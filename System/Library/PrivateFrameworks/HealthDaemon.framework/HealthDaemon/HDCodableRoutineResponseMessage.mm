@@ -1,14 +1,14 @@
 @interface HDCodableRoutineResponseMessage
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsRequestType:(id)a3;
+- (int)StringAsRequestType:(id)type;
 - (int)requestType;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HDCodableRoutineResponseMessage
@@ -26,20 +26,20 @@
   }
 }
 
-- (int)StringAsRequestType:(id)a3
+- (int)StringAsRequestType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"FetchLocation"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"FetchLocation"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"FetchNextLocations"])
+  else if ([typeCopy isEqualToString:@"FetchNextLocations"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"ScenarioTriggered"])
+  else if ([typeCopy isEqualToString:@"ScenarioTriggered"])
   {
     v4 = 3;
   }
@@ -58,15 +58,15 @@
   v8.receiver = self;
   v8.super_class = HDCodableRoutineResponseMessage;
   v4 = [(HDCodableRoutineResponseMessage *)&v8 description];
-  v5 = [(HDCodableRoutineResponseMessage *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HDCodableRoutineResponseMessage *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if (*&self->_has)
   {
     v4 = self->_requestType - 1;
@@ -80,112 +80,112 @@
       v5 = off_278627728[v4];
     }
 
-    [v3 setObject:v5 forKey:@"requestType"];
+    [dictionary setObject:v5 forKey:@"requestType"];
   }
 
   requestIdentifier = self->_requestIdentifier;
   if (requestIdentifier)
   {
-    [v3 setObject:requestIdentifier forKey:@"requestIdentifier"];
+    [dictionary setObject:requestIdentifier forKey:@"requestIdentifier"];
   }
 
   fetchLocationResponse = self->_fetchLocationResponse;
   if (fetchLocationResponse)
   {
-    v8 = [(HDCodableRoutineLocationResponse *)fetchLocationResponse dictionaryRepresentation];
-    [v3 setObject:v8 forKey:@"fetchLocationResponse"];
+    dictionaryRepresentation = [(HDCodableRoutineLocationResponse *)fetchLocationResponse dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"fetchLocationResponse"];
   }
 
   fetchNextLocationResponse = self->_fetchNextLocationResponse;
   if (fetchNextLocationResponse)
   {
-    v10 = [(HDCodableRoutinePredictedLocationsResponse *)fetchNextLocationResponse dictionaryRepresentation];
-    [v3 setObject:v10 forKey:@"fetchNextLocationResponse"];
+    dictionaryRepresentation2 = [(HDCodableRoutinePredictedLocationsResponse *)fetchNextLocationResponse dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"fetchNextLocationResponse"];
   }
 
   errorDescription = self->_errorDescription;
   if (errorDescription)
   {
-    [v3 setObject:errorDescription forKey:@"errorDescription"];
+    [dictionary setObject:errorDescription forKey:@"errorDescription"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (*&self->_has)
   {
     requestType = self->_requestType;
     PBDataWriterWriteInt32Field();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_requestIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_fetchLocationResponse)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_fetchNextLocationResponse)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_errorDescription)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[10] = self->_requestType;
-    *(v4 + 44) |= 1u;
+    toCopy[10] = self->_requestType;
+    *(toCopy + 44) |= 1u;
   }
 
-  v5 = v4;
+  v5 = toCopy;
   if (self->_requestIdentifier)
   {
-    [v4 setRequestIdentifier:?];
-    v4 = v5;
+    [toCopy setRequestIdentifier:?];
+    toCopy = v5;
   }
 
   if (self->_fetchLocationResponse)
   {
     [v5 setFetchLocationResponse:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_fetchNextLocationResponse)
   {
     [v5 setFetchNextLocationResponse:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_errorDescription)
   {
     [v5 setErrorDescription:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -193,43 +193,43 @@
     *(v5 + 44) |= 1u;
   }
 
-  v7 = [(NSString *)self->_requestIdentifier copyWithZone:a3];
+  v7 = [(NSString *)self->_requestIdentifier copyWithZone:zone];
   v8 = v6[4];
   v6[4] = v7;
 
-  v9 = [(HDCodableRoutineLocationResponse *)self->_fetchLocationResponse copyWithZone:a3];
+  v9 = [(HDCodableRoutineLocationResponse *)self->_fetchLocationResponse copyWithZone:zone];
   v10 = v6[2];
   v6[2] = v9;
 
-  v11 = [(HDCodableRoutinePredictedLocationsResponse *)self->_fetchNextLocationResponse copyWithZone:a3];
+  v11 = [(HDCodableRoutinePredictedLocationsResponse *)self->_fetchNextLocationResponse copyWithZone:zone];
   v12 = v6[3];
   v6[3] = v11;
 
-  v13 = [(NSString *)self->_errorDescription copyWithZone:a3];
+  v13 = [(NSString *)self->_errorDescription copyWithZone:zone];
   v14 = v6[1];
   v6[1] = v13;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_15;
   }
 
-  v5 = *(v4 + 44);
+  v5 = *(equalCopy + 44);
   if (*&self->_has)
   {
-    if ((*(v4 + 44) & 1) == 0 || self->_requestType != *(v4 + 10))
+    if ((*(equalCopy + 44) & 1) == 0 || self->_requestType != *(equalCopy + 10))
     {
       goto LABEL_15;
     }
   }
 
-  else if (*(v4 + 44))
+  else if (*(equalCopy + 44))
   {
 LABEL_15:
     v10 = 0;
@@ -237,13 +237,13 @@ LABEL_15:
   }
 
   requestIdentifier = self->_requestIdentifier;
-  if (requestIdentifier | *(v4 + 4) && ![(NSString *)requestIdentifier isEqual:?])
+  if (requestIdentifier | *(equalCopy + 4) && ![(NSString *)requestIdentifier isEqual:?])
   {
     goto LABEL_15;
   }
 
   fetchLocationResponse = self->_fetchLocationResponse;
-  if (fetchLocationResponse | *(v4 + 2))
+  if (fetchLocationResponse | *(equalCopy + 2))
   {
     if (![(HDCodableRoutineLocationResponse *)fetchLocationResponse isEqual:?])
     {
@@ -252,7 +252,7 @@ LABEL_15:
   }
 
   fetchNextLocationResponse = self->_fetchNextLocationResponse;
-  if (fetchNextLocationResponse | *(v4 + 3))
+  if (fetchNextLocationResponse | *(equalCopy + 3))
   {
     if (![(HDCodableRoutinePredictedLocationsResponse *)fetchNextLocationResponse isEqual:?])
     {
@@ -261,7 +261,7 @@ LABEL_15:
   }
 
   errorDescription = self->_errorDescription;
-  if (errorDescription | *(v4 + 1))
+  if (errorDescription | *(equalCopy + 1))
   {
     v10 = [(NSString *)errorDescription isEqual:?];
   }
@@ -294,18 +294,18 @@ LABEL_16:
   return v6 ^ [(NSString *)self->_errorDescription hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 44))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 44))
   {
-    self->_requestType = *(v4 + 10);
+    self->_requestType = *(fromCopy + 10);
     *&self->_has |= 1u;
   }
 
-  v10 = v4;
-  if (*(v4 + 4))
+  v10 = fromCopy;
+  if (*(fromCopy + 4))
   {
     [(HDCodableRoutineResponseMessage *)self setRequestIdentifier:?];
     v5 = v10;

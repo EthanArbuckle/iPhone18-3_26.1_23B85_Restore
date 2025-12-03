@@ -1,14 +1,14 @@
 @interface FTAVCMoments
 - (FTAVCMomentsDelegate)delegate;
-- (_TtC18FTLivePhotoService12FTAVCMoments)initWithStreamToken:(int64_t)a3 requesterID:(id)a4 delegate:(id)a5 dispatchQueue:(id)a6;
+- (_TtC18FTLivePhotoService12FTAVCMoments)initWithStreamToken:(int64_t)token requesterID:(id)d delegate:(id)delegate dispatchQueue:(id)queue;
 - (int)activeRequestCount;
 - (int)pendingRequestCount;
 - (int64_t)streamToken;
 - (unsigned)capabilities;
-- (void)moments:(id)a3 didEndProcessingRequest:(id)a4 stillImageURL:(id)a5 movieURL:(id)a6 error:(id)a7;
-- (void)moments:(id)a3 didEndProcessingRequest:(id)a4 url:(id)a5 error:(id)a6;
-- (void)momentsServerDidDisconnect:(id)a3;
-- (void)setDelegate:(id)a3;
+- (void)moments:(id)moments didEndProcessingRequest:(id)request stillImageURL:(id)l movieURL:(id)rL error:(id)error;
+- (void)moments:(id)moments didEndProcessingRequest:(id)request url:(id)url error:(id)error;
+- (void)momentsServerDidDisconnect:(id)disconnect;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation FTAVCMoments
@@ -20,16 +20,16 @@
   return v2;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v5 = a3;
-  v6 = self;
-  sub_1000340A4(a3);
+  delegateCopy = delegate;
+  selfCopy = self;
+  sub_1000340A4(delegate);
 }
 
-- (_TtC18FTLivePhotoService12FTAVCMoments)initWithStreamToken:(int64_t)a3 requesterID:(id)a4 delegate:(id)a5 dispatchQueue:(id)a6
+- (_TtC18FTLivePhotoService12FTAVCMoments)initWithStreamToken:(int64_t)token requesterID:(id)d delegate:(id)delegate dispatchQueue:(id)queue
 {
-  if (a4)
+  if (d)
   {
     v9 = sub_10003986C();
     v11 = v10;
@@ -41,14 +41,14 @@
     v11 = 0;
   }
 
-  v12 = a5;
-  v13 = a6;
-  return sub_1000340EC(a3, v9, v11, v12, a6);
+  delegateCopy = delegate;
+  queueCopy = queue;
+  return sub_1000340EC(token, v9, v11, delegateCopy, queue);
 }
 
 - (int64_t)streamToken
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10003429C();
 
   return v3;
@@ -56,7 +56,7 @@
 
 - (unsigned)capabilities
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100034370(&selRef_capabilities);
 
   return v3;
@@ -64,7 +64,7 @@
 
 - (int)activeRequestCount
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100034370(&selRef_activeRequestCount);
 
   return v3;
@@ -72,19 +72,19 @@
 
 - (int)pendingRequestCount
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100034370(&selRef_pendingRequestCount);
 
   return v3;
 }
 
-- (void)moments:(id)a3 didEndProcessingRequest:(id)a4 url:(id)a5 error:(id)a6
+- (void)moments:(id)moments didEndProcessingRequest:(id)request url:(id)url error:(id)error
 {
   v7 = sub_10000BEC0(&unk_100058FA0, &unk_10003F260);
   v8 = *(*(v7 - 8) + 64);
   __chkstk_darwin(v7 - 8);
   v10 = &v13 - v9;
-  if (a5)
+  if (url)
   {
     sub_10003958C();
     v11 = sub_1000395CC();
@@ -101,7 +101,7 @@
   sub_10000D3F4(v10);
 }
 
-- (void)moments:(id)a3 didEndProcessingRequest:(id)a4 stillImageURL:(id)a5 movieURL:(id)a6 error:(id)a7
+- (void)moments:(id)moments didEndProcessingRequest:(id)request stillImageURL:(id)l movieURL:(id)rL error:(id)error
 {
   v13 = sub_10000BEC0(&unk_100058FA0, &unk_10003F260);
   v14 = *(*(v13 - 8) + 64);
@@ -109,7 +109,7 @@
   v17 = &v28 - ((v16 + 15) & 0xFFFFFFFFFFFFFFF0);
   __chkstk_darwin(v15);
   v19 = &v28 - v18;
-  if (a5)
+  if (l)
   {
     sub_10003958C();
     v20 = sub_1000395CC();
@@ -124,7 +124,7 @@
 
   v22 = 1;
   sub_10000E998(v19, v21, 1, v20);
-  if (a6)
+  if (rL)
   {
     sub_10003958C();
     v22 = 0;
@@ -132,20 +132,20 @@
 
   v23 = sub_1000395CC();
   sub_10000E998(v17, v22, 1, v23);
-  v24 = a3;
-  v25 = a4;
-  v26 = a7;
-  v27 = self;
-  sub_100034854(v27, v25, v19, v17, a7);
+  momentsCopy = moments;
+  requestCopy = request;
+  errorCopy = error;
+  selfCopy = self;
+  sub_100034854(selfCopy, requestCopy, v19, v17, error);
 
   sub_10000D3F4(v17);
   sub_10000D3F4(v19);
 }
 
-- (void)momentsServerDidDisconnect:(id)a3
+- (void)momentsServerDidDisconnect:(id)disconnect
 {
-  v4 = a3;
-  v5 = self;
+  disconnectCopy = disconnect;
+  selfCopy = self;
   sub_100034BD4();
 }
 

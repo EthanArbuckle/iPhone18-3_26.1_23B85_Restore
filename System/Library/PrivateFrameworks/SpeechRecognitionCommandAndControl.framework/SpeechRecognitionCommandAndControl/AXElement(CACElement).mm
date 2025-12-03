@@ -17,7 +17,7 @@
 + (id)wordsFromString:()CACElement
 {
   v3 = a3;
-  v4 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v5 = +[CACPreferences sharedPreferences];
   v6 = CFLocaleCreate(0, [v5 bestLocaleIdentifier]);
 
@@ -35,7 +35,7 @@
     if (CurrentTokenRange.location != -1)
     {
       v9 = [(__CFString *)v3 substringWithRange:CurrentTokenRange.location, CurrentTokenRange.length];
-      [v4 addObject:v9];
+      [array addObject:v9];
     }
   }
 
@@ -44,7 +44,7 @@
     CFRelease(v7);
   }
 
-  return v4;
+  return array;
 }
 
 + (uint64_t)_trimMutableString:()CACElement toMaxWordCount:
@@ -211,7 +211,7 @@ LABEL_16:
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
-  obj = [a1 userInputLabels];
+  obj = [self userInputLabels];
   v3 = [obj countByEnumeratingWithState:&v41 objects:v47 count:16];
   if (v3)
   {
@@ -232,8 +232,8 @@ LABEL_16:
         v39 = 0u;
         v40 = 0u;
         v8 = +[CACDisplayManager sharedManager];
-        v9 = a1;
-        v10 = [a1 _combinationsFromTitle:v7 isCarPlayConnected:{objc_msgSend(v8, "carPlayConnected")}];
+        selfCopy = self;
+        v10 = [self _combinationsFromTitle:v7 isCarPlayConnected:{objc_msgSend(v8, "carPlayConnected")}];
 
         v11 = [v10 countByEnumeratingWithState:&v37 objects:v46 count:16];
         if (v11)
@@ -262,7 +262,7 @@ LABEL_16:
           while (v12);
         }
 
-        a1 = v9;
+        self = selfCopy;
       }
 
       v4 = [obj countByEnumeratingWithState:&v41 objects:v47 count:16];
@@ -271,16 +271,16 @@ LABEL_16:
     while (v4);
   }
 
-  if ([a1 hasAnyTraits:*MEMORY[0x277CE6E08]])
+  if ([self hasAnyTraits:*MEMORY[0x277CE6E08]])
   {
     v35 = 0u;
     v36 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v16 = [a1 uiElement];
-    v17 = [v16 stringWithAXAttribute:5043];
+    uiElement = [self uiElement];
+    v17 = [uiElement stringWithAXAttribute:5043];
     v18 = +[CACDisplayManager sharedManager];
-    v19 = [a1 _combinationsFromTitle:v17 isCarPlayConnected:{objc_msgSend(v18, "carPlayConnected")}];
+    v19 = [self _combinationsFromTitle:v17 isCarPlayConnected:{objc_msgSend(v18, "carPlayConnected")}];
 
     v20 = [v19 countByEnumeratingWithState:&v33 objects:v45 count:16];
     if (v20)
@@ -310,13 +310,13 @@ LABEL_16:
     }
   }
 
-  if (![v2 count] && objc_msgSend(a1, "eligibleForIconVision"))
+  if (![v2 count] && objc_msgSend(self, "eligibleForIconVision"))
   {
-    v25 = [a1 uiElement];
-    v26 = [v25 arrayWithAXAttribute:2315];
+    uiElement2 = [self uiElement];
+    v26 = [uiElement2 arrayWithAXAttribute:2315];
 
-    v27 = [MEMORY[0x277CE6AB8] sharedInstance];
-    v28 = [v27 classifyImages:v26 withTimeout:0.5];
+    mEMORY[0x277CE6AB8] = [MEMORY[0x277CE6AB8] sharedInstance];
+    v28 = [mEMORY[0x277CE6AB8] classifyImages:v26 withTimeout:0.5];
 
     if ([v28 length])
     {
@@ -324,10 +324,10 @@ LABEL_16:
     }
   }
 
-  if ([a1 hasAnyTraits:*MEMORY[0x277CE6DF8]])
+  if ([self hasAnyTraits:*MEMORY[0x277CE6DF8]])
   {
-    v29 = [a1 uiElement];
-    v30 = [v29 arrayWithAXAttribute:2239];
+    uiElement3 = [self uiElement];
+    v30 = [uiElement3 arrayWithAXAttribute:2239];
     [v2 addObjectsFromArray:v30];
   }
 
@@ -338,13 +338,13 @@ LABEL_16:
 {
   v58[1] = *MEMORY[0x277D85DE8];
   v4 = a3;
-  v5 = [MEMORY[0x277D79890] shared];
-  v6 = [v5 carPlayDebugOverlayUIEnabled];
+  mEMORY[0x277D79890] = [MEMORY[0x277D79890] shared];
+  carPlayDebugOverlayUIEnabled = [mEMORY[0x277D79890] carPlayDebugOverlayUIEnabled];
 
-  if (!v6)
+  if (!carPlayDebugOverlayUIEnabled)
   {
     v10 = objc_autoreleasePoolPush();
-    v11 = [MEMORY[0x277CBEB40] orderedSet];
+    orderedSet = [MEMORY[0x277CBEB40] orderedSet];
     v12 = &stru_287BD8610;
     if (v4)
     {
@@ -354,9 +354,9 @@ LABEL_16:
     v13 = v12;
 
     v14 = +[CACPreferences sharedPreferences];
-    v15 = [v14 bestLocaleIdentifier];
+    bestLocaleIdentifier = [v14 bestLocaleIdentifier];
 
-    if (![CACLocaleUtilities isSameLangaugeFromLocaleIdentifier:v15 secondLocaleIdentifier:@"en"])
+    if (![CACLocaleUtilities isSameLangaugeFromLocaleIdentifier:bestLocaleIdentifier secondLocaleIdentifier:@"en"])
     {
       v37 = [MEMORY[0x277CCAB68] stringWithString:v13];
       v38 = 4;
@@ -364,7 +364,7 @@ LABEL_16:
       {
         [MEMORY[0x277CE6BA0] _trimMutableString:v37 toMaxWordCount:v38];
         v39 = [v37 copy];
-        [v11 addObject:v39];
+        [orderedSet addObject:v39];
 
         --v38;
       }
@@ -373,17 +373,17 @@ LABEL_16:
       goto LABEL_35;
     }
 
-    v49 = v15;
+    v49 = bestLocaleIdentifier;
     v50 = v13;
     v51 = v10;
-    v16 = [(__CFString *)v13 cac_stringByPreparingForAX];
-    v17 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-    v18 = [v16 componentsSeparatedByCharactersInSet:v17];
+    cac_stringByPreparingForAX = [(__CFString *)v13 cac_stringByPreparingForAX];
+    whitespaceCharacterSet = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+    v18 = [cac_stringByPreparingForAX componentsSeparatedByCharactersInSet:whitespaceCharacterSet];
 
     v55 = v18;
     v19 = [v18 count];
-    v48 = v16;
-    [v11 addObject:v16];
+    v48 = cac_stringByPreparingForAX;
+    [orderedSet addObject:cac_stringByPreparingForAX];
     if (v19 >= 1)
     {
       v20 = 0;
@@ -414,7 +414,7 @@ LABEL_16:
         }
 
         v28 = [v27 copy];
-        [v11 addObject:v28];
+        [orderedSet addObject:v28];
 
         if (v23 >= v53)
         {
@@ -426,14 +426,14 @@ LABEL_16:
           do
           {
             [MEMORY[0x277CE6BA0] _trimMutableString:v27 toMaxWordCount:v23];
-            v29 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-            v30 = [v27 rangeOfCharacterFromSet:v29];
+            whitespaceCharacterSet2 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+            v30 = [v27 rangeOfCharacterFromSet:whitespaceCharacterSet2];
 
             if (v30 == 0x7FFFFFFFFFFFFFFFLL)
             {
-              v31 = [a1 englishFunctionWords];
-              v32 = [v27 lowercaseString];
-              v33 = [v31 containsObject:v32];
+              englishFunctionWords = [self englishFunctionWords];
+              lowercaseString = [v27 lowercaseString];
+              v33 = [englishFunctionWords containsObject:lowercaseString];
 
               if (v33)
               {
@@ -441,9 +441,9 @@ LABEL_16:
               }
             }
 
-            v34 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-            v35 = [v27 stringByTrimmingCharactersInSet:v34];
-            [v11 addObject:v35];
+            whitespaceCharacterSet3 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+            v35 = [v27 stringByTrimmingCharactersInSet:whitespaceCharacterSet3];
+            [orderedSet addObject:v35];
           }
 
           while (v23-- > 0);
@@ -465,15 +465,15 @@ LABEL_16:
 LABEL_28:
     v37 = v48;
     v40 = [v48 componentsSeparatedByString:@" "];
-    v41 = [v40 firstObject];
+    firstObject = [v40 firstObject];
 
-    v42 = [MEMORY[0x277CBEB40] orderedSet];
-    if ([v11 containsObject:v41])
+    orderedSet2 = [MEMORY[0x277CBEB40] orderedSet];
+    if ([orderedSet containsObject:firstObject])
     {
-      [v42 addObject:v41];
-      [v42 unionOrderedSet:v11];
-      v43 = v11;
-      v11 = v42;
+      [orderedSet2 addObject:firstObject];
+      [orderedSet2 unionOrderedSet:orderedSet];
+      v43 = orderedSet;
+      orderedSet = orderedSet2;
     }
 
     else
@@ -482,7 +482,7 @@ LABEL_28:
       {
         v13 = v50;
         v10 = v51;
-        v15 = v49;
+        bestLocaleIdentifier = v49;
         goto LABEL_34;
       }
 
@@ -490,24 +490,24 @@ LABEL_28:
       v46 = [v45 subarrayWithRange:{0, 2}];
       v43 = [v46 componentsJoinedByString:@" "];
 
-      if ([v11 containsObject:v43])
+      if ([orderedSet containsObject:v43])
       {
-        [v42 addObject:v43];
-        [v42 unionOrderedSet:v11];
-        v47 = v42;
+        [orderedSet2 addObject:v43];
+        [orderedSet2 unionOrderedSet:orderedSet];
+        v47 = orderedSet2;
 
-        v11 = v47;
+        orderedSet = v47;
       }
     }
 
     v13 = v50;
     v10 = v51;
-    v15 = v49;
+    bestLocaleIdentifier = v49;
 
 LABEL_34:
 LABEL_35:
 
-    v9 = [v11 copy];
+    orderedSet3 = [orderedSet copy];
     objc_autoreleasePoolPop(v10);
 
     goto LABEL_36;
@@ -518,17 +518,17 @@ LABEL_35:
   {
     v58[0] = v4;
     v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v58 count:1];
-    v9 = [v7 orderedSetWithArray:v8];
+    orderedSet3 = [v7 orderedSetWithArray:v8];
   }
 
   else
   {
-    v9 = [MEMORY[0x277CBEB70] orderedSet];
+    orderedSet3 = [MEMORY[0x277CBEB70] orderedSet];
   }
 
 LABEL_36:
 
-  return v9;
+  return orderedSet3;
 }
 
 - (id)englishFunctionWords
@@ -548,11 +548,11 @@ LABEL_36:
   v4 = a3;
   if ([v4 isEqual:v4])
   {
-    v5 = [a1 userInputLabels];
-    v6 = [v4 userInputLabels];
-    if ([v5 isEqualToArray:v6] && (v5 || !v6) && (!v5 || v6))
+    userInputLabels = [self userInputLabels];
+    userInputLabels2 = [v4 userInputLabels];
+    if ([userInputLabels isEqualToArray:userInputLabels2] && (userInputLabels || !userInputLabels2) && (!userInputLabels || userInputLabels2))
     {
-      [a1 visibleFrame];
+      [self visibleFrame];
       v8 = v7;
       v10 = v9;
       v12 = v11;
@@ -593,57 +593,57 @@ LABEL_15:
 
 - (id)elementForVoiceControlTextEditing
 {
-  v2 = [a1 elementForTextInsertionAndDeletion];
-  v3 = v2;
-  if (v2)
+  elementForTextInsertionAndDeletion = [self elementForTextInsertionAndDeletion];
+  v3 = elementForTextInsertionAndDeletion;
+  if (elementForTextInsertionAndDeletion)
   {
-    v4 = v2;
+    firstResponder = elementForTextInsertionAndDeletion;
   }
 
   else
   {
-    v4 = [a1 firstResponder];
+    firstResponder = [self firstResponder];
   }
 
-  v5 = v4;
+  v5 = firstResponder;
 
   return v5;
 }
 
 - (uint64_t)cacActivate
 {
-  v2 = [MEMORY[0x277D79898] shared];
-  [v2 axPress];
+  mEMORY[0x277D79898] = [MEMORY[0x277D79898] shared];
+  [mEMORY[0x277D79898] axPress];
 
-  return [a1 press];
+  return [self press];
 }
 
 - (id)textOperationsOperator
 {
-  v1 = a1;
-  if ([v1 hasWebContent])
+  selfCopy = self;
+  if ([selfCopy hasWebContent])
   {
-    v2 = [v1 elementForAttribute:2011];
+    v2 = [selfCopy elementForAttribute:2011];
 
-    v1 = v2;
+    selfCopy = v2;
   }
 
-  return v1;
+  return selfCopy;
 }
 
 - (id)cacTrailingValue
 {
-  [a1 updateCache:2006];
-  v2 = [a1 value];
-  v3 = [v2 length];
+  [self updateCache:2006];
+  value = [self value];
+  v3 = [value length];
   if (v3 >= 0xC9)
   {
-    v4 = [v2 substringWithRange:{v3 - 200, 200}];
+    v4 = [value substringWithRange:{v3 - 200, 200}];
 
-    v2 = v4;
+    value = v4;
   }
 
-  return v2;
+  return value;
 }
 
 - (void)isVisuallyEqual:()CACElement .cold.1(os_log_t log)

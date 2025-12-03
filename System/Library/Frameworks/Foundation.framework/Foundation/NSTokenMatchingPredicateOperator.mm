@@ -1,5 +1,5 @@
 @interface NSTokenMatchingPredicateOperator
-- (BOOL)performPrimitiveOperationUsingObject:(id)a3 andObject:(id)a4;
+- (BOOL)performPrimitiveOperationUsingObject:(id)object andObject:(id)andObject;
 - (id)symbol;
 @end
 
@@ -7,28 +7,28 @@
 
 - (id)symbol
 {
-  v2 = [(NSStringPredicateOperator *)self _modifierString];
+  _modifierString = [(NSStringPredicateOperator *)self _modifierString];
 
-  return [@"TOKENMATCHES" stringByAppendingString:v2];
+  return [@"TOKENMATCHES" stringByAppendingString:_modifierString];
 }
 
-- (BOOL)performPrimitiveOperationUsingObject:(id)a3 andObject:(id)a4
+- (BOOL)performPrimitiveOperationUsingObject:(id)object andObject:(id)andObject
 {
-  if (!a3 || !a4)
+  if (!object || !andObject)
   {
     return 0;
   }
 
-  v6 = [(NSStringPredicateOperator *)self flags];
-  if ((v6 & 4) != 0)
+  flags = [(NSStringPredicateOperator *)self flags];
+  if ((flags & 4) != 0)
   {
     v7 = 0;
   }
 
   else
   {
-    v7 = v6 & 3;
-    if ((v6 & 8) != 0)
+    v7 = flags & 3;
+    if ((flags & 8) != 0)
     {
       v8 = +[_NSPredicateOperatorUtilities retainedLocale];
       goto LABEL_9;
@@ -39,7 +39,7 @@
 LABEL_9:
   if (_NSIsNSString())
   {
-    v10 = [_NSPredicateUtilities _processAndTokenize:a3 flags:v7 locale:v8];
+    v10 = [_NSPredicateUtilities _processAndTokenize:object flags:v7 locale:v8];
   }
 
   else
@@ -49,7 +49,7 @@ LABEL_9:
       goto LABEL_24;
     }
 
-    v10 = [_NSPredicateUtilities _collapseAndTokenize:a3 flags:v7 locale:v8];
+    v10 = [_NSPredicateUtilities _collapseAndTokenize:object flags:v7 locale:v8];
   }
 
   v11 = v10;
@@ -57,7 +57,7 @@ LABEL_9:
   {
     if ((_NSIsNSArray() & 1) != 0 || (_NSIsNSSet() & 1) != 0 || _NSIsNSOrderedSet())
     {
-      v12 = [_NSPredicateUtilities _collapseAndTokenize:a4 flags:v7 locale:v8];
+      v12 = [_NSPredicateUtilities _collapseAndTokenize:andObject flags:v7 locale:v8];
       goto LABEL_21;
     }
 
@@ -66,7 +66,7 @@ LABEL_24:
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"Unable to tokenize : %@", 0), 0}]);
   }
 
-  v12 = [_NSPredicateUtilities _processAndTokenize:a4 flags:v7 locale:v8];
+  v12 = [_NSPredicateUtilities _processAndTokenize:andObject flags:v7 locale:v8];
 LABEL_21:
   v13 = v12;
 

@@ -21,27 +21,27 @@
   v7 = [UIImageSymbolConfiguration configurationWithPointSize:72.0];
   [v5 setPreferredSymbolConfiguration:v7];
 
-  v8 = [(ProxCardKitTestEndViewController *)self contentView];
-  [v8 addSubview:v5];
+  contentView = [(ProxCardKitTestEndViewController *)self contentView];
+  [contentView addSubview:v5];
 
-  v9 = [(ProxCardKitTestEndViewController *)self contentView];
-  v10 = [v9 mainContentGuide];
+  contentView2 = [(ProxCardKitTestEndViewController *)self contentView];
+  mainContentGuide = [contentView2 mainContentGuide];
 
-  v23 = [v5 topAnchor];
-  v22 = [v10 topAnchor];
-  v21 = [v23 constraintGreaterThanOrEqualToAnchor:v22];
+  topAnchor = [v5 topAnchor];
+  topAnchor2 = [mainContentGuide topAnchor];
+  v21 = [topAnchor constraintGreaterThanOrEqualToAnchor:topAnchor2];
   v25[0] = v21;
-  v20 = [v5 bottomAnchor];
-  v19 = [v10 bottomAnchor];
-  v11 = [v20 constraintLessThanOrEqualToAnchor:v19];
+  bottomAnchor = [v5 bottomAnchor];
+  bottomAnchor2 = [mainContentGuide bottomAnchor];
+  v11 = [bottomAnchor constraintLessThanOrEqualToAnchor:bottomAnchor2];
   v25[1] = v11;
-  v12 = [v5 centerYAnchor];
-  v13 = [v10 centerYAnchor];
-  v14 = [v12 constraintEqualToAnchor:v13];
+  centerYAnchor = [v5 centerYAnchor];
+  centerYAnchor2 = [mainContentGuide centerYAnchor];
+  v14 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v25[2] = v14;
-  v15 = [v5 centerXAnchor];
-  v16 = [v10 centerXAnchor];
-  v17 = [v15 constraintEqualToAnchor:v16];
+  centerXAnchor = [v5 centerXAnchor];
+  centerXAnchor2 = [mainContentGuide centerXAnchor];
+  v17 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v25[3] = v17;
   v18 = [NSArray arrayWithObjects:v25 count:4];
   [NSLayoutConstraint activateConstraints:v18];

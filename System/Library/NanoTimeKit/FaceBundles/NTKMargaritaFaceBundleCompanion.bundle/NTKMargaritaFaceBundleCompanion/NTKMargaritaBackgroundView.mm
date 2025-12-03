@@ -1,41 +1,41 @@
 @interface NTKMargaritaBackgroundView
-+ (id)rotationSwatchImageForDevice:(id)a3 withColors:(id)a4 rotation:(int64_t)a5;
-+ (id)stripeCountSwatchImageForDevice:(id)a3 withColors:(id)a4;
-- (CGSize)_stripeContainerSizeForStyle:(unint64_t)a3 rotation:(double)a4;
-- (CGSize)_stripeSizeForStripeCount:(unint64_t)a3;
-- (CGVector)_stripeOriginOffsetForStripeCount:(unint64_t)a3;
-- (NTKMargaritaBackgroundView)initWithDevice:(id)a3;
-- (double)_stripeContainerCornerRadiusForStyle:(unint64_t)a3;
-- (id)_maskLayerWithFraction:(double)a3 fromStyle:(unint64_t)a4 toStyle:(unint64_t)a5;
-- (id)_stripeContainerCornerCurveForStyle:(unint64_t)a3;
-- (void)_applyColors:(id)a3;
-- (void)_applyStripeSize:(CGSize)a3 originOffset:(CGVector)a4;
++ (id)rotationSwatchImageForDevice:(id)device withColors:(id)colors rotation:(int64_t)rotation;
++ (id)stripeCountSwatchImageForDevice:(id)device withColors:(id)colors;
+- (CGSize)_stripeContainerSizeForStyle:(unint64_t)style rotation:(double)rotation;
+- (CGSize)_stripeSizeForStripeCount:(unint64_t)count;
+- (CGVector)_stripeOriginOffsetForStripeCount:(unint64_t)count;
+- (NTKMargaritaBackgroundView)initWithDevice:(id)device;
+- (double)_stripeContainerCornerRadiusForStyle:(unint64_t)style;
+- (id)_maskLayerWithFraction:(double)fraction fromStyle:(unint64_t)style toStyle:(unint64_t)toStyle;
+- (id)_stripeContainerCornerCurveForStyle:(unint64_t)style;
+- (void)_applyColors:(id)colors;
+- (void)_applyStripeSize:(CGSize)size originOffset:(CGVector)offset;
 - (void)_layoutStripes;
-- (void)_layoutStripesForStripeCount:(unint64_t)a3;
+- (void)_layoutStripesForStripeCount:(unint64_t)count;
 - (void)_recreateStripeLayers;
-- (void)applyTransitionFraction:(double)a3 fromRotation:(int64_t)a4 toRotation:(int64_t)a5;
-- (void)applyTransitionFraction:(double)a3 fromStripeCount:(unint64_t)a4 toStripeCount:(unint64_t)a5;
-- (void)applyTransitionFraction:(double)a3 fromStyle:(unint64_t)a4 toStyle:(unint64_t)a5;
-- (void)applyTransitionFractionToCompactCircular:(double)a3;
+- (void)applyTransitionFraction:(double)fraction fromRotation:(int64_t)rotation toRotation:(int64_t)toRotation;
+- (void)applyTransitionFraction:(double)fraction fromStripeCount:(unint64_t)count toStripeCount:(unint64_t)stripeCount;
+- (void)applyTransitionFraction:(double)fraction fromStyle:(unint64_t)style toStyle:(unint64_t)toStyle;
+- (void)applyTransitionFractionToCompactCircular:(double)circular;
 - (void)layoutSubviews;
-- (void)setCompactCircular:(BOOL)a3;
-- (void)setRotation:(int64_t)a3;
-- (void)setStripeColor:(id)a3 atIndex:(int64_t)a4;
-- (void)setStyle:(unint64_t)a3;
+- (void)setCompactCircular:(BOOL)circular;
+- (void)setRotation:(int64_t)rotation;
+- (void)setStripeColor:(id)color atIndex:(int64_t)index;
+- (void)setStyle:(unint64_t)style;
 @end
 
 @implementation NTKMargaritaBackgroundView
 
-- (NTKMargaritaBackgroundView)initWithDevice:(id)a3
+- (NTKMargaritaBackgroundView)initWithDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v25.receiver = self;
   v25.super_class = NTKMargaritaBackgroundView;
   v6 = [(NTKMargaritaBackgroundView *)&v25 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_device, a3);
+    objc_storeStrong(&v6->_device, device);
     v8 = +[NTKMargaritaFace totalStripeCount];
     v9 = [NSMutableArray arrayWithCapacity:v8];
     stripeColors = v7->_stripeColors;
@@ -64,22 +64,22 @@
     v16 = sub_73A8();
     [(CALayer *)v15 setActions:v16];
 
-    v17 = [(NTKMargaritaBackgroundView *)v7 layer];
-    [v17 addSublayer:v7->_stripeContainerLayer];
+    layer = [(NTKMargaritaBackgroundView *)v7 layer];
+    [layer addSublayer:v7->_stripeContainerLayer];
 
-    v18 = [(NTKMargaritaBackgroundView *)v7 layer];
-    [v18 setCornerCurve:kCACornerCurveContinuous];
+    layer2 = [(NTKMargaritaBackgroundView *)v7 layer];
+    [layer2 setCornerCurve:kCACornerCurveContinuous];
 
-    v19 = [(NTKMargaritaBackgroundView *)v7 layer];
-    [v5 screenCornerRadius];
-    [v19 setCornerRadius:?];
+    layer3 = [(NTKMargaritaBackgroundView *)v7 layer];
+    [deviceCopy screenCornerRadius];
+    [layer3 setCornerRadius:?];
 
-    v20 = [(NTKMargaritaBackgroundView *)v7 layer];
-    [v20 setMasksToBounds:1];
+    layer4 = [(NTKMargaritaBackgroundView *)v7 layer];
+    [layer4 setMasksToBounds:1];
 
-    v21 = [(NTKMargaritaBackgroundView *)v7 layer];
+    layer5 = [(NTKMargaritaBackgroundView *)v7 layer];
     v22 = sub_73A8();
-    [v21 setActions:v22];
+    [layer5 setActions:v22];
 
     [(NTKMargaritaBackgroundView *)v7 _recreateStripeLayers];
     v23 = v7;
@@ -98,15 +98,15 @@
   [(CALayer *)self->_stripeContainerLayer setPosition:?];
 }
 
-+ (id)stripeCountSwatchImageForDevice:(id)a3 withColors:(id)a4
++ (id)stripeCountSwatchImageForDevice:(id)device withColors:(id)colors
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[NTKMargaritaBackgroundView alloc] initWithDevice:v6];
-  [(NTKMargaritaBackgroundView *)v7 _applyColors:v5];
+  colorsCopy = colors;
+  deviceCopy = device;
+  v7 = [[NTKMargaritaBackgroundView alloc] initWithDevice:deviceCopy];
+  [(NTKMargaritaBackgroundView *)v7 _applyColors:colorsCopy];
 
   [(NTKMargaritaBackgroundView *)v7 setStyle:0];
-  [v6 screenBounds];
+  [deviceCopy screenBounds];
   v9 = v8;
   v11 = v10;
   v13 = v12;
@@ -125,11 +125,11 @@
   return v18;
 }
 
-+ (id)rotationSwatchImageForDevice:(id)a3 withColors:(id)a4 rotation:(int64_t)a5
++ (id)rotationSwatchImageForDevice:(id)device withColors:(id)colors rotation:(int64_t)rotation
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [[NTKMargaritaBackgroundView alloc] initWithDevice:v8];
+  colorsCopy = colors;
+  deviceCopy = device;
+  v9 = [[NTKMargaritaBackgroundView alloc] initWithDevice:deviceCopy];
 
   v10 = v9->_stripeContainerLayer;
   [NTKEditOption sizeForSwatchStyle:0];
@@ -137,9 +137,9 @@
   v14 = v13;
   [(CALayer *)v10 setCornerRadius:0.0];
   [(CALayer *)v10 setFrame:0.0, 0.0, v12, v14];
-  CGAffineTransformMakeRotation(&v22, a5 * 3.14159265 / 180.0);
+  CGAffineTransformMakeRotation(&v22, rotation * 3.14159265 / 180.0);
   [(CALayer *)v10 setAffineTransform:&v22];
-  [(NTKMargaritaBackgroundView *)v9 _applyColors:v7];
+  [(NTKMargaritaBackgroundView *)v9 _applyColors:colorsCopy];
 
   v15 = +[CALayer layer];
   [v15 setMasksToBounds:1];
@@ -158,15 +158,15 @@
   return v18;
 }
 
-- (void)_applyColors:(id)a3
+- (void)_applyColors:(id)colors
 {
-  v7 = a3;
-  v4 = [v7 count];
+  colorsCopy = colors;
+  v4 = [colorsCopy count];
   if (v4)
   {
     for (i = 0; i != v4; ++i)
     {
-      v6 = [v7 objectAtIndexedSubscript:i];
+      v6 = [colorsCopy objectAtIndexedSubscript:i];
       [(NTKMargaritaBackgroundView *)self setStripeColor:v6 atIndex:i];
     }
   }
@@ -180,8 +180,8 @@
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v3 = [(CALayer *)self->_stripeContainerLayer sublayers];
-  v4 = [v3 copy];
+  sublayers = [(CALayer *)self->_stripeContainerLayer sublayers];
+  v4 = [sublayers copy];
 
   v5 = [v4 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v5)
@@ -218,7 +218,7 @@
   v16 = 3221225472;
   v17 = sub_7AD8;
   v18 = &unk_14788;
-  v19 = self;
+  selfCopy = self;
   v12 = v10;
   v20 = v12;
   [(NSMutableArray *)stripeColors enumerateObjectsUsingBlock:&v15];
@@ -237,53 +237,53 @@
   }
 }
 
-- (void)_layoutStripesForStripeCount:(unint64_t)a3
+- (void)_layoutStripesForStripeCount:(unint64_t)count
 {
   [(NTKMargaritaBackgroundView *)self _stripeSizeForStripeCount:?];
   v6 = v5;
   v8 = v7;
-  [(NTKMargaritaBackgroundView *)self _stripeOriginOffsetForStripeCount:a3];
+  [(NTKMargaritaBackgroundView *)self _stripeOriginOffsetForStripeCount:count];
 
   [(NTKMargaritaBackgroundView *)self _applyStripeSize:v6 originOffset:v8, v9, v10];
 }
 
-- (void)_applyStripeSize:(CGSize)a3 originOffset:(CGVector)a4
+- (void)_applyStripeSize:(CGSize)size originOffset:(CGVector)offset
 {
   stripeLayers = self->_stripeLayers;
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_7CA4;
   v5[3] = &unk_147A8;
-  v6 = a4;
-  v7 = a3;
+  offsetCopy = offset;
+  sizeCopy = size;
   [(NSArray *)stripeLayers enumerateObjectsUsingBlock:v5];
 }
 
-- (void)setStyle:(unint64_t)a3
+- (void)setStyle:(unint64_t)style
 {
-  self->_style = a3;
+  self->_style = style;
   [(NTKMargaritaBackgroundView *)self _stripeContainerSizeForStyle:self->_displayRotation rotation:?];
   [(CALayer *)self->_stripeContainerLayer setBounds:0.0, 0.0, v5, v6];
   [(NTKMargaritaBackgroundView *)self _layoutStripes];
-  v8 = [(NTKMargaritaBackgroundView *)self _maskLayerWithStyle:a3];
-  v7 = [(NTKMargaritaBackgroundView *)self layer];
-  [v7 setMask:v8];
+  v8 = [(NTKMargaritaBackgroundView *)self _maskLayerWithStyle:style];
+  layer = [(NTKMargaritaBackgroundView *)self layer];
+  [layer setMask:v8];
 }
 
-- (void)applyTransitionFraction:(double)a3 fromStyle:(unint64_t)a4 toStyle:(unint64_t)a5
+- (void)applyTransitionFraction:(double)fraction fromStyle:(unint64_t)style toStyle:(unint64_t)toStyle
 {
   [(NTKMargaritaBackgroundView *)self _stripeContainerSizeForStyle:self->_displayRotation rotation:?];
-  [(NTKMargaritaBackgroundView *)self _stripeContainerSizeForStyle:a5 rotation:self->_displayRotation];
+  [(NTKMargaritaBackgroundView *)self _stripeContainerSizeForStyle:toStyle rotation:self->_displayRotation];
   CLKInterpolateBetweenSizes();
   [(CALayer *)self->_stripeContainerLayer setBounds:0.0, 0.0, v9, v10];
   [(CALayer *)self->_stripeContainerLayer setNeedsDisplay];
   [(NTKMargaritaBackgroundView *)self _layoutStripes];
-  v12 = [(NTKMargaritaBackgroundView *)self _maskLayerWithFraction:a4 fromStyle:a5 toStyle:a3];
-  v11 = [(NTKMargaritaBackgroundView *)self layer];
-  [v11 setMask:v12];
+  v12 = [(NTKMargaritaBackgroundView *)self _maskLayerWithFraction:style fromStyle:toStyle toStyle:fraction];
+  layer = [(NTKMargaritaBackgroundView *)self layer];
+  [layer setMask:v12];
 }
 
-- (id)_maskLayerWithFraction:(double)a3 fromStyle:(unint64_t)a4 toStyle:(unint64_t)a5
+- (id)_maskLayerWithFraction:(double)fraction fromStyle:(unint64_t)style toStyle:(unint64_t)toStyle
 {
   [(CLKDevice *)self->_device screenBounds];
   [(NTKMargaritaBackgroundView *)self _stripeContainerSizeForStyle:2 rotation:0.0];
@@ -292,8 +292,8 @@
   v12 = v11;
   v14 = v13;
   v16 = v15;
-  [(NTKMargaritaBackgroundView *)self _stripeContainerCornerRadiusForStyle:a4, *&a3];
-  [(NTKMargaritaBackgroundView *)self _stripeContainerCornerRadiusForStyle:a5];
+  [(NTKMargaritaBackgroundView *)self _stripeContainerCornerRadiusForStyle:style, *&fraction];
+  [(NTKMargaritaBackgroundView *)self _stripeContainerCornerRadiusForStyle:toStyle];
   CLKInterpolateBetweenFloatsClipped();
   v18 = v17;
   v19 = +[CAShapeLayer layer];
@@ -303,20 +303,20 @@
   return v19;
 }
 
-- (void)setRotation:(int64_t)a3
+- (void)setRotation:(int64_t)rotation
 {
-  self->_rotation = a3;
-  v4 = a3;
-  self->_displayRotation = a3;
+  self->_rotation = rotation;
+  rotationCopy = rotation;
+  self->_displayRotation = rotation;
   stripeContainerLayer = self->_stripeContainerLayer;
-  CGAffineTransformMakeRotation(&v8, a3 * 3.14159265 / 180.0);
+  CGAffineTransformMakeRotation(&v8, rotation * 3.14159265 / 180.0);
   [(CALayer *)stripeContainerLayer setAffineTransform:&v8];
-  [(NTKMargaritaBackgroundView *)self _stripeContainerSizeForStyle:self->_style rotation:v4];
+  [(NTKMargaritaBackgroundView *)self _stripeContainerSizeForStyle:self->_style rotation:rotationCopy];
   [(CALayer *)self->_stripeContainerLayer setBounds:0.0, 0.0, v6, v7];
   [(NTKMargaritaBackgroundView *)self _layoutStripes];
 }
 
-- (void)applyTransitionFraction:(double)a3 fromRotation:(int64_t)a4 toRotation:(int64_t)a5
+- (void)applyTransitionFraction:(double)fraction fromRotation:(int64_t)rotation toRotation:(int64_t)toRotation
 {
   CLKInterpolateBetweenFloatsClipped();
   v7 = v6;
@@ -329,34 +329,34 @@
   [(NTKMargaritaBackgroundView *)self _layoutStripes];
 }
 
-- (void)applyTransitionFraction:(double)a3 fromStripeCount:(unint64_t)a4 toStripeCount:(unint64_t)a5
+- (void)applyTransitionFraction:(double)fraction fromStripeCount:(unint64_t)count toStripeCount:(unint64_t)stripeCount
 {
   [(NTKMargaritaBackgroundView *)self _stripeSizeForStripeCount:?];
-  [(NTKMargaritaBackgroundView *)self _stripeSizeForStripeCount:a5];
+  [(NTKMargaritaBackgroundView *)self _stripeSizeForStripeCount:stripeCount];
   CLKInterpolateBetweenSizes();
   v9 = v8;
   v11 = v10;
-  [(NTKMargaritaBackgroundView *)self _stripeOriginOffsetForStripeCount:a4];
-  [(NTKMargaritaBackgroundView *)self _stripeOriginOffsetForStripeCount:a5];
+  [(NTKMargaritaBackgroundView *)self _stripeOriginOffsetForStripeCount:count];
+  [(NTKMargaritaBackgroundView *)self _stripeOriginOffsetForStripeCount:stripeCount];
   CLKInterpolateBetweenVectors();
 
   [(NTKMargaritaBackgroundView *)self _applyStripeSize:v9 originOffset:v11, v12, v13];
 }
 
-- (void)setStripeColor:(id)a3 atIndex:(int64_t)a4
+- (void)setStripeColor:(id)color atIndex:(int64_t)index
 {
-  v7 = a3;
+  colorCopy = color;
   [NSMutableArray setObject:"setObject:atIndexedSubscript:" atIndexedSubscript:?];
-  if ([(NSArray *)self->_stripeLayers count]> a4)
+  if ([(NSArray *)self->_stripeLayers count]> index)
   {
-    v6 = [(NSArray *)self->_stripeLayers objectAtIndexedSubscript:a4];
-    [v6 setBackgroundColor:{objc_msgSend(v7, "CGColor")}];
+    v6 = [(NSArray *)self->_stripeLayers objectAtIndexedSubscript:index];
+    [v6 setBackgroundColor:{objc_msgSend(colorCopy, "CGColor")}];
   }
 }
 
-- (void)setCompactCircular:(BOOL)a3
+- (void)setCompactCircular:(BOOL)circular
 {
-  self->_compactCircular = a3;
+  self->_compactCircular = circular;
   if (self->_style >= 2)
   {
     [(NTKMargaritaBackgroundView *)self _stripeContainerSizeForStyle:self->_displayRotation rotation:?];
@@ -366,7 +366,7 @@
   }
 }
 
-- (void)applyTransitionFractionToCompactCircular:(double)a3
+- (void)applyTransitionFractionToCompactCircular:(double)circular
 {
   if (self->_style >= 2)
   {
@@ -381,29 +381,29 @@
   }
 }
 
-- (CGSize)_stripeSizeForStripeCount:(unint64_t)a3
+- (CGSize)_stripeSizeForStripeCount:(unint64_t)count
 {
   [(CALayer *)self->_stripeContainerLayer bounds];
   v5 = v4;
-  v7 = v6 / a3;
+  v7 = v6 / count;
   result.height = v7;
   result.width = v5;
   return result;
 }
 
-- (CGVector)_stripeOriginOffsetForStripeCount:(unint64_t)a3
+- (CGVector)_stripeOriginOffsetForStripeCount:(unint64_t)count
 {
   [(CALayer *)self->_stripeContainerLayer bounds];
-  v5 = v4 / a3;
+  v5 = v4 / count;
   v6 = 0.0;
   result.dy = v5;
   result.dx = v6;
   return result;
 }
 
-- (CGSize)_stripeContainerSizeForStyle:(unint64_t)a3 rotation:(double)a4
+- (CGSize)_stripeContainerSizeForStyle:(unint64_t)style rotation:(double)rotation
 {
-  if ((a3 & 0xFFFFFFFFFFFFFFFELL) == 2)
+  if ((style & 0xFFFFFFFFFFFFFFFELL) == 2)
   {
     compactCircular = self->_compactCircular;
     v6 = sub_8780(self, self->_device);
@@ -430,7 +430,7 @@
 
   else
   {
-    v10 = a4 * 3.14159265 / 180.0;
+    v10 = rotation * 3.14159265 / 180.0;
     [(CLKDevice *)self->_device screenBounds];
     v12 = v11;
     v14 = v13;
@@ -452,9 +452,9 @@
   return result;
 }
 
-- (double)_stripeContainerCornerRadiusForStyle:(unint64_t)a3
+- (double)_stripeContainerCornerRadiusForStyle:(unint64_t)style
 {
-  if (a3 > 1)
+  if (style > 1)
   {
     compactCircular = self->_compactCircular;
     v7 = sub_8780(self, self->_device);
@@ -476,10 +476,10 @@
   return result;
 }
 
-- (id)_stripeContainerCornerCurveForStyle:(unint64_t)a3
+- (id)_stripeContainerCornerCurveForStyle:(unint64_t)style
 {
   v3 = &kCACornerCurveContinuous;
-  if (a3 >= 2)
+  if (style >= 2)
   {
     v3 = &kCACornerCurveCircular;
   }

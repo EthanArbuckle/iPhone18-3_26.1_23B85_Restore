@@ -1,17 +1,17 @@
 @interface MXSignpostMetric
-- (MXSignpostMetric)initWithCoder:(id)a3;
-- (MXSignpostMetric)initWithSignpostName:(id)a3 withSignpostCategory:(id)a4 withTotalCount:(unint64_t)a5 withSignpostIntervalData:(id)a6;
+- (MXSignpostMetric)initWithCoder:(id)coder;
+- (MXSignpostMetric)initWithSignpostName:(id)name withSignpostCategory:(id)category withTotalCount:(unint64_t)count withSignpostIntervalData:(id)data;
 - (id)toDictionary;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MXSignpostMetric
 
-- (MXSignpostMetric)initWithSignpostName:(id)a3 withSignpostCategory:(id)a4 withTotalCount:(unint64_t)a5 withSignpostIntervalData:(id)a6
+- (MXSignpostMetric)initWithSignpostName:(id)name withSignpostCategory:(id)category withTotalCount:(unint64_t)count withSignpostIntervalData:(id)data
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  nameCopy = name;
+  categoryCopy = category;
+  dataCopy = data;
   v18.receiver = self;
   v18.super_class = MXSignpostMetric;
   v14 = [(MXMetric *)&v18 init];
@@ -22,12 +22,12 @@
   }
 
   v16 = 0;
-  if (v11 && v12)
+  if (nameCopy && categoryCopy)
   {
-    objc_storeStrong(&v14->_signpostName, a3);
-    objc_storeStrong(&v15->_signpostCategory, a4);
-    v15->_totalCount = a5;
-    objc_storeStrong(&v15->_signpostIntervalData, a6);
+    objc_storeStrong(&v14->_signpostName, name);
+    objc_storeStrong(&v15->_signpostCategory, category);
+    v15->_totalCount = count;
+    objc_storeStrong(&v15->_signpostIntervalData, data);
 LABEL_5:
     v16 = v15;
   }
@@ -35,34 +35,34 @@ LABEL_5:
   return v16;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   signpostName = self->_signpostName;
-  v5 = a3;
-  [v5 encodeObject:signpostName forKey:@"signpostName"];
-  [v5 encodeObject:self->_signpostCategory forKey:@"signpostCategory"];
-  [v5 encodeInteger:self->_totalCount forKey:@"totalSignpostCount"];
-  [v5 encodeObject:self->_signpostIntervalData forKey:@"signpostIntervalData"];
+  coderCopy = coder;
+  [coderCopy encodeObject:signpostName forKey:@"signpostName"];
+  [coderCopy encodeObject:self->_signpostCategory forKey:@"signpostCategory"];
+  [coderCopy encodeInteger:self->_totalCount forKey:@"totalSignpostCount"];
+  [coderCopy encodeObject:self->_signpostIntervalData forKey:@"signpostIntervalData"];
 }
 
-- (MXSignpostMetric)initWithCoder:(id)a3
+- (MXSignpostMetric)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = MXSignpostMetric;
   v5 = [(MXMetric *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"signpostName"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"signpostName"];
     signpostName = v5->_signpostName;
     v5->_signpostName = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"signpostCategory"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"signpostCategory"];
     signpostCategory = v5->_signpostCategory;
     v5->_signpostCategory = v8;
 
-    v5->_totalCount = [v4 decodeIntegerForKey:@"totalSignpostCount"];
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"signpostIntervalData"];
+    v5->_totalCount = [coderCopy decodeIntegerForKey:@"totalSignpostCount"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"signpostIntervalData"];
     signpostIntervalData = v5->_signpostIntervalData;
     v5->_signpostIntervalData = v10;
   }
@@ -83,8 +83,8 @@ LABEL_5:
     signpostIntervalData = self->_signpostIntervalData;
     if (signpostIntervalData)
     {
-      v6 = [(MXSignpostIntervalData *)signpostIntervalData toDictionary];
-      [v3 setObject:v6 forKey:@"signpostIntervalData"];
+      toDictionary = [(MXSignpostIntervalData *)signpostIntervalData toDictionary];
+      [v3 setObject:toDictionary forKey:@"signpostIntervalData"];
     }
   }
 

@@ -1,10 +1,10 @@
 @interface WBSHistoryController
 + (WBSHistoryController)existingSharedHistoryController;
 - (WBSHistoryController)init;
-- (id)_createHistorySessionControllerForHistory:(id)a3;
-- (id)historyForProfileIdentifier:(id)a3 loadIfNeeded:(BOOL)a4;
-- (id)historySessionControllerForProfileIdentifier:(id)a3 loadIfNeeded:(BOOL)a4;
-- (id)normalizeProfileIdentifier:(id)a3;
+- (id)_createHistorySessionControllerForHistory:(id)history;
+- (id)historyForProfileIdentifier:(id)identifier loadIfNeeded:(BOOL)needed;
+- (id)historySessionControllerForProfileIdentifier:(id)identifier loadIfNeeded:(BOOL)needed;
+- (id)normalizeProfileIdentifier:(id)identifier;
 @end
 
 @implementation WBSHistoryController
@@ -34,13 +34,13 @@
     queue = v4->_queue;
     v4->_queue = v9;
 
-    v11 = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
+    strongToWeakObjectsMapTable = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
     historyMap = v4->_historyMap;
-    v4->_historyMap = v11;
+    v4->_historyMap = strongToWeakObjectsMapTable;
 
-    v13 = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
+    strongToWeakObjectsMapTable2 = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
     historySessionControllerMap = v4->_historySessionControllerMap;
-    v4->_historySessionControllerMap = v13;
+    v4->_historySessionControllerMap = strongToWeakObjectsMapTable2;
 
     v15 = v4;
   }
@@ -98,12 +98,12 @@ void __55__WBSHistoryController_existingSharedHistoryController__block_invoke(ui
   }
 }
 
-- (id)normalizeProfileIdentifier:(id)a3
+- (id)normalizeProfileIdentifier:(id)identifier
 {
-  v3 = a3;
-  if ([v3 length] && (objc_msgSend(v3, "isEqualToString:", *MEMORY[0x1E69C8B58]) & 1) == 0)
+  identifierCopy = identifier;
+  if ([identifierCopy length] && (objc_msgSend(identifierCopy, "isEqualToString:", *MEMORY[0x1E69C8B58]) & 1) == 0)
   {
-    v4 = v3;
+    v4 = identifierCopy;
   }
 
   else
@@ -114,16 +114,16 @@ void __55__WBSHistoryController_existingSharedHistoryController__block_invoke(ui
   return v4;
 }
 
-- (id)historyForProfileIdentifier:(id)a3 loadIfNeeded:(BOOL)a4
+- (id)historyForProfileIdentifier:(id)identifier loadIfNeeded:(BOOL)needed
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
   v19 = __Block_byref_object_copy__20;
   v20 = __Block_byref_object_dispose__20;
   v21 = 0;
-  v7 = [(WBSHistoryController *)self normalizeProfileIdentifier:v6];
+  v7 = [(WBSHistoryController *)self normalizeProfileIdentifier:identifierCopy];
 
   queue = self->_queue;
   v12[0] = MEMORY[0x1E69E9820];
@@ -133,7 +133,7 @@ void __55__WBSHistoryController_existingSharedHistoryController__block_invoke(ui
   v13 = v7;
   v14 = &v16;
   v12[4] = self;
-  v15 = a4;
+  neededCopy = needed;
   v9 = v7;
   dispatch_sync(queue, v12);
   v10 = v17[5];
@@ -165,15 +165,15 @@ void __65__WBSHistoryController_historyForProfileIdentifier_loadIfNeeded___block
   }
 }
 
-- (id)_createHistorySessionControllerForHistory:(id)a3
+- (id)_createHistorySessionControllerForHistory:(id)history
 {
-  v3 = a3;
-  v4 = [v3 databaseID];
-  v5 = [v4 length];
+  historyCopy = history;
+  databaseID = [historyCopy databaseID];
+  v5 = [databaseID length];
 
   if (v5)
   {
-    v6 = [[WBSHistorySessionController alloc] initWithHistory:v3];
+    v6 = [[WBSHistorySessionController alloc] initWithHistory:historyCopy];
   }
 
   else
@@ -186,19 +186,19 @@ void __65__WBSHistoryController_historyForProfileIdentifier_loadIfNeeded___block
   return v7;
 }
 
-- (id)historySessionControllerForProfileIdentifier:(id)a3 loadIfNeeded:(BOOL)a4
+- (id)historySessionControllerForProfileIdentifier:(id)identifier loadIfNeeded:(BOOL)needed
 {
-  v4 = a4;
-  v6 = a3;
+  neededCopy = needed;
+  identifierCopy = identifier;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
   v20 = __Block_byref_object_copy__20;
   v21 = __Block_byref_object_dispose__20;
   v22 = 0;
-  v7 = [(WBSHistoryController *)self normalizeProfileIdentifier:v6];
+  v7 = [(WBSHistoryController *)self normalizeProfileIdentifier:identifierCopy];
 
-  v8 = [(WBSHistoryController *)self historyForProfileIdentifier:v7 loadIfNeeded:v4];
+  v8 = [(WBSHistoryController *)self historyForProfileIdentifier:v7 loadIfNeeded:neededCopy];
   if (v8)
   {
     queue = self->_queue;
@@ -209,7 +209,7 @@ void __65__WBSHistoryController_historyForProfileIdentifier_loadIfNeeded___block
     v15 = &v17;
     block[4] = self;
     v13 = v7;
-    v16 = v4;
+    v16 = neededCopy;
     v14 = v8;
     dispatch_sync(queue, block);
     v10 = v18[5];

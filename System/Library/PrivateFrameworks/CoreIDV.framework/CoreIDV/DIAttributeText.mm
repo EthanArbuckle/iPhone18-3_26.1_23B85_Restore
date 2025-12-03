@@ -4,7 +4,7 @@
 - (BOOL)isSecureVisibleText;
 - (BOOL)useLuhnCheck;
 - (DIAttributeText)init;
-- (DIAttributeText)initWithCoder:(id)a3;
+- (DIAttributeText)initWithCoder:(id)coder;
 - (NSString)defaultValue;
 - (NSString)displayFormatPlaceholder;
 - (NSString)getCurrentValue;
@@ -13,53 +13,53 @@
 - (id)submissionString;
 - (unint64_t)maxLength;
 - (unint64_t)minLength;
-- (void)encodeWithCoder:(id)a3;
-- (void)setCurrentValue:(id)a3;
-- (void)setDefaultValue:(id)a3;
-- (void)setDisplayFormatPlaceholder:(id)a3;
-- (void)setIsNumeric:(BOOL)a3;
-- (void)setIsSecureText:(BOOL)a3;
-- (void)setIsSecureVisibleText:(BOOL)a3;
-- (void)setLuhnCheck:(BOOL)a3;
-- (void)setMaxLength:(unint64_t)a3;
-- (void)setMinLength:(unint64_t)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setCurrentValue:(id)value;
+- (void)setDefaultValue:(id)value;
+- (void)setDisplayFormatPlaceholder:(id)placeholder;
+- (void)setIsNumeric:(BOOL)numeric;
+- (void)setIsSecureText:(BOOL)text;
+- (void)setIsSecureVisibleText:(BOOL)text;
+- (void)setLuhnCheck:(BOOL)check;
+- (void)setMaxLength:(unint64_t)length;
+- (void)setMinLength:(unint64_t)length;
 @end
 
 @implementation DIAttributeText
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = DIAttributeText;
-  v4 = a3;
-  [(DIAttribute *)&v5 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(DIAttribute *)&v5 encodeWithCoder:coderCopy];
   os_unfair_lock_lock(&self->super._lock);
-  [v4 encodeInteger:self->_minLength forKey:{@"minLength", v5.receiver, v5.super_class}];
-  [v4 encodeInteger:self->_maxLength forKey:@"maxLength"];
-  [v4 encodeBool:self->_isSecureText forKey:@"isSecureText"];
-  [v4 encodeBool:self->_isSecureVisibleText forKey:@"isSecureVisibleText"];
-  [v4 encodeBool:self->_isNumeric forKey:@"isNumeric"];
-  [v4 encodeBool:self->_luhnCheck forKey:@"useLuhnCheck"];
-  [v4 encodeObject:self->_displayFormatPlaceholder forKey:@"displayFormatPlaceHolder"];
+  [coderCopy encodeInteger:self->_minLength forKey:{@"minLength", v5.receiver, v5.super_class}];
+  [coderCopy encodeInteger:self->_maxLength forKey:@"maxLength"];
+  [coderCopy encodeBool:self->_isSecureText forKey:@"isSecureText"];
+  [coderCopy encodeBool:self->_isSecureVisibleText forKey:@"isSecureVisibleText"];
+  [coderCopy encodeBool:self->_isNumeric forKey:@"isNumeric"];
+  [coderCopy encodeBool:self->_luhnCheck forKey:@"useLuhnCheck"];
+  [coderCopy encodeObject:self->_displayFormatPlaceholder forKey:@"displayFormatPlaceHolder"];
 
   os_unfair_lock_unlock(&self->super._lock);
 }
 
-- (DIAttributeText)initWithCoder:(id)a3
+- (DIAttributeText)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = DIAttributeText;
-  v5 = [(DIAttribute *)&v9 initWithCoder:v4];
+  v5 = [(DIAttribute *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_minLength = [v4 decodeIntegerForKey:@"minLength"];
-    v5->_maxLength = [v4 decodeIntegerForKey:@"maxLength"];
-    v5->_isSecureText = [v4 decodeBoolForKey:@"isSecureText"];
-    v5->_isSecureVisibleText = [v4 decodeBoolForKey:@"isSecureVisibleText"];
-    v5->_isNumeric = [v4 decodeBoolForKey:@"isNumeric"];
-    v5->_luhnCheck = [v4 decodeBoolForKey:@"useLuhnCheck"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"displayFormatPlaceHolder"];
+    v5->_minLength = [coderCopy decodeIntegerForKey:@"minLength"];
+    v5->_maxLength = [coderCopy decodeIntegerForKey:@"maxLength"];
+    v5->_isSecureText = [coderCopy decodeBoolForKey:@"isSecureText"];
+    v5->_isSecureVisibleText = [coderCopy decodeBoolForKey:@"isSecureVisibleText"];
+    v5->_isNumeric = [coderCopy decodeBoolForKey:@"isNumeric"];
+    v5->_luhnCheck = [coderCopy decodeBoolForKey:@"useLuhnCheck"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"displayFormatPlaceHolder"];
     displayFormatPlaceholder = v5->_displayFormatPlaceholder;
     v5->_displayFormatPlaceholder = v6;
   }
@@ -87,9 +87,9 @@
   return v3;
 }
 
-- (void)setCurrentValue:(id)a3
+- (void)setCurrentValue:(id)value
 {
-  if (a3)
+  if (value)
   {
     v4 = [MEMORY[0x277CCACA8] _newZStringWithString:?];
     v6.receiver = self;
@@ -105,9 +105,9 @@
   }
 }
 
-- (void)setDefaultValue:(id)a3
+- (void)setDefaultValue:(id)value
 {
-  if (a3)
+  if (value)
   {
     v4 = [MEMORY[0x277CCACA8] _newZStringWithString:?];
     v6.receiver = self;
@@ -123,61 +123,61 @@
   }
 }
 
-- (void)setMinLength:(unint64_t)a3
+- (void)setMinLength:(unint64_t)length
 {
   os_unfair_lock_lock(&self->super._lock);
-  self->_minLength = a3;
+  self->_minLength = length;
 
   os_unfair_lock_unlock(&self->super._lock);
 }
 
-- (void)setMaxLength:(unint64_t)a3
+- (void)setMaxLength:(unint64_t)length
 {
   os_unfair_lock_lock(&self->super._lock);
-  self->_maxLength = a3;
+  self->_maxLength = length;
 
   os_unfair_lock_unlock(&self->super._lock);
 }
 
-- (void)setIsSecureText:(BOOL)a3
+- (void)setIsSecureText:(BOOL)text
 {
   os_unfair_lock_lock(&self->super._lock);
-  self->_isSecureText = a3;
+  self->_isSecureText = text;
 
   os_unfair_lock_unlock(&self->super._lock);
 }
 
-- (void)setIsSecureVisibleText:(BOOL)a3
+- (void)setIsSecureVisibleText:(BOOL)text
 {
   os_unfair_lock_lock(&self->super._lock);
-  self->_isSecureVisibleText = a3;
+  self->_isSecureVisibleText = text;
 
   os_unfair_lock_unlock(&self->super._lock);
 }
 
-- (void)setIsNumeric:(BOOL)a3
+- (void)setIsNumeric:(BOOL)numeric
 {
   os_unfair_lock_lock(&self->super._lock);
-  self->_isNumeric = a3;
+  self->_isNumeric = numeric;
 
   os_unfair_lock_unlock(&self->super._lock);
 }
 
-- (void)setLuhnCheck:(BOOL)a3
+- (void)setLuhnCheck:(BOOL)check
 {
   os_unfair_lock_lock(&self->super._lock);
-  self->_luhnCheck = a3;
+  self->_luhnCheck = check;
 
   os_unfair_lock_unlock(&self->super._lock);
 }
 
-- (void)setDisplayFormatPlaceholder:(id)a3
+- (void)setDisplayFormatPlaceholder:(id)placeholder
 {
-  v6 = a3;
+  placeholderCopy = placeholder;
   os_unfair_lock_lock(&self->super._lock);
-  if (self->_displayFormatPlaceholder != v6)
+  if (self->_displayFormatPlaceholder != placeholderCopy)
   {
-    v4 = [(NSString *)v6 copyWithZone:0];
+    v4 = [(NSString *)placeholderCopy copyWithZone:0];
     displayFormatPlaceholder = self->_displayFormatPlaceholder;
     self->_displayFormatPlaceholder = v4;
   }
@@ -189,18 +189,18 @@
 {
   v4.receiver = self;
   v4.super_class = DIAttributeText;
-  v2 = [(DIAttribute *)&v4 getCurrentValue];
+  getCurrentValue = [(DIAttribute *)&v4 getCurrentValue];
 
-  return v2;
+  return getCurrentValue;
 }
 
 - (NSString)defaultValue
 {
   v4.receiver = self;
   v4.super_class = DIAttributeText;
-  v2 = [(DIAttribute *)&v4 defaultValue];
+  defaultValue = [(DIAttribute *)&v4 defaultValue];
 
-  return v2;
+  return defaultValue;
 }
 
 - (unint64_t)minLength
@@ -331,11 +331,11 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  v10 = [(DIAttributeText *)self defaultValue];
-  [v3 appendFormat:@"defaultValue: '%@'; ", v10];
+  defaultValue = [(DIAttributeText *)self defaultValue];
+  [v3 appendFormat:@"defaultValue: '%@'; ", defaultValue];
 
-  v11 = [(DIAttributeText *)self getCurrentValue];
-  [v3 appendFormat:@"currentValue: '%@'; ", v11];
+  getCurrentValue = [(DIAttributeText *)self getCurrentValue];
+  [v3 appendFormat:@"currentValue: '%@'; ", getCurrentValue];
 
 LABEL_18:
   [v3 appendFormat:@">"];
@@ -346,36 +346,36 @@ LABEL_18:
 - (id)displayFormatPaddingCharacters
 {
   v26 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB18] array];
-  v4 = [(DIAttributeText *)self displayFormatPlaceholder];
-  v5 = [v4 length];
+  array = [MEMORY[0x277CBEB18] array];
+  displayFormatPlaceholder = [(DIAttributeText *)self displayFormatPlaceholder];
+  v5 = [displayFormatPlaceholder length];
 
   if (v5 == 1)
   {
-    v6 = [(DIAttribute *)self displayFormat];
-    if ([v6 length])
+    displayFormat = [(DIAttribute *)self displayFormat];
+    if ([displayFormat length])
     {
       do
       {
-        v7 = [v6 substringToIndex:1];
-        v8 = [(DIAttributeText *)self displayFormatPlaceholder];
-        if ([v7 isEqualToString:v8])
+        v7 = [displayFormat substringToIndex:1];
+        displayFormatPlaceholder2 = [(DIAttributeText *)self displayFormatPlaceholder];
+        if ([v7 isEqualToString:displayFormatPlaceholder2])
         {
         }
 
         else
         {
-          v9 = [v3 containsObject:v7];
+          v9 = [array containsObject:v7];
 
           if ((v9 & 1) == 0)
           {
-            [v3 addObject:v7];
+            [array addObject:v7];
           }
         }
 
-        v10 = [v6 substringFromIndex:1];
+        v10 = [displayFormat substringFromIndex:1];
 
-        v6 = v10;
+        displayFormat = v10;
       }
 
       while ([v10 length]);
@@ -383,7 +383,7 @@ LABEL_18:
 
     else
     {
-      v10 = v6;
+      v10 = displayFormat;
     }
   }
 
@@ -408,12 +408,12 @@ LABEL_18:
           }
 
           v15 = *(*(&v21 + 1) + 8 * i);
-          v16 = [(DIAttribute *)self displayFormat];
-          v17 = [v16 containsString:v15];
+          displayFormat2 = [(DIAttribute *)self displayFormat];
+          v17 = [displayFormat2 containsString:v15];
 
           if (v17)
           {
-            [v3 addObject:v15];
+            [array addObject:v15];
           }
         }
 
@@ -424,7 +424,7 @@ LABEL_18:
     }
   }
 
-  v18 = [MEMORY[0x277CBEA60] arrayWithArray:v3];
+  v18 = [MEMORY[0x277CBEA60] arrayWithArray:array];
 
   v19 = *MEMORY[0x277D85DE8];
 
@@ -434,22 +434,22 @@ LABEL_18:
 - (id)submissionString
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = [(DIAttributeText *)self getCurrentValue];
-  v4 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-  v5 = [v3 stringByTrimmingCharactersInSet:v4];
+  getCurrentValue = [(DIAttributeText *)self getCurrentValue];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+  v5 = [getCurrentValue stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
   if (v5)
   {
-    v6 = [(DIAttribute *)self displayFormat];
+    displayFormat = [(DIAttribute *)self displayFormat];
 
-    if (v6)
+    if (displayFormat)
     {
       v18 = 0u;
       v19 = 0u;
       v16 = 0u;
       v17 = 0u;
-      v7 = [(DIAttributeText *)self displayFormatPaddingCharacters];
-      v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      displayFormatPaddingCharacters = [(DIAttributeText *)self displayFormatPaddingCharacters];
+      v8 = [displayFormatPaddingCharacters countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v8)
       {
         v9 = v8;
@@ -462,7 +462,7 @@ LABEL_18:
           {
             if (*v17 != v10)
             {
-              objc_enumerationMutation(v7);
+              objc_enumerationMutation(displayFormatPaddingCharacters);
             }
 
             v5 = [v12 stringByReplacingOccurrencesOfString:*(*(&v16 + 1) + 8 * v11) withString:&stru_282E746B8];
@@ -472,7 +472,7 @@ LABEL_18:
           }
 
           while (v9 != v11);
-          v9 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+          v9 = [displayFormatPaddingCharacters countByEnumeratingWithState:&v16 objects:v20 count:16];
         }
 
         while (v9);

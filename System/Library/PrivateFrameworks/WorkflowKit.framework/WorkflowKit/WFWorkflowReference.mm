@@ -1,18 +1,18 @@
 @interface WFWorkflowReference
 + (NSArray)readableTypeIdentifiersForItemProvider;
 + (NSArray)writableTypeIdentifiersForItemProvider;
-+ (id)objectWithItemProviderData:(id)a3 typeIdentifier:(id)a4 error:(id *)a5;
-- (BOOL)isEqual:(id)a3;
++ (id)objectWithItemProviderData:(id)data typeIdentifier:(id)identifier error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (NSString)attributionTitle;
 - (NSUserActivity)userActivityForViewing;
 - (WFIcon)attributionIcon;
-- (WFWorkflowReference)initWithCoder:(id)a3;
-- (WFWorkflowReference)initWithIdentifier:(id)a3 name:(id)a4 color:(int64_t)a5 glyphCharacter:(unsigned __int16)a6 associatedAppBundleIdentifier:(id)a7 searchAttributionAppBundleIdentifier:(id)a8 subtitle:(id)a9 actionsDescription:(id)a10 actionCount:(unint64_t)a11 syncHash:(int64_t)a12 isDeleted:(BOOL)a13 hiddenFromLibraryAndSync:(BOOL)a14 creationDate:(id)a15 modificationDate:(id)a16 lastRunDate:(id)a17 remoteQuarantineStatus:(int64_t)a18 remoteQuarantineHash:(id)a19 showInSearch:(BOOL)a20 receivesInputFromSearch:(BOOL)a21 hasShortcutInputVariables:(BOOL)a22 disabledOnLockScreen:(BOOL)a23 source:(id)a24 runEventsCount:(id)a25 hasOutputAction:(BOOL)a26;
-- (id)externalURLForRunningWithSource:(id)a3;
-- (id)loadDataWithTypeIdentifier:(id)a3 forItemProviderCompletionHandler:(id)a4;
+- (WFWorkflowReference)initWithCoder:(id)coder;
+- (WFWorkflowReference)initWithIdentifier:(id)identifier name:(id)name color:(int64_t)color glyphCharacter:(unsigned __int16)character associatedAppBundleIdentifier:(id)bundleIdentifier searchAttributionAppBundleIdentifier:(id)appBundleIdentifier subtitle:(id)subtitle actionsDescription:(id)self0 actionCount:(unint64_t)self1 syncHash:(int64_t)self2 isDeleted:(BOOL)self3 hiddenFromLibraryAndSync:(BOOL)self4 creationDate:(id)self5 modificationDate:(id)self6 lastRunDate:(id)self7 remoteQuarantineStatus:(int64_t)self8 remoteQuarantineHash:(id)self9 showInSearch:(BOOL)search receivesInputFromSearch:(BOOL)fromSearch hasShortcutInputVariables:(BOOL)variables disabledOnLockScreen:(BOOL)screen source:(id)source runEventsCount:(id)eventsCount hasOutputAction:(BOOL)action;
+- (id)externalURLForRunningWithSource:(id)source;
+- (id)loadDataWithTypeIdentifier:(id)identifier forItemProviderCompletionHandler:(id)handler;
 - (id)speakableString;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFWorkflowReference
@@ -22,81 +22,81 @@
   v45.receiver = self;
   v45.super_class = WFWorkflowReference;
   v3 = [(WFWorkflowDescriptor *)&v45 hash];
-  v4 = [(WFWorkflowReference *)self subtitle];
-  v5 = v4;
-  if (!v4)
+  subtitle = [(WFWorkflowReference *)self subtitle];
+  v5 = subtitle;
+  if (!subtitle)
   {
-    v4 = &stru_1F4A1C408;
+    subtitle = &stru_1F4A1C408;
   }
 
-  v6 = [(__CFString *)v4 hash];
-  v44 = [(WFWorkflowReference *)self actionsDescription];
-  v7 = v6 ^ [v44 hash];
+  v6 = [(__CFString *)subtitle hash];
+  actionsDescription = [(WFWorkflowReference *)self actionsDescription];
+  v7 = v6 ^ [actionsDescription hash];
   v8 = v7 ^ [(WFWorkflowReference *)self actionCount]^ v3;
   v9 = [MEMORY[0x1E696AD98] numberWithLongLong:{-[WFWorkflowReference syncHash](self, "syncHash")}];
   v10 = v8 ^ [v9 hash];
-  v11 = [(WFWorkflowReference *)self icon];
-  v12 = [v11 hash];
-  v13 = [(WFWorkflowReference *)self creationDate];
-  v14 = v12 ^ [v13 hash];
-  v15 = [(WFWorkflowReference *)self modificationDate];
-  v16 = v14 ^ [v15 hash];
-  v17 = [(WFWorkflowReference *)self isDeleted];
+  icon = [(WFWorkflowReference *)self icon];
+  v12 = [icon hash];
+  creationDate = [(WFWorkflowReference *)self creationDate];
+  v14 = v12 ^ [creationDate hash];
+  modificationDate = [(WFWorkflowReference *)self modificationDate];
+  v16 = v14 ^ [modificationDate hash];
+  isDeleted = [(WFWorkflowReference *)self isDeleted];
   v18 = 3133065982;
-  if (v17)
+  if (isDeleted)
   {
     v18 = 3203381950;
   }
 
   v19 = v16 ^ v18;
-  v20 = [(WFWorkflowReference *)self hiddenFromLibraryAndSync];
+  hiddenFromLibraryAndSync = [(WFWorkflowReference *)self hiddenFromLibraryAndSync];
   v21 = 3405774846;
-  if (v20)
+  if (hiddenFromLibraryAndSync)
   {
     v21 = 3133079551;
   }
 
   v22 = v19 ^ v21;
-  v23 = [(WFWorkflowReference *)self disabledOnLockScreen];
+  disabledOnLockScreen = [(WFWorkflowReference *)self disabledOnLockScreen];
   v24 = 3133145087;
-  if (!v23)
+  if (!disabledOnLockScreen)
   {
     v24 = 3404726270;
   }
 
   v25 = v22 ^ v24;
-  v26 = [(WFWorkflowReference *)self lastRunDate];
-  v27 = v10 ^ v25 ^ [v26 hash];
-  v28 = [(WFWorkflowReference *)self remoteQuarantineStatus];
-  v29 = [(WFWorkflowReference *)self remoteQuarantineHash];
-  v30 = v28 ^ [v29 hash];
-  v31 = [(WFWorkflowReference *)self showInSearch];
+  lastRunDate = [(WFWorkflowReference *)self lastRunDate];
+  v27 = v10 ^ v25 ^ [lastRunDate hash];
+  remoteQuarantineStatus = [(WFWorkflowReference *)self remoteQuarantineStatus];
+  remoteQuarantineHash = [(WFWorkflowReference *)self remoteQuarantineHash];
+  v30 = remoteQuarantineStatus ^ [remoteQuarantineHash hash];
+  showInSearch = [(WFWorkflowReference *)self showInSearch];
   v32 = 3014969561;
-  if (v31)
+  if (showInSearch)
   {
     v32 = 2749691239;
   }
 
   v33 = v30 ^ v32;
-  v34 = [(WFWorkflowReference *)self receivesInputFromSearch];
+  receivesInputFromSearch = [(WFWorkflowReference *)self receivesInputFromSearch];
   v35 = 998052521;
-  if (v34)
+  if (receivesInputFromSearch)
   {
     v35 = 3281674209;
   }
 
   v36 = v33 ^ v35;
-  v37 = [(WFWorkflowReference *)self hasShortcutInputVariables];
+  hasShortcutInputVariables = [(WFWorkflowReference *)self hasShortcutInputVariables];
   v38 = 1093271700;
-  if (v37)
+  if (hasShortcutInputVariables)
   {
     v38 = 1437221162;
   }
 
   v39 = v36 ^ v38;
-  v40 = [(WFWorkflowReference *)self hasOutputAction];
+  hasOutputAction = [(WFWorkflowReference *)self hasOutputAction];
   v41 = 195948557;
-  if (v40)
+  if (hasOutputAction)
   {
     v41 = 4277006349;
   }
@@ -106,38 +106,38 @@
   return v27 ^ v42;
 }
 
-- (id)loadDataWithTypeIdentifier:(id)a3 forItemProviderCompletionHandler:(id)a4
+- (id)loadDataWithTypeIdentifier:(id)identifier forItemProviderCompletionHandler:(id)handler
 {
   v5 = MEMORY[0x1E696ACC8];
-  v6 = a4;
+  handlerCopy = handler;
   v7 = [(WFWorkflowReference *)self copy];
   v11 = 0;
   v8 = [v5 archivedDataWithRootObject:v7 requiringSecureCoding:1 error:&v11];
   v9 = v11;
 
-  v6[2](v6, v8, v9);
+  handlerCopy[2](handlerCopy, v8, v9);
   return 0;
 }
 
 - (WFIcon)attributionIcon
 {
-  v3 = [(WFWorkflowDescriptor *)self associatedAppBundleIdentifier];
-  v4 = [v3 length];
+  associatedAppBundleIdentifier = [(WFWorkflowDescriptor *)self associatedAppBundleIdentifier];
+  v4 = [associatedAppBundleIdentifier length];
 
   if (v4)
   {
     v5 = objc_alloc(MEMORY[0x1E69E0960]);
-    v6 = [(WFWorkflowDescriptor *)self associatedAppBundleIdentifier];
-    v7 = [v5 initWithBundleIdentifier:v6];
+    associatedAppBundleIdentifier2 = [(WFWorkflowDescriptor *)self associatedAppBundleIdentifier];
+    icon = [v5 initWithBundleIdentifier:associatedAppBundleIdentifier2];
   }
 
   else
   {
-    v6 = [(WFWorkflowReference *)self icon];
-    v7 = [v6 icon];
+    associatedAppBundleIdentifier2 = [(WFWorkflowReference *)self icon];
+    icon = [associatedAppBundleIdentifier2 icon];
   }
 
-  v8 = v7;
+  v8 = icon;
 
   return v8;
 }
@@ -158,13 +158,13 @@
   return v3;
 }
 
-- (id)externalURLForRunningWithSource:(id)a3
+- (id)externalURLForRunningWithSource:(id)source
 {
-  if (a3)
+  if (source)
   {
     v4 = [@"&source=" stringByAppendingString:?];
-    v5 = [MEMORY[0x1E696AB08] URLPathAllowedCharacterSet];
-    v6 = [v4 stringByAddingPercentEncodingWithAllowedCharacters:v5];
+    uRLPathAllowedCharacterSet = [MEMORY[0x1E696AB08] URLPathAllowedCharacterSet];
+    v6 = [v4 stringByAddingPercentEncodingWithAllowedCharacters:uRLPathAllowedCharacterSet];
   }
 
   else
@@ -174,135 +174,135 @@
 
   v7 = MEMORY[0x1E695DFF8];
   v8 = MEMORY[0x1E696AEC0];
-  v9 = [(WFWorkflowDescriptor *)self name];
-  v10 = [MEMORY[0x1E696AB08] URLPathAllowedCharacterSet];
-  v11 = [v9 stringByAddingPercentEncodingWithAllowedCharacters:v10];
-  v12 = [(WFWorkflowReference *)self identifier];
-  v13 = [MEMORY[0x1E696AB08] URLPathAllowedCharacterSet];
-  v14 = [v12 stringByAddingPercentEncodingWithAllowedCharacters:v13];
+  name = [(WFWorkflowDescriptor *)self name];
+  uRLPathAllowedCharacterSet2 = [MEMORY[0x1E696AB08] URLPathAllowedCharacterSet];
+  v11 = [name stringByAddingPercentEncodingWithAllowedCharacters:uRLPathAllowedCharacterSet2];
+  identifier = [(WFWorkflowReference *)self identifier];
+  uRLPathAllowedCharacterSet3 = [MEMORY[0x1E696AB08] URLPathAllowedCharacterSet];
+  v14 = [identifier stringByAddingPercentEncodingWithAllowedCharacters:uRLPathAllowedCharacterSet3];
   v15 = [v8 stringWithFormat:@"shortcuts://x-callback-url/run-shortcut?name=%@&id=%@%@", v11, v14, v6];
   v16 = [v7 URLWithString:v15];
 
   return v16;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v16.receiver = self;
   v16.super_class = WFWorkflowReference;
-  v4 = a3;
-  [(WFWorkflowDescriptor *)&v16 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(WFWorkflowDescriptor *)&v16 encodeWithCoder:coderCopy];
   v5 = [(WFWorkflowReference *)self icon:v16.receiver];
-  [v4 encodeObject:v5 forKey:@"icon"];
+  [coderCopy encodeObject:v5 forKey:@"icon"];
 
-  v6 = [(WFWorkflowReference *)self subtitle];
-  [v4 encodeObject:v6 forKey:@"subtitle"];
+  subtitle = [(WFWorkflowReference *)self subtitle];
+  [coderCopy encodeObject:subtitle forKey:@"subtitle"];
 
-  v7 = [(WFWorkflowReference *)self actionsDescription];
-  [v4 encodeObject:v7 forKey:@"actionsDescription"];
+  actionsDescription = [(WFWorkflowReference *)self actionsDescription];
+  [coderCopy encodeObject:actionsDescription forKey:@"actionsDescription"];
 
   v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[WFWorkflowReference actionCount](self, "actionCount")}];
-  [v4 encodeObject:v8 forKey:@"actionCount"];
+  [coderCopy encodeObject:v8 forKey:@"actionCount"];
 
   v9 = [MEMORY[0x1E696AD98] numberWithLongLong:{-[WFWorkflowReference syncHash](self, "syncHash")}];
-  [v4 encodeObject:v9 forKey:@"syncHash"];
+  [coderCopy encodeObject:v9 forKey:@"syncHash"];
 
-  [v4 encodeBool:-[WFWorkflowReference isDeleted](self forKey:{"isDeleted"), @"isDeleted"}];
-  [v4 encodeBool:-[WFWorkflowReference hiddenFromLibraryAndSync](self forKey:{"hiddenFromLibraryAndSync"), @"hiddenFromLibraryAndSync"}];
-  v10 = [(WFWorkflowReference *)self creationDate];
-  [v4 encodeObject:v10 forKey:@"creationDate"];
+  [coderCopy encodeBool:-[WFWorkflowReference isDeleted](self forKey:{"isDeleted"), @"isDeleted"}];
+  [coderCopy encodeBool:-[WFWorkflowReference hiddenFromLibraryAndSync](self forKey:{"hiddenFromLibraryAndSync"), @"hiddenFromLibraryAndSync"}];
+  creationDate = [(WFWorkflowReference *)self creationDate];
+  [coderCopy encodeObject:creationDate forKey:@"creationDate"];
 
-  v11 = [(WFWorkflowReference *)self modificationDate];
-  [v4 encodeObject:v11 forKey:@"modificationDate"];
+  modificationDate = [(WFWorkflowReference *)self modificationDate];
+  [coderCopy encodeObject:modificationDate forKey:@"modificationDate"];
 
-  v12 = [(WFWorkflowReference *)self lastRunDate];
-  [v4 encodeObject:v12 forKey:@"lastRunDate"];
+  lastRunDate = [(WFWorkflowReference *)self lastRunDate];
+  [coderCopy encodeObject:lastRunDate forKey:@"lastRunDate"];
 
-  [v4 encodeInteger:-[WFWorkflowReference remoteQuarantineStatus](self forKey:{"remoteQuarantineStatus"), @"remoteQuarantineStatus"}];
-  v13 = [(WFWorkflowReference *)self remoteQuarantineHash];
-  [v4 encodeObject:v13 forKey:@"remoteQuarantineHash"];
+  [coderCopy encodeInteger:-[WFWorkflowReference remoteQuarantineStatus](self forKey:{"remoteQuarantineStatus"), @"remoteQuarantineStatus"}];
+  remoteQuarantineHash = [(WFWorkflowReference *)self remoteQuarantineHash];
+  [coderCopy encodeObject:remoteQuarantineHash forKey:@"remoteQuarantineHash"];
 
-  [v4 encodeBool:-[WFWorkflowReference hasShortcutInputVariables](self forKey:{"hasShortcutInputVariables"), @"hasShortcutInputVariables"}];
-  [v4 encodeBool:-[WFWorkflowReference showInSearch](self forKey:{"showInSearch"), @"showInSearch"}];
-  [v4 encodeBool:-[WFWorkflowReference receivesInputFromSearch](self forKey:{"receivesInputFromSearch"), @"receivesInputFromSearch"}];
-  [v4 encodeBool:-[WFWorkflowReference disabledOnLockScreen](self forKey:{"disabledOnLockScreen"), @"disabledOnLockScreen"}];
-  v14 = [(WFWorkflowReference *)self source];
-  [v4 encodeObject:v14 forKey:@"source"];
+  [coderCopy encodeBool:-[WFWorkflowReference hasShortcutInputVariables](self forKey:{"hasShortcutInputVariables"), @"hasShortcutInputVariables"}];
+  [coderCopy encodeBool:-[WFWorkflowReference showInSearch](self forKey:{"showInSearch"), @"showInSearch"}];
+  [coderCopy encodeBool:-[WFWorkflowReference receivesInputFromSearch](self forKey:{"receivesInputFromSearch"), @"receivesInputFromSearch"}];
+  [coderCopy encodeBool:-[WFWorkflowReference disabledOnLockScreen](self forKey:{"disabledOnLockScreen"), @"disabledOnLockScreen"}];
+  source = [(WFWorkflowReference *)self source];
+  [coderCopy encodeObject:source forKey:@"source"];
 
-  v15 = [(WFWorkflowReference *)self runEventsCount];
-  [v4 encodeObject:v15 forKey:@"runEventsCount"];
+  runEventsCount = [(WFWorkflowReference *)self runEventsCount];
+  [coderCopy encodeObject:runEventsCount forKey:@"runEventsCount"];
 
-  [v4 encodeBool:-[WFWorkflowReference hasOutputAction](self forKey:{"hasOutputAction"), @"hasOutputAction"}];
+  [coderCopy encodeBool:-[WFWorkflowReference hasOutputAction](self forKey:{"hasOutputAction"), @"hasOutputAction"}];
 }
 
-- (WFWorkflowReference)initWithCoder:(id)a3
+- (WFWorkflowReference)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v28.receiver = self;
   v28.super_class = WFWorkflowReference;
-  v5 = [(WFWorkflowDescriptor *)&v28 initWithCoder:v4];
+  v5 = [(WFWorkflowDescriptor *)&v28 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"icon"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"icon"];
     icon = v5->_icon;
     v5->_icon = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"subtitle"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"subtitle"];
     subtitle = v5->_subtitle;
     v5->_subtitle = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"actionsDescription"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"actionsDescription"];
     actionsDescription = v5->_actionsDescription;
     v5->_actionsDescription = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"actionCount"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"actionCount"];
     v5->_actionCount = [v12 unsignedIntegerValue];
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"syncHash"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"syncHash"];
     v5->_syncHash = [v13 longValue];
 
-    v5->_isDeleted = [v4 decodeBoolForKey:@"isDeleted"];
-    v5->_hiddenFromLibraryAndSync = [v4 decodeBoolForKey:@"hiddenFromLibraryAndSync"];
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"creationDate"];
+    v5->_isDeleted = [coderCopy decodeBoolForKey:@"isDeleted"];
+    v5->_hiddenFromLibraryAndSync = [coderCopy decodeBoolForKey:@"hiddenFromLibraryAndSync"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"creationDate"];
     creationDate = v5->_creationDate;
     v5->_creationDate = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"modificationDate"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"modificationDate"];
     modificationDate = v5->_modificationDate;
     v5->_modificationDate = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lastRunDate"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lastRunDate"];
     lastRunDate = v5->_lastRunDate;
     v5->_lastRunDate = v18;
 
-    v5->_remoteQuarantineStatus = [v4 decodeIntegerForKey:@"remoteQuarantineStatus"];
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"remoteQuarantineHash"];
+    v5->_remoteQuarantineStatus = [coderCopy decodeIntegerForKey:@"remoteQuarantineStatus"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"remoteQuarantineHash"];
     remoteQuarantineHash = v5->_remoteQuarantineHash;
     v5->_remoteQuarantineHash = v20;
 
-    v5->_hasShortcutInputVariables = [v4 decodeBoolForKey:@"hasShortcutInputVariables"];
-    v5->_showInSearch = [v4 decodeBoolForKey:@"showInSearch"];
-    v5->_receivesInputFromSearch = [v4 decodeBoolForKey:@"receivesInputFromSearch"];
-    v5->_disabledOnLockScreen = [v4 decodeBoolForKey:@"disabledOnLockScreen"];
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"source"];
+    v5->_hasShortcutInputVariables = [coderCopy decodeBoolForKey:@"hasShortcutInputVariables"];
+    v5->_showInSearch = [coderCopy decodeBoolForKey:@"showInSearch"];
+    v5->_receivesInputFromSearch = [coderCopy decodeBoolForKey:@"receivesInputFromSearch"];
+    v5->_disabledOnLockScreen = [coderCopy decodeBoolForKey:@"disabledOnLockScreen"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"source"];
     source = v5->_source;
     v5->_source = v22;
 
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"runEventsCount"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"runEventsCount"];
     runEventsCount = v5->_runEventsCount;
     v5->_runEventsCount = v24;
 
-    v5->_hasOutputAction = [v4 decodeBoolForKey:@"hasOutputAction"];
+    v5->_hasOutputAction = [coderCopy decodeBoolForKey:@"hasOutputAction"];
     v26 = v5;
   }
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v12 = 1;
   }
@@ -312,7 +312,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v79.receiver = self;
       v79.super_class = WFWorkflowReference;
       if (![(WFWorkflowDescriptor *)&v79 isEqual:v5])
@@ -323,10 +323,10 @@ LABEL_90:
         goto LABEL_91;
       }
 
-      v6 = [(WFWorkflowReference *)self subtitle];
-      v7 = [(WFWorkflowReference *)v5 subtitle];
-      v8 = v6;
-      v9 = v7;
+      subtitle = [(WFWorkflowReference *)self subtitle];
+      subtitle2 = [(WFWorkflowReference *)v5 subtitle];
+      v8 = subtitle;
+      v9 = subtitle2;
       v10 = v9;
       if (v8 == v9)
       {
@@ -338,8 +338,8 @@ LABEL_90:
         {
 
 LABEL_20:
-          v19 = [(WFWorkflowReference *)self subtitle];
-          if ([v19 length])
+          subtitle3 = [(WFWorkflowReference *)self subtitle];
+          if ([subtitle3 length])
           {
             LOBYTE(v20) = 0;
 LABEL_88:
@@ -348,23 +348,23 @@ LABEL_88:
             goto LABEL_89;
           }
 
-          v76 = v19;
-          v77 = [(WFWorkflowReference *)v5 subtitle];
-          if ([v77 length])
+          v76 = subtitle3;
+          subtitle4 = [(WFWorkflowReference *)v5 subtitle];
+          if ([subtitle4 length])
           {
             LOBYTE(v20) = 0;
 LABEL_87:
 
-            v19 = v76;
+            subtitle3 = v76;
             goto LABEL_88;
           }
 
           v78 = 1;
 LABEL_14:
-          v13 = [(WFWorkflowReference *)self actionsDescription];
-          v14 = [(WFWorkflowReference *)v5 actionsDescription];
-          v15 = v13;
-          v16 = v14;
+          actionsDescription = [(WFWorkflowReference *)self actionsDescription];
+          actionsDescription2 = [(WFWorkflowReference *)v5 actionsDescription];
+          v15 = actionsDescription;
+          v16 = actionsDescription2;
           v17 = v16;
           if (v15 == v16)
           {
@@ -395,22 +395,22 @@ LABEL_31:
             }
           }
 
-          v21 = [(WFWorkflowReference *)self actionCount];
-          if (v21 != [(WFWorkflowReference *)v5 actionCount])
+          actionCount = [(WFWorkflowReference *)self actionCount];
+          if (actionCount != [(WFWorkflowReference *)v5 actionCount])
           {
             goto LABEL_31;
           }
 
-          v22 = [(WFWorkflowReference *)self syncHash];
-          if (v22 != [(WFWorkflowReference *)v5 syncHash])
+          syncHash = [(WFWorkflowReference *)self syncHash];
+          if (syncHash != [(WFWorkflowReference *)v5 syncHash])
           {
             goto LABEL_31;
           }
 
-          v23 = [(WFWorkflowReference *)self icon];
-          v24 = [(WFWorkflowReference *)v5 icon];
-          v25 = v23;
-          v26 = v24;
+          icon = [(WFWorkflowReference *)self icon];
+          icon2 = [(WFWorkflowReference *)v5 icon];
+          v25 = icon;
+          v26 = icon2;
           v75 = v26;
           if (v25 != v26)
           {
@@ -431,10 +431,10 @@ LABEL_31:
 
 LABEL_37:
                 v74 = v25;
-                v30 = [(WFWorkflowReference *)self creationDate];
-                v31 = [(WFWorkflowReference *)v5 creationDate];
-                v32 = v30;
-                v33 = v31;
+                creationDate = [(WFWorkflowReference *)self creationDate];
+                creationDate2 = [(WFWorkflowReference *)v5 creationDate];
+                v32 = creationDate;
+                v33 = creationDate2;
                 v72 = v33;
                 v73 = v32;
                 if (v32 != v33)
@@ -459,10 +459,10 @@ LABEL_84:
                       }
 
 LABEL_43:
-                      v36 = [(WFWorkflowReference *)self modificationDate];
-                      v37 = [(WFWorkflowReference *)v5 modificationDate];
-                      v38 = v36;
-                      v39 = v37;
+                      modificationDate = [(WFWorkflowReference *)self modificationDate];
+                      modificationDate2 = [(WFWorkflowReference *)v5 modificationDate];
+                      v38 = modificationDate;
+                      v39 = modificationDate2;
                       v35 = v38;
                       v71 = v39;
                       if (v38 != v39)
@@ -488,29 +488,29 @@ LABEL_82:
                             }
 
 LABEL_50:
-                            v43 = [(WFWorkflowReference *)self isDeleted];
-                            if (v43 != [(WFWorkflowReference *)v5 isDeleted])
+                            isDeleted = [(WFWorkflowReference *)self isDeleted];
+                            if (isDeleted != [(WFWorkflowReference *)v5 isDeleted])
                             {
                               goto LABEL_53;
                             }
 
-                            v44 = [(WFWorkflowReference *)self disabledOnLockScreen];
-                            if (v44 != [(WFWorkflowReference *)v5 disabledOnLockScreen])
+                            disabledOnLockScreen = [(WFWorkflowReference *)self disabledOnLockScreen];
+                            if (disabledOnLockScreen != [(WFWorkflowReference *)v5 disabledOnLockScreen])
                             {
                               goto LABEL_53;
                             }
 
-                            v45 = [(WFWorkflowReference *)self hiddenFromLibraryAndSync];
-                            if (v45 != [(WFWorkflowReference *)v5 hiddenFromLibraryAndSync])
+                            hiddenFromLibraryAndSync = [(WFWorkflowReference *)self hiddenFromLibraryAndSync];
+                            if (hiddenFromLibraryAndSync != [(WFWorkflowReference *)v5 hiddenFromLibraryAndSync])
                             {
                               goto LABEL_53;
                             }
 
                             v70 = v35;
-                            v46 = [(WFWorkflowReference *)self lastRunDate];
-                            v47 = [(WFWorkflowReference *)v5 lastRunDate];
-                            v48 = v46;
-                            v49 = v47;
+                            lastRunDate = [(WFWorkflowReference *)self lastRunDate];
+                            lastRunDate2 = [(WFWorkflowReference *)v5 lastRunDate];
+                            v48 = lastRunDate;
+                            v49 = lastRunDate2;
                             v67 = v49;
                             v68 = v48;
                             if (v48 != v49)
@@ -532,8 +532,8 @@ LABEL_50:
                                   }
 
 LABEL_62:
-                                  v51 = [(WFWorkflowReference *)self remoteQuarantineStatus];
-                                  if (v51 != [(WFWorkflowReference *)v5 remoteQuarantineStatus])
+                                  remoteQuarantineStatus = [(WFWorkflowReference *)self remoteQuarantineStatus];
+                                  if (remoteQuarantineStatus != [(WFWorkflowReference *)v5 remoteQuarantineStatus])
                                   {
                                     LOBYTE(v20) = 0;
 LABEL_69:
@@ -545,10 +545,10 @@ LABEL_80:
                                     goto LABEL_81;
                                   }
 
-                                  v52 = [(WFWorkflowReference *)self remoteQuarantineHash];
-                                  v53 = [(WFWorkflowReference *)v5 remoteQuarantineHash];
-                                  v54 = v52;
-                                  v65 = v53;
+                                  remoteQuarantineHash = [(WFWorkflowReference *)self remoteQuarantineHash];
+                                  remoteQuarantineHash2 = [(WFWorkflowReference *)v5 remoteQuarantineHash];
+                                  v54 = remoteQuarantineHash;
+                                  v65 = remoteQuarantineHash2;
                                   v66 = v54;
                                   if (v54 == v65)
                                   {
@@ -579,8 +579,8 @@ LABEL_77:
                                     }
                                   }
 
-                                  v56 = [(WFWorkflowReference *)self showInSearch];
-                                  if (v56 != [(WFWorkflowReference *)v5 showInSearch]|| (v57 = [(WFWorkflowReference *)self receivesInputFromSearch], v57 != [(WFWorkflowReference *)v5 receivesInputFromSearch]) || (v58 = [(WFWorkflowReference *)self hasShortcutInputVariables], v58 != [(WFWorkflowReference *)v5 hasShortcutInputVariables]))
+                                  showInSearch = [(WFWorkflowReference *)self showInSearch];
+                                  if (showInSearch != [(WFWorkflowReference *)v5 showInSearch]|| (v57 = [(WFWorkflowReference *)self receivesInputFromSearch], v57 != [(WFWorkflowReference *)v5 receivesInputFromSearch]) || (v58 = [(WFWorkflowReference *)self hasShortcutInputVariables], v58 != [(WFWorkflowReference *)v5 hasShortcutInputVariables]))
                                   {
                                     LOBYTE(v20) = 0;
 LABEL_78:
@@ -590,17 +590,17 @@ LABEL_78:
                                     goto LABEL_79;
                                   }
 
-                                  v61 = [(WFWorkflowReference *)self runEventsCount];
-                                  v62 = [(WFWorkflowReference *)v5 runEventsCount];
-                                  v54 = v61;
-                                  v63 = v62;
+                                  runEventsCount = [(WFWorkflowReference *)self runEventsCount];
+                                  runEventsCount2 = [(WFWorkflowReference *)v5 runEventsCount];
+                                  v54 = runEventsCount;
+                                  v63 = runEventsCount2;
                                   v55 = v63;
                                   if (v54 == v63)
                                   {
 
 LABEL_98:
-                                    v64 = [(WFWorkflowReference *)self hasOutputAction];
-                                    v20 = v64 ^ [(WFWorkflowReference *)v5 hasOutputAction]^ 1;
+                                    hasOutputAction = [(WFWorkflowReference *)self hasOutputAction];
+                                    v20 = hasOutputAction ^ [(WFWorkflowReference *)v5 hasOutputAction]^ 1;
                                     goto LABEL_77;
                                   }
 
@@ -716,72 +716,72 @@ LABEL_91:
   return v12;
 }
 
-- (WFWorkflowReference)initWithIdentifier:(id)a3 name:(id)a4 color:(int64_t)a5 glyphCharacter:(unsigned __int16)a6 associatedAppBundleIdentifier:(id)a7 searchAttributionAppBundleIdentifier:(id)a8 subtitle:(id)a9 actionsDescription:(id)a10 actionCount:(unint64_t)a11 syncHash:(int64_t)a12 isDeleted:(BOOL)a13 hiddenFromLibraryAndSync:(BOOL)a14 creationDate:(id)a15 modificationDate:(id)a16 lastRunDate:(id)a17 remoteQuarantineStatus:(int64_t)a18 remoteQuarantineHash:(id)a19 showInSearch:(BOOL)a20 receivesInputFromSearch:(BOOL)a21 hasShortcutInputVariables:(BOOL)a22 disabledOnLockScreen:(BOOL)a23 source:(id)a24 runEventsCount:(id)a25 hasOutputAction:(BOOL)a26
+- (WFWorkflowReference)initWithIdentifier:(id)identifier name:(id)name color:(int64_t)color glyphCharacter:(unsigned __int16)character associatedAppBundleIdentifier:(id)bundleIdentifier searchAttributionAppBundleIdentifier:(id)appBundleIdentifier subtitle:(id)subtitle actionsDescription:(id)self0 actionCount:(unint64_t)self1 syncHash:(int64_t)self2 isDeleted:(BOOL)self3 hiddenFromLibraryAndSync:(BOOL)self4 creationDate:(id)self5 modificationDate:(id)self6 lastRunDate:(id)self7 remoteQuarantineStatus:(int64_t)self8 remoteQuarantineHash:(id)self9 showInSearch:(BOOL)search receivesInputFromSearch:(BOOL)fromSearch hasShortcutInputVariables:(BOOL)variables disabledOnLockScreen:(BOOL)screen source:(id)source runEventsCount:(id)eventsCount hasOutputAction:(BOOL)action
 {
-  v53 = a6;
-  v46 = a3;
-  v29 = a4;
-  v30 = a7;
-  v55 = a8;
-  v52 = a9;
-  v54 = a10;
-  v51 = a15;
-  v31 = a16;
-  v32 = a17;
-  v33 = a19;
-  v49 = a24;
-  v48 = a25;
-  v50 = v31;
-  if (!v31)
+  characterCopy = character;
+  identifierCopy = identifier;
+  nameCopy = name;
+  bundleIdentifierCopy = bundleIdentifier;
+  appBundleIdentifierCopy = appBundleIdentifier;
+  subtitleCopy = subtitle;
+  descriptionCopy = description;
+  dateCopy = date;
+  modificationDateCopy = modificationDate;
+  runDateCopy = runDate;
+  quarantineHashCopy = quarantineHash;
+  sourceCopy = source;
+  eventsCountCopy = eventsCount;
+  v50 = modificationDateCopy;
+  if (!modificationDateCopy)
   {
-    v43 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v43 handleFailureInMethod:a2 object:self file:@"WFWorkflowReference.m" lineNumber:51 description:{@"Invalid parameter not satisfying: %@", @"modificationDate"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFWorkflowReference.m" lineNumber:51 description:{@"Invalid parameter not satisfying: %@", @"modificationDate"}];
   }
 
   v56.receiver = self;
   v56.super_class = WFWorkflowReference;
-  v34 = [(WFWorkflowDescriptor *)&v56 initWithIdentifier:v46 name:v29 color:a5 glyphCharacter:v53 associatedAppBundleIdentifier:v30 searchAttributionAppBundleIdentifier:v55];
+  v34 = [(WFWorkflowDescriptor *)&v56 initWithIdentifier:identifierCopy name:nameCopy color:color glyphCharacter:characterCopy associatedAppBundleIdentifier:bundleIdentifierCopy searchAttributionAppBundleIdentifier:appBundleIdentifierCopy];
   if (v34)
   {
-    v35 = [v52 copy];
+    v35 = [subtitleCopy copy];
     subtitle = v34->_subtitle;
     v34->_subtitle = v35;
 
-    v37 = [v54 copy];
+    v37 = [descriptionCopy copy];
     actionsDescription = v34->_actionsDescription;
     v34->_actionsDescription = v37;
 
-    v34->_actionCount = a11;
-    v34->_syncHash = a12;
-    v39 = [objc_alloc(MEMORY[0x1E69E0E00]) initWithBackgroundColorValue:a5 glyphCharacter:v53 customImageData:0];
+    v34->_actionCount = count;
+    v34->_syncHash = hash;
+    v39 = [objc_alloc(MEMORY[0x1E69E0E00]) initWithBackgroundColorValue:color glyphCharacter:characterCopy customImageData:0];
     icon = v34->_icon;
     v34->_icon = v39;
 
-    v34->_isDeleted = a13;
-    v34->_hiddenFromLibraryAndSync = a14;
-    objc_storeStrong(&v34->_creationDate, a15);
-    objc_storeStrong(&v34->_modificationDate, a16);
-    objc_storeStrong(&v34->_lastRunDate, a17);
-    v34->_remoteQuarantineStatus = a18;
-    objc_storeStrong(&v34->_remoteQuarantineHash, a19);
-    v34->_showInSearch = a20;
-    v34->_receivesInputFromSearch = a21;
-    v34->_hasShortcutInputVariables = a22;
-    v34->_disabledOnLockScreen = a23;
-    objc_storeStrong(&v34->_source, a24);
-    objc_storeStrong(&v34->_runEventsCount, a25);
-    v34->_hasOutputAction = a26;
+    v34->_isDeleted = deleted;
+    v34->_hiddenFromLibraryAndSync = sync;
+    objc_storeStrong(&v34->_creationDate, date);
+    objc_storeStrong(&v34->_modificationDate, modificationDate);
+    objc_storeStrong(&v34->_lastRunDate, runDate);
+    v34->_remoteQuarantineStatus = status;
+    objc_storeStrong(&v34->_remoteQuarantineHash, quarantineHash);
+    v34->_showInSearch = search;
+    v34->_receivesInputFromSearch = fromSearch;
+    v34->_hasShortcutInputVariables = variables;
+    v34->_disabledOnLockScreen = screen;
+    objc_storeStrong(&v34->_source, source);
+    objc_storeStrong(&v34->_runEventsCount, eventsCount);
+    v34->_hasOutputAction = action;
     v41 = v34;
   }
 
   return v34;
 }
 
-+ (id)objectWithItemProviderData:(id)a3 typeIdentifier:(id)a4 error:(id *)a5
++ (id)objectWithItemProviderData:(id)data typeIdentifier:(id)identifier error:(id *)error
 {
   v6 = MEMORY[0x1E696ACD0];
-  v7 = a3;
-  v8 = [v6 unarchivedObjectOfClass:objc_opt_class() fromData:v7 error:a5];
+  dataCopy = data;
+  v8 = [v6 unarchivedObjectOfClass:objc_opt_class() fromData:dataCopy error:error];
 
   return v8;
 }
@@ -790,8 +790,8 @@ LABEL_91:
 {
   v7[1] = *MEMORY[0x1E69E9840];
   v2 = [MEMORY[0x1E6982C40] exportedTypeWithIdentifier:@"com.apple.shortcuts.workflow-reference"];
-  v3 = [v2 identifier];
-  v7[0] = v3;
+  identifier = [v2 identifier];
+  v7[0] = identifier;
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v7 count:1];
 
   v5 = *MEMORY[0x1E69E9840];
@@ -803,8 +803,8 @@ LABEL_91:
 {
   v7[1] = *MEMORY[0x1E69E9840];
   v2 = [MEMORY[0x1E6982C40] exportedTypeWithIdentifier:@"com.apple.shortcuts.workflow-reference"];
-  v3 = [v2 identifier];
-  v7[0] = v3;
+  identifier = [v2 identifier];
+  v7[0] = identifier;
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v7 count:1];
 
   v5 = *MEMORY[0x1E69E9840];
@@ -815,9 +815,9 @@ LABEL_91:
 - (id)speakableString
 {
   v3 = objc_alloc(MEMORY[0x1E696EA50]);
-  v4 = [(WFWorkflowReference *)self identifier];
-  v5 = [(WFWorkflowDescriptor *)self name];
-  v6 = [v3 initWithVocabularyIdentifier:v4 spokenPhrase:v5 pronunciationHint:0];
+  identifier = [(WFWorkflowReference *)self identifier];
+  name = [(WFWorkflowDescriptor *)self name];
+  v6 = [v3 initWithVocabularyIdentifier:identifier spokenPhrase:name pronunciationHint:0];
 
   return v6;
 }
@@ -826,15 +826,15 @@ LABEL_91:
 {
   v16[2] = *MEMORY[0x1E69E9840];
   v3 = [objc_alloc(MEMORY[0x1E69636A8]) initWithActivityType:@"is.workflow.my.app.viewworkflow"];
-  v4 = [(WFWorkflowDescriptor *)self name];
-  [v3 setTitle:v4];
+  name = [(WFWorkflowDescriptor *)self name];
+  [v3 setTitle:name];
 
   v15[0] = @"workflowID";
-  v5 = [(WFWorkflowReference *)self identifier];
+  identifier = [(WFWorkflowReference *)self identifier];
   v15[1] = @"workflowName";
-  v16[0] = v5;
-  v6 = [(WFWorkflowDescriptor *)self name];
-  v16[1] = v6;
+  v16[0] = identifier;
+  name2 = [(WFWorkflowDescriptor *)self name];
+  v16[1] = name2;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:v15 count:2];
   [v3 setUserInfo:v7];
 

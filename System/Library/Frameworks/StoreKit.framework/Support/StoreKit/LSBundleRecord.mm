@@ -11,13 +11,13 @@
 
 - (NSURL)lib_receiptURL
 {
-  v3 = [(LSBundleRecord *)self dataContainerURL];
-  v4 = [v3 URLByAppendingPathComponent:@"StoreKit" isDirectory:1];
+  dataContainerURL = [(LSBundleRecord *)self dataContainerURL];
+  v4 = [dataContainerURL URLByAppendingPathComponent:@"StoreKit" isDirectory:1];
 
   if (v4)
   {
-    v5 = [(LSBundleRecord *)self _lib_receiptName];
-    v6 = [v4 URLByAppendingPathComponent:v5 isDirectory:0];
+    _lib_receiptName = [(LSBundleRecord *)self _lib_receiptName];
+    v6 = [v4 URLByAppendingPathComponent:_lib_receiptName isDirectory:0];
   }
 
   else
@@ -59,7 +59,7 @@
   v3 = sub_100080FB4(&unk_1003D0540);
   __chkstk_darwin(v3 - 8);
   v5 = &v12 - v4;
-  v6 = self;
+  selfCopy = self;
   sub_100178B44();
 
   v7 = type metadata accessor for URL();
@@ -76,7 +76,7 @@
 
 - (BOOL)sk_allowExternalLink
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100179370(4);
 
   return v3 & 1;
@@ -84,7 +84,7 @@
 
 - (BOOL)sk_allowExternalPurchase
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100179370(5);
 
   return v3 & 1;
@@ -92,7 +92,7 @@
 
 - (BOOL)sk_getTaskAllowed
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10017C008();
 
   return v3 & 1;

@@ -1,18 +1,18 @@
 @interface QLPXChangeDirectionNumberFilter
-- (QLPXChangeDirectionNumberFilter)initWithInput:(double)a3;
+- (QLPXChangeDirectionNumberFilter)initWithInput:(double)input;
 - (double)updatedOutput;
 @end
 
 @implementation QLPXChangeDirectionNumberFilter
 
-- (QLPXChangeDirectionNumberFilter)initWithInput:(double)a3
+- (QLPXChangeDirectionNumberFilter)initWithInput:(double)input
 {
   v5.receiver = self;
   v5.super_class = QLPXChangeDirectionNumberFilter;
   result = [(QLPXNumberFilter *)&v5 initWithInput:?];
   if (result)
   {
-    result->_threshold = a3;
+    result->_threshold = input;
   }
 
   return result;

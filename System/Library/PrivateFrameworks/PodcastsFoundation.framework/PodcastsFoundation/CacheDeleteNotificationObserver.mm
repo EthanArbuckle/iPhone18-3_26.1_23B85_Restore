@@ -1,20 +1,20 @@
 @interface CacheDeleteNotificationObserver
 - (BOOL)beginObserving;
-- (CacheDeleteNotificationObserver)initWithDelegate:(id)a3 observedPaths:(id)a4 notificationQueue:(id)a5;
+- (CacheDeleteNotificationObserver)initWithDelegate:(id)delegate observedPaths:(id)paths notificationQueue:(id)queue;
 - (CacheDeleteNotificationObserverDelegate)delegate;
 - (void)_onQueueBeginObserving;
-- (void)_onQueueConfigurePurgeMarkerForVolume:(__CFArray *)a3;
-- (void)_onQueueProcessNotifications:(__CFArray *)a3;
-- (void)_onQueueSubscribeToNotificationsForVolume:(id)a3;
+- (void)_onQueueConfigurePurgeMarkerForVolume:(__CFArray *)volume;
+- (void)_onQueueProcessNotifications:(__CFArray *)notifications;
+- (void)_onQueueSubscribeToNotificationsForVolume:(id)volume;
 @end
 
 @implementation CacheDeleteNotificationObserver
 
 - (BOOL)beginObserving
 {
-  v3 = [(NSArray *)self->_observedPaths firstObject];
+  firstObject = [(NSArray *)self->_observedPaths firstObject];
 
-  if (v3)
+  if (firstObject)
   {
     objc_initWeak(&location, self);
     notificationQueue = self->_notificationQueue;
@@ -28,7 +28,7 @@
     objc_destroyWeak(&location);
   }
 
-  return v3 != 0;
+  return firstObject != 0;
 }
 
 void __49__CacheDeleteNotificationObserver_beginObserving__block_invoke(uint64_t a1)
@@ -49,20 +49,20 @@ void __49__CacheDeleteNotificationObserver_beginObserving__block_invoke(uint64_t
   [(CacheDeleteNotificationObserver *)self _onQueueSubscribeToNotificationsForVolume:v3];
 }
 
-- (CacheDeleteNotificationObserver)initWithDelegate:(id)a3 observedPaths:(id)a4 notificationQueue:(id)a5
+- (CacheDeleteNotificationObserver)initWithDelegate:(id)delegate observedPaths:(id)paths notificationQueue:(id)queue
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  delegateCopy = delegate;
+  pathsCopy = paths;
+  queueCopy = queue;
   v16.receiver = self;
   v16.super_class = CacheDeleteNotificationObserver;
   v11 = [(CacheDeleteNotificationObserver *)&v16 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_delegate, v8);
-    objc_storeStrong(&v12->_notificationQueue, a5);
-    objc_storeStrong(&v12->_observedPaths, a4);
+    objc_storeWeak(&v11->_delegate, delegateCopy);
+    objc_storeStrong(&v12->_notificationQueue, queue);
+    objc_storeStrong(&v12->_observedPaths, paths);
     v13 = objc_alloc_init(MEMORY[0x1E696AB78]);
     formatter = v12->_formatter;
     v12->_formatter = v13;
@@ -73,15 +73,15 @@ void __49__CacheDeleteNotificationObserver_beginObserving__block_invoke(uint64_t
   return v12;
 }
 
-- (void)_onQueueConfigurePurgeMarkerForVolume:(__CFArray *)a3
+- (void)_onQueueConfigurePurgeMarkerForVolume:(__CFArray *)volume
 {
   objc_initWeak(&location, self);
-  Count = CFArrayGetCount(a3);
+  Count = CFArrayGetCount(volume);
   if (Count >= 1)
   {
     for (i = 0; i != Count; ++i)
     {
-      CFArrayGetValueAtIndex(a3, i);
+      CFArrayGetValueAtIndex(volume, i);
       CacheDeleteInitPurgeMarker();
     }
   }
@@ -103,11 +103,11 @@ void __73__CacheDeleteNotificationObserver__onQueueConfigurePurgeMarkerForVolume
   }
 }
 
-- (void)_onQueueSubscribeToNotificationsForVolume:(id)a3
+- (void)_onQueueSubscribeToNotificationsForVolume:(id)volume
 {
-  v4 = a3;
+  volumeCopy = volume;
   objc_initWeak(&location, self);
-  v5 = v4;
+  v5 = volumeCopy;
   objc_copyWeak(&v6, &location);
   CacheDeleteRegisterPurgeNotification();
   objc_destroyWeak(&v6);
@@ -134,15 +134,15 @@ void __77__CacheDeleteNotificationObserver__onQueueSubscribeToNotificationsForVo
   }
 }
 
-- (void)_onQueueProcessNotifications:(__CFArray *)a3
+- (void)_onQueueProcessNotifications:(__CFArray *)notifications
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  notificationsCopy = notifications;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v5 = [(__CFArray *)v4 countByEnumeratingWithState:&v23 objects:v33 count:16];
+  v5 = [(__CFArray *)notificationsCopy countByEnumeratingWithState:&v23 objects:v33 count:16];
   if (v5)
   {
     v7 = v5;
@@ -156,7 +156,7 @@ void __77__CacheDeleteNotificationObserver__onQueueSubscribeToNotificationsForVo
       {
         if (*v24 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(notificationsCopy);
         }
 
         v10 = *(*(&v23 + 1) + 8 * v9);
@@ -208,7 +208,7 @@ void __77__CacheDeleteNotificationObserver__onQueueSubscribeToNotificationsForVo
       }
 
       while (v7 != v9);
-      v20 = [(__CFArray *)v4 countByEnumeratingWithState:&v23 objects:v33 count:16];
+      v20 = [(__CFArray *)notificationsCopy countByEnumeratingWithState:&v23 objects:v33 count:16];
       v7 = v20;
     }
 

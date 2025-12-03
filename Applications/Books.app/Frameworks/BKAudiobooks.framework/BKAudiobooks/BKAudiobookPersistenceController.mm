@@ -2,17 +2,17 @@
 + (id)sharedInstance;
 - (BKAudiobookPersistenceController)init;
 - (NSArray)stores;
-- (double)_rollbackAmountForLastPlayedDate:(id)a3;
-- (void)_upgradeLastPeriodicBookmarkTimeWithPlayer:(id)a3 audiobook:(id)a4;
-- (void)addStore:(id)a3;
-- (void)bookmarkTimeForAudiobook:(id)a3 localStoresOnly:(BOOL)a4 completion:(id)a5;
-- (void)player:(id)a3 audiobookDidChange:(id)a4;
-- (void)player:(id)a3 audiobookWillChange:(id)a4;
-- (void)player:(id)a3 chapterDidChange:(id)a4;
-- (void)player:(id)a3 currentPositionDidChange:(double)a4 inChapter:(unint64_t)a5 absolutePosition:(double)a6;
-- (void)player:(id)a3 isScrubbing:(BOOL)a4;
-- (void)player:(id)a3 stateDidChangeFrom:(int64_t)a4 to:(int64_t)a5;
-- (void)saveBookmarkTime:(double)a3 audiobook:(id)a4 importance:(int64_t)a5 completion:(id)a6;
+- (double)_rollbackAmountForLastPlayedDate:(id)date;
+- (void)_upgradeLastPeriodicBookmarkTimeWithPlayer:(id)player audiobook:(id)audiobook;
+- (void)addStore:(id)store;
+- (void)bookmarkTimeForAudiobook:(id)audiobook localStoresOnly:(BOOL)only completion:(id)completion;
+- (void)player:(id)player audiobookDidChange:(id)change;
+- (void)player:(id)player audiobookWillChange:(id)change;
+- (void)player:(id)player chapterDidChange:(id)change;
+- (void)player:(id)player currentPositionDidChange:(double)change inChapter:(unint64_t)chapter absolutePosition:(double)position;
+- (void)player:(id)player isScrubbing:(BOOL)scrubbing;
+- (void)player:(id)player stateDidChangeFrom:(int64_t)from to:(int64_t)to;
+- (void)saveBookmarkTime:(double)time audiobook:(id)audiobook importance:(int64_t)importance completion:(id)completion;
 @end
 
 @implementation BKAudiobookPersistenceController
@@ -58,9 +58,9 @@
   return v2;
 }
 
-- (void)addStore:(id)a3
+- (void)addStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   objc_initWeak(&location, self);
   accessQueue = self->_accessQueue;
   block[0] = _NSConcreteStackBlock;
@@ -68,21 +68,21 @@
   block[2] = sub_8820;
   block[3] = &unk_3C8D0;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = storeCopy;
+  v6 = storeCopy;
   dispatch_async(accessQueue, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
 }
 
-- (void)bookmarkTimeForAudiobook:(id)a3 localStoresOnly:(BOOL)a4 completion:(id)a5
+- (void)bookmarkTimeForAudiobook:(id)audiobook localStoresOnly:(BOOL)only completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  if ([v8 isAudiobookPreview])
+  audiobookCopy = audiobook;
+  completionCopy = completion;
+  if ([audiobookCopy isAudiobookPreview])
   {
-    v10 = objc_retainBlock(v9);
+    v10 = objc_retainBlock(completionCopy);
     v11 = v10;
     if (v10)
     {
@@ -99,10 +99,10 @@
     v13[2] = sub_89E4;
     v13[3] = &unk_3CBD0;
     objc_copyWeak(&v17, &location);
-    v18 = a4;
-    v14 = v8;
-    v15 = self;
-    v16 = v9;
+    onlyCopy = only;
+    v14 = audiobookCopy;
+    selfCopy = self;
+    v16 = completionCopy;
     dispatch_async(accessQueue, v13);
 
     objc_destroyWeak(&v17);
@@ -110,14 +110,14 @@
   }
 }
 
-- (void)saveBookmarkTime:(double)a3 audiobook:(id)a4 importance:(int64_t)a5 completion:(id)a6
+- (void)saveBookmarkTime:(double)time audiobook:(id)audiobook importance:(int64_t)importance completion:(id)completion
 {
-  v10 = a4;
-  v11 = a6;
+  audiobookCopy = audiobook;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  if ([v10 isAudiobookPreview])
+  if ([audiobookCopy isAudiobookPreview])
   {
-    v12 = objc_retainBlock(v11);
+    v12 = objc_retainBlock(completionCopy);
     v13 = v12;
     if (v12)
     {
@@ -133,10 +133,10 @@
     v15[2] = sub_9780;
     v15[3] = &unk_3CC70;
     objc_copyWeak(v18, &location);
-    v18[1] = a5;
-    v18[2] = *&a3;
-    v16 = v10;
-    v17 = v11;
+    v18[1] = importance;
+    v18[2] = *&time;
+    v16 = audiobookCopy;
+    v17 = completionCopy;
     dispatch_async(accessQueue, v15);
 
     objc_destroyWeak(v18);
@@ -145,148 +145,148 @@
   objc_destroyWeak(&location);
 }
 
-- (void)player:(id)a3 stateDidChangeFrom:(int64_t)a4 to:(int64_t)a5
+- (void)player:(id)player stateDidChangeFrom:(int64_t)from to:(int64_t)to
 {
-  v8 = a3;
-  if (a4 == 2 && (a5 - 3) <= 1)
+  playerCopy = player;
+  if (from == 2 && (to - 3) <= 1)
   {
-    v11 = v8;
-    v9 = [v8 currentAudiobook];
+    v11 = playerCopy;
+    currentAudiobook = [playerCopy currentAudiobook];
     [v11 positionInCurrentAudiobook];
-    if (a5 == 4 && v10 == 0.0)
+    if (to == 4 && v10 == 0.0)
     {
-      [(BKAudiobookPersistenceController *)self _upgradeLastPeriodicBookmarkTimeWithPlayer:v11 audiobook:v9];
+      [(BKAudiobookPersistenceController *)self _upgradeLastPeriodicBookmarkTimeWithPlayer:v11 audiobook:currentAudiobook];
     }
 
     else if ([v11 isPositionValid])
     {
       [v11 positionInCurrentAudiobook];
-      [(BKAudiobookPersistenceController *)self saveBookmarkTime:v9 audiobook:5 importance:0 completion:?];
+      [(BKAudiobookPersistenceController *)self saveBookmarkTime:currentAudiobook audiobook:5 importance:0 completion:?];
     }
 
-    v8 = v11;
+    playerCopy = v11;
   }
 }
 
-- (void)player:(id)a3 currentPositionDidChange:(double)a4 inChapter:(unint64_t)a5 absolutePosition:(double)a6
+- (void)player:(id)player currentPositionDidChange:(double)change inChapter:(unint64_t)chapter absolutePosition:(double)position
 {
-  v16 = a3;
-  v9 = [v16 currentAudiobook];
-  v10 = [v16 state];
-  if (v10 == &dword_0 + 3 || v10 == &dword_0 + 2 && (v11 = a4, __ROR8__(0xEEEEEEEEEEEEEEEFLL * llroundf(v11) + 0x888888888888888, 2) <= 0x444444444444444uLL))
+  playerCopy = player;
+  currentAudiobook = [playerCopy currentAudiobook];
+  state = [playerCopy state];
+  if (state == &dword_0 + 3 || state == &dword_0 + 2 && (v11 = change, __ROR8__(0xEEEEEEEEEEEEEEEFLL * llroundf(v11) + 0x888888888888888, 2) <= 0x444444444444444uLL))
   {
-    if (([v16 isScrubbing] & 1) == 0)
+    if (([playerCopy isScrubbing] & 1) == 0)
     {
-      v12 = [v16 currentAudiobook];
-      v13 = [v12 assetID];
-      v14 = [(BKAudiobookPersistenceController *)self cachedAssetID];
-      v15 = [v13 isEqualToString:v14];
+      currentAudiobook2 = [playerCopy currentAudiobook];
+      assetID = [currentAudiobook2 assetID];
+      cachedAssetID = [(BKAudiobookPersistenceController *)self cachedAssetID];
+      v15 = [assetID isEqualToString:cachedAssetID];
 
       if (v15)
       {
-        [(BKAudiobookPersistenceController *)self saveBookmarkTime:v9 audiobook:1 importance:0 completion:a6];
+        [(BKAudiobookPersistenceController *)self saveBookmarkTime:currentAudiobook audiobook:1 importance:0 completion:position];
       }
     }
   }
 }
 
-- (void)player:(id)a3 audiobookWillChange:(id)a4
+- (void)player:(id)player audiobookWillChange:(id)change
 {
-  v9 = a3;
-  v6 = a4;
-  if (v6)
+  playerCopy = player;
+  changeCopy = change;
+  if (changeCopy)
   {
-    [v9 positionInCurrentAudiobook];
+    [playerCopy positionInCurrentAudiobook];
     if (v7 == 0.0)
     {
-      [(BKAudiobookPersistenceController *)self _upgradeLastPeriodicBookmarkTimeWithPlayer:v9 audiobook:v6];
+      [(BKAudiobookPersistenceController *)self _upgradeLastPeriodicBookmarkTimeWithPlayer:playerCopy audiobook:changeCopy];
     }
 
     else
     {
       v8 = v7;
-      if ([v9 isPositionValid])
+      if ([playerCopy isPositionValid])
       {
-        [(BKAudiobookPersistenceController *)self saveBookmarkTime:v6 audiobook:5 importance:0 completion:v8];
+        [(BKAudiobookPersistenceController *)self saveBookmarkTime:changeCopy audiobook:5 importance:0 completion:v8];
       }
     }
   }
 }
 
-- (void)_upgradeLastPeriodicBookmarkTimeWithPlayer:(id)a3 audiobook:(id)a4
+- (void)_upgradeLastPeriodicBookmarkTimeWithPlayer:(id)player audiobook:(id)audiobook
 {
-  v6 = a3;
-  v7 = a4;
+  playerCopy = player;
+  audiobookCopy = audiobook;
   objc_initWeak(&location, self);
-  v8 = [v6 currentAudiobook];
+  currentAudiobook = [playerCopy currentAudiobook];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_9FB0;
   v10[3] = &unk_3CC98;
   objc_copyWeak(&v12, &location);
-  v9 = v7;
+  v9 = audiobookCopy;
   v11 = v9;
-  [(BKAudiobookPersistenceController *)self bookmarkTimeForAudiobook:v8 completion:v10];
+  [(BKAudiobookPersistenceController *)self bookmarkTimeForAudiobook:currentAudiobook completion:v10];
 
   objc_destroyWeak(&v12);
   objc_destroyWeak(&location);
 }
 
-- (void)player:(id)a3 audiobookDidChange:(id)a4
+- (void)player:(id)player audiobookDidChange:(id)change
 {
-  v5 = a4;
-  if (v5)
+  changeCopy = change;
+  if (changeCopy)
   {
     v6 = BKAudiobooksPersistenceLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [v5 assetID];
+      assetID = [changeCopy assetID];
       v9 = 138477827;
-      v10 = v7;
+      v10 = assetID;
       _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "BKAsssetAudiobookPersistenceController changed cached assetID to %{private}@", &v9, 0xCu);
     }
 
-    v8 = [v5 assetID];
-    [(BKAudiobookPersistenceController *)self setCachedAssetID:v8];
+    assetID2 = [changeCopy assetID];
+    [(BKAudiobookPersistenceController *)self setCachedAssetID:assetID2];
   }
 }
 
-- (void)player:(id)a3 chapterDidChange:(id)a4
+- (void)player:(id)player chapterDidChange:(id)change
 {
-  v6 = a3;
-  v5 = [v6 currentAudiobook];
-  if ([v6 isPositionValid] && objc_msgSend(v6, "state") != &dword_4)
+  playerCopy = player;
+  currentAudiobook = [playerCopy currentAudiobook];
+  if ([playerCopy isPositionValid] && objc_msgSend(playerCopy, "state") != &dword_4)
   {
-    [v6 positionInCurrentAudiobook];
-    [(BKAudiobookPersistenceController *)self saveBookmarkTime:v5 audiobook:5 importance:0 completion:?];
+    [playerCopy positionInCurrentAudiobook];
+    [(BKAudiobookPersistenceController *)self saveBookmarkTime:currentAudiobook audiobook:5 importance:0 completion:?];
   }
 }
 
-- (void)player:(id)a3 isScrubbing:(BOOL)a4
+- (void)player:(id)player isScrubbing:(BOOL)scrubbing
 {
-  v11 = a3;
-  v6 = [v11 currentAudiobook];
-  if (([v11 state] & 0xFFFFFFFFFFFFFFFELL) == 2 && !a4)
+  playerCopy = player;
+  currentAudiobook = [playerCopy currentAudiobook];
+  if (([playerCopy state] & 0xFFFFFFFFFFFFFFFELL) == 2 && !scrubbing)
   {
-    if ([v11 isPositionValid])
+    if ([playerCopy isPositionValid])
     {
-      v7 = [v11 currentAudiobook];
-      v8 = [v7 assetID];
-      v9 = [(BKAudiobookPersistenceController *)self cachedAssetID];
-      v10 = [v8 isEqualToString:v9];
+      currentAudiobook2 = [playerCopy currentAudiobook];
+      assetID = [currentAudiobook2 assetID];
+      cachedAssetID = [(BKAudiobookPersistenceController *)self cachedAssetID];
+      v10 = [assetID isEqualToString:cachedAssetID];
 
       if (v10)
       {
-        [v11 positionInCurrentAudiobook];
-        [(BKAudiobookPersistenceController *)self saveBookmarkTime:v6 audiobook:1 importance:0 completion:?];
+        [playerCopy positionInCurrentAudiobook];
+        [(BKAudiobookPersistenceController *)self saveBookmarkTime:currentAudiobook audiobook:1 importance:0 completion:?];
       }
     }
   }
 }
 
-- (double)_rollbackAmountForLastPlayedDate:(id)a3
+- (double)_rollbackAmountForLastPlayedDate:(id)date
 {
-  [a3 timeIntervalSinceNow];
+  [date timeIntervalSinceNow];
   v4 = fabs(v3);
   result = 10.0;
   if (v4 <= 3600.0)

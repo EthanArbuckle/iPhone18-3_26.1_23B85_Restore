@@ -1,28 +1,28 @@
 @interface PPXCollectionListViewController
-- (PPXCollectionListViewController)initWithAssetID:(id)a3 isPurchased:(BOOL)a4 isAudiobook:(BOOL)a5;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (PPXCollectionListViewController)initWithAssetID:(id)d isPurchased:(BOOL)purchased isAudiobook:(BOOL)audiobook;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)_updateCollections;
 - (void)loadView;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation PPXCollectionListViewController
 
-- (PPXCollectionListViewController)initWithAssetID:(id)a3 isPurchased:(BOOL)a4 isAudiobook:(BOOL)a5
+- (PPXCollectionListViewController)initWithAssetID:(id)d isPurchased:(BOOL)purchased isAudiobook:(BOOL)audiobook
 {
-  v8 = a3;
+  dCopy = d;
   v13.receiver = self;
   v13.super_class = PPXCollectionListViewController;
   v9 = [(PPXCollectionListViewController *)&v13 init];
   if (v9)
   {
-    v10 = [v8 copy];
+    v10 = [dCopy copy];
     assetID = v9->_assetID;
     v9->_assetID = v10;
 
-    v9->_isPurchased = a4;
-    v9->_isAudiobook = a5;
+    v9->_isPurchased = purchased;
+    v9->_isAudiobook = audiobook;
   }
 
   return v9;
@@ -45,79 +45,79 @@
 {
   objc_initWeak(&location, self);
   v2 = +[BCCloudCollectionsManager sharedManager];
-  v3 = [v2 collectionDetailManager];
+  collectionDetailManager = [v2 collectionDetailManager];
 
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10000245C;
   v4[3] = &unk_100031418;
   objc_copyWeak(&v5, &location);
-  [v3 fetchCollectionDetailsIncludingDeleted:0 completion:v4];
+  [collectionDetailManager fetchCollectionDetailsIncludingDeleted:0 completion:v4];
   objc_destroyWeak(&v5);
 
   objc_destroyWeak(&location);
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v4 = [(PPXCollectionListViewController *)self collectionDetailsCache:a3];
+  v4 = [(PPXCollectionListViewController *)self collectionDetailsCache:view];
   v5 = [v4 count];
 
   return v5;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"PPXCollectionListCell"];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"PPXCollectionListCell"];
   if (!v7)
   {
     v7 = [[UITableViewCell alloc] initWithStyle:0 reuseIdentifier:@"PPXCollectionListCell"];
   }
 
-  v8 = [v6 row];
-  v9 = [(PPXCollectionListViewController *)self collectionDetailsCache];
-  if (v8 >= [v9 count])
+  v8 = [pathCopy row];
+  collectionDetailsCache = [(PPXCollectionListViewController *)self collectionDetailsCache];
+  if (v8 >= [collectionDetailsCache count])
   {
     v10 = 0;
   }
 
   else
   {
-    v10 = [v9 objectAtIndex:v8];
+    v10 = [collectionDetailsCache objectAtIndex:v8];
   }
 
-  v11 = [v10 name];
-  v12 = [v7 textLabel];
-  [v12 setText:v11];
+  name = [v10 name];
+  textLabel = [v7 textLabel];
+  [textLabel setText:name];
 
   return v7;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(PPXCollectionListViewController *)self assetID];
-  if (v6)
+  pathCopy = path;
+  assetID = [(PPXCollectionListViewController *)self assetID];
+  if (assetID)
   {
-    v7 = [v5 row];
-    v8 = [(PPXCollectionListViewController *)self collectionDetailsCache];
-    if (v7 < [v8 count])
+    v7 = [pathCopy row];
+    collectionDetailsCache = [(PPXCollectionListViewController *)self collectionDetailsCache];
+    if (v7 < [collectionDetailsCache count])
     {
-      v9 = [v8 objectAtIndex:v7];
-      v10 = [v9 collectionID];
-      if (v10)
+      v9 = [collectionDetailsCache objectAtIndex:v7];
+      collectionID = [v9 collectionID];
+      if (collectionID)
       {
-        v11 = [(PPXCollectionListViewController *)self ba_effectiveAnalyticsTracker];
+        ba_effectiveAnalyticsTracker = [(PPXCollectionListViewController *)self ba_effectiveAnalyticsTracker];
         v13 = _NSConcreteStackBlock;
         v14 = 3221225472;
         v15 = sub_100002A48;
         v16 = &unk_100031440;
-        v17 = v6;
-        v18 = self;
-        v19 = v11;
-        v20 = v10;
-        v12 = v11;
+        v17 = assetID;
+        selfCopy = self;
+        v19 = ba_effectiveAnalyticsTracker;
+        v20 = collectionID;
+        v12 = ba_effectiveAnalyticsTracker;
         [BDSServiceCenter addStoreID:v17 toCollectionID:v20 completion:&v13];
       }
     }

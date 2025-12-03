@@ -1,6 +1,6 @@
 @interface ATXHeuristicEventTimeUtilities
 - (ATXHeuristicEventTimeUtilities)init;
-- (id)travelTimeToEvent:(id)a3 destination:(id)a4 transportType:(id)a5 heuristicDevice:(id)a6;
+- (id)travelTimeToEvent:(id)event destination:(id)destination transportType:(id)type heuristicDevice:(id)device;
 @end
 
 @implementation ATXHeuristicEventTimeUtilities
@@ -12,13 +12,13 @@
   return [(ATXHeuristicEventTimeUtilities *)&v3 init];
 }
 
-- (id)travelTimeToEvent:(id)a3 destination:(id)a4 transportType:(id)a5 heuristicDevice:(id)a6
+- (id)travelTimeToEvent:(id)event destination:(id)destination transportType:(id)type heuristicDevice:(id)device
 {
   v52 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v37 = a4;
-  v36 = a5;
-  v12 = a6;
+  eventCopy = event;
+  destinationCopy = destination;
+  typeCopy = type;
+  deviceCopy = device;
   v42 = 0;
   v43 = &v42;
   v44 = 0x3032000000;
@@ -31,11 +31,11 @@
   v40[2] = __Block_byref_object_copy__17;
   v40[3] = __Block_byref_object_dispose__17;
   v41 = 0;
-  if (v11)
+  if (eventCopy)
   {
-    v13 = [MEMORY[0x277CBEAA8] date];
-    v14 = [v11 startDate];
-    v15 = [v13 compare:v14] == 1;
+    date = [MEMORY[0x277CBEAA8] date];
+    startDate = [eventCopy startDate];
+    v15 = [date compare:startDate] == 1;
 
     if (v15)
     {
@@ -46,15 +46,15 @@
       }
     }
 
-    v17 = [v11 startDate];
-    v18 = [v17 dateByAddingTimeInterval:-600.0];
+    startDate2 = [eventCopy startDate];
+    v18 = [startDate2 dateByAddingTimeInterval:-600.0];
 
 LABEL_12:
-    v23 = [[ATXEventTravelTimeDataSource alloc] initWithDevice:v12];
-    objc_storeStrong(&self->_event, a3);
+    v23 = [[ATXEventTravelTimeDataSource alloc] initWithDevice:deviceCopy];
+    objc_storeStrong(&self->_event, event);
     objc_storeStrong(&self->_dataSource, v23);
-    objc_storeStrong(&self->_destination, a4);
-    objc_storeStrong(&self->_transportType, a5);
+    objc_storeStrong(&self->_destination, destination);
+    objc_storeStrong(&self->_transportType, type);
     v24 = dispatch_semaphore_create(0);
     semaphore = self->_semaphore;
     self->_semaphore = v24;
@@ -62,17 +62,17 @@ LABEL_12:
     v26 = __atxlog_handle_context_heuristic();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
     {
-      v27 = [v11 eventIdentifier];
-      v28 = [(CLPlacemark *)self->_destination name];
+      eventIdentifier = [eventCopy eventIdentifier];
+      name = [(CLPlacemark *)self->_destination name];
       *buf = 138412546;
-      v49 = v27;
+      v49 = eventIdentifier;
       v50 = 2112;
-      v51 = v28;
+      v51 = name;
       _os_log_impl(&dword_23E3EA000, v26, OS_LOG_TYPE_DEFAULT, "ATXHeuristicEventTimeUtilities: Calling datasource for time (Eid: %@), D:(%@)", buf, 0x16u);
     }
 
-    v29 = [(EKEvent *)self->_event eventIdentifier];
-    v30 = [(CLPlacemark *)self->_destination location];
+    eventIdentifier2 = [(EKEvent *)self->_event eventIdentifier];
+    location = [(CLPlacemark *)self->_destination location];
     transportType = self->_transportType;
     v38[0] = MEMORY[0x277D85DD0];
     v38[1] = 3221225472;
@@ -81,7 +81,7 @@ LABEL_12:
     v38[5] = &v42;
     v38[6] = &v39;
     v38[4] = self;
-    [(ATXEventTravelTimeDataSource *)v23 travelTimeInfoForEventID:v29 location:v30 expectedArrivalDate:v18 transportType:transportType localOnlyAfterFirstUpdate:1 callback:v38];
+    [(ATXEventTravelTimeDataSource *)v23 travelTimeInfoForEventID:eventIdentifier2 location:location expectedArrivalDate:v18 transportType:transportType localOnlyAfterFirstUpdate:1 callback:v38];
 
     [MEMORY[0x277D425A0] waitForSemaphore:self->_semaphore timeoutSeconds:1.0];
     if (*(v40[0] + 40))
@@ -104,19 +104,19 @@ LABEL_12:
     _os_log_impl(&dword_23E3EA000, v19, OS_LOG_TYPE_DEFAULT, "ATXHeuristicEventTimeUtilities: Event is nil, setting destination expiry time to an hour from now", buf, 2u);
   }
 
-  v20 = [MEMORY[0x277CBEAA8] date];
-  v18 = [v20 dateByAddingTimeInterval:3600.0];
+  date2 = [MEMORY[0x277CBEAA8] date];
+  v18 = [date2 dateByAddingTimeInterval:3600.0];
 
   v21 = __atxlog_handle_context_heuristic();
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
   {
-    v22 = [v37 name];
+    name2 = [destinationCopy name];
     *buf = 138412290;
-    v49 = v22;
+    v49 = name2;
     _os_log_impl(&dword_23E3EA000, v21, OS_LOG_TYPE_DEFAULT, "ATXHeuristicEventTimeUtilities: Determining travel time: (event is nil), D:(%@)", buf, 0xCu);
   }
 
-  if (v37)
+  if (destinationCopy)
   {
     goto LABEL_12;
   }

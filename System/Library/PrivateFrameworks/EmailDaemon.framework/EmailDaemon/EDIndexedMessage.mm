@@ -1,17 +1,17 @@
 @interface EDIndexedMessage
 - (EDIndexedMessage)init;
-- (EDIndexedMessage)initWithMessageID:(id)a3 hasBodyData:(BOOL)a4;
+- (EDIndexedMessage)initWithMessageID:(id)d hasBodyData:(BOOL)data;
 @end
 
 @implementation EDIndexedMessage
 
-- (EDIndexedMessage)initWithMessageID:(id)a3 hasBodyData:(BOOL)a4
+- (EDIndexedMessage)initWithMessageID:(id)d hasBodyData:(BOOL)data
 {
-  *(&self->super.isa + OBJC_IVAR___EDIndexedMessage_messageID) = a3;
-  *(&self->super.isa + OBJC_IVAR___EDIndexedMessage_hasBodyData) = a4;
+  *(&self->super.isa + OBJC_IVAR___EDIndexedMessage_messageID) = d;
+  *(&self->super.isa + OBJC_IVAR___EDIndexedMessage_hasBodyData) = data;
   v6.receiver = self;
   v6.super_class = EDIndexedMessage;
-  v4 = a3;
+  dCopy = d;
   return [(EDIndexedMessage *)&v6 init];
 }
 

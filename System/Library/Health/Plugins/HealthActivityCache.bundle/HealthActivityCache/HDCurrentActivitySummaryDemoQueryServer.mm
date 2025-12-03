@@ -9,7 +9,7 @@
   v8.receiver = self;
   v8.super_class = HDCurrentActivitySummaryDemoQueryServer;
   [(HDCurrentActivitySummaryDemoQueryServer *)&v8 _queue_start];
-  v3 = [(HDCurrentActivitySummaryDemoQueryServer *)self clientProxy];
+  clientProxy = [(HDCurrentActivitySummaryDemoQueryServer *)self clientProxy];
   v4 = sub_1F0B8(self);
   _HKInitializeLogging();
   v5 = HKLogActivity;
@@ -22,8 +22,8 @@
 
   v9 = v4;
   v6 = [NSArray arrayWithObjects:&v9 count:1];
-  v7 = [(HDCurrentActivitySummaryDemoQueryServer *)self queryUUID];
-  [v3 client_deliverActivitySummaries:v6 queryUUID:v7];
+  queryUUID = [(HDCurrentActivitySummaryDemoQueryServer *)self queryUUID];
+  [clientProxy client_deliverActivitySummaries:v6 queryUUID:queryUUID];
 }
 
 @end

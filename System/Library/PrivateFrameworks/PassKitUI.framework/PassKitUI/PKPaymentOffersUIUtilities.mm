@@ -1,21 +1,21 @@
 @interface PKPaymentOffersUIUtilities
-+ (BOOL)shouldDisplayPaymentOfferConfirmationRecordFollowUp:(id)a3;
-+ (BOOL)shouldDisplayPaymentOfferViewPlanDetailsButtonForConfirmationRecord:(id)a3 transaction:(id)a4;
-+ (BOOL)shouldDisplayRewardsRedemptionInfoForTransaction:(id)a3;
-+ (BOOL)shouldDisplayRewardsRedemptionStatusLinkForTransaction:(id)a3;
-+ (BOOL)shouldDisplaySetupPostPurchaseInstallmentsForTransaction:(id)a3 installmentCriteria:(id)a4;
-+ (BOOL)shouldDisplayStatusForConfirmationRecord:(id)a3 transaction:(id)a4 installmentCriteria:(id)a5;
++ (BOOL)shouldDisplayPaymentOfferConfirmationRecordFollowUp:(id)up;
++ (BOOL)shouldDisplayPaymentOfferViewPlanDetailsButtonForConfirmationRecord:(id)record transaction:(id)transaction;
++ (BOOL)shouldDisplayRewardsRedemptionInfoForTransaction:(id)transaction;
++ (BOOL)shouldDisplayRewardsRedemptionStatusLinkForTransaction:(id)transaction;
++ (BOOL)shouldDisplaySetupPostPurchaseInstallmentsForTransaction:(id)transaction installmentCriteria:(id)criteria;
++ (BOOL)shouldDisplayStatusForConfirmationRecord:(id)record transaction:(id)transaction installmentCriteria:(id)criteria;
 - (PKPaymentOffersUIUtilities)init;
 @end
 
 @implementation PKPaymentOffersUIUtilities
 
-+ (BOOL)shouldDisplayStatusForConfirmationRecord:(id)a3 transaction:(id)a4 installmentCriteria:(id)a5
++ (BOOL)shouldDisplayStatusForConfirmationRecord:(id)record transaction:(id)transaction installmentCriteria:(id)criteria
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = _s9PassKitUI42PKPaymentOfferConfirmationRecordDetailCellC6status3for11transaction19installmentCriteriaAA0defghI6StatusOSo0defG0CSg_So0D11TransactionCSo0de11InstallmentN0CSgtFZ_0(a3, v9, a5);
+  recordCopy = record;
+  transactionCopy = transaction;
+  criteriaCopy = criteria;
+  v11 = _s9PassKitUI42PKPaymentOfferConfirmationRecordDetailCellC6status3for11transaction19installmentCriteriaAA0defghI6StatusOSo0defG0CSg_So0D11TransactionCSo0de11InstallmentN0CSgtFZ_0(record, transactionCopy, criteria);
   v12 = v11;
   if (v11 >= 4)
   {
@@ -32,36 +32,36 @@
   return result;
 }
 
-+ (BOOL)shouldDisplayPaymentOfferConfirmationRecordFollowUp:(id)a3
++ (BOOL)shouldDisplayPaymentOfferConfirmationRecordFollowUp:(id)up
 {
-  v3 = a3;
-  v4 = a3;
-  LOBYTE(v3) = _s9PassKitUI24PaymentOffersUIUtilitiesC21shouldDisplayFollowUp3forSbSo32PKPaymentOfferConfirmationRecordCSg_tFZ_0(v3);
+  upCopy = up;
+  upCopy2 = up;
+  LOBYTE(upCopy) = _s9PassKitUI24PaymentOffersUIUtilitiesC21shouldDisplayFollowUp3forSbSo32PKPaymentOfferConfirmationRecordCSg_tFZ_0(upCopy);
 
-  return v3 & 1;
+  return upCopy & 1;
 }
 
-+ (BOOL)shouldDisplayPaymentOfferViewPlanDetailsButtonForConfirmationRecord:(id)a3 transaction:(id)a4
++ (BOOL)shouldDisplayPaymentOfferViewPlanDetailsButtonForConfirmationRecord:(id)record transaction:(id)transaction
 {
-  v6 = a3;
-  v7 = a4;
-  LOBYTE(a4) = _s9PassKitUI24PaymentOffersUIUtilitiesC30shouldDisplayPlanDetailsButton3for11transactionSbSo32PKPaymentOfferConfirmationRecordCSg_So0N11TransactionCSgtFZ_0(a3, a4);
+  recordCopy = record;
+  transactionCopy = transaction;
+  LOBYTE(transaction) = _s9PassKitUI24PaymentOffersUIUtilitiesC30shouldDisplayPlanDetailsButton3for11transactionSbSo32PKPaymentOfferConfirmationRecordCSg_So0N11TransactionCSgtFZ_0(record, transaction);
 
-  return a4 & 1;
+  return transaction & 1;
 }
 
-+ (BOOL)shouldDisplaySetupPostPurchaseInstallmentsForTransaction:(id)a3 installmentCriteria:(id)a4
++ (BOOL)shouldDisplaySetupPostPurchaseInstallmentsForTransaction:(id)transaction installmentCriteria:(id)criteria
 {
-  v6 = a3;
-  v7 = a4;
-  LOBYTE(a4) = _s9PassKitUI24PaymentOffersUIUtilitiesC42shouldDisplaySetupPostPurchaseInstallments3for19installmentCriteriaSbSo20PKPaymentTransactionCSg_So0p16OfferInstallmentO0CSgtFZ_0(a3, a4);
+  transactionCopy = transaction;
+  criteriaCopy = criteria;
+  LOBYTE(criteria) = _s9PassKitUI24PaymentOffersUIUtilitiesC42shouldDisplaySetupPostPurchaseInstallments3for19installmentCriteriaSbSo20PKPaymentTransactionCSg_So0p16OfferInstallmentO0CSgtFZ_0(transaction, criteria);
 
-  return a4 & 1;
+  return criteria & 1;
 }
 
-+ (BOOL)shouldDisplayRewardsRedemptionInfoForTransaction:(id)a3
++ (BOOL)shouldDisplayRewardsRedemptionInfoForTransaction:(id)transaction
 {
-  v3 = a3;
+  transactionCopy = transaction;
   if (PKHideCardBenefitRewards())
   {
     v4 = 0;
@@ -69,24 +69,24 @@
 
   else
   {
-    v5 = [v3 paymentRewardsRedemption];
+    paymentRewardsRedemption = [transactionCopy paymentRewardsRedemption];
 
-    if (!v5)
+    if (!paymentRewardsRedemption)
     {
       return 0;
     }
 
     v4 = 1;
-    v3 = v5;
+    transactionCopy = paymentRewardsRedemption;
   }
 
   return v4;
 }
 
-+ (BOOL)shouldDisplayRewardsRedemptionStatusLinkForTransaction:(id)a3
++ (BOOL)shouldDisplayRewardsRedemptionStatusLinkForTransaction:(id)transaction
 {
-  v3 = a3;
-  v4 = _s9PassKitUI24PaymentOffersUIUtilitiesC40shouldDisplayRewardsRedemptionStatusLink3forSbSo20PKPaymentTransactionC_tFZ_0(v3);
+  transactionCopy = transaction;
+  v4 = _s9PassKitUI24PaymentOffersUIUtilitiesC40shouldDisplayRewardsRedemptionStatusLink3forSbSo20PKPaymentTransactionC_tFZ_0(transactionCopy);
 
   return v4 & 1;
 }

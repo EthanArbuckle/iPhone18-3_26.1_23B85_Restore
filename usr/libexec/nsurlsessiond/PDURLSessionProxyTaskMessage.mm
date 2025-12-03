@@ -1,21 +1,21 @@
 @interface PDURLSessionProxyTaskMessage
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PDURLSessionProxyTaskMessage
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   session = self->_session;
-  v6 = v4[2];
+  v6 = fromCopy[2];
   if (session)
   {
     if (!v6)
@@ -23,7 +23,7 @@
       goto LABEL_7;
     }
 
-    v7 = v4;
+    v7 = fromCopy;
     [(PDURLSessionProxySessionMessage *)session mergeFrom:?];
   }
 
@@ -34,15 +34,15 @@
       goto LABEL_7;
     }
 
-    v7 = v4;
+    v7 = fromCopy;
     [(PDURLSessionProxyTaskMessage *)self setSession:?];
   }
 
-  v4 = v7;
+  fromCopy = v7;
 LABEL_7:
-  if (v4[3])
+  if (fromCopy[3])
   {
-    self->_taskIdentifier = v4[1];
+    self->_taskIdentifier = fromCopy[1];
     *&self->_has |= 1u;
   }
 }
@@ -63,16 +63,16 @@ LABEL_7:
   return v4 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_8;
   }
 
   session = self->_session;
-  if (session | *(v4 + 2))
+  if (session | *(equalCopy + 2))
   {
     if (![(PDURLSessionProxySessionMessage *)session isEqual:?])
     {
@@ -80,10 +80,10 @@ LABEL_7:
     }
   }
 
-  v6 = (*(v4 + 24) & 1) == 0;
+  v6 = (*(equalCopy + 24) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 24) & 1) != 0 && self->_taskIdentifier == *(v4 + 1))
+    if ((*(equalCopy + 24) & 1) != 0 && self->_taskIdentifier == *(equalCopy + 1))
     {
       v6 = 1;
       goto LABEL_9;
@@ -98,10 +98,10 @@ LABEL_9:
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(PDURLSessionProxySessionMessage *)self->_session copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(PDURLSessionProxySessionMessage *)self->_session copyWithZone:zone];
   v7 = v5[2];
   v5[2] = v6;
 
@@ -114,38 +114,38 @@ LABEL_9:
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_session)
   {
-    v5 = v4;
-    [v4 setSession:?];
-    v4 = v5;
+    v5 = toCopy;
+    [toCopy setSession:?];
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 1) = self->_taskIdentifier;
-    *(v4 + 24) |= 1u;
+    *(toCopy + 1) = self->_taskIdentifier;
+    *(toCopy + 24) |= 1u;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_session)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (*&self->_has)
   {
     taskIdentifier = self->_taskIdentifier;
     PBDataWriterWriteUint64Field();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
@@ -155,8 +155,8 @@ LABEL_9:
   session = self->_session;
   if (session)
   {
-    v5 = [(PDURLSessionProxySessionMessage *)session dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"session"];
+    dictionaryRepresentation = [(PDURLSessionProxySessionMessage *)session dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation forKey:@"session"];
   }
 
   if (*&self->_has)
@@ -173,8 +173,8 @@ LABEL_9:
   v7.receiver = self;
   v7.super_class = PDURLSessionProxyTaskMessage;
   v3 = [(PDURLSessionProxyTaskMessage *)&v7 description];
-  v4 = [(PDURLSessionProxyTaskMessage *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(PDURLSessionProxyTaskMessage *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }

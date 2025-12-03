@@ -1,22 +1,22 @@
 @interface CLSUtil
 + (BOOL)isAppleInternalInstall;
 + (BOOL)isSystemIntegrityEnabled;
-+ (id)dataFromError:(id)a3;
-+ (id)dataFromPath:(id)a3 makeBackwardCompatible:(BOOL)a4 error:(id *)a5;
-+ (id)dictionaryStrippingNSNullValues:(id)a3;
-+ (id)errorFromData:(id)a3;
-+ (id)hashArrayOfStrings:(id)a3 lastHash:(id)a4;
-+ (id)hashData:(id)a3 lastHash:(id)a4;
-+ (id)hashData:(id)a3 lastHashData:(id)a4;
++ (id)dataFromError:(id)error;
++ (id)dataFromPath:(id)path makeBackwardCompatible:(BOOL)compatible error:(id *)error;
++ (id)dictionaryStrippingNSNullValues:(id)values;
++ (id)errorFromData:(id)data;
++ (id)hashArrayOfStrings:(id)strings lastHash:(id)hash;
++ (id)hashData:(id)data lastHash:(id)hash;
++ (id)hashData:(id)data lastHashData:(id)hashData;
 + (id)mediumDateFormatter;
-+ (id)mediumStringFromDate:(id)a3;
-+ (id)pathFromData:(id)a3;
++ (id)mediumStringFromDate:(id)date;
++ (id)pathFromData:(id)data;
 + (id)percentNumberFormatter;
-+ (id)percentageStringFromNumber:(id)a3;
-+ (id)stringFromTimeInterval:(double)a3;
-+ (void)fetchInfoForAppWithBundleIdentifier:(id)a3 completion:(id)a4;
-+ (void)postNotification:(char *)a3;
-+ (void)postNotificationAsync:(char *)a3;
++ (id)percentageStringFromNumber:(id)number;
++ (id)stringFromTimeInterval:(double)interval;
++ (void)fetchInfoForAppWithBundleIdentifier:(id)identifier completion:(id)completion;
++ (void)postNotification:(char *)notification;
++ (void)postNotificationAsync:(char *)async;
 @end
 
 @implementation CLSUtil
@@ -41,13 +41,13 @@
   return byte_27DE90598;
 }
 
-+ (id)percentageStringFromNumber:(id)a3
++ (id)percentageStringFromNumber:(id)number
 {
-  if (a3)
+  if (number)
   {
-    v4 = a3;
-    v7 = objc_msgSend_percentNumberFormatter(a1, v5, v6);
-    v9 = objc_msgSend_stringFromNumber_(v7, v8, v4);
+    numberCopy = number;
+    v7 = objc_msgSend_percentNumberFormatter(self, v5, v6);
+    v9 = objc_msgSend_stringFromNumber_(v7, v8, numberCopy);
   }
 
   else
@@ -77,16 +77,16 @@
   return v8;
 }
 
-+ (id)mediumStringFromDate:(id)a3
++ (id)mediumStringFromDate:(id)date
 {
-  v4 = a3;
-  v7 = objc_msgSend_mediumDateFormatter(a1, v5, v6);
-  v9 = objc_msgSend_stringFromDate_(v7, v8, v4);
+  dateCopy = date;
+  v7 = objc_msgSend_mediumDateFormatter(self, v5, v6);
+  v9 = objc_msgSend_stringFromDate_(v7, v8, dateCopy);
 
   return v9;
 }
 
-+ (id)stringFromTimeInterval:(double)a3
++ (id)stringFromTimeInterval:(double)interval
 {
   if (qword_280B2A520 != -1)
   {
@@ -110,24 +110,24 @@
   return v3;
 }
 
-+ (id)dataFromPath:(id)a3 makeBackwardCompatible:(BOOL)a4 error:(id *)a5
++ (id)dataFromPath:(id)path makeBackwardCompatible:(BOOL)compatible error:(id *)error
 {
-  v6 = a4;
-  v7 = a3;
-  if (!objc_msgSend_count(v7, v8, v9))
+  compatibleCopy = compatible;
+  pathCopy = path;
+  if (!objc_msgSend_count(pathCopy, v8, v9))
   {
     v18 = 0;
     goto LABEL_19;
   }
 
-  v11 = objc_msgSend_validatedContextIdentifierPathFromPath_(CLSContext, v10, v7);
+  v11 = objc_msgSend_validatedContextIdentifierPathFromPath_(CLSContext, v10, pathCopy);
 
   v30 = 0;
   v13 = objc_msgSend_archivedDataWithRootObject_requiringSecureCoding_error_(MEMORY[0x277CCAAB0], v12, v11, 1, &v30);
   v14 = v30;
   if (!v14)
   {
-    if (v6)
+    if (compatibleCopy)
     {
       v28 = 0;
       v29 = 0;
@@ -137,10 +137,10 @@
       {
         v16 = v20;
         objc_msgSend_cls_debug_(v20, v21, CLSLogDefault);
-        if (a5)
+        if (error)
         {
           v22 = v16;
-          *a5 = v16;
+          *error = v16;
         }
 
         goto LABEL_11;
@@ -153,10 +153,10 @@
       if (v16)
       {
         objc_msgSend_cls_debug_(v16, v24, CLSLogDefault);
-        if (a5)
+        if (error)
         {
           v25 = v16;
-          *a5 = v16;
+          *error = v16;
         }
       }
 
@@ -175,7 +175,7 @@
 
   v16 = v14;
   objc_msgSend_cls_debug_(v14, v15, CLSLogDefault);
-  if (!a5)
+  if (!error)
   {
 LABEL_11:
     v18 = 0;
@@ -184,28 +184,28 @@ LABEL_11:
 
   v17 = v16;
   v18 = 0;
-  *a5 = v16;
+  *error = v16;
 LABEL_18:
 
-  v7 = v11;
+  pathCopy = v11;
 LABEL_19:
 
   return v18;
 }
 
-+ (id)pathFromData:(id)a3
++ (id)pathFromData:(id)data
 {
   v14[2] = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (data)
   {
     v3 = MEMORY[0x277CCAAC8];
     v4 = MEMORY[0x277CBEB98];
-    v5 = a3;
+    dataCopy = data;
     v14[0] = objc_opt_class();
     v14[1] = objc_opt_class();
     v7 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v6, v14, 2);
     v9 = objc_msgSend_setWithArray_(v4, v8, v7);
-    v11 = objc_msgSend_cls_secureUnarchiveObjectOfClasses_withData_(v3, v10, v9, v5);
+    v11 = objc_msgSend_cls_secureUnarchiveObjectOfClasses_withData_(v3, v10, v9, dataCopy);
   }
 
   else
@@ -218,12 +218,12 @@ LABEL_19:
   return v11;
 }
 
-+ (id)dataFromError:(id)a3
++ (id)dataFromError:(id)error
 {
-  if (a3)
+  if (error)
   {
     v9 = 0;
-    v3 = objc_msgSend_archivedDataWithRootObject_requiringSecureCoding_error_(MEMORY[0x277CCAAB0], a2, a3, 1, &v9);
+    v3 = objc_msgSend_archivedDataWithRootObject_requiringSecureCoding_error_(MEMORY[0x277CCAAB0], a2, error, 1, &v9);
     v4 = v9;
     v6 = v4;
     if (v4)
@@ -246,14 +246,14 @@ LABEL_19:
   return v7;
 }
 
-+ (id)errorFromData:(id)a3
++ (id)errorFromData:(id)data
 {
-  if (a3)
+  if (data)
   {
     v3 = MEMORY[0x277CCAAC8];
-    v4 = a3;
+    dataCopy = data;
     v5 = objc_opt_class();
-    v7 = objc_msgSend_cls_secureUnarchiveObjectOfClass_withData_(v3, v6, v5, v4);
+    v7 = objc_msgSend_cls_secureUnarchiveObjectOfClass_withData_(v3, v6, v5, dataCopy);
   }
 
   else
@@ -264,31 +264,31 @@ LABEL_19:
   return v7;
 }
 
-+ (id)hashData:(id)a3 lastHash:(id)a4
++ (id)hashData:(id)data lastHash:(id)hash
 {
-  v6 = a3;
-  v8 = objc_msgSend_dataUsingEncoding_(a4, v7, 4);
-  v10 = objc_msgSend_hashData_lastHashData_(a1, v9, v6, v8);
+  dataCopy = data;
+  v8 = objc_msgSend_dataUsingEncoding_(hash, v7, 4);
+  v10 = objc_msgSend_hashData_lastHashData_(self, v9, dataCopy, v8);
 
   return v10;
 }
 
-+ (id)hashData:(id)a3 lastHashData:(id)a4
++ (id)hashData:(id)data lastHashData:(id)hashData
 {
   v30 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  dataCopy = data;
+  hashDataCopy = hashData;
   memset(&c, 0, sizeof(c));
   CC_SHA224_Init(&c);
-  v7 = v5;
+  v7 = dataCopy;
   v10 = objc_msgSend_bytes(v7, v8, v9);
-  v13 = objc_msgSend_length(v5, v11, v12);
+  v13 = objc_msgSend_length(dataCopy, v11, v12);
   CC_SHA224_Update(&c, v10, v13);
-  if (v6)
+  if (hashDataCopy)
   {
-    v14 = v6;
+    v14 = hashDataCopy;
     v17 = objc_msgSend_bytes(v14, v15, v16);
-    v20 = objc_msgSend_length(v6, v18, v19);
+    v20 = objc_msgSend_length(hashDataCopy, v18, v19);
     CC_SHA224_Update(&c, v17, v20);
   }
 
@@ -306,15 +306,15 @@ LABEL_19:
   return v25;
 }
 
-+ (id)hashArrayOfStrings:(id)a3 lastHash:(id)a4
++ (id)hashArrayOfStrings:(id)strings lastHash:(id)hash
 {
-  v5 = a3;
-  v10 = objc_msgSend_firstObject(v5, v6, v7);
+  stringsCopy = strings;
+  v10 = objc_msgSend_firstObject(stringsCopy, v6, v7);
   if (v10)
   {
-    v11 = objc_msgSend_count(v5, v8, v9);
+    v11 = objc_msgSend_count(stringsCopy, v8, v9);
     v13 = objc_msgSend_dataUsingEncoding_(v10, v12, 4);
-    v15 = objc_msgSend_hashData_lastHash_(a1, v14, v13, 0);
+    v15 = objc_msgSend_hashData_lastHash_(self, v14, v13, 0);
 
     if (v11 < 2)
     {
@@ -325,9 +325,9 @@ LABEL_19:
     {
       for (i = 1; i != v11; ++i)
       {
-        v18 = objc_msgSend_objectAtIndex_(v5, v16, i);
+        v18 = objc_msgSend_objectAtIndex_(stringsCopy, v16, i);
         v20 = objc_msgSend_dataUsingEncoding_(v18, v19, 4);
-        v22 = objc_msgSend_hashData_lastHash_(a1, v21, v20, v15);
+        v22 = objc_msgSend_hashData_lastHash_(self, v21, v20, v15);
 
         v15 = v22;
       }
@@ -337,24 +337,24 @@ LABEL_19:
   else
   {
     v23 = objc_msgSend_data(MEMORY[0x277CBEA90], v8, v9);
-    v22 = objc_msgSend_hashData_lastHash_(a1, v24, v23, 0);
+    v22 = objc_msgSend_hashData_lastHash_(self, v24, v23, 0);
   }
 
   return v22;
 }
 
-+ (id)dictionaryStrippingNSNullValues:(id)a3
++ (id)dictionaryStrippingNSNullValues:(id)values
 {
   v28 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v5 = v3;
-  if (v3)
+  valuesCopy = values;
+  v5 = valuesCopy;
+  if (valuesCopy)
   {
     v25 = 0u;
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v6 = objc_msgSend_countByEnumeratingWithState_objects_count_(v3, v4, &v23, v27, 16);
+    v6 = objc_msgSend_countByEnumeratingWithState_objects_count_(valuesCopy, v4, &v23, v27, 16);
     v9 = v5;
     if (v6)
     {
@@ -416,10 +416,10 @@ LABEL_19:
   return v9;
 }
 
-+ (void)postNotification:(char *)a3
++ (void)postNotification:(char *)notification
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = notify_post(a3);
+  v4 = notify_post(notification);
   if (qword_280B2A720 != -1)
   {
     dispatch_once(&qword_280B2A720, &unk_284A07B28);
@@ -431,7 +431,7 @@ LABEL_19:
     if (os_log_type_enabled(CLSLogDefault, OS_LOG_TYPE_ERROR))
     {
       v7 = 136315138;
-      v8 = a3;
+      notificationCopy2 = notification;
       _os_log_error_impl(&dword_236F71000, v5, OS_LOG_TYPE_ERROR, "Notification post failed: '%s'", &v7, 0xCu);
     }
   }
@@ -439,33 +439,33 @@ LABEL_19:
   else if (os_log_type_enabled(CLSLogDefault, OS_LOG_TYPE_INFO))
   {
     v7 = 136315138;
-    v8 = a3;
+    notificationCopy2 = notification;
     _os_log_impl(&dword_236F71000, v5, OS_LOG_TYPE_INFO, "Notification posted: '%s'", &v7, 0xCu);
   }
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)postNotificationAsync:(char *)a3
++ (void)postNotificationAsync:(char *)async
 {
   v4 = clsNotificationQueue();
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_236FD2230;
   block[3] = &unk_278A17960;
-  block[4] = a3;
+  block[4] = async;
   dispatch_async(v4, block);
 }
 
-+ (void)fetchInfoForAppWithBundleIdentifier:(id)a3 completion:(id)a4
++ (void)fetchInfoForAppWithBundleIdentifier:(id)identifier completion:(id)completion
 {
-  v27 = a3;
-  v5 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v6 = objc_autoreleasePoolPush();
-  if (objc_msgSend_length(v27, v7, v8))
+  if (objc_msgSend_length(identifierCopy, v7, v8))
   {
     v9 = objc_alloc(MEMORY[0x277CC1E70]);
-    v11 = objc_msgSend_initWithBundleIdentifier_allowPlaceholder_error_(v9, v10, v27, 0, 0);
+    v11 = objc_msgSend_initWithBundleIdentifier_allowPlaceholder_error_(v9, v10, identifierCopy, 0, 0);
     v14 = v11;
     if (v11)
     {
@@ -499,7 +499,7 @@ LABEL_19:
     v15 = 0;
   }
 
-  v5[2](v5, v15, v26, v18);
+  completionCopy[2](completionCopy, v15, v26, v18);
 
   objc_autoreleasePoolPop(v6);
 }

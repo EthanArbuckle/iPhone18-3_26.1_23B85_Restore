@@ -1,9 +1,9 @@
 @interface IDSProfileGetDefaultInvitationContext
 - (IDSProfileGetDefaultInvitationContext)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)messageBody;
 - (id)requiredKeys;
-- (void)handleResponseDictionary:(id)a3;
+- (void)handleResponseDictionary:(id)dictionary;
 @end
 
 @implementation IDSProfileGetDefaultInvitationContext
@@ -22,19 +22,19 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v9.receiver = self;
   v9.super_class = IDSProfileGetDefaultInvitationContext;
-  v4 = [(IDSProfileMessage *)&v9 copyWithZone:a3];
-  v5 = [(IDSProfileGetDefaultInvitationContext *)self responseBasePhoneNumber];
-  [v4 setResponseBasePhoneNumber:v5];
+  v4 = [(IDSProfileMessage *)&v9 copyWithZone:zone];
+  responseBasePhoneNumber = [(IDSProfileGetDefaultInvitationContext *)self responseBasePhoneNumber];
+  [v4 setResponseBasePhoneNumber:responseBasePhoneNumber];
 
-  v6 = [(IDSProfileGetDefaultInvitationContext *)self responseRegionID];
-  [v4 setResponseRegionID:v6];
+  responseRegionID = [(IDSProfileGetDefaultInvitationContext *)self responseRegionID];
+  [v4 setResponseRegionID:responseRegionID];
 
-  v7 = [(IDSProfileGetDefaultInvitationContext *)self responseExtraInfo];
-  [v4 setResponseExtraInfo:v7];
+  responseExtraInfo = [(IDSProfileGetDefaultInvitationContext *)self responseExtraInfo];
+  [v4 setResponseExtraInfo:responseExtraInfo];
 
   [v4 setResponseValidated:{-[IDSProfileGetDefaultInvitationContext responseValidated](self, "responseValidated")}];
   return v4;
@@ -54,22 +54,22 @@
   return v2;
 }
 
-- (void)handleResponseDictionary:(id)a3
+- (void)handleResponseDictionary:(id)dictionary
 {
   v9.receiver = self;
   v9.super_class = IDSProfileGetDefaultInvitationContext;
-  v4 = a3;
-  [(IDSProfileMessage *)&v9 handleResponseDictionary:v4];
-  v5 = [v4 objectForKey:{@"region-id", v9.receiver, v9.super_class}];
+  dictionaryCopy = dictionary;
+  [(IDSProfileMessage *)&v9 handleResponseDictionary:dictionaryCopy];
+  v5 = [dictionaryCopy objectForKey:{@"region-id", v9.receiver, v9.super_class}];
   [(IDSProfileGetDefaultInvitationContext *)self setResponseRegionID:v5];
 
-  v6 = [v4 objectForKey:@"base-phone-number"];
+  v6 = [dictionaryCopy objectForKey:@"base-phone-number"];
   [(IDSProfileGetDefaultInvitationContext *)self setResponseBasePhoneNumber:v6];
 
-  v7 = [v4 objectForKey:@"extra"];
+  v7 = [dictionaryCopy objectForKey:@"extra"];
   [(IDSProfileGetDefaultInvitationContext *)self setResponseExtraInfo:v7];
 
-  v8 = [v4 objectForKey:@"validated"];
+  v8 = [dictionaryCopy objectForKey:@"validated"];
 
   -[IDSProfileGetDefaultInvitationContext setResponseValidated:](self, "setResponseValidated:", [v8 intValue] != 0);
 }

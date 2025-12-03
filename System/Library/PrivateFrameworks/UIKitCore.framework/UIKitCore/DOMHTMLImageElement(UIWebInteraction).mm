@@ -6,8 +6,8 @@
 
 - (BOOL)showsTapHighlight
 {
-  v1 = [a1 hrefURL];
-  v2 = v1 != 0;
+  hrefURL = [self hrefURL];
+  v2 = hrefURL != 0;
 
   return v2;
 }

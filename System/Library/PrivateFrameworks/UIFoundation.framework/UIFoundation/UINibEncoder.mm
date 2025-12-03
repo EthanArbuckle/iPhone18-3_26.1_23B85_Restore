@@ -1,59 +1,59 @@
 @interface UINibEncoder
-+ (BOOL)archiveRootObject:(id)a3 toFile:(id)a4;
-+ (id)archivedDataWithRootObject:(id)a3;
-- (BOOL)object:(id)a3 encodesAsMemberAndWithCoderOfClass:(Class)a4;
-- (BOOL)shouldUniqueObjectByValue:(id)a3;
-- (Class)encodedClassForObject:(id)a3;
-- (id)assignObjectIDForObject:(id)a3;
-- (id)encodedClassNameForObject:(id)a3;
-- (id)initForWritingWithMutableData:(id)a3;
++ (BOOL)archiveRootObject:(id)object toFile:(id)file;
++ (id)archivedDataWithRootObject:(id)object;
+- (BOOL)object:(id)object encodesAsMemberAndWithCoderOfClass:(Class)class;
+- (BOOL)shouldUniqueObjectByValue:(id)value;
+- (Class)encodedClassForObject:(id)object;
+- (id)assignObjectIDForObject:(id)object;
+- (id)encodedClassNameForObject:(id)object;
+- (id)initForWritingWithMutableData:(id)data;
 - (id)nextGenericKey;
-- (id)replacementObjectForObject:(id)a3 forKey:(id)a4;
-- (int64_t)versionForClassName:(id)a3;
+- (id)replacementObjectForObject:(id)object forKey:(id)key;
+- (int64_t)versionForClassName:(id)name;
 - (void)dealloc;
-- (void)encodeArrayOfDoubles:(double *)a3 count:(int64_t)a4 forKey:(id)a5;
-- (void)encodeArrayOfFloats:(float *)a3 count:(int64_t)a4 forKey:(id)a5;
-- (void)encodeArrayOfObjCType:(const char *)a3 count:(unint64_t)a4 at:(const void *)a5;
-- (void)encodeBool:(BOOL)a3 forKey:(id)a4;
-- (void)encodeBycopyObject:(id)a3;
-- (void)encodeByrefObject:(id)a3;
-- (void)encodeBytes:(const char *)a3 length:(unint64_t)a4 forKey:(id)a5;
-- (void)encodeBytes:(const void *)a3 length:(unint64_t)a4;
-- (void)encodeCGAffineTransform:(CGAffineTransform *)a3 forKey:(id)a4;
-- (void)encodeCGPoint:(CGPoint)a3 forKey:(id)a4;
-- (void)encodeCGRect:(CGRect)a3 forKey:(id)a4;
-- (void)encodeCGSize:(CGSize)a3 forKey:(id)a4;
-- (void)encodeConditionalObject:(id)a3;
-- (void)encodeConditionalObject:(id)a3 forKey:(id)a4;
-- (void)encodeDouble:(double)a3 forKey:(id)a4;
-- (void)encodeFloat:(float)a3 forKey:(id)a4;
-- (void)encodeInt32:(int)a3 forKey:(id)a4;
-- (void)encodeInt64:(int64_t)a3 forKey:(id)a4;
-- (void)encodeInt:(int)a3 forKey:(id)a4;
-- (void)encodeInteger:(int64_t)a3 forKey:(id)a4;
-- (void)encodeObject:(id)a3;
-- (void)encodeObject:(id)a3 forKey:(id)a4;
-- (void)encodeRootObject:(id)a3;
-- (void)encodeUIEdgeInsets:(UIEdgeInsets)a3 forKey:(id)a4;
-- (void)encodeValueOfObjCType:(const char *)a3 at:(const void *)a4;
-- (void)encodeValuesOfObjCTypes:(const char *)a3;
+- (void)encodeArrayOfDoubles:(double *)doubles count:(int64_t)count forKey:(id)key;
+- (void)encodeArrayOfFloats:(float *)floats count:(int64_t)count forKey:(id)key;
+- (void)encodeArrayOfObjCType:(const char *)type count:(unint64_t)count at:(const void *)at;
+- (void)encodeBool:(BOOL)bool forKey:(id)key;
+- (void)encodeBycopyObject:(id)object;
+- (void)encodeByrefObject:(id)object;
+- (void)encodeBytes:(const char *)bytes length:(unint64_t)length forKey:(id)key;
+- (void)encodeBytes:(const void *)bytes length:(unint64_t)length;
+- (void)encodeCGAffineTransform:(CGAffineTransform *)transform forKey:(id)key;
+- (void)encodeCGPoint:(CGPoint)point forKey:(id)key;
+- (void)encodeCGRect:(CGRect)rect forKey:(id)key;
+- (void)encodeCGSize:(CGSize)size forKey:(id)key;
+- (void)encodeConditionalObject:(id)object;
+- (void)encodeConditionalObject:(id)object forKey:(id)key;
+- (void)encodeDouble:(double)double forKey:(id)key;
+- (void)encodeFloat:(float)float forKey:(id)key;
+- (void)encodeInt32:(int)int32 forKey:(id)key;
+- (void)encodeInt64:(int64_t)int64 forKey:(id)key;
+- (void)encodeInt:(int)int forKey:(id)key;
+- (void)encodeInteger:(int64_t)integer forKey:(id)key;
+- (void)encodeObject:(id)object;
+- (void)encodeObject:(id)object forKey:(id)key;
+- (void)encodeRootObject:(id)object;
+- (void)encodeUIEdgeInsets:(UIEdgeInsets)insets forKey:(id)key;
+- (void)encodeValueOfObjCType:(const char *)type at:(const void *)at;
+- (void)encodeValuesOfObjCTypes:(const char *)types;
 - (void)finishEncoding;
-- (void)serializeArray:(id)a3;
-- (void)serializeDictionary:(id)a3;
-- (void)serializeObject:(id)a3;
-- (void)serializeSet:(id)a3;
+- (void)serializeArray:(id)array;
+- (void)serializeDictionary:(id)dictionary;
+- (void)serializeObject:(id)object;
+- (void)serializeSet:(id)set;
 @end
 
 @implementation UINibEncoder
 
-- (id)initForWritingWithMutableData:(id)a3
+- (id)initForWritingWithMutableData:(id)data
 {
   v12.receiver = self;
   v12.super_class = UINibEncoder;
   v4 = [(UINibEncoder *)&v12 init];
   if (v4)
   {
-    v4->data = a3;
+    v4->data = data;
     memset(&keyCallBacks, 0, sizeof(keyCallBacks));
     UIRetainedIdentityKeyDictionaryCallbacks(&keyCallBacks);
     memset(&valueCallBacks, 0, sizeof(valueCallBacks));
@@ -98,18 +98,18 @@
   [(UINibEncoder *)&v3 dealloc];
 }
 
-- (id)assignObjectIDForObject:(id)a3
+- (id)assignObjectIDForObject:(id)object
 {
   v5 = [MEMORY[0x1E696AD98] numberWithLongLong:self->nextObjectID];
-  CFDictionarySetValue(self->objectsToObjectIDs, a3, v5);
-  CFDictionarySetValue(self->objectIDsToObjects, v5, a3);
+  CFDictionarySetValue(self->objectsToObjectIDs, object, v5);
+  CFDictionarySetValue(self->objectIDsToObjects, v5, object);
   ++self->nextObjectID;
   return v5;
 }
 
-- (Class)encodedClassForObject:(id)a3
+- (Class)encodedClassForObject:(id)object
 {
-  result = [a3 classForKeyedArchiver];
+  result = [object classForKeyedArchiver];
   if (!result)
   {
 
@@ -119,68 +119,68 @@
   return result;
 }
 
-- (id)encodedClassNameForObject:(id)a3
+- (id)encodedClassNameForObject:(id)object
 {
-  v4 = [(UINibEncoder *)self encodedClassForObject:a3];
+  v4 = [(UINibEncoder *)self encodedClassForObject:object];
 
   return [(UINibEncoder *)self encodedClassNameForClass:v4];
 }
 
-- (BOOL)object:(id)a3 encodesAsMemberAndWithCoderOfClass:(Class)a4
+- (BOOL)object:(id)object encodesAsMemberAndWithCoderOfClass:(Class)class
 {
-  if ([a3 classForKeyedArchiver] != a4)
+  if ([object classForKeyedArchiver] != class)
   {
     return 0;
   }
 
-  return [(UINibEncoder *)self object:a3 encodesWithCoderFromClass:a4];
+  return [(UINibEncoder *)self object:object encodesWithCoderFromClass:class];
 }
 
-- (BOOL)shouldUniqueObjectByValue:(id)a3
+- (BOOL)shouldUniqueObjectByValue:(id)value
 {
-  if ([(UINibEncoder *)self object:a3 encodesAsMemberAndWithCoderOfClass:objc_opt_class()])
+  if ([(UINibEncoder *)self object:value encodesAsMemberAndWithCoderOfClass:objc_opt_class()])
   {
     return 1;
   }
 
   v6 = objc_opt_class();
 
-  return [(UINibEncoder *)self object:a3 encodesAsMemberAndWithCoderOfClass:v6];
+  return [(UINibEncoder *)self object:value encodesAsMemberAndWithCoderOfClass:v6];
 }
 
-- (id)replacementObjectForObject:(id)a3 forKey:(id)a4
+- (id)replacementObjectForObject:(id)object forKey:(id)key
 {
-  if (!CFSetContainsValue(self->objectsReplacedWithNil, a3) && !CFDictionaryContainsKey(self->replacements, a3))
+  if (!CFSetContainsValue(self->objectsReplacedWithNil, object) && !CFDictionaryContainsKey(self->replacements, object))
   {
-    if ([(UINibEncoder *)self objectIDForObject:a3])
+    if ([(UINibEncoder *)self objectIDForObject:object])
     {
-      return a3;
+      return object;
     }
 
-    if ([(UINibEncoder *)self shouldUniqueObjectByValue:a3])
+    if ([(UINibEncoder *)self shouldUniqueObjectByValue:object])
     {
-      Value = CFSetGetValue(self->objectsUniquedByValue, a3);
+      Value = CFSetGetValue(self->objectsUniquedByValue, object);
       if (Value)
       {
         goto LABEL_12;
       }
 
-      CFSetAddValue(self->objectsUniquedByValue, a3);
+      CFSetAddValue(self->objectsUniquedByValue, object);
     }
 
-    Value = [a3 replacementObjectForCoder:self];
+    Value = [object replacementObjectForCoder:self];
     if (!Value)
     {
 LABEL_19:
-      CFSetAddValue(self->objectsReplacedWithNil, a3);
+      CFSetAddValue(self->objectsReplacedWithNil, object);
       return 0;
     }
 
 LABEL_12:
     v9 = Value;
-    if (!self->delegate || ((v11 = objc_opt_respondsToSelector(), objectIDsToObjects = self->objectIDsToObjects, v13 = UINumberWithNibArchiveIndex(self->recursiveState.currentObjectID), v14 = CFDictionaryGetValue(objectIDsToObjects, v13), delegate = self->delegate, (v11 & 1) == 0) ? (v16 = [delegate nibCoder:self willEncodeObject:{v9, v14}]) : (v16 = objc_msgSend(delegate, "nibCoder:willEncodeObject:forObject:forKey:", self, v9, v14, a4)), (v9 = v16) != 0))
+    if (!self->delegate || ((v11 = objc_opt_respondsToSelector(), objectIDsToObjects = self->objectIDsToObjects, v13 = UINumberWithNibArchiveIndex(self->recursiveState.currentObjectID), v14 = CFDictionaryGetValue(objectIDsToObjects, v13), delegate = self->delegate, (v11 & 1) == 0) ? (v16 = [delegate nibCoder:self willEncodeObject:{v9, v14}]) : (v16 = objc_msgSend(delegate, "nibCoder:willEncodeObject:forObject:forKey:", self, v9, v14, key)), (v9 = v16) != 0))
     {
-      CFDictionarySetValue(self->replacements, a3, v9);
+      CFDictionarySetValue(self->replacements, object, v9);
       if (![(UINibEncoder *)self objectIDForObject:v9])
       {
         [(UINibEncoder *)self assignObjectIDForObject:v9];
@@ -194,10 +194,10 @@ LABEL_12:
 
   replacements = self->replacements;
 
-  return CFDictionaryGetValue(replacements, a3);
+  return CFDictionaryGetValue(replacements, object);
 }
 
-- (void)serializeArray:(id)a3
+- (void)serializeArray:(id)array
 {
   v14 = *MEMORY[0x1E69E9840];
   [(UINibEncoder *)self encodeBool:1 forKey:@"NSInlinedValue"];
@@ -205,7 +205,7 @@ LABEL_12:
   v12 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v5 = [a3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v5 = [array countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -217,27 +217,27 @@ LABEL_12:
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(array);
         }
 
         [(UINibEncoder *)self encodeObject:*(*(&v9 + 1) + 8 * v8++) forKey:@"UINibEncoderEmptyKey"];
       }
 
       while (v6 != v8);
-      v6 = [a3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [array countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)serializeDictionary:(id)a3
+- (void)serializeDictionary:(id)dictionary
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = [a3 allKeys];
-  if ([(UINibEncoder *)self isUnorderedCollectionSortingEnabled]&& UIAreObjectsSortableForEncoding(v5))
+  allKeys = [dictionary allKeys];
+  if ([(UINibEncoder *)self isUnorderedCollectionSortingEnabled]&& UIAreObjectsSortableForEncoding(allKeys))
   {
-    v5 = [v5 sortedArrayUsingSelector:sel_compare_];
+    allKeys = [allKeys sortedArrayUsingSelector:sel_compare_];
   }
 
   [(UINibEncoder *)self encodeBool:1 forKey:@"NSInlinedValue"];
@@ -245,7 +245,7 @@ LABEL_12:
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v6 = [allKeys countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -256,28 +256,28 @@ LABEL_12:
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allKeys);
         }
 
         v10 = *(*(&v11 + 1) + 8 * i);
         [(UINibEncoder *)self encodeObject:v10 forKey:@"UINibEncoderEmptyKey"];
-        -[UINibEncoder encodeObject:forKey:](self, "encodeObject:forKey:", [a3 objectForKey:v10], @"UINibEncoderEmptyKey");
+        -[UINibEncoder encodeObject:forKey:](self, "encodeObject:forKey:", [dictionary objectForKey:v10], @"UINibEncoderEmptyKey");
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [allKeys countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)serializeSet:(id)a3
+- (void)serializeSet:(id)set
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = [a3 allObjects];
-  if ([(UINibEncoder *)self isUnorderedCollectionSortingEnabled]&& UIAreObjectsSortableForEncoding(v4))
+  allObjects = [set allObjects];
+  if ([(UINibEncoder *)self isUnorderedCollectionSortingEnabled]&& UIAreObjectsSortableForEncoding(allObjects))
   {
-    v4 = [v4 sortedArrayUsingSelector:sel_compare_];
+    allObjects = [allObjects sortedArrayUsingSelector:sel_compare_];
   }
 
   [(UINibEncoder *)self encodeBool:1 forKey:@"NSInlinedValue"];
@@ -285,7 +285,7 @@ LABEL_12:
   v12 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v5 = [allObjects countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -297,61 +297,61 @@ LABEL_12:
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allObjects);
         }
 
         [(UINibEncoder *)self encodeObject:*(*(&v9 + 1) + 8 * v8++) forKey:@"UINibEncoderEmptyKey"];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [allObjects countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)serializeObject:(id)a3
+- (void)serializeObject:(id)object
 {
-  if ([(UINibEncoder *)self object:a3 encodesWithCoderFromClass:objc_opt_class()])
+  if ([(UINibEncoder *)self object:object encodesWithCoderFromClass:objc_opt_class()])
   {
 
-    [(UINibEncoder *)self serializeArray:a3];
+    [(UINibEncoder *)self serializeArray:object];
   }
 
-  else if ([(UINibEncoder *)self object:a3 encodesWithCoderFromClass:objc_opt_class()])
+  else if ([(UINibEncoder *)self object:object encodesWithCoderFromClass:objc_opt_class()])
   {
 
-    [(UINibEncoder *)self serializeDictionary:a3];
+    [(UINibEncoder *)self serializeDictionary:object];
   }
 
-  else if ([(UINibEncoder *)self object:a3 encodesWithCoderFromClass:objc_opt_class()])
+  else if ([(UINibEncoder *)self object:object encodesWithCoderFromClass:objc_opt_class()])
   {
 
-    [(UINibEncoder *)self serializeSet:a3];
+    [(UINibEncoder *)self serializeSet:object];
   }
 
   else
   {
 
-    [a3 encodeWithCoder:self];
+    [object encodeWithCoder:self];
   }
 }
 
-+ (id)archivedDataWithRootObject:(id)a3
++ (id)archivedDataWithRootObject:(id)object
 {
-  v5 = [MEMORY[0x1E695DF88] data];
-  v6 = [[a1 alloc] initForWritingWithMutableData:v5];
-  [v6 encodeObject:a3 forKey:@"object"];
+  data = [MEMORY[0x1E695DF88] data];
+  v6 = [[self alloc] initForWritingWithMutableData:data];
+  [v6 encodeObject:object forKey:@"object"];
   [v6 finishEncoding];
-  return v5;
+  return data;
 }
 
-+ (BOOL)archiveRootObject:(id)a3 toFile:(id)a4
++ (BOOL)archiveRootObject:(id)object toFile:(id)file
 {
-  v5 = [a1 archivedDataWithRootObject:a3];
+  v5 = [self archivedDataWithRootObject:object];
 
-  return [v5 writeToFile:a4 atomically:1];
+  return [v5 writeToFile:file atomically:1];
 }
 
 - (void)finishEncoding
@@ -444,8 +444,8 @@ LABEL_12:
     }
   }
 
-  v23 = [MEMORY[0x1E695DF90] dictionary];
-  v24 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  dictionary2 = [MEMORY[0x1E695DF90] dictionary];
   v25 = CFArrayGetCount(*(&self->super.super.isa + v33));
   if (v25 >= 1)
   {
@@ -456,13 +456,13 @@ LABEL_12:
       v28 = *v27;
       v29 = [(UINibEncoder *)self encodedClassForObject:*v27];
       v30 = [(UINibEncoder *)self encodedClassNameForClass:v29];
-      [v23 setObject:v30 forKey:{CFDictionaryGetValue(v3, v28)}];
-      if (![v24 objectForKey:v30])
+      [dictionary setObject:v30 forKey:{CFDictionaryGetValue(v3, v28)}];
+      if (![dictionary2 objectForKey:v30])
       {
-        v31 = [(objc_class *)v29 classFallbacksForKeyedArchiver];
-        if ([v31 count])
+        classFallbacksForKeyedArchiver = [(objc_class *)v29 classFallbacksForKeyedArchiver];
+        if ([classFallbacksForKeyedArchiver count])
         {
-          [v24 setObject:v31 forKey:v30];
+          [dictionary2 setObject:classFallbacksForKeyedArchiver forKey:v30];
         }
       }
 
@@ -479,12 +479,12 @@ LABEL_12:
   }
 
   CFRelease(v3);
-  UIWriteArchiveToData(self->data, 1, v23, v24, self->values, @"UINibEncoderEmptyKey");
+  UIWriteArchiveToData(self->data, 1, dictionary, dictionary2, self->values, @"UINibEncoderEmptyKey");
 }
 
-- (int64_t)versionForClassName:(id)a3
+- (int64_t)versionForClassName:(id)name
 {
-  v3 = NSClassFromString(a3);
+  v3 = NSClassFromString(name);
   if (!v3)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
@@ -493,9 +493,9 @@ LABEL_12:
   return [(objc_class *)v3 version];
 }
 
-- (void)encodeObject:(id)a3 forKey:(id)a4
+- (void)encodeObject:(id)object forKey:(id)key
 {
-  if (a3 && (v7 = [(UINibEncoder *)self replacementObjectForObject:a3 forKey:a4]) != 0)
+  if (object && (v7 = [(UINibEncoder *)self replacementObjectForObject:object forKey:key]) != 0)
   {
     v8 = v7;
     v9 = [(UINibEncoder *)self objectIDForObject:v7];
@@ -508,7 +508,7 @@ LABEL_12:
     {
       CFSetAddValue(self->encodedObjects, v8);
       CFArrayAppendValue(self->encodedOrderedObjects, v8);
-      [(UINibEncoder *)self appendValue:[UINibCoderValue nibValueForObjectReference:UINibArchiveIndexFromNumber(v9) key:a4 scope:self->recursiveState.currentObjectID]];
+      [(UINibEncoder *)self appendValue:[UINibCoderValue nibValueForObjectReference:UINibArchiveIndexFromNumber(v9) key:key scope:self->recursiveState.currentObjectID]];
       recursiveState = self->recursiveState;
       self->recursiveState = 0;
       self->recursiveState.currentObjectID = UINibArchiveIndexFromNumber(v9);
@@ -517,20 +517,20 @@ LABEL_12:
       return;
     }
 
-    v10 = [UINibCoderValue nibValueForObjectReference:UINibArchiveIndexFromNumber(v9) key:a4 scope:self->recursiveState.currentObjectID];
+    v10 = [UINibCoderValue nibValueForObjectReference:UINibArchiveIndexFromNumber(v9) key:key scope:self->recursiveState.currentObjectID];
   }
 
   else
   {
-    v10 = [UINibCoderValue nibValueRepresentingNilReferenceForKey:a4 scope:self->recursiveState.currentObjectID];
+    v10 = [UINibCoderValue nibValueRepresentingNilReferenceForKey:key scope:self->recursiveState.currentObjectID];
   }
 
   [(UINibEncoder *)self appendValue:v10];
 }
 
-- (void)encodeConditionalObject:(id)a3 forKey:(id)a4
+- (void)encodeConditionalObject:(id)object forKey:(id)key
 {
-  if (!a3)
+  if (!object)
   {
     goto LABEL_9;
   }
@@ -545,7 +545,7 @@ LABEL_12:
     }
   }
 
-  v10 = [(UINibEncoder *)self replacementObjectForObject:a3 forKey:a4];
+  v10 = [(UINibEncoder *)self replacementObjectForObject:object forKey:key];
   if (v10)
   {
     v11 = v10;
@@ -555,152 +555,152 @@ LABEL_12:
       v12 = [(UINibEncoder *)self assignObjectIDForObject:v11];
     }
 
-    v13 = [UINibCoderValue nibValueForObjectReference:UINibArchiveIndexFromNumber(v12) key:a4 scope:self->recursiveState.currentObjectID];
+    v13 = [UINibCoderValue nibValueForObjectReference:UINibArchiveIndexFromNumber(v12) key:key scope:self->recursiveState.currentObjectID];
   }
 
   else
   {
 LABEL_9:
-    v13 = [UINibCoderValue nibValueRepresentingNilReferenceForKey:a4 scope:self->recursiveState.currentObjectID];
+    v13 = [UINibCoderValue nibValueRepresentingNilReferenceForKey:key scope:self->recursiveState.currentObjectID];
   }
 
   [(UINibEncoder *)self appendValue:v13];
 }
 
-- (void)encodeBool:(BOOL)a3 forKey:(id)a4
+- (void)encodeBool:(BOOL)bool forKey:(id)key
 {
-  v5 = [UINibCoderValue nibValueForBoolean:a3 key:a4 scope:self->recursiveState.currentObjectID];
+  v5 = [UINibCoderValue nibValueForBoolean:bool key:key scope:self->recursiveState.currentObjectID];
 
   [(UINibEncoder *)self appendValue:v5];
 }
 
-- (void)encodeInt:(int)a3 forKey:(id)a4
+- (void)encodeInt:(int)int forKey:(id)key
 {
-  v5 = [UINibCoderValue nibValueForInteger:a3 key:a4 scope:self->recursiveState.currentObjectID];
+  v5 = [UINibCoderValue nibValueForInteger:int key:key scope:self->recursiveState.currentObjectID];
 
   [(UINibEncoder *)self appendValue:v5];
 }
 
-- (void)encodeInt32:(int)a3 forKey:(id)a4
+- (void)encodeInt32:(int)int32 forKey:(id)key
 {
-  v5 = [UINibCoderValue nibValueForInteger:a3 key:a4 scope:self->recursiveState.currentObjectID];
+  v5 = [UINibCoderValue nibValueForInteger:int32 key:key scope:self->recursiveState.currentObjectID];
 
   [(UINibEncoder *)self appendValue:v5];
 }
 
-- (void)encodeInt64:(int64_t)a3 forKey:(id)a4
+- (void)encodeInt64:(int64_t)int64 forKey:(id)key
 {
-  v5 = [UINibCoderValue nibValueForInteger:a3 key:a4 scope:self->recursiveState.currentObjectID];
+  v5 = [UINibCoderValue nibValueForInteger:int64 key:key scope:self->recursiveState.currentObjectID];
 
   [(UINibEncoder *)self appendValue:v5];
 }
 
-- (void)encodeInteger:(int64_t)a3 forKey:(id)a4
+- (void)encodeInteger:(int64_t)integer forKey:(id)key
 {
-  v5 = [UINibCoderValue nibValueForInteger:a3 key:a4 scope:self->recursiveState.currentObjectID];
+  v5 = [UINibCoderValue nibValueForInteger:integer key:key scope:self->recursiveState.currentObjectID];
 
   [(UINibEncoder *)self appendValue:v5];
 }
 
-- (void)encodeFloat:(float)a3 forKey:(id)a4
+- (void)encodeFloat:(float)float forKey:(id)key
 {
-  v5 = [UINibCoderValue nibValueForFloat:a4 key:self->recursiveState.currentObjectID scope:?];
+  v5 = [UINibCoderValue nibValueForFloat:key key:self->recursiveState.currentObjectID scope:?];
 
   [(UINibEncoder *)self appendValue:v5];
 }
 
-- (void)encodeDouble:(double)a3 forKey:(id)a4
+- (void)encodeDouble:(double)double forKey:(id)key
 {
-  v5 = [UINibCoderValue nibValueForDouble:a4 key:self->recursiveState.currentObjectID scope:a3];
+  v5 = [UINibCoderValue nibValueForDouble:key key:self->recursiveState.currentObjectID scope:double];
 
   [(UINibEncoder *)self appendValue:v5];
 }
 
-- (void)encodeBytes:(const char *)a3 length:(unint64_t)a4 forKey:(id)a5
+- (void)encodeBytes:(const char *)bytes length:(unint64_t)length forKey:(id)key
 {
-  v6 = [UINibCoderValue nibValueForBytes:a3 length:a4 key:a5 scope:self->recursiveState.currentObjectID];
+  v6 = [UINibCoderValue nibValueForBytes:bytes length:length key:key scope:self->recursiveState.currentObjectID];
 
   [(UINibEncoder *)self appendValue:v6];
 }
 
-- (void)encodeArrayOfDoubles:(double *)a3 count:(int64_t)a4 forKey:(id)a5
+- (void)encodeArrayOfDoubles:(double *)doubles count:(int64_t)count forKey:(id)key
 {
-  v9 = [MEMORY[0x1E695DF88] data];
+  data = [MEMORY[0x1E695DF88] data];
   v12 = 7;
-  [v9 appendBytes:&v12 length:1];
-  if (a4 >= 1)
+  [data appendBytes:&v12 length:1];
+  if (count >= 1)
   {
     do
     {
-      v10 = *a3++;
+      v10 = *doubles++;
       v11 = v10;
-      [v9 appendBytes:&v11 length:8];
-      --a4;
+      [data appendBytes:&v11 length:8];
+      --count;
     }
 
-    while (a4);
+    while (count);
   }
 
-  -[UINibEncoder encodeBytes:length:forKey:](self, "encodeBytes:length:forKey:", [v9 bytes], objc_msgSend(v9, "length"), a5);
+  -[UINibEncoder encodeBytes:length:forKey:](self, "encodeBytes:length:forKey:", [data bytes], objc_msgSend(data, "length"), key);
 }
 
-- (void)encodeArrayOfFloats:(float *)a3 count:(int64_t)a4 forKey:(id)a5
+- (void)encodeArrayOfFloats:(float *)floats count:(int64_t)count forKey:(id)key
 {
-  v9 = [MEMORY[0x1E695DF88] data];
+  data = [MEMORY[0x1E695DF88] data];
   v12 = 6;
-  [v9 appendBytes:&v12 length:1];
-  if (a4 >= 1)
+  [data appendBytes:&v12 length:1];
+  if (count >= 1)
   {
     do
     {
-      v10 = *a3++;
+      v10 = *floats++;
       v11 = v10;
-      [v9 appendBytes:&v11 length:4];
-      --a4;
+      [data appendBytes:&v11 length:4];
+      --count;
     }
 
-    while (a4);
+    while (count);
   }
 
-  -[UINibEncoder encodeBytes:length:forKey:](self, "encodeBytes:length:forKey:", [v9 bytes], objc_msgSend(v9, "length"), a5);
+  -[UINibEncoder encodeBytes:length:forKey:](self, "encodeBytes:length:forKey:", [data bytes], objc_msgSend(data, "length"), key);
 }
 
-- (void)encodeCGPoint:(CGPoint)a3 forKey:(id)a4
+- (void)encodeCGPoint:(CGPoint)point forKey:(id)key
 {
   v5 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  [(UINibEncoder *)self encodeArrayOfCGFloats:&v4 count:2 forKey:a4];
+  pointCopy = point;
+  [(UINibEncoder *)self encodeArrayOfCGFloats:&pointCopy count:2 forKey:key];
 }
 
-- (void)encodeCGSize:(CGSize)a3 forKey:(id)a4
+- (void)encodeCGSize:(CGSize)size forKey:(id)key
 {
   v5 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  [(UINibEncoder *)self encodeArrayOfCGFloats:&v4 count:2 forKey:a4];
+  sizeCopy = size;
+  [(UINibEncoder *)self encodeArrayOfCGFloats:&sizeCopy count:2 forKey:key];
 }
 
-- (void)encodeCGRect:(CGRect)a3 forKey:(id)a4
+- (void)encodeCGRect:(CGRect)rect forKey:(id)key
 {
   v5 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  [(UINibEncoder *)self encodeArrayOfCGFloats:&v4 count:4 forKey:a4];
+  rectCopy = rect;
+  [(UINibEncoder *)self encodeArrayOfCGFloats:&rectCopy count:4 forKey:key];
 }
 
-- (void)encodeCGAffineTransform:(CGAffineTransform *)a3 forKey:(id)a4
+- (void)encodeCGAffineTransform:(CGAffineTransform *)transform forKey:(id)key
 {
   v6 = *MEMORY[0x1E69E9840];
-  v4 = *&a3->c;
-  v5[0] = *&a3->a;
+  v4 = *&transform->c;
+  v5[0] = *&transform->a;
   v5[1] = v4;
-  v5[2] = *&a3->tx;
-  [(UINibEncoder *)self encodeArrayOfCGFloats:v5 count:6 forKey:a4];
+  v5[2] = *&transform->tx;
+  [(UINibEncoder *)self encodeArrayOfCGFloats:v5 count:6 forKey:key];
 }
 
-- (void)encodeUIEdgeInsets:(UIEdgeInsets)a3 forKey:(id)a4
+- (void)encodeUIEdgeInsets:(UIEdgeInsets)insets forKey:(id)key
 {
   v5 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  [(UINibEncoder *)self encodeArrayOfCGFloats:&v4 count:4 forKey:a4];
+  insetsCopy = insets;
+  [(UINibEncoder *)self encodeArrayOfCGFloats:&insetsCopy count:4 forKey:key];
 }
 
 - (id)nextGenericKey
@@ -711,73 +711,73 @@ LABEL_9:
   return [v2 stringWithFormat:@"$%ld", nextAnonymousKey];
 }
 
-- (void)encodeObject:(id)a3
+- (void)encodeObject:(id)object
 {
-  v5 = [(UINibEncoder *)self nextGenericKey];
+  nextGenericKey = [(UINibEncoder *)self nextGenericKey];
 
-  [(UINibEncoder *)self encodeObject:a3 forKey:v5];
+  [(UINibEncoder *)self encodeObject:object forKey:nextGenericKey];
 }
 
-- (void)encodeRootObject:(id)a3
+- (void)encodeRootObject:(id)object
 {
-  v5 = [(UINibEncoder *)self nextGenericKey];
+  nextGenericKey = [(UINibEncoder *)self nextGenericKey];
 
-  [(UINibEncoder *)self encodeObject:a3 forKey:v5];
+  [(UINibEncoder *)self encodeObject:object forKey:nextGenericKey];
 }
 
-- (void)encodeBycopyObject:(id)a3
+- (void)encodeBycopyObject:(id)object
 {
-  v5 = [(UINibEncoder *)self nextGenericKey];
+  nextGenericKey = [(UINibEncoder *)self nextGenericKey];
 
-  [(UINibEncoder *)self encodeObject:a3 forKey:v5];
+  [(UINibEncoder *)self encodeObject:object forKey:nextGenericKey];
 }
 
-- (void)encodeByrefObject:(id)a3
+- (void)encodeByrefObject:(id)object
 {
-  v5 = [(UINibEncoder *)self nextGenericKey];
+  nextGenericKey = [(UINibEncoder *)self nextGenericKey];
 
-  [(UINibEncoder *)self encodeObject:a3 forKey:v5];
+  [(UINibEncoder *)self encodeObject:object forKey:nextGenericKey];
 }
 
-- (void)encodeConditionalObject:(id)a3
+- (void)encodeConditionalObject:(id)object
 {
-  v5 = [(UINibEncoder *)self nextGenericKey];
+  nextGenericKey = [(UINibEncoder *)self nextGenericKey];
 
-  [(UINibEncoder *)self encodeConditionalObject:a3 forKey:v5];
+  [(UINibEncoder *)self encodeConditionalObject:object forKey:nextGenericKey];
 }
 
-- (void)encodeValuesOfObjCTypes:(const char *)a3
+- (void)encodeValuesOfObjCTypes:(const char *)types
 {
-  v5 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
 
-  [v5 handleFailureInMethod:a2 object:self file:@"UINibEncoder.m" lineNumber:512 description:&stru_1F01AD578];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"UINibEncoder.m" lineNumber:512 description:&stru_1F01AD578];
 }
 
-- (void)encodeArrayOfObjCType:(const char *)a3 count:(unint64_t)a4 at:(const void *)a5
+- (void)encodeArrayOfObjCType:(const char *)type count:(unint64_t)count at:(const void *)at
 {
-  v7 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
 
-  [v7 handleFailureInMethod:a2 object:self file:@"UINibEncoder.m" lineNumber:516 description:&stru_1F01AD578];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"UINibEncoder.m" lineNumber:516 description:&stru_1F01AD578];
 }
 
-- (void)encodeBytes:(const void *)a3 length:(unint64_t)a4
+- (void)encodeBytes:(const void *)bytes length:(unint64_t)length
 {
-  v7 = [(UINibEncoder *)self nextGenericKey];
+  nextGenericKey = [(UINibEncoder *)self nextGenericKey];
 
-  [(UINibEncoder *)self encodeBytes:a3 length:a4 forKey:v7];
+  [(UINibEncoder *)self encodeBytes:bytes length:length forKey:nextGenericKey];
 }
 
-- (void)encodeValueOfObjCType:(const char *)a3 at:(const void *)a4
+- (void)encodeValueOfObjCType:(const char *)type at:(const void *)at
 {
-  if (strlen(a3) != 1)
+  if (strlen(type) != 1)
   {
     [UINibEncoder encodeValueOfObjCType:at:];
   }
 
-  v7 = *a3;
+  v7 = *type;
   if (v7 <= 0x63)
   {
-    if (*a3 > 0x3Fu)
+    if (*type > 0x3Fu)
     {
       if (v7 != 64)
       {
@@ -786,25 +786,25 @@ LABEL_9:
           goto LABEL_37;
         }
 
-        v10 = *a4;
-        v11 = [(UINibEncoder *)self nextGenericKey];
+        v10 = *at;
+        nextGenericKey = [(UINibEncoder *)self nextGenericKey];
 
-        [(UINibEncoder *)self encodeBool:v10 forKey:v11];
+        [(UINibEncoder *)self encodeBool:v10 forKey:nextGenericKey];
         return;
       }
 
-      v9 = *a4;
+      v9 = *at;
     }
 
     else
     {
       if (v7 == 42)
       {
-        v13 = *a4;
+        v13 = *at;
         v14 = strlen(v13);
-        v15 = [(UINibEncoder *)self nextGenericKey];
+        nextGenericKey2 = [(UINibEncoder *)self nextGenericKey];
 
-        [(UINibEncoder *)self encodeBytes:v13 length:v14 + 1 forKey:v15];
+        [(UINibEncoder *)self encodeBytes:v13 length:v14 + 1 forKey:nextGenericKey2];
         return;
       }
 
@@ -813,31 +813,31 @@ LABEL_9:
         goto LABEL_37;
       }
 
-      v9 = NSStringFromSelector(*a4);
+      v9 = NSStringFromSelector(*at);
     }
 
-    v16 = [(UINibEncoder *)self nextGenericKey];
+    nextGenericKey3 = [(UINibEncoder *)self nextGenericKey];
 
-    [(UINibEncoder *)self encodeObject:v9 forKey:v16];
+    [(UINibEncoder *)self encodeObject:v9 forKey:nextGenericKey3];
     return;
   }
 
-  if (*a3 > 0x68u)
+  if (*type > 0x68u)
   {
     switch(v7)
     {
       case 'i':
-        v8 = *a4;
+        v8 = *at;
         goto LABEL_33;
       case 'q':
-        v8 = *a4;
+        v8 = *at;
         goto LABEL_33;
       case 's':
-        v8 = *a4;
+        v8 = *at;
 LABEL_33:
-        v18 = [(UINibEncoder *)self nextGenericKey];
+        nextGenericKey4 = [(UINibEncoder *)self nextGenericKey];
 
-        [(UINibEncoder *)self encodeInteger:v8 forKey:v18];
+        [(UINibEncoder *)self encodeInteger:v8 forKey:nextGenericKey4];
         return;
     }
 
@@ -847,7 +847,7 @@ LABEL_37:
 
   if (v7 == 100)
   {
-    v12 = *a4;
+    v12 = *at;
   }
 
   else
@@ -857,12 +857,12 @@ LABEL_37:
       goto LABEL_37;
     }
 
-    v12 = *a4;
+    v12 = *at;
   }
 
-  v17 = [(UINibEncoder *)self nextGenericKey];
+  nextGenericKey5 = [(UINibEncoder *)self nextGenericKey];
 
-  [(UINibEncoder *)self encodeDouble:v17 forKey:v12];
+  [(UINibEncoder *)self encodeDouble:nextGenericKey5 forKey:v12];
 }
 
 - (uint64_t)encodeObject:(uint64_t)a1 forKey:(uint64_t)a2 .cold.1(uint64_t a1, uint64_t a2)

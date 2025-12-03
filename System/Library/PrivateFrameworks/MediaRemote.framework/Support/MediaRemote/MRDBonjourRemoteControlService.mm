@@ -1,34 +1,34 @@
 @interface MRDBonjourRemoteControlService
-+ (id)_netServiceTXTRecordDataWithDeviceInfo:(id)a3;
-- (MRDBonjourRemoteControlService)initWithNetServiceType:(id)a3;
++ (id)_netServiceTXTRecordDataWithDeviceInfo:(id)info;
+- (MRDBonjourRemoteControlService)initWithNetServiceType:(id)type;
 - (MRDBonjourRemoteControlServiceDelegate)delegate;
 - (NSString)description;
-- (void)_handleDeviceInfoChangedNotification:(id)a3;
-- (void)_handleRestrictionChangedNotification:(id)a3;
-- (void)_initializeBonjourServiceWithDeviceInfo:(id)a3;
+- (void)_handleDeviceInfoChangedNotification:(id)notification;
+- (void)_handleRestrictionChangedNotification:(id)notification;
+- (void)_initializeBonjourServiceWithDeviceInfo:(id)info;
 - (void)_txtDataChanged;
-- (void)_txtDataChangedWithDeviceInfo:(id)a3;
-- (void)_txtDataChangedWithUserInfo:(id)a3;
+- (void)_txtDataChangedWithDeviceInfo:(id)info;
+- (void)_txtDataChangedWithUserInfo:(id)info;
 - (void)dealloc;
-- (void)netService:(id)a3 didAcceptConnectionWithInputStream:(id)a4 outputStream:(id)a5;
-- (void)netService:(id)a3 didNotPublish:(id)a4;
-- (void)netServiceDidPublish:(id)a3;
+- (void)netService:(id)service didAcceptConnectionWithInputStream:(id)stream outputStream:(id)outputStream;
+- (void)netService:(id)service didNotPublish:(id)publish;
+- (void)netServiceDidPublish:(id)publish;
 - (void)start;
 - (void)stop;
 @end
 
 @implementation MRDBonjourRemoteControlService
 
-- (MRDBonjourRemoteControlService)initWithNetServiceType:(id)a3
+- (MRDBonjourRemoteControlService)initWithNetServiceType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   v19.receiver = self;
   v19.super_class = MRDBonjourRemoteControlService;
   v5 = [(MRDBonjourRemoteControlService *)&v19 init];
   if (v5)
   {
     objc_initWeak(&location, v5);
-    v6 = [v4 copy];
+    v6 = [typeCopy copy];
     netServiceType = v5->_netServiceType;
     v5->_netServiceType = v6;
 
@@ -123,23 +123,23 @@
   self->_started = 0;
 }
 
-- (void)netService:(id)a3 didAcceptConnectionWithInputStream:(id)a4 outputStream:(id)a5
+- (void)netService:(id)service didAcceptConnectionWithInputStream:(id)stream outputStream:(id)outputStream
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  serviceCopy = service;
+  streamCopy = stream;
+  outputStreamCopy = outputStream;
   v11 = _MRLogForCategory();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     netServiceType = self->_netServiceType;
     v17 = 138544130;
-    v18 = v8;
+    v18 = serviceCopy;
     v19 = 2114;
     v20 = netServiceType;
     v21 = 2114;
-    v22 = v9;
+    v22 = streamCopy;
     v23 = 2114;
-    v24 = v10;
+    v24 = outputStreamCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "[MRDRemoteControlNetworkService] Did accept connection with service: %{public}@ using type: %{public}@ input: %{public}@ output: %{public}@", &v17, 0x2Au);
   }
 
@@ -148,38 +148,38 @@
 
   if (v14)
   {
-    v15 = [[MRStreamTransportConnection alloc] initWithInputStream:v9 outputStream:v10 dataSource:0];
+    v15 = [[MRStreamTransportConnection alloc] initWithInputStream:streamCopy outputStream:outputStreamCopy dataSource:0];
     v16 = objc_loadWeakRetained(&self->_delegate);
     [v16 bonjourRemoteControlService:self didAcceptConnection:v15];
   }
 }
 
-- (void)netServiceDidPublish:(id)a3
+- (void)netServiceDidPublish:(id)publish
 {
-  v4 = a3;
+  publishCopy = publish;
   v5 = _MRLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     netServiceType = self->_netServiceType;
     v7 = 138543618;
-    v8 = v4;
+    v8 = publishCopy;
     v9 = 2114;
     v10 = netServiceType;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[MRDRemoteControlNetworkService] Remote server advertisement success with service: %{public}@ using type: %{public}@", &v7, 0x16u);
   }
 }
 
-- (void)netService:(id)a3 didNotPublish:(id)a4
+- (void)netService:(id)service didNotPublish:(id)publish
 {
-  v6 = a3;
-  v7 = a4;
+  serviceCopy = service;
+  publishCopy = publish;
   v8 = _MRLogForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v15 = v6;
+    v15 = serviceCopy;
     v16 = 2114;
-    v17 = v7;
+    v17 = publishCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "[MRDRemoteControlNetworkService] Remote server advertisement failed with service: %{public}@ error: %{public}@", buf, 0x16u);
   }
 
@@ -207,9 +207,9 @@
   [MRDeviceInfoRequest deviceInfoForOrigin:v12 queue:&_dispatch_main_q completion:v13];
 }
 
-- (void)_handleDeviceInfoChangedNotification:(id)a3
+- (void)_handleDeviceInfoChangedNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = _MRLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -217,17 +217,17 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[MRDRemoteControlNetworkService] Updating txtData because deviceInfo changed...", v9, 2u);
   }
 
-  v6 = [v4 userInfo];
+  userInfo = [notificationCopy userInfo];
   v7 = MRGetOriginFromUserInfo();
 
   if ([v7 isLocal])
   {
-    v8 = [v4 userInfo];
-    [(MRDBonjourRemoteControlService *)self _txtDataChangedWithUserInfo:v8];
+    userInfo2 = [notificationCopy userInfo];
+    [(MRDBonjourRemoteControlService *)self _txtDataChangedWithUserInfo:userInfo2];
   }
 }
 
-- (void)_handleRestrictionChangedNotification:(id)a3
+- (void)_handleRestrictionChangedNotification:(id)notification
 {
   v4 = _MRLogForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -239,7 +239,7 @@
   [(MRDBonjourRemoteControlService *)self _txtDataChanged];
 }
 
-- (void)_txtDataChangedWithUserInfo:(id)a3
+- (void)_txtDataChangedWithUserInfo:(id)info
 {
   v4 = MRGetDeviceInfoFromUserInfo();
   [(MRDBonjourRemoteControlService *)self _txtDataChangedWithDeviceInfo:v4];
@@ -256,36 +256,36 @@
   [MRDeviceInfoRequest deviceInfoForOrigin:v3 queue:&_dispatch_main_q completion:v4];
 }
 
-- (void)_txtDataChangedWithDeviceInfo:(id)a3
+- (void)_txtDataChangedWithDeviceInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v5 = _MRLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138543362;
-    v9 = v4;
+    v9 = infoCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[MRDRemoteControlNetworkService] Updating txtData: %{public}@", &v8, 0xCu);
   }
 
-  if (v4)
+  if (infoCopy)
   {
-    v6 = [(MRDBonjourRemoteControlService *)self lastKnownBluetoothAddress];
+    lastKnownBluetoothAddress = [(MRDBonjourRemoteControlService *)self lastKnownBluetoothAddress];
     MRPairedDeviceSetBluetoothAddress();
 
-    v7 = [objc_opt_class() _netServiceTXTRecordDataWithDeviceInfo:v4];
+    v7 = [objc_opt_class() _netServiceTXTRecordDataWithDeviceInfo:infoCopy];
     [(NSNetService *)self->_networkService setTXTRecordData:v7];
   }
 }
 
-+ (id)_netServiceTXTRecordDataWithDeviceInfo:(id)a3
++ (id)_netServiceTXTRecordDataWithDeviceInfo:(id)info
 {
   v29[0] = kMRExternalDeviceUniqueIdentifierTXTRecordKey;
-  v3 = a3;
-  v4 = [v3 identifier];
-  v5 = v4;
-  if (v4)
+  infoCopy = info;
+  identifier = [infoCopy identifier];
+  v5 = identifier;
+  if (identifier)
   {
-    v6 = v4;
+    v6 = identifier;
   }
 
   else
@@ -295,11 +295,11 @@
 
   v30[0] = v6;
   v29[1] = kMRExternalDeviceNameTXTRecordKey;
-  v7 = [v3 name];
-  v8 = v7;
-  if (v7)
+  name = [infoCopy name];
+  v8 = name;
+  if (name)
   {
-    v9 = v7;
+    v9 = name;
   }
 
   else
@@ -309,11 +309,11 @@
 
   v30[1] = v9;
   v29[2] = kMRExternalDeviceModelNameTXTRecordKey;
-  v10 = [v3 localizedModelName];
-  v11 = v10;
-  if (v10)
+  localizedModelName = [infoCopy localizedModelName];
+  v11 = localizedModelName;
+  if (localizedModelName)
   {
-    v12 = v10;
+    v12 = localizedModelName;
   }
 
   else
@@ -323,11 +323,11 @@
 
   v30[2] = v12;
   v29[3] = kMRExternalDeviceSystemBuildVersionTXTRecordKey;
-  v13 = [v3 buildVersion];
-  v14 = v13;
-  if (v13)
+  buildVersion = [infoCopy buildVersion];
+  v14 = buildVersion;
+  if (buildVersion)
   {
-    v15 = v13;
+    v15 = buildVersion;
   }
 
   else
@@ -337,20 +337,20 @@
 
   v30[3] = v15;
   v29[4] = kMRExternalDeviceAllowPairingTXTRecordKey;
-  v16 = [v3 isPairingAllowed];
+  isPairingAllowed = [infoCopy isPairingAllowed];
   v17 = @"NO";
-  if (v16)
+  if (isPairingAllowed)
   {
     v17 = @"YES";
   }
 
   v30[4] = v17;
   v29[5] = kMRExternalDeviceBluetoothAddressTXTRecordKey;
-  v18 = [v3 bluetoothAddress];
-  v19 = v18;
-  if (v18)
+  bluetoothAddress = [infoCopy bluetoothAddress];
+  v19 = bluetoothAddress;
+  if (bluetoothAddress)
   {
-    v20 = v18;
+    v20 = bluetoothAddress;
   }
 
   else
@@ -360,11 +360,11 @@
 
   v30[5] = v20;
   v29[6] = kMRExternalDeviceLocalAirPlayReceiverPairingIdentityKey;
-  v21 = [v3 deviceUID];
-  v22 = v21;
-  if (v21)
+  deviceUID = [infoCopy deviceUID];
+  v22 = deviceUID;
+  if (deviceUID)
   {
-    v23 = v21;
+    v23 = deviceUID;
   }
 
   else
@@ -374,11 +374,11 @@
 
   v30[6] = v23;
   v29[7] = kMRExternalManagedConfigDeviceIDKey;
-  v24 = [v3 managedConfigurationDeviceIdentifier];
+  managedConfigurationDeviceIdentifier = [infoCopy managedConfigurationDeviceIdentifier];
 
-  if (v24)
+  if (managedConfigurationDeviceIdentifier)
   {
-    v25 = v24;
+    v25 = managedConfigurationDeviceIdentifier;
   }
 
   else
@@ -394,16 +394,16 @@
   return v27;
 }
 
-- (void)_initializeBonjourServiceWithDeviceInfo:(id)a3
+- (void)_initializeBonjourServiceWithDeviceInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   if (self->_networkService)
   {
     v5 = _MRLogForCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v16 = 138543362;
-      v17 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[MRDRemoteControlNetworkService] Stopping bonjour service %{public}@", &v16, 0xCu);
     }
 
@@ -417,7 +417,7 @@
   {
     netServiceType = self->_netServiceType;
     v16 = 138543362;
-    v17 = netServiceType;
+    selfCopy = netServiceType;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "[MRDRemoteControlNetworkService] Initializing bonjour service for type %{public}@", &v16, 0xCu);
   }
 
@@ -426,27 +426,27 @@
   self->_networkService = v9;
 
   [(NSNetService *)self->_networkService setDelegate:self];
-  v11 = [objc_opt_class() _netServiceTXTRecordDataWithDeviceInfo:v4];
+  v11 = [objc_opt_class() _netServiceTXTRecordDataWithDeviceInfo:infoCopy];
   [(NSNetService *)self->_networkService setTXTRecordData:v11];
 
   v12 = +[MRUserSettings currentSettings];
-  v13 = [v12 usePeerToPeerExternalDeviceConnections];
+  usePeerToPeerExternalDeviceConnections = [v12 usePeerToPeerExternalDeviceConnections];
 
   v14 = _MRLogForCategory();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     v15 = "NO";
-    if (v13)
+    if (usePeerToPeerExternalDeviceConnections)
     {
       v15 = "YES";
     }
 
     v16 = 136315138;
-    v17 = v15;
+    selfCopy = v15;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Configuring remote control network service with includesPeerToPeer = %s", &v16, 0xCu);
   }
 
-  [(NSNetService *)self->_networkService setIncludesPeerToPeer:v13];
+  [(NSNetService *)self->_networkService setIncludesPeerToPeer:usePeerToPeerExternalDeviceConnections];
   if (self->_started)
   {
     [(MRDBonjourRemoteControlService *)self start];

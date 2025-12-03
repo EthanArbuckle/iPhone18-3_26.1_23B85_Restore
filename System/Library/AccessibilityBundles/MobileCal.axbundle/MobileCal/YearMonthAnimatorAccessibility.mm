@@ -1,23 +1,23 @@
 @interface YearMonthAnimatorAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (void)animateTransition:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (void)animateTransition:(id)transition;
 @end
 
 @implementation YearMonthAnimatorAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"YearMonthAnimator" hasInstanceMethod:@"animateTransition:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"YearMonthAnimator" hasInstanceMethod:@"transitionDuration:" withFullSignature:{"d", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"YearMonthAnimator" hasInstanceMethod:@"animateTransition:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"YearMonthAnimator" hasInstanceMethod:@"transitionDuration:" withFullSignature:{"d", "@", 0}];
 }
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
-  v4 = a3;
+  transitionCopy = transition;
   v6.receiver = self;
   v6.super_class = YearMonthAnimatorAccessibility;
-  [(YearMonthAnimatorAccessibility *)&v6 animateTransition:v4];
+  [(YearMonthAnimatorAccessibility *)&v6 animateTransition:transitionCopy];
   v5[0] = 0;
   v5[1] = v5;
   v5[2] = 0x2020000000;

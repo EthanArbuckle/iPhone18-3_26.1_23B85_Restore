@@ -1,33 +1,33 @@
 @interface TNSheetSelection
-+ (id)selectionForSheet:(id)a3 paginated:(BOOL)a4;
-- (BOOL)isEqual:(id)a3;
-- (TNSheetSelection)initWithSheet:(id)a3 paginated:(BOOL)a4;
++ (id)selectionForSheet:(id)sheet paginated:(BOOL)paginated;
+- (BOOL)isEqual:(id)equal;
+- (TNSheetSelection)initWithSheet:(id)sheet paginated:(BOOL)paginated;
 - (id)UUIDDescription;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (void)dealloc;
 @end
 
 @implementation TNSheetSelection
 
-+ (id)selectionForSheet:(id)a3 paginated:(BOOL)a4
++ (id)selectionForSheet:(id)sheet paginated:(BOOL)paginated
 {
-  v4 = a4;
+  paginatedCopy = paginated;
   v6 = [TNSheetSelection alloc];
-  v8 = objc_msgSend_initWithSheet_paginated_(v6, v7, a3, v4);
+  v8 = objc_msgSend_initWithSheet_paginated_(v6, v7, sheet, paginatedCopy);
 
   return v8;
 }
 
-- (TNSheetSelection)initWithSheet:(id)a3 paginated:(BOOL)a4
+- (TNSheetSelection)initWithSheet:(id)sheet paginated:(BOOL)paginated
 {
   v8.receiver = self;
   v8.super_class = TNSheetSelection;
   v6 = [(TNSheetSelection *)&v8 init];
   if (v6)
   {
-    v6->mSheet = a3;
-    v6->mIsPaginated = a4;
+    v6->mSheet = sheet;
+    v6->mIsPaginated = paginated;
   }
 
   return v6;
@@ -40,7 +40,7 @@
   [(TNSheetSelection *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   v7 = objc_msgSend_sheet(self, v5, v6);
@@ -49,9 +49,9 @@
   return objc_msgSend_initWithSheet_paginated_(v4, v10, v7, isPaginated);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     LOBYTE(isEqual) = 1;
   }
@@ -62,9 +62,9 @@
     if (objc_opt_isKindOfClass())
     {
       v7 = objc_msgSend_sheet(self, v5, v6);
-      v10 = objc_msgSend_sheet(a3, v8, v9);
+      v10 = objc_msgSend_sheet(equal, v8, v9);
       isPaginated = objc_msgSend_isPaginated(self, v11, v12);
-      v17 = objc_msgSend_isPaginated(a3, v14, v15);
+      v17 = objc_msgSend_isPaginated(equal, v14, v15);
       if (v7 == v10 || (isEqual = objc_msgSend_isEqual_(v7, v16, v10)) != 0)
       {
         LOBYTE(isEqual) = isPaginated ^ v17 ^ 1;

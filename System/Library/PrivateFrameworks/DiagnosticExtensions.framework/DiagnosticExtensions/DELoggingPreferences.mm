@@ -1,31 +1,31 @@
 @interface DELoggingPreferences
-+ (id)_subsystemPayloadForURL:(id)a3 error:(id *)a4;
-+ (id)combinedLoggingPayloadForURLs:(id)a3 error:(id *)a4;
-+ (id)loggingPayloadForURL:(id)a3 error:(id *)a4;
++ (id)_subsystemPayloadForURL:(id)l error:(id *)error;
++ (id)combinedLoggingPayloadForURLs:(id)ls error:(id *)error;
++ (id)loggingPayloadForURL:(id)l error:(id *)error;
 + (id)managedLoggingProfilesDirectory;
-+ (id)managedLoggingProfilesDirectoryForSessionIdentifier:(id)a3 createIfNeeded:(BOOL)a4 error:(id *)a5;
-+ (id)removeLoggingProfileForSessionIdentifier:(id)a3 extensionIdentifier:(id)a4 error:(id *)a5;
++ (id)managedLoggingProfilesDirectoryForSessionIdentifier:(id)identifier createIfNeeded:(BOOL)needed error:(id *)error;
++ (id)removeLoggingProfileForSessionIdentifier:(id)identifier extensionIdentifier:(id)extensionIdentifier error:(id *)error;
 + (unint64_t)numberOfManagedLoggingPreferences;
-+ (void)installLoggingProfile:(id)a3 sessionIdentifier:(id)a4 extensionIdentifier:(id)a5 error:(id *)a6;
++ (void)installLoggingProfile:(id)profile sessionIdentifier:(id)identifier extensionIdentifier:(id)extensionIdentifier error:(id *)error;
 @end
 
 @implementation DELoggingPreferences
 
-+ (void)installLoggingProfile:(id)a3 sessionIdentifier:(id)a4 extensionIdentifier:(id)a5 error:(id *)a6
++ (void)installLoggingProfile:(id)profile sessionIdentifier:(id)identifier extensionIdentifier:(id)extensionIdentifier error:(id *)error
 {
   v20 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a5;
-  v12 = [a1 managedLoggingProfilesDirectoryForSessionIdentifier:a4 createIfNeeded:1 error:a6];
-  v13 = [v12 URLByAppendingPathComponent:v11];
+  profileCopy = profile;
+  extensionIdentifierCopy = extensionIdentifier;
+  v12 = [self managedLoggingProfilesDirectoryForSessionIdentifier:identifier createIfNeeded:1 error:error];
+  v13 = [v12 URLByAppendingPathComponent:extensionIdentifierCopy];
 
   v14 = [v13 URLByAppendingPathExtension:@"plist"];
 
-  [v10 writeToURL:v14 error:a6];
-  if (!*a6)
+  [profileCopy writeToURL:v14 error:error];
+  if (!*error)
   {
     OSLogInstallProfilePayload();
-    if (*a6)
+    if (*error)
     {
       v15 = +[DELogging fwHandle];
       if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
@@ -35,26 +35,26 @@
         _os_log_impl(&dword_248AB3000, v15, OS_LOG_TYPE_INFO, "Failed to install logging preference payload. Deleting [%{public}@]", &v18, 0xCu);
       }
 
-      v16 = [MEMORY[0x277CCAA00] defaultManager];
-      [v16 removeItemAtURL:v14 error:0];
+      defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+      [defaultManager removeItemAtURL:v14 error:0];
     }
   }
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)removeLoggingProfileForSessionIdentifier:(id)a3 extensionIdentifier:(id)a4 error:(id *)a5
++ (id)removeLoggingProfileForSessionIdentifier:(id)identifier extensionIdentifier:(id)extensionIdentifier error:(id *)error
 {
   v29[1] = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = [a1 managedLoggingProfilesDirectoryForSessionIdentifier:a3 createIfNeeded:0 error:0];
-  v10 = [v9 URLByAppendingPathComponent:v8];
+  extensionIdentifierCopy = extensionIdentifier;
+  v9 = [self managedLoggingProfilesDirectoryForSessionIdentifier:identifier createIfNeeded:0 error:0];
+  v10 = [v9 URLByAppendingPathComponent:extensionIdentifierCopy];
 
   v11 = [v10 URLByAppendingPathExtension:@"plist"];
 
-  v12 = [MEMORY[0x277CCAA00] defaultManager];
-  v13 = [v11 path];
-  v14 = [v12 fileExistsAtPath:v13];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  path = [v11 path];
+  v14 = [defaultManager fileExistsAtPath:path];
 
   v15 = 0;
   if (v14)
@@ -63,10 +63,10 @@
     if (v15)
     {
       OSLogRemoveProfilePayload();
-      if (!*a5)
+      if (!*error)
       {
-        v16 = [MEMORY[0x277CCAA00] defaultManager];
-        [v16 removeItemAtURL:v11 error:a5];
+        defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+        [defaultManager2 removeItemAtURL:v11 error:error];
 
         v17 = [DEUtils lsDir:v9];
         v18 = [v17 count];
@@ -81,8 +81,8 @@
             _os_log_impl(&dword_248AB3000, v19, OS_LOG_TYPE_INFO, "Deleting [%{public}@]", &v26, 0xCu);
           }
 
-          v20 = [MEMORY[0x277CCAA00] defaultManager];
-          [v20 removeItemAtURL:v9 error:a5];
+          defaultManager3 = [MEMORY[0x277CCAA00] defaultManager];
+          [defaultManager3 removeItemAtURL:v9 error:error];
         }
       }
 
@@ -95,7 +95,7 @@
       v28 = @"url";
       v29[0] = v11;
       v23 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v29 forKeys:&v28 count:1];
-      *a5 = [v22 errorWithDomain:@"DEExtensionErrorDomain" code:3 userInfo:v23];
+      *error = [v22 errorWithDomain:@"DEExtensionErrorDomain" code:3 userInfo:v23];
     }
   }
 
@@ -104,10 +104,10 @@
   return v15;
 }
 
-+ (id)loggingPayloadForURL:(id)a3 error:(id *)a4
++ (id)loggingPayloadForURL:(id)l error:(id *)error
 {
   v10[1] = *MEMORY[0x277D85DE8];
-  v4 = [a1 _subsystemPayloadForURL:a3 error:a4];
+  v4 = [self _subsystemPayloadForURL:l error:error];
   v5 = v4;
   if (v4)
   {
@@ -126,18 +126,18 @@
   return v6;
 }
 
-+ (id)combinedLoggingPayloadForURLs:(id)a3 error:(id *)a4
++ (id)combinedLoggingPayloadForURLs:(id)ls error:(id *)error
 {
-  v26 = a4;
+  errorCopy = error;
   v41 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v27 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v4, "count")}];
-  v29 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(v4, "count")}];
+  lsCopy = ls;
+  v27 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(lsCopy, "count")}];
+  v29 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(lsCopy, "count")}];
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  obj = v4;
+  obj = lsCopy;
   v5 = [obj countByEnumeratingWithState:&v32 objects:v40 count:16];
   if (v5)
   {
@@ -154,16 +154,16 @@
 
         v9 = *(*(&v32 + 1) + 8 * i);
         v31 = 0;
-        v10 = [a1 _subsystemPayloadForURL:v9 error:{&v31, v26}];
+        v10 = [self _subsystemPayloadForURL:v9 error:{&v31, errorCopy}];
         v11 = v31;
         if (v10)
         {
-          v12 = [v10 allKeys];
-          v13 = [v12 firstObject];
-          v14 = [v10 objectForKeyedSubscript:v13];
-          v15 = [v10 allKeys];
-          v16 = [v15 firstObject];
-          [v29 setObject:v14 forKeyedSubscript:v16];
+          allKeys = [v10 allKeys];
+          firstObject = [allKeys firstObject];
+          v14 = [v10 objectForKeyedSubscript:firstObject];
+          allKeys2 = [v10 allKeys];
+          firstObject2 = [allKeys2 firstObject];
+          [v29 setObject:v14 forKeyedSubscript:firstObject2];
         }
 
         else
@@ -178,18 +178,18 @@
     while (v6);
   }
 
-  if (v26 && [v27 count])
+  if (errorCopy && [v27 count])
   {
     v17 = MEMORY[0x277CCA9B8];
     v38 = @"errors";
     v18 = [MEMORY[0x277CBEA60] arrayWithArray:v27];
     v39 = v18;
     v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v39 forKeys:&v38 count:1];
-    *v26 = [v17 errorWithDomain:@"DEExtensionErrorDomain" code:1 userInfo:v19];
+    *errorCopy = [v17 errorWithDomain:@"DEExtensionErrorDomain" code:1 userInfo:v19];
   }
 
-  v20 = [v29 allKeys];
-  v21 = [v20 count];
+  allKeys3 = [v29 allKeys];
+  v21 = [allKeys3 count];
 
   if (v21)
   {
@@ -209,32 +209,32 @@
   return v23;
 }
 
-+ (id)_subsystemPayloadForURL:(id)a3 error:(id *)a4
++ (id)_subsystemPayloadForURL:(id)l error:(id *)error
 {
   v20[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [objc_alloc(MEMORY[0x277CBEAC0]) initWithContentsOfURL:v5];
+  lCopy = l;
+  v6 = [objc_alloc(MEMORY[0x277CBEAC0]) initWithContentsOfURL:lCopy];
   if (v6)
   {
-    v7 = [v5 URLByDeletingPathExtension];
-    v8 = [v7 lastPathComponent];
+    uRLByDeletingPathExtension = [lCopy URLByDeletingPathExtension];
+    lastPathComponent = [uRLByDeletingPathExtension lastPathComponent];
 
-    if (v8)
+    if (lastPathComponent)
     {
-      v15 = v8;
+      v15 = lastPathComponent;
       v16 = v6;
       v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v16 forKeys:&v15 count:1];
     }
 
     else
     {
-      if (a4)
+      if (error)
       {
         v11 = MEMORY[0x277CCA9B8];
         v17 = @"url";
-        v18 = v5;
+        v18 = lCopy;
         v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v18 forKeys:&v17 count:1];
-        *a4 = [v11 errorWithDomain:@"DEExtensionErrorDomain" code:4 userInfo:v12];
+        *error = [v11 errorWithDomain:@"DEExtensionErrorDomain" code:4 userInfo:v12];
       }
 
       v9 = 0;
@@ -243,14 +243,14 @@
     goto LABEL_9;
   }
 
-  if (a4)
+  if (error)
   {
     v10 = MEMORY[0x277CCA9B8];
     v19 = @"url";
-    v20[0] = v5;
-    v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v20 forKeys:&v19 count:1];
-    [v10 errorWithDomain:@"DEExtensionErrorDomain" code:2 userInfo:v8];
-    *a4 = v9 = 0;
+    v20[0] = lCopy;
+    lastPathComponent = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v20 forKeys:&v19 count:1];
+    [v10 errorWithDomain:@"DEExtensionErrorDomain" code:2 userInfo:lastPathComponent];
+    *error = v9 = 0;
 LABEL_9:
 
     goto LABEL_10;
@@ -267,8 +267,8 @@ LABEL_10:
 + (unint64_t)numberOfManagedLoggingPreferences
 {
   v3 = objc_autoreleasePoolPush();
-  v4 = [a1 managedLoggingProfilesDirectory];
-  v5 = [DEUtils findAllItems:v4 includeDirs:0];
+  managedLoggingProfilesDirectory = [self managedLoggingProfilesDirectory];
+  v5 = [DEUtils findAllItems:managedLoggingProfilesDirectory includeDirs:0];
   v6 = [v5 count];
 
   objc_autoreleasePoolPop(v3);
@@ -301,23 +301,23 @@ LABEL_10:
   return v4;
 }
 
-+ (id)managedLoggingProfilesDirectoryForSessionIdentifier:(id)a3 createIfNeeded:(BOOL)a4 error:(id *)a5
++ (id)managedLoggingProfilesDirectoryForSessionIdentifier:(id)identifier createIfNeeded:(BOOL)needed error:(id *)error
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = [a1 managedLoggingProfilesDirectory];
-  v10 = [v9 URLByAppendingPathComponent:v8];
+  neededCopy = needed;
+  identifierCopy = identifier;
+  managedLoggingProfilesDirectory = [self managedLoggingProfilesDirectory];
+  v10 = [managedLoggingProfilesDirectory URLByAppendingPathComponent:identifierCopy];
 
-  if (v6)
+  if (neededCopy)
   {
-    v11 = [MEMORY[0x277CCAA00] defaultManager];
-    v12 = [v10 path];
-    v13 = [v11 fileExistsAtPath:v12];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    path = [v10 path];
+    v13 = [defaultManager fileExistsAtPath:path];
 
     if ((v13 & 1) == 0)
     {
-      v14 = [MEMORY[0x277CCAA00] defaultManager];
-      [v14 createDirectoryAtURL:v10 withIntermediateDirectories:1 attributes:0 error:a5];
+      defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+      [defaultManager2 createDirectoryAtURL:v10 withIntermediateDirectories:1 attributes:0 error:error];
     }
   }
 

@@ -1,5 +1,5 @@
 @interface FBAsynchronousShutdownTask
-+ (void)startTaskWithName:(id)a3 timeout:(double)a4 workItem:(id)a5;
++ (void)startTaskWithName:(id)name timeout:(double)timeout workItem:(id)item;
 + (void)waitForTasks;
 @end
 
@@ -8,7 +8,7 @@
 + (void)waitForTasks
 {
   v7 = *MEMORY[0x1E69E9840];
-  v3 = [a1 componentsJoinedByString:{@", "}];
+  v3 = [self componentsJoinedByString:{@", "}];
   v5 = 138543362;
   v6 = v3;
   _os_log_error_impl(&dword_1A89DD000, a2, OS_LOG_TYPE_ERROR, "Shutdown tasks timed out: %{public}@. Shutting down now.", &v5, 0xCu);
@@ -16,22 +16,22 @@
   v4 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)startTaskWithName:(id)a3 timeout:(double)a4 workItem:(id)a5
++ (void)startTaskWithName:(id)name timeout:(double)timeout workItem:(id)item
 {
   v45 = *MEMORY[0x1E69E9840];
-  v7 = a5;
-  v8 = [a3 copy];
+  itemCopy = item;
+  v8 = [name copy];
   v9 = objc_alloc_init(FBAsynchronousShutdownTask);
   objc_storeStrong(&v9->_name, v8);
-  v9->_interval = a4;
+  v9->_interval = timeout;
   v10 = FBLogCommon();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     name = v9->_name;
     *buf = 138543618;
-    v42 = name;
+    nameCopy = name;
     v43 = 2048;
-    v44 = a4;
+    timeoutCopy = timeout;
     _os_log_impl(&dword_1A89DD000, v10, OS_LOG_TYPE_DEFAULT, "Starting shutdown task %{public}@ with %.1fs timeout.", buf, 0x16u);
   }
 
@@ -63,7 +63,7 @@
   v20 = [v17 sentinelWithCompletion:v38];
   v21 = [MEMORY[0x1E696AEC0] stringWithFormat:@"FBSShutdownTask:%@", v8];
   SerialWithQoS = BSDispatchQueueCreateSerialWithQoS();
-  v23 = [MEMORY[0x1E695DF00] date];
+  date = [MEMORY[0x1E695DF00] date];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __65__FBAsynchronousShutdownTask_startTaskWithName_timeout_workItem___block_invoke_10;
@@ -71,15 +71,15 @@
   v32 = SerialWithQoS;
   v33 = v18;
   v34 = v8;
-  v35 = v23;
+  v35 = date;
   v36 = v20;
-  v37 = v7;
+  v37 = itemCopy;
   v24 = v20;
-  v25 = v23;
+  v25 = date;
   v26 = v8;
   v27 = v18;
   v28 = SerialWithQoS;
-  v29 = v7;
+  v29 = itemCopy;
   dispatch_async(v28, block);
 
   v30 = *MEMORY[0x1E69E9840];

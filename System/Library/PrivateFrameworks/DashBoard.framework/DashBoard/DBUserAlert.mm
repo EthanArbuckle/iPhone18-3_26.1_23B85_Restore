@@ -1,41 +1,41 @@
 @interface DBUserAlert
-- (DBUserAlert)initWithAlert:(id)a3 scene:(id)a4 preferredPresentationStyle:(int64_t)a5 safeAreaInsets:(UIEdgeInsets)a6 environmentConfiguration:(id)a7;
+- (DBUserAlert)initWithAlert:(id)alert scene:(id)scene preferredPresentationStyle:(int64_t)style safeAreaInsets:(UIEdgeInsets)insets environmentConfiguration:(id)configuration;
 - (FBScene)scene;
 - (UIEdgeInsets)safeAreaInsets;
 - (id)_alertViewController;
-- (id)presentationViewForRequester:(id)a3;
-- (void)_setupAlertScene:(id)a3;
+- (id)presentationViewForRequester:(id)requester;
+- (void)_setupAlertScene:(id)scene;
 - (void)invalidate;
-- (void)relinquishPresentationForRequester:(id)a3;
-- (void)setSceneFrame:(CGRect)a3 safeAreaInsets:(UIEdgeInsets)a4;
-- (void)setUserInterfaceStyle:(int64_t)a3;
+- (void)relinquishPresentationForRequester:(id)requester;
+- (void)setSceneFrame:(CGRect)frame safeAreaInsets:(UIEdgeInsets)insets;
+- (void)setUserInterfaceStyle:(int64_t)style;
 @end
 
 @implementation DBUserAlert
 
-- (DBUserAlert)initWithAlert:(id)a3 scene:(id)a4 preferredPresentationStyle:(int64_t)a5 safeAreaInsets:(UIEdgeInsets)a6 environmentConfiguration:(id)a7
+- (DBUserAlert)initWithAlert:(id)alert scene:(id)scene preferredPresentationStyle:(int64_t)style safeAreaInsets:(UIEdgeInsets)insets environmentConfiguration:(id)configuration
 {
-  right = a6.right;
-  bottom = a6.bottom;
-  left = a6.left;
-  top = a6.top;
-  v16 = a3;
-  v17 = a4;
-  v18 = a7;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  alertCopy = alert;
+  sceneCopy = scene;
+  configurationCopy = configuration;
   v22.receiver = self;
   v22.super_class = DBUserAlert;
   v19 = [(DBUserAlert *)&v22 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_alert, a3);
-    v20->_preferredPresentationStyle = a5;
-    objc_storeStrong(&v20->_environmentConfiguration, a7);
+    objc_storeStrong(&v19->_alert, alert);
+    v20->_preferredPresentationStyle = style;
+    objc_storeStrong(&v20->_environmentConfiguration, configuration);
     v20->_safeAreaInsets.top = top;
     v20->_safeAreaInsets.left = left;
     v20->_safeAreaInsets.bottom = bottom;
     v20->_safeAreaInsets.right = right;
-    [(DBUserAlert *)v20 _setupAlertScene:v17];
+    [(DBUserAlert *)v20 _setupAlertScene:sceneCopy];
   }
 
   return v20;
@@ -43,43 +43,43 @@
 
 - (FBScene)scene
 {
-  v2 = [(DBUserAlert *)self localSceneController];
-  v3 = [v2 scene];
+  localSceneController = [(DBUserAlert *)self localSceneController];
+  scene = [localSceneController scene];
 
-  return v3;
+  return scene;
 }
 
-- (id)presentationViewForRequester:(id)a3
+- (id)presentationViewForRequester:(id)requester
 {
-  v4 = a3;
-  v5 = [(DBUserAlert *)self localSceneController];
-  v6 = [v5 presentationViewWithIdentifier:v4];
+  requesterCopy = requester;
+  localSceneController = [(DBUserAlert *)self localSceneController];
+  v6 = [localSceneController presentationViewWithIdentifier:requesterCopy];
 
   return v6;
 }
 
-- (void)relinquishPresentationForRequester:(id)a3
+- (void)relinquishPresentationForRequester:(id)requester
 {
-  v4 = a3;
-  v5 = [(DBUserAlert *)self localSceneController];
-  [v5 invalidatePresentationViewForIdentifier:v4];
+  requesterCopy = requester;
+  localSceneController = [(DBUserAlert *)self localSceneController];
+  [localSceneController invalidatePresentationViewForIdentifier:requesterCopy];
 }
 
-- (void)setSceneFrame:(CGRect)a3 safeAreaInsets:(UIEdgeInsets)a4
+- (void)setSceneFrame:(CGRect)frame safeAreaInsets:(UIEdgeInsets)insets
 {
-  right = a4.right;
-  bottom = a4.bottom;
-  left = a4.left;
-  top = a4.top;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v28 = *MEMORY[0x277D85DE8];
-  self->_safeAreaInsets = a4;
-  v13 = [(DBUserAlert *)self requiresSafeAreaWindow];
-  v14 = v13;
-  if (v13)
+  self->_safeAreaInsets = insets;
+  requiresSafeAreaWindow = [(DBUserAlert *)self requiresSafeAreaWindow];
+  v14 = requiresSafeAreaWindow;
+  if (requiresSafeAreaWindow)
   {
     x = x + left;
     y = y + top;
@@ -107,8 +107,8 @@
     _os_log_impl(&dword_248146000, v15, OS_LOG_TYPE_INFO, "updating user alert sceneFrame %@, safeAreaInsets: %@", buf, 0x16u);
   }
 
-  v18 = [(DBUserAlert *)self localSceneController];
-  v19 = [v18 scene];
+  localSceneController = [(DBUserAlert *)self localSceneController];
+  scene = [localSceneController scene];
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __44__DBUserAlert_setSceneFrame_safeAreaInsets___block_invoke;
@@ -117,53 +117,53 @@
   *&v23[5] = y;
   *&v23[6] = width;
   *&v23[7] = height;
-  [v19 updateSettingsWithBlock:v23];
+  [scene updateSettingsWithBlock:v23];
 
-  v20 = [(DBUserAlert *)self window];
-  [v20 setFrame:{x, y, width, height}];
+  window = [(DBUserAlert *)self window];
+  [window setFrame:{x, y, width, height}];
 
   if (!v14)
   {
-    v21 = [(DBUserAlert *)self window];
-    v22 = [v21 rootViewController];
-    [v22 setAdditionalSafeAreaInsets:{top, left, bottom, right}];
+    window2 = [(DBUserAlert *)self window];
+    rootViewController = [window2 rootViewController];
+    [rootViewController setAdditionalSafeAreaInsets:{top, left, bottom, right}];
   }
 }
 
-- (void)setUserInterfaceStyle:(int64_t)a3
+- (void)setUserInterfaceStyle:(int64_t)style
 {
-  v4 = [(DBUserAlert *)self localSceneController];
-  v5 = [v4 scene];
+  localSceneController = [(DBUserAlert *)self localSceneController];
+  scene = [localSceneController scene];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __37__DBUserAlert_setUserInterfaceStyle___block_invoke;
   v6[3] = &__block_descriptor_40_e43_v16__0__UIMutableApplicationSceneSettings_8l;
-  v6[4] = a3;
-  [v5 updateSettingsWithBlock:v6];
+  v6[4] = style;
+  [scene updateSettingsWithBlock:v6];
 }
 
 - (void)invalidate
 {
-  v3 = [(DBUserAlert *)self localSceneController];
-  [v3 invalidate];
+  localSceneController = [(DBUserAlert *)self localSceneController];
+  [localSceneController invalidate];
 
   [(DBUserAlert *)self setWindow:0];
 }
 
-- (void)_setupAlertScene:(id)a3
+- (void)_setupAlertScene:(id)scene
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(DBUserAlert *)self environmentConfiguration];
-  [v5 currentSafeViewAreaFrame];
+  sceneCopy = scene;
+  environmentConfiguration = [(DBUserAlert *)self environmentConfiguration];
+  [environmentConfiguration currentSafeViewAreaFrame];
   v7 = v6;
   v9 = v8;
 
   v10 = *MEMORY[0x277CBF348];
   v11 = *(MEMORY[0x277CBF348] + 8);
-  v12 = [(DBUserAlert *)self requiresSafeAreaWindow];
-  v13 = v12;
-  if (v12)
+  requiresSafeAreaWindow = [(DBUserAlert *)self requiresSafeAreaWindow];
+  v13 = requiresSafeAreaWindow;
+  if (requiresSafeAreaWindow)
   {
     [(DBUserAlert *)self safeAreaInsets];
     v10 = v10 + v14;
@@ -198,30 +198,30 @@
   *&v29[6] = v11;
   *&v29[7] = v7;
   *&v29[8] = v9;
-  [v4 configureParameters:v29];
-  v21 = [[DBLocalSceneController alloc] initWithScene:v4];
+  [sceneCopy configureParameters:v29];
+  v21 = [[DBLocalSceneController alloc] initWithScene:sceneCopy];
   [(DBUserAlert *)self setLocalSceneController:v21];
   v22 = MEMORY[0x277D75DA8];
-  v23 = [(DBLocalSceneController *)v21 clientScene];
-  v24 = [v22 _sceneForFBSScene:v23];
+  clientScene = [(DBLocalSceneController *)v21 clientScene];
+  v24 = [v22 _sceneForFBSScene:clientScene];
 
   v25 = [[_TtC9DashBoard17DBUserAlertWindow alloc] initWithWindowScene:v24 frame:v10, v11, v7, v9];
-  v26 = [(DBUserAlert *)self _alertViewController];
+  _alertViewController = [(DBUserAlert *)self _alertViewController];
   if (!v13)
   {
     [(DBUserAlert *)self safeAreaInsets];
-    [v26 setAdditionalSafeAreaInsets:?];
+    [_alertViewController setAdditionalSafeAreaInsets:?];
   }
 
-  [(DBUserAlertWindow *)v25 setRootViewController:v26];
+  [(DBUserAlertWindow *)v25 setRootViewController:_alertViewController];
   [(DBUserAlertWindow *)v25 setHidden:0];
   [(DBUserAlert *)self setWindow:v25];
   v27 = DBLogForCategory(0);
   if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
   {
-    v28 = [v4 identity];
+    identity = [sceneCopy identity];
     *buf = 138543362;
-    v31 = v28;
+    v31 = identity;
     _os_log_impl(&dword_248146000, v27, OS_LOG_TYPE_INFO, "Set up user alert scene %{public}@", buf, 0xCu);
   }
 }
@@ -255,12 +255,12 @@ void __32__DBUserAlert__setupAlertScene___block_invoke_2(uint64_t a1, void *a2)
 
 - (id)_alertViewController
 {
-  v3 = [(DBUserAlert *)self preferredPresentationStyle];
+  preferredPresentationStyle = [(DBUserAlert *)self preferredPresentationStyle];
   v4 = DBLogForCategory(0);
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG);
-  if (v3 != 2)
+  if (preferredPresentationStyle != 2)
   {
-    if (v3 == 1)
+    if (preferredPresentationStyle == 1)
     {
       if (v5)
       {
@@ -275,8 +275,8 @@ LABEL_9:
     }
 
     v17 = [DBUserAlertModalViewController alloc];
-    v14 = [(DBUserAlert *)self alert];
-    v16 = [(DBUserAlertModalViewController *)v17 initWithAlert:v14];
+    alert = [(DBUserAlert *)self alert];
+    v16 = [(DBUserAlertModalViewController *)v17 initWithAlert:alert];
     goto LABEL_11;
   }
 
@@ -286,9 +286,9 @@ LABEL_9:
   }
 
   v13 = [DBUserAlertSheetViewController alloc];
-  v14 = [(DBUserAlert *)self alert];
-  v15 = [(DBUserAlert *)self environmentConfiguration];
-  v16 = [(DBUserAlertSheetViewController *)v13 initWithAlert:v14 environmentConfiguration:v15];
+  alert = [(DBUserAlert *)self alert];
+  environmentConfiguration = [(DBUserAlert *)self environmentConfiguration];
+  v16 = [(DBUserAlertSheetViewController *)v13 initWithAlert:alert environmentConfiguration:environmentConfiguration];
 
 LABEL_11:
 

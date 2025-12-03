@@ -1,5 +1,5 @@
 @interface RAWAdjustColorTRC
-+ (BOOL)automaticallyNotifiesObserversForKey:(id)a3;
++ (BOOL)automaticallyNotifiesObserversForKey:(id)key;
 + (id)customAttributes;
 - (id)customAttributes;
 - (id)outputImage;
@@ -7,19 +7,19 @@
 
 @implementation RAWAdjustColorTRC
 
-+ (BOOL)automaticallyNotifiesObserversForKey:(id)a3
++ (BOOL)automaticallyNotifiesObserversForKey:(id)key
 {
-  v4 = a3;
-  if (objc_msgSend_isEqualToString_(v4, v5, @"inputBoostAmount", v6, v7))
+  keyCopy = key;
+  if (objc_msgSend_isEqualToString_(keyCopy, v5, @"inputBoostAmount", v6, v7))
   {
     v8 = 0;
   }
 
   else
   {
-    v10.receiver = a1;
+    v10.receiver = self;
     v10.super_class = &OBJC_METACLASS___RAWAdjustColorTRC;
-    v8 = objc_msgSendSuper2(&v10, sel_automaticallyNotifiesObserversForKey_, v4);
+    v8 = objc_msgSendSuper2(&v10, sel_automaticallyNotifiesObserversForKey_, keyCopy);
   }
 
   return v8;

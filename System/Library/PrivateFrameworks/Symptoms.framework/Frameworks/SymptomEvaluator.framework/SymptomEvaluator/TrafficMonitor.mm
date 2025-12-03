@@ -1,14 +1,14 @@
 @interface TrafficMonitor
-- (TrafficMonitor)initWithQueue:(id)a3;
+- (TrafficMonitor)initWithQueue:(id)queue;
 - (double)currentIdleDuration;
 - (id)fetchBlock;
 - (id)getState;
 - (void)_refreshValues;
 - (void)_timerMaintenance;
-- (void)didPollFlowsAt:(double)a3 periodic:(BOOL)a4;
-- (void)setActivePolling:(BOOL)a3;
-- (void)setFetchBlock:(id)a3;
-- (void)setUserInitiatedFlowThreshold:(BOOL)a3;
+- (void)didPollFlowsAt:(double)at periodic:(BOOL)periodic;
+- (void)setActivePolling:(BOOL)polling;
+- (void)setFetchBlock:(id)block;
+- (void)setUserInitiatedFlowThreshold:(BOOL)threshold;
 @end
 
 @implementation TrafficMonitor
@@ -199,12 +199,12 @@ uint64_t __35__TrafficMonitor__timerMaintenance__block_invoke_2(uint64_t a1)
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setUserInitiatedFlowThreshold:(BOOL)a3
+- (void)setUserInitiatedFlowThreshold:(BOOL)threshold
 {
-  if (self->_userInitiatedFlowThreshold != a3)
+  if (self->_userInitiatedFlowThreshold != threshold)
   {
     [(TrafficMonitor *)self willChangeValueForKey:@"userInitiatedFlowThreshold"];
-    self->_userInitiatedFlowThreshold = a3;
+    self->_userInitiatedFlowThreshold = threshold;
 
     [(TrafficMonitor *)self didChangeValueForKey:@"userInitiatedFlowThreshold"];
   }
@@ -215,8 +215,8 @@ uint64_t __35__TrafficMonitor__timerMaintenance__block_invoke_2(uint64_t a1)
   v2 = 0.0;
   if (self->_currentIdleStartTime > 0.0)
   {
-    v4 = [(TrafficMonitor *)self fetchBlock];
-    v5 = v4[2]();
+    fetchBlock = [(TrafficMonitor *)self fetchBlock];
+    v5 = fetchBlock[2]();
 
     if (v5 == self->_prevTrafficCount)
     {
@@ -228,9 +228,9 @@ uint64_t __35__TrafficMonitor__timerMaintenance__block_invoke_2(uint64_t a1)
   return v2;
 }
 
-- (void)setActivePolling:(BOOL)a3
+- (void)setActivePolling:(BOOL)polling
 {
-  v3 = a3;
+  pollingCopy = polling;
   v13 = *MEMORY[0x277D85DE8];
   v5 = otherLogHandle;
   if (os_log_type_enabled(otherLogHandle, OS_LOG_TYPE_DEBUG))
@@ -239,12 +239,12 @@ uint64_t __35__TrafficMonitor__timerMaintenance__block_invoke_2(uint64_t a1)
     v9 = 138412546;
     v10 = name;
     v11 = 1024;
-    v12 = v3;
+    v12 = pollingCopy;
     _os_log_impl(&dword_23255B000, v5, OS_LOG_TYPE_DEBUG, "%@  setActivePolling %d", &v9, 0x12u);
   }
 
-  self->_activePolling = v3;
-  if (v3)
+  self->_activePolling = pollingCopy;
+  if (pollingCopy)
   {
     [(TrafficMonitor *)self _timerMaintenance];
   }
@@ -265,17 +265,17 @@ uint64_t __35__TrafficMonitor__timerMaintenance__block_invoke_2(uint64_t a1)
   return v2;
 }
 
-- (void)setFetchBlock:(id)a3
+- (void)setFetchBlock:(id)block
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(block);
   fetchBlock = self->_fetchBlock;
   self->_fetchBlock = v4;
 
-  v6 = [(TrafficMonitor *)self fetchBlock];
-  self->_prevTrafficCount = v6[2]();
+  fetchBlock = [(TrafficMonitor *)self fetchBlock];
+  self->_prevTrafficCount = fetchBlock[2]();
 }
 
-- (void)didPollFlowsAt:(double)a3 periodic:(BOOL)a4
+- (void)didPollFlowsAt:(double)at periodic:(BOOL)periodic
 {
   v15 = *MEMORY[0x277D85DE8];
   v5 = otherLogHandle;
@@ -562,8 +562,8 @@ uint64_t __42__TrafficMonitor_didPollFlowsAt_periodic___block_invoke(uint64_t a1
   v21 = v20 - self->_prevTrafficTimestamp;
   if (v21 > 0.5)
   {
-    v22 = [(TrafficMonitor *)self fetchBlock];
-    v23 = v22[2]();
+    fetchBlock = [(TrafficMonitor *)self fetchBlock];
+    v23 = fetchBlock[2]();
 
     v24 = objc_alloc_init(UsageTallySample);
     [(UsageTallySample *)v24 setStartTimeIntervalSinceReferenceDate:self->_prevTrafficTimestamp];
@@ -580,16 +580,16 @@ uint64_t __42__TrafficMonitor_didPollFlowsAt_periodic___block_invoke(uint64_t a1
   return v3;
 }
 
-- (TrafficMonitor)initWithQueue:(id)a3
+- (TrafficMonitor)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v14.receiver = self;
   v14.super_class = TrafficMonitor;
   v6 = [(TrafficMonitor *)&v14 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_queue, a3);
+    objc_storeStrong(&v6->_queue, queue);
     v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
     samples = v7->_samples;
     v7->_samples = v8;

@@ -1,108 +1,108 @@
 @interface NWStatisticsDelegateBlockWrapper
-- (void)sourceDidReceiveCounts:(id)a3;
-- (void)sourceDidReceiveDescription:(id)a3;
-- (void)statisticsManager:(id)a3 didAddSource:(id)a4;
-- (void)statisticsManager:(id)a3 didRemoveSource:(id)a4;
+- (void)sourceDidReceiveCounts:(id)counts;
+- (void)sourceDidReceiveDescription:(id)description;
+- (void)statisticsManager:(id)manager didAddSource:(id)source;
+- (void)statisticsManager:(id)manager didRemoveSource:(id)source;
 @end
 
 @implementation NWStatisticsDelegateBlockWrapper
 
-- (void)statisticsManager:(id)a3 didAddSource:(id)a4
+- (void)statisticsManager:(id)manager didAddSource:(id)source
 {
-  v7 = a4;
-  v5 = [(NWStatisticsDelegateBlockWrapper *)self addedBlock];
+  sourceCopy = source;
+  addedBlock = [(NWStatisticsDelegateBlockWrapper *)self addedBlock];
 
-  if (v5)
+  if (addedBlock)
   {
-    v6 = [(NWStatisticsDelegateBlockWrapper *)self addedBlock];
-    (v6)[2](v6, v7);
+    addedBlock2 = [(NWStatisticsDelegateBlockWrapper *)self addedBlock];
+    (addedBlock2)[2](addedBlock2, sourceCopy);
   }
 }
 
-- (void)statisticsManager:(id)a3 didRemoveSource:(id)a4
+- (void)statisticsManager:(id)manager didRemoveSource:(id)source
 {
-  v11 = a4;
-  v4 = [v11 delegate];
+  sourceCopy = source;
+  delegate = [sourceCopy delegate];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v6 = [v11 delegate];
-    v7 = [v6 eventsBlock];
-    v8 = v7;
-    if (v7)
+    delegate2 = [sourceCopy delegate];
+    eventsBlock = [delegate2 eventsBlock];
+    v8 = eventsBlock;
+    if (eventsBlock)
     {
-      (*(v7 + 16))(v7, v11, 2);
+      (*(eventsBlock + 16))(eventsBlock, sourceCopy, 2);
     }
 
     else
     {
-      v9 = [v6 removedBlock];
-      v10 = v9;
-      if (v9)
+      removedBlock = [delegate2 removedBlock];
+      v10 = removedBlock;
+      if (removedBlock)
       {
-        (*(v9 + 16))(v9);
+        (*(removedBlock + 16))(removedBlock);
       }
     }
 
-    [v11 setDelegate:0];
+    [sourceCopy setDelegate:0];
   }
 }
 
-- (void)sourceDidReceiveCounts:(id)a3
+- (void)sourceDidReceiveCounts:(id)counts
 {
-  v9 = a3;
-  v4 = [(NWStatisticsDelegateBlockWrapper *)self eventsBlock];
+  countsCopy = counts;
+  eventsBlock = [(NWStatisticsDelegateBlockWrapper *)self eventsBlock];
 
-  if (v4)
+  if (eventsBlock)
   {
-    v5 = [(NWStatisticsDelegateBlockWrapper *)self eventsBlock];
-    (v5)[2](v5, v9, 0);
+    eventsBlock2 = [(NWStatisticsDelegateBlockWrapper *)self eventsBlock];
+    (eventsBlock2)[2](eventsBlock2, countsCopy, 0);
   }
 
   else
   {
-    v6 = [(NWStatisticsDelegateBlockWrapper *)self countsBlock];
+    countsBlock = [(NWStatisticsDelegateBlockWrapper *)self countsBlock];
 
-    if (!v6)
+    if (!countsBlock)
     {
       goto LABEL_6;
     }
 
-    v5 = [v9 currentSnapshot];
-    v7 = [v5 traditionalDictionary];
-    v8 = [(NWStatisticsDelegateBlockWrapper *)self countsBlock];
-    (v8)[2](v8, v7);
+    eventsBlock2 = [countsCopy currentSnapshot];
+    traditionalDictionary = [eventsBlock2 traditionalDictionary];
+    countsBlock2 = [(NWStatisticsDelegateBlockWrapper *)self countsBlock];
+    (countsBlock2)[2](countsBlock2, traditionalDictionary);
   }
 
 LABEL_6:
 }
 
-- (void)sourceDidReceiveDescription:(id)a3
+- (void)sourceDidReceiveDescription:(id)description
 {
-  v9 = a3;
-  v4 = [(NWStatisticsDelegateBlockWrapper *)self eventsBlock];
+  descriptionCopy = description;
+  eventsBlock = [(NWStatisticsDelegateBlockWrapper *)self eventsBlock];
 
-  if (v4)
+  if (eventsBlock)
   {
-    v5 = [(NWStatisticsDelegateBlockWrapper *)self eventsBlock];
-    (v5)[2](v5, v9, 1);
+    eventsBlock2 = [(NWStatisticsDelegateBlockWrapper *)self eventsBlock];
+    (eventsBlock2)[2](eventsBlock2, descriptionCopy, 1);
   }
 
   else
   {
-    v6 = [(NWStatisticsDelegateBlockWrapper *)self descriptionBlock];
+    descriptionBlock = [(NWStatisticsDelegateBlockWrapper *)self descriptionBlock];
 
-    if (!v6)
+    if (!descriptionBlock)
     {
       goto LABEL_6;
     }
 
-    v5 = [v9 currentSnapshot];
-    v7 = [v5 traditionalDictionary];
-    v8 = [(NWStatisticsDelegateBlockWrapper *)self descriptionBlock];
-    (v8)[2](v8, v7);
+    eventsBlock2 = [descriptionCopy currentSnapshot];
+    traditionalDictionary = [eventsBlock2 traditionalDictionary];
+    descriptionBlock2 = [(NWStatisticsDelegateBlockWrapper *)self descriptionBlock];
+    (descriptionBlock2)[2](descriptionBlock2, traditionalDictionary);
   }
 
 LABEL_6:

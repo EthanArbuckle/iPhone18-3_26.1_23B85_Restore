@@ -1,44 +1,44 @@
 @interface PUGroupValueFilter
 - (double)outputValue;
-- (void)setInputValue:(double)a3;
+- (void)setInputValue:(double)value;
 @end
 
 @implementation PUGroupValueFilter
 
 - (double)outputValue
 {
-  v2 = [(PUGroupValueFilter *)self filters];
-  v3 = [v2 objectEnumerator];
+  filters = [(PUGroupValueFilter *)self filters];
+  objectEnumerator = [filters objectEnumerator];
 
-  v4 = [v3 nextObject];
-  [v4 outputValue];
+  nextObject = [objectEnumerator nextObject];
+  [nextObject outputValue];
   v6 = v5;
-  v7 = [v3 nextObject];
-  if (v7)
+  nextObject2 = [objectEnumerator nextObject];
+  if (nextObject2)
   {
-    v8 = v7;
+    v8 = nextObject2;
     do
     {
       [v8 setInputValue:v6];
       [v8 outputValue];
       v6 = v9;
-      v10 = [v3 nextObject];
+      nextObject3 = [objectEnumerator nextObject];
 
-      v8 = v10;
+      v8 = nextObject3;
     }
 
-    while (v10);
+    while (nextObject3);
   }
 
   return v6;
 }
 
-- (void)setInputValue:(double)a3
+- (void)setInputValue:(double)value
 {
-  v4 = [(PUGroupValueFilter *)self filters];
-  v5 = [v4 firstObject];
+  filters = [(PUGroupValueFilter *)self filters];
+  firstObject = [filters firstObject];
 
-  [v5 setInputValue:a3];
+  [firstObject setInputValue:value];
 }
 
 @end

@@ -1,36 +1,36 @@
 @interface _UIEventSessionTouchAction
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (int64_t)actionType;
-- (int64_t)mergeActionIfPossible:(id)a3;
+- (int64_t)mergeActionIfPossible:(id)possible;
 @end
 
 @implementation _UIEventSessionTouchAction
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5.receiver = self;
   v5.super_class = _UIEventSessionTouchAction;
-  result = [(_UIEventSessionAction *)&v5 copyWithZone:a3];
+  result = [(_UIEventSessionAction *)&v5 copyWithZone:zone];
   *(result + 9) = self->_tapDragState;
   *(result + 10) = self->_numFingers;
   *(result + 11) = self->_windowSection;
   return result;
 }
 
-- (int64_t)mergeActionIfPossible:(id)a3
+- (int64_t)mergeActionIfPossible:(id)possible
 {
-  v4 = a3;
-  v5 = [v4 uiInterfaceOrientation];
-  if (v5 == -[_UIEventSessionAction uiInterfaceOrientation](self, "uiInterfaceOrientation") && (v6 = [v4 hardwareKeyboardState], v6 == -[_UIEventSessionAction hardwareKeyboardState](self, "hardwareKeyboardState")) && (v7 = objc_msgSend(v4, "magicKeyboardState"), v7 == -[_UIEventSessionAction magicKeyboardState](self, "magicKeyboardState")))
+  possibleCopy = possible;
+  uiInterfaceOrientation = [possibleCopy uiInterfaceOrientation];
+  if (uiInterfaceOrientation == -[_UIEventSessionAction uiInterfaceOrientation](self, "uiInterfaceOrientation") && (v6 = [possibleCopy hardwareKeyboardState], v6 == -[_UIEventSessionAction hardwareKeyboardState](self, "hardwareKeyboardState")) && (v7 = objc_msgSend(possibleCopy, "magicKeyboardState"), v7 == -[_UIEventSessionAction magicKeyboardState](self, "magicKeyboardState")))
   {
-    v8 = [v4 asTouch];
-    v9 = [v4 source];
+    asTouch = [possibleCopy asTouch];
+    source = [possibleCopy source];
     v10 = 0;
-    if (v9 == [(_UIEventSessionAction *)self source]&& v8)
+    if (source == [(_UIEventSessionAction *)self source]&& asTouch)
     {
-      v11 = [v8 numFingers];
-      if (v11 == -[_UIEventSessionTouchAction numFingers](self, "numFingers") && (v12 = [v8 tapDragState], v12 == -[_UIEventSessionTouchAction tapDragState](self, "tapDragState")) && (objc_msgSend(v8, "numFingers") != 1 || objc_msgSend(v8, "tapDragState") != 1 || (v13 = objc_msgSend(v8, "windowSection"), v13 == -[_UIEventSessionTouchAction windowSection](self, "windowSection"))))
+      numFingers = [asTouch numFingers];
+      if (numFingers == -[_UIEventSessionTouchAction numFingers](self, "numFingers") && (v12 = [asTouch tapDragState], v12 == -[_UIEventSessionTouchAction tapDragState](self, "tapDragState")) && (objc_msgSend(asTouch, "numFingers") != 1 || objc_msgSend(asTouch, "tapDragState") != 1 || (v13 = objc_msgSend(asTouch, "windowSection"), v13 == -[_UIEventSessionTouchAction windowSection](self, "windowSection"))))
       {
         if (os_variant_has_internal_diagnostics())
         {
@@ -46,7 +46,7 @@
           }
         }
 
-        -[_UIEventSessionAction setActionCountFromMergedActions:](self, "setActionCountFromMergedActions:", -[_UIEventSessionAction actionCountFromMergedActions](self, "actionCountFromMergedActions") + [v4 actionCount]);
+        -[_UIEventSessionAction setActionCountFromMergedActions:](self, "setActionCountFromMergedActions:", -[_UIEventSessionAction actionCountFromMergedActions](self, "actionCountFromMergedActions") + [possibleCopy actionCount]);
         v10 = 1;
       }
 
@@ -70,19 +70,19 @@
   v11.receiver = self;
   v11.super_class = _UIEventSessionTouchAction;
   v3 = [(_UIEventSessionAction *)&v11 description];
-  v4 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@" tapDragState = %lu", -[_UIEventSessionTouchAction tapDragState](self, "tapDragState")];
-  [v4 addObject:v5];
+  [array addObject:v5];
 
   v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@" numFingers = %lu", -[_UIEventSessionTouchAction numFingers](self, "numFingers")];
-  [v4 addObject:v6];
+  [array addObject:v6];
 
   v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@" windowSection = %lu", -[_UIEventSessionTouchAction windowSection](self, "windowSection")];
-  [v4 addObject:v7];
+  [array addObject:v7];
 
-  if ([v4 count])
+  if ([array count])
   {
-    v8 = [v4 componentsJoinedByString:{@", "}];
+    v8 = [array componentsJoinedByString:{@", "}];
     v9 = [v3 stringByAppendingFormat:@" %@", v8];
 
     v3 = v9;
@@ -93,8 +93,8 @@
 
 - (int64_t)actionType
 {
-  v3 = [(_UIEventSessionAction *)self source];
-  if (v3 == 4)
+  source = [(_UIEventSessionAction *)self source];
+  if (source == 4)
   {
     numFingers = self->_numFingers;
     if (numFingers == 2)
@@ -124,7 +124,7 @@ LABEL_11:
     }
   }
 
-  if (v3 != 1)
+  if (source != 1)
   {
     return 21;
   }

@@ -2,13 +2,13 @@
 + (GKEntity)entity;
 - (GKComponent)componentForClass:(Class)componentClass;
 - (GKEntity)init;
-- (GKEntity)initWithCoder:(id)a3;
+- (GKEntity)initWithCoder:(id)coder;
 - (id)copy;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)addComponent:(GKComponent *)component;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)removeComponent:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)removeComponent:(id)component;
 - (void)removeComponentForClass:(Class)componentClass;
 - (void)updateWithDeltaTime:(NSTimeInterval)seconds;
 @end
@@ -22,8 +22,8 @@
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v3 = [(NSMutableDictionary *)self->_components allValues];
-  v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  allValues = [(NSMutableDictionary *)self->_components allValues];
+  v4 = [allValues countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v4)
   {
     v5 = v4;
@@ -34,20 +34,20 @@
       {
         if (*v14 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allValues);
         }
 
         v8 = *(*(&v13 + 1) + 8 * i);
-        v9 = [v8 componentSystem];
-        v10 = v9;
-        if (v9)
+        componentSystem = [v8 componentSystem];
+        v10 = componentSystem;
+        if (componentSystem)
         {
-          [v9 removeComponentWithEntity:self];
+          [componentSystem removeComponentWithEntity:self];
           [v8 setEntity:0];
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v5 = [allValues countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v5);
@@ -61,7 +61,7 @@
 
 + (GKEntity)entity
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
@@ -73,18 +73,18 @@
   v2 = [(GKEntity *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     components = v2->_components;
-    v2->_components = v3;
+    v2->_components = dictionary;
   }
 
   return v2;
 }
 
-- (GKEntity)initWithCoder:(id)a3
+- (GKEntity)initWithCoder:(id)coder
 {
   v27[12] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(GKEntity *)self init];
   if (v5)
   {
@@ -104,15 +104,15 @@
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v27 count:12];
     [v6 addObjectsFromArray:v7];
 
-    v8 = [v4 allowedClasses];
-    [v6 unionSet:v8];
+    allowedClasses = [coderCopy allowedClasses];
+    [v6 unionSet:allowedClasses];
 
-    v9 = [v4 decodeObjectOfClasses:v6 forKey:@"_components"];
+    v9 = [coderCopy decodeObjectOfClasses:v6 forKey:@"_components"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       v20 = v6;
-      v21 = v4;
+      v21 = coderCopy;
       v24 = 0u;
       v25 = 0u;
       v22 = 0u;
@@ -138,8 +138,8 @@
             if (objc_opt_isKindOfClass())
             {
               components = v5->_components;
-              v17 = [v15 componentName];
-              [(NSMutableDictionary *)components setObject:v15 forKey:v17];
+              componentName = [v15 componentName];
+              [(NSMutableDictionary *)components setObject:v15 forKey:componentName];
 
               [v15 setEntity:v5];
             }
@@ -155,7 +155,7 @@
       }
 
       v6 = v20;
-      v4 = v21;
+      coderCopy = v21;
     }
   }
 
@@ -163,12 +163,12 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   components = self->_components;
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)components allValues];
-  [v4 encodeObject:v5 forKey:@"_components"];
+  coderCopy = coder;
+  allValues = [(NSMutableDictionary *)components allValues];
+  [coderCopy encodeObject:allValues forKey:@"_components"];
 }
 
 - (void)updateWithDeltaTime:(NSTimeInterval)seconds
@@ -178,8 +178,8 @@
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(NSMutableDictionary *)self->_components objectEnumerator];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  objectEnumerator = [(NSMutableDictionary *)self->_components objectEnumerator];
+  v5 = [objectEnumerator countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -199,7 +199,7 @@
 
         else
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(objectEnumerator);
           v9 = *(*(&v11 + 1) + 8 * i);
           if ([v9 usesPerComponentUpdate])
           {
@@ -210,7 +210,7 @@
         [v9 updateWithDeltaTime:seconds];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [objectEnumerator countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -223,8 +223,8 @@
 {
   components = self->_components;
   v6 = component;
-  v5 = [(GKComponent *)v6 componentName];
-  [(NSMutableDictionary *)components setObject:v6 forKey:v5];
+  componentName = [(GKComponent *)v6 componentName];
+  [(NSMutableDictionary *)components setObject:v6 forKey:componentName];
 
   [(GKComponent *)v6 setEntity:self];
   [(GKComponent *)v6 didAddToEntity];
@@ -259,7 +259,7 @@
   return [(GKEntity *)self copyWithZone:v3];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v3 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:self requiringSecureCoding:1 error:0];
   v4 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:objc_opt_class() fromData:v3 error:0];
@@ -267,14 +267,14 @@
   return v4;
 }
 
-- (void)removeComponent:(id)a3
+- (void)removeComponent:(id)component
 {
   components = self->_components;
-  v5 = a3;
-  v4 = [v5 componentName];
-  [(NSMutableDictionary *)components removeObjectForKey:v4];
+  componentCopy = component;
+  componentName = [componentCopy componentName];
+  [(NSMutableDictionary *)components removeObjectForKey:componentName];
 
-  [v5 setEntity:0];
+  [componentCopy setEntity:0];
 }
 
 @end

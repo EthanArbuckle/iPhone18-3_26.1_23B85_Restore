@@ -1,22 +1,22 @@
 @interface AMSUIBundleViewController
 + (AMSBagKeySet)bagKeySet;
-- (AMSUIBundleViewController)initWithServiceType:(id)a3 placement:(id)a4 account:(id)a5 bag:(id)a6;
+- (AMSUIBundleViewController)initWithServiceType:(id)type placement:(id)placement account:(id)account bag:(id)bag;
 @end
 
 @implementation AMSUIBundleViewController
 
-- (AMSUIBundleViewController)initWithServiceType:(id)a3 placement:(id)a4 account:(id)a5 bag:(id)a6
+- (AMSUIBundleViewController)initWithServiceType:(id)type placement:(id)placement account:(id)account bag:(id)bag
 {
-  v8 = a5;
-  v9 = a6;
-  v10 = [v9 URLForKey:@"bundleDynamicUIUrl"];
+  accountCopy = account;
+  bagCopy = bag;
+  v10 = [bagCopy URLForKey:@"bundleDynamicUIUrl"];
   v13.receiver = self;
   v13.super_class = AMSUIBundleViewController;
-  v11 = [(AMSUIDynamicViewController *)&v13 initWithBag:v9 bagValue:v10];
+  v11 = [(AMSUIDynamicViewController *)&v13 initWithBag:bagCopy bagValue:v10];
 
   if (v11)
   {
-    [(AMSUIBundleViewController *)v11 setAccount:v8];
+    [(AMSUIBundleViewController *)v11 setAccount:accountCopy];
   }
 
   return v11;

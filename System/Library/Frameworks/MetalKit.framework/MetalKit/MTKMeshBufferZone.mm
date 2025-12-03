@@ -1,33 +1,33 @@
 @interface MTKMeshBufferZone
-- (MTKMeshBufferZone)initWithCapacity:(unint64_t)a3 allocator:(id)a4;
-- (id)newBufferWithLength:(unint64_t)a3 type:(unint64_t)a4;
-- (void)destroyBuffer:(id)a3;
+- (MTKMeshBufferZone)initWithCapacity:(unint64_t)capacity allocator:(id)allocator;
+- (id)newBufferWithLength:(unint64_t)length type:(unint64_t)type;
+- (void)destroyBuffer:(id)buffer;
 @end
 
 @implementation MTKMeshBufferZone
 
-- (MTKMeshBufferZone)initWithCapacity:(unint64_t)a3 allocator:(id)a4
+- (MTKMeshBufferZone)initWithCapacity:(unint64_t)capacity allocator:(id)allocator
 {
-  v7 = a4;
+  allocatorCopy = allocator;
   v19.receiver = self;
   v19.super_class = MTKMeshBufferZone;
   v8 = [(MTKMeshBufferZone *)&v19 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_allocator, a4);
-    v9->_capacity = a3;
-    v10 = [(MTKMeshBufferAllocator *)v9->_allocator device];
+    objc_storeStrong(&v8->_allocator, allocator);
+    v9->_capacity = capacity;
+    device = [(MTKMeshBufferAllocator *)v9->_allocator device];
     capacity = v9->_capacity;
-    if (capacity > [v10 maxBufferLength] || !v9->_capacity)
+    if (capacity > [device maxBufferLength] || !v9->_capacity)
     {
 
       v17 = 0;
       goto LABEL_7;
     }
 
-    v12 = [v7 device];
-    v13 = [v12 newBufferWithLength:v9->_capacity options:0];
+    device2 = [allocatorCopy device];
+    v13 = [device2 newBufferWithLength:v9->_capacity options:0];
     buffer = v9->_buffer;
     v9->_buffer = v13;
 
@@ -44,27 +44,27 @@ LABEL_7:
   return v17;
 }
 
-- (id)newBufferWithLength:(unint64_t)a3 type:(unint64_t)a4
+- (id)newBufferWithLength:(unint64_t)length type:(unint64_t)type
 {
-  if (a4 == 1)
+  if (type == 1)
   {
-    v7 = [(MTKMeshBufferAllocator *)self->_allocator device];
-    v8 = [v7 minConstantBufferAlignmentBytes];
+    device = [(MTKMeshBufferAllocator *)self->_allocator device];
+    minConstantBufferAlignmentBytes = [device minConstantBufferAlignmentBytes];
   }
 
   else
   {
-    v8 = 1;
+    minConstantBufferAlignmentBytes = 1;
   }
 
   buffers = self->_buffers;
   if (!self->_destroyInvoked)
   {
-    v17 = [(NSMutableOrderedSet *)buffers lastObject];
-    v18 = [v17 buffer];
+    lastObject = [(NSMutableOrderedSet *)buffers lastObject];
+    buffer = [lastObject buffer];
 
-    v19 = [v18 offset];
-    v10 = (v8 + v19 + [v18 length] - 1) & -v8;
+    offset = [buffer offset];
+    v10 = (minConstantBufferAlignmentBytes + offset + [buffer length] - 1) & -minConstantBufferAlignmentBytes;
 
     goto LABEL_11;
   }
@@ -75,12 +75,12 @@ LABEL_7:
 LABEL_11:
     v20 = [(MTLBuffer *)self->_buffer length];
 LABEL_12:
-    if (v20 - v10 < a3)
+    if (v20 - v10 < length)
     {
       return 0;
     }
 
-    v21 = [[MTKMeshBuffer alloc] _initWithLength:a3 offset:v10 zone:self type:a4];
+    v21 = [[MTKMeshBuffer alloc] _initWithLength:length offset:v10 zone:self type:type];
     if (v21)
     {
       v22 = objc_opt_new();
@@ -92,20 +92,20 @@ LABEL_12:
   }
 
   v11 = 0;
-  v12 = v8 - 1;
-  v13 = -v8;
+  v12 = minConstantBufferAlignmentBytes - 1;
+  v13 = -minConstantBufferAlignmentBytes;
   while (1)
   {
     v14 = [(NSMutableOrderedSet *)self->_buffers objectAtIndexedSubscript:v11];
-    v15 = [v14 buffer];
+    buffer2 = [v14 buffer];
 
-    if ([v15 offset] - v10 >= a3)
+    if ([buffer2 offset] - v10 >= length)
     {
       break;
     }
 
-    v16 = [v15 offset];
-    v10 = (v12 + v16 + [v15 length]) & v13;
+    offset2 = [buffer2 offset];
+    v10 = (v12 + offset2 + [buffer2 length]) & v13;
 
     if (++v11 >= [(NSMutableOrderedSet *)self->_buffers count])
     {
@@ -113,7 +113,7 @@ LABEL_12:
     }
   }
 
-  v21 = [[MTKMeshBuffer alloc] _initWithLength:a3 offset:v10 zone:self type:a4];
+  v21 = [[MTKMeshBuffer alloc] _initWithLength:length offset:v10 zone:self type:type];
   v23 = objc_opt_new();
   [v23 setBuffer:v21];
   [(NSMutableOrderedSet *)self->_buffers insertObject:v23 atIndex:v11];
@@ -127,10 +127,10 @@ LABEL_12:
   return v21;
 }
 
-- (void)destroyBuffer:(id)a3
+- (void)destroyBuffer:(id)buffer
 {
-  v8 = a3;
-  v4 = [v8 zone];
+  bufferCopy = buffer;
+  v4 = [bufferCopy zone];
   if (v4 != self)
   {
     [MTKMeshBufferZone destroyBuffer:];
@@ -143,9 +143,9 @@ LABEL_12:
     while (1)
     {
       v6 = [(NSMutableOrderedSet *)self->_buffers objectAtIndexedSubscript:v5];
-      v7 = [v6 buffer];
+      buffer = [v6 buffer];
 
-      if (v7 == v8)
+      if (buffer == bufferCopy)
       {
         break;
       }

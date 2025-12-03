@@ -1,33 +1,33 @@
 @interface _WTTextEffect
 - (BOOL)needsSetup;
 - (CGRect)effectVisibilityFrame;
-- (_WTTextEffect)initWithChunk:(id)a3 effectView:(id)a4;
+- (_WTTextEffect)initWithChunk:(id)chunk effectView:(id)view;
 - (_WTTextEffectView)effectView;
-- (double)clamp:(double)a3 min:(double)a4 max:(double)a5;
+- (double)clamp:(double)clamp min:(double)min max:(double)max;
 - (double)defaultSweepRadius;
 - (double)sweepDuration;
-- (double)sweepRadiusForLineSize:(CGSize)a3;
-- (void)_applyToFill:(id)a3 colors:(id)a4 center:(CGPoint)a5 startRadius:(double)a6 endRadius:(double)a7;
-- (void)_applyToFill:(id)a3 locatedColors:(id)a4 center:(CGPoint)a5 startRadius:(double)a6 endRadius:(double)a7;
-- (void)_applyToFill:(id)a3 nonlocatedColors:(id)a4 center:(CGPoint)a5 startRadius:(double)a6 endRadius:(double)a7;
-- (void)invalidate:(BOOL)a3;
-- (void)updateEffectWith:(id)a3;
+- (double)sweepRadiusForLineSize:(CGSize)size;
+- (void)_applyToFill:(id)fill colors:(id)colors center:(CGPoint)center startRadius:(double)radius endRadius:(double)endRadius;
+- (void)_applyToFill:(id)fill locatedColors:(id)colors center:(CGPoint)center startRadius:(double)radius endRadius:(double)endRadius;
+- (void)_applyToFill:(id)fill nonlocatedColors:(id)colors center:(CGPoint)center startRadius:(double)radius endRadius:(double)endRadius;
+- (void)invalidate:(BOOL)invalidate;
+- (void)updateEffectWith:(id)with;
 @end
 
 @implementation _WTTextEffect
 
-- (_WTTextEffect)initWithChunk:(id)a3 effectView:(id)a4
+- (_WTTextEffect)initWithChunk:(id)chunk effectView:(id)view
 {
-  v6 = a3;
-  v7 = a4;
+  chunkCopy = chunk;
+  viewCopy = view;
   v12.receiver = self;
   v12.super_class = _WTTextEffect;
   v8 = [(_WTTextEffect *)&v12 init];
   v9 = v8;
   if (v8)
   {
-    [(_WTTextEffect *)v8 setChunk:v6];
-    [(_WTTextEffect *)v9 setEffectView:v7];
+    [(_WTTextEffect *)v8 setChunk:chunkCopy];
+    [(_WTTextEffect *)v9 setEffectView:viewCopy];
     [(_WTTextEffect *)v9 setHidesOriginal:1];
     [(_WTTextEffect *)v9 setInvalidationDelay:0.0];
     v10 = v9;
@@ -36,12 +36,12 @@
   return v9;
 }
 
-- (void)updateEffectWith:(id)a3
+- (void)updateEffectWith:(id)with
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 firstObject];
-  [v5 presentationFrame];
+  withCopy = with;
+  firstObject = [withCopy firstObject];
+  [firstObject presentationFrame];
   self->_firstSnapshotRect.origin.x = v6;
   self->_firstSnapshotRect.origin.y = v7;
   self->_firstSnapshotRect.size.width = v8;
@@ -52,7 +52,7 @@
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v10 = v4;
+  v10 = withCopy;
   v11 = [v10 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v11)
   {
@@ -85,15 +85,15 @@
   }
 }
 
-- (void)invalidate:(BOOL)a3
+- (void)invalidate:(BOOL)invalidate
 {
-  v3 = a3;
-  v5 = [(_WTTextEffect *)self timer];
-  [v5 invalidate];
+  invalidateCopy = invalidate;
+  timer = [(_WTTextEffect *)self timer];
+  [timer invalidate];
 
   [MEMORY[0x1E6979518] begin];
   v6 = 0.0;
-  if (v3)
+  if (invalidateCopy)
   {
     [(_WTTextEffect *)self invalidationAnimationDuration];
   }
@@ -105,48 +105,48 @@
   v8[3] = &unk_1E8480BF8;
   v8[4] = self;
   [MEMORY[0x1E6979518] setCompletionBlock:v8];
-  v7 = [(_WTTextEffect *)self rootLayer];
-  [v7 setOpacity:0.0];
+  rootLayer = [(_WTTextEffect *)self rootLayer];
+  [rootLayer setOpacity:0.0];
 
   [MEMORY[0x1E6979518] commit];
 }
 
-- (void)_applyToFill:(id)a3 colors:(id)a4 center:(CGPoint)a5 startRadius:(double)a6 endRadius:(double)a7
+- (void)_applyToFill:(id)fill colors:(id)colors center:(CGPoint)center startRadius:(double)radius endRadius:(double)endRadius
 {
-  y = a5.y;
-  x = a5.x;
-  v18 = a3;
-  v13 = a4;
-  v14 = [v13 firstObject];
+  y = center.y;
+  x = center.x;
+  fillCopy = fill;
+  colorsCopy = colors;
+  firstObject = [colorsCopy firstObject];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    [(_WTTextEffect *)self _applyToFill:v18 nonlocatedColors:v13 center:x startRadius:y endRadius:a6, a7];
+    [(_WTTextEffect *)self _applyToFill:fillCopy nonlocatedColors:colorsCopy center:x startRadius:y endRadius:radius, endRadius];
   }
 
   else
   {
-    v16 = [v13 firstObject];
+    firstObject2 = [colorsCopy firstObject];
     objc_opt_class();
     v17 = objc_opt_isKindOfClass();
 
     if (v17)
     {
-      [(_WTTextEffect *)self _applyToFill:v18 locatedColors:v13 center:x startRadius:y endRadius:a6, a7];
+      [(_WTTextEffect *)self _applyToFill:fillCopy locatedColors:colorsCopy center:x startRadius:y endRadius:radius, endRadius];
     }
   }
 }
 
-- (void)_applyToFill:(id)a3 nonlocatedColors:(id)a4 center:(CGPoint)a5 startRadius:(double)a6 endRadius:(double)a7
+- (void)_applyToFill:(id)fill nonlocatedColors:(id)colors center:(CGPoint)center startRadius:(double)radius endRadius:(double)endRadius
 {
-  y = a5.y;
-  x = a5.x;
+  y = center.y;
+  x = center.x;
   v23[1] = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = [v13 count];
+  fillCopy = fill;
+  colorsCopy = colors;
+  v14 = [colorsCopy count];
   v15 = &v23[-2 * v14];
   if (v14)
   {
@@ -154,7 +154,7 @@
     v17 = v15 + 1;
     do
     {
-      v18 = [v13 objectAtIndexedSubscript:v16];
+      v18 = [colorsCopy objectAtIndexedSubscript:v16];
       [v18 CGColor];
       RBColorFromCGColor();
       *(v17 - 2) = v19;
@@ -169,17 +169,17 @@
     while (v14 != v16);
   }
 
-  [v12 setRadialGradientCenter:v14 startRadius:v15 endRadius:0 stopCount:0 colors:x locations:y flags:{a6, a7}];
+  [fillCopy setRadialGradientCenter:v14 startRadius:v15 endRadius:0 stopCount:0 colors:x locations:y flags:{radius, endRadius}];
 }
 
-- (void)_applyToFill:(id)a3 locatedColors:(id)a4 center:(CGPoint)a5 startRadius:(double)a6 endRadius:(double)a7
+- (void)_applyToFill:(id)fill locatedColors:(id)colors center:(CGPoint)center startRadius:(double)radius endRadius:(double)endRadius
 {
-  y = a5.y;
-  x = a5.x;
+  y = center.y;
+  x = center.x;
   v26[1] = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = [v13 count];
+  fillCopy = fill;
+  colorsCopy = colors;
+  v14 = [colorsCopy count];
   v15 = &v26[-2 * v14];
   v16 = v26 - ((8 * v14 + 15) & 0xFFFFFFFFFFFFFFF0);
   if (v14)
@@ -188,9 +188,9 @@
     v18 = v15 + 1;
     do
     {
-      v19 = [v13 objectAtIndexedSubscript:v17];
-      v20 = [v19 color];
-      [v20 CGColor];
+      v19 = [colorsCopy objectAtIndexedSubscript:v17];
+      color = [v19 color];
+      [color CGColor];
       RBColorFromCGColor();
       *(v18 - 2) = v21;
       *(v18 - 1) = v22;
@@ -207,13 +207,13 @@
     while (v14 != v17);
   }
 
-  [v12 setRadialGradientCenter:v14 startRadius:v15 endRadius:v16 stopCount:0 colors:x locations:y flags:{a6, a7}];
+  [fillCopy setRadialGradientCenter:v14 startRadius:v15 endRadius:v16 stopCount:0 colors:x locations:y flags:{radius, endRadius}];
 }
 
 - (double)defaultSweepRadius
 {
-  v3 = [(_WTTextEffect *)self effectView];
-  [v3 bounds];
+  effectView = [(_WTTextEffect *)self effectView];
+  [effectView bounds];
   width = v4;
   if (v4 == 0.0)
   {
@@ -226,11 +226,11 @@
   return result;
 }
 
-- (double)sweepRadiusForLineSize:(CGSize)a3
+- (double)sweepRadiusForLineSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = atan((a3.height + a3.height) / a3.width);
+  height = size.height;
+  width = size.width;
+  v5 = atan((size.height + size.height) / size.width);
   v6 = cos(1.57079633 - v5);
   return sqrt(height * height + width * 0.5 * (width * 0.5)) / (v6 + v6);
 }
@@ -243,8 +243,8 @@
   height = self->_effectPresentationRect.size.height;
   if (width == 0.0)
   {
-    v6 = [(_WTTextEffect *)self effectView];
-    [v6 bounds];
+    effectView = [(_WTTextEffect *)self effectView];
+    [effectView bounds];
     width = v7;
   }
 
@@ -268,25 +268,25 @@
   return result;
 }
 
-- (double)clamp:(double)a3 min:(double)a4 max:(double)a5
+- (double)clamp:(double)clamp min:(double)min max:(double)max
 {
-  if (a3 >= a5)
+  if (clamp >= max)
   {
-    a3 = a5;
+    clamp = max;
   }
 
-  if (a3 < a4)
+  if (clamp < min)
   {
-    a3 = a4;
+    clamp = min;
   }
 
-  return (a3 - a4) / (a5 - a4);
+  return (clamp - min) / (max - min);
 }
 
 - (BOOL)needsSetup
 {
-  v2 = [(_WTTextEffect *)self rootLayer];
-  v3 = v2 == 0;
+  rootLayer = [(_WTTextEffect *)self rootLayer];
+  v3 = rootLayer == 0;
 
   return v3;
 }

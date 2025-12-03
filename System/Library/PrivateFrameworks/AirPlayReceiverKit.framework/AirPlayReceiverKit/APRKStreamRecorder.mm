@@ -1,14 +1,14 @@
 @interface APRKStreamRecorder
 - (BOOL)finalizeRecording;
-- (int)_recordSampleBuffer:(opaqueCMSampleBuffer *)a3 toTrackWithID:(int)a4;
-- (int)startRecordingAtURL:(id)a3;
+- (int)_recordSampleBuffer:(opaqueCMSampleBuffer *)buffer toTrackWithID:(int)d;
+- (int)startRecordingAtURL:(id)l;
 @end
 
 @implementation APRKStreamRecorder
 
-- (int)startRecordingAtURL:(id)a3
+- (int)startRecordingAtURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v5 = MEMORY[0x277CC0898];
   v6 = *MEMORY[0x277CC0898];
   self->_audioTrackID = 0;
@@ -142,17 +142,17 @@ LABEL_15:
   return assetWriter == 0;
 }
 
-- (int)_recordSampleBuffer:(opaqueCMSampleBuffer *)a3 toTrackWithID:(int)a4
+- (int)_recordSampleBuffer:(opaqueCMSampleBuffer *)buffer toTrackWithID:(int)d
 {
-  v4 = *&a4;
-  if (a3)
+  v4 = *&d;
+  if (buffer)
   {
-    CFRetain(a3);
+    CFRetain(buffer);
   }
 
   if ((self->_recordingStartTime.flags & 1) == 0)
   {
-    CMSampleBufferGetPresentationTimeStamp(&v16, a3);
+    CMSampleBufferGetPresentationTimeStamp(&v16, buffer);
     *&self->_recordingStartTime.value = *&v16.value;
     epoch = v16.epoch;
     self->_recordingStartTime.epoch = v16.epoch;
@@ -186,7 +186,7 @@ LABEL_6:
   v12 = *(*(CMBaseObjectGetVTable() + 16) + 80);
   if (v12)
   {
-    v13 = v12(v11, v4, a3);
+    v13 = v12(v11, v4, buffer);
     if (!v13)
     {
       goto LABEL_15;
@@ -202,7 +202,7 @@ LABEL_12:
   if (gLogCategory_AirPlayReceiverKit <= 90 && (gLogCategory_AirPlayReceiverKit != -1 || _LogCategory_Initialize()))
   {
     [APRKStreamRecorder _recordSampleBuffer:toTrackWithID:];
-    if (!a3)
+    if (!buffer)
     {
       return v13;
     }
@@ -211,10 +211,10 @@ LABEL_12:
   }
 
 LABEL_15:
-  if (a3)
+  if (buffer)
   {
 LABEL_16:
-    CFRelease(a3);
+    CFRelease(buffer);
   }
 
   return v13;

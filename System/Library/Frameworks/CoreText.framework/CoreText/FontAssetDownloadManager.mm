@@ -1,10 +1,10 @@
 @interface FontAssetDownloadManager
-+ (uint64_t)errorWithCode:(uint64_t)a3 description:;
-+ (uint64_t)fontInfo:(uint64_t)a3 andAssetDesignLanguages:(void *)a4 matchesRequest:;
-+ (void)availableMobileAssetsWithOptions:(uint64_t *)a3 error:;
-+ (void)availableMobileAssetsWithOptions:(uint64_t)a3 manager:(uint64_t *)a4 error:;
++ (uint64_t)errorWithCode:(uint64_t)code description:;
++ (uint64_t)fontInfo:(uint64_t)info andAssetDesignLanguages:(void *)languages matchesRequest:;
++ (void)availableMobileAssetsWithOptions:(uint64_t *)options error:;
++ (void)availableMobileAssetsWithOptions:(uint64_t)options manager:(uint64_t *)manager error:;
 - (id).cxx_construct;
-- (uint64_t)callProgressCallback:(uint64_t)a1;
+- (uint64_t)callProgressCallback:(uint64_t)callback;
 - (void)dealloc;
 @end
 
@@ -19,9 +19,9 @@
   [(FontAssetDownloadManager *)&v3 dealloc];
 }
 
-- (uint64_t)callProgressCallback:(uint64_t)a1
+- (uint64_t)callProgressCallback:(uint64_t)callback
 {
-  if (a1)
+  if (callback)
   {
     if (_MergedGlobals_39 != -1)
     {
@@ -36,7 +36,7 @@
     block[1] = 3221225472;
     block[2] = __49__FontAssetDownloadManager_callProgressCallback___block_invoke_2;
     block[3] = &unk_1E6E3EEB0;
-    block[4] = a1;
+    block[4] = callback;
     block[5] = &v8;
     v7 = a2;
     dispatch_sync(qword_1ED568288, block);
@@ -66,12 +66,12 @@ uint64_t __49__FontAssetDownloadManager_callProgressCallback___block_invoke_2(ui
   return result;
 }
 
-+ (uint64_t)errorWithCode:(uint64_t)a3 description:
++ (uint64_t)errorWithCode:(uint64_t)code description:
 {
   v13[2] = *MEMORY[0x1E69E9840];
   objc_opt_self();
   v5 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.CoreText"];
-  v6 = [v5 localizedStringForKey:a3 value:&stru_1EF25C610 table:0];
+  v6 = [v5 localizedStringForKey:code value:&stru_1EF25C610 table:0];
   if (IsWAPIComplianceRequired())
   {
     v7 = @"Check WLAN connection and try again later.";
@@ -114,7 +114,7 @@ uint64_t __52__FontAssetDownloadManager_filterIncompatibleAsset___block_invoke(u
   return [v9 compare:v10];
 }
 
-+ (void)availableMobileAssetsWithOptions:(uint64_t *)a3 error:
++ (void)availableMobileAssetsWithOptions:(uint64_t *)options error:
 {
   v77 = *MEMORY[0x1E69E9840];
   objc_opt_self();
@@ -156,7 +156,7 @@ uint64_t __52__FontAssetDownloadManager_filterIncompatibleAsset___block_invoke(u
   if (!dispatch_semaphore_wait(v10, v14))
   {
     AssociatedObject = objc_getAssociatedObject(v13, +[FontAssetDownloadManager availableMobileAssetsWithOptions:error:]::downloadErrorKey);
-    if (!a3 || !AssociatedObject)
+    if (!options || !AssociatedObject)
     {
       goto LABEL_13;
     }
@@ -165,11 +165,11 @@ uint64_t __52__FontAssetDownloadManager_filterIncompatibleAsset___block_invoke(u
     goto LABEL_12;
   }
 
-  if (a3)
+  if (options)
   {
     v15 = [FontAssetDownloadManager errorWithCode:@"Font asset catalog download failed." description:?];
 LABEL_12:
-    *a3 = v15;
+    *options = v15;
   }
 
 LABEL_13:
@@ -194,11 +194,11 @@ LABEL_14:
   [v19 setDoNotBlockOnNetworkStatus:1];
   if ([v19 queryMetaDataSync] == 2)
   {
-    if (a3)
+    if (options)
     {
-      v52 = 0;
-      *a3 = [FontAssetDownloadManager errorWithCode:@"Font asset catalog has not been downloaded." description:?];
-      return v52;
+      array = 0;
+      *options = [FontAssetDownloadManager errorWithCode:@"Font asset catalog has not been downloaded." description:?];
+      return array;
     }
 
     return 0;
@@ -207,13 +207,13 @@ LABEL_14:
   v21 = 0x1E695D000uLL;
   if ((a2 & 2) != 0)
   {
-    v22 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:0];
+    results2 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:0];
     v56 = 0u;
     v57 = 0u;
     v58 = 0u;
     v59 = 0u;
-    v23 = [v19 results];
-    v24 = [v23 countByEnumeratingWithState:&v56 objects:v73 count:16];
+    results = [v19 results];
+    v24 = [results countByEnumeratingWithState:&v56 objects:v73 count:16];
     if (v24)
     {
       v25 = v24;
@@ -224,19 +224,19 @@ LABEL_14:
         {
           if (*v57 != v26)
           {
-            objc_enumerationMutation(v23);
+            objc_enumerationMutation(results);
           }
 
           v28 = *(*(&v56 + 1) + 8 * i);
           objc_opt_self();
-          v29 = [v28 state];
-          if (v29 <= 6 && ((1 << v29) & 0x6C) != 0)
+          state = [v28 state];
+          if (state <= 6 && ((1 << state) & 0x6C) != 0)
           {
-            [v22 addObject:v28];
+            [results2 addObject:v28];
           }
         }
 
-        v25 = [v23 countByEnumeratingWithState:&v56 objects:v73 count:16];
+        v25 = [results countByEnumeratingWithState:&v56 objects:v73 count:16];
       }
 
       while (v25);
@@ -245,10 +245,10 @@ LABEL_14:
 
   else
   {
-    v22 = [v19 results];
+    results2 = [v19 results];
   }
 
-  v31 = v22;
+  v31 = results2;
   objc_opt_self();
   v32 = FSGetMaxSupportedFontAssetCompatibilityVersion();
   obj = [MEMORY[0x1E695DF70] array];
@@ -271,10 +271,10 @@ LABEL_14:
         }
 
         v37 = *(*(&v69 + 1) + 8 * j);
-        v38 = [v37 attributes];
-        if ([objc_msgSend(v38 objectForKeyedSubscript:{@"_CompatibilityVersion", "unsignedIntValue"}] <= v32)
+        attributes = [v37 attributes];
+        if ([objc_msgSend(attributes objectForKeyedSubscript:{@"_CompatibilityVersion", "unsignedIntValue"}] <= v32)
         {
-          v39 = [objc_msgSend(v38 objectForKeyedSubscript:{@"MaxFontCompatibilityVersion", "unsignedIntValue"}];
+          v39 = [objc_msgSend(attributes objectForKeyedSubscript:{@"MaxFontCompatibilityVersion", "unsignedIntValue"}];
           if (!v39 || v39 >= v32)
           {
             [obj addObject:v37];
@@ -289,7 +289,7 @@ LABEL_14:
   }
 
   [obj sortUsingComparator:&__block_literal_global_76];
-  v52 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v41 = [MEMORY[0x1E695DFA8] set];
   v65 = 0u;
   v66 = 0u;
@@ -310,7 +310,7 @@ LABEL_14:
 
         v43 = *(*(&v65 + 1) + 8 * k);
         v44 = [objc_msgSend(v43 "attributes")];
-        v45 = [*(v21 + 3952) array];
+        array2 = [*(v21 + 3952) array];
         v61 = 0u;
         v62 = 0u;
         v63 = 0u;
@@ -330,7 +330,7 @@ LABEL_56:
             }
 
             v50 = [*(*(&v61 + 1) + 8 * v49) objectForKey:@"PostScriptFontName"];
-            [v45 addObject:v50];
+            [array2 addObject:v50];
             if ([v41 containsObject:v50])
             {
               break;
@@ -352,8 +352,8 @@ LABEL_56:
         else
         {
 LABEL_62:
-          [v41 addObjectsFromArray:v45];
-          [v52 addObject:v43];
+          [v41 addObjectsFromArray:array2];
+          [array addObject:v43];
         }
 
         v21 = 0x1E695D000;
@@ -365,7 +365,7 @@ LABEL_62:
     while (v55);
   }
 
-  return v52;
+  return array;
 }
 
 void __67__FontAssetDownloadManager_availableMobileAssetsWithOptions_error___block_invoke(uint64_t a1, uint64_t a2)
@@ -385,23 +385,23 @@ void __67__FontAssetDownloadManager_availableMobileAssetsWithOptions_error___blo
   dispatch_release(v6);
 }
 
-+ (uint64_t)fontInfo:(uint64_t)a3 andAssetDesignLanguages:(void *)a4 matchesRequest:
++ (uint64_t)fontInfo:(uint64_t)info andAssetDesignLanguages:(void *)languages matchesRequest:
 {
   objc_opt_self();
-  v7 = [a4 objectForKey:@"NSFontFamilyAttribute"];
-  v8 = [a4 objectForKey:@"NSFontNameAttribute"];
+  v7 = [languages objectForKey:@"NSFontFamilyAttribute"];
+  v8 = [languages objectForKey:@"NSFontNameAttribute"];
   v9 = [(NSDictionary *)a2 objectForKey:@"PostScriptFontNameAliases"];
   if (!v8 || (v10 = v9, (v11 = -[NSDictionary objectForKey:](a2, "objectForKey:", @"PostScriptFontName")) == 0) || ([v11 isEqualToString:v8] & 1) != 0 || (result = objc_msgSend(v10, "containsObject:", v8), result))
   {
-    v13 = [a4 objectForKey:@"NSCTFontPostScriptNameAttribute"];
+    v13 = [languages objectForKey:@"NSCTFontPostScriptNameAttribute"];
     if (!v13 || (v14 = v13, (v15 = -[NSDictionary objectForKey:](a2, "objectForKey:", @"PostScriptFontName")) == 0) || (result = [v15 isEqualToString:v14], result))
     {
-      if (DictHasUnmatchedNames(a2, &cfstr_Fontfamilyname.isa, &cfstr_Preferredfamil.isa, v7) || DictHasUnmatchedNames(a2, &cfstr_Fontstylename.isa, &cfstr_Preferredstyle.isa, [a4 objectForKey:@"NSFontFaceAttribute"]))
+      if (DictHasUnmatchedNames(a2, &cfstr_Fontfamilyname.isa, &cfstr_Preferredfamil.isa, v7) || DictHasUnmatchedNames(a2, &cfstr_Fontstylename.isa, &cfstr_Preferredstyle.isa, [languages objectForKey:@"NSFontFaceAttribute"]))
       {
         return 0;
       }
 
-      v16 = [a4 objectForKey:@"NSFontVisibleNameAttribute"];
+      v16 = [languages objectForKey:@"NSFontVisibleNameAttribute"];
       if (!v16)
       {
         goto LABEL_29;
@@ -420,7 +420,7 @@ void __67__FontAssetDownloadManager_availableMobileAssetsWithOptions_error___blo
       if (result)
       {
 LABEL_29:
-        if ([a4 objectForKey:@"NSCTFontDesignLanguagesAttribute"])
+        if ([languages objectForKey:@"NSCTFontDesignLanguagesAttribute"])
         {
           v19 = [MEMORY[0x1E695DFD8] setWithArray:?];
         }
@@ -437,7 +437,7 @@ LABEL_29:
         }
 
         v21 = [(NSDictionary *)a2 objectForKey:@"FontDesignLanguages"];
-        v22 = v21 ? v21 : a3;
+        v22 = v21 ? v21 : info;
         v23 = v22 ? [MEMORY[0x1E695DFD8] setWithArray:?] : objc_msgSend(MEMORY[0x1E695DFD8], "set");
         result = [v20 isSubsetOfSet:v23];
         if (result)
@@ -451,17 +451,17 @@ LABEL_29:
   return result;
 }
 
-+ (void)availableMobileAssetsWithOptions:(uint64_t)a3 manager:(uint64_t *)a4 error:
++ (void)availableMobileAssetsWithOptions:(uint64_t)options manager:(uint64_t *)manager error:
 {
   objc_opt_self();
   if (a2)
   {
-    [(FontAssetDownloadManager *)a3 callProgressCallback:?];
+    [(FontAssetDownloadManager *)options callProgressCallback:?];
   }
 
-  v7 = [FontAssetDownloadManager availableMobileAssetsWithOptions:a2 error:a4];
+  v7 = [FontAssetDownloadManager availableMobileAssetsWithOptions:a2 error:manager];
   v8 = [v7 count];
-  if (!a4 || v8 || [*a4 code] != 303)
+  if (!manager || v8 || [*manager code] != 303)
   {
     return v7;
   }
@@ -475,7 +475,7 @@ LABEL_29:
     }
 
 LABEL_10:
-    [(FontAssetDownloadManager *)a3 callProgressCallback:?];
+    [(FontAssetDownloadManager *)options callProgressCallback:?];
     goto LABEL_11;
   }
 
@@ -495,7 +495,7 @@ LABEL_10:
 
 LABEL_11:
 
-  return [FontAssetDownloadManager availableMobileAssetsWithOptions:v11 error:a4];
+  return [FontAssetDownloadManager availableMobileAssetsWithOptions:v11 error:manager];
 }
 
 intptr_t __57__FontAssetDownloadManager_executeDownloadingFontAssets___block_invoke(uint64_t a1)

@@ -1,21 +1,21 @@
 @interface SCMLPerformanceResult
-- (SCMLPerformanceResult)initWithName:(id)a3;
+- (SCMLPerformanceResult)initWithName:(id)name;
 - (id)description;
 - (id)dict;
 @end
 
 @implementation SCMLPerformanceResult
 
-- (SCMLPerformanceResult)initWithName:(id)a3
+- (SCMLPerformanceResult)initWithName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   v9.receiver = self;
   v9.super_class = SCMLPerformanceResult;
   v6 = [(SCMLPerformanceResult *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_name, a3);
+    objc_storeStrong(&v6->_name, name);
   }
 
   return v7;
@@ -24,9 +24,9 @@
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(SCMLPerformanceResult *)self name];
+  name = [(SCMLPerformanceResult *)self name];
   cpuTime = self->cpuTime;
-  v6 = [v3 stringWithFormat:@"[%@: Peak-Delta: %lf, CPU-Time: %lf, Interval: %lf]", v4, *&self->peakdelta, *&cpuTime, *&self->timeInterval];
+  v6 = [v3 stringWithFormat:@"[%@: Peak-Delta: %lf, CPU-Time: %lf, Interval: %lf]", name, *&self->peakdelta, *&cpuTime, *&self->timeInterval];
 
   return v6;
 }

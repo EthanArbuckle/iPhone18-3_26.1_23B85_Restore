@@ -8,8 +8,8 @@
 - (void)createPath
 {
   Mutable = CGPathCreateMutable();
-  v4 = [(MKOverlayView *)self overlay];
-  [v4 coordinate];
+  overlay = [(MKOverlayView *)self overlay];
+  [overlay coordinate];
   v6 = v5;
   v8 = v7;
 
@@ -18,8 +18,8 @@
   v12 = v11;
   GEOMapPointsPerMeterAtLatitude();
   v14 = v13;
-  v15 = [(MKOverlayView *)self overlay];
-  [v15 radius];
+  overlay2 = [(MKOverlayView *)self overlay];
+  [overlay2 radius];
   v17 = v14 * v16;
 
   CGPathAddArc(Mutable, 0, v10, v12, v17, 0.0, 6.28318531, 1);

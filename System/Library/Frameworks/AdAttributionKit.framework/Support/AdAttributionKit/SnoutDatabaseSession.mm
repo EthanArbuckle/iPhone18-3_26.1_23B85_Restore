@@ -1,6 +1,6 @@
 @interface SnoutDatabaseSession
 - (_TtC20AttributionKitDaemon20SnoutDatabaseSession)init;
-- (_TtC20AttributionKitDaemon20SnoutDatabaseSession)initWithConnection:(id)a3;
+- (_TtC20AttributionKitDaemon20SnoutDatabaseSession)initWithConnection:(id)connection;
 @end
 
 @implementation SnoutDatabaseSession
@@ -12,11 +12,11 @@
   return [(SnoutDatabaseSession *)&v3 init];
 }
 
-- (_TtC20AttributionKitDaemon20SnoutDatabaseSession)initWithConnection:(id)a3
+- (_TtC20AttributionKitDaemon20SnoutDatabaseSession)initWithConnection:(id)connection
 {
   v5.receiver = self;
   v5.super_class = type metadata accessor for SnoutDatabaseSession();
-  return [(SQLiteDatabaseSession *)&v5 initWithConnection:a3];
+  return [(SQLiteDatabaseSession *)&v5 initWithConnection:connection];
 }
 
 @end

@@ -1,21 +1,21 @@
 @interface HKOverlayContextUtilities
-+ (id)defaultMetricColorsForOverlayMode:(int64_t)a3;
-+ (id)selectedMetricColorsForCategory:(int64_t)a3;
++ (id)defaultMetricColorsForOverlayMode:(int64_t)mode;
++ (id)selectedMetricColorsForCategory:(int64_t)category;
 + (id)stackedAxisConfiguration;
-+ (id)stackedChartMetricColorsForSampleType:(id)a3 templateType:(id)a4;
-+ (void)setStackedSeriesLegend:(id)a3 title:(id)a4;
++ (id)stackedChartMetricColorsForSampleType:(id)type templateType:(id)templateType;
++ (void)setStackedSeriesLegend:(id)legend title:(id)title;
 @end
 
 @implementation HKOverlayContextUtilities
 
-+ (id)selectedMetricColorsForCategory:(int64_t)a3
++ (id)selectedMetricColorsForCategory:(int64_t)category
 {
-  switch(a3)
+  switch(category)
   {
     case -1:
     case 7:
-      v5 = [MEMORY[0x1E69DC888] whiteColor];
-      v3 = [HKUIMetricColors defaultContextViewColorsUsingColor:v5];
+      whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+      v3 = [HKUIMetricColors defaultContextViewColorsUsingColor:whiteColor];
 
       break;
     case 1:
@@ -98,13 +98,13 @@ LABEL_26:
   return v3;
 }
 
-+ (id)stackedChartMetricColorsForSampleType:(id)a3 templateType:(id)a4
++ (id)stackedChartMetricColorsForSampleType:(id)type templateType:(id)templateType
 {
-  v5 = a4;
-  v6 = [a3 code];
-  if (v6 <= 74)
+  templateTypeCopy = templateType;
+  code = [type code];
+  if (code <= 74)
   {
-    switch(v6)
+    switch(code)
     {
       case 3:
         v7 = +[HKUIMetricColors bodyMeasurementColors];
@@ -118,22 +118,22 @@ LABEL_26:
     }
 
 LABEL_14:
-    v8 = [v5 displayCategory];
-    v9 = [v8 color];
-    v10 = [HKUIMetricColors categoryColorsWithColor:v9];
+    displayCategory = [templateTypeCopy displayCategory];
+    color = [displayCategory color];
+    v10 = [HKUIMetricColors categoryColorsWithColor:color];
 
     goto LABEL_19;
   }
 
-  if (v6 > 190)
+  if (code > 190)
   {
-    if (v6 == 191)
+    if (code == 191)
     {
       v7 = +[HKUIMetricColors pregnancyColors];
       goto LABEL_18;
     }
 
-    if (v6 == 251)
+    if (code == 251)
     {
       v7 = +[HKUIMetricColors otherColors];
       goto LABEL_18;
@@ -142,13 +142,13 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  if (v6 == 75)
+  if (code == 75)
   {
     v7 = +[HKUIMetricColors activityColors];
     goto LABEL_18;
   }
 
-  if (v6 != 99)
+  if (code != 99)
   {
     goto LABEL_14;
   }
@@ -161,43 +161,43 @@ LABEL_19:
   return v10;
 }
 
-+ (id)defaultMetricColorsForOverlayMode:(int64_t)a3
++ (id)defaultMetricColorsForOverlayMode:(int64_t)mode
 {
-  if (a3 >= 3)
+  if (mode >= 3)
   {
-    if (a3 != 3)
+    if (mode != 3)
     {
       goto LABEL_6;
     }
 
-    v4 = [MEMORY[0x1E69DC888] tertiarySystemBackgroundColor];
+    tertiarySystemBackgroundColor = [MEMORY[0x1E69DC888] tertiarySystemBackgroundColor];
   }
 
   else
   {
-    v4 = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
+    tertiarySystemBackgroundColor = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
   }
 
-  v5 = v4;
-  v3 = [HKUIMetricColors defaultContextViewColorsUsingColor:v4];
+  v5 = tertiarySystemBackgroundColor;
+  v3 = [HKUIMetricColors defaultContextViewColorsUsingColor:tertiarySystemBackgroundColor];
 
 LABEL_6:
 
   return v3;
 }
 
-+ (void)setStackedSeriesLegend:(id)a3 title:(id)a4
++ (void)setStackedSeriesLegend:(id)legend title:(id)title
 {
   v11[1] = *MEMORY[0x1E69E9840];
   v5 = MEMORY[0x1E69DC888];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v5 hk_defaultSecondaryTextColor];
-  v9 = [HKLegendEntry legendEntryWithTitle:v6 labelColor:v8];
+  titleCopy = title;
+  legendCopy = legend;
+  hk_defaultSecondaryTextColor = [v5 hk_defaultSecondaryTextColor];
+  v9 = [HKLegendEntry legendEntryWithTitle:titleCopy labelColor:hk_defaultSecondaryTextColor];
 
   v11[0] = v9;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
-  [v7 setTitleLegendEntries:v10];
+  [legendCopy setTitleLegendEntries:v10];
 }
 
 + (id)stackedAxisConfiguration

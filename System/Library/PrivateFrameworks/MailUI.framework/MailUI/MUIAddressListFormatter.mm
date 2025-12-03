@@ -1,11 +1,11 @@
 @interface MUIAddressListFormatter
-- (MUIAddressListFormatter)initWithUserProfileProvider:(id)a3 addressBookManager:(id)a4;
-- (id)_addressCommentForAddressList:(id)a3 preferFullDisplayName:(BOOL)a4;
-- (id)_attributedAddressCommentForAddressList:(id)a3 preferFullDisplayName:(BOOL)a4;
-- (id)attributedStringFromEmailAddressList:(id)a3;
-- (id)stringForObjectValue:(id)a3;
-- (id)stringFromAddressAddressList:(id)a3 preferFullDisplayName:(BOOL)a4;
-- (id)stringFromEmailAddressList:(id)a3 preferFullDisplayName:(BOOL)a4;
+- (MUIAddressListFormatter)initWithUserProfileProvider:(id)provider addressBookManager:(id)manager;
+- (id)_addressCommentForAddressList:(id)list preferFullDisplayName:(BOOL)name;
+- (id)_attributedAddressCommentForAddressList:(id)list preferFullDisplayName:(BOOL)name;
+- (id)attributedStringFromEmailAddressList:(id)list;
+- (id)stringForObjectValue:(id)value;
+- (id)stringFromAddressAddressList:(id)list preferFullDisplayName:(BOOL)name;
+- (id)stringFromEmailAddressList:(id)list preferFullDisplayName:(BOOL)name;
 - (void)_commonInit;
 - (void)_invalidateCache;
 - (void)dealloc;
@@ -34,19 +34,19 @@
 
 - (void)dealloc
 {
-  v3 = [(MUIAddressListFormatter *)self addressBookManager];
-  [v3 removeClient:self];
+  addressBookManager = [(MUIAddressListFormatter *)self addressBookManager];
+  [addressBookManager removeClient:self];
 
   v4.receiver = self;
   v4.super_class = MUIAddressListFormatter;
   [(MUIAddressListFormatter *)&v4 dealloc];
 }
 
-- (MUIAddressListFormatter)initWithUserProfileProvider:(id)a3 addressBookManager:(id)a4
+- (MUIAddressListFormatter)initWithUserProfileProvider:(id)provider addressBookManager:(id)manager
 {
-  v8 = a3;
-  v9 = a4;
-  if (!v8)
+  providerCopy = provider;
+  managerCopy = manager;
+  if (!providerCopy)
   {
     [MUIAddressListFormatter initWithUserProfileProvider:a2 addressBookManager:self];
   }
@@ -57,8 +57,8 @@
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_userProfileProvider, a3);
-    objc_storeStrong(&v11->_addressBookManager, a4);
+    objc_storeStrong(&v10->_userProfileProvider, provider);
+    objc_storeStrong(&v11->_addressBookManager, manager);
     [(MUIAddressListFormatter *)v11 _commonInit];
     [(MFAddressBookManager *)v11->_addressBookManager addClient:v11];
   }
@@ -66,13 +66,13 @@
   return v11;
 }
 
-- (id)stringForObjectValue:(id)a3
+- (id)stringForObjectValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(MUIAddressListFormatter *)self stringFromAddressAddressList:v4];
+    v5 = [(MUIAddressListFormatter *)self stringFromAddressAddressList:valueCopy];
   }
 
   else
@@ -83,14 +83,14 @@
   return v5;
 }
 
-- (id)stringFromAddressAddressList:(id)a3 preferFullDisplayName:(BOOL)a4
+- (id)stringFromAddressAddressList:(id)list preferFullDisplayName:(BOOL)name
 {
-  v4 = a4;
-  v6 = [a3 ef_map:&__block_literal_global_12];
+  nameCopy = name;
+  v6 = [list ef_map:&__block_literal_global_12];
   v7 = [v6 componentsJoinedByString:{@", "}];
   if ([v7 length])
   {
-    v8 = !v4;
+    v8 = !nameCopy;
   }
 
   else
@@ -107,15 +107,15 @@
 
   if (v7 && [v7 length])
   {
-    v10 = [(MUIAddressListFormatter *)self commentCache];
+    commentCache = [(MUIAddressListFormatter *)self commentCache];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __78__MUIAddressListFormatter_stringFromAddressAddressList_preferFullDisplayName___block_invoke_2;
     v13[3] = &unk_278189E38;
     v13[4] = self;
     v14 = v6;
-    v15 = v4;
-    v11 = [v10 objectForKey:v7 generator:v13];
+    v15 = nameCopy;
+    v11 = [commentCache objectForKey:v7 generator:v13];
   }
 
   else
@@ -157,11 +157,11 @@ id __78__MUIAddressListFormatter_stringFromAddressAddressList_preferFullDisplayN
   return v11;
 }
 
-- (id)stringFromEmailAddressList:(id)a3 preferFullDisplayName:(BOOL)a4
+- (id)stringFromEmailAddressList:(id)list preferFullDisplayName:(BOOL)name
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [v6 ef_map:&__block_literal_global_25_0];
+  nameCopy = name;
+  listCopy = list;
+  v7 = [listCopy ef_map:&__block_literal_global_25_0];
   v8 = [v7 componentsJoinedByString:{@", "}];
 
   addressCache = self->_addressCache;
@@ -169,15 +169,15 @@ id __78__MUIAddressListFormatter_stringFromAddressAddressList_preferFullDisplayN
   v16[1] = 3221225472;
   v16[2] = __76__MUIAddressListFormatter_stringFromEmailAddressList_preferFullDisplayName___block_invoke_2;
   v16[3] = &unk_278189E80;
-  v17 = v6;
-  v10 = v6;
+  v17 = listCopy;
+  v10 = listCopy;
   v11 = [(EFLazyCache *)addressCache objectForKey:v8 generator:v16];
-  v12 = [v11 firstObject];
-  v13 = [v12 length];
+  firstObject = [v11 firstObject];
+  v13 = [firstObject length];
 
   if (v13)
   {
-    v14 = [(MUIAddressListFormatter *)self stringFromAddressAddressList:v11 preferFullDisplayName:v4];
+    v14 = [(MUIAddressListFormatter *)self stringFromAddressAddressList:v11 preferFullDisplayName:nameCopy];
   }
 
   else
@@ -188,19 +188,19 @@ id __78__MUIAddressListFormatter_stringFromAddressAddressList_preferFullDisplayN
   return v14;
 }
 
-- (id)attributedStringFromEmailAddressList:(id)a3
+- (id)attributedStringFromEmailAddressList:(id)list
 {
-  v4 = [a3 ef_map:&__block_literal_global_34];
+  v4 = [list ef_map:&__block_literal_global_34];
   if (v4)
   {
-    v5 = [(MUIAddressListFormatter *)self attributedAddressCache];
+    attributedAddressCache = [(MUIAddressListFormatter *)self attributedAddressCache];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __64__MUIAddressListFormatter_attributedStringFromEmailAddressList___block_invoke_2;
     v8[3] = &unk_278189EC8;
     v8[4] = self;
     v9 = v4;
-    v6 = [v5 objectForKey:v9 generator:v8];
+    v6 = [attributedAddressCache objectForKey:v9 generator:v8];
   }
 
   else
@@ -247,48 +247,48 @@ id __64__MUIAddressListFormatter_attributedStringFromEmailAddressList___block_in
 - (void)_invalidateCache
 {
   [(EFLazyCache *)self->_commentCache removeAllObjects];
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 postNotificationName:@"MFAddressListsFormatterDidInvalidateCache" object:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"MFAddressListsFormatterDidInvalidateCache" object:self];
 }
 
-- (id)_addressCommentForAddressList:(id)a3 preferFullDisplayName:(BOOL)a4
+- (id)_addressCommentForAddressList:(id)list preferFullDisplayName:(BOOL)name
 {
-  v4 = a4;
-  v6 = [a3 ef_map:&__block_literal_global_40];
-  v7 = [(MUIAddressListFormatter *)self _attributedAddressCommentForAddressList:v6 preferFullDisplayName:v4];
-  v8 = [v7 string];
+  nameCopy = name;
+  v6 = [list ef_map:&__block_literal_global_40];
+  v7 = [(MUIAddressListFormatter *)self _attributedAddressCommentForAddressList:v6 preferFullDisplayName:nameCopy];
+  string = [v7 string];
 
-  return v8;
+  return string;
 }
 
-- (id)_attributedAddressCommentForAddressList:(id)a3 preferFullDisplayName:(BOOL)a4
+- (id)_attributedAddressCommentForAddressList:(id)list preferFullDisplayName:(BOOL)name
 {
-  v93 = a4;
+  nameCopy = name;
   v107 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(MUIAddressListFormatter *)self listFormatter];
+  listCopy = list;
+  listFormatter = [(MUIAddressListFormatter *)self listFormatter];
 
-  if (!v7)
+  if (!listFormatter)
   {
     [MUIAddressListFormatter _attributedAddressCommentForAddressList:a2 preferFullDisplayName:self];
   }
 
-  v8 = [(MUIAddressListFormatter *)self addressBookManager];
-  [v8 addressBook];
+  addressBookManager = [(MUIAddressListFormatter *)self addressBookManager];
+  [addressBookManager addressBook];
 
-  if ([v6 count] > 1)
+  if ([listCopy count] > 1)
   {
-    v89 = self;
-    v15 = [(MUIAddressListFormatter *)self userProfileProvider];
-    v96 = [v15 allEmailAddresses];
+    selfCopy = self;
+    userProfileProvider = [(MUIAddressListFormatter *)self userProfileProvider];
+    allEmailAddresses = [userProfileProvider allEmailAddresses];
 
-    v94 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v101 = 0u;
     v102 = 0u;
     v103 = 0u;
     v104 = 0u;
-    v6 = v6;
-    v16 = [v6 countByEnumeratingWithState:&v101 objects:v106 count:16];
+    listCopy = listCopy;
+    v16 = [listCopy countByEnumeratingWithState:&v101 objects:v106 count:16];
     if (v16)
     {
       v17 = v16;
@@ -300,91 +300,91 @@ id __64__MUIAddressListFormatter_attributedStringFromEmailAddressList___block_in
         {
           if (*v102 != v19)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(listCopy);
           }
 
           v21 = *(*(&v101 + 1) + 8 * i);
-          v22 = [v21 first];
-          v23 = [v22 emailAddressValue];
-          v24 = [v23 simpleAddress];
-          v25 = v24;
-          if (v24)
+          first = [v21 first];
+          emailAddressValue = [first emailAddressValue];
+          simpleAddress = [emailAddressValue simpleAddress];
+          v25 = simpleAddress;
+          if (simpleAddress)
           {
-            v26 = v24;
+            stringValue = simpleAddress;
           }
 
           else
           {
-            v26 = [v22 stringValue];
+            stringValue = [first stringValue];
           }
 
-          v27 = v26;
+          v27 = stringValue;
 
-          if ((v18 & [v96 containsObject:v27] & 1) == 0)
+          if ((v18 & [allEmailAddresses containsObject:v27] & 1) == 0)
           {
             v28 = MEMORY[0x277D07190];
-            v29 = [v21 second];
-            v30 = [v28 pairWithFirst:v22 second:v29];
-            [v94 addObject:v30];
+            second = [v21 second];
+            v30 = [v28 pairWithFirst:first second:second];
+            [array addObject:v30];
           }
 
           v18 = 1;
         }
 
-        v17 = [v6 countByEnumeratingWithState:&v101 objects:v106 count:16];
+        v17 = [listCopy countByEnumeratingWithState:&v101 objects:v106 count:16];
       }
 
       while (v17);
     }
 
-    v31 = v94;
-    if ([v94 count])
+    v31 = array;
+    if ([array count])
     {
-      v32 = v94;
+      v32 = array;
 
-      v6 = v32;
+      listCopy = v32;
     }
 
-    if ([v6 count] == 1)
+    if ([listCopy count] == 1)
     {
-      v33 = [v94 lastObject];
-      v34 = [v33 first];
-      v35 = [v34 emailAddressValue];
-      v36 = [v35 simpleAddress];
-      v37 = v36;
-      if (v36)
+      lastObject = [array lastObject];
+      first2 = [lastObject first];
+      emailAddressValue2 = [first2 emailAddressValue];
+      simpleAddress2 = [emailAddressValue2 simpleAddress];
+      v37 = simpleAddress2;
+      if (simpleAddress2)
       {
-        v38 = v36;
+        stringValue2 = simpleAddress2;
       }
 
       else
       {
-        v38 = [v34 stringValue];
+        stringValue2 = [first2 stringValue];
       }
 
-      v79 = v38;
+      v79 = stringValue2;
 
-      v61 = v34;
-      v80 = [v61 emailAddressValue];
-      v81 = [v80 displayName];
-      v82 = v81;
-      if (v81)
+      v61 = first2;
+      emailAddressValue3 = [v61 emailAddressValue];
+      displayName = [emailAddressValue3 displayName];
+      v82 = displayName;
+      if (displayName)
       {
-        v83 = v81;
+        stringValue3 = displayName;
       }
 
       else
       {
-        v83 = [v61 stringValue];
+        stringValue3 = [v61 stringValue];
       }
 
-      v84 = v83;
+      v84 = stringValue3;
 
       v60 = MFPreferredCompositeNameForAddressAndDisplayName();
 
       v85 = MEMORY[0x277CCA898];
-      v66 = [v33 second];
-      v68 = [v85 ec_emailAttributedStringWithString:v60 andEmailAddress:v66];
+      second2 = [lastObject second];
+      v68 = [v85 ec_emailAttributedStringWithString:v60 andEmailAddress:second2];
     }
 
     else
@@ -396,8 +396,8 @@ id __64__MUIAddressListFormatter_attributedStringFromEmailAddressList___block_in
       v98 = 0u;
       v99 = 0u;
       v100 = 0u;
-      v87 = v6;
-      v39 = v6;
+      v87 = listCopy;
+      v39 = listCopy;
       v95 = [v39 countByEnumeratingWithState:&v97 objects:v105 count:16];
       if (v95)
       {
@@ -412,41 +412,41 @@ id __64__MUIAddressListFormatter_attributedStringFromEmailAddressList___block_in
             }
 
             v42 = *(*(&v97 + 1) + 8 * j);
-            v43 = [v42 first];
-            v44 = [v42 second];
-            v45 = v43;
-            v46 = [v45 emailAddressValue];
-            v47 = [v46 simpleAddress];
-            v48 = v47;
-            if (v47)
+            first3 = [v42 first];
+            second3 = [v42 second];
+            v45 = first3;
+            emailAddressValue4 = [v45 emailAddressValue];
+            simpleAddress3 = [emailAddressValue4 simpleAddress];
+            v48 = simpleAddress3;
+            if (simpleAddress3)
             {
-              v49 = v47;
+              stringValue4 = simpleAddress3;
             }
 
             else
             {
-              v49 = [v45 stringValue];
+              stringValue4 = [v45 stringValue];
             }
 
-            v50 = v49;
+            v50 = stringValue4;
 
             v51 = v45;
-            v52 = [v51 emailAddressValue];
-            v53 = [v52 displayName];
-            v54 = v53;
-            if (v53)
+            emailAddressValue5 = [v51 emailAddressValue];
+            displayName2 = [emailAddressValue5 displayName];
+            v54 = displayName2;
+            if (displayName2)
             {
-              v55 = v53;
+              stringValue5 = displayName2;
             }
 
             else
             {
-              v55 = [v51 stringValue];
+              stringValue5 = [v51 stringValue];
             }
 
-            v56 = v55;
+            v56 = stringValue5;
 
-            if (v93)
+            if (nameCopy)
             {
               v57 = v56;
             }
@@ -459,7 +459,7 @@ id __64__MUIAddressListFormatter_attributedStringFromEmailAddressList___block_in
             v58 = v57;
             if (v57)
             {
-              v59 = [MEMORY[0x277D07190] pairWithFirst:v57 second:v44];
+              v59 = [MEMORY[0x277D07190] pairWithFirst:v57 second:second3];
               [v92 addObject:v59];
             }
           }
@@ -470,72 +470,72 @@ id __64__MUIAddressListFormatter_attributedStringFromEmailAddressList___block_in
         while (v95);
       }
 
-      v33 = v92;
-      v31 = v94;
+      lastObject = v92;
+      v31 = array;
       v60 = v90;
       v61 = v91;
       if ([v92 count] == 1)
       {
-        v62 = [v91 allObjects];
-        v63 = [v62 firstObject];
+        allObjects = [v91 allObjects];
+        firstObject = [allObjects firstObject];
 
-        v64 = [v90 objectForKeyedSubscript:v63];
+        v64 = [v90 objectForKeyedSubscript:firstObject];
         v65 = v64;
-        if (v63 && v64)
+        if (firstObject && v64)
         {
           [v92 removeAllObjects];
           [v92 addObject:v65];
         }
       }
 
-      v66 = [(MUIAddressListFormatter *)v89 listFormatter];
+      second2 = [(MUIAddressListFormatter *)selfCopy listFormatter];
       v67 = [v92 ef_map:&__block_literal_global_50];
-      v68 = [v66 attributedLocalizedStringFromList:v67];
+      v68 = [second2 attributedLocalizedStringFromList:v67];
 
-      v6 = v88;
+      listCopy = v88;
     }
   }
 
   else
   {
-    v9 = [v6 lastObject];
-    v10 = [v9 first];
-    v11 = [v10 emailAddressValue];
-    v12 = [v11 simpleAddress];
-    v13 = v12;
-    if (v12)
+    lastObject2 = [listCopy lastObject];
+    first4 = [lastObject2 first];
+    emailAddressValue6 = [first4 emailAddressValue];
+    simpleAddress4 = [emailAddressValue6 simpleAddress];
+    v13 = simpleAddress4;
+    if (simpleAddress4)
     {
-      v14 = v12;
+      stringValue6 = simpleAddress4;
     }
 
     else
     {
-      v14 = [v10 stringValue];
+      stringValue6 = [first4 stringValue];
     }
 
-    v69 = v14;
+    v69 = stringValue6;
 
-    v70 = v10;
-    v71 = [v70 emailAddressValue];
-    v72 = [v71 displayName];
-    v73 = v72;
-    if (v72)
+    v70 = first4;
+    emailAddressValue7 = [v70 emailAddressValue];
+    displayName3 = [emailAddressValue7 displayName];
+    v73 = displayName3;
+    if (displayName3)
     {
-      v74 = v72;
+      stringValue7 = displayName3;
     }
 
     else
     {
-      v74 = [v70 stringValue];
+      stringValue7 = [v70 stringValue];
     }
 
-    v75 = v74;
+    v75 = stringValue7;
 
     v76 = MFPreferredCompositeNameForAddressAndDisplayName();
 
     v77 = MEMORY[0x277CCA898];
-    v78 = [v9 second];
-    v68 = [v77 ec_emailAttributedStringWithString:v76 andEmailAddress:v78];
+    second4 = [lastObject2 second];
+    v68 = [v77 ec_emailAttributedStringWithString:v76 andEmailAddress:second4];
   }
 
   return v68;

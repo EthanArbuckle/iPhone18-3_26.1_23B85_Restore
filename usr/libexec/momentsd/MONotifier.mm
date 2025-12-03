@@ -1,11 +1,11 @@
 @interface MONotifier
 + (BOOL)isAvailable;
-- (MONotifier)initWithName:(id)a3;
+- (MONotifier)initWithName:(id)name;
 - (unint64_t)observerCount;
-- (void)notify:(int)a3 withPayload:(id)a4;
-- (void)notifyAndPersist:(int)a3 withPayload:(id)a4;
-- (void)registerDispatcher:(id)a3 forNotification:(int)a4;
-- (void)unregisterDispatcher:(id)a3;
+- (void)notify:(int)notify withPayload:(id)payload;
+- (void)notifyAndPersist:(int)persist withPayload:(id)payload;
+- (void)registerDispatcher:(id)dispatcher forNotification:(int)notification;
+- (void)unregisterDispatcher:(id)dispatcher;
 @end
 
 @implementation MONotifier
@@ -46,22 +46,22 @@ id __27__MONotifier_observerCount__block_invoke(uint64_t a1)
   return result;
 }
 
-- (MONotifier)initWithName:(id)a3
+- (MONotifier)initWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v17.receiver = self;
   v17.super_class = MONotifier;
   v5 = [(MONotifier *)&v17 init];
   if (v5)
   {
-    if (v4 && [v4 length])
+    if (nameCopy && [nameCopy length])
     {
-      v6 = [NSString stringWithFormat:@"com.apple.momentsd:%@", v4];
+      nameCopy = [NSString stringWithFormat:@"com.apple.momentsd:%@", nameCopy];
     }
 
     else
     {
-      v6 = @"com.apple.momentsd:anonymous";
+      nameCopy = @"com.apple.momentsd:anonymous";
     }
 
     v5->_enabled = 0;
@@ -73,9 +73,9 @@ id __27__MONotifier_observerCount__block_invoke(uint64_t a1)
     persistedPayload = v5->_persistedPayload;
     v5->_persistedPayload = v9;
 
-    v11 = [(__CFString *)v6 UTF8String];
+    uTF8String = [(__CFString *)nameCopy UTF8String];
     v12 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v13 = dispatch_queue_create(v11, v12);
+    v13 = dispatch_queue_create(uTF8String, v12);
     queue = v5->_queue;
     v5->_queue = v13;
 
@@ -85,18 +85,18 @@ id __27__MONotifier_observerCount__block_invoke(uint64_t a1)
   return v5;
 }
 
-- (void)notify:(int)a3 withPayload:(id)a4
+- (void)notify:(int)notify withPayload:(id)payload
 {
-  v6 = a4;
+  payloadCopy = payload;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __59__MONotifier_MODerivedNotifierUtility__notify_withPayload___block_invoke;
   block[3] = &unk_10033C6D0;
   block[4] = self;
-  v10 = v6;
-  v11 = a3;
-  v8 = v6;
+  v10 = payloadCopy;
+  notifyCopy = notify;
+  v8 = payloadCopy;
   dispatch_async(queue, block);
 }
 
@@ -137,18 +137,18 @@ void __59__MONotifier_MODerivedNotifierUtility__notify_withPayload___block_invok
   }
 }
 
-- (void)notifyAndPersist:(int)a3 withPayload:(id)a4
+- (void)notifyAndPersist:(int)persist withPayload:(id)payload
 {
-  v6 = a4;
+  payloadCopy = payload;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __69__MONotifier_MODerivedNotifierUtility__notifyAndPersist_withPayload___block_invoke;
   block[3] = &unk_10033C6D0;
-  v11 = a3;
+  persistCopy = persist;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = payloadCopy;
+  v8 = payloadCopy;
   dispatch_async(queue, block);
 }
 
@@ -161,9 +161,9 @@ void __69__MONotifier_MODerivedNotifierUtility__notifyAndPersist_withPayload___b
   [v2 setObject:v4 forKey:v3];
 }
 
-- (void)registerDispatcher:(id)a3 forNotification:(int)a4
+- (void)registerDispatcher:(id)dispatcher forNotification:(int)notification
 {
-  v7 = a3;
+  dispatcherCopy = dispatcher;
   queue = self->_queue;
   if (!queue)
   {
@@ -184,9 +184,9 @@ void __69__MONotifier_MODerivedNotifierUtility__notifyAndPersist_withPayload___b
   block[2] = __70__MONotifier_MODispatcherUtility__registerDispatcher_forNotification___block_invoke;
   block[3] = &unk_10033C6D0;
   block[4] = self;
-  v13 = v7;
-  v14 = a4;
-  v11 = v7;
+  v13 = dispatcherCopy;
+  notificationCopy = notification;
+  v11 = dispatcherCopy;
   dispatch_sync(queue, block);
 }
 
@@ -225,9 +225,9 @@ void __70__MONotifier_MODispatcherUtility__registerDispatcher_forNotification___
   }
 }
 
-- (void)unregisterDispatcher:(id)a3
+- (void)unregisterDispatcher:(id)dispatcher
 {
-  v5 = a3;
+  dispatcherCopy = dispatcher;
   queue = self->_queue;
   if (!queue)
   {
@@ -248,8 +248,8 @@ void __70__MONotifier_MODispatcherUtility__registerDispatcher_forNotification___
   block[2] = __56__MONotifier_MODispatcherUtility__unregisterDispatcher___block_invoke;
   block[3] = &unk_100335B08;
   block[4] = self;
-  v11 = v5;
-  v9 = v5;
+  v11 = dispatcherCopy;
+  v9 = dispatcherCopy;
   dispatch_sync(queue, block);
 }
 

@@ -1,65 +1,65 @@
 @interface MCMFileManager
 + (id)defaultManager;
-- ($7DEDF3842AEFB7F1E6DF5AF62E424A02)diskUsageForURL:(id)a3;
-- ($7DEDF3842AEFB7F1E6DF5AF62E424A02)fastDiskUsageForURL:(id)a3;
-- (BOOL)_CreateSystemUserACEInACL:(_acl *)a3 withPermissions:(int)a4 andFlags:(int)a5 withError:(id *)a6;
-- (BOOL)_copyItemAtURL:(id)a3 toURL:(id)a4 failIfSrcMissing:(BOOL)a5 error:(id *)a6;
-- (BOOL)_enumeratePOSIX1eACLEntriesAtURL:(id)a3 error:(id *)a4 usingBlock:(id)a5;
-- (BOOL)_moveItemAtURL:(id)a3 toURL:(id)a4 failIfSrcMissing:(BOOL)a5 error:(id *)a6;
-- (BOOL)_traverseDirectory:(id)a3 error:(id *)a4 withBlock:(id)a5;
-- (BOOL)_validateSymlink:(id)a3 withStartingDepth:(unsigned int)a4 andEndingDepth:(unsigned int *)a5;
-- (BOOL)_withEveryoneDenyDeleteACLDoBlock:(id)a3;
-- (BOOL)checkFileSystemAtURL:(id)a3 isCaseSensitive:(BOOL *)a4 canAtomicSwap:(BOOL *)a5 error:(id *)a6;
-- (BOOL)checkFileSystemAtURL:(id)a3 supportsPerFileKeys:(BOOL *)a4 error:(id *)a5;
-- (BOOL)compareVolumeForURL:(id)a3 versusURL:(id)a4 isSameVolume:(BOOL *)a5 error:(id *)a6;
-- (BOOL)copyItemAtURL:(id)a3 toURL:(id)a4 error:(id *)a5;
-- (BOOL)copyItemIfExistsAtURL:(id)a3 toURL:(id)a4 error:(id *)a5;
-- (BOOL)dataProtectionClassOfItemAtURL:(id)a3 dataProtectionClass:(int *)a4 error:(id *)a5;
-- (BOOL)enableFastDiskUsageForURL:(id)a3 error:(id *)a4;
-- (BOOL)fixUserPermissionsAtURL:(id)a3 limitToTopLevelURL:(id)a4 error:(id *)a5;
-- (BOOL)itemAtURL:(id)a3 exists:(BOOL *)a4 error:(id *)a5;
-- (BOOL)itemAtURL:(id)a3 exists:(BOOL *)a4 isDirectory:(BOOL *)a5 error:(id *)a6;
-- (BOOL)itemAtURL:(id)a3 followSymlinks:(BOOL)a4 exists:(BOOL *)a5 isDirectory:(BOOL *)a6 fsNode:(id *)a7 error:(id *)a8;
-- (BOOL)itemDoesNotExistAtURL:(id)a3;
-- (BOOL)itemExistsAtURL:(id)a3;
-- (BOOL)itemExistsAtURL:(id)a3 isDirectory:(BOOL *)a4;
-- (BOOL)moveItemAtURL:(id)a3 toURL:(id)a4 error:(id *)a5;
-- (BOOL)moveItemIfExistsAtURL:(id)a3 toURL:(id)a4 error:(id *)a5;
-- (BOOL)quarantineNeededForDirectoryURL:(id)a3;
-- (BOOL)quarantineURL:(id)a3 identifier:(id)a4 error:(id *)a5;
-- (BOOL)removeExclusionFromBackupFromURL:(id)a3 error:(id *)a4;
-- (BOOL)removeItemAtURL:(id)a3 error:(id *)a4;
-- (BOOL)repairPermissionsAtURL:(id)a3 uid:(unsigned int)a4 gid:(unsigned int)a5 options:(unint64_t)a6 error:(id *)a7;
-- (BOOL)replaceItemAtDestinationURL:(id)a3 withSourceURL:(id)a4 swapped:(BOOL *)a5 error:(id *)a6;
-- (BOOL)setDataProtectionAtURL:(id)a3 toDataProtectionClass:(int)a4 directoriesOnly:(BOOL)a5 recursive:(BOOL)a6 error:(id *)a7;
-- (BOOL)setTopLevelSystemContainerACLAtURL:(id)a3 error:(id *)a4;
-- (BOOL)standardizeACLsAtURL:(id)a3 isSystemContainer:(BOOL)a4 error:(id *)a5;
-- (BOOL)standardizeACLsForSystemContainerAtURL:(id)a3 error:(id *)a4;
-- (BOOL)standardizeAllSystemContainerACLsAtURL:(id)a3 error:(id *)a4;
-- (BOOL)standardizeOwnershipAtURL:(id)a3 toPOSIXUser:(id)a4 error:(id *)a5;
-- (BOOL)stripACLFromURL:(id)a3 error:(id *)a4;
-- (BOOL)symbolicallyLinkURL:(id)a3 toSymlinkTarget:(id)a4 error:(id *)a5;
-- (BOOL)writeData:(id)a3 toURL:(id)a4 options:(unint64_t)a5 mode:(unsigned __int16)a6 error:(id *)a7;
-- (_acl)_CopySystemContainerACLWithNumACEs:(int)a3 isDir:(BOOL)a4 inheritOnly:(BOOL)a5 withError:(id *)a6;
-- (_acl)_CopyTopLevelSystemContainerACLWithError:(id *)a3;
-- (_filesec)_denyDeleteACLFilesecWithACLText:(char *)a3;
+- ($7DEDF3842AEFB7F1E6DF5AF62E424A02)diskUsageForURL:(id)l;
+- ($7DEDF3842AEFB7F1E6DF5AF62E424A02)fastDiskUsageForURL:(id)l;
+- (BOOL)_CreateSystemUserACEInACL:(_acl *)l withPermissions:(int)permissions andFlags:(int)flags withError:(id *)error;
+- (BOOL)_copyItemAtURL:(id)l toURL:(id)rL failIfSrcMissing:(BOOL)missing error:(id *)error;
+- (BOOL)_enumeratePOSIX1eACLEntriesAtURL:(id)l error:(id *)error usingBlock:(id)block;
+- (BOOL)_moveItemAtURL:(id)l toURL:(id)rL failIfSrcMissing:(BOOL)missing error:(id *)error;
+- (BOOL)_traverseDirectory:(id)directory error:(id *)error withBlock:(id)block;
+- (BOOL)_validateSymlink:(id)symlink withStartingDepth:(unsigned int)depth andEndingDepth:(unsigned int *)endingDepth;
+- (BOOL)_withEveryoneDenyDeleteACLDoBlock:(id)block;
+- (BOOL)checkFileSystemAtURL:(id)l isCaseSensitive:(BOOL *)sensitive canAtomicSwap:(BOOL *)swap error:(id *)error;
+- (BOOL)checkFileSystemAtURL:(id)l supportsPerFileKeys:(BOOL *)keys error:(id *)error;
+- (BOOL)compareVolumeForURL:(id)l versusURL:(id)rL isSameVolume:(BOOL *)volume error:(id *)error;
+- (BOOL)copyItemAtURL:(id)l toURL:(id)rL error:(id *)error;
+- (BOOL)copyItemIfExistsAtURL:(id)l toURL:(id)rL error:(id *)error;
+- (BOOL)dataProtectionClassOfItemAtURL:(id)l dataProtectionClass:(int *)class error:(id *)error;
+- (BOOL)enableFastDiskUsageForURL:(id)l error:(id *)error;
+- (BOOL)fixUserPermissionsAtURL:(id)l limitToTopLevelURL:(id)rL error:(id *)error;
+- (BOOL)itemAtURL:(id)l exists:(BOOL *)exists error:(id *)error;
+- (BOOL)itemAtURL:(id)l exists:(BOOL *)exists isDirectory:(BOOL *)directory error:(id *)error;
+- (BOOL)itemAtURL:(id)l followSymlinks:(BOOL)symlinks exists:(BOOL *)exists isDirectory:(BOOL *)directory fsNode:(id *)node error:(id *)error;
+- (BOOL)itemDoesNotExistAtURL:(id)l;
+- (BOOL)itemExistsAtURL:(id)l;
+- (BOOL)itemExistsAtURL:(id)l isDirectory:(BOOL *)directory;
+- (BOOL)moveItemAtURL:(id)l toURL:(id)rL error:(id *)error;
+- (BOOL)moveItemIfExistsAtURL:(id)l toURL:(id)rL error:(id *)error;
+- (BOOL)quarantineNeededForDirectoryURL:(id)l;
+- (BOOL)quarantineURL:(id)l identifier:(id)identifier error:(id *)error;
+- (BOOL)removeExclusionFromBackupFromURL:(id)l error:(id *)error;
+- (BOOL)removeItemAtURL:(id)l error:(id *)error;
+- (BOOL)repairPermissionsAtURL:(id)l uid:(unsigned int)uid gid:(unsigned int)gid options:(unint64_t)options error:(id *)error;
+- (BOOL)replaceItemAtDestinationURL:(id)l withSourceURL:(id)rL swapped:(BOOL *)swapped error:(id *)error;
+- (BOOL)setDataProtectionAtURL:(id)l toDataProtectionClass:(int)class directoriesOnly:(BOOL)only recursive:(BOOL)recursive error:(id *)error;
+- (BOOL)setTopLevelSystemContainerACLAtURL:(id)l error:(id *)error;
+- (BOOL)standardizeACLsAtURL:(id)l isSystemContainer:(BOOL)container error:(id *)error;
+- (BOOL)standardizeACLsForSystemContainerAtURL:(id)l error:(id *)error;
+- (BOOL)standardizeAllSystemContainerACLsAtURL:(id)l error:(id *)error;
+- (BOOL)standardizeOwnershipAtURL:(id)l toPOSIXUser:(id)user error:(id *)error;
+- (BOOL)stripACLFromURL:(id)l error:(id *)error;
+- (BOOL)symbolicallyLinkURL:(id)l toSymlinkTarget:(id)target error:(id *)error;
+- (BOOL)writeData:(id)data toURL:(id)l options:(unint64_t)options mode:(unsigned __int16)mode error:(id *)error;
+- (_acl)_CopySystemContainerACLWithNumACEs:(int)es isDir:(BOOL)dir inheritOnly:(BOOL)only withError:(id *)error;
+- (_acl)_CopyTopLevelSystemContainerACLWithError:(id *)error;
+- (_filesec)_denyDeleteACLFilesecWithACLText:(char *)text;
 - (_filesec)_removeACLFilesec;
-- (id)_realPathForURL:(id)a3 allowNonExistentPathComponents:(BOOL)a4;
-- (id)_realPathWhatExistsInPath:(id)a3;
-- (id)copyDescriptionOfURL:(id)a3;
-- (id)createTemporaryDirectoryInDirectoryURL:(id)a3 error:(id *)a4;
-- (id)createTemporaryDirectoryInDirectoryURL:(id)a3 withNamePrefix:(id)a4 error:(id *)a5;
-- (id)fsMinimallySanitizedStringFromString:(id)a3;
-- (id)fsNodeOfURL:(id)a3 followSymlinks:(BOOL)a4 error:(id *)a5;
-- (id)fsSanitizedStringFromString:(id)a3 allowSpaces:(BOOL)a4;
-- (id)mountPointForURL:(id)a3 error:(id *)a4;
-- (id)readDataFromURL:(id)a3 options:(unint64_t)a4 error:(id *)a5;
-- (id)readDataFromURL:(id)a3 options:(unint64_t)a4 fsNode:(id *)a5 error:(id *)a6;
-- (id)realPathForURL:(id)a3 ifChildOfURL:(id)a4;
-- (id)targetOfSymbolicLinkAtURL:(id)a3 error:(id *)a4;
-- (id)urlsForItemsInDirectoryAtURL:(id)a3 error:(id *)a4;
-- (unint64_t)dataWritingOptionsForFileAtURL:(id)a3;
-- (void)printDirectoryStructureAtURL:(id)a3;
+- (id)_realPathForURL:(id)l allowNonExistentPathComponents:(BOOL)components;
+- (id)_realPathWhatExistsInPath:(id)path;
+- (id)copyDescriptionOfURL:(id)l;
+- (id)createTemporaryDirectoryInDirectoryURL:(id)l error:(id *)error;
+- (id)createTemporaryDirectoryInDirectoryURL:(id)l withNamePrefix:(id)prefix error:(id *)error;
+- (id)fsMinimallySanitizedStringFromString:(id)string;
+- (id)fsNodeOfURL:(id)l followSymlinks:(BOOL)symlinks error:(id *)error;
+- (id)fsSanitizedStringFromString:(id)string allowSpaces:(BOOL)spaces;
+- (id)mountPointForURL:(id)l error:(id *)error;
+- (id)readDataFromURL:(id)l options:(unint64_t)options error:(id *)error;
+- (id)readDataFromURL:(id)l options:(unint64_t)options fsNode:(id *)node error:(id *)error;
+- (id)realPathForURL:(id)l ifChildOfURL:(id)rL;
+- (id)targetOfSymbolicLinkAtURL:(id)l error:(id *)error;
+- (id)urlsForItemsInDirectoryAtURL:(id)l error:(id *)error;
+- (unint64_t)dataWritingOptionsForFileAtURL:(id)l;
+- (void)printDirectoryStructureAtURL:(id)l;
 @end
 
 @implementation MCMFileManager
@@ -288,10 +288,10 @@ id __91__MCMFileManager__fixACLOnFD_removeACLFilesec_denyDeleteFilesec_denyDelet
   return v5;
 }
 
-- (BOOL)_withEveryoneDenyDeleteACLDoBlock:(id)a3
+- (BOOL)_withEveryoneDenyDeleteACLDoBlock:(id)block
 {
   identifier[2] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  blockCopy = block;
   strcpy(identifier, "everyone");
   v15 = 0;
   v16 = 0;
@@ -336,7 +336,7 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  v9 = v3[2](v3, v16);
+  v9 = blockCopy[2](blockCopy, v16);
 LABEL_15:
   if (v16)
   {
@@ -347,12 +347,12 @@ LABEL_15:
   return v9;
 }
 
-- (_filesec)_denyDeleteACLFilesecWithACLText:(char *)a3
+- (_filesec)_denyDeleteACLFilesecWithACLText:(char *)text
 {
   v14 = *MEMORY[0x1E69E9840];
   v5 = (*(*MEMORY[0x1E69E9988] + 288))(self, a2);
   v6 = v5;
-  if (a3 && v5)
+  if (text && v5)
   {
     v10 = 0;
     v11 = &v10;
@@ -365,7 +365,7 @@ LABEL_15:
     v9[4] = &v10;
     v9[5] = v5;
     [(MCMFileManager *)self _withEveryoneDenyDeleteACLDoBlock:v9];
-    *a3 = v11[3];
+    *text = v11[3];
     _Block_object_dispose(&v10, 8);
   }
 
@@ -424,25 +424,25 @@ BOOL __51__MCMFileManager__denyDeleteACLFilesecWithACLText___block_invoke(uint64
   return v4;
 }
 
-- (BOOL)quarantineNeededForDirectoryURL:(id)a3
+- (BOOL)quarantineNeededForDirectoryURL:(id)l
 {
   v8 = *MEMORY[0x1E69E9840];
-  v3 = [a3 path];
-  v4 = [v3 pathExtension];
-  v5 = [&unk_1F5A76FC0 containsObject:v4];
+  path = [l path];
+  pathExtension = [path pathExtension];
+  v5 = [&unk_1F5A76FC0 containsObject:pathExtension];
 
   v6 = *MEMORY[0x1E69E9840];
   return v5;
 }
 
-- (BOOL)quarantineURL:(id)a3 identifier:(id)a4 error:(id *)a5
+- (BOOL)quarantineURL:(id)l identifier:(id)identifier error:(id *)error
 {
   v35 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = [a3 fileSystemRepresentation];
+  identifierCopy = identifier;
+  fileSystemRepresentation = [l fileSystemRepresentation];
   v9 = MEMORY[0x1E69E9998];
   v10 = (*(*MEMORY[0x1E69E9998] + 8))();
-  v11 = (*(*v9 + 48))(v10, v8);
+  v11 = (*(*v9 + 48))(v10, fileSystemRepresentation);
   if (v11)
   {
     if (v11 != -1)
@@ -451,7 +451,7 @@ BOOL __51__MCMFileManager__denyDeleteACLFilesecWithACLText___block_invoke(uint64
       v31[1] = 3221225472;
       v31[2] = __49__MCMFileManager_quarantineURL_identifier_error___block_invoke;
       v31[3] = &__block_descriptor_44_e14___NSError_8__0l;
-      v31[4] = v8;
+      v31[4] = fileSystemRepresentation;
       v32 = v11;
       v13 = __49__MCMFileManager_quarantineURL_identifier_error___block_invoke(v31);
       goto LABEL_12;
@@ -461,16 +461,16 @@ BOOL __51__MCMFileManager__denyDeleteACLFilesecWithACLText___block_invoke(uint64
     (*(*v9 + 32))(v10, 0);
   }
 
-  if (v7)
+  if (identifierCopy)
   {
-    v12 = (*(*v9 + 64))(v10, [v7 UTF8String]);
+    v12 = (*(*v9 + 64))(v10, [identifierCopy UTF8String]);
     if (v12)
     {
       v29[0] = MEMORY[0x1E69E9820];
       v29[1] = 3221225472;
       v29[2] = __49__MCMFileManager_quarantineURL_identifier_error___block_invoke_589;
       v29[3] = &__block_descriptor_44_e14___NSError_8__0l;
-      v29[4] = v8;
+      v29[4] = fileSystemRepresentation;
       v30 = v12;
       v13 = __49__MCMFileManager_quarantineURL_identifier_error___block_invoke_589(v29);
       goto LABEL_12;
@@ -485,7 +485,7 @@ BOOL __51__MCMFileManager__denyDeleteACLFilesecWithACLText___block_invoke(uint64
     v27[1] = 3221225472;
     v27[2] = __49__MCMFileManager_quarantineURL_identifier_error___block_invoke_595;
     v27[3] = &__block_descriptor_44_e14___NSError_8__0l;
-    v27[4] = v8;
+    v27[4] = fileSystemRepresentation;
     v28 = v15;
     v13 = __49__MCMFileManager_quarantineURL_identifier_error___block_invoke_595(v27);
     goto LABEL_12;
@@ -493,14 +493,14 @@ BOOL __51__MCMFileManager__denyDeleteACLFilesecWithACLText___block_invoke(uint64
 
   v16 = time(0);
   (*(*v9 + 80))(v10, v16);
-  v17 = (*(*v9 + 56))(v10, v8);
+  v17 = (*(*v9 + 56))(v10, fileSystemRepresentation);
   if (v17)
   {
     v25[0] = MEMORY[0x1E69E9820];
     v25[1] = 3221225472;
     v25[2] = __49__MCMFileManager_quarantineURL_identifier_error___block_invoke_601;
     v25[3] = &__block_descriptor_44_e14___NSError_8__0l;
-    v25[4] = v8;
+    v25[4] = fileSystemRepresentation;
     v26 = v17;
     v13 = __49__MCMFileManager_quarantineURL_identifier_error___block_invoke_601(v25);
 LABEL_12:
@@ -518,7 +518,7 @@ LABEL_12:
   if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
   {
     *buf = 136315138;
-    v34 = v8;
+    v34 = fileSystemRepresentation;
     _os_log_debug_impl(&dword_1DF2C3000, v24, OS_LOG_TYPE_DEBUG, "Quarantined [%s]", buf, 0xCu);
   }
 
@@ -531,7 +531,7 @@ LABEL_13:
   }
 
 LABEL_14:
-  if (a5)
+  if (error)
   {
     v20 = v19;
   }
@@ -544,7 +544,7 @@ LABEL_14:
   if ((v20 & 1) == 0)
   {
     v21 = v18;
-    *a5 = v18;
+    *error = v18;
   }
 
   v22 = *MEMORY[0x1E69E9840];
@@ -643,10 +643,10 @@ id __49__MCMFileManager_quarantineURL_identifier_error___block_invoke_601(uint64
   return v8;
 }
 
-- (BOOL)setDataProtectionAtURL:(id)a3 toDataProtectionClass:(int)a4 directoriesOnly:(BOOL)a5 recursive:(BOOL)a6 error:(id *)a7
+- (BOOL)setDataProtectionAtURL:(id)l toDataProtectionClass:(int)class directoriesOnly:(BOOL)only recursive:(BOOL)recursive error:(id *)error
 {
   v34 = *MEMORY[0x1E69E9840];
-  v10 = a3;
+  lCopy = l;
   v28 = 0;
   v29 = &v28;
   v30 = 0x3032000000;
@@ -654,14 +654,14 @@ id __49__MCMFileManager_quarantineURL_identifier_error___block_invoke_601(uint64
   v32 = __Block_byref_object_dispose__1136;
   v33 = 0;
   v27 = 0;
-  v11 = v10;
-  [v10 fileSystemRepresentation];
+  v11 = lCopy;
+  [lCopy fileSystemRepresentation];
   v20 = MEMORY[0x1E69E9820];
   v21 = 3221225472;
   v22 = __95__MCMFileManager_setDataProtectionAtURL_toDataProtectionClass_directoriesOnly_recursive_error___block_invoke;
   v23 = &unk_1E86AFD78;
-  v26 = a5;
-  v25 = a4;
+  onlyCopy = only;
+  classCopy = class;
   v24 = &v28;
   if ((container_traverse_directory() & 1) == 0)
   {
@@ -676,10 +676,10 @@ id __49__MCMFileManager_quarantineURL_identifier_error___block_invoke_601(uint64
   }
 
   v14 = v29[5];
-  if (a7 && v14)
+  if (error && v14)
   {
     v14 = v14;
-    *a7 = v14;
+    *error = v14;
   }
 
   v15 = v14 == 0;
@@ -835,19 +835,19 @@ id __95__MCMFileManager_setDataProtectionAtURL_toDataProtectionClass_directories
   return v6;
 }
 
-- (BOOL)repairPermissionsAtURL:(id)a3 uid:(unsigned int)a4 gid:(unsigned int)a5 options:(unint64_t)a6 error:(id *)a7
+- (BOOL)repairPermissionsAtURL:(id)l uid:(unsigned int)uid gid:(unsigned int)gid options:(unint64_t)options error:(id *)error
 {
-  v8 = a6;
+  optionsCopy = options;
   v80[2] = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = 0;
-  v80[0] = [v12 fileSystemRepresentation];
+  lCopy = l;
+  _removeACLFilesec = 0;
+  v80[0] = [lCopy fileSystemRepresentation];
   v80[1] = 0;
   __s = 0;
-  if (v8)
+  if (optionsCopy)
   {
-    v13 = [(MCMFileManager *)self _removeACLFilesec];
-    if (!v13)
+    _removeACLFilesec = [(MCMFileManager *)self _removeACLFilesec];
+    if (!_removeACLFilesec)
     {
       v48 = 0;
       v18 = 0;
@@ -856,7 +856,7 @@ id __95__MCMFileManager_setDataProtectionAtURL_toDataProtectionClass_directories
   }
 
   v14 = MEMORY[0x1E69E9988];
-  if ((v8 & 2) != 0)
+  if ((optionsCopy & 2) != 0)
   {
     v15 = [(MCMFileManager *)self _denyDeleteACLFilesecWithACLText:&__s];
     if (!v15)
@@ -872,7 +872,7 @@ id __95__MCMFileManager_setDataProtectionAtURL_toDataProtectionClass_directories
     v15 = 0;
   }
 
-  v60 = self;
+  selfCopy = self;
   v61 = v15;
   v16 = (*(*v14 + 384))(v80, 84, 0);
   if (!v16)
@@ -881,20 +881,20 @@ id __95__MCMFileManager_setDataProtectionAtURL_toDataProtectionClass_directories
     v70[1] = 3221225472;
     v70[2] = __63__MCMFileManager_repairPermissionsAtURL_uid_gid_options_error___block_invoke;
     v70[3] = &unk_1E86B0B98;
-    v49 = v12;
+    v49 = lCopy;
     v71 = v49;
     v18 = __63__MCMFileManager_repairPermissionsAtURL_uid_gid_options_error___block_invoke(v70);
     v50 = container_log_handle_for_category();
     if (os_log_type_enabled(v50, OS_LOG_TYPE_ERROR))
     {
-      v54 = a7;
+      errorCopy = error;
       v55 = *__error();
-      v56 = [v49 path];
+      path = [v49 path];
       *v75 = 67240450;
       v76 = v55;
-      a7 = v54;
+      error = errorCopy;
       v77 = 2112;
-      v78 = v56;
+      v78 = path;
       _os_log_error_impl(&dword_1DF2C3000, v50, OS_LOG_TYPE_ERROR, "fts_open() failed (%{darwin.errno, public}d) on [%@]", v75, 0x12u);
     }
 
@@ -903,8 +903,8 @@ id __95__MCMFileManager_setDataProtectionAtURL_toDataProtectionClass_directories
   }
 
   v17 = v16;
-  v57 = a4;
-  v58 = a5;
+  uidCopy = uid;
+  gidCopy = gid;
   v18 = 0;
   do
   {
@@ -1002,9 +1002,9 @@ LABEL_18:
       goto LABEL_19;
     }
 
-    v59 = a7;
+    errorCopy2 = error;
     v66 = v18;
-    v34 = [(MCMFileManager *)v60 _fixFlagsOnFD:v22 FTSENT:v20 stat:v79 error:&v66];
+    v34 = [(MCMFileManager *)selfCopy _fixFlagsOnFD:v22 FTSENT:v20 stat:v79 error:&v66];
     v23 = v66;
 
     if (!v34)
@@ -1029,11 +1029,11 @@ LABEL_18:
       goto LABEL_43;
     }
 
-    if ((v8 & 3) != 0)
+    if ((optionsCopy & 3) != 0)
     {
       v39 = *(v20 + 48);
       v65 = v23;
-      v40 = [(MCMFileManager *)v60 _fixACLOnFD:v22 removeACLFilesec:v13 denyDeleteFilesec:v61 denyDeleteText:__s path:v39 error:&v65];
+      v40 = [(MCMFileManager *)selfCopy _fixACLOnFD:v22 removeACLFilesec:_removeACLFilesec denyDeleteFilesec:v61 denyDeleteText:__s path:v39 error:&v65];
       v41 = v65;
 
       if (!v40)
@@ -1046,13 +1046,13 @@ LABEL_18:
 
     v42 = v23;
     v64 = v23;
-    v43 = [(MCMFileManager *)v60 _fixPOSIXPermsOnFD:v22 FTSENT:v20 stat:v79 error:&v64];
+    v43 = [(MCMFileManager *)selfCopy _fixPOSIXPermsOnFD:v22 FTSENT:v20 stat:v79 error:&v64];
     v23 = v64;
 
     if (v43)
     {
       v63 = v23;
-      v44 = [(MCMFileManager *)v60 _fixOwnershipOnFD:v22 FTSENT:v20 stat:v79 statfs:v75 uid:v57 gid:v58 error:&v63];
+      v44 = [(MCMFileManager *)selfCopy _fixOwnershipOnFD:v22 FTSENT:v20 stat:v79 statfs:v75 uid:uidCopy gid:gidCopy error:&v63];
       v41 = v63;
 
       if (!v44)
@@ -1064,7 +1064,7 @@ LABEL_44:
       }
 
       v62 = v41;
-      v31 = [(MCMFileManager *)v60 _fixPOSIXBitsOnFD:v22 FTSENT:v20 stat:v79 error:&v62];
+      v31 = [(MCMFileManager *)selfCopy _fixPOSIXBitsOnFD:v22 FTSENT:v20 stat:v79 error:&v62];
       v23 = v62;
     }
 
@@ -1075,7 +1075,7 @@ LABEL_42:
     }
 
 LABEL_43:
-    a7 = v59;
+    error = errorCopy2;
 LABEL_19:
     if ((*(*v14 + 152))(v22))
     {
@@ -1105,7 +1105,7 @@ LABEL_25:
     v33 = 2;
 LABEL_26:
     v18 = v23;
-    if ((v8 & 0x100) == 0)
+    if ((optionsCopy & 0x100) == 0)
     {
       v33 = 4;
     }
@@ -1129,9 +1129,9 @@ LABEL_56:
   }
 
 LABEL_58:
-  if (v13)
+  if (_removeACLFilesec)
   {
-    (*(*v14 + 272))(v13);
+    (*(*v14 + 272))(_removeACLFilesec);
   }
 
 LABEL_60:
@@ -1141,10 +1141,10 @@ LABEL_60:
     memset_s(&__s, 8uLL, 0, 8uLL);
   }
 
-  if (a7)
+  if (error)
   {
     v51 = v18;
-    *a7 = v18;
+    *error = v18;
   }
 
   v52 = *MEMORY[0x1E69E9840];
@@ -1238,10 +1238,10 @@ id __63__MCMFileManager_repairPermissionsAtURL_uid_gid_options_error___block_inv
   return v5;
 }
 
-- (id)fsMinimallySanitizedStringFromString:(id)a3
+- (id)fsMinimallySanitizedStringFromString:(id)string
 {
   v6 = *MEMORY[0x1E69E9840];
-  v3 = [a3 stringByReplacingOccurrencesOfString:@"/" withString:&stru_1F5A5B2B8];
+  v3 = [string stringByReplacingOccurrencesOfString:@"/" withString:&stru_1F5A5B2B8];
   if (([v3 isEqualToString:@".."] & 1) != 0 || objc_msgSend(v3, "isEqualToString:", @"."))
   {
 
@@ -1253,25 +1253,25 @@ id __63__MCMFileManager_repairPermissionsAtURL_uid_gid_options_error___block_inv
   return v3;
 }
 
-- (id)fsSanitizedStringFromString:(id)a3 allowSpaces:(BOOL)a4
+- (id)fsSanitizedStringFromString:(id)string allowSpaces:(BOOL)spaces
 {
-  v4 = a4;
+  spacesCopy = spaces;
   v15 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  stringCopy = string;
   if (fsSanitizedStringFromString_allowSpaces__onceToken != -1)
   {
     dispatch_once(&fsSanitizedStringFromString_allowSpaces__onceToken, &__block_literal_global_539);
   }
 
   v6 = fsSanitizedStringFromString_allowSpaces__forbiddenCharactersDisallowingSpace;
-  if (v4)
+  if (spacesCopy)
   {
     v7 = fsSanitizedStringFromString_allowSpaces__forbiddenCharactersAllowingSpace;
 
     v6 = v7;
   }
 
-  v8 = [v5 dataUsingEncoding:1 allowLossyConversion:1];
+  v8 = [stringCopy dataUsingEncoding:1 allowLossyConversion:1];
   v9 = [objc_alloc(MEMORY[0x1E696AD60]) initWithData:v8 encoding:1];
   v10 = [v9 rangeOfCharacterFromSet:v6];
   if (v10 != 0x7FFFFFFFFFFFFFFFLL)
@@ -1312,33 +1312,33 @@ void __58__MCMFileManager_fsSanitizedStringFromString_allowSpaces___block_invoke
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (id)fsNodeOfURL:(id)a3 followSymlinks:(BOOL)a4 error:(id *)a5
+- (id)fsNodeOfURL:(id)l followSymlinks:(BOOL)symlinks error:(id *)error
 {
-  v6 = a4;
+  symlinksCopy = symlinks;
   v17 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  lCopy = l;
   memset(&v16, 0, sizeof(v16));
-  v8 = [v7 fileSystemRepresentation];
-  if (v6)
+  fileSystemRepresentation = [lCopy fileSystemRepresentation];
+  if (symlinksCopy)
   {
-    if (stat(v8, &v16))
+    if (stat(fileSystemRepresentation, &v16))
     {
       goto LABEL_3;
     }
   }
 
-  else if (lstat(v8, &v16))
+  else if (lstat(fileSystemRepresentation, &v16))
   {
 LABEL_3:
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __51__MCMFileManager_fsNodeOfURL_followSymlinks_error___block_invoke;
     v14[3] = &unk_1E86B0B98;
-    v15 = v7;
+    v15 = lCopy;
     v9 = __51__MCMFileManager_fsNodeOfURL_followSymlinks_error___block_invoke(v14);
 
     v10 = 0;
-    if (!a5)
+    if (!error)
     {
       goto LABEL_9;
     }
@@ -1348,7 +1348,7 @@ LABEL_3:
 
   v10 = [[MCMFSNode alloc] initWithStat:&v16];
   v9 = 0;
-  if (!a5)
+  if (!error)
   {
     goto LABEL_9;
   }
@@ -1357,7 +1357,7 @@ LABEL_7:
   if (!v10)
   {
     v11 = v9;
-    *a5 = v9;
+    *error = v9;
   }
 
 LABEL_9:
@@ -1391,19 +1391,19 @@ id __51__MCMFileManager_fsNodeOfURL_followSymlinks_error___block_invoke(uint64_t
   return v8;
 }
 
-- (id)copyDescriptionOfURL:(id)a3
+- (id)copyDescriptionOfURL:(id)l
 {
   v14 = *MEMORY[0x1E69E9840];
   bzero(&v13, 0x878uLL);
   memset(&v12, 0, sizeof(v12));
-  v4 = [a3 fileSystemRepresentation];
-  v5 = [MEMORY[0x1E696AEC0] string];
-  if (lstat(v4, &v12))
+  fileSystemRepresentation = [l fileSystemRepresentation];
+  string = [MEMORY[0x1E696AEC0] string];
+  if (lstat(fileSystemRepresentation, &v12))
   {
-    v6 = [v5 stringByAppendingFormat:@"lstat error = %d ", *__error()];
+    v6 = [string stringByAppendingFormat:@"lstat error = %d ", *__error()];
 
-    v5 = v6;
-    if (!statfs(v4, &v13))
+    string = v6;
+    if (!statfs(fileSystemRepresentation, &v13))
     {
       goto LABEL_6;
     }
@@ -1411,16 +1411,16 @@ id __51__MCMFileManager_fsNodeOfURL_followSymlinks_error___block_invoke(uint64_t
     goto LABEL_5;
   }
 
-  if (statfs(v4, &v13))
+  if (statfs(fileSystemRepresentation, &v13))
   {
 LABEL_5:
-    v6 = [v5 stringByAppendingFormat:@"statfs error = %d ", *__error()];
+    v6 = [string stringByAppendingFormat:@"statfs error = %d ", *__error()];
 
     goto LABEL_6;
   }
 
   v10 = fflagstostr(v12.st_flags);
-  v6 = [v5 stringByAppendingFormat:@"%d/0%o/[%s]/[%s]/%08x/%llx/%x-%x/%d", v12.st_uid, v12.st_mode, v10, v13.f_fstypename, v13.f_flags, v12.st_ino, v13.f_fsid.val[0], v13.f_fsid.val[1], v13.f_owner, v10, *&v12.st_dev];
+  v6 = [string stringByAppendingFormat:@"%d/0%o/[%s]/[%s]/%08x/%llx/%x-%x/%d", v12.st_uid, v12.st_mode, v10, v13.f_fstypename, v13.f_flags, v12.st_ino, v13.f_fsid.val[0], v13.f_fsid.val[1], v13.f_owner, v10, *&v12.st_dev];
 
   if (v10)
   {
@@ -1435,11 +1435,11 @@ LABEL_6:
   return v7;
 }
 
-- (BOOL)removeExclusionFromBackupFromURL:(id)a3 error:(id *)a4
+- (BOOL)removeExclusionFromBackupFromURL:(id)l error:(id *)error
 {
   v24 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (v5)
+  lCopy = l;
+  if (lCopy)
   {
     v6 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Removing backup exclusion unimplemented"];
     v18 = @"FunctionName";
@@ -1470,31 +1470,31 @@ LABEL_6:
 
     v10 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:22 userInfo:v14];
 
-    if (a4)
+    if (error)
     {
       v15 = v10;
-      *a4 = v10;
+      *error = v10;
     }
   }
 
   v16 = *MEMORY[0x1E69E9840];
-  return v5 != 0;
+  return lCopy != 0;
 }
 
-- (BOOL)fixUserPermissionsAtURL:(id)a3 limitToTopLevelURL:(id)a4 error:(id *)a5
+- (BOOL)fixUserPermissionsAtURL:(id)l limitToTopLevelURL:(id)rL error:(id *)error
 {
   v26 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  lCopy = l;
+  rLCopy = rL;
   v25 = 0;
-  v9 = [v7 path];
-  v10 = [v8 path];
-  v11 = [v9 hasPrefix:v10];
+  path = [lCopy path];
+  path2 = [rLCopy path];
+  v11 = [path hasPrefix:path2];
 
   if (v11)
   {
     v21 = 0;
-    if (_fix_permissions_on_path([v7 fileSystemRepresentation], objc_msgSend(v8, "fileSystemRepresentation"), &v25, &v21))
+    if (_fix_permissions_on_path([lCopy fileSystemRepresentation], objc_msgSend(rLCopy, "fileSystemRepresentation"), &v25, &v21))
     {
       v12 = 0;
       goto LABEL_9;
@@ -1506,7 +1506,7 @@ LABEL_6:
     v18[2] = __67__MCMFileManager_fixUserPermissionsAtURL_limitToTopLevelURL_error___block_invoke_500;
     v18[3] = &unk_1E86B0618;
     v13 = &v19;
-    v19 = v7;
+    v19 = lCopy;
     v20 = v21;
     v12 = __67__MCMFileManager_fixUserPermissionsAtURL_limitToTopLevelURL_error___block_invoke_500(v18);
   }
@@ -1518,15 +1518,15 @@ LABEL_6:
     v22[2] = __67__MCMFileManager_fixUserPermissionsAtURL_limitToTopLevelURL_error___block_invoke;
     v22[3] = &unk_1E86B0BE8;
     v13 = &v23;
-    v23 = v7;
-    v24 = v8;
+    v23 = lCopy;
+    v24 = rLCopy;
     v12 = __67__MCMFileManager_fixUserPermissionsAtURL_limitToTopLevelURL_error___block_invoke(v22);
   }
 
-  if (a5 && v12)
+  if (error && v12)
   {
     v14 = v12;
-    *a5 = v12;
+    *error = v12;
   }
 
 LABEL_9:
@@ -1585,21 +1585,21 @@ id __67__MCMFileManager_fixUserPermissionsAtURL_limitToTopLevelURL_error___block
   return v8;
 }
 
-- (unint64_t)dataWritingOptionsForFileAtURL:(id)a3
+- (unint64_t)dataWritingOptionsForFileAtURL:(id)l
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  lCopy = l;
   v17 = 0;
   v4 = +[MCMFileManager defaultManager];
   v16 = 0;
-  v5 = [v4 checkFileSystemAtURL:v3 isCaseSensitive:0 canAtomicSwap:&v17 + 1 error:&v16];
+  v5 = [v4 checkFileSystemAtURL:lCopy isCaseSensitive:0 canAtomicSwap:&v17 + 1 error:&v16];
   v6 = v16;
 
   if (v5)
   {
     v7 = +[MCMFileManager defaultManager];
     v15 = v6;
-    v8 = [v7 checkFileSystemAtURL:v3 supportsPerFileKeys:&v17 error:&v15];
+    v8 = [v7 checkFileSystemAtURL:lCopy supportsPerFileKeys:&v17 error:&v15];
     v9 = v15;
 
     if (v8)
@@ -1621,7 +1621,7 @@ id __67__MCMFileManager_fixUserPermissionsAtURL_limitToTopLevelURL_error___block
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412546;
-        v19 = v3;
+        v19 = lCopy;
         v20 = 2112;
         v21 = v9;
         _os_log_error_impl(&dword_1DF2C3000, v12, OS_LOG_TYPE_ERROR, "Could not check fs capabilities for data protection at [%@]: %@", buf, 0x16u);
@@ -1639,7 +1639,7 @@ id __67__MCMFileManager_fixUserPermissionsAtURL_limitToTopLevelURL_error___block
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v19 = v3;
+      v19 = lCopy;
       v20 = 2112;
       v21 = v6;
       _os_log_error_impl(&dword_1DF2C3000, v11, OS_LOG_TYPE_ERROR, "Could not check fs capabilities for atomic swap at [%@]: %@", buf, 0x16u);
@@ -1652,12 +1652,12 @@ id __67__MCMFileManager_fixUserPermissionsAtURL_limitToTopLevelURL_error___block
   return v10;
 }
 
-- (BOOL)stripACLFromURL:(id)a3 error:(id *)a4
+- (BOOL)stripACLFromURL:(id)l error:(id *)error
 {
   v6 = *MEMORY[0x1E69E9840];
   v4 = *MEMORY[0x1E69E9840];
 
-  return [(MCMFileManager *)self _enumeratePOSIX1eACLEntriesAtURL:a3 error:a4 usingBlock:&__block_literal_global_463];
+  return [(MCMFileManager *)self _enumeratePOSIX1eACLEntriesAtURL:l error:error usingBlock:&__block_literal_global_463];
 }
 
 uint64_t __40__MCMFileManager_stripACLFromURL_error___block_invoke(int a1, acl_entry_t entry_d, _BYTE *a3, void *a4)
@@ -1757,12 +1757,12 @@ id __40__MCMFileManager_stripACLFromURL_error___block_invoke_487()
   return v4;
 }
 
-- (BOOL)_enumeratePOSIX1eACLEntriesAtURL:(id)a3 error:(id *)a4 usingBlock:(id)a5
+- (BOOL)_enumeratePOSIX1eACLEntriesAtURL:(id)l error:(id *)error usingBlock:(id)block
 {
   v29[3] = *MEMORY[0x1E69E9840];
-  v7 = a5;
-  v8 = [a3 fileSystemRepresentation];
-  if (!v8)
+  blockCopy = block;
+  fileSystemRepresentation = [l fileSystemRepresentation];
+  if (!fileSystemRepresentation)
   {
     v14 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"URL is nil"];
     v28[0] = @"FunctionName";
@@ -1780,8 +1780,8 @@ id __40__MCMFileManager_stripACLFromURL_error___block_invoke_487()
     goto LABEL_7;
   }
 
-  v9 = v8;
-  file = acl_get_file(v8, ACL_TYPE_EXTENDED);
+  v9 = fileSystemRepresentation;
+  file = acl_get_file(fileSystemRepresentation, ACL_TYPE_EXTENDED);
   if (!file)
   {
     v27[0] = MEMORY[0x1E69E9820];
@@ -1792,7 +1792,7 @@ id __40__MCMFileManager_stripACLFromURL_error___block_invoke_487()
     v12 = __68__MCMFileManager__enumeratePOSIX1eACLEntriesAtURL_error_usingBlock___block_invoke_449(v27);
 LABEL_7:
     LOBYTE(v13) = 0;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_20;
     }
@@ -1816,12 +1816,12 @@ LABEL_7:
     {
       LOBYTE(v29[0]) = 0;
       v25 = v12;
-      v13 = v7[2](v7, entry_p, v29, &v25);
+      v13 = blockCopy[2](blockCopy, entry_p, v29, &v25);
       v19 = v25;
 
       v12 = v19;
       v18 |= LOBYTE(v29[0]);
-      if (!a4)
+      if (!error)
       {
         v13 = 1;
       }
@@ -1843,13 +1843,13 @@ LABEL_7:
   }
 
   acl_free(v11);
-  if (a4)
+  if (error)
   {
 LABEL_18:
     if ((v13 & 1) == 0)
     {
       v21 = v12;
-      *a4 = v12;
+      *error = v12;
     }
   }
 
@@ -1901,21 +1901,21 @@ id __68__MCMFileManager__enumeratePOSIX1eACLEntriesAtURL_error_usingBlock___bloc
   return v5;
 }
 
-- (BOOL)checkFileSystemAtURL:(id)a3 supportsPerFileKeys:(BOOL *)a4 error:(id *)a5
+- (BOOL)checkFileSystemAtURL:(id)l supportsPerFileKeys:(BOOL *)keys error:(id *)error
 {
   v18 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  if ([v7 hasDirectoryPath])
+  lCopy = l;
+  if ([lCopy hasDirectoryPath])
   {
-    v8 = v7;
+    uRLByDeletingLastPathComponent = lCopy;
   }
 
   else
   {
-    v8 = [v7 URLByDeletingLastPathComponent];
+    uRLByDeletingLastPathComponent = [lCopy URLByDeletingLastPathComponent];
   }
 
-  v9 = v8;
+  v9 = uRLByDeletingLastPathComponent;
   bzero(&v17, 0x878uLL);
   v10 = statfs([v9 fileSystemRepresentation], &v17);
   if (v10)
@@ -1927,19 +1927,19 @@ id __68__MCMFileManager__enumeratePOSIX1eACLEntriesAtURL_error_usingBlock___bloc
     v16 = v9;
     v11 = __65__MCMFileManager_checkFileSystemAtURL_supportsPerFileKeys_error___block_invoke(v15);
 
-    if (a5)
+    if (error)
     {
       v12 = v11;
-      *a5 = v11;
+      *error = v11;
     }
   }
 
   else
   {
     v11 = 0;
-    if (a4)
+    if (keys)
     {
-      *a4 = (v17.f_flags & 0x80) != 0;
+      *keys = (v17.f_flags & 0x80) != 0;
     }
   }
 
@@ -1971,28 +1971,28 @@ id __65__MCMFileManager_checkFileSystemAtURL_supportsPerFileKeys_error___block_i
   return v8;
 }
 
-- (BOOL)checkFileSystemAtURL:(id)a3 isCaseSensitive:(BOOL *)a4 canAtomicSwap:(BOOL *)a5 error:(id *)a6
+- (BOOL)checkFileSystemAtURL:(id)l isCaseSensitive:(BOOL *)sensitive canAtomicSwap:(BOOL *)swap error:(id *)error
 {
   v36 = *MEMORY[0x1E69E9840];
-  v9 = a3;
+  lCopy = l;
   v35 = 0;
   v33 = 0u;
   v34 = 0u;
   v32 = 0u;
   v24 = xmmword_1DF3BE498;
   v25 = 0;
-  if ([v9 hasDirectoryPath])
+  if ([lCopy hasDirectoryPath])
   {
-    v10 = v9;
+    uRLByDeletingLastPathComponent = lCopy;
   }
 
   else
   {
-    v10 = [v9 URLByDeletingLastPathComponent];
+    uRLByDeletingLastPathComponent = [lCopy URLByDeletingLastPathComponent];
   }
 
-  v11 = v10;
-  if (getattrlist([v10 fileSystemRepresentation], &v24, &v32, 0x38uLL, 0))
+  v11 = uRLByDeletingLastPathComponent;
+  if (getattrlist([uRLByDeletingLastPathComponent fileSystemRepresentation], &v24, &v32, 0x38uLL, 0))
   {
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
@@ -2021,11 +2021,11 @@ id __65__MCMFileManager_checkFileSystemAtURL_supportsPerFileKeys_error___block_i
 LABEL_10:
     v15 = v13;
 
-    if (a6)
+    if (error)
     {
       v16 = v15;
       v17 = 0;
-      *a6 = v15;
+      *error = v15;
     }
 
     else
@@ -2048,15 +2048,15 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  if (a4)
+  if (sensitive)
   {
-    *a4 = ((WORD4(v34) & WORD4(v33)) >> 8) & 1;
+    *sensitive = ((WORD4(v34) & WORD4(v33)) >> 8) & 1;
   }
 
   v15 = 0;
-  if (a5)
+  if (swap)
   {
-    *a5 = (BYTE14(v33) >> 2) & ((HIDWORD(v34) & 0x40000u) >> 18);
+    *swap = (BYTE14(v33) >> 2) & ((HIDWORD(v34) & 0x40000u) >> 18);
   }
 
   v17 = 1;
@@ -2138,39 +2138,39 @@ id __75__MCMFileManager_checkFileSystemAtURL_isCaseSensitive_canAtomicSwap_error
   return v8;
 }
 
-- (BOOL)compareVolumeForURL:(id)a3 versusURL:(id)a4 isSameVolume:(BOOL *)a5 error:(id *)a6
+- (BOOL)compareVolumeForURL:(id)l versusURL:(id)rL isSameVolume:(BOOL *)volume error:(id *)error
 {
   v54 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
+  lCopy = l;
+  rLCopy = rL;
   memset(v53, 0, sizeof(v53));
   memset(v52, 0, 36);
   v40 = xmmword_1DF3BE480;
   v41 = 0;
   v38 = xmmword_1DF3BE480;
   v39 = 0;
-  if ([v9 hasDirectoryPath])
+  if ([lCopy hasDirectoryPath])
   {
-    v11 = v9;
+    uRLByDeletingLastPathComponent = lCopy;
   }
 
   else
   {
-    v11 = [v9 URLByDeletingLastPathComponent];
+    uRLByDeletingLastPathComponent = [lCopy URLByDeletingLastPathComponent];
   }
 
-  v12 = v11;
-  if ([v10 hasDirectoryPath])
+  v12 = uRLByDeletingLastPathComponent;
+  if ([rLCopy hasDirectoryPath])
   {
-    v13 = v10;
+    uRLByDeletingLastPathComponent2 = rLCopy;
   }
 
   else
   {
-    v13 = [v10 URLByDeletingLastPathComponent];
+    uRLByDeletingLastPathComponent2 = [rLCopy URLByDeletingLastPathComponent];
   }
 
-  v14 = v13;
+  v14 = uRLByDeletingLastPathComponent2;
   if (getattrlist([v12 fileSystemRepresentation], &v40, v53, 0x24uLL, 0))
   {
     v32[0] = MEMORY[0x1E69E9820];
@@ -2275,11 +2275,11 @@ id __75__MCMFileManager_checkFileSystemAtURL_isCaseSensitive_canAtomicSwap_error
 LABEL_13:
     v17 = v16;
 
-    if (a6)
+    if (error)
     {
       v18 = v17;
       v19 = 0;
-      *a6 = v17;
+      *error = v17;
     }
 
     else
@@ -2291,10 +2291,10 @@ LABEL_13:
   }
 
   v17 = 0;
-  if (a5)
+  if (volume)
   {
     v25 = v22 == DWORD2(v52[1]) && v23 == *(&v52[1] + 12);
-    *a5 = v25;
+    *volume = v25;
   }
 
   v19 = 1;
@@ -2496,18 +2496,18 @@ id __67__MCMFileManager_compareVolumeForURL_versusURL_isSameVolume_error___block
   return v8;
 }
 
-- (id)mountPointForURL:(id)a3 error:(id *)a4
+- (id)mountPointForURL:(id)l error:(id *)error
 {
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  lCopy = l;
   bzero(&v16, 0x878uLL);
-  if (statfs([v6 fileSystemRepresentation], &v16))
+  if (statfs([lCopy fileSystemRepresentation], &v16))
   {
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __41__MCMFileManager_mountPointForURL_error___block_invoke;
     v14[3] = &unk_1E86B0B98;
-    v15 = v6;
+    v15 = lCopy;
     v7 = __41__MCMFileManager_mountPointForURL_error___block_invoke(v14);
     v8 = 0;
     v9 = v15;
@@ -2521,10 +2521,10 @@ id __67__MCMFileManager_compareVolumeForURL_versusURL_isSameVolume_error___block
     v7 = v13;
   }
 
-  if (a4 && !v8)
+  if (error && !v8)
   {
     v10 = v7;
-    *a4 = v7;
+    *error = v7;
   }
 
   v11 = *MEMORY[0x1E69E9840];
@@ -2556,23 +2556,23 @@ id __41__MCMFileManager_mountPointForURL_error___block_invoke(uint64_t a1)
   return v8;
 }
 
-- (BOOL)writeData:(id)a3 toURL:(id)a4 options:(unint64_t)a5 mode:(unsigned __int16)a6 error:(id *)a7
+- (BOOL)writeData:(id)data toURL:(id)l options:(unint64_t)options mode:(unsigned __int16)mode error:(id *)error
 {
-  v8 = a6;
+  modeCopy = mode;
   v79 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = [v11 bytes];
+  dataCopy = data;
+  lCopy = l;
+  bytes = [dataCopy bytes];
   __s = 0;
   container_seam_fs_ensure_lazy_loaded();
   v14 = MEMORY[0x1E69E9988];
-  if ((a5 & 0xFFFFFFFF8FFFFFFELL) != 0)
+  if ((options & 0xFFFFFFFF8FFFFFFELL) != 0)
   {
     v69[0] = MEMORY[0x1E69E9820];
     v69[1] = 3221225472;
     v69[2] = __53__MCMFileManager_writeData_toURL_options_mode_error___block_invoke;
     v69[3] = &__block_descriptor_40_e14___NSError_8__0l;
-    v69[4] = a5 & 0xFFFFFFFF8FFFFFFELL;
+    v69[4] = options & 0xFFFFFFFF8FFFFFFELL;
     v15 = __53__MCMFileManager_writeData_toURL_options_mode_error___block_invoke(v69);
 LABEL_3:
     v16 = 0;
@@ -2581,18 +2581,18 @@ LABEL_3:
   }
 
   v21 = *MEMORY[0x1E69E9988];
-  if ((a5 - 0x10000000) >> 28 > 4)
+  if ((options - 0x10000000) >> 28 > 4)
   {
     v22 = 0xFFFFFFFFLL;
   }
 
   else
   {
-    v22 = *(&unk_1DF3BE4B0 + (((a5 - 0x10000000) >> 26) & 0x3FFFFFFFFCLL));
+    v22 = *(&unk_1DF3BE4B0 + (((options - 0x10000000) >> 26) & 0x3FFFFFFFFCLL));
   }
 
   v23 = *(v21 + 504);
-  if ((a5 & 1) == 0)
+  if ((options & 1) == 0)
   {
     v16 = 0;
     v24 = -1;
@@ -2600,20 +2600,20 @@ LABEL_3:
     goto LABEL_21;
   }
 
-  if (asprintf(&__s, "%s.atomic.XXXXXX", [v12 fileSystemRepresentation]) < 0)
+  if (asprintf(&__s, "%s.atomic.XXXXXX", [lCopy fileSystemRepresentation]) < 0)
   {
     v67[0] = MEMORY[0x1E69E9820];
     v67[1] = 3221225472;
     v67[2] = __53__MCMFileManager_writeData_toURL_options_mode_error___block_invoke_353;
     v67[3] = &unk_1E86B0B98;
-    v68 = v12;
+    v68 = lCopy;
     v15 = __53__MCMFileManager_writeData_toURL_options_mode_error___block_invoke_353(v67);
 
     goto LABEL_3;
   }
 
   v26 = *v14;
-  v48 = v12;
+  v48 = lCopy;
   if (!v23)
   {
     v27 = (*(v26 + 496))(__s);
@@ -2643,34 +2643,34 @@ LABEL_44:
   }
 
 LABEL_20:
-  v28 = v8;
-  v29 = a7;
+  v28 = modeCopy;
+  errorCopy = error;
   v30 = v27;
   v16 = [MEMORY[0x1E695DFF8] fileURLWithFileSystemRepresentation:__s isDirectory:0 relativeToURL:0];
   v24 = v30;
-  a7 = v29;
-  v8 = v28;
+  error = errorCopy;
+  modeCopy = v28;
   v21 = *v14;
   v25 = 256;
-  v12 = v48;
+  lCopy = v48;
 LABEL_21:
   v49 = v24;
   if (v23)
   {
-    v31 = (*(v21 + 520))([v12 fileSystemRepresentation], v25, v22, 0);
+    v31 = (*(v21 + 520))([lCopy fileSystemRepresentation], v25, v22, 0);
   }
 
   else
   {
-    v31 = (*(v21 + 512))([v12 fileSystemRepresentation], v25);
+    v31 = (*(v21 + 512))([lCopy fileSystemRepresentation], v25);
   }
 
   v32 = v31;
   v33 = *__error();
-  v35 = (a5 & 1) == 0 || v33 != 2;
+  v35 = (options & 1) == 0 || v33 != 2;
   if ((v32 & 0x80000000) == 0 || !v35)
   {
-    if (a5)
+    if (options)
     {
       v36 = v49;
     }
@@ -2680,15 +2680,15 @@ LABEL_21:
       v36 = v32;
     }
 
-    v37 = (*(*MEMORY[0x1E69E9988] + 704))(v36, v13, [v11 length]);
-    if (v37 == [v11 length])
+    v37 = (*(*MEMORY[0x1E69E9988] + 704))(v36, bytes, [dataCopy length]);
+    if (v37 == [dataCopy length])
     {
-      if (a5)
+      if (options)
       {
         v14 = MEMORY[0x1E69E9988];
         v38 = (*(*MEMORY[0x1E69E9988] + 688))(18);
         (*(*v14 + 688))();
-        v39 = v8 & ~v38;
+        v39 = modeCopy & ~v38;
         if (((*(*v14 + 208))(v49, v39) & 0x80000000) != 0)
         {
           v44 = *__error();
@@ -2718,7 +2718,7 @@ LABEL_21:
         }
 
         (*(*v14 + 152))(v49);
-        if (((*(*v14 + 640))([v16 fileSystemRepresentation], objc_msgSend(v12, "fileSystemRepresentation"), v40) & 0x80000000) != 0)
+        if (((*(*v14 + 640))([v16 fileSystemRepresentation], objc_msgSend(lCopy, "fileSystemRepresentation"), v40) & 0x80000000) != 0)
         {
           v47 = *__error();
           v50[0] = MEMORY[0x1E69E9820];
@@ -2727,7 +2727,7 @@ LABEL_21:
           v50[3] = &unk_1E86B05A0;
           v16 = v16;
           v51 = v16;
-          v52 = v12;
+          v52 = lCopy;
           v53 = v47;
           v15 = __53__MCMFileManager_writeData_toURL_options_mode_error___block_invoke_383(v50);
 
@@ -2742,16 +2742,16 @@ LABEL_21:
       v42 = container_log_handle_for_category();
       if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
       {
-        v45 = [v12 path];
-        v46 = [v11 length];
+        path = [lCopy path];
+        v46 = [dataCopy length];
         *buf = 138544130;
-        v72 = v45;
+        v72 = path;
         v73 = 2050;
         v74 = v46;
         v75 = 2050;
-        v76 = a5;
+        optionsCopy = options;
         v77 = 1026;
-        v78 = v8;
+        v78 = modeCopy;
         _os_log_impl(&dword_1DF2C3000, v42, OS_LOG_TYPE_DEFAULT, "Wrote [%{public}@], length = %{public}lu, options = 0x%{public}lx, mode = 0%{public}o", buf, 0x26u);
       }
 
@@ -2766,7 +2766,7 @@ LABEL_21:
       v58[1] = 3221225472;
       v58[2] = __53__MCMFileManager_writeData_toURL_options_mode_error___block_invoke_371;
       v58[3] = &unk_1E86B0618;
-      v59 = v12;
+      v59 = lCopy;
       v60 = v41;
       v15 = __53__MCMFileManager_writeData_toURL_options_mode_error___block_invoke_371(v58);
       v17 = 0;
@@ -2788,7 +2788,7 @@ LABEL_53:
   v61[1] = 3221225472;
   v61[2] = __53__MCMFileManager_writeData_toURL_options_mode_error___block_invoke_365;
   v61[3] = &unk_1E86B05A0;
-  v62 = v12;
+  v62 = lCopy;
   v63 = v16;
   v64 = v33;
   v15 = __53__MCMFileManager_writeData_toURL_options_mode_error___block_invoke_365(v61);
@@ -2813,10 +2813,10 @@ LABEL_4:
     (*(*v14 + 696))([v16 fileSystemRepresentation]);
   }
 
-  if (a7 && v15)
+  if (error && v15)
   {
     v18 = v15;
-    *a7 = v15;
+    *error = v15;
   }
 
   v19 = *MEMORY[0x1E69E9840];
@@ -2987,19 +2987,19 @@ id __53__MCMFileManager_writeData_toURL_options_mode_error___block_invoke_383(ui
   return v9;
 }
 
-- (id)readDataFromURL:(id)a3 options:(unint64_t)a4 fsNode:(id *)a5 error:(id *)a6
+- (id)readDataFromURL:(id)l options:(unint64_t)options fsNode:(id *)node error:(id *)error
 {
   v60 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = v9;
+  lCopy = l;
+  v10 = lCopy;
   __s = 0;
-  if ((a4 & 0xFFFFFFFFFFFFFFFDLL) != 0)
+  if ((options & 0xFFFFFFFFFFFFFFFDLL) != 0)
   {
     v51[0] = MEMORY[0x1E69E9820];
     v51[1] = 3221225472;
     v51[2] = __55__MCMFileManager_readDataFromURL_options_fsNode_error___block_invoke;
     v51[3] = &__block_descriptor_40_e14___NSError_8__0l;
-    v51[4] = a4 & 0xFFFFFFFFFFFFFFFDLL;
+    v51[4] = options & 0xFFFFFFFFFFFFFFFDLL;
     v11 = __55__MCMFileManager_readDataFromURL_options_fsNode_error___block_invoke(v51);
     v12 = 0;
     v13 = 0;
@@ -3007,7 +3007,7 @@ id __53__MCMFileManager_writeData_toURL_options_mode_error___block_invoke_383(ui
     goto LABEL_33;
   }
 
-  v15 = open([v9 fileSystemRepresentation], 256);
+  v15 = open([lCopy fileSystemRepresentation], 256);
   v14 = v15;
   if (v15 < 0)
   {
@@ -3025,7 +3025,7 @@ LABEL_18:
     goto LABEL_33;
   }
 
-  if (a4)
+  if (options)
   {
     fcntl(v15, 48, 1);
   }
@@ -3046,7 +3046,7 @@ LABEL_18:
   }
 
   v17 = v16;
-  v36 = a6;
+  errorCopy = error;
   v18 = 0;
   v19 = 0x4000;
   v20 = 0x4000;
@@ -3087,7 +3087,7 @@ LABEL_18:
 LABEL_21:
 
       v13 = 0;
-      a6 = v36;
+      error = errorCopy;
 LABEL_32:
       free(v17);
       memset_s(&__s, 8uLL, 0, 8uLL);
@@ -3109,7 +3109,7 @@ LABEL_32:
 
       v12 = 0;
       v13 = 0;
-      a6 = v36;
+      error = errorCopy;
       goto LABEL_33;
     }
 
@@ -3120,10 +3120,10 @@ LABEL_32:
 
   while (v22);
   __s = v17;
-  if (a5)
+  if (node)
   {
     memset(&v59, 0, sizeof(v59));
-    a6 = v36;
+    error = errorCopy;
     if (fstat(v14, &v59))
     {
       v37[0] = MEMORY[0x1E69E9820];
@@ -3142,11 +3142,11 @@ LABEL_32:
       v27 = container_log_handle_for_category();
       if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
       {
-        v35 = [v10 path];
+        path = [v10 path];
         *buf = 134218498;
         v54 = v18;
         v55 = 2112;
-        v56 = v35;
+        v56 = path;
         v57 = 2048;
         st_size = v59.st_size;
         _os_log_error_impl(&dword_1DF2C3000, v27, OS_LOG_TYPE_ERROR, "Read size (%zu) of file [%@] did not match its length (%lld). Possibly a concurrent write+read.", buf, 0x20u);
@@ -3159,21 +3159,21 @@ LABEL_32:
   else
   {
     v13 = 0;
-    a6 = v36;
+    error = errorCopy;
   }
 
   v12 = [MEMORY[0x1E695DEF0] dataWithBytesNoCopy:v17 length:v18];
   v28 = container_log_handle_for_category();
   if (os_log_type_enabled(v28, OS_LOG_TYPE_DEBUG))
   {
-    v33 = [v10 path];
+    path2 = [v10 path];
     v34 = [v12 length];
     v59.st_dev = 138543874;
-    *&v59.st_mode = v33;
+    *&v59.st_mode = path2;
     WORD2(v59.st_ino) = 2050;
     *(&v59.st_ino + 6) = v34;
     HIWORD(v59.st_gid) = 2050;
-    *&v59.st_rdev = a4;
+    *&v59.st_rdev = options;
     _os_log_debug_impl(&dword_1DF2C3000, v28, OS_LOG_TYPE_DEBUG, "Read [%{public}@], length = %{public}lu, options = 0x%{public}lx", &v59, 0x20u);
   }
 
@@ -3186,16 +3186,16 @@ LABEL_32:
 
 LABEL_33:
   close(v14);
-  if (a6 && v11)
+  if (error && v11)
   {
     v29 = v11;
-    *a6 = v11;
+    *error = v11;
   }
 
-  if (a5 && v12)
+  if (node && v12)
   {
     v30 = v13;
-    *a5 = v13;
+    *node = v13;
   }
 
   v31 = *MEMORY[0x1E69E9840];
@@ -3370,12 +3370,12 @@ id __55__MCMFileManager_readDataFromURL_options_fsNode_error___block_invoke_340(
   return v8;
 }
 
-- (id)readDataFromURL:(id)a3 options:(unint64_t)a4 error:(id *)a5
+- (id)readDataFromURL:(id)l options:(unint64_t)options error:(id *)error
 {
   v7 = *MEMORY[0x1E69E9840];
   v5 = *MEMORY[0x1E69E9840];
 
-  return [(MCMFileManager *)self readDataFromURL:a3 options:a4 fsNode:0 error:a5];
+  return [(MCMFileManager *)self readDataFromURL:l options:options fsNode:0 error:error];
 }
 
 id __51__MCMFileManager_realPathForURL_isDirectory_error___block_invoke(uint64_t a1)
@@ -3399,13 +3399,13 @@ id __51__MCMFileManager_realPathForURL_isDirectory_error___block_invoke(uint64_t
   return v5;
 }
 
-- (id)realPathForURL:(id)a3 ifChildOfURL:(id)a4
+- (id)realPathForURL:(id)l ifChildOfURL:(id)rL
 {
   v100 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  rLCopy = rL;
   bzero(v99, 0x401uLL);
-  if (!v6 || !v7)
+  if (!lCopy || !rLCopy)
   {
     v25 = container_log_handle_for_category();
     if (!os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -3414,56 +3414,56 @@ id __51__MCMFileManager_realPathForURL_isDirectory_error___block_invoke(uint64_t
     }
 
     *buf = 138412546;
-    v88 = v7;
+    v88 = rLCopy;
     v89 = 2112;
-    v90 = v6;
+    v90 = lCopy;
     v30 = "The base path %@ and/or suspicious path %@ were nil";
     v31 = v25;
     v32 = 22;
     goto LABEL_14;
   }
 
-  v8 = [v7 path];
-  v9 = [v8 hasPrefix:@"/private/"];
+  path = [rLCopy path];
+  v9 = [path hasPrefix:@"/private/"];
 
   if (v9)
   {
     v10 = MEMORY[0x1E695DFF8];
-    v11 = [v7 path];
-    v12 = [v11 substringFromIndex:{objc_msgSend(@"/private", "length")}];
+    path2 = [rLCopy path];
+    v12 = [path2 substringFromIndex:{objc_msgSend(@"/private", "length")}];
     v13 = [v10 fileURLWithPath:v12];
 
-    v7 = v13;
+    rLCopy = v13;
   }
 
-  v14 = [v6 path];
-  v15 = [v14 hasPrefix:@"/private/"];
+  path3 = [lCopy path];
+  v15 = [path3 hasPrefix:@"/private/"];
 
   if (v15)
   {
     v16 = MEMORY[0x1E695DFF8];
-    v17 = [v6 path];
-    v18 = [v17 substringFromIndex:{objc_msgSend(@"/private", "length")}];
+    path4 = [lCopy path];
+    v18 = [path4 substringFromIndex:{objc_msgSend(@"/private", "length")}];
     v19 = [v16 fileURLWithPath:v18];
 
-    v6 = v19;
+    lCopy = v19;
   }
 
-  v20 = [v6 path];
-  v21 = [v7 path];
-  v22 = [v20 hasPrefix:v21];
+  path5 = [lCopy path];
+  path6 = [rLCopy path];
+  v22 = [path5 hasPrefix:path6];
 
   if ((v22 & 1) == 0)
   {
     v25 = container_log_handle_for_category();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
     {
-      v26 = [v6 path];
-      v52 = [v7 path];
+      path7 = [lCopy path];
+      path8 = [rLCopy path];
       *buf = 138412546;
-      v88 = v26;
+      v88 = path7;
       v89 = 2112;
-      v90 = v52;
+      v90 = path8;
       _os_log_error_impl(&dword_1DF2C3000, v25, OS_LOG_TYPE_ERROR, "supiscious path %@ does not contain base path %@ as a prefix", buf, 0x16u);
 
       goto LABEL_42;
@@ -3472,17 +3472,17 @@ id __51__MCMFileManager_realPathForURL_isDirectory_error___block_invoke(uint64_t
     goto LABEL_16;
   }
 
-  v23 = [v6 pathComponents];
-  v24 = [v23 containsObject:@".."];
+  pathComponents = [lCopy pathComponents];
+  v24 = [pathComponents containsObject:@".."];
 
   if (v24)
   {
     v25 = container_log_handle_for_category();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
     {
-      v26 = [v6 path];
+      path7 = [lCopy path];
       *buf = 138412290;
-      v88 = v26;
+      v88 = path7;
       v27 = "The suspicious path %@ contains '..' paths, which are invalid";
 LABEL_11:
       v28 = v25;
@@ -3497,13 +3497,13 @@ LABEL_42:
     goto LABEL_16;
   }
 
-  v41 = readlink([v6 fileSystemRepresentation], v99, 0x400uLL);
+  v41 = readlink([lCopy fileSystemRepresentation], v99, 0x400uLL);
   if (v41 == -1)
   {
     if (*__error() == 22 || *__error() == 2)
     {
-      v34 = [v6 path];
-      v33 = 0;
+      path9 = [lCopy path];
+      stringByDeletingLastPathComponent = 0;
       goto LABEL_33;
     }
 
@@ -3530,9 +3530,9 @@ LABEL_14:
     v25 = container_log_handle_for_category();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
     {
-      v26 = [v6 path];
+      path7 = [lCopy path];
       *buf = 138412546;
-      v88 = v26;
+      v88 = path7;
       v89 = 2080;
       v90 = v99;
       v27 = "Rejecting %@ -> %s, as absolute symlinks are not allowed";
@@ -3545,25 +3545,25 @@ LABEL_14:
   }
 
   v86 = 0;
-  v42 = [v7 path];
-  v43 = [(MCMFileManager *)self _validateSymlink:v42 withStartingDepth:0 andEndingDepth:&v86];
+  path10 = [rLCopy path];
+  v43 = [(MCMFileManager *)self _validateSymlink:path10 withStartingDepth:0 andEndingDepth:&v86];
 
   if (!v43)
   {
     v25 = container_log_handle_for_category();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
     {
-      v26 = [v7 path];
+      path7 = [rLCopy path];
       *buf = 138412290;
-      v88 = v26;
+      v88 = path7;
       v27 = "Failed to retrieve depth of %@";
       goto LABEL_11;
     }
 
 LABEL_16:
 
-    v33 = 0;
-    v34 = 0;
+    stringByDeletingLastPathComponent = 0;
+    path9 = 0;
 LABEL_17:
     v35 = 0;
 LABEL_18:
@@ -3573,28 +3573,28 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  v44 = [v6 path];
-  v45 = [v7 path];
-  v46 = [v44 substringFromIndex:{objc_msgSend(v45, "length")}];
+  path11 = [lCopy path];
+  path12 = [rLCopy path];
+  v46 = [path11 substringFromIndex:{objc_msgSend(path12, "length")}];
 
-  v33 = [v46 stringByDeletingLastPathComponent];
+  stringByDeletingLastPathComponent = [v46 stringByDeletingLastPathComponent];
 
   v47 = [MEMORY[0x1E696AEC0] stringWithFileSystemRepresentation:v99 length:v41];
-  v34 = [v33 stringByAppendingPathComponent:v47];
+  path9 = [stringByDeletingLastPathComponent stringByAppendingPathComponent:v47];
 
-  if (![(MCMFileManager *)self _validateSymlink:v34 withStartingDepth:v86 andEndingDepth:0])
+  if (![(MCMFileManager *)self _validateSymlink:path9 withStartingDepth:v86 andEndingDepth:0])
   {
     v50 = container_log_handle_for_category();
     if (os_log_type_enabled(v50, OS_LOG_TYPE_ERROR))
     {
-      v51 = [v6 path];
-      v73 = [v7 path];
+      path13 = [lCopy path];
+      path14 = [rLCopy path];
       *buf = 138412802;
-      v88 = v51;
+      v88 = path13;
       v89 = 2112;
-      v90 = v34;
+      v90 = path9;
       v91 = 2112;
-      v92 = v73;
+      v92 = path14;
       _os_log_error_impl(&dword_1DF2C3000, v50, OS_LOG_TYPE_ERROR, "Rejecting %@ -> %@, as it is points outside or to the base %@", buf, 0x20u);
 
       goto LABEL_67;
@@ -3606,15 +3606,15 @@ LABEL_49:
   }
 
 LABEL_33:
-  v48 = [(MCMFileManager *)self _realPathForURL:v7 allowNonExistentPathComponents:0];
+  v48 = [(MCMFileManager *)self _realPathForURL:rLCopy allowNonExistentPathComponents:0];
   if (!v48)
   {
     v50 = container_log_handle_for_category();
     if (os_log_type_enabled(v50, OS_LOG_TYPE_ERROR))
     {
-      v51 = [v7 path];
+      path13 = [rLCopy path];
       *buf = 138412290;
-      v88 = v51;
+      v88 = path13;
       _os_log_error_impl(&dword_1DF2C3000, v50, OS_LOG_TYPE_ERROR, "Failed to retrieve realpath for base path %@ ", buf, 0xCu);
 LABEL_67:
 
@@ -3625,15 +3625,15 @@ LABEL_67:
   }
 
   v35 = v48;
-  v49 = [(MCMFileManager *)self _realPathForURL:v6 allowNonExistentPathComponents:1];
+  v49 = [(MCMFileManager *)self _realPathForURL:lCopy allowNonExistentPathComponents:1];
   if (!v49)
   {
     v55 = container_log_handle_for_category();
     if (os_log_type_enabled(v55, OS_LOG_TYPE_ERROR))
     {
-      v72 = [v6 path];
+      path15 = [lCopy path];
       *buf = 138412290;
-      v88 = v72;
+      v88 = path15;
       _os_log_error_impl(&dword_1DF2C3000, v55, OS_LOG_TYPE_ERROR, "Failed to retrieve realpath for suspicious path %@", buf, 0xCu);
     }
 
@@ -3643,29 +3643,29 @@ LABEL_67:
   v36 = v49;
   if (v41 == -1)
   {
-    v56 = [v49 pathComponents];
-    v84 = [v35 pathComponents];
-    v57 = [v84 count];
-    v85 = v56;
-    v58 = [v56 count];
+    pathComponents2 = [v49 pathComponents];
+    pathComponents3 = [v35 pathComponents];
+    v57 = [pathComponents3 count];
+    v85 = pathComponents2;
+    v58 = [pathComponents2 count];
     if (v58 < 2 || v57 <= 1)
     {
       v64 = container_log_handle_for_category();
       if (os_log_type_enabled(v64, OS_LOG_TYPE_ERROR))
       {
-        v82 = [v6 path];
-        v65 = [v7 path];
-        v66 = [v36 path];
-        v78 = [v35 path];
+        path16 = [lCopy path];
+        path17 = [rLCopy path];
+        path18 = [v36 path];
+        path19 = [v35 path];
         *buf = 138413058;
-        v88 = v82;
+        v88 = path16;
         v89 = 2112;
-        v90 = v65;
+        v90 = path17;
         v91 = 2112;
-        v92 = v66;
+        v92 = path18;
         v93 = 2112;
-        v94 = v78;
-        v68 = v78;
+        v94 = path19;
+        v68 = path19;
         v69 = "Rejecting %@ with base %@ because real component counts don't make sense (reals %@ ; %@)";
         goto LABEL_71;
       }
@@ -3675,7 +3675,7 @@ LABEL_67:
     {
       v59 = v58;
       v60 = 1;
-      v61 = [v84 objectAtIndexedSubscript:1];
+      v61 = [pathComponents3 objectAtIndexedSubscript:1];
       if ([v61 isEqualToString:@"private"])
       {
         v60 = 2;
@@ -3704,7 +3704,7 @@ LABEL_65:
 
         while (1)
         {
-          v70 = [v84 objectAtIndexedSubscript:v60];
+          v70 = [pathComponents3 objectAtIndexedSubscript:v60];
           v71 = [v85 objectAtIndexedSubscript:v63];
           v83 = [v70 isEqualToString:v71];
 
@@ -3725,20 +3725,20 @@ LABEL_65:
         v64 = container_log_handle_for_category();
         if (os_log_type_enabled(v64, OS_LOG_TYPE_ERROR))
         {
-          v82 = [v6 path];
-          v81 = [v7 path];
-          v79 = [v36 path];
-          v75 = [v35 path];
-          v76 = [v84 objectAtIndexedSubscript:v60];
+          path16 = [lCopy path];
+          path20 = [rLCopy path];
+          path21 = [v36 path];
+          path22 = [v35 path];
+          v76 = [pathComponents3 objectAtIndexedSubscript:v60];
           v77 = [v85 objectAtIndexedSubscript:v74];
           *buf = 138413570;
-          v88 = v82;
+          v88 = path16;
           v89 = 2112;
-          v90 = v81;
+          v90 = path20;
           v91 = 2112;
-          v92 = v79;
+          v92 = path21;
           v93 = 2112;
-          v94 = v75;
+          v94 = path22;
           v95 = 2112;
           v96 = v76;
           v97 = 2112;
@@ -3754,19 +3754,19 @@ LABEL_72:
         v64 = container_log_handle_for_category();
         if (os_log_type_enabled(v64, OS_LOG_TYPE_ERROR))
         {
-          v82 = [v6 path];
-          v65 = [v7 path];
-          v66 = [v36 path];
-          v67 = [v35 path];
+          path16 = [lCopy path];
+          path17 = [rLCopy path];
+          path18 = [v36 path];
+          path23 = [v35 path];
           *buf = 138413058;
-          v88 = v82;
+          v88 = path16;
           v89 = 2112;
-          v90 = v65;
+          v90 = path17;
           v91 = 2112;
-          v92 = v66;
+          v92 = path18;
           v93 = 2112;
-          v94 = v67;
-          v68 = v67;
+          v94 = path23;
+          v68 = path23;
           v69 = "Rejecting %@ with base %@ because base component count is greater than child component count (reals %@ ; %@)";
 LABEL_71:
           _os_log_error_impl(&dword_1DF2C3000, v64, OS_LOG_TYPE_ERROR, v69, buf, 0x2Au);
@@ -3790,16 +3790,16 @@ LABEL_20:
   return v38;
 }
 
-- (BOOL)_validateSymlink:(id)a3 withStartingDepth:(unsigned int)a4 andEndingDepth:(unsigned int *)a5
+- (BOOL)_validateSymlink:(id)symlink withStartingDepth:(unsigned int)depth andEndingDepth:(unsigned int *)endingDepth
 {
   v28 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = v7;
-  if (v7)
+  symlinkCopy = symlink;
+  v8 = symlinkCopy;
+  if (symlinkCopy)
   {
-    v21 = a5;
-    v22 = v7;
-    [v7 pathComponents];
+    endingDepthCopy = endingDepth;
+    v22 = symlinkCopy;
+    [symlinkCopy pathComponents];
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
@@ -3809,7 +3809,7 @@ LABEL_20:
     {
       v11 = v10;
       v12 = *v25;
-      v13 = a4;
+      depthCopy2 = depth;
       while (1)
       {
         v14 = 0;
@@ -3836,8 +3836,8 @@ LABEL_20:
             v16 = [v15 isEqualToString:@"/"] ^ 1;
           }
 
-          v13 += v16;
-          if (v13 < a4)
+          depthCopy2 += v16;
+          if (depthCopy2 < depth)
           {
 
             v18 = 0;
@@ -3858,12 +3858,12 @@ LABEL_13:
       }
     }
 
-    v13 = a4;
+    depthCopy2 = depth;
 LABEL_20:
 
-    if (v21)
+    if (endingDepthCopy)
     {
-      *v21 = v13;
+      *endingDepthCopy = depthCopy2;
     }
 
     v18 = 1;
@@ -3881,25 +3881,25 @@ LABEL_23:
   return v18;
 }
 
-- (id)_realPathForURL:(id)a3 allowNonExistentPathComponents:(BOOL)a4
+- (id)_realPathForURL:(id)l allowNonExistentPathComponents:(BOOL)components
 {
-  v4 = a4;
+  componentsCopy = components;
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  lCopy = l;
   v18 = 0;
-  v7 = -[MCMFileManager realPathForURL:isDirectory:error:](self, "realPathForURL:isDirectory:error:", v6, [v6 hasDirectoryPath], &v18);
+  v7 = -[MCMFileManager realPathForURL:isDirectory:error:](self, "realPathForURL:isDirectory:error:", lCopy, [lCopy hasDirectoryPath], &v18);
   v8 = v18;
   v9 = v8;
   if (!v7)
   {
-    v10 = [v8 domain];
-    if ([v10 isEqualToString:*MEMORY[0x1E696A798]] && objc_msgSend(v9, "code") == 2)
+    domain = [v8 domain];
+    if ([domain isEqualToString:*MEMORY[0x1E696A798]] && objc_msgSend(v9, "code") == 2)
     {
 
-      if (v4)
+      if (componentsCopy)
       {
-        v11 = [v6 path];
-        v12 = [(MCMFileManager *)self _realPathWhatExistsInPath:v11];
+        path = [lCopy path];
+        v12 = [(MCMFileManager *)self _realPathWhatExistsInPath:path];
 
         goto LABEL_11;
       }
@@ -3912,10 +3912,10 @@ LABEL_23:
     v13 = container_log_handle_for_category();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
-      v16 = [v6 path];
-      v17 = [v16 fileSystemRepresentation];
+      path2 = [lCopy path];
+      fileSystemRepresentation = [path2 fileSystemRepresentation];
       *buf = 136315394;
-      v20 = v17;
+      v20 = fileSystemRepresentation;
       v21 = 2112;
       v22 = v9;
       _os_log_error_impl(&dword_1DF2C3000, v13, OS_LOG_TYPE_ERROR, "Failed to realpath [%s] : %@", buf, 0x16u);
@@ -3930,11 +3930,11 @@ LABEL_11:
   return v12;
 }
 
-- (id)_realPathWhatExistsInPath:(id)a3
+- (id)_realPathWhatExistsInPath:(id)path
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = [a3 pathComponents];
-  v5 = [v4 count];
+  pathComponents = [path pathComponents];
+  v5 = [pathComponents count];
   v6 = v5 - 1;
   if (v5 == 1)
   {
@@ -3945,7 +3945,7 @@ LABEL_11:
   {
     do
     {
-      v7 = [v4 subarrayWithRange:{0, v6 + 1}];
+      v7 = [pathComponents subarrayWithRange:{0, v6 + 1}];
       v8 = [MEMORY[0x1E695DFF8] fileURLWithPathComponents:v7];
       v9 = 0;
       if ([(MCMFileManager *)self itemExistsAtURL:v8])
@@ -3953,14 +3953,14 @@ LABEL_11:
         v10 = [(MCMFileManager *)self _realPathForURL:v8 allowNonExistentPathComponents:0];
         if (v10)
         {
-          v11 = [v4 subarrayWithRange:{v6 + 1, objc_msgSend(v4, "count") - (v6 + 1)}];
+          v11 = [pathComponents subarrayWithRange:{v6 + 1, objc_msgSend(pathComponents, "count") - (v6 + 1)}];
           v12 = [MEMORY[0x1E696AEC0] pathWithComponents:v11];
           v13 = container_log_handle_for_category();
           if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
           {
-            v16 = [v10 path];
+            path = [v10 path];
             *buf = 138412546;
-            v18 = v16;
+            v18 = path;
             v19 = 2112;
             v20 = v12;
             _os_log_debug_impl(&dword_1DF2C3000, v13, OS_LOG_TYPE_DEBUG, "Realpathed %@ ; appending non-existing components %@", buf, 0x16u);
@@ -3991,31 +3991,31 @@ LABEL_11:
   return v9;
 }
 
-- ($7DEDF3842AEFB7F1E6DF5AF62E424A02)diskUsageForURL:(id)a3
+- ($7DEDF3842AEFB7F1E6DF5AF62E424A02)diskUsageForURL:(id)l
 {
   v34 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 path];
-  v5 = [v4 fileSystemRepresentation];
+  lCopy = l;
+  path = [lCopy path];
+  fileSystemRepresentation = [path fileSystemRepresentation];
   v6 = container_log_handle_for_category();
-  v7 = os_signpost_id_make_with_pointer(v6, v3);
+  v7 = os_signpost_id_make_with_pointer(v6, lCopy);
 
   v8 = container_log_handle_for_category();
   v9 = v8;
   if (v7 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v8))
   {
     *buf = 138477827;
-    v31 = v4;
+    v31 = path;
     _os_signpost_emit_with_name_impl(&dword_1DF2C3000, v9, OS_SIGNPOST_INTERVAL_BEGIN, v7, "CalculatingDiskUsage", " path=%{private, signpost.description:attribute}@ ", buf, 0xCu);
   }
 
-  if (!v5)
+  if (!fileSystemRepresentation)
   {
     v10 = container_log_handle_for_category();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v31 = v3;
+      v31 = lCopy;
       v14 = "Failed to get path to url %@";
       v15 = v10;
       v16 = 12;
@@ -4027,7 +4027,7 @@ LABEL_11:
 
   v28 = 0;
   v29 = 0;
-  if ((*(*MEMORY[0x1E69E9988] + 184))(v5, 2, &v28, 16))
+  if ((*(*MEMORY[0x1E69E9988] + 184))(fileSystemRepresentation, 2, &v28, 16))
   {
     v10 = container_log_handle_for_category();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -4036,7 +4036,7 @@ LABEL_11:
       v12 = __error();
       v13 = strerror(*v12);
       *buf = 136446722;
-      v31 = v5;
+      v31 = fileSystemRepresentation;
       v32 = 1024;
       *v33 = v11;
       *&v33[4] = 2080;
@@ -4065,7 +4065,7 @@ LABEL_20:
       *buf = 134218754;
       v31 = v24;
       v32 = 2082;
-      *v33 = v5;
+      *v33 = fileSystemRepresentation;
       *&v33[8] = 1024;
       *&v33[10] = v25;
       *&v33[14] = 2080;
@@ -4087,7 +4087,7 @@ LABEL_9:
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446722;
-    v31 = v5;
+    v31 = fileSystemRepresentation;
     v32 = 2048;
     *v33 = v17;
     *&v33[8] = 2048;
@@ -4102,7 +4102,7 @@ LABEL_10:
   if (v7 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v19))
   {
     *buf = 138478339;
-    v31 = v4;
+    v31 = path;
     v32 = 2050;
     *v33 = v17;
     *&v33[8] = 2049;
@@ -4118,23 +4118,23 @@ LABEL_10:
   return result;
 }
 
-- ($7DEDF3842AEFB7F1E6DF5AF62E424A02)fastDiskUsageForURL:(id)a3
+- ($7DEDF3842AEFB7F1E6DF5AF62E424A02)fastDiskUsageForURL:(id)l
 {
   v61 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  lCopy = l;
   if (!_os_feature_enabled_impl())
   {
 LABEL_41:
-    v31 = [(MCMFileManager *)self diskUsageForURL:v4, v42];
+    v31 = [(MCMFileManager *)self diskUsageForURL:lCopy, v42];
     v29 = v36;
     goto LABEL_42;
   }
 
   v45 = 0;
-  v5 = [v4 path];
-  v6 = [v5 fileSystemRepresentation];
+  path = [lCopy path];
+  fileSystemRepresentation = [path fileSystemRepresentation];
   v7 = container_log_handle_for_category();
-  v8 = os_signpost_id_make_with_pointer(v7, v4);
+  v8 = os_signpost_id_make_with_pointer(v7, lCopy);
 
   v9 = container_log_handle_for_category();
   v10 = v9;
@@ -4142,7 +4142,7 @@ LABEL_41:
   if (v8 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v9))
   {
     *buf = 138477827;
-    *&buf[4] = v5;
+    *&buf[4] = path;
     _os_signpost_emit_with_name_impl(&dword_1DF2C3000, v10, OS_SIGNPOST_INTERVAL_BEGIN, v8, "CalculatingDiskUsage", " path=%{private, signpost.description:attribute}@ ", buf, 0xCu);
   }
 
@@ -4151,13 +4151,13 @@ LABEL_41:
     *v46 = 0;
     *&v46[8] = 0;
     v12 = MEMORY[0x1E69E9988];
-    v13 = (*(*MEMORY[0x1E69E9988] + 184))(v6, 1, v46, 16);
+    v13 = (*(*MEMORY[0x1E69E9988] + 184))(fileSystemRepresentation, 1, v46, 16);
     v14 = *__error();
     if (_os_feature_enabled_impl() && v13 && v14 == 45)
     {
       *v46 = 0;
       *&v46[8] = 0;
-      v15 = (*(*v12 + 312))(v6, 2148026882, &v45, 0);
+      v15 = (*(*v12 + 312))(fileSystemRepresentation, 2148026882, &v45, 0);
       v16 = *__error();
       v17 = container_log_handle_for_category();
       v18 = v17;
@@ -4166,7 +4166,7 @@ LABEL_41:
         if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
         {
           *buf = 136446466;
-          *&buf[4] = v6;
+          *&buf[4] = fileSystemRepresentation;
           *&buf[12] = 1024;
           *&buf[14] = v16;
           v19 = "[%{public}s] Failed to set maintain-dir-stats: %{darwin.errno}d";
@@ -4181,11 +4181,11 @@ LABEL_46:
       if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
       {
         *buf = 136446210;
-        *&buf[4] = v6;
+        *&buf[4] = fileSystemRepresentation;
         _os_log_impl(&dword_1DF2C3000, v18, OS_LOG_TYPE_INFO, "[%{public}s] Enabled APFSIOC_MAINTAIN_DIR_STATS", buf, 0xCu);
       }
 
-      v13 = (*(*v12 + 184))(v6, 1, v46, 16);
+      v13 = (*(*v12 + 184))(fileSystemRepresentation, 1, v46, 16);
       v14 = *__error();
     }
 
@@ -4195,7 +4195,7 @@ LABEL_46:
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
       {
         *buf = 136446466;
-        *&buf[4] = v6;
+        *&buf[4] = fileSystemRepresentation;
         *&buf[12] = 1024;
         *&buf[14] = v14;
         v19 = "[%{public}s] Failed to get dirstats: %{darwin.errno}d";
@@ -4217,7 +4217,7 @@ LABEL_31:
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
       {
         *buf = 136446722;
-        *&buf[4] = v6;
+        *&buf[4] = fileSystemRepresentation;
         *&buf[12] = 2048;
         *&buf[14] = *v46;
         *&buf[22] = 1024;
@@ -4263,12 +4263,12 @@ LABEL_48:
     *buf = 1;
     *&buf[8] = 1;
     v20 = MEMORY[0x1E69E9988];
-    v21 = (*(*MEMORY[0x1E69E9988] + 312))(v6, 3239070321, buf, 0);
+    v21 = (*(*MEMORY[0x1E69E9988] + 312))(fileSystemRepresentation, 3239070321, buf, 0);
     v22 = *__error();
     if (_os_feature_enabled_impl() && v21 && v22 == 45)
     {
       v44 = 0;
-      v23 = [(MCMFileManager *)self enableFastDiskUsageForURL:v4 error:&v44];
+      v23 = [(MCMFileManager *)self enableFastDiskUsageForURL:lCopy error:&v44];
       v18 = v44;
       v24 = container_log_handle_for_category();
       v25 = v24;
@@ -4277,7 +4277,7 @@ LABEL_48:
         if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
         {
           *v46 = 136446466;
-          *&v46[4] = v6;
+          *&v46[4] = fileSystemRepresentation;
           *&v46[12] = 2112;
           *&v46[14] = v18;
           _os_log_error_impl(&dword_1DF2C3000, v25, OS_LOG_TYPE_ERROR, "[%{public}s] Enabling fast disk sizing failed: %@", v46, 0x16u);
@@ -4290,14 +4290,14 @@ LABEL_48:
       if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
       {
         *v46 = 136446210;
-        *&v46[4] = v6;
+        *&v46[4] = fileSystemRepresentation;
         _os_log_impl(&dword_1DF2C3000, v25, OS_LOG_TYPE_INFO, "[%{public}s] Enabled APFSIOC_DIR_STATS_OP", v46, 0xCu);
       }
 
       memset_s(buf, 0x110uLL, 0, 0x110uLL);
       *buf = 1;
       *&buf[8] = 1;
-      v21 = (*(*v20 + 312))(v6, 3239070321, buf, 0);
+      v21 = (*(*v20 + 312))(fileSystemRepresentation, 3239070321, buf, 0);
       v22 = *__error();
     }
 
@@ -4308,7 +4308,7 @@ LABEL_48:
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
       {
         *v46 = 136446466;
-        *&v46[4] = v6;
+        *&v46[4] = fileSystemRepresentation;
         *&v46[12] = 1024;
         *&v46[14] = v22;
         v19 = "[%{public}s] Fast disk sizing failed: %{darwin.errno}d";
@@ -4334,7 +4334,7 @@ LABEL_47:
   if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136447490;
-    *&buf[4] = v6;
+    *&buf[4] = fileSystemRepresentation;
     *&buf[12] = 2048;
     *&buf[14] = v29;
     *&buf[22] = 2048;
@@ -4357,7 +4357,7 @@ LABEL_37:
   if (v11 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v34))
   {
     *buf = 138478339;
-    *&buf[4] = v5;
+    *&buf[4] = path;
     *&buf[12] = 2050;
     *&buf[14] = v29;
     *&buf[22] = 2049;
@@ -4380,15 +4380,15 @@ LABEL_42:
   return result;
 }
 
-- (BOOL)enableFastDiskUsageForURL:(id)a3 error:(id *)a4
+- (BOOL)enableFastDiskUsageForURL:(id)l error:(id *)error
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = [a3 fileSystemRepresentation];
+  fileSystemRepresentation = [l fileSystemRepresentation];
   memset(__s, 0, sizeof(__s));
   memset_s(__s, 0x110uLL, 0, 0x110uLL);
   *&__s[0] = 0x100000001;
   *(&__s[0] + 1) = 28;
-  v6 = (*(*MEMORY[0x1E69E9988] + 312))(v5, 3239070321, __s, 0);
+  v6 = (*(*MEMORY[0x1E69E9988] + 312))(fileSystemRepresentation, 3239070321, __s, 0);
   if (v6)
   {
     v7 = *__error();
@@ -4396,13 +4396,13 @@ LABEL_42:
     v12[1] = 3221225472;
     v12[2] = __50__MCMFileManager_enableFastDiskUsageForURL_error___block_invoke;
     v12[3] = &__block_descriptor_44_e14___NSError_8__0l;
-    v12[4] = v5;
+    v12[4] = fileSystemRepresentation;
     v13 = v7;
     v8 = __50__MCMFileManager_enableFastDiskUsageForURL_error___block_invoke(v12);
-    if (a4)
+    if (error)
     {
       v8 = v8;
-      *a4 = v8;
+      *error = v8;
     }
   }
 
@@ -4412,7 +4412,7 @@ LABEL_42:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
       *buf = 136446210;
-      v15 = v5;
+      v15 = fileSystemRepresentation;
       _os_log_debug_impl(&dword_1DF2C3000, v9, OS_LOG_TYPE_DEBUG, "[%{public}s] Enabled APFSIOC_DIR_STATS_OP", buf, 0xCu);
     }
 
@@ -4444,11 +4444,11 @@ id __50__MCMFileManager_enableFastDiskUsageForURL_error___block_invoke(uint64_t 
   return v6;
 }
 
-- (void)printDirectoryStructureAtURL:(id)a3
+- (void)printDirectoryStructureAtURL:(id)l
 {
   v24[2] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v24[0] = [v3 fileSystemRepresentation];
+  lCopy = l;
+  v24[0] = [lCopy fileSystemRepresentation];
   v24[1] = 0;
   v4 = fts_open(v24, 84, 0);
   if (v4)
@@ -4518,7 +4518,7 @@ LABEL_7:
     v18 = __error();
     v19 = strerror(*v18);
     *buf = 138412546;
-    v21 = v3;
+    v21 = lCopy;
     v22 = 2080;
     v23 = v19;
     _os_log_error_impl(&dword_1DF2C3000, v16, OS_LOG_TYPE_ERROR, "fts_open failed for %@ : %s", buf, 0x16u);
@@ -4528,11 +4528,11 @@ LABEL_17:
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)dataProtectionClassOfItemAtURL:(id)a3 dataProtectionClass:(int *)a4 error:(id *)a5
+- (BOOL)dataProtectionClassOfItemAtURL:(id)l dataProtectionClass:(int *)class error:(id *)error
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = open([v7 fileSystemRepresentation], 256);
+  lCopy = l;
+  v8 = open([lCopy fileSystemRepresentation], 256);
   v9 = v8;
   if (v8 < 0)
   {
@@ -4541,7 +4541,7 @@ LABEL_17:
     v21[2] = __75__MCMFileManager_dataProtectionClassOfItemAtURL_dataProtectionClass_error___block_invoke;
     v21[3] = &unk_1E86B0B98;
     v13 = v22;
-    v22[0] = v7;
+    v22[0] = lCopy;
     v14 = __75__MCMFileManager_dataProtectionClassOfItemAtURL_dataProtectionClass_error___block_invoke(v21);
   }
 
@@ -4551,7 +4551,7 @@ LABEL_17:
     if ((v10 & 0x80000000) == 0 || *__error() == 45)
     {
       v11 = 0;
-      *a4 = v10;
+      *class = v10;
       v12 = 1;
 LABEL_10:
       close(v9);
@@ -4564,16 +4564,16 @@ LABEL_10:
     v19[2] = __75__MCMFileManager_dataProtectionClassOfItemAtURL_dataProtectionClass_error___block_invoke_267;
     v19[3] = &unk_1E86B0B98;
     v13 = &v20;
-    v20 = v7;
+    v20 = lCopy;
     v14 = __75__MCMFileManager_dataProtectionClassOfItemAtURL_dataProtectionClass_error___block_invoke_267(v19);
   }
 
   v11 = v14;
 
-  if (a5)
+  if (error)
   {
     v15 = v11;
-    *a5 = v11;
+    *error = v11;
   }
 
   v12 = 0;
@@ -4637,36 +4637,36 @@ id __75__MCMFileManager_dataProtectionClassOfItemAtURL_dataProtectionClass_error
   return v9;
 }
 
-- (BOOL)itemDoesNotExistAtURL:(id)a3
+- (BOOL)itemDoesNotExistAtURL:(id)l
 {
   v6 = *MEMORY[0x1E69E9840];
-  v3 = [(MCMFileManager *)self itemExistsAtURL:a3];
+  v3 = [(MCMFileManager *)self itemExistsAtURL:l];
   v4 = *MEMORY[0x1E69E9840];
   return !v3;
 }
 
-- (BOOL)itemAtURL:(id)a3 followSymlinks:(BOOL)a4 exists:(BOOL *)a5 isDirectory:(BOOL *)a6 fsNode:(id *)a7 error:(id *)a8
+- (BOOL)itemAtURL:(id)l followSymlinks:(BOOL)symlinks exists:(BOOL *)exists isDirectory:(BOOL *)directory fsNode:(id *)node error:(id *)error
 {
-  v12 = a4;
+  symlinksCopy = symlinks;
   v42 = *MEMORY[0x1E69E9840];
-  v13 = [a3 fileSystemRepresentation];
-  v14 = v13;
+  fileSystemRepresentation = [l fileSystemRepresentation];
+  v14 = fileSystemRepresentation;
   memset(&v41, 0, sizeof(v41));
-  if (v12)
+  if (symlinksCopy)
   {
-    v15 = stat(v13, &v41);
+    v15 = stat(fileSystemRepresentation, &v41);
   }
 
   else
   {
-    v15 = lstat(v13, &v41);
+    v15 = lstat(fileSystemRepresentation, &v41);
   }
 
   v16 = v15;
   if (!v15)
   {
     v18 = (v41.st_mode & 0xF000) == 0x4000;
-    if (a7)
+    if (node)
     {
       v17 = [[MCMFSNode alloc] initWithStat:&v41];
     }
@@ -4702,21 +4702,21 @@ LABEL_14:
       _os_log_debug_impl(&dword_1DF2C3000, v23, OS_LOG_TYPE_DEBUG, "stat [%s]: %d/%d/0%03o/%u/%u", buf, 0x2Au);
     }
 
-    if (a5)
+    if (exists)
     {
-      *a5 = v16 == 0;
+      *exists = v16 == 0;
     }
 
-    if (a6)
+    if (directory)
     {
-      *a6 = v18;
+      *directory = v18;
     }
 
-    if (a7)
+    if (node)
     {
       v24 = v17;
       v19 = 0;
-      *a7 = v17;
+      *node = v17;
     }
 
     else
@@ -4749,12 +4749,12 @@ LABEL_14:
     _os_log_error_impl(&dword_1DF2C3000, v20, OS_LOG_TYPE_ERROR, "Failed to determine if [%s] exists: (%d) %s", buf, 0x1Cu);
   }
 
-  if (a8)
+  if (error)
   {
     v21 = v19;
     v17 = 0;
     v22 = 0;
-    *a8 = v19;
+    *error = v19;
   }
 
   else
@@ -4790,56 +4790,56 @@ id __75__MCMFileManager_itemAtURL_followSymlinks_exists_isDirectory_fsNode_error
   return v5;
 }
 
-- (BOOL)itemAtURL:(id)a3 exists:(BOOL *)a4 isDirectory:(BOOL *)a5 error:(id *)a6
+- (BOOL)itemAtURL:(id)l exists:(BOOL *)exists isDirectory:(BOOL *)directory error:(id *)error
 {
   v8 = *MEMORY[0x1E69E9840];
   v6 = *MEMORY[0x1E69E9840];
 
-  return [(MCMFileManager *)self itemAtURL:a3 followSymlinks:0 exists:a4 isDirectory:a5 error:a6];
+  return [(MCMFileManager *)self itemAtURL:l followSymlinks:0 exists:exists isDirectory:directory error:error];
 }
 
-- (BOOL)itemExistsAtURL:(id)a3 isDirectory:(BOOL *)a4
+- (BOOL)itemExistsAtURL:(id)l isDirectory:(BOOL *)directory
 {
   v7 = *MEMORY[0x1E69E9840];
   v6 = 0;
-  [(MCMFileManager *)self itemAtURL:a3 exists:&v6 isDirectory:a4 error:0];
+  [(MCMFileManager *)self itemAtURL:l exists:&v6 isDirectory:directory error:0];
   result = v6;
   v5 = *MEMORY[0x1E69E9840];
   return result;
 }
 
-- (BOOL)itemAtURL:(id)a3 exists:(BOOL *)a4 error:(id *)a5
+- (BOOL)itemAtURL:(id)l exists:(BOOL *)exists error:(id *)error
 {
   v7 = *MEMORY[0x1E69E9840];
   v5 = *MEMORY[0x1E69E9840];
 
-  return [(MCMFileManager *)self itemAtURL:a3 exists:a4 isDirectory:0 error:a5];
+  return [(MCMFileManager *)self itemAtURL:l exists:exists isDirectory:0 error:error];
 }
 
-- (BOOL)itemExistsAtURL:(id)a3
+- (BOOL)itemExistsAtURL:(id)l
 {
   v5 = *MEMORY[0x1E69E9840];
   v3 = *MEMORY[0x1E69E9840];
 
-  return [(MCMFileManager *)self itemExistsAtURL:a3 isDirectory:0];
+  return [(MCMFileManager *)self itemExistsAtURL:l isDirectory:0];
 }
 
-- (id)urlsForItemsInDirectoryAtURL:(id)a3 error:(id *)a4
+- (id)urlsForItemsInDirectoryAtURL:(id)l error:(id *)error
 {
   v40 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  lCopy = l;
   v6 = objc_opt_new();
-  v7 = [v5 fileSystemRepresentation];
+  fileSystemRepresentation = [lCopy fileSystemRepresentation];
   v34[0] = MEMORY[0x1E69E9820];
   v34[1] = 3221225472;
   v35 = __53__MCMFileManager_urlsForItemsInDirectoryAtURL_error___block_invoke;
   v36 = &unk_1E86AFCC0;
   v8 = v6;
   v37 = v8;
-  v9 = v5;
+  v9 = lCopy;
   v38 = v9;
   v10 = v34;
-  v11 = opendir(v7);
+  v11 = opendir(fileSystemRepresentation);
   if (v11)
   {
     v12 = v11;
@@ -4871,7 +4871,7 @@ LABEL_8:
       }
 
       memset(&v39, 0, sizeof(v39));
-      v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s/%s", v7, v14->d_name];
+      v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s/%s", fileSystemRepresentation, v14->d_name];
       if (stat([v16 fileSystemRepresentation], &v39))
       {
         goto LABEL_6;
@@ -4920,7 +4920,7 @@ LABEL_18:
         v29 = __error();
         v30 = strerror(*v29);
         v39.st_dev = 136315394;
-        *&v39.st_mode = v7;
+        *&v39.st_mode = fileSystemRepresentation;
         WORD2(v39.st_ino) = 2080;
         *(&v39.st_ino + 6) = v30;
         _os_log_error_impl(&dword_1DF2C3000, v22, OS_LOG_TYPE_ERROR, "opendir of %s failed: %s", &v39, 0x16u);
@@ -4940,7 +4940,7 @@ LABEL_18:
       v21 = __53__MCMFileManager_urlsForItemsInDirectoryAtURL_error___block_invoke_2(v31);
 
       v20 = 0;
-      if (!a4)
+      if (!error)
       {
         goto LABEL_29;
       }
@@ -4951,7 +4951,7 @@ LABEL_18:
 
   v20 = v8;
   v21 = 0;
-  if (!a4)
+  if (!error)
   {
     goto LABEL_29;
   }
@@ -4960,7 +4960,7 @@ LABEL_27:
   if (!v20)
   {
     v24 = v21;
-    *a4 = v21;
+    *error = v21;
   }
 
 LABEL_29:
@@ -5008,33 +5008,33 @@ id __53__MCMFileManager_urlsForItemsInDirectoryAtURL_error___block_invoke_2(uint
   return v9;
 }
 
-- (BOOL)standardizeOwnershipAtURL:(id)a3 toPOSIXUser:(id)a4 error:(id *)a5
+- (BOOL)standardizeOwnershipAtURL:(id)l toPOSIXUser:(id)user error:(id *)error
 {
   v33 = *MEMORY[0x1E69E9840];
-  v8 = a4;
+  userCopy = user;
   memset(&v32, 0, sizeof(v32));
-  v9 = a3;
-  v10 = a3;
-  v11 = [v10 fileSystemRepresentation];
+  lCopy = l;
+  lCopy2 = l;
+  fileSystemRepresentation = [lCopy2 fileSystemRepresentation];
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __62__MCMFileManager_standardizeOwnershipAtURL_toPOSIXUser_error___block_invoke;
   v26[3] = &unk_1E86AFC98;
-  v12 = v8;
+  v12 = userCopy;
   v27 = v12;
-  v13 = [(MCMFileManager *)self _traverseDirectory:v10 error:a5 withBlock:v26];
+  v13 = [(MCMFileManager *)self _traverseDirectory:lCopy2 error:error withBlock:v26];
 
-  if (lstat(v11, &v32) == -1)
+  if (lstat(fileSystemRepresentation, &v32) == -1)
   {
-    if (a5)
+    if (error)
     {
       v25[0] = MEMORY[0x1E69E9820];
       v25[1] = 3221225472;
       v25[2] = __62__MCMFileManager_standardizeOwnershipAtURL_toPOSIXUser_error___block_invoke_244;
       v25[3] = &__block_descriptor_40_e14___NSError_8__0l;
-      v25[4] = v11;
+      v25[4] = fileSystemRepresentation;
       __62__MCMFileManager_standardizeOwnershipAtURL_toPOSIXUser_error___block_invoke_244(v25);
-      *a5 = v13 = 0;
+      *error = v13 = 0;
     }
 
     else
@@ -5043,10 +5043,10 @@ id __53__MCMFileManager_urlsForItemsInDirectoryAtURL_error___block_invoke_2(uint
     }
   }
 
-  else if (!strstr(v11, ".com.apple.mobile_container_manager.metadata.plist"))
+  else if (!strstr(fileSystemRepresentation, ".com.apple.mobile_container_manager.metadata.plist"))
   {
     st_uid = v32.st_uid;
-    if (st_uid != [v12 UID] && lchown(v11, objc_msgSend(v12, "UID"), objc_msgSend(v12, "primaryGID")) == -1)
+    if (st_uid != [v12 UID] && lchown(fileSystemRepresentation, objc_msgSend(v12, "UID"), objc_msgSend(v12, "primaryGID")) == -1)
     {
       v15 = container_log_handle_for_category();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -5054,7 +5054,7 @@ id __53__MCMFileManager_urlsForItemsInDirectoryAtURL_error___block_invoke_2(uint
         v23 = __error();
         v24 = strerror(*v23);
         *buf = 136315394;
-        v29 = v11;
+        v29 = fileSystemRepresentation;
         v30 = 2080;
         v31 = v24;
         _os_log_error_impl(&dword_1DF2C3000, v15, OS_LOG_TYPE_ERROR, "Could not chown %s: %s", buf, 0x16u);
@@ -5081,7 +5081,7 @@ id __53__MCMFileManager_urlsForItemsInDirectoryAtURL_error___block_invoke_2(uint
       v17 = v16;
     }
 
-    if (lchmod(v11, v17) == -1)
+    if (lchmod(fileSystemRepresentation, v17) == -1)
     {
       v18 = container_log_handle_for_category();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -5089,7 +5089,7 @@ id __53__MCMFileManager_urlsForItemsInDirectoryAtURL_error___block_invoke_2(uint
         v21 = __error();
         v22 = strerror(*v21);
         *buf = 136315394;
-        v29 = v11;
+        v29 = fileSystemRepresentation;
         v30 = 2080;
         v31 = v22;
         _os_log_error_impl(&dword_1DF2C3000, v18, OS_LOG_TYPE_ERROR, "Could not chmod %s: %s", buf, 0x16u);
@@ -5191,23 +5191,23 @@ id __62__MCMFileManager_standardizeOwnershipAtURL_toPOSIXUser_error___block_invo
   return v9;
 }
 
-- (BOOL)standardizeAllSystemContainerACLsAtURL:(id)a3 error:(id *)a4
+- (BOOL)standardizeAllSystemContainerACLsAtURL:(id)l error:(id *)error
 {
   v42 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  lCopy = l;
   v7 = +[MCMFileManager defaultManager];
   v32 = 0;
-  v8 = [v7 urlsForItemsInDirectoryAtURL:v6 error:&v32];
+  v8 = [v7 urlsForItemsInDirectoryAtURL:lCopy error:&v32];
   v9 = v32;
 
   if (!v8)
   {
-    v22 = [v9 domain];
-    if ([v22 isEqualToString:*MEMORY[0x1E696A798]])
+    domain = [v9 domain];
+    if ([domain isEqualToString:*MEMORY[0x1E696A798]])
     {
-      v23 = [v9 code];
+      code = [v9 code];
 
-      if (v23 == 2)
+      if (code == 2)
       {
         goto LABEL_19;
       }
@@ -5220,9 +5220,9 @@ id __62__MCMFileManager_standardizeOwnershipAtURL_toPOSIXUser_error___block_invo
     v11 = container_log_handle_for_category();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      v27 = [v6 path];
+      path = [lCopy path];
       *buf = 138412546;
-      v39 = v27;
+      v39 = path;
       v40 = 2112;
       v41 = v9;
       _os_log_error_impl(&dword_1DF2C3000, v11, OS_LOG_TYPE_ERROR, "Failed to get items at URL%@ : %@", buf, 0x16u);
@@ -5257,8 +5257,8 @@ LABEL_19:
   {
     v13 = v12;
     v28 = v8;
-    v29 = a4;
-    v30 = v6;
+    errorCopy = error;
+    v30 = lCopy;
     v14 = *v35;
     v15 = 1;
     do
@@ -5282,9 +5282,9 @@ LABEL_19:
           v20 = container_log_handle_for_category();
           if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
           {
-            v21 = [v18 path];
+            path2 = [v18 path];
             *buf = 138412546;
-            v39 = v21;
+            v39 = path2;
             v40 = 2112;
             v41 = v9;
             _os_log_error_impl(&dword_1DF2C3000, v20, OS_LOG_TYPE_ERROR, "Failed to set system container ACL at %@: %@", buf, 0x16u);
@@ -5302,8 +5302,8 @@ LABEL_19:
     }
 
     while (v13);
-    a4 = v29;
-    v6 = v30;
+    error = errorCopy;
+    lCopy = v30;
     v8 = v28;
   }
 
@@ -5314,11 +5314,11 @@ LABEL_19:
 
 LABEL_25:
 
-  if (a4 && (v15 & 1) == 0)
+  if (error && (v15 & 1) == 0)
   {
     v24 = v9;
     v15 = 0;
-    *a4 = v9;
+    *error = v9;
   }
 
 LABEL_28:
@@ -5327,18 +5327,18 @@ LABEL_28:
   return v15 & 1;
 }
 
-- (BOOL)standardizeACLsForSystemContainerAtURL:(id)a3 error:(id *)a4
+- (BOOL)standardizeACLsForSystemContainerAtURL:(id)l error:(id *)error
 {
   v6 = *MEMORY[0x1E69E9840];
   v4 = *MEMORY[0x1E69E9840];
 
-  return [(MCMFileManager *)self standardizeACLsAtURL:a3 isSystemContainer:1 error:a4];
+  return [(MCMFileManager *)self standardizeACLsAtURL:l isSystemContainer:1 error:error];
 }
 
-- (BOOL)standardizeACLsAtURL:(id)a3 isSystemContainer:(BOOL)a4 error:(id *)a5
+- (BOOL)standardizeACLsAtURL:(id)l isSystemContainer:(BOOL)container error:(id *)error
 {
   v47 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  lCopy = l;
   v43 = 0;
   v44 = &v43;
   v45 = 0x2020000000;
@@ -5353,7 +5353,7 @@ LABEL_28:
   v38 = 0;
   v9 = +[MCMPOSIXUser nobody];
   v10 = [v9 UID];
-  v11 = [v9 primaryGID];
+  primaryGID = [v9 primaryGID];
   v34 = 0;
   v12 = [(MCMFileManager *)self _CopyTopLevelSystemContainerACLWithError:&v34];
   v13 = v34;
@@ -5385,13 +5385,13 @@ LABEL_5:
       v27[1] = 3221225472;
       v27[2] = __63__MCMFileManager_standardizeACLsAtURL_isSystemContainer_error___block_invoke;
       v27[3] = &unk_1E86AFC70;
-      v30 = a4;
+      containerCopy = container;
       v27[4] = &v43;
       v27[5] = &v39;
       v27[6] = &v35;
       v28 = v10;
-      v29 = v11;
-      v18 = [(MCMFileManager *)self _traverseDirectory:v8 error:&v31 withBlock:v27];
+      v29 = primaryGID;
+      v18 = [(MCMFileManager *)self _traverseDirectory:lCopy error:&v31 withBlock:v27];
       v19 = v31;
 
       v14 = v19;
@@ -5422,7 +5422,7 @@ LABEL_7:
     acl_free(v22);
   }
 
-  if (a5)
+  if (error)
   {
     v23 = v18;
   }
@@ -5435,7 +5435,7 @@ LABEL_7:
   if ((v23 & 1) == 0)
   {
     v24 = v14;
-    *a5 = v14;
+    *error = v14;
   }
 
   _Block_object_dispose(&v35, 8);
@@ -5555,17 +5555,17 @@ LABEL_21:
   return 1;
 }
 
-- (BOOL)setTopLevelSystemContainerACLAtURL:(id)a3 error:(id *)a4
+- (BOOL)setTopLevelSystemContainerACLAtURL:(id)l error:(id *)error
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  lCopy = l;
   v19[0] = 0;
   v7 = [(MCMFileManager *)self _CopyTopLevelSystemContainerACLWithError:v19];
   v8 = v19[0];
   if (!v7)
   {
     v11 = 0;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_9;
     }
@@ -5573,8 +5573,8 @@ LABEL_21:
     goto LABEL_7;
   }
 
-  v9 = [v6 path];
-  v10 = acl_set_file([v9 UTF8String], ACL_TYPE_EXTENDED, v7);
+  path = [lCopy path];
+  v10 = acl_set_file([path UTF8String], ACL_TYPE_EXTENDED, v7);
   v11 = v10 == 0;
 
   if (v10)
@@ -5583,20 +5583,20 @@ LABEL_21:
     v16[1] = 3221225472;
     v16[2] = __59__MCMFileManager_setTopLevelSystemContainerACLAtURL_error___block_invoke;
     v16[3] = &unk_1E86B0BE8;
-    v17 = v6;
+    v17 = lCopy;
     v18 = v8;
     v12 = v8;
     v8 = __59__MCMFileManager_setTopLevelSystemContainerACLAtURL_error___block_invoke(v16);
   }
 
   acl_free(v7);
-  if (a4)
+  if (error)
   {
 LABEL_7:
     if (!v11)
     {
       v13 = v8;
-      *a4 = v8;
+      *error = v8;
     }
   }
 
@@ -5677,7 +5677,7 @@ LABEL_7:
   return v16;
 }
 
-- (_acl)_CopyTopLevelSystemContainerACLWithError:(id *)a3
+- (_acl)_CopyTopLevelSystemContainerACLWithError:(id *)error
 {
   obj_p[1] = *MEMORY[0x1E69E9840];
   v14 = 0;
@@ -5688,7 +5688,7 @@ LABEL_7:
   if (!v5)
   {
     v9 = 0;
-    if (!a3)
+    if (!error)
     {
       goto LABEL_10;
     }
@@ -5709,13 +5709,13 @@ LABEL_7:
   }
 
   v7 = v8;
-  if (a3)
+  if (error)
   {
 LABEL_8:
     if (!v9)
     {
       v10 = v7;
-      *a3 = v7;
+      *error = v7;
       v9 = obj_p[0];
     }
   }
@@ -5726,12 +5726,12 @@ LABEL_10:
   return v9;
 }
 
-- (_acl)_CopySystemContainerACLWithNumACEs:(int)a3 isDir:(BOOL)a4 inheritOnly:(BOOL)a5 withError:(id *)a6
+- (_acl)_CopySystemContainerACLWithNumACEs:(int)es isDir:(BOOL)dir inheritOnly:(BOOL)only withError:(id *)error
 {
-  v7 = a5;
-  v8 = a4;
+  onlyCopy = only;
+  dirCopy = dir;
   obj_p[1] = *MEMORY[0x1E69E9840];
-  obj_p[0] = acl_init(a3);
+  obj_p[0] = acl_init(es);
   if (!obj_p[0])
   {
     v19[0] = MEMORY[0x1E69E9820];
@@ -5742,7 +5742,7 @@ LABEL_10:
     v13 = __81__MCMFileManager__CopySystemContainerACLWithNumACEs_isDir_inheritOnly_withError___block_invoke(v19);
 
     v14 = 0;
-    if (!a6)
+    if (!error)
     {
       goto LABEL_19;
     }
@@ -5750,7 +5750,7 @@ LABEL_10:
     goto LABEL_17;
   }
 
-  if (v7)
+  if (onlyCopy)
   {
     v10 = 352;
   }
@@ -5760,7 +5760,7 @@ LABEL_10:
     v10 = 96;
   }
 
-  if (v8)
+  if (dirCopy)
   {
     v11 = 16382;
   }
@@ -5770,7 +5770,7 @@ LABEL_10:
     v11 = 16318;
   }
 
-  if (v8)
+  if (dirCopy)
   {
     v12 = v10;
   }
@@ -5791,13 +5791,13 @@ LABEL_10:
     obj_p[0] = 0;
   }
 
-  if (a6)
+  if (error)
   {
 LABEL_17:
     if (!v14)
     {
       v15 = v13;
-      *a6 = v13;
+      *error = v13;
       v14 = obj_p[0];
     }
   }
@@ -5877,14 +5877,14 @@ LABEL_7:
   return v15;
 }
 
-- (BOOL)_CreateSystemUserACEInACL:(_acl *)a3 withPermissions:(int)a4 andFlags:(int)a5 withError:(id *)a6
+- (BOOL)_CreateSystemUserACEInACL:(_acl *)l withPermissions:(int)permissions andFlags:(int)flags withError:(id *)error
 {
   entry_p[1] = *MEMORY[0x1E69E9840];
   permset_p = 0;
   entry_p[0] = 0;
   __s = 0;
   flagset_p = 0;
-  if (acl_create_entry(a3, entry_p))
+  if (acl_create_entry(l, entry_p))
   {
     v41[0] = MEMORY[0x1E69E9820];
     v41[1] = 3221225472;
@@ -5914,7 +5914,7 @@ LABEL_7:
 
     else
     {
-      if (a4)
+      if (permissions)
       {
         if (acl_get_permset(entry_p[0], &permset_p))
         {
@@ -5928,13 +5928,13 @@ LABEL_7:
           goto LABEL_8;
         }
 
-        if (acl_add_perm(permset_p, a4))
+        if (acl_add_perm(permset_p, permissions))
         {
           v32[0] = MEMORY[0x1E69E9820];
           v32[1] = 3221225472;
           v32[2] = __79__MCMFileManager__CreateSystemUserACEInACL_withPermissions_andFlags_withError___block_invoke_190;
           v32[3] = &unk_1E86B0618;
-          v34 = a4;
+          permissionsCopy = permissions;
           v14 = &v33;
           v33 = 0;
           v15 = __79__MCMFileManager__CreateSystemUserACEInACL_withPermissions_andFlags_withError___block_invoke_190(v32);
@@ -5954,7 +5954,7 @@ LABEL_7:
         }
       }
 
-      if (a5)
+      if (flags)
       {
         if (acl_get_flagset_np(entry_p[0], &flagset_p))
         {
@@ -5968,13 +5968,13 @@ LABEL_7:
           goto LABEL_8;
         }
 
-        if (acl_add_flag_np(flagset_p, a5))
+        if (acl_add_flag_np(flagset_p, flags))
         {
           v25[0] = MEMORY[0x1E69E9820];
           v25[1] = 3221225472;
           v25[2] = __79__MCMFileManager__CreateSystemUserACEInACL_withPermissions_andFlags_withError___block_invoke_208;
           v25[3] = &unk_1E86B0618;
-          v27 = a5;
+          flagsCopy = flags;
           v14 = &v26;
           v26 = 0;
           v15 = __79__MCMFileManager__CreateSystemUserACEInACL_withPermissions_andFlags_withError___block_invoke_208(v25);
@@ -6014,7 +6014,7 @@ LABEL_7:
 LABEL_9:
           free(v13);
           memset_s(&__s, 8uLL, 0, 8uLL);
-          if (!a6)
+          if (!error)
           {
             goto LABEL_12;
           }
@@ -6049,7 +6049,7 @@ LABEL_8:
 LABEL_3:
 
   v11 = 0;
-  if (!a6)
+  if (!error)
   {
     goto LABEL_12;
   }
@@ -6058,7 +6058,7 @@ LABEL_10:
   if (!v11)
   {
     v16 = v9;
-    *a6 = v9;
+    *error = v9;
   }
 
 LABEL_12:
@@ -6828,29 +6828,29 @@ LABEL_7:
   return v15;
 }
 
-- (BOOL)_traverseDirectory:(id)a3 error:(id *)a4 withBlock:(id)a5
+- (BOOL)_traverseDirectory:(id)directory error:(id *)error withBlock:(id)block
 {
   v43[2] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a5;
-  v9 = [v7 fileSystemRepresentation];
+  directoryCopy = directory;
+  blockCopy = block;
+  fileSystemRepresentation = [directoryCopy fileSystemRepresentation];
   v10 = container_log_handle_for_category();
-  v11 = os_signpost_id_make_with_pointer(v10, v7);
+  v11 = os_signpost_id_make_with_pointer(v10, directoryCopy);
 
   v12 = container_log_handle_for_category();
   v13 = v12;
   v14 = v11 - 1;
   if (v11 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v12))
   {
-    v15 = [v7 path];
+    path = [directoryCopy path];
     *buf = 138477827;
-    v40 = v15;
+    v40 = path;
     _os_signpost_emit_with_name_impl(&dword_1DF2C3000, v13, OS_SIGNPOST_INTERVAL_BEGIN, v11, "TraversingDirectory", " path=%{private, signpost.description:attribute}@ ", buf, 0xCu);
   }
 
   spid = v11;
 
-  v43[0] = v9;
+  v43[0] = fileSystemRepresentation;
   v43[1] = 0;
   v16 = fts_open(v43, 84, 0);
   if (!v16)
@@ -6859,7 +6859,7 @@ LABEL_7:
     v38[1] = 3221225472;
     v38[2] = __53__MCMFileManager__traverseDirectory_error_withBlock___block_invoke;
     v38[3] = &__block_descriptor_40_e14___NSError_8__0l;
-    v38[4] = v9;
+    v38[4] = fileSystemRepresentation;
     v25 = __53__MCMFileManager__traverseDirectory_error_withBlock___block_invoke(v38);
     v18 = 0;
 LABEL_20:
@@ -6869,7 +6869,7 @@ LABEL_20:
 
   v17 = v16;
   v32 = v11 - 1;
-  v34 = a4;
+  errorCopy = error;
   v18 = 0;
   v19 = 0;
   v20 = 0;
@@ -6888,7 +6888,7 @@ LABEL_20:
       v37[1] = 3221225472;
       v37[2] = __53__MCMFileManager__traverseDirectory_error_withBlock___block_invoke_154;
       v37[3] = &__block_descriptor_48_e14___NSError_8__0l;
-      v37[4] = v9;
+      v37[4] = fileSystemRepresentation;
       v37[5] = v21;
       v25 = __53__MCMFileManager__traverseDirectory_error_withBlock___block_invoke_154(v37);
 
@@ -6899,7 +6899,7 @@ LABEL_15:
 
     ++v18;
     v36 = v19;
-    v24 = v8[2](v8, v21, &v36);
+    v24 = blockCopy[2](blockCopy, v21, &v36);
     v25 = v36;
 
     v20 = 1;
@@ -6912,7 +6912,7 @@ LABEL_15:
 
   v25 = v19;
 LABEL_17:
-  a4 = v34;
+  error = errorCopy;
   v14 = v32;
   if (fts_close(v17))
   {
@@ -6922,7 +6922,7 @@ LABEL_17:
       v35[1] = 3221225472;
       v35[2] = __53__MCMFileManager__traverseDirectory_error_withBlock___block_invoke_160;
       v35[3] = &__block_descriptor_40_e14___NSError_8__0l;
-      v35[4] = v9;
+      v35[4] = fileSystemRepresentation;
       v25 = __53__MCMFileManager__traverseDirectory_error_withBlock___block_invoke_160(v35);
     }
 
@@ -6934,18 +6934,18 @@ LABEL_21:
   v27 = v26;
   if (v14 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v26))
   {
-    v28 = [v7 path];
+    path2 = [directoryCopy path];
     *buf = 138478083;
-    v40 = v28;
+    v40 = path2;
     v41 = 2050;
     v42 = v18;
     _os_signpost_emit_with_name_impl(&dword_1DF2C3000, v27, OS_SIGNPOST_INTERVAL_END, spid, "TraversingDirectory", " path=%{private, signpost.description:attribute}@  numNodes=%{public, signpost.description:attribute}llu ", buf, 0x16u);
   }
 
-  if (!((a4 == 0) | v20 & 1))
+  if (!((error == 0) | v20 & 1))
   {
     v29 = v25;
-    *a4 = v25;
+    *error = v25;
   }
 
   v30 = *MEMORY[0x1E69E9840];
@@ -7021,25 +7021,25 @@ id __53__MCMFileManager__traverseDirectory_error_withBlock___block_invoke_160(ui
   return v9;
 }
 
-- (id)createTemporaryDirectoryInDirectoryURL:(id)a3 error:(id *)a4
+- (id)createTemporaryDirectoryInDirectoryURL:(id)l error:(id *)error
 {
   v6 = *MEMORY[0x1E69E9840];
   v4 = *MEMORY[0x1E69E9840];
 
-  return [(MCMFileManager *)self createTemporaryDirectoryInDirectoryURL:a3 withNamePrefix:@"temp." error:a4];
+  return [(MCMFileManager *)self createTemporaryDirectoryInDirectoryURL:l withNamePrefix:@"temp." error:error];
 }
 
-- (id)createTemporaryDirectoryInDirectoryURL:(id)a3 withNamePrefix:(id)a4 error:(id *)a5
+- (id)createTemporaryDirectoryInDirectoryURL:(id)l withNamePrefix:(id)prefix error:(id *)error
 {
   __s[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
+  lCopy = l;
+  prefixCopy = prefix;
+  v9 = prefixCopy;
   __s[0] = 0;
-  if (v7)
+  if (lCopy)
   {
-    v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@XXXXXX", v8];
-    v11 = [v7 URLByAppendingPathComponent:v10 isDirectory:1];
+    prefixCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@XXXXXX", prefixCopy];
+    v11 = [lCopy URLByAppendingPathComponent:prefixCopy isDirectory:1];
     v12 = strdup([v11 fileSystemRepresentation]);
     __s[0] = v12;
     if (mkdtemp(v12))
@@ -7075,19 +7075,19 @@ LABEL_7:
     v20[1] = 3221225472;
     v20[2] = __78__MCMFileManager_createTemporaryDirectoryInDirectoryURL_withNamePrefix_error___block_invoke;
     v20[3] = &unk_1E86B0B98;
-    v21 = v8;
+    v21 = prefixCopy;
     v14 = __78__MCMFileManager_createTemporaryDirectoryInDirectoryURL_withNamePrefix_error___block_invoke(v20);
 
     v11 = 0;
-    v10 = 0;
+    prefixCopy = 0;
     v13 = 0;
   }
 
 LABEL_8:
-  if (a5 && !v13)
+  if (error && !v13)
   {
     v15 = v14;
-    *a5 = v14;
+    *error = v14;
   }
 
   v16 = v13;
@@ -7141,30 +7141,30 @@ id __78__MCMFileManager_createTemporaryDirectoryInDirectoryURL_withNamePrefix_er
   return v9;
 }
 
-- (BOOL)replaceItemAtDestinationURL:(id)a3 withSourceURL:(id)a4 swapped:(BOOL *)a5 error:(id *)a6
+- (BOOL)replaceItemAtDestinationURL:(id)l withSourceURL:(id)rL swapped:(BOOL *)swapped error:(id *)error
 {
   v29 = *MEMORY[0x1E69E9840];
-  v10 = a4;
-  v11 = a3;
-  v12 = [a4 fileSystemRepresentation];
-  v13 = [v11 fileSystemRepresentation];
+  rLCopy = rL;
+  lCopy = l;
+  fileSystemRepresentation = [rL fileSystemRepresentation];
+  fileSystemRepresentation2 = [lCopy fileSystemRepresentation];
 
   v14 = MEMORY[0x1E69E9988];
-  v15 = (*(*MEMORY[0x1E69E9988] + 640))(v12, v13, 2);
-  if (v15 < 0 && (*__error() != 45 || ((*(*v14 + 640))(v12, v13, 0) & 0x80000000) != 0))
+  v15 = (*(*MEMORY[0x1E69E9988] + 640))(fileSystemRepresentation, fileSystemRepresentation2, 2);
+  if (v15 < 0 && (*__error() != 45 || ((*(*v14 + 640))(fileSystemRepresentation, fileSystemRepresentation2, 0) & 0x80000000) != 0))
   {
     v22[0] = MEMORY[0x1E69E9820];
     v22[1] = 3221225472;
     v22[2] = __74__MCMFileManager_replaceItemAtDestinationURL_withSourceURL_swapped_error___block_invoke;
     v22[3] = &__block_descriptor_48_e14___NSError_8__0l;
-    v22[4] = v13;
-    v22[5] = v12;
+    v22[4] = fileSystemRepresentation2;
+    v22[5] = fileSystemRepresentation;
     v18 = __74__MCMFileManager_replaceItemAtDestinationURL_withSourceURL_swapped_error___block_invoke(v22);
-    if (a6)
+    if (error)
     {
       v18 = v18;
       v19 = 0;
-      *a6 = v18;
+      *error = v18;
     }
 
     else
@@ -7175,9 +7175,9 @@ id __78__MCMFileManager_createTemporaryDirectoryInDirectoryURL_withNamePrefix_er
 
   else
   {
-    if (a5)
+    if (swapped)
     {
-      *a5 = v15 >= 0;
+      *swapped = v15 >= 0;
     }
 
     v16 = container_log_handle_for_category();
@@ -7192,9 +7192,9 @@ id __78__MCMFileManager_createTemporaryDirectoryInDirectoryURL_withNamePrefix_er
 
       v24 = v17;
       v25 = 2080;
-      v26 = v13;
+      v26 = fileSystemRepresentation2;
       v27 = 2080;
-      v28 = v12;
+      v28 = fileSystemRepresentation;
       _os_log_impl(&dword_1DF2C3000, v16, OS_LOG_TYPE_INFO, "%s [%s] <-> [%s].", buf, 0x20u);
     }
 
@@ -7227,49 +7227,49 @@ id __74__MCMFileManager_replaceItemAtDestinationURL_withSourceURL_swapped_error_
   return v5;
 }
 
-- (BOOL)moveItemAtURL:(id)a3 toURL:(id)a4 error:(id *)a5
+- (BOOL)moveItemAtURL:(id)l toURL:(id)rL error:(id *)error
 {
   v7 = *MEMORY[0x1E69E9840];
   v5 = *MEMORY[0x1E69E9840];
 
-  return [(MCMFileManager *)self _moveItemAtURL:a3 toURL:a4 failIfSrcMissing:1 error:a5];
+  return [(MCMFileManager *)self _moveItemAtURL:l toURL:rL failIfSrcMissing:1 error:error];
 }
 
-- (BOOL)copyItemAtURL:(id)a3 toURL:(id)a4 error:(id *)a5
+- (BOOL)copyItemAtURL:(id)l toURL:(id)rL error:(id *)error
 {
   v7 = *MEMORY[0x1E69E9840];
   v5 = *MEMORY[0x1E69E9840];
 
-  return [(MCMFileManager *)self _copyItemAtURL:a3 toURL:a4 failIfSrcMissing:1 error:a5];
+  return [(MCMFileManager *)self _copyItemAtURL:l toURL:rL failIfSrcMissing:1 error:error];
 }
 
-- (BOOL)moveItemIfExistsAtURL:(id)a3 toURL:(id)a4 error:(id *)a5
+- (BOOL)moveItemIfExistsAtURL:(id)l toURL:(id)rL error:(id *)error
 {
   v7 = *MEMORY[0x1E69E9840];
   v5 = *MEMORY[0x1E69E9840];
 
-  return [(MCMFileManager *)self _moveItemAtURL:a3 toURL:a4 failIfSrcMissing:0 error:a5];
+  return [(MCMFileManager *)self _moveItemAtURL:l toURL:rL failIfSrcMissing:0 error:error];
 }
 
-- (BOOL)copyItemIfExistsAtURL:(id)a3 toURL:(id)a4 error:(id *)a5
+- (BOOL)copyItemIfExistsAtURL:(id)l toURL:(id)rL error:(id *)error
 {
   v7 = *MEMORY[0x1E69E9840];
   v5 = *MEMORY[0x1E69E9840];
 
-  return [(MCMFileManager *)self _copyItemAtURL:a3 toURL:a4 failIfSrcMissing:0 error:a5];
+  return [(MCMFileManager *)self _copyItemAtURL:l toURL:rL failIfSrcMissing:0 error:error];
 }
 
-- (BOOL)_moveItemAtURL:(id)a3 toURL:(id)a4 failIfSrcMissing:(BOOL)a5 error:(id *)a6
+- (BOOL)_moveItemAtURL:(id)l toURL:(id)rL failIfSrcMissing:(BOOL)missing error:(id *)error
 {
   v35 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = [v10 fileSystemRepresentation];
-  v14 = [v11 fileSystemRepresentation];
-  if (!a5)
+  lCopy = l;
+  rLCopy = rL;
+  fileSystemRepresentation = [lCopy fileSystemRepresentation];
+  fileSystemRepresentation2 = [rLCopy fileSystemRepresentation];
+  if (!missing)
   {
     memset(&v34, 0, sizeof(v34));
-    if (lstat(v12, &v34))
+    if (lstat(fileSystemRepresentation, &v34))
     {
       if (*__error() != 2)
       {
@@ -7277,7 +7277,7 @@ id __74__MCMFileManager_replaceItemAtDestinationURL_withSourceURL_swapped_error_
         v33[1] = 3221225472;
         v33[2] = __62__MCMFileManager__moveItemAtURL_toURL_failIfSrcMissing_error___block_invoke;
         v33[3] = &__block_descriptor_40_e14___NSError_8__0l;
-        v33[4] = v12;
+        v33[4] = fileSystemRepresentation;
         v15 = __62__MCMFileManager__moveItemAtURL_toURL_failIfSrcMissing_error___block_invoke(v33);
         goto LABEL_18;
       }
@@ -7286,7 +7286,7 @@ id __74__MCMFileManager_replaceItemAtDestinationURL_withSourceURL_swapped_error_
     }
   }
 
-  rename(v12, v14, v13);
+  rename(fileSystemRepresentation, fileSystemRepresentation2, v13);
   if (!v16)
   {
 LABEL_13:
@@ -7301,17 +7301,17 @@ LABEL_13:
     v32[1] = 3221225472;
     v32[2] = __62__MCMFileManager__moveItemAtURL_toURL_failIfSrcMissing_error___block_invoke_115;
     v32[3] = &__block_descriptor_48_e14___NSError_8__0l;
-    v32[4] = v12;
-    v32[5] = v14;
+    v32[4] = fileSystemRepresentation;
+    v32[5] = fileSystemRepresentation2;
     v15 = __62__MCMFileManager__moveItemAtURL_toURL_failIfSrcMissing_error___block_invoke_115(v32);
 LABEL_18:
     v21 = v15;
-    if (a6)
+    if (error)
     {
 LABEL_19:
       v26 = v21;
       v25 = 0;
-      *a6 = v21;
+      *error = v21;
       goto LABEL_22;
     }
 
@@ -7321,13 +7321,13 @@ LABEL_21:
   }
 
   v31 = 0;
-  v17 = [(MCMFileManager *)self _copyItemAtURL:v10 toURL:v11 failIfSrcMissing:1 error:&v31];
+  v17 = [(MCMFileManager *)self _copyItemAtURL:lCopy toURL:rLCopy failIfSrcMissing:1 error:&v31];
   v18 = v31;
   v19 = v18;
   if (!v17)
   {
     v21 = v18;
-    if (a6)
+    if (error)
     {
       goto LABEL_19;
     }
@@ -7336,7 +7336,7 @@ LABEL_21:
   }
 
   v30 = v18;
-  v20 = [(MCMFileManager *)self removeItemAtURL:v10 error:&v30];
+  v20 = [(MCMFileManager *)self removeItemAtURL:lCopy error:&v30];
   v21 = v30;
 
   if (!v20)
@@ -7344,9 +7344,9 @@ LABEL_21:
     v22 = container_log_handle_for_category();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
     {
-      v29 = [v10 path];
+      path = [lCopy path];
       v34.st_dev = 138412546;
-      *&v34.st_mode = v29;
+      *&v34.st_mode = path;
       WORD2(v34.st_ino) = 2112;
       *(&v34.st_ino + 6) = v21;
       _os_log_error_impl(&dword_1DF2C3000, v22, OS_LOG_TYPE_ERROR, "Failed to remove move source after copy at %@ : %@", &v34, 0x16u);
@@ -7361,9 +7361,9 @@ LABEL_14:
     v34.st_dev = 136315650;
     *&v34.st_mode = v23;
     WORD2(v34.st_ino) = 2080;
-    *(&v34.st_ino + 6) = v12;
+    *(&v34.st_ino + 6) = fileSystemRepresentation;
     HIWORD(v34.st_gid) = 2080;
-    *&v34.st_rdev = v14;
+    *&v34.st_rdev = fileSystemRepresentation2;
     _os_log_impl(&dword_1DF2C3000, v24, OS_LOG_TYPE_INFO, "Moved %s[%s] → [%s].", &v34, 0x20u);
   }
 
@@ -7423,14 +7423,14 @@ id __62__MCMFileManager__moveItemAtURL_toURL_failIfSrcMissing_error___block_invo
   return v9;
 }
 
-- (BOOL)_copyItemAtURL:(id)a3 toURL:(id)a4 failIfSrcMissing:(BOOL)a5 error:(id *)a6
+- (BOOL)_copyItemAtURL:(id)l toURL:(id)rL failIfSrcMissing:(BOOL)missing error:(id *)error
 {
   v23 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  if (a5 || (memset(&v22, 0, sizeof(v22)), !lstat([v9 fileSystemRepresentation], &v22)))
+  lCopy = l;
+  rLCopy = rL;
+  if (missing || (memset(&v22, 0, sizeof(v22)), !lstat([lCopy fileSystemRepresentation], &v22)))
   {
-    if (!copyfile([v9 fileSystemRepresentation], objc_msgSend(v10, "fileSystemRepresentation"), 0, 0x10C800Fu))
+    if (!copyfile([lCopy fileSystemRepresentation], objc_msgSend(rLCopy, "fileSystemRepresentation"), 0, 0x10C800Fu))
     {
       v13 = 0;
       v12 = 1;
@@ -7441,12 +7441,12 @@ id __62__MCMFileManager__moveItemAtURL_toURL_failIfSrcMissing_error___block_invo
     v17[1] = 3221225472;
     v17[2] = __62__MCMFileManager__copyItemAtURL_toURL_failIfSrcMissing_error___block_invoke_104;
     v17[3] = &unk_1E86B0BE8;
-    v18 = v9;
-    v19 = v10;
+    v18 = lCopy;
+    v19 = rLCopy;
     v13 = __62__MCMFileManager__copyItemAtURL_toURL_failIfSrcMissing_error___block_invoke_104(v17);
 
     v12 = 0;
-    if (!a6)
+    if (!error)
     {
       goto LABEL_14;
     }
@@ -7459,7 +7459,7 @@ id __62__MCMFileManager__moveItemAtURL_toURL_failIfSrcMissing_error___block_invo
     if (v11 == 2)
     {
       v13 = 0;
-      if (!a6)
+      if (!error)
       {
         goto LABEL_14;
       }
@@ -7471,10 +7471,10 @@ id __62__MCMFileManager__moveItemAtURL_toURL_failIfSrcMissing_error___block_invo
       v20[1] = 3221225472;
       v20[2] = __62__MCMFileManager__copyItemAtURL_toURL_failIfSrcMissing_error___block_invoke;
       v20[3] = &unk_1E86B0B98;
-      v21 = v9;
+      v21 = lCopy;
       v13 = __62__MCMFileManager__copyItemAtURL_toURL_failIfSrcMissing_error___block_invoke(v20);
 
-      if (!a6)
+      if (!error)
       {
         goto LABEL_14;
       }
@@ -7485,7 +7485,7 @@ id __62__MCMFileManager__moveItemAtURL_toURL_failIfSrcMissing_error___block_invo
   {
     v14 = v13;
     v12 = 0;
-    *a6 = v13;
+    *error = v13;
   }
 
 LABEL_14:
@@ -7545,30 +7545,30 @@ id __62__MCMFileManager__copyItemAtURL_toURL_failIfSrcMissing_error___block_invo
   return v10;
 }
 
-- (id)targetOfSymbolicLinkAtURL:(id)a3 error:(id *)a4
+- (id)targetOfSymbolicLinkAtURL:(id)l error:(id *)error
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  lCopy = l;
   memset(&v19, 0, sizeof(v19));
   bzero(v18, 0x401uLL);
-  if (lstat([v5 fileSystemRepresentation], &v19))
+  if (lstat([lCopy fileSystemRepresentation], &v19))
   {
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __50__MCMFileManager_targetOfSymbolicLinkAtURL_error___block_invoke;
     v16[3] = &unk_1E86B0B98;
-    v17 = v5;
+    v17 = lCopy;
     v6 = __50__MCMFileManager_targetOfSymbolicLinkAtURL_error___block_invoke(v16);
     v7 = v17;
   }
 
   else if ((v19.st_mode & 0xF000) == 0xA000)
   {
-    if (readlink([v5 fileSystemRepresentation], v18, 0x400uLL) > 0)
+    if (readlink([lCopy fileSystemRepresentation], v18, 0x400uLL) > 0)
     {
       v8 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v18];
       v6 = 0;
-      if (!a4)
+      if (!error)
       {
         goto LABEL_12;
       }
@@ -7580,7 +7580,7 @@ id __62__MCMFileManager__copyItemAtURL_toURL_failIfSrcMissing_error___block_invo
     v12[1] = 3221225472;
     v12[2] = __50__MCMFileManager_targetOfSymbolicLinkAtURL_error___block_invoke_93;
     v12[3] = &unk_1E86B0B98;
-    v13 = v5;
+    v13 = lCopy;
     v6 = __50__MCMFileManager_targetOfSymbolicLinkAtURL_error___block_invoke_93(v12);
     v7 = v13;
   }
@@ -7591,13 +7591,13 @@ id __62__MCMFileManager__copyItemAtURL_toURL_failIfSrcMissing_error___block_invo
     v14[1] = 3221225472;
     v14[2] = __50__MCMFileManager_targetOfSymbolicLinkAtURL_error___block_invoke_87;
     v14[3] = &unk_1E86B0B98;
-    v15 = v5;
+    v15 = lCopy;
     v6 = __50__MCMFileManager_targetOfSymbolicLinkAtURL_error___block_invoke_87(v14);
     v7 = v15;
   }
 
   v8 = 0;
-  if (!a4)
+  if (!error)
   {
     goto LABEL_12;
   }
@@ -7606,7 +7606,7 @@ LABEL_10:
   if (!v8)
   {
     v9 = v6;
-    *a4 = v6;
+    *error = v6;
   }
 
 LABEL_12:
@@ -7690,23 +7690,23 @@ id __50__MCMFileManager_targetOfSymbolicLinkAtURL_error___block_invoke_93(uint64
   return v9;
 }
 
-- (BOOL)symbolicallyLinkURL:(id)a3 toSymlinkTarget:(id)a4 error:(id *)a5
+- (BOOL)symbolicallyLinkURL:(id)l toSymlinkTarget:(id)target error:(id *)error
 {
   v39 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  lCopy = l;
+  targetCopy = target;
   v10 = container_log_handle_for_category();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
-    v22 = [v8 path];
+    path = [lCopy path];
     *buf = 138412546;
-    v36 = v22;
+    v36 = path;
     v37 = 2112;
-    v38 = v9;
+    v38 = targetCopy;
     _os_log_debug_impl(&dword_1DF2C3000, v10, OS_LOG_TYPE_DEBUG, "Creating symlink [%@] → [%@]", buf, 0x16u);
   }
 
-  if (!symlink([v9 UTF8String], objc_msgSend(v8, "fileSystemRepresentation")))
+  if (!symlink([targetCopy UTF8String], objc_msgSend(lCopy, "fileSystemRepresentation")))
   {
     goto LABEL_8;
   }
@@ -7714,11 +7714,11 @@ id __50__MCMFileManager_targetOfSymbolicLinkAtURL_error___block_invoke_93(uint64
   if (*__error() == 17)
   {
     v31 = 0;
-    v11 = [(MCMFileManager *)self targetOfSymbolicLinkAtURL:v8 error:&v31];
+    v11 = [(MCMFileManager *)self targetOfSymbolicLinkAtURL:lCopy error:&v31];
     v12 = v31;
     if (v11)
     {
-      if ([v9 isEqualToString:v11])
+      if ([targetCopy isEqualToString:v11])
       {
 
 LABEL_8:
@@ -7732,9 +7732,9 @@ LABEL_8:
       v23[2] = __60__MCMFileManager_symbolicallyLinkURL_toSymlinkTarget_error___block_invoke_76;
       v23[3] = &unk_1E86B05C8;
       v15 = &v24;
-      v24 = v8;
+      v24 = lCopy;
       v16 = &v25;
-      v25 = v9;
+      v25 = targetCopy;
       v17 = &v26;
       v26 = v11;
       v18 = __60__MCMFileManager_symbolicallyLinkURL_toSymlinkTarget_error___block_invoke_76(v23);
@@ -7747,9 +7747,9 @@ LABEL_8:
       v27[2] = __60__MCMFileManager_symbolicallyLinkURL_toSymlinkTarget_error___block_invoke_70;
       v27[3] = &unk_1E86B05C8;
       v15 = &v28;
-      v28 = v8;
+      v28 = lCopy;
       v16 = &v29;
-      v29 = v9;
+      v29 = targetCopy;
       v17 = &v30;
       v30 = v12;
       v18 = __60__MCMFileManager_symbolicallyLinkURL_toSymlinkTarget_error___block_invoke_70(v27);
@@ -7764,18 +7764,18 @@ LABEL_8:
     v32[1] = 3221225472;
     v32[2] = __60__MCMFileManager_symbolicallyLinkURL_toSymlinkTarget_error___block_invoke;
     v32[3] = &unk_1E86B0BE8;
-    v33 = v8;
-    v34 = v9;
+    v33 = lCopy;
+    v34 = targetCopy;
     v13 = __60__MCMFileManager_symbolicallyLinkURL_toSymlinkTarget_error___block_invoke(v32);
 
     v12 = v33;
   }
 
-  if (a5)
+  if (error)
   {
     v19 = v13;
     v14 = 0;
-    *a5 = v13;
+    *error = v13;
   }
 
   else
@@ -8033,13 +8033,13 @@ id __111__MCMFileManager_createDirectoryAtURL_withIntermediateDirectories_mode_o
   return v10;
 }
 
-- (BOOL)removeItemAtURL:(id)a3 error:(id *)a4
+- (BOOL)removeItemAtURL:(id)l error:(id *)error
 {
   v38 = *MEMORY[0x1E69E9840];
   value = 0;
-  v6 = a3;
-  v7 = [a3 fileSystemRepresentation];
-  if (!a3)
+  lCopy = l;
+  fileSystemRepresentation = [l fileSystemRepresentation];
+  if (!l)
   {
     v20 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"nil url passed to -removeItemAtURL:error:"];
     v36[0] = @"FunctionName";
@@ -8058,7 +8058,7 @@ id __111__MCMFileManager_createDirectoryAtURL_withIntermediateDirectories_mode_o
     goto LABEL_25;
   }
 
-  v8 = v7;
+  v8 = fileSystemRepresentation;
   v9 = 100;
   do
   {
@@ -8170,10 +8170,10 @@ LABEL_22:
   }
 
 LABEL_25:
-  if (a4 && !v25)
+  if (error && !v25)
   {
     v27 = v24;
-    *a4 = v24;
+    *error = v24;
   }
 
   v28 = *MEMORY[0x1E69E9840];

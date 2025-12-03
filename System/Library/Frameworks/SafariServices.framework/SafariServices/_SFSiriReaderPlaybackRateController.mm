@@ -1,54 +1,54 @@
 @interface _SFSiriReaderPlaybackRateController
-- (BOOL)isSelectedValue:(id)a3;
-- (BOOL)shouldSelectValue:(id)a3 forItem:(id)a4 groupItem:(id)a5;
-- (id)attributedStringForValue:(id)a3;
-- (void)setSelectedValue:(id)a3;
+- (BOOL)isSelectedValue:(id)value;
+- (BOOL)shouldSelectValue:(id)value forItem:(id)item groupItem:(id)groupItem;
+- (id)attributedStringForValue:(id)value;
+- (void)setSelectedValue:(id)value;
 @end
 
 @implementation _SFSiriReaderPlaybackRateController
 
-- (BOOL)isSelectedValue:(id)a3
+- (BOOL)isSelectedValue:(id)value
 {
-  [a3 floatValue];
+  [value floatValue];
   v4 = v3;
-  v5 = [MEMORY[0x1E69B1B90] sharedPlaybackController];
-  [v5 currentPlaybackRate];
+  mEMORY[0x1E69B1B90] = [MEMORY[0x1E69B1B90] sharedPlaybackController];
+  [mEMORY[0x1E69B1B90] currentPlaybackRate];
   v7 = v4 == v6;
 
   return v7;
 }
 
-- (void)setSelectedValue:(id)a3
+- (void)setSelectedValue:(id)value
 {
-  [a3 floatValue];
+  [value floatValue];
   self->_playbackRate = v4;
-  v5 = [MEMORY[0x1E69B1B90] sharedPlaybackController];
-  [v5 setPlaybackRate:self->_playbackRate];
+  mEMORY[0x1E69B1B90] = [MEMORY[0x1E69B1B90] sharedPlaybackController];
+  [mEMORY[0x1E69B1B90] setPlaybackRate:self->_playbackRate];
 }
 
-- (BOOL)shouldSelectValue:(id)a3 forItem:(id)a4 groupItem:(id)a5
+- (BOOL)shouldSelectValue:(id)value forItem:(id)item groupItem:(id)groupItem
 {
   v13[1] = *MEMORY[0x1E69E9840];
   v6 = MEMORY[0x1E696AEC0];
-  v7 = a5;
-  v8 = [v6 stringWithFormat:@"%@x", a3, @"currentSpeakingRate"];
+  groupItemCopy = groupItem;
+  v8 = [v6 stringWithFormat:@"%@x", value, @"currentSpeakingRate"];
   v13[0] = v8;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:&v12 count:1];
   v10 = WBSMakeAccessibilityIdentifier();
-  [v7 setAccessibilityIdentifier:v10];
+  [groupItemCopy setAccessibilityIdentifier:v10];
 
   return 1;
 }
 
-- (id)attributedStringForValue:(id)a3
+- (id)attributedStringForValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   v5 = objc_alloc(MEMORY[0x1E696AAB0]);
   v7 = MEMORY[0x1E696AEC0];
   v8 = MEMORY[0x1E696ADA0];
-  if (v4)
+  if (valueCopy)
   {
-    v9 = [MEMORY[0x1E696ADA0] localizedStringFromNumber:v4 numberStyle:1];
+    v9 = [MEMORY[0x1E696ADA0] localizedStringFromNumber:valueCopy numberStyle:1];
     v10 = [v7 stringWithFormat:@"%@x", v9];
     v11 = [v5 initWithString:v10];
   }

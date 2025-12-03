@@ -1,50 +1,50 @@
 @interface VOTImageExplorerDetailData
-- (VOTImageExplorerDetailData)initWithCoder:(id)a3;
-- (VOTImageExplorerDetailData)initWithKey:(id)a3 values:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (VOTImageExplorerDetailData)initWithCoder:(id)coder;
+- (VOTImageExplorerDetailData)initWithKey:(id)key values:(id)values;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation VOTImageExplorerDetailData
 
-- (VOTImageExplorerDetailData)initWithKey:(id)a3 values:(id)a4
+- (VOTImageExplorerDetailData)initWithKey:(id)key values:(id)values
 {
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  valuesCopy = values;
   v11.receiver = self;
   v11.super_class = VOTImageExplorerDetailData;
   v8 = [(VOTImageExplorerDetailData *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    [(VOTImageExplorerDetailData *)v8 setKey:v6];
-    [(VOTImageExplorerDetailData *)v9 setValues:v7];
+    [(VOTImageExplorerDetailData *)v8 setKey:keyCopy];
+    [(VOTImageExplorerDetailData *)v9 setValues:valuesCopy];
   }
 
   return v9;
 }
 
-- (VOTImageExplorerDetailData)initWithCoder:(id)a3
+- (VOTImageExplorerDetailData)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"key"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"key"];
   [(VOTImageExplorerDetailData *)self setKey:v5];
 
   v6 = objc_opt_class();
   v7 = [NSSet setWithObjects:v6, objc_opt_class(), 0];
-  v8 = [v4 decodeObjectOfClasses:v7 forKey:@"values"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"values"];
 
   [(VOTImageExplorerDetailData *)self setValues:v8];
   return self;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(VOTImageExplorerDetailData *)self key];
-  [v4 encodeObject:v5 forKey:@"key"];
+  [coderCopy encodeObject:v5 forKey:@"key"];
 
-  v6 = [(VOTImageExplorerDetailData *)self values];
-  [v4 encodeObject:v6 forKey:@"values"];
+  values = [(VOTImageExplorerDetailData *)self values];
+  [coderCopy encodeObject:values forKey:@"values"];
 }
 
 @end

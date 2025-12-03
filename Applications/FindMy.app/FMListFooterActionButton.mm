@@ -1,14 +1,14 @@
 @interface FMListFooterActionButton
 - (BOOL)isHighlighted;
 - (NSString)accessibilityLabel;
-- (_TtC6FindMyP33_ECF36241999DC0BA34D7A6B6193B019D24FMListFooterActionButton)initWithFrame:(CGRect)a3;
-- (void)addAction:(id)a3 forControlEvents:(unint64_t)a4;
-- (void)setAccessibilityLabel:(id)a3;
-- (void)setAccessibilityTraits:(unint64_t)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setIsAccessibilityElement:(BOOL)a3;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)traitCollectionDidChange:(id)a3;
+- (_TtC6FindMyP33_ECF36241999DC0BA34D7A6B6193B019D24FMListFooterActionButton)initWithFrame:(CGRect)frame;
+- (void)addAction:(id)action forControlEvents:(unint64_t)events;
+- (void)setAccessibilityLabel:(id)label;
+- (void)setAccessibilityTraits:(unint64_t)traits;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setIsAccessibilityElement:(BOOL)element;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation FMListFooterActionButton
@@ -20,82 +20,82 @@
   return [(FMListFooterActionButton *)&v3 isHighlighted];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v6.receiver = self;
   v6.super_class = type metadata accessor for FMListFooterActionButton();
   v4 = v6.receiver;
-  [(FMListFooterActionButton *)&v6 setHighlighted:v3];
+  [(FMListFooterActionButton *)&v6 setHighlighted:highlightedCopy];
   v5 = *&v4[OBJC_IVAR____TtC6FindMyP33_ECF36241999DC0BA34D7A6B6193B019D24FMListFooterActionButton_backgroundView];
   [v5 setHidden:{objc_msgSend(v4, "isHighlighted", v6.receiver, v6.super_class) ^ 1}];
 }
 
-- (void)addAction:(id)a3 forControlEvents:(unint64_t)a4
+- (void)addAction:(id)action forControlEvents:(unint64_t)events
 {
-  v6 = a3;
-  v7 = self;
-  sub_100416188(v6, a4);
+  actionCopy = action;
+  selfCopy = self;
+  sub_100416188(actionCopy, events);
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v6.receiver = self;
   v6.super_class = type metadata accessor for FMListFooterActionButton();
-  v4 = a3;
+  changeCopy = change;
   v5 = v6.receiver;
-  [(FMListFooterActionButton *)&v6 traitCollectionDidChange:v4];
+  [(FMListFooterActionButton *)&v6 traitCollectionDidChange:changeCopy];
   sub_10041632C();
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
   sub_10000905C(0, &qword_1006B0C30);
   sub_1000D5BCC();
   v5 = static Set._unconditionallyBridgeFromObjectiveC(_:)();
-  v11 = self;
-  [(FMListFooterActionButton *)v11 setHighlighted:0];
+  selfCopy = self;
+  [(FMListFooterActionButton *)selfCopy setHighlighted:0];
   v6 = sub_1000F07E4(v5);
 
   if (v6)
   {
-    [v6 locationInView:v11];
+    [v6 locationInView:selfCopy];
     v8 = v7;
     v10 = v9;
 
-    [(FMListFooterActionButton *)v11 bounds];
+    [(FMListFooterActionButton *)selfCopy bounds];
     v13.x = v8;
     v13.y = v10;
     if (CGRectContainsPoint(v14, v13))
     {
-      [(FMListFooterActionButton *)v11 sendActionsForControlEvents:64];
+      [(FMListFooterActionButton *)selfCopy sendActionsForControlEvents:64];
     }
   }
 }
 
-- (_TtC6FindMyP33_ECF36241999DC0BA34D7A6B6193B019D24FMListFooterActionButton)initWithFrame:(CGRect)a3
+- (_TtC6FindMyP33_ECF36241999DC0BA34D7A6B6193B019D24FMListFooterActionButton)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)setIsAccessibilityElement:(BOOL)a3
+- (void)setIsAccessibilityElement:(BOOL)element
 {
-  v3 = a3;
+  elementCopy = element;
   v4.receiver = self;
   v4.super_class = type metadata accessor for FMListFooterActionButton();
-  [(FMListFooterActionButton *)&v4 setIsAccessibilityElement:v3];
+  [(FMListFooterActionButton *)&v4 setIsAccessibilityElement:elementCopy];
 }
 
 - (NSString)accessibilityLabel
 {
   v2 = *(&self->super.super.super.super.isa + OBJC_IVAR____TtC6FindMyP33_ECF36241999DC0BA34D7A6B6193B019D24FMListFooterActionButton_textLabel);
-  v3 = self;
-  v4 = [v2 accessibilityLabel];
-  if (v4)
+  selfCopy = self;
+  accessibilityLabel = [v2 accessibilityLabel];
+  if (accessibilityLabel)
   {
-    v5 = v4;
+    v5 = accessibilityLabel;
     static String._unconditionallyBridgeFromObjectiveC(_:)();
 
     v6 = String._bridgeToObjectiveC()();
@@ -110,18 +110,18 @@
   return v6;
 }
 
-- (void)setAccessibilityLabel:(id)a3
+- (void)setAccessibilityLabel:(id)label
 {
-  if (a3)
+  if (label)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
-    v4 = self;
+    selfCopy = self;
     v5 = String._bridgeToObjectiveC()();
   }
 
   else
   {
-    v6 = self;
+    selfCopy2 = self;
     v5 = 0;
   }
 
@@ -130,11 +130,11 @@
   [(FMListFooterActionButton *)&v7 setAccessibilityLabel:v5];
 }
 
-- (void)setAccessibilityTraits:(unint64_t)a3
+- (void)setAccessibilityTraits:(unint64_t)traits
 {
   v4.receiver = self;
   v4.super_class = type metadata accessor for FMListFooterActionButton();
-  [(FMListFooterActionButton *)&v4 setAccessibilityTraits:a3];
+  [(FMListFooterActionButton *)&v4 setAccessibilityTraits:traits];
 }
 
 @end

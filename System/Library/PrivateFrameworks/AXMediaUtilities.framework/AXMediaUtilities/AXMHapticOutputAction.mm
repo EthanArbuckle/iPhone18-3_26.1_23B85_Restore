@@ -1,34 +1,34 @@
 @interface AXMHapticOutputAction
-- (AXMHapticOutputAction)initWithURL:(id)a3;
-- (id)_initWithURL:(id)a3 handle:(id)a4;
+- (AXMHapticOutputAction)initWithURL:(id)l;
+- (id)_initWithURL:(id)l handle:(id)handle;
 @end
 
 @implementation AXMHapticOutputAction
 
-- (AXMHapticOutputAction)initWithURL:(id)a3
+- (AXMHapticOutputAction)initWithURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v5 = objc_alloc_init(AXMActiveSoundOutputActionHandle);
-  v6 = [(AXMHapticOutputAction *)self _initWithURL:v4 handle:v5];
+  v6 = [(AXMHapticOutputAction *)self _initWithURL:lCopy handle:v5];
 
   return v6;
 }
 
-- (id)_initWithURL:(id)a3 handle:(id)a4
+- (id)_initWithURL:(id)l handle:(id)handle
 {
-  v7 = a3;
+  lCopy = l;
   v13.receiver = self;
   v13.super_class = AXMHapticOutputAction;
-  v8 = [(AXMOutputAction *)&v13 _initWithHandle:a4];
+  v8 = [(AXMOutputAction *)&v13 _initWithHandle:handle];
   if (v8)
   {
-    v9 = [MEMORY[0x1E696AC08] defaultManager];
-    v10 = [v7 path];
-    v11 = [v9 fileExistsAtPath:v10];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    path = [lCopy path];
+    v11 = [defaultManager fileExistsAtPath:path];
 
     if (v11)
     {
-      objc_storeStrong(v8 + 2, a3);
+      objc_storeStrong(v8 + 2, l);
     }
 
     else

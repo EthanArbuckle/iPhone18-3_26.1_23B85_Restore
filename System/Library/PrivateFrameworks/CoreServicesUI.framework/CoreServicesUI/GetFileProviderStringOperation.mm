@@ -10,7 +10,7 @@
 - (BOOL)isExecuting
 {
   v2 = *(&self->super.super.isa + OBJC_IVAR____TtC14CoreServicesUI30GetFileProviderStringOperation_mutableState);
-  v3 = self;
+  selfCopy = self;
   os_unfair_lock_lock((v2 + 36));
   v4 = *(v2 + 32) == 254;
   os_unfair_lock_unlock((v2 + 36));
@@ -21,7 +21,7 @@
 - (BOOL)isFinished
 {
   v2 = *(&self->super.super.isa + OBJC_IVAR____TtC14CoreServicesUI30GetFileProviderStringOperation_mutableState);
-  v3 = self;
+  selfCopy = self;
   os_unfair_lock_lock((v2 + 36));
   v4 = *(v2 + 32) < 0xFEu;
   os_unfair_lock_unlock((v2 + 36));
@@ -31,7 +31,7 @@
 
 - (void)start
 {
-  v2 = self;
+  selfCopy = self;
   sub_2478BEC24();
 }
 

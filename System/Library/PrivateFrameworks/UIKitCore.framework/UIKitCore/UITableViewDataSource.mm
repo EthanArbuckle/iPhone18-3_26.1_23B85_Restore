@@ -1,39 +1,39 @@
 @interface UITableViewDataSource
-+ (id)staticDataSourceWithSections:(id)a3;
-- (UITableViewDataSource)initWithCoder:(id)a3;
-- (double)tableView:(id)a3 heightForFooterInSection:(int64_t)a4;
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
-- (int64_t)tableView:(id)a3 indentationLevelForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)encodeWithCoder:(id)a3;
++ (id)staticDataSourceWithSections:(id)sections;
+- (UITableViewDataSource)initWithCoder:(id)coder;
+- (double)tableView:(id)view heightForFooterInSection:(int64_t)section;
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
+- (int64_t)tableView:(id)view indentationLevelForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation UITableViewDataSource
 
-+ (id)staticDataSourceWithSections:(id)a3
++ (id)staticDataSourceWithSections:(id)sections
 {
-  v3 = a3;
+  sectionsCopy = sections;
   v4 = objc_alloc_init(objc_opt_class());
-  [v4 setSections:v3];
+  [v4 setSections:sectionsCopy];
 
   return v4;
 }
 
-- (UITableViewDataSource)initWithCoder:(id)a3
+- (UITableViewDataSource)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = UITableViewDataSource;
   v5 = [(UITableViewDataSource *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectForKey:@"UITableSections"];
+    v6 = [coderCopy decodeObjectForKey:@"UITableSections"];
     sections = v5->_sections;
     v5->_sections = v6;
   }
@@ -41,83 +41,83 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   sections = self->_sections;
   if (sections)
   {
-    [a3 encodeObject:sections forKey:@"UITableSections"];
+    [coder encodeObject:sections forKey:@"UITableSections"];
   }
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v4 = [(NSArray *)self->_sections objectAtIndex:a4];
-  v5 = [v4 rows];
-  v6 = [v5 count];
+  v4 = [(NSArray *)self->_sections objectAtIndex:section];
+  rows = [v4 rows];
+  v6 = [rows count];
 
   return v6;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   sections = self->_sections;
-  v5 = a4;
-  v6 = -[NSArray objectAtIndex:](sections, "objectAtIndex:", [v5 section]);
-  v7 = [v6 rows];
-  v8 = [v5 row];
+  pathCopy = path;
+  v6 = -[NSArray objectAtIndex:](sections, "objectAtIndex:", [pathCopy section]);
+  rows = [v6 rows];
+  v8 = [pathCopy row];
 
-  v9 = [v7 objectAtIndex:v8];
-  v10 = [v9 cell];
+  v9 = [rows objectAtIndex:v8];
+  cell = [v9 cell];
 
-  if (!v10)
+  if (!cell)
   {
-    v10 = [[UITableViewCell alloc] initWithStyle:0 reuseIdentifier:@"blank-cell"];
+    cell = [[UITableViewCell alloc] initWithStyle:0 reuseIdentifier:@"blank-cell"];
   }
 
-  return v10;
+  return cell;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  v4 = [(NSArray *)self->_sections objectAtIndex:a4];
-  v5 = [v4 headerTitle];
+  v4 = [(NSArray *)self->_sections objectAtIndex:section];
+  headerTitle = [v4 headerTitle];
 
-  return v5;
+  return headerTitle;
 }
 
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section
 {
-  v4 = [(NSArray *)self->_sections objectAtIndex:a4];
-  v5 = [v4 footerTitle];
+  v4 = [(NSArray *)self->_sections objectAtIndex:section];
+  footerTitle = [v4 footerTitle];
 
-  return v5;
+  return footerTitle;
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
-  v4 = [(NSArray *)self->_sections objectAtIndex:a4];
-  v5 = [v4 headerView];
+  v4 = [(NSArray *)self->_sections objectAtIndex:section];
+  headerView = [v4 headerView];
 
-  return v5;
+  return headerView;
 }
 
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section
 {
-  v4 = [(NSArray *)self->_sections objectAtIndex:a4];
-  v5 = [v4 footerView];
+  v4 = [(NSArray *)self->_sections objectAtIndex:section];
+  footerView = [v4 footerView];
 
-  return v5;
+  return footerView;
 }
 
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section
 {
-  v4 = [(NSArray *)self->_sections objectAtIndex:a4];
-  v5 = [v4 headerView];
+  v4 = [(NSArray *)self->_sections objectAtIndex:section];
+  headerView = [v4 headerView];
 
-  if (v5)
+  if (headerView)
   {
-    [v5 frame];
+    [headerView frame];
     v7 = v6;
   }
 
@@ -129,14 +129,14 @@
   return v7;
 }
 
-- (double)tableView:(id)a3 heightForFooterInSection:(int64_t)a4
+- (double)tableView:(id)view heightForFooterInSection:(int64_t)section
 {
-  v4 = [(NSArray *)self->_sections objectAtIndex:a4];
-  v5 = [v4 headerView];
+  v4 = [(NSArray *)self->_sections objectAtIndex:section];
+  headerView = [v4 headerView];
 
-  if (v5)
+  if (headerView)
   {
-    [v5 frame];
+    [headerView frame];
     v7 = v6;
   }
 
@@ -148,41 +148,41 @@
   return v7;
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
-  v6 = a3;
+  viewCopy = view;
   sections = self->_sections;
-  v8 = a4;
-  v9 = -[NSArray objectAtIndex:](sections, "objectAtIndex:", [v8 section]);
-  v10 = [v9 rows];
-  v11 = [v8 row];
+  pathCopy = path;
+  v9 = -[NSArray objectAtIndex:](sections, "objectAtIndex:", [pathCopy section]);
+  rows = [v9 rows];
+  v11 = [pathCopy row];
 
-  v12 = [v10 objectAtIndex:v11];
+  v12 = [rows objectAtIndex:v11];
   [v12 height];
   v14 = v13;
 
   if (v14 == -1.0)
   {
-    [v6 rowHeight];
+    [viewCopy rowHeight];
     v14 = v15;
   }
 
   return v14;
 }
 
-- (int64_t)tableView:(id)a3 indentationLevelForRowAtIndexPath:(id)a4
+- (int64_t)tableView:(id)view indentationLevelForRowAtIndexPath:(id)path
 {
   sections = self->_sections;
-  v5 = a4;
-  v6 = -[NSArray objectAtIndex:](sections, "objectAtIndex:", [v5 section]);
-  v7 = [v6 rows];
-  v8 = [v5 row];
+  pathCopy = path;
+  v6 = -[NSArray objectAtIndex:](sections, "objectAtIndex:", [pathCopy section]);
+  rows = [v6 rows];
+  v8 = [pathCopy row];
 
-  v9 = [v7 objectAtIndex:v8];
-  v10 = [v9 cell];
-  v11 = [v10 indentationLevel];
+  v9 = [rows objectAtIndex:v8];
+  cell = [v9 cell];
+  indentationLevel = [cell indentationLevel];
 
-  return v11;
+  return indentationLevel;
 }
 
 @end

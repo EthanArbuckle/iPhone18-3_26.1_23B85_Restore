@@ -1,29 +1,29 @@
 @interface NTKColtanColorPalette
 - (BOOL)isRedGreenGold;
 - (NSNumber)tickColoration;
-- (id)swatchImageForSize:(CGSize)a3;
+- (id)swatchImageForSize:(CGSize)size;
 @end
 
 @implementation NTKColtanColorPalette
 
-- (id)swatchImageForSize:(CGSize)a3
+- (id)swatchImageForSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   if ([(NTKColtanColorPalette *)self isRedGreenGold])
   {
-    v6 = [(NTKColtanColorPalette *)self unityRedColor];
+    unityRedColor = [(NTKColtanColorPalette *)self unityRedColor];
     v7 = +[UIColor blackColor];
-    v8 = [(NTKColtanColorPalette *)self unityGreenColor];
-    v9 = [(NTKColtanColorPalette *)self _unitySwatchImageForSize:v6 redColor:v7 blackColor:v8 greenColor:width, height];
+    unityGreenColor = [(NTKColtanColorPalette *)self unityGreenColor];
+    height = [(NTKColtanColorPalette *)self _unitySwatchImageForSize:unityRedColor redColor:v7 blackColor:unityGreenColor greenColor:width, height];
   }
 
   else
   {
-    v9 = 0;
+    height = 0;
   }
 
-  return v9;
+  return height;
 }
 
 - (NSNumber)tickColoration
@@ -41,9 +41,9 @@
 
 - (BOOL)isRedGreenGold
 {
-  v2 = [(NTKColtanColorPalette *)self pigmentEditOption];
-  v3 = [v2 fullname];
-  v4 = [v3 isEqualToString:@"coltan.redgreengold"];
+  pigmentEditOption = [(NTKColtanColorPalette *)self pigmentEditOption];
+  fullname = [pigmentEditOption fullname];
+  v4 = [fullname isEqualToString:@"coltan.redgreengold"];
 
   return v4;
 }

@@ -1,23 +1,23 @@
 @interface AKGrandslamTokenUpdater
-+ (BOOL)shouldUpdateSynchronouslyWith:(id)a3;
-- (BOOL)_isTouchIDRequiredForGrandSlamServiceTokenWithID:(id)a3;
-- (void)_updateCredentialForSavedAIDAAccount:(id)a3 accountStore:(id)a4 withNewTokens:(id)a5;
-- (void)_updateWithRequest:(id)a3 error:(id *)a4;
-- (void)updateGrandSlamServiceTokensWithRequest:(id)a3 error:(id *)a4;
++ (BOOL)shouldUpdateSynchronouslyWith:(id)with;
+- (BOOL)_isTouchIDRequiredForGrandSlamServiceTokenWithID:(id)d;
+- (void)_updateCredentialForSavedAIDAAccount:(id)account accountStore:(id)store withNewTokens:(id)tokens;
+- (void)_updateWithRequest:(id)request error:(id *)error;
+- (void)updateGrandSlamServiceTokensWithRequest:(id)request error:(id *)error;
 @end
 
 @implementation AKGrandslamTokenUpdater
 
-- (void)updateGrandSlamServiceTokensWithRequest:(id)a3 error:(id *)a4
+- (void)updateGrandSlamServiceTokensWithRequest:(id)request error:(id *)error
 {
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v13 = a4;
+  objc_storeStrong(location, request);
+  errorCopy = error;
   if ([objc_opt_class() shouldUpdateSynchronouslyWith:location[0]])
   {
-    [(AKGrandslamTokenUpdater *)v15 _updateWithRequest:location[0] error:v13];
+    [(AKGrandslamTokenUpdater *)selfCopy _updateWithRequest:location[0] error:errorCopy];
   }
 
   else
@@ -28,9 +28,9 @@
     v8 = 0;
     v9 = sub_100186A80;
     v10 = &unk_1003254E0;
-    v11 = _objc_retain(v15);
+    v11 = _objc_retain(selfCopy);
     v12[0] = _objc_retain(location[0]);
-    v12[1] = v13;
+    v12[1] = errorCopy;
     dispatch_async(queue, &v6);
     _objc_release(queue);
     objc_storeStrong(v12, 0);
@@ -40,42 +40,42 @@
   objc_storeStrong(location, 0);
 }
 
-+ (BOOL)shouldUpdateSynchronouslyWith:(id)a3
++ (BOOL)shouldUpdateSynchronouslyWith:(id)with
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v4 = [location[0] context];
-  v5 = [v4 serviceIdentifier];
+  objc_storeStrong(location, with);
+  context = [location[0] context];
+  serviceIdentifier = [context serviceIdentifier];
   v7 = 0;
   v6 = 0;
-  if (v5)
+  if (serviceIdentifier)
   {
-    v8 = [location[0] aidaAccount];
+    aidaAccount = [location[0] aidaAccount];
     v7 = 1;
-    v6 = v8 != 0;
+    v6 = aidaAccount != 0;
   }
 
   v10 = v6;
   if (v7)
   {
-    _objc_release(v8);
+    _objc_release(aidaAccount);
   }
 
-  _objc_release(v5);
-  _objc_release(v4);
+  _objc_release(serviceIdentifier);
+  _objc_release(context);
   objc_storeStrong(location, 0);
   return v10;
 }
 
-- (void)_updateWithRequest:(id)a3 error:(id *)a4
+- (void)_updateWithRequest:(id)request error:(id *)error
 {
-  v75 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v73 = a4;
+  objc_storeStrong(location, request);
+  errorCopy = error;
   v72 = 0uLL;
   v42 = _AKSignpostLogSystem();
   *&v71 = _AKSignpostCreate();
@@ -104,111 +104,111 @@
 
   objc_storeStrong(&v66, 0);
   v72 = v71;
-  v64 = [location[0] aidaAccount];
-  if (!v64)
+  aidaAccount = [location[0] aidaAccount];
+  if (!aidaAccount)
   {
     v63 = _AKLogSystem();
     v62 = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(v63, OS_LOG_TYPE_DEFAULT))
     {
-      v37 = [location[0] altDSID];
-      v36 = [location[0] appleIDUsername];
-      sub_10006A3A4(v81, 1752392040, v37, v36);
+      altDSID = [location[0] altDSID];
+      appleIDUsername = [location[0] appleIDUsername];
+      sub_10006A3A4(v81, 1752392040, altDSID, appleIDUsername);
       _os_log_impl(&_mh_execute_header, v63, v62, "No AIDA account for altDSID %{mask.hash}@ was found. Searching by Apple ID: %@", v81, 0x20u);
-      _objc_release(v36);
-      _objc_release(v37);
+      _objc_release(appleIDUsername);
+      _objc_release(altDSID);
     }
 
     objc_storeStrong(&v63, 0);
-    v35 = [location[0] accountManager];
-    v34 = [location[0] appleIDUsername];
-    v5 = [v35 appleIDAccountWithAppleID:?];
-    v6 = v64;
-    v64 = v5;
+    accountManager = [location[0] accountManager];
+    appleIDUsername2 = [location[0] appleIDUsername];
+    v5 = [accountManager appleIDAccountWithAppleID:?];
+    v6 = aidaAccount;
+    aidaAccount = v5;
     _objc_release(v6);
-    _objc_release(v34);
-    _objc_release(v35);
+    _objc_release(appleIDUsername2);
+    _objc_release(accountManager);
   }
 
-  if (!v64)
+  if (!aidaAccount)
   {
     v61 = _AKLogSystem();
     v60 = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(v61, OS_LOG_TYPE_DEFAULT))
     {
-      v33 = [location[0] appleIDUsername];
-      sub_1000194D4(v80, v33);
+      appleIDUsername3 = [location[0] appleIDUsername];
+      sub_1000194D4(v80, appleIDUsername3);
       _os_log_impl(&_mh_execute_header, v61, v60, "Creating new AIDA account for Apple ID: %@", v80, 0xCu);
-      _objc_release(v33);
+      _objc_release(appleIDUsername3);
     }
 
     objc_storeStrong(&v61, 0);
     v28 = [ACAccount alloc];
-    v30 = [location[0] accountManager];
-    v29 = [v30 appleIDAccountType];
+    accountManager2 = [location[0] accountManager];
+    appleIDAccountType = [accountManager2 appleIDAccountType];
     v7 = [v28 initWithAccountType:?];
-    v8 = v64;
-    v64 = v7;
+    v8 = aidaAccount;
+    aidaAccount = v7;
     _objc_release(v8);
-    _objc_release(v29);
-    _objc_release(v30);
-    v31 = v64;
-    v32 = [location[0] appleIDUsername];
+    _objc_release(appleIDAccountType);
+    _objc_release(accountManager2);
+    v31 = aidaAccount;
+    appleIDUsername4 = [location[0] appleIDUsername];
     [v31 setUsername:?];
-    _objc_release(v32);
+    _objc_release(appleIDUsername4);
     v59 = +[AKAccountManager personaIDIfCurrentPersonaIsDataSeparated];
     if (v59)
     {
-      [v64 setObject:v59 forKeyedSubscript:ACAccountPropertyPersonaIdentifier];
+      [aidaAccount setObject:v59 forKeyedSubscript:ACAccountPropertyPersonaIdentifier];
     }
 
     objc_storeStrong(&v59, 0);
   }
 
-  v27 = [location[0] accountManager];
-  v26 = [location[0] altDSID];
-  v58 = [v27 authKitAccountWithAltDSID:? error:?];
-  _objc_release(v26);
-  _objc_release(v27);
+  accountManager3 = [location[0] accountManager];
+  altDSID2 = [location[0] altDSID];
+  v58 = [accountManager3 authKitAccountWithAltDSID:? error:?];
+  _objc_release(altDSID2);
+  _objc_release(accountManager3);
   if (v58)
   {
-    v25 = [location[0] accountManager];
-    [v25 setCredentialStorageOption:objc_msgSend(v58 forAccount:{"credentialLocation"), v64}];
-    _objc_release(v25);
+    accountManager4 = [location[0] accountManager];
+    [accountManager4 setCredentialStorageOption:objc_msgSend(v58 forAccount:{"credentialLocation"), aidaAccount}];
+    _objc_release(accountManager4);
   }
 
   oslog = _AKLogSystem();
   v56 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
-    sub_1000194D4(v79, v64);
+    sub_1000194D4(v79, aidaAccount);
     _os_log_impl(&_mh_execute_header, oslog, v56, "Updating AIDA account %@ with properties and tokens.", v79, 0xCu);
   }
 
   objc_storeStrong(&oslog, 0);
-  [v64 setCredential:0];
-  [v64 setAuthenticated:1];
-  v23 = [location[0] accountManager];
-  v22 = [location[0] altDSID];
-  [v23 setAltDSID:? forAccount:?];
-  _objc_release(v22);
-  _objc_release(v23);
-  v24 = [location[0] dsid];
-  _objc_release(v24);
-  if (v24)
+  [aidaAccount setCredential:0];
+  [aidaAccount setAuthenticated:1];
+  accountManager5 = [location[0] accountManager];
+  altDSID3 = [location[0] altDSID];
+  [accountManager5 setAltDSID:? forAccount:?];
+  _objc_release(altDSID3);
+  _objc_release(accountManager5);
+  dsid = [location[0] dsid];
+  _objc_release(dsid);
+  if (dsid)
   {
-    v20 = v64;
-    v21 = [location[0] dsid];
+    v20 = aidaAccount;
+    dsid2 = [location[0] dsid];
     [v20 setAccountProperty:? forKey:?];
-    _objc_release(v21);
+    _objc_release(dsid2);
   }
 
   v55 = 0;
-  v18 = [location[0] accountManager];
+  accountManager6 = [location[0] accountManager];
   obj = v55;
-  v19 = [v18 saveAccount:v64 error:&obj];
+  v19 = [accountManager6 saveAccount:aidaAccount error:&obj];
   objc_storeStrong(&v55, obj);
-  _objc_release(v18);
+  _objc_release(accountManager6);
   v54 = v19;
   if (v19)
   {
@@ -223,24 +223,24 @@
     }
 
     objc_storeStrong(&v52, 0);
-    v12 = v75;
-    v11 = v64;
-    v15 = [location[0] accountManager];
-    v14 = [v15 store];
-    v13 = [location[0] tokensById];
-    [(AKGrandslamTokenUpdater *)v12 _updateCredentialForSavedAIDAAccount:v11 accountStore:v14 withNewTokens:?];
-    _objc_release(v13);
-    _objc_release(v14);
-    _objc_release(v15);
+    v12 = selfCopy;
+    v11 = aidaAccount;
+    accountManager7 = [location[0] accountManager];
+    store = [accountManager7 store];
+    tokensById = [location[0] tokensById];
+    [(AKGrandslamTokenUpdater *)v12 _updateCredentialForSavedAIDAAccount:v11 accountStore:store withNewTokens:?];
+    _objc_release(tokensById);
+    _objc_release(store);
+    _objc_release(accountManager7);
   }
 
   else
   {
-    if (v73)
+    if (errorCopy)
     {
       v10 = v55;
       v9 = v55;
-      *v73 = v10;
+      *errorCopy = v10;
     }
 
     v49 = _AKLogSystem();
@@ -275,20 +275,20 @@
   objc_storeStrong(&v43, 0);
   objc_storeStrong(&v55, 0);
   objc_storeStrong(&v58, 0);
-  objc_storeStrong(&v64, 0);
+  objc_storeStrong(&aidaAccount, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)_updateCredentialForSavedAIDAAccount:(id)a3 accountStore:(id)a4 withNewTokens:(id)a5
+- (void)_updateCredentialForSavedAIDAAccount:(id)account accountStore:(id)store withNewTokens:(id)tokens
 {
-  v20 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v18 = 0;
-  objc_storeStrong(&v18, a4);
+  objc_storeStrong(&v18, store);
   v17 = 0;
-  objc_storeStrong(&v17, a5);
+  objc_storeStrong(&v17, tokens);
   queue = dispatch_get_global_queue(33, 0);
   v8 = _NSConcreteStackBlock;
   v9 = -1073741824;
@@ -296,7 +296,7 @@
   v11 = sub_1001879F0;
   v12 = &unk_100320000;
   v13 = _objc_retain(v17);
-  v14 = _objc_retain(v20);
+  v14 = _objc_retain(selfCopy);
   v15 = _objc_retain(v18);
   v16 = _objc_retain(location[0]);
   dispatch_sync(queue, &v8);
@@ -310,12 +310,12 @@
   objc_storeStrong(location, 0);
 }
 
-- (BOOL)_isTouchIDRequiredForGrandSlamServiceTokenWithID:(id)a3
+- (BOOL)_isTouchIDRequiredForGrandSlamServiceTokenWithID:(id)d
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v5 = ([location[0] isEqualToString:@"com.apple.gs.icloud.storage.buy"] & 1) != 0;
   objc_storeStrong(location, 0);
   return v5;

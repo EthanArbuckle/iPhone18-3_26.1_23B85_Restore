@@ -3,80 +3,80 @@
 - (BOOL)isPlaying;
 - (BOOL)serviceIsRCS;
 - (BOOL)serviceIsSMS;
-- (CGSize)sizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4 tailInsets:(UIEdgeInsets *)a5;
+- (CGSize)sizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets tailInsets:(UIEdgeInsets *)tailInsets;
 - (CKAudioMediaObject)mediaObject;
-- (CKBalloonDescriptor_t)balloonDescriptorForSnapshotRenderingUsingTraitCollection:(SEL)a3;
+- (CKBalloonDescriptor_t)balloonDescriptorForSnapshotRenderingUsingTraitCollection:(SEL)collection;
 - (_TtC7ChatKit20AudioMessageWaveform)waveformView;
 - (double)duration;
 - (double)initialTimeBeforePan;
 - (double)time;
 - (id)nonVibrantSubViews;
-- (id)playPauseButtonColorFor:(char)a3;
+- (id)playPauseButtonColorFor:(char)for;
 - (id)playPauseButtonConfiguration;
 - (id)playbackSpeedMenu;
-- (id)speedLabelColorFor:(char)a3 idiom:(int64_t)a4;
-- (id)transcriptionButtonColorWithIsFromMe:(BOOL)a3 idiom:(int64_t)a4;
-- (id)transcriptionLabelColorFor:(char)a3 idiom:(uint64_t)a4;
-- (id)waveformColorWithIsFromMe:(BOOL)a3 isPlayed:(BOOL)a4 idiom:(int64_t)a5;
+- (id)speedLabelColorFor:(char)for idiom:(int64_t)idiom;
+- (id)transcriptionButtonColorWithIsFromMe:(BOOL)me idiom:(int64_t)idiom;
+- (id)transcriptionLabelColorFor:(char)for idiom:(uint64_t)idiom;
+- (id)waveformColorWithIsFromMe:(BOOL)me isPlayed:(BOOL)played idiom:(int64_t)idiom;
 - (int64_t)waveformContentMode;
-- (void)configureForComposition:(id)a3;
-- (void)configureForMediaObject:(id)a3 previewWidth:(double)a4 orientation:(char)a5;
-- (void)configureForMessagePart:(id)a3;
-- (void)insertHighlightOverlayLayer:(id)a3;
+- (void)configureForComposition:(id)composition;
+- (void)configureForMediaObject:(id)object previewWidth:(double)width orientation:(char)orientation;
+- (void)configureForMessagePart:(id)part;
+- (void)insertHighlightOverlayLayer:(id)layer;
 - (void)layoutSubviews;
 - (void)prepareForDisplay;
-- (void)setInitialTimeBeforePan:(double)a3;
-- (void)setMediaObject:(id)a3;
-- (void)setPlaybackSpeed:(double)a3;
-- (void)setPlayed:(BOOL)a3;
-- (void)setPlaying:(BOOL)a3;
-- (void)setServiceIsRCS:(BOOL)a3;
-- (void)setServiceIsSMS:(BOOL)a3;
-- (void)setWaveformContentMode:(int64_t)a3;
-- (void)setWaveformView:(id)a3;
-- (void)tapGestureRecognized:(id)a3;
-- (void)vibrantContainerWillReparentNonVibrantSubviews:(id)a3;
-- (void)waveformProgressViewPanning:(id)a3;
+- (void)setInitialTimeBeforePan:(double)pan;
+- (void)setMediaObject:(id)object;
+- (void)setPlaybackSpeed:(double)speed;
+- (void)setPlayed:(BOOL)played;
+- (void)setPlaying:(BOOL)playing;
+- (void)setServiceIsRCS:(BOOL)s;
+- (void)setServiceIsSMS:(BOOL)s;
+- (void)setWaveformContentMode:(int64_t)mode;
+- (void)setWaveformView:(id)view;
+- (void)tapGestureRecognized:(id)recognized;
+- (void)vibrantContainerWillReparentNonVibrantSubviews:(id)subviews;
+- (void)waveformProgressViewPanning:(id)panning;
 @end
 
 @implementation CKAudioMessageBalloonView
 
-- (id)transcriptionLabelColorFor:(char)a3 idiom:(uint64_t)a4
+- (id)transcriptionLabelColorFor:(char)for idiom:(uint64_t)idiom
 {
-  v4 = sub_19083145C(a3, a4);
+  v4 = sub_19083145C(for, idiom);
 
   return v4;
 }
 
-- (id)waveformColorWithIsFromMe:(BOOL)a3 isPlayed:(BOOL)a4 idiom:(int64_t)a5
+- (id)waveformColorWithIsFromMe:(BOOL)me isPlayed:(BOOL)played idiom:(int64_t)idiom
 {
-  v8 = self;
-  sub_190830DCC(a3, a4, a5);
+  selfCopy = self;
+  sub_190830DCC(me, played, idiom);
   v10 = v9;
 
   return v10;
 }
 
-- (id)transcriptionButtonColorWithIsFromMe:(BOOL)a3 idiom:(int64_t)a4
+- (id)transcriptionButtonColorWithIsFromMe:(BOOL)me idiom:(int64_t)idiom
 {
-  v4 = sub_1908313E8(a3, a4);
+  v4 = sub_1908313E8(me, idiom);
 
   return v4;
 }
 
-- (id)playPauseButtonColorFor:(char)a3
+- (id)playPauseButtonColorFor:(char)for
 {
-  v4 = self;
-  sub_19083100C(a3);
+  selfCopy = self;
+  sub_19083100C(for);
   v6 = v5;
 
   return v6;
 }
 
-- (id)speedLabelColorFor:(char)a3 idiom:(int64_t)a4
+- (id)speedLabelColorFor:(char)for idiom:(int64_t)idiom
 {
-  v6 = self;
-  sub_1908311E4(a3, a4);
+  selfCopy = self;
+  sub_1908311E4(for, idiom);
   v8 = v7;
 
   return v8;
@@ -84,17 +84,17 @@
 
 - (id)playbackSpeedMenu
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_190B4CC48();
 
   return v3;
 }
 
-- (void)waveformProgressViewPanning:(id)a3
+- (void)waveformProgressViewPanning:(id)panning
 {
-  v4 = a3;
-  v5 = self;
-  sub_190B4D324(v4);
+  panningCopy = panning;
+  selfCopy = self;
+  sub_190B4D324(panningCopy);
 }
 
 - (CKAudioMediaObject)mediaObject
@@ -104,38 +104,38 @@
   return *(&self->super.super.super.super.super.super.isa + v3);
 }
 
-- (void)setMediaObject:(id)a3
+- (void)setMediaObject:(id)object
 {
   v5 = OBJC_IVAR____TtC7ChatKit25CKAudioMessageBalloonView_mediaObject;
   swift_beginAccess();
   v6 = *(&self->super.super.super.super.super.super.isa + v5);
-  *(&self->super.super.super.super.super.super.isa + v5) = a3;
-  v7 = a3;
-  v8 = self;
+  *(&self->super.super.super.super.super.super.isa + v5) = object;
+  objectCopy = object;
+  selfCopy = self;
 
-  if (v7)
+  if (objectCopy)
   {
-    v9 = v7;
+    v9 = objectCopy;
     v10 = sub_190BE94C4();
 
-    v8 = *&v10[OBJC_IVAR____TtC7ChatKit20AudioMessageWaveform_audioMediaObject];
-    *&v10[OBJC_IVAR____TtC7ChatKit20AudioMessageWaveform_audioMediaObject] = a3;
+    selfCopy = *&v10[OBJC_IVAR____TtC7ChatKit20AudioMessageWaveform_audioMediaObject];
+    *&v10[OBJC_IVAR____TtC7ChatKit20AudioMessageWaveform_audioMediaObject] = object;
   }
 }
 
 - (_TtC7ChatKit20AudioMessageWaveform)waveformView
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_190BE94C4();
 
   return v3;
 }
 
-- (void)setWaveformView:(id)a3
+- (void)setWaveformView:(id)view
 {
   v4 = *(&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC7ChatKit25CKAudioMessageBalloonView____lazy_storage___waveformView);
-  *(&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC7ChatKit25CKAudioMessageBalloonView____lazy_storage___waveformView) = a3;
-  v3 = a3;
+  *(&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC7ChatKit25CKAudioMessageBalloonView____lazy_storage___waveformView) = view;
+  viewCopy = view;
 }
 
 - (id)playPauseButtonConfiguration
@@ -153,10 +153,10 @@
   return v7;
 }
 
-- (void)setPlaybackSpeed:(double)a3
+- (void)setPlaybackSpeed:(double)speed
 {
-  v4 = self;
-  sub_190BEA0BC(a3);
+  selfCopy = self;
+  sub_190BEA0BC(speed);
 }
 
 - (int64_t)waveformContentMode
@@ -166,11 +166,11 @@
   return *(&self->super.super.super.super.super.super.isa + v3);
 }
 
-- (void)setWaveformContentMode:(int64_t)a3
+- (void)setWaveformContentMode:(int64_t)mode
 {
   v5 = OBJC_IVAR____TtC7ChatKit25CKAudioMessageBalloonView_waveformContentMode;
   swift_beginAccess();
-  *(&self->super.super.super.super.super.super.isa + v5) = a3;
+  *(&self->super.super.super.super.super.super.isa + v5) = mode;
 }
 
 - (double)time
@@ -187,11 +187,11 @@
   return *(&self->super.super.super.super.super.super.isa + v3);
 }
 
-- (void)setInitialTimeBeforePan:(double)a3
+- (void)setInitialTimeBeforePan:(double)pan
 {
   v5 = OBJC_IVAR____TtC7ChatKit25CKAudioMessageBalloonView_initialTimeBeforePan;
   swift_beginAccess();
-  *(&self->super.super.super.super.super.super.isa + v5) = a3;
+  *(&self->super.super.super.super.super.super.isa + v5) = pan;
 }
 
 - (double)duration
@@ -208,13 +208,13 @@
   return *(&self->super.super.super.super.super.super.isa + v3);
 }
 
-- (void)setPlaying:(BOOL)a3
+- (void)setPlaying:(BOOL)playing
 {
   v5 = OBJC_IVAR____TtC7ChatKit25CKAudioMessageBalloonView_isPlaying;
   swift_beginAccess();
   v6 = *(&self->super.super.super.super.super.super.isa + v5);
-  *(&self->super.super.super.super.super.super.isa + v5) = a3;
-  v7 = self;
+  *(&self->super.super.super.super.super.super.isa + v5) = playing;
+  selfCopy = self;
   sub_190BEAEFC(v6);
 }
 
@@ -225,10 +225,10 @@
   return *(&self->super.super.super.super.super.super.isa + v3);
 }
 
-- (void)setPlayed:(BOOL)a3
+- (void)setPlayed:(BOOL)played
 {
-  v4 = self;
-  sub_190BEB318(a3);
+  selfCopy = self;
+  sub_190BEB318(played);
 }
 
 - (BOOL)serviceIsSMS
@@ -238,11 +238,11 @@
   return *(&self->super.super.super.super.super.super.isa + v3);
 }
 
-- (void)setServiceIsSMS:(BOOL)a3
+- (void)setServiceIsSMS:(BOOL)s
 {
   v5 = OBJC_IVAR____TtC7ChatKit25CKAudioMessageBalloonView_serviceIsSMS;
   swift_beginAccess();
-  *(&self->super.super.super.super.super.super.isa + v5) = a3;
+  *(&self->super.super.super.super.super.super.isa + v5) = s;
 }
 
 - (BOOL)serviceIsRCS
@@ -252,33 +252,33 @@
   return *(&self->super.super.super.super.super.super.isa + v3);
 }
 
-- (void)setServiceIsRCS:(BOOL)a3
+- (void)setServiceIsRCS:(BOOL)s
 {
   v5 = OBJC_IVAR____TtC7ChatKit25CKAudioMessageBalloonView_serviceIsRCS;
   swift_beginAccess();
-  *(&self->super.super.super.super.super.super.isa + v5) = a3;
+  *(&self->super.super.super.super.super.super.isa + v5) = s;
 }
 
-- (void)insertHighlightOverlayLayer:(id)a3
+- (void)insertHighlightOverlayLayer:(id)layer
 {
-  v4 = a3;
-  v8 = self;
-  v5 = [(CKAudioMessageBalloonView *)v8 layer];
+  layerCopy = layer;
+  selfCopy = self;
+  layer = [(CKAudioMessageBalloonView *)selfCopy layer];
   v6 = sub_190BE9EA4();
-  v7 = [v6 layer];
+  layer2 = [v6 layer];
 
-  [v5 insertSublayer:v4 below:v7];
+  [layer insertSublayer:layerCopy below:layer2];
 }
 
 - (void)prepareForDisplay
 {
-  v2 = self;
+  selfCopy = self;
   sub_190BEBDCC();
 }
 
-- (void)vibrantContainerWillReparentNonVibrantSubviews:(id)a3
+- (void)vibrantContainerWillReparentNonVibrantSubviews:(id)subviews
 {
-  if (!a3)
+  if (!subviews)
   {
     goto LABEL_15;
   }
@@ -337,7 +337,7 @@ LABEL_11:
   __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EAD53820);
   v3 = swift_allocObject();
   *(v3 + 16) = xmmword_190DDA780;
-  v4 = self;
+  selfCopy = self;
   *(v3 + 32) = sub_190BE8EE8();
   *(v3 + 40) = sub_190BE94C4();
   *(v3 + 48) = sub_190BE96B8();
@@ -348,25 +348,25 @@ LABEL_11:
   return v5;
 }
 
-- (void)configureForComposition:(id)a3
+- (void)configureForComposition:(id)composition
 {
-  v5 = a3;
-  v6 = self;
-  sub_190BEC564(a3);
+  compositionCopy = composition;
+  selfCopy = self;
+  sub_190BEC564(composition);
 }
 
-- (void)configureForMediaObject:(id)a3 previewWidth:(double)a4 orientation:(char)a5
+- (void)configureForMediaObject:(id)object previewWidth:(double)width orientation:(char)orientation
 {
-  v9 = a3;
-  v10 = self;
-  sub_190BEC780(a3, a5, a4);
+  objectCopy = object;
+  selfCopy = self;
+  sub_190BEC780(object, orientation, width);
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4 tailInsets:(UIEdgeInsets *)a5
+- (CGSize)sizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets tailInsets:(UIEdgeInsets *)tailInsets
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = self;
+  height = fits.height;
+  width = fits.width;
+  selfCopy = self;
   sub_190BED6F4(width, height);
   v9 = v8;
   v11 = v10;
@@ -380,28 +380,28 @@ LABEL_11:
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_190BEC98C();
 }
 
-- (void)configureForMessagePart:(id)a3
+- (void)configureForMessagePart:(id)part
 {
-  v5 = a3;
-  v6 = self;
-  sub_190BECB64(a3);
+  partCopy = part;
+  selfCopy = self;
+  sub_190BECB64(part);
 }
 
-- (void)tapGestureRecognized:(id)a3
+- (void)tapGestureRecognized:(id)recognized
 {
-  v5 = a3;
-  v6 = self;
-  sub_190BED0E8(a3);
+  recognizedCopy = recognized;
+  selfCopy = self;
+  sub_190BED0E8(recognized);
 }
 
-- (CKBalloonDescriptor_t)balloonDescriptorForSnapshotRenderingUsingTraitCollection:(SEL)a3
+- (CKBalloonDescriptor_t)balloonDescriptorForSnapshotRenderingUsingTraitCollection:(SEL)collection
 {
   v6 = a4;
-  v7 = self;
+  selfCopy = self;
   sub_190BED230(v6, &v20);
   v8 = *(&v20 + 1);
   v9 = v21;

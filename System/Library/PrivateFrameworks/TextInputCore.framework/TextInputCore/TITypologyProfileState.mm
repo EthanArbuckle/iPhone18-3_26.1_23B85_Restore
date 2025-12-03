@@ -1,43 +1,43 @@
 @interface TITypologyProfileState
-+ (BOOL)_removePersistedStateAtURL:(id)a3;
++ (BOOL)_removePersistedStateAtURL:(id)l;
 + (BOOL)removePersistedState;
-+ (id)_typologyProfileStateFromURL:(id)a3;
++ (id)_typologyProfileStateFromURL:(id)l;
 + (id)defaultPersistentURL;
 + (id)typologyProfileStateFromPersistedState;
-- (BOOL)_authenticateHashToken:(id)a3 forProfileInstallationDate:(id)a4 userNotificationDate:(id)a5 userResponse:(id)a6;
-- (BOOL)_persistStateToURL:(id)a3;
+- (BOOL)_authenticateHashToken:(id)token forProfileInstallationDate:(id)date userNotificationDate:(id)notificationDate userResponse:(id)response;
+- (BOOL)_persistStateToURL:(id)l;
 - (BOOL)persistState;
 - (NSData)salt;
-- (TITypologyProfileState)initWithCoder:(id)a3;
-- (TITypologyProfileState)initWithProfileInstallationDate:(id)a3;
-- (TITypologyProfileState)initWithProfileInstallationDate:(id)a3 userNotificationDate:(id)a4 userResponse:(id)a5;
-- (id)_hashTokenForProfileInstallationDate:(id)a3 userNotificationDate:(id)a4 userResponse:(id)a5;
-- (id)hashForString:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (TITypologyProfileState)initWithCoder:(id)coder;
+- (TITypologyProfileState)initWithProfileInstallationDate:(id)date;
+- (TITypologyProfileState)initWithProfileInstallationDate:(id)date userNotificationDate:(id)notificationDate userResponse:(id)response;
+- (id)_hashTokenForProfileInstallationDate:(id)date userNotificationDate:(id)notificationDate userResponse:(id)response;
+- (id)hashForString:(id)string;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TITypologyProfileState
 
 - (BOOL)persistState
 {
-  v3 = [objc_opt_class() defaultPersistentURL];
-  LOBYTE(self) = [(TITypologyProfileState *)self _persistStateToURL:v3];
+  defaultPersistentURL = [objc_opt_class() defaultPersistentURL];
+  LOBYTE(self) = [(TITypologyProfileState *)self _persistStateToURL:defaultPersistentURL];
 
   return self;
 }
 
-- (BOOL)_persistStateToURL:(id)a3
+- (BOOL)_persistStateToURL:(id)l
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  lCopy = l;
   v5 = [objc_alloc(MEMORY[0x277CCAAB0]) initRequiringSecureCoding:1];
   [(TITypologyProfileState *)self encodeWithCoder:v5];
-  v6 = [v5 encodedData];
-  v7 = v6;
-  if (v6)
+  encodedData = [v5 encodedData];
+  v7 = encodedData;
+  if (encodedData)
   {
     v13 = 0;
-    v8 = [v6 writeToURL:v4 options:1073741825 error:&v13];
+    v8 = [encodedData writeToURL:lCopy options:1073741825 error:&v13];
     v9 = v13;
     if ((v8 & 1) == 0)
     {
@@ -60,34 +60,34 @@
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   profileInstallationDate = self->_profileInstallationDate;
   userNotificationDate = self->_userNotificationDate;
   v7 = self->_userResponse;
   v8 = userNotificationDate;
   v11 = profileInstallationDate;
-  v9 = a3;
+  coderCopy = coder;
   v10 = [(TITypologyProfileState *)self _hashTokenForProfileInstallationDate:v11 userNotificationDate:v8 userResponse:v7];
-  [v9 encodeObject:v11 forKey:@"InstallDate"];
-  [v9 encodeObject:v8 forKey:@"UserNotificationDate"];
-  [v9 encodeObject:v7 forKey:@"UserResponse"];
+  [coderCopy encodeObject:v11 forKey:@"InstallDate"];
+  [coderCopy encodeObject:v8 forKey:@"UserNotificationDate"];
+  [coderCopy encodeObject:v7 forKey:@"UserResponse"];
 
-  [v9 encodeObject:v10 forKey:@"HashToken"];
+  [coderCopy encodeObject:v10 forKey:@"HashToken"];
 }
 
-- (TITypologyProfileState)initWithCoder:(id)a3
+- (TITypologyProfileState)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"InstallDate"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"UserNotificationDate"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"UserResponse"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HashToken"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"InstallDate"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"UserNotificationDate"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"UserResponse"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HashToken"];
 
   if ([(TITypologyProfileState *)self _authenticateHashToken:v8 forProfileInstallationDate:v5 userNotificationDate:v6 userResponse:v7])
   {
     self = [(TITypologyProfileState *)self initWithProfileInstallationDate:v5 userNotificationDate:v6 userResponse:v7];
-    v9 = self;
+    selfCopy = self;
   }
 
   else
@@ -99,66 +99,66 @@
       _os_log_error_impl(&dword_22CA55000, v10, OS_LOG_TYPE_ERROR, "Unable to instantiate decoded typology profile state: authentication failed.", v12, 2u);
     }
 
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
-- (TITypologyProfileState)initWithProfileInstallationDate:(id)a3 userNotificationDate:(id)a4 userResponse:(id)a5
+- (TITypologyProfileState)initWithProfileInstallationDate:(id)date userNotificationDate:(id)notificationDate userResponse:(id)response
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (_areValidFieldValues(v8, v9, v10))
+  dateCopy = date;
+  notificationDateCopy = notificationDate;
+  responseCopy = response;
+  if (_areValidFieldValues(dateCopy, notificationDateCopy, responseCopy))
   {
     v20.receiver = self;
     v20.super_class = TITypologyProfileState;
     v11 = [(TITypologyProfileState *)&v20 init];
     if (v11)
     {
-      v12 = [v8 copy];
+      v12 = [dateCopy copy];
       profileInstallationDate = v11->_profileInstallationDate;
       v11->_profileInstallationDate = v12;
 
-      v14 = [v9 copy];
+      v14 = [notificationDateCopy copy];
       userNotificationDate = v11->_userNotificationDate;
       v11->_userNotificationDate = v14;
 
-      v16 = [v10 copy];
+      v16 = [responseCopy copy];
       userResponse = v11->_userResponse;
       v11->_userResponse = v16;
     }
 
     self = v11;
-    v18 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v18 = 0;
+    selfCopy = 0;
   }
 
-  return v18;
+  return selfCopy;
 }
 
-- (TITypologyProfileState)initWithProfileInstallationDate:(id)a3
+- (TITypologyProfileState)initWithProfileInstallationDate:(id)date
 {
   v4 = MEMORY[0x277CBEAA8];
-  v5 = a3;
-  v6 = [v4 distantPast];
-  v7 = [(TITypologyProfileState *)self initWithProfileInstallationDate:v5 userNotificationDate:v6 userResponse:@"None"];
+  dateCopy = date;
+  distantPast = [v4 distantPast];
+  v7 = [(TITypologyProfileState *)self initWithProfileInstallationDate:dateCopy userNotificationDate:distantPast userResponse:@"None"];
 
   return v7;
 }
 
-- (BOOL)_authenticateHashToken:(id)a3 forProfileInstallationDate:(id)a4 userNotificationDate:(id)a5 userResponse:(id)a6
+- (BOOL)_authenticateHashToken:(id)token forProfileInstallationDate:(id)date userNotificationDate:(id)notificationDate userResponse:(id)response
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = v10;
+  tokenCopy = token;
+  dateCopy = date;
+  notificationDateCopy = notificationDate;
+  responseCopy = response;
+  v14 = tokenCopy;
   if (!v14)
   {
     v16 = 0;
@@ -177,13 +177,13 @@ LABEL_9:
 
   v15 = [v14 length];
 
-  if (!v15 || !_areValidFieldValues(v11, v12, v13))
+  if (!v15 || !_areValidFieldValues(dateCopy, notificationDateCopy, responseCopy))
   {
     v17 = 0;
     goto LABEL_13;
   }
 
-  v16 = [(TITypologyProfileState *)self _hashTokenForProfileInstallationDate:v11 userNotificationDate:v12 userResponse:v13];
+  v16 = [(TITypologyProfileState *)self _hashTokenForProfileInstallationDate:dateCopy userNotificationDate:notificationDateCopy userResponse:responseCopy];
   if (![v16 length] || (objc_msgSend(v16, "isEqualToString:", v14) & 1) == 0)
   {
     goto LABEL_9;
@@ -196,12 +196,12 @@ LABEL_13:
   return v17;
 }
 
-- (id)_hashTokenForProfileInstallationDate:(id)a3 userNotificationDate:(id)a4 userResponse:(id)a5
+- (id)_hashTokenForProfileInstallationDate:(id)date userNotificationDate:(id)notificationDate userResponse:(id)response
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (_areValidFieldValues(v8, v9, v10))
+  dateCopy = date;
+  notificationDateCopy = notificationDate;
+  responseCopy = response;
+  if (_areValidFieldValues(dateCopy, notificationDateCopy, responseCopy))
   {
     v11 = objc_alloc_init(MEMORY[0x277CCA968]);
     v12 = [MEMORY[0x277CBEAF8] localeWithLocaleIdentifier:@"en_US_POSIX"];
@@ -211,10 +211,10 @@ LABEL_13:
     v13 = [MEMORY[0x277CBEBB0] timeZoneWithName:@"UTC"];
     [v11 setTimeZone:v13];
 
-    v14 = [v11 stringFromDate:v8];
-    v15 = [v11 stringFromDate:v9];
-    v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"profileInstalled:%@, userNotification:%@, userResponse:%@", v14, v15, v10];
-    v17 = [(TITypologyProfileState *)self hashForString:v16];
+    v14 = [v11 stringFromDate:dateCopy];
+    v15 = [v11 stringFromDate:notificationDateCopy];
+    responseCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"profileInstalled:%@, userNotification:%@, userResponse:%@", v14, v15, responseCopy];
+    v17 = [(TITypologyProfileState *)self hashForString:responseCopy];
   }
 
   else
@@ -270,16 +270,16 @@ LABEL_13:
   return salt;
 }
 
-- (id)hashForString:(id)a3
+- (id)hashForString:(id)string
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(TITypologyProfileState *)self salt];
-  if (v5)
+  stringCopy = string;
+  salt = [(TITypologyProfileState *)self salt];
+  if (salt)
   {
     memset(&c, 0, sizeof(c));
     CC_SHA256_Init(&c);
-    CStringPtr = CFStringGetCStringPtr(v4, 0x8000100u);
+    CStringPtr = CFStringGetCStringPtr(stringCopy, 0x8000100u);
     if (CStringPtr)
     {
       v7 = CStringPtr;
@@ -289,7 +289,7 @@ LABEL_13:
 
     else
     {
-      Length = CFStringGetLength(v4);
+      Length = CFStringGetLength(stringCopy);
       if (Length >= 1)
       {
         v11 = Length;
@@ -299,7 +299,7 @@ LABEL_13:
           usedBufLen = 0;
           v25.location = v12;
           v25.length = v11;
-          Bytes = CFStringGetBytes(v4, v25, 0x8000100u, 0, 0, buffer, 512, &usedBufLen);
+          Bytes = CFStringGetBytes(stringCopy, v25, 0x8000100u, 0, 0, buffer, 512, &usedBufLen);
           CC_SHA256_Update(&c, buffer, usedBufLen);
           v12 += Bytes;
           v14 = v11 <= Bytes;
@@ -310,8 +310,8 @@ LABEL_13:
       }
     }
 
-    BytePtr = CFDataGetBytePtr(v5);
-    v16 = CFDataGetLength(v5);
+    BytePtr = CFDataGetBytePtr(salt);
+    v16 = CFDataGetLength(salt);
     CC_SHA256_Update(&c, BytePtr, v16);
     CC_SHA256_Final(buffer, &c);
     Mutable = CFStringCreateMutable(*MEMORY[0x277CBECE8], 64);
@@ -340,32 +340,32 @@ LABEL_13:
     _os_log_impl(&dword_22CA55000, v3, OS_LOG_TYPE_DEFAULT, "Removing persisted state", v7, 2u);
   }
 
-  v4 = [a1 defaultPersistentURL];
-  v5 = [a1 _removePersistedStateAtURL:v4];
+  defaultPersistentURL = [self defaultPersistentURL];
+  v5 = [self _removePersistedStateAtURL:defaultPersistentURL];
 
   return v5;
 }
 
-+ (BOOL)_removePersistedStateAtURL:(id)a3
++ (BOOL)_removePersistedStateAtURL:(id)l
 {
   v16 = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CCAA00];
-  v4 = a3;
-  v5 = [v3 defaultManager];
+  lCopy = l;
+  defaultManager = [v3 defaultManager];
   v13 = 0;
-  v6 = [v5 removeItemAtURL:v4 error:&v13];
+  v6 = [defaultManager removeItemAtURL:lCopy error:&v13];
 
   v7 = v13;
   if ((v6 & 1) == 0)
   {
     if (v7)
     {
-      v8 = [v7 domain];
-      if ([v8 isEqualToString:*MEMORY[0x277CCA050]])
+      domain = [v7 domain];
+      if ([domain isEqualToString:*MEMORY[0x277CCA050]])
       {
-        v9 = [v7 code];
+        code = [v7 code];
 
-        if (v9 == 4)
+        if (code == 4)
         {
           v10 = TITypologyProfileStateLog();
           if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
@@ -404,29 +404,29 @@ LABEL_11:
 
 + (id)typologyProfileStateFromPersistedState
 {
-  v3 = [a1 defaultPersistentURL];
-  v4 = [a1 _typologyProfileStateFromURL:v3];
+  defaultPersistentURL = [self defaultPersistentURL];
+  v4 = [self _typologyProfileStateFromURL:defaultPersistentURL];
 
   return v4;
 }
 
-+ (id)_typologyProfileStateFromURL:(id)a3
++ (id)_typologyProfileStateFromURL:(id)l
 {
   v19 = *MEMORY[0x277D85DE8];
   v16 = 0;
-  v4 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:a3 options:0 error:&v16];
+  v4 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:l options:0 error:&v16];
   v5 = v16;
   v6 = v5;
   if (!v4)
   {
     if (v5)
     {
-      v10 = [v5 domain];
-      if ([v10 isEqualToString:*MEMORY[0x277CCA050]])
+      domain = [v5 domain];
+      if ([domain isEqualToString:*MEMORY[0x277CCA050]])
       {
-        v11 = [v6 code];
+        code = [v6 code];
 
-        if (v11 == 260)
+        if (code == 260)
         {
           v7 = TITypologyProfileStateLog();
           if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
@@ -464,7 +464,7 @@ LABEL_15:
 
   if (v7)
   {
-    v9 = [[a1 alloc] initWithCoder:v7];
+    v9 = [[self alloc] initWithCoder:v7];
   }
 
   else

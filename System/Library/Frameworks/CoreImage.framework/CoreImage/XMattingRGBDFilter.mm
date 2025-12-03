@@ -1,37 +1,37 @@
 @interface XMattingRGBDFilter
-- (XMattingRGBDFilter)initWithDevice:(id)a3 library:(id)a4;
-- (int)_compileShadersWithLibrary:(id)a3;
-- (int)allocateResources:(id *)a3;
-- (int)encodeApplyCoefficientsOn:(id)a3 colorGuide:(id)a4 disparityGuide:(id)a5 constraints:(id)a6 destinationAlphaTexture:(id)a7;
-- (int)encodeCoefficientsOn:(id)a3 guideStack:(id)a4 alphaStack:(id)a5 mean_I:(id)a6 var_I:(id)a7 coefficients:(id)a8;
-- (int)encodeDisparityToAlphaOn:(id)a3 disparityTexture:(id)a4 destinationTexture:(id)a5;
-- (int)encodeNearestNeighborDownSamplingOn:(id)a3 inputTexture:(id)a4 outputTexture:(id)a5;
-- (int)encodeStateOn:(id)a3 colorGuide:(id)a4 disparityGuide:(id)a5 initialSegmentation:(id)a6 constraints:(id)a7;
-- (int)encodeStepOn:(id)a3;
-- (int)encodeUpsampleOn:(id)a3 segmentation:(id)a4 colorGuide:(id)a5 disparityGuide:(id)a6 outputMatte:(id)a7;
+- (XMattingRGBDFilter)initWithDevice:(id)device library:(id)library;
+- (int)_compileShadersWithLibrary:(id)library;
+- (int)allocateResources:(id *)resources;
+- (int)encodeApplyCoefficientsOn:(id)on colorGuide:(id)guide disparityGuide:(id)disparityGuide constraints:(id)constraints destinationAlphaTexture:(id)texture;
+- (int)encodeCoefficientsOn:(id)on guideStack:(id)stack alphaStack:(id)alphaStack mean_I:(id)i var_I:(id)var_I coefficients:(id)coefficients;
+- (int)encodeDisparityToAlphaOn:(id)on disparityTexture:(id)texture destinationTexture:(id)destinationTexture;
+- (int)encodeNearestNeighborDownSamplingOn:(id)on inputTexture:(id)texture outputTexture:(id)outputTexture;
+- (int)encodeStateOn:(id)on colorGuide:(id)guide disparityGuide:(id)disparityGuide initialSegmentation:(id)segmentation constraints:(id)constraints;
+- (int)encodeStepOn:(id)on;
+- (int)encodeUpsampleOn:(id)on segmentation:(id)segmentation colorGuide:(id)guide disparityGuide:(id)disparityGuide outputMatte:(id)matte;
 - (void)dealloc;
-- (void)encodePushOn:(id)a3 textureArray:(id)a4 texture:(id)a5;
+- (void)encodePushOn:(id)on textureArray:(id)array texture:(id)texture;
 - (void)releaseResources;
 @end
 
 @implementation XMattingRGBDFilter
 
-- (XMattingRGBDFilter)initWithDevice:(id)a3 library:(id)a4
+- (XMattingRGBDFilter)initWithDevice:(id)device library:(id)library
 {
-  v7 = a3;
-  v8 = a4;
+  deviceCopy = device;
+  libraryCopy = library;
   v13.receiver = self;
   v13.super_class = XMattingRGBDFilter;
   v9 = [(XMattingRGBDFilter *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_device, a3);
-    objc_storeStrong(&v10->_library, a4);
+    objc_storeStrong(&v9->_device, device);
+    objc_storeStrong(&v10->_library, library);
     *&v10->stateComputed = 0;
-    if (v7)
+    if (deviceCopy)
     {
-      v11 = [v7 readWriteTextureSupport] > 1;
+      v11 = [deviceCopy readWriteTextureSupport] > 1;
     }
 
     else
@@ -45,11 +45,11 @@
   return v10;
 }
 
-- (int)allocateResources:(id *)a3
+- (int)allocateResources:(id *)resources
 {
   v67[3] = *MEMORY[0x1E69E9840];
-  v4 = *&a3->var0;
-  *&self->config.temporalRadius = *&a3->var3;
+  v4 = *&resources->var0;
+  *&self->config.temporalRadius = *&resources->var3;
   *&self->config.internalWidth = v4;
   if ([(XMattingRGBDFilter *)self _compileShadersWithLibrary:self->_library]|| (v5 = [[XMattingBoxTensorFilter alloc] initWithDevice:self->_device library:self->_library], boxTensorFilter = self->boxTensorFilter, self->boxTensorFilter = v5, boxTensorFilter, (v7 = self->boxTensorFilter) == 0) || [(XMattingBoxTensorFilter *)v7 allocateResources:*&self->config.spatialRadius])
   {
@@ -332,15 +332,15 @@ LABEL_28:
   [(XMattingRGBDFilter *)&v3 dealloc];
 }
 
-- (void)encodePushOn:(id)a3 textureArray:(id)a4 texture:(id)a5
+- (void)encodePushOn:(id)on textureArray:(id)array texture:(id)texture
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [a3 blitCommandEncoder];
-  v10 = [v7 width];
-  v11 = [v7 height];
-  v12 = [v7 depth];
-  if ([v7 arrayLength] >= 2)
+  arrayCopy = array;
+  textureCopy = texture;
+  blitCommandEncoder = [on blitCommandEncoder];
+  width = [arrayCopy width];
+  height = [arrayCopy height];
+  depth = [arrayCopy depth];
+  if ([arrayCopy arrayLength] >= 2)
   {
     v13 = 1;
     do
@@ -348,36 +348,36 @@ LABEL_28:
       v21 = 0;
       v22 = 0;
       v23 = 0;
-      v18 = v10;
-      v19 = v11;
-      v20 = v12;
+      v18 = width;
+      v19 = height;
+      v20 = depth;
       v15 = 0;
       v16 = 0;
       v17 = 0;
-      [v9 copyFromTexture:v7 sourceSlice:v13 sourceLevel:0 sourceOrigin:&v21 sourceSize:&v18 toTexture:v7 destinationSlice:v13 - 1 destinationLevel:0 destinationOrigin:&v15];
+      [blitCommandEncoder copyFromTexture:arrayCopy sourceSlice:v13 sourceLevel:0 sourceOrigin:&v21 sourceSize:&v18 toTexture:arrayCopy destinationSlice:v13 - 1 destinationLevel:0 destinationOrigin:&v15];
       ++v13;
     }
 
-    while (v13 < [v7 arrayLength]);
+    while (v13 < [arrayCopy arrayLength]);
   }
 
-  v14 = [v7 arrayLength];
+  arrayLength = [arrayCopy arrayLength];
   v21 = 0;
   v22 = 0;
   v23 = 0;
-  v18 = v10;
-  v19 = v11;
-  v20 = v12;
+  v18 = width;
+  v19 = height;
+  v20 = depth;
   v15 = 0;
   v16 = 0;
   v17 = 0;
-  [v9 copyFromTexture:v8 sourceSlice:0 sourceLevel:0 sourceOrigin:&v21 sourceSize:&v18 toTexture:v7 destinationSlice:v14 - 1 destinationLevel:0 destinationOrigin:&v15];
-  [v9 endEncoding];
+  [blitCommandEncoder copyFromTexture:textureCopy sourceSlice:0 sourceLevel:0 sourceOrigin:&v21 sourceSize:&v18 toTexture:arrayCopy destinationSlice:arrayLength - 1 destinationLevel:0 destinationOrigin:&v15];
+  [blitCommandEncoder endEncoding];
 }
 
-- (int)_compileShadersWithLibrary:(id)a3
+- (int)_compileShadersWithLibrary:(id)library
 {
-  v4 = a3;
+  libraryCopy = library;
   v5 = [(MTLLibrary *)self->_library newFunctionWithName:@"nearestNeighborDownsampling"];
   v6 = OUTLINED_FUNCTION_2_10();
   nearestNeighborDownsamplingKernel = self->_nearestNeighborDownsamplingKernel;
@@ -398,7 +398,7 @@ LABEL_28:
     v8 = @"halfToAlphaBL";
   }
 
-  v9 = [v4 newFunctionWithName:v8];
+  v9 = [libraryCopy newFunctionWithName:v8];
 
   v10 = OUTLINED_FUNCTION_4_4();
   halfToAlphaBLKernel = self->_halfToAlphaBLKernel;
@@ -487,28 +487,28 @@ LABEL_14:
   return v24;
 }
 
-- (int)encodeDisparityToAlphaOn:(id)a3 disparityTexture:(id)a4 destinationTexture:(id)a5
+- (int)encodeDisparityToAlphaOn:(id)on disparityTexture:(id)texture destinationTexture:(id)destinationTexture
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  onCopy = on;
+  textureCopy = texture;
+  destinationTextureCopy = destinationTexture;
   if (!self->_supportsReadWriteTextures)
   {
-    v11 = [v8 blitCommandEncoder];
-    [v11 copyFromTexture:v10 toTexture:self->_tmp_RGBA];
-    [v11 endEncoding];
+    blitCommandEncoder = [onCopy blitCommandEncoder];
+    [blitCommandEncoder copyFromTexture:destinationTextureCopy toTexture:self->_tmp_RGBA];
+    [blitCommandEncoder endEncoding];
   }
 
-  v12 = [v8 computeCommandEncoder];
-  v13 = v12;
-  if (v12)
+  computeCommandEncoder = [onCopy computeCommandEncoder];
+  v13 = computeCommandEncoder;
+  if (computeCommandEncoder)
   {
-    [v12 setLabel:@"encodeDisparityToAlphaOn"];
-    v14 = [v9 pixelFormat];
-    if (v14 == 25 || v14 == 10)
+    [computeCommandEncoder setLabel:@"encodeDisparityToAlphaOn"];
+    pixelFormat = [textureCopy pixelFormat];
+    if (pixelFormat == 25 || pixelFormat == 10)
     {
       [v13 setComputePipelineState:self->_halfToAlphaBLKernel];
-      [v13 setTexture:v9 atIndex:0];
+      [v13 setTexture:textureCopy atIndex:0];
       if (self->_supportsReadWriteTextures)
       {
         v16 = 1;
@@ -520,13 +520,13 @@ LABEL_14:
         v16 = 2;
       }
 
-      [v13 setTexture:v10 atIndex:v16];
-      v17 = [(MTLComputePipelineState *)self->_halfToAlphaBLKernel threadExecutionWidth];
-      v18 = [(MTLComputePipelineState *)self->_halfToAlphaBLKernel maxTotalThreadsPerThreadgroup]/ v17;
-      v22[0] = (v17 + [v10 width] - 1) / v17;
-      v22[1] = (v18 + [v10 height] - 1) / v18;
+      [v13 setTexture:destinationTextureCopy atIndex:v16];
+      threadExecutionWidth = [(MTLComputePipelineState *)self->_halfToAlphaBLKernel threadExecutionWidth];
+      v18 = [(MTLComputePipelineState *)self->_halfToAlphaBLKernel maxTotalThreadsPerThreadgroup]/ threadExecutionWidth;
+      v22[0] = (threadExecutionWidth + [destinationTextureCopy width] - 1) / threadExecutionWidth;
+      v22[1] = (v18 + [destinationTextureCopy height] - 1) / v18;
       v22[2] = 1;
-      v21[0] = v17;
+      v21[0] = threadExecutionWidth;
       v21[1] = v18;
       v21[2] = 1;
       [v13 dispatchThreadgroups:v22 threadsPerThreadgroup:v21];
@@ -548,24 +548,24 @@ LABEL_14:
   return v19;
 }
 
-- (int)encodeNearestNeighborDownSamplingOn:(id)a3 inputTexture:(id)a4 outputTexture:(id)a5
+- (int)encodeNearestNeighborDownSamplingOn:(id)on inputTexture:(id)texture outputTexture:(id)outputTexture
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [a3 computeCommandEncoder];
-  v11 = v10;
-  if (v10)
+  textureCopy = texture;
+  outputTextureCopy = outputTexture;
+  computeCommandEncoder = [on computeCommandEncoder];
+  v11 = computeCommandEncoder;
+  if (computeCommandEncoder)
   {
-    [v10 setLabel:@"nearestNeighborDownsamplingKernel"];
+    [computeCommandEncoder setLabel:@"nearestNeighborDownsamplingKernel"];
     [v11 setComputePipelineState:self->_nearestNeighborDownsamplingKernel];
-    [v11 setTexture:v8 atIndex:0];
-    [v11 setTexture:v9 atIndex:1];
-    v12 = [(MTLComputePipelineState *)self->_nearestNeighborDownsamplingKernel threadExecutionWidth];
-    v13 = [(MTLComputePipelineState *)self->_nearestNeighborDownsamplingKernel maxTotalThreadsPerThreadgroup]/ v12;
-    v17[0] = (v12 + [v9 width] - 1) / v12;
-    v17[1] = (v13 + [v9 height] - 1) / v13;
+    [v11 setTexture:textureCopy atIndex:0];
+    [v11 setTexture:outputTextureCopy atIndex:1];
+    threadExecutionWidth = [(MTLComputePipelineState *)self->_nearestNeighborDownsamplingKernel threadExecutionWidth];
+    v13 = [(MTLComputePipelineState *)self->_nearestNeighborDownsamplingKernel maxTotalThreadsPerThreadgroup]/ threadExecutionWidth;
+    v17[0] = (threadExecutionWidth + [outputTextureCopy width] - 1) / threadExecutionWidth;
+    v17[1] = (v13 + [outputTextureCopy height] - 1) / v13;
     v17[2] = 1;
-    v16[0] = v12;
+    v16[0] = threadExecutionWidth;
     v16[1] = v13;
     v16[2] = 1;
     [v11 dispatchThreadgroups:v17 threadsPerThreadgroup:v16];
@@ -581,7 +581,7 @@ LABEL_14:
   return v14;
 }
 
-- (int)encodeCoefficientsOn:(id)a3 guideStack:(id)a4 alphaStack:(id)a5 mean_I:(id)a6 var_I:(id)a7 coefficients:(id)a8
+- (int)encodeCoefficientsOn:(id)on guideStack:(id)stack alphaStack:(id)alphaStack mean_I:(id)i var_I:(id)var_I coefficients:(id)coefficients
 {
   OUTLINED_FUNCTION_2_11();
   v14 = v13;
@@ -590,46 +590,46 @@ LABEL_14:
   v17 = v8;
   v18 = v9;
   v19 = v10;
-  v20 = v11;
-  v21 = a8;
-  v22 = [v17 width];
-  if (v22 != [v18 width] || (v23 = objc_msgSend(v17, "height"), v23 != objc_msgSend(v18, "height")) || (v24 = objc_msgSend(v17, "arrayLength"), v24 != objc_msgSend(v18, "arrayLength")) || (v25 = objc_msgSend(v17, "width"), v25 != objc_msgSend(v19, "width")) || (v26 = objc_msgSend(v17, "height"), v26 != objc_msgSend(v19, "height")) || (v27 = objc_msgSend(v17, "arrayLength"), v27 != objc_msgSend(v19, "arrayLength")) || objc_msgSend(v20, "count") != 3)
+  arrayLength2 = v11;
+  coefficientsCopy = coefficients;
+  width = [v17 width];
+  if (width != [v18 width] || (v23 = objc_msgSend(v17, "height"), v23 != objc_msgSend(v18, "height")) || (v24 = objc_msgSend(v17, "arrayLength"), v24 != objc_msgSend(v18, "arrayLength")) || (v25 = objc_msgSend(v17, "width"), v25 != objc_msgSend(v19, "width")) || (v26 = objc_msgSend(v17, "height"), v26 != objc_msgSend(v19, "height")) || (v27 = objc_msgSend(v17, "arrayLength"), v27 != objc_msgSend(v19, "arrayLength")) || objc_msgSend(arrayLength2, "count") != 3)
   {
     v54 = -12780;
     goto LABEL_44;
   }
 
   v58 = v18;
-  v59 = v21;
+  v59 = coefficientsCopy;
   v72 = 0u;
   v73 = 0u;
   v70 = 0u;
   v71 = 0u;
-  v57 = v20;
-  v28 = v20;
+  v57 = arrayLength2;
+  v28 = arrayLength2;
   v29 = [v28 countByEnumeratingWithState:&v70 objects:v76 count:16];
   if (v29)
   {
     v30 = v29;
-    v20 = *v71;
+    arrayLength2 = *v71;
     while (2)
     {
       for (i = 0; i != v30; ++i)
       {
-        if (*v71 != v20)
+        if (*v71 != arrayLength2)
         {
           objc_enumerationMutation(v28);
         }
 
         v32 = *(*(&v70 + 1) + 8 * i);
-        v33 = [v32 width];
-        if (v33 == [v17 width])
+        width2 = [v32 width];
+        if (width2 == [v17 width])
         {
-          v34 = [v32 height];
-          if (v34 == [v17 height])
+          height = [v32 height];
+          if (height == [v17 height])
           {
-            v35 = [v32 arrayLength];
-            if (v35 == [v17 arrayLength])
+            arrayLength = [v32 arrayLength];
+            if (arrayLength == [v17 arrayLength])
             {
               continue;
             }
@@ -652,11 +652,11 @@ LABEL_14:
     }
   }
 
-  v21 = v59;
+  coefficientsCopy = v59;
   if ([v59 count] != 2)
   {
     v54 = -12780;
-    v20 = v57;
+    arrayLength2 = v57;
     v18 = v58;
     goto LABEL_44;
   }
@@ -682,14 +682,14 @@ LABEL_14:
         }
 
         v41 = *(*(&v66 + 1) + 8 * j);
-        v42 = [v41 width];
-        if (v42 == [v17 width])
+        width3 = [v41 width];
+        if (width3 == [v17 width])
         {
-          v43 = [v41 height];
-          if (v43 == [v17 height])
+          height2 = [v41 height];
+          if (height2 == [v17 height])
           {
-            v20 = [v41 arrayLength];
-            if (v20 == [v17 arrayLength])
+            arrayLength2 = [v41 arrayLength];
+            if (arrayLength2 == [v17 arrayLength])
             {
               continue;
             }
@@ -721,13 +721,13 @@ LABEL_14:
 
   else
   {
-    v45 = [v16 computeCommandEncoder];
+    computeCommandEncoder = [v16 computeCommandEncoder];
     v18 = v58;
     v19 = v56;
-    if (v45)
+    if (computeCommandEncoder)
     {
-      v46 = v45;
-      [v45 setLabel:@"compute4DCoefficientsKernel"];
+      v46 = computeCommandEncoder;
+      [computeCommandEncoder setLabel:@"compute4DCoefficientsKernel"];
       [v46 setComputePipelineState:*(v14 + 136)];
       [v46 setTexture:v17 atIndex:0];
       [v46 setTexture:v58 atIndex:1];
@@ -754,12 +754,12 @@ LABEL_14:
       [OUTLINED_FUNCTION_1_10() setTexture:? atIndex:?];
 
       [v46 setBytes:v14 + 216 length:4 atIndex:0];
-      v47 = [*(v14 + 136) threadExecutionWidth];
-      v48 = [*(v14 + 136) maxTotalThreadsPerThreadgroup] / v47;
-      v65[0] = (v47 + [v17 width] - 1) / v47;
+      threadExecutionWidth = [*(v14 + 136) threadExecutionWidth];
+      v48 = [*(v14 + 136) maxTotalThreadsPerThreadgroup] / threadExecutionWidth;
+      v65[0] = (threadExecutionWidth + [v17 width] - 1) / threadExecutionWidth;
       v65[1] = (v48 + [v17 height] - 1) / v48;
       v65[2] = 1;
-      v64[0] = v47;
+      v64[0] = threadExecutionWidth;
       v64[1] = v48;
       v64[2] = 1;
       [v46 dispatchThreadgroups:v65 threadsPerThreadgroup:v64];
@@ -797,7 +797,7 @@ LABEL_41:
       v18 = v58;
       v19 = v56;
 LABEL_42:
-      v20 = v57;
+      arrayLength2 = v57;
 
       goto LABEL_43;
     }
@@ -805,15 +805,15 @@ LABEL_42:
     v54 = -1;
   }
 
-  v20 = v57;
+  arrayLength2 = v57;
 LABEL_43:
-  v21 = v59;
+  coefficientsCopy = v59;
 LABEL_44:
 
   return v54;
 }
 
-- (int)encodeStateOn:(id)a3 colorGuide:(id)a4 disparityGuide:(id)a5 initialSegmentation:(id)a6 constraints:(id)a7
+- (int)encodeStateOn:(id)on colorGuide:(id)guide disparityGuide:(id)disparityGuide initialSegmentation:(id)segmentation constraints:(id)constraints
 {
   OUTLINED_FUNCTION_2_11();
   v13 = v12;
@@ -847,14 +847,14 @@ LABEL_44:
           }
 
           v27 = *(*(&v46 + 1) + 8 * i);
-          v28 = [v27 width];
-          if (v28 == [*(v13 + 24) width])
+          width = [v27 width];
+          if (width == [*(v13 + 24) width])
           {
-            v29 = [v27 height];
-            if (v29 == [*(v13 + 24) height])
+            height = [v27 height];
+            if (height == [*(v13 + 24) height])
             {
-              v30 = [v27 arrayLength];
-              if (v30 == [*(v13 + 24) arrayLength])
+              arrayLength = [v27 arrayLength];
+              if (arrayLength == [*(v13 + 24) arrayLength])
               {
                 continue;
               }
@@ -895,11 +895,11 @@ LABEL_44:
       else
       {
         [*(v13 + 200) encodeOnCommandBuffer:v15 sourceTexture:*(v13 + 24) destinationTexture:*(v13 + 56)];
-        v33 = [v15 computeCommandEncoder];
-        if (v33)
+        computeCommandEncoder = [v15 computeCommandEncoder];
+        if (computeCommandEncoder)
         {
-          v23 = v33;
-          [v33 setLabel:@"computeInverted4DGuideCovarianceMatrixKernel"];
+          v23 = computeCommandEncoder;
+          [computeCommandEncoder setLabel:@"computeInverted4DGuideCovarianceMatrixKernel"];
           [v23 setComputePipelineState:*(v13 + 128)];
           [v23 setTexture:*(v13 + 24) atIndex:0];
           [v23 setTexture:*(v13 + 56) atIndex:1];
@@ -917,14 +917,14 @@ LABEL_44:
 
           [v23 setBytes:v13 + 228 length:4 atIndex:0];
           [v23 setBytes:v13 + 216 length:4 atIndex:1];
-          v34 = [*(v13 + 128) threadExecutionWidth];
-          v35 = [*(v13 + 128) maxTotalThreadsPerThreadgroup] / v34;
-          v36 = (v34 + [*(v13 + 24) width] - 1) / v34;
-          v37 = [*(v13 + 24) height];
+          threadExecutionWidth = [*(v13 + 128) threadExecutionWidth];
+          v35 = [*(v13 + 128) maxTotalThreadsPerThreadgroup] / threadExecutionWidth;
+          v36 = (threadExecutionWidth + [*(v13 + 24) width] - 1) / threadExecutionWidth;
+          height2 = [*(v13 + 24) height];
           v45[0] = v36;
-          v45[1] = (v35 + v37 - 1) / v35;
+          v45[1] = (v35 + height2 - 1) / v35;
           v45[2] = 1;
-          v44[0] = v34;
+          v44[0] = threadExecutionWidth;
           v44[1] = v35;
           v44[2] = 1;
           [v23 dispatchThreadgroups:v45 threadsPerThreadgroup:v44];
@@ -970,13 +970,13 @@ LABEL_31:
   return v39;
 }
 
-- (int)encodeStepOn:(id)a3
+- (int)encodeStepOn:(id)on
 {
-  v4 = a3;
-  v5 = [(XMattingRGBDFilter *)self encodeCoefficientsOn:v4 guideStack:self->_guideStack alphaStack:self->_alphaStack mean_I:self->_mean_I var_I:self->_var_I coefficients:self->_coefficients];
+  onCopy = on;
+  v5 = [(XMattingRGBDFilter *)self encodeCoefficientsOn:onCopy guideStack:self->_guideStack alphaStack:self->_alphaStack mean_I:self->_mean_I var_I:self->_var_I coefficients:self->_coefficients];
   if (!v5)
   {
-    v5 = [(XMattingRGBDFilter *)self encodeApplyCoefficientsOn:v4 colorGuide:self->_guideStackTexture2DView disparityGuide:0 constraints:self->_constraintsTexture2DView destinationAlphaTexture:self->_alphaStackTexture2DView];
+    v5 = [(XMattingRGBDFilter *)self encodeApplyCoefficientsOn:onCopy colorGuide:self->_guideStackTexture2DView disparityGuide:0 constraints:self->_constraintsTexture2DView destinationAlphaTexture:self->_alphaStackTexture2DView];
   }
 
   v6 = v5;
@@ -984,7 +984,7 @@ LABEL_31:
   return v6;
 }
 
-- (int)encodeApplyCoefficientsOn:(id)a3 colorGuide:(id)a4 disparityGuide:(id)a5 constraints:(id)a6 destinationAlphaTexture:(id)a7
+- (int)encodeApplyCoefficientsOn:(id)on colorGuide:(id)guide disparityGuide:(id)disparityGuide constraints:(id)constraints destinationAlphaTexture:(id)texture
 {
   OUTLINED_FUNCTION_2_11();
   v13 = v12;
@@ -1023,14 +1023,14 @@ LABEL_20:
       goto LABEL_21;
     }
 
-    v39 = [v15 computeCommandEncoder];
-    if (!v39)
+    computeCommandEncoder = [v15 computeCommandEncoder];
+    if (!computeCommandEncoder)
     {
       goto LABEL_33;
     }
 
-    v27 = v39;
-    [v39 setLabel:@"applyDepthAwareCoefficientsNoConstraintsKernel"];
+    v27 = computeCommandEncoder;
+    [computeCommandEncoder setLabel:@"applyDepthAwareCoefficientsNoConstraintsKernel"];
     [v27 setComputePipelineState:v13[19]];
     [OUTLINED_FUNCTION_11_1() objectAtIndexedSubscript:?];
     objc_claimAutoreleasedReturnValue();
@@ -1043,10 +1043,10 @@ LABEL_20:
     OUTLINED_FUNCTION_6_1();
     OUTLINED_FUNCTION_5_1();
     [OUTLINED_FUNCTION_9_1() setTexture:? atIndex:?];
-    v28 = [v13[19] threadExecutionWidth];
+    threadExecutionWidth = [v13[19] threadExecutionWidth];
     v29 = v13[19];
 LABEL_28:
-    v32 = [v29 maxTotalThreadsPerThreadgroup] / v28;
+    v32 = [v29 maxTotalThreadsPerThreadgroup] / threadExecutionWidth;
     [v19 width];
     [v19 height];
     goto LABEL_29;
@@ -1079,21 +1079,21 @@ LABEL_9:
   }
 
 LABEL_14:
-  v23 = [v18 width];
-  if (v23 == [v16 width])
+  width = [v18 width];
+  if (width == [v16 width])
   {
-    v24 = [v18 height];
-    v25 = [v16 height];
-    if (!v21 && !v22 && v24 == v25)
+    height = [v18 height];
+    height2 = [v16 height];
+    if (!v21 && !v22 && height == height2)
     {
-      v26 = [v15 computeCommandEncoder];
-      if (!v26)
+      computeCommandEncoder2 = [v15 computeCommandEncoder];
+      if (!computeCommandEncoder2)
       {
         goto LABEL_33;
       }
 
-      v27 = v26;
-      [v26 setLabel:@"applyDepthAwareCoefficientsKernel"];
+      v27 = computeCommandEncoder2;
+      [computeCommandEncoder2 setLabel:@"applyDepthAwareCoefficientsKernel"];
       [v27 setComputePipelineState:v13[18]];
       [OUTLINED_FUNCTION_11_1() objectAtIndexedSubscript:?];
       objc_claimAutoreleasedReturnValue();
@@ -1107,20 +1107,20 @@ LABEL_14:
       OUTLINED_FUNCTION_5_1();
       [v27 setTexture:v18 atIndex:4];
       [OUTLINED_FUNCTION_9_1() setTexture:? atIndex:?];
-      v28 = [v13[18] threadExecutionWidth];
+      threadExecutionWidth = [v13[18] threadExecutionWidth];
       v29 = v13[18];
       goto LABEL_28;
     }
   }
 
 LABEL_21:
-  v30 = [v15 computeCommandEncoder];
-  v27 = v30;
+  computeCommandEncoder3 = [v15 computeCommandEncoder];
+  v27 = computeCommandEncoder3;
   if (v18)
   {
-    if (v30)
+    if (computeCommandEncoder3)
     {
-      [v30 setLabel:@"applyDepthAwareCoefficientsSamplingKernel"];
+      [computeCommandEncoder3 setLabel:@"applyDepthAwareCoefficientsSamplingKernel"];
       [v27 setComputePipelineState:v13[20]];
       [OUTLINED_FUNCTION_11_1() objectAtIndexedSubscript:?];
       objc_claimAutoreleasedReturnValue();
@@ -1135,8 +1135,8 @@ LABEL_21:
       [v27 setTexture:v18 atIndex:4];
       [OUTLINED_FUNCTION_9_1() setTexture:? atIndex:?];
       [OUTLINED_FUNCTION_9_1() setTexture:? atIndex:?];
-      v31 = [v13[20] threadExecutionWidth];
-      v32 = [v13[20] maxTotalThreadsPerThreadgroup] / v31;
+      threadExecutionWidth2 = [v13[20] threadExecutionWidth];
+      v32 = [v13[20] maxTotalThreadsPerThreadgroup] / threadExecutionWidth2;
       [v19 width];
       [v19 height];
 LABEL_29:
@@ -1150,12 +1150,12 @@ LABEL_33:
     goto LABEL_31;
   }
 
-  if (!v30)
+  if (!computeCommandEncoder3)
   {
     goto LABEL_33;
   }
 
-  [v30 setLabel:@"applyDepthAwareCoefficientsSamplingNoConstraintsKernel"];
+  [computeCommandEncoder3 setLabel:@"applyDepthAwareCoefficientsSamplingNoConstraintsKernel"];
   [v27 setComputePipelineState:v13[21]];
   [OUTLINED_FUNCTION_11_1() objectAtIndexedSubscript:?];
   objc_claimAutoreleasedReturnValue();
@@ -1168,9 +1168,9 @@ LABEL_33:
   OUTLINED_FUNCTION_6_1();
   OUTLINED_FUNCTION_5_1();
   [OUTLINED_FUNCTION_9_1() setTexture:? atIndex:?];
-  v33 = [v13[21] threadExecutionWidth];
+  threadExecutionWidth3 = [v13[21] threadExecutionWidth];
   v34 = v15;
-  v35 = [v13[21] maxTotalThreadsPerThreadgroup] / v33;
+  v35 = [v13[21] maxTotalThreadsPerThreadgroup] / threadExecutionWidth3;
   [v19 width];
   [v19 height];
   OUTLINED_FUNCTION_8_2();
@@ -1189,16 +1189,16 @@ LABEL_31:
   return v40;
 }
 
-- (int)encodeUpsampleOn:(id)a3 segmentation:(id)a4 colorGuide:(id)a5 disparityGuide:(id)a6 outputMatte:(id)a7
+- (int)encodeUpsampleOn:(id)on segmentation:(id)segmentation colorGuide:(id)guide disparityGuide:(id)disparityGuide outputMatte:(id)matte
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
+  onCopy = on;
+  guideCopy = guide;
+  disparityGuideCopy = disparityGuide;
+  matteCopy = matte;
   v15 = [OUTLINED_FUNCTION_14_0() encodeStateOn:? colorGuide:? disparityGuide:? initialSegmentation:? constraints:?];
   if (!v15)
   {
-    v15 = [(XMattingRGBDFilter *)self encodeCoefficientsOn:v11 guideStack:self->_guideStack alphaStack:self->_alphaStack mean_I:self->_mean_I var_I:self->_var_I coefficients:self->_coefficients];
+    v15 = [(XMattingRGBDFilter *)self encodeCoefficientsOn:onCopy guideStack:self->_guideStack alphaStack:self->_alphaStack mean_I:self->_mean_I var_I:self->_var_I coefficients:self->_coefficients];
     if (!v15)
     {
       v15 = [OUTLINED_FUNCTION_14_0() encodeApplyCoefficientsOn:? colorGuide:? disparityGuide:? constraints:? destinationAlphaTexture:?];

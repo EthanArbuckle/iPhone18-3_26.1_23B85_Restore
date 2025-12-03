@@ -1,5 +1,5 @@
 @interface SKUISettingsTableViewCellAcccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)isAccessibilityElement;
 - (CGPoint)accessibilityActivationPoint;
 - (id)_axLockupView;
@@ -12,13 +12,13 @@
 
 @implementation SKUISettingsTableViewCellAcccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SKUISettingsTableViewCell" isKindOfClass:@"UITableViewCell"];
-  [v3 validateClass:@"SKUISettingsTableViewCell" hasInstanceVariable:@"_settingDescriptionView" withType:"SKUISettingDescriptionView"];
-  [v3 validateClass:@"SKUIDefaultSettingDescriptionView" hasInstanceVariable:@"_viewReuseView" withType:"SKUIViewReuseView"];
-  [v3 validateClass:@"SKUICheckboxFieldSettingDescriptionView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SKUISettingsTableViewCell" isKindOfClass:@"UITableViewCell"];
+  [validationsCopy validateClass:@"SKUISettingsTableViewCell" hasInstanceVariable:@"_settingDescriptionView" withType:"SKUISettingDescriptionView"];
+  [validationsCopy validateClass:@"SKUIDefaultSettingDescriptionView" hasInstanceVariable:@"_viewReuseView" withType:"SKUIViewReuseView"];
+  [validationsCopy validateClass:@"SKUICheckboxFieldSettingDescriptionView"];
 }
 
 - (BOOL)isAccessibilityElement
@@ -162,56 +162,56 @@ LABEL_13:
 
 - (id)accessibilityLabel
 {
-  v3 = [(SKUISettingsTableViewCellAcccessibility *)self _axLockupView];
-  v4 = v3;
-  if (v3)
+  _axLockupView = [(SKUISettingsTableViewCellAcccessibility *)self _axLockupView];
+  v4 = _axLockupView;
+  if (_axLockupView)
   {
-    v5 = [v3 accessibilityLabel];
+    accessibilityLabel = [_axLockupView accessibilityLabel];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = SKUISettingsTableViewCellAcccessibility;
-    v5 = [(SKUISettingsTableViewCellAcccessibility *)&v8 accessibilityLabel];
+    accessibilityLabel = [(SKUISettingsTableViewCellAcccessibility *)&v8 accessibilityLabel];
   }
 
-  v6 = v5;
+  v6 = accessibilityLabel;
 
   return v6;
 }
 
 - (id)accessibilityCustomActions
 {
-  v3 = [(SKUISettingsTableViewCellAcccessibility *)self _axLockupView];
-  v4 = v3;
-  if (v3)
+  _axLockupView = [(SKUISettingsTableViewCellAcccessibility *)self _axLockupView];
+  v4 = _axLockupView;
+  if (_axLockupView)
   {
-    v5 = [v3 accessibilityCustomActions];
+    accessibilityCustomActions = [_axLockupView accessibilityCustomActions];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = SKUISettingsTableViewCellAcccessibility;
-    v5 = [(SKUISettingsTableViewCellAcccessibility *)&v8 accessibilityCustomActions];
+    accessibilityCustomActions = [(SKUISettingsTableViewCellAcccessibility *)&v8 accessibilityCustomActions];
   }
 
-  v6 = v5;
+  v6 = accessibilityCustomActions;
 
   return v6;
 }
 
 - (unint64_t)accessibilityTraits
 {
-  v3 = [(SKUISettingsTableViewCellAcccessibility *)self _axViewContainsSwitch];
+  _axViewContainsSwitch = [(SKUISettingsTableViewCellAcccessibility *)self _axViewContainsSwitch];
 
-  if (v3)
+  if (_axViewContainsSwitch)
   {
-    v4 = [(SKUISettingsTableViewCellAcccessibility *)self _axViewContainsSwitch];
-    v5 = [v4 accessibilityTraits];
+    _axViewContainsSwitch2 = [(SKUISettingsTableViewCellAcccessibility *)self _axViewContainsSwitch];
+    accessibilityTraits = [_axViewContainsSwitch2 accessibilityTraits];
 
-    return v5;
+    return accessibilityTraits;
   }
 
   else
@@ -224,32 +224,32 @@ LABEL_13:
 
 - (id)accessibilityValue
 {
-  v3 = [(SKUISettingsTableViewCellAcccessibility *)self _axViewContainsSwitch];
+  _axViewContainsSwitch = [(SKUISettingsTableViewCellAcccessibility *)self _axViewContainsSwitch];
 
-  if (v3)
+  if (_axViewContainsSwitch)
   {
-    v4 = [(SKUISettingsTableViewCellAcccessibility *)self _axViewContainsSwitch];
-    v5 = [v4 accessibilityValue];
+    _axViewContainsSwitch2 = [(SKUISettingsTableViewCellAcccessibility *)self _axViewContainsSwitch];
+    accessibilityValue = [_axViewContainsSwitch2 accessibilityValue];
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = SKUISettingsTableViewCellAcccessibility;
-    v5 = [(SKUISettingsTableViewCellAcccessibility *)&v7 accessibilityValue];
+    accessibilityValue = [(SKUISettingsTableViewCellAcccessibility *)&v7 accessibilityValue];
   }
 
-  return v5;
+  return accessibilityValue;
 }
 
 - (CGPoint)accessibilityActivationPoint
 {
-  v3 = [(SKUISettingsTableViewCellAcccessibility *)self _axViewContainsSwitch];
+  _axViewContainsSwitch = [(SKUISettingsTableViewCellAcccessibility *)self _axViewContainsSwitch];
 
-  if (v3)
+  if (_axViewContainsSwitch)
   {
-    v4 = [(SKUISettingsTableViewCellAcccessibility *)self _axViewContainsSwitch];
-    [v4 accessibilityActivationPoint];
+    _axViewContainsSwitch2 = [(SKUISettingsTableViewCellAcccessibility *)self _axViewContainsSwitch];
+    [_axViewContainsSwitch2 accessibilityActivationPoint];
     v6 = v5;
     v8 = v7;
 

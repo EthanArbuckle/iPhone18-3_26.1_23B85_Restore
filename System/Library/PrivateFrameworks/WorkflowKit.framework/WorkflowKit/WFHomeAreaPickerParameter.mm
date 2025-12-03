@@ -1,32 +1,32 @@
 @interface WFHomeAreaPickerParameter
-- (WFHomeAreaPickerParameter)initWithDefinition:(id)a3;
-- (id)enumeration:(id)a3 accessoryIconForPossibleState:(id)a4;
-- (id)enumeration:(id)a3 localizedLabelForPossibleState:(id)a4;
-- (void)loadDefaultSerializedRepresentationForEnumeration:(id)a3 completionHandler:(id)a4;
-- (void)loadPossibleStatesForEnumeration:(id)a3 searchTerm:(id)a4 completionHandler:(id)a5;
+- (WFHomeAreaPickerParameter)initWithDefinition:(id)definition;
+- (id)enumeration:(id)enumeration accessoryIconForPossibleState:(id)state;
+- (id)enumeration:(id)enumeration localizedLabelForPossibleState:(id)state;
+- (void)loadDefaultSerializedRepresentationForEnumeration:(id)enumeration completionHandler:(id)handler;
+- (void)loadPossibleStatesForEnumeration:(id)enumeration searchTerm:(id)term completionHandler:(id)handler;
 @end
 
 @implementation WFHomeAreaPickerParameter
 
-- (id)enumeration:(id)a3 accessoryIconForPossibleState:(id)a4
+- (id)enumeration:(id)enumeration accessoryIconForPossibleState:(id)state
 {
-  v4 = a4;
-  v5 = [v4 value];
-  v6 = [v5 areaType];
+  stateCopy = state;
+  value = [stateCopy value];
+  areaType = [value areaType];
 
-  if (!v6)
+  if (!areaType)
   {
     v8 = @"house";
 LABEL_7:
     v11 = objc_alloc(MEMORY[0x1E69E0D70]);
-    v12 = [MEMORY[0x1E69E0B48] clearBackground];
-    v13 = [v11 initWithSymbolName:v8 background:v12];
+    clearBackground = [MEMORY[0x1E69E0B48] clearBackground];
+    v13 = [v11 initWithSymbolName:v8 background:clearBackground];
 
     goto LABEL_8;
   }
 
-  v7 = [v4 value];
-  if ([v7 areaType] == 2)
+  value2 = [stateCopy value];
+  if ([value2 areaType] == 2)
   {
 
 LABEL_6:
@@ -34,10 +34,10 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v9 = [v4 value];
-  v10 = [v9 areaType];
+  value3 = [stateCopy value];
+  areaType2 = [value3 areaType];
 
-  if (v10 == 1)
+  if (areaType2 == 1)
   {
     goto LABEL_6;
   }
@@ -48,24 +48,24 @@ LABEL_8:
   return v13;
 }
 
-- (id)enumeration:(id)a3 localizedLabelForPossibleState:(id)a4
+- (id)enumeration:(id)enumeration localizedLabelForPossibleState:(id)state
 {
-  v4 = [a4 value];
-  v5 = [v4 name];
+  value = [state value];
+  name = [value name];
 
-  return v5;
+  return name;
 }
 
-- (void)loadDefaultSerializedRepresentationForEnumeration:(id)a3 completionHandler:(id)a4
+- (void)loadDefaultSerializedRepresentationForEnumeration:(id)enumeration completionHandler:(id)handler
 {
-  v4 = a4;
+  handlerCopy = handler;
   v5 = +[WFHomeManager sharedManager];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __97__WFHomeAreaPickerParameter_loadDefaultSerializedRepresentationForEnumeration_completionHandler___block_invoke;
   v7[3] = &unk_1E837F4E8;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   [v5 ensureHomesAreLoadedWithCompletionHandler:v7];
 }
 
@@ -91,16 +91,16 @@ void __97__WFHomeAreaPickerParameter_loadDefaultSerializedRepresentationForEnume
   }
 }
 
-- (void)loadPossibleStatesForEnumeration:(id)a3 searchTerm:(id)a4 completionHandler:(id)a5
+- (void)loadPossibleStatesForEnumeration:(id)enumeration searchTerm:(id)term completionHandler:(id)handler
 {
-  v5 = a5;
+  handlerCopy = handler;
   v6 = +[WFHomeManager sharedManager];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __91__WFHomeAreaPickerParameter_loadPossibleStatesForEnumeration_searchTerm_completionHandler___block_invoke;
   v8[3] = &unk_1E837F4E8;
-  v9 = v5;
-  v7 = v5;
+  v9 = handlerCopy;
+  v7 = handlerCopy;
   [v6 ensureHomesAreLoadedWithCompletionHandler:v8];
 }
 
@@ -239,11 +239,11 @@ void __91__WFHomeAreaPickerParameter_loadPossibleStatesForEnumeration_searchTerm
   v38 = *MEMORY[0x1E69E9840];
 }
 
-- (WFHomeAreaPickerParameter)initWithDefinition:(id)a3
+- (WFHomeAreaPickerParameter)initWithDefinition:(id)definition
 {
   v7.receiver = self;
   v7.super_class = WFHomeAreaPickerParameter;
-  v3 = [(WFDynamicEnumerationParameter *)&v7 initWithDefinition:a3];
+  v3 = [(WFDynamicEnumerationParameter *)&v7 initWithDefinition:definition];
   v4 = v3;
   if (v3)
   {

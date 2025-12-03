@@ -1,20 +1,20 @@
 @interface BSMutableServiceInterface
-+ (id)interfaceWithIdentifier:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setClient:(id)a3;
-- (void)setClientMessagingExpectation:(int64_t)a3;
-- (void)setIdentifier:(id)a3;
-- (void)setServer:(id)a3;
++ (id)interfaceWithIdentifier:(id)identifier;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setClient:(id)client;
+- (void)setClientMessagingExpectation:(int64_t)expectation;
+- (void)setIdentifier:(id)identifier;
+- (void)setServer:(id)server;
 @end
 
 @implementation BSMutableServiceInterface
 
-+ (id)interfaceWithIdentifier:(id)a3
++ (id)interfaceWithIdentifier:(id)identifier
 {
   v34 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  identifierCopy = identifier;
   NSClassFromString(&cfstr_Nsstring.isa);
-  if (!v5)
+  if (!identifierCopy)
   {
     v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"_bs_assert_object != nil"];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -27,7 +27,7 @@
       v24 = 2114;
       v25 = v15;
       v26 = 2048;
-      v27 = a1;
+      selfCopy2 = self;
       v28 = 2114;
       v29 = @"BSServiceInterface.m";
       v30 = 1024;
@@ -57,7 +57,7 @@
       v24 = 2114;
       v25 = v20;
       v26 = 2048;
-      v27 = a1;
+      selfCopy2 = self;
       v28 = 2114;
       v29 = @"BSServiceInterface.m";
       v30 = 1024;
@@ -77,19 +77,19 @@
   v6 = [BSMutableServiceInterface alloc];
   v7 = __emptyProtocol();
   v8 = __emptyProtocol();
-  v9 = [(BSServiceInterface *)v6 _initWithIdentifier:v5 server:v7 client:v8 clientWaitsForActivation:0];
+  v9 = [(BSServiceInterface *)v6 _initWithIdentifier:identifierCopy server:v7 client:v8 clientWaitsForActivation:0];
 
   v10 = *MEMORY[0x1E69E9840];
 
   return v9;
 }
 
-- (void)setIdentifier:(id)a3
+- (void)setIdentifier:(id)identifier
 {
   v31 = *MEMORY[0x1E69E9840];
-  v18 = a3;
+  identifierCopy = identifier;
   NSClassFromString(&cfstr_Nsstring.isa);
-  if (!v18)
+  if (!identifierCopy)
   {
     v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"_bs_assert_object != nil"];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -102,7 +102,7 @@
       v21 = 2114;
       v22 = v11;
       v23 = 2048;
-      v24 = self;
+      selfCopy2 = self;
       v25 = 2114;
       v26 = @"BSServiceInterface.m";
       v27 = 1024;
@@ -132,7 +132,7 @@
       v21 = 2114;
       v22 = v16;
       v23 = 2048;
-      v24 = self;
+      selfCopy2 = self;
       v25 = 2114;
       v26 = @"BSServiceInterface.m";
       v27 = 1024;
@@ -149,18 +149,18 @@
     JUMPOUT(0x19A85A270);
   }
 
-  v5 = [v18 copy];
+  v5 = [identifierCopy copy];
   identifier = self->super._identifier;
   self->super._identifier = v5;
 
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setServer:(id)a3
+- (void)setServer:(id)server
 {
   v31 = *MEMORY[0x1E69E9840];
-  v18 = a3;
-  if (v18)
+  serverCopy = server;
+  if (serverCopy)
   {
     NSClassFromString(&cfstr_Bsobjcprotocol.isa);
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -176,7 +176,7 @@
         v21 = 2114;
         v22 = v16;
         v23 = 2048;
-        v24 = self;
+        selfCopy = self;
         v25 = 2114;
         v26 = @"BSServiceInterface.m";
         v27 = 1024;
@@ -194,7 +194,7 @@
     }
 
     v5 = __protocolsToRemove();
-    v6 = [v18 flattenWithIgnoredInheritedProtocols:v5];
+    v6 = [serverCopy flattenWithIgnoredInheritedProtocols:v5];
 
     __vetProtocol(v6);
     server = self->super._server;
@@ -220,11 +220,11 @@
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setClient:(id)a3
+- (void)setClient:(id)client
 {
   v31 = *MEMORY[0x1E69E9840];
-  v18 = a3;
-  if (v18)
+  clientCopy = client;
+  if (clientCopy)
   {
     NSClassFromString(&cfstr_Bsobjcprotocol.isa);
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -240,7 +240,7 @@
         v21 = 2114;
         v22 = v16;
         v23 = 2048;
-        v24 = self;
+        selfCopy = self;
         v25 = 2114;
         v26 = @"BSServiceInterface.m";
         v27 = 1024;
@@ -258,7 +258,7 @@
     }
 
     v5 = __protocolsToRemove();
-    v6 = [v18 flattenWithIgnoredInheritedProtocols:v5];
+    v6 = [clientCopy flattenWithIgnoredInheritedProtocols:v5];
 
     __vetProtocol(v6);
     client = self->super._client;
@@ -284,10 +284,10 @@
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setClientMessagingExpectation:(int64_t)a3
+- (void)setClientMessagingExpectation:(int64_t)expectation
 {
   v3 = MEMORY[0x1E695E4D0];
-  if (a3 != 1)
+  if (expectation != 1)
   {
     v3 = MEMORY[0x1E695E4C0];
   }
@@ -295,17 +295,17 @@
   self->super._clientWaitsForActivation = *v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [(BSServiceInterface *)self clientMessagingExpectation];
+  clientMessagingExpectation = [(BSServiceInterface *)self clientMessagingExpectation];
   v6 = MEMORY[0x1E695E4D0];
-  if (v5 != 1)
+  if (clientMessagingExpectation != 1)
   {
     v6 = MEMORY[0x1E695E4C0];
   }
 
   v7 = *v6;
-  v8 = [BSServiceInterface allocWithZone:a3];
+  v8 = [BSServiceInterface allocWithZone:zone];
   identifier = self->super._identifier;
   server = self->super._server;
   client = self->super._client;

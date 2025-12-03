@@ -1,31 +1,31 @@
 @interface ChromeMapSettings
-+ (id)_nameForType:(unint64_t)a3;
++ (id)_nameForType:(unint64_t)type;
 + (void)_registerDefaultsIfNeeded;
 + (void)initialize;
-- (BOOL)_isCamera:(id)a3 equalToCamera:(id)a4;
+- (BOOL)_isCamera:(id)camera equalToCamera:(id)toCamera;
 - (CLLocationCoordinate2D)centerCoordinate;
-- (ChromeMapSettings)initWithType:(unint64_t)a3 userInterfaceIdiom:(int64_t)a4;
+- (ChromeMapSettings)initWithType:(unint64_t)type userInterfaceIdiom:(int64_t)idiom;
 - (ChromeMapSettingsDelegate)delegate;
 - (MKMapView)mapView;
-- (id)_defaultsKeysForType:(unint64_t)a3;
+- (id)_defaultsKeysForType:(unint64_t)type;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)_readFromUserDefaultsWithKeys:(id)a3;
+- (void)_readFromUserDefaultsWithKeys:(id)keys;
 - (void)_saveIfNeeded;
-- (void)_writeToUserDefaultsWithKeys:(id)a3;
-- (void)applyToMapViewAnimated:(BOOL)a3 duration:(double)a4 completion:(id)a5;
+- (void)_writeToUserDefaultsWithKeys:(id)keys;
+- (void)applyToMapViewAnimated:(BOOL)animated duration:(double)duration completion:(id)completion;
 - (void)clear;
-- (void)readFromMapSettings:(id)a3;
+- (void)readFromMapSettings:(id)settings;
 - (void)readFromMapView;
 - (void)reload;
 - (void)save;
-- (void)setCenterCoordinate:(CLLocationCoordinate2D)a3;
-- (void)setMapView:(id)a3;
+- (void)setCenterCoordinate:(CLLocationCoordinate2D)coordinate;
+- (void)setMapView:(id)view;
 - (void)setNeedsSaving;
-- (void)setPitched:(BOOL)a3;
-- (void)setTrackingMode:(int64_t)a3;
-- (void)setType:(unint64_t)a3;
-- (void)setZoomLevel:(double)a3;
+- (void)setPitched:(BOOL)pitched;
+- (void)setTrackingMode:(int64_t)mode;
+- (void)setType:(unint64_t)type;
+- (void)setZoomLevel:(double)level;
 @end
 
 @implementation ChromeMapSettings
@@ -82,14 +82,14 @@
   return v5;
 }
 
-- (void)_writeToUserDefaultsWithKeys:(id)a3
+- (void)_writeToUserDefaultsWithKeys:(id)keys
 {
-  v4 = a3;
-  v5 = [(ChromeMapSettings *)self saveTimer];
-  [v5 invalidate];
+  keysCopy = keys;
+  saveTimer = [(ChromeMapSettings *)self saveTimer];
+  [saveTimer invalidate];
 
   [(ChromeMapSettings *)self setSaveTimer:0];
-  if (![v4 count])
+  if (![keysCopy count])
   {
     goto LABEL_31;
   }
@@ -97,10 +97,10 @@
   v6 = sub_1007B0F80();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
-    v7 = self;
-    if (!v7)
+    selfCopy = self;
+    if (!selfCopy)
     {
-      v12 = @"<nil>";
+      selfCopy = @"<nil>";
       goto LABEL_11;
     }
 
@@ -108,34 +108,34 @@
     v9 = NSStringFromClass(v8);
     if (objc_opt_respondsToSelector())
     {
-      v10 = [(ChromeMapSettings *)v7 performSelector:"accessibilityIdentifier"];
+      v10 = [(ChromeMapSettings *)selfCopy performSelector:"accessibilityIdentifier"];
       v11 = v10;
       if (v10 && ![v10 isEqualToString:v9])
       {
-        v12 = [NSString stringWithFormat:@"%@<%p, %@>", v9, v7, v11];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v9, selfCopy, v11];
 
         goto LABEL_9;
       }
     }
 
-    v12 = [NSString stringWithFormat:@"%@<%p>", v9, v7];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v9, selfCopy];
 LABEL_9:
 
 LABEL_11:
-    v13 = [(ChromeMapSettings *)v7 description];
+    v13 = [(ChromeMapSettings *)selfCopy description];
     *buf = 138543618;
-    v25 = v12;
+    v25 = selfCopy;
     v26 = 2112;
     v27 = v13;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "[%{public}@] Saving to defaults: %@", buf, 0x16u);
   }
 
   v14 = +[NSUserDefaults standardUserDefaults];
-  v15 = [v4 objectForKeyedSubscript:@"centerCoordinate.latitude"];
-  v16 = [v4 objectForKeyedSubscript:@"centerCoordinate.longitude"];
-  v17 = [v4 objectForKeyedSubscript:@"zoomLevel"];
-  v18 = [v4 objectForKeyedSubscript:@"trackingMode"];
-  v19 = [v4 objectForKeyedSubscript:@"pitched"];
+  v15 = [keysCopy objectForKeyedSubscript:@"centerCoordinate.latitude"];
+  v16 = [keysCopy objectForKeyedSubscript:@"centerCoordinate.longitude"];
+  v17 = [keysCopy objectForKeyedSubscript:@"zoomLevel"];
+  v18 = [keysCopy objectForKeyedSubscript:@"trackingMode"];
+  v19 = [keysCopy objectForKeyedSubscript:@"pitched"];
   if (v15 && v16)
   {
     v20 = 0;
@@ -186,21 +186,21 @@ LABEL_11:
 LABEL_31:
 }
 
-- (void)_readFromUserDefaultsWithKeys:(id)a3
+- (void)_readFromUserDefaultsWithKeys:(id)keys
 {
-  v4 = a3;
-  v5 = [(ChromeMapSettings *)self saveTimer];
-  [v5 invalidate];
+  keysCopy = keys;
+  saveTimer = [(ChromeMapSettings *)self saveTimer];
+  [saveTimer invalidate];
 
   [(ChromeMapSettings *)self setSaveTimer:0];
-  if ([v4 count])
+  if ([keysCopy count])
   {
     v6 = +[NSUserDefaults standardUserDefaults];
-    v7 = [v4 objectForKeyedSubscript:@"centerCoordinate.latitude"];
-    v8 = [v4 objectForKeyedSubscript:@"centerCoordinate.longitude"];
-    v9 = [v4 objectForKeyedSubscript:@"zoomLevel"];
-    v10 = [v4 objectForKeyedSubscript:@"trackingMode"];
-    v11 = [v4 objectForKeyedSubscript:@"pitched"];
+    v7 = [keysCopy objectForKeyedSubscript:@"centerCoordinate.latitude"];
+    v8 = [keysCopy objectForKeyedSubscript:@"centerCoordinate.longitude"];
+    v9 = [keysCopy objectForKeyedSubscript:@"zoomLevel"];
+    v10 = [keysCopy objectForKeyedSubscript:@"trackingMode"];
+    v11 = [keysCopy objectForKeyedSubscript:@"pitched"];
     if (v7)
     {
       v12 = [v6 objectForKey:v7];
@@ -288,28 +288,28 @@ LABEL_14:
           }
 
           v33 = v9;
-          v26 = self;
+          selfCopy = self;
           v27 = objc_opt_class();
           v28 = NSStringFromClass(v27);
           v34 = v7;
           if (objc_opt_respondsToSelector())
           {
-            v29 = [(ChromeMapSettings *)v26 performSelector:"accessibilityIdentifier"];
+            v29 = [(ChromeMapSettings *)selfCopy performSelector:"accessibilityIdentifier"];
             v30 = v29;
             if (v29 && ![v29 isEqualToString:v28])
             {
-              v31 = [NSString stringWithFormat:@"%@<%p, %@>", v28, v26, v30];
+              selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v28, selfCopy, v30];
 
               goto LABEL_28;
             }
           }
 
-          v31 = [NSString stringWithFormat:@"%@<%p>", v28, v26];
+          selfCopy = [NSString stringWithFormat:@"%@<%p>", v28, selfCopy];
 LABEL_28:
 
-          v32 = [(ChromeMapSettings *)v26 description];
+          v32 = [(ChromeMapSettings *)selfCopy description];
           *buf = 138543618;
-          v37 = v31;
+          v37 = selfCopy;
           v38 = 2112;
           v39 = v32;
           _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_INFO, "[%{public}@] Read from defaults: %@", buf, 0x16u);
@@ -341,9 +341,9 @@ LABEL_30:
 
 - (void)_saveIfNeeded
 {
-  v3 = [(ChromeMapSettings *)self saveTimer];
+  saveTimer = [(ChromeMapSettings *)self saveTimer];
 
-  if (v3)
+  if (saveTimer)
   {
 
     [(ChromeMapSettings *)self save];
@@ -352,8 +352,8 @@ LABEL_30:
 
 - (void)save
 {
-  v3 = [(ChromeMapSettings *)self saveTimer];
-  [v3 invalidate];
+  saveTimer = [(ChromeMapSettings *)self saveTimer];
+  [saveTimer invalidate];
 
   [(ChromeMapSettings *)self setSaveTimer:0];
   v4 = [(ChromeMapSettings *)self _defaultsKeysForType:[(ChromeMapSettings *)self type]];
@@ -365,21 +365,21 @@ LABEL_30:
 
 - (void)setNeedsSaving
 {
-  v3 = [(ChromeMapSettings *)self saveTimer];
-  [v3 invalidate];
+  saveTimer = [(ChromeMapSettings *)self saveTimer];
+  [saveTimer invalidate];
 
   [(ChromeMapSettings *)self setSaveTimer:0];
   v4 = [(ChromeMapSettings *)self _defaultsKeysForType:[(ChromeMapSettings *)self type]];
   if ([v4 count])
   {
-    v5 = [(ChromeMapSettings *)self type];
+    type = [(ChromeMapSettings *)self type];
     objc_initWeak(&location, self);
     v7 = _NSConcreteStackBlock;
     v8 = 3221225472;
     v9 = sub_1007B1618;
     v10 = &unk_10162A010;
     objc_copyWeak(v12, &location);
-    v12[1] = v5;
+    v12[1] = type;
     v11 = v4;
     v6 = [NSTimer scheduledTimerWithTimeInterval:0 repeats:&v7 block:1.0];
     [(ChromeMapSettings *)self setSaveTimer:v6, v7, v8, v9, v10];
@@ -394,22 +394,22 @@ LABEL_30:
   v12.receiver = self;
   v12.super_class = ChromeMapSettings;
   v3 = [(ChromeMapSettings *)&v12 description];
-  v4 = [(ChromeMapSettings *)self name];
+  name = [(ChromeMapSettings *)self name];
   v5 = [NSNumber numberWithUnsignedInteger:[(ChromeMapSettings *)self type]];
   v6 = [NSString stringWithFormat:@"%+.8f, %+.8f", *&self->_centerCoordinate.latitude, *&self->_centerCoordinate.longitude];
-  v7 = [(NSNumber *)self->_trackingMode integerValue];
-  if (v7 >= 3)
+  integerValue = [(NSNumber *)self->_trackingMode integerValue];
+  if (integerValue >= 3)
   {
-    v9 = [NSNumber numberWithInteger:v7];
+    v9 = [NSNumber numberWithInteger:integerValue];
     v8 = [NSString stringWithFormat:@"Unknown %@", v9];
   }
 
   else
   {
-    v8 = *(&off_10162A050 + v7);
+    v8 = *(&off_10162A050 + integerValue);
   }
 
-  v10 = [NSString stringWithFormat:@"%@ <name:%@, type:%@, centerCoordinate:%@, trackingMode:%@, zoomLevel:%@, pitched:%@>", v3, v4, v5, v6, v8, self->_zoomLevel, self->_pitched];
+  v10 = [NSString stringWithFormat:@"%@ <name:%@, type:%@, centerCoordinate:%@, trackingMode:%@, zoomLevel:%@, pitched:%@>", v3, name, v5, v6, v8, self->_zoomLevel, self->_pitched];
 
   return v10;
 }
@@ -419,10 +419,10 @@ LABEL_30:
   v3 = sub_1007B0F80();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
-    v4 = self;
-    if (!v4)
+    selfCopy = self;
+    if (!selfCopy)
     {
-      v9 = @"<nil>";
+      selfCopy = @"<nil>";
       goto LABEL_10;
     }
 
@@ -430,22 +430,22 @@ LABEL_30:
     v6 = NSStringFromClass(v5);
     if (objc_opt_respondsToSelector())
     {
-      v7 = [(ChromeMapSettings *)v4 performSelector:"accessibilityIdentifier"];
+      v7 = [(ChromeMapSettings *)selfCopy performSelector:"accessibilityIdentifier"];
       v8 = v7;
       if (v7 && ![v7 isEqualToString:v6])
       {
-        v9 = [NSString stringWithFormat:@"%@<%p, %@>", v6, v4, v8];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v6, selfCopy, v8];
 
         goto LABEL_8;
       }
     }
 
-    v9 = [NSString stringWithFormat:@"%@<%p>", v6, v4];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v6, selfCopy];
 LABEL_8:
 
 LABEL_10:
     *buf = 138543362;
-    v14 = v9;
+    v14 = selfCopy;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "[%{public}@] Resetting to original default values", buf, 0xCu);
   }
 
@@ -463,17 +463,17 @@ LABEL_10:
   [(ChromeMapSettings *)self reload];
 }
 
-- (BOOL)_isCamera:(id)a3 equalToCamera:(id)a4
+- (BOOL)_isCamera:(id)camera equalToCamera:(id)toCamera
 {
-  v5 = a3;
-  v6 = a4;
-  [v5 centerCoordinate];
-  [v6 centerCoordinate];
-  if (CLCoordinateEqualToCoordinateEpsilon() && ([v5 heading], v8 = v7, objc_msgSend(v6, "heading"), v8 == v9) && (objc_msgSend(v5, "pitch"), v11 = v10, objc_msgSend(v6, "pitch"), v11 == v12))
+  cameraCopy = camera;
+  toCameraCopy = toCamera;
+  [cameraCopy centerCoordinate];
+  [toCameraCopy centerCoordinate];
+  if (CLCoordinateEqualToCoordinateEpsilon() && ([cameraCopy heading], v8 = v7, objc_msgSend(toCameraCopy, "heading"), v8 == v9) && (objc_msgSend(cameraCopy, "pitch"), v11 = v10, objc_msgSend(toCameraCopy, "pitch"), v11 == v12))
   {
-    [v5 altitude];
+    [cameraCopy altitude];
     v14 = v13;
-    [v6 altitude];
+    [toCameraCopy altitude];
     v16 = v14 == v15;
   }
 
@@ -485,12 +485,12 @@ LABEL_10:
   return v16;
 }
 
-- (void)applyToMapViewAnimated:(BOOL)a3 duration:(double)a4 completion:(id)a5
+- (void)applyToMapViewAnimated:(BOOL)animated duration:(double)duration completion:(id)completion
 {
-  v157 = a3;
-  v161 = a5;
+  animatedCopy = animated;
+  completionCopy = completion;
   v6 = +[NSUUID UUID];
-  v7 = [v6 UUIDString];
+  uUIDString = [v6 UUIDString];
 
   v8 = sub_1007B0F80();
   if (!os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
@@ -498,10 +498,10 @@ LABEL_10:
     goto LABEL_17;
   }
 
-  v9 = self;
-  if (!v9)
+  selfCopy = self;
+  if (!selfCopy)
   {
-    v14 = @"<nil>";
+    selfCopy = @"<nil>";
     goto LABEL_10;
   }
 
@@ -509,22 +509,22 @@ LABEL_10:
   v11 = NSStringFromClass(v10);
   if (objc_opt_respondsToSelector())
   {
-    v12 = [(ChromeMapSettings *)v9 performSelector:"accessibilityIdentifier"];
+    v12 = [(ChromeMapSettings *)selfCopy performSelector:"accessibilityIdentifier"];
     v13 = v12;
     if (v12 && ![v12 isEqualToString:v11])
     {
-      v14 = [NSString stringWithFormat:@"%@<%p, %@>", v11, v9, v13];
+      selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v11, selfCopy, v13];
 
       goto LABEL_8;
     }
   }
 
-  v14 = [NSString stringWithFormat:@"%@<%p>", v11, v9];
+  selfCopy = [NSString stringWithFormat:@"%@<%p>", v11, selfCopy];
 LABEL_8:
 
 LABEL_10:
-  v15 = [(ChromeMapSettings *)v9 description];
-  if (v157)
+  v15 = [(ChromeMapSettings *)selfCopy description];
+  if (animatedCopy)
   {
     v16 = @"YES";
   }
@@ -535,7 +535,7 @@ LABEL_10:
   }
 
   v17 = v16;
-  if (v161)
+  if (completionCopy)
   {
     v18 = @"YES";
   }
@@ -547,15 +547,15 @@ LABEL_10:
 
   v19 = v18;
   *buf = 138544642;
-  *&buf[4] = v14;
+  *&buf[4] = selfCopy;
   *&buf[12] = 2114;
-  *&buf[14] = v7;
+  *&buf[14] = uUIDString;
   *&buf[22] = 2112;
   v177 = v15;
   v178 = 2114;
   v179 = v17;
   v180 = 2048;
-  v181 = a4;
+  durationCopy2 = duration;
   v182 = 2114;
   v183 = v19;
   _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "[%{public}@] %{public}@ applyToMapViewAnimated:duration:completion: %@ (animated:%{public}@, duration:%#.2lfs, completion:%{public}@)", buf, 0x3Eu);
@@ -568,27 +568,27 @@ LABEL_17:
   block[2] = sub_1007B2FA4;
   block[3] = &unk_101661A40;
   block[4] = self;
-  v159 = v7;
+  v159 = uUIDString;
   v174 = v159;
   v158 = v20;
   v175 = v158;
   dispatch_async(v21, block);
 
-  v160 = [(ChromeMapSettings *)self dictionaryRepresentation];
+  dictionaryRepresentation = [(ChromeMapSettings *)self dictionaryRepresentation];
   applicationsByRunIndex = self->_applicationsByRunIndex;
   v23 = [NSNumber numberWithUnsignedInteger:self->_runningApplicationCount];
   v24 = [(NSMutableDictionary *)applicationsByRunIndex objectForKeyedSubscript:v23];
 
-  if (!v24 || ([v24 settingsDictionary], v25 = objc_claimAutoreleasedReturnValue(), v26 = objc_msgSend(v25, "isEqualToDictionary:", v160), v25, !v26))
+  if (!v24 || ([v24 settingsDictionary], v25 = objc_claimAutoreleasedReturnValue(), v26 = objc_msgSend(v25, "isEqualToDictionary:", dictionaryRepresentation), v25, !v26))
   {
-    v35 = [(ChromeMapSettings *)self mapView];
-    v27 = v35;
-    if (!v35)
+    mapView = [(ChromeMapSettings *)self mapView];
+    v27 = mapView;
+    if (!mapView)
     {
       goto LABEL_144;
     }
 
-    [v35 frame];
+    [mapView frame];
     if (v37 == CGSizeZero.width && v36 == CGSizeZero.height)
     {
       v38 = sub_1007B0F80();
@@ -599,26 +599,26 @@ LABEL_36:
         goto LABEL_144;
       }
 
-      v39 = self;
+      selfCopy2 = self;
       v40 = objc_opt_class();
       v41 = NSStringFromClass(v40);
       if (objc_opt_respondsToSelector())
       {
-        v42 = [(ChromeMapSettings *)v39 performSelector:"accessibilityIdentifier"];
+        v42 = [(ChromeMapSettings *)selfCopy2 performSelector:"accessibilityIdentifier"];
         v43 = v42;
         if (v42 && ![v42 isEqualToString:v41])
         {
-          v44 = [NSString stringWithFormat:@"%@<%p, %@>", v41, v39, v43];
+          selfCopy2 = [NSString stringWithFormat:@"%@<%p, %@>", v41, selfCopy2, v43];
 
           goto LABEL_35;
         }
       }
 
-      v44 = [NSString stringWithFormat:@"%@<%p>", v41, v39];
+      selfCopy2 = [NSString stringWithFormat:@"%@<%p>", v41, selfCopy2];
 LABEL_35:
 
       *buf = 138543618;
-      *&buf[4] = v44;
+      *&buf[4] = selfCopy2;
       *&buf[12] = 2114;
       *&buf[14] = v159;
       _os_log_impl(&_mh_execute_header, v38, OS_LOG_TYPE_INFO, "[%{public}@] %{public}@ Will not apply, mapView has zero size", buf, 0x16u);
@@ -626,20 +626,20 @@ LABEL_35:
       goto LABEL_36;
     }
 
-    v45 = [v27 window];
-    if (v45)
+    window = [v27 window];
+    if (window)
     {
-      v46 = [v27 window];
-      v47 = [v46 windowScene];
-      if ([v47 activationState] == 2)
+      window2 = [v27 window];
+      windowScene = [window2 windowScene];
+      if ([windowScene activationState] == 2)
       {
       }
 
       else
       {
-        v48 = [v27 window];
-        v49 = [v48 windowScene];
-        v50 = [v49 activationState] == -1;
+        window3 = [v27 window];
+        windowScene2 = [window3 windowScene];
+        v50 = [windowScene2 activationState] == -1;
 
         if (!v50)
         {
@@ -648,9 +648,9 @@ LABEL_35:
       }
     }
 
-    LOBYTE(v157) = 0;
+    LOBYTE(animatedCopy) = 0;
 LABEL_42:
-    v51 = [(ChromeMapSettings *)self delegate];
+    delegate = [(ChromeMapSettings *)self delegate];
     v52 = objc_opt_respondsToSelector();
 
     if ((v52 & 1) == 0)
@@ -658,26 +658,26 @@ LABEL_42:
       goto LABEL_45;
     }
 
-    LOBYTE(location[0]) = v157;
-    v53 = [(ChromeMapSettings *)self delegate];
-    v54 = [v53 mapSettings:self shouldApplyAnimated:location];
+    LOBYTE(location[0]) = animatedCopy;
+    delegate2 = [(ChromeMapSettings *)self delegate];
+    v54 = [delegate2 mapSettings:self shouldApplyAnimated:location];
 
     if (v54)
     {
-      LOBYTE(v157) = location[0];
+      LOBYTE(animatedCopy) = location[0];
 LABEL_45:
-      v153 = [(ChromeMapSettings *)self pitched];
-      v155 = [(ChromeMapSettings *)self trackingMode];
+      pitched = [(ChromeMapSettings *)self pitched];
+      trackingMode = [(ChromeMapSettings *)self trackingMode];
       [(ChromeMapSettings *)self zoomLevel];
       [(ChromeMapSettings *)self centerCoordinate];
       v56 = v55;
       v58 = v57;
-      if (v155)
+      if (trackingMode)
       {
         v59 = +[MKLocationManager sharedLocationManager];
-        v60 = [v59 isAuthorizedForPreciseLocation];
+        isAuthorizedForPreciseLocation = [v59 isAuthorizedForPreciseLocation];
 
-        if (v60)
+        if (isAuthorizedForPreciseLocation)
         {
           memset(buf, 0, sizeof(buf));
           [v27 _userTrackingBehavior];
@@ -700,60 +700,60 @@ LABEL_45:
         [v27 setUserTrackingMode:0 animated:0];
       }
 
-      v69 = [v27 userLocation];
-      v70 = [v69 location];
-      if (v70)
+      userLocation = [v27 userLocation];
+      location = [userLocation location];
+      if (location)
       {
       }
 
       else
       {
         v71 = +[MKLocationManager sharedLocationManager];
-        v70 = [v71 lastLocation];
+        location = [v71 lastLocation];
 
-        if (!v70)
+        if (!location)
         {
           goto LABEL_72;
         }
       }
 
-      if (v155 || fabs(v58) > 180.0 || v56 < -90.0 || v56 > 90.0)
+      if (trackingMode || fabs(v58) > 180.0 || v56 < -90.0 || v56 > 90.0)
       {
         v72 = sub_1007B0F80();
         if (!os_log_type_enabled(v72, OS_LOG_TYPE_INFO))
         {
 LABEL_71:
 
-          [v70 coordinate];
+          [location coordinate];
           v56 = v79;
           v58 = v80;
           goto LABEL_72;
         }
 
-        v73 = self;
+        selfCopy3 = self;
         v74 = objc_opt_class();
         v75 = NSStringFromClass(v74);
         if (objc_opt_respondsToSelector())
         {
-          v76 = [(ChromeMapSettings *)v73 performSelector:"accessibilityIdentifier"];
+          v76 = [(ChromeMapSettings *)selfCopy3 performSelector:"accessibilityIdentifier"];
           v77 = v76;
           if (v76 && ![v76 isEqualToString:v75])
           {
-            v78 = [NSString stringWithFormat:@"%@<%p, %@>", v75, v73, v77];
+            selfCopy3 = [NSString stringWithFormat:@"%@<%p, %@>", v75, selfCopy3, v77];
 
             goto LABEL_70;
           }
         }
 
-        v78 = [NSString stringWithFormat:@"%@<%p>", v75, v73];
+        selfCopy3 = [NSString stringWithFormat:@"%@<%p>", v75, selfCopy3];
 LABEL_70:
 
         *buf = 138543874;
-        *&buf[4] = v78;
+        *&buf[4] = selfCopy3;
         *&buf[12] = 2114;
         *&buf[14] = v159;
         *&buf[22] = 2112;
-        v177 = v70;
+        v177 = location;
         _os_log_impl(&_mh_execute_header, v72, OS_LOG_TYPE_INFO, "[%{public}@] %{public}@ Will try to use centerCoordinate from userLocation: %@", buf, 0x20u);
 
         goto LABEL_71;
@@ -771,13 +771,13 @@ LABEL_72:
           *&buf[12] = 2112;
           *&buf[14] = v104;
           *&buf[22] = 2112;
-          v177 = v70;
+          v177 = location;
           _os_log_impl(&_mh_execute_header, v103, OS_LOG_TYPE_ERROR, "%{public}@ Will not apply due to invalid center coordinate %@, userLocation: %@", buf, 0x20u);
         }
 
-        if (v161)
+        if (completionCopy)
         {
-          v161[2](v161, 0);
+          completionCopy[2](completionCopy, 0);
         }
 
         goto LABEL_143;
@@ -795,25 +795,25 @@ LABEL_72:
       v96 = v92;
       v97 = v93;
       v98 = v94;
-      if (a4 < 0.0)
+      if (duration < 0.0)
       {
         v99 = [[GEOMapRegion alloc] initWithMapRect:{v91, v92, v93, v94}];
-        a4 = 0.0;
-        if (v157)
+        duration = 0.0;
+        if (animatedCopy)
         {
-          v100 = [v27 _mapLayer];
-          [v100 durationToAnimateToMapRegion:v99];
-          a4 = v101;
+          _mapLayer = [v27 _mapLayer];
+          [_mapLayer durationToAnimateToMapRegion:v99];
+          duration = v101;
         }
       }
 
       v154 = [MKMapCamera _cameraLookingAtMapRect:v95 forViewSize:v96, v97, v98, v87, v90];
-      if (v153)
+      if (pitched)
       {
         if ([v27 _isPitched])
         {
-          v102 = [v27 camera];
-          [v102 pitch];
+          camera = [v27 camera];
+          [camera pitch];
           [v154 setPitch:?];
         }
       }
@@ -823,12 +823,12 @@ LABEL_72:
         [v154 setPitch:0.0];
       }
 
-      if (v155 == 2)
+      if (trackingMode == 2)
       {
         if ([v27 userTrackingMode]== 2)
         {
-          v105 = [v27 camera];
-          [v105 heading];
+          camera2 = [v27 camera];
+          [camera2 heading];
           [v154 setHeading:?];
         }
       }
@@ -841,10 +841,10 @@ LABEL_72:
       [v154 centerCoordinate];
       if (fabs(v107) <= 180.0 && v106 >= -90.0 && v106 <= 90.0)
       {
-        if (v155 == [v27 userTrackingMode])
+        if (trackingMode == [v27 userTrackingMode])
         {
-          v108 = [v27 camera];
-          v109 = [(ChromeMapSettings *)self _isCamera:v154 equalToCamera:v108];
+          camera3 = [v27 camera];
+          v109 = [(ChromeMapSettings *)self _isCamera:v154 equalToCamera:camera3];
 
           if (v109)
           {
@@ -854,34 +854,34 @@ LABEL_72:
               goto LABEL_108;
             }
 
-            v111 = self;
+            selfCopy4 = self;
             v112 = objc_opt_class();
             v113 = NSStringFromClass(v112);
             if (objc_opt_respondsToSelector())
             {
-              v114 = [(ChromeMapSettings *)v111 performSelector:"accessibilityIdentifier"];
+              v114 = [(ChromeMapSettings *)selfCopy4 performSelector:"accessibilityIdentifier"];
               v115 = v114;
               if (v114 && ![v114 isEqualToString:v113])
               {
-                v116 = [NSString stringWithFormat:@"%@<%p, %@>", v113, v111, v115];
+                v115 = [NSString stringWithFormat:@"%@<%p, %@>", v113, selfCopy4, v115];
 
                 goto LABEL_107;
               }
             }
 
-            v116 = [NSString stringWithFormat:@"%@<%p>", v113, v111];
+            v115 = [NSString stringWithFormat:@"%@<%p>", v113, selfCopy4];
 LABEL_107:
 
             *buf = 138543618;
-            *&buf[4] = v116;
+            *&buf[4] = v115;
             *&buf[12] = 2114;
             *&buf[14] = v159;
             _os_log_impl(&_mh_execute_header, v110, OS_LOG_TYPE_INFO, "[%{public}@] %{public}@ Will not apply because the map is already correctly framed", buf, 0x16u);
 
 LABEL_108:
-            if (v161)
+            if (completionCopy)
             {
-              v161[2](v161, 1);
+              completionCopy[2](completionCopy, 1);
             }
 
 LABEL_142:
@@ -893,8 +893,8 @@ LABEL_143:
 
         ++self->_runningApplicationCount;
         objc_initWeak(location, self);
-        v125 = [[ChromeMapSettingsApplication alloc] initWithSettingsDictionary:v160];
-        [(ChromeMapSettingsApplication *)v125 addCompletionHandler:v161];
+        v125 = [[ChromeMapSettingsApplication alloc] initWithSettingsDictionary:dictionaryRepresentation];
+        [(ChromeMapSettingsApplication *)v125 addCompletionHandler:completionCopy];
         runningApplicationCount = self->_runningApplicationCount;
         v127 = self->_applicationsByRunIndex;
         if (!v127)
@@ -917,13 +917,13 @@ LABEL_143:
         {
 LABEL_134:
 
-          v145 = [(ChromeMapSettings *)self delegate];
+          delegate3 = [(ChromeMapSettings *)self delegate];
           v146 = objc_opt_respondsToSelector();
 
           if (v146)
           {
-            v147 = [(ChromeMapSettings *)self delegate];
-            [v147 mapSettings:self willApplyAnimated:v157 & 1];
+            delegate4 = [(ChromeMapSettings *)self delegate];
+            [delegate4 mapSettings:self willApplyAnimated:animatedCopy & 1];
           }
 
           v167[0] = _NSConcreteStackBlock;
@@ -942,16 +942,16 @@ LABEL_134:
           v162[2] = sub_1007B3310;
           v162[3] = &unk_101629FC8;
           objc_copyWeak(v164, location);
-          v165 = v157 & 1;
-          v166 = v153;
+          v165 = animatedCopy & 1;
+          v166 = pitched;
           v164[1] = v152;
-          v164[2] = v155;
+          v164[2] = trackingMode;
           v162[4] = self;
           v163 = v148;
           v150 = objc_retainBlock(v162);
-          if (v157)
+          if (animatedCopy)
           {
-            [UIView animateWithDuration:v149 animations:v150 completion:a4];
+            [UIView animateWithDuration:v149 animations:v150 completion:duration];
           }
 
           else
@@ -968,27 +968,27 @@ LABEL_134:
         }
 
         log = v132;
-        v133 = self;
+        selfCopy5 = self;
         v134 = objc_opt_class();
         v135 = NSStringFromClass(v134);
         if (objc_opt_respondsToSelector())
         {
-          v136 = [(ChromeMapSettings *)v133 performSelector:"accessibilityIdentifier"];
+          v136 = [(ChromeMapSettings *)selfCopy5 performSelector:"accessibilityIdentifier"];
           v137 = v136;
           if (v136 && ([v136 isEqualToString:v135] & 1) == 0)
           {
-            v138 = [NSString stringWithFormat:@"%@<%p, %@>", v135, v133, v137];
+            v137 = [NSString stringWithFormat:@"%@<%p, %@>", v135, selfCopy5, v137];
 
             goto LABEL_127;
           }
         }
 
-        v138 = [NSString stringWithFormat:@"%@<%p>", v135, v133];
+        v137 = [NSString stringWithFormat:@"%@<%p>", v135, selfCopy5];
 LABEL_127:
 
-        v139 = v138;
-        v140 = [(ChromeMapSettings *)v133 description];
-        if (v157)
+        v139 = v137;
+        v140 = [(ChromeMapSettings *)selfCopy5 description];
+        if (animatedCopy)
         {
           v141 = @"YES";
         }
@@ -999,7 +999,7 @@ LABEL_127:
         }
 
         v142 = v141;
-        if (v161)
+        if (completionCopy)
         {
           v143 = @"YES";
         }
@@ -1019,7 +1019,7 @@ LABEL_127:
         v178 = 2112;
         v179 = v142;
         v180 = 2048;
-        v181 = a4;
+        durationCopy2 = duration;
         v182 = 2112;
         v183 = v144;
         _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_INFO, "[%{public}@] %{public}@ Will apply %@ (animated:%@, duration:%#.2lfs, completion:%@)", buf, 0x3Eu);
@@ -1033,36 +1033,36 @@ LABEL_127:
       {
 LABEL_117:
 
-        if (v161)
+        if (completionCopy)
         {
-          v161[2](v161, 0);
+          completionCopy[2](completionCopy, 0);
         }
 
         goto LABEL_142;
       }
 
-      v118 = self;
+      selfCopy6 = self;
       v119 = objc_opt_class();
       v120 = NSStringFromClass(v119);
       if (objc_opt_respondsToSelector())
       {
-        v121 = [(ChromeMapSettings *)v118 performSelector:"accessibilityIdentifier"];
+        v121 = [(ChromeMapSettings *)selfCopy6 performSelector:"accessibilityIdentifier"];
         v122 = v121;
         if (v121 && ![v121 isEqualToString:v120])
         {
-          v123 = [NSString stringWithFormat:@"%@<%p, %@>", v120, v118, v122];
+          v122 = [NSString stringWithFormat:@"%@<%p, %@>", v120, selfCopy6, v122];
 
           goto LABEL_116;
         }
       }
 
-      v123 = [NSString stringWithFormat:@"%@<%p>", v120, v118];
+      v122 = [NSString stringWithFormat:@"%@<%p>", v120, selfCopy6];
 LABEL_116:
 
       [v27 bounds];
       v124 = NSStringFromCGRect(v184);
       *buf = 138544130;
-      *&buf[4] = v123;
+      *&buf[4] = v122;
       *&buf[12] = 2114;
       *&buf[14] = v159;
       *&buf[22] = 2112;
@@ -1079,35 +1079,35 @@ LABEL_116:
     {
 LABEL_57:
 
-      if (v161)
+      if (completionCopy)
       {
-        v161[2](v161, 0);
+        completionCopy[2](completionCopy, 0);
       }
 
       goto LABEL_144;
     }
 
-    v62 = self;
+    selfCopy7 = self;
     v63 = objc_opt_class();
     v64 = NSStringFromClass(v63);
     if (objc_opt_respondsToSelector())
     {
-      v65 = [(ChromeMapSettings *)v62 performSelector:"accessibilityIdentifier"];
+      v65 = [(ChromeMapSettings *)selfCopy7 performSelector:"accessibilityIdentifier"];
       v66 = v65;
       if (v65 && ![v65 isEqualToString:v64])
       {
-        v67 = [NSString stringWithFormat:@"%@<%p, %@>", v64, v62, v66];
+        selfCopy7 = [NSString stringWithFormat:@"%@<%p, %@>", v64, selfCopy7, v66];
 
         goto LABEL_56;
       }
     }
 
-    v67 = [NSString stringWithFormat:@"%@<%p>", v64, v62];
+    selfCopy7 = [NSString stringWithFormat:@"%@<%p>", v64, selfCopy7];
 LABEL_56:
 
-    v68 = [(ChromeMapSettings *)v62 description];
+    v68 = [(ChromeMapSettings *)selfCopy7 description];
     *buf = 138543874;
-    *&buf[4] = v67;
+    *&buf[4] = selfCopy7;
     *&buf[12] = 2114;
     *&buf[14] = v159;
     *&buf[22] = 2112;
@@ -1117,31 +1117,31 @@ LABEL_56:
     goto LABEL_57;
   }
 
-  [v24 addCompletionHandler:v161];
+  [v24 addCompletionHandler:completionCopy];
   v27 = sub_1007B0F80();
   if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
   {
-    v28 = self;
+    selfCopy8 = self;
     v29 = objc_opt_class();
     v30 = NSStringFromClass(v29);
     if (objc_opt_respondsToSelector())
     {
-      v31 = [(ChromeMapSettings *)v28 performSelector:"accessibilityIdentifier"];
+      v31 = [(ChromeMapSettings *)selfCopy8 performSelector:"accessibilityIdentifier"];
       v32 = v31;
       if (v31 && ![v31 isEqualToString:v30])
       {
-        v33 = [NSString stringWithFormat:@"%@<%p, %@>", v30, v28, v32];
+        selfCopy8 = [NSString stringWithFormat:@"%@<%p, %@>", v30, selfCopy8, v32];
 
         goto LABEL_25;
       }
     }
 
-    v33 = [NSString stringWithFormat:@"%@<%p>", v30, v28];
+    selfCopy8 = [NSString stringWithFormat:@"%@<%p>", v30, selfCopy8];
 LABEL_25:
 
-    v34 = [(ChromeMapSettings *)v28 description];
+    v34 = [(ChromeMapSettings *)selfCopy8 description];
     *buf = 138543874;
-    *&buf[4] = v33;
+    *&buf[4] = selfCopy8;
     *&buf[12] = 2114;
     *&buf[14] = v159;
     *&buf[22] = 2112;
@@ -1152,43 +1152,43 @@ LABEL_25:
 LABEL_144:
 }
 
-- (void)readFromMapSettings:(id)a3
+- (void)readFromMapSettings:(id)settings
 {
-  v4 = a3;
-  if (v4)
+  settingsCopy = settings;
+  if (settingsCopy)
   {
-    if ([v4 hasCenterCoordinate])
+    if ([settingsCopy hasCenterCoordinate])
     {
-      [v4 centerCoordinate];
+      [settingsCopy centerCoordinate];
       [(ChromeMapSettings *)self setCenterCoordinate:?];
     }
 
-    if ([v4 hasTrackingMode])
+    if ([settingsCopy hasTrackingMode])
     {
-      -[ChromeMapSettings setTrackingMode:](self, "setTrackingMode:", [v4 trackingMode]);
+      -[ChromeMapSettings setTrackingMode:](self, "setTrackingMode:", [settingsCopy trackingMode]);
     }
 
-    if ([v4 hasZoomLevel])
+    if ([settingsCopy hasZoomLevel])
     {
-      [v4 zoomLevel];
+      [settingsCopy zoomLevel];
       [(ChromeMapSettings *)self setZoomLevel:?];
     }
 
-    if ([v4 hasPitched])
+    if ([settingsCopy hasPitched])
     {
-      -[ChromeMapSettings setPitched:](self, "setPitched:", [v4 pitched]);
+      -[ChromeMapSettings setPitched:](self, "setPitched:", [settingsCopy pitched]);
     }
   }
 }
 
 - (void)readFromMapView
 {
-  v3 = [(ChromeMapSettings *)self mapView];
-  if (v3)
+  mapView = [(ChromeMapSettings *)self mapView];
+  if (mapView)
   {
-    v7 = v3;
-    v4 = [v3 userTrackingMode];
-    if (v4)
+    v7 = mapView;
+    userTrackingMode = [mapView userTrackingMode];
+    if (userTrackingMode)
     {
       v5 = MKCoordinateInvalid[0];
       v6 = MKCoordinateInvalid[1];
@@ -1200,17 +1200,17 @@ LABEL_144:
     }
 
     [(ChromeMapSettings *)self setCenterCoordinate:v5, v6];
-    [(ChromeMapSettings *)self setTrackingMode:v4];
+    [(ChromeMapSettings *)self setTrackingMode:userTrackingMode];
     [v7 _zoomLevel];
     [(ChromeMapSettings *)self setZoomLevel:?];
     -[ChromeMapSettings setPitched:](self, "setPitched:", [v7 _isPitched]);
-    v3 = v7;
+    mapView = v7;
   }
 }
 
-- (void)setMapView:(id)a3
+- (void)setMapView:(id)view
 {
-  obj = a3;
+  obj = view;
   WeakRetained = objc_loadWeakRetained(&self->_mapView);
 
   v5 = obj;
@@ -1221,13 +1221,13 @@ LABEL_144:
   }
 }
 
-- (void)setPitched:(BOOL)a3
+- (void)setPitched:(BOOL)pitched
 {
-  v3 = a3;
+  pitchedCopy = pitched;
   pitched = self->_pitched;
-  if (!pitched || [(NSNumber *)pitched BOOLValue]!= a3)
+  if (!pitched || [(NSNumber *)pitched BOOLValue]!= pitched)
   {
-    v6 = [NSNumber numberWithBool:v3];
+    v6 = [NSNumber numberWithBool:pitchedCopy];
     v7 = self->_pitched;
     self->_pitched = v6;
 
@@ -1235,10 +1235,10 @@ LABEL_144:
   }
 }
 
-- (void)setTrackingMode:(int64_t)a3
+- (void)setTrackingMode:(int64_t)mode
 {
   trackingMode = self->_trackingMode;
-  if (trackingMode && [(NSNumber *)trackingMode integerValue]== a3)
+  if (trackingMode && [(NSNumber *)trackingMode integerValue]== mode)
   {
     return;
   }
@@ -1246,34 +1246,34 @@ LABEL_144:
   v6 = sub_1007B0F80();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
-    v7 = self;
+    selfCopy = self;
     v8 = objc_opt_class();
     v9 = NSStringFromClass(v8);
     if (objc_opt_respondsToSelector())
     {
-      v10 = [(ChromeMapSettings *)v7 performSelector:"accessibilityIdentifier"];
+      v10 = [(ChromeMapSettings *)selfCopy performSelector:"accessibilityIdentifier"];
       v11 = v10;
       if (v10 && ![v10 isEqualToString:v9])
       {
-        v12 = [NSString stringWithFormat:@"%@<%p, %@>", v9, v7, v11];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v9, selfCopy, v11];
 
         goto LABEL_9;
       }
     }
 
-    v12 = [NSString stringWithFormat:@"%@<%p>", v9, v7];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v9, selfCopy];
 LABEL_9:
 
-    v13 = v12;
-    if (a3 >= 3)
+    v13 = selfCopy;
+    if (mode >= 3)
     {
-      v15 = [NSNumber numberWithInteger:a3];
+      v15 = [NSNumber numberWithInteger:mode];
       v14 = [NSString stringWithFormat:@"Unknown %@", v15];
     }
 
     else
     {
-      v14 = *(&off_10162A050 + a3);
+      v14 = *(&off_10162A050 + mode);
     }
 
     *buf = 138543618;
@@ -1283,11 +1283,11 @@ LABEL_9:
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "[%{public}@] setTrackingMode (%{public}@)", buf, 0x16u);
   }
 
-  v16 = [NSNumber numberWithInteger:a3];
+  v16 = [NSNumber numberWithInteger:mode];
   v17 = self->_trackingMode;
   self->_trackingMode = v16;
 
-  if (a3)
+  if (mode)
   {
     self->_centerCoordinate = *MKCoordinateInvalid;
   }
@@ -1295,15 +1295,15 @@ LABEL_9:
   [(ChromeMapSettings *)self setNeedsSaving];
 }
 
-- (void)setZoomLevel:(double)a3
+- (void)setZoomLevel:(double)level
 {
   v5 = sub_1007B0F80();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = self;
-    if (!v6)
+    selfCopy = self;
+    if (!selfCopy)
     {
-      v11 = @"<nil>";
+      selfCopy = @"<nil>";
       goto LABEL_10;
     }
 
@@ -1311,38 +1311,38 @@ LABEL_9:
     v8 = NSStringFromClass(v7);
     if (objc_opt_respondsToSelector())
     {
-      v9 = [(ChromeMapSettings *)v6 performSelector:"accessibilityIdentifier"];
+      v9 = [(ChromeMapSettings *)selfCopy performSelector:"accessibilityIdentifier"];
       v10 = v9;
       if (v9 && ![v9 isEqualToString:v8])
       {
-        v11 = [NSString stringWithFormat:@"%@<%p, %@>", v8, v6, v10];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v8, selfCopy, v10];
 
         goto LABEL_8;
       }
     }
 
-    v11 = [NSString stringWithFormat:@"%@<%p>", v8, v6];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v8, selfCopy];
 LABEL_8:
 
 LABEL_10:
     *buf = 138543618;
-    v17 = v11;
+    v17 = selfCopy;
     v18 = 2048;
-    v19 = a3;
+    levelCopy = level;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[%{public}@] setZoomLevel (%f)", buf, 0x16u);
   }
 
   zoomLevel = self->_zoomLevel;
-  if (!zoomLevel || ([(NSNumber *)zoomLevel floatValue], v13 != a3))
+  if (!zoomLevel || ([(NSNumber *)zoomLevel floatValue], v13 != level))
   {
-    if (a3 <= 0.0)
+    if (level <= 0.0)
     {
       v14 = 0;
     }
 
     else
     {
-      v14 = [NSNumber numberWithDouble:a3];
+      v14 = [NSNumber numberWithDouble:level];
     }
 
     v15 = self->_zoomLevel;
@@ -1352,20 +1352,20 @@ LABEL_10:
   }
 }
 
-- (void)setCenterCoordinate:(CLLocationCoordinate2D)a3
+- (void)setCenterCoordinate:(CLLocationCoordinate2D)coordinate
 {
-  if (vabdd_f64(a3.latitude, self->_centerCoordinate.latitude) >= 0.00000000999999994 || vabdd_f64(a3.longitude, self->_centerCoordinate.longitude) >= 0.00000000999999994)
+  if (vabdd_f64(coordinate.latitude, self->_centerCoordinate.latitude) >= 0.00000000999999994 || vabdd_f64(coordinate.longitude, self->_centerCoordinate.longitude) >= 0.00000000999999994)
   {
-    self->_centerCoordinate = a3;
+    self->_centerCoordinate = coordinate;
     [(ChromeMapSettings *)self setNeedsSaving];
   }
 }
 
-- (id)_defaultsKeysForType:(unint64_t)a3
+- (id)_defaultsKeysForType:(unint64_t)type
 {
   if ([(ChromeMapSettings *)self userInterfaceIdiom]!= 3)
   {
-    if (a3 == 1)
+    if (type == 1)
     {
       v9[0] = @"centerCoordinate.latitude";
       v9[1] = @"centerCoordinate.longitude";
@@ -1387,7 +1387,7 @@ LABEL_8:
     goto LABEL_11;
   }
 
-  if (a3 == 2)
+  if (type == 2)
   {
     v11 = @"zoomLevel";
     v12 = @"StarkNavigationOverviewZoomLevel";
@@ -1397,7 +1397,7 @@ LABEL_8:
     goto LABEL_10;
   }
 
-  if (a3 != 1)
+  if (type != 1)
   {
     goto LABEL_8;
   }
@@ -1423,12 +1423,12 @@ LABEL_11:
   return v7;
 }
 
-- (void)setType:(unint64_t)a3
+- (void)setType:(unint64_t)type
 {
-  if (self->_type != a3)
+  if (self->_type != type)
   {
     [(ChromeMapSettings *)self _saveIfNeeded];
-    self->_type = a3;
+    self->_type = type;
     v6 = [objc_opt_class() _nameForType:self->_type];
     name = self->_name;
     self->_name = v6;
@@ -1444,7 +1444,7 @@ LABEL_11:
   [(ChromeMapSettings *)self _readFromUserDefaultsWithKeys:v3];
 }
 
-- (ChromeMapSettings)initWithType:(unint64_t)a3 userInterfaceIdiom:(int64_t)a4
+- (ChromeMapSettings)initWithType:(unint64_t)type userInterfaceIdiom:(int64_t)idiom
 {
   v9.receiver = self;
   v9.super_class = ChromeMapSettings;
@@ -1452,8 +1452,8 @@ LABEL_11:
   v7 = v6;
   if (v6)
   {
-    [(ChromeMapSettings *)v6 setUserInterfaceIdiom:a4];
-    [(ChromeMapSettings *)v7 setType:a3];
+    [(ChromeMapSettings *)v6 setUserInterfaceIdiom:idiom];
+    [(ChromeMapSettings *)v7 setType:type];
   }
 
   return v7;
@@ -1467,15 +1467,15 @@ LABEL_11:
   }
 }
 
-+ (id)_nameForType:(unint64_t)a3
++ (id)_nameForType:(unint64_t)type
 {
   v3 = @"other";
-  if (a3 == 2)
+  if (type == 2)
   {
     v3 = @"navigation-overview";
   }
 
-  if (a3 == 1)
+  if (type == 1)
   {
     return @"browsing";
   }
@@ -1488,10 +1488,10 @@ LABEL_11:
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
-    [a1 _registerDefaultsIfNeeded];
+    [self _registerDefaultsIfNeeded];
   }
 }
 

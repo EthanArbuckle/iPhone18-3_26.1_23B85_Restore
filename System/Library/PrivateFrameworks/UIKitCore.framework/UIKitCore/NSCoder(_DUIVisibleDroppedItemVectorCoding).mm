@@ -17,13 +17,13 @@
   v11 = [MEMORY[0x1E696AD98] numberWithDouble:a3[2]];
   v13[2] = v11;
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:3];
-  [a1 encodeObject:v12 forKey:v8];
+  [self encodeObject:v12 forKey:v8];
 }
 
 - (void)_uikit_decodeSPVector3DForKey:()_DUIVisibleDroppedItemVectorCoding
 {
   v5 = a2;
-  v16 = [a1 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:v5];
+  v16 = [self decodeArrayOfObjectsOfClass:objc_opt_class() forKey:v5];
 
   v6 = v16;
   if (v16 && (v7 = [v16 count] == 3, v6 = v16, v7))

@@ -1,24 +1,24 @@
 @interface WebBookmark
-- (void)writeOfflineWebView:(id)a3 withOptions:(unint64_t)a4 quickLookFilePath:(id)a5 suggestedFileName:(id)a6 completion:(id)a7;
+- (void)writeOfflineWebView:(id)view withOptions:(unint64_t)options quickLookFilePath:(id)path suggestedFileName:(id)name completion:(id)completion;
 @end
 
 @implementation WebBookmark
 
-- (void)writeOfflineWebView:(id)a3 withOptions:(unint64_t)a4 quickLookFilePath:(id)a5 suggestedFileName:(id)a6 completion:(id)a7
+- (void)writeOfflineWebView:(id)view withOptions:(unint64_t)options quickLookFilePath:(id)path suggestedFileName:(id)name completion:(id)completion
 {
-  v10 = a4;
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  v44 = v13;
-  v16 = (v10 & 1) != 0 && [v13 length] == 0;
-  v17 = [(WebBookmark *)self offlineArchiveDirectoryPath];
-  v43 = v14;
+  optionsCopy = options;
+  viewCopy = view;
+  pathCopy = path;
+  nameCopy = name;
+  completionCopy = completion;
+  v44 = pathCopy;
+  v16 = (optionsCopy & 1) != 0 && [pathCopy length] == 0;
+  offlineArchiveDirectoryPath = [(WebBookmark *)self offlineArchiveDirectoryPath];
+  v43 = nameCopy;
   if (v16)
   {
     v18 = &WBReaderWebArchiveName;
-    if ((v10 & 2) == 0)
+    if ((optionsCopy & 2) == 0)
     {
       v18 = &WBPageWebArchiveName;
     }
@@ -28,7 +28,7 @@
 
   else
   {
-    v19 = [v12 _fileNameForSuggestedName:v14];
+    v19 = [viewCopy _fileNameForSuggestedName:nameCopy];
   }
 
   v20 = v19;
@@ -37,13 +37,13 @@
   v47[2] = sub_100006BBC;
   v47[3] = &unk_10001C888;
   v52 = v16;
-  v21 = v12;
+  v21 = viewCopy;
   v48 = v21;
-  v22 = v17;
+  v22 = offlineArchiveDirectoryPath;
   v49 = v22;
   v23 = v20;
   v50 = v23;
-  v24 = v15;
+  v24 = completionCopy;
   v51 = v24;
   v25 = objc_retainBlock(v47);
   v26 = [v22 stringByAppendingPathComponent:v23];
@@ -57,9 +57,9 @@
       if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
       {
         v29 = v28;
-        v30 = [(WebBookmark *)self UUID];
+        uUID = [(WebBookmark *)self UUID];
         *buf = 138543362;
-        v54 = v30;
+        v54 = uUID;
         _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_DEFAULT, "Offline Reading List: Overwriting existing archive for bookmark UUID %{public}@.", buf, 0xCu);
       }
     }

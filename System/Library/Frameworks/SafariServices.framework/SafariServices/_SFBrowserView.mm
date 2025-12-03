@@ -5,46 +5,46 @@
 - (UIEdgeInsets)obscuredInsets;
 - (UIView)currentWebViewContainerView;
 - (WKWebView)currentWebView;
-- (_SFBrowserView)initWithFrame:(CGRect)a3;
+- (_SFBrowserView)initWithFrame:(CGRect)frame;
 - (double)maximumHeightObscuredByBottomBar;
 - (double)previewScaleFactor;
 - (id)accessibilityIdentifier;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (void)_addWebView:(id)a3 webViewContainerView:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (void)_addWebView:(id)view webViewContainerView:(id)containerView;
 - (void)_scaleContentInset;
-- (void)addWebViewController:(id)a3;
+- (void)addWebViewController:(id)controller;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setAppInfoOverlay:(id)a3;
-- (void)setBottomBarOffset:(double)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setAppInfoOverlay:(id)overlay;
+- (void)setBottomBarOffset:(double)offset;
 - (void)setContentReadyForDisplay;
-- (void)setCrashBanner:(id)a3;
-- (void)setCrashBannerOffset:(double)a3;
-- (void)setMinimalUITopOffset:(double)a3;
-- (void)setNanoDomainContainerView:(id)a3;
-- (void)setNavigationBar:(id)a3;
-- (void)setObscuredInsets:(UIEdgeInsets)a3;
-- (void)setPinnableBanner:(id)a3;
-- (void)setPinnableBannerOffset:(CGPoint)a3;
-- (void)setPreviewHeader:(id)a3;
-- (void)setQuickLookDocumentView:(id)a3;
-- (void)setShouldUseScrollToTopView:(BOOL)a3;
-- (void)setStatusBarBackgroundView:(id)a3;
-- (void)setToolbar:(id)a3;
-- (void)setTopBarHeight:(double)a3;
-- (void)setUnscaledWebViewWidth:(double)a3;
-- (void)updateDismissButtonStyle:(int64_t)a3;
-- (void)updatePreviewHeaderWithURLString:(id)a3;
+- (void)setCrashBanner:(id)banner;
+- (void)setCrashBannerOffset:(double)offset;
+- (void)setMinimalUITopOffset:(double)offset;
+- (void)setNanoDomainContainerView:(id)view;
+- (void)setNavigationBar:(id)bar;
+- (void)setObscuredInsets:(UIEdgeInsets)insets;
+- (void)setPinnableBanner:(id)banner;
+- (void)setPinnableBannerOffset:(CGPoint)offset;
+- (void)setPreviewHeader:(id)header;
+- (void)setQuickLookDocumentView:(id)view;
+- (void)setShouldUseScrollToTopView:(BOOL)view;
+- (void)setStatusBarBackgroundView:(id)view;
+- (void)setToolbar:(id)toolbar;
+- (void)setTopBarHeight:(double)height;
+- (void)setUnscaledWebViewWidth:(double)width;
+- (void)updateDismissButtonStyle:(int64_t)style;
+- (void)updatePreviewHeaderWithURLString:(id)string;
 @end
 
 @implementation _SFBrowserView
 
-- (_SFBrowserView)initWithFrame:(CGRect)a3
+- (_SFBrowserView)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = _SFBrowserView;
-  v3 = [(_SFBrowserView *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(_SFBrowserView *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc(MEMORY[0x1E69DD250]);
@@ -171,16 +171,16 @@
 
   [(_SFNavigationBar *)self->_navigationBar setMaximumHeight:?];
   [(_SFNavigationBar *)self->_navigationBar setContentUnderStatusBarHeight:v19];
-  v28 = [MEMORY[0x1E69C8880] isSolariumEnabled];
+  isSolariumEnabled = [MEMORY[0x1E69C8880] isSolariumEnabled];
   v29 = v4 + v21;
   v30 = v8 - (v21 + v23);
-  if (!v28)
+  if (!isSolariumEnabled)
   {
     v29 = v4;
   }
 
   recta = v29;
-  if (v28)
+  if (isSolariumEnabled)
   {
     v31 = v26 + 0.0;
   }
@@ -190,7 +190,7 @@
     v31 = v26;
   }
 
-  if (v28)
+  if (isSolariumEnabled)
   {
     v32 = v30;
   }
@@ -319,8 +319,8 @@
   }
 
   v66 = objc_loadWeakRetained(&self->_currentWebView);
-  v67 = [v66 scrollView];
-  [v67 bounds];
+  scrollView = [v66 scrollView];
+  [scrollView bounds];
   v69 = v68;
   v71 = v70;
   v73 = v72;
@@ -343,102 +343,102 @@
   }
 }
 
-- (void)setPreviewHeader:(id)a3
+- (void)setPreviewHeader:(id)header
 {
-  v5 = a3;
+  headerCopy = header;
   previewHeader = self->_previewHeader;
-  v7 = v5;
-  if (previewHeader != v5)
+  v7 = headerCopy;
+  if (previewHeader != headerCopy)
   {
     [(_SFLinkPreviewHeader *)previewHeader removeFromSuperview];
-    objc_storeStrong(&self->_previewHeader, a3);
+    objc_storeStrong(&self->_previewHeader, header);
     [(_SFBrowserView *)self addSubview:self->_previewHeader];
   }
 }
 
-- (void)setStatusBarBackgroundView:(id)a3
+- (void)setStatusBarBackgroundView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   statusBarBackgroundView = self->_statusBarBackgroundView;
-  v7 = v5;
-  if (statusBarBackgroundView != v5)
+  v7 = viewCopy;
+  if (statusBarBackgroundView != viewCopy)
   {
     [(UIView *)statusBarBackgroundView removeFromSuperview];
-    objc_storeStrong(&self->_statusBarBackgroundView, a3);
+    objc_storeStrong(&self->_statusBarBackgroundView, view);
     [(_SFBrowserView *)self addSubview:self->_statusBarBackgroundView];
   }
 }
 
-- (void)setToolbar:(id)a3
+- (void)setToolbar:(id)toolbar
 {
-  v5 = a3;
+  toolbarCopy = toolbar;
   [(_SFToolbar *)self->_toolbar removeFromSuperview];
-  objc_storeStrong(&self->_toolbar, a3);
+  objc_storeStrong(&self->_toolbar, toolbar);
   [(_SFBrowserView *)self addSubview:self->_toolbar];
 }
 
-- (void)setNavigationBar:(id)a3
+- (void)setNavigationBar:(id)bar
 {
-  v5 = a3;
+  barCopy = bar;
   [(_SFNavigationBar *)self->_navigationBar removeFromSuperview];
-  objc_storeStrong(&self->_navigationBar, a3);
+  objc_storeStrong(&self->_navigationBar, bar);
   [(_SFBrowserView *)self addSubview:self->_navigationBar];
 }
 
-- (void)updateDismissButtonStyle:(int64_t)a3
+- (void)updateDismissButtonStyle:(int64_t)style
 {
-  v5 = [(_SFBrowserView *)self navigationBar];
-  [v5 setDismissButtonStyle:a3 animated:self->_contentReadyForDisplay];
+  navigationBar = [(_SFBrowserView *)self navigationBar];
+  [navigationBar setDismissButtonStyle:style animated:self->_contentReadyForDisplay];
 }
 
-- (void)setBottomBarOffset:(double)a3
+- (void)setBottomBarOffset:(double)offset
 {
-  if (self->_bottomBarOffset != a3)
+  if (self->_bottomBarOffset != offset)
   {
-    self->_bottomBarOffset = a3;
+    self->_bottomBarOffset = offset;
     [(_SFBrowserView *)self setNeedsLayout];
   }
 }
 
-- (void)setTopBarHeight:(double)a3
+- (void)setTopBarHeight:(double)height
 {
-  if (self->_topBarHeight != a3)
+  if (self->_topBarHeight != height)
   {
-    self->_topBarHeight = a3;
+    self->_topBarHeight = height;
     [(_SFBrowserView *)self setNeedsLayout];
   }
 }
 
-- (void)addWebViewController:(id)a3
+- (void)addWebViewController:(id)controller
 {
-  v6 = a3;
-  v4 = [v6 webView];
-  v5 = [v6 view];
-  [(_SFBrowserView *)self _addWebView:v4 webViewContainerView:v5];
+  controllerCopy = controller;
+  webView = [controllerCopy webView];
+  view = [controllerCopy view];
+  [(_SFBrowserView *)self _addWebView:webView webViewContainerView:view];
 }
 
-- (void)_addWebView:(id)a3 webViewContainerView:(id)a4
+- (void)_addWebView:(id)view webViewContainerView:(id)containerView
 {
-  obj = a3;
-  v6 = a4;
+  obj = view;
+  containerViewCopy = containerView;
   WeakRetained = objc_loadWeakRetained(&self->_currentWebView);
-  v8 = [WeakRetained scrollView];
-  [v8 setDelegate:0];
+  scrollView = [WeakRetained scrollView];
+  [scrollView setDelegate:0];
 
   v9 = objc_loadWeakRetained(&self->_currentWebViewContainerView);
   [v9 removeFromSuperview];
 
   [WeakRetained removeObserver:self forKeyPath:@"fullscreenState" context:kvoContext];
   objc_storeWeak(&self->_currentWebView, obj);
-  objc_storeWeak(&self->_currentWebViewContainerView, v6);
+  objc_storeWeak(&self->_currentWebViewContainerView, containerViewCopy);
   [(UIView *)self->_contentContainerView bounds];
-  [v6 setFrame:?];
-  [(UIView *)self->_contentContainerView addSubview:v6];
+  [containerViewCopy setFrame:?];
+  [(UIView *)self->_contentContainerView addSubview:containerViewCopy];
   [obj addObserver:self forKeyPath:@"fullscreenState" options:1 context:kvoContext];
   if (self->_pinnableBanner)
   {
-    v10 = [obj scrollView];
-    [v10 addSubview:self->_pinnableBanner];
+    scrollView2 = [obj scrollView];
+    [scrollView2 addSubview:self->_pinnableBanner];
   }
 }
 
@@ -505,10 +505,10 @@
   v6 = v5;
   left = self->_obscuredInsets.left;
   right = self->_obscuredInsets.right;
-  v9 = [WeakRetained scrollView];
+  scrollView = [WeakRetained scrollView];
   v10 = v4 / v6;
-  [v9 _sf_setContentInsetAdjustments:{v10, left, 0.0, right}];
-  [v9 setScrollIndicatorInsets:{v10, left, 0.0, right}];
+  [scrollView _sf_setContentInsetAdjustments:{v10, left, 0.0, right}];
+  [scrollView setScrollIndicatorInsets:{v10, left, 0.0, right}];
   [WeakRetained _setObscuredInsets:{v10, left, 0.0, right}];
   [WeakRetained bounds];
   v12 = v11;
@@ -526,25 +526,25 @@
   }
 }
 
-- (void)updatePreviewHeaderWithURLString:(id)a3
+- (void)updatePreviewHeaderWithURLString:(id)string
 {
-  v6 = a3;
-  v4 = [(_SFBrowserView *)self previewHeader];
-  if (v4)
+  stringCopy = string;
+  previewHeader = [(_SFBrowserView *)self previewHeader];
+  if (previewHeader)
   {
-    v5 = [v6 safari_simplifiedUserVisibleURLStringWithSimplifications:511 forDisplayOnly:1 simplifiedStringOffset:0];
-    [v4 setDomain:v5];
+    v5 = [stringCopy safari_simplifiedUserVisibleURLStringWithSimplifications:511 forDisplayOnly:1 simplifiedStringOffset:0];
+    [previewHeader setDomain:v5];
   }
 }
 
-- (void)setShouldUseScrollToTopView:(BOOL)a3
+- (void)setShouldUseScrollToTopView:(BOOL)view
 {
-  if (self->_shouldUseScrollToTopView != a3)
+  if (self->_shouldUseScrollToTopView != view)
   {
     v13 = v3;
-    self->_shouldUseScrollToTopView = a3;
+    self->_shouldUseScrollToTopView = view;
     scrollToTopView = self->_scrollToTopView;
-    if (a3)
+    if (view)
     {
       if (!scrollToTopView)
       {
@@ -570,75 +570,75 @@
   }
 }
 
-- (void)setCrashBanner:(id)a3
+- (void)setCrashBanner:(id)banner
 {
-  v5 = a3;
+  bannerCopy = banner;
   [(SFCrashBanner *)self->_crashBanner removeFromSuperview];
-  objc_storeStrong(&self->_crashBanner, a3);
+  objc_storeStrong(&self->_crashBanner, banner);
   [(_SFBrowserView *)self insertSubview:self->_crashBanner belowSubview:self->_navigationBar];
   [(_SFBrowserView *)self setNeedsLayout];
 }
 
-- (void)setCrashBannerOffset:(double)a3
+- (void)setCrashBannerOffset:(double)offset
 {
-  if (self->_crashBannerOffset != a3)
+  if (self->_crashBannerOffset != offset)
   {
-    self->_crashBannerOffset = a3;
+    self->_crashBannerOffset = offset;
     [(_SFBrowserView *)self setNeedsLayout];
   }
 }
 
-- (void)setPinnableBanner:(id)a3
+- (void)setPinnableBanner:(id)banner
 {
-  v7 = a3;
+  bannerCopy = banner;
   [(SFPinnableBanner *)self->_pinnableBanner removeFromSuperview];
-  objc_storeStrong(&self->_pinnableBanner, a3);
-  if (v7)
+  objc_storeStrong(&self->_pinnableBanner, banner);
+  if (bannerCopy)
   {
     WeakRetained = objc_loadWeakRetained(&self->_currentWebView);
-    v6 = [WeakRetained scrollView];
-    [v6 addSubview:v7];
+    scrollView = [WeakRetained scrollView];
+    [scrollView addSubview:bannerCopy];
 
     [(_SFBrowserView *)self setNeedsLayout];
   }
 }
 
-- (void)setPinnableBannerOffset:(CGPoint)a3
+- (void)setPinnableBannerOffset:(CGPoint)offset
 {
-  if (self->_pinnableBannerOffset.x != a3.x || self->_pinnableBannerOffset.y != a3.y)
+  if (self->_pinnableBannerOffset.x != offset.x || self->_pinnableBannerOffset.y != offset.y)
   {
-    self->_pinnableBannerOffset = a3;
+    self->_pinnableBannerOffset = offset;
     [(_SFBrowserView *)self setNeedsLayout];
   }
 }
 
-- (void)setAppInfoOverlay:(id)a3
+- (void)setAppInfoOverlay:(id)overlay
 {
-  v5 = a3;
+  overlayCopy = overlay;
   appInfoOverlay = self->_appInfoOverlay;
-  v9 = v5;
-  if (appInfoOverlay != v5)
+  v9 = overlayCopy;
+  if (appInfoOverlay != overlayCopy)
   {
     [(UIView *)appInfoOverlay removeFromSuperview];
-    objc_storeStrong(&self->_appInfoOverlay, a3);
+    objc_storeStrong(&self->_appInfoOverlay, overlay);
     [(SFPinnableBanner *)self->_pinnableBanner setHidden:self->_appInfoOverlay != 0];
     if (v9)
     {
       WeakRetained = objc_loadWeakRetained(&self->_currentWebView);
-      v8 = [WeakRetained scrollView];
-      [v8 addSubview:self->_appInfoOverlay];
+      scrollView = [WeakRetained scrollView];
+      [scrollView addSubview:self->_appInfoOverlay];
     }
 
     [(_SFBrowserView *)self setNeedsLayout];
   }
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  if (![v7 type])
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
+  if (![eventCopy type])
   {
     if (!self->_hasReceivedTouchEvents)
     {
@@ -657,7 +657,7 @@
   {
     v13.receiver = self;
     v13.super_class = _SFBrowserView;
-    v10 = [(_SFBrowserView *)&v13 hitTest:v7 withEvent:x, y];
+    v10 = [(_SFBrowserView *)&v13 hitTest:eventCopy withEvent:x, y];
     goto LABEL_11;
   }
 
@@ -666,7 +666,7 @@
   v15.y = y;
   if (CGRectContainsPoint(v16, v15))
   {
-    v10 = [(_SFLinkPreviewHeader *)self->_previewHeader hitTest:v7 withEvent:x, y];
+    v10 = [(_SFLinkPreviewHeader *)self->_previewHeader hitTest:eventCopy withEvent:x, y];
 LABEL_11:
     v11 = v10;
     goto LABEL_13;
@@ -678,63 +678,63 @@ LABEL_13:
   return v11;
 }
 
-- (void)setQuickLookDocumentView:(id)a3
+- (void)setQuickLookDocumentView:(id)view
 {
-  v6 = a3;
+  viewCopy = view;
   quickLookDocumentView = self->_quickLookDocumentView;
   if (quickLookDocumentView)
   {
     [(UIView *)quickLookDocumentView removeFromSuperview];
   }
 
-  objc_storeStrong(&self->_quickLookDocumentView, a3);
+  objc_storeStrong(&self->_quickLookDocumentView, view);
   if (self->_quickLookDocumentView)
   {
-    [(UIView *)self->_contentContainerView addSubview:v6];
+    [(UIView *)self->_contentContainerView addSubview:viewCopy];
     [(_SFBrowserView *)self setNeedsLayout];
   }
 }
 
-- (void)setMinimalUITopOffset:(double)a3
+- (void)setMinimalUITopOffset:(double)offset
 {
-  if (self->_minimalUITopOffset != a3)
+  if (self->_minimalUITopOffset != offset)
   {
-    self->_minimalUITopOffset = a3;
+    self->_minimalUITopOffset = offset;
     [(_SFBrowserView *)self setNeedsLayout];
   }
 }
 
-- (void)setNanoDomainContainerView:(id)a3
+- (void)setNanoDomainContainerView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   nanoDomainContainerView = self->_nanoDomainContainerView;
-  v7 = v5;
-  if (nanoDomainContainerView != v5)
+  v7 = viewCopy;
+  if (nanoDomainContainerView != viewCopy)
   {
     [(SFNanoDomainContainerView *)nanoDomainContainerView removeFromSuperview];
-    objc_storeStrong(&self->_nanoDomainContainerView, a3);
+    objc_storeStrong(&self->_nanoDomainContainerView, view);
     [(_SFBrowserView *)self addSubview:self->_nanoDomainContainerView];
   }
 }
 
-- (void)setUnscaledWebViewWidth:(double)a3
+- (void)setUnscaledWebViewWidth:(double)width
 {
-  if (self->_unscaledWebViewWidth != a3)
+  if (self->_unscaledWebViewWidth != width)
   {
-    self->_unscaledWebViewWidth = a3;
+    self->_unscaledWebViewWidth = width;
     [(_SFBrowserView *)self setNeedsLayout];
   }
 }
 
-- (void)setObscuredInsets:(UIEdgeInsets)a3
+- (void)setObscuredInsets:(UIEdgeInsets)insets
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = insets.top;
+  v3.f64[1] = insets.left;
+  v4.f64[0] = insets.bottom;
+  v4.f64[1] = insets.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(v3, *&self->_obscuredInsets.top), vceqq_f64(v4, *&self->_obscuredInsets.bottom)))) & 1) == 0)
   {
-    self->_obscuredInsets = a3;
+    self->_obscuredInsets = insets;
     [(_SFBrowserView *)self setNeedsLayout];
   }
 }
@@ -765,14 +765,14 @@ LABEL_13:
   return v8;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (kvoContext == a6)
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if (kvoContext == context)
   {
-    if ([v10 isEqualToString:@"fullscreenState"])
+    if ([pathCopy isEqualToString:@"fullscreenState"])
     {
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
       if (objc_opt_respondsToSelector())
@@ -786,7 +786,7 @@ LABEL_13:
   {
     v14.receiver = self;
     v14.super_class = _SFBrowserView;
-    [(_SFBrowserView *)&v14 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(_SFBrowserView *)&v14 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 

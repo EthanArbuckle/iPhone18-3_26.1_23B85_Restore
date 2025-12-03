@@ -1,10 +1,10 @@
 @interface NSFileManager
-- (BOOL)crl_directoryExistsAt:(id)a3;
+- (BOOL)crl_directoryExistsAt:(id)at;
 @end
 
 @implementation NSFileManager
 
-- (BOOL)crl_directoryExistsAt:(id)a3
+- (BOOL)crl_directoryExistsAt:(id)at
 {
   v4 = type metadata accessor for URL();
   v5 = *(v4 - 8);
@@ -12,14 +12,14 @@
   __chkstk_darwin();
   v8 = &v13 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   static URL._unconditionallyBridgeFromObjectiveC(_:)();
-  v9 = self;
+  selfCopy = self;
   if (URL.isFileURL.getter())
   {
     HIBYTE(v13) = 0;
     URL.path.getter();
     v10 = String._bridgeToObjectiveC()();
 
-    v11 = [(NSFileManager *)v9 fileExistsAtPath:v10 isDirectory:&v13 + 7];
+    v11 = [(NSFileManager *)selfCopy fileExistsAtPath:v10 isDirectory:&v13 + 7];
 
     (*(v5 + 8))(v8, v4);
     return v11 & HIBYTE(v13);

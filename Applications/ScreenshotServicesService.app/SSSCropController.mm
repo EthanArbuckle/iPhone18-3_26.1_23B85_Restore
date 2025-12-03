@@ -4,13 +4,13 @@
 - (CGRect)cropRect;
 - (SSSCropController)init;
 - (SSSCropControllerDelegate)delegate;
-- (void)_setCropRect:(CGRect)a3 notify:(BOOL)a4;
+- (void)_setCropRect:(CGRect)rect notify:(BOOL)notify;
 - (void)cancelCrop;
-- (void)cropControllerRootView:(id)a3 changedToCropRect:(CGRect)a4;
-- (void)cropControllerRootViewWillBeginChangingCropRect:(id)a3;
+- (void)cropControllerRootView:(id)view changedToCropRect:(CGRect)rect;
+- (void)cropControllerRootViewWillBeginChangingCropRect:(id)rect;
 - (void)resetCrop;
-- (void)setCropRect:(CGRect)a3;
-- (void)setState:(unint64_t)a3;
+- (void)setCropRect:(CGRect)rect;
+- (void)setState:(unint64_t)state;
 @end
 
 @implementation SSSCropController
@@ -37,41 +37,41 @@
   return v2;
 }
 
-- (void)setState:(unint64_t)a3
+- (void)setState:(unint64_t)state
 {
-  if (self->_state != a3)
+  if (self->_state != state)
   {
-    self->_state = a3;
+    self->_state = state;
     [(SSSCropControllerRootView *)self->_rootView setState:?];
   }
 }
 
-- (void)setCropRect:(CGRect)a3
+- (void)setCropRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  self->_lastNotifiedCropRect = a3;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  self->_lastNotifiedCropRect = rect;
   [(SSSCropController *)self _setCropRect:0 notify:?];
   rootView = self->_rootView;
 
   [(SSSCropControllerRootView *)rootView setUndoCropRect:x, y, width, height];
 }
 
-- (void)_setCropRect:(CGRect)a3 notify:(BOOL)a4
+- (void)_setCropRect:(CGRect)rect notify:(BOOL)notify
 {
-  self->_cropRect = a3;
-  if (a4)
+  self->_cropRect = rect;
+  if (notify)
   {
-    height = a3.size.height;
-    width = a3.size.width;
-    y = a3.origin.y;
-    x = a3.origin.x;
+    height = rect.size.height;
+    width = rect.size.width;
+    y = rect.origin.y;
+    x = rect.origin.x;
     if ((SSRectEqualToRect() & 1) == 0)
     {
-      v9 = [(SSSCropController *)self delegate];
-      [v9 cropController:self changedToCropRect:{x, y, width, height}];
+      delegate = [(SSSCropController *)self delegate];
+      [delegate cropController:self changedToCropRect:{x, y, width, height}];
 
       self->_lastNotifiedCropRect.origin.x = x;
       self->_lastNotifiedCropRect.origin.y = y;
@@ -108,17 +108,17 @@
   return !CGRectEqualToRect(self->_cropRect, v3);
 }
 
-- (void)cropControllerRootViewWillBeginChangingCropRect:(id)a3
+- (void)cropControllerRootViewWillBeginChangingCropRect:(id)rect
 {
-  v4 = [(SSSCropController *)self delegate];
-  [v4 cropControllerDidBeginCropping:self];
+  delegate = [(SSSCropController *)self delegate];
+  [delegate cropControllerDidBeginCropping:self];
 }
 
-- (void)cropControllerRootView:(id)a3 changedToCropRect:(CGRect)a4
+- (void)cropControllerRootView:(id)view changedToCropRect:(CGRect)rect
 {
-  -[SSSCropController _setCropRect:notify:](self, "_setCropRect:notify:", [a3 editMode] != 2, a4.origin.x, a4.origin.y, a4.size.width, a4.size.height);
-  v5 = [(SSSCropController *)self delegate];
-  [v5 cropControllerCropRectDidChange:self];
+  -[SSSCropController _setCropRect:notify:](self, "_setCropRect:notify:", [view editMode] != 2, rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
+  delegate = [(SSSCropController *)self delegate];
+  [delegate cropControllerCropRectDidChange:self];
 }
 
 - (CGRect)cropOverlayViewRectInWindow

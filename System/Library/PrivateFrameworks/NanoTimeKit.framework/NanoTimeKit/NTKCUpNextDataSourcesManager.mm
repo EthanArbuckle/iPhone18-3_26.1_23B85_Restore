@@ -2,24 +2,24 @@
 - (NTKCUpNextDataSourcesManagerIdentifiersDelegate)firstPartyIdentifiersDelegate;
 - (NTKCUpNextDataSourcesManagerIdentifiersDelegate)sportsIdentifiersDelegate;
 - (NTKCUpNextDataSourcesManagerIdentifiersDelegate)thirdPartyIdentifiersDelegate;
-- (id)_dedupeAndSortFirstPartyDataSourcesFromIdentifiers:(id)a3;
+- (id)_dedupeAndSortFirstPartyDataSourcesFromIdentifiers:(id)identifiers;
 - (id)_firstPartyDataSourceEntries;
 - (id)_preGraceThirdPartyBundleIdentifiers;
-- (id)initWatchVersion:(id *)a3;
-- (void)_appsChangedNotification:(id)a3;
+- (id)initWatchVersion:(id *)version;
+- (void)_appsChangedNotification:(id)notification;
 - (void)_buildRows;
 - (void)_buildRowsAfterPrewarming;
-- (void)_dataSourcesChangedNotification:(id)a3;
-- (void)_fetchThirdPartyBundleIdentifiersWithCompletion:(id)a3;
-- (void)_phoneDedupeFromIdentifiers:(id)a3 completion:(id)a4;
-- (void)_phoneDedupedDataSourcesFromIdentifiers:(id)a3 completion:(id)a4;
-- (void)_prewarmRowBuildingWithCompletion:(id)a3;
+- (void)_dataSourcesChangedNotification:(id)notification;
+- (void)_fetchThirdPartyBundleIdentifiersWithCompletion:(id)completion;
+- (void)_phoneDedupeFromIdentifiers:(id)identifiers completion:(id)completion;
+- (void)_phoneDedupedDataSourcesFromIdentifiers:(id)identifiers completion:(id)completion;
+- (void)_prewarmRowBuildingWithCompletion:(id)completion;
 - (void)dealloc;
 @end
 
 @implementation NTKCUpNextDataSourcesManager
 
-- (id)initWatchVersion:(id *)a3
+- (id)initWatchVersion:(id *)version
 {
   v22.receiver = self;
   v22.super_class = NTKCUpNextDataSourcesManager;
@@ -27,35 +27,35 @@
   if (v4)
   {
     v5 = +[NTKRelevanceEngineCache sharedCache];
-    v6 = [v5 canonicalRelevanceEngine];
+    canonicalRelevanceEngine = [v5 canonicalRelevanceEngine];
     v7 = *(v4 + 1);
-    *(v4 + 1) = v6;
+    *(v4 + 1) = canonicalRelevanceEngine;
 
-    v8 = *&a3->var0;
-    *(v4 + 11) = a3->var2;
+    v8 = *&version->var0;
+    *(v4 + 11) = version->var2;
     *(v4 + 72) = v8;
-    v9 = [MEMORY[0x277CBEA60] array];
+    array = [MEMORY[0x277CBEA60] array];
     v10 = *(v4 + 2);
-    *(v4 + 2) = v9;
+    *(v4 + 2) = array;
 
-    v11 = [MEMORY[0x277CBEA60] array];
+    array2 = [MEMORY[0x277CBEA60] array];
     v12 = *(v4 + 4);
-    *(v4 + 4) = v11;
+    *(v4 + 4) = array2;
 
-    v13 = [MEMORY[0x277CBEA60] array];
+    array3 = [MEMORY[0x277CBEA60] array];
     v14 = *(v4 + 3);
-    *(v4 + 3) = v13;
+    *(v4 + 3) = array3;
 
     v15 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_DEFAULT, 0);
     v16 = dispatch_queue_create("com.apple.upnext.datasources.fetcher", v15);
     v17 = *(v4 + 8);
     *(v4 + 8) = v16;
 
-    v18 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v18 addObserver:v4 selector:sel__appsChangedNotification_ name:@"NTKSystemAppStateChangedNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v4 selector:sel__appsChangedNotification_ name:@"NTKSystemAppStateChangedNotification" object:0];
 
-    v19 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v19 addObserver:v4 selector:sel__dataSourcesChangedNotification_ name:*MEMORY[0x277D444C8] object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v4 selector:sel__dataSourcesChangedNotification_ name:*MEMORY[0x277D444C8] object:0];
 
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
     CFNotificationCenterAddObserver(DarwinNotifyCenter, v4, _dataSourcesDidChange, @"com.apple.NanoTimeKit.NPS.NTKSiriDefaultsThirdPartyDataSourcesDidChangeNotification", 0, CFNotificationSuspensionBehaviorDeliverImmediately);
@@ -73,32 +73,32 @@
   [(NTKCUpNextDataSourcesManager *)&v4 dealloc];
 }
 
-- (void)_appsChangedNotification:(id)a3
+- (void)_appsChangedNotification:(id)notification
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  notificationCopy = notification;
   v5 = _NTKLoggingObjectForDomain(27, "NTKLoggingDomainUpNext");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 object];
+    object = [notificationCopy object];
     v7 = 138412290;
-    v8 = v6;
+    v8 = object;
     _os_log_impl(&dword_22D9C5000, v5, OS_LOG_TYPE_DEFAULT, "NTKSystemAppStateChangedNotification will rebuild rows - %@", &v7, 0xCu);
   }
 
   [(NTKCUpNextDataSourcesManager *)self fetchIdentifiers];
 }
 
-- (void)_dataSourcesChangedNotification:(id)a3
+- (void)_dataSourcesChangedNotification:(id)notification
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  notificationCopy = notification;
   v5 = _NTKLoggingObjectForDomain(27, "NTKLoggingDomainUpNext");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 object];
+    object = [notificationCopy object];
     v7 = 138412290;
-    v8 = v6;
+    v8 = object;
     _os_log_impl(&dword_22D9C5000, v5, OS_LOG_TYPE_DEFAULT, "REAvailableDataSourceIdentifiersDidChange will rebuild rows - %@", &v7, 0xCu);
   }
 
@@ -107,25 +107,25 @@
 
 - (id)_preGraceThirdPartyBundleIdentifiers
 {
-  v2 = [MEMORY[0x277CBBAE8] activePDRDevice];
-  v3 = v2;
-  if (v2)
+  activePDRDevice = [MEMORY[0x277CBBAE8] activePDRDevice];
+  v3 = activePDRDevice;
+  if (activePDRDevice)
   {
-    v4 = [v2 pairingID];
-    v5 = [MEMORY[0x277CEAF80] sharedDeviceConnection];
+    pairingID = [activePDRDevice pairingID];
+    mEMORY[0x277CEAF80] = [MEMORY[0x277CEAF80] sharedDeviceConnection];
     v6 = [MEMORY[0x277CBEB58] set];
-    v7 = [MEMORY[0x277CC1E80] defaultWorkspace];
+    defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __68__NTKCUpNextDataSourcesManager__preGraceThirdPartyBundleIdentifiers__block_invoke;
     v14[3] = &unk_2787807D8;
     v8 = v6;
     v15 = v8;
-    v16 = v5;
-    v17 = v4;
-    v9 = v4;
-    v10 = v5;
-    [v7 enumerateBundlesOfType:1 block:v14];
+    v16 = mEMORY[0x277CEAF80];
+    v17 = pairingID;
+    v9 = pairingID;
+    v10 = mEMORY[0x277CEAF80];
+    [defaultWorkspace enumerateBundlesOfType:1 block:v14];
 
     v11 = v17;
     v12 = v8;
@@ -241,27 +241,27 @@ void __68__NTKCUpNextDataSourcesManager__preGraceThirdPartyBundleIdentifiers__bl
   dispatch_group_leave(*(a1 + 48));
 }
 
-- (id)_dedupeAndSortFirstPartyDataSourcesFromIdentifiers:(id)a3
+- (id)_dedupeAndSortFirstPartyDataSourcesFromIdentifiers:(id)identifiers
 {
   v97 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v61 = self;
-  v5 = [(RERelevanceEngine *)self->_relevanceEngine dataSourceCatalog];
-  v71 = [MEMORY[0x277CBEB38] dictionary];
-  v6 = [MEMORY[0x277CBEB38] dictionary];
+  identifiersCopy = identifiers;
+  selfCopy = self;
+  dataSourceCatalog = [(RERelevanceEngine *)self->_relevanceEngine dataSourceCatalog];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  dictionary2 = [MEMORY[0x277CBEB38] dictionary];
   v89 = 0u;
   v90 = 0u;
   v91 = 0u;
   v92 = 0u;
-  v70 = v4;
-  obj = [v4 copy];
+  v70 = identifiersCopy;
+  obj = [identifiersCopy copy];
   v7 = [obj countByEnumeratingWithState:&v89 objects:v96 count:16];
   if (v7)
   {
     v8 = v7;
     v9 = *v90;
     v62 = *v90;
-    v63 = v5;
+    v63 = dataSourceCatalog;
     do
     {
       v10 = 0;
@@ -288,14 +288,14 @@ void __68__NTKCUpNextDataSourcesManager__preGraceThirdPartyBundleIdentifiers__bl
 
         v15 = v14;
 
-        v16 = [v5 localizedNameForDataSourceWithIdentifier:v15];
+        v16 = [dataSourceCatalog localizedNameForDataSourceWithIdentifier:v15];
         if (v16)
         {
-          v17 = [v5 applicationIdentifierForDataSourceWithIdentifier:v15];
+          v17 = [dataSourceCatalog applicationIdentifierForDataSourceWithIdentifier:v15];
           if (v17)
           {
             v68 = v17;
-            v18 = [v71 objectForKeyedSubscript:v16];
+            v18 = [dictionary objectForKeyedSubscript:v16];
             v69 = v15;
             v66 = v10;
             v67 = v16;
@@ -365,12 +365,12 @@ void __68__NTKCUpNextDataSourcesManager__preGraceThirdPartyBundleIdentifiers__bl
               v33 = [v30 copy];
 
               v19 = [v33 mutableCopy];
-              if (![(NTKCUpNextDataSourcesManager *)v61 _isNanoWeatherAppID:v68])
+              if (![(NTKCUpNextDataSourcesManager *)selfCopy _isNanoWeatherAppID:v68])
               {
                 [v19 addObject:v68];
               }
 
-              [v71 setObject:v19 forKeyedSubscript:v67];
+              [dictionary setObject:v19 forKeyedSubscript:v67];
             }
 
             v83 = 0u;
@@ -410,21 +410,21 @@ void __68__NTKCUpNextDataSourcesManager__preGraceThirdPartyBundleIdentifiers__bl
                   v43 = *(*(&v81 + 1) + 8 * j);
                   if (([v43 isEqualToString:v34] & 1) == 0)
                   {
-                    v44 = [v6 objectForKeyedSubscript:v43];
+                    v44 = [dictionary2 objectForKeyedSubscript:v43];
                     v45 = v44;
                     if (v44)
                     {
                       if (([v44 isEqualToString:v34] & 1) == 0)
                       {
                         [v70 removeObject:v43];
-                        v46 = [v71 objectForKeyedSubscript:v45];
+                        v46 = [dictionary objectForKeyedSubscript:v45];
                         [v46 removeObject:v43];
                       }
                     }
 
                     else
                     {
-                      [v6 setObject:v34 forKeyedSubscript:v43];
+                      [dictionary2 setObject:v34 forKeyedSubscript:v43];
                     }
                   }
                 }
@@ -436,7 +436,7 @@ void __68__NTKCUpNextDataSourcesManager__preGraceThirdPartyBundleIdentifiers__bl
             }
 
             v9 = v62;
-            v5 = v63;
+            dataSourceCatalog = v63;
             v8 = v64;
             v10 = v66;
             v16 = v67;
@@ -475,13 +475,13 @@ void __68__NTKCUpNextDataSourcesManager__preGraceThirdPartyBundleIdentifiers__bl
         }
 
         v52 = *(*(&v77 + 1) + 8 * k);
-        v53 = [v5 applicationIdentifierForDataSourceWithIdentifier:v52];
+        v53 = [dataSourceCatalog applicationIdentifierForDataSourceWithIdentifier:v52];
         if (v53 && ([v52 isEqualToString:v53] & 1) == 0)
         {
-          v54 = [v5 localizedNameForDataSourceWithIdentifier:v52];
-          if (v54 && ![(NTKCUpNextDataSourcesManager *)v61 _isNanoWeatherAppID:v53])
+          v54 = [dataSourceCatalog localizedNameForDataSourceWithIdentifier:v52];
+          if (v54 && ![(NTKCUpNextDataSourcesManager *)selfCopy _isNanoWeatherAppID:v53])
           {
-            v55 = [v71 objectForKeyedSubscript:v54];
+            v55 = [dictionary objectForKeyedSubscript:v54];
             v74[0] = MEMORY[0x277D85DD0];
             v74[1] = 3221225472;
             v74[2] = __83__NTKCUpNextDataSourcesManager__dedupeAndSortFirstPartyDataSourcesFromIdentifiers___block_invoke;
@@ -489,7 +489,7 @@ void __68__NTKCUpNextDataSourcesManager__preGraceThirdPartyBundleIdentifiers__bl
             v75 = v54;
             v76 = v55;
             v56 = v55;
-            [v71 enumerateKeysAndObjectsUsingBlock:v74];
+            [dictionary enumerateKeysAndObjectsUsingBlock:v74];
           }
         }
       }
@@ -500,14 +500,14 @@ void __68__NTKCUpNextDataSourcesManager__preGraceThirdPartyBundleIdentifiers__bl
     while (v49);
   }
 
-  v57 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v72[0] = MEMORY[0x277D85DD0];
   v72[1] = 3221225472;
   v72[2] = __83__NTKCUpNextDataSourcesManager__dedupeAndSortFirstPartyDataSourcesFromIdentifiers___block_invoke_2;
   v72[3] = &unk_278780830;
-  v73 = v57;
-  v58 = v57;
-  [v71 enumerateKeysAndObjectsUsingBlock:v72];
+  v73 = array;
+  v58 = array;
+  [dictionary enumerateKeysAndObjectsUsingBlock:v72];
   v59 = [v58 sortedArrayUsingComparator:&__block_literal_global_42];
 
   return v59;
@@ -547,7 +547,7 @@ uint64_t __83__NTKCUpNextDataSourcesManager__dedupeAndSortFirstPartyDataSourcesF
 - (id)_firstPartyDataSourceEntries
 {
   v26 = *MEMORY[0x277D85DE8];
-  v3 = [(RERelevanceEngine *)self->_relevanceEngine dataSourceCatalog];
+  dataSourceCatalog = [(RERelevanceEngine *)self->_relevanceEngine dataSourceCatalog];
   v4 = [MEMORY[0x277CBEB98] setWithArray:&unk_28418ADF8];
   if (NTKInternalBuild(v4, v5))
   {
@@ -581,18 +581,18 @@ uint64_t __83__NTKCUpNextDataSourcesManager__dedupeAndSortFirstPartyDataSourcesF
         }
 
         v13 = *(*(&v18 + 1) + 8 * i);
-        if (v3)
+        if (dataSourceCatalog)
         {
-          [v3 minimumSupportedSystemVersionForDataSourceWithIdentifier:v13];
+          [dataSourceCatalog minimumSupportedSystemVersionForDataSourceWithIdentifier:v13];
         }
 
         if (v22 >= 0 && ([v13 isEqualToString:@"com.apple.upnext.siri.sports"] & 1) == 0)
         {
-          v14 = [v3 localizedNameForDataSourceWithIdentifier:v13];
+          v14 = [dataSourceCatalog localizedNameForDataSourceWithIdentifier:v13];
 
           if (v14)
           {
-            v15 = [v3 applicationIdentifierForDataSourceWithIdentifier:v13];
+            v15 = [dataSourceCatalog applicationIdentifierForDataSourceWithIdentifier:v13];
 
             if (v15)
             {
@@ -613,31 +613,31 @@ uint64_t __83__NTKCUpNextDataSourcesManager__dedupeAndSortFirstPartyDataSourcesF
   return v16;
 }
 
-- (void)_phoneDedupedDataSourcesFromIdentifiers:(id)a3 completion:(id)a4
+- (void)_phoneDedupedDataSourcesFromIdentifiers:(id)identifiers completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  identifiersCopy = identifiers;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if ([v6 count])
+    if ([identifiersCopy count])
     {
-      v8 = [(RERelevanceEngine *)self->_relevanceEngine dataSourceCatalog];
+      dataSourceCatalog = [(RERelevanceEngine *)self->_relevanceEngine dataSourceCatalog];
       v9 = dispatch_get_global_queue(2, 0);
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __83__NTKCUpNextDataSourcesManager__phoneDedupedDataSourcesFromIdentifiers_completion___block_invoke;
       block[3] = &unk_27877DC88;
-      v12 = v6;
-      v13 = v8;
-      v14 = v7;
-      v10 = v8;
+      v12 = identifiersCopy;
+      v13 = dataSourceCatalog;
+      v14 = completionCopy;
+      dictionary = dataSourceCatalog;
       dispatch_async(v9, block);
     }
 
     else
     {
-      v10 = [MEMORY[0x277CBEAC0] dictionary];
-      (*(v7 + 2))(v7, v10);
+      dictionary = [MEMORY[0x277CBEAC0] dictionary];
+      (*(completionCopy + 2))(completionCopy, dictionary);
     }
   }
 }
@@ -706,16 +706,16 @@ void __83__NTKCUpNextDataSourcesManager__phoneDedupedDataSourcesFromIdentifiers_
   (*(v15 + 16))(v15, v16);
 }
 
-- (void)_phoneDedupeFromIdentifiers:(id)a3 completion:(id)a4
+- (void)_phoneDedupeFromIdentifiers:(id)identifiers completion:(id)completion
 {
-  v6 = a4;
-  v7 = [a3 copy];
+  completionCopy = completion;
+  v7 = [identifiers copy];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __71__NTKCUpNextDataSourcesManager__phoneDedupeFromIdentifiers_completion___block_invoke;
   v9[3] = &unk_2787808A0;
-  v10 = v6;
-  v8 = v6;
+  v10 = completionCopy;
+  v8 = completionCopy;
   [(NTKCUpNextDataSourcesManager *)self _phoneDedupedDataSourcesFromIdentifiers:v7 completion:v9];
 }
 
@@ -773,15 +773,15 @@ uint64_t __71__NTKCUpNextDataSourcesManager__phoneDedupeFromIdentifiers_completi
   return v7;
 }
 
-- (void)_fetchThirdPartyBundleIdentifiersWithCompletion:(id)a3
+- (void)_fetchThirdPartyBundleIdentifiersWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = +[NTKSiriDefaults sharedInstance];
-  v6 = [v5 watchHasMigratedAvailableDataSources];
+  watchHasMigratedAvailableDataSources = [v5 watchHasMigratedAvailableDataSources];
 
   v7 = _NTKLoggingObjectForDomain(27, "NTKLoggingDomainUpNext");
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
-  if (v6)
+  if (watchHasMigratedAvailableDataSources)
   {
     if (v8)
     {
@@ -789,16 +789,16 @@ uint64_t __71__NTKCUpNextDataSourcesManager__phoneDedupeFromIdentifiers_completi
       _os_log_impl(&dword_22D9C5000, v7, OS_LOG_TYPE_DEFAULT, "Watch has migrated available data sources. Using defaults.", v16, 2u);
     }
 
-    v9 = [MEMORY[0x277CBEB58] set];
+    _preGraceThirdPartyBundleIdentifiers = [MEMORY[0x277CBEB58] set];
     v10 = +[NTKSiriDefaults sharedInstance];
-    v11 = [v10 watchThirdPartyDataSources];
-    v12 = [v11 allObjects];
-    [v9 addObjectsFromArray:v12];
+    watchThirdPartyDataSources = [v10 watchThirdPartyDataSources];
+    allObjects = [watchThirdPartyDataSources allObjects];
+    [_preGraceThirdPartyBundleIdentifiers addObjectsFromArray:allObjects];
 
     v13 = +[NTKSiriDefaults sharedInstance];
-    v14 = [v13 phoneThirdPartyDataSources];
-    v15 = [v14 allObjects];
-    [v9 addObjectsFromArray:v15];
+    phoneThirdPartyDataSources = [v13 phoneThirdPartyDataSources];
+    allObjects2 = [phoneThirdPartyDataSources allObjects];
+    [_preGraceThirdPartyBundleIdentifiers addObjectsFromArray:allObjects2];
   }
 
   else
@@ -809,10 +809,10 @@ uint64_t __71__NTKCUpNextDataSourcesManager__phoneDedupeFromIdentifiers_completi
       _os_log_impl(&dword_22D9C5000, v7, OS_LOG_TYPE_DEFAULT, "Watch has not migrated available data sources. Using legacy path.", buf, 2u);
     }
 
-    v9 = [(NTKCUpNextDataSourcesManager *)self _preGraceThirdPartyBundleIdentifiers];
+    _preGraceThirdPartyBundleIdentifiers = [(NTKCUpNextDataSourcesManager *)self _preGraceThirdPartyBundleIdentifiers];
   }
 
-  [(NTKCUpNextDataSourcesManager *)self _dedupeAndSortThirdPartyDataSourcesFromIdentifiers:v9 completion:v4];
+  [(NTKCUpNextDataSourcesManager *)self _dedupeAndSortThirdPartyDataSourcesFromIdentifiers:_preGraceThirdPartyBundleIdentifiers completion:completionCopy];
 }
 
 - (void)_buildRows
@@ -836,13 +836,13 @@ uint64_t __42__NTKCUpNextDataSourcesManager__buildRows__block_invoke(uint64_t a1
   return [v1 _prewarmRowBuildingWithCompletion:v3];
 }
 
-- (void)_prewarmRowBuildingWithCompletion:(id)a3
+- (void)_prewarmRowBuildingWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
-  v5 = [(RERelevanceEngine *)self->_relevanceEngine dataSourceCatalog];
-  v6 = [v5 dataSourceIdentifiers];
-  v7 = [v6 copy];
+  dataSourceCatalog = [(RERelevanceEngine *)self->_relevanceEngine dataSourceCatalog];
+  dataSourceIdentifiers = [dataSourceCatalog dataSourceIdentifiers];
+  v7 = [dataSourceIdentifiers copy];
 
   v8 = dispatch_get_global_queue(2, 0);
   v12[0] = MEMORY[0x277D85DD0];
@@ -850,11 +850,11 @@ uint64_t __42__NTKCUpNextDataSourcesManager__buildRows__block_invoke(uint64_t a1
   v12[2] = __66__NTKCUpNextDataSourcesManager__prewarmRowBuildingWithCompletion___block_invoke;
   v12[3] = &unk_2787808C8;
   v13 = v7;
-  v14 = v5;
-  v15 = self;
-  v16 = v4;
-  v9 = v4;
-  v10 = v5;
+  v14 = dataSourceCatalog;
+  selfCopy = self;
+  v16 = completionCopy;
+  v9 = completionCopy;
+  v10 = dataSourceCatalog;
   v11 = v7;
   dispatch_async(v8, v12);
 }
@@ -913,12 +913,12 @@ uint64_t __66__NTKCUpNextDataSourcesManager__prewarmRowBuildingWithCompletion___
 - (void)_buildRowsAfterPrewarming
 {
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
-  v3 = [(NTKCUpNextDataSourcesManager *)self _firstPartyDataSourceEntries];
-  [(NTKCUpNextDataSourcesManager *)self setFirstPartyDataSourceEntries:v3];
+  _firstPartyDataSourceEntries = [(NTKCUpNextDataSourcesManager *)self _firstPartyDataSourceEntries];
+  [(NTKCUpNextDataSourcesManager *)self setFirstPartyDataSourceEntries:_firstPartyDataSourceEntries];
 
-  v4 = [(NTKCUpNextDataSourcesManager *)self firstPartyIdentifiersDelegate];
-  v5 = [(NTKCUpNextDataSourcesManager *)self firstPartyDataSourceEntries];
-  [v4 manager:self didUpdateDataSourceEntries:v5];
+  firstPartyIdentifiersDelegate = [(NTKCUpNextDataSourcesManager *)self firstPartyIdentifiersDelegate];
+  firstPartyDataSourceEntries = [(NTKCUpNextDataSourcesManager *)self firstPartyDataSourceEntries];
+  [firstPartyIdentifiersDelegate manager:self didUpdateDataSourceEntries:firstPartyDataSourceEntries];
 
   [(NTKCUpNextDataSourcesManager *)self watchVersion];
   if (v8[5] >= 5)

@@ -40,7 +40,7 @@
 
   else
   {
-    v2 = [a1 colorInBundleWithName:@"bar_color"];
+    v2 = [self colorInBundleWithName:@"bar_color"];
   }
 
   return v2;
@@ -55,7 +55,7 @@
 
   else
   {
-    v2 = [a1 colorInBundleWithName:@"edit_background_color"];
+    v2 = [self colorInBundleWithName:@"edit_background_color"];
   }
 
   return v2;
@@ -70,7 +70,7 @@
 
   else
   {
-    v2 = [a1 colorInBundleWithName:@"label_background_color"];
+    v2 = [self colorInBundleWithName:@"label_background_color"];
   }
 
   return v2;
@@ -82,7 +82,7 @@
   v4 = 0;
   v5 = 0.0;
   v3 = 0.0;
-  [a1 getHue:&v6 saturation:&v5 brightness:&v4 alpha:&v3];
+  [self getHue:&v6 saturation:&v5 brightness:&v4 alpha:&v3];
   v1 = [MEMORY[0x277D75348] colorWithHue:v6 saturation:v5 brightness:1.0 alpha:v3];
 
   return v1;

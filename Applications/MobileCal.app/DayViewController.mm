@@ -1,116 +1,116 @@
 @interface DayViewController
-- (BOOL)allEventsIndividuallyRepresented:(id)a3;
-- (BOOL)creationGestureController:(id)a3 canActivateAtPoint:(CGPoint)a4;
+- (BOOL)allEventsIndividuallyRepresented:(id)represented;
+- (BOOL)creationGestureController:(id)controller canActivateAtPoint:(CGPoint)point;
 - (BOOL)currentlyEditingEventsWithGestures;
-- (BOOL)dayViewController:(id)a3 willDuplicateOccurrence:(id)a4;
-- (BOOL)dayViewControllerShouldAllowLongPress:(id)a3;
-- (BOOL)didSelectEvent:(id)a3 userInitiated:(BOOL)a4;
-- (BOOL)didSelectEvents:(id)a3 userInitiated:(BOOL)a4;
-- (BOOL)eventViewDelegateShouldShowNextOccurrenceOfEvent:(id)a3 forward:(BOOL)a4;
-- (BOOL)isDateVisible:(id)a3;
-- (BOOL)provideExternalRepresentationsForEvent:(id)a3 withProvider:(id)a4;
-- (CGPoint)creationGestureController:(id)a3 requestsPointForDate:(id)a4;
-- (CGRect)scrubberFrameWithPaletteView:(id)a3;
+- (BOOL)dayViewController:(id)controller willDuplicateOccurrence:(id)occurrence;
+- (BOOL)dayViewControllerShouldAllowLongPress:(id)press;
+- (BOOL)didSelectEvent:(id)event userInitiated:(BOOL)initiated;
+- (BOOL)didSelectEvents:(id)events userInitiated:(BOOL)initiated;
+- (BOOL)eventViewDelegateShouldShowNextOccurrenceOfEvent:(id)event forward:(BOOL)forward;
+- (BOOL)isDateVisible:(id)visible;
+- (BOOL)provideExternalRepresentationsForEvent:(id)event withProvider:(id)provider;
+- (CGPoint)creationGestureController:(id)controller requestsPointForDate:(id)date;
+- (CGRect)scrubberFrameWithPaletteView:(id)view;
 - (CGSize)cellSize;
-- (DayViewController)initWithDay:(id)a3 model:(id)a4 window:(id)a5;
-- (double)creationGestureController:(id)a3 requestedWidthForEventPreview:(id)a4 atPoint:(CGPoint)a5;
-- (double)creationGestureController:(id)a3 requestedXCoordinateForEventPreviewAtPoint:(CGPoint)a4;
-- (double)dayViewControllerPersistedHourScalePreference:(id)a3;
+- (DayViewController)initWithDay:(id)day model:(id)model window:(id)window;
+- (double)creationGestureController:(id)controller requestedWidthForEventPreview:(id)preview atPoint:(CGPoint)point;
+- (double)creationGestureController:(id)controller requestedXCoordinateForEventPreviewAtPoint:(CGPoint)point;
+- (double)dayViewControllerPersistedHourScalePreference:(id)preference;
 - (double)firstCellInset;
 - (id)_parentViewForCreationGesture;
 - (id)_selectedOccurrenceFrontmostClonedViews;
 - (id)cellFactory;
-- (id)creationGestureController:(id)a3 dateForPoint:(CGPoint)a4;
-- (id)creationGestureController:(id)a3 requestedPreviewForEvent:(id)a4;
-- (id)creationGestureControllerRequestsNewEvent:(id)a3;
-- (id)dayViewController:(id)a3 createEventAtDate:(id)a4 allDay:(BOOL)a5;
-- (id)dayViewController:(id)a3 createReminderAtDate:(id)a4 allDay:(BOOL)a5;
+- (id)creationGestureController:(id)controller dateForPoint:(CGPoint)point;
+- (id)creationGestureController:(id)controller requestedPreviewForEvent:(id)event;
+- (id)creationGestureControllerRequestsNewEvent:(id)event;
+- (id)dayViewController:(id)controller createEventAtDate:(id)date allDay:(BOOL)day;
+- (id)dayViewController:(id)controller createReminderAtDate:(id)date allDay:(BOOL)day;
 - (id)pasteboardManager;
-- (id)pasteboardManagerForEventEditViewController:(id)a3;
+- (id)pasteboardManagerForEventEditViewController:(id)controller;
 - (id)sceneTitle;
-- (id)showDetailViewControllerForEvent:(id)a3 context:(id)a4 animated:(BOOL)a5;
-- (id)showDetailViewControllerForEvents:(id)a3 animated:(BOOL)a4;
+- (id)showDetailViewControllerForEvent:(id)event context:(id)context animated:(BOOL)animated;
+- (id)showDetailViewControllerForEvents:(id)events animated:(BOOL)animated;
 - (int)savedFirstVisibleSecond;
 - (int64_t)intendedSizeClass;
 - (int64_t)scrubberFirstVisibleDayOffsetFromSelectedDay;
 - (void)_cleanupSelectedOccurrenceCloneViews;
 - (void)_cleanupSelectedOccurrenceCloneViewsRespectingModelSelected;
-- (void)_cleanupSelectedOccurrenceCloneViewsSkipSet:(id)a3;
-- (void)_occurrencesChanged:(id)a3;
-- (void)_receivedSelectedDateChangeNotification:(id)a3;
-- (void)_recursiveRemoveSelectedClonedViewsFromViewTree:(id)a3 skipSet:(id)a4;
-- (void)_sceneEnteredForeground:(id)a3;
-- (void)_scrollToEvent:(id)a3 animated:(BOOL)a4;
-- (void)_selectedOccurrencesChanged:(id)a3;
-- (void)_setUpSelectedOccurrenceViewsWithEvents:(id)a3 animated:(BOOL)a4 autoScroll:(BOOL)a5 resetSelection:(BOOL)a6;
-- (void)_showDetailForEvent:(id)a3 animated:(BOOL)a4 showComments:(BOOL)a5 context:(id)a6;
-- (void)_showDetailForEvent:(id)a3 animated:(BOOL)a4 userInitiated:(BOOL)a5;
-- (void)_showDetailForEvents:(id)a3 animated:(BOOL)a4;
-- (void)_showDetailForEvents:(id)a3 animated:(BOOL)a4 userInitiated:(BOOL)a5;
+- (void)_cleanupSelectedOccurrenceCloneViewsSkipSet:(id)set;
+- (void)_occurrencesChanged:(id)changed;
+- (void)_receivedSelectedDateChangeNotification:(id)notification;
+- (void)_recursiveRemoveSelectedClonedViewsFromViewTree:(id)tree skipSet:(id)set;
+- (void)_sceneEnteredForeground:(id)foreground;
+- (void)_scrollToEvent:(id)event animated:(BOOL)animated;
+- (void)_selectedOccurrencesChanged:(id)changed;
+- (void)_setUpSelectedOccurrenceViewsWithEvents:(id)events animated:(BOOL)animated autoScroll:(BOOL)scroll resetSelection:(BOOL)selection;
+- (void)_showDetailForEvent:(id)event animated:(BOOL)animated showComments:(BOOL)comments context:(id)context;
+- (void)_showDetailForEvent:(id)event animated:(BOOL)animated userInitiated:(BOOL)initiated;
+- (void)_showDetailForEvents:(id)events animated:(BOOL)animated;
+- (void)_showDetailForEvents:(id)events animated:(BOOL)animated userInitiated:(BOOL)initiated;
 - (void)_showNowWhenSameDaySelected;
 - (void)_showWeekdayLabelPreferenceChanged;
-- (void)_significantTimeChanged:(id)a3;
-- (void)_timeZoneChanged:(id)a3;
-- (void)_updateNavigationTitleToDate:(id)a3;
-- (void)addEventToSelection:(id)a3;
-- (void)beginEditingOccurrence:(id)a3 creationMethod:(unint64_t)a4;
-- (void)creationGestureController:(id)a3 didCreateNewEvent:(id)a4;
-- (void)creationGestureController:(id)a3 didResizeToDate:(id)a4;
-- (void)creationGestureControllerDidCancel:(id)a3;
-- (void)currentlyVisibleDateRangeFromStartDate:(id *)a3 toEndDate:(id *)a4;
-- (void)dataReloadedWithTrigger:(int)a3;
-- (void)dayNavigationViewController:(id)a3 didSelectDate:(id)a4;
-- (void)dayOccurrenceViewSelected:(id)a3 source:(unint64_t)a4;
-- (void)dayViewController:(id)a3 didChangeDisplayDate:(id)a4;
-- (void)dayViewController:(id)a3 didChangeDisplayedOccurrencesDueToTrigger:(int)a4;
-- (void)dayViewController:(id)a3 didSelectEvent:(id)a4 animated:(BOOL)a5 userInitiated:(BOOL)a6;
-- (void)dayViewController:(id)a3 didSelectEvents:(id)a4 animated:(BOOL)a5 userInitiated:(BOOL)a6;
-- (void)dayViewController:(id)a3 didStartDeceleratingTargettingDate:(id)a4;
-- (void)dayViewController:(id)a3 modifySelection:(id)a4;
-- (void)dayViewController:(id)a3 pointerDidTargetOccurrences:(id)a4;
-- (void)dayViewController:(id)a3 requestsPresentationOfViewControllerForGestures:(id)a4;
-- (void)dayViewController:(id)a3 requestsSaveFirstVisibleSecondPreference:(int)a4;
-- (void)dayViewController:(id)a3 requestsSaveHourScalePreference:(double)a4;
-- (void)dayViewControllerDidBeginMovingEventWithGesture:(id)a3;
-- (void)dayViewControllerDidEndScrolling:(id)a3;
-- (void)dayViewControllerDidTapEmptySpace:(id)a3 onDate:(id)a4;
-- (void)dayViewDidChangeSelectedDate:(id)a3;
+- (void)_significantTimeChanged:(id)changed;
+- (void)_timeZoneChanged:(id)changed;
+- (void)_updateNavigationTitleToDate:(id)date;
+- (void)addEventToSelection:(id)selection;
+- (void)beginEditingOccurrence:(id)occurrence creationMethod:(unint64_t)method;
+- (void)creationGestureController:(id)controller didCreateNewEvent:(id)event;
+- (void)creationGestureController:(id)controller didResizeToDate:(id)date;
+- (void)creationGestureControllerDidCancel:(id)cancel;
+- (void)currentlyVisibleDateRangeFromStartDate:(id *)date toEndDate:(id *)endDate;
+- (void)dataReloadedWithTrigger:(int)trigger;
+- (void)dayNavigationViewController:(id)controller didSelectDate:(id)date;
+- (void)dayOccurrenceViewSelected:(id)selected source:(unint64_t)source;
+- (void)dayViewController:(id)controller didChangeDisplayDate:(id)date;
+- (void)dayViewController:(id)controller didChangeDisplayedOccurrencesDueToTrigger:(int)trigger;
+- (void)dayViewController:(id)controller didSelectEvent:(id)event animated:(BOOL)animated userInitiated:(BOOL)initiated;
+- (void)dayViewController:(id)controller didSelectEvents:(id)events animated:(BOOL)animated userInitiated:(BOOL)initiated;
+- (void)dayViewController:(id)controller didStartDeceleratingTargettingDate:(id)date;
+- (void)dayViewController:(id)controller modifySelection:(id)selection;
+- (void)dayViewController:(id)controller pointerDidTargetOccurrences:(id)occurrences;
+- (void)dayViewController:(id)controller requestsPresentationOfViewControllerForGestures:(id)gestures;
+- (void)dayViewController:(id)controller requestsSaveFirstVisibleSecondPreference:(int)preference;
+- (void)dayViewController:(id)controller requestsSaveHourScalePreference:(double)preference;
+- (void)dayViewControllerDidBeginMovingEventWithGesture:(id)gesture;
+- (void)dayViewControllerDidEndScrolling:(id)scrolling;
+- (void)dayViewControllerDidTapEmptySpace:(id)space onDate:(id)date;
+- (void)dayViewDidChangeSelectedDate:(id)date;
 - (void)dealloc;
-- (void)eventEditViewController:(id)a3 didCompleteWithAction:(int64_t)a4 dismissController:(BOOL)a5 completionHandler:(id)a6;
-- (void)eventViewController:(id)a3 didCompleteWithAction:(int64_t)a4;
-- (void)eventViewController:(id)a3 requestsShowEvent:(id)a4;
-- (void)eventViewControllerNextButtonWasTapped:(id)a3;
-- (void)eventViewControllerPreviousButtonWasTapped:(id)a3;
-- (void)eventViewControllerWillDisappear:(id)a3;
-- (void)eventViewDelegateShowNextOccurrenceOfEvent:(id)a3 forward:(BOOL)a4;
-- (void)extendedLaunchCompletedByViewType:(int)a3;
+- (void)eventEditViewController:(id)controller didCompleteWithAction:(int64_t)action dismissController:(BOOL)dismissController completionHandler:(id)handler;
+- (void)eventViewController:(id)controller didCompleteWithAction:(int64_t)action;
+- (void)eventViewController:(id)controller requestsShowEvent:(id)event;
+- (void)eventViewControllerNextButtonWasTapped:(id)tapped;
+- (void)eventViewControllerPreviousButtonWasTapped:(id)tapped;
+- (void)eventViewControllerWillDisappear:(id)disappear;
+- (void)eventViewDelegateShowNextOccurrenceOfEvent:(id)event forward:(BOOL)forward;
+- (void)extendedLaunchCompletedByViewType:(int)type;
 - (void)finishedPinchingDayView;
 - (void)loadView;
-- (void)presentDetailsForEvents:(id)a3 animated:(BOOL)a4 showComments:(BOOL)a5 context:(id)a6;
-- (void)removeEventFromSelection:(id)a3;
-- (void)saveFirstVisibleSecond:(int)a3;
-- (void)scrubberDidChangeSelectedDate:(id)a3;
-- (void)selectDate:(id)a3 andTime:(BOOL)a4 animated:(BOOL)a5;
-- (void)setVisible:(BOOL)a3;
-- (void)showEditViewController:(id)a3;
-- (void)showEvent:(id)a3 animated:(BOOL)a4 showMode:(unint64_t)a5 context:(id)a6;
-- (void)showNowAnimated:(BOOL)a3;
-- (void)showReminderDetail:(id)a3;
-- (void)updatePalette:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)presentDetailsForEvents:(id)events animated:(BOOL)animated showComments:(BOOL)comments context:(id)context;
+- (void)removeEventFromSelection:(id)selection;
+- (void)saveFirstVisibleSecond:(int)second;
+- (void)scrubberDidChangeSelectedDate:(id)date;
+- (void)selectDate:(id)date andTime:(BOOL)time animated:(BOOL)animated;
+- (void)setVisible:(BOOL)visible;
+- (void)showEditViewController:(id)controller;
+- (void)showEvent:(id)event animated:(BOOL)animated showMode:(unint64_t)mode context:(id)context;
+- (void)showNowAnimated:(BOOL)animated;
+- (void)showReminderDetail:(id)detail;
+- (void)updatePalette:(id)palette;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)viewWillLayoutSubviews;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation DayViewController
 
 - (CGSize)cellSize
 {
-  v2 = [(DayNavigationViewController *)self->_scrubberControllerNeue weekScrollView];
-  [v2 cellSize];
+  weekScrollView = [(DayNavigationViewController *)self->_scrubberControllerNeue weekScrollView];
+  [weekScrollView cellSize];
   v4 = v3;
   v6 = v5;
 
@@ -132,8 +132,8 @@
   scrubberControllerNeue = self->_scrubberControllerNeue;
   self->_scrubberControllerNeue = v4;
 
-  v6 = [(DayViewController *)self cellFactory];
-  [(DayNavigationViewController *)self->_scrubberControllerNeue setCellFactory:v6];
+  cellFactory = [(DayViewController *)self cellFactory];
+  [(DayNavigationViewController *)self->_scrubberControllerNeue setCellFactory:cellFactory];
 
   [(DayNavigationViewController *)self->_scrubberControllerNeue setDelegate:self];
   [(DayViewController *)self addChildViewController:self->_scrubberControllerNeue];
@@ -149,8 +149,8 @@
   [(EKDayViewController *)self->_dayViewController setShowsBanner:0];
   [(EKDayViewController *)self->_dayViewController setAlwaysAnimate:1];
   [(EKDayViewController *)self->_dayViewController setDisableNotifyDateChangeDuringTracking:1];
-  v9 = [(DayViewController *)self navigationController];
-  -[EKDayViewController setPreloadExtraDays:](self->_dayViewController, "setPreloadExtraDays:", [v9 extendedLaunchFinished]);
+  navigationController = [(DayViewController *)self navigationController];
+  -[EKDayViewController setPreloadExtraDays:](self->_dayViewController, "setPreloadExtraDays:", [navigationController extendedLaunchFinished]);
 
   [(EKDayViewController *)self->_dayViewController setShowWeekdayLabel:[(DayViewController *)self showWeekdayLabel]];
   [(DayViewController *)self addChildViewController:self->_dayViewController];
@@ -166,25 +166,25 @@
   [(DayViewController *)self selectDate:self->_day animated:0];
   v3 = +[NSNotificationCenter defaultCenter];
   [v3 addObserver:self selector:"_sceneEnteredForeground:" name:UISceneWillEnterForegroundNotification object:0];
-  v4 = [(DayViewController *)self savedFirstVisibleSecond];
-  v5 = [(DayViewController *)self dayView];
-  [v5 setStartingFirstVisibleSecond:v4];
+  savedFirstVisibleSecond = [(DayViewController *)self savedFirstVisibleSecond];
+  dayView = [(DayViewController *)self dayView];
+  [dayView setStartingFirstVisibleSecond:savedFirstVisibleSecond];
 
   v6 = [EKEventCreationGestureController alloc];
-  v7 = [(DayViewController *)self dayView];
-  v8 = [v7 view];
-  v9 = [v6 initWithView:v8 delegate:self];
+  dayView2 = [(DayViewController *)self dayView];
+  view = [dayView2 view];
+  v9 = [v6 initWithView:view delegate:self];
   eventCreationGestureController = self->_eventCreationGestureController;
   self->_eventCreationGestureController = v9;
 
-  v11 = [(MainViewController *)self window];
+  window = [(MainViewController *)self window];
   EKUIPushFallbackSizingContextWithViewHierarchy();
 
-  v12 = [(DayViewController *)self view];
-  v13 = [(EKDayViewController *)self->_dayViewController view];
-  [v12 addSubview:v13];
+  view2 = [(DayViewController *)self view];
+  view3 = [(EKDayViewController *)self->_dayViewController view];
+  [view2 addSubview:view3];
 
-  v14 = [(MainViewController *)self window];
+  window2 = [(MainViewController *)self window];
   EKUIPopFallbackSizingContextWithViewHierarchy();
 }
 
@@ -202,14 +202,14 @@
 {
   if (!EKUIShouldSaveStateInPreferences())
   {
-    v8 = [(MainViewController *)self model];
-    v9 = [v8 persistedSceneState];
+    model = [(MainViewController *)self model];
+    persistedSceneState = [model persistedSceneState];
 
-    if (v9)
+    if (persistedSceneState)
     {
-      v5 = [(MainViewController *)self model];
-      v6 = [v5 persistedSceneState];
-      v7 = [v6 dayViewFirstVisibleSecond];
+      model2 = [(MainViewController *)self model];
+      persistedSceneState2 = [model2 persistedSceneState];
+      dayViewFirstVisibleSecond = [persistedSceneState2 dayViewFirstVisibleSecond];
       goto LABEL_6;
     }
 
@@ -217,18 +217,18 @@
   }
 
   v3 = +[CUIKPreferences sharedPreferences];
-  v4 = [v3 dayViewFirstVisibleSecond];
+  dayViewFirstVisibleSecond2 = [v3 dayViewFirstVisibleSecond];
 
-  if (!v4)
+  if (!dayViewFirstVisibleSecond2)
   {
     return -1;
   }
 
-  v5 = +[CUIKPreferences sharedPreferences];
-  v6 = [v5 dayViewFirstVisibleSecond];
-  v7 = [v6 intValue];
+  model2 = +[CUIKPreferences sharedPreferences];
+  persistedSceneState2 = [model2 dayViewFirstVisibleSecond];
+  dayViewFirstVisibleSecond = [persistedSceneState2 intValue];
 LABEL_6:
-  v10 = v7;
+  v10 = dayViewFirstVisibleSecond;
 
   return v10;
 }
@@ -237,24 +237,24 @@ LABEL_6:
 {
   if (!self->_hasSetUpDayViewInitialLayout)
   {
-    v3 = [(MainViewController *)self window];
+    window = [(MainViewController *)self window];
     EKUIPushFallbackSizingContextWithViewHierarchy();
 
-    v4 = [(EKDayViewController *)self->_dayViewController view];
-    [v4 setAutoresizingMask:18];
+    view = [(EKDayViewController *)self->_dayViewController view];
+    [view setAutoresizingMask:18];
 
-    v5 = [(DayViewController *)self view];
-    [v5 bounds];
+    view2 = [(DayViewController *)self view];
+    [view2 bounds];
     v7 = v6;
 
-    v8 = [(DayViewController *)self view];
-    [v8 bounds];
+    view3 = [(DayViewController *)self view];
+    [view3 bounds];
     v10 = v9;
 
     dayViewController = self->_dayViewController;
     [(EKDayViewController *)dayViewController gutterWidth];
     [(EKDayViewController *)dayViewController setFrame:0.0 gutterWidth:0.0, v7, v10, v12];
-    v13 = [(MainViewController *)self window];
+    window2 = [(MainViewController *)self window];
     EKUIPopFallbackSizingContextWithViewHierarchy();
 
     self->_hasSetUpDayViewInitialLayout = 1;
@@ -265,12 +265,12 @@ LABEL_6:
   [(DayViewController *)&v14 viewWillLayoutSubviews];
 }
 
-- (DayViewController)initWithDay:(id)a3 model:(id)a4 window:(id)a5
+- (DayViewController)initWithDay:(id)day model:(id)model window:(id)window
 {
-  v8 = a3;
+  dayCopy = day;
   v22.receiver = self;
   v22.super_class = DayViewController;
-  v9 = [(MainViewController *)&v22 initWithWindow:a5 model:a4];
+  v9 = [(MainViewController *)&v22 initWithWindow:window model:model];
   if (v9)
   {
     if (CalCanvasPocketEnabled())
@@ -284,9 +284,9 @@ LABEL_6:
     }
 
     [(DayViewController *)v9 setEdgesForExtendedLayout:v10];
-    v11 = [v8 calendarDateForDay];
+    calendarDateForDay = [dayCopy calendarDateForDay];
     day = v9->_day;
-    v9->_day = v11;
+    v9->_day = calendarDateForDay;
 
     v9->_hasReloadedWithData = 0;
     v9->_hasEndedExtendedLaunch = 0;
@@ -303,10 +303,10 @@ LABEL_6:
     [v16 addObserver:v9 selector:"virtualConferenceAppChanged:" name:EKConferenceUtilsAppRecordChangedNotification object:0];
 
     model = v9->super._model;
-    v18 = [(EKCalendarDate *)v9->_day date];
-    v19 = [(EKCalendarDate *)v9->_day calendarDateForEndOfDay];
-    v20 = [v19 date];
-    [(CUIKCalendarModel *)model setPreferredReloadStartDate:v18 endDate:v20];
+    date = [(EKCalendarDate *)v9->_day date];
+    calendarDateForEndOfDay = [(EKCalendarDate *)v9->_day calendarDateForEndOfDay];
+    date2 = [calendarDateForEndOfDay date];
+    [(CUIKCalendarModel *)model setPreferredReloadStartDate:date endDate:date2];
   }
 
   return v9;
@@ -322,11 +322,11 @@ LABEL_6:
   [(MainViewController *)&v4 dealloc];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v28.receiver = self;
   v28.super_class = DayViewController;
-  [(DayViewController *)&v28 viewWillAppear:a3];
+  [(DayViewController *)&v28 viewWillAppear:appear];
   if (self->_viewHasDoneFirstAppearance)
   {
     if ([(MainViewController *)self updateModelPreferredReloadRangeAndReturnWhetherLoadingNeeded])
@@ -344,65 +344,65 @@ LABEL_6:
     self->_viewHasDoneFirstAppearance = 1;
   }
 
-  v5 = [(DayViewController *)self navigationItem];
-  v6 = [v5 title];
+  navigationItem = [(DayViewController *)self navigationItem];
+  title = [navigationItem title];
   previousNavigationTitle = self->_previousNavigationTitle;
-  self->_previousNavigationTitle = v6;
+  self->_previousNavigationTitle = title;
 
-  v8 = [(DayViewController *)self navigationItem];
-  [v8 setTitle:&stru_1002133B8];
+  navigationItem2 = [(DayViewController *)self navigationItem];
+  [navigationItem2 setTitle:&stru_1002133B8];
 
-  v9 = [(MainViewController *)self window];
+  window = [(MainViewController *)self window];
   EKUIPushFallbackSizingContextWithViewHierarchy();
 
-  v10 = [(EKDayViewController *)self->_dayViewController view];
-  v11 = [(MainViewController *)self window];
+  view = [(EKDayViewController *)self->_dayViewController view];
+  window2 = [(MainViewController *)self window];
   EKUIPopFallbackSizingContextWithViewHierarchy();
 
-  v12 = [(EKDayViewController *)self->_dayViewController displayDate];
-  v13 = [(CUIKCalendarModel *)self->super._model calendar];
-  v14 = [v13 timeZone];
-  v15 = [EKCalendarDate calendarDateWithDateComponents:v12 timeZone:v14];
+  displayDate = [(EKDayViewController *)self->_dayViewController displayDate];
+  calendar = [(CUIKCalendarModel *)self->super._model calendar];
+  timeZone = [calendar timeZone];
+  v15 = [EKCalendarDate calendarDateWithDateComponents:displayDate timeZone:timeZone];
 
-  v16 = [(CUIKCalendarModel *)self->super._model calendar];
-  v17 = [v15 date];
-  v18 = [(CUIKCalendarModel *)self->super._model selectedDate];
-  v19 = [v18 date];
-  v20 = [v16 isDate:v17 inSameDayAsDate:v19];
+  calendar2 = [(CUIKCalendarModel *)self->super._model calendar];
+  date = [v15 date];
+  selectedDate = [(CUIKCalendarModel *)self->super._model selectedDate];
+  date2 = [selectedDate date];
+  v20 = [calendar2 isDate:date inSameDayAsDate:date2];
 
   if ((v20 & 1) == 0)
   {
-    v21 = [(MainViewController *)self model];
-    v22 = [v21 selectedDate];
-    [(DayViewController *)self selectDate:v22 animated:0];
+    model = [(MainViewController *)self model];
+    selectedDate2 = [model selectedDate];
+    [(DayViewController *)self selectDate:selectedDate2 animated:0];
 
-    v23 = [(MainViewController *)self model];
-    v24 = [v23 selectedDate];
+    model2 = [(MainViewController *)self model];
+    selectedDate3 = [model2 selectedDate];
 
-    v15 = v24;
+    v15 = selectedDate3;
   }
 
   if (CalSolariumEnabled())
   {
-    v25 = [(CUIKCalendarModel *)self->super._model selectedDay];
-    [(DayViewController *)self _updateNavigationTitleToDate:v25];
+    selectedDay = [(CUIKCalendarModel *)self->super._model selectedDay];
+    [(DayViewController *)self _updateNavigationTitleToDate:selectedDay];
   }
 
   scrubberControllerNeue = self->_scrubberControllerNeue;
-  v27 = [v15 date];
-  [(DayNavigationViewController *)scrubberControllerNeue setSelectedDate:v27 animated:0];
+  date3 = [v15 date];
+  [(DayNavigationViewController *)scrubberControllerNeue setSelectedDate:date3 animated:0];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   previousNavigationTitle = self->_previousNavigationTitle;
   self->_previousNavigationTitle = 0;
 
-  v6 = [(DayViewController *)self navigationController];
-  v7 = [v6 extendedLaunchFinished];
+  navigationController = [(DayViewController *)self navigationController];
+  extendedLaunchFinished = [navigationController extendedLaunchFinished];
 
-  if (v7)
+  if (extendedLaunchFinished)
   {
     [(CUIKCalendarModel *)self->super._model setDesiredPaddingDays:1];
     [(CUIKCalendarModel *)self->super._model setComponentForExpandingPadding:16];
@@ -410,17 +410,17 @@ LABEL_6:
 
   v8.receiver = self;
   v8.super_class = DayViewController;
-  [(MainViewController *)&v8 viewDidAppear:v3];
+  [(MainViewController *)&v8 viewDidAppear:appearCopy];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   previousNavigationTitle = self->_previousNavigationTitle;
   if (previousNavigationTitle)
   {
-    v6 = [(DayViewController *)self navigationItem];
-    [v6 setTitle:previousNavigationTitle];
+    navigationItem = [(DayViewController *)self navigationItem];
+    [navigationItem setTitle:previousNavigationTitle];
 
     v7 = self->_previousNavigationTitle;
     self->_previousNavigationTitle = 0;
@@ -428,47 +428,47 @@ LABEL_6:
 
   v8.receiver = self;
   v8.super_class = DayViewController;
-  [(DayViewController *)&v8 viewDidDisappear:v3];
+  [(DayViewController *)&v8 viewDidDisappear:disappearCopy];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
   if ([(DayViewController *)self isViewLoaded])
   {
-    v8 = [(DayViewController *)self view];
-    v9 = [v8 window];
+    view = [(DayViewController *)self view];
+    window = [view window];
 
-    if (v9)
+    if (window)
     {
       v12.receiver = self;
       v12.super_class = DayViewController;
-      [(MainViewController *)&v12 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
-      v10 = [(DayViewController *)self dayView];
-      [v10 viewWillTransitionToSize:v7 withTransitionCoordinator:{width, height}];
+      [(MainViewController *)&v12 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
+      dayView = [(DayViewController *)self dayView];
+      [dayView viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:{width, height}];
 
-      v11 = [(DayViewController *)self dayScrubberController];
-      [v11 viewWillTransitionToSize:v7 withTransitionCoordinator:{width, height}];
+      dayScrubberController = [(DayViewController *)self dayScrubberController];
+      [dayScrubberController viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:{width, height}];
     }
   }
 }
 
-- (void)updatePalette:(id)a3
+- (void)updatePalette:(id)palette
 {
-  v4 = a3;
-  [v4 setWeekdayHeaderVisible:1];
-  [v4 setWeekdayHeaderFillsHalfWidth:0];
-  v11 = [(DayViewController *)self dayScrubberController];
-  v5 = [(DayViewController *)self ekui_futureTraitCollection];
-  [v11 setShowsWeekNumberWhenEnabled:{objc_msgSend(v5, "horizontalSizeClass") == 2}];
+  paletteCopy = palette;
+  [paletteCopy setWeekdayHeaderVisible:1];
+  [paletteCopy setWeekdayHeaderFillsHalfWidth:0];
+  dayScrubberController = [(DayViewController *)self dayScrubberController];
+  ekui_futureTraitCollection = [(DayViewController *)self ekui_futureTraitCollection];
+  [dayScrubberController setShowsWeekNumberWhenEnabled:{objc_msgSend(ekui_futureTraitCollection, "horizontalSizeClass") == 2}];
 
-  [v4 setDayScrubberController:v11];
-  v6 = [v11 view];
-  [v6 setNeedsLayout];
+  [paletteCopy setDayScrubberController:dayScrubberController];
+  view = [dayScrubberController view];
+  [view setNeedsLayout];
 
-  [v4 setUseCustomDayFrames:0];
+  [paletteCopy setUseCustomDayFrames:0];
   if (CalSolariumEnabled())
   {
     v7 = 3;
@@ -479,43 +479,43 @@ LABEL_6:
     v7 = 1;
   }
 
-  [v4 setFocusBannerPlacement:v7];
-  [v4 sizeToFit];
-  [v4 frame];
+  [paletteCopy setFocusBannerPlacement:v7];
+  [paletteCopy sizeToFit];
+  [paletteCopy frame];
   v9 = v8;
-  v10 = [v4 containingPalette];
+  containingPalette = [paletteCopy containingPalette];
 
-  [v10 setPreferredHeight:v9];
+  [containingPalette setPreferredHeight:v9];
 }
 
-- (void)_updateNavigationTitleToDate:(id)a3
+- (void)_updateNavigationTitleToDate:(id)date
 {
-  v5 = a3;
-  v4 = [(DayViewController *)self navigationController];
+  dateCopy = date;
+  navigationController = [(DayViewController *)self navigationController];
   if (objc_opt_respondsToSelector())
   {
-    [v4 updateTitleToDate:v5];
+    [navigationController updateTitleToDate:dateCopy];
   }
 }
 
-- (void)selectDate:(id)a3 andTime:(BOOL)a4 animated:(BOOL)a5
+- (void)selectDate:(id)date andTime:(BOOL)time animated:(BOOL)animated
 {
-  v5 = a5;
-  v6 = a4;
-  v8 = a3;
-  if (v8)
+  animatedCopy = animated;
+  timeCopy = time;
+  dateCopy = date;
+  if (dateCopy)
   {
-    v9 = [(MainViewController *)self shownEventEditViewController];
+    shownEventEditViewController = [(MainViewController *)self shownEventEditViewController];
 
-    if (!v9)
+    if (!shownEventEditViewController)
     {
-      v10 = [(CUIKCalendarModel *)self->super._model eventStore];
-      v11 = [v10 timeZone];
+      eventStore = [(CUIKCalendarModel *)self->super._model eventStore];
+      timeZone = [eventStore timeZone];
 
-      v12 = [v8 calendarDateInTimeZone:v11];
-      v13 = [v12 calendarDateForDay];
+      v12 = [dateCopy calendarDateInTimeZone:timeZone];
+      calendarDateForDay = [v12 calendarDateForDay];
       day = self->_day;
-      self->_day = v13;
+      self->_day = calendarDateForDay;
 
       if (!self->_scrubberControllerNeue || !self->_dayViewController)
       {
@@ -525,18 +525,18 @@ LABEL_24:
       }
 
       v37 = v12;
-      v38 = v6;
+      v38 = timeCopy;
       v15 = self->_day;
       v16 = +[NSCalendar currentCalendar];
-      v17 = [(EKDayViewController *)self->_dayViewController displayDate];
-      v18 = [v16 dateFromComponents:v17];
-      v36 = v11;
-      v19 = [EKCalendarDate calendarDateWithDate:v18 timeZone:v11];
+      displayDate = [(EKDayViewController *)self->_dayViewController displayDate];
+      v18 = [v16 dateFromComponents:displayDate];
+      v36 = timeZone;
+      v19 = [EKCalendarDate calendarDateWithDate:v18 timeZone:timeZone];
       v20 = [(EKCalendarDate *)v15 differenceInDays:v19];
 
       if (v20)
       {
-        v21 = v5;
+        v21 = animatedCopy;
       }
 
       else
@@ -544,58 +544,58 @@ LABEL_24:
         v21 = 0;
       }
 
-      v22 = [(EKCalendarDate *)self->_day date];
-      v23 = [(MainViewController *)self model];
-      [v23 setSelectedDate:v8];
+      date = [(EKCalendarDate *)self->_day date];
+      model = [(MainViewController *)self model];
+      [model setSelectedDate:dateCopy];
 
-      v24 = [(MainViewController *)self model];
-      v25 = [(EKCalendarDate *)self->_day calendarDateForEndOfDay];
-      v26 = [v25 date];
-      [v24 setPreferredReloadStartDate:v22 endDate:v26];
+      model2 = [(MainViewController *)self model];
+      calendarDateForEndOfDay = [(EKCalendarDate *)self->_day calendarDateForEndOfDay];
+      date2 = [calendarDateForEndOfDay date];
+      [model2 setPreferredReloadStartDate:date endDate:date2];
 
       if (v21)
       {
-        if ([(DayNavigationViewController *)self->_scrubberControllerNeue canAnimateToDate:v22])
+        if ([(DayNavigationViewController *)self->_scrubberControllerNeue canAnimateToDate:date])
         {
-          [(DayNavigationViewController *)self->_scrubberControllerNeue setSelectedDate:v22 animated:1];
-          v27 = [(CUIKCalendarModel *)self->super._model calendar];
-          v28 = [v27 components:30 fromDate:v22];
+          [(DayNavigationViewController *)self->_scrubberControllerNeue setSelectedDate:date animated:1];
+          calendar = [(CUIKCalendarModel *)self->super._model calendar];
+          v28 = [calendar components:30 fromDate:date];
           [(EKDayViewController *)self->_dayViewController setDisplayDate:v28];
         }
 
         else
         {
-          v27 = [(CUIKCalendarModel *)self->super._model calendar];
-          v33 = [(EKDayViewController *)self->_dayViewController alwaysAnimate];
+          calendar = [(CUIKCalendarModel *)self->super._model calendar];
+          alwaysAnimate = [(EKDayViewController *)self->_dayViewController alwaysAnimate];
           [(EKDayViewController *)self->_dayViewController setAlwaysAnimate:0];
-          v34 = [v27 components:30 fromDate:v22];
+          v34 = [calendar components:30 fromDate:date];
           [(EKDayViewController *)self->_dayViewController setDisplayDate:v34];
 
-          [(EKDayViewController *)self->_dayViewController setAlwaysAnimate:v33];
-          [(DayNavigationViewController *)self->_scrubberControllerNeue setSelectedDate:v22 animated:0];
+          [(EKDayViewController *)self->_dayViewController setAlwaysAnimate:alwaysAnimate];
+          [(DayNavigationViewController *)self->_scrubberControllerNeue setSelectedDate:date animated:0];
         }
 
-        v11 = v36;
+        timeZone = v36;
 
-        [(DayViewController *)self dayViewDidChangeSelectedDate:v22];
+        [(DayViewController *)self dayViewDidChangeSelectedDate:date];
         v12 = v37;
       }
 
       else
       {
-        [(DayNavigationViewController *)self->_scrubberControllerNeue setSelectedDate:v22 animated:0];
+        [(DayNavigationViewController *)self->_scrubberControllerNeue setSelectedDate:date animated:0];
         v30 = v20;
-        if (!v20 && v5)
+        if (!v20 && animatedCopy)
         {
           [(DayNavigationViewController *)self->_scrubberControllerNeue pulseToday];
         }
 
-        v31 = [(CUIKCalendarModel *)self->super._model calendar];
-        v32 = [v31 components:30 fromDate:v22];
+        calendar2 = [(CUIKCalendarModel *)self->super._model calendar];
+        v32 = [calendar2 components:30 fromDate:date];
         [(EKDayViewController *)self->_dayViewController setDisplayDate:v32];
 
-        [(DayViewController *)self dayViewDidChangeSelectedDate:v22];
-        v11 = v36;
+        [(DayViewController *)self dayViewDidChangeSelectedDate:date];
+        timeZone = v36;
         v12 = v37;
         if (!v30)
         {
@@ -603,8 +603,8 @@ LABEL_24:
 LABEL_21:
           if (v38)
           {
-            v35 = [(DayViewController *)self dayView];
-            [v35 scrollToDate:v8 animated:v21];
+            dayView = [(DayViewController *)self dayView];
+            [dayView scrollToDate:dateCopy animated:v21];
           }
 
           goto LABEL_24;
@@ -630,103 +630,103 @@ LABEL_21:
 LABEL_25:
 }
 
-- (BOOL)isDateVisible:(id)a3
+- (BOOL)isDateVisible:(id)visible
 {
-  v4 = a3;
-  v5 = [(CUIKCalendarModel *)self->super._model calendar];
-  v6 = [(EKDayViewController *)self->_dayViewController displayDate];
-  v7 = [v5 dateFromComponents:v6];
+  visibleCopy = visible;
+  calendar = [(CUIKCalendarModel *)self->super._model calendar];
+  displayDate = [(EKDayViewController *)self->_dayViewController displayDate];
+  v7 = [calendar dateFromComponents:displayDate];
 
   v8 = kCalUILogHandle;
   if (os_log_type_enabled(kCalUILogHandle, OS_LOG_TYPE_INFO))
   {
     v11 = 138412546;
-    v12 = v4;
+    v12 = visibleCopy;
     v13 = 2112;
     v14 = v7;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "Day view determining if date %@ is visible. Onscreen date: %@", &v11, 0x16u);
   }
 
-  v9 = [v5 isDate:v4 inSameDayAsDate:v7];
+  v9 = [calendar isDate:visibleCopy inSameDayAsDate:v7];
 
   return v9;
 }
 
-- (void)currentlyVisibleDateRangeFromStartDate:(id *)a3 toEndDate:(id *)a4
+- (void)currentlyVisibleDateRangeFromStartDate:(id *)date toEndDate:(id *)endDate
 {
-  v14 = [(CUIKCalendarModel *)self->super._model calendar];
-  v7 = [(EKDayViewController *)self->_dayViewController displayDate];
-  v8 = [v14 dateFromComponents:v7];
+  calendar = [(CUIKCalendarModel *)self->super._model calendar];
+  displayDate = [(EKDayViewController *)self->_dayViewController displayDate];
+  v8 = [calendar dateFromComponents:displayDate];
 
-  if (a3)
+  if (date)
   {
-    v9 = [(CUIKCalendarModel *)self->super._model calendar];
-    v10 = [v9 timeZone];
-    *a3 = [v8 dateForStartOfDayInTimeZone:v10];
+    calendar2 = [(CUIKCalendarModel *)self->super._model calendar];
+    timeZone = [calendar2 timeZone];
+    *date = [v8 dateForStartOfDayInTimeZone:timeZone];
   }
 
-  if (a4)
+  if (endDate)
   {
-    v11 = [v8 dateByAddingHours:1 inCalendar:v14];
-    v12 = [(CUIKCalendarModel *)self->super._model calendar];
-    v13 = [v12 timeZone];
-    *a4 = [v11 dateForEndOfDayInTimeZone:v13];
+    v11 = [v8 dateByAddingHours:1 inCalendar:calendar];
+    calendar3 = [(CUIKCalendarModel *)self->super._model calendar];
+    timeZone2 = [calendar3 timeZone];
+    *endDate = [v11 dateForEndOfDayInTimeZone:timeZone2];
   }
 }
 
-- (void)showNowAnimated:(BOOL)a3
+- (void)showNowAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v4 = [(DayViewController *)self dayView];
-  [v4 scrollToNow:v3];
+  animatedCopy = animated;
+  dayView = [(DayViewController *)self dayView];
+  [dayView scrollToNow:animatedCopy];
 }
 
-- (void)showEvent:(id)a3 animated:(BOOL)a4 showMode:(unint64_t)a5 context:(id)a6
+- (void)showEvent:(id)event animated:(BOOL)animated showMode:(unint64_t)mode context:(id)context
 {
-  v8 = a4;
-  v12 = a3;
-  v10 = a6;
-  if (a5)
+  animatedCopy = animated;
+  eventCopy = event;
+  contextCopy = context;
+  if (mode)
   {
-    if (a5 == 3)
+    if (mode == 3)
     {
-      [(DayViewController *)self beginEditingOccurrence:v12 creationMethod:3];
+      [(DayViewController *)self beginEditingOccurrence:eventCopy creationMethod:3];
     }
 
     else
     {
-      [(DayViewController *)self _showDetailForEvent:v12 animated:v8 showComments:a5 == 2 context:v10];
+      [(DayViewController *)self _showDetailForEvent:eventCopy animated:animatedCopy showComments:mode == 2 context:contextCopy];
     }
   }
 
   else
   {
-    v11 = [v12 startCalendarDate];
-    [(DayViewController *)self selectDate:v11 animated:v8];
+    startCalendarDate = [eventCopy startCalendarDate];
+    [(DayViewController *)self selectDate:startCalendarDate animated:animatedCopy];
 
     [(DayViewController *)self clearSelection];
-    [(DayViewController *)self addEventToSelection:v12];
-    [(DayViewController *)self didShowEventWithoutShowingDetails:v12];
+    [(DayViewController *)self addEventToSelection:eventCopy];
+    [(DayViewController *)self didShowEventWithoutShowingDetails:eventCopy];
   }
 
-  [(DayViewController *)self _scrollToEvent:v12 animated:v8];
+  [(DayViewController *)self _scrollToEvent:eventCopy animated:animatedCopy];
 }
 
-- (void)addEventToSelection:(id)a3
+- (void)addEventToSelection:(id)selection
 {
   model = self->super._model;
-  v5 = a3;
-  [(CUIKCalendarModel *)model selectOccurrence:v5];
-  v7 = v5;
+  selectionCopy = selection;
+  [(CUIKCalendarModel *)model selectOccurrence:selectionCopy];
+  v7 = selectionCopy;
   v6 = [NSArray arrayWithObjects:&v7 count:1];
 
   [(DayViewController *)self _setUpSelectedOccurrenceViewsWithEvents:v6 animated:1 autoScroll:0 resetSelection:0];
 }
 
-- (void)removeEventFromSelection:(id)a3
+- (void)removeEventFromSelection:(id)selection
 {
-  v4 = a3;
-  [(CUIKCalendarModel *)self->super._model deselectOccurrence:v4];
+  selectionCopy = selection;
+  [(CUIKCalendarModel *)self->super._model deselectOccurrence:selectionCopy];
   [(DayViewController *)self _selectedOccurrenceFrontmostClonedViews];
   v26 = 0u;
   v27 = 0u;
@@ -747,8 +747,8 @@ LABEL_25:
         }
 
         v10 = *(*(&v26 + 1) + 8 * i);
-        v11 = [v10 occurrence];
-        v12 = [v11 isEqual:v4];
+        occurrence = [v10 occurrence];
+        v12 = [occurrence isEqual:selectionCopy];
 
         if (v12)
         {
@@ -774,7 +774,7 @@ LABEL_11:
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v21 = self;
+  selfCopy = self;
   v13 = self->_selectedOccurrenceViews;
   v14 = [(NSMutableArray *)v13 countByEnumeratingWithState:&v22 objects:v30 count:16];
   if (v14)
@@ -791,12 +791,12 @@ LABEL_11:
         }
 
         v18 = *(*(&v22 + 1) + 8 * j);
-        v19 = [v18 occurrence];
-        v20 = [v19 isEqual:v4];
+        occurrence2 = [v18 occurrence];
+        v20 = [occurrence2 isEqual:selectionCopy];
 
         if (v20)
         {
-          [(NSMutableArray *)v21->_selectedOccurrenceViews removeObject:v18];
+          [(NSMutableArray *)selfCopy->_selectedOccurrenceViews removeObject:v18];
           goto LABEL_21;
         }
       }
@@ -816,17 +816,17 @@ LABEL_21:
 
 - (BOOL)currentlyEditingEventsWithGestures
 {
-  v2 = [(EKDayViewController *)self->_dayViewController gestureController];
-  v3 = [v2 dragGestureInProgress];
+  gestureController = [(EKDayViewController *)self->_dayViewController gestureController];
+  dragGestureInProgress = [gestureController dragGestureInProgress];
 
-  return v3;
+  return dragGestureInProgress;
 }
 
-- (void)extendedLaunchCompletedByViewType:(int)a3
+- (void)extendedLaunchCompletedByViewType:(int)type
 {
   v6.receiver = self;
   v6.super_class = DayViewController;
-  [(MainViewController *)&v6 extendedLaunchCompletedByViewType:*&a3];
+  [(MainViewController *)&v6 extendedLaunchCompletedByViewType:*&type];
   v4 = dispatch_time(0, 300000000);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -838,14 +838,14 @@ LABEL_21:
 
 - (id)sceneTitle
 {
-  v3 = [(EKDayViewController *)self->_dayViewController displayDate];
-  v4 = [(MainViewController *)self model];
-  v5 = [v4 calendar];
+  displayDate = [(EKDayViewController *)self->_dayViewController displayDate];
+  model = [(MainViewController *)self model];
+  calendar = [model calendar];
 
-  v6 = [v5 dateFromComponents:v3];
+  v6 = [calendar dateFromComponents:displayDate];
   if (v6)
   {
-    if ([v5 isDateInToday:v6])
+    if ([calendar isDateInToday:v6])
     {
       v7 = [NSBundle bundleForClass:objc_opt_class()];
       v8 = [v7 localizedStringForKey:@"Today" value:&stru_1002133B8 table:0];
@@ -865,31 +865,31 @@ LABEL_21:
   return v8;
 }
 
-- (void)setVisible:(BOOL)a3
+- (void)setVisible:(BOOL)visible
 {
-  v3 = a3;
-  self->_visible = a3;
+  visibleCopy = visible;
+  self->_visible = visible;
   [(DayNavigationViewController *)self->_scrubberControllerNeue setVisible:?];
-  v5 = [(EKDayViewController *)self->_dayViewController view];
-  [v5 setHidden:!v3];
+  view = [(EKDayViewController *)self->_dayViewController view];
+  [view setHidden:!visibleCopy];
 }
 
 - (double)firstCellInset
 {
-  v2 = [(DayNavigationViewController *)self->_scrubberControllerNeue weekScrollView];
-  [v2 frame];
+  weekScrollView = [(DayNavigationViewController *)self->_scrubberControllerNeue weekScrollView];
+  [weekScrollView frame];
   v4 = v3;
 
   return v4;
 }
 
-- (CGRect)scrubberFrameWithPaletteView:(id)a3
+- (CGRect)scrubberFrameWithPaletteView:(id)view
 {
-  v4 = a3;
-  v5 = [(DayViewController *)self view];
-  v6 = [(DayNavigationViewController *)self->_scrubberControllerNeue view];
-  [v6 frame];
-  [v5 convertRect:v4 fromView:?];
+  viewCopy = view;
+  view = [(DayViewController *)self view];
+  view2 = [(DayNavigationViewController *)self->_scrubberControllerNeue view];
+  [view2 frame];
+  [view convertRect:viewCopy fromView:?];
   v8 = v7;
   v10 = v9;
   v12 = v11;
@@ -908,61 +908,61 @@ LABEL_21:
 
 - (int64_t)scrubberFirstVisibleDayOffsetFromSelectedDay
 {
-  v2 = [(DayNavigationViewController *)self->_scrubberControllerNeue weekScrollView];
-  v3 = [v2 firstVisibleDayOffsetFromSelectedDay];
+  weekScrollView = [(DayNavigationViewController *)self->_scrubberControllerNeue weekScrollView];
+  firstVisibleDayOffsetFromSelectedDay = [weekScrollView firstVisibleDayOffsetFromSelectedDay];
 
-  return v3;
+  return firstVisibleDayOffsetFromSelectedDay;
 }
 
 - (void)_showWeekdayLabelPreferenceChanged
 {
-  v3 = [(DayViewController *)self showWeekdayLabel];
+  showWeekdayLabel = [(DayViewController *)self showWeekdayLabel];
   dayViewController = self->_dayViewController;
 
-  [(EKDayViewController *)dayViewController setShowWeekdayLabel:v3];
+  [(EKDayViewController *)dayViewController setShowWeekdayLabel:showWeekdayLabel];
 }
 
-- (void)presentDetailsForEvents:(id)a3 animated:(BOOL)a4 showComments:(BOOL)a5 context:(id)a6
+- (void)presentDetailsForEvents:(id)events animated:(BOOL)animated showComments:(BOOL)comments context:(id)context
 {
-  v6 = a5;
-  v7 = a4;
-  v13 = a6;
-  v10 = a3;
-  if ([v10 count] < 2)
+  commentsCopy = comments;
+  animatedCopy = animated;
+  contextCopy = context;
+  eventsCopy = events;
+  if ([eventsCopy count] < 2)
   {
-    v11 = [v10 firstObject];
-    [(DayViewController *)self _showDetailForEvent:v11 animated:v7 showComments:v6 context:v13];
+    firstObject = [eventsCopy firstObject];
+    [(DayViewController *)self _showDetailForEvent:firstObject animated:animatedCopy showComments:commentsCopy context:contextCopy];
   }
 
   else
   {
-    [(DayViewController *)self _showDetailForEvents:v10 animated:v7];
+    [(DayViewController *)self _showDetailForEvents:eventsCopy animated:animatedCopy];
   }
 
-  v12 = [v10 firstObject];
+  firstObject2 = [eventsCopy firstObject];
 
-  [(DayViewController *)self _scrollToEvent:v12 animated:v7];
+  [(DayViewController *)self _scrollToEvent:firstObject2 animated:animatedCopy];
 }
 
-- (void)beginEditingOccurrence:(id)a3 creationMethod:(unint64_t)a4
+- (void)beginEditingOccurrence:(id)occurrence creationMethod:(unint64_t)method
 {
-  v5 = [AddEventViewController editOrAddViewControllerForEventOrIntegrationWithEvent:a3 model:self->super._model creationMethod:a4 viewStart:0 eventEditViewDelegate:self];
+  v5 = [AddEventViewController editOrAddViewControllerForEventOrIntegrationWithEvent:occurrence model:self->super._model creationMethod:method viewStart:0 eventEditViewDelegate:self];
   [(DayViewController *)self showEditViewController:v5];
 }
 
-- (void)_showDetailForEvent:(id)a3 animated:(BOOL)a4 userInitiated:(BOOL)a5
+- (void)_showDetailForEvent:(id)event animated:(BOOL)animated userInitiated:(BOOL)initiated
 {
-  v8 = a3;
+  eventCopy = event;
   objc_initWeak(&location, self);
   v12 = _NSConcreteStackBlock;
   v13 = 3221225472;
   v14 = sub_1001536D0;
   v15 = &unk_1002126F0;
   objc_copyWeak(&v17, &location);
-  v9 = v8;
+  v9 = eventCopy;
   v16 = v9;
-  v18 = a5;
-  v19 = a4;
+  initiatedCopy = initiated;
+  animatedCopy = animated;
   v10 = objc_retainBlock(&v12);
   v11 = [CalendarTipsManager sharedManager:v12];
   [v11 dismissTipDueToUserNavigationWithCompletionBlock:v10];
@@ -971,19 +971,19 @@ LABEL_21:
   objc_destroyWeak(&location);
 }
 
-- (void)_showDetailForEvents:(id)a3 animated:(BOOL)a4 userInitiated:(BOOL)a5
+- (void)_showDetailForEvents:(id)events animated:(BOOL)animated userInitiated:(BOOL)initiated
 {
-  v8 = a3;
+  eventsCopy = events;
   objc_initWeak(&location, self);
   v12 = _NSConcreteStackBlock;
   v13 = 3221225472;
   v14 = sub_1001538B0;
   v15 = &unk_1002126F0;
   objc_copyWeak(&v17, &location);
-  v9 = v8;
+  v9 = eventsCopy;
   v16 = v9;
-  v18 = a5;
-  v19 = a4;
+  initiatedCopy = initiated;
+  animatedCopy = animated;
   v10 = objc_retainBlock(&v12);
   v11 = [CalendarTipsManager sharedManager:v12];
   [v11 dismissTipDueToUserNavigationWithCompletionBlock:v10];
@@ -992,107 +992,107 @@ LABEL_21:
   objc_destroyWeak(&location);
 }
 
-- (void)dayNavigationViewController:(id)a3 didSelectDate:(id)a4
+- (void)dayNavigationViewController:(id)controller didSelectDate:(id)date
 {
   model = self->super._model;
-  v6 = a4;
-  v7 = [(CUIKCalendarModel *)model calendar];
-  v15 = [v7 components:30 fromDate:v6];
+  dateCopy = date;
+  calendar = [(CUIKCalendarModel *)model calendar];
+  v15 = [calendar components:30 fromDate:dateCopy];
 
-  v8 = [(CUIKCalendarModel *)self->super._model calendar];
-  v9 = [v8 timeZone];
-  v10 = [EKCalendarDate calendarDateWithDateComponents:v15 timeZone:v9];
+  calendar2 = [(CUIKCalendarModel *)self->super._model calendar];
+  timeZone = [calendar2 timeZone];
+  v10 = [EKCalendarDate calendarDateWithDateComponents:v15 timeZone:timeZone];
 
   [(CUIKCalendarModel *)self->super._model setSelectedDate:v10];
-  v11 = [v10 calendarDateForDay];
-  v12 = [v11 date];
+  calendarDateForDay = [v10 calendarDateForDay];
+  date = [calendarDateForDay date];
 
-  v13 = [v10 calendarDateForEndOfDay];
-  v14 = [v13 date];
+  calendarDateForEndOfDay = [v10 calendarDateForEndOfDay];
+  date2 = [calendarDateForEndOfDay date];
 
-  [(CUIKCalendarModel *)self->super._model setPreferredReloadStartDate:v12 endDate:v14];
+  [(CUIKCalendarModel *)self->super._model setPreferredReloadStartDate:date endDate:date2];
   [(EKDayViewController *)self->_dayViewController setDisplayDate:v15];
-  [(DayViewController *)self scrubberDidChangeSelectedDate:v6];
+  [(DayViewController *)self scrubberDidChangeSelectedDate:dateCopy];
 
   [(MainViewController *)self setSceneTitleNeedsUpdate];
   [(DayViewController *)self wasAllowedToChangeDate];
 }
 
-- (void)_showDetailForEvent:(id)a3 animated:(BOOL)a4 showComments:(BOOL)a5 context:(id)a6
+- (void)_showDetailForEvent:(id)event animated:(BOOL)animated showComments:(BOOL)comments context:(id)context
 {
-  if (a3)
+  if (event)
   {
-    v6 = a5;
-    v7 = a4;
+    commentsCopy = comments;
+    animatedCopy = animated;
     model = self->super._model;
-    v11 = a6;
-    v12 = a3;
-    [(CUIKCalendarModel *)model setSelectedOccurrence:v12];
-    v13 = [(DayViewController *)self showDetailViewControllerForEvent:v12 context:v11 animated:v7];
+    contextCopy = context;
+    eventCopy = event;
+    [(CUIKCalendarModel *)model setSelectedOccurrence:eventCopy];
+    v13 = [(DayViewController *)self showDetailViewControllerForEvent:eventCopy context:contextCopy animated:animatedCopy];
 
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && v6)
+    if ((objc_opt_isKindOfClass() & 1) != 0 && commentsCopy)
     {
       [v13 openAttendeesDetailItem];
     }
   }
 }
 
-- (void)_showDetailForEvents:(id)a3 animated:(BOOL)a4
+- (void)_showDetailForEvents:(id)events animated:(BOOL)animated
 {
-  v4 = a4;
-  v7 = a3;
-  [(CUIKCalendarModel *)self->super._model setSelectedOccurrences:v7];
-  v6 = [(DayViewController *)self showDetailViewControllerForEvents:v7 animated:v4];
+  animatedCopy = animated;
+  eventsCopy = events;
+  [(CUIKCalendarModel *)self->super._model setSelectedOccurrences:eventsCopy];
+  v6 = [(DayViewController *)self showDetailViewControllerForEvents:eventsCopy animated:animatedCopy];
 }
 
-- (void)eventViewController:(id)a3 didCompleteWithAction:(int64_t)a4
+- (void)eventViewController:(id)controller didCompleteWithAction:(int64_t)action
 {
-  v20 = a3;
-  [v20 setDelegate:0];
+  controllerCopy = controller;
+  [controllerCopy setDelegate:0];
   [(CUIKCalendarModel *)self->super._model setSelectedOccurrence:0];
-  v6 = [v20 presentingViewController];
+  presentingViewController = [controllerCopy presentingViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v8 = [v20 presentingViewController];
-    v9 = v8;
-    if (a4 == 2)
+    presentingViewController2 = [controllerCopy presentingViewController];
+    v9 = presentingViewController2;
+    if (action == 2)
     {
-      v10 = [v20 event];
-      [v9 reminderDetailDismissedWithDeletedEvent:v10];
+      event = [controllerCopy event];
+      [v9 reminderDetailDismissedWithDeletedEvent:event];
     }
 
     else
     {
-      [v8 reminderDetailDismissedWithDeletedEvent:0];
+      [presentingViewController2 reminderDetailDismissedWithDeletedEvent:0];
     }
   }
 
   else
   {
-    v11 = [(DayViewController *)self navigationController];
-    v12 = [v11 presentedViewController];
+    navigationController = [(DayViewController *)self navigationController];
+    presentedViewController = [navigationController presentedViewController];
     objc_opt_class();
     v13 = objc_opt_isKindOfClass();
 
-    v14 = [(DayViewController *)self navigationController];
-    v15 = v14;
+    navigationController2 = [(DayViewController *)self navigationController];
+    v15 = navigationController2;
     if (v13)
     {
-      v16 = [v14 presentedViewController];
-      v17 = v16;
-      if (a4 == 2)
+      presentedViewController2 = [navigationController2 presentedViewController];
+      v17 = presentedViewController2;
+      if (action == 2)
       {
-        v18 = [v20 event];
-        [v17 reminderDetailDismissedWithDeletedEvent:v18];
+        event2 = [controllerCopy event];
+        [v17 reminderDetailDismissedWithDeletedEvent:event2];
       }
 
       else
       {
-        [v16 reminderDetailDismissedWithDeletedEvent:0];
+        [presentedViewController2 reminderDetailDismissedWithDeletedEvent:0];
       }
     }
 
@@ -1101,8 +1101,8 @@ LABEL_21:
 
       if (v15)
       {
-        v19 = [(DayViewController *)self navigationController];
-        [v19 popViewControllersAfterAndIncluding:v20 animated:!self->_editorDismissedFromDelete];
+        navigationController3 = [(DayViewController *)self navigationController];
+        [navigationController3 popViewControllersAfterAndIncluding:controllerCopy animated:!self->_editorDismissedFromDelete];
 
         self->_editorDismissedFromDelete = 0;
         goto LABEL_14;
@@ -1110,17 +1110,17 @@ LABEL_21:
     }
   }
 
-  [v20 dismissViewControllerAnimated:1 completion:0];
+  [controllerCopy dismissViewControllerAnimated:1 completion:0];
 LABEL_14:
 }
 
-- (void)eventViewControllerWillDisappear:(id)a3
+- (void)eventViewControllerWillDisappear:(id)disappear
 {
-  v4 = [(DayViewController *)self navigationController];
+  navigationController = [(DayViewController *)self navigationController];
   if (objc_opt_respondsToSelector())
   {
-    v5 = [(DayViewController *)self navigationController];
-    v6 = [v5 performSelector:"isTransitioningTraitCollection"];
+    navigationController2 = [(DayViewController *)self navigationController];
+    v6 = [navigationController2 performSelector:"isTransitioningTraitCollection"];
 
     if (v6)
     {
@@ -1137,79 +1137,79 @@ LABEL_14:
   [(CUIKCalendarModel *)model setSelectedOccurrence:0];
 }
 
-- (void)dayViewController:(id)a3 didSelectEvent:(id)a4 animated:(BOOL)a5 userInitiated:(BOOL)a6
+- (void)dayViewController:(id)controller didSelectEvent:(id)event animated:(BOOL)animated userInitiated:(BOOL)initiated
 {
-  v6 = a6;
-  v7 = a5;
-  v12 = a4;
-  v9 = [(MainViewController *)self model];
-  v10 = [v9 pasteboardManager];
-  v11 = [v12 startDate];
-  [v10 setDateForPaste:v11];
+  initiatedCopy = initiated;
+  animatedCopy = animated;
+  eventCopy = event;
+  model = [(MainViewController *)self model];
+  pasteboardManager = [model pasteboardManager];
+  startDate = [eventCopy startDate];
+  [pasteboardManager setDateForPaste:startDate];
 
-  [(DayViewController *)self _showDetailForEvent:v12 animated:v7 userInitiated:v6];
+  [(DayViewController *)self _showDetailForEvent:eventCopy animated:animatedCopy userInitiated:initiatedCopy];
 }
 
-- (void)dayViewController:(id)a3 didSelectEvents:(id)a4 animated:(BOOL)a5 userInitiated:(BOOL)a6
+- (void)dayViewController:(id)controller didSelectEvents:(id)events animated:(BOOL)animated userInitiated:(BOOL)initiated
 {
-  v6 = a6;
-  v7 = a5;
-  v13 = a4;
-  v9 = [(MainViewController *)self model];
-  v10 = [v9 pasteboardManager];
-  v11 = [v13 firstObject];
-  v12 = [v11 startDate];
-  [v10 setDateForPaste:v12];
+  initiatedCopy = initiated;
+  animatedCopy = animated;
+  eventsCopy = events;
+  model = [(MainViewController *)self model];
+  pasteboardManager = [model pasteboardManager];
+  firstObject = [eventsCopy firstObject];
+  startDate = [firstObject startDate];
+  [pasteboardManager setDateForPaste:startDate];
 
-  [(DayViewController *)self _showDetailForEvents:v13 animated:v7 userInitiated:v6];
+  [(DayViewController *)self _showDetailForEvents:eventsCopy animated:animatedCopy userInitiated:initiatedCopy];
 }
 
-- (void)dayViewController:(id)a3 pointerDidTargetOccurrences:(id)a4
+- (void)dayViewController:(id)controller pointerDidTargetOccurrences:(id)occurrences
 {
-  v8 = a3;
-  v6 = a4;
-  if ([v6 count] == 1)
+  controllerCopy = controller;
+  occurrencesCopy = occurrences;
+  if ([occurrencesCopy count] == 1)
   {
-    v7 = [v6 firstObject];
+    firstObject = [occurrencesCopy firstObject];
 
-    [(DayViewController *)self dayViewController:v8 didSelectEvent:v7 animated:1 userInitiated:1];
-    v6 = v7;
+    [(DayViewController *)self dayViewController:controllerCopy didSelectEvent:firstObject animated:1 userInitiated:1];
+    occurrencesCopy = firstObject;
   }
 
   else
   {
-    [(DayViewController *)self dayViewController:v8 didSelectEvents:v6 animated:1 userInitiated:1];
+    [(DayViewController *)self dayViewController:controllerCopy didSelectEvents:occurrencesCopy animated:1 userInitiated:1];
   }
 }
 
-- (void)dayViewController:(id)a3 modifySelection:(id)a4
+- (void)dayViewController:(id)controller modifySelection:(id)selection
 {
-  v9 = a3;
-  v6 = a4;
-  if (v6)
+  controllerCopy = controller;
+  selectionCopy = selection;
+  if (selectionCopy)
   {
-    v7 = [(CUIKCalendarModel *)self->super._model selectedOccurrences];
-    v8 = [v7 containsObject:v6];
+    selectedOccurrences = [(CUIKCalendarModel *)self->super._model selectedOccurrences];
+    v8 = [selectedOccurrences containsObject:selectionCopy];
 
     if (v8)
     {
-      [(DayViewController *)self removeEventFromSelection:v6];
+      [(DayViewController *)self removeEventFromSelection:selectionCopy];
     }
 
     else
     {
-      [(DayViewController *)self addEventToSelection:v6];
+      [(DayViewController *)self addEventToSelection:selectionCopy];
     }
   }
 }
 
-- (void)dayViewController:(id)a3 didChangeDisplayDate:(id)a4
+- (void)dayViewController:(id)controller didChangeDisplayDate:(id)date
 {
   model = self->super._model;
-  v6 = a4;
-  v7 = [(CUIKCalendarModel *)model eventStore];
-  v8 = [v7 timeZone];
-  v9 = [EKCalendarDate calendarDateWithDateComponents:v6 timeZone:v8];
+  dateCopy = date;
+  eventStore = [(CUIKCalendarModel *)model eventStore];
+  timeZone = [eventStore timeZone];
+  v9 = [EKCalendarDate calendarDateWithDateComponents:dateCopy timeZone:timeZone];
 
   day = self->_day;
   self->_day = v9;
@@ -1220,14 +1220,14 @@ LABEL_14:
   [(MainViewController *)self setSceneTitleNeedsUpdate];
 }
 
-- (void)dayViewControllerDidEndScrolling:(id)a3
+- (void)dayViewControllerDidEndScrolling:(id)scrolling
 {
   model = self->super._model;
-  v5 = a3;
-  v6 = [(CUIKCalendarModel *)model calendar];
-  v7 = [v5 displayDate];
+  scrollingCopy = scrolling;
+  calendar = [(CUIKCalendarModel *)model calendar];
+  displayDate = [scrollingCopy displayDate];
 
-  v9 = [v6 dateFromComponents:v7];
+  v9 = [calendar dateFromComponents:displayDate];
 
   [(DayNavigationViewController *)self->_scrubberControllerNeue setSelectedDate:v9 animated:1];
   if ([UIApp isRunningTest])
@@ -1237,18 +1237,18 @@ LABEL_14:
   }
 }
 
-- (void)dayViewController:(id)a3 didStartDeceleratingTargettingDate:(id)a4
+- (void)dayViewController:(id)controller didStartDeceleratingTargettingDate:(id)date
 {
-  v5 = a4;
+  dateCopy = date;
   CalAnalyticsSendEvent();
   [(DayViewController *)self beganHorizontalDeceleration];
-  v6 = [(CUIKCalendarModel *)self->super._model calendar];
-  v7 = [v6 timeZone];
-  obj = [EKCalendarDate calendarDateWithDateComponents:v5 timeZone:v7];
+  calendar = [(CUIKCalendarModel *)self->super._model calendar];
+  timeZone = [calendar timeZone];
+  obj = [EKCalendarDate calendarDateWithDateComponents:dateCopy timeZone:timeZone];
 
   scrubberControllerNeue = self->_scrubberControllerNeue;
-  v9 = [obj date];
-  [(DayNavigationViewController *)scrubberControllerNeue setSelectedDate:v9 animated:1];
+  date = [obj date];
+  [(DayNavigationViewController *)scrubberControllerNeue setSelectedDate:date animated:1];
 
   if ([obj isEqual:self->_day])
   {
@@ -1259,96 +1259,96 @@ LABEL_14:
   {
     objc_storeStrong(&self->_day, obj);
     [(CUIKCalendarModel *)self->super._model setSelectedDate:obj];
-    v10 = [obj date];
-    [(DayViewController *)self dayViewDidChangeSelectedDate:v10];
+    date2 = [obj date];
+    [(DayViewController *)self dayViewDidChangeSelectedDate:date2];
   }
 }
 
-- (id)dayViewController:(id)a3 createEventAtDate:(id)a4 allDay:(BOOL)a5
+- (id)dayViewController:(id)controller createEventAtDate:(id)date allDay:(BOOL)day
 {
-  v5 = a5;
-  v7 = a4;
+  dayCopy = day;
+  dateCopy = date;
   CalAnalyticsSendEvent();
-  v8 = [(CUIKCalendarModel *)self->super._model eventStore];
-  v9 = [EKEvent eventWithEventStore:v8];
+  eventStore = [(CUIKCalendarModel *)self->super._model eventStore];
+  v9 = [EKEvent eventWithEventStore:eventStore];
 
-  [v9 setStartDate:v7];
-  if (v5)
+  [v9 setStartDate:dateCopy];
+  if (dayCopy)
   {
     v10 = 1.0;
   }
 
   else
   {
-    v8 = +[CalFoundationPreferences shared];
-    [v8 defaultEventDuration];
+    eventStore = +[CalFoundationPreferences shared];
+    [eventStore defaultEventDuration];
   }
 
-  v11 = [v7 dateByAddingTimeInterval:v10];
+  v11 = [dateCopy dateByAddingTimeInterval:v10];
   [v9 setEndDate:v11];
 
-  if (!v5)
+  if (!dayCopy)
   {
   }
 
-  [v9 setAllDay:v5];
+  [v9 setAllDay:dayCopy];
   v12 = +[EKEventEditor defaultTitleForCalendarItem];
   [v9 setTitle:v12];
 
-  v13 = [(CUIKCalendarModel *)self->super._model defaultCalendarForNewEvents];
-  [v9 setCalendar:v13];
+  defaultCalendarForNewEvents = [(CUIKCalendarModel *)self->super._model defaultCalendarForNewEvents];
+  [v9 setCalendar:defaultCalendarForNewEvents];
 
   return v9;
 }
 
-- (id)dayViewController:(id)a3 createReminderAtDate:(id)a4 allDay:(BOOL)a5
+- (id)dayViewController:(id)controller createReminderAtDate:(id)date allDay:(BOOL)day
 {
-  v5 = a5;
+  dayCopy = day;
   model = self->super._model;
-  v8 = a4;
-  v9 = [(CUIKCalendarModel *)model eventStore];
-  v10 = [EKEvent eventWithEventStore:v9];
+  dateCopy = date;
+  eventStore = [(CUIKCalendarModel *)model eventStore];
+  v10 = [EKEvent eventWithEventStore:eventStore];
 
-  [v10 setStartDate:v8];
-  [v10 setEndDate:v8];
+  [v10 setStartDate:dateCopy];
+  [v10 setEndDate:dateCopy];
 
-  [v10 setAllDay:v5];
-  v11 = [(CUIKCalendarModel *)self->super._model reminderCalendar];
-  [v10 setCalendar:v11];
+  [v10 setAllDay:dayCopy];
+  reminderCalendar = [(CUIKCalendarModel *)self->super._model reminderCalendar];
+  [v10 setCalendar:reminderCalendar];
 
   return v10;
 }
 
-- (BOOL)dayViewControllerShouldAllowLongPress:(id)a3
+- (BOOL)dayViewControllerShouldAllowLongPress:(id)press
 {
   if (![(DayViewController *)self shouldAllowLongPress])
   {
     return 0;
   }
 
-  v4 = [(CUIKCalendarModel *)self->super._model defaultCalendarForNewEvents];
-  v5 = v4 != 0;
+  defaultCalendarForNewEvents = [(CUIKCalendarModel *)self->super._model defaultCalendarForNewEvents];
+  v5 = defaultCalendarForNewEvents != 0;
 
   return v5;
 }
 
-- (void)dayViewControllerDidTapEmptySpace:(id)a3 onDate:(id)a4
+- (void)dayViewControllerDidTapEmptySpace:(id)space onDate:(id)date
 {
-  v8 = a4;
+  dateCopy = date;
   [(DayViewController *)self didSelectEvent:0 userInitiated:1];
   [(DayViewController *)self _cleanupSelectedOccurrenceCloneViews];
-  if (v8)
+  if (dateCopy)
   {
-    v5 = [(MainViewController *)self model];
-    v6 = [v5 pasteboardManager];
-    v7 = [v8 date];
-    [v6 setDateForPaste:v7];
+    model = [(MainViewController *)self model];
+    pasteboardManager = [model pasteboardManager];
+    date = [dateCopy date];
+    [pasteboardManager setDateForPaste:date];
   }
 }
 
-- (void)dayViewController:(id)a3 didChangeDisplayedOccurrencesDueToTrigger:(int)a4
+- (void)dayViewController:(id)controller didChangeDisplayedOccurrencesDueToTrigger:(int)trigger
 {
-  [(DayViewController *)self displayedOccurrencesChangedWithTrigger:*&a4];
+  [(DayViewController *)self displayedOccurrencesChangedWithTrigger:*&trigger];
   if (self->_hasReloadedWithData && !self->_hasEndedExtendedLaunch)
   {
     self->_hasEndedExtendedLaunch = 1;
@@ -1357,12 +1357,12 @@ LABEL_14:
   }
 }
 
-- (BOOL)dayViewController:(id)a3 willDuplicateOccurrence:(id)a4
+- (BOOL)dayViewController:(id)controller willDuplicateOccurrence:(id)occurrence
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  occurrenceCopy = occurrence;
   v8 = +[UIApplication sharedApplication];
-  if ([v8 optionKeyIsDown] && (v22 = v7, +[NSArray arrayWithObjects:count:](NSArray, "arrayWithObjects:count:", &v22, 1), v9 = objc_claimAutoreleasedReturnValue(), v10 = +[CUIKPasteboardUtilities allEventsValidForAction:fromEvents:](CUIKPasteboardUtilities, "allEventsValidForAction:fromEvents:", 2, v9), v9, v10))
+  if ([v8 optionKeyIsDown] && (v22 = occurrenceCopy, +[NSArray arrayWithObjects:count:](NSArray, "arrayWithObjects:count:", &v22, 1), v9 = objc_claimAutoreleasedReturnValue(), v10 = +[CUIKPasteboardUtilities allEventsValidForAction:fromEvents:](CUIKPasteboardUtilities, "allEventsValidForAction:fromEvents:", 2, v9), v9, v10))
   {
     v11 = kCalUILogHandle;
     if (os_log_type_enabled(kCalUILogHandle, OS_LOG_TYPE_INFO))
@@ -1371,19 +1371,19 @@ LABEL_14:
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "duplicating event(s) in day view because option key is down", v21, 2u);
     }
 
-    v12 = [(MainViewController *)self model];
-    v13 = [v12 pasteboardManager];
-    v14 = [v7 startDate];
-    [v13 setDateForPaste:v14];
+    model = [(MainViewController *)self model];
+    pasteboardManager = [model pasteboardManager];
+    startDate = [occurrenceCopy startDate];
+    [pasteboardManager setDateForPaste:startDate];
 
-    v15 = [(MainViewController *)self model];
-    v16 = [v15 pasteboardManager];
-    [v16 setCalendarForPaste:0];
+    model2 = [(MainViewController *)self model];
+    pasteboardManager2 = [model2 pasteboardManager];
+    [pasteboardManager2 setCalendarForPaste:0];
 
-    v17 = [(DayViewController *)self pasteboardManager];
-    v18 = [NSSet setWithObject:v7];
+    pasteboardManager3 = [(DayViewController *)self pasteboardManager];
+    v18 = [NSSet setWithObject:occurrenceCopy];
     v19 = 1;
-    [v17 duplicateEvents:v18 withDateMode:1 delegate:v6];
+    [pasteboardManager3 duplicateEvents:v18 withDateMode:1 delegate:controllerCopy];
   }
 
   else
@@ -1394,13 +1394,13 @@ LABEL_14:
   return v19;
 }
 
-- (void)dayViewControllerDidBeginMovingEventWithGesture:(id)a3
+- (void)dayViewControllerDidBeginMovingEventWithGesture:(id)gesture
 {
-  v4 = [a3 gestureController];
-  v5 = [v4 event];
-  v6 = [v5 isNew];
+  gestureController = [gesture gestureController];
+  event = [gestureController event];
+  isNew = [event isNew];
 
-  if ((v6 & 1) == 0)
+  if ((isNew & 1) == 0)
   {
     CalAnalyticsSendEvent();
   }
@@ -1408,69 +1408,69 @@ LABEL_14:
   [(DayViewController *)self didBeginMovingOccurrenceWithGesture];
 }
 
-- (void)dayViewController:(id)a3 requestsPresentationOfViewControllerForGestures:(id)a4
+- (void)dayViewController:(id)controller requestsPresentationOfViewControllerForGestures:(id)gestures
 {
-  v5 = a4;
-  v7 = [[UnadaptableNavigationController alloc] initWithRootViewController:v5];
+  gesturesCopy = gestures;
+  v7 = [[UnadaptableNavigationController alloc] initWithRootViewController:gesturesCopy];
 
   [(UnadaptableNavigationController *)v7 setModalPresentationStyle:2];
-  v6 = [(DayViewController *)self navigationController];
-  [v6 presentViewController:v7 animated:1 completion:0];
+  navigationController = [(DayViewController *)self navigationController];
+  [navigationController presentViewController:v7 animated:1 completion:0];
 }
 
-- (double)dayViewControllerPersistedHourScalePreference:(id)a3
+- (double)dayViewControllerPersistedHourScalePreference:(id)preference
 {
-  v4 = [(CUIKCalendarModel *)self->super._model persistedSceneState];
+  persistedSceneState = [(CUIKCalendarModel *)self->super._model persistedSceneState];
 
-  if (!v4)
+  if (!persistedSceneState)
   {
     return -1.0;
   }
 
-  v5 = [(CUIKCalendarModel *)self->super._model persistedSceneState];
-  [v5 dayViewHourScale];
+  persistedSceneState2 = [(CUIKCalendarModel *)self->super._model persistedSceneState];
+  [persistedSceneState2 dayViewHourScale];
   v7 = v6;
 
   return v7;
 }
 
-- (void)dayViewController:(id)a3 requestsSaveHourScalePreference:(double)a4
+- (void)dayViewController:(id)controller requestsSaveHourScalePreference:(double)preference
 {
-  v5 = [(CUIKCalendarModel *)self->super._model persistedSceneState];
-  [v5 setDayViewHourScale:a4];
+  persistedSceneState = [(CUIKCalendarModel *)self->super._model persistedSceneState];
+  [persistedSceneState setDayViewHourScale:preference];
 }
 
-- (void)dayOccurrenceViewSelected:(id)a3 source:(unint64_t)a4
+- (void)dayOccurrenceViewSelected:(id)selected source:(unint64_t)source
 {
-  v6 = a3;
-  if (a4 == 2)
+  selectedCopy = selected;
+  if (source == 2)
   {
-    v11 = v6;
-    v7 = [(CUIKCalendarModel *)self->super._model selectedOccurrences];
-    v8 = [v11 occurrence];
-    v9 = [v7 containsObject:v8];
+    v11 = selectedCopy;
+    selectedOccurrences = [(CUIKCalendarModel *)self->super._model selectedOccurrences];
+    occurrence = [v11 occurrence];
+    v9 = [selectedOccurrences containsObject:occurrence];
 
-    v6 = v11;
+    selectedCopy = v11;
     if ((v9 & 1) == 0)
     {
-      v10 = [v11 occurrence];
-      [(CUIKCalendarModel *)self->super._model setSelectedOccurrence:v10];
+      occurrence2 = [v11 occurrence];
+      [(CUIKCalendarModel *)self->super._model setSelectedOccurrence:occurrence2];
 
-      v6 = v11;
+      selectedCopy = v11;
     }
   }
 }
 
-- (BOOL)provideExternalRepresentationsForEvent:(id)a3 withProvider:(id)a4
+- (BOOL)provideExternalRepresentationsForEvent:(id)event withProvider:(id)provider
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 isReminderIntegrationEvent])
+  eventCopy = event;
+  providerCopy = provider;
+  if ([eventCopy isReminderIntegrationEvent])
   {
-    v7 = [CUIKIReminderDragProvider itemProviderWriterForReminderEvent:v5];
+    v7 = [CUIKIReminderDragProvider itemProviderWriterForReminderEvent:eventCopy];
     if (v7)
     {
-      [v6 registerObject:v7 visibility:0];
+      [providerCopy registerObject:v7 visibility:0];
 
       LOBYTE(v7) = 1;
     }
@@ -1484,29 +1484,29 @@ LABEL_14:
   return v7;
 }
 
-- (void)_occurrencesChanged:(id)a3
+- (void)_occurrencesChanged:(id)changed
 {
-  v17 = a3;
-  v4 = [(DayViewController *)self view];
-  v5 = [v4 superview];
+  changedCopy = changed;
+  view = [(DayViewController *)self view];
+  superview = [view superview];
 
-  if (v5)
+  if (superview)
   {
-    v6 = [v17 userInfo];
+    userInfo = [changedCopy userInfo];
 
-    if (v6)
+    if (userInfo)
     {
-      v7 = [v17 userInfo];
-      v8 = [v7 objectForKey:CUIKCalendarModelDisplayedOccurrencesChangedRangeStartKey];
+      userInfo2 = [changedCopy userInfo];
+      v8 = [userInfo2 objectForKey:CUIKCalendarModelDisplayedOccurrencesChangedRangeStartKey];
 
-      v9 = [v17 userInfo];
-      v10 = [v9 objectForKey:CUIKCalendarModelDisplayedOccurrencesChangedRangeEndKey];
+      userInfo3 = [changedCopy userInfo];
+      v10 = [userInfo3 objectForKey:CUIKCalendarModelDisplayedOccurrencesChangedRangeEndKey];
 
-      v11 = [v17 userInfo];
-      v12 = [v11 objectForKey:CUIKCalendarModelDisplayedOccurrencesChangedFilteredAllKey];
+      userInfo4 = [changedCopy userInfo];
+      v12 = [userInfo4 objectForKey:CUIKCalendarModelDisplayedOccurrencesChangedFilteredAllKey];
 
-      v13 = [v17 userInfo];
-      v14 = [v13 objectForKey:CUIKCalendarModelDisplayedOccurrencesChangedGenerationKey];
+      userInfo5 = [changedCopy userInfo];
+      v14 = [userInfo5 objectForKey:CUIKCalendarModelDisplayedOccurrencesChangedGenerationKey];
 
       if (([v12 BOOLValue] & 1) == 0)
       {
@@ -1515,16 +1515,16 @@ LABEL_14:
 
       if (self->_viewHasDoneFirstAppearance)
       {
-        v15 = [v14 intValue];
+        intValue = [v14 intValue];
         dayViewController = self->_dayViewController;
         if (v8 && v10)
         {
-          [(EKDayViewController *)dayViewController loadDataBetweenStart:v8 end:v10 withTrigger:1 generation:v15 completionForCurrentDayReload:0];
+          [(EKDayViewController *)dayViewController loadDataBetweenStart:v8 end:v10 withTrigger:1 generation:intValue completionForCurrentDayReload:0];
         }
 
         else
         {
-          [(EKDayViewController *)dayViewController reloadDataForOccurrenceChangeWithGeneration:v15];
+          [(EKDayViewController *)dayViewController reloadDataForOccurrenceChangeWithGeneration:intValue];
         }
       }
     }
@@ -1541,79 +1541,79 @@ LABEL_14:
   }
 }
 
-- (void)_significantTimeChanged:(id)a3
+- (void)_significantTimeChanged:(id)changed
 {
-  v4 = [(DayViewController *)self dayView];
+  dayView = [(DayViewController *)self dayView];
   [(DayNavigationViewController *)self->_scrubberControllerNeue significantTimeChangeOccurred];
-  [v4 significantTimeChangeOccurred];
+  [dayView significantTimeChangeOccurred];
 }
 
-- (void)_timeZoneChanged:(id)a3
+- (void)_timeZoneChanged:(id)changed
 {
-  v15 = [(DayViewController *)self dayView];
-  v4 = [(MainViewController *)self model];
-  v5 = [v4 selectedDate];
-  [v5 absoluteTime];
+  dayView = [(DayViewController *)self dayView];
+  model = [(MainViewController *)self model];
+  selectedDate = [model selectedDate];
+  [selectedDate absoluteTime];
   v7 = v6;
 
-  v8 = [(MainViewController *)self model];
-  v9 = [v8 calendar];
-  v10 = [v9 timeZone];
+  model2 = [(MainViewController *)self model];
+  calendar = [model2 calendar];
+  timeZone = [calendar timeZone];
 
-  [v15 setTimeZone:v10];
-  v11 = [(MainViewController *)self model];
-  v12 = [v11 calendar];
-  [v15 setCalendar:v12];
+  [dayView setTimeZone:timeZone];
+  model3 = [(MainViewController *)self model];
+  calendar2 = [model3 calendar];
+  [dayView setCalendar:calendar2];
 
-  v13 = [[EKCalendarDate alloc] initWithAbsoluteTime:v10 timeZone:v7];
-  v14 = [v13 dayComponents];
-  [v15 setDisplayDate:v14];
+  v13 = [[EKCalendarDate alloc] initWithAbsoluteTime:timeZone timeZone:v7];
+  dayComponents = [v13 dayComponents];
+  [dayView setDisplayDate:dayComponents];
   [(DayNavigationViewController *)self->_scrubberControllerNeue timeZoneChanged];
-  [v15 timeZoneChanged];
+  [dayView timeZoneChanged];
 }
 
-- (void)_receivedSelectedDateChangeNotification:(id)a3
+- (void)_receivedSelectedDateChangeNotification:(id)notification
 {
-  v4 = [(DayViewController *)self view];
-  v5 = [v4 window];
+  view = [(DayViewController *)self view];
+  window = [view window];
 
-  if (v5)
+  if (window)
   {
-    v9 = [(MainViewController *)self model];
-    v6 = [(EKCalendarDate *)self->_day date];
-    v7 = [(EKCalendarDate *)self->_day calendarDateForEndOfDay];
-    v8 = [v7 date];
-    [v9 setPreferredReloadStartDate:v6 endDate:v8];
+    model = [(MainViewController *)self model];
+    date = [(EKCalendarDate *)self->_day date];
+    calendarDateForEndOfDay = [(EKCalendarDate *)self->_day calendarDateForEndOfDay];
+    date2 = [calendarDateForEndOfDay date];
+    [model setPreferredReloadStartDate:date endDate:date2];
   }
 }
 
-- (void)eventEditViewController:(id)a3 didCompleteWithAction:(int64_t)a4 dismissController:(BOOL)a5 completionHandler:(id)a6
+- (void)eventEditViewController:(id)controller didCompleteWithAction:(int64_t)action dismissController:(BOOL)dismissController completionHandler:(id)handler
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a6;
-  v12 = [v10 event];
-  if (v12)
+  dismissControllerCopy = dismissController;
+  controllerCopy = controller;
+  handlerCopy = handler;
+  event = [controllerCopy event];
+  if (event)
   {
-    if (a4)
+    if (action)
     {
-      if (a4 == 2)
+      if (action == 2)
       {
-        [(EKDayViewController *)self->_dayViewController editorDidDeleteEvent:v12];
+        [(EKDayViewController *)self->_dayViewController editorDidDeleteEvent:event];
       }
 
-      else if (a4 == 1)
+      else if (action == 1)
       {
-        v13 = [v10 calendarToMakeVisibleOnSave];
-        v14 = [v13 objectID];
-        if (v14)
+        calendarToMakeVisibleOnSave = [controllerCopy calendarToMakeVisibleOnSave];
+        objectID = [calendarToMakeVisibleOnSave objectID];
+        if (objectID)
         {
-          [(CUIKCalendarModel *)self->super._model ensureCalendarVisibleWithId:v14];
+          [(CUIKCalendarModel *)self->super._model ensureCalendarVisibleWithId:objectID];
         }
 
-        [(CUIKCalendarModel *)self->super._model setSelectedOccurrence:v12];
-        [(EKDayViewController *)self->_dayViewController editorDidSaveEvent:v12];
-        if ([v13 sharingStatus])
+        [(CUIKCalendarModel *)self->super._model setSelectedOccurrence:event];
+        [(EKDayViewController *)self->_dayViewController editorDidSaveEvent:event];
+        if ([calendarToMakeVisibleOnSave sharingStatus])
         {
           [(MainViewController *)self attemptDisplayReviewPrompt];
         }
@@ -1622,21 +1622,21 @@ LABEL_14:
 
     else
     {
-      [(EKDayViewController *)self->_dayViewController editorDidCancelEditingEvent:v12];
+      [(EKDayViewController *)self->_dayViewController editorDidCancelEditingEvent:event];
     }
 
-    v16 = [v10 internalEditViewDelegate];
+    internalEditViewDelegate = [controllerCopy internalEditViewDelegate];
 
-    if (v16 == self && v7)
+    if (internalEditViewDelegate == self && dismissControllerCopy)
     {
-      v17 = [v10 presentingViewController];
+      presentingViewController = [controllerCopy presentingViewController];
       v18[0] = _NSConcreteStackBlock;
       v18[1] = 3221225472;
       v18[2] = sub_10015551C;
       v18[3] = &unk_10020EBC8;
       v18[4] = self;
-      v19 = v11;
-      [v17 dismissViewControllerAnimated:1 completion:v18];
+      v19 = handlerCopy;
+      [presentingViewController dismissViewControllerAnimated:1 completion:v18];
     }
   }
 
@@ -1652,38 +1652,38 @@ LABEL_14:
   }
 }
 
-- (id)pasteboardManagerForEventEditViewController:(id)a3
+- (id)pasteboardManagerForEventEditViewController:(id)controller
 {
-  v3 = [(MainViewController *)self model];
-  v4 = [v3 pasteboardManager];
+  model = [(MainViewController *)self model];
+  pasteboardManager = [model pasteboardManager];
 
-  return v4;
+  return pasteboardManager;
 }
 
 - (id)pasteboardManager
 {
-  v2 = [(MainViewController *)self model];
-  v3 = [v2 pasteboardManager];
+  model = [(MainViewController *)self model];
+  pasteboardManager = [model pasteboardManager];
 
-  return v3;
+  return pasteboardManager;
 }
 
-- (BOOL)eventViewDelegateShouldShowNextOccurrenceOfEvent:(id)a3 forward:(BOOL)a4
+- (BOOL)eventViewDelegateShouldShowNextOccurrenceOfEvent:(id)event forward:(BOOL)forward
 {
-  if (a4)
+  if (forward)
   {
-    [a3 nextOccurrence];
+    [event nextOccurrence];
   }
 
   else
   {
-    [a3 previousOccurrence];
+    [event previousOccurrence];
   }
   v4 = ;
-  v5 = [v4 reminderOccurrenceType];
+  reminderOccurrenceType = [v4 reminderOccurrenceType];
   if (v4)
   {
-    v6 = v5 == 1;
+    v6 = reminderOccurrenceType == 1;
   }
 
   else
@@ -1696,99 +1696,99 @@ LABEL_14:
   return v7;
 }
 
-- (void)eventViewDelegateShowNextOccurrenceOfEvent:(id)a3 forward:(BOOL)a4
+- (void)eventViewDelegateShowNextOccurrenceOfEvent:(id)event forward:(BOOL)forward
 {
-  v4 = a4;
-  v6 = a3;
-  v10 = v6;
-  if (v4)
+  forwardCopy = forward;
+  eventCopy = event;
+  v10 = eventCopy;
+  if (forwardCopy)
   {
-    [v6 nextOccurrence];
+    [eventCopy nextOccurrence];
   }
 
   else
   {
-    [v6 previousOccurrence];
+    [eventCopy previousOccurrence];
   }
   v7 = ;
   v8 = v7;
   if (v7)
   {
-    v9 = [v7 startCalendarDate];
-    [(DayViewController *)self selectDate:v9 animated:1];
+    startCalendarDate = [v7 startCalendarDate];
+    [(DayViewController *)self selectDate:startCalendarDate animated:1];
 
     [(DayViewController *)self showEvent:v8 animated:1 showMode:0 context:0];
   }
 }
 
-- (void)eventViewControllerNextButtonWasTapped:(id)a3
+- (void)eventViewControllerNextButtonWasTapped:(id)tapped
 {
-  v8 = a3;
-  v4 = [v8 event];
-  v5 = [v4 nextOccurrence];
+  tappedCopy = tapped;
+  event = [tappedCopy event];
+  nextOccurrence = [event nextOccurrence];
 
-  if (v5)
+  if (nextOccurrence)
   {
-    [(DayViewController *)self eventViewController:v8 didCompleteWithAction:0];
-    v6 = [v5 startCalendarDate];
-    [(DayViewController *)self selectDate:v6 animated:0];
+    [(DayViewController *)self eventViewController:tappedCopy didCompleteWithAction:0];
+    startCalendarDate = [nextOccurrence startCalendarDate];
+    [(DayViewController *)self selectDate:startCalendarDate animated:0];
 
-    v7 = [v8 context];
-    [(DayViewController *)self showEvent:v5 animated:1 showMode:1 context:v7];
+    context = [tappedCopy context];
+    [(DayViewController *)self showEvent:nextOccurrence animated:1 showMode:1 context:context];
   }
 }
 
-- (void)eventViewControllerPreviousButtonWasTapped:(id)a3
+- (void)eventViewControllerPreviousButtonWasTapped:(id)tapped
 {
-  v8 = a3;
-  v4 = [v8 event];
-  v5 = [v4 previousOccurrence];
+  tappedCopy = tapped;
+  event = [tappedCopy event];
+  previousOccurrence = [event previousOccurrence];
 
-  if (v5)
+  if (previousOccurrence)
   {
-    [(DayViewController *)self eventViewController:v8 didCompleteWithAction:0];
-    v6 = [v5 startCalendarDate];
-    [(DayViewController *)self selectDate:v6 animated:0];
+    [(DayViewController *)self eventViewController:tappedCopy didCompleteWithAction:0];
+    startCalendarDate = [previousOccurrence startCalendarDate];
+    [(DayViewController *)self selectDate:startCalendarDate animated:0];
 
-    v7 = [v8 context];
-    [(DayViewController *)self showEvent:v5 animated:1 showMode:1 context:v7];
+    context = [tappedCopy context];
+    [(DayViewController *)self showEvent:previousOccurrence animated:1 showMode:1 context:context];
   }
 }
 
-- (void)eventViewController:(id)a3 requestsShowEvent:(id)a4
+- (void)eventViewController:(id)controller requestsShowEvent:(id)event
 {
-  v6 = a4;
-  v7 = a3;
-  [(DayViewController *)self eventViewController:v7 didCompleteWithAction:0];
-  v8 = [v7 context];
+  eventCopy = event;
+  controllerCopy = controller;
+  [(DayViewController *)self eventViewController:controllerCopy didCompleteWithAction:0];
+  context = [controllerCopy context];
 
-  [(DayViewController *)self showEvent:v6 animated:1 showMode:1 context:v8];
+  [(DayViewController *)self showEvent:eventCopy animated:1 showMode:1 context:context];
 }
 
-- (void)_scrollToEvent:(id)a3 animated:(BOOL)a4
+- (void)_scrollToEvent:(id)event animated:(BOOL)animated
 {
-  v4 = a4;
-  v11 = a3;
+  animatedCopy = animated;
+  eventCopy = event;
   v6 = [(EKDayViewController *)self->_dayViewController occurrenceViewForEvent:?];
   if (-[DayViewController isViewLoaded](self, "isViewLoaded") && (-[DayViewController view](self, "view"), v7 = objc_claimAutoreleasedReturnValue(), [v7 window], v8 = objc_claimAutoreleasedReturnValue(), v8, v7, v8) && v6)
   {
-    [(EKDayViewController *)self->_dayViewController scrollEventIntoView:v11 animated:v4];
-    v9 = 0;
+    [(EKDayViewController *)self->_dayViewController scrollEventIntoView:eventCopy animated:animatedCopy];
+    eventIdentifier = 0;
   }
 
   else
   {
-    v9 = [v11 eventIdentifier];
+    eventIdentifier = [eventCopy eventIdentifier];
   }
 
   scrollToEventIdentifier = self->_scrollToEventIdentifier;
-  self->_scrollToEventIdentifier = v9;
+  self->_scrollToEventIdentifier = eventIdentifier;
 }
 
-- (BOOL)didSelectEvent:(id)a3 userInitiated:(BOOL)a4
+- (BOOL)didSelectEvent:(id)event userInitiated:(BOOL)initiated
 {
-  v6 = a3;
-  if (!v6)
+  eventCopy = event;
+  if (!eventCopy)
   {
     [(CUIKCalendarModel *)self->super._model setSelectedOccurrences:&__NSArray0__struct];
 LABEL_7:
@@ -1796,15 +1796,15 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if (!a4)
+  if (!initiated)
   {
-    v8 = [(CUIKCalendarModel *)self->super._model selectedOccurrences];
-    v9 = [v8 containsObject:v6];
+    selectedOccurrences = [(CUIKCalendarModel *)self->super._model selectedOccurrences];
+    v9 = [selectedOccurrences containsObject:eventCopy];
 
     if ((v9 & 1) == 0)
     {
-      [(CUIKCalendarModel *)self->super._model setSelectedOccurrence:v6];
-      v12 = v6;
+      [(CUIKCalendarModel *)self->super._model setSelectedOccurrence:eventCopy];
+      v12 = eventCopy;
       v10 = [NSArray arrayWithObjects:&v12 count:1];
       [(DayViewController *)self _setUpSelectedOccurrenceViewsWithEvents:v10 animated:1 autoScroll:0 resetSelection:1];
     }
@@ -1818,11 +1818,11 @@ LABEL_8:
   return v7;
 }
 
-- (BOOL)didSelectEvents:(id)a3 userInitiated:(BOOL)a4
+- (BOOL)didSelectEvents:(id)events userInitiated:(BOOL)initiated
 {
-  v6 = a3;
-  v7 = v6;
-  if (!v6 || ![v6 count])
+  eventsCopy = events;
+  v7 = eventsCopy;
+  if (!eventsCopy || ![eventsCopy count])
   {
     [(CUIKCalendarModel *)self->super._model setSelectedOccurrences:&__NSArray0__struct];
 LABEL_6:
@@ -1830,10 +1830,10 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  if (!a4)
+  if (!initiated)
   {
-    v10 = [(CUIKCalendarModel *)self->super._model selectedOccurrences];
-    v11 = [NSSet setWithArray:v10];
+    selectedOccurrences = [(CUIKCalendarModel *)self->super._model selectedOccurrences];
+    v11 = [NSSet setWithArray:selectedOccurrences];
     v12 = [NSSet setWithArray:v7];
     v13 = [v11 isEqualToSet:v12];
 
@@ -1852,13 +1852,13 @@ LABEL_7:
   return v8;
 }
 
-- (void)scrubberDidChangeSelectedDate:(id)a3
+- (void)scrubberDidChangeSelectedDate:(id)date
 {
   model = self->super._model;
-  v5 = a3;
-  v6 = [(CUIKCalendarModel *)model calendar];
-  v7 = [v6 timeZone];
-  v8 = [EKCalendarDate calendarDateWithDate:v5 timeZone:v7];
+  dateCopy = date;
+  calendar = [(CUIKCalendarModel *)model calendar];
+  timeZone = [calendar timeZone];
+  v8 = [EKCalendarDate calendarDateWithDate:dateCopy timeZone:timeZone];
 
   day = self->_day;
   self->_day = v8;
@@ -1868,13 +1868,13 @@ LABEL_7:
   [(DayViewController *)self _updateNavigationTitleToDate:v10];
 }
 
-- (void)dayViewDidChangeSelectedDate:(id)a3
+- (void)dayViewDidChangeSelectedDate:(id)date
 {
   model = self->super._model;
-  v5 = a3;
-  v6 = [(CUIKCalendarModel *)model calendar];
-  v7 = [v6 timeZone];
-  v8 = [EKCalendarDate calendarDateWithDate:v5 timeZone:v7];
+  dateCopy = date;
+  calendar = [(CUIKCalendarModel *)model calendar];
+  timeZone = [calendar timeZone];
+  v8 = [EKCalendarDate calendarDateWithDate:dateCopy timeZone:timeZone];
 
   day = self->_day;
   self->_day = v8;
@@ -1884,68 +1884,68 @@ LABEL_7:
   [(DayViewController *)self _updateNavigationTitleToDate:v10];
 }
 
-- (id)showDetailViewControllerForEvent:(id)a3 context:(id)a4 animated:(BOOL)a5
+- (id)showDetailViewControllerForEvent:(id)event context:(id)context animated:(BOOL)animated
 {
-  v5 = a5;
-  v8 = a4;
-  v9 = a3;
+  animatedCopy = animated;
+  contextCopy = context;
+  eventCopy = event;
   v10 = [NSBundle bundleForClass:objc_opt_class()];
   v11 = [v10 localizedStringForKey:@"Day" value:&stru_1002133B8 table:0];
-  v12 = [(DayViewController *)self navigationItem];
-  [v12 setTitle:v11];
+  navigationItem = [(DayViewController *)self navigationItem];
+  [navigationItem setTitle:v11];
 
-  v13 = [(MainViewController *)self augmentEventDetailsContext:v8];
+  v13 = [(MainViewController *)self augmentEventDetailsContext:contextCopy];
 
-  v14 = [EKEventViewController eventDetailViewControllerWithEvent:v9 delegate:self context:v13 canvasView:0];
+  v14 = [EKEventViewController eventDetailViewControllerWithEvent:eventCopy delegate:self context:v13 canvasView:0];
 
-  [(MainViewController *)self showViewController:v14 sender:self animated:v5 completion:0];
+  [(MainViewController *)self showViewController:v14 sender:self animated:animatedCopy completion:0];
 
   return v14;
 }
 
-- (id)showDetailViewControllerForEvents:(id)a3 animated:(BOOL)a4
+- (id)showDetailViewControllerForEvents:(id)events animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
+  animatedCopy = animated;
+  eventsCopy = events;
   v7 = [NSBundle bundleForClass:objc_opt_class()];
   v8 = [v7 localizedStringForKey:@"Day" value:&stru_1002133B8 table:0];
-  v9 = [(DayViewController *)self navigationItem];
-  [v9 setTitle:v8];
+  navigationItem = [(DayViewController *)self navigationItem];
+  [navigationItem setTitle:v8];
 
-  v10 = [[EKExpandedReminderStackViewController alloc] initWithEvents:v6 delegate:self];
+  v10 = [[EKExpandedReminderStackViewController alloc] initWithEvents:eventsCopy delegate:self];
   [v10 setPreferModalPresentation:0];
-  [(MainViewController *)self showViewController:v10 sender:self animated:v4 completion:0];
+  [(MainViewController *)self showViewController:v10 sender:self animated:animatedCopy completion:0];
 
   return v10;
 }
 
-- (void)showReminderDetail:(id)a3
+- (void)showReminderDetail:(id)detail
 {
-  v4 = a3;
+  detailCopy = detail;
   v7 = [(MainViewController *)self augmentEventDetailsContext:0];
   v5 = objc_alloc_init(UINavigationController);
-  v6 = [EKEventViewController eventDetailViewControllerWithEvent:v4 delegate:self context:v7 canvasView:0];
+  v6 = [EKEventViewController eventDetailViewControllerWithEvent:detailCopy delegate:self context:v7 canvasView:0];
 
   [v5 pushViewController:v6 animated:0];
   [(MainViewController *)self showViewController:v5 sender:self animated:1 completion:0];
 }
 
-- (void)showEditViewController:(id)a3
+- (void)showEditViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [(DayViewController *)self navigationController];
-  [v5 presentModalViewController:v4 withTransition:8];
+  controllerCopy = controller;
+  navigationController = [(DayViewController *)self navigationController];
+  [navigationController presentModalViewController:controllerCopy withTransition:8];
 }
 
-- (void)dataReloadedWithTrigger:(int)a3
+- (void)dataReloadedWithTrigger:(int)trigger
 {
-  v4 = [(DayViewController *)self view];
-  v5 = [v4 window];
+  view = [(DayViewController *)self view];
+  window = [view window];
 
-  if (v5)
+  if (window)
   {
-    v6 = [(CUIKCalendarModel *)self->super._model eventStore];
-    v7 = [v6 eventWithIdentifier:self->_scrollToEventIdentifier];
+    eventStore = [(CUIKCalendarModel *)self->super._model eventStore];
+    v7 = [eventStore eventWithIdentifier:self->_scrollToEventIdentifier];
 
     [(DayViewController *)self _scrollToEvent:v7 animated:1];
   }
@@ -1953,30 +1953,30 @@ LABEL_7:
 
 - (void)finishedPinchingDayView
 {
-  v4 = [(MainViewController *)self model];
-  v3 = [v4 selectedOccurrences];
-  [(DayViewController *)self _setUpSelectedOccurrenceViewsWithEvents:v3 animated:0 autoScroll:1 resetSelection:1];
+  model = [(MainViewController *)self model];
+  selectedOccurrences = [model selectedOccurrences];
+  [(DayViewController *)self _setUpSelectedOccurrenceViewsWithEvents:selectedOccurrences animated:0 autoScroll:1 resetSelection:1];
 }
 
-- (void)_sceneEnteredForeground:(id)a3
+- (void)_sceneEnteredForeground:(id)foreground
 {
-  v9 = [a3 object];
-  v4 = [(MainViewController *)self model];
-  v5 = [v4 sceneIdentifier];
-  v6 = [v9 _sceneIdentifier];
-  if ([v5 isEqualToString:v6])
+  object = [foreground object];
+  model = [(MainViewController *)self model];
+  sceneIdentifier = [model sceneIdentifier];
+  _sceneIdentifier = [object _sceneIdentifier];
+  if ([sceneIdentifier isEqualToString:_sceneIdentifier])
   {
-    v7 = [(DayViewController *)self savedFirstVisibleSecond];
+    savedFirstVisibleSecond = [(DayViewController *)self savedFirstVisibleSecond];
 
-    if ((v7 & 0x80000000) != 0)
+    if ((savedFirstVisibleSecond & 0x80000000) != 0)
     {
       goto LABEL_6;
     }
 
-    v8 = [(DayViewController *)self savedFirstVisibleSecond];
-    v4 = [(DayViewController *)self dayView];
-    v5 = [v4 currentDayView];
-    [v5 setFirstVisibleSecond:v8];
+    savedFirstVisibleSecond2 = [(DayViewController *)self savedFirstVisibleSecond];
+    model = [(DayViewController *)self dayView];
+    sceneIdentifier = [model currentDayView];
+    [sceneIdentifier setFirstVisibleSecond:savedFirstVisibleSecond2];
   }
 
   else
@@ -1986,44 +1986,44 @@ LABEL_7:
 LABEL_6:
 }
 
-- (void)dayViewController:(id)a3 requestsSaveFirstVisibleSecondPreference:(int)a4
+- (void)dayViewController:(id)controller requestsSaveFirstVisibleSecondPreference:(int)preference
 {
-  v4 = *&a4;
-  v6 = [(MainViewController *)self window];
-  v7 = [v6 windowScene];
-  v8 = [v7 activationState];
+  v4 = *&preference;
+  window = [(MainViewController *)self window];
+  windowScene = [window windowScene];
+  activationState = [windowScene activationState];
 
-  if (!v8)
+  if (!activationState)
   {
 
     [(DayViewController *)self saveFirstVisibleSecond:v4];
   }
 }
 
-- (void)saveFirstVisibleSecond:(int)a3
+- (void)saveFirstVisibleSecond:(int)second
 {
-  v3 = *&a3;
+  v3 = *&second;
   if (EKUIShouldSaveStateInPreferences())
   {
-    v6 = [NSNumber numberWithInt:v3];
-    v5 = +[CUIKPreferences sharedPreferences];
-    [v5 setDayViewFirstVisibleSecond:v6];
+    model = [NSNumber numberWithInt:v3];
+    persistedSceneState = +[CUIKPreferences sharedPreferences];
+    [persistedSceneState setDayViewFirstVisibleSecond:model];
   }
 
   else
   {
-    v6 = [(MainViewController *)self model];
-    v5 = [v6 persistedSceneState];
-    [v5 setDayViewFirstVisibleSecond:v3];
+    model = [(MainViewController *)self model];
+    persistedSceneState = [model persistedSceneState];
+    [persistedSceneState setDayViewFirstVisibleSecond:v3];
   }
 }
 
-- (BOOL)creationGestureController:(id)a3 canActivateAtPoint:(CGPoint)a4
+- (BOOL)creationGestureController:(id)controller canActivateAtPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = [(DayViewController *)self gestureController];
-  if ([v7 dragGestureInProgress])
+  y = point.y;
+  x = point.x;
+  gestureController = [(DayViewController *)self gestureController];
+  if ([gestureController dragGestureInProgress])
   {
     v8 = 0;
 LABEL_6:
@@ -2031,21 +2031,21 @@ LABEL_6:
     return v8;
   }
 
-  v9 = [(DayViewController *)self gestureController];
-  v10 = [v9 draggingView];
+  gestureController2 = [(DayViewController *)self gestureController];
+  draggingView = [gestureController2 draggingView];
 
-  if (!v10)
+  if (!draggingView)
   {
-    v11 = [(DayViewController *)self _parentViewForCreationGesture];
-    v12 = [(DayViewController *)self dayView];
-    v13 = [v12 currentDayView];
-    [v11 convertPoint:v13 toView:{x, y}];
+    _parentViewForCreationGesture = [(DayViewController *)self _parentViewForCreationGesture];
+    dayView = [(DayViewController *)self dayView];
+    currentDayView = [dayView currentDayView];
+    [_parentViewForCreationGesture convertPoint:currentDayView toView:{x, y}];
     v15 = v14;
     v17 = v16;
 
-    v7 = [(DayViewController *)self dayView];
-    v18 = [v7 currentDayView];
-    v19 = [v18 occurrenceViewAtPoint:{v15, v17}];
+    gestureController = [(DayViewController *)self dayView];
+    currentDayView2 = [gestureController currentDayView];
+    v19 = [currentDayView2 occurrenceViewAtPoint:{v15, v17}];
     v8 = v19 == 0;
 
     goto LABEL_6;
@@ -2056,60 +2056,60 @@ LABEL_6:
 
 - (id)_parentViewForCreationGesture
 {
-  v2 = [(DayViewController *)self dayView];
-  v3 = [v2 effectiveEventGestureSuperview];
+  dayView = [(DayViewController *)self dayView];
+  effectiveEventGestureSuperview = [dayView effectiveEventGestureSuperview];
 
-  return v3;
+  return effectiveEventGestureSuperview;
 }
 
-- (id)creationGestureController:(id)a3 requestedPreviewForEvent:(id)a4
+- (id)creationGestureController:(id)controller requestedPreviewForEvent:(id)event
 {
-  v5 = a4;
-  v6 = [(DayViewController *)self dayView];
-  v7 = [v6 createOccurrenceViewForEventGestures];
+  eventCopy = event;
+  dayView = [(DayViewController *)self dayView];
+  createOccurrenceViewForEventGestures = [dayView createOccurrenceViewForEventGestures];
 
-  [v7 setOccurrence:v5];
-  [v7 setSelected:1];
-  return v7;
+  [createOccurrenceViewForEventGestures setOccurrence:eventCopy];
+  [createOccurrenceViewForEventGestures setSelected:1];
+  return createOccurrenceViewForEventGestures;
 }
 
-- (double)creationGestureController:(id)a3 requestedWidthForEventPreview:(id)a4 atPoint:(CGPoint)a5
+- (double)creationGestureController:(id)controller requestedWidthForEventPreview:(id)preview atPoint:(CGPoint)point
 {
-  v6 = [(DayViewController *)self dayView:a3];
-  v7 = [v6 currentDayView];
-  [v7 frame];
+  v6 = [(DayViewController *)self dayView:controller];
+  currentDayView = [v6 currentDayView];
+  [currentDayView frame];
   v9 = v8;
-  v10 = [(DayViewController *)self dayView];
-  v11 = [v10 currentDayView];
-  [v11 leftContentInset];
+  dayView = [(DayViewController *)self dayView];
+  currentDayView2 = [dayView currentDayView];
+  [currentDayView2 leftContentInset];
   v13 = v9 - v12;
 
   return v13;
 }
 
-- (double)creationGestureController:(id)a3 requestedXCoordinateForEventPreviewAtPoint:(CGPoint)a4
+- (double)creationGestureController:(id)controller requestedXCoordinateForEventPreviewAtPoint:(CGPoint)point
 {
-  v5 = [(DayViewController *)self dayView:a3];
-  v6 = [v5 currentDayView];
+  v5 = [(DayViewController *)self dayView:controller];
+  currentDayView = [v5 currentDayView];
 
-  v7 = [(DayViewController *)self _parentViewForCreationGesture];
-  v8 = [(DayViewController *)self dayView];
-  v9 = [v8 currentDayView];
-  [v9 leftContentInset];
-  [v7 convertPoint:v6 fromView:?];
+  _parentViewForCreationGesture = [(DayViewController *)self _parentViewForCreationGesture];
+  dayView = [(DayViewController *)self dayView];
+  currentDayView2 = [dayView currentDayView];
+  [currentDayView2 leftContentInset];
+  [_parentViewForCreationGesture convertPoint:currentDayView fromView:?];
   v11 = v10;
 
   return v11;
 }
 
-- (CGPoint)creationGestureController:(id)a3 requestsPointForDate:(id)a4
+- (CGPoint)creationGestureController:(id)controller requestsPointForDate:(id)date
 {
-  v5 = a4;
-  v6 = [(DayViewController *)self dayView];
-  [v5 timeIntervalSinceReferenceDate];
+  dateCopy = date;
+  dayView = [(DayViewController *)self dayView];
+  [dateCopy timeIntervalSinceReferenceDate];
   v8 = v7;
 
-  [v6 pointAtDate:0 isAllDay:v8];
+  [dayView pointAtDate:0 isAllDay:v8];
   v10 = v9;
   v12 = v11;
 
@@ -2120,79 +2120,79 @@ LABEL_6:
   return result;
 }
 
-- (void)creationGestureController:(id)a3 didResizeToDate:(id)a4
+- (void)creationGestureController:(id)controller didResizeToDate:(id)date
 {
-  v5 = a4;
-  v6 = [(DayViewController *)self dayView];
-  [v6 showTimelineHighlightForTime:v5];
+  dateCopy = date;
+  dayView = [(DayViewController *)self dayView];
+  [dayView showTimelineHighlightForTime:dateCopy];
 }
 
-- (id)creationGestureController:(id)a3 dateForPoint:(CGPoint)a4
+- (id)creationGestureController:(id)controller dateForPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
-  v6 = [(DayViewController *)self dayView];
-  v7 = [v6 currentDayView];
-  [v7 dateAtPoint:0 isAllDay:{x, y}];
+  y = point.y;
+  x = point.x;
+  dayView = [(DayViewController *)self dayView];
+  currentDayView = [dayView currentDayView];
+  [currentDayView dateAtPoint:0 isAllDay:{x, y}];
   v9 = v8;
 
   return [NSDate dateWithTimeIntervalSinceReferenceDate:v9];
 }
 
-- (id)creationGestureControllerRequestsNewEvent:(id)a3
+- (id)creationGestureControllerRequestsNewEvent:(id)event
 {
-  v4 = [(MainViewController *)self model];
-  v5 = [v4 calendar];
-  v6 = [(DayViewController *)self dayView];
-  v7 = [v6 displayDate];
-  v8 = [v5 dateFromComponents:v7];
+  model = [(MainViewController *)self model];
+  calendar = [model calendar];
+  dayView = [(DayViewController *)self dayView];
+  displayDate = [dayView displayDate];
+  v8 = [calendar dateFromComponents:displayDate];
 
-  v9 = [(DayViewController *)self dayView];
-  v10 = [(DayViewController *)self dayViewController:v9 createEventAtDate:v8 allDay:0];
+  dayView2 = [(DayViewController *)self dayView];
+  v10 = [(DayViewController *)self dayViewController:dayView2 createEventAtDate:v8 allDay:0];
 
   return v10;
 }
 
-- (void)creationGestureController:(id)a3 didCreateNewEvent:(id)a4
+- (void)creationGestureController:(id)controller didCreateNewEvent:(id)event
 {
-  v11 = a4;
-  v5 = [(DayViewController *)self dayView];
-  v6 = [v5 currentEditor];
+  eventCopy = event;
+  dayView = [(DayViewController *)self dayView];
+  currentEditor = [dayView currentEditor];
 
-  if (!v6)
+  if (!currentEditor)
   {
     v7 = +[EKEventEditor defaultTitleForCalendarItem];
-    v8 = [v11 title];
-    v9 = [v7 isEqualToString:v8];
+    title = [eventCopy title];
+    v9 = [v7 isEqualToString:title];
 
     if (v9)
     {
-      [v11 setTitle:&stru_1002133B8];
+      [eventCopy setTitle:&stru_1002133B8];
     }
 
-    [(DayViewController *)self beginEditingOccurrence:v11 creationMethod:4];
+    [(DayViewController *)self beginEditingOccurrence:eventCopy creationMethod:4];
   }
 
-  v10 = [(DayViewController *)self gestureController];
-  [v10 liftUpOccurrenceForEditingEvent:v11];
+  gestureController = [(DayViewController *)self gestureController];
+  [gestureController liftUpOccurrenceForEditingEvent:eventCopy];
 }
 
-- (void)creationGestureControllerDidCancel:(id)a3
+- (void)creationGestureControllerDidCancel:(id)cancel
 {
-  v3 = [(DayViewController *)self dayView];
-  [v3 hideTimelineHighlight];
+  dayView = [(DayViewController *)self dayView];
+  [dayView hideTimelineHighlight];
 }
 
-- (void)_setUpSelectedOccurrenceViewsWithEvents:(id)a3 animated:(BOOL)a4 autoScroll:(BOOL)a5 resetSelection:(BOOL)a6
+- (void)_setUpSelectedOccurrenceViewsWithEvents:(id)events animated:(BOOL)animated autoScroll:(BOOL)scroll resetSelection:(BOOL)selection
 {
-  v34 = a4;
-  v35 = a6;
-  v33 = a5;
+  animatedCopy = animated;
+  selectionCopy = selection;
+  scrollCopy = scroll;
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
-  obj = a3;
+  obj = events;
   v7 = [obj countByEnumeratingWithState:&v41 objects:v45 count:16];
   if (v7)
   {
@@ -2211,10 +2211,10 @@ LABEL_6:
         }
 
         v12 = *(*(&v41 + 1) + 8 * i);
-        v13 = [(DayViewController *)self gestureController];
-        v14 = [v13 draggingView];
-        v15 = [v14 occurrence];
-        v16 = [v15 isEqual:v12];
+        gestureController = [(DayViewController *)self gestureController];
+        draggingView = [gestureController draggingView];
+        occurrence = [draggingView occurrence];
+        v16 = [occurrence isEqual:v12];
 
         if (v16)
         {
@@ -2223,8 +2223,8 @@ LABEL_6:
 
         else
         {
-          v18 = [(DayViewController *)self dayView];
-          v17 = [v18 occurrenceViewForEvent:v12 includeNextAndPreviousDays:1];
+          dayView = [(DayViewController *)self dayView];
+          v17 = [dayView occurrenceViewForEvent:v12 includeNextAndPreviousDays:1];
 
           if (v17)
           {
@@ -2235,10 +2235,10 @@ LABEL_6:
 
             else
             {
-              if (v35)
+              if (selectionCopy)
               {
-                v20 = [(DayViewController *)self _selectedOccurrenceFrontmostClonedViews];
-                v21 = [v20 count];
+                _selectedOccurrenceFrontmostClonedViews = [(DayViewController *)self _selectedOccurrenceFrontmostClonedViews];
+                v21 = [_selectedOccurrenceFrontmostClonedViews count];
 
                 if (v21)
                 {
@@ -2246,16 +2246,16 @@ LABEL_6:
                 }
               }
 
-              if (v33)
+              if (scrollCopy)
               {
-                v22 = [(DayViewController *)self dayView];
-                [v22 scrollEventIntoView:v12 animated:v34];
+                dayView2 = [(DayViewController *)self dayView];
+                [dayView2 scrollEventIntoView:v12 animated:animatedCopy];
               }
 
               selectedOccurrenceViews = self->_selectedOccurrenceViews;
               if (selectedOccurrenceViews)
               {
-                if (v35)
+                if (selectionCopy)
                 {
                   [(NSMutableArray *)selectedOccurrenceViews removeAllObjects];
                 }
@@ -2268,8 +2268,8 @@ LABEL_6:
                 self->_selectedOccurrenceViews = v24;
               }
 
-              v26 = [(DayViewController *)self _selectedOccurrenceViews];
-              v27 = [v26 CalMap:&stru_100212730];
+              _selectedOccurrenceViews = [(DayViewController *)self _selectedOccurrenceViews];
+              v27 = [_selectedOccurrenceViews CalMap:&stru_100212730];
               v28 = [NSMutableSet setWithArray:v27];
 
               v19 = v28;
@@ -2278,11 +2278,11 @@ LABEL_6:
             v37 = v19;
             if (([v19 containsObject:v12] & 1) == 0)
             {
-              v29 = [v17 occurrences];
-              [v19 addObjectsFromArray:v29];
+              occurrences = [v17 occurrences];
+              [v19 addObjectsFromArray:occurrences];
 
               [(NSMutableArray *)self->_selectedOccurrenceViews addObject:v17];
-              v30 = [v17 superview];
+              superview = [v17 superview];
               v31 = [v17 copy];
               [v31 setDelegate:0];
               [v31 setIsSelectedCopyView:1];
@@ -2291,9 +2291,9 @@ LABEL_6:
               [v31 setUserInteractionEnabled:0];
               [v31 requestContentIfNeeded:16 completion:0];
               [v17 setSelectedCopy:v31];
-              [v30 addSubview:v31];
-              [v30 bringSubviewToFront:v31];
-              if (v34)
+              [superview addSubview:v31];
+              [superview bringSubviewToFront:v31];
+              if (animatedCopy)
               {
                 [v31 setAlpha:0.0];
                 v38[0] = _NSConcreteStackBlock;
@@ -2331,12 +2331,12 @@ LABEL_6:
   v14 = sub_1001571A8;
   v15 = 0;
   v3 = objc_opt_new();
-  v4 = [(DayViewController *)self timedDayViewContentGridSubviews];
-  [v3 addObjectsFromArray:v4];
+  timedDayViewContentGridSubviews = [(DayViewController *)self timedDayViewContentGridSubviews];
+  [v3 addObjectsFromArray:timedDayViewContentGridSubviews];
 
-  v5 = [(DayViewController *)self allDayView];
-  v6 = [v5 subviews];
-  [v3 addObjectsFromArray:v6];
+  allDayView = [(DayViewController *)self allDayView];
+  subviews = [allDayView subviews];
+  [v3 addObjectsFromArray:subviews];
 
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
@@ -2359,41 +2359,41 @@ LABEL_6:
 
 - (void)_cleanupSelectedOccurrenceCloneViewsRespectingModelSelected
 {
-  v5 = [(MainViewController *)self model];
-  v3 = [v5 selectedOccurrences];
-  v4 = [NSSet setWithArray:v3];
+  model = [(MainViewController *)self model];
+  selectedOccurrences = [model selectedOccurrences];
+  v4 = [NSSet setWithArray:selectedOccurrences];
   [(DayViewController *)self _cleanupSelectedOccurrenceCloneViewsSkipSet:v4];
 }
 
-- (void)_cleanupSelectedOccurrenceCloneViewsSkipSet:(id)a3
+- (void)_cleanupSelectedOccurrenceCloneViewsSkipSet:(id)set
 {
-  v4 = a3;
-  v5 = [(DayViewController *)self dayView];
-  v6 = [v5 view];
-  [(DayViewController *)self _recursiveRemoveSelectedClonedViewsFromViewTree:v6 skipSet:v4];
+  setCopy = set;
+  dayView = [(DayViewController *)self dayView];
+  view = [dayView view];
+  [(DayViewController *)self _recursiveRemoveSelectedClonedViewsFromViewTree:view skipSet:setCopy];
 
   selectedOccurrenceViews = self->_selectedOccurrenceViews;
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10015744C;
   v10[3] = &unk_100212780;
-  v11 = v4;
-  v8 = v4;
+  v11 = setCopy;
+  v8 = setCopy;
   v9 = [NSPredicate predicateWithBlock:v10];
   [(NSMutableArray *)selectedOccurrenceViews filterUsingPredicate:v9];
 }
 
-- (void)_recursiveRemoveSelectedClonedViewsFromViewTree:(id)a3 skipSet:(id)a4
+- (void)_recursiveRemoveSelectedClonedViewsFromViewTree:(id)tree skipSet:(id)set
 {
-  v6 = a4;
-  if (a3)
+  setCopy = set;
+  if (tree)
   {
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v7 = [a3 subviews];
-    v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    subviews = [tree subviews];
+    v8 = [subviews countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v8)
     {
       v9 = v8;
@@ -2404,17 +2404,17 @@ LABEL_6:
         {
           if (*v17 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(subviews);
           }
 
           v12 = *(*(&v16 + 1) + 8 * i);
-          [(DayViewController *)self _recursiveRemoveSelectedClonedViewsFromViewTree:v12 skipSet:v6];
+          [(DayViewController *)self _recursiveRemoveSelectedClonedViewsFromViewTree:v12 skipSet:setCopy];
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
             v13 = v12;
-            v14 = [v13 occurrence];
-            v15 = [v6 containsObject:v14];
+            occurrence = [v13 occurrence];
+            v15 = [setCopy containsObject:occurrence];
 
             if ((v15 & 1) == 0)
             {
@@ -2432,7 +2432,7 @@ LABEL_6:
           }
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v9 = [subviews countByEnumeratingWithState:&v16 objects:v20 count:16];
       }
 
       while (v9);
@@ -2440,20 +2440,20 @@ LABEL_6:
   }
 }
 
-- (void)_selectedOccurrencesChanged:(id)a3
+- (void)_selectedOccurrencesChanged:(id)changed
 {
-  v4 = [(CUIKCalendarModel *)self->super._model selectedOccurrences];
-  v5 = [NSSet setWithArray:v4];
+  selectedOccurrences = [(CUIKCalendarModel *)self->super._model selectedOccurrences];
+  v5 = [NSSet setWithArray:selectedOccurrences];
 
   [(DayViewController *)self _cleanupSelectedOccurrenceCloneViewsRespectingModelSelected];
-  v6 = [(DayViewController *)self gestureController];
-  v7 = [v6 event];
-  v8 = [v5 containsObject:v7];
+  gestureController = [(DayViewController *)self gestureController];
+  event = [gestureController event];
+  v8 = [v5 containsObject:event];
 
   if ((v8 & 1) == 0)
   {
-    v9 = [(DayViewController *)self gestureController];
-    [v9 endForcedStart:0];
+    gestureController2 = [(DayViewController *)self gestureController];
+    [gestureController2 endForcedStart:0];
   }
 
   v10 = [v5 mutableCopy];
@@ -2477,12 +2477,12 @@ LABEL_6:
         }
 
         v16 = *(*(&v24 + 1) + 8 * i);
-        v17 = [v16 occurrence];
+        occurrence = [v16 occurrence];
 
-        if (v17)
+        if (occurrence)
         {
-          v18 = [v16 occurrence];
-          [v10 removeObject:v18];
+          occurrence2 = [v16 occurrence];
+          [v10 removeObject:occurrence2];
         }
       }
 
@@ -2492,28 +2492,28 @@ LABEL_6:
     while (v13);
   }
 
-  v19 = [(DayViewController *)self gestureController];
-  v20 = [v19 event];
+  gestureController3 = [(DayViewController *)self gestureController];
+  event2 = [gestureController3 event];
 
-  if (v20)
+  if (event2)
   {
-    v21 = [(DayViewController *)self gestureController];
-    v22 = [v21 event];
-    [v10 removeObject:v22];
+    gestureController4 = [(DayViewController *)self gestureController];
+    event3 = [gestureController4 event];
+    [v10 removeObject:event3];
   }
 
-  v23 = [v10 allObjects];
-  [(DayViewController *)self _setUpSelectedOccurrenceViewsWithEvents:v23 animated:1 autoScroll:0 resetSelection:0];
+  allObjects = [v10 allObjects];
+  [(DayViewController *)self _setUpSelectedOccurrenceViewsWithEvents:allObjects animated:1 autoScroll:0 resetSelection:0];
 }
 
-- (BOOL)allEventsIndividuallyRepresented:(id)a3
+- (BOOL)allEventsIndividuallyRepresented:(id)represented
 {
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  representedCopy = represented;
+  v5 = [representedCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -2524,7 +2524,7 @@ LABEL_3:
     {
       if (*v15 != v7)
       {
-        objc_enumerationMutation(v4);
+        objc_enumerationMutation(representedCopy);
       }
 
       v9 = [(EKDayViewController *)self->_dayViewController occurrenceViewForEvent:*(*(&v14 + 1) + 8 * v8), v14];
@@ -2534,8 +2534,8 @@ LABEL_3:
         break;
       }
 
-      v11 = [v9 occurrences];
-      v12 = [v11 count];
+      occurrences = [v9 occurrences];
+      v12 = [occurrences count];
 
       if (v12 > 1)
       {
@@ -2545,7 +2545,7 @@ LABEL_3:
 
       if (v6 == ++v8)
       {
-        v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v6 = [representedCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
         LOBYTE(v10) = 1;
         if (v6)
         {

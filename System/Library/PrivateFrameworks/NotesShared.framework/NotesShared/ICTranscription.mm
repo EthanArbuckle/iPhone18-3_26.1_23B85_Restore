@@ -1,8 +1,8 @@
 @interface ICTranscription
 + (ICTranscription)sharedInstance;
-+ (void)setSharedInstance:(id)a3;
-- (void)addAudioTranscriptionTaskToQueueWithAttachmentIdentifier:(id)a3;
-- (void)addCallRecordingTranscriptionTaskToQueueWithSpeakers:(id)a3 attachmentIdentifier:(id)a4;
++ (void)setSharedInstance:(id)instance;
+- (void)addAudioTranscriptionTaskToQueueWithAttachmentIdentifier:(id)identifier;
+- (void)addCallRecordingTranscriptionTaskToQueueWithSpeakers:(id)speakers attachmentIdentifier:(id)identifier;
 @end
 
 @implementation ICTranscription
@@ -18,10 +18,10 @@
   return qword_27CA444E0;
 }
 
-+ (void)setSharedInstance:(id)a3
++ (void)setSharedInstance:(id)instance
 {
   v3 = qword_27CA417A0;
-  v4 = a3;
+  instanceCopy = instance;
   if (v3 != -1)
   {
     swift_once();
@@ -29,22 +29,22 @@
 
   swift_beginAccess();
   v5 = qword_27CA444E0;
-  qword_27CA444E0 = v4;
+  qword_27CA444E0 = instanceCopy;
 }
 
-- (void)addAudioTranscriptionTaskToQueueWithAttachmentIdentifier:(id)a3
+- (void)addAudioTranscriptionTaskToQueueWithAttachmentIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = self;
-  sub_215045AAC(v4);
+  identifierCopy = identifier;
+  selfCopy = self;
+  sub_215045AAC(identifierCopy);
 }
 
-- (void)addCallRecordingTranscriptionTaskToQueueWithSpeakers:(id)a3 attachmentIdentifier:(id)a4
+- (void)addCallRecordingTranscriptionTaskToQueueWithSpeakers:(id)speakers attachmentIdentifier:(id)identifier
 {
   v6 = sub_2150A4ED0();
-  v7 = a4;
-  v8 = self;
-  sub_2150467C4(v6, v7);
+  identifierCopy = identifier;
+  selfCopy = self;
+  sub_2150467C4(v6, identifierCopy);
 }
 
 @end

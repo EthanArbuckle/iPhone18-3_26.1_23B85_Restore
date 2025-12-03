@@ -1,79 +1,79 @@
 @interface ICIAMTriggerCondition
-- (BOOL)isEqual:(id)a3;
-- (id)comparisonTypeAsString:(int)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)dataTypeAsString:(int)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)comparisonTypeAsString:(int)string;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)dataTypeAsString:(int)string;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)kindAsString:(int)a3;
-- (id)triggerConditionTypeAsString:(int)a3;
-- (int)StringAsComparisonType:(id)a3;
-- (int)StringAsDataType:(id)a3;
-- (int)StringAsKind:(id)a3;
-- (int)StringAsTriggerConditionType:(id)a3;
+- (id)kindAsString:(int)string;
+- (id)triggerConditionTypeAsString:(int)string;
+- (int)StringAsComparisonType:(id)type;
+- (int)StringAsDataType:(id)type;
+- (int)StringAsKind:(id)kind;
+- (int)StringAsTriggerConditionType:(id)type;
 - (int)comparisonType;
 - (int)dataType;
 - (int)kind;
 - (int)triggerConditionType;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasDataType:(BOOL)a3;
-- (void)setHasKind:(BOOL)a3;
-- (void)setHasTriggerConditionType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasDataType:(BOOL)type;
+- (void)setHasKind:(BOOL)kind;
+- (void)setHasTriggerConditionType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ICIAMTriggerCondition
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v7 = v4;
-  if (*(v4 + 3))
+  fromCopy = from;
+  v7 = fromCopy;
+  if (*(fromCopy + 3))
   {
     [(ICIAMTriggerCondition *)self setIdentifier:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  v5 = *(v4 + 48);
+  v5 = *(fromCopy + 48);
   if ((v5 & 2) != 0)
   {
-    self->_dataType = v4[5];
+    self->_dataType = fromCopy[5];
     *&self->_has |= 2u;
-    v5 = *(v4 + 48);
+    v5 = *(fromCopy + 48);
   }
 
   if (v5)
   {
-    self->_comparisonType = v4[4];
+    self->_comparisonType = fromCopy[4];
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(ICIAMTriggerCondition *)self setTriggerValue:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  v6 = *(v4 + 48);
+  v6 = *(fromCopy + 48);
   if ((v6 & 8) != 0)
   {
-    self->_triggerConditionType = v4[9];
+    self->_triggerConditionType = fromCopy[9];
     *&self->_has |= 8u;
-    v6 = *(v4 + 48);
+    v6 = *(fromCopy + 48);
   }
 
   if ((v6 & 4) != 0)
   {
-    self->_kind = v4[8];
+    self->_kind = fromCopy[8];
     *&self->_has |= 4u;
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
     [(ICIAMTriggerCondition *)self setBundleIdentifier:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 }
 
@@ -127,16 +127,16 @@ LABEL_8:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ [(NSString *)self->_bundleIdentifier hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_29;
   }
 
   identifier = self->_identifier;
-  if (identifier | *(v4 + 3))
+  if (identifier | *(equalCopy + 3))
   {
     if (![(NSString *)identifier isEqual:?])
     {
@@ -145,35 +145,35 @@ LABEL_8:
   }
 
   has = self->_has;
-  v7 = *(v4 + 48);
+  v7 = *(equalCopy + 48);
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 48) & 2) == 0 || self->_dataType != *(v4 + 5))
+    if ((*(equalCopy + 48) & 2) == 0 || self->_dataType != *(equalCopy + 5))
     {
       goto LABEL_29;
     }
   }
 
-  else if ((*(v4 + 48) & 2) != 0)
+  else if ((*(equalCopy + 48) & 2) != 0)
   {
     goto LABEL_29;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 48) & 1) == 0 || self->_comparisonType != *(v4 + 4))
+    if ((*(equalCopy + 48) & 1) == 0 || self->_comparisonType != *(equalCopy + 4))
     {
       goto LABEL_29;
     }
   }
 
-  else if (*(v4 + 48))
+  else if (*(equalCopy + 48))
   {
     goto LABEL_29;
   }
 
   triggerValue = self->_triggerValue;
-  if (triggerValue | *(v4 + 5))
+  if (triggerValue | *(equalCopy + 5))
   {
     if (![(NSString *)triggerValue isEqual:?])
     {
@@ -183,12 +183,12 @@ LABEL_29:
     }
 
     has = self->_has;
-    v7 = *(v4 + 48);
+    v7 = *(equalCopy + 48);
   }
 
   if ((has & 8) != 0)
   {
-    if ((v7 & 8) == 0 || self->_triggerConditionType != *(v4 + 9))
+    if ((v7 & 8) == 0 || self->_triggerConditionType != *(equalCopy + 9))
     {
       goto LABEL_29;
     }
@@ -201,7 +201,7 @@ LABEL_29:
 
   if ((has & 4) != 0)
   {
-    if ((v7 & 4) == 0 || self->_kind != *(v4 + 8))
+    if ((v7 & 4) == 0 || self->_kind != *(equalCopy + 8))
     {
       goto LABEL_29;
     }
@@ -213,7 +213,7 @@ LABEL_29:
   }
 
   bundleIdentifier = self->_bundleIdentifier;
-  if (bundleIdentifier | *(v4 + 1))
+  if (bundleIdentifier | *(equalCopy + 1))
   {
     v10 = [(NSString *)bundleIdentifier isEqual:?];
   }
@@ -228,10 +228,10 @@ LABEL_30:
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_identifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_identifier copyWithZone:zone];
   v7 = *(v5 + 24);
   *(v5 + 24) = v6;
 
@@ -249,7 +249,7 @@ LABEL_30:
     *(v5 + 48) |= 1u;
   }
 
-  v9 = [(NSString *)self->_triggerValue copyWithZone:a3];
+  v9 = [(NSString *)self->_triggerValue copyWithZone:zone];
   v10 = *(v5 + 40);
   *(v5 + 40) = v9;
 
@@ -267,123 +267,123 @@ LABEL_30:
     *(v5 + 48) |= 4u;
   }
 
-  v12 = [(NSString *)self->_bundleIdentifier copyWithZone:a3];
+  v12 = [(NSString *)self->_bundleIdentifier copyWithZone:zone];
   v13 = *(v5 + 8);
   *(v5 + 8) = v12;
 
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v7 = v4;
+  toCopy = to;
+  v7 = toCopy;
   if (self->_identifier)
   {
-    [v4 setIdentifier:?];
-    v4 = v7;
+    [toCopy setIdentifier:?];
+    toCopy = v7;
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(v4 + 5) = self->_dataType;
-    *(v4 + 48) |= 2u;
+    *(toCopy + 5) = self->_dataType;
+    *(toCopy + 48) |= 2u;
     has = self->_has;
   }
 
   if (has)
   {
-    *(v4 + 4) = self->_comparisonType;
-    *(v4 + 48) |= 1u;
+    *(toCopy + 4) = self->_comparisonType;
+    *(toCopy + 48) |= 1u;
   }
 
   if (self->_triggerValue)
   {
     [v7 setTriggerValue:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   v6 = self->_has;
   if ((v6 & 8) != 0)
   {
-    *(v4 + 9) = self->_triggerConditionType;
-    *(v4 + 48) |= 8u;
+    *(toCopy + 9) = self->_triggerConditionType;
+    *(toCopy + 48) |= 8u;
     v6 = self->_has;
   }
 
   if ((v6 & 4) != 0)
   {
-    *(v4 + 8) = self->_kind;
-    *(v4 + 48) |= 4u;
+    *(toCopy + 8) = self->_kind;
+    *(toCopy + 48) |= 4u;
   }
 
   if (self->_bundleIdentifier)
   {
     [v7 setBundleIdentifier:?];
-    v4 = v7;
+    toCopy = v7;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v7 = v4;
+  toCopy = to;
+  v7 = toCopy;
   if (self->_identifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
     PBDataWriterWriteInt32Field();
-    v4 = v7;
+    toCopy = v7;
     has = self->_has;
   }
 
   if (has)
   {
     PBDataWriterWriteInt32Field();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_triggerValue)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   v6 = self->_has;
   if ((v6 & 8) != 0)
   {
     PBDataWriterWriteInt32Field();
-    v4 = v7;
+    toCopy = v7;
     v6 = self->_has;
   }
 
   if ((v6 & 4) != 0)
   {
     PBDataWriterWriteInt32Field();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_bundleIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   identifier = self->_identifier;
   if (identifier)
   {
-    [v3 setObject:identifier forKey:@"identifier"];
+    [dictionary setObject:identifier forKey:@"identifier"];
   }
 
   has = self->_has;
@@ -493,40 +493,40 @@ LABEL_30:
   v8.receiver = self;
   v8.super_class = ICIAMTriggerCondition;
   v4 = [(ICIAMTriggerCondition *)&v8 description];
-  v5 = [(ICIAMTriggerCondition *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ICIAMTriggerCondition *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (int)StringAsKind:(id)a3
+- (int)StringAsKind:(id)kind
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Event"])
+  kindCopy = kind;
+  if ([kindCopy isEqualToString:@"Event"])
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"ContextProperty"];
+    v4 = [kindCopy isEqualToString:@"ContextProperty"];
   }
 
   return v4;
 }
 
-- (id)kindAsString:(int)a3
+- (id)kindAsString:(int)string
 {
-  if (a3)
+  if (string)
   {
-    if (a3 == 1)
+    if (string == 1)
     {
       v4 = @"ContextProperty";
     }
 
     else
     {
-      v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&a3];
+      v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&string];
     }
   }
 
@@ -538,9 +538,9 @@ LABEL_30:
   return v4;
 }
 
-- (void)setHasKind:(BOOL)a3
+- (void)setHasKind:(BOOL)kind
 {
-  if (a3)
+  if (kind)
   {
     v3 = 4;
   }
@@ -566,34 +566,34 @@ LABEL_30:
   }
 }
 
-- (int)StringAsTriggerConditionType:(id)a3
+- (int)StringAsTriggerConditionType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Countable"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"Countable"])
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"Value"];
+    v4 = [typeCopy isEqualToString:@"Value"];
   }
 
   return v4;
 }
 
-- (id)triggerConditionTypeAsString:(int)a3
+- (id)triggerConditionTypeAsString:(int)string
 {
-  if (a3)
+  if (string)
   {
-    if (a3 == 1)
+    if (string == 1)
     {
       v4 = @"Value";
     }
 
     else
     {
-      v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&a3];
+      v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&string];
     }
   }
 
@@ -605,9 +605,9 @@ LABEL_30:
   return v4;
 }
 
-- (void)setHasTriggerConditionType:(BOOL)a3
+- (void)setHasTriggerConditionType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 8;
   }
@@ -633,35 +633,35 @@ LABEL_30:
   }
 }
 
-- (int)StringAsComparisonType:(id)a3
+- (int)StringAsComparisonType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Equal"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"Equal"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"NotEqual"])
+  else if ([typeCopy isEqualToString:@"NotEqual"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"LessThan"])
+  else if ([typeCopy isEqualToString:@"LessThan"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"LessThanOrEqualTo"])
+  else if ([typeCopy isEqualToString:@"LessThanOrEqualTo"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"GreaterThan"])
+  else if ([typeCopy isEqualToString:@"GreaterThan"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"GreaterThanOrEqualTo"])
+  else if ([typeCopy isEqualToString:@"GreaterThanOrEqualTo"])
   {
     v4 = 5;
   }
@@ -674,16 +674,16 @@ LABEL_30:
   return v4;
 }
 
-- (id)comparisonTypeAsString:(int)a3
+- (id)comparisonTypeAsString:(int)string
 {
-  if (a3 >= 6)
+  if (string >= 6)
   {
-    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&a3];
+    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&string];
   }
 
   else
   {
-    v4 = off_1E7BF57E0[a3];
+    v4 = off_1E7BF57E0[string];
   }
 
   return v4;
@@ -702,20 +702,20 @@ LABEL_30:
   }
 }
 
-- (int)StringAsDataType:(id)a3
+- (int)StringAsDataType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Boolean"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"Boolean"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"String"])
+  else if ([typeCopy isEqualToString:@"String"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Integer"])
+  else if ([typeCopy isEqualToString:@"Integer"])
   {
     v4 = 2;
   }
@@ -728,24 +728,24 @@ LABEL_30:
   return v4;
 }
 
-- (id)dataTypeAsString:(int)a3
+- (id)dataTypeAsString:(int)string
 {
-  if (a3 >= 3)
+  if (string >= 3)
   {
-    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&a3];
+    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&string];
   }
 
   else
   {
-    v4 = off_1E7BF57C8[a3];
+    v4 = off_1E7BF57C8[string];
   }
 
   return v4;
 }
 
-- (void)setHasDataType:(BOOL)a3
+- (void)setHasDataType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }

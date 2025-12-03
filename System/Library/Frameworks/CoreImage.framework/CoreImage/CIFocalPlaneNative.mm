@@ -155,23 +155,23 @@
         inputMatteImage = [(CIImage *)v37 imageByApplyingTransform:&v46 highQualityDownsample:0];
       }
 
-      v38 = [(CIImage *)self->inputLensModelCalculatorImage imageByClampingToExtent];
+      imageByClampingToExtent = [(CIImage *)self->inputLensModelCalculatorImage imageByClampingToExtent];
       [(NSNumber *)self->inputExponent floatValue];
       if (vabdd_f64(2.0, v39) >= 0.00100000005)
       {
-        v40 = [(CIFocalPlaneNative *)self _focalPlanePreProcessorKernel];
+        _focalPlanePreProcessorKernel = [(CIFocalPlaneNative *)self _focalPlanePreProcessorKernel];
       }
 
       else
       {
-        v40 = [(CIFocalPlaneNative *)self _focalPlanePreProcessorKernelPow2];
+        _focalPlanePreProcessorKernel = [(CIFocalPlaneNative *)self _focalPlanePreProcessorKernelPow2];
       }
 
-      v41 = v40;
+      v41 = _focalPlanePreProcessorKernel;
       [(CIImage *)self->inputImage extent];
       v47[0] = self->inputImage;
       v47[1] = inputMatteImage;
-      v47[2] = v38;
+      v47[2] = imageByClampingToExtent;
       v47[3] = v11;
       v47[4] = v15;
       return [v41 applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v47, 5), v42, v43, v44, v45}];

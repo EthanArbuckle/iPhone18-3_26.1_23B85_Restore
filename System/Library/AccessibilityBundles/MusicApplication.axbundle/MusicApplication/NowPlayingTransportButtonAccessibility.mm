@@ -1,15 +1,15 @@
 @interface NowPlayingTransportButtonAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (unint64_t)accessibilityTraits;
 @end
 
 @implementation NowPlayingTransportButtonAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"UIControl" hasInstanceMethod:@"isEnabled" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"MusicApplication.NowPlayingTransportButton" isKindOfClass:@"UIButton"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"UIControl" hasInstanceMethod:@"isEnabled" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"MusicApplication.NowPlayingTransportButton" isKindOfClass:@"UIButton"];
 }
 
 - (unint64_t)accessibilityTraits

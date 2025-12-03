@@ -1,41 +1,41 @@
 @interface CKSendMenuPopoverPresentationController
 - (CGPoint)_anchorViewCenterInContainer;
 - (CGRect)frameOfPresentedViewInContainerView;
-- (CKSendMenuPopoverPresentationController)initWithConfiguration:(id)a3 popoverViewController:(id)a4 presentingViewController:(id)a5;
+- (CKSendMenuPopoverPresentationController)initWithConfiguration:(id)configuration popoverViewController:(id)controller presentingViewController:(id)viewController;
 - (CKSendMenuPopoverPresentationControllerDelegate)delegate;
 - (id)newPopoverLayoutMetrics;
 - (id)presentedView;
 - (void)_appCardContentViewControllerPresentationTransitionWillBegin;
-- (void)_didComputePopoverLayoutMetrics:(id)a3;
+- (void)_didComputePopoverLayoutMetrics:(id)metrics;
 - (void)_sendMenuViewControllerPresentationTransitionWillBegin;
 - (void)anchorViewDidMove;
 - (void)containerViewWillLayoutSubviews;
-- (void)dismissalTransitionDidEnd:(BOOL)a3;
+- (void)dismissalTransitionDidEnd:(BOOL)end;
 - (void)dismissalTransitionWillBegin;
-- (void)presentCardWithContentViewController:(id)a3 style:(unint64_t)a4 completion:(id)a5;
-- (void)presentationTransitionDidEnd:(BOOL)a3;
+- (void)presentCardWithContentViewController:(id)controller style:(unint64_t)style completion:(id)completion;
+- (void)presentationTransitionDidEnd:(BOOL)end;
 - (void)presentationTransitionWillBegin;
-- (void)sendMenuPopoverPresentationDimmingViewDidReceiveTap:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)sendMenuPopoverPresentationDimmingViewDidReceiveTap:(id)tap;
+- (void)setDelegate:(id)delegate;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation CKSendMenuPopoverPresentationController
 
-- (CKSendMenuPopoverPresentationController)initWithConfiguration:(id)a3 popoverViewController:(id)a4 presentingViewController:(id)a5
+- (CKSendMenuPopoverPresentationController)initWithConfiguration:(id)configuration popoverViewController:(id)controller presentingViewController:(id)viewController
 {
-  v9 = a3;
+  configurationCopy = configuration;
   v21.receiver = self;
   v21.super_class = CKSendMenuPopoverPresentationController;
-  v10 = [(CKSendMenuPopoverPresentationController *)&v21 initWithPresentedViewController:a4 presentingViewController:a5];
+  v10 = [(CKSendMenuPopoverPresentationController *)&v21 initWithPresentedViewController:controller presentingViewController:viewController];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_configuration, a3);
+    objc_storeStrong(&v10->_configuration, configuration);
     v12 = +[CKUIBehavior sharedBehaviors];
-    v13 = [v12 newSendMenuPopoverLayoutConfiguration];
+    newSendMenuPopoverLayoutConfiguration = [v12 newSendMenuPopoverLayoutConfiguration];
 
-    v14 = [[CKPopoverViewLayout alloc] initWithConfiguration:v13];
+    v14 = [[CKPopoverViewLayout alloc] initWithConfiguration:newSendMenuPopoverLayoutConfiguration];
     popoverLayout = v11->_popoverLayout;
     v11->_popoverLayout = v14;
 
@@ -43,66 +43,66 @@
     layoutMetricsCommunicatedToDelegate = v11->_layoutMetricsCommunicatedToDelegate;
     v11->_layoutMetricsCommunicatedToDelegate = 0;
 
-    v17 = [(CKSendMenuPopoverPresentationController *)v11 traitOverrides];
+    traitOverrides = [(CKSendMenuPopoverPresentationController *)v11 traitOverrides];
     v18 = objc_opt_self();
-    [v17 setNSIntegerValue:3 forTrait:v18];
+    [traitOverrides setNSIntegerValue:3 forTrait:v18];
 
-    v19 = [(CKSendMenuPopoverPresentationController *)v11 traitOverrides];
-    [v19 setHorizontalSizeClass:1];
+    traitOverrides2 = [(CKSendMenuPopoverPresentationController *)v11 traitOverrides];
+    [traitOverrides2 setHorizontalSizeClass:1];
   }
 
   return v11;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   v3.receiver = self;
   v3.super_class = CKSendMenuPopoverPresentationController;
-  [(CKSendMenuPopoverPresentationController *)&v3 setDelegate:a3];
+  [(CKSendMenuPopoverPresentationController *)&v3 setDelegate:delegate];
 }
 
 - (CKSendMenuPopoverPresentationControllerDelegate)delegate
 {
   v4.receiver = self;
   v4.super_class = CKSendMenuPopoverPresentationController;
-  v2 = [(CKSendMenuPopoverPresentationController *)&v4 delegate];
+  delegate = [(CKSendMenuPopoverPresentationController *)&v4 delegate];
 
-  return v2;
+  return delegate;
 }
 
-- (void)_didComputePopoverLayoutMetrics:(id)a3
+- (void)_didComputePopoverLayoutMetrics:(id)metrics
 {
-  v36 = a3;
-  v4 = [(CKSendMenuPopoverPresentationController *)self delegate];
+  metricsCopy = metrics;
+  delegate = [(CKSendMenuPopoverPresentationController *)self delegate];
 
-  if (v4)
+  if (delegate)
   {
     layoutMetricsCommunicatedToDelegate = self->_layoutMetricsCommunicatedToDelegate;
-    if (!layoutMetricsCommunicatedToDelegate || (-[CKPopoverViewLayoutMetrics frame](layoutMetricsCommunicatedToDelegate, "frame"), v7 = v6, v9 = v8, v11 = v10, v13 = v12, [v36 frame], v15 = v14, v17 = v16, v19 = v18, v21 = v20, v35 = v9, v38.origin.x = v7, v38.origin.y = v9, v38.size.width = v11, v38.size.height = v13, Width = CGRectGetWidth(v38), v39.origin.x = v15, v39.origin.y = v17, v39.size.width = v19, v39.size.height = v21, v23 = CGRectGetWidth(v39), !CKFloatApproximatelyEqualToFloatWithTolerance(Width, v23, 0.00000999999975)) || (v40.origin.y = v35, v40.origin.x = v7, v40.size.width = v11, v40.size.height = v13, Height = CGRectGetHeight(v40), v41.origin.x = v15, v41.origin.y = v17, v41.size.width = v19, v41.size.height = v21, v25 = CGRectGetHeight(v41), !CKFloatApproximatelyEqualToFloatWithTolerance(Height, v25, 0.00000999999975)) || (v42.origin.y = v35, v42.origin.x = v7, v42.size.width = v11, v42.size.height = v13, MinX = CGRectGetMinX(v42), v43.origin.x = v15, v43.origin.y = v17, v43.size.width = v19, v43.size.height = v21, v27 = CGRectGetMinX(v43), !CKFloatApproximatelyEqualToFloatWithTolerance(MinX, v27, 0.00000999999975)) || (v44.origin.y = v35, v44.origin.x = v7, v44.size.width = v11, v44.size.height = v13, MinY = CGRectGetMinY(v44), v45.origin.x = v15, v45.origin.y = v17, v45.size.width = v19, v45.size.height = v21, v29 = CGRectGetMinY(v45), !CKFloatApproximatelyEqualToFloatWithTolerance(MinY, v29, 0.00000999999975)))
+    if (!layoutMetricsCommunicatedToDelegate || (-[CKPopoverViewLayoutMetrics frame](layoutMetricsCommunicatedToDelegate, "frame"), v7 = v6, v9 = v8, v11 = v10, v13 = v12, [metricsCopy frame], v15 = v14, v17 = v16, v19 = v18, v21 = v20, v35 = v9, v38.origin.x = v7, v38.origin.y = v9, v38.size.width = v11, v38.size.height = v13, Width = CGRectGetWidth(v38), v39.origin.x = v15, v39.origin.y = v17, v39.size.width = v19, v39.size.height = v21, v23 = CGRectGetWidth(v39), !CKFloatApproximatelyEqualToFloatWithTolerance(Width, v23, 0.00000999999975)) || (v40.origin.y = v35, v40.origin.x = v7, v40.size.width = v11, v40.size.height = v13, Height = CGRectGetHeight(v40), v41.origin.x = v15, v41.origin.y = v17, v41.size.width = v19, v41.size.height = v21, v25 = CGRectGetHeight(v41), !CKFloatApproximatelyEqualToFloatWithTolerance(Height, v25, 0.00000999999975)) || (v42.origin.y = v35, v42.origin.x = v7, v42.size.width = v11, v42.size.height = v13, MinX = CGRectGetMinX(v42), v43.origin.x = v15, v43.origin.y = v17, v43.size.width = v19, v43.size.height = v21, v27 = CGRectGetMinX(v43), !CKFloatApproximatelyEqualToFloatWithTolerance(MinX, v27, 0.00000999999975)) || (v44.origin.y = v35, v44.origin.x = v7, v44.size.width = v11, v44.size.height = v13, MinY = CGRectGetMinY(v44), v45.origin.x = v15, v45.origin.y = v17, v45.size.width = v19, v45.size.height = v21, v29 = CGRectGetMinY(v45), !CKFloatApproximatelyEqualToFloatWithTolerance(MinY, v29, 0.00000999999975)))
     {
       v30 = self->_layoutMetricsCommunicatedToDelegate;
-      v31 = v36;
+      v31 = metricsCopy;
       v32 = self->_layoutMetricsCommunicatedToDelegate;
       self->_layoutMetricsCommunicatedToDelegate = v31;
       v33 = v30;
 
-      v34 = [(CKSendMenuPopoverPresentationController *)self delegate];
-      [v34 sendMenuPresentationController:self didChangePopoverLayoutMetrics:v33];
+      delegate2 = [(CKSendMenuPopoverPresentationController *)self delegate];
+      [delegate2 sendMenuPresentationController:self didChangePopoverLayoutMetrics:v33];
     }
   }
 }
 
 - (void)presentationTransitionWillBegin
 {
-  v3 = [(CKSendMenuPopoverPresentationController *)self popoverView];
-  [v3 setLayoutSubviewsEnabled:1];
+  popoverView = [(CKSendMenuPopoverPresentationController *)self popoverView];
+  [popoverView setLayoutSubviewsEnabled:1];
 
   v28.receiver = self;
   v28.super_class = CKSendMenuPopoverPresentationController;
   [(CKSendMenuPopoverPresentationController *)&v28 presentationTransitionWillBegin];
-  v4 = [(CKSendMenuPopoverPresentationController *)self sendMenuViewController];
+  sendMenuViewController = [(CKSendMenuPopoverPresentationController *)self sendMenuViewController];
 
-  if (v4)
+  if (sendMenuViewController)
   {
     [(CKSendMenuPopoverPresentationController *)self _sendMenuViewControllerPresentationTransitionWillBegin];
   }
@@ -112,31 +112,31 @@
     [(CKSendMenuPopoverPresentationController *)self _appCardContentViewControllerPresentationTransitionWillBegin];
   }
 
-  v5 = [(CKSendMenuPopoverPresentationController *)self anchorItem];
-  v6 = [v5 anchorView];
-  [v6 setAlpha:0.0];
+  anchorItem = [(CKSendMenuPopoverPresentationController *)self anchorItem];
+  anchorView = [anchorItem anchorView];
+  [anchorView setAlpha:0.0];
 
-  v7 = [(CKSendMenuPopoverPresentationController *)self containerView];
-  v8 = [(CKSendMenuPopoverPresentationController *)self anchorItem];
-  v9 = [v8 anchorView];
+  containerView = [(CKSendMenuPopoverPresentationController *)self containerView];
+  anchorItem2 = [(CKSendMenuPopoverPresentationController *)self anchorItem];
+  anchorView2 = [anchorItem2 anchorView];
 
-  [v9 bounds];
-  [v7 convertRect:v9 fromView:?];
+  [anchorView2 bounds];
+  [containerView convertRect:anchorView2 fromView:?];
   v11 = v10;
   v13 = v12;
   v15 = v14;
   v17 = v16;
-  v18 = [(CKSendMenuPopoverPresentationController *)self presentedViewController];
-  v19 = [(CKSendMenuPopoverPresentationController *)self popoverView];
-  [v19 setFrame:{v11, v13, v15, v17}];
+  presentedViewController = [(CKSendMenuPopoverPresentationController *)self presentedViewController];
+  popoverView2 = [(CKSendMenuPopoverPresentationController *)self popoverView];
+  [popoverView2 setFrame:{v11, v13, v15, v17}];
 
   v20 = objc_alloc_init(CKSendMenuPopoverPresentationDimmingView);
   dimmingView = self->_dimmingView;
   self->_dimmingView = v20;
 
   [(CKSendMenuPopoverPresentationDimmingView *)self->_dimmingView setDelegate:self];
-  [v7 addSubview:self->_dimmingView];
-  [v7 bounds];
+  [containerView addSubview:self->_dimmingView];
+  [containerView bounds];
   [(CKSendMenuPopoverPresentationDimmingView *)self->_dimmingView setFrame:?];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -144,17 +144,17 @@
   aBlock[3] = &unk_1E72EBA18;
   aBlock[4] = self;
   v22 = _Block_copy(aBlock);
-  v23 = [v18 transitionCoordinator];
+  transitionCoordinator = [presentedViewController transitionCoordinator];
 
-  if (v23)
+  if (transitionCoordinator)
   {
-    v24 = [v18 transitionCoordinator];
+    transitionCoordinator2 = [presentedViewController transitionCoordinator];
     v25[0] = MEMORY[0x1E69E9820];
     v25[1] = 3221225472;
     v25[2] = __74__CKSendMenuPopoverPresentationController_presentationTransitionWillBegin__block_invoke_2;
     v25[3] = &unk_1E72F0100;
     v26 = v22;
-    [v24 animateAlongsideTransition:v25 completion:0];
+    [transitionCoordinator2 animateAlongsideTransition:v25 completion:0];
   }
 
   else
@@ -171,23 +171,23 @@ void __74__CKSendMenuPopoverPresentationController_presentationTransitionWillBeg
 
 - (void)_appCardContentViewControllerPresentationTransitionWillBegin
 {
-  v3 = [(CKSendMenuPopoverPresentationController *)self popoverLayout];
+  popoverLayout = [(CKSendMenuPopoverPresentationController *)self popoverLayout];
   v29[0] = MEMORY[0x1E69E9820];
   v29[1] = 3221225472;
   v29[2] = __103__CKSendMenuPopoverPresentationController__appCardContentViewControllerPresentationTransitionWillBegin__block_invoke;
   v29[3] = &unk_1E72EBA18;
   v29[4] = self;
-  [v3 updateProperties:v29];
+  [popoverLayout updateProperties:v29];
 
   popoverLayout = self->_popoverLayout;
-  v5 = [(CKSendMenuPopoverPresentationController *)self containerView];
-  v6 = [(CKPopoverViewLayout *)popoverLayout newLayoutMetricsWithCoordinateSpace:v5];
+  containerView = [(CKSendMenuPopoverPresentationController *)self containerView];
+  v6 = [(CKPopoverViewLayout *)popoverLayout newLayoutMetricsWithCoordinateSpace:containerView];
 
   [v6 frame];
   v8 = v7;
   v10 = v9;
-  v11 = [(CKSendMenuPopoverPresentationController *)self presentedViewController];
-  [v11 setPreferredContentSize:{v8, v10}];
+  presentedViewController = [(CKSendMenuPopoverPresentationController *)self presentedViewController];
+  [presentedViewController setPreferredContentSize:{v8, v10}];
 
   [v6 frame];
   v13 = v12;
@@ -195,24 +195,24 @@ void __74__CKSendMenuPopoverPresentationController_presentationTransitionWillBeg
   [v6 frame];
   v17 = v16;
   v19 = v18;
-  v20 = [(CKSendMenuPopoverPresentationController *)self appCardContentViewController];
-  [v20 setPreferredContentSize:{v17, v19}];
+  appCardContentViewController = [(CKSendMenuPopoverPresentationController *)self appCardContentViewController];
+  [appCardContentViewController setPreferredContentSize:{v17, v19}];
 
-  v21 = [(CKSendMenuPopoverPresentationController *)self appCardContentViewController];
-  v22 = [v21 view];
-  [v22 setTranslatesAutoresizingMaskIntoConstraints:1];
+  appCardContentViewController2 = [(CKSendMenuPopoverPresentationController *)self appCardContentViewController];
+  view = [appCardContentViewController2 view];
+  [view setTranslatesAutoresizingMaskIntoConstraints:1];
 
-  v23 = [(CKSendMenuPopoverPresentationController *)self appCardContentViewController];
-  v24 = [v23 view];
-  [v24 setAutoresizingMask:0];
+  appCardContentViewController3 = [(CKSendMenuPopoverPresentationController *)self appCardContentViewController];
+  view2 = [appCardContentViewController3 view];
+  [view2 setAutoresizingMask:0];
 
-  v25 = [(CKSendMenuPopoverPresentationController *)self appCardContentViewController];
-  v26 = [v25 view];
-  [v26 setFrame:{0.0, 0.0, v13, v15}];
+  appCardContentViewController4 = [(CKSendMenuPopoverPresentationController *)self appCardContentViewController];
+  view3 = [appCardContentViewController4 view];
+  [view3 setFrame:{0.0, 0.0, v13, v15}];
 
-  v27 = [(CKSendMenuPopoverPresentationController *)self popoverViewController];
-  v28 = [v27 view];
-  [v28 setFrame:{0.0, 0.0, v13, v15}];
+  popoverViewController = [(CKSendMenuPopoverPresentationController *)self popoverViewController];
+  view4 = [popoverViewController view];
+  [view4 setFrame:{0.0, 0.0, v13, v15}];
 
   self->_presentationState = 4;
 }
@@ -256,27 +256,27 @@ void __103__CKSendMenuPopoverPresentationController__appCardContentViewControlle
 
 - (void)_sendMenuViewControllerPresentationTransitionWillBegin
 {
-  v3 = [(CKSendMenuPopoverPresentationController *)self configuration];
-  v4 = [v3 sendMenuViewController];
-  [v4 preferredContentSize];
+  configuration = [(CKSendMenuPopoverPresentationController *)self configuration];
+  sendMenuViewController = [configuration sendMenuViewController];
+  [sendMenuViewController preferredContentSize];
   v6 = v5;
   v8 = v7;
-  v9 = [(CKSendMenuPopoverPresentationController *)self presentedViewController];
-  [v9 setPreferredContentSize:{v6, v8}];
+  presentedViewController = [(CKSendMenuPopoverPresentationController *)self presentedViewController];
+  [presentedViewController setPreferredContentSize:{v6, v8}];
 
   self->_presentationState = 1;
 }
 
-- (void)presentationTransitionDidEnd:(BOOL)a3
+- (void)presentationTransitionDidEnd:(BOOL)end
 {
-  v3 = a3;
-  v5 = [(CKSendMenuPopoverPresentationController *)self popoverView];
-  [v5 setLayoutSubviewsEnabled:1];
+  endCopy = end;
+  popoverView = [(CKSendMenuPopoverPresentationController *)self popoverView];
+  [popoverView setLayoutSubviewsEnabled:1];
 
   v7.receiver = self;
   v7.super_class = CKSendMenuPopoverPresentationController;
-  [(CKSendMenuPopoverPresentationController *)&v7 presentationTransitionDidEnd:v3];
-  if (v3)
+  [(CKSendMenuPopoverPresentationController *)&v7 presentationTransitionDidEnd:endCopy];
+  if (endCopy)
   {
     self->_presentationState = 2;
   }
@@ -292,32 +292,32 @@ void __103__CKSendMenuPopoverPresentationController__appCardContentViewControlle
 
 - (void)dismissalTransitionWillBegin
 {
-  v3 = [(CKSendMenuPopoverPresentationController *)self popoverView];
-  [v3 setLayoutSubviewsEnabled:0];
+  popoverView = [(CKSendMenuPopoverPresentationController *)self popoverView];
+  [popoverView setLayoutSubviewsEnabled:0];
 
   v11.receiver = self;
   v11.super_class = CKSendMenuPopoverPresentationController;
   [(CKSendMenuPopoverPresentationController *)&v11 dismissalTransitionWillBegin];
   self->_presentationState = 3;
-  v4 = [(CKSendMenuPopoverPresentationController *)self presentedViewController];
-  v5 = [v4 transitionCoordinator];
+  presentedViewController = [(CKSendMenuPopoverPresentationController *)self presentedViewController];
+  transitionCoordinator = [presentedViewController transitionCoordinator];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __71__CKSendMenuPopoverPresentationController_dismissalTransitionWillBegin__block_invoke;
   aBlock[3] = &unk_1E72EBA18;
   aBlock[4] = self;
   v6 = _Block_copy(aBlock);
-  v7 = [(CKSendMenuPopoverPresentationController *)self delegate];
-  [v7 sendMenuPresentationControllerWillDismiss:self];
+  delegate = [(CKSendMenuPopoverPresentationController *)self delegate];
+  [delegate sendMenuPresentationControllerWillDismiss:self];
 
-  if (v5)
+  if (transitionCoordinator)
   {
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __71__CKSendMenuPopoverPresentationController_dismissalTransitionWillBegin__block_invoke_2;
     v8[3] = &unk_1E72F0100;
     v9 = v6;
-    [v5 animateAlongsideTransition:v8 completion:0];
+    [transitionCoordinator animateAlongsideTransition:v8 completion:0];
   }
 
   else
@@ -332,13 +332,13 @@ void __71__CKSendMenuPopoverPresentationController_dismissalTransitionWillBegin_
   [v1 setActive:0];
 }
 
-- (void)dismissalTransitionDidEnd:(BOOL)a3
+- (void)dismissalTransitionDidEnd:(BOOL)end
 {
-  v3 = a3;
+  endCopy = end;
   v12.receiver = self;
   v12.super_class = CKSendMenuPopoverPresentationController;
   [(CKSendMenuPopoverPresentationController *)&v12 dismissalTransitionDidEnd:?];
-  if (v3)
+  if (endCopy)
   {
     self->_presentationState = 0;
     [(CKSendMenuPopoverPresentationDimmingView *)self->_dimmingView removeFromSuperview];
@@ -346,26 +346,26 @@ void __71__CKSendMenuPopoverPresentationController_dismissalTransitionWillBegin_
     self->_dimmingView = 0;
   }
 
-  v6 = [(CKSendMenuPopoverPresentationController *)self anchorItem];
-  v7 = [v6 anchorView];
-  [v7 setAlpha:1.0];
+  anchorItem = [(CKSendMenuPopoverPresentationController *)self anchorItem];
+  anchorView = [anchorItem anchorView];
+  [anchorView setAlpha:1.0];
 
-  v8 = [(CKSendMenuPopoverPresentationController *)self popoverView];
-  v9 = [v8 sendMenuView];
+  popoverView = [(CKSendMenuPopoverPresentationController *)self popoverView];
+  sendMenuView = [popoverView sendMenuView];
   v10 = *(MEMORY[0x1E695EFD0] + 16);
   v11[0] = *MEMORY[0x1E695EFD0];
   v11[1] = v10;
   v11[2] = *(MEMORY[0x1E695EFD0] + 32);
-  [v9 setTransform:v11];
+  [sendMenuView setTransform:v11];
 }
 
 - (id)presentedView
 {
   v4.receiver = self;
   v4.super_class = CKSendMenuPopoverPresentationController;
-  v2 = [(CKSendMenuPopoverPresentationController *)&v4 presentedView];
+  presentedView = [(CKSendMenuPopoverPresentationController *)&v4 presentedView];
 
-  return v2;
+  return presentedView;
 }
 
 - (void)containerViewWillLayoutSubviews
@@ -373,44 +373,44 @@ void __71__CKSendMenuPopoverPresentationController_dismissalTransitionWillBegin_
   v17.receiver = self;
   v17.super_class = CKSendMenuPopoverPresentationController;
   [(CKSendMenuPopoverPresentationController *)&v17 containerViewWillLayoutSubviews];
-  v3 = [(CKSendMenuPopoverPresentationController *)self anchorItem];
-  v4 = [(CKSendMenuPopoverPresentationController *)self isPresenting];
+  anchorItem = [(CKSendMenuPopoverPresentationController *)self anchorItem];
+  isPresenting = [(CKSendMenuPopoverPresentationController *)self isPresenting];
   [(CKSendMenuPopoverPresentationController *)self frameOfPresentedViewInContainerView];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [(CKSendMenuPopoverPresentationController *)self popoverView];
-  [v13 setFrame:{v6, v8, v10, v12}];
+  popoverView = [(CKSendMenuPopoverPresentationController *)self popoverView];
+  [popoverView setFrame:{v6, v8, v10, v12}];
 
-  if (v4)
+  if (isPresenting)
   {
-    v14 = [(CKSendMenuPopoverPresentationController *)self popoverView];
-    [v14 setNeedsLayout];
+    popoverView2 = [(CKSendMenuPopoverPresentationController *)self popoverView];
+    [popoverView2 setNeedsLayout];
 
-    v15 = [(CKSendMenuPopoverPresentationController *)self popoverView];
-    [v15 layoutIfNeeded];
+    popoverView3 = [(CKSendMenuPopoverPresentationController *)self popoverView];
+    [popoverView3 layoutIfNeeded];
   }
 
-  v16 = [(CKSendMenuPopoverPresentationController *)self containerView];
-  [v16 bounds];
+  containerView = [(CKSendMenuPopoverPresentationController *)self containerView];
+  [containerView bounds];
   [(CKSendMenuPopoverPresentationDimmingView *)self->_dimmingView setFrame:?];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v9.receiver = self;
   v9.super_class = CKSendMenuPopoverPresentationController;
-  v7 = a4;
-  [(CKSendMenuPopoverPresentationController *)&v9 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  coordinatorCopy = coordinator;
+  [(CKSendMenuPopoverPresentationController *)&v9 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __94__CKSendMenuPopoverPresentationController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke;
   v8[3] = &unk_1E72EC3E8;
   v8[4] = self;
-  [v7 animateAlongsideTransition:0 completion:v8];
+  [coordinatorCopy animateAlongsideTransition:0 completion:v8];
 }
 
 void __94__CKSendMenuPopoverPresentationController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke(uint64_t a1)
@@ -421,15 +421,15 @@ void __94__CKSendMenuPopoverPresentationController_viewWillTransitionToSize_with
 
 - (CGRect)frameOfPresentedViewInContainerView
 {
-  v3 = [(CKSendMenuPopoverPresentationController *)self anchorItem];
+  anchorItem = [(CKSendMenuPopoverPresentationController *)self anchorItem];
   popoverLayout = self->_popoverLayout;
   v21 = MEMORY[0x1E69E9820];
   v22 = 3221225472;
   v23 = __78__CKSendMenuPopoverPresentationController_frameOfPresentedViewInContainerView__block_invoke;
   v24 = &unk_1E72EB8D0;
-  v25 = self;
-  v26 = v3;
-  v5 = v3;
+  selfCopy = self;
+  v26 = anchorItem;
+  v5 = anchorItem;
   [(CKPopoverViewLayout *)popoverLayout updateProperties:&v21];
   v6 = self->_popoverLayout;
   v7 = [(CKSendMenuPopoverPresentationController *)self containerView:v21];
@@ -468,33 +468,33 @@ void __78__CKSendMenuPopoverPresentationController_frameOfPresentedViewInContain
   [*(*(a1 + 32) + 384) setContainerSize:{v5, v6}];
 }
 
-- (void)sendMenuPopoverPresentationDimmingViewDidReceiveTap:(id)a3
+- (void)sendMenuPopoverPresentationDimmingViewDidReceiveTap:(id)tap
 {
-  v4 = [(CKSendMenuPopoverPresentationController *)self delegate];
-  [v4 sendMenuPresentationControllerWantsToBeDismissed:self];
+  delegate = [(CKSendMenuPopoverPresentationController *)self delegate];
+  [delegate sendMenuPresentationControllerWantsToBeDismissed:self];
 }
 
-- (void)presentCardWithContentViewController:(id)a3 style:(unint64_t)a4 completion:(id)a5
+- (void)presentCardWithContentViewController:(id)controller style:(unint64_t)style completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(CKSendMenuPopoverPresentationController *)self popoverView];
-  [v10 setLayoutSubviewsEnabled:0];
+  controllerCopy = controller;
+  completionCopy = completion;
+  popoverView = [(CKSendMenuPopoverPresentationController *)self popoverView];
+  [popoverView setLayoutSubviewsEnabled:0];
 
   self->_presentationState = 4;
-  v11 = [(CKSendMenuPopoverPresentationController *)self presentedViewController];
-  v12 = [(CKSendMenuPopoverPresentationController *)self popoverLayout];
+  presentedViewController = [(CKSendMenuPopoverPresentationController *)self presentedViewController];
+  popoverLayout = [(CKSendMenuPopoverPresentationController *)self popoverLayout];
   v40[0] = MEMORY[0x1E69E9820];
   v40[1] = 3221225472;
   v40[2] = __97__CKSendMenuPopoverPresentationController_presentCardWithContentViewController_style_completion___block_invoke;
   v40[3] = &unk_1E72ED810;
   v40[4] = self;
-  v40[5] = a4;
-  [v12 updateProperties:v40];
+  v40[5] = style;
+  [popoverLayout updateProperties:v40];
 
   popoverLayout = self->_popoverLayout;
-  v14 = [(CKSendMenuPopoverPresentationController *)self containerView];
-  v15 = [(CKPopoverViewLayout *)popoverLayout newLayoutMetricsWithCoordinateSpace:v14];
+  containerView = [(CKSendMenuPopoverPresentationController *)self containerView];
+  v15 = [(CKPopoverViewLayout *)popoverLayout newLayoutMetricsWithCoordinateSpace:containerView];
 
   [(CKSendMenuPopoverPresentationController *)self _didComputePopoverLayoutMetrics:v15];
   [v15 frame];
@@ -524,15 +524,15 @@ void __78__CKSendMenuPopoverPresentationController_frameOfPresentedViewInContain
   v32[2] = __97__CKSendMenuPopoverPresentationController_presentCardWithContentViewController_style_completion___block_invoke_2;
   v32[3] = &unk_1E72F0128;
   v25 = MinY + v23 * 0.5;
-  v33 = v11;
-  v34 = v8;
+  v33 = presentedViewController;
+  v34 = controllerCopy;
   v36 = 0;
   v37 = 0;
   v38 = width;
   v39 = height;
-  v35 = self;
-  v26 = v8;
-  v27 = v11;
+  selfCopy = self;
+  v26 = controllerCopy;
+  v27 = presentedViewController;
   [v24 performWithoutAnimation:v32];
   v28 = [v27 animationForTransitioningToAppContainerViewControllerWithFinalBounds:0.0 finalCenter:{0.0, width, height, v21, v25}];
   v30[0] = MEMORY[0x1E69E9820];
@@ -540,8 +540,8 @@ void __78__CKSendMenuPopoverPresentationController_frameOfPresentedViewInContain
   v30[2] = __97__CKSendMenuPopoverPresentationController_presentCardWithContentViewController_style_completion___block_invoke_3;
   v30[3] = &unk_1E72ED1C8;
   v30[4] = self;
-  v31 = v9;
-  v29 = v9;
+  v31 = completionCopy;
+  v29 = completionCopy;
   [v28 setCompletion:v30];
   [v28 startAnimation];
 }
@@ -610,8 +610,8 @@ uint64_t __97__CKSendMenuPopoverPresentationController_presentCardWithContentVie
   v5[3] = &unk_1E72EBA18;
   v5[4] = self;
   [(CKPopoverViewLayout *)popoverLayout updateProperties:v5];
-  v4 = [(CKSendMenuPopoverPresentationController *)self containerView];
-  [v4 setNeedsLayout];
+  containerView = [(CKSendMenuPopoverPresentationController *)self containerView];
+  [containerView setNeedsLayout];
 }
 
 uint64_t __60__CKSendMenuPopoverPresentationController_anchorViewDidMove__block_invoke(uint64_t a1)
@@ -624,15 +624,15 @@ uint64_t __60__CKSendMenuPopoverPresentationController_anchorViewDidMove__block_
 
 - (CGPoint)_anchorViewCenterInContainer
 {
-  v3 = [(CKSendMenuPopoverPresentationController *)self anchorItem];
-  v4 = [(CKSendMenuPopoverPresentationController *)self containerView];
-  v5 = [v3 anchorView];
-  [v5 center];
+  anchorItem = [(CKSendMenuPopoverPresentationController *)self anchorItem];
+  containerView = [(CKSendMenuPopoverPresentationController *)self containerView];
+  anchorView = [anchorItem anchorView];
+  [anchorView center];
   v7 = v6;
   v9 = v8;
-  v10 = [v3 anchorView];
-  v11 = [v10 superview];
-  [v4 convertPoint:v11 fromView:{v7, v9}];
+  anchorView2 = [anchorItem anchorView];
+  superview = [anchorView2 superview];
+  [containerView convertPoint:superview fromView:{v7, v9}];
   v13 = v12;
   v15 = v14;
 
@@ -646,8 +646,8 @@ uint64_t __60__CKSendMenuPopoverPresentationController_anchorViewDidMove__block_
 - (id)newPopoverLayoutMetrics
 {
   popoverLayout = self->_popoverLayout;
-  v3 = [(CKSendMenuPopoverPresentationController *)self containerView];
-  v4 = [(CKPopoverViewLayout *)popoverLayout newLayoutMetricsWithCoordinateSpace:v3];
+  containerView = [(CKSendMenuPopoverPresentationController *)self containerView];
+  v4 = [(CKPopoverViewLayout *)popoverLayout newLayoutMetricsWithCoordinateSpace:containerView];
 
   return v4;
 }

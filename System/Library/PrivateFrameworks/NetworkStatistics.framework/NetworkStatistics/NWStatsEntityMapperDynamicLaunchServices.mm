@@ -1,10 +1,10 @@
 @interface NWStatsEntityMapperDynamicLaunchServices
 - (NWStatsEntityMapperDynamicLaunchServices)init;
-- (id)_attemptConvertingPluginNameToContainingAppName:(id)a3;
-- (id)_identifierForUUID:(id)a3 fromSet:(id)a4;
-- (id)extensionNameForUUID:(id)a3;
-- (id)handleNewUUID:(id)a3;
-- (id)identifierForUUID:(id)a3 derivation:(int *)a4;
+- (id)_attemptConvertingPluginNameToContainingAppName:(id)name;
+- (id)_identifierForUUID:(id)d fromSet:(id)set;
+- (id)extensionNameForUUID:(id)d;
+- (id)handleNewUUID:(id)d;
+- (id)identifierForUUID:(id)d derivation:(int *)derivation;
 - (id)stateDictionary;
 - (void)dealloc;
 @end
@@ -64,37 +64,37 @@
   [(NWStatsEntityMapperDynamicLaunchServices *)&v4 dealloc];
 }
 
-- (id)_attemptConvertingPluginNameToContainingAppName:(id)a3
+- (id)_attemptConvertingPluginNameToContainingAppName:(id)name
 {
-  v4 = [(objc_class *)self->_LSPlugInKitProxyClass pluginKitProxyForIdentifier:a3];
+  v4 = [(objc_class *)self->_LSPlugInKitProxyClass pluginKitProxyForIdentifier:name];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 containingBundle];
-    if (v6 && (LSApplicationProxyClass = self->_LSApplicationProxyClass, (objc_opt_isKindOfClass() & 1) != 0))
+    containingBundle = [v4 containingBundle];
+    if (containingBundle && (LSApplicationProxyClass = self->_LSApplicationProxyClass, (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v8 = [v6 applicationIdentifier];
+      applicationIdentifier = [containingBundle applicationIdentifier];
     }
 
     else
     {
-      v8 = 0;
+      applicationIdentifier = 0;
     }
   }
 
   else
   {
-    v8 = 0;
+    applicationIdentifier = 0;
   }
 
-  return v8;
+  return applicationIdentifier;
 }
 
-- (id)_identifierForUUID:(id)a3 fromSet:(id)a4
+- (id)_identifierForUUID:(id)d fromSet:(id)set
 {
   v13[2] = *MEMORY[0x277D85DE8];
-  v5 = [a4 allObjects];
-  v6 = [v5 objectAtIndex:0];
+  allObjects = [set allObjects];
+  v6 = [allObjects objectAtIndex:0];
 
   v7 = [(NWStatsEntityMapperDynamicLaunchServices *)self _attemptConvertingPluginNameToContainingAppName:v6];
   v8 = v7;
@@ -117,14 +117,14 @@
   return v10;
 }
 
-- (id)handleNewUUID:(id)a3
+- (id)handleNewUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = objc_autoreleasePoolPush();
-  v6 = [(objc_class *)self->_LSApplicationWorkspaceClass defaultWorkspace];
-  v7 = [MEMORY[0x277CBEB98] setWithObject:v4];
+  defaultWorkspace = [(objc_class *)self->_LSApplicationWorkspaceClass defaultWorkspace];
+  v7 = [MEMORY[0x277CBEB98] setWithObject:dCopy];
   v15 = 0;
-  v8 = [v6 bundleIdentifiersForMachOUUIDs:v7 error:&v15];
+  v8 = [defaultWorkspace bundleIdentifiersForMachOUUIDs:v7 error:&v15];
   v9 = v15;
 
   if (v9 || ![v8 count])
@@ -132,42 +132,42 @@
     goto LABEL_2;
   }
 
-  v13 = [v8 objectForKeyedSubscript:v4];
+  v13 = [v8 objectForKeyedSubscript:dCopy];
   if (![v13 count])
   {
 
     goto LABEL_2;
   }
 
-  v14 = [(NWStatsEntityMapperDynamicLaunchServices *)self _identifierForUUID:v4 fromSet:v13];
+  v14 = [(NWStatsEntityMapperDynamicLaunchServices *)self _identifierForUUID:dCopy fromSet:v13];
 
   if (!v14)
   {
 LABEL_2:
-    v10 = [MEMORY[0x277CBEB68] null];
+    null = [MEMORY[0x277CBEB68] null];
     v11 = 0;
     goto LABEL_3;
   }
 
-  v10 = v14;
-  v11 = v10;
+  null = v14;
+  v11 = null;
 LABEL_3:
-  [(NWStatsEntityMapCache *)self->_entityMap setEntry:v10 forUUID:v4];
+  [(NWStatsEntityMapCache *)self->_entityMap setEntry:null forUUID:dCopy];
 
   objc_autoreleasePoolPop(v5);
 
-  return v10;
+  return null;
 }
 
-- (id)identifierForUUID:(id)a3 derivation:(int *)a4
+- (id)identifierForUUID:(id)d derivation:(int *)derivation
 {
-  v6 = a3;
-  v7 = v6;
-  if (!v6 || ([v6 UUIDString], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "length"), v8, !v9))
+  dCopy = d;
+  v7 = dCopy;
+  if (!dCopy || ([dCopy UUIDString], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "length"), v8, !v9))
   {
     v14 = 0;
     v13 = 0;
-    if (!a4)
+    if (!derivation)
     {
       goto LABEL_9;
     }
@@ -218,10 +218,10 @@ LABEL_15:
 
   objc_sync_exit(v11);
   objc_autoreleasePoolPop(v10);
-  if (a4)
+  if (derivation)
   {
 LABEL_8:
-    *a4 = v14;
+    *derivation = v14;
   }
 
 LABEL_9:
@@ -229,11 +229,11 @@ LABEL_9:
   return v13;
 }
 
-- (id)extensionNameForUUID:(id)a3
+- (id)extensionNameForUUID:(id)d
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && ([v4 UUIDString], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "length"), v6, v7))
+  dCopy = d;
+  v5 = dCopy;
+  if (dCopy && ([dCopy UUIDString], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "length"), v6, v7))
   {
     v8 = objc_autoreleasePoolPush();
     v9 = self->_entityMap;
@@ -269,8 +269,8 @@ LABEL_9:
   v3 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v4 = self->_entityMap;
   objc_sync_enter(v4);
-  v5 = [(NWStatsEntityMapCache *)self->_entityMap stateDictionary];
-  [v3 setObject:v5 forKeyedSubscript:@"EntityMapper"];
+  stateDictionary = [(NWStatsEntityMapCache *)self->_entityMap stateDictionary];
+  [v3 setObject:stateDictionary forKeyedSubscript:@"EntityMapper"];
 
   objc_sync_exit(v4);
 

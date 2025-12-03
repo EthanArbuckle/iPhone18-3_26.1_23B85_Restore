@@ -1,40 +1,40 @@
 @interface STTransportPayloadManager
-- (STTransportPayloadManager)initWithTransport:(id)a3 localTransport:(id)a4 persistenceController:(id)a5;
+- (STTransportPayloadManager)initWithTransport:(id)transport localTransport:(id)localTransport persistenceController:(id)controller;
 - (STTransportPayloadManagerDelegate)delegate;
-- (void)_forwardPayloadToLocalTransport:(id)a3;
-- (void)_operation:(id)a3 cancelledDidChange:(BOOL)a4;
-- (void)_operation:(id)a3 executingDidChange:(BOOL)a4;
-- (void)_operation:(id)a3 finishedDidChange:(BOOL)a4;
+- (void)_forwardPayloadToLocalTransport:(id)transport;
+- (void)_operation:(id)_operation cancelledDidChange:(BOOL)change;
+- (void)_operation:(id)_operation executingDidChange:(BOOL)change;
+- (void)_operation:(id)_operation finishedDidChange:(BOOL)change;
 - (void)_processEnqueuedPayloads;
-- (void)_sendPayload:(id)a3;
-- (void)_updatePayloadUUID:(id)a3 toState:(unint64_t)a4 context:(id)a5;
-- (void)enqueuePayload:(id)a3;
+- (void)_sendPayload:(id)payload;
+- (void)_updatePayloadUUID:(id)d toState:(unint64_t)state context:(id)context;
+- (void)enqueuePayload:(id)payload;
 - (void)invalidate;
-- (void)localTransport:(id)a3 didReceivePayload:(id)a4;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)localTransport:(id)transport didReceivePayload:(id)payload;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)resume;
-- (void)transport:(id)a3 didReceiveData:(id)a4 altURI:(id)a5 appleID:(id)a6 serverReceivedTime:(id)a7;
-- (void)transport:(id)a3 didReceiveUpdatedState:(unint64_t)a4 forPayloadUUID:(id)a5 context:(id)a6 error:(id)a7;
+- (void)transport:(id)transport didReceiveData:(id)data altURI:(id)i appleID:(id)d serverReceivedTime:(id)time;
+- (void)transport:(id)transport didReceiveUpdatedState:(unint64_t)state forPayloadUUID:(id)d context:(id)context error:(id)error;
 @end
 
 @implementation STTransportPayloadManager
 
-- (STTransportPayloadManager)initWithTransport:(id)a3 localTransport:(id)a4 persistenceController:(id)a5
+- (STTransportPayloadManager)initWithTransport:(id)transport localTransport:(id)localTransport persistenceController:(id)controller
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  transportCopy = transport;
+  localTransportCopy = localTransport;
+  controllerCopy = controller;
   v22.receiver = self;
   v22.super_class = STTransportPayloadManager;
   v12 = [(STTransportPayloadManager *)&v22 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_transport, a3);
+    objc_storeStrong(&v12->_transport, transport);
     [(STTransport *)v13->_transport setDelegate:v13];
-    objc_storeStrong(&v13->_localTransport, a4);
+    objc_storeStrong(&v13->_localTransport, localTransport);
     [(STLocalIDSTransport *)v13->_localTransport setDelegate:v13];
-    objc_storeStrong(&v13->_persistenceController, a5);
+    objc_storeStrong(&v13->_persistenceController, controller);
     v14 = objc_opt_new();
     operationQueue = v13->_operationQueue;
     v13->_operationQueue = v14;
@@ -45,7 +45,7 @@
     v20[1] = 3221225472;
     v20[2] = sub_100092050;
     v20[3] = &unk_1001A3180;
-    v21 = v11;
+    v21 = controllerCopy;
     [(NSOperationQueue *)v16 addOperationWithBlock:v20];
     v17 = objc_opt_new();
     queuedProcessQueueOperations = v13->_queuedProcessQueueOperations;
@@ -63,11 +63,11 @@
   }
 
   [(STTransportPayloadManager *)self setResumed:1];
-  v4 = [(STTransportPayloadManager *)self operationQueue];
-  [v4 setSuspended:0];
+  operationQueue = [(STTransportPayloadManager *)self operationQueue];
+  [operationQueue setSuspended:0];
 
-  v5 = [(STTransportPayloadManager *)self transport];
-  [v5 resume];
+  transport = [(STTransportPayloadManager *)self transport];
+  [transport resume];
 
   v6 = +[STLog payloadManager];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -80,18 +80,18 @@
 
 - (void)invalidate
 {
-  v3 = [(STTransportPayloadManager *)self operationQueue];
+  operationQueue = [(STTransportPayloadManager *)self operationQueue];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100092440;
   v4[3] = &unk_1001A3180;
   v4[4] = self;
-  [v3 addOperationWithBlock:v4];
+  [operationQueue addOperationWithBlock:v4];
 }
 
-- (void)enqueuePayload:(id)a3
+- (void)enqueuePayload:(id)payload
 {
-  v4 = a3;
+  payloadCopy = payload;
   v5 = +[STLog payloadManager];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -101,8 +101,8 @@
   }
 
   v6 = [STEnqueuePayloadOperation alloc];
-  v7 = [(STTransportPayloadManager *)self persistenceController];
-  v8 = [(STEnqueuePayloadOperation *)v6 initWithPayload:v4 persistenceController:v7];
+  persistenceController = [(STTransportPayloadManager *)self persistenceController];
+  v8 = [(STEnqueuePayloadOperation *)v6 initWithPayload:payloadCopy persistenceController:persistenceController];
 
   objc_initWeak(buf, v8);
   v10 = _NSConcreteStackBlock;
@@ -110,7 +110,7 @@
   v12 = sub_100092714;
   v13 = &unk_1001A5FF8;
   objc_copyWeak(&v15, buf);
-  v14 = self;
+  selfCopy = self;
   [(STEnqueuePayloadOperation *)v8 setCompletionBlock:&v10];
   v9 = [(STTransportPayloadManager *)self operationQueue:v10];
   [v9 addOperation:v8];
@@ -131,8 +131,8 @@
   else
   {
     v5 = [STProcessPayloadQueueOperation alloc];
-    v6 = [(STTransportPayloadManager *)self persistenceController];
-    v4 = [(STPersistenceOperation *)v5 initWithPersistenceController:v6];
+    persistenceController = [(STTransportPayloadManager *)self persistenceController];
+    v4 = [(STPersistenceOperation *)v5 initWithPersistenceController:persistenceController];
 
     [(NSMutableSet *)self->_queuedProcessQueueOperations addObject:v4];
   }
@@ -156,13 +156,13 @@
     v12 = sub_100092A2C;
     v13 = &unk_1001A5FF8;
     objc_copyWeak(&v15, buf);
-    v14 = self;
+    selfCopy = self;
     [(STProcessPayloadQueueOperation *)v4 setCompletionBlock:&v10];
     [(STProcessPayloadQueueOperation *)v4 addObserver:self forKeyPath:@"cancelled" options:1 context:"KVOContextSTTransportPayloadManager", v10, v11, v12, v13];
     [(STProcessPayloadQueueOperation *)v4 addObserver:self forKeyPath:@"executing" options:1 context:"KVOContextSTTransportPayloadManager"];
     [(STProcessPayloadQueueOperation *)v4 addObserver:self forKeyPath:@"finished" options:1 context:"KVOContextSTTransportPayloadManager"];
-    v9 = [(STTransportPayloadManager *)self operationQueue];
-    [v9 addOperation:v4];
+    operationQueue = [(STTransportPayloadManager *)self operationQueue];
+    [operationQueue addOperation:v4];
 
     objc_destroyWeak(&v15);
     objc_destroyWeak(buf);
@@ -179,16 +179,16 @@
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (a6 == "KVOContextSTTransportPayloadManager")
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if (context == "KVOContextSTTransportPayloadManager")
   {
-    if ([v10 isEqualToString:@"cancelled"])
+    if ([pathCopy isEqualToString:@"cancelled"])
     {
-      v13 = [v12 objectForKeyedSubscript:NSKeyValueChangeNewKey];
+      v13 = [changeCopy objectForKeyedSubscript:NSKeyValueChangeNewKey];
       v14 = +[NSNull null];
 
       if (v13 == v14)
@@ -197,12 +197,12 @@
         v13 = 0;
       }
 
-      -[STTransportPayloadManager _operation:cancelledDidChange:](self, "_operation:cancelledDidChange:", v11, [v13 BOOLValue]);
+      -[STTransportPayloadManager _operation:cancelledDidChange:](self, "_operation:cancelledDidChange:", objectCopy, [v13 BOOLValue]);
     }
 
-    else if ([v10 isEqualToString:@"executing"])
+    else if ([pathCopy isEqualToString:@"executing"])
     {
-      v13 = [v12 objectForKeyedSubscript:NSKeyValueChangeNewKey];
+      v13 = [changeCopy objectForKeyedSubscript:NSKeyValueChangeNewKey];
       v15 = +[NSNull null];
 
       if (v13 == v15)
@@ -211,17 +211,17 @@
         v13 = 0;
       }
 
-      -[STTransportPayloadManager _operation:executingDidChange:](self, "_operation:executingDidChange:", v11, [v13 BOOLValue]);
+      -[STTransportPayloadManager _operation:executingDidChange:](self, "_operation:executingDidChange:", objectCopy, [v13 BOOLValue]);
     }
 
     else
     {
-      if (![v10 isEqualToString:@"finished"])
+      if (![pathCopy isEqualToString:@"finished"])
       {
         goto LABEL_16;
       }
 
-      v13 = [v12 objectForKeyedSubscript:NSKeyValueChangeNewKey];
+      v13 = [changeCopy objectForKeyedSubscript:NSKeyValueChangeNewKey];
       v16 = +[NSNull null];
 
       if (v13 == v16)
@@ -230,7 +230,7 @@
         v13 = 0;
       }
 
-      -[STTransportPayloadManager _operation:finishedDidChange:](self, "_operation:finishedDidChange:", v11, [v13 BOOLValue]);
+      -[STTransportPayloadManager _operation:finishedDidChange:](self, "_operation:finishedDidChange:", objectCopy, [v13 BOOLValue]);
     }
 
     goto LABEL_16;
@@ -238,14 +238,14 @@
 
   v17.receiver = self;
   v17.super_class = STTransportPayloadManager;
-  [(STTransportPayloadManager *)&v17 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+  [(STTransportPayloadManager *)&v17 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
 LABEL_16:
 }
 
-- (void)_operation:(id)a3 cancelledDidChange:(BOOL)a4
+- (void)_operation:(id)_operation cancelledDidChange:(BOOL)change
 {
-  v4 = a4;
-  v6 = a3;
+  changeCopy = change;
+  _operationCopy = _operation;
   v7 = +[STLog payloadManager];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -254,19 +254,19 @@ LABEL_16:
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "[v1] %{public}s", &v9, 0xCu);
   }
 
-  if (v4)
+  if (changeCopy)
   {
     v8 = self->_queuedProcessQueueOperations;
     objc_sync_enter(v8);
-    [(NSMutableSet *)self->_queuedProcessQueueOperations removeObject:v6];
+    [(NSMutableSet *)self->_queuedProcessQueueOperations removeObject:_operationCopy];
     objc_sync_exit(v8);
   }
 }
 
-- (void)_operation:(id)a3 executingDidChange:(BOOL)a4
+- (void)_operation:(id)_operation executingDidChange:(BOOL)change
 {
-  v4 = a4;
-  v6 = a3;
+  changeCopy = change;
+  _operationCopy = _operation;
   v7 = +[STLog payloadManager];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -275,19 +275,19 @@ LABEL_16:
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "[v1] %{public}s", &v9, 0xCu);
   }
 
-  if (v4)
+  if (changeCopy)
   {
     v8 = self->_queuedProcessQueueOperations;
     objc_sync_enter(v8);
-    [(NSMutableSet *)self->_queuedProcessQueueOperations removeObject:v6];
+    [(NSMutableSet *)self->_queuedProcessQueueOperations removeObject:_operationCopy];
     objc_sync_exit(v8);
   }
 }
 
-- (void)_operation:(id)a3 finishedDidChange:(BOOL)a4
+- (void)_operation:(id)_operation finishedDidChange:(BOOL)change
 {
-  v4 = a4;
-  v6 = a3;
+  changeCopy = change;
+  _operationCopy = _operation;
   v7 = +[STLog payloadManager];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -296,22 +296,22 @@ LABEL_16:
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "[v1] %{public}s", &v9, 0xCu);
   }
 
-  if (v4)
+  if (changeCopy)
   {
     v8 = self->_queuedProcessQueueOperations;
     objc_sync_enter(v8);
-    [(NSMutableSet *)self->_queuedProcessQueueOperations removeObject:v6];
+    [(NSMutableSet *)self->_queuedProcessQueueOperations removeObject:_operationCopy];
     objc_sync_exit(v8);
 
-    [v6 removeObserver:self forKeyPath:@"cancelled" context:"KVOContextSTTransportPayloadManager"];
-    [v6 removeObserver:self forKeyPath:@"executing" context:"KVOContextSTTransportPayloadManager"];
-    [v6 removeObserver:self forKeyPath:@"finished" context:"KVOContextSTTransportPayloadManager"];
+    [_operationCopy removeObserver:self forKeyPath:@"cancelled" context:"KVOContextSTTransportPayloadManager"];
+    [_operationCopy removeObserver:self forKeyPath:@"executing" context:"KVOContextSTTransportPayloadManager"];
+    [_operationCopy removeObserver:self forKeyPath:@"finished" context:"KVOContextSTTransportPayloadManager"];
   }
 }
 
-- (void)_sendPayload:(id)a3
+- (void)_sendPayload:(id)payload
 {
-  v4 = a3;
+  payloadCopy = payload;
   v5 = +[STLog payloadManager];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -320,13 +320,13 @@ LABEL_16:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[v1] %{public}s", buf, 0xCu);
   }
 
-  [(STTransportPayloadManager *)self _forwardPayloadToLocalTransport:v4];
+  [(STTransportPayloadManager *)self _forwardPayloadToLocalTransport:payloadCopy];
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v6 = [v4 destinations];
-  v7 = [v6 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  destinations = [payloadCopy destinations];
+  v7 = [destinations countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v7)
   {
     v8 = *v21;
@@ -338,11 +338,11 @@ LABEL_16:
       {
         if (*v21 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(destinations);
         }
 
-        v11 = [*(*(&v20 + 1) + 8 * v10) type];
-        v12 = [v11 isEqualToString:v9];
+        type = [*(*(&v20 + 1) + 8 * v10) type];
+        v12 = [type isEqualToString:v9];
 
         if (!v12)
         {
@@ -356,16 +356,16 @@ LABEL_16:
           }
 
           objc_initWeak(buf, self);
-          v14 = [(STTransportPayloadManager *)self transport];
-          v15 = [v4 destinations];
-          v16 = [(STTransportPayloadManager *)self persistenceController];
+          transport = [(STTransportPayloadManager *)self transport];
+          destinations2 = [payloadCopy destinations];
+          persistenceController = [(STTransportPayloadManager *)self persistenceController];
           v17[0] = _NSConcreteStackBlock;
           v17[1] = 3221225472;
           v17[2] = sub_1000934CC;
           v17[3] = &unk_1001A6020;
-          v18 = v4;
+          v18 = payloadCopy;
           objc_copyWeak(&v19, buf);
-          [v14 resolveTransportDestinations:v15 toLocal:0 persistenceController:v16 completion:v17];
+          [transport resolveTransportDestinations:destinations2 toLocal:0 persistenceController:persistenceController completion:v17];
 
           objc_destroyWeak(&v19);
           objc_destroyWeak(buf);
@@ -376,7 +376,7 @@ LABEL_16:
       }
 
       while (v7 != v10);
-      v7 = [v6 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v7 = [destinations countByEnumeratingWithState:&v20 objects:v24 count:16];
       if (v7)
       {
         continue;
@@ -389,53 +389,53 @@ LABEL_16:
 LABEL_15:
 }
 
-- (void)_updatePayloadUUID:(id)a3 toState:(unint64_t)a4 context:(id)a5
+- (void)_updatePayloadUUID:(id)d toState:(unint64_t)state context:(id)context
 {
-  v8 = a3;
-  v9 = a5;
+  dCopy = d;
+  contextCopy = context;
   v10 = +[STLog payloadManager];
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    if (a4 - 1 > 4)
+    if (state - 1 > 4)
     {
       v11 = @"unknown";
     }
 
     else
     {
-      v11 = off_1001A6068[a4 - 1];
+      v11 = off_1001A6068[state - 1];
     }
 
     v12 = 136446978;
     v13 = "[STTransportPayloadManager _updatePayloadUUID:toState:context:]";
     v14 = 2112;
-    v15 = v8;
+    v15 = dCopy;
     v16 = 2112;
     v17 = v11;
     v18 = 2112;
-    v19 = v9;
+    v19 = contextCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "[v1] %{public}s: \npayloadUUID: %@, \nstate: %@, \ncontext: %@", &v12, 0x2Au);
   }
 
   [(STTransportPayloadManager *)self _processEnqueuedPayloads];
 }
 
-- (void)_forwardPayloadToLocalTransport:(id)a3
+- (void)_forwardPayloadToLocalTransport:(id)transport
 {
-  v4 = a3;
-  v5 = [v4 payloadType];
-  if ([v5 isEqualToString:@"RMUnifiedTransportPayloadTypeFamilySettings"])
+  transportCopy = transport;
+  payloadType = [transportCopy payloadType];
+  if ([payloadType isEqualToString:@"RMUnifiedTransportPayloadTypeFamilySettings"])
   {
-    v6 = [(STTransportPayloadManager *)self localTransport];
-    [v6 sendPayload:v4];
+    localTransport = [(STTransportPayloadManager *)self localTransport];
+    [localTransport sendPayload:transportCopy];
   }
 
-  else if (([v5 isEqualToString:@"RMUnifiedTransportPayloadTypeBlueprints"] & 1) != 0 || objc_msgSend(v5, "isEqualToString:", @"RMUnifiedTransportPayloadTypeCheckinResponse"))
+  else if (([payloadType isEqualToString:@"RMUnifiedTransportPayloadTypeBlueprints"] & 1) != 0 || objc_msgSend(payloadType, "isEqualToString:", @"RMUnifiedTransportPayloadTypeCheckinResponse"))
   {
-    v30 = v5;
-    v31 = v4;
-    v7 = [v4 payloadDictionary];
-    v8 = [v7 mutableCopy];
+    v30 = payloadType;
+    v31 = transportCopy;
+    payloadDictionary = [transportCopy payloadDictionary];
+    v8 = [payloadDictionary mutableCopy];
 
     v29 = v8;
     v9 = [v8 objectForKeyedSubscript:?];
@@ -490,91 +490,91 @@ LABEL_15:
 
     [v8 setObject:v20 forKeyedSubscript:@"Blueprints"];
     v21 = [STUnifiedTransportPayload alloc];
-    v4 = v31;
-    v22 = [v31 userInfo];
-    v5 = v30;
-    v23 = [(STUnifiedTransportPayload *)v21 initWithPayload:v8 type:v30 userInfo:v22];
+    transportCopy = v31;
+    userInfo = [v31 userInfo];
+    payloadType = v30;
+    v23 = [(STUnifiedTransportPayload *)v21 initWithPayload:v8 type:v30 userInfo:userInfo];
 
-    v24 = [(STUnifiedTransportPayload *)v23 payloadDictionary];
-    v25 = [v24 allKeys];
-    v26 = [v25 count];
+    payloadDictionary2 = [(STUnifiedTransportPayload *)v23 payloadDictionary];
+    allKeys = [payloadDictionary2 allKeys];
+    v26 = [allKeys count];
 
     if (v26)
     {
-      v27 = [v28 localTransport];
-      [v27 sendPayload:v23];
+      localTransport2 = [v28 localTransport];
+      [localTransport2 sendPayload:v23];
     }
 
     else
     {
-      v27 = +[STLog payloadManager];
-      if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
+      localTransport2 = +[STLog payloadManager];
+      if (os_log_type_enabled(localTransport2, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 136446210;
         v40 = "[STTransportPayloadManager _forwardPayloadToLocalTransport:]";
-        _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEFAULT, "[v1] %{public}s: \nSkipping forward to local transport -- filtering left nothing to send", buf, 0xCu);
+        _os_log_impl(&_mh_execute_header, localTransport2, OS_LOG_TYPE_DEFAULT, "[v1] %{public}s: \nSkipping forward to local transport -- filtering left nothing to send", buf, 0xCu);
       }
     }
   }
 }
 
-- (void)transport:(id)a3 didReceiveData:(id)a4 altURI:(id)a5 appleID:(id)a6 serverReceivedTime:(id)a7
+- (void)transport:(id)transport didReceiveData:(id)data altURI:(id)i appleID:(id)d serverReceivedTime:(id)time
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  v16 = a3;
+  dataCopy = data;
+  iCopy = i;
+  dCopy = d;
+  timeCopy = time;
+  transportCopy = transport;
   v17 = +[STLog payloadManager];
   if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
   {
     *buf = 136446466;
     v34 = "[STTransportPayloadManager transport:didReceiveData:altURI:appleID:serverReceivedTime:]";
     v35 = 2048;
-    v36 = [v12 length];
+    v36 = [dataCopy length];
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_INFO, "[v1] %{public}s: \nReceived data: %lu bytes", buf, 0x16u);
   }
 
   v18 = [STUnifiedTransportPayloadDestination alloc];
-  v19 = [v18 initWithAddress:v13 type:STUnifiedTransportPayloadDestinationTypeUser];
+  v19 = [v18 initWithAddress:iCopy type:STUnifiedTransportPayloadDestinationTypeUser];
   v32 = v19;
   v20 = [NSArray arrayWithObjects:&v32 count:1];
-  v21 = [(STTransportPayloadManager *)self persistenceController];
+  persistenceController = [(STTransportPayloadManager *)self persistenceController];
   v26[0] = _NSConcreteStackBlock;
   v26[1] = 3221225472;
   v26[2] = sub_100093CB0;
   v26[3] = &unk_1001A6048;
-  v27 = v12;
-  v28 = v13;
-  v29 = v14;
-  v30 = v15;
-  v31 = self;
-  v22 = v15;
-  v23 = v14;
-  v24 = v13;
-  v25 = v12;
-  [v16 resolveTransportDestinations:v20 toLocal:1 persistenceController:v21 completion:v26];
+  v27 = dataCopy;
+  v28 = iCopy;
+  v29 = dCopy;
+  v30 = timeCopy;
+  selfCopy = self;
+  v22 = timeCopy;
+  v23 = dCopy;
+  v24 = iCopy;
+  v25 = dataCopy;
+  [transportCopy resolveTransportDestinations:v20 toLocal:1 persistenceController:persistenceController completion:v26];
 }
 
-- (void)transport:(id)a3 didReceiveUpdatedState:(unint64_t)a4 forPayloadUUID:(id)a5 context:(id)a6 error:(id)a7
+- (void)transport:(id)transport didReceiveUpdatedState:(unint64_t)state forPayloadUUID:(id)d context:(id)context error:(id)error
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  transportCopy = transport;
+  dCopy = d;
+  contextCopy = context;
+  errorCopy = error;
   v16 = +[STLog familyMessaging];
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
-    v17 = [v12 description];
+    v17 = [transportCopy description];
     v18 = v17;
-    if (a4 - 1 > 4)
+    if (state - 1 > 4)
     {
       v19 = @"unknown";
     }
 
     else
     {
-      v19 = off_1001A6068[a4 - 1];
+      v19 = off_1001A6068[state - 1];
     }
 
     v21 = 136447490;
@@ -584,17 +584,17 @@ LABEL_15:
     v25 = 2112;
     v26 = v19;
     v27 = 2112;
-    v28 = v13;
+    v28 = dCopy;
     v29 = 2112;
-    v30 = v14;
+    v30 = contextCopy;
     v31 = 2114;
-    v32 = v15;
+    v32 = errorCopy;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "[v1] %{public}s: \ntransport: %@, \npayloadState: %@, \npayloadUUID: %@, \ncontext: %@, \nerror: %{public}@", &v21, 0x3Eu);
   }
 
-  if (v13)
+  if (dCopy)
   {
-    [(STTransportPayloadManager *)self _updatePayloadUUID:v13 toState:a4 context:v14];
+    [(STTransportPayloadManager *)self _updatePayloadUUID:dCopy toState:state context:contextCopy];
   }
 
   else
@@ -607,11 +607,11 @@ LABEL_15:
   }
 }
 
-- (void)localTransport:(id)a3 didReceivePayload:(id)a4
+- (void)localTransport:(id)transport didReceivePayload:(id)payload
 {
-  v5 = a4;
-  v6 = [(STTransportPayloadManager *)self delegate];
-  [v6 payloadManager:self didReceivePayload:v5];
+  payloadCopy = payload;
+  delegate = [(STTransportPayloadManager *)self delegate];
+  [delegate payloadManager:self didReceivePayload:payloadCopy];
 }
 
 - (STTransportPayloadManagerDelegate)delegate

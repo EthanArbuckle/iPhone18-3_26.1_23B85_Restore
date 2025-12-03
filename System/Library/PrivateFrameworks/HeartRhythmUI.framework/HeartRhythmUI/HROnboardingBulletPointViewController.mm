@@ -10,11 +10,11 @@
 - (void)_setupBulletPointViews;
 - (void)setUpConstraints;
 - (void)setUpUI;
-- (void)stackedButtonView:(id)a3 didTapButtonAtIndex:(int64_t)a4;
-- (void)updateUserInterfaceForStyle:(int64_t)a3;
+- (void)stackedButtonView:(id)view didTapButtonAtIndex:(int64_t)index;
+- (void)updateUserInterfaceForStyle:(int64_t)style;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation HROnboardingBulletPointViewController
@@ -27,11 +27,11 @@
   [(HROnboardingBulletPointViewController *)self _setUpButtonFooterView];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = HROnboardingBulletPointViewController;
-  [(HROnboardingBulletPointViewController *)&v4 viewWillAppear:a3];
+  [(HROnboardingBulletPointViewController *)&v4 viewWillAppear:appear];
   [(HROnboardingBulletPointViewController *)self _adjustButtonFooterViewLocationForViewContentHeight];
 }
 
@@ -43,18 +43,18 @@
   [(HROnboardingBulletPointViewController *)self _adjustButtonFooterViewLocationForViewContentHeight];
 }
 
-- (void)updateUserInterfaceForStyle:(int64_t)a3
+- (void)updateUserInterfaceForStyle:(int64_t)style
 {
   v17 = *MEMORY[0x277D85DE8];
   v15.receiver = self;
   v15.super_class = HROnboardingBulletPointViewController;
-  [(HROnboardingBulletPointViewController *)&v15 updateUserInterfaceForStyle:a3];
+  [(HROnboardingBulletPointViewController *)&v15 updateUserInterfaceForStyle:style];
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [(HROnboardingBulletPointViewController *)self bulletPointBodyLabels];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v16 count:16];
+  bulletPointBodyLabels = [(HROnboardingBulletPointViewController *)self bulletPointBodyLabels];
+  v5 = [bulletPointBodyLabels countByEnumeratingWithState:&v11 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -66,18 +66,18 @@
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(bulletPointBodyLabels);
         }
 
         v9 = *(*(&v11 + 1) + 8 * v8);
-        v10 = [MEMORY[0x277D75348] secondaryLabelColor];
-        [v9 setTextColor:v10];
+        secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+        [v9 setTextColor:secondaryLabelColor];
 
         ++v8;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v16 count:16];
+      v6 = [bulletPointBodyLabels countByEnumeratingWithState:&v11 objects:v16 count:16];
     }
 
     while (v6);
@@ -93,87 +93,87 @@
   v3 = objc_alloc_init(MEMORY[0x277D756B8]);
   [(HROnboardingBulletPointViewController *)self setTitleLabel:v3];
 
-  v4 = [(HROnboardingBulletPointViewController *)self titleString];
-  v5 = [(HROnboardingBulletPointViewController *)self titleLabel];
-  [v5 setText:v4];
+  titleString = [(HROnboardingBulletPointViewController *)self titleString];
+  titleLabel = [(HROnboardingBulletPointViewController *)self titleLabel];
+  [titleLabel setText:titleString];
 
-  v6 = [(HROnboardingBulletPointViewController *)self titleLabel];
-  [v6 setTextAlignment:1];
+  titleLabel2 = [(HROnboardingBulletPointViewController *)self titleLabel];
+  [titleLabel2 setTextAlignment:1];
 
-  v7 = [(HROnboardingBulletPointViewController *)self titleFont];
-  v8 = [(HROnboardingBulletPointViewController *)self titleLabel];
-  [v8 setFont:v7];
+  titleFont = [(HROnboardingBulletPointViewController *)self titleFont];
+  titleLabel3 = [(HROnboardingBulletPointViewController *)self titleLabel];
+  [titleLabel3 setFont:titleFont];
 
-  v9 = [(HROnboardingBulletPointViewController *)self titleLabel];
-  [v9 setTranslatesAutoresizingMaskIntoConstraints:0];
+  titleLabel4 = [(HROnboardingBulletPointViewController *)self titleLabel];
+  [titleLabel4 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v10 = [(HROnboardingBulletPointViewController *)self titleLabel];
-  [v10 setNumberOfLines:0];
+  titleLabel5 = [(HROnboardingBulletPointViewController *)self titleLabel];
+  [titleLabel5 setNumberOfLines:0];
 
-  v11 = [(HROnboardingBulletPointViewController *)self contentView];
-  v12 = [(HROnboardingBulletPointViewController *)self titleLabel];
-  [v11 addSubview:v12];
+  contentView = [(HROnboardingBulletPointViewController *)self contentView];
+  titleLabel6 = [(HROnboardingBulletPointViewController *)self titleLabel];
+  [contentView addSubview:titleLabel6];
 
-  v13 = [(HROnboardingBulletPointViewController *)self bodyString];
+  bodyString = [(HROnboardingBulletPointViewController *)self bodyString];
 
-  if (v13)
+  if (bodyString)
   {
     v14 = objc_alloc_init(MEMORY[0x277D756B8]);
     [(HROnboardingBulletPointViewController *)self setBodyLabel:v14];
 
-    v15 = [(HROnboardingBulletPointViewController *)self bodyString];
-    v16 = [(HROnboardingBulletPointViewController *)self bodyLabel];
-    [v16 setText:v15];
+    bodyString2 = [(HROnboardingBulletPointViewController *)self bodyString];
+    bodyLabel = [(HROnboardingBulletPointViewController *)self bodyLabel];
+    [bodyLabel setText:bodyString2];
 
-    v17 = [(HROnboardingBulletPointViewController *)self bodyLabel];
-    [v17 setTextAlignment:1];
+    bodyLabel2 = [(HROnboardingBulletPointViewController *)self bodyLabel];
+    [bodyLabel2 setTextAlignment:1];
 
-    v18 = [(HROnboardingBulletPointViewController *)self _bodyFont];
-    v19 = [(HROnboardingBulletPointViewController *)self bodyLabel];
-    [v19 setFont:v18];
+    _bodyFont = [(HROnboardingBulletPointViewController *)self _bodyFont];
+    bodyLabel3 = [(HROnboardingBulletPointViewController *)self bodyLabel];
+    [bodyLabel3 setFont:_bodyFont];
 
-    v20 = [(HROnboardingBulletPointViewController *)self bodyLabel];
-    [v20 setAdjustsFontForContentSizeCategory:1];
+    bodyLabel4 = [(HROnboardingBulletPointViewController *)self bodyLabel];
+    [bodyLabel4 setAdjustsFontForContentSizeCategory:1];
 
-    v21 = [(HROnboardingBulletPointViewController *)self bodyLabel];
-    [v21 setTranslatesAutoresizingMaskIntoConstraints:0];
+    bodyLabel5 = [(HROnboardingBulletPointViewController *)self bodyLabel];
+    [bodyLabel5 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v22 = [(HROnboardingBulletPointViewController *)self bodyLabel];
-    [v22 setNumberOfLines:0];
+    bodyLabel6 = [(HROnboardingBulletPointViewController *)self bodyLabel];
+    [bodyLabel6 setNumberOfLines:0];
 
-    v23 = [(HROnboardingBulletPointViewController *)self contentView];
-    v24 = [(HROnboardingBulletPointViewController *)self bodyLabel];
-    [v23 addSubview:v24];
+    contentView2 = [(HROnboardingBulletPointViewController *)self contentView];
+    bodyLabel7 = [(HROnboardingBulletPointViewController *)self bodyLabel];
+    [contentView2 addSubview:bodyLabel7];
   }
 
   v25 = objc_alloc_init(MEMORY[0x277D75A68]);
   [(HROnboardingBulletPointViewController *)self setBulletPointsView:v25];
 
-  v26 = [(HROnboardingBulletPointViewController *)self bulletPointsView];
-  [v26 setAxis:1];
+  bulletPointsView = [(HROnboardingBulletPointViewController *)self bulletPointsView];
+  [bulletPointsView setAxis:1];
 
-  v27 = [(HROnboardingBulletPointViewController *)self bulletPointsView];
-  [v27 setTranslatesAutoresizingMaskIntoConstraints:0];
+  bulletPointsView2 = [(HROnboardingBulletPointViewController *)self bulletPointsView];
+  [bulletPointsView2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v28 = [(HROnboardingBulletPointViewController *)self contentView];
-  v29 = [(HROnboardingBulletPointViewController *)self bulletPointsView];
-  [v28 addSubview:v29];
+  contentView3 = [(HROnboardingBulletPointViewController *)self contentView];
+  bulletPointsView3 = [(HROnboardingBulletPointViewController *)self bulletPointsView];
+  [contentView3 addSubview:bulletPointsView3];
 
   [(HROnboardingBulletPointViewController *)self _setupBulletPointViews];
-  v30 = [(HROnboardingBulletPointViewController *)self buttonTitleString];
-  v37[0] = v30;
+  buttonTitleString = [(HROnboardingBulletPointViewController *)self buttonTitleString];
+  v37[0] = buttonTitleString;
   v31 = [MEMORY[0x277CBEA60] arrayWithObjects:v37 count:1];
   v32 = [HRStackedButtonView buddyStackedButtonViewWithTitles:v31 footerText:0 boldFooterText:0 delegate:self];
   [(HROnboardingBulletPointViewController *)self setStackedButtonView:v32];
 
-  v33 = [(HROnboardingBulletPointViewController *)self stackedButtonView];
-  [v33 setBlurHidden:1];
+  stackedButtonView = [(HROnboardingBulletPointViewController *)self stackedButtonView];
+  [stackedButtonView setBlurHidden:1];
 
-  v34 = [(HROnboardingBulletPointViewController *)self stackedButtonView];
-  [v34 setFixedBottomButtonSpacing:1];
+  stackedButtonView2 = [(HROnboardingBulletPointViewController *)self stackedButtonView];
+  [stackedButtonView2 setFixedBottomButtonSpacing:1];
 
-  v35 = [(HROnboardingBulletPointViewController *)self stackedButtonView];
-  [v35 setTranslatesAutoresizingMaskIntoConstraints:0];
+  stackedButtonView3 = [(HROnboardingBulletPointViewController *)self stackedButtonView];
+  [stackedButtonView3 setTranslatesAutoresizingMaskIntoConstraints:0];
 }
 
 - (void)_setupBulletPointViews
@@ -203,41 +203,41 @@
 
         v6 = *(*(&v41 + 1) + 8 * i);
         v7 = [HRImageLabel alloc];
-        v8 = [v6 bulletImage];
+        bulletImage = [v6 bulletImage];
         [(HROnboardingBulletPointViewController *)self _bulletImageSize];
         v10 = v9;
         v12 = v11;
-        v13 = [v6 bulletTitleString];
-        v14 = [(HRImageLabel *)v7 initWithImage:v8 size:v13 text:v10, v12];
+        bulletTitleString = [v6 bulletTitleString];
+        v14 = [(HRImageLabel *)v7 initWithImage:bulletImage size:bulletTitleString text:v10, v12];
 
-        v15 = [(HROnboardingBulletPointViewController *)self _boldSubheadlineFont];
-        v16 = [(HRImageLabel *)v14 textLabel];
-        [v16 setFont:v15];
+        _boldSubheadlineFont = [(HROnboardingBulletPointViewController *)self _boldSubheadlineFont];
+        textLabel = [(HRImageLabel *)v14 textLabel];
+        [textLabel setFont:_boldSubheadlineFont];
 
         [(HRImageLabel *)v14 setImageAlignment:2];
         [(HRImageLabel *)v14 setTranslatesAutoresizingMaskIntoConstraints:0];
-        v17 = [(HROnboardingBulletPointViewController *)self contentView];
-        [v17 addSubview:v14];
+        contentView = [(HROnboardingBulletPointViewController *)self contentView];
+        [contentView addSubview:v14];
 
-        v18 = [(HROnboardingBulletPointViewController *)self titleLabel];
-        [(HRImageLabel *)v14 hk_alignHorizontalConstraintsWithView:v18 margin:0.0];
+        titleLabel = [(HROnboardingBulletPointViewController *)self titleLabel];
+        [(HRImageLabel *)v14 hk_alignHorizontalConstraintsWithView:titleLabel margin:0.0];
 
         if (v4)
         {
-          v19 = [(HRImageLabel *)v14 textLabel];
-          v20 = [v19 topAnchor];
-          v21 = [(HRImageLabel *)v4 bottomAnchor];
-          v22 = [v20 constraintEqualToAnchor:v21 constant:26.0];
-          [v22 setActive:1];
+          textLabel2 = [(HRImageLabel *)v14 textLabel];
+          topAnchor = [textLabel2 topAnchor];
+          bottomAnchor = [(HRImageLabel *)v4 bottomAnchor];
+          v21BottomAnchor = [topAnchor constraintEqualToAnchor:bottomAnchor constant:26.0];
+          [v21BottomAnchor setActive:1];
         }
 
         else
         {
-          v23 = [(HROnboardingBulletPointViewController *)self bodyString];
+          bodyString = [(HROnboardingBulletPointViewController *)self bodyString];
 
-          v19 = [(HRImageLabel *)v14 textLabel];
-          v20 = [v19 topAnchor];
-          if (v23)
+          textLabel2 = [(HRImageLabel *)v14 textLabel];
+          topAnchor = [textLabel2 topAnchor];
+          if (bodyString)
           {
             [(HROnboardingBulletPointViewController *)self bodyLabel];
           }
@@ -246,45 +246,45 @@
           {
             [(HROnboardingBulletPointViewController *)self titleLabel];
           }
-          v21 = ;
-          v22 = [v21 bottomAnchor];
-          v24 = [v20 constraintEqualToAnchor:v22 constant:37.0];
+          bottomAnchor = ;
+          v21BottomAnchor = [bottomAnchor bottomAnchor];
+          v24 = [topAnchor constraintEqualToAnchor:v21BottomAnchor constant:37.0];
           [v24 setActive:1];
         }
 
         v25 = v14;
-        v26 = [v6 bulletBodyString];
-        v27 = [v26 length];
+        bulletBodyString = [v6 bulletBodyString];
+        v27 = [bulletBodyString length];
 
         v4 = v25;
         if (v27)
         {
           v28 = objc_alloc_init(MEMORY[0x277D756B8]);
-          v29 = [v6 bulletBodyString];
-          [v28 setText:v29];
+          bulletBodyString2 = [v6 bulletBodyString];
+          [v28 setText:bulletBodyString2];
 
-          v30 = [(HROnboardingBulletPointViewController *)self _subheadlineFont];
-          [v28 setFont:v30];
+          _subheadlineFont = [(HROnboardingBulletPointViewController *)self _subheadlineFont];
+          [v28 setFont:_subheadlineFont];
 
           [v28 setAdjustsFontForContentSizeCategory:1];
           [v28 setTranslatesAutoresizingMaskIntoConstraints:0];
           [v28 setNumberOfLines:0];
-          v31 = [(HROnboardingBulletPointViewController *)self contentView];
-          [v31 addSubview:v28];
+          contentView2 = [(HROnboardingBulletPointViewController *)self contentView];
+          [contentView2 addSubview:v28];
 
-          v32 = [(HRImageLabel *)v25 textLabel];
-          [v28 hk_alignHorizontalConstraintsWithView:v32 margin:0.0];
+          textLabel3 = [(HRImageLabel *)v25 textLabel];
+          [v28 hk_alignHorizontalConstraintsWithView:textLabel3 margin:0.0];
 
-          v33 = [v28 firstBaselineAnchor];
-          v34 = [(HRImageLabel *)v25 textLabel];
-          v35 = [v34 lastBaselineAnchor];
+          firstBaselineAnchor = [v28 firstBaselineAnchor];
+          textLabel4 = [(HRImageLabel *)v25 textLabel];
+          lastBaselineAnchor = [textLabel4 lastBaselineAnchor];
           [(HROnboardingBulletPointViewController *)self _cannotDoHeaderLastBaselineToCannotDoBodyFirstBaseline];
-          v36 = [v33 constraintEqualToAnchor:v35 constant:?];
+          v36 = [firstBaselineAnchor constraintEqualToAnchor:lastBaselineAnchor constant:?];
           [v36 setActive:1];
 
           v4 = v28;
-          v37 = [(HROnboardingBulletPointViewController *)self bulletPointBodyLabels];
-          [v37 addObject:v4];
+          bulletPointBodyLabels = [(HROnboardingBulletPointViewController *)self bulletPointBodyLabels];
+          [bulletPointBodyLabels addObject:v4];
         }
       }
 
@@ -302,71 +302,71 @@
   v31.receiver = self;
   v31.super_class = HROnboardingBulletPointViewController;
   [(HROnboardingBulletPointViewController *)&v31 setUpConstraints];
-  v3 = [(HROnboardingBulletPointViewController *)self titleLabel];
-  v4 = [(HROnboardingBulletPointViewController *)self contentView];
+  titleLabel = [(HROnboardingBulletPointViewController *)self titleLabel];
+  contentView = [(HROnboardingBulletPointViewController *)self contentView];
   HKHealthUIBuddyDirectionalEdgeInsets();
-  [v3 hrui_alignHorizontalConstraintsWithView:v4 insets:?];
+  [titleLabel hrui_alignHorizontalConstraintsWithView:contentView insets:?];
 
-  v5 = [(HROnboardingBulletPointViewController *)self titleLabel];
-  v6 = [v5 topAnchor];
-  v7 = [(HROnboardingBulletPointViewController *)self contentView];
-  v8 = [v7 topAnchor];
+  titleLabel2 = [(HROnboardingBulletPointViewController *)self titleLabel];
+  topAnchor = [titleLabel2 topAnchor];
+  contentView2 = [(HROnboardingBulletPointViewController *)self contentView];
+  topAnchor2 = [contentView2 topAnchor];
   [(HROnboardingBulletPointViewController *)self contentTop];
-  v9 = [v6 constraintEqualToAnchor:v8 constant:?];
+  v9 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:?];
   [v9 setActive:1];
 
-  v10 = [(HROnboardingBulletPointViewController *)self bodyString];
+  bodyString = [(HROnboardingBulletPointViewController *)self bodyString];
 
-  if (v10)
+  if (bodyString)
   {
-    v11 = [(HROnboardingBulletPointViewController *)self bodyLabel];
-    v12 = [(HROnboardingBulletPointViewController *)self titleLabel];
-    [v11 hk_alignHorizontalConstraintsWithView:v12 margin:0.0];
+    bodyLabel = [(HROnboardingBulletPointViewController *)self bodyLabel];
+    titleLabel3 = [(HROnboardingBulletPointViewController *)self titleLabel];
+    [bodyLabel hk_alignHorizontalConstraintsWithView:titleLabel3 margin:0.0];
 
-    v13 = [(HROnboardingBulletPointViewController *)self bodyLabel];
-    v14 = [v13 topAnchor];
-    v15 = [(HROnboardingBulletPointViewController *)self titleLabel];
-    v16 = [v15 bottomAnchor];
-    v17 = [v14 constraintEqualToAnchor:v16 constant:15.0];
+    bodyLabel2 = [(HROnboardingBulletPointViewController *)self bodyLabel];
+    topAnchor3 = [bodyLabel2 topAnchor];
+    titleLabel4 = [(HROnboardingBulletPointViewController *)self titleLabel];
+    bottomAnchor = [titleLabel4 bottomAnchor];
+    v17 = [topAnchor3 constraintEqualToAnchor:bottomAnchor constant:15.0];
     [v17 setActive:1];
 
-    v18 = [(HROnboardingBulletPointViewController *)self bulletPointsView];
-    v19 = [v18 topAnchor];
+    bulletPointsView = [(HROnboardingBulletPointViewController *)self bulletPointsView];
+    topAnchor4 = [bulletPointsView topAnchor];
     [(HROnboardingBulletPointViewController *)self bodyLabel];
   }
 
   else
   {
-    v18 = [(HROnboardingBulletPointViewController *)self bulletPointsView];
-    v19 = [v18 topAnchor];
+    bulletPointsView = [(HROnboardingBulletPointViewController *)self bulletPointsView];
+    topAnchor4 = [bulletPointsView topAnchor];
     [(HROnboardingBulletPointViewController *)self titleLabel];
   }
   v20 = ;
-  v21 = [v20 bottomAnchor];
-  v22 = [v19 constraintEqualToAnchor:v21 constant:37.0];
+  bottomAnchor2 = [v20 bottomAnchor];
+  v22 = [topAnchor4 constraintEqualToAnchor:bottomAnchor2 constant:37.0];
   [v22 setActive:1];
 
-  v23 = [(HROnboardingBulletPointViewController *)self bulletPointsView];
-  v24 = [(HROnboardingBulletPointViewController *)self titleLabel];
-  [v23 hk_alignHorizontalConstraintsWithView:v24 margin:0.0];
+  bulletPointsView2 = [(HROnboardingBulletPointViewController *)self bulletPointsView];
+  titleLabel5 = [(HROnboardingBulletPointViewController *)self titleLabel];
+  [bulletPointsView2 hk_alignHorizontalConstraintsWithView:titleLabel5 margin:0.0];
 
-  v25 = [(HROnboardingBulletPointViewController *)self contentView];
-  v26 = [v25 bottomAnchor];
-  v27 = [(HROnboardingBulletPointViewController *)self lastBulletPointView];
-  v28 = [v27 bottomAnchor];
-  v29 = [v26 constraintEqualToAnchor:v28 constant:*MEMORY[0x277D12778]];
+  contentView3 = [(HROnboardingBulletPointViewController *)self contentView];
+  bottomAnchor3 = [contentView3 bottomAnchor];
+  lastBulletPointView = [(HROnboardingBulletPointViewController *)self lastBulletPointView];
+  bottomAnchor4 = [lastBulletPointView bottomAnchor];
+  v29 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4 constant:*MEMORY[0x277D12778]];
   [(HROnboardingBulletPointViewController *)self setContentViewBottomConstraint:v29];
 
-  v30 = [(HROnboardingBulletPointViewController *)self contentViewBottomConstraint];
-  [v30 setActive:1];
+  contentViewBottomConstraint = [(HROnboardingBulletPointViewController *)self contentViewBottomConstraint];
+  [contentViewBottomConstraint setActive:1];
 }
 
-- (void)stackedButtonView:(id)a3 didTapButtonAtIndex:(int64_t)a4
+- (void)stackedButtonView:(id)view didTapButtonAtIndex:(int64_t)index
 {
-  if (!a4)
+  if (!index)
   {
-    v5 = [(HROnboardingBulletPointViewController *)self delegate];
-    [v5 stepForward];
+    delegate = [(HROnboardingBulletPointViewController *)self delegate];
+    [delegate stepForward];
   }
 }
 
@@ -383,16 +383,16 @@
 {
   if ([(HROnboardingBulletPointViewController *)self isOnboarding])
   {
-    v3 = [(HROnboardingBulletPointViewController *)self stackedButtonView];
+    stackedButtonView = [(HROnboardingBulletPointViewController *)self stackedButtonView];
     HKHealthUIBuddyDirectionalEdgeInsets();
-    [(HROnboardingBulletPointViewController *)self setFooterView:v3 insets:?];
+    [(HROnboardingBulletPointViewController *)self setFooterView:stackedButtonView insets:?];
 
-    v4 = [(HROnboardingBulletPointViewController *)self stackedButtonView];
-    v5 = [(HROnboardingBulletPointViewController *)self view];
-    [v4 alignBlurViewHorizontalConstraintsWithView:v5];
+    stackedButtonView2 = [(HROnboardingBulletPointViewController *)self stackedButtonView];
+    view = [(HROnboardingBulletPointViewController *)self view];
+    [stackedButtonView2 alignBlurViewHorizontalConstraintsWithView:view];
 
-    v6 = [(HROnboardingBulletPointViewController *)self stackedButtonView];
-    [v6 setBlurHidden:0];
+    stackedButtonView3 = [(HROnboardingBulletPointViewController *)self stackedButtonView];
+    [stackedButtonView3 setBlurHidden:0];
   }
 }
 
@@ -401,74 +401,74 @@
   v44[1] = *MEMORY[0x277D85DE8];
   if ([(HROnboardingBulletPointViewController *)self isOnboarding])
   {
-    v3 = [(HROnboardingBulletPointViewController *)self view];
-    [v3 layoutIfNeeded];
+    view = [(HROnboardingBulletPointViewController *)self view];
+    [view layoutIfNeeded];
 
-    v4 = [(HROnboardingBulletPointViewController *)self view];
-    v5 = [(HROnboardingBulletPointViewController *)self stackedButtonView];
-    v6 = [v5 buttons];
-    v7 = [v6 firstObject];
-    [v7 frame];
+    view2 = [(HROnboardingBulletPointViewController *)self view];
+    stackedButtonView = [(HROnboardingBulletPointViewController *)self stackedButtonView];
+    buttons = [stackedButtonView buttons];
+    firstObject = [buttons firstObject];
+    [firstObject frame];
     v9 = v8;
     v11 = v10;
     v13 = v12;
     v15 = v14;
-    v16 = [(HROnboardingBulletPointViewController *)self stackedButtonView];
-    [v4 convertRect:v16 fromView:{v9, v11, v13, v15}];
+    stackedButtonView2 = [(HROnboardingBulletPointViewController *)self stackedButtonView];
+    [view2 convertRect:stackedButtonView2 fromView:{v9, v11, v13, v15}];
     v18 = v17;
 
-    v19 = [(HROnboardingBulletPointViewController *)self contentView];
-    [v19 frame];
+    contentView = [(HROnboardingBulletPointViewController *)self contentView];
+    [contentView frame];
     v21 = v20;
-    v22 = [(HROnboardingBulletPointViewController *)self view];
-    [v22 safeAreaInsets];
+    view3 = [(HROnboardingBulletPointViewController *)self view];
+    [view3 safeAreaInsets];
     v24 = v18 - v23;
 
     if (v21 > v24)
     {
       [(HROnboardingBulletPointViewController *)self removeFooterView];
-      v25 = [(HROnboardingBulletPointViewController *)self contentView];
-      v26 = [(HROnboardingBulletPointViewController *)self stackedButtonView];
-      [v25 addSubview:v26];
+      contentView2 = [(HROnboardingBulletPointViewController *)self contentView];
+      stackedButtonView3 = [(HROnboardingBulletPointViewController *)self stackedButtonView];
+      [contentView2 addSubview:stackedButtonView3];
 
-      v27 = [(HROnboardingBulletPointViewController *)self stackedButtonView];
-      [v27 setBlurHidden:1];
+      stackedButtonView4 = [(HROnboardingBulletPointViewController *)self stackedButtonView];
+      [stackedButtonView4 setBlurHidden:1];
 
-      v28 = [(HROnboardingBulletPointViewController *)self stackedButtonView];
-      v29 = [(HROnboardingBulletPointViewController *)self titleLabel];
-      [v28 hk_alignHorizontalConstraintsWithView:v29 margin:0.0];
+      stackedButtonView5 = [(HROnboardingBulletPointViewController *)self stackedButtonView];
+      titleLabel = [(HROnboardingBulletPointViewController *)self titleLabel];
+      [stackedButtonView5 hk_alignHorizontalConstraintsWithView:titleLabel margin:0.0];
 
-      v30 = [(HROnboardingBulletPointViewController *)self stackedButtonView];
-      v31 = [v30 topAnchor];
-      v32 = [(HROnboardingBulletPointViewController *)self lastBulletPointView];
-      v33 = [v32 bottomAnchor];
-      v34 = [v31 constraintEqualToAnchor:v33 constant:*MEMORY[0x277D127A0]];
+      stackedButtonView6 = [(HROnboardingBulletPointViewController *)self stackedButtonView];
+      topAnchor = [stackedButtonView6 topAnchor];
+      lastBulletPointView = [(HROnboardingBulletPointViewController *)self lastBulletPointView];
+      bottomAnchor = [lastBulletPointView bottomAnchor];
+      v34 = [topAnchor constraintEqualToAnchor:bottomAnchor constant:*MEMORY[0x277D127A0]];
       [v34 setActive:1];
 
       v35 = MEMORY[0x277CCAAD0];
-      v36 = [(HROnboardingBulletPointViewController *)self contentViewBottomConstraint];
-      v44[0] = v36;
+      contentViewBottomConstraint = [(HROnboardingBulletPointViewController *)self contentViewBottomConstraint];
+      v44[0] = contentViewBottomConstraint;
       v37 = [MEMORY[0x277CBEA60] arrayWithObjects:v44 count:1];
       [v35 deactivateConstraints:v37];
 
       [(HROnboardingBulletPointViewController *)self setContentViewBottomConstraint:0];
-      v38 = [(HROnboardingBulletPointViewController *)self contentView];
-      v39 = [v38 bottomAnchor];
-      v40 = [(HROnboardingBulletPointViewController *)self stackedButtonView];
-      v41 = [v40 bottomAnchor];
-      v42 = [v39 constraintEqualToAnchor:v41];
+      contentView3 = [(HROnboardingBulletPointViewController *)self contentView];
+      bottomAnchor2 = [contentView3 bottomAnchor];
+      stackedButtonView7 = [(HROnboardingBulletPointViewController *)self stackedButtonView];
+      bottomAnchor3 = [stackedButtonView7 bottomAnchor];
+      v42 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
       [(HROnboardingBulletPointViewController *)self setContentViewBottomConstraint:v42];
 
-      v43 = [(HROnboardingBulletPointViewController *)self contentViewBottomConstraint];
-      [v43 setActive:1];
+      contentViewBottomConstraint2 = [(HROnboardingBulletPointViewController *)self contentViewBottomConstraint];
+      [contentViewBottomConstraint2 setActive:1];
     }
   }
 }
 
 - (double)_cannotDoHeaderLastBaselineToCannotDoBodyFirstBaseline
 {
-  v2 = [(HROnboardingBulletPointViewController *)self _bodyFont];
-  [v2 _scaledValueForValue:27.0];
+  _bodyFont = [(HROnboardingBulletPointViewController *)self _bodyFont];
+  [_bodyFont _scaledValueForValue:27.0];
   v4 = v3;
 
   return v4;

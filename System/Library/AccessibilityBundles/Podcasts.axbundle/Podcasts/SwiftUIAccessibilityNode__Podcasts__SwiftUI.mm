@@ -16,7 +16,7 @@
   v9 = 3221225472;
   v10 = __96__SwiftUIAccessibilityNode__Podcasts__SwiftUI__accessibilityHitTestShouldFallbackToNearestChild__block_invoke;
   v11 = &unk_29F2EA2F8;
-  v12 = self;
+  selfCopy = self;
   v13 = &v14;
   AXPerformSafeBlock();
   v3 = v15[5];
@@ -24,19 +24,19 @@
 
   if (v3)
   {
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = SwiftUIAccessibilityNode__Podcasts__SwiftUI;
-    v5 = [(SwiftUIAccessibilityNode__Podcasts__SwiftUI *)&v7 _accessibilityExpandedStatus];
+    _accessibilityExpandedStatus = [(SwiftUIAccessibilityNode__Podcasts__SwiftUI *)&v7 _accessibilityExpandedStatus];
 
-    return v5 != 0;
+    return _accessibilityExpandedStatus != 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 @end

@@ -22,8 +22,8 @@
 
 - (BOOL)isMaster
 {
-  v2 = [(CalDAVCalendarServerRecurrenceItem *)self master];
-  v3 = v2 != 0;
+  master = [(CalDAVCalendarServerRecurrenceItem *)self master];
+  v3 = master != 0;
 
   return v3;
 }

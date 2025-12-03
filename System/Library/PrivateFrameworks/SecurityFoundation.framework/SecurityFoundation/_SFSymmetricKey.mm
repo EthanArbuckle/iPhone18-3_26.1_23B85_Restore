@@ -1,31 +1,31 @@
 @interface _SFSymmetricKey
-- (_SFSymmetricKey)initWithData:(id)a3 specifier:(id)a4 error:(id *)a5;
-- (id)initRandomKeyWithSpecifier:(id)a3 error:(id *)a4;
+- (_SFSymmetricKey)initWithData:(id)data specifier:(id)specifier error:(id *)error;
+- (id)initRandomKeyWithSpecifier:(id)specifier error:(id *)error;
 @end
 
 @implementation _SFSymmetricKey
 
-- (id)initRandomKeyWithSpecifier:(id)a3 error:(id *)a4
+- (id)initRandomKeyWithSpecifier:(id)specifier error:(id *)error
 {
-  v6 = a3;
-  if (!v6)
+  specifierCopy = specifier;
+  if (!specifierCopy)
   {
     [_SFSymmetricKey initRandomKeyWithSpecifier:error:];
   }
 
-  v7 = [v6 keyLengthInBytes];
-  v8 = malloc_type_malloc(v7, 0xF3B8A818uLL);
-  if (SecRandomCopyBytes(*MEMORY[0x277CDC540], v7, v8))
+  keyLengthInBytes = [specifierCopy keyLengthInBytes];
+  v8 = malloc_type_malloc(keyLengthInBytes, 0xF3B8A818uLL);
+  if (SecRandomCopyBytes(*MEMORY[0x277CDC540], keyLengthInBytes, v8))
   {
-    if (a4)
+    if (error)
     {
       [MEMORY[0x277CCA9B8] errorWithDomain:@"SFKeychainErrorDomain" code:3 userInfo:0];
-      *a4 = v9 = 0;
+      *error = selfCopy = 0;
     }
 
     else
     {
-      v9 = 0;
+      selfCopy = 0;
     }
   }
 
@@ -36,24 +36,24 @@
     v13[1] = 3221225472;
     v13[2] = __52___SFSymmetricKey_initRandomKeyWithSpecifier_error___block_invoke;
     v13[3] = &__block_descriptor_40_e12_v24__0_v8Q16l;
-    v13[4] = v7;
-    v11 = [v10 initWithBytesNoCopy:v8 length:v7 deallocator:v13];
-    self = [(_SFSymmetricKey *)self initWithData:v11 specifier:v6 error:a4];
+    v13[4] = keyLengthInBytes;
+    v11 = [v10 initWithBytesNoCopy:v8 length:keyLengthInBytes deallocator:v13];
+    self = [(_SFSymmetricKey *)self initWithData:v11 specifier:specifierCopy error:error];
 
-    v9 = self;
+    selfCopy = self;
   }
 
-  return v9;
+  return selfCopy;
 }
 
-- (_SFSymmetricKey)initWithData:(id)a3 specifier:(id)a4 error:(id *)a5
+- (_SFSymmetricKey)initWithData:(id)data specifier:(id)specifier error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (v8)
+  dataCopy = data;
+  specifierCopy = specifier;
+  v10 = specifierCopy;
+  if (dataCopy)
   {
-    if (v9)
+    if (specifierCopy)
     {
       goto LABEL_3;
     }
@@ -74,7 +74,7 @@ LABEL_3:
   if (objc_opt_isKindOfClass())
   {
     v11 = v10;
-    v12 = [v8 length];
+    v12 = [dataCopy length];
     if (v12 == [v11 keyLengthInBytes])
     {
       v13 = [objc_msgSend(objc_msgSend(objc_opt_class() "_attributesClass")];
@@ -88,9 +88,9 @@ LABEL_3:
         symmetricKeyInternal = v14->_symmetricKeyInternal;
         v14->_symmetricKeyInternal = v15;
 
-        v17 = [v8 length];
+        v17 = [dataCopy length];
         v18 = malloc_type_malloc(v17, 0x8BE9CEC6uLL);
-        memcpy(v18, [v8 bytes], v17);
+        memcpy(v18, [dataCopy bytes], v17);
         v19 = objc_alloc(MEMORY[0x277CBEA90]);
         v25[0] = MEMORY[0x277D85DD0];
         v25[1] = 3221225472;
@@ -104,33 +104,33 @@ LABEL_3:
       }
 
       self = v14;
-      v23 = self;
+      selfCopy = self;
     }
 
-    else if (a5)
+    else if (error)
     {
       [MEMORY[0x277CCA9B8] errorWithDomain:@"SFKeychainErrorDomain" code:2 userInfo:0];
-      *a5 = v23 = 0;
+      *error = selfCopy = 0;
     }
 
     else
     {
-      v23 = 0;
+      selfCopy = 0;
     }
   }
 
-  else if (a5)
+  else if (error)
   {
     [MEMORY[0x277CCA9B8] errorWithDomain:@"SFCryptoServicesErrorDomain" code:4 userInfo:0];
-    *a5 = v23 = 0;
+    *error = selfCopy = 0;
   }
 
   else
   {
-    v23 = 0;
+    selfCopy = 0;
   }
 
-  return v23;
+  return selfCopy;
 }
 
 - (void)initRandomKeyWithSpecifier:error:.cold.1()

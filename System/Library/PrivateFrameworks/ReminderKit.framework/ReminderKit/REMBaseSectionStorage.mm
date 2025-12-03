@@ -1,50 +1,50 @@
 @interface REMBaseSectionStorage
 + (NSString)cdEntityName;
 + (id)newObjectID;
-+ (id)objectIDWithUUID:(id)a3;
++ (id)objectIDWithUUID:(id)d;
 + (void)cdEntityName;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isUnsupported;
-- (REMBaseSectionStorage)initWithCoder:(id)a3;
-- (REMBaseSectionStorage)initWithObjectID:(id)a3 accountID:(id)a4 parentID:(id)a5 displayName:(id)a6;
+- (REMBaseSectionStorage)initWithCoder:(id)coder;
+- (REMBaseSectionStorage)initWithObjectID:(id)d accountID:(id)iD parentID:(id)parentID displayName:(id)name;
 - (REMResolutionTokenMap)resolutionTokenMap;
 - (id)cdKeyToStorageKeyMap;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
 - (id)description;
 - (unint64_t)hash;
 - (void)cdKeyToStorageKeyMap;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)resolutionTokenMap;
-- (void)setStoreGenerationIfNeeded:(unint64_t)a3;
+- (void)setStoreGenerationIfNeeded:(unint64_t)needed;
 @end
 
 @implementation REMBaseSectionStorage
 
-- (REMBaseSectionStorage)initWithObjectID:(id)a3 accountID:(id)a4 parentID:(id)a5 displayName:(id)a6
+- (REMBaseSectionStorage)initWithObjectID:(id)d accountID:(id)iD parentID:(id)parentID displayName:(id)name
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  dCopy = d;
+  iDCopy = iD;
+  parentIDCopy = parentID;
+  nameCopy = name;
   v23.receiver = self;
   v23.super_class = REMBaseSectionStorage;
   v15 = [(REMBaseSectionStorage *)&v23 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_objectID, a3);
-    objc_storeStrong(&v16->_accountID, a4);
-    objc_storeStrong(&v16->_parentID, a5);
+    objc_storeStrong(&v15->_objectID, d);
+    objc_storeStrong(&v16->_accountID, iD);
+    objc_storeStrong(&v16->_parentID, parentID);
     v17 = objc_alloc_init(REMResolutionTokenMap);
     resolutionTokenMap = v16->_resolutionTokenMap;
     v16->_resolutionTokenMap = v17;
 
-    v19 = [MEMORY[0x1E695DEF0] data];
+    data = [MEMORY[0x1E695DEF0] data];
     resolutionTokenMapData = v16->_resolutionTokenMapData;
-    v16->_resolutionTokenMapData = v19;
+    v16->_resolutionTokenMapData = data;
 
-    objc_storeStrong(&v16->_displayName, a6);
+    objc_storeStrong(&v16->_displayName, name);
     creationDate = v16->_creationDate;
     v16->_creationDate = 0;
   }
@@ -52,53 +52,53 @@
   return v16;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(REMBaseSectionStorage *)self objectID];
-  v6 = [(REMBaseSectionStorage *)self accountID];
-  v7 = [(REMBaseSectionStorage *)self parentID];
-  v8 = [(REMBaseSectionStorage *)self displayName];
-  v9 = [v4 initWithObjectID:v5 accountID:v6 parentID:v7 displayName:v8];
+  objectID = [(REMBaseSectionStorage *)self objectID];
+  accountID = [(REMBaseSectionStorage *)self accountID];
+  parentID = [(REMBaseSectionStorage *)self parentID];
+  displayName = [(REMBaseSectionStorage *)self displayName];
+  v9 = [v4 initWithObjectID:objectID accountID:accountID parentID:parentID displayName:displayName];
 
-  v10 = [(REMBaseSectionStorage *)self creationDate];
-  [v9 setCreationDate:v10];
+  creationDate = [(REMBaseSectionStorage *)self creationDate];
+  [v9 setCreationDate:creationDate];
 
   v11 = [(REMResolutionTokenMap *)self->_resolutionTokenMap copy];
   v12 = v9[10];
   v9[10] = v11;
 
-  v13 = [(REMBaseSectionStorage *)self resolutionTokenMapData];
-  [v9 setResolutionTokenMapData:v13];
+  resolutionTokenMapData = [(REMBaseSectionStorage *)self resolutionTokenMapData];
+  [v9 setResolutionTokenMapData:resolutionTokenMapData];
 
   v9[1] = self->_storeGeneration;
   v9[2] = self->_copyGeneration + 1;
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v55 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4 != self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy != self)
   {
-    v6 = v4;
+    v6 = equalCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [(REMBaseSectionStorage *)self objectID];
-      v8 = [(REMBaseSectionStorage *)v6 objectID];
-      v9 = v8;
-      if (v7 == v8)
+      objectID = [(REMBaseSectionStorage *)self objectID];
+      objectID2 = [(REMBaseSectionStorage *)v6 objectID];
+      v9 = objectID2;
+      if (objectID == objectID2)
       {
       }
 
       else
       {
-        v10 = [(REMBaseSectionStorage *)self objectID];
-        v11 = [(REMBaseSectionStorage *)v6 objectID];
-        v12 = [v10 isEqual:v11];
+        objectID3 = [(REMBaseSectionStorage *)self objectID];
+        objectID4 = [(REMBaseSectionStorage *)v6 objectID];
+        v12 = [objectID3 isEqual:objectID4];
 
         if (!v12)
         {
@@ -106,18 +106,18 @@
         }
       }
 
-      v14 = [(REMBaseSectionStorage *)self accountID];
-      v15 = [(REMBaseSectionStorage *)v6 accountID];
-      v16 = v15;
-      if (v14 == v15)
+      accountID = [(REMBaseSectionStorage *)self accountID];
+      accountID2 = [(REMBaseSectionStorage *)v6 accountID];
+      v16 = accountID2;
+      if (accountID == accountID2)
       {
       }
 
       else
       {
-        v17 = [(REMBaseSectionStorage *)self accountID];
-        v18 = [(REMBaseSectionStorage *)v6 accountID];
-        v19 = [v17 isEqual:v18];
+        accountID3 = [(REMBaseSectionStorage *)self accountID];
+        accountID4 = [(REMBaseSectionStorage *)v6 accountID];
+        v19 = [accountID3 isEqual:accountID4];
 
         if (!v19)
         {
@@ -125,18 +125,18 @@
         }
       }
 
-      v20 = [(REMBaseSectionStorage *)self parentID];
-      v21 = [(REMBaseSectionStorage *)v6 parentID];
-      v22 = v21;
-      if (v20 == v21)
+      parentID = [(REMBaseSectionStorage *)self parentID];
+      parentID2 = [(REMBaseSectionStorage *)v6 parentID];
+      v22 = parentID2;
+      if (parentID == parentID2)
       {
       }
 
       else
       {
-        v23 = [(REMBaseSectionStorage *)self parentID];
-        v24 = [(REMBaseSectionStorage *)v6 parentID];
-        v25 = [v23 isEqual:v24];
+        parentID3 = [(REMBaseSectionStorage *)self parentID];
+        parentID4 = [(REMBaseSectionStorage *)v6 parentID];
+        v25 = [parentID3 isEqual:parentID4];
 
         if (!v25)
         {
@@ -144,18 +144,18 @@
         }
       }
 
-      v26 = [(REMBaseSectionStorage *)self displayName];
-      v27 = [(REMBaseSectionStorage *)v6 displayName];
-      v28 = v27;
-      if (v26 == v27)
+      displayName = [(REMBaseSectionStorage *)self displayName];
+      displayName2 = [(REMBaseSectionStorage *)v6 displayName];
+      v28 = displayName2;
+      if (displayName == displayName2)
       {
       }
 
       else
       {
-        v29 = [(REMBaseSectionStorage *)self displayName];
-        v30 = [(REMBaseSectionStorage *)v6 displayName];
-        v31 = [v29 isEqual:v30];
+        displayName3 = [(REMBaseSectionStorage *)self displayName];
+        displayName4 = [(REMBaseSectionStorage *)v6 displayName];
+        v31 = [displayName3 isEqual:displayName4];
 
         if (!v31)
         {
@@ -163,18 +163,18 @@
         }
       }
 
-      v32 = [(REMBaseSectionStorage *)self creationDate];
-      v33 = [(REMBaseSectionStorage *)v6 creationDate];
-      v34 = v33;
-      if (v32 == v33)
+      creationDate = [(REMBaseSectionStorage *)self creationDate];
+      creationDate2 = [(REMBaseSectionStorage *)v6 creationDate];
+      v34 = creationDate2;
+      if (creationDate == creationDate2)
       {
       }
 
       else
       {
-        v35 = [(REMBaseSectionStorage *)self creationDate];
-        v36 = [(REMBaseSectionStorage *)v6 creationDate];
-        v37 = [v35 isEqual:v36];
+        creationDate3 = [(REMBaseSectionStorage *)self creationDate];
+        creationDate4 = [(REMBaseSectionStorage *)v6 creationDate];
+        v37 = [creationDate3 isEqual:creationDate4];
 
         if (!v37)
         {
@@ -201,18 +201,18 @@
         }
       }
 
-      v41 = [(REMBaseSectionStorage *)self resolutionTokenMap];
-      v42 = [(REMBaseSectionStorage *)v6 resolutionTokenMap];
-      if (v41 == v42)
+      resolutionTokenMap = [(REMBaseSectionStorage *)self resolutionTokenMap];
+      resolutionTokenMap2 = [(REMBaseSectionStorage *)v6 resolutionTokenMap];
+      if (resolutionTokenMap == resolutionTokenMap2)
       {
         v13 = 1;
       }
 
       else
       {
-        v43 = [(REMBaseSectionStorage *)self resolutionTokenMap];
-        v44 = [(REMBaseSectionStorage *)v6 resolutionTokenMap];
-        v13 = [v43 isEqual:v44];
+        resolutionTokenMap3 = [(REMBaseSectionStorage *)self resolutionTokenMap];
+        resolutionTokenMap4 = [(REMBaseSectionStorage *)v6 resolutionTokenMap];
+        v13 = [resolutionTokenMap3 isEqual:resolutionTokenMap4];
       }
 
       goto LABEL_23;
@@ -234,8 +234,8 @@ LABEL_24:
 
 - (unint64_t)hash
 {
-  v2 = [(REMBaseSectionStorage *)self objectID];
-  v3 = [v2 hash];
+  objectID = [(REMBaseSectionStorage *)self objectID];
+  v3 = [objectID hash];
 
   return v3;
 }
@@ -244,8 +244,8 @@ LABEL_24:
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(REMBaseSectionStorage *)self objectID];
-  v6 = [v3 stringWithFormat:@"<%@: %p %@>", v4, self, v5];
+  objectID = [(REMBaseSectionStorage *)self objectID];
+  v6 = [v3 stringWithFormat:@"<%@: %p %@>", v4, self, objectID];
 
   return v6;
 }
@@ -254,29 +254,29 @@ LABEL_24:
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(REMBaseSectionStorage *)self displayName];
-  v6 = [(REMBaseSectionStorage *)self objectID];
-  v7 = [v3 stringWithFormat:@"<%@: %p %@ %@ [%ld.%ld]>", v4, self, v5, v6, self->_storeGeneration, self->_copyGeneration];
+  displayName = [(REMBaseSectionStorage *)self displayName];
+  objectID = [(REMBaseSectionStorage *)self objectID];
+  v7 = [v3 stringWithFormat:@"<%@: %p %@ %@ [%ld.%ld]>", v4, self, displayName, objectID, self->_storeGeneration, self->_copyGeneration];
 
   return v7;
 }
 
-- (void)setStoreGenerationIfNeeded:(unint64_t)a3
+- (void)setStoreGenerationIfNeeded:(unint64_t)needed
 {
   if (!self->_storeGeneration)
   {
-    self->_storeGeneration = a3;
+    self->_storeGeneration = needed;
   }
 }
 
-- (REMBaseSectionStorage)initWithCoder:(id)a3
+- (REMBaseSectionStorage)initWithCoder:(id)coder
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"objectID"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"accountID"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"parentID"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"displayName"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"objectID"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"accountID"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"parentID"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"displayName"];
   v9 = v8;
   if (v5)
   {
@@ -304,14 +304,14 @@ LABEL_24:
       _os_log_fault_impl(&dword_19A0DB000, v12, OS_LOG_TYPE_FAULT, "Attempted to decode REMBaseSectionStorage missing objectID, accountID, displayName {objectID: %{public}@, accountID:%{public}@ parentID:%{public}@ displayName: %{sensitive}@}", &v24, 0x2Au);
     }
 
-    v13 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     v14 = [(REMBaseSectionStorage *)self initWithObjectID:v5 accountID:v6 parentID:v7 displayName:v8];
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"resolutionTokenMapData"];
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"resolutionTokenMap"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"resolutionTokenMapData"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"resolutionTokenMap"];
     v17 = v16;
     if (v16)
     {
@@ -330,63 +330,63 @@ LABEL_24:
       v14->_resolutionTokenMapData = v20;
     }
 
-    v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"creationDate"];
+    v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"creationDate"];
     [(REMBaseSectionStorage *)v14 setCreationDate:v21];
 
     self = v14;
-    v13 = self;
+    selfCopy = self;
   }
 
   v22 = *MEMORY[0x1E69E9840];
-  return v13;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v11 = a3;
-  v4 = [(REMBaseSectionStorage *)self objectID];
-  [v11 encodeObject:v4 forKey:@"objectID"];
+  coderCopy = coder;
+  objectID = [(REMBaseSectionStorage *)self objectID];
+  [coderCopy encodeObject:objectID forKey:@"objectID"];
 
-  v5 = [(REMBaseSectionStorage *)self accountID];
-  [v11 encodeObject:v5 forKey:@"accountID"];
+  accountID = [(REMBaseSectionStorage *)self accountID];
+  [coderCopy encodeObject:accountID forKey:@"accountID"];
 
-  v6 = [(REMBaseSectionStorage *)self parentID];
-  [v11 encodeObject:v6 forKey:@"parentID"];
+  parentID = [(REMBaseSectionStorage *)self parentID];
+  [coderCopy encodeObject:parentID forKey:@"parentID"];
 
-  v7 = [(REMBaseSectionStorage *)self displayName];
-  [v11 encodeObject:v7 forKey:@"displayName"];
+  displayName = [(REMBaseSectionStorage *)self displayName];
+  [coderCopy encodeObject:displayName forKey:@"displayName"];
 
-  v8 = [(REMBaseSectionStorage *)self creationDate];
-  [v11 encodeObject:v8 forKey:@"creationDate"];
+  creationDate = [(REMBaseSectionStorage *)self creationDate];
+  [coderCopy encodeObject:creationDate forKey:@"creationDate"];
 
   resolutionTokenMap = self->_resolutionTokenMap;
   if (resolutionTokenMap)
   {
-    [v11 encodeObject:resolutionTokenMap forKey:@"resolutionTokenMap"];
-    [v11 encodeObject:0 forKey:@"resolutionTokenMapData"];
+    [coderCopy encodeObject:resolutionTokenMap forKey:@"resolutionTokenMap"];
+    [coderCopy encodeObject:0 forKey:@"resolutionTokenMapData"];
   }
 
   else
   {
-    [v11 encodeObject:0 forKey:@"resolutionTokenMap"];
-    v10 = [(REMBaseSectionStorage *)self resolutionTokenMapData];
-    [v11 encodeObject:v10 forKey:@"resolutionTokenMapData"];
+    [coderCopy encodeObject:0 forKey:@"resolutionTokenMap"];
+    resolutionTokenMapData = [(REMBaseSectionStorage *)self resolutionTokenMapData];
+    [coderCopy encodeObject:resolutionTokenMapData forKey:@"resolutionTokenMapData"];
   }
 }
 
 + (id)newObjectID
 {
-  v3 = [MEMORY[0x1E696AFB0] UUID];
-  v4 = [a1 objectIDWithUUID:v3];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  v4 = [self objectIDWithUUID:uUID];
 
   return v4;
 }
 
-+ (id)objectIDWithUUID:(id)a3
++ (id)objectIDWithUUID:(id)d
 {
-  v4 = a3;
-  v5 = [a1 cdEntityName];
-  v6 = [REMObjectID objectIDWithUUID:v4 entityName:v5];
+  dCopy = d;
+  cdEntityName = [self cdEntityName];
+  v6 = [REMObjectID objectIDWithUUID:dCopy entityName:cdEntityName];
 
   return v6;
 }
@@ -395,7 +395,7 @@ LABEL_24:
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = NSStringFromClass(a1);
+  v5 = NSStringFromClass(self);
   v6 = [v4 isEqualToString:v5];
 
   if ((v6 & 1) == 0)
@@ -408,9 +408,9 @@ LABEL_24:
 
 - (BOOL)isUnsupported
 {
-  v2 = [(REMBaseSectionStorage *)self effectiveMinimumSupportedVersion];
+  effectiveMinimumSupportedVersion = [(REMBaseSectionStorage *)self effectiveMinimumSupportedVersion];
 
-  return rem_isUnsupportedVersionByRuntime(v2);
+  return rem_isUnsupportedVersionByRuntime(effectiveMinimumSupportedVersion);
 }
 
 - (id)cdKeyToStorageKeyMap
@@ -440,8 +440,8 @@ LABEL_24:
 
   else
   {
-    v6 = [(REMBaseSectionStorage *)self resolutionTokenMapData];
-    if (!v6)
+    resolutionTokenMapData = [(REMBaseSectionStorage *)self resolutionTokenMapData];
+    if (!resolutionTokenMapData)
     {
       v7 = +[REMLogStore read];
       if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -450,8 +450,8 @@ LABEL_24:
       }
     }
 
-    v8 = [(REMBaseSectionStorage *)self cdKeyToStorageKeyMap];
-    v9 = [REMResolutionTokenMap resolutionTokenMapWithJSONData:v6 keyMap:v8];
+    cdKeyToStorageKeyMap = [(REMBaseSectionStorage *)self cdKeyToStorageKeyMap];
+    v9 = [REMResolutionTokenMap resolutionTokenMapWithJSONData:resolutionTokenMapData keyMap:cdKeyToStorageKeyMap];
 
     objc_storeStrong(p_resolutionTokenMap, v9);
     v5 = v9;
@@ -466,7 +466,7 @@ LABEL_24:
   v0 = +[REMLogStore read];
   if (os_log_type_enabled(v0, OS_LOG_TYPE_FAULT))
   {
-    v2 = [MEMORY[0x1E696AF00] callStackSymbols];
+    callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
     OUTLINED_FUNCTION_0_8(&dword_19A0DB000, v3, v4, "rem_log_fault_if (![NSStringFromClass([REMBaseSectionStorage class]) isEqualToString:NSStringFromClass(self)]) -- A subclass of REMBaseSectionStorage called '- [REMBaseSectionStorage cdEntityName]'. The subclass should override this method. {callstack: %@}", v5, v6, v7, v8, 2u);
   }
 
@@ -479,7 +479,7 @@ LABEL_24:
   v0 = +[REMLogStore read];
   if (os_log_type_enabled(v0, OS_LOG_TYPE_FAULT))
   {
-    v2 = [MEMORY[0x1E696AF00] callStackSymbols];
+    callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
     OUTLINED_FUNCTION_0_8(&dword_19A0DB000, v3, v4, "rem_log_fault_if (![NSStringFromClass([REMBaseSectionStorage class]) isEqualToString:NSStringFromClass([self class])]) -- A subclass of REMBaseSectionStorage called '- [REMBaseSectionStorage cdKeyToStorageKeyMap]'. The subclass should override this method. {callstack: %@}", v5, v6, v7, v8, 2u);
   }
 
@@ -490,7 +490,7 @@ LABEL_24:
 {
   v5 = *MEMORY[0x1E69E9840];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_19A0DB000, a2, OS_LOG_TYPE_ERROR, "Nil resolutionTokenMapData when reading resolutionTokenMap from account storage. Initialize an empty map {list: %@}", &v3, 0xCu);
   v2 = *MEMORY[0x1E69E9840];
 }

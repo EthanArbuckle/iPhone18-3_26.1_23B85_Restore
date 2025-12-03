@@ -1,11 +1,11 @@
 @interface PTMetalContext
-- (BOOL)supportsFamily:(int64_t)a3;
+- (BOOL)supportsFamily:(int64_t)family;
 - (MTLCommandBuffer)commandBuffer;
-- (PTMetalContext)initWithCommandQueue:(id)a3 bundleClass:(Class)a4;
-- (PTMetalContext)initWithDevice:(id)a3 bundleClass:(Class)a4;
-- (PTMetalContext)initWithFigMetalContext:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)functionWithName:(id)a3 withConstants:(id)a4;
+- (PTMetalContext)initWithCommandQueue:(id)queue bundleClass:(Class)class;
+- (PTMetalContext)initWithDevice:(id)device bundleClass:(Class)class;
+- (PTMetalContext)initWithFigMetalContext:(id)context;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)functionWithName:(id)name withConstants:(id)constants;
 - (void)commit;
 - (void)commitAndWaitUntilCompleted;
 - (void)commitAndWaitUntilScheduled;
@@ -14,55 +14,55 @@
 
 @implementation PTMetalContext
 
-- (PTMetalContext)initWithFigMetalContext:(id)a3
+- (PTMetalContext)initWithFigMetalContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v8.receiver = self;
   v8.super_class = PTMetalContext;
   v5 = [(PTMetalContext *)&v8 init];
   figMetalContext = v5->_figMetalContext;
-  v5->_figMetalContext = v4;
+  v5->_figMetalContext = contextCopy;
 
   return v5;
 }
 
-- (PTMetalContext)initWithDevice:(id)a3 bundleClass:(Class)a4
+- (PTMetalContext)initWithDevice:(id)device bundleClass:(Class)class
 {
-  v6 = [a3 newCommandQueue];
-  v7 = [(PTMetalContext *)self initWithCommandQueue:v6 bundleClass:a4];
+  newCommandQueue = [device newCommandQueue];
+  v7 = [(PTMetalContext *)self initWithCommandQueue:newCommandQueue bundleClass:class];
 
   return v7;
 }
 
-- (PTMetalContext)initWithCommandQueue:(id)a3 bundleClass:(Class)a4
+- (PTMetalContext)initWithCommandQueue:(id)queue bundleClass:(Class)class
 {
-  v7 = a3;
+  queueCopy = queue;
   v23.receiver = self;
   v23.super_class = PTMetalContext;
   v8 = [(PTMetalContext *)&v23 init];
   if (v8)
   {
-    v9 = [v7 device];
+    device = [queueCopy device];
     device = v8->_device;
-    v8->_device = v9;
+    v8->_device = device;
 
-    objc_storeStrong(&v8->_commandQueue, a3);
+    objc_storeStrong(&v8->_commandQueue, queue);
     v8->_allowCommandbufferAllocation = 0;
     v8->_imageblocksSupported = [(PTMetalContext *)v8 supportsFamily:1006];
-    v11 = [MEMORY[0x277CCA8D8] bundleForClass:a4];
+    v11 = [MEMORY[0x277CCA8D8] bundleForClass:class];
     if (v11)
     {
       v12 = [objc_alloc(MEMORY[0x277CF6C78]) initWithbundle:v11 andOptionalCommandQueue:v8->_commandQueue];
       figMetalContext = v8->_figMetalContext;
       v8->_figMetalContext = v12;
 
-      v14 = [(FigMetalContext *)v8->_figMetalContext library];
+      library = [(FigMetalContext *)v8->_figMetalContext library];
       library = v8->_library;
-      v8->_library = v14;
+      v8->_library = library;
 
-      v16 = [(FigMetalContext *)v8->_figMetalContext pipelineLibrary];
+      pipelineLibrary = [(FigMetalContext *)v8->_figMetalContext pipelineLibrary];
       pipelineLibrary = v8->_pipelineLibrary;
-      v8->_pipelineLibrary = v16;
+      v8->_pipelineLibrary = pipelineLibrary;
 
       v18 = [[PTMetalTextureUtil alloc] initWithMetalContext:v8];
       textureUtil = v8->_textureUtil;
@@ -107,9 +107,9 @@
     commandBuffer = self->_commandBuffer;
     if (!commandBuffer)
     {
-      v12 = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
+      commandBuffer = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
       v13 = self->_commandBuffer;
-      self->_commandBuffer = v12;
+      self->_commandBuffer = commandBuffer;
 
       v14 = self->_commandBuffer;
       if (!v14)
@@ -172,18 +172,18 @@
 
 - (void)waitForIdle
 {
-  v3 = [(PTMetalContext *)self commandBuffer];
+  commandBuffer = [(PTMetalContext *)self commandBuffer];
 
   [(PTMetalContext *)self commitAndWaitUntilCompleted];
 }
 
-- (id)functionWithName:(id)a3 withConstants:(id)a4
+- (id)functionWithName:(id)name withConstants:(id)constants
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  nameCopy = name;
+  constantsCopy = constants;
+  if (!constantsCopy)
   {
-    v10 = [(MTLLibrary *)self->_library newFunctionWithName:v6];
+    v10 = [(MTLLibrary *)self->_library newFunctionWithName:nameCopy];
     if (v10)
     {
       goto LABEL_20;
@@ -198,19 +198,19 @@
   if (pipelineLibrary)
   {
     v19 = 0;
-    v10 = [(MTLLibrary *)library newFunctionWithName:v6 constantValues:v7 pipelineLibrary:pipelineLibrary error:&v19];
+    v10 = [(MTLLibrary *)library newFunctionWithName:nameCopy constantValues:constantsCopy pipelineLibrary:pipelineLibrary error:&v19];
     v11 = v19;
     if (!v10)
     {
       v12 = _PTLogSystem();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
-        [PTMetalContext functionWithName:v6 withConstants:?];
+        [PTMetalContext functionWithName:nameCopy withConstants:?];
       }
 
       v13 = self->_library;
       v18 = v11;
-      v10 = [(MTLLibrary *)v13 newFunctionWithName:v6 constantValues:v7 error:&v18];
+      v10 = [(MTLLibrary *)v13 newFunctionWithName:nameCopy constantValues:constantsCopy error:&v18];
       v14 = v18;
 
       v11 = v14;
@@ -224,7 +224,7 @@
   else
   {
     v20 = 0;
-    v10 = [(MTLLibrary *)library newFunctionWithName:v6 constantValues:v7 error:&v20];
+    v10 = [(MTLLibrary *)library newFunctionWithName:nameCopy constantValues:constantsCopy error:&v20];
     v11 = v20;
     if (!v10)
     {
@@ -239,7 +239,7 @@ LABEL_12:
       v16 = _PTLogSystem();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
       {
-        [PTMetalContext functionWithName:v6 withConstants:?];
+        [PTMetalContext functionWithName:nameCopy withConstants:?];
       }
 
       v10 = 0;
@@ -265,23 +265,23 @@ LABEL_20:
   return v10;
 }
 
-- (BOOL)supportsFamily:(int64_t)a3
+- (BOOL)supportsFamily:(int64_t)family
 {
   v5 = PTDefaultsPublicGetDictionary();
   v6 = [v5 objectForKeyedSubscript:@"harvesting.gpufamily"];
-  v7 = [v6 intValue];
+  intValue = [v6 intValue];
 
-  if (v7)
+  if (intValue)
   {
-    return v7 >= a3;
+    return intValue >= family;
   }
 
   device = self->_device;
 
-  return [(MTLDevice *)device supportsFamily:a3];
+  return [(MTLDevice *)device supportsFamily:family];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[PTMetalContext alloc] initWithFigMetalContext:self->_figMetalContext];
   [(PTMetalContext *)v4 setDevice:self->_device];

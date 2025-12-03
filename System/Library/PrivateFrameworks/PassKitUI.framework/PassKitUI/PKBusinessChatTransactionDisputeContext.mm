@@ -1,9 +1,9 @@
 @interface PKBusinessChatTransactionDisputeContext
-- (PKBusinessChatTransactionDisputeContext)initWithPaymentPass:(id)a3 transaction:(id)a4 account:(id)a5 accountUser:(id)a6 familyMember:(id)a7 physicalCards:(id)a8 intent:(int64_t)a9;
-- (PKBusinessChatTransactionDisputeContext)initWithPaymentPass:(id)a3 transaction:(id)a4 account:(id)a5 accountUser:(id)a6 familyMember:(id)a7 physicalCards:(id)a8 topic:(id)a9;
-- (id)_formattedBodyTextForTopicBodyText:(id)a3;
+- (PKBusinessChatTransactionDisputeContext)initWithPaymentPass:(id)pass transaction:(id)transaction account:(id)account accountUser:(id)user familyMember:(id)member physicalCards:(id)cards intent:(int64_t)intent;
+- (PKBusinessChatTransactionDisputeContext)initWithPaymentPass:(id)pass transaction:(id)transaction account:(id)account accountUser:(id)user familyMember:(id)member physicalCards:(id)cards topic:(id)topic;
+- (id)_formattedBodyTextForTopicBodyText:(id)text;
 - (id)_formattedTransactionDate;
-- (id)_replacePlaceholder:(id)a3 withValue:(id)a4 inBodyText:(id)a5;
+- (id)_replacePlaceholder:(id)placeholder withValue:(id)value inBodyText:(id)text;
 - (id)bodyText;
 - (id)groupParameters;
 - (id)intentParameters;
@@ -11,33 +11,33 @@
 
 @implementation PKBusinessChatTransactionDisputeContext
 
-- (PKBusinessChatTransactionDisputeContext)initWithPaymentPass:(id)a3 transaction:(id)a4 account:(id)a5 accountUser:(id)a6 familyMember:(id)a7 physicalCards:(id)a8 intent:(int64_t)a9
+- (PKBusinessChatTransactionDisputeContext)initWithPaymentPass:(id)pass transaction:(id)transaction account:(id)account accountUser:(id)user familyMember:(id)member physicalCards:(id)cards intent:(int64_t)intent
 {
-  v27 = a3;
-  v26 = a4;
-  v25 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
+  passCopy = pass;
+  transactionCopy = transaction;
+  accountCopy = account;
+  userCopy = user;
+  memberCopy = member;
+  cardsCopy = cards;
   v28.receiver = self;
   v28.super_class = PKBusinessChatTransactionDisputeContext;
   v19 = [(PKBusinessChatTransactionDisputeContext *)&v28 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_paymentPass, a3);
-    objc_storeStrong(&v20->_transaction, a4);
-    objc_storeStrong(&v20->_account, a5);
-    objc_storeStrong(&v20->_accountUser, a6);
-    objc_storeStrong(&v20->_familyMember, a7);
-    v21 = [v18 copy];
+    objc_storeStrong(&v19->_paymentPass, pass);
+    objc_storeStrong(&v20->_transaction, transaction);
+    objc_storeStrong(&v20->_account, account);
+    objc_storeStrong(&v20->_accountUser, user);
+    objc_storeStrong(&v20->_familyMember, member);
+    v21 = [cardsCopy copy];
     physicalCards = v20->_physicalCards;
     v20->_physicalCards = v21;
 
-    v20->_intent = a9;
-    if (v16)
+    v20->_intent = intent;
+    if (userCopy)
     {
-      v23 = [v16 isCurrentUser] ^ 1;
+      v23 = [userCopy isCurrentUser] ^ 1;
     }
 
     else
@@ -51,35 +51,35 @@
   return v20;
 }
 
-- (PKBusinessChatTransactionDisputeContext)initWithPaymentPass:(id)a3 transaction:(id)a4 account:(id)a5 accountUser:(id)a6 familyMember:(id)a7 physicalCards:(id)a8 topic:(id)a9
+- (PKBusinessChatTransactionDisputeContext)initWithPaymentPass:(id)pass transaction:(id)transaction account:(id)account accountUser:(id)user familyMember:(id)member physicalCards:(id)cards topic:(id)topic
 {
-  v28 = a3;
-  v27 = a4;
-  v26 = a5;
-  v16 = a6;
-  v25 = a7;
-  v17 = a8;
-  v24 = a9;
+  passCopy = pass;
+  transactionCopy = transaction;
+  accountCopy = account;
+  userCopy = user;
+  memberCopy = member;
+  cardsCopy = cards;
+  topicCopy = topic;
   v29.receiver = self;
   v29.super_class = PKBusinessChatTransactionDisputeContext;
   v18 = [(PKBusinessChatTransactionDisputeContext *)&v29 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_paymentPass, a3);
-    objc_storeStrong(&v19->_transaction, a4);
-    objc_storeStrong(&v19->_account, a5);
-    objc_storeStrong(&v19->_accountUser, a6);
-    objc_storeStrong(&v19->_familyMember, a7);
-    v20 = [v17 copy];
+    objc_storeStrong(&v18->_paymentPass, pass);
+    objc_storeStrong(&v19->_transaction, transaction);
+    objc_storeStrong(&v19->_account, account);
+    objc_storeStrong(&v19->_accountUser, user);
+    objc_storeStrong(&v19->_familyMember, member);
+    v20 = [cardsCopy copy];
     physicalCards = v19->_physicalCards;
     v19->_physicalCards = v20;
 
     v19->_intent = 5;
-    objc_storeStrong(&v19->_topic, a9);
-    if (v16)
+    objc_storeStrong(&v19->_topic, topic);
+    if (userCopy)
     {
-      v22 = [v16 isCurrentUser] ^ 1;
+      v22 = [userCopy isCurrentUser] ^ 1;
     }
 
     else
@@ -98,9 +98,9 @@
   topic = self->_topic;
   if (topic)
   {
-    v4 = [(PKAccountSupportTopic *)topic businessChatTargetDialog];
+    businessChatTargetDialog = [(PKAccountSupportTopic *)topic businessChatTargetDialog];
 LABEL_8:
-    v6 = v4;
+    v6 = businessChatTargetDialog;
     goto LABEL_9;
   }
 
@@ -117,36 +117,36 @@ LABEL_8:
 
   if (self->_disputingAccountUserTransaction)
   {
-    v4 = [(__CFString *)v6 stringByAppendingString:@"_alt"];
+    businessChatTargetDialog = [(__CFString *)v6 stringByAppendingString:@"_alt"];
     goto LABEL_8;
   }
 
 LABEL_9:
   v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
   [v7 setObject:v6 forKeyedSubscript:@"targetDialog"];
-  v8 = [(PKPaymentTransaction *)self->_transaction serviceIdentifier];
-  [v7 setObject:v8 forKeyedSubscript:@"transactionId"];
+  serviceIdentifier = [(PKPaymentTransaction *)self->_transaction serviceIdentifier];
+  [v7 setObject:serviceIdentifier forKeyedSubscript:@"transactionId"];
 
-  v9 = [(PKPaymentPass *)self->_paymentPass uniqueID];
-  [v7 setObject:v9 forKeyedSubscript:@"passUniqueId"];
+  uniqueID = [(PKPaymentPass *)self->_paymentPass uniqueID];
+  [v7 setObject:uniqueID forKeyedSubscript:@"passUniqueId"];
 
-  v10 = [(PKPaymentPass *)self->_paymentPass associatedAccountServiceAccountIdentifier];
-  [v7 setObject:v10 forKeyedSubscript:@"accountID"];
+  associatedAccountServiceAccountIdentifier = [(PKPaymentPass *)self->_paymentPass associatedAccountServiceAccountIdentifier];
+  [v7 setObject:associatedAccountServiceAccountIdentifier forKeyedSubscript:@"accountID"];
 
-  v11 = [(PKPaymentTransaction *)self->_transaction effectiveTransactionSource];
+  effectiveTransactionSource = [(PKPaymentTransaction *)self->_transaction effectiveTransactionSource];
   v12 = PKPaymentTransactionSourceToString();
   [v7 setObject:v12 forKeyedSubscript:@"paymentMethod"];
 
-  if (v11 == 5)
+  if (effectiveTransactionSource == 5)
   {
-    v13 = [(PKPaymentTransaction *)self->_transaction cardNumberSuffix];
+    cardNumberSuffix = [(PKPaymentTransaction *)self->_transaction cardNumberSuffix];
     physicalCards = self->_physicalCards;
     v38[0] = MEMORY[0x1E69E9820];
     v38[1] = 3221225472;
     v38[2] = __59__PKBusinessChatTransactionDisputeContext_intentParameters__block_invoke;
     v38[3] = &unk_1E80132B0;
-    v39 = v13;
-    v15 = v13;
+    v39 = cardNumberSuffix;
+    v15 = cardNumberSuffix;
     v16 = [(NSSet *)physicalCards pk_anyObjectPassingTest:v38];
   }
 
@@ -159,15 +159,15 @@ LABEL_9:
   v17 = PKStringFromPhysicalCardState();
   [v7 setObject:v17 forKeyedSubscript:@"physicalCardStatus"];
 
-  v18 = [(PKPaymentTransaction *)self->_transaction amount];
-  v19 = [v18 stringValue];
-  [v7 setObject:v19 forKeyedSubscript:@"transactionAmount"];
+  amount = [(PKPaymentTransaction *)self->_transaction amount];
+  stringValue = [amount stringValue];
+  [v7 setObject:stringValue forKeyedSubscript:@"transactionAmount"];
 
-  v20 = [(PKPaymentTransaction *)self->_transaction merchant];
-  v21 = [v20 displayName];
-  [v7 setObject:v21 forKeyedSubscript:@"transactionMerchantName"];
+  merchant = [(PKPaymentTransaction *)self->_transaction merchant];
+  displayName = [merchant displayName];
+  [v7 setObject:displayName forKeyedSubscript:@"transactionMerchantName"];
 
-  v22 = [(PKPaymentTransaction *)self->_transaction transactionDate];
+  transactionDate = [(PKPaymentTransaction *)self->_transaction transactionDate];
   v23 = PKW3CDateStringFromDate();
   [v7 setObject:v23 forKeyedSubscript:@"transactionDate"];
 
@@ -178,14 +178,14 @@ LABEL_9:
     v25 = PKAccountStateToString();
     [v7 setObject:v25 forKeyedSubscript:@"transactorAccountState"];
 
-    v26 = [(PKAccountUser *)self->_accountUser accessLevel];
+    accessLevel = [(PKAccountUser *)self->_accountUser accessLevel];
     v27 = @"participant";
-    if (v26 != 2)
+    if (accessLevel != 2)
     {
       v27 = 0;
     }
 
-    if (v26 == 1)
+    if (accessLevel == 1)
     {
       v28 = @"owner";
     }
@@ -196,8 +196,8 @@ LABEL_9:
     }
 
     [v7 setObject:v28 forKeyedSubscript:@"transactorAccountRole"];
-    v29 = [(PKAccountUser *)self->_accountUser firstName];
-    [v7 setObject:v29 forKeyedSubscript:@"transactorFirstName"];
+    firstName = [(PKAccountUser *)self->_accountUser firstName];
+    [v7 setObject:firstName forKeyedSubscript:@"transactorFirstName"];
   }
 
   else
@@ -206,14 +206,14 @@ LABEL_9:
     v30 = PKAccountStateToString();
     [v7 setObject:v30 forKeyedSubscript:@"transactorAccountState"];
 
-    v31 = [(PKAccount *)self->_account accessLevel];
+    accessLevel2 = [(PKAccount *)self->_account accessLevel];
     v32 = @"participant";
-    if (v31 != 2)
+    if (accessLevel2 != 2)
     {
       v32 = 0;
     }
 
-    if (v31 == 1)
+    if (accessLevel2 == 1)
     {
       v33 = @"owner";
     }
@@ -275,7 +275,7 @@ uint64_t __59__PKBusinessChatTransactionDisputeContext_intentParameters__block_i
   v8[3] = *MEMORY[0x1E69E9840];
   if (self->_topic)
   {
-    v2 = [(PKAccountSupportTopic *)self->_topic businessChatPage];
+    businessChatPage = [(PKAccountSupportTopic *)self->_topic businessChatPage];
   }
 
   else
@@ -296,10 +296,10 @@ uint64_t __59__PKBusinessChatTransactionDisputeContext_intentParameters__block_i
       goto LABEL_9;
     }
 
-    v2 = [(__CFString *)v4 stringByAppendingString:@"::alt"];
+    businessChatPage = [(__CFString *)v4 stringByAppendingString:@"::alt"];
   }
 
-  v4 = v2;
+  v4 = businessChatPage;
 LABEL_9:
   v7[0] = @"domain";
   v7[1] = @"origin";
@@ -317,15 +317,15 @@ LABEL_9:
   topic = self->_topic;
   if (topic)
   {
-    v4 = [(PKAccountSupportTopic *)topic bodyText];
-    v5 = [(PKBusinessChatTransactionDisputeContext *)self _formattedBodyTextForTopicBodyText:v4];
+    bodyText = [(PKAccountSupportTopic *)topic bodyText];
+    v5 = [(PKBusinessChatTransactionDisputeContext *)self _formattedBodyTextForTopicBodyText:bodyText];
     goto LABEL_21;
   }
 
-  v4 = [(PKPaymentTransaction *)self->_transaction formattedBalanceAdjustmentAmount];
-  v6 = [(PKBusinessChatTransactionDisputeContext *)self _formattedTransactionDate];
-  v7 = [(PKPaymentTransaction *)self->_transaction merchant];
-  v8 = [v7 displayName];
+  bodyText = [(PKPaymentTransaction *)self->_transaction formattedBalanceAdjustmentAmount];
+  _formattedTransactionDate = [(PKBusinessChatTransactionDisputeContext *)self _formattedTransactionDate];
+  merchant = [(PKPaymentTransaction *)self->_transaction merchant];
+  displayName = [merchant displayName];
 
   familyMember = self->_familyMember;
   if (familyMember && ![(PKFamilyMember *)familyMember isMe])
@@ -336,15 +336,15 @@ LABEL_9:
   accountUser = self->_accountUser;
   if (accountUser)
   {
-    v11 = [(PKAccountUser *)accountUser altDSID];
+    altDSID = [(PKAccountUser *)accountUser altDSID];
     v12 = PKCurrentUserAltDSID();
-    v13 = v11;
+    v13 = altDSID;
     v14 = v12;
     v15 = v14;
     if (v13 == v14)
     {
 
-      v17 = 0;
+      givenName = 0;
 LABEL_14:
 
       goto LABEL_15;
@@ -367,15 +367,15 @@ LABEL_14:
 LABEL_13:
     v18 = MEMORY[0x1E69B8740];
     v19 = self->_familyMember;
-    v20 = [(PKAccountUser *)self->_accountUser nameComponents];
-    v13 = [v18 contactForFamilyMember:v19 nameComponents:v20 imageData:0];
+    nameComponents = [(PKAccountUser *)self->_accountUser nameComponents];
+    v13 = [v18 contactForFamilyMember:v19 nameComponents:nameComponents imageData:0];
 
-    v17 = [v13 givenName];
+    givenName = [v13 givenName];
     goto LABEL_14;
   }
 
 LABEL_10:
-  v17 = 0;
+  givenName = 0;
 LABEL_15:
   switch(self->_intent)
   {
@@ -409,48 +409,48 @@ LABEL_21:
   return v5;
 }
 
-- (id)_formattedBodyTextForTopicBodyText:(id)a3
+- (id)_formattedBodyTextForTopicBodyText:(id)text
 {
   transaction = self->_transaction;
-  v5 = a3;
-  v6 = [(PKPaymentTransaction *)transaction merchant];
-  v7 = [v6 displayName];
-  v8 = [(PKBusinessChatTransactionDisputeContext *)self _replacePlaceholder:@"{merchantName}" withValue:v7 inBodyText:v5];
+  textCopy = text;
+  merchant = [(PKPaymentTransaction *)transaction merchant];
+  displayName = [merchant displayName];
+  v8 = [(PKBusinessChatTransactionDisputeContext *)self _replacePlaceholder:@"{merchantName}" withValue:displayName inBodyText:textCopy];
 
-  v9 = [(PKBusinessChatTransactionDisputeContext *)self _formattedTransactionDate];
-  v10 = [(PKBusinessChatTransactionDisputeContext *)self _replacePlaceholder:@"{transactionDate}" withValue:v9 inBodyText:v8];
+  _formattedTransactionDate = [(PKBusinessChatTransactionDisputeContext *)self _formattedTransactionDate];
+  v10 = [(PKBusinessChatTransactionDisputeContext *)self _replacePlaceholder:@"{transactionDate}" withValue:_formattedTransactionDate inBodyText:v8];
 
-  v11 = [(PKPaymentTransaction *)self->_transaction formattedBalanceAdjustmentAmount];
-  v12 = [(PKBusinessChatTransactionDisputeContext *)self _replacePlaceholder:@"{transactionAmount}" withValue:v11 inBodyText:v10];
+  formattedBalanceAdjustmentAmount = [(PKPaymentTransaction *)self->_transaction formattedBalanceAdjustmentAmount];
+  v12 = [(PKBusinessChatTransactionDisputeContext *)self _replacePlaceholder:@"{transactionAmount}" withValue:formattedBalanceAdjustmentAmount inBodyText:v10];
 
   return v12;
 }
 
-- (id)_replacePlaceholder:(id)a3 withValue:(id)a4 inBodyText:(id)a5
+- (id)_replacePlaceholder:(id)placeholder withValue:(id)value inBodyText:(id)text
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
-  if (!v9)
+  placeholderCopy = placeholder;
+  valueCopy = value;
+  textCopy = text;
+  v10 = textCopy;
+  if (!textCopy)
   {
     goto LABEL_5;
   }
 
-  if (([v9 containsString:v7] & 1) == 0)
+  if (([textCopy containsString:placeholderCopy] & 1) == 0)
   {
     v11 = v10;
     goto LABEL_7;
   }
 
-  if (!v8)
+  if (!valueCopy)
   {
 LABEL_5:
     v12 = 0;
     goto LABEL_8;
   }
 
-  v11 = [v10 stringByReplacingOccurrencesOfString:v7 withString:v8];
+  v11 = [v10 stringByReplacingOccurrencesOfString:placeholderCopy withString:valueCopy];
 LABEL_7:
   v12 = v11;
 LABEL_8:
@@ -466,8 +466,8 @@ LABEL_8:
 
   [v3 setDateStyle:3];
   [v3 setTimeStyle:1];
-  v5 = [(PKPaymentTransaction *)self->_transaction transactionDate];
-  v6 = [v3 stringFromDate:v5];
+  transactionDate = [(PKPaymentTransaction *)self->_transaction transactionDate];
+  v6 = [v3 stringFromDate:transactionDate];
 
   return v6;
 }

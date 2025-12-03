@@ -1,17 +1,17 @@
 @interface _UIFocusSystemHaloEffect
-- (id)_resolvedEffectForItem:(id)a3;
+- (id)_resolvedEffectForItem:(id)item;
 @end
 
 @implementation _UIFocusSystemHaloEffect
 
-- (id)_resolvedEffectForItem:(id)a3
+- (id)_resolvedEffectForItem:(id)item
 {
-  v4 = a3;
-  if (_UIFocusEffectIsSystemDefaultVisible(v4))
+  itemCopy = item;
+  if (_UIFocusEffectIsSystemDefaultVisible(itemCopy))
   {
     v7.receiver = self;
     v7.super_class = _UIFocusSystemHaloEffect;
-    v5 = [(UIFocusHaloEffect *)&v7 _resolvedEffectForItem:v4];
+    v5 = [(UIFocusHaloEffect *)&v7 _resolvedEffectForItem:itemCopy];
   }
 
   else

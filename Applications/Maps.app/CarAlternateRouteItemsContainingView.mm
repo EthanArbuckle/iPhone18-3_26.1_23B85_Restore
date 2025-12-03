@@ -1,21 +1,21 @@
 @interface CarAlternateRouteItemsContainingView
-- (CarAlternateRouteItemsContainingView)initWithDataSource:(id)a3;
-- (id)focusItemsInRect:(CGRect)a3;
+- (CarAlternateRouteItemsContainingView)initWithDataSource:(id)source;
+- (id)focusItemsInRect:(CGRect)rect;
 @end
 
 @implementation CarAlternateRouteItemsContainingView
 
-- (id)focusItemsInRect:(CGRect)a3
+- (id)focusItemsInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v16.receiver = self;
   v16.super_class = CarAlternateRouteItemsContainingView;
   v8 = [(CarAlternateRouteItemsContainingView *)&v16 focusItemsInRect:?];
-  v9 = [(CarAlternateRouteItemsContainingView *)self dataSource];
-  v10 = [v9 focusableRouteItems];
+  dataSource = [(CarAlternateRouteItemsContainingView *)self dataSource];
+  focusableRouteItems = [dataSource focusableRouteItems];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100674DCC;
@@ -26,22 +26,22 @@
   *&v15[7] = width;
   *&v15[8] = height;
   v11 = [NSPredicate predicateWithBlock:v15];
-  v12 = [v10 filteredArrayUsingPredicate:v11];
+  v12 = [focusableRouteItems filteredArrayUsingPredicate:v11];
   v13 = [v8 arrayByAddingObjectsFromArray:v12];
 
   return v13;
 }
 
-- (CarAlternateRouteItemsContainingView)initWithDataSource:(id)a3
+- (CarAlternateRouteItemsContainingView)initWithDataSource:(id)source
 {
-  v5 = a3;
+  sourceCopy = source;
   v9.receiver = self;
   v9.super_class = CarAlternateRouteItemsContainingView;
   v6 = [(CarAlternateRouteItemsContainingView *)&v9 initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_dataSource, a3);
+    objc_storeStrong(&v6->_dataSource, source);
   }
 
   return v7;

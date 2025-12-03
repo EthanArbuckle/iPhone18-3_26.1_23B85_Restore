@@ -1,16 +1,16 @@
 @interface MEComposeExtensionsHelper
 + (id)log;
-- (MEComposeExtensionsHelper)initWithComposeSession:(id)a3 extensionsController:(id)a4 iconReloader:(id)a5;
+- (MEComposeExtensionsHelper)initWithComposeSession:(id)session extensionsController:(id)controller iconReloader:(id)reloader;
 - (MEMailComposeExtensionDelegate)extensionDelegate;
-- (void)_dispatchMailComposeSessionDidBeginForExtensions:(id)a3;
-- (void)appExtensionViewControllerForExtensionIdentifier:(id)a3 completionHandler:(id)a4;
+- (void)_dispatchMailComposeSessionDidBeginForExtensions:(id)extensions;
+- (void)appExtensionViewControllerForExtensionIdentifier:(id)identifier completionHandler:(id)handler;
 - (void)dealloc;
-- (void)dispatchEmailAddressTokenIconRequestsForMailMessage:(id)a3 completionHandler:(id)a4;
-- (void)extensionsMatched:(id)a3;
-- (void)extensionsNoLongerMatching:(id)a3;
-- (void)getAdditionalHeadersForMessage:(id)a3 completionHandler:(id)a4;
-- (void)regenerateEmailAddressTokenChangesForSession:(id)a3 forContextUUID:(id)a4;
-- (void)regenerateSecurityStatusInformationForSession:(id)a3 forContextUUID:(id)a4;
+- (void)dispatchEmailAddressTokenIconRequestsForMailMessage:(id)message completionHandler:(id)handler;
+- (void)extensionsMatched:(id)matched;
+- (void)extensionsNoLongerMatching:(id)matching;
+- (void)getAdditionalHeadersForMessage:(id)message completionHandler:(id)handler;
+- (void)regenerateEmailAddressTokenChangesForSession:(id)session forContextUUID:(id)d;
+- (void)regenerateSecurityStatusInformationForSession:(id)session forContextUUID:(id)d;
 @end
 
 @implementation MEComposeExtensionsHelper
@@ -21,7 +21,7 @@
   block[1] = 3221225472;
   block[2] = __32__MEComposeExtensionsHelper_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_0 != -1)
   {
     dispatch_once(&log_onceToken_0, block);
@@ -40,29 +40,29 @@ void __32__MEComposeExtensionsHelper_log__block_invoke(uint64_t a1)
   log_log_0 = v1;
 }
 
-- (MEComposeExtensionsHelper)initWithComposeSession:(id)a3 extensionsController:(id)a4 iconReloader:(id)a5
+- (MEComposeExtensionsHelper)initWithComposeSession:(id)session extensionsController:(id)controller iconReloader:(id)reloader
 {
   v41[1] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  sessionCopy = session;
+  controllerCopy = controller;
+  reloaderCopy = reloader;
   v40.receiver = self;
   v40.super_class = MEComposeExtensionsHelper;
   v12 = [(MEComposeExtensionsHelper *)&v40 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_composeSession, a3);
-    objc_storeStrong(&v13->_extensionsController, a4);
+    objc_storeStrong(&v12->_composeSession, session);
+    objc_storeStrong(&v13->_extensionsController, controller);
     v14 = MEMORY[0x277CCACA8];
-    v15 = [(MEComposeSession *)v13->_composeSession sessionID];
-    v16 = [v14 stringWithFormat:@"com.apple.email.composeextensionrequests.%@", v15];
+    sessionID = [(MEComposeSession *)v13->_composeSession sessionID];
+    v16 = [v14 stringWithFormat:@"com.apple.email.composeextensionrequests.%@", sessionID];
 
     v17 = v16;
-    v18 = [v16 UTF8String];
+    uTF8String = [v16 UTF8String];
     v19 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v20 = dispatch_queue_attr_make_with_qos_class(v19, QOS_CLASS_UTILITY, 0);
-    v21 = dispatch_queue_create(v18, v20);
+    v21 = dispatch_queue_create(uTF8String, v20);
     extensionRequestDispatcherQueue = v13->_extensionRequestDispatcherQueue;
     v13->_extensionRequestDispatcherQueue = v21;
 
@@ -76,7 +76,7 @@ void __32__MEComposeExtensionsHelper_log__block_invoke(uint64_t a1)
     extensionsObserverCancelable = v13->_extensionsObserverCancelable;
     v13->_extensionsObserverCancelable = v27;
 
-    objc_storeWeak(&v13->_extensionDelegate, v11);
+    objc_storeWeak(&v13->_extensionDelegate, reloaderCopy);
     v29 = objc_alloc(MEMORY[0x277D07168]);
     v30 = objc_opt_new();
     v31 = [v29 initWithObject:v30];
@@ -159,8 +159,8 @@ void __86__MEComposeExtensionsHelper_initWithComposeSession_extensionsController
           objc_enumerationMutation(v3);
         }
 
-        v7 = [*(*(&v10 + 1) + 8 * v6) composeSessionInterface];
-        [v7 mailComposeSessionDidEnd:self->_composeSession];
+        composeSessionInterface = [*(*(&v10 + 1) + 8 * v6) composeSessionInterface];
+        [composeSessionInterface mailComposeSessionDidEnd:self->_composeSession];
 
         ++v6;
       }
@@ -179,38 +179,38 @@ void __86__MEComposeExtensionsHelper_initWithComposeSession_extensionsController
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)extensionsMatched:(id)a3
+- (void)extensionsMatched:(id)matched
 {
-  v4 = a3;
+  matchedCopy = matched;
   remoteExtensions = self->_remoteExtensions;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __47__MEComposeExtensionsHelper_extensionsMatched___block_invoke;
   v7[3] = &unk_279858EA8;
-  v6 = v4;
+  v6 = matchedCopy;
   v8 = v6;
   [(EFLocked *)remoteExtensions performWhileLocked:v7];
   [(MEComposeExtensionsHelper *)self _dispatchMailComposeSessionDidBeginForExtensions:v6];
 }
 
-- (void)extensionsNoLongerMatching:(id)a3
+- (void)extensionsNoLongerMatching:(id)matching
 {
-  v4 = a3;
+  matchingCopy = matching;
   remoteExtensions = self->_remoteExtensions;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __56__MEComposeExtensionsHelper_extensionsNoLongerMatching___block_invoke;
   v8[3] = &unk_279858EA8;
-  v6 = v4;
+  v6 = matchingCopy;
   v9 = v6;
   [(EFLocked *)remoteExtensions performWhileLocked:v8];
-  v7 = [(MEComposeExtensionsHelper *)self extensionDelegate];
-  [v7 reloadEmailAddressTokenIcons];
+  extensionDelegate = [(MEComposeExtensionsHelper *)self extensionDelegate];
+  [extensionDelegate reloadEmailAddressTokenIcons];
 }
 
-- (void)_dispatchMailComposeSessionDidBeginForExtensions:(id)a3
+- (void)_dispatchMailComposeSessionDidBeginForExtensions:(id)extensions
 {
-  v4 = a3;
+  extensionsCopy = extensions;
   objc_initWeak(&location, self);
   extensionRequestDispatcherQueue = self->_extensionRequestDispatcherQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -218,8 +218,8 @@ void __86__MEComposeExtensionsHelper_initWithComposeSession_extensionsController
   block[2] = __78__MEComposeExtensionsHelper__dispatchMailComposeSessionDidBeginForExtensions___block_invoke;
   block[3] = &unk_279858E58;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = extensionsCopy;
+  v6 = extensionsCopy;
   dispatch_async(extensionRequestDispatcherQueue, block);
 
   objc_destroyWeak(&v9);
@@ -315,11 +315,11 @@ void __78__MEComposeExtensionsHelper__dispatchMailComposeSessionDidBeginForExten
   }
 }
 
-- (void)dispatchEmailAddressTokenIconRequestsForMailMessage:(id)a3 completionHandler:(id)a4
+- (void)dispatchEmailAddressTokenIconRequestsForMailMessage:(id)message completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CBEB38] dictionary];
+  messageCopy = message;
+  handlerCopy = handler;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   objc_initWeak(&location, self);
   extensionRequestDispatcherQueue = self->_extensionRequestDispatcherQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -327,12 +327,12 @@ void __78__MEComposeExtensionsHelper__dispatchMailComposeSessionDidBeginForExten
   block[2] = __99__MEComposeExtensionsHelper_dispatchEmailAddressTokenIconRequestsForMailMessage_completionHandler___block_invoke;
   block[3] = &unk_279858F98;
   objc_copyWeak(&v17, &location);
-  v15 = v8;
-  v16 = v7;
-  v14 = v6;
-  v10 = v8;
-  v11 = v6;
-  v12 = v7;
+  v15 = dictionary;
+  v16 = handlerCopy;
+  v14 = messageCopy;
+  v10 = dictionary;
+  v11 = messageCopy;
+  v12 = handlerCopy;
   dispatch_async(extensionRequestDispatcherQueue, block);
 
   objc_destroyWeak(&v17);
@@ -480,51 +480,51 @@ id __99__MEComposeExtensionsHelper_dispatchEmailAddressTokenIconRequestsForMailM
   return v3;
 }
 
-- (void)regenerateEmailAddressTokenChangesForSession:(id)a3 forContextUUID:(id)a4
+- (void)regenerateEmailAddressTokenChangesForSession:(id)session forContextUUID:(id)d
 {
   v13 = *MEMORY[0x277D85DE8];
-  v5 = [MEComposeExtensionsHelper log:a3];
+  v5 = [MEComposeExtensionsHelper log:session];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(MEComposeExtensionsHelper *)self extensionDelegate];
+    extensionDelegate = [(MEComposeExtensionsHelper *)self extensionDelegate];
     v9 = 138412546;
-    v10 = self;
+    selfCopy = self;
     v11 = 2112;
-    v12 = v6;
+    v12 = extensionDelegate;
     _os_log_impl(&dword_257F67000, v5, OS_LOG_TYPE_DEFAULT, "MEMailComposeExtensionsHelper[%@]: Ivoking %@ to reload address token icons.", &v9, 0x16u);
   }
 
-  v7 = [(MEComposeExtensionsHelper *)self extensionDelegate];
-  [v7 reloadEmailAddressTokenIcons];
+  extensionDelegate2 = [(MEComposeExtensionsHelper *)self extensionDelegate];
+  [extensionDelegate2 reloadEmailAddressTokenIcons];
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)regenerateSecurityStatusInformationForSession:(id)a3 forContextUUID:(id)a4
+- (void)regenerateSecurityStatusInformationForSession:(id)session forContextUUID:(id)d
 {
   v13 = *MEMORY[0x277D85DE8];
-  v5 = [MEComposeExtensionsHelper log:a3];
+  v5 = [MEComposeExtensionsHelper log:session];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(MEComposeExtensionsHelper *)self extensionDelegate];
+    extensionDelegate = [(MEComposeExtensionsHelper *)self extensionDelegate];
     v9 = 138412546;
-    v10 = self;
+    selfCopy = self;
     v11 = 2112;
-    v12 = v6;
+    v12 = extensionDelegate;
     _os_log_impl(&dword_257F67000, v5, OS_LOG_TYPE_DEFAULT, "MEMailComposeExtensionsHelper[%@]: Ivoking %@ to reload message security status information.", &v9, 0x16u);
   }
 
-  v7 = [(MEComposeExtensionsHelper *)self extensionDelegate];
-  [v7 reloadCanSignAndEncryptControls];
+  extensionDelegate2 = [(MEComposeExtensionsHelper *)self extensionDelegate];
+  [extensionDelegate2 reloadCanSignAndEncryptControls];
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getAdditionalHeadersForMessage:(id)a3 completionHandler:(id)a4
+- (void)getAdditionalHeadersForMessage:(id)message completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CBEB38] dictionary];
+  messageCopy = message;
+  handlerCopy = handler;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   objc_initWeak(&location, self);
   extensionRequestDispatcherQueue = self->_extensionRequestDispatcherQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -532,12 +532,12 @@ id __99__MEComposeExtensionsHelper_dispatchEmailAddressTokenIconRequestsForMailM
   block[2] = __78__MEComposeExtensionsHelper_getAdditionalHeadersForMessage_completionHandler___block_invoke;
   block[3] = &unk_279858F98;
   objc_copyWeak(&v17, &location);
-  v15 = v8;
-  v16 = v7;
-  v14 = v6;
-  v10 = v8;
-  v11 = v6;
-  v12 = v7;
+  v15 = dictionary;
+  v16 = handlerCopy;
+  v14 = messageCopy;
+  v10 = dictionary;
+  v11 = messageCopy;
+  v12 = handlerCopy;
   dispatch_async(extensionRequestDispatcherQueue, block);
 
   objc_destroyWeak(&v17);
@@ -632,24 +632,24 @@ void __78__MEComposeExtensionsHelper_getAdditionalHeadersForMessage_completionHa
   [v3 finishWithResult:v4];
 }
 
-- (void)appExtensionViewControllerForExtensionIdentifier:(id)a3 completionHandler:(id)a4
+- (void)appExtensionViewControllerForExtensionIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(EFLocked *)self->_remoteExtensions getObject];
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  getObject = [(EFLocked *)self->_remoteExtensions getObject];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __96__MEComposeExtensionsHelper_appExtensionViewControllerForExtensionIdentifier_completionHandler___block_invoke;
   v15[3] = &unk_279858E10;
-  v9 = v6;
+  v9 = identifierCopy;
   v16 = v9;
-  v10 = [v8 ef_firstObjectPassingTest:v15];
+  v10 = [getObject ef_firstObjectPassingTest:v15];
   composeSession = self->_composeSession;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __96__MEComposeExtensionsHelper_appExtensionViewControllerForExtensionIdentifier_completionHandler___block_invoke_2;
   v13[3] = &unk_279858FE8;
-  v12 = v7;
+  v12 = handlerCopy;
   v14 = v12;
   [v10 getMailComposeExtensionViewControllerForSession:composeSession hostDelegate:self completionHandler:v13];
 }

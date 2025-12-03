@@ -42,21 +42,21 @@
 + (id)checkoutFragment;
 + (id)defaultPlanePosition;
 + (id)overrideURLForSafariInline;
-+ (id)preferencesValueforKey:(__CFString *)a3 domain:(__CFString *)a4;
++ (id)preferencesValueforKey:(__CFString *)key domain:(__CFString *)domain;
 + (int)inlinePreviewMemoryReserve;
 + (int)maxInlinePreviewCount;
 + (int)overrideMaxTextureSize;
 + (int64_t)artificialLoadingDelay;
 + (int64_t)overridePreferredIblVersionKey;
-+ (void)setPreferencesValue:(id)a3 forKey:(__CFString *)a4;
-+ (void)setPreferencesValueForKey:(__CFString *)a3 value:(__CFString *)a4;
++ (void)setPreferencesValue:(id)value forKey:(__CFString *)key;
++ (void)setPreferencesValueForKey:(__CFString *)key value:(__CFString *)value;
 @end
 
 @implementation ASVUserDefaults
 
 + (int64_t)artificialLoadingDelay
 {
-  v2 = [a1 preferencesValueforKey:@"ArtificialLoadingDelay" domain:@"com.apple.AssetViewer"];
+  v2 = [self preferencesValueforKey:@"ArtificialLoadingDelay" domain:@"com.apple.AssetViewer"];
   if (v2)
   {
     v3 = v2;
@@ -67,14 +67,14 @@
     v3 = &unk_285313570;
   }
 
-  v4 = [v3 longValue];
+  longValue = [v3 longValue];
 
-  return v4;
+  return longValue;
 }
 
 + (BOOL)wantsAnimationDisabled
 {
-  v2 = [a1 preferencesValueforKey:@"DisableAnimation" domain:@"com.apple.AssetViewer"];
+  v2 = [self preferencesValueforKey:@"DisableAnimation" domain:@"com.apple.AssetViewer"];
   if (v2)
   {
     v3 = v2;
@@ -85,14 +85,14 @@
     v3 = MEMORY[0x277CBEC28];
   }
 
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 + (BOOL)wantsStatusBarHidden
 {
-  v2 = [a1 preferencesValueforKey:@"HideStatusBar" domain:@"com.apple.AssetViewer"];
+  v2 = [self preferencesValueforKey:@"HideStatusBar" domain:@"com.apple.AssetViewer"];
   if (v2)
   {
     v3 = v2;
@@ -103,14 +103,14 @@
     v3 = MEMORY[0x277CBEC28];
   }
 
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 + (BOOL)wants2DOverlayControlsHidden
 {
-  v2 = [a1 preferencesValueforKey:@"Hide2DOverlayControls" domain:@"com.apple.AssetViewer"];
+  v2 = [self preferencesValueforKey:@"Hide2DOverlayControls" domain:@"com.apple.AssetViewer"];
   if (v2)
   {
     v3 = v2;
@@ -121,14 +121,14 @@
     v3 = MEMORY[0x277CBEC28];
   }
 
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 + (BOOL)wantsObjectPlacedWithoutPlane
 {
-  v2 = [a1 preferencesValueforKey:@"PlaceObjectWithoutPlane" domain:@"com.apple.AssetViewer"];
+  v2 = [self preferencesValueforKey:@"PlaceObjectWithoutPlane" domain:@"com.apple.AssetViewer"];
   if (v2)
   {
     v3 = v2;
@@ -139,14 +139,14 @@
     v3 = MEMORY[0x277CBEC28];
   }
 
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 + (id)defaultPlanePosition
 {
-  v2 = [a1 preferencesValueforKey:@"DefaultPlanePosition" domain:@"com.apple.AssetViewer"];
+  v2 = [self preferencesValueforKey:@"DefaultPlanePosition" domain:@"com.apple.AssetViewer"];
   if (!v2)
   {
     v2 = &stru_285305818;
@@ -157,7 +157,7 @@
 
 + (BOOL)wantsOpenInObjectMode
 {
-  v2 = [a1 preferencesValueforKey:@"OpenInObjectMode" domain:@"com.apple.AssetViewer"];
+  v2 = [self preferencesValueforKey:@"OpenInObjectMode" domain:@"com.apple.AssetViewer"];
   if (v2)
   {
     v3 = v2;
@@ -168,14 +168,14 @@
     v3 = MEMORY[0x277CBEC28];
   }
 
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 + (BOOL)wantsParentToCameraInARAndEnableProbes
 {
-  v2 = [a1 preferencesValueforKey:@"ParentToCameraInARAndEnableProbes" domain:@"com.apple.AssetViewer"];
+  v2 = [self preferencesValueforKey:@"ParentToCameraInARAndEnableProbes" domain:@"com.apple.AssetViewer"];
   if (v2)
   {
     v3 = v2;
@@ -186,14 +186,14 @@
     v3 = MEMORY[0x277CBEC28];
   }
 
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 + (id)checkoutFragment
 {
-  v2 = [a1 preferencesValueforKey:@"CheckoutFragment" domain:@"com.apple.AssetViewer"];
+  v2 = [self preferencesValueforKey:@"CheckoutFragment" domain:@"com.apple.AssetViewer"];
   if (!v2)
   {
     v2 = &stru_285305818;
@@ -204,7 +204,7 @@
 
 + (BOOL)allowCheckoutNonSecureHTML
 {
-  v2 = [a1 preferencesValueforKey:@"CheckoutAllowNonSecureHTML" domain:@"com.apple.AssetViewer"];
+  v2 = [self preferencesValueforKey:@"CheckoutAllowNonSecureHTML" domain:@"com.apple.AssetViewer"];
   if (v2)
   {
     v3 = v2;
@@ -215,14 +215,14 @@
     v3 = MEMORY[0x277CBEC28];
   }
 
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 + (BOOL)wantsPeopleOcclusionDisabled
 {
-  v2 = [a1 preferencesValueforKey:@"DisablePeopleOcclusion" domain:@"com.apple.AssetViewer"];
+  v2 = [self preferencesValueforKey:@"DisablePeopleOcclusion" domain:@"com.apple.AssetViewer"];
   if (v2)
   {
     v3 = v2;
@@ -233,14 +233,14 @@
     v3 = MEMORY[0x277CBEC28];
   }
 
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 + (BOOL)wantsTrackedRaycastStatus
 {
-  v2 = [a1 preferencesValueforKey:@"ShowTrackedRaycastStatus" domain:@"com.apple.AssetViewer"];
+  v2 = [self preferencesValueforKey:@"ShowTrackedRaycastStatus" domain:@"com.apple.AssetViewer"];
   if (v2)
   {
     v3 = v2;
@@ -251,14 +251,14 @@
     v3 = MEMORY[0x277CBEC28];
   }
 
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 + (BOOL)wantsShowLastPlacementResultTypeStatus
 {
-  v2 = [a1 preferencesValueforKey:@"ShowLastPlacementResultTypeStatus" domain:@"com.apple.AssetViewer"];
+  v2 = [self preferencesValueforKey:@"ShowLastPlacementResultTypeStatus" domain:@"com.apple.AssetViewer"];
   if (v2)
   {
     v3 = v2;
@@ -269,14 +269,14 @@
     v3 = MEMORY[0x277CBEC28];
   }
 
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 + (BOOL)wantsObjectFitToScreen
 {
-  v2 = [a1 preferencesValueforKey:@"FitObjectToScreen" domain:@"com.apple.AssetViewer"];
+  v2 = [self preferencesValueforKey:@"FitObjectToScreen" domain:@"com.apple.AssetViewer"];
   if (v2)
   {
     v3 = v2;
@@ -287,14 +287,14 @@
     v3 = MEMORY[0x277CBEC28];
   }
 
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 + (float)objectFitToScreenPercentage
 {
-  v2 = [a1 preferencesValueforKey:@"ObjectFitToScreenPercentage" domain:@"com.apple.AssetViewer"];
+  v2 = [self preferencesValueforKey:@"ObjectFitToScreenPercentage" domain:@"com.apple.AssetViewer"];
   if (v2)
   {
     v3 = v2;
@@ -313,7 +313,7 @@
 
 + (BOOL)wantsRayTracedAmbientOcclusionEnabled
 {
-  v2 = [a1 preferencesValueforKey:@"EnableRayTracedAmbientOcclusion" domain:@"com.apple.AssetViewer"];
+  v2 = [self preferencesValueforKey:@"EnableRayTracedAmbientOcclusion" domain:@"com.apple.AssetViewer"];
   if (v2)
   {
     v3 = v2;
@@ -324,22 +324,22 @@
     v3 = MEMORY[0x277CBEC28];
   }
 
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 + (BOOL)wantsDebugActionsButton
 {
-  v2 = [a1 preferencesValueforKey:@"EnableDebugActionsButton" domain:@"com.apple.AssetViewer"];
-  v3 = [v2 BOOLValue];
+  v2 = [self preferencesValueforKey:@"EnableDebugActionsButton" domain:@"com.apple.AssetViewer"];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 + (BOOL)wantsTTRButton
 {
-  v2 = [a1 preferencesValueforKey:@"EnableTTRButton" domain:@"com.apple.AssetViewer"];
+  v2 = [self preferencesValueforKey:@"EnableTTRButton" domain:@"com.apple.AssetViewer"];
   v3 = v2;
   if (v2)
   {
@@ -353,13 +353,13 @@
 
   v5 = v4;
 
-  v6 = [v5 BOOLValue];
-  return v6;
+  bOOLValue = [v5 BOOLValue];
+  return bOOLValue;
 }
 
 + (BOOL)forceDisableRayTracedAmbientOcclusion
 {
-  v2 = [a1 preferencesValueforKey:@"ForceDisableRayTracedAmbientOcclusion" domain:@"com.apple.AssetViewer"];
+  v2 = [self preferencesValueforKey:@"ForceDisableRayTracedAmbientOcclusion" domain:@"com.apple.AssetViewer"];
   if (v2)
   {
     v3 = v2;
@@ -370,14 +370,14 @@
     v3 = MEMORY[0x277CBEC28];
   }
 
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 + (BOOL)wantsDebugVisualizationEnabled
 {
-  v2 = [a1 preferencesValueforKey:@"EnableDebugVisualization" domain:@"com.apple.AssetViewer"];
+  v2 = [self preferencesValueforKey:@"EnableDebugVisualization" domain:@"com.apple.AssetViewer"];
   if (v2)
   {
     v3 = v2;
@@ -388,14 +388,14 @@
     v3 = MEMORY[0x277CBEC28];
   }
 
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 + (BOOL)wantsDebugPhysicsEnabled
 {
-  v2 = [a1 preferencesValueforKey:@"EnableDebugPhysics" domain:@"com.apple.AssetViewer"];
+  v2 = [self preferencesValueforKey:@"EnableDebugPhysics" domain:@"com.apple.AssetViewer"];
   if (v2)
   {
     v3 = v2;
@@ -406,14 +406,14 @@
     v3 = MEMORY[0x277CBEC28];
   }
 
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 + (BOOL)wantsStatisticsShown
 {
-  v2 = [a1 preferencesValueforKey:@"ShowStatistics" domain:@"com.apple.AssetViewer"];
+  v2 = [self preferencesValueforKey:@"ShowStatistics" domain:@"com.apple.AssetViewer"];
   if (v2)
   {
     v3 = v2;
@@ -424,14 +424,14 @@
     v3 = MEMORY[0x277CBEC28];
   }
 
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 + (BOOL)wantsStatusPillHidden
 {
-  v2 = [a1 preferencesValueforKey:@"WantsStatusPillHidden" domain:@"com.apple.AssetViewer"];
+  v2 = [self preferencesValueforKey:@"WantsStatusPillHidden" domain:@"com.apple.AssetViewer"];
   v3 = v2;
   v4 = MEMORY[0x277CBEC28];
   if (v2)
@@ -441,13 +441,13 @@
 
   v5 = v4;
 
-  v6 = [v5 BOOLValue];
-  return v6;
+  bOOLValue = [v5 BOOLValue];
+  return bOOLValue;
 }
 
 + (double)triggerAffordanceShowDuration
 {
-  v2 = [a1 preferencesValueforKey:@"TriggerAffordanceShowDuration" domain:@"com.apple.AssetViewer"];
+  v2 = [self preferencesValueforKey:@"TriggerAffordanceShowDuration" domain:@"com.apple.AssetViewer"];
   v3 = v2;
   v4 = &unk_285313588;
   if (v2)
@@ -465,7 +465,7 @@
 
 + (BOOL)triggerAffordanceShouldReshowAfterArReset
 {
-  v2 = [a1 preferencesValueforKey:@"TriggerAffordanceShouldReshowAfterArReset" domain:@"com.apple.AssetViewer"];
+  v2 = [self preferencesValueforKey:@"TriggerAffordanceShouldReshowAfterArReset" domain:@"com.apple.AssetViewer"];
   v3 = v2;
   v4 = MEMORY[0x277CBEC38];
   if (v2)
@@ -475,13 +475,13 @@
 
   v5 = v4;
 
-  v6 = [v5 BOOLValue];
-  return v6;
+  bOOLValue = [v5 BOOLValue];
+  return bOOLValue;
 }
 
 + (BOOL)forceShowAnimationScrubber
 {
-  v2 = [a1 preferencesValueforKey:@"ForceShowAnimationScrubber" domain:@"com.apple.AssetViewer"];
+  v2 = [self preferencesValueforKey:@"ForceShowAnimationScrubber" domain:@"com.apple.AssetViewer"];
   v3 = v2;
   v4 = MEMORY[0x277CBEC28];
   if (v2)
@@ -491,13 +491,13 @@
 
   v5 = v4;
 
-  v6 = [v5 BOOLValue];
-  return v6;
+  bOOLValue = [v5 BOOLValue];
+  return bOOLValue;
 }
 
 + (BOOL)forceUseLegacySceneImportPipeline
 {
-  v2 = [a1 preferencesValueforKey:@"ForceUseLegacySceneImportPipeline" domain:@"com.apple.AssetViewer"];
+  v2 = [self preferencesValueforKey:@"ForceUseLegacySceneImportPipeline" domain:@"com.apple.AssetViewer"];
   v3 = v2;
   v4 = MEMORY[0x277CBEC28];
   if (v2)
@@ -507,13 +507,13 @@
 
   v5 = v4;
 
-  v6 = [v5 BOOLValue];
-  return v6;
+  bOOLValue = [v5 BOOLValue];
+  return bOOLValue;
 }
 
 + (BOOL)enableVariantsFeature
 {
-  v2 = [a1 preferencesValueforKey:@"enableVariantsFeature" domain:@"com.apple.AssetViewer"];
+  v2 = [self preferencesValueforKey:@"enableVariantsFeature" domain:@"com.apple.AssetViewer"];
   v3 = v2;
   v4 = MEMORY[0x277CBEC38];
   if (v2)
@@ -523,13 +523,13 @@
 
   v5 = v4;
 
-  v6 = [v5 BOOLValue];
-  return v6;
+  bOOLValue = [v5 BOOLValue];
+  return bOOLValue;
 }
 
 + (BOOL)useEntityLoadFor3DLoading
 {
-  v2 = [a1 preferencesValueforKey:@"useEntityLoadFor3DLoading" domain:@"com.apple.AssetViewer"];
+  v2 = [self preferencesValueforKey:@"useEntityLoadFor3DLoading" domain:@"com.apple.AssetViewer"];
   v3 = v2;
   v4 = MEMORY[0x277CBEC28];
   if (v2)
@@ -539,13 +539,13 @@
 
   v5 = v4;
 
-  v6 = [v5 BOOLValue];
-  return v6;
+  bOOLValue = [v5 BOOLValue];
+  return bOOLValue;
 }
 
 + (BOOL)forceUseOldProcessLoadedEntities
 {
-  v2 = [a1 preferencesValueforKey:@"ForceUseOldProcessLoadedEntities" domain:@"com.apple.AssetViewer"];
+  v2 = [self preferencesValueforKey:@"ForceUseOldProcessLoadedEntities" domain:@"com.apple.AssetViewer"];
   v3 = v2;
   v4 = MEMORY[0x277CBEC28];
   if (v2)
@@ -555,13 +555,13 @@
 
   v5 = v4;
 
-  v6 = [v5 BOOLValue];
-  return v6;
+  bOOLValue = [v5 BOOLValue];
+  return bOOLValue;
 }
 
 + (int)overrideMaxTextureSize
 {
-  v2 = [a1 preferencesValueforKey:@"ASVOverrideMaxTextureSize" domain:@"com.apple.AssetViewer"];
+  v2 = [self preferencesValueforKey:@"ASVOverrideMaxTextureSize" domain:@"com.apple.AssetViewer"];
   v3 = v2;
   v4 = &unk_285313570;
   if (v2)
@@ -571,13 +571,13 @@
 
   v5 = v4;
 
-  v6 = [v5 intValue];
-  return v6;
+  intValue = [v5 intValue];
+  return intValue;
 }
 
 + (BOOL)wantsMeshMemoryEstimateEnabled
 {
-  v2 = [a1 preferencesValueforKey:@"EnableMeshMemoryEstimate" domain:@"com.apple.AssetViewer"];
+  v2 = [self preferencesValueforKey:@"EnableMeshMemoryEstimate" domain:@"com.apple.AssetViewer"];
   v3 = v2;
   v4 = MEMORY[0x277CBEC28];
   if (v2)
@@ -587,13 +587,13 @@
 
   v5 = v4;
 
-  v6 = [v5 BOOLValue];
-  return v6;
+  bOOLValue = [v5 BOOLValue];
+  return bOOLValue;
 }
 
 + (BOOL)wantsDebugSceneUnderstandingEnabled
 {
-  v2 = [a1 preferencesValueforKey:@"EnableDebugSceneUnderstanding" domain:@"com.apple.AssetViewer"];
+  v2 = [self preferencesValueforKey:@"EnableDebugSceneUnderstanding" domain:@"com.apple.AssetViewer"];
   if (v2)
   {
     v3 = v2;
@@ -604,14 +604,14 @@
     v3 = MEMORY[0x277CBEC28];
   }
 
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 + (BOOL)forceDisableRealWorldOcclusion
 {
-  v2 = [a1 preferencesValueforKey:@"ForceDisableRealWorldOcclusion" domain:@"com.apple.AssetViewer"];
+  v2 = [self preferencesValueforKey:@"ForceDisableRealWorldOcclusion" domain:@"com.apple.AssetViewer"];
   if (v2)
   {
     v3 = v2;
@@ -622,14 +622,14 @@
     v3 = MEMORY[0x277CBEC28];
   }
 
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 + (BOOL)forceDisableRealWorldPhysics
 {
-  v2 = [a1 preferencesValueforKey:@"ForceDisableRealWorldPhysics" domain:@"com.apple.AssetViewer"];
+  v2 = [self preferencesValueforKey:@"ForceDisableRealWorldPhysics" domain:@"com.apple.AssetViewer"];
   if (v2)
   {
     v3 = v2;
@@ -640,14 +640,14 @@
     v3 = MEMORY[0x277CBEC28];
   }
 
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 + (BOOL)forceUseLegacyHitTestAPI
 {
-  v2 = [a1 preferencesValueforKey:@"ForceLegacyHitTestAPI" domain:@"com.apple.AssetViewer"];
+  v2 = [self preferencesValueforKey:@"ForceLegacyHitTestAPI" domain:@"com.apple.AssetViewer"];
   if (v2)
   {
     v3 = v2;
@@ -658,14 +658,14 @@
     v3 = MEMORY[0x277CBEC28];
   }
 
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 + (BOOL)forceUseSceneReconstructionMeshForOrientation
 {
-  v2 = [a1 preferencesValueforKey:@"ForceUseSceneReconstructionMeshForOrientation" domain:@"com.apple.AssetViewer"];
+  v2 = [self preferencesValueforKey:@"ForceUseSceneReconstructionMeshForOrientation" domain:@"com.apple.AssetViewer"];
   if (v2)
   {
     v3 = v2;
@@ -676,14 +676,14 @@
     v3 = MEMORY[0x277CBEC28];
   }
 
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 + (BOOL)forceDisableShadowMaps
 {
-  v2 = [a1 preferencesValueforKey:@"ForceDisableShadowMaps" domain:@"com.apple.AssetViewer"];
+  v2 = [self preferencesValueforKey:@"ForceDisableShadowMaps" domain:@"com.apple.AssetViewer"];
   if (v2)
   {
     v3 = v2;
@@ -694,14 +694,14 @@
     v3 = MEMORY[0x277CBEC28];
   }
 
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 + (BOOL)forceDisableArKitVerticalRejection
 {
-  v2 = [a1 preferencesValueforKey:@"ForceDisableArKitVerticalRejection" domain:@"com.apple.AssetViewer"];
+  v2 = [self preferencesValueforKey:@"ForceDisableArKitVerticalRejection" domain:@"com.apple.AssetViewer"];
   if (v2)
   {
     v3 = v2;
@@ -712,14 +712,14 @@
     v3 = MEMORY[0x277CBEC28];
   }
 
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 + (BOOL)shouldRevertToOldHapticsBehavior
 {
-  v2 = [a1 preferencesValueforKey:@"RevertToOldHapticsBehavior" domain:@"com.apple.AssetViewer"];
+  v2 = [self preferencesValueforKey:@"RevertToOldHapticsBehavior" domain:@"com.apple.AssetViewer"];
   v3 = v2;
   v4 = MEMORY[0x277CBEC28];
   if (v2)
@@ -729,13 +729,13 @@
 
   v5 = v4;
 
-  v6 = [v5 BOOLValue];
-  return v6;
+  bOOLValue = [v5 BOOLValue];
+  return bOOLValue;
 }
 
 + (float)sceneIBLARIntensity
 {
-  v2 = [a1 preferencesValueforKey:@"SceneIBLARIntensity" domain:@"com.apple.AssetViewer"];
+  v2 = [self preferencesValueforKey:@"SceneIBLARIntensity" domain:@"com.apple.AssetViewer"];
   if (v2)
   {
     v3 = v2;
@@ -754,7 +754,7 @@
 
 + (int64_t)overridePreferredIblVersionKey
 {
-  v2 = [a1 preferencesValueforKey:@"OverridePreferredIblVersionKey" domain:@"com.apple.AssetViewer"];
+  v2 = [self preferencesValueforKey:@"OverridePreferredIblVersionKey" domain:@"com.apple.AssetViewer"];
   if (v2)
   {
     v3 = v2;
@@ -765,14 +765,14 @@
     v3 = &unk_285313570;
   }
 
-  v4 = [v3 integerValue];
+  integerValue = [v3 integerValue];
 
-  return v4;
+  return integerValue;
 }
 
 + (BOOL)debugSaveThumbnailImageToDisk
 {
-  v2 = [a1 preferencesValueforKey:@"DebugSaveThumbnailImageToDisk" domain:@"com.apple.AssetViewer"];
+  v2 = [self preferencesValueforKey:@"DebugSaveThumbnailImageToDisk" domain:@"com.apple.AssetViewer"];
   if (v2)
   {
     v3 = v2;
@@ -783,14 +783,14 @@
     v3 = MEMORY[0x277CBEC28];
   }
 
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 + (BOOL)debug3DPreserveWorldTransform
 {
-  v2 = [a1 preferencesValueforKey:@"debugPreserveWorldTransform" domain:@"com.apple.AssetViewer"];
+  v2 = [self preferencesValueforKey:@"debugPreserveWorldTransform" domain:@"com.apple.AssetViewer"];
   if (v2)
   {
     v3 = v2;
@@ -801,14 +801,14 @@
     v3 = MEMORY[0x277CBEC38];
   }
 
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 + (BOOL)forceDisableExtendedDynamicRangeOutput
 {
-  v2 = [a1 preferencesValueforKey:@"ForceDisableExtendedDynamicRangeOutput" domain:@"com.apple.AssetViewer"];
+  v2 = [self preferencesValueforKey:@"ForceDisableExtendedDynamicRangeOutput" domain:@"com.apple.AssetViewer"];
   if (v2)
   {
     v3 = v2;
@@ -819,14 +819,14 @@
     v3 = MEMORY[0x277CBEC28];
   }
 
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 + (id)overrideURLForSafariInline
 {
-  v2 = [a1 preferencesValueforKey:@"SafariInlinePreviewURL" domain:@"com.apple.AssetViewer"];
+  v2 = [self preferencesValueforKey:@"SafariInlinePreviewURL" domain:@"com.apple.AssetViewer"];
   if (v2 && ([MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet], v3 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v2, "stringByTrimmingCharactersInSet:", v3), v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v4, "length"), v4, v3, v5))
   {
     v6 = v2;
@@ -842,7 +842,7 @@
 
 + (int)maxInlinePreviewCount
 {
-  v2 = [a1 preferencesValueforKey:@"ASVInlineMaxCount" domain:@"com.apple.AssetViewer"];
+  v2 = [self preferencesValueforKey:@"ASVInlineMaxCount" domain:@"com.apple.AssetViewer"];
   v3 = v2;
   v4 = &unk_2853135A0;
   if (v2)
@@ -852,13 +852,13 @@
 
   v5 = v4;
 
-  v6 = [v5 intValue];
-  return v6;
+  intValue = [v5 intValue];
+  return intValue;
 }
 
 + (int)inlinePreviewMemoryReserve
 {
-  v2 = [a1 preferencesValueforKey:@"ASVinlinePreviewMemoryReserve" domain:@"com.apple.AssetViewer"];
+  v2 = [self preferencesValueforKey:@"ASVinlinePreviewMemoryReserve" domain:@"com.apple.AssetViewer"];
   v3 = v2;
   v4 = &unk_2853135B8;
   if (v2)
@@ -868,30 +868,30 @@
 
   v5 = v4;
 
-  v6 = [v5 intValue];
+  intValue = [v5 intValue];
+  return intValue;
+}
+
++ (id)preferencesValueforKey:(__CFString *)key domain:(__CFString *)domain
+{
+  CFPreferencesAppSynchronize(domain);
+  v6 = CFPreferencesCopyAppValue(key, domain);
+
   return v6;
 }
 
-+ (id)preferencesValueforKey:(__CFString *)a3 domain:(__CFString *)a4
++ (void)setPreferencesValueForKey:(__CFString *)key value:(__CFString *)value
 {
-  CFPreferencesAppSynchronize(a4);
-  v6 = CFPreferencesCopyAppValue(a3, a4);
-
-  return v6;
-}
-
-+ (void)setPreferencesValueForKey:(__CFString *)a3 value:(__CFString *)a4
-{
-  CFPreferencesSetAppValue(a3, a4, @"com.apple.AssetViewer");
+  CFPreferencesSetAppValue(key, value, @"com.apple.AssetViewer");
 
   CFPreferencesAppSynchronize(@"com.apple.AssetViewer");
 }
 
-+ (void)setPreferencesValue:(id)a3 forKey:(__CFString *)a4
++ (void)setPreferencesValue:(id)value forKey:(__CFString *)key
 {
   v4 = *MEMORY[0x277CBF040];
   v5 = *MEMORY[0x277CBF010];
-  CFPreferencesSetValue(a4, a3, @"com.apple.AssetViewer", *MEMORY[0x277CBF040], *MEMORY[0x277CBF010]);
+  CFPreferencesSetValue(key, value, @"com.apple.AssetViewer", *MEMORY[0x277CBF040], *MEMORY[0x277CBF010]);
 
   CFPreferencesSynchronize(@"com.apple.AssetViewer", v4, v5);
 }

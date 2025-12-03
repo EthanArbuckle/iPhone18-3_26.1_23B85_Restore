@@ -1,16 +1,16 @@
 @interface PNWidgetAlbumSuggester
-+ (unsigned)widgetSuggestionSubtypeForAssetCollectionType:(int64_t)a3;
++ (unsigned)widgetSuggestionSubtypeForAssetCollectionType:(int64_t)type;
 - (PHFetchResult)suggestions;
-- (PNWidgetAlbumSuggester)initWithAlbumLocalIdentifier:(id)a3 widgetIdentifier:(id)a4 photoLibrary:(id)a5;
+- (PNWidgetAlbumSuggester)initWithAlbumLocalIdentifier:(id)identifier widgetIdentifier:(id)widgetIdentifier photoLibrary:(id)library;
 - (id)_assetFetchOptions;
-- (id)_assetIndexesForDate:(id)a3 count:(unint64_t)a4 from:(id)a5;
-- (id)_makeSuggestionsFromAssets:(id)a3 numberOfSuggestions:(unint64_t)a4 date:(id)a5;
-- (id)_mutableAssetIndexesForAssetCount:(unint64_t)a3;
+- (id)_assetIndexesForDate:(id)date count:(unint64_t)count from:(id)from;
+- (id)_makeSuggestionsFromAssets:(id)assets numberOfSuggestions:(unint64_t)suggestions date:(id)date;
+- (id)_mutableAssetIndexesForAssetCount:(unint64_t)count;
 - (id)_predicateForFeaturedSuggestions;
-- (id)fetchSuggestionsWithOptions:(id)a3;
-- (id)updatedSuggestionLocalIdentifiersForDate:(id)a3 numberOfSuggestions:(unint64_t)a4;
-- (unint64_t)removeSuggestionsNotRelevantForDate:(id)a3;
-- (void)_shuffleAssetIndexes:(id)a3;
+- (id)fetchSuggestionsWithOptions:(id)options;
+- (id)updatedSuggestionLocalIdentifiersForDate:(id)date numberOfSuggestions:(unint64_t)suggestions;
+- (unint64_t)removeSuggestionsNotRelevantForDate:(id)date;
+- (void)_shuffleAssetIndexes:(id)indexes;
 @end
 
 @implementation PNWidgetAlbumSuggester
@@ -18,31 +18,31 @@
 - (PHFetchResult)suggestions
 {
   v11[2] = *MEMORY[0x1E69E9840];
-  v3 = [(PNWidgetAlbumSuggester *)self photoLibrary];
-  v4 = [v3 librarySpecificFetchOptions];
+  photoLibrary = [(PNWidgetAlbumSuggester *)self photoLibrary];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
-  [v4 setWantsIncrementalChangeDetails:0];
+  [librarySpecificFetchOptions setWantsIncrementalChangeDetails:0];
   v5 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"creationDate" ascending:1];
   v11[0] = v5;
   v6 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"uuid" ascending:0];
   v11[1] = v6;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:2];
-  [v4 setSortDescriptors:v7];
+  [librarySpecificFetchOptions setSortDescriptors:v7];
 
-  v8 = [(PNWidgetAlbumSuggester *)self _predicateForFeaturedSuggestions];
-  [v4 setPredicate:v8];
+  _predicateForFeaturedSuggestions = [(PNWidgetAlbumSuggester *)self _predicateForFeaturedSuggestions];
+  [librarySpecificFetchOptions setPredicate:_predicateForFeaturedSuggestions];
 
-  v9 = [(PNWidgetAlbumSuggester *)self fetchSuggestionsWithOptions:v4];
+  v9 = [(PNWidgetAlbumSuggester *)self fetchSuggestionsWithOptions:librarySpecificFetchOptions];
 
   return v9;
 }
 
-- (id)fetchSuggestionsWithOptions:(id)a3
+- (id)fetchSuggestionsWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   context = objc_autoreleasePoolPush();
-  v21 = v4;
-  v5 = [MEMORY[0x1E6978AE8] fetchSuggestionsWithOptions:v4];
+  v21 = optionsCopy;
+  v5 = [MEMORY[0x1E6978AE8] fetchSuggestionsWithOptions:optionsCopy];
   v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
   if ([v5 count])
   {
@@ -51,11 +51,11 @@
     {
       v8 = objc_autoreleasePoolPush();
       v9 = [v5 objectAtIndex:v7];
-      v10 = [v9 featuresProperties];
-      v11 = [v10 objectForKeyedSubscript:@"widgetIdentifier"];
+      featuresProperties = [v9 featuresProperties];
+      v11 = [featuresProperties objectForKeyedSubscript:@"widgetIdentifier"];
 
-      v12 = [(PNWidgetAlbumSuggester *)self widgetIdentifier];
-      v13 = [v12 isEqualToString:v11];
+      widgetIdentifier = [(PNWidgetAlbumSuggester *)self widgetIdentifier];
+      v13 = [widgetIdentifier isEqualToString:v11];
 
       if (v13)
       {
@@ -70,10 +70,10 @@
   }
 
   v14 = objc_alloc(MEMORY[0x1E69788E0]);
-  v15 = [(PNWidgetAlbumSuggester *)self photoLibrary];
-  v16 = [v5 fetchType];
-  v17 = [v5 fetchPropertySets];
-  v18 = [v14 initWithObjects:v6 photoLibrary:v15 fetchType:v16 fetchPropertySets:v17 identifier:0 registerIfNeeded:0];
+  photoLibrary = [(PNWidgetAlbumSuggester *)self photoLibrary];
+  fetchType = [v5 fetchType];
+  fetchPropertySets = [v5 fetchPropertySets];
+  v18 = [v14 initWithObjects:v6 photoLibrary:photoLibrary fetchType:fetchType fetchPropertySets:fetchPropertySets identifier:0 registerIfNeeded:0];
 
   objc_autoreleasePoolPop(context);
 
@@ -88,8 +88,8 @@
   v5 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %d", @"featuredState", 1];
   v6 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %d", @"state", 1];
   v7 = MEMORY[0x1E696AE18];
-  v8 = [(PNWidgetAlbumSuggester *)self suggestionContext];
-  v9 = [v7 predicateWithFormat:@"%K == %@", @"context", v8];
+  suggestionContext = [(PNWidgetAlbumSuggester *)self suggestionContext];
+  v9 = [v7 predicateWithFormat:@"%K == %@", @"context", suggestionContext];
 
   v10 = MEMORY[0x1E696AB28];
   v14[0] = v3;
@@ -103,10 +103,10 @@
   return v12;
 }
 
-- (unint64_t)removeSuggestionsNotRelevantForDate:(id)a3
+- (unint64_t)removeSuggestionsNotRelevantForDate:(id)date
 {
   v49[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dateCopy = date;
   v5 = PLMemoriesGetLog();
   v6 = os_signpost_id_generate(v5);
   info = 0;
@@ -121,27 +121,27 @@
   }
 
   v10 = mach_absolute_time();
-  v11 = [(PNWidgetAlbumSuggester *)self photoLibrary];
-  v12 = [v11 librarySpecificFetchOptions];
+  photoLibrary = [(PNWidgetAlbumSuggester *)self photoLibrary];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
-  [v12 setWantsIncrementalChangeDetails:0];
-  v13 = [(PNWidgetAlbumSuggester *)self _predicateForFeaturedSuggestions];
-  v14 = [MEMORY[0x1E696AE18] predicateWithFormat:@"relevantUntilDate < %@", v4];
+  [librarySpecificFetchOptions setWantsIncrementalChangeDetails:0];
+  _predicateForFeaturedSuggestions = [(PNWidgetAlbumSuggester *)self _predicateForFeaturedSuggestions];
+  dateCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"relevantUntilDate < %@", dateCopy];
 
   v15 = MEMORY[0x1E696AB28];
-  v49[0] = v13;
-  v49[1] = v14;
+  v49[0] = _predicateForFeaturedSuggestions;
+  v49[1] = dateCopy;
   v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v49 count:2];
   v17 = [v15 andPredicateWithSubpredicates:v16];
-  [v12 setPredicate:v17];
+  [librarySpecificFetchOptions setPredicate:v17];
 
-  v18 = [(PNWidgetAlbumSuggester *)self fetchSuggestionsWithOptions:v12];
+  v18 = [(PNWidgetAlbumSuggester *)self fetchSuggestionsWithOptions:librarySpecificFetchOptions];
   if ([v18 count])
   {
     v38 = v10;
-    v39 = v13;
+    v39 = _predicateForFeaturedSuggestions;
     v40 = v6;
-    v19 = [(PNWidgetAlbumSuggester *)self photoLibrary];
+    photoLibrary2 = [(PNWidgetAlbumSuggester *)self photoLibrary];
     v42[0] = MEMORY[0x1E69E9820];
     v42[1] = 3221225472;
     v42[2] = __62__PNWidgetAlbumSuggester_removeSuggestionsNotRelevantForDate___block_invoke;
@@ -149,7 +149,7 @@
     v20 = v18;
     v43 = v20;
     v41 = 0;
-    v21 = [v19 performChangesAndWait:v42 error:&v41];
+    v21 = [photoLibrary2 performChangesAndWait:v42 error:&v41];
     v22 = v41;
 
     v23 = PLMemoriesGetLog();
@@ -158,10 +158,10 @@
     {
       if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
       {
-        v25 = [(PNWidgetAlbumSuggester *)self widgetIdentifier];
+        widgetIdentifier = [(PNWidgetAlbumSuggester *)self widgetIdentifier];
         v26 = [v20 count];
         *buf = 138412546;
-        v46 = v25;
+        v46 = widgetIdentifier;
         v47 = 1024;
         LODWORD(v48) = v26;
         v27 = "[PNWidgetAlbumSuggester] widgetIdentifier: %@, deleted non-relevant %d suggestions";
@@ -175,9 +175,9 @@ LABEL_10:
 
     else if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
     {
-      v25 = [(PNWidgetAlbumSuggester *)self widgetIdentifier];
+      widgetIdentifier = [(PNWidgetAlbumSuggester *)self widgetIdentifier];
       *buf = 138412546;
-      v46 = v25;
+      v46 = widgetIdentifier;
       v47 = 2112;
       v48 = *&v22;
       v27 = "[PNWidgetAlbumSuggester] failed to remove suggestions for widgetIdentifier %@, error: %@";
@@ -187,7 +187,7 @@ LABEL_10:
       goto LABEL_10;
     }
 
-    v13 = v39;
+    _predicateForFeaturedSuggestions = v39;
     v6 = v40;
     v10 = v38;
   }
@@ -220,18 +220,18 @@ LABEL_10:
 - (id)_assetFetchOptions
 {
   v15[2] = *MEMORY[0x1E69E9840];
-  v2 = [(PNWidgetAlbumSuggester *)self photoLibrary];
-  v3 = [v2 librarySpecificFetchOptions];
+  photoLibrary = [(PNWidgetAlbumSuggester *)self photoLibrary];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
   v4 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"creationDate" ascending:0];
   v15[0] = v4;
   v5 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"uuid" ascending:1];
   v15[1] = v5;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:2];
-  [v3 setSortDescriptors:v6];
+  [librarySpecificFetchOptions setSortDescriptors:v6];
 
-  [v3 setIncludeGuestAssets:0];
-  [v3 setWantsIncrementalChangeDetails:0];
+  [librarySpecificFetchOptions setIncludeGuestAssets:0];
+  [librarySpecificFetchOptions setWantsIncrementalChangeDetails:0];
   v7 = [MEMORY[0x1E69BF328] predicateForExcludeMask:objc_msgSend(MEMORY[0x1E69BF328] useIndex:{"maskForGuestAsset"), 1}];
   v8 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K != %d && %K != %d", @"playbackStyle", 4, @"playbackStyle", 5];
   v9 = [MEMORY[0x1E696AE18] predicateWithFormat:@"(%K & %d) == 0", @"kindSubtype", 1];
@@ -241,16 +241,16 @@ LABEL_10:
   v14[2] = v9;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:3];
   v12 = [v10 andPredicateWithSubpredicates:v11];
-  [v3 setInternalPredicate:v12];
+  [librarySpecificFetchOptions setInternalPredicate:v12];
 
-  return v3;
+  return librarySpecificFetchOptions;
 }
 
-- (id)_makeSuggestionsFromAssets:(id)a3 numberOfSuggestions:(unint64_t)a4 date:(id)a5
+- (id)_makeSuggestionsFromAssets:(id)assets numberOfSuggestions:(unint64_t)suggestions date:(id)date
 {
   v69 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  assetsCopy = assets;
+  dateCopy = date;
   v49 = objc_autoreleasePoolPush();
   v10 = PLMemoriesGetLog();
   v11 = os_signpost_id_generate(v10);
@@ -269,23 +269,23 @@ LABEL_10:
   v51 = v13;
 
   v45 = mach_absolute_time();
-  v14 = [v8 count];
-  if (v14 >= a4)
+  v14 = [assetsCopy count];
+  if (v14 >= suggestions)
   {
-    v15 = a4;
+    suggestionsCopy = suggestions;
   }
 
   else
   {
-    v15 = v14;
+    suggestionsCopy = v14;
   }
 
-  v47 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v15];
-  v16 = -[PNWidgetAlbumSuggester _mutableAssetIndexesForAssetCount:](self, "_mutableAssetIndexesForAssetCount:", [v8 count]);
+  v47 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:suggestionsCopy];
+  v16 = -[PNWidgetAlbumSuggester _mutableAssetIndexesForAssetCount:](self, "_mutableAssetIndexesForAssetCount:", [assetsCopy count]);
   [(PNWidgetAlbumSuggester *)self _shuffleAssetIndexes:v16];
-  v50 = v9;
+  v50 = dateCopy;
   v48 = v16;
-  v17 = [(PNWidgetAlbumSuggester *)self _assetIndexesForDate:v9 count:a4 from:v16];
+  v17 = [(PNWidgetAlbumSuggester *)self _assetIndexesForDate:dateCopy count:suggestions from:v16];
   v18 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v59 = 0u;
   v60 = 0u;
@@ -306,7 +306,7 @@ LABEL_10:
           objc_enumerationMutation(v19);
         }
 
-        v24 = [v8 objectAtIndex:{objc_msgSend(*(*(&v59 + 1) + 8 * i), "integerValue", spid)}];
+        v24 = [assetsCopy objectAtIndex:{objc_msgSend(*(*(&v59 + 1) + 8 * i), "integerValue", spid)}];
         [v18 addObject:v24];
       }
 
@@ -316,28 +316,28 @@ LABEL_10:
     while (v21);
   }
 
-  v25 = [(PNWidgetAlbumSuggester *)self widgetIdentifier];
-  v26 = [(PNWidgetAlbumSuggester *)self suggestionContext];
-  v27 = [(PNWidgetAlbumSuggester *)self suggestionSubtype];
-  v28 = [(PNWidgetAlbumSuggester *)self photoLibrary];
+  widgetIdentifier = [(PNWidgetAlbumSuggester *)self widgetIdentifier];
+  suggestionContext = [(PNWidgetAlbumSuggester *)self suggestionContext];
+  suggestionSubtype = [(PNWidgetAlbumSuggester *)self suggestionSubtype];
+  photoLibrary = [(PNWidgetAlbumSuggester *)self photoLibrary];
   v53[0] = MEMORY[0x1E69E9820];
   v53[1] = 3221225472;
   v53[2] = __78__PNWidgetAlbumSuggester__makeSuggestionsFromAssets_numberOfSuggestions_date___block_invoke;
   v53[3] = &unk_1E82A2450;
   v29 = v18;
   v54 = v29;
-  v30 = v25;
+  v30 = widgetIdentifier;
   v55 = v30;
-  v58 = v27;
-  v31 = v26;
+  v58 = suggestionSubtype;
+  v31 = suggestionContext;
   v56 = v31;
   v32 = v47;
   v57 = v32;
   v52 = 0;
-  LOBYTE(v26) = [v28 performChangesAndWait:v53 error:&v52];
+  LOBYTE(suggestionContext) = [photoLibrary performChangesAndWait:v53 error:&v52];
   v33 = COERCE_DOUBLE(v52);
 
-  if (v26)
+  if (suggestionContext)
   {
     v34 = mach_absolute_time();
     numer = info.numer;
@@ -368,9 +368,9 @@ LABEL_10:
     v41 = PLMemoriesGetLog();
     if (os_log_type_enabled(v41, OS_LOG_TYPE_ERROR))
     {
-      v42 = [(PNWidgetAlbumSuggester *)self widgetIdentifier];
+      widgetIdentifier2 = [(PNWidgetAlbumSuggester *)self widgetIdentifier];
       *buf = 138412546;
-      v65 = v42;
+      v65 = widgetIdentifier2;
       v66 = 2112;
       v67 = v33;
       _os_log_impl(&dword_1C6F5C000, v41, OS_LOG_TYPE_ERROR, "[PNWidgetAlbumSuggester] failed to create suggestions for identifier %@, error: %@", buf, 0x16u);
@@ -464,49 +464,49 @@ void __78__PNWidgetAlbumSuggester__makeSuggestionsFromAssets_numberOfSuggestions
   }
 }
 
-- (id)_assetIndexesForDate:(id)a3 count:(unint64_t)a4 from:(id)a5
+- (id)_assetIndexesForDate:(id)date count:(unint64_t)count from:(id)from
 {
   v31 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  v10 = [v9 count];
+  dateCopy = date;
+  fromCopy = from;
+  v10 = [fromCopy count];
   if (v10)
   {
     v11 = v10;
-    if (v10 < a4)
+    if (v10 < count)
     {
-      a4 = v10;
+      count = v10;
     }
 
-    [v8 timeIntervalSinceReferenceDate];
-    v13 = a4 * (v12 / 86400.0) % v11;
+    [dateCopy timeIntervalSinceReferenceDate];
+    v13 = count * (v12 / 86400.0) % v11;
     v14 = PLMemoriesGetLog();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = [(PNWidgetAlbumSuggester *)self widgetIdentifier];
+      widgetIdentifier = [(PNWidgetAlbumSuggester *)self widgetIdentifier];
       v21 = 138413314;
-      v22 = v8;
+      v22 = dateCopy;
       v23 = 1024;
       v24 = v13;
       v25 = 1024;
       v26 = v11;
       v27 = 1024;
-      v28 = a4;
+      countCopy = count;
       v29 = 2112;
-      v30 = v15;
+      v30 = widgetIdentifier;
       _os_log_impl(&dword_1C6F5C000, v14, OS_LOG_TYPE_DEFAULT, "[PNWidgetAlbumSuggester] selected assets for date:%@ offset: %d totalAssets: %d numberToChoose: %d widgetIdentifier: %@", &v21, 0x28u);
     }
 
-    if (v13 <= v11 - a4)
+    if (v13 <= v11 - count)
     {
-      v19 = [v9 subarrayWithRange:{v13, a4}];
+      v19 = [fromCopy subarrayWithRange:{v13, count}];
     }
 
     else
     {
       v16 = v11 - v13;
-      v17 = [v9 subarrayWithRange:{v13, v16}];
-      v18 = [v9 subarrayWithRange:{0, a4 - v16}];
+      v17 = [fromCopy subarrayWithRange:{v13, v16}];
+      v18 = [fromCopy subarrayWithRange:{0, count - v16}];
       v19 = [v17 arrayByAddingObjectsFromArray:v18];
     }
   }
@@ -519,51 +519,51 @@ void __78__PNWidgetAlbumSuggester__makeSuggestionsFromAssets_numberOfSuggestions
   return v19;
 }
 
-- (void)_shuffleAssetIndexes:(id)a3
+- (void)_shuffleAssetIndexes:(id)indexes
 {
   v4 = MEMORY[0x1E69C0838];
-  v5 = a3;
+  indexesCopy = indexes;
   v6 = [v4 alloc];
-  v7 = [(PNWidgetAlbumSuggester *)self widgetIdentifier];
-  v8 = [v6 initWithSeed:{objc_msgSend(v7, "hash")}];
+  widgetIdentifier = [(PNWidgetAlbumSuggester *)self widgetIdentifier];
+  v8 = [v6 initWithSeed:{objc_msgSend(widgetIdentifier, "hash")}];
 
   PFMutableArrayShuffleWithRandomNumberGenerator();
 }
 
-- (id)_mutableAssetIndexesForAssetCount:(unint64_t)a3
+- (id)_mutableAssetIndexesForAssetCount:(unint64_t)count
 {
-  v4 = [MEMORY[0x1E695DF70] array];
-  if (a3)
+  array = [MEMORY[0x1E695DF70] array];
+  if (count)
   {
     v5 = 0;
     do
     {
       v6 = [MEMORY[0x1E696AD98] numberWithInteger:v5];
-      [v4 addObject:v6];
+      [array addObject:v6];
 
       ++v5;
     }
 
-    while (a3 != v5);
+    while (count != v5);
   }
 
-  return v4;
+  return array;
 }
 
-- (id)updatedSuggestionLocalIdentifiersForDate:(id)a3 numberOfSuggestions:(unint64_t)a4
+- (id)updatedSuggestionLocalIdentifiersForDate:(id)date numberOfSuggestions:(unint64_t)suggestions
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(PNWidgetAlbumSuggester *)self assetCollection];
+  dateCopy = date;
+  assetCollection = [(PNWidgetAlbumSuggester *)self assetCollection];
 
-  if (!v7)
+  if (!assetCollection)
   {
     v11 = PLMemoriesGetLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      v17 = [(PNWidgetAlbumSuggester *)self sourceIdentifier];
+      sourceIdentifier = [(PNWidgetAlbumSuggester *)self sourceIdentifier];
       v23 = 138412290;
-      v24 = v17;
+      v24 = sourceIdentifier;
       _os_log_impl(&dword_1C6F5C000, v11, OS_LOG_TYPE_ERROR, "[PNWidgetAlbumSuggester] album not found: %@", &v23, 0xCu);
     }
 
@@ -576,8 +576,8 @@ void __78__PNWidgetAlbumSuggester__makeSuggestionsFromAssets_numberOfSuggestions
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       v18 = MEMORY[0x1E6978650];
-      v19 = [(PNWidgetAlbumSuggester *)self assetCollection];
-      v20 = [v18 descriptionForSubtype:{objc_msgSend(v19, "assetCollectionSubtype")}];
+      assetCollection2 = [(PNWidgetAlbumSuggester *)self assetCollection];
+      v20 = [v18 descriptionForSubtype:{objc_msgSend(assetCollection2, "assetCollectionSubtype")}];
       v23 = 138412290;
       v24 = v20;
       _os_log_impl(&dword_1C6F5C000, v11, OS_LOG_TYPE_ERROR, "[PNWidgetAlbumSuggester] album subtype not supported found: %@", &v23, 0xCu);
@@ -588,10 +588,10 @@ LABEL_11:
     goto LABEL_16;
   }
 
-  v8 = [(PNWidgetAlbumSuggester *)self _assetFetchOptions];
+  _assetFetchOptions = [(PNWidgetAlbumSuggester *)self _assetFetchOptions];
   v9 = MEMORY[0x1E6978630];
-  v10 = [(PNWidgetAlbumSuggester *)self assetCollection];
-  v11 = [v9 fetchAssetsInAssetCollection:v10 options:v8];
+  assetCollection3 = [(PNWidgetAlbumSuggester *)self assetCollection];
+  v11 = [v9 fetchAssetsInAssetCollection:assetCollection3 options:_assetFetchOptions];
 
   v12 = [v11 count];
   v13 = PLMemoriesGetLog();
@@ -600,24 +600,24 @@ LABEL_11:
   {
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = [(PNWidgetAlbumSuggester *)self sourceIdentifier];
+      sourceIdentifier2 = [(PNWidgetAlbumSuggester *)self sourceIdentifier];
       v23 = 138412546;
-      v24 = v15;
+      v24 = sourceIdentifier2;
       v25 = 1024;
       v26 = [v11 count];
       _os_log_impl(&dword_1C6F5C000, v14, OS_LOG_TYPE_DEFAULT, "[PNWidgetAlbumSuggester] source: %@, eligibleAssets: %d", &v23, 0x12u);
     }
 
-    v16 = [(PNWidgetAlbumSuggester *)self _makeSuggestionsFromAssets:v11 numberOfSuggestions:a4 date:v6];
+    v16 = [(PNWidgetAlbumSuggester *)self _makeSuggestionsFromAssets:v11 numberOfSuggestions:suggestions date:dateCopy];
   }
 
   else
   {
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
-      v21 = [(PNWidgetAlbumSuggester *)self sourceIdentifier];
+      sourceIdentifier3 = [(PNWidgetAlbumSuggester *)self sourceIdentifier];
       v23 = 138412290;
-      v24 = v21;
+      v24 = sourceIdentifier3;
       _os_log_impl(&dword_1C6F5C000, v14, OS_LOG_TYPE_ERROR, "[PNWidgetAlbumSuggester] source: %@, no eligible assets", &v23, 0xCu);
     }
 
@@ -629,31 +629,31 @@ LABEL_16:
   return v16;
 }
 
-- (PNWidgetAlbumSuggester)initWithAlbumLocalIdentifier:(id)a3 widgetIdentifier:(id)a4 photoLibrary:(id)a5
+- (PNWidgetAlbumSuggester)initWithAlbumLocalIdentifier:(id)identifier widgetIdentifier:(id)widgetIdentifier photoLibrary:(id)library
 {
   v28[1] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  identifierCopy = identifier;
+  widgetIdentifierCopy = widgetIdentifier;
+  libraryCopy = library;
   v27.receiver = self;
   v27.super_class = PNWidgetAlbumSuggester;
   v12 = [(PNWidgetAlbumSuggester *)&v27 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_widgetIdentifier, a4);
-    objc_storeStrong(&v13->_sourceIdentifier, a3);
-    objc_storeStrong(&v13->_photoLibrary, a5);
-    v14 = [v11 librarySpecificFetchOptions];
-    [v14 setWantsIncrementalChangeDetails:0];
+    objc_storeStrong(&v12->_widgetIdentifier, widgetIdentifier);
+    objc_storeStrong(&v13->_sourceIdentifier, identifier);
+    objc_storeStrong(&v13->_photoLibrary, library);
+    librarySpecificFetchOptions = [libraryCopy librarySpecificFetchOptions];
+    [librarySpecificFetchOptions setWantsIncrementalChangeDetails:0];
     v15 = MEMORY[0x1E6978650];
-    v16 = [(PNWidgetAlbumSuggester *)v13 sourceIdentifier];
-    v28[0] = v16;
+    sourceIdentifier = [(PNWidgetAlbumSuggester *)v13 sourceIdentifier];
+    v28[0] = sourceIdentifier;
     v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v28 count:1];
-    v18 = [v15 fetchAssetCollectionsWithLocalIdentifiers:v17 options:v14];
-    v19 = [v18 firstObject];
+    v18 = [v15 fetchAssetCollectionsWithLocalIdentifiers:v17 options:librarySpecificFetchOptions];
+    firstObject = [v18 firstObject];
     assetCollection = v13->_assetCollection;
-    v13->_assetCollection = v19;
+    v13->_assetCollection = firstObject;
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -666,8 +666,8 @@ LABEL_16:
     {
       v13->_suggestionSubtype = [objc_opt_class() widgetSuggestionSubtypeForAssetCollectionType:{-[PHAssetCollection assetCollectionSubtype](v13->_assetCollection, "assetCollectionSubtype")}];
       v22 = MEMORY[0x1E6978650];
-      v23 = [(PNWidgetAlbumSuggester *)v13 sourceIdentifier];
-      v24 = [v22 uuidFromLocalIdentifier:v23];
+      sourceIdentifier2 = [(PNWidgetAlbumSuggester *)v13 sourceIdentifier];
+      v24 = [v22 uuidFromLocalIdentifier:sourceIdentifier2];
       suggestionContext = v13->_suggestionContext;
       v13->_suggestionContext = v24;
     }
@@ -676,9 +676,9 @@ LABEL_16:
   return v13;
 }
 
-+ (unsigned)widgetSuggestionSubtypeForAssetCollectionType:(int64_t)a3
++ (unsigned)widgetSuggestionSubtypeForAssetCollectionType:(int64_t)type
 {
-  if (a3 == 203)
+  if (type == 203)
   {
     v3 = 702;
   }
@@ -688,7 +688,7 @@ LABEL_16:
     v3 = 0;
   }
 
-  if (a3 == 212)
+  if (type == 212)
   {
     v4 = 703;
   }
@@ -698,7 +698,7 @@ LABEL_16:
     v4 = v3;
   }
 
-  if (a3 == 2)
+  if (type == 2)
   {
     return 701;
   }

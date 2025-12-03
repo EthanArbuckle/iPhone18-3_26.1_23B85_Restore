@@ -1,31 +1,31 @@
 @interface HSPCSelectRoomViewController
-- (HSPCSelectRoomViewController)initWithCoordinator:(id)a3 config:(id)a4;
+- (HSPCSelectRoomViewController)initWithCoordinator:(id)coordinator config:(id)config;
 - (id)commitConfiguration;
 - (id)hu_preloadContent;
-- (id)pickerView:(id)a3 titleForRow:(int64_t)a4 forComponent:(int64_t)a5;
+- (id)pickerView:(id)view titleForRow:(int64_t)row forComponent:(int64_t)component;
 - (id)shouldSkip;
-- (int64_t)pickerView:(id)a3 numberOfRowsInComponent:(int64_t)a4;
+- (int64_t)pickerView:(id)view numberOfRowsInComponent:(int64_t)component;
 @end
 
 @implementation HSPCSelectRoomViewController
 
-- (HSPCSelectRoomViewController)initWithCoordinator:(id)a3 config:(id)a4
+- (HSPCSelectRoomViewController)initWithCoordinator:(id)coordinator config:(id)config
 {
-  v7 = a3;
-  v8 = a4;
+  coordinatorCopy = coordinator;
+  configCopy = config;
   v19.receiver = self;
   v19.super_class = HSPCSelectRoomViewController;
   v9 = [(HSPCSelectRoomViewController *)&v19 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_config, a4);
-    objc_storeStrong(&v10->_coordinator, a3);
-    v11 = [v7 activeTuple];
-    v12 = [v11 accessoryCategoryOrPrimaryServiceType];
-    v13 = [v7 setupAccessoryDescription];
-    v14 = [v13 setupAccessoryPayload];
-    v15 = [v14 matterDeviceTypeID];
+    objc_storeStrong(&v9->_config, config);
+    objc_storeStrong(&v10->_coordinator, coordinator);
+    activeTuple = [coordinatorCopy activeTuple];
+    accessoryCategoryOrPrimaryServiceType = [activeTuple accessoryCategoryOrPrimaryServiceType];
+    setupAccessoryDescription = [coordinatorCopy setupAccessoryDescription];
+    setupAccessoryPayload = [setupAccessoryDescription setupAccessoryPayload];
+    matterDeviceTypeID = [setupAccessoryPayload matterDeviceTypeID];
     v16 = HFLocalizedCategoryOrPrimaryServiceTypeString();
     [(HSPCSelectRoomViewController *)v10 setTitle:v16];
 
@@ -37,36 +37,36 @@
 
 - (id)commitConfiguration
 {
-  v3 = [(HSPCSelectRoomViewController *)self contentView];
-  v4 = [v3 pickerView];
-  v5 = [v4 selectedRowInComponent:0];
+  contentView = [(HSPCSelectRoomViewController *)self contentView];
+  pickerView = [contentView pickerView];
+  v5 = [pickerView selectedRowInComponent:0];
 
-  v6 = [(HSPCSelectRoomViewController *)self roomProvider];
-  v7 = [v6 items];
-  v8 = [v7 count];
+  roomProvider = [(HSPCSelectRoomViewController *)self roomProvider];
+  items = [roomProvider items];
+  v8 = [items count];
 
-  v9 = [(HSPCSelectRoomViewController *)self config];
-  v10 = v9;
+  config = [(HSPCSelectRoomViewController *)self config];
+  v10 = config;
   if (v5 >= v8)
   {
-    [v9 setRoomName:0];
+    [config setRoomName:0];
 
     v16 = [NAFuture futureWithResult:&off_1000CD870];
   }
 
   else
   {
-    v11 = [v9 isSetupInitiatedByOtherMatterEcosystem];
+    isSetupInitiatedByOtherMatterEcosystem = [config isSetupInitiatedByOtherMatterEcosystem];
 
-    if (v11)
+    if (isSetupInitiatedByOtherMatterEcosystem)
     {
       v12 = objc_opt_class();
-      v13 = [(HSPCSelectRoomViewController *)self config];
-      if (v13)
+      config2 = [(HSPCSelectRoomViewController *)self config];
+      if (config2)
       {
         if (objc_opt_isKindOfClass())
         {
-          v14 = v13;
+          v14 = config2;
         }
 
         else
@@ -77,7 +77,7 @@
         v15 = v14;
         if (!v15)
         {
-          sub_1000774F0(v13, v12);
+          sub_1000774F0(config2, v12);
         }
       }
 
@@ -86,9 +86,9 @@
         v15 = 0;
       }
 
-      v23 = [(HSPCSelectRoomViewController *)self roomProvider];
-      v24 = [v23 items];
-      v25 = [v24 objectAtIndexedSubscript:v5];
+      roomProvider2 = [(HSPCSelectRoomViewController *)self roomProvider];
+      items2 = [roomProvider2 items];
+      v25 = [items2 objectAtIndexedSubscript:v5];
       [v15 setSelectedPartnerRoom:v25];
 
       v16 = [NAFuture futureWithResult:&off_1000CD870];
@@ -96,15 +96,15 @@
 
     else
     {
-      v17 = [(HSPCSelectRoomViewController *)self roomProvider];
-      v18 = [v17 items];
-      v19 = [v18 objectAtIndexedSubscript:v5];
-      v20 = [(HSPCSelectRoomViewController *)self config];
-      [v20 setRoomName:v19];
+      roomProvider3 = [(HSPCSelectRoomViewController *)self roomProvider];
+      items3 = [roomProvider3 items];
+      v19 = [items3 objectAtIndexedSubscript:v5];
+      config3 = [(HSPCSelectRoomViewController *)self config];
+      [config3 setRoomName:v19];
 
-      v21 = [(HSPCSelectRoomViewController *)self config];
-      v22 = [v21 configureRoom];
-      v16 = [v22 hs_commitConfigurationFutureWithContextMessage:@"Set Room"];
+      config4 = [(HSPCSelectRoomViewController *)self config];
+      configureRoom = [config4 configureRoom];
+      v16 = [configureRoom hs_commitConfigurationFutureWithContextMessage:@"Set Room"];
     }
   }
 
@@ -113,47 +113,47 @@
 
 - (id)hu_preloadContent
 {
-  v3 = [(HSPCSelectRoomViewController *)self coordinator];
-  v4 = [(HSPCSelectRoomViewController *)self config];
-  v5 = [HSPCRoomProviderFactory providerForCoordinator:v3 config:v4];
+  coordinator = [(HSPCSelectRoomViewController *)self coordinator];
+  config = [(HSPCSelectRoomViewController *)self config];
+  v5 = [HSPCRoomProviderFactory providerForCoordinator:coordinator config:config];
   [(HSPCSelectRoomViewController *)self setRoomProvider:v5];
 
-  v6 = [(HSPCSelectRoomViewController *)self roomProvider];
-  v7 = [v6 loadData];
+  roomProvider = [(HSPCSelectRoomViewController *)self roomProvider];
+  loadData = [roomProvider loadData];
   v8 = +[NAScheduler mainThreadScheduler];
-  v9 = [v7 reschedule:v8];
+  v9 = [loadData reschedule:v8];
 
   return v9;
 }
 
-- (int64_t)pickerView:(id)a3 numberOfRowsInComponent:(int64_t)a4
+- (int64_t)pickerView:(id)view numberOfRowsInComponent:(int64_t)component
 {
-  v5 = [(HSPCSelectRoomViewController *)self config:a3];
-  v6 = [v5 isSetupInitiatedByOtherMatterEcosystem];
+  v5 = [(HSPCSelectRoomViewController *)self config:view];
+  isSetupInitiatedByOtherMatterEcosystem = [v5 isSetupInitiatedByOtherMatterEcosystem];
 
-  v7 = [(HSPCSelectRoomViewController *)self roomProvider];
-  v8 = [v7 items];
-  v9 = [v8 count];
+  roomProvider = [(HSPCSelectRoomViewController *)self roomProvider];
+  items = [roomProvider items];
+  v9 = [items count];
 
-  return v9 + (v6 ^ 1);
+  return v9 + (isSetupInitiatedByOtherMatterEcosystem ^ 1);
 }
 
-- (id)pickerView:(id)a3 titleForRow:(int64_t)a4 forComponent:(int64_t)a5
+- (id)pickerView:(id)view titleForRow:(int64_t)row forComponent:(int64_t)component
 {
-  v7 = [(HSPCSelectRoomViewController *)self roomProvider:a3];
-  v8 = [v7 items];
-  if ([v8 count] <= a4)
+  v7 = [(HSPCSelectRoomViewController *)self roomProvider:view];
+  items = [v7 items];
+  if ([items count] <= row)
   {
     v13 = HULocalizedString();
   }
 
   else
   {
-    v9 = [(HSPCSelectRoomViewController *)self roomProvider];
-    v10 = [(HSPCSelectRoomViewController *)self roomProvider];
-    v11 = [v10 items];
-    v12 = [v11 objectAtIndexedSubscript:a4];
-    v13 = [v9 userFacingStringForItem:v12];
+    roomProvider = [(HSPCSelectRoomViewController *)self roomProvider];
+    roomProvider2 = [(HSPCSelectRoomViewController *)self roomProvider];
+    items2 = [roomProvider2 items];
+    v12 = [items2 objectAtIndexedSubscript:row];
+    v13 = [roomProvider userFacingStringForItem:v12];
   }
 
   return v13;
@@ -161,14 +161,14 @@
 
 - (id)shouldSkip
 {
-  v3 = [(HSPCSelectRoomViewController *)self config];
-  v4 = [v3 isSetupInitiatedByOtherMatterEcosystem];
+  config = [(HSPCSelectRoomViewController *)self config];
+  isSetupInitiatedByOtherMatterEcosystem = [config isSetupInitiatedByOtherMatterEcosystem];
 
-  v5 = [(HSPCSelectRoomViewController *)self roomProvider];
-  v6 = [v5 items];
-  v7 = [v6 count] < 2;
+  roomProvider = [(HSPCSelectRoomViewController *)self roomProvider];
+  items = [roomProvider items];
+  v7 = [items count] < 2;
 
-  v8 = [NSNumber numberWithBool:v7 & v4];
+  v8 = [NSNumber numberWithBool:v7 & isSetupInitiatedByOtherMatterEcosystem];
   v9 = [NAFuture futureWithResult:v8];
 
   return v9;

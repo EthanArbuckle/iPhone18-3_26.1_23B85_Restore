@@ -1,39 +1,39 @@
 @interface REMLLinearModel
-- (BOOL)_loadModelFromURL:(id)a3 error:(id *)a4;
-- (BOOL)_saveModelToURL:(id)a3 error:(id *)a4;
-- (REMLLinearModel)initWithFeatureSet:(id)a3 interactionDescriptors:(id)a4;
+- (BOOL)_loadModelFromURL:(id)l error:(id *)error;
+- (BOOL)_saveModelToURL:(id)l error:(id *)error;
+- (REMLLinearModel)initWithFeatureSet:(id)set interactionDescriptors:(id)descriptors;
 - (float)_getAveragePrediction;
 - (float)_getNormalizedEntropy;
-- (id)_predictWithFeatures:(id)a3;
-- (id)predictionSetWithFeatures:(id)a3;
+- (id)_predictWithFeatures:(id)features;
+- (id)predictionSetWithFeatures:(id)features;
 - (int64_t)_getNumberOfCoordinates;
 - (unint64_t)_getTotalExampleCount;
 - (unint64_t)_getTotalPositiveCount;
 - (void)_clearCache;
-- (void)_enumerateModelsForFeatureMap:(id)a3 usingBlock:(id)a4;
-- (void)setMetricsRecorder:(id)a3;
-- (void)trainWithFeatures:(id)a3 positiveEvent:(id)a4 interaction:(id)a5;
+- (void)_enumerateModelsForFeatureMap:(id)map usingBlock:(id)block;
+- (void)setMetricsRecorder:(id)recorder;
+- (void)trainWithFeatures:(id)features positiveEvent:(id)event interaction:(id)interaction;
 @end
 
 @implementation REMLLinearModel
 
-- (REMLLinearModel)initWithFeatureSet:(id)a3 interactionDescriptors:(id)a4
+- (REMLLinearModel)initWithFeatureSet:(id)set interactionDescriptors:(id)descriptors
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  setCopy = set;
+  descriptorsCopy = descriptors;
   v27.receiver = self;
   v27.super_class = REMLLinearModel;
-  v8 = [(REMLModel *)&v27 initWithFeatureSet:v6 priorMean:0.0 modelVarianceEpsilon:0.0];
+  v8 = [(REMLModel *)&v27 initWithFeatureSet:setCopy priorMean:0.0 modelVarianceEpsilon:0.0];
   if (v8)
   {
-    v9 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v7, "count")}];
+    v9 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(descriptorsCopy, "count")}];
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v22 = v7;
-    v10 = v7;
+    v22 = descriptorsCopy;
+    v10 = descriptorsCopy;
     v11 = [v10 countByEnumeratingWithState:&v23 objects:v28 count:16];
     if (v11)
     {
@@ -49,9 +49,9 @@
           }
 
           v15 = *(*(&v23 + 1) + 8 * i);
-          v16 = [_REMLWeightedModel weightedModelWithDescriptor:v15 featureSet:v6];
-          v17 = [v15 name];
-          [v9 setObject:v16 forKeyedSubscript:v17];
+          v16 = [_REMLWeightedModel weightedModelWithDescriptor:v15 featureSet:setCopy];
+          name = [v15 name];
+          [v9 setObject:v16 forKeyedSubscript:name];
         }
 
         v12 = [v10 countByEnumeratingWithState:&v23 objects:v28 count:16];
@@ -64,24 +64,24 @@
     models = v8->_models;
     v8->_models = v18;
 
-    v7 = v22;
+    descriptorsCopy = v22;
   }
 
   v20 = *MEMORY[0x277D85DE8];
   return v8;
 }
 
-- (void)trainWithFeatures:(id)a3 positiveEvent:(id)a4 interaction:(id)a5
+- (void)trainWithFeatures:(id)features positiveEvent:(id)event interaction:(id)interaction
 {
   v12.receiver = self;
   v12.super_class = REMLLinearModel;
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  [(REMLModel *)&v12 trainWithFeatures:v10 positiveEvent:v9];
-  v11 = [(NSDictionary *)self->_models objectForKeyedSubscript:v8, v12.receiver, v12.super_class];
+  interactionCopy = interaction;
+  eventCopy = event;
+  featuresCopy = features;
+  [(REMLModel *)&v12 trainWithFeatures:featuresCopy positiveEvent:eventCopy];
+  v11 = [(NSDictionary *)self->_models objectForKeyedSubscript:interactionCopy, v12.receiver, v12.super_class];
 
-  [v11 trainModelWithFeatureMap:v10 positiveEvent:v9];
+  [v11 trainModelWithFeatureMap:featuresCopy positiveEvent:eventCopy];
 }
 
 - (void)_clearCache
@@ -94,8 +94,8 @@
   v12 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v3 = [(NSDictionary *)self->_models allValues];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v14 count:16];
+  allValues = [(NSDictionary *)self->_models allValues];
+  v4 = [allValues countByEnumeratingWithState:&v9 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -107,14 +107,14 @@
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allValues);
         }
 
         [*(*(&v9 + 1) + 8 * v7++) enumerateModels:&__block_literal_global_54];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v14 count:16];
+      v5 = [allValues countByEnumeratingWithState:&v9 objects:v14 count:16];
     }
 
     while (v5);
@@ -123,12 +123,12 @@
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_enumerateModelsForFeatureMap:(id)a3 usingBlock:(id)a4
+- (void)_enumerateModelsForFeatureMap:(id)map usingBlock:(id)block
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  mapCopy = map;
+  blockCopy = block;
+  if (blockCopy)
   {
     v20 = 0u;
     v21 = 0u;
@@ -140,7 +140,7 @@
     {
       v9 = v8;
       v10 = *v19;
-      v16 = v7 + 16;
+      v16 = blockCopy + 16;
       do
       {
         for (i = 0; i != v9; ++i)
@@ -152,10 +152,10 @@
 
           v12 = *(*(&v18 + 1) + 8 * i);
           v13 = [(NSDictionary *)self->_models objectForKeyedSubscript:v12, v16];
-          v14 = [v13 selectionFeature];
-          if (!v14 || [v6 hasValueForFeature:v14] && REBooleanValueForTaggedPointer(objc_msgSend(v6, "valueForFeature:", v14)))
+          selectionFeature = [v13 selectionFeature];
+          if (!selectionFeature || [mapCopy hasValueForFeature:selectionFeature] && REBooleanValueForTaggedPointer(objc_msgSend(mapCopy, "valueForFeature:", selectionFeature)))
           {
-            (*(v7 + 2))(v7, v12, v13);
+            (*(blockCopy + 2))(blockCopy, v12, v13);
           }
         }
 
@@ -169,17 +169,17 @@
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (id)predictionSetWithFeatures:(id)a3
+- (id)predictionSetWithFeatures:(id)features
 {
-  v4 = a3;
+  featuresCopy = features;
   v5 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{-[NSDictionary count](self->_models, "count")}];
   v13 = MEMORY[0x277D85DD0];
   v14 = 3221225472;
   v15 = __45__REMLLinearModel_predictionSetWithFeatures___block_invoke;
   v16 = &unk_2785FCFF8;
   v17 = v5;
-  v18 = v4;
-  v6 = v4;
+  v18 = featuresCopy;
+  v6 = featuresCopy;
   v7 = v5;
   [(REMLLinearModel *)self _enumerateModelsForFeatureMap:v6 usingBlock:&v13];
   v8 = [REMLPredictionSet alloc];
@@ -198,10 +198,10 @@ void __45__REMLLinearModel_predictionSetWithFeatures___block_invoke(uint64_t a1,
   [*(a1 + 32) setObject:v7 forKeyedSubscript:v6];
 }
 
-- (id)_predictWithFeatures:(id)a3
+- (id)_predictWithFeatures:(id)features
 {
   v58 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  featuresCopy = features;
   v53 = 0;
   v54 = &v53;
   v55 = 0x2020000000;
@@ -238,7 +238,7 @@ void __45__REMLLinearModel_predictionSetWithFeatures___block_invoke(uint64_t a1,
   v28[1] = 3221225472;
   v28[2] = __40__REMLLinearModel__predictWithFeatures___block_invoke;
   v28[3] = &unk_2785FD020;
-  v8 = v4;
+  v8 = featuresCopy;
   v29 = v8;
   v36 = v6;
   v9 = v7;
@@ -331,9 +331,9 @@ void __40__REMLLinearModel__predictWithFeatures___block_invoke(uint64_t a1, uint
   *(*(*(a1 + 80) + 8) + 24) = *(*(*(a1 + 80) + 8) + 24) + (v9 * v17);
 }
 
-- (BOOL)_saveModelToURL:(id)a3 error:(id *)a4
+- (BOOL)_saveModelToURL:(id)l error:(id *)error
 {
-  v6 = a3;
+  lCopy = l;
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
@@ -349,14 +349,14 @@ void __40__REMLLinearModel__predictWithFeatures___block_invoke(uint64_t a1, uint
   v11[1] = 3221225472;
   v11[2] = __41__REMLLinearModel__saveModelToURL_error___block_invoke;
   v11[3] = &unk_2785FD048;
-  v8 = v6;
+  v8 = lCopy;
   v12 = v8;
   v13 = &v15;
   v14 = &v21;
   [(NSDictionary *)models enumerateKeysAndObjectsUsingBlock:v11];
-  if (a4)
+  if (error)
   {
-    *a4 = v16[5];
+    *error = v16[5];
   }
 
   v9 = *(v22 + 24);
@@ -399,9 +399,9 @@ LABEL_3:
   }
 }
 
-- (BOOL)_loadModelFromURL:(id)a3 error:(id *)a4
+- (BOOL)_loadModelFromURL:(id)l error:(id *)error
 {
-  v6 = a3;
+  lCopy = l;
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
@@ -417,14 +417,14 @@ LABEL_3:
   v11[1] = 3221225472;
   v11[2] = __43__REMLLinearModel__loadModelFromURL_error___block_invoke;
   v11[3] = &unk_2785FD048;
-  v8 = v6;
+  v8 = lCopy;
   v12 = v8;
   v13 = &v15;
   v14 = &v21;
   [(NSDictionary *)models enumerateKeysAndObjectsUsingBlock:v11];
-  if (a4)
+  if (error)
   {
-    *a4 = v16[5];
+    *error = v16[5];
   }
 
   v9 = *(v22 + 24);
@@ -458,14 +458,14 @@ void __43__REMLLinearModel__loadModelFromURL_error___block_invoke(void *a1, uint
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v2 = [(NSDictionary *)self->_models allValues];
-  v3 = [v2 firstObject];
+  allValues = [(NSDictionary *)self->_models allValues];
+  firstObject = [allValues firstObject];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __40__REMLLinearModel__getAveragePrediction__block_invoke;
   v6[3] = &unk_2785FD090;
   v6[4] = &v7;
-  [v3 enumerateModels:v6];
+  [firstObject enumerateModels:v6];
 
   v4 = v8[6];
   _Block_object_dispose(&v7, 8);
@@ -485,14 +485,14 @@ uint64_t __40__REMLLinearModel__getAveragePrediction__block_invoke(uint64_t a1, 
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v2 = [(NSDictionary *)self->_models allValues];
-  v3 = [v2 firstObject];
+  allValues = [(NSDictionary *)self->_models allValues];
+  firstObject = [allValues firstObject];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __40__REMLLinearModel__getNormalizedEntropy__block_invoke;
   v6[3] = &unk_2785FD090;
   v6[4] = &v7;
-  [v3 enumerateModels:v6];
+  [firstObject enumerateModels:v6];
 
   v4 = v8[6];
   _Block_object_dispose(&v7, 8);
@@ -512,14 +512,14 @@ uint64_t __40__REMLLinearModel__getNormalizedEntropy__block_invoke(uint64_t a1, 
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v2 = [(NSDictionary *)self->_models allValues];
-  v3 = [v2 firstObject];
+  allValues = [(NSDictionary *)self->_models allValues];
+  firstObject = [allValues firstObject];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __42__REMLLinearModel__getNumberOfCoordinates__block_invoke;
   v6[3] = &unk_2785FD090;
   v6[4] = &v7;
-  [v3 enumerateModels:v6];
+  [firstObject enumerateModels:v6];
 
   v4 = v8[3];
   _Block_object_dispose(&v7, 8);
@@ -539,14 +539,14 @@ uint64_t __42__REMLLinearModel__getNumberOfCoordinates__block_invoke(uint64_t a1
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v2 = [(NSDictionary *)self->_models allValues];
-  v3 = [v2 firstObject];
+  allValues = [(NSDictionary *)self->_models allValues];
+  firstObject = [allValues firstObject];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __40__REMLLinearModel__getTotalExampleCount__block_invoke;
   v6[3] = &unk_2785FD090;
   v6[4] = &v7;
-  [v3 enumerateModels:v6];
+  [firstObject enumerateModels:v6];
 
   v4 = v8[3];
   _Block_object_dispose(&v7, 8);
@@ -566,14 +566,14 @@ uint64_t __40__REMLLinearModel__getTotalExampleCount__block_invoke(uint64_t a1, 
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v2 = [(NSDictionary *)self->_models allValues];
-  v3 = [v2 firstObject];
+  allValues = [(NSDictionary *)self->_models allValues];
+  firstObject = [allValues firstObject];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __41__REMLLinearModel__getTotalPositiveCount__block_invoke;
   v6[3] = &unk_2785FD090;
   v6[4] = &v7;
-  [v3 enumerateModels:v6];
+  [firstObject enumerateModels:v6];
 
   v4 = v8[3];
   _Block_object_dispose(&v7, 8);
@@ -587,19 +587,19 @@ uint64_t __41__REMLLinearModel__getTotalPositiveCount__block_invoke(uint64_t a1,
   return result;
 }
 
-- (void)setMetricsRecorder:(id)a3
+- (void)setMetricsRecorder:(id)recorder
 {
-  v4 = a3;
+  recorderCopy = recorder;
   v9.receiver = self;
   v9.super_class = REMLLinearModel;
-  [(REMLModel *)&v9 setMetricsRecorder:v4];
+  [(REMLModel *)&v9 setMetricsRecorder:recorderCopy];
   models = self->_models;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __38__REMLLinearModel_setMetricsRecorder___block_invoke;
   v7[3] = &unk_2785FD0E0;
-  v8 = v4;
-  v6 = v4;
+  v8 = recorderCopy;
+  v6 = recorderCopy;
   [(NSDictionary *)models enumerateKeysAndObjectsUsingBlock:v7];
 }
 

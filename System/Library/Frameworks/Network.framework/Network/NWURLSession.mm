@@ -1,50 +1,50 @@
 @interface NWURLSession
-+ (BOOL)isSubclassOfClass:(Class)a3;
-+ (id)sessionWithConfiguration:(id)a3;
-+ (id)sessionWithConfiguration:(id)a3 delegate:(id)a4 delegateQueue:(id)a5;
++ (BOOL)isSubclassOfClass:(Class)class;
++ (id)sessionWithConfiguration:(id)configuration;
++ (id)sessionWithConfiguration:(id)configuration delegate:(id)delegate delegateQueue:(id)queue;
 + (void)initialize;
-- (BOOL)isKindOfClass:(Class)a3;
+- (BOOL)isKindOfClass:(Class)class;
 - (NSOperationQueue)delegateQueue;
 - (NSURLSessionConfiguration)configuration;
 - (NSURLSessionDelegate)delegate;
-- (NWURLSession)initWithConfiguration:(id)a3 UUID:(id)a4 delegate:(id)a5 delegateQueue:(id)a6 delegateDispatchQueue:(id)a7;
+- (NWURLSession)initWithConfiguration:(id)configuration UUID:(id)d delegate:(id)delegate delegateQueue:(id)queue delegateDispatchQueue:(id)dispatchQueue;
 - (OS_nw_context)_networkContext;
-- (id)_dataTaskWithRequest:(id)a3 delegate:(id)a4;
-- (id)_dataTaskWithRequest:(id)a3 delegate:(id)a4 completionHandler:(id)a5;
-- (id)_dataTaskWithURL:(id)a3 delegate:(id)a4;
-- (id)_dataTaskWithURL:(id)a3 delegate:(id)a4 completionHandler:(id)a5;
-- (id)_downloadTaskWithRequest:(id)a3 delegate:(id)a4 completionHandler:(id)a5;
-- (id)_downloadTaskWithResumeData:(id)a3 delegate:(id)a4 completionHandler:(id)a5;
-- (id)_downloadTaskWithURL:(id)a3 delegate:(id)a4 completionHandler:(id)a5;
-- (id)_uploadTaskWithRequest:(id)a3 fromData:(id)a4 delegate:(id)a5 completionHandler:(id)a6;
-- (id)_uploadTaskWithRequest:(id)a3 fromFile:(id)a4 delegate:(id)a5 completionHandler:(id)a6;
-- (id)_uploadTaskWithResumeData:(id)a3 delegate:(id)a4 completionHandler:(id)a5;
-- (id)dataTaskWithResumeInfo:(id)a3;
-- (id)downloadTaskWithRequest:(id)a3;
-- (id)downloadTaskWithResumeData:(id)a3;
-- (id)downloadTaskWithResumeInfo:(id)a3;
-- (id)downloadTaskWithURL:(id)a3;
-- (id)preparedRequestFromRequest:(void *)a3 bodyInfo:;
-- (id)streamTaskWithHostName:(id)a3 port:(int64_t)a4;
-- (id)streamTaskWithNetService:(id)a3;
-- (id)uploadTaskWithRequest:(id)a3 fromData:(id)a4;
-- (id)uploadTaskWithRequest:(id)a3 fromFile:(id)a4;
-- (id)uploadTaskWithResumeData:(id)a3 completionHandler:(id)a4;
-- (id)uploadTaskWithResumeInfo:(id)a3;
-- (id)uploadTaskWithStreamedRequest:(id)a3;
-- (id)webSocketTaskWithRequest:(id)a3;
-- (id)webSocketTaskWithURL:(id)a3 protocols:(id)a4;
+- (id)_dataTaskWithRequest:(id)request delegate:(id)delegate;
+- (id)_dataTaskWithRequest:(id)request delegate:(id)delegate completionHandler:(id)handler;
+- (id)_dataTaskWithURL:(id)l delegate:(id)delegate;
+- (id)_dataTaskWithURL:(id)l delegate:(id)delegate completionHandler:(id)handler;
+- (id)_downloadTaskWithRequest:(id)request delegate:(id)delegate completionHandler:(id)handler;
+- (id)_downloadTaskWithResumeData:(id)data delegate:(id)delegate completionHandler:(id)handler;
+- (id)_downloadTaskWithURL:(id)l delegate:(id)delegate completionHandler:(id)handler;
+- (id)_uploadTaskWithRequest:(id)request fromData:(id)data delegate:(id)delegate completionHandler:(id)handler;
+- (id)_uploadTaskWithRequest:(id)request fromFile:(id)file delegate:(id)delegate completionHandler:(id)handler;
+- (id)_uploadTaskWithResumeData:(id)data delegate:(id)delegate completionHandler:(id)handler;
+- (id)dataTaskWithResumeInfo:(id)info;
+- (id)downloadTaskWithRequest:(id)request;
+- (id)downloadTaskWithResumeData:(id)data;
+- (id)downloadTaskWithResumeInfo:(id)info;
+- (id)downloadTaskWithURL:(id)l;
+- (id)preparedRequestFromRequest:(void *)request bodyInfo:;
+- (id)streamTaskWithHostName:(id)name port:(int64_t)port;
+- (id)streamTaskWithNetService:(id)service;
+- (id)uploadTaskWithRequest:(id)request fromData:(id)data;
+- (id)uploadTaskWithRequest:(id)request fromFile:(id)file;
+- (id)uploadTaskWithResumeData:(id)data completionHandler:(id)handler;
+- (id)uploadTaskWithResumeInfo:(id)info;
+- (id)uploadTaskWithStreamedRequest:(id)request;
+- (id)webSocketTaskWithRequest:(id)request;
+- (id)webSocketTaskWithURL:(id)l protocols:(id)protocols;
 - (void)checkForCompletion;
 - (void)finishTasksAndInvalidate;
-- (void)flushWithCompletionHandler:(id)a3;
-- (void)getAllTasksWithCompletionHandler:(id)a3;
-- (void)getTasksWithCompletionHandler:(id)a3;
+- (void)flushWithCompletionHandler:(id)handler;
+- (void)getAllTasksWithCompletionHandler:(id)handler;
+- (void)getTasksWithCompletionHandler:(id)handler;
 - (void)invalidateAndCancel;
-- (void)resetWithCompletionHandler:(id)a3;
-- (void)taskCompleted:(os_unfair_lock_s *)a1;
-- (void)taskStarted:(os_unfair_lock_s *)a1;
+- (void)resetWithCompletionHandler:(id)handler;
+- (void)taskCompleted:(os_unfair_lock_s *)completed;
+- (void)taskStarted:(os_unfair_lock_s *)started;
 - (void)teardownAllConnections;
-- (void)withLock:(os_unfair_lock_s *)a1;
+- (void)withLock:(os_unfair_lock_s *)lock;
 @end
 
 @implementation NWURLSession
@@ -71,46 +71,46 @@ void __26__NWURLSession_initialize__block_invoke()
 - (void)checkForCompletion
 {
   v20 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    os_unfair_lock_assert_owner((a1 + 24));
-    if (*(a1 + 28) == 1)
+    os_unfair_lock_assert_owner((self + 24));
+    if (*(self + 28) == 1)
     {
-      v11 = *(a1 + 104);
-      v2 = [v11 anyObject];
-      if (v2)
+      v11 = *(self + 104);
+      anyObject = [v11 anyObject];
+      if (anyObject)
       {
       }
 
       else
       {
-        v3 = [*(a1 + 112) count];
+        v3 = [*(self + 112) count];
 
         if (!v3)
         {
-          v4 = *(a1 + 160);
+          v4 = *(self + 160);
           v16[0] = MEMORY[0x1E69E9820];
           v16[1] = 3221225472;
           v16[2] = __34__NWURLSession_checkForCompletion__block_invoke;
           v16[3] = &unk_1E6A3D868;
-          v16[4] = a1;
+          v16[4] = self;
           nw_queue_context_async_if_needed(v4, v16);
           v12[0] = MEMORY[0x1E69E9820];
           v12[1] = 3221225472;
           v13 = __34__NWURLSession_checkForCompletion__block_invoke_2;
           v14 = &unk_1E6A3D868;
-          v15 = a1;
+          selfCopy = self;
           v5 = v12;
-          v6 = *(a1 + 136);
-          *(a1 + 136) = 0;
+          v6 = *(self + 136);
+          *(self + 136) = 0;
 
-          if (*(a1 + 36))
+          if (*(self + 36))
           {
-            IONotificationPortSetDispatchQueue(*(a1 + 128), 0);
-            if (*(a1 + 40))
+            IONotificationPortSetDispatchQueue(*(self + 128), 0);
+            if (*(self + 40))
             {
-              notifier = *(a1 + 40);
-              *(a1 + 40) = 0;
+              notifier = *(self + 40);
+              *(self + 40) = 0;
               v7 = IODeregisterForSystemPower(&notifier);
               if (v7)
               {
@@ -130,16 +130,16 @@ void __26__NWURLSession_initialize__block_invoke()
               }
             }
 
-            IOServiceClose(*(a1 + 36));
-            *(a1 + 36) = 0;
-            v10 = *(a1 + 128);
+            IOServiceClose(*(self + 36));
+            *(self + 36) = 0;
+            v10 = *(self + 128);
             if (v10)
             {
               IONotificationPortDestroy(v10);
-              *(a1 + 128) = 0;
+              *(self + 128) = 0;
             }
 
-            dispatch_async(*(a1 + 144), v5);
+            dispatch_async(*(self + 144), v5);
           }
 
           else
@@ -162,10 +162,10 @@ void __26__NWURLSession_initialize__block_invoke()
   return self;
 }
 
-- (id)downloadTaskWithResumeInfo:(id)a3
+- (id)downloadTaskWithResumeInfo:(id)info
 {
-  v4 = a3;
-  if (!v4)
+  infoCopy = info;
+  if (!infoCopy)
   {
     v14 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"URLSessionDownloadTask created with nil resume info" userInfo:0];
     objc_exception_throw(v14);
@@ -182,7 +182,7 @@ void __26__NWURLSession_initialize__block_invoke()
   v15[2] = __43__NWURLSession_downloadTaskWithResumeInfo___block_invoke;
   v15[3] = &unk_1E6A3BE58;
   v15[4] = self;
-  v5 = v4;
+  v5 = infoCopy;
   v16 = v5;
   v17 = &v18;
   [(NWURLSession *)self withLock:v15];
@@ -199,8 +199,8 @@ void __26__NWURLSession_initialize__block_invoke()
     if (v8)
     {
       v9 = v19[5];
-      v11 = [(NWURLSessionDelegateWrapper *)v8 delegateFor_didCreateTask];
-      [v11 URLSession:v8[5] didCreateTask:v9];
+      delegateFor_didCreateTask = [(NWURLSessionDelegateWrapper *)v8 delegateFor_didCreateTask];
+      [delegateFor_didCreateTask URLSession:v8[5] didCreateTask:v9];
     }
   }
 
@@ -286,21 +286,21 @@ void __43__NWURLSession_downloadTaskWithResumeInfo___block_invoke(uint64_t a1)
   [v19 addObject:*(*(*(a1 + 48) + 8) + 40)];
 }
 
-- (void)withLock:(os_unfair_lock_s *)a1
+- (void)withLock:(os_unfair_lock_s *)lock
 {
   v3 = a2;
-  if (a1)
+  if (lock)
   {
-    os_unfair_lock_lock(a1 + 6);
+    os_unfair_lock_lock(lock + 6);
     v3[2]();
-    os_unfair_lock_unlock(a1 + 6);
+    os_unfair_lock_unlock(lock + 6);
   }
 }
 
-- (id)uploadTaskWithResumeInfo:(id)a3
+- (id)uploadTaskWithResumeInfo:(id)info
 {
-  v4 = a3;
-  if (!v4)
+  infoCopy = info;
+  if (!infoCopy)
   {
     v14 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"URLSessionUploadTask created with nil resume info" userInfo:0];
     objc_exception_throw(v14);
@@ -318,7 +318,7 @@ void __43__NWURLSession_downloadTaskWithResumeInfo___block_invoke(uint64_t a1)
   v15[3] = &unk_1E6A3BE58;
   v15[4] = self;
   v17 = &v18;
-  v5 = v4;
+  v5 = infoCopy;
   v16 = v5;
   [(NWURLSession *)self withLock:v15];
   v6 = v19[5];
@@ -334,8 +334,8 @@ void __43__NWURLSession_downloadTaskWithResumeInfo___block_invoke(uint64_t a1)
     if (v8)
     {
       v9 = v19[5];
-      v11 = [(NWURLSessionDelegateWrapper *)v8 delegateFor_didCreateTask];
-      [v11 URLSession:v8[5] didCreateTask:v9];
+      delegateFor_didCreateTask = [(NWURLSessionDelegateWrapper *)v8 delegateFor_didCreateTask];
+      [delegateFor_didCreateTask URLSession:v8[5] didCreateTask:v9];
     }
   }
 
@@ -403,10 +403,10 @@ uint64_t __41__NWURLSession_uploadTaskWithResumeInfo___block_invoke(void *a1)
   return [v14 addObject:v15];
 }
 
-- (id)dataTaskWithResumeInfo:(id)a3
+- (id)dataTaskWithResumeInfo:(id)info
 {
-  v4 = a3;
-  if (!v4)
+  infoCopy = info;
+  if (!infoCopy)
   {
     v14 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"URLSessionDataTask created with nil resume info" userInfo:0];
     objc_exception_throw(v14);
@@ -423,7 +423,7 @@ uint64_t __41__NWURLSession_uploadTaskWithResumeInfo___block_invoke(void *a1)
   v15[2] = __39__NWURLSession_dataTaskWithResumeInfo___block_invoke;
   v15[3] = &unk_1E6A3BE58;
   v15[4] = self;
-  v5 = v4;
+  v5 = infoCopy;
   v16 = v5;
   v17 = &v18;
   [(NWURLSession *)self withLock:v15];
@@ -440,8 +440,8 @@ uint64_t __41__NWURLSession_uploadTaskWithResumeInfo___block_invoke(void *a1)
     if (v8)
     {
       v9 = v19[5];
-      v11 = [(NWURLSessionDelegateWrapper *)v8 delegateFor_didCreateTask];
-      [v11 URLSession:v8[5] didCreateTask:v9];
+      delegateFor_didCreateTask = [(NWURLSessionDelegateWrapper *)v8 delegateFor_didCreateTask];
+      [delegateFor_didCreateTask URLSession:v8[5] didCreateTask:v9];
     }
   }
 
@@ -528,12 +528,12 @@ void __39__NWURLSession_dataTaskWithResumeInfo___block_invoke(uint64_t a1)
   [v19 addObject:*(*(*(a1 + 48) + 8) + 40)];
 }
 
-- (id)_downloadTaskWithResumeData:(id)a3 delegate:(id)a4 completionHandler:(id)a5
+- (id)_downloadTaskWithResumeData:(id)data delegate:(id)delegate completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v8)
+  dataCopy = data;
+  delegateCopy = delegate;
+  handlerCopy = handler;
+  if (!dataCopy)
   {
     v23 = MEMORY[0x1E695DF30];
     v24 = *MEMORY[0x1E695D940];
@@ -541,8 +541,8 @@ void __39__NWURLSession_dataTaskWithResumeInfo___block_invoke(uint64_t a1)
     goto LABEL_13;
   }
 
-  v11 = v10;
-  if (!v10)
+  v11 = handlerCopy;
+  if (!handlerCopy)
   {
     v23 = MEMORY[0x1E695DF30];
     v24 = *MEMORY[0x1E695D940];
@@ -563,12 +563,12 @@ LABEL_13:
   v27[2] = __71__NWURLSession__downloadTaskWithResumeData_delegate_completionHandler___block_invoke;
   v27[3] = &unk_1E6A34320;
   v27[4] = self;
-  v12 = v8;
+  v12 = dataCopy;
   v28 = v12;
   v13 = v11;
   v30 = v13;
   v31 = &v32;
-  v14 = v9;
+  v14 = delegateCopy;
   v29 = v14;
   [(NWURLSession *)self withLock:v27];
   v15 = v33[5];
@@ -584,8 +584,8 @@ LABEL_13:
     if (v17)
     {
       v18 = v33[5];
-      v20 = [(NWURLSessionDelegateWrapper *)v17 delegateFor_didCreateTask];
-      [v20 URLSession:v17[5] didCreateTask:v18];
+      delegateFor_didCreateTask = [(NWURLSessionDelegateWrapper *)v17 delegateFor_didCreateTask];
+      [delegateFor_didCreateTask URLSession:v17[5] didCreateTask:v18];
     }
   }
 
@@ -679,12 +679,12 @@ void __71__NWURLSession__downloadTaskWithResumeData_delegate_completionHandler__
   }
 }
 
-- (id)_downloadTaskWithURL:(id)a3 delegate:(id)a4 completionHandler:(id)a5
+- (id)_downloadTaskWithURL:(id)l delegate:(id)delegate completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v8)
+  lCopy = l;
+  delegateCopy = delegate;
+  handlerCopy = handler;
+  if (!lCopy)
   {
     v23 = MEMORY[0x1E695DF30];
     v24 = *MEMORY[0x1E695D940];
@@ -692,8 +692,8 @@ void __71__NWURLSession__downloadTaskWithResumeData_delegate_completionHandler__
     goto LABEL_13;
   }
 
-  v11 = v10;
-  if (!v10)
+  v11 = handlerCopy;
+  if (!handlerCopy)
   {
     v23 = MEMORY[0x1E695DF30];
     v24 = *MEMORY[0x1E695D940];
@@ -714,12 +714,12 @@ LABEL_13:
   v27[2] = __64__NWURLSession__downloadTaskWithURL_delegate_completionHandler___block_invoke;
   v27[3] = &unk_1E6A34320;
   v27[4] = self;
-  v12 = v8;
+  v12 = lCopy;
   v28 = v12;
   v31 = &v32;
   v13 = v11;
   v30 = v13;
-  v14 = v9;
+  v14 = delegateCopy;
   v29 = v14;
   [(NWURLSession *)self withLock:v27];
   v15 = v33[5];
@@ -735,8 +735,8 @@ LABEL_13:
     if (v17)
     {
       v18 = v33[5];
-      v20 = [(NWURLSessionDelegateWrapper *)v17 delegateFor_didCreateTask];
-      [v20 URLSession:v17[5] didCreateTask:v18];
+      delegateFor_didCreateTask = [(NWURLSessionDelegateWrapper *)v17 delegateFor_didCreateTask];
+      [delegateFor_didCreateTask URLSession:v17[5] didCreateTask:v18];
     }
   }
 
@@ -822,23 +822,23 @@ void __64__NWURLSession__downloadTaskWithURL_delegate_completionHandler___block_
   [v17 addObject:*(*(*(a1 + 64) + 8) + 40)];
 }
 
-- (id)preparedRequestFromRequest:(void *)a3 bodyInfo:
+- (id)preparedRequestFromRequest:(void *)request bodyInfo:
 {
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  requestCopy = request;
+  if (self)
   {
-    v7 = *(a1 + 96);
-    v8 = [v7 HTTPAdditionalHeaders];
+    v7 = *(self + 96);
+    hTTPAdditionalHeaders = [v7 HTTPAdditionalHeaders];
     v32[0] = MEMORY[0x1E69E9820];
     v32[1] = 3221225472;
     v32[2] = __52__NWURLSession_preparedRequestFromRequest_bodyInfo___block_invoke;
     v32[3] = &unk_1E6A33448;
-    v32[4] = a1;
+    v32[4] = self;
     v9 = v5;
 
     v33 = v9;
-    [v8 enumerateKeysAndObjectsUsingBlock:v32];
+    [hTTPAdditionalHeaders enumerateKeysAndObjectsUsingBlock:v32];
 
     v10 = [v9 valueForHTTPHeaderField:@"Host"];
 
@@ -912,7 +912,7 @@ void __64__NWURLSession__downloadTaskWithURL_delegate_completionHandler___block_
       }
     }
 
-    if (!v6 || v6[1] != -1)
+    if (!requestCopy || requestCopy[1] != -1)
     {
       if (!v9 || ([v9 HTTPMethod], v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v18, "caseInsensitiveCompare:", @"GET"), v18, v19) && (objc_msgSend(v9, "HTTPMethod"), v26 = objc_claimAutoreleasedReturnValue(), v27 = objc_msgSend(v26, "caseInsensitiveCompare:", @"HEAD"), v26, v27))
       {
@@ -920,9 +920,9 @@ void __64__NWURLSession__downloadTaskWithURL_delegate_completionHandler___block_
 
         if (!v28)
         {
-          if (v6)
+          if (requestCopy)
           {
-            v29 = v6[1];
+            v29 = requestCopy[1];
           }
 
           else
@@ -936,17 +936,17 @@ void __64__NWURLSession__downloadTaskWithURL_delegate_completionHandler___block_
       }
     }
 
-    if (![*(a1 + 96) usesClassicLoadingMode])
+    if (![*(self + 96) usesClassicLoadingMode])
     {
       goto LABEL_37;
     }
 
-    v20 = [MEMORY[0x1E696AAE8] mainBundle];
-    v21 = [v20 bundleIdentifier];
-    if ([v21 isEqualToString:@"fm.overcast.overcast"])
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
+    if ([bundleIdentifier isEqualToString:@"fm.overcast.overcast"])
     {
-      v22 = [v9 HTTPMethod];
-      if ([v22 isEqualToString:@"POST"])
+      hTTPMethod = [v9 HTTPMethod];
+      if ([hTTPMethod isEqualToString:@"POST"])
       {
         v23 = [v9 valueForHTTPHeaderField:@"Content-Type"];
 
@@ -999,12 +999,12 @@ void __52__NWURLSession_preparedRequestFromRequest_bodyInfo___block_invoke(uint6
   }
 }
 
-- (id)_downloadTaskWithRequest:(id)a3 delegate:(id)a4 completionHandler:(id)a5
+- (id)_downloadTaskWithRequest:(id)request delegate:(id)delegate completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 URL];
+  requestCopy = request;
+  delegateCopy = delegate;
+  handlerCopy = handler;
+  v11 = [requestCopy URL];
 
   if (!v11)
   {
@@ -1014,7 +1014,7 @@ void __52__NWURLSession_preparedRequestFromRequest_bodyInfo___block_invoke(uint6
     goto LABEL_13;
   }
 
-  if (!v10)
+  if (!handlerCopy)
   {
     v23 = MEMORY[0x1E695DF30];
     v24 = *MEMORY[0x1E695D940];
@@ -1035,12 +1035,12 @@ LABEL_13:
   v27[2] = __68__NWURLSession__downloadTaskWithRequest_delegate_completionHandler___block_invoke;
   v27[3] = &unk_1E6A34320;
   v27[4] = self;
-  v12 = v8;
+  v12 = requestCopy;
   v28 = v12;
   v31 = &v32;
-  v13 = v10;
+  v13 = handlerCopy;
   v30 = v13;
-  v14 = v9;
+  v14 = delegateCopy;
   v29 = v14;
   [(NWURLSession *)self withLock:v27];
   v15 = v33[5];
@@ -1056,8 +1056,8 @@ LABEL_13:
     if (v17)
     {
       v18 = v33[5];
-      v20 = [(NWURLSessionDelegateWrapper *)v17 delegateFor_didCreateTask];
-      [v20 URLSession:v17[5] didCreateTask:v18];
+      delegateFor_didCreateTask = [(NWURLSessionDelegateWrapper *)v17 delegateFor_didCreateTask];
+      [delegateFor_didCreateTask URLSession:v17[5] didCreateTask:v18];
     }
   }
 
@@ -1163,18 +1163,18 @@ void __68__NWURLSession__downloadTaskWithRequest_delegate_completionHandler___bl
   [v23 addObject:*(*(*(a1 + 64) + 8) + 40)];
 }
 
-- (id)_uploadTaskWithResumeData:(id)a3 delegate:(id)a4 completionHandler:(id)a5
+- (id)_uploadTaskWithResumeData:(id)data delegate:(id)delegate completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v8)
+  dataCopy = data;
+  delegateCopy = delegate;
+  handlerCopy = handler;
+  if (!dataCopy)
   {
     v23 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"URLSessionUploadTask created with nil resume data" userInfo:0];
     objc_exception_throw(v23);
   }
 
-  v11 = v10;
+  v11 = handlerCopy;
   v29 = 0;
   v30 = &v29;
   v31 = 0x3032000000;
@@ -1186,12 +1186,12 @@ void __68__NWURLSession__downloadTaskWithRequest_delegate_completionHandler___bl
   v24[2] = __69__NWURLSession__uploadTaskWithResumeData_delegate_completionHandler___block_invoke;
   v24[3] = &unk_1E6A34320;
   v24[4] = self;
-  v12 = v8;
+  v12 = dataCopy;
   v25 = v12;
   v28 = &v29;
   v13 = v11;
   v27 = v13;
-  v14 = v9;
+  v14 = delegateCopy;
   v26 = v14;
   [(NWURLSession *)self withLock:v24];
   v15 = v30[5];
@@ -1207,8 +1207,8 @@ void __68__NWURLSession__downloadTaskWithRequest_delegate_completionHandler___bl
     if (v17)
     {
       v18 = v30[5];
-      v20 = [(NWURLSessionDelegateWrapper *)v17 delegateFor_didCreateTask];
-      [v20 URLSession:v17[5] didCreateTask:v18];
+      delegateFor_didCreateTask = [(NWURLSessionDelegateWrapper *)v17 delegateFor_didCreateTask];
+      [delegateFor_didCreateTask URLSession:v17[5] didCreateTask:v18];
     }
   }
 
@@ -1290,13 +1290,13 @@ void __69__NWURLSession__uploadTaskWithResumeData_delegate_completionHandler___b
   }
 }
 
-- (id)_uploadTaskWithRequest:(id)a3 fromData:(id)a4 delegate:(id)a5 completionHandler:(id)a6
+- (id)_uploadTaskWithRequest:(id)request fromData:(id)data delegate:(id)delegate completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [v10 URL];
+  requestCopy = request;
+  dataCopy = data;
+  delegateCopy = delegate;
+  handlerCopy = handler;
+  v14 = [requestCopy URL];
 
   if (!v14)
   {
@@ -1306,7 +1306,7 @@ void __69__NWURLSession__uploadTaskWithResumeData_delegate_completionHandler___b
     goto LABEL_15;
   }
 
-  if (!v11)
+  if (!dataCopy)
   {
     v27 = MEMORY[0x1E695DF30];
     v28 = *MEMORY[0x1E695D940];
@@ -1314,7 +1314,7 @@ void __69__NWURLSession__uploadTaskWithResumeData_delegate_completionHandler___b
     goto LABEL_15;
   }
 
-  if (!v13)
+  if (!handlerCopy)
   {
     v27 = MEMORY[0x1E695DF30];
     v28 = *MEMORY[0x1E695D940];
@@ -1334,15 +1334,15 @@ LABEL_15:
   v32 = 3221225472;
   v33 = __75__NWURLSession__uploadTaskWithRequest_fromData_delegate_completionHandler___block_invoke;
   v34 = &unk_1E6A349E8;
-  v35 = self;
-  v15 = v11;
+  selfCopy = self;
+  v15 = dataCopy;
   v36 = v15;
-  v16 = v10;
+  v16 = requestCopy;
   v37 = v16;
   v40 = &v41;
-  v17 = v13;
+  v17 = handlerCopy;
   v39 = v17;
-  v18 = v12;
+  v18 = delegateCopy;
   v38 = v18;
   [(NWURLSession *)self withLock:?];
   v19 = v42[5];
@@ -1358,8 +1358,8 @@ LABEL_15:
     if (v21)
     {
       v22 = v42[5];
-      v24 = [(NWURLSessionDelegateWrapper *)v21 delegateFor_didCreateTask];
-      [v24 URLSession:v21[5] didCreateTask:{v22, v31, v32, v33, v34, v35, v36, v37}];
+      delegateFor_didCreateTask = [(NWURLSessionDelegateWrapper *)v21 delegateFor_didCreateTask];
+      [delegateFor_didCreateTask URLSession:v21[5] didCreateTask:{v22, v31, v32, v33, v34, selfCopy, v36, v37}];
     }
   }
 
@@ -1453,13 +1453,13 @@ void __75__NWURLSession__uploadTaskWithRequest_fromData_delegate_completionHandl
   [v22 addObject:*(*(*(a1 + 72) + 8) + 40)];
 }
 
-- (id)_uploadTaskWithRequest:(id)a3 fromFile:(id)a4 delegate:(id)a5 completionHandler:(id)a6
+- (id)_uploadTaskWithRequest:(id)request fromFile:(id)file delegate:(id)delegate completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [v10 URL];
+  requestCopy = request;
+  fileCopy = file;
+  delegateCopy = delegate;
+  handlerCopy = handler;
+  v14 = [requestCopy URL];
 
   if (!v14)
   {
@@ -1469,7 +1469,7 @@ void __75__NWURLSession__uploadTaskWithRequest_fromData_delegate_completionHandl
     goto LABEL_17;
   }
 
-  if (!v11)
+  if (!fileCopy)
   {
     v27 = MEMORY[0x1E695DF30];
     v28 = *MEMORY[0x1E695D940];
@@ -1477,7 +1477,7 @@ void __75__NWURLSession__uploadTaskWithRequest_fromData_delegate_completionHandl
     goto LABEL_17;
   }
 
-  if (([v11 isFileURL] & 1) == 0)
+  if (([fileCopy isFileURL] & 1) == 0)
   {
     v27 = MEMORY[0x1E695DF30];
     v28 = *MEMORY[0x1E695D940];
@@ -1485,7 +1485,7 @@ void __75__NWURLSession__uploadTaskWithRequest_fromData_delegate_completionHandl
     goto LABEL_17;
   }
 
-  if (!v13)
+  if (!handlerCopy)
   {
     v27 = MEMORY[0x1E695DF30];
     v28 = *MEMORY[0x1E695D940];
@@ -1505,15 +1505,15 @@ LABEL_17:
   v32 = 3221225472;
   v33 = __75__NWURLSession__uploadTaskWithRequest_fromFile_delegate_completionHandler___block_invoke;
   v34 = &unk_1E6A349E8;
-  v35 = self;
-  v15 = v11;
+  selfCopy = self;
+  v15 = fileCopy;
   v36 = v15;
-  v16 = v10;
+  v16 = requestCopy;
   v37 = v16;
   v40 = &v41;
-  v17 = v13;
+  v17 = handlerCopy;
   v39 = v17;
-  v18 = v12;
+  v18 = delegateCopy;
   v38 = v18;
   [(NWURLSession *)self withLock:?];
   v19 = v42[5];
@@ -1529,8 +1529,8 @@ LABEL_17:
     if (v21)
     {
       v22 = v42[5];
-      v24 = [(NWURLSessionDelegateWrapper *)v21 delegateFor_didCreateTask];
-      [v24 URLSession:v21[5] didCreateTask:{v22, v31, v32, v33, v34, v35, v36, v37}];
+      delegateFor_didCreateTask = [(NWURLSessionDelegateWrapper *)v21 delegateFor_didCreateTask];
+      [delegateFor_didCreateTask URLSession:v21[5] didCreateTask:{v22, v31, v32, v33, v34, selfCopy, v36, v37}];
     }
   }
 
@@ -1620,12 +1620,12 @@ void __75__NWURLSession__uploadTaskWithRequest_fromFile_delegate_completionHandl
   [v20 addObject:*(*(*(a1 + 72) + 8) + 40)];
 }
 
-- (id)_dataTaskWithURL:(id)a3 delegate:(id)a4 completionHandler:(id)a5
+- (id)_dataTaskWithURL:(id)l delegate:(id)delegate completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v8)
+  lCopy = l;
+  delegateCopy = delegate;
+  handlerCopy = handler;
+  if (!lCopy)
   {
     v23 = MEMORY[0x1E695DF30];
     v24 = *MEMORY[0x1E695D940];
@@ -1633,8 +1633,8 @@ void __75__NWURLSession__uploadTaskWithRequest_fromFile_delegate_completionHandl
     goto LABEL_13;
   }
 
-  v11 = v10;
-  if (!v10)
+  v11 = handlerCopy;
+  if (!handlerCopy)
   {
     v23 = MEMORY[0x1E695DF30];
     v24 = *MEMORY[0x1E695D940];
@@ -1655,12 +1655,12 @@ LABEL_13:
   v27[2] = __60__NWURLSession__dataTaskWithURL_delegate_completionHandler___block_invoke;
   v27[3] = &unk_1E6A34320;
   v27[4] = self;
-  v12 = v8;
+  v12 = lCopy;
   v28 = v12;
   v31 = &v32;
   v13 = v11;
   v30 = v13;
-  v14 = v9;
+  v14 = delegateCopy;
   v29 = v14;
   [(NWURLSession *)self withLock:v27];
   v15 = v33[5];
@@ -1676,8 +1676,8 @@ LABEL_13:
     if (v17)
     {
       v18 = v33[5];
-      v20 = [(NWURLSessionDelegateWrapper *)v17 delegateFor_didCreateTask];
-      [v20 URLSession:v17[5] didCreateTask:v18];
+      delegateFor_didCreateTask = [(NWURLSessionDelegateWrapper *)v17 delegateFor_didCreateTask];
+      [delegateFor_didCreateTask URLSession:v17[5] didCreateTask:v18];
     }
   }
 
@@ -1747,12 +1747,12 @@ void __60__NWURLSession__dataTaskWithURL_delegate_completionHandler___block_invo
   [v14 addObject:*(*(*(a1 + 64) + 8) + 40)];
 }
 
-- (id)_dataTaskWithRequest:(id)a3 delegate:(id)a4 completionHandler:(id)a5
+- (id)_dataTaskWithRequest:(id)request delegate:(id)delegate completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 URL];
+  requestCopy = request;
+  delegateCopy = delegate;
+  handlerCopy = handler;
+  v11 = [requestCopy URL];
   if (v11)
   {
   }
@@ -1765,7 +1765,7 @@ void __60__NWURLSession__dataTaskWithURL_delegate_completionHandler___block_invo
     goto LABEL_18;
   }
 
-  if (v10)
+  if (handlerCopy)
   {
     goto LABEL_6;
   }
@@ -1780,7 +1780,7 @@ LABEL_18:
     objc_exception_throw(v26);
   }
 
-  v10 = &__block_literal_global_79;
+  handlerCopy = &__block_literal_global_79;
 LABEL_6:
   v32 = 0;
   v33 = &v32;
@@ -1793,12 +1793,12 @@ LABEL_6:
   v27[2] = __64__NWURLSession__dataTaskWithRequest_delegate_completionHandler___block_invoke_2;
   v27[3] = &unk_1E6A34320;
   v27[4] = self;
-  v12 = v8;
+  v12 = requestCopy;
   v28 = v12;
   v31 = &v32;
-  v13 = v10;
+  v13 = handlerCopy;
   v30 = v13;
-  v14 = v9;
+  v14 = delegateCopy;
   v29 = v14;
   [(NWURLSession *)self withLock:v27];
   v15 = v33[5];
@@ -1814,8 +1814,8 @@ LABEL_6:
     if (v17)
     {
       v18 = v33[5];
-      v20 = [(NWURLSessionDelegateWrapper *)v17 delegateFor_didCreateTask];
-      [v20 URLSession:v17[5] didCreateTask:v18];
+      delegateFor_didCreateTask = [(NWURLSessionDelegateWrapper *)v17 delegateFor_didCreateTask];
+      [delegateFor_didCreateTask URLSession:v17[5] didCreateTask:v18];
     }
   }
 
@@ -1905,11 +1905,11 @@ void __64__NWURLSession__dataTaskWithRequest_delegate_completionHandler___block_
   [v20 addObject:*(*(*(a1 + 64) + 8) + 40)];
 }
 
-- (id)_dataTaskWithURL:(id)a3 delegate:(id)a4
+- (id)_dataTaskWithURL:(id)l delegate:(id)delegate
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6 && (!self || ([(NSURLSessionConfiguration *)self->_internalConfiguration usesClassicLoadingMode]& 1) == 0))
+  lCopy = l;
+  delegateCopy = delegate;
+  if (!lCopy && (!self || ([(NSURLSessionConfiguration *)self->_internalConfiguration usesClassicLoadingMode]& 1) == 0))
   {
     v18 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"URLSessionTask created with nil URL" userInfo:0];
     objc_exception_throw(v18);
@@ -1925,11 +1925,11 @@ void __64__NWURLSession__dataTaskWithRequest_delegate_completionHandler___block_
   v20 = 3221225472;
   v21 = __42__NWURLSession__dataTaskWithURL_delegate___block_invoke;
   v22 = &unk_1E6A33400;
-  v23 = self;
-  v8 = v6;
+  selfCopy = self;
+  v8 = lCopy;
   v24 = v8;
   v26 = &v27;
-  v9 = v7;
+  v9 = delegateCopy;
   v25 = v9;
   [(NWURLSession *)self withLock:?];
   v10 = v28[5];
@@ -1945,8 +1945,8 @@ void __64__NWURLSession__dataTaskWithRequest_delegate_completionHandler___block_
     if (v12)
     {
       v13 = v28[5];
-      v15 = [(NWURLSessionDelegateWrapper *)v12 delegateFor_didCreateTask];
-      [v15 URLSession:v12[5] didCreateTask:{v13, v19, v20, v21, v22, v23, v24}];
+      delegateFor_didCreateTask = [(NWURLSessionDelegateWrapper *)v12 delegateFor_didCreateTask];
+      [delegateFor_didCreateTask URLSession:v12[5] didCreateTask:{v13, v19, v20, v21, v22, selfCopy, v24}];
     }
   }
 
@@ -2015,11 +2015,11 @@ void __42__NWURLSession__dataTaskWithURL_delegate___block_invoke(void *a1)
   [v14 addObject:*(*(a1[7] + 8) + 40)];
 }
 
-- (id)_dataTaskWithRequest:(id)a3 delegate:(id)a4
+- (id)_dataTaskWithRequest:(id)request delegate:(id)delegate
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 URL];
+  requestCopy = request;
+  delegateCopy = delegate;
+  v8 = [requestCopy URL];
   if (v8)
   {
   }
@@ -2040,11 +2040,11 @@ void __42__NWURLSession__dataTaskWithURL_delegate___block_invoke(void *a1)
   v21 = 3221225472;
   v22 = __46__NWURLSession__dataTaskWithRequest_delegate___block_invoke;
   v23 = &unk_1E6A33400;
-  v24 = self;
-  v9 = v6;
+  selfCopy = self;
+  v9 = requestCopy;
   v25 = v9;
   v27 = &v28;
-  v10 = v7;
+  v10 = delegateCopy;
   v26 = v10;
   [(NWURLSession *)self withLock:?];
   v11 = v29[5];
@@ -2060,8 +2060,8 @@ void __42__NWURLSession__dataTaskWithURL_delegate___block_invoke(void *a1)
     if (v13)
     {
       v14 = v29[5];
-      v16 = [(NWURLSessionDelegateWrapper *)v13 delegateFor_didCreateTask];
-      [v16 URLSession:v13[5] didCreateTask:{v14, v20, v21, v22, v23, v24, v25}];
+      delegateFor_didCreateTask = [(NWURLSessionDelegateWrapper *)v13 delegateFor_didCreateTask];
+      [delegateFor_didCreateTask URLSession:v13[5] didCreateTask:{v14, v20, v21, v22, v23, selfCopy, v25}];
     }
   }
 
@@ -2150,26 +2150,26 @@ void __46__NWURLSession__dataTaskWithRequest_delegate___block_invoke(uint64_t a1
   [v20 addObject:*(*(*(a1 + 56) + 8) + 40)];
 }
 
-- (id)uploadTaskWithResumeData:(id)a3 completionHandler:(id)a4
+- (id)uploadTaskWithResumeData:(id)data completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  dataCopy = data;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v11 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"URLSessionTask created with nil completion handler" userInfo:0];
     objc_exception_throw(v11);
   }
 
-  v8 = v7;
-  v9 = [(NWURLSession *)self _uploadTaskWithResumeData:v6 delegate:0 completionHandler:v7];
+  v8 = handlerCopy;
+  v9 = [(NWURLSession *)self _uploadTaskWithResumeData:dataCopy delegate:0 completionHandler:handlerCopy];
 
   return v9;
 }
 
-- (id)webSocketTaskWithRequest:(id)a3
+- (id)webSocketTaskWithRequest:(id)request
 {
-  v4 = a3;
-  v5 = [v4 URL];
+  requestCopy = request;
+  v5 = [requestCopy URL];
 
   if (!v5)
   {
@@ -2179,7 +2179,7 @@ void __46__NWURLSession__dataTaskWithRequest_delegate___block_invoke(uint64_t a1
     goto LABEL_13;
   }
 
-  v6 = [v4 URL];
+  v6 = [requestCopy URL];
   isWeb = [(NSURL *)v6 _NW_isWebSocket];
 
   if (!isWeb)
@@ -2203,7 +2203,7 @@ LABEL_13:
   v21[2] = __41__NWURLSession_webSocketTaskWithRequest___block_invoke;
   v21[3] = &unk_1E6A3BE58;
   v21[4] = self;
-  v8 = v4;
+  v8 = requestCopy;
   v22 = v8;
   v23 = &v24;
   [(NWURLSession *)self withLock:v21];
@@ -2220,8 +2220,8 @@ LABEL_13:
     if (v11)
     {
       v12 = v25[5];
-      v14 = [(NWURLSessionDelegateWrapper *)v11 delegateFor_didCreateTask];
-      [v14 URLSession:v11[5] didCreateTask:v12];
+      delegateFor_didCreateTask = [(NWURLSessionDelegateWrapper *)v11 delegateFor_didCreateTask];
+      [delegateFor_didCreateTask URLSession:v11[5] didCreateTask:v12];
     }
   }
 
@@ -2320,11 +2320,11 @@ LABEL_8:
   [v19 addObject:*(*(*(a1 + 48) + 8) + 40)];
 }
 
-- (id)webSocketTaskWithURL:(id)a3 protocols:(id)a4
+- (id)webSocketTaskWithURL:(id)l protocols:(id)protocols
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  lCopy = l;
+  protocolsCopy = protocols;
+  if (!lCopy)
   {
     v19 = MEMORY[0x1E695DF30];
     v20 = *MEMORY[0x1E695D940];
@@ -2332,8 +2332,8 @@ LABEL_8:
     goto LABEL_15;
   }
 
-  v8 = v7;
-  if (![(NSURL *)v6 _NW_isWebSocket])
+  v8 = protocolsCopy;
+  if (![(NSURL *)lCopy _NW_isWebSocket])
   {
     v19 = MEMORY[0x1E695DF30];
     v20 = *MEMORY[0x1E695D940];
@@ -2361,8 +2361,8 @@ LABEL_15:
   v24 = 3221225472;
   v25 = __47__NWURLSession_webSocketTaskWithURL_protocols___block_invoke;
   v26 = &unk_1E6A33400;
-  v27 = self;
-  v9 = v6;
+  selfCopy = self;
+  v9 = lCopy;
   v28 = v9;
   v10 = v8;
   v29 = v10;
@@ -2381,8 +2381,8 @@ LABEL_15:
     if (v13)
     {
       v14 = v32[5];
-      v16 = [(NWURLSessionDelegateWrapper *)v13 delegateFor_didCreateTask];
-      [v16 URLSession:v13[5] didCreateTask:{v14, v23, v24, v25, v26, v27, v28}];
+      delegateFor_didCreateTask = [(NWURLSessionDelegateWrapper *)v13 delegateFor_didCreateTask];
+      [delegateFor_didCreateTask URLSession:v13[5] didCreateTask:{v14, v23, v24, v25, v26, selfCopy, v28}];
     }
   }
 
@@ -2473,17 +2473,17 @@ LABEL_9:
   [v18 addObject:*(*(*(a1 + 56) + 8) + 40)];
 }
 
-- (id)streamTaskWithNetService:(id)a3
+- (id)streamTaskWithNetService:(id)service
 {
-  v3 = a3;
+  serviceCopy = service;
   v4 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D920] reason:@"NetService is not supported by the new loader" userInfo:0];
   objc_exception_throw(v4);
 }
 
-- (id)streamTaskWithHostName:(id)a3 port:(int64_t)a4
+- (id)streamTaskWithHostName:(id)name port:(int64_t)port
 {
-  v6 = a3;
-  if (!v6)
+  nameCopy = name;
+  if (!nameCopy)
   {
     v16 = MEMORY[0x1E695DF30];
     v17 = *MEMORY[0x1E695D940];
@@ -2491,7 +2491,7 @@ LABEL_9:
     goto LABEL_13;
   }
 
-  if ((a4 - 0x10000) <= 0xFFFFFFFFFFFF0000)
+  if ((port - 0x10000) <= 0xFFFFFFFFFFFF0000)
   {
     v16 = MEMORY[0x1E695DF30];
     v17 = *MEMORY[0x1E695D940];
@@ -2511,11 +2511,11 @@ LABEL_13:
   v21 = 3221225472;
   v22 = __44__NWURLSession_streamTaskWithHostName_port___block_invoke;
   v23 = &unk_1E6A333D8;
-  v24 = self;
+  selfCopy = self;
   v26 = &v28;
-  v7 = v6;
+  v7 = nameCopy;
   v25 = v7;
-  v27 = a4;
+  portCopy = port;
   [(NWURLSession *)self withLock:?];
   v8 = v29[5];
   if (v8)
@@ -2530,8 +2530,8 @@ LABEL_13:
     if (v10)
     {
       v11 = v29[5];
-      v13 = [(NWURLSessionDelegateWrapper *)v10 delegateFor_didCreateTask];
-      [v13 URLSession:v10[5] didCreateTask:{v11, v20, v21, v22, v23, v24}];
+      delegateFor_didCreateTask = [(NWURLSessionDelegateWrapper *)v10 delegateFor_didCreateTask];
+      [delegateFor_didCreateTask URLSession:v10[5] didCreateTask:{v11, v20, v21, v22, v23, selfCopy}];
     }
   }
 
@@ -2672,10 +2672,10 @@ uint64_t __44__NWURLSession_streamTaskWithHostName_port___block_invoke(void *a1)
   return [v40 addObject:v41];
 }
 
-- (id)downloadTaskWithResumeData:(id)a3
+- (id)downloadTaskWithResumeData:(id)data
 {
-  v4 = a3;
-  if (!v4)
+  dataCopy = data;
+  if (!dataCopy)
   {
     v14 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"URLSessionDownloadTask created with nil resume data" userInfo:0];
     objc_exception_throw(v14);
@@ -2692,7 +2692,7 @@ uint64_t __44__NWURLSession_streamTaskWithHostName_port___block_invoke(void *a1)
   v15[2] = __43__NWURLSession_downloadTaskWithResumeData___block_invoke;
   v15[3] = &unk_1E6A3BE58;
   v15[4] = self;
-  v5 = v4;
+  v5 = dataCopy;
   v16 = v5;
   v17 = &v18;
   [(NWURLSession *)self withLock:v15];
@@ -2709,8 +2709,8 @@ uint64_t __44__NWURLSession_streamTaskWithHostName_port___block_invoke(void *a1)
     if (v8)
     {
       v9 = v19[5];
-      v11 = [(NWURLSessionDelegateWrapper *)v8 delegateFor_didCreateTask];
-      [v11 URLSession:v8[5] didCreateTask:v9];
+      delegateFor_didCreateTask = [(NWURLSessionDelegateWrapper *)v8 delegateFor_didCreateTask];
+      [delegateFor_didCreateTask URLSession:v8[5] didCreateTask:v9];
     }
   }
 
@@ -2802,10 +2802,10 @@ void __43__NWURLSession_downloadTaskWithResumeData___block_invoke(void *a1)
   }
 }
 
-- (id)downloadTaskWithURL:(id)a3
+- (id)downloadTaskWithURL:(id)l
 {
-  v4 = a3;
-  if (!v4)
+  lCopy = l;
+  if (!lCopy)
   {
     v14 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"URLSessionTask created with nil URL" userInfo:0];
     objc_exception_throw(v14);
@@ -2822,7 +2822,7 @@ void __43__NWURLSession_downloadTaskWithResumeData___block_invoke(void *a1)
   v15[2] = __36__NWURLSession_downloadTaskWithURL___block_invoke;
   v15[3] = &unk_1E6A3BE58;
   v15[4] = self;
-  v5 = v4;
+  v5 = lCopy;
   v16 = v5;
   v17 = &v18;
   [(NWURLSession *)self withLock:v15];
@@ -2839,8 +2839,8 @@ void __43__NWURLSession_downloadTaskWithResumeData___block_invoke(void *a1)
     if (v8)
     {
       v9 = v19[5];
-      v11 = [(NWURLSessionDelegateWrapper *)v8 delegateFor_didCreateTask];
-      [v11 URLSession:v8[5] didCreateTask:v9];
+      delegateFor_didCreateTask = [(NWURLSessionDelegateWrapper *)v8 delegateFor_didCreateTask];
+      [delegateFor_didCreateTask URLSession:v8[5] didCreateTask:v9];
     }
   }
 
@@ -2909,10 +2909,10 @@ void __36__NWURLSession_downloadTaskWithURL___block_invoke(void *a1)
   [v14 addObject:*(*(a1[6] + 8) + 40)];
 }
 
-- (id)downloadTaskWithRequest:(id)a3
+- (id)downloadTaskWithRequest:(id)request
 {
-  v4 = a3;
-  v5 = [v4 URL];
+  requestCopy = request;
+  v5 = [requestCopy URL];
 
   if (!v5)
   {
@@ -2931,7 +2931,7 @@ void __36__NWURLSession_downloadTaskWithURL___block_invoke(void *a1)
   v16[2] = __40__NWURLSession_downloadTaskWithRequest___block_invoke;
   v16[3] = &unk_1E6A3BE58;
   v16[4] = self;
-  v6 = v4;
+  v6 = requestCopy;
   v17 = v6;
   v18 = &v19;
   [(NWURLSession *)self withLock:v16];
@@ -2948,8 +2948,8 @@ void __36__NWURLSession_downloadTaskWithURL___block_invoke(void *a1)
     if (v9)
     {
       v10 = v20[5];
-      v12 = [(NWURLSessionDelegateWrapper *)v9 delegateFor_didCreateTask];
-      [v12 URLSession:v9[5] didCreateTask:v10];
+      delegateFor_didCreateTask = [(NWURLSessionDelegateWrapper *)v9 delegateFor_didCreateTask];
+      [delegateFor_didCreateTask URLSession:v9[5] didCreateTask:v10];
     }
   }
 
@@ -3038,10 +3038,10 @@ void __40__NWURLSession_downloadTaskWithRequest___block_invoke(uint64_t a1)
   [v20 addObject:*(*(*(a1 + 48) + 8) + 40)];
 }
 
-- (id)uploadTaskWithStreamedRequest:(id)a3
+- (id)uploadTaskWithStreamedRequest:(id)request
 {
-  v4 = a3;
-  v5 = [v4 URL];
+  requestCopy = request;
+  v5 = [requestCopy URL];
 
   if (!v5)
   {
@@ -3060,7 +3060,7 @@ void __40__NWURLSession_downloadTaskWithRequest___block_invoke(uint64_t a1)
   v16[2] = __46__NWURLSession_uploadTaskWithStreamedRequest___block_invoke;
   v16[3] = &unk_1E6A3BE58;
   v16[4] = self;
-  v6 = v4;
+  v6 = requestCopy;
   v17 = v6;
   v18 = &v19;
   [(NWURLSession *)self withLock:v16];
@@ -3077,8 +3077,8 @@ void __40__NWURLSession_downloadTaskWithRequest___block_invoke(uint64_t a1)
     if (v9)
     {
       v10 = v20[5];
-      v12 = [(NWURLSessionDelegateWrapper *)v9 delegateFor_didCreateTask];
-      [v12 URLSession:v9[5] didCreateTask:v10];
+      delegateFor_didCreateTask = [(NWURLSessionDelegateWrapper *)v9 delegateFor_didCreateTask];
+      [delegateFor_didCreateTask URLSession:v9[5] didCreateTask:v10];
     }
   }
 
@@ -3166,11 +3166,11 @@ void __46__NWURLSession_uploadTaskWithStreamedRequest___block_invoke(uint64_t a1
   [v20 addObject:*(*(*(a1 + 48) + 8) + 40)];
 }
 
-- (id)uploadTaskWithRequest:(id)a3 fromData:(id)a4
+- (id)uploadTaskWithRequest:(id)request fromData:(id)data
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 URL];
+  requestCopy = request;
+  dataCopy = data;
+  v8 = [requestCopy URL];
 
   if (!v8)
   {
@@ -3180,7 +3180,7 @@ void __46__NWURLSession_uploadTaskWithStreamedRequest___block_invoke(uint64_t a1
     goto LABEL_13;
   }
 
-  if (!v7)
+  if (!dataCopy)
   {
     v19 = MEMORY[0x1E695DF30];
     v20 = *MEMORY[0x1E695D940];
@@ -3200,10 +3200,10 @@ LABEL_13:
   v24 = 3221225472;
   v25 = __47__NWURLSession_uploadTaskWithRequest_fromData___block_invoke;
   v26 = &unk_1E6A33400;
-  v27 = self;
-  v9 = v7;
+  selfCopy = self;
+  v9 = dataCopy;
   v28 = v9;
-  v10 = v6;
+  v10 = requestCopy;
   v29 = v10;
   v30 = &v31;
   [(NWURLSession *)self withLock:?];
@@ -3220,8 +3220,8 @@ LABEL_13:
     if (v13)
     {
       v14 = v32[5];
-      v16 = [(NWURLSessionDelegateWrapper *)v13 delegateFor_didCreateTask];
-      [v16 URLSession:v13[5] didCreateTask:{v14, v23, v24, v25, v26, v27, v28}];
+      delegateFor_didCreateTask = [(NWURLSessionDelegateWrapper *)v13 delegateFor_didCreateTask];
+      [delegateFor_didCreateTask URLSession:v13[5] didCreateTask:{v14, v23, v24, v25, v26, selfCopy, v28}];
     }
   }
 
@@ -3313,11 +3313,11 @@ void __47__NWURLSession_uploadTaskWithRequest_fromData___block_invoke(uint64_t a
   [v22 addObject:*(*(*(a1 + 56) + 8) + 40)];
 }
 
-- (id)uploadTaskWithRequest:(id)a3 fromFile:(id)a4
+- (id)uploadTaskWithRequest:(id)request fromFile:(id)file
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 URL];
+  requestCopy = request;
+  fileCopy = file;
+  v8 = [requestCopy URL];
 
   if (!v8)
   {
@@ -3327,7 +3327,7 @@ void __47__NWURLSession_uploadTaskWithRequest_fromData___block_invoke(uint64_t a
     goto LABEL_17;
   }
 
-  if (!v7)
+  if (!fileCopy)
   {
     v19 = MEMORY[0x1E695DF30];
     v20 = *MEMORY[0x1E695D940];
@@ -3335,7 +3335,7 @@ void __47__NWURLSession_uploadTaskWithRequest_fromData___block_invoke(uint64_t a
     goto LABEL_17;
   }
 
-  if (([v7 isFileURL] & 1) == 0 && (!self || (-[NSURLSessionConfiguration usesClassicLoadingMode](self->_internalConfiguration, "usesClassicLoadingMode") & 1) == 0))
+  if (([fileCopy isFileURL] & 1) == 0 && (!self || (-[NSURLSessionConfiguration usesClassicLoadingMode](self->_internalConfiguration, "usesClassicLoadingMode") & 1) == 0))
   {
     v19 = MEMORY[0x1E695DF30];
     v20 = *MEMORY[0x1E695D940];
@@ -3355,10 +3355,10 @@ LABEL_17:
   v24 = 3221225472;
   v25 = __47__NWURLSession_uploadTaskWithRequest_fromFile___block_invoke;
   v26 = &unk_1E6A33400;
-  v27 = self;
-  v9 = v7;
+  selfCopy = self;
+  v9 = fileCopy;
   v28 = v9;
-  v10 = v6;
+  v10 = requestCopy;
   v29 = v10;
   v30 = &v31;
   [(NWURLSession *)self withLock:?];
@@ -3375,8 +3375,8 @@ LABEL_17:
     if (v13)
     {
       v14 = v32[5];
-      v16 = [(NWURLSessionDelegateWrapper *)v13 delegateFor_didCreateTask];
-      [v16 URLSession:v13[5] didCreateTask:{v14, v23, v24, v25, v26, v27, v28}];
+      delegateFor_didCreateTask = [(NWURLSessionDelegateWrapper *)v13 delegateFor_didCreateTask];
+      [delegateFor_didCreateTask URLSession:v13[5] didCreateTask:{v14, v23, v24, v25, v26, selfCopy, v28}];
     }
   }
 
@@ -3464,16 +3464,16 @@ void __47__NWURLSession_uploadTaskWithRequest_fromFile___block_invoke(uint64_t a
   [v20 addObject:*(*(*(a1 + 56) + 8) + 40)];
 }
 
-- (void)getAllTasksWithCompletionHandler:(id)a3
+- (void)getAllTasksWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __49__NWURLSession_getAllTasksWithCompletionHandler___block_invoke;
   v6[3] = &unk_1E6A3D710;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = handlerCopy;
+  v5 = handlerCopy;
   [(NWURLSession *)self withLock:v6];
 }
 
@@ -3524,16 +3524,16 @@ void __49__NWURLSession_getAllTasksWithCompletionHandler___block_invoke(uint64_t
   }
 }
 
-- (void)getTasksWithCompletionHandler:(id)a3
+- (void)getTasksWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __46__NWURLSession_getTasksWithCompletionHandler___block_invoke;
   v6[3] = &unk_1E6A3D710;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = handlerCopy;
+  v5 = handlerCopy;
   [(NWURLSession *)self withLock:v6];
 }
 
@@ -3674,10 +3674,10 @@ void __46__NWURLSession_getTasksWithCompletionHandler___block_invoke_2(uint64_t 
   (*(v2 + 16))(v2, v5, v3, v4);
 }
 
-- (void)flushWithCompletionHandler:(id)a3
+- (void)flushWithCompletionHandler:(id)handler
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlerCopy = handler;
   if (__nwlog_url_log::onceToken != -1)
   {
     dispatch_once(&__nwlog_url_log::onceToken, &__block_literal_global_72);
@@ -3702,8 +3702,8 @@ void __46__NWURLSession_getTasksWithCompletionHandler___block_invoke_2(uint64_t 
   v8[1] = 3221225472;
   v8[2] = __43__NWURLSession_flushWithCompletionHandler___block_invoke;
   v8[3] = &unk_1E6A3CE48;
-  v9 = v4;
-  v6 = v4;
+  v9 = handlerCopy;
+  v6 = handlerCopy;
   v7 = v6;
   if (self)
   {
@@ -3712,10 +3712,10 @@ void __46__NWURLSession_getTasksWithCompletionHandler___block_invoke_2(uint64_t 
   }
 }
 
-- (void)resetWithCompletionHandler:(id)a3
+- (void)resetWithCompletionHandler:(id)handler
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlerCopy = handler;
   if (__nwlog_url_log::onceToken != -1)
   {
     dispatch_once(&__nwlog_url_log::onceToken, &__block_literal_global_72);
@@ -3740,8 +3740,8 @@ void __46__NWURLSession_getTasksWithCompletionHandler___block_invoke_2(uint64_t 
   v8[1] = 3221225472;
   v8[2] = __43__NWURLSession_resetWithCompletionHandler___block_invoke;
   v8[3] = &unk_1E6A3CE48;
-  v9 = v4;
-  v6 = v4;
+  v9 = handlerCopy;
+  v6 = handlerCopy;
   v7 = v6;
   if (self)
   {
@@ -3775,8 +3775,8 @@ void __46__NWURLSession_getTasksWithCompletionHandler___block_invoke_2(uint64_t 
     v6[2] = __35__NWURLSession_invalidateAndCancel__block_invoke;
     v6[3] = &unk_1E6A3D868;
     v6[4] = self;
-    v5 = self;
-    [(NWURLSession *)v5 withLock:v6];
+    selfCopy = self;
+    [(NWURLSession *)selfCopy withLock:v6];
   }
 }
 
@@ -3911,9 +3911,9 @@ void __34__NWURLSession_checkForCompletion__block_invoke_2(uint64_t a1, const ch
 - (void)teardownAllConnections
 {
   v34 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v1 = nw_context_copy_cache_context(*(a1 + 160));
+    v1 = nw_context_copy_cache_context(*(self + 160));
     v2 = objc_alloc_init(MEMORY[0x1E695DF70]);
     if (nw_protocol_http_messaging_identifier::onceToken != -1)
     {
@@ -4131,8 +4131,8 @@ void __35__NWURLSession_invalidateAndCancel__block_invoke_3(uint64_t a1)
     v6[2] = __40__NWURLSession_finishTasksAndInvalidate__block_invoke;
     v6[3] = &unk_1E6A3D868;
     v6[4] = self;
-    v5 = self;
-    [(NWURLSession *)v5 withLock:v6];
+    selfCopy = self;
+    [(NWURLSession *)selfCopy withLock:v6];
   }
 }
 
@@ -4221,14 +4221,14 @@ LABEL_8:
   return v2;
 }
 
-- (NWURLSession)initWithConfiguration:(id)a3 UUID:(id)a4 delegate:(id)a5 delegateQueue:(id)a6 delegateDispatchQueue:(id)a7
+- (NWURLSession)initWithConfiguration:(id)configuration UUID:(id)d delegate:(id)delegate delegateQueue:(id)queue delegateDispatchQueue:(id)dispatchQueue
 {
   v79 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v69 = a7;
+  configurationCopy = configuration;
+  dCopy = d;
+  delegateCopy = delegate;
+  queueCopy = queue;
+  dispatchQueueCopy = dispatchQueue;
   v74.receiver = self;
   v74.super_class = NWURLSession;
   v16 = [(NWURLSession *)&v74 init];
@@ -4238,10 +4238,10 @@ LABEL_8:
     goto LABEL_38;
   }
 
-  v68 = v14;
-  if (v13)
+  v68 = delegateCopy;
+  if (dCopy)
   {
-    [v13 getUUIDBytes:v16->uuid];
+    [dCopy getUUIDBytes:v16->uuid];
   }
 
   else
@@ -4259,15 +4259,15 @@ LABEL_8:
   v17->_context = v20;
 
   nw_context_set_isolate_protocol_cache(v17->_context, 1);
-  nw_context_set_privacy_level(v17->_context, [v12 _loggingPrivacyLevel]);
+  nw_context_set_privacy_level(v17->_context, [configurationCopy _loggingPrivacyLevel]);
   nw_context_activate(v17->_context);
   nw_queue_context_target_dispatch_queue(v17->_context, v17->_queue);
   v70 = 0u;
   v71 = 0u;
   v72 = 0u;
   v73 = 0u;
-  v22 = [v12 _proxyConfigurations];
-  v23 = [v22 countByEnumeratingWithState:&v70 objects:v78 count:16];
+  _proxyConfigurations = [configurationCopy _proxyConfigurations];
+  v23 = [_proxyConfigurations countByEnumeratingWithState:&v70 objects:v78 count:16];
   if (v23)
   {
     v24 = v23;
@@ -4278,45 +4278,45 @@ LABEL_8:
       {
         if (*v71 != v25)
         {
-          objc_enumerationMutation(v22);
+          objc_enumerationMutation(_proxyConfigurations);
         }
 
         nw_context_add_proxy(v17->_context, *(*(&v70 + 1) + 8 * i));
       }
 
-      v24 = [v22 countByEnumeratingWithState:&v70 objects:v78 count:16];
+      v24 = [_proxyConfigurations countByEnumeratingWithState:&v70 objects:v78 count:16];
     }
 
     while (v24);
   }
 
-  v67 = v15;
-  obj = a6;
-  if (v12)
+  v67 = queueCopy;
+  obj = queue;
+  if (configurationCopy)
   {
-    v27 = [v12 copy];
+    v27 = [configurationCopy copy];
     internalConfiguration = v17->_internalConfiguration;
     v17->_internalConfiguration = v27;
   }
 
   else
   {
-    v29 = [MEMORY[0x1E695AC80] defaultSessionConfiguration];
+    defaultSessionConfiguration = [MEMORY[0x1E695AC80] defaultSessionConfiguration];
     v30 = v17->_internalConfiguration;
-    v17->_internalConfiguration = v29;
+    v17->_internalConfiguration = defaultSessionConfiguration;
 
     [(NSURLSessionConfiguration *)v17->_internalConfiguration setUsesClassicLoadingMode:0];
   }
 
-  v66 = v13;
+  v66 = dCopy;
   v31 = [NWURLSessionDelegateWrapper alloc];
   v32 = v17->_queue;
-  v33 = [(NSURLSessionConfiguration *)v17->_internalConfiguration usesClassicLoadingMode];
+  usesClassicLoadingMode = [(NSURLSessionConfiguration *)v17->_internalConfiguration usesClassicLoadingMode];
   v34 = v17;
   v64 = v32;
   v65 = v68;
   v35 = v67;
-  v36 = v69;
+  v36 = dispatchQueueCopy;
   if (v31)
   {
     v75.receiver = v31;
@@ -4325,10 +4325,10 @@ LABEL_8:
     v31 = v37;
     if (v37)
     {
-      v62 = v33 ^ 1;
+      v62 = usesClassicLoadingMode ^ 1;
       *&v37->_notifierObject = v34;
       objc_storeStrong(&v37->_HTTPCookieStorage, v32);
-      objc_storeStrong(&v31->_wrappedDelegate, a5);
+      objc_storeStrong(&v31->_wrappedDelegate, delegate);
       v38 = [NWURLSessionDelegateQueue alloc];
       v39 = v35;
       v40 = v36;
@@ -4354,9 +4354,9 @@ LABEL_8:
 
       else
       {
-        v59 = [MEMORY[0x1E696ADC8] mainQueue];
+        mainQueue = [MEMORY[0x1E696ADC8] mainQueue];
 
-        if (v59 != v39)
+        if (mainQueue != v39)
         {
           if (v39)
           {
@@ -4370,7 +4370,7 @@ LABEL_8:
 
 LABEL_22:
 LABEL_23:
-          v13 = v66;
+          dCopy = v66;
 
           delegateQueueWrapper = v31->_delegateQueueWrapper;
           v31->_delegateQueueWrapper = v38;
@@ -4393,9 +4393,9 @@ LABEL_24:
   delegateWrapper = v34->_delegateWrapper;
   v34->_delegateWrapper = v31;
 
-  v46 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+  weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
   weakUnresumedTasks = v34->_weakUnresumedTasks;
-  v34->_weakUnresumedTasks = v46;
+  v34->_weakUnresumedTasks = weakObjectsHashTable;
 
   v48 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   runningTasks = v34->_runningTasks;
@@ -4405,9 +4405,9 @@ LABEL_24:
   trustExceptions = v34->_trustExceptions;
   v34->_trustExceptions = v50;
 
-  v15 = v67;
-  v14 = v68;
-  if ([v12 _disableAPWakeOnIdleConnections])
+  queueCopy = v67;
+  delegateCopy = v68;
+  if ([configurationCopy _disableAPWakeOnIdleConnections])
   {
     v76.receiver = 0;
     LODWORD(v75.receiver) = 0;
@@ -4439,13 +4439,13 @@ LABEL_24:
     objc_storeStrong(&v34->_retainedSelf, v17);
   }
 
-  v55 = [(NSURLSessionConfiguration *)v17->_internalConfiguration usesClassicLoadingMode];
-  if (v65 && v55)
+  usesClassicLoadingMode2 = [(NSURLSessionConfiguration *)v17->_internalConfiguration usesClassicLoadingMode];
+  if (v65 && usesClassicLoadingMode2)
   {
-    v56 = [MEMORY[0x1E696AAE8] mainBundle];
-    v57 = [v56 bundleIdentifier];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
 
-    if ([v57 isEqualToString:@"com.activision.callofduty.warzone"])
+    if ([bundleIdentifier isEqualToString:@"com.activision.callofduty.warzone"])
     {
       objc_storeStrong(&v34->_retainedSelf, v17);
     }
@@ -4503,7 +4503,7 @@ void __62__NWURLSession_systemPowerChangedNotification_notificationID___block_in
   nw_queue_cancel_source(*(*(a1[5] + 8) + 24), v6);
 }
 
-- (BOOL)isKindOfClass:(Class)a3
+- (BOOL)isKindOfClass:(Class)class
 {
   v5.receiver = self;
   v5.super_class = NWURLSession;
@@ -4514,31 +4514,31 @@ void __62__NWURLSession_systemPowerChangedNotification_notificationID___block_in
 
   else
   {
-    return [(objc_class *)a3 isEqual:objc_opt_class()];
+    return [(objc_class *)class isEqual:objc_opt_class()];
   }
 }
 
-+ (id)sessionWithConfiguration:(id)a3 delegate:(id)a4 delegateQueue:(id)a5
++ (id)sessionWithConfiguration:(id)configuration delegate:(id)delegate delegateQueue:(id)queue
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[a1 alloc] initWithConfiguration:v10 delegate:v9 delegateQueue:v8];
+  queueCopy = queue;
+  delegateCopy = delegate;
+  configurationCopy = configuration;
+  v11 = [[self alloc] initWithConfiguration:configurationCopy delegate:delegateCopy delegateQueue:queueCopy];
 
   return v11;
 }
 
-+ (id)sessionWithConfiguration:(id)a3
++ (id)sessionWithConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithConfiguration:v4 delegate:0 delegateQueue:0];
+  configurationCopy = configuration;
+  v5 = [[self alloc] initWithConfiguration:configurationCopy delegate:0 delegateQueue:0];
 
   return v5;
 }
 
-+ (BOOL)isSubclassOfClass:(Class)a3
++ (BOOL)isSubclassOfClass:(Class)class
 {
-  v5.receiver = a1;
+  v5.receiver = self;
   v5.super_class = &OBJC_METACLASS___NWURLSession;
   if (objc_msgSendSuper2(&v5, sel_isSubclassOfClass_))
   {
@@ -4547,23 +4547,23 @@ void __62__NWURLSession_systemPowerChangedNotification_notificationID___block_in
 
   else
   {
-    return [(objc_class *)a3 isEqual:objc_opt_class()];
+    return [(objc_class *)class isEqual:objc_opt_class()];
   }
 }
 
-- (void)taskStarted:(os_unfair_lock_s *)a1
+- (void)taskStarted:(os_unfair_lock_s *)started
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (started)
   {
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __28__NWURLSession_taskStarted___block_invoke;
     v5[3] = &unk_1E6A3D760;
-    v5[4] = a1;
+    v5[4] = started;
     v6 = v3;
-    [(NWURLSession *)a1 withLock:v5];
+    [(NWURLSession *)started withLock:v5];
   }
 }
 
@@ -4597,19 +4597,19 @@ uint64_t __28__NWURLSession_taskStarted___block_invoke(uint64_t a1)
   return [v5 addObject:v6];
 }
 
-- (void)taskCompleted:(os_unfair_lock_s *)a1
+- (void)taskCompleted:(os_unfair_lock_s *)completed
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (completed)
   {
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __30__NWURLSession_taskCompleted___block_invoke;
     v5[3] = &unk_1E6A3D760;
-    v5[4] = a1;
+    v5[4] = completed;
     v6 = v3;
-    [(NWURLSession *)a1 withLock:v5];
+    [(NWURLSession *)completed withLock:v5];
   }
 }
 

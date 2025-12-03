@@ -1,25 +1,25 @@
 @interface HUDiagnosticsCameraClipViewController
-- (HUDiagnosticsCameraClipViewController)initWithRecordingEvent:(id)a3 cameraProfile:(id)a4;
+- (HUDiagnosticsCameraClipViewController)initWithRecordingEvent:(id)event cameraProfile:(id)profile;
 - (UITableView)eventTableView;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
 @implementation HUDiagnosticsCameraClipViewController
 
-- (HUDiagnosticsCameraClipViewController)initWithRecordingEvent:(id)a3 cameraProfile:(id)a4
+- (HUDiagnosticsCameraClipViewController)initWithRecordingEvent:(id)event cameraProfile:(id)profile
 {
-  v7 = a3;
-  v8 = a4;
+  eventCopy = event;
+  profileCopy = profile;
   v12.receiver = self;
   v12.super_class = HUDiagnosticsCameraClipViewController;
   v9 = [(HUDiagnosticsCameraClipViewController *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_cameraClip, a3);
-    objc_storeStrong(&v10->_cameraProfile, a4);
+    objc_storeStrong(&v9->_cameraClip, event);
+    objc_storeStrong(&v10->_cameraProfile, profile);
   }
 
   return v10;
@@ -30,13 +30,13 @@
   v7.receiver = self;
   v7.super_class = HUDiagnosticsCameraClipViewController;
   [(HUDiagnosticsCameraClipViewController *)&v7 viewDidLoad];
-  v3 = [MEMORY[0x277D75348] systemBackgroundColor];
-  v4 = [(HUDiagnosticsCameraClipViewController *)self view];
-  [v4 setBackgroundColor:v3];
+  systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+  view = [(HUDiagnosticsCameraClipViewController *)self view];
+  [view setBackgroundColor:systemBackgroundColor];
 
-  v5 = [(HUDiagnosticsCameraClipViewController *)self view];
-  v6 = [(HUDiagnosticsCameraClipViewController *)self eventTableView];
-  [v5 addSubview:v6];
+  view2 = [(HUDiagnosticsCameraClipViewController *)self view];
+  eventTableView = [(HUDiagnosticsCameraClipViewController *)self eventTableView];
+  [view2 addSubview:eventTableView];
 }
 
 - (UITableView)eventTableView
@@ -45,15 +45,15 @@
   if (!eventTableView)
   {
     v4 = objc_alloc(MEMORY[0x277D75B40]);
-    v5 = [(HUDiagnosticsCameraClipViewController *)self view];
-    [v5 bounds];
+    view = [(HUDiagnosticsCameraClipViewController *)self view];
+    [view bounds];
     v6 = [v4 initWithFrame:?];
 
     [(UITableView *)v6 setDataSource:self];
     [(UITableView *)v6 setDelegate:self];
     [(UITableView *)v6 setSemanticContentAttribute:3];
-    v7 = [MEMORY[0x277D75348] clearColor];
-    [(UITableView *)v6 setBackgroundColor:v7];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(UITableView *)v6 setBackgroundColor:clearColor];
 
     [(UITableView *)v6 registerClass:objc_opt_class() forCellReuseIdentifier:@"HUDiagnosticsRecordingCellEventIdentifier"];
     [(UITableView *)v6 setShowsHorizontalScrollIndicator:0];
@@ -66,12 +66,12 @@
   return eventTableView;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"HUDiagnosticsRecordingCellEventIdentifier" forIndexPath:v6];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"HUDiagnosticsRecordingCellEventIdentifier" forIndexPath:pathCopy];
   [v7 setHideIcon:1];
-  v8 = [v6 row];
+  v8 = [pathCopy row];
 
   if (v8 <= 2)
   {
@@ -85,24 +85,24 @@
         }
 
         v12 = MEMORY[0x277CCACA8];
-        v10 = [(HUDiagnosticsCameraClipViewController *)self cameraClip];
-        [v10 duration];
+        cameraClip = [(HUDiagnosticsCameraClipViewController *)self cameraClip];
+        [cameraClip duration];
         [v12 stringWithFormat:@"Duration: %.2f", v13];
         goto LABEL_18;
       }
 
       v23 = MEMORY[0x277CCACA8];
-      v10 = [(HUDiagnosticsCameraClipViewController *)self cameraClip];
-      v18 = [v10 dateOfOccurrence];
-      [v23 stringWithFormat:@"Start Date: %@", v18];
+      cameraClip = [(HUDiagnosticsCameraClipViewController *)self cameraClip];
+      dateOfOccurrence = [cameraClip dateOfOccurrence];
+      [v23 stringWithFormat:@"Start Date: %@", dateOfOccurrence];
     }
 
     else
     {
       v17 = MEMORY[0x277CCACA8];
-      v10 = [(HUDiagnosticsCameraClipViewController *)self cameraClip];
-      v18 = [v10 uniqueIdentifier];
-      [v17 stringWithFormat:@"UUID: %@", v18];
+      cameraClip = [(HUDiagnosticsCameraClipViewController *)self cameraClip];
+      dateOfOccurrence = [cameraClip uniqueIdentifier];
+      [v17 stringWithFormat:@"UUID: %@", dateOfOccurrence];
     }
 
     v24 = LABEL_21:;
@@ -121,10 +121,10 @@
       }
 
       v14 = MEMORY[0x277CCACA8];
-      v10 = [(HUDiagnosticsCameraClipViewController *)self cameraClip];
-      v15 = [v10 canAskForUserFeedback];
+      cameraClip = [(HUDiagnosticsCameraClipViewController *)self cameraClip];
+      canAskForUserFeedback = [cameraClip canAskForUserFeedback];
       v16 = @"NO";
-      if (v15)
+      if (canAskForUserFeedback)
       {
         v16 = @"YES";
       }
@@ -134,19 +134,19 @@
     }
 
     v22 = MEMORY[0x277CCACA8];
-    v10 = [(HUDiagnosticsCameraClipViewController *)self cameraClip];
-    v18 = [v10 significantEvents];
-    [v22 stringWithFormat:@"Significant Events: %lu", objc_msgSend(v18, "count")];
+    cameraClip = [(HUDiagnosticsCameraClipViewController *)self cameraClip];
+    dateOfOccurrence = [cameraClip significantEvents];
+    [v22 stringWithFormat:@"Significant Events: %lu", objc_msgSend(dateOfOccurrence, "count")];
     goto LABEL_21;
   }
 
   if (v8 == 3)
   {
     v19 = MEMORY[0x277CCACA8];
-    v10 = [(HUDiagnosticsCameraClipViewController *)self cameraClip];
-    v20 = [v10 isComplete];
+    cameraClip = [(HUDiagnosticsCameraClipViewController *)self cameraClip];
+    isComplete = [cameraClip isComplete];
     v21 = @"NO";
-    if (v20)
+    if (isComplete)
     {
       v21 = @"YES";
     }
@@ -157,13 +157,13 @@
   else
   {
     v9 = MEMORY[0x277CCACA8];
-    v10 = [(HUDiagnosticsCameraClipViewController *)self cameraClip];
-    [v10 targetFragmentDuration];
+    cameraClip = [(HUDiagnosticsCameraClipViewController *)self cameraClip];
+    [cameraClip targetFragmentDuration];
     [v9 stringWithFormat:@"Target Fragment Duration: %.2f", v11];
   }
 
-  v18 = LABEL_18:;
-  [v7 setTitleText:v18];
+  dateOfOccurrence = LABEL_18:;
+  [v7 setTitleText:dateOfOccurrence];
 LABEL_22:
 
 LABEL_23:
@@ -171,16 +171,16 @@ LABEL_23:
   return v7;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  if ([a4 row] == 5)
+  if ([path row] == 5)
   {
     v5 = [HUDiagnosticsCameraClipSignificantEventsViewController alloc];
-    v6 = [(HUDiagnosticsCameraClipViewController *)self cameraClip];
-    v8 = [(HUDiagnosticsCameraClipSignificantEventsViewController *)v5 initWithCameraClip:v6];
+    cameraClip = [(HUDiagnosticsCameraClipViewController *)self cameraClip];
+    v8 = [(HUDiagnosticsCameraClipSignificantEventsViewController *)v5 initWithCameraClip:cameraClip];
 
-    v7 = [(HUDiagnosticsCameraClipViewController *)self navigationController];
-    [v7 pushViewController:v8 animated:1];
+    navigationController = [(HUDiagnosticsCameraClipViewController *)self navigationController];
+    [navigationController pushViewController:v8 animated:1];
   }
 }
 

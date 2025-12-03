@@ -7,20 +7,20 @@
 - (id)phAdjustmentData
 {
   v2 = objc_alloc(MEMORY[0x1E6978608]);
-  v3 = [a1 adjustmentFormatIdentifier];
-  v4 = [a1 adjustmentFormatVersion];
-  v5 = [a1 adjustmentData];
-  v6 = [v2 initWithFormatIdentifier:v3 formatVersion:v4 data:v5];
+  adjustmentFormatIdentifier = [self adjustmentFormatIdentifier];
+  adjustmentFormatVersion = [self adjustmentFormatVersion];
+  adjustmentData = [self adjustmentData];
+  v6 = [v2 initWithFormatIdentifier:adjustmentFormatIdentifier formatVersion:adjustmentFormatVersion data:adjustmentData];
 
-  v7 = [a1 adjustmentBaseVersion];
-  if (v7 == 2)
+  adjustmentBaseVersion = [self adjustmentBaseVersion];
+  if (adjustmentBaseVersion == 2)
   {
     v8 = 2;
   }
 
   else
   {
-    v8 = v7 == 1;
+    v8 = adjustmentBaseVersion == 1;
   }
 
   [v6 setBaseVersion:v8];

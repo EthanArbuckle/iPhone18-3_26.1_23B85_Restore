@@ -1,8 +1,8 @@
 @interface VUIMPMediaItemCloudDownloadController
-+ (id)_stateFromStoreDownload:(id)a3;
++ (id)_stateFromStoreDownload:(id)download;
 - (BOOL)isRestoreDownload;
-- (VUIMPMediaItemCloudDownloadController)initWithMediaItem:(id)a3 serialProcessingDispatchQueue:(id)a4;
-- (VUIMPMediaItemCloudDownloadController)initWithMediaItem:(id)a3 state:(id)a4 serialProcessingDispatchQueue:(id)a5;
+- (VUIMPMediaItemCloudDownloadController)initWithMediaItem:(id)item serialProcessingDispatchQueue:(id)queue;
+- (VUIMPMediaItemCloudDownloadController)initWithMediaItem:(id)item state:(id)state serialProcessingDispatchQueue:(id)queue;
 - (void)_addStoreObserver;
 - (void)_onProcessingQueue_cancelDownload;
 - (void)_onProcessingQueue_invalidate;
@@ -10,28 +10,28 @@
 - (void)_onProcessingQueue_resumeDownload;
 - (void)_removeStoreObserver;
 - (void)dealloc;
-- (void)downloadManager:(id)a3 downloadDidFinish:(id)a4;
-- (void)downloadManager:(id)a3 downloadDidProgress:(id)a4;
+- (void)downloadManager:(id)manager downloadDidFinish:(id)finish;
+- (void)downloadManager:(id)manager downloadDidProgress:(id)progress;
 @end
 
 @implementation VUIMPMediaItemCloudDownloadController
 
-- (VUIMPMediaItemCloudDownloadController)initWithMediaItem:(id)a3 serialProcessingDispatchQueue:(id)a4
+- (VUIMPMediaItemCloudDownloadController)initWithMediaItem:(id)item serialProcessingDispatchQueue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 valueForProperty:*MEMORY[0x1E696FB60]];
-  v9 = [v8 longLongValue];
+  itemCopy = item;
+  queueCopy = queue;
+  v8 = [itemCopy valueForProperty:*MEMORY[0x1E696FB60]];
+  longLongValue = [v8 longLongValue];
 
-  v10 = [MEMORY[0x1E69709A8] sharedManager];
-  v11 = [v10 downloadForStoreID:v9];
+  mEMORY[0x1E69709A8] = [MEMORY[0x1E69709A8] sharedManager];
+  v11 = [mEMORY[0x1E69709A8] downloadForStoreID:longLongValue];
 
   if (v11)
   {
     v12 = [objc_opt_class() _stateFromStoreDownload:v11];
     v20.receiver = self;
     v20.super_class = VUIMPMediaItemCloudDownloadController;
-    v13 = [(VUIMPMediaItemDownloadController *)&v20 initWithMediaItem:v6 state:v12 serialProcessingDispatchQueue:v7];
+    v13 = [(VUIMPMediaItemDownloadController *)&v20 initWithMediaItem:itemCopy state:v12 serialProcessingDispatchQueue:queueCopy];
     v14 = v13;
     if (v13)
     {
@@ -44,7 +44,7 @@
         v17[2] = __89__VUIMPMediaItemCloudDownloadController_initWithMediaItem_serialProcessingDispatchQueue___block_invoke;
         v17[3] = &unk_1E872E4B8;
         objc_copyWeak(&v18, &location);
-        dispatch_async(v7, v17);
+        dispatch_async(queueCopy, v17);
         objc_destroyWeak(&v18);
         objc_destroyWeak(&location);
       }
@@ -57,15 +57,15 @@
 
     self = v14;
 
-    v15 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v15 = 0;
+    selfCopy = 0;
   }
 
-  return v15;
+  return selfCopy;
 }
 
 void __89__VUIMPMediaItemCloudDownloadController_initWithMediaItem_serialProcessingDispatchQueue___block_invoke(uint64_t a1)
@@ -79,7 +79,7 @@ void __89__VUIMPMediaItemCloudDownloadController_initWithMediaItem_serialProcess
   }
 }
 
-- (VUIMPMediaItemCloudDownloadController)initWithMediaItem:(id)a3 state:(id)a4 serialProcessingDispatchQueue:(id)a5
+- (VUIMPMediaItemCloudDownloadController)initWithMediaItem:(id)item state:(id)state serialProcessingDispatchQueue:(id)queue
 {
   v6 = MEMORY[0x1E695DF30];
   v7 = *MEMORY[0x1E695D940];
@@ -99,10 +99,10 @@ void __89__VUIMPMediaItemCloudDownloadController_initWithMediaItem_serialProcess
 
 - (BOOL)isRestoreDownload
 {
-  v2 = [(VUIMPMediaItemCloudDownloadController *)self storeDownload];
-  v3 = [v2 isRestore];
+  storeDownload = [(VUIMPMediaItemCloudDownloadController *)self storeDownload];
+  isRestore = [storeDownload isRestore];
 
-  return v3;
+  return isRestore;
 }
 
 - (void)_onProcessingQueue_invalidate
@@ -117,75 +117,75 @@ void __89__VUIMPMediaItemCloudDownloadController_initWithMediaItem_serialProcess
 - (void)_onProcessingQueue_cancelDownload
 {
   v5[1] = *MEMORY[0x1E69E9840];
-  v2 = [(VUIMPMediaItemCloudDownloadController *)self storeDownload];
-  if (v2)
+  storeDownload = [(VUIMPMediaItemCloudDownloadController *)self storeDownload];
+  if (storeDownload)
   {
-    v3 = [MEMORY[0x1E69709A8] sharedManager];
-    v5[0] = v2;
+    mEMORY[0x1E69709A8] = [MEMORY[0x1E69709A8] sharedManager];
+    v5[0] = storeDownload;
     v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v5 count:1];
-    [v3 cancelDownloads:v4];
+    [mEMORY[0x1E69709A8] cancelDownloads:v4];
   }
 }
 
 - (void)_onProcessingQueue_pauseDownload
 {
   v5[1] = *MEMORY[0x1E69E9840];
-  v2 = [(VUIMPMediaItemCloudDownloadController *)self storeDownload];
-  if (v2)
+  storeDownload = [(VUIMPMediaItemCloudDownloadController *)self storeDownload];
+  if (storeDownload)
   {
-    v3 = [MEMORY[0x1E69709A8] sharedManager];
-    v5[0] = v2;
+    mEMORY[0x1E69709A8] = [MEMORY[0x1E69709A8] sharedManager];
+    v5[0] = storeDownload;
     v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v5 count:1];
-    [v3 pauseDownloads:v4];
+    [mEMORY[0x1E69709A8] pauseDownloads:v4];
   }
 }
 
 - (void)_onProcessingQueue_resumeDownload
 {
   v5[1] = *MEMORY[0x1E69E9840];
-  v2 = [(VUIMPMediaItemCloudDownloadController *)self storeDownload];
-  if (v2)
+  storeDownload = [(VUIMPMediaItemCloudDownloadController *)self storeDownload];
+  if (storeDownload)
   {
-    v3 = [MEMORY[0x1E69709A8] sharedManager];
-    v5[0] = v2;
+    mEMORY[0x1E69709A8] = [MEMORY[0x1E69709A8] sharedManager];
+    v5[0] = storeDownload;
     v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v5 count:1];
-    [v3 resumeDownloads:v4];
+    [mEMORY[0x1E69709A8] resumeDownloads:v4];
   }
 }
 
-- (void)downloadManager:(id)a3 downloadDidProgress:(id)a4
+- (void)downloadManager:(id)manager downloadDidProgress:(id)progress
 {
-  v5 = a4;
-  v7 = [(VUIMPMediaItemCloudDownloadController *)self storeDownload];
+  progressCopy = progress;
+  storeDownload = [(VUIMPMediaItemCloudDownloadController *)self storeDownload];
 
-  if (v7 == v5)
+  if (storeDownload == progressCopy)
   {
-    v6 = [objc_opt_class() _stateFromStoreDownload:v7];
+    v6 = [objc_opt_class() _stateFromStoreDownload:storeDownload];
     [(VUIMPMediaItemDownloadController *)self _setState:v6];
   }
 }
 
-- (void)downloadManager:(id)a3 downloadDidFinish:(id)a4
+- (void)downloadManager:(id)manager downloadDidFinish:(id)finish
 {
-  v5 = a4;
-  v7 = [(VUIMPMediaItemCloudDownloadController *)self storeDownload];
+  finishCopy = finish;
+  storeDownload = [(VUIMPMediaItemCloudDownloadController *)self storeDownload];
 
-  if (v7 == v5)
+  if (storeDownload == finishCopy)
   {
-    v6 = [objc_opt_class() _stateFromStoreDownload:v7];
+    v6 = [objc_opt_class() _stateFromStoreDownload:storeDownload];
     [(VUIMPMediaItemDownloadController *)self _setState:v6];
   }
 }
 
-+ (id)_stateFromStoreDownload:(id)a3
++ (id)_stateFromStoreDownload:(id)download
 {
-  v3 = a3;
-  [v3 percentComplete];
+  downloadCopy = download;
+  [downloadCopy percentComplete];
   v5 = v4;
-  v6 = [v3 bytesDownloaded];
-  v7 = [v3 bytesTotal];
-  v8 = [v3 phaseIdentifier];
-  if (([v8 isEqualToString:*MEMORY[0x1E69703B8]] & 1) != 0 || (objc_msgSend(v8, "isEqualToString:", *MEMORY[0x1E69703E0]) & 1) != 0 || (objc_msgSend(v8, "isEqualToString:", *MEMORY[0x1E69703E8]) & 1) != 0 || objc_msgSend(v8, "isEqualToString:", *MEMORY[0x1E69703D0]))
+  bytesDownloaded = [downloadCopy bytesDownloaded];
+  bytesTotal = [downloadCopy bytesTotal];
+  phaseIdentifier = [downloadCopy phaseIdentifier];
+  if (([phaseIdentifier isEqualToString:*MEMORY[0x1E69703B8]] & 1) != 0 || (objc_msgSend(phaseIdentifier, "isEqualToString:", *MEMORY[0x1E69703E0]) & 1) != 0 || (objc_msgSend(phaseIdentifier, "isEqualToString:", *MEMORY[0x1E69703E8]) & 1) != 0 || objc_msgSend(phaseIdentifier, "isEqualToString:", *MEMORY[0x1E69703D0]))
   {
     v9 = 0;
     v10 = v5 > 0.00000011920929;
@@ -193,26 +193,26 @@ void __89__VUIMPMediaItemCloudDownloadController_initWithMediaItem_serialProcess
     goto LABEL_6;
   }
 
-  if ([v8 isEqualToString:*MEMORY[0x1E69703C0]])
+  if ([phaseIdentifier isEqualToString:*MEMORY[0x1E69703C0]])
   {
-    v14 = [v3 failureError];
-    v15 = v14;
-    if (v14)
+    failureError = [downloadCopy failureError];
+    v15 = failureError;
+    if (failureError)
     {
-      v16 = v14;
+      purchaseError = failureError;
     }
 
     else
     {
-      v16 = [v3 purchaseError];
+      purchaseError = [downloadCopy purchaseError];
     }
 
-    v9 = v16;
+    v9 = purchaseError;
 
     goto LABEL_19;
   }
 
-  if ([v8 isEqualToString:*MEMORY[0x1E69703B0]])
+  if ([phaseIdentifier isEqualToString:*MEMORY[0x1E69703B0]])
   {
     v9 = 0;
 LABEL_19:
@@ -222,21 +222,21 @@ LABEL_20:
     goto LABEL_6;
   }
 
-  if ([v8 isEqualToString:*MEMORY[0x1E69703C8]])
+  if ([phaseIdentifier isEqualToString:*MEMORY[0x1E69703C8]])
   {
-    v17 = [v3 failureError];
-    v18 = v17;
-    if (v17)
+    failureError2 = [downloadCopy failureError];
+    v18 = failureError2;
+    if (failureError2)
     {
-      v19 = v17;
+      purchaseError2 = failureError2;
     }
 
     else
     {
-      v19 = [v3 purchaseError];
+      purchaseError2 = [downloadCopy purchaseError];
     }
 
-    v9 = v19;
+    v9 = purchaseError2;
 
     v11 = v9 == 0;
     goto LABEL_20;
@@ -244,7 +244,7 @@ LABEL_20:
 
   v9 = 0;
   v11 = 0;
-  if ([v8 isEqualToString:*MEMORY[0x1E69703D8]])
+  if ([phaseIdentifier isEqualToString:*MEMORY[0x1E69703D8]])
   {
     v10 = 2;
   }
@@ -258,8 +258,8 @@ LABEL_6:
   v12 = objc_alloc_init(VUIMPMediaItemDownloadControllerState);
   [(VUIMPMediaItemDownloadControllerState *)v12 setStatus:v10];
   [(VUIMPMediaItemDownloadControllerState *)v12 setDownloadProgress:v5];
-  [(VUIMPMediaItemDownloadControllerState *)v12 setBytesToDownload:v7];
-  [(VUIMPMediaItemDownloadControllerState *)v12 setBytesDownloaded:v6];
+  [(VUIMPMediaItemDownloadControllerState *)v12 setBytesToDownload:bytesTotal];
+  [(VUIMPMediaItemDownloadControllerState *)v12 setBytesDownloaded:bytesDownloaded];
   [(VUIMPMediaItemDownloadControllerState *)v12 setDownloadSucceeded:v11];
   [(VUIMPMediaItemDownloadControllerState *)v12 setError:v9];
 
@@ -269,26 +269,26 @@ LABEL_6:
 - (void)_addStoreObserver
 {
   v6[1] = *MEMORY[0x1E69E9840];
-  v3 = [(VUIMPMediaItemCloudDownloadController *)self storeDownload];
-  if (v3)
+  storeDownload = [(VUIMPMediaItemCloudDownloadController *)self storeDownload];
+  if (storeDownload)
   {
-    v4 = [MEMORY[0x1E69709A8] sharedManager];
-    v6[0] = v3;
+    mEMORY[0x1E69709A8] = [MEMORY[0x1E69709A8] sharedManager];
+    v6[0] = storeDownload;
     v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:1];
-    [v4 addObserver:self forDownloads:v5];
+    [mEMORY[0x1E69709A8] addObserver:self forDownloads:v5];
   }
 }
 
 - (void)_removeStoreObserver
 {
   v6[1] = *MEMORY[0x1E69E9840];
-  v3 = [(VUIMPMediaItemCloudDownloadController *)self storeDownload];
-  if (v3)
+  storeDownload = [(VUIMPMediaItemCloudDownloadController *)self storeDownload];
+  if (storeDownload)
   {
-    v4 = [MEMORY[0x1E69709A8] sharedManager];
-    v6[0] = v3;
+    mEMORY[0x1E69709A8] = [MEMORY[0x1E69709A8] sharedManager];
+    v6[0] = storeDownload;
     v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:1];
-    [v4 removeObserver:self forDownloads:v5];
+    [mEMORY[0x1E69709A8] removeObserver:self forDownloads:v5];
   }
 }
 

@@ -1,33 +1,33 @@
 @interface ARPlaneEstimationTechnique
-+ (id)_detectPlanesWithDetector:(simd_float4)a3 types:(simd_float4)a4 camera:(uint64_t)a5 referenceFeaturePoints:(uint64_t)a6 referenceOriginTransform:(uint64_t)a7;
-+ (id)detectPlanes:(unint64_t)a3 withFrame:(id)a4;
-- (ARPlaneEstimationTechnique)initWithTrackingTechnique:(id)a3;
++ (id)_detectPlanesWithDetector:(simd_float4)detector types:(simd_float4)types camera:(uint64_t)camera referenceFeaturePoints:(uint64_t)points referenceOriginTransform:(uint64_t)transform;
++ (id)detectPlanes:(unint64_t)planes withFrame:(id)frame;
+- (ARPlaneEstimationTechnique)initWithTrackingTechnique:(id)technique;
 - (BOOL)isBusy;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)reconfigurableFrom:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)reconfigurableFrom:(id)from;
 - (id)_fullDescription;
 - (id)resultDataClasses;
 - (void)dealloc;
-- (void)reconfigureFrom:(id)a3;
-- (void)requestResultDataAtTimestamp:(double)a3 context:(id)a4;
-- (void)siblingTechniquesDidChange:(id)a3;
-- (void)technique:(id)a3 didDetectPlane:(id)a4 timestamp:(double)a5;
-- (void)technique:(id)a3 didOutputSceneUnderstandingData:(id)a4 timestamp:(double)a5;
+- (void)reconfigureFrom:(id)from;
+- (void)requestResultDataAtTimestamp:(double)timestamp context:(id)context;
+- (void)siblingTechniquesDidChange:(id)change;
+- (void)technique:(id)technique didDetectPlane:(id)plane timestamp:(double)timestamp;
+- (void)technique:(id)technique didOutputSceneUnderstandingData:(id)data timestamp:(double)timestamp;
 @end
 
 @implementation ARPlaneEstimationTechnique
 
-- (ARPlaneEstimationTechnique)initWithTrackingTechnique:(id)a3
+- (ARPlaneEstimationTechnique)initWithTrackingTechnique:(id)technique
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  techniqueCopy = technique;
   v14.receiver = self;
   v14.super_class = ARPlaneEstimationTechnique;
   v6 = [(ARTechnique *)&v14 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_worldTrackingTechnique, a3);
+    objc_storeStrong(&v6->_worldTrackingTechnique, technique);
     [(ARWorldTrackingTechnique *)v7->_worldTrackingTechnique addObserver:v7];
     v8 = dispatch_semaphore_create(1);
     semaphoreResult = v7->_semaphoreResult;
@@ -43,7 +43,7 @@
       v17 = 2048;
       v18 = v7;
       v19 = 2048;
-      v20 = v5;
+      v20 = techniqueCopy;
       _os_log_impl(&dword_1C241C000, v10, OS_LOG_TYPE_INFO, "%{public}@ <%p>: initialized with world tracking technique (%p)", buf, 0x20u);
     }
   }
@@ -62,7 +62,7 @@
     *buf = 138543618;
     v8 = v5;
     v9 = 2048;
-    v10 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1C241C000, v3, OS_LOG_TYPE_INFO, "%{public}@ <%p>: dealloc", buf, 0x16u);
   }
 
@@ -79,15 +79,15 @@
   return [v2 setWithObject:v3];
 }
 
-- (BOOL)reconfigurableFrom:(id)a3
+- (BOOL)reconfigurableFrom:(id)from
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  fromCopy = from;
+  if ([fromCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = v4;
-    v6 = [(ARPlaneEstimationTechnique *)self worldTrackingTechnique];
-    v7 = [v5 worldTrackingTechnique];
-    v8 = [v6 reconfigurableFrom:v7];
+    v5 = fromCopy;
+    worldTrackingTechnique = [(ARPlaneEstimationTechnique *)self worldTrackingTechnique];
+    worldTrackingTechnique2 = [v5 worldTrackingTechnique];
+    v8 = [worldTrackingTechnique reconfigurableFrom:worldTrackingTechnique2];
   }
 
   else
@@ -98,49 +98,49 @@
   return v8;
 }
 
-- (void)reconfigureFrom:(id)a3
+- (void)reconfigureFrom:(id)from
 {
-  v8 = a3;
-  if ([v8 isMemberOfClass:objc_opt_class()])
+  fromCopy = from;
+  if ([fromCopy isMemberOfClass:objc_opt_class()])
   {
-    v4 = v8;
-    v5 = [(ARPlaneEstimationTechnique *)self worldTrackingTechnique];
-    [v5 removeObserver:self];
+    v4 = fromCopy;
+    worldTrackingTechnique = [(ARPlaneEstimationTechnique *)self worldTrackingTechnique];
+    [worldTrackingTechnique removeObserver:self];
 
-    v6 = [v4 worldTrackingTechnique];
-    [v6 addObserver:self];
+    worldTrackingTechnique2 = [v4 worldTrackingTechnique];
+    [worldTrackingTechnique2 addObserver:self];
 
-    v7 = [v4 worldTrackingTechnique];
-    [(ARPlaneEstimationTechnique *)self setWorldTrackingTechnique:v7];
+    worldTrackingTechnique3 = [v4 worldTrackingTechnique];
+    [(ARPlaneEstimationTechnique *)self setWorldTrackingTechnique:worldTrackingTechnique3];
   }
 }
 
-- (void)siblingTechniquesDidChange:(id)a3
+- (void)siblingTechniquesDidChange:(id)change
 {
-  v6 = a3;
-  v4 = [ARTechnique techniqueOfClass:objc_opt_class() inArray:v6];
+  changeCopy = change;
+  v4 = [ARTechnique techniqueOfClass:objc_opt_class() inArray:changeCopy];
   if (v4)
   {
-    v5 = [(ARPlaneEstimationTechnique *)self worldTrackingTechnique];
-    [v5 removeObserver:self];
+    worldTrackingTechnique = [(ARPlaneEstimationTechnique *)self worldTrackingTechnique];
+    [worldTrackingTechnique removeObserver:self];
 
     [v4 addObserver:self];
     [(ARPlaneEstimationTechnique *)self setWorldTrackingTechnique:v4];
   }
 }
 
-- (void)requestResultDataAtTimestamp:(double)a3 context:(id)a4
+- (void)requestResultDataAtTimestamp:(double)timestamp context:(id)context
 {
-  v16 = a4;
+  contextCopy = context;
   v6 = objc_opt_new();
-  v7 = [v16 anchorsToRemove];
-  v8 = [v7 count];
+  anchorsToRemove = [contextCopy anchorsToRemove];
+  v8 = [anchorsToRemove count];
 
   if (v8)
   {
     worldTrackingTechnique = self->_worldTrackingTechnique;
-    v10 = [v16 anchorsToRemove];
-    [(ARWorldTrackingTechnique *)worldTrackingTechnique removePlanesByUUIDs:v10];
+    anchorsToRemove2 = [contextCopy anchorsToRemove];
+    [(ARWorldTrackingTechnique *)worldTrackingTechnique removePlanesByUUIDs:anchorsToRemove2];
   }
 
   dispatch_semaphore_wait(self->_semaphoreResult, 0xFFFFFFFFFFFFFFFFLL);
@@ -159,49 +159,49 @@
   }
 
   dispatch_semaphore_signal(self->_semaphoreResult);
-  v13 = [(ARTechnique *)self delegate];
+  delegate = [(ARTechnique *)self delegate];
   v14 = objc_opt_respondsToSelector();
 
   if (v14)
   {
-    v15 = [(ARTechnique *)self delegate];
-    [v15 technique:self didOutputResultData:v6 timestamp:v16 context:a3];
+    delegate2 = [(ARTechnique *)self delegate];
+    [delegate2 technique:self didOutputResultData:v6 timestamp:contextCopy context:timestamp];
   }
 }
 
-- (void)technique:(id)a3 didDetectPlane:(id)a4 timestamp:(double)a5
+- (void)technique:(id)technique didDetectPlane:(id)plane timestamp:(double)timestamp
 {
-  v6 = a4;
+  planeCopy = plane;
   dispatch_semaphore_wait(self->_semaphoreResult, 0xFFFFFFFFFFFFFFFFLL);
   planeResultData = self->_planeResultData;
-  self->_planeResultData = v6;
-  v8 = v6;
+  self->_planeResultData = planeCopy;
+  v8 = planeCopy;
 
   dispatch_semaphore_signal(self->_semaphoreResult);
 }
 
-- (void)technique:(id)a3 didOutputSceneUnderstandingData:(id)a4 timestamp:(double)a5
+- (void)technique:(id)technique didOutputSceneUnderstandingData:(id)data timestamp:(double)timestamp
 {
-  v6 = a4;
+  dataCopy = data;
   dispatch_semaphore_wait(self->_semaphoreResult, 0xFFFFFFFFFFFFFFFFLL);
   rawSceneUnderstandingData = self->_rawSceneUnderstandingData;
-  self->_rawSceneUnderstandingData = v6;
-  v8 = v6;
+  self->_rawSceneUnderstandingData = dataCopy;
+  v8 = dataCopy;
 
   dispatch_semaphore_signal(self->_semaphoreResult);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v10.receiver = self;
   v10.super_class = ARPlaneEstimationTechnique;
-  if ([(ARTechnique *)&v10 isEqual:v4])
+  if ([(ARTechnique *)&v10 isEqual:equalCopy])
   {
-    v5 = v4;
-    v6 = [(ARPlaneEstimationTechnique *)self worldTrackingTechnique];
-    v7 = [v5 worldTrackingTechnique];
-    v8 = v6 == v7;
+    v5 = equalCopy;
+    worldTrackingTechnique = [(ARPlaneEstimationTechnique *)self worldTrackingTechnique];
+    worldTrackingTechnique2 = [v5 worldTrackingTechnique];
+    v8 = worldTrackingTechnique == worldTrackingTechnique2;
   }
 
   else
@@ -217,8 +217,8 @@
   v3 = MEMORY[0x1E696AD60];
   v7.receiver = self;
   v7.super_class = ARPlaneEstimationTechnique;
-  v4 = [(ARTechnique *)&v7 _fullDescription];
-  v5 = [v3 stringWithFormat:@"%@\n", v4];
+  _fullDescription = [(ARTechnique *)&v7 _fullDescription];
+  v5 = [v3 stringWithFormat:@"%@\n", _fullDescription];
 
   [v5 appendFormat:@"Plane Result Data: %@\n", self->_planeResultData];
   [v5 appendFormat:@"Scene Understanding Data: %@\n", self->_rawSceneUnderstandingData];
@@ -237,26 +237,26 @@
   return v3 != 0;
 }
 
-+ (id)detectPlanes:(unint64_t)a3 withFrame:(id)a4
++ (id)detectPlanes:(unint64_t)planes withFrame:(id)frame
 {
-  v6 = a4;
+  frameCopy = frame;
   CV3DSurfaceDetectionDefaultParameters();
   CV3DSurfaceDetectionCreateWithArgs();
-  v7 = [v6 camera];
-  v8 = [v6 referenceFeaturePoints];
-  [v6 referenceOriginTransform];
-  v9 = [a1 _detectPlanesWithDetector:0 types:a3 camera:v7 referenceFeaturePoints:v8 referenceOriginTransform:?];
+  camera = [frameCopy camera];
+  referenceFeaturePoints = [frameCopy referenceFeaturePoints];
+  [frameCopy referenceOriginTransform];
+  v9 = [self _detectPlanesWithDetector:0 types:planes camera:camera referenceFeaturePoints:referenceFeaturePoints referenceOriginTransform:?];
 
   CV3DSurfaceDetectionRelease();
 
   return v9;
 }
 
-+ (id)_detectPlanesWithDetector:(simd_float4)a3 types:(simd_float4)a4 camera:(uint64_t)a5 referenceFeaturePoints:(uint64_t)a6 referenceOriginTransform:(uint64_t)a7
++ (id)_detectPlanesWithDetector:(simd_float4)detector types:(simd_float4)types camera:(uint64_t)camera referenceFeaturePoints:(uint64_t)points referenceOriginTransform:(uint64_t)transform
 {
-  v81.columns[2] = a3;
-  v81.columns[3] = a4;
-  v81.columns[0] = a1;
+  v81.columns[2] = detector;
+  v81.columns[3] = types;
+  v81.columns[0] = self;
   v81.columns[1] = a2;
   v12 = a9;
   v13 = a10;
@@ -344,10 +344,10 @@
     v39 = [v13 count];
     _ZNSt3__16vectorIDv2_fNS_9allocatorIS1_EEE7reserveEm(&__src, v39);
     v79 = a8;
-    v40 = [v13 vergenceAngleCosines];
+    vergenceAngleCosines = [v13 vergenceAngleCosines];
     if (v39)
     {
-      v41 = v40;
+      v41 = vergenceAngleCosines;
       v42 = v99;
       v43 = 4 * v39;
       do

@@ -1,37 +1,37 @@
 @interface HDMHLoggingPatternDetector
-- (HDMHLoggingPatternDetector)initWithProfile:(id)a3;
+- (HDMHLoggingPatternDetector)initWithProfile:(id)profile;
 - (HDProfile)profile;
-- (id)isUnpleasantLoggingPatternDetectedWithCurrentDate:(id)a3 gregorianCalendar:(id)a4 pendingStateOfMind:(id)a5 error:(id *)a6;
+- (id)isUnpleasantLoggingPatternDetectedWithCurrentDate:(id)date gregorianCalendar:(id)calendar pendingStateOfMind:(id)mind error:(id *)error;
 @end
 
 @implementation HDMHLoggingPatternDetector
 
-- (HDMHLoggingPatternDetector)initWithProfile:(id)a3
+- (HDMHLoggingPatternDetector)initWithProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   v8.receiver = self;
   v8.super_class = HDMHLoggingPatternDetector;
   v5 = [(HDMHLoggingPatternDetector *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_profile, v4);
+    objc_storeWeak(&v5->_profile, profileCopy);
   }
 
   return v6;
 }
 
-- (id)isUnpleasantLoggingPatternDetectedWithCurrentDate:(id)a3 gregorianCalendar:(id)a4 pendingStateOfMind:(id)a5 error:(id *)a6
+- (id)isUnpleasantLoggingPatternDetectedWithCurrentDate:(id)date gregorianCalendar:(id)calendar pendingStateOfMind:(id)mind error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [v10 hk_dayIndexWithCalendar:v11];
+  dateCopy = date;
+  calendarCopy = calendar;
+  mindCopy = mind;
+  v13 = [dateCopy hk_dayIndexWithCalendar:calendarCopy];
   v14 = *MEMORY[0x277D28048];
   v15 = v13 - *MEMORY[0x277D28048];
-  if ([v12 reflectiveInterval] == 2)
+  if ([mindCopy reflectiveInterval] == 2)
   {
-    v16 = v12;
+    v16 = mindCopy;
   }
 
   else
@@ -42,7 +42,7 @@
   WeakRetained = objc_loadWeakRetained(&self->_profile);
   v18 = [MEMORY[0x277D10880] predicateForReflectiveInterval:2];
   LOBYTE(v24) = 1;
-  v19 = [[HDMHDaySummaryEnumerator alloc] initWithProfile:WeakRetained dayIndexRange:v15 + 1 gregorianCalendar:v14 predicate:v11 pendingDailyStateOfMind:v18 ascending:v16, v24];
+  v19 = [[HDMHDaySummaryEnumerator alloc] initWithProfile:WeakRetained dayIndexRange:v15 + 1 gregorianCalendar:v14 predicate:calendarCopy pendingDailyStateOfMind:v18 ascending:v16, v24];
   v30 = 0;
   v31 = &v30;
   v32 = 0x2020000000;
@@ -57,7 +57,7 @@
   v25[3] = &unk_2798AAEF0;
   v25[4] = &v30;
   v25[5] = &v26;
-  if ([(HDMHDaySummaryEnumerator *)v19 enumerateWithError:a6 handler:v25])
+  if ([(HDMHDaySummaryEnumerator *)v19 enumerateWithError:error handler:v25])
   {
     v21 = v31[3] >= *MEMORY[0x277D28058] && v27[3] < *MEMORY[0x277D28050];
     v22 = [MEMORY[0x277CCABB0] numberWithInt:v21];

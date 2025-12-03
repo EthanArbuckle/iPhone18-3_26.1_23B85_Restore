@@ -1,26 +1,26 @@
 @interface NoThumbUISlider
-- (CGRect)thumbRectForBounds:(CGRect)a3 trackRect:(CGRect)a4 value:(float)a5;
-- (_TtC7Journal15NoThumbUISlider)initWithCoder:(id)a3;
-- (_TtC7Journal15NoThumbUISlider)initWithFrame:(CGRect)a3;
+- (CGRect)thumbRectForBounds:(CGRect)bounds trackRect:(CGRect)rect value:(float)value;
+- (_TtC7Journal15NoThumbUISlider)initWithCoder:(id)coder;
+- (_TtC7Journal15NoThumbUISlider)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation NoThumbUISlider
 
-- (CGRect)thumbRectForBounds:(CGRect)a3 trackRect:(CGRect)a4 value:(float)a5
+- (CGRect)thumbRectForBounds:(CGRect)bounds trackRect:(CGRect)rect value:(float)value
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = a3.size.height;
-  v9 = a3.size.width;
-  v10 = a3.origin.y;
-  v11 = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v8 = bounds.size.height;
+  v9 = bounds.size.width;
+  v10 = bounds.origin.y;
+  v11 = bounds.origin.x;
   v30.receiver = self;
   v30.super_class = type metadata accessor for NoThumbUISlider();
   v12 = v30.receiver;
-  [(NoThumbUISlider *)&v30 thumbRectForBounds:v11 trackRect:v10 value:v9, v8, x, y, width, height, LODWORD(a5)];
+  [(NoThumbUISlider *)&v30 thumbRectForBounds:v11 trackRect:v10 value:v9, v8, x, y, width, height, LODWORD(value)];
   v14 = v13;
   v16 = v15;
   v18 = v17;
@@ -31,7 +31,7 @@
   [v12 minimumValue];
   LODWORD(v9) = v22;
 
-  v23 = v14 + (v20 + v20) * (a5 / (*&v8 - *&v9)) - v20;
+  v23 = v14 + (v20 + v20) * (value / (*&v8 - *&v9)) - v20;
   v24 = v16;
   v25 = v18;
   v26 = v29;
@@ -44,27 +44,27 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_10080CB0C();
 }
 
-- (_TtC7Journal15NoThumbUISlider)initWithFrame:(CGRect)a3
+- (_TtC7Journal15NoThumbUISlider)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8.receiver = self;
   v8.super_class = type metadata accessor for NoThumbUISlider();
   return [(NoThumbUISlider *)&v8 initWithFrame:x, y, width, height];
 }
 
-- (_TtC7Journal15NoThumbUISlider)initWithCoder:(id)a3
+- (_TtC7Journal15NoThumbUISlider)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for NoThumbUISlider();
-  v4 = a3;
-  v5 = [(NoThumbUISlider *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(NoThumbUISlider *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

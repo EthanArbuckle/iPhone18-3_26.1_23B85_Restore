@@ -1,81 +1,81 @@
 @interface SFProductInventory
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (SFProductInventory)initWithCoder:(id)a3;
-- (SFProductInventory)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SFProductInventory)initWithCoder:(id)coder;
+- (SFProductInventory)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFProductInventory
 
-- (SFProductInventory)initWithProtobuf:(id)a3
+- (SFProductInventory)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
+  protobufCopy = protobuf;
   v21.receiver = self;
   v21.super_class = SFProductInventory;
   v5 = [(SFProductInventory *)&v21 init];
   if (v5)
   {
-    if ([v4 type])
+    if ([protobufCopy type])
     {
-      -[SFProductInventory setType:](v5, "setType:", [v4 type]);
+      -[SFProductInventory setType:](v5, "setType:", [protobufCopy type]);
     }
 
-    v6 = [v4 storeId];
+    storeId = [protobufCopy storeId];
 
-    if (v6)
+    if (storeId)
     {
-      v7 = [v4 storeId];
-      [(SFProductInventory *)v5 setStoreId:v7];
+      storeId2 = [protobufCopy storeId];
+      [(SFProductInventory *)v5 setStoreId:storeId2];
     }
 
-    if ([v4 availabilityStatus])
+    if ([protobufCopy availabilityStatus])
     {
-      -[SFProductInventory setAvailabilityStatus:](v5, "setAvailabilityStatus:", [v4 availabilityStatus]);
+      -[SFProductInventory setAvailabilityStatus:](v5, "setAvailabilityStatus:", [protobufCopy availabilityStatus]);
     }
 
-    [v4 distance];
+    [protobufCopy distance];
     if (v8 != 0.0)
     {
       v9 = MEMORY[0x1E696AD98];
-      [v4 distance];
+      [protobufCopy distance];
       v10 = [v9 numberWithFloat:?];
       [(SFProductInventory *)v5 setDistance:v10];
     }
 
-    if ([v4 distanceUnit])
+    if ([protobufCopy distanceUnit])
     {
-      -[SFProductInventory setDistanceUnit:](v5, "setDistanceUnit:", [v4 distanceUnit]);
+      -[SFProductInventory setDistanceUnit:](v5, "setDistanceUnit:", [protobufCopy distanceUnit]);
     }
 
-    v11 = [v4 timestamp];
+    timestamp = [protobufCopy timestamp];
 
-    if (v11)
+    if (timestamp)
     {
-      v12 = [v4 timestamp];
+      timestamp2 = [protobufCopy timestamp];
       v13 = MEMORY[0x1E695DF00];
-      [v12 secondsSince1970];
+      [timestamp2 secondsSince1970];
       v14 = [v13 dateWithTimeIntervalSince1970:?];
       [(SFProductInventory *)v5 setTimestamp:v14];
     }
 
-    v15 = [v4 storeName];
+    storeName = [protobufCopy storeName];
 
-    if (v15)
+    if (storeName)
     {
-      v16 = [v4 storeName];
-      [(SFProductInventory *)v5 setStoreName:v16];
+      storeName2 = [protobufCopy storeName];
+      [(SFProductInventory *)v5 setStoreName:storeName2];
     }
 
-    v17 = [v4 storeAddress];
+    storeAddress = [protobufCopy storeAddress];
 
-    if (v17)
+    if (storeAddress)
     {
-      v18 = [v4 storeAddress];
-      [(SFProductInventory *)v5 setStoreAddress:v18];
+      storeAddress2 = [protobufCopy storeAddress];
+      [(SFProductInventory *)v5 setStoreAddress:storeAddress2];
     }
 
     v19 = v5;
@@ -86,38 +86,38 @@
 
 - (unint64_t)hash
 {
-  v3 = [(SFProductInventory *)self type];
-  v4 = [(SFProductInventory *)self storeId];
-  v5 = [v4 hash] ^ v3;
-  v6 = [(SFProductInventory *)self availabilityStatus];
-  v7 = [(SFProductInventory *)self distance];
-  v8 = v5 ^ v6 ^ [v7 hash];
-  v9 = [(SFProductInventory *)self distanceUnit];
-  v10 = [(SFProductInventory *)self timestamp];
-  v11 = v9 ^ [v10 hash];
-  v12 = [(SFProductInventory *)self storeName];
-  v13 = v8 ^ v11 ^ [v12 hash];
-  v14 = [(SFProductInventory *)self storeAddress];
-  v15 = [v14 hash];
+  type = [(SFProductInventory *)self type];
+  storeId = [(SFProductInventory *)self storeId];
+  v5 = [storeId hash] ^ type;
+  availabilityStatus = [(SFProductInventory *)self availabilityStatus];
+  distance = [(SFProductInventory *)self distance];
+  v8 = v5 ^ availabilityStatus ^ [distance hash];
+  distanceUnit = [(SFProductInventory *)self distanceUnit];
+  timestamp = [(SFProductInventory *)self timestamp];
+  v11 = distanceUnit ^ [timestamp hash];
+  storeName = [(SFProductInventory *)self storeName];
+  v13 = v8 ^ v11 ^ [storeName hash];
+  storeAddress = [(SFProductInventory *)self storeAddress];
+  v15 = [storeAddress hash];
 
   return v13 ^ v15;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
-  if (self == v6)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
 
   else
   {
-    if ([(SFProductInventory *)v6 isMemberOfClass:objc_opt_class()])
+    if ([(SFProductInventory *)equalCopy isMemberOfClass:objc_opt_class()])
     {
-      v7 = v6;
-      v8 = [(SFProductInventory *)self type];
-      if (v8 != [(SFProductInventory *)v7 type])
+      v7 = equalCopy;
+      type = [(SFProductInventory *)self type];
+      if (type != [(SFProductInventory *)v7 type])
       {
         v12 = 0;
 LABEL_34:
@@ -125,9 +125,9 @@ LABEL_34:
         goto LABEL_35;
       }
 
-      v9 = [(SFProductInventory *)self storeId];
-      v10 = [(SFProductInventory *)v7 storeId];
-      if ((v9 != 0) == (v10 == 0))
+      storeId = [(SFProductInventory *)self storeId];
+      storeId2 = [(SFProductInventory *)v7 storeId];
+      if ((storeId != 0) == (storeId2 == 0))
       {
         v12 = 0;
 LABEL_33:
@@ -135,48 +135,48 @@ LABEL_33:
         goto LABEL_34;
       }
 
-      v11 = [(SFProductInventory *)self storeId];
-      if (v11)
+      storeId3 = [(SFProductInventory *)self storeId];
+      if (storeId3)
       {
-        v3 = [(SFProductInventory *)self storeId];
-        v4 = [(SFProductInventory *)v7 storeId];
-        if (![v3 isEqual:v4])
+        storeId4 = [(SFProductInventory *)self storeId];
+        storeId5 = [(SFProductInventory *)v7 storeId];
+        if (![storeId4 isEqual:storeId5])
         {
           v12 = 0;
           goto LABEL_31;
         }
       }
 
-      v13 = [(SFProductInventory *)self availabilityStatus];
-      if (v13 == [(SFProductInventory *)v7 availabilityStatus])
+      availabilityStatus = [(SFProductInventory *)self availabilityStatus];
+      if (availabilityStatus == [(SFProductInventory *)v7 availabilityStatus])
       {
-        v14 = [(SFProductInventory *)self distance];
-        v15 = [(SFProductInventory *)v7 distance];
-        if ((v14 != 0) != (v15 == 0))
+        distance = [(SFProductInventory *)self distance];
+        distance2 = [(SFProductInventory *)v7 distance];
+        if ((distance != 0) != (distance2 == 0))
         {
-          v50 = v15;
-          v51 = [(SFProductInventory *)self distance];
-          if (v51)
+          v50 = distance2;
+          distance3 = [(SFProductInventory *)self distance];
+          if (distance3)
           {
-            v16 = [(SFProductInventory *)self distance];
+            distance4 = [(SFProductInventory *)self distance];
             [(SFProductInventory *)v7 distance];
-            v48 = v49 = v16;
-            if (![v16 isEqual:?])
+            v48 = v49 = distance4;
+            if (![distance4 isEqual:?])
             {
               v12 = 0;
-              v17 = v14;
-              v18 = v51;
+              v17 = distance;
+              v18 = distance3;
               goto LABEL_23;
             }
           }
 
-          v19 = [(SFProductInventory *)self distanceUnit];
-          if (v19 != [(SFProductInventory *)v7 distanceUnit])
+          distanceUnit = [(SFProductInventory *)self distanceUnit];
+          if (distanceUnit != [(SFProductInventory *)v7 distanceUnit])
           {
             v12 = 0;
-            v17 = v14;
-            v18 = v51;
-            if (!v51)
+            v17 = distance;
+            v18 = distance3;
+            if (!distance3)
             {
               goto LABEL_24;
             }
@@ -184,35 +184,35 @@ LABEL_33:
             goto LABEL_23;
           }
 
-          v47 = v3;
-          v20 = [(SFProductInventory *)self timestamp];
-          v21 = [(SFProductInventory *)v7 timestamp];
-          if ((v20 != 0) != (v21 == 0))
+          v47 = storeId4;
+          timestamp = [(SFProductInventory *)self timestamp];
+          timestamp2 = [(SFProductInventory *)v7 timestamp];
+          if ((timestamp != 0) != (timestamp2 == 0))
           {
-            v45 = v20;
-            v46 = v21;
-            v22 = [(SFProductInventory *)self timestamp];
-            v44 = v14;
-            if (v22)
+            v45 = timestamp;
+            v46 = timestamp2;
+            timestamp3 = [(SFProductInventory *)self timestamp];
+            v44 = distance;
+            if (timestamp3)
             {
-              v23 = [(SFProductInventory *)self timestamp];
+              timestamp4 = [(SFProductInventory *)self timestamp];
               [(SFProductInventory *)v7 timestamp];
-              v43 = v41 = v23;
-              if (![v23 isEqual:?])
+              v43 = v41 = timestamp4;
+              if (![timestamp4 isEqual:?])
               {
                 v12 = 0;
-                v18 = v51;
+                v18 = distance3;
                 v29 = v43;
 LABEL_52:
 
 LABEL_53:
-                v3 = v47;
+                storeId4 = v47;
                 v17 = v44;
                 if (!v18)
                 {
 LABEL_24:
 
-                  if (!v11)
+                  if (!storeId3)
                   {
                     goto LABEL_32;
                   }
@@ -225,7 +225,7 @@ LABEL_23:
                 goto LABEL_24;
               }
 
-              v42 = v22;
+              v42 = timestamp3;
             }
 
             else
@@ -233,23 +233,23 @@ LABEL_23:
               v42 = 0;
             }
 
-            v25 = [(SFProductInventory *)self storeName];
-            v26 = [(SFProductInventory *)v7 storeName];
-            if ((v25 != 0) == (v26 == 0))
+            storeName = [(SFProductInventory *)self storeName];
+            storeName2 = [(SFProductInventory *)v7 storeName];
+            if ((storeName != 0) == (storeName2 == 0))
             {
 
               v12 = 0;
               goto LABEL_51;
             }
 
-            v40 = v26;
-            v38 = v25;
-            v39 = [(SFProductInventory *)self storeName];
-            if (!v39 || (-[SFProductInventory storeName](self, "storeName"), v27 = objc_claimAutoreleasedReturnValue(), -[SFProductInventory storeName](v7, "storeName"), v36 = objc_claimAutoreleasedReturnValue(), v37 = v27, [v27 isEqual:?]))
+            v40 = storeName2;
+            v38 = storeName;
+            storeName3 = [(SFProductInventory *)self storeName];
+            if (!storeName3 || (-[SFProductInventory storeName](self, "storeName"), v27 = objc_claimAutoreleasedReturnValue(), -[SFProductInventory storeName](v7, "storeName"), v36 = objc_claimAutoreleasedReturnValue(), v37 = v27, [v27 isEqual:?]))
             {
-              v30 = [(SFProductInventory *)self storeAddress];
-              v31 = [(SFProductInventory *)v7 storeAddress];
-              if ((v30 != 0) == (v31 == 0))
+              storeAddress = [(SFProductInventory *)self storeAddress];
+              storeAddress2 = [(SFProductInventory *)v7 storeAddress];
+              if ((storeAddress != 0) == (storeAddress2 == 0))
               {
 
                 v12 = 0;
@@ -257,13 +257,13 @@ LABEL_23:
 
               else
               {
-                v35 = v31;
-                v34 = [(SFProductInventory *)self storeAddress];
-                if (v34)
+                v35 = storeAddress2;
+                storeAddress3 = [(SFProductInventory *)self storeAddress];
+                if (storeAddress3)
                 {
-                  v33 = [(SFProductInventory *)self storeAddress];
-                  v32 = [(SFProductInventory *)v7 storeAddress];
-                  v12 = [v33 isEqual:v32];
+                  storeAddress4 = [(SFProductInventory *)self storeAddress];
+                  storeAddress5 = [(SFProductInventory *)v7 storeAddress];
+                  v12 = [storeAddress4 isEqual:storeAddress5];
                 }
 
                 else
@@ -273,9 +273,9 @@ LABEL_23:
                 }
               }
 
-              v25 = v38;
-              v28 = v39;
-              if (!v39)
+              storeName = v38;
+              v28 = storeName3;
+              if (!storeName3)
               {
                 goto LABEL_50;
               }
@@ -284,13 +284,13 @@ LABEL_23:
             else
             {
               v12 = 0;
-              v28 = v39;
+              v28 = storeName3;
             }
 
 LABEL_50:
 LABEL_51:
-            v18 = v51;
-            v22 = v42;
+            v18 = distance3;
+            timestamp3 = v42;
             v29 = v43;
             if (!v42)
             {
@@ -300,17 +300,17 @@ LABEL_51:
             goto LABEL_52;
           }
 
-          if (v51)
+          if (distance3)
           {
           }
 
-          v15 = v50;
-          v3 = v47;
+          distance2 = v50;
+          storeId4 = v47;
         }
       }
 
       v12 = 0;
-      if (!v11)
+      if (!storeId3)
       {
 LABEL_32:
 
@@ -330,30 +330,30 @@ LABEL_35:
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setType:{-[SFProductInventory type](self, "type")}];
-  v5 = [(SFProductInventory *)self storeId];
-  v6 = [v5 copy];
+  storeId = [(SFProductInventory *)self storeId];
+  v6 = [storeId copy];
   [v4 setStoreId:v6];
 
   [v4 setAvailabilityStatus:{-[SFProductInventory availabilityStatus](self, "availabilityStatus")}];
-  v7 = [(SFProductInventory *)self distance];
-  v8 = [v7 copy];
+  distance = [(SFProductInventory *)self distance];
+  v8 = [distance copy];
   [v4 setDistance:v8];
 
   [v4 setDistanceUnit:{-[SFProductInventory distanceUnit](self, "distanceUnit")}];
-  v9 = [(SFProductInventory *)self timestamp];
-  v10 = [v9 copy];
+  timestamp = [(SFProductInventory *)self timestamp];
+  v10 = [timestamp copy];
   [v4 setTimestamp:v10];
 
-  v11 = [(SFProductInventory *)self storeName];
-  v12 = [v11 copy];
+  storeName = [(SFProductInventory *)self storeName];
+  v12 = [storeName copy];
   [v4 setStoreName:v12];
 
-  v13 = [(SFProductInventory *)self storeAddress];
-  v14 = [v13 copy];
+  storeAddress = [(SFProductInventory *)self storeAddress];
+  v14 = [storeAddress copy];
   [v4 setStoreAddress:v14];
 
   return v4;
@@ -362,31 +362,31 @@ LABEL_35:
 - (NSData)jsonData
 {
   v2 = [[_SFPBProductInventory alloc] initWithFacade:self];
-  v3 = [(_SFPBProductInventory *)v2 jsonData];
+  jsonData = [(_SFPBProductInventory *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBProductInventory alloc] initWithFacade:self];
-  v3 = [(_SFPBProductInventory *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBProductInventory *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6 = [[_SFPBProductInventory alloc] initWithFacade:self];
-  v5 = [(_SFPBProductInventory *)v6 data];
-  [v4 encodeObject:v5 forKey:@"_backingStore"];
+  data = [(_SFPBProductInventory *)v6 data];
+  [coderCopy encodeObject:data forKey:@"_backingStore"];
 }
 
-- (SFProductInventory)initWithCoder:(id)a3
+- (SFProductInventory)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v6 = [[_SFPBProductInventory alloc] initWithData:v5];
   v7 = [(SFProductInventory *)self initWithProtobuf:v6];

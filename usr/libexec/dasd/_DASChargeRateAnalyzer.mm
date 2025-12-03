@@ -1,8 +1,8 @@
 @interface _DASChargeRateAnalyzer
 - (NSMutableDictionary)analyticsStatus;
-- (_DASChargeRateAnalyzer)initWithQueueLimit:(unint64_t)a3 reader:(id)a4 monitoringInterval:(unint64_t)a5 analyzeToMonitorRatio:(unint64_t)a6;
-- (double)getReferenceChargeRateForContext:(id)a3 reader:(id)a4;
-- (void)analyzeValues:(id)a3 currentContext:(id)a4;
+- (_DASChargeRateAnalyzer)initWithQueueLimit:(unint64_t)limit reader:(id)reader monitoringInterval:(unint64_t)interval analyzeToMonitorRatio:(unint64_t)ratio;
+- (double)getReferenceChargeRateForContext:(id)context reader:(id)reader;
+- (void)analyzeValues:(id)values currentContext:(id)context;
 - (void)recordValue;
 - (void)start;
 - (void)stop;
@@ -10,15 +10,15 @@
 
 @implementation _DASChargeRateAnalyzer
 
-- (_DASChargeRateAnalyzer)initWithQueueLimit:(unint64_t)a3 reader:(id)a4 monitoringInterval:(unint64_t)a5 analyzeToMonitorRatio:(unint64_t)a6
+- (_DASChargeRateAnalyzer)initWithQueueLimit:(unint64_t)limit reader:(id)reader monitoringInterval:(unint64_t)interval analyzeToMonitorRatio:(unint64_t)ratio
 {
-  v11 = a4;
+  readerCopy = reader;
   v26.receiver = self;
   v26.super_class = _DASChargeRateAnalyzer;
   v12 = [(_DASChargeRateAnalyzer *)&v26 init];
   if (v12)
   {
-    v13 = [[_DASSignalQueue alloc] initWithCount:a3];
+    v13 = [[_DASSignalQueue alloc] initWithCount:limit];
     chargeRateQueue = v12->_chargeRateQueue;
     v12->_chargeRateQueue = v13;
 
@@ -32,9 +32,9 @@
     executionQueue = v12->_executionQueue;
     v12->_executionQueue = v18;
 
-    objc_storeStrong(&v12->_reader, a4);
-    v12->_monitorInterval = a5;
-    v12->_analyzeToMonitorRatio = a6;
+    objc_storeStrong(&v12->_reader, reader);
+    v12->_monitorInterval = interval;
+    v12->_analyzeToMonitorRatio = ratio;
     v24[0] = _NSConcreteStackBlock;
     v24[1] = 3221225472;
     v24[2] = sub_100029C00;
@@ -82,33 +82,33 @@
   dispatch_sync(executionQueue, block);
 }
 
-- (double)getReferenceChargeRateForContext:(id)a3 reader:(id)a4
+- (double)getReferenceChargeRateForContext:(id)context reader:(id)reader
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = +[_CDContextQueries keyPathForBatteryLevel];
-  v6 = [v4 objectForKeyedSubscript:v5];
-  v7 = [v6 integerValue];
+  v6 = [contextCopy objectForKeyedSubscript:v5];
+  integerValue = [v6 integerValue];
 
   v8 = +[_CDContextQueries keyPathForBatteryStateDataDictionary];
-  v9 = [v4 objectForKeyedSubscript:v8];
+  v9 = [contextCopy objectForKeyedSubscript:v8];
 
   if ([_DASRequiresPluggedInPolicy isWirelessCharger:v9])
   {
     v10 = 0.75;
-    if (v7 >= 50)
+    if (integerValue >= 50)
     {
       v10 = 0.375;
-      if (v7 >= 0x3C)
+      if (integerValue >= 0x3C)
       {
-        if (v7 >= 0x50)
+        if (integerValue >= 0x50)
         {
-          if (v7 < 0x5A)
+          if (integerValue < 0x5A)
           {
             v10 = 0.15;
             goto LABEL_18;
           }
 
-          v11 = v7 >= 0x5F;
+          v11 = integerValue >= 0x5F;
           v12 = 0.1125;
           goto LABEL_15;
         }
@@ -120,21 +120,21 @@
 
   else
   {
-    if (v7 < 50)
+    if (integerValue < 50)
     {
       v10 = 0.9;
       goto LABEL_18;
     }
 
     v10 = 0.75;
-    if (v7 >= 0x3C)
+    if (integerValue >= 0x3C)
     {
       v10 = 0.375;
-      if (v7 >= 0x50)
+      if (integerValue >= 0x50)
       {
-        if (v7 >= 0x5A)
+        if (integerValue >= 0x5A)
         {
-          v11 = v7 >= 0x5F;
+          v11 = integerValue >= 0x5F;
           v12 = 0.15;
 LABEL_15:
           if (v11)
@@ -183,20 +183,20 @@ LABEL_18:
   return v3;
 }
 
-- (void)analyzeValues:(id)a3 currentContext:(id)a4
+- (void)analyzeValues:(id)values currentContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  valuesCopy = values;
+  contextCopy = context;
   executionQueue = self->_executionQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10002A214;
   block[3] = &unk_1001B56B8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = valuesCopy;
+  v13 = contextCopy;
+  v9 = contextCopy;
+  v10 = valuesCopy;
   dispatch_sync(executionQueue, block);
 }
 

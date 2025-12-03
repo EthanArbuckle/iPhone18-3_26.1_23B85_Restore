@@ -1,19 +1,19 @@
 @interface ContactsService
-- (void)authenticateRestrictionsPasscode:(NSString *)a3 completionHandler:(id)a4;
-- (void)isRestrictionsPasscodeSetWithCompletionHandler:(id)a3;
-- (void)presentRemotePINControllerWithCompletionHandler:(id)a3;
-- (void)restrictionsPasscodeEntryAttemptCountAndTimeoutDateWithCompletionHandler:(id)a3;
+- (void)authenticateRestrictionsPasscode:(NSString *)passcode completionHandler:(id)handler;
+- (void)isRestrictionsPasscodeSetWithCompletionHandler:(id)handler;
+- (void)presentRemotePINControllerWithCompletionHandler:(id)handler;
+- (void)restrictionsPasscodeEntryAttemptCountAndTimeoutDateWithCompletionHandler:(id)handler;
 @end
 
 @implementation ContactsService
 
-- (void)isRestrictionsPasscodeSetWithCompletionHandler:(id)a3
+- (void)isRestrictionsPasscodeSetWithCompletionHandler:(id)handler
 {
   v5 = sub_1000A0F2C(&unk_1001DF9B0, &qword_100140000);
   v6 = *(*(v5 - 8) + 64);
   __chkstk_darwin(v5 - 8);
   v8 = &v14 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -33,15 +33,15 @@
   sub_10010D4C0(0, 0, v8, &unk_1001405D8, v13);
 }
 
-- (void)authenticateRestrictionsPasscode:(NSString *)a3 completionHandler:(id)a4
+- (void)authenticateRestrictionsPasscode:(NSString *)passcode completionHandler:(id)handler
 {
   v7 = sub_1000A0F2C(&unk_1001DF9B0, &qword_100140000);
   v8 = *(*(v7 - 8) + 64);
   __chkstk_darwin(v7 - 8);
   v10 = &v17 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(handler);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = passcode;
   v12[3] = v11;
   v12[4] = self;
   v13 = type metadata accessor for TaskPriority();
@@ -56,18 +56,18 @@
   v15[3] = 0;
   v15[4] = &unk_1001405A8;
   v15[5] = v14;
-  v16 = a3;
+  passcodeCopy = passcode;
 
   sub_10010D4C0(0, 0, v10, &unk_1001405B0, v15);
 }
 
-- (void)restrictionsPasscodeEntryAttemptCountAndTimeoutDateWithCompletionHandler:(id)a3
+- (void)restrictionsPasscodeEntryAttemptCountAndTimeoutDateWithCompletionHandler:(id)handler
 {
   v5 = sub_1000A0F2C(&unk_1001DF9B0, &qword_100140000);
   v6 = *(*(v5 - 8) + 64);
   __chkstk_darwin(v5 - 8);
   v8 = &v14 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -87,13 +87,13 @@
   sub_10010D4C0(0, 0, v8, &unk_100140590, v13);
 }
 
-- (void)presentRemotePINControllerWithCompletionHandler:(id)a3
+- (void)presentRemotePINControllerWithCompletionHandler:(id)handler
 {
   v5 = sub_1000A0F2C(&unk_1001DF9B0, &qword_100140000);
   v6 = *(*(v5 - 8) + 64);
   __chkstk_darwin(v5 - 8);
   v8 = &v14 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;

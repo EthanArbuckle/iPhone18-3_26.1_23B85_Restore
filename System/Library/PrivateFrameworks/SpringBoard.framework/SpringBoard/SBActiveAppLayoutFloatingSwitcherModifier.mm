@@ -1,13 +1,13 @@
 @interface SBActiveAppLayoutFloatingSwitcherModifier
-- (SBActiveAppLayoutFloatingSwitcherModifier)initWithActiveAppLayout:(id)a3 fullScreenAppLayout:(id)a4 floatingConfiguration:(int64_t)a5 environmentMode:(int64_t)a6;
+- (SBActiveAppLayoutFloatingSwitcherModifier)initWithActiveAppLayout:(id)layout fullScreenAppLayout:(id)appLayout floatingConfiguration:(int64_t)configuration environmentMode:(int64_t)mode;
 @end
 
 @implementation SBActiveAppLayoutFloatingSwitcherModifier
 
-- (SBActiveAppLayoutFloatingSwitcherModifier)initWithActiveAppLayout:(id)a3 fullScreenAppLayout:(id)a4 floatingConfiguration:(int64_t)a5 environmentMode:(int64_t)a6
+- (SBActiveAppLayoutFloatingSwitcherModifier)initWithActiveAppLayout:(id)layout fullScreenAppLayout:(id)appLayout floatingConfiguration:(int64_t)configuration environmentMode:(int64_t)mode
 {
-  v10 = a3;
-  v11 = a4;
+  layoutCopy = layout;
+  appLayoutCopy = appLayout;
   v19.receiver = self;
   v19.super_class = SBActiveAppLayoutFloatingSwitcherModifier;
   v12 = [(SBSwitcherModifier *)&v19 init];
@@ -18,7 +18,7 @@
     v12->_stackedModifier = v13;
 
     [(SBChainableModifier *)v12 addChildModifier:v12->_stackedModifier atLevel:0 key:0];
-    v15 = [[_SBActiveAppFloorFloatingSwitcherModifier alloc] initWithActiveAppLayout:v10 fullScreenAppLayout:v11 floatingConfiguration:a5 environmentMode:a6];
+    v15 = [[_SBActiveAppFloorFloatingSwitcherModifier alloc] initWithActiveAppLayout:layoutCopy fullScreenAppLayout:appLayoutCopy floatingConfiguration:configuration environmentMode:mode];
     floorModifier = v12->_floorModifier;
     v12->_floorModifier = v15;
 

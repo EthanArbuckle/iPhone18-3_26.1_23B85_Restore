@@ -11,7 +11,7 @@
 {
   if (*MEMORY[0x1E695E108])
   {
-    (*MEMORY[0x1E695E108])(a1, v4, *MEMORY[0x1E695E0C8]);
+    (*MEMORY[0x1E695E108])(self, v4, *MEMORY[0x1E695E0C8]);
   }
 
   if (a4 < 2)
@@ -22,7 +22,7 @@ LABEL_9:
       v10 = (a3 - 1);
       do
       {
-        [a1 removeObjectAtIndex:*&v10[8 * a4--]];
+        [self removeObjectAtIndex:*&v10[8 * a4--]];
       }
 
       while (a4);
@@ -46,7 +46,7 @@ LABEL_9:
     qsort(v11, a4, 8uLL, int_sort);
     do
     {
-      [a1 removeObjectAtIndex:*(v11 + v9--)];
+      [self removeObjectAtIndex:*(v11 + v9--)];
     }
 
     while (v9 != -1);

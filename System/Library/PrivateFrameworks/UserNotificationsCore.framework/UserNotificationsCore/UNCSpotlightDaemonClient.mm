@@ -2,12 +2,12 @@
 + (id)sharedInstance;
 - (UNCSpotlightDaemonClient)init;
 - (uint64_t)init;
-- (void)addObserver:(id)a3;
-- (void)provideDataForBundleID:(id)a3 protectionClass:(id)a4 itemIdentifier:(id)a5 typeIdentifier:(id)a6 options:(int64_t)a7 completionHandler:(id)a8;
-- (void)provideFileURLForBundleID:(id)a3 protectionClass:(id)a4 itemIdentifier:(id)a5 typeIdentifier:(id)a6 options:(int64_t)a7 completionHandler:(id)a8;
-- (void)reindexAllItemsForBundleID:(id)a3 protectionClass:(id)a4 acknowledgementHandler:(id)a5;
-- (void)reindexItemsWithIdentifiers:(id)a3 bundleID:(id)a4 protectionClass:(id)a5 acknowledgementHandler:(id)a6;
-- (void)searchableItemsDidUpdate:(id)a3 mask:(int64_t)a4;
+- (void)addObserver:(id)observer;
+- (void)provideDataForBundleID:(id)d protectionClass:(id)class itemIdentifier:(id)identifier typeIdentifier:(id)typeIdentifier options:(int64_t)options completionHandler:(id)handler;
+- (void)provideFileURLForBundleID:(id)d protectionClass:(id)class itemIdentifier:(id)identifier typeIdentifier:(id)typeIdentifier options:(int64_t)options completionHandler:(id)handler;
+- (void)reindexAllItemsForBundleID:(id)d protectionClass:(id)class acknowledgementHandler:(id)handler;
+- (void)reindexItemsWithIdentifiers:(id)identifiers bundleID:(id)d protectionClass:(id)class acknowledgementHandler:(id)handler;
+- (void)searchableItemsDidUpdate:(id)update mask:(int64_t)mask;
 @end
 
 @implementation UNCSpotlightDaemonClient
@@ -80,57 +80,57 @@ uint64_t __42__UNCSpotlightDaemonClient_sharedInstance__block_invoke()
   return v2;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v5 = a3;
+  observerCopy = observer;
   v4 = self->_observers;
   objc_sync_enter(v4);
-  [(NSHashTable *)self->_observers addObject:v5];
+  [(NSHashTable *)self->_observers addObject:observerCopy];
   objc_sync_exit(v4);
 }
 
-- (void)provideDataForBundleID:(id)a3 protectionClass:(id)a4 itemIdentifier:(id)a5 typeIdentifier:(id)a6 options:(int64_t)a7 completionHandler:(id)a8
+- (void)provideDataForBundleID:(id)d protectionClass:(id)class itemIdentifier:(id)identifier typeIdentifier:(id)typeIdentifier options:(int64_t)options completionHandler:(id)handler
 {
-  if (a8)
+  if (handler)
   {
-    (*(a8 + 2))(a8, 0, 0);
+    (*(handler + 2))(handler, 0, 0);
   }
 }
 
-- (void)provideFileURLForBundleID:(id)a3 protectionClass:(id)a4 itemIdentifier:(id)a5 typeIdentifier:(id)a6 options:(int64_t)a7 completionHandler:(id)a8
+- (void)provideFileURLForBundleID:(id)d protectionClass:(id)class itemIdentifier:(id)identifier typeIdentifier:(id)typeIdentifier options:(int64_t)options completionHandler:(id)handler
 {
-  if (a8)
+  if (handler)
   {
-    (*(a8 + 2))(a8, 0, 0);
+    (*(handler + 2))(handler, 0, 0);
   }
 }
 
-- (void)reindexAllItemsForBundleID:(id)a3 protectionClass:(id)a4 acknowledgementHandler:(id)a5
+- (void)reindexAllItemsForBundleID:(id)d protectionClass:(id)class acknowledgementHandler:(id)handler
 {
-  if (a5)
+  if (handler)
   {
-    (*(a5 + 2))(a5);
+    (*(handler + 2))(handler);
   }
 }
 
-- (void)reindexItemsWithIdentifiers:(id)a3 bundleID:(id)a4 protectionClass:(id)a5 acknowledgementHandler:(id)a6
+- (void)reindexItemsWithIdentifiers:(id)identifiers bundleID:(id)d protectionClass:(id)class acknowledgementHandler:(id)handler
 {
-  if (a6)
+  if (handler)
   {
-    (*(a6 + 2))(a6);
+    (*(handler + 2))(handler);
   }
 }
 
-- (void)searchableItemsDidUpdate:(id)a3 mask:(int64_t)a4
+- (void)searchableItemsDidUpdate:(id)update mask:(int64_t)mask
 {
   v43 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v28 = [MEMORY[0x1E695DF70] array];
+  updateCopy = update;
+  array = [MEMORY[0x1E695DF70] array];
   v35 = 0u;
   v36 = 0u;
   v33 = 0u;
   v34 = 0u;
-  obj = v4;
+  obj = updateCopy;
   v5 = [obj countByEnumeratingWithState:&v33 objects:v42 count:16];
   if (v5)
   {
@@ -147,12 +147,12 @@ uint64_t __42__UNCSpotlightDaemonClient_sharedInstance__block_invoke()
         v8 = *(*(&v33 + 1) + 8 * i);
         v9 = MEMORY[0x1E696AEC0];
         v10 = objc_opt_class();
-        v11 = [v8 uniqueIdentifier];
-        v12 = [v8 attributeSet];
-        v13 = [v12 summarizationStatus];
-        v14 = [v8 attributeSet];
-        v15 = [v9 stringWithFormat:@"<%@:%p, %@, %d, %d>", v10, v8, v11, v13, objc_msgSend(v14, "urgencyStatus")];
-        [v28 addObject:v15];
+        uniqueIdentifier = [v8 uniqueIdentifier];
+        attributeSet = [v8 attributeSet];
+        summarizationStatus = [attributeSet summarizationStatus];
+        attributeSet2 = [v8 attributeSet];
+        v15 = [v9 stringWithFormat:@"<%@:%p, %@, %d, %d>", v10, v8, uniqueIdentifier, summarizationStatus, objc_msgSend(attributeSet2, "urgencyStatus")];
+        [array addObject:v15];
       }
 
       v5 = [obj countByEnumeratingWithState:&v33 objects:v42 count:16];
@@ -166,13 +166,13 @@ uint64_t __42__UNCSpotlightDaemonClient_sharedInstance__block_invoke()
   if (os_log_type_enabled(*MEMORY[0x1E69833A8], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218242;
-    v39 = a4;
+    maskCopy = mask;
     v40 = 2112;
-    v41 = v28;
+    v41 = array;
     _os_log_impl(&dword_1DA7A9000, v17, OS_LOG_TYPE_DEFAULT, "SpotlightDaemonClient searchableItemsDidUpdate: %lu, %@", buf, 0x16u);
   }
 
-  if (a4)
+  if (mask)
   {
     v18 = self->_observers;
     objc_sync_enter(v18);

@@ -2,9 +2,9 @@
 - (BOOL)isInstalled;
 - (id)_installedAccount;
 - (id)accountStore;
-- (void)_deleteAccountAndAssociatedData:(id)a3;
+- (void)_deleteAccountAndAssociatedData:(id)data;
 - (void)remove;
-- (void)setAsideWithInstaller:(id)a3;
+- (void)setAsideWithInstaller:(id)installer;
 @end
 
 @implementation MCOSXServerAccountPayloadHandler
@@ -23,12 +23,12 @@
 
 - (id)_installedAccount
 {
-  v3 = [(MCOSXServerAccountPayloadHandler *)self accountStore];
-  v4 = [v3 accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierOSXServer];
+  accountStore = [(MCOSXServerAccountPayloadHandler *)self accountStore];
+  v4 = [accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierOSXServer];
 
-  v24 = self;
-  v5 = [(MCOSXServerAccountPayloadHandler *)self accountStore];
-  v6 = [v5 accountsWithAccountType:v4];
+  selfCopy = self;
+  accountStore2 = [(MCOSXServerAccountPayloadHandler *)self accountStore];
+  v6 = [accountStore2 accountsWithAccountType:v4];
 
   v29 = 0u;
   v30 = 0u;
@@ -40,7 +40,7 @@
   {
     v22 = v4;
     v8 = *v28;
-    v9 = v24;
+    v9 = selfCopy;
     do
     {
       for (i = 0; i != v7; i = i + 1)
@@ -51,24 +51,24 @@
         }
 
         v11 = *(*(&v27 + 1) + 8 * i);
-        v12 = [v11 mcProfileUUID];
-        v13 = [(MCNewPayloadHandler *)v9 payload];
-        v14 = [v13 profile];
-        v15 = [v14 UUID];
-        if ([v12 isEqualToString:v15])
+        mcProfileUUID = [v11 mcProfileUUID];
+        payload = [(MCNewPayloadHandler *)v9 payload];
+        profile = [payload profile];
+        uUID = [profile UUID];
+        if ([mcProfileUUID isEqualToString:uUID])
         {
           v23 = v11;
-          v16 = [v11 mcPayloadUUID];
-          v17 = [(MCNewPayloadHandler *)v9 payload];
-          [v17 UUID];
+          mcPayloadUUID = [v11 mcPayloadUUID];
+          payload2 = [(MCNewPayloadHandler *)v9 payload];
+          [payload2 UUID];
           v18 = v7;
           v20 = v19 = v8;
-          v26 = [v16 isEqualToString:v20];
+          v26 = [mcPayloadUUID isEqualToString:v20];
 
           v8 = v19;
           v7 = v18;
 
-          v9 = v24;
+          v9 = selfCopy;
           if (v26)
           {
             v7 = v23;
@@ -94,30 +94,30 @@ LABEL_12:
 
 - (BOOL)isInstalled
 {
-  v2 = [(MCOSXServerAccountPayloadHandler *)self _installedAccount];
-  v3 = v2 != 0;
+  _installedAccount = [(MCOSXServerAccountPayloadHandler *)self _installedAccount];
+  v3 = _installedAccount != 0;
 
   return v3;
 }
 
-- (void)setAsideWithInstaller:(id)a3
+- (void)setAsideWithInstaller:(id)installer
 {
-  v4 = a3;
+  installerCopy = installer;
   v7.receiver = self;
   v7.super_class = MCOSXServerAccountPayloadHandler;
-  [(MCNewPayloadHandler *)&v7 setAsideWithInstaller:v4];
-  v5 = [(MCOSXServerAccountPayloadHandler *)self _installedAccount];
-  if (v5)
+  [(MCNewPayloadHandler *)&v7 setAsideWithInstaller:installerCopy];
+  _installedAccount = [(MCOSXServerAccountPayloadHandler *)self _installedAccount];
+  if (_installedAccount)
   {
-    [(MCOSXServerAccountPayloadHandler *)self setSetAsideAccount:v5];
-    v6 = [v5 identifier];
-    [v4 addSetAsideAccountIdentifier:v6 forPayloadClass:objc_opt_class()];
+    [(MCOSXServerAccountPayloadHandler *)self setSetAsideAccount:_installedAccount];
+    identifier = [_installedAccount identifier];
+    [installerCopy addSetAsideAccountIdentifier:identifier forPayloadClass:objc_opt_class()];
   }
 }
 
-- (void)_deleteAccountAndAssociatedData:(id)a3
+- (void)_deleteAccountAndAssociatedData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v5 = [[DMCProcessAssertion alloc] initWithReason:@"profiled-DeleteAccount"];
   v6 = dispatch_get_global_queue(17, 0);
   block[0] = _NSConcreteStackBlock;
@@ -125,23 +125,23 @@ LABEL_12:
   block[2] = sub_100084774;
   block[3] = &unk_10011CC68;
   block[4] = self;
-  v10 = v4;
+  v10 = dataCopy;
   v11 = v5;
   v7 = v5;
-  v8 = v4;
+  v8 = dataCopy;
   dispatch_async(v6, block);
 }
 
 - (void)remove
 {
-  v3 = [(MCNewPayloadHandler *)self profileHandler];
-  v4 = [v3 isSetAside];
+  profileHandler = [(MCNewPayloadHandler *)self profileHandler];
+  isSetAside = [profileHandler isSetAside];
 
-  if (v4)
+  if (isSetAside)
   {
-    v5 = [(MCOSXServerAccountPayloadHandler *)self setAsideAccount];
+    setAsideAccount = [(MCOSXServerAccountPayloadHandler *)self setAsideAccount];
     [(MCOSXServerAccountPayloadHandler *)self setSetAsideAccount:0];
-    if (!v5)
+    if (!setAsideAccount)
     {
       goto LABEL_6;
     }
@@ -149,11 +149,11 @@ LABEL_12:
     goto LABEL_5;
   }
 
-  v5 = [(MCOSXServerAccountPayloadHandler *)self _installedAccount];
-  if (v5)
+  setAsideAccount = [(MCOSXServerAccountPayloadHandler *)self _installedAccount];
+  if (setAsideAccount)
   {
 LABEL_5:
-    [(MCOSXServerAccountPayloadHandler *)self _deleteAccountAndAssociatedData:v5];
+    [(MCOSXServerAccountPayloadHandler *)self _deleteAccountAndAssociatedData:setAsideAccount];
   }
 
 LABEL_6:

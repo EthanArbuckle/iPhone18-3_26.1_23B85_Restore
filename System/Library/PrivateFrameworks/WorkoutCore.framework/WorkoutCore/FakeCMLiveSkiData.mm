@@ -1,8 +1,8 @@
 @interface FakeCMLiveSkiData
 - (NSDate)date;
 - (_TtC11WorkoutCore17FakeCMLiveSkiData)init;
-- (_TtC11WorkoutCore17FakeCMLiveSkiData)initWithCoder:(id)a3;
-- (void)setDate:(id)a3;
+- (_TtC11WorkoutCore17FakeCMLiveSkiData)initWithCoder:(id)coder;
+- (void)setDate:(id)date;
 @end
 
 @implementation FakeCMLiveSkiData
@@ -23,7 +23,7 @@
   return v9.super.isa;
 }
 
-- (void)setDate:(id)a3
+- (void)setDate:(id)date
 {
   v4 = type metadata accessor for Date();
   v5 = *(v4 - 8);
@@ -34,7 +34,7 @@
   v9 = OBJC_IVAR____TtC11WorkoutCore17FakeCMLiveSkiData__date;
   swift_beginAccess();
   v10 = *(v5 + 40);
-  v11 = self;
+  selfCopy = self;
   v10(self + v9, v8, v4);
   swift_endAccess();
 }
@@ -52,7 +52,7 @@
   return [(FakeCMLiveSkiData *)&v4 init];
 }
 
-- (_TtC11WorkoutCore17FakeCMLiveSkiData)initWithCoder:(id)a3
+- (_TtC11WorkoutCore17FakeCMLiveSkiData)initWithCoder:(id)coder
 {
   Date.init()();
   *(&self->super.super.isa + OBJC_IVAR____TtC11WorkoutCore17FakeCMLiveSkiData__distance) = 0;

@@ -4,18 +4,18 @@
 - (CGRect)searchAffordanceReferenceFrame;
 - (CGSize)intrinsicContentSize;
 - (SBHSearchPillView)init;
-- (SBHSearchPillView)initWithBackgroundViewProvider:(id)a3;
+- (SBHSearchPillView)initWithBackgroundViewProvider:(id)provider;
 - (UIView)searchAffordanceReferenceContainerView;
 - (id)makeSearchAffordanceBackgroundCapturingView;
 - (void)_updateBackgroundViewUserInterfaceStyle;
 - (void)layoutSubviews;
-- (void)setAppliesSearchAffordanceCornerRadius:(BOOL)a3;
-- (void)setBackgroundView:(id)a3;
-- (void)setLabelAlignment:(int64_t)a3;
-- (void)setLegibilitySettings:(id)a3;
-- (void)setSearchAffordanceCornerRadius:(double)a3;
-- (void)setSearchAffordanceReferenceBackgroundView:(id)a3;
-- (void)setSearchAffordanceReferenceFrame:(CGRect)a3;
+- (void)setAppliesSearchAffordanceCornerRadius:(BOOL)radius;
+- (void)setBackgroundView:(id)view;
+- (void)setLabelAlignment:(int64_t)alignment;
+- (void)setLegibilitySettings:(id)settings;
+- (void)setSearchAffordanceCornerRadius:(double)radius;
+- (void)setSearchAffordanceReferenceBackgroundView:(id)view;
+- (void)setSearchAffordanceReferenceFrame:(CGRect)frame;
 @end
 
 @implementation SBHSearchPillView
@@ -30,9 +30,9 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(SBHSearchPillView *)self backgroundView];
+  backgroundView = [(SBHSearchPillView *)self backgroundView];
   v64 = v8;
-  [v11 setFrame:{v4, v6, v8, v10}];
+  [backgroundView setFrame:{v4, v6, v8, v10}];
   if ([(SBHSearchPillView *)self appliesSearchAffordanceCornerRadius])
   {
     [(SBHSearchPillView *)self searchAffordanceCornerRadius];
@@ -44,19 +44,19 @@
   }
 
   v63 = v10;
-  if (v11)
+  if (backgroundView)
   {
     [(SBHSearchPillView *)self _setContinuousCornerRadius:v12];
   }
 
-  v13 = [(SBHSearchPillView *)self contentContainerView];
-  [v13 bounds];
+  contentContainerView = [(SBHSearchPillView *)self contentContainerView];
+  [contentContainerView bounds];
   v65 = v14;
   v66 = v15;
   v17 = v16;
   v68 = v18;
-  v19 = [(SBHSearchPillView *)self traitCollection];
-  [v19 displayScale];
+  traitCollection = [(SBHSearchPillView *)self traitCollection];
+  [traitCollection displayScale];
   v21 = v20;
 
   v22 = self->_searchLabel;
@@ -76,14 +76,14 @@
   }
 
   [(UILabel *)v22 bounds];
-  v32 = [*v31 userInterfaceLayoutDirection];
+  userInterfaceLayoutDirection = [*v31 userInterfaceLayoutDirection];
   v62 = v30;
   v33 = v30;
   v34 = v25;
   v35 = v25;
   v36 = v27;
   v37 = rect;
-  if (v32 == 1)
+  if (userInterfaceLayoutDirection == 1)
   {
     CGRectGetMinX(*&v33);
   }
@@ -101,8 +101,8 @@
   v45 = v44;
   BSFloatRoundForScale();
   v47 = v46 + v41;
-  v48 = [(UIImageView *)v23 image];
-  [v48 baselineOffsetFromBottom];
+  image = [(UIImageView *)v23 image];
+  [image baselineOffsetFromBottom];
   v50 = v49;
   v72.origin.x = v39;
   v72.origin.y = v47;
@@ -133,8 +133,8 @@
     *&v70.a = *MEMORY[0x1E695EFD0];
     *&v70.c = v55;
     *&v70.tx = *(MEMORY[0x1E695EFD0] + 32);
-    [v13 setTransform:&v70];
-    [v13 setFrame:{v65, v66, v17, v68}];
+    [contentContainerView setTransform:&v70];
+    [contentContainerView setFrame:{v65, v66, v17, v68}];
   }
 
   else
@@ -142,7 +142,7 @@
     memset(&v70, 0, sizeof(v70));
     CGAffineTransformMakeScale(&v70, v54, v54);
     v69 = v70;
-    [v13 setTransform:&v69];
+    [contentContainerView setTransform:&v69];
     UIRectGetCenter();
     v57 = v56;
     v59 = v58;
@@ -166,7 +166,7 @@
       }
     }
 
-    [v13 setCenter:{v57, v59}];
+    [contentContainerView setCenter:{v57, v59}];
   }
 }
 
@@ -209,18 +209,18 @@
 
 - (CGSize)intrinsicContentSize
 {
-  v3 = [(SBHSearchPillView *)self traitCollection];
-  [v3 displayScale];
+  traitCollection = [(SBHSearchPillView *)self traitCollection];
+  [traitCollection displayScale];
   v5 = v4;
 
-  v6 = [(SBHSearchPillView *)self searchLabel];
+  searchLabel = [(SBHSearchPillView *)self searchLabel];
   v7 = *MEMORY[0x1E695F060];
   v8 = *(MEMORY[0x1E695F060] + 8);
-  [v6 sizeThatFits:{*MEMORY[0x1E695F060], v8}];
+  [searchLabel sizeThatFits:{*MEMORY[0x1E695F060], v8}];
   v10 = v9;
 
-  v11 = [(SBHSearchPillView *)self searchGlyphImageView];
-  [v11 sizeThatFits:{v7, v8}];
+  searchGlyphImageView = [(SBHSearchPillView *)self searchGlyphImageView];
+  [searchGlyphImageView sizeThatFits:{v7, v8}];
   v13 = v10 + v12 + 3.0 + 11.5 + 11.5;
 
   [(SBHSearchPillView *)self halfFloatRoundForScale:v13 scale:v5];
@@ -237,19 +237,19 @@
   return v2;
 }
 
-- (SBHSearchPillView)initWithBackgroundViewProvider:(id)a3
+- (SBHSearchPillView)initWithBackgroundViewProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v5 = [(SBHSearchPillView *)self init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [providerCopy copy];
     backgroundViewProvider = v5->_backgroundViewProvider;
     v5->_backgroundViewProvider = v6;
 
-    v8 = v4[2](v4);
-    v9 = [(SBHSearchPillView *)v5 _backdropGroupNameBase];
-    [v8 setGroupNameBase:v9];
+    v8 = providerCopy[2](providerCopy);
+    _backdropGroupNameBase = [(SBHSearchPillView *)v5 _backdropGroupNameBase];
+    [v8 setGroupNameBase:_backdropGroupNameBase];
 
     [(SBHSearchPillView *)v5 setBackgroundView:v8];
   }
@@ -293,8 +293,8 @@
     contentContainerView = v2->_contentContainerView;
     v2->_contentContainerView = v15;
 
-    v17 = [(UIView *)v2->_contentContainerView layer];
-    [v17 setAllowsGroupBlending:0];
+    layer = [(UIView *)v2->_contentContainerView layer];
+    [layer setAllowsGroupBlending:0];
 
     [(SBHSearchPillView *)v2 addSubview:v2->_contentContainerView];
     [(UIView *)v2->_contentContainerView addSubview:v2->_searchGlyphImageView];
@@ -320,33 +320,33 @@
   return v2;
 }
 
-- (void)setLegibilitySettings:(id)a3
+- (void)setLegibilitySettings:(id)settings
 {
-  v7 = a3;
+  settingsCopy = settings;
   if (![(SBHLegibilitySettings *)self->_legibilitySettings isEqual:?])
   {
-    objc_storeStrong(&self->_legibilitySettings, a3);
-    v5 = [v7 primaryColor];
-    v6 = [v5 colorWithAlphaComponent:0.7];
+    objc_storeStrong(&self->_legibilitySettings, settings);
+    primaryColor = [settingsCopy primaryColor];
+    v6 = [primaryColor colorWithAlphaComponent:0.7];
 
     [(UILabel *)self->_searchLabel setTextColor:v6];
     [(UIImageView *)self->_searchGlyphImageView setTintColor:v6];
   }
 }
 
-- (void)setBackgroundView:(id)a3
+- (void)setBackgroundView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   backgroundView = self->_backgroundView;
-  if (backgroundView != v5)
+  if (backgroundView != viewCopy)
   {
-    v8 = v5;
+    v8 = viewCopy;
     [(UIView *)backgroundView removeFromSuperview];
-    objc_storeStrong(&self->_backgroundView, a3);
+    objc_storeStrong(&self->_backgroundView, view);
     if (v8)
     {
-      v7 = [(SBHSearchPillView *)self traitCollection];
-      -[UIView sbh_applySearchPillGlassWithUserInterfaceStyle:grouping:](self, "sbh_applySearchPillGlassWithUserInterfaceStyle:grouping:", [MEMORY[0x1E69DD1B8] sbh_dockGlassUserInterfaceStyleFromTraitCollection:v7], 0);
+      traitCollection = [(SBHSearchPillView *)self traitCollection];
+      -[UIView sbh_applySearchPillGlassWithUserInterfaceStyle:grouping:](self, "sbh_applySearchPillGlassWithUserInterfaceStyle:grouping:", [MEMORY[0x1E69DD1B8] sbh_dockGlassUserInterfaceStyleFromTraitCollection:traitCollection], 0);
       [(SBHSearchPillView *)self setNeedsLayout];
     }
   }
@@ -354,11 +354,11 @@
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setLabelAlignment:(int64_t)a3
+- (void)setLabelAlignment:(int64_t)alignment
 {
-  if (self->_labelAlignment != a3)
+  if (self->_labelAlignment != alignment)
   {
-    self->_labelAlignment = a3;
+    self->_labelAlignment = alignment;
     [(SBHSearchPillView *)self setNeedsLayout];
   }
 }
@@ -369,23 +369,23 @@
   if (backgroundViewProvider)
   {
     v4 = backgroundViewProvider[2](backgroundViewProvider, a2);
-    v5 = [(SBHSearchPillView *)self _backdropGroupNameBase];
-    [v4 setGroupNameBase:v5];
+    _backdropGroupNameBase = [(SBHSearchPillView *)self _backdropGroupNameBase];
+    [v4 setGroupNameBase:_backdropGroupNameBase];
 
     [v4 setCaptureOnly:1];
     createdSearchAffordanceBackgroundCapturingViews = self->_createdSearchAffordanceBackgroundCapturingViews;
     if (!createdSearchAffordanceBackgroundCapturingViews)
     {
-      v7 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+      weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
       v8 = self->_createdSearchAffordanceBackgroundCapturingViews;
-      self->_createdSearchAffordanceBackgroundCapturingViews = v7;
+      self->_createdSearchAffordanceBackgroundCapturingViews = weakObjectsHashTable;
 
       createdSearchAffordanceBackgroundCapturingViews = self->_createdSearchAffordanceBackgroundCapturingViews;
     }
 
     [(NSHashTable *)createdSearchAffordanceBackgroundCapturingViews addObject:v4];
-    v9 = [(SBHSearchPillView *)self traitCollection];
-    [v4 setOverrideUserInterfaceStyle:{objc_msgSend(MEMORY[0x1E69DD1B8], "sbh_materialUserInterfaceStyleFromTraitCollection:", v9)}];
+    traitCollection = [(SBHSearchPillView *)self traitCollection];
+    [v4 setOverrideUserInterfaceStyle:{objc_msgSend(MEMORY[0x1E69DD1B8], "sbh_materialUserInterfaceStyleFromTraitCollection:", traitCollection)}];
   }
 
   else
@@ -396,14 +396,14 @@
   return v4;
 }
 
-- (void)setSearchAffordanceReferenceFrame:(CGRect)a3
+- (void)setSearchAffordanceReferenceFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   p_clientReferenceFrame = &self->_clientReferenceFrame;
-  if (!CGRectEqualToRect(self->_clientReferenceFrame, a3))
+  if (!CGRectEqualToRect(self->_clientReferenceFrame, frame))
   {
     p_clientReferenceFrame->origin.x = x;
     p_clientReferenceFrame->origin.y = y;
@@ -412,50 +412,50 @@
   }
 }
 
-- (void)setAppliesSearchAffordanceCornerRadius:(BOOL)a3
+- (void)setAppliesSearchAffordanceCornerRadius:(BOOL)radius
 {
-  if (self->_appliesSearchAffordanceCornerRadius != a3)
+  if (self->_appliesSearchAffordanceCornerRadius != radius)
   {
-    self->_appliesSearchAffordanceCornerRadius = a3;
+    self->_appliesSearchAffordanceCornerRadius = radius;
     [(SBHSearchPillView *)self setNeedsLayout];
   }
 }
 
-- (void)setSearchAffordanceCornerRadius:(double)a3
+- (void)setSearchAffordanceCornerRadius:(double)radius
 {
-  if (self->_searchAffordanceCornerRadius != a3)
+  if (self->_searchAffordanceCornerRadius != radius)
   {
-    self->_searchAffordanceCornerRadius = a3;
+    self->_searchAffordanceCornerRadius = radius;
     [(SBHSearchPillView *)self setNeedsLayout];
   }
 }
 
-- (void)setSearchAffordanceReferenceBackgroundView:(id)a3
+- (void)setSearchAffordanceReferenceBackgroundView:(id)view
 {
-  v5 = a3;
-  if (self->_searchAffordanceReferenceBackgroundView != v5)
+  viewCopy = view;
+  if (self->_searchAffordanceReferenceBackgroundView != viewCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_searchAffordanceReferenceBackgroundView, a3);
+    v6 = viewCopy;
+    objc_storeStrong(&self->_searchAffordanceReferenceBackgroundView, view);
     [(SBHSearchPillView *)self _updateBackgroundViewUserInterfaceStyle];
-    v5 = v6;
+    viewCopy = v6;
   }
 }
 
 - (void)_updateBackgroundViewUserInterfaceStyle
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [(SBHSearchPillView *)self traitCollection];
-  v4 = [MEMORY[0x1E69DD1B8] sbh_materialUserInterfaceStyleFromTraitCollection:v3];
-  v5 = [MEMORY[0x1E69DD1B8] sbh_iconImageAppearanceFromTraitCollection:v3];
+  traitCollection = [(SBHSearchPillView *)self traitCollection];
+  v4 = [MEMORY[0x1E69DD1B8] sbh_materialUserInterfaceStyleFromTraitCollection:traitCollection];
+  v5 = [MEMORY[0x1E69DD1B8] sbh_iconImageAppearanceFromTraitCollection:traitCollection];
   if ([v5 hasGlass])
   {
     v4 = 2;
   }
 
   [(SBHSearchPillView *)self setOverrideUserInterfaceStyle:v4];
-  v6 = [(SBHSearchPillView *)self backgroundView];
-  [v6 setOverrideUserInterfaceStyle:v4];
+  backgroundView = [(SBHSearchPillView *)self backgroundView];
+  [backgroundView setOverrideUserInterfaceStyle:v4];
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
@@ -484,8 +484,8 @@
     while (v9);
   }
 
-  v12 = [(SBHSearchPillView *)self searchAffordanceReferenceBackgroundView];
-  [v12 setOverrideUserInterfaceStyle:v4];
+  searchAffordanceReferenceBackgroundView = [(SBHSearchPillView *)self searchAffordanceReferenceBackgroundView];
+  [searchAffordanceReferenceBackgroundView setOverrideUserInterfaceStyle:v4];
 }
 
 - (UIView)searchAffordanceReferenceContainerView

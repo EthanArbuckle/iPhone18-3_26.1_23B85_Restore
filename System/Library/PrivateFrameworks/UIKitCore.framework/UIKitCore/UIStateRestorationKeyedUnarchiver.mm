@@ -1,25 +1,25 @@
 @interface UIStateRestorationKeyedUnarchiver
-- (id)decodeObjectForKey:(id)a3;
-- (id)decodeObjectOfClasses:(id)a3 forKey:(id)a4;
-- (id)decodeTopLevelObjectOfClasses:(id)a3 forKey:(id)a4 error:(id *)a5;
-- (id)initForReadingWithData:(id)a3 defaultValues:(id)a4 requiresSecureCoding:(BOOL)a5;
+- (id)decodeObjectForKey:(id)key;
+- (id)decodeObjectOfClasses:(id)classes forKey:(id)key;
+- (id)decodeTopLevelObjectOfClasses:(id)classes forKey:(id)key error:(id *)error;
+- (id)initForReadingWithData:(id)data defaultValues:(id)values requiresSecureCoding:(BOOL)coding;
 - (void)dealloc;
 @end
 
 @implementation UIStateRestorationKeyedUnarchiver
 
-- (id)initForReadingWithData:(id)a3 defaultValues:(id)a4 requiresSecureCoding:(BOOL)a5
+- (id)initForReadingWithData:(id)data defaultValues:(id)values requiresSecureCoding:(BOOL)coding
 {
-  v5 = a5;
+  codingCopy = coding;
   v10.receiver = self;
   v10.super_class = UIStateRestorationKeyedUnarchiver;
-  v7 = [(UIStateRestorationKeyedUnarchiver *)&v10 initForReadingFromData:a3 error:0];
+  v7 = [(UIStateRestorationKeyedUnarchiver *)&v10 initForReadingFromData:data error:0];
   v8 = v7;
   if (v7)
   {
     [v7 setDecodingFailurePolicy:0];
-    [v8 setRequiresSecureCoding:v5];
-    v8[18] = a4;
+    [v8 setRequiresSecureCoding:codingCopy];
+    v8[18] = values;
   }
 
   return v8;
@@ -32,54 +32,54 @@
   [(UIStateRestorationKeyedUnarchiver *)&v3 dealloc];
 }
 
-- (id)decodeObjectForKey:(id)a3
+- (id)decodeObjectForKey:(id)key
 {
   if ([(UIStateRestorationKeyedUnarchiver *)self requiresSecureCoding])
   {
-    v8 = self;
-    v5 = &v8;
+    selfCopy = self;
+    v5 = &selfCopy;
   }
 
   else
   {
-    result = [(NSDictionary *)self->_defaultValues objectForKey:a3];
+    result = [(NSDictionary *)self->_defaultValues objectForKey:key];
     if (result)
     {
       return result;
     }
 
-    v7 = self;
-    v5 = &v7;
+    selfCopy2 = self;
+    v5 = &selfCopy2;
   }
 
   v5[1] = UIStateRestorationKeyedUnarchiver;
-  return objc_msgSendSuper2(v5, sel_decodeObjectForKey_, a3, v7);
+  return objc_msgSendSuper2(v5, sel_decodeObjectForKey_, key, selfCopy2);
 }
 
-- (id)decodeObjectOfClasses:(id)a3 forKey:(id)a4
+- (id)decodeObjectOfClasses:(id)classes forKey:(id)key
 {
   if (([(UIStateRestorationKeyedUnarchiver *)self requiresSecureCoding]& 1) != 0)
   {
-    v7 = [(NSDictionary *)self->_defaultValues objectForKey:a4];
+    v7 = [(NSDictionary *)self->_defaultValues objectForKey:key];
     if (v7)
     {
       v8 = v7;
-      v9 = [(UIStateRestorationKeyedUnarchiver *)self decodingFailurePolicy];
+      decodingFailurePolicy = [(UIStateRestorationKeyedUnarchiver *)self decodingFailurePolicy];
 
-      return verifyDecodedObject(v8, a4, a3, v9);
+      return verifyDecodedObject(v8, key, classes, decodingFailurePolicy);
     }
 
     else
     {
       if (_UIStateRestorationDebugLogEnabled())
       {
-        NSLog(&cfstr_SDecodingObjec.isa, "[UIStateRestorationKeyedUnarchiver decodeObjectOfClasses:forKey:]", a4, a3);
+        NSLog(&cfstr_SDecodingObjec.isa, "[UIStateRestorationKeyedUnarchiver decodeObjectOfClasses:forKey:]", key, classes);
       }
 
-      v11 = decodeSomeKindOfObject(a3, a4, sel_decodeObjectOfClasses_forKey_, self);
+      v11 = decodeSomeKindOfObject(classes, key, sel_decodeObjectOfClasses_forKey_, self);
       if (_UIStateRestorationDebugLogEnabled())
       {
-        NSLog(&cfstr_SDecodedObject.isa, "[UIStateRestorationKeyedUnarchiver decodeObjectOfClasses:forKey:]", a4, v11);
+        NSLog(&cfstr_SDecodedObject.isa, "[UIStateRestorationKeyedUnarchiver decodeObjectOfClasses:forKey:]", key, v11);
       }
 
       return v11;
@@ -89,23 +89,23 @@
   else
   {
 
-    return [(UIStateRestorationKeyedUnarchiver *)self decodeObjectForKey:a4];
+    return [(UIStateRestorationKeyedUnarchiver *)self decodeObjectForKey:key];
   }
 }
 
-- (id)decodeTopLevelObjectOfClasses:(id)a3 forKey:(id)a4 error:(id *)a5
+- (id)decodeTopLevelObjectOfClasses:(id)classes forKey:(id)key error:(id *)error
 {
   if ([(UIStateRestorationKeyedUnarchiver *)self requiresSecureCoding])
   {
 
-    return decodeSomeKindOfObject(a3, a4, sel_decodeTopLevelObjectOfClasses_forKey_error_, self);
+    return decodeSomeKindOfObject(classes, key, sel_decodeTopLevelObjectOfClasses_forKey_error_, self);
   }
 
   else
   {
     v10.receiver = self;
     v10.super_class = UIStateRestorationKeyedUnarchiver;
-    return [(UIStateRestorationKeyedUnarchiver *)&v10 decodeTopLevelObjectOfClasses:a3 forKey:a4 error:a5];
+    return [(UIStateRestorationKeyedUnarchiver *)&v10 decodeTopLevelObjectOfClasses:classes forKey:key error:error];
   }
 }
 

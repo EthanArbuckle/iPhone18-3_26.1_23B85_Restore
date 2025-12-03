@@ -1,26 +1,26 @@
 @interface HeadphoneImageBatteryViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (void)updateWithBattery:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (void)updateWithBattery:(id)battery;
 @end
 
 @implementation HeadphoneImageBatteryViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SharingViewService.HeadphoneImageBatteryView"];
-  [v3 validateClass:@"SharingViewService.HeadphoneImageBatteryView" hasSwiftField:@"batteryView" withSwiftType:"LabelledBatteryView"];
-  [v3 validateClass:@"SharingViewService.HeadphoneImageBatteryView" hasSwiftField:@"imageViews" withSwiftType:"Array<SFAdjustedImageView>"];
-  [v3 validateClass:@"SharingViewService.HeadphoneImageBatteryView" hasInstanceMethod:@"updateWithBattery:" withFullSignature:{"v", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SharingViewService.HeadphoneImageBatteryView"];
+  [validationsCopy validateClass:@"SharingViewService.HeadphoneImageBatteryView" hasSwiftField:@"batteryView" withSwiftType:"LabelledBatteryView"];
+  [validationsCopy validateClass:@"SharingViewService.HeadphoneImageBatteryView" hasSwiftField:@"imageViews" withSwiftType:"Array<SFAdjustedImageView>"];
+  [validationsCopy validateClass:@"SharingViewService.HeadphoneImageBatteryView" hasInstanceMethod:@"updateWithBattery:" withFullSignature:{"v", "@", 0}];
 }
 
-- (void)updateWithBattery:(id)a3
+- (void)updateWithBattery:(id)battery
 {
-  v4 = a3;
+  batteryCopy = battery;
   v11.receiver = self;
   v11.super_class = HeadphoneImageBatteryViewAccessibility;
-  [(HeadphoneImageBatteryViewAccessibility *)&v11 updateWithBattery:v4];
-  v5 = [v4 safeIntegerForKey:@"batteryType"];
+  [(HeadphoneImageBatteryViewAccessibility *)&v11 updateWithBattery:batteryCopy];
+  v5 = [batteryCopy safeIntegerForKey:@"batteryType"];
   objc_opt_class();
   v6 = [(HeadphoneImageBatteryViewAccessibility *)self safeSwiftValueForKey:@"batteryView"];
   v7 = __UIAccessibilityCastAsSafeCategory();

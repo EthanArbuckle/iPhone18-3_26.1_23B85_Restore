@@ -1,20 +1,20 @@
 @interface CLNotifierClientAdapter
-+ (void)becameFatallyBlocked:(id)a3 index:(unint64_t)a4;
++ (void)becameFatallyBlocked:(id)blocked index:(unint64_t)index;
 - (CLNotifierClientAdapter)init;
-- (CLNotifierClientAdapter)initWithClient:(CLNotifierClientBase *)a3;
+- (CLNotifierClientAdapter)initWithClient:(CLNotifierClientBase *)client;
 - (NSString)debugDescription;
-- (void)onNotification:(int)a3 withData:(id)a4;
+- (void)onNotification:(int)notification withData:(id)data;
 @end
 
 @implementation CLNotifierClientAdapter
 
-+ (void)becameFatallyBlocked:(id)a3 index:(unint64_t)a4
++ (void)becameFatallyBlocked:(id)blocked index:(unint64_t)index
 {
-  v5 = a4 + 1;
-  if (a4 + 1 < objc_msgSend_count(a3, a2, a3))
+  v5 = index + 1;
+  if (index + 1 < objc_msgSend_count(blocked, a2, blocked))
   {
-    v7 = objc_msgSend_objectAtIndexedSubscript_(a3, v6, v5);
-    objc_msgSend_becameFatallyBlocked_index_(v7, v8, a3, v5);
+    v7 = objc_msgSend_objectAtIndexedSubscript_(blocked, v6, v5);
+    objc_msgSend_becameFatallyBlocked_index_(v7, v8, blocked, v5);
   }
 }
 
@@ -84,7 +84,7 @@ LABEL_11:
   }
 }
 
-- (CLNotifierClientAdapter)initWithClient:(CLNotifierClientBase *)a3
+- (CLNotifierClientAdapter)initWithClient:(CLNotifierClientBase *)client
 {
   v8.receiver = self;
   v8.super_class = CLNotifierClientAdapter;
@@ -92,14 +92,14 @@ LABEL_11:
   v6 = v4;
   if (v4)
   {
-    v4->_client = a3;
+    v4->_client = client;
   }
 
   objc_msgSend_setValid_(v4, v5, 1);
   return v6;
 }
 
-- (void)onNotification:(int)a3 withData:(id)a4
+- (void)onNotification:(int)notification withData:(id)data
 {
   v18 = *MEMORY[0x1E69E9840];
   client = self->_client;

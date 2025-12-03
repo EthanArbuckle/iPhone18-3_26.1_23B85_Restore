@@ -1,5 +1,5 @@
 @interface DeviationDescriptionView
-- (_TtC24MenstrualCyclesAppPlugin24DeviationDescriptionView)initWithFrame:(CGRect)a3;
+- (_TtC24MenstrualCyclesAppPlugin24DeviationDescriptionView)initWithFrame:(CGRect)frame;
 - (void)respondToContentSizeChanges;
 - (void)updateConstraints;
 @end
@@ -8,18 +8,18 @@
 
 - (void)respondToContentSizeChanges
 {
-  v2 = self;
+  selfCopy = self;
   sub_29E261210();
   sub_29E261728();
 }
 
 - (void)updateConstraints
 {
-  v2 = self;
+  selfCopy = self;
   sub_29E261728();
 }
 
-- (_TtC24MenstrualCyclesAppPlugin24DeviationDescriptionView)initWithFrame:(CGRect)a3
+- (_TtC24MenstrualCyclesAppPlugin24DeviationDescriptionView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

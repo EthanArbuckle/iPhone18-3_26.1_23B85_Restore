@@ -1,7 +1,7 @@
 @interface RTLearnedPlaceMO
 + (id)fetchRequest;
 + (id)fetchRequestSortedByCreation;
-+ (id)managedObjectWithPlace:(id)a3 managedObject:(id)a4 inManagedObjectContext:(id)a5;
++ (id)managedObjectWithPlace:(id)place managedObject:(id)object inManagedObjectContext:(id)context;
 - (void)didSave;
 @end
 
@@ -10,13 +10,13 @@
 + (id)fetchRequestSortedByCreation
 {
   v6[1] = *MEMORY[0x277D85DE8];
-  v2 = [a1 fetchRequest];
+  fetchRequest = [self fetchRequest];
   v3 = [objc_alloc(MEMORY[0x277CCAC98]) initWithKey:@"creationDate" ascending:1];
   v6[0] = v3;
   v4 = [MEMORY[0x277CBEA60] arrayWithObjects:v6 count:1];
-  [v2 setSortDescriptors:v4];
+  [fetchRequest setSortDescriptors:v4];
 
-  return v2;
+  return fetchRequest;
 }
 
 + (id)fetchRequest
@@ -26,15 +26,15 @@
   return v2;
 }
 
-+ (id)managedObjectWithPlace:(id)a3 managedObject:(id)a4 inManagedObjectContext:(id)a5
++ (id)managedObjectWithPlace:(id)place managedObject:(id)object inManagedObjectContext:(id)context
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (!v7)
+  placeCopy = place;
+  objectCopy = object;
+  contextCopy = context;
+  if (!placeCopy)
   {
-    v13 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-    if (!os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+    managedObjectContext2 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
+    if (!os_log_type_enabled(managedObjectContext2, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_16;
     }
@@ -42,16 +42,16 @@
     *buf = 0;
     v15 = "Invalid parameter not satisfying: place";
 LABEL_15:
-    _os_log_error_impl(&dword_2304B3000, v13, OS_LOG_TYPE_ERROR, v15, buf, 2u);
+    _os_log_error_impl(&dword_2304B3000, managedObjectContext2, OS_LOG_TYPE_ERROR, v15, buf, 2u);
     goto LABEL_16;
   }
 
-  v10 = [v7 mapItem];
+  mapItem = [placeCopy mapItem];
 
-  if (!v10)
+  if (!mapItem)
   {
-    v13 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-    if (!os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+    managedObjectContext2 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
+    if (!os_log_type_enabled(managedObjectContext2, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_16;
     }
@@ -61,10 +61,10 @@ LABEL_15:
     goto LABEL_15;
   }
 
-  if (!v9)
+  if (!contextCopy)
   {
-    v13 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-    if (!os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+    managedObjectContext2 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
+    if (!os_log_type_enabled(managedObjectContext2, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_16;
     }
@@ -74,7 +74,7 @@ LABEL_15:
     goto LABEL_15;
   }
 
-  v11 = [v8 managedObjectContext];
+  managedObjectContext = [objectCopy managedObjectContext];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -92,9 +92,9 @@ LABEL_8:
     v17[2] = __80__RTLearnedPlaceMO_managedObjectWithPlace_managedObject_inManagedObjectContext___block_invoke;
     v17[3] = &unk_2788C5DA0;
     v21 = buf;
-    v18 = v8;
-    v19 = v9;
-    v20 = v7;
+    v18 = objectCopy;
+    v19 = contextCopy;
+    v20 = placeCopy;
     [v19 performBlockAndWait:v17];
     v14 = *(v23 + 5);
 
@@ -102,8 +102,8 @@ LABEL_8:
     goto LABEL_17;
   }
 
-  v13 = [v8 managedObjectContext];
-  if ((-[NSObject allowTombstones](v13, "allowTombstones") & 1) != 0 || ([v8 flags] & 1) == 0)
+  managedObjectContext2 = [objectCopy managedObjectContext];
+  if ((-[NSObject allowTombstones](managedObjectContext2, "allowTombstones") & 1) != 0 || ([objectCopy flags] & 1) == 0)
   {
 
     goto LABEL_8;
@@ -169,16 +169,16 @@ void __80__RTLearnedPlaceMO_managedObjectWithPlace_managedObject_inManagedObject
 - (void)didSave
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = [(RTLearnedPlaceMO *)self managedObjectContext];
+  managedObjectContext = [(RTLearnedPlaceMO *)self managedObjectContext];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v6 = [(RTLearnedPlaceMO *)self managedObjectContext];
-    v7 = [v6 options];
+    managedObjectContext2 = [(RTLearnedPlaceMO *)self managedObjectContext];
+    options = [managedObjectContext2 options];
 
-    v8 = v7 & 1;
+    v8 = options & 1;
   }
 
   else
@@ -186,40 +186,40 @@ void __80__RTLearnedPlaceMO_managedObjectWithPlace_managedObject_inManagedObject
     v8 = 0;
   }
 
-  v9 = [(RTLearnedPlaceMO *)self managedObjectContext];
-  v10 = [v9 transactionAuthor];
-  if ([v10 hasPrefix:@"NSCloudKitMirroringDelegate"])
+  managedObjectContext3 = [(RTLearnedPlaceMO *)self managedObjectContext];
+  transactionAuthor = [managedObjectContext3 transactionAuthor];
+  if ([transactionAuthor hasPrefix:@"NSCloudKitMirroringDelegate"])
   {
     goto LABEL_7;
   }
 
-  v11 = [(RTLearnedPlaceMO *)self managedObjectContext];
-  v12 = [v11 transactionAuthor];
-  if (([v12 hasPrefix:@"RTPersistenceStoreImporter"] | v8))
+  managedObjectContext4 = [(RTLearnedPlaceMO *)self managedObjectContext];
+  transactionAuthor2 = [managedObjectContext4 transactionAuthor];
+  if (([transactionAuthor2 hasPrefix:@"RTPersistenceStoreImporter"] | v8))
   {
 
 LABEL_7:
     goto LABEL_8;
   }
 
-  v13 = [(RTLearnedPlaceMO *)self mapItem];
+  mapItem = [(RTLearnedPlaceMO *)self mapItem];
 
-  if (v13)
+  if (mapItem)
   {
     goto LABEL_9;
   }
 
   v14 = MEMORY[0x277CCACA8];
-  v15 = [(RTCloudManagedObject *)self identifier];
-  v16 = [(RTLearnedPlaceMO *)self managedObjectContext];
-  v17 = [v16 transactionAuthor];
-  v9 = [v14 stringWithFormat:@"map item is nil for place with identifier, %@, transactionAuthor, %@", v15, v17];
+  identifier = [(RTCloudManagedObject *)self identifier];
+  managedObjectContext5 = [(RTLearnedPlaceMO *)self managedObjectContext];
+  transactionAuthor3 = [managedObjectContext5 transactionAuthor];
+  managedObjectContext3 = [v14 stringWithFormat:@"map item is nil for place with identifier, %@, transactionAuthor, %@", identifier, transactionAuthor3];
 
   v18 = _rt_log_facility_get_os_log(RTLogFacilityLearnedLocation);
   if (os_log_type_enabled(v18, OS_LOG_TYPE_FAULT))
   {
     *buf = 138412290;
-    v32 = v9;
+    v32 = managedObjectContext3;
     _os_log_fault_impl(&dword_2304B3000, v18, OS_LOG_TYPE_FAULT, "%@", buf, 0xCu);
   }
 
@@ -230,11 +230,11 @@ LABEL_7:
   v23 = [v19 stringWithFormat:@"%@.%@.detectedNilMapItem", v21, v22];
 
   v24 = [MEMORY[0x277CCACA8] stringWithFormat:@"This device detected an unexpected state in the learned location graph of CoreRoutine. Please file a radar to help diagnose the issue."];
-  v25 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ - %@", v23, v9];
+  v25 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ - %@", v23, managedObjectContext3];
   v26 = MEMORY[0x277CCACA8];
-  v27 = [MEMORY[0x277CBEAA8] date];
-  v28 = [v27 stringFromDate];
-  v29 = [v26 stringWithFormat:@"issue detected at %@", v28];
+  date = [MEMORY[0x277CBEAA8] date];
+  stringFromDate = [date stringFromDate];
+  v29 = [v26 stringWithFormat:@"issue detected at %@", stringFromDate];
 
   [RTRadarUtilities promptUserToCreateRadarForAssertionIdentifier:v23 alertMessage:v24 radarTitle:v25 radarDescription:v29 handler:0];
 LABEL_8:

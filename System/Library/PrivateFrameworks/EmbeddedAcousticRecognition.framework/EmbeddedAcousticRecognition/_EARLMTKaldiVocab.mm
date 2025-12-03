@@ -1,15 +1,15 @@
 @interface _EARLMTKaldiVocab
 + (void)initialize;
-- (_EARLMTKaldiVocab)initWithContentsOfUrl:(id)a3 outError:(id *)a4;
+- (_EARLMTKaldiVocab)initWithContentsOfUrl:(id)url outError:(id *)error;
 - (id).cxx_construct;
-- (unint64_t)indexForWord:(id)a3;
+- (unint64_t)indexForWord:(id)word;
 @end
 
 @implementation _EARLMTKaldiVocab
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = os_log_create("com.apple.speech.languagemodeltraining", "_EARLMTKaldiVocab");
     v3 = sLog;
@@ -17,10 +17,10 @@
   }
 }
 
-- (_EARLMTKaldiVocab)initWithContentsOfUrl:(id)a3 outError:(id *)a4
+- (_EARLMTKaldiVocab)initWithContentsOfUrl:(id)url outError:(id *)error
 {
   v72[1] = *MEMORY[0x1E69E9840];
-  v29 = a3;
+  urlCopy = url;
   v67.receiver = self;
   v67.super_class = _EARLMTKaldiVocab;
   v6 = [(_EARLMTKaldiVocab *)&v67 init];
@@ -29,15 +29,15 @@
     goto LABEL_21;
   }
 
-  v7 = [MEMORY[0x1E696AEC0] stringWithContentsOfURL:v29 encoding:4 error:a4];
+  v7 = [MEMORY[0x1E696AEC0] stringWithContentsOfURL:urlCopy encoding:4 error:error];
   if (!v7)
   {
     goto LABEL_20;
   }
 
   v27 = v7;
-  v8 = [MEMORY[0x1E696AB08] newlineCharacterSet];
-  v28 = [v7 componentsSeparatedByCharactersInSet:v8];
+  newlineCharacterSet = [MEMORY[0x1E696AB08] newlineCharacterSet];
+  v28 = [v7 componentsSeparatedByCharactersInSet:newlineCharacterSet];
 
   v61 = 0;
   v62 = &v61;
@@ -98,8 +98,8 @@
   {
     v18 = MEMORY[0x1E696ABC0];
     v69 = *v12;
-    v19 = [MEMORY[0x1E696AEC0] stringWithFormat:@"One of <UnknownWord>, <BeginOfSentenceWord> or <EndOfSentenceWord> symbols are missing from file:%@", v29];
-    v70 = v19;
+    urlCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"One of <UnknownWord>, <BeginOfSentenceWord> or <EndOfSentenceWord> symbols are missing from file:%@", urlCopy];
+    v70 = urlCopy;
     v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v70 forKeys:&v69 count:1];
     v21 = [v18 errorWithDomain:@"com.apple.siri.languagemodeltraining" code:151 userInfo:v20];
     v22 = v44[5];
@@ -109,10 +109,10 @@
   v23 = v44[5];
   if (v23)
   {
-    if (a4)
+    if (error)
     {
       v24 = v23;
-      *a4 = v23;
+      *error = v23;
     }
   }
 
@@ -167,10 +167,10 @@ LABEL_21:
   return v25;
 }
 
-- (unint64_t)indexForWord:(id)a3
+- (unint64_t)indexForWord:(id)word
 {
-  v4 = a3;
-  std::string::basic_string[abi:ne200100]<0>(__p, [v4 UTF8String]);
+  wordCopy = word;
+  std::string::basic_string[abi:ne200100]<0>(__p, [wordCopy UTF8String]);
   if (std::__hash_table<std::__hash_value_type<std::string,std::variant<kaldi::quasar::ShortlistDataInManyFiles::NotLoadedShortListDataOnDisk,std::shared_ptr<kaldi::quasar::ShortlistDataOnDisk>>>,std::__unordered_map_hasher<std::string,std::__hash_value_type<std::string,std::variant<kaldi::quasar::ShortlistDataInManyFiles::NotLoadedShortListDataOnDisk,std::shared_ptr<kaldi::quasar::ShortlistDataOnDisk>>>,std::hash<std::string>,std::equal_to<std::string>,true>,std::__unordered_map_equal<std::string,std::__hash_value_type<std::string,std::variant<kaldi::quasar::ShortlistDataInManyFiles::NotLoadedShortListDataOnDisk,std::shared_ptr<kaldi::quasar::ShortlistDataOnDisk>>>,std::equal_to<std::string>,std::hash<std::string>,true>,std::allocator<std::__hash_value_type<std::string,std::variant<kaldi::quasar::ShortlistDataInManyFiles::NotLoadedShortListDataOnDisk,std::shared_ptr<kaldi::quasar::ShortlistDataOnDisk>>>>>::find<std::string>(&self->_w2i.__table_.__bucket_list_.__ptr_, __p))
   {
     v10 = __p;

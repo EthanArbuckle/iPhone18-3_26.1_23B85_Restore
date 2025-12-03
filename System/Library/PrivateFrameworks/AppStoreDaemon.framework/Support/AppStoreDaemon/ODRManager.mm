@@ -1,9 +1,9 @@
 @interface ODRManager
 + (void)initialize;
 - (ODRManager)init;
-- (id)allPurgeablesForVolume:(id)a3 reason:(id)a4 client:(id)a5;
-- (int64_t)purgeForVolume:(id)a3 urgency:(int64_t)a4 desiredPurge:(id)a5 client:(id)a6;
-- (int64_t)purgeableForVolume:(id)a3 urgency:(int64_t)a4 client:(id)a5;
+- (id)allPurgeablesForVolume:(id)volume reason:(id)reason client:(id)client;
+- (int64_t)purgeForVolume:(id)volume urgency:(int64_t)urgency desiredPurge:(id)purge client:(id)client;
+- (int64_t)purgeableForVolume:(id)volume urgency:(int64_t)urgency client:(id)client;
 - (void)cancelPurge;
 @end
 
@@ -11,7 +11,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = +[NSUserDefaults standardUserDefaults];
     [v2 registerDefaults:&off_100549778];
@@ -22,7 +22,7 @@
 
 - (ODRManager)init
 {
-  v2 = self;
+  selfCopy = self;
   if (qword_1005AA828)
   {
     v3 = qword_1005AA828;
@@ -60,7 +60,7 @@
     }
 
     v3 = v4;
-    v2 = v3;
+    selfCopy = v3;
   }
 
   v14 = v3;
@@ -68,7 +68,7 @@
   return v14;
 }
 
-- (id)allPurgeablesForVolume:(id)a3 reason:(id)a4 client:(id)a5
+- (id)allPurgeablesForVolume:(id)volume reason:(id)reason client:(id)client
 {
   v5 = sub_1001C13C8();
   sub_1001C14D8(v5);
@@ -102,28 +102,28 @@
   return v18;
 }
 
-- (int64_t)purgeableForVolume:(id)a3 urgency:(int64_t)a4 client:(id)a5
+- (int64_t)purgeableForVolume:(id)volume urgency:(int64_t)urgency client:(id)client
 {
-  v5 = a4;
+  urgencyCopy = urgency;
   v6 = sub_1001C13C8();
   sub_1001C14D8(v6);
 
   v7 = sub_100220330();
-  v8 = sub_100221A8C(v7, v5);
+  v8 = sub_100221A8C(v7, urgencyCopy);
 
   return v8;
 }
 
-- (int64_t)purgeForVolume:(id)a3 urgency:(int64_t)a4 desiredPurge:(id)a5 client:(id)a6
+- (int64_t)purgeForVolume:(id)volume urgency:(int64_t)urgency desiredPurge:(id)purge client:(id)client
 {
-  v6 = a4;
-  v7 = a5;
+  urgencyCopy = urgency;
+  purgeCopy = purge;
   v8 = sub_1001C13C8();
   sub_1001C14D8(v8);
 
-  v9 = [v7 unsignedLongLongValue];
+  unsignedLongLongValue = [purgeCopy unsignedLongLongValue];
   v10 = sub_100220330();
-  v11 = sub_100221C68(v10, v9, v6);
+  v11 = sub_100221C68(v10, unsignedLongLongValue, urgencyCopy);
 
   return v11;
 }

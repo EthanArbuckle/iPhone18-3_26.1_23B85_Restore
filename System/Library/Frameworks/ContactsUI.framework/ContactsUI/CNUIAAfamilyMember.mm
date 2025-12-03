@@ -1,71 +1,71 @@
 @interface CNUIAAfamilyMember
-+ (id)cnuiFamilyMemberWithAAFamilyMember:(id)a3;
-- (CNUIAAfamilyMember)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
++ (id)cnuiFamilyMemberWithAAFamilyMember:(id)member;
+- (CNUIAAfamilyMember)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CNUIAAfamilyMember
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v9 = a3;
-  if (([v9 allowsKeyedCoding] & 1) == 0)
+  coderCopy = coder;
+  if (([coderCopy allowsKeyedCoding] & 1) == 0)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"CNUIAAfamilyMember.m" lineNumber:56 description:@"Keyed coder expected"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"CNUIAAfamilyMember.m" lineNumber:56 description:@"Keyed coder expected"];
   }
 
-  v5 = [(CNUIAAfamilyMember *)self firstName];
-  [v9 encodeObject:v5 forKey:@"firstName"];
+  firstName = [(CNUIAAfamilyMember *)self firstName];
+  [coderCopy encodeObject:firstName forKey:@"firstName"];
 
-  v6 = [(CNUIAAfamilyMember *)self lastName];
-  [v9 encodeObject:v6 forKey:@"lastName"];
+  lastName = [(CNUIAAfamilyMember *)self lastName];
+  [coderCopy encodeObject:lastName forKey:@"lastName"];
 
-  v7 = [(CNUIAAfamilyMember *)self appleID];
-  [v9 encodeObject:v7 forKey:@"appleID"];
+  appleID = [(CNUIAAfamilyMember *)self appleID];
+  [coderCopy encodeObject:appleID forKey:@"appleID"];
 
-  [v9 encodeBool:-[CNUIAAfamilyMember isMe](self forKey:{"isMe"), @"isMe"}];
+  [coderCopy encodeBool:-[CNUIAAfamilyMember isMe](self forKey:{"isMe"), @"isMe"}];
 }
 
-- (CNUIAAfamilyMember)initWithCoder:(id)a3
+- (CNUIAAfamilyMember)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = CNUIAAfamilyMember;
   v5 = [(CNUIAAfamilyMember *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"firstName"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"firstName"];
     [(CNUIAAfamilyMember *)v5 setFirstName:v6];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lastName"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lastName"];
     [(CNUIAAfamilyMember *)v5 setLastName:v7];
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"appleID"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"appleID"];
     [(CNUIAAfamilyMember *)v5 setAppleID:v8];
 
-    -[CNUIAAfamilyMember setIsMe:](v5, "setIsMe:", [v4 decodeBoolForKey:@"isMe"]);
+    -[CNUIAAfamilyMember setIsMe:](v5, "setIsMe:", [coderCopy decodeBoolForKey:@"isMe"]);
     v9 = v5;
   }
 
   return v5;
 }
 
-+ (id)cnuiFamilyMemberWithAAFamilyMember:(id)a3
++ (id)cnuiFamilyMemberWithAAFamilyMember:(id)member
 {
-  v3 = a3;
+  memberCopy = member;
   v4 = objc_alloc_init(CNUIAAfamilyMember);
-  v5 = [v3 firstName];
-  [(CNUIAAfamilyMember *)v4 setFirstName:v5];
+  firstName = [memberCopy firstName];
+  [(CNUIAAfamilyMember *)v4 setFirstName:firstName];
 
-  v6 = [v3 lastName];
-  [(CNUIAAfamilyMember *)v4 setLastName:v6];
+  lastName = [memberCopy lastName];
+  [(CNUIAAfamilyMember *)v4 setLastName:lastName];
 
-  v7 = [v3 appleID];
-  [(CNUIAAfamilyMember *)v4 setAppleID:v7];
+  appleID = [memberCopy appleID];
+  [(CNUIAAfamilyMember *)v4 setAppleID:appleID];
 
-  v8 = [v3 isMe];
-  [(CNUIAAfamilyMember *)v4 setIsMe:v8];
+  isMe = [memberCopy isMe];
+  [(CNUIAAfamilyMember *)v4 setIsMe:isMe];
 
   return v4;
 }

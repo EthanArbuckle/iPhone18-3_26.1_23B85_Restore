@@ -1,12 +1,12 @@
 @interface _PIPosterLayoutJob
-- (BOOL)complete:(id *)a3;
-- (BOOL)prepare:(id *)a3;
-- (BOOL)render:(id *)a3;
-- (_PIPosterLayoutJob)initWithPosterLayoutRequest:(id)a3;
-- (_PIPosterLayoutJob)initWithRequest:(id)a3;
-- (float)_headroomPenaltyForIntermediateLayout:(id)a3 originalFullExtent:(CGRect)a4 layoutConfiguration:(id)a5;
-- (id)_layoutFromIntermediateLayouts:(id)a3 layoutConfiguration:(id)a4 fullExtent:(CGRect)a5;
-- (id)generateOrientedLayoutsForFullExtent:(CGRect)a3 layoutConfiguration:(id)a4 layoutRegions:(id)a5 segmentationMatteImage:(id)a6 segmentationClassification:(unint64_t)a7 error:(id *)a8;
+- (BOOL)complete:(id *)complete;
+- (BOOL)prepare:(id *)prepare;
+- (BOOL)render:(id *)render;
+- (_PIPosterLayoutJob)initWithPosterLayoutRequest:(id)request;
+- (_PIPosterLayoutJob)initWithRequest:(id)request;
+- (float)_headroomPenaltyForIntermediateLayout:(id)layout originalFullExtent:(CGRect)extent layoutConfiguration:(id)configuration;
+- (id)_layoutFromIntermediateLayouts:(id)layouts layoutConfiguration:(id)configuration fullExtent:(CGRect)extent;
+- (id)generateOrientedLayoutsForFullExtent:(CGRect)extent layoutConfiguration:(id)configuration layoutRegions:(id)regions segmentationMatteImage:(id)image segmentationClassification:(unint64_t)classification error:(id *)error;
 - (id)result;
 @end
 
@@ -16,9 +16,9 @@
 {
   v57[21] = *MEMORY[0x1E69E9840];
   v3 = objc_alloc_init(_PIPosterLayoutResult);
-  v4 = [(_PIPosterLayoutJob *)self layout];
+  layout = [(_PIPosterLayoutJob *)self layout];
   v53 = v3;
-  [(_PIPosterLayoutResult *)v3 setLayout:v4];
+  [(_PIPosterLayoutResult *)v3 setLayout:layout];
 
   v48 = objc_alloc(MEMORY[0x1E695DF90]);
   v56[0] = *MEMORY[0x1E69C0D60];
@@ -117,10 +117,10 @@
   v26 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v57 forKeys:v56 count:21];
   v27 = [v48 initWithDictionary:v26];
 
-  v28 = [(_PIPosterLayoutJob *)self layout];
-  v29 = [v28 landscapeLayout];
+  layout2 = [(_PIPosterLayoutJob *)self layout];
+  landscapeLayout = [layout2 landscapeLayout];
 
-  if (v29)
+  if (landscapeLayout)
   {
     v54[0] = *MEMORY[0x1E69C0CC0];
     v30 = MEMORY[0x1E696AD98];
@@ -144,11 +144,11 @@
   return v53;
 }
 
-- (BOOL)complete:(id *)a3
+- (BOOL)complete:(id *)complete
 {
   v42 = *MEMORY[0x1E69E9840];
-  v4 = [(_PIPosterLayoutJob *)self layoutRegions];
-  if (!v4)
+  layoutRegions = [(_PIPosterLayoutJob *)self layoutRegions];
+  if (!layoutRegions)
   {
     v25 = NUAssertLogger_14911();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -170,8 +170,8 @@
         v33 = dispatch_get_specific(*v27);
         v34 = MEMORY[0x1E696AF00];
         v35 = v33;
-        v36 = [v34 callStackSymbols];
-        v37 = [v36 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v34 callStackSymbols];
+        v37 = [callStackSymbols componentsJoinedByString:@"\n"];
         v38 = 138543618;
         v39 = v33;
         v40 = 2114;
@@ -182,8 +182,8 @@
 
     else if (v30)
     {
-      v31 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v32 = [v31 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v32 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       v38 = 138543362;
       v39 = v32;
       _os_log_error_impl(&dword_1C7694000, v29, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", &v38, 0xCu);
@@ -192,26 +192,26 @@
     _NUAssertFailHandler();
   }
 
-  v5 = v4;
+  v5 = layoutRegions;
   if ([(_PIPosterLayoutJob *)self segmentationClassification]== 1)
   {
-    v6 = [v5 faceRegions];
+    faceRegions = [v5 faceRegions];
   }
 
   else
   {
-    v7 = [(_PIPosterLayoutJob *)self segmentationClassification];
+    segmentationClassification = [(_PIPosterLayoutJob *)self segmentationClassification];
     v8 = 0.0;
-    if (v7 != 2)
+    if (segmentationClassification != 2)
     {
       goto LABEL_8;
     }
 
-    v6 = [v5 petRegions];
+    faceRegions = [v5 petRegions];
   }
 
-  v9 = v6;
-  v10 = [v6 count];
+  v9 = faceRegions;
+  v10 = [faceRegions count];
 
   v8 = 0.0;
   if (v10 == 1)
@@ -221,9 +221,9 @@
 
 LABEL_8:
   [(_PIPosterLayoutJob *)self setParallaxScore:v8];
-  v11 = [(_PIPosterLayoutJob *)self layoutRegions];
-  v12 = [v11 faceRegions];
-  v13 = [v12 count] / 10.0;
+  layoutRegions2 = [(_PIPosterLayoutJob *)self layoutRegions];
+  faceRegions2 = [layoutRegions2 faceRegions];
+  v13 = [faceRegions2 count] / 10.0;
 
   if (v13 <= 1.0)
   {
@@ -236,14 +236,14 @@ LABEL_8:
   }
 
   [(_PIPosterLayoutJob *)self setNFaces:v14];
-  v15 = [(_PIPosterLayoutJob *)self layout];
-  v16 = [v15 portraitLayout];
-  [v16 visibleFrame];
+  layout = [(_PIPosterLayoutJob *)self layout];
+  portraitLayout = [layout portraitLayout];
+  [portraitLayout visibleFrame];
   v18 = v17;
 
-  v19 = [(_PIPosterLayoutJob *)self layoutConfiguration];
-  v20 = [v19 portraitConfiguration];
-  [v20 screenSize];
+  layoutConfiguration = [(_PIPosterLayoutJob *)self layoutConfiguration];
+  portraitConfiguration = [layoutConfiguration portraitConfiguration];
+  [portraitConfiguration screenSize];
   v22 = v21;
 
   *&v23 = fminf(v18 / v22, 1.0);
@@ -252,11 +252,11 @@ LABEL_8:
   return 1;
 }
 
-- (BOOL)render:(id *)a3
+- (BOOL)render:(id *)render
 {
   v6 = buf;
   v282 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!render)
   {
     v208 = NUAssertLogger_14911();
     if (os_log_type_enabled(v208, OS_LOG_TYPE_ERROR))
@@ -267,7 +267,7 @@ LABEL_8:
       _os_log_error_impl(&dword_1C7694000, v208, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v11 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     specific = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v9 = NUAssertLogger_14911();
     v211 = os_log_type_enabled(v9, OS_LOG_TYPE_ERROR);
@@ -275,11 +275,11 @@ LABEL_8:
     {
       if (v211)
       {
-        v228 = dispatch_get_specific(*v11);
+        v228 = dispatch_get_specific(*callStackSymbols);
         v229 = MEMORY[0x1E696AF00];
         v3 = v228;
-        v11 = [v229 callStackSymbols];
-        v4 = [v11 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v229 callStackSymbols];
+        v4 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v277 = v228;
         v278 = 2114;
@@ -290,10 +290,10 @@ LABEL_8:
 
     else if (v211)
     {
-      v212 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v11 = [v212 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      callStackSymbols = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
-      v277 = v11;
+      v277 = callStackSymbols;
       _os_log_error_impl(&dword_1C7694000, v9, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
     }
 
@@ -302,9 +302,9 @@ LABEL_8:
     goto LABEL_103;
   }
 
-  v5 = a3;
-  v8 = [(_PIPosterLayoutJob *)self layoutConfiguration];
-  if (!v8)
+  renderCopy = render;
+  layoutConfiguration = [(_PIPosterLayoutJob *)self layoutConfiguration];
+  if (!layoutConfiguration)
   {
     v213 = NUAssertLogger_14911();
     if (os_log_type_enabled(v213, OS_LOG_TYPE_ERROR))
@@ -315,7 +315,7 @@ LABEL_8:
       _os_log_error_impl(&dword_1C7694000, v213, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v11 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     v215 = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v9 = NUAssertLogger_14911();
     v216 = os_log_type_enabled(v9, OS_LOG_TYPE_ERROR);
@@ -323,10 +323,10 @@ LABEL_8:
     {
       if (v216)
       {
-        v217 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v11 = [v217 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [MEMORY[0x1E696AF00] callStackSymbols];
+        callStackSymbols = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543362;
-        v277 = v11;
+        v277 = callStackSymbols;
         _os_log_error_impl(&dword_1C7694000, v9, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
       }
 
@@ -339,11 +339,11 @@ LABEL_105:
 LABEL_103:
     if (v216)
     {
-      v230 = dispatch_get_specific(*v11);
+      v230 = dispatch_get_specific(*callStackSymbols);
       v231 = MEMORY[0x1E696AF00];
       v3 = v230;
-      v11 = [v231 callStackSymbols];
-      v4 = [v11 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v231 callStackSymbols];
+      v4 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543618;
       v277 = v230;
       v278 = 2114;
@@ -354,9 +354,9 @@ LABEL_103:
     goto LABEL_105;
   }
 
-  v9 = v8;
-  v270 = [(_PIPosterLayoutJob *)self layoutRegions];
-  if (!v270)
+  v9 = layoutConfiguration;
+  layoutRegions = [(_PIPosterLayoutJob *)self layoutRegions];
+  if (!layoutRegions)
   {
     v218 = NUAssertLogger_14911();
     if (os_log_type_enabled(v218, OS_LOG_TYPE_ERROR))
@@ -367,7 +367,7 @@ LABEL_103:
       _os_log_error_impl(&dword_1C7694000, v218, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v11 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     v220 = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v9 = NUAssertLogger_14911();
     v221 = os_log_type_enabled(v9, OS_LOG_TYPE_ERROR);
@@ -375,10 +375,10 @@ LABEL_103:
     {
       if (v221)
       {
-        v222 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v11 = [v222 componentsJoinedByString:@"\n"];
+        callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+        callStackSymbols = [callStackSymbols4 componentsJoinedByString:@"\n"];
         *buf = 138543362;
-        v277 = v11;
+        v277 = callStackSymbols;
         _os_log_error_impl(&dword_1C7694000, v9, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
       }
 
@@ -391,11 +391,11 @@ LABEL_108:
 LABEL_106:
     if (v221)
     {
-      v232 = dispatch_get_specific(*v11);
+      v232 = dispatch_get_specific(*callStackSymbols);
       v233 = MEMORY[0x1E696AF00];
       v3 = v232;
-      v11 = [v233 callStackSymbols];
-      v4 = [v11 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v233 callStackSymbols];
+      v4 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543618;
       v277 = v232;
       v278 = 2114;
@@ -406,8 +406,8 @@ LABEL_106:
     goto LABEL_108;
   }
 
-  v10 = [(NURenderJob *)self outputGeometry];
-  if (!v10)
+  outputGeometry = [(NURenderJob *)self outputGeometry];
+  if (!outputGeometry)
   {
     v223 = NUAssertLogger_14911();
     v3 = &qword_1C7845000;
@@ -419,7 +419,7 @@ LABEL_106:
       _os_log_error_impl(&dword_1C7694000, v223, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v11 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     v225 = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v9 = NUAssertLogger_14911();
     v226 = os_log_type_enabled(v9, OS_LOG_TYPE_ERROR);
@@ -427,10 +427,10 @@ LABEL_106:
     {
       if (v226)
       {
-        v227 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v11 = [v227 componentsJoinedByString:@"\n"];
+        callStackSymbols5 = [MEMORY[0x1E696AF00] callStackSymbols];
+        callStackSymbols = [callStackSymbols5 componentsJoinedByString:@"\n"];
         *buf = 138543362;
-        v277 = v11;
+        v277 = callStackSymbols;
         _os_log_error_impl(&dword_1C7694000, v9, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
       }
 
@@ -443,11 +443,11 @@ LABEL_111:
 LABEL_109:
     if (v226)
     {
-      v234 = dispatch_get_specific(*v11);
+      v234 = dispatch_get_specific(*callStackSymbols);
       v235 = MEMORY[0x1E696AF00];
       v3 = v234;
-      v11 = [v235 callStackSymbols];
-      v4 = [v11 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v235 callStackSymbols];
+      v4 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543618;
       v277 = v234;
       v278 = 2114;
@@ -458,66 +458,66 @@ LABEL_109:
     goto LABEL_111;
   }
 
-  v11 = v10;
-  [v10 extent];
+  callStackSymbols = outputGeometry;
+  [outputGeometry extent];
   NUPixelRectToCGRect();
   v13 = v12;
   v15 = v14;
   v17 = v16;
   v19 = v18;
-  v20 = [(_PIPosterLayoutJob *)self layoutRequest];
-  v21 = [v20 layoutProvider];
-  v22 = v21;
-  if (v21)
+  layoutRequest = [(_PIPosterLayoutJob *)self layoutRequest];
+  layoutProvider = [layoutRequest layoutProvider];
+  v22 = layoutProvider;
+  if (layoutProvider)
   {
-    v23 = v21;
+    selfCopy = layoutProvider;
   }
 
   else
   {
-    v23 = self;
+    selfCopy = self;
   }
 
-  v3 = v23;
+  v3 = selfCopy;
 
-  v24 = [v9 portraitConfiguration];
-  v25 = [(_PIPosterLayoutJob *)self layoutRegions];
-  v26 = [(_PIPosterLayoutJob *)self segmentationMatteImage];
-  v4 = [v3 generateOrientedLayoutsForFullExtent:v24 layoutConfiguration:v25 layoutRegions:v26 segmentationMatteImage:-[_PIPosterLayoutJob segmentationClassification](self segmentationClassification:"segmentationClassification") error:{v5, v13, v15, v17, v19}];
+  portraitConfiguration = [v9 portraitConfiguration];
+  layoutRegions2 = [(_PIPosterLayoutJob *)self layoutRegions];
+  segmentationMatteImage = [(_PIPosterLayoutJob *)self segmentationMatteImage];
+  v4 = [v3 generateOrientedLayoutsForFullExtent:portraitConfiguration layoutConfiguration:layoutRegions2 layoutRegions:segmentationMatteImage segmentationMatteImage:-[_PIPosterLayoutJob segmentationClassification](self segmentationClassification:"segmentationClassification") error:{renderCopy, v13, v15, v17, v19}];
 
   if (v4)
   {
-    v27 = [v9 portraitConfiguration];
-    v6 = [(_PIPosterLayoutJob *)self _layoutFromIntermediateLayouts:v4 layoutConfiguration:v27 fullExtent:v13, v15, v17, v19];
+    portraitConfiguration2 = [v9 portraitConfiguration];
+    v6 = [(_PIPosterLayoutJob *)self _layoutFromIntermediateLayouts:v4 layoutConfiguration:portraitConfiguration2 fullExtent:v13, v15, v17, v19];
 
     [v6 visibleFrame];
     if (!CGRectIsEmpty(v283))
     {
-      v30 = [v9 landscapeConfiguration];
-      if (v30)
+      landscapeConfiguration = [v9 landscapeConfiguration];
+      if (landscapeConfiguration)
       {
-        v31 = [MEMORY[0x1E69C0938] deviceSupportsLandscapeConfiguration];
+        deviceSupportsLandscapeConfiguration = [MEMORY[0x1E69C0938] deviceSupportsLandscapeConfiguration];
 
-        if (v31)
+        if (deviceSupportsLandscapeConfiguration)
         {
-          v32 = [v9 landscapeConfiguration];
-          v33 = [(_PIPosterLayoutJob *)self layoutRegions];
+          landscapeConfiguration2 = [v9 landscapeConfiguration];
+          layoutRegions3 = [(_PIPosterLayoutJob *)self layoutRegions];
           [(_PIPosterLayoutJob *)self segmentationMatteImage];
-          v268 = v11;
+          v268 = callStackSymbols;
           v35 = v34 = v6;
-          v30 = [v3 generateOrientedLayoutsForFullExtent:v32 layoutConfiguration:v33 layoutRegions:v35 segmentationMatteImage:-[_PIPosterLayoutJob segmentationClassification](self segmentationClassification:"segmentationClassification") error:{v5, v13, v15, v17, v19}];
+          landscapeConfiguration = [v3 generateOrientedLayoutsForFullExtent:landscapeConfiguration2 layoutConfiguration:layoutRegions3 layoutRegions:v35 segmentationMatteImage:-[_PIPosterLayoutJob segmentationClassification](self segmentationClassification:"segmentationClassification") error:{renderCopy, v13, v15, v17, v19}];
 
-          v36 = [v9 landscapeConfiguration];
-          v37 = [(_PIPosterLayoutJob *)self _layoutFromIntermediateLayouts:v30 layoutConfiguration:v36 fullExtent:v13, v15, v17, v19];
+          landscapeConfiguration3 = [v9 landscapeConfiguration];
+          v37 = [(_PIPosterLayoutJob *)self _layoutFromIntermediateLayouts:landscapeConfiguration layoutConfiguration:landscapeConfiguration3 fullExtent:v13, v15, v17, v19];
 
           v6 = v34;
-          v11 = v268;
+          callStackSymbols = v268;
         }
 
         else
         {
           v37 = 0;
-          v30 = 0;
+          landscapeConfiguration = 0;
         }
       }
 
@@ -529,20 +529,20 @@ LABEL_109:
       v265 = v6;
       v266 = [objc_alloc(MEMORY[0x1E69C0800]) initWithPortraitLayout:v6 landscapeLayout:v37];
       [(_PIPosterLayoutJob *)self setLayout:?];
-      v38 = [v4 lastObject];
-      [v38 layoutScore];
+      lastObject = [v4 lastObject];
+      [lastObject layoutScore];
       *&v39 = v39;
       [(_PIPosterLayoutJob *)self setLayoutScore:v39];
-      v269 = v38;
-      [v38 cropScore];
+      v269 = lastObject;
+      [lastObject cropScore];
       *&v40 = v40;
       [(_PIPosterLayoutJob *)self setCropScore:v40];
-      v264 = v30;
-      v41 = [v30 lastObject];
-      v42 = v41;
-      if (v41)
+      v264 = landscapeConfiguration;
+      lastObject2 = [landscapeConfiguration lastObject];
+      v42 = lastObject2;
+      if (lastObject2)
       {
-        [v41 layoutScore];
+        [lastObject2 layoutScore];
         *&v43 = v43;
         [(_PIPosterLayoutJob *)self setLandscapeLayoutScore:v43];
         [v42 cropScore];
@@ -551,37 +551,37 @@ LABEL_109:
       }
 
       v267 = v42;
-      v45 = [(_PIPosterLayoutJob *)self layoutRequest];
-      v46 = [v45 shouldConstrainLayoutToBounds];
+      layoutRequest2 = [(_PIPosterLayoutJob *)self layoutRequest];
+      shouldConstrainLayoutToBounds = [layoutRequest2 shouldConstrainLayoutToBounds];
 
-      if ((v46 & 1) == 0)
+      if ((shouldConstrainLayoutToBounds & 1) == 0)
       {
         v47 = MEMORY[0x1E69C07A8];
-        v48 = [v9 portraitConfiguration];
-        [v47 headroomPenaltyForIntermediateLayout:v269 originalFullExtent:v48 layoutConfiguration:{v13, v15, v17, v19}];
+        portraitConfiguration3 = [v9 portraitConfiguration];
+        [v47 headroomPenaltyForIntermediateLayout:v269 originalFullExtent:portraitConfiguration3 layoutConfiguration:{v13, v15, v17, v19}];
         [(_PIPosterLayoutJob *)self setUsingHeadroom:v49 > 0.0];
 
         if (v267)
         {
           v50 = MEMORY[0x1E69C07A8];
-          v51 = [v9 landscapeConfiguration];
-          [v50 headroomPenaltyForIntermediateLayout:v267 originalFullExtent:v51 layoutConfiguration:{v13, v15, v17, v19}];
+          landscapeConfiguration4 = [v9 landscapeConfiguration];
+          [v50 headroomPenaltyForIntermediateLayout:v267 originalFullExtent:landscapeConfiguration4 layoutConfiguration:{v13, v15, v17, v19}];
           [(_PIPosterLayoutJob *)self setUsingLandscapeHeadroom:v52 > 0.0];
         }
       }
 
-      v53 = [(_PIPosterLayoutJob *)self layoutRequest];
-      v54 = [v53 shouldComputeAllScores];
+      layoutRequest3 = [(_PIPosterLayoutJob *)self layoutRequest];
+      shouldComputeAllScores = [layoutRequest3 shouldComputeAllScores];
 
-      if (v54)
+      if (shouldComputeAllScores)
       {
-        v55 = [v9 portraitConfiguration];
-        -[_PIPosterLayoutJob setClockOverlapAcceptable:](self, "setClockOverlapAcceptable:", [v269 clockOverlapAcceptableForLayoutConfiguration:v55]);
+        portraitConfiguration4 = [v9 portraitConfiguration];
+        -[_PIPosterLayoutJob setClockOverlapAcceptable:](self, "setClockOverlapAcceptable:", [v269 clockOverlapAcceptableForLayoutConfiguration:portraitConfiguration4]);
 
-        v56 = [(NURenderJob *)self renderer:v5];
-        v57 = [(_PIPosterLayoutJob *)self segmentationMatteImage];
+        v56 = [(NURenderJob *)self renderer:renderCopy];
+        segmentationMatteImage2 = [(_PIPosterLayoutJob *)self segmentationMatteImage];
 
-        if (v57)
+        if (segmentationMatteImage2)
         {
           v58 = v56 == 0;
         }
@@ -598,13 +598,13 @@ LABEL_109:
           v258 = v56;
           v256 = v29;
           v263 = objc_alloc_init(MEMORY[0x1E69B3AB8]);
-          v60 = [v270 faceRegions];
+          faceRegions = [layoutRegions faceRegions];
           v257 = v19;
-          if ([v60 count])
+          if ([faceRegions count])
           {
-            v61 = [v270 faceRegions];
-            v62 = [v61 firstObject];
-            [v62 rectValue];
+            faceRegions2 = [layoutRegions faceRegions];
+            firstObject = [faceRegions2 firstObject];
+            [firstObject rectValue];
             v64 = v63;
             v66 = v65;
             v68 = v67;
@@ -623,22 +623,22 @@ LABEL_109:
           v73 = v72;
           [v266 imageSize];
           v75 = v74;
-          v76 = [(_PIPosterLayoutJob *)self segmentationMatteImage];
+          segmentationMatteImage3 = [(_PIPosterLayoutJob *)self segmentationMatteImage];
 
           v238 = v17;
           v252 = v66;
-          if (v76)
+          if (segmentationMatteImage3)
           {
             r2_16 = v68;
             r2_24 = v64;
             v77 = v64 * v73 + 0.0;
             v259 = 0.0;
             v254 = v68 * v73;
-            v78 = [(_PIPosterLayoutJob *)self segmentationMatteImage];
-            v79 = [v266 portraitLayout];
-            [v79 visibleFrame];
+            segmentationMatteImage4 = [(_PIPosterLayoutJob *)self segmentationMatteImage];
+            portraitLayout = [v266 portraitLayout];
+            [portraitLayout visibleFrame];
             NURectNormalize();
-            [v78 extent];
+            [segmentationMatteImage4 extent];
             NURectDenormalize();
             v81 = v80;
             v83 = v82;
@@ -651,8 +651,8 @@ LABEL_109:
             v284.size.width = v85;
             v284.size.height = v87;
             v285 = CGRectIntegral(v284);
-            v88 = v78;
-            r2_8 = [v78 imageByCroppingToRect:{v285.origin.x, v285.origin.y, v285.size.width, v285.size.height}];
+            v88 = segmentationMatteImage4;
+            r2_8 = [segmentationMatteImage4 imageByCroppingToRect:{v285.origin.x, v285.origin.y, v285.size.width, v285.size.height}];
             [MEMORY[0x1E69C0798] inflatePersonFaceRect:{v77, v66 * v75 + 0.0, v254, v261 * v75}];
             if (v85 >= v87)
             {
@@ -669,8 +669,8 @@ LABEL_109:
             y = v286.origin.y;
             width = v286.size.width;
             height = v286.size.height;
-            v98 = [v266 portraitLayout];
-            [v98 visibleFrame];
+            portraitLayout2 = [v266 portraitLayout];
+            [portraitLayout2 visibleFrame];
             v103 = x - v102;
             v104 = 0.0;
             if (v100 != 0.0)
@@ -712,16 +712,16 @@ LABEL_109:
             v122 = v121;
             v124 = v123;
             v126 = v125;
-            v127 = [v258 context];
-            [PISegmentationHelper localConfidenceScoreForLocalConfidenceImage:v118 extent:v127 context:v120, v122, v124, v126];
+            context = [v258 context];
+            [PISegmentationHelper localConfidenceScoreForLocalConfidenceImage:v118 extent:context context:v120, v122, v124, v126];
             v240 = v128;
 
-            v129 = [v258 context];
-            [PISegmentationHelper localConfidenceScoreForLocalConfidenceImage:v118 extent:v129 context:v114, v115, v116, v117];
+            context2 = [v258 context];
+            [PISegmentationHelper localConfidenceScoreForLocalConfidenceImage:v118 extent:context2 context:v114, v115, v116, v117];
             v131 = v130;
 
-            v132 = [v258 context];
-            [PISegmentationHelper groundedScoreForSegmentationMatte:r2_8 context:v132];
+            context3 = [v258 context];
+            [PISegmentationHelper groundedScoreForSegmentationMatte:r2_8 context:context3];
             v239 = v133;
 
             v68 = r2_16;
@@ -737,17 +737,17 @@ LABEL_109:
             v131 = 0;
           }
 
-          v134 = [(_PIPosterLayoutJob *)self segmentationConfidenceMapImage];
+          segmentationConfidenceMapImage = [(_PIPosterLayoutJob *)self segmentationConfidenceMapImage];
 
-          if (v134)
+          if (segmentationConfidenceMapImage)
           {
-            v135 = [(_PIPosterLayoutJob *)self segmentationConfidenceMapImage];
+            segmentationConfidenceMapImage2 = [(_PIPosterLayoutJob *)self segmentationConfidenceMapImage];
             [v59 imageSize];
             [v59 imageSize];
-            v136 = [v59 portraitLayout];
-            [v136 visibleFrame];
+            portraitLayout3 = [v59 portraitLayout];
+            [portraitLayout3 visibleFrame];
             NURectNormalize();
-            [v135 extent];
+            [segmentationConfidenceMapImage2 extent];
             NURectDenormalize();
             v138 = v137;
             v140 = v139;
@@ -759,7 +759,7 @@ LABEL_109:
             v289.size.width = v142;
             v289.size.height = v144;
             v290 = CGRectIntegral(v289);
-            v145 = [v135 imageByCroppingToRect:{v290.origin.x, v290.origin.y, v290.size.width, v290.size.height}];
+            v145 = [segmentationConfidenceMapImage2 imageByCroppingToRect:{v290.origin.x, v290.origin.y, v290.size.width, v290.size.height}];
             v146 = [v263 computeHistogramFromMatte:v145];
           }
 
@@ -832,8 +832,8 @@ LABEL_109:
           v272 = 0u;
           v273 = 0u;
           v274 = 0u;
-          v165 = [v270 faceRegions];
-          v166 = [v165 countByEnumeratingWithState:&v271 objects:v275 count:16];
+          faceRegions3 = [layoutRegions faceRegions];
+          v166 = [faceRegions3 countByEnumeratingWithState:&v271 objects:v275 count:16];
           if (v166)
           {
             v167 = v166;
@@ -844,7 +844,7 @@ LABEL_109:
               {
                 if (*v272 != v168)
                 {
-                  objc_enumerationMutation(v165);
+                  objc_enumerationMutation(faceRegions3);
                 }
 
                 [*(*(&v271 + 1) + 8 * i) rectValue];
@@ -882,30 +882,30 @@ LABEL_109:
                 }
               }
 
-              v167 = [v165 countByEnumeratingWithState:&v271 objects:v275 count:16];
+              v167 = [faceRegions3 countByEnumeratingWithState:&v271 objects:v275 count:16];
             }
 
             while (v167);
           }
 
           buf[0] = 0;
-          v179 = [(_PIPosterLayoutJob *)self layoutRequest];
-          v180 = [v179 layoutProvider];
+          layoutRequest4 = [(_PIPosterLayoutJob *)self layoutRequest];
+          layoutProvider2 = [layoutRequest4 layoutProvider];
 
           v181 = 0;
-          if (!v180)
+          if (!layoutProvider2)
           {
             v237 = *(MEMORY[0x1E69BDDA8] + 8) + *(MEMORY[0x1E69BDDA8] + 24) - (v161 + v163);
             v182 = MEMORY[0x1E69C06A0];
-            v183 = [(_PIPosterLayoutJob *)self segmentationClassification];
-            v184 = [v9 portraitConfiguration];
-            [v270 preferredCropRect];
+            segmentationClassification = [(_PIPosterLayoutJob *)self segmentationClassification];
+            portraitConfiguration5 = [v9 portraitConfiguration];
+            [layoutRegions preferredCropRect];
             v186 = v185;
             v188 = v187;
             v190 = v189;
             v192 = v191;
-            [v270 acceptableCropRect];
-            [v182 bestCropRectV2ForPosterClassification:v183 layoutConfiguration:v184 sourcePixelWidth:v238 sourcePixelHeight:v257 sourcePreferredCropRectNormalized:0 sourceAcceptableCropRectNormalized:0 sourceFaceAreaRectNormalized:v186 outputCropScore:v188 outputLayoutScore:v190 outputClockOverlapAcceptable:{v192, v193, v194, v195, v196, *&v162, *&v237, *&v164, *&v163, buf}];
+            [layoutRegions acceptableCropRect];
+            [v182 bestCropRectV2ForPosterClassification:segmentationClassification layoutConfiguration:portraitConfiguration5 sourcePixelWidth:v238 sourcePixelHeight:v257 sourcePreferredCropRectNormalized:0 sourceAcceptableCropRectNormalized:0 sourceFaceAreaRectNormalized:v186 outputCropScore:v188 outputLayoutScore:v190 outputClockOverlapAcceptable:{v192, v193, v194, v195, v196, *&v162, *&v237, *&v164, *&v163, buf}];
 
             v181 = buf[0];
           }
@@ -967,7 +967,7 @@ LABEL_11:
       }
 
       [MEMORY[0x1E69B3A48] invalidError:@"Invalid portrait layout" object:{v6, v236}];
-      *v5 = v29 = 0;
+      *renderCopy = v29 = 0;
 LABEL_78:
 
       goto LABEL_79;
@@ -984,22 +984,22 @@ LABEL_79:
   return v29;
 }
 
-- (float)_headroomPenaltyForIntermediateLayout:(id)a3 originalFullExtent:(CGRect)a4 layoutConfiguration:(id)a5
+- (float)_headroomPenaltyForIntermediateLayout:(id)layout originalFullExtent:(CGRect)extent layoutConfiguration:(id)configuration
 {
-  height = a4.size.height;
-  v7 = a5;
-  v8 = a3;
-  [v8 visibleRect];
+  height = extent.size.height;
+  configurationCopy = configuration;
+  layoutCopy = layout;
+  [layoutCopy visibleRect];
   v10 = v9;
-  [v8 visibleRect];
+  [layoutCopy visibleRect];
   v12 = v11;
 
   v13 = v10 + v12 - height;
-  [v7 screenSize];
+  [configurationCopy screenSize];
   v15 = v14;
-  [v7 screenScale];
+  [configurationCopy screenScale];
   v17 = v16;
-  [v7 screenScale];
+  [configurationCopy screenScale];
   v19 = v18;
 
   result = 1.0;
@@ -1011,16 +1011,16 @@ LABEL_79:
   return result;
 }
 
-- (id)_layoutFromIntermediateLayouts:(id)a3 layoutConfiguration:(id)a4 fullExtent:(CGRect)a5
+- (id)_layoutFromIntermediateLayouts:(id)layouts layoutConfiguration:(id)configuration fullExtent:(CGRect)extent
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
+  height = extent.size.height;
+  width = extent.size.width;
+  y = extent.origin.y;
+  x = extent.origin.x;
   v149 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  if (![v10 count])
+  layoutsCopy = layouts;
+  configurationCopy = configuration;
+  if (![layoutsCopy count])
   {
     v97 = NUAssertLogger_14911();
     if (os_log_type_enabled(v97, OS_LOG_TYPE_ERROR))
@@ -1042,8 +1042,8 @@ LABEL_79:
         v105 = dispatch_get_specific(*v99);
         v106 = MEMORY[0x1E696AF00];
         v107 = v105;
-        v108 = [v106 callStackSymbols];
-        v109 = [v108 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v106 callStackSymbols];
+        v109 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v105;
         *&buf[12] = 2114;
@@ -1054,8 +1054,8 @@ LABEL_79:
 
     else if (v102)
     {
-      v103 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v104 = [v103 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v104 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v104;
       _os_log_error_impl(&dword_1C7694000, v101, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1064,32 +1064,32 @@ LABEL_79:
     _NUAssertFailHandler();
   }
 
-  v12 = [v10 lastObject];
-  [v12 visibleRect];
+  lastObject = [layoutsCopy lastObject];
+  [lastObject visibleRect];
   v14 = v13;
   v16 = v15;
   v18 = v17;
   v20 = v19;
-  [v12 adaptiveVisibleRect];
+  [lastObject adaptiveVisibleRect];
   v140 = v21;
   v139 = v22;
   v138 = v23;
   v142 = v24;
-  [v11 parallaxPaddingPct];
+  [configurationCopy parallaxPaddingPct];
   v135 = v26;
   v136 = v25;
-  [v11 timeRect];
+  [configurationCopy timeRect];
   v131 = v28;
   v133 = v27;
   v129 = v29;
   v31 = v30;
   v32 = *MEMORY[0x1E69C0BA0];
-  v33 = [(_PIPosterLayoutJob *)self segmentationMatteImage];
+  segmentationMatteImage = [(_PIPosterLayoutJob *)self segmentationMatteImage];
   v141 = height;
   v143 = v14;
   v145 = v18;
   v146 = v16;
-  if (v33 && [v12 layoutVariant] == 1)
+  if (segmentationMatteImage && [lastObject layoutVariant] == 1)
   {
     v147 = 0;
     v34 = [(NURenderJob *)self renderer:&v147];
@@ -1110,14 +1110,14 @@ LABEL_79:
     }
 
     v39 = v147;
-    [v33 extent];
+    [segmentationMatteImage extent];
     v42 = v40 + v35 * v41;
     v45 = v43 + v38 * v44;
     v46 = v37 * v41;
     v47 = v36 * v44;
     memset(buf, 0, sizeof(buf));
-    v48 = [v34 context];
-    [PISegmentationHelper computeClockLayerOrderWithVisibleFrame:v33 segmentationMatte:v11 layoutConfiguration:v48 context:0 interactive:v42, v45, v46, v47];
+    context = [v34 context];
+    [PISegmentationHelper computeClockLayerOrderWithVisibleFrame:segmentationMatteImage segmentationMatte:configurationCopy layoutConfiguration:context context:0 interactive:v42, v45, v46, v47];
 
     v49 = *buf;
     v50 = *&buf[8];
@@ -1136,21 +1136,21 @@ LABEL_79:
   v51 = v20;
   v52 = v16 + v129 * v20;
   v53 = v20 * v31;
-  [v12 inactiveRect];
+  [lastObject inactiveRect];
   v128 = v55;
   v130 = v54;
   v126 = v57;
   v127 = v56;
-  [v12 maxClockShift];
+  [lastObject maxClockShift];
   v59 = v58;
-  [v12 adaptiveInactiveTopRect];
+  [lastObject adaptiveInactiveTopRect];
   v123 = v61;
   v124 = v60;
   v121 = v63;
   v122 = v62;
   v125 = v52;
   v120 = v59;
-  if ([v12 layoutVariant] == 3)
+  if ([lastObject layoutVariant] == 3)
   {
     v64 = v51 * v59;
 LABEL_12:
@@ -1164,23 +1164,23 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  if ([v12 layoutVariant] == 2)
+  if ([lastObject layoutVariant] == 2)
   {
     v119 = v52 - (v142 - v51) - v51 * v59;
     v65 = v142 - v51 + v53 + v51 * v59;
     goto LABEL_15;
   }
 
-  if ([v12 layoutVariant] == 4)
+  if ([lastObject layoutVariant] == 4)
   {
-    v90 = [(_PIPosterLayoutJob *)self layoutRequest];
-    v91 = [v90 allowedClockStretch];
+    layoutRequest = [(_PIPosterLayoutJob *)self layoutRequest];
+    allowedClockStretch = [layoutRequest allowedClockStretch];
 
-    if (v91)
+    if (allowedClockStretch)
     {
-      v92 = [(_PIPosterLayoutJob *)self layoutRequest];
-      v93 = [v92 allowedClockStretch];
-      [v93 floatValue];
+      layoutRequest2 = [(_PIPosterLayoutJob *)self layoutRequest];
+      allowedClockStretch2 = [layoutRequest2 allowedClockStretch];
+      [allowedClockStretch2 floatValue];
       v95 = fmax(fmin(v94, 1.0), 0.0);
     }
 
@@ -1189,7 +1189,7 @@ LABEL_15:
       v95 = 1.0;
     }
 
-    [v11 maxStrechAmountNormalized];
+    [configurationCopy maxStrechAmountNormalized];
     v64 = v95 * (v51 * v96);
     goto LABEL_12;
   }
@@ -1206,39 +1206,39 @@ LABEL_16:
   v117 = v18 * v131;
   v118 = v14 + v133 * v18;
   v137 = v18 * v136;
-  [v11 timeRectForNormalizedHeight:v67];
+  [configurationCopy timeRectForNormalizedHeight:v67];
   v115 = v18 * v69;
   v116 = v14 + v68 * v18;
   v70 = objc_alloc(MEMORY[0x1E69C0828]);
-  [v11 screenSize];
+  [configurationCopy screenSize];
   v132 = v72;
   v134 = v71;
-  [v12 spatialVisibleRect];
+  [lastObject spatialVisibleRect];
   v113 = v74;
   v114 = v73;
   v112 = v75;
   v111 = v76;
-  [v12 spatialAdaptiveVisibleRect];
+  [lastObject spatialAdaptiveVisibleRect];
   v110 = v77;
   v79 = v78;
   v81 = v80;
   v83 = v82;
-  [v12 salientContentRect];
-  v88 = [v70 initWithImageSize:v32 deviceResolution:v50 parallaxPadding:objc_msgSend(v12 visibleFrame:"layoutVariant") adaptiveVisibleFrame:objc_msgSend(v12 inactiveFrame:"hasTopEdgeContact") adaptiveInactiveTopFrame:v10 spatialVisibleFrame:width spatialAdaptiveFrame:v141 timeFrame:v134 adaptiveTimeFrame:v132 salientContentFrame:v137 clockLayerOrder:v51 * v135 clockIntersection:*&v143 layoutVariant:*&v146 hasTopEdgeContact:*&v145 maxClockShift:*&v51 debugLayouts:{v140, v139, v138, *&v142, v130, v128, v127, v126, v124, v123, v122, v121, v114, v113, v112, v111, v110, v79, v81, v83, *&v118, *&v125, *&v117, *&v53, *&v116, *&v119, *&v115, *&v65, v84, v85, v86, v87, *&v120}];
+  [lastObject salientContentRect];
+  v88 = [v70 initWithImageSize:v32 deviceResolution:v50 parallaxPadding:objc_msgSend(lastObject visibleFrame:"layoutVariant") adaptiveVisibleFrame:objc_msgSend(lastObject inactiveFrame:"hasTopEdgeContact") adaptiveInactiveTopFrame:layoutsCopy spatialVisibleFrame:width spatialAdaptiveFrame:v141 timeFrame:v134 adaptiveTimeFrame:v132 salientContentFrame:v137 clockLayerOrder:v51 * v135 clockIntersection:*&v143 layoutVariant:*&v146 hasTopEdgeContact:*&v145 maxClockShift:*&v51 debugLayouts:{v140, v139, v138, *&v142, v130, v128, v127, v126, v124, v123, v122, v121, v114, v113, v112, v111, v110, v79, v81, v83, *&v118, *&v125, *&v117, *&v53, *&v116, *&v119, *&v115, *&v65, v84, v85, v86, v87, *&v120}];
 
   return v88;
 }
 
-- (id)generateOrientedLayoutsForFullExtent:(CGRect)a3 layoutConfiguration:(id)a4 layoutRegions:(id)a5 segmentationMatteImage:(id)a6 segmentationClassification:(unint64_t)a7 error:(id *)a8
+- (id)generateOrientedLayoutsForFullExtent:(CGRect)extent layoutConfiguration:(id)configuration layoutRegions:(id)regions segmentationMatteImage:(id)image segmentationClassification:(unint64_t)classification error:(id *)error
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = extent.size.height;
+  width = extent.size.width;
+  y = extent.origin.y;
+  x = extent.origin.x;
   v247 = *MEMORY[0x1E69E9840];
-  v22 = a4;
-  v23 = a5;
-  v24 = a6;
+  configurationCopy = configuration;
+  regionsCopy = regions;
+  imageCopy = image;
   v249.origin.x = x;
   v249.origin.y = y;
   v249.size.width = width;
@@ -1255,7 +1255,7 @@ LABEL_16:
       _os_log_error_impl(&dword_1C7694000, v186, OS_LOG_TYPE_ERROR, "Fail: %{public}@", &v246, 0xCu);
     }
 
-    v188 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     specific = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v190 = NUAssertLogger_14911();
     v191 = os_log_type_enabled(v190, OS_LOG_TYPE_ERROR);
@@ -1263,25 +1263,25 @@ LABEL_16:
     {
       if (v191)
       {
-        v199 = dispatch_get_specific(*v188);
+        v199 = dispatch_get_specific(*callStackSymbols);
         v200 = MEMORY[0x1E696AF00];
         self = v199;
-        v188 = [v200 callStackSymbols];
-        v24 = [v188 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v200 callStackSymbols];
+        imageCopy = [callStackSymbols componentsJoinedByString:@"\n"];
         LODWORD(v246.a) = 138543618;
         *(&v246.a + 4) = v199;
         WORD2(v246.b) = 2114;
-        *(&v246.b + 6) = v24;
+        *(&v246.b + 6) = imageCopy;
         _os_log_error_impl(&dword_1C7694000, v190, OS_LOG_TYPE_ERROR, "job: %{public}@\nTrace:\n%{public}@", &v246, 0x16u);
       }
     }
 
     else if (v191)
     {
-      v192 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v188 = [v192 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      callStackSymbols = [callStackSymbols2 componentsJoinedByString:@"\n"];
       LODWORD(v246.a) = 138543362;
-      *(&v246.a + 4) = v188;
+      *(&v246.a + 4) = callStackSymbols;
       _os_log_error_impl(&dword_1C7694000, v190, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", &v246, 0xCu);
     }
 
@@ -1290,14 +1290,14 @@ LABEL_16:
     goto LABEL_100;
   }
 
-  v25 = [(_PIPosterLayoutJob *)self layoutRequest];
-  [v25 normalizedLayoutBounds];
+  layoutRequest = [(_PIPosterLayoutJob *)self layoutRequest];
+  [layoutRequest normalizedLayoutBounds];
   v9 = v26;
   v10 = v27;
   v245 = v28;
   v11 = v29;
 
-  [v22 screenSize];
+  [configurationCopy screenSize];
   if (v30 <= 0.0)
   {
     v193 = NUAssertLogger_14911();
@@ -1309,7 +1309,7 @@ LABEL_16:
       _os_log_error_impl(&dword_1C7694000, v193, OS_LOG_TYPE_ERROR, "Fail: %{public}@", &v246, 0xCu);
     }
 
-    v188 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     v195 = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v190 = NUAssertLogger_14911();
     v196 = os_log_type_enabled(v190, OS_LOG_TYPE_ERROR);
@@ -1317,8 +1317,8 @@ LABEL_16:
     {
       if (v196)
       {
-        v197 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v198 = [v197 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v198 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         LODWORD(v246.a) = 138543362;
         *(&v246.a + 4) = v198;
         _os_log_error_impl(&dword_1C7694000, v190, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", &v246, 0xCu);
@@ -1368,8 +1368,8 @@ LABEL_53:
           v115 = MEMORY[0x1E696AF00];
           v116 = v114;
           v117 = v113;
-          v118 = [v115 callStackSymbols];
-          v119 = [v118 componentsJoinedByString:@"\n"];
+          callStackSymbols4 = [v115 callStackSymbols];
+          v119 = [callStackSymbols4 componentsJoinedByString:@"\n"];
           LODWORD(v246.a) = 138543618;
           *(&v246.a + 4) = v114;
           WORD2(v246.b) = 2114;
@@ -1388,8 +1388,8 @@ LABEL_59:
       {
         v182 = MEMORY[0x1E696AF00];
         v183 = v120;
-        v184 = [v182 callStackSymbols];
-        v185 = [v184 componentsJoinedByString:@"\n"];
+        callStackSymbols5 = [v182 callStackSymbols];
+        v185 = [callStackSymbols5 componentsJoinedByString:@"\n"];
         LODWORD(v246.a) = 138543362;
         *(&v246.a + 4) = v185;
         _os_log_error_impl(&dword_1C7694000, v183, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", &v246, 0xCu);
@@ -1401,32 +1401,32 @@ LABEL_59:
 LABEL_100:
     if (v196)
     {
-      v201 = dispatch_get_specific(*v188);
+      v201 = dispatch_get_specific(*callStackSymbols);
       v202 = MEMORY[0x1E696AF00];
       self = v201;
-      v203 = [v202 callStackSymbols];
-      v24 = [v203 componentsJoinedByString:@"\n"];
+      callStackSymbols6 = [v202 callStackSymbols];
+      imageCopy = [callStackSymbols6 componentsJoinedByString:@"\n"];
       LODWORD(v246.a) = 138543618;
       *(&v246.a + 4) = v201;
       WORD2(v246.b) = 2114;
-      *(&v246.b + 6) = v24;
+      *(&v246.b + 6) = imageCopy;
       _os_log_error_impl(&dword_1C7694000, v190, OS_LOG_TYPE_ERROR, "job: %{public}@\nTrace:\n%{public}@", &v246, 0x16u);
     }
 
     goto LABEL_102;
   }
 
-  v31 = [(NURenderJob *)self renderer:a8];
-  v32 = [(_PIPosterLayoutJob *)self segmentationMatteImage];
+  v31 = [(NURenderJob *)self renderer:error];
+  segmentationMatteImage = [(_PIPosterLayoutJob *)self segmentationMatteImage];
 
-  if (v32 && !v31)
+  if (segmentationMatteImage && !v31)
   {
     v33 = 0;
     goto LABEL_81;
   }
 
-  v34 = [v23 petRegions];
-  v35 = [v34 count];
+  petRegions = [regionsCopy petRegions];
+  v35 = [petRegions count];
 
   v229 = v9;
   v243 = v10;
@@ -1434,42 +1434,42 @@ LABEL_100:
   v230 = v31;
   v214 = x;
   v215 = y;
-  if (v24)
+  if (imageCopy)
   {
-    [v24 extent];
+    [imageCopy extent];
     v37 = width / v36;
-    [v24 extent];
+    [imageCopy extent];
     CGAffineTransformMakeScale(&v246, v37, height / v38);
-    v39 = [v24 imageByApplyingTransform:&v246];
+    v39 = [imageCopy imageByApplyingTransform:&v246];
 
-    v24 = v39;
+    imageCopy = v39;
   }
 
   v40 = width;
   v41 = height;
-  [v23 preferredCropRect];
+  [regionsCopy preferredCropRect];
   v223 = v43;
   v225 = v42;
   v220 = v45;
   v221 = v44;
-  [v23 acceptableCropRect];
+  [regionsCopy acceptableCropRect];
   v218 = v47;
   v219 = v46;
   v216 = v49;
   v217 = v48;
-  [v23 gazeAreaRect];
+  [regionsCopy gazeAreaRect];
   v51 = v50;
   v53 = v52;
   v55 = v54;
   v57 = v56;
   v58 = MEMORY[0x1E69C07A8];
-  [v22 screenSize];
+  [configurationCopy screenSize];
   v60 = v59;
   v62 = v61;
-  v63 = [v23 faceRegions];
+  faceRegions = [regionsCopy faceRegions];
   v227 = width;
   v228 = height;
-  [v58 bestFaceRectWithImageSize:v63 deviceSize:width faceRegions:{height, v60, v62}];
+  [v58 bestFaceRectWithImageSize:faceRegions deviceSize:width faceRegions:{height, v60, v62}];
   v65 = v64;
   v67 = v66;
   v69 = v68;
@@ -1477,8 +1477,8 @@ LABEL_100:
 
   v240 = v67 + v71;
   v242 = *(MEMORY[0x1E69BDDA8] + 8) + *(MEMORY[0x1E69BDDA8] + 24);
-  v72 = [v23 faceRegions];
-  v73 = [v72 count];
+  faceRegions2 = [regionsCopy faceRegions];
+  v73 = [faceRegions2 count];
 
   v212 = v69;
   v213 = v65;
@@ -1486,9 +1486,9 @@ LABEL_100:
   v211 = v71;
   if (v73 == 1)
   {
-    v74 = [v23 faceRegions];
-    v75 = [v74 firstObject];
-    [v75 rectValue];
+    faceRegions3 = [regionsCopy faceRegions];
+    firstObject = [faceRegions3 firstObject];
+    [firstObject rectValue];
     v76 = v55;
     v77 = v67;
     v78 = v53;
@@ -1514,29 +1514,29 @@ LABEL_100:
   v206 = v55;
   v207 = v53;
   v208 = v51;
-  [MEMORY[0x1E69C07A8] effectiveAcceptableRectForClassification:a7 havePetFaces:v35 != 0 sourcePreferredCropRectNormalized:v225 sourceAcceptableCropRectNormalized:v223 sourceFaceAreaRectNormalized:v221 sourceGazeAreaRectNormalized:{v220, v219, v218, v217, v216, v65, *&v67, v69, *&v71, *&v51, *&v53, *&v55, *&v57}];
+  [MEMORY[0x1E69C07A8] effectiveAcceptableRectForClassification:classification havePetFaces:v35 != 0 sourcePreferredCropRectNormalized:v225 sourceAcceptableCropRectNormalized:v223 sourceFaceAreaRectNormalized:v221 sourceGazeAreaRectNormalized:{v220, v219, v218, v217, v216, v65, *&v67, v69, *&v71, *&v51, *&v53, *&v55, *&v57}];
   v238 = v84;
   v239 = v83;
   v236 = v86;
   v237 = v85;
-  [MEMORY[0x1E69C07A8] effectivePreferredRectForClassification:a7 havePetFaces:v35 != 0 sourcePreferredCropRectNormalized:v225 sourceAcceptableCropRectNormalized:v223 sourceFaceAreaRectNormalized:{v221, v220, v219, v218, v217, v216, v65, *&v67, v69, *&v71}];
+  [MEMORY[0x1E69C07A8] effectivePreferredRectForClassification:classification havePetFaces:v35 != 0 sourcePreferredCropRectNormalized:v225 sourceAcceptableCropRectNormalized:v223 sourceFaceAreaRectNormalized:{v221, v220, v219, v218, v217, v216, v65, *&v67, v69, *&v71}];
   v234 = v88;
   v235 = v87;
   v232 = v90;
   v233 = v89;
-  [v22 screenSize];
+  [configurationCopy screenSize];
   v92 = v91;
-  [v22 screenSize];
+  [configurationCopy screenSize];
   width = *MEMORY[0x1E695F058];
   v93 = *(MEMORY[0x1E695F058] + 8);
   v10 = *(MEMORY[0x1E695F058] + 16);
   v11 = *(MEMORY[0x1E695F058] + 24);
   v95 = v92 / v94;
-  v96 = [(_PIPosterLayoutJob *)self segmentationClassification];
-  if (v96 > 2)
+  segmentationClassification = [(_PIPosterLayoutJob *)self segmentationClassification];
+  if (segmentationClassification > 2)
   {
     v97 = v245;
-    if ((v96 - 3) >= 3)
+    if ((segmentationClassification - 3) >= 3)
     {
       goto LABEL_25;
     }
@@ -1545,7 +1545,7 @@ LABEL_100:
   }
 
   v97 = v245;
-  if (!v96)
+  if (!segmentationClassification)
   {
 LABEL_17:
     [MEMORY[0x1E69C06A0] bestCropRectV2ForAspectRatio:v40 withFocusRegion:v41 sourcePixelWidth:0 sourcePixelHeight:v95 sourcePreferredCropRectNormalized:*MEMORY[0x1E695F050] sourceAcceptableCropRectNormalized:*(MEMORY[0x1E695F050] + 8) sourceFaceAreaRectNormalized:*(MEMORY[0x1E695F050] + 16) outputCropScore:{*(MEMORY[0x1E695F050] + 24), v235, v234, v233, v232, *&v239, *&v238, *&v237, *&v236, v213, *&v210, v212, *&v211}];
@@ -1557,9 +1557,9 @@ LABEL_24:
     goto LABEL_25;
   }
 
-  if (v96 != 1)
+  if (segmentationClassification != 1)
   {
-    if (v96 != 2)
+    if (segmentationClassification != 2)
     {
       goto LABEL_25;
     }
@@ -1609,7 +1609,7 @@ LABEL_25:
   v252.origin.y = v243;
   v252.size.width = v97;
   v252.size.height = v244;
-  v241 = v23;
+  v241 = regionsCopy;
   if (CGRectIsNull(v252))
   {
     y = v11;
@@ -1715,35 +1715,35 @@ LABEL_60:
 LABEL_67:
   v124 = v227;
   v123 = v228;
-  v125 = [(_PIPosterLayoutJob *)self layoutRequest];
-  v126 = [v125 allowedLayoutStrategies];
+  layoutRequest2 = [(_PIPosterLayoutJob *)self layoutRequest];
+  allowedLayoutStrategies = [layoutRequest2 allowedLayoutStrategies];
 
-  v127 = [(_PIPosterLayoutJob *)self layoutRequest];
-  v128 = [v127 role];
+  layoutRequest3 = [(_PIPosterLayoutJob *)self layoutRequest];
+  role = [layoutRequest3 role];
 
-  if (v128 == 2)
+  if (role == 2)
   {
     v129 = 3;
   }
 
   else
   {
-    v130 = [(_PIPosterLayoutJob *)self layoutRequest];
-    v131 = [v130 role];
+    layoutRequest4 = [(_PIPosterLayoutJob *)self layoutRequest];
+    role2 = [layoutRequest4 role];
 
-    if (v131 != 1)
+    if (role2 != 1)
     {
-      v180 = [(_PIPosterLayoutJob *)self layoutRequest];
-      v181 = [v180 hasSettlingEffect];
+      layoutRequest5 = [(_PIPosterLayoutJob *)self layoutRequest];
+      hasSettlingEffect = [layoutRequest5 hasSettlingEffect];
 
-      if (v181)
+      if (hasSettlingEffect)
       {
         v129 = 2;
       }
 
       else
       {
-        v129 = [MEMORY[0x1E69C07A8] layoutTypeFromLayoutConfiguration:v22];
+        v129 = [MEMORY[0x1E69C07A8] layoutTypeFromLayoutConfiguration:configurationCopy];
       }
 
       goto LABEL_72;
@@ -1752,40 +1752,40 @@ LABEL_67:
     v129 = 0;
   }
 
-  v126 = 1;
+  allowedLayoutStrategies = 1;
 LABEL_72:
   v132 = v214 + width * v227;
   v133 = v215 + v9 * v228;
   v134 = v227 * height;
   v135 = v228 * y;
-  v136 = [(_PIPosterLayoutJob *)self layoutRequest];
-  v137 = [v136 shouldConstrainLayoutToBounds];
+  layoutRequest6 = [(_PIPosterLayoutJob *)self layoutRequest];
+  shouldConstrainLayoutToBounds = [layoutRequest6 shouldConstrainLayoutToBounds];
 
-  v138 = [(_PIPosterLayoutJob *)self layoutRequest];
-  v139 = [v138 shouldConsiderHeadroom];
+  layoutRequest7 = [(_PIPosterLayoutJob *)self layoutRequest];
+  shouldConsiderHeadroom = [layoutRequest7 shouldConsiderHeadroom];
 
-  v231 = v22;
-  if (v24)
+  v231 = configurationCopy;
+  if (imageCopy)
   {
-    v140 = [MEMORY[0x1E695F620] context];
-    v141 = [PISegmentationHelper topEdgeHasNoContactWithInspectionMatte:v24 context:v140];
+    context = [MEMORY[0x1E695F620] context];
+    v141 = [PISegmentationHelper topEdgeHasNoContactWithInspectionMatte:imageCopy context:context];
 
-    [(_PIPosterLayoutJob *)self setHeadroomIsFeasible:v139 & v141];
+    [(_PIPosterLayoutJob *)self setHeadroomIsFeasible:shouldConsiderHeadroom & v141];
     v224 = v129;
-    v226 = v126;
-    v222 = v137;
+    v226 = allowedLayoutStrategies;
+    v222 = shouldConstrainLayoutToBounds;
     if ([(_PIPosterLayoutJob *)self headroomIsFeasible]&& v129 != 2)
     {
-      [v24 extent];
+      [imageCopy extent];
       v143 = v142;
       v145 = v144;
       v147 = v146;
       v149 = *MEMORY[0x1E69C0C68] * v148;
       v150 = objc_alloc(MEMORY[0x1E695F658]);
-      v151 = [MEMORY[0x1E695F610] blackColor];
-      v152 = [v150 initWithColor:v151];
+      blackColor = [MEMORY[0x1E695F610] blackColor];
+      v152 = [v150 initWithColor:blackColor];
 
-      v153 = [v24 imageByCompositingOverImage:v152];
+      v153 = [imageCopy imageByCompositingOverImage:v152];
       v154 = v143;
       v155 = v147;
       v156 = v149;
@@ -1794,68 +1794,68 @@ LABEL_72:
       v124 = v227;
       v157 = [v153 imageByCroppingToRect:{v154, v145, v155, v156}];
 
-      v24 = v157;
+      imageCopy = v157;
     }
 
     v158 = [PIPosterLayoutHelper alloc];
-    v159 = [v230 context];
-    v160 = [(_PIPosterLayoutJob *)self segmentationClassification];
-    v161 = [(_PIPosterLayoutJob *)self headroomIsFeasible];
-    v162 = [(_PIPosterLayoutJob *)self layoutRequest];
-    v163 = [v162 shouldComputeSpatialLayout];
-    v164 = [(_PIPosterLayoutJob *)self layoutRequest];
-    [v164 spatialPadding];
-    LOBYTE(v205) = v163;
-    v166 = [(PIPosterLayoutHelper *)v158 initWithCIContext:v159 matte:v24 posterClassification:v160 initialRect:v161 imageSize:!v141 effectiveAcceptableRect:v222 effectivePreferredRect:v132 validBoundsNormalized:v133 headroomFeasible:v134 hasTopEdgeContact:v135 shouldConstrainLayoutToBounds:v124 computeSpatial:v123 spatialPadding:*&v239 layoutType:*&v238 allowedLayoutStrategies:*&v237 layoutConfiguration:*&v236, v235, v234, v233, v232, *&v12, *&v243, *&v245, *&v244, v205, v165, v224, v226, v231];
+    context2 = [v230 context];
+    segmentationClassification2 = [(_PIPosterLayoutJob *)self segmentationClassification];
+    headroomIsFeasible = [(_PIPosterLayoutJob *)self headroomIsFeasible];
+    layoutRequest8 = [(_PIPosterLayoutJob *)self layoutRequest];
+    shouldComputeSpatialLayout = [layoutRequest8 shouldComputeSpatialLayout];
+    layoutRequest9 = [(_PIPosterLayoutJob *)self layoutRequest];
+    [layoutRequest9 spatialPadding];
+    LOBYTE(v205) = shouldComputeSpatialLayout;
+    v231 = [(PIPosterLayoutHelper *)v158 initWithCIContext:context2 matte:imageCopy posterClassification:segmentationClassification2 initialRect:headroomIsFeasible imageSize:!v141 effectiveAcceptableRect:v222 effectivePreferredRect:v132 validBoundsNormalized:v133 headroomFeasible:v134 hasTopEdgeContact:v135 shouldConstrainLayoutToBounds:v124 computeSpatial:v123 spatialPadding:*&v239 layoutType:*&v238 allowedLayoutStrategies:*&v237 layoutConfiguration:*&v236, v235, v234, v233, v232, *&v12, *&v243, *&v245, *&v244, v205, v165, v224, v226, v231];
   }
 
   else
   {
     v167 = objc_alloc(MEMORY[0x1E69C0798]);
-    v168 = [(_PIPosterLayoutJob *)self segmentationClassification];
+    segmentationClassification3 = [(_PIPosterLayoutJob *)self segmentationClassification];
     [(_PIPosterLayoutJob *)self layoutRequest];
-    v159 = v169 = v22;
-    v170 = [v159 shouldComputeSpatialLayout];
-    v162 = [(_PIPosterLayoutJob *)self layoutRequest];
-    [v162 spatialPadding];
-    v166 = [v167 initWithPosterClassification:v168 initialRect:0 imageSize:0 effectiveAcceptableRect:v170 effectivePreferredRect:v129 validBoundsNormalized:v126 headroomFeasible:v132 hasTopEdgeContact:v133 computeSpatial:v134 spatialPadding:v228 * y layoutType:v227 allowedLayoutStrategies:v228 layoutConfiguration:{*&v239, *&v238, *&v237, *&v236, v235, v234, v233, v232, *&v12, *&v243, *&v245, *&v244, v171, v169}];
-    v24 = 0;
+    context2 = v169 = configurationCopy;
+    shouldComputeSpatialLayout2 = [context2 shouldComputeSpatialLayout];
+    layoutRequest8 = [(_PIPosterLayoutJob *)self layoutRequest];
+    [layoutRequest8 spatialPadding];
+    v231 = [v167 initWithPosterClassification:segmentationClassification3 initialRect:0 imageSize:0 effectiveAcceptableRect:shouldComputeSpatialLayout2 effectivePreferredRect:v129 validBoundsNormalized:allowedLayoutStrategies headroomFeasible:v132 hasTopEdgeContact:v133 computeSpatial:v134 spatialPadding:v228 * y layoutType:v227 allowedLayoutStrategies:v228 layoutConfiguration:{*&v239, *&v238, *&v237, *&v236, v235, v234, v233, v232, *&v12, *&v243, *&v245, *&v244, v171, v169}];
+    imageCopy = 0;
   }
 
-  v172 = [(_PIPosterLayoutJob *)self layoutRequest];
-  v173 = [v172 allowedClockStretch];
+  layoutRequest10 = [(_PIPosterLayoutJob *)self layoutRequest];
+  allowedClockStretch = [layoutRequest10 allowedClockStretch];
 
-  if (v173)
+  if (allowedClockStretch)
   {
-    v174 = [(_PIPosterLayoutJob *)self layoutRequest];
-    v175 = [v174 allowedClockStretch];
-    [v175 floatValue];
-    [(PFParallaxLayoutHelper *)v166 setAllowedClockStretch:fmax(fmin(v176, 1.0), 0.0)];
+    layoutRequest11 = [(_PIPosterLayoutJob *)self layoutRequest];
+    allowedClockStretch2 = [layoutRequest11 allowedClockStretch];
+    [allowedClockStretch2 floatValue];
+    [(PFParallaxLayoutHelper *)v231 setAllowedClockStretch:fmax(fmin(v176, 1.0), 0.0)];
   }
 
-  v177 = [MEMORY[0x1E69C07A8] computeLayoutsWithHelper:v166];
-  v178 = [(PFParallaxLayoutHelper *)v166 bestLayout:v177];
+  v177 = [MEMORY[0x1E69C07A8] computeLayoutsWithHelper:v231];
+  v178 = [(PFParallaxLayoutHelper *)v231 bestLayout:v177];
   v33 = [v177 arrayByAddingObject:v178];
 
   v31 = v230;
-  v22 = v231;
-  v23 = v241;
+  configurationCopy = v231;
+  regionsCopy = v241;
 LABEL_81:
 
   return v33;
 }
 
-- (BOOL)prepare:(id *)a3
+- (BOOL)prepare:(id *)prepare
 {
   v42 = *MEMORY[0x1E69E9840];
   v37.receiver = self;
   v37.super_class = _PIPosterLayoutJob;
   if ([(NURenderJob *)&v37 prepare:?])
   {
-    v5 = [(_PIPosterLayoutJob *)self layoutRequest];
-    if ([v5 shouldConstrainLayoutToBounds])
+    layoutRequest = [(_PIPosterLayoutJob *)self layoutRequest];
+    if ([layoutRequest shouldConstrainLayoutToBounds])
     {
-      [v5 normalizedLayoutBounds];
+      [layoutRequest normalizedLayoutBounds];
       if (CGRectIsNull(v43))
       {
         v24 = NUAssertLogger_14911();
@@ -1878,8 +1878,8 @@ LABEL_81:
             v32 = dispatch_get_specific(*v26);
             v33 = MEMORY[0x1E696AF00];
             v34 = v32;
-            v35 = [v33 callStackSymbols];
-            v36 = [v35 componentsJoinedByString:@"\n"];
+            callStackSymbols = [v33 callStackSymbols];
+            v36 = [callStackSymbols componentsJoinedByString:@"\n"];
             *buf = 138543618;
             v39 = v32;
             v40 = 2114;
@@ -1890,8 +1890,8 @@ LABEL_81:
 
         else if (v29)
         {
-          v30 = [MEMORY[0x1E696AF00] callStackSymbols];
-          v31 = [v30 componentsJoinedByString:@"\n"];
+          callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+          v31 = [callStackSymbols2 componentsJoinedByString:@"\n"];
           *buf = 138543362;
           v39 = v31;
           _os_log_error_impl(&dword_1C7694000, v28, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1901,26 +1901,26 @@ LABEL_81:
       }
     }
 
-    v6 = [v5 layoutConfiguration];
-    [(_PIPosterLayoutJob *)self setLayoutConfiguration:v6];
+    layoutConfiguration = [layoutRequest layoutConfiguration];
+    [(_PIPosterLayoutJob *)self setLayoutConfiguration:layoutConfiguration];
 
-    v7 = [(_PIPosterLayoutJob *)self layoutConfiguration];
+    layoutConfiguration2 = [(_PIPosterLayoutJob *)self layoutConfiguration];
 
-    if (v7)
+    if (layoutConfiguration2)
     {
-      v8 = [v5 layoutRegions];
-      [(_PIPosterLayoutJob *)self setLayoutRegions:v8];
+      layoutRegions = [layoutRequest layoutRegions];
+      [(_PIPosterLayoutJob *)self setLayoutRegions:layoutRegions];
 
-      v9 = [(_PIPosterLayoutJob *)self layoutRegions];
+      layoutRegions2 = [(_PIPosterLayoutJob *)self layoutRegions];
 
-      if (v9)
+      if (layoutRegions2)
       {
-        -[_PIPosterLayoutJob setSegmentationClassification:](self, "setSegmentationClassification:", [v5 segmentationClassification]);
-        v10 = [v5 segmentationMatte];
-        if (v10)
+        -[_PIPosterLayoutJob setSegmentationClassification:](self, "setSegmentationClassification:", [layoutRequest segmentationClassification]);
+        segmentationMatte = [layoutRequest segmentationMatte];
+        if (segmentationMatte)
         {
-          v11 = [MEMORY[0x1E695F658] imageWithNUImageBuffer:v10];
-          [v11 extent];
+          segmentationConfidenceMap = [MEMORY[0x1E695F658] imageWithNUImageBuffer:segmentationMatte];
+          [segmentationConfidenceMap extent];
           v13 = @"Invalid segmentation matte size";
           if (v14 >= 1.0 && v12 >= 1.0)
           {
@@ -1928,12 +1928,12 @@ LABEL_81:
             {
               if ([(_PIPosterLayoutJob *)self segmentationClassification]== 3 || [(_PIPosterLayoutJob *)self segmentationClassification]== 4)
               {
-                v15 = [PISegmentationHelper invertImage:v11];
+                v15 = [PISegmentationHelper invertImage:segmentationConfidenceMap];
 
-                v11 = v15;
+                segmentationConfidenceMap = v15;
               }
 
-              [(_PIPosterLayoutJob *)self setSegmentationMatteImage:v11];
+              [(_PIPosterLayoutJob *)self setSegmentationMatteImage:segmentationConfidenceMap];
 
               goto LABEL_14;
             }
@@ -1941,24 +1941,24 @@ LABEL_81:
             v13 = @"Invalid segmentation classification";
           }
 
-          [MEMORY[0x1E69B3A48] invalidError:v13 object:v5];
-          *a3 = v20 = 0;
+          [MEMORY[0x1E69B3A48] invalidError:v13 object:layoutRequest];
+          *prepare = v20 = 0;
 LABEL_26:
 
           goto LABEL_27;
         }
 
 LABEL_14:
-        v11 = [v5 segmentationConfidenceMap];
-        if (v11)
+        segmentationConfidenceMap = [layoutRequest segmentationConfidenceMap];
+        if (segmentationConfidenceMap)
         {
-          v16 = [MEMORY[0x1E695F658] imageWithNUImageBuffer:v11];
+          v16 = [MEMORY[0x1E695F658] imageWithNUImageBuffer:segmentationConfidenceMap];
           [v16 extent];
           v19 = fmin(v17, v18);
           v20 = v19 >= 1.0;
           if (v19 < 1.0)
           {
-            *a3 = [MEMORY[0x1E69B3A48] invalidError:@"Invalid segmentation confidence map size" object:v5];
+            *prepare = [MEMORY[0x1E69B3A48] invalidError:@"Invalid segmentation confidence map size" object:layoutRequest];
           }
 
           else
@@ -1985,8 +1985,8 @@ LABEL_14:
       v22 = @"Missing layout configuration";
     }
 
-    [v21 missingError:v22 object:v5];
-    *a3 = v20 = 0;
+    [v21 missingError:v22 object:layoutRequest];
+    *prepare = v20 = 0;
 LABEL_27:
 
     return v20;
@@ -1995,17 +1995,17 @@ LABEL_27:
   return 0;
 }
 
-- (_PIPosterLayoutJob)initWithPosterLayoutRequest:(id)a3
+- (_PIPosterLayoutJob)initWithPosterLayoutRequest:(id)request
 {
   v4.receiver = self;
   v4.super_class = _PIPosterLayoutJob;
-  return [(NURenderJob *)&v4 initWithRequest:a3];
+  return [(NURenderJob *)&v4 initWithRequest:request];
 }
 
-- (_PIPosterLayoutJob)initWithRequest:(id)a3
+- (_PIPosterLayoutJob)initWithRequest:(id)request
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  requestCopy = request;
   v5 = MEMORY[0x1E69B3D78];
   if (*MEMORY[0x1E69B3D78] != -1)
   {
@@ -2044,8 +2044,8 @@ LABEL_11:
           v22 = MEMORY[0x1E696AF00];
           v23 = specific;
           v24 = v20;
-          v25 = [v22 callStackSymbols];
-          v26 = [v25 componentsJoinedByString:@"\n"];
+          callStackSymbols = [v22 callStackSymbols];
+          v26 = [callStackSymbols componentsJoinedByString:@"\n"];
           *buf = 138543618;
           v29 = specific;
           v30 = 2114;
@@ -2072,8 +2072,8 @@ LABEL_11:
     {
       v16 = MEMORY[0x1E696AF00];
       v17 = v15;
-      v18 = [v16 callStackSymbols];
-      v19 = [v18 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [v16 callStackSymbols];
+      v19 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v29 = v19;
       _os_log_error_impl(&dword_1C7694000, v17, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);

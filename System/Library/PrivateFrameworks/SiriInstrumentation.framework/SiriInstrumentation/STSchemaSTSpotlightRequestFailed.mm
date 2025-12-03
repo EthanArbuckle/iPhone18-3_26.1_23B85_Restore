@@ -1,33 +1,33 @@
 @interface STSchemaSTSpotlightRequestFailed
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (STSchemaSTSpotlightRequestFailed)initWithDictionary:(id)a3;
-- (STSchemaSTSpotlightRequestFailed)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (STSchemaSTSpotlightRequestFailed)initWithDictionary:(id)dictionary;
+- (STSchemaSTSpotlightRequestFailed)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation STSchemaSTSpotlightRequestFailed
 
-- (STSchemaSTSpotlightRequestFailed)initWithDictionary:(id)a3
+- (STSchemaSTSpotlightRequestFailed)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v11.receiver = self;
   v11.super_class = STSchemaSTSpotlightRequestFailed;
   v5 = [(STSchemaSTSpotlightRequestFailed *)&v11 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"reason"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"reason"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[STSchemaSTSpotlightRequestFailed setReason:](v5, "setReason:", [v6 intValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"stError"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"stError"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -41,30 +41,30 @@
   return v5;
 }
 
-- (STSchemaSTSpotlightRequestFailed)initWithJSON:(id)a3
+- (STSchemaSTSpotlightRequestFailed)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(STSchemaSTSpotlightRequestFailed *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(STSchemaSTSpotlightRequestFailed *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(STSchemaSTSpotlightRequestFailed *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -77,17 +77,17 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
-    v4 = [(STSchemaSTSpotlightRequestFailed *)self reason];
+    reason = [(STSchemaSTSpotlightRequestFailed *)self reason];
     v5 = @"STSPOTLIGHTFAILUREREASON_UNKNOWN";
-    if (v4 == 1)
+    if (reason == 1)
     {
       v5 = @"STSPOTLIGHTFAILUREREASON_TIMEOUT";
     }
 
-    if (v4 == 2)
+    if (reason == 2)
     {
       v6 = @"STSPOTLIGHTFAILUREREASON_SEARCHD_UNAVAILABLE";
     }
@@ -97,28 +97,28 @@
       v6 = v5;
     }
 
-    [v3 setObject:v6 forKeyedSubscript:@"reason"];
+    [dictionary setObject:v6 forKeyedSubscript:@"reason"];
   }
 
   if (self->_stError)
   {
-    v7 = [(STSchemaSTSpotlightRequestFailed *)self stError];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    stError = [(STSchemaSTSpotlightRequestFailed *)self stError];
+    dictionaryRepresentation = [stError dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"stError"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"stError"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"stError"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"stError"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -136,22 +136,22 @@
   return [(STSchemaSTFailureError *)self->_stError hash]^ v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    if ((*&self->_has & 1) == (v4[24] & 1))
+    if ((*&self->_has & 1) == (equalCopy[24] & 1))
     {
-      if ((*&self->_has & 1) == 0 || (reason = self->_reason, reason == [v4 reason]))
+      if ((*&self->_has & 1) == 0 || (reason = self->_reason, reason == [equalCopy reason]))
       {
-        v6 = [(STSchemaSTSpotlightRequestFailed *)self stError];
-        v7 = [v4 stError];
-        v8 = v7;
-        if ((v6 != 0) != (v7 == 0))
+        stError = [(STSchemaSTSpotlightRequestFailed *)self stError];
+        stError2 = [equalCopy stError];
+        v8 = stError2;
+        if ((stError != 0) != (stError2 == 0))
         {
-          v9 = [(STSchemaSTSpotlightRequestFailed *)self stError];
-          if (!v9)
+          stError3 = [(STSchemaSTSpotlightRequestFailed *)self stError];
+          if (!stError3)
           {
 
 LABEL_13:
@@ -159,10 +159,10 @@ LABEL_13:
             goto LABEL_11;
           }
 
-          v10 = v9;
-          v11 = [(STSchemaSTSpotlightRequestFailed *)self stError];
-          v12 = [v4 stError];
-          v13 = [v11 isEqual:v12];
+          v10 = stError3;
+          stError4 = [(STSchemaSTSpotlightRequestFailed *)self stError];
+          stError5 = [equalCopy stError];
+          v13 = [stError4 isEqual:stError5];
 
           if (v13)
           {
@@ -183,37 +183,37 @@ LABEL_11:
   return v14;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v7 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     PBDataWriterWriteInt32Field();
   }
 
-  v4 = [(STSchemaSTSpotlightRequestFailed *)self stError];
+  stError = [(STSchemaSTSpotlightRequestFailed *)self stError];
 
-  v5 = v7;
-  if (v4)
+  v5 = toCopy;
+  if (stError)
   {
-    v6 = [(STSchemaSTSpotlightRequestFailed *)self stError];
+    stError2 = [(STSchemaSTSpotlightRequestFailed *)self stError];
     PBDataWriterWriteSubmessage();
 
-    v5 = v7;
+    v5 = toCopy;
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = STSchemaSTSpotlightRequestFailed;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(STSchemaSTSpotlightRequestFailed *)self stError:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(STSchemaSTSpotlightRequestFailed *)self deleteStError];
   }

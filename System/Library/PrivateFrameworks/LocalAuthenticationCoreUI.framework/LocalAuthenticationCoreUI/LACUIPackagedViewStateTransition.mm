@@ -1,24 +1,24 @@
 @interface LACUIPackagedViewStateTransition
-- (LACUIPackagedViewStateTransition)initWithFromState:(id)a3 toState:(id)a4 completion:(id)a5;
+- (LACUIPackagedViewStateTransition)initWithFromState:(id)state toState:(id)toState completion:(id)completion;
 - (void)dealloc;
 @end
 
 @implementation LACUIPackagedViewStateTransition
 
-- (LACUIPackagedViewStateTransition)initWithFromState:(id)a3 toState:(id)a4 completion:(id)a5
+- (LACUIPackagedViewStateTransition)initWithFromState:(id)state toState:(id)toState completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  stateCopy = state;
+  toStateCopy = toState;
+  completionCopy = completion;
   v17.receiver = self;
   v17.super_class = LACUIPackagedViewStateTransition;
   v12 = [(LACUIPackagedViewStateTransition *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_fromState, a3);
-    objc_storeStrong(&v13->_toState, a4);
-    v14 = [v11 copy];
+    objc_storeStrong(&v12->_fromState, state);
+    objc_storeStrong(&v13->_toState, toState);
+    v14 = [completionCopy copy];
     handler = v13->_handler;
     v13->_handler = v14;
   }

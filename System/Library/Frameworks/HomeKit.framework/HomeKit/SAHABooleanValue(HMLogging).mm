@@ -6,13 +6,13 @@
 
 - (id)hm_shortDescription
 {
-  v2 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   v3 = *MEMORY[0x1E69C7D38];
-  [a1 value];
+  [self value];
   v4 = HMFBooleanToString();
-  appendToShortDescription(v2, v3, v4);
+  appendToShortDescription(string, v3, v4);
 
-  return v2;
+  return string;
 }
 
 @end

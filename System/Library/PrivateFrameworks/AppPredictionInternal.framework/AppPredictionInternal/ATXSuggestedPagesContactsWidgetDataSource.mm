@@ -1,8 +1,8 @@
 @interface ATXSuggestedPagesContactsWidgetDataSource
 - (ATXSuggestedPagesContactsWidgetDataSource)init;
-- (id)_createMediumContactsWidgetForPeople:(id)a3 entities:(id)a4;
-- (id)_createSmallContactsWidgetForPeople:(id)a3;
-- (id)provideWidgetsForPageType:(int64_t)a3 environment:(id)a4;
+- (id)_createMediumContactsWidgetForPeople:(id)people entities:(id)entities;
+- (id)_createSmallContactsWidgetForPeople:(id)people;
+- (id)provideWidgetsForPageType:(int64_t)type environment:(id)environment;
 @end
 
 @implementation ATXSuggestedPagesContactsWidgetDataSource
@@ -22,10 +22,10 @@
   return v2;
 }
 
-- (id)provideWidgetsForPageType:(int64_t)a3 environment:(id)a4
+- (id)provideWidgetsForPageType:(int64_t)type environment:(id)environment
 {
-  v6 = a4;
-  if ((a3 - 3) < 9 && ((0x143u >> (a3 - 3)) & 1) != 0 || (v7 = [ATXSuggestedPagesUtils modeForSuggestedPageType:a3], v7 == 16))
+  environmentCopy = environment;
+  if ((type - 3) < 9 && ((0x143u >> (type - 3)) & 1) != 0 || (v7 = [ATXSuggestedPagesUtils modeForSuggestedPageType:type], v7 == 16))
   {
     v8 = 0;
   }
@@ -33,12 +33,12 @@
   else
   {
     v9 = v7;
-    v10 = [ATXSuggestedPagesUtils semanticTypeForSuggestedPageType:a3];
+    v10 = [ATXSuggestedPagesUtils semanticTypeForSuggestedPageType:type];
     v11 = v10;
     if (v10 && [v10 integerValue] != 8)
     {
-      v13 = [MEMORY[0x277CEB440] sharedInstance];
-      v12 = [v13 iOSContactAllowListForMode:{objc_msgSend(v11, "integerValue")}];
+      mEMORY[0x277CEB440] = [MEMORY[0x277CEB440] sharedInstance];
+      v12 = [mEMORY[0x277CEB440] iOSContactAllowListForMode:{objc_msgSend(v11, "integerValue")}];
     }
 
     else
@@ -54,7 +54,7 @@
     v25[2] = __83__ATXSuggestedPagesContactsWidgetDataSource_provideWidgetsForPageType_environment___block_invoke;
     v25[3] = &unk_27859EB70;
     v25[4] = self;
-    v28 = a3;
+    typeCopy = type;
     v17 = v12;
     v26 = v17;
     v18 = v16;
@@ -157,24 +157,24 @@ LABEL_4:
   return v13;
 }
 
-- (id)_createMediumContactsWidgetForPeople:(id)a3 entities:(id)a4
+- (id)_createMediumContactsWidgetForPeople:(id)people entities:(id)entities
 {
   v21[1] = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v8 count];
+  entitiesCopy = entities;
+  peopleCopy = people;
+  v9 = [peopleCopy count];
   if (v9 < [(ATXSuggestedPagesTunableConstants *)self->_suggestedPagesTunableConstants numberOfContactsForMediumWidget])
   {
     [ATXSuggestedPagesContactsWidgetDataSource _createMediumContactsWidgetForPeople:a2 entities:self];
   }
 
-  v10 = [v7 count];
+  v10 = [entitiesCopy count];
   if (v10 < [(ATXSuggestedPagesTunableConstants *)self->_suggestedPagesTunableConstants numberOfContactsForMediumWidget])
   {
     [ATXSuggestedPagesContactsWidgetDataSource _createMediumContactsWidgetForPeople:a2 entities:self];
   }
 
-  v11 = [v8 subarrayWithRange:{0, -[ATXSuggestedPagesTunableConstants numberOfContactsForMediumWidget](self->_suggestedPagesTunableConstants, "numberOfContactsForMediumWidget")}];
+  v11 = [peopleCopy subarrayWithRange:{0, -[ATXSuggestedPagesTunableConstants numberOfContactsForMediumWidget](self->_suggestedPagesTunableConstants, "numberOfContactsForMediumWidget")}];
 
   v12 = objc_alloc(MEMORY[0x277D42030]);
   v20 = @"people";
@@ -182,11 +182,11 @@ LABEL_4:
   v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v21 forKeys:&v20 count:1];
   v14 = [v12 initWithTypeName:@"com.apple.PeopleViewService.SelectPerson-iOS.SelectPeopleIntent" parameters:v13];
 
-  v15 = [v14 createIntent];
-  if (v15)
+  createIntent = [v14 createIntent];
+  if (createIntent)
   {
     v16 = objc_alloc_init(MEMORY[0x277CEB5B0]);
-    [v16 setIntent:v15];
+    [v16 setIntent:createIntent];
     [v16 setSize:1];
     [v16 setWidgetKind:@"MultipleContactWidget_iOS"];
     [v16 setExtensionBundleId:@"com.apple.PeopleViewService.PeopleWidget-iOS"];
@@ -212,20 +212,20 @@ LABEL_4:
   return v16;
 }
 
-- (id)_createSmallContactsWidgetForPeople:(id)a3
+- (id)_createSmallContactsWidgetForPeople:(id)people
 {
   v16[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [v5 count];
+  peopleCopy = people;
+  v6 = [peopleCopy count];
   if (v6 < [(ATXSuggestedPagesTunableConstants *)self->_suggestedPagesTunableConstants numberOfContactsForSmallWidget])
   {
     [(ATXSuggestedPagesContactsWidgetDataSource *)a2 _createSmallContactsWidgetForPeople:?];
   }
 
-  v7 = [v5 firstObject];
+  firstObject = [peopleCopy firstObject];
   v8 = objc_alloc(MEMORY[0x277CD3A70]);
   v15 = @"person";
-  v16[0] = v7;
+  v16[0] = firstObject;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:&v15 count:1];
   v10 = [v8 initWithAppBundleIdentifier:@"com.apple.PeopleViewService" appIntentIdentifier:@"SelectPersonIntent" serializedParameters:v9];
 

@@ -1,9 +1,9 @@
 @interface MSMessageRichLinkLayout
 - (MSMessageRichLinkLayout)init;
-- (MSMessageRichLinkLayout)initWithCoder:(id)a3;
-- (MSMessageRichLinkLayout)initWithLinkMetadata:(id)a3;
+- (MSMessageRichLinkLayout)initWithCoder:(id)coder;
+- (MSMessageRichLinkLayout)initWithLinkMetadata:(id)metadata;
 - (id)_sanitizedCopy;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation MSMessageRichLinkLayout
@@ -19,42 +19,42 @@
   objc_exception_throw(v5);
 }
 
-- (MSMessageRichLinkLayout)initWithLinkMetadata:(id)a3
+- (MSMessageRichLinkLayout)initWithLinkMetadata:(id)metadata
 {
-  v5 = a3;
-  if (!v5)
+  metadataCopy = metadata;
+  if (!metadataCopy)
   {
     v10 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"linkMetadata is required for MSMessageRichLinkLayout" userInfo:0];
     objc_exception_throw(v10);
   }
 
-  v6 = v5;
+  v6 = metadataCopy;
   v11.receiver = self;
   v11.super_class = MSMessageRichLinkLayout;
-  v7 = [(MSMessageLayout *)&v11 _init];
-  v8 = v7;
-  if (v7)
+  _init = [(MSMessageLayout *)&v11 _init];
+  v8 = _init;
+  if (_init)
   {
-    objc_storeStrong(v7 + 11, a3);
+    objc_storeStrong(_init + 11, metadata);
   }
 
   return v8;
 }
 
-- (MSMessageRichLinkLayout)initWithCoder:(id)a3
+- (MSMessageRichLinkLayout)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"linkMetadata"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"linkMetadata"];
 
   v6 = [(MSMessageRichLinkLayout *)self initWithLinkMetadata:v5];
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [MSMessageRichLinkLayout alloc];
-  v5 = [(MSMessageRichLinkLayout *)self linkMetadata];
-  v6 = [(MSMessageRichLinkLayout *)v4 initWithLinkMetadata:v5];
+  linkMetadata = [(MSMessageRichLinkLayout *)self linkMetadata];
+  v6 = [(MSMessageRichLinkLayout *)v4 initWithLinkMetadata:linkMetadata];
 
   return v6;
 }
@@ -62,8 +62,8 @@
 - (id)_sanitizedCopy
 {
   v3 = [MSMessageRichLinkLayout alloc];
-  v4 = [(MSMessageRichLinkLayout *)self linkMetadata];
-  v5 = [(MSMessageRichLinkLayout *)v3 initWithLinkMetadata:v4];
+  linkMetadata = [(MSMessageRichLinkLayout *)self linkMetadata];
+  v5 = [(MSMessageRichLinkLayout *)v3 initWithLinkMetadata:linkMetadata];
 
   return v5;
 }

@@ -1,7 +1,7 @@
 @interface MailPresenter
 - (BOOL)canComposeMail;
 - (_TtC12NewsArticles13MailPresenter)init;
-- (void)presentMail:(id)a3;
+- (void)presentMail:(id)mail;
 @end
 
 @implementation MailPresenter
@@ -13,11 +13,11 @@
   return [v2 canSendMail];
 }
 
-- (void)presentMail:(id)a3
+- (void)presentMail:(id)mail
 {
-  v4 = a3;
-  v5 = self;
-  sub_1D7AF3680(v4);
+  mailCopy = mail;
+  selfCopy = self;
+  sub_1D7AF3680(mailCopy);
 }
 
 - (_TtC12NewsArticles13MailPresenter)init

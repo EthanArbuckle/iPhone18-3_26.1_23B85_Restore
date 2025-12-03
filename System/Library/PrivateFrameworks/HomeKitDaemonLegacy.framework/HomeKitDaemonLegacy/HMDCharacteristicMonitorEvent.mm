@@ -1,38 +1,38 @@
 @interface HMDCharacteristicMonitorEvent
 + (id)logCategory;
-- (BOOL)_compareEventValue:(id)a3;
-- (BOOL)_evaluateNewValue:(id)a3;
-- (BOOL)isCompatibleWithEvent:(id)a3;
+- (BOOL)_compareEventValue:(id)value;
+- (BOOL)_evaluateNewValue:(id)value;
+- (BOOL)isCompatibleWithEvent:(id)event;
 - (id)description;
 @end
 
 @implementation HMDCharacteristicMonitorEvent
 
-- (BOOL)isCompatibleWithEvent:(id)a3
+- (BOOL)isCompatibleWithEvent:(id)event
 {
   v4.receiver = self;
   v4.super_class = HMDCharacteristicMonitorEvent;
-  return [(HMDCharacteristicEvent *)&v4 isCompatibleWithEvent:a3];
+  return [(HMDCharacteristicEvent *)&v4 isCompatibleWithEvent:event];
 }
 
-- (BOOL)_compareEventValue:(id)a3
+- (BOOL)_compareEventValue:(id)value
 {
-  v4 = [(HMDCharacteristicEventBase *)self characteristic];
-  v5 = [(HMDCharacteristicEvent *)self eventValue];
-  v6 = [HMDCharacteristicEventBase compareValueOfCharacteristic:v4 againstValue:v5 operatorType:&unk_286627AA8];
-  v7 = [v6 BOOLValue];
+  characteristic = [(HMDCharacteristicEventBase *)self characteristic];
+  eventValue = [(HMDCharacteristicEvent *)self eventValue];
+  v6 = [HMDCharacteristicEventBase compareValueOfCharacteristic:characteristic againstValue:eventValue operatorType:&unk_286627AA8];
+  bOOLValue = [v6 BOOLValue];
 
-  return v7;
+  return bOOLValue;
 }
 
-- (BOOL)_evaluateNewValue:(id)a3
+- (BOOL)_evaluateNewValue:(id)value
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDCharacteristicEventBase *)self previousValue];
-  if (v4)
+  valueCopy = value;
+  previousValue = [(HMDCharacteristicEventBase *)self previousValue];
+  if (valueCopy)
   {
-    v6 = ![(HMDCharacteristicMonitorEvent *)self _compareEventValue:v4];
+    v6 = ![(HMDCharacteristicMonitorEvent *)self _compareEventValue:valueCopy];
   }
 
   else
@@ -41,18 +41,18 @@
   }
 
   v7 = objc_autoreleasePoolPush();
-  v8 = self;
+  selfCopy = self;
   v9 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
     HMFGetLogIdentifier();
-    v10 = v19 = v5;
+    v10 = v19 = previousValue;
     v11 = HMFBooleanToString();
-    v12 = [(HMDCharacteristicEventBase *)v8 characteristic];
-    v13 = [v12 value];
-    [(HMDCharacteristicEvent *)v8 eventValue];
+    characteristic = [(HMDCharacteristicEventBase *)selfCopy characteristic];
+    value = [characteristic value];
+    [(HMDCharacteristicEvent *)selfCopy eventValue];
     v14 = v18 = v7;
-    v15 = [(HMDCharacteristicEventBase *)v8 characteristic];
+    characteristic2 = [(HMDCharacteristicEventBase *)selfCopy characteristic];
     *buf = 138544642;
     v21 = v10;
     v22 = 2112;
@@ -60,15 +60,15 @@
     v24 = 2112;
     v25 = v19;
     v26 = 2112;
-    v27 = v13;
+    v27 = value;
     v28 = 2112;
     v29 = v14;
     v30 = 2112;
-    v31 = v15;
+    v31 = characteristic2;
     _os_log_impl(&dword_2531F8000, v9, OS_LOG_TYPE_INFO, "%{public}@Evaluated event, should fire: %@, previous value: %@, current value: %@, event monitor value: %@, %@", buf, 0x3Eu);
 
     v7 = v18;
-    v5 = v19;
+    previousValue = v19;
   }
 
   objc_autoreleasePoolPop(v7);
@@ -82,8 +82,8 @@
   v8.receiver = self;
   v8.super_class = HMDCharacteristicMonitorEvent;
   v4 = [(HMDCharacteristicEvent *)&v8 description];
-  v5 = [(HMDCharacteristicEvent *)self eventValue];
-  v6 = [v3 stringWithFormat:@"[Char-Monitor-Event: %@, event value: %@]", v4, v5];
+  eventValue = [(HMDCharacteristicEvent *)self eventValue];
+  v6 = [v3 stringWithFormat:@"[Char-Monitor-Event: %@, event value: %@]", v4, eventValue];
 
   return v6;
 }

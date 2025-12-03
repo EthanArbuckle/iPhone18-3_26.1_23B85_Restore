@@ -29,7 +29,7 @@
           objc_enumerationMutation(v4);
         }
 
-        if (recordHasKey(a1, *(*(&v12 + 1) + 8 * v8)))
+        if (recordHasKey(self, *(*(&v12 + 1) + 8 * v8)))
         {
           v9 = 1;
           goto LABEL_11;
@@ -79,7 +79,7 @@ LABEL_11:
           objc_enumerationMutation(v4);
         }
 
-        if (recordHasKey(a1, *(*(&v12 + 1) + 8 * v8)))
+        if (recordHasKey(self, *(*(&v12 + 1) + 8 * v8)))
         {
           v9 = 1;
           goto LABEL_11;
@@ -109,11 +109,11 @@ LABEL_11:
 - (id)journalRecordNumberValueForKey:()SKGJournalRecordValidation
 {
   v4 = a3;
-  v5 = a1;
+  selfCopy = self;
   v6 = v4;
-  if (v5)
+  if (selfCopy)
   {
-    ValueForKey = getValueForKey(v5, v6);
+    ValueForKey = getValueForKey(selfCopy, v6);
     v8 = ValueForKey;
     if (!ValueForKey)
     {

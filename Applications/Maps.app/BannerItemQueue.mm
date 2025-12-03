@@ -1,9 +1,9 @@
 @interface BannerItemQueue
 - (BannerItemQueue)init;
 - (id)popItem;
-- (void)addItem:(id)a3;
+- (void)addItem:(id)item;
 - (void)removeAllItems;
-- (void)removeItemsOfType:(Class)a3;
+- (void)removeItemsOfType:(Class)type;
 @end
 
 @implementation BannerItemQueue
@@ -74,8 +74,8 @@ LABEL_10:
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v11 = [(NSMutableOrderedSet *)self->_dequeuedOrder reverseObjectEnumerator];
-  v12 = [v11 countByEnumeratingWithState:&v24 objects:v32 count:16];
+  reverseObjectEnumerator = [(NSMutableOrderedSet *)self->_dequeuedOrder reverseObjectEnumerator];
+  v12 = [reverseObjectEnumerator countByEnumeratingWithState:&v24 objects:v32 count:16];
   if (v12)
   {
     v13 = v12;
@@ -86,7 +86,7 @@ LABEL_10:
       {
         if (*v25 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
         v9 = [(NSMutableDictionary *)self->_queueByClass objectForKeyedSubscript:*(*(&v24 + 1) + 8 * i)];
@@ -104,7 +104,7 @@ LABEL_10:
         }
       }
 
-      v13 = [v11 countByEnumeratingWithState:&v24 objects:v32 count:16];
+      v13 = [reverseObjectEnumerator countByEnumeratingWithState:&v24 objects:v32 count:16];
       if (v13)
       {
         continue;
@@ -118,8 +118,8 @@ LABEL_10:
 LABEL_26:
 
 LABEL_27:
-  v17 = [v9 firstObject];
-  if (v17)
+  firstObject = [v9 firstObject];
+  if (firstObject)
   {
     v18 = objc_opt_class();
     [(NSMutableOrderedSet *)self->_dequeuedOrder removeObject:v18];
@@ -132,7 +132,7 @@ LABEL_27:
     }
 
     *buf = 138412290;
-    v34 = v17;
+    v34 = firstObject;
     v20 = "Dequeued item: %@";
     v21 = v19;
     v22 = 12;
@@ -155,7 +155,7 @@ LABEL_27:
   _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_INFO, v20, buf, v22);
 LABEL_33:
 
-  return v17;
+  return firstObject;
 }
 
 - (void)removeAllItems
@@ -169,8 +169,8 @@ LABEL_33:
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v5 = [(NSMutableDictionary *)self->_queueByClass allValues];
-    v6 = [v5 countByEnumeratingWithState:&v12 objects:v18 count:16];
+    allValues = [(NSMutableDictionary *)self->_queueByClass allValues];
+    v6 = [allValues countByEnumeratingWithState:&v12 objects:v18 count:16];
     if (v6)
     {
       v7 = v6;
@@ -182,13 +182,13 @@ LABEL_33:
         {
           if (*v13 != v9)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(allValues);
           }
 
           v8 += [*(*(&v12 + 1) + 8 * i) count];
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v12 objects:v18 count:16];
+        v7 = [allValues countByEnumeratingWithState:&v12 objects:v18 count:16];
       }
 
       while (v7);
@@ -211,7 +211,7 @@ LABEL_33:
   [(NSMutableDictionary *)self->_queueByClass removeAllObjects];
 }
 
-- (void)removeItemsOfType:(Class)a3
+- (void)removeItemsOfType:(Class)type
 {
   v5 = [(NSMutableDictionary *)self->_queueByClass objectForKeyedSubscript:?];
   v6 = [v5 count];
@@ -224,18 +224,18 @@ LABEL_33:
       v9 = 134218242;
       v10 = v6;
       v11 = 2112;
-      v12 = a3;
+      typeCopy = type;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "Removing %lu instance(s) of %@", &v9, 0x16u);
     }
 
-    v8 = [(NSMutableDictionary *)self->_queueByClass objectForKeyedSubscript:a3];
+    v8 = [(NSMutableDictionary *)self->_queueByClass objectForKeyedSubscript:type];
     [v8 removeAllObjects];
   }
 }
 
-- (void)addItem:(id)a3
+- (void)addItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v5 = [(NSMutableDictionary *)self->_queueByClass objectForKeyedSubscript:objc_opt_class()];
   v6 = v5;
   if (v5)
@@ -259,9 +259,9 @@ LABEL_33:
   while (1)
   {
     v10 = [v8 objectAtIndexedSubscript:v9];
-    v11 = [v10 uniqueId];
-    v12 = [v4 uniqueId];
-    v13 = [v11 isEqualToString:v12];
+    uniqueId = [v10 uniqueId];
+    uniqueId2 = [itemCopy uniqueId];
+    v13 = [uniqueId isEqualToString:uniqueId2];
 
     if (v13)
     {
@@ -283,11 +283,11 @@ LABEL_33:
       v17 = 138412546;
       v18 = v16;
       v19 = 2112;
-      v20 = v4;
+      v20 = itemCopy;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "Replacing item %@ with %@", &v17, 0x16u);
     }
 
-    [v8 replaceObjectAtIndex:v9 withObject:v4];
+    [v8 replaceObjectAtIndex:v9 withObject:itemCopy];
   }
 
   else
@@ -297,11 +297,11 @@ LABEL_10:
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
       v17 = 138412290;
-      v18 = v4;
+      v18 = itemCopy;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "Adding item %@", &v17, 0xCu);
     }
 
-    [v8 addObject:v4];
+    [v8 addObject:itemCopy];
   }
 
   [(NSMutableDictionary *)self->_queueByClass setObject:v8 forKeyedSubscript:objc_opt_class()];

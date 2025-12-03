@@ -6,21 +6,21 @@
 - (BOOL)handleHomeButtonHeld;
 - (BOOL)isVisible;
 - (SBVoiceControlController)init;
-- (id)_newVoiceControlTransientOverlayViewControllerWithSource:(id)a3;
-- (id)siriBluetoothDeviceSource:(id)a3;
-- (void)_assistantActivationSettingsDidChange:(id)a3;
+- (id)_newVoiceControlTransientOverlayViewControllerWithSource:(id)source;
+- (id)siriBluetoothDeviceSource:(id)source;
+- (void)_assistantActivationSettingsDidChange:(id)change;
 - (void)_cancelDelayedHeadsetAction;
 - (void)_performDelayedHeadsetActionForAssistant;
 - (void)_performDelayedHeadsetActionForVoiceControl;
 - (void)_prepareDelayedHeadsetAction;
 - (void)_shouldEnterVoiceControl;
-- (void)_updateNextRecognitionAudioInputPaths:(id)a3;
-- (void)bluetoothDeviceEndedVoiceControl:(id)a3;
-- (void)bluetoothDeviceInitiatedVoiceControl:(id)a3;
+- (void)_updateNextRecognitionAudioInputPaths:(id)paths;
+- (void)bluetoothDeviceEndedVoiceControl:(id)control;
+- (void)bluetoothDeviceInitiatedVoiceControl:(id)control;
 - (void)dismissTransientOverlay;
-- (void)handleHeadsetButtonDownWithClickCount:(unint64_t)a3;
-- (void)voiceControlTransientOverlayViewControllerDidDisappear:(id)a3;
-- (void)voiceControlTransientOverlayViewControllerRequestsDismissal:(id)a3;
+- (void)handleHeadsetButtonDownWithClickCount:(unint64_t)count;
+- (void)voiceControlTransientOverlayViewControllerDidDisappear:(id)disappear;
+- (void)voiceControlTransientOverlayViewControllerRequestsDismissal:(id)dismissal;
 @end
 
 @implementation SBVoiceControlController
@@ -40,8 +40,8 @@
 - (BOOL)isVisible
 {
   v3 = +[SBWorkspace mainWorkspace];
-  v4 = [v3 transientOverlayPresentationManager];
-  LOBYTE(self) = [v4 isTopmostPresentedViewController:self->_transientOverlayViewController];
+  transientOverlayPresentationManager = [v3 transientOverlayPresentationManager];
+  LOBYTE(self) = [transientOverlayPresentationManager isTopmostPresentedViewController:self->_transientOverlayViewController];
 
   return self;
 }
@@ -67,25 +67,25 @@ uint64_t __42__SBVoiceControlController_sharedInstance__block_invoke()
     siriHeadsetDeviceSource = v2->_siriHeadsetDeviceSource;
     v2->_siriHeadsetDeviceSource = v3;
 
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v5 addObserver:v2 selector:sel__spokenLanguageDidChange_ name:*MEMORY[0x277D79A30] object:0];
-    [v5 addObserver:v2 selector:sel__updateNextRecognitionAudioInputPaths_ name:*MEMORY[0x277D67AC8] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__spokenLanguageDidChange_ name:*MEMORY[0x277D79A30] object:0];
+    [defaultCenter addObserver:v2 selector:sel__updateNextRecognitionAudioInputPaths_ name:*MEMORY[0x277D67AC8] object:0];
   }
 
   return v2;
 }
 
-- (id)siriBluetoothDeviceSource:(id)a3
+- (id)siriBluetoothDeviceSource:(id)source
 {
-  v3 = a3;
-  v4 = [v3 sb_siriBluetoothDeviceSource];
-  if (!v4)
+  sourceCopy = source;
+  sb_siriBluetoothDeviceSource = [sourceCopy sb_siriBluetoothDeviceSource];
+  if (!sb_siriBluetoothDeviceSource)
   {
-    v4 = [MEMORY[0x277D551D0] bluetoothDeviceForIdentifier:3 bluetoothDevice:v3];
-    [v3 sb_setSiriBluetoothDeviceSource:v4];
+    sb_siriBluetoothDeviceSource = [MEMORY[0x277D551D0] bluetoothDeviceForIdentifier:3 bluetoothDevice:sourceCopy];
+    [sourceCopy sb_setSiriBluetoothDeviceSource:sb_siriBluetoothDeviceSource];
   }
 
-  return v4;
+  return sb_siriBluetoothDeviceSource;
 }
 
 - (void)dismissTransientOverlay
@@ -98,12 +98,12 @@ uint64_t __42__SBVoiceControlController_sharedInstance__block_invoke()
   [v4 dismissTransientOverlayViewController:v3 animated:1 completion:0];
 }
 
-- (void)voiceControlTransientOverlayViewControllerRequestsDismissal:(id)a3
+- (void)voiceControlTransientOverlayViewControllerRequestsDismissal:(id)dismissal
 {
-  v4 = a3;
+  dismissalCopy = dismissal;
   transientOverlayViewController = self->_transientOverlayViewController;
-  v7 = v4;
-  if (transientOverlayViewController == v4)
+  v7 = dismissalCopy;
+  if (transientOverlayViewController == dismissalCopy)
   {
     self->_transientOverlayViewController = 0;
   }
@@ -112,10 +112,10 @@ uint64_t __42__SBVoiceControlController_sharedInstance__block_invoke()
   [v6 dismissTransientOverlayViewController:v7 animated:1 completion:0];
 }
 
-- (void)voiceControlTransientOverlayViewControllerDidDisappear:(id)a3
+- (void)voiceControlTransientOverlayViewControllerDidDisappear:(id)disappear
 {
   transientOverlayViewController = self->_transientOverlayViewController;
-  if (transientOverlayViewController == a3)
+  if (transientOverlayViewController == disappear)
   {
     self->_transientOverlayViewController = 0;
   }
@@ -169,8 +169,8 @@ LABEL_7:
 - (void)_performDelayedHeadsetActionForVoiceControl
 {
   v3 = +[SBSceneManagerCoordinator mainDisplaySceneManager];
-  v4 = [v3 policyAggregator];
-  v5 = [v4 allowsCapability:4];
+  policyAggregator = [v3 policyAggregator];
+  v5 = [policyAggregator allowsCapability:4];
 
   if ((v5 & 1) == 0)
   {
@@ -207,8 +207,8 @@ LABEL_7:
 {
   self->_headsetDownDelayedActionPerformed = 0;
   v3 = +[SBSceneManagerCoordinator mainDisplaySceneManager];
-  v4 = [v3 policyAggregator];
-  v5 = [v4 allowsCapability:5];
+  policyAggregator = [v3 policyAggregator];
+  v5 = [policyAggregator allowsCapability:5];
 
   if (v5)
   {
@@ -219,9 +219,9 @@ LABEL_7:
     if (v7 > 0.0)
     {
       [(SiriAssertion *)self->_siriPreheatAssertion invalidate];
-      v8 = [(SiriLongPressButtonSource *)self->_siriHeadsetDeviceSource prepareForActivation];
+      prepareForActivation = [(SiriLongPressButtonSource *)self->_siriHeadsetDeviceSource prepareForActivation];
       siriPreheatAssertion = self->_siriPreheatAssertion;
-      self->_siriPreheatAssertion = v8;
+      self->_siriPreheatAssertion = prepareForActivation;
     }
   }
 
@@ -245,10 +245,10 @@ LABEL_7:
   }
 }
 
-- (void)handleHeadsetButtonDownWithClickCount:(unint64_t)a3
+- (void)handleHeadsetButtonDownWithClickCount:(unint64_t)count
 {
   self->_headsetDownDelayedActionPerformed = 0;
-  if (a3)
+  if (count)
   {
     [(SBVoiceControlController *)self _cancelDelayedHeadsetAction];
   }
@@ -263,8 +263,8 @@ LABEL_7:
 {
   [(SBVoiceControlController *)self _cancelDelayedHeadsetAction];
   v3 = +[SBSceneManagerCoordinator mainDisplaySceneManager];
-  v4 = [v3 policyAggregator];
-  v5 = [v4 allowsCapability:4];
+  policyAggregator = [v3 policyAggregator];
+  v5 = [policyAggregator allowsCapability:4];
 
   if (v5)
   {
@@ -290,34 +290,34 @@ LABEL_7:
 {
   if (self->_headsetDownDelayedActionPerformed)
   {
-    LOBYTE(v2) = 1;
+    LOBYTE(isActive) = 1;
   }
 
   else
   {
-    v2 = [(SiriLongPressButtonSource *)self->_siriHeadsetDeviceSource isActive];
-    if (v2)
+    isActive = [(SiriLongPressButtonSource *)self->_siriHeadsetDeviceSource isActive];
+    if (isActive)
     {
       [(SiriLongPressButtonSource *)self->_siriHeadsetDeviceSource didRecognizeButtonSinglePressUp];
-      LOBYTE(v2) = 1;
+      LOBYTE(isActive) = 1;
     }
   }
 
-  return v2;
+  return isActive;
 }
 
-- (void)_assistantActivationSettingsDidChange:(id)a3
+- (void)_assistantActivationSettingsDidChange:(id)change
 {
   v3 = +[SBSceneManagerCoordinator mainDisplaySceneManager];
-  v4 = [v3 policyAggregator];
-  if ([v4 allowsCapability:4])
+  policyAggregator = [v3 policyAggregator];
+  if ([policyAggregator allowsCapability:4])
   {
     v5 = NSClassFromString(&cfstr_Vscacheupdatel.isa);
 
     if (v5)
     {
-      v6 = [MEMORY[0x277D79928] sharedListener];
-      [v6 stopListening];
+      mEMORY[0x277D79928] = [MEMORY[0x277D79928] sharedListener];
+      [mEMORY[0x277D79928] stopListening];
 
       v7 = SBLogCommon();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
@@ -338,8 +338,8 @@ LABEL_8:
   {
   }
 
-  v10 = [MEMORY[0x277D79928] sharedListener];
-  [v10 startListening];
+  mEMORY[0x277D79928]2 = [MEMORY[0x277D79928] sharedListener];
+  [mEMORY[0x277D79928]2 startListening];
 
   v7 = SBLogCommon();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
@@ -353,53 +353,53 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)bluetoothDeviceInitiatedVoiceControl:(id)a3
+- (void)bluetoothDeviceInitiatedVoiceControl:(id)control
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  controlCopy = control;
+  if (controlCopy)
   {
     v5 = +[SBSceneManagerCoordinator mainDisplaySceneManager];
-    v6 = [v5 policyAggregator];
-    v7 = [v6 allowsCapability:5];
+    policyAggregator = [v5 policyAggregator];
+    v7 = [policyAggregator allowsCapability:5];
 
     if (v7)
     {
-      v8 = [(SBVoiceControlController *)self siriBluetoothDeviceSource:v4];
+      mEMORY[0x277CF3248] = [(SBVoiceControlController *)self siriBluetoothDeviceSource:controlCopy];
       v9 = SBLogCommon();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
         v19 = 138543618;
-        *v20 = v8;
+        *v20 = mEMORY[0x277CF3248];
         *&v20[8] = 2114;
-        v21 = v4;
+        v21 = controlCopy;
         _os_log_impl(&dword_21ED4E000, v9, OS_LOG_TYPE_DEFAULT, "Telling siri to activate for BTHeadset (source:%{public}@ device:%{public}@)", &v19, 0x16u);
       }
 
-      [v8 activate];
+      [mEMORY[0x277CF3248] activate];
       goto LABEL_15;
     }
 
-    v10 = [(SBVoiceControlController *)self _shouldEnterVoiceControl];
+    _shouldEnterVoiceControl = [(SBVoiceControlController *)self _shouldEnterVoiceControl];
     v11 = +[SBDefaults localDefaults];
-    v12 = [v11 voiceControlDefaults];
-    v13 = [v12 disableVoiceControlForBluetoothRequests];
+    voiceControlDefaults = [v11 voiceControlDefaults];
+    disableVoiceControlForBluetoothRequests = [voiceControlDefaults disableVoiceControlForBluetoothRequests];
 
     v14 = SBLogCommon();
     v15 = os_log_type_enabled(v14, OS_LOG_TYPE_INFO);
-    if (!v10 || v13)
+    if (!_shouldEnterVoiceControl || disableVoiceControlForBluetoothRequests)
     {
       if (v15)
       {
         v19 = 67109376;
-        *v20 = v10;
+        *v20 = _shouldEnterVoiceControl;
         *&v20[4] = 1024;
-        *&v20[6] = v13;
+        *&v20[6] = disableVoiceControlForBluetoothRequests;
         _os_log_impl(&dword_21ED4E000, v14, OS_LOG_TYPE_INFO, "Not starting VC because shouldEnterVoiceControl: %{BOOL}u disabledByPref: %{BOOL}u", &v19, 0xEu);
       }
 
-      v8 = [MEMORY[0x277CF3248] sharedInstance];
-      [v8 endVoiceCommand:v4];
+      mEMORY[0x277CF3248] = [MEMORY[0x277CF3248] sharedInstance];
+      [mEMORY[0x277CF3248] endVoiceCommand:controlCopy];
       goto LABEL_15;
     }
 
@@ -411,24 +411,24 @@ LABEL_9:
 
     if (!self->_transientOverlayViewController)
     {
-      v16 = [SBVoiceControlPresentationSource sourceFromBluetoothDevice:v4];
+      v16 = [SBVoiceControlPresentationSource sourceFromBluetoothDevice:controlCopy];
       v17 = [(SBVoiceControlController *)self _newVoiceControlTransientOverlayViewControllerWithSource:v16];
       transientOverlayViewController = self->_transientOverlayViewController;
       self->_transientOverlayViewController = v17;
 
-      v8 = +[SBWorkspace mainWorkspace];
-      [v8 presentTransientOverlayViewController:self->_transientOverlayViewController animated:1 completion:0];
+      mEMORY[0x277CF3248] = +[SBWorkspace mainWorkspace];
+      [mEMORY[0x277CF3248] presentTransientOverlayViewController:self->_transientOverlayViewController animated:1 completion:0];
 LABEL_15:
     }
   }
 }
 
-- (void)bluetoothDeviceEndedVoiceControl:(id)a3
+- (void)bluetoothDeviceEndedVoiceControl:(id)control
 {
-  v4 = a3;
+  controlCopy = control;
   v5 = +[SBSceneManagerCoordinator mainDisplaySceneManager];
-  v6 = [v5 policyAggregator];
-  v7 = [v6 allowsCapability:4];
+  policyAggregator = [v5 policyAggregator];
+  v7 = [policyAggregator allowsCapability:4];
 
   v8 = SBLogCommon();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
@@ -440,7 +440,7 @@ LABEL_15:
       _os_log_impl(&dword_21ED4E000, v8, OS_LOG_TYPE_DEFAULT, "Telling siri to deactivate for BTHeadset", buf, 2u);
     }
 
-    v10 = [(SBVoiceControlController *)self siriBluetoothDeviceSource:v4];
+    v10 = [(SBVoiceControlController *)self siriBluetoothDeviceSource:controlCopy];
     [v10 deactivate];
   }
 
@@ -459,9 +459,9 @@ LABEL_15:
 - (BOOL)_shouldEnterVoiceControl
 {
   v3 = +[SBSceneManagerCoordinator mainDisplaySceneManager];
-  v4 = [v3 policyAggregator];
+  policyAggregator = [v3 policyAggregator];
   v18 = 0;
-  v5 = [v4 allowsCapability:8 explanation:&v18];
+  v5 = [policyAggregator allowsCapability:8 explanation:&v18];
   v6 = v18;
 
   if (v5)
@@ -479,11 +479,11 @@ LABEL_15:
 
       else
       {
-        v8 = [MEMORY[0x277D26E58] sharedAVSystemController];
-        v9 = [v8 attributeForKey:*MEMORY[0x277D26DD8]];
-        v10 = [v9 BOOLValue];
+        mEMORY[0x277D26E58] = [MEMORY[0x277D26E58] sharedAVSystemController];
+        v9 = [mEMORY[0x277D26E58] attributeForKey:*MEMORY[0x277D26DD8]];
+        bOOLValue = [v9 BOOLValue];
 
-        if (v10)
+        if (bOOLValue)
         {
           v11 = 1;
           goto LABEL_15;
@@ -556,10 +556,10 @@ LABEL_15:
   return v11;
 }
 
-- (void)_updateNextRecognitionAudioInputPaths:(id)a3
+- (void)_updateNextRecognitionAudioInputPaths:(id)paths
 {
-  v4 = [a3 object];
-  v5 = [v4 copy];
+  object = [paths object];
+  v5 = [object copy];
   nextRecognitionAudioInputPaths = self->_nextRecognitionAudioInputPaths;
   self->_nextRecognitionAudioInputPaths = v5;
 
@@ -572,20 +572,20 @@ LABEL_15:
   }
 }
 
-- (id)_newVoiceControlTransientOverlayViewControllerWithSource:(id)a3
+- (id)_newVoiceControlTransientOverlayViewControllerWithSource:(id)source
 {
-  v4 = a3;
-  v5 = [[SBVoiceControlTransientOverlayViewController alloc] initWithSource:v4];
+  sourceCopy = source;
+  v5 = [[SBVoiceControlTransientOverlayViewController alloc] initWithSource:sourceCopy];
 
   [(SBVoiceControlTransientOverlayViewController *)v5 setVoiceControlDelegate:self];
-  v6 = [SBApp authenticationController];
+  authenticationController = [SBApp authenticationController];
   v7 = +[SBLockScreenManager sharedInstance];
-  if (([v7 isUILocked] & 1) != 0 || (objc_msgSend(v6, "isAuthenticated") & 1) == 0)
+  if (([v7 isUILocked] & 1) != 0 || (objc_msgSend(authenticationController, "isAuthenticated") & 1) == 0)
   {
-    v9 = [MEMORY[0x277D262A0] sharedConnection];
-    if ([v9 effectiveBoolValueForSetting:*MEMORY[0x277D25CE8]] == 2)
+    mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+    if ([mEMORY[0x277D262A0] effectiveBoolValueForSetting:*MEMORY[0x277D25CE8]] == 2)
     {
-      v8 = [v6 hasPasscodeSet] ^ 1;
+      v8 = [authenticationController hasPasscodeSet] ^ 1;
     }
 
     else
@@ -600,9 +600,9 @@ LABEL_15:
   }
 
   v10 = +[SBDefaults localDefaults];
-  v11 = [v10 voiceControlDefaults];
+  voiceControlDefaults = [v10 voiceControlDefaults];
 
-  if ([v11 isVoiceControlLoggingEnabled])
+  if ([voiceControlDefaults isVoiceControlLoggingEnabled])
   {
     [(SBVoiceControlTransientOverlayViewController *)v5 setVoiceControlLoggingEnabled:1];
   }
@@ -613,8 +613,8 @@ LABEL_15:
     -[SBVoiceControlTransientOverlayViewController setVoiceControlLoggingEnabled:](v5, "setVoiceControlLoggingEnabled:", [v12 isInternalInstall]);
   }
 
-  -[SBVoiceControlTransientOverlayViewController setShouldDisableHandlerActions:](v5, "setShouldDisableHandlerActions:", [v11 disableHandlerActions]);
-  -[SBVoiceControlTransientOverlayViewController setShouldDisableVoiceControlForBluetoothRequests:](v5, "setShouldDisableVoiceControlForBluetoothRequests:", [v11 disableVoiceControlForBluetoothRequests]);
+  -[SBVoiceControlTransientOverlayViewController setShouldDisableHandlerActions:](v5, "setShouldDisableHandlerActions:", [voiceControlDefaults disableHandlerActions]);
+  -[SBVoiceControlTransientOverlayViewController setShouldDisableVoiceControlForBluetoothRequests:](v5, "setShouldDisableVoiceControlForBluetoothRequests:", [voiceControlDefaults disableVoiceControlForBluetoothRequests]);
   [(SBVoiceControlTransientOverlayViewController *)v5 setShouldAllowSensitiveActions:v8];
   [(SBVoiceControlTransientOverlayViewController *)v5 setNextRecognitionAudioInputPaths:self->_nextRecognitionAudioInputPaths];
 

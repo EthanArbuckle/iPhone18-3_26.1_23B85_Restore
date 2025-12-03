@@ -1,27 +1,27 @@
 @interface VoiceTriggerRePromptUtil
 + (id)sharedInstance;
-- (BOOL)isRePromptableWithAssistantId:(id)a3;
+- (BOOL)isRePromptableWithAssistantId:(id)id;
 - (id)initAndLoadImpactedAssistantIdsForRePrompt;
-- (id)initAndLoadImpactedAssistantIdsForRePromptWithAsset:(id)a3;
+- (id)initAndLoadImpactedAssistantIdsForRePromptWithAsset:(id)asset;
 @end
 
 @implementation VoiceTriggerRePromptUtil
 
-- (BOOL)isRePromptableWithAssistantId:(id)a3
+- (BOOL)isRePromptableWithAssistantId:(id)id
 {
   v22 = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CCAC38];
-  v5 = a3;
-  v6 = [v4 processInfo];
-  [v6 systemUptime];
+  idCopy = id;
+  processInfo = [v4 processInfo];
+  [processInfo systemUptime];
   v8 = v7;
 
   bloomFilter = self->_bloomFilter;
-  v10 = [v5 dataUsingEncoding:4];
+  v10 = [idCopy dataUsingEncoding:4];
 
   v11 = [(BloomFilter *)bloomFilter contains:v10];
-  v12 = [MEMORY[0x277CCAC38] processInfo];
-  [v12 systemUptime];
+  processInfo2 = [MEMORY[0x277CCAC38] processInfo];
+  [processInfo2 systemUptime];
   v14 = v13;
 
   v15 = *MEMORY[0x277D01970];
@@ -38,10 +38,10 @@
   return v11;
 }
 
-- (id)initAndLoadImpactedAssistantIdsForRePromptWithAsset:(id)a3
+- (id)initAndLoadImpactedAssistantIdsForRePromptWithAsset:(id)asset
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  assetCopy = asset;
   v25.receiver = self;
   v25.super_class = VoiceTriggerRePromptUtil;
   v5 = [(VoiceTriggerRePromptUtil *)&v25 init];
@@ -51,8 +51,8 @@
   }
 
   SSRLogInitIfNeeded();
-  v6 = [v4 blobVersion];
-  if (([v6 isEqualToString:@"1"] & 1) == 0)
+  blobVersion = [assetCopy blobVersion];
+  if (([blobVersion isEqualToString:@"1"] & 1) == 0)
   {
     v19 = *MEMORY[0x277D01970];
     if (os_log_type_enabled(*MEMORY[0x277D01970], OS_LOG_TYPE_ERROR))
@@ -60,19 +60,19 @@
       *buf = 136315394;
       v27 = "[VoiceTriggerRePromptUtil initAndLoadImpactedAssistantIdsForRePromptWithAsset:]";
       v28 = 2112;
-      v29 = v6;
+      v29 = blobVersion;
       _os_log_error_impl(&dword_225E12000, v19, OS_LOG_TYPE_ERROR, "%s Unsupported blob version %@", buf, 0x16u);
     }
 
     goto LABEL_13;
   }
 
-  v7 = [v4 blobName];
-  v8 = [v4 resourcePath];
-  v9 = [v8 stringByAppendingPathComponent:v7];
+  blobName = [assetCopy blobName];
+  resourcePath = [assetCopy resourcePath];
+  v9 = [resourcePath stringByAppendingPathComponent:blobName];
 
-  v10 = [MEMORY[0x277CCAA00] defaultManager];
-  v11 = [v10 fileExistsAtPath:v9];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v11 = [defaultManager fileExistsAtPath:v9];
 
   if ((v11 & 1) == 0)
   {
@@ -134,7 +134,7 @@ LABEL_16:
   if (v4)
   {
     self = [(VoiceTriggerRePromptUtil *)self initAndLoadImpactedAssistantIdsForRePromptWithAsset:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
   else
@@ -147,11 +147,11 @@ LABEL_16:
       _os_log_error_impl(&dword_225E12000, v6, OS_LOG_TYPE_ERROR, "%s No asset found, nothing to do", &v9, 0xCu);
     }
 
-    v5 = 0;
+    selfCopy = 0;
   }
 
   v7 = *MEMORY[0x277D85DE8];
-  return v5;
+  return selfCopy;
 }
 
 + (id)sharedInstance

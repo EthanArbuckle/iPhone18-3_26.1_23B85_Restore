@@ -1,38 +1,38 @@
 @interface VNEntityIdentificationModelConfiguration
-+ (id)newConfigurationForEntityPrintsGeneratedByRequest:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)newConfigurationForEntityPrintsGeneratedByRequest:(id)request error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (NSArray)acceptableEntityPrintOriginatingRequestSpecifiers;
-- (VNEntityIdentificationModelConfiguration)initWithCoder:(id)a3;
-- (VNEntityIdentificationModelConfiguration)initWithEntityPrintOriginatingRequestSpecifier:(id)a3;
-- (id)algorithmOfClass:(Class)a3 error:(id *)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (VNEntityIdentificationModelConfiguration)initWithCoder:(id)coder;
+- (VNEntityIdentificationModelConfiguration)initWithEntityPrintOriginatingRequestSpecifier:(id)specifier;
+- (id)algorithmOfClass:(Class)class error:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)resolvedAlgorithmAndReturnError:(id *)a3;
+- (id)resolvedAlgorithmAndReturnError:(id *)error;
 - (int)faceID3IndexMode;
 - (int)faceID3ModelMaximumElementsPerID;
 - (int)faceID3ModelMaximumIDs;
 - (int)faceIDModelMaximumElementsPerID;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setMaximumEntities:(unint64_t)a3;
-- (void)setMaximumTrainingPrintsPerEntity:(unint64_t)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setMaximumEntities:(unint64_t)entities;
+- (void)setMaximumTrainingPrintsPerEntity:(unint64_t)entity;
 @end
 
 @implementation VNEntityIdentificationModelConfiguration
 
-- (VNEntityIdentificationModelConfiguration)initWithCoder:(id)a3
+- (VNEntityIdentificationModelConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(VNEntityIdentificationModelConfiguration *)self init];
   if (v5)
   {
-    v5->_maximumEntities = [v4 decodeIntegerForKey:@"maximumEntities"];
-    v5->_maximumTrainingPrintsPerEntity = [v4 decodeIntegerForKey:@"printsPerEntity"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"printOriginatingRequest"];
+    v5->_maximumEntities = [coderCopy decodeIntegerForKey:@"maximumEntities"];
+    v5->_maximumTrainingPrintsPerEntity = [coderCopy decodeIntegerForKey:@"printsPerEntity"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"printOriginatingRequest"];
     entityPrintOriginatingRequestSpecifier = v5->_entityPrintOriginatingRequestSpecifier;
     v5->_entityPrintOriginatingRequestSpecifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"algorithm"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"algorithm"];
     algorithm = v5->_algorithm;
     v5->_algorithm = v8;
   }
@@ -40,14 +40,14 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   maximumEntities = self->_maximumEntities;
-  v5 = a3;
-  [v5 encodeInteger:maximumEntities forKey:@"maximumEntities"];
-  [v5 encodeInteger:self->_maximumTrainingPrintsPerEntity forKey:@"printsPerEntity"];
-  [v5 encodeObject:self->_entityPrintOriginatingRequestSpecifier forKey:@"printOriginatingRequest"];
-  [v5 encodeObject:self->_algorithm forKey:@"algorithm"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:maximumEntities forKey:@"maximumEntities"];
+  [coderCopy encodeInteger:self->_maximumTrainingPrintsPerEntity forKey:@"printsPerEntity"];
+  [coderCopy encodeObject:self->_entityPrintOriginatingRequestSpecifier forKey:@"printOriginatingRequest"];
+  [coderCopy encodeObject:self->_algorithm forKey:@"algorithm"];
 }
 
 - (id)description
@@ -68,10 +68,10 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v13 = 1;
   }
@@ -81,16 +81,16 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(VNEntityIdentificationModelConfiguration *)self algorithm];
-      v7 = [(VNEntityIdentificationModelConfiguration *)v5 algorithm];
+      v5 = equalCopy;
+      algorithm = [(VNEntityIdentificationModelConfiguration *)self algorithm];
+      algorithm2 = [(VNEntityIdentificationModelConfiguration *)v5 algorithm];
       v8 = VisionCoreEqualOrNilObjects();
 
       if (v8 && (v9 = [(VNEntityIdentificationModelConfiguration *)self maximumEntities], v9 == [(VNEntityIdentificationModelConfiguration *)v5 maximumEntities]) && (v10 = [(VNEntityIdentificationModelConfiguration *)self maximumTrainingPrintsPerEntity], v10 == [(VNEntityIdentificationModelConfiguration *)v5 maximumTrainingPrintsPerEntity]))
       {
-        v11 = [(VNEntityIdentificationModelConfiguration *)self entityPrintOriginatingRequestSpecifier];
-        v12 = [(VNEntityIdentificationModelConfiguration *)v5 entityPrintOriginatingRequestSpecifier];
-        v13 = [v11 isEqual:v12];
+        entityPrintOriginatingRequestSpecifier = [(VNEntityIdentificationModelConfiguration *)self entityPrintOriginatingRequestSpecifier];
+        entityPrintOriginatingRequestSpecifier2 = [(VNEntityIdentificationModelConfiguration *)v5 entityPrintOriginatingRequestSpecifier];
+        v13 = [entityPrintOriginatingRequestSpecifier isEqual:entityPrintOriginatingRequestSpecifier2];
       }
 
       else
@@ -110,19 +110,19 @@
 
 - (unint64_t)hash
 {
-  v3 = [(VNEntityIdentificationModelConfiguration *)self entityPrintOriginatingRequestSpecifier];
-  v4 = [v3 hash];
+  entityPrintOriginatingRequestSpecifier = [(VNEntityIdentificationModelConfiguration *)self entityPrintOriginatingRequestSpecifier];
+  v4 = [entityPrintOriginatingRequestSpecifier hash];
 
   v5 = [(VNEntityIdentificationModelConfiguration *)self maximumTrainingPrintsPerEntity]^ __ROR8__([(VNEntityIdentificationModelConfiguration *)self maximumEntities]^ __ROR8__(v4, 51), 51);
-  v6 = [(VNEntityIdentificationModelConfiguration *)self algorithm];
-  v7 = [v6 hash] ^ __ROR8__(v5, 51);
+  algorithm = [(VNEntityIdentificationModelConfiguration *)self algorithm];
+  v7 = [algorithm hash] ^ __ROR8__(v5, 51);
 
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = v4;
   if (v4)
   {
@@ -140,51 +140,51 @@
   return v5;
 }
 
-- (void)setMaximumTrainingPrintsPerEntity:(unint64_t)a3
+- (void)setMaximumTrainingPrintsPerEntity:(unint64_t)entity
 {
-  v5 = [objc_opt_class() maximumAllowableFaceprintsPerIdentity];
-  v6 = 20;
-  if (a3)
+  maximumAllowableFaceprintsPerIdentity = [objc_opt_class() maximumAllowableFaceprintsPerIdentity];
+  entityCopy = 20;
+  if (entity)
   {
-    v6 = a3;
+    entityCopy = entity;
   }
 
-  if (v6 >= v5)
+  if (entityCopy >= maximumAllowableFaceprintsPerIdentity)
   {
-    v6 = v5;
+    entityCopy = maximumAllowableFaceprintsPerIdentity;
   }
 
-  self->_maximumTrainingPrintsPerEntity = v6;
+  self->_maximumTrainingPrintsPerEntity = entityCopy;
 }
 
-- (void)setMaximumEntities:(unint64_t)a3
+- (void)setMaximumEntities:(unint64_t)entities
 {
-  v5 = [objc_opt_class() maximumAllowableEntities];
-  if (a3 - 1 >= v5)
+  maximumAllowableEntities = [objc_opt_class() maximumAllowableEntities];
+  if (entities - 1 >= maximumAllowableEntities)
   {
-    v6 = v5;
+    entitiesCopy = maximumAllowableEntities;
   }
 
   else
   {
-    v6 = a3;
+    entitiesCopy = entities;
   }
 
-  self->_maximumEntities = v6;
+  self->_maximumEntities = entitiesCopy;
 }
 
 - (NSArray)acceptableEntityPrintOriginatingRequestSpecifiers
 {
-  v2 = [(VNEntityIdentificationModelConfiguration *)self entityPrintOriginatingRequestSpecifier];
-  v3 = [v2 allModelEquivalents];
+  entityPrintOriginatingRequestSpecifier = [(VNEntityIdentificationModelConfiguration *)self entityPrintOriginatingRequestSpecifier];
+  allModelEquivalents = [entityPrintOriginatingRequestSpecifier allModelEquivalents];
 
-  return v3;
+  return allModelEquivalents;
 }
 
-- (id)algorithmOfClass:(Class)a3 error:(id *)a4
+- (id)algorithmOfClass:(Class)class error:(id *)error
 {
-  v4 = a4;
-  v6 = [(VNEntityIdentificationModelConfiguration *)self resolvedAlgorithmAndReturnError:a4];
+  errorCopy = error;
+  v6 = [(VNEntityIdentificationModelConfiguration *)self resolvedAlgorithmAndReturnError:error];
   if (!v6)
   {
     goto LABEL_6;
@@ -192,43 +192,43 @@
 
   if (objc_opt_isKindOfClass())
   {
-    v4 = v6;
+    errorCopy = v6;
     goto LABEL_7;
   }
 
-  if (v4)
+  if (errorCopy)
   {
     v7 = objc_alloc(MEMORY[0x1E696AEC0]);
     v8 = objc_opt_class();
     v9 = NSStringFromClass(v8);
-    v10 = NSStringFromClass(a3);
+    v10 = NSStringFromClass(class);
     v11 = [v7 initWithFormat:@"configuration %@ cannot provide a %@", v9, v10];
 
-    *v4 = [VNError errorForInvalidOperationWithLocalizedDescription:v11];
+    *errorCopy = [VNError errorForInvalidOperationWithLocalizedDescription:v11];
 
 LABEL_6:
-    v4 = 0;
+    errorCopy = 0;
   }
 
 LABEL_7:
 
-  return v4;
+  return errorCopy;
 }
 
-- (id)resolvedAlgorithmAndReturnError:(id *)a3
+- (id)resolvedAlgorithmAndReturnError:(id *)error
 {
-  v3 = [(VNEntityIdentificationModelConfiguration *)self algorithm];
-  if (!v3)
+  algorithm = [(VNEntityIdentificationModelConfiguration *)self algorithm];
+  if (!algorithm)
   {
-    v3 = objc_alloc_init(VNEntityIdentificationModelAlgorithmVIPv2);
+    algorithm = objc_alloc_init(VNEntityIdentificationModelAlgorithmVIPv2);
   }
 
-  return v3;
+  return algorithm;
 }
 
-- (VNEntityIdentificationModelConfiguration)initWithEntityPrintOriginatingRequestSpecifier:(id)a3
+- (VNEntityIdentificationModelConfiguration)initWithEntityPrintOriginatingRequestSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   v10.receiver = self;
   v10.super_class = VNEntityIdentificationModelConfiguration;
   v5 = [(VNEntityIdentificationModelConfiguration *)&v10 init];
@@ -236,7 +236,7 @@ LABEL_7:
   if (v5)
   {
     *(v5 + 8) = xmmword_1A6038C10;
-    v7 = [v4 copy];
+    v7 = [specifierCopy copy];
     entityPrintOriginatingRequestSpecifier = v6->_entityPrintOriginatingRequestSpecifier;
     v6->_entityPrintOriginatingRequestSpecifier = v7;
   }
@@ -244,29 +244,29 @@ LABEL_7:
   return v6;
 }
 
-+ (id)newConfigurationForEntityPrintsGeneratedByRequest:(id)a3 error:(id *)a4
++ (id)newConfigurationForEntityPrintsGeneratedByRequest:(id)request error:(id *)error
 {
-  v6 = a3;
+  requestCopy = request;
   v7 = VNEntityUniqueIdentifierSupportedRequestSpecifiers();
-  v8 = [v6 specifier];
-  if ([v7 containsObject:v8])
+  specifier = [requestCopy specifier];
+  if ([v7 containsObject:specifier])
   {
-    v9 = [a1 alloc];
-    v10 = [v6 specifier];
-    v11 = [v9 initWithEntityPrintOriginatingRequestSpecifier:v10];
+    v9 = [self alloc];
+    specifier2 = [requestCopy specifier];
+    v11 = [v9 initWithEntityPrintOriginatingRequestSpecifier:specifier2];
   }
 
   else
   {
-    if (!a4)
+    if (!error)
     {
       v11 = 0;
       goto LABEL_6;
     }
 
-    v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ is not supported", v8];
-    VNEntityIdentificationModelErrorWithLocalizedDescriptionAndUnderlyingError(2, v10, 0);
-    *a4 = v11 = 0;
+    specifier2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ is not supported", specifier];
+    VNEntityIdentificationModelErrorWithLocalizedDescriptionAndUnderlyingError(2, specifier2, 0);
+    *error = v11 = 0;
   }
 
 LABEL_6:
@@ -292,35 +292,35 @@ LABEL_6:
 
 - (int)faceID3ModelMaximumElementsPerID
 {
-  v2 = [(VNEntityIdentificationModelConfiguration *)self maximumTrainingPrintsPerEntity];
-  if (v2 >= 0x7FFFFFFF)
+  maximumTrainingPrintsPerEntity = [(VNEntityIdentificationModelConfiguration *)self maximumTrainingPrintsPerEntity];
+  if (maximumTrainingPrintsPerEntity >= 0x7FFFFFFF)
   {
-    LODWORD(v2) = 0x7FFFFFFF;
+    LODWORD(maximumTrainingPrintsPerEntity) = 0x7FFFFFFF;
   }
 
-  return v2;
+  return maximumTrainingPrintsPerEntity;
 }
 
 - (int)faceID3ModelMaximumIDs
 {
-  v2 = [(VNEntityIdentificationModelConfiguration *)self maximumEntities];
-  if (v2 >= 0x7FFFFFFF)
+  maximumEntities = [(VNEntityIdentificationModelConfiguration *)self maximumEntities];
+  if (maximumEntities >= 0x7FFFFFFF)
   {
-    LODWORD(v2) = 0x7FFFFFFF;
+    LODWORD(maximumEntities) = 0x7FFFFFFF;
   }
 
-  return v2;
+  return maximumEntities;
 }
 
 - (int)faceIDModelMaximumElementsPerID
 {
-  v2 = [(VNEntityIdentificationModelConfiguration *)self maximumTrainingPrintsPerEntity];
-  if (v2 >= 0x7FFFFFFF)
+  maximumTrainingPrintsPerEntity = [(VNEntityIdentificationModelConfiguration *)self maximumTrainingPrintsPerEntity];
+  if (maximumTrainingPrintsPerEntity >= 0x7FFFFFFF)
   {
-    LODWORD(v2) = 0x7FFFFFFF;
+    LODWORD(maximumTrainingPrintsPerEntity) = 0x7FFFFFFF;
   }
 
-  return v2;
+  return maximumTrainingPrintsPerEntity;
 }
 
 @end

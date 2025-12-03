@@ -1,18 +1,18 @@
 @interface ValidUpdateRequest
-- (BOOL)scheduleUpdateFromServer:(id)a3 forVersion:(int64_t)a4 withQueue:(id)a5;
-- (BOOL)updateNowFromServer:(id)a3 version:(int64_t)a4 queue:(id)a5;
-- (id)validUpdateConfiguration:(BOOL)a3;
-- (void)createSessions:(id)a3 forServer:(id)a4;
+- (BOOL)scheduleUpdateFromServer:(id)server forVersion:(int64_t)version withQueue:(id)queue;
+- (BOOL)updateNowFromServer:(id)server version:(int64_t)version queue:(id)queue;
+- (id)validUpdateConfiguration:(BOOL)configuration;
+- (void)createSessions:(id)sessions forServer:(id)server;
 @end
 
 @implementation ValidUpdateRequest
 
-- (BOOL)updateNowFromServer:(id)a3 version:(int64_t)a4 queue:(id)a5
+- (BOOL)updateNowFromServer:(id)server version:(int64_t)version queue:(id)queue
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = v9;
-  if (!v8)
+  serverCopy = server;
+  queueCopy = queue;
+  v10 = queueCopy;
+  if (!serverCopy)
   {
     v15 = sub_1000027AC("validupdate");
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -28,7 +28,7 @@ LABEL_10:
     goto LABEL_15;
   }
 
-  if (!v9)
+  if (!queueCopy)
   {
     v15 = sub_1000027AC("validupdate");
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -41,30 +41,30 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  v11 = [(ValidUpdateRequest *)self ephemeralSession];
+  ephemeralSession = [(ValidUpdateRequest *)self ephemeralSession];
 
-  if (v11)
+  if (ephemeralSession)
   {
-    v12 = [(ValidUpdateRequest *)self ephemeralSession];
-    v13 = [v12 delegate];
+    ephemeralSession2 = [(ValidUpdateRequest *)self ephemeralSession];
+    delegate = [ephemeralSession2 delegate];
 
-    v14 = [v8 copy];
-    [v13 setCurrentUpdateServer:v14];
+    v14 = [serverCopy copy];
+    [delegate setCurrentUpdateServer:v14];
   }
 
   else
   {
-    [(ValidUpdateRequest *)self createSessions:v10 forServer:v8];
+    [(ValidUpdateRequest *)self createSessions:v10 forServer:serverCopy];
   }
 
-  v18 = [NSString stringWithFormat:@"https://%@/g%ld/v%ld", v8, sub_1000511C0(), a4];
-  v15 = [NSURL URLWithString:v18];
+  version = [NSString stringWithFormat:@"https://%@/g%ld/v%ld", serverCopy, sub_1000511C0(), version];
+  v15 = [NSURL URLWithString:version];
 
-  v19 = [(ValidUpdateRequest *)self ephemeralSession];
-  v20 = [v19 dataTaskWithURL:v15];
+  ephemeralSession3 = [(ValidUpdateRequest *)self ephemeralSession];
+  v20 = [ephemeralSession3 dataTaskWithURL:v15];
 
-  v21 = [NSString stringWithFormat:@"%ld", a4];
-  [v20 setTaskDescription:v21];
+  version2 = [NSString stringWithFormat:@"%ld", version];
+  [v20 setTaskDescription:version2];
 
   [v20 resume];
   v22 = sub_1000027AC("validupdate");
@@ -85,12 +85,12 @@ LABEL_15:
   return v17;
 }
 
-- (BOOL)scheduleUpdateFromServer:(id)a3 forVersion:(int64_t)a4 withQueue:(id)a5
+- (BOOL)scheduleUpdateFromServer:(id)server forVersion:(int64_t)version withQueue:(id)queue
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = v9;
-  if (!v8)
+  serverCopy = server;
+  queueCopy = queue;
+  v10 = queueCopy;
+  if (!serverCopy)
   {
     v12 = sub_1000027AC("validupdate");
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -107,7 +107,7 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if (!v9)
+  if (!queueCopy)
   {
     v12 = sub_1000027AC("validupdate");
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -125,9 +125,9 @@ LABEL_9:
   v15[2] = sub_10003C90C;
   v15[3] = &unk_1000836E8;
   v15[4] = self;
-  v16 = v9;
-  v17 = v8;
-  v18 = a4;
+  v16 = queueCopy;
+  v17 = serverCopy;
+  versionCopy = version;
   dispatch_async(v16, v15);
 
   v11 = 1;
@@ -136,11 +136,11 @@ LABEL_10:
   return v11;
 }
 
-- (void)createSessions:(id)a3 forServer:(id)a4
+- (void)createSessions:(id)sessions forServer:(id)server
 {
-  v14 = a3;
-  v6 = a4;
-  v7 = [(ValidUpdateRequest *)self createSession:0 queue:v14 forServer:v6];
+  sessionsCopy = sessions;
+  serverCopy = server;
+  v7 = [(ValidUpdateRequest *)self createSession:0 queue:sessionsCopy forServer:serverCopy];
   [(ValidUpdateRequest *)self setEphemeralSession:v7];
 
   v8 = CFPreferencesCopyValue(@"ValidUpdateBackground", @"com.apple.security", kCFPreferencesAnyUser, kCFPreferencesCurrentHost);
@@ -154,7 +154,7 @@ LABEL_10:
       CFRelease(v9);
       if (!Value)
       {
-        v12 = [(ValidUpdateRequest *)self ephemeralSession];
+        ephemeralSession = [(ValidUpdateRequest *)self ephemeralSession];
         goto LABEL_7;
       }
     }
@@ -165,15 +165,15 @@ LABEL_10:
     }
   }
 
-  v12 = [(ValidUpdateRequest *)self createSession:1 queue:v14 forServer:v6];
+  ephemeralSession = [(ValidUpdateRequest *)self createSession:1 queue:sessionsCopy forServer:serverCopy];
 LABEL_7:
-  v13 = v12;
-  [(ValidUpdateRequest *)self setBackgroundSession:v12];
+  v13 = ephemeralSession;
+  [(ValidUpdateRequest *)self setBackgroundSession:ephemeralSession];
 }
 
-- (id)validUpdateConfiguration:(BOOL)a3
+- (id)validUpdateConfiguration:(BOOL)configuration
 {
-  if (a3)
+  if (configuration)
   {
     v3 = CFPreferencesCopyValue(@"ValidUpdateWiFiOnly", @"com.apple.security", kCFPreferencesAnyUser, kCFPreferencesCurrentHost);
     if (v3)

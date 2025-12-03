@@ -22,22 +22,22 @@
 
     if (v3)
     {
-      v6 = [v3 periodicDelay];
+      periodicDelay = [v3 periodicDelay];
 
-      if (v6)
+      if (periodicDelay)
       {
-        v7 = [v3 periodicDelay];
+        periodicDelay2 = [v3 periodicDelay];
         v8 = v2->_periodicDelay;
-        v2->_periodicDelay = v7;
+        v2->_periodicDelay = periodicDelay2;
       }
 
-      v9 = [v3 periodicDelay];
+      periodicDelay3 = [v3 periodicDelay];
 
-      if (v9)
+      if (periodicDelay3)
       {
-        v10 = [v3 batchSize];
+        batchSize = [v3 batchSize];
         v11 = v2->_batchSize;
-        v2->_batchSize = v10;
+        v2->_batchSize = batchSize;
       }
     }
   }
@@ -47,16 +47,16 @@
 
 - (unint64_t)batchSizeUInteger
 {
-  v2 = [(APJourneyBatchSettings *)self batchSize];
-  v3 = [v2 integerValue];
+  batchSize = [(APJourneyBatchSettings *)self batchSize];
+  integerValue = [batchSize integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 - (double)periodicDelayTimeInterval
 {
-  v2 = [(APJourneyBatchSettings *)self periodicDelay];
-  [v2 doubleValue];
+  periodicDelay = [(APJourneyBatchSettings *)self periodicDelay];
+  [periodicDelay doubleValue];
   v4 = v3;
 
   return v4;

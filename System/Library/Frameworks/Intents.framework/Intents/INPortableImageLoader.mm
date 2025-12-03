@@ -1,12 +1,12 @@
 @interface INPortableImageLoader
-- (INPortableImageLoader)initWithCoder:(id)a3;
+- (INPortableImageLoader)initWithCoder:(id)coder;
 - (INPortableImageLoaderHelping)helper;
 - (NSString)serviceIdentifier;
 - (id)_helperClassName;
-- (void)filePathForImage:(id)a3 completion:(id)a4;
-- (void)filePathForImage:(id)a3 usingPortableImageLoader:(id)a4 completion:(id)a5;
-- (void)loadDataImageFromImage:(id)a3 usingPortableImageLoader:(id)a4 scaledSize:(id)a5 completion:(id)a6;
-- (void)loadImageDataFromImage:(id)a3 accessSpecifier:(id)a4 completion:(id)a5;
+- (void)filePathForImage:(id)image completion:(id)completion;
+- (void)filePathForImage:(id)image usingPortableImageLoader:(id)loader completion:(id)completion;
+- (void)loadDataImageFromImage:(id)image usingPortableImageLoader:(id)loader scaledSize:(id)size completion:(id)completion;
+- (void)loadImageDataFromImage:(id)image accessSpecifier:(id)specifier completion:(id)completion;
 @end
 
 @implementation INPortableImageLoader
@@ -39,22 +39,22 @@ void __42__INPortableImageLoader_serviceIdentifier__block_invoke(uint64_t a1)
   serviceIdentifier_sServiceIdentifier_83630 = v6;
 }
 
-- (INPortableImageLoader)initWithCoder:(id)a3
+- (INPortableImageLoader)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = INPortableImageLoader;
   return [(INPortableImageLoader *)&v4 init];
 }
 
-- (void)filePathForImage:(id)a3 usingPortableImageLoader:(id)a4 completion:(id)a5
+- (void)filePathForImage:(id)image usingPortableImageLoader:(id)loader completion:(id)completion
 {
   v21 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v8)
+  imageCopy = image;
+  loaderCopy = loader;
+  completionCopy = completion;
+  if (loaderCopy)
   {
-    [v8 filePathForImage:v7 usingPortableImageLoader:0 completion:v9];
+    [loaderCopy filePathForImage:imageCopy usingPortableImageLoader:0 completion:completionCopy];
   }
 
   else
@@ -74,45 +74,45 @@ void __42__INPortableImageLoader_serviceIdentifier__block_invoke(uint64_t a1)
     v16 = @"The INPortableImageLoader provided to filePathForImage:usingPortableImageLoader:completion: is nil";
     v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v16 forKeys:&v15 count:1];
     v13 = [v11 errorWithDomain:@"IntentsErrorDomain" code:6000 userInfo:v12];
-    v9[2](v9, 0, v13);
+    completionCopy[2](completionCopy, 0, v13);
   }
 
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)loadDataImageFromImage:(id)a3 usingPortableImageLoader:(id)a4 scaledSize:(id)a5 completion:(id)a6
+- (void)loadDataImageFromImage:(id)image usingPortableImageLoader:(id)loader scaledSize:(id)size completion:(id)completion
 {
-  if (a4)
+  if (loader)
   {
-    [a4 loadDataImageFromImage:a3 usingPortableImageLoader:0 scaledSize:a6 completion:{a5.var0, a5.var1}];
+    [loader loadDataImageFromImage:image usingPortableImageLoader:0 scaledSize:completion completion:{size.var0, size.var1}];
   }
 
   else
   {
-    [(INPortableImageLoader *)self loadImageDataFromImage:a3 accessSpecifier:0 completion:a6, a5.var0, a5.var1];
+    [(INPortableImageLoader *)self loadImageDataFromImage:image accessSpecifier:0 completion:completion, size.var0, size.var1];
   }
 }
 
-- (void)filePathForImage:(id)a3 completion:(id)a4
+- (void)filePathForImage:(id)image completion:(id)completion
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if (v6)
+  imageCopy = image;
+  completionCopy = completion;
+  if (completionCopy)
   {
     v7 = INSiriLogContextIntents;
-    if (v5)
+    if (imageCopy)
     {
       if (os_log_type_enabled(INSiriLogContextIntents, OS_LOG_TYPE_INFO))
       {
         *buf = 136315394;
         v15 = "[INPortableImageLoader filePathForImage:completion:]";
         v16 = 2112;
-        v17 = v5;
+        v17 = imageCopy;
         _os_log_impl(&dword_18E991000, v7, OS_LOG_TYPE_INFO, "%s Attempting to grab file path for image: %@", buf, 0x16u);
       }
 
-      [(__CFString *)v5 _retrieveFilePathWithCompletion:v6];
+      [(__CFString *)imageCopy _retrieveFilePathWithCompletion:completionCopy];
     }
 
     else
@@ -131,36 +131,36 @@ void __42__INPortableImageLoader_serviceIdentifier__block_invoke(uint64_t a1)
       v13 = @"The INImage provided to INPortableImageLoader:filePathForImage is nil";
       v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v13 forKeys:&v12 count:1];
       v10 = [v8 errorWithDomain:@"IntentsErrorDomain" code:6000 userInfo:v9];
-      v6[2](v6, 0, v10);
+      completionCopy[2](completionCopy, 0, v10);
     }
   }
 
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)loadImageDataFromImage:(id)a3 accessSpecifier:(id)a4 completion:(id)a5
+- (void)loadImageDataFromImage:(id)image accessSpecifier:(id)specifier completion:(id)completion
 {
   v26 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  imageCopy = image;
+  specifierCopy = specifier;
+  completionCopy = completion;
+  if (completionCopy)
   {
     v11 = INSiriLogContextIntents;
-    if (v8)
+    if (imageCopy)
     {
       if (os_log_type_enabled(INSiriLogContextIntents, OS_LOG_TYPE_INFO))
       {
         *buf = 136315394;
         v23 = "[INPortableImageLoader loadImageDataFromImage:accessSpecifier:completion:]";
         v24 = 2112;
-        v25 = v8;
+        v25 = imageCopy;
         _os_log_impl(&dword_18E991000, v11, OS_LOG_TYPE_INFO, "%s Attempting intrinsic loading strategy for image: %@", buf, 0x16u);
       }
 
-      v12 = [(INPortableImageLoader *)self helper];
-      v13 = v9;
-      if (!v9)
+      helper = [(INPortableImageLoader *)self helper];
+      v13 = specifierCopy;
+      if (!specifierCopy)
       {
         v13 = +[INHelperServiceAccessSpecifier accessSpecifierAppropriateForCurrentProcess];
       }
@@ -169,9 +169,9 @@ void __42__INPortableImageLoader_serviceIdentifier__block_invoke(uint64_t a1)
       v18[1] = 3221225472;
       v18[2] = __75__INPortableImageLoader_loadImageDataFromImage_accessSpecifier_completion___block_invoke;
       v18[3] = &unk_1E7283580;
-      v19 = v10;
-      [(__CFString *)v8 _loadImageDataAndSizeWithHelper:v12 accessSpecifier:v13 completion:v18];
-      if (!v9)
+      v19 = completionCopy;
+      [(__CFString *)imageCopy _loadImageDataAndSizeWithHelper:helper accessSpecifier:v13 completion:v18];
+      if (!specifierCopy)
       {
       }
 
@@ -194,7 +194,7 @@ void __42__INPortableImageLoader_serviceIdentifier__block_invoke(uint64_t a1)
       v21 = @"The INImage provided to INPortableImageLoader:loadImageDataFromImage is nil";
       v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v21 forKeys:&v20 count:1];
       v16 = [v15 errorWithDomain:@"IntentsErrorDomain" code:6000 userInfo:v14];
-      (*(v10 + 2))(v10, 0, v16);
+      (*(completionCopy + 2))(completionCopy, 0, v16);
     }
   }
 
@@ -222,11 +222,11 @@ void __75__INPortableImageLoader_loadImageDataFromImage_accessSpecifier_completi
 
 - (id)_helperClassName
 {
-  v3 = [(INPortableImageLoader *)self helper];
+  helper = [(INPortableImageLoader *)self helper];
 
-  if (v3)
+  if (helper)
   {
-    v4 = [(INPortableImageLoader *)self helper];
+    helper2 = [(INPortableImageLoader *)self helper];
     v5 = objc_opt_class();
     v6 = NSStringFromClass(v5);
   }

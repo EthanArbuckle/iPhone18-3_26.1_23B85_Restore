@@ -1,33 +1,33 @@
 @interface SBHPageManagementCellDragPreview
-+ (id)_pageManagementCellViewForIconImageViewController:(id)a3;
-- (SBHPageManagementCellDragPreview)initWithReferenceIconView:(id)a3;
++ (id)_pageManagementCellViewForIconImageViewController:(id)controller;
+- (SBHPageManagementCellDragPreview)initWithReferenceIconView:(id)view;
 - (id)_pageManagementCellView;
-- (id)delayCleanUpForReason:(id)a3;
-- (void)_configureIconViewWithReferenceIconView:(id)a3;
-- (void)_removeDelayCleanupAssertion:(id)a3;
+- (id)delayCleanUpForReason:(id)reason;
+- (void)_configureIconViewWithReferenceIconView:(id)view;
+- (void)_removeDelayCleanupAssertion:(id)assertion;
 - (void)cleanUp;
-- (void)draggingSourceDroppedWithOperation:(unint64_t)a3;
+- (void)draggingSourceDroppedWithOperation:(unint64_t)operation;
 - (void)dropDestinationAnimationCompleted;
 - (void)handleCleanup;
-- (void)setDragState:(unint64_t)a3;
-- (void)setIconViewCustomIconImageViewController:(id)a3;
+- (void)setDragState:(unint64_t)state;
+- (void)setIconViewCustomIconImageViewController:(id)controller;
 @end
 
 @implementation SBHPageManagementCellDragPreview
 
-- (SBHPageManagementCellDragPreview)initWithReferenceIconView:(id)a3
+- (SBHPageManagementCellDragPreview)initWithReferenceIconView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   v6 = *MEMORY[0x1E695EFF8];
   v7 = *(MEMORY[0x1E695EFF8] + 8);
-  [v5 iconImageInfo];
+  [viewCopy iconImageInfo];
   v13.receiver = self;
   v13.super_class = SBHPageManagementCellDragPreview;
   v10 = [(SBHPageManagementCellDragPreview *)&v13 initWithFrame:v6, v7, v8, v9];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_referenceIconView, a3);
+    objc_storeStrong(&v10->_referenceIconView, view);
   }
 
   return v11;
@@ -35,17 +35,17 @@
 
 - (id)_pageManagementCellView
 {
-  v2 = [(SBIconView *)self->_iconView customIconImageViewController];
-  v3 = [objc_opt_class() _pageManagementCellViewForIconImageViewController:v2];
+  customIconImageViewController = [(SBIconView *)self->_iconView customIconImageViewController];
+  v3 = [objc_opt_class() _pageManagementCellViewForIconImageViewController:customIconImageViewController];
 
   return v3;
 }
 
-+ (id)_pageManagementCellViewForIconImageViewController:(id)a3
++ (id)_pageManagementCellViewForIconImageViewController:(id)controller
 {
-  v3 = a3;
+  controllerCopy = controller;
   v4 = objc_opt_class();
-  v5 = v3;
+  v5 = controllerCopy;
   if (v4)
   {
     if (objc_opt_isKindOfClass())
@@ -66,27 +66,27 @@
 
   v7 = v6;
 
-  v8 = [v7 pageManagementCellView];
+  pageManagementCellView = [v7 pageManagementCellView];
 
-  return v8;
+  return pageManagementCellView;
 }
 
-- (void)_configureIconViewWithReferenceIconView:(id)a3
+- (void)_configureIconViewWithReferenceIconView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v5 = [objc_alloc(objc_opt_class()) initWithConfigurationOptions:4];
   [(SBIconView *)v5 setCustomIconImageViewControllerPriority:3];
-  v12 = [(SBHPageManagementCellDragPreview *)self customIconImageViewController];
-  v6 = [objc_opt_class() _pageManagementCellViewForIconImageViewController:v12];
-  v7 = [v6 listView];
-  [v7 ignoreNextWindowChange];
+  customIconImageViewController = [(SBHPageManagementCellDragPreview *)self customIconImageViewController];
+  v6 = [objc_opt_class() _pageManagementCellViewForIconImageViewController:customIconImageViewController];
+  listView = [v6 listView];
+  [listView ignoreNextWindowChange];
 
-  [(SBIconView *)v5 setOverrideCustomIconImageViewController:v12];
-  [v4 configureMatchingIconView:v5];
-  -[SBIconView setEditing:](v5, "setEditing:", [v4 isEditing]);
-  v8 = [v4 accessibilityTintColor];
+  [(SBIconView *)v5 setOverrideCustomIconImageViewController:customIconImageViewController];
+  [viewCopy configureMatchingIconView:v5];
+  -[SBIconView setEditing:](v5, "setEditing:", [viewCopy isEditing]);
+  accessibilityTintColor = [viewCopy accessibilityTintColor];
 
-  [(SBIconView *)v5 setAccessibilityTintColor:v8];
+  [(SBIconView *)v5 setAccessibilityTintColor:accessibilityTintColor];
   [(SBIconView *)v5 setAllowsEditingAnimation:0];
   [(SBIconView *)v5 setIconContentScalingEnabled:1];
   [(SBHPageManagementCellDragPreview *)self bounds];
@@ -98,8 +98,8 @@
 
   [(SBHPageManagementCellDragPreview *)self addSubview:v10];
   [v6 setListHighlighted:1];
-  v11 = [v6 listView];
-  [v11 enumerateIconViewsUsingBlock:&__block_literal_global_45];
+  listView2 = [v6 listView];
+  [listView2 enumerateIconViewsUsingBlock:&__block_literal_global_45];
 }
 
 void __76__SBHPageManagementCellDragPreview__configureIconViewWithReferenceIconView___block_invoke(uint64_t a1, void *a2)
@@ -135,12 +135,12 @@ void __76__SBHPageManagementCellDragPreview__configureIconViewWithReferenceIconV
   }
 }
 
-- (void)setDragState:(unint64_t)a3
+- (void)setDragState:(unint64_t)state
 {
-  if (self->_dragState != a3)
+  if (self->_dragState != state)
   {
-    self->_dragState = a3;
-    if (a3 >= 2 && !self->_iconView)
+    self->_dragState = state;
+    if (state >= 2 && !self->_iconView)
     {
       if (!self->_referenceIconView)
       {
@@ -157,39 +157,39 @@ void __76__SBHPageManagementCellDragPreview__configureIconViewWithReferenceIconV
       self->_referenceIconView = 0;
     }
 
-    v6 = [(SBHPageManagementCellDragPreview *)self _pageManagementCellView];
-    v7 = v6;
-    if (a3 == 2)
+    _pageManagementCellView = [(SBHPageManagementCellDragPreview *)self _pageManagementCellView];
+    v7 = _pageManagementCellView;
+    if (state == 2)
     {
-      v8 = [v6 layer];
+      layer = [_pageManagementCellView layer];
       LODWORD(v9) = *"fff>";
-      [v8 setShadowOpacity:v9];
+      [layer setShadowOpacity:v9];
 
-      v10 = [v7 layer];
-      [v10 setShadowRadius:14.0];
+      layer2 = [v7 layer];
+      [layer2 setShadowRadius:14.0];
 
-      v11 = [v7 layer];
-      [v11 setShadowOffset:{0.0, 10.0}];
+      layer3 = [v7 layer];
+      [layer3 setShadowOffset:{0.0, 10.0}];
 
       [(SBIconView *)self->_iconView setAllowsCloseBox:0];
     }
 
-    else if (a3 - 3 <= 1)
+    else if (state - 3 <= 1)
     {
       [(SBIconView *)self->_iconView setIconContentScale:1.0];
       [v7 setListHighlighted:0];
-      v12 = [v7 layer];
-      [v12 setShadowOpacity:0.0];
+      layer4 = [v7 layer];
+      [layer4 setShadowOpacity:0.0];
 
-      v13 = [v7 layer];
-      [v13 setShadowRadius:0.0];
+      layer5 = [v7 layer];
+      [layer5 setShadowRadius:0.0];
 
-      v14 = [v7 layer];
-      [v14 setShadowOffset:{*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)}];
+      layer6 = [v7 layer];
+      [layer6 setShadowOffset:{*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)}];
 
-      v15 = [v7 listView];
-      v16 = [v15 model];
-      if ([v16 isHidden])
+      listView = [v7 listView];
+      model = [listView model];
+      if ([model isHidden])
       {
         [(SBIconView *)self->_iconView setAllowsCloseBox:1];
       }
@@ -217,7 +217,7 @@ uint64_t __49__SBHPageManagementCellDragPreview_setDragState___block_invoke(uint
   return [v5 _configureIconViewWithReferenceIconView:v6];
 }
 
-- (void)draggingSourceDroppedWithOperation:(unint64_t)a3
+- (void)draggingSourceDroppedWithOperation:(unint64_t)operation
 {
   if ([(NSHashTable *)self->_cleanupDelayAssertions count])
   {
@@ -244,61 +244,61 @@ uint64_t __49__SBHPageManagementCellDragPreview_setDragState___block_invoke(uint
 - (void)handleCleanup
 {
   [(SBHPageManagementCellDragPreview *)self setCleanedUp:1];
-  v3 = [(SBHPageManagementCellDragPreview *)self cleanUpHandler];
-  if (v3)
+  cleanUpHandler = [(SBHPageManagementCellDragPreview *)self cleanUpHandler];
+  if (cleanUpHandler)
   {
-    v7 = v3;
-    v4 = [(SBHPageManagementCellDragPreview *)self customIconImageViewController];
-    v5 = [objc_opt_class() _pageManagementCellViewForIconImageViewController:v4];
-    v6 = [v5 listView];
-    [v6 ignoreNextWindowChange];
+    v7 = cleanUpHandler;
+    customIconImageViewController = [(SBHPageManagementCellDragPreview *)self customIconImageViewController];
+    v5 = [objc_opt_class() _pageManagementCellViewForIconImageViewController:customIconImageViewController];
+    listView = [v5 listView];
+    [listView ignoreNextWindowChange];
 
     [(SBHPageManagementCellDragPreview *)self setCleanUpHandler:0];
     v7[2](v7, self);
 
-    v3 = v7;
+    cleanUpHandler = v7;
   }
 }
 
 - (void)dropDestinationAnimationCompleted
 {
-  v3 = [(SBHPageManagementCellDragPreview *)self iconView];
-  [v3 setIcon:0];
+  iconView = [(SBHPageManagementCellDragPreview *)self iconView];
+  [iconView setIcon:0];
 
-  v4 = [(SBHPageManagementCellDragPreview *)self iconView];
-  [v4 setDelegate:0];
+  iconView2 = [(SBHPageManagementCellDragPreview *)self iconView];
+  [iconView2 setDelegate:0];
 }
 
-- (void)setIconViewCustomIconImageViewController:(id)a3
+- (void)setIconViewCustomIconImageViewController:(id)controller
 {
-  v4 = a3;
-  [(SBHPageManagementCellDragPreview *)self setCustomIconImageViewController:v4];
-  v5 = [(SBHPageManagementCellDragPreview *)self iconView];
-  [v5 setOverrideCustomIconImageViewController:v4];
+  controllerCopy = controller;
+  [(SBHPageManagementCellDragPreview *)self setCustomIconImageViewController:controllerCopy];
+  iconView = [(SBHPageManagementCellDragPreview *)self iconView];
+  [iconView setOverrideCustomIconImageViewController:controllerCopy];
 }
 
-- (id)delayCleanUpForReason:(id)a3
+- (id)delayCleanUpForReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   if (!self->_cleanupDelayAssertions)
   {
-    v5 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     cleanupDelayAssertions = self->_cleanupDelayAssertions;
-    self->_cleanupDelayAssertions = v5;
+    self->_cleanupDelayAssertions = weakObjectsHashTable;
   }
 
-  v7 = [[SBHPageManagementCellDragPreviewDelayCleanupAssertion alloc] initWithDragPreview:self reason:v4];
+  v7 = [[SBHPageManagementCellDragPreviewDelayCleanupAssertion alloc] initWithDragPreview:self reason:reasonCopy];
   [(NSHashTable *)self->_cleanupDelayAssertions addObject:v7];
 
   return v7;
 }
 
-- (void)_removeDelayCleanupAssertion:(id)a3
+- (void)_removeDelayCleanupAssertion:(id)assertion
 {
-  v4 = a3;
+  assertionCopy = assertion;
   if ([(NSHashTable *)self->_cleanupDelayAssertions containsObject:?])
   {
-    [(NSHashTable *)self->_cleanupDelayAssertions removeObject:v4];
+    [(NSHashTable *)self->_cleanupDelayAssertions removeObject:assertionCopy];
     if (![(NSHashTable *)self->_cleanupDelayAssertions count])
     {
       if ([(SBHPageManagementCellDragPreview *)self isDelayingCleanup])

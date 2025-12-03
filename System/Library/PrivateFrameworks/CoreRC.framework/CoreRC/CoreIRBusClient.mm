@@ -1,22 +1,22 @@
 @interface CoreIRBusClient
-- (BOOL)deleteDevice:(id)a3 error:(id *)a4;
-- (BOOL)setPairState:(BOOL)a3 forAppleRemote:(id)a4 error:(id *)a5;
-- (id)addDeviceWithType:(unint64_t)a3 matching:(id)a4 error:(id *)a5;
-- (id)addDeviceWithType:(unint64_t)a3 matching:(id)a4 learningSession:(id)a5 error:(id *)a6;
+- (BOOL)deleteDevice:(id)device error:(id *)error;
+- (BOOL)setPairState:(BOOL)state forAppleRemote:(id)remote error:(id *)error;
+- (id)addDeviceWithType:(unint64_t)type matching:(id)matching error:(id *)error;
+- (id)addDeviceWithType:(unint64_t)type matching:(id)matching learningSession:(id)session error:(id *)error;
 @end
 
 @implementation CoreIRBusClient
 
-- (id)addDeviceWithType:(unint64_t)a3 matching:(id)a4 error:(id *)a5
+- (id)addDeviceWithType:(unint64_t)type matching:(id)matching error:(id *)error
 {
-  v10 = [(CoreRCBus *)self manager];
+  manager = [(CoreRCBus *)self manager];
   v16 = 0;
   v17 = &v16;
   v18 = 0x3052000000;
   v19 = __Block_byref_object_copy_;
   v20 = __Block_byref_object_dispose_;
   v21 = 0;
-  if (!v10)
+  if (!manager)
   {
     [objc_msgSend(MEMORY[0x277CCA890] "currentHandler")];
   }
@@ -30,12 +30,12 @@
   v15[1] = 3221225472;
   v15[2] = __52__CoreIRBusClient_addDeviceWithType_matching_error___block_invoke;
   v15[3] = &unk_278EA2898;
-  v15[4] = v10;
+  v15[4] = manager;
   v15[5] = self;
-  v15[6] = a4;
+  v15[6] = matching;
   v15[7] = &v16;
-  v15[8] = a3;
-  v11 = CoreRCWaitForAsyncOperation(a5, v15);
+  v15[8] = type;
+  v11 = CoreRCWaitForAsyncOperation(error, v15);
   v12 = v17[5];
   if (v11)
   {
@@ -84,23 +84,23 @@ uint64_t __52__CoreIRBusClient_addDeviceWithType_matching_error___block_invoke_2
   return v4();
 }
 
-- (id)addDeviceWithType:(unint64_t)a3 matching:(id)a4 learningSession:(id)a5 error:(id *)a6
+- (id)addDeviceWithType:(unint64_t)type matching:(id)matching learningSession:(id)session error:(id *)error
 {
-  v12 = [(CoreRCBus *)self manager];
+  manager = [(CoreRCBus *)self manager];
   v18 = 0;
   v19 = &v18;
   v20 = 0x3052000000;
   v21 = __Block_byref_object_copy_;
   v22 = __Block_byref_object_dispose_;
   v23 = 0;
-  if (!v12)
+  if (!manager)
   {
     [objc_msgSend(MEMORY[0x277CCA890] "currentHandler")];
   }
 
   if (gLogCategory_CoreRCXPC <= 50 && (gLogCategory_CoreRCXPC != -1 || _LogCategory_Initialize()))
   {
-    [a5 owningDevice];
+    [session owningDevice];
     LogPrintF();
   }
 
@@ -108,13 +108,13 @@ uint64_t __52__CoreIRBusClient_addDeviceWithType_matching_error___block_invoke_2
   v17[1] = 3221225472;
   v17[2] = __68__CoreIRBusClient_addDeviceWithType_matching_learningSession_error___block_invoke;
   v17[3] = &unk_278EA28C0;
-  v17[4] = v12;
+  v17[4] = manager;
   v17[5] = self;
-  v17[6] = a4;
-  v17[7] = a5;
+  v17[6] = matching;
+  v17[7] = session;
   v17[8] = &v18;
-  v17[9] = a3;
-  v13 = CoreRCWaitForAsyncOperation(a6, v17);
+  v17[9] = type;
+  v13 = CoreRCWaitForAsyncOperation(error, v17);
   v14 = v19[5];
   if (v13)
   {
@@ -164,10 +164,10 @@ uint64_t __68__CoreIRBusClient_addDeviceWithType_matching_learningSession_error_
   return v4();
 }
 
-- (BOOL)deleteDevice:(id)a3 error:(id *)a4
+- (BOOL)deleteDevice:(id)device error:(id *)error
 {
-  v8 = [(CoreRCBus *)self manager];
-  if (!v8)
+  manager = [(CoreRCBus *)self manager];
+  if (!manager)
   {
     [CoreIRBusClient deleteDevice:a2 error:self];
   }
@@ -181,10 +181,10 @@ uint64_t __68__CoreIRBusClient_addDeviceWithType_matching_learningSession_error_
   v10[1] = 3221225472;
   v10[2] = __38__CoreIRBusClient_deleteDevice_error___block_invoke;
   v10[3] = &unk_278EA2910;
-  v10[4] = v8;
-  v10[5] = a3;
+  v10[4] = manager;
+  v10[5] = device;
   v10[6] = self;
-  return CoreRCWaitForAsyncOperation(a4, v10);
+  return CoreRCWaitForAsyncOperation(error, v10);
 }
 
 uint64_t __38__CoreIRBusClient_deleteDevice_error___block_invoke(void *a1, uint64_t a2)
@@ -212,11 +212,11 @@ uint64_t __38__CoreIRBusClient_deleteDevice_error___block_invoke_2(uint64_t a1, 
   return v4();
 }
 
-- (BOOL)setPairState:(BOOL)a3 forAppleRemote:(id)a4 error:(id *)a5
+- (BOOL)setPairState:(BOOL)state forAppleRemote:(id)remote error:(id *)error
 {
-  v7 = a3;
-  v10 = [(CoreRCBus *)self manager];
-  if (!v10)
+  stateCopy = state;
+  manager = [(CoreRCBus *)self manager];
+  if (!manager)
   {
     [objc_msgSend(MEMORY[0x277CCA890] "currentHandler")];
   }
@@ -224,7 +224,7 @@ uint64_t __38__CoreIRBusClient_deleteDevice_error___block_invoke_2(uint64_t a1, 
   if (gLogCategory_CoreRCXPC <= 10 && (gLogCategory_CoreRCXPC != -1 || _LogCategory_Initialize()))
   {
     v14 = objc_opt_class();
-    v15 = self;
+    selfCopy = self;
     LogPrintF();
   }
 
@@ -232,23 +232,23 @@ uint64_t __38__CoreIRBusClient_deleteDevice_error___block_invoke_2(uint64_t a1, 
   v16[1] = 3221225472;
   v16[2] = __53__CoreIRBusClient_setPairState_forAppleRemote_error___block_invoke;
   v16[3] = &unk_278EA2938;
-  v17 = v7;
-  v16[4] = v10;
-  v16[5] = a4;
-  v11 = CoreRCWaitForAsyncOperation(a5, v16);
+  v17 = stateCopy;
+  v16[4] = manager;
+  v16[5] = remote;
+  v11 = CoreRCWaitForAsyncOperation(error, v16);
   if (v11)
   {
-    if (v7)
+    if (stateCopy)
     {
-      v12 = a4;
+      remoteCopy = remote;
     }
 
     else
     {
-      v12 = 0;
+      remoteCopy = 0;
     }
 
-    LOBYTE(v11) = [(CoreIRBus *)self setPairedAppleRemote:v12 error:a5, v14, v15];
+    LOBYTE(v11) = [(CoreIRBus *)self setPairedAppleRemote:remoteCopy error:error, v14, selfCopy];
   }
 
   return v11;

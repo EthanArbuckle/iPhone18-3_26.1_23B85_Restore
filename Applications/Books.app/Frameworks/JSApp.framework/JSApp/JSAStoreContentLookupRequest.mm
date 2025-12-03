@@ -4,9 +4,9 @@
 - (void)cancel;
 - (void)dealloc;
 - (void)send;
-- (void)setItemIdentifiers:(id)a3;
-- (void)setOnResponse:(id)a3;
-- (void)setRequestOptions:(id)a3;
+- (void)setItemIdentifiers:(id)identifiers;
+- (void)setOnResponse:(id)response;
+- (void)setRequestOptions:(id)options;
 @end
 
 @implementation JSAStoreContentLookupRequest
@@ -28,9 +28,9 @@
   return v3.super.isa;
 }
 
-- (void)setRequestOptions:(id)a3
+- (void)setRequestOptions:(id)options
 {
-  if (a3)
+  if (options)
   {
     v4 = sub_8434C();
   }
@@ -52,7 +52,7 @@
   v3 = OBJC_IVAR___JSAStoreContentLookupRequest__itemIdentifiers;
   swift_beginAccess();
   v4 = *(&self->super.isa + v3);
-  v5 = self;
+  selfCopy = self;
 
   sub_634D8(v6);
 
@@ -61,9 +61,9 @@
   return v7.super.isa;
 }
 
-- (void)setItemIdentifiers:(id)a3
+- (void)setItemIdentifiers:(id)identifiers
 {
-  if (a3)
+  if (identifiers)
   {
     v4 = sub_845AC();
   }
@@ -73,17 +73,17 @@
     v4 = 0;
   }
 
-  v5 = self;
+  selfCopy = self;
   sub_63B10(v4);
 }
 
-- (void)setOnResponse:(id)a3
+- (void)setOnResponse:(id)response
 {
   if ((*(&self->super.isa + OBJC_IVAR___JSAStoreContentLookupRequest_frozen) & 1) == 0)
   {
     v5 = *(&self->super.isa + OBJC_IVAR___JSAStoreContentLookupRequest__onResponse);
-    *(&self->super.isa + OBJC_IVAR___JSAStoreContentLookupRequest__onResponse) = a3;
-    v4 = a3;
+    *(&self->super.isa + OBJC_IVAR___JSAStoreContentLookupRequest__onResponse) = response;
+    responseCopy = response;
   }
 }
 
@@ -91,14 +91,14 @@
 {
   if (*(&self->super.isa + OBJC_IVAR___JSAStoreContentLookupRequest_frozen) == 1)
   {
-    v3 = self;
+    selfCopy = self;
   }
 
   else
   {
     v4 = *(&self->super.isa + OBJC_IVAR___JSAStoreContentLookupRequest__onResponse);
     *(&self->super.isa + OBJC_IVAR___JSAStoreContentLookupRequest__onResponse) = 0;
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6.receiver = self;
@@ -108,13 +108,13 @@
 
 - (void)send
 {
-  v2 = self;
+  selfCopy = self;
   sub_64568();
 }
 
 - (void)cancel
 {
-  v2 = self;
+  selfCopy = self;
   sub_6532C();
 }
 

@@ -1,9 +1,9 @@
 @interface AMSFairPlayDeviceIdentity
 + (AMSFairPlayDeviceIdentity)shared;
-- (void)fpdiLevelFor:(NSURL *)a3 bag:(AMSSendableBag *)a4 buyParams:(NSDictionary *)a5 completionHandler:(id)a6;
-- (void)headersFor:(NSURLRequest *)a3 bag:(AMSSendableBag *)a4 buyParams:(NSDictionary *)a5 networkProvider:(AMSFairPlayDeviceIdentityNetworkProviderProtocol *)a6 completionHandler:(id)a7;
-- (void)initializeSessionFor:(NSURL *)a3 buyParams:(NSDictionary *)a4 networkProvider:(AMSFairPlayDeviceIdentityNetworkProviderProtocol *)a5 bag:(AMSSendableBag *)a6 completionHandler:(id)a7;
-- (void)resetSessionFor:(NSURL *)a3 buyParams:(NSDictionary *)a4 bag:(AMSSendableBag *)a5 completionHandler:(id)a6;
+- (void)fpdiLevelFor:(NSURL *)for bag:(AMSSendableBag *)bag buyParams:(NSDictionary *)params completionHandler:(id)handler;
+- (void)headersFor:(NSURLRequest *)for bag:(AMSSendableBag *)bag buyParams:(NSDictionary *)params networkProvider:(AMSFairPlayDeviceIdentityNetworkProviderProtocol *)provider completionHandler:(id)handler;
+- (void)initializeSessionFor:(NSURL *)for buyParams:(NSDictionary *)params networkProvider:(AMSFairPlayDeviceIdentityNetworkProviderProtocol *)provider bag:(AMSSendableBag *)bag completionHandler:(id)handler;
+- (void)resetSessionFor:(NSURL *)for buyParams:(NSDictionary *)params bag:(AMSSendableBag *)bag completionHandler:(id)handler;
 @end
 
 @implementation AMSFairPlayDeviceIdentity
@@ -15,70 +15,70 @@
   return v2;
 }
 
-- (void)headersFor:(NSURLRequest *)a3 bag:(AMSSendableBag *)a4 buyParams:(NSDictionary *)a5 networkProvider:(AMSFairPlayDeviceIdentityNetworkProviderProtocol *)a6 completionHandler:(id)a7
+- (void)headersFor:(NSURLRequest *)for bag:(AMSSendableBag *)bag buyParams:(NSDictionary *)params networkProvider:(AMSFairPlayDeviceIdentityNetworkProviderProtocol *)provider completionHandler:(id)handler
 {
-  v12 = _Block_copy(a7);
+  v12 = _Block_copy(handler);
   v13 = swift_allocObject();
-  v13[2] = a3;
-  v13[3] = a4;
-  v13[4] = a5;
-  v13[5] = a6;
+  v13[2] = for;
+  v13[3] = bag;
+  v13[4] = params;
+  v13[5] = provider;
   v13[6] = v12;
   v13[7] = self;
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
+  forCopy = for;
+  bagCopy = bag;
+  paramsCopy = params;
   swift_unknownObjectRetain();
 
   sub_1928FB3BC(&unk_192FCA788, v13);
 }
 
-- (void)resetSessionFor:(NSURL *)a3 buyParams:(NSDictionary *)a4 bag:(AMSSendableBag *)a5 completionHandler:(id)a6
+- (void)resetSessionFor:(NSURL *)for buyParams:(NSDictionary *)params bag:(AMSSendableBag *)bag completionHandler:(id)handler
 {
-  v10 = _Block_copy(a6);
+  v10 = _Block_copy(handler);
   v11 = swift_allocObject();
-  v11[2] = a3;
-  v11[3] = a4;
-  v11[4] = a5;
+  v11[2] = for;
+  v11[3] = params;
+  v11[4] = bag;
   v11[5] = v10;
   v11[6] = self;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
+  forCopy = for;
+  paramsCopy = params;
+  bagCopy = bag;
 
   sub_1928FB3BC(&unk_192FCA7C0, v11);
 }
 
-- (void)initializeSessionFor:(NSURL *)a3 buyParams:(NSDictionary *)a4 networkProvider:(AMSFairPlayDeviceIdentityNetworkProviderProtocol *)a5 bag:(AMSSendableBag *)a6 completionHandler:(id)a7
+- (void)initializeSessionFor:(NSURL *)for buyParams:(NSDictionary *)params networkProvider:(AMSFairPlayDeviceIdentityNetworkProviderProtocol *)provider bag:(AMSSendableBag *)bag completionHandler:(id)handler
 {
-  v12 = _Block_copy(a7);
+  v12 = _Block_copy(handler);
   v13 = swift_allocObject();
-  v13[2] = a3;
-  v13[3] = a4;
-  v13[4] = a5;
-  v13[5] = a6;
+  v13[2] = for;
+  v13[3] = params;
+  v13[4] = provider;
+  v13[5] = bag;
   v13[6] = v12;
   v13[7] = self;
-  v14 = a3;
-  v15 = a4;
+  forCopy = for;
+  paramsCopy = params;
   swift_unknownObjectRetain();
-  v16 = a6;
+  bagCopy = bag;
 
   sub_1928FB3BC(&unk_192FCA7A8, v13);
 }
 
-- (void)fpdiLevelFor:(NSURL *)a3 bag:(AMSSendableBag *)a4 buyParams:(NSDictionary *)a5 completionHandler:(id)a6
+- (void)fpdiLevelFor:(NSURL *)for bag:(AMSSendableBag *)bag buyParams:(NSDictionary *)params completionHandler:(id)handler
 {
-  v10 = _Block_copy(a6);
+  v10 = _Block_copy(handler);
   v11 = swift_allocObject();
-  v11[2] = a3;
-  v11[3] = a4;
-  v11[4] = a5;
+  v11[2] = for;
+  v11[3] = bag;
+  v11[4] = params;
   v11[5] = v10;
   v11[6] = self;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
+  forCopy = for;
+  bagCopy = bag;
+  paramsCopy = params;
 
   sub_1928FB3BC(&unk_192FCA798, v11);
 }

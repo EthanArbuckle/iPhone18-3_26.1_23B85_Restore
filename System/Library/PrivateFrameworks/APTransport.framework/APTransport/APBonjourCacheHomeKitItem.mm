@@ -1,15 +1,15 @@
 @interface APBonjourCacheHomeKitItem
-+ (id)itemWithDeviceInfo:(id)a3 userInfo:(id)a4;
++ (id)itemWithDeviceInfo:(id)info userInfo:(id)userInfo;
 - (void)dealloc;
 @end
 
 @implementation APBonjourCacheHomeKitItem
 
-+ (id)itemWithDeviceInfo:(id)a3 userInfo:(id)a4
++ (id)itemWithDeviceInfo:(id)info userInfo:(id)userInfo
 {
   v6 = objc_opt_new();
-  [v6 setDeviceInfo:a3];
-  [v6 setUserInfo:a4];
+  [v6 setDeviceInfo:info];
+  [v6 setUserInfo:userInfo];
 
   return v6;
 }

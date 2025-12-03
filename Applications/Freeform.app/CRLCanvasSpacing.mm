@@ -1,21 +1,21 @@
 @interface CRLCanvasSpacing
-- (BOOL)containsNonIntersectingSpacingRectsWithRect:(CGRect)a3 forEdge:(int)a4;
-- (BOOL)needsGuideForEdge:(int)a3 ofRect:(CGRect)a4;
+- (BOOL)containsNonIntersectingSpacingRectsWithRect:(CGRect)rect forEdge:(int)edge;
+- (BOOL)needsGuideForEdge:(int)edge ofRect:(CGRect)rect;
 - (double)exactOffset;
 - (id)description;
-- (id)spacingRectsRenderableForGuideRect:(CGRect)a3 withICC:(id)a4;
+- (id)spacingRectsRenderableForGuideRect:(CGRect)rect withICC:(id)c;
 - (int)integerOffset;
-- (int64_t)compare:(id)a3;
-- (void)addSpacingRect:(double)a3 forFrame:(double)a4 andFrame:(double)a5;
-- (void)initWithGuideType:(CGFloat)a3 withSpacingRect:(CGFloat)a4 forFrame:(CGFloat)a5 andFrame:(double)a6;
-- (void)updateSpacingUIWithICC:(id)a3;
+- (int64_t)compare:(id)compare;
+- (void)addSpacingRect:(double)rect forFrame:(double)frame andFrame:(double)andFrame;
+- (void)initWithGuideType:(CGFloat)type withSpacingRect:(CGFloat)rect forFrame:(CGFloat)frame andFrame:(double)andFrame;
+- (void)updateSpacingUIWithICC:(id)c;
 @end
 
 @implementation CRLCanvasSpacing
 
-- (void)initWithGuideType:(CGFloat)a3 withSpacingRect:(CGFloat)a4 forFrame:(CGFloat)a5 andFrame:(double)a6
+- (void)initWithGuideType:(CGFloat)type withSpacingRect:(CGFloat)rect forFrame:(CGFloat)frame andFrame:(double)andFrame
 {
-  v37.receiver = a1;
+  v37.receiver = self;
   v37.super_class = CRLCanvasSpacing;
   v29 = objc_msgSendSuper2(&v37, "init");
   if (v29)
@@ -42,12 +42,12 @@
     v29[5] = v34;
 
     v38.origin.x = a2;
-    v38.origin.y = a3;
-    v38.size.width = a4;
-    v38.size.height = a5;
+    v38.origin.y = type;
+    v38.size.width = rect;
+    v38.size.height = frame;
     if (!CGRectIsNull(v38))
     {
-      [v29 addSpacingRect:a2 forFrame:a3 andFrame:{a4, a5, a6, a7, a8, a9, a17, a18, a19, a20}];
+      [v29 addSpacingRect:a2 forFrame:type andFrame:{rect, frame, andFrame, a7, a8, a9, a17, a18, a19, a20}];
     }
   }
 
@@ -68,23 +68,23 @@
 - (double)exactOffset
 {
   mHorizontalGeom = self->mHorizontalGeom;
-  v3 = [(NSMutableSet *)self->mSpacingRects anyObject];
-  v4 = [v3 first];
-  [v4 CGRectValue];
+  anyObject = [(NSMutableSet *)self->mSpacingRects anyObject];
+  first = [anyObject first];
+  [first CGRectValue];
   [(CRLSwappableAxesGeometry *)mHorizontalGeom rectWidth:?];
   v6 = v5;
 
   return v6;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
-  v5 = [(CRLCanvasSpacing *)self integerOffset];
-  if (v5 <= [v4 integerOffset])
+  compareCopy = compare;
+  integerOffset = [(CRLCanvasSpacing *)self integerOffset];
+  if (integerOffset <= [compareCopy integerOffset])
   {
-    v7 = [(CRLCanvasSpacing *)self integerOffset];
-    if (v7 >= [v4 integerOffset])
+    integerOffset2 = [(CRLCanvasSpacing *)self integerOffset];
+    if (integerOffset2 >= [compareCopy integerOffset])
     {
       v6 = 0;
     }
@@ -103,44 +103,44 @@
   return v6;
 }
 
-- (void)addSpacingRect:(double)a3 forFrame:(double)a4 andFrame:(double)a5
+- (void)addSpacingRect:(double)rect forFrame:(double)frame andFrame:(double)andFrame
 {
   v34 = objc_alloc_init(CRLMutablePair);
-  v29 = [NSValue valueWithCGRect:a2, a3, a4, a5];
-  [(CRLMutablePair *)v34 setFirst:v29];
+  andFrame = [NSValue valueWithCGRect:a2, rect, frame, andFrame];
+  [(CRLMutablePair *)v34 setFirst:andFrame];
 
   [(CRLMutablePair *)v34 setSecond:0];
-  [*(a1 + 8) addObject:v34];
-  v30 = *(a1 + 16);
+  [*(self + 8) addObject:v34];
+  v30 = *(self + 16);
   v31 = [NSValue valueWithCGRect:a6, a7, a8, a9];
   [v30 addObject:v31];
 
-  v32 = *(a1 + 16);
+  v32 = *(self + 16);
   v33 = [NSValue valueWithCGRect:a10, a11, a12, a13];
   [v32 addObject:v33];
 }
 
-- (BOOL)needsGuideForEdge:(int)a3 ofRect:(CGRect)a4
+- (BOOL)needsGuideForEdge:(int)edge ofRect:(CGRect)rect
 {
-  width = a4.size.width;
-  height = a4.size.height;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  width = rect.size.width;
+  height = rect.size.height;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v7 = 0;
   v8 = 0;
   v9 = 0.0;
-  if (a3 > 2)
+  if (edge > 2)
   {
-    switch(a3)
+    switch(edge)
     {
       case 3:
-        MinY = CGRectGetMinY(a4);
+        MinY = CGRectGetMinY(rect);
         v9 = MinY - [(CRLCanvasSpacing *)self integerOffset];
         break;
       case 4:
         return v7;
       case 5:
-        MaxY = CGRectGetMaxY(a4);
+        MaxY = CGRectGetMaxY(rect);
         v9 = MaxY + [(CRLCanvasSpacing *)self integerOffset];
         break;
       default:
@@ -151,16 +151,16 @@
     goto LABEL_14;
   }
 
-  switch(a3)
+  switch(edge)
   {
     case 0:
-      MinX = CGRectGetMinX(a4);
+      MinX = CGRectGetMinX(rect);
       v9 = MinX - [(CRLCanvasSpacing *)self integerOffset];
       goto LABEL_11;
     case 1:
       return v7;
     case 2:
-      MaxX = CGRectGetMaxX(a4);
+      MaxX = CGRectGetMaxX(rect);
       v9 = MaxX + [(CRLCanvasSpacing *)self integerOffset];
 LABEL_11:
       v13 = sub_10011F144;
@@ -190,8 +190,8 @@ LABEL_15:
           objc_enumerationMutation(v15);
         }
 
-        v20 = [*(*(&v35 + 1) + 8 * i) first];
-        [v20 CGRectValue];
+        first = [*(*(&v35 + 1) + 8 * i) first];
+        [first CGRectValue];
         v22 = v21;
         v24 = v23;
         v26 = v25;
@@ -224,13 +224,13 @@ LABEL_15:
   return v7;
 }
 
-- (BOOL)containsNonIntersectingSpacingRectsWithRect:(CGRect)a3 forEdge:(int)a4
+- (BOOL)containsNonIntersectingSpacingRectsWithRect:(CGRect)rect forEdge:(int)edge
 {
-  x = a3.origin.x;
-  y = a3.origin.y;
-  width = a3.size.width;
-  height = a3.size.height;
-  v9 = sub_10011EC1C(a4, a3.origin.x, a3.origin.y, a3.size.width, a3.size.height);
+  x = rect.origin.x;
+  y = rect.origin.y;
+  width = rect.size.width;
+  height = rect.size.height;
+  v9 = sub_10011EC1C(edge, rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
@@ -251,14 +251,14 @@ LABEL_15:
           objc_enumerationMutation(v10);
         }
 
-        v16 = [*(*(&v29 + 1) + 8 * i) first];
-        [v16 CGRectValue];
+        first = [*(*(&v29 + 1) + 8 * i) first];
+        [first CGRectValue];
         v18 = v17;
         v20 = v19;
         v22 = v21;
         v24 = v23;
 
-        v25 = sub_10011EC1C(a4, v18, v20, v22, v24);
+        v25 = sub_10011EC1C(edge, v18, v20, v22, v24);
         v26 = vabdd_f64(v9, v25) >= 1.0 && v9 != v25;
         if (!sub_10011FF38(x, y, width, height, v18, v20, v22, v24))
         {
@@ -280,13 +280,13 @@ LABEL_15:
   return v13 & 1;
 }
 
-- (id)spacingRectsRenderableForGuideRect:(CGRect)a3 withICC:(id)a4
+- (id)spacingRectsRenderableForGuideRect:(CGRect)rect withICC:(id)c
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  cCopy = c;
   if (self->mHasBeenDrawn)
   {
     v10 = 0;
@@ -322,8 +322,8 @@ LABEL_15:
             }
 
             v19 = *(*(&v33 + 1) + 8 * i);
-            v20 = [v19 first];
-            [v20 CGRectValue];
+            first = [v19 first];
+            [first CGRectValue];
             v22 = v21;
             v24 = v23;
             v26 = v25;
@@ -331,7 +331,7 @@ LABEL_15:
 
             if (!sub_10011FF38(v22, v24, v26, v28, x, y, width, height))
             {
-              v29 = [[CRLCanvasSpacingGuideUILayer alloc] initWithSpacingRect:[(CRLSwappableAxesGeometry *)self->mHorizontalGeom horizontalOrientation] ofOrientation:v9 icc:1 useVisibleRect:v22, v24, v26, v28];
+              v29 = [[CRLCanvasSpacingGuideUILayer alloc] initWithSpacingRect:[(CRLSwappableAxesGeometry *)self->mHorizontalGeom horizontalOrientation] ofOrientation:cCopy icc:1 useVisibleRect:v22, v24, v26, v28];
               [v19 setSecond:v29];
               v30 = self->mRenderable;
               v31 = [CRLCanvasRenderable renderableFromLayer:v29];
@@ -355,9 +355,9 @@ LABEL_15:
   return v10;
 }
 
-- (void)updateSpacingUIWithICC:(id)a3
+- (void)updateSpacingUIWithICC:(id)c
 {
-  v4 = a3;
+  cCopy = c;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
@@ -378,15 +378,15 @@ LABEL_15:
         }
 
         v10 = *(*(&v21 + 1) + 8 * i);
-        v11 = [v10 first];
-        [v11 CGRectValue];
+        first = [v10 first];
+        [first CGRectValue];
         v13 = v12;
         v15 = v14;
         v17 = v16;
         v19 = v18;
 
-        v20 = [v10 second];
-        [v20 setFrameFromSpacingRect:v4 icc:{v13, v15, v17, v19}];
+        second = [v10 second];
+        [second setFrameFromSpacingRect:cCopy icc:{v13, v15, v17, v19}];
       }
 
       v7 = [(NSMutableSet *)v5 countByEnumeratingWithState:&v21 objects:v25 count:16];

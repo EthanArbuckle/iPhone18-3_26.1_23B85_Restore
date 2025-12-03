@@ -1,20 +1,20 @@
 @interface PDFForm
 - (PDFForm)init;
-- (PDFForm)initWithDocument:(id)a3;
+- (PDFForm)initWithDocument:(id)document;
 - (__CFDictionary)createDictionaryRef;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)defaultStringValueForFieldNamed:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)defaultStringValueForFieldNamed:(id)named;
 - (id)description;
 - (id)document;
-- (id)fieldNamed:(id)a3;
+- (id)fieldNamed:(id)named;
 - (id)fieldNames;
-- (id)stringValueForFieldNamed:(id)a3;
-- (void)_commonResetForm:(id)a3 inclusive:(BOOL)a4;
-- (void)addFormField:(id)a3;
+- (id)stringValueForFieldNamed:(id)named;
+- (void)_commonResetForm:(id)form inclusive:(BOOL)inclusive;
+- (void)addFormField:(id)field;
 - (void)dealloc;
-- (void)removeFormFieldWithFieldName:(id)a3;
-- (void)setDocument:(id)a3;
-- (void)setStringValue:(id)a3 forFieldNamed:(id)a4 postFormChangeNotification:(BOOL)a5;
+- (void)removeFormFieldWithFieldName:(id)name;
+- (void)setDocument:(id)document;
+- (void)setStringValue:(id)value forFieldNamed:(id)named postFormChangeNotification:(BOOL)notification;
 @end
 
 @implementation PDFForm
@@ -42,15 +42,15 @@
   return v2;
 }
 
-- (PDFForm)initWithDocument:(id)a3
+- (PDFForm)initWithDocument:(id)document
 {
-  v4 = a3;
+  documentCopy = document;
   array = 0;
   value = 0;
   v23.receiver = self;
   v23.super_class = PDFForm;
   v5 = [(PDFForm *)&v23 init];
-  if (v5 && (v6 = objc_alloc_init(PDFFormPrivateVars), v7 = v5->_private, v5->_private = v6, v7, objc_storeWeak(&v5->_private->document, v4), v8 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:0], v9 = v5->_private, fieldArray = v9->fieldArray, v9->fieldArray = v8, fieldArray, v5->_private->appearString = 0, (v11 = objc_msgSend(v4, "documentRef")) != 0) && (Catalog = CGPDFDocumentGetCatalog(v11)) != 0 && CGPDFDictionaryGetDictionary(Catalog, "AcroForm", &value) && CGPDFDictionaryGetArray(value, "Fields", &array) && CGPDFArrayGetCount(array))
+  if (v5 && (v6 = objc_alloc_init(PDFFormPrivateVars), v7 = v5->_private, v5->_private = v6, v7, objc_storeWeak(&v5->_private->document, documentCopy), v8 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:0], v9 = v5->_private, fieldArray = v9->fieldArray, v9->fieldArray = v8, fieldArray, v5->_private->appearString = 0, (v11 = objc_msgSend(documentCopy, "documentRef")) != 0) && (Catalog = CGPDFDocumentGetCatalog(v11)) != 0 && CGPDFDictionaryGetDictionary(Catalog, "AcroForm", &value) && CGPDFDictionaryGetArray(value, "Fields", &array) && CGPDFArrayGetCount(array))
   {
     Count = CGPDFArrayGetCount(array);
     if (Count)
@@ -69,7 +69,7 @@
             v18 = v17;
             if (v17)
             {
-              [(PDFFormField *)v17 setDocument:v4];
+              [(PDFFormField *)v17 setDocument:documentCopy];
               [(NSMutableArray *)v5->_private->fieldArray addObject:v18];
             }
           }
@@ -93,10 +93,10 @@
   return v19;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v24 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = objc_alloc_init(PDFFormPrivateVars);
   v7 = v5[1];
   v5[1] = v6;
@@ -130,7 +130,7 @@
           objc_enumerationMutation(v12);
         }
 
-        v17 = [*(*(&v19 + 1) + 8 * v16) copyWithZone:{a3, v19}];
+        v17 = [*(*(&v19 + 1) + 8 * v16) copyWithZone:{zone, v19}];
         [*(v5[1] + 16) addObject:v17];
 
         ++v16;
@@ -173,11 +173,11 @@
       for (i = 0; i != v4; ++i)
       {
         v7 = [(NSMutableArray *)self->_private->fieldArray objectAtIndex:i];
-        v8 = [v7 fieldName];
+        fieldName = [v7 fieldName];
 
-        if (v8)
+        if (fieldName)
         {
-          [v5 addObject:v8];
+          [v5 addObject:fieldName];
         }
       }
     }
@@ -191,79 +191,79 @@
   return v5;
 }
 
-- (void)setStringValue:(id)a3 forFieldNamed:(id)a4 postFormChangeNotification:(BOOL)a5
+- (void)setStringValue:(id)value forFieldNamed:(id)named postFormChangeNotification:(BOOL)notification
 {
-  v5 = a5;
-  v15 = a3;
-  v8 = [(PDFForm *)self fieldNamed:a4];
+  notificationCopy = notification;
+  valueCopy = value;
+  v8 = [(PDFForm *)self fieldNamed:named];
   v9 = v8;
   if (v8)
   {
-    [v8 setStringValue:v15];
-    if (v5)
+    [v8 setStringValue:valueCopy];
+    if (notificationCopy)
     {
-      v10 = [MEMORY[0x1E696AD88] defaultCenter];
-      v11 = [(PDFForm *)self document];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      document = [(PDFForm *)self document];
       v12 = MEMORY[0x1E695DF20];
-      v13 = [v9 fieldName];
-      v14 = [v12 dictionaryWithObject:v13 forKey:@"PDFFormFieldName"];
-      [v10 postNotificationName:@"PDFFormDidChangeValue" object:v11 userInfo:v14];
+      fieldName = [v9 fieldName];
+      v14 = [v12 dictionaryWithObject:fieldName forKey:@"PDFFormFieldName"];
+      [defaultCenter postNotificationName:@"PDFFormDidChangeValue" object:document userInfo:v14];
     }
   }
 }
 
-- (id)stringValueForFieldNamed:(id)a3
+- (id)stringValueForFieldNamed:(id)named
 {
-  v3 = [(PDFForm *)self fieldNamed:a3];
+  v3 = [(PDFForm *)self fieldNamed:named];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 stringValue];
+    stringValue = [v3 stringValue];
   }
 
   else
   {
-    v5 = 0;
+    stringValue = 0;
   }
 
-  return v5;
+  return stringValue;
 }
 
-- (id)defaultStringValueForFieldNamed:(id)a3
+- (id)defaultStringValueForFieldNamed:(id)named
 {
-  v3 = [(PDFForm *)self fieldNamed:a3];
+  v3 = [(PDFForm *)self fieldNamed:named];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 defaultStringValue];
+    defaultStringValue = [v3 defaultStringValue];
   }
 
   else
   {
-    v5 = 0;
+    defaultStringValue = 0;
   }
 
-  return v5;
+  return defaultStringValue;
 }
 
-- (void)addFormField:(id)a3
+- (void)addFormField:(id)field
 {
-  v7 = a3;
-  v4 = [v7 fieldName];
-  v5 = [(PDFForm *)self fieldNamed:v4];
+  fieldCopy = field;
+  fieldName = [fieldCopy fieldName];
+  v5 = [(PDFForm *)self fieldNamed:fieldName];
 
   if (!v5)
   {
-    v6 = [(PDFForm *)self document];
-    [v7 setDocument:v6];
+    document = [(PDFForm *)self document];
+    [fieldCopy setDocument:document];
 
-    [(NSMutableArray *)self->_private->fieldArray addObject:v7];
+    [(NSMutableArray *)self->_private->fieldArray addObject:fieldCopy];
   }
 }
 
-- (void)removeFormFieldWithFieldName:(id)a3
+- (void)removeFormFieldWithFieldName:(id)name
 {
-  v4 = [(PDFForm *)self fieldNamed:a3];
+  v4 = [(PDFForm *)self fieldNamed:name];
   v5 = v4;
   if (v4)
   {
@@ -295,14 +295,14 @@
   return v3;
 }
 
-- (void)_commonResetForm:(id)a3 inclusive:(BOOL)a4
+- (void)_commonResetForm:(id)form inclusive:(BOOL)inclusive
 {
-  v4 = a4;
-  v6 = a3;
-  v21 = v6;
-  if (v6)
+  inclusiveCopy = inclusive;
+  formCopy = form;
+  v21 = formCopy;
+  if (formCopy)
   {
-    v7 = [v6 count];
+    v7 = [formCopy count];
   }
 
   else
@@ -317,14 +317,14 @@
     for (i = 0; i != v9; ++i)
     {
       v11 = [(NSMutableArray *)self->_private->fieldArray objectAtIndex:i];
-      v12 = [v11 fieldName];
+      fieldName = [v11 fieldName];
       if (v7)
       {
         v13 = 0;
         while (1)
         {
           v14 = [v21 objectAtIndex:v13];
-          v15 = [v14 isEqualToString:v12];
+          v15 = [v14 isEqualToString:fieldName];
 
           if (v15)
           {
@@ -346,24 +346,24 @@ LABEL_10:
         v16 = 0;
       }
 
-      if (v16 == v4)
+      if (v16 == inclusiveCopy)
       {
-        v17 = [v11 defaultStringValue];
-        [v11 setStringValue:v17];
+        defaultStringValue = [v11 defaultStringValue];
+        [v11 setStringValue:defaultStringValue];
 
-        v18 = [MEMORY[0x1E696AD88] defaultCenter];
-        v19 = [(PDFForm *)self document];
-        v20 = [MEMORY[0x1E695DF20] dictionaryWithObject:v12 forKey:@"PDFFormFieldName"];
-        [v18 postNotificationName:@"PDFFormDidChangeValue" object:v19 userInfo:v20];
+        defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+        document = [(PDFForm *)self document];
+        v20 = [MEMORY[0x1E695DF20] dictionaryWithObject:fieldName forKey:@"PDFFormFieldName"];
+        [defaultCenter postNotificationName:@"PDFFormDidChangeValue" object:document userInfo:v20];
       }
     }
   }
 }
 
-- (id)fieldNamed:(id)a3
+- (id)fieldNamed:(id)named
 {
-  v4 = a3;
-  if (!v4)
+  namedCopy = named;
+  if (!namedCopy)
   {
     NSLog(&cfstr_TempFieldnamed.isa);
 LABEL_9:
@@ -388,8 +388,8 @@ LABEL_9:
   while (1)
   {
     v9 = [(NSMutableArray *)self->_private->fieldArray objectAtIndex:v8];
-    v10 = [v9 fieldName];
-    v11 = [v10 isEqualToString:v4];
+    fieldName = [v9 fieldName];
+    v11 = [fieldName isEqualToString:namedCopy];
 
     if (v11)
     {
@@ -430,11 +430,11 @@ LABEL_10:
     [v9 clearDictionaryRef];
 
     v10 = [(NSMutableArray *)self->_private->fieldArray objectAtIndex:i];
-    v11 = [v10 dictionaryRef];
+    dictionaryRef = [v10 dictionaryRef];
 
-    if (v11)
+    if (dictionaryRef)
     {
-      CFArrayAppendValue(v7, v11);
+      CFArrayAppendValue(v7, dictionaryRef);
     }
   }
 
@@ -445,11 +445,11 @@ LABEL_10:
   return v12;
 }
 
-- (void)setDocument:(id)a3
+- (void)setDocument:(id)document
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  objc_storeWeak(&self->_private->document, v4);
+  documentCopy = document;
+  objc_storeWeak(&self->_private->document, documentCopy);
   v12 = 0u;
   v13 = 0u;
   v10 = 0u;
@@ -470,7 +470,7 @@ LABEL_10:
           objc_enumerationMutation(v5);
         }
 
-        [*(*(&v10 + 1) + 8 * v9++) setDocument:{v4, v10}];
+        [*(*(&v10 + 1) + 8 * v9++) setDocument:{documentCopy, v10}];
       }
 
       while (v7 != v9);

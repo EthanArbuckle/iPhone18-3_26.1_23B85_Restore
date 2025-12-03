@@ -1,15 +1,15 @@
 @interface ContainerImplementation
 - (_TtC5UIKitP33_BA7E8DCF32E747052AD4072137B98A3B23ContainerImplementation)init;
-- (void)_geometryChanged:(id *)a3 forAncestor:(id)a4;
+- (void)_geometryChanged:(id *)changed forAncestor:(id)ancestor;
 @end
 
 @implementation ContainerImplementation
 
-- (void)_geometryChanged:(id *)a3 forAncestor:(id)a4
+- (void)_geometryChanged:(id *)changed forAncestor:(id)ancestor
 {
-  v7 = a4;
-  v8 = self;
-  sub_188CF2944(a3, a4);
+  ancestorCopy = ancestor;
+  selfCopy = self;
+  sub_188CF2944(changed, ancestor);
 }
 
 - (_TtC5UIKitP33_BA7E8DCF32E747052AD4072137B98A3B23ContainerImplementation)init

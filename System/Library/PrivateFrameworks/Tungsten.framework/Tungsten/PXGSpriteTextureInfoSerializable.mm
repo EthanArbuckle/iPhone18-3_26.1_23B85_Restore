@@ -1,13 +1,13 @@
 @interface PXGSpriteTextureInfoSerializable
 - ($94F468A8D4C62B317260615823C2B210)spriteTextureInfo;
-- (PXGSpriteTextureInfoSerializable)initWithSerializableObject:(id)a3;
+- (PXGSpriteTextureInfoSerializable)initWithSerializableObject:(id)object;
 - (id)createSerializableObject;
-- (void)setSpriteTextureInfo:(id)a3;
+- (void)setSpriteTextureInfo:(id)info;
 @end
 
 @implementation PXGSpriteTextureInfoSerializable
 
-- (void)setSpriteTextureInfo:(id)a3
+- (void)setSpriteTextureInfo:(id)info
 {
   v4 = *v3;
   v5 = v3[1];
@@ -40,15 +40,15 @@
   return v2;
 }
 
-- (PXGSpriteTextureInfoSerializable)initWithSerializableObject:(id)a3
+- (PXGSpriteTextureInfoSerializable)initWithSerializableObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v8.receiver = self;
   v8.super_class = PXGSpriteTextureInfoSerializable;
   v5 = [(PXGSpriteTextureInfoSerializable *)&v8 init];
   if (v5)
   {
-    PXGDeserializeSpriteTextureInfo(v4, v7);
+    PXGDeserializeSpriteTextureInfo(objectCopy, v7);
     [(PXGSpriteTextureInfoSerializable *)v5 setSpriteTextureInfo:v7];
   }
 

@@ -1,19 +1,19 @@
 @interface BWBufferometerTracker
-+ (void)trackBuffer:(int64_t)a3 trackedSize:(void *)a4 tag:(void *)a5 bufferType:;
-- (unint64_t)initWithBuffer:(unint64_t)a3 trackedSize:(void *)a4 tag:(void *)a5 bufferType:;
++ (void)trackBuffer:(int64_t)buffer trackedSize:(void *)size tag:(void *)tag bufferType:;
+- (unint64_t)initWithBuffer:(unint64_t)buffer trackedSize:(void *)size tag:(void *)tag bufferType:;
 - (void)dealloc;
 @end
 
 @implementation BWBufferometerTracker
 
-+ (void)trackBuffer:(int64_t)a3 trackedSize:(void *)a4 tag:(void *)a5 bufferType:
++ (void)trackBuffer:(int64_t)buffer trackedSize:(void *)size tag:(void *)tag bufferType:
 {
   objc_opt_self();
   if (a2)
   {
-    if (a3 >= 1)
+    if (buffer >= 1)
     {
-      v9 = [[BWBufferometerTracker alloc] initWithBuffer:a2 trackedSize:a3 tag:a4 bufferType:a5];
+      v9 = [[BWBufferometerTracker alloc] initWithBuffer:a2 trackedSize:buffer tag:size bufferType:tag];
       if (v9)
       {
         v10 = v9;
@@ -33,25 +33,25 @@
   [(BWBufferometerTracker *)&v3 dealloc];
 }
 
-- (unint64_t)initWithBuffer:(unint64_t)a3 trackedSize:(void *)a4 tag:(void *)a5 bufferType:
+- (unint64_t)initWithBuffer:(unint64_t)buffer trackedSize:(void *)size tag:(void *)tag bufferType:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v14.receiver = a1;
+  v14.receiver = self;
   v14.super_class = BWBufferometerTracker;
   v9 = objc_msgSendSuper2(&v14, sel_init);
   v10 = v9;
   if (v9)
   {
     v9[3] = a2;
-    v9[1] = a3;
-    v9[4] = a4;
-    v11 = a5;
+    v9[1] = buffer;
+    v9[4] = size;
+    tagCopy = tag;
     v12 = _MergedGlobals_15++;
-    v10[5] = v11;
+    v10[5] = tagCopy;
     v10[2] = v12;
     atomic_fetch_add_explicit(&qword_1ED845238, v10[1], memory_order_relaxed);
     atomic_fetch_add_explicit(&qword_1ED845240, 1uLL, memory_order_relaxed);

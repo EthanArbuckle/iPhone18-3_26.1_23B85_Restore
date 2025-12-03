@@ -1,33 +1,33 @@
 @interface CPLCloudKitScope
-+ (id)descriptionForCloudKitScopeOptions:(int64_t)a3;
-+ (id)scopeFromTransportScope:(id)a3;
++ (id)descriptionForCloudKitScopeOptions:(int64_t)options;
++ (id)scopeFromTransportScope:(id)scope;
 - (BOOL)isCoherent;
 - (CPLCloudKitScope)fixedCloudKitScope;
-- (CPLCloudKitScope)initWithCoder:(id)a3;
-- (CPLCloudKitScope)initWithZone:(id)a3;
-- (CPLCloudKitScope)initWithZone:(id)a3 options:(int64_t)a4;
-- (CPLCloudKitScope)initWithZoneID:(id)a3;
-- (CPLCloudKitScope)initWithZoneID:(id)a3 currentUserID:(id)a4;
-- (CPLCloudKitScope)initWithZoneID:(id)a3 options:(int64_t)a4;
+- (CPLCloudKitScope)initWithCoder:(id)coder;
+- (CPLCloudKitScope)initWithZone:(id)zone;
+- (CPLCloudKitScope)initWithZone:(id)zone options:(int64_t)options;
+- (CPLCloudKitScope)initWithZoneID:(id)d;
+- (CPLCloudKitScope)initWithZoneID:(id)d currentUserID:(id)iD;
+- (CPLCloudKitScope)initWithZoneID:(id)d options:(int64_t)options;
 - (id)description;
-- (id)recordIDWithRecordName:(id)a3;
+- (id)recordIDWithRecordName:(id)name;
 - (int64_t)databaseScope;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CPLCloudKitScope
 
-+ (id)descriptionForCloudKitScopeOptions:(int64_t)a3
++ (id)descriptionForCloudKitScopeOptions:(int64_t)options
 {
   if (qword_1002C5218 == -1)
   {
-    if (a3)
+    if (options)
     {
 LABEL_3:
       v15 = 0;
       v16 = &v15;
       v17 = 0x2020000000;
-      v18 = a3;
+      optionsCopy = options;
       v4 = objc_alloc_init(NSMutableArray);
       v5 = qword_1002C5210;
       v11[0] = _NSConcreteStackBlock;
@@ -35,7 +35,7 @@ LABEL_3:
       v11[2] = sub_10005A224;
       v11[3] = &unk_100274BE0;
       v13 = &v15;
-      v14 = a3;
+      optionsCopy2 = options;
       v6 = v4;
       v12 = v6;
       [v5 enumerateKeysAndObjectsUsingBlock:v11];
@@ -59,7 +59,7 @@ LABEL_3:
   else
   {
     sub_10019E48C();
-    if (a3)
+    if (options)
     {
       goto LABEL_3;
     }
@@ -71,26 +71,26 @@ LABEL_9:
   return v9;
 }
 
-- (CPLCloudKitScope)initWithZone:(id)a3 options:(int64_t)a4
+- (CPLCloudKitScope)initWithZone:(id)zone options:(int64_t)options
 {
-  v8 = a3;
+  zoneCopy = zone;
   v21.receiver = self;
   v21.super_class = CPLCloudKitScope;
   v9 = [(CPLCloudKitScope *)&v21 init];
   if (v9)
   {
-    v10 = [v8 zoneID];
-    if (!v10)
+    zoneID = [zoneCopy zoneID];
+    if (!zoneID)
     {
       sub_10019E614(a2, v9);
     }
 
-    v11 = v10;
-    v12 = [v10 databaseScope];
-    if (v12 == 2)
+    v11 = zoneID;
+    databaseScope = [zoneID databaseScope];
+    if (databaseScope == 2)
     {
-      v18 = [v11 ownerName];
-      v19 = [v18 isEqualToString:CKCurrentUserDefaultName];
+      ownerName = [v11 ownerName];
+      v19 = [ownerName isEqualToString:CKCurrentUserDefaultName];
 
       if ((v19 & 1) == 0)
       {
@@ -98,10 +98,10 @@ LABEL_9:
       }
     }
 
-    else if (v12 == 3)
+    else if (databaseScope == 3)
     {
-      v13 = [v11 ownerName];
-      v14 = [v13 isEqualToString:CKCurrentUserDefaultName];
+      ownerName2 = [v11 ownerName];
+      v14 = [ownerName2 isEqualToString:CKCurrentUserDefaultName];
 
       if (v14)
       {
@@ -126,48 +126,48 @@ LABEL_9:
       }
     }
 
-    else if (v12 == 1)
+    else if (databaseScope == 1)
     {
       sub_10019E58C(a2, v9, v11);
     }
 
-    objc_storeStrong(&v9->_zone, a3);
-    v9->_options = a4;
+    objc_storeStrong(&v9->_zone, zone);
+    v9->_options = options;
   }
 
   return v9;
 }
 
-- (CPLCloudKitScope)initWithZoneID:(id)a3 options:(int64_t)a4
+- (CPLCloudKitScope)initWithZoneID:(id)d options:(int64_t)options
 {
-  v7 = a3;
-  if (!v7)
+  dCopy = d;
+  if (!dCopy)
   {
     sub_10019E6D0(a2, self);
   }
 
-  v8 = v7;
-  v9 = [[CKRecordZone alloc] initWithZoneID:v7];
-  v10 = [(CPLCloudKitScope *)self initWithZone:v9 options:a4];
+  v8 = dCopy;
+  v9 = [[CKRecordZone alloc] initWithZoneID:dCopy];
+  v10 = [(CPLCloudKitScope *)self initWithZone:v9 options:options];
 
   return v10;
 }
 
-- (CPLCloudKitScope)initWithZoneID:(id)a3 currentUserID:(id)a4
+- (CPLCloudKitScope)initWithZoneID:(id)d currentUserID:(id)iD
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 ownerName];
-  v9 = [v7 recordName];
+  dCopy = d;
+  iDCopy = iD;
+  ownerName = [dCopy ownerName];
+  recordName = [iDCopy recordName];
 
-  if ([v8 isEqualToString:v9])
+  if ([ownerName isEqualToString:recordName])
   {
-    sub_10019E78C(v6, &v13);
+    sub_10019E78C(dCopy, &v13);
     v10 = 0;
-    v6 = v13;
+    dCopy = v13;
   }
 
-  else if ([v8 isEqualToString:CKCurrentUserDefaultName])
+  else if ([ownerName isEqualToString:CKCurrentUserDefaultName])
   {
     v10 = 0;
   }
@@ -177,17 +177,17 @@ LABEL_9:
     v10 = 2;
   }
 
-  v11 = [(CPLCloudKitScope *)self initWithZoneID:v6 options:v10];
+  v11 = [(CPLCloudKitScope *)self initWithZoneID:dCopy options:v10];
 
   return v11;
 }
 
-- (CPLCloudKitScope)initWithZone:(id)a3
+- (CPLCloudKitScope)initWithZone:(id)zone
 {
-  v4 = a3;
-  v5 = [v4 zoneID];
-  v6 = [v5 ownerName];
-  v7 = [v6 isEqualToString:CKCurrentUserDefaultName];
+  zoneCopy = zone;
+  zoneID = [zoneCopy zoneID];
+  ownerName = [zoneID ownerName];
+  v7 = [ownerName isEqualToString:CKCurrentUserDefaultName];
 
   if (v7)
   {
@@ -199,33 +199,33 @@ LABEL_9:
     v8 = 2;
   }
 
-  v9 = [(CPLCloudKitScope *)self initWithZone:v4 options:v8];
+  v9 = [(CPLCloudKitScope *)self initWithZone:zoneCopy options:v8];
 
   return v9;
 }
 
-- (CPLCloudKitScope)initWithZoneID:(id)a3
+- (CPLCloudKitScope)initWithZoneID:(id)d
 {
-  v5 = a3;
-  if (!v5)
+  dCopy = d;
+  if (!dCopy)
   {
     sub_10019E8A4(a2, self);
   }
 
-  v6 = v5;
-  v7 = [[CKRecordZone alloc] initWithZoneID:v5];
+  v6 = dCopy;
+  v7 = [[CKRecordZone alloc] initWithZoneID:dCopy];
   v8 = [(CPLCloudKitScope *)self initWithZone:v7];
 
   return v8;
 }
 
-- (CPLCloudKitScope)initWithCoder:(id)a3
+- (CPLCloudKitScope)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = CPLCloudKitScope;
   v5 = [(CPLCloudKitScope *)&v10 init];
-  if (v5 && ([v4 decodeObjectOfClass:objc_opt_class() forKey:@"z"], v6 = objc_claimAutoreleasedReturnValue(), zone = v5->_zone, v5->_zone = v6, zone, v5->_options = objc_msgSend(v4, "decodeIntegerForKey:", @"o"), !v5->_zone))
+  if (v5 && ([coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"z"], v6 = objc_claimAutoreleasedReturnValue(), zone = v5->_zone, v5->_zone = v6, zone, v5->_options = objc_msgSend(coderCopy, "decodeIntegerForKey:", @"o"), !v5->_zone))
   {
     v8 = 0;
   }
@@ -238,36 +238,36 @@ LABEL_9:
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   zone = self->_zone;
-  v5 = a3;
-  [v5 encodeObject:zone forKey:@"z"];
-  [v5 encodeInteger:self->_options forKey:@"o"];
+  coderCopy = coder;
+  [coderCopy encodeObject:zone forKey:@"z"];
+  [coderCopy encodeInteger:self->_options forKey:@"o"];
 }
 
-+ (id)scopeFromTransportScope:(id)a3
++ (id)scopeFromTransportScope:(id)scope
 {
-  v3 = a3;
+  scopeCopy = scope;
   if (qword_1002C5228 != -1)
   {
     sub_10019E960();
   }
 
-  v4 = [NSKeyedUnarchiver cpl_safeUnarchiveObjectWithData:v3 classes:qword_1002C5220];
+  v4 = [NSKeyedUnarchiver cpl_safeUnarchiveObjectWithData:scopeCopy classes:qword_1002C5220];
   if (v4)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       v5 = v4;
-      v6 = [(CPLCloudKitScope *)v5 zoneID];
+      zoneID = [(CPLCloudKitScope *)v5 zoneID];
 
-      if (v6)
+      if (zoneID)
       {
-        v7 = [(CPLCloudKitScope *)v5 zoneID];
-        v8 = [v7 ownerName];
-        v9 = [v8 isEqualToString:CKCurrentUserDefaultName];
+        zoneID2 = [(CPLCloudKitScope *)v5 zoneID];
+        ownerName = [zoneID2 ownerName];
+        v9 = [ownerName isEqualToString:CKCurrentUserDefaultName];
 
         if (v9)
         {
@@ -310,12 +310,12 @@ LABEL_9:
   }
 }
 
-- (id)recordIDWithRecordName:(id)a3
+- (id)recordIDWithRecordName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v5 = [CKRecordID alloc];
-  v6 = [(CKRecordZone *)self->_zone zoneID];
-  v7 = [v5 initWithRecordName:v4 zoneID:v6];
+  zoneID = [(CKRecordZone *)self->_zone zoneID];
+  v7 = [v5 initWithRecordName:nameCopy zoneID:zoneID];
 
   return v7;
 }
@@ -324,24 +324,24 @@ LABEL_9:
 {
   v3 = [NSString alloc];
   v4 = objc_opt_class();
-  v5 = [(CPLCloudKitScope *)self zoneID];
-  v6 = [v5 cpl_zoneName];
+  zoneID = [(CPLCloudKitScope *)self zoneID];
+  cpl_zoneName = [zoneID cpl_zoneName];
   v7 = [objc_opt_class() descriptionForCloudKitScopeOptions:self->_options];
-  v8 = [v3 initWithFormat:@"<%@ %@ (%@)>", v4, v6, v7];
+  v8 = [v3 initWithFormat:@"<%@ %@ (%@)>", v4, cpl_zoneName, v7];
 
   return v8;
 }
 
 - (CPLCloudKitScope)fixedCloudKitScope
 {
-  v3 = [(CPLCloudKitScope *)self zoneID];
-  v4 = v3;
-  if (v3 && [v3 databaseScope] && (v5 = objc_msgSend(v4, "databaseScope"), v5 != -[CPLCloudKitScope databaseScope](self, "databaseScope")))
+  zoneID = [(CPLCloudKitScope *)self zoneID];
+  v4 = zoneID;
+  if (zoneID && [zoneID databaseScope] && (v5 = objc_msgSend(v4, "databaseScope"), v5 != -[CPLCloudKitScope databaseScope](self, "databaseScope")))
   {
     v8 = [CKRecordZoneID alloc];
-    v9 = [v4 zoneName];
-    v10 = [v4 ownerName];
-    v11 = [v8 initWithZoneName:v9 ownerName:v10];
+    zoneName = [v4 zoneName];
+    ownerName = [v4 ownerName];
+    v11 = [v8 initWithZoneName:zoneName ownerName:ownerName];
 
     v6 = [[CPLCloudKitScope alloc] initWithZoneID:v11 options:[(CPLCloudKitScope *)self options]];
   }
@@ -356,15 +356,15 @@ LABEL_9:
 
 - (BOOL)isCoherent
 {
-  v3 = [(CPLCloudKitScope *)self zoneID];
-  v4 = v3;
+  zoneID = [(CPLCloudKitScope *)self zoneID];
+  v4 = zoneID;
   v6 = 1;
-  if (v3)
+  if (zoneID)
   {
-    if ([v3 databaseScope])
+    if ([zoneID databaseScope])
     {
-      v5 = [v4 databaseScope];
-      if (v5 != [(CPLCloudKitScope *)self databaseScope])
+      databaseScope = [v4 databaseScope];
+      if (databaseScope != [(CPLCloudKitScope *)self databaseScope])
       {
         v6 = 0;
       }

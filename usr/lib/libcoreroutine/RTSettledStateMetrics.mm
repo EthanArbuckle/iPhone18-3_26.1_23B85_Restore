@@ -1,19 +1,19 @@
 @interface RTSettledStateMetrics
 + (id)binsForDistanceTraveled;
 + (id)binsForDuration;
-+ (id)createSettledStateMetricsForNewSettledStateTransition:(id)a3 settledStateTransitionStore:(id)a4 locationStore:(id)a5;
-+ (unint64_t)bucketForDistanceTraveled:(double)a3;
-+ (unint64_t)bucketForDurationLength:(double)a3;
-+ (void)submitSettledStateMetricsForSettledStateTransition:(id)a3 settledStateTransitionStore:(id)a4 locationStore:(id)a5;
-- (RTSettledStateMetrics)initWithCurrentSettledStateTransition:(id)a3 nextSettledStateTransition:(id)a4 distanceTraveled:(unint64_t)a5;
++ (id)createSettledStateMetricsForNewSettledStateTransition:(id)transition settledStateTransitionStore:(id)store locationStore:(id)locationStore;
++ (unint64_t)bucketForDistanceTraveled:(double)traveled;
++ (unint64_t)bucketForDurationLength:(double)length;
++ (void)submitSettledStateMetricsForSettledStateTransition:(id)transition settledStateTransitionStore:(id)store locationStore:(id)locationStore;
+- (RTSettledStateMetrics)initWithCurrentSettledStateTransition:(id)transition nextSettledStateTransition:(id)stateTransition distanceTraveled:(unint64_t)traveled;
 @end
 
 @implementation RTSettledStateMetrics
 
-- (RTSettledStateMetrics)initWithCurrentSettledStateTransition:(id)a3 nextSettledStateTransition:(id)a4 distanceTraveled:(unint64_t)a5
+- (RTSettledStateMetrics)initWithCurrentSettledStateTransition:(id)transition nextSettledStateTransition:(id)stateTransition distanceTraveled:(unint64_t)traveled
 {
-  v8 = a3;
-  v9 = a4;
+  transitionCopy = transition;
+  stateTransitionCopy = stateTransition;
   v22.receiver = self;
   v22.super_class = RTSettledStateMetrics;
   v10 = [(RTMetric *)&v22 init];
@@ -21,20 +21,20 @@
   {
     v11 = MEMORY[0x277CCABB0];
     v12 = objc_opt_class();
-    v13 = [v9 date];
-    v14 = [v8 date];
-    [v13 timeIntervalSinceDate:v14];
+    date = [stateTransitionCopy date];
+    date2 = [transitionCopy date];
+    [date timeIntervalSinceDate:date2];
     v15 = [v11 numberWithUnsignedInteger:{objc_msgSend(v12, "bucketForDurationLength:")}];
-    v16 = [(RTMetric *)v10 metrics];
-    [v16 setObject:v15 forKeyedSubscript:@"DurationLength"];
+    metrics = [(RTMetric *)v10 metrics];
+    [metrics setObject:v15 forKeyedSubscript:@"DurationLength"];
 
-    v17 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v8, "transitionToType") == 2}];
-    v18 = [(RTMetric *)v10 metrics];
-    [v18 setObject:v17 forKeyedSubscript:@"IsSettledState"];
+    v17 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(transitionCopy, "transitionToType") == 2}];
+    metrics2 = [(RTMetric *)v10 metrics];
+    [metrics2 setObject:v17 forKeyedSubscript:@"IsSettledState"];
 
-    v19 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(objc_opt_class(), "bucketForDistanceTraveled:", a5)}];
-    v20 = [(RTMetric *)v10 metrics];
-    [v20 setObject:v19 forKeyedSubscript:@"DistanceTraveledAfterEnteringState"];
+    v19 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(objc_opt_class(), "bucketForDistanceTraveled:", traveled)}];
+    metrics3 = [(RTMetric *)v10 metrics];
+    [metrics3 setObject:v19 forKeyedSubscript:@"DistanceTraveledAfterEnteringState"];
   }
 
   return v10;
@@ -55,14 +55,14 @@
   return v2;
 }
 
-+ (unint64_t)bucketForDistanceTraveled:(double)a3
++ (unint64_t)bucketForDistanceTraveled:(double)traveled
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithDouble:traveled];
   v5 = +[RTSettledStateMetrics binsForDistanceTraveled];
-  v6 = [a1 binForNumber:v4 bins:v5];
-  v7 = [v6 unsignedIntegerValue];
+  v6 = [self binForNumber:v4 bins:v5];
+  unsignedIntegerValue = [v6 unsignedIntegerValue];
 
-  return v7;
+  return unsignedIntegerValue;
 }
 
 + (id)binsForDuration
@@ -106,27 +106,27 @@
   return v2;
 }
 
-+ (unint64_t)bucketForDurationLength:(double)a3
++ (unint64_t)bucketForDurationLength:(double)length
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithDouble:length];
   v5 = +[RTSettledStateMetrics binsForDuration];
-  v6 = [a1 binForNumber:v4 bins:v5];
-  v7 = [v6 unsignedIntegerValue];
+  v6 = [self binForNumber:v4 bins:v5];
+  unsignedIntegerValue = [v6 unsignedIntegerValue];
 
-  return v7;
+  return unsignedIntegerValue;
 }
 
-+ (id)createSettledStateMetricsForNewSettledStateTransition:(id)a3 settledStateTransitionStore:(id)a4 locationStore:(id)a5
++ (id)createSettledStateMetricsForNewSettledStateTransition:(id)transition settledStateTransitionStore:(id)store locationStore:(id)locationStore
 {
   v52 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  transitionCopy = transition;
+  storeCopy = store;
+  locationStoreCopy = locationStore;
   v10 = [RTStoredSettledStateTransitionEnumerationOptions alloc];
   v11 = objc_alloc(MEMORY[0x277CCA970]);
-  v12 = [MEMORY[0x277CBEAA8] distantPast];
-  v13 = [MEMORY[0x277CBEAA8] distantFuture];
-  v14 = [v11 initWithStartDate:v12 endDate:v13];
+  distantPast = [MEMORY[0x277CBEAA8] distantPast];
+  distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
+  v14 = [v11 initWithStartDate:distantPast endDate:distantFuture];
   v15 = [(RTStoredSettledStateTransitionEnumerationOptions *)v10 initWithAscending:0 dateInterval:v14 limit:&unk_28459C930 batchSize:1];
 
   v43 = 0;
@@ -146,10 +146,10 @@
   v33[2] = __121__RTSettledStateMetrics_createSettledStateMetricsForNewSettledStateTransition_settledStateTransitionStore_locationStore___block_invoke;
   v33[3] = &unk_2788C6AC0;
   v35 = &v43;
-  v16 = v7;
+  v16 = transitionCopy;
   v34 = v16;
   v36 = &v37;
-  [v8 enumerateStoredSettledStateTransitionsWithOptions:v15 enumerationBlock:v33];
+  [storeCopy enumerateStoredSettledStateTransitionsWithOptions:v15 enumerationBlock:v33];
   if (v44[5])
   {
     v17 = _rt_log_facility_get_os_log(RTLogFacilityVisit);
@@ -170,14 +170,14 @@
   v20 = v38[5];
   if (v20)
   {
-    v21 = [v20 transitionToType];
-    if (v21 == [v16 transitionFromType])
+    transitionToType = [v20 transitionToType];
+    if (transitionToType == [v16 transitionFromType])
     {
       v22 = [RTLocationStoreMetricOptions alloc];
       v23 = objc_alloc(MEMORY[0x277CCA970]);
-      v24 = [v38[5] date];
-      v25 = [v16 date];
-      v26 = [v23 initWithStartDate:v24 endDate:v25];
+      date = [v38[5] date];
+      date2 = [v16 date];
+      v26 = [v23 initWithStartDate:date endDate:date2];
       v17 = [(RTLocationStoreMetricOptions *)v22 initWithDateInterval:v26 uncertaintyThreshold:2500.0];
 
       *&buf = 0;
@@ -189,7 +189,7 @@
       v32[2] = __121__RTSettledStateMetrics_createSettledStateMetricsForNewSettledStateTransition_settledStateTransitionStore_locationStore___block_invoke_46;
       v32[3] = &unk_2788C6AE8;
       v32[4] = &buf;
-      [v9 fetchMetricsWithOptions:v17 handler:v32];
+      [locationStoreCopy fetchMetricsWithOptions:v17 handler:v32];
       v27 = [RTSettledStateMetrics alloc];
       v18 = [(RTSettledStateMetrics *)v27 initWithCurrentSettledStateTransition:v38[5] nextSettledStateTransition:v16 distanceTraveled:*(*(&buf + 1) + 24)];
       _Block_object_dispose(&buf, 8);
@@ -265,12 +265,12 @@ uint64_t __121__RTSettledStateMetrics_createSettledStateMetricsForNewSettledStat
   return result;
 }
 
-+ (void)submitSettledStateMetricsForSettledStateTransition:(id)a3 settledStateTransitionStore:(id)a4 locationStore:(id)a5
++ (void)submitSettledStateMetricsForSettledStateTransition:(id)transition settledStateTransitionStore:(id)store locationStore:(id)locationStore
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [objc_opt_class() createSettledStateMetricsForNewSettledStateTransition:v9 settledStateTransitionStore:v8 locationStore:v7];
+  locationStoreCopy = locationStore;
+  storeCopy = store;
+  transitionCopy = transition;
+  v10 = [objc_opt_class() createSettledStateMetricsForNewSettledStateTransition:transitionCopy settledStateTransitionStore:storeCopy locationStore:locationStoreCopy];
 
   if (v10)
   {

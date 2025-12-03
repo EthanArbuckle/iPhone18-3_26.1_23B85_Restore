@@ -1,5 +1,5 @@
 @interface TKCtkdRunner
-- (TKCtkdRunner)initWithArgc:(int)a3 argv:(const char *)a4;
+- (TKCtkdRunner)initWithArgc:(int)argc argv:(const char *)argv;
 - (TKHostTokenDriverCache)tokenDriverCache;
 - (TKHostTokenRegistry)tokenRegistry;
 - (TKSmartCardTokenRegistrationRegistry)smartCardTokenRegistrationRegistry;
@@ -30,10 +30,10 @@
   if (!tokenRegistry)
   {
     v4 = [TKHostTokenRegistry alloc];
-    v5 = [(TKCtkdRunner *)self tokenDriverCache];
+    tokenDriverCache = [(TKCtkdRunner *)self tokenDriverCache];
     v6 = +[NSXPCListener anonymousListener];
     v7 = objc_alloc_init(TKHostKeychainHandler);
-    v8 = [(TKHostTokenRegistry *)v4 initWithDriverCache:v5 listener:v6 keychain:v7];
+    v8 = [(TKHostTokenRegistry *)v4 initWithDriverCache:tokenDriverCache listener:v6 keychain:v7];
     v9 = self->_tokenRegistry;
     self->_tokenRegistry = v8;
 
@@ -49,13 +49,13 @@
   if (!smartCardTokenRegistrationRegistry)
   {
     v4 = [TKSmartCardTokenRegistrationRegistry alloc];
-    v5 = [(TKCtkdRunner *)self tokenRegistry];
+    tokenRegistry = [(TKCtkdRunner *)self tokenRegistry];
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_10000381C;
     v9[3] = &unk_100038950;
     v9[4] = self;
-    v6 = [(TKSmartCardTokenRegistrationRegistry *)v4 initWithHostTokenRegistry:v5 slotServerConnectionProvider:0 tokenWatcherProvider:v9];
+    v6 = [(TKSmartCardTokenRegistrationRegistry *)v4 initWithHostTokenRegistry:tokenRegistry slotServerConnectionProvider:0 tokenWatcherProvider:v9];
     v7 = self->_smartCardTokenRegistrationRegistry;
     self->_smartCardTokenRegistrationRegistry = v6;
 
@@ -65,7 +65,7 @@
   return smartCardTokenRegistrationRegistry;
 }
 
-- (TKCtkdRunner)initWithArgc:(int)a3 argv:(const char *)a4
+- (TKCtkdRunner)initWithArgc:(int)argc argv:(const char *)argv
 {
   v30.receiver = self;
   v30.super_class = TKCtkdRunner;
@@ -82,7 +82,7 @@
     {
       while (1)
       {
-        v9 = getopt(a3, a4, "stw");
+        v9 = getopt(argc, argv, "stw");
         if (v9 <= 115)
         {
           break;
@@ -90,24 +90,24 @@
 
         if (v9 == 116)
         {
-          v11 = [[NSXPCListener alloc] initWithMachServiceName:v29];
-          v16 = [[TKTokenServer alloc] initWithTokenServer:v11];
+          tokenRegistry2 = [[NSXPCListener alloc] initWithMachServiceName:v29];
+          v16 = [[TKTokenServer alloc] initWithTokenServer:tokenRegistry2];
           tokenServer = v7->_tokenServer;
           v7->_tokenServer = v16;
 
-          v18 = [(TKCtkdRunner *)v7 tokenRegistry];
-          v19 = [(TKCtkdRunner *)v7 smartCardTokenRegistrationRegistry];
+          tokenRegistry = [(TKCtkdRunner *)v7 tokenRegistry];
+          smartCardTokenRegistrationRegistry = [(TKCtkdRunner *)v7 smartCardTokenRegistrationRegistry];
           if (v7->_tokenDriverCache)
           {
-            v20 = [(TKCtkdRunner *)v7 smartCardTokenRegistrationRegistry];
-            v21 = [(TKCtkdRunner *)v7 tokenDriverCache];
-            [v21 setSmartCardTokenRegistrationRegistry:v20];
+            smartCardTokenRegistrationRegistry2 = [(TKCtkdRunner *)v7 smartCardTokenRegistrationRegistry];
+            tokenDriverCache = [(TKCtkdRunner *)v7 tokenDriverCache];
+            [tokenDriverCache setSmartCardTokenRegistrationRegistry:smartCardTokenRegistrationRegistry2];
           }
 
           slotWatcher = [[NSXPCListener alloc] initWithMachServiceName:v28];
           v22 = [TKSmartCardTokenRegistrationServer alloc];
-          v23 = [(TKCtkdRunner *)v7 smartCardTokenRegistrationRegistry];
-          v24 = [(TKSmartCardTokenRegistrationServer *)v22 initWithSmartCardTokenRegistry:v23 listener:slotWatcher];
+          smartCardTokenRegistrationRegistry3 = [(TKCtkdRunner *)v7 smartCardTokenRegistrationRegistry];
+          v24 = [(TKSmartCardTokenRegistrationServer *)v22 initWithSmartCardTokenRegistry:smartCardTokenRegistrationRegistry3 listener:slotWatcher];
           smartCardRegistrationServer = v7->_smartCardRegistrationServer;
           v7->_smartCardRegistrationServer = v24;
 
@@ -117,8 +117,8 @@ LABEL_12:
         else if (v9 == 119)
         {
           v10 = [TKSlotWatcher alloc];
-          v11 = [(TKCtkdRunner *)v7 tokenRegistry];
-          v12 = [(TKSlotWatcher *)v10 initWithTokenRegistry:v11];
+          tokenRegistry2 = [(TKCtkdRunner *)v7 tokenRegistry];
+          v12 = [(TKSlotWatcher *)v10 initWithTokenRegistry:tokenRegistry2];
           slotWatcher = v7->_slotWatcher;
           v7->_slotWatcher = v12;
           goto LABEL_12;
@@ -127,9 +127,9 @@ LABEL_12:
 
       if (v9 == 115)
       {
-        v11 = [[NSXPCListener alloc] initWithMachServiceName:v27];
+        tokenRegistry2 = [[NSXPCListener alloc] initWithMachServiceName:v27];
         slotWatcher = [[NSXPCListener alloc] initWithMachServiceName:v8];
-        v14 = [[TKSlotServer alloc] initWithRegistryListener:v11 clientListener:slotWatcher];
+        v14 = [[TKSlotServer alloc] initWithRegistryListener:tokenRegistry2 clientListener:slotWatcher];
         slotServer = v7->_slotServer;
         v7->_slotServer = v14;
 
@@ -147,8 +147,8 @@ LABEL_12:
 {
   v3 = [NSXPCConnection alloc];
   v5 = [v3 initWithMachServiceName:TKProtocolSlotClientName options:4096];
-  v4 = [(TKCtkdRunner *)self slotWatcher];
-  [v4 startWithSlotServer:v5];
+  slotWatcher = [(TKCtkdRunner *)self slotWatcher];
+  [slotWatcher startWithSlotServer:v5];
 }
 
 - (void)run
@@ -163,24 +163,24 @@ LABEL_12:
   sigTermSource = self->_sigTermSource;
   self->_sigTermSource = v4;
 
-  v6 = [(TKCtkdRunner *)self sigTermSource];
+  sigTermSource = [(TKCtkdRunner *)self sigTermSource];
   handler[0] = _NSConcreteStackBlock;
   handler[1] = 3221225472;
   handler[2] = sub_100003F08;
   handler[3] = &unk_100038710;
   handler[4] = self;
-  dispatch_source_set_event_handler(v6, handler);
+  dispatch_source_set_event_handler(sigTermSource, handler);
 
-  v7 = [(TKCtkdRunner *)self sigTermSource];
-  dispatch_activate(v7);
+  sigTermSource2 = [(TKCtkdRunner *)self sigTermSource];
+  dispatch_activate(sigTermSource2);
 
   signal(15, 1);
-  v8 = [(TKCtkdRunner *)self slotServer];
+  slotServer = [(TKCtkdRunner *)self slotServer];
 
-  if (v8)
+  if (slotServer)
   {
-    v9 = [(TKCtkdRunner *)self slotServer];
-    [v9 start];
+    slotServer2 = [(TKCtkdRunner *)self slotServer];
+    [slotServer2 start];
 
     LODWORD(out_token) = 0;
     v22[0] = _NSConcreteStackBlock;
@@ -191,12 +191,12 @@ LABEL_12:
     notify_register_dispatch([@"com.apple.system.loginwindow.desktopUp" UTF8String], &out_token, &_dispatch_main_q, v22);
   }
 
-  v10 = [(TKCtkdRunner *)self tokenServer];
+  tokenServer = [(TKCtkdRunner *)self tokenServer];
 
-  if (v10)
+  if (tokenServer)
   {
-    v11 = [(TKCtkdRunner *)self tokenServer];
-    [v11 start];
+    tokenServer2 = [(TKCtkdRunner *)self tokenServer];
+    [tokenServer2 start];
   }
 
   if ([(TKCtkdRunner *)self hasRegistry])
@@ -210,14 +210,14 @@ LABEL_12:
     dispatch_async(v12, block);
   }
 
-  v13 = [(TKCtkdRunner *)self slotWatcher];
+  slotWatcher = [(TKCtkdRunner *)self slotWatcher];
 
-  if (v13)
+  if (slotWatcher)
   {
     [(TKCtkdRunner *)self ensureSlotWatcherIsRunning];
-    v14 = [(TKCtkdRunner *)self tokenServer];
+    tokenServer3 = [(TKCtkdRunner *)self tokenServer];
 
-    if (v14)
+    if (tokenServer3)
     {
       objc_initWeak(&out_token, self);
       v18[0] = _NSConcreteStackBlock;
@@ -225,20 +225,20 @@ LABEL_12:
       v18[2] = sub_100004118;
       v18[3] = &unk_1000389A0;
       objc_copyWeak(&v19, &out_token);
-      v15 = [(TKCtkdRunner *)self tokenServer];
-      [v15 setEnsureSlotWatcherIsRunning:v18];
+      tokenServer4 = [(TKCtkdRunner *)self tokenServer];
+      [tokenServer4 setEnsureSlotWatcherIsRunning:v18];
 
       objc_destroyWeak(&v19);
       objc_destroyWeak(&out_token);
     }
   }
 
-  v16 = [(TKCtkdRunner *)self smartCardRegistrationServer];
+  smartCardRegistrationServer = [(TKCtkdRunner *)self smartCardRegistrationServer];
 
-  if (v16)
+  if (smartCardRegistrationServer)
   {
-    v17 = [(TKCtkdRunner *)self smartCardRegistrationServer];
-    [v17 start];
+    smartCardRegistrationServer2 = [(TKCtkdRunner *)self smartCardRegistrationServer];
+    [smartCardRegistrationServer2 start];
   }
 }
 

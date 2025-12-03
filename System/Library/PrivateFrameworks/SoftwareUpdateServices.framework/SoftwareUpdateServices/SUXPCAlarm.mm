@@ -1,8 +1,8 @@
 @interface SUXPCAlarm
 - (SUXPCAlarm)init;
-- (void)cancelAlarm:(id)a3;
+- (void)cancelAlarm:(id)alarm;
 - (void)cancelInstallAlertAlarm;
-- (void)scheduleAlarm:(id)a3 date:(id)a4;
+- (void)scheduleAlarm:(id)alarm date:(id)date;
 @end
 
 @implementation SUXPCAlarm
@@ -60,26 +60,26 @@ uint64_t __18__SUXPCAlarm_init__block_invoke(uint64_t a1, void *a2)
   [(SUCSScheduler *)csScheduler unregisterInstallationAlertAction];
 }
 
-- (void)scheduleAlarm:(id)a3 date:(id)a4
+- (void)scheduleAlarm:(id)alarm date:(id)date
 {
-  v5 = a4;
-  v6 = a3;
-  SULogInfo(@"Scheduling alarm: %@", v7, v8, v9, v10, v11, v12, v13, v6);
-  [v5 timeIntervalSince1970];
+  dateCopy = date;
+  alarmCopy = alarm;
+  SULogInfo(@"Scheduling alarm: %@", v7, v8, v9, v10, v11, v12, v13, alarmCopy);
+  [dateCopy timeIntervalSince1970];
   v15 = v14;
 
   v16 = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_date(v16, "Date", (v15 * 1000000000.0));
-  [v6 UTF8String];
+  [alarmCopy UTF8String];
 
   xpc_set_event();
 }
 
-- (void)cancelAlarm:(id)a3
+- (void)cancelAlarm:(id)alarm
 {
-  v3 = a3;
-  SULogInfo(@"Canceling alarm: %@", v4, v5, v6, v7, v8, v9, v10, v3);
-  [v3 UTF8String];
+  alarmCopy = alarm;
+  SULogInfo(@"Canceling alarm: %@", v4, v5, v6, v7, v8, v9, v10, alarmCopy);
+  [alarmCopy UTF8String];
 
   xpc_set_event();
 }

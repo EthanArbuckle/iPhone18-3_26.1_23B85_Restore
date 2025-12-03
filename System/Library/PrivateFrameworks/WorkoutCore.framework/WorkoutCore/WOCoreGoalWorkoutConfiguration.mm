@@ -7,7 +7,7 @@
 
 - (NSString)analyticsKey
 {
-  v2 = self;
+  selfCopy = self;
   v3 = GoalWorkoutConfiguration.analyticsKey.getter();
   v5 = v4;
 
@@ -18,7 +18,7 @@
 
 - (int64_t)hash
 {
-  v2 = self;
+  selfCopy = self;
   v3 = GoalWorkoutConfiguration.hash.getter();
 
   return v3;

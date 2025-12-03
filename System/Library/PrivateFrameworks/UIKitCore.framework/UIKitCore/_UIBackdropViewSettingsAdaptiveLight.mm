@@ -9,13 +9,13 @@
   v4.receiver = self;
   v4.super_class = _UIBackdropViewSettingsAdaptiveLight;
   [(_UIBackdropViewSettingsLight *)&v4 setDefaultValues];
-  v3 = [(_UIBackdropViewSettings *)self graphicsQuality];
-  if (v3 == 10)
+  graphicsQuality = [(_UIBackdropViewSettings *)self graphicsQuality];
+  if (graphicsQuality == 10)
   {
     [(_UIBackdropViewSettings *)self setRequiresColorStatistics:0];
   }
 
-  else if (v3 == 100)
+  else if (graphicsQuality == 100)
   {
     [(_UIBackdropViewSettings *)self setRequiresColorStatistics:1];
     [(_UIBackdropViewSettings *)self setUsesDarkeningTintView:1];

@@ -1,20 +1,20 @@
 @interface AMSMockBagBuilder
-- (AMSMockBagBuilder)initWithData:(id)a3;
+- (AMSMockBagBuilder)initWithData:(id)data;
 - (id)createMockBag;
-- (void)addBagKey:(id)a3 value:(id)a4 valueType:(unint64_t)a5;
+- (void)addBagKey:(id)key value:(id)value valueType:(unint64_t)type;
 @end
 
 @implementation AMSMockBagBuilder
 
-- (AMSMockBagBuilder)initWithData:(id)a3
+- (AMSMockBagBuilder)initWithData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v9.receiver = self;
   v9.super_class = AMSMockBagBuilder;
   v5 = [(AMSMockBagBuilder *)&v9 init];
   if (v5)
   {
-    v6 = [v4 mutableCopy];
+    v6 = [dataCopy mutableCopy];
     data = v5->_data;
     v5->_data = v6;
   }
@@ -22,40 +22,40 @@
   return v5;
 }
 
-- (void)addBagKey:(id)a3 value:(id)a4 valueType:(unint64_t)a5
+- (void)addBagKey:(id)key value:(id)value valueType:(unint64_t)type
 {
-  if (a4)
+  if (value)
   {
-    v7 = a4;
-    v8 = a3;
-    v9 = [(AMSMockBagBuilder *)self data];
-    [v9 setObject:v7 forKeyedSubscript:v8];
+    valueCopy = value;
+    keyCopy = key;
+    data = [(AMSMockBagBuilder *)self data];
+    [data setObject:valueCopy forKeyedSubscript:keyCopy];
   }
 }
 
 - (id)createMockBag
 {
   v3 = objc_alloc_init(AMSBagFrozenDataSourceBuilder);
-  v4 = [(AMSMockBagBuilder *)self data];
-  [(AMSBagFrozenDataSourceBuilder *)v3 setData:v4];
+  data = [(AMSMockBagBuilder *)self data];
+  [(AMSBagFrozenDataSourceBuilder *)v3 setData:data];
 
-  v5 = [(AMSMockBagBuilder *)self expirationDate];
-  if (v5)
+  expirationDate = [(AMSMockBagBuilder *)self expirationDate];
+  if (expirationDate)
   {
-    [(AMSBagFrozenDataSourceBuilder *)v3 setExpirationDate:v5];
+    [(AMSBagFrozenDataSourceBuilder *)v3 setExpirationDate:expirationDate];
   }
 
   else
   {
-    v6 = [MEMORY[0x1E695DF00] distantFuture];
-    [(AMSBagFrozenDataSourceBuilder *)v3 setExpirationDate:v6];
+    distantFuture = [MEMORY[0x1E695DF00] distantFuture];
+    [(AMSBagFrozenDataSourceBuilder *)v3 setExpirationDate:distantFuture];
   }
 
-  v7 = [(AMSMockBagBuilder *)self profile];
-  v8 = v7;
-  if (v7)
+  profile = [(AMSMockBagBuilder *)self profile];
+  v8 = profile;
+  if (profile)
   {
-    v9 = v7;
+    v9 = profile;
   }
 
   else
@@ -65,11 +65,11 @@
 
   [(AMSBagFrozenDataSourceBuilder *)v3 setProfile:v9];
 
-  v10 = [(AMSMockBagBuilder *)self profileVersion];
-  v11 = v10;
-  if (v10)
+  profileVersion = [(AMSMockBagBuilder *)self profileVersion];
+  v11 = profileVersion;
+  if (profileVersion)
   {
-    v12 = v10;
+    v12 = profileVersion;
   }
 
   else
@@ -80,8 +80,8 @@
   [(AMSBagFrozenDataSourceBuilder *)v3 setProfileVersion:v12];
 
   v13 = [AMSBag alloc];
-  v14 = [(AMSBagFrozenDataSourceBuilder *)v3 createFrozenDataSource];
-  v15 = [(AMSBag *)v13 initWithDataSource:v14];
+  createFrozenDataSource = [(AMSBagFrozenDataSourceBuilder *)v3 createFrozenDataSource];
+  v15 = [(AMSBag *)v13 initWithDataSource:createFrozenDataSource];
 
   return v15;
 }

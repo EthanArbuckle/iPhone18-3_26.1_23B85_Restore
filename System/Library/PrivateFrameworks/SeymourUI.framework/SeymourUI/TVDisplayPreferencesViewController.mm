@@ -1,12 +1,12 @@
 @interface TVDisplayPreferencesViewController
-- (_TtC9SeymourUI34TVDisplayPreferencesViewController)initWithCoder:(id)a3;
-- (_TtC9SeymourUI34TVDisplayPreferencesViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC9SeymourUI34TVDisplayPreferencesViewController)initWithCoder:(id)coder;
+- (_TtC9SeymourUI34TVDisplayPreferencesViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLoad;
 @end
 
 @implementation TVDisplayPreferencesViewController
 
-- (_TtC9SeymourUI34TVDisplayPreferencesViewController)initWithCoder:(id)a3
+- (_TtC9SeymourUI34TVDisplayPreferencesViewController)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x277D84F90];
   *(&self->super.super.super.isa + OBJC_IVAR____TtC9SeymourUI34TVDisplayPreferencesViewController_currentSections) = MEMORY[0x277D84F90];
@@ -27,7 +27,7 @@
   [(TVDisplayPreferencesViewController *)&v2 viewDidLoad];
 }
 
-- (_TtC9SeymourUI34TVDisplayPreferencesViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC9SeymourUI34TVDisplayPreferencesViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

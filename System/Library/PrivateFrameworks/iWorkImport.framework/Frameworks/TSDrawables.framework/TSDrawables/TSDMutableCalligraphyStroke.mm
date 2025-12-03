@@ -1,20 +1,20 @@
 @interface TSDMutableCalligraphyStroke
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setWidth:(double)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setWidth:(double)width;
 @end
 
 @implementation TSDMutableCalligraphyStroke
 
-- (void)setWidth:(double)a3
+- (void)setWidth:(double)width
 {
   objc_msgSend_setI_width_(self, a2, v3);
 
-  objc_msgSend_setI_actualWidth_(self, v6, v7, a3);
+  objc_msgSend_setI_actualWidth_(self, v6, v7, width);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = objc_msgSend_allocWithZone_(TSDCalligraphyStroke, a2, a3);
+  v4 = objc_msgSend_allocWithZone_(TSDCalligraphyStroke, a2, zone);
   v7 = objc_msgSend_color(self, v5, v6);
   objc_msgSend_width(self, v8, v9);
   v11 = v10;

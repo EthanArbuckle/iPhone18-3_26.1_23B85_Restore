@@ -2,7 +2,7 @@
 + (id)placeholderImage;
 - (BalloonPlaceholderView)init;
 - (void)layoutSubviews;
-- (void)setBackgroundImage:(id)a3;
+- (void)setBackgroundImage:(id)image;
 @end
 
 @implementation BalloonPlaceholderView
@@ -29,8 +29,8 @@
     v3 = +[UIColor blackColor];
     [(BalloonPlaceholderView *)v2 setBackgroundColor:v3];
 
-    v4 = [(BalloonPlaceholderView *)v2 layer];
-    [v4 setMasksToBounds:1];
+    layer = [(BalloonPlaceholderView *)v2 layer];
+    [layer setMasksToBounds:1];
 
     v5 = objc_alloc_init(UIImageView);
     placeholderImageView = v2->_placeholderImageView;
@@ -43,14 +43,14 @@
   return v2;
 }
 
-- (void)setBackgroundImage:(id)a3
+- (void)setBackgroundImage:(id)image
 {
-  v9 = a3;
-  objc_storeStrong(&self->_backgroundImage, a3);
+  imageCopy = image;
+  objc_storeStrong(&self->_backgroundImage, image);
   placeholderImageView = self->_placeholderImageView;
   if (self->_backgroundImage)
   {
-    [(UIImageView *)self->_placeholderImageView setImage:v9];
+    [(UIImageView *)self->_placeholderImageView setImage:imageCopy];
     [(UIImageView *)self->_placeholderImageView setContentMode:2];
     [(UIImageView *)self->_placeholderImageView setTintColor:0];
   }

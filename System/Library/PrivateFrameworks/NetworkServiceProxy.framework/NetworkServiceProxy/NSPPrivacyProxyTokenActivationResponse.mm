@@ -1,52 +1,52 @@
 @interface NSPPrivacyProxyTokenActivationResponse
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addActivatedTokenList:(id)a3;
-- (void)addAuxiliaryAuthArray:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addActivatedTokenList:(id)list;
+- (void)addAuxiliaryAuthArray:(id)array;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NSPPrivacyProxyTokenActivationResponse
 
-- (void)addActivatedTokenList:(id)a3
+- (void)addActivatedTokenList:(id)list
 {
-  v4 = a3;
+  listCopy = list;
   activatedTokenLists = self->_activatedTokenLists;
-  v8 = v4;
+  v8 = listCopy;
   if (!activatedTokenLists)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_activatedTokenLists;
     self->_activatedTokenLists = v6;
 
-    v4 = v8;
+    listCopy = v8;
     activatedTokenLists = self->_activatedTokenLists;
   }
 
-  [(NSMutableArray *)activatedTokenLists addObject:v4];
+  [(NSMutableArray *)activatedTokenLists addObject:listCopy];
 }
 
-- (void)addAuxiliaryAuthArray:(id)a3
+- (void)addAuxiliaryAuthArray:(id)array
 {
-  v4 = a3;
+  arrayCopy = array;
   auxiliaryAuthArrays = self->_auxiliaryAuthArrays;
-  v8 = v4;
+  v8 = arrayCopy;
   if (!auxiliaryAuthArrays)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_auxiliaryAuthArrays;
     self->_auxiliaryAuthArrays = v6;
 
-    v4 = v8;
+    arrayCopy = v8;
     auxiliaryAuthArrays = self->_auxiliaryAuthArrays;
   }
 
-  [(NSMutableArray *)auxiliaryAuthArrays addObject:v4];
+  [(NSMutableArray *)auxiliaryAuthArrays addObject:arrayCopy];
 }
 
 - (id)description
@@ -55,8 +55,8 @@
   v8.receiver = self;
   v8.super_class = NSPPrivacyProxyTokenActivationResponse;
   v4 = [(NSPPrivacyProxyTokenActivationResponse *)&v8 description];
-  v5 = [(NSPPrivacyProxyTokenActivationResponse *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NSPPrivacyProxyTokenActivationResponse *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -64,17 +64,17 @@
 - (id)dictionaryRepresentation
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_tokenExpiryTimestamp];
-    [v3 setObject:v4 forKey:@"tokenExpiryTimestamp"];
+    [dictionary setObject:v4 forKey:@"tokenExpiryTimestamp"];
   }
 
   activatedTokenLists = self->_activatedTokenLists;
   if (activatedTokenLists)
   {
-    [v3 setObject:activatedTokenLists forKey:@"activatedTokenList"];
+    [dictionary setObject:activatedTokenLists forKey:@"activatedTokenList"];
   }
 
   if ([(NSMutableArray *)self->_auxiliaryAuthArrays count])
@@ -99,8 +99,8 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v15 + 1) + 8 * i) dictionaryRepresentation];
-          [v6 addObject:v12];
+          dictionaryRepresentation = [*(*(&v15 + 1) + 8 * i) dictionaryRepresentation];
+          [v6 addObject:dictionaryRepresentation];
         }
 
         v9 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -109,18 +109,18 @@
       while (v9);
     }
 
-    [v3 setObject:v6 forKey:@"auxiliaryAuthArray"];
+    [dictionary setObject:v6 forKey:@"auxiliaryAuthArray"];
   }
 
   v13 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     tokenExpiryTimestamp = self->_tokenExpiryTimestamp;
@@ -194,23 +194,23 @@
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[1] = self->_tokenExpiryTimestamp;
-    *(v4 + 32) |= 1u;
+    toCopy[1] = self->_tokenExpiryTimestamp;
+    *(toCopy + 32) |= 1u;
   }
 
-  v13 = v4;
+  v13 = toCopy;
   if ([(NSPPrivacyProxyTokenActivationResponse *)self activatedTokenListsCount])
   {
     [v13 clearActivatedTokenLists];
-    v5 = [(NSPPrivacyProxyTokenActivationResponse *)self activatedTokenListsCount];
-    if (v5)
+    activatedTokenListsCount = [(NSPPrivacyProxyTokenActivationResponse *)self activatedTokenListsCount];
+    if (activatedTokenListsCount)
     {
-      v6 = v5;
+      v6 = activatedTokenListsCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(NSPPrivacyProxyTokenActivationResponse *)self activatedTokenListAtIndex:i];
@@ -222,10 +222,10 @@
   if ([(NSPPrivacyProxyTokenActivationResponse *)self auxiliaryAuthArraysCount])
   {
     [v13 clearAuxiliaryAuthArrays];
-    v9 = [(NSPPrivacyProxyTokenActivationResponse *)self auxiliaryAuthArraysCount];
-    if (v9)
+    auxiliaryAuthArraysCount = [(NSPPrivacyProxyTokenActivationResponse *)self auxiliaryAuthArraysCount];
+    if (auxiliaryAuthArraysCount)
     {
-      v10 = v9;
+      v10 = auxiliaryAuthArraysCount;
       for (j = 0; j != v10; ++j)
       {
         v12 = [(NSPPrivacyProxyTokenActivationResponse *)self auxiliaryAuthArrayAtIndex:j];
@@ -235,10 +235,10 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v31 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -266,7 +266,7 @@
           objc_enumerationMutation(v7);
         }
 
-        v12 = [*(*(&v25 + 1) + 8 * v11) copyWithZone:a3];
+        v12 = [*(*(&v25 + 1) + 8 * v11) copyWithZone:zone];
         [v6 addActivatedTokenList:v12];
 
         ++v11;
@@ -299,7 +299,7 @@
           objc_enumerationMutation(v13);
         }
 
-        v18 = [*(*(&v21 + 1) + 8 * v17) copyWithZone:{a3, v21}];
+        v18 = [*(*(&v21 + 1) + 8 * v17) copyWithZone:{zone, v21}];
         [v6 addAuxiliaryAuthArray:v18];
 
         ++v17;
@@ -316,24 +316,24 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_11;
   }
 
-  v5 = *(v4 + 32);
+  v5 = *(equalCopy + 32);
   if (*&self->_has)
   {
-    if ((*(v4 + 32) & 1) == 0 || self->_tokenExpiryTimestamp != *(v4 + 1))
+    if ((*(equalCopy + 32) & 1) == 0 || self->_tokenExpiryTimestamp != *(equalCopy + 1))
     {
       goto LABEL_11;
     }
   }
 
-  else if (*(v4 + 32))
+  else if (*(equalCopy + 32))
   {
 LABEL_11:
     v8 = 0;
@@ -341,13 +341,13 @@ LABEL_11:
   }
 
   activatedTokenLists = self->_activatedTokenLists;
-  if (activatedTokenLists | *(v4 + 2) && ![(NSMutableArray *)activatedTokenLists isEqual:?])
+  if (activatedTokenLists | *(equalCopy + 2) && ![(NSMutableArray *)activatedTokenLists isEqual:?])
   {
     goto LABEL_11;
   }
 
   auxiliaryAuthArrays = self->_auxiliaryAuthArrays;
-  if (auxiliaryAuthArrays | *(v4 + 3))
+  if (auxiliaryAuthArrays | *(equalCopy + 3))
   {
     v8 = [(NSMutableArray *)auxiliaryAuthArrays isEqual:?];
   }
@@ -378,14 +378,14 @@ LABEL_12:
   return v4 ^ [(NSMutableArray *)self->_auxiliaryAuthArrays hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 32))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 32))
   {
-    self->_tokenExpiryTimestamp = *(v4 + 1);
+    self->_tokenExpiryTimestamp = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
@@ -393,7 +393,7 @@ LABEL_12:
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v6 = *(v4 + 2);
+  v6 = *(fromCopy + 2);
   v7 = [v6 countByEnumeratingWithState:&v21 objects:v26 count:16];
   if (v7)
   {

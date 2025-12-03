@@ -1,7 +1,7 @@
 @interface AVCaptionRendererScene
 - (AVCaptionRendererScene)init;
-- (AVCaptionRendererScene)initWithTimeRange:(id *)a3 hasActiveCaptions:(BOOL)a4 needsPeriodicRefresh:(BOOL)a5;
-- (BOOL)isEqual:(id)a3;
+- (AVCaptionRendererScene)initWithTimeRange:(id *)range hasActiveCaptions:(BOOL)captions needsPeriodicRefresh:(BOOL)refresh;
+- (BOOL)isEqual:(id)equal;
 - (CMTimeRange)timeRange;
 - (id)description;
 - (unint64_t)hash;
@@ -19,11 +19,11 @@
   objc_exception_throw(v12);
 }
 
-- (AVCaptionRendererScene)initWithTimeRange:(id *)a3 hasActiveCaptions:(BOOL)a4 needsPeriodicRefresh:(BOOL)a5
+- (AVCaptionRendererScene)initWithTimeRange:(id *)range hasActiveCaptions:(BOOL)captions needsPeriodicRefresh:(BOOL)refresh
 {
-  if ((a3->var0.var2 & 0x1D) != 1 || (a3->var1.var2 & 0x1D) != 1)
+  if ((range->var0.var2 & 0x1D) != 1 || (range->var1.var2 & 0x1D) != 1)
   {
-    v15 = self;
+    selfCopy = self;
     v21 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector(self userInfo:{a2, @"invalid parameter not satisfying: %s", v16, v17, v18, v19, v20, "CMTIME_IS_NUMERIC(timeRange.start) && CMTIME_IS_NUMERIC(timeRange.duration)"), 0}];
     objc_exception_throw(v21);
   }
@@ -37,13 +37,13 @@
     v9->_internal = v10;
     if (v10)
     {
-      v11 = *&a3->var0.var0;
-      v12 = *&a3->var0.var3;
-      *&v10->_timeRange.duration.timescale = *&a3->var1.var1;
+      v11 = *&range->var0.var0;
+      v12 = *&range->var0.var3;
+      *&v10->_timeRange.duration.timescale = *&range->var1.var1;
       *&v10->_timeRange.start.epoch = v12;
       *&v10->_timeRange.start.value = v11;
-      v9->_internal->_hasActiveCaptions = a4;
-      v9->_internal->_needsPeriodicRefresh = a5;
+      v9->_internal->_hasActiveCaptions = captions;
+      v9->_internal->_needsPeriodicRefresh = refresh;
     }
 
     else
@@ -63,9 +63,9 @@
   [(AVCaptionRendererScene *)&v3 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }
@@ -81,7 +81,7 @@
   if (!self)
   {
     memset(&range1, 0, sizeof(range1));
-    if (a3)
+    if (equal)
     {
       goto LABEL_5;
     }
@@ -92,13 +92,13 @@ LABEL_9:
   }
 
   [(AVCaptionRendererScene *)self timeRange];
-  if (!a3)
+  if (!equal)
   {
     goto LABEL_9;
   }
 
 LABEL_5:
-  [a3 timeRange];
+  [equal timeRange];
   return CMTimeRangeEqual(&range1, &v8) != 0;
 }
 
@@ -155,9 +155,9 @@ LABEL_5:
     v8 = @"NO";
   }
 
-  v9 = [(AVCaptionRendererScene *)self needsPeriodicRefresh];
+  needsPeriodicRefresh = [(AVCaptionRendererScene *)self needsPeriodicRefresh];
   v10 = &stru_1F0A8E470;
-  if (v9)
+  if (needsPeriodicRefresh)
   {
     v10 = @", periodic-refresh";
   }

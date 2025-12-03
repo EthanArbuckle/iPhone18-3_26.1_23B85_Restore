@@ -1,37 +1,37 @@
 @interface HMMTRDoorLockClusterAPIRouter
-+ (BOOL)isCredentialTypeAliro:(id)a3;
-+ (id)aliroClearCredentialParamsFromParams:(id)a3 flow:(id)a4;
-+ (id)aliroCredentialFromCredential:(id)a3 flow:(id)a4;
-+ (id)aliroCredentialTypeForCredentialType:(id)a3 flow:(id)a4;
-+ (id)aliroGetCredentialParamsFromParams:(id)a3 flow:(id)a4;
-+ (id)aliroReaderConfigParamsFromParams:(id)a3;
-+ (id)aliroSetCredentialParamsFromParams:(id)a3 flow:(id)a4;
-+ (id)arrayOfDataFromRead:(id)a3;
-+ (id)credentialTypeForAliroCredentialType:(unsigned __int8)a3 flow:(id)a4;
-+ (id)doorLockFeatureMapSupportsAppleCustomAliroBLEUWB:(id)a3;
-+ (id)doorLockFeatureMapSupportsAppleCustomAliroProvisioning:(id)a3;
-+ (id)mergeAndRemoveDuplicatesFromArray:(id)a3 andArray:(id)a4;
-+ (id)readerConfigParamsFromReaderConfig:(id)a3;
-- (HMMTRDoorLockClusterAPIRouter)initWithDoorLock:(id)a3 device:(id)a4 queue:(id)a5;
++ (BOOL)isCredentialTypeAliro:(id)aliro;
++ (id)aliroClearCredentialParamsFromParams:(id)params flow:(id)flow;
++ (id)aliroCredentialFromCredential:(id)credential flow:(id)flow;
++ (id)aliroCredentialTypeForCredentialType:(id)type flow:(id)flow;
++ (id)aliroGetCredentialParamsFromParams:(id)params flow:(id)flow;
++ (id)aliroReaderConfigParamsFromParams:(id)params;
++ (id)aliroSetCredentialParamsFromParams:(id)params flow:(id)flow;
++ (id)arrayOfDataFromRead:(id)read;
++ (id)credentialTypeForAliroCredentialType:(unsigned __int8)type flow:(id)flow;
++ (id)doorLockFeatureMapSupportsAppleCustomAliroBLEUWB:(id)b;
++ (id)doorLockFeatureMapSupportsAppleCustomAliroProvisioning:(id)provisioning;
++ (id)mergeAndRemoveDuplicatesFromArray:(id)array andArray:(id)andArray;
++ (id)readerConfigParamsFromReaderConfig:(id)config;
+- (HMMTRDoorLockClusterAPIRouter)initWithDoorLock:(id)lock device:(id)device queue:(id)queue;
 - (MTRClusterDoorLock)doorLock;
-- (id)appendAliroCredentialsToUser:(id)a3 aliroCredentials:(id)a4;
-- (id)getAliroCredentialAtIndex:(int64_t)a3 forCredentialType:(int64_t)a4 flow:(id)a5;
-- (id)getAppleAliroCredentialsWithCredentialType:(int64_t)a3 startingAtIndex:(int64_t)a4 credentials:(id)a5 flow:(id)a6;
-- (void)clearCredentialWithParams:(id)a3 flow:(id)a4 completion:(id)a5;
-- (void)fetchAppleClusterFeaturesWithFlow:(id)a3 completion:(id)a4;
-- (void)getCredentialStatusWithParams:(id)a3 flow:(id)a4 completion:(id)a5;
-- (void)getUserWithParams:(id)a3 includeAliroCredentials:(BOOL)a4 temporaryCachedAliroCredentials:(id)a5 flow:(id)a6 completion:(id)a7;
-- (void)isCustomClusterAvailableWithFlow:(id)a3 completion:(id)a4;
-- (void)numberOfAliroDeviceKeyCredentialsSupportedWithFlow:(id)a3 completion:(id)a4;
-- (void)numberOfAliroIssuerKeyCredentialsSupportedWithFlow:(id)a3 completion:(id)a4;
-- (void)readAttributeAliroBLEAdvertisingVersionWithFlow:(id)a3 completion:(id)a4;
-- (void)readAttributeAliroExpeditedTransactionSupportedProtocolVersionsWithFlow:(id)a3 completion:(id)a4;
-- (void)readAttributeAliroGroupResolvingKeyWithFlow:(id)a3 completion:(id)a4;
-- (void)readAttributeAliroReaderGroupIdentifierWithFlow:(id)a3 completion:(id)a4;
-- (void)readAttributeAliroReaderVerificationKeyWithFlow:(id)a3 completion:(id)a4;
-- (void)readAttributeAliroSupportedBLEUWBProtocolVersionsWithFlow:(id)a3 completion:(id)a4;
-- (void)setAliroReaderConfigWithConfig:(id)a3 flow:(id)a4 completion:(id)a5;
-- (void)setCredentialWithParams:(id)a3 flow:(id)a4 completion:(id)a5;
+- (id)appendAliroCredentialsToUser:(id)user aliroCredentials:(id)credentials;
+- (id)getAliroCredentialAtIndex:(int64_t)index forCredentialType:(int64_t)type flow:(id)flow;
+- (id)getAppleAliroCredentialsWithCredentialType:(int64_t)type startingAtIndex:(int64_t)index credentials:(id)credentials flow:(id)flow;
+- (void)clearCredentialWithParams:(id)params flow:(id)flow completion:(id)completion;
+- (void)fetchAppleClusterFeaturesWithFlow:(id)flow completion:(id)completion;
+- (void)getCredentialStatusWithParams:(id)params flow:(id)flow completion:(id)completion;
+- (void)getUserWithParams:(id)params includeAliroCredentials:(BOOL)credentials temporaryCachedAliroCredentials:(id)aliroCredentials flow:(id)flow completion:(id)completion;
+- (void)isCustomClusterAvailableWithFlow:(id)flow completion:(id)completion;
+- (void)numberOfAliroDeviceKeyCredentialsSupportedWithFlow:(id)flow completion:(id)completion;
+- (void)numberOfAliroIssuerKeyCredentialsSupportedWithFlow:(id)flow completion:(id)completion;
+- (void)readAttributeAliroBLEAdvertisingVersionWithFlow:(id)flow completion:(id)completion;
+- (void)readAttributeAliroExpeditedTransactionSupportedProtocolVersionsWithFlow:(id)flow completion:(id)completion;
+- (void)readAttributeAliroGroupResolvingKeyWithFlow:(id)flow completion:(id)completion;
+- (void)readAttributeAliroReaderGroupIdentifierWithFlow:(id)flow completion:(id)completion;
+- (void)readAttributeAliroReaderVerificationKeyWithFlow:(id)flow completion:(id)completion;
+- (void)readAttributeAliroSupportedBLEUWBProtocolVersionsWithFlow:(id)flow completion:(id)completion;
+- (void)setAliroReaderConfigWithConfig:(id)config flow:(id)flow completion:(id)completion;
+- (void)setCredentialWithParams:(id)params flow:(id)flow completion:(id)completion;
 @end
 
 @implementation HMMTRDoorLockClusterAPIRouter
@@ -43,67 +43,67 @@
   return WeakRetained;
 }
 
-- (id)getAliroCredentialAtIndex:(int64_t)a3 forCredentialType:(int64_t)a4 flow:(id)a5
+- (id)getAliroCredentialAtIndex:(int64_t)index forCredentialType:(int64_t)type flow:(id)flow
 {
   v40 = *MEMORY[0x277D85DE8];
-  v8 = a5;
+  flowCopy = flow;
   v9 = objc_autoreleasePoolPush();
-  v10 = self;
+  selfCopy = self;
   v11 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     v12 = HMFGetLogIdentifier();
-    v13 = [v8 UUID];
+    uUID = [flowCopy UUID];
     *buf = 138544130;
     v33 = v12;
     v34 = 2112;
-    v35 = v13;
+    v35 = uUID;
     v36 = 2048;
-    v37 = a3;
+    indexCopy = index;
     v38 = 2048;
-    v39 = a4;
+    typeCopy = type;
     _os_log_impl(&dword_22AEAE000, v11, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] getCredentialAtIndex: %ld forCredentialType: %ld", buf, 0x2Au);
   }
 
   objc_autoreleasePoolPop(v9);
   v14 = objc_opt_new();
-  v15 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
+  v15 = [MEMORY[0x277CCABB0] numberWithInteger:type];
   [v14 setCredentialType:v15];
 
-  v16 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v16 = [MEMORY[0x277CCABB0] numberWithInteger:index];
   [v14 setCredentialIndex:v16];
 
   v17 = objc_opt_new();
   [v17 setCredential:v14];
-  v18 = [(HMMTRDoorLockClusterAPIRouter *)v10 doorLock];
-  if (v18)
+  doorLock = [(HMMTRDoorLockClusterAPIRouter *)selfCopy doorLock];
+  if (doorLock)
   {
     v19 = objc_opt_new();
-    v20 = [v19 completionHandlerAdapter];
-    [v18 appleGetAliroCredentialStatusWithParams:v17 expectedValues:0 expectedValueInterval:0 completion:v20];
+    completionHandlerAdapter = [v19 completionHandlerAdapter];
+    [doorLock appleGetAliroCredentialStatusWithParams:v17 expectedValues:0 expectedValueInterval:0 completion:completionHandlerAdapter];
 
     v30[0] = MEMORY[0x277D85DD0];
     v30[1] = 3221225472;
     v30[2] = __82__HMMTRDoorLockClusterAPIRouter_getAliroCredentialAtIndex_forCredentialType_flow___block_invoke;
     v30[3] = &unk_2786EF9E0;
-    v30[4] = v10;
-    v31 = v8;
+    v30[4] = selfCopy;
+    v31 = flowCopy;
     v21 = [v19 addFailureBlock:v30];
   }
 
   else
   {
     v22 = objc_autoreleasePoolPush();
-    v23 = v10;
+    v23 = selfCopy;
     v24 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
     {
       v25 = HMFGetLogIdentifier();
-      v26 = [v8 UUID];
+      uUID2 = [flowCopy UUID];
       *buf = 138543618;
       v33 = v25;
       v34 = 2112;
-      v35 = v26;
+      v35 = uUID2;
       _os_log_impl(&dword_22AEAE000, v24, OS_LOG_TYPE_ERROR, "%{public}@[Flow: %@] Door lock became nil", buf, 0x16u);
     }
 
@@ -142,22 +142,22 @@ void __82__HMMTRDoorLockClusterAPIRouter_getAliroCredentialAtIndex_forCredential
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (id)getAppleAliroCredentialsWithCredentialType:(int64_t)a3 startingAtIndex:(int64_t)a4 credentials:(id)a5 flow:(id)a6
+- (id)getAppleAliroCredentialsWithCredentialType:(int64_t)type startingAtIndex:(int64_t)index credentials:(id)credentials flow:(id)flow
 {
-  v10 = a5;
-  v11 = a6;
-  v12 = [(HMMTRDoorLockClusterAPIRouter *)self getAliroCredentialAtIndex:a4 forCredentialType:a3 flow:v11];
+  credentialsCopy = credentials;
+  flowCopy = flow;
+  v12 = [(HMMTRDoorLockClusterAPIRouter *)self getAliroCredentialAtIndex:index forCredentialType:type flow:flowCopy];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __109__HMMTRDoorLockClusterAPIRouter_getAppleAliroCredentialsWithCredentialType_startingAtIndex_credentials_flow___block_invoke;
   v17[3] = &unk_2786EF0E8;
-  v21 = a3;
-  v22 = a4;
-  v18 = v10;
-  v19 = self;
-  v20 = v11;
-  v13 = v11;
-  v14 = v10;
+  typeCopy = type;
+  indexCopy = index;
+  v18 = credentialsCopy;
+  selfCopy = self;
+  v20 = flowCopy;
+  v13 = flowCopy;
+  v14 = credentialsCopy;
   v15 = [v12 flatMap:v17];
 
   return v15;
@@ -197,26 +197,26 @@ id __109__HMMTRDoorLockClusterAPIRouter_getAppleAliroCredentialsWithCredentialTy
   return v15;
 }
 
-- (id)appendAliroCredentialsToUser:(id)a3 aliroCredentials:(id)a4
+- (id)appendAliroCredentialsToUser:(id)user aliroCredentials:(id)credentials
 {
-  v6 = a3;
+  userCopy = user;
   v7 = MEMORY[0x277CBEB18];
-  v8 = a4;
-  v9 = [v7 array];
+  credentialsCopy = credentials;
+  array = [v7 array];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __79__HMMTRDoorLockClusterAPIRouter_appendAliroCredentialsToUser_aliroCredentials___block_invoke;
   v18[3] = &unk_2786EF0C0;
-  v10 = v6;
+  v10 = userCopy;
   v19 = v10;
-  v20 = self;
-  v21 = v9;
-  v11 = v9;
-  [v8 na_each:v18];
+  selfCopy = self;
+  v21 = array;
+  v11 = array;
+  [credentialsCopy na_each:v18];
 
   v12 = objc_opt_class();
-  v13 = [v10 credentials];
-  v14 = [v12 mergeAndRemoveDuplicatesFromArray:v13 andArray:v11];
+  credentials = [v10 credentials];
+  v14 = [v12 mergeAndRemoveDuplicatesFromArray:credentials andArray:v11];
   [v10 setCredentials:v14];
 
   v15 = v21;
@@ -250,26 +250,26 @@ void __79__HMMTRDoorLockClusterAPIRouter_appendAliroCredentialsToUser_aliroCrede
   }
 }
 
-- (void)getUserWithParams:(id)a3 includeAliroCredentials:(BOOL)a4 temporaryCachedAliroCredentials:(id)a5 flow:(id)a6 completion:(id)a7
+- (void)getUserWithParams:(id)params includeAliroCredentials:(BOOL)credentials temporaryCachedAliroCredentials:(id)aliroCredentials flow:(id)flow completion:(id)completion
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  paramsCopy = params;
+  aliroCredentialsCopy = aliroCredentials;
+  flowCopy = flow;
+  completionCopy = completion;
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __123__HMMTRDoorLockClusterAPIRouter_getUserWithParams_includeAliroCredentials_temporaryCachedAliroCredentials_flow_completion___block_invoke;
   v20[3] = &unk_2786EF098;
-  v23 = v13;
-  v24 = v15;
+  v23 = aliroCredentialsCopy;
+  v24 = completionCopy;
   v20[4] = self;
-  v21 = v14;
-  v25 = a4;
-  v22 = v12;
-  v16 = v13;
-  v17 = v12;
-  v18 = v14;
-  v19 = v15;
+  v21 = flowCopy;
+  credentialsCopy = credentials;
+  v22 = paramsCopy;
+  v16 = aliroCredentialsCopy;
+  v17 = paramsCopy;
+  v18 = flowCopy;
+  v19 = completionCopy;
   [(HMMTRDoorLockClusterAPIRouter *)self isCustomClusterAvailableWithFlow:v18 completion:v20];
 }
 
@@ -450,22 +450,22 @@ void __123__HMMTRDoorLockClusterAPIRouter_getUserWithParams_includeAliroCredenti
   (*(*(a1 + 56) + 16))();
 }
 
-- (void)setAliroReaderConfigWithConfig:(id)a3 flow:(id)a4 completion:(id)a5
+- (void)setAliroReaderConfigWithConfig:(id)config flow:(id)flow completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  configCopy = config;
+  flowCopy = flow;
+  completionCopy = completion;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __80__HMMTRDoorLockClusterAPIRouter_setAliroReaderConfigWithConfig_flow_completion___block_invoke;
   v14[3] = &unk_2786EF020;
   v14[4] = self;
-  v15 = v8;
-  v16 = v9;
-  v17 = v10;
-  v11 = v9;
-  v12 = v8;
-  v13 = v10;
+  v15 = configCopy;
+  v16 = flowCopy;
+  v17 = completionCopy;
+  v11 = flowCopy;
+  v12 = configCopy;
+  v13 = completionCopy;
   [(HMMTRDoorLockClusterAPIRouter *)self isCustomClusterAvailableWithFlow:v11 completion:v14];
 }
 
@@ -599,22 +599,22 @@ LABEL_20:
   v45 = *MEMORY[0x277D85DE8];
 }
 
-- (void)clearCredentialWithParams:(id)a3 flow:(id)a4 completion:(id)a5
+- (void)clearCredentialWithParams:(id)params flow:(id)flow completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  paramsCopy = params;
+  flowCopy = flow;
+  completionCopy = completion;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __75__HMMTRDoorLockClusterAPIRouter_clearCredentialWithParams_flow_completion___block_invoke;
   v14[3] = &unk_2786EF020;
   v14[4] = self;
-  v15 = v9;
-  v16 = v8;
-  v17 = v10;
-  v11 = v8;
-  v12 = v9;
-  v13 = v10;
+  v15 = flowCopy;
+  v16 = paramsCopy;
+  v17 = completionCopy;
+  v11 = paramsCopy;
+  v12 = flowCopy;
+  v13 = completionCopy;
   [(HMMTRDoorLockClusterAPIRouter *)self isCustomClusterAvailableWithFlow:v12 completion:v14];
 }
 
@@ -683,22 +683,22 @@ LABEL_13:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getCredentialStatusWithParams:(id)a3 flow:(id)a4 completion:(id)a5
+- (void)getCredentialStatusWithParams:(id)params flow:(id)flow completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  paramsCopy = params;
+  flowCopy = flow;
+  completionCopy = completion;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __79__HMMTRDoorLockClusterAPIRouter_getCredentialStatusWithParams_flow_completion___block_invoke;
   v14[3] = &unk_2786EF020;
   v14[4] = self;
-  v15 = v9;
-  v16 = v8;
-  v17 = v10;
-  v11 = v8;
-  v12 = v9;
-  v13 = v10;
+  v15 = flowCopy;
+  v16 = paramsCopy;
+  v17 = completionCopy;
+  v11 = paramsCopy;
+  v12 = flowCopy;
+  v13 = completionCopy;
   [(HMMTRDoorLockClusterAPIRouter *)self isCustomClusterAvailableWithFlow:v12 completion:v14];
 }
 
@@ -767,22 +767,22 @@ LABEL_13:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setCredentialWithParams:(id)a3 flow:(id)a4 completion:(id)a5
+- (void)setCredentialWithParams:(id)params flow:(id)flow completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  paramsCopy = params;
+  flowCopy = flow;
+  completionCopy = completion;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __73__HMMTRDoorLockClusterAPIRouter_setCredentialWithParams_flow_completion___block_invoke;
   v14[3] = &unk_2786EF020;
   v14[4] = self;
-  v15 = v9;
-  v16 = v8;
-  v17 = v10;
-  v11 = v8;
-  v12 = v9;
-  v13 = v10;
+  v15 = flowCopy;
+  v16 = paramsCopy;
+  v17 = completionCopy;
+  v11 = paramsCopy;
+  v12 = flowCopy;
+  v13 = completionCopy;
   [(HMMTRDoorLockClusterAPIRouter *)self isCustomClusterAvailableWithFlow:v12 completion:v14];
 }
 
@@ -851,19 +851,19 @@ LABEL_13:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)readAttributeAliroBLEAdvertisingVersionWithFlow:(id)a3 completion:(id)a4
+- (void)readAttributeAliroBLEAdvertisingVersionWithFlow:(id)flow completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  flowCopy = flow;
+  completionCopy = completion;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __92__HMMTRDoorLockClusterAPIRouter_readAttributeAliroBLEAdvertisingVersionWithFlow_completion___block_invoke;
   v10[3] = &unk_2786F0C38;
-  v11 = v6;
-  v12 = v7;
+  v11 = flowCopy;
+  v12 = completionCopy;
   v10[4] = self;
-  v8 = v6;
-  v9 = v7;
+  v8 = flowCopy;
+  v9 = completionCopy;
   [(HMMTRDoorLockClusterAPIRouter *)self isCustomClusterAvailableWithFlow:v8 completion:v10];
 }
 
@@ -935,19 +935,19 @@ void __92__HMMTRDoorLockClusterAPIRouter_readAttributeAliroBLEAdvertisingVersion
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)readAttributeAliroSupportedBLEUWBProtocolVersionsWithFlow:(id)a3 completion:(id)a4
+- (void)readAttributeAliroSupportedBLEUWBProtocolVersionsWithFlow:(id)flow completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  flowCopy = flow;
+  completionCopy = completion;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __102__HMMTRDoorLockClusterAPIRouter_readAttributeAliroSupportedBLEUWBProtocolVersionsWithFlow_completion___block_invoke;
   v10[3] = &unk_2786F0C38;
-  v11 = v6;
-  v12 = v7;
+  v11 = flowCopy;
+  v12 = completionCopy;
   v10[4] = self;
-  v8 = v6;
-  v9 = v7;
+  v8 = flowCopy;
+  v9 = completionCopy;
   [(HMMTRDoorLockClusterAPIRouter *)self isCustomClusterAvailableWithFlow:v8 completion:v10];
 }
 
@@ -1007,19 +1007,19 @@ void __102__HMMTRDoorLockClusterAPIRouter_readAttributeAliroSupportedBLEUWBProto
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)readAttributeAliroExpeditedTransactionSupportedProtocolVersionsWithFlow:(id)a3 completion:(id)a4
+- (void)readAttributeAliroExpeditedTransactionSupportedProtocolVersionsWithFlow:(id)flow completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  flowCopy = flow;
+  completionCopy = completion;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __116__HMMTRDoorLockClusterAPIRouter_readAttributeAliroExpeditedTransactionSupportedProtocolVersionsWithFlow_completion___block_invoke;
   v10[3] = &unk_2786F0C38;
-  v11 = v6;
-  v12 = v7;
+  v11 = flowCopy;
+  v12 = completionCopy;
   v10[4] = self;
-  v8 = v6;
-  v9 = v7;
+  v8 = flowCopy;
+  v9 = completionCopy;
   [(HMMTRDoorLockClusterAPIRouter *)self isCustomClusterAvailableWithFlow:v8 completion:v10];
 }
 
@@ -1079,19 +1079,19 @@ void __116__HMMTRDoorLockClusterAPIRouter_readAttributeAliroExpeditedTransaction
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)numberOfAliroDeviceKeyCredentialsSupportedWithFlow:(id)a3 completion:(id)a4
+- (void)numberOfAliroDeviceKeyCredentialsSupportedWithFlow:(id)flow completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  flowCopy = flow;
+  completionCopy = completion;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __95__HMMTRDoorLockClusterAPIRouter_numberOfAliroDeviceKeyCredentialsSupportedWithFlow_completion___block_invoke;
   v10[3] = &unk_2786F0C38;
-  v11 = v6;
-  v12 = v7;
+  v11 = flowCopy;
+  v12 = completionCopy;
   v10[4] = self;
-  v8 = v6;
-  v9 = v7;
+  v8 = flowCopy;
+  v9 = completionCopy;
   [(HMMTRDoorLockClusterAPIRouter *)self isCustomClusterAvailableWithFlow:v8 completion:v10];
 }
 
@@ -1170,19 +1170,19 @@ void __95__HMMTRDoorLockClusterAPIRouter_numberOfAliroDeviceKeyCredentialsSuppor
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)numberOfAliroIssuerKeyCredentialsSupportedWithFlow:(id)a3 completion:(id)a4
+- (void)numberOfAliroIssuerKeyCredentialsSupportedWithFlow:(id)flow completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  flowCopy = flow;
+  completionCopy = completion;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __95__HMMTRDoorLockClusterAPIRouter_numberOfAliroIssuerKeyCredentialsSupportedWithFlow_completion___block_invoke;
   v10[3] = &unk_2786F0C38;
-  v11 = v6;
-  v12 = v7;
+  v11 = flowCopy;
+  v12 = completionCopy;
   v10[4] = self;
-  v8 = v6;
-  v9 = v7;
+  v8 = flowCopy;
+  v9 = completionCopy;
   [(HMMTRDoorLockClusterAPIRouter *)self isCustomClusterAvailableWithFlow:v8 completion:v10];
 }
 
@@ -1261,19 +1261,19 @@ void __95__HMMTRDoorLockClusterAPIRouter_numberOfAliroIssuerKeyCredentialsSuppor
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)readAttributeAliroGroupResolvingKeyWithFlow:(id)a3 completion:(id)a4
+- (void)readAttributeAliroGroupResolvingKeyWithFlow:(id)flow completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  flowCopy = flow;
+  completionCopy = completion;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __88__HMMTRDoorLockClusterAPIRouter_readAttributeAliroGroupResolvingKeyWithFlow_completion___block_invoke;
   v10[3] = &unk_2786F0C38;
-  v11 = v6;
-  v12 = v7;
+  v11 = flowCopy;
+  v12 = completionCopy;
   v10[4] = self;
-  v8 = v6;
-  v9 = v7;
+  v8 = flowCopy;
+  v9 = completionCopy;
   [(HMMTRDoorLockClusterAPIRouter *)self isCustomClusterAvailableWithFlow:v8 completion:v10];
 }
 
@@ -1332,19 +1332,19 @@ void __88__HMMTRDoorLockClusterAPIRouter_readAttributeAliroGroupResolvingKeyWith
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)readAttributeAliroReaderGroupIdentifierWithFlow:(id)a3 completion:(id)a4
+- (void)readAttributeAliroReaderGroupIdentifierWithFlow:(id)flow completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  flowCopy = flow;
+  completionCopy = completion;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __92__HMMTRDoorLockClusterAPIRouter_readAttributeAliroReaderGroupIdentifierWithFlow_completion___block_invoke;
   v10[3] = &unk_2786F0C38;
-  v11 = v6;
-  v12 = v7;
+  v11 = flowCopy;
+  v12 = completionCopy;
   v10[4] = self;
-  v8 = v6;
-  v9 = v7;
+  v8 = flowCopy;
+  v9 = completionCopy;
   [(HMMTRDoorLockClusterAPIRouter *)self isCustomClusterAvailableWithFlow:v8 completion:v10];
 }
 
@@ -1403,19 +1403,19 @@ void __92__HMMTRDoorLockClusterAPIRouter_readAttributeAliroReaderGroupIdentifier
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)readAttributeAliroReaderVerificationKeyWithFlow:(id)a3 completion:(id)a4
+- (void)readAttributeAliroReaderVerificationKeyWithFlow:(id)flow completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  flowCopy = flow;
+  completionCopy = completion;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __92__HMMTRDoorLockClusterAPIRouter_readAttributeAliroReaderVerificationKeyWithFlow_completion___block_invoke;
   v10[3] = &unk_2786F0C38;
-  v11 = v6;
-  v12 = v7;
+  v11 = flowCopy;
+  v12 = completionCopy;
   v10[4] = self;
-  v8 = v6;
-  v9 = v7;
+  v8 = flowCopy;
+  v9 = completionCopy;
   [(HMMTRDoorLockClusterAPIRouter *)self isCustomClusterAvailableWithFlow:v8 completion:v10];
 }
 
@@ -1474,39 +1474,39 @@ void __92__HMMTRDoorLockClusterAPIRouter_readAttributeAliroReaderVerificationKey
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fetchAppleClusterFeaturesWithFlow:(id)a3 completion:(id)a4
+- (void)fetchAppleClusterFeaturesWithFlow:(id)flow completion:(id)completion
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  flowCopy = flow;
+  completionCopy = completion;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     v11 = HMFGetLogIdentifier();
-    v12 = [v6 UUID];
+    uUID = [flowCopy UUID];
     *buf = 138543618;
     v23 = v11;
     v24 = 2112;
-    v25 = v12;
+    v25 = uUID;
     _os_log_impl(&dword_22AEAE000, v10, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] Fetching apple cluster features", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v8);
   v13 = +[HMMTRDescriptorClusterManager sharedManager];
-  v14 = [(HMMTRDoorLockClusterAPIRouter *)v9 device];
-  v15 = [(HMMTRDoorLockClusterAPIRouter *)v9 queue];
+  device = [(HMMTRDoorLockClusterAPIRouter *)selfCopy device];
+  queue = [(HMMTRDoorLockClusterAPIRouter *)selfCopy queue];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __78__HMMTRDoorLockClusterAPIRouter_fetchAppleClusterFeaturesWithFlow_completion___block_invoke;
   v19[3] = &unk_2786F0F20;
-  v19[4] = v9;
-  v20 = v6;
-  v21 = v7;
-  v16 = v7;
-  v17 = v6;
-  [v13 endpointForClusterID:&unk_283EE8820 mtrDevice:v14 callbackQueue:v15 completionHandler:v19];
+  v19[4] = selfCopy;
+  v20 = flowCopy;
+  v21 = completionCopy;
+  v16 = completionCopy;
+  v17 = flowCopy;
+  [v13 endpointForClusterID:&unk_283EE8820 mtrDevice:device callbackQueue:queue completionHandler:v19];
 
   v18 = *MEMORY[0x277D85DE8];
 }
@@ -1649,52 +1649,52 @@ void __78__HMMTRDoorLockClusterAPIRouter_fetchAppleClusterFeaturesWithFlow_compl
   v41 = *MEMORY[0x277D85DE8];
 }
 
-- (void)isCustomClusterAvailableWithFlow:(id)a3 completion:(id)a4
+- (void)isCustomClusterAvailableWithFlow:(id)flow completion:(id)completion
 {
   v30 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMMTRDoorLockClusterAPIRouter *)self nsNumberIsCustomClusterAvailable];
+  flowCopy = flow;
+  completionCopy = completion;
+  nsNumberIsCustomClusterAvailable = [(HMMTRDoorLockClusterAPIRouter *)self nsNumberIsCustomClusterAvailable];
 
-  if (v8)
+  if (nsNumberIsCustomClusterAvailable)
   {
     v9 = objc_autoreleasePoolPush();
-    v10 = self;
+    selfCopy = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
       v12 = HMFGetLogIdentifier();
-      v13 = [v6 UUID];
-      v14 = [(HMMTRDoorLockClusterAPIRouter *)v10 nsNumberIsCustomClusterAvailable];
-      [v14 BOOLValue];
+      uUID = [flowCopy UUID];
+      nsNumberIsCustomClusterAvailable2 = [(HMMTRDoorLockClusterAPIRouter *)selfCopy nsNumberIsCustomClusterAvailable];
+      [nsNumberIsCustomClusterAvailable2 BOOLValue];
       v15 = HMFBooleanToString();
       *buf = 138543874;
       v25 = v12;
       v26 = 2112;
-      v27 = v13;
+      v27 = uUID;
       v28 = 2112;
       v29 = v15;
       _os_log_impl(&dword_22AEAE000, v11, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] Returning cached value for isCustomClusterAvailable: %@", buf, 0x20u);
     }
 
     objc_autoreleasePoolPop(v9);
-    v16 = [(HMMTRDoorLockClusterAPIRouter *)v10 nsNumberIsCustomClusterAvailable];
-    v7[2](v7, [v16 BOOLValue], 0);
+    nsNumberIsCustomClusterAvailable3 = [(HMMTRDoorLockClusterAPIRouter *)selfCopy nsNumberIsCustomClusterAvailable];
+    completionCopy[2](completionCopy, [nsNumberIsCustomClusterAvailable3 BOOLValue], 0);
   }
 
   else
   {
     v17 = +[HMMTRDescriptorClusterManager sharedManager];
-    v18 = [(HMMTRDoorLockClusterAPIRouter *)self device];
-    v19 = [(HMMTRDoorLockClusterAPIRouter *)self queue];
+    device = [(HMMTRDoorLockClusterAPIRouter *)self device];
+    queue = [(HMMTRDoorLockClusterAPIRouter *)self queue];
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = __77__HMMTRDoorLockClusterAPIRouter_isCustomClusterAvailableWithFlow_completion___block_invoke;
     v21[3] = &unk_2786F0F20;
     v21[4] = self;
-    v22 = v6;
-    v23 = v7;
-    [v17 endpointForClusterID:&unk_283EE8820 mtrDevice:v18 callbackQueue:v19 completionHandler:v21];
+    v22 = flowCopy;
+    v23 = completionCopy;
+    [v17 endpointForClusterID:&unk_283EE8820 mtrDevice:device callbackQueue:queue completionHandler:v21];
   }
 
   v20 = *MEMORY[0x277D85DE8];
@@ -1834,38 +1834,38 @@ void __77__HMMTRDoorLockClusterAPIRouter_isCustomClusterAvailableWithFlow_comple
   v39 = *MEMORY[0x277D85DE8];
 }
 
-- (HMMTRDoorLockClusterAPIRouter)initWithDoorLock:(id)a3 device:(id)a4 queue:(id)a5
+- (HMMTRDoorLockClusterAPIRouter)initWithDoorLock:(id)lock device:(id)device queue:(id)queue
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  lockCopy = lock;
+  deviceCopy = device;
+  queueCopy = queue;
   v14.receiver = self;
   v14.super_class = HMMTRDoorLockClusterAPIRouter;
   v11 = [(HMMTRDoorLockClusterAPIRouter *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_doorLock, v8);
-    objc_storeStrong(&v12->_device, a4);
-    objc_storeStrong(&v12->_queue, a5);
+    objc_storeWeak(&v11->_doorLock, lockCopy);
+    objc_storeStrong(&v12->_device, device);
+    objc_storeStrong(&v12->_queue, queue);
   }
 
   return v12;
 }
 
-+ (id)mergeAndRemoveDuplicatesFromArray:(id)a3 andArray:(id)a4
++ (id)mergeAndRemoveDuplicatesFromArray:(id)array andArray:(id)andArray
 {
   v49 = *MEMORY[0x277D85DE8];
   context = objc_autoreleasePoolPush();
   v6 = MEMORY[0x277CBEB18];
-  v7 = a4;
-  v8 = a3;
-  v37 = [v6 array];
+  andArrayCopy = andArray;
+  arrayCopy = array;
+  array = [v6 array];
   v9 = [MEMORY[0x277CBEB58] set];
   v10 = MEMORY[0x277CBEBF8];
-  if (v8)
+  if (arrayCopy)
   {
-    v11 = v8;
+    v11 = arrayCopy;
   }
 
   else
@@ -1875,9 +1875,9 @@ void __77__HMMTRDoorLockClusterAPIRouter_isCustomClusterAvailableWithFlow_comple
 
   v12 = v11;
 
-  if (v7)
+  if (andArrayCopy)
   {
-    v13 = v7;
+    v13 = andArrayCopy;
   }
 
   else
@@ -1933,14 +1933,14 @@ void __77__HMMTRDoorLockClusterAPIRouter_isCustomClusterAvailableWithFlow_comple
 
               v22 = *(*(&v38 + 1) + 8 * i);
               v23 = MEMORY[0x277CCACA8];
-              v24 = [v22 credentialType];
-              v25 = [v22 credentialIndex];
-              v26 = [v23 stringWithFormat:@"%@_%@", v24, v25];
+              credentialType = [v22 credentialType];
+              credentialIndex = [v22 credentialIndex];
+              v26 = [v23 stringWithFormat:@"%@_%@", credentialType, credentialIndex];
 
               if (([v9 containsObject:v26] & 1) == 0)
               {
                 [v9 addObject:v26];
-                [v37 addObject:v22];
+                [array addObject:v22];
               }
             }
 
@@ -1960,7 +1960,7 @@ void __77__HMMTRDoorLockClusterAPIRouter_isCustomClusterAvailableWithFlow_comple
     while (v35);
   }
 
-  v27 = [v37 copy];
+  v27 = [array copy];
   objc_autoreleasePoolPop(context);
 
   v28 = *MEMORY[0x277D85DE8];
@@ -1968,110 +1968,110 @@ void __77__HMMTRDoorLockClusterAPIRouter_isCustomClusterAvailableWithFlow_comple
   return v27;
 }
 
-+ (id)readerConfigParamsFromReaderConfig:(id)a3
++ (id)readerConfigParamsFromReaderConfig:(id)config
 {
-  v3 = a3;
+  configCopy = config;
   v4 = objc_opt_new();
-  v5 = [v3 readerPrivateKey];
-  [v4 setSigningKey:v5];
+  readerPrivateKey = [configCopy readerPrivateKey];
+  [v4 setSigningKey:readerPrivateKey];
 
-  v6 = [v3 readerPublicKeyExternalRepresentation];
-  [v4 setVerificationKey:v6];
+  readerPublicKeyExternalRepresentation = [configCopy readerPublicKeyExternalRepresentation];
+  [v4 setVerificationKey:readerPublicKeyExternalRepresentation];
 
-  v7 = [v3 readerGroupIdentifier];
-  [v4 setGroupIdentifier:v7];
+  readerGroupIdentifier = [configCopy readerGroupIdentifier];
+  [v4 setGroupIdentifier:readerGroupIdentifier];
 
-  v8 = [v3 groupResolvingKey];
+  groupResolvingKey = [configCopy groupResolvingKey];
 
-  [v4 setGroupResolvingKey:v8];
+  [v4 setGroupResolvingKey:groupResolvingKey];
 
   return v4;
 }
 
-+ (id)doorLockFeatureMapSupportsAppleCustomAliroBLEUWB:(id)a3
++ (id)doorLockFeatureMapSupportsAppleCustomAliroBLEUWB:(id)b
 {
   v3 = MEMORY[0x277CCABB0];
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(a3, "unsignedIntValue") & 2}];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(b, "unsignedIntValue") & 2}];
   v5 = [v3 numberWithBool:{objc_msgSend(v4, "BOOLValue")}];
 
   return v5;
 }
 
-+ (id)doorLockFeatureMapSupportsAppleCustomAliroProvisioning:(id)a3
++ (id)doorLockFeatureMapSupportsAppleCustomAliroProvisioning:(id)provisioning
 {
   v3 = MEMORY[0x277CCABB0];
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(a3, "unsignedIntValue") & 1}];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(provisioning, "unsignedIntValue") & 1}];
   v5 = [v3 numberWithBool:{objc_msgSend(v4, "BOOLValue")}];
 
   return v5;
 }
 
-+ (id)aliroReaderConfigParamsFromParams:(id)a3
++ (id)aliroReaderConfigParamsFromParams:(id)params
 {
-  v3 = a3;
+  paramsCopy = params;
   v4 = objc_opt_new();
-  v5 = [v3 signingKey];
-  [v4 setSigningKey:v5];
+  signingKey = [paramsCopy signingKey];
+  [v4 setSigningKey:signingKey];
 
-  v6 = [v3 verificationKey];
-  [v4 setVerificationKey:v6];
+  verificationKey = [paramsCopy verificationKey];
+  [v4 setVerificationKey:verificationKey];
 
-  v7 = [v3 groupIdentifier];
-  [v4 setGroupIdentifier:v7];
+  groupIdentifier = [paramsCopy groupIdentifier];
+  [v4 setGroupIdentifier:groupIdentifier];
 
-  v8 = [v3 groupResolvingKey];
+  groupResolvingKey = [paramsCopy groupResolvingKey];
 
-  [v4 setGroupResolvingKey:v8];
+  [v4 setGroupResolvingKey:groupResolvingKey];
 
   return v4;
 }
 
-+ (id)aliroClearCredentialParamsFromParams:(id)a3 flow:(id)a4
++ (id)aliroClearCredentialParamsFromParams:(id)params flow:(id)flow
 {
-  v6 = a4;
-  v7 = a3;
+  flowCopy = flow;
+  paramsCopy = params;
   v8 = objc_opt_new();
-  v9 = [v7 credential];
+  credential = [paramsCopy credential];
 
-  v10 = [a1 aliroCredentialFromCredential:v9 flow:v6];
+  v10 = [self aliroCredentialFromCredential:credential flow:flowCopy];
 
   [v8 setCredential:v10];
 
   return v8;
 }
 
-+ (id)aliroGetCredentialParamsFromParams:(id)a3 flow:(id)a4
++ (id)aliroGetCredentialParamsFromParams:(id)params flow:(id)flow
 {
-  v6 = a4;
-  v7 = a3;
+  flowCopy = flow;
+  paramsCopy = params;
   v8 = objc_opt_new();
-  v9 = [v7 credential];
+  credential = [paramsCopy credential];
 
-  v10 = [a1 aliroCredentialFromCredential:v9 flow:v6];
+  v10 = [self aliroCredentialFromCredential:credential flow:flowCopy];
 
   [v8 setCredential:v10];
 
   return v8;
 }
 
-+ (id)credentialTypeForAliroCredentialType:(unsigned __int8)a3 flow:(id)a4
++ (id)credentialTypeForAliroCredentialType:(unsigned __int8)type flow:(id)flow
 {
-  v5 = a3;
+  typeCopy = type;
   v22 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  if (v5 == 3)
+  flowCopy = flow;
+  if (typeCopy == 3)
   {
     v9 = objc_autoreleasePoolPush();
-    v10 = a1;
+    selfCopy = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       v12 = HMFGetLogIdentifier();
-      v13 = [v7 UUID];
+      uUID = [flowCopy UUID];
       v16 = 138543874;
       v17 = v12;
       v18 = 2112;
-      v19 = v13;
+      v19 = uUID;
       v20 = 2048;
       v21 = 3;
       _os_log_impl(&dword_22AEAE000, v11, OS_LOG_TYPE_ERROR, "%{public}@[Flow: %@] Cannot convert AliroNonEvictableEndpointKey credential type: %ld to credential type", &v16, 0x20u);
@@ -2083,14 +2083,14 @@ void __77__HMMTRDoorLockClusterAPIRouter_isCustomClusterAvailableWithFlow_comple
 
   else
   {
-    if (v5 == 2)
+    if (typeCopy == 2)
     {
       v4 = &unk_283EE7A28;
     }
 
     else
     {
-      if (v5 != 1)
+      if (typeCopy != 1)
       {
         goto LABEL_10;
       }
@@ -2108,11 +2108,11 @@ LABEL_10:
   return v4;
 }
 
-+ (id)aliroCredentialTypeForCredentialType:(id)a3 flow:(id)a4
++ (id)aliroCredentialTypeForCredentialType:(id)type flow:(id)flow
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  typeCopy = type;
+  flowCopy = flow;
   if (HMFEqualObjects())
   {
     v8 = &unk_283EE8880;
@@ -2126,18 +2126,18 @@ LABEL_10:
   else
   {
     v9 = objc_autoreleasePoolPush();
-    v10 = a1;
+    selfCopy = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       v12 = HMFGetLogIdentifier();
-      v13 = [v7 UUID];
+      uUID = [flowCopy UUID];
       v16 = 138543874;
       v17 = v12;
       v18 = 2112;
-      v19 = v13;
+      v19 = uUID;
       v20 = 2112;
-      v21 = v6;
+      v21 = typeCopy;
       _os_log_impl(&dword_22AEAE000, v11, OS_LOG_TYPE_ERROR, "%{public}@[Flow: %@] Cannot convert credential type: %@ to an Apple Aliro custom cluster credential type", &v16, 0x20u);
     }
 
@@ -2149,47 +2149,47 @@ LABEL_10:
   return v8;
 }
 
-+ (id)aliroCredentialFromCredential:(id)a3 flow:(id)a4
++ (id)aliroCredentialFromCredential:(id)credential flow:(id)flow
 {
-  v6 = a4;
-  v7 = a3;
+  flowCopy = flow;
+  credentialCopy = credential;
   v8 = objc_opt_new();
-  v9 = [v7 credentialType];
-  v10 = [a1 aliroCredentialTypeForCredentialType:v9 flow:v6];
+  credentialType = [credentialCopy credentialType];
+  v10 = [self aliroCredentialTypeForCredentialType:credentialType flow:flowCopy];
 
   [v8 setCredentialType:v10];
-  v11 = [v7 credentialIndex];
+  credentialIndex = [credentialCopy credentialIndex];
 
-  [v8 setCredentialIndex:v11];
+  [v8 setCredentialIndex:credentialIndex];
 
   return v8;
 }
 
-+ (id)aliroSetCredentialParamsFromParams:(id)a3 flow:(id)a4
++ (id)aliroSetCredentialParamsFromParams:(id)params flow:(id)flow
 {
-  v6 = a4;
-  v7 = a3;
+  flowCopy = flow;
+  paramsCopy = params;
   v8 = objc_opt_new();
-  v9 = [v7 operationType];
-  [v8 setOperationType:v9];
+  operationType = [paramsCopy operationType];
+  [v8 setOperationType:operationType];
 
-  v10 = [v7 userIndex];
-  [v8 setUserIndex:v10];
+  userIndex = [paramsCopy userIndex];
+  [v8 setUserIndex:userIndex];
 
-  v11 = [v7 credential];
-  v12 = [a1 aliroCredentialFromCredential:v11 flow:v6];
+  credential = [paramsCopy credential];
+  v12 = [self aliroCredentialFromCredential:credential flow:flowCopy];
 
   [v8 setCredential:v12];
-  v13 = [v7 credentialData];
+  credentialData = [paramsCopy credentialData];
 
-  [v8 setCredentialData:v13];
+  [v8 setCredentialData:credentialData];
 
   return v8;
 }
 
-+ (BOOL)isCredentialTypeAliro:(id)a3
++ (BOOL)isCredentialTypeAliro:(id)aliro
 {
-  v3 = a3;
+  aliroCopy = aliro;
   if (HMFEqualObjects())
   {
     v4 = 1;
@@ -2203,9 +2203,9 @@ LABEL_10:
   return v4;
 }
 
-+ (id)arrayOfDataFromRead:(id)a3
++ (id)arrayOfDataFromRead:(id)read
 {
-  v3 = [a3 objectForKeyedSubscript:*MEMORY[0x277CD51A0]];
+  v3 = [read objectForKeyedSubscript:*MEMORY[0x277CD51A0]];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {

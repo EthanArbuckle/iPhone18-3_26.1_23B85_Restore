@@ -22,25 +22,25 @@
     v3 = qword_100019E50;
   }
 
-  v6 = NSStringFromClass(a1);
+  v6 = NSStringFromClass(self);
   v7 = [v3 objectForKeyedSubscript:v6];
 
   if (!v7)
   {
-    v8 = objc_alloc_init(a1);
+    v8 = objc_alloc_init(self);
     v9 = qword_100019E50;
-    v10 = NSStringFromClass(a1);
+    v10 = NSStringFromClass(self);
     [v9 setObject:v8 forKeyedSubscript:v10];
 
     v11 = qword_100019E50;
-    v12 = NSStringFromClass(a1);
+    v12 = NSStringFromClass(self);
     v13 = [v11 objectForKeyedSubscript:v12];
     [v13 initData];
   }
 
   pthread_mutex_unlock(&stru_100019E10);
   v14 = qword_100019E50;
-  v15 = NSStringFromClass(a1);
+  v15 = NSStringFromClass(self);
   v16 = [v14 objectForKeyedSubscript:v15];
 
   return v16;

@@ -1,11 +1,11 @@
 @interface _LTDMAAssetModel
-+ (id)modelFromAsset:(id)a3;
-+ (id)splitANECapabilityFromIdentifier:(id)a3;
++ (id)modelFromAsset:(id)asset;
++ (id)splitANECapabilityFromIdentifier:(id)identifier;
 - (BOOL)_localFileExists;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isInstalled;
 - (BOOL)isPremiumTextLID;
-- (BOOL)supportsLocale:(id)a3;
+- (BOOL)supportsLocale:(id)locale;
 - (NSArray)localeIdentifiers;
 - (NSArray)supportedLanguages;
 - (NSString)assetBuild;
@@ -15,7 +15,7 @@
 - (NSString)coreAssetName;
 - (NSString)debugDescription;
 - (NSString)managedAssetType;
-- (_LTDMAAssetModel)initWithProvider:(id)a3;
+- (_LTDMAAssetModel)initWithProvider:(id)provider;
 - (int64_t)assetVersion;
 - (int64_t)contentVersion;
 - (int64_t)downloadSize;
@@ -33,9 +33,9 @@
 
 @implementation _LTDMAAssetModel
 
-- (_LTDMAAssetModel)initWithProvider:(id)a3
+- (_LTDMAAssetModel)initWithProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v14.receiver = self;
   v14.super_class = _LTDMAAssetModel;
   v5 = [(_LTDMAAssetModel *)&v14 init];
@@ -47,7 +47,7 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  [(_LTDMAAssetModel *)v5 setProvider:v4];
+  [(_LTDMAAssetModel *)v5 setProvider:providerCopy];
   if (!v6->_provider)
   {
     v12 = _LTOSLogAssets();
@@ -60,8 +60,8 @@ LABEL_8:
   }
 
   v7 = MEMORY[0x277CE1AC0];
-  v8 = [(_LTDMAAssetModel *)v6 identifier];
-  v9 = [v7 discreteProgressWithIdentifier:v8 totalUnitCount:{-[_LTDMAAssetModel downloadSize](v6, "downloadSize")}];
+  identifier = [(_LTDMAAssetModel *)v6 identifier];
+  v9 = [v7 discreteProgressWithIdentifier:identifier totalUnitCount:{-[_LTDMAAssetModel downloadSize](v6, "downloadSize")}];
   progress = v6->_progress;
   v6->_progress = v9;
 
@@ -76,15 +76,15 @@ LABEL_9:
   return v11;
 }
 
-+ (id)modelFromAsset:(id)a3
++ (id)modelFromAsset:(id)asset
 {
-  v3 = [a3 provider];
-  if (v3)
+  provider = [asset provider];
+  if (provider)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v4 = v3;
+      v4 = provider;
     }
 
     else
@@ -109,13 +109,13 @@ LABEL_9:
   assetName = self->_assetName;
   if (!assetName)
   {
-    v5 = [(MAAsset *)self->_provider attributes];
-    v6 = [v5 objectForKeyedSubscript:@"AssetName"];
+    attributes = [(MAAsset *)self->_provider attributes];
+    v6 = [attributes objectForKeyedSubscript:@"AssetName"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [(MAAsset *)self->_provider attributes];
-      v8 = [v7 objectForKeyedSubscript:@"AssetName"];
+      attributes2 = [(MAAsset *)self->_provider attributes];
+      v8 = [attributes2 objectForKeyedSubscript:@"AssetName"];
     }
 
     else
@@ -132,8 +132,8 @@ LABEL_18:
       goto LABEL_19;
     }
 
-    v9 = [(_LTDMAAssetModel *)self assetType];
-    switch(v9)
+    assetType = [(_LTDMAAssetModel *)self assetType];
+    switch(assetType)
     {
       case 7uLL:
         v13 = *p_assetName;
@@ -144,8 +144,8 @@ LABEL_18:
         v14 = @"SpeechEndpoint-en-US";
         break;
       case 2uLL:
-        v10 = [(_LTDMAAssetModel *)self assetLanguage];
-        v11 = [@"ASR-" stringByAppendingString:v10];
+        assetLanguage = [(_LTDMAAssetModel *)self assetLanguage];
+        v11 = [@"ASR-" stringByAppendingString:assetLanguage];
         v12 = self->_assetName;
         self->_assetName = v11;
 
@@ -157,9 +157,9 @@ LABEL_18:
           [(_LTDMAAssetModel *)self assetName:v15];
         }
 
-        v22 = [(_LTDMAAssetModel *)self assetId];
+        assetId = [(_LTDMAAssetModel *)self assetId];
         v13 = self->_assetName;
-        self->_assetName = v22;
+        self->_assetName = assetId;
 LABEL_17:
 
         goto LABEL_18;
@@ -176,10 +176,10 @@ LABEL_19:
 
 - (NSString)coreAssetName
 {
-  v3 = [(_LTDMAAssetModel *)self assetName];
-  if (-[_LTDMAAssetModel assetType](self, "assetType") == 8 && ([v3 containsString:@"-partial"] & 1) != 0)
+  assetName = [(_LTDMAAssetModel *)self assetName];
+  if (-[_LTDMAAssetModel assetType](self, "assetType") == 8 && ([assetName containsString:@"-partial"] & 1) != 0)
   {
-    v4 = [v3 componentsSeparatedByString:@"-"];
+    v4 = [assetName componentsSeparatedByString:@"-"];
     v5 = [v4 mutableCopy];
 
     if ([v5 count] >= 4 && (objc_msgSend(v5, "objectAtIndexedSubscript:", objc_msgSend(v5, "count") - 3), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "isEqualToString:", @"partial"), v6, v7))
@@ -197,7 +197,7 @@ LABEL_19:
         [(_LTDMAAssetModel *)self coreAssetName:v10];
       }
 
-      v8 = v3;
+      v8 = assetName;
     }
 
     v9 = v8;
@@ -205,7 +205,7 @@ LABEL_19:
 
   else
   {
-    v9 = v3;
+    v9 = assetName;
   }
 
   return v9;
@@ -213,13 +213,13 @@ LABEL_19:
 
 - (NSString)assetTypeName
 {
-  v3 = [(MAAsset *)self->_provider attributes];
-  v4 = [v3 objectForKeyedSubscript:@"Type"];
+  attributes = [(MAAsset *)self->_provider attributes];
+  v4 = [attributes objectForKeyedSubscript:@"Type"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(MAAsset *)self->_provider attributes];
-    v6 = [v5 objectForKeyedSubscript:@"Type"];
+    attributes2 = [(MAAsset *)self->_provider attributes];
+    v6 = [attributes2 objectForKeyedSubscript:@"Type"];
   }
 
   else
@@ -238,8 +238,8 @@ LABEL_19:
     result = [(_LTDMAAssetModel *)self assetType];
     if (result == 8)
     {
-      v4 = [(_LTDMAAssetModel *)self identifier];
-      v5 = [v4 containsString:@"-partial-"];
+      identifier = [(_LTDMAAssetModel *)self identifier];
+      v5 = [identifier containsString:@"-partial-"];
       v6 = 8;
       if (v5)
       {
@@ -262,26 +262,26 @@ LABEL_19:
 
 - (unint64_t)assetType
 {
-  v2 = self;
+  selfCopy = self;
   v25 = *MEMORY[0x277D85DE8];
-  v3 = [(_LTDMAAssetModel *)self assetTypeName];
-  if ([v3 length])
+  assetTypeName = [(_LTDMAAssetModel *)self assetTypeName];
+  if ([assetTypeName length])
   {
-    v4 = [v3 characterAtIndex:0];
+    v4 = [assetTypeName characterAtIndex:0];
     if (v4 > 76)
     {
       switch(v4)
       {
         case 'M':
-          v5 = [v3 hasPrefix:@"MT"] == 0;
+          v5 = [assetTypeName hasPrefix:@"MT"] == 0;
           v6 = 8;
           break;
         case 'P':
-          v5 = [v3 hasPrefix:@"PB"] == 0;
+          v5 = [assetTypeName hasPrefix:@"PB"] == 0;
           v6 = 10;
           break;
         case 'e':
-          v5 = [v3 hasPrefix:@"endpointer"] == 0;
+          v5 = [assetTypeName hasPrefix:@"endpointer"] == 0;
           v6 = 6;
           break;
         default:
@@ -290,26 +290,26 @@ LABEL_21:
           if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
           {
             v23 = 138543362;
-            v24 = v3;
+            v24 = assetTypeName;
             _os_log_impl(&dword_232E53000, v16, OS_LOG_TYPE_INFO, "No matching MA asset model type for %{public}@", &v23, 0xCu);
           }
 
-          v17 = [v2 _attributes];
-          v18 = [v17 objectForKeyedSubscript:@"__Empty"];
+          _attributes = [selfCopy _attributes];
+          v18 = [_attributes objectForKeyedSubscript:@"__Empty"];
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v19 = [v2 _attributes];
-            v20 = [v19 objectForKeyedSubscript:@"__Empty"];
-            LODWORD(v2) = [v20 isEqualToString:@"Empty"];
+            _attributes2 = [selfCopy _attributes];
+            v20 = [_attributes2 objectForKeyedSubscript:@"__Empty"];
+            LODWORD(selfCopy) = [v20 isEqualToString:@"Empty"];
           }
 
           else
           {
-            LODWORD(v2) = [0 isEqualToString:@"Empty"];
+            LODWORD(selfCopy) = [0 isEqualToString:@"Empty"];
           }
 
-          v2 = v2;
+          selfCopy = selfCopy;
           goto LABEL_30;
       }
     }
@@ -319,15 +319,15 @@ LABEL_21:
       switch(v4)
       {
         case 'A':
-          v5 = [v3 hasPrefix:@"ASR"] == 0;
+          v5 = [assetTypeName hasPrefix:@"ASR"] == 0;
           v6 = 2;
           break;
         case 'C':
-          v5 = [v3 hasPrefix:@"Config"] == 0;
+          v5 = [assetTypeName hasPrefix:@"Config"] == 0;
           v6 = 5;
           break;
         case 'L':
-          v5 = [v3 hasPrefix:@"LID"] == 0;
+          v5 = [assetTypeName hasPrefix:@"LID"] == 0;
           v6 = 7;
           break;
         default:
@@ -337,28 +337,28 @@ LABEL_21:
 
     if (v5)
     {
-      v2 = 0;
+      selfCopy = 0;
     }
 
     else
     {
-      v2 = v6;
+      selfCopy = v6;
     }
 
     goto LABEL_30;
   }
 
-  v7 = [v2 provider];
-  v8 = [v7 assetType];
+  provider = [selfCopy provider];
+  assetType = [provider assetType];
 
-  if ([v8 hasPrefix:@"com.apple.MobileAsset.SpeechEndpointAssets"])
+  if ([assetType hasPrefix:@"com.apple.MobileAsset.SpeechEndpointAssets"])
   {
-    v2 = 6;
+    selfCopy = 6;
   }
 
-  else if ([v8 hasPrefix:@"com.apple.MobileAsset.LanguageDetectorAssets"])
+  else if ([assetType hasPrefix:@"com.apple.MobileAsset.LanguageDetectorAssets"])
   {
-    v2 = 7;
+    selfCopy = 7;
   }
 
   else
@@ -366,26 +366,26 @@ LABEL_21:
     v9 = _LTOSLogAssets();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      [(_LTDMAAssetModel *)v2 assetType:v9];
+      [(_LTDMAAssetModel *)selfCopy assetType:v9];
     }
 
-    v2 = 0;
+    selfCopy = 0;
   }
 
 LABEL_30:
   v21 = *MEMORY[0x277D85DE8];
-  return v2;
+  return selfCopy;
 }
 
 - (NSString)managedAssetType
 {
-  v3 = [(MAAsset *)self->_provider attributes];
-  v4 = [v3 objectForKeyedSubscript:@"AssetType"];
+  attributes = [(MAAsset *)self->_provider attributes];
+  v4 = [attributes objectForKeyedSubscript:@"AssetType"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(MAAsset *)self->_provider attributes];
-    v6 = [v5 objectForKeyedSubscript:@"AssetType"];
+    attributes2 = [(MAAsset *)self->_provider attributes];
+    v6 = [attributes2 objectForKeyedSubscript:@"AssetType"];
   }
 
   else
@@ -398,33 +398,33 @@ LABEL_30:
 
 - (int64_t)assetVersion
 {
-  v3 = [(MAAsset *)self->_provider attributes];
-  v4 = [v3 objectForKeyedSubscript:@"AssetVersion"];
+  attributes = [(MAAsset *)self->_provider attributes];
+  v4 = [attributes objectForKeyedSubscript:@"AssetVersion"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(MAAsset *)self->_provider attributes];
-    v6 = [v5 objectForKeyedSubscript:@"AssetVersion"];
-    v7 = [v6 integerValue];
+    attributes2 = [(MAAsset *)self->_provider attributes];
+    v6 = [attributes2 objectForKeyedSubscript:@"AssetVersion"];
+    integerValue = [v6 integerValue];
   }
 
   else
   {
-    v7 = [0 integerValue];
+    integerValue = [0 integerValue];
   }
 
-  return v7;
+  return integerValue;
 }
 
 - (NSString)assetBuild
 {
-  v3 = [(MAAsset *)self->_provider attributes];
-  v4 = [v3 objectForKeyedSubscript:@"Build"];
+  attributes = [(MAAsset *)self->_provider attributes];
+  v4 = [attributes objectForKeyedSubscript:@"Build"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(MAAsset *)self->_provider attributes];
-    v6 = [v5 objectForKeyedSubscript:@"Build"];
+    attributes2 = [(MAAsset *)self->_provider attributes];
+    v6 = [attributes2 objectForKeyedSubscript:@"Build"];
   }
 
   else
@@ -437,96 +437,96 @@ LABEL_30:
 
 - (int64_t)formatVersion
 {
-  v3 = [(MAAsset *)self->_provider attributes];
-  v4 = [v3 objectForKeyedSubscript:@"FormatVersion"];
+  attributes = [(MAAsset *)self->_provider attributes];
+  v4 = [attributes objectForKeyedSubscript:@"FormatVersion"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(MAAsset *)self->_provider attributes];
-    v6 = [v5 objectForKeyedSubscript:@"FormatVersion"];
-    v7 = [v6 integerValue];
+    attributes2 = [(MAAsset *)self->_provider attributes];
+    v6 = [attributes2 objectForKeyedSubscript:@"FormatVersion"];
+    integerValue = [v6 integerValue];
   }
 
   else
   {
-    v7 = [0 integerValue];
+    integerValue = [0 integerValue];
   }
 
-  return v7;
+  return integerValue;
 }
 
 - (int64_t)contentVersion
 {
-  v3 = [(MAAsset *)self->_provider attributes];
+  attributes = [(MAAsset *)self->_provider attributes];
   v4 = *MEMORY[0x277D28900];
-  v5 = [v3 objectForKeyedSubscript:*MEMORY[0x277D28900]];
+  v5 = [attributes objectForKeyedSubscript:*MEMORY[0x277D28900]];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [(MAAsset *)self->_provider attributes];
-    v7 = [v6 objectForKeyedSubscript:v4];
-    v8 = [v7 integerValue];
+    attributes2 = [(MAAsset *)self->_provider attributes];
+    v7 = [attributes2 objectForKeyedSubscript:v4];
+    integerValue = [v7 integerValue];
   }
 
   else
   {
-    v8 = [0 integerValue];
+    integerValue = [0 integerValue];
   }
 
-  return v8;
+  return integerValue;
 }
 
 - (int64_t)downloadSize
 {
-  v3 = [(MAAsset *)self->_provider attributes];
+  attributes = [(MAAsset *)self->_provider attributes];
   v4 = *MEMORY[0x277D28908];
-  v5 = [v3 objectForKeyedSubscript:*MEMORY[0x277D28908]];
+  v5 = [attributes objectForKeyedSubscript:*MEMORY[0x277D28908]];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [(MAAsset *)self->_provider attributes];
-    v7 = [v6 objectForKeyedSubscript:v4];
-    v8 = [v7 integerValue];
+    attributes2 = [(MAAsset *)self->_provider attributes];
+    v7 = [attributes2 objectForKeyedSubscript:v4];
+    integerValue = [v7 integerValue];
   }
 
   else
   {
-    v8 = [0 integerValue];
+    integerValue = [0 integerValue];
   }
 
-  return v8;
+  return integerValue;
 }
 
 - (int64_t)unarchivedSize
 {
-  v3 = [(MAAsset *)self->_provider attributes];
+  attributes = [(MAAsset *)self->_provider attributes];
   v4 = *MEMORY[0x277D28920];
-  v5 = [v3 objectForKeyedSubscript:*MEMORY[0x277D28920]];
+  v5 = [attributes objectForKeyedSubscript:*MEMORY[0x277D28920]];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [(MAAsset *)self->_provider attributes];
-    v7 = [v6 objectForKeyedSubscript:v4];
-    v8 = [v7 integerValue];
+    attributes2 = [(MAAsset *)self->_provider attributes];
+    v7 = [attributes2 objectForKeyedSubscript:v4];
+    integerValue = [v7 integerValue];
   }
 
   else
   {
-    v8 = [0 integerValue];
+    integerValue = [0 integerValue];
   }
 
-  return v8;
+  return integerValue;
 }
 
 - (BOOL)isPremiumTextLID
 {
-  v3 = [(MAAsset *)self->_provider attributes];
-  v4 = [v3 objectForKeyedSubscript:@"Footprint"];
+  attributes = [(MAAsset *)self->_provider attributes];
+  v4 = [attributes objectForKeyedSubscript:@"Footprint"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(MAAsset *)self->_provider attributes];
-    v6 = [v5 objectForKeyedSubscript:@"Footprint"];
+    attributes2 = [(MAAsset *)self->_provider attributes];
+    v6 = [attributes2 objectForKeyedSubscript:@"Footprint"];
     v7 = [v6 isEqualToString:@"Premium"];
   }
 
@@ -538,26 +538,26 @@ LABEL_30:
   return v7;
 }
 
-+ (id)splitANECapabilityFromIdentifier:(id)a3
++ (id)splitANECapabilityFromIdentifier:(id)identifier
 {
   v12[2] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 componentsSeparatedByString:@"-"];
+  identifierCopy = identifier;
+  v4 = [identifierCopy componentsSeparatedByString:@"-"];
   v5 = [v4 mutableCopy];
 
-  v6 = [v5 lastObject];
-  if (([v6 isEqualToString:@"0"] & 1) != 0 || objc_msgSend(v6, "integerValue") >= 1)
+  lastObject = [v5 lastObject];
+  if (([lastObject isEqualToString:@"0"] & 1) != 0 || objc_msgSend(lastObject, "integerValue") >= 1)
   {
     [v5 removeLastObject];
     v7 = [v5 componentsJoinedByString:@"-"];
     v12[0] = v7;
-    v12[1] = v6;
+    v12[1] = lastObject;
     v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:2];
   }
 
   else
   {
-    v11[0] = v3;
+    v11[0] = identifierCopy;
     v11[1] = @"0";
     v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:2];
   }
@@ -575,23 +575,23 @@ LABEL_30:
   }
 
   v3 = objc_opt_class();
-  v4 = [(_LTDMAAssetModel *)self assetName];
-  v5 = [v3 splitANECapabilityFromIdentifier:v4];
-  v6 = [v5 lastObject];
-  v7 = [v6 integerValue];
+  assetName = [(_LTDMAAssetModel *)self assetName];
+  v5 = [v3 splitANECapabilityFromIdentifier:assetName];
+  lastObject = [v5 lastObject];
+  integerValue = [lastObject integerValue];
 
-  return v7;
+  return integerValue;
 }
 
 - (NSString)assetLanguage
 {
-  v3 = [(MAAsset *)self->_provider attributes];
-  v4 = [v3 objectForKeyedSubscript:@"Language"];
+  attributes = [(MAAsset *)self->_provider attributes];
+  v4 = [attributes objectForKeyedSubscript:@"Language"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(MAAsset *)self->_provider attributes];
-    v6 = [v5 objectForKeyedSubscript:@"Language"];
+    attributes2 = [(MAAsset *)self->_provider attributes];
+    v6 = [attributes2 objectForKeyedSubscript:@"Language"];
   }
 
   else
@@ -604,8 +604,8 @@ LABEL_30:
 
 - (NSArray)supportedLanguages
 {
-  v2 = [(MAAsset *)self->_provider attributes];
-  v3 = [v2 objectForKeyedSubscript:@"Languages"];
+  attributes = [(MAAsset *)self->_provider attributes];
+  v3 = [attributes objectForKeyedSubscript:@"Languages"];
 
   if (v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
@@ -632,27 +632,27 @@ LABEL_30:
   return v4;
 }
 
-- (BOOL)supportsLocale:(id)a3
+- (BOOL)supportsLocale:(id)locale
 {
-  v4 = a3;
-  v5 = [(_LTDMAAssetModel *)self assetLanguage];
-  v6 = [v4 _ltLocaleIdentifier];
+  localeCopy = locale;
+  assetLanguage = [(_LTDMAAssetModel *)self assetLanguage];
+  _ltLocaleIdentifier = [localeCopy _ltLocaleIdentifier];
 
-  LOBYTE(v4) = [v5 isEqualToString:v6];
-  return v4;
+  LOBYTE(localeCopy) = [assetLanguage isEqualToString:_ltLocaleIdentifier];
+  return localeCopy;
 }
 
 - (NSArray)localeIdentifiers
 {
   v33[1] = *MEMORY[0x277D85DE8];
-  v3 = [(_LTDMAAssetModel *)self identifier];
-  v4 = [v3 componentsSeparatedByString:@"-"];
+  identifier = [(_LTDMAAssetModel *)self identifier];
+  v4 = [identifier componentsSeparatedByString:@"-"];
 
-  v5 = [(_LTDMAAssetModel *)self assetType];
+  assetType = [(_LTDMAAssetModel *)self assetType];
   v6 = MEMORY[0x277CBEBF8];
-  if (v5 > 7)
+  if (assetType > 7)
   {
-    if (v5 == 8)
+    if (assetType == 8)
     {
       v7 = objc_opt_new();
       v18 = [v4 indexOfObject:@"partial"];
@@ -664,8 +664,8 @@ LABEL_30:
           do
           {
             v20 = [v4 objectAtIndexedSubscript:v19];
-            v21 = [MEMORY[0x277CCA900] decimalDigitCharacterSet];
-            v22 = [v20 rangeOfCharacterFromSet:v21];
+            decimalDigitCharacterSet = [MEMORY[0x277CCA900] decimalDigitCharacterSet];
+            v22 = [v20 rangeOfCharacterFromSet:decimalDigitCharacterSet];
 
             if (v22 == 0x7FFFFFFFFFFFFFFFLL)
             {
@@ -697,7 +697,7 @@ LABEL_30:
       goto LABEL_11;
     }
 
-    if (v5 == 10 && [v4 count] == 2)
+    if (assetType == 10 && [v4 count] == 2)
     {
       v17 = [v4 objectAtIndexedSubscript:1];
       v6 = [_LTDAssetModel localeIdentifiersForLanguageName:v17];
@@ -706,15 +706,15 @@ LABEL_30:
 
   else
   {
-    if ((v5 - 6) < 2)
+    if ((assetType - 6) < 2)
     {
       v7 = objc_opt_new();
       v28 = 0u;
       v29 = 0u;
       v30 = 0u;
       v31 = 0u;
-      v8 = [(_LTDMAAssetModel *)self supportedLanguages];
-      v9 = [v8 countByEnumeratingWithState:&v28 objects:v32 count:16];
+      supportedLanguages = [(_LTDMAAssetModel *)self supportedLanguages];
+      v9 = [supportedLanguages countByEnumeratingWithState:&v28 objects:v32 count:16];
       if (v9)
       {
         v10 = v9;
@@ -725,14 +725,14 @@ LABEL_30:
           {
             if (*v29 != v11)
             {
-              objc_enumerationMutation(v8);
+              objc_enumerationMutation(supportedLanguages);
             }
 
             v13 = [*(*(&v28 + 1) + 8 * i) stringByReplacingOccurrencesOfString:@"-" withString:@"_"];
             [v7 addObject:v13];
           }
 
-          v10 = [v8 countByEnumeratingWithState:&v28 objects:v32 count:16];
+          v10 = [supportedLanguages countByEnumeratingWithState:&v28 objects:v32 count:16];
         }
 
         while (v10);
@@ -746,7 +746,7 @@ LABEL_12:
       goto LABEL_13;
     }
 
-    if (v5 == 2 && [v4 count] == 2)
+    if (assetType == 2 && [v4 count] == 2)
     {
       v7 = [v4 objectAtIndexedSubscript:1];
       v33[0] = v7;
@@ -805,12 +805,12 @@ LABEL_13:
     return result == 2;
   }
 
-  v4 = [(_LTDMAAssetModel *)self progress];
-  v5 = [v4 offlineState];
+  progress = [(_LTDMAAssetModel *)self progress];
+  offlineState = [progress offlineState];
 
-  if (v5 < 4)
+  if (offlineState < 4)
   {
-    return 3 - v5;
+    return 3 - offlineState;
   }
 
   return 2;
@@ -818,23 +818,23 @@ LABEL_13:
 
 - (BOOL)_localFileExists
 {
-  v2 = [(_LTDMAAssetModel *)self getLocalFileUrl];
-  v3 = [v2 path];
+  getLocalFileUrl = [(_LTDMAAssetModel *)self getLocalFileUrl];
+  path = [getLocalFileUrl path];
 
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
-  v5 = [v4 fileExistsAtPath:v3];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v5 = [defaultManager fileExistsAtPath:path];
 
   return v5;
 }
 
 - (BOOL)isInstalled
 {
-  v3 = [(_LTDMAAssetModel *)self state];
-  if (v3 - 4 >= 3)
+  state = [(_LTDMAAssetModel *)self state];
+  if (state - 4 >= 3)
   {
-    if (v3)
+    if (state)
     {
-      if (v3 == 1)
+      if (state == 1)
       {
         goto LABEL_4;
       }
@@ -844,19 +844,19 @@ LABEL_13:
 
     else
     {
-      v5 = [(_LTDMAAssetModel *)self progress];
-      if ([v5 isFinished])
+      progress = [(_LTDMAAssetModel *)self progress];
+      if ([progress isFinished])
       {
-        v6 = [(_LTDMAAssetModel *)self _localFileExists];
+        _localFileExists = [(_LTDMAAssetModel *)self _localFileExists];
       }
 
       else
       {
-        v6 = 0;
+        _localFileExists = 0;
       }
     }
 
-    return v6;
+    return _localFileExists;
   }
 
 LABEL_4:
@@ -866,24 +866,24 @@ LABEL_4:
 
 - (unint64_t)hash
 {
-  v2 = [(_LTDMAAssetModel *)self assetName];
-  v3 = [v2 hash];
+  assetName = [(_LTDMAAssetModel *)self assetName];
+  v3 = [assetName hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
 
   else
   {
-    if (v4)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -903,17 +903,17 @@ LABEL_4:
     }
 
     v8 = v6;
-    v9 = [(_LTDMAAssetModel *)self assetName];
-    v10 = [(_LTDMAAssetModel *)v8 assetName];
-    v11 = [v9 isEqualToString:v10];
+    assetName = [(_LTDMAAssetModel *)self assetName];
+    assetName2 = [(_LTDMAAssetModel *)v8 assetName];
+    v11 = [assetName isEqualToString:assetName2];
 
     if (v11)
     {
-      v12 = [(_LTDMAAssetModel *)self getLocalFileUrl];
-      v13 = [(_LTDMAAssetModel *)v8 getLocalFileUrl];
-      if (v12 | v13)
+      getLocalFileUrl = [(_LTDMAAssetModel *)self getLocalFileUrl];
+      getLocalFileUrl2 = [(_LTDMAAssetModel *)v8 getLocalFileUrl];
+      if (getLocalFileUrl | getLocalFileUrl2)
       {
-        v7 = [v12 isEqual:v13];
+        v7 = [getLocalFileUrl isEqual:getLocalFileUrl2];
       }
 
       else
@@ -936,10 +936,10 @@ LABEL_4:
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(_LTDMAAssetModel *)self assetName];
-  v7 = [(_LTDMAAssetModel *)self provider];
-  v8 = [v7 debugDescription];
-  v9 = [v3 stringWithFormat:@"<%@ %@, %@>", v5, v6, v8];
+  assetName = [(_LTDMAAssetModel *)self assetName];
+  provider = [(_LTDMAAssetModel *)self provider];
+  v8 = [provider debugDescription];
+  v9 = [v3 stringWithFormat:@"<%@ %@, %@>", v5, assetName, v8];
 
   return v9;
 }

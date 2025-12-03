@@ -1,55 +1,55 @@
 @interface CHXLegend
-+ (id)chdLegendEntryFromXmlLegendEntryElement:(_xmlNode *)a3 defaultFont:(id)a4 state:(id)a5;
-+ (id)chdLegendFromXmlLegendElement:(_xmlNode *)a3 state:(id)a4;
-+ (int)chdLegendPositionFromXmlLegendPositionElement:(_xmlNode *)a3;
-+ (void)setDefaultLegendBounds:(id)a3 legendPosition:(int)a4;
++ (id)chdLegendEntryFromXmlLegendEntryElement:(_xmlNode *)element defaultFont:(id)font state:(id)state;
++ (id)chdLegendFromXmlLegendElement:(_xmlNode *)element state:(id)state;
++ (int)chdLegendPositionFromXmlLegendPositionElement:(_xmlNode *)element;
++ (void)setDefaultLegendBounds:(id)bounds legendPosition:(int)position;
 @end
 
 @implementation CHXLegend
 
-+ (id)chdLegendFromXmlLegendElement:(_xmlNode *)a3 state:(id)a4
++ (id)chdLegendFromXmlLegendElement:(_xmlNode *)element state:(id)state
 {
-  v6 = a4;
+  stateCopy = state;
   v7 = [CHDLegend alloc];
-  v8 = [v6 resources];
-  v9 = [(CHDLegend *)v7 initWithResources:v8];
+  resources = [stateCopy resources];
+  v9 = [(CHDLegend *)v7 initWithResources:resources];
 
   v10 = objc_alloc_init(OADGraphicProperties);
-  [CHXGraphicProperties setGraphicPropertiesFromXmlElementWithGraphicProperties:v10 element:a3 state:v6];
-  v11 = [v6 autoStyling];
-  [v11 resolveLegendGraphicProperties:v10];
+  [CHXGraphicProperties setGraphicPropertiesFromXmlElementWithGraphicProperties:v10 element:element state:stateCopy];
+  autoStyling = [stateCopy autoStyling];
+  [autoStyling resolveLegendGraphicProperties:v10];
 
   [(CHDLegend *)v9 setGraphicProperties:v10];
-  v12 = [v6 drawingState];
-  v13 = [v12 OAXChartNamespace];
-  v14 = OCXFindChild(a3, v13, "overlay");
+  drawingState = [stateCopy drawingState];
+  oAXChartNamespace = [drawingState OAXChartNamespace];
+  v14 = OCXFindChild(element, oAXChartNamespace, "overlay");
 
   if (v14)
   {
     [(CHDLegend *)v9 setIsOverlay:CXRequiredBoolAttribute(v14, CXNoNamespace, "val")];
   }
 
-  v15 = [v6 drawingState];
-  v16 = [v15 OAXChartNamespace];
-  v17 = OCXFindChild(a3, v16, "legendPos");
+  drawingState2 = [stateCopy drawingState];
+  oAXChartNamespace2 = [drawingState2 OAXChartNamespace];
+  v17 = OCXFindChild(element, oAXChartNamespace2, "legendPos");
 
-  -[CHDLegend setLegendPosition:](v9, "setLegendPosition:", [a1 chdLegendPositionFromXmlLegendPositionElement:v17]);
-  v18 = [v6 drawingState];
-  v19 = [v18 OAXChartNamespace];
-  v20 = OCXFindChild(a3, v19, "txPr");
+  -[CHDLegend setLegendPosition:](v9, "setLegendPosition:", [self chdLegendPositionFromXmlLegendPositionElement:v17]);
+  drawingState3 = [stateCopy drawingState];
+  oAXChartNamespace3 = [drawingState3 OAXChartNamespace];
+  v20 = OCXFindChild(element, oAXChartNamespace3, "txPr");
 
   if (v20)
   {
     v21 = objc_alloc_init(OADTextBody);
-    v22 = [v6 drawingState];
-    [OAXTextBody readTextBodyFromXmlNode:v20 textBody:v21 drawingState:v22];
+    drawingState4 = [stateCopy drawingState];
+    [OAXTextBody readTextBodyFromXmlNode:v20 textBody:v21 drawingState:drawingState4];
 
-    v23 = [CHXFont edFontWithOadTextBody:v21 state:v6];
+    v23 = [CHXFont edFontWithOadTextBody:v21 state:stateCopy];
     [(CHDLegend *)v9 setFont:v23];
     if ([(OADTextBody *)v21 paragraphCount])
     {
-      v24 = [(OADTextBody *)v21 firstParagraphEffects];
-      v25 = [OAXEffect updateIncomingEffects:v24];
+      firstParagraphEffects = [(OADTextBody *)v21 firstParagraphEffects];
+      v25 = [OAXEffect updateIncomingEffects:firstParagraphEffects];
 
       [(CHDLegend *)v9 setLabelEffects:v25];
     }
@@ -60,66 +60,66 @@
     v23 = 0;
   }
 
-  for (i = OCXFirstChildNamed(a3, "legendEntry"); i; i = OCXNextSiblingNamed(i, "legendEntry"))
+  for (i = OCXFirstChildNamed(element, "legendEntry"); i; i = OCXNextSiblingNamed(i, "legendEntry"))
   {
-    v27 = [(CHDLegend *)v9 legendEntries];
-    v28 = [a1 chdLegendEntryFromXmlLegendEntryElement:i defaultFont:v23 state:v6];
-    [v27 addObject:v28];
+    legendEntries = [(CHDLegend *)v9 legendEntries];
+    v28 = [self chdLegendEntryFromXmlLegendEntryElement:i defaultFont:v23 state:stateCopy];
+    [legendEntries addObject:v28];
   }
 
   return v9;
 }
 
-+ (void)setDefaultLegendBounds:(id)a3 legendPosition:(int)a4
++ (void)setDefaultLegendBounds:(id)bounds legendPosition:(int)position
 {
-  v10 = a3;
+  boundsCopy = bounds;
   v5 = MEMORY[0x277CBF3A0];
   v6 = (MEMORY[0x277CBF3A0] + 16);
   v7 = (MEMORY[0x277CBF3A0] + 8);
-  v8 = (&unk_25D6FE7F0 + 8 * (a4 - 1));
-  if ((a4 - 1) > 4)
+  v8 = (&unk_25D6FE7F0 + 8 * (position - 1));
+  if ((position - 1) > 4)
   {
     v8 = (MEMORY[0x277CBF3A0] + 24);
   }
 
   else
   {
-    v5 = (&unk_25D6FE778 + 8 * (a4 - 1));
-    v7 = (&unk_25D6FE7A0 + 8 * (a4 - 1));
-    v6 = (&unk_25D6FE7C8 + 8 * (a4 - 1));
+    v5 = (&unk_25D6FE778 + 8 * (position - 1));
+    v7 = (&unk_25D6FE7A0 + 8 * (position - 1));
+    v6 = (&unk_25D6FE7C8 + 8 * (position - 1));
   }
 
   v9 = [OADOrientedBounds orientedBoundsWithBounds:*v5 / 4000.0, *v7 / 4000.0, *v6 / 4000.0, *v8 / 4000.0];
-  [v10 setOrientedBounds:v9];
+  [boundsCopy setOrientedBounds:v9];
 }
 
-+ (id)chdLegendEntryFromXmlLegendEntryElement:(_xmlNode *)a3 defaultFont:(id)a4 state:(id)a5
++ (id)chdLegendEntryFromXmlLegendEntryElement:(_xmlNode *)element defaultFont:(id)font state:(id)state
 {
-  v7 = a4;
-  v8 = a5;
+  fontCopy = font;
+  stateCopy = state;
   v9 = [CHDLegendEntry alloc];
-  v10 = [v8 resources];
-  v11 = [(CHDLegendEntry *)v9 initWithResources:v10];
+  resources = [stateCopy resources];
+  v11 = [(CHDLegendEntry *)v9 initWithResources:resources];
 
-  v12 = [v8 drawingState];
-  v13 = [v12 OAXChartNamespace];
-  v14 = OCXFindRequiredChild(a3, v13, "idx");
+  drawingState = [stateCopy drawingState];
+  oAXChartNamespace = [drawingState OAXChartNamespace];
+  v14 = OCXFindRequiredChild(element, oAXChartNamespace, "idx");
 
   [(CHDLegendEntry *)v11 setEntryIndex:CXRequiredUnsignedLongAttribute(v14, CXNoNamespace, "val")];
-  v15 = [v8 drawingState];
-  v16 = [v15 OAXChartNamespace];
-  v17 = OCXFindChild(a3, v16, "txPr");
+  drawingState2 = [stateCopy drawingState];
+  oAXChartNamespace2 = [drawingState2 OAXChartNamespace];
+  v17 = OCXFindChild(element, oAXChartNamespace2, "txPr");
 
-  if (v17 && ([CHXFont edFontFromXmlTextPropertiesElement:v17 state:v8], (v18 = objc_claimAutoreleasedReturnValue()) != 0))
+  if (v17 && ([CHXFont edFontFromXmlTextPropertiesElement:v17 state:stateCopy], (v18 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     [(CHDLegendEntry *)v11 setFont:v18];
   }
 
   else
   {
-    if (v7)
+    if (fontCopy)
     {
-      [(CHDLegendEntry *)v11 setFont:v7];
+      [(CHDLegendEntry *)v11 setFont:fontCopy];
     }
 
     v18 = 0;
@@ -128,11 +128,11 @@
   return v11;
 }
 
-+ (int)chdLegendPositionFromXmlLegendPositionElement:(_xmlNode *)a3
++ (int)chdLegendPositionFromXmlLegendPositionElement:(_xmlNode *)element
 {
-  if (a3)
+  if (element)
   {
-    v3 = CXRequiredStringAttribute(a3, CXNoNamespace, "val");
+    v3 = CXRequiredStringAttribute(element, CXNoNamespace, "val");
     if ([v3 isEqualToString:@"b"])
     {
       v4 = 1;

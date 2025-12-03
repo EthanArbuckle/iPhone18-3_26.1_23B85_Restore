@@ -1,30 +1,30 @@
 @interface MTStorageReader
-+ (BOOL)_dictionaryIsForSerializableObject:(id)a3;
-+ (id)_unwrap:(id)a3;
-- (BOOL)decodeBoolForKey:(id)a3;
-- (MTStorageReader)initWithEncodedDictionary:(id)a3;
-- (double)decodeDoubleForKey:(id)a3;
-- (float)decodeFloatForKey:(id)a3;
-- (id)_decodeObject:(id)a3;
-- (id)_objectForDictionary:(id)a3;
-- (id)decodeObjectForKey:(id)a3;
-- (int)decodeInt32ForKey:(id)a3;
-- (int)decodeIntForKey:(id)a3;
-- (int64_t)decodeInt64ForKey:(id)a3;
-- (int64_t)decodeIntegerForKey:(id)a3;
++ (BOOL)_dictionaryIsForSerializableObject:(id)object;
++ (id)_unwrap:(id)_unwrap;
+- (BOOL)decodeBoolForKey:(id)key;
+- (MTStorageReader)initWithEncodedDictionary:(id)dictionary;
+- (double)decodeDoubleForKey:(id)key;
+- (float)decodeFloatForKey:(id)key;
+- (id)_decodeObject:(id)object;
+- (id)_objectForDictionary:(id)dictionary;
+- (id)decodeObjectForKey:(id)key;
+- (int)decodeInt32ForKey:(id)key;
+- (int)decodeIntForKey:(id)key;
+- (int64_t)decodeInt64ForKey:(id)key;
+- (int64_t)decodeIntegerForKey:(id)key;
 @end
 
 @implementation MTStorageReader
 
-- (MTStorageReader)initWithEncodedDictionary:(id)a3
+- (MTStorageReader)initWithEncodedDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = MTStorageReader;
   v5 = [(MTStorageReader *)&v9 init];
   if (v5)
   {
-    v6 = [MEMORY[0x1E695DF70] arrayWithObject:v4];
+    v6 = [MEMORY[0x1E695DF70] arrayWithObject:dictionaryCopy];
     stack = v5->_stack;
     v5->_stack = v6;
   }
@@ -32,67 +32,67 @@
   return v5;
 }
 
-- (BOOL)decodeBoolForKey:(id)a3
+- (BOOL)decodeBoolForKey:(id)key
 {
   stack = self->_stack;
-  v4 = a3;
-  v5 = [(NSMutableArray *)stack lastObject];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  keyCopy = key;
+  lastObject = [(NSMutableArray *)stack lastObject];
+  v6 = [lastObject objectForKeyedSubscript:keyCopy];
 
-  LOBYTE(v4) = [v6 BOOLValue];
-  return v4;
+  LOBYTE(keyCopy) = [v6 BOOLValue];
+  return keyCopy;
 }
 
-- (int64_t)decodeIntegerForKey:(id)a3
+- (int64_t)decodeIntegerForKey:(id)key
 {
   stack = self->_stack;
-  v4 = a3;
-  v5 = [(NSMutableArray *)stack lastObject];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  keyCopy = key;
+  lastObject = [(NSMutableArray *)stack lastObject];
+  v6 = [lastObject objectForKeyedSubscript:keyCopy];
 
-  v7 = [v6 integerValue];
-  return v7;
+  integerValue = [v6 integerValue];
+  return integerValue;
 }
 
-- (int)decodeIntForKey:(id)a3
+- (int)decodeIntForKey:(id)key
 {
   stack = self->_stack;
-  v4 = a3;
-  v5 = [(NSMutableArray *)stack lastObject];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  keyCopy = key;
+  lastObject = [(NSMutableArray *)stack lastObject];
+  v6 = [lastObject objectForKeyedSubscript:keyCopy];
 
-  LODWORD(v4) = [v6 intValue];
-  return v4;
+  LODWORD(keyCopy) = [v6 intValue];
+  return keyCopy;
 }
 
-- (int)decodeInt32ForKey:(id)a3
+- (int)decodeInt32ForKey:(id)key
 {
   stack = self->_stack;
-  v4 = a3;
-  v5 = [(NSMutableArray *)stack lastObject];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  keyCopy = key;
+  lastObject = [(NSMutableArray *)stack lastObject];
+  v6 = [lastObject objectForKeyedSubscript:keyCopy];
 
-  LODWORD(v4) = [v6 intValue];
-  return v4;
+  LODWORD(keyCopy) = [v6 intValue];
+  return keyCopy;
 }
 
-- (int64_t)decodeInt64ForKey:(id)a3
+- (int64_t)decodeInt64ForKey:(id)key
 {
   stack = self->_stack;
-  v4 = a3;
-  v5 = [(NSMutableArray *)stack lastObject];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  keyCopy = key;
+  lastObject = [(NSMutableArray *)stack lastObject];
+  v6 = [lastObject objectForKeyedSubscript:keyCopy];
 
-  v7 = [v6 longLongValue];
-  return v7;
+  longLongValue = [v6 longLongValue];
+  return longLongValue;
 }
 
-- (float)decodeFloatForKey:(id)a3
+- (float)decodeFloatForKey:(id)key
 {
   stack = self->_stack;
-  v4 = a3;
-  v5 = [(NSMutableArray *)stack lastObject];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  keyCopy = key;
+  lastObject = [(NSMutableArray *)stack lastObject];
+  v6 = [lastObject objectForKeyedSubscript:keyCopy];
 
   [v6 floatValue];
   v8 = v7;
@@ -100,12 +100,12 @@
   return v8;
 }
 
-- (double)decodeDoubleForKey:(id)a3
+- (double)decodeDoubleForKey:(id)key
 {
   stack = self->_stack;
-  v4 = a3;
-  v5 = [(NSMutableArray *)stack lastObject];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  keyCopy = key;
+  lastObject = [(NSMutableArray *)stack lastObject];
+  v6 = [lastObject objectForKeyedSubscript:keyCopy];
 
   [v6 doubleValue];
   v8 = v7;
@@ -113,34 +113,34 @@
   return v8;
 }
 
-- (id)decodeObjectForKey:(id)a3
+- (id)decodeObjectForKey:(id)key
 {
   stack = self->_stack;
-  v5 = a3;
-  v6 = [(NSMutableArray *)stack lastObject];
-  v7 = [v6 objectForKeyedSubscript:v5];
+  keyCopy = key;
+  lastObject = [(NSMutableArray *)stack lastObject];
+  v7 = [lastObject objectForKeyedSubscript:keyCopy];
 
   v8 = [(MTStorageReader *)self _decodeObject:v7];
 
   return v8;
 }
 
-- (id)_decodeObject:(id)a3
+- (id)_decodeObject:(id)object
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  objectCopy = object;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
-    v6 = v4;
+    v6 = objectCopy;
     if ((isKindOfClass & 1) == 0)
     {
       goto LABEL_22;
     }
 
-    v8 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
@@ -161,7 +161,7 @@
           }
 
           v14 = [(MTStorageReader *)self _decodeObject:*(*(&v24 + 1) + 8 * i), v24];
-          [v8 addObject:v14];
+          [array addObject:v14];
         }
 
         v11 = [v9 countByEnumeratingWithState:&v24 objects:v32 count:16];
@@ -173,10 +173,10 @@
     goto LABEL_20;
   }
 
-  v5 = v4;
+  v5 = objectCopy;
   if (![objc_opt_class() _dictionaryIsForSerializableObject:v5])
   {
-    v8 = [MEMORY[0x1E695DF90] dictionary];
+    array = [MEMORY[0x1E695DF90] dictionary];
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
@@ -199,7 +199,7 @@
           v19 = *(*(&v28 + 1) + 8 * j);
           v20 = [v9 objectForKeyedSubscript:v19];
           v21 = [(MTStorageReader *)self _decodeObject:v20];
-          [v8 setObject:v21 forKeyedSubscript:v19];
+          [array setObject:v21 forKeyedSubscript:v19];
         }
 
         v16 = [v9 countByEnumeratingWithState:&v28 objects:v33 count:16];
@@ -210,7 +210,7 @@
 
 LABEL_20:
 
-    v6 = [v8 copy];
+    v6 = [array copy];
     goto LABEL_21;
   }
 
@@ -223,19 +223,19 @@ LABEL_22:
   return v6;
 }
 
-+ (BOOL)_dictionaryIsForSerializableObject:(id)a3
++ (BOOL)_dictionaryIsForSerializableObject:(id)object
 {
-  v3 = a3;
-  if ([v3 count] == 1)
+  objectCopy = object;
+  if ([objectCopy count] == 1)
   {
-    v4 = [v3 allKeys];
-    v5 = [v4 firstObject];
+    allKeys = [objectCopy allKeys];
+    firstObject = [allKeys firstObject];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [v3 allKeys];
-      v7 = [v6 firstObject];
-      v8 = [v7 hasPrefix:@"$"];
+      allKeys2 = [objectCopy allKeys];
+      firstObject2 = [allKeys2 firstObject];
+      v8 = [firstObject2 hasPrefix:@"$"];
     }
 
     else
@@ -252,35 +252,35 @@ LABEL_22:
   return v8;
 }
 
-+ (id)_unwrap:(id)a3
++ (id)_unwrap:(id)_unwrap
 {
-  v4 = a3;
-  if ([a1 _dictionaryIsForSerializableObject:v4])
+  _unwrapCopy = _unwrap;
+  if ([self _dictionaryIsForSerializableObject:_unwrapCopy])
   {
-    v5 = [v4 allKeys];
-    v6 = [v5 firstObject];
+    allKeys = [_unwrapCopy allKeys];
+    firstObject = [allKeys firstObject];
 
-    v7 = [v4 objectForKeyedSubscript:v6];
+    v7 = [_unwrapCopy objectForKeyedSubscript:firstObject];
   }
 
   else
   {
-    v7 = v4;
+    v7 = _unwrapCopy;
   }
 
   return v7;
 }
 
-- (id)_objectForDictionary:(id)a3
+- (id)_objectForDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 allKeys];
-  v6 = [v5 firstObject];
+  dictionaryCopy = dictionary;
+  allKeys = [dictionaryCopy allKeys];
+  firstObject = [allKeys firstObject];
 
-  v7 = [v4 objectForKeyedSubscript:v6];
+  v7 = [dictionaryCopy objectForKeyedSubscript:firstObject];
 
   [(NSMutableArray *)self->_stack addObject:v7];
-  v8 = [v6 substringFromIndex:1];
+  v8 = [firstObject substringFromIndex:1];
   v9 = [objc_alloc(NSClassFromString(v8)) initWithCoder:self];
   [(NSMutableArray *)self->_stack removeObject:v7];
 

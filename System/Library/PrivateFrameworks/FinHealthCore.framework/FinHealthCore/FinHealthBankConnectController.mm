@@ -1,8 +1,8 @@
 @interface FinHealthBankConnectController
 + (id)sharedInstance;
 - (id)_init;
-- (void)_parityCheckBetweenWalletSourceTransaction:(id)a3 andFinanceSourceTransaction:(id)a4;
-- (void)updateTransactionsWithCompletion:(id)a3;
+- (void)_parityCheckBetweenWalletSourceTransaction:(id)transaction andFinanceSourceTransaction:(id)sourceTransaction;
+- (void)updateTransactionsWithCompletion:(id)completion;
 @end
 
 @implementation FinHealthBankConnectController
@@ -33,13 +33,13 @@ uint64_t __48__FinHealthBankConnectController_sharedInstance__block_invoke()
   return [(FinHealthBankConnectController *)&v3 init];
 }
 
-- (void)updateTransactionsWithCompletion:(id)a3
+- (void)updateTransactionsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = objc_alloc_init(_TtC13FinHealthCore19FinanceKitDataStore);
   v6 = [[FHDatabaseManager alloc] init:0];
   v7 = [v6 processingDataForFeature:@"FHProcessingHistoryBankConnectTransactions"];
-  v8 = [v6 getFHAccounts];
+  getFHAccounts = [v6 getFHAccounts];
   [(FinHealthBankConnectController *)self setUpdateInProgress:1];
   objc_initWeak(&location, self);
   v17[0] = MEMORY[0x277D85DD0];
@@ -61,9 +61,9 @@ uint64_t __48__FinHealthBankConnectController_sharedInstance__block_invoke()
   v12[2] = __67__FinHealthBankConnectController_updateTransactionsWithCompletion___block_invoke_87;
   v12[3] = &unk_2785CAFA0;
   v12[4] = self;
-  v11 = v4;
+  v11 = completionCopy;
   v13 = v11;
-  [(FinanceKitDataStore *)v5 streamTransactionsSince:v7 savedAccounts:v8 transactionHandler:v17 accountHandler:v14 completionHandler:v12];
+  [(FinanceKitDataStore *)v5 streamTransactionsSince:v7 savedAccounts:getFHAccounts transactionHandler:v17 accountHandler:v14 completionHandler:v12];
 
   objc_destroyWeak(&v16);
   objc_destroyWeak(&v19);
@@ -530,54 +530,54 @@ void __67__FinHealthBankConnectController_updateTransactionsWithCompletion___blo
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_parityCheckBetweenWalletSourceTransaction:(id)a3 andFinanceSourceTransaction:(id)a4
+- (void)_parityCheckBetweenWalletSourceTransaction:(id)transaction andFinanceSourceTransaction:(id)sourceTransaction
 {
   v94 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 amount];
-  v8 = [v6 amount];
-  v9 = [v7 isEqual:v8];
+  transactionCopy = transaction;
+  sourceTransactionCopy = sourceTransaction;
+  amount = [transactionCopy amount];
+  amount2 = [sourceTransactionCopy amount];
+  v9 = [amount isEqual:amount2];
 
   if ((v9 & 1) == 0)
   {
-    if ([v5 transactionType] != 3)
+    if ([transactionCopy transactionType] != 3)
     {
       goto LABEL_4;
     }
 
     v10 = MEMORY[0x277CCA980];
-    v11 = [v5 amount];
-    v12 = [v10 abs:v11];
+    amount3 = [transactionCopy amount];
+    amount7 = [v10 abs:amount3];
     v13 = MEMORY[0x277CCA980];
-    v14 = [v6 amount];
-    v15 = [v13 abs:v14];
-    v16 = [v12 compare:v15];
+    amount4 = [sourceTransactionCopy amount];
+    zero = [v13 abs:amount4];
+    v16 = [amount7 compare:zero];
 
     if (v16)
     {
 LABEL_4:
-      v12 = FinHealthLogObject(@"FinHealthCore");
-      if (!os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+      amount7 = FinHealthLogObject(@"FinHealthCore");
+      if (!os_log_type_enabled(amount7, OS_LOG_TYPE_ERROR))
       {
 LABEL_7:
 
         goto LABEL_8;
       }
 
-      v17 = [v5 identifier];
-      v18 = [v5 amount];
-      v19 = [v6 amount];
+      identifier = [transactionCopy identifier];
+      amount5 = [transactionCopy amount];
+      amount6 = [sourceTransactionCopy amount];
       *v91 = 138413058;
-      *&v91[4] = v17;
+      *&v91[4] = identifier;
       *&v91[12] = 2112;
       *&v91[14] = @"amount";
       *&v91[22] = 2112;
-      v92 = v18;
+      v92 = amount5;
       *v93 = 2112;
-      *&v93[2] = v19;
+      *&v93[2] = amount6;
       v20 = "parity check for transaction %@ - %@ not match: [Wallet source] %@,  [FK source] %@";
-      v21 = v12;
+      v21 = amount7;
       v22 = 42;
 LABEL_6:
       _os_log_impl(&dword_226DD4000, v21, OS_LOG_TYPE_ERROR, v20, v91, v22);
@@ -585,57 +585,57 @@ LABEL_6:
       goto LABEL_7;
     }
 
-    v87 = [v5 peerPaymentType];
-    if (v87 == 2)
+    peerPaymentType = [transactionCopy peerPaymentType];
+    if (peerPaymentType == 2)
     {
-      v12 = [v6 amount];
-      v15 = [MEMORY[0x277CCA980] zero];
-      if ([v12 compare:v15]== -1)
+      amount7 = [sourceTransactionCopy amount];
+      zero = [MEMORY[0x277CCA980] zero];
+      if ([amount7 compare:zero]== -1)
       {
 
         goto LABEL_7;
       }
 
-      if ([v5 peerPaymentType] != 1)
+      if ([transactionCopy peerPaymentType] != 1)
       {
 
 LABEL_45:
-        v12 = FinHealthLogObject(@"FinHealthCore");
-        if (!os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+        amount7 = FinHealthLogObject(@"FinHealthCore");
+        if (!os_log_type_enabled(amount7, OS_LOG_TYPE_ERROR))
         {
           goto LABEL_7;
         }
 
-        v17 = [v5 identifier];
-        v18 = [v5 amount];
-        v19 = [v6 amount];
+        identifier = [transactionCopy identifier];
+        amount5 = [transactionCopy amount];
+        amount6 = [sourceTransactionCopy amount];
         *v91 = 138413314;
-        *&v91[4] = v17;
+        *&v91[4] = identifier;
         *&v91[12] = 2112;
         *&v91[14] = @"amount";
         *&v91[22] = 2112;
-        v92 = v18;
+        v92 = amount5;
         *v93 = 2112;
-        *&v93[2] = v19;
+        *&v93[2] = amount6;
         *&v93[10] = 2048;
-        *&v93[12] = [v5 peerPaymentType];
+        *&v93[12] = [transactionCopy peerPaymentType];
         v20 = "parity check for transaction %@ - %@ not match: [Wallet source] %@,  [FK source] %@, peerPaymentType: %lu";
-        v21 = v12;
+        v21 = amount7;
         v22 = 52;
         goto LABEL_6;
       }
     }
 
-    else if ([v5 peerPaymentType] != 1)
+    else if ([transactionCopy peerPaymentType] != 1)
     {
       goto LABEL_45;
     }
 
-    v88 = [v6 amount];
-    v89 = [MEMORY[0x277CCA980] zero];
-    v90 = [v88 compare:v89];
+    amount8 = [sourceTransactionCopy amount];
+    zero2 = [MEMORY[0x277CCA980] zero];
+    v90 = [amount8 compare:zero2];
 
-    if (v87 == 2)
+    if (peerPaymentType == 2)
     {
     }
 
@@ -646,35 +646,35 @@ LABEL_45:
   }
 
 LABEL_8:
-  v23 = [v5 currencyCode];
-  v24 = [v6 currencyCode];
-  v25 = [v23 isEqualToString:v24];
+  currencyCode = [transactionCopy currencyCode];
+  currencyCode2 = [sourceTransactionCopy currencyCode];
+  v25 = [currencyCode isEqualToString:currencyCode2];
 
   if ((v25 & 1) == 0)
   {
     v26 = FinHealthLogObject(@"FinHealthCore");
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
     {
-      v27 = [v5 identifier];
-      v28 = [v5 currencyCode];
-      v29 = [v6 currencyCode];
+      identifier2 = [transactionCopy identifier];
+      currencyCode3 = [transactionCopy currencyCode];
+      currencyCode4 = [sourceTransactionCopy currencyCode];
       *v91 = 138413058;
-      *&v91[4] = v27;
+      *&v91[4] = identifier2;
       *&v91[12] = 2112;
       *&v91[14] = @"currencyCode";
       *&v91[22] = 2112;
-      v92 = v28;
+      v92 = currencyCode3;
       *v93 = 2112;
-      *&v93[2] = v29;
+      *&v93[2] = currencyCode4;
       _os_log_impl(&dword_226DD4000, v26, OS_LOG_TYPE_ERROR, "parity check for transaction %@ - %@ not match: [Wallet source] %@,  [FK source] %@", v91, 0x2Au);
     }
   }
 
-  v30 = [v5 transactionDate];
-  [v30 timeIntervalSinceReferenceDate];
+  transactionDate = [transactionCopy transactionDate];
+  [transactionDate timeIntervalSinceReferenceDate];
   v32 = v31;
-  v33 = [v6 transactionDate];
-  [v33 timeIntervalSinceReferenceDate];
+  transactionDate2 = [sourceTransactionCopy transactionDate];
+  [transactionDate2 timeIntervalSinceReferenceDate];
   v35 = v34;
 
   if (v32 != v35)
@@ -682,35 +682,35 @@ LABEL_8:
     v36 = FinHealthLogObject(@"FinHealthCore");
     if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
     {
-      v37 = [v5 identifier];
-      v38 = [v5 transactionDate];
-      v39 = [v5 transactionDate];
-      [v39 timeIntervalSinceReferenceDate];
+      identifier3 = [transactionCopy identifier];
+      transactionDate3 = [transactionCopy transactionDate];
+      transactionDate4 = [transactionCopy transactionDate];
+      [transactionDate4 timeIntervalSinceReferenceDate];
       v41 = v40;
-      v42 = [v6 transactionDate];
-      v43 = [v6 transactionDate];
-      [v43 timeIntervalSinceReferenceDate];
+      transactionDate5 = [sourceTransactionCopy transactionDate];
+      transactionDate6 = [sourceTransactionCopy transactionDate];
+      [transactionDate6 timeIntervalSinceReferenceDate];
       *v91 = 138413570;
-      *&v91[4] = v37;
+      *&v91[4] = identifier3;
       *&v91[12] = 2112;
       *&v91[14] = @"transactionDate";
       *&v91[22] = 2112;
-      v92 = v38;
+      v92 = transactionDate3;
       *v93 = 2048;
       *&v93[2] = v41;
       *&v93[10] = 2112;
-      *&v93[12] = v42;
+      *&v93[12] = transactionDate5;
       *&v93[20] = 2048;
       *&v93[22] = v44;
       _os_log_impl(&dword_226DD4000, v36, OS_LOG_TYPE_ERROR, "parity check for transaction %@ - %@ not match: [Wallet source] %@ timestamp: %f,  [FK source] %@ timestamp: %f", v91, 0x3Eu);
     }
   }
 
-  v45 = [v5 transactionStatusChangedDate];
-  [v45 timeIntervalSinceReferenceDate];
+  transactionStatusChangedDate = [transactionCopy transactionStatusChangedDate];
+  [transactionStatusChangedDate timeIntervalSinceReferenceDate];
   v47 = v46;
-  v48 = [v6 transactionStatusChangedDate];
-  [v48 timeIntervalSinceReferenceDate];
+  transactionStatusChangedDate2 = [sourceTransactionCopy transactionStatusChangedDate];
+  [transactionStatusChangedDate2 timeIntervalSinceReferenceDate];
   v50 = v49;
 
   if (v47 != v50)
@@ -718,119 +718,119 @@ LABEL_8:
     v51 = FinHealthLogObject(@"FinHealthCore");
     if (os_log_type_enabled(v51, OS_LOG_TYPE_ERROR))
     {
-      v52 = [v5 identifier];
-      v53 = [v5 transactionStatusChangedDate];
-      v54 = [v5 transactionStatusChangedDate];
-      [v54 timeIntervalSinceReferenceDate];
+      identifier4 = [transactionCopy identifier];
+      transactionStatusChangedDate3 = [transactionCopy transactionStatusChangedDate];
+      transactionStatusChangedDate4 = [transactionCopy transactionStatusChangedDate];
+      [transactionStatusChangedDate4 timeIntervalSinceReferenceDate];
       v56 = v55;
-      v57 = [v6 transactionStatusChangedDate];
-      v58 = [v6 transactionStatusChangedDate];
-      [v58 timeIntervalSinceReferenceDate];
+      transactionStatusChangedDate5 = [sourceTransactionCopy transactionStatusChangedDate];
+      transactionStatusChangedDate6 = [sourceTransactionCopy transactionStatusChangedDate];
+      [transactionStatusChangedDate6 timeIntervalSinceReferenceDate];
       *v91 = 138413570;
-      *&v91[4] = v52;
+      *&v91[4] = identifier4;
       *&v91[12] = 2112;
       *&v91[14] = @"transactionStatusChangedDate";
       *&v91[22] = 2112;
-      v92 = v53;
+      v92 = transactionStatusChangedDate3;
       *v93 = 2048;
       *&v93[2] = v56;
       *&v93[10] = 2112;
-      *&v93[12] = v57;
+      *&v93[12] = transactionStatusChangedDate5;
       *&v93[20] = 2048;
       *&v93[22] = v59;
       _os_log_impl(&dword_226DD4000, v51, OS_LOG_TYPE_ERROR, "parity check for transaction %@ - %@ not match: [Wallet source] %@ timestamp: %f,  [FK source] %@ timestamp: %f", v91, 0x3Eu);
     }
   }
 
-  v60 = [v5 name];
-  v61 = [v6 name];
-  v62 = FHEqualStrings(v60, v61);
+  name = [transactionCopy name];
+  name2 = [sourceTransactionCopy name];
+  v62 = FHEqualStrings(name, name2);
 
   if ((v62 & 1) == 0)
   {
     v63 = FinHealthLogObject(@"FinHealthCore");
     if (os_log_type_enabled(v63, OS_LOG_TYPE_ERROR))
     {
-      v64 = [v5 identifier];
-      v65 = [v5 name];
-      v66 = [v6 name];
+      identifier5 = [transactionCopy identifier];
+      name3 = [transactionCopy name];
+      name4 = [sourceTransactionCopy name];
       *v91 = 138413058;
-      *&v91[4] = v64;
+      *&v91[4] = identifier5;
       *&v91[12] = 2112;
       *&v91[14] = @"name";
       *&v91[22] = 2112;
-      v92 = v65;
+      v92 = name3;
       *v93 = 2112;
-      *&v93[2] = v66;
+      *&v93[2] = name4;
       _os_log_impl(&dword_226DD4000, v63, OS_LOG_TYPE_ERROR, "parity check for transaction %@ - %@ not match: [Wallet source] %@,  [FK source] %@", v91, 0x2Au);
     }
   }
 
-  v67 = [v5 displayName];
-  v68 = [v6 displayName];
-  v69 = FHEqualStrings(v67, v68);
+  displayName = [transactionCopy displayName];
+  displayName2 = [sourceTransactionCopy displayName];
+  v69 = FHEqualStrings(displayName, displayName2);
 
   if ((v69 & 1) == 0)
   {
     v70 = FinHealthLogObject(@"FinHealthCore");
     if (os_log_type_enabled(v70, OS_LOG_TYPE_ERROR))
     {
-      v71 = [v5 identifier];
-      v72 = [v5 displayName];
-      v73 = [v6 displayName];
+      identifier6 = [transactionCopy identifier];
+      displayName3 = [transactionCopy displayName];
+      displayName4 = [sourceTransactionCopy displayName];
       *v91 = 138413058;
-      *&v91[4] = v71;
+      *&v91[4] = identifier6;
       *&v91[12] = 2112;
       *&v91[14] = @"displayName";
       *&v91[22] = 2112;
-      v92 = v72;
+      v92 = displayName3;
       *v93 = 2112;
-      *&v93[2] = v73;
+      *&v93[2] = displayName4;
       _os_log_impl(&dword_226DD4000, v70, OS_LOG_TYPE_ERROR, "parity check for transaction %@ - %@ not match: [Wallet source] %@,  [FK source] %@", v91, 0x2Au);
     }
   }
 
-  v74 = [v5 location];
-  v75 = [v6 location];
-  v76 = FHEqualObjects(v74, v75);
+  location = [transactionCopy location];
+  location2 = [sourceTransactionCopy location];
+  v76 = FHEqualObjects(location, location2);
 
   if ((v76 & 1) == 0)
   {
     v77 = FinHealthLogObject(@"FinHealthCore");
     if (os_log_type_enabled(v77, OS_LOG_TYPE_ERROR))
     {
-      v78 = [v5 identifier];
-      v79 = [v5 location];
-      v80 = [v6 location];
+      identifier7 = [transactionCopy identifier];
+      location3 = [transactionCopy location];
+      location4 = [sourceTransactionCopy location];
       *v91 = 138413058;
-      *&v91[4] = v78;
+      *&v91[4] = identifier7;
       *&v91[12] = 2112;
       *&v91[14] = @"location";
       *&v91[22] = 2112;
-      v92 = v79;
+      v92 = location3;
       *v93 = 2112;
-      *&v93[2] = v80;
+      *&v93[2] = location4;
       _os_log_impl(&dword_226DD4000, v77, OS_LOG_TYPE_ERROR, "parity check for transaction %@ - %@ not match: [Wallet source] %@,  [FK source] %@", v91, 0x2Au);
     }
   }
 
-  v81 = [v5 transactionStatus];
-  if (v81 != [v6 transactionStatus])
+  transactionStatus = [transactionCopy transactionStatus];
+  if (transactionStatus != [sourceTransactionCopy transactionStatus])
   {
     v82 = FinHealthLogObject(@"FinHealthCore");
     if (os_log_type_enabled(v82, OS_LOG_TYPE_ERROR))
     {
-      v83 = [v5 identifier];
-      v84 = [v5 transactionStatus];
-      v85 = [v6 transactionStatus];
+      identifier8 = [transactionCopy identifier];
+      transactionStatus2 = [transactionCopy transactionStatus];
+      transactionStatus3 = [sourceTransactionCopy transactionStatus];
       *v91 = 138413058;
-      *&v91[4] = v83;
+      *&v91[4] = identifier8;
       *&v91[12] = 2112;
       *&v91[14] = @"transactionStatus";
       *&v91[22] = 2048;
-      v92 = v84;
+      v92 = transactionStatus2;
       *v93 = 2048;
-      *&v93[2] = v85;
+      *&v93[2] = transactionStatus3;
       _os_log_impl(&dword_226DD4000, v82, OS_LOG_TYPE_ERROR, "parity check for transaction %@ - %@ not match: [Wallet source] %ld,  [FK source] %ld", v91, 0x2Au);
     }
   }

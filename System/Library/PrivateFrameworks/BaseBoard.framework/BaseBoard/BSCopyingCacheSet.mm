@@ -1,8 +1,8 @@
 @interface BSCopyingCacheSet
-- (BOOL)containsObject:(id)a3;
+- (BOOL)containsObject:(id)object;
 - (id)immutableSet;
-- (void)addObject:(id)a3;
-- (void)removeObject:(id)a3;
+- (void)addObject:(id)object;
+- (void)removeObject:(id)object;
 @end
 
 @implementation BSCopyingCacheSet
@@ -22,16 +22,16 @@
   return immutable;
 }
 
-- (void)addObject:(id)a3
+- (void)addObject:(id)object
 {
-  v4 = a3;
-  v9 = v4;
-  if (v4 && ([(NSMutableSet *)self->_mutable containsObject:v4]& 1) == 0)
+  objectCopy = object;
+  v9 = objectCopy;
+  if (objectCopy && ([(NSMutableSet *)self->_mutable containsObject:objectCopy]& 1) == 0)
   {
     v5 = self->_mutable;
     if (v5)
     {
-      [(NSMutableSet *)v5 addObject:v4];
+      [(NSMutableSet *)v5 addObject:objectCopy];
     }
 
     else
@@ -44,18 +44,18 @@
     immutable = self->_immutable;
     self->_immutable = 0;
 
-    v4 = v9;
+    objectCopy = v9;
   }
 }
 
-- (void)removeObject:(id)a3
+- (void)removeObject:(id)object
 {
-  v4 = a3;
-  if (v4)
+  objectCopy = object;
+  if (objectCopy)
   {
-    v9 = v4;
-    v5 = [(NSMutableSet *)self->_mutable containsObject:v4];
-    v4 = v9;
+    v9 = objectCopy;
+    v5 = [(NSMutableSet *)self->_mutable containsObject:objectCopy];
+    objectCopy = v9;
     if (v5)
     {
       v6 = [(NSMutableSet *)self->_mutable count];
@@ -73,17 +73,17 @@
       immutable = self->_immutable;
       self->_immutable = 0;
 
-      v4 = v9;
+      objectCopy = v9;
     }
   }
 }
 
-- (BOOL)containsObject:(id)a3
+- (BOOL)containsObject:(id)object
 {
-  v4 = a3;
-  if (v4)
+  objectCopy = object;
+  if (objectCopy)
   {
-    v5 = [(NSMutableSet *)self->_mutable containsObject:v4];
+    v5 = [(NSMutableSet *)self->_mutable containsObject:objectCopy];
   }
 
   else

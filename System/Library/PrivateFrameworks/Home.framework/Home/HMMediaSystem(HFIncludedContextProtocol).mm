@@ -10,38 +10,38 @@
 
 - (uint64_t)hf_isOnForContextType:()HFIncludedContextProtocol
 {
-  v4 = [a1 accessories];
+  accessories = [self accessories];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __66__HMMediaSystem_HFIncludedContextProtocol__hf_isOnForContextType___block_invoke;
   v7[3] = &__block_descriptor_40_e21_B16__0__HMAccessory_8l;
   v7[4] = a3;
-  v5 = [v4 na_any:v7];
+  v5 = [accessories na_any:v7];
 
   return v5;
 }
 
 - (uint64_t)hf_hasSetForContextType:()HFIncludedContextProtocol
 {
-  v4 = [a1 accessories];
+  accessories = [self accessories];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __68__HMMediaSystem_HFIncludedContextProtocol__hf_hasSetForContextType___block_invoke;
   v7[3] = &__block_descriptor_40_e21_B16__0__HMAccessory_8l;
   v7[4] = a3;
-  v5 = [v4 na_all:v7];
+  v5 = [accessories na_all:v7];
 
   return v5;
 }
 
 - (uint64_t)hf_shouldBeOnForContextType:()HFIncludedContextProtocol
 {
-  v4 = a1;
+  selfCopy = self;
   if (a2 < 2)
   {
-    if (([a1 hf_isOnForContextType:a2] & 1) == 0)
+    if (([self hf_isOnForContextType:a2] & 1) == 0)
     {
-      a3 = [v4 hf_hasSetForContextType:a2] ^ 1;
+      a3 = [selfCopy hf_hasSetForContextType:a2] ^ 1;
       return a3 & 1;
     }
 
@@ -59,18 +59,18 @@
     return a3 & 1;
   }
 
-  if (![a1 hf_hasSetForContextType:3])
+  if (![self hf_hasSetForContextType:3])
   {
 LABEL_7:
     a3 = 1;
     return a3 & 1;
   }
 
-  a1 = v4;
+  self = selfCopy;
   v5 = 3;
 LABEL_9:
 
-  return [a1 hf_isOnForContextType:v5];
+  return [self hf_isOnForContextType:v5];
 }
 
 - (uint64_t)hf_shouldHideForContextType:()HFIncludedContextProtocol
@@ -79,13 +79,13 @@ LABEL_9:
   {
     if (a3 == 1)
     {
-      v5 = [a1 accessories];
+      accessories = [self accessories];
       v6[0] = MEMORY[0x277D85DD0];
       v6[1] = 3221225472;
       v6[2] = __72__HMMediaSystem_HFIncludedContextProtocol__hf_shouldHideForContextType___block_invoke;
       v6[3] = &__block_descriptor_40_e21_B16__0__HMAccessory_8l;
       v6[4] = 1;
-      v3 = [v5 na_all:v6];
+      v3 = [accessories na_all:v6];
     }
 
     else if (!a3)
@@ -98,7 +98,7 @@ LABEL_9:
 
 LABEL_4:
 
-  return [a1 isContainedWithinItemGroup];
+  return [self isContainedWithinItemGroup];
 }
 
 - (id)hf_updateValue:()HFIncludedContextProtocol forContextType:
@@ -108,7 +108,7 @@ LABEL_4:
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138413058;
-    v27 = a1;
+    selfCopy = self;
     v28 = 2080;
     v29 = "[HMMediaSystem(HFIncludedContextProtocol) hf_updateValue:forContextType:]";
     v30 = 1024;
@@ -118,13 +118,13 @@ LABEL_4:
     _os_log_impl(&dword_20D9BF000, v7, OS_LOG_TYPE_DEFAULT, "(%@:%s) Updating value to %{BOOL}d for context %lu", buf, 0x26u);
   }
 
-  v8 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v9 = [a1 accessories];
-  v10 = [v9 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  accessories = [self accessories];
+  v10 = [accessories countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v10)
   {
     v11 = v10;
@@ -135,26 +135,26 @@ LABEL_4:
       {
         if (*v22 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(accessories);
         }
 
         v14 = *(*(&v21 + 1) + 8 * i);
-        if (a4 != 1 || ([a1 hf_shouldHideForContextType:1] & 1) == 0)
+        if (a4 != 1 || ([self hf_shouldHideForContextType:1] & 1) == 0)
         {
           v15 = [v14 hf_updateValue:a3 forContextType:a4];
-          [v8 addObject:v15];
+          [array addObject:v15];
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v11 = [accessories countByEnumeratingWithState:&v21 objects:v25 count:16];
     }
 
     while (v11);
   }
 
   v16 = MEMORY[0x277D2C900];
-  v17 = [MEMORY[0x277D2C938] mainThreadScheduler];
-  v18 = [v16 combineAllFutures:v8 ignoringErrors:0 scheduler:v17];
+  mainThreadScheduler = [MEMORY[0x277D2C938] mainThreadScheduler];
+  v18 = [v16 combineAllFutures:array ignoringErrors:0 scheduler:mainThreadScheduler];
 
   v19 = *MEMORY[0x277D85DE8];
 

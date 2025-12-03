@@ -1,20 +1,20 @@
 @interface ULVisualMappingKitManager
 - (_TtC19MicroLocationDaemon25ULVisualMappingKitManager)init;
-- (_TtC19MicroLocationDaemon25ULVisualMappingKitManager)initWithQueue:(id)a3 delegate:(id)a4 exclaveManager:(id)a5 databaseService:(id)a6;
-- (id)addAnchorWithIdentifiedBy:(id)a3 error:(id *)a4;
+- (_TtC19MicroLocationDaemon25ULVisualMappingKitManager)initWithQueue:(id)queue delegate:(id)delegate exclaveManager:(id)manager databaseService:(id)service;
+- (id)addAnchorWithIdentifiedBy:(id)by error:(id *)error;
 - (id)getAnchors;
 - (void)teardown;
 @end
 
 @implementation ULVisualMappingKitManager
 
-- (_TtC19MicroLocationDaemon25ULVisualMappingKitManager)initWithQueue:(id)a3 delegate:(id)a4 exclaveManager:(id)a5 databaseService:(id)a6
+- (_TtC19MicroLocationDaemon25ULVisualMappingKitManager)initWithQueue:(id)queue delegate:(id)delegate exclaveManager:(id)manager databaseService:(id)service
 {
-  v9 = a3;
+  queueCopy = queue;
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
-  v10 = sub_2591FCD68(v9, a4, a5, a6);
+  v10 = sub_2591FCD68(queueCopy, delegate, manager, service);
 
   swift_unknownObjectRelease();
   swift_unknownObjectRelease();
@@ -24,11 +24,11 @@
 
 - (void)teardown
 {
-  v2 = self;
+  selfCopy = self;
   ULVisualMappingKitManager.teardown()();
 }
 
-- (id)addAnchorWithIdentifiedBy:(id)a3 error:(id *)a4
+- (id)addAnchorWithIdentifiedBy:(id)by error:(id *)error
 {
   v5 = sub_2592121D0();
   v6 = *(v5 - 8);
@@ -36,7 +36,7 @@
   MEMORY[0x28223BE20](v5);
   v9 = &v13 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_259212190();
-  v10 = self;
+  selfCopy = self;
   v11 = ULVisualMappingKitManager.addAnchor(identifiedBy:)(v9);
   (*(v6 + 8))(v9, v5);
 
@@ -45,7 +45,7 @@
 
 - (id)getAnchors
 {
-  v2 = self;
+  selfCopy = self;
   ULVisualMappingKitManager.getAnchors()();
 
   type metadata accessor for ULVisualMappingKitAnchor();

@@ -1,10 +1,10 @@
 @interface HMDRemoteLoginBase
 + (id)logCategory;
 - (HMDAppleMediaAccessory)accessory;
-- (HMDRemoteLoginBase)initWithUUID:(id)a3 accessory:(id)a4 remoteLoginHandler:(id)a5;
+- (HMDRemoteLoginBase)initWithUUID:(id)d accessory:(id)accessory remoteLoginHandler:(id)handler;
 - (HMDRemoteLoginHandler)remoteLoginHandler;
 - (NSString)description;
-- (void)configureWithWorkQueue:(id)a3 messageDispatcher:(id)a4;
+- (void)configureWithWorkQueue:(id)queue messageDispatcher:(id)dispatcher;
 @end
 
 @implementation HMDRemoteLoginBase
@@ -23,41 +23,41 @@
   return WeakRetained;
 }
 
-- (void)configureWithWorkQueue:(id)a3 messageDispatcher:(id)a4
+- (void)configureWithWorkQueue:(id)queue messageDispatcher:(id)dispatcher
 {
-  v6 = a4;
-  [(HMDRemoteLoginBase *)self setWorkQueue:a3];
-  [(HMDRemoteLoginBase *)self setMsgDispatcher:v6];
+  dispatcherCopy = dispatcher;
+  [(HMDRemoteLoginBase *)self setWorkQueue:queue];
+  [(HMDRemoteLoginBase *)self setMsgDispatcher:dispatcherCopy];
 }
 
 - (NSString)description
 {
-  v2 = [(HMDRemoteLoginBase *)self uuid];
-  v3 = [v2 UUIDString];
+  uuid = [(HMDRemoteLoginBase *)self uuid];
+  uUIDString = [uuid UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
-- (HMDRemoteLoginBase)initWithUUID:(id)a3 accessory:(id)a4 remoteLoginHandler:(id)a5
+- (HMDRemoteLoginBase)initWithUUID:(id)d accessory:(id)accessory remoteLoginHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  dCopy = d;
+  accessoryCopy = accessory;
+  handlerCopy = handler;
   v22.receiver = self;
   v22.super_class = HMDRemoteLoginBase;
   v12 = [(HMDRemoteLoginBase *)&v22 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_uuid, a3);
-    objc_storeWeak(&v13->_accessory, v10);
-    objc_storeWeak(&v13->_remoteLoginHandler, v11);
+    objc_storeStrong(&v12->_uuid, d);
+    objc_storeWeak(&v13->_accessory, accessoryCopy);
+    objc_storeWeak(&v13->_remoteLoginHandler, handlerCopy);
     v14 = MEMORY[0x277CCACA8];
-    v15 = [(HMDRemoteLoginBase *)v13 accessory];
-    v16 = [v15 name];
-    v17 = [(HMDRemoteLoginBase *)v13 uuid];
-    v18 = [v17 UUIDString];
-    v19 = [v14 stringWithFormat:@"%@/%@", v16, v18];
+    accessory = [(HMDRemoteLoginBase *)v13 accessory];
+    name = [accessory name];
+    uuid = [(HMDRemoteLoginBase *)v13 uuid];
+    uUIDString = [uuid UUIDString];
+    v19 = [v14 stringWithFormat:@"%@/%@", name, uUIDString];
     logString = v13->_logString;
     v13->_logString = v19;
   }

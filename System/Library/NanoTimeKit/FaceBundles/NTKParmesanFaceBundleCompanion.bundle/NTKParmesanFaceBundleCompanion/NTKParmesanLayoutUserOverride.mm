@@ -1,7 +1,7 @@
 @interface NTKParmesanLayoutUserOverride
 - (CGRect)crop;
 - (NTKParmesanLayoutUserOverride)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -27,10 +27,10 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v8 = objc_msgSend_allocWithZone_(v5, v6, a3, v7);
+  v8 = objc_msgSend_allocWithZone_(v5, v6, zone, v7);
   v12 = objc_msgSend_init(v8, v9, v10, v11);
   objc_msgSend_setCrop_(v12, v13, v14, v15, self->_crop.origin.x, self->_crop.origin.y, self->_crop.size.width, self->_crop.size.height);
   objc_msgSend_setTimeLayout_(v12, v16, self->_timeLayout, v17);

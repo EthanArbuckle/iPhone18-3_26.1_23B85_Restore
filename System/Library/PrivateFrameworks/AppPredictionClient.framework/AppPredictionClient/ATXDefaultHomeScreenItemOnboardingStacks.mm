@@ -1,42 +1,42 @@
 @interface ATXDefaultHomeScreenItemOnboardingStacks
-- (ATXDefaultHomeScreenItemOnboardingStacks)initWithOnboardingStack1:(id)a3 stack2:(id)a4 sortedThirdPartyWidgets:(id)a5;
-- (ATXDefaultHomeScreenItemOnboardingStacks)initWithOnboardingStacks:(id)a3 sortedThirdPartyWidgets:(id)a4;
+- (ATXDefaultHomeScreenItemOnboardingStacks)initWithOnboardingStack1:(id)stack1 stack2:(id)stack2 sortedThirdPartyWidgets:(id)widgets;
+- (ATXDefaultHomeScreenItemOnboardingStacks)initWithOnboardingStacks:(id)stacks sortedThirdPartyWidgets:(id)widgets;
 @end
 
 @implementation ATXDefaultHomeScreenItemOnboardingStacks
 
-- (ATXDefaultHomeScreenItemOnboardingStacks)initWithOnboardingStack1:(id)a3 stack2:(id)a4 sortedThirdPartyWidgets:(id)a5
+- (ATXDefaultHomeScreenItemOnboardingStacks)initWithOnboardingStack1:(id)stack1 stack2:(id)stack2 sortedThirdPartyWidgets:(id)widgets
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [MEMORY[0x1E695DF70] array];
-  v12 = v11;
-  if (v8)
+  stack1Copy = stack1;
+  stack2Copy = stack2;
+  widgetsCopy = widgets;
+  array = [MEMORY[0x1E695DF70] array];
+  v12 = array;
+  if (stack1Copy)
   {
-    [v11 addObject:v8];
+    [array addObject:stack1Copy];
   }
 
-  if (v9)
+  if (stack2Copy)
   {
-    [v12 addObject:v9];
+    [v12 addObject:stack2Copy];
   }
 
-  v13 = [(ATXDefaultHomeScreenItemOnboardingStacks *)self initWithOnboardingStacks:v12 sortedThirdPartyWidgets:v10];
+  v13 = [(ATXDefaultHomeScreenItemOnboardingStacks *)self initWithOnboardingStacks:v12 sortedThirdPartyWidgets:widgetsCopy];
 
   return v13;
 }
 
-- (ATXDefaultHomeScreenItemOnboardingStacks)initWithOnboardingStacks:(id)a3 sortedThirdPartyWidgets:(id)a4
+- (ATXDefaultHomeScreenItemOnboardingStacks)initWithOnboardingStacks:(id)stacks sortedThirdPartyWidgets:(id)widgets
 {
-  v6 = a3;
-  v7 = a4;
+  stacksCopy = stacks;
+  widgetsCopy = widgets;
   v18.receiver = self;
   v18.super_class = ATXDefaultHomeScreenItemOnboardingStacks;
   v8 = [(ATXDefaultHomeScreenItemOnboardingStacks *)&v18 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [stacksCopy copy];
     onboardingStacks = v8->_onboardingStacks;
     v8->_onboardingStacks = v9;
 
@@ -62,7 +62,7 @@
     stack2 = v8->_stack2;
     v8->_stack2 = v13;
 
-    v15 = [v7 copy];
+    v15 = [widgetsCopy copy];
     sortedThirdPartyWidgets = v8->_sortedThirdPartyWidgets;
     v8->_sortedThirdPartyWidgets = v15;
   }

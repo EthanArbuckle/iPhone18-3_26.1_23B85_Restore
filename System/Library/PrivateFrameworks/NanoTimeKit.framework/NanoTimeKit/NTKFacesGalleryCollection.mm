@@ -1,22 +1,22 @@
 @interface NTKFacesGalleryCollection
-- (NTKFacesGalleryCollection)initWithDevice:(id)a3 title:(id)a4 faceDescriptors:(id)a5;
-- (id)facesForDevice:(id)a3;
+- (NTKFacesGalleryCollection)initWithDevice:(id)device title:(id)title faceDescriptors:(id)descriptors;
+- (id)facesForDevice:(id)device;
 @end
 
 @implementation NTKFacesGalleryCollection
 
-- (NTKFacesGalleryCollection)initWithDevice:(id)a3 title:(id)a4 faceDescriptors:(id)a5
+- (NTKFacesGalleryCollection)initWithDevice:(id)device title:(id)title faceDescriptors:(id)descriptors
 {
-  v9 = a4;
-  v10 = a5;
+  titleCopy = title;
+  descriptorsCopy = descriptors;
   v16.receiver = self;
   v16.super_class = NTKFacesGalleryCollection;
-  v11 = [(NTKDeviceSpecificFacesArrayGalleryCollection *)&v16 initWithDevice:a3];
+  v11 = [(NTKDeviceSpecificFacesArrayGalleryCollection *)&v16 initWithDevice:device];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_title, a4);
-    v13 = [v10 copy];
+    objc_storeStrong(&v11->_title, title);
+    v13 = [descriptorsCopy copy];
     faceDescriptors = v12->_faceDescriptors;
     v12->_faceDescriptors = v13;
 
@@ -26,11 +26,11 @@
   return v12;
 }
 
-- (id)facesForDevice:(id)a3
+- (id)facesForDevice:(id)device
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] array];
+  deviceCopy = device;
+  array = [MEMORY[0x277CBEB18] array];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -50,10 +50,10 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [NTKFace defaultFaceFromFaceDescriptor:*(*(&v14 + 1) + 8 * i) forDevice:v4, v14];
+        v11 = [NTKFace defaultFaceFromFaceDescriptor:*(*(&v14 + 1) + 8 * i) forDevice:deviceCopy, v14];
         if (v11)
         {
-          [v5 addObject:v11];
+          [array addObject:v11];
         }
       }
 
@@ -63,7 +63,7 @@
     while (v8);
   }
 
-  v12 = [v5 copy];
+  v12 = [array copy];
 
   return v12;
 }

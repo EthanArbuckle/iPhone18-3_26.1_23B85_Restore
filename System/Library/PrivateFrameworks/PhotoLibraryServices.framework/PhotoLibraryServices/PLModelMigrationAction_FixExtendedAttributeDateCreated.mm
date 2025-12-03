@@ -1,20 +1,20 @@
 @interface PLModelMigrationAction_FixExtendedAttributeDateCreated
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4;
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error;
 @end
 
 @implementation PLModelMigrationAction_FixExtendedAttributeDateCreated
 
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error
 {
   v40[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v32 = self;
-  v7 = [(PLModelMigrationActionBackground *)self resumeMarker];
-  v8 = v6;
-  v34 = a4;
-  if (v7)
+  contextCopy = context;
+  selfCopy = self;
+  resumeMarker = [(PLModelMigrationActionBackground *)self resumeMarker];
+  v8 = contextCopy;
+  errorCopy = error;
+  if (resumeMarker)
   {
-    v9 = [MEMORY[0x1E695DFF8] URLWithString:v7];
+    v9 = [MEMORY[0x1E695DFF8] URLWithString:resumeMarker];
   }
 
   else
@@ -22,8 +22,8 @@
     v9 = 0;
   }
 
-  v10 = [v8 persistentStoreCoordinator];
-  v35 = [v10 managedObjectIDForURIRepresentation:v9];
+  persistentStoreCoordinator = [v8 persistentStoreCoordinator];
+  v35 = [persistentStoreCoordinator managedObjectIDForURIRepresentation:v9];
 
   v33 = v8;
   v11 = MEMORY[0x1E695D5E0];
@@ -65,13 +65,13 @@
   [v13 setSortDescriptors:v26];
 
   v36 = 0;
-  v27 = [PLModelMigrationActionUtility updateExtendedAttributesWithAction:v32 managedObjectContext:v33 fetchRequest:v13 useObjectIDResumeMarker:1 error:&v36];
+  v27 = [PLModelMigrationActionUtility updateExtendedAttributesWithAction:selfCopy managedObjectContext:v33 fetchRequest:v13 useObjectIDResumeMarker:1 error:&v36];
   v28 = v36;
-  [(PLModelMigrationActionBackground *)v32 finalizeProgress];
-  if (v34)
+  [(PLModelMigrationActionBackground *)selfCopy finalizeProgress];
+  if (errorCopy)
   {
     v29 = v28;
-    *v34 = v28;
+    *errorCopy = v28;
   }
 
   return v27;

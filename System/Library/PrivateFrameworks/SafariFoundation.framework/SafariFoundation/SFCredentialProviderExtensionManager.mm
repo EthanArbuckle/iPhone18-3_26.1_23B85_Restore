@@ -1,45 +1,45 @@
 @interface SFCredentialProviderExtensionManager
 + (SFCredentialProviderExtensionManager)sharedManager;
-- (BOOL)atLeastOneAvailableExtensionSupportsCredentialExchange:(id)a3;
+- (BOOL)atLeastOneAvailableExtensionSupportsCredentialExchange:(id)exchange;
 - (BOOL)atLeastOneEnabledExtensionSupportsCredentialUpdate;
 - (BOOL)atLeastOneEnabledExtensionSupportsOneTimeCodes;
 - (BOOL)atLeastOneEnabledExtensionSupportsPasskeys;
-- (BOOL)extensionSupportsConditionalPasskeyRegistration:(id)a3;
-- (BOOL)extensionSupportsCredentialExchange:(id)a3;
-- (BOOL)extensionSupportsCredentialUpdate:(id)a3;
-- (BOOL)extensionSupportsOneTimeCodes:(id)a3;
-- (BOOL)extensionSupportsPasskeys:(id)a3;
-- (BOOL)extensionSupportsPasswords:(id)a3;
-- (BOOL)extensionSupportsTextInsertion:(id)a3;
-- (BOOL)shouldShowConfigurationUIForEnablingExtension:(id)a3;
+- (BOOL)extensionSupportsConditionalPasskeyRegistration:(id)registration;
+- (BOOL)extensionSupportsCredentialExchange:(id)exchange;
+- (BOOL)extensionSupportsCredentialUpdate:(id)update;
+- (BOOL)extensionSupportsOneTimeCodes:(id)codes;
+- (BOOL)extensionSupportsPasskeys:(id)passkeys;
+- (BOOL)extensionSupportsPasswords:(id)passwords;
+- (BOOL)extensionSupportsTextInsertion:(id)insertion;
+- (BOOL)shouldShowConfigurationUIForEnablingExtension:(id)extension;
 - (NSArray)enabledExtensions;
 - (NSArray)getEnabledExtensionsSynchronously;
 - (NSSet)extensions;
 - (NSSet)extensionsSync;
 - (SFCredentialProviderExtensionManager)init;
 - (id)_extensions;
-- (id)displayNameForExtension:(id)a3;
-- (id)enabledExtensionWithContainingAppBundleID:(id)a3;
-- (id)extensionSupportedCredentialExchangeFormatVersions:(id)a3;
-- (id)supportedCredentialTypesStringForExtension:(id)a3;
-- (unint64_t)_numberOfAutoFillProvidersEnabledWithExtensions:(id)a3;
+- (id)displayNameForExtension:(id)extension;
+- (id)enabledExtensionWithContainingAppBundleID:(id)d;
+- (id)extensionSupportedCredentialExchangeFormatVersions:(id)versions;
+- (id)supportedCredentialTypesStringForExtension:(id)extension;
+- (unint64_t)_numberOfAutoFillProvidersEnabledWithExtensions:(id)extensions;
 - (unint64_t)numberOfAutoFillProvidersEnabled;
-- (void)_addObserverOnInternalQueue:(id)a3 shouldHoldWeakly:(BOOL)a4;
+- (void)_addObserverOnInternalQueue:(id)queue shouldHoldWeakly:(BOOL)weakly;
 - (void)_beginExtensionDiscovery;
 - (void)_endExtensionDiscovery;
-- (void)_getExtensionsIncludingDisabled:(BOOL)a3 completionHandler:(id)a4;
-- (void)_notifyObservers:(id)a3;
+- (void)_getExtensionsIncludingDisabled:(BOOL)disabled completionHandler:(id)handler;
+- (void)_notifyObservers:(id)observers;
 - (void)_observerWasRemovedOnInternalQueue;
-- (void)_updateExtensions:(id)a3;
-- (void)addObserver:(id)a3;
-- (void)addWeakObserver:(id)a3;
+- (void)_updateExtensions:(id)extensions;
+- (void)addObserver:(id)observer;
+- (void)addWeakObserver:(id)observer;
 - (void)dealloc;
-- (void)getAllExtensionsForContainingApp:(id)a3 completion:(id)a4;
-- (void)getExtensionWithBundleID:(id)a3 completion:(id)a4;
-- (void)numberOfAutoFillProvidersEnabledWithCompletion:(id)a3;
-- (void)removeObserver:(id)a3;
-- (void)sentinelDidDeallocateWithContext:(id)a3;
-- (void)setExtension:(id)a3 isEnabled:(BOOL)a4;
+- (void)getAllExtensionsForContainingApp:(id)app completion:(id)completion;
+- (void)getExtensionWithBundleID:(id)d completion:(id)completion;
+- (void)numberOfAutoFillProvidersEnabledWithCompletion:(id)completion;
+- (void)removeObserver:(id)observer;
+- (void)sentinelDidDeallocateWithContext:(id)context;
+- (void)setExtension:(id)extension isEnabled:(BOOL)enabled;
 @end
 
 @implementation SFCredentialProviderExtensionManager
@@ -50,7 +50,7 @@
   block[1] = 3221225472;
   block[2] = __53__SFCredentialProviderExtensionManager_sharedManager__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedManager_onceToken != -1)
   {
     dispatch_once(&sharedManager_onceToken, block);
@@ -80,15 +80,15 @@ uint64_t __53__SFCredentialProviderExtensionManager_sharedManager__block_invoke(
     queue = v2->_queue;
     v2->_queue = v4;
 
-    v6 = [MEMORY[0x277CBEB40] orderedSet];
+    orderedSet = [MEMORY[0x277CBEB40] orderedSet];
     observers = v2->_observers;
-    v2->_observers = v6;
+    v2->_observers = orderedSet;
 
     v2->_observerLock.ourl_lock._os_unfair_lock_opaque = 0;
     v2->_observerLock.ourl_count = 0;
-    v8 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     weakObservers = v2->_weakObservers;
-    v2->_weakObservers = v8;
+    v2->_weakObservers = weakObjectsHashTable;
 
     v10 = v2;
   }
@@ -160,20 +160,20 @@ uint64_t __64__SFCredentialProviderExtensionManager__beginExtensionDiscovery__bl
   [(SFCredentialProviderExtensionManager *)&v3 dealloc];
 }
 
-- (void)getExtensionWithBundleID:(id)a3 completion:(id)a4
+- (void)getExtensionWithBundleID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  dCopy = d;
+  completionCopy = completion;
+  v8 = completionCopy;
+  if (completionCopy)
   {
     queue = self->_queue;
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __76__SFCredentialProviderExtensionManager_getExtensionWithBundleID_completion___block_invoke;
     v10[3] = &unk_279B617F0;
-    v12 = v7;
-    v11 = v6;
+    v12 = completionCopy;
+    v11 = dCopy;
     dispatch_async(queue, v10);
   }
 }
@@ -290,18 +290,18 @@ LABEL_14:
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getAllExtensionsForContainingApp:(id)a3 completion:(id)a4
+- (void)getAllExtensionsForContainingApp:(id)app completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  appCopy = app;
+  completionCopy = completion;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __84__SFCredentialProviderExtensionManager_getAllExtensionsForContainingApp_completion___block_invoke;
   v10[3] = &unk_279B61840;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = appCopy;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = appCopy;
   [(SFCredentialProviderExtensionManager *)self getAllExtensionsWithCompletion:v10];
 }
 
@@ -325,19 +325,19 @@ uint64_t __84__SFCredentialProviderExtensionManager_getAllExtensionsForContainin
   return v5;
 }
 
-- (void)_getExtensionsIncludingDisabled:(BOOL)a3 completionHandler:(id)a4
+- (void)_getExtensionsIncludingDisabled:(BOOL)disabled completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  handlerCopy = handler;
+  v7 = handlerCopy;
+  if (handlerCopy)
   {
     queue = self->_queue;
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __90__SFCredentialProviderExtensionManager__getExtensionsIncludingDisabled_completionHandler___block_invoke;
     v9[3] = &unk_279B61890;
-    v11 = a3;
-    v10 = v6;
+    disabledCopy = disabled;
+    v10 = handlerCopy;
     dispatch_async(queue, v9);
   }
 }
@@ -417,9 +417,9 @@ void __90__SFCredentialProviderExtensionManager__getExtensionsIncludingDisabled_
   }
 }
 
-- (void)_updateExtensions:(id)a3
+- (void)_updateExtensions:(id)extensions
 {
-  v4 = [a3 safari_filterObjectsUsingBlock:&__block_literal_global_4];
+  v4 = [extensions safari_filterObjectsUsingBlock:&__block_literal_global_4];
   v10 = v4;
   if (v4)
   {
@@ -434,17 +434,17 @@ void __90__SFCredentialProviderExtensionManager__getExtensionsIncludingDisabled_
   extensions = self->_extensions;
   self->_extensions = v5;
 
-  v7 = [(NSMutableOrderedSet *)self->_observers array];
-  v8 = [(NSHashTable *)self->_weakObservers allObjects];
-  v9 = [v7 arrayByAddingObjectsFromArray:v8];
+  array = [(NSMutableOrderedSet *)self->_observers array];
+  allObjects = [(NSHashTable *)self->_weakObservers allObjects];
+  v9 = [array arrayByAddingObjectsFromArray:allObjects];
 
   [(SFCredentialProviderExtensionManager *)self _notifyObservers:v9];
 }
 
-- (void)_notifyObservers:(id)a3
+- (void)_notifyObservers:(id)observers
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  observersCopy = observers;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -452,15 +452,15 @@ void __90__SFCredentialProviderExtensionManager__getExtensionsIncludingDisabled_
   v23 = __Block_byref_object_dispose__0;
   v24 = 0;
   v5 = objc_autoreleasePoolPush();
-  v6 = [MEMORY[0x277CCAC18] weakObjectsPointerArray];
+  weakObjectsPointerArray = [MEMORY[0x277CCAC18] weakObjectsPointerArray];
   v7 = v20[5];
-  v20[5] = v6;
+  v20[5] = weakObjectsPointerArray;
 
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v8 = v4;
+  v8 = observersCopy;
   v9 = [v8 countByEnumeratingWithState:&v15 objects:v25 count:16];
   if (v9)
   {
@@ -719,10 +719,10 @@ void __73__SFCredentialProviderExtensionManager_getEnabledExtensionsSynchronousl
   }
 }
 
-- (id)enabledExtensionWithContainingAppBundleID:(id)a3
+- (id)enabledExtensionWithContainingAppBundleID:(id)d
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   [(SFCredentialProviderExtensionManager *)self getEnabledExtensionsSynchronously];
   v17 = 0u;
   v18 = 0u;
@@ -743,8 +743,8 @@ LABEL_3:
       }
 
       v10 = *(*(&v17 + 1) + 8 * v9);
-      v11 = [v10 sf_bundleIdentifierForContainingApp];
-      v12 = [v11 isEqualToString:v4];
+      sf_bundleIdentifierForContainingApp = [v10 sf_bundleIdentifierForContainingApp];
+      v12 = [sf_bundleIdentifierForContainingApp isEqualToString:dCopy];
 
       if (v12)
       {
@@ -790,37 +790,37 @@ LABEL_14:
   return v13;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __52__SFCredentialProviderExtensionManager_addObserver___block_invoke;
   v7[3] = &unk_279B611D8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)addWeakObserver:(id)a3
+- (void)addWeakObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __56__SFCredentialProviderExtensionManager_addWeakObserver___block_invoke;
   v7[3] = &unk_279B611D8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_recursive_lock_lock_with_options();
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
@@ -828,8 +828,8 @@ LABEL_14:
   v7[2] = __55__SFCredentialProviderExtensionManager_removeObserver___block_invoke;
   v7[3] = &unk_279B611D8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_sync(queue, v7);
   os_unfair_recursive_lock_unlock();
 }
@@ -842,30 +842,30 @@ uint64_t __55__SFCredentialProviderExtensionManager_removeObserver___block_invok
   return [v2 _observerWasRemovedOnInternalQueue];
 }
 
-- (void)_addObserverOnInternalQueue:(id)a3 shouldHoldWeakly:(BOOL)a4
+- (void)_addObserverOnInternalQueue:(id)queue shouldHoldWeakly:(BOOL)weakly
 {
-  v4 = a4;
+  weaklyCopy = weakly;
   v16[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  queueCopy = queue;
   v7 = [(NSMutableOrderedSet *)self->_observers count];
-  v8 = [(NSHashTable *)self->_weakObservers allObjects];
-  v9 = [v8 count];
+  allObjects = [(NSHashTable *)self->_weakObservers allObjects];
+  v9 = [allObjects count];
 
-  if (v4)
+  if (weaklyCopy)
   {
-    [(NSHashTable *)self->_weakObservers addObject:v6];
-    [v6 safari_setDeallocationSentinelForObserver:self];
+    [(NSHashTable *)self->_weakObservers addObject:queueCopy];
+    [queueCopy safari_setDeallocationSentinelForObserver:self];
   }
 
   else
   {
-    [(NSMutableOrderedSet *)self->_observers addObject:v6];
+    [(NSMutableOrderedSet *)self->_observers addObject:queueCopy];
   }
 
   v10 = v9 + v7;
   v11 = [(NSMutableOrderedSet *)self->_observers count];
-  v12 = [(NSHashTable *)self->_weakObservers allObjects];
-  v13 = [v12 count] + v11;
+  allObjects2 = [(NSHashTable *)self->_weakObservers allObjects];
+  v13 = [allObjects2 count] + v11;
 
   if (v13 == 1)
   {
@@ -874,7 +874,7 @@ uint64_t __55__SFCredentialProviderExtensionManager_removeObserver___block_invok
 
   if (v13 > v10 && self->_extensions)
   {
-    v16[0] = v6;
+    v16[0] = queueCopy;
     v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:1];
     [(SFCredentialProviderExtensionManager *)self _notifyObservers:v14];
   }
@@ -885,8 +885,8 @@ uint64_t __55__SFCredentialProviderExtensionManager_removeObserver___block_invok
 - (void)_observerWasRemovedOnInternalQueue
 {
   v3 = [(NSMutableOrderedSet *)self->_observers count];
-  v4 = [(NSHashTable *)self->_weakObservers allObjects];
-  v5 = [v4 count];
+  allObjects = [(NSHashTable *)self->_weakObservers allObjects];
+  v5 = [allObjects count];
 
   if (!(v3 + v5))
   {
@@ -895,13 +895,13 @@ uint64_t __55__SFCredentialProviderExtensionManager_removeObserver___block_invok
   }
 }
 
-- (void)setExtension:(id)a3 isEnabled:(BOOL)a4
+- (void)setExtension:(id)extension isEnabled:(BOOL)enabled
 {
-  v4 = a4;
-  v6 = a3;
-  if (v6 && [(SFCredentialProviderExtensionManager *)self extensionIsEnabled:v6]!= v4)
+  enabledCopy = enabled;
+  extensionCopy = extension;
+  if (extensionCopy && [(SFCredentialProviderExtensionManager *)self extensionIsEnabled:extensionCopy]!= enabledCopy)
   {
-    if (!v4)
+    if (!enabledCopy)
     {
       v7 = 2;
       goto LABEL_7;
@@ -911,8 +911,8 @@ uint64_t __55__SFCredentialProviderExtensionManager_removeObserver___block_invok
     {
       v7 = 1;
 LABEL_7:
-      v8 = [v6 _plugIn];
-      [v8 setUserElection:v7];
+      _plugIn = [extensionCopy _plugIn];
+      [_plugIn setUserElection:v7];
 
       queue = self->_queue;
       block[0] = MEMORY[0x277D85DD0];
@@ -937,22 +937,22 @@ void __63__SFCredentialProviderExtensionManager_setExtension_isEnabled___block_i
 - (unint64_t)numberOfAutoFillProvidersEnabled
 {
   v3 = +[SFCredentialProviderExtensionManager sharedManager];
-  v4 = [v3 getEnabledExtensionsSynchronously];
+  getEnabledExtensionsSynchronously = [v3 getEnabledExtensionsSynchronously];
 
-  v5 = [(SFCredentialProviderExtensionManager *)self _numberOfAutoFillProvidersEnabledWithExtensions:v4];
+  v5 = [(SFCredentialProviderExtensionManager *)self _numberOfAutoFillProvidersEnabledWithExtensions:getEnabledExtensionsSynchronously];
   return v5;
 }
 
-- (void)numberOfAutoFillProvidersEnabledWithCompletion:(id)a3
+- (void)numberOfAutoFillProvidersEnabledWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __87__SFCredentialProviderExtensionManager_numberOfAutoFillProvidersEnabledWithCompletion___block_invoke;
   v6[3] = &unk_279B61950;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   [(SFCredentialProviderExtensionManager *)self getEnabledExtensionsWithCompletion:v6];
 }
 
@@ -965,49 +965,49 @@ uint64_t __87__SFCredentialProviderExtensionManager_numberOfAutoFillProvidersEna
   return v4(v2, v3);
 }
 
-- (unint64_t)_numberOfAutoFillProvidersEnabledWithExtensions:(id)a3
+- (unint64_t)_numberOfAutoFillProvidersEnabledWithExtensions:(id)extensions
 {
-  v3 = a3;
+  extensionsCopy = extensions;
   v4 = +[SFAutoFillFeatureManager sharedFeatureManager];
-  v5 = [v4 shouldAutoFillPasswordsFromKeychain];
+  shouldAutoFillPasswordsFromKeychain = [v4 shouldAutoFillPasswordsFromKeychain];
 
-  v6 = [v3 count];
-  return v6 + v5;
+  v6 = [extensionsCopy count];
+  return v6 + shouldAutoFillPasswordsFromKeychain;
 }
 
-- (id)displayNameForExtension:(id)a3
+- (id)displayNameForExtension:(id)extension
 {
-  v4 = a3;
-  v5 = [v4 _plugIn];
-  v6 = [v5 containingUrl];
+  extensionCopy = extension;
+  _plugIn = [extensionCopy _plugIn];
+  containingUrl = [_plugIn containingUrl];
 
-  v7 = [v4 _plugIn];
-  v8 = [v7 localizedContainingName];
+  _plugIn2 = [extensionCopy _plugIn];
+  localizedContainingName = [_plugIn2 localizedContainingName];
 
   v22[0] = 0;
   v22[1] = v22;
   v22[2] = 0x2020000000;
   v23 = 0;
-  v9 = [(SFCredentialProviderExtensionManager *)self extensionsSync];
+  extensionsSync = [(SFCredentialProviderExtensionManager *)self extensionsSync];
   v16 = MEMORY[0x277D85DD0];
   v17 = 3221225472;
   v18 = __64__SFCredentialProviderExtensionManager_displayNameForExtension___block_invoke;
   v19 = &unk_279B61978;
-  v10 = v6;
+  v10 = containingUrl;
   v20 = v10;
   v21 = v22;
-  v11 = [v9 objectsPassingTest:&v16];
+  v11 = [extensionsSync objectsPassingTest:&v16];
 
   if ([v11 count] == 1)
   {
-    v12 = v8;
+    v12 = localizedContainingName;
   }
 
   else
   {
     v13 = MEMORY[0x277CCACA8];
-    v14 = [v4 objectForInfoDictionaryKey:*MEMORY[0x277CBEC40]];
-    v12 = [v13 stringWithFormat:@"%@ — %@", v8, v14, v16, v17, v18, v19];
+    v14 = [extensionCopy objectForInfoDictionaryKey:*MEMORY[0x277CBEC40]];
+    v12 = [v13 stringWithFormat:@"%@ — %@", localizedContainingName, v14, v16, v17, v18, v19];
   }
 
   _Block_object_dispose(v22, 8);
@@ -1038,44 +1038,44 @@ uint64_t __64__SFCredentialProviderExtensionManager_displayNameForExtension___bl
   return v7;
 }
 
-- (BOOL)shouldShowConfigurationUIForEnablingExtension:(id)a3
+- (BOOL)shouldShowConfigurationUIForEnablingExtension:(id)extension
 {
-  v3 = a3;
-  v4 = [v3 attributes];
-  v5 = [v4 safari_dictionaryForKey:@"ASCredentialProviderExtensionCapabilities"];
+  extensionCopy = extension;
+  attributes = [extensionCopy attributes];
+  v5 = [attributes safari_dictionaryForKey:@"ASCredentialProviderExtensionCapabilities"];
 
   v6 = [v5 safari_numberForKey:@"ShowsConfigurationUI"];
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 BOOLValue];
+    bOOLValue = [v6 BOOLValue];
   }
 
   else
   {
-    v9 = [v3 attributes];
-    v8 = [v9 safari_BOOLForKey:@"ASCredentialProviderExtensionShowsConfigurationUI"];
+    attributes2 = [extensionCopy attributes];
+    bOOLValue = [attributes2 safari_BOOLForKey:@"ASCredentialProviderExtensionShowsConfigurationUI"];
   }
 
-  return v8;
+  return bOOLValue;
 }
 
-- (BOOL)extensionSupportsPasskeys:(id)a3
+- (BOOL)extensionSupportsPasskeys:(id)passkeys
 {
-  v3 = [a3 attributes];
-  v4 = [v3 safari_dictionaryForKey:@"ASCredentialProviderExtensionCapabilities"];
+  attributes = [passkeys attributes];
+  v4 = [attributes safari_dictionaryForKey:@"ASCredentialProviderExtensionCapabilities"];
 
-  LOBYTE(v3) = [v4 safari_BOOLForKey:@"ProvidesPasskeys"];
-  return v3;
+  LOBYTE(attributes) = [v4 safari_BOOLForKey:@"ProvidesPasskeys"];
+  return attributes;
 }
 
-- (BOOL)extensionSupportsConditionalPasskeyRegistration:(id)a3
+- (BOOL)extensionSupportsConditionalPasskeyRegistration:(id)registration
 {
-  v3 = [a3 attributes];
-  v4 = [v3 safari_dictionaryForKey:@"ASCredentialProviderExtensionCapabilities"];
+  attributes = [registration attributes];
+  v4 = [attributes safari_dictionaryForKey:@"ASCredentialProviderExtensionCapabilities"];
 
-  LOBYTE(v3) = [v4 safari_BOOLForKey:@"SupportsConditionalPasskeyRegistration"];
-  return v3;
+  LOBYTE(attributes) = [v4 safari_BOOLForKey:@"SupportsConditionalPasskeyRegistration"];
+  return attributes;
 }
 
 - (BOOL)atLeastOneEnabledExtensionSupportsPasskeys
@@ -1092,8 +1092,8 @@ uint64_t __64__SFCredentialProviderExtensionManager_displayNameForExtension___bl
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v4 = [(SFCredentialProviderExtensionManager *)self getEnabledExtensionsSynchronously];
-    v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    getEnabledExtensionsSynchronously = [(SFCredentialProviderExtensionManager *)self getEnabledExtensionsSynchronously];
+    v5 = [getEnabledExtensionsSynchronously countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v5)
     {
       v6 = v5;
@@ -1105,13 +1105,13 @@ uint64_t __64__SFCredentialProviderExtensionManager_displayNameForExtension___bl
         {
           if (*v12 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(getEnabledExtensionsSynchronously);
           }
 
           v3 |= [(SFCredentialProviderExtensionManager *)self extensionSupportsPasskeys:*(*(&v11 + 1) + 8 * i)];
         }
 
-        v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v6 = [getEnabledExtensionsSynchronously countByEnumeratingWithState:&v11 objects:v15 count:16];
       }
 
       while (v6);
@@ -1134,8 +1134,8 @@ uint64_t __64__SFCredentialProviderExtensionManager_displayNameForExtension___bl
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [(SFCredentialProviderExtensionManager *)self getEnabledExtensionsSynchronously];
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  getEnabledExtensionsSynchronously = [(SFCredentialProviderExtensionManager *)self getEnabledExtensionsSynchronously];
+  v4 = [getEnabledExtensionsSynchronously countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1146,7 +1146,7 @@ uint64_t __64__SFCredentialProviderExtensionManager_displayNameForExtension___bl
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(getEnabledExtensionsSynchronously);
         }
 
         if ([(SFCredentialProviderExtensionManager *)self extensionSupportsOneTimeCodes:*(*(&v11 + 1) + 8 * i)])
@@ -1156,7 +1156,7 @@ uint64_t __64__SFCredentialProviderExtensionManager_displayNameForExtension___bl
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [getEnabledExtensionsSynchronously countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v5)
       {
         continue;
@@ -1173,31 +1173,31 @@ LABEL_11:
   return v8;
 }
 
-- (BOOL)extensionSupportsOneTimeCodes:(id)a3
+- (BOOL)extensionSupportsOneTimeCodes:(id)codes
 {
-  v3 = [a3 attributes];
-  v4 = [v3 safari_dictionaryForKey:@"ASCredentialProviderExtensionCapabilities"];
+  attributes = [codes attributes];
+  v4 = [attributes safari_dictionaryForKey:@"ASCredentialProviderExtensionCapabilities"];
 
-  LOBYTE(v3) = [v4 safari_BOOLForKey:@"ProvidesOneTimeCodes"];
-  return v3;
+  LOBYTE(attributes) = [v4 safari_BOOLForKey:@"ProvidesOneTimeCodes"];
+  return attributes;
 }
 
-- (BOOL)extensionSupportsTextInsertion:(id)a3
+- (BOOL)extensionSupportsTextInsertion:(id)insertion
 {
-  v3 = [a3 attributes];
-  v4 = [v3 safari_dictionaryForKey:@"ASCredentialProviderExtensionCapabilities"];
+  attributes = [insertion attributes];
+  v4 = [attributes safari_dictionaryForKey:@"ASCredentialProviderExtensionCapabilities"];
 
-  LOBYTE(v3) = [v4 safari_BOOLForKey:@"ProvidesTextToInsert"];
-  return v3;
+  LOBYTE(attributes) = [v4 safari_BOOLForKey:@"ProvidesTextToInsert"];
+  return attributes;
 }
 
-- (BOOL)extensionSupportsPasswords:(id)a3
+- (BOOL)extensionSupportsPasswords:(id)passwords
 {
-  v3 = a3;
-  v4 = [v3 attributes];
-  v5 = [v4 safari_dictionaryForKey:@"ASCredentialProviderExtensionCapabilities"];
+  passwordsCopy = passwords;
+  attributes = [passwordsCopy attributes];
+  v5 = [attributes safari_dictionaryForKey:@"ASCredentialProviderExtensionCapabilities"];
 
-  if (v5 && [v3 _sf_credentialProviderExtensionNeedsToDeclarePasswordSupport])
+  if (v5 && [passwordsCopy _sf_credentialProviderExtensionNeedsToDeclarePasswordSupport])
   {
     v6 = [v5 safari_BOOLForKey:@"ProvidesPasswords"];
   }
@@ -1210,12 +1210,12 @@ LABEL_11:
   return v6;
 }
 
-- (id)supportedCredentialTypesStringForExtension:(id)a3
+- (id)supportedCredentialTypesStringForExtension:(id)extension
 {
-  v4 = a3;
-  v5 = [(SFCredentialProviderExtensionManager *)self extensionSupportsPasswords:v4];
-  v6 = [(SFCredentialProviderExtensionManager *)self extensionSupportsPasskeys:v4];
-  v7 = [(SFCredentialProviderExtensionManager *)self extensionSupportsOneTimeCodes:v4];
+  extensionCopy = extension;
+  v5 = [(SFCredentialProviderExtensionManager *)self extensionSupportsPasswords:extensionCopy];
+  v6 = [(SFCredentialProviderExtensionManager *)self extensionSupportsPasskeys:extensionCopy];
+  v7 = [(SFCredentialProviderExtensionManager *)self extensionSupportsOneTimeCodes:extensionCopy];
 
   if (v5 || v6 || v7)
   {
@@ -1230,11 +1230,11 @@ LABEL_11:
   return v8;
 }
 
-- (BOOL)extensionSupportsCredentialExchange:(id)a3
+- (BOOL)extensionSupportsCredentialExchange:(id)exchange
 {
-  v3 = a3;
-  v4 = [v3 attributes];
-  v5 = [v4 safari_dictionaryForKey:@"ASCredentialProviderExtensionCapabilities"];
+  exchangeCopy = exchange;
+  attributes = [exchangeCopy attributes];
+  v5 = [attributes safari_dictionaryForKey:@"ASCredentialProviderExtensionCapabilities"];
 
   v6 = [v5 safari_BOOLForKey:@"SupportsCredentialExchange"];
   v7 = [v5 safari_arrayForKey:@"SupportedCredentialExchangeVersions"];
@@ -1246,7 +1246,7 @@ LABEL_11:
       v9 = WBS_LOG_CHANNEL_PREFIXCredentialProviderExtension();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
-        [(SFCredentialProviderExtensionManager *)v9 extensionSupportsCredentialExchange:v3];
+        [(SFCredentialProviderExtensionManager *)v9 extensionSupportsCredentialExchange:exchangeCopy];
       }
     }
 
@@ -1256,16 +1256,16 @@ LABEL_11:
   return v6;
 }
 
-- (BOOL)atLeastOneAvailableExtensionSupportsCredentialExchange:(id)a3
+- (BOOL)atLeastOneAvailableExtensionSupportsCredentialExchange:(id)exchange
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  exchangeCopy = exchange;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = [(SFCredentialProviderExtensionManager *)self extensionsSync];
-  v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  extensionsSync = [(SFCredentialProviderExtensionManager *)self extensionsSync];
+  v6 = [extensionsSync countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1276,22 +1276,22 @@ LABEL_11:
       {
         if (*v17 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(extensionsSync);
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
-        v11 = [v10 sf_bundleIdentifierForContainingApp];
-        v12 = [v4 isEqualToString:v11];
+        sf_bundleIdentifierForContainingApp = [v10 sf_bundleIdentifierForContainingApp];
+        v12 = [exchangeCopy isEqualToString:sf_bundleIdentifierForContainingApp];
 
         if ((v12 & 1) == 0 && [(SFCredentialProviderExtensionManager *)self extensionSupportsCredentialExchange:v10])
         {
 
-          v13 = 1;
+          isPasswordsAppInstalled = 1;
           goto LABEL_14;
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v7 = [extensionsSync countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v7)
       {
         continue;
@@ -1301,26 +1301,26 @@ LABEL_11:
     }
   }
 
-  if ([v4 isEqualToString:*MEMORY[0x277D49CC0]])
+  if ([exchangeCopy isEqualToString:*MEMORY[0x277D49CC0]])
   {
-    v13 = 0;
+    isPasswordsAppInstalled = 0;
   }
 
   else
   {
-    v13 = [MEMORY[0x277D49A08] isPasswordsAppInstalled];
+    isPasswordsAppInstalled = [MEMORY[0x277D49A08] isPasswordsAppInstalled];
   }
 
 LABEL_14:
 
   v14 = *MEMORY[0x277D85DE8];
-  return v13;
+  return isPasswordsAppInstalled;
 }
 
-- (id)extensionSupportedCredentialExchangeFormatVersions:(id)a3
+- (id)extensionSupportedCredentialExchangeFormatVersions:(id)versions
 {
-  v3 = [a3 attributes];
-  v4 = [v3 safari_dictionaryForKey:@"ASCredentialProviderExtensionCapabilities"];
+  attributes = [versions attributes];
+  v4 = [attributes safari_dictionaryForKey:@"ASCredentialProviderExtensionCapabilities"];
 
   v5 = [v4 safari_arrayContainingObjectsOfClass:objc_opt_class() forKey:@"SupportedCredentialExchangeVersions"];
 
@@ -1334,8 +1334,8 @@ LABEL_14:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [(SFCredentialProviderExtensionManager *)self getEnabledExtensionsSynchronously];
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  getEnabledExtensionsSynchronously = [(SFCredentialProviderExtensionManager *)self getEnabledExtensionsSynchronously];
+  v4 = [getEnabledExtensionsSynchronously countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1346,7 +1346,7 @@ LABEL_14:
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(getEnabledExtensionsSynchronously);
         }
 
         if ([(SFCredentialProviderExtensionManager *)self extensionSupportsCredentialUpdate:*(*(&v11 + 1) + 8 * i)])
@@ -1356,7 +1356,7 @@ LABEL_14:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [getEnabledExtensionsSynchronously countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v5)
       {
         continue;
@@ -1373,16 +1373,16 @@ LABEL_11:
   return v8;
 }
 
-- (BOOL)extensionSupportsCredentialUpdate:(id)a3
+- (BOOL)extensionSupportsCredentialUpdate:(id)update
 {
-  v3 = [a3 attributes];
-  v4 = [v3 safari_dictionaryForKey:@"ASCredentialProviderExtensionCapabilities"];
+  attributes = [update attributes];
+  v4 = [attributes safari_dictionaryForKey:@"ASCredentialProviderExtensionCapabilities"];
 
-  LOBYTE(v3) = [v4 safari_BOOLForKey:@"SupportsCredentialUpdate"];
-  return v3;
+  LOBYTE(attributes) = [v4 safari_BOOLForKey:@"SupportsCredentialUpdate"];
+  return attributes;
 }
 
-- (void)sentinelDidDeallocateWithContext:(id)a3
+- (void)sentinelDidDeallocateWithContext:(id)context
 {
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];

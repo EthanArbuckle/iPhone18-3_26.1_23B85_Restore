@@ -1,12 +1,12 @@
 @interface GVSFaceStabilizationProcessor
-- (BOOL)updateBiasTrackingAndFaceCorrectionQuaternionWithFaceSmoothingArrays:(GVSFaceSmoothingArrays *)a3 biasTrackingSigma:(float)a4 centerFrameOffset:(int)a5;
+- (BOOL)updateBiasTrackingAndFaceCorrectionQuaternionWithFaceSmoothingArrays:(GVSFaceSmoothingArrays *)arrays biasTrackingSigma:(float)sigma centerFrameOffset:(int)offset;
 - (GVSFaceStabilizationProcessor)init;
 - (uint64_t)init;
-- (void)_convertFaceRectangleToFacePose:(double)a3 withCameraPose:(double)a4 focalLength:(double)a5 imageCenter:(double)a6;
+- (void)_convertFaceRectangleToFacePose:(double)pose withCameraPose:(double)cameraPose focalLength:(double)length imageCenter:(double)center;
 - (void)dealloc;
 - (void)reset;
-- (void)updateFaceCorrectionStrengthWithFaceSmoothingArrays:(GVSFaceSmoothingArrays *)a3;
-- (void)updateFacePoseWithFaceDetections:(GVSFaceStabilizationProcessor *)self cameraPose:(SEL)a2 focalLength:(id)a3 imageCenter:(id)a4 sourcePixelBufferDimensions:(float)a5 finalCropRect:(CGRect)a6 currentCaptureTime:(double)a7;
+- (void)updateFaceCorrectionStrengthWithFaceSmoothingArrays:(GVSFaceSmoothingArrays *)arrays;
+- (void)updateFacePoseWithFaceDetections:(GVSFaceStabilizationProcessor *)self cameraPose:(SEL)pose focalLength:(id)length imageCenter:(id)center sourcePixelBufferDimensions:(float)dimensions finalCropRect:(CGRect)rect currentCaptureTime:(double)time;
 @end
 
 @implementation GVSFaceStabilizationProcessor
@@ -70,25 +70,25 @@ LABEL_6:
   [(GVSFacePosePreprocessor *)facePosePreprocessor reset];
 }
 
-- (void)updateFacePoseWithFaceDetections:(GVSFaceStabilizationProcessor *)self cameraPose:(SEL)a2 focalLength:(id)a3 imageCenter:(id)a4 sourcePixelBufferDimensions:(float)a5 finalCropRect:(CGRect)a6 currentCaptureTime:(double)a7
+- (void)updateFacePoseWithFaceDetections:(GVSFaceStabilizationProcessor *)self cameraPose:(SEL)pose focalLength:(id)length imageCenter:(id)center sourcePixelBufferDimensions:(float)dimensions finalCropRect:(CGRect)rect currentCaptureTime:(double)time
 {
   v9 = v7;
-  [(GVSFaceSelectionProcessor *)self->_faceSelectionProcessor updateFaceSelectionWithFaceDetections:a3 imageCenter:v7 sourcePixelBufferDimensions:v8 finalCropRect:a6.origin.x currentCaptureTime:a6.origin.y, a6.size.width, a6.size.height, a7];
+  [(GVSFaceSelectionProcessor *)self->_faceSelectionProcessor updateFaceSelectionWithFaceDetections:length imageCenter:v7 sourcePixelBufferDimensions:v8 finalCropRect:rect.origin.x currentCaptureTime:rect.origin.y, rect.size.width, rect.size.height, time];
   [(GVSFaceSelectionProcessor *)self->_faceSelectionProcessor faceRectangle];
   GVSDenormalizeRectangle(v12, v13, v14, v15);
   facePosePreprocessor = self->_facePosePreprocessor;
-  *&v19 = a5;
+  *&v19 = dimensions;
   [GVSFaceStabilizationProcessor _convertFaceRectangleToFacePose:"_convertFaceRectangleToFacePose:withCameraPose:focalLength:imageCenter:" withCameraPose:v19 focalLength:*&v9 imageCenter:?];
   [(GVSFacePosePreprocessor *)facePosePreprocessor updateWithFacePose:[(GVSFaceSelectionProcessor *)self->_faceSelectionProcessor faceIdentifier] faceIdentifier:v17];
   *self->_anon_20 = v18;
 }
 
-- (void)_convertFaceRectangleToFacePose:(double)a3 withCameraPose:(double)a4 focalLength:(double)a5 imageCenter:(double)a6
+- (void)_convertFaceRectangleToFacePose:(double)pose withCameraPose:(double)cameraPose focalLength:(double)length imageCenter:(double)center
 {
-  if (!CGRectIsNull(*&a1))
+  if (!CGRectIsNull(*&self))
   {
-    v18.f32[0] = a1 + a3 * 0.5;
-    v19 = a2 + a4 * 0.5;
+    v18.f32[0] = self + pose * 0.5;
+    v19 = a2 + cameraPose * 0.5;
     v18.f32[1] = v19;
     v20 = vsub_f32(v18, a18);
     v22 = v20.f32[0];
@@ -98,12 +98,12 @@ LABEL_6:
   }
 }
 
-- (void)updateFaceCorrectionStrengthWithFaceSmoothingArrays:(GVSFaceSmoothingArrays *)a3
+- (void)updateFaceCorrectionStrengthWithFaceSmoothingArrays:(GVSFaceSmoothingArrays *)arrays
 {
-  var4 = a3->var4;
-  var5 = a3->var5;
+  var4 = arrays->var4;
+  var5 = arrays->var5;
   v5 = var4 - (var5 != var4);
-  var6 = a3->var6;
+  var6 = arrays->var6;
   if (var5 == var4)
   {
     v5 = v5;
@@ -112,10 +112,10 @@ LABEL_6:
 
   else
   {
-    var2 = a3->var0[12 * v5 + 8].var2;
+    var2 = arrays->var0[12 * v5 + 8].var2;
   }
 
-  v8 = a3->var2;
+  v8 = arrays->var2;
   v9 = v8[v5];
   maximumStrengthSlope = self->_maximumStrengthSlope;
   v11 = 1.0;
@@ -145,7 +145,7 @@ LABEL_6:
       FMOV            V19.2S, #3.0
     }
 
-    v22 = a3->var4;
+    v22 = arrays->var4;
     v11 = 1.0;
     do
     {
@@ -157,12 +157,12 @@ LABEL_6:
         v26 = 0;
         v27 = 0;
         v28 = v16 - var5;
-        v29 = a3->var5;
+        v29 = arrays->var5;
         do
         {
           if (vabdd_f64(v8[v29], v23) <= 1.0)
           {
-            v30 = fabsf(a3->var1[v29]);
+            v30 = fabsf(arrays->var1[v29]);
             if (v30 < self->_tripodRotationRateThreshold)
             {
               ++v27;
@@ -212,7 +212,7 @@ LABEL_6:
   {
     v36 = var2;
     v37 = maximumStrengthSlope;
-    v38 = &a3->var0[12 * var4 + 8];
+    v38 = &arrays->var0[12 * var4 + 8];
     v39 = &v8[var4];
     v40 = var6 - var4 + 1;
     do
@@ -234,10 +234,10 @@ LABEL_6:
   }
 }
 
-- (BOOL)updateBiasTrackingAndFaceCorrectionQuaternionWithFaceSmoothingArrays:(GVSFaceSmoothingArrays *)a3 biasTrackingSigma:(float)a4 centerFrameOffset:(int)a5
+- (BOOL)updateBiasTrackingAndFaceCorrectionQuaternionWithFaceSmoothingArrays:(GVSFaceSmoothingArrays *)arrays biasTrackingSigma:(float)sigma centerFrameOffset:(int)offset
 {
-  v18 = *&a3->var0[12 * a3->var4 + 4 + 12 * a5].var2;
-  GVSComputeSmoothedFaceQuaternion(a3, a5, a4);
+  v18 = *&arrays->var0[12 * arrays->var4 + 4 + 12 * offset].var2;
+  GVSComputeSmoothedFaceQuaternion(arrays, offset, sigma);
   v9 = vmulq_f32(v8, xmmword_433E0);
   v10 = vnegq_f32(v18);
   v11 = vtrn2q_s32(v18, vtrn1q_s32(v18, v10));
@@ -246,7 +246,7 @@ LABEL_6:
   v13.i32[0] = v10.i32[1];
   v13.i32[3] = v10.i32[2];
   *self->_anon_30 = vaddq_f32(v12, vmlaq_laneq_f32(vmulq_laneq_f32(v18, v9, 3), v13, v9, 2));
-  v14 = *&a3->var0[12 * a3->var4 + 12 * a5].var2;
+  v14 = *&arrays->var0[12 * arrays->var4 + 12 * offset].var2;
   v15 = vmulq_f32(v18, v14);
   *v15.i8 = vadd_f32(*v15.i8, *&vextq_s8(v15, v15, 8uLL));
   v16 = vmulq_f32(v8, v14);

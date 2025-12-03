@@ -1,23 +1,23 @@
 @interface AMSRemoteNotification
-+ (BOOL)shouldHandleNotification:(id)a3;
++ (BOOL)shouldHandleNotification:(id)notification;
 + (id)_sharedPushHandler;
-+ (void)handleNotification:(id)a3;
++ (void)handleNotification:(id)notification;
 @end
 
 @implementation AMSRemoteNotification
 
-+ (void)handleNotification:(id)a3
++ (void)handleNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [a1 _sharedPushHandler];
-  [v5 handleNotification:v4];
+  notificationCopy = notification;
+  _sharedPushHandler = [self _sharedPushHandler];
+  [_sharedPushHandler handleNotification:notificationCopy];
 }
 
-+ (BOOL)shouldHandleNotification:(id)a3
++ (BOOL)shouldHandleNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [a1 _sharedPushHandler];
-  v6 = [v5 shouldHandleNotification:v4];
+  notificationCopy = notification;
+  _sharedPushHandler = [self _sharedPushHandler];
+  v6 = [_sharedPushHandler shouldHandleNotification:notificationCopy];
 
   return v6;
 }

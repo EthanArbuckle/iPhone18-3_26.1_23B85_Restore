@@ -1,18 +1,18 @@
 @interface OneStepBookmarkingController
 - (OneStepBookmarkingController)init;
-- (OneStepBookmarkingController)initWithCurrentTabProvider:(id)a3;
+- (OneStepBookmarkingController)initWithCurrentTabProvider:(id)provider;
 - (_SFSyntheticBookmarkProvider)syntheticBookmarkProvider;
 - (id)currentTabProvider;
 - (id)didSaveBookmark;
-- (void)configureOneStepBookmarkingButton:(id)a3;
-- (void)setDidSaveBookmark:(id)a3;
+- (void)configureOneStepBookmarkingButton:(id)button;
+- (void)setDidSaveBookmark:(id)bookmark;
 @end
 
 @implementation OneStepBookmarkingController
 
-- (OneStepBookmarkingController)initWithCurrentTabProvider:(id)a3
+- (OneStepBookmarkingController)initWithCurrentTabProvider:(id)provider
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(provider);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
   v6 = (self + OBJC_IVAR___OneStepBookmarkingController_didSaveBookmark);
@@ -55,9 +55,9 @@
   return v3;
 }
 
-- (void)setDidSaveBookmark:(id)a3
+- (void)setDidSaveBookmark:(id)bookmark
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(bookmark);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
   v6 = (self + OBJC_IVAR___OneStepBookmarkingController_didSaveBookmark);
@@ -72,11 +72,11 @@
   return Strong;
 }
 
-- (void)configureOneStepBookmarkingButton:(id)a3
+- (void)configureOneStepBookmarkingButton:(id)button
 {
-  v4 = a3;
-  v5 = self;
-  sub_215A16650(v4);
+  buttonCopy = button;
+  selfCopy = self;
+  sub_215A16650(buttonCopy);
 }
 
 - (OneStepBookmarkingController)init

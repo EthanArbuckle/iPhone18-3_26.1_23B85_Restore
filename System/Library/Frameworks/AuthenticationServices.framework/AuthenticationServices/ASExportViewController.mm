@@ -1,24 +1,24 @@
 @interface ASExportViewController
-- (ASExportViewController)initWithExportedCredentialData:(id)a3 exporterBundleID:(id)a4;
+- (ASExportViewController)initWithExportedCredentialData:(id)data exporterBundleID:(id)d;
 - (ASExportViewControllerDelegate)delegate;
 @end
 
 @implementation ASExportViewController
 
-- (ASExportViewController)initWithExportedCredentialData:(id)a3 exporterBundleID:(id)a4
+- (ASExportViewController)initWithExportedCredentialData:(id)data exporterBundleID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  dCopy = d;
   v15.receiver = self;
   v15.super_class = ASExportViewController;
   v8 = [(ASExportViewController *)&v15 initWithNibName:0 bundle:0];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [dataCopy copy];
     exportedCredentialData = v8->_exportedCredentialData;
     v8->_exportedCredentialData = v9;
 
-    v11 = [v7 copy];
+    v11 = [dCopy copy];
     exporterBundleID = v8->_exporterBundleID;
     v8->_exporterBundleID = v11;
 

@@ -1,10 +1,10 @@
 @interface _DASActivityRateLimitPolicy
 + (id)policyInstance;
-- (BOOL)appliesToActivity:(id)a3;
-- (BOOL)shouldIgnoreTrigger:(id)a3 withState:(id)a4;
+- (BOOL)appliesToActivity:(id)activity;
+- (BOOL)shouldIgnoreTrigger:(id)trigger withState:(id)state;
 - (_DASActivityRateLimitPolicy)init;
 - (id)initializeTriggers;
-- (id)responseForActivity:(id)a3 withState:(id)a4;
+- (id)responseForActivity:(id)activity withState:(id)state;
 @end
 
 @implementation _DASActivityRateLimitPolicy
@@ -38,9 +38,9 @@
     policyDescription = v3->_policyDescription;
     v3->_policyDescription = @"Blocks rate limited activities if rate limit configuration group is at capacity.";
 
-    v6 = [(_DASActivityRateLimitPolicy *)v3 initializeTriggers];
+    initializeTriggers = [(_DASActivityRateLimitPolicy *)v3 initializeTriggers];
     triggers = v3->_triggers;
-    v3->_triggers = v6;
+    v3->_triggers = initializeTriggers;
   }
 
   return v3;
@@ -58,26 +58,26 @@
   return v3;
 }
 
-- (BOOL)appliesToActivity:(id)a3
+- (BOOL)appliesToActivity:(id)activity
 {
-  v3 = [a3 rateLimitConfigurationName];
-  v4 = v3 != 0;
+  rateLimitConfigurationName = [activity rateLimitConfigurationName];
+  v4 = rateLimitConfigurationName != 0;
 
   return v4;
 }
 
-- (id)responseForActivity:(id)a3 withState:(id)a4
+- (id)responseForActivity:(id)activity withState:(id)state
 {
-  v5 = a3;
+  activityCopy = activity;
   v6 = [[_DASPolicyResponseRationale alloc] initWithPolicyName:self->_policyName];
-  v7 = [v5 rateLimitConfigurationName];
-  if (v7 && ([v5 startDate], v8 = objc_claimAutoreleasedReturnValue(), v8, !v8))
+  rateLimitConfigurationName = [activityCopy rateLimitConfigurationName];
+  if (rateLimitConfigurationName && ([activityCopy startDate], v8 = objc_claimAutoreleasedReturnValue(), v8, !v8))
   {
     v10 = +[_DASActivityRateLimitManager sharedLimiter];
-    v11 = [v10 evaluateRateLimitedActivity:v5];
+    v11 = [v10 evaluateRateLimitedActivity:activityCopy];
 
-    v12 = [v11 maxedRateLimits];
-    v13 = [v12 count];
+    maxedRateLimits = [v11 maxedRateLimits];
+    v13 = [maxedRateLimits count];
 
     if (v13)
     {
@@ -101,11 +101,11 @@
   return v9;
 }
 
-- (BOOL)shouldIgnoreTrigger:(id)a3 withState:(id)a4
+- (BOOL)shouldIgnoreTrigger:(id)trigger withState:(id)state
 {
-  v5 = a3;
-  v6 = a4;
-  if ((([v5 isEqualToString:@"com.apple.das.lpmchange"] & 1) != 0 || objc_msgSend(v5, "isEqualToString:", @"com.apple.duetactivityscheduler.pluggedinpolicy.ispluggedin")) && !+[_DASRateLimiterUtilities consideredInLPMWithState:](_DASRateLimiterUtilities, "consideredInLPMWithState:", v6))
+  triggerCopy = trigger;
+  stateCopy = state;
+  if ((([triggerCopy isEqualToString:@"com.apple.das.lpmchange"] & 1) != 0 || objc_msgSend(triggerCopy, "isEqualToString:", @"com.apple.duetactivityscheduler.pluggedinpolicy.ispluggedin")) && !+[_DASRateLimiterUtilities consideredInLPMWithState:](_DASRateLimiterUtilities, "consideredInLPMWithState:", stateCopy))
   {
     v8 = +[_DASActivityRateLimitManager sharedLimiter];
     [v8 recalculateStartDates];

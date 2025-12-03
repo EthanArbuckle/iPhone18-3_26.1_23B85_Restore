@@ -1,34 +1,34 @@
 @interface WFPlayMusicAction
 - (BOOL)attemptContextualPlayback;
-- (BOOL)canOfferSuggestionsForParameterWithKey:(id)a3;
+- (BOOL)canOfferSuggestionsForParameterWithKey:(id)key;
 - (BOOL)hasPlaybackArchive;
 - (id)disabledOnPlatforms;
-- (id)mediaQueryFromMediaCollection:(id)a3;
-- (id)serializedParametersForContextualActionMediaIntent:(id)a3;
-- (id)serializedParametersForDonatedIntent:(id)a3 allowDroppingUnconfigurableValues:(BOOL)a4;
-- (id)systemEntityCollectionIdentifierForDisambiguatingParameterWithKey:(id)a3;
+- (id)mediaQueryFromMediaCollection:(id)collection;
+- (id)serializedParametersForContextualActionMediaIntent:(id)intent;
+- (id)serializedParametersForDonatedIntent:(id)intent allowDroppingUnconfigurableValues:(BOOL)values;
+- (id)systemEntityCollectionIdentifierForDisambiguatingParameterWithKey:(id)key;
 - (int64_t)repeatMode;
 - (int64_t)shuffleMode;
-- (void)executePlayMediaIntent:(id)a3;
-- (void)fetchSuggestedEntitiesForParameterWithKey:(id)a3 completionHandler:(id)a4;
-- (void)finishRunningWithError:(id)a3;
-- (void)getContentWithCompletionHandler:(id)a3;
+- (void)executePlayMediaIntent:(id)intent;
+- (void)fetchSuggestedEntitiesForParameterWithKey:(id)key completionHandler:(id)handler;
+- (void)finishRunningWithError:(id)error;
+- (void)getContentWithCompletionHandler:(id)handler;
 - (void)initializeParameters;
-- (void)playContent:(id)a3 withMusicPlayer:(id)a4 completionHandler:(id)a5;
-- (void)playContentViaMPCAssistant:(id)a3 routeDescriptor:(id)a4;
-- (void)playContentViaMusicPlayer:(id)a3;
-- (void)runAsynchronouslyWithInput:(id)a3;
-- (void)sendPlaybackArchive:(id)a3 orPlaybackQueue:(id)a4 toDestination:(id)a5 completion:(id)a6;
-- (void)setShuffleAndRepeatModesOnMusicPlayer:(id)a3;
+- (void)playContent:(id)content withMusicPlayer:(id)player completionHandler:(id)handler;
+- (void)playContentViaMPCAssistant:(id)assistant routeDescriptor:(id)descriptor;
+- (void)playContentViaMusicPlayer:(id)player;
+- (void)runAsynchronouslyWithInput:(id)input;
+- (void)sendPlaybackArchive:(id)archive orPlaybackQueue:(id)queue toDestination:(id)destination completion:(id)completion;
+- (void)setShuffleAndRepeatModesOnMusicPlayer:(id)player;
 @end
 
 @implementation WFPlayMusicAction
 
-- (void)executePlayMediaIntent:(id)a3
+- (void)executePlayMediaIntent:(id)intent
 {
   v4 = MEMORY[0x277D7C538];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithIntent:v5 donateInteraction:0 groupIdentifier:0];
+  intentCopy = intent;
+  v6 = [[v4 alloc] initWithIntent:intentCopy donateInteraction:0 groupIdentifier:0];
 
   [v6 setSkipResolveAndConfirm:1];
   [(WFPlayMusicAction *)self setExecutor:v6];
@@ -46,8 +46,8 @@
   v4 = v3;
   if (v3 && ([v3 intent], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
   {
-    v6 = [v4 intent];
-    [(WFPlayMusicAction *)self executePlayMediaIntent:v6];
+    intent = [v4 intent];
+    [(WFPlayMusicAction *)self executePlayMediaIntent:intent];
 
     v7 = 1;
   }
@@ -60,17 +60,17 @@
   return v7;
 }
 
-- (id)serializedParametersForContextualActionMediaIntent:(id)a3
+- (id)serializedParametersForContextualActionMediaIntent:(id)intent
 {
   v12[1] = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277D7C638];
-  v4 = a3;
-  v5 = [[v3 alloc] initWithIntent:v4];
+  intentCopy = intent;
+  v5 = [[v3 alloc] initWithIntent:intentCopy];
 
   v6 = [objc_alloc(MEMORY[0x277D7C640]) initWithValue:v5];
   v11 = @"WFMediaItems";
-  v7 = [v6 serializedRepresentation];
-  v12[0] = v7;
+  serializedRepresentation = [v6 serializedRepresentation];
+  v12[0] = serializedRepresentation;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v12 forKeys:&v11 count:1];
 
   v9 = *MEMORY[0x277D85DE8];
@@ -78,50 +78,50 @@
   return v8;
 }
 
-- (void)fetchSuggestedEntitiesForParameterWithKey:(id)a3 completionHandler:(id)a4
+- (void)fetchSuggestedEntitiesForParameterWithKey:(id)key completionHandler:(id)handler
 {
   v18[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(WFPlayMusicAction *)self systemEntityCollectionIdentifierForDisambiguatingParameterWithKey:v6];
+  keyCopy = key;
+  handlerCopy = handler;
+  v8 = [(WFPlayMusicAction *)self systemEntityCollectionIdentifierForDisambiguatingParameterWithKey:keyCopy];
   if (v8)
   {
-    v9 = [MEMORY[0x277D7C840] sharedDataSource];
-    [v9 loadEntriesFor:objc_opt_class() parameterKey:v6 limit:20 collectionIdentifier:v8 completionHandler:v7];
+    mEMORY[0x277D7C840] = [MEMORY[0x277D7C840] sharedDataSource];
+    [mEMORY[0x277D7C840] loadEntriesFor:objc_opt_class() parameterKey:keyCopy limit:20 collectionIdentifier:v8 completionHandler:handlerCopy];
   }
 
   else
   {
-    v9 = WFLocalizedString(@"Suggestions Not Found");
+    mEMORY[0x277D7C840] = WFLocalizedString(@"Suggestions Not Found");
     v10 = WFLocalizedString(@"The specified action has no suggestions available");
     v11 = MEMORY[0x277CCA9B8];
     v12 = *MEMORY[0x277D7CB30];
     v13 = *MEMORY[0x277CCA450];
     v17[0] = *MEMORY[0x277CCA470];
     v17[1] = v13;
-    v18[0] = v9;
+    v18[0] = mEMORY[0x277D7C840];
     v18[1] = v10;
     v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:v17 count:2];
     v15 = [v11 errorWithDomain:v12 code:5 userInfo:v14];
 
-    (*(v7 + 2))(v7, 0, v15);
+    (*(handlerCopy + 2))(handlerCopy, 0, v15);
   }
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)canOfferSuggestionsForParameterWithKey:(id)a3
+- (BOOL)canOfferSuggestionsForParameterWithKey:(id)key
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == @"WFMediaItems")
+  keyCopy = key;
+  v5 = keyCopy;
+  if (keyCopy == @"WFMediaItems")
   {
     v6 = 1;
   }
 
-  else if (v4)
+  else if (keyCopy)
   {
-    v6 = [(__CFString *)v4 isEqualToString:@"WFMediaItems"];
+    v6 = [(__CFString *)keyCopy isEqualToString:@"WFMediaItems"];
   }
 
   else
@@ -144,16 +144,16 @@
   return v8;
 }
 
-- (id)systemEntityCollectionIdentifierForDisambiguatingParameterWithKey:(id)a3
+- (id)systemEntityCollectionIdentifierForDisambiguatingParameterWithKey:(id)key
 {
   v3 = [(WFPlayMusicAction *)self parameterStateForKey:@"WFMediaItems"];
-  v4 = [v3 variable];
-  if (v4)
+  variable = [v3 variable];
+  if (variable)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = variable;
     }
 
     else
@@ -169,103 +169,103 @@
 
   v6 = v5;
 
-  v7 = [v6 collectionFilter];
+  collectionFilter = [v6 collectionFilter];
 
-  v8 = [v7 namedQueryReference];
+  namedQueryReference = [collectionFilter namedQueryReference];
 
-  if (v8)
+  if (namedQueryReference)
   {
-    v9 = [v8 topHitSystemEntityCollectionIdentifier];
+    topHitSystemEntityCollectionIdentifier = [namedQueryReference topHitSystemEntityCollectionIdentifier];
   }
 
   else
   {
-    v9 = 0;
+    topHitSystemEntityCollectionIdentifier = 0;
   }
 
-  return v9;
+  return topHitSystemEntityCollectionIdentifier;
 }
 
-- (id)serializedParametersForDonatedIntent:(id)a3 allowDroppingUnconfigurableValues:(BOOL)a4
+- (id)serializedParametersForDonatedIntent:(id)intent allowDroppingUnconfigurableValues:(BOOL)values
 {
   v26[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  intentCopy = intent;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v18 = 0;
+    mediaItems = 0;
     goto LABEL_14;
   }
 
-  v6 = v5;
-  v7 = [v6 _codableDescription];
-  v8 = [v6 mediaContainer];
-  if (v8)
+  v6 = intentCopy;
+  _codableDescription = [v6 _codableDescription];
+  mediaContainer = [v6 mediaContainer];
+  if (mediaContainer)
   {
-    v9 = v8;
-    v10 = [v6 mediaContainer];
-    v11 = [v10 type];
+    v9 = mediaContainer;
+    mediaContainer2 = [v6 mediaContainer];
+    type = [mediaContainer2 type];
 
-    if (v11)
+    if (type)
     {
-      v12 = [v7 attributeByName:@"mediaContainer"];
+      v12 = [_codableDescription attributeByName:@"mediaContainer"];
       v13 = [(WFPlayMusicAction *)self parameterForKey:@"WFMediaItems"];
-      v14 = [v6 mediaContainer];
-      v15 = [v13 definition];
-      v16 = [v12 wf_parameterStateForIntentValue:v14 parameterDefinition:v15];
-      v17 = [v16 serializedRepresentation];
+      mediaContainer3 = [v6 mediaContainer];
+      definition = [v13 definition];
+      definition2 = [v12 wf_parameterStateForIntentValue:mediaContainer3 parameterDefinition:definition];
+      serializedRepresentation = [definition2 serializedRepresentation];
 LABEL_8:
 
-      if (v17 && ([v17 objectForKey:@"itemName"], v20 = objc_claimAutoreleasedReturnValue(), objc_msgSend(MEMORY[0x277CBEB68], "null"), v21 = objc_claimAutoreleasedReturnValue(), v22 = objc_msgSend(v20, "isEqual:", v21), v21, v20, (v22 & 1) == 0))
+      if (serializedRepresentation && ([serializedRepresentation objectForKey:@"itemName"], v20 = objc_claimAutoreleasedReturnValue(), objc_msgSend(MEMORY[0x277CBEB68], "null"), v21 = objc_claimAutoreleasedReturnValue(), v22 = objc_msgSend(v20, "isEqual:", v21), v21, v20, (v22 & 1) == 0))
       {
         v25 = @"WFMediaItems";
-        v26[0] = v17;
-        v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v26 forKeys:&v25 count:1];
+        v26[0] = serializedRepresentation;
+        mediaItems = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v26 forKeys:&v25 count:1];
       }
 
       else
       {
-        v18 = 0;
+        mediaItems = 0;
       }
 
       goto LABEL_13;
     }
   }
 
-  v18 = [v6 mediaItems];
+  mediaItems = [v6 mediaItems];
 
-  if (v18)
+  if (mediaItems)
   {
-    v12 = [v7 attributeByName:@"mediaItems"];
+    v12 = [_codableDescription attributeByName:@"mediaItems"];
     v13 = [(WFPlayMusicAction *)self parameterForKey:@"WFMediaItems"];
-    v14 = [v6 mediaItems];
-    v15 = [v14 firstObject];
-    v16 = [v13 definition];
-    v19 = [v12 wf_parameterStateForIntentValue:v15 parameterDefinition:v16];
-    v17 = [v19 serializedRepresentation];
+    mediaContainer3 = [v6 mediaItems];
+    definition = [mediaContainer3 firstObject];
+    definition2 = [v13 definition];
+    v19 = [v12 wf_parameterStateForIntentValue:definition parameterDefinition:definition2];
+    serializedRepresentation = [v19 serializedRepresentation];
 
     goto LABEL_8;
   }
 
-  v17 = 0;
+  serializedRepresentation = 0;
 LABEL_13:
 
 LABEL_14:
   v23 = *MEMORY[0x277D85DE8];
 
-  return v18;
+  return mediaItems;
 }
 
-- (void)finishRunningWithError:(id)a3
+- (void)finishRunningWithError:(id)error
 {
-  v4 = a3;
-  v5 = [(WFPlayMusicAction *)self variableSource];
+  errorCopy = error;
+  variableSource = [(WFPlayMusicAction *)self variableSource];
   v6 = objc_opt_new();
-  [v5 setContent:v6 forVariableWithName:@"Has Played Music"];
+  [variableSource setContent:v6 forVariableWithName:@"Has Played Music"];
 
   v7.receiver = self;
   v7.super_class = WFPlayMusicAction;
-  [(WFPlayMusicAction *)&v7 finishRunningWithError:v4];
+  [(WFPlayMusicAction *)&v7 finishRunningWithError:errorCopy];
 }
 
 - (int64_t)repeatMode
@@ -320,79 +320,79 @@ LABEL_14:
   return v3;
 }
 
-- (void)setShuffleAndRepeatModesOnMusicPlayer:(id)a3
+- (void)setShuffleAndRepeatModesOnMusicPlayer:(id)player
 {
-  v6 = a3;
-  v4 = [(WFPlayMusicAction *)self shuffleMode];
-  if (v4)
+  playerCopy = player;
+  shuffleMode = [(WFPlayMusicAction *)self shuffleMode];
+  if (shuffleMode)
   {
-    [v6 setShuffleMode:v4];
+    [playerCopy setShuffleMode:shuffleMode];
   }
 
-  v5 = [(WFPlayMusicAction *)self repeatMode];
-  if (v5)
+  repeatMode = [(WFPlayMusicAction *)self repeatMode];
+  if (repeatMode)
   {
-    [v6 setRepeatMode:v5];
+    [playerCopy setRepeatMode:repeatMode];
   }
 }
 
-- (void)playContent:(id)a3 withMusicPlayer:(id)a4 completionHandler:(id)a5
+- (void)playContent:(id)content withMusicPlayer:(id)player completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 storeIDs];
+  contentCopy = content;
+  playerCopy = player;
+  handlerCopy = handler;
+  storeIDs = [contentCopy storeIDs];
 
-  if (v11)
+  if (storeIDs)
   {
-    v12 = [v8 storeIDs];
-    [v9 setQueueWithStoreIDs:v12];
+    storeIDs2 = [contentCopy storeIDs];
+    [playerCopy setQueueWithStoreIDs:storeIDs2];
   }
 
   else
   {
-    v13 = [v8 mediaCollection];
+    mediaCollection = [contentCopy mediaCollection];
 
-    if (v13)
+    if (mediaCollection)
     {
-      v12 = [v8 mediaCollection];
-      [v9 setQueueWithItemCollection:v12];
+      storeIDs2 = [contentCopy mediaCollection];
+      [playerCopy setQueueWithItemCollection:storeIDs2];
     }
 
     else
     {
-      v15 = [v9 nowPlayingItem];
+      nowPlayingItem = [playerCopy nowPlayingItem];
 
-      if (v15)
+      if (nowPlayingItem)
       {
         goto LABEL_6;
       }
 
-      v12 = [getMPMediaQueryClass() songsQuery];
-      v16 = [v12 items];
-      v17 = [v16 count];
+      storeIDs2 = [getMPMediaQueryClass() songsQuery];
+      items = [storeIDs2 items];
+      v17 = [items count];
 
       if (!v17)
       {
-        v10[2](v10, 0);
+        handlerCopy[2](handlerCopy, 0);
 
         goto LABEL_7;
       }
 
-      [v9 setQueueWithQuery:v12];
+      [playerCopy setQueueWithQuery:storeIDs2];
     }
   }
 
 LABEL_6:
-  v14 = [(WFPlayMusicAction *)self userInterface];
+  userInterface = [(WFPlayMusicAction *)self userInterface];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __67__WFPlayMusicAction_playContent_withMusicPlayer_completionHandler___block_invoke;
   v18[3] = &unk_278C21360;
-  v19 = v9;
-  v20 = self;
-  v21 = v10;
-  WFConfigureAudioRoutesForUserInterface(v14, v18);
+  v19 = playerCopy;
+  selfCopy = self;
+  v21 = handlerCopy;
+  WFConfigureAudioRoutesForUserInterface(userInterface, v18);
 
 LABEL_7:
 }
@@ -434,9 +434,9 @@ void __67__WFPlayMusicAction_playContent_withMusicPlayer_completionHandler___blo
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)playContentViaMusicPlayer:(id)a3
+- (void)playContentViaMusicPlayer:(id)player
 {
-  v4 = a3;
+  playerCopy = player;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2050000000;
@@ -455,16 +455,16 @@ void __67__WFPlayMusicAction_playContent_withMusicPlayer_completionHandler___blo
 
   v6 = v5;
   _Block_object_dispose(&v14, 8);
-  v7 = [v5 systemMusicPlayer];
+  systemMusicPlayer = [v5 systemMusicPlayer];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __47__WFPlayMusicAction_playContentViaMusicPlayer___block_invoke;
   v10[3] = &unk_278C1FF80;
   v10[4] = self;
-  v11 = v7;
-  v12 = v4;
-  v8 = v4;
-  v9 = v7;
+  v11 = systemMusicPlayer;
+  v12 = playerCopy;
+  v8 = playerCopy;
+  v9 = systemMusicPlayer;
   [(WFPlayMusicAction *)self playContent:v8 withMusicPlayer:v9 completionHandler:v10];
 }
 
@@ -516,26 +516,26 @@ uint64_t __47__WFPlayMusicAction_playContentViaMusicPlayer___block_invoke_2(uint
   }
 }
 
-- (void)sendPlaybackArchive:(id)a3 orPlaybackQueue:(id)a4 toDestination:(id)a5 completion:(id)a6
+- (void)sendPlaybackArchive:(id)archive orPlaybackQueue:(id)queue toDestination:(id)destination completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(WFPlayMusicAction *)self userInterface];
+  archiveCopy = archive;
+  queueCopy = queue;
+  destinationCopy = destination;
+  completionCopy = completion;
+  userInterface = [(WFPlayMusicAction *)self userInterface];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __82__WFPlayMusicAction_sendPlaybackArchive_orPlaybackQueue_toDestination_completion___block_invoke;
   v19[3] = &unk_278C21268;
-  v20 = v10;
-  v21 = v12;
-  v22 = v11;
-  v23 = v13;
-  v15 = v11;
-  v16 = v13;
-  v17 = v12;
-  v18 = v10;
-  WFConfigureAudioRoutesForUserInterface(v14, v19);
+  v20 = archiveCopy;
+  v21 = destinationCopy;
+  v22 = queueCopy;
+  v23 = completionCopy;
+  v15 = queueCopy;
+  v16 = completionCopy;
+  v17 = destinationCopy;
+  v18 = archiveCopy;
+  WFConfigureAudioRoutesForUserInterface(userInterface, v19);
 }
 
 void __82__WFPlayMusicAction_sendPlaybackArchive_orPlaybackQueue_toDestination_completion___block_invoke(uint64_t a1)
@@ -601,15 +601,15 @@ uint64_t __82__WFPlayMusicAction_sendPlaybackArchive_orPlaybackQueue_toDestinati
   }
 }
 
-- (void)playContentViaMPCAssistant:(id)a3 routeDescriptor:(id)a4
+- (void)playContentViaMPCAssistant:(id)assistant routeDescriptor:(id)descriptor
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 playbackArchive];
-  v9 = [(WFPlayMusicAction *)self shuffleMode];
-  v10 = [v6 storeIDs];
+  assistantCopy = assistant;
+  descriptorCopy = descriptor;
+  playbackArchive = [assistantCopy playbackArchive];
+  shuffleMode = [(WFPlayMusicAction *)self shuffleMode];
+  storeIDs = [assistantCopy storeIDs];
 
-  if (v10)
+  if (storeIDs)
   {
     v37 = 0;
     v38 = &v37;
@@ -630,29 +630,29 @@ uint64_t __82__WFPlayMusicAction_sendPlaybackArchive_orPlaybackQueue_toDestinati
     v12 = v11;
     _Block_object_dispose(&v37, 8);
     v13 = [v11 alloc];
-    v14 = [v6 storeIDs];
-    v15 = [v13 initWithContextID:0 storeItemIDs:v14 collectionIdentifierSet:0];
+    storeIDs2 = [assistantCopy storeIDs];
+    v15 = [v13 initWithContextID:0 storeItemIDs:storeIDs2 collectionIdentifierSet:0];
 
-    if ((v9 - 1) >= 3)
+    if ((shuffleMode - 1) >= 3)
     {
       v16 = 1000;
     }
 
     else
     {
-      v16 = v9 - 1;
+      v16 = shuffleMode - 1;
     }
 
     [v15 setShuffleType:v16];
     goto LABEL_23;
   }
 
-  v17 = [v6 mediaCollection];
+  mediaCollection = [assistantCopy mediaCollection];
 
-  if (v17)
+  if (mediaCollection)
   {
-    v18 = [v6 mediaCollection];
-    v19 = [(WFPlayMusicAction *)self mediaQueryFromMediaCollection:v18];
+    mediaCollection2 = [assistantCopy mediaCollection];
+    v19 = [(WFPlayMusicAction *)self mediaQueryFromMediaCollection:mediaCollection2];
 
     v37 = 0;
     v38 = &v37;
@@ -674,14 +674,14 @@ uint64_t __82__WFPlayMusicAction_sendPlaybackArchive_orPlaybackQueue_toDestinati
     _Block_object_dispose(&v37, 8);
     v22 = [[v20 alloc] initWithContextID:0 query:v19];
     v15 = v22;
-    if ((v9 - 1) >= 3)
+    if ((shuffleMode - 1) >= 3)
     {
       v23 = 1000;
     }
 
     else
     {
-      v23 = v9 - 1;
+      v23 = shuffleMode - 1;
     }
 
     [v22 setShuffleType:v23];
@@ -689,11 +689,11 @@ uint64_t __82__WFPlayMusicAction_sendPlaybackArchive_orPlaybackQueue_toDestinati
     goto LABEL_23;
   }
 
-  if (v8)
+  if (playbackArchive)
   {
-    if ((v9 - 2) >= 2)
+    if ((shuffleMode - 2) >= 2)
     {
-      if (v9 != 1)
+      if (shuffleMode != 1)
       {
 LABEL_22:
         v15 = 0;
@@ -704,22 +704,22 @@ LABEL_23:
         v28[2] = __64__WFPlayMusicAction_playContentViaMPCAssistant_routeDescriptor___block_invoke;
         v28[3] = &unk_278C1AB08;
         v28[4] = self;
-        v29 = v7;
-        v30 = v6;
+        v29 = descriptorCopy;
+        v30 = assistantCopy;
         v31 = v15;
         v27 = v15;
-        [(WFMediaPlaybackController *)v26 getPreferredPlaybackDestinationForPlaybackArchive:v8 completionBlock:v28];
+        [(WFMediaPlaybackController *)v26 getPreferredPlaybackDestinationForPlaybackArchive:playbackArchive completionBlock:v28];
 
         goto LABEL_24;
       }
 
-      v24 = v8;
+      v24 = playbackArchive;
       v25 = 0;
     }
 
     else
     {
-      v24 = v8;
+      v24 = playbackArchive;
       v25 = 1;
     }
 
@@ -818,15 +818,15 @@ void __64__WFPlayMusicAction_playContentViaMPCAssistant_routeDescriptor___block_
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (id)mediaQueryFromMediaCollection:(id)a3
+- (id)mediaQueryFromMediaCollection:(id)collection
 {
   v38[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 itemsQuery];
+  collectionCopy = collection;
+  itemsQuery = [collectionCopy itemsQuery];
 
-  if (v4)
+  if (itemsQuery)
   {
-    v5 = [v3 itemsQuery];
+    itemsQuery2 = [collectionCopy itemsQuery];
   }
 
   else
@@ -871,9 +871,9 @@ void __64__WFPlayMusicAction_playContentViaMPCAssistant_routeDescriptor___block_
     _Block_object_dispose(&v33, 8);
     if (!v8)
     {
-      v22 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v23 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString *getMPMediaItemPropertyIsPlayable(void)"];
-      [v22 handleFailureInFunction:v23 file:@"WFPlayMusicAction.m" lineNumber:36 description:{@"%s", dlerror()}];
+      [currentHandler handleFailureInFunction:v23 file:@"WFPlayMusicAction.m" lineNumber:36 description:{@"%s", dlerror()}];
 
       __break(1u);
     }
@@ -884,8 +884,8 @@ void __64__WFPlayMusicAction_playContentViaMPCAssistant_routeDescriptor___block_
     v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v38 count:1];
 
     v14 = objc_alloc(getMPMediaQueryClass());
-    v15 = [v3 items];
-    v5 = [v14 initWithEntities:v15 entityType:0];
+    items = [collectionCopy items];
+    itemsQuery2 = [v14 initWithEntities:items entityType:0];
 
     v26 = 0u;
     v27 = 0u;
@@ -905,7 +905,7 @@ void __64__WFPlayMusicAction_playContentViaMPCAssistant_routeDescriptor___block_
             objc_enumerationMutation(v16);
           }
 
-          [v5 addFilterPredicate:*(*(&v24 + 1) + 8 * i)];
+          [itemsQuery2 addFilterPredicate:*(*(&v24 + 1) + 8 * i)];
         }
 
         v17 = [v16 countByEnumeratingWithState:&v24 objects:v37 count:16];
@@ -917,16 +917,16 @@ void __64__WFPlayMusicAction_playContentViaMPCAssistant_routeDescriptor___block_
 
   v20 = *MEMORY[0x277D85DE8];
 
-  return v5;
+  return itemsQuery2;
 }
 
-- (void)getContentWithCompletionHandler:(id)a3
+- (void)getContentWithCompletionHandler:(id)handler
 {
   v26[3] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = [(WFPlayMusicAction *)self parameterValueForKey:@"WFMediaItems" ofClass:objc_opt_class()];
-  v6 = [v5 playbackArchiveData];
-  if (v6)
+  playbackArchiveData = [v5 playbackArchiveData];
+  if (playbackArchiveData)
   {
     v7 = MEMORY[0x277CCAAC8];
     v22 = 0;
@@ -948,17 +948,17 @@ void __64__WFPlayMusicAction_playContentViaMPCAssistant_routeDescriptor___block_
     v9 = v8;
     _Block_object_dispose(&v22, 8);
     v20 = 0;
-    v10 = [v7 unarchivedObjectOfClass:v8 fromData:v6 error:&v20];
+    v10 = [v7 unarchivedObjectOfClass:v8 fromData:playbackArchiveData error:&v20];
     v11 = v20;
     v12 = [[WFPlayMusicActionContent alloc] initWithPlaybackArchive:v10];
-    v4[2](v4, v12, v11);
+    handlerCopy[2](handlerCopy, v12, v11);
   }
 
   else if (v5)
   {
-    v13 = [v5 collectionForPlayback];
-    v14 = [[WFPlayMusicActionContent alloc] initWithMediaCollection:v13];
-    v4[2](v4, v14, 0);
+    collectionForPlayback = [v5 collectionForPlayback];
+    v14 = [[WFPlayMusicActionContent alloc] initWithMediaCollection:collectionForPlayback];
+    handlerCopy[2](handlerCopy, v14, 0);
   }
 
   else
@@ -974,13 +974,13 @@ void __64__WFPlayMusicAction_playContentViaMPCAssistant_routeDescriptor___block_
       v18[1] = 3221225472;
       v18[2] = __53__WFPlayMusicAction_getContentWithCompletionHandler___block_invoke;
       v18[3] = &unk_278C1EE80;
-      v19 = v4;
+      v19 = handlerCopy;
       [v15 generateCollectionByCoercingToItemClasses:v16 completionHandler:v18];
     }
 
     else
     {
-      v4[2](v4, 0, 0);
+      handlerCopy[2](handlerCopy, 0, 0);
     }
   }
 
@@ -1078,14 +1078,14 @@ void __53__WFPlayMusicAction_getContentWithCompletionHandler___block_invoke_2(ui
 - (BOOL)hasPlaybackArchive
 {
   v2 = [(WFPlayMusicAction *)self parameterStateForKey:@"WFMediaItems"];
-  v3 = [v2 value];
-  v4 = [v3 type];
+  value = [v2 value];
+  type = [value type];
 
-  LOBYTE(v3) = [v4 isEqualToString:*MEMORY[0x277D7CD88]];
-  return v3;
+  LOBYTE(value) = [type isEqualToString:*MEMORY[0x277D7CD88]];
+  return value;
 }
 
-- (void)runAsynchronouslyWithInput:(id)a3
+- (void)runAsynchronouslyWithInput:(id)input
 {
   v4 = [(WFPlayMusicAction *)self parameterValueForKey:@"WFMediaRoute" ofClass:objc_opt_class()];
   if (!v4)
@@ -1164,8 +1164,8 @@ LABEL_9:
 {
   v5.receiver = self;
   v5.super_class = WFPlayMusicAction;
-  v2 = [(WFPlayMusicAction *)&v5 disabledOnPlatforms];
-  v3 = [v2 arrayByAddingObject:*MEMORY[0x277D7CC80]];
+  disabledOnPlatforms = [(WFPlayMusicAction *)&v5 disabledOnPlatforms];
+  v3 = [disabledOnPlatforms arrayByAddingObject:*MEMORY[0x277D7CC80]];
 
   return v3;
 }

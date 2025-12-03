@@ -2,11 +2,11 @@
 + (id)sharedInstance;
 + (void)runSnapshotServer;
 + (void)updateAllSnapshots;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (NTKDFaceSnapshotCoordinator)init;
 - (void)_handleCalendarDayChangedNotification;
 - (void)_handleCurrentLocaleDidChangeNotification;
-- (void)_prewarmForActivity:(id)a3;
+- (void)_prewarmForActivity:(id)activity;
 - (void)_setupXPCEventListner;
 - (void)_updateAllSnapshots;
 @end
@@ -86,16 +86,16 @@
   return v2;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
+  connectionCopy = connection;
   v6 = _NTKLoggingObjectForDomain();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218242;
-    v14 = self;
+    selfCopy = self;
     v15 = 2112;
-    v16 = v5;
+    v16 = connectionCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "NTKDFaceSnapshotClientHandler %p accept from connection %@", buf, 0x16u);
   }
 
@@ -104,9 +104,9 @@
   v10[1] = 3221225472;
   v10[2] = sub_10000D6AC;
   v10[3] = &unk_10005CA98;
-  v11 = v5;
-  v12 = self;
-  v8 = v5;
+  v11 = connectionCopy;
+  selfCopy2 = self;
+  v8 = connectionCopy;
   dispatch_async(queue, v10);
 
   return 1;
@@ -154,11 +154,11 @@
   xpc_set_event_stream_handler("com.apple.notifyd.matching", &_dispatch_main_q, handler);
 }
 
-- (void)_prewarmForActivity:(id)a3
+- (void)_prewarmForActivity:(id)activity
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  activityCopy = activity;
+  v4 = activityCopy;
+  if (!activityCopy)
   {
     v5 = _NTKLoggingObjectForDomain();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -169,7 +169,7 @@
     goto LABEL_11;
   }
 
-  if (!xpc_activity_get_state(v3))
+  if (!xpc_activity_get_state(activityCopy))
   {
     v5 = _NTKLoggingObjectForDomain();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))

@@ -1,27 +1,27 @@
 @interface HMDRemoteLoginCompanionAuthenticationRequest
-+ (id)objWithDict:(id)a3;
-+ (id)objWithMessage:(id)a3;
-- (HMDRemoteLoginCompanionAuthenticationRequest)initWithCoder:(id)a3;
++ (id)objWithDict:(id)dict;
++ (id)objWithMessage:(id)message;
+- (HMDRemoteLoginCompanionAuthenticationRequest)initWithCoder:(id)coder;
 - (NSDictionary)messagePayload;
 - (NSString)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMDRemoteLoginCompanionAuthenticationRequest
 
-- (HMDRemoteLoginCompanionAuthenticationRequest)initWithCoder:(id)a3
+- (HMDRemoteLoginCompanionAuthenticationRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = HMDRemoteLoginCompanionAuthenticationRequest;
-  v5 = [(HMDRemoteLoginAuthenticationRequest *)&v11 initWithCoder:v4];
+  v5 = [(HMDRemoteLoginAuthenticationRequest *)&v11 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"account"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"account"];
     account = v5->_account;
     v5->_account = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"companionDevice"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"companionDevice"];
     companionDevice = v5->_companionDevice;
     v5->_companionDevice = v8;
   }
@@ -29,19 +29,19 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v9.receiver = self;
   v9.super_class = HMDRemoteLoginCompanionAuthenticationRequest;
-  v4 = a3;
-  [(HMDRemoteLoginAuthenticationRequest *)&v9 encodeWithCoder:v4];
-  v5 = [MEMORY[0x277CF0130] sharedInstance];
-  v6 = [(HMDRemoteLoginCompanionAuthenticationRequest *)self account];
-  v7 = [v5 transportableAuthKitAccount:v6];
+  coderCopy = coder;
+  [(HMDRemoteLoginAuthenticationRequest *)&v9 encodeWithCoder:coderCopy];
+  mEMORY[0x277CF0130] = [MEMORY[0x277CF0130] sharedInstance];
+  account = [(HMDRemoteLoginCompanionAuthenticationRequest *)self account];
+  v7 = [mEMORY[0x277CF0130] transportableAuthKitAccount:account];
 
-  [v4 encodeObject:v7 forKey:@"account"];
-  v8 = [(HMDRemoteLoginCompanionAuthenticationRequest *)self companionDevice];
-  [v4 encodeObject:v8 forKey:@"companionDevice"];
+  [coderCopy encodeObject:v7 forKey:@"account"];
+  companionDevice = [(HMDRemoteLoginCompanionAuthenticationRequest *)self companionDevice];
+  [coderCopy encodeObject:companionDevice forKey:@"companionDevice"];
 }
 
 - (NSString)description
@@ -50,9 +50,9 @@
   v9.receiver = self;
   v9.super_class = HMDRemoteLoginCompanionAuthenticationRequest;
   v4 = [(HMDRemoteLoginAuthenticationRequest *)&v9 description];
-  v5 = [(HMDRemoteLoginCompanionAuthenticationRequest *)self account];
-  v6 = [(HMDRemoteLoginCompanionAuthenticationRequest *)self companionDevice];
-  v7 = [v3 stringWithFormat:@"HMDRemoteLoginCompanionAuthenticationRequest: %@, Account: %@, Companion-Device: %@", v4, v5, v6];
+  account = [(HMDRemoteLoginCompanionAuthenticationRequest *)self account];
+  companionDevice = [(HMDRemoteLoginCompanionAuthenticationRequest *)self companionDevice];
+  v7 = [v3 stringWithFormat:@"HMDRemoteLoginCompanionAuthenticationRequest: %@, Account: %@, Companion-Device: %@", v4, account, companionDevice];
 
   return v7;
 }
@@ -61,8 +61,8 @@
 {
   v9[1] = *MEMORY[0x277D85DE8];
   v3 = encodeRootObject();
-  v4 = [(HMDRemoteLoginCompanionAuthenticationRequest *)self messageName];
-  v8 = v4;
+  messageName = [(HMDRemoteLoginCompanionAuthenticationRequest *)self messageName];
+  v8 = messageName;
   v9[0] = v3;
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v9 forKeys:&v8 count:1];
 
@@ -71,12 +71,12 @@
   return v5;
 }
 
-+ (id)objWithMessage:(id)a3
++ (id)objWithMessage:(id)message
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 messagePayload];
-  v6 = [v5 hmf_dataForKey:@"kHMDRemoteLoginCompanionAuthenticationRequest"];
+  messageCopy = message;
+  messagePayload = [messageCopy messagePayload];
+  v6 = [messagePayload hmf_dataForKey:@"kHMDRemoteLoginCompanionAuthenticationRequest"];
 
   v15 = 0;
   v7 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:objc_opt_class() fromData:v6 error:&v15];
@@ -84,7 +84,7 @@
   if (!v7)
   {
     v9 = objc_autoreleasePoolPush();
-    v10 = a1;
+    selfCopy = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
@@ -104,18 +104,18 @@
   return v7;
 }
 
-+ (id)objWithDict:(id)a3
++ (id)objWithDict:(id)dict
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 hmf_dataForKey:@"kHMDRemoteLoginCompanionAuthenticationRequest"];
+  dictCopy = dict;
+  v5 = [dictCopy hmf_dataForKey:@"kHMDRemoteLoginCompanionAuthenticationRequest"];
   v14 = 0;
   v6 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:objc_opt_class() fromData:v5 error:&v14];
   v7 = v14;
   if (!v6)
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = a1;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {

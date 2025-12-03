@@ -2,8 +2,8 @@
 - (CGSize)_bodySize;
 - (NTKRichComplicationRectangularHeadlineLargeBodyView)init;
 - (id)body;
-- (id)headerTextProviderFromTemplate:(id)a3;
-- (void)_handleTemplate:(id)a3 reason:(int64_t)a4;
+- (id)headerTextProviderFromTemplate:(id)template;
+- (void)_handleTemplate:(id)template reason:(int64_t)reason;
 - (void)layoutSubviews;
 @end
 
@@ -17,15 +17,15 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [(CDRichComplicationView *)v2 device];
-    v5 = [(NTKRichComplicationRectangularBaseView *)v3 _createAndAddColoringLabelWithFontSize:1 weight:___LayoutConstants_block_invoke_56(v4 usesTextProviderTintColoring:v4), *MEMORY[0x277D74420]];
+    device = [(CDRichComplicationView *)v2 device];
+    v5 = [(NTKRichComplicationRectangularBaseView *)v3 _createAndAddColoringLabelWithFontSize:1 weight:___LayoutConstants_block_invoke_56(device usesTextProviderTintColoring:device), *MEMORY[0x277D74420]];
     headerLabel = v3->_headerLabel;
     v3->_headerLabel = v5;
 
     [(CLKUIColoringLabel *)v3->_headerLabel setNumberOfLines:1];
-    v7 = [(NTKRichComplicationRectangularHeadlineLargeBodyView *)v3 body];
+    body = [(NTKRichComplicationRectangularHeadlineLargeBodyView *)v3 body];
     body = v3->_body;
-    v3->_body = v7;
+    v3->_body = body;
 
     [(NTKRichComplicationRectangularHeadlineLargeBodyView *)v3 addSubview:v3->_body];
   }
@@ -35,10 +35,10 @@
 
 - (CGSize)_bodySize
 {
-  v3 = [(CDRichComplicationView *)self device];
-  v4 = __64__NTKRichComplicationRectangularHeadlineLargeBodyView__bodySize__block_invoke(v3, v3);
+  device = [(CDRichComplicationView *)self device];
+  v4 = __64__NTKRichComplicationRectangularHeadlineLargeBodyView__bodySize__block_invoke(device, device);
 
-  v5 = [(CDRichComplicationView *)self device];
+  device2 = [(CDRichComplicationView *)self device];
   v6 = NTKWhistlerLargeRectangularComplicationSize();
 
   [(NTKRichComplicationRectangularBaseView *)self contentMargin];
@@ -83,19 +83,19 @@ double __64__NTKRichComplicationRectangularHeadlineLargeBodyView__bodySize__bloc
   [(NTKRichComplicationRectangularHeadlineLargeBodyView *)&v24 layoutSubviews];
   [(NTKRichComplicationRectangularHeadlineLargeBodyView *)self bounds];
   v4 = v3;
-  v5 = [(CDRichComplicationView *)self device];
-  v6 = ___LayoutConstants_block_invoke_56(v5, v5);
+  device = [(CDRichComplicationView *)self device];
+  v6 = ___LayoutConstants_block_invoke_56(device, device);
   v8 = v7;
   v10 = v9;
-  v11 = [(CLKUIColoringLabel *)self->_headerLabel font];
+  font = [(CLKUIColoringLabel *)self->_headerLabel font];
   [(NTKRichComplicationRectangularBaseView *)self contentMargin];
   v13 = v4 + v12 * -2.0;
-  [v11 ascender];
+  [font ascender];
   CLKRoundForDevice();
   v15 = v14;
   [(NTKRichComplicationRectangularBaseView *)self contentMargin];
   v17 = v16;
-  [v11 lineHeight];
+  [font lineHeight];
   CLKRoundForDevice();
   [(CLKUIColoringLabel *)self->_headerLabel setFrame:v17, v8 - v15, v13, v18];
   [(CLKUIColoringLabel *)self->_headerLabel setMaxWidth:v13];
@@ -106,20 +106,20 @@ double __64__NTKRichComplicationRectangularHeadlineLargeBodyView__bodySize__bloc
   [(UIView *)self->_body setFrame:v21, v19, v22, v23];
 }
 
-- (void)_handleTemplate:(id)a3 reason:(int64_t)a4
+- (void)_handleTemplate:(id)template reason:(int64_t)reason
 {
-  v14 = a3;
-  v5 = [v14 tintColor];
+  templateCopy = template;
+  tintColor = [templateCopy tintColor];
 
-  if (v5)
+  if (tintColor)
   {
     headerLabel = self->_headerLabel;
-    v7 = [v14 tintColor];
-    [(CLKUIColoringLabel *)headerLabel setColor:v7];
+    tintColor2 = [templateCopy tintColor];
+    [(CLKUIColoringLabel *)headerLabel setColor:tintColor2];
   }
 
-  v8 = [v14 metadata];
-  v9 = [v8 objectForKeyedSubscript:*MEMORY[0x277CBB6D8]];
+  metadata = [templateCopy metadata];
+  v9 = [metadata objectForKeyedSubscript:*MEMORY[0x277CBB6D8]];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -127,15 +127,15 @@ double __64__NTKRichComplicationRectangularHeadlineLargeBodyView__bodySize__bloc
     -[CLKUIColoringLabel setTwoToneStyleInMonochrome:](self->_headerLabel, "setTwoToneStyleInMonochrome:", [v9 integerValue]);
   }
 
-  v10 = [(NTKRichComplicationRectangularHeadlineLargeBodyView *)self headerTextProviderFromTemplate:v14];
+  v10 = [(NTKRichComplicationRectangularHeadlineLargeBodyView *)self headerTextProviderFromTemplate:templateCopy];
   [(CLKUIColoringLabel *)self->_headerLabel setTextProvider:v10];
   v13 = 1;
-  if ([v14 isLinkedOnOrAfterGrace])
+  if ([templateCopy isLinkedOnOrAfterGrace])
   {
-    v11 = [(CDRichComplicationView *)self device];
-    v12 = [v11 isRunningGraceOrLater];
+    device = [(CDRichComplicationView *)self device];
+    isRunningGraceOrLater = [device isRunningGraceOrLater];
 
-    if (v12)
+    if (isRunningGraceOrLater)
     {
       v13 = 0;
     }
@@ -151,7 +151,7 @@ double __64__NTKRichComplicationRectangularHeadlineLargeBodyView__bodySize__bloc
   return 0;
 }
 
-- (id)headerTextProviderFromTemplate:(id)a3
+- (id)headerTextProviderFromTemplate:(id)template
 {
   objc_opt_class();
   NSRequestConcreteImplementation();

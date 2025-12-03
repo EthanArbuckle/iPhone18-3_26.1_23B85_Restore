@@ -1,13 +1,13 @@
 @interface AWDMDNSResponderResolveStatsHostname
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)addResult:(id)a3;
-- (void)copyTo:(id)a3;
+- (void)addResult:(id)result;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDMDNSResponderResolveStatsHostname
@@ -21,7 +21,7 @@
   [(AWDMDNSResponderResolveStatsHostname *)&v3 dealloc];
 }
 
-- (void)addResult:(id)a3
+- (void)addResult:(id)result
 {
   results = self->_results;
   if (!results)
@@ -30,7 +30,7 @@
     self->_results = results;
   }
 
-  [(NSMutableArray *)results addObject:a3];
+  [(NSMutableArray *)results addObject:result];
 }
 
 - (id)description
@@ -43,12 +43,12 @@
 - (id)dictionaryRepresentation
 {
   v19 = *MEMORY[0x29EDCA608];
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
+  v4 = dictionary;
   name = self->_name;
   if (name)
   {
-    [v3 setObject:name forKey:@"name"];
+    [dictionary setObject:name forKey:@"name"];
   }
 
   if ([(NSMutableArray *)self->_results count])
@@ -89,7 +89,7 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v16 = *MEMORY[0x29EDCA608];
   if (self->_name)
@@ -132,34 +132,34 @@
   v10 = *MEMORY[0x29EDCA608];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if (self->_name)
   {
-    [a3 setName:?];
+    [to setName:?];
   }
 
   if ([(AWDMDNSResponderResolveStatsHostname *)self resultsCount])
   {
-    [a3 clearResults];
-    v5 = [(AWDMDNSResponderResolveStatsHostname *)self resultsCount];
-    if (v5)
+    [to clearResults];
+    resultsCount = [(AWDMDNSResponderResolveStatsHostname *)self resultsCount];
+    if (resultsCount)
     {
-      v6 = v5;
+      v6 = resultsCount;
       for (i = 0; i != v6; ++i)
       {
-        [a3 addResult:{-[AWDMDNSResponderResolveStatsHostname resultAtIndex:](self, "resultAtIndex:", i)}];
+        [to addResult:{-[AWDMDNSResponderResolveStatsHostname resultAtIndex:](self, "resultAtIndex:", i)}];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v19 = *MEMORY[0x29EDCA608];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
 
-  v5[1] = [(NSString *)self->_name copyWithZone:a3];
+  v5[1] = [(NSString *)self->_name copyWithZone:zone];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -180,7 +180,7 @@
           objc_enumerationMutation(results);
         }
 
-        v11 = [*(*(&v14 + 1) + 8 * v10) copyWithZone:a3];
+        v11 = [*(*(&v14 + 1) + 8 * v10) copyWithZone:zone];
         [v5 addResult:v11];
 
         ++v10;
@@ -197,16 +197,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     name = self->_name;
-    if (!(name | *(a3 + 1)) || (v5 = [(NSString *)name isEqual:?]) != 0)
+    if (!(name | *(equal + 1)) || (v5 = [(NSString *)name isEqual:?]) != 0)
     {
       results = self->_results;
-      if (results | *(a3 + 2))
+      if (results | *(equal + 2))
       {
 
         LOBYTE(v5) = [(NSMutableArray *)results isEqual:?];
@@ -222,10 +222,10 @@
   return v5;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v16 = *MEMORY[0x29EDCA608];
-  if (*(a3 + 1))
+  if (*(from + 1))
   {
     [(AWDMDNSResponderResolveStatsHostname *)self setName:?];
   }
@@ -234,7 +234,7 @@
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = *(a3 + 2);
+  v5 = *(from + 2);
   v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {

@@ -1,7 +1,7 @@
 @interface TSUKVOToken
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (TSUKVOToken)init;
-- (TSUKVOToken)initWithObserver:(id)a3 target:(id)a4 keyPath:(id)a5 context:(void *)a6;
+- (TSUKVOToken)initWithObserver:(id)observer target:(id)target keyPath:(id)path context:(void *)context;
 - (void)dealloc;
 @end
 
@@ -15,7 +15,7 @@
   objc_exception_throw([MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE658] reason:objc_msgSend(MEMORY[0x277CCACA8] userInfo:{"stringWithFormat:", @"%s: %s", "Do not call method", "-[TSUKVOToken init]"), 0}]);
 }
 
-- (TSUKVOToken)initWithObserver:(id)a3 target:(id)a4 keyPath:(id)a5 context:(void *)a6
+- (TSUKVOToken)initWithObserver:(id)observer target:(id)target keyPath:(id)path context:(void *)context
 {
   v13.receiver = self;
   v13.super_class = TSUKVOToken;
@@ -23,10 +23,10 @@
   v11 = v10;
   if (v10)
   {
-    v10->_observer = a3;
-    v10->_target = a4;
-    v10->_keyPath = [a5 copy];
-    v11->_context = a6;
+    v10->_observer = observer;
+    v10->_target = target;
+    v10->_keyPath = [path copy];
+    v11->_context = context;
   }
 
   return v11;
@@ -39,9 +39,9 @@
   [(TSUKVOToken *)&v3 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     LOBYTE(v6) = 1;
   }
@@ -49,7 +49,7 @@
   else
   {
     v5 = objc_opt_class();
-    v6 = TSUDynamicCast(v5, a3);
+    v6 = TSUDynamicCast(v5, equal);
     if (v6)
     {
       v7 = v6;
@@ -57,9 +57,9 @@
       if (context == [v6 context] && (observer = self->_observer, observer == objc_msgSend(v7, "observer")))
       {
         keyPath = self->_keyPath;
-        v11 = [v7 keyPath];
+        keyPath = [v7 keyPath];
 
-        LOBYTE(v6) = [(NSString *)keyPath isEqualToString:v11];
+        LOBYTE(v6) = [(NSString *)keyPath isEqualToString:keyPath];
       }
 
       else

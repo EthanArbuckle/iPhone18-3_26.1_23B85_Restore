@@ -1,21 +1,21 @@
 @interface ComAppleProactiveLuceneCachingWeight
-- (id)scorerWithOrgApacheLuceneIndexLeafReaderContext:(id)a3;
+- (id)scorerWithOrgApacheLuceneIndexLeafReaderContext:(id)context;
 - (void)dealloc;
-- (void)extractTermsWithJavaUtilSet:(id)a3;
-- (void)normalizeWithFloat:(float)a3 withFloat:(float)a4;
+- (void)extractTermsWithJavaUtilSet:(id)set;
+- (void)normalizeWithFloat:(float)float withFloat:(float)withFloat;
 @end
 
 @implementation ComAppleProactiveLuceneCachingWeight
 
-- (void)extractTermsWithJavaUtilSet:(id)a3
+- (void)extractTermsWithJavaUtilSet:(id)set
 {
   cachedTerms = self->cachedTerms_;
   if (cachedTerms)
   {
-    if (a3)
+    if (set)
     {
 
-      [a3 addAllWithJavaUtilCollection:cachedTerms];
+      [set addAllWithJavaUtilCollection:cachedTerms];
       return;
     }
 
@@ -36,7 +36,7 @@ LABEL_10:
   [(OrgApacheLuceneSearchWeight *)w extractTermsWithJavaUtilSet:v7];
 }
 
-- (void)normalizeWithFloat:(float)a3 withFloat:(float)a4
+- (void)normalizeWithFloat:(float)float withFloat:(float)withFloat
 {
   self->valueForNormalization_ = NAN;
   w = self->w_;
@@ -48,7 +48,7 @@ LABEL_10:
   [OrgApacheLuceneSearchWeight normalizeWithFloat:"normalizeWithFloat:withFloat:" withFloat:?];
 }
 
-- (id)scorerWithOrgApacheLuceneIndexLeafReaderContext:(id)a3
+- (id)scorerWithOrgApacheLuceneIndexLeafReaderContext:(id)context
 {
   w = self->w_;
   if (!w)
@@ -56,7 +56,7 @@ LABEL_10:
     JreThrowNullPointerException();
   }
 
-  return [(OrgApacheLuceneSearchWeight *)w scorerWithOrgApacheLuceneIndexLeafReaderContext:a3];
+  return [(OrgApacheLuceneSearchWeight *)w scorerWithOrgApacheLuceneIndexLeafReaderContext:context];
 }
 
 - (void)dealloc

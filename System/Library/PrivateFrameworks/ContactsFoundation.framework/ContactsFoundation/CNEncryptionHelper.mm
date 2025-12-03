@@ -1,8 +1,8 @@
 @interface CNEncryptionHelper
-+ (id)decryptAddressingGrammarData:(id)a3;
-+ (id)decryptAddressingGrammarString:(id)a3;
-+ (id)encryptAddressingGrammar:(id)a3;
-+ (id)encryptAddressingGrammarAsString:(id)a3;
++ (id)decryptAddressingGrammarData:(id)data;
++ (id)decryptAddressingGrammarString:(id)string;
++ (id)encryptAddressingGrammar:(id)grammar;
++ (id)encryptAddressingGrammarAsString:(id)string;
 + (id)os_log;
 @end
 
@@ -29,28 +29,28 @@ uint64_t __28__CNEncryptionHelper_os_log__block_invoke()
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-+ (id)encryptAddressingGrammarAsString:(id)a3
++ (id)encryptAddressingGrammarAsString:(id)string
 {
-  v3 = [a1 encryptAddressingGrammar:a3];
+  v3 = [self encryptAddressingGrammar:string];
   v4 = [v3 base64EncodedStringWithOptions:0];
 
   return v4;
 }
 
-+ (id)decryptAddressingGrammarString:(id)a3
++ (id)decryptAddressingGrammarString:(id)string
 {
-  v4 = a3;
-  if (v4)
+  stringCopy = string;
+  if (stringCopy)
   {
-    v5 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBase64EncodedString:v4 options:0];
-    if (v5)
+    os_log2 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBase64EncodedString:stringCopy options:0];
+    if (os_log2)
     {
-      v6 = [a1 decryptAddressingGrammarData:v5];
+      v6 = [self decryptAddressingGrammarData:os_log2];
       goto LABEL_10;
     }
 
-    v7 = [objc_opt_class() os_log];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    os_log = [objc_opt_class() os_log];
+    if (os_log_type_enabled(os_log, OS_LOG_TYPE_ERROR))
     {
       +[CNEncryptionHelper decryptAddressingGrammarString:];
     }
@@ -58,8 +58,8 @@ uint64_t __28__CNEncryptionHelper_os_log__block_invoke()
 
   else
   {
-    v5 = [objc_opt_class() os_log];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    os_log2 = [objc_opt_class() os_log];
+    if (os_log_type_enabled(os_log2, OS_LOG_TYPE_ERROR))
     {
       +[CNEncryptionHelper decryptAddressingGrammarString:];
     }
@@ -71,12 +71,12 @@ LABEL_10:
   return v6;
 }
 
-+ (id)encryptAddressingGrammar:(id)a3
++ (id)encryptAddressingGrammar:(id)grammar
 {
-  if (a3)
+  if (grammar)
   {
-    v3 = [a3 dataRepresentation];
-    v4 = [_TtC18ContactsFoundation15CNDataEncryptor encryptData:v3 keyLabel:@"com.apple.contacts.keys.pronouns"];
+    dataRepresentation = [grammar dataRepresentation];
+    v4 = [_TtC18ContactsFoundation15CNDataEncryptor encryptData:dataRepresentation keyLabel:@"com.apple.contacts.keys.pronouns"];
 
     if (v4)
     {
@@ -85,8 +85,8 @@ LABEL_10:
 
     else
     {
-      v6 = [objc_opt_class() os_log];
-      if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+      os_log = [objc_opt_class() os_log];
+      if (os_log_type_enabled(os_log, OS_LOG_TYPE_ERROR))
       {
         +[CNEncryptionHelper encryptAddressingGrammar:];
       }
@@ -101,11 +101,11 @@ LABEL_10:
   return v4;
 }
 
-+ (id)decryptAddressingGrammarData:(id)a3
++ (id)decryptAddressingGrammarData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v3 = [_TtC18ContactsFoundation15CNDataEncryptor decryptData:a3 keyLabel:@"com.apple.contacts.keys.pronouns"];
+    v3 = [_TtC18ContactsFoundation15CNDataEncryptor decryptData:data keyLabel:@"com.apple.contacts.keys.pronouns"];
     if (v3)
     {
       v4 = [MEMORY[0x1E696AEE0] termOfAddressFromDataRepresentation:v3];
@@ -113,8 +113,8 @@ LABEL_10:
 
     else
     {
-      v5 = [objc_opt_class() os_log];
-      if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+      os_log = [objc_opt_class() os_log];
+      if (os_log_type_enabled(os_log, OS_LOG_TYPE_ERROR))
       {
         +[CNEncryptionHelper decryptAddressingGrammarData:];
       }

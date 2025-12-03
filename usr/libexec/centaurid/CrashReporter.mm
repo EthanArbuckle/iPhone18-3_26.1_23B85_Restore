@@ -1,34 +1,34 @@
 @interface CrashReporter
-+ (id)coreNameFromFilename:(id)a3;
-+ (id)decodeCrashlogs:(id)a3 fromSubsystem:(id)a4;
-+ (id)decodeCustomSectionsFromData:(id)a3 forCore:(id)a4 withDecoder:(id)a5 sectionInfo:(id)a6;
-+ (id)firmwareReasonFromDecodedCrashlogs:(id)a3 subsystemID:(id)a4;
-+ (id)humanReadableDurationFromTimestamp:(id)a3;
-+ (id)humanReadableWallTimeFromTimestamp:(id)a3;
-+ (id)primaryCoreNameForSubsystemID:(id)a3;
-+ (id)radarCreationURLWithHostReason:(id)a3 firmwareReason:(id)a4 subsystemName:(id)a5 upTimestamp:(id)a6 monotonicTimestamp:(id)a7 realTimestamp:(id)a8;
-+ (id)subsystemNameForSubsystemID:(id)a3;
-+ (id)unslideAddress:(id)a3 slide:(unint64_t)a4;
-+ (id)unslideCallstack:(id)a3 slide:(unint64_t)a4;
++ (id)coreNameFromFilename:(id)filename;
++ (id)decodeCrashlogs:(id)crashlogs fromSubsystem:(id)subsystem;
++ (id)decodeCustomSectionsFromData:(id)data forCore:(id)core withDecoder:(id)decoder sectionInfo:(id)info;
++ (id)firmwareReasonFromDecodedCrashlogs:(id)crashlogs subsystemID:(id)d;
++ (id)humanReadableDurationFromTimestamp:(id)timestamp;
++ (id)humanReadableWallTimeFromTimestamp:(id)timestamp;
++ (id)primaryCoreNameForSubsystemID:(id)d;
++ (id)radarCreationURLWithHostReason:(id)reason firmwareReason:(id)firmwareReason subsystemName:(id)name upTimestamp:(id)timestamp monotonicTimestamp:(id)monotonicTimestamp realTimestamp:(id)realTimestamp;
++ (id)subsystemNameForSubsystemID:(id)d;
++ (id)unslideAddress:(id)address slide:(unint64_t)slide;
++ (id)unslideCallstack:(id)callstack slide:(unint64_t)slide;
 + (int64_t)getUserNotificationMinInterval;
 + (unint64_t)crashAnalyticsSamplingRate;
-+ (void)saveDecodedCrashlogs:(id)a3 fromSubsystem:(id)a4 timestamp:(id)a5;
++ (void)saveDecodedCrashlogs:(id)crashlogs fromSubsystem:(id)subsystem timestamp:(id)timestamp;
 - (BOOL)shouldNotifyUser;
-- (CrashReporter)initWithBuiltIn:(BOOL)a3 analyticsReporter:(id)a4;
-- (id)analyticsDataForCrashlog:(id)a3 core:(id)a4;
+- (CrashReporter)initWithBuiltIn:(BOOL)in analyticsReporter:(id)reporter;
+- (id)analyticsDataForCrashlog:(id)crashlog core:(id)core;
 - (int64_t)getLastUserNotificationTimestamp;
-- (void)notifyUserWithBody:(id)a3 radarCreationURL:(id)a4;
-- (void)processCrash:(id)a3;
-- (void)processCrashes:(id)a3 completion:(id)a4;
-- (void)sendToCrashAnalyticsPipeline:(id)a3 hostReason:(id)a4 subsystemID:(id)a5 upTimestamp:(id)a6 monotonicTimestamp:(id)a7 realTimestamp:(id)a8;
-- (void)setLastUserNotificationTimestamp:(int64_t)a3;
+- (void)notifyUserWithBody:(id)body radarCreationURL:(id)l;
+- (void)processCrash:(id)crash;
+- (void)processCrashes:(id)crashes completion:(id)completion;
+- (void)sendToCrashAnalyticsPipeline:(id)pipeline hostReason:(id)reason subsystemID:(id)d upTimestamp:(id)timestamp monotonicTimestamp:(id)monotonicTimestamp realTimestamp:(id)realTimestamp;
+- (void)setLastUserNotificationTimestamp:(int64_t)timestamp;
 @end
 
 @implementation CrashReporter
 
-- (CrashReporter)initWithBuiltIn:(BOOL)a3 analyticsReporter:(id)a4
+- (CrashReporter)initWithBuiltIn:(BOOL)in analyticsReporter:(id)reporter
 {
-  v8 = a4;
+  reporterCopy = reporter;
   v27.receiver = self;
   v27.super_class = CrashReporter;
   v9 = [(CrashReporter *)&v27 init];
@@ -39,8 +39,8 @@
     dispatchQueue = v9->_dispatchQueue;
     v9->_dispatchQueue = v11;
 
-    v9->_builtIn = a3;
-    objc_storeStrong(&v9->_analyticsReporter, a4);
+    v9->_builtIn = in;
+    objc_storeStrong(&v9->_analyticsReporter, reporter);
     v13 = _os_feature_enabled_impl();
     v9->_enableCrashAnalytics = v13;
     if (v13)
@@ -98,28 +98,28 @@
   return v9;
 }
 
-- (void)processCrashes:(id)a3 completion:(id)a4
+- (void)processCrashes:(id)crashes completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  crashesCopy = crashes;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100010B28;
   block[3] = &unk_10005CA10;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = crashesCopy;
+  selfCopy = self;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  v10 = crashesCopy;
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)processCrash:(id)a3
+- (void)processCrash:(id)crash
 {
-  v4 = a3;
+  crashCopy = crash;
   v5 = [NSString stringWithUTF8String:"Metadata"];
-  v6 = [v4 objectForKeyedSubscript:v5];
+  v6 = [crashCopy objectForKeyedSubscript:v5];
 
   if (v6)
   {
@@ -155,8 +155,8 @@
           if (v17)
           {
             v47 = v10;
-            v18 = [objc_opt_class() decodeCrashlogs:v4 fromSubsystem:v11];
-            v45 = v4;
+            v18 = [objc_opt_class() decodeCrashlogs:crashCopy fromSubsystem:v11];
+            v45 = crashCopy;
             v46 = v8;
             if (v18)
             {
@@ -274,7 +274,7 @@
 
             [(CrashReporter *)self sendToCrashAnalyticsPipeline:v18 hostReason:v46 subsystemID:v47 upTimestamp:v48 monotonicTimestamp:v15 realTimestamp:v17];
 
-            v4 = v45;
+            crashCopy = v45;
             goto LABEL_28;
           }
 
@@ -326,22 +326,22 @@
 LABEL_28:
 }
 
-+ (id)decodeCrashlogs:(id)a3 fromSubsystem:(id)a4
++ (id)decodeCrashlogs:(id)crashlogs fromSubsystem:(id)subsystem
 {
-  v7 = a3;
+  crashlogsCopy = crashlogs;
   if (&_RTBuddyCrashlogDecode)
   {
-    [CrashlogDecoder decoderForSubsystem:a4];
+    [CrashlogDecoder decoderForSubsystem:subsystem];
     v12 = _NSConcreteStackBlock;
     v13 = 3221225472;
     v14 = sub_100029EE4;
     v15 = &unk_10005CA38;
-    v18 = a1;
+    selfCopy = self;
     v16 = v19 = a2;
     v17 = objc_alloc_init(NSMutableDictionary);
     v8 = v17;
     v9 = v16;
-    [v7 enumerateKeysAndObjectsUsingBlock:&v12];
+    [crashlogsCopy enumerateKeysAndObjectsUsingBlock:&v12];
     v10 = [v8 copy];
   }
 
@@ -359,19 +359,19 @@ LABEL_28:
   return v10;
 }
 
-+ (id)decodeCustomSectionsFromData:(id)a3 forCore:(id)a4 withDecoder:(id)a5 sectionInfo:(id)a6
++ (id)decodeCustomSectionsFromData:(id)data forCore:(id)core withDecoder:(id)decoder sectionInfo:(id)info
 {
-  v49 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
+  dataCopy = data;
+  coreCopy = core;
+  decoderCopy = decoder;
+  infoCopy = info;
   objc_opt_class();
-  v40 = v11;
-  v46 = v10;
-  v47 = v9;
+  v40 = infoCopy;
+  v46 = decoderCopy;
+  v47 = coreCopy;
   if (objc_opt_isKindOfClass())
   {
-    v50 = [v10 supportedSectionsForCore:v9];
+    v50 = [decoderCopy supportedSectionsForCore:coreCopy];
     if (v50)
     {
       v41 = objc_alloc_init(NSMutableDictionary);
@@ -379,7 +379,7 @@ LABEL_28:
       v52 = 0u;
       v53 = 0u;
       v54 = 0u;
-      v12 = v11;
+      v12 = infoCopy;
       v13 = [v12 countByEnumeratingWithState:&v51 objects:v67 count:16];
       if (!v13)
       {
@@ -417,9 +417,9 @@ LABEL_28:
               objc_opt_class();
               if (objc_opt_isKindOfClass())
               {
-                v21 = [v19 unsignedIntegerValue];
-                v22 = [v20 unsignedIntegerValue];
-                if (v21 < [v49 length] && v22 < objc_msgSend(v49, "length") && &v21[v22] <= objc_msgSend(v49, "length"))
+                unsignedIntegerValue = [v19 unsignedIntegerValue];
+                unsignedIntegerValue2 = [v20 unsignedIntegerValue];
+                if (unsignedIntegerValue < [dataCopy length] && unsignedIntegerValue2 < objc_msgSend(dataCopy, "length") && &unsignedIntegerValue[unsignedIntegerValue2] <= objc_msgSend(dataCopy, "length"))
                 {
                   v29 = sub_100025204();
                   if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
@@ -438,7 +438,7 @@ LABEL_28:
                     _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_DEFAULT, "%{public}@::%{public}@: decoding %@:%@", buf, 0x2Au);
                   }
 
-                  v31 = [v49 subdataWithRange:{v21, v22}];
+                  v31 = [dataCopy subdataWithRange:{unsignedIntegerValue, unsignedIntegerValue2}];
                   v23 = [v46 decodeData:v31 forSection:v18 fromCore:v47];
 
                   if ([v23 count])
@@ -454,7 +454,7 @@ LABEL_28:
                   {
                     v44 = [objc_opt_class() description];
                     v42 = NSStringFromSelector(a2);
-                    v24 = [v49 length];
+                    v24 = [dataCopy length];
                     *buf = 138544642;
                     v56 = v44;
                     v57 = 2114;
@@ -462,9 +462,9 @@ LABEL_28:
                     v59 = 2112;
                     v60 = v18;
                     v61 = 2048;
-                    v62 = v21;
+                    v62 = unsignedIntegerValue;
                     v63 = 2048;
-                    v64 = v22;
+                    v64 = unsignedIntegerValue2;
                     v65 = 2048;
                     v66 = v24;
                     _os_log_error_impl(&_mh_execute_header, v23, OS_LOG_TYPE_ERROR, "%{public}@::%{public}@: %@ section out of bounds: %lu, %lu, %lu", buf, 0x3Eu);
@@ -550,11 +550,11 @@ LABEL_35:
   return v37;
 }
 
-+ (id)firmwareReasonFromDecodedCrashlogs:(id)a3 subsystemID:(id)a4
++ (id)firmwareReasonFromDecodedCrashlogs:(id)crashlogs subsystemID:(id)d
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [a1 primaryCoreNameForSubsystemID:v8];
+  crashlogsCopy = crashlogs;
+  dCopy = d;
+  v9 = [self primaryCoreNameForSubsystemID:dCopy];
   if (!v9)
   {
     v14 = sub_100025204();
@@ -570,12 +570,12 @@ LABEL_35:
     v22 = 2114;
     v23 = v16;
     v24 = 2112;
-    v25 = v8;
+    v25 = dCopy;
     _os_log_error_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "%{public}@::%{public}@: invalid subsystemID %@", &v20, 0x20u);
     goto LABEL_7;
   }
 
-  v10 = [v7 objectForKey:v9];
+  v10 = [crashlogsCopy objectForKey:v9];
   if (!v10)
   {
     v14 = sub_100025204();
@@ -630,25 +630,25 @@ LABEL_12:
   return v13;
 }
 
-+ (id)subsystemNameForSubsystemID:(id)a3
++ (id)subsystemNameForSubsystemID:(id)d
 {
-  v3 = [a3 unsignedIntegerValue];
-  if (v3 >= [&off_100080E28 count])
+  unsignedIntegerValue = [d unsignedIntegerValue];
+  if (unsignedIntegerValue >= [&off_100080E28 count])
   {
     v4 = @"???";
   }
 
   else
   {
-    v4 = [&off_100080E40 objectAtIndexedSubscript:v3];
+    v4 = [&off_100080E40 objectAtIndexedSubscript:unsignedIntegerValue];
   }
 
   return v4;
 }
 
-+ (id)primaryCoreNameForSubsystemID:(id)a3
++ (id)primaryCoreNameForSubsystemID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = [NSString stringWithUTF8String:"Crashlog.CTRL.bin"];
   v6 = [NSString stringWithUTF8String:"Crashlog.WFMAIN.bin", v5];
   v13[1] = v6;
@@ -656,31 +656,31 @@ LABEL_12:
   v13[2] = v7;
   v8 = [NSArray arrayWithObjects:v13 count:3];
 
-  v9 = [v4 unsignedIntegerValue];
-  if (v9 >= [v8 count])
+  unsignedIntegerValue = [dCopy unsignedIntegerValue];
+  if (unsignedIntegerValue >= [v8 count])
   {
     v11 = 0;
   }
 
   else
   {
-    v10 = [v8 objectAtIndexedSubscript:v9];
-    v11 = [a1 coreNameFromFilename:v10];
+    v10 = [v8 objectAtIndexedSubscript:unsignedIntegerValue];
+    v11 = [self coreNameFromFilename:v10];
   }
 
   return v11;
 }
 
-+ (id)coreNameFromFilename:(id)a3
++ (id)coreNameFromFilename:(id)filename
 {
-  v3 = a3;
+  filenameCopy = filename;
   v4 = [NSRegularExpression regularExpressionWithPattern:@"Crashlog\\.(\\S+)\\.bin" options:0 error:0];
-  v5 = [v4 firstMatchInString:v3 options:0 range:{0, objc_msgSend(v3, "length")}];
+  v5 = [v4 firstMatchInString:filenameCopy options:0 range:{0, objc_msgSend(filenameCopy, "length")}];
   v6 = v5;
   if (v5)
   {
     v7 = [v5 rangeAtIndex:1];
-    v9 = [v3 substringWithRange:{v7, v8}];
+    v9 = [filenameCopy substringWithRange:{v7, v8}];
   }
 
   else
@@ -691,13 +691,13 @@ LABEL_12:
   return v9;
 }
 
-+ (void)saveDecodedCrashlogs:(id)a3 fromSubsystem:(id)a4 timestamp:(id)a5
++ (void)saveDecodedCrashlogs:(id)crashlogs fromSubsystem:(id)subsystem timestamp:(id)timestamp
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [a1 humanReadableWallTimeFromTimestamp:a5];
+  crashlogsCopy = crashlogs;
+  subsystemCopy = subsystem;
+  v10 = [self humanReadableWallTimeFromTimestamp:timestamp];
   v11 = NSTemporaryDirectory();
-  v12 = [NSString stringWithFormat:@"CentauriCrash-%@-%@", v9, v10];
+  v12 = [NSString stringWithFormat:@"CentauriCrash-%@-%@", subsystemCopy, v10];
   v13 = [v11 stringByAppendingPathComponent:v12];
 
   v14 = +[NSFileManager defaultManager];
@@ -712,14 +712,14 @@ LABEL_12:
     v42 = 0u;
     v39 = 0u;
     v40 = 0u;
-    v16 = v8;
+    v16 = crashlogsCopy;
     v17 = [v16 countByEnumeratingWithState:&v39 objects:v52 count:16];
     if (v17)
     {
       v18 = v17;
       v32 = v10;
-      v33 = v9;
-      v34 = v8;
+      v33 = subsystemCopy;
+      v34 = crashlogsCopy;
       v36 = *v40;
       do
       {
@@ -770,8 +770,8 @@ LABEL_12:
       }
 
       while (v18);
-      v9 = v33;
-      v8 = v34;
+      subsystemCopy = v33;
+      crashlogsCopy = v34;
       v10 = v32;
     }
   }
@@ -794,16 +794,16 @@ LABEL_12:
   }
 }
 
-- (void)notifyUserWithBody:(id)a3 radarCreationURL:(id)a4
+- (void)notifyUserWithBody:(id)body radarCreationURL:(id)l
 {
-  v7 = a3;
-  v8 = a4;
+  bodyCopy = body;
+  lCopy = l;
   if (self->_userNotificationCenter || (v9 = [[UNUserNotificationCenter alloc] initWithBundleIdentifier:@"com.apple.centaurid.CentauriNotifications" queue:self->_dispatchQueue], v10 = self->_userNotificationCenter, self->_userNotificationCenter = v9, v10, self->_userNotificationCenter))
   {
     v11 = objc_alloc_init(UNMutableNotificationContent);
     [v11 setTitle:@"Connectivity Fatal Error Detected"];
     [v11 setSubtitle:@"Please File a Radar"];
-    [v11 setBody:v7];
+    [v11 setBody:bodyCopy];
     v12 = +[UNNotificationSound defaultSound];
     [v11 setSound:v12];
 
@@ -811,7 +811,7 @@ LABEL_12:
     [v11 setCategoryIdentifier:@"com.apple.centaurid.crashalert"];
     [v11 setShouldBackgroundDefaultAction:1];
     [v11 setShouldAuthenticateDefaultAction:1];
-    [v11 setDefaultActionURL:v8];
+    [v11 setDefaultActionURL:lCopy];
     v13 = [UNNotificationIcon iconForApplicationIdentifier:@"com.apple.TapToRadar"];
     [v11 setIcon:v13];
 
@@ -879,9 +879,9 @@ LABEL_12:
   return v4;
 }
 
-- (void)setLastUserNotificationTimestamp:(int64_t)a3
+- (void)setLastUserNotificationTimestamp:(int64_t)timestamp
 {
-  self->_lastUserNotificationTimestamp = a3;
+  self->_lastUserNotificationTimestamp = timestamp;
   p_lastUserNotificationTimestamp = &self->_lastUserNotificationTimestamp;
   self->_lastUserNotificationTimestampKnown = 1;
   v5 = NSTemporaryDirectory();
@@ -956,14 +956,14 @@ LABEL_9:
         }
       }
 
-      v8 = [(CrashReporter *)self getLastUserNotificationTimestamp];
+      getLastUserNotificationTimestamp = [(CrashReporter *)self getLastUserNotificationTimestamp];
       tv_sec = v19.tv_sec;
-      if (v8 >= 1)
+      if (getLastUserNotificationTimestamp >= 1)
       {
-        v10 = v8;
-        if (v19.tv_sec >= v8)
+        v10 = getLastUserNotificationTimestamp;
+        if (v19.tv_sec >= getLastUserNotificationTimestamp)
         {
-          v11 = v19.tv_sec - v8;
+          v11 = v19.tv_sec - getLastUserNotificationTimestamp;
           if (v11 < [objc_opt_class() getUserNotificationMinInterval])
           {
             v12 = sub_100025204();
@@ -1021,30 +1021,30 @@ LABEL_18:
   return v4;
 }
 
-+ (id)radarCreationURLWithHostReason:(id)a3 firmwareReason:(id)a4 subsystemName:(id)a5 upTimestamp:(id)a6 monotonicTimestamp:(id)a7 realTimestamp:(id)a8
++ (id)radarCreationURLWithHostReason:(id)reason firmwareReason:(id)firmwareReason subsystemName:(id)name upTimestamp:(id)timestamp monotonicTimestamp:(id)monotonicTimestamp realTimestamp:(id)realTimestamp
 {
-  v45 = a8;
-  v44 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
+  realTimestampCopy = realTimestamp;
+  monotonicTimestampCopy = monotonicTimestamp;
+  timestampCopy = timestamp;
+  nameCopy = name;
+  firmwareReasonCopy = firmwareReason;
+  reasonCopy = reason;
   v17 = objc_opt_new();
   [v17 setScheme:@"tap-to-radar"];
   [v17 setHost:@"new"];
   v18 = sub_1000254F0();
   v19 = sub_1000253D8();
-  v43 = [NSString stringWithFormat:@"%@: %@: Connectivity Fatal Error: %@: %@: %@", v18, v19, v14, v16, v15];
+  firmwareReasonCopy = [NSString stringWithFormat:@"%@: %@: Connectivity Fatal Error: %@: %@: %@", v18, v19, nameCopy, reasonCopy, firmwareReasonCopy];
 
   v20 = sub_1000253D8();
   v21 = sub_1000254F0();
-  v22 = [objc_opt_class() humanReadableDurationFromTimestamp:v13];
+  v22 = [objc_opt_class() humanReadableDurationFromTimestamp:timestampCopy];
 
-  v23 = [objc_opt_class() humanReadableDurationFromTimestamp:v44];
+  v23 = [objc_opt_class() humanReadableDurationFromTimestamp:monotonicTimestampCopy];
 
-  v24 = [objc_opt_class() humanReadableWallTimeFromTimestamp:v45];
+  v24 = [objc_opt_class() humanReadableWallTimeFromTimestamp:realTimestampCopy];
 
-  v25 = [NSString stringWithFormat:@"Connectivity Fatal Error Detected\nSubsystem: %@\nHost Reason: %@\nFirmware Reason: %@\nOS Version: %@\nDevice Type: %@\nUptime Excluding Sleep: %@\nUptime Including Sleep: %@\nTimestamp: %@\n", v14, v16, v15, v20, v21, v22, v23, v24];
+  v25 = [NSString stringWithFormat:@"Connectivity Fatal Error Detected\nSubsystem: %@\nHost Reason: %@\nFirmware Reason: %@\nOS Version: %@\nDevice Type: %@\nUptime Excluding Sleep: %@\nUptime Including Sleep: %@\nTimestamp: %@\n", nameCopy, reasonCopy, firmwareReasonCopy, v20, v21, v22, v23, v24];
 
   v26 = v25;
   v27 = +[NSMutableArray array];
@@ -1057,7 +1057,7 @@ LABEL_18:
   v30 = [[NSURLQueryItem alloc] initWithName:@"ComponentVersion" value:@"All"];
   [v27 addObject:v30];
 
-  v31 = [[NSURLQueryItem alloc] initWithName:@"Title" value:v43];
+  v31 = [[NSURLQueryItem alloc] initWithName:@"Title" value:firmwareReasonCopy];
   [v27 addObject:v31];
 
   v32 = [[NSURLQueryItem alloc] initWithName:@"Description" value:v26];
@@ -1093,18 +1093,18 @@ LABEL_18:
   return v40;
 }
 
-+ (id)humanReadableDurationFromTimestamp:(id)a3
++ (id)humanReadableDurationFromTimestamp:(id)timestamp
 {
-  v3 = [a3 unsignedLongLongValue];
-  v4 = v3 / 0x3B9ACA00;
-  v5 = (v3 / 0x3B9ACA00 * 0x444444444444445uLL) >> 64;
-  v6 = v3 / 0xDF8475800 - 60 * (((572662307 * (v3 / 0xDF8475800)) >> 32) >> 3);
-  v7 = (v3 / 0x34630B8A000 - 24 * ((178956971 * (v3 / 0x34630B8A000)) >> 32));
+  unsignedLongLongValue = [timestamp unsignedLongLongValue];
+  v4 = unsignedLongLongValue / 0x3B9ACA00;
+  v5 = (unsignedLongLongValue / 0x3B9ACA00 * 0x444444444444445uLL) >> 64;
+  v6 = unsignedLongLongValue / 0xDF8475800 - 60 * (((572662307 * (unsignedLongLongValue / 0xDF8475800)) >> 32) >> 3);
+  v7 = (unsignedLongLongValue / 0x34630B8A000 - 24 * ((178956971 * (unsignedLongLongValue / 0x34630B8A000)) >> 32));
   v8 = objc_alloc_init(NSMutableString);
   v9 = v8;
-  if (v3 >= 0x4E94914F0000)
+  if (unsignedLongLongValue >= 0x4E94914F0000)
   {
-    [v8 appendFormat:@"%@%llu days", @", ", v3 / 0x4E94914F0000];
+    [v8 appendFormat:@"%@%llu days", @", ", unsignedLongLongValue / 0x4E94914F0000];
   }
 
   if (v7)
@@ -1136,19 +1136,19 @@ LABEL_18:
   return v11;
 }
 
-+ (id)humanReadableWallTimeFromTimestamp:(id)a3
++ (id)humanReadableWallTimeFromTimestamp:(id)timestamp
 {
   v3 = qword_100087188;
-  v4 = a3;
+  timestampCopy = timestamp;
   if (v3 != -1)
   {
     sub_10002AD60();
   }
 
-  v5 = [v4 unsignedLongLongValue];
+  unsignedLongLongValue = [timestampCopy unsignedLongLongValue];
 
   v6 = qword_100087190;
-  v7 = [NSDate dateWithTimeIntervalSince1970:v5 / 1000000000.0];
+  v7 = [NSDate dateWithTimeIntervalSince1970:unsignedLongLongValue / 1000000000.0];
   v8 = [v6 stringFromDate:v7];
 
   return v8;
@@ -1171,7 +1171,7 @@ LABEL_18:
 
   if (!v5)
   {
-    v6 = v3;
+    integerValue = v3;
 LABEL_11:
     v8 = sub_100025204();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -1183,21 +1183,21 @@ LABEL_11:
       v18 = 2114;
       v19 = v12;
       v20 = 2048;
-      v21 = v6;
+      v21 = integerValue;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%{public}@::%{public}@: %lu%%", &v16, 0x20u);
     }
 
-    v3 = v6;
+    v3 = integerValue;
     goto LABEL_14;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v5 integerValue];
+    integerValue = [v5 integerValue];
     v7 = sub_100025204();
     v8 = v7;
-    if (v6 < 0x65)
+    if (integerValue < 0x65)
     {
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
@@ -1222,7 +1222,7 @@ LABEL_11:
       v18 = 2114;
       v19 = v15;
       v20 = 2048;
-      v21 = v6;
+      v21 = integerValue;
       _os_log_error_impl(&_mh_execute_header, v8, OS_LOG_TYPE_ERROR, "%{public}@::%{public}@: override out of range: %ld", &v16, 0x20u);
     }
   }
@@ -1241,14 +1241,14 @@ LABEL_14:
   return v3;
 }
 
-- (void)sendToCrashAnalyticsPipeline:(id)a3 hostReason:(id)a4 subsystemID:(id)a5 upTimestamp:(id)a6 monotonicTimestamp:(id)a7 realTimestamp:(id)a8
+- (void)sendToCrashAnalyticsPipeline:(id)pipeline hostReason:(id)reason subsystemID:(id)d upTimestamp:(id)timestamp monotonicTimestamp:(id)monotonicTimestamp realTimestamp:(id)realTimestamp
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  pipelineCopy = pipeline;
+  reasonCopy = reason;
+  dCopy = d;
+  timestampCopy = timestamp;
+  monotonicTimestampCopy = monotonicTimestamp;
+  realTimestampCopy = realTimestamp;
   if (self->_enableCrashAnalytics)
   {
     v20 = arc4random_uniform(0x64u);
@@ -1259,23 +1259,23 @@ LABEL_14:
       {
         v27 = [objc_opt_class() description];
         NSStringFromSelector(a2);
-        v29 = v28 = v19;
+        v29 = v28 = realTimestampCopy;
         *buf = 138543618;
         v98 = v27;
         v99 = 2114;
         v100 = v29;
         _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "%{public}@::%{public}@: dropping due to sampling rate", buf, 0x16u);
 
-        v19 = v28;
+        realTimestampCopy = v28;
       }
 
       goto LABEL_49;
     }
 
-    v78 = v19;
-    v80 = v17;
-    v81 = v15;
-    v79 = v18;
+    v78 = realTimestampCopy;
+    v80 = timestampCopy;
+    v81 = reasonCopy;
+    v79 = monotonicTimestampCopy;
     if (sub_10002529C() && (+[NSUserDefaults standardUserDefaults](NSUserDefaults, "standardUserDefaults"), v21 = objc_claimAutoreleasedReturnValue(), v22 = [v21 BOOLForKey:@"CrashAnalyticsTestMode"], v21, v22))
     {
       v23 = sub_100025204();
@@ -1298,17 +1298,17 @@ LABEL_14:
       v73 = 0;
     }
 
-    v77 = [objc_opt_class() subsystemNameForSubsystemID:v16];
-    v86 = self;
-    v75 = v16;
-    v84 = [objc_opt_class() primaryCoreNameForSubsystemID:v16];
+    v77 = [objc_opt_class() subsystemNameForSubsystemID:dCopy];
+    selfCopy = self;
+    v75 = dCopy;
+    v84 = [objc_opt_class() primaryCoreNameForSubsystemID:dCopy];
     v85 = objc_alloc_init(NSMutableArray);
     v91 = 0u;
     v92 = 0u;
     v93 = 0u;
     v94 = 0u;
-    v76 = v14;
-    v30 = v14;
+    v76 = pipelineCopy;
+    v30 = pipelineCopy;
     v31 = [v30 countByEnumeratingWithState:&v91 objects:v111 count:16];
     if (v31)
     {
@@ -1332,7 +1332,7 @@ LABEL_14:
           if (isKindOfClass)
           {
             v38 = [v30 objectForKeyedSubscript:v35];
-            v39 = [(CrashReporter *)v86 analyticsDataForCrashlog:v38 core:v35];
+            v39 = [(CrashReporter *)selfCopy analyticsDataForCrashlog:v38 core:v35];
 
             if (v39)
             {
@@ -1399,7 +1399,7 @@ LABEL_20:
     v74 = [NSNumber numberWithBool:v73];
     v106[4] = v74;
     v105[5] = @"accessory_machine_config";
-    productType = v86->_productType;
+    productType = selfCopy->_productType;
     v46 = productType;
     if (!productType)
     {
@@ -1410,7 +1410,7 @@ LABEL_20:
     v106[5] = v46;
     v105[6] = @"application-info";
     v103[0] = @"chipset";
-    chipset = v86->_chipset;
+    chipset = selfCopy->_chipset;
     v48 = chipset;
     if (!chipset)
     {
@@ -1420,7 +1420,7 @@ LABEL_20:
     v70 = v48;
     v104[0] = v48;
     v103[1] = @"chipset-revision";
-    chipsetRevision = v86->_chipsetRevision;
+    chipsetRevision = selfCopy->_chipsetRevision;
     v50 = chipsetRevision;
     if (!chipsetRevision)
     {
@@ -1429,7 +1429,7 @@ LABEL_20:
 
     v104[1] = v50;
     v103[2] = @"sku";
-    wsku = v86->_wsku;
+    wsku = selfCopy->_wsku;
     v52 = wsku;
     if (!wsku)
     {
@@ -1438,7 +1438,7 @@ LABEL_20:
 
     v104[2] = v52;
     v103[3] = @"builtin";
-    v53 = [NSNumber numberWithBool:v86->_builtIn, v70];
+    v53 = [NSNumber numberWithBool:selfCopy->_builtIn, v70];
     v104[3] = v53;
     v104[4] = v81;
     v103[4] = @"host-reason";
@@ -1481,7 +1481,7 @@ LABEL_36:
     {
     }
 
-    v18 = v79;
+    monotonicTimestampCopy = v79;
     if (!productType)
     {
     }
@@ -1490,11 +1490,11 @@ LABEL_36:
     v57 = [NSJSONSerialization dataWithJSONObject:v82 options:1 error:&v90];
     v58 = v90;
     v59 = v58;
-    v15 = v81;
+    reasonCopy = v81;
     if (!v57 || v58)
     {
       v67 = sub_100025204();
-      v14 = v76;
+      pipelineCopy = v76;
       if (os_log_type_enabled(v67, OS_LOG_TYPE_ERROR))
       {
         v68 = [objc_opt_class() description];
@@ -1525,7 +1525,7 @@ LABEL_36:
 
     v62 = sub_100025204();
     v63 = v62;
-    v14 = v76;
+    pipelineCopy = v76;
     if (!v61 || v59)
     {
       if (!os_log_type_enabled(v62, OS_LOG_TYPE_ERROR))
@@ -1553,9 +1553,9 @@ LABEL_47:
         v67 = v88;
 LABEL_48:
 
-        v16 = v75;
-        v17 = v80;
-        v19 = v78;
+        dCopy = v75;
+        timestampCopy = v80;
+        realTimestampCopy = v78;
 LABEL_49:
 
         goto LABEL_50;
@@ -1563,13 +1563,13 @@ LABEL_49:
 
       v64 = [objc_opt_class() description];
       v65 = NSStringFromSelector(a2);
-      v66 = [v61 filepath];
+      filepath = [v61 filepath];
       *buf = 138543874;
       v98 = v64;
       v99 = 2114;
       v100 = v65;
       v101 = 2114;
-      v102 = v66;
+      v102 = filepath;
       _os_log_impl(&_mh_execute_header, v63, OS_LOG_TYPE_DEFAULT, "%{public}@::%{public}@: submitted: %{public}@", buf, 0x20u);
 
       v56 = v82;
@@ -1582,15 +1582,15 @@ LABEL_49:
 LABEL_50:
 }
 
-- (id)analyticsDataForCrashlog:(id)a3 core:(id)a4
+- (id)analyticsDataForCrashlog:(id)crashlog core:(id)core
 {
-  v6 = a3;
-  v230 = a4;
+  crashlogCopy = crashlog;
+  coreCopy = core;
   v7 = objc_alloc_init(NSMutableArray);
   v234 = objc_alloc_init(NSMutableArray);
-  v8 = [v6 objectForKeyedSubscript:@"errors"];
+  v8 = [crashlogCopy objectForKeyedSubscript:@"errors"];
 
-  v231 = v6;
+  v231 = crashlogCopy;
   if (v8)
   {
     v9 = 0;
@@ -1608,7 +1608,7 @@ LABEL_50:
     goto LABEL_234;
   }
 
-  v19 = [v6 objectForKeyedSubscript:@"panic"];
+  v19 = [crashlogCopy objectForKeyedSubscript:@"panic"];
   v20 = &airship_ch_interface_close_ptr;
   if (v19)
   {
@@ -1629,7 +1629,7 @@ LABEL_50:
 
   v235 = 0;
 LABEL_9:
-  v23 = [v6 objectForKeyedSubscript:@"crashlog-version"];
+  v23 = [crashlogCopy objectForKeyedSubscript:@"crashlog-version"];
   if (v23)
   {
     v24 = v23;
@@ -1649,7 +1649,7 @@ LABEL_9:
 
   v229 = 0;
 LABEL_15:
-  v26 = [v6 objectForKeyedSubscript:@"exception"];
+  v26 = [crashlogCopy objectForKeyedSubscript:@"exception"];
   if (v26)
   {
     v27 = v26;
@@ -1669,11 +1669,11 @@ LABEL_15:
 
   v228 = 0;
 LABEL_21:
-  v29 = [v6 objectForKeyedSubscript:@"sections"];
+  v29 = [crashlogCopy objectForKeyedSubscript:@"sections"];
   if (!v29)
   {
-    v192 = sub_100025204();
-    if (os_log_type_enabled(v192, OS_LOG_TYPE_ERROR))
+    null6 = sub_100025204();
+    if (os_log_type_enabled(null6, OS_LOG_TYPE_ERROR))
     {
       sub_10002B0EC();
     }
@@ -1693,9 +1693,9 @@ LABEL_21:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v192 = sub_100025204();
+    null6 = sub_100025204();
     v238 = v30;
-    if (os_log_type_enabled(v192, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(null6, OS_LOG_TYPE_ERROR))
     {
       sub_10002B044();
     }
@@ -2155,8 +2155,8 @@ LABEL_102:
             v94 = v79;
             if (!v79)
             {
-              v251 = [v34[201] null];
-              v94 = v251;
+              null = [v34[201] null];
+              v94 = null;
             }
 
             v294[0] = v94;
@@ -2164,8 +2164,8 @@ LABEL_102:
             v95 = v84;
             if (!v84)
             {
-              v253 = [v34[201] null];
-              v95 = v253;
+              null2 = [v34[201] null];
+              v95 = null2;
             }
 
             v294[1] = v95;
@@ -2362,8 +2362,8 @@ LABEL_186:
               v159 = obj;
               if (!obj)
               {
-                v222 = [v34[201] null];
-                v159 = v222;
+                null3 = [v34[201] null];
+                v159 = null3;
               }
 
               v291[0] = v159;
@@ -2371,8 +2371,8 @@ LABEL_186:
               v160 = v124;
               if (!v124)
               {
-                v223 = [v34[201] null];
-                v160 = v223;
+                null4 = [v34[201] null];
+                v160 = null4;
               }
 
               v291[1] = v160;
@@ -2380,12 +2380,12 @@ LABEL_186:
               v161 = v125;
               if (!v125)
               {
-                v224 = [v34[201] null];
-                v161 = v224;
+                null5 = [v34[201] null];
+                v161 = null5;
               }
 
               v291[2] = v161;
-              v162 = [v33[197] dictionaryWithObjects:v291 forKeys:v290 count:{3, v222}];
+              v162 = [v33[197] dictionaryWithObjects:v291 forKeys:v290 count:{3, null3}];
               [v234 addObject:v162];
 
               if (v125)
@@ -2814,22 +2814,22 @@ LABEL_256:
   v194 = v235;
 LABEL_257:
   v285[0] = @"panic";
-  v192 = v194;
+  null6 = v194;
   if (!v194)
   {
-    v192 = [v34[201] null];
+    null6 = [v34[201] null];
   }
 
-  v286[0] = v192;
+  v286[0] = null6;
   v285[1] = @"crashlog-version";
-  v207 = v229;
+  null7 = v229;
   if (!v229)
   {
-    v207 = [v34[201] null];
+    null7 = [v34[201] null];
   }
 
-  v252 = v207;
-  v286[1] = v207;
+  v252 = null7;
+  v286[1] = null7;
   v285[2] = @"exception";
   v208 = v228;
   if (!v228)
@@ -3012,10 +3012,10 @@ LABEL_234:
   return v257;
 }
 
-+ (id)unslideAddress:(id)a3 slide:(unint64_t)a4
++ (id)unslideAddress:(id)address slide:(unint64_t)slide
 {
-  v6 = a3;
-  v7 = strtoull([a3 UTF8String], 0, 0);
+  addressCopy = address;
+  v7 = strtoull([address UTF8String], 0, 0);
   if (v7 == -1)
   {
     v9 = sub_100025204();
@@ -3029,8 +3029,8 @@ LABEL_234:
 
   if (v7 - 1879048192 >= 0xFFFFFFFF90000001)
   {
-    v8 = v7 >= a4;
-    v7 -= a4;
+    v8 = v7 >= slide;
+    v7 -= slide;
     if (!v8)
     {
       v9 = sub_100025204();
@@ -3050,15 +3050,15 @@ LABEL_8:
   return v10;
 }
 
-+ (id)unslideCallstack:(id)a3 slide:(unint64_t)a4
++ (id)unslideCallstack:(id)callstack slide:(unint64_t)slide
 {
-  v6 = a3;
-  v7 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v6, "count")}];
+  callstackCopy = callstack;
+  v7 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(callstackCopy, "count")}];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v8 = v6;
+  v8 = callstackCopy;
   v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v9)
   {
@@ -3073,7 +3073,7 @@ LABEL_8:
           objc_enumerationMutation(v8);
         }
 
-        v13 = [a1 unslideAddress:*(*(&v16 + 1) + 8 * i) slide:{a4, v16}];
+        v13 = [self unslideAddress:*(*(&v16 + 1) + 8 * i) slide:{slide, v16}];
         [v7 addObject:v13];
       }
 

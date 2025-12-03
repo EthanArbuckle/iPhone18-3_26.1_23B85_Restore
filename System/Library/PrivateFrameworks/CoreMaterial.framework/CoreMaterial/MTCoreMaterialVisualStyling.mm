@@ -1,16 +1,16 @@
 @interface MTCoreMaterialVisualStyling
 - (CAFilter)_composedFilter;
-- (MTCoreMaterialVisualStyling)initWithVisualStyleSet:(id)a3 styleName:(id)a4 description:(id)a5 andDescendantDescriptions:(id)a6;
+- (MTCoreMaterialVisualStyling)initWithVisualStyleSet:(id)set styleName:(id)name description:(id)description andDescendantDescriptions:(id)descriptions;
 - (NSString)description;
 - (NSString)visualStyleSetName;
-- (id)_preProcessFilteringDescription:(id)a3;
-- (void)_applyToLayer:(id)a3 withColorBlock:(id)a4;
-- (void)_getCompositingFilter:(id *)a3 tintColor:(CGColor *)a4;
-- (void)_getFilterType:(id *)a3 vibrantColor:(CGColor *)a4 tintColor:(CGColor *)a5 inputReversed:(BOOL *)a6;
-- (void)_processBlendingDescription:(id)a3;
-- (void)_processFilteringDescription:(id)a3;
-- (void)_processTintingDescription:(id)a3;
-- (void)_processUserInfoDescription:(id)a3;
+- (id)_preProcessFilteringDescription:(id)description;
+- (void)_applyToLayer:(id)layer withColorBlock:(id)block;
+- (void)_getCompositingFilter:(id *)filter tintColor:(CGColor *)color;
+- (void)_getFilterType:(id *)type vibrantColor:(CGColor *)color tintColor:(CGColor *)tintColor inputReversed:(BOOL *)reversed;
+- (void)_processBlendingDescription:(id)description;
+- (void)_processFilteringDescription:(id)description;
+- (void)_processTintingDescription:(id)description;
+- (void)_processUserInfoDescription:(id)description;
 - (void)dealloc;
 @end
 
@@ -33,20 +33,20 @@
       v8 = v7;
       if (compositingFilter)
       {
-        v9 = [v7 objectForKey:@"compositingFilter"];
+        lastObject = [v7 objectForKey:@"compositingFilter"];
       }
 
       else
       {
         v10 = [v7 valueForKey:@"filters"];
-        v9 = [v10 lastObject];
+        lastObject = [v10 lastObject];
       }
 
       v22 = 0u;
       v23 = 0u;
       v20 = 0u;
       v21 = 0u;
-      v11 = v9;
+      v11 = lastObject;
       v12 = [v11 countByEnumeratingWithState:&v20 objects:v24 count:16];
       if (v12)
       {
@@ -89,31 +89,31 @@
   return composedFilter;
 }
 
-- (MTCoreMaterialVisualStyling)initWithVisualStyleSet:(id)a3 styleName:(id)a4 description:(id)a5 andDescendantDescriptions:(id)a6
+- (MTCoreMaterialVisualStyling)initWithVisualStyleSet:(id)set styleName:(id)name description:(id)description andDescendantDescriptions:(id)descriptions
 {
   v77 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  setCopy = set;
+  nameCopy = name;
+  descriptionCopy = description;
+  descriptionsCopy = descriptions;
   v72.receiver = self;
   v72.super_class = MTCoreMaterialVisualStyling;
   v14 = [(MTCoreMaterialVisualStyling *)&v72 init];
   v15 = v14;
   if (v14)
   {
-    v52 = v11;
-    v54 = v10;
-    objc_storeWeak(&v14->_visualStyleSet, v10);
-    objc_storeStrong(&v15->_visualStyleName, a4);
-    v16 = [v12 objectForKey:@"tinting"];
+    v52 = nameCopy;
+    v54 = setCopy;
+    objc_storeWeak(&v14->_visualStyleSet, setCopy);
+    objc_storeStrong(&v15->_visualStyleName, name);
+    v16 = [descriptionCopy objectForKey:@"tinting"];
     [(MTCoreMaterialVisualStyling *)v15 _processTintingDescription:v16];
 
     v70 = 0u;
     v71 = 0u;
     v68 = 0u;
     v69 = 0u;
-    v17 = [v13 valueForKey:@"tinting"];
+    v17 = [descriptionsCopy valueForKey:@"tinting"];
     v18 = [v17 countByEnumeratingWithState:&v68 objects:v76 count:16];
     if (v18)
     {
@@ -130,9 +130,9 @@
           }
 
           v22 = *(*(&v68 + 1) + 8 * v21);
-          v23 = [MEMORY[0x1E695DFB0] null];
+          null = [MEMORY[0x1E695DFB0] null];
 
-          if (v22 != v23)
+          if (v22 != null)
           {
             [(MTCoreMaterialVisualStyling *)v15 _processTintingDescription:v22];
           }
@@ -147,14 +147,14 @@
       while (v19);
     }
 
-    v24 = [v12 objectForKey:@"blending"];
+    v24 = [descriptionCopy objectForKey:@"blending"];
     [(MTCoreMaterialVisualStyling *)v15 _processBlendingDescription:v24];
 
     v66 = 0u;
     v67 = 0u;
     v64 = 0u;
     v65 = 0u;
-    v25 = [v13 valueForKey:@"blending"];
+    v25 = [descriptionsCopy valueForKey:@"blending"];
     v26 = [v25 countByEnumeratingWithState:&v64 objects:v75 count:16];
     if (v26)
     {
@@ -171,9 +171,9 @@
           }
 
           v30 = *(*(&v64 + 1) + 8 * v29);
-          v31 = [MEMORY[0x1E695DFB0] null];
+          null2 = [MEMORY[0x1E695DFB0] null];
 
-          if (v30 != v31)
+          if (v30 != null2)
           {
             [(MTCoreMaterialVisualStyling *)v15 _processBlendingDescription:v30];
           }
@@ -190,7 +190,7 @@
 
     if (!v15->_compositingFilter)
     {
-      v32 = [v12 objectForKey:@"filtering"];
+      v32 = [descriptionCopy objectForKey:@"filtering"];
       v33 = [(MTCoreMaterialVisualStyling *)v15 _preProcessFilteringDescription:v32];
       [(MTCoreMaterialVisualStyling *)v15 _processFilteringDescription:v33];
 
@@ -198,7 +198,7 @@
       v63 = 0u;
       v60 = 0u;
       v61 = 0u;
-      v34 = [v13 valueForKey:@"filtering"];
+      v34 = [descriptionsCopy valueForKey:@"filtering"];
       v35 = [v34 countByEnumeratingWithState:&v60 objects:v74 count:16];
       if (v35)
       {
@@ -215,9 +215,9 @@
             }
 
             v39 = *(*(&v60 + 1) + 8 * v38);
-            v40 = [MEMORY[0x1E695DFB0] null];
+            null3 = [MEMORY[0x1E695DFB0] null];
 
-            if (v39 != v40)
+            if (v39 != null3)
             {
               v41 = [(MTCoreMaterialVisualStyling *)v15 _preProcessFilteringDescription:v39];
               [(MTCoreMaterialVisualStyling *)v15 _processFilteringDescription:v41];
@@ -234,14 +234,14 @@
       }
     }
 
-    v42 = [v12 objectForKey:{@"userInfo", v52, v54}];
+    v42 = [descriptionCopy objectForKey:{@"userInfo", v52, v54}];
     [(MTCoreMaterialVisualStyling *)v15 _processUserInfoDescription:v42];
 
     v58 = 0u;
     v59 = 0u;
     v56 = 0u;
     v57 = 0u;
-    v43 = [v13 valueForKey:@"userInfo"];
+    v43 = [descriptionsCopy valueForKey:@"userInfo"];
     v44 = [v43 countByEnumeratingWithState:&v56 objects:v73 count:16];
     if (v44)
     {
@@ -258,9 +258,9 @@
           }
 
           v48 = *(*(&v56 + 1) + 8 * v47);
-          v49 = [MEMORY[0x1E695DFB0] null];
+          null4 = [MEMORY[0x1E695DFB0] null];
 
-          if (v48 != v49)
+          if (v48 != null4)
           {
             [(MTCoreMaterialVisualStyling *)v15 _processUserInfoDescription:v48];
           }
@@ -275,8 +275,8 @@
       while (v45);
     }
 
-    v11 = v53;
-    v10 = v55;
+    nameCopy = v53;
+    setCopy = v55;
   }
 
   v50 = *MEMORY[0x1E69E9840];
@@ -296,10 +296,10 @@
   [(MTCoreMaterialVisualStyling *)&v4 dealloc];
 }
 
-- (void)_processTintingDescription:(id)a3
+- (void)_processTintingDescription:(id)description
 {
-  v15 = a3;
-  v4 = [v15 objectForKey:@"tintColor"];
+  descriptionCopy = description;
+  v4 = [descriptionCopy objectForKey:@"tintColor"];
   tintColorDescription = self->_tintColorDescription;
   self->_tintColorDescription = v4;
 
@@ -320,10 +320,10 @@
     self->_tintColor = 0;
   }
 
-  v8 = [v15 objectForKey:@"tintAlpha"];
+  v8 = [descriptionCopy objectForKey:@"tintAlpha"];
   if (v8)
   {
-    v9 = [v15 objectForKey:@"tintAlpha"];
+    v9 = [descriptionCopy objectForKey:@"tintAlpha"];
     [v9 floatValue];
     self->_tintAlpha = v10;
   }
@@ -333,14 +333,14 @@
     self->_tintAlpha = 1.0;
   }
 
-  v11 = [v15 objectForKey:@"tintColorName"];
+  v11 = [descriptionCopy objectForKey:@"tintColorName"];
   tintColorName = self->_tintColorName;
   self->_tintColorName = v11;
 
-  v13 = [v15 objectForKey:@"tintColorUIStyle"];
+  v13 = [descriptionCopy objectForKey:@"tintColorUIStyle"];
   if (v13)
   {
-    v14 = [v15 objectForKey:@"tintColorUIStyle"];
+    v14 = [descriptionCopy objectForKey:@"tintColorUIStyle"];
     self->_tintColorUIStyle = [v14 integerValue];
   }
 
@@ -350,28 +350,28 @@
   }
 }
 
-- (void)_processBlendingDescription:(id)a3
+- (void)_processBlendingDescription:(id)description
 {
-  v4 = a3;
-  v5 = [v4 objectForKey:@"compositingFilter"];
+  descriptionCopy = description;
+  v5 = [descriptionCopy objectForKey:@"compositingFilter"];
   compositingFilter = self->_compositingFilter;
   self->_compositingFilter = v5;
 
   objc_storeStrong(&self->_filterType, self->_compositingFilter);
-  v7 = [v4 objectForKey:@"filterProperties"];
+  v7 = [descriptionCopy objectForKey:@"filterProperties"];
 
   filterProperties = self->_filterProperties;
   self->_filterProperties = v7;
 }
 
-- (id)_preProcessFilteringDescription:(id)a3
+- (id)_preProcessFilteringDescription:(id)description
 {
   v55 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  descriptionCopy = description;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = descriptionCopy;
   }
 
   else
@@ -379,7 +379,7 @@
     v4 = 0;
   }
 
-  v5 = v3;
+  v5 = descriptionCopy;
   if (!v4)
   {
     v29 = *(MEMORY[0x1E6979280] + 48);
@@ -392,8 +392,8 @@
     v27 = *(MEMORY[0x1E6979280] + 16);
     v45 = *MEMORY[0x1E6979280];
     v46 = v27;
-    v31 = v3;
-    v6 = v3;
+    v31 = descriptionCopy;
+    v6 = descriptionCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -530,7 +530,7 @@ LABEL_25:
       v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v53 forKeys:v52 count:2];
     }
 
-    v3 = v31;
+    descriptionCopy = v31;
   }
 
   v24 = *MEMORY[0x1E69E9840];
@@ -538,14 +538,14 @@ LABEL_25:
   return v5;
 }
 
-- (void)_processFilteringDescription:(id)a3
+- (void)_processFilteringDescription:(id)description
 {
-  v4 = a3;
-  v5 = [v4 objectForKey:@"filterType"];
+  descriptionCopy = description;
+  v5 = [descriptionCopy objectForKey:@"filterType"];
   filterType = self->_filterType;
   self->_filterType = v5;
 
-  v7 = [v4 objectForKey:@"filterProperties"];
+  v7 = [descriptionCopy objectForKey:@"filterProperties"];
 
   filterProperties = self->_filterProperties;
   self->_filterProperties = v7;
@@ -557,11 +557,11 @@ LABEL_25:
   }
 }
 
-- (void)_processUserInfoDescription:(id)a3
+- (void)_processUserInfoDescription:(id)description
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 count])
+  descriptionCopy = description;
+  if ([descriptionCopy count])
   {
     userInfo = self->_userInfo;
     if (userInfo)
@@ -579,7 +579,7 @@ LABEL_25:
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v8 = v4;
+    v8 = descriptionCopy;
     v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v9)
     {
@@ -631,99 +631,99 @@ LABEL_25:
 - (NSString)visualStyleSetName
 {
   WeakRetained = objc_loadWeakRetained(&self->_visualStyleSet);
-  v3 = [WeakRetained visualStyleSetName];
+  visualStyleSetName = [WeakRetained visualStyleSetName];
 
-  return v3;
+  return visualStyleSetName;
 }
 
-- (void)_applyToLayer:(id)a3 withColorBlock:(id)a4
+- (void)_applyToLayer:(id)layer withColorBlock:(id)block
 {
-  v16 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v6 && self->_tintColor)
+  layerCopy = layer;
+  blockCopy = block;
+  v7 = blockCopy;
+  if (blockCopy && self->_tintColor)
   {
-    (*(v6 + 2))(v6);
+    (*(blockCopy + 2))(blockCopy);
   }
 
   tintAlpha = self->_tintAlpha;
   *&tintAlpha = tintAlpha;
-  [v16 setOpacity:tintAlpha];
+  [layerCopy setOpacity:tintAlpha];
   if (self->_compositingFilter || self->_filterType)
   {
-    v9 = [v16 superlayer];
-    [v9 setAllowsGroupBlending:0];
+    superlayer = [layerCopy superlayer];
+    [superlayer setAllowsGroupBlending:0];
 
     if (self->_compositingFilter)
     {
-      v10 = [(MTCoreMaterialVisualStyling *)self _composedFilter];
-      [v16 setCompositingFilter:v10];
+      _composedFilter = [(MTCoreMaterialVisualStyling *)self _composedFilter];
+      [layerCopy setCompositingFilter:_composedFilter];
     }
 
     else
     {
-      v11 = [v16 filters];
-      v12 = v11;
+      filters = [layerCopy filters];
+      v12 = filters;
       v13 = MEMORY[0x1E695E0F0];
-      if (v11)
+      if (filters)
       {
-        v13 = v11;
+        v13 = filters;
       }
 
       v14 = v13;
 
-      v10 = [(MTCoreMaterialVisualStyling *)self _composedFilter];
-      v15 = [v14 arrayByAddingObject:v10];
+      _composedFilter = [(MTCoreMaterialVisualStyling *)self _composedFilter];
+      v15 = [v14 arrayByAddingObject:_composedFilter];
 
-      [v16 setFilters:v15];
+      [layerCopy setFilters:v15];
     }
   }
 }
 
-- (void)_getCompositingFilter:(id *)a3 tintColor:(CGColor *)a4
+- (void)_getCompositingFilter:(id *)filter tintColor:(CGColor *)color
 {
   compositingFilter = self->_compositingFilter;
   if (compositingFilter)
   {
-    if (a3)
+    if (filter)
     {
-      *a3 = compositingFilter;
+      *filter = compositingFilter;
     }
 
-    if (a4)
+    if (color)
     {
-      *a4 = self->_tintColor;
+      *color = self->_tintColor;
     }
   }
 }
 
-- (void)_getFilterType:(id *)a3 vibrantColor:(CGColor *)a4 tintColor:(CGColor *)a5 inputReversed:(BOOL *)a6
+- (void)_getFilterType:(id *)type vibrantColor:(CGColor *)color tintColor:(CGColor *)tintColor inputReversed:(BOOL *)reversed
 {
   filterType = self->_filterType;
   if (filterType)
   {
-    if (a3)
+    if (type)
     {
-      *a3 = filterType;
+      *type = filterType;
     }
 
-    if (a4)
+    if (color)
     {
-      v11 = [(MTCoreMaterialVisualStyling *)self _composedFilter];
-      *a4 = [v11 valueForKey:@"inputColor0"];
+      _composedFilter = [(MTCoreMaterialVisualStyling *)self _composedFilter];
+      *color = [_composedFilter valueForKey:@"inputColor0"];
     }
 
-    if (a5)
+    if (tintColor)
     {
-      v12 = [(MTCoreMaterialVisualStyling *)self _composedFilter];
-      *a5 = [v12 valueForKey:@"inputColor1"];
+      _composedFilter2 = [(MTCoreMaterialVisualStyling *)self _composedFilter];
+      *tintColor = [_composedFilter2 valueForKey:@"inputColor1"];
     }
 
-    if (a6)
+    if (reversed)
     {
-      v14 = [(MTCoreMaterialVisualStyling *)self _composedFilter];
-      v13 = [v14 valueForKey:@"inputReversed"];
-      *a6 = [v13 BOOLValue];
+      _composedFilter3 = [(MTCoreMaterialVisualStyling *)self _composedFilter];
+      v13 = [_composedFilter3 valueForKey:@"inputReversed"];
+      *reversed = [v13 BOOLValue];
     }
   }
 }

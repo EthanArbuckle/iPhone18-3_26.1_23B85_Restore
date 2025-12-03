@@ -1,25 +1,25 @@
 @interface MPModelLibraryDefaultSectionedCollectionDataSource
 - (BOOL)_allowedEntityIdentifiersContainsAllPersistentIDs;
 - (BOOL)_usesSections;
-- (BOOL)hasSameContentAsDataSource:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (MPModelLibraryDefaultSectionedCollectionDataSource)initWithRequest:(id)a3 itemQueryResults:(shared_ptr<mlcore::EntityQueryResult>)a4;
+- (BOOL)hasSameContentAsDataSource:(id)source;
+- (BOOL)isEqual:(id)equal;
+- (MPModelLibraryDefaultSectionedCollectionDataSource)initWithRequest:(id)request itemQueryResults:(shared_ptr<mlcore::EntityQueryResult>)results;
 - (_NSRange)optionalSectionIndexTitlesRange;
 - (id).cxx_construct;
-- (id)_buildIndexPathToContainerUniqueIDMapFromItemQueryResults:(shared_ptr<mlcore::EntityQueryResult>)a3;
-- (id)_constructEmptyLibraryPinWithIdentifiers:(id)a3 referralObject:(id)a4 underlyingObjectClass:(Class)a5;
-- (id)_libraryPinAtIndexPath:(id)a3 withEntity:(shared_ptr<mlcore::Entity>)a4;
+- (id)_buildIndexPathToContainerUniqueIDMapFromItemQueryResults:(shared_ptr<mlcore::EntityQueryResult>)results;
+- (id)_constructEmptyLibraryPinWithIdentifiers:(id)identifiers referralObject:(id)object underlyingObjectClass:(Class)class;
+- (id)_libraryPinAtIndexPath:(id)path withEntity:(shared_ptr<mlcore::Entity>)entity;
 - (id)_stateDumpObject;
-- (id)identifiersForItemAtIndexPath:(id)a3;
-- (id)indexPathForItemWithIdentifiersIntersectingSet:(id)a3;
-- (id)itemAtIndexPath:(id)a3;
-- (id)sectionAtIndex:(unint64_t)a3;
+- (id)identifiersForItemAtIndexPath:(id)path;
+- (id)indexPathForItemWithIdentifiersIntersectingSet:(id)set;
+- (id)itemAtIndexPath:(id)path;
+- (id)sectionAtIndex:(unint64_t)index;
 - (id)sectionIndexTitles;
-- (int64_t)indexOfSectionForSectionIndexTitleAtIndex:(int64_t)a3;
+- (int64_t)indexOfSectionForSectionIndexTitleAtIndex:(int64_t)index;
 - (shared_ptr<mlcore::EntityQueryResult>)itemQueryResults;
-- (unint64_t)_adjustedGlobalIndexForIndexPath:(id)a3;
+- (unint64_t)_adjustedGlobalIndexForIndexPath:(id)path;
 - (unint64_t)hash;
-- (unint64_t)numberOfItemsInSection:(unint64_t)a3;
+- (unint64_t)numberOfItemsInSection:(unint64_t)section;
 - (unint64_t)numberOfSections;
 - (void)_populateIndexMap;
 @end
@@ -164,17 +164,17 @@
   return (v60 + v61) ^ __ROR8__(v60, 47) ^ v63 ^ __ROR8__(v60 + v61, 32) ^ v63 ^ __ROR8__(v61 ^ v62, 43);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
 
-  else if ([(MPModelLibraryDefaultSectionedCollectionDataSource *)v4 isMemberOfClass:objc_opt_class()])
+  else if ([(MPModelLibraryDefaultSectionedCollectionDataSource *)equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(MPModelLibraryDefaultSectionedCollectionDataSource *)self hasSameContentAsDataSource:v4];
+    v5 = [(MPModelLibraryDefaultSectionedCollectionDataSource *)self hasSameContentAsDataSource:equalCopy];
   }
 
   else
@@ -185,26 +185,26 @@
   return v5;
 }
 
-- (id)_constructEmptyLibraryPinWithIdentifiers:(id)a3 referralObject:(id)a4 underlyingObjectClass:(Class)a5
+- (id)_constructEmptyLibraryPinWithIdentifiers:(id)identifiers referralObject:(id)object underlyingObjectClass:(Class)class
 {
-  v7 = a3;
-  v8 = a4;
+  identifiersCopy = identifiers;
+  objectCopy = object;
   v9 = [MPModelLibraryPin alloc];
-  v10 = v7;
-  if (!v7)
+  identifiers = identifiersCopy;
+  if (!identifiersCopy)
   {
-    v10 = [v8 identifiers];
+    identifiers = [objectCopy identifiers];
   }
 
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __132__MPModelLibraryDefaultSectionedCollectionDataSource__constructEmptyLibraryPinWithIdentifiers_referralObject_underlyingObjectClass___block_invoke;
   v14[3] = &unk_1E76770A8;
-  v11 = v8;
+  v11 = objectCopy;
   v15 = v11;
-  v16 = a5;
-  v12 = [(MPModelObject *)v9 initWithIdentifiers:v10 block:v14];
-  if (!v7)
+  classCopy = class;
+  v12 = [(MPModelObject *)v9 initWithIdentifiers:identifiers block:v14];
+  if (!identifiersCopy)
   {
   }
 
@@ -304,10 +304,10 @@ LABEL_21:
 LABEL_22:
 }
 
-- (id)_buildIndexPathToContainerUniqueIDMapFromItemQueryResults:(shared_ptr<mlcore::EntityQueryResult>)a3
+- (id)_buildIndexPathToContainerUniqueIDMapFromItemQueryResults:(shared_ptr<mlcore::EntityQueryResult>)results
 {
-  ptr = a3.__ptr_;
-  v5 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:mlcore::EntityQueryResult::entityCount(*a3.__ptr_)];
+  ptr = results.__ptr_;
+  v5 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:mlcore::EntityQueryResult::entityCount(*results.__ptr_)];
   v6 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:mlcore::EntityQueryResult::entityCount(*ptr)];
   for (i = 0; i < mlcore::EntityQueryResult::entityCount(self->_itemQueryResults.__ptr_); ++i)
   {
@@ -337,16 +337,16 @@ LABEL_22:
   return v15;
 }
 
-- (id)_libraryPinAtIndexPath:(id)a3 withEntity:(shared_ptr<mlcore::Entity>)a4
+- (id)_libraryPinAtIndexPath:(id)path withEntity:(shared_ptr<mlcore::Entity>)entity
 {
-  var0 = a4.var0;
+  var0 = entity.var0;
   v122[1] = *MEMORY[0x1E69E9840];
-  v77 = a3;
-  v6 = [(MPModelLibraryRequest *)self->_request filteringOptions];
+  pathCopy = path;
+  filteringOptions = [(MPModelLibraryRequest *)self->_request filteringOptions];
   v7 = +[MPRestrictionsMonitor sharedRestrictionsMonitor];
-  v8 = [v7 allowsExplicitContent];
-  v75 = *&v6 & 0x10000;
-  v9 = (*&v6 & 0x10000) != 0;
+  allowsExplicitContent = [v7 allowsExplicitContent];
+  v75 = *&filteringOptions & 0x10000;
+  v9 = (*&filteringOptions & 0x10000) != 0;
 
   v96 = 0;
   v95 = 0;
@@ -439,13 +439,13 @@ LABEL_22:
   v19 = v21;
   v79 = v20;
 LABEL_17:
-  v74 = v9 | v8;
+  v74 = v9 | allowsExplicitContent;
   v22 = os_log_create("com.apple.amp.mediaplayer", "Default");
   v23 = v79;
   if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138545410;
-    *&buf[4] = v77;
+    *&buf[4] = pathCopy;
     v103 = 2048;
     v104 = v10;
     v105 = 2048;
@@ -459,7 +459,7 @@ LABEL_17:
     v113 = 1024;
     v114 = v75 >> 16;
     v115 = 1024;
-    v116 = v8;
+    v116 = allowsExplicitContent;
     v117 = 1024;
     v118 = v74 & 1;
     _os_log_impl(&dword_1A238D000, v22, OS_LOG_TYPE_DEFAULT, "Starting to build out pin at indexPath=%{public}@, pinPID=%lld, entityPID=%lld, entityType=%d, relationshipModelKind=%{public}@, relationshipModelClass=%{public}@, requestIgnoresRestrictedContent=%{BOOL}u, allowsExplicitContent=%{BOOL}u, returnOriginalPin=%{BOOL}u", buf, 0x4Cu);
@@ -484,13 +484,13 @@ LABEL_17:
     [v32 snapshotWithDomain:*MEMORY[0x1E69B1340] type:@"Bug" subType:@"RequestBuiltInvalidPin" context:@"Invalid Library Pin" triggerThresholdValues:0 events:v37 completion:0];
 
 LABEL_50:
-    v50 = [(MPModelLibraryDefaultSectionedCollectionDataSource *)self identifiersForItemAtIndexPath:v77];
-    v49 = [(MPModelLibraryDefaultSectionedCollectionDataSource *)self _constructEmptyLibraryPinWithIdentifiers:v50 referralObject:0 underlyingObjectClass:0];
+    anyObject = [(MPModelLibraryDefaultSectionedCollectionDataSource *)self identifiersForItemAtIndexPath:pathCopy];
+    v49 = [(MPModelLibraryDefaultSectionedCollectionDataSource *)self _constructEmptyLibraryPinWithIdentifiers:anyObject referralObject:0 underlyingObjectClass:0];
     v51 = os_log_create("com.apple.amp.mediaplayer", "Default_Oversize");
     if (os_log_type_enabled(v51, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
-      *&buf[4] = v50;
+      *&buf[4] = anyObject;
       _os_log_impl(&dword_1A238D000, v51, OS_LOG_TYPE_ERROR, "request produced an invalid pin - creating empty pin with identifiers=%{public}@", buf, 0xCu);
     }
 
@@ -506,20 +506,20 @@ LABEL_50:
   v92[4] = self;
   v92[5] = v18;
   v73 = [(MPIdentifierSet *)v24 initWithSource:@"MPModelLibraryDefaultSectionedCollectionDataSource" modelKind:v79 block:v92];
-  v25 = [(MPModelLibraryRequest *)self->_request filteringOptions];
+  filteringOptions2 = [(MPModelLibraryRequest *)self->_request filteringOptions];
   v26 = [MPMediaLibraryView alloc];
-  v27 = [(MPModelLibraryRequest *)self->_request mediaLibrary];
-  v76 = [(MPMediaLibraryView *)v26 initWithLibrary:v27 filteringOptions:v25 | v75 ^ 0x10000];
+  mediaLibrary = [(MPModelLibraryRequest *)self->_request mediaLibrary];
+  0x10000 = [(MPMediaLibraryView *)v26 initWithLibrary:mediaLibrary filteringOptions:filteringOptions2 | v75 ^ 0x10000];
 
   v72 = [MPMediaLibraryEntityTranslator translatorForMPModelClass:v19];
-  v28 = [(MPModelRequest *)self->_request itemProperties];
-  v29 = [v28 relationships];
-  v30 = [v29 objectForKey:v78];
+  itemProperties = [(MPModelRequest *)self->_request itemProperties];
+  relationships = [itemProperties relationships];
+  v30 = [relationships objectForKey:v78];
   v119 = v73;
   v31 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v119 count:1];
   if (v72)
   {
-    [v72 propertiesQueryForPropertySet:v30 scopedContainers:0 allowedItemIdentifiers:v31 view:v76];
+    [v72 propertiesQueryForPropertySet:v30 scopedContainers:0 allowedItemIdentifiers:v31 view:0x10000];
   }
 
   else
@@ -536,9 +536,9 @@ LABEL_50:
   }
 
   v85 = 0;
-  if (v76)
+  if (0x10000)
   {
-    [(MPMediaLibraryView *)v76 resultsForCoreQuery:&v86 error:&v85];
+    [(MPMediaLibraryView *)0x10000 resultsForCoreQuery:&v86 error:&v85];
     v71 = v85;
   }
 
@@ -589,25 +589,25 @@ LABEL_50:
     }
   }
 
-  v38 = [(MPModelRequest *)self->_request itemKind];
-  v39 = +[MPMediaLibraryEntityTranslator translatorForMPModelClass:](MPMediaLibraryEntityTranslator, "translatorForMPModelClass:", [v38 modelClass]);
+  itemKind = [(MPModelRequest *)self->_request itemKind];
+  v39 = +[MPMediaLibraryEntityTranslator translatorForMPModelClass:](MPMediaLibraryEntityTranslator, "translatorForMPModelClass:", [itemKind modelClass]);
 
-  v40 = [(MPModelRequest *)self->_request itemProperties];
-  v41 = [v39 objectForPropertySet:v40 entityClass:(*(**var0 + 48))() propertyCache:v94 context:self->_entityTranslationContext];
+  itemProperties2 = [(MPModelRequest *)self->_request itemProperties];
+  v41 = [v39 objectForPropertySet:itemProperties2 entityClass:(*(**var0 + 48))() propertyCache:v94 context:self->_entityTranslationContext];
 
   if (self->_indexPathToContainerUniqueIDMap)
   {
-    v42 = [v41 identifiers];
-    v43 = [(MPMediaLibraryEntityTranslationContext *)self->_entityTranslationContext mediaLibrary];
-    v44 = [v43 uniqueIdentifier];
-    v45 = [@"Library-DefaultSectionedCollection-" stringByAppendingString:v44];
+    identifiers = [v41 identifiers];
+    mediaLibrary2 = [(MPMediaLibraryEntityTranslationContext *)self->_entityTranslationContext mediaLibrary];
+    uniqueIdentifier = [mediaLibrary2 uniqueIdentifier];
+    v45 = [@"Library-DefaultSectionedCollection-" stringByAppendingString:uniqueIdentifier];
     v80[0] = MEMORY[0x1E69E9820];
     v80[1] = 3221225472;
     v80[2] = __88__MPModelLibraryDefaultSectionedCollectionDataSource__libraryPinAtIndexPath_withEntity___block_invoke_3;
     v80[3] = &unk_1E767EE00;
     v80[4] = self;
-    v81 = v77;
-    v46 = [v42 copyWithSource:v45 block:v80];
+    v81 = pathCopy;
+    v46 = [identifiers copyWithSource:v45 block:v80];
     v47 = [v41 copyWithIdentifiers:v46 block:&__block_literal_global_97];
 
     v41 = v47;
@@ -647,18 +647,18 @@ LABEL_50:
     v57 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v100 count:1];
     [v52 snapshotWithDomain:*MEMORY[0x1E69B1340] type:@"Bug" subType:@"QueryProducedInvalidPin" context:@"Invalid Library Pin" triggerThresholdValues:0 events:v57 completion:0];
 
-    v50 = [(MPModelLibraryDefaultSectionedCollectionDataSource *)self identifiersForItemAtIndexPath:v77];
+    anyObject = [(MPModelLibraryDefaultSectionedCollectionDataSource *)self identifiersForItemAtIndexPath:pathCopy];
     v58 = os_log_create("com.apple.amp.mediaplayer", "Default_Oversize");
     if (os_log_type_enabled(v58, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
       *&buf[4] = v48;
       v103 = 2114;
-      v104 = v50;
+      v104 = anyObject;
       _os_log_impl(&dword_1A238D000, v58, OS_LOG_TYPE_ERROR, "request produced an invalid pin=%{public}@ - creating empty pin with identifiers=%{public}@", buf, 0x16u);
     }
 
-    v49 = [(MPModelLibraryDefaultSectionedCollectionDataSource *)self _constructEmptyLibraryPinWithIdentifiers:v50 referralObject:0 underlyingObjectClass:0];
+    v49 = [(MPModelLibraryDefaultSectionedCollectionDataSource *)self _constructEmptyLibraryPinWithIdentifiers:anyObject referralObject:0 underlyingObjectClass:0];
     v51 = v48;
     goto LABEL_56;
   }
@@ -670,14 +670,14 @@ LABEL_50:
     goto LABEL_58;
   }
 
-  v65 = [v48 pinnedEntityType];
-  if (v65 <= 2)
+  pinnedEntityType = [v48 pinnedEntityType];
+  if (pinnedEntityType <= 2)
   {
     v23 = v79;
-    if (v65 == 1)
+    if (pinnedEntityType == 1)
     {
-      v50 = [v48 anyObject];
-      if ([v50 isExplicitSong])
+      anyObject = [v48 anyObject];
+      if ([anyObject isExplicitSong])
       {
         v49 = [(MPModelLibraryDefaultSectionedCollectionDataSource *)self _constructEmptyLibraryPinWithIdentifiers:0 referralObject:v48 underlyingObjectClass:objc_opt_class()];
 
@@ -685,7 +685,7 @@ LABEL_50:
         if (os_log_type_enabled(v51, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543362;
-          *&buf[4] = v50;
+          *&buf[4] = anyObject;
           v67 = "pinned song=%{public}@ is explicit and restrictions are enforced";
           goto LABEL_91;
         }
@@ -696,11 +696,11 @@ LABEL_50:
       goto LABEL_88;
     }
 
-    if (v65 == 2)
+    if (pinnedEntityType == 2)
     {
-      v50 = [v48 anyObject];
-      v66 = [v50 trackCount];
-      if (!((v66 == 0) | [v50 hasAnyCleanTracks] & 1))
+      anyObject = [v48 anyObject];
+      trackCount = [anyObject trackCount];
+      if (!((trackCount == 0) | [anyObject hasAnyCleanTracks] & 1))
       {
         v49 = [(MPModelLibraryDefaultSectionedCollectionDataSource *)self _constructEmptyLibraryPinWithIdentifiers:0 referralObject:v48 underlyingObjectClass:objc_opt_class()];
 
@@ -708,7 +708,7 @@ LABEL_50:
         if (os_log_type_enabled(v51, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543362;
-          *&buf[4] = v50;
+          *&buf[4] = anyObject;
           v67 = "pinned playlist=%{public}@ has no clean tracks and restrictions are enforced";
 LABEL_91:
           v68 = v51;
@@ -725,8 +725,8 @@ LABEL_88:
     }
 
 LABEL_81:
-    v50 = [(MPModelLibraryDefaultSectionedCollectionDataSource *)self identifiersForItemAtIndexPath:v77];
-    v49 = [(MPModelLibraryDefaultSectionedCollectionDataSource *)self _constructEmptyLibraryPinWithIdentifiers:v50 referralObject:0 underlyingObjectClass:0];
+    anyObject = [(MPModelLibraryDefaultSectionedCollectionDataSource *)self identifiersForItemAtIndexPath:pathCopy];
+    v49 = [(MPModelLibraryDefaultSectionedCollectionDataSource *)self _constructEmptyLibraryPinWithIdentifiers:anyObject referralObject:0 underlyingObjectClass:0];
 
     v51 = _MPLogCategoryDefault();
     if (os_log_type_enabled(v51, OS_LOG_TYPE_DEFAULT))
@@ -736,7 +736,7 @@ LABEL_81:
       v103 = 2114;
       v104 = v49;
       v105 = 2114;
-      v106 = v50;
+      v106 = anyObject;
       v67 = "pin=%{public}@ has incorrect type, returning %{public}@ with identifiers=%{public}@";
       v68 = v51;
       v69 = 32;
@@ -749,10 +749,10 @@ LABEL_92:
   }
 
   v23 = v79;
-  if (v65 == 3)
+  if (pinnedEntityType == 3)
   {
-    v50 = [v48 anyObject];
-    if ([v50 songCount] && !objc_msgSend(v50, "cleanSongCount"))
+    anyObject = [v48 anyObject];
+    if ([anyObject songCount] && !objc_msgSend(anyObject, "cleanSongCount"))
     {
       v49 = [(MPModelLibraryDefaultSectionedCollectionDataSource *)self _constructEmptyLibraryPinWithIdentifiers:0 referralObject:v48 underlyingObjectClass:objc_opt_class()];
 
@@ -760,7 +760,7 @@ LABEL_92:
       if (os_log_type_enabled(v51, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        *&buf[4] = v50;
+        *&buf[4] = anyObject;
         v67 = "pinned artist=%{public}@ has no clean tracks and restrictions are enforced";
         goto LABEL_91;
       }
@@ -771,13 +771,13 @@ LABEL_92:
     goto LABEL_88;
   }
 
-  if (v65 != 4)
+  if (pinnedEntityType != 4)
   {
     goto LABEL_81;
   }
 
-  v50 = [v48 anyObject];
-  if ([v50 cleanSongCount])
+  anyObject = [v48 anyObject];
+  if ([anyObject cleanSongCount])
   {
     goto LABEL_88;
   }
@@ -788,7 +788,7 @@ LABEL_92:
   if (os_log_type_enabled(v51, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    *&buf[4] = v50;
+    *&buf[4] = anyObject;
     v67 = "pinned album=%{public}@ has no clean tracks and restrictions are enforced";
     goto LABEL_91;
   }
@@ -843,8 +843,8 @@ void __88__MPModelLibraryDefaultSectionedCollectionDataSource__libraryPinAtIndex
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v2 = [(MPMediaLibraryEntityTranslationContext *)self->_entityTranslationContext allowedEntityIdentifiers];
-  v3 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  allowedEntityIdentifiers = [(MPMediaLibraryEntityTranslationContext *)self->_entityTranslationContext allowedEntityIdentifiers];
+  v3 = [allowedEntityIdentifiers countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v3)
   {
     v4 = *v12;
@@ -854,12 +854,12 @@ void __88__MPModelLibraryDefaultSectionedCollectionDataSource__libraryPinAtIndex
       {
         if (*v12 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(allowedEntityIdentifiers);
         }
 
         v6 = *(*(&v11 + 1) + 8 * i);
-        v7 = [v6 library];
-        if ([v7 persistentID])
+        library = [v6 library];
+        if ([library persistentID])
         {
         }
 
@@ -875,7 +875,7 @@ void __88__MPModelLibraryDefaultSectionedCollectionDataSource__libraryPinAtIndex
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v3 = [allowedEntityIdentifiers countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v3)
       {
         continue;
@@ -891,24 +891,24 @@ LABEL_13:
   return v9;
 }
 
-- (unint64_t)_adjustedGlobalIndexForIndexPath:(id)a3
+- (unint64_t)_adjustedGlobalIndexForIndexPath:(id)path
 {
-  v5 = a3;
+  pathCopy = path;
   v6 = mlcore::EntityQueryResult::sections(self->_itemQueryResults.__ptr_);
-  v7 = [v5 item];
+  item = [pathCopy item];
   v8 = v6[1];
   v9 = v8 - *v6;
   if (v8 != *v6 && [(MPModelLibraryDefaultSectionedCollectionDataSource *)self _usesSections])
   {
-    v10 = [v5 section];
+    section = [pathCopy section];
     v11 = 0xAAAAAAAAAAAAAAABLL * (v9 >> 4);
-    if (v10 >= v11)
+    if (section >= v11)
     {
-      v20 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v20 handleFailureInMethod:a2 object:self file:@"MPModelLibraryDefaultSectionedCollectionDataSource.mm" lineNumber:394 description:{@"Section index out of bounds: %ld (sectionCount = %ld)", v10, v11}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelLibraryDefaultSectionedCollectionDataSource.mm" lineNumber:394 description:{@"Section index out of bounds: %ld (sectionCount = %ld)", section, v11}];
     }
 
-    v12 = *v6 + 48 * v10;
+    v12 = *v6 + 48 * section;
     if (*(v12 + 23) < 0)
     {
       std::string::__init_copy_ctor_external(&v21, *v12, *(v12 + 8));
@@ -924,7 +924,7 @@ LABEL_13:
     v14 = *(v12 + 24);
     v23 = *(v12 + 40);
     v22 = v14;
-    v7 += *mlcore::Section::range(&v21);
+    item += *mlcore::Section::range(&v21);
     if (SHIBYTE(v21.__r_.__value_.__r.__words[2]) < 0)
     {
       operator delete(v21.__r_.__value_.__l.__data_);
@@ -933,7 +933,7 @@ LABEL_13:
 
   if (self->_allowedItemPersistentIDToItemQueryResultsIndexMap.__tree_.__size_)
   {
-    v15 = self->_allowedItemPersistentIDs.__begin_[v7];
+    v15 = self->_allowedItemPersistentIDs.__begin_[item];
     v21.__r_.__value_.__r.__words[0] = v15;
     for (i = self->_allowedItemPersistentIDToItemQueryResultsIndexMap.__tree_.__end_node_.__left_; i; i = *i)
     {
@@ -949,16 +949,16 @@ LABEL_13:
       }
     }
 
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"MPModelLibraryDefaultSectionedCollectionDataSource.mm" lineNumber:404 description:@"_allowedItemPersistentIDToItemQueryResultsIndexMap must contain an entry for every value in _allowedItemIdentifiers"];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"MPModelLibraryDefaultSectionedCollectionDataSource.mm" lineNumber:404 description:@"_allowedItemPersistentIDToItemQueryResultsIndexMap must contain an entry for every value in _allowedItemIdentifiers"];
 
     v15 = v21.__r_.__value_.__r.__words[0];
 LABEL_17:
     v24 = &v21;
-    v7 = std::__tree<std::__value_type<long long,unsigned long>,std::__map_value_compare<long long,std::__value_type<long long,unsigned long>,std::less<long long>,true>,std::allocator<std::__value_type<long long,unsigned long>>>::__emplace_unique_key_args<long long,std::piecewise_construct_t const&,std::tuple<long long const&>,std::tuple<>>(&self->_allowedItemPersistentIDToItemQueryResultsIndexMap, v15)[5];
+    item = std::__tree<std::__value_type<long long,unsigned long>,std::__map_value_compare<long long,std::__value_type<long long,unsigned long>,std::less<long long>,true>,std::allocator<std::__value_type<long long,unsigned long>>>::__emplace_unique_key_args<long long,std::piecewise_construct_t const&,std::tuple<long long const&>,std::tuple<>>(&self->_allowedItemPersistentIDToItemQueryResultsIndexMap, v15)[5];
   }
 
-  return v7;
+  return item;
 }
 
 - (void)_populateIndexMap
@@ -972,12 +972,12 @@ LABEL_17:
     std::__tree<std::__value_type<long long,unsigned long>,std::__map_value_compare<long long,std::__value_type<long long,unsigned long>,std::less<long long>,true>,std::allocator<std::__value_type<long long,unsigned long>>>::__emplace_unique_key_args<long long,std::piecewise_construct_t const&,std::tuple<long long const&>,std::tuple<>>(&self->_allowedItemPersistentIDToItemQueryResultsIndexMap, v26)[5] = v3++;
   }
 
-  v4 = [(MPMediaLibraryEntityTranslationContext *)self->_entityTranslationContext allowedEntityIdentifiers];
+  allowedEntityIdentifiers = [(MPMediaLibraryEntityTranslationContext *)self->_entityTranslationContext allowedEntityIdentifiers];
   v29 = 0u;
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v5 = v4;
+  v5 = allowedEntityIdentifiers;
   v6 = [v5 countByEnumeratingWithState:&v27 objects:v32 count:16];
   if (v6)
   {
@@ -992,15 +992,15 @@ LABEL_17:
           objc_enumerationMutation(v5);
         }
 
-        v9 = [*(*(&v27 + 1) + 8 * v8) library];
-        v10 = [v9 persistentID];
+        library = [*(*(&v27 + 1) + 8 * v8) library];
+        persistentID = [library persistentID];
 
         for (i = self->_allowedItemPersistentIDToItemQueryResultsIndexMap.__tree_.__end_node_.__left_; i; i = *i)
         {
           v12 = i[4];
-          if (v10 >= v12)
+          if (persistentID >= v12)
           {
-            if (v12 >= v10)
+            if (v12 >= persistentID)
             {
               end = self->_allowedItemPersistentIDs.__end_;
               cap = self->_allowedItemPersistentIDs.__cap_;
@@ -1039,7 +1039,7 @@ LABEL_17:
                 v22 = end - begin;
                 v23 = (8 * v18);
                 v24 = (8 * v18 - 8 * v22);
-                *v23 = v10;
+                *v23 = persistentID;
                 v15 = v23 + 1;
                 memcpy(v24, begin, v17);
                 v25 = self->_allowedItemPersistentIDs.__begin_;
@@ -1054,7 +1054,7 @@ LABEL_17:
 
               else
               {
-                *end = v10;
+                *end = persistentID;
                 v15 = end + 1;
               }
 
@@ -1096,17 +1096,17 @@ LABEL_17:
   return ptr;
 }
 
-- (id)indexPathForItemWithIdentifiersIntersectingSet:(id)a3
+- (id)indexPathForItemWithIdentifiersIntersectingSet:(id)set
 {
-  v41 = a3;
+  setCopy = set;
   if (!self->_allowedItemPersistentIDToItemQueryResultsIndexMap.__tree_.__size_)
   {
-    v12 = [(MPModelLibraryRequest *)self->_request mediaLibrary];
-    v13 = [v12 uniqueIdentifier];
-    v14 = [v41 library];
-    v15 = [v14 databaseID];
-    v16 = v13;
-    v17 = v15;
+    mediaLibrary = [(MPModelLibraryRequest *)self->_request mediaLibrary];
+    uniqueIdentifier = [mediaLibrary uniqueIdentifier];
+    library = [setCopy library];
+    databaseID = [library databaseID];
+    v16 = uniqueIdentifier;
+    v17 = databaseID;
     v18 = v16;
     v19 = v17;
     v20 = v19;
@@ -1120,11 +1120,11 @@ LABEL_17:
 
       if ((v21 & 1) == 0)
       {
-        v22 = 0;
+        persistentID = 0;
 LABEL_20:
 
-        v24 = [(MPModelRequest *)self->_request itemKind];
-        v7 = +[MPMediaLibraryEntityTranslator translatorForMPModelClass:](MPMediaLibraryEntityTranslator, "translatorForMPModelClass:", [v24 modelClass]);
+        itemKind = [(MPModelRequest *)self->_request itemKind];
+        v7 = +[MPMediaLibraryEntityTranslator translatorForMPModelClass:](MPMediaLibraryEntityTranslator, "translatorForMPModelClass:", [itemKind modelClass]);
 
         v25 = 0;
         for (i = 0; ; ++i)
@@ -1135,9 +1135,9 @@ LABEL_20:
           }
 
           ptr = self->_itemQueryResults.__ptr_;
-          if (v22)
+          if (persistentID)
           {
-            if (v22 == mlcore::EntityQueryResult::persistentIDAtIndex(ptr))
+            if (persistentID == mlcore::EntityQueryResult::persistentIDAtIndex(ptr))
             {
               goto LABEL_28;
             }
@@ -1152,7 +1152,7 @@ LABEL_20:
             }
 
             v29 = [v7 identifiersForPropertyCache:*v28 + v25 context:self->_entityTranslationContext];
-            v30 = [v41 intersectsSet:v29];
+            v30 = [setCopy intersectsSet:v29];
 
             if (v30)
             {
@@ -1226,21 +1226,21 @@ LABEL_44:
       }
     }
 
-    v23 = [v41 library];
-    v22 = [v23 persistentID];
+    library2 = [setCopy library];
+    persistentID = [library2 persistentID];
 
     goto LABEL_20;
   }
 
-  v4 = [(MPModelLibraryDefaultSectionedCollectionDataSource *)self numberOfSections];
-  if (v4 >= 1)
+  numberOfSections = [(MPModelLibraryDefaultSectionedCollectionDataSource *)self numberOfSections];
+  if (numberOfSections >= 1)
   {
     v5 = 0;
     v6 = 0;
     while (1)
     {
       v7 = [(MPModelLibraryDefaultSectionedCollectionDataSource *)self identifiersForSectionAtIndex:v6];
-      if ([v41 intersectsSet:v7])
+      if ([setCopy intersectsSet:v7])
       {
         break;
       }
@@ -1259,7 +1259,7 @@ LABEL_9:
         {
           v10 = [MEMORY[0x1E696AC88] indexPathForItem:v9 inSection:v6];
           v11 = [(MPModelLibraryDefaultSectionedCollectionDataSource *)self identifiersForItemAtIndexPath:v10];
-          if ([v41 intersectsSet:v11])
+          if ([setCopy intersectsSet:v11])
           {
             break;
           }
@@ -1273,7 +1273,7 @@ LABEL_9:
 
       ++v6;
       v5 = v10;
-      if (v6 == v4)
+      if (v6 == numberOfSections)
       {
         goto LABEL_45;
       }
@@ -1290,15 +1290,15 @@ LABEL_45:
   return v10;
 }
 
-- (id)identifiersForItemAtIndexPath:(id)a3
+- (id)identifiersForItemAtIndexPath:(id)path
 {
-  v5 = a3;
-  v6 = [(MPModelLibraryDefaultSectionedCollectionDataSource *)self _adjustedGlobalIndexForIndexPath:v5];
+  pathCopy = path;
+  v6 = [(MPModelLibraryDefaultSectionedCollectionDataSource *)self _adjustedGlobalIndexForIndexPath:pathCopy];
   v7 = mlcore::EntityQueryResult::entityCount(self->_itemQueryResults.__ptr_);
   if (v6 >= v7)
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"MPModelLibraryDefaultSectionedCollectionDataSource.mm" lineNumber:260 description:{@"Adjusted global index out of bounds: %ld (indexPath = %@ / entityCount = %ld)", v6, v5, v7}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelLibraryDefaultSectionedCollectionDataSource.mm" lineNumber:260 description:{@"Adjusted global index out of bounds: %ld (indexPath = %@ / entityCount = %ld)", v6, pathCopy, v7}];
   }
 
   v8 = mlcore::EntityQueryResult::propertyCaches(self->_itemQueryResults.__ptr_);
@@ -1308,21 +1308,21 @@ LABEL_45:
     std::vector<mlcore::PropertyCache>::__throw_out_of_range[abi:ne200100]();
   }
 
-  v10 = [(MPModelRequest *)self->_request itemKind];
-  v11 = +[MPMediaLibraryEntityTranslator translatorForMPModelClass:](MPMediaLibraryEntityTranslator, "translatorForMPModelClass:", [v10 modelClass]);
+  itemKind = [(MPModelRequest *)self->_request itemKind];
+  v11 = +[MPMediaLibraryEntityTranslator translatorForMPModelClass:](MPMediaLibraryEntityTranslator, "translatorForMPModelClass:", [itemKind modelClass]);
 
   v12 = [v11 identifiersForPropertyCache:v9 + 216 * v6 context:self->_entityTranslationContext];
   if (self->_indexPathToContainerUniqueIDMap)
   {
-    v13 = [(MPMediaLibraryEntityTranslationContext *)self->_entityTranslationContext mediaLibrary];
-    v14 = [v13 uniqueIdentifier];
-    v15 = [@"Library-DefaultSectionedCollection-" stringByAppendingString:v14];
+    mediaLibrary = [(MPMediaLibraryEntityTranslationContext *)self->_entityTranslationContext mediaLibrary];
+    uniqueIdentifier = [mediaLibrary uniqueIdentifier];
+    v15 = [@"Library-DefaultSectionedCollection-" stringByAppendingString:uniqueIdentifier];
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __84__MPModelLibraryDefaultSectionedCollectionDataSource_identifiersForItemAtIndexPath___block_invoke;
     v19[3] = &unk_1E767EE00;
     v19[4] = self;
-    v20 = v5;
+    v20 = pathCopy;
     v16 = [v12 copyWithSource:v15 block:v19];
 
     v12 = v16;
@@ -1338,7 +1338,7 @@ void __84__MPModelLibraryDefaultSectionedCollectionDataSource_identifiersForItem
   [v4 setContainerUniqueID:v3];
 }
 
-- (int64_t)indexOfSectionForSectionIndexTitleAtIndex:(int64_t)a3
+- (int64_t)indexOfSectionForSectionIndexTitleAtIndex:(int64_t)index
 {
   v5 = mlcore::EntityQueryResult::sections(self->_itemQueryResults.__ptr_);
   if (v5[1] == *v5 || ![(MPModelLibraryDefaultSectionedCollectionDataSource *)self _usesSections])
@@ -1348,12 +1348,12 @@ void __84__MPModelLibraryDefaultSectionedCollectionDataSource_identifiersForItem
 
   v7 = *v5;
   v6 = v5[1];
-  v8 = [(MPModelLibraryDefaultSectionedCollectionDataSource *)self sectionIndexTitles];
-  v9 = [v8 count];
+  sectionIndexTitles = [(MPModelLibraryDefaultSectionedCollectionDataSource *)self sectionIndexTitles];
+  v9 = [sectionIndexTitles count];
   v10 = v6 - v7;
   v11 = 0xAAAAAAAAAAAAAAABLL * (v10 >> 4);
 
-  if (v9 - 1 == a3)
+  if (v9 - 1 == index)
   {
     return v11 - 1;
   }
@@ -1399,12 +1399,12 @@ void __84__MPModelLibraryDefaultSectionedCollectionDataSource_identifiersForItem
     v21 = mlcore::Section::sectionIndex(&__p);
     v22 = v21;
     v23 = v14 - 1;
-    if (v21 <= a3)
+    if (v21 <= index)
     {
       v23 = v12;
     }
 
-    if (v21 == a3)
+    if (v21 == index)
     {
       v12 = v14;
     }
@@ -1419,7 +1419,7 @@ void __84__MPModelLibraryDefaultSectionedCollectionDataSource_identifiersForItem
       operator delete(__p.__r_.__value_.__l.__data_);
     }
 
-    if (v22 >= a3)
+    if (v22 >= index)
     {
       break;
     }
@@ -1481,16 +1481,16 @@ void __84__MPModelLibraryDefaultSectionedCollectionDataSource_identifiersForItem
   return v10;
 }
 
-- (id)itemAtIndexPath:(id)a3
+- (id)itemAtIndexPath:(id)path
 {
   v38 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [(MPModelLibraryDefaultSectionedCollectionDataSource *)self _adjustedGlobalIndexForIndexPath:v5];
+  pathCopy = path;
+  v6 = [(MPModelLibraryDefaultSectionedCollectionDataSource *)self _adjustedGlobalIndexForIndexPath:pathCopy];
   v7 = mlcore::EntityQueryResult::entityCount(self->_itemQueryResults.__ptr_);
   if (v6 >= v7)
   {
-    v27 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v27 handleFailureInMethod:a2 object:self file:@"MPModelLibraryDefaultSectionedCollectionDataSource.mm" lineNumber:166 description:{@"Adjusted global index out of bounds: %ld (indexPath = %@ / entityCount = %ld)", v6, v5, v7}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelLibraryDefaultSectionedCollectionDataSource.mm" lineNumber:166 description:{@"Adjusted global index out of bounds: %ld (indexPath = %@ / entityCount = %ld)", v6, pathCopy, v7}];
   }
 
   mlcore::EntityQueryResult::entityAtIndex(self->_itemQueryResults.__ptr_);
@@ -1498,8 +1498,8 @@ void __84__MPModelLibraryDefaultSectionedCollectionDataSource_identifiersForItem
   request = self->_request;
   if (v28)
   {
-    v9 = [(MPModelRequest *)request itemKind];
-    v10 = [objc_msgSend(v9 "modelClass")];
+    itemKind = [(MPModelRequest *)request itemKind];
+    v10 = [objc_msgSend(itemKind "modelClass")];
 
     if (v10)
     {
@@ -1510,7 +1510,7 @@ void __84__MPModelLibraryDefaultSectionedCollectionDataSource_identifiersForItem
         atomic_fetch_add_explicit(&v29->__shared_owners_, 1uLL, memory_order_relaxed);
       }
 
-      v11 = [(MPModelLibraryDefaultSectionedCollectionDataSource *)self _libraryPinAtIndexPath:v5 withEntity:&v32];
+      v11 = [(MPModelLibraryDefaultSectionedCollectionDataSource *)self _libraryPinAtIndexPath:pathCopy withEntity:&v32];
       if (v33)
       {
         std::__shared_weak_count::__release_shared[abi:ne200100](v33);
@@ -1519,26 +1519,26 @@ void __84__MPModelLibraryDefaultSectionedCollectionDataSource_identifiersForItem
 
     else
     {
-      v16 = [(MPModelRequest *)self->_request itemKind];
-      v17 = +[MPMediaLibraryEntityTranslator translatorForMPModelClass:](MPMediaLibraryEntityTranslator, "translatorForMPModelClass:", [v16 modelClass]);
+      itemKind2 = [(MPModelRequest *)self->_request itemKind];
+      v17 = +[MPMediaLibraryEntityTranslator translatorForMPModelClass:](MPMediaLibraryEntityTranslator, "translatorForMPModelClass:", [itemKind2 modelClass]);
 
-      v18 = [(MPModelRequest *)self->_request itemProperties];
+      itemProperties = [(MPModelRequest *)self->_request itemProperties];
       v19 = (*(*v28 + 48))();
-      v11 = [v17 objectForPropertySet:v18 entityClass:v19 propertyCache:mlcore::Entity::propertyCache(v28) context:self->_entityTranslationContext];
+      v11 = [v17 objectForPropertySet:itemProperties entityClass:v19 propertyCache:mlcore::Entity::propertyCache(v28) context:self->_entityTranslationContext];
 
       if (self->_indexPathToContainerUniqueIDMap)
       {
-        v20 = [v11 identifiers];
-        v21 = [(MPMediaLibraryEntityTranslationContext *)self->_entityTranslationContext mediaLibrary];
-        v22 = [v21 uniqueIdentifier];
-        v23 = [@"Library-DefaultSectionedCollection-" stringByAppendingString:v22];
+        identifiers = [v11 identifiers];
+        mediaLibrary = [(MPMediaLibraryEntityTranslationContext *)self->_entityTranslationContext mediaLibrary];
+        uniqueIdentifier = [mediaLibrary uniqueIdentifier];
+        v23 = [@"Library-DefaultSectionedCollection-" stringByAppendingString:uniqueIdentifier];
         v30[0] = MEMORY[0x1E69E9820];
         v30[1] = 3221225472;
         v30[2] = __70__MPModelLibraryDefaultSectionedCollectionDataSource_itemAtIndexPath___block_invoke;
         v30[3] = &unk_1E767EE00;
         v30[4] = self;
-        v31 = v5;
-        v24 = [v20 copyWithSource:v23 block:v30];
+        v31 = pathCopy;
+        v24 = [identifiers copyWithSource:v23 block:v30];
         v25 = [v11 copyWithIdentifiers:v24 block:&__block_literal_global_9204];
 
         v11 = v25;
@@ -1548,17 +1548,17 @@ void __84__MPModelLibraryDefaultSectionedCollectionDataSource_identifiersForItem
 
   else
   {
-    v12 = [(MPModelRequest *)request itemKind];
-    v13 = [objc_msgSend(v12 "modelClass")];
+    itemKind3 = [(MPModelRequest *)request itemKind];
+    v13 = [objc_msgSend(itemKind3 "modelClass")];
 
     if (v13)
     {
-      v14 = [(MPModelLibraryDefaultSectionedCollectionDataSource *)self identifiersForItemAtIndexPath:v5];
+      v14 = [(MPModelLibraryDefaultSectionedCollectionDataSource *)self identifiersForItemAtIndexPath:pathCopy];
       v15 = os_log_create("com.apple.amp.mediaplayer", "Default");
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543618;
-        v35 = v5;
+        v35 = pathCopy;
         v36 = 2114;
         v37 = v14;
         _os_log_impl(&dword_1A238D000, v15, OS_LOG_TYPE_DEFAULT, "Library pin at indexPath=%{public}@ is nil, Creating a default library pin with identifiers=%{public}@", buf, 0x16u);
@@ -1588,13 +1588,13 @@ void __70__MPModelLibraryDefaultSectionedCollectionDataSource_itemAtIndexPath___
   [v4 setContainerUniqueID:v3];
 }
 
-- (BOOL)hasSameContentAsDataSource:(id)a3
+- (BOOL)hasSameContentAsDataSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && (ptr = self->_itemQueryResults.__ptr_) != 0 && (v6 = v4[10]) != 0)
+  if ((objc_opt_isKindOfClass() & 1) != 0 && (ptr = self->_itemQueryResults.__ptr_) != 0 && (v6 = sourceCopy[10]) != 0)
   {
-    v7 = v4[11];
+    v7 = sourceCopy[11];
     if (v7)
     {
       atomic_fetch_add_explicit(&v7->__shared_owners_, 1uLL, memory_order_relaxed);
@@ -1643,7 +1643,7 @@ LABEL_10:
   return v11;
 }
 
-- (unint64_t)numberOfItemsInSection:(unint64_t)a3
+- (unint64_t)numberOfItemsInSection:(unint64_t)section
 {
   result = self->_itemQueryResults.__ptr_;
   if (result)
@@ -1656,20 +1656,20 @@ LABEL_10:
 
     else
     {
-      return *(mlcore::Section::range((*v6 + 48 * a3)) + 8);
+      return *(mlcore::Section::range((*v6 + 48 * section)) + 8);
     }
   }
 
   return result;
 }
 
-- (id)sectionAtIndex:(unint64_t)a3
+- (id)sectionAtIndex:(unint64_t)index
 {
   v5 = mlcore::EntityQueryResult::sections(self->_itemQueryResults.__ptr_);
-  if (0xAAAAAAAAAAAAAAABLL * ((v5[1] - *v5) >> 4) > a3 && [(MPModelLibraryDefaultSectionedCollectionDataSource *)self _usesSections])
+  if (0xAAAAAAAAAAAAAAABLL * ((v5[1] - *v5) >> 4) > index && [(MPModelLibraryDefaultSectionedCollectionDataSource *)self _usesSections])
   {
     v6 = MEMORY[0x1E696AEC0];
-    mlcore::Section::localizedTitle(__p, (*v5 + 48 * a3));
+    mlcore::Section::localizedTitle(__p, (*v5 + 48 * index));
     if (v11 >= 0)
     {
       v7 = __p;
@@ -1721,7 +1721,7 @@ LABEL_10:
 {
   v40[2] = *MEMORY[0x1E69E9840];
   ptr = self->_itemQueryResults.__ptr_;
-  v31 = self;
+  selfCopy = self;
   if (ptr)
   {
     v4 = mlcore::EntityQueryResult::sections(ptr);
@@ -1798,7 +1798,7 @@ LABEL_10:
     }
 
     v39[0] = @"entityCount";
-    v21 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:mlcore::EntityQueryResult::entityCount(v31->_itemQueryResults.__ptr_)];
+    v21 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:mlcore::EntityQueryResult::entityCount(selfCopy->_itemQueryResults.__ptr_)];
     v39[1] = @"sections";
     v40[0] = v21;
     v40[1] = v8;
@@ -1811,16 +1811,16 @@ LABEL_10:
   }
 
   v37[0] = @"_obj";
-  v23 = [MEMORY[0x1E696AEC0] stringWithFormat:@"<%@: %p>", objc_opt_class(), v31];
-  v24 = v23;
+  selfCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"<%@: %p>", objc_opt_class(), selfCopy];
+  v24 = selfCopy;
   request = @"@";
-  size = v31->_allowedItemPersistentIDToItemQueryResultsIndexMap.__tree_.__size_;
-  if (v31->_request)
+  size = selfCopy->_allowedItemPersistentIDToItemQueryResultsIndexMap.__tree_.__size_;
+  if (selfCopy->_request)
   {
-    request = v31->_request;
+    request = selfCopy->_request;
   }
 
-  v38[0] = v23;
+  v38[0] = selfCopy;
   v38[1] = request;
   v37[1] = @"request";
   v37[2] = @"itemQueryResults";
@@ -1829,17 +1829,17 @@ LABEL_10:
   v27 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:size];
   v38[3] = v27;
   v37[4] = @"allowedItemPersistentIDs.size";
-  v28 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:v31->_allowedItemPersistentIDs.__end_ - v31->_allowedItemPersistentIDs.__begin_];
+  v28 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:selfCopy->_allowedItemPersistentIDs.__end_ - selfCopy->_allowedItemPersistentIDs.__begin_];
   v38[4] = v28;
   v29 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v38 forKeys:v37 count:5];
 
   return v29;
 }
 
-- (MPModelLibraryDefaultSectionedCollectionDataSource)initWithRequest:(id)a3 itemQueryResults:(shared_ptr<mlcore::EntityQueryResult>)a4
+- (MPModelLibraryDefaultSectionedCollectionDataSource)initWithRequest:(id)request itemQueryResults:(shared_ptr<mlcore::EntityQueryResult>)results
 {
-  ptr = a4.__ptr_;
-  v7 = a3;
+  ptr = results.__ptr_;
+  requestCopy = request;
   v8 = [(MPModelLibraryDefaultSectionedCollectionDataSource *)self init];
   v9 = v8;
   v10 = v8;
@@ -1848,7 +1848,7 @@ LABEL_10:
     goto LABEL_16;
   }
 
-  objc_storeStrong(&v8->_request, a3);
+  objc_storeStrong(&v8->_request, request);
   v12 = *ptr;
   v11 = *(ptr + 1);
   if (v11)
@@ -1864,23 +1864,23 @@ LABEL_10:
     std::__shared_weak_count::__release_shared[abi:ne200100](cntrl);
   }
 
-  v14 = [(MPModelLibraryRequest *)v9->_request itemTranslationContext];
+  itemTranslationContext = [(MPModelLibraryRequest *)v9->_request itemTranslationContext];
   entityTranslationContext = v10->_entityTranslationContext;
-  v10->_entityTranslationContext = v14;
+  v10->_entityTranslationContext = itemTranslationContext;
 
-  v16 = [(MPMediaLibraryEntityTranslationContext *)v10->_entityTranslationContext allowedEntityIdentifiers];
-  if ([v16 count])
+  allowedEntityIdentifiers = [(MPMediaLibraryEntityTranslationContext *)v10->_entityTranslationContext allowedEntityIdentifiers];
+  if ([allowedEntityIdentifiers count])
   {
-    v17 = [(MPModelRequest *)v9->_request itemSortDescriptors];
-    if (v17)
+    itemSortDescriptors = [(MPModelRequest *)v9->_request itemSortDescriptors];
+    if (itemSortDescriptors)
     {
     }
 
     else
     {
-      v25 = [(MPModelLibraryRequest *)v9->_request sortUsingAllowedItemIdentifiers];
+      sortUsingAllowedItemIdentifiers = [(MPModelLibraryRequest *)v9->_request sortUsingAllowedItemIdentifiers];
 
-      if (!v25)
+      if (!sortUsingAllowedItemIdentifiers)
       {
         goto LABEL_10;
       }
@@ -1891,23 +1891,23 @@ LABEL_10:
         goto LABEL_10;
       }
 
-      v16 = os_log_create("com.apple.amp.mediaplayer", "Default");
-      if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+      allowedEntityIdentifiers = os_log_create("com.apple.amp.mediaplayer", "Default");
+      if (os_log_type_enabled(allowedEntityIdentifiers, OS_LOG_TYPE_ERROR))
       {
         *buf = 0;
-        _os_log_impl(&dword_1A238D000, v16, OS_LOG_TYPE_ERROR, "Skipping sorting by allowed item identifiers because allowedItemIdentifiers for _entityTranslationContext does not contain either a persistentID or a possiblePersistentID.", buf, 2u);
+        _os_log_impl(&dword_1A238D000, allowedEntityIdentifiers, OS_LOG_TYPE_ERROR, "Skipping sorting by allowed item identifiers because allowedItemIdentifiers for _entityTranslationContext does not contain either a persistentID or a possiblePersistentID.", buf, 2u);
       }
     }
   }
 
 LABEL_10:
-  v18 = [(MPModelLibraryRequest *)v9->_request legacyMediaQuery];
-  if (v18)
+  legacyMediaQuery = [(MPModelLibraryRequest *)v9->_request legacyMediaQuery];
+  if (legacyMediaQuery)
   {
-    v19 = [(MPModelLibraryRequest *)v9->_request legacyMediaQuery];
-    v20 = [v19 _hasStaticEntities];
+    legacyMediaQuery2 = [(MPModelLibraryRequest *)v9->_request legacyMediaQuery];
+    _hasStaticEntities = [legacyMediaQuery2 _hasStaticEntities];
 
-    if (v20)
+    if (_hasStaticEntities)
     {
       v21 = v10->_itemQueryResults.__cntrl_;
       v26 = v10->_itemQueryResults.__ptr_;

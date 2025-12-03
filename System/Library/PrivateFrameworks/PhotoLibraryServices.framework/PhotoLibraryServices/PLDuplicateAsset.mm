@@ -1,60 +1,60 @@
 @interface PLDuplicateAsset
-+ (BOOL)isDuplicateAssetSortChangedObject:(id)a3;
++ (BOOL)isDuplicateAssetSortChangedObject:(id)object;
 + (id)relationshipKeyPathsForMergePrefetching;
 + (id)relationshipKeyPathsForPrefetching;
-- (BOOL)_validCPLAssetsWithAssets:(id)a3;
+- (BOOL)_validCPLAssetsWithAssets:(id)assets;
 - (BOOL)hasModifiedUserDateCreated;
 - (BOOL)hasModifiedUserLocation;
 - (BOOL)hasModifiedUserTimezone;
 - (BOOL)hasModifiedUserTitle;
 - (BOOL)isCPLEnabled;
-- (PLDuplicateAsset)initWithAsset:(id)a3 cloudScopedIdentifier:(id)a4 enableEXIFDataAccess:(BOOL)a5;
-- (PLDuplicateAssetScoreTuple)_compareResourcesAdditionalChecksFromOther:(id)a3;
-- (PLDuplicateAssetScoreTuple)_compareResourcesMatchingKindSubtypeCheckFromOther:(id)a3 error:(id *)a4;
-- (PLDuplicateAssetScoreTuple)_compareResourcesMatchingPlaybackStyleAndKindSubTypeCheckFromOther:(id)a3;
-- (PLDuplicateAssetScoreTuple)_compareResourcesMatchingPlaybackStyleCheckFromOther:(id)a3 error:(id *)a4;
-- (PLDuplicateAssetScoreTuple)_compareResourcesNotMatchingPlaybackStyleAndKindSubTypeCheckFromOther:(id)a3 error:(id *)a4;
-- (id)_additionalDescriptionDictionaryWithPIIDetails:(BOOL)a3;
-- (id)_additionalDescriptionState:(id)a3;
-- (id)_additionalDescriptionWithPIIDetails:(BOOL)a3;
+- (PLDuplicateAsset)initWithAsset:(id)asset cloudScopedIdentifier:(id)identifier enableEXIFDataAccess:(BOOL)access;
+- (PLDuplicateAssetScoreTuple)_compareResourcesAdditionalChecksFromOther:(id)other;
+- (PLDuplicateAssetScoreTuple)_compareResourcesMatchingKindSubtypeCheckFromOther:(id)other error:(id *)error;
+- (PLDuplicateAssetScoreTuple)_compareResourcesMatchingPlaybackStyleAndKindSubTypeCheckFromOther:(id)other;
+- (PLDuplicateAssetScoreTuple)_compareResourcesMatchingPlaybackStyleCheckFromOther:(id)other error:(id *)error;
+- (PLDuplicateAssetScoreTuple)_compareResourcesNotMatchingPlaybackStyleAndKindSubTypeCheckFromOther:(id)other error:(id *)error;
+- (id)_additionalDescriptionDictionaryWithPIIDetails:(BOOL)details;
+- (id)_additionalDescriptionState:(id)state;
+- (id)_additionalDescriptionWithPIIDetails:(BOOL)details;
 - (id)debugDescription;
 - (id)duplicateAssetVisibilityStateString;
 - (int64_t)_buildBaseScore;
 - (int64_t)_buildUserModifiedScore;
-- (int64_t)_correctedCompareDate:(id)a3 otherDate:(id)a4;
-- (int64_t)compare:(id)a3 enabledMergeComparison:(BOOL)a4;
-- (int64_t)compareResource:(id)a3 error:(id *)a4;
+- (int64_t)_correctedCompareDate:(id)date otherDate:(id)otherDate;
+- (int64_t)compare:(id)compare enabledMergeComparison:(BOOL)comparison;
+- (int64_t)compareResource:(id)resource error:(id *)error;
 - (int64_t)score;
 - (signed)_calculateDuplicateAssetVisibilityState;
-- (void)_compareResourceReverseCheckFromOther:(id)a3 score:(PLDuplicateAssetScoreTuple *)a4;
-- (void)_compareResourceTIFFCheckFromAsset:(id)a3 other:(id)a4 scoreProperty:(signed __int16 *)a5;
-- (void)_compareResourcesResetPropertiesWithOther:(id)a3;
-- (void)_compareUTICheckFromOther:(id)a3 scoreTuple:(PLDuplicateAssetScoreTuple *)a4;
-- (void)_configureInitPropertiesWithAsset:(id)a3;
-- (void)_fileFormatIncrementScore:(int64_t *)a3;
-- (void)_mergeComparisonScoreModifierWithOtherAsset:(id)a3 score:(int64_t *)a4 otherScore:(int64_t *)a5;
-- (void)_tieBreakerComparisonScoreWithOtherAsset:(id)a3 score:(int64_t *)a4 otherScore:(int64_t *)a5;
-- (void)_updateScoreOnCondition:(BOOL)a3 incrementOtherScore:(BOOL)a4 scoreTuple:(PLDuplicateAssetScoreTuple *)a5 other:(id)a6 propertyName:(id)a7 additionalLogString:(id)a8;
-- (void)_updateScoresUsingLatestDateWithDate:(id)a3 otherDate:(id)a4 score:(int64_t *)a5 otherScore:(int64_t *)a6;
-- (void)setMergeStatus:(int64_t)a3;
+- (void)_compareResourceReverseCheckFromOther:(id)other score:(PLDuplicateAssetScoreTuple *)score;
+- (void)_compareResourceTIFFCheckFromAsset:(id)asset other:(id)other scoreProperty:(signed __int16 *)property;
+- (void)_compareResourcesResetPropertiesWithOther:(id)other;
+- (void)_compareUTICheckFromOther:(id)other scoreTuple:(PLDuplicateAssetScoreTuple *)tuple;
+- (void)_configureInitPropertiesWithAsset:(id)asset;
+- (void)_fileFormatIncrementScore:(int64_t *)score;
+- (void)_mergeComparisonScoreModifierWithOtherAsset:(id)asset score:(int64_t *)score otherScore:(int64_t *)otherScore;
+- (void)_tieBreakerComparisonScoreWithOtherAsset:(id)asset score:(int64_t *)score otherScore:(int64_t *)otherScore;
+- (void)_updateScoreOnCondition:(BOOL)condition incrementOtherScore:(BOOL)score scoreTuple:(PLDuplicateAssetScoreTuple *)tuple other:(id)other propertyName:(id)name additionalLogString:(id)string;
+- (void)_updateScoresUsingLatestDateWithDate:(id)date otherDate:(id)otherDate score:(int64_t *)score otherScore:(int64_t *)otherScore;
+- (void)setMergeStatus:(int64_t)status;
 @end
 
 @implementation PLDuplicateAsset
 
-- (void)_fileFormatIncrementScore:(int64_t *)a3
+- (void)_fileFormatIncrementScore:(int64_t *)score
 {
   v26 = *MEMORY[0x1E69E9840];
-  v5 = [(PLDuplicateAsset *)self asset];
-  if (([v5 isJPEG] & 1) == 0)
+  asset = [(PLDuplicateAsset *)self asset];
+  if (([asset isJPEG] & 1) == 0)
   {
-    if ([v5 isHEIF])
+    if ([asset isHEIF])
     {
-      ++*a3;
+      ++*score;
       v6 = PLDuplicateDetectionGetLog();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
       {
-        v7 = [(PLDuplicateAsset *)self shortDescription];
-        v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Duplicate Asset: [%@] score incremented to %td", v7, *a3];
+        shortDescription = [(PLDuplicateAsset *)self shortDescription];
+        v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Duplicate Asset: [%@] score incremented to %td", shortDescription, *score];
         v9 = _PLDuplicateAssetLogString(v8, @"uniformTypeIdentifier", @"HEIF");
 
         *buf = 138543362;
@@ -68,29 +68,29 @@ LABEL_9:
 
     else
     {
-      v10 = [(PLDuplicateAsset *)self asset];
-      v11 = [v10 RAWBadgeAttribute];
+      asset2 = [(PLDuplicateAsset *)self asset];
+      rAWBadgeAttribute = [asset2 RAWBadgeAttribute];
 
-      if (!v11)
+      if (!rAWBadgeAttribute)
       {
         v13 = MEMORY[0x1E69C08F0];
-        v14 = [v5 uniformTypeIdentifier];
-        v6 = [v13 typeWithIdentifier:v14];
+        uniformTypeIdentifier = [asset uniformTypeIdentifier];
+        v6 = [v13 typeWithIdentifier:uniformTypeIdentifier];
 
-        v15 = [MEMORY[0x1E69C08F0] canonTIFFRAWImageType];
-        v16 = [v6 isEqual:v15];
+        canonTIFFRAWImageType = [MEMORY[0x1E69C08F0] canonTIFFRAWImageType];
+        v16 = [v6 isEqual:canonTIFFRAWImageType];
 
         if (v16)
         {
-          *a3 += 2;
+          *score += 2;
           v9 = PLDuplicateDetectionGetLog();
           if (!os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
           {
             goto LABEL_9;
           }
 
-          v17 = [(PLDuplicateAsset *)self shortDescription];
-          v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Duplicate Asset: [%@] score incremented to %td", v17, *a3];
+          shortDescription2 = [(PLDuplicateAsset *)self shortDescription];
+          v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Duplicate Asset: [%@] score incremented to %td", shortDescription2, *score];
           v19 = _PLDuplicateAssetLogString(v18, @"uniformTypeIdentifier", @"TIFFRaw");
 
           *buf = 138543362;
@@ -99,15 +99,15 @@ LABEL_9:
 
         else
         {
-          v20 = [MEMORY[0x1E69C08F0] adobePhotoshopType];
-          if ([v6 isEqual:v20])
+          adobePhotoshopType = [MEMORY[0x1E69C08F0] adobePhotoshopType];
+          if ([v6 isEqual:adobePhotoshopType])
           {
           }
 
           else
           {
-            v21 = [MEMORY[0x1E69C08F0] adobeIllustratorType];
-            v22 = [v6 isEqual:v21];
+            adobeIllustratorType = [MEMORY[0x1E69C08F0] adobeIllustratorType];
+            v22 = [v6 isEqual:adobeIllustratorType];
 
             if (!v22)
             {
@@ -115,15 +115,15 @@ LABEL_9:
             }
           }
 
-          *a3 += 3;
+          *score += 3;
           v9 = PLDuplicateDetectionGetLog();
           if (!os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
           {
             goto LABEL_9;
           }
 
-          v17 = [(PLDuplicateAsset *)self shortDescription];
-          v23 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Duplicate Asset: [%@] score incremented to %td", v17, *a3];
+          shortDescription2 = [(PLDuplicateAsset *)self shortDescription];
+          v23 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Duplicate Asset: [%@] score incremented to %td", shortDescription2, *score];
           v19 = _PLDuplicateAssetLogString(v23, @"uniformTypeIdentifier", @"Adobe");
 
           *buf = 138543362;
@@ -135,12 +135,12 @@ LABEL_9:
         goto LABEL_9;
       }
 
-      *a3 += 4;
+      *score += 4;
       v6 = PLDuplicateDetectionGetLog();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
       {
-        v7 = [(PLDuplicateAsset *)self shortDescription];
-        v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Duplicate Asset: [%@] score incremented to %td", v7, *a3];
+        shortDescription = [(PLDuplicateAsset *)self shortDescription];
+        v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Duplicate Asset: [%@] score incremented to %td", shortDescription, *score];
         v9 = _PLDuplicateAssetLogString(v12, @"packedBadgeAttributes", @"RAWBadgeAttributes");
 
         *buf = 138543362;
@@ -156,13 +156,13 @@ LABEL_10:
 - (int64_t)_buildUserModifiedScore
 {
   v39 = *MEMORY[0x1E69E9840];
-  v3 = [(PLDuplicateAsset *)self asset];
-  v4 = [v3 additionalAttributes];
+  asset = [(PLDuplicateAsset *)self asset];
+  additionalAttributes = [asset additionalAttributes];
   if ([(PLDuplicateAsset *)self hasModifiedUserTitle])
   {
-    v5 = [v4 title];
-    v6 = [v4 originalFilename];
-    if ([v5 isEqualToString:v6])
+    title = [additionalAttributes title];
+    originalFilename = [additionalAttributes originalFilename];
+    if ([title isEqualToString:originalFilename])
     {
       v7 = 5;
     }
@@ -175,8 +175,8 @@ LABEL_10:
     v8 = PLDuplicateDetectionGetLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
-      v9 = [(PLDuplicateAsset *)self shortDescription];
-      v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Duplicate Asset: [%@] score incremented to %td", v9, v7];
+      shortDescription = [(PLDuplicateAsset *)self shortDescription];
+      v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Duplicate Asset: [%@] score incremented to %td", shortDescription, v7];
       v11 = _PLDuplicateAssetLogString(v10, @"title", 0);
 
       *buf = 138543362;
@@ -190,17 +190,17 @@ LABEL_10:
     v7 = 0;
   }
 
-  v12 = [v4 assetDescription];
-  v13 = [v12 longDescription];
+  assetDescription = [additionalAttributes assetDescription];
+  longDescription = [assetDescription longDescription];
 
-  if (v13)
+  if (longDescription)
   {
     v7 += 5;
     v14 = PLDuplicateDetectionGetLog();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
     {
-      v15 = [(PLDuplicateAsset *)self shortDescription];
-      v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Duplicate Asset: [%@] score incremented to %td", v15, v7];
+      shortDescription2 = [(PLDuplicateAsset *)self shortDescription];
+      v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Duplicate Asset: [%@] score incremented to %td", shortDescription2, v7];
       v17 = _PLDuplicateAssetLogString(v16, @"longDescription", 0);
 
       *buf = 138543362;
@@ -209,8 +209,8 @@ LABEL_10:
     }
   }
 
-  v18 = [v4 keywords];
-  v19 = [v18 count];
+  keywords = [additionalAttributes keywords];
+  v19 = [keywords count];
 
   if (v19 >= 1)
   {
@@ -218,8 +218,8 @@ LABEL_10:
     v20 = PLDuplicateDetectionGetLog();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
     {
-      v21 = [(PLDuplicateAsset *)self shortDescription];
-      v22 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Duplicate Asset: [%@] score incremented to %td", v21, v7];
+      shortDescription3 = [(PLDuplicateAsset *)self shortDescription];
+      v22 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Duplicate Asset: [%@] score incremented to %td", shortDescription3, v7];
       v23 = _PLDuplicateAssetLogString(v22, @"keywords", 0);
 
       *buf = 138543362;
@@ -234,8 +234,8 @@ LABEL_10:
     v24 = PLDuplicateDetectionGetLog();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
     {
-      v25 = [(PLDuplicateAsset *)self shortDescription];
-      v26 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Duplicate Asset: [%@] score incremented to %td", v25, v7];
+      shortDescription4 = [(PLDuplicateAsset *)self shortDescription];
+      v26 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Duplicate Asset: [%@] score incremented to %td", shortDescription4, v7];
       v27 = _PLDuplicateAssetLogString(v26, @"location", 0);
 
       *buf = 138543362;
@@ -250,8 +250,8 @@ LABEL_10:
     v28 = PLDuplicateDetectionGetLog();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_DEBUG))
     {
-      v29 = [(PLDuplicateAsset *)self shortDescription];
-      v30 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Duplicate Asset: [%@] score incremented to %td", v29, v7];
+      shortDescription5 = [(PLDuplicateAsset *)self shortDescription];
+      v30 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Duplicate Asset: [%@] score incremented to %td", shortDescription5, v7];
       v31 = _PLDuplicateAssetLogString(v30, @"dateCreated", 0);
 
       *buf = 138543362;
@@ -266,8 +266,8 @@ LABEL_10:
     v32 = PLDuplicateDetectionGetLog();
     if (os_log_type_enabled(v32, OS_LOG_TYPE_DEBUG))
     {
-      v33 = [(PLDuplicateAsset *)self shortDescription];
-      v34 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Duplicate Asset: [%@] score incremented to %td", v33, v7];
+      shortDescription6 = [(PLDuplicateAsset *)self shortDescription];
+      v34 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Duplicate Asset: [%@] score incremented to %td", shortDescription6, v7];
       v35 = _PLDuplicateAssetLogString(v34, @"timeZoneOffset", 0);
 
       *buf = 138543362;
@@ -282,20 +282,20 @@ LABEL_10:
 - (int64_t)_buildBaseScore
 {
   v56 = *MEMORY[0x1E69E9840];
-  v3 = [(PLDuplicateAsset *)self _buildUserModifiedScore];
-  v51 = v3;
-  v4 = [(PLDuplicateAsset *)self asset];
-  v5 = [v4 hasAdjustments];
+  _buildUserModifiedScore = [(PLDuplicateAsset *)self _buildUserModifiedScore];
+  v51 = _buildUserModifiedScore;
+  asset = [(PLDuplicateAsset *)self asset];
+  hasAdjustments = [asset hasAdjustments];
 
-  if (v5)
+  if (hasAdjustments)
   {
-    v3 += 15;
-    v51 = v3;
+    _buildUserModifiedScore += 15;
+    v51 = _buildUserModifiedScore;
     v6 = PLDuplicateDetectionGetLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
     {
-      v7 = [(PLDuplicateAsset *)self shortDescription];
-      v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Duplicate Asset: [%@] score incremented to %td", v7, v3];
+      shortDescription = [(PLDuplicateAsset *)self shortDescription];
+      v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Duplicate Asset: [%@] score incremented to %td", shortDescription, _buildUserModifiedScore];
       v9 = _PLDuplicateAssetLogString(v8, @"adjustmentsState", 0);
 
       *buf = 138543362;
@@ -304,18 +304,18 @@ LABEL_10:
     }
   }
 
-  v10 = [(PLDuplicateAsset *)self asset];
-  v11 = [v10 favorite];
+  asset2 = [(PLDuplicateAsset *)self asset];
+  favorite = [asset2 favorite];
 
-  if (v11)
+  if (favorite)
   {
-    v3 += 20;
-    v51 = v3;
+    _buildUserModifiedScore += 20;
+    v51 = _buildUserModifiedScore;
     v12 = PLDuplicateDetectionGetLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
     {
-      v13 = [(PLDuplicateAsset *)self shortDescription];
-      v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Duplicate Asset: [%@] score incremented to %td", v13, v3];
+      shortDescription2 = [(PLDuplicateAsset *)self shortDescription];
+      v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Duplicate Asset: [%@] score incremented to %td", shortDescription2, _buildUserModifiedScore];
       v15 = _PLDuplicateAssetLogString(v14, @"favorite", 0);
 
       *buf = 138543362;
@@ -324,16 +324,16 @@ LABEL_10:
     }
   }
 
-  v16 = [(PLDuplicateAsset *)self asset];
-  v17 = [v16 additionalAttributes];
-  v18 = [v17 importedBy];
+  asset3 = [(PLDuplicateAsset *)self asset];
+  additionalAttributes = [asset3 additionalAttributes];
+  importedBy = [additionalAttributes importedBy];
 
-  if (v18 <= 0xF)
+  if (importedBy <= 0xF)
   {
-    if (((1 << v18) & 0x2360) != 0)
+    if (((1 << importedBy) & 0x2360) != 0)
     {
-      v3 += 10;
-      v51 = v3;
+      _buildUserModifiedScore += 10;
+      v51 = _buildUserModifiedScore;
       v19 = PLDuplicateDetectionGetLog();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
       {
@@ -343,15 +343,15 @@ LABEL_10:
 
     else
     {
-      if (((1 << v18) & 0x16) == 0)
+      if (((1 << importedBy) & 0x16) == 0)
       {
-        if (((1 << v18) & 0x8088) == 0)
+        if (((1 << importedBy) & 0x8088) == 0)
         {
           goto LABEL_20;
         }
 
-        v3 += 5;
-        v51 = v3;
+        _buildUserModifiedScore += 5;
+        v51 = _buildUserModifiedScore;
         v19 = PLDuplicateDetectionGetLog();
         if (!os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
         {
@@ -361,14 +361,14 @@ LABEL_10:
         goto LABEL_18;
       }
 
-      v3 += 15;
-      v51 = v3;
+      _buildUserModifiedScore += 15;
+      v51 = _buildUserModifiedScore;
       v19 = PLDuplicateDetectionGetLog();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
       {
 LABEL_18:
-        v20 = [(PLDuplicateAsset *)self shortDescription];
-        v21 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Duplicate Asset: [%@] score incremented to %td", v20, v3];
+        shortDescription3 = [(PLDuplicateAsset *)self shortDescription];
+        v21 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Duplicate Asset: [%@] score incremented to %td", shortDescription3, _buildUserModifiedScore];
         v22 = _PLDuplicateAssetLogString(v21, @"importedBy", 0);
 
         *buf = 138543362;
@@ -381,12 +381,12 @@ LABEL_19:
   }
 
 LABEL_20:
-  v23 = [(PLDuplicateAsset *)self asset];
-  v24 = [v23 playbackStyle];
+  asset4 = [(PLDuplicateAsset *)self asset];
+  playbackStyle = [asset4 playbackStyle];
 
-  if (v24 > 3)
+  if (playbackStyle > 3)
   {
-    if ((v24 - 4) >= 2)
+    if ((playbackStyle - 4) >= 2)
     {
       goto LABEL_34;
     }
@@ -394,7 +394,7 @@ LABEL_20:
 
   else
   {
-    if (v24 == 1)
+    if (playbackStyle == 1)
     {
       [(PLDuplicateAsset *)self _fileFormatIncrementScore:&v51];
       v51 += 10;
@@ -407,14 +407,14 @@ LABEL_20:
       goto LABEL_33;
     }
 
-    if (v24 == 2)
+    if (playbackStyle == 2)
     {
-      v51 = v3 + 5;
+      v51 = _buildUserModifiedScore + 5;
       v25 = PLDuplicateDetectionGetLog();
       if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
       {
-        v26 = [(PLDuplicateAsset *)self shortDescription];
-        v29 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Duplicate Asset: [%@] score incremented to %td", v26, v51];
+        shortDescription4 = [(PLDuplicateAsset *)self shortDescription];
+        v29 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Duplicate Asset: [%@] score incremented to %td", shortDescription4, v51];
         v28 = _PLDuplicateAssetLogString(v29, @"playbackStyle", 0);
 
         *buf = 138543362;
@@ -425,22 +425,22 @@ LABEL_20:
       goto LABEL_33;
     }
 
-    if (v24 != 3)
+    if (playbackStyle != 3)
     {
       goto LABEL_34;
     }
 
     [(PLDuplicateAsset *)self _fileFormatIncrementScore:&v51];
-    v3 = v51;
+    _buildUserModifiedScore = v51;
   }
 
-  v51 = v3 + 15;
+  v51 = _buildUserModifiedScore + 15;
   v25 = PLDuplicateDetectionGetLog();
   if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
   {
 LABEL_27:
-    v26 = [(PLDuplicateAsset *)self shortDescription];
-    v27 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Duplicate Asset: [%@] score incremented to %td", v26, v51];
+    shortDescription4 = [(PLDuplicateAsset *)self shortDescription];
+    v27 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Duplicate Asset: [%@] score incremented to %td", shortDescription4, v51];
     v28 = _PLDuplicateAssetLogString(v27, @"playbackStyle", 0);
 
     *buf = 138543362;
@@ -452,17 +452,17 @@ LABEL_32:
 LABEL_33:
 
 LABEL_34:
-  v30 = [(PLDuplicateAsset *)self asset];
-  v31 = [v30 hdrType];
+  asset5 = [(PLDuplicateAsset *)self asset];
+  hdrType = [asset5 hdrType];
 
-  if (v31 >= 1)
+  if (hdrType >= 1)
   {
     v51 += 5;
     v32 = PLDuplicateDetectionGetLog();
     if (os_log_type_enabled(v32, OS_LOG_TYPE_DEBUG))
     {
-      v33 = [(PLDuplicateAsset *)self shortDescription];
-      v34 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Duplicate Asset: [%@] score incremented to %td", v33, v51];
+      shortDescription5 = [(PLDuplicateAsset *)self shortDescription];
+      v34 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Duplicate Asset: [%@] score incremented to %td", shortDescription5, v51];
       v35 = _PLDuplicateAssetLogString(v34, @"hdrType", 0);
 
       *buf = 138543362;
@@ -471,17 +471,17 @@ LABEL_34:
     }
   }
 
-  v36 = [(PLDuplicateAsset *)self asset];
-  v37 = [v36 kindSubtype];
+  asset6 = [(PLDuplicateAsset *)self asset];
+  kindSubtype = [asset6 kindSubtype];
 
-  if (v37 - 101 <= 3 && v37 != 103 || v37 < 3u)
+  if (kindSubtype - 101 <= 3 && kindSubtype != 103 || kindSubtype < 3u)
   {
     v51 += 5;
     v38 = PLDuplicateDetectionGetLog();
     if (os_log_type_enabled(v38, OS_LOG_TYPE_DEBUG))
     {
-      v39 = [(PLDuplicateAsset *)self shortDescription];
-      v40 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Duplicate Asset: [%@] score incremented to %td", v39, v51];
+      shortDescription6 = [(PLDuplicateAsset *)self shortDescription];
+      v40 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Duplicate Asset: [%@] score incremented to %td", shortDescription6, v51];
       v41 = _PLDuplicateAssetLogString(v40, @"kindSubtype", 0);
 
       *buf = 138543362;
@@ -490,8 +490,8 @@ LABEL_34:
     }
   }
 
-  v42 = [(PLDuplicateAsset *)self asset];
-  [v42 savedAssetType];
+  asset7 = [(PLDuplicateAsset *)self asset];
+  [asset7 savedAssetType];
 
   [MEMORY[0x1E69BF328] maskForFinderSyncedAsset];
   if ((PLValidatedSavedAssetTypeApplies() & 1) != 0 || ([MEMORY[0x1E69BF328] maskForReferencedAsset], PLValidatedSavedAssetTypeApplies()))
@@ -500,8 +500,8 @@ LABEL_34:
     v43 = PLDuplicateDetectionGetLog();
     if (os_log_type_enabled(v43, OS_LOG_TYPE_DEBUG))
     {
-      v44 = [(PLDuplicateAsset *)self shortDescription];
-      v45 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Duplicate Asset: [%@] score incremented to %td", v44, v51];
+      shortDescription7 = [(PLDuplicateAsset *)self shortDescription];
+      v45 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Duplicate Asset: [%@] score incremented to %td", shortDescription7, v51];
       v46 = _PLDuplicateAssetLogString(v45, @"savedAssetType", @"Score was invalidated");
 
       *buf = 138543362;
@@ -513,11 +513,11 @@ LABEL_34:
     if (os_log_type_enabled(v47, OS_LOG_TYPE_INFO))
     {
       v48 = PLValidatedSavedAssetTypeDescription();
-      v49 = [(PLDuplicateAsset *)self shortDescription];
+      shortDescription8 = [(PLDuplicateAsset *)self shortDescription];
       *buf = 138543618;
       v53 = v48;
       v54 = 2114;
-      v55 = v49;
+      v55 = shortDescription8;
       _os_log_impl(&dword_19BF1F000, v47, OS_LOG_TYPE_INFO, "Duplicate Asset: reset score to 0 based on savedAssetType: %{public}@ [%{public}@]", buf, 0x16u);
     }
   }
@@ -525,72 +525,72 @@ LABEL_34:
   return v51;
 }
 
-- (void)_compareResourcesResetPropertiesWithOther:(id)a3
+- (void)_compareResourcesResetPropertiesWithOther:(id)other
 {
-  v4 = a3;
+  otherCopy = other;
   [(PLDuplicateAsset *)self setResourceComparisonPropertyUpdateLocation:0];
-  [v4 setResourceComparisonPropertyUpdateLocation:0];
+  [otherCopy setResourceComparisonPropertyUpdateLocation:0];
 }
 
-- (void)_compareResourceReverseCheckFromOther:(id)a3 score:(PLDuplicateAssetScoreTuple *)a4
+- (void)_compareResourceReverseCheckFromOther:(id)other score:(PLDuplicateAssetScoreTuple *)score
 {
   v42 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 asset];
-  v8 = [(PLDuplicateAsset *)self asset];
-  v9 = [v8 additionalAttributes];
-  v10 = [v9 originatingAssetIdentifier];
+  otherCopy = other;
+  asset = [otherCopy asset];
+  asset2 = [(PLDuplicateAsset *)self asset];
+  additionalAttributes = [asset2 additionalAttributes];
+  originatingAssetIdentifier = [additionalAttributes originatingAssetIdentifier];
 
-  v11 = [v7 additionalAttributes];
-  v12 = [v11 originatingAssetIdentifier];
+  additionalAttributes2 = [asset additionalAttributes];
+  originatingAssetIdentifier2 = [additionalAttributes2 originatingAssetIdentifier];
 
-  if ((v10 == 0) == (v12 != 0))
+  if ((originatingAssetIdentifier == 0) == (originatingAssetIdentifier2 != 0))
   {
-    v13 = [v8 additionalAttributes];
-    v14 = [v13 originalStableHash];
+    additionalAttributes3 = [asset2 additionalAttributes];
+    originalStableHash = [additionalAttributes3 originalStableHash];
 
-    v15 = [v7 additionalAttributes];
-    v16 = [v15 originalStableHash];
+    additionalAttributes4 = [asset additionalAttributes];
+    originalStableHash2 = [additionalAttributes4 originalStableHash];
 
-    if (([v10 isEqualToString:v16] & 1) == 0 && !objc_msgSend(v12, "isEqualToString:", v14))
+    if (([originatingAssetIdentifier isEqualToString:originalStableHash2] & 1) == 0 && !objc_msgSend(originatingAssetIdentifier2, "isEqualToString:", originalStableHash))
     {
       goto LABEL_20;
     }
 
-    v38 = v16;
-    v39 = v14;
-    v37 = v8;
-    v17 = *a4;
-    v18 = [MEMORY[0x1E696AD98] numberWithShort:a4->var0];
+    v38 = originalStableHash2;
+    v39 = originalStableHash;
+    v37 = asset2;
+    v17 = *score;
+    v18 = [MEMORY[0x1E696AD98] numberWithShort:score->var0];
     v19 = [MEMORY[0x1E696AD98] numberWithShort:(*&v17 >> 16)];
     v20 = [v18 compare:v19];
 
     if (v20 == -1)
     {
-      v16 = v38;
-      v14 = v39;
-      if (v12)
+      originalStableHash2 = v38;
+      originalStableHash = v39;
+      if (originatingAssetIdentifier2)
       {
-        a4->var0 = a4->var1 + 5;
+        score->var0 = score->var1 + 5;
         v25 = PLDuplicateDetectionGetLog();
         if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
         {
 LABEL_11:
-          v26 = [(PLDuplicateAsset *)self shortDescription];
-          v27 = [v6 shortDescription];
-          var0 = a4->var0;
-          v29 = (*a4 >> 16);
-          v30 = v26;
-          v31 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Duplicate Asset: Resource comparisonScore [%d:%d][%@:%@]", var0, v29, v26, v27];
+          shortDescription = [(PLDuplicateAsset *)self shortDescription];
+          shortDescription2 = [otherCopy shortDescription];
+          var0 = score->var0;
+          v29 = (*score >> 16);
+          v30 = shortDescription;
+          v31 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Duplicate Asset: Resource comparisonScore [%d:%d][%@:%@]", var0, v29, shortDescription, shortDescription2];
           v32 = _PLDuplicateAssetLogString(v31, @"originatingAssetIdentifier", @"reversed");
 
-          v14 = v39;
+          originalStableHash = v39;
           *buf = 138543362;
           v41 = v32;
           _os_log_impl(&dword_19BF1F000, v25, OS_LOG_TYPE_DEBUG, "%{public}@", buf, 0xCu);
 
 LABEL_18:
-          v16 = v38;
+          originalStableHash2 = v38;
         }
 
 LABEL_19:
@@ -601,18 +601,18 @@ LABEL_20:
       goto LABEL_21;
     }
 
-    v21 = *a4;
-    v22 = [MEMORY[0x1E696AD98] numberWithShort:a4->var0];
+    v21 = *score;
+    v22 = [MEMORY[0x1E696AD98] numberWithShort:score->var0];
     v23 = [MEMORY[0x1E696AD98] numberWithShort:(*&v21 >> 16)];
     v24 = [v22 compare:v23];
 
     if (v24)
     {
-      v16 = v38;
-      v14 = v39;
-      if (v10)
+      originalStableHash2 = v38;
+      originalStableHash = v39;
+      if (originatingAssetIdentifier)
       {
-        a4->var1 = a4->var0 + 5;
+        score->var1 = score->var0 + 5;
         v25 = PLDuplicateDetectionGetLog();
         if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
         {
@@ -625,9 +625,9 @@ LABEL_20:
       goto LABEL_20;
     }
 
-    if (v12)
+    if (originatingAssetIdentifier2)
     {
-      a4->var0 = a4->var1 + 5;
+      score->var0 = score->var1 + 5;
       v25 = PLDuplicateDetectionGetLog();
       if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
       {
@@ -637,14 +637,14 @@ LABEL_20:
 
     else
     {
-      a4->var1 = a4->var0 + 5;
+      score->var1 = score->var0 + 5;
       v25 = PLDuplicateDetectionGetLog();
       if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
       {
 LABEL_16:
-        v33 = [(PLDuplicateAsset *)self shortDescription];
-        v34 = [v6 shortDescription];
-        v35 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Duplicate Asset: Resource comparisonScore [%d:%d][%@:%@]", a4->var0, (*a4 >> 16), v33, v34];
+        shortDescription3 = [(PLDuplicateAsset *)self shortDescription];
+        shortDescription4 = [otherCopy shortDescription];
+        v35 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Duplicate Asset: Resource comparisonScore [%d:%d][%@:%@]", score->var0, (*score >> 16), shortDescription3, shortDescription4];
         v36 = _PLDuplicateAssetLogString(v35, @"originatingAssetIdentifier", @"reversed");
 
         *buf = 138543362;
@@ -653,40 +653,40 @@ LABEL_16:
       }
     }
 
-    v8 = v37;
-    v14 = v39;
+    asset2 = v37;
+    originalStableHash = v39;
     goto LABEL_18;
   }
 
 LABEL_21:
 }
 
-- (void)_compareResourceTIFFCheckFromAsset:(id)a3 other:(id)a4 scoreProperty:(signed __int16 *)a5
+- (void)_compareResourceTIFFCheckFromAsset:(id)asset other:(id)other scoreProperty:(signed __int16 *)property
 {
-  v7 = a4;
-  v21 = [a3 asset];
-  v8 = [v7 asset];
+  otherCopy = other;
+  asset = [asset asset];
+  asset2 = [otherCopy asset];
 
-  v9 = [v8 additionalAttributes];
-  v10 = [v9 dateCreatedSource];
+  additionalAttributes = [asset2 additionalAttributes];
+  dateCreatedSource = [additionalAttributes dateCreatedSource];
 
-  if ((v10 - 1) <= 1u)
+  if ((dateCreatedSource - 1) <= 1u)
   {
-    v11 = [v8 extendedAttributes];
-    v12 = [v11 dateCreated];
+    extendedAttributes = [asset2 extendedAttributes];
+    dateCreated = [extendedAttributes dateCreated];
 
-    if (v12)
+    if (dateCreated)
     {
-      v13 = [v21 extendedAttributes];
-      v14 = [v13 dateCreated];
+      extendedAttributes2 = [asset extendedAttributes];
+      dateCreated2 = [extendedAttributes2 dateCreated];
 
-      if (v14)
+      if (dateCreated2)
       {
-        v15 = [v8 extendedAttributes];
-        v16 = [v15 dateCreated];
-        v17 = [v21 extendedAttributes];
-        v18 = [v17 dateCreated];
-        [v16 timeIntervalSinceDate:v18];
+        extendedAttributes3 = [asset2 extendedAttributes];
+        dateCreated3 = [extendedAttributes3 dateCreated];
+        extendedAttributes4 = [asset extendedAttributes];
+        dateCreated4 = [extendedAttributes4 dateCreated];
+        [dateCreated3 timeIntervalSinceDate:dateCreated4];
         if (v19 >= 0.0)
         {
           v20 = 0;
@@ -697,27 +697,27 @@ LABEL_21:
           v20 = 5;
         }
 
-        *a5 = v20;
+        *property = v20;
       }
 
       else
       {
-        *a5 = 5;
+        *property = 5;
       }
     }
   }
 }
 
-- (void)_updateScoreOnCondition:(BOOL)a3 incrementOtherScore:(BOOL)a4 scoreTuple:(PLDuplicateAssetScoreTuple *)a5 other:(id)a6 propertyName:(id)a7 additionalLogString:(id)a8
+- (void)_updateScoreOnCondition:(BOOL)condition incrementOtherScore:(BOOL)score scoreTuple:(PLDuplicateAssetScoreTuple *)tuple other:(id)other propertyName:(id)name additionalLogString:(id)string
 {
-  v11 = a4;
-  v12 = a3;
+  scoreCopy = score;
+  conditionCopy = condition;
   v37 = *MEMORY[0x1E69E9840];
-  v14 = a6;
-  v15 = a7;
-  v16 = a8;
-  v17 = *a5;
-  v18 = [MEMORY[0x1E696AD98] numberWithShort:a5->var0];
+  otherCopy = other;
+  nameCopy = name;
+  stringCopy = string;
+  v17 = *tuple;
+  v18 = [MEMORY[0x1E696AD98] numberWithShort:tuple->var0];
   v19 = [MEMORY[0x1E696AD98] numberWithShort:(*&v17 >> 16)];
   v20 = [v18 compare:v19];
 
@@ -728,105 +728,105 @@ LABEL_21:
 
   else
   {
-    v21 = !v12;
+    v21 = !conditionCopy;
   }
 
   if (!v21)
   {
     v22 = 2;
-    if (!v11)
+    if (!scoreCopy)
     {
       v22 = 0;
     }
 
-    *(&a5->var0 + v22) = 5;
+    *(&tuple->var0 + v22) = 5;
     v23 = PLDuplicateDetectionGetLog();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
     {
-      v24 = [(PLDuplicateAsset *)self shortDescription];
-      [v14 shortDescription];
-      v25 = v34 = v14;
-      v26 = *a5;
+      shortDescription = [(PLDuplicateAsset *)self shortDescription];
+      [otherCopy shortDescription];
+      v25 = v34 = otherCopy;
+      v26 = *tuple;
       v27 = MEMORY[0x1E696AEC0];
       var0 = v26.var0;
       v29 = (*&v26 >> 16);
-      v30 = v16;
-      v31 = v15;
-      v32 = [v27 stringWithFormat:@"Duplicate Asset: Resource comparisonScore [%d:%d][%@:%@]", var0, v29, v24, v25];
+      v30 = stringCopy;
+      v31 = nameCopy;
+      v32 = [v27 stringWithFormat:@"Duplicate Asset: Resource comparisonScore [%d:%d][%@:%@]", var0, v29, shortDescription, v25];
       v33 = _PLDuplicateAssetLogString(v32, v31, v30);
 
       *buf = 138543362;
       v36 = v33;
       _os_log_impl(&dword_19BF1F000, v23, OS_LOG_TYPE_DEBUG, "%{public}@", buf, 0xCu);
 
-      v14 = v34;
+      otherCopy = v34;
     }
   }
 }
 
-- (void)_compareUTICheckFromOther:(id)a3 scoreTuple:(PLDuplicateAssetScoreTuple *)a4
+- (void)_compareUTICheckFromOther:(id)other scoreTuple:(PLDuplicateAssetScoreTuple *)tuple
 {
   v36 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  otherCopy = other;
   v33 = 0;
-  v7 = [v6 asset];
-  v8 = [(PLDuplicateAsset *)self asset];
+  asset = [otherCopy asset];
+  asset2 = [(PLDuplicateAsset *)self asset];
   v9 = MEMORY[0x1E69C08F0];
-  v10 = [v7 uniformTypeIdentifier];
-  v11 = [v9 typeWithIdentifier:v10];
+  uniformTypeIdentifier = [asset uniformTypeIdentifier];
+  v11 = [v9 typeWithIdentifier:uniformTypeIdentifier];
 
   v12 = MEMORY[0x1E69C08F0];
-  v13 = [v8 uniformTypeIdentifier];
-  v14 = [v12 typeWithIdentifier:v13];
+  uniformTypeIdentifier2 = [asset2 uniformTypeIdentifier];
+  v14 = [v12 typeWithIdentifier:uniformTypeIdentifier2];
 
   if ([v11 isEqual:v14])
   {
     goto LABEL_19;
   }
 
-  if ([v7 isHEIF])
+  if ([asset isHEIF])
   {
-    v15 = [v8 isJPEG];
+    isJPEG = [asset2 isJPEG];
   }
 
   else
   {
-    v15 = 0;
+    isJPEG = 0;
   }
 
-  [(PLDuplicateAsset *)self _updateScoreOnCondition:v15 incrementOtherScore:1 scoreTuple:&v33 other:v6 propertyName:@"UTI" additionalLogString:@"JPG:HEIF format"];
-  if ([v8 isHEIF])
+  [(PLDuplicateAsset *)self _updateScoreOnCondition:isJPEG incrementOtherScore:1 scoreTuple:&v33 other:otherCopy propertyName:@"UTI" additionalLogString:@"JPG:HEIF format"];
+  if ([asset2 isHEIF])
   {
-    v16 = [v7 isJPEG];
+    isJPEG2 = [asset isJPEG];
   }
 
   else
   {
-    v16 = 0;
+    isJPEG2 = 0;
   }
 
-  [(PLDuplicateAsset *)self _updateScoreOnCondition:v16 incrementOtherScore:0 scoreTuple:&v33 other:v6 propertyName:@"UTI" additionalLogString:@"HEIF:JPG format"];
-  v17 = [MEMORY[0x1E69C08F0] canonTIFFRAWImageType];
-  -[PLDuplicateAsset _updateScoreOnCondition:incrementOtherScore:scoreTuple:other:propertyName:additionalLogString:](self, "_updateScoreOnCondition:incrementOtherScore:scoreTuple:other:propertyName:additionalLogString:", [v11 isEqual:v17], 1, &v33, v6, @"UTI", @"??:TIFF format");
+  [(PLDuplicateAsset *)self _updateScoreOnCondition:isJPEG2 incrementOtherScore:0 scoreTuple:&v33 other:otherCopy propertyName:@"UTI" additionalLogString:@"HEIF:JPG format"];
+  canonTIFFRAWImageType = [MEMORY[0x1E69C08F0] canonTIFFRAWImageType];
+  -[PLDuplicateAsset _updateScoreOnCondition:incrementOtherScore:scoreTuple:other:propertyName:additionalLogString:](self, "_updateScoreOnCondition:incrementOtherScore:scoreTuple:other:propertyName:additionalLogString:", [v11 isEqual:canonTIFFRAWImageType], 1, &v33, otherCopy, @"UTI", @"??:TIFF format");
 
-  v18 = [MEMORY[0x1E69C08F0] canonTIFFRAWImageType];
-  -[PLDuplicateAsset _updateScoreOnCondition:incrementOtherScore:scoreTuple:other:propertyName:additionalLogString:](self, "_updateScoreOnCondition:incrementOtherScore:scoreTuple:other:propertyName:additionalLogString:", [v14 isEqual:v18], 0, &v33, v6, @"UTI", @"TIFF:?? format");
+  canonTIFFRAWImageType2 = [MEMORY[0x1E69C08F0] canonTIFFRAWImageType];
+  -[PLDuplicateAsset _updateScoreOnCondition:incrementOtherScore:scoreTuple:other:propertyName:additionalLogString:](self, "_updateScoreOnCondition:incrementOtherScore:scoreTuple:other:propertyName:additionalLogString:", [v14 isEqual:canonTIFFRAWImageType2], 0, &v33, otherCopy, @"UTI", @"TIFF:?? format");
 
-  v19 = [MEMORY[0x1E69C08F0] adobePhotoshopType];
-  -[PLDuplicateAsset _updateScoreOnCondition:incrementOtherScore:scoreTuple:other:propertyName:additionalLogString:](self, "_updateScoreOnCondition:incrementOtherScore:scoreTuple:other:propertyName:additionalLogString:", [v11 isEqual:v19], 1, &v33, v6, @"UTI", @"??:Photoshop format");
+  adobePhotoshopType = [MEMORY[0x1E69C08F0] adobePhotoshopType];
+  -[PLDuplicateAsset _updateScoreOnCondition:incrementOtherScore:scoreTuple:other:propertyName:additionalLogString:](self, "_updateScoreOnCondition:incrementOtherScore:scoreTuple:other:propertyName:additionalLogString:", [v11 isEqual:adobePhotoshopType], 1, &v33, otherCopy, @"UTI", @"??:Photoshop format");
 
-  v20 = [MEMORY[0x1E69C08F0] adobePhotoshopType];
-  -[PLDuplicateAsset _updateScoreOnCondition:incrementOtherScore:scoreTuple:other:propertyName:additionalLogString:](self, "_updateScoreOnCondition:incrementOtherScore:scoreTuple:other:propertyName:additionalLogString:", [v14 isEqual:v20], 0, &v33, v6, @"UTI", @"Photoshop:?? format");
+  adobePhotoshopType2 = [MEMORY[0x1E69C08F0] adobePhotoshopType];
+  -[PLDuplicateAsset _updateScoreOnCondition:incrementOtherScore:scoreTuple:other:propertyName:additionalLogString:](self, "_updateScoreOnCondition:incrementOtherScore:scoreTuple:other:propertyName:additionalLogString:", [v14 isEqual:adobePhotoshopType2], 0, &v33, otherCopy, @"UTI", @"Photoshop:?? format");
 
-  v21 = [MEMORY[0x1E69C08F0] adobeIllustratorType];
-  -[PLDuplicateAsset _updateScoreOnCondition:incrementOtherScore:scoreTuple:other:propertyName:additionalLogString:](self, "_updateScoreOnCondition:incrementOtherScore:scoreTuple:other:propertyName:additionalLogString:", [v11 isEqual:v21], 1, &v33, v6, @"UTI", @"??:Illustrator format");
+  adobeIllustratorType = [MEMORY[0x1E69C08F0] adobeIllustratorType];
+  -[PLDuplicateAsset _updateScoreOnCondition:incrementOtherScore:scoreTuple:other:propertyName:additionalLogString:](self, "_updateScoreOnCondition:incrementOtherScore:scoreTuple:other:propertyName:additionalLogString:", [v11 isEqual:adobeIllustratorType], 1, &v33, otherCopy, @"UTI", @"??:Illustrator format");
 
-  v22 = [MEMORY[0x1E69C08F0] adobeIllustratorType];
-  -[PLDuplicateAsset _updateScoreOnCondition:incrementOtherScore:scoreTuple:other:propertyName:additionalLogString:](self, "_updateScoreOnCondition:incrementOtherScore:scoreTuple:other:propertyName:additionalLogString:", [v14 isEqual:v22], 0, &v33, v6, @"UTI", @"Illustrator:?? format");
+  adobeIllustratorType2 = [MEMORY[0x1E69C08F0] adobeIllustratorType];
+  -[PLDuplicateAsset _updateScoreOnCondition:incrementOtherScore:scoreTuple:other:propertyName:additionalLogString:](self, "_updateScoreOnCondition:incrementOtherScore:scoreTuple:other:propertyName:additionalLogString:", [v14 isEqual:adobeIllustratorType2], 0, &v33, otherCopy, @"UTI", @"Illustrator:?? format");
 
-  LODWORD(v22) = v33;
+  LODWORD(adobeIllustratorType2) = v33;
   v23 = [MEMORY[0x1E696AD98] numberWithShort:v33];
-  v24 = [MEMORY[0x1E696AD98] numberWithShort:(v22 >> 16)];
+  v24 = [MEMORY[0x1E696AD98] numberWithShort:(adobeIllustratorType2 >> 16)];
   v25 = [v23 compare:v24];
 
   if (!v25)
@@ -834,7 +834,7 @@ LABEL_21:
     v26 = *MEMORY[0x1E6983008];
     if ([v11 isEqual:*MEMORY[0x1E6983008]])
     {
-      [(PLDuplicateAsset *)self _compareResourceTIFFCheckFromAsset:self other:v6 scoreProperty:&v33 + 2];
+      [(PLDuplicateAsset *)self _compareResourceTIFFCheckFromAsset:self other:otherCopy scoreProperty:&v33 + 2];
       v27 = PLDuplicateDetectionGetLog();
       if (!os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
       {
@@ -843,9 +843,9 @@ LABEL_16:
         goto LABEL_17;
       }
 
-      v32 = [(PLDuplicateAsset *)self shortDescription];
-      v28 = [v6 shortDescription];
-      v29 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Duplicate Asset: Resource comparisonScore [%d:%d][%@:%@]", v33, (v33 >> 16), v32, v28];
+      shortDescription = [(PLDuplicateAsset *)self shortDescription];
+      shortDescription2 = [otherCopy shortDescription];
+      v29 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Duplicate Asset: Resource comparisonScore [%d:%d][%@:%@]", v33, (v33 >> 16), shortDescription, shortDescription2];
       v30 = _PLDuplicateAssetLogString(v29, @"??:TIFF format", 0);
 
       *buf = 138543362;
@@ -859,16 +859,16 @@ LABEL_16:
         goto LABEL_17;
       }
 
-      [(PLDuplicateAsset *)self _compareResourceTIFFCheckFromAsset:v6 other:self scoreProperty:&v33];
+      [(PLDuplicateAsset *)self _compareResourceTIFFCheckFromAsset:otherCopy other:self scoreProperty:&v33];
       v27 = PLDuplicateDetectionGetLog();
       if (!os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
       {
         goto LABEL_16;
       }
 
-      v32 = [(PLDuplicateAsset *)self shortDescription];
-      v28 = [v6 shortDescription];
-      v31 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Duplicate Asset: Resource comparisonScore [%d:%d][%@:%@]", v33, (v33 >> 16), v32, v28];
+      shortDescription = [(PLDuplicateAsset *)self shortDescription];
+      shortDescription2 = [otherCopy shortDescription];
+      v31 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Duplicate Asset: Resource comparisonScore [%d:%d][%@:%@]", v33, (v33 >> 16), shortDescription, shortDescription2];
       v30 = _PLDuplicateAssetLogString(v31, @"TIFF:?? format", 0);
 
       *buf = 138543362;
@@ -881,28 +881,28 @@ LABEL_16:
   }
 
 LABEL_17:
-  if (a4)
+  if (tuple)
   {
-    a4->var0 += v33;
-    a4->var1 += HIWORD(v33);
+    tuple->var0 += v33;
+    tuple->var1 += HIWORD(v33);
   }
 
 LABEL_19:
 }
 
-- (PLDuplicateAssetScoreTuple)_compareResourcesAdditionalChecksFromOther:(id)a3
+- (PLDuplicateAssetScoreTuple)_compareResourcesAdditionalChecksFromOther:(id)other
 {
   v122 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  otherCopy = other;
   v119 = 0;
-  v5 = [v4 asset];
-  v6 = [(PLDuplicateAsset *)self asset];
-  v7 = [v4 originalResolution];
+  asset = [otherCopy asset];
+  asset2 = [(PLDuplicateAsset *)self asset];
+  originalResolution = [otherCopy originalResolution];
   v8 = 0;
-  if (v7 != [(PLDuplicateAsset *)self originalResolution])
+  if (originalResolution != [(PLDuplicateAsset *)self originalResolution])
   {
-    v9 = [v4 originalResolution];
-    if (v9 <= [(PLDuplicateAsset *)self originalResolution])
+    originalResolution2 = [otherCopy originalResolution];
+    if (originalResolution2 <= [(PLDuplicateAsset *)self originalResolution])
     {
       LOWORD(v119) = 5;
     }
@@ -915,9 +915,9 @@ LABEL_19:
     v10 = PLDuplicateDetectionGetLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
-      v11 = [(PLDuplicateAsset *)self shortDescription];
-      v12 = [v4 shortDescription];
-      v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Duplicate Asset: Resource comparisonScore [%d:%d][%@:%@]", v119, (v119 >> 16), v11, v12];
+      shortDescription = [(PLDuplicateAsset *)self shortDescription];
+      shortDescription2 = [otherCopy shortDescription];
+      v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Duplicate Asset: Resource comparisonScore [%d:%d][%@:%@]", v119, (v119 >> 16), shortDescription, shortDescription2];
       v14 = _PLDuplicateAssetLogString(v13, @"resolution", 0);
 
       *buf = 138543362;
@@ -934,21 +934,21 @@ LABEL_19:
 
   if (!v17)
   {
-    v18 = [v5 kind];
-    if (v18 == [v6 kind] && !objc_msgSend(v6, "kind"))
+    kind = [asset kind];
+    if (kind == [asset2 kind] && !objc_msgSend(asset2, "kind"))
     {
-      v19 = [v5 kindSubtype];
-      if (v19 == [v6 kindSubtype] && objc_msgSend(v6, "kindSubtype") == 2)
+      kindSubtype = [asset kindSubtype];
+      if (kindSubtype == [asset2 kindSubtype] && objc_msgSend(asset2, "kindSubtype") == 2)
       {
-        v20 = [v5 firstPersistedResourceMatching:&__block_literal_global_222];
-        v21 = [v6 firstPersistedResourceMatching:&__block_literal_global_224];
-        v22 = [v20 unorientedWidth];
-        v23 = [v20 unorientedHeight] * v22;
-        v24 = [v21 unorientedWidth];
-        v25 = [v21 unorientedHeight];
-        if (v23 != v25 * v24)
+        v20 = [asset firstPersistedResourceMatching:&__block_literal_global_222];
+        v21 = [asset2 firstPersistedResourceMatching:&__block_literal_global_224];
+        unorientedWidth = [v20 unorientedWidth];
+        v23 = [v20 unorientedHeight] * unorientedWidth;
+        unorientedWidth2 = [v21 unorientedWidth];
+        unorientedHeight = [v21 unorientedHeight];
+        if (v23 != unorientedHeight * unorientedWidth2)
         {
-          if (v23 <= v25 * v24)
+          if (v23 <= unorientedHeight * unorientedWidth2)
           {
             LOWORD(v119) = 5;
           }
@@ -961,10 +961,10 @@ LABEL_19:
           v26 = PLDuplicateDetectionGetLog();
           if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
           {
-            v117 = [(PLDuplicateAsset *)self shortDescription];
-            v115 = [v4 shortDescription];
-            v27 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Duplicate Asset: Resource comparisonScore [%d:%d][%@:%@]", v119, (v119 >> 16), v117, v115];
-            v28 = _PLDuplicateAssetLogString(v27, @"videoComplementResolution", 0);
+            shortDescription3 = [(PLDuplicateAsset *)self shortDescription];
+            shortDescription4 = [otherCopy shortDescription];
+            v115 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Duplicate Asset: Resource comparisonScore [%d:%d][%@:%@]", v119, (v119 >> 16), shortDescription3, shortDescription4];
+            v28 = _PLDuplicateAssetLogString(v115, @"videoComplementResolution", 0);
 
             *buf = 138543362;
             v121 = v28;
@@ -981,11 +981,11 @@ LABEL_19:
 
   if (!v31)
   {
-    v32 = [v5 additionalAttributes];
-    v33 = [v32 originalStableHash];
-    v34 = [v6 additionalAttributes];
-    v35 = [v34 originatingAssetIdentifier];
-    v36 = [v33 isEqualToString:v35];
+    additionalAttributes = [asset additionalAttributes];
+    originalStableHash = [additionalAttributes originalStableHash];
+    additionalAttributes2 = [asset2 additionalAttributes];
+    originatingAssetIdentifier = [additionalAttributes2 originatingAssetIdentifier];
+    v36 = [originalStableHash isEqualToString:originatingAssetIdentifier];
 
     if (v36)
     {
@@ -993,9 +993,9 @@ LABEL_19:
       v37 = PLDuplicateDetectionGetLog();
       if (os_log_type_enabled(v37, OS_LOG_TYPE_DEBUG))
       {
-        v38 = [(PLDuplicateAsset *)self shortDescription];
-        v39 = [v4 shortDescription];
-        v40 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Duplicate Asset: Resource comparisonScore [%d:%d][%@:%@]", v119, (v119 >> 16), v38, v39];
+        shortDescription5 = [(PLDuplicateAsset *)self shortDescription];
+        shortDescription6 = [otherCopy shortDescription];
+        v40 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Duplicate Asset: Resource comparisonScore [%d:%d][%@:%@]", v119, (v119 >> 16), shortDescription5, shortDescription6];
         v41 = _PLDuplicateAssetLogString(v40, @"originatingAssetIdentifier", 0);
 
         *buf = 138543362;
@@ -1012,11 +1012,11 @@ LABEL_19:
   if (!v44)
   {
     v45 = MEMORY[0x1E69C08F0];
-    v46 = [v6 uniformTypeIdentifier];
-    v47 = [v45 typeWithIdentifier:v46];
+    uniformTypeIdentifier = [asset2 uniformTypeIdentifier];
+    v47 = [v45 typeWithIdentifier:uniformTypeIdentifier];
 
-    v48 = [v4 originalResolution];
-    if (v48 != -[PLDuplicateAsset originalResolution](self, "originalResolution") || ([v47 conformsToType:*MEMORY[0x1E6982F88]] & 1) != 0 || (-[PLDuplicateAsset _compareUTICheckFromOther:scoreTuple:](self, "_compareUTICheckFromOther:scoreTuple:", v4, &v119), v49 = v119, objc_msgSend(MEMORY[0x1E696AD98], "numberWithShort:", v119), v50 = objc_claimAutoreleasedReturnValue(), objc_msgSend(MEMORY[0x1E696AD98], "numberWithShort:", (v49 >> 16)), v51 = objc_claimAutoreleasedReturnValue(), v52 = objc_msgSend(v50, "compare:", v51), v51, v50, v52))
+    originalResolution3 = [otherCopy originalResolution];
+    if (originalResolution3 != -[PLDuplicateAsset originalResolution](self, "originalResolution") || ([v47 conformsToType:*MEMORY[0x1E6982F88]] & 1) != 0 || (-[PLDuplicateAsset _compareUTICheckFromOther:scoreTuple:](self, "_compareUTICheckFromOther:scoreTuple:", otherCopy, &v119), v49 = v119, objc_msgSend(MEMORY[0x1E696AD98], "numberWithShort:", v119), v50 = objc_claimAutoreleasedReturnValue(), objc_msgSend(MEMORY[0x1E696AD98], "numberWithShort:", (v49 >> 16)), v51 = objc_claimAutoreleasedReturnValue(), v52 = objc_msgSend(v50, "compare:", v51), v51, v50, v52))
     {
 LABEL_94:
 
@@ -1026,10 +1026,10 @@ LABEL_94:
     if ([(PLDuplicateAsset *)self locationUpdated])
     {
 LABEL_53:
-      v77 = [v6 hasAdjustments];
-      if (v77 != [v5 hasAdjustments])
+      hasAdjustments = [asset2 hasAdjustments];
+      if (hasAdjustments != [asset hasAdjustments])
       {
-        if ([v6 hasAdjustments])
+        if ([asset2 hasAdjustments])
         {
           v78 = 5;
         }
@@ -1040,7 +1040,7 @@ LABEL_53:
         }
 
         LOWORD(v119) = v78 + v119;
-        if ([v5 hasAdjustments])
+        if ([asset hasAdjustments])
         {
           v79 = 5;
         }
@@ -1054,9 +1054,9 @@ LABEL_53:
         v80 = PLDuplicateDetectionGetLog();
         if (os_log_type_enabled(v80, OS_LOG_TYPE_DEBUG))
         {
-          v81 = [(PLDuplicateAsset *)self shortDescription];
-          v82 = [v4 shortDescription];
-          v83 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Duplicate Asset: Resource comparisonScore [%d:%d][%@:%@]", v119, (v119 >> 16), v81, v82];
+          shortDescription7 = [(PLDuplicateAsset *)self shortDescription];
+          shortDescription8 = [otherCopy shortDescription];
+          v83 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Duplicate Asset: Resource comparisonScore [%d:%d][%@:%@]", v119, (v119 >> 16), shortDescription7, shortDescription8];
           v84 = _PLDuplicateAssetLogString(v83, @"adjustments", 0);
 
           *buf = 138543362;
@@ -1065,11 +1065,11 @@ LABEL_53:
         }
       }
 
-      v85 = [v6 hdrType];
-      if (v85 != [v5 hdrType])
+      hdrType = [asset2 hdrType];
+      if (hdrType != [asset hdrType])
       {
-        v86 = [v6 hdrType];
-        if (v86 <= [v5 hdrType])
+        hdrType2 = [asset2 hdrType];
+        if (hdrType2 <= [asset hdrType])
         {
           v87 = 0;
         }
@@ -1080,8 +1080,8 @@ LABEL_53:
         }
 
         LOWORD(v119) = v87 + v119;
-        v88 = [v5 hdrType];
-        if (v88 <= [v6 hdrType])
+        hdrType3 = [asset hdrType];
+        if (hdrType3 <= [asset2 hdrType])
         {
           v89 = 0;
         }
@@ -1095,9 +1095,9 @@ LABEL_53:
         v90 = PLDuplicateDetectionGetLog();
         if (os_log_type_enabled(v90, OS_LOG_TYPE_DEBUG))
         {
-          v91 = [(PLDuplicateAsset *)self shortDescription];
-          v92 = [v4 shortDescription];
-          v93 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Duplicate Asset: Resource comparisonScore [%d:%d][%@:%@]", v119, (v119 >> 16), v91, v92];
+          shortDescription9 = [(PLDuplicateAsset *)self shortDescription];
+          shortDescription10 = [otherCopy shortDescription];
+          v93 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Duplicate Asset: Resource comparisonScore [%d:%d][%@:%@]", v119, (v119 >> 16), shortDescription9, shortDescription10];
           v94 = _PLDuplicateAssetLogString(v93, @"HDR", 0);
 
           *buf = 138543362;
@@ -1106,10 +1106,10 @@ LABEL_53:
         }
       }
 
-      v95 = [v6 depthType];
-      if (v95 != [v5 depthType])
+      depthType = [asset2 depthType];
+      if (depthType != [asset depthType])
       {
-        if ([v5 depthType])
+        if ([asset depthType])
         {
           v96 = 0;
         }
@@ -1120,7 +1120,7 @@ LABEL_53:
         }
 
         LOWORD(v119) = v96 + v119;
-        if ([v6 depthType])
+        if ([asset2 depthType])
         {
           v97 = 0;
         }
@@ -1134,10 +1134,10 @@ LABEL_53:
         v98 = PLDuplicateDetectionGetLog();
         if (os_log_type_enabled(v98, OS_LOG_TYPE_DEBUG))
         {
-          v99 = [(PLDuplicateAsset *)self shortDescription];
-          v100 = [v4 shortDescription];
-          v101 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Duplicate Asset: Resource comparisonScore [%d:%d][%@:%@]", v119, (v119 >> 16), v99, v100];
-          v102 = _PLDuplicateAssetLogString(v101, @"Depth Data", 0);
+          shortDescription11 = [(PLDuplicateAsset *)self shortDescription];
+          shortDescription12 = [otherCopy shortDescription];
+          v100 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Duplicate Asset: Resource comparisonScore [%d:%d][%@:%@]", v119, (v119 >> 16), shortDescription11, shortDescription12];
+          v102 = _PLDuplicateAssetLogString(v100, @"Depth Data", 0);
 
           *buf = 138543362;
           v121 = v102;
@@ -1145,13 +1145,13 @@ LABEL_53:
         }
       }
 
-      v103 = [v5 playbackVariation];
-      if (v103 != [v6 playbackVariation])
+      playbackVariation = [asset playbackVariation];
+      if (playbackVariation != [asset2 playbackVariation])
       {
-        v104 = [v5 playbackVariation];
-        if ((v104 - 1) >= 3)
+        playbackVariation2 = [asset playbackVariation];
+        if ((playbackVariation2 - 1) >= 3)
         {
-          if (!v104)
+          if (!playbackVariation2)
           {
             LOWORD(v119) = v119 + 5;
           }
@@ -1159,7 +1159,7 @@ LABEL_53:
 
         else
         {
-          if ([v6 playbackVariation])
+          if ([asset2 playbackVariation])
           {
             v105 = 0;
           }
@@ -1175,10 +1175,10 @@ LABEL_53:
         v106 = PLDuplicateDetectionGetLog();
         if (os_log_type_enabled(v106, OS_LOG_TYPE_DEBUG))
         {
-          v107 = [(PLDuplicateAsset *)self shortDescription];
-          v108 = [v4 shortDescription];
-          v109 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Duplicate Asset: Resource comparisonScore [%d:%d][%@:%@]", v119, (v119 >> 16), v107, v108];
-          v110 = _PLDuplicateAssetLogString(v109, @"Variation", 0);
+          shortDescription13 = [(PLDuplicateAsset *)self shortDescription];
+          shortDescription14 = [otherCopy shortDescription];
+          v108 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Duplicate Asset: Resource comparisonScore [%d:%d][%@:%@]", v119, (v119 >> 16), shortDescription13, shortDescription14];
+          v110 = _PLDuplicateAssetLogString(v108, @"Variation", 0);
 
           *buf = 138543362;
           v121 = v110;
@@ -1189,11 +1189,11 @@ LABEL_53:
       goto LABEL_94;
     }
 
-    v53 = [v6 location];
-    v54 = [v5 location];
-    if (v53)
+    location = [asset2 location];
+    location2 = [asset location];
+    if (location)
     {
-      v55 = [PLLocationUtils locationIsCoarse:v53];
+      v55 = [PLLocationUtils locationIsCoarse:location];
     }
 
     else
@@ -1202,9 +1202,9 @@ LABEL_53:
     }
 
     v113 = v55;
-    if (v54)
+    if (location2)
     {
-      v56 = ![PLLocationUtils locationIsCoarse:v54];
+      v56 = ![PLLocationUtils locationIsCoarse:location2];
     }
 
     else
@@ -1213,14 +1213,14 @@ LABEL_53:
     }
 
     v112 = v56;
-    v116 = v54;
-    v57 = [v6 extendedAttributes];
-    v58 = [v57 latitude];
-    if (v58)
+    v116 = location2;
+    extendedAttributes = [asset2 extendedAttributes];
+    latitude = [extendedAttributes latitude];
+    if (latitude)
     {
-      v59 = [v6 extendedAttributes];
-      v60 = [v59 longitude];
-      v61 = v60 != 0;
+      extendedAttributes2 = [asset2 extendedAttributes];
+      longitude = [extendedAttributes2 longitude];
+      v61 = longitude != 0;
     }
 
     else
@@ -1228,15 +1228,15 @@ LABEL_53:
       v61 = 0;
     }
 
-    v118 = v53;
+    v118 = location;
 
-    v62 = [v5 extendedAttributes];
-    v63 = [v62 latitude];
-    if (v63)
+    extendedAttributes3 = [asset extendedAttributes];
+    latitude2 = [extendedAttributes3 latitude];
+    if (latitude2)
     {
-      v64 = [v5 extendedAttributes];
-      v65 = [v64 longitude];
-      v66 = v65 != 0;
+      extendedAttributes4 = [asset extendedAttributes];
+      longitude2 = [extendedAttributes4 longitude];
+      v66 = longitude2 != 0;
     }
 
     else
@@ -1248,13 +1248,13 @@ LABEL_53:
     if ((v113 & v112 & v67 & 1) != 0 || !v61 && v66)
     {
       HIWORD(v119) += 5;
-      [v4 setResourceComparisonPropertyUpdateLocation:1];
+      [otherCopy setResourceComparisonPropertyUpdateLocation:1];
       v69 = PLDuplicateDetectionGetLog();
       if (os_log_type_enabled(v69, OS_LOG_TYPE_DEBUG))
       {
-        v73 = [(PLDuplicateAsset *)self shortDescription];
-        v74 = [v4 shortDescription];
-        v75 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Duplicate Asset: Resource comparisonScore [%d:%d][%@:%@]", v119, (v119 >> 16), v73, v74];
+        shortDescription15 = [(PLDuplicateAsset *)self shortDescription];
+        shortDescription16 = [otherCopy shortDescription];
+        v75 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Duplicate Asset: Resource comparisonScore [%d:%d][%@:%@]", v119, (v119 >> 16), shortDescription15, shortDescription16];
         v76 = _PLDuplicateAssetLogString(v75, @"location", 0);
 
         *buf = 138543362;
@@ -1279,9 +1279,9 @@ LABEL_52:
       v69 = PLDuplicateDetectionGetLog();
       if (os_log_type_enabled(v69, OS_LOG_TYPE_DEBUG))
       {
-        v114 = [(PLDuplicateAsset *)self shortDescription];
-        v70 = [v4 shortDescription];
-        v71 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Duplicate Asset: Resource comparisonScore [%d:%d][%@:%@]", v119, (v119 >> 16), v114, v70];
+        shortDescription17 = [(PLDuplicateAsset *)self shortDescription];
+        shortDescription18 = [otherCopy shortDescription];
+        v71 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Duplicate Asset: Resource comparisonScore [%d:%d][%@:%@]", v119, (v119 >> 16), shortDescription17, shortDescription18];
         v72 = _PLDuplicateAssetLogString(v71, @"location", 0);
 
         *buf = 138543362;
@@ -1330,19 +1330,19 @@ BOOL __63__PLDuplicateAsset__compareResourcesAdditionalChecksFromOther___block_i
   return v3;
 }
 
-- (PLDuplicateAssetScoreTuple)_compareResourcesNotMatchingPlaybackStyleAndKindSubTypeCheckFromOther:(id)a3 error:(id *)a4
+- (PLDuplicateAssetScoreTuple)_compareResourcesNotMatchingPlaybackStyleAndKindSubTypeCheckFromOther:(id)other error:(id *)error
 {
   v56[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 asset];
-  v8 = [(PLDuplicateAsset *)self asset];
-  v9 = [v8 kindSubtype];
+  otherCopy = other;
+  asset = [otherCopy asset];
+  asset2 = [(PLDuplicateAsset *)self asset];
+  kindSubtype = [asset2 kindSubtype];
   v10 = 0;
   v11 = 0;
-  v12 = [v7 kindSubtype];
-  if (v12 > 9)
+  kindSubtype2 = [asset kindSubtype];
+  if (kindSubtype2 > 9)
   {
-    if (v12 - 100 < 5)
+    if (kindSubtype2 - 100 < 5)
     {
       v13 = MEMORY[0x1E696ABC0];
       v14 = *MEMORY[0x1E69BFF48];
@@ -1361,12 +1361,12 @@ LABEL_6:
         goto LABEL_7;
       }
 
-      v17 = [v6 shortDescription];
-      v18 = [(PLDuplicateAsset *)self shortDescription];
+      shortDescription = [otherCopy shortDescription];
+      shortDescription2 = [(PLDuplicateAsset *)self shortDescription];
       *buf = 138543618;
-      v52 = v17;
+      v52 = shortDescription;
       v53 = 2114;
-      v54 = v18;
+      v54 = shortDescription2;
       v19 = "Duplicate Asset: Resource matching error, unexpected processing a video kind subtype [%{public}@ -> %{public}@]";
 LABEL_5:
       _os_log_impl(&dword_19BF1F000, v16, OS_LOG_TYPE_ERROR, v19, buf, 0x16u);
@@ -1375,14 +1375,14 @@ LABEL_5:
     }
 
     var0 = 0;
-    if (v12 != 10)
+    if (kindSubtype2 != 10)
     {
       goto LABEL_7;
     }
 
-    if (v9)
+    if (kindSubtype)
     {
-      if (v9 != 2)
+      if (kindSubtype != 2)
       {
         v44 = MEMORY[0x1E696ABC0];
         v45 = *MEMORY[0x1E69BFF48];
@@ -1397,12 +1397,12 @@ LABEL_5:
           goto LABEL_6;
         }
 
-        v17 = [v6 shortDescription];
-        v18 = [(PLDuplicateAsset *)self shortDescription];
+        shortDescription = [otherCopy shortDescription];
+        shortDescription2 = [(PLDuplicateAsset *)self shortDescription];
         *buf = 138543618;
-        v52 = v17;
+        v52 = shortDescription;
         v53 = 2114;
-        v54 = v18;
+        v54 = shortDescription2;
         v19 = "Duplicate Asset: Resource matching error, unexpected processing of kindSubtype [%{public}@ -> %{public}@]";
         goto LABEL_5;
       }
@@ -1410,9 +1410,9 @@ LABEL_5:
       v33 = PLDuplicateDetectionGetLog();
       if (os_log_type_enabled(v33, OS_LOG_TYPE_DEBUG))
       {
-        v34 = [(PLDuplicateAsset *)self shortDescription];
-        v35 = [v6 shortDescription];
-        v39 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Duplicate Asset: Resource comparisonScore [%d:%d][%@:%@]", 5, 0, v34, v35];
+        shortDescription3 = [(PLDuplicateAsset *)self shortDescription];
+        shortDescription4 = [otherCopy shortDescription];
+        v39 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Duplicate Asset: Resource comparisonScore [%d:%d][%@:%@]", 5, 0, shortDescription3, shortDescription4];
         v37 = _PLDuplicateAssetLogString(v39, @"live photo/screenshot", @"no matching");
 
         *buf = 138543362;
@@ -1429,21 +1429,21 @@ LABEL_35:
     }
 
 LABEL_38:
-    v40 = [(PLDuplicateAsset *)self _compareResourcesAdditionalChecksFromOther:v6];
+    v40 = [(PLDuplicateAsset *)self _compareResourcesAdditionalChecksFromOther:otherCopy];
     var0 = v40.var0;
     v10 = 0;
     v11 = *&v40 & 0xFFFF0000;
     goto LABEL_7;
   }
 
-  if (!v12)
+  if (!kindSubtype2)
   {
-    if (v9 == 10)
+    if (kindSubtype == 10)
     {
       goto LABEL_21;
     }
 
-    if (v9 == 2)
+    if (kindSubtype == 2)
     {
 LABEL_23:
       v33 = PLDuplicateDetectionGetLog();
@@ -1452,9 +1452,9 @@ LABEL_23:
         goto LABEL_35;
       }
 
-      v34 = [(PLDuplicateAsset *)self shortDescription];
-      v35 = [v6 shortDescription];
-      v36 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Duplicate Asset: Resource comparisonScore [%d:%d][%@:%@]", 5, 0, v34, v35];
+      shortDescription3 = [(PLDuplicateAsset *)self shortDescription];
+      shortDescription4 = [otherCopy shortDescription];
+      v36 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Duplicate Asset: Resource comparisonScore [%d:%d][%@:%@]", 5, 0, shortDescription3, shortDescription4];
       v37 = _PLDuplicateAssetLogString(v36, @"live photo over image", @"no matching");
 
       *buf = 138543362;
@@ -1465,15 +1465,15 @@ LABEL_34:
       goto LABEL_35;
     }
 
-    if (v9 == 1)
+    if (kindSubtype == 1)
     {
 LABEL_21:
-      if ([v7 playbackStyle] == 2)
+      if ([asset playbackStyle] == 2)
       {
         goto LABEL_38;
       }
 
-      if (v9 == 2)
+      if (kindSubtype == 2)
       {
         goto LABEL_23;
       }
@@ -1485,11 +1485,11 @@ LABEL_21:
     goto LABEL_7;
   }
 
-  if (v12 == 1)
+  if (kindSubtype2 == 1)
   {
-    if (v9)
+    if (kindSubtype)
     {
-      if (v9 == 2)
+      if (kindSubtype == 2)
       {
         v33 = PLDuplicateDetectionGetLog();
         if (!os_log_type_enabled(v33, OS_LOG_TYPE_DEBUG))
@@ -1497,9 +1497,9 @@ LABEL_21:
           goto LABEL_35;
         }
 
-        v34 = [(PLDuplicateAsset *)self shortDescription];
-        v35 = [v6 shortDescription];
-        v38 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Duplicate Asset: Resource comparisonScore [%d:%d][%@:%@]", 5, 0, v34, v35];
+        shortDescription3 = [(PLDuplicateAsset *)self shortDescription];
+        shortDescription4 = [otherCopy shortDescription];
+        v38 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Duplicate Asset: Resource comparisonScore [%d:%d][%@:%@]", 5, 0, shortDescription3, shortDescription4];
         v37 = _PLDuplicateAssetLogString(v38, @"live photo over pano", @"no matching");
 
         *buf = 138543362;
@@ -1508,7 +1508,7 @@ LABEL_21:
       }
     }
 
-    else if ([v8 playbackStyle] == 2)
+    else if ([asset2 playbackStyle] == 2)
     {
       goto LABEL_38;
     }
@@ -1526,25 +1526,25 @@ LABEL_21:
       goto LABEL_6;
     }
 
-    v17 = [v6 shortDescription];
-    v18 = [(PLDuplicateAsset *)self shortDescription];
+    shortDescription = [otherCopy shortDescription];
+    shortDescription2 = [(PLDuplicateAsset *)self shortDescription];
     *buf = 138543618;
-    v52 = v17;
+    v52 = shortDescription;
     v53 = 2114;
-    v54 = v18;
+    v54 = shortDescription2;
     v19 = "Duplicate Asset: Resource matching error, unexpected processing of kindSubtype [%{public}@ -> %{public}@]";
     goto LABEL_5;
   }
 
   var0 = 0;
-  if (v12 == 2)
+  if (kindSubtype2 == 2)
   {
     v28 = PLDuplicateDetectionGetLog();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_DEBUG))
     {
-      v29 = [(PLDuplicateAsset *)self shortDescription];
-      v30 = [v6 shortDescription];
-      v31 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Duplicate Asset: Resource comparisonScore [%d:%d][%@:%@]", 0, 5, v29, v30];
+      shortDescription5 = [(PLDuplicateAsset *)self shortDescription];
+      shortDescription6 = [otherCopy shortDescription];
+      v31 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Duplicate Asset: Resource comparisonScore [%d:%d][%@:%@]", 0, 5, shortDescription5, shortDescription6];
       v32 = _PLDuplicateAssetLogString(v31, @"live photo", @"no matching");
 
       *buf = 138543362;
@@ -1564,35 +1564,35 @@ LABEL_7:
 
   v24 = v10;
   v25 = v24;
-  if (var0 == 0xFFFF && !v23 && a4)
+  if (var0 == 0xFFFF && !v23 && error)
   {
     v26 = v24;
-    *a4 = v25;
+    *error = v25;
   }
 
   return (var0 | v11);
 }
 
-- (PLDuplicateAssetScoreTuple)_compareResourcesMatchingPlaybackStyleCheckFromOther:(id)a3 error:(id *)a4
+- (PLDuplicateAssetScoreTuple)_compareResourcesMatchingPlaybackStyleCheckFromOther:(id)other error:(id *)error
 {
   v69[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 asset];
-  v8 = [(PLDuplicateAsset *)self asset];
+  otherCopy = other;
+  asset = [otherCopy asset];
+  asset2 = [(PLDuplicateAsset *)self asset];
   v9 = 0;
   v10 = 0;
-  v11 = [v7 kindSubtype];
-  v57 = a4;
-  if (v11 <= 0x63)
+  kindSubtype = [asset kindSubtype];
+  errorCopy = error;
+  if (kindSubtype <= 0x63)
   {
-    if (v11 - 1 < 2)
+    if (kindSubtype - 1 < 2)
     {
-      v23 = [v7 kindSubtype];
+      kindSubtype2 = [asset kindSubtype];
       v24 = 5;
-      if (v23 <= [v8 kindSubtype])
+      if (kindSubtype2 <= [asset2 kindSubtype])
       {
-        v29 = [v8 kindSubtype];
-        if (v29 == 10)
+        kindSubtype3 = [asset2 kindSubtype];
+        if (kindSubtype3 == 10)
         {
           v12 = 0;
         }
@@ -1602,7 +1602,7 @@ LABEL_7:
           v12 = 5;
         }
 
-        if (v29 == 10)
+        if (kindSubtype3 == 10)
         {
           v30 = 5;
         }
@@ -1623,9 +1623,9 @@ LABEL_7:
       v31 = PLDuplicateDetectionGetLog();
       if (os_log_type_enabled(v31, OS_LOG_TYPE_DEBUG))
       {
-        v32 = [(PLDuplicateAsset *)self shortDescription];
-        v33 = [v6 shortDescription];
-        v34 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Duplicate Asset: Resource comparisonScore [%d:%d][%@:%@]", v12, v24, v32, v33];
+        shortDescription = [(PLDuplicateAsset *)self shortDescription];
+        shortDescription2 = [otherCopy shortDescription];
+        v34 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Duplicate Asset: Resource comparisonScore [%d:%d][%@:%@]", v12, v24, shortDescription, shortDescription2];
         v35 = _PLDuplicateAssetLogString(v34, @"pano/live photo", @"matching playbackStyle");
 
         *buf = 138543362;
@@ -1638,15 +1638,15 @@ LABEL_7:
       goto LABEL_41;
     }
 
-    if (v11)
+    if (kindSubtype)
     {
       LODWORD(v12) = 0;
-      if (v11 != 10)
+      if (kindSubtype != 10)
       {
         goto LABEL_41;
       }
 
-      if ([v8 kindSubtype] == 10)
+      if ([asset2 kindSubtype] == 10)
       {
         v20 = MEMORY[0x1E696ABC0];
         v21 = *MEMORY[0x1E69BFF48];
@@ -1661,12 +1661,12 @@ LABEL_7:
           goto LABEL_6;
         }
 
-        v17 = [v6 shortDescription];
-        v18 = [(PLDuplicateAsset *)self shortDescription];
+        shortDescription3 = [otherCopy shortDescription];
+        shortDescription4 = [(PLDuplicateAsset *)self shortDescription];
         *buf = 138543618;
-        v65 = v17;
+        v65 = shortDescription3;
         v66 = 2114;
-        v67 = v18;
+        v67 = shortDescription4;
         v19 = "Duplicate Asset: Resource matching error, unexpected processing kind subtype PLAssetSubtypeScreenshot [%{public}@ -> %{public}@]";
         goto LABEL_5;
       }
@@ -1674,9 +1674,9 @@ LABEL_7:
       v36 = PLDuplicateDetectionGetLog();
       if (os_log_type_enabled(v36, OS_LOG_TYPE_DEBUG))
       {
-        v37 = [(PLDuplicateAsset *)self shortDescription];
-        v38 = [v6 shortDescription];
-        v39 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Duplicate Asset: Resource comparisonScore [%d:%d][%@:%@]", 5, 0, v37, v38];
+        shortDescription5 = [(PLDuplicateAsset *)self shortDescription];
+        shortDescription6 = [otherCopy shortDescription];
+        v39 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Duplicate Asset: Resource comparisonScore [%d:%d][%@:%@]", 5, 0, shortDescription5, shortDescription6];
         v40 = _PLDuplicateAssetLogString(v39, @"screenshot", @"matching playbackStyle");
 
         *buf = 138543362;
@@ -1690,11 +1690,11 @@ LABEL_39:
     {
       v9 = 0;
       v10 = 0;
-      v25 = [v8 kindSubtype];
-      if (v25 > 0x63)
+      kindSubtype4 = [asset2 kindSubtype];
+      if (kindSubtype4 > 0x63)
       {
         LODWORD(v12) = 0;
-        if (v25 - 100 >= 5)
+        if (kindSubtype4 - 100 >= 5)
         {
           goto LABEL_41;
         }
@@ -1712,19 +1712,19 @@ LABEL_39:
           goto LABEL_6;
         }
 
-        v17 = [v6 shortDescription];
-        v18 = [(PLDuplicateAsset *)self shortDescription];
+        shortDescription3 = [otherCopy shortDescription];
+        shortDescription4 = [(PLDuplicateAsset *)self shortDescription];
         *buf = 138543618;
-        v65 = v17;
+        v65 = shortDescription3;
         v66 = 2114;
-        v67 = v18;
+        v67 = shortDescription4;
         v19 = "Duplicate Asset: Resource matching error, unexpected processing a video kind subtype [%{public}@ -> %{public}@]";
         goto LABEL_5;
       }
 
-      if (v25 - 1 >= 2)
+      if (kindSubtype4 - 1 >= 2)
       {
-        if (!v25)
+        if (!kindSubtype4)
         {
           v54 = MEMORY[0x1E696ABC0];
           v55 = *MEMORY[0x1E69BFF48];
@@ -1739,25 +1739,25 @@ LABEL_39:
             goto LABEL_6;
           }
 
-          v17 = [v6 shortDescription];
-          v18 = [(PLDuplicateAsset *)self shortDescription];
+          shortDescription3 = [otherCopy shortDescription];
+          shortDescription4 = [(PLDuplicateAsset *)self shortDescription];
           *buf = 138543618;
-          v65 = v17;
+          v65 = shortDescription3;
           v66 = 2114;
-          v67 = v18;
+          v67 = shortDescription4;
           v19 = "Duplicate Asset: Resource matching error, unexpected processing kind subtype PLAssetSubtypeNone [%{public}@ -> %{public}@]";
           goto LABEL_5;
         }
 
         LODWORD(v12) = 0;
-        if (v25 == 10)
+        if (kindSubtype4 == 10)
         {
           v41 = PLDuplicateDetectionGetLog();
           if (os_log_type_enabled(v41, OS_LOG_TYPE_DEBUG))
           {
-            v42 = [(PLDuplicateAsset *)self shortDescription];
-            v43 = [v6 shortDescription];
-            v44 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Duplicate Asset: Resource comparisonScore [%d:%d][%@:%@]", 0, 5, v42, v43];
+            shortDescription7 = [(PLDuplicateAsset *)self shortDescription];
+            shortDescription8 = [otherCopy shortDescription];
+            v44 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Duplicate Asset: Resource comparisonScore [%d:%d][%@:%@]", 0, 5, shortDescription7, shortDescription8];
             v45 = _PLDuplicateAssetLogString(v44, @"screenshot", @"matching playbackStyle");
 
             *buf = 138543362;
@@ -1776,9 +1776,9 @@ LABEL_39:
       v36 = PLDuplicateDetectionGetLog();
       if (os_log_type_enabled(v36, OS_LOG_TYPE_DEBUG))
       {
-        v37 = [(PLDuplicateAsset *)self shortDescription];
-        v38 = [v6 shortDescription];
-        v46 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Duplicate Asset: Resource comparisonScore [%d:%d][%@:%@]", 5, 0, v37, v38];
+        shortDescription5 = [(PLDuplicateAsset *)self shortDescription];
+        shortDescription6 = [otherCopy shortDescription];
+        v46 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Duplicate Asset: Resource comparisonScore [%d:%d][%@:%@]", 5, 0, shortDescription5, shortDescription6];
         v40 = _PLDuplicateAssetLogString(v46, @"pano/live photo", @"matching playbackStyle");
 
         *buf = 138543362;
@@ -1794,7 +1794,7 @@ LABEL_39:
   }
 
   LODWORD(v12) = 0;
-  if (v11 - 100 < 5)
+  if (kindSubtype - 100 < 5)
   {
     v13 = MEMORY[0x1E696ABC0];
     v14 = *MEMORY[0x1E69BFF48];
@@ -1813,12 +1813,12 @@ LABEL_6:
       goto LABEL_41;
     }
 
-    v17 = [v6 shortDescription];
-    v18 = [(PLDuplicateAsset *)self shortDescription];
+    shortDescription3 = [otherCopy shortDescription];
+    shortDescription4 = [(PLDuplicateAsset *)self shortDescription];
     *buf = 138543618;
-    v65 = v17;
+    v65 = shortDescription3;
     v66 = 2114;
-    v67 = v18;
+    v67 = shortDescription4;
     v19 = "Duplicate Asset: Resource matching error, unexpected processing a video kind subtype [%{public}@ -> %{public}@]";
 LABEL_5:
     _os_log_impl(&dword_19BF1F000, v16, OS_LOG_TYPE_ERROR, v19, buf, 0x16u);
@@ -1833,29 +1833,29 @@ LABEL_41:
 
   v50 = v9;
   v51 = v50;
-  if (v12 == 0xFFFF && !v49 && v57)
+  if (v12 == 0xFFFF && !v49 && errorCopy)
   {
     v52 = v50;
-    *v57 = v51;
+    *errorCopy = v51;
   }
 
   return (v12 | v10);
 }
 
-- (PLDuplicateAssetScoreTuple)_compareResourcesMatchingKindSubtypeCheckFromOther:(id)a3 error:(id *)a4
+- (PLDuplicateAssetScoreTuple)_compareResourcesMatchingKindSubtypeCheckFromOther:(id)other error:(id *)error
 {
   v52[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 asset];
-  v8 = [(PLDuplicateAsset *)self asset];
+  otherCopy = other;
+  asset = [otherCopy asset];
+  asset2 = [(PLDuplicateAsset *)self asset];
   v9 = 0;
   LODWORD(v10) = 0;
-  v11 = [v7 kindSubtype];
+  kindSubtype = [asset kindSubtype];
   v12 = 0x1E696A000uLL;
-  if (v11 > 0x63)
+  if (kindSubtype > 0x63)
   {
     var0 = 0;
-    if (v11 - 100 < 5)
+    if (kindSubtype - 100 < 5)
     {
       v14 = MEMORY[0x1E696ABC0];
       v15 = *MEMORY[0x1E69BFF48];
@@ -1874,12 +1874,12 @@ LABEL_6:
         goto LABEL_11;
       }
 
-      v17 = [v6 shortDescription];
-      v18 = [(PLDuplicateAsset *)self shortDescription];
+      shortDescription = [otherCopy shortDescription];
+      shortDescription2 = [(PLDuplicateAsset *)self shortDescription];
       *buf = 138543618;
-      v48 = v17;
+      v48 = shortDescription;
       v49 = 2114;
-      v50 = v18;
+      v50 = shortDescription2;
       v19 = "Duplicate Asset: Resource matching error, unexpected processing a video kind subtype [%{public}@ -> %{public}@]";
 LABEL_5:
       _os_log_impl(&dword_19BF1F000, v10, OS_LOG_TYPE_ERROR, v19, buf, 0x16u);
@@ -1890,20 +1890,20 @@ LABEL_5:
     goto LABEL_11;
   }
 
-  if (v11 < 2)
+  if (kindSubtype < 2)
   {
 LABEL_10:
-    v20 = [(PLDuplicateAsset *)self _compareResourcesAdditionalChecksFromOther:v6];
+    v20 = [(PLDuplicateAsset *)self _compareResourcesAdditionalChecksFromOther:otherCopy];
     v9 = 0;
     LODWORD(v10) = HIWORD(*&v20);
     var0 = v20.var0;
     goto LABEL_11;
   }
 
-  if (v11 != 2)
+  if (kindSubtype != 2)
   {
     var0 = 0;
-    if (v11 != 10)
+    if (kindSubtype != 10)
     {
       goto LABEL_11;
     }
@@ -1911,12 +1911,12 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  v28 = [v7 playbackStyle];
+  playbackStyle = [asset playbackStyle];
   v9 = 0;
   LODWORD(v10) = 0;
-  if (v28 > 3)
+  if (playbackStyle > 3)
   {
-    if (v28 == 4)
+    if (playbackStyle == 4)
     {
       v42 = MEMORY[0x1E696ABC0];
       v43 = *MEMORY[0x1E69BFF48];
@@ -1931,34 +1931,34 @@ LABEL_10:
         goto LABEL_6;
       }
 
-      v17 = [v6 shortDescription];
-      v18 = [(PLDuplicateAsset *)self shortDescription];
+      shortDescription = [otherCopy shortDescription];
+      shortDescription2 = [(PLDuplicateAsset *)self shortDescription];
       *buf = 138543618;
-      v48 = v17;
+      v48 = shortDescription;
       v49 = 2114;
-      v50 = v18;
+      v50 = shortDescription2;
       v19 = "Duplicate Asset: Resource matching error, unexpected processing a video playbackStyle [%{public}@ -> %{public}@]";
       goto LABEL_5;
     }
 
     var0 = 0;
-    if (v28 != 5)
+    if (playbackStyle != 5)
     {
       goto LABEL_11;
     }
   }
 
-  else if ((v28 - 1) >= 3)
+  else if ((playbackStyle - 1) >= 3)
   {
     var0 = 0;
-    if (!v28)
+    if (!playbackStyle)
     {
       v10 = PLDuplicateDetectionGetLog();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
       {
-        v29 = [(PLDuplicateAsset *)self shortDescription];
-        v30 = [v6 shortDescription];
-        v31 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Duplicate Asset: Resource comparisonScore [%d:%d][%@:%@]", 5, 0, v29, v30];
+        shortDescription3 = [(PLDuplicateAsset *)self shortDescription];
+        shortDescription4 = [otherCopy shortDescription];
+        v31 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Duplicate Asset: Resource comparisonScore [%d:%d][%@:%@]", 5, 0, shortDescription3, shortDescription4];
         v32 = _PLDuplicateAssetLogString(v31, @"playbackStyle", @"matching kindSubtype");
 
         *buf = 138543362;
@@ -1976,8 +1976,8 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v33 = [v7 playbackStyle];
-  if (v33 <= [v8 playbackStyle])
+  playbackStyle2 = [asset playbackStyle];
+  if (playbackStyle2 <= [asset2 playbackStyle])
   {
     v10 = 0;
   }
@@ -1996,9 +1996,9 @@ LABEL_10:
     v37 = PLDuplicateDetectionGetLog();
     if (os_log_type_enabled(v37, OS_LOG_TYPE_DEBUG))
     {
-      v38 = [(PLDuplicateAsset *)self shortDescription];
-      v39 = [v6 shortDescription];
-      v40 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Duplicate Asset: Resource comparisonScore [%d:%d][%@:%@]", 0, v10, v38, v39];
+      shortDescription5 = [(PLDuplicateAsset *)self shortDescription];
+      shortDescription6 = [otherCopy shortDescription];
+      v40 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Duplicate Asset: Resource comparisonScore [%d:%d][%@:%@]", 0, v10, shortDescription5, shortDescription6];
       v41 = _PLDuplicateAssetLogString(v40, @"playbackStyle", @"matching kindSubtype");
 
       *buf = 138543362;
@@ -2017,32 +2017,32 @@ LABEL_11:
 
   v24 = v9;
   v25 = v24;
-  if (var0 == 0xFFFF && !v23 && a4)
+  if (var0 == 0xFFFF && !v23 && error)
   {
     v26 = v24;
-    *a4 = v25;
+    *error = v25;
   }
 
   return (var0 | (v10 << 16));
 }
 
-- (PLDuplicateAssetScoreTuple)_compareResourcesMatchingPlaybackStyleAndKindSubTypeCheckFromOther:(id)a3
+- (PLDuplicateAssetScoreTuple)_compareResourcesMatchingPlaybackStyleAndKindSubTypeCheckFromOther:(id)other
 {
   v37 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 asset];
-  v6 = [(PLDuplicateAsset *)self asset];
-  v7 = [v5 RAWBadgeAttribute];
-  if (v7 == [v6 RAWBadgeAttribute])
+  otherCopy = other;
+  asset = [otherCopy asset];
+  asset2 = [(PLDuplicateAsset *)self asset];
+  rAWBadgeAttribute = [asset RAWBadgeAttribute];
+  if (rAWBadgeAttribute == [asset2 RAWBadgeAttribute])
   {
     goto LABEL_2;
   }
 
-  v10 = [v5 RAWBadgeAttribute];
-  if ((v10 - 1) < 2)
+  rAWBadgeAttribute2 = [asset RAWBadgeAttribute];
+  if ((rAWBadgeAttribute2 - 1) < 2)
   {
-    v16 = [v6 RAWBadgeAttribute];
-    if (v16 != 3 && v16)
+    rAWBadgeAttribute3 = [asset2 RAWBadgeAttribute];
+    if (rAWBadgeAttribute3 != 3 && rAWBadgeAttribute3)
     {
       goto LABEL_2;
     }
@@ -2050,10 +2050,10 @@ LABEL_11:
     v11 = PLDuplicateDetectionGetLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
-      v17 = [(PLDuplicateAsset *)self shortDescription];
-      v18 = [v4 shortDescription];
+      shortDescription = [(PLDuplicateAsset *)self shortDescription];
+      shortDescription2 = [otherCopy shortDescription];
       v8 = 5;
-      v19 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Duplicate Asset: Resource comparisonScore [%d:%d][%@:%@]", 0, 5, v17, v18];
+      v19 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Duplicate Asset: Resource comparisonScore [%d:%d][%@:%@]", 0, 5, shortDescription, shortDescription2];
       v20 = _PLDuplicateAssetLogString(v19, @"R+J vs non-R+J", 0);
 
       *buf = 138543362;
@@ -2067,17 +2067,17 @@ LABEL_11:
     goto LABEL_19;
   }
 
-  if (v10 == 3)
+  if (rAWBadgeAttribute2 == 3)
   {
-    v21 = [v6 RAWBadgeAttribute];
-    if ((v21 - 1) < 2)
+    rAWBadgeAttribute4 = [asset2 RAWBadgeAttribute];
+    if ((rAWBadgeAttribute4 - 1) < 2)
     {
       v11 = PLDuplicateDetectionGetLog();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
       {
-        v22 = [(PLDuplicateAsset *)self shortDescription];
-        v23 = [v4 shortDescription];
-        v24 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Duplicate Asset: Resource comparisonScore [%d:%d][%@:%@]", 5, 0, v22, v23];
+        shortDescription3 = [(PLDuplicateAsset *)self shortDescription];
+        shortDescription4 = [otherCopy shortDescription];
+        v24 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Duplicate Asset: Resource comparisonScore [%d:%d][%@:%@]", 5, 0, shortDescription3, shortDescription4];
         v25 = _PLDuplicateAssetLogString(v24, @"non-R+J vs R+J", 0);
 
         *buf = 138543362;
@@ -2095,7 +2095,7 @@ LABEL_15:
       goto LABEL_20;
     }
 
-    if (v21)
+    if (rAWBadgeAttribute4)
     {
 LABEL_2:
       v8 = 0;
@@ -2106,9 +2106,9 @@ LABEL_2:
     v11 = PLDuplicateDetectionGetLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
-      v26 = [(PLDuplicateAsset *)self shortDescription];
-      v27 = [v4 shortDescription];
-      v28 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Duplicate Asset: Resource comparisonScore [%d:%d][%@:%@]", 0, 5, v26, v27];
+      shortDescription5 = [(PLDuplicateAsset *)self shortDescription];
+      shortDescription6 = [otherCopy shortDescription];
+      v28 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Duplicate Asset: Resource comparisonScore [%d:%d][%@:%@]", 0, 5, shortDescription5, shortDescription6];
       v29 = _PLDuplicateAssetLogString(v28, @"RAW vs non-RAW", 0);
 
       *buf = 138543362;
@@ -2126,7 +2126,7 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  if (v10)
+  if (rAWBadgeAttribute2)
   {
     goto LABEL_2;
   }
@@ -2137,10 +2137,10 @@ LABEL_19:
     goto LABEL_15;
   }
 
-  v12 = [(PLDuplicateAsset *)self shortDescription];
-  v13 = [v4 shortDescription];
+  shortDescription7 = [(PLDuplicateAsset *)self shortDescription];
+  shortDescription8 = [otherCopy shortDescription];
   v9 = 5;
-  v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Duplicate Asset: Resource comparisonScore [%d:%d][%@:%@]", 5, 0, v12, v13];
+  v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Duplicate Asset: Resource comparisonScore [%d:%d][%@:%@]", 5, 0, shortDescription7, shortDescription8];
   v15 = _PLDuplicateAssetLogString(v14, @"non-RAW vs RAW", 0);
 
   *buf = 138543362;
@@ -2157,7 +2157,7 @@ LABEL_21:
 
   if (!v32)
   {
-    v33 = [(PLDuplicateAsset *)self _compareResourcesAdditionalChecksFromOther:v4];
+    v33 = [(PLDuplicateAsset *)self _compareResourcesAdditionalChecksFromOther:otherCopy];
     LOWORD(v9) = v33.var0;
     LODWORD(v8) = HIWORD(*&v33);
   }
@@ -2165,24 +2165,24 @@ LABEL_21:
   return (v9 | (v8 << 16));
 }
 
-- (int64_t)compareResource:(id)a3 error:(id *)a4
+- (int64_t)compareResource:(id)resource error:(id *)error
 {
   v64[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 asset];
-  v8 = [(PLDuplicateAsset *)self asset];
+  resourceCopy = resource;
+  asset = [resourceCopy asset];
+  asset2 = [(PLDuplicateAsset *)self asset];
   v56 = 0;
-  [(PLDuplicateAsset *)self _compareResourcesResetPropertiesWithOther:v6];
-  v52 = v8;
-  if ([v7 isReferencedAsset] & 1) != 0 || (objc_msgSend(v8, "isReferencedAsset"))
+  [(PLDuplicateAsset *)self _compareResourcesResetPropertiesWithOther:resourceCopy];
+  v52 = asset2;
+  if ([asset isReferencedAsset] & 1) != 0 || (objc_msgSend(asset2, "isReferencedAsset"))
   {
     v9 = 0;
     v10 = 0;
     goto LABEL_4;
   }
 
-  v34 = [v7 kind];
-  if (v34 != [v8 kind])
+  kind = [asset kind];
+  if (kind != [asset2 kind])
   {
     v41 = MEMORY[0x1E696ABC0];
     v42 = *MEMORY[0x1E69BFF48];
@@ -2199,14 +2199,14 @@ LABEL_24:
     goto LABEL_35;
   }
 
-  v35 = [v7 kind];
-  if ((v35 - 1) < 2)
+  kind2 = [asset kind];
+  if ((kind2 - 1) < 2)
   {
-    v40 = [(PLDuplicateAsset *)self _compareResourcesAdditionalChecksFromOther:v6];
+    v40 = [(PLDuplicateAsset *)self _compareResourcesAdditionalChecksFromOther:resourceCopy];
     goto LABEL_26;
   }
 
-  if (v35 == 3)
+  if (kind2 == 3)
   {
     v41 = MEMORY[0x1E696ABC0];
     v42 = *MEMORY[0x1E69BFF48];
@@ -2218,43 +2218,43 @@ LABEL_24:
     goto LABEL_24;
   }
 
-  if (v35)
+  if (kind2)
   {
     v10 = 0;
     goto LABEL_35;
   }
 
-  v36 = [v7 kindSubtype];
-  v37 = [v8 kindSubtype];
-  v38 = [v7 playbackStyle];
-  v39 = [v8 playbackStyle];
-  if (v38 == v39 && v36 == v37)
+  kindSubtype = [asset kindSubtype];
+  kindSubtype2 = [asset2 kindSubtype];
+  playbackStyle = [asset playbackStyle];
+  playbackStyle2 = [asset2 playbackStyle];
+  if (playbackStyle == playbackStyle2 && kindSubtype == kindSubtype2)
   {
-    v40 = [(PLDuplicateAsset *)self _compareResourcesMatchingPlaybackStyleAndKindSubTypeCheckFromOther:v6];
+    v40 = [(PLDuplicateAsset *)self _compareResourcesMatchingPlaybackStyleAndKindSubTypeCheckFromOther:resourceCopy];
 LABEL_26:
     v10 = 0;
     v56 = v40;
     goto LABEL_35;
   }
 
-  if (v36 == v37)
+  if (kindSubtype == kindSubtype2)
   {
     v55 = 0;
-    v47 = [(PLDuplicateAsset *)self _compareResourcesMatchingKindSubtypeCheckFromOther:v6 error:&v55];
+    v47 = [(PLDuplicateAsset *)self _compareResourcesMatchingKindSubtypeCheckFromOther:resourceCopy error:&v55];
     v48 = v55;
   }
 
-  else if (v38 == v39)
+  else if (playbackStyle == playbackStyle2)
   {
     v54 = 0;
-    v47 = [(PLDuplicateAsset *)self _compareResourcesMatchingPlaybackStyleCheckFromOther:v6 error:&v54];
+    v47 = [(PLDuplicateAsset *)self _compareResourcesMatchingPlaybackStyleCheckFromOther:resourceCopy error:&v54];
     v48 = v54;
   }
 
   else
   {
     v53 = 0;
-    v47 = [(PLDuplicateAsset *)self _compareResourcesNotMatchingPlaybackStyleAndKindSubTypeCheckFromOther:v6 error:&v53];
+    v47 = [(PLDuplicateAsset *)self _compareResourcesNotMatchingPlaybackStyleAndKindSubTypeCheckFromOther:resourceCopy error:&v53];
     v48 = v53;
   }
 
@@ -2268,7 +2268,7 @@ LABEL_35:
 
   if (v9 != 0xFFFF || v51)
   {
-    [(PLDuplicateAsset *)self _compareResourceReverseCheckFromOther:v6 score:&v56];
+    [(PLDuplicateAsset *)self _compareResourceReverseCheckFromOther:resourceCopy score:&v56];
     v9 = v56;
   }
 
@@ -2279,10 +2279,10 @@ LABEL_4:
 
   v14 = v10;
   v15 = v14;
-  if (v9 == 0xFFFF && !v13 && a4)
+  if (v9 == 0xFFFF && !v13 && error)
   {
     v16 = v14;
-    *a4 = v15;
+    *error = v15;
   }
 
   v17 = v56;
@@ -2295,12 +2295,12 @@ LABEL_4:
     v21 = PLDuplicateDetectionGetLog();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
-      v22 = [v6 shortDescription];
-      v23 = [(PLDuplicateAsset *)self shortDescription];
+      shortDescription = [resourceCopy shortDescription];
+      shortDescription2 = [(PLDuplicateAsset *)self shortDescription];
       *buf = 138543874;
-      *v58 = v22;
+      *v58 = shortDescription;
       *&v58[8] = 2114;
-      *v59 = v23;
+      *v59 = shortDescription2;
       *&v59[8] = 2112;
       v60[0] = v15;
       _os_log_impl(&dword_19BF1F000, v21, OS_LOG_TYPE_ERROR, "Duplicate Asset: Resource matching error for assets [%{public}@ -> %{public}@]. Error: %@", buf, 0x20u);
@@ -2312,16 +2312,16 @@ LABEL_4:
   {
     v25 = v56;
     v26 = SHIWORD(v56);
-    v27 = [(PLDuplicateAsset *)self shortDescription];
-    v28 = [v6 shortDescription];
+    shortDescription3 = [(PLDuplicateAsset *)self shortDescription];
+    shortDescription4 = [resourceCopy shortDescription];
     *buf = 67109890;
     *v58 = v25;
     *&v58[4] = 1024;
     *&v58[6] = v26;
     *v59 = 2114;
-    *&v59[2] = v27;
+    *&v59[2] = shortDescription3;
     LOWORD(v60[0]) = 2114;
-    *(v60 + 2) = v28;
+    *(v60 + 2) = shortDescription4;
     _os_log_impl(&dword_19BF1F000, v24, OS_LOG_TYPE_INFO, "Duplicate Asset: Resource comparisonScore [%d:%d][%{public}@:%{public}@] (Final)", buf, 0x22u);
   }
 
@@ -2333,15 +2333,15 @@ LABEL_4:
   return v32;
 }
 
-- (void)_updateScoresUsingLatestDateWithDate:(id)a3 otherDate:(id)a4 score:(int64_t *)a5 otherScore:(int64_t *)a6
+- (void)_updateScoresUsingLatestDateWithDate:(id)date otherDate:(id)otherDate score:(int64_t *)score otherScore:(int64_t *)otherScore
 {
-  if (a3 && a4)
+  if (date && otherDate)
   {
-    v8 = [a3 compare:a4];
+    v8 = [date compare:otherDate];
     if (v8 == 1)
     {
-      a6 = a5;
-      if (!a5)
+      otherScore = score;
+      if (!score)
       {
         return;
       }
@@ -2349,17 +2349,17 @@ LABEL_4:
       goto LABEL_6;
     }
 
-    if (v8 == -1 && a6)
+    if (v8 == -1 && otherScore)
     {
 LABEL_6:
-      *a6 += 5;
+      *otherScore += 5;
     }
   }
 }
 
-- (BOOL)_validCPLAssetsWithAssets:(id)a3
+- (BOOL)_validCPLAssetsWithAssets:(id)assets
 {
-  v3 = a3;
+  assetsCopy = assets;
   v7 = 0;
   v8 = &v7;
   v9 = 0x2020000000;
@@ -2369,7 +2369,7 @@ LABEL_6:
   v6[2] = __46__PLDuplicateAsset__validCPLAssetsWithAssets___block_invoke;
   v6[3] = &unk_1E756CB40;
   v6[4] = &v7;
-  [v3 enumerateObjectsUsingBlock:v6];
+  [assetsCopy enumerateObjectsUsingBlock:v6];
   v4 = *(v8 + 24);
   _Block_object_dispose(&v7, 8);
 
@@ -2388,22 +2388,22 @@ void __46__PLDuplicateAsset__validCPLAssetsWithAssets___block_invoke(uint64_t a1
   }
 }
 
-- (void)_mergeComparisonScoreModifierWithOtherAsset:(id)a3 score:(int64_t *)a4 otherScore:(int64_t *)a5
+- (void)_mergeComparisonScoreModifierWithOtherAsset:(id)asset score:(int64_t *)score otherScore:(int64_t *)otherScore
 {
   v73[2] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  if (v9)
+  assetCopy = asset;
+  if (assetCopy)
   {
-    if (a4)
+    if (score)
     {
       goto LABEL_3;
     }
 
 LABEL_74:
-    v59 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v59 handleFailureInMethod:a2 object:self file:@"PLDuplicateAsset.m" lineNumber:509 description:{@"Invalid parameter not satisfying: %@", @"score"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLDuplicateAsset.m" lineNumber:509 description:{@"Invalid parameter not satisfying: %@", @"score"}];
 
-    if (a5)
+    if (otherScore)
     {
       goto LABEL_4;
     }
@@ -2411,44 +2411,44 @@ LABEL_74:
     goto LABEL_75;
   }
 
-  v58 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v58 handleFailureInMethod:a2 object:self file:@"PLDuplicateAsset.m" lineNumber:508 description:{@"Invalid parameter not satisfying: %@", @"other"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLDuplicateAsset.m" lineNumber:508 description:{@"Invalid parameter not satisfying: %@", @"other"}];
 
-  if (!a4)
+  if (!score)
   {
     goto LABEL_74;
   }
 
 LABEL_3:
-  if (a5)
+  if (otherScore)
   {
     goto LABEL_4;
   }
 
 LABEL_75:
-  v60 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v60 handleFailureInMethod:a2 object:self file:@"PLDuplicateAsset.m" lineNumber:510 description:{@"Invalid parameter not satisfying: %@", @"otherScore"}];
+  currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"PLDuplicateAsset.m" lineNumber:510 description:{@"Invalid parameter not satisfying: %@", @"otherScore"}];
 
 LABEL_4:
   [(PLDuplicateAsset *)self setResourceSwapDisabled:0];
-  [(PLDuplicateAsset *)v9 setResourceSwapDisabled:0];
+  [(PLDuplicateAsset *)assetCopy setResourceSwapDisabled:0];
   if ([(PLDuplicateAsset *)self isCPLEnabled])
   {
-    v10 = [(PLDuplicateAsset *)self asset];
-    v11 = [v10 activeLibraryScopeParticipationState];
+    asset = [(PLDuplicateAsset *)self asset];
+    activeLibraryScopeParticipationState = [asset activeLibraryScopeParticipationState];
 
-    v12 = [(PLDuplicateAsset *)v9 asset];
-    v13 = [v12 activeLibraryScopeParticipationState];
+    asset2 = [(PLDuplicateAsset *)assetCopy asset];
+    activeLibraryScopeParticipationState2 = [asset2 activeLibraryScopeParticipationState];
 
-    v14 = v13 == 1 && v11 == 1;
-    v15 = v11 != v13 && (v11 == 1 || v13 == 1);
-    v16 = [(PLDuplicateAsset *)self asset];
-    v17 = [v16 fingerprintScheme];
+    v14 = activeLibraryScopeParticipationState2 == 1 && activeLibraryScopeParticipationState == 1;
+    v15 = activeLibraryScopeParticipationState != activeLibraryScopeParticipationState2 && (activeLibraryScopeParticipationState == 1 || activeLibraryScopeParticipationState2 == 1);
+    asset3 = [(PLDuplicateAsset *)self asset];
+    fingerprintScheme = [asset3 fingerprintScheme];
 
-    v18 = [(PLDuplicateAsset *)v9 asset];
-    v19 = [v18 fingerprintScheme];
+    asset4 = [(PLDuplicateAsset *)assetCopy asset];
+    fingerprintScheme2 = [asset4 fingerprintScheme];
 
-    if (!(v17 | v19))
+    if (!(fingerprintScheme | fingerprintScheme2))
     {
       v20 = 1;
       if (!v15)
@@ -2457,22 +2457,22 @@ LABEL_12:
         if (v14)
         {
 LABEL_13:
-          v21 = [(PLDuplicateAsset *)self assetCloudScopedIdentifier];
-          v22 = [(PLDuplicateAsset *)v9 assetCloudScopedIdentifier];
-          v23 = v22;
-          if (!v21 || !v22)
+          assetCloudScopedIdentifier = [(PLDuplicateAsset *)self assetCloudScopedIdentifier];
+          assetCloudScopedIdentifier2 = [(PLDuplicateAsset *)assetCopy assetCloudScopedIdentifier];
+          v23 = assetCloudScopedIdentifier2;
+          if (!assetCloudScopedIdentifier || !assetCloudScopedIdentifier2)
           {
-            if (v21)
+            if (assetCloudScopedIdentifier)
             {
-              v47 = v9;
+              selfCopy = assetCopy;
             }
 
             else
             {
-              v47 = self;
+              selfCopy = self;
             }
 
-            [(PLDuplicateAsset *)v47 setMergeStatus:2];
+            [(PLDuplicateAsset *)selfCopy setMergeStatus:2];
             v25 = PLDuplicateDetectionGetLog();
             if (!os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
             {
@@ -2486,11 +2486,11 @@ LABEL_52:
               goto LABEL_53;
             }
 
-            v28 = [(PLDuplicateAsset *)self shortDescription];
-            [(PLDuplicateAsset *)v9 shortDescription];
+            shortDescription = [(PLDuplicateAsset *)self shortDescription];
+            [(PLDuplicateAsset *)assetCopy shortDescription];
             v30 = v64 = v20;
             *buf = 138543618;
-            v70 = v28;
+            v70 = shortDescription;
             v71 = 2114;
             v72 = v30;
             _os_log_impl(&dword_19BF1F000, v25, OS_LOG_TYPE_ERROR, "Duplicate Asset: CPL assets missing cloud identifiers: [%{public}@ : %{public}@]", buf, 0x16u);
@@ -2498,29 +2498,29 @@ LABEL_52:
           }
 
           v64 = v20;
-          v68[0] = v21;
-          v68[1] = v22;
+          v68[0] = assetCloudScopedIdentifier;
+          v68[1] = assetCloudScopedIdentifier2;
           v24 = [MEMORY[0x1E695DEC8] arrayWithObjects:v68 count:2];
           v25 = [v24 sortedArrayUsingComparator:&__block_literal_global_141];
 
           v26 = [v25 objectAtIndexedSubscript:0];
-          v27 = [v26 isEqualToString:v21];
+          v27 = [v26 isEqualToString:assetCloudScopedIdentifier];
 
           if (v27)
           {
-            *a4 = *a5 + 1;
-            v28 = PLDuplicateDetectionGetLog();
-            if (os_log_type_enabled(v28, OS_LOG_TYPE_DEBUG))
+            *score = *otherScore + 1;
+            shortDescription = PLDuplicateDetectionGetLog();
+            if (os_log_type_enabled(shortDescription, OS_LOG_TYPE_DEBUG))
             {
-              v63 = [(PLDuplicateAsset *)self shortDescription];
-              v29 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Duplicate Asset: [%@] score incremented to %td", v63, *a4];
+              shortDescription2 = [(PLDuplicateAsset *)self shortDescription];
+              v29 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Duplicate Asset: [%@] score incremented to %td", shortDescription2, *score];
               v61 = _PLDuplicateAssetLogString(v29, @"cloudScopedIdentifier", 0);
 
               *buf = 138543362;
               v30 = v61;
               v70 = v61;
 LABEL_49:
-              _os_log_impl(&dword_19BF1F000, v28, OS_LOG_TYPE_DEBUG, "%{public}@", buf, 0xCu);
+              _os_log_impl(&dword_19BF1F000, shortDescription, OS_LOG_TYPE_DEBUG, "%{public}@", buf, 0xCu);
 
 LABEL_50:
             }
@@ -2528,12 +2528,12 @@ LABEL_50:
 
           else
           {
-            *a5 = *a4 + 1;
-            v28 = PLDuplicateDetectionGetLog();
-            if (os_log_type_enabled(v28, OS_LOG_TYPE_DEBUG))
+            *otherScore = *score + 1;
+            shortDescription = PLDuplicateDetectionGetLog();
+            if (os_log_type_enabled(shortDescription, OS_LOG_TYPE_DEBUG))
             {
-              v63 = [(PLDuplicateAsset *)v9 shortDescription];
-              v52 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Duplicate Asset: [%@] score incremented to %td", v63, *a5];
+              shortDescription2 = [(PLDuplicateAsset *)assetCopy shortDescription];
+              v52 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Duplicate Asset: [%@] score incremented to %td", shortDescription2, *otherScore];
               v62 = _PLDuplicateAssetLogString(v52, @"cloudScopedIdentifier", 0);
 
               *buf = 138543362;
@@ -2549,25 +2549,25 @@ LABEL_50:
         }
 
         v73[0] = self;
-        v73[1] = v9;
+        v73[1] = assetCopy;
         v36 = [MEMORY[0x1E695DEC8] arrayWithObjects:v73 count:2];
         v37 = [(PLDuplicateAsset *)self _validCPLAssetsWithAssets:v36];
 
         if (v37)
         {
           v65 = 0;
-          v38 = [(PLDuplicateAsset *)self compareResource:v9 error:&v65];
+          v38 = [(PLDuplicateAsset *)self compareResource:assetCopy error:&v65];
           v39 = v65;
           if (v39)
           {
             [(PLDuplicateAsset *)self setMergeStatus:2];
-            [(PLDuplicateAsset *)v9 setMergeStatus:2];
+            [(PLDuplicateAsset *)assetCopy setMergeStatus:2];
             v40 = PLDuplicateDetectionGetLog();
             if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
             {
-              v41 = [(PLDuplicateAsset *)v9 shortDescription];
+              shortDescription3 = [(PLDuplicateAsset *)assetCopy shortDescription];
               *buf = 138543618;
-              v70 = v41;
+              v70 = shortDescription3;
               v71 = 2112;
               v72 = v39;
               _os_log_impl(&dword_19BF1F000, v40, OS_LOG_TYPE_ERROR, "Duplicate Asset: Resource comparison failure for duplicate asset: %{public}@. Error: %@", buf, 0x16u);
@@ -2579,54 +2579,54 @@ LABEL_50:
             switch(v38)
             {
               case 1:
-                *a4 = *a5 + 1;
+                *score = *otherScore + 1;
                 break;
               case 0:
                 goto LABEL_13;
               case -1:
-                *a5 = *a4 + 1;
+                *otherScore = *score + 1;
                 break;
             }
           }
 
 LABEL_53:
-          if (*a4 <= *a5)
+          if (*score <= *otherScore)
           {
-            v53 = v9;
+            selfCopy2 = assetCopy;
           }
 
           else
           {
-            v53 = self;
+            selfCopy2 = self;
           }
 
-          [(PLDuplicateAsset *)v53 setResourceSwapDisabled:1];
+          [(PLDuplicateAsset *)selfCopy2 setResourceSwapDisabled:1];
 LABEL_62:
           if ((v20 & 1) == 0)
           {
-            if (*a4 <= *a5)
+            if (*score <= *otherScore)
             {
-              v57 = v9;
+              selfCopy3 = assetCopy;
             }
 
             else
             {
-              v57 = self;
+              selfCopy3 = self;
             }
 
-            [(PLDuplicateAsset *)v57 setResourceSwapDisabled:1];
+            [(PLDuplicateAsset *)selfCopy3 setResourceSwapDisabled:1];
           }
 
           goto LABEL_67;
         }
 
-        v67 = self;
-        v48 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v67 count:1];
+        selfCopy4 = self;
+        v48 = [MEMORY[0x1E695DEC8] arrayWithObjects:&selfCopy4 count:1];
         v49 = [(PLDuplicateAsset *)self _validCPLAssetsWithAssets:v48];
 
         if (!v49)
         {
-          v66 = v9;
+          v66 = assetCopy;
           v54 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v66 count:1];
           v55 = [(PLDuplicateAsset *)self _validCPLAssetsWithAssets:v54];
 
@@ -2635,16 +2635,16 @@ LABEL_62:
             goto LABEL_62;
           }
 
-          *a5 = *a4 + 1;
-          [(PLDuplicateAsset *)v9 setResourceSwapDisabled:1];
+          *otherScore = *score + 1;
+          [(PLDuplicateAsset *)assetCopy setResourceSwapDisabled:1];
           v34 = PLDuplicateDetectionGetLog();
           if (!os_log_type_enabled(v34, OS_LOG_TYPE_DEBUG))
           {
             goto LABEL_61;
           }
 
-          v42 = [(PLDuplicateAsset *)v9 shortDescription];
-          v56 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Duplicate Asset: [%@] score incremented to %td", v42, *a5];
+          shortDescription4 = [(PLDuplicateAsset *)assetCopy shortDescription];
+          v56 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Duplicate Asset: [%@] score incremented to %td", shortDescription4, *otherScore];
           v44 = _PLDuplicateAssetLogString(v56, @"master", 0);
 
           *buf = 138543362;
@@ -2652,13 +2652,13 @@ LABEL_62:
           goto LABEL_60;
         }
 
-        *a4 = *a5 + 1;
+        *score = *otherScore + 1;
         [(PLDuplicateAsset *)self setResourceSwapDisabled:1];
         v34 = PLDuplicateDetectionGetLog();
         if (os_log_type_enabled(v34, OS_LOG_TYPE_DEBUG))
         {
-          v42 = [(PLDuplicateAsset *)self shortDescription];
-          v50 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Duplicate Asset: [%@] score incremented to %td", v42, *a4];
+          shortDescription4 = [(PLDuplicateAsset *)self shortDescription];
+          v50 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Duplicate Asset: [%@] score incremented to %td", shortDescription4, *score];
           v44 = _PLDuplicateAssetLogString(v50, @"master", 0);
 
           *buf = 138543362;
@@ -2670,17 +2670,17 @@ LABEL_62:
       }
 
 LABEL_22:
-      v32 = [(PLDuplicateAsset *)self asset];
-      v33 = [v32 duplicateAssetVisibilityState];
+      asset5 = [(PLDuplicateAsset *)self asset];
+      duplicateAssetVisibilityState = [asset5 duplicateAssetVisibilityState];
 
-      if (v33 - 1 < 2)
+      if (duplicateAssetVisibilityState - 1 < 2)
       {
-        *a5 = *a4 + 1;
+        *otherScore = *score + 1;
         v34 = PLDuplicateDetectionGetLog();
         if (os_log_type_enabled(v34, OS_LOG_TYPE_DEBUG))
         {
-          v42 = [(PLDuplicateAsset *)v9 shortDescription];
-          v43 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Duplicate Asset: [%@] score incremented to %td", v42, *a5];
+          shortDescription4 = [(PLDuplicateAsset *)assetCopy shortDescription];
+          v43 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Duplicate Asset: [%@] score incremented to %td", shortDescription4, *otherScore];
           v44 = _PLDuplicateAssetLogString(v43, @"duplicateAssetVisibilityState", 0);
 
           *buf = 138543362;
@@ -2692,9 +2692,9 @@ LABEL_60:
 
       else
       {
-        if (v33 != 100)
+        if (duplicateAssetVisibilityState != 100)
         {
-          if (v33)
+          if (duplicateAssetVisibilityState)
           {
             goto LABEL_62;
           }
@@ -2703,21 +2703,21 @@ LABEL_60:
           v34 = PLDuplicateDetectionGetLog();
           if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
           {
-            v35 = [(PLDuplicateAsset *)v9 shortDescription];
+            shortDescription5 = [(PLDuplicateAsset *)assetCopy shortDescription];
             *buf = 138543362;
-            v70 = v35;
+            v70 = shortDescription5;
             _os_log_impl(&dword_19BF1F000, v34, OS_LOG_TYPE_ERROR, "Duplicate Asset: Invalid visibility state PLDuplicateAssetVisibilityStateNotDuplicate for duplicate asset: %{public}@", buf, 0xCu);
           }
 
           goto LABEL_61;
         }
 
-        *a4 = *a5 + 1;
+        *score = *otherScore + 1;
         v34 = PLDuplicateDetectionGetLog();
         if (os_log_type_enabled(v34, OS_LOG_TYPE_DEBUG))
         {
-          v42 = [(PLDuplicateAsset *)self shortDescription];
-          v51 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Duplicate Asset: [%@] score incremented to %td", v42, *a4];
+          shortDescription4 = [(PLDuplicateAsset *)self shortDescription];
+          v51 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Duplicate Asset: [%@] score incremented to %td", shortDescription4, *score];
           v44 = _PLDuplicateAssetLogString(v51, @"duplicateAssetVisibilityState", 0);
 
           *buf = 138543362;
@@ -2731,9 +2731,9 @@ LABEL_61:
       goto LABEL_62;
     }
 
-    if (v17)
+    if (fingerprintScheme)
     {
-      if (v19)
+      if (fingerprintScheme2)
       {
         goto LABEL_11;
       }
@@ -2741,20 +2741,20 @@ LABEL_61:
 
     else
     {
-      v45 = [(PLDuplicateAsset *)self asset];
-      v17 = __81__PLDuplicateAsset__mergeComparisonScoreModifierWithOtherAsset_score_otherScore___block_invoke(v45);
+      asset6 = [(PLDuplicateAsset *)self asset];
+      fingerprintScheme = __81__PLDuplicateAsset__mergeComparisonScoreModifierWithOtherAsset_score_otherScore___block_invoke(asset6);
 
-      if (v19)
+      if (fingerprintScheme2)
       {
         goto LABEL_11;
       }
     }
 
-    v46 = [(PLDuplicateAsset *)v9 asset];
-    v19 = __81__PLDuplicateAsset__mergeComparisonScoreModifierWithOtherAsset_score_otherScore___block_invoke(v46);
+    asset7 = [(PLDuplicateAsset *)assetCopy asset];
+    fingerprintScheme2 = __81__PLDuplicateAsset__mergeComparisonScoreModifierWithOtherAsset_score_otherScore___block_invoke(asset7);
 
 LABEL_11:
-    v20 = [v17 isCompatibleWithFingerprintScheme:v19];
+    v20 = [fingerprintScheme isCompatibleWithFingerprintScheme:fingerprintScheme2];
 
     if (!v15)
     {
@@ -2789,25 +2789,25 @@ id __81__PLDuplicateAsset__mergeComparisonScoreModifierWithOtherAsset_score_othe
   return v3;
 }
 
-- (void)_tieBreakerComparisonScoreWithOtherAsset:(id)a3 score:(int64_t *)a4 otherScore:(int64_t *)a5
+- (void)_tieBreakerComparisonScoreWithOtherAsset:(id)asset score:(int64_t *)score otherScore:(int64_t *)otherScore
 {
   v28 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  if (!-[PLDuplicateAsset hasModifiedUserDateCreated](self, "hasModifiedUserDateCreated") && ([v8 hasModifiedUserDateCreated] & 1) == 0)
+  assetCopy = asset;
+  if (!-[PLDuplicateAsset hasModifiedUserDateCreated](self, "hasModifiedUserDateCreated") && ([assetCopy hasModifiedUserDateCreated] & 1) == 0)
   {
-    v9 = [(PLDuplicateAsset *)self asset];
-    v10 = [v9 dateCreated];
+    asset = [(PLDuplicateAsset *)self asset];
+    dateCreated = [asset dateCreated];
 
-    v11 = [v8 asset];
-    v12 = [v11 dateCreated];
+    asset2 = [assetCopy asset];
+    dateCreated2 = [asset2 dateCreated];
 
-    if (v10 && v12)
+    if (dateCreated && dateCreated2)
     {
-      v13 = [(PLDuplicateAsset *)self _correctedCompareDate:v10 otherDate:v12];
-      v14 = a4;
+      v13 = [(PLDuplicateAsset *)self _correctedCompareDate:dateCreated otherDate:dateCreated2];
+      otherScoreCopy2 = score;
       if (v13 != -1)
       {
-        v14 = a5;
+        otherScoreCopy2 = otherScore;
         if (v13 != 1)
         {
           goto LABEL_13;
@@ -2817,60 +2817,60 @@ id __81__PLDuplicateAsset__mergeComparisonScoreModifierWithOtherAsset_score_othe
 
     else
     {
-      if (v10)
+      if (dateCreated)
       {
-        v14 = a4;
+        otherScoreCopy2 = score;
       }
 
       else
       {
-        v14 = a5;
+        otherScoreCopy2 = otherScore;
       }
 
-      if (!(v10 | v12))
+      if (!(dateCreated | dateCreated2))
       {
         goto LABEL_13;
       }
     }
 
-    *v14 += 5;
+    *otherScoreCopy2 += 5;
 LABEL_13:
   }
 
-  if (*a4 != *a5)
+  if (*score != *otherScore)
   {
     v15 = PLDuplicateDetectionGetLog();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
-      v16 = *a4;
-      v17 = *a5;
-      v18 = [(PLDuplicateAsset *)self shortDescription];
-      v19 = [v8 shortDescription];
+      v16 = *score;
+      v17 = *otherScore;
+      shortDescription = [(PLDuplicateAsset *)self shortDescription];
+      shortDescription2 = [assetCopy shortDescription];
       v20 = 134218754;
       v21 = v16;
       v22 = 2048;
       v23 = v17;
       v24 = 2114;
-      v25 = v18;
+      v25 = shortDescription;
       v26 = 2114;
-      v27 = v19;
+      v27 = shortDescription2;
       _os_log_impl(&dword_19BF1F000, v15, OS_LOG_TYPE_INFO, "Duplicate Asset: tie breaker comparisonScore [%tu:%tu][%{public}@:%{public}@]", &v20, 0x2Au);
     }
   }
 }
 
-- (int64_t)_correctedCompareDate:(id)a3 otherDate:(id)a4
+- (int64_t)_correctedCompareDate:(id)date otherDate:(id)otherDate
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 isEqualToDate:v6])
+  dateCopy = date;
+  otherDateCopy = otherDate;
+  if ([dateCopy isEqualToDate:otherDateCopy])
   {
     v7 = 0;
   }
 
   else
   {
-    [v5 timeIntervalSinceDate:v6];
+    [dateCopy timeIntervalSinceDate:otherDateCopy];
     v9 = fabs(v8);
     v10 = -1;
     if (v8 >= 0.0)
@@ -2892,44 +2892,44 @@ LABEL_13:
   return v7;
 }
 
-- (int64_t)compare:(id)a3 enabledMergeComparison:(BOOL)a4
+- (int64_t)compare:(id)compare enabledMergeComparison:(BOOL)comparison
 {
-  v4 = a4;
+  comparisonCopy = comparison;
   v67 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(PLDuplicateAsset *)self score];
-  v58 = v7;
-  v8 = [v6 score];
-  v57 = v8;
-  v9 = [(PLDuplicateAsset *)self asset];
-  v10 = [v9 hasAdjustments];
+  compareCopy = compare;
+  score = [(PLDuplicateAsset *)self score];
+  v58 = score;
+  score2 = [compareCopy score];
+  v57 = score2;
+  asset = [(PLDuplicateAsset *)self asset];
+  hasAdjustments = [asset hasAdjustments];
 
-  v11 = [v6 asset];
-  v12 = [v11 hasAdjustments];
+  asset2 = [compareCopy asset];
+  hasAdjustments2 = [asset2 hasAdjustments];
 
-  if (!v10 || !v12)
+  if (!hasAdjustments || !hasAdjustments2)
   {
     goto LABEL_12;
   }
 
-  v13 = [(PLDuplicateAsset *)self asset];
-  v14 = [v13 additionalAttributes];
-  v15 = [v14 unmanagedAdjustment];
-  v16 = [v15 adjustmentTimestamp];
+  asset3 = [(PLDuplicateAsset *)self asset];
+  additionalAttributes = [asset3 additionalAttributes];
+  unmanagedAdjustment = [additionalAttributes unmanagedAdjustment];
+  adjustmentTimestamp = [unmanagedAdjustment adjustmentTimestamp];
 
-  v17 = [v6 asset];
-  v18 = [v17 additionalAttributes];
-  v19 = [v18 unmanagedAdjustment];
-  v20 = [v19 adjustmentTimestamp];
+  asset4 = [compareCopy asset];
+  additionalAttributes2 = [asset4 additionalAttributes];
+  unmanagedAdjustment2 = [additionalAttributes2 unmanagedAdjustment];
+  adjustmentTimestamp2 = [unmanagedAdjustment2 adjustmentTimestamp];
 
-  [(PLDuplicateAsset *)self _updateScoresUsingLatestDateWithDate:v16 otherDate:v20 score:&v58 otherScore:&v57];
-  if (v7 != v58)
+  [(PLDuplicateAsset *)self _updateScoresUsingLatestDateWithDate:adjustmentTimestamp otherDate:adjustmentTimestamp2 score:&v58 otherScore:&v57];
+  if (score != v58)
   {
     v21 = PLDuplicateDetectionGetLog();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
     {
-      v22 = [(PLDuplicateAsset *)self shortDescription];
-      v25 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Duplicate Asset: [%@] score incremented to %td", v22, v58];
+      shortDescription = [(PLDuplicateAsset *)self shortDescription];
+      v25 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Duplicate Asset: [%@] score incremented to %td", shortDescription, v58];
       v24 = _PLDuplicateAssetLogString(v25, @"latest Adjustment", 0);
 
       *buf = 138543362;
@@ -2942,13 +2942,13 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  if (v8 != v57)
+  if (score2 != v57)
   {
     v21 = PLDuplicateDetectionGetLog();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
     {
-      v22 = [v6 shortDescription];
-      v23 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Duplicate Asset: [%@] score incremented to %td", v22, v57];
+      shortDescription = [compareCopy shortDescription];
+      v23 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Duplicate Asset: [%@] score incremented to %td", shortDescription, v57];
       v24 = _PLDuplicateAssetLogString(v23, @"latest Adjustment", 0);
 
       *buf = 138543362;
@@ -2965,17 +2965,17 @@ LABEL_9:
 LABEL_11:
 
 LABEL_12:
-  if (-[PLDuplicateAsset hasModifiedUserTitle](self, "hasModifiedUserTitle") && ([v6 hasModifiedUserTitle] & 1) != 0 || -[PLDuplicateAsset hasModifiedUserLocation](self, "hasModifiedUserLocation") && objc_msgSend(v6, "hasModifiedUserLocation"))
+  if (-[PLDuplicateAsset hasModifiedUserTitle](self, "hasModifiedUserTitle") && ([compareCopy hasModifiedUserTitle] & 1) != 0 || -[PLDuplicateAsset hasModifiedUserLocation](self, "hasModifiedUserLocation") && objc_msgSend(compareCopy, "hasModifiedUserLocation"))
   {
-    v26 = [(PLDuplicateAsset *)self asset];
-    v27 = [v26 modificationDate];
+    asset5 = [(PLDuplicateAsset *)self asset];
+    modificationDate = [asset5 modificationDate];
 
-    v28 = [v6 asset];
-    v29 = [v28 modificationDate];
+    asset6 = [compareCopy asset];
+    modificationDate2 = [asset6 modificationDate];
 
     v30 = v57;
     v31 = v58;
-    [(PLDuplicateAsset *)self _updateScoresUsingLatestDateWithDate:v27 otherDate:v29 score:&v58 otherScore:&v57];
+    [(PLDuplicateAsset *)self _updateScoresUsingLatestDateWithDate:modificationDate otherDate:modificationDate2 score:&v58 otherScore:&v57];
     if (v31 == v58)
     {
       if (v30 == v57)
@@ -2988,8 +2988,8 @@ LABEL_24:
       v32 = PLDuplicateDetectionGetLog();
       if (os_log_type_enabled(v32, OS_LOG_TYPE_DEBUG))
       {
-        v33 = [v6 shortDescription];
-        v34 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Duplicate Asset: [%@] score incremented to %td", v33, v57];
+        shortDescription2 = [compareCopy shortDescription];
+        v34 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Duplicate Asset: [%@] score incremented to %td", shortDescription2, v57];
         v35 = _PLDuplicateAssetLogString(v34, @"latest user modification", 0);
 
         *buf = 138543362;
@@ -3004,8 +3004,8 @@ LABEL_22:
       v32 = PLDuplicateDetectionGetLog();
       if (os_log_type_enabled(v32, OS_LOG_TYPE_DEBUG))
       {
-        v33 = [(PLDuplicateAsset *)self shortDescription];
-        v36 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Duplicate Asset: [%@] score incremented to %td", v33, v58];
+        shortDescription2 = [(PLDuplicateAsset *)self shortDescription];
+        v36 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Duplicate Asset: [%@] score incremented to %td", shortDescription2, v58];
         v35 = _PLDuplicateAssetLogString(v36, @"latest user modification", 0);
 
         *buf = 138543362;
@@ -3018,11 +3018,11 @@ LABEL_22:
   }
 
 LABEL_25:
-  v37 = [(PLDuplicateAsset *)self originalResolution];
-  if (v37 <= [v6 originalResolution])
+  originalResolution = [(PLDuplicateAsset *)self originalResolution];
+  if (originalResolution <= [compareCopy originalResolution])
   {
-    v42 = [(PLDuplicateAsset *)self originalResolution];
-    if (v42 >= [v6 originalResolution])
+    originalResolution2 = [(PLDuplicateAsset *)self originalResolution];
+    if (originalResolution2 >= [compareCopy originalResolution])
     {
       goto LABEL_33;
     }
@@ -3031,8 +3031,8 @@ LABEL_25:
     v38 = PLDuplicateDetectionGetLog();
     if (os_log_type_enabled(v38, OS_LOG_TYPE_DEBUG))
     {
-      v39 = [v6 shortDescription];
-      v43 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Duplicate Asset: [%@] score incremented to %td", v39, v57];
+      shortDescription3 = [compareCopy shortDescription];
+      v43 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Duplicate Asset: [%@] score incremented to %td", shortDescription3, v57];
       v41 = _PLDuplicateAssetLogString(v43, @"originalResolution", 0);
 
       *buf = 138543362;
@@ -3047,8 +3047,8 @@ LABEL_25:
     v38 = PLDuplicateDetectionGetLog();
     if (os_log_type_enabled(v38, OS_LOG_TYPE_DEBUG))
     {
-      v39 = [(PLDuplicateAsset *)self shortDescription];
-      v40 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Duplicate Asset: [%@] score incremented to %td", v39, v58];
+      shortDescription3 = [(PLDuplicateAsset *)self shortDescription];
+      v40 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Duplicate Asset: [%@] score incremented to %td", shortDescription3, v58];
       v41 = _PLDuplicateAssetLogString(v40, @"originalResolution", 0);
 
       *buf = 138543362;
@@ -3061,7 +3061,7 @@ LABEL_31:
 LABEL_33:
   if (v58 == v57)
   {
-    [(PLDuplicateAsset *)self _tieBreakerComparisonScoreWithOtherAsset:v6 score:&v58 otherScore:&v57];
+    [(PLDuplicateAsset *)self _tieBreakerComparisonScoreWithOtherAsset:compareCopy score:&v58 otherScore:&v57];
   }
 
   v44 = PLDuplicateDetectionGetLog();
@@ -3069,37 +3069,37 @@ LABEL_33:
   {
     v46 = v57;
     v45 = v58;
-    v47 = [(PLDuplicateAsset *)self shortDescription];
-    v48 = [v6 shortDescription];
+    shortDescription4 = [(PLDuplicateAsset *)self shortDescription];
+    shortDescription5 = [compareCopy shortDescription];
     *buf = 134218754;
     v60 = v45;
     v61 = 2048;
     v62 = v46;
     v63 = 2114;
-    v64 = v47;
+    v64 = shortDescription4;
     v65 = 2114;
-    v66 = v48;
+    v66 = shortDescription5;
     _os_log_impl(&dword_19BF1F000, v44, OS_LOG_TYPE_INFO, "Duplicate Asset: comparisonScore [%tu:%tu][%{public}@:%{public}@]", buf, 0x2Au);
   }
 
-  if (v4)
+  if (comparisonCopy)
   {
-    [(PLDuplicateAsset *)self _mergeComparisonScoreModifierWithOtherAsset:v6 score:&v58 otherScore:&v57];
+    [(PLDuplicateAsset *)self _mergeComparisonScoreModifierWithOtherAsset:compareCopy score:&v58 otherScore:&v57];
     v49 = PLDuplicateDetectionGetLog();
     if (os_log_type_enabled(v49, OS_LOG_TYPE_INFO))
     {
       v51 = v57;
       v50 = v58;
-      v52 = [(PLDuplicateAsset *)self shortDescription];
-      v53 = [v6 shortDescription];
+      shortDescription6 = [(PLDuplicateAsset *)self shortDescription];
+      shortDescription7 = [compareCopy shortDescription];
       *buf = 134218754;
       v60 = v50;
       v61 = 2048;
       v62 = v51;
       v63 = 2114;
-      v64 = v52;
+      v64 = shortDescription6;
       v65 = 2114;
-      v66 = v53;
+      v66 = shortDescription7;
       _os_log_impl(&dword_19BF1F000, v49, OS_LOG_TYPE_INFO, "Duplicate Asset: post-mergeComparisonScore [%tu:%tu][%{public}@:%{public}@]", buf, 0x2Au);
     }
   }
@@ -3125,10 +3125,10 @@ LABEL_33:
 
 - (BOOL)hasModifiedUserTitle
 {
-  v2 = [(PLDuplicateAsset *)self asset];
-  v3 = [v2 additionalAttributes];
-  v4 = [v3 title];
-  v5 = v4 != 0;
+  asset = [(PLDuplicateAsset *)self asset];
+  additionalAttributes = [asset additionalAttributes];
+  title = [additionalAttributes title];
+  v5 = title != 0;
 
   return v5;
 }
@@ -3144,18 +3144,18 @@ LABEL_33:
 
   else
   {
-    v5 = [(PLDuplicateAsset *)self asset];
-    v6 = [v5 dateCreated];
+    asset = [(PLDuplicateAsset *)self asset];
+    dateCreated = [asset dateCreated];
 
-    if (v6)
+    if (dateCreated)
     {
-      v7 = [(PLDuplicateAsset *)self asset];
-      v8 = [v7 extendedAttributes];
-      v9 = [v8 dateCreated];
+      asset2 = [(PLDuplicateAsset *)self asset];
+      extendedAttributes = [asset2 extendedAttributes];
+      dateCreated2 = [extendedAttributes dateCreated];
 
-      if (v9 || -[PLDuplicateAsset enableEXIFDataAccess](self, "enableEXIFDataAccess") && (-[PLDuplicateAsset asset](self, "asset"), v11 = objc_claimAutoreleasedReturnValue(), [v11 metadataFromMediaPropertiesOrOriginalResource], v12 = objc_claimAutoreleasedReturnValue(), v11, objc_msgSend(v12, "utcCreationDate"), v9 = objc_claimAutoreleasedReturnValue(), v12, v9))
+      if (dateCreated2 || -[PLDuplicateAsset enableEXIFDataAccess](self, "enableEXIFDataAccess") && (-[PLDuplicateAsset asset](self, "asset"), v11 = objc_claimAutoreleasedReturnValue(), [v11 metadataFromMediaPropertiesOrOriginalResource], v12 = objc_claimAutoreleasedReturnValue(), v11, objc_msgSend(v12, "utcCreationDate"), dateCreated2 = objc_claimAutoreleasedReturnValue(), v12, dateCreated2))
       {
-        v10 = [(PLDuplicateAsset *)self _correctedCompareDate:v6 otherDate:v9]!= 0;
+        v10 = [(PLDuplicateAsset *)self _correctedCompareDate:dateCreated otherDate:dateCreated2]!= 0;
       }
 
       else
@@ -3188,19 +3188,19 @@ LABEL_33:
 
   else
   {
-    v5 = [(PLDuplicateAsset *)self asset];
-    v6 = [v5 additionalAttributes];
-    v7 = [v6 timeZoneOffset];
+    asset = [(PLDuplicateAsset *)self asset];
+    additionalAttributes = [asset additionalAttributes];
+    timeZoneOffset = [additionalAttributes timeZoneOffset];
 
-    if (v7)
+    if (timeZoneOffset)
     {
-      v8 = [(PLDuplicateAsset *)self asset];
-      v9 = [v8 extendedAttributes];
-      v10 = [v9 timezoneOffset];
+      asset2 = [(PLDuplicateAsset *)self asset];
+      extendedAttributes = [asset2 extendedAttributes];
+      timezoneOffset = [extendedAttributes timezoneOffset];
 
-      if (v10 || -[PLDuplicateAsset enableEXIFDataAccess](self, "enableEXIFDataAccess") && (-[PLDuplicateAsset asset](self, "asset"), v12 = objc_claimAutoreleasedReturnValue(), [v12 metadataFromMediaPropertiesOrOriginalResource], v13 = objc_claimAutoreleasedReturnValue(), v12, objc_msgSend(v13, "timeZoneOffset"), v10 = objc_claimAutoreleasedReturnValue(), v13, v10))
+      if (timezoneOffset || -[PLDuplicateAsset enableEXIFDataAccess](self, "enableEXIFDataAccess") && (-[PLDuplicateAsset asset](self, "asset"), v12 = objc_claimAutoreleasedReturnValue(), [v12 metadataFromMediaPropertiesOrOriginalResource], v13 = objc_claimAutoreleasedReturnValue(), v12, objc_msgSend(v13, "timeZoneOffset"), timezoneOffset = objc_claimAutoreleasedReturnValue(), v13, timezoneOffset))
       {
-        v11 = [v7 isEqualToNumber:v10] ^ 1;
+        v11 = [timeZoneOffset isEqualToNumber:timezoneOffset] ^ 1;
       }
 
       else
@@ -3233,17 +3233,17 @@ LABEL_33:
 
   else
   {
-    v5 = [(PLDuplicateAsset *)self asset];
-    v6 = [v5 extendedAttributes];
+    asset = [(PLDuplicateAsset *)self asset];
+    extendedAttributes = [asset extendedAttributes];
 
-    v7 = [v6 latitude];
-    v8 = [v6 longitude];
-    v9 = [(PLDuplicateAsset *)self asset];
-    [v9 latitude];
+    latitude = [extendedAttributes latitude];
+    longitude = [extendedAttributes longitude];
+    asset2 = [(PLDuplicateAsset *)self asset];
+    [asset2 latitude];
     v11 = v10;
 
-    v12 = [(PLDuplicateAsset *)self asset];
-    [v12 longitude];
+    asset3 = [(PLDuplicateAsset *)self asset];
+    [asset3 longitude];
     v14 = v13;
 
     if (v11 == -180.0 && v14 == -180.0)
@@ -3254,11 +3254,11 @@ LABEL_33:
     else
     {
       v15 = 1;
-      if (v7 && v8)
+      if (latitude && longitude)
       {
-        [v7 doubleValue];
+        [latitude doubleValue];
         v17 = v16;
-        [v8 doubleValue];
+        [longitude doubleValue];
         v15 = vabdd_f64(v17 + v18, v11 + v14) > 2.22044605e-16;
       }
     }
@@ -3289,9 +3289,9 @@ LABEL_33:
   if (!isCPLEnabled)
   {
     v4 = MEMORY[0x1E696AD98];
-    v5 = [(PLDuplicateAsset *)self asset];
-    v6 = [v5 photoLibrary];
-    v7 = [v4 numberWithBool:{objc_msgSend(v6, "isCloudPhotoLibraryEnabled")}];
+    asset = [(PLDuplicateAsset *)self asset];
+    photoLibrary = [asset photoLibrary];
+    v7 = [v4 numberWithBool:{objc_msgSend(photoLibrary, "isCloudPhotoLibraryEnabled")}];
     v8 = self->_isCPLEnabled;
     self->_isCPLEnabled = v7;
 
@@ -3301,7 +3301,7 @@ LABEL_33:
   return [(NSNumber *)isCPLEnabled BOOLValue];
 }
 
-- (void)setMergeStatus:(int64_t)a3
+- (void)setMergeStatus:(int64_t)status
 {
   mergeStatus = self->_mergeStatus;
   if (mergeStatus < 2)
@@ -3309,11 +3309,11 @@ LABEL_33:
     goto LABEL_2;
   }
 
-  if (mergeStatus == 2 && a3 == 0)
+  if (mergeStatus == 2 && status == 0)
   {
-    a3 = 0;
+    status = 0;
 LABEL_2:
-    self->_mergeStatus = a3;
+    self->_mergeStatus = status;
   }
 }
 
@@ -3328,31 +3328,31 @@ LABEL_2:
   return v5;
 }
 
-- (id)_additionalDescriptionState:(id)a3
+- (id)_additionalDescriptionState:(id)state
 {
   v3 = MEMORY[0x1E696AD60];
-  v4 = a3;
+  stateCopy = state;
   v5 = objc_alloc_init(v3);
-  v6 = [v4 objectForKeyedSubscript:@"mergeStatus"];
+  v6 = [stateCopy objectForKeyedSubscript:@"mergeStatus"];
   [v5 appendFormat:@"m%@:", v6];
 
-  v7 = [v4 objectForKeyedSubscript:@"visibility"];
+  v7 = [stateCopy objectForKeyedSubscript:@"visibility"];
   v8 = [v7 substringToIndex:1];
   [v5 appendFormat:@"v%@:", v8];
 
-  v9 = [v4 objectForKeyedSubscript:@"resourceSwapDisabled"];
+  v9 = [stateCopy objectForKeyedSubscript:@"resourceSwapDisabled"];
   v10 = [v9 substringToIndex:1];
   [v5 appendFormat:@"rd%@:", v10];
 
-  v11 = [v4 objectForKeyedSubscript:@"hasModifiedUserLocation"];
+  v11 = [stateCopy objectForKeyedSubscript:@"hasModifiedUserLocation"];
   v12 = [v11 substringToIndex:1];
   [v5 appendFormat:@"ul%@:", v12];
 
-  v13 = [v4 objectForKeyedSubscript:@"hasModifiedUserTimezone"];
+  v13 = [stateCopy objectForKeyedSubscript:@"hasModifiedUserTimezone"];
   v14 = [v13 substringToIndex:1];
   [v5 appendFormat:@"utz%@:", v14];
 
-  v15 = [v4 objectForKeyedSubscript:@"hasModifiedUserDateCreated"];
+  v15 = [stateCopy objectForKeyedSubscript:@"hasModifiedUserDateCreated"];
 
   v16 = [v15 substringToIndex:1];
   [v5 appendFormat:@"ud%@:", v16];
@@ -3360,9 +3360,9 @@ LABEL_2:
   return v5;
 }
 
-- (id)_additionalDescriptionWithPIIDetails:(BOOL)a3
+- (id)_additionalDescriptionWithPIIDetails:(BOOL)details
 {
-  v3 = a3;
+  detailsCopy = details;
   v5 = [(PLDuplicateAsset *)self _additionalDescriptionDictionaryWithPIIDetails:?];
   v6 = objc_alloc_init(MEMORY[0x1E696AD60]);
   v7 = [v5 objectForKeyedSubscript:@"objectIDDescription"];
@@ -3377,7 +3377,7 @@ LABEL_2:
   v10 = [(PLDuplicateAsset *)self _additionalDescriptionState:v5];
   [v6 appendFormat:@" state:[%@]", v10];
 
-  if (v3)
+  if (detailsCopy)
   {
     v11 = [v5 objectForKeyedSubscript:@"filename"];
     [v6 appendFormat:@" filename:[%@]", v11];
@@ -3386,23 +3386,23 @@ LABEL_2:
   return v6;
 }
 
-- (id)_additionalDescriptionDictionaryWithPIIDetails:(BOOL)a3
+- (id)_additionalDescriptionDictionaryWithPIIDetails:(BOOL)details
 {
-  v3 = a3;
+  detailsCopy = details;
   v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v6 = [(PLDuplicateAsset *)self veryShortDescription];
-  [v5 setObject:v6 forKeyedSubscript:@"objectIDDescription"];
+  veryShortDescription = [(PLDuplicateAsset *)self veryShortDescription];
+  [v5 setObject:veryShortDescription forKeyedSubscript:@"objectIDDescription"];
 
-  v7 = [(PLDuplicateAsset *)self assetUUID];
-  [v5 setObject:v7 forKeyedSubscript:@"uuid"];
+  assetUUID = [(PLDuplicateAsset *)self assetUUID];
+  [v5 setObject:assetUUID forKeyedSubscript:@"uuid"];
 
-  if (v3)
+  if (detailsCopy)
   {
     [v5 setObject:self->_originalFilename forKeyedSubscript:@"filename"];
   }
 
-  v8 = [(PLDuplicateAsset *)self duplicateAssetVisibilityStateString];
-  [v5 setObject:v8 forKeyedSubscript:@"visibility"];
+  duplicateAssetVisibilityStateString = [(PLDuplicateAsset *)self duplicateAssetVisibilityStateString];
+  [v5 setObject:duplicateAssetVisibilityStateString forKeyedSubscript:@"visibility"];
 
   v9 = [MEMORY[0x1E696AD98] numberWithInteger:{-[PLDuplicateAsset score](self, "score")}];
   [v5 setObject:v9 forKeyedSubscript:@"score"];
@@ -3463,32 +3463,32 @@ LABEL_2:
 
 - (id)duplicateAssetVisibilityStateString
 {
-  v2 = [(PLDuplicateAsset *)self duplicateAssetVisibilityState];
+  duplicateAssetVisibilityState = [(PLDuplicateAsset *)self duplicateAssetVisibilityState];
   v3 = @"R";
   v4 = @"H";
-  if (v2 != 100)
+  if (duplicateAssetVisibilityState != 100)
   {
     v4 = 0;
   }
 
-  if (v2 != 2)
+  if (duplicateAssetVisibilityState != 2)
   {
     v3 = v4;
   }
 
   v5 = @"X";
   v6 = @"V";
-  if (v2 != 1)
+  if (duplicateAssetVisibilityState != 1)
   {
     v6 = 0;
   }
 
-  if (v2)
+  if (duplicateAssetVisibilityState)
   {
     v5 = v6;
   }
 
-  if (v2 <= 1u)
+  if (duplicateAssetVisibilityState <= 1u)
   {
     return v5;
   }
@@ -3501,10 +3501,10 @@ LABEL_2:
 
 - (signed)_calculateDuplicateAssetVisibilityState
 {
-  v2 = [(PLDuplicateAsset *)self asset];
-  v3 = [v2 activeLibraryScopeParticipationState];
+  asset = [(PLDuplicateAsset *)self asset];
+  activeLibraryScopeParticipationState = [asset activeLibraryScopeParticipationState];
 
-  if (v3 == 1)
+  if (activeLibraryScopeParticipationState == 1)
   {
     return 100;
   }
@@ -3515,32 +3515,32 @@ LABEL_2:
   }
 }
 
-- (void)_configureInitPropertiesWithAsset:(id)a3
+- (void)_configureInitPropertiesWithAsset:(id)asset
 {
-  v4 = a3;
-  v19 = [v4 additionalAttributes];
-  v5 = [v4 objectID];
+  assetCopy = asset;
+  additionalAttributes = [assetCopy additionalAttributes];
+  objectID = [assetCopy objectID];
   assetObjectID = self->_assetObjectID;
-  self->_assetObjectID = v5;
+  self->_assetObjectID = objectID;
 
-  v7 = [(NSManagedObjectID *)self->_assetObjectID URIRepresentation];
-  v8 = [v7 relativePath];
+  uRIRepresentation = [(NSManagedObjectID *)self->_assetObjectID URIRepresentation];
+  relativePath = [uRIRepresentation relativePath];
   assetObjectIDDescription = self->_assetObjectIDDescription;
-  self->_assetObjectIDDescription = v8;
+  self->_assetObjectIDDescription = relativePath;
 
-  v10 = [v19 originalWidth];
-  v11 = [v10 integerValue];
-  v12 = [v19 originalHeight];
-  self->_originalResolution = [v12 integerValue] * v11;
+  originalWidth = [additionalAttributes originalWidth];
+  integerValue = [originalWidth integerValue];
+  originalHeight = [additionalAttributes originalHeight];
+  self->_originalResolution = [originalHeight integerValue] * integerValue;
 
-  v13 = [v4 uuid];
+  uuid = [assetCopy uuid];
 
-  v14 = [v13 copy];
+  v14 = [uuid copy];
   assetUUID = self->_assetUUID;
   self->_assetUUID = v14;
 
-  v16 = [v19 originalFilename];
-  v17 = [v16 copy];
+  originalFilename = [additionalAttributes originalFilename];
+  v17 = [originalFilename copy];
   originalFilename = self->_originalFilename;
   self->_originalFilename = v17;
 
@@ -3548,14 +3548,14 @@ LABEL_2:
   self->_duplicateAssetVisibilityState = [(PLDuplicateAsset *)self _calculateDuplicateAssetVisibilityState];
 }
 
-- (PLDuplicateAsset)initWithAsset:(id)a3 cloudScopedIdentifier:(id)a4 enableEXIFDataAccess:(BOOL)a5
+- (PLDuplicateAsset)initWithAsset:(id)asset cloudScopedIdentifier:(id)identifier enableEXIFDataAccess:(BOOL)access
 {
-  v10 = a3;
-  v11 = a4;
-  if (!v10)
+  assetCopy = asset;
+  identifierCopy = identifier;
+  if (!assetCopy)
   {
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v21 handleFailureInMethod:a2 object:self file:@"PLDuplicateAsset.m" lineNumber:146 description:{@"Invalid parameter not satisfying: %@", @"asset"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLDuplicateAsset.m" lineNumber:146 description:{@"Invalid parameter not satisfying: %@", @"asset"}];
   }
 
   v22.receiver = self;
@@ -3564,51 +3564,51 @@ LABEL_2:
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_asset, a3);
-    if (v11)
+    objc_storeStrong(&v12->_asset, asset);
+    if (identifierCopy)
     {
-      v14 = [v11 copy];
+      v14 = [identifierCopy copy];
       assetCloudScopedIdentifier = v13->_assetCloudScopedIdentifier;
       v13->_assetCloudScopedIdentifier = v14;
     }
 
     else
     {
-      assetCloudScopedIdentifier = [v10 cloudAssetGUID];
+      assetCloudScopedIdentifier = [assetCopy cloudAssetGUID];
       v16 = [assetCloudScopedIdentifier copy];
       v17 = v13->_assetCloudScopedIdentifier;
       v13->_assetCloudScopedIdentifier = v16;
     }
 
-    v18 = [(PLManagedAsset *)v13->_asset duplicateAssetVisibilityState];
+    duplicateAssetVisibilityState = [(PLManagedAsset *)v13->_asset duplicateAssetVisibilityState];
     v19 = 1;
-    if (!v18)
+    if (!duplicateAssetVisibilityState)
     {
       v19 = 2;
     }
 
     v13->_mergeStatus = v19;
-    v13->_enableEXIFDataAccess = a5;
+    v13->_enableEXIFDataAccess = access;
     v13->_resourceSwapDisabled = 0;
-    [(PLDuplicateAsset *)v13 _configureInitPropertiesWithAsset:v10];
+    [(PLDuplicateAsset *)v13 _configureInitPropertiesWithAsset:assetCopy];
   }
 
   return v13;
 }
 
-+ (BOOL)isDuplicateAssetSortChangedObject:(id)a3
++ (BOOL)isDuplicateAssetSortChangedObject:(id)object
 {
   v26 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 changedValues];
-  if ([v4 count])
+  objectCopy = object;
+  changedValues = [objectCopy changedValues];
+  if ([changedValues count])
   {
     v22 = 0u;
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v5 = [v3 duplicateSortPropertyNamesSkip];
-    v6 = [v5 countByEnumeratingWithState:&v20 objects:v25 count:16];
+    duplicateSortPropertyNamesSkip = [objectCopy duplicateSortPropertyNamesSkip];
+    v6 = [duplicateSortPropertyNamesSkip countByEnumeratingWithState:&v20 objects:v25 count:16];
     if (v6)
     {
       v7 = v6;
@@ -3619,10 +3619,10 @@ LABEL_2:
         {
           if (*v21 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(duplicateSortPropertyNamesSkip);
           }
 
-          v10 = [v4 objectForKeyedSubscript:*(*(&v20 + 1) + 8 * i)];
+          v10 = [changedValues objectForKeyedSubscript:*(*(&v20 + 1) + 8 * i)];
 
           if (v10)
           {
@@ -3631,7 +3631,7 @@ LABEL_2:
           }
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v20 objects:v25 count:16];
+        v7 = [duplicateSortPropertyNamesSkip countByEnumeratingWithState:&v20 objects:v25 count:16];
         if (v7)
         {
           continue;
@@ -3645,8 +3645,8 @@ LABEL_2:
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v5 = [v3 duplicateSortPropertyNames];
-    v11 = [v5 countByEnumeratingWithState:&v16 objects:v24 count:16];
+    duplicateSortPropertyNamesSkip = [objectCopy duplicateSortPropertyNames];
+    v11 = [duplicateSortPropertyNamesSkip countByEnumeratingWithState:&v16 objects:v24 count:16];
     if (v11)
     {
       v12 = *v17;
@@ -3656,10 +3656,10 @@ LABEL_2:
         {
           if (*v17 != v12)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(duplicateSortPropertyNamesSkip);
           }
 
-          v14 = [v4 objectForKeyedSubscript:*(*(&v16 + 1) + 8 * j)];
+          v14 = [changedValues objectForKeyedSubscript:*(*(&v16 + 1) + 8 * j)];
 
           if (v14)
           {
@@ -3668,7 +3668,7 @@ LABEL_2:
           }
         }
 
-        v11 = [v5 countByEnumeratingWithState:&v16 objects:v24 count:16];
+        v11 = [duplicateSortPropertyNamesSkip countByEnumeratingWithState:&v16 objects:v24 count:16];
         if (v11)
         {
           continue;
@@ -3692,11 +3692,11 @@ LABEL_22:
 + (id)relationshipKeyPathsForMergePrefetching
 {
   v6[2] = *MEMORY[0x1E69E9840];
-  v2 = [a1 relationshipKeyPathsForPrefetching];
+  relationshipKeyPathsForPrefetching = [self relationshipKeyPathsForPrefetching];
   v6[0] = @"albums";
   v6[1] = @"libraryScope";
   v3 = [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:2];
-  v4 = [v2 arrayByAddingObjectsFromArray:v3];
+  v4 = [relationshipKeyPathsForPrefetching arrayByAddingObjectsFromArray:v3];
 
   return v4;
 }

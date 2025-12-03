@@ -1,19 +1,19 @@
 @interface CDMRegexSpanMatcher
-+ (id)getNumberFormatter:(id)a3;
++ (id)getNumberFormatter:(id)formatter;
 + (id)getNumberFormatterForOutput;
-+ (id)getNumberString:(id)a3 numberFormatter:(id)a4 numberFormatterForOutput:(id)a5 integerOnly:(BOOL)a6;
-+ (id)readRegexAssetFromPath:(id)a3;
-- (CDMRegexSpanMatcher)initWithCachePath:(id)a3;
-- (id)matchSpansForTokenChain:(id)a3 asrHypothesis:(id)a4;
++ (id)getNumberString:(id)string numberFormatter:(id)formatter numberFormatterForOutput:(id)output integerOnly:(BOOL)only;
++ (id)readRegexAssetFromPath:(id)path;
+- (CDMRegexSpanMatcher)initWithCachePath:(id)path;
+- (id)matchSpansForTokenChain:(id)chain asrHypothesis:(id)hypothesis;
 @end
 
 @implementation CDMRegexSpanMatcher
 
-- (id)matchSpansForTokenChain:(id)a3 asrHypothesis:(id)a4
+- (id)matchSpansForTokenChain:(id)chain asrHypothesis:(id)hypothesis
 {
   v129 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v90 = a4;
+  chainCopy = chain;
+  hypothesisCopy = hypothesis;
   v7 = os_signpost_id_generate(CDMLogContext);
   v8 = CDMLogContext;
   v9 = v8;
@@ -31,12 +31,12 @@
   if ([(NSArray *)self->_regexEntries count])
   {
     v88 = v10;
-    v13 = [MEMORY[0x1E695DF70] array];
-    v14 = [v6 string];
-    v15 = v14;
-    if (v14)
+    array = [MEMORY[0x1E695DF70] array];
+    string = [chainCopy string];
+    v15 = string;
+    if (string)
     {
-      v93 = [(__CFString *)v14 length];
+      v93 = [(__CFString *)string length];
       v111 = 0u;
       v112 = 0u;
       v113 = 0u;
@@ -48,9 +48,9 @@
         v97 = 0;
         v98 = 0;
         v92 = *v112;
-        v96 = v13;
+        v96 = array;
         v100 = v15;
-        v101 = v6;
+        v101 = chainCopy;
         while (1)
         {
           v16 = 0;
@@ -65,8 +65,8 @@
 
             v95 = v16;
             v104 = *(*(&v111 + 1) + 8 * v16);
-            v18 = [v104 regularExpression];
-            v19 = [v18 matchesInString:v15 options:0 range:{0, v93}];
+            regularExpression = [v104 regularExpression];
+            v19 = [regularExpression matchesInString:v15 options:0 range:{0, v93}];
 
             v109 = 0u;
             v110 = 0u;
@@ -91,11 +91,11 @@
                   v22 = CDMOSLoggerForCategory(0);
                   if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
                   {
-                    v23 = [v21 range];
-                    v25 = [(__CFString *)v15 substringWithRange:v23, v24];
-                    v26 = [v104 label];
-                    v27 = [v21 range];
-                    v28 = [v21 range];
+                    range = [v21 range];
+                    v25 = [(__CFString *)v15 substringWithRange:range, v24];
+                    label = [v104 label];
+                    range2 = [v21 range];
+                    range3 = [v21 range];
                     [v21 range];
                     *buf = 136316418;
                     v116 = "[CDMRegexSpanMatcher matchSpansForTokenChain:asrHypothesis:]";
@@ -104,43 +104,43 @@
                     v119 = 2112;
                     v120 = v25;
                     v121 = 2112;
-                    v122 = v26;
+                    v122 = label;
                     v123 = 2048;
-                    v124 = v27;
+                    v124 = range2;
                     v125 = 2048;
-                    v126 = v29 + v28;
+                    v126 = v29 + range3;
                     _os_log_impl(&dword_1DC287000, v22, OS_LOG_TYPE_INFO, "%s For utterance <%@>, CDMRegexSpanMatcher matched text: <%@>, label: <%@>, start index: <%zu>, end index: <%zu>", buf, 0x3Eu);
                   }
 
-                  v30 = [v6 tokenIndexFromCharacterIndex:{objc_msgSend(v21, "range")}];
-                  v31 = [v21 range];
+                  v30 = [chainCopy tokenIndexFromCharacterIndex:{objc_msgSend(v21, "range")}];
+                  range4 = [v21 range];
                   [v21 range];
-                  v33 = [v6 tokenIndexFromCharacterIndex:v31 + v32 - 1];
+                  v33 = [chainCopy tokenIndexFromCharacterIndex:range4 + v32 - 1];
                   v34 = (v33 + 1);
                   if (v33 != -1)
                   {
-                    v35 = [v6 tokens];
-                    v36 = [v35 count];
+                    tokens = [chainCopy tokens];
+                    v36 = [tokens count];
 
                     if (v36 >= v34)
                     {
-                      v38 = [v21 range];
-                      v40 = [(__CFString *)v15 substringWithRange:v38, v39];
+                      range5 = [v21 range];
+                      v40 = [(__CFString *)v15 substringWithRange:range5, v39];
                       v41 = v104;
-                      v42 = [v104 label];
-                      v43 = [v21 range];
-                      v44 = [v21 range];
+                      label2 = [v104 label];
+                      range6 = [v21 range];
+                      range7 = [v21 range];
                       [v21 range];
                       LODWORD(v87) = 8;
                       v46 = v40;
-                      v102 = [CDMProtoSpanMatcherHelper buildMatchingSpanProtoWithLabel:v42 inputStringForDebug:v40 startTokenIndex:v30 endTokenIndex:v34 startCharIndex:v43 endCharIndex:(v45 + v44) spanMatcherName:v87];
+                      v102 = [CDMProtoSpanMatcherHelper buildMatchingSpanProtoWithLabel:label2 inputStringForDebug:v40 startTokenIndex:v30 endTokenIndex:v34 startCharIndex:range6 endCharIndex:(v45 + range7) spanMatcherName:v87];
 
-                      v47 = [v104 label];
-                      v48 = [v47 isEqualToString:@"ordinal"];
+                      label3 = [v104 label];
+                      v48 = [label3 isEqualToString:@"ordinal"];
 
                       if (v48)
                       {
-                        v6 = v101;
+                        chainCopy = v101;
                         if ([v21 numberOfRanges] <= 1)
                         {
                           v49 = CDMOSLoggerForCategory(0);
@@ -181,9 +181,9 @@ LABEL_41:
                         }
 
                         v75 = [(__CFString *)v100 substringWithRange:v57, v56];
-                        v76 = [v75 integerValue];
+                        integerValue = [v75 integerValue];
 
-                        if (v76 == 0x7FFFFFFFFFFFFFFFLL)
+                        if (integerValue == 0x7FFFFFFFFFFFFFFFLL)
                         {
                           v49 = CDMOSLoggerForCategory(0);
                           if (os_log_type_enabled(v49, OS_LOG_TYPE_INFO))
@@ -196,13 +196,13 @@ LABEL_41:
                           goto LABEL_32;
                         }
 
-                        v52 = [v104 label];
-                        v77 = [v21 range];
-                        v78 = [v21 range];
+                        label4 = [v104 label];
+                        range8 = [v21 range];
+                        range9 = [v21 range];
                         [v21 range];
-                        v70 = [CDMVocUsoGraphMapper buildVocUSOGraphForRegexOrdinal:v76 withVocLabel:v52 withInput:v46 withStartCharIndex:v77 withEndCharIndex:(v79 + v78)];
+                        label8 = [CDMVocUsoGraphMapper buildVocUSOGraphForRegexOrdinal:integerValue withVocLabel:label4 withInput:v46 withStartCharIndex:range8 withEndCharIndex:(v79 + range9)];
                         v58 = v102;
-                        [v102 setUsoGraph:v70];
+                        [v102 setUsoGraph:label8];
 LABEL_40:
 
                         [v96 addObject:v58];
@@ -210,11 +210,11 @@ LABEL_40:
                         goto LABEL_41;
                       }
 
-                      v6 = v101;
+                      chainCopy = v101;
                       v99 = [v101 nonWhiteSpaceCountFromToken:v30 toToken:v34];
-                      v52 = [v104 label];
-                      v53 = [v104 label];
-                      if ([v53 isEqualToString:@"integer"])
+                      label4 = [v104 label];
+                      label5 = [v104 label];
+                      if ([label5 isEqualToString:@"integer"])
                       {
 
 LABEL_34:
@@ -227,31 +227,31 @@ LABEL_34:
 
                         else
                         {
-                          v64 = [v101 locale];
-                          v65 = [CDMRegexSpanMatcher getNumberFormatter:v64];
+                          locale = [v101 locale];
+                          v65 = [CDMRegexSpanMatcher getNumberFormatter:locale];
 
                           v66 = +[CDMRegexSpanMatcher getNumberFormatterForOutput];
 
                           v63 = 0x1E862B000uLL;
-                          v6 = v101;
+                          chainCopy = v101;
                           v62 = v66;
                           v61 = v65;
                         }
 
                         v67 = *(v63 + 2552);
                         v41 = v104;
-                        v68 = [v104 label];
+                        label6 = [v104 label];
                         v97 = v62;
                         v98 = v61;
-                        v69 = [v67 getNumberString:v46 numberFormatter:v61 numberFormatterForOutput:v62 integerOnly:{objc_msgSend(v68, "isEqualToString:", @"integer"}];
+                        v69 = [v67 getNumberString:v46 numberFormatter:v61 numberFormatterForOutput:v62 integerOnly:{objc_msgSend(label6, "isEqualToString:", @"integer"}];
 
-                        v52 = v69;
+                        label4 = v69;
                       }
 
                       else
                       {
-                        v59 = [v104 label];
-                        v60 = [v59 isEqualToString:@"decimal"];
+                        label7 = [v104 label];
+                        v60 = [label7 isEqualToString:@"decimal"];
 
                         if (v60)
                         {
@@ -259,11 +259,11 @@ LABEL_34:
                         }
                       }
 
-                      v70 = [v41 label];
-                      v71 = [v21 range];
-                      v72 = [v21 range];
+                      label8 = [v41 label];
+                      range10 = [v21 range];
+                      range11 = [v21 range];
                       [v21 range];
-                      v74 = [CDMVocUsoGraphMapper buildVocUSOGraphWithVocLabel:v70 withSemantic:v52 withInput:v46 withStartCharIndex:v71 withEndCharIndex:(v73 + v72) withTokenCount:v99];
+                      v74 = [CDMVocUsoGraphMapper buildVocUSOGraphWithVocLabel:label8 withSemantic:label4 withInput:v46 withStartCharIndex:range10 withEndCharIndex:(v73 + range11) withTokenCount:v99];
                       v58 = v102;
                       [v102 setUsoGraph:v74];
 
@@ -296,7 +296,7 @@ LABEL_42:
             }
 
             v16 = v95 + 1;
-            v13 = v96;
+            array = v96;
           }
 
           while (v95 + 1 != v94);
@@ -320,7 +320,7 @@ LABEL_61:
         _os_signpost_emit_with_name_impl(&dword_1DC287000, v84, OS_SIGNPOST_INTERVAL_END, spid, "SpanMatcher", "", buf, 2u);
       }
 
-      v81 = v13;
+      v81 = array;
       v82 = v98;
     }
 
@@ -340,12 +340,12 @@ LABEL_61:
 
   else
   {
-    v13 = CDMOSLoggerForCategory(0);
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
+    array = CDMOSLoggerForCategory(0);
+    if (os_log_type_enabled(array, OS_LOG_TYPE_INFO))
     {
       *buf = 136315138;
       v116 = "[CDMRegexSpanMatcher matchSpansForTokenChain:asrHypothesis:]";
-      _os_log_impl(&dword_1DC287000, v13, OS_LOG_TYPE_INFO, "%s CDMRegexSpanMatcher no regex entities loaded", buf, 0xCu);
+      _os_log_impl(&dword_1DC287000, array, OS_LOG_TYPE_INFO, "%s CDMRegexSpanMatcher no regex entities loaded", buf, 0xCu);
     }
 
     v81 = 0;
@@ -356,22 +356,22 @@ LABEL_61:
   return v81;
 }
 
-- (CDMRegexSpanMatcher)initWithCachePath:(id)a3
+- (CDMRegexSpanMatcher)initWithCachePath:(id)path
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  pathCopy = path;
   v13.receiver = self;
   v13.super_class = CDMRegexSpanMatcher;
   v5 = [(CDMRegexSpanMatcher *)&v13 init];
   if (v5)
   {
-    if (!v4)
+    if (!pathCopy)
     {
       v6 = NSTemporaryDirectory();
-      v4 = [v6 stringByStandardizingPath];
+      pathCopy = [v6 stringByStandardizingPath];
     }
 
-    v7 = [v4 stringByAppendingPathComponent:@"regex.jsonl"];
+    v7 = [pathCopy stringByAppendingPathComponent:@"regex.jsonl"];
     v8 = CDMOSLoggerForCategory(0);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
@@ -391,70 +391,70 @@ LABEL_61:
   return v5;
 }
 
-+ (id)getNumberString:(id)a3 numberFormatter:(id)a4 numberFormatterForOutput:(id)a5 integerOnly:(BOOL)a6
++ (id)getNumberString:(id)string numberFormatter:(id)formatter numberFormatterForOutput:(id)output integerOnly:(BOOL)only
 {
-  v6 = a6;
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v9)
+  onlyCopy = only;
+  stringCopy = string;
+  formatterCopy = formatter;
+  outputCopy = output;
+  if (stringCopy)
   {
-    if (!v10)
+    if (!formatterCopy)
     {
       goto LABEL_12;
     }
 
-    v12 = [v10 numberFromString:v9];
+    v12 = [formatterCopy numberFromString:stringCopy];
     if (!v12)
     {
       goto LABEL_12;
     }
 
     v13 = v12;
-    if (v6)
+    if (onlyCopy)
     {
-      v14 = [v12 intValue];
-      v15 = [MEMORY[0x1E696AD98] numberWithInteger:v14];
-      v16 = [v15 stringValue];
+      intValue = [v12 intValue];
+      v15 = [MEMORY[0x1E696AD98] numberWithInteger:intValue];
+      stringValue = [v15 stringValue];
     }
 
     else
     {
-      if (v11)
+      if (outputCopy)
       {
-        [v11 stringFromNumber:v12];
+        [outputCopy stringFromNumber:v12];
       }
 
       else
       {
         [v12 stringValue];
       }
-      v16 = ;
+      stringValue = ;
     }
 
-    if (!v16)
+    if (!stringValue)
     {
 LABEL_12:
-      if (v6)
+      if (onlyCopy)
       {
-        v17 = [v9 stringByReplacingOccurrencesOfString:@" withString:{", &stru_1F5800F50}];
+        v17 = [stringCopy stringByReplacingOccurrencesOfString:@" withString:{", &stru_1F5800F50}];
       }
 
       else
       {
-        v17 = v9;
+        v17 = stringCopy;
       }
 
-      v16 = v17;
+      stringValue = v17;
     }
   }
 
   else
   {
-    v16 = 0;
+    stringValue = 0;
   }
 
-  return v16;
+  return stringValue;
 }
 
 + (id)getNumberFormatterForOutput
@@ -469,14 +469,14 @@ LABEL_12:
   return v2;
 }
 
-+ (id)getNumberFormatter:(id)a3
++ (id)getNumberFormatter:(id)formatter
 {
-  if (a3)
+  if (formatter)
   {
     v3 = MEMORY[0x1E696ADA0];
-    v4 = a3;
+    formatterCopy = formatter;
     v5 = objc_alloc_init(v3);
-    v6 = [objc_alloc(MEMORY[0x1E695DF58]) initWithLocaleIdentifier:v4];
+    v6 = [objc_alloc(MEMORY[0x1E695DF58]) initWithLocaleIdentifier:formatterCopy];
 
     [v5 setNumberStyle:1];
     [v5 setLocale:v6];
@@ -491,16 +491,16 @@ LABEL_12:
   return v5;
 }
 
-+ (id)readRegexAssetFromPath:(id)a3
++ (id)readRegexAssetFromPath:(id)path
 {
   v21 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (path)
   {
     v3 = MEMORY[0x1E695DF70];
-    v4 = a3;
-    v5 = [v3 array];
+    pathCopy = path;
+    array = [v3 array];
     v16 = 0;
-    v6 = [MEMORY[0x1E696AEC0] stringWithContentsOfFile:v4 encoding:4 error:&v16];
+    v6 = [MEMORY[0x1E696AEC0] stringWithContentsOfFile:pathCopy encoding:4 error:&v16];
 
     v7 = v16;
     if (v7)
@@ -520,14 +520,14 @@ LABEL_12:
 
     else
     {
-      v10 = [MEMORY[0x1E696AB08] newlineCharacterSet];
-      v8 = [v6 componentsSeparatedByCharactersInSet:v10];
+      newlineCharacterSet = [MEMORY[0x1E696AB08] newlineCharacterSet];
+      v8 = [v6 componentsSeparatedByCharactersInSet:newlineCharacterSet];
 
       v14[0] = MEMORY[0x1E69E9820];
       v14[1] = 3221225472;
       v14[2] = __46__CDMRegexSpanMatcher_readRegexAssetFromPath___block_invoke;
       v14[3] = &unk_1E862F800;
-      v11 = v5;
+      v11 = array;
       v15 = v11;
       [v8 enumerateObjectsUsingBlock:v14];
       v9 = v11;

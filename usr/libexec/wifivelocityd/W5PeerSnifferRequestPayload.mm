@@ -1,22 +1,22 @@
 @interface W5PeerSnifferRequestPayload
-+ (id)payloadFromDictionary:(id)a3;
-- (W5PeerSnifferRequestPayload)initWithRequest:(id)a3;
++ (id)payloadFromDictionary:(id)dictionary;
+- (W5PeerSnifferRequestPayload)initWithRequest:(id)request;
 - (id)encode;
 @end
 
 @implementation W5PeerSnifferRequestPayload
 
-+ (id)payloadFromDictionary:(id)a3
++ (id)payloadFromDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithRequest:v3];
+  dictionaryCopy = dictionary;
+  v4 = [objc_alloc(objc_opt_class()) initWithRequest:dictionaryCopy];
 
   return v4;
 }
 
-- (W5PeerSnifferRequestPayload)initWithRequest:(id)a3
+- (W5PeerSnifferRequestPayload)initWithRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v45.receiver = self;
   v45.super_class = W5PeerSnifferRequestPayload;
   v5 = [(W5PeerSnifferRequestPayload *)&v45 init];
@@ -32,15 +32,15 @@
       v62 = 1024;
       v63 = 36;
       v64 = 2114;
-      v65 = v4;
+      v65 = requestCopy;
       _os_log_send_and_compose_impl();
     }
 
-    v7 = [v4 objectForKey:@"version"];
+    v7 = [requestCopy objectForKey:@"version"];
     v5->_version = v7;
     if (v7)
     {
-      v8 = [v4 objectForKey:@"type"];
+      v8 = [requestCopy objectForKey:@"type"];
       v9 = [NSSet setWithObjects:objc_opt_class(), 0];
       v44 = 0;
       v10 = [NSKeyedUnarchiver unarchivedObjectOfClasses:v9 fromData:v8 error:&v44];
@@ -58,7 +58,7 @@
             v14 = 0;
             v15 = 0;
 LABEL_16:
-            v24 = [v4 objectForKey:@"noAutoStop"];
+            v24 = [requestCopy objectForKey:@"noAutoStop"];
             v5->_noAutoStop = [v24 BOOLValue];
 
             if (!v5->_noAutoStop)
@@ -67,7 +67,7 @@ LABEL_16:
               goto LABEL_20;
             }
 
-            v25 = [v4 objectForKey:@"rorationInterval"];
+            v25 = [requestCopy objectForKey:@"rorationInterval"];
             if (v25)
             {
               v26 = v25;
@@ -104,7 +104,7 @@ LABEL_29:
           goto LABEL_30;
         }
 
-        v13 = [v4 objectForKey:@"uuid"];
+        v13 = [requestCopy objectForKey:@"uuid"];
         if (!v13)
         {
           v40 = [NSError alloc];
@@ -128,7 +128,7 @@ LABEL_15:
         goto LABEL_16;
       }
 
-      v15 = [v4 objectForKey:@"channels"];
+      v15 = [requestCopy objectForKey:@"channels"];
       v16 = objc_opt_class();
       v17 = [NSSet setWithObjects:v16, objc_opt_class(), 0];
       v43 = v11;
@@ -140,12 +140,12 @@ LABEL_15:
 
       if (v5->_channels)
       {
-        v21 = [v4 objectForKey:@"duration"];
+        v21 = [requestCopy objectForKey:@"duration"];
         if (v21)
         {
           v14 = v21;
           v5->_duration = [v21 longValue];
-          v13 = [v4 objectForKey:@"uuid"];
+          v13 = [requestCopy objectForKey:@"uuid"];
           v11 = v19;
           if (!v13)
           {
@@ -235,19 +235,19 @@ LABEL_20:
 - (id)encode
 {
   v3 = objc_alloc_init(NSMutableDictionary);
-  v4 = [(W5PeerSnifferRequestPayload *)self version];
+  version = [(W5PeerSnifferRequestPayload *)self version];
 
-  if (!v4)
+  if (!version)
   {
     goto LABEL_22;
   }
 
-  v5 = [(W5PeerSnifferRequestPayload *)self version];
-  [v3 setObject:v5 forKey:@"version"];
+  version2 = [(W5PeerSnifferRequestPayload *)self version];
+  [v3 setObject:version2 forKey:@"version"];
 
   if (![(W5PeerSnifferRequestPayload *)self type])
   {
-    v4 = 0;
+    version = 0;
 LABEL_22:
     v9 = 0;
     v10 = 0;
@@ -256,10 +256,10 @@ LABEL_22:
 
   v6 = [[NSNumber alloc] initWithInteger:{-[W5PeerSnifferRequestPayload type](self, "type")}];
   v27 = 0;
-  v4 = [NSKeyedArchiver archivedDataWithRootObject:v6 requiringSecureCoding:1 error:&v27];
+  version = [NSKeyedArchiver archivedDataWithRootObject:v6 requiringSecureCoding:1 error:&v27];
   v7 = v27;
 
-  [v3 setObject:v4 forKey:@"type"];
+  [v3 setObject:version forKey:@"type"];
   if ([(W5PeerSnifferRequestPayload *)self type]!= 1)
   {
     v9 = 0;
@@ -267,9 +267,9 @@ LABEL_22:
     goto LABEL_8;
   }
 
-  v8 = [(W5PeerSnifferRequestPayload *)self channels];
+  channels = [(W5PeerSnifferRequestPayload *)self channels];
   v26 = v7;
-  v9 = [NSKeyedArchiver archivedDataWithRootObject:v8 requiringSecureCoding:1 error:&v26];
+  v9 = [NSKeyedArchiver archivedDataWithRootObject:channels requiringSecureCoding:1 error:&v26];
   v10 = v26;
 
   if (v9)
@@ -286,10 +286,10 @@ LABEL_22:
     [v3 setObject:v12 forKey:@"duration"];
 
 LABEL_8:
-    v13 = [(W5PeerSnifferRequestPayload *)self type];
-    v14 = [(W5PeerSnifferRequestPayload *)self uuid];
-    v15 = v14;
-    if (v13 == 2)
+    type = [(W5PeerSnifferRequestPayload *)self type];
+    uuid = [(W5PeerSnifferRequestPayload *)self uuid];
+    v15 = uuid;
+    if (type == 2)
     {
 
       if (!v15)
@@ -307,9 +307,9 @@ LABEL_8:
       }
     }
 
-    v16 = [(W5PeerSnifferRequestPayload *)self uuid];
-    v17 = [v16 UUIDString];
-    [v3 setObject:v17 forKey:@"uuid"];
+    uuid2 = [(W5PeerSnifferRequestPayload *)self uuid];
+    uUIDString = [uuid2 UUIDString];
+    [v3 setObject:uUIDString forKey:@"uuid"];
 
 LABEL_13:
     if ([(W5PeerSnifferRequestPayload *)self noAutoStop])

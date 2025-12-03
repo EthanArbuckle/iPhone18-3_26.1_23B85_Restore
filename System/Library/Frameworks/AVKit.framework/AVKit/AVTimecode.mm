@@ -1,48 +1,48 @@
 @interface AVTimecode
-- (AVTimecode)initWithTimecodeString:(id)a3;
-- (BOOL)stringIsValidNumericValue:(id)a3;
-- (void)setFrameDuration:(id *)a3;
-- (void)setTimecodeStruct:(CVSMPTETime *)a3;
+- (AVTimecode)initWithTimecodeString:(id)string;
+- (BOOL)stringIsValidNumericValue:(id)value;
+- (void)setFrameDuration:(id *)duration;
+- (void)setTimecodeStruct:(CVSMPTETime *)struct;
 @end
 
 @implementation AVTimecode
 
-- (void)setFrameDuration:(id *)a3
+- (void)setFrameDuration:(id *)duration
 {
-  v3 = *&a3->var0;
-  self->_frameDuration.epoch = a3->var3;
+  v3 = *&duration->var0;
+  self->_frameDuration.epoch = duration->var3;
   *&self->_frameDuration.value = v3;
 }
 
-- (void)setTimecodeStruct:(CVSMPTETime *)a3
+- (void)setTimecodeStruct:(CVSMPTETime *)struct
 {
-  v3 = *&a3->subframes;
-  *&self->_timecodeStruct.hours = *&a3->hours;
+  v3 = *&struct->subframes;
+  *&self->_timecodeStruct.hours = *&struct->hours;
   *&self->_timecodeStruct.subframes = v3;
 }
 
-- (BOOL)stringIsValidNumericValue:(id)a3
+- (BOOL)stringIsValidNumericValue:(id)value
 {
   v3 = MEMORY[0x1E696AB08];
-  v4 = a3;
-  v5 = [v3 decimalDigitCharacterSet];
-  v6 = [v5 invertedSet];
+  valueCopy = value;
+  decimalDigitCharacterSet = [v3 decimalDigitCharacterSet];
+  invertedSet = [decimalDigitCharacterSet invertedSet];
 
-  v7 = [v4 rangeOfCharacterFromSet:v6];
+  v7 = [valueCopy rangeOfCharacterFromSet:invertedSet];
   return v7 == 0x7FFFFFFFFFFFFFFFLL;
 }
 
-- (AVTimecode)initWithTimecodeString:(id)a3
+- (AVTimecode)initWithTimecodeString:(id)string
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  stringCopy = string;
   v23.receiver = self;
   v23.super_class = AVTimecode;
   v5 = [(AVTimecode *)&v23 init];
   if (v5)
   {
-    v6 = [MEMORY[0x1E696AB08] punctuationCharacterSet];
-    v7 = [v4 componentsSeparatedByCharactersInSet:v6];
+    punctuationCharacterSet = [MEMORY[0x1E696AB08] punctuationCharacterSet];
+    v7 = [stringCopy componentsSeparatedByCharactersInSet:punctuationCharacterSet];
 
     v19 = 0u;
     v20 = 0u;

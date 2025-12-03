@@ -1,15 +1,15 @@
 @interface MKPlaceCuratedCollectionRefiner
-- (MKPlaceCuratedCollectionRefiner)initWithCollectionIdentifier:(unint64_t)a3 providerIdentifier:(int)a4;
-- (void)fetchWithCallbackQueue:(id)a3 completion:(id)a4;
+- (MKPlaceCuratedCollectionRefiner)initWithCollectionIdentifier:(unint64_t)identifier providerIdentifier:(int)providerIdentifier;
+- (void)fetchWithCallbackQueue:(id)queue completion:(id)completion;
 @end
 
 @implementation MKPlaceCuratedCollectionRefiner
 
-- (void)fetchWithCallbackQueue:(id)a3 completion:(id)a4
+- (void)fetchWithCallbackQueue:(id)queue completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  queueCopy = queue;
+  completionCopy = completion;
+  if (!completionCopy)
   {
     if (!os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_FAULT))
     {
@@ -24,7 +24,7 @@ LABEL_9:
     goto LABEL_4;
   }
 
-  if (!v6)
+  if (!queueCopy)
   {
     if (!os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_FAULT))
     {
@@ -42,9 +42,9 @@ LABEL_9:
   v19[2] = __69__MKPlaceCuratedCollectionRefiner_fetchWithCallbackQueue_completion___block_invoke;
   v19[3] = &unk_1E76C6918;
   v19[4] = self;
-  v8 = v6;
+  v8 = queueCopy;
   v20 = v8;
-  v9 = v7;
+  v9 = completionCopy;
   v21 = v9;
   v10 = MEMORY[0x1A58E9F30](v19);
   identifierRefinementTicket = self->_identifierRefinementTicket;
@@ -220,20 +220,20 @@ void __69__MKPlaceCuratedCollectionRefiner_fetchWithCallbackQueue_completion___b
   }
 }
 
-- (MKPlaceCuratedCollectionRefiner)initWithCollectionIdentifier:(unint64_t)a3 providerIdentifier:(int)a4
+- (MKPlaceCuratedCollectionRefiner)initWithCollectionIdentifier:(unint64_t)identifier providerIdentifier:(int)providerIdentifier
 {
-  v4 = self;
+  selfCopy = self;
   v19[1] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (identifier)
   {
-    v5 = *&a4;
+    v5 = *&providerIdentifier;
     v17.receiver = self;
     v17.super_class = MKPlaceCuratedCollectionRefiner;
     v7 = [(MKPlaceCuratedCollectionRefiner *)&v17 init];
     if (v7)
     {
       v8 = [MKMapItemIdentifier alloc];
-      v9 = [(MKMapItemIdentifier *)v8 initWithMUID:a3 resultProviderID:v5 coordinate:*MEMORY[0x1E6985CC0], *(MEMORY[0x1E6985CC0] + 8)];
+      v9 = [(MKMapItemIdentifier *)v8 initWithMUID:identifier resultProviderID:v5 coordinate:*MEMORY[0x1E6985CC0], *(MEMORY[0x1E6985CC0] + 8)];
       collectionIdentifier = v7->_collectionIdentifier;
       v7->_collectionIdentifier = v9;
 
@@ -245,8 +245,8 @@ void __69__MKPlaceCuratedCollectionRefiner_fetchWithCallbackQueue_completion___b
       v7->_identifierRefinementTicket = v13;
     }
 
-    v4 = v7;
-    v15 = v4;
+    selfCopy = v7;
+    v15 = selfCopy;
   }
 
   else

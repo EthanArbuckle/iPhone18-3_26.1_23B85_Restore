@@ -1,16 +1,16 @@
 @interface VNDetectFaceLandmarksRequestConfiguration
-+ (BOOL)revision:(unint64_t)a3 supportsConstellation:(unint64_t)a4;
-- (VNDetectFaceLandmarksRequestConfiguration)initWithRequestClass:(Class)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (BOOL)revision:(unint64_t)revision supportsConstellation:(unint64_t)constellation;
+- (VNDetectFaceLandmarksRequestConfiguration)initWithRequestClass:(Class)class;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation VNDetectFaceLandmarksRequestConfiguration
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = VNDetectFaceLandmarksRequestConfiguration;
-  v4 = [(VNImageBasedRequestConfiguration *)&v7 copyWithZone:a3];
+  v4 = [(VNImageBasedRequestConfiguration *)&v7 copyWithZone:zone];
   v5 = v4;
   if (v4)
   {
@@ -25,11 +25,11 @@
   return v5;
 }
 
-- (VNDetectFaceLandmarksRequestConfiguration)initWithRequestClass:(Class)a3
+- (VNDetectFaceLandmarksRequestConfiguration)initWithRequestClass:(Class)class
 {
   v7.receiver = self;
   v7.super_class = VNDetectFaceLandmarksRequestConfiguration;
-  v3 = [(VNImageBasedRequestConfiguration *)&v7 initWithRequestClass:a3];
+  v3 = [(VNImageBasedRequestConfiguration *)&v7 initWithRequestClass:class];
   v4 = v3;
   if (v3)
   {
@@ -44,7 +44,7 @@
   return v4;
 }
 
-+ (BOOL)revision:(unint64_t)a3 supportsConstellation:(unint64_t)a4
++ (BOOL)revision:(unint64_t)revision supportsConstellation:(unint64_t)constellation
 {
   if (+[VNDetectFaceLandmarksRequestConfiguration revision:supportsConstellation:]::onceToken != -1)
   {
@@ -61,8 +61,8 @@
   do
   {
     v8 = *(v6 + 32);
-    v9 = v8 >= a3;
-    v10 = v8 < a3;
+    v9 = v8 >= revision;
+    v10 = v8 < revision;
     if (v9)
     {
       v7 = v6;
@@ -72,7 +72,7 @@
   }
 
   while (v6);
-  if (v7 == +[VNDetectFaceLandmarksRequestConfiguration revision:supportsConstellation:]::requestRevisionToSupportedConstellationsMap + 8 || *(v7 + 32) > a3)
+  if (v7 == +[VNDetectFaceLandmarksRequestConfiguration revision:supportsConstellation:]::requestRevisionToSupportedConstellationsMap + 8 || *(v7 + 32) > revision)
   {
     return 0;
   }
@@ -89,8 +89,8 @@
   do
   {
     v16 = *(v13 + 32);
-    v9 = v16 >= a4;
-    v17 = v16 < a4;
+    v9 = v16 >= constellation;
+    v17 = v16 < constellation;
     if (v9)
     {
       v15 = v13;
@@ -100,7 +100,7 @@
   }
 
   while (v13);
-  if (v15 == v12 || *(v15 + 32) > a4)
+  if (v15 == v12 || *(v15 + 32) > constellation)
   {
 LABEL_20:
     v15 = v12;

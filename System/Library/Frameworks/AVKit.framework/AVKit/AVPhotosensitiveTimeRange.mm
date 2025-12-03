@@ -1,11 +1,11 @@
 @interface AVPhotosensitiveTimeRange
-+ (id)timeRangesFromMetadata:(id)a3 initialDate:(id)a4;
++ (id)timeRangesFromMetadata:(id)metadata initialDate:(id)date;
 - (AVPhotosensitiveTimeRange)init;
-- (AVPhotosensitiveTimeRange)initWithCoder:(id)a3;
-- (AVPhotosensitiveTimeRange)initWithTimeRange:(id *)a3 risk:(double)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (AVPhotosensitiveTimeRange)initWithCoder:(id)coder;
+- (AVPhotosensitiveTimeRange)initWithTimeRange:(id *)range risk:(double)risk;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AVPhotosensitiveTimeRange
@@ -27,10 +27,10 @@
   return v8;
 }
 
-- (AVPhotosensitiveTimeRange)initWithCoder:(id)a3
+- (AVPhotosensitiveTimeRange)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"timeRange"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"timeRange"];
   v6 = v5;
   v11 = 0u;
   v12 = 0u;
@@ -40,7 +40,7 @@
     [v5 CMTimeRangeValue];
   }
 
-  [v4 decodeDoubleForKey:@"risk"];
+  [coderCopy decodeDoubleForKey:@"risk"];
   v9[0] = v10;
   v9[1] = v11;
   v9[2] = v12;
@@ -49,20 +49,20 @@
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   risk = self->_risk;
-  v5 = a3;
-  [v5 encodeDouble:@"risk" forKey:risk];
+  coderCopy = coder;
+  [coderCopy encodeDouble:@"risk" forKey:risk];
   v6 = *&self->_timeRange.start.epoch;
   v8[0] = *&self->_timeRange.start.value;
   v8[1] = v6;
   v8[2] = *&self->_timeRange.duration.timescale;
   v7 = [MEMORY[0x1E696B098] valueWithCMTimeRange:v8];
-  [v5 encodeObject:v7 forKey:@"timeRange"];
+  [coderCopy encodeObject:v7 forKey:@"timeRange"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   result = [[AVPhotosensitiveTimeRange allocWithZone:?]];
   v5 = *&self->_timeRange.start.epoch;
@@ -74,17 +74,17 @@
   return result;
 }
 
-- (AVPhotosensitiveTimeRange)initWithTimeRange:(id *)a3 risk:(double)a4
+- (AVPhotosensitiveTimeRange)initWithTimeRange:(id *)range risk:(double)risk
 {
   v9.receiver = self;
   v9.super_class = AVPhotosensitiveTimeRange;
   result = [(AVPhotosensitiveTimeRange *)&v9 init];
-  v8 = *&a3->var0.var3;
-  v7 = *&a3->var1.var1;
-  *&result->_timeRange.start.value = *&a3->var0.var0;
+  v8 = *&range->var0.var3;
+  v7 = *&range->var1.var1;
+  *&result->_timeRange.start.value = *&range->var0.var0;
   *&result->_timeRange.start.epoch = v8;
   *&result->_timeRange.duration.timescale = v7;
-  result->_risk = a4;
+  result->_risk = risk;
   return result;
 }
 
@@ -97,27 +97,27 @@
   return [(AVPhotosensitiveTimeRange *)self initWithTimeRange:v4 risk:0.0];
 }
 
-+ (id)timeRangesFromMetadata:(id)a3 initialDate:(id)a4
++ (id)timeRangesFromMetadata:(id)metadata initialDate:(id)date
 {
   v58 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if ([v5 count])
+  metadataCopy = metadata;
+  dateCopy = date;
+  if ([metadataCopy count])
   {
-    v39 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v5, "count")}];
+    v39 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(metadataCopy, "count")}];
     v52 = 0u;
     v53 = 0u;
     v54 = 0u;
     v55 = 0u;
-    v35 = v5;
-    obj = v5;
+    v35 = metadataCopy;
+    obj = metadataCopy;
     v7 = [obj countByEnumeratingWithState:&v52 objects:v57 count:16];
     if (v7)
     {
       v8 = v7;
       v9 = *v53;
       v36 = *v53;
-      v37 = v6;
+      v37 = dateCopy;
       do
       {
         v10 = 0;
@@ -130,44 +130,44 @@
           }
 
           v11 = *(*(&v52 + 1) + 8 * v10);
-          v12 = [v11 startDate];
-          v13 = [v11 endDate];
-          [v12 timeIntervalSinceDate:v6];
+          startDate = [v11 startDate];
+          endDate = [v11 endDate];
+          [startDate timeIntervalSinceDate:dateCopy];
           if (v14 < 0.0)
           {
-            v15 = v6;
+            v15 = dateCopy;
 
-            v12 = v15;
+            startDate = v15;
           }
 
-          [v13 timeIntervalSinceDate:v6];
+          [endDate timeIntervalSinceDate:dateCopy];
           if (v16 < 0.0)
           {
-            v17 = v6;
+            v17 = dateCopy;
 
-            v13 = v17;
+            endDate = v17;
           }
 
-          if (([v12 isEqualToDate:v13] & 1) == 0)
+          if (([startDate isEqualToDate:endDate] & 1) == 0)
           {
             memset(&v51, 0, sizeof(v51));
-            [v12 timeIntervalSinceDate:v6];
+            [startDate timeIntervalSinceDate:dateCopy];
             CMTimeMakeWithSeconds(&v51, v18, 1000);
             memset(&v50, 0, sizeof(v50));
-            v42 = v13;
-            [v13 timeIntervalSinceDate:v6];
+            v42 = endDate;
+            [endDate timeIntervalSinceDate:dateCopy];
             CMTimeMakeWithSeconds(&v50, v19, 1000);
             v48 = 0u;
             v49 = 0u;
             v46 = 0u;
             v47 = 0u;
-            v20 = [v11 items];
-            v21 = [v20 countByEnumeratingWithState:&v46 objects:v56 count:16];
+            items = [v11 items];
+            v21 = [items countByEnumeratingWithState:&v46 objects:v56 count:16];
             v22 = 0.0;
             if (v21)
             {
               v23 = v21;
-              v41 = v12;
+              v41 = startDate;
               v24 = *v47;
               do
               {
@@ -175,7 +175,7 @@
                 {
                   if (*v47 != v24)
                   {
-                    objc_enumerationMutation(v20);
+                    objc_enumerationMutation(items);
                   }
 
                   v26 = *(*(&v46 + 1) + 8 * i);
@@ -188,8 +188,8 @@
 
                     if (v29)
                     {
-                      v30 = [v26 numberValue];
-                      [v30 doubleValue];
+                      numberValue = [v26 numberValue];
+                      [numberValue doubleValue];
                       v22 = v31;
 
                       goto LABEL_23;
@@ -201,15 +201,15 @@
                   }
                 }
 
-                v23 = [v20 countByEnumeratingWithState:&v46 objects:v56 count:16];
+                v23 = [items countByEnumeratingWithState:&v46 objects:v56 count:16];
               }
 
               while (v23);
 LABEL_23:
               v9 = v36;
-              v6 = v37;
+              dateCopy = v37;
               v8 = v38;
-              v12 = v41;
+              startDate = v41;
             }
 
             v32 = [AVPhotosensitiveTimeRange alloc];
@@ -221,7 +221,7 @@ LABEL_23:
             v33 = [(AVPhotosensitiveTimeRange *)v32 initWithTimeRange:&lhs risk:v22 / 100.0];
             [v39 addObject:v33];
 
-            v13 = v42;
+            endDate = v42;
           }
 
           ++v10;
@@ -234,7 +234,7 @@ LABEL_23:
       while (v8);
     }
 
-    v5 = v35;
+    metadataCopy = v35;
   }
 
   else

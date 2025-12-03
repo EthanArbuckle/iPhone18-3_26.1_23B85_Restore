@@ -1,62 +1,62 @@
 @interface DTXMessage
-+ (BOOL)extractSerializedCompressionInfoFromBuffer:(const char *)a3 length:(unint64_t)a4 compressionType:(int *)a5 uncompressedLength:(unint64_t *)a6 compressedDataOffset:(unint64_t *)a7;
++ (BOOL)extractSerializedCompressionInfoFromBuffer:(const char *)buffer length:(unint64_t)length compressionType:(int *)type uncompressedLength:(unint64_t *)uncompressedLength compressedDataOffset:(unint64_t *)offset;
 + (id)message;
-+ (id)messageReferencingBuffer:(const void *)a3 length:(unint64_t)a4 destructor:(id)a5;
-+ (id)messageWithBuffer:(const void *)a3 length:(unint64_t)a4;
-+ (id)messageWithData:(id)a3;
-+ (id)messageWithError:(id)a3;
-+ (id)messageWithObject:(id)a3;
-+ (id)messageWithPrimitive:(void *)a3;
-+ (id)messageWithSelector:(SEL)a3 arguments:(id)a4;
-+ (id)messageWithSelector:(SEL)a3 objectArguments:(id)a4;
++ (id)messageReferencingBuffer:(const void *)buffer length:(unint64_t)length destructor:(id)destructor;
++ (id)messageWithBuffer:(const void *)buffer length:(unint64_t)length;
++ (id)messageWithData:(id)data;
++ (id)messageWithError:(id)error;
++ (id)messageWithObject:(id)object;
++ (id)messageWithPrimitive:(void *)primitive;
++ (id)messageWithSelector:(SEL)selector arguments:(id)arguments;
++ (id)messageWithSelector:(SEL)selector objectArguments:(id)arguments;
 + (void)initialize;
-+ (void)setReportCompressionBlock:(id)a3;
++ (void)setReportCompressionBlock:(id)block;
 - (BOOL)isBarrier;
 - (BOOL)isDispatch;
-- (BOOL)shouldInvokeWithTarget:(id)a3;
-- (DTXMessage)initWithInvocation:(id)a3;
-- (DTXMessage)initWithSelector:(SEL)a3 firstArg:(id)a4 remainingObjectArgs:(char *)a5;
-- (DTXMessage)initWithSelector:(SEL)a3 objects:(id)a4;
-- (DTXMessage)initWithSerializedForm:(const char *)a3 length:(unint64_t)a4 destructor:(id)a5 compressor:(id)a6;
-- (DTXMessage)initWithSerializedForm:(id)a3 compressor:(id)a4;
+- (BOOL)shouldInvokeWithTarget:(id)target;
+- (DTXMessage)initWithInvocation:(id)invocation;
+- (DTXMessage)initWithSelector:(SEL)selector firstArg:(id)arg remainingObjectArgs:(char *)args;
+- (DTXMessage)initWithSelector:(SEL)selector objects:(id)objects;
+- (DTXMessage)initWithSerializedForm:(const char *)form length:(unint64_t)length destructor:(id)destructor compressor:(id)compressor;
+- (DTXMessage)initWithSerializedForm:(id)form compressor:(id)compressor;
 - (NSData)data;
 - (NSError)error;
 - (NSSecureCoding)object;
 - (NSSecureCoding)payloadObject;
-- (const)getBufferWithReturnedLength:(unint64_t *)a3;
-- (id)_faultAuxiliaryValueOfType:(Class)a3 forKey:(id)a4;
-- (id)_initWithReferencedSerializedForm:(id)a3 compressor:(id)a4 payloadSet:(id)a5;
+- (const)getBufferWithReturnedLength:(unint64_t *)length;
+- (id)_faultAuxiliaryValueOfType:(Class)type forKey:(id)key;
+- (id)_initWithReferencedSerializedForm:(id)form compressor:(id)compressor payloadSet:(id)set;
 - (id)_mutableAuxiliaryDictionary;
-- (id)dataForMessageKey:(id)a3;
+- (id)dataForMessageKey:(id)key;
 - (id)newReply;
-- (id)newReplyReferencingBuffer:(const void *)a3 length:(unint64_t)a4 destructor:(id)a5;
-- (id)newReplyWithError:(id)a3;
-- (id)newReplyWithMessage:(id)a3;
-- (id)newReplyWithObject:(id)a3;
-- (id)objectWithAllowedClasses:(id)a3;
-- (id)stringForMessageKey:(id)a3;
-- (int64_t)integerForMessageKey:(id)a3;
+- (id)newReplyReferencingBuffer:(const void *)buffer length:(unint64_t)length destructor:(id)destructor;
+- (id)newReplyWithError:(id)error;
+- (id)newReplyWithMessage:(id)message;
+- (id)newReplyWithObject:(id)object;
+- (id)objectWithAllowedClasses:(id)classes;
+- (id)stringForMessageKey:(id)key;
+- (int64_t)integerForMessageKey:(id)key;
 - (unint64_t)serializedLength;
 - (void)_makeBarrier;
 - (void)_makeImmutable;
-- (void)_setPayloadBuffer:(const char *)a3 length:(unint64_t)a4 shouldCopy:(BOOL)a5 destructor:(id)a6;
+- (void)_setPayloadBuffer:(const char *)buffer length:(unint64_t)length shouldCopy:(BOOL)copy destructor:(id)destructor;
 - (void)_willModifyAuxiliary;
 - (void)dealloc;
-- (void)invokeWithTarget:(id)a3 replyChannel:(id)a4 validator:(id)a5;
-- (void)serializedFormApply:(id)a3;
-- (void)setData:(id)a3 forMessageKey:(id)a4;
-- (void)setError:(id)a3;
-- (void)setErrorStatus:(unsigned int)a3;
-- (void)setInteger:(int64_t)a3 forMessageKey:(id)a4;
-- (void)setPayloadObject:(id)a3;
-- (void)setString:(id)a3 forMessageKey:(id)a4;
+- (void)invokeWithTarget:(id)target replyChannel:(id)channel validator:(id)validator;
+- (void)serializedFormApply:(id)apply;
+- (void)setData:(id)data forMessageKey:(id)key;
+- (void)setError:(id)error;
+- (void)setErrorStatus:(unsigned int)status;
+- (void)setInteger:(int64_t)integer forMessageKey:(id)key;
+- (void)setPayloadObject:(id)object;
+- (void)setString:(id)string forMessageKey:(id)key;
 @end
 
 @implementation DTXMessage
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = objc_opt_new();
     v3 = kDTXBarrierMessage;
@@ -116,75 +116,75 @@
   }
 }
 
-+ (void)setReportCompressionBlock:(id)a3
++ (void)setReportCompressionBlock:(id)block
 {
-  v3 = a3;
+  blockCopy = block;
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = sub_247F51530;
   v5[3] = &unk_278EEEB88;
-  v6 = v3;
-  v4 = v3;
+  v6 = blockCopy;
+  v4 = blockCopy;
   sub_247F51498(v5);
 }
 
-+ (id)messageWithObject:(id)a3
++ (id)messageWithObject:(id)object
 {
-  v3 = a3;
+  objectCopy = object;
   v4 = objc_opt_new();
-  objc_msgSend_setPayloadObject_(v4, v5, v3);
+  objc_msgSend_setPayloadObject_(v4, v5, objectCopy);
 
   return v4;
 }
 
-+ (id)messageWithError:(id)a3
++ (id)messageWithError:(id)error
 {
-  v3 = a3;
+  errorCopy = error;
   v4 = objc_opt_new();
-  objc_msgSend_setError_(v4, v5, v3);
+  objc_msgSend_setError_(v4, v5, errorCopy);
 
   return v4;
 }
 
-+ (id)messageWithPrimitive:(void *)a3
++ (id)messageWithPrimitive:(void *)primitive
 {
   v4 = objc_opt_new();
   v9 = 0;
-  Serialized = DTXPrimitiveDictionaryGetSerialized(a3, &v9);
+  Serialized = DTXPrimitiveDictionaryGetSerialized(primitive, &v9);
   objc_msgSend__setPayloadBuffer_length_shouldCopy_destructor_(v4, v6, Serialized, v9, 1, 0);
   objc_msgSend_setMessageType_(v4, v7, 6);
 
   return v4;
 }
 
-+ (id)messageWithBuffer:(const void *)a3 length:(unint64_t)a4
++ (id)messageWithBuffer:(const void *)buffer length:(unint64_t)length
 {
   v6 = objc_opt_new();
-  objc_msgSend__setPayloadBuffer_length_shouldCopy_destructor_(v6, v7, a3, a4, 1, 0);
+  objc_msgSend__setPayloadBuffer_length_shouldCopy_destructor_(v6, v7, buffer, length, 1, 0);
 
   return v6;
 }
 
-+ (id)messageReferencingBuffer:(const void *)a3 length:(unint64_t)a4 destructor:(id)a5
++ (id)messageReferencingBuffer:(const void *)buffer length:(unint64_t)length destructor:(id)destructor
 {
-  v7 = a5;
+  destructorCopy = destructor;
   v8 = objc_opt_new();
-  objc_msgSend__setPayloadBuffer_length_shouldCopy_destructor_(v8, v9, a3, a4, 0, v7);
-  if (v7 && !v8[3])
+  objc_msgSend__setPayloadBuffer_length_shouldCopy_destructor_(v8, v9, buffer, length, 0, destructorCopy);
+  if (destructorCopy && !v8[3])
   {
-    v7[2](v7);
+    destructorCopy[2](destructorCopy);
   }
 
   return v8;
 }
 
-+ (id)messageWithData:(id)a3
++ (id)messageWithData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v6 = objc_opt_new();
   if (v6)
   {
-    v7 = objc_msgSend_copy(v3, v4, v5);
+    v7 = objc_msgSend_copy(dataCopy, v4, v5);
     v8 = *(v6 + 24);
     *(v6 + 24) = v7;
 
@@ -195,31 +195,31 @@
   return v6;
 }
 
-+ (id)messageWithSelector:(SEL)a3 objectArguments:(id)a4
++ (id)messageWithSelector:(SEL)selector objectArguments:(id)arguments
 {
-  v8 = a4;
-  if (!a3)
+  argumentsCopy = arguments;
+  if (!selector)
   {
-    sub_247F5A5D0(a2, a1, v7);
+    sub_247F5A5D0(a2, self, v7);
   }
 
-  v9 = [a1 alloc];
-  v11 = objc_msgSend_initWithSelector_firstArg_remainingObjectArgs_(v9, v10, a3, v8, &v16);
+  v9 = [self alloc];
+  v11 = objc_msgSend_initWithSelector_firstArg_remainingObjectArgs_(v9, v10, selector, argumentsCopy, &v16);
   objc_msgSend__makeImmutable(v11, v12, v13);
 
   return v11;
 }
 
-+ (id)messageWithSelector:(SEL)a3 arguments:(id)a4
++ (id)messageWithSelector:(SEL)selector arguments:(id)arguments
 {
-  v8 = a4;
-  if (!a3)
+  argumentsCopy = arguments;
+  if (!selector)
   {
-    sub_247F5A64C(a2, a1, v7);
+    sub_247F5A64C(a2, self, v7);
   }
 
-  v9 = [a1 alloc];
-  v11 = objc_msgSend_initWithSelector_objects_(v9, v10, a3, v8);
+  v9 = [self alloc];
+  v11 = objc_msgSend_initWithSelector_objects_(v9, v10, selector, argumentsCopy);
   objc_msgSend__makeImmutable(v11, v12, v13);
 
   return v11;
@@ -244,9 +244,9 @@
   return v3;
 }
 
-- (id)newReplyWithObject:(id)a3
+- (id)newReplyWithObject:(id)object
 {
-  v4 = objc_msgSend_messageWithObject_(DTXMessage, a2, a3);
+  v4 = objc_msgSend_messageWithObject_(DTXMessage, a2, object);
   v7 = objc_msgSend_channelCode(self, v5, v6);
   objc_msgSend_setChannelCode_(v4, v8, v7);
   v11 = objc_msgSend_identifier(self, v9, v10);
@@ -256,9 +256,9 @@
   return v4;
 }
 
-- (id)newReplyWithError:(id)a3
+- (id)newReplyWithError:(id)error
 {
-  v4 = objc_msgSend_messageWithError_(DTXMessage, a2, a3);
+  v4 = objc_msgSend_messageWithError_(DTXMessage, a2, error);
   v7 = objc_msgSend_channelCode(self, v5, v6);
   objc_msgSend_setChannelCode_(v4, v8, v7);
   v11 = objc_msgSend_identifier(self, v9, v10);
@@ -268,13 +268,13 @@
   return v4;
 }
 
-- (id)newReplyWithMessage:(id)a3
+- (id)newReplyWithMessage:(id)message
 {
-  v5 = a3;
-  v8 = objc_msgSend_errorStatus(v5, v6, v7);
+  messageCopy = message;
+  v8 = objc_msgSend_errorStatus(messageCopy, v6, v7);
   if (v8 == 3)
   {
-    v11 = objc_msgSend_errorStatus(v5, v9, v10);
+    v11 = objc_msgSend_errorStatus(messageCopy, v9, v10);
     v18 = @"peer unable to respond";
   }
 
@@ -283,15 +283,15 @@
     if (v8 != 2)
     {
       v21 = objc_msgSend_message(DTXMessage, v9, v10);
-      objc_storeStrong((v21 + 48), a3);
-      *(v21 + 32) = objc_msgSend_cost(v5, v24, v25);
+      objc_storeStrong((v21 + 48), message);
+      *(v21 + 32) = objc_msgSend_cost(messageCopy, v24, v25);
       objc_msgSend_setMessageType_(v21, v26, 8);
-      v29 = objc_msgSend_errorStatus(v5, v27, v28);
+      v29 = objc_msgSend_errorStatus(messageCopy, v27, v28);
       objc_msgSend_setErrorStatus_(v21, v30, v29);
       goto LABEL_7;
     }
 
-    v11 = objc_msgSend_errorStatus(v5, v9, v10);
+    v11 = objc_msgSend_errorStatus(messageCopy, v9, v10);
     v18 = @"interruption encountered and re-routed";
   }
 
@@ -310,9 +310,9 @@ LABEL_7:
   return v21;
 }
 
-- (id)newReplyReferencingBuffer:(const void *)a3 length:(unint64_t)a4 destructor:(id)a5
+- (id)newReplyReferencingBuffer:(const void *)buffer length:(unint64_t)length destructor:(id)destructor
 {
-  v6 = objc_msgSend_messageReferencingBuffer_length_destructor_(DTXMessage, a2, a3, a4, a5);
+  v6 = objc_msgSend_messageReferencingBuffer_length_destructor_(DTXMessage, a2, buffer, length, destructor);
   v9 = objc_msgSend_channelCode(self, v7, v8);
   objc_msgSend_setChannelCode_(v6, v10, v9);
   v13 = objc_msgSend_identifier(self, v11, v12);
@@ -322,20 +322,20 @@ LABEL_7:
   return v6;
 }
 
-- (DTXMessage)initWithSelector:(SEL)a3 firstArg:(id)a4 remainingObjectArgs:(char *)a5
+- (DTXMessage)initWithSelector:(SEL)selector firstArg:(id)arg remainingObjectArgs:(char *)args
 {
-  v8 = a4;
+  argCopy = arg;
   v20.receiver = self;
   v20.super_class = DTXMessage;
-  v21 = a5;
+  argsCopy = args;
   v9 = [(DTXMessage *)&v20 init];
   if (v9)
   {
-    v10 = NSStringFromSelector(a3);
+    v10 = NSStringFromSelector(selector);
     objc_msgSend_setPayloadObject_(v9, v11, v10);
 
     v9->_messageType = 2;
-    if (v8)
+    if (argCopy)
     {
       objc_msgSend__willModifyAuxiliary(v9, v12, v13);
       v14 = MEMORY[0x277D85DD0];
@@ -346,12 +346,12 @@ LABEL_7:
         v18[2] = sub_247F523E8;
         v18[3] = &unk_278EEF090;
         v19 = v9;
-        sub_247F522C0(v8, v18);
-        v15 = v21;
-        v21 += 8;
+        sub_247F522C0(argCopy, v18);
+        v15 = argsCopy;
+        argsCopy += 8;
         v16 = *v15;
 
-        v8 = v16;
+        argCopy = v16;
       }
 
       while (v16);
@@ -361,27 +361,27 @@ LABEL_7:
   return v9;
 }
 
-- (DTXMessage)initWithSelector:(SEL)a3 objects:(id)a4
+- (DTXMessage)initWithSelector:(SEL)selector objects:(id)objects
 {
   v32 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  objectsCopy = objects;
   v30.receiver = self;
   v30.super_class = DTXMessage;
   v7 = [(DTXMessage *)&v30 init];
   if (v7)
   {
-    v8 = NSStringFromSelector(a3);
+    v8 = NSStringFromSelector(selector);
     objc_msgSend_setPayloadObject_(v7, v9, v8);
 
     v7->_messageType = 2;
-    if (objc_msgSend_count(v6, v10, v11))
+    if (objc_msgSend_count(objectsCopy, v10, v11))
     {
       objc_msgSend__willModifyAuxiliary(v7, v12, v13);
       v28 = 0u;
       v29 = 0u;
       v26 = 0u;
       v27 = 0u;
-      v14 = v6;
+      v14 = objectsCopy;
       v16 = objc_msgSend_countByEnumeratingWithState_objects_count_(v14, v15, &v26, v31, 16);
       if (v16)
       {
@@ -421,20 +421,20 @@ LABEL_7:
   return v7;
 }
 
-- (DTXMessage)initWithInvocation:(id)a3
+- (DTXMessage)initWithInvocation:(id)invocation
 {
-  v4 = a3;
+  invocationCopy = invocation;
   v42.receiver = self;
   v42.super_class = DTXMessage;
   v7 = [(DTXMessage *)&v42 init];
   if (v7)
   {
-    v8 = objc_msgSend_selector(v4, v5, v6);
+    v8 = objc_msgSend_selector(invocationCopy, v5, v6);
     v9 = NSStringFromSelector(v8);
     objc_msgSend_setPayloadObject_(v7, v10, v9);
 
     v7->_messageType = 2;
-    v13 = objc_msgSend_methodSignature(v4, v11, v12);
+    v13 = objc_msgSend_methodSignature(invocationCopy, v11, v12);
     v16 = objc_msgSend_numberOfArguments(v13, v14, v15);
     if (v16 >= 3)
     {
@@ -448,7 +448,7 @@ LABEL_7:
         if (*ArgumentTypeAtIndex == 64)
         {
           v41 = 0;
-          objc_msgSend_getArgument_atIndex_(v4, v25, &v41, i);
+          objc_msgSend_getArgument_atIndex_(invocationCopy, v25, &v41, i);
           if (v41)
           {
             v28 = objc_msgSend_conformsToProtocol_(v41, v27, &unk_285A16828);
@@ -479,7 +479,7 @@ LABEL_7:
         {
           v33 = ArgumentTypeAtIndex;
           v34 = MEMORY[0x277CBEAD8];
-          v35 = objc_msgSend_selector(v4, v25, v26);
+          v35 = objc_msgSend_selector(invocationCopy, v25, v26);
           v36 = NSStringFromSelector(v35);
           objc_msgSend_raise_format_(v34, v37, v20, @"Invalid argument type %s at index %lu of selector %@", v33, i, v36);
         }
@@ -504,28 +504,28 @@ LABEL_7:
   [(DTXMessage *)&v4 dealloc];
 }
 
-- (void)_setPayloadBuffer:(const char *)a3 length:(unint64_t)a4 shouldCopy:(BOOL)a5 destructor:(id)a6
+- (void)_setPayloadBuffer:(const char *)buffer length:(unint64_t)length shouldCopy:(BOOL)copy destructor:(id)destructor
 {
-  v6 = a5;
-  v11 = a6;
-  if (a3 && a4)
+  copyCopy = copy;
+  destructorCopy = destructor;
+  if (buffer && length)
   {
-    if (v6)
+    if (copyCopy)
     {
-      v12 = objc_msgSend_dataWithBytes_length_(MEMORY[0x277CBEA90], v10, a3, a4);
+      v12 = objc_msgSend_dataWithBytes_length_(MEMORY[0x277CBEA90], v10, buffer, length);
     }
 
     else
     {
-      if (v11)
+      if (destructorCopy)
       {
         v13 = objc_alloc(MEMORY[0x277CBEA90]);
         v18[0] = MEMORY[0x277D85DD0];
         v18[1] = 3221225472;
         v18[2] = sub_247F529A4;
         v18[3] = &unk_278EEF0B8;
-        v19 = v11;
-        v15 = objc_msgSend_initWithBytesNoCopy_length_deallocator_(v13, v14, a3, a4, v18);
+        v19 = destructorCopy;
+        v15 = objc_msgSend_initWithBytesNoCopy_length_deallocator_(v13, v14, buffer, length, v18);
         payloadData = self->_payloadData;
         self->_payloadData = v15;
 
@@ -535,7 +535,7 @@ LABEL_9:
         goto LABEL_10;
       }
 
-      v12 = objc_msgSend_dataWithBytesNoCopy_length_freeWhenDone_(MEMORY[0x277CBEA90], v10, a3, a4, 0);
+      v12 = objc_msgSend_dataWithBytesNoCopy_length_freeWhenDone_(MEMORY[0x277CBEA90], v10, buffer, length, 0);
     }
 
     v17 = self->_payloadData;
@@ -547,9 +547,9 @@ LABEL_10:
   self->_messageType = 1;
 }
 
-- (void)setPayloadObject:(id)a3
+- (void)setPayloadObject:(id)object
 {
-  v6 = a3;
+  objectCopy = object;
   v7 = atomic_load(&self->_immutable);
   if (v7)
   {
@@ -560,9 +560,9 @@ LABEL_10:
     objc_msgSend_raise_format_(v8, v12, @"DTXMessageException", @"[%@ %s] Unable to modify immutable message: %@", v10, Name, self);
   }
 
-  if (self->_payloadObject != v6)
+  if (self->_payloadObject != objectCopy)
   {
-    objc_storeStrong(&self->_payloadObject, a3);
+    objc_storeStrong(&self->_payloadObject, object);
     payloadObject = self->_payloadObject;
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
@@ -583,12 +583,12 @@ LABEL_10:
   return payloadObject;
 }
 
-- (id)objectWithAllowedClasses:(id)a3
+- (id)objectWithAllowedClasses:(id)classes
 {
-  v4 = a3;
-  sub_247F52B5C(self, v4);
+  classesCopy = classes;
+  sub_247F52B5C(self, classesCopy);
   v5 = self->_payloadObject;
-  v6 = v4;
+  v6 = classesCopy;
   for (i = object_getClass(v5); ; i = class_getSuperclass(v9))
   {
     v9 = i;
@@ -641,21 +641,21 @@ LABEL_9:
   return v7;
 }
 
-- (const)getBufferWithReturnedLength:(unint64_t *)a3
+- (const)getBufferWithReturnedLength:(unint64_t *)length
 {
   if (self->_messageType != 1)
   {
     return 0;
   }
 
-  if (a3)
+  if (length)
   {
-    *a3 = objc_msgSend_length(self->_payloadData, a2, a3);
+    *length = objc_msgSend_length(self->_payloadData, a2, length);
   }
 
   payloadData = self->_payloadData;
 
-  return objc_msgSend_bytes(payloadData, a2, a3);
+  return objc_msgSend_bytes(payloadData, a2, length);
 }
 
 - (void)_makeImmutable
@@ -705,7 +705,7 @@ LABEL_9:
   self->_messageType = 5;
 }
 
-- (void)setErrorStatus:(unsigned int)a3
+- (void)setErrorStatus:(unsigned int)status
 {
   v5 = atomic_load(&self->_immutable);
   if (v5)
@@ -717,7 +717,7 @@ LABEL_9:
     objc_msgSend_raise_format_(v7, v11, @"DTXMessageException", @"[%@ %s] Unable to modify immutable message: %@", v9, Name, self);
   }
 
-  self->_status = a3;
+  self->_status = status;
 }
 
 - (void)_willModifyAuxiliary
@@ -764,62 +764,62 @@ LABEL_9:
   return auxiliaryPromoted;
 }
 
-- (void)setString:(id)a3 forMessageKey:(id)a4
+- (void)setString:(id)string forMessageKey:(id)key
 {
-  v11 = a3;
-  v6 = a4;
-  if (v11)
+  stringCopy = string;
+  keyCopy = key;
+  if (stringCopy)
   {
-    if (v6)
+    if (keyCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
         v9 = objc_msgSend__mutableAuxiliaryDictionary(self, v7, v8);
-        objc_msgSend_setObject_forKeyedSubscript_(v9, v10, v11, v6);
+        objc_msgSend_setObject_forKeyedSubscript_(v9, v10, stringCopy, keyCopy);
       }
     }
   }
 }
 
-- (void)setInteger:(int64_t)a3 forMessageKey:(id)a4
+- (void)setInteger:(int64_t)integer forMessageKey:(id)key
 {
-  if (a4)
+  if (key)
   {
     v6 = MEMORY[0x277CCABB0];
-    v7 = a4;
-    v13 = objc_msgSend_numberWithLongLong_(v6, v8, a3);
+    keyCopy = key;
+    v13 = objc_msgSend_numberWithLongLong_(v6, v8, integer);
     v11 = objc_msgSend__mutableAuxiliaryDictionary(self, v9, v10);
-    objc_msgSend_setObject_forKeyedSubscript_(v11, v12, v13, v7);
+    objc_msgSend_setObject_forKeyedSubscript_(v11, v12, v13, keyCopy);
   }
 }
 
-- (void)setData:(id)a3 forMessageKey:(id)a4
+- (void)setData:(id)data forMessageKey:(id)key
 {
-  v11 = a3;
-  v6 = a4;
-  if (v11)
+  dataCopy = data;
+  keyCopy = key;
+  if (dataCopy)
   {
-    if (v6)
+    if (keyCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
         v9 = objc_msgSend__mutableAuxiliaryDictionary(self, v7, v8);
-        objc_msgSend_setObject_forKeyedSubscript_(v9, v10, v11, v6);
+        objc_msgSend_setObject_forKeyedSubscript_(v9, v10, dataCopy, keyCopy);
       }
     }
   }
 }
 
-- (id)_faultAuxiliaryValueOfType:(Class)a3 forKey:(id)a4
+- (id)_faultAuxiliaryValueOfType:(Class)type forKey:(id)key
 {
-  v7 = a4;
-  if (v7)
+  keyCopy = key;
+  if (keyCopy)
   {
     if (self->_messageType == 8)
     {
-      v8 = objc_msgSend__faultAuxiliaryValueOfType_forKey_(self->_payloadObject, v6, a3, v7);
+      v8 = objc_msgSend__faultAuxiliaryValueOfType_forKey_(self->_payloadObject, v6, type, keyCopy);
     }
 
     else
@@ -834,8 +834,8 @@ LABEL_9:
         auxiliaryPromoted = self->_auxiliaryPromoted;
       }
 
-      v12 = objc_msgSend_objectForKeyedSubscript_(auxiliaryPromoted, v6, v7);
-      if (a3 && (objc_opt_isKindOfClass() & 1) == 0)
+      v12 = objc_msgSend_objectForKeyedSubscript_(auxiliaryPromoted, v6, keyCopy);
+      if (type && (objc_opt_isKindOfClass() & 1) == 0)
       {
         v13 = 0;
       }
@@ -857,30 +857,30 @@ LABEL_9:
   return v8;
 }
 
-- (int64_t)integerForMessageKey:(id)a3
+- (int64_t)integerForMessageKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = objc_opt_class();
-  v7 = objc_msgSend__faultAuxiliaryValueOfType_forKey_(self, v6, v5, v4);
+  v7 = objc_msgSend__faultAuxiliaryValueOfType_forKey_(self, v6, v5, keyCopy);
 
   v10 = objc_msgSend_longLongValue(v7, v8, v9);
   return v10;
 }
 
-- (id)stringForMessageKey:(id)a3
+- (id)stringForMessageKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = objc_opt_class();
-  v7 = objc_msgSend__faultAuxiliaryValueOfType_forKey_(self, v6, v5, v4);
+  v7 = objc_msgSend__faultAuxiliaryValueOfType_forKey_(self, v6, v5, keyCopy);
 
   return v7;
 }
 
-- (id)dataForMessageKey:(id)a3
+- (id)dataForMessageKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = objc_opt_class();
-  v7 = objc_msgSend__faultAuxiliaryValueOfType_forKey_(self, v6, v5, v4);
+  v7 = objc_msgSend__faultAuxiliaryValueOfType_forKey_(self, v6, v5, keyCopy);
 
   return v7;
 }
@@ -931,9 +931,9 @@ LABEL_9:
   return v4;
 }
 
-- (void)setError:(id)a3
+- (void)setError:(id)error
 {
-  objc_msgSend_setPayloadObject_(self, a2, a3);
+  objc_msgSend_setPayloadObject_(self, a2, error);
   self->_messageType = 4;
   self->_status = 1;
 }
@@ -966,20 +966,20 @@ LABEL_9:
   }
 }
 
-- (BOOL)shouldInvokeWithTarget:(id)a3
+- (BOOL)shouldInvokeWithTarget:(id)target
 {
-  v4 = a3;
+  targetCopy = target;
   isDispatch = objc_msgSend_isDispatch(self, v5, v6);
   v10 = 0;
-  if (v4 && isDispatch)
+  if (targetCopy && isDispatch)
   {
     v11 = objc_msgSend_payloadObject(self, v8, v9);
     v12 = NSSelectorFromString(v11);
 
-    v14 = objc_msgSend_methodSignatureForSelector_(v4, v13, v12);
+    v14 = objc_msgSend_methodSignatureForSelector_(targetCopy, v13, v12);
     if (v14)
     {
-      v10 = sub_247F53D64(v12, v4);
+      v10 = sub_247F53D64(v12, targetCopy);
     }
 
     else
@@ -991,12 +991,12 @@ LABEL_9:
   return v10;
 }
 
-- (void)invokeWithTarget:(id)a3 replyChannel:(id)a4 validator:(id)a5
+- (void)invokeWithTarget:(id)target replyChannel:(id)channel validator:(id)validator
 {
   v85 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  targetCopy = target;
+  channelCopy = channel;
+  validatorCopy = validator;
   if (!objc_msgSend_isDispatch(self, v11, v12))
   {
     goto LABEL_29;
@@ -1005,34 +1005,34 @@ LABEL_9:
   v15 = objc_msgSend_payloadObject(self, v13, v14);
   v16 = NSSelectorFromString(v15);
 
-  v20 = objc_msgSend_methodSignatureForSelector_(v8, v17, v16);
+  v20 = objc_msgSend_methodSignatureForSelector_(targetCopy, v17, v16);
   if (v20)
   {
-    if (v10 || (sub_247F53D64(v16, v8) & 1) != 0)
+    if (validatorCopy || (sub_247F53D64(v16, targetCopy) & 1) != 0)
     {
       goto LABEL_8;
     }
 
     v22 = MEMORY[0x277CBEAD8];
     v23 = objc_msgSend_payloadObject(self, v18, v21);
-    objc_msgSend_raise_format_(v22, v24, @"DTXMessageInvocationException", @"Unable to invoke [%@ %@] - the selector is not allowed", v8, v23);
+    objc_msgSend_raise_format_(v22, v24, @"DTXMessageInvocationException", @"Unable to invoke [%@ %@] - the selector is not allowed", targetCopy, v23);
   }
 
   else
   {
     v25 = MEMORY[0x277CBEAD8];
     v23 = objc_msgSend_payloadObject(self, v18, v19);
-    objc_msgSend_raise_format_(v25, v26, @"DTXMessageInvocationException", @"Unable to invoke [%@ %@] - it does not respond to the selector", v8, v23);
+    objc_msgSend_raise_format_(v25, v26, @"DTXMessageInvocationException", @"Unable to invoke [%@ %@] - it does not respond to the selector", targetCopy, v23);
   }
 
 LABEL_8:
   v27 = objc_msgSend_invocationWithMethodSignature_(MEMORY[0x277CBEAE8], v18, v20);
   objc_msgSend_setSelector_(v27, v28, v16);
-  objc_msgSend_setTarget_(v27, v29, v8);
+  objc_msgSend_setTarget_(v27, v29, targetCopy);
   v34 = objc_msgSend_defaultAllowedSecureCodingClasses(DTXMessage, v30, v31);
-  if (v10)
+  if (validatorCopy)
   {
-    v35 = v10[2](v10, v27);
+    v35 = validatorCopy[2](validatorCopy, v27);
 
     v34 = v35;
   }
@@ -1068,7 +1068,7 @@ LABEL_8:
     v42 = MEMORY[0x277CBEAD8];
     v43 = objc_msgSend_payloadObject(self, v40, v41);
     v44 = v82[3];
-    objc_msgSend_raise_format_(v42, v45, @"DTXMessageInvocationException", @"Unable to invoke [%@ %@] - too few arguments (%lu provided, %lu expected)", v8, v43, v44, v78[3]);
+    objc_msgSend_raise_format_(v42, v45, @"DTXMessageInvocationException", @"Unable to invoke [%@ %@] - too few arguments (%lu provided, %lu expected)", targetCopy, v43, v44, v78[3]);
   }
 
   objc_msgSend_invoke(v38, v40, v41);
@@ -1101,7 +1101,7 @@ LABEL_8:
         {
           v62 = MEMORY[0x277CBEAD8];
           v53 = objc_msgSend_payloadObject(self, v49, v50);
-          objc_msgSend_raise_format_(v62, v54, @"DTXMessageInvocationException", @"Unable to invoke [%@ %@] - 'id' return value does not conform to NSSecureCoding", v8, v53);
+          objc_msgSend_raise_format_(v62, v54, @"DTXMessageInvocationException", @"Unable to invoke [%@ %@] - 'id' return value does not conform to NSSecureCoding", targetCopy, v53);
         }
       }
     }
@@ -1117,8 +1117,8 @@ LABEL_8:
       v63[1] = 3221225472;
       v63[2] = sub_247F54710;
       v63[3] = &unk_278EEF1B8;
-      v64 = v9;
-      v65 = self;
+      v64 = channelCopy;
+      selfCopy = self;
       objc_msgSend_handleCompletion_(v57, v58, v63);
     }
 
@@ -1135,7 +1135,7 @@ LABEL_8:
       }
 
       v57 = v59;
-      objc_msgSend_sendControlAsync_replyHandler_(v9, v60, v59, 0);
+      objc_msgSend_sendControlAsync_replyHandler_(channelCopy, v60, v59, 0);
     }
   }
 
@@ -1147,16 +1147,16 @@ LABEL_29:
   v61 = *MEMORY[0x277D85DE8];
 }
 
-+ (BOOL)extractSerializedCompressionInfoFromBuffer:(const char *)a3 length:(unint64_t)a4 compressionType:(int *)a5 uncompressedLength:(unint64_t *)a6 compressedDataOffset:(unint64_t *)a7
++ (BOOL)extractSerializedCompressionInfoFromBuffer:(const char *)buffer length:(unint64_t)length compressionType:(int *)type uncompressedLength:(unint64_t *)uncompressedLength compressedDataOffset:(unint64_t *)offset
 {
   result = 0;
-  if (a3 && a4 >= 0x14 && a5 && a6 && a7)
+  if (buffer && length >= 0x14 && type && uncompressedLength && offset)
   {
-    if (*a3 == 7 && (v8 = *(a3 + 1) - *(a3 + 1), *a5 = (*a3 >> 8) & 0xF, v8 >= 4))
+    if (*buffer == 7 && (v8 = *(buffer + 1) - *(buffer + 1), *type = (*buffer >> 8) & 0xF, v8 >= 4))
     {
-      v9 = *(a3 + 1);
-      *a6 = *&a3[v9 + 16];
-      *a7 = v9 + 20;
+      v9 = *(buffer + 1);
+      *uncompressedLength = *&buffer[v9 + 16];
+      *offset = v9 + 20;
       return 1;
     }
 
@@ -1169,23 +1169,23 @@ LABEL_29:
   return result;
 }
 
-- (id)_initWithReferencedSerializedForm:(id)a3 compressor:(id)a4 payloadSet:(id)a5
+- (id)_initWithReferencedSerializedForm:(id)form compressor:(id)compressor payloadSet:(id)set
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  formCopy = form;
+  compressorCopy = compressor;
+  setCopy = set;
   v28.receiver = self;
   v28.super_class = DTXMessage;
   v11 = [(DTXMessage *)&v28 init];
   if (v11)
   {
-    v12 = v8;
+    v12 = formCopy;
     v15 = objc_msgSend_bytes(v12, v13, v14);
     v11->_deserialized = 1;
-    v11->_cost = objc_msgSend_length(v8, v16, v17);
+    v11->_cost = objc_msgSend_length(formCopy, v16, v17);
     v18 = *(v15 + 1);
     v19 = *(v15 + 1) - v18;
-    v10[2](v10, &v15[v18 + 16], v19);
+    setCopy[2](setCopy, &v15[v18 + 16], v19);
     v11->_auxiliary = DTXPrimitiveDictionaryReferencingSerialized(v15 + 16, *(v15 + 1));
     v22 = *v15;
     v11->_messageType = v22;
@@ -1193,7 +1193,7 @@ LABEL_29:
     if (v22 == 7)
     {
       v23 = objc_msgSend_dataWithBytesNoCopy_length_freeWhenDone_(MEMORY[0x277CBEA90], v20, &v15[*(v15 + 1) + 16], v19, 0);
-      v25 = objc_msgSend__decompressedData_compressor_compressionType_(v11, v24, v23, v9, (*v15 >> 12) & 0xF0 | (*v15 >> 8) & 0xFu);
+      v25 = objc_msgSend__decompressedData_compressor_compressionType_(v11, v24, v23, compressorCopy, (*v15 >> 12) & 0xF0 | (*v15 >> 8) & 0xFu);
       payloadData = v11->_payloadData;
       v11->_payloadData = v25;
 
@@ -1215,41 +1215,41 @@ LABEL_6:
   return v11;
 }
 
-- (DTXMessage)initWithSerializedForm:(id)a3 compressor:(id)a4
+- (DTXMessage)initWithSerializedForm:(id)form compressor:(id)compressor
 {
-  objc_storeStrong(&self->_serializedData, a3);
-  v7 = a3;
-  v8 = a4;
+  objc_storeStrong(&self->_serializedData, form);
+  formCopy = form;
+  compressorCopy = compressor;
   serializedData = self->_serializedData;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = sub_247F54C80;
   v13[3] = &unk_278EEF1E0;
-  v14 = self;
-  v11 = objc_msgSend__initWithReferencedSerializedForm_compressor_payloadSet_(v14, v10, serializedData, v8, v13);
+  selfCopy = self;
+  v11 = objc_msgSend__initWithReferencedSerializedForm_compressor_payloadSet_(selfCopy, v10, serializedData, compressorCopy, v13);
 
   return v11;
 }
 
-- (DTXMessage)initWithSerializedForm:(const char *)a3 length:(unint64_t)a4 destructor:(id)a5 compressor:(id)a6
+- (DTXMessage)initWithSerializedForm:(const char *)form length:(unint64_t)length destructor:(id)destructor compressor:(id)compressor
 {
-  v10 = a5;
+  destructorCopy = destructor;
   v11 = MEMORY[0x277CBEA90];
-  v12 = a6;
+  compressorCopy = compressor;
   v13 = [v11 alloc];
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = sub_247F54E04;
   v24[3] = &unk_278EEF0B8;
-  v25 = v10;
-  v14 = v10;
-  v16 = objc_msgSend_initWithBytesNoCopy_length_deallocator_(v13, v15, a3, a4, v24);
+  v25 = destructorCopy;
+  v14 = destructorCopy;
+  v16 = objc_msgSend_initWithBytesNoCopy_length_deallocator_(v13, v15, form, length, v24);
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = sub_247F54E1C;
   v22[3] = &unk_278EEF1E0;
-  v23 = self;
-  v18 = objc_msgSend__initWithReferencedSerializedForm_compressor_payloadSet_(v23, v17, v16, v12, v22);
+  selfCopy = self;
+  v18 = objc_msgSend__initWithReferencedSerializedForm_compressor_payloadSet_(selfCopy, v17, v16, compressorCopy, v22);
 
   serializedData = v18->_serializedData;
   v18->_serializedData = v16;
@@ -1258,14 +1258,14 @@ LABEL_6:
   return v18;
 }
 
-- (void)serializedFormApply:(id)a3
+- (void)serializedFormApply:(id)apply
 {
-  v5 = a3;
-  if (v5)
+  applyCopy = apply;
+  if (applyCopy)
   {
     if (self->_messageType == 8)
     {
-      objc_msgSend_serializedFormApply_(self->_payloadObject, v4, v5);
+      objc_msgSend_serializedFormApply_(self->_payloadObject, v4, applyCopy);
     }
 
     else
@@ -1283,11 +1283,11 @@ LABEL_6:
       v19[0] = messageType;
       v19[1] = v21;
       v20 = v10 + v7;
-      v5[2](v5, v19, 16);
+      applyCopy[2](applyCopy, v19, 16);
       v13 = v21;
       if (v21)
       {
-        (v5[2])(v5, Serialized);
+        (applyCopy[2])(applyCopy, Serialized);
       }
 
       payloadData = self->_payloadData;
@@ -1295,7 +1295,7 @@ LABEL_6:
       {
         v15 = objc_msgSend_bytes(payloadData, v12, v13);
         v18 = objc_msgSend_length(self->_payloadData, v16, v17);
-        (v5)[2](v5, v15, v18);
+        (applyCopy)[2](applyCopy, v15, v18);
       }
     }
   }

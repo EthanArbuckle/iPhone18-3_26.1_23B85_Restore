@@ -2,31 +2,31 @@
 + (id)shortDescription;
 - (BOOL)isConnected;
 - (_HMDHTTPServerClientConnection)init;
-- (_HMDHTTPServerClientConnection)initWithDevice:(id)a3;
+- (_HMDHTTPServerClientConnection)initWithDevice:(id)device;
 - (id)dequeueRequest;
-- (id)descriptionWithPointer:(BOOL)a3;
-- (id)removeCompletionHandlerForTransactionIdentifier:(id)a3;
+- (id)descriptionWithPointer:(BOOL)pointer;
+- (id)removeCompletionHandlerForTransactionIdentifier:(id)identifier;
 - (id)shortDescription;
-- (void)_reallySendMessage:(id)a3 timeout:(double)a4 completionHandler:(id)a5;
-- (void)addCompletionHandler:(id)a3 forTransactionIdentifier:(id)a4;
+- (void)_reallySendMessage:(id)message timeout:(double)timeout completionHandler:(id)handler;
+- (void)addCompletionHandler:(id)handler forTransactionIdentifier:(id)identifier;
 - (void)invalidate;
-- (void)queueRequest:(id)a3;
-- (void)sendMessage:(id)a3 timeout:(double)a4 completionHandler:(id)a5;
-- (void)setConnection:(id)a3;
+- (void)queueRequest:(id)request;
+- (void)sendMessage:(id)message timeout:(double)timeout completionHandler:(id)handler;
+- (void)setConnection:(id)connection;
 @end
 
 @implementation _HMDHTTPServerClientConnection
 
-- (void)_reallySendMessage:(id)a3 timeout:(double)a4 completionHandler:(id)a5
+- (void)_reallySendMessage:(id)message timeout:(double)timeout completionHandler:(id)handler
 {
   v47 = *MEMORY[0x277D85DE8];
-  v31 = a3;
-  v8 = a5;
-  v9 = [(_HMDHTTPServerClientConnection *)self dequeueRequest];
-  if (v9)
+  messageCopy = message;
+  handlerCopy = handler;
+  dequeueRequest = [(_HMDHTTPServerClientConnection *)self dequeueRequest];
+  if (dequeueRequest)
   {
     v42 = 0;
-    v10 = [MEMORY[0x277CCAC58] dataWithPropertyList:v31 format:100 options:0 error:&v42];
+    v10 = [MEMORY[0x277CCAC58] dataWithPropertyList:messageCopy format:100 options:0 error:&v42];
     v11 = v42;
     if (v10)
     {
@@ -40,11 +40,11 @@
       if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
       {
         v20 = HMFGetLogIdentifier();
-        v21 = [(_HMDHTTPServerClientConnection *)self shortDescription];
+        shortDescription = [(_HMDHTTPServerClientConnection *)self shortDescription];
         *buf = 138543874;
         *&buf[4] = v20;
         *&buf[12] = 2112;
-        *&buf[14] = v21;
+        *&buf[14] = shortDescription;
         *&buf[22] = 2112;
         v44 = v11;
         _os_log_impl(&dword_2531F8000, v19, OS_LOG_TYPE_ERROR, "%{public}@[%@] Failed to serialize response message with error: %@", buf, 0x20u);
@@ -54,7 +54,7 @@
       v12 = 400;
     }
 
-    v22 = [v9 responseWithStatusCode:v12];
+    v22 = [dequeueRequest responseWithStatusCode:v12];
     v23 = [v22 mutableCopy];
 
     if (v10)
@@ -62,11 +62,11 @@
       [v23 setBody:v10];
     }
 
-    v24 = [MEMORY[0x277CCAD78] UUID];
-    v25 = [v24 UUIDString];
-    [v23 setHeaderValue:v25 forHeaderKey:@"Transaction-Identifier"];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    [v23 setHeaderValue:uUIDString forHeaderKey:@"Transaction-Identifier"];
 
-    v26 = [objc_alloc(MEMORY[0x277D0F780]) initWithTimeout:a4];
+    v26 = [objc_alloc(MEMORY[0x277D0F780]) initWithTimeout:timeout];
     objc_initWeak(&location, v26);
     *buf = 0;
     *&buf[8] = buf;
@@ -80,28 +80,28 @@
     v36[3] = &unk_27972AD08;
     objc_copyWeak(&v40, &location);
     v36[4] = self;
-    v27 = v24;
+    v27 = uUID;
     v37 = v27;
     v39 = buf;
     v28 = v23;
     v38 = v28;
     [v26 addExecutionBlock:v36];
-    if (v8)
+    if (handlerCopy)
     {
       v32[0] = MEMORY[0x277D85DD0];
       v32[1] = 3221225472;
       v32[2] = __79___HMDHTTPServerClientConnection__reallySendMessage_timeout_completionHandler___block_invoke_57;
       v32[3] = &unk_27972AD30;
       objc_copyWeak(&v35, &location);
-      v33 = v8;
+      v33 = handlerCopy;
       v34 = buf;
       [v26 setCompletionBlock:v32];
 
       objc_destroyWeak(&v35);
     }
 
-    v29 = [(_HMDHTTPServerClientConnection *)self transactionOperationQueue];
-    [v29 addOperation:v26];
+    transactionOperationQueue = [(_HMDHTTPServerClientConnection *)self transactionOperationQueue];
+    [transactionOperationQueue addOperation:v26];
 
     objc_destroyWeak(&v40);
     _Block_object_dispose(buf, 8);
@@ -115,35 +115,35 @@
   if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
   {
     v15 = HMFGetLogIdentifier();
-    v16 = [(_HMDHTTPServerClientConnection *)self shortDescription];
-    v17 = [(_HMDHTTPServerClientConnection *)self device];
+    shortDescription2 = [(_HMDHTTPServerClientConnection *)self shortDescription];
+    device = [(_HMDHTTPServerClientConnection *)self device];
     *buf = 138543874;
     *&buf[4] = v15;
     *&buf[12] = 2112;
-    *&buf[14] = v16;
+    *&buf[14] = shortDescription2;
     *&buf[22] = 2112;
-    v44 = v17;
+    v44 = device;
     _os_log_impl(&dword_2531F8000, v14, OS_LOG_TYPE_ERROR, "%{public}@[%@] Unable to send message to device, %@, there is no queued request", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v13);
-  if (v8)
+  if (handlerCopy)
   {
     v11 = [MEMORY[0x277CCA9B8] hmErrorWithCode:54 description:@"Communication Failure." reason:@"There is no queued request to send the message." suggestion:0];
-    (*(v8 + 2))(v8, 0, v11);
+    (*(handlerCopy + 2))(handlerCopy, 0, v11);
 LABEL_16:
   }
 
   v30 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sendMessage:(id)a3 timeout:(double)a4 completionHandler:(id)a5
+- (void)sendMessage:(id)message timeout:(double)timeout completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  messageCopy = message;
+  handlerCopy = handler;
   [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
   v11 = v10;
-  v12 = [objc_alloc(MEMORY[0x277D0F780]) initWithTimeout:a4];
+  v12 = [objc_alloc(MEMORY[0x277D0F780]) initWithTimeout:timeout];
   objc_initWeak(&location, v12);
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
@@ -151,11 +151,11 @@ LABEL_16:
   v24[3] = &unk_27972AC90;
   objc_copyWeak(v27, &location);
   v27[1] = v11;
-  v27[2] = *&a4;
+  v27[2] = *&timeout;
   v24[4] = self;
-  v13 = v8;
+  v13 = messageCopy;
   v25 = v13;
-  v14 = v9;
+  v14 = handlerCopy;
   v26 = v14;
   [v12 addExecutionBlock:v24];
   v17 = MEMORY[0x277D85DD0];
@@ -163,7 +163,7 @@ LABEL_16:
   v19 = __72___HMDHTTPServerClientConnection_sendMessage_timeout_completionHandler___block_invoke_2;
   v20 = &unk_279730E50;
   objc_copyWeak(&v23, &location);
-  v21 = self;
+  selfCopy = self;
   v15 = v14;
   v22 = v15;
   [v12 setCompletionBlock:&v17];
@@ -178,144 +178,144 @@ LABEL_16:
 - (id)dequeueRequest
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = [(_HMDHTTPServerClientConnection *)self receiveMessageRequests];
-  v4 = [v3 firstObject];
+  receiveMessageRequests = [(_HMDHTTPServerClientConnection *)self receiveMessageRequests];
+  firstObject = [receiveMessageRequests firstObject];
 
-  v5 = [(_HMDHTTPServerClientConnection *)self receiveMessageRequests];
-  [v5 removeObject:v4];
+  receiveMessageRequests2 = [(_HMDHTTPServerClientConnection *)self receiveMessageRequests];
+  [receiveMessageRequests2 removeObject:firstObject];
 
-  v6 = [(_HMDHTTPServerClientConnection *)self receiveMessageRequests];
-  if ([v6 count])
+  receiveMessageRequests3 = [(_HMDHTTPServerClientConnection *)self receiveMessageRequests];
+  if ([receiveMessageRequests3 count])
   {
   }
 
   else
   {
-    v7 = [(_HMDHTTPServerClientConnection *)self requestOperationQueue];
-    v8 = [v7 isSuspended];
+    requestOperationQueue = [(_HMDHTTPServerClientConnection *)self requestOperationQueue];
+    isSuspended = [requestOperationQueue isSuspended];
 
-    if ((v8 & 1) == 0)
+    if ((isSuspended & 1) == 0)
     {
       v9 = objc_autoreleasePoolPush();
       v10 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
       {
         v11 = HMFGetLogIdentifier();
-        v12 = [(_HMDHTTPServerClientConnection *)self shortDescription];
+        shortDescription = [(_HMDHTTPServerClientConnection *)self shortDescription];
         v17 = 138543618;
         v18 = v11;
         v19 = 2112;
-        v20 = v12;
+        v20 = shortDescription;
         _os_log_impl(&dword_2531F8000, v10, OS_LOG_TYPE_DEBUG, "%{public}@[%@] Suspending the request queue as there are no more queued requests", &v17, 0x16u);
       }
 
       objc_autoreleasePoolPop(v9);
-      v13 = [(_HMDHTTPServerClientConnection *)self requestOperationQueue];
-      [v13 setSuspended:1];
+      requestOperationQueue2 = [(_HMDHTTPServerClientConnection *)self requestOperationQueue];
+      [requestOperationQueue2 setSuspended:1];
 
-      v14 = [(_HMDHTTPServerClientConnection *)self lostConnectionTimer];
-      [v14 resume];
+      lostConnectionTimer = [(_HMDHTTPServerClientConnection *)self lostConnectionTimer];
+      [lostConnectionTimer resume];
     }
   }
 
   v15 = *MEMORY[0x277D85DE8];
 
-  return v4;
+  return firstObject;
 }
 
-- (void)queueRequest:(id)a3
+- (void)queueRequest:(id)request
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  requestCopy = request;
+  if (requestCopy)
   {
-    v5 = [(_HMDHTTPServerClientConnection *)self receiveMessageRequests];
-    [v5 addObject:v4];
+    receiveMessageRequests = [(_HMDHTTPServerClientConnection *)self receiveMessageRequests];
+    [receiveMessageRequests addObject:requestCopy];
 
-    v6 = [(_HMDHTTPServerClientConnection *)self requestOperationQueue];
-    v7 = [v6 isSuspended];
+    requestOperationQueue = [(_HMDHTTPServerClientConnection *)self requestOperationQueue];
+    isSuspended = [requestOperationQueue isSuspended];
 
-    if (v7)
+    if (isSuspended)
     {
       v8 = objc_autoreleasePoolPush();
       v9 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
       {
         v10 = HMFGetLogIdentifier();
-        v11 = [(_HMDHTTPServerClientConnection *)self shortDescription];
+        shortDescription = [(_HMDHTTPServerClientConnection *)self shortDescription];
         v15 = 138543618;
         v16 = v10;
         v17 = 2112;
-        v18 = v11;
+        v18 = shortDescription;
         _os_log_impl(&dword_2531F8000, v9, OS_LOG_TYPE_DEBUG, "%{public}@[%@] Resuming the request queue as there are queued requests", &v15, 0x16u);
       }
 
       objc_autoreleasePoolPop(v8);
-      v12 = [(_HMDHTTPServerClientConnection *)self requestOperationQueue];
-      [v12 setSuspended:0];
+      requestOperationQueue2 = [(_HMDHTTPServerClientConnection *)self requestOperationQueue];
+      [requestOperationQueue2 setSuspended:0];
     }
 
-    v13 = [(_HMDHTTPServerClientConnection *)self lostConnectionTimer];
-    [v13 suspend];
+    lostConnectionTimer = [(_HMDHTTPServerClientConnection *)self lostConnectionTimer];
+    [lostConnectionTimer suspend];
   }
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setConnection:(id)a3
+- (void)setConnection:(id)connection
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [(_HMDHTTPServerClientConnection *)self connection];
-  v7 = [v5 isEqual:v6];
+  connectionCopy = connection;
+  connection = [(_HMDHTTPServerClientConnection *)self connection];
+  v7 = [connectionCopy isEqual:connection];
 
   if ((v7 & 1) == 0)
   {
-    objc_storeStrong(&self->_connection, a3);
+    objc_storeStrong(&self->_connection, connection);
     v8 = objc_autoreleasePoolPush();
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
       v10 = HMFGetLogIdentifier();
-      v11 = [(_HMDHTTPServerClientConnection *)self shortDescription];
+      shortDescription = [(_HMDHTTPServerClientConnection *)self shortDescription];
       v17 = 138543618;
       v18 = v10;
       v19 = 2112;
-      v20 = v11;
+      v20 = shortDescription;
       _os_log_impl(&dword_2531F8000, v9, OS_LOG_TYPE_DEBUG, "%{public}@[%@] Received new connection, removing all queued requests and suspending the request queue", &v17, 0x16u);
     }
 
     objc_autoreleasePoolPop(v8);
-    v12 = [(_HMDHTTPServerClientConnection *)self receiveMessageRequests];
-    [v12 removeAllObjects];
+    receiveMessageRequests = [(_HMDHTTPServerClientConnection *)self receiveMessageRequests];
+    [receiveMessageRequests removeAllObjects];
 
-    v13 = [(_HMDHTTPServerClientConnection *)self requestOperationQueue];
-    [v13 setSuspended:1];
+    requestOperationQueue = [(_HMDHTTPServerClientConnection *)self requestOperationQueue];
+    [requestOperationQueue setSuspended:1];
 
-    v14 = [(_HMDHTTPServerClientConnection *)self lostConnectionTimer];
-    v15 = v14;
-    if (v5)
+    lostConnectionTimer = [(_HMDHTTPServerClientConnection *)self lostConnectionTimer];
+    v15 = lostConnectionTimer;
+    if (connectionCopy)
     {
-      [v14 suspend];
+      [lostConnectionTimer suspend];
     }
 
     else
     {
-      [v14 resume];
+      [lostConnectionTimer resume];
     }
   }
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (id)removeCompletionHandlerForTransactionIdentifier:(id)a3
+- (id)removeCompletionHandlerForTransactionIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_lock_with_options();
-  v5 = [(NSMutableDictionary *)self->_pendingTransactionCompletionHandlers objectForKeyedSubscript:v4];
+  v5 = [(NSMutableDictionary *)self->_pendingTransactionCompletionHandlers objectForKeyedSubscript:identifierCopy];
   if (v5)
   {
-    [(NSMutableDictionary *)self->_pendingTransactionCompletionHandlers removeObjectForKey:v4];
+    [(NSMutableDictionary *)self->_pendingTransactionCompletionHandlers removeObjectForKey:identifierCopy];
   }
 
   v6 = _Block_copy(v5);
@@ -325,42 +325,42 @@ LABEL_16:
   return v6;
 }
 
-- (void)addCompletionHandler:(id)a3 forTransactionIdentifier:(id)a4
+- (void)addCompletionHandler:(id)handler forTransactionIdentifier:(id)identifier
 {
-  v9 = a3;
-  v6 = a4;
+  handlerCopy = handler;
+  identifierCopy = identifier;
   os_unfair_lock_lock_with_options();
-  v7 = [v9 copy];
+  v7 = [handlerCopy copy];
   v8 = _Block_copy(v7);
-  [(NSMutableDictionary *)self->_pendingTransactionCompletionHandlers setObject:v8 forKeyedSubscript:v6];
+  [(NSMutableDictionary *)self->_pendingTransactionCompletionHandlers setObject:v8 forKeyedSubscript:identifierCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
 - (BOOL)isConnected
 {
-  v2 = [(_HMDHTTPServerClientConnection *)self connection];
-  v3 = v2 != 0;
+  connection = [(_HMDHTTPServerClientConnection *)self connection];
+  v3 = connection != 0;
 
   return v3;
 }
 
-- (id)descriptionWithPointer:(BOOL)a3
+- (id)descriptionWithPointer:(BOOL)pointer
 {
   v5 = MEMORY[0x277CCACA8];
-  v6 = [objc_opt_class() shortDescription];
-  v7 = [(_HMDHTTPServerClientConnection *)self device];
-  v8 = [(_HMDHTTPServerClientConnection *)self connection];
-  v9 = v8;
-  if (a3)
+  shortDescription = [objc_opt_class() shortDescription];
+  device = [(_HMDHTTPServerClientConnection *)self device];
+  connection = [(_HMDHTTPServerClientConnection *)self connection];
+  v9 = connection;
+  if (pointer)
   {
     v10 = [MEMORY[0x277CCACA8] stringWithFormat:@" %p", self];
-    v11 = [v5 stringWithFormat:@"<%@ %@, Device = %@, Connection = %@>", v6, v7, v9, v10];
+    v11 = [v5 stringWithFormat:@"<%@ %@, Device = %@, Connection = %@>", shortDescription, device, v9, v10];
   }
 
   else
   {
-    v11 = [v5 stringWithFormat:@"<%@ %@, Device = %@, Connection = %@>", v6, v7, v8, &stru_286509E58];
+    v11 = [v5 stringWithFormat:@"<%@ %@, Device = %@, Connection = %@>", shortDescription, device, connection, &stru_286509E58];
   }
 
   return v11;
@@ -369,11 +369,11 @@ LABEL_16:
 - (id)shortDescription
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [objc_opt_class() shortDescription];
-  v5 = [(_HMDHTTPServerClientConnection *)self device];
-  v6 = [v5 identifier];
-  v7 = [v6 UUIDString];
-  v8 = [v3 stringWithFormat:@"%@ %@", v4, v7];
+  shortDescription = [objc_opt_class() shortDescription];
+  device = [(_HMDHTTPServerClientConnection *)self device];
+  identifier = [device identifier];
+  uUIDString = [identifier UUIDString];
+  v8 = [v3 stringWithFormat:@"%@ %@", shortDescription, uUIDString];
 
   return v8;
 }
@@ -383,7 +383,7 @@ LABEL_16:
   v36 = *MEMORY[0x277D85DE8];
   v3 = [MEMORY[0x277CCA9B8] hmErrorWithCode:23 description:@"Operation cancelled." reason:@"The client connection is no longer valid." suggestion:0];
   os_unfair_lock_lock_with_options();
-  v4 = [(NSMutableDictionary *)self->_pendingTransactionCompletionHandlers allValues];
+  allValues = [(NSMutableDictionary *)self->_pendingTransactionCompletionHandlers allValues];
   [(NSMutableDictionary *)self->_pendingTransactionCompletionHandlers removeAllObjects];
   os_unfair_lock_unlock(&self->_lock);
   v5 = objc_autoreleasePoolPush();
@@ -391,21 +391,21 @@ LABEL_16:
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     v20 = HMFGetLogIdentifier();
-    v19 = [(_HMDHTTPServerClientConnection *)self shortDescription];
-    v7 = [v4 count];
-    v8 = [(_HMDHTTPServerClientConnection *)self requestOperationQueue];
-    v9 = [v8 operationCount];
-    v10 = [(_HMDHTTPServerClientConnection *)self transactionOperationQueue];
+    shortDescription = [(_HMDHTTPServerClientConnection *)self shortDescription];
+    v7 = [allValues count];
+    requestOperationQueue = [(_HMDHTTPServerClientConnection *)self requestOperationQueue];
+    operationCount = [requestOperationQueue operationCount];
+    transactionOperationQueue = [(_HMDHTTPServerClientConnection *)self transactionOperationQueue];
     *buf = 138544386;
     v27 = v20;
     v28 = 2112;
-    v29 = v19;
+    v29 = shortDescription;
     v30 = 2048;
     v31 = v7;
     v32 = 2048;
-    v33 = v9;
+    v33 = operationCount;
     v34 = 2048;
-    v35 = [v10 operationCount];
+    operationCount2 = [transactionOperationQueue operationCount];
     _os_log_impl(&dword_2531F8000, v6, OS_LOG_TYPE_INFO, "%{public}@[%@] Invalidating: outstanding pendingHandlers=%lu, requests=%lu, transactions=%lu", buf, 0x34u);
   }
 
@@ -414,7 +414,7 @@ LABEL_16:
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v11 = v4;
+  v11 = allValues;
   v12 = [v11 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v12)
   {
@@ -439,35 +439,35 @@ LABEL_16:
     while (v12);
   }
 
-  v15 = [(_HMDHTTPServerClientConnection *)self requestOperationQueue];
-  [v15 cancelAllOperationsWithError:v3];
+  requestOperationQueue2 = [(_HMDHTTPServerClientConnection *)self requestOperationQueue];
+  [requestOperationQueue2 cancelAllOperationsWithError:v3];
 
-  v16 = [(_HMDHTTPServerClientConnection *)self requestOperationQueue];
-  [v16 setSuspended:0];
+  requestOperationQueue3 = [(_HMDHTTPServerClientConnection *)self requestOperationQueue];
+  [requestOperationQueue3 setSuspended:0];
 
-  v17 = [(_HMDHTTPServerClientConnection *)self transactionOperationQueue];
-  [v17 cancelAllOperationsWithError:v3];
+  transactionOperationQueue2 = [(_HMDHTTPServerClientConnection *)self transactionOperationQueue];
+  [transactionOperationQueue2 cancelAllOperationsWithError:v3];
 
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (_HMDHTTPServerClientConnection)initWithDevice:(id)a3
+- (_HMDHTTPServerClientConnection)initWithDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v26.receiver = self;
   v26.super_class = _HMDHTTPServerClientConnection;
   v6 = [(_HMDHTTPServerClientConnection *)&v26 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_device, a3);
+    objc_storeStrong(&v6->_device, device);
     v8 = [MEMORY[0x277CBEB18] arrayWithCapacity:1];
     receiveMessageRequests = v7->_receiveMessageRequests;
     v7->_receiveMessageRequests = v8;
 
-    v10 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     pendingTransactionCompletionHandlers = v7->_pendingTransactionCompletionHandlers;
-    v7->_pendingTransactionCompletionHandlers = v10;
+    v7->_pendingTransactionCompletionHandlers = dictionary;
 
     v12 = [objc_alloc(MEMORY[0x277D0F920]) initWithTimeInterval:1 options:10.0];
     lostConnectionTimer = v7->_lostConnectionTimer;

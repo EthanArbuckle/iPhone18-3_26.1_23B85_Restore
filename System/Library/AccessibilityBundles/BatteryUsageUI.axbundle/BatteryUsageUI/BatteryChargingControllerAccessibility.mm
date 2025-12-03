@@ -1,28 +1,28 @@
 @interface BatteryChargingControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
 @end
 
 @implementation BatteryChargingControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"BatteryChargingController" hasInstanceMethod:@"getSegmentedControlValue" withFullSignature:{"f", 0}];
-  [v3 validateClass:@"BatteryChargingController" hasInstanceMethod:@"setSegmentedControlValue:" withFullSignature:{"v", "f", 0}];
-  [v3 validateClass:@"PLSegmentedLabelSliderCell" hasInstanceMethod:@"setCurrentValue: animated:" withFullSignature:{"v", "f", "B", 0}];
-  [v3 validateClass:@"BatteryChargingController" isKindOfClass:@"PSListItemsController"];
-  [v3 validateClass:@"PSListItemsController" isKindOfClass:@"PSListController"];
-  [v3 validateClass:@"PSListController" conformsToProtocol:@"UITableViewDelegate"];
-  [v3 validateClass:@"PSListController" hasInstanceMethod:@"specifierAtIndex:" withFullSignature:{"@", "q", 0}];
-  [v3 validateClass:@"PSListController" hasInstanceMethod:@"indexForIndexPath:" withFullSignature:{"q", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"BatteryChargingController" hasInstanceMethod:@"getSegmentedControlValue" withFullSignature:{"f", 0}];
+  [validationsCopy validateClass:@"BatteryChargingController" hasInstanceMethod:@"setSegmentedControlValue:" withFullSignature:{"v", "f", 0}];
+  [validationsCopy validateClass:@"PLSegmentedLabelSliderCell" hasInstanceMethod:@"setCurrentValue: animated:" withFullSignature:{"v", "f", "B", 0}];
+  [validationsCopy validateClass:@"BatteryChargingController" isKindOfClass:@"PSListItemsController"];
+  [validationsCopy validateClass:@"PSListItemsController" isKindOfClass:@"PSListController"];
+  [validationsCopy validateClass:@"PSListController" conformsToProtocol:@"UITableViewDelegate"];
+  [validationsCopy validateClass:@"PSListController" hasInstanceMethod:@"specifierAtIndex:" withFullSignature:{"@", "q", 0}];
+  [validationsCopy validateClass:@"PSListController" hasInstanceMethod:@"indexForIndexPath:" withFullSignature:{"q", "@", 0}];
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  viewCopy = view;
+  cellCopy = cell;
+  pathCopy = path;
   objc_opt_class();
   location = 0;
   p_location = &location;
@@ -36,7 +36,7 @@
   from[4] = &unk_29F2A7BA8;
   from[7] = &location;
   from[5] = self;
-  v11 = v10;
+  v11 = pathCopy;
   from[6] = v11;
   AXPerformSafeBlock();
   v12 = p_location[5];
@@ -44,35 +44,35 @@
   _Block_object_dispose(&location, 8);
   v13 = __UIAccessibilityCastAsClass();
 
-  v14 = [v13 identifier];
-  v15 = [v14 isEqualToString:@"CHARGING_LIMIT_SLIDER_IDENTIFIER"];
+  identifier = [v13 identifier];
+  v15 = [identifier isEqualToString:@"CHARGING_LIMIT_SLIDER_IDENTIFIER"];
 
   if (v15)
   {
-    [v9 setAccessibilityTraits:*MEMORY[0x29EDC7F60]];
+    [cellCopy setAccessibilityTraits:*MEMORY[0x29EDC7F60]];
     objc_initWeak(&location, self);
-    objc_initWeak(from, v9);
-    [v9 setAccessibilityLabelBlock:&__block_literal_global_0];
+    objc_initWeak(from, cellCopy);
+    [cellCopy setAccessibilityLabelBlock:&__block_literal_global_0];
     v22[0] = MEMORY[0x29EDCA5F8];
     v22[1] = 3221225472;
     v22[2] = __86__BatteryChargingControllerAccessibility_tableView_willDisplayCell_forRowAtIndexPath___block_invoke_3;
     v22[3] = &unk_29F2A7C18;
     objc_copyWeak(&v23, &location);
-    [v9 setAccessibilityValueBlock:v22];
+    [cellCopy setAccessibilityValueBlock:v22];
     v19[0] = MEMORY[0x29EDCA5F8];
     v19[1] = 3221225472;
     v19[2] = __86__BatteryChargingControllerAccessibility_tableView_willDisplayCell_forRowAtIndexPath___block_invoke_5;
     v19[3] = &unk_29F2A7C68;
     objc_copyWeak(&v20, &location);
     objc_copyWeak(&v21, from);
-    [v9 setAccessibilityDecrementBlock:v19];
+    [cellCopy setAccessibilityDecrementBlock:v19];
     v16[0] = MEMORY[0x29EDCA5F8];
     v16[1] = 3221225472;
     v16[2] = __86__BatteryChargingControllerAccessibility_tableView_willDisplayCell_forRowAtIndexPath___block_invoke_8;
     v16[3] = &unk_29F2A7C68;
     objc_copyWeak(&v17, &location);
     objc_copyWeak(&v18, from);
-    [v9 setAccessibilityIncrementBlock:v16];
+    [cellCopy setAccessibilityIncrementBlock:v16];
     objc_destroyWeak(&v18);
     objc_destroyWeak(&v17);
     objc_destroyWeak(&v21);

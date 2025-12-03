@@ -1,6 +1,6 @@
 @interface CancelPreordersOperation
-- (BOOL)_cancelPreorderWithOperation:(id)a3 error:(id *)a4;
-- (id)_newURLOperationWithItemID:(id)a3 accountID:(id)a4;
+- (BOOL)_cancelPreorderWithOperation:(id)operation error:(id *)error;
+- (id)_newURLOperationWithItemID:(id)d accountID:(id)iD;
 - (void)run;
 @end
 
@@ -81,13 +81,13 @@
   [(CancelPreordersOperation *)self setSuccess:v14 & 1];
 }
 
-- (BOOL)_cancelPreorderWithOperation:(id)a3 error:(id *)a4
+- (BOOL)_cancelPreorderWithOperation:(id)operation error:(id *)error
 {
   v25 = 0;
-  LODWORD(v6) = [(CancelPreordersOperation *)self runSubOperation:a3 returningError:&v25];
+  LODWORD(v6) = [(CancelPreordersOperation *)self runSubOperation:operation returningError:&v25];
   if (v6)
   {
-    v7 = [objc_msgSend(a3 "dataProvider")];
+    v7 = [objc_msgSend(operation "dataProvider")];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -101,15 +101,15 @@
           v10 = +[SSLogConfig sharedConfig];
         }
 
-        v11 = [v10 shouldLog];
+        shouldLog = [v10 shouldLog];
         if ([v10 shouldLogToDisk])
         {
-          v12 = v11 | 2;
+          v12 = shouldLog | 2;
         }
 
         else
         {
-          v12 = v11;
+          v12 = shouldLog;
         }
 
         if (!os_log_type_enabled([v10 OSLogObject], OS_LOG_TYPE_DEFAULT))
@@ -159,15 +159,15 @@
         v16 = +[SSLogConfig sharedConfig];
       }
 
-      v17 = [v16 shouldLog];
+      shouldLog2 = [v16 shouldLog];
       if ([v16 shouldLogToDisk])
       {
-        v18 = v17 | 2;
+        v18 = shouldLog2 | 2;
       }
 
       else
       {
-        v18 = v17;
+        v18 = shouldLog2;
       }
 
       if (!os_log_type_enabled([v16 OSLogObject], OS_LOG_TYPE_DEFAULT))
@@ -201,26 +201,26 @@
   }
 
 LABEL_29:
-  if (a4)
+  if (error)
   {
-    *a4 = v25;
+    *error = v25;
   }
 
   return v6;
 }
 
-- (id)_newURLOperationWithItemID:(id)a3 accountID:(id)a4
+- (id)_newURLOperationWithItemID:(id)d accountID:(id)iD
 {
   v6 = objc_alloc_init(ISStoreURLOperation);
   [v6 setDataProvider:{+[DaemonProtocolDataProvider provider](DaemonProtocolDataProvider, "provider")}];
   [v6 setNeedsAuthentication:1];
-  v7 = [[SSAuthenticationContext alloc] initWithAccountIdentifier:a4];
+  v7 = [[SSAuthenticationContext alloc] initWithAccountIdentifier:iD];
   [v6 setAuthenticationContext:v7];
 
   v8 = objc_alloc_init(SSMutableURLRequestProperties);
   [v8 setURLBagKey:@"p2-cancel-pre-order"];
   v9 = objc_alloc_init(NSMutableDictionary);
-  [v9 setObject:objc_msgSend(a3 forKey:{"stringValue"), @"id"}];
+  [v9 setObject:objc_msgSend(d forKey:{"stringValue"), @"id"}];
   [v8 setRequestParameters:v9];
 
   [v6 setRequestProperties:v8];

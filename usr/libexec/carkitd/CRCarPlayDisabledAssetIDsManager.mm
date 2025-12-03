@@ -1,7 +1,7 @@
 @interface CRCarPlayDisabledAssetIDsManager
-- (BOOL)isAssetDisabled:(id)a3 accessoryContentVersion:(id)a4 iosContentVersion:(id)a5;
+- (BOOL)isAssetDisabled:(id)disabled accessoryContentVersion:(id)version iosContentVersion:(id)contentVersion;
 - (CRCarPlayDisabledAssetIDsManager)init;
-- (CRCarPlayDisabledAssetIDsManager)initWithFile:(id)a3;
+- (CRCarPlayDisabledAssetIDsManager)initWithFile:(id)file;
 @end
 
 @implementation CRCarPlayDisabledAssetIDsManager
@@ -22,9 +22,9 @@
   return v3;
 }
 
-- (CRCarPlayDisabledAssetIDsManager)initWithFile:(id)a3
+- (CRCarPlayDisabledAssetIDsManager)initWithFile:(id)file
 {
-  v4 = a3;
+  fileCopy = file;
   self->_ferriteDisabled = 0;
   disabledAssetIDsData = self->_disabledAssetIDsData;
   self->_disabledAssetIDsData = &__NSDictionary0__struct;
@@ -36,7 +36,7 @@
   {
     v26 = 0;
     v25 = 0;
-    v7 = [v4 getResourceValue:&v26 forKey:NSURLIsRegularFileKey error:&v25];
+    v7 = [fileCopy getResourceValue:&v26 forKey:NSURLIsRegularFileKey error:&v25];
     v8 = v26;
     v9 = v25;
     if (v7)
@@ -46,7 +46,7 @@
         if ([v8 BOOLValue])
         {
           v24 = 0;
-          v10 = [NSDictionary dictionaryWithContentsOfURL:v4 error:&v24];
+          v10 = [NSDictionary dictionaryWithContentsOfURL:fileCopy error:&v24];
           v11 = v24;
           if (v11 || !v10)
           {
@@ -167,18 +167,18 @@ LABEL_34:
   return v6;
 }
 
-- (BOOL)isAssetDisabled:(id)a3 accessoryContentVersion:(id)a4 iosContentVersion:(id)a5
+- (BOOL)isAssetDisabled:(id)disabled accessoryContentVersion:(id)version iosContentVersion:(id)contentVersion
 {
-  v8 = a3;
-  v9 = a4;
-  v26 = a5;
+  disabledCopy = disabled;
+  versionCopy = version;
+  contentVersionCopy = contentVersion;
   if ([(CRCarPlayDisabledAssetIDsManager *)self ferriteDisabled])
   {
     v10 = CarGeneralLogging();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v33 = v8;
+      v33 = disabledCopy;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "AssetID=%@ is disabled globally by plist.", buf, 0xCu);
     }
 
@@ -187,8 +187,8 @@ LABEL_28:
     goto LABEL_29;
   }
 
-  v11 = [(CRCarPlayDisabledAssetIDsManager *)self disabledAssetIDsData];
-  v10 = [v11 objectForKeyedSubscript:v8];
+  disabledAssetIDsData = [(CRCarPlayDisabledAssetIDsManager *)self disabledAssetIDsData];
+  v10 = [disabledAssetIDsData objectForKeyedSubscript:disabledCopy];
 
   if (!v10)
   {
@@ -210,7 +210,7 @@ LABEL_24:
     goto LABEL_24;
   }
 
-  v25 = v8;
+  v25 = disabledCopy;
   v29 = 0u;
   v30 = 0u;
   v27 = 0u;
@@ -250,19 +250,19 @@ LABEL_17:
       }
 
       v17 = [v16 objectForKeyedSubscript:@"AccessoryContentVersion"];
-      if (![v17 isEqual:v9])
+      if (![v17 isEqual:versionCopy])
       {
         goto LABEL_17;
       }
 
       v18 = [v16 objectForKeyedSubscript:@"iOSContentVersion"];
-      v19 = [v18 isEqual:v26];
+      v19 = [v18 isEqual:contentVersionCopy];
 
       if (v19)
       {
         v22 = CarGeneralLogging();
         v23 = os_log_type_enabled(v22, OS_LOG_TYPE_ERROR);
-        v8 = v25;
+        disabledCopy = v25;
         if (v23)
         {
           sub_1000853F8(v25, v22);
@@ -284,7 +284,7 @@ LABEL_17:
 LABEL_20:
 
   v20 = 0;
-  v8 = v25;
+  disabledCopy = v25;
 LABEL_29:
 
   return v20;

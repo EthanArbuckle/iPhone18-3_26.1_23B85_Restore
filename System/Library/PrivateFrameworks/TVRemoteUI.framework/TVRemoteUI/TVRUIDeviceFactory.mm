@@ -1,13 +1,13 @@
 @interface TVRUIDeviceFactory
-+ (id)deviceWithIdentifier:(id)a3;
++ (id)deviceWithIdentifier:(id)identifier;
 @end
 
 @implementation TVRUIDeviceFactory
 
-+ (id)deviceWithIdentifier:(id)a3
++ (id)deviceWithIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = [[TVRUICoreDevice alloc] _initWithDeviceIdentifier:v3];
+  identifierCopy = identifier;
+  v4 = [[TVRUICoreDevice alloc] _initWithDeviceIdentifier:identifierCopy];
 
   return v4;
 }

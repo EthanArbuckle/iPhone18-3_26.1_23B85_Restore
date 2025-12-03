@@ -1,10 +1,10 @@
 @interface PTPersonReactionSlot
-- (PTPersonReactionSlot)initWithStartTime:(float)a3 stopTime:(float)a4;
+- (PTPersonReactionSlot)initWithStartTime:(float)time stopTime:(float)stopTime;
 @end
 
 @implementation PTPersonReactionSlot
 
-- (PTPersonReactionSlot)initWithStartTime:(float)a3 stopTime:(float)a4
+- (PTPersonReactionSlot)initWithStartTime:(float)time stopTime:(float)stopTime
 {
   v13.receiver = self;
   v13.super_class = PTPersonReactionSlot;
@@ -20,8 +20,8 @@
     *(v6 + 6) = v10;
     *(v6 + 56) = v9;
     *(v6 + 9) = v10;
-    *(v6 + 4) = a3;
-    *(v6 + 5) = a4;
+    *(v6 + 4) = time;
+    *(v6 + 5) = stopTime;
     v11 = v6;
   }
 

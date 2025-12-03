@@ -1,8 +1,8 @@
 @interface Application
-- (BOOL)runTest:(id)a3 options:(id)a4;
+- (BOOL)runTest:(id)test options:(id)options;
 - (_TtC7Journal11Application)init;
 - (id)_extendLaunchTest;
-- (void)testRunner:(id)a3 didFailRunningParameters:(id)a4 withError:(id)a5;
+- (void)testRunner:(id)runner didFailRunningParameters:(id)parameters withError:(id)error;
 - (void)testRunner:didFinishRunningParameters:;
 @end
 
@@ -22,22 +22,22 @@
   return v2;
 }
 
-- (BOOL)runTest:(id)a3 options:(id)a4
+- (BOOL)runTest:(id)test options:(id)options
 {
   v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v7 = v6;
-  v8 = self;
+  selfCopy = self;
   LOBYTE(v5) = sub_1008A791C(v5, v7);
 
   return v5 & 1;
 }
 
-- (void)testRunner:(id)a3 didFailRunningParameters:(id)a4 withError:(id)a5
+- (void)testRunner:(id)runner didFailRunningParameters:(id)parameters withError:(id)error
 {
-  v7 = a3;
+  runnerCopy = runner;
   swift_unknownObjectRetain();
-  v9 = a5;
-  v8 = self;
+  errorCopy = error;
+  selfCopy = self;
   sub_1008A7FF8();
 
   swift_unknownObjectRelease();

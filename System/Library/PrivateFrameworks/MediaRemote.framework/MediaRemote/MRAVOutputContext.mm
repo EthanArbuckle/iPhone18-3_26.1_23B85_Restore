@@ -1,8 +1,8 @@
 @interface MRAVOutputContext
 + (OS_dispatch_queue)notificationQueue;
 - (BOOL)containsLocalDevice;
-- (BOOL)containsOutputDevice:(id)a3;
-- (BOOL)containsOutputDeviceUID:(id)a3;
+- (BOOL)containsOutputDevice:(id)device;
+- (BOOL)containsOutputDeviceUID:(id)d;
 - (BOOL)isVolumeMuted;
 - (BOOL)supportsMultipleBluetoothOutputDevices;
 - (BOOL)supportsVolumeControl;
@@ -15,46 +15,46 @@
 - (NSArray)predictedOutputDeviceUIDs;
 - (NSString)contextID;
 - (float)volume;
-- (id)outputDeviceForUID:(id)a3;
+- (id)outputDeviceForUID:(id)d;
 - (unsigned)type;
 - (unsigned)volumeControlCapabilities;
-- (void)_compareOutputDeviceList:(id)a3 withNewOutputDeviceList:(id)a4;
-- (void)_notfiyOutputDeviceRemoved:(id)a3;
-- (void)_notifyChangesInOutputDevicesWithAdded:(id)a3 removed:(id)a4 updated:(id)a5 previous:(id)a6 newDevices:(id)a7;
-- (void)_notifyOutputDeviceAdded:(id)a3;
-- (void)_notifyOutputDeviceChanged:(id)a3;
+- (void)_compareOutputDeviceList:(id)list withNewOutputDeviceList:(id)deviceList;
+- (void)_notfiyOutputDeviceRemoved:(id)removed;
+- (void)_notifyChangesInOutputDevicesWithAdded:(id)added removed:(id)removed updated:(id)updated previous:(id)previous newDevices:(id)devices;
+- (void)_notifyOutputDeviceAdded:(id)added;
+- (void)_notifyOutputDeviceChanged:(id)changed;
 - (void)_reloadOutputDevices;
-- (void)_reloadWithOutputDevices:(id)a3;
+- (void)_reloadWithOutputDevices:(id)devices;
 - (void)_scheduleOutputContextDeviceDidChangeNotification;
 - (void)_scheduleOutputContextDevicesDidChangeNotification;
 - (void)_scheduleOutputContextDidChangeNotification;
-- (void)adjustVolume:(int64_t)a3 details:(id)a4;
-- (void)modifyTopologyWithRequest:(id)a3 withReplyQueue:(id)a4 completion:(id)a5;
-- (void)removeAllOutputDevicesWithCallbackQueue:(id)a3 block:(id)a4;
+- (void)adjustVolume:(int64_t)volume details:(id)details;
+- (void)modifyTopologyWithRequest:(id)request withReplyQueue:(id)queue completion:(id)completion;
+- (void)removeAllOutputDevicesWithCallbackQueue:(id)queue block:(id)block;
 - (void)resetPredictedOutputDevice;
-- (void)setOutputDevices:(id)a3;
-- (void)setVolume:(float)a3 details:(id)a4;
-- (void)setVolumeMuted:(BOOL)a3 details:(id)a4;
+- (void)setOutputDevices:(id)devices;
+- (void)setVolume:(float)volume details:(id)details;
+- (void)setVolumeMuted:(BOOL)muted details:(id)details;
 @end
 
 @implementation MRAVOutputContext
 
 - (NSArray)outputDevices
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NSArray *)v2->_outputDevices copy];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [(NSArray *)selfCopy->_outputDevices copy];
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (NSArray)outputDevicesSnapshot
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NSArray *)v2->_outputDevicesSnapshot copy];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [(NSArray *)selfCopy->_outputDevicesSnapshot copy];
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
@@ -81,13 +81,13 @@ void __38__MRAVOutputContext_notificationQueue__block_invoke()
 
 - (void)_scheduleOutputContextDidChangeNotification
 {
-  v3 = [objc_opt_class() notificationQueue];
+  notificationQueue = [objc_opt_class() notificationQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __64__MRAVOutputContext__scheduleOutputContextDidChangeNotification__block_invoke;
   block[3] = &unk_1E769A228;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(notificationQueue, block);
 }
 
 void __64__MRAVOutputContext__scheduleOutputContextDidChangeNotification__block_invoke(uint64_t a1)
@@ -98,24 +98,24 @@ void __64__MRAVOutputContext__scheduleOutputContextDidChangeNotification__block_
 
 - (void)_scheduleOutputContextDeviceDidChangeNotification
 {
-  v3 = [objc_opt_class() notificationQueue];
+  notificationQueue = [objc_opt_class() notificationQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __70__MRAVOutputContext__scheduleOutputContextDeviceDidChangeNotification__block_invoke;
   block[3] = &unk_1E769A228;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(notificationQueue, block);
 }
 
 - (void)_scheduleOutputContextDevicesDidChangeNotification
 {
-  v3 = [objc_opt_class() notificationQueue];
+  notificationQueue = [objc_opt_class() notificationQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __71__MRAVOutputContext__scheduleOutputContextDevicesDidChangeNotification__block_invoke;
   block[3] = &unk_1E769A228;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(notificationQueue, block);
 }
 
 - (NSString)contextID
@@ -140,17 +140,17 @@ void __64__MRAVOutputContext__scheduleOutputContextDidChangeNotification__block_
   objc_exception_throw(v5);
 }
 
-- (void)setOutputDevices:(id)a3
+- (void)setOutputDevices:(id)devices
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  devicesCopy = devices;
   v5 = [MEMORY[0x1E695DF00] now];
-  v6 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v4, "count")}];
+  v6 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(devicesCopy, "count")}];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v7 = v4;
+  v7 = devicesCopy;
   v8 = [(NSArray *)v7 countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v8)
   {
@@ -168,8 +168,8 @@ void __64__MRAVOutputContext__scheduleOutputContextDidChangeNotification__block_
 
         v12 = *(*(&v23 + 1) + 8 * v11);
         v13 = [MRAVDistantOutputDevice alloc];
-        v14 = [v12 descriptor];
-        v15 = [(MRAVDistantOutputDevice *)v13 initWithDescriptor:v14];
+        descriptor = [v12 descriptor];
+        v15 = [(MRAVDistantOutputDevice *)v13 initWithDescriptor:descriptor];
         [(NSArray *)v6 addObject:v15];
 
         ++v11;
@@ -182,16 +182,16 @@ void __64__MRAVOutputContext__scheduleOutputContextDidChangeNotification__block_
     while (v9);
   }
 
-  v16 = self;
-  objc_sync_enter(v16);
-  outputDevices = v16->_outputDevices;
-  v16->_outputDevices = v7;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  outputDevices = selfCopy->_outputDevices;
+  selfCopy->_outputDevices = v7;
   v18 = v7;
 
-  outputDevicesSnapshot = v16->_outputDevicesSnapshot;
-  v16->_outputDevicesSnapshot = v6;
+  outputDevicesSnapshot = selfCopy->_outputDevicesSnapshot;
+  selfCopy->_outputDevicesSnapshot = v6;
 
-  objc_sync_exit(v16);
+  objc_sync_exit(selfCopy);
   [v5 timeIntervalSinceNow];
   if (v20 < -0.1)
   {
@@ -207,16 +207,16 @@ void __64__MRAVOutputContext__scheduleOutputContextDidChangeNotification__block_
 
 - (NSArray)outputDeviceUIDs
 {
-  v2 = [(MRAVOutputContext *)self outputDevices];
-  v3 = [v2 mr_compactMap:&__block_literal_global_49];
+  outputDevices = [(MRAVOutputContext *)self outputDevices];
+  v3 = [outputDevices mr_compactMap:&__block_literal_global_49];
 
   return v3;
 }
 
 - (NSArray)personalDevices
 {
-  v2 = [(MRAVOutputContext *)self outputDevices];
-  v3 = [v2 mr_compactMap:&__block_literal_global_130];
+  outputDevices = [(MRAVOutputContext *)self outputDevices];
+  v3 = [outputDevices mr_compactMap:&__block_literal_global_130];
 
   return v3;
 }
@@ -241,38 +241,38 @@ void *__36__MRAVOutputContext_personalDevices__block_invoke(uint64_t a1, void *a
 
 - (NSArray)personalDeviceUIDs
 {
-  v2 = [(MRAVOutputContext *)self personalDevices];
-  v3 = [v2 mr_compactMap:&__block_literal_global_132];
+  personalDevices = [(MRAVOutputContext *)self personalDevices];
+  v3 = [personalDevices mr_compactMap:&__block_literal_global_132];
 
   return v3;
 }
 
-- (BOOL)containsOutputDevice:(id)a3
+- (BOOL)containsOutputDevice:(id)device
 {
-  v4 = [a3 uid];
+  v4 = [device uid];
   LOBYTE(self) = [(MRAVOutputContext *)self containsOutputDeviceUID:v4];
 
   return self;
 }
 
-- (BOOL)containsOutputDeviceUID:(id)a3
+- (BOOL)containsOutputDeviceUID:(id)d
 {
-  v3 = [(MRAVOutputContext *)self outputDeviceForUID:a3];
+  v3 = [(MRAVOutputContext *)self outputDeviceForUID:d];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (id)outputDeviceForUID:(id)a3
+- (id)outputDeviceForUID:(id)d
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dCopy = d;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [(MRAVOutputContext *)self outputDevices];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  outputDevices = [(MRAVOutputContext *)self outputDevices];
+  v6 = [outputDevices countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = *v13;
@@ -282,18 +282,18 @@ void *__36__MRAVOutputContext_personalDevices__block_invoke(uint64_t a1, void *a
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(outputDevices);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
-        if ([v9 containsUID:v4])
+        if ([v9 containsUID:dCopy])
         {
           v6 = v9;
           goto LABEL_11;
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [outputDevices countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v6)
       {
         continue;
@@ -312,8 +312,8 @@ LABEL_11:
 
 - (BOOL)containsLocalDevice
 {
-  v2 = [(MRAVOutputContext *)self outputDevices];
-  v3 = [v2 msv_firstWhere:&__block_literal_global_135];
+  outputDevices = [(MRAVOutputContext *)self outputDevices];
+  v3 = [outputDevices msv_firstWhere:&__block_literal_global_135];
   v4 = v3 != 0;
 
   return v4;
@@ -374,9 +374,9 @@ LABEL_11:
   objc_exception_throw(v5);
 }
 
-- (void)setVolume:(float)a3 details:(id)a4
+- (void)setVolume:(float)volume details:(id)details
 {
-  v4 = a4;
+  detailsCopy = details;
   v5 = MEMORY[0x1E695DF30];
   v6 = *MEMORY[0x1E695D930];
   v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s is abstract", "-[MRAVOutputContext setVolume:details:]"];
@@ -386,9 +386,9 @@ LABEL_11:
   objc_exception_throw(v8);
 }
 
-- (void)setVolumeMuted:(BOOL)a3 details:(id)a4
+- (void)setVolumeMuted:(BOOL)muted details:(id)details
 {
-  v4 = a4;
+  detailsCopy = details;
   v5 = MEMORY[0x1E695DF30];
   v6 = *MEMORY[0x1E695D930];
   v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s is abstract", "-[MRAVOutputContext setVolumeMuted:details:]"];
@@ -409,9 +409,9 @@ LABEL_11:
   objc_exception_throw(v5);
 }
 
-- (void)adjustVolume:(int64_t)a3 details:(id)a4
+- (void)adjustVolume:(int64_t)volume details:(id)details
 {
-  v4 = a4;
+  detailsCopy = details;
   v5 = MEMORY[0x1E695DF30];
   v6 = *MEMORY[0x1E695D930];
   v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s is abstract", "-[MRAVOutputContext adjustVolume:details:]"];
@@ -432,11 +432,11 @@ LABEL_11:
   objc_exception_throw(v5);
 }
 
-- (void)modifyTopologyWithRequest:(id)a3 withReplyQueue:(id)a4 completion:(id)a5
+- (void)modifyTopologyWithRequest:(id)request withReplyQueue:(id)queue completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  requestCopy = request;
+  queueCopy = queue;
+  completionCopy = completion;
   v10 = MEMORY[0x1E695DF30];
   v11 = *MEMORY[0x1E695D930];
   v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s is abstract", "-[MRAVOutputContext modifyTopologyWithRequest:withReplyQueue:completion:]"];
@@ -457,19 +457,19 @@ LABEL_11:
   objc_exception_throw(v5);
 }
 
-- (void)_reloadWithOutputDevices:(id)a3
+- (void)_reloadWithOutputDevices:(id)devices
 {
   v4 = MEMORY[0x1E695DFD8];
-  v5 = a3;
-  v6 = [(MRAVOutputContext *)self outputDevicesSnapshot];
-  v7 = [v4 setWithArray:v6];
+  devicesCopy = devices;
+  outputDevicesSnapshot = [(MRAVOutputContext *)self outputDevicesSnapshot];
+  v7 = [v4 setWithArray:outputDevicesSnapshot];
 
-  [(MRAVOutputContext *)self setOutputDevices:v5];
+  [(MRAVOutputContext *)self setOutputDevices:devicesCopy];
   v8 = MEMORY[0x1E695DFD8];
-  v9 = [(MRAVOutputContext *)self outputDevicesSnapshot];
-  v10 = [v8 setWithArray:v9];
+  outputDevicesSnapshot2 = [(MRAVOutputContext *)self outputDevicesSnapshot];
+  v10 = [v8 setWithArray:outputDevicesSnapshot2];
 
-  v11 = [v5 count];
+  v11 = [devicesCopy count];
   if (v11 != [v10 count])
   {
     v12 = _MRLogForCategory(0);
@@ -480,11 +480,11 @@ LABEL_11:
   }
 
   v13 = [MEMORY[0x1E695DF00] now];
-  v14 = [v7 allObjects];
-  v15 = [v14 mr_allOutputDevices];
-  v16 = [v10 allObjects];
-  v17 = [v16 mr_allOutputDevices];
-  [(MRAVOutputContext *)self _compareOutputDeviceList:v15 withNewOutputDeviceList:v17];
+  allObjects = [v7 allObjects];
+  mr_allOutputDevices = [allObjects mr_allOutputDevices];
+  allObjects2 = [v10 allObjects];
+  mr_allOutputDevices2 = [allObjects2 mr_allOutputDevices];
+  [(MRAVOutputContext *)self _compareOutputDeviceList:mr_allOutputDevices withNewOutputDeviceList:mr_allOutputDevices2];
 
   [v13 timeIntervalSinceNow];
   if (v18 < -0.1)
@@ -497,11 +497,11 @@ LABEL_11:
   }
 }
 
-- (void)_compareOutputDeviceList:(id)a3 withNewOutputDeviceList:(id)a4
+- (void)_compareOutputDeviceList:(id)list withNewOutputDeviceList:(id)deviceList
 {
   v60 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  listCopy = list;
+  deviceListCopy = deviceList;
   v37 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v36 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v38 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -509,7 +509,7 @@ LABEL_11:
   v53 = 0u;
   v54 = 0u;
   v55 = 0u;
-  obj = v5;
+  obj = listCopy;
   v7 = [obj countByEnumeratingWithState:&v52 objects:v59 count:16];
   if (v7)
   {
@@ -529,7 +529,7 @@ LABEL_11:
         v49 = 0u;
         v50 = 0u;
         v51 = 0u;
-        v12 = v6;
+        v12 = deviceListCopy;
         v13 = [v12 countByEnumeratingWithState:&v48 objects:v58 count:16];
         if (v13)
         {
@@ -578,7 +578,7 @@ LABEL_16:
   v47 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v18 = v6;
+  v18 = deviceListCopy;
   v19 = [v18 countByEnumeratingWithState:&v44 objects:v57 count:16];
   if (v19)
   {
@@ -641,7 +641,7 @@ LABEL_33:
     while (v20);
   }
 
-  v29 = [objc_opt_class() notificationQueue];
+  notificationQueue = [objc_opt_class() notificationQueue];
   v30 = v18;
   v31 = obj;
   v32 = v38;
@@ -667,23 +667,23 @@ void __70__MRAVOutputContext__compareOutputDeviceList_withNewOutputDeviceList___
   }
 }
 
-- (void)_notifyChangesInOutputDevicesWithAdded:(id)a3 removed:(id)a4 updated:(id)a5 previous:(id)a6 newDevices:(id)a7
+- (void)_notifyChangesInOutputDevicesWithAdded:(id)added removed:(id)removed updated:(id)updated previous:(id)previous newDevices:(id)devices
 {
   v60 = a2;
   v100 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v17 postNotificationName:@"kMRAVOutputContextDevicesDidChangeNotification" object:self];
+  addedCopy = added;
+  removedCopy = removed;
+  updatedCopy = updated;
+  previousCopy = previous;
+  devicesCopy = devices;
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"kMRAVOutputContextDevicesDidChangeNotification" object:self];
 
   v89 = 0u;
   v90 = 0u;
   v87 = 0u;
   v88 = 0u;
-  v18 = v13;
+  v18 = removedCopy;
   v19 = [v18 countByEnumeratingWithState:&v87 objects:v99 count:16];
   if (v19)
   {
@@ -711,7 +711,7 @@ void __70__MRAVOutputContext__compareOutputDeviceList_withNewOutputDeviceList___
   v86 = 0u;
   v83 = 0u;
   v84 = 0u;
-  obj = v12;
+  obj = addedCopy;
   v23 = [obj countByEnumeratingWithState:&v83 objects:v98 count:16];
   if (v23)
   {
@@ -737,15 +737,15 @@ void __70__MRAVOutputContext__compareOutputDeviceList_withNewOutputDeviceList___
 
   if ([obj count] || objc_msgSend(v18, "count"))
   {
-    v27 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v27 postNotificationName:@"MRAVOutputContextOutputDevicesDidChangeNotification" object:self userInfo:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 postNotificationName:@"MRAVOutputContextOutputDevicesDidChangeNotification" object:self userInfo:0];
   }
 
   v81 = 0u;
   v82 = 0u;
   v79 = 0u;
   v80 = 0u;
-  v63 = v16;
+  v63 = devicesCopy;
   v28 = [v63 countByEnumeratingWithState:&v79 objects:v97 count:16];
   if (v28)
   {
@@ -779,7 +779,7 @@ void __70__MRAVOutputContext__compareOutputDeviceList_withNewOutputDeviceList___
   v78 = 0u;
   v75 = 0u;
   v76 = 0u;
-  v66 = v15;
+  v66 = previousCopy;
   v33 = [v66 countByEnumeratingWithState:&v75 objects:v96 count:16];
   if (v33)
   {
@@ -811,22 +811,22 @@ void __70__MRAVOutputContext__compareOutputDeviceList_withNewOutputDeviceList___
 
   if (v30 > v35)
   {
-    v38 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v38 postNotificationName:@"MRAVOutputContextDidAddPersonalDeviceNotification" object:self];
+    defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter3 postNotificationName:@"MRAVOutputContextDidAddPersonalDeviceNotification" object:self];
   }
 
   v61 = v18;
   if (v30 < v35)
   {
-    v39 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v39 postNotificationName:@"MRAVOutputContextDidRemovePersonalDeviceNotification" object:self];
+    defaultCenter4 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter4 postNotificationName:@"MRAVOutputContextDidRemovePersonalDeviceNotification" object:self];
   }
 
   v73 = 0u;
   v74 = 0u;
   v71 = 0u;
   v72 = 0u;
-  v62 = v14;
+  v62 = updatedCopy;
   v65 = [v62 countByEnumeratingWithState:&v71 objects:v95 count:16];
   if (v65)
   {
@@ -872,20 +872,20 @@ void __70__MRAVOutputContext__compareOutputDeviceList_withNewOutputDeviceList___
             v48 = _MRLogForCategory(0);
             if (os_log_type_enabled(v48, OS_LOG_TYPE_DEFAULT))
             {
-              v49 = [v42 debugName];
+              debugName = [v42 debugName];
               *buf = 138543618;
-              v92 = v49;
+              v92 = debugName;
               v93 = 2114;
-              v94 = self;
+              selfCopy = self;
               _os_log_impl(&dword_1A2860000, v48, OS_LOG_TYPE_DEFAULT, "[OutputContext] Updated outputDevice %{public}@ for context: %{public}@", buf, 0x16u);
             }
 
             if ([v45 count])
             {
               v50 = +[MRUserSettings currentSettings];
-              v51 = [v50 verboseOutputContextLogging];
+              verboseOutputContextLogging = [v50 verboseOutputContextLogging];
 
-              if (v51)
+              if (verboseOutputContextLogging)
               {
                 v52 = MRLogCategoryOutputContextUpdates();
                 if (os_log_type_enabled(v52, OS_LOG_TYPE_DEFAULT))
@@ -900,9 +900,9 @@ void __70__MRAVOutputContext__compareOutputDeviceList_withNewOutputDeviceList___
             if ([v46 count])
             {
               v53 = +[MRUserSettings currentSettings];
-              v54 = [v53 verboseOutputContextLogging];
+              verboseOutputContextLogging2 = [v53 verboseOutputContextLogging];
 
-              if (v54)
+              if (verboseOutputContextLogging2)
               {
                 v55 = MRLogCategoryOutputContextUpdates();
                 if (os_log_type_enabled(v55, OS_LOG_TYPE_DEFAULT))
@@ -917,9 +917,9 @@ void __70__MRAVOutputContext__compareOutputDeviceList_withNewOutputDeviceList___
             if ([v47 count])
             {
               v56 = +[MRUserSettings currentSettings];
-              v57 = [v56 verboseOutputContextLogging];
+              verboseOutputContextLogging3 = [v56 verboseOutputContextLogging];
 
-              if (v57)
+              if (verboseOutputContextLogging3)
               {
                 v58 = MRLogCategoryOutputContextUpdates();
                 if (os_log_type_enabled(v58, OS_LOG_TYPE_DEFAULT))
@@ -954,152 +954,152 @@ void __96__MRAVOutputContext__notifyChangesInOutputDevicesWithAdded_removed_upda
   _notifyChangesInOutputDevicesWithAdded_removed_updated_previous_newDevices__denyList = &unk_1F1577518;
 }
 
-- (void)_notfiyOutputDeviceRemoved:(id)a3
+- (void)_notfiyOutputDeviceRemoved:(id)removed
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  removedCopy = removed;
   if ([(MRAVOutputContext *)self shouldLog])
   {
     v5 = _MRLogForCategory(0);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [v4 debugName];
+      debugName = [removedCopy debugName];
       *buf = 138543618;
-      v21 = v6;
+      v21 = debugName;
       v22 = 2114;
-      v23 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_1A2860000, v5, OS_LOG_TYPE_DEFAULT, "[OutputContext] Observed removed outputDevice %{public}@ for context: %{public}@", buf, 0x16u);
     }
   }
 
-  v7 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v18 = @"MRAVOutputContextOutputDeviceUserInfoKey";
-  v19 = v4;
+  v19 = removedCopy;
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v19 forKeys:&v18 count:1];
-  [v7 postNotificationName:@"MRAVOutputContextDidRemoveOutputDeviceNotification" object:self userInfo:v8];
+  [defaultCenter postNotificationName:@"MRAVOutputContextDidRemoveOutputDeviceNotification" object:self userInfo:v8];
 
-  if ([v4 isLocalDevice])
+  if ([removedCopy isLocalDevice])
   {
     if ([(MRAVOutputContext *)self shouldLog])
     {
       v9 = +[MRUserSettings currentSettings];
-      v10 = [v9 verboseOutputContextLogging];
+      verboseOutputContextLogging = [v9 verboseOutputContextLogging];
 
-      if (v10)
+      if (verboseOutputContextLogging)
       {
         v11 = MRLogCategoryOutputContextUpdates();
         if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
         {
-          v12 = [v4 debugName];
+          debugName2 = [removedCopy debugName];
           *buf = 138543618;
-          v21 = v12;
+          v21 = debugName2;
           v22 = 2114;
-          v23 = self;
+          selfCopy2 = self;
           _os_log_impl(&dword_1A2860000, v11, OS_LOG_TYPE_DEFAULT, "[OutputContext] Observed removed localOutputDevice %{public}@ for context: %{public}@", buf, 0x16u);
         }
       }
     }
 
-    v13 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
     v16 = @"MRAVOutputContextOutputDeviceUserInfoKey";
-    v17 = v4;
+    v17 = removedCopy;
     v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v17 forKeys:&v16 count:1];
-    [v13 postNotificationName:@"MRAVOutputContextDidRemoveLocalDeviceNotification" object:self userInfo:v14];
+    [defaultCenter2 postNotificationName:@"MRAVOutputContextDidRemoveLocalDeviceNotification" object:self userInfo:v14];
   }
 
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_notifyOutputDeviceAdded:(id)a3
+- (void)_notifyOutputDeviceAdded:(id)added
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  addedCopy = added;
   if ([(MRAVOutputContext *)self shouldLog])
   {
     v5 = _MRLogForCategory(0);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [v4 debugName];
+      debugName = [addedCopy debugName];
       *buf = 138543618;
-      v25 = v6;
+      v25 = debugName;
       v26 = 2114;
-      v27 = self;
+      selfCopy3 = self;
       _os_log_impl(&dword_1A2860000, v5, OS_LOG_TYPE_DEFAULT, "[OutputContext] Observed added outputDevice %{public}@ for context: %{public}@", buf, 0x16u);
     }
 
     v7 = +[MRUserSettings currentSettings];
-    v8 = [v7 verboseOutputContextLogging];
+    verboseOutputContextLogging = [v7 verboseOutputContextLogging];
 
-    if (v8)
+    if (verboseOutputContextLogging)
     {
       v9 = MRLogCategoryOutputContextUpdates();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
-        v10 = [v4 descriptor];
+        descriptor = [addedCopy descriptor];
         *buf = 138543618;
-        v25 = v10;
+        v25 = descriptor;
         v26 = 2114;
-        v27 = self;
+        selfCopy3 = self;
         _os_log_impl(&dword_1A2860000, v9, OS_LOG_TYPE_DEFAULT, "[OutputContext] Observed added outputDevice %{public}@ for context: %{public}@", buf, 0x16u);
       }
     }
   }
 
-  v11 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v22 = @"MRAVOutputContextOutputDeviceUserInfoKey";
-  v23 = v4;
+  v23 = addedCopy;
   v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v23 forKeys:&v22 count:1];
-  [v11 postNotificationName:@"MRAVOutputContextDidAddOutputDeviceNotification" object:self userInfo:v12];
+  [defaultCenter postNotificationName:@"MRAVOutputContextDidAddOutputDeviceNotification" object:self userInfo:v12];
 
-  if ([v4 isLocalDevice])
+  if ([addedCopy isLocalDevice])
   {
     if ([(MRAVOutputContext *)self shouldLog])
     {
       v13 = +[MRUserSettings currentSettings];
-      v14 = [v13 verboseOutputContextLogging];
+      verboseOutputContextLogging2 = [v13 verboseOutputContextLogging];
 
-      if (v14)
+      if (verboseOutputContextLogging2)
       {
         v15 = MRLogCategoryOutputContextUpdates();
         if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
         {
-          v16 = [v4 debugName];
+          debugName2 = [addedCopy debugName];
           *buf = 138543618;
-          v25 = v16;
+          v25 = debugName2;
           v26 = 2114;
-          v27 = self;
+          selfCopy3 = self;
           _os_log_impl(&dword_1A2860000, v15, OS_LOG_TYPE_DEFAULT, "[OutputContext] Observed added localOutputDevice %{public}@ for context: %{public}@", buf, 0x16u);
         }
       }
     }
 
-    v17 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
     v20 = @"MRAVOutputContextOutputDeviceUserInfoKey";
-    v21 = v4;
+    v21 = addedCopy;
     v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v21 forKeys:&v20 count:1];
-    [v17 postNotificationName:@"MRAVOutputContextDidAddLocalDeviceNotification" object:self userInfo:v18];
+    [defaultCenter2 postNotificationName:@"MRAVOutputContextDidAddLocalDeviceNotification" object:self userInfo:v18];
   }
 
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_notifyOutputDeviceChanged:(id)a3
+- (void)_notifyOutputDeviceChanged:(id)changed
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
+  changedCopy = changed;
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v12 = @"MRAVOutputContextOutputDeviceUserInfoKey";
-  v13[0] = v4;
+  v13[0] = changedCopy;
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:&v12 count:1];
-  [v5 postNotificationName:@"MRAVOutputContextOutputDeviceDidChangeNotification" object:self userInfo:v6];
+  [defaultCenter postNotificationName:@"MRAVOutputContextOutputDeviceDidChangeNotification" object:self userInfo:v6];
 
-  if ([v4 isLocalDevice])
+  if ([changedCopy isLocalDevice])
   {
-    v7 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
     v10 = @"MRAVOutputContextOutputDeviceUserInfoKey";
-    v11 = v4;
+    v11 = changedCopy;
     v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v11 forKeys:&v10 count:1];
-    [v7 postNotificationName:@"MRAVOutputContextLocalDeviceDidChangeNotification" object:self userInfo:v8];
+    [defaultCenter2 postNotificationName:@"MRAVOutputContextLocalDeviceDidChangeNotification" object:self userInfo:v8];
   }
 
   v9 = *MEMORY[0x1E69E9840];
@@ -1138,22 +1138,22 @@ uint64_t __97__MRAVOutputContext_Deprecated__removeOutputDevices_initiator_fadeA
   return result;
 }
 
-- (void)removeAllOutputDevicesWithCallbackQueue:(id)a3 block:(id)a4
+- (void)removeAllOutputDevicesWithCallbackQueue:(id)queue block:(id)block
 {
-  v6 = a4;
-  v7 = a3;
+  blockCopy = block;
+  queueCopy = queue;
   v8 = [[MRRequestDetails alloc] initWithInitiator:@"Infer" requestID:0 reason:@"API"];
   v9 = [MRGroupTopologyModificationRequest alloc];
-  v10 = [(MRAVOutputContext *)self outputDevices];
-  v11 = [(MRGroupTopologyModificationRequest *)v9 initWithRequestDetails:v8 type:2 outputDevices:v10];
+  outputDevices = [(MRAVOutputContext *)self outputDevices];
+  v11 = [(MRGroupTopologyModificationRequest *)v9 initWithRequestDetails:v8 type:2 outputDevices:outputDevices];
 
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __79__MRAVOutputContext_Deprecated__removeAllOutputDevicesWithCallbackQueue_block___block_invoke;
   v13[3] = &unk_1E769AD80;
-  v14 = v6;
-  v12 = v6;
-  [(MRAVOutputContext *)self modifyTopologyWithRequest:v11 withReplyQueue:v7 completion:v13];
+  v14 = blockCopy;
+  v12 = blockCopy;
+  [(MRAVOutputContext *)self modifyTopologyWithRequest:v11 withReplyQueue:queueCopy completion:v13];
 }
 
 uint64_t __79__MRAVOutputContext_Deprecated__removeAllOutputDevicesWithCallbackQueue_block___block_invoke(uint64_t a1)

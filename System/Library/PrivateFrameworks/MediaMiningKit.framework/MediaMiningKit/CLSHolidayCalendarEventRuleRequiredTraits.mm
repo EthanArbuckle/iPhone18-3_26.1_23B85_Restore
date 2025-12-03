@@ -1,18 +1,18 @@
 @interface CLSHolidayCalendarEventRuleRequiredTraits
-+ (id)_locationTraitDebugStringForTrait:(unint64_t)a3;
-+ (id)_peopleTraitDebugStringForTrait:(unint64_t)a3;
-+ (unint64_t)importanceEnumForImportanceString:(id)a3;
-- (BOOL)evaluateWithTraits:(id)a3 evaluateLocationTraits:(BOOL)a4;
-- (CLSHolidayCalendarEventRuleRequiredTraits)initWithDescription:(id)a3;
++ (id)_locationTraitDebugStringForTrait:(unint64_t)trait;
++ (id)_peopleTraitDebugStringForTrait:(unint64_t)trait;
++ (unint64_t)importanceEnumForImportanceString:(id)string;
+- (BOOL)evaluateWithTraits:(id)traits evaluateLocationTraits:(BOOL)locationTraits;
+- (CLSHolidayCalendarEventRuleRequiredTraits)initWithDescription:(id)description;
 - (id)description;
-- (unint64_t)importanceForScene:(id)a3;
+- (unint64_t)importanceForScene:(id)scene;
 @end
 
 @implementation CLSHolidayCalendarEventRuleRequiredTraits
 
-- (unint64_t)importanceForScene:(id)a3
+- (unint64_t)importanceForScene:(id)scene
 {
-  v3 = [(NSDictionary *)self->_defaultScenesWithImportanceString objectForKeyedSubscript:a3];
+  v3 = [(NSDictionary *)self->_defaultScenesWithImportanceString objectForKeyedSubscript:scene];
   v4 = [CLSHolidayCalendarEventRuleRequiredTraits importanceEnumForImportanceString:v3];
 
   return v4;
@@ -28,15 +28,15 @@
   return v6;
 }
 
-- (BOOL)evaluateWithTraits:(id)a3 evaluateLocationTraits:(BOOL)a4
+- (BOOL)evaluateWithTraits:(id)traits evaluateLocationTraits:(BOOL)locationTraits
 {
-  v4 = a4;
+  locationTraitsCopy = locationTraits;
   v54 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (v4 && -[CLSHolidayCalendarEventRuleTraits locationTrait](self, "locationTrait") && [v6 locationTrait])
+  traitsCopy = traits;
+  if (locationTraitsCopy && -[CLSHolidayCalendarEventRuleTraits locationTrait](self, "locationTrait") && [traitsCopy locationTrait])
   {
-    v7 = [(CLSHolidayCalendarEventRuleTraits *)self locationTrait];
-    v8 = ([v6 locationTrait] & v7) != 0;
+    locationTrait = [(CLSHolidayCalendarEventRuleTraits *)self locationTrait];
+    v8 = ([traitsCopy locationTrait] & locationTrait) != 0;
   }
 
   else
@@ -44,10 +44,10 @@
     v8 = 1;
   }
 
-  if (-[CLSHolidayCalendarEventRuleTraits peopleTrait](self, "peopleTrait") && [v6 peopleTrait])
+  if (-[CLSHolidayCalendarEventRuleTraits peopleTrait](self, "peopleTrait") && [traitsCopy peopleTrait])
   {
-    v9 = [(CLSHolidayCalendarEventRuleTraits *)self peopleTrait];
-    v10 = ([v6 peopleTrait] & v9) != 0;
+    peopleTrait = [(CLSHolidayCalendarEventRuleTraits *)self peopleTrait];
+    v10 = ([traitsCopy peopleTrait] & peopleTrait) != 0;
   }
 
   else
@@ -55,10 +55,10 @@
     v10 = 1;
   }
 
-  if (-[CLSHolidayCalendarEventRuleRequiredTraits peopleCountRangeIsRequired](self, "peopleCountRangeIsRequired") && [v6 numberOfPeople] != 0x7FFFFFFFFFFFFFFFLL)
+  if (-[CLSHolidayCalendarEventRuleRequiredTraits peopleCountRangeIsRequired](self, "peopleCountRangeIsRequired") && [traitsCopy numberOfPeople] != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v12 = [v6 numberOfPeople];
-    v11 = v12 >= [(CLSHolidayCalendarEventRuleRequiredTraits *)self minimumPeopleCount];
+    numberOfPeople = [traitsCopy numberOfPeople];
+    v11 = numberOfPeople >= [(CLSHolidayCalendarEventRuleRequiredTraits *)self minimumPeopleCount];
   }
 
   else
@@ -68,118 +68,118 @@
 
   if ([(CLSHolidayCalendarEventRuleRequiredTraits *)self mustContainMePerson])
   {
-    v13 = [v6 containsMePerson];
+    containsMePerson = [traitsCopy containsMePerson];
   }
 
   else
   {
-    v13 = 1;
+    containsMePerson = 1;
   }
 
   v14 = v8 && v10;
-  v15 = v11 & v13;
+  v15 = v11 & containsMePerson;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     v17 = NSStringFromBOOL();
     v18 = NSStringFromBOOL();
-    v27 = [v6 locationTrait];
-    v26 = [(CLSHolidayCalendarEventRuleTraits *)self locationTrait];
+    locationTrait2 = [traitsCopy locationTrait];
+    locationTrait3 = [(CLSHolidayCalendarEventRuleTraits *)self locationTrait];
     v25 = NSStringFromBOOL();
-    v24 = [v6 peopleTrait];
-    v23 = [(CLSHolidayCalendarEventRuleTraits *)self peopleTrait];
+    peopleTrait2 = [traitsCopy peopleTrait];
+    peopleTrait3 = [(CLSHolidayCalendarEventRuleTraits *)self peopleTrait];
     v22 = NSStringFromBOOL();
-    v21 = [v6 numberOfPeople];
-    v19 = [(CLSHolidayCalendarEventRuleRequiredTraits *)self minimumPeopleCount];
+    numberOfPeople2 = [traitsCopy numberOfPeople];
+    minimumPeopleCount = [(CLSHolidayCalendarEventRuleRequiredTraits *)self minimumPeopleCount];
     v20 = NSStringFromBOOL();
     *buf = 138415362;
     v29 = v17;
     v30 = 2112;
     v31 = v18;
     v32 = 2048;
-    v33 = v27;
+    v33 = locationTrait2;
     v34 = 2048;
-    v35 = v26;
+    v35 = locationTrait3;
     v36 = 2112;
     v37 = v25;
     v38 = 2048;
-    v39 = v24;
+    v39 = peopleTrait2;
     v40 = 2048;
-    v41 = v23;
+    v41 = peopleTrait3;
     v42 = 2112;
     v43 = v22;
     v44 = 2048;
-    v45 = v21;
+    v45 = numberOfPeople2;
     v46 = 2048;
-    v47 = v19;
+    v47 = minimumPeopleCount;
     v48 = 2112;
     v49 = v20;
     v50 = 1024;
-    v51 = [v6 containsMePerson];
+    containsMePerson2 = [traitsCopy containsMePerson];
     v52 = 1024;
-    v53 = [(CLSHolidayCalendarEventRuleRequiredTraits *)self mustContainMePerson];
+    mustContainMePerson = [(CLSHolidayCalendarEventRuleRequiredTraits *)self mustContainMePerson];
     _os_log_debug_impl(&dword_22F907000, MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG, "Traits succeeded %@ : location %@ (given %lu, needed %lu), people %@ (given %lu, needed %lu), minimumPeopleCount %@ (given %lu, needed %lu), mustContainMe %@ (given %d, needed %d)", buf, 0x7Cu);
   }
 
   return v14 & v15;
 }
 
-- (CLSHolidayCalendarEventRuleRequiredTraits)initWithDescription:(id)a3
+- (CLSHolidayCalendarEventRuleRequiredTraits)initWithDescription:(id)description
 {
-  v4 = a3;
+  descriptionCopy = description;
   v18.receiver = self;
   v18.super_class = CLSHolidayCalendarEventRuleRequiredTraits;
   v5 = [(CLSHolidayCalendarEventRuleTraits *)&v18 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"eventType"];
+    v6 = [descriptionCopy objectForKeyedSubscript:@"eventType"];
     v5->_type = [v6 unsignedIntegerValue];
 
-    v7 = [v4 objectForKeyedSubscript:@"eventCategory"];
+    v7 = [descriptionCopy objectForKeyedSubscript:@"eventCategory"];
     v5->_eventCategory = [v7 unsignedIntegerValue];
 
-    v8 = [v4 objectForKeyedSubscript:@"peopleTrait"];
-    v9 = [v8 unsignedIntegerValue];
+    v8 = [descriptionCopy objectForKeyedSubscript:@"peopleTrait"];
+    unsignedIntegerValue = [v8 unsignedIntegerValue];
 
-    [(CLSHolidayCalendarEventRuleTraits *)v5 setPeopleTrait:v9];
-    v10 = [v4 objectForKeyedSubscript:@"minimumPeopleCount"];
+    [(CLSHolidayCalendarEventRuleTraits *)v5 setPeopleTrait:unsignedIntegerValue];
+    v10 = [descriptionCopy objectForKeyedSubscript:@"minimumPeopleCount"];
     v5->_minimumPeopleCount = [v10 unsignedIntegerValue];
-    v11 = [v4 objectForKeyedSubscript:@"locationTrait"];
-    v12 = [v11 unsignedIntegerValue];
+    v11 = [descriptionCopy objectForKeyedSubscript:@"locationTrait"];
+    unsignedIntegerValue2 = [v11 unsignedIntegerValue];
 
-    [(CLSHolidayCalendarEventRuleTraits *)v5 setLocationTrait:v12];
-    v13 = [v4 objectForKeyedSubscript:@"scenes"];
+    [(CLSHolidayCalendarEventRuleTraits *)v5 setLocationTrait:unsignedIntegerValue2];
+    v13 = [descriptionCopy objectForKeyedSubscript:@"scenes"];
     defaultScenesWithImportanceString = v5->_defaultScenesWithImportanceString;
     v5->_defaultScenesWithImportanceString = v13;
 
-    v15 = [v4 objectForKeyedSubscript:@"mustContainMe"];
+    v15 = [descriptionCopy objectForKeyedSubscript:@"mustContainMe"];
     v5->_mustContainMePerson = [v15 BOOLValue];
 
-    v16 = [v4 objectForKeyedSubscript:@"allowApproximateDateCalculation"];
+    v16 = [descriptionCopy objectForKeyedSubscript:@"allowApproximateDateCalculation"];
     v5->_allowApproximateDateCalculation = [v16 BOOLValue];
   }
 
   return v5;
 }
 
-+ (unint64_t)importanceEnumForImportanceString:(id)a3
++ (unint64_t)importanceEnumForImportanceString:(id)string
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"edgeCase"])
+  stringCopy = string;
+  if ([stringCopy isEqualToString:@"edgeCase"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"medium"])
+  else if ([stringCopy isEqualToString:@"medium"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"important"])
+  else if ([stringCopy isEqualToString:@"important"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"imperative"])
+  else if ([stringCopy isEqualToString:@"imperative"])
   {
     v4 = 4;
   }
@@ -192,12 +192,12 @@
   return v4;
 }
 
-+ (id)_peopleTraitDebugStringForTrait:(unint64_t)a3
++ (id)_peopleTraitDebugStringForTrait:(unint64_t)trait
 {
   v19 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (trait)
   {
-    v4 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
@@ -216,14 +216,14 @@
             objc_enumerationMutation(&unk_28449B2C8);
           }
 
-          v9 = [*(*(&v14 + 1) + 8 * i) unsignedIntegerValue];
-          if ((v9 & a3) != 0)
+          unsignedIntegerValue = [*(*(&v14 + 1) + 8 * i) unsignedIntegerValue];
+          if ((unsignedIntegerValue & trait) != 0)
           {
-            if (v9 <= 7)
+            if (unsignedIntegerValue <= 7)
             {
-              if (v9 > 1)
+              if (unsignedIntegerValue > 1)
               {
-                if (v9 == 2)
+                if (unsignedIntegerValue == 2)
                 {
                   v10 = @"family";
                 }
@@ -231,16 +231,16 @@
                 else
                 {
                   v10 = 0;
-                  if (v9 == 4)
+                  if (unsignedIntegerValue == 4)
                   {
                     v10 = @"friend";
                   }
                 }
               }
 
-              else if (v9)
+              else if (unsignedIntegerValue)
               {
-                if (v9 == 1)
+                if (unsignedIntegerValue == 1)
                 {
                   v10 = @"favorite";
                 }
@@ -257,9 +257,9 @@
               }
             }
 
-            else if (v9 <= 31)
+            else if (unsignedIntegerValue <= 31)
             {
-              if (v9 == 8)
+              if (unsignedIntegerValue == 8)
               {
                 v10 = @"coworker";
               }
@@ -267,19 +267,19 @@
               else
               {
                 v10 = 0;
-                if (v9 == 16)
+                if (unsignedIntegerValue == 16)
                 {
                   v10 = @"acquaintance";
                 }
               }
             }
 
-            else if (v9 == 32)
+            else if (unsignedIntegerValue == 32)
             {
               v10 = @"mother";
             }
 
-            else if (v9 == 64)
+            else if (unsignedIntegerValue == 64)
             {
               v10 = @"father";
             }
@@ -287,14 +287,14 @@
             else
             {
               v10 = 0;
-              if (v9 == 127)
+              if (unsignedIntegerValue == 127)
               {
                 v10 = @"Any";
               }
             }
 
             v11 = v10;
-            [v4 addObject:v11];
+            [array addObject:v11];
           }
         }
 
@@ -304,7 +304,7 @@
       while (v6);
     }
 
-    v12 = [v4 componentsJoinedByString:{@", "}];
+    v12 = [array componentsJoinedByString:{@", "}];
   }
 
   else
@@ -315,12 +315,12 @@
   return v12;
 }
 
-+ (id)_locationTraitDebugStringForTrait:(unint64_t)a3
++ (id)_locationTraitDebugStringForTrait:(unint64_t)trait
 {
   v19 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (trait)
   {
-    v4 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
@@ -339,14 +339,14 @@
             objc_enumerationMutation(&unk_28449B2B0);
           }
 
-          v9 = [*(*(&v14 + 1) + 8 * i) unsignedIntegerValue];
-          if ((v9 & a3) != 0)
+          unsignedIntegerValue = [*(*(&v14 + 1) + 8 * i) unsignedIntegerValue];
+          if ((unsignedIntegerValue & trait) != 0)
           {
-            if (v9 > 7)
+            if (unsignedIntegerValue > 7)
             {
-              if (v9 > 31)
+              if (unsignedIntegerValue > 31)
               {
-                if (v9 == 32)
+                if (unsignedIntegerValue == 32)
                 {
                   v10 = @"out of superset country";
                 }
@@ -354,14 +354,14 @@
                 else
                 {
                   v10 = 0;
-                  if (v9 == 63)
+                  if (unsignedIntegerValue == 63)
                   {
                     v10 = @"Any";
                   }
                 }
               }
 
-              else if (v9 == 8)
+              else if (unsignedIntegerValue == 8)
               {
                 v10 = @"out of superset city";
               }
@@ -369,16 +369,16 @@
               else
               {
                 v10 = 0;
-                if (v9 == 16)
+                if (unsignedIntegerValue == 16)
                 {
                   v10 = @"out of extended area";
                 }
               }
             }
 
-            else if (v9 > 1)
+            else if (unsignedIntegerValue > 1)
             {
-              if (v9 == 2)
+              if (unsignedIntegerValue == 2)
               {
                 v10 = @"in superset extended area";
               }
@@ -386,16 +386,16 @@
               else
               {
                 v10 = 0;
-                if (v9 == 4)
+                if (unsignedIntegerValue == 4)
                 {
                   v10 = @"in superset country";
                 }
               }
             }
 
-            else if (v9)
+            else if (unsignedIntegerValue)
             {
-              if (v9 == 1)
+              if (unsignedIntegerValue == 1)
               {
                 v10 = @"in superset city";
               }
@@ -412,7 +412,7 @@
             }
 
             v11 = v10;
-            [v4 addObject:v11];
+            [array addObject:v11];
           }
         }
 
@@ -422,7 +422,7 @@
       while (v6);
     }
 
-    v12 = [v4 componentsJoinedByString:{@", "}];
+    v12 = [array componentsJoinedByString:{@", "}];
   }
 
   else

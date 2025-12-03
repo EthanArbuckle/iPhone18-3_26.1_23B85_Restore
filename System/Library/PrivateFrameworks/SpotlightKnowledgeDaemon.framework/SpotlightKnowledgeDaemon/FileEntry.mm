@@ -1,23 +1,23 @@
 @interface FileEntry
-- (FileEntry)initWithFilePath:(id)a3 journalNumber:(unint64_t)a4 fileSize:(unint64_t)a5;
+- (FileEntry)initWithFilePath:(id)path journalNumber:(unint64_t)number fileSize:(unint64_t)size;
 @end
 
 @implementation FileEntry
 
-- (FileEntry)initWithFilePath:(id)a3 journalNumber:(unint64_t)a4 fileSize:(unint64_t)a5
+- (FileEntry)initWithFilePath:(id)path journalNumber:(unint64_t)number fileSize:(unint64_t)size
 {
-  v8 = a3;
+  pathCopy = path;
   v13.receiver = self;
   v13.super_class = FileEntry;
   v9 = [(FileEntry *)&v13 init];
   if (v9)
   {
-    v10 = [v8 copy];
+    v10 = [pathCopy copy];
     filePath = v9->_filePath;
     v9->_filePath = v10;
 
-    v9->_journalNumber = a4;
-    v9->_fileSize = a5;
+    v9->_journalNumber = number;
+    v9->_fileSize = size;
   }
 
   return v9;

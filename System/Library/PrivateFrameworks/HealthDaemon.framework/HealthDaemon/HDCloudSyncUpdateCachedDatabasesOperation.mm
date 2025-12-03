@@ -11,12 +11,12 @@
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v2 = [(HDCloudSyncOperation *)self configuration];
-  v3 = [v2 repository];
-  v4 = [v3 allCKContainers];
+  configuration = [(HDCloudSyncOperation *)self configuration];
+  repository = [configuration repository];
+  allCKContainers = [repository allCKContainers];
 
-  obj = v4;
-  v5 = [v4 countByEnumeratingWithState:&v25 objects:v35 count:16];
+  obj = allCKContainers;
+  v5 = [allCKContainers countByEnumeratingWithState:&v25 objects:v35 count:16];
   if (v5)
   {
     v6 = v5;
@@ -34,13 +34,13 @@
         }
 
         v10 = *(*(&v25 + 1) + 8 * v8);
-        v11 = [(HDCloudSyncOperation *)self configuration];
-        v12 = [v11 cachedCloudState];
-        v13 = [v10 containerIdentifier];
-        v14 = [v10 privateCloudDatabase];
-        v15 = [v14 databaseScope];
+        configuration2 = [(HDCloudSyncOperation *)self configuration];
+        cachedCloudState = [configuration2 cachedCloudState];
+        containerIdentifier = [v10 containerIdentifier];
+        privateCloudDatabase = [v10 privateCloudDatabase];
+        databaseScope = [privateCloudDatabase databaseScope];
         v24 = v9;
-        v16 = [v12 addDatabaseWithContainerIdentifier:v13 databaseScope:v15 error:&v24];
+        v16 = [cachedCloudState addDatabaseWithContainerIdentifier:containerIdentifier databaseScope:databaseScope error:&v24];
         v7 = v24;
 
         if ((v16 & 1) == 0)
@@ -50,11 +50,11 @@
           if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_ERROR))
           {
             v19 = v17;
-            v20 = [v10 containerIdentifier];
+            containerIdentifier2 = [v10 containerIdentifier];
             *buf = 138543874;
-            v30 = self;
+            selfCopy = self;
             v31 = 2114;
-            v32 = v20;
+            v32 = containerIdentifier2;
             v33 = 2114;
             v34 = v7;
             _os_log_error_impl(&dword_228986000, v19, OS_LOG_TYPE_ERROR, "%{public}@ Failed to update cache with private database in container %{public}@, error: %{public}@", buf, 0x20u);

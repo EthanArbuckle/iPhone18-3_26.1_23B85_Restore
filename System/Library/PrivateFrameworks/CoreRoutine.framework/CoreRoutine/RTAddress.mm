@@ -1,9 +1,9 @@
 @interface RTAddress
-+ (id)_decodeGeoAddressObjectFromData:(id)a3 decompress:(BOOL)a4;
-+ (id)_encodeGeoAddressObject:(id)a3 compress:(BOOL)a4;
-+ (id)_mergedThoroughfareWithSubPremises:(id)a3 subThoroughfare:(id)a4 thoroughfare:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToAddress:(id)a3;
++ (id)_decodeGeoAddressObjectFromData:(id)data decompress:(BOOL)decompress;
++ (id)_encodeGeoAddressObject:(id)object compress:(BOOL)compress;
++ (id)_mergedThoroughfareWithSubPremises:(id)premises subThoroughfare:(id)thoroughfare thoroughfare:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToAddress:(id)address;
 - (NSArray)areasOfInterest;
 - (NSString)administrativeArea;
 - (NSString)administrativeAreaCode;
@@ -18,38 +18,38 @@
 - (NSString)subLocality;
 - (NSString)subThoroughfare;
 - (NSString)thoroughfare;
-- (RTAddress)initWithCoder:(id)a3;
-- (RTAddress)initWithGeoDictionary:(id)a3 language:(id)a4 country:(id)a5 phoneticLocale:(id)a6;
-- (RTAddress)initWithIdentifier:(id)a3 geoAddressData:(id)a4 subPremises:(id)a5 subThoroughfare:(id)a6 thoroughfare:(id)a7 subLocality:(id)a8 locality:(id)a9 subAdministrativeArea:(id)a10 administrativeArea:(id)a11 administrativeAreaCode:(id)a12 postalCode:(id)a13 country:(id)a14 countryCode:(id)a15 inlandWater:(id)a16 ocean:(id)a17 areasOfInterest:(id)a18 isIsland:(BOOL)a19 creationDate:(id)a20 expirationDate:(id)a21 iso3166CountryCode:(id)a22 iso3166SubdivisionCode:(id)a23;
-- (id)copyWithZone:(_NSZone *)a3;
+- (RTAddress)initWithCoder:(id)coder;
+- (RTAddress)initWithGeoDictionary:(id)dictionary language:(id)language country:(id)country phoneticLocale:(id)locale;
+- (RTAddress)initWithIdentifier:(id)identifier geoAddressData:(id)data subPremises:(id)premises subThoroughfare:(id)thoroughfare thoroughfare:(id)a7 subLocality:(id)locality locality:(id)a9 subAdministrativeArea:(id)self0 administrativeArea:(id)self1 administrativeAreaCode:(id)self2 postalCode:(id)self3 country:(id)self4 countryCode:(id)self5 inlandWater:(id)self6 ocean:(id)self7 areasOfInterest:(id)self8 isIsland:(BOOL)self9 creationDate:(id)date expirationDate:(id)expirationDate iso3166CountryCode:(id)iso3166CountryCode iso3166SubdivisionCode:(id)subdivisionCode;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)geoAddressObject;
 - (id)geoDictionaryRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RTAddress
 
 - (NSString)thoroughfare
 {
-  v3 = [(RTAddress *)self geoAddressData];
+  geoAddressData = [(RTAddress *)self geoAddressData];
 
-  if (v3)
+  if (geoAddressData)
   {
-    v4 = [(RTAddress *)self geoAddressObject];
-    v5 = [v4 address];
-    v6 = [v5 structuredAddress];
+    geoAddressObject = [(RTAddress *)self geoAddressObject];
+    address = [geoAddressObject address];
+    structuredAddress = [address structuredAddress];
 
-    v7 = [v6 thoroughfare];
+    thoroughfare = [structuredAddress thoroughfare];
   }
 
   else
   {
-    v7 = self->_thoroughfare;
+    thoroughfare = self->_thoroughfare;
   }
 
-  return v7;
+  return thoroughfare;
 }
 
 - (id)geoAddressObject
@@ -82,329 +82,329 @@
 
 - (NSString)mergedThoroughfare
 {
-  v3 = [(RTAddress *)self geoAddressData];
+  geoAddressData = [(RTAddress *)self geoAddressData];
 
-  if (v3)
+  if (geoAddressData)
   {
-    v4 = [(RTAddress *)self geoAddressObject];
-    v5 = [v4 address];
-    v6 = [v5 structuredAddress];
+    geoAddressObject = [(RTAddress *)self geoAddressObject];
+    address = [geoAddressObject address];
+    structuredAddress = [address structuredAddress];
 
-    v7 = [v6 fullThoroughfare];
+    fullThoroughfare = [structuredAddress fullThoroughfare];
 
-    if (v7)
+    if (fullThoroughfare)
     {
-      v8 = [v6 fullThoroughfare];
+      fullThoroughfare2 = [structuredAddress fullThoroughfare];
       goto LABEL_6;
     }
   }
 
   v9 = objc_opt_class();
   subPremises = self->_subPremises;
-  v6 = [(RTAddress *)self subThoroughfare];
-  v11 = [(RTAddress *)self thoroughfare];
-  v8 = [v9 _mergedThoroughfareWithSubPremises:subPremises subThoroughfare:v6 thoroughfare:v11];
+  structuredAddress = [(RTAddress *)self subThoroughfare];
+  thoroughfare = [(RTAddress *)self thoroughfare];
+  fullThoroughfare2 = [v9 _mergedThoroughfareWithSubPremises:subPremises subThoroughfare:structuredAddress thoroughfare:thoroughfare];
 
 LABEL_6:
 
-  return v8;
+  return fullThoroughfare2;
 }
 
 - (NSString)subThoroughfare
 {
-  v3 = [(RTAddress *)self geoAddressData];
+  geoAddressData = [(RTAddress *)self geoAddressData];
 
-  if (v3)
+  if (geoAddressData)
   {
-    v4 = [(RTAddress *)self geoAddressObject];
-    v5 = [v4 address];
-    v6 = [v5 structuredAddress];
+    geoAddressObject = [(RTAddress *)self geoAddressObject];
+    address = [geoAddressObject address];
+    structuredAddress = [address structuredAddress];
 
-    v7 = [v6 subThoroughfare];
+    subThoroughfare = [structuredAddress subThoroughfare];
   }
 
   else
   {
-    v7 = self->_subThoroughfare;
+    subThoroughfare = self->_subThoroughfare;
   }
 
-  return v7;
+  return subThoroughfare;
 }
 
 - (NSString)subLocality
 {
-  v3 = [(RTAddress *)self geoAddressData];
+  geoAddressData = [(RTAddress *)self geoAddressData];
 
-  if (v3)
+  if (geoAddressData)
   {
-    v4 = [(RTAddress *)self geoAddressObject];
-    v5 = [v4 address];
-    v6 = [v5 structuredAddress];
+    geoAddressObject = [(RTAddress *)self geoAddressObject];
+    address = [geoAddressObject address];
+    structuredAddress = [address structuredAddress];
 
-    v7 = [v6 subLocality];
+    subLocality = [structuredAddress subLocality];
   }
 
   else
   {
-    v7 = self->_subLocality;
+    subLocality = self->_subLocality;
   }
 
-  return v7;
+  return subLocality;
 }
 
 - (NSString)locality
 {
-  v3 = [(RTAddress *)self geoAddressData];
+  geoAddressData = [(RTAddress *)self geoAddressData];
 
-  if (v3)
+  if (geoAddressData)
   {
-    v4 = [(RTAddress *)self geoAddressObject];
-    v5 = [v4 address];
-    v6 = [v5 structuredAddress];
+    geoAddressObject = [(RTAddress *)self geoAddressObject];
+    address = [geoAddressObject address];
+    structuredAddress = [address structuredAddress];
 
-    v7 = [v6 locality];
+    locality = [structuredAddress locality];
   }
 
   else
   {
-    v7 = self->_locality;
+    locality = self->_locality;
   }
 
-  return v7;
+  return locality;
 }
 
 - (NSString)subAdministrativeArea
 {
-  v3 = [(RTAddress *)self geoAddressData];
+  geoAddressData = [(RTAddress *)self geoAddressData];
 
-  if (v3)
+  if (geoAddressData)
   {
-    v4 = [(RTAddress *)self geoAddressObject];
-    v5 = [v4 address];
-    v6 = [v5 structuredAddress];
+    geoAddressObject = [(RTAddress *)self geoAddressObject];
+    address = [geoAddressObject address];
+    structuredAddress = [address structuredAddress];
 
-    v7 = [v6 subAdministrativeArea];
+    subAdministrativeArea = [structuredAddress subAdministrativeArea];
   }
 
   else
   {
-    v7 = self->_subAdministrativeArea;
+    subAdministrativeArea = self->_subAdministrativeArea;
   }
 
-  return v7;
+  return subAdministrativeArea;
 }
 
 - (NSString)administrativeArea
 {
-  v3 = [(RTAddress *)self geoAddressData];
+  geoAddressData = [(RTAddress *)self geoAddressData];
 
-  if (v3)
+  if (geoAddressData)
   {
-    v4 = [(RTAddress *)self geoAddressObject];
-    v5 = [v4 address];
-    v6 = [v5 structuredAddress];
+    geoAddressObject = [(RTAddress *)self geoAddressObject];
+    address = [geoAddressObject address];
+    structuredAddress = [address structuredAddress];
 
-    v7 = [v6 administrativeArea];
+    administrativeArea = [structuredAddress administrativeArea];
   }
 
   else
   {
-    v7 = self->_administrativeArea;
+    administrativeArea = self->_administrativeArea;
   }
 
-  return v7;
+  return administrativeArea;
 }
 
 - (NSString)administrativeAreaCode
 {
-  v3 = [(RTAddress *)self geoAddressData];
+  geoAddressData = [(RTAddress *)self geoAddressData];
 
-  if (v3)
+  if (geoAddressData)
   {
-    v4 = [(RTAddress *)self geoAddressObject];
-    v5 = [v4 address];
-    v6 = [v5 structuredAddress];
+    geoAddressObject = [(RTAddress *)self geoAddressObject];
+    address = [geoAddressObject address];
+    structuredAddress = [address structuredAddress];
 
-    v7 = [v6 administrativeAreaCode];
+    administrativeAreaCode = [structuredAddress administrativeAreaCode];
   }
 
   else
   {
-    v7 = self->_administrativeAreaCode;
+    administrativeAreaCode = self->_administrativeAreaCode;
   }
 
-  return v7;
+  return administrativeAreaCode;
 }
 
 - (NSString)postalCode
 {
-  v3 = [(RTAddress *)self geoAddressData];
+  geoAddressData = [(RTAddress *)self geoAddressData];
 
-  if (v3)
+  if (geoAddressData)
   {
-    v4 = [(RTAddress *)self geoAddressObject];
-    v5 = [v4 address];
-    v6 = [v5 structuredAddress];
+    geoAddressObject = [(RTAddress *)self geoAddressObject];
+    address = [geoAddressObject address];
+    structuredAddress = [address structuredAddress];
 
-    v7 = [v6 postCode];
+    postCode = [structuredAddress postCode];
   }
 
   else
   {
-    v7 = self->_postalCode;
+    postCode = self->_postalCode;
   }
 
-  return v7;
+  return postCode;
 }
 
 - (NSString)country
 {
-  v3 = [(RTAddress *)self geoAddressData];
+  geoAddressData = [(RTAddress *)self geoAddressData];
 
-  if (v3)
+  if (geoAddressData)
   {
-    v4 = [(RTAddress *)self geoAddressObject];
-    v5 = [v4 address];
-    v6 = [v5 structuredAddress];
+    geoAddressObject = [(RTAddress *)self geoAddressObject];
+    address = [geoAddressObject address];
+    structuredAddress = [address structuredAddress];
 
-    v7 = [v6 country];
+    country = [structuredAddress country];
   }
 
   else
   {
-    v7 = self->_country;
+    country = self->_country;
   }
 
-  return v7;
+  return country;
 }
 
 - (NSString)countryCode
 {
-  v3 = [(RTAddress *)self geoAddressData];
+  geoAddressData = [(RTAddress *)self geoAddressData];
 
-  if (v3)
+  if (geoAddressData)
   {
-    v4 = [(RTAddress *)self geoAddressObject];
-    v5 = [v4 address];
-    v6 = [v5 structuredAddress];
+    geoAddressObject = [(RTAddress *)self geoAddressObject];
+    address = [geoAddressObject address];
+    structuredAddress = [address structuredAddress];
 
-    v7 = [v6 countryCode];
+    countryCode = [structuredAddress countryCode];
   }
 
   else
   {
-    v7 = self->_countryCode;
+    countryCode = self->_countryCode;
   }
 
-  return v7;
+  return countryCode;
 }
 
 - (NSString)inlandWater
 {
-  v3 = [(RTAddress *)self geoAddressData];
+  geoAddressData = [(RTAddress *)self geoAddressData];
 
-  if (v3)
+  if (geoAddressData)
   {
-    v4 = [(RTAddress *)self geoAddressObject];
-    v5 = [v4 address];
-    v6 = [v5 structuredAddress];
+    geoAddressObject = [(RTAddress *)self geoAddressObject];
+    address = [geoAddressObject address];
+    structuredAddress = [address structuredAddress];
 
-    v7 = [v6 inlandWater];
+    inlandWater = [structuredAddress inlandWater];
   }
 
   else
   {
-    v7 = self->_inlandWater;
+    inlandWater = self->_inlandWater;
   }
 
-  return v7;
+  return inlandWater;
 }
 
 - (NSString)ocean
 {
-  v3 = [(RTAddress *)self geoAddressData];
+  geoAddressData = [(RTAddress *)self geoAddressData];
 
-  if (v3)
+  if (geoAddressData)
   {
-    v4 = [(RTAddress *)self geoAddressObject];
-    v5 = [v4 address];
-    v6 = [v5 structuredAddress];
+    geoAddressObject = [(RTAddress *)self geoAddressObject];
+    address = [geoAddressObject address];
+    structuredAddress = [address structuredAddress];
 
-    v7 = [v6 ocean];
+    ocean = [structuredAddress ocean];
   }
 
   else
   {
-    v7 = self->_ocean;
+    ocean = self->_ocean;
   }
 
-  return v7;
+  return ocean;
 }
 
 - (NSArray)areasOfInterest
 {
-  v3 = [(RTAddress *)self geoAddressData];
+  geoAddressData = [(RTAddress *)self geoAddressData];
 
-  if (v3)
+  if (geoAddressData)
   {
-    v4 = [(RTAddress *)self geoAddressObject];
-    v5 = [v4 address];
-    v6 = [v5 structuredAddress];
+    geoAddressObject = [(RTAddress *)self geoAddressObject];
+    address = [geoAddressObject address];
+    structuredAddress = [address structuredAddress];
 
-    v7 = [v6 areaOfInterests];
+    areaOfInterests = [structuredAddress areaOfInterests];
   }
 
   else
   {
-    v7 = self->_areasOfInterest;
+    areaOfInterests = self->_areasOfInterest;
   }
 
-  return v7;
+  return areaOfInterests;
 }
 
-- (RTAddress)initWithIdentifier:(id)a3 geoAddressData:(id)a4 subPremises:(id)a5 subThoroughfare:(id)a6 thoroughfare:(id)a7 subLocality:(id)a8 locality:(id)a9 subAdministrativeArea:(id)a10 administrativeArea:(id)a11 administrativeAreaCode:(id)a12 postalCode:(id)a13 country:(id)a14 countryCode:(id)a15 inlandWater:(id)a16 ocean:(id)a17 areasOfInterest:(id)a18 isIsland:(BOOL)a19 creationDate:(id)a20 expirationDate:(id)a21 iso3166CountryCode:(id)a22 iso3166SubdivisionCode:(id)a23
+- (RTAddress)initWithIdentifier:(id)identifier geoAddressData:(id)data subPremises:(id)premises subThoroughfare:(id)thoroughfare thoroughfare:(id)a7 subLocality:(id)locality locality:(id)a9 subAdministrativeArea:(id)self0 administrativeArea:(id)self1 administrativeAreaCode:(id)self2 postalCode:(id)self3 country:(id)self4 countryCode:(id)self5 inlandWater:(id)self6 ocean:(id)self7 areasOfInterest:(id)self8 isIsland:(BOOL)self9 creationDate:(id)date expirationDate:(id)expirationDate iso3166CountryCode:(id)iso3166CountryCode iso3166SubdivisionCode:(id)subdivisionCode
 {
-  v56 = a3;
-  v73 = a4;
-  v72 = a5;
-  v54 = a6;
-  v71 = a6;
+  identifierCopy = identifier;
+  dataCopy = data;
+  premisesCopy = premises;
+  thoroughfareCopy = thoroughfare;
+  thoroughfareCopy2 = thoroughfare;
   v70 = a7;
-  v69 = a8;
+  localityCopy = locality;
   v68 = a9;
-  v67 = a10;
-  v66 = a11;
-  v65 = a12;
-  v64 = a13;
-  v63 = a14;
-  v62 = a15;
-  v61 = a16;
-  v60 = a17;
-  v28 = a18;
-  v29 = a20;
-  v74 = a21;
-  v59 = a22;
-  v58 = a23;
-  if (v56)
+  areaCopy = area;
+  administrativeAreaCopy = administrativeArea;
+  codeCopy = code;
+  postalCodeCopy = postalCode;
+  countryCopy = country;
+  countryCodeCopy = countryCode;
+  waterCopy = water;
+  oceanCopy = ocean;
+  interestCopy = interest;
+  dateCopy = date;
+  expirationDateCopy = expirationDate;
+  iso3166CountryCodeCopy = iso3166CountryCode;
+  subdivisionCodeCopy = subdivisionCode;
+  if (identifierCopy)
   {
-    if (v29)
+    if (dateCopy)
     {
-      v30 = self;
-      if (v74)
+      selfCopy3 = self;
+      if (expirationDateCopy)
       {
-        v53 = v28;
+        v53 = interestCopy;
         v75.receiver = self;
         v75.super_class = RTAddress;
         v31 = [(RTAddress *)&v75 init];
         v32 = v31;
         if (v31)
         {
-          objc_storeStrong(&v31->_identifier, a3);
-          objc_storeStrong(&v32->_geoAddressData, a4);
+          objc_storeStrong(&v31->_identifier, identifier);
+          objc_storeStrong(&v32->_geoAddressData, data);
           localGeoAddressObject = v32->_localGeoAddressObject;
           v32->_localGeoAddressObject = 0;
 
-          objc_storeStrong(&v32->_subPremises, a5);
+          objc_storeStrong(&v32->_subPremises, premises);
           if (v32->_geoAddressData)
           {
             subThoroughfare = v32->_subThoroughfare;
@@ -448,18 +448,18 @@ LABEL_6:
 
           else
           {
-            objc_storeStrong(&v32->_subThoroughfare, v54);
+            objc_storeStrong(&v32->_subThoroughfare, thoroughfareCopy);
             objc_storeStrong(&v32->_thoroughfare, a7);
-            objc_storeStrong(&v32->_subLocality, a8);
+            objc_storeStrong(&v32->_subLocality, locality);
             objc_storeStrong(&v32->_locality, a9);
-            objc_storeStrong(&v32->_subAdministrativeArea, a10);
-            objc_storeStrong(&v32->_administrativeArea, a11);
-            objc_storeStrong(&v32->_administrativeAreaCode, a12);
-            objc_storeStrong(&v32->_postalCode, a13);
-            objc_storeStrong(&v32->_country, a14);
-            objc_storeStrong(&v32->_countryCode, a15);
-            objc_storeStrong(&v32->_inlandWater, a16);
-            objc_storeStrong(&v32->_ocean, a17);
+            objc_storeStrong(&v32->_subAdministrativeArea, area);
+            objc_storeStrong(&v32->_administrativeArea, administrativeArea);
+            objc_storeStrong(&v32->_administrativeAreaCode, code);
+            objc_storeStrong(&v32->_postalCode, postalCode);
+            objc_storeStrong(&v32->_country, country);
+            objc_storeStrong(&v32->_countryCode, countryCode);
+            objc_storeStrong(&v32->_inlandWater, water);
+            objc_storeStrong(&v32->_ocean, ocean);
             v46 = [v53 count];
             if (v46)
             {
@@ -470,16 +470,16 @@ LABEL_6:
           areasOfInterest = v32->_areasOfInterest;
           v32->_areasOfInterest = v46;
 
-          v32->_isIsland = a19;
-          objc_storeStrong(&v32->_creationDate, a20);
-          objc_storeStrong(&v32->_expirationDate, a21);
-          objc_storeStrong(&v32->_iso3166CountryCode, a22);
-          objc_storeStrong(&v32->_iso3166SubdivisionCode, a23);
+          v32->_isIsland = island;
+          objc_storeStrong(&v32->_creationDate, date);
+          objc_storeStrong(&v32->_expirationDate, expirationDate);
+          objc_storeStrong(&v32->_iso3166CountryCode, iso3166CountryCode);
+          objc_storeStrong(&v32->_iso3166SubdivisionCode, subdivisionCode);
         }
 
-        v30 = v32;
-        v48 = v30;
-        v28 = v53;
+        selfCopy3 = v32;
+        v48 = selfCopy3;
+        interestCopy = v53;
         goto LABEL_18;
       }
 
@@ -499,7 +499,7 @@ LABEL_13:
     else
     {
       v49 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-      v30 = self;
+      selfCopy3 = self;
       if (!os_log_type_enabled(v49, OS_LOG_TYPE_ERROR))
       {
         goto LABEL_13;
@@ -521,64 +521,64 @@ LABEL_13:
   }
 
   v48 = 0;
-  v30 = self;
+  selfCopy3 = self;
 LABEL_18:
 
   return v48;
 }
 
-- (RTAddress)initWithGeoDictionary:(id)a3 language:(id)a4 country:(id)a5 phoneticLocale:(id)a6
+- (RTAddress)initWithGeoDictionary:(id)dictionary language:(id)language country:(id)country phoneticLocale:(id)locale
 {
   v10 = MEMORY[0x1E695DF00];
-  v11 = a6;
-  v12 = a5;
-  v13 = a4;
-  v14 = a3;
-  v15 = [v10 date];
-  v16 = [v15 dateByAddingTimeInterval:4838400.0];
-  v17 = [objc_alloc(MEMORY[0x1E69A1B40]) initWithContactAddressDictionary:v14 language:v13 country:v12 phoneticLocale:v11];
+  localeCopy = locale;
+  countryCopy = country;
+  languageCopy = language;
+  dictionaryCopy = dictionary;
+  date = [v10 date];
+  v16 = [date dateByAddingTimeInterval:4838400.0];
+  v17 = [objc_alloc(MEMORY[0x1E69A1B40]) initWithContactAddressDictionary:dictionaryCopy language:languageCopy country:countryCopy phoneticLocale:localeCopy];
 
-  v18 = [MEMORY[0x1E696AFB0] UUID];
-  v19 = [(RTAddress *)self initWithIdentifier:v18 geoAddressObject:v17 subPremises:0 isIsland:0 creationDate:v15 expirationDate:v16 iso3166CountryCode:0 iso3166SubdivisionCode:0];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  v19 = [(RTAddress *)self initWithIdentifier:uUID geoAddressObject:v17 subPremises:0 isIsland:0 creationDate:date expirationDate:v16 iso3166CountryCode:0 iso3166SubdivisionCode:0];
 
   return v19;
 }
 
-+ (id)_encodeGeoAddressObject:(id)a3 compress:(BOOL)a4
++ (id)_encodeGeoAddressObject:(id)object compress:(BOOL)compress
 {
-  v4 = a4;
+  compressCopy = compress;
   v5 = MEMORY[0x1E696ACC8];
-  v6 = a3;
+  objectCopy = object;
   v7 = [[v5 alloc] initRequiringSecureCoding:1];
-  [v7 encodeObject:v6 forKey:@"geoAddress"];
+  [v7 encodeObject:objectCopy forKey:@"geoAddress"];
 
   [v7 finishEncoding];
-  if (v6)
+  if (objectCopy)
   {
-    v8 = [v7 encodedData];
-    v6 = v8;
-    if (v4)
+    encodedData = [v7 encodedData];
+    objectCopy = encodedData;
+    if (compressCopy)
     {
-      v9 = [v8 compressedDataUsingAlgorithm:3 error:0];
+      v9 = [encodedData compressedDataUsingAlgorithm:3 error:0];
 
-      v6 = v9;
+      objectCopy = v9;
     }
   }
 
-  return v6;
+  return objectCopy;
 }
 
-+ (id)_decodeGeoAddressObjectFromData:(id)a3 decompress:(BOOL)a4
++ (id)_decodeGeoAddressObjectFromData:(id)data decompress:(BOOL)decompress
 {
-  v4 = a4;
+  decompressCopy = decompress;
   v19 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  dataCopy = data;
+  v6 = dataCopy;
+  if (dataCopy)
   {
-    v7 = v5;
+    v7 = dataCopy;
     v8 = v7;
-    if (v4)
+    if (decompressCopy)
     {
       v9 = [v7 decompressedDataUsingAlgorithm:3 error:0];
 
@@ -623,53 +623,53 @@ LABEL_18:
   v3 = MEMORY[0x1E696AEC0];
   if (self->_geoAddressData)
   {
-    v4 = [(RTAddress *)self geoAddressObject];
-    v5 = [v4 fullAddressWithMultiline:0];
+    geoAddressObject = [(RTAddress *)self geoAddressObject];
+    v5 = [geoAddressObject fullAddressWithMultiline:0];
     v6 = [v3 stringWithFormat:@"%@ (%@, %@, GEOAddressObject)", v5, self->_iso3166SubdivisionCode, self->_iso3166CountryCode];
   }
 
   else
   {
-    v4 = [(RTAddress *)self mergedThoroughfare];
+    geoAddressObject = [(RTAddress *)self mergedThoroughfare];
     locality = self->_locality;
-    v6 = [v3 stringWithFormat:@"%@ %@, %@ %@ %@ (%@, %@, legacy)", v4, locality, self->_administrativeArea, self->_postalCode, self->_country, self->_iso3166SubdivisionCode, self->_iso3166CountryCode];
+    v6 = [v3 stringWithFormat:@"%@ %@, %@ %@ %@ (%@, %@, legacy)", geoAddressObject, locality, self->_administrativeArea, self->_postalCode, self->_country, self->_iso3166SubdivisionCode, self->_iso3166CountryCode];
   }
 
   return v6;
 }
 
-- (RTAddress)initWithCoder:(id)a3
+- (RTAddress)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v30 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
-  v29 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"geoAddressData"];
+  coderCopy = coder;
+  v30 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  v29 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"geoAddressData"];
   v4 = MEMORY[0x1E695DFD8];
   v5 = objc_opt_class();
   v6 = [v4 setWithObjects:{v5, objc_opt_class(), 0}];
-  v33 = [v3 decodeObjectOfClasses:v6 forKey:@"subPremises"];
+  v33 = [coderCopy decodeObjectOfClasses:v6 forKey:@"subPremises"];
 
-  v32 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"subThoroughfare"];
-  v31 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"thoroughfare"];
-  v24 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"subLocality"];
-  v28 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"locality"];
-  v23 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"subAdministrativeArea"];
-  v22 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"administrativeArea"];
-  v27 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"administrativeAreaCode"];
-  v19 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"postalCode"];
-  v21 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"country"];
-  v20 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"countryCode"];
-  v18 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"inlandWater"];
-  v7 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"ocean"];
+  v32 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"subThoroughfare"];
+  v31 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"thoroughfare"];
+  v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"subLocality"];
+  v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"locality"];
+  v23 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"subAdministrativeArea"];
+  v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"administrativeArea"];
+  v27 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"administrativeAreaCode"];
+  v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"postalCode"];
+  v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"country"];
+  v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"countryCode"];
+  v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"inlandWater"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ocean"];
   v8 = MEMORY[0x1E695DFD8];
   v9 = objc_opt_class();
   v10 = [v8 setWithObjects:{v9, objc_opt_class(), 0}];
-  v17 = [v3 decodeObjectOfClasses:v10 forKey:@"areasOfInterest"];
+  v17 = [coderCopy decodeObjectOfClasses:v10 forKey:@"areasOfInterest"];
 
-  LOBYTE(v10) = [v3 decodeBoolForKey:@"isIsland"];
-  v11 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"creationDate"];
-  v12 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"expirationDate"];
-  v13 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"iso3166CountryCode"];
-  v14 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"iso3166SubdivisionCode"];
+  LOBYTE(v10) = [coderCopy decodeBoolForKey:@"isIsland"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"creationDate"];
+  v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"expirationDate"];
+  v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"iso3166CountryCode"];
+  v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"iso3166SubdivisionCode"];
 
   LOBYTE(v16) = v10;
   v26 = [(RTAddress *)self initWithIdentifier:v30 geoAddressData:v29 subPremises:v33 subThoroughfare:v32 thoroughfare:v31 subLocality:v24 locality:v28 subAdministrativeArea:v23 administrativeArea:v22 administrativeAreaCode:v27 postalCode:v19 country:v21 countryCode:v20 inlandWater:v18 ocean:v7 areasOfInterest:v17 isIsland:v16 creationDate:v11 expirationDate:v12 iso3166CountryCode:v13 iso3166SubdivisionCode:v14];
@@ -677,36 +677,36 @@ LABEL_18:
   return v26;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"identifier"];
-  [v5 encodeObject:self->_geoAddressData forKey:@"geoAddressData"];
-  [v5 encodeObject:self->_subPremises forKey:@"subPremises"];
-  [v5 encodeObject:self->_subThoroughfare forKey:@"subThoroughfare"];
-  [v5 encodeObject:self->_thoroughfare forKey:@"thoroughfare"];
-  [v5 encodeObject:self->_subLocality forKey:@"subLocality"];
-  [v5 encodeObject:self->_locality forKey:@"locality"];
-  [v5 encodeObject:self->_subAdministrativeArea forKey:@"subAdministrativeArea"];
-  [v5 encodeObject:self->_administrativeArea forKey:@"administrativeArea"];
-  [v5 encodeObject:self->_administrativeAreaCode forKey:@"administrativeAreaCode"];
-  [v5 encodeObject:self->_postalCode forKey:@"postalCode"];
-  [v5 encodeObject:self->_country forKey:@"country"];
-  [v5 encodeObject:self->_countryCode forKey:@"countryCode"];
-  [v5 encodeObject:self->_inlandWater forKey:@"inlandWater"];
-  [v5 encodeObject:self->_ocean forKey:@"ocean"];
-  [v5 encodeObject:self->_areasOfInterest forKey:@"areasOfInterest"];
-  [v5 encodeBool:self->_isIsland forKey:@"isIsland"];
-  [v5 encodeObject:self->_creationDate forKey:@"creationDate"];
-  [v5 encodeObject:self->_expirationDate forKey:@"expirationDate"];
-  [v5 encodeObject:self->_iso3166CountryCode forKey:@"iso3166CountryCode"];
-  [v5 encodeObject:self->_iso3166SubdivisionCode forKey:@"iso3166SubdivisionCode"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
+  [coderCopy encodeObject:self->_geoAddressData forKey:@"geoAddressData"];
+  [coderCopy encodeObject:self->_subPremises forKey:@"subPremises"];
+  [coderCopy encodeObject:self->_subThoroughfare forKey:@"subThoroughfare"];
+  [coderCopy encodeObject:self->_thoroughfare forKey:@"thoroughfare"];
+  [coderCopy encodeObject:self->_subLocality forKey:@"subLocality"];
+  [coderCopy encodeObject:self->_locality forKey:@"locality"];
+  [coderCopy encodeObject:self->_subAdministrativeArea forKey:@"subAdministrativeArea"];
+  [coderCopy encodeObject:self->_administrativeArea forKey:@"administrativeArea"];
+  [coderCopy encodeObject:self->_administrativeAreaCode forKey:@"administrativeAreaCode"];
+  [coderCopy encodeObject:self->_postalCode forKey:@"postalCode"];
+  [coderCopy encodeObject:self->_country forKey:@"country"];
+  [coderCopy encodeObject:self->_countryCode forKey:@"countryCode"];
+  [coderCopy encodeObject:self->_inlandWater forKey:@"inlandWater"];
+  [coderCopy encodeObject:self->_ocean forKey:@"ocean"];
+  [coderCopy encodeObject:self->_areasOfInterest forKey:@"areasOfInterest"];
+  [coderCopy encodeBool:self->_isIsland forKey:@"isIsland"];
+  [coderCopy encodeObject:self->_creationDate forKey:@"creationDate"];
+  [coderCopy encodeObject:self->_expirationDate forKey:@"expirationDate"];
+  [coderCopy encodeObject:self->_iso3166CountryCode forKey:@"iso3166CountryCode"];
+  [coderCopy encodeObject:self->_iso3166SubdivisionCode forKey:@"iso3166SubdivisionCode"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   v5 = *&self->_locality;
   v6 = *&self->_postalCode;
   iso3166CountryCode = self->_iso3166CountryCode;
@@ -714,18 +714,18 @@ LABEL_18:
   return [v4 initWithIdentifier:self->_identifier geoAddressData:self->_geoAddressData subPremises:self->_subPremises subThoroughfare:self->_subThoroughfare thoroughfare:self->_thoroughfare subLocality:self->_subLocality locality:self->_locality subAdministrativeArea:self->_subAdministrativeArea administrativeArea:self->_administrativeArea administrativeAreaCode:self->_administrativeAreaCode postalCode:self->_postalCode country:self->_country countryCode:self->_countryCode inlandWater:self->_inlandWater ocean:self->_ocean areasOfInterest:self->_areasOfInterest isIsland:v9 creationDate:self->_creationDate expirationDate:self->_expirationDate iso3166CountryCode:iso3166CountryCode iso3166SubdivisionCode:self->_iso3166SubdivisionCode];
 }
 
-- (BOOL)isEqualToAddress:(id)a3
+- (BOOL)isEqualToAddress:(id)address
 {
-  v5 = a3;
-  v6 = v5;
+  addressCopy = address;
+  v6 = addressCopy;
   identifier = self->_identifier;
   v171 = identifier;
   if (!identifier)
   {
-    v152 = [v5 identifier];
-    if (!v152)
+    identifier = [addressCopy identifier];
+    if (!identifier)
     {
-      v152 = 0;
+      identifier = 0;
       v172 = 0;
       v169 = 0;
       memset(v170, 0, sizeof(v170));
@@ -759,7 +759,7 @@ LABEL_18:
     identifier = self->_identifier;
   }
 
-  v154 = [v6 identifier];
+  identifier2 = [v6 identifier];
   if (([(NSUUID *)identifier isEqual:?]& 1) != 0)
   {
     v169 = 0;
@@ -798,19 +798,19 @@ LABEL_13:
   *&v170[8] = subPremises == 0;
   if (!subPremises)
   {
-    v20 = [v6 subPremises];
-    if (!v20)
+    subPremises = [v6 subPremises];
+    if (!subPremises)
     {
       v153 = 0;
       v21 = 0;
       goto LABEL_114;
     }
 
-    v153 = v20;
+    v153 = subPremises;
     subPremises = self->_subPremises;
   }
 
-  v151 = [v6 subPremises];
+  subPremises2 = [v6 subPremises];
   if (![(NSArray *)subPremises isEqual:?])
   {
     v172 = 1;
@@ -850,15 +850,15 @@ LABEL_114:
   LODWORD(v169) = v21;
   if (geoAddressData)
   {
-    v25 = [v6 geoAddressData];
-    if (v25)
+    geoAddressData = [v6 geoAddressData];
+    if (geoAddressData)
     {
-      v145 = v25;
+      v145 = geoAddressData;
       v26 = self->_geoAddressData;
-      v27 = [v6 geoAddressData];
-      v28 = [(NSData *)v26 isEqual:v27];
+      geoAddressData2 = [v6 geoAddressData];
+      v28 = [(NSData *)v26 isEqual:geoAddressData2];
       v29 = 1;
-      v138 = v27;
+      v138 = geoAddressData2;
       if (v28)
       {
         HIDWORD(v169) = 0;
@@ -895,17 +895,17 @@ LABEL_114:
     v29 = 0;
   }
 
-  v150 = [(RTAddress *)self subThoroughfare];
-  HIDWORD(v169) = v150 == 0;
+  subThoroughfare = [(RTAddress *)self subThoroughfare];
+  HIDWORD(v169) = subThoroughfare == 0;
   *v170 = v29;
-  if (v150 || ([v6 subThoroughfare], (v143 = objc_claimAutoreleasedReturnValue()) != 0))
+  if (subThoroughfare || ([v6 subThoroughfare], (v143 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v149 = [(RTAddress *)self subThoroughfare];
-    v31 = [v149 lowercaseString];
-    v147 = [v6 subThoroughfare];
-    [v147 lowercaseString];
-    v146 = v148 = v31;
-    if (![v31 isEqual:?])
+    subThoroughfare2 = [(RTAddress *)self subThoroughfare];
+    lowercaseString = [subThoroughfare2 lowercaseString];
+    subThoroughfare3 = [v6 subThoroughfare];
+    [subThoroughfare3 lowercaseString];
+    v146 = v148 = lowercaseString;
+    if (![lowercaseString isEqual:?])
     {
       v172 = 1;
       v156 = 0;
@@ -944,18 +944,18 @@ LABEL_114:
     v32 = 0;
   }
 
-  v33 = [(RTAddress *)self thoroughfare];
-  HIDWORD(v168) = v33 == 0;
-  v144 = v33;
+  thoroughfare = [(RTAddress *)self thoroughfare];
+  HIDWORD(v168) = thoroughfare == 0;
+  v144 = thoroughfare;
   LODWORD(v168) = v32;
-  if (v33 || ([v6 thoroughfare], (v136 = objc_claimAutoreleasedReturnValue()) != 0))
+  if (thoroughfare || ([v6 thoroughfare], (v136 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v142 = [(RTAddress *)self thoroughfare];
-    v3 = [v142 lowercaseString];
-    v140 = [v6 thoroughfare];
-    [v140 lowercaseString];
-    v139 = v141 = v3;
-    if (![v3 isEqual:?])
+    thoroughfare2 = [(RTAddress *)self thoroughfare];
+    lowercaseString2 = [thoroughfare2 lowercaseString];
+    thoroughfare3 = [v6 thoroughfare];
+    [thoroughfare3 lowercaseString];
+    v139 = v141 = lowercaseString2;
+    if (![lowercaseString2 isEqual:?])
     {
       v172 = 1;
       v166 = 0;
@@ -993,17 +993,17 @@ LABEL_114:
     LODWORD(v167) = 0;
   }
 
-  v34 = [(RTAddress *)self mergedThoroughfare];
-  HIDWORD(v167) = v34 == 0;
-  v137 = v34;
-  if (v34 || ([v6 mergedThoroughfare], (v129 = objc_claimAutoreleasedReturnValue()) != 0))
+  mergedThoroughfare = [(RTAddress *)self mergedThoroughfare];
+  HIDWORD(v167) = mergedThoroughfare == 0;
+  v137 = mergedThoroughfare;
+  if (mergedThoroughfare || ([v6 mergedThoroughfare], (v129 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v135 = [(RTAddress *)self mergedThoroughfare];
-    v3 = [v135 lowercaseString];
-    v133 = [v6 mergedThoroughfare];
-    [v133 lowercaseString];
-    v132 = v134 = v3;
-    if (![v3 isEqual:?])
+    mergedThoroughfare2 = [(RTAddress *)self mergedThoroughfare];
+    lowercaseString2 = [mergedThoroughfare2 lowercaseString];
+    mergedThoroughfare3 = [v6 mergedThoroughfare];
+    [mergedThoroughfare3 lowercaseString];
+    v132 = v134 = lowercaseString2;
+    if (![lowercaseString2 isEqual:?])
     {
       v172 = 1;
       *&v155[8] = 0;
@@ -1042,22 +1042,22 @@ LABEL_114:
     LODWORD(v166) = 0;
   }
 
-  v35 = [(RTAddress *)self subLocality];
-  HIDWORD(v166) = v35 == 0;
-  v131 = v35;
-  if (v35 || ([v6 subLocality], (v124 = objc_claimAutoreleasedReturnValue()) != 0))
+  subLocality = [(RTAddress *)self subLocality];
+  HIDWORD(v166) = subLocality == 0;
+  v131 = subLocality;
+  if (subLocality || ([v6 subLocality], (v124 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v128 = [(RTAddress *)self subLocality];
-    v36 = [v128 lowercaseString];
-    v126 = [v6 subLocality];
-    v37 = [v126 lowercaseString];
-    v127 = v36;
-    v38 = v36;
-    v3 = v37;
+    subLocality2 = [(RTAddress *)self subLocality];
+    lowercaseString3 = [subLocality2 lowercaseString];
+    subLocality3 = [v6 subLocality];
+    lowercaseString4 = [subLocality3 lowercaseString];
+    v127 = lowercaseString3;
+    v38 = lowercaseString3;
+    lowercaseString2 = lowercaseString4;
     v172 = 1;
-    if (![v38 isEqual:v37])
+    if (![v38 isEqual:lowercaseString4])
     {
-      v130 = v3;
+      v130 = lowercaseString2;
       *&v155[4] = 0;
       v164 = 0;
       v163 = 0;
@@ -1094,22 +1094,22 @@ LABEL_114:
     LODWORD(v165) = 0;
   }
 
-  v39 = [(RTAddress *)self locality];
-  HIDWORD(v165) = v39 == 0;
-  v125 = v39;
-  v130 = v3;
-  if (v39 || ([v6 locality], (v117 = objc_claimAutoreleasedReturnValue()) != 0))
+  locality = [(RTAddress *)self locality];
+  HIDWORD(v165) = locality == 0;
+  v125 = locality;
+  v130 = lowercaseString2;
+  if (locality || ([v6 locality], (v117 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v123 = [(RTAddress *)self locality];
-    v40 = [v123 lowercaseString];
-    v121 = [v6 locality];
-    v41 = [v121 lowercaseString];
-    v122 = v40;
-    v42 = v40;
-    v32 = v41;
+    locality2 = [(RTAddress *)self locality];
+    lowercaseString5 = [locality2 lowercaseString];
+    locality3 = [v6 locality];
+    lowercaseString6 = [locality3 lowercaseString];
+    v122 = lowercaseString5;
+    v42 = lowercaseString5;
+    v32 = lowercaseString6;
     v172 = 1;
-    v120 = v41;
-    if (![v42 isEqual:v41])
+    v120 = lowercaseString6;
+    if (![v42 isEqual:lowercaseString6])
     {
       *v155 = 0;
       v163 = 0;
@@ -1146,20 +1146,20 @@ LABEL_114:
     LODWORD(v164) = 0;
   }
 
-  v43 = [(RTAddress *)self subAdministrativeArea];
-  HIDWORD(v164) = v43 == 0;
-  v119 = v43;
-  if (v43 || ([v6 subAdministrativeArea], (v111 = objc_claimAutoreleasedReturnValue()) != 0))
+  subAdministrativeArea = [(RTAddress *)self subAdministrativeArea];
+  HIDWORD(v164) = subAdministrativeArea == 0;
+  v119 = subAdministrativeArea;
+  if (subAdministrativeArea || ([v6 subAdministrativeArea], (v111 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v116 = [(RTAddress *)self subAdministrativeArea];
-    v44 = [v116 lowercaseString];
-    v114 = [v6 subAdministrativeArea];
-    v45 = [v114 lowercaseString];
-    v115 = v44;
-    v46 = v44;
-    v32 = v45;
+    subAdministrativeArea2 = [(RTAddress *)self subAdministrativeArea];
+    lowercaseString7 = [subAdministrativeArea2 lowercaseString];
+    subAdministrativeArea3 = [v6 subAdministrativeArea];
+    lowercaseString8 = [subAdministrativeArea3 lowercaseString];
+    v115 = lowercaseString7;
+    v46 = lowercaseString7;
+    v32 = lowercaseString8;
     v172 = 1;
-    if (![v46 isEqual:v45])
+    if (![v46 isEqual:lowercaseString8])
     {
       v118 = v32;
       *v155 = 0x100000000;
@@ -1197,20 +1197,20 @@ LABEL_114:
   }
 
   v118 = v32;
-  v47 = [(RTAddress *)self administrativeArea];
-  HIDWORD(v163) = v47 == 0;
-  v113 = v47;
-  if (v47 || ([v6 administrativeArea], (v106 = objc_claimAutoreleasedReturnValue()) != 0))
+  administrativeArea = [(RTAddress *)self administrativeArea];
+  HIDWORD(v163) = administrativeArea == 0;
+  v113 = administrativeArea;
+  if (administrativeArea || ([v6 administrativeArea], (v106 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v110 = [(RTAddress *)self administrativeArea];
-    v48 = [v110 lowercaseString];
-    v108 = [v6 administrativeArea];
-    v49 = [v108 lowercaseString];
-    v109 = v48;
-    v50 = v48;
-    v32 = v49;
+    administrativeArea2 = [(RTAddress *)self administrativeArea];
+    lowercaseString9 = [administrativeArea2 lowercaseString];
+    administrativeArea3 = [v6 administrativeArea];
+    lowercaseString10 = [administrativeArea3 lowercaseString];
+    v109 = lowercaseString9;
+    v50 = lowercaseString9;
+    v32 = lowercaseString10;
     v172 = 1;
-    if (![v50 isEqual:v49])
+    if (![v50 isEqual:lowercaseString10])
     {
       v112 = v32;
       v10 = 0;
@@ -1247,19 +1247,19 @@ LABEL_114:
     LODWORD(v162) = 0;
   }
 
-  v51 = [(RTAddress *)self administrativeAreaCode];
-  HIDWORD(v162) = v51 == 0;
-  v107 = v51;
+  administrativeAreaCode = [(RTAddress *)self administrativeAreaCode];
+  HIDWORD(v162) = administrativeAreaCode == 0;
+  v107 = administrativeAreaCode;
   v112 = v32;
-  if (v51 || ([v6 administrativeAreaCode], (v100 = objc_claimAutoreleasedReturnValue()) != 0))
+  if (administrativeAreaCode || ([v6 administrativeAreaCode], (v100 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v105 = [(RTAddress *)self administrativeAreaCode];
-    v52 = [v105 lowercaseString];
-    v103 = [v6 administrativeAreaCode];
-    [v103 lowercaseString];
-    v102 = v104 = v52;
+    administrativeAreaCode2 = [(RTAddress *)self administrativeAreaCode];
+    lowercaseString11 = [administrativeAreaCode2 lowercaseString];
+    administrativeAreaCode3 = [v6 administrativeAreaCode];
+    [administrativeAreaCode3 lowercaseString];
+    v102 = v104 = lowercaseString11;
     v172 = 1;
-    if (![v52 isEqual:?])
+    if (![lowercaseString11 isEqual:?])
     {
       v11 = 0;
       v160 = 0;
@@ -1294,18 +1294,18 @@ LABEL_114:
     LODWORD(v161) = 0;
   }
 
-  v53 = [(RTAddress *)self postalCode];
-  HIDWORD(v161) = v53 == 0;
-  v101 = v53;
-  if (v53 || ([v6 postalCode], (v94 = objc_claimAutoreleasedReturnValue()) != 0))
+  postalCode = [(RTAddress *)self postalCode];
+  HIDWORD(v161) = postalCode == 0;
+  v101 = postalCode;
+  if (postalCode || ([v6 postalCode], (v94 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v99 = [(RTAddress *)self postalCode];
-    v54 = [v99 lowercaseString];
-    v97 = [v6 postalCode];
-    [v97 lowercaseString];
-    v96 = v98 = v54;
+    postalCode2 = [(RTAddress *)self postalCode];
+    lowercaseString12 = [postalCode2 lowercaseString];
+    postalCode3 = [v6 postalCode];
+    [postalCode3 lowercaseString];
+    v96 = v98 = lowercaseString12;
     v172 = 1;
-    if (![v54 isEqual:?])
+    if (![lowercaseString12 isEqual:?])
     {
       v12 = 0;
       v159 = 0;
@@ -1339,18 +1339,18 @@ LABEL_114:
     LODWORD(v160) = 0;
   }
 
-  v55 = [(RTAddress *)self country];
-  HIDWORD(v160) = v55 == 0;
-  v95 = v55;
-  if (v55 || ([v6 country], (v88 = objc_claimAutoreleasedReturnValue()) != 0))
+  country = [(RTAddress *)self country];
+  HIDWORD(v160) = country == 0;
+  v95 = country;
+  if (country || ([v6 country], (v88 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v93 = [(RTAddress *)self country];
-    v56 = [v93 lowercaseString];
-    v91 = [v6 country];
-    [v91 lowercaseString];
-    v90 = v92 = v56;
+    country2 = [(RTAddress *)self country];
+    lowercaseString13 = [country2 lowercaseString];
+    country3 = [v6 country];
+    [country3 lowercaseString];
+    v90 = v92 = lowercaseString13;
     v172 = 1;
-    if (![v56 isEqual:?])
+    if (![lowercaseString13 isEqual:?])
     {
       v13 = 0;
       v158 = 0;
@@ -1383,19 +1383,19 @@ LABEL_114:
     v57 = 0;
   }
 
-  v58 = [(RTAddress *)self countryCode];
-  HIDWORD(v159) = v58 == 0;
-  v89 = v58;
+  countryCode = [(RTAddress *)self countryCode];
+  HIDWORD(v159) = countryCode == 0;
+  v89 = countryCode;
   LODWORD(v159) = v57;
-  if (v58 || ([v6 countryCode], (v82 = objc_claimAutoreleasedReturnValue()) != 0))
+  if (countryCode || ([v6 countryCode], (v82 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v87 = [(RTAddress *)self countryCode];
-    v59 = [v87 lowercaseString];
-    v85 = [v6 countryCode];
-    [v85 lowercaseString];
-    v84 = v86 = v59;
+    countryCode2 = [(RTAddress *)self countryCode];
+    lowercaseString14 = [countryCode2 lowercaseString];
+    countryCode3 = [v6 countryCode];
+    [countryCode3 lowercaseString];
+    v84 = v86 = lowercaseString14;
     v172 = 1;
-    if (![v59 isEqual:?])
+    if (![lowercaseString14 isEqual:?])
     {
       v14 = 0;
       v157 = 0;
@@ -1427,18 +1427,18 @@ LABEL_114:
     LODWORD(v158) = 0;
   }
 
-  v60 = [(RTAddress *)self inlandWater];
-  HIDWORD(v158) = v60 == 0;
-  v83 = v60;
-  if (v60 || ([v6 inlandWater], (v76 = objc_claimAutoreleasedReturnValue()) != 0))
+  inlandWater = [(RTAddress *)self inlandWater];
+  HIDWORD(v158) = inlandWater == 0;
+  v83 = inlandWater;
+  if (inlandWater || ([v6 inlandWater], (v76 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v81 = [(RTAddress *)self inlandWater];
-    v61 = [v81 lowercaseString];
-    v79 = [v6 inlandWater];
-    [v79 lowercaseString];
-    v78 = v80 = v61;
+    inlandWater2 = [(RTAddress *)self inlandWater];
+    lowercaseString15 = [inlandWater2 lowercaseString];
+    inlandWater3 = [v6 inlandWater];
+    [inlandWater3 lowercaseString];
+    v78 = v80 = lowercaseString15;
     v172 = 1;
-    if (![v61 isEqual:?])
+    if (![lowercaseString15 isEqual:?])
     {
       v15 = 0;
       v156 = 1;
@@ -1469,40 +1469,40 @@ LABEL_114:
     LODWORD(v157) = 0;
   }
 
-  v62 = [(RTAddress *)self ocean];
-  HIDWORD(v157) = v62 == 0;
-  v77 = v62;
-  if (!v62)
+  ocean = [(RTAddress *)self ocean];
+  HIDWORD(v157) = ocean == 0;
+  v77 = ocean;
+  if (!ocean)
   {
-    v70 = [v6 ocean];
-    if (!v70)
+    ocean2 = [v6 ocean];
+    if (!ocean2)
     {
-      v70 = 0;
+      ocean2 = 0;
       HIDWORD(v156) = 0;
       goto LABEL_200;
     }
   }
 
-  v75 = [(RTAddress *)self ocean];
-  v63 = [v75 lowercaseString];
-  v73 = [v6 ocean];
-  [v73 lowercaseString];
-  v72 = v74 = v63;
+  ocean3 = [(RTAddress *)self ocean];
+  lowercaseString16 = [ocean3 lowercaseString];
+  ocean4 = [v6 ocean];
+  [ocean4 lowercaseString];
+  v72 = v74 = lowercaseString16;
   v172 = 1;
-  if ([v63 isEqual:?])
+  if ([lowercaseString16 isEqual:?])
   {
     HIDWORD(v156) = 1;
 LABEL_200:
-    v64 = [(RTAddress *)self areasOfInterest];
-    v67 = v64 == 0;
-    v71 = v64;
-    if (v64 || ([v6 areasOfInterest], (v68 = objc_claimAutoreleasedReturnValue()) != 0))
+    areasOfInterest = [(RTAddress *)self areasOfInterest];
+    v67 = areasOfInterest == 0;
+    v71 = areasOfInterest;
+    if (areasOfInterest || ([v6 areasOfInterest], (v68 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v65 = [(RTAddress *)self areasOfInterest];
+      areasOfInterest2 = [(RTAddress *)self areasOfInterest];
       [v6 areasOfInterest];
-      v66 = v69 = v65;
+      v66 = v69 = areasOfInterest2;
       v172 = 1;
-      if (![v65 isEqualToArray:?])
+      if (![areasOfInterest2 isEqualToArray:?])
       {
         v155[20] = 0;
         LODWORD(v156) = 1;
@@ -1828,18 +1828,18 @@ LABEL_102:
   return v155[20];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(RTAddress *)self isEqualToAddress:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(RTAddress *)self isEqualToAddress:v5];
   }
 
   return v6;
@@ -1871,14 +1871,14 @@ LABEL_102:
   return v18 ^ v22;
 }
 
-+ (id)_mergedThoroughfareWithSubPremises:(id)a3 subThoroughfare:(id)a4 thoroughfare:(id)a5
++ (id)_mergedThoroughfareWithSubPremises:(id)premises subThoroughfare:(id)thoroughfare thoroughfare:(id)a5
 {
-  v7 = a3;
-  v8 = a4;
+  premisesCopy = premises;
+  thoroughfareCopy = thoroughfare;
   v9 = a5;
-  if ([v8 length] && objc_msgSend(v9, "length"))
+  if ([thoroughfareCopy length] && objc_msgSend(v9, "length"))
   {
-    [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ %@", v8, v9];
+    [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ %@", thoroughfareCopy, v9];
   }
 
   else
@@ -1893,14 +1893,14 @@ LABEL_102:
   }
   v10 = ;
 LABEL_8:
-  if ([v10 length] && objc_msgSend(v7, "count"))
+  if ([v10 length] && objc_msgSend(premisesCopy, "count"))
   {
     v11 = MEMORY[0x1E696AEC0];
-    v12 = [v7 componentsJoinedByString:@" "];
+    v12 = [premisesCopy componentsJoinedByString:@" "];
     v13 = [v11 stringWithFormat:@"%@ %@", v10, v12];
   }
 
-  else if (v10 && ![v7 count])
+  else if (v10 && ![premisesCopy count])
   {
     v13 = v10;
   }
@@ -1915,10 +1915,10 @@ LABEL_8:
 
 - (id)geoDictionaryRepresentation
 {
-  v2 = [(RTAddress *)self geoAddressObject];
-  v3 = [v2 addressDictionary];
+  geoAddressObject = [(RTAddress *)self geoAddressObject];
+  addressDictionary = [geoAddressObject addressDictionary];
 
-  return v3;
+  return addressDictionary;
 }
 
 @end

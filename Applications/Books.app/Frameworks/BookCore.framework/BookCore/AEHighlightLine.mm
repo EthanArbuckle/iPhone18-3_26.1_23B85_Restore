@@ -2,7 +2,7 @@
 - (CGRect)currentLineRect;
 - (CGRect)fullLineRect;
 - (void)dealloc;
-- (void)setMultiplyImage:(CGImage *)a3;
+- (void)setMultiplyImage:(CGImage *)image;
 @end
 
 @implementation AEHighlightLine
@@ -15,10 +15,10 @@
   [(AEHighlightLine *)&v3 dealloc];
 }
 
-- (void)setMultiplyImage:(CGImage *)a3
+- (void)setMultiplyImage:(CGImage *)image
 {
   mMultiplyImage = self->mMultiplyImage;
-  if (mMultiplyImage != a3)
+  if (mMultiplyImage != image)
   {
     if (mMultiplyImage)
     {
@@ -26,9 +26,9 @@
     }
 
     self->mMultiplyImage = 0;
-    if (a3)
+    if (image)
     {
-      self->mMultiplyImage = CFRetain(a3);
+      self->mMultiplyImage = CFRetain(image);
     }
   }
 }

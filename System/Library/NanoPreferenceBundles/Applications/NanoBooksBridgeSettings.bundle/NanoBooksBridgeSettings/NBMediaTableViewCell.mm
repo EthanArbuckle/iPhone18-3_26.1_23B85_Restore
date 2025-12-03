@@ -1,24 +1,24 @@
 @interface NBMediaTableViewCell
-- (NBMediaTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5;
+- (NBMediaTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier;
 @end
 
 @implementation NBMediaTableViewCell
 
-- (NBMediaTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5
+- (NBMediaTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier
 {
-  v8 = a5;
+  specifierCopy = specifier;
   v14.receiver = self;
   v14.super_class = NBMediaTableViewCell;
-  v9 = [(NBMediaTableViewCell *)&v14 initWithStyle:a3 reuseIdentifier:a4 specifier:v8];
+  v9 = [(NBMediaTableViewCell *)&v14 initWithStyle:style reuseIdentifier:identifier specifier:specifierCopy];
   if (v9)
   {
     v10 = +[UIApplication sharedApplication];
-    v11 = [v10 preferredContentSizeCategory];
-    v12 = UIContentSizeCategoryCompareToCategory(v11, UIContentSizeCategoryLarge);
+    preferredContentSizeCategory = [v10 preferredContentSizeCategory];
+    v12 = UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, UIContentSizeCategoryLarge);
 
     if (v12 == NSOrderedDescending)
     {
-      [v8 removePropertyForKey:PSTableCellHeightKey];
+      [specifierCopy removePropertyForKey:PSTableCellHeightKey];
     }
   }
 

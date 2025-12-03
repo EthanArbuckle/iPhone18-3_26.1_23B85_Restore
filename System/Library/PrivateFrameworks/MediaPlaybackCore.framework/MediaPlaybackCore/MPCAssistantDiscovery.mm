@@ -1,25 +1,25 @@
 @interface MPCAssistantDiscovery
 - (MPCAssistantDiscovery)init;
-- (void)_discoverAirplayDevices:(id)a3;
+- (void)_discoverAirplayDevices:(id)devices;
 - (void)dealloc;
-- (void)discoverAirplayDevicesMatchingGroupID:(id)a3 completion:(id)a4;
-- (void)discoverAirplayDevicesMatchingLogicalDeviceIDs:(id)a3 expectedCount:(unint64_t)a4 completion:(id)a5;
-- (void)discoverAirplayDevicesMatchingUIDs:(id)a3 completion:(id)a4;
-- (void)discoverRemoteControlEndpointsMatchingUIDs:(id)a3 completion:(id)a4;
+- (void)discoverAirplayDevicesMatchingGroupID:(id)d completion:(id)completion;
+- (void)discoverAirplayDevicesMatchingLogicalDeviceIDs:(id)ds expectedCount:(unint64_t)count completion:(id)completion;
+- (void)discoverAirplayDevicesMatchingUIDs:(id)ds completion:(id)completion;
+- (void)discoverRemoteControlEndpointsMatchingUIDs:(id)ds completion:(id)completion;
 - (void)stopDiscovery;
 @end
 
 @implementation MPCAssistantDiscovery
 
-- (void)_discoverAirplayDevices:(id)a3
+- (void)_discoverAirplayDevices:(id)devices
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  devicesCopy = devices;
   MRAVReconnaissanceSessionSetReturnPartialResults();
-  v4 = [MEMORY[0x1E6958460] auxiliarySession];
+  auxiliarySession = [MEMORY[0x1E6958460] auxiliarySession];
   v5 = *MEMORY[0x1E6958068];
   v13 = 0;
-  v6 = [v4 setCategory:v5 error:&v13];
+  v6 = [auxiliarySession setCategory:v5 error:&v13];
   v7 = v13;
   if ((v6 & 1) == 0)
   {
@@ -32,12 +32,12 @@
     }
   }
 
-  [v4 opaqueSessionID];
+  [auxiliarySession opaqueSessionID];
   MRAVReconnaissanceSessionSetTargetAudioSessionID();
-  v11 = v4;
-  v12 = v3;
-  v9 = v3;
-  v10 = v4;
+  v11 = auxiliarySession;
+  v12 = devicesCopy;
+  v9 = devicesCopy;
+  v10 = auxiliarySession;
   MRAVReconnaissanceSessionBeginSearch();
 }
 
@@ -59,10 +59,10 @@ void __49__MPCAssistantDiscovery__discoverAirplayDevices___block_invoke(uint64_t
   }
 }
 
-- (void)discoverRemoteControlEndpointsMatchingUIDs:(id)a3 completion:(id)a4
+- (void)discoverRemoteControlEndpointsMatchingUIDs:(id)ds completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  dsCopy = ds;
   [(MPCAssistantDiscovery *)self stopDiscovery];
   v8 = MRAVReconnaissanceSessionCreateWithEndpointFeatures();
 
@@ -70,8 +70,8 @@ void __49__MPCAssistantDiscovery__discoverAirplayDevices___block_invoke(uint64_t
   MRAVReconnaissanceSessionSetWaitForCompleteClusters();
   MRAVReconnaissanceSessionSetWaitForUnanimousEndpoints();
   MRAVReconnaissanceSessionSetReturnPartialResults();
-  v10 = v6;
-  v9 = v6;
+  v10 = completionCopy;
+  v9 = completionCopy;
   MRAVReconnaissanceSessionBeginEndpointsSearch();
 }
 
@@ -151,40 +151,40 @@ LABEL_17:
 LABEL_18:
 }
 
-- (void)discoverAirplayDevicesMatchingUIDs:(id)a3 completion:(id)a4
+- (void)discoverAirplayDevicesMatchingUIDs:(id)ds completion:(id)completion
 {
-  v8 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  dsCopy = ds;
   [(MPCAssistantDiscovery *)self stopDiscovery];
   v7 = MRAVReconnaissanceSessionCreateWithEndpointFeatures();
 
   self->_reconSession = v7;
   MRAVReconnaissanceSessionSetWaitForCompleteClusters();
-  [(MPCAssistantDiscovery *)self _discoverAirplayDevices:v8];
+  [(MPCAssistantDiscovery *)self _discoverAirplayDevices:completionCopy];
 }
 
-- (void)discoverAirplayDevicesMatchingLogicalDeviceIDs:(id)a3 expectedCount:(unint64_t)a4 completion:(id)a5
+- (void)discoverAirplayDevicesMatchingLogicalDeviceIDs:(id)ds expectedCount:(unint64_t)count completion:(id)completion
 {
-  v9 = a5;
-  v7 = a3;
+  completionCopy = completion;
+  dsCopy = ds;
   [(MPCAssistantDiscovery *)self stopDiscovery];
   v8 = MRAVReconnaissanceSessionCreateWithMatchingLogicalDeviceIDs();
 
   self->_reconSession = v8;
   MRAVReconnaissanceSessionSetWaitForCompleteClusters();
   MRAVReconnaissanceSessionSetExpectedLogicalDevices();
-  [(MPCAssistantDiscovery *)self _discoverAirplayDevices:v9];
+  [(MPCAssistantDiscovery *)self _discoverAirplayDevices:completionCopy];
 }
 
-- (void)discoverAirplayDevicesMatchingGroupID:(id)a3 completion:(id)a4
+- (void)discoverAirplayDevicesMatchingGroupID:(id)d completion:(id)completion
 {
-  v8 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  dCopy = d;
   [(MPCAssistantDiscovery *)self stopDiscovery];
   v7 = MRAVReconnaissanceSessionCreateWithMatchingOutputGroupIDFeatures();
 
   self->_reconSession = v7;
-  [(MPCAssistantDiscovery *)self _discoverAirplayDevices:v8];
+  [(MPCAssistantDiscovery *)self _discoverAirplayDevices:completionCopy];
 }
 
 - (void)dealloc

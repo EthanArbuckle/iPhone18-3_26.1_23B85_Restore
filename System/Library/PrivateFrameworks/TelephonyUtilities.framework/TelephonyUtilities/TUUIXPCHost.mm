@@ -1,10 +1,10 @@
 @interface TUUIXPCHost
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (TUUIXPCHost)init;
-- (TUUIXPCHost)initWithDelegate:(id)a3 delegateQueue:(id)a4;
+- (TUUIXPCHost)initWithDelegate:(id)delegate delegateQueue:(id)queue;
 - (TUUIXPCHostDelegate)delegate;
 - (id)endpoint;
-- (void)connectionInvalidated:(id)a3;
+- (void)connectionInvalidated:(id)invalidated;
 - (void)dealloc;
 @end
 
@@ -12,51 +12,51 @@
 
 - (TUUIXPCHost)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"TUUIXPCHost.m" lineNumber:38 description:{@"%s is not available. Use a designated initializer instead.", "-[TUUIXPCHost init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"TUUIXPCHost.m" lineNumber:38 description:{@"%s is not available. Use a designated initializer instead.", "-[TUUIXPCHost init]"}];
 
   return 0;
 }
 
-- (TUUIXPCHost)initWithDelegate:(id)a3 delegateQueue:(id)a4
+- (TUUIXPCHost)initWithDelegate:(id)delegate delegateQueue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  queueCopy = queue;
   v14.receiver = self;
   v14.super_class = TUUIXPCHost;
   v8 = [(TUUIXPCHost *)&v14 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_delegate, v6);
-    objc_storeStrong(&v9->_delegateQueue, a4);
-    objc_storeStrong(&v9->_queue, a4);
-    v10 = [MEMORY[0x1E696B0D8] anonymousListener];
-    [(TUUIXPCHost *)v9 setXpcListener:v10];
+    objc_storeWeak(&v8->_delegate, delegateCopy);
+    objc_storeStrong(&v9->_delegateQueue, queue);
+    objc_storeStrong(&v9->_queue, queue);
+    anonymousListener = [MEMORY[0x1E696B0D8] anonymousListener];
+    [(TUUIXPCHost *)v9 setXpcListener:anonymousListener];
 
-    v11 = [(TUUIXPCHost *)v9 xpcListener];
-    [v11 setDelegate:v9];
+    xpcListener = [(TUUIXPCHost *)v9 xpcListener];
+    [xpcListener setDelegate:v9];
 
-    v12 = [(TUUIXPCHost *)v9 xpcListener];
-    [v12 resume];
+    xpcListener2 = [(TUUIXPCHost *)v9 xpcListener];
+    [xpcListener2 resume];
   }
 
   return v9;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v32 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  connectionCopy = connection;
   v6 = TUDefaultLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v31 = v5;
+    v31 = connectionCopy;
     _os_log_impl(&dword_1956FD000, v6, OS_LOG_TYPE_DEFAULT, "Asked to accept new connection from %@", buf, 0xCu);
   }
 
-  v7 = [v5 valueForEntitlement:@"com.apple.telephonyutilities.callservicesd"];
+  v7 = [connectionCopy valueForEntitlement:@"com.apple.telephonyutilities.callservicesd"];
   if (v7)
   {
     objc_opt_class();
@@ -86,11 +86,11 @@
             {
 
               v18 = [TUUIXPCHostConnection alloc];
-              v19 = [(TUUIXPCHost *)self delegate];
-              v20 = [(TUUIXPCHost *)self queue];
-              v21 = [(TUUIXPCHostConnection *)v18 initWithConnection:v5 hostDelegate:v19 connectionDelegate:self queue:v20];
+              delegate = [(TUUIXPCHost *)self delegate];
+              queue = [(TUUIXPCHost *)self queue];
+              v21 = [(TUUIXPCHostConnection *)v18 initWithConnection:connectionCopy hostDelegate:delegate connectionDelegate:self queue:queue];
 
-              v22 = [(TUUIXPCHost *)self queue];
+              queue2 = [(TUUIXPCHost *)self queue];
               v23[0] = MEMORY[0x1E69E9820];
               v23[1] = 3221225472;
               v23[2] = __50__TUUIXPCHost_listener_shouldAcceptNewConnection___block_invoke;
@@ -98,7 +98,7 @@
               v23[4] = self;
               v24 = v21;
               v14 = v21;
-              dispatch_async(v22, v23);
+              dispatch_async(queue2, v23);
 
               v15 = 1;
               goto LABEL_18;
@@ -121,7 +121,7 @@
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v31 = v5;
+    v31 = connectionCopy;
     _os_log_impl(&dword_1956FD000, v14, OS_LOG_TYPE_DEFAULT, "[WARN] New connection is missing entitlement to access UIXPC so declining the connection %@", buf, 0xCu);
   }
 
@@ -152,22 +152,22 @@ void __50__TUUIXPCHost_listener_shouldAcceptNewConnection___block_invoke(uint64_
   [(TUUIXPCHost *)&v4 dealloc];
 }
 
-- (void)connectionInvalidated:(id)a3
+- (void)connectionInvalidated:(id)invalidated
 {
-  v4 = a3;
-  v5 = [(TUUIXPCHost *)self queue];
-  dispatch_assert_queue_V2(v5);
+  invalidatedCopy = invalidated;
+  queue = [(TUUIXPCHost *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [(TUUIXPCHost *)self connections];
-  [v6 removeObject:v4];
+  connections = [(TUUIXPCHost *)self connections];
+  [connections removeObject:invalidatedCopy];
 }
 
 - (id)endpoint
 {
-  v2 = [(TUUIXPCHost *)self xpcListener];
-  v3 = [v2 endpoint];
+  xpcListener = [(TUUIXPCHost *)self xpcListener];
+  endpoint = [xpcListener endpoint];
 
-  return v3;
+  return endpoint;
 }
 
 - (TUUIXPCHostDelegate)delegate

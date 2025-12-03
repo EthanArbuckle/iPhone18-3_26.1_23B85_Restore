@@ -1,27 +1,27 @@
 @interface STS18013ReaderAnalyticsData
-- (STS18013ReaderAnalyticsData)initWithTrusted:(BOOL)a3 untrustedIdentifier:(id)a4 untrustedOrganization:(id)a5 untrustedIssuerIdentifier:(id)a6 untrustedIssuerOrganization:(id)a7;
+- (STS18013ReaderAnalyticsData)initWithTrusted:(BOOL)trusted untrustedIdentifier:(id)identifier untrustedOrganization:(id)organization untrustedIssuerIdentifier:(id)issuerIdentifier untrustedIssuerOrganization:(id)issuerOrganization;
 - (id)description;
 @end
 
 @implementation STS18013ReaderAnalyticsData
 
-- (STS18013ReaderAnalyticsData)initWithTrusted:(BOOL)a3 untrustedIdentifier:(id)a4 untrustedOrganization:(id)a5 untrustedIssuerIdentifier:(id)a6 untrustedIssuerOrganization:(id)a7
+- (STS18013ReaderAnalyticsData)initWithTrusted:(BOOL)trusted untrustedIdentifier:(id)identifier untrustedOrganization:(id)organization untrustedIssuerIdentifier:(id)issuerIdentifier untrustedIssuerOrganization:(id)issuerOrganization
 {
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  identifierCopy = identifier;
+  organizationCopy = organization;
+  issuerIdentifierCopy = issuerIdentifier;
+  issuerOrganizationCopy = issuerOrganization;
   v20.receiver = self;
   v20.super_class = STS18013ReaderAnalyticsData;
   v17 = [(STS18013ReaderAnalyticsData *)&v20 init];
   v18 = v17;
   if (v17)
   {
-    v17->_trusted = a3;
-    objc_storeStrong(&v17->_untrustedIdentifier, a4);
-    objc_storeStrong(&v18->_untrustedOrganization, a5);
-    objc_storeStrong(&v18->_untrustedIssuerIdentifier, a6);
-    objc_storeStrong(&v18->_untrustedIssuerOrganization, a7);
+    v17->_trusted = trusted;
+    objc_storeStrong(&v17->_untrustedIdentifier, identifier);
+    objc_storeStrong(&v18->_untrustedOrganization, organization);
+    objc_storeStrong(&v18->_untrustedIssuerIdentifier, issuerIdentifier);
+    objc_storeStrong(&v18->_untrustedIssuerOrganization, issuerOrganization);
   }
 
   return v18;
@@ -42,11 +42,11 @@
     v6 = @"NO";
   }
 
-  v7 = [(STS18013ReaderAnalyticsData *)self untrustedIdentifier];
-  v8 = [(STS18013ReaderAnalyticsData *)self untrustedOrganization];
-  v9 = [(STS18013ReaderAnalyticsData *)self untrustedIssuerIdentifier];
-  v10 = [(STS18013ReaderAnalyticsData *)self untrustedIssuerOrganization];
-  v11 = [v3 stringWithFormat:@"<%@ trusted = %@; untrustedIdentifier = %@; untrustedOrganization = %@; untrustedIssuerIdentifier = %@; untrustedIssuerOrganization = %@>", v5, v6, v7, v8, v9, v10];;
+  untrustedIdentifier = [(STS18013ReaderAnalyticsData *)self untrustedIdentifier];
+  untrustedOrganization = [(STS18013ReaderAnalyticsData *)self untrustedOrganization];
+  untrustedIssuerIdentifier = [(STS18013ReaderAnalyticsData *)self untrustedIssuerIdentifier];
+  untrustedIssuerOrganization = [(STS18013ReaderAnalyticsData *)self untrustedIssuerOrganization];
+  v11 = [v3 stringWithFormat:@"<%@ trusted = %@; untrustedIdentifier = %@; untrustedOrganization = %@; untrustedIssuerIdentifier = %@; untrustedIssuerOrganization = %@>", v5, v6, untrustedIdentifier, untrustedOrganization, untrustedIssuerIdentifier, untrustedIssuerOrganization];;
 
   return v11;
 }

@@ -1,6 +1,6 @@
 @interface PHSearchSuggestionQueryResult
-- (PHSearchSuggestionQueryResult)initWithSearchQuery:(id)a3;
-- (PHSearchSuggestionQueryResult)initWithSearchQuery:(id)a3 searchSuggestions:(id)a4;
+- (PHSearchSuggestionQueryResult)initWithSearchQuery:(id)query;
+- (PHSearchSuggestionQueryResult)initWithSearchQuery:(id)query searchSuggestions:(id)suggestions;
 - (id)description;
 - (id)jsonDictionary;
 @end
@@ -11,14 +11,14 @@
 {
   v20[1] = *MEMORY[0x1E69E9840];
   v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v4 = [(PHSearchSuggestionQueryResult *)self searchSuggestions];
+  searchSuggestions = [(PHSearchSuggestionQueryResult *)self searchSuggestions];
   v14 = MEMORY[0x1E69E9820];
   v15 = 3221225472;
   v16 = __47__PHSearchSuggestionQueryResult_jsonDictionary__block_invoke;
   v17 = &unk_1E75A73B8;
   v5 = v3;
   v18 = v5;
-  [v4 enumerateObjectsUsingBlock:&v14];
+  [searchSuggestions enumerateObjectsUsingBlock:&v14];
 
   v6 = objc_alloc(MEMORY[0x1E695DF90]);
   v19 = @"searchSuggestions";
@@ -26,13 +26,13 @@
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:&v19 count:{1, v14, v15, v16, v17}];
   v8 = [v6 initWithDictionary:v7];
 
-  v9 = [(PHSearchSuggestionQueryResult *)self searchQuery];
+  searchQuery = [(PHSearchSuggestionQueryResult *)self searchQuery];
 
-  if (v9)
+  if (searchQuery)
   {
-    v10 = [(PHSearchSuggestionQueryResult *)self searchQuery];
-    v11 = [v10 jsonDictionary];
-    [v8 setObject:v11 forKeyedSubscript:@"searchQuery"];
+    searchQuery2 = [(PHSearchSuggestionQueryResult *)self searchQuery];
+    jsonDictionary = [searchQuery2 jsonDictionary];
+    [v8 setObject:jsonDictionary forKeyedSubscript:@"searchQuery"];
   }
 
   v12 = [v8 copy];
@@ -63,11 +63,11 @@ void __47__PHSearchSuggestionQueryResult_jsonDictionary__block_invoke(uint64_t a
   return v5;
 }
 
-- (PHSearchSuggestionQueryResult)initWithSearchQuery:(id)a3
+- (PHSearchSuggestionQueryResult)initWithSearchQuery:(id)query
 {
-  if (a3)
+  if (query)
   {
-    v3 = [(PHSearchSuggestionQueryResult *)self initWithSearchQuery:a3 searchSuggestions:0];
+    v3 = [(PHSearchSuggestionQueryResult *)self initWithSearchQuery:query searchSuggestions:0];
   }
 
   else
@@ -82,14 +82,14 @@ void __47__PHSearchSuggestionQueryResult_jsonDictionary__block_invoke(uint64_t a
   return v4;
 }
 
-- (PHSearchSuggestionQueryResult)initWithSearchQuery:(id)a3 searchSuggestions:(id)a4
+- (PHSearchSuggestionQueryResult)initWithSearchQuery:(id)query searchSuggestions:(id)suggestions
 {
-  v8 = a3;
-  v9 = a4;
-  if (!v8)
+  queryCopy = query;
+  suggestionsCopy = suggestions;
+  if (!queryCopy)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"PHSearchSuggestionQueryResult.m" lineNumber:17 description:{@"Invalid parameter not satisfying: %@", @"searchQuery"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHSearchSuggestionQueryResult.m" lineNumber:17 description:{@"Invalid parameter not satisfying: %@", @"searchQuery"}];
   }
 
   v14.receiver = self;
@@ -98,8 +98,8 @@ void __47__PHSearchSuggestionQueryResult_jsonDictionary__block_invoke(uint64_t a
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_searchQuery, a3);
-    objc_storeStrong(&v11->_searchSuggestions, a4);
+    objc_storeStrong(&v10->_searchQuery, query);
+    objc_storeStrong(&v11->_searchSuggestions, suggestions);
   }
 
   return v11;

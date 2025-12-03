@@ -1,18 +1,18 @@
 @interface APTelephony
-+ (id)connectionTypeToString:(int64_t)a3;
++ (id)connectionTypeToString:(int64_t)string;
 + (id)telephony;
 - (APTelephony)init;
 - (BOOL)networkDataValid;
 - (BOOL)telephonyDataValid;
 - (NSNumber)signalStrength;
-- (int64_t)dataIndicatorToConnectionType:(int)a3;
+- (int64_t)dataIndicatorToConnectionType:(int)type;
 - (void)_deviceLockStateChanged;
 - (void)_resumeTelephonyAndReachability;
 - (void)_startMonitoringTelephony;
 - (void)_suspendTelephonyAndReachability;
-- (void)preferredDataSimChanged:(id)a3;
-- (void)reachabilityChanged:(int64_t)a3;
-- (void)signalStrengthChanged:(id)a3 info:(id)a4;
+- (void)preferredDataSimChanged:(id)changed;
+- (void)reachabilityChanged:(int64_t)changed;
+- (void)signalStrengthChanged:(id)changed info:(id)info;
 - (void)updateCellularSignalStrength;
 - (void)updateTelephonyProperties;
 @end
@@ -42,9 +42,9 @@
       v4 = APLogForCategory();
       if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
       {
-        v5 = [(APTelephony *)self deviceIsLocked];
+        deviceIsLocked = [(APTelephony *)self deviceIsLocked];
         v6 = @"unlocked";
-        if (v5)
+        if (deviceIsLocked)
         {
           v6 = @"locked";
         }
@@ -54,12 +54,12 @@
         _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "Device lock state changed to %{public}@. Queuing attempt to toggle Telephony and Reachability.", buf, 0xCu);
       }
 
-      v7 = [(APTelephony *)self disableTelephonyMethod];
+      disableTelephonyMethod = [(APTelephony *)self disableTelephonyMethod];
 
-      if (v7)
+      if (disableTelephonyMethod)
       {
-        v8 = [(APTelephony *)self disableTelephonyMethod];
-        dispatch_block_cancel(v8);
+        disableTelephonyMethod2 = [(APTelephony *)self disableTelephonyMethod];
+        dispatch_block_cancel(disableTelephonyMethod2);
       }
 
       if ([(APTelephony *)self deviceIsLocked])
@@ -81,9 +81,9 @@
         }
 
         v11 = dispatch_time(0, 30000000000);
-        v12 = [(APTelephony *)self queue];
-        v13 = [(APTelephony *)self disableTelephonyMethod];
-        dispatch_after(v11, v12, v13);
+        queue = [(APTelephony *)self queue];
+        disableTelephonyMethod3 = [(APTelephony *)self disableTelephonyMethod];
+        dispatch_after(v11, queue, disableTelephonyMethod3);
       }
 
       else
@@ -104,8 +104,8 @@
   }
 
   [(APTelephony *)self _startMonitoringTelephony];
-  v4 = [(APTelephony *)self reachability];
-  [v4 startMonitoring];
+  reachability = [(APTelephony *)self reachability];
+  [reachability startMonitoring];
 }
 
 - (void)_startMonitoringTelephony
@@ -126,13 +126,13 @@
 - (void)updateTelephonyProperties
 {
   objc_initWeak(&location, self);
-  v3 = [(APTelephony *)self queue];
+  queue = [(APTelephony *)self queue];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10000F1BC;
   v4[3] = &unk_10047C978;
   objc_copyWeak(&v5, &location);
-  dispatch_async(v3, v4);
+  dispatch_async(queue, v4);
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -199,8 +199,8 @@
     v8->_reachability = v16;
 
     [(APTelephony *)v8 _startMonitoringTelephony];
-    v18 = [(APTelephony *)v8 reachability];
-    [v18 startMonitoring];
+    reachability = [(APTelephony *)v8 reachability];
+    [reachability startMonitoring];
   }
 
   return v3;
@@ -208,80 +208,80 @@
 
 - (BOOL)networkDataValid
 {
-  v2 = self;
-  v3 = [(APTelephony *)self lock];
-  [v3 lock];
-  LOBYTE(v2) = v2->_networkError == 0;
-  [v3 unlock];
+  selfCopy = self;
+  lock = [(APTelephony *)self lock];
+  [lock lock];
+  LOBYTE(selfCopy) = selfCopy->_networkError == 0;
+  [lock unlock];
 
-  return v2;
+  return selfCopy;
 }
 
 - (NSNumber)signalStrength
 {
-  v3 = [(APTelephony *)self lock];
-  [v3 lock];
+  lock = [(APTelephony *)self lock];
+  [lock lock];
   if ([(APTelephony *)self networkType]== 1)
   {
-    [v3 unlock];
-    v4 = &off_100492178;
+    [lock unlock];
+    latestCellularSignalStrength2 = &off_100492178;
   }
 
   else
   {
-    v5 = [(APTelephony *)self ctClient];
+    ctClient = [(APTelephony *)self ctClient];
 
-    if (v5)
+    if (ctClient)
     {
-      v6 = [(APTelephony *)self latestCellularSignalStrength];
-      [v3 unlock];
-      if (!v6)
+      latestCellularSignalStrength = [(APTelephony *)self latestCellularSignalStrength];
+      [lock unlock];
+      if (!latestCellularSignalStrength)
       {
         [(APTelephony *)self updateCellularSignalStrength];
       }
 
-      v4 = [(APTelephony *)self latestCellularSignalStrength];
+      latestCellularSignalStrength2 = [(APTelephony *)self latestCellularSignalStrength];
     }
 
     else
     {
-      [v3 unlock];
-      v4 = [(APTelephony *)self latestCellularSignalStrength];
+      [lock unlock];
+      latestCellularSignalStrength2 = [(APTelephony *)self latestCellularSignalStrength];
     }
   }
 
-  return v4;
+  return latestCellularSignalStrength2;
 }
 
 - (BOOL)telephonyDataValid
 {
-  v2 = self;
-  v3 = [(APTelephony *)self lock];
-  [v3 lock];
-  v4 = [(APTelephony *)v2 telephonyError];
-  LOBYTE(v2) = v4 == 0;
+  selfCopy = self;
+  lock = [(APTelephony *)self lock];
+  [lock lock];
+  telephonyError = [(APTelephony *)selfCopy telephonyError];
+  LOBYTE(selfCopy) = telephonyError == 0;
 
-  [v3 unlock];
-  return v2;
+  [lock unlock];
+  return selfCopy;
 }
 
-- (void)reachabilityChanged:(int64_t)a3
+- (void)reachabilityChanged:(int64_t)changed
 {
   v5 = APLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 134217984;
-    v13 = a3;
+    changedCopy = changed;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "APTelephony notification from reachability: new network type = %ld", buf, 0xCu);
   }
 
   v6 = -1;
-  if ((a3 & 2) != 0)
+  if ((changed & 2) != 0)
   {
     v6 = 1;
   }
 
-  if (a3)
+  if (changed)
   {
     v7 = 0;
   }
@@ -297,64 +297,64 @@
     [(APTelephony *)self setNetworkInfoUpdatingInProgress:1];
     objc_initWeak(buf, self);
     v8 = dispatch_time(0, 10000000000);
-    v9 = [(APTelephony *)self queue];
+    queue = [(APTelephony *)self queue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_10028C01C;
     block[3] = &unk_10047C978;
     objc_copyWeak(&v11, buf);
-    dispatch_after(v8, v9, block);
+    dispatch_after(v8, queue, block);
 
     objc_destroyWeak(&v11);
     objc_destroyWeak(buf);
   }
 }
 
-- (void)signalStrengthChanged:(id)a3 info:(id)a4
+- (void)signalStrengthChanged:(id)changed info:(id)info
 {
-  v6 = a3;
-  v7 = a4;
+  changedCopy = changed;
+  infoCopy = info;
   objc_initWeak(&location, self);
-  v8 = [(APTelephony *)self queue];
+  queue = [(APTelephony *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10028C180;
   block[3] = &unk_10047C9A0;
   objc_copyWeak(&v12, &location);
-  v11 = v7;
-  v9 = v7;
-  dispatch_async(v8, block);
+  v11 = infoCopy;
+  v9 = infoCopy;
+  dispatch_async(queue, block);
 
   objc_destroyWeak(&v12);
   objc_destroyWeak(&location);
 }
 
-- (void)preferredDataSimChanged:(id)a3
+- (void)preferredDataSimChanged:(id)changed
 {
-  v4 = a3;
-  v5 = [(APTelephony *)self lock];
-  [v5 lock];
-  [(APTelephony *)self setCtSubscriptionContext:v4];
+  changedCopy = changed;
+  lock = [(APTelephony *)self lock];
+  [lock lock];
+  [(APTelephony *)self setCtSubscriptionContext:changedCopy];
 
-  [v5 unlock];
+  [lock unlock];
 }
 
 - (void)updateCellularSignalStrength
 {
-  v3 = [(APTelephony *)self lock];
-  [v3 lock];
-  v4 = [(APTelephony *)self ctClient];
-  if (v4)
+  lock = [(APTelephony *)self lock];
+  [lock lock];
+  ctClient = [(APTelephony *)self ctClient];
+  if (ctClient)
   {
-    v5 = v4;
-    v6 = [(APTelephony *)self ctSubscriptionContext];
+    v5 = ctClient;
+    ctSubscriptionContext = [(APTelephony *)self ctSubscriptionContext];
 
-    if (v6)
+    if (ctSubscriptionContext)
     {
-      v7 = [(APTelephony *)self ctClient];
-      v8 = [(APTelephony *)self ctSubscriptionContext];
+      ctClient2 = [(APTelephony *)self ctClient];
+      ctSubscriptionContext2 = [(APTelephony *)self ctSubscriptionContext];
       v22 = 0;
-      v9 = [v7 getSignalStrengthInfo:v8 error:&v22];
+      v9 = [ctClient2 getSignalStrengthInfo:ctSubscriptionContext2 error:&v22];
       v10 = v22;
 
       if (v10)
@@ -372,12 +372,12 @@ LABEL_14:
       else
       {
         [(APTelephony *)self setTelephonyError:0];
-        v14 = [v9 maxDisplayBars];
-        [v14 doubleValue];
+        maxDisplayBars = [v9 maxDisplayBars];
+        [maxDisplayBars doubleValue];
         v16 = v15;
 
-        v17 = [v9 bars];
-        [v17 doubleValue];
+        bars = [v9 bars];
+        [bars doubleValue];
         v19 = v18;
 
         if (v16 > 0.0)
@@ -388,9 +388,9 @@ LABEL_14:
           v11 = APLogForCategory();
           if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
           {
-            v21 = [(APTelephony *)self latestCellularSignalStrength];
+            latestCellularSignalStrength = [(APTelephony *)self latestCellularSignalStrength];
             *buf = 138543362;
-            v24 = v21;
+            v24 = latestCellularSignalStrength;
             _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "Update latest signal strength to %{public}@.", buf, 0xCu);
           }
 
@@ -408,7 +408,7 @@ LABEL_14:
 
 LABEL_15:
 
-      [v3 unlock];
+      [lock unlock];
       goto LABEL_16;
     }
   }
@@ -420,33 +420,33 @@ LABEL_15:
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_ERROR, "CoreTelephony client or CoreTelephonySubScriptionContext is not created.", buf, 2u);
   }
 
-  [v3 unlock];
+  [lock unlock];
 LABEL_16:
 }
 
-- (int64_t)dataIndicatorToConnectionType:(int)a3
+- (int64_t)dataIndicatorToConnectionType:(int)type
 {
-  if (a3 > 0xF)
+  if (type > 0xF)
   {
     return -1;
   }
 
   else
   {
-    return qword_1003F0450[a3];
+    return qword_1003F0450[type];
   }
 }
 
-+ (id)connectionTypeToString:(int64_t)a3
++ (id)connectionTypeToString:(int64_t)string
 {
-  if (a3 > 9)
+  if (string > 9)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_10047C9C0[a3];
+    return off_10047C9C0[string];
   }
 }
 
@@ -459,12 +459,12 @@ LABEL_16:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "Suspending Telephony and Reachability callbacks", v6, 2u);
   }
 
-  v4 = [(APTelephony *)self ctClient];
-  [v4 setDelegate:0];
+  ctClient = [(APTelephony *)self ctClient];
+  [ctClient setDelegate:0];
 
   [(APTelephony *)self setCtClient:0];
-  v5 = [(APTelephony *)self reachability];
-  [v5 stopMonitoring];
+  reachability = [(APTelephony *)self reachability];
+  [reachability stopMonitoring];
 }
 
 @end

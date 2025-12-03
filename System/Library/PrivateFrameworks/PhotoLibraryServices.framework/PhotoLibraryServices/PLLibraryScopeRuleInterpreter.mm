@@ -1,14 +1,14 @@
 @interface PLLibraryScopeRuleInterpreter
-- (id)evaluateObjects:(id)a3 forCondition:(id)a4;
+- (id)evaluateObjects:(id)objects forCondition:(id)condition;
 @end
 
 @implementation PLLibraryScopeRuleInterpreter
 
-- (id)evaluateObjects:(id)a3 forCondition:(id)a4
+- (id)evaluateObjects:(id)objects forCondition:(id)condition
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  objectsCopy = objects;
+  conditionCopy = condition;
+  selfCopy = self;
   v9 = PLAbstractMethodException();
   objc_exception_throw(v9);
 }

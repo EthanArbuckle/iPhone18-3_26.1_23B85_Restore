@@ -1,22 +1,22 @@
 @interface PHASEExternalStreamGroupDebugInfo
-- (BOOL)isEqual:(id)a3;
-- (PHASEExternalStreamGroupDebugInfo)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (PHASEExternalStreamGroupDebugInfo)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
-- (void)setStreams:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setStreams:(id)streams;
 @end
 
 @implementation PHASEExternalStreamGroupDebugInfo
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [(PHASEExternalStreamGroupDebugInfo *)self isControlled];
-  if (v5 == [v4 isControlled] && (v6 = -[PHASEExternalStreamGroupDebugInfo isControllerPaused](self, "isControllerPaused"), v6 == objc_msgSend(v4, "isControllerPaused")))
+  equalCopy = equal;
+  isControlled = [(PHASEExternalStreamGroupDebugInfo *)self isControlled];
+  if (isControlled == [equalCopy isControlled] && (v6 = -[PHASEExternalStreamGroupDebugInfo isControllerPaused](self, "isControllerPaused"), v6 == objc_msgSend(equalCopy, "isControllerPaused")))
   {
-    v8 = [(PHASEExternalStreamGroupDebugInfo *)self streams];
-    v9 = [v4 streams];
-    v7 = [v8 isEqualToDictionary:v9];
+    streams = [(PHASEExternalStreamGroupDebugInfo *)self streams];
+    streams2 = [equalCopy streams];
+    v7 = [streams isEqualToDictionary:streams2];
   }
 
   else
@@ -27,30 +27,30 @@
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeBool:self->_controlled forKey:@"controlled"];
-  [v4 encodeBool:self->_controllerPaused forKey:@"controllerPaused"];
-  [v4 encodeObject:self->_streams forKey:@"streams"];
+  coderCopy = coder;
+  [coderCopy encodeBool:self->_controlled forKey:@"controlled"];
+  [coderCopy encodeBool:self->_controllerPaused forKey:@"controllerPaused"];
+  [coderCopy encodeObject:self->_streams forKey:@"streams"];
 }
 
-- (PHASEExternalStreamGroupDebugInfo)initWithCoder:(id)a3
+- (PHASEExternalStreamGroupDebugInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = PHASEExternalStreamGroupDebugInfo;
   v5 = [(PHASEExternalStreamGroupDebugInfo *)&v14 init];
   if (v5)
   {
-    v5->_controlled = [v4 decodeBoolForKey:@"controlled"];
-    v5->_controllerPaused = [v4 decodeBoolForKey:@"controllerPaused"];
+    v5->_controlled = [coderCopy decodeBoolForKey:@"controlled"];
+    v5->_controllerPaused = [coderCopy decodeBoolForKey:@"controllerPaused"];
     v6 = MEMORY[0x277CBEB98];
     v7 = objc_opt_class();
     v8 = objc_opt_class();
     v9 = objc_opt_class();
     v10 = [v6 setWithObjects:{v7, v8, v9, objc_opt_class(), 0}];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"streams"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"streams"];
     streams = v5->_streams;
     v5->_streams = v11;
   }
@@ -96,10 +96,10 @@
   return v10;
 }
 
-- (void)setStreams:(id)a3
+- (void)setStreams:(id)streams
 {
-  v6 = a3;
-  v4 = [v6 copy];
+  streamsCopy = streams;
+  v4 = [streamsCopy copy];
   streams = self->_streams;
   self->_streams = v4;
 }

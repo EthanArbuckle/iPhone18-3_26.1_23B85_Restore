@@ -1,6 +1,6 @@
 @interface CHPKAnalyticsServer
 + (id)sharedAnalyticsServer;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (CHPKAnalyticsServer)init;
 - (void)dealloc;
 - (void)resumeConnectionIfIdle;
@@ -55,28 +55,28 @@
 {
   if (![(CHPKAnalyticsServer *)self isListening])
   {
-    v3 = [(CHPKAnalyticsServer *)self listener];
-    [v3 resume];
+    listener = [(CHPKAnalyticsServer *)self listener];
+    [listener resume];
 
     [(CHPKAnalyticsServer *)self setIsListening:1];
   }
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a4;
+  connectionCopy = connection;
   listener = self->_listener;
-  if (listener == a3)
+  if (listener == listener)
   {
     v8 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___CHPKRemoteAnalyticsProtocol];
-    [v6 setExportedInterface:v8];
+    [connectionCopy setExportedInterface:v8];
   }
 
   v9 = +[CHPKPersistentAnalyticsController sharedInstance];
-  [v6 setExportedObject:v9];
+  [connectionCopy setExportedObject:v9];
 
-  [v6 resume];
-  return listener == a3;
+  [connectionCopy resume];
+  return listener == listener;
 }
 
 @end

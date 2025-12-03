@@ -1,120 +1,120 @@
 @interface STContentPrivacyMediaRestrictionsDetailController
-- (STContentPrivacyMediaRestrictionsDetailController)initWithRegionRatings:(id)a3;
-- (id)_appRatingsAndExceptionsSpecifierWithRatings:(id)a3 restrictionsStringsTable:(id)a4 screenTimeSettingsUIBundle:(id)a5;
-- (id)_appRatingsSpecifierWithRatings:(id)a3 restrictionsStringsTable:(id)a4 screenTimeSettingsUIBundle:(id)a5;
-- (id)_getSpecifierValueForItem:(id)a3 viewModel:(id)a4 restrictionValues:(id)a5;
-- (id)_legacyAppsAndRatingsSpecifierWithRatings:(id)a3 restrictionsStringsTable:(id)a4 screenTimeSettingsUIBundle:(id)a5;
-- (id)_titlesAndValuesForItem:(id)a3 titlesByValue:(id)a4 sortByTitle:(BOOL)a5;
-- (id)defaultLinkListSpecifierWithConfiguration:(id)a3 key:(id)a4;
-- (id)defaultLinkListSpecifierWithConfiguration:(id)a3 key:(id)a4 titlesByValue:(id)a5 sortByTitle:(BOOL)a6;
-- (id)defaultLinkListSpecifierWithItem:(id)a3 titlesByValue:(id)a4 sortByTitle:(BOOL)a5;
-- (id)defaultSwitchSpecifierWithConfiguration:(id)a3 key:(id)a4;
-- (id)getItemSpecifierValue:(id)a3;
-- (id)linkListSpecifierForTVAndMoviesWithConfiguration:(id)a3 key:(id)a4 footerKey:(id)a5 titlesByValue:(id)a6;
-- (id)radioGroupSpecifierWithName:(id)a3 footerText:(id)a4 item:(id)a5;
+- (STContentPrivacyMediaRestrictionsDetailController)initWithRegionRatings:(id)ratings;
+- (id)_appRatingsAndExceptionsSpecifierWithRatings:(id)ratings restrictionsStringsTable:(id)table screenTimeSettingsUIBundle:(id)bundle;
+- (id)_appRatingsSpecifierWithRatings:(id)ratings restrictionsStringsTable:(id)table screenTimeSettingsUIBundle:(id)bundle;
+- (id)_getSpecifierValueForItem:(id)item viewModel:(id)model restrictionValues:(id)values;
+- (id)_legacyAppsAndRatingsSpecifierWithRatings:(id)ratings restrictionsStringsTable:(id)table screenTimeSettingsUIBundle:(id)bundle;
+- (id)_titlesAndValuesForItem:(id)item titlesByValue:(id)value sortByTitle:(BOOL)title;
+- (id)defaultLinkListSpecifierWithConfiguration:(id)configuration key:(id)key;
+- (id)defaultLinkListSpecifierWithConfiguration:(id)configuration key:(id)key titlesByValue:(id)value sortByTitle:(BOOL)title;
+- (id)defaultLinkListSpecifierWithItem:(id)item titlesByValue:(id)value sortByTitle:(BOOL)title;
+- (id)defaultSwitchSpecifierWithConfiguration:(id)configuration key:(id)key;
+- (id)getItemSpecifierValue:(id)value;
+- (id)linkListSpecifierForTVAndMoviesWithConfiguration:(id)configuration key:(id)key footerKey:(id)footerKey titlesByValue:(id)value;
+- (id)radioGroupSpecifierWithName:(id)name footerText:(id)text item:(id)item;
 - (id)specifiers;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setCoordinator:(id)a3;
-- (void)setItemSpecifierValue:(id)a3 specifier:(id)a4;
-- (void)showWebFilterRestrictions:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setCoordinator:(id)coordinator;
+- (void)setItemSpecifierValue:(id)value specifier:(id)specifier;
+- (void)showWebFilterRestrictions:(id)restrictions;
+- (void)viewDidAppear:(BOOL)appear;
 @end
 
 @implementation STContentPrivacyMediaRestrictionsDetailController
 
-- (STContentPrivacyMediaRestrictionsDetailController)initWithRegionRatings:(id)a3
+- (STContentPrivacyMediaRestrictionsDetailController)initWithRegionRatings:(id)ratings
 {
-  v5 = a3;
+  ratingsCopy = ratings;
   v9.receiver = self;
   v9.super_class = STContentPrivacyMediaRestrictionsDetailController;
   v6 = [(STPINListViewController *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_regionRatings, a3);
+    objc_storeStrong(&v6->_regionRatings, ratings);
   }
 
   return v7;
 }
 
-- (id)_appRatingsSpecifierWithRatings:(id)a3 restrictionsStringsTable:(id)a4 screenTimeSettingsUIBundle:(id)a5
+- (id)_appRatingsSpecifierWithRatings:(id)ratings restrictionsStringsTable:(id)table screenTimeSettingsUIBundle:(id)bundle
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  bundleCopy = bundle;
+  tableCopy = table;
+  ratingsCopy = ratings;
   if (_os_feature_enabled_impl())
   {
-    [(STContentPrivacyMediaRestrictionsDetailController *)self _appRatingsAndExceptionsSpecifierWithRatings:v10 restrictionsStringsTable:v9 screenTimeSettingsUIBundle:v8];
+    [(STContentPrivacyMediaRestrictionsDetailController *)self _appRatingsAndExceptionsSpecifierWithRatings:ratingsCopy restrictionsStringsTable:tableCopy screenTimeSettingsUIBundle:bundleCopy];
   }
 
   else
   {
-    [(STContentPrivacyMediaRestrictionsDetailController *)self _legacyAppsAndRatingsSpecifierWithRatings:v10 restrictionsStringsTable:v9 screenTimeSettingsUIBundle:v8];
+    [(STContentPrivacyMediaRestrictionsDetailController *)self _legacyAppsAndRatingsSpecifierWithRatings:ratingsCopy restrictionsStringsTable:tableCopy screenTimeSettingsUIBundle:bundleCopy];
   }
   v11 = ;
 
   return v11;
 }
 
-- (id)_appRatingsAndExceptionsSpecifierWithRatings:(id)a3 restrictionsStringsTable:(id)a4 screenTimeSettingsUIBundle:(id)a5
+- (id)_appRatingsAndExceptionsSpecifierWithRatings:(id)ratings restrictionsStringsTable:(id)table screenTimeSettingsUIBundle:(id)bundle
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(STPINListViewController *)self coordinator];
-  v12 = [v11 contentPrivacyCoordinator];
-  v13 = [v12 viewModel];
-  v14 = [v13 visibleRestrictionWithConfiguration:@"system.ratings" key:@"ratingApps"];
+  bundleCopy = bundle;
+  tableCopy = table;
+  ratingsCopy = ratings;
+  coordinator = [(STPINListViewController *)self coordinator];
+  contentPrivacyCoordinator = [coordinator contentPrivacyCoordinator];
+  viewModel = [contentPrivacyCoordinator viewModel];
+  v14 = [viewModel visibleRestrictionWithConfiguration:@"system.ratings" key:@"ratingApps"];
 
-  v15 = [v14 uiLabel];
-  v16 = [v8 localizedStringForKey:v15 value:&stru_28766E5A8 table:v9];
+  uiLabel = [v14 uiLabel];
+  v16 = [bundleCopy localizedStringForKey:uiLabel value:&stru_28766E5A8 table:tableCopy];
 
   v17 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:v16 target:self set:sel_setItemSpecifierValue_specifier_ get:sel_getItemSpecifierValue_ detail:objc_opt_class() cell:2 edit:0];
   [v17 setIdentifier:@"APP_RATING"];
-  v18 = [(STPINListViewController *)self coordinator];
-  [v17 setObject:v18 forKeyedSubscript:@"rootViewModelCoordinator"];
+  coordinator2 = [(STPINListViewController *)self coordinator];
+  [v17 setObject:coordinator2 forKeyedSubscript:@"rootViewModelCoordinator"];
 
   v19 = [STAppExceptionsController alloc];
-  v20 = [(STPINListViewController *)self coordinator];
-  v21 = [v20 contentPrivacyCoordinator];
-  v22 = [v21 viewModel];
-  v23 = [v22 userDSID];
-  v24 = [(STAppExceptionsController *)v19 initWithManagedUserDSID:v23];
+  coordinator3 = [(STPINListViewController *)self coordinator];
+  contentPrivacyCoordinator2 = [coordinator3 contentPrivacyCoordinator];
+  viewModel2 = [contentPrivacyCoordinator2 viewModel];
+  userDSID = [viewModel2 userDSID];
+  v24 = [(STAppExceptionsController *)v19 initWithManagedUserDSID:userDSID];
   [v17 setObject:v24 forKeyedSubscript:@"controller"];
 
   v25 = MEMORY[0x277CCABB0];
-  v26 = [(STPINListViewController *)self coordinator];
-  v27 = [v26 contentPrivacyCoordinator];
-  v28 = [v27 viewModel];
-  v29 = [v25 numberWithBool:{objc_msgSend(v28, "shouldEnableRestriction:", v14)}];
+  coordinator4 = [(STPINListViewController *)self coordinator];
+  contentPrivacyCoordinator3 = [coordinator4 contentPrivacyCoordinator];
+  viewModel3 = [contentPrivacyCoordinator3 viewModel];
+  v29 = [v25 numberWithBool:{objc_msgSend(viewModel3, "shouldEnableRestriction:", v14)}];
   [v17 setObject:v29 forKeyedSubscript:*MEMORY[0x277D3FF38]];
 
   [v17 setObject:v14 forKeyedSubscript:0x287672648];
   [v17 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277D3FD80]];
-  v30 = [(STContentPrivacyMediaRestrictionsDetailController *)self _titlesAndValuesForItem:v14 titlesByValue:v10 sortByTitle:0];
+  v30 = [(STContentPrivacyMediaRestrictionsDetailController *)self _titlesAndValuesForItem:v14 titlesByValue:ratingsCopy sortByTitle:0];
 
-  v31 = [v30 values];
-  v32 = [v30 titles];
-  [v17 setValues:v31 titles:v32];
+  values = [v30 values];
+  titles = [v30 titles];
+  [v17 setValues:values titles:titles];
 
   [v17 setObject:objc_opt_class() forKeyedSubscript:*MEMORY[0x277D3FE58]];
 
   return v17;
 }
 
-- (id)_legacyAppsAndRatingsSpecifierWithRatings:(id)a3 restrictionsStringsTable:(id)a4 screenTimeSettingsUIBundle:(id)a5
+- (id)_legacyAppsAndRatingsSpecifierWithRatings:(id)ratings restrictionsStringsTable:(id)table screenTimeSettingsUIBundle:(id)bundle
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [(STContentPrivacyMediaRestrictionsDetailController *)self defaultLinkListSpecifierWithConfiguration:@"system.ratings" key:@"ratingApps" titlesByValue:a3 sortByTitle:0];
-  v11 = [v10 titleDictionary];
-  v12 = [v11 allKeys];
-  v13 = [v12 containsObject:&unk_28769D100];
+  tableCopy = table;
+  bundleCopy = bundle;
+  v10 = [(STContentPrivacyMediaRestrictionsDetailController *)self defaultLinkListSpecifierWithConfiguration:@"system.ratings" key:@"ratingApps" titlesByValue:ratings sortByTitle:0];
+  titleDictionary = [v10 titleDictionary];
+  allKeys = [titleDictionary allKeys];
+  v13 = [allKeys containsObject:&unk_28769D100];
 
   if (v13)
   {
-    v14 = [v9 localizedStringForKey:@"UnratedExplanationFooter" value:&stru_28766E5A8 table:v8];
+    v14 = [bundleCopy localizedStringForKey:@"UnratedExplanationFooter" value:&stru_28766E5A8 table:tableCopy];
     [v10 setObject:v14 forKeyedSubscript:0x287674048];
   }
 
@@ -124,16 +124,16 @@
 - (id)specifiers
 {
   v122[2] = *MEMORY[0x277D85DE8];
-  v3 = [(STPINListViewController *)self coordinator];
-  v4 = [v3 contentPrivacyCoordinator];
-  v5 = [v4 viewModel];
-  v6 = [v5 isLoaded];
+  coordinator = [(STPINListViewController *)self coordinator];
+  contentPrivacyCoordinator = [coordinator contentPrivacyCoordinator];
+  viewModel = [contentPrivacyCoordinator viewModel];
+  isLoaded = [viewModel isLoaded];
 
-  if (v6)
+  if (isLoaded)
   {
     v7 = objc_opt_new();
     v89 = v7;
-    v8 = [(STContentPrivacyMediaRestrictionsDetailController *)self regionRatings];
+    regionRatings = [(STContentPrivacyMediaRestrictionsDetailController *)self regionRatings];
     if (_os_feature_enabled_impl())
     {
       v9 = @"AllowedMediaServicesLabel";
@@ -150,12 +150,12 @@
     v12 = [STContentPrivacyMediaRestrictionsDetailController radioGroupSpecifierWithName:"radioGroupSpecifierWithName:footerText:item:" footerText:? item:?];
     [v7 addObject:v12];
 
-    v13 = [v8 preferredRegion];
-    v102 = [v8 localizedMovieRatingsForRegion:v13];
-    v106 = [v8 localizedTVRatingsForRegion:v13];
-    v103 = v8;
-    v100 = v13;
-    v105 = [v8 localizedAppRatingsForRegion:v13];
+    preferredRegion = [regionRatings preferredRegion];
+    v102 = [regionRatings localizedMovieRatingsForRegion:preferredRegion];
+    v106 = [regionRatings localizedTVRatingsForRegion:preferredRegion];
+    v103 = regionRatings;
+    v100 = preferredRegion;
+    v105 = [regionRatings localizedAppRatingsForRegion:preferredRegion];
     v121[0] = MEMORY[0x277CBEC28];
     v14 = [v11 localizedStringForKey:@"CleanLabel" value:&stru_28766E5A8 table:v10];
     v122[0] = v14;
@@ -193,15 +193,15 @@
     v26 = [(STContentPrivacyMediaRestrictionsDetailController *)self defaultLinkListSpecifierWithConfiguration:@"system.music" key:@"allowMusicArtistActivity" titlesByValue:v23 sortByTitle:0];
     [v89 addObject:v26];
 
-    v27 = [(STPINListViewController *)self coordinator];
-    v28 = [v27 viewModel];
-    v29 = [v28 me];
-    v30 = [v29 type];
+    coordinator2 = [(STPINListViewController *)self coordinator];
+    viewModel2 = [coordinator2 viewModel];
+    v29 = [viewModel2 me];
+    type = [v29 type];
 
-    if (v30 == 7)
+    if (type == 7)
     {
-      v31 = [v89 lastObject];
-      [v31 setObject:@"1" forKeyedSubscript:0x287673FE8];
+      lastObject = [v89 lastObject];
+      [lastObject setObject:@"1" forKeyedSubscript:0x287673FE8];
     }
 
     v32 = v102;
@@ -217,8 +217,8 @@
     v36 = [(STContentPrivacyMediaRestrictionsDetailController *)self _appRatingsSpecifierWithRatings:v105 restrictionsStringsTable:v10 screenTimeSettingsUIBundle:v11];
     [(STContentPrivacyMediaRestrictionsDetailController *)self setAppsSpecifier:v36];
 
-    v37 = [(STContentPrivacyMediaRestrictionsDetailController *)self appsSpecifier];
-    [v89 addObject:v37];
+    appsSpecifier = [(STContentPrivacyMediaRestrictionsDetailController *)self appsSpecifier];
+    [v89 addObject:appsSpecifier];
 
     v38 = [(STContentPrivacyMediaRestrictionsDetailController *)self defaultLinkListSpecifierWithConfiguration:@"application.store" key:@"allowAppClips"];
     [v89 addObject:v38];
@@ -240,9 +240,9 @@
 
     v97 = v42;
     v44 = [(STContentPrivacyMediaRestrictionsDetailController *)self defaultLinkListSpecifierWithConfiguration:0x2876725E8 key:0x2876726E8 titlesByValue:v42 sortByTitle:0];
-    v45 = [(STPINListViewController *)self coordinator];
-    v46 = [v45 contentPrivacyCoordinator];
-    LOBYTE(v40) = [v46 areRestrictionsEditable];
+    coordinator3 = [(STPINListViewController *)self coordinator];
+    contentPrivacyCoordinator2 = [coordinator3 contentPrivacyCoordinator];
+    LOBYTE(v40) = [contentPrivacyCoordinator2 areRestrictionsEditable];
 
     if ((v40 & 1) == 0)
     {
@@ -251,8 +251,8 @@
 
     v95 = v44;
     [v89 addObject:v44];
-    v47 = [v89 lastObject];
-    [v47 setControllerLoadAction:sel_showWebFilterRestrictions_];
+    lastObject2 = [v89 lastObject];
+    [lastObject2 setControllerLoadAction:sel_showWebFilterRestrictions_];
 
     if ((_os_feature_enabled_impl() & 1) == 0)
     {
@@ -293,12 +293,12 @@
     v60 = [v11 localizedStringForKey:@"ConnectWithFriendsExplanatoryFooterText" value:&stru_28766E5A8 table:v10];
     [v59 setObject:v60 forKeyedSubscript:0x287674048];
 
-    v61 = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
+    emptyGroupSpecifier = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
     v62 = [v11 localizedStringForKey:@"ConnectWithFriendsContinuedExplanatoryText" value:&stru_28766E5A8 table:v10];
-    [v61 setObject:v62 forKeyedSubscript:*MEMORY[0x277D3FF88]];
+    [emptyGroupSpecifier setObject:v62 forKeyedSubscript:*MEMORY[0x277D3FF88]];
 
-    v91 = v61;
-    v112 = v61;
+    v91 = emptyGroupSpecifier;
+    v112 = emptyGroupSpecifier;
     v63 = [MEMORY[0x277CBEA60] arrayWithObjects:&v112 count:1];
     [v59 setObject:v63 forKeyedSubscript:0x287674008];
 
@@ -322,9 +322,9 @@
     v69 = [(STContentPrivacyMediaRestrictionsDetailController *)self defaultLinkListSpecifierWithConfiguration:@"system.gamecenter" key:@"allowGameCenterProfileModification"];
     [v89 addObject:v69];
 
-    v70 = [(STPINListViewController *)self coordinator];
-    v71 = [v70 contentPrivacyCoordinator];
-    LOBYTE(v59) = [v71 areRestrictionsEditable];
+    coordinator4 = [(STPINListViewController *)self coordinator];
+    contentPrivacyCoordinator3 = [coordinator4 contentPrivacyCoordinator];
+    LOBYTE(v59) = [contentPrivacyCoordinator3 areRestrictionsEditable];
 
     v72 = v103;
     if ((v59 & 1) == 0)
@@ -389,43 +389,43 @@
   return v85;
 }
 
-- (void)showWebFilterRestrictions:(id)a3
+- (void)showWebFilterRestrictions:(id)restrictions
 {
-  v4 = a3;
+  restrictionsCopy = restrictions;
   v7 = objc_opt_new();
-  v5 = [(STPINListViewController *)self coordinator];
-  [v7 setCoordinator:v5];
+  coordinator = [(STPINListViewController *)self coordinator];
+  [v7 setCoordinator:coordinator];
 
   [v7 setParentController:self];
-  v6 = [(STContentPrivacyMediaRestrictionsDetailController *)self rootController];
-  [v7 setRootController:v6];
+  rootController = [(STContentPrivacyMediaRestrictionsDetailController *)self rootController];
+  [v7 setRootController:rootController];
 
-  [v7 setSpecifier:v4];
+  [v7 setSpecifier:restrictionsCopy];
   [(STContentPrivacyMediaRestrictionsDetailController *)self showController:v7 animate:1];
 }
 
-- (id)getItemSpecifierValue:(id)a3
+- (id)getItemSpecifierValue:(id)value
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:0x287672648];
-  v6 = [(STPINListViewController *)self coordinator];
-  v7 = [v6 contentPrivacyCoordinator];
-  v8 = [v7 viewModel];
+  valueCopy = value;
+  v5 = [valueCopy objectForKeyedSubscript:0x287672648];
+  coordinator = [(STPINListViewController *)self coordinator];
+  contentPrivacyCoordinator = [coordinator contentPrivacyCoordinator];
+  viewModel = [contentPrivacyCoordinator viewModel];
 
-  v9 = [v4 values];
+  values = [valueCopy values];
 
-  v10 = [(STContentPrivacyMediaRestrictionsDetailController *)self _getSpecifierValueForItem:v5 viewModel:v8 restrictionValues:v9];
+  v10 = [(STContentPrivacyMediaRestrictionsDetailController *)self _getSpecifierValueForItem:v5 viewModel:viewModel restrictionValues:values];
 
   return v10;
 }
 
-- (id)_getSpecifierValueForItem:(id)a3 viewModel:(id)a4 restrictionValues:(id)a5
+- (id)_getSpecifierValueForItem:(id)item viewModel:(id)model restrictionValues:(id)values
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 valuesByRestriction];
-  v12 = [v11 objectForKeyedSubscript:v8];
+  itemCopy = item;
+  modelCopy = model;
+  valuesCopy = values;
+  valuesByRestriction = [modelCopy valuesByRestriction];
+  v12 = [valuesByRestriction objectForKeyedSubscript:itemCopy];
   v13 = v12;
   if (v12)
   {
@@ -434,16 +434,16 @@
 
   else
   {
-    v14 = [v9 defaultValueForRestriction:v8];
+    v14 = [modelCopy defaultValueForRestriction:itemCopy];
   }
 
   v15 = v14;
 
-  if ([v8 restrictionType] && (objc_msgSend(v8, "rmConfiguration"), v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "isEqualToString:", @"system.ratings"), v16, v17))
+  if ([itemCopy restrictionType] && (objc_msgSend(itemCopy, "rmConfiguration"), v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "isEqualToString:", @"system.ratings"), v16, v17))
   {
-    v18 = [(STContentPrivacyMediaRestrictionsDetailController *)self regionRatings];
-    v19 = [v8 payloadKey];
-    v20 = [v18 getClosestRestrictionMatch:v15 within:v10 forPayloadKey:v19];
+    regionRatings = [(STContentPrivacyMediaRestrictionsDetailController *)self regionRatings];
+    payloadKey = [itemCopy payloadKey];
+    v20 = [regionRatings getClosestRestrictionMatch:v15 within:valuesCopy forPayloadKey:payloadKey];
   }
 
   else
@@ -454,64 +454,64 @@
   return v20;
 }
 
-- (void)setItemSpecifierValue:(id)a3 specifier:(id)a4
+- (void)setItemSpecifierValue:(id)value specifier:(id)specifier
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v6 objectForKeyedSubscript:0x287672648];
-  v9 = [(STPINListViewController *)self coordinator];
-  v10 = [v9 contentPrivacyCoordinator];
+  specifierCopy = specifier;
+  valueCopy = value;
+  v8 = [specifierCopy objectForKeyedSubscript:0x287672648];
+  coordinator = [(STPINListViewController *)self coordinator];
+  contentPrivacyCoordinator = [coordinator contentPrivacyCoordinator];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __85__STContentPrivacyMediaRestrictionsDetailController_setItemSpecifierValue_specifier___block_invoke;
   v12[3] = &unk_279B7CBC8;
   v12[4] = self;
-  v13 = v6;
-  v11 = v6;
-  [v10 saveRestrictionValue:v7 forItem:v8 completionHandler:v12];
+  v13 = specifierCopy;
+  v11 = specifierCopy;
+  [contentPrivacyCoordinator saveRestrictionValue:valueCopy forItem:v8 completionHandler:v12];
 }
 
 - (void)dealloc
 {
-  v3 = [(STPINListViewController *)self coordinator];
-  v4 = [v3 contentPrivacyCoordinator];
-  [v4 removeObserver:self forKeyPath:@"viewModel.isLoaded" context:@"MediaRestrictionsViewModelLoadedContext"];
+  coordinator = [(STPINListViewController *)self coordinator];
+  contentPrivacyCoordinator = [coordinator contentPrivacyCoordinator];
+  [contentPrivacyCoordinator removeObserver:self forKeyPath:@"viewModel.isLoaded" context:@"MediaRestrictionsViewModelLoadedContext"];
 
   v5.receiver = self;
   v5.super_class = STContentPrivacyMediaRestrictionsDetailController;
   [(STListViewController *)&v5 dealloc];
 }
 
-- (void)setCoordinator:(id)a3
+- (void)setCoordinator:(id)coordinator
 {
-  v4 = a3;
-  v5 = [(STPINListViewController *)self coordinator];
+  coordinatorCopy = coordinator;
+  coordinator = [(STPINListViewController *)self coordinator];
 
-  if (v5 != v4)
+  if (coordinator != coordinatorCopy)
   {
-    v6 = [(STPINListViewController *)self coordinator];
-    v7 = [v6 contentPrivacyCoordinator];
-    [v7 removeObserver:self forKeyPath:@"viewModel.isLoaded" context:@"MediaRestrictionsViewModelLoadedContext"];
+    coordinator2 = [(STPINListViewController *)self coordinator];
+    contentPrivacyCoordinator = [coordinator2 contentPrivacyCoordinator];
+    [contentPrivacyCoordinator removeObserver:self forKeyPath:@"viewModel.isLoaded" context:@"MediaRestrictionsViewModelLoadedContext"];
 
     v10.receiver = self;
     v10.super_class = STContentPrivacyMediaRestrictionsDetailController;
-    [(STPINListViewController *)&v10 setCoordinator:v4];
-    v8 = [(STPINListViewController *)self coordinator];
-    v9 = [v8 contentPrivacyCoordinator];
-    [v9 addObserver:self forKeyPath:@"viewModel.isLoaded" options:0 context:@"MediaRestrictionsViewModelLoadedContext"];
+    [(STPINListViewController *)&v10 setCoordinator:coordinatorCopy];
+    coordinator3 = [(STPINListViewController *)self coordinator];
+    contentPrivacyCoordinator2 = [coordinator3 contentPrivacyCoordinator];
+    [contentPrivacyCoordinator2 addObserver:self forKeyPath:@"viewModel.isLoaded" options:0 context:@"MediaRestrictionsViewModelLoadedContext"];
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (a6 == @"MediaRestrictionsViewModelLoadedContext")
+  if (context == @"MediaRestrictionsViewModelLoadedContext")
   {
-    v7 = [(STPINListViewController *)self coordinator:a3];
-    v8 = [v7 contentPrivacyCoordinator];
-    v9 = [v8 viewModel];
-    v10 = [v9 isLoaded];
+    v7 = [(STPINListViewController *)self coordinator:path];
+    contentPrivacyCoordinator = [v7 contentPrivacyCoordinator];
+    viewModel = [contentPrivacyCoordinator viewModel];
+    isLoaded = [viewModel isLoaded];
 
-    if (v10)
+    if (isLoaded)
     {
 
       [(STContentPrivacyMediaRestrictionsDetailController *)self reloadSpecifiers];
@@ -522,45 +522,45 @@
   {
     v11.receiver = self;
     v11.super_class = STContentPrivacyMediaRestrictionsDetailController;
-    [(STListViewController *)&v11 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:?];
+    [(STListViewController *)&v11 observeValueForKeyPath:path ofObject:object change:change context:?];
   }
 }
 
-- (id)_titlesAndValuesForItem:(id)a3 titlesByValue:(id)a4 sortByTitle:(BOOL)a5
+- (id)_titlesAndValuesForItem:(id)item titlesByValue:(id)value sortByTitle:(BOOL)title
 {
-  v5 = a5;
+  titleCopy = title;
   v24[2] = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a3;
+  valueCopy = value;
+  itemCopy = item;
   v9 = +[STScreenTimeSettingsUIBundle restrictionsStringsTable];
   v10 = +[STScreenTimeSettingsUIBundle bundle];
   v11 = objc_alloc_init(STSpecifierValuesAndTitles);
-  v12 = [v8 restrictionType];
+  restrictionType = [itemCopy restrictionType];
 
-  if (v7)
+  if (valueCopy)
   {
-    if (v5)
+    if (titleCopy)
     {
-      v13 = [v7 keysSortedByValueUsingSelector:sel_localizedCaseInsensitiveCompare_];
-      [(STSpecifierValuesAndTitles *)v11 setValues:v13];
+      allKeys = [valueCopy keysSortedByValueUsingSelector:sel_localizedCaseInsensitiveCompare_];
+      [(STSpecifierValuesAndTitles *)v11 setValues:allKeys];
     }
 
     else
     {
-      v13 = [v7 allKeys];
-      v18 = [v13 sortedArrayUsingSelector:sel_compare_];
+      allKeys = [valueCopy allKeys];
+      v18 = [allKeys sortedArrayUsingSelector:sel_compare_];
       [(STSpecifierValuesAndTitles *)v11 setValues:v18];
     }
 
-    v19 = [(STSpecifierValuesAndTitles *)v11 values];
-    v20 = [v7 objectsForKeys:v19 notFoundMarker:&stru_28766E5A8];
+    values = [(STSpecifierValuesAndTitles *)v11 values];
+    v20 = [valueCopy objectsForKeys:values notFoundMarker:&stru_28766E5A8];
     [(STSpecifierValuesAndTitles *)v11 setTitles:v20];
 
 LABEL_9:
     goto LABEL_12;
   }
 
-  if (v12 == 1)
+  if (restrictionType == 1)
   {
     [(STSpecifierValuesAndTitles *)v11 setValues:&unk_28769D820];
     v14 = [v10 localizedStringForKey:@"AllowLabel" value:&stru_28766E5A8 table:v9];
@@ -573,12 +573,12 @@ LABEL_9:
 
   else
   {
-    if (v12)
+    if (restrictionType)
     {
-      v19 = +[STUILog contentPrivacy];
-      if (os_log_type_enabled(v19, OS_LOG_TYPE_FAULT))
+      values = +[STUILog contentPrivacy];
+      if (os_log_type_enabled(values, OS_LOG_TYPE_FAULT))
       {
-        [STContentPrivacyMediaRestrictionsDetailController _titlesAndValuesForItem:v12 titlesByValue:v19 sortByTitle:?];
+        [STContentPrivacyMediaRestrictionsDetailController _titlesAndValuesForItem:restrictionType titlesByValue:values sortByTitle:?];
       }
 
       goto LABEL_9;
@@ -601,70 +601,70 @@ LABEL_12:
   return v11;
 }
 
-- (id)defaultLinkListSpecifierWithItem:(id)a3 titlesByValue:(id)a4 sortByTitle:(BOOL)a5
+- (id)defaultLinkListSpecifierWithItem:(id)item titlesByValue:(id)value sortByTitle:(BOOL)title
 {
-  v5 = a5;
-  v8 = a4;
-  v9 = a3;
+  titleCopy = title;
+  valueCopy = value;
+  itemCopy = item;
   v10 = +[STScreenTimeSettingsUIBundle restrictionsStringsTable];
   v11 = +[STScreenTimeSettingsUIBundle bundle];
-  v12 = [v9 uiLabel];
-  v13 = [v11 localizedStringForKey:v12 value:&stru_28766E5A8 table:v10];
+  uiLabel = [itemCopy uiLabel];
+  v13 = [v11 localizedStringForKey:uiLabel value:&stru_28766E5A8 table:v10];
 
   v14 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:v13 target:self set:sel_setItemSpecifierValue_specifier_ get:sel_getItemSpecifierValue_ detail:objc_opt_class() cell:2 edit:0];
-  v15 = [(STPINListViewController *)self coordinator];
-  [v14 setObject:v15 forKeyedSubscript:0x287675C48];
+  coordinator = [(STPINListViewController *)self coordinator];
+  [v14 setObject:coordinator forKeyedSubscript:0x287675C48];
 
-  v16 = [(STContentPrivacyMediaRestrictionsDetailController *)self _titlesAndValuesForItem:v9 titlesByValue:v8 sortByTitle:v5];
+  v16 = [(STContentPrivacyMediaRestrictionsDetailController *)self _titlesAndValuesForItem:itemCopy titlesByValue:valueCopy sortByTitle:titleCopy];
 
   v17 = MEMORY[0x277CCABB0];
-  v18 = [(STPINListViewController *)self coordinator];
-  v19 = [v18 contentPrivacyCoordinator];
-  v20 = [v19 viewModel];
-  v21 = [v17 numberWithBool:{objc_msgSend(v20, "shouldEnableRestriction:", v9)}];
+  coordinator2 = [(STPINListViewController *)self coordinator];
+  contentPrivacyCoordinator = [coordinator2 contentPrivacyCoordinator];
+  viewModel = [contentPrivacyCoordinator viewModel];
+  v21 = [v17 numberWithBool:{objc_msgSend(viewModel, "shouldEnableRestriction:", itemCopy)}];
   [v14 setObject:v21 forKeyedSubscript:*MEMORY[0x277D3FF38]];
 
-  v22 = [v16 values];
-  [v14 setObject:v22 forKeyedSubscript:@"STMediaRestrictionRanksSpecifierKey"];
+  values = [v16 values];
+  [v14 setObject:values forKeyedSubscript:@"STMediaRestrictionRanksSpecifierKey"];
 
-  [v14 setObject:v9 forKeyedSubscript:0x287672648];
+  [v14 setObject:itemCopy forKeyedSubscript:0x287672648];
   [v14 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277D3FD80]];
-  v23 = [v16 values];
-  v24 = [v16 titles];
-  [v14 setValues:v23 titles:v24];
+  values2 = [v16 values];
+  titles = [v16 titles];
+  [v14 setValues:values2 titles:titles];
 
   return v14;
 }
 
-- (id)defaultLinkListSpecifierWithConfiguration:(id)a3 key:(id)a4 titlesByValue:(id)a5 sortByTitle:(BOOL)a6
+- (id)defaultLinkListSpecifierWithConfiguration:(id)configuration key:(id)key titlesByValue:(id)value sortByTitle:(BOOL)title
 {
-  v6 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [(STPINListViewController *)self coordinator];
-  v14 = [v13 contentPrivacyCoordinator];
-  v15 = [v14 viewModel];
-  v16 = [v15 visibleRestrictionWithConfiguration:v12 key:v11];
+  titleCopy = title;
+  valueCopy = value;
+  keyCopy = key;
+  configurationCopy = configuration;
+  coordinator = [(STPINListViewController *)self coordinator];
+  contentPrivacyCoordinator = [coordinator contentPrivacyCoordinator];
+  viewModel = [contentPrivacyCoordinator viewModel];
+  v16 = [viewModel visibleRestrictionWithConfiguration:configurationCopy key:keyCopy];
 
   if (!v16)
   {
     [STContentPrivacyMediaRestrictionsDetailController defaultLinkListSpecifierWithConfiguration:key:titlesByValue:sortByTitle:];
   }
 
-  v17 = [(STContentPrivacyMediaRestrictionsDetailController *)self defaultLinkListSpecifierWithItem:v16 titlesByValue:v10 sortByTitle:v6];
+  v17 = [(STContentPrivacyMediaRestrictionsDetailController *)self defaultLinkListSpecifierWithItem:v16 titlesByValue:valueCopy sortByTitle:titleCopy];
 
   return v17;
 }
 
-- (id)defaultLinkListSpecifierWithConfiguration:(id)a3 key:(id)a4
+- (id)defaultLinkListSpecifierWithConfiguration:(id)configuration key:(id)key
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(STPINListViewController *)self coordinator];
-  v9 = [v8 contentPrivacyCoordinator];
-  v10 = [v9 viewModel];
-  v11 = [v10 visibleRestrictionWithConfiguration:v7 key:v6];
+  keyCopy = key;
+  configurationCopy = configuration;
+  coordinator = [(STPINListViewController *)self coordinator];
+  contentPrivacyCoordinator = [coordinator contentPrivacyCoordinator];
+  viewModel = [contentPrivacyCoordinator viewModel];
+  v11 = [viewModel visibleRestrictionWithConfiguration:configurationCopy key:keyCopy];
 
   if (!v11)
   {
@@ -676,94 +676,94 @@ LABEL_12:
   return v12;
 }
 
-- (id)radioGroupSpecifierWithName:(id)a3 footerText:(id)a4 item:(id)a5
+- (id)radioGroupSpecifierWithName:(id)name footerText:(id)text item:(id)item
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [MEMORY[0x277D3FAD8] groupSpecifierWithName:a3];
+  textCopy = text;
+  itemCopy = item;
+  v9 = [MEMORY[0x277D3FAD8] groupSpecifierWithName:name];
   [v9 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277D3FFE8]];
-  if (v7)
+  if (textCopy)
   {
-    [v9 setObject:v7 forKeyedSubscript:*MEMORY[0x277D3FF88]];
+    [v9 setObject:textCopy forKeyedSubscript:*MEMORY[0x277D3FF88]];
   }
 
-  if (v8)
+  if (itemCopy)
   {
-    [v9 setObject:v8 forKeyedSubscript:0x287672648];
+    [v9 setObject:itemCopy forKeyedSubscript:0x287672648];
   }
 
   return v9;
 }
 
-- (id)defaultSwitchSpecifierWithConfiguration:(id)a3 key:(id)a4
+- (id)defaultSwitchSpecifierWithConfiguration:(id)configuration key:(id)key
 {
-  v6 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
 
   v7 = objc_opt_new();
 
   return v7;
 }
 
-- (id)linkListSpecifierForTVAndMoviesWithConfiguration:(id)a3 key:(id)a4 footerKey:(id)a5 titlesByValue:(id)a6
+- (id)linkListSpecifierForTVAndMoviesWithConfiguration:(id)configuration key:(id)key footerKey:(id)footerKey titlesByValue:(id)value
 {
-  v10 = a4;
-  v11 = a6;
-  v33 = a5;
-  v12 = a3;
-  if (([v10 isEqualToString:@"ratingMovies"] & 1) == 0 && (objc_msgSend(v10, "isEqualToString:", @"ratingTVShows") & 1) == 0)
+  keyCopy = key;
+  valueCopy = value;
+  footerKeyCopy = footerKey;
+  configurationCopy = configuration;
+  if (([keyCopy isEqualToString:@"ratingMovies"] & 1) == 0 && (objc_msgSend(keyCopy, "isEqualToString:", @"ratingTVShows") & 1) == 0)
   {
     [STContentPrivacyMediaRestrictionsDetailController linkListSpecifierForTVAndMoviesWithConfiguration:key:footerKey:titlesByValue:];
   }
 
-  v13 = [(STPINListViewController *)self coordinator];
-  v14 = [v13 contentPrivacyCoordinator];
-  v15 = [v14 viewModel];
-  v16 = [v15 visibleRestrictionWithConfiguration:v12 key:v10];
+  coordinator = [(STPINListViewController *)self coordinator];
+  contentPrivacyCoordinator = [coordinator contentPrivacyCoordinator];
+  viewModel = [contentPrivacyCoordinator viewModel];
+  v16 = [viewModel visibleRestrictionWithConfiguration:configurationCopy key:keyCopy];
 
-  v32 = v10;
+  v32 = keyCopy;
   if (!v16)
   {
     [STContentPrivacyMediaRestrictionsDetailController linkListSpecifierForTVAndMoviesWithConfiguration:key:footerKey:titlesByValue:];
   }
 
-  v17 = [v11 allKeys];
-  v18 = [v17 sortedArrayUsingSelector:sel_compare_];
+  allKeys = [valueCopy allKeys];
+  v18 = [allKeys sortedArrayUsingSelector:sel_compare_];
 
-  v31 = [v11 objectsForKeys:v18 notFoundMarker:&stru_28766E5A8];
+  v31 = [valueCopy objectsForKeys:v18 notFoundMarker:&stru_28766E5A8];
 
   v30 = +[STScreenTimeSettingsUIBundle restrictionsStringsTable];
   v19 = +[STScreenTimeSettingsUIBundle bundle];
-  v20 = [v16 uiLabel];
-  v21 = [v19 localizedStringForKey:v20 value:&stru_28766E5A8 table:v30];
+  uiLabel = [v16 uiLabel];
+  v21 = [v19 localizedStringForKey:uiLabel value:&stru_28766E5A8 table:v30];
 
   v22 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:v21 target:self set:sel_setItemSpecifierValue_specifier_ get:sel_getItemSpecifierValue_ detail:objc_opt_class() cell:2 edit:0];
   v23 = MEMORY[0x277CCABB0];
-  v24 = [(STPINListViewController *)self coordinator];
-  v25 = [v24 contentPrivacyCoordinator];
-  v26 = [v25 viewModel];
-  v27 = [v23 numberWithBool:{objc_msgSend(v26, "shouldEnableRestriction:", v16)}];
+  coordinator2 = [(STPINListViewController *)self coordinator];
+  contentPrivacyCoordinator2 = [coordinator2 contentPrivacyCoordinator];
+  viewModel2 = [contentPrivacyCoordinator2 viewModel];
+  v27 = [v23 numberWithBool:{objc_msgSend(viewModel2, "shouldEnableRestriction:", v16)}];
   [v22 setObject:v27 forKeyedSubscript:*MEMORY[0x277D3FF38]];
 
   [v22 setObject:v18 forKeyedSubscript:@"STMediaRestrictionRanksSpecifierKey"];
   [v22 setObject:v16 forKeyedSubscript:0x287672648];
   [v22 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277D3FD80]];
-  [v22 setObject:v33 forKeyedSubscript:0x287674028];
+  [v22 setObject:footerKeyCopy forKeyedSubscript:0x287674028];
 
-  v28 = [(STPINListViewController *)self coordinator];
-  [v22 setObject:v28 forKeyedSubscript:0x287675C48];
+  coordinator3 = [(STPINListViewController *)self coordinator];
+  [v22 setObject:coordinator3 forKeyedSubscript:0x287675C48];
 
   [v22 setValues:v18 titles:v31];
 
   return v22;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v8.receiver = self;
   v8.super_class = STContentPrivacyMediaRestrictionsDetailController;
-  [(STPINListViewController *)&v8 viewDidAppear:a3];
-  v4 = [(STContentPrivacyMediaRestrictionsDetailController *)self specifier];
-  v5 = [v4 objectForKeyedSubscript:@"STContentRestrictionAdditionalURLHandling"];
+  [(STPINListViewController *)&v8 viewDidAppear:appear];
+  specifier = [(STContentPrivacyMediaRestrictionsDetailController *)self specifier];
+  v5 = [specifier objectForKeyedSubscript:@"STContentRestrictionAdditionalURLHandling"];
   v6 = [@"APP_RATING" isEqualToString:v5];
 
   if (v6)

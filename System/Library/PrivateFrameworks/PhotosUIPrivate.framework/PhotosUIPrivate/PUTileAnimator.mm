@@ -1,10 +1,10 @@
 @interface PUTileAnimator
 - (PUTilingViewControllerTransition)currentTransition;
-- (void)animateTileController:(id)a3 toLayoutInfo:(id)a4 withOptions:(id)a5 completionHandler:(id)a6;
-- (void)prepareTileControllerForAnimation:(id)a3 withInitialLayoutInfo:(id)a4;
-- (void)transitionDidBeginAnimation:(id)a3;
-- (void)transitionWillBeginAnimation:(id)a3;
-- (void)updateAnimationForTileController:(id)a3 withRepositionedTargetLayoutInfo:(id)a4;
+- (void)animateTileController:(id)controller toLayoutInfo:(id)info withOptions:(id)options completionHandler:(id)handler;
+- (void)prepareTileControllerForAnimation:(id)animation withInitialLayoutInfo:(id)info;
+- (void)transitionDidBeginAnimation:(id)animation;
+- (void)transitionWillBeginAnimation:(id)animation;
+- (void)updateAnimationForTileController:(id)controller withRepositionedTargetLayoutInfo:(id)info;
 @end
 
 @implementation PUTileAnimator
@@ -16,50 +16,50 @@
   return WeakRetained;
 }
 
-- (void)transitionDidBeginAnimation:(id)a3
+- (void)transitionDidBeginAnimation:(id)animation
 {
-  v5 = a3;
+  animationCopy = animation;
   WeakRetained = objc_loadWeakRetained(&self->_currentTransition);
 
-  if (WeakRetained != v5)
+  if (WeakRetained != animationCopy)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"PUTileAnimator.m" lineNumber:42 description:{@"Invalid parameter not satisfying: %@", @"transition == _currentTransition"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUTileAnimator.m" lineNumber:42 description:{@"Invalid parameter not satisfying: %@", @"transition == _currentTransition"}];
   }
 
   objc_storeWeak(&self->_currentTransition, 0);
 }
 
-- (void)transitionWillBeginAnimation:(id)a3
+- (void)transitionWillBeginAnimation:(id)animation
 {
-  obj = a3;
+  obj = animation;
   WeakRetained = objc_loadWeakRetained(&self->_currentTransition);
 
   if (WeakRetained)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"PUTileAnimator.m" lineNumber:37 description:{@"Invalid parameter not satisfying: %@", @"!_currentTransition"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUTileAnimator.m" lineNumber:37 description:{@"Invalid parameter not satisfying: %@", @"!_currentTransition"}];
   }
 
   objc_storeWeak(&self->_currentTransition, obj);
 }
 
-- (void)updateAnimationForTileController:(id)a3 withRepositionedTargetLayoutInfo:(id)a4
+- (void)updateAnimationForTileController:(id)controller withRepositionedTargetLayoutInfo:(id)info
 {
-  v6 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v6 handleFailureInMethod:a2 object:self file:@"PUTileAnimator.m" lineNumber:26 description:@"must be implemented by concrete subclass"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PUTileAnimator.m" lineNumber:26 description:@"must be implemented by concrete subclass"];
 }
 
-- (void)animateTileController:(id)a3 toLayoutInfo:(id)a4 withOptions:(id)a5 completionHandler:(id)a6
+- (void)animateTileController:(id)controller toLayoutInfo:(id)info withOptions:(id)options completionHandler:(id)handler
 {
-  v8 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v8 handleFailureInMethod:a2 object:self file:@"PUTileAnimator.m" lineNumber:22 description:@"must be implemented by concrete subclass"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PUTileAnimator.m" lineNumber:22 description:@"must be implemented by concrete subclass"];
 }
 
-- (void)prepareTileControllerForAnimation:(id)a3 withInitialLayoutInfo:(id)a4
+- (void)prepareTileControllerForAnimation:(id)animation withInitialLayoutInfo:(id)info
 {
-  v6 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v6 handleFailureInMethod:a2 object:self file:@"PUTileAnimator.m" lineNumber:18 description:@"must be implemented by concrete subclass"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PUTileAnimator.m" lineNumber:18 description:@"must be implemented by concrete subclass"];
 }
 
 @end

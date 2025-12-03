@@ -6,26 +6,26 @@
 - (BOOL)getSoundRecognitionPreferenceIsOn;
 - (BOOL)isAnyCarPlaySoundDetectionOn;
 - (BOOL)soundRecognitionSwitchIsOn;
-- (CARSoundRecognitionPanel)initWithPanelController:(id)a3;
+- (CARSoundRecognitionPanel)initWithPanelController:(id)controller;
 - (id)cellSpecifier;
 - (id)specifierSections;
 - (void)_updateSpecifiers;
-- (void)setBabyCryingPreference:(BOOL)a3;
-- (void)setCarHornPreference:(BOOL)a3;
-- (void)setSirenPreference:(BOOL)a3;
-- (void)setSoundRecognitionPreference:(BOOL)a3;
+- (void)setBabyCryingPreference:(BOOL)preference;
+- (void)setCarHornPreference:(BOOL)preference;
+- (void)setSirenPreference:(BOOL)preference;
+- (void)setSoundRecognitionPreference:(BOOL)preference;
 - (void)startSoundDetectionEngineIfNeeded;
 - (void)stopSoundDetectionEngineIfNeeded;
 @end
 
 @implementation CARSoundRecognitionPanel
 
-- (CARSoundRecognitionPanel)initWithPanelController:(id)a3
+- (CARSoundRecognitionPanel)initWithPanelController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v39.receiver = self;
   v39.super_class = CARSoundRecognitionPanel;
-  v5 = [(CARSettingsPanel *)&v39 initWithPanelController:v4];
+  v5 = [(CARSettingsPanel *)&v39 initWithPanelController:controllerCopy];
   if (v5)
   {
     objc_initWeak(&location, v5);
@@ -41,27 +41,27 @@
     v5->_soundRecognitionSwitchSpecifier = v8;
 
     [(CARSettingsCellSpecifier *)v5->_soundRecognitionSwitchSpecifier setAccessibilityIdentifier:@"CPSettingsAccessibilitySoundRecognitionToggle"];
-    v10 = [(CARSoundRecognitionPanel *)v5 getSoundRecognitionPreferenceIsOn];
+    getSoundRecognitionPreferenceIsOn = [(CARSoundRecognitionPanel *)v5 getSoundRecognitionPreferenceIsOn];
     v11 = v5->_soundRecognitionSwitchSpecifier;
-    v12 = [NSNumber numberWithBool:v10];
+    v12 = [NSNumber numberWithBool:getSoundRecognitionPreferenceIsOn];
     [(CARSettingsCellSpecifier *)v11 setCellValue:v12];
 
     v13 = sub_10001C784();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67240192;
-      v41 = v10;
+      v41 = getSoundRecognitionPreferenceIsOn;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "[Settings] Saved Sound Recognition preference is on: %{public}d", buf, 8u);
     }
 
-    v14 = [(CARSoundRecognitionPanel *)v5 getCarHornPreferenceIsOn];
+    getCarHornPreferenceIsOn = [(CARSoundRecognitionPanel *)v5 getCarHornPreferenceIsOn];
     v15 = objc_alloc_init(CARHornSpecifier);
     carHornSpecifier = v5->_carHornSpecifier;
     v5->_carHornSpecifier = v15;
 
     [(CARSettingsCellSpecifier *)v5->_carHornSpecifier setAccessibilityIdentifier:@"CPSettingsAccessibilitySoundRecognitionCarHornToggle"];
     v17 = v5->_carHornSpecifier;
-    v18 = [NSNumber numberWithBool:v14];
+    v18 = [NSNumber numberWithBool:getCarHornPreferenceIsOn];
     [(CARSettingsCellSpecifier *)v17 setCellValue:v18];
 
     v34[0] = _NSConcreteStackBlock;
@@ -70,14 +70,14 @@
     v34[3] = &unk_1000DAE68;
     objc_copyWeak(&v35, &location);
     [(CARSettingsCellSpecifier *)v5->_carHornSpecifier setActionBlock:v34];
-    v19 = [(CARSoundRecognitionPanel *)v5 getSirenPreferenceIsOn];
+    getSirenPreferenceIsOn = [(CARSoundRecognitionPanel *)v5 getSirenPreferenceIsOn];
     v20 = objc_alloc_init(CARSirenSpecifier);
     sirenSpecifier = v5->_sirenSpecifier;
     v5->_sirenSpecifier = v20;
 
     [(CARSettingsCellSpecifier *)v5->_sirenSpecifier setAccessibilityIdentifier:@"CPSettingsAccessibilitySoundRecognitionSirenToggle"];
     v22 = v5->_sirenSpecifier;
-    v23 = [NSNumber numberWithBool:v19];
+    v23 = [NSNumber numberWithBool:getSirenPreferenceIsOn];
     [(CARSettingsCellSpecifier *)v22 setCellValue:v23];
 
     v32[0] = _NSConcreteStackBlock;
@@ -86,14 +86,14 @@
     v32[3] = &unk_1000DAE68;
     objc_copyWeak(&v33, &location);
     [(CARSettingsCellSpecifier *)v5->_sirenSpecifier setActionBlock:v32];
-    v24 = [(CARSoundRecognitionPanel *)v5 getBabyCryingPreferenceIsOn];
+    getBabyCryingPreferenceIsOn = [(CARSoundRecognitionPanel *)v5 getBabyCryingPreferenceIsOn];
     v25 = objc_alloc_init(CARBabyCryingSpecifier);
     babyCryingSpecifier = v5->_babyCryingSpecifier;
     v5->_babyCryingSpecifier = v25;
 
     [(CARSettingsCellSpecifier *)v5->_babyCryingSpecifier setAccessibilityIdentifier:@"CPSettingsAccessibilitySoundRecognitionBabyCryingToggle"];
     v27 = v5->_babyCryingSpecifier;
-    v28 = [NSNumber numberWithBool:v24];
+    v28 = [NSNumber numberWithBool:getBabyCryingPreferenceIsOn];
     [(CARSettingsCellSpecifier *)v27 setCellValue:v28];
 
     v30[0] = _NSConcreteStackBlock;
@@ -141,8 +141,8 @@
 
 - (id)specifierSections
 {
-  v3 = [(CARSoundRecognitionPanel *)self soundRecognitionSwitchSpecifier];
-  v19 = v3;
+  soundRecognitionSwitchSpecifier = [(CARSoundRecognitionPanel *)self soundRecognitionSwitchSpecifier];
+  v19 = soundRecognitionSwitchSpecifier;
   v4 = [NSArray arrayWithObjects:&v19 count:1];
 
   v5 = [CARSettingsCellSpecifierSection alloc];
@@ -177,60 +177,60 @@
 
 - (BOOL)soundRecognitionSwitchIsOn
 {
-  v2 = [(CARSoundRecognitionPanel *)self soundRecognitionSwitchSpecifier];
-  v3 = [v2 cellValue];
-  v4 = [v3 BOOLValue];
+  soundRecognitionSwitchSpecifier = [(CARSoundRecognitionPanel *)self soundRecognitionSwitchSpecifier];
+  cellValue = [soundRecognitionSwitchSpecifier cellValue];
+  bOOLValue = [cellValue BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)getSoundRecognitionPreferenceIsOn
 {
-  v2 = [(CARSettingsPanel *)self panelController];
-  v3 = [v2 vehicle];
+  panelController = [(CARSettingsPanel *)self panelController];
+  vehicle = [panelController vehicle];
 
-  LOBYTE(v2) = [v3 soundRecognitionPreference];
-  return v2 & 1;
+  LOBYTE(panelController) = [vehicle soundRecognitionPreference];
+  return panelController & 1;
 }
 
 - (BOOL)getCarHornPreferenceIsOn
 {
-  v2 = [(CARSettingsPanel *)self panelController];
-  v3 = [v2 vehicle];
+  panelController = [(CARSettingsPanel *)self panelController];
+  vehicle = [panelController vehicle];
 
-  v4 = ([v3 soundRecognitionPreference] >> 1) & 1;
+  v4 = ([vehicle soundRecognitionPreference] >> 1) & 1;
   return v4;
 }
 
 - (BOOL)getSirenPreferenceIsOn
 {
-  v2 = [(CARSettingsPanel *)self panelController];
-  v3 = [v2 vehicle];
+  panelController = [(CARSettingsPanel *)self panelController];
+  vehicle = [panelController vehicle];
 
-  v4 = ([v3 soundRecognitionPreference] >> 2) & 1;
+  v4 = ([vehicle soundRecognitionPreference] >> 2) & 1;
   return v4;
 }
 
 - (BOOL)getBabyCryingPreferenceIsOn
 {
-  v2 = [(CARSettingsPanel *)self panelController];
-  v3 = [v2 vehicle];
+  panelController = [(CARSettingsPanel *)self panelController];
+  vehicle = [panelController vehicle];
 
-  v4 = ([v3 soundRecognitionPreference] >> 3) & 1;
+  v4 = ([vehicle soundRecognitionPreference] >> 3) & 1;
   return v4;
 }
 
-- (void)setSoundRecognitionPreference:(BOOL)a3
+- (void)setSoundRecognitionPreference:(BOOL)preference
 {
-  v3 = a3;
-  v5 = [(CARSettingsPanel *)self panelController];
-  v14 = [v5 vehicle];
+  preferenceCopy = preference;
+  panelController = [(CARSettingsPanel *)self panelController];
+  vehicle = [panelController vehicle];
 
-  v6 = [v14 soundRecognitionPreference];
-  v7 = v6;
-  if (v3)
+  soundRecognitionPreference = [vehicle soundRecognitionPreference];
+  v7 = soundRecognitionPreference;
+  if (preferenceCopy)
   {
-    v8 = (v6 | 1);
+    v8 = (soundRecognitionPreference | 1);
     [(CARSoundRecognitionPanel *)self startSoundDetectionEngineIfNeeded];
   }
 
@@ -242,33 +242,33 @@
     v8 = (v7 & 0xFFFFFFFFFFFFFFFELL);
   }
 
-  if ([v14 soundRecognitionPreference] != v8)
+  if ([vehicle soundRecognitionPreference] != v8)
   {
-    [v14 setSoundRecognitionPreference:v8];
-    v10 = [(CARSettingsPanel *)self panelController];
-    [v10 saveVehicle:v14];
+    [vehicle setSoundRecognitionPreference:v8];
+    panelController2 = [(CARSettingsPanel *)self panelController];
+    [panelController2 saveVehicle:vehicle];
 
     v11 = +[CARSettingsAnalytics sharedInstance];
-    v12 = [(CARSettingsPanel *)self panelController];
-    v13 = [v12 carSession];
-    [v11 axSoundRecognitionChangedForVehicle:v14 session:v13];
+    panelController3 = [(CARSettingsPanel *)self panelController];
+    carSession = [panelController3 carSession];
+    [v11 axSoundRecognitionChangedForVehicle:vehicle session:carSession];
   }
 }
 
-- (void)setCarHornPreference:(BOOL)a3
+- (void)setCarHornPreference:(BOOL)preference
 {
-  v3 = a3;
-  v5 = [(CARSettingsPanel *)self panelController];
-  v14 = [v5 vehicle];
+  preferenceCopy = preference;
+  panelController = [(CARSettingsPanel *)self panelController];
+  vehicle = [panelController vehicle];
 
-  v6 = [v14 soundRecognitionPreference];
+  soundRecognitionPreference = [vehicle soundRecognitionPreference];
   v7 = +[AXSDSettings sharedInstance];
   v8 = v7;
-  if (v3)
+  if (preferenceCopy)
   {
     [v7 addSoundDetectionType:AXSDSoundDetectionTypeCarHorns];
 
-    v9 = (v6 | 2);
+    v9 = (soundRecognitionPreference | 2);
     [(CARSoundRecognitionPanel *)self startSoundDetectionEngineIfNeeded];
   }
 
@@ -276,37 +276,37 @@
   {
     [v7 removeSoundDetectionType:AXSDSoundDetectionTypeCarHorns];
 
-    v9 = (v6 & 0xFFFFFFFFFFFFFFFDLL);
+    v9 = (soundRecognitionPreference & 0xFFFFFFFFFFFFFFFDLL);
     [(CARSoundRecognitionPanel *)self stopSoundDetectionEngineIfNeeded];
   }
 
-  if ([v14 soundRecognitionPreference] != v9)
+  if ([vehicle soundRecognitionPreference] != v9)
   {
-    [v14 setSoundRecognitionPreference:v9];
-    v10 = [(CARSettingsPanel *)self panelController];
-    [v10 saveVehicle:v14];
+    [vehicle setSoundRecognitionPreference:v9];
+    panelController2 = [(CARSettingsPanel *)self panelController];
+    [panelController2 saveVehicle:vehicle];
 
     v11 = +[CARSettingsAnalytics sharedInstance];
-    v12 = [(CARSettingsPanel *)self panelController];
-    v13 = [v12 carSession];
-    [v11 axSoundRecognitionChangedForVehicle:v14 session:v13];
+    panelController3 = [(CARSettingsPanel *)self panelController];
+    carSession = [panelController3 carSession];
+    [v11 axSoundRecognitionChangedForVehicle:vehicle session:carSession];
   }
 }
 
-- (void)setSirenPreference:(BOOL)a3
+- (void)setSirenPreference:(BOOL)preference
 {
-  v3 = a3;
-  v5 = [(CARSettingsPanel *)self panelController];
-  v14 = [v5 vehicle];
+  preferenceCopy = preference;
+  panelController = [(CARSettingsPanel *)self panelController];
+  vehicle = [panelController vehicle];
 
-  v6 = [v14 soundRecognitionPreference];
+  soundRecognitionPreference = [vehicle soundRecognitionPreference];
   v7 = +[AXSDSettings sharedInstance];
   v8 = v7;
-  if (v3)
+  if (preferenceCopy)
   {
     [v7 addSoundDetectionType:AXSDSoundDetectionTypeSirenAlarms];
 
-    v9 = (v6 | 4);
+    v9 = (soundRecognitionPreference | 4);
     [(CARSoundRecognitionPanel *)self startSoundDetectionEngineIfNeeded];
   }
 
@@ -314,37 +314,37 @@
   {
     [v7 removeSoundDetectionType:AXSDSoundDetectionTypeSirenAlarms];
 
-    v9 = (v6 & 0xFFFFFFFFFFFFFFFBLL);
+    v9 = (soundRecognitionPreference & 0xFFFFFFFFFFFFFFFBLL);
     [(CARSoundRecognitionPanel *)self stopSoundDetectionEngineIfNeeded];
   }
 
-  if ([v14 soundRecognitionPreference] != v9)
+  if ([vehicle soundRecognitionPreference] != v9)
   {
-    [v14 setSoundRecognitionPreference:v9];
-    v10 = [(CARSettingsPanel *)self panelController];
-    [v10 saveVehicle:v14];
+    [vehicle setSoundRecognitionPreference:v9];
+    panelController2 = [(CARSettingsPanel *)self panelController];
+    [panelController2 saveVehicle:vehicle];
 
     v11 = +[CARSettingsAnalytics sharedInstance];
-    v12 = [(CARSettingsPanel *)self panelController];
-    v13 = [v12 carSession];
-    [v11 axSoundRecognitionChangedForVehicle:v14 session:v13];
+    panelController3 = [(CARSettingsPanel *)self panelController];
+    carSession = [panelController3 carSession];
+    [v11 axSoundRecognitionChangedForVehicle:vehicle session:carSession];
   }
 }
 
-- (void)setBabyCryingPreference:(BOOL)a3
+- (void)setBabyCryingPreference:(BOOL)preference
 {
-  v3 = a3;
-  v5 = [(CARSettingsPanel *)self panelController];
-  v14 = [v5 vehicle];
+  preferenceCopy = preference;
+  panelController = [(CARSettingsPanel *)self panelController];
+  vehicle = [panelController vehicle];
 
-  v6 = [v14 soundRecognitionPreference];
+  soundRecognitionPreference = [vehicle soundRecognitionPreference];
   v7 = +[AXSDSettings sharedInstance];
   v8 = v7;
-  if (v3)
+  if (preferenceCopy)
   {
     [v7 addSoundDetectionType:AXSDSoundDetectionTypeDistressedBaby];
 
-    v9 = (v6 | 8);
+    v9 = (soundRecognitionPreference | 8);
     [(CARSoundRecognitionPanel *)self startSoundDetectionEngineIfNeeded];
   }
 
@@ -352,20 +352,20 @@
   {
     [v7 removeSoundDetectionType:AXSDSoundDetectionTypeDistressedBaby];
 
-    v9 = (v6 & 0xFFFFFFFFFFFFFFF7);
+    v9 = (soundRecognitionPreference & 0xFFFFFFFFFFFFFFF7);
     [(CARSoundRecognitionPanel *)self stopSoundDetectionEngineIfNeeded];
   }
 
-  if ([v14 soundRecognitionPreference] != v9)
+  if ([vehicle soundRecognitionPreference] != v9)
   {
-    [v14 setSoundRecognitionPreference:v9];
-    v10 = [(CARSettingsPanel *)self panelController];
-    [v10 saveVehicle:v14];
+    [vehicle setSoundRecognitionPreference:v9];
+    panelController2 = [(CARSettingsPanel *)self panelController];
+    [panelController2 saveVehicle:vehicle];
 
     v11 = +[CARSettingsAnalytics sharedInstance];
-    v12 = [(CARSettingsPanel *)self panelController];
-    v13 = [v12 carSession];
-    [v11 axSoundRecognitionChangedForVehicle:v14 session:v13];
+    panelController3 = [(CARSettingsPanel *)self panelController];
+    carSession = [panelController3 carSession];
+    [v11 axSoundRecognitionChangedForVehicle:vehicle session:carSession];
   }
 }
 
@@ -374,9 +374,9 @@
   v4 = +[AXSDSettings sharedInstance];
   if ([v4 soundDetectionState] != 2)
   {
-    v3 = [(CARSoundRecognitionPanel *)self isAnyCarPlaySoundDetectionOn];
+    isAnyCarPlaySoundDetectionOn = [(CARSoundRecognitionPanel *)self isAnyCarPlaySoundDetectionOn];
 
-    if (!v3)
+    if (!isAnyCarPlaySoundDetectionOn)
     {
       return;
     }
@@ -391,9 +391,9 @@
   v4 = +[AXSDSettings sharedInstance];
   if ([v4 soundDetectionState])
   {
-    v3 = [(CARSoundRecognitionPanel *)self isAnyCarPlaySoundDetectionOn];
+    isAnyCarPlaySoundDetectionOn = [(CARSoundRecognitionPanel *)self isAnyCarPlaySoundDetectionOn];
 
-    if (v3)
+    if (isAnyCarPlaySoundDetectionOn)
     {
       return;
     }
@@ -405,11 +405,11 @@
 
 - (BOOL)isAnyCarPlaySoundDetectionOn
 {
-  v2 = [(CARSettingsPanel *)self panelController];
-  v3 = [v2 vehicle];
+  panelController = [(CARSettingsPanel *)self panelController];
+  vehicle = [panelController vehicle];
 
-  LOBYTE(v2) = ([v3 soundRecognitionPreference] & 0xE) != 0;
-  return v2;
+  LOBYTE(panelController) = ([vehicle soundRecognitionPreference] & 0xE) != 0;
+  return panelController;
 }
 
 + (id)sounds
@@ -427,20 +427,20 @@
 - (void)_updateSpecifiers
 {
   v3 = [NSNumber numberWithBool:[(CARSoundRecognitionPanel *)self getSoundRecognitionPreferenceIsOn]];
-  v4 = [(CARSoundRecognitionPanel *)self soundRecognitionSwitchSpecifier];
-  [v4 setCellValue:v3];
+  soundRecognitionSwitchSpecifier = [(CARSoundRecognitionPanel *)self soundRecognitionSwitchSpecifier];
+  [soundRecognitionSwitchSpecifier setCellValue:v3];
 
   v5 = [NSNumber numberWithBool:[(CARSoundRecognitionPanel *)self getCarHornPreferenceIsOn]];
-  v6 = [(CARSoundRecognitionPanel *)self carHornSpecifier];
-  [v6 setCellValue:v5];
+  carHornSpecifier = [(CARSoundRecognitionPanel *)self carHornSpecifier];
+  [carHornSpecifier setCellValue:v5];
 
   v7 = [NSNumber numberWithBool:[(CARSoundRecognitionPanel *)self getSirenPreferenceIsOn]];
-  v8 = [(CARSoundRecognitionPanel *)self sirenSpecifier];
-  [v8 setCellValue:v7];
+  sirenSpecifier = [(CARSoundRecognitionPanel *)self sirenSpecifier];
+  [sirenSpecifier setCellValue:v7];
 
   v9 = [NSNumber numberWithBool:[(CARSoundRecognitionPanel *)self getBabyCryingPreferenceIsOn]];
-  v10 = [(CARSoundRecognitionPanel *)self babyCryingSpecifier];
-  [v10 setCellValue:v9];
+  babyCryingSpecifier = [(CARSoundRecognitionPanel *)self babyCryingSpecifier];
+  [babyCryingSpecifier setCellValue:v9];
 
   [(CARSettingsTablePanel *)self reloadSpecifiers];
 }

@@ -1,8 +1,8 @@
 @interface VNPersonsModelFaceModelDataSummarization
-+ (id)summarizationOfDataFromProvider:(id)a3;
-- (VNPersonsModelFaceModelDataSummarization)initWithPersonsCount:(unint64_t)a3 faceObservationCountsDistribution:(id)a4 personFaceObservationsCountHistogram:(id)a5;
++ (id)summarizationOfDataFromProvider:(id)provider;
+- (VNPersonsModelFaceModelDataSummarization)initWithPersonsCount:(unint64_t)count faceObservationCountsDistribution:(id)distribution personFaceObservationsCountHistogram:(id)histogram;
 - (id)description;
-- (unint64_t)numberOfPersonsWithFaceObservationsCount:(unint64_t)a3;
+- (unint64_t)numberOfPersonsWithFaceObservationsCount:(unint64_t)count;
 @end
 
 @implementation VNPersonsModelFaceModelDataSummarization
@@ -10,8 +10,8 @@
 - (id)description
 {
   v3 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"Persons: %lu", -[VNPersonsModelFaceModelDataSummarization personsCount](self, "personsCount")];
-  v4 = [(VNPersonsModelFaceModelDataSummarization *)self faceObservationCountsDistribution];
-  if ([v4 count])
+  faceObservationCountsDistribution = [(VNPersonsModelFaceModelDataSummarization *)self faceObservationCountsDistribution];
+  if ([faceObservationCountsDistribution count])
   {
     [v3 appendString:@" observation counts:"];
     v9[0] = 0;
@@ -25,7 +25,7 @@
     v6[4] = self;
     v8 = v9;
     v7 = v3;
-    [v4 enumerateIndexesWithOptions:2 usingBlock:v6];
+    [faceObservationCountsDistribution enumerateIndexesWithOptions:2 usingBlock:v6];
 
     _Block_object_dispose(v9, 8);
   }
@@ -50,31 +50,31 @@ uint64_t __55__VNPersonsModelFaceModelDataSummarization_description__block_invok
   return [*(a1 + 40) appendFormat:@" %lu (%lu)", a2, v4];
 }
 
-- (unint64_t)numberOfPersonsWithFaceObservationsCount:(unint64_t)a3
+- (unint64_t)numberOfPersonsWithFaceObservationsCount:(unint64_t)count
 {
   personFaceObservationsCountHistogram = self->_personFaceObservationsCountHistogram;
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:count];
   v5 = [(NSCountedSet *)personFaceObservationsCountHistogram countForObject:v4];
 
   return v5;
 }
 
-- (VNPersonsModelFaceModelDataSummarization)initWithPersonsCount:(unint64_t)a3 faceObservationCountsDistribution:(id)a4 personFaceObservationsCountHistogram:(id)a5
+- (VNPersonsModelFaceModelDataSummarization)initWithPersonsCount:(unint64_t)count faceObservationCountsDistribution:(id)distribution personFaceObservationsCountHistogram:(id)histogram
 {
-  v8 = a4;
-  v9 = a5;
+  distributionCopy = distribution;
+  histogramCopy = histogram;
   v17.receiver = self;
   v17.super_class = VNPersonsModelFaceModelDataSummarization;
   v10 = [(VNPersonsModelFaceModelDataSummarization *)&v17 init];
   v11 = v10;
   if (v10)
   {
-    v10->_personsCount = a3;
-    v12 = [v8 copy];
+    v10->_personsCount = count;
+    v12 = [distributionCopy copy];
     faceObservationCountsDistribution = v11->_faceObservationCountsDistribution;
     v11->_faceObservationCountsDistribution = v12;
 
-    v14 = [v9 copy];
+    v14 = [histogramCopy copy];
     personFaceObservationsCountHistogram = v11->_personFaceObservationsCountHistogram;
     v11->_personFaceObservationsCountHistogram = v14;
   }
@@ -82,17 +82,17 @@ uint64_t __55__VNPersonsModelFaceModelDataSummarization_description__block_invok
   return v11;
 }
 
-+ (id)summarizationOfDataFromProvider:(id)a3
++ (id)summarizationOfDataFromProvider:(id)provider
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 faceModelPersonsCount];
+  providerCopy = provider;
+  faceModelPersonsCount = [providerCopy faceModelPersonsCount];
   v6 = objc_alloc_init(MEMORY[0x1E696AB50]);
-  if (v5)
+  if (faceModelPersonsCount)
   {
-    for (i = 0; i != v5; ++i)
+    for (i = 0; i != faceModelPersonsCount; ++i)
     {
-      v8 = [v4 faceModelNumberOfFaceObservationsForPersonAtIndex:i];
+      v8 = [providerCopy faceModelNumberOfFaceObservationsForPersonAtIndex:i];
       v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v8];
       [v6 addObject:v9];
     }
@@ -127,7 +127,7 @@ uint64_t __55__VNPersonsModelFaceModelDataSummarization_description__block_invok
     while (v13);
   }
 
-  v16 = [[a1 alloc] initWithPersonsCount:v5 faceObservationCountsDistribution:v10 personFaceObservationsCountHistogram:v11];
+  v16 = [[self alloc] initWithPersonsCount:faceModelPersonsCount faceObservationCountsDistribution:v10 personFaceObservationsCountHistogram:v11];
 
   return v16;
 }

@@ -1,27 +1,27 @@
 @interface KmlBluetoothPairingTransport
 - (KmlBluetoothPairingTransport)init;
-- (KmlBluetoothPairingTransport)initWithDelegate:(id)a3;
+- (KmlBluetoothPairingTransport)initWithDelegate:(id)delegate;
 - (KmlPairingTransportDelegate)delegate;
-- (void)btHceSessionHandleApdu:(id)a3;
-- (void)btHceTxnSessionDidEndUnexpectedly:(id)a3 result:(id)a4;
-- (void)btHceTxnSessionDidStartEmulation:(id)a3 result:(id)a4;
-- (void)btHceTxnSessionDidStopEmulation:(id)a3 result:(id)a4;
-- (void)btHceTxnSessionRadioIsDisabled:(id)a3;
-- (void)btHceTxnSessionUwbUnavailable:(id)a3;
-- (void)btTxnSessionDidEndTransaction:(id)a3 result:(id)a4;
-- (void)btTxnSessionDidStartTransaction:(id)a3 result:(id)a4;
+- (void)btHceSessionHandleApdu:(id)apdu;
+- (void)btHceTxnSessionDidEndUnexpectedly:(id)unexpectedly result:(id)result;
+- (void)btHceTxnSessionDidStartEmulation:(id)emulation result:(id)result;
+- (void)btHceTxnSessionDidStopEmulation:(id)emulation result:(id)result;
+- (void)btHceTxnSessionRadioIsDisabled:(id)disabled;
+- (void)btHceTxnSessionUwbUnavailable:(id)unavailable;
+- (void)btTxnSessionDidEndTransaction:(id)transaction result:(id)result;
+- (void)btTxnSessionDidStartTransaction:(id)transaction result:(id)result;
 - (void)endSession;
 - (void)endTransaction;
-- (void)pairingEndedWithResult:(id)a3;
+- (void)pairingEndedWithResult:(id)result;
 - (void)pauseSession;
 - (void)readApdu;
 - (void)reset;
 - (void)resumeSessionWithTimeout;
-- (void)secureElementManagerSessionDidEndUnexpectedly:(id)a3;
-- (void)sendApdu:(id)a3;
+- (void)secureElementManagerSessionDidEndUnexpectedly:(id)unexpectedly;
+- (void)sendApdu:(id)apdu;
 - (void)startSession;
 - (void)startSessionWithTimeout;
-- (void)startTransactionForKeyWithIdentifier:(id)a3;
+- (void)startTransactionForKeyWithIdentifier:(id)identifier;
 @end
 
 @implementation KmlBluetoothPairingTransport
@@ -33,9 +33,9 @@
   return [(KmlBluetoothPairingTransport *)&v3 init];
 }
 
-- (KmlBluetoothPairingTransport)initWithDelegate:(id)a3
+- (KmlBluetoothPairingTransport)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v19.receiver = self;
   v19.super_class = KmlBluetoothPairingTransport;
   v5 = [(KmlBluetoothPairingTransport *)&v19 init];
@@ -51,7 +51,7 @@
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "%s : %i : let's init", buf, 0x12u);
     }
 
-    [(KmlBluetoothPairingTransport *)v5 setDelegate:v4];
+    [(KmlBluetoothPairingTransport *)v5 setDelegate:delegateCopy];
     btSession = v5->_btSession;
     v5->_btSession = 0;
 
@@ -150,17 +150,17 @@
   dispatch_async(btTransportQueue, block);
 }
 
-- (void)startTransactionForKeyWithIdentifier:(id)a3
+- (void)startTransactionForKeyWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   btTransportQueue = self->_btTransportQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10039B0F0;
   v7[3] = &unk_1004C22F0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = identifierCopy;
+  v6 = identifierCopy;
   dispatch_async(btTransportQueue, v7);
 }
 
@@ -186,17 +186,17 @@
   dispatch_async(btTransportQueue, block);
 }
 
-- (void)sendApdu:(id)a3
+- (void)sendApdu:(id)apdu
 {
-  v4 = a3;
+  apduCopy = apdu;
   btTransportQueue = self->_btTransportQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10039B4AC;
   v7[3] = &unk_1004C22F0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = apduCopy;
+  v6 = apduCopy;
   dispatch_async(btTransportQueue, v7);
 }
 
@@ -211,158 +211,158 @@
   dispatch_async(btTransportQueue, block);
 }
 
-- (void)pairingEndedWithResult:(id)a3
+- (void)pairingEndedWithResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   btTransportQueue = self->_btTransportQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10039B74C;
   v7[3] = &unk_1004C22F0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = resultCopy;
+  selfCopy = self;
+  v6 = resultCopy;
   dispatch_async(btTransportQueue, v7);
 }
 
-- (void)secureElementManagerSessionDidEndUnexpectedly:(id)a3
+- (void)secureElementManagerSessionDidEndUnexpectedly:(id)unexpectedly
 {
-  v4 = a3;
+  unexpectedlyCopy = unexpectedly;
   btTransportQueue = self->_btTransportQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10039C14C;
   v7[3] = &unk_1004C22F0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = unexpectedlyCopy;
+  selfCopy = self;
+  v6 = unexpectedlyCopy;
   dispatch_async(btTransportQueue, v7);
 }
 
-- (void)btHceSessionHandleApdu:(id)a3
+- (void)btHceSessionHandleApdu:(id)apdu
 {
-  v4 = a3;
+  apduCopy = apdu;
   btTransportQueue = self->_btTransportQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10039C3E4;
   v7[3] = &unk_1004C22F0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = apduCopy;
+  v6 = apduCopy;
   dispatch_async(btTransportQueue, v7);
 }
 
-- (void)btTxnSessionDidStartTransaction:(id)a3 result:(id)a4
+- (void)btTxnSessionDidStartTransaction:(id)transaction result:(id)result
 {
-  v6 = a3;
-  v7 = a4;
+  transactionCopy = transaction;
+  resultCopy = result;
   btTransportQueue = self->_btTransportQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10039C500;
   block[3] = &unk_1004C24A8;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = transactionCopy;
+  selfCopy = self;
+  v14 = resultCopy;
+  v9 = resultCopy;
+  v10 = transactionCopy;
   dispatch_async(btTransportQueue, block);
 }
 
-- (void)btTxnSessionDidEndTransaction:(id)a3 result:(id)a4
+- (void)btTxnSessionDidEndTransaction:(id)transaction result:(id)result
 {
-  v6 = a3;
-  v7 = a4;
+  transactionCopy = transaction;
+  resultCopy = result;
   btTransportQueue = self->_btTransportQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10039C770;
   block[3] = &unk_1004C24A8;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = transactionCopy;
+  selfCopy = self;
+  v14 = resultCopy;
+  v9 = resultCopy;
+  v10 = transactionCopy;
   dispatch_async(btTransportQueue, block);
 }
 
-- (void)btHceTxnSessionDidStartEmulation:(id)a3 result:(id)a4
+- (void)btHceTxnSessionDidStartEmulation:(id)emulation result:(id)result
 {
-  v6 = a3;
-  v7 = a4;
+  emulationCopy = emulation;
+  resultCopy = result;
   btTransportQueue = self->_btTransportQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10039C9EC;
   block[3] = &unk_1004C24A8;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = emulationCopy;
+  selfCopy = self;
+  v14 = resultCopy;
+  v9 = resultCopy;
+  v10 = emulationCopy;
   dispatch_async(btTransportQueue, block);
 }
 
-- (void)btHceTxnSessionDidStopEmulation:(id)a3 result:(id)a4
+- (void)btHceTxnSessionDidStopEmulation:(id)emulation result:(id)result
 {
-  v6 = a3;
-  v7 = a4;
+  emulationCopy = emulation;
+  resultCopy = result;
   btTransportQueue = self->_btTransportQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10039CBB0;
   block[3] = &unk_1004C24A8;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = emulationCopy;
+  selfCopy = self;
+  v14 = resultCopy;
+  v9 = resultCopy;
+  v10 = emulationCopy;
   dispatch_async(btTransportQueue, block);
 }
 
-- (void)btHceTxnSessionDidEndUnexpectedly:(id)a3 result:(id)a4
+- (void)btHceTxnSessionDidEndUnexpectedly:(id)unexpectedly result:(id)result
 {
-  v6 = a3;
-  v7 = a4;
+  unexpectedlyCopy = unexpectedly;
+  resultCopy = result;
   btTransportQueue = self->_btTransportQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10039CE48;
   block[3] = &unk_1004C24A8;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = unexpectedlyCopy;
+  selfCopy = self;
+  v14 = resultCopy;
+  v9 = resultCopy;
+  v10 = unexpectedlyCopy;
   dispatch_async(btTransportQueue, block);
 }
 
-- (void)btHceTxnSessionRadioIsDisabled:(id)a3
+- (void)btHceTxnSessionRadioIsDisabled:(id)disabled
 {
-  v4 = a3;
+  disabledCopy = disabled;
   btTransportQueue = self->_btTransportQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10039D0A0;
   v7[3] = &unk_1004C22F0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = disabledCopy;
+  selfCopy = self;
+  v6 = disabledCopy;
   dispatch_async(btTransportQueue, v7);
 }
 
-- (void)btHceTxnSessionUwbUnavailable:(id)a3
+- (void)btHceTxnSessionUwbUnavailable:(id)unavailable
 {
-  v4 = a3;
+  unavailableCopy = unavailable;
   btTransportQueue = self->_btTransportQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10039D338;
   v7[3] = &unk_1004C22F0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = unavailableCopy;
+  selfCopy = self;
+  v6 = unavailableCopy;
   dispatch_async(btTransportQueue, v7);
 }
 

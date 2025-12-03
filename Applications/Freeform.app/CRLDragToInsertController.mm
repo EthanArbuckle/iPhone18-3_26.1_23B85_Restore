@@ -1,28 +1,28 @@
 @interface CRLDragToInsertController
 - (CGPoint)autoscrollPoint;
-- (CRLDragToInsertController)initWithBoardItems:(id)a3 canvasEditor:(id)a4 atPoint:(CGPoint)a5 withPostInsertionBlock:(id)a6;
+- (CRLDragToInsertController)initWithBoardItems:(id)items canvasEditor:(id)editor atPoint:(CGPoint)point withPostInsertionBlock:(id)block;
 - (void)cancelDragToInsert;
 - (void)commitDragToInsert;
 - (void)dealloc;
-- (void)dragToPoint:(CGPoint)a3;
+- (void)dragToPoint:(CGPoint)point;
 - (void)operationDidEnd;
 - (void)p_finishDragging;
-- (void)p_updateTrackerPointsAtPoint:(CGPoint)a3;
-- (void)updateAfterAutoscroll:(id)a3;
+- (void)p_updateTrackerPointsAtPoint:(CGPoint)point;
+- (void)updateAfterAutoscroll:(id)autoscroll;
 @end
 
 @implementation CRLDragToInsertController
 
-- (CRLDragToInsertController)initWithBoardItems:(id)a3 canvasEditor:(id)a4 atPoint:(CGPoint)a5 withPostInsertionBlock:(id)a6
+- (CRLDragToInsertController)initWithBoardItems:(id)items canvasEditor:(id)editor atPoint:(CGPoint)point withPostInsertionBlock:(id)block
 {
-  y = a5.y;
-  x = a5.x;
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
-  if (v12)
+  y = point.y;
+  x = point.x;
+  itemsCopy = items;
+  editorCopy = editor;
+  blockCopy = block;
+  if (editorCopy)
   {
-    if (v11)
+    if (itemsCopy)
     {
       goto LABEL_22;
     }
@@ -56,7 +56,7 @@
   v16 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLKit/CRLDragToInsertController.m"];
   [CRLAssertionHandler handleFailureInFunction:v15 file:v16 lineNumber:47 isFatal:0 description:"Invalid parameter not satisfying: %{public}s", "canvasEditor != nil"];
 
-  if (!v11)
+  if (!itemsCopy)
   {
 LABEL_13:
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -93,18 +93,18 @@ LABEL_22:
   v21 = v20;
   if (v20)
   {
-    v56 = v13;
-    v57 = v11;
-    objc_storeStrong(&v20->_canvasEditor, a4);
-    v22 = [v12 interactiveCanvasController];
-    [v22 setIsDraggingToInsertBoardItems:1];
-    [v12 editorController];
+    v56 = blockCopy;
+    v57 = itemsCopy;
+    objc_storeStrong(&v20->_canvasEditor, editor);
+    interactiveCanvasController = [editorCopy interactiveCanvasController];
+    [interactiveCanvasController setIsDraggingToInsertBoardItems:1];
+    [editorCopy editorController];
     v62 = 0u;
     v63 = 0u;
     v64 = 0u;
     v55 = v65 = 0u;
-    v23 = [v55 currentEditors];
-    v24 = [v23 countByEnumeratingWithState:&v62 objects:v68 count:16];
+    currentEditors = [v55 currentEditors];
+    v24 = [currentEditors countByEnumeratingWithState:&v62 objects:v68 count:16];
     if (v24)
     {
       v25 = v24;
@@ -115,7 +115,7 @@ LABEL_22:
         {
           if (*v63 != v26)
           {
-            objc_enumerationMutation(v23);
+            objc_enumerationMutation(currentEditors);
           }
 
           v28 = *(*(&v62 + 1) + 8 * i);
@@ -126,7 +126,7 @@ LABEL_22:
           }
         }
 
-        v25 = [v23 countByEnumeratingWithState:&v62 objects:v68 count:16];
+        v25 = [currentEditors countByEnumeratingWithState:&v62 objects:v68 count:16];
         if (v25)
         {
           continue;
@@ -138,28 +138,28 @@ LABEL_22:
 
 LABEL_34:
 
-    [v22 setTemporaryAdditionalBoardItemsToDisplay:v57];
+    [interactiveCanvasController setTemporaryAdditionalBoardItemsToDisplay:v57];
     v29 = [CRLInsertionContext dragInsertionContextWithPreferredCenter:1 required:0 shouldEndEditing:1 fromDragToInsertController:1 insertFloating:0x7FFFFFFFFFFFFFFFLL targetZOrder:x, y];
     v21->_lastPoint.x = x;
     v21->_lastPoint.y = y;
     v53 = v29;
-    [v12 prepareGeometryForInsertingBoardItems:v57 withInsertionContext:?];
-    if (v13)
+    [editorCopy prepareGeometryForInsertingBoardItems:v57 withInsertionContext:?];
+    if (blockCopy)
     {
-      v30 = [v13 copy];
+      v30 = [blockCopy copy];
       mPostInsertionBlock = v21->mPostInsertionBlock;
       v21->mPostInsertionBlock = v30;
 
-      v13[2](v13);
+      blockCopy[2](blockCopy);
     }
 
-    [v22 layoutIfNeededIncludingLayerTreeIfYouKnowWhatYouAreDoing];
+    [interactiveCanvasController layoutIfNeededIncludingLayerTreeIfYouKnowWhatYouAreDoing];
     v32 = [v57 copy];
     boardItemsToInsert = v21->_boardItemsToInsert;
     v21->_boardItemsToInsert = v32;
 
-    v52 = [v57 lastObject];
-    v34 = [v22 repForInfo:?];
+    lastObject = [v57 lastObject];
+    v34 = [interactiveCanvasController repForInfo:?];
     if (!v34)
     {
       +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -189,7 +189,7 @@ LABEL_34:
       [CRLAssertionHandler handleFailureInFunction:v36 file:v37 lineNumber:93 isFatal:0 description:"invalid nil value for '%{public}s'", "repToDrag"];
     }
 
-    v54 = v12;
+    v54 = editorCopy;
     v51 = v34;
     v38 = [[CRLCanvasRepDragTracker alloc] initWithRep:v34];
     repDragTracker = v21->_repDragTracker;
@@ -199,11 +199,11 @@ LABEL_34:
     [(CRLCanvasRepDragTracker *)v21->_repDragTracker setIsDragInsertDrivenTracking:1];
     [(CRLDragToInsertController *)v21 p_updateTrackerPointsAtPoint:x, y];
     v21->_isFinishedDragging = 0;
-    v40 = [v22 tmCoordinator];
-    [v40 registerTrackerManipulator:v21];
-    [v40 takeControlWithTrackerManipulator:v21];
-    v41 = [v22 dynamicOperationController];
-    [v41 beginOperation];
+    tmCoordinator = [interactiveCanvasController tmCoordinator];
+    [tmCoordinator registerTrackerManipulator:v21];
+    [tmCoordinator takeControlWithTrackerManipulator:v21];
+    dynamicOperationController = [interactiveCanvasController dynamicOperationController];
+    [dynamicOperationController beginOperation];
     v42 = objc_alloc_init(NSMutableSet);
     v58 = 0u;
     v59 = 0u;
@@ -224,7 +224,7 @@ LABEL_34:
             objc_enumerationMutation(v43);
           }
 
-          v48 = [v22 repForInfo:*(*(&v58 + 1) + 8 * j)];
+          v48 = [interactiveCanvasController repForInfo:*(*(&v58 + 1) + 8 * j)];
           v49 = v48;
           if (v48)
           {
@@ -239,13 +239,13 @@ LABEL_34:
       while (v45);
     }
 
-    [v41 startTransformingReps:v42];
+    [dynamicOperationController startTransformingReps:v42];
     [(CRLCanvasRepDragTracker *)v21->_repDragTracker beginShowingDragUIForInitialDragPoint:x, y];
-    [v41 handleTrackerManipulator:v21];
+    [dynamicOperationController handleTrackerManipulator:v21];
 
-    v13 = v56;
-    v11 = v57;
-    v12 = v54;
+    blockCopy = v56;
+    itemsCopy = v57;
+    editorCopy = v54;
   }
 
   return v21;
@@ -287,24 +287,24 @@ LABEL_34:
   [(CRLDragToInsertController *)&v6 dealloc];
 }
 
-- (void)dragToPoint:(CGPoint)a3
+- (void)dragToPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  [(CRLCanvasRepDragTracker *)self->_repDragTracker addUnscaledDragDelta:1 roundDeltaToViewScale:sub_10011F31C(a3.x, a3.y, self->_lastPoint.x)];
+  y = point.y;
+  x = point.x;
+  [(CRLCanvasRepDragTracker *)self->_repDragTracker addUnscaledDragDelta:1 roundDeltaToViewScale:sub_10011F31C(point.x, point.y, self->_lastPoint.x)];
   [(CRLDragToInsertController *)self p_updateTrackerPointsAtPoint:x, y];
   v6 = [(CRLDragToInsertController *)self icc];
-  v7 = [v6 dynamicOperationController];
-  [v7 handleTrackerManipulator:self];
+  dynamicOperationController = [v6 dynamicOperationController];
+  [dynamicOperationController handleTrackerManipulator:self];
 
   self->_lastPoint.x = x;
   self->_lastPoint.y = y;
 }
 
-- (void)p_updateTrackerPointsAtPoint:(CGPoint)a3
+- (void)p_updateTrackerPointsAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v10 = [(CRLDragToInsertController *)self icc];
   [v10 convertUnscaledToBoundsPoint:{x, y}];
   v7 = v6;
@@ -320,8 +320,8 @@ LABEL_34:
   v3 = [(CRLDragToInsertController *)self icc];
   [v3 setTemporaryAdditionalBoardItemsToDisplay:0];
 
-  v4 = [(CRLCanvasEditor *)self->_canvasEditor interactiveCanvasController];
-  [v4 setIsDraggingToInsertBoardItems:0];
+  interactiveCanvasController = [(CRLCanvasEditor *)self->_canvasEditor interactiveCanvasController];
+  [interactiveCanvasController setIsDraggingToInsertBoardItems:0];
 }
 
 - (void)commitDragToInsert
@@ -332,7 +332,7 @@ LABEL_34:
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
-  v40 = self;
+  selfCopy = self;
   obj = self->_boardItemsToInsert;
   v5 = [(NSArray *)obj countByEnumeratingWithState:&v46 objects:v61 count:16];
   if (v5)
@@ -367,11 +367,11 @@ LABEL_34:
           v15 = [v11 computeInfoGeometryFromPureLayoutGeometry:v17];
 
           v16 = [v15 mutableCopy];
-          v18 = [v9 geometry];
-          [v16 setWidthValid:{objc_msgSend(v18, "widthValid")}];
+          geometry = [v9 geometry];
+          [v16 setWidthValid:{objc_msgSend(geometry, "widthValid")}];
 
-          v19 = [v9 geometry];
-          [v16 setHeightValid:{objc_msgSend(v19, "heightValid")}];
+          geometry2 = [v9 geometry];
+          [v16 setHeightValid:{objc_msgSend(geometry2, "heightValid")}];
 
           [v9 autosizePositionOffsetForGeometry:v16 dynamicallyDraggedLayout:v11];
           v21 = v20;
@@ -437,8 +437,8 @@ LABEL_34:
     while (v6);
   }
 
-  [(CRLDragToInsertController *)v40 cancelDragToInsert];
-  v27 = [v3 commandController];
+  [(CRLDragToInsertController *)selfCopy cancelDragToInsert];
+  commandController = [v3 commandController];
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
@@ -459,9 +459,9 @@ LABEL_34:
         }
 
         v33 = *(*(&v42 + 1) + 8 * i);
-        v34 = [v33 second];
-        v35 = [v33 first];
-        [v35 setGeometry:v34];
+        second = [v33 second];
+        first = [v33 first];
+        [first setGeometry:second];
       }
 
       v30 = [v28 countByEnumeratingWithState:&v42 objects:v50 count:16];
@@ -476,21 +476,21 @@ LABEL_34:
     [v3 endEditing];
   }
 
-  [v27 openGroup];
-  [(CRLCanvasEditor *)v40->_canvasEditor insertBoardItems:v40->_boardItemsToInsert withInsertionContext:v36 postProcessBlock:0];
-  v37 = [(CRLCanvasEditor *)v40->_canvasEditor interactiveCanvasController];
-  [v37 setIsDraggingToInsertBoardItems:1];
+  [commandController openGroup];
+  [(CRLCanvasEditor *)selfCopy->_canvasEditor insertBoardItems:selfCopy->_boardItemsToInsert withInsertionContext:v36 postProcessBlock:0];
+  interactiveCanvasController = [(CRLCanvasEditor *)selfCopy->_canvasEditor interactiveCanvasController];
+  [interactiveCanvasController setIsDraggingToInsertBoardItems:1];
 
-  mPostInsertionBlock = v40->mPostInsertionBlock;
+  mPostInsertionBlock = selfCopy->mPostInsertionBlock;
   if (mPostInsertionBlock)
   {
     mPostInsertionBlock[2]();
   }
 
-  v39 = [(CRLCanvasEditor *)v40->_canvasEditor interactiveCanvasController];
-  [v39 setIsDraggingToInsertBoardItems:0];
+  interactiveCanvasController2 = [(CRLCanvasEditor *)selfCopy->_canvasEditor interactiveCanvasController];
+  [interactiveCanvasController2 setIsDraggingToInsertBoardItems:0];
 
-  [v27 closeGroup];
+  [commandController closeGroup];
 }
 
 - (void)p_finishDragging
@@ -534,8 +534,8 @@ LABEL_34:
     while (v6);
   }
 
-  v11 = [v3 dynamicOperationController];
-  [v11 handleTrackerManipulator:self];
+  dynamicOperationController = [v3 dynamicOperationController];
+  [dynamicOperationController handleTrackerManipulator:self];
 }
 
 - (void)operationDidEnd
@@ -558,17 +558,17 @@ LABEL_34:
   return result;
 }
 
-- (void)updateAfterAutoscroll:(id)a3
+- (void)updateAfterAutoscroll:(id)autoscroll
 {
-  [a3 lastAutoscrollDelta];
+  [autoscroll lastAutoscrollDelta];
   v5 = v4;
   [(CRLCanvasRepDragTracker *)self->_repDragTracker addUnscaledDragDelta:1 roundDeltaToViewScale:?];
   self->_lastPoint.x = sub_10011F334(self->_lastPoint.x, self->_lastPoint.y, v5);
   self->_lastPoint.y = v6;
   [(CRLDragToInsertController *)self p_updateTrackerPointsAtPoint:?];
   v8 = [(CRLDragToInsertController *)self icc];
-  v7 = [v8 dynamicOperationController];
-  [v7 handleTrackerManipulator:self];
+  dynamicOperationController = [v8 dynamicOperationController];
+  [dynamicOperationController handleTrackerManipulator:self];
 }
 
 @end

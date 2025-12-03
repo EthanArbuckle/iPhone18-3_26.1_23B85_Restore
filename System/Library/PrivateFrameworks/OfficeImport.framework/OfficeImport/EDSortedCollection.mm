@@ -1,14 +1,14 @@
 @interface EDSortedCollection
-- (unint64_t)addObject:(id)a3 overrideDuplicate:(BOOL)a4;
+- (unint64_t)addObject:(id)object overrideDuplicate:(BOOL)duplicate;
 @end
 
 @implementation EDSortedCollection
 
-- (unint64_t)addObject:(id)a3 overrideDuplicate:(BOOL)a4
+- (unint64_t)addObject:(id)object overrideDuplicate:(BOOL)duplicate
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [v6 key];
+  duplicateCopy = duplicate;
+  objectCopy = object;
+  v7 = [objectCopy key];
   v8 = [(EDCollection *)self count];
   if (v8)
   {
@@ -35,8 +35,8 @@
 
     v16.receiver = self;
     v16.super_class = EDSortedCollection;
-    [(EDKeyedCollection *)&v16 insertObject:v6 atIndex:v8];
-    if (v4 && v7 == v12)
+    [(EDKeyedCollection *)&v16 insertObject:objectCopy atIndex:v8];
+    if (duplicateCopy && v7 == v12)
     {
       v15.receiver = self;
       v15.super_class = EDSortedCollection;
@@ -49,7 +49,7 @@
 LABEL_5:
     v14.receiver = self;
     v14.super_class = EDSortedCollection;
-    [(EDKeyedCollection *)&v14 insertObject:v6 atIndex:0];
+    [(EDKeyedCollection *)&v14 insertObject:objectCopy atIndex:0];
     v8 = 0;
   }
 

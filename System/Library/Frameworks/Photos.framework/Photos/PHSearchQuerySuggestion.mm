@@ -1,22 +1,22 @@
 @interface PHSearchQuerySuggestion
-+ (BOOL)_deleteRecentSuggestions:(id)a3 photoLibrary:(id)a4 error:(id *)a5;
-+ (BOOL)_saveRecentSuggestions:(id)a3 photoLibrary:(id)a4 error:(id *)a5;
-+ (BOOL)deleteAllRecentSearchSuggestionsForPhotoLibrary:(id)a3 error:(id *)a4;
-+ (BOOL)deleteRecentSearchSuggestions:(id)a3 photoLibrary:(id)a4 error:(id *)a5;
-+ (BOOL)saveRecentSearchQuery:(id)a3 assetResultCount:(int64_t)a4 keyAssetUUIDs:(id)a5 photoLibrary:(id)a6 error:(id *)a7;
-+ (id)_assetUUIDsFromFetchResult:(id)a3;
-+ (id)_recentSuggestionsForPhotoLibrary:(id)a3 error:(id *)a4;
-+ (id)recentSearchesForPhotoLibrary:(id)a3 error:(id *)a4;
-+ (void)initialSearchQuerySuggestionsForPhotoLibrary:(id)a3 suggestionLimit:(unint64_t)a4 minimumResultCountPerSuggestion:(unint64_t)a5 suggestionStyleType:(unint64_t)a6 suggestionsHandler:(id)a7;
-+ (void)initialSearchQuerySuggestionsForPhotoLibrary:(id)a3 suggestionLimit:(unint64_t)a4 minimumResultCountPerSuggestion:(unint64_t)a5 suggestionsHandler:(id)a6;
-- (BOOL)isEqual:(id)a3;
-- (PHSearchQuerySuggestion)initWithCoder:(id)a3;
-- (PHSearchQuerySuggestion)initWithQueryText:(id)a3 type:(unint64_t)a4 assetCount:(int64_t)a5 keyAssetUUIDs:(id)a6;
++ (BOOL)_deleteRecentSuggestions:(id)suggestions photoLibrary:(id)library error:(id *)error;
++ (BOOL)_saveRecentSuggestions:(id)suggestions photoLibrary:(id)library error:(id *)error;
++ (BOOL)deleteAllRecentSearchSuggestionsForPhotoLibrary:(id)library error:(id *)error;
++ (BOOL)deleteRecentSearchSuggestions:(id)suggestions photoLibrary:(id)library error:(id *)error;
++ (BOOL)saveRecentSearchQuery:(id)query assetResultCount:(int64_t)count keyAssetUUIDs:(id)ds photoLibrary:(id)library error:(id *)error;
++ (id)_assetUUIDsFromFetchResult:(id)result;
++ (id)_recentSuggestionsForPhotoLibrary:(id)library error:(id *)error;
++ (id)recentSearchesForPhotoLibrary:(id)library error:(id *)error;
++ (void)initialSearchQuerySuggestionsForPhotoLibrary:(id)library suggestionLimit:(unint64_t)limit minimumResultCountPerSuggestion:(unint64_t)suggestion suggestionStyleType:(unint64_t)type suggestionsHandler:(id)handler;
++ (void)initialSearchQuerySuggestionsForPhotoLibrary:(id)library suggestionLimit:(unint64_t)limit minimumResultCountPerSuggestion:(unint64_t)suggestion suggestionsHandler:(id)handler;
+- (BOOL)isEqual:(id)equal;
+- (PHSearchQuerySuggestion)initWithCoder:(id)coder;
+- (PHSearchQuerySuggestion)initWithQueryText:(id)text type:(unint64_t)type assetCount:(int64_t)count keyAssetUUIDs:(id)ds;
 - (float)score;
 - (id)description;
 - (id)jsonDictionary;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PHSearchQuerySuggestion
@@ -29,14 +29,14 @@
   v20 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[PHSearchQuerySuggestion type](self, "type")}];
   v22[0] = v20;
   v21[1] = @"type_humanReadable";
-  v4 = [(PHSearchQuerySuggestion *)self type];
+  type = [(PHSearchQuerySuggestion *)self type];
   v5 = @"PHSearchQuerySuggestionTypeUndefined";
-  if (v4 == 1)
+  if (type == 1)
   {
     v5 = @"PHSearchQuerySuggestionTypeInitial";
   }
 
-  if (v4 == 2)
+  if (type == 2)
   {
     v5 = @"PHSearchQuerySuggestionTypeRecent";
   }
@@ -44,13 +44,13 @@
   v6 = v5;
   v22[1] = v6;
   v21[2] = @"query_attr_text";
-  v7 = [(PHSearchQuerySuggestion *)self queryText];
-  v8 = [v7 description];
+  queryText = [(PHSearchQuerySuggestion *)self queryText];
+  v8 = [queryText description];
   v22[2] = v8;
   v21[3] = @"query_plain_text";
-  v9 = [(PHSearchQuerySuggestion *)self queryText];
-  v10 = [v9 string];
-  v22[3] = v10;
+  queryText2 = [(PHSearchQuerySuggestion *)self queryText];
+  string = [queryText2 string];
+  v22[3] = string;
   v21[4] = @"score";
   v11 = MEMORY[0x1E696AD98];
   [(PHSearchQuerySuggestion *)self score];
@@ -62,12 +62,12 @@
   v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v22 forKeys:v21 count:6];
   v15 = [v3 initWithDictionary:v14];
 
-  v16 = [(PHSearchQuerySuggestion *)self keyAssetUUIDs];
+  keyAssetUUIDs = [(PHSearchQuerySuggestion *)self keyAssetUUIDs];
 
-  if (v16)
+  if (keyAssetUUIDs)
   {
-    v17 = [(PHSearchQuerySuggestion *)self keyAssetUUIDs];
-    [v15 setObject:v17 forKeyedSubscript:@"key_asset_uuids"];
+    keyAssetUUIDs2 = [(PHSearchQuerySuggestion *)self keyAssetUUIDs];
+    [v15 setObject:keyAssetUUIDs2 forKeyedSubscript:@"key_asset_uuids"];
   }
 
   v18 = [v15 copy];
@@ -79,8 +79,8 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(PHSearchQuerySuggestion *)self queryText];
-  v6 = [v5 description];
+  queryText = [(PHSearchQuerySuggestion *)self queryText];
+  v6 = [queryText description];
   type = self->_type;
   v8 = @"PHSearchQuerySuggestionTypeUndefined";
   if (type == 1)
@@ -96,84 +96,84 @@
   v9 = v8;
   [(PHSearchQuerySuggestion *)self score];
   v11 = v10;
-  v12 = [(PHSearchQuerySuggestion *)self assetCount];
-  v13 = [(PHSearchQuerySuggestion *)self keyAssetUUIDs];
-  v14 = [v3 stringWithFormat:@"%@: %p, query text: '%@', type: %ld (%@), score: %f, asset count: %ld, key asset uuids: %@", v4, self, v6, type, v9, *&v11, v12, v13];
+  assetCount = [(PHSearchQuerySuggestion *)self assetCount];
+  keyAssetUUIDs = [(PHSearchQuerySuggestion *)self keyAssetUUIDs];
+  v14 = [v3 stringWithFormat:@"%@: %p, query text: '%@', type: %ld (%@), score: %f, asset count: %ld, key asset uuids: %@", v4, self, v6, type, v9, *&v11, assetCount, keyAssetUUIDs];
 
   return v14;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  [v6 encodeObject:self->_queryText forKey:@"PHSearchQuerySuggestionPropertyQueryText"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_queryText forKey:@"PHSearchQuerySuggestionPropertyQueryText"];
   v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_type];
-  [v6 encodeObject:v4 forKey:@"PHSearchQuerySuggestionPropertyType"];
+  [coderCopy encodeObject:v4 forKey:@"PHSearchQuerySuggestionPropertyType"];
 
   if (self->_assetCount != 0x7FFFFFFFFFFFFFFFLL)
   {
     v5 = [MEMORY[0x1E696AD98] numberWithInteger:?];
-    [v6 encodeObject:v5 forKey:@"PHSearchQuerySuggestionPropertyAssetCount"];
+    [coderCopy encodeObject:v5 forKey:@"PHSearchQuerySuggestionPropertyAssetCount"];
   }
 
-  [v6 encodeObject:self->_keyAssetUUIDs forKey:@"PHSearchQuerySuggestionPropertyKeyAssetUUIDs"];
+  [coderCopy encodeObject:self->_keyAssetUUIDs forKey:@"PHSearchQuerySuggestionPropertyKeyAssetUUIDs"];
 }
 
-- (PHSearchQuerySuggestion)initWithCoder:(id)a3
+- (PHSearchQuerySuggestion)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PHSearchQuerySuggestionPropertyType"];
-  v6 = [v5 unsignedIntegerValue];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PHSearchQuerySuggestionPropertyType"];
+  unsignedIntegerValue = [v5 unsignedIntegerValue];
 
   v7 = MEMORY[0x1E695DFD8];
   v8 = objc_opt_class();
   v9 = [v7 setWithObjects:{v8, objc_opt_class(), 0}];
-  v10 = [v4 decodeObjectOfClasses:v9 forKey:@"PHSearchQuerySuggestionPropertyQueryText"];
-  v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PHSearchQuerySuggestionPropertyAssetCount"];
+  v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"PHSearchQuerySuggestionPropertyQueryText"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PHSearchQuerySuggestionPropertyAssetCount"];
   v12 = v11;
   if (v11)
   {
-    v13 = [v11 integerValue];
+    integerValue = [v11 integerValue];
   }
 
   else
   {
-    v13 = 0x7FFFFFFFFFFFFFFFLL;
+    integerValue = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v14 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"PHSearchQuerySuggestionPropertyKeyAssetUUIDs"];
-  v15 = 0;
-  if ([v10 length] && v6)
+  v14 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"PHSearchQuerySuggestionPropertyKeyAssetUUIDs"];
+  selfCopy = 0;
+  if ([v10 length] && unsignedIntegerValue)
   {
-    if (v13 == 0x7FFFFFFFFFFFFFFFLL && v6 == 2)
+    if (integerValue == 0x7FFFFFFFFFFFFFFFLL && unsignedIntegerValue == 2)
     {
-      v15 = 0;
+      selfCopy = 0;
     }
 
     else
     {
-      self = [(PHSearchQuerySuggestion *)self initWithQueryText:v10 type:v6 assetCount:v13 keyAssetUUIDs:v14];
-      v15 = self;
+      self = [(PHSearchQuerySuggestion *)self initWithQueryText:v10 type:unsignedIntegerValue assetCount:integerValue keyAssetUUIDs:v14];
+      selfCopy = self;
     }
   }
 
-  return v15;
+  return selfCopy;
 }
 
 - (unint64_t)hash
 {
-  v3 = [(PHSearchQuerySuggestion *)self type];
-  v4 = [(PHSearchQuerySuggestion *)self queryText];
-  v5 = [v4 string];
-  v6 = [v5 hash];
+  type = [(PHSearchQuerySuggestion *)self type];
+  queryText = [(PHSearchQuerySuggestion *)self queryText];
+  string = [queryText string];
+  v6 = [string hash];
 
-  return v6 ^ v3;
+  return v6 ^ type;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v11 = 1;
   }
@@ -183,15 +183,15 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(PHSearchQuerySuggestion *)self type];
-      if (v6 == [(PHSearchQuerySuggestion *)v5 type])
+      v5 = equalCopy;
+      type = [(PHSearchQuerySuggestion *)self type];
+      if (type == [(PHSearchQuerySuggestion *)v5 type])
       {
-        v7 = [(PHSearchQuerySuggestion *)self queryText];
-        v8 = [v7 string];
-        v9 = [(PHSearchQuerySuggestion *)v5 queryText];
-        v10 = [v9 string];
-        v11 = [v8 isEqualToString:v10];
+        queryText = [(PHSearchQuerySuggestion *)self queryText];
+        string = [queryText string];
+        queryText2 = [(PHSearchQuerySuggestion *)v5 queryText];
+        string2 = [queryText2 string];
+        v11 = [string isEqualToString:string2];
       }
 
       else
@@ -223,9 +223,9 @@
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 0;
-  v3 = [(PHSearchQuerySuggestion *)self queryText];
-  v4 = [(PHSearchQuerySuggestion *)self queryText];
-  v5 = [v4 length];
+  queryText = [(PHSearchQuerySuggestion *)self queryText];
+  queryText2 = [(PHSearchQuerySuggestion *)self queryText];
+  v5 = [queryText2 length];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __32__PHSearchQuerySuggestion_score__block_invoke;
@@ -233,7 +233,7 @@
   v10[4] = &v11;
   v10[5] = &v19;
   v10[6] = &v15;
-  [v3 enumerateAttribute:@"PHSearchQueryAttributeKey" inRange:0 options:v5 usingBlock:{0, v10}];
+  [queryText enumerateAttribute:@"PHSearchQueryAttributeKey" inRange:0 options:v5 usingBlock:{0, v10}];
 
   if (v12[3])
   {
@@ -304,13 +304,13 @@ void __32__PHSearchQuerySuggestion_score__block_invoke(void *a1, void *a2)
   }
 }
 
-- (PHSearchQuerySuggestion)initWithQueryText:(id)a3 type:(unint64_t)a4 assetCount:(int64_t)a5 keyAssetUUIDs:(id)a6
+- (PHSearchQuerySuggestion)initWithQueryText:(id)text type:(unint64_t)type assetCount:(int64_t)count keyAssetUUIDs:(id)ds
 {
-  v11 = a3;
-  v12 = a6;
-  if (v11)
+  textCopy = text;
+  dsCopy = ds;
+  if (textCopy)
   {
-    if (a4)
+    if (type)
     {
       goto LABEL_3;
     }
@@ -318,17 +318,17 @@ void __32__PHSearchQuerySuggestion_score__block_invoke(void *a1, void *a2)
 
   else
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"PHSearchQuerySuggestion.m" lineNumber:49 description:{@"Invalid parameter not satisfying: %@", @"queryText"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHSearchQuerySuggestion.m" lineNumber:49 description:{@"Invalid parameter not satisfying: %@", @"queryText"}];
 
-    if (a4)
+    if (type)
     {
       goto LABEL_3;
     }
   }
 
-  v20 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v20 handleFailureInMethod:a2 object:self file:@"PHSearchQuerySuggestion.m" lineNumber:50 description:{@"Invalid parameter not satisfying: %@", @"type != PHSearchQuerySuggestionTypeUndefined"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PHSearchQuerySuggestion.m" lineNumber:50 description:{@"Invalid parameter not satisfying: %@", @"type != PHSearchQuerySuggestionTypeUndefined"}];
 
 LABEL_3:
   v21.receiver = self;
@@ -336,13 +336,13 @@ LABEL_3:
   v13 = [(PHSearchQuerySuggestion *)&v21 init];
   if (v13)
   {
-    v14 = [v11 copy];
+    v14 = [textCopy copy];
     queryText = v13->_queryText;
     v13->_queryText = v14;
 
-    v13->_type = a4;
-    v13->_assetCount = a5;
-    v16 = [v12 copy];
+    v13->_type = type;
+    v13->_assetCount = count;
+    v16 = [dsCopy copy];
     keyAssetUUIDs = v13->_keyAssetUUIDs;
     v13->_keyAssetUUIDs = v16;
   }
@@ -350,18 +350,18 @@ LABEL_3:
   return v13;
 }
 
-+ (id)_assetUUIDsFromFetchResult:(id)a3
++ (id)_assetUUIDsFromFetchResult:(id)result
 {
   v3 = MEMORY[0x1E695DFA8];
-  v4 = a3;
-  v5 = [[v3 alloc] initWithCapacity:{objc_msgSend(v4, "count")}];
+  resultCopy = result;
+  v5 = [[v3 alloc] initWithCapacity:{objc_msgSend(resultCopy, "count")}];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __54__PHSearchQuerySuggestion__assetUUIDsFromFetchResult___block_invoke;
   v9[3] = &unk_1E75A6FC8;
   v10 = v5;
   v6 = v5;
-  [v4 enumerateObjectsUsingBlock:v9];
+  [resultCopy enumerateObjectsUsingBlock:v9];
 
   v7 = [v6 copy];
 
@@ -381,15 +381,15 @@ void __54__PHSearchQuerySuggestion__assetUUIDsFromFetchResult___block_invoke(uin
   }
 }
 
-+ (BOOL)_deleteRecentSuggestions:(id)a3 photoLibrary:(id)a4 error:(id *)a5
++ (BOOL)_deleteRecentSuggestions:(id)suggestions photoLibrary:(id)library error:(id *)error
 {
   v29 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = v10;
-  if (v9)
+  suggestionsCopy = suggestions;
+  libraryCopy = library;
+  v11 = libraryCopy;
+  if (suggestionsCopy)
   {
-    if (v10)
+    if (libraryCopy)
     {
       goto LABEL_3;
     }
@@ -397,8 +397,8 @@ void __54__PHSearchQuerySuggestion__assetUUIDsFromFetchResult___block_invoke(uin
 
   else
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a2 object:a1 file:@"PHSearchQuerySuggestion.m" lineNumber:292 description:{@"Invalid parameter not satisfying: %@", @"suggestionsToDelete"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHSearchQuerySuggestion.m" lineNumber:292 description:{@"Invalid parameter not satisfying: %@", @"suggestionsToDelete"}];
 
     if (v11)
     {
@@ -406,19 +406,19 @@ void __54__PHSearchQuerySuggestion__assetUUIDsFromFetchResult___block_invoke(uin
     }
   }
 
-  v20 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v20 handleFailureInMethod:a2 object:a1 file:@"PHSearchQuerySuggestion.m" lineNumber:293 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PHSearchQuerySuggestion.m" lineNumber:293 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary"}];
 
 LABEL_3:
-  if ([v9 count])
+  if ([suggestionsCopy count])
   {
     v22 = 0;
-    v12 = [a1 _recentSuggestionsForPhotoLibrary:v11 error:&v22];
+    v12 = [self _recentSuggestionsForPhotoLibrary:v11 error:&v22];
     v13 = v22;
     v14 = [v12 mutableCopy];
-    [v14 removeObjectsInArray:v9];
+    [v14 removeObjectsInArray:suggestionsCopy];
     v21 = 0;
-    v15 = [a1 _saveRecentSuggestions:v14 photoLibrary:v11 error:&v21];
+    v15 = [self _saveRecentSuggestions:v14 photoLibrary:v11 error:&v21];
     v16 = v21;
 
     if (v15)
@@ -426,11 +426,11 @@ LABEL_3:
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
       {
         *buf = 138412546;
-        v24 = v9;
+        v24 = suggestionsCopy;
         v25 = 2112;
         v26 = v11;
         _os_log_impl(&dword_19C86F000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "Deleted search suggestions: %@, photoLibrary: %@", buf, 0x16u);
-        if (!a5)
+        if (!error)
         {
           goto LABEL_12;
         }
@@ -442,13 +442,13 @@ LABEL_3:
     else if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
       *buf = 138412802;
-      v24 = v9;
+      v24 = suggestionsCopy;
       v25 = 2112;
       v26 = v11;
       v27 = 2112;
       v28 = v16;
       _os_log_error_impl(&dword_19C86F000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed to delete search suggestions: %@, photoLibrary: %@, error: %@", buf, 0x20u);
-      if (!a5)
+      if (!error)
       {
         goto LABEL_12;
       }
@@ -456,7 +456,7 @@ LABEL_3:
       goto LABEL_11;
     }
 
-    if (!a5)
+    if (!error)
     {
 LABEL_12:
 
@@ -465,7 +465,7 @@ LABEL_12:
 
 LABEL_11:
     v17 = v16;
-    *a5 = v16;
+    *error = v16;
     goto LABEL_12;
   }
 
@@ -475,15 +475,15 @@ LABEL_13:
   return v15;
 }
 
-+ (BOOL)_saveRecentSuggestions:(id)a3 photoLibrary:(id)a4 error:(id *)a5
++ (BOOL)_saveRecentSuggestions:(id)suggestions photoLibrary:(id)library error:(id *)error
 {
   v32 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = v10;
-  if (v9)
+  suggestionsCopy = suggestions;
+  libraryCopy = library;
+  v11 = libraryCopy;
+  if (suggestionsCopy)
   {
-    if (v10)
+    if (libraryCopy)
     {
       goto LABEL_3;
     }
@@ -491,8 +491,8 @@ LABEL_13:
 
   else
   {
-    v22 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v22 handleFailureInMethod:a2 object:a1 file:@"PHSearchQuerySuggestion.m" lineNumber:268 description:{@"Invalid parameter not satisfying: %@", @"suggestions"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHSearchQuerySuggestion.m" lineNumber:268 description:{@"Invalid parameter not satisfying: %@", @"suggestions"}];
 
     if (v11)
     {
@@ -500,21 +500,21 @@ LABEL_13:
     }
   }
 
-  v23 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v23 handleFailureInMethod:a2 object:a1 file:@"PHSearchQuerySuggestion.m" lineNumber:269 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PHSearchQuerySuggestion.m" lineNumber:269 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary"}];
 
 LABEL_3:
-  v12 = [v11 pathManager];
-  v13 = [v12 searchRecentSearchesFilePath];
+  pathManager = [v11 pathManager];
+  searchRecentSearchesFilePath = [pathManager searchRecentSearchesFilePath];
 
   v25 = 0;
-  v14 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v9 requiringSecureCoding:1 error:&v25];
+  v14 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:suggestionsCopy requiringSecureCoding:1 error:&v25];
   v15 = v25;
   v16 = v15;
   if (v14)
   {
     v24 = v15;
-    v17 = [v14 writeToFile:v13 options:1073741825 error:&v24];
+    v17 = [v14 writeToFile:searchRecentSearchesFilePath options:1073741825 error:&v24];
     v18 = v24;
 
     if (v17)
@@ -523,7 +523,7 @@ LABEL_3:
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
       {
         *buf = 138412546;
-        v27 = v9;
+        v27 = suggestionsCopy;
         v28 = 2112;
         v29 = v11;
         _os_log_impl(&dword_19C86F000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "Saved search suggestions: %@, photoLibrary: %@", buf, 0x16u);
@@ -541,7 +541,7 @@ LABEL_3:
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     *buf = 138412802;
-    v27 = v9;
+    v27 = suggestionsCopy;
     v28 = 2112;
     v29 = v11;
     v30 = 2112;
@@ -551,30 +551,30 @@ LABEL_3:
 
   v19 = 0;
 LABEL_11:
-  if (a5)
+  if (error)
   {
     v20 = v18;
-    *a5 = v18;
+    *error = v18;
   }
 
   return v19;
 }
 
-+ (id)_recentSuggestionsForPhotoLibrary:(id)a3 error:(id *)a4
++ (id)_recentSuggestionsForPhotoLibrary:(id)library error:(id *)error
 {
   v29 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  if (!v7)
+  libraryCopy = library;
+  if (!libraryCopy)
   {
-    v22 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v22 handleFailureInMethod:a2 object:a1 file:@"PHSearchQuerySuggestion.m" lineNumber:247 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHSearchQuerySuggestion.m" lineNumber:247 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary"}];
   }
 
-  v8 = [v7 pathManager];
-  v9 = [v8 searchRecentSearchesFilePath];
+  pathManager = [libraryCopy pathManager];
+  searchRecentSearchesFilePath = [pathManager searchRecentSearchesFilePath];
 
   v24 = 0;
-  v10 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithContentsOfFile:v9 options:0 error:&v24];
+  v10 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithContentsOfFile:searchRecentSearchesFilePath options:0 error:&v24];
   v11 = v24;
   v12 = v11;
   if (v10)
@@ -589,13 +589,13 @@ LABEL_11:
     if (!v16 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v26 = v7;
+      v26 = libraryCopy;
       v27 = 2112;
       v28 = v17;
       _os_log_error_impl(&dword_19C86F000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed to unarchive search suggestions for photoLibrary: %@, error: %@", buf, 0x16u);
     }
 
-    if (a4)
+    if (error)
     {
       goto LABEL_8;
     }
@@ -605,11 +605,11 @@ LABEL_11:
   {
     v16 = 0;
     v17 = v11;
-    if (a4)
+    if (error)
     {
 LABEL_8:
       v18 = v17;
-      *a4 = v17;
+      *error = v17;
     }
   }
 
@@ -628,20 +628,20 @@ LABEL_8:
   return v19;
 }
 
-+ (BOOL)deleteAllRecentSearchSuggestionsForPhotoLibrary:(id)a3 error:(id *)a4
++ (BOOL)deleteAllRecentSearchSuggestionsForPhotoLibrary:(id)library error:(id *)error
 {
   v25 = *MEMORY[0x1E69E9840];
-  v5 = [a3 pathManager];
-  v6 = [v5 searchRecentSearchesFilePath];
+  pathManager = [library pathManager];
+  searchRecentSearchesFilePath = [pathManager searchRecentSearchesFilePath];
 
-  v7 = [MEMORY[0x1E696AC08] defaultManager];
-  v8 = [v7 fileExistsAtPath:v6];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v8 = [defaultManager fileExistsAtPath:searchRecentSearchesFilePath];
 
   if (v8)
   {
-    v9 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
     v20 = 0;
-    v10 = [v9 removeItemAtPath:v6 error:&v20];
+    v10 = [defaultManager2 removeItemAtPath:searchRecentSearchesFilePath error:&v20];
     v11 = v20;
 
     v12 = PLSearchBackendRecentSuggestionsGetLog();
@@ -654,7 +654,7 @@ LABEL_8:
       }
 
       *buf = 138412290;
-      v22 = v6;
+      v22 = searchRecentSearchesFilePath;
       v14 = "Successfully deleted recent suggestions at path: %@.";
       v15 = v13;
       v16 = OS_LOG_TYPE_DEFAULT;
@@ -669,7 +669,7 @@ LABEL_8:
       }
 
       *buf = 138412546;
-      v22 = v6;
+      v22 = searchRecentSearchesFilePath;
       v23 = 2112;
       v24 = v11;
       v14 = "Failed to delete recent suggestions at path: %@ with error: %@.";
@@ -681,10 +681,10 @@ LABEL_8:
     _os_log_impl(&dword_19C86F000, v15, v16, v14, buf, v17);
 LABEL_11:
 
-    if (a4)
+    if (error)
     {
       v18 = v11;
-      *a4 = v11;
+      *error = v11;
     }
 
     goto LABEL_13;
@@ -694,7 +694,7 @@ LABEL_11:
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v22 = v6;
+    v22 = searchRecentSearchesFilePath;
     _os_log_impl(&dword_19C86F000, v11, OS_LOG_TYPE_DEFAULT, "No recent suggestions found at path: %@, nothing to delete.", buf, 0xCu);
   }
 
@@ -704,15 +704,15 @@ LABEL_13:
   return v10;
 }
 
-+ (BOOL)deleteRecentSearchSuggestions:(id)a3 photoLibrary:(id)a4 error:(id *)a5
++ (BOOL)deleteRecentSearchSuggestions:(id)suggestions photoLibrary:(id)library error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = v10;
-  if (!v9)
+  suggestionsCopy = suggestions;
+  libraryCopy = library;
+  v11 = libraryCopy;
+  if (!suggestionsCopy)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:a1 file:@"PHSearchQuerySuggestion.m" lineNumber:215 description:{@"Invalid parameter not satisfying: %@", @"suggestionsToDelete"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHSearchQuerySuggestion.m" lineNumber:215 description:{@"Invalid parameter not satisfying: %@", @"suggestionsToDelete"}];
 
     if (v11)
     {
@@ -720,33 +720,33 @@ LABEL_13:
     }
 
 LABEL_5:
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:a1 file:@"PHSearchQuerySuggestion.m" lineNumber:216 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PHSearchQuerySuggestion.m" lineNumber:216 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary"}];
 
     goto LABEL_3;
   }
 
-  if (!v10)
+  if (!libraryCopy)
   {
     goto LABEL_5;
   }
 
 LABEL_3:
-  v12 = [a1 _deleteRecentSuggestions:v9 photoLibrary:v11 error:a5];
+  v12 = [self _deleteRecentSuggestions:suggestionsCopy photoLibrary:v11 error:error];
 
   return v12;
 }
 
-+ (BOOL)saveRecentSearchQuery:(id)a3 assetResultCount:(int64_t)a4 keyAssetUUIDs:(id)a5 photoLibrary:(id)a6 error:(id *)a7
++ (BOOL)saveRecentSearchQuery:(id)query assetResultCount:(int64_t)count keyAssetUUIDs:(id)ds photoLibrary:(id)library error:(id *)error
 {
   v45 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = v14;
-  if (v12)
+  queryCopy = query;
+  dsCopy = ds;
+  libraryCopy = library;
+  v15 = libraryCopy;
+  if (queryCopy)
   {
-    if (v14)
+    if (libraryCopy)
     {
       goto LABEL_3;
     }
@@ -754,8 +754,8 @@ LABEL_3:
 
   else
   {
-    v32 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v32 handleFailureInMethod:a2 object:a1 file:@"PHSearchQuerySuggestion.m" lineNumber:178 description:{@"Invalid parameter not satisfying: %@", @"searchQuery"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHSearchQuerySuggestion.m" lineNumber:178 description:{@"Invalid parameter not satisfying: %@", @"searchQuery"}];
 
     if (v15)
     {
@@ -763,20 +763,20 @@ LABEL_3:
     }
   }
 
-  v33 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v33 handleFailureInMethod:a2 object:a1 file:@"PHSearchQuerySuggestion.m" lineNumber:179 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PHSearchQuerySuggestion.m" lineNumber:179 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary"}];
 
 LABEL_3:
   v38 = 0;
-  v16 = [a1 recentSearchesForPhotoLibrary:v15 error:&v38];
+  v16 = [self recentSearchesForPhotoLibrary:v15 error:&v38];
   v17 = v38;
-  v36 = v12;
-  v18 = [v12 searchText];
-  v19 = [PHSearchQueryAnnotation annotatedQueryStringByFilteringToPHSearchQueryAttributes:v18];
+  v36 = queryCopy;
+  searchText = [queryCopy searchText];
+  v19 = [PHSearchQueryAnnotation annotatedQueryStringByFilteringToPHSearchQueryAttributes:searchText];
 
   v20 = [PHSearchUtility insertSpacingIfNeededBetweenAnnotationsAndPlainTextInQueryString:v19];
-  v35 = v13;
-  v21 = [[PHSearchQuerySuggestion alloc] initWithQueryText:v20 type:2 assetCount:a4 keyAssetUUIDs:v13];
+  v35 = dsCopy;
+  v21 = [[PHSearchQuerySuggestion alloc] initWithQueryText:v20 type:2 assetCount:count keyAssetUUIDs:dsCopy];
   v22 = [objc_alloc(MEMORY[0x1E695DFA0]) initWithArray:v16];
   [v22 removeObject:v21];
   [v22 insertObject:v21 atIndex:0];
@@ -791,22 +791,22 @@ LABEL_3:
     v24 = v23;
   }
 
-  v25 = [v22 array];
-  v26 = [v25 subarrayWithRange:{0, v24}];
+  array = [v22 array];
+  v26 = [array subarrayWithRange:{0, v24}];
 
   v37 = 0;
-  v27 = [a1 _saveRecentSuggestions:v26 photoLibrary:v15 error:&v37];
+  v27 = [self _saveRecentSuggestions:v26 photoLibrary:v15 error:&v37];
   v28 = v37;
 
   if (v27)
   {
-    v29 = a7;
+    errorCopy2 = error;
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
       v40 = v15;
       _os_log_impl(&dword_19C86F000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "Saved recent search query for photoLibrary: %@", buf, 0xCu);
-      if (!a7)
+      if (!error)
       {
         goto LABEL_13;
       }
@@ -817,7 +817,7 @@ LABEL_3:
 
   else
   {
-    v29 = a7;
+    errorCopy2 = error;
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
       *buf = 138412802;
@@ -827,7 +827,7 @@ LABEL_3:
       v43 = 2112;
       v44 = v28;
       _os_log_error_impl(&dword_19C86F000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed to save recent search query: %@, photoLibrary: %@, error: %@", buf, 0x20u);
-      if (!a7)
+      if (!error)
       {
         goto LABEL_13;
       }
@@ -836,11 +836,11 @@ LABEL_3:
     }
   }
 
-  if (v29)
+  if (errorCopy2)
   {
 LABEL_12:
     v30 = v28;
-    *v29 = v28;
+    *errorCopy2 = v28;
   }
 
 LABEL_13:
@@ -848,37 +848,37 @@ LABEL_13:
   return v27;
 }
 
-+ (id)recentSearchesForPhotoLibrary:(id)a3 error:(id *)a4
++ (id)recentSearchesForPhotoLibrary:(id)library error:(id *)error
 {
-  v7 = a3;
-  if (!v7)
+  libraryCopy = library;
+  if (!libraryCopy)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:a1 file:@"PHSearchQuerySuggestion.m" lineNumber:173 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHSearchQuerySuggestion.m" lineNumber:173 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary"}];
   }
 
-  v8 = [a1 _recentSuggestionsForPhotoLibrary:v7 error:a4];
+  v8 = [self _recentSuggestionsForPhotoLibrary:libraryCopy error:error];
 
   return v8;
 }
 
-+ (void)initialSearchQuerySuggestionsForPhotoLibrary:(id)a3 suggestionLimit:(unint64_t)a4 minimumResultCountPerSuggestion:(unint64_t)a5 suggestionStyleType:(unint64_t)a6 suggestionsHandler:(id)a7
++ (void)initialSearchQuerySuggestionsForPhotoLibrary:(id)library suggestionLimit:(unint64_t)limit minimumResultCountPerSuggestion:(unint64_t)suggestion suggestionStyleType:(unint64_t)type suggestionsHandler:(id)handler
 {
-  v13 = a3;
-  v14 = a7;
-  v15 = v14;
-  if (v13)
+  libraryCopy = library;
+  handlerCopy = handler;
+  v15 = handlerCopy;
+  if (libraryCopy)
   {
-    if (v14)
+    if (handlerCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_8:
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v21 handleFailureInMethod:a2 object:a1 file:@"PHSearchQuerySuggestion.m" lineNumber:108 description:{@"Invalid parameter not satisfying: %@", @"suggestionsHandler"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHSearchQuerySuggestion.m" lineNumber:108 description:{@"Invalid parameter not satisfying: %@", @"suggestionsHandler"}];
 
-    if (a4)
+    if (limit)
     {
       goto LABEL_4;
     }
@@ -886,8 +886,8 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v20 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v20 handleFailureInMethod:a2 object:a1 file:@"PHSearchQuerySuggestion.m" lineNumber:107 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PHSearchQuerySuggestion.m" lineNumber:107 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary"}];
 
   if (!v15)
   {
@@ -895,14 +895,14 @@ LABEL_8:
   }
 
 LABEL_3:
-  if (a4)
+  if (limit)
   {
     goto LABEL_4;
   }
 
 LABEL_9:
-  v22 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v22 handleFailureInMethod:a2 object:a1 file:@"PHSearchQuerySuggestion.m" lineNumber:109 description:{@"Invalid parameter not satisfying: %@", @"suggestionLimit > 0"}];
+  currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"PHSearchQuerySuggestion.m" lineNumber:109 description:{@"Invalid parameter not satisfying: %@", @"suggestionLimit > 0"}];
 
 LABEL_4:
   if (initialSearchQuerySuggestionsForPhotoLibrary_suggestionLimit_minimumResultCountPerSuggestion_suggestionStyleType_suggestionsHandler__onceToken != -1)
@@ -915,13 +915,13 @@ LABEL_4:
   block[1] = 3221225472;
   block[2] = __159__PHSearchQuerySuggestion_initialSearchQuerySuggestionsForPhotoLibrary_suggestionLimit_minimumResultCountPerSuggestion_suggestionStyleType_suggestionsHandler___block_invoke_2;
   block[3] = &unk_1E75A4910;
-  v24 = v13;
+  v24 = libraryCopy;
   v25 = v15;
-  v26 = a4;
-  v27 = a5;
-  v28 = a6;
+  limitCopy = limit;
+  suggestionCopy = suggestion;
+  typeCopy = type;
   v17 = v15;
-  v18 = v13;
+  v18 = libraryCopy;
   v19 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v16, v19);
 }
@@ -1078,13 +1078,13 @@ void __159__PHSearchQuerySuggestion_initialSearchQuerySuggestionsForPhotoLibrary
   initialSearchQuerySuggestionsForPhotoLibrary_suggestionLimit_minimumResultCountPerSuggestion_suggestionStyleType_suggestionsHandler__initialSuggestionQueryQueue = v0;
 }
 
-+ (void)initialSearchQuerySuggestionsForPhotoLibrary:(id)a3 suggestionLimit:(unint64_t)a4 minimumResultCountPerSuggestion:(unint64_t)a5 suggestionsHandler:(id)a6
++ (void)initialSearchQuerySuggestionsForPhotoLibrary:(id)library suggestionLimit:(unint64_t)limit minimumResultCountPerSuggestion:(unint64_t)suggestion suggestionsHandler:(id)handler
 {
   v19 = *MEMORY[0x1E69E9840];
   v10 = MEMORY[0x1E695DF58];
-  v11 = a6;
-  v12 = a3;
-  v13 = [v10 currentLocale];
+  handlerCopy = handler;
+  libraryCopy = library;
+  currentLocale = [v10 currentLocale];
   v14 = PLSearchNaturalLanguageInitialSuggestionsSupportedForLocale();
   v15 = PLSearchBackendInitialSuggestionsGetLog();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -1100,7 +1100,7 @@ void __159__PHSearchQuerySuggestion_initialSearchQuerySuggestionsForPhotoLibrary
     _os_log_impl(&dword_19C86F000, v15, OS_LOG_TYPE_DEFAULT, "Device locale supports natural language style initial suggestions: %@", &v17, 0xCu);
   }
 
-  [a1 initialSearchQuerySuggestionsForPhotoLibrary:v12 suggestionLimit:a4 minimumResultCountPerSuggestion:a5 suggestionStyleType:v14 ^ 1u suggestionsHandler:v11];
+  [self initialSearchQuerySuggestionsForPhotoLibrary:libraryCopy suggestionLimit:limit minimumResultCountPerSuggestion:suggestion suggestionStyleType:v14 ^ 1u suggestionsHandler:handlerCopy];
 }
 
 @end

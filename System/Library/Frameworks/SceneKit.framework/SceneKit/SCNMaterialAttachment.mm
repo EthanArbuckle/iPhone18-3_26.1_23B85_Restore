@@ -1,5 +1,5 @@
 @interface SCNMaterialAttachment
-+ (id)materialAttachmentWithGLKTextureInfo:(id)a3;
++ (id)materialAttachmentWithGLKTextureInfo:(id)info;
 - (CGSize)size;
 - (void)dealloc;
 @end
@@ -13,14 +13,14 @@
   [(SCNMaterialAttachment *)&v3 dealloc];
 }
 
-+ (id)materialAttachmentWithGLKTextureInfo:(id)a3
++ (id)materialAttachmentWithGLKTextureInfo:(id)info
 {
-  v4 = [a3 width];
-  v5 = [a3 height];
-  v6 = [a3 name];
-  v7 = [a3 target];
+  width = [info width];
+  height = [info height];
+  name = [info name];
+  target = [info target];
 
-  return SCNTextureContentWithGLInfo(0, v6, v7, 0, v4, v5);
+  return SCNTextureContentWithGLInfo(0, name, target, 0, width, height);
 }
 
 - (CGSize)size

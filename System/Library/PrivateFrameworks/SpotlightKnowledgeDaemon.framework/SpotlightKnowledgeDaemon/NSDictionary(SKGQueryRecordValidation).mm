@@ -33,11 +33,11 @@
         }
 
         v11 = *(*(&v17 + 1) + 8 * i);
-        v12 = a1;
+        selfCopy = self;
         v13 = v11;
-        if (getValueForKey(v12, v13))
+        if (getValueForKey(selfCopy, v13))
         {
-          v14 = [v12 objectForKeyedSubscript:{v13, v17}];
+          v14 = [selfCopy objectForKeyedSubscript:{v13, v17}];
         }
 
         else
@@ -85,7 +85,7 @@
           objc_enumerationMutation(v4);
         }
 
-        if (a1 && getValueForKey(a1, *(*(&v12 + 1) + 8 * v8)))
+        if (self && getValueForKey(self, *(*(&v12 + 1) + 8 * v8)))
         {
           v9 = 1;
           goto LABEL_12;
@@ -135,7 +135,7 @@ LABEL_12:
           objc_enumerationMutation(v4);
         }
 
-        if (a1 && getValueForKey(a1, *(*(&v12 + 1) + 8 * v8)))
+        if (self && getValueForKey(self, *(*(&v12 + 1) + 8 * v8)))
         {
           v9 = 1;
           goto LABEL_12;
@@ -164,13 +164,13 @@ LABEL_12:
 
 - (const)queryRecordNumberValueForKey:()SKGQueryRecordValidation
 {
-  if (a1)
+  if (self)
   {
-    a1 = getValueForKey(a1, a3);
+    self = getValueForKey(self, a3);
     v3 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (uint64_t)recordIsCurrent:()SKGQueryRecordValidation toCalendarUnit:maxOffset:checkFuture:dateKeys:
@@ -278,9 +278,9 @@ LABEL_12:
           }
 
           v31 = a4;
-          v32 = [MEMORY[0x277CBEA80] currentCalendar];
+          currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
           v33 = [MEMORY[0x277CBEAA8] now];
-          v34 = v32;
+          v34 = currentCalendar;
           v35 = a4;
           v36 = v33;
           v37 = v25;
@@ -295,9 +295,9 @@ LABEL_12:
           }
 
           v31 = a4;
-          v32 = [MEMORY[0x277CBEA80] currentCalendar];
+          currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
           v33 = [MEMORY[0x277CBEAA8] now];
-          v34 = v32;
+          v34 = currentCalendar;
           v35 = a4;
           v36 = v24;
           v37 = v33;
@@ -310,20 +310,20 @@ LABEL_12:
           switch(v31)
           {
             case 4:
-              v38 = [v27 year];
+              year = [v27 year];
               break;
             case 0x2000:
-              v38 = [v27 weekOfYear];
+              year = [v27 weekOfYear];
               break;
             case 0x10:
-              v38 = [v27 day];
+              year = [v27 day];
               break;
             default:
-              v38 = [v27 month];
+              year = [v27 month];
               break;
           }
 
-          v26 = v38 <= v41;
+          v26 = year <= v41;
           goto LABEL_44;
         }
 

@@ -1,10 +1,10 @@
 @interface ConnectivityIssueCell
-- (_TtC19HealthMedicationsUI21ConnectivityIssueCell)initWithCoder:(id)a3;
+- (_TtC19HealthMedicationsUI21ConnectivityIssueCell)initWithCoder:(id)coder;
 @end
 
 @implementation ConnectivityIssueCell
 
-- (_TtC19HealthMedicationsUI21ConnectivityIssueCell)initWithCoder:(id)a3
+- (_TtC19HealthMedicationsUI21ConnectivityIssueCell)initWithCoder:(id)coder
 {
   v3 = self + OBJC_IVAR____TtC19HealthMedicationsUI21ConnectivityIssueCell_item;
   *v3 = 0u;

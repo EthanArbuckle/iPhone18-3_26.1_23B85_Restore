@@ -1,10 +1,10 @@
 @interface MAAutoAssetNotifications
 - (MAAutoAssetNotifications)init;
-- (MAAutoAssetNotifications)initWithCoder:(id)a3;
+- (MAAutoAssetNotifications)initWithCoder:(id)coder;
 - (id)copy;
 - (id)newSummaryDictionary;
 - (id)summary;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MAAutoAssetNotifications
@@ -23,42 +23,42 @@
   return result;
 }
 
-- (MAAutoAssetNotifications)initWithCoder:(id)a3
+- (MAAutoAssetNotifications)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = MAAutoAssetNotifications;
   v5 = [(MAAutoAssetNotifications *)&v7 init];
   if (v5)
   {
-    v5->_newerVersionDiscovered = [v4 decodeBoolForKey:@"newerVersionDiscovered"];
-    v5->_checkForNewerFailure = [v4 decodeBoolForKey:@"checkForNewerFailure"];
-    v5->_contentAvailableForUse = [v4 decodeBoolForKey:@"contentAvailableForUse"];
-    v5->_contentVersionRevoked = [v4 decodeBoolForKey:@"contentVersionRevoked"];
-    v5->_lockUsageCheck = [v4 decodeBoolForKey:@"lockUsageCheck"];
-    v5->_filesystemSpaceCritical = [v4 decodeBoolForKey:@"filesystemSpaceCritical"];
-    v5->_assetPurged = [v4 decodeBoolForKey:@"assetPurged"];
-    v5->_downloadPending = [v4 decodeBoolForKey:@"downloadPending"];
-    v5->_downloadProgress = [v4 decodeBoolForKey:@"downloadProgress"];
-    v5->_downloadAbandoned = [v4 decodeBoolForKey:@"downloadAbandoned"];
+    v5->_newerVersionDiscovered = [coderCopy decodeBoolForKey:@"newerVersionDiscovered"];
+    v5->_checkForNewerFailure = [coderCopy decodeBoolForKey:@"checkForNewerFailure"];
+    v5->_contentAvailableForUse = [coderCopy decodeBoolForKey:@"contentAvailableForUse"];
+    v5->_contentVersionRevoked = [coderCopy decodeBoolForKey:@"contentVersionRevoked"];
+    v5->_lockUsageCheck = [coderCopy decodeBoolForKey:@"lockUsageCheck"];
+    v5->_filesystemSpaceCritical = [coderCopy decodeBoolForKey:@"filesystemSpaceCritical"];
+    v5->_assetPurged = [coderCopy decodeBoolForKey:@"assetPurged"];
+    v5->_downloadPending = [coderCopy decodeBoolForKey:@"downloadPending"];
+    v5->_downloadProgress = [coderCopy decodeBoolForKey:@"downloadProgress"];
+    v5->_downloadAbandoned = [coderCopy decodeBoolForKey:@"downloadAbandoned"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeBool:-[MAAutoAssetNotifications newerVersionDiscovered](self forKey:{"newerVersionDiscovered"), @"newerVersionDiscovered"}];
-  [v4 encodeBool:-[MAAutoAssetNotifications checkForNewerFailure](self forKey:{"checkForNewerFailure"), @"checkForNewerFailure"}];
-  [v4 encodeBool:-[MAAutoAssetNotifications contentAvailableForUse](self forKey:{"contentAvailableForUse"), @"contentAvailableForUse"}];
-  [v4 encodeBool:-[MAAutoAssetNotifications contentVersionRevoked](self forKey:{"contentVersionRevoked"), @"contentVersionRevoked"}];
-  [v4 encodeBool:-[MAAutoAssetNotifications lockUsageCheck](self forKey:{"lockUsageCheck"), @"lockUsageCheck"}];
-  [v4 encodeBool:-[MAAutoAssetNotifications filesystemSpaceCritical](self forKey:{"filesystemSpaceCritical"), @"filesystemSpaceCritical"}];
-  [v4 encodeBool:-[MAAutoAssetNotifications assetPurged](self forKey:{"assetPurged"), @"assetPurged"}];
-  [v4 encodeBool:-[MAAutoAssetNotifications downloadPending](self forKey:{"downloadPending"), @"downloadPending"}];
-  [v4 encodeBool:-[MAAutoAssetNotifications downloadProgress](self forKey:{"downloadProgress"), @"downloadProgress"}];
-  [v4 encodeBool:-[MAAutoAssetNotifications downloadAbandoned](self forKey:{"downloadAbandoned"), @"downloadAbandoned"}];
+  coderCopy = coder;
+  [coderCopy encodeBool:-[MAAutoAssetNotifications newerVersionDiscovered](self forKey:{"newerVersionDiscovered"), @"newerVersionDiscovered"}];
+  [coderCopy encodeBool:-[MAAutoAssetNotifications checkForNewerFailure](self forKey:{"checkForNewerFailure"), @"checkForNewerFailure"}];
+  [coderCopy encodeBool:-[MAAutoAssetNotifications contentAvailableForUse](self forKey:{"contentAvailableForUse"), @"contentAvailableForUse"}];
+  [coderCopy encodeBool:-[MAAutoAssetNotifications contentVersionRevoked](self forKey:{"contentVersionRevoked"), @"contentVersionRevoked"}];
+  [coderCopy encodeBool:-[MAAutoAssetNotifications lockUsageCheck](self forKey:{"lockUsageCheck"), @"lockUsageCheck"}];
+  [coderCopy encodeBool:-[MAAutoAssetNotifications filesystemSpaceCritical](self forKey:{"filesystemSpaceCritical"), @"filesystemSpaceCritical"}];
+  [coderCopy encodeBool:-[MAAutoAssetNotifications assetPurged](self forKey:{"assetPurged"), @"assetPurged"}];
+  [coderCopy encodeBool:-[MAAutoAssetNotifications downloadPending](self forKey:{"downloadPending"), @"downloadPending"}];
+  [coderCopy encodeBool:-[MAAutoAssetNotifications downloadProgress](self forKey:{"downloadProgress"), @"downloadProgress"}];
+  [coderCopy encodeBool:-[MAAutoAssetNotifications downloadAbandoned](self forKey:{"downloadAbandoned"), @"downloadAbandoned"}];
 }
 
 - (id)copy

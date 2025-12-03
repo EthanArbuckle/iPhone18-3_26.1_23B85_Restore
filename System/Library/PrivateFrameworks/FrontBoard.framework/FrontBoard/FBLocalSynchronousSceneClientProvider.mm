@@ -1,32 +1,32 @@
 @interface FBLocalSynchronousSceneClientProvider
 + (id)sharedInstance;
 - (FBLocalSynchronousSceneClientProvider)init;
-- (id)_initWithWorkspaceCoupler:(void *)a3 currentProcess:(void *)a4 eventDispatcher:;
-- (id)createSceneFutureWithDefinition:(id)a3;
-- (id)fbsSceneForScene:(id)a3;
-- (id)fbsSceneWithIdentifier:(id)a3;
-- (id)registerHost:(id)a3 settings:(id)a4 initialClientSettings:(id)a5 fromRemnant:(id)a6 error:(id *)a7;
-- (id)sceneWithIdentity:(id)a3;
+- (id)_initWithWorkspaceCoupler:(void *)coupler currentProcess:(void *)process eventDispatcher:;
+- (id)createSceneFutureWithDefinition:(id)definition;
+- (id)fbsSceneForScene:(id)scene;
+- (id)fbsSceneWithIdentifier:(id)identifier;
+- (id)registerHost:(id)host settings:(id)settings initialClientSettings:(id)clientSettings fromRemnant:(id)remnant error:(id *)error;
+- (id)sceneWithIdentity:(id)identity;
 - (id)scenes;
 - (void)_invalidate;
-- (void)_invalidateSceneInfo:(void *)a3 transitionContext:;
-- (void)_sendSceneCreateFBSWorkspaceDelegateForSceneInfo:(void *)a1;
-- (void)_sendToHost:(void *)a3 updatedClientSettings:(void *)a4 withDiff:(void *)a5 transitionContext:;
-- (void)_sendToSceneWithInfo:(void *)a3 updatedSettings:(void *)a4 withDiff:(void *)a5 transitionContext:(void *)a6 completion:;
-- (void)activateSceneFuture:(id)a3 completion:(id)a4;
+- (void)_invalidateSceneInfo:(void *)info transitionContext:;
+- (void)_sendSceneCreateFBSWorkspaceDelegateForSceneInfo:(void *)info;
+- (void)_sendToHost:(void *)host updatedClientSettings:(void *)settings withDiff:(void *)diff transitionContext:;
+- (void)_sendToSceneWithInfo:(void *)info updatedSettings:(void *)settings withDiff:(void *)diff transitionContext:(void *)context completion:;
+- (void)activateSceneFuture:(id)future completion:(id)completion;
 - (void)dealloc;
-- (void)host:(id)a3 didInvalidateWithTransitionContext:(id)a4 completion:(id)a5;
-- (void)host:(id)a3 didReceiveActions:(id)a4 forExtension:(Class)a5;
-- (void)host:(id)a3 didUpdateSettings:(id)a4 withDiff:(id)a5 transitionContext:(id)a6 completion:(id)a7;
-- (void)host:(id)a3 sendInvocation:(id)a4 withReply:(id)a5;
-- (void)requestSceneWithOptions:(id)a3 completion:(id)a4;
-- (void)scene:(id)a3 didReceiveActions:(id)a4 forExtension:(Class)a5;
-- (void)scene:(id)a3 didUpdateClientSettings:(id)a4 withDiff:(id)a5 transitionContext:(id)a6;
-- (void)scene:(id)a3 invalidateWithTransitionContext:(id)a4;
-- (void)scene:(id)a3 sendInvocation:(id)a4;
-- (void)scene:(id)a3 sendMessage:(id)a4 withResponse:(id)a5;
-- (void)sendActions:(id)a3 toWorkspaceID:(id)a4 completion:(id)a5;
-- (void)unregisterHost:(id)a3;
+- (void)host:(id)host didInvalidateWithTransitionContext:(id)context completion:(id)completion;
+- (void)host:(id)host didReceiveActions:(id)actions forExtension:(Class)extension;
+- (void)host:(id)host didUpdateSettings:(id)settings withDiff:(id)diff transitionContext:(id)context completion:(id)completion;
+- (void)host:(id)host sendInvocation:(id)invocation withReply:(id)reply;
+- (void)requestSceneWithOptions:(id)options completion:(id)completion;
+- (void)scene:(id)scene didReceiveActions:(id)actions forExtension:(Class)extension;
+- (void)scene:(id)scene didUpdateClientSettings:(id)settings withDiff:(id)diff transitionContext:(id)context;
+- (void)scene:(id)scene invalidateWithTransitionContext:(id)context;
+- (void)scene:(id)scene sendInvocation:(id)invocation;
+- (void)scene:(id)scene sendMessage:(id)message withResponse:(id)response;
+- (void)sendActions:(id)actions toWorkspaceID:(id)d completion:(id)completion;
+- (void)unregisterHost:(id)host;
 @end
 
 @implementation FBLocalSynchronousSceneClientProvider
@@ -44,7 +44,7 @@
     v11 = 2114;
     v12 = v7;
     v13 = 2048;
-    v14 = self;
+    selfCopy = self;
     v15 = 2114;
     v16 = @"FBLocalSynchronousSceneClientProvider.m";
     v17 = 1024;
@@ -60,12 +60,12 @@
   return result;
 }
 
-- (id)_initWithWorkspaceCoupler:(void *)a3 currentProcess:(void *)a4 eventDispatcher:
+- (id)_initWithWorkspaceCoupler:(void *)coupler currentProcess:(void *)process eventDispatcher:
 {
   v8 = a2;
-  v9 = a3;
-  v10 = a4;
-  if (a1)
+  couplerCopy = coupler;
+  processCopy = process;
+  if (self)
   {
     v11 = v8;
     if (!v11)
@@ -80,12 +80,12 @@
       [FBLocalSynchronousSceneClientProvider _initWithWorkspaceCoupler:v12 currentProcess:sel__initWithWorkspaceCoupler_currentProcess_eventDispatcher_ eventDispatcher:?];
     }
 
-    if (!v9)
+    if (!couplerCopy)
     {
       [FBLocalSynchronousSceneClientProvider _initWithWorkspaceCoupler:? currentProcess:? eventDispatcher:?];
     }
 
-    v13 = v10;
+    v13 = processCopy;
     if (!v13)
     {
       [FBLocalSynchronousSceneClientProvider _initWithWorkspaceCoupler:? currentProcess:? eventDispatcher:?];
@@ -98,45 +98,45 @@
       [FBLocalSynchronousSceneClientProvider _initWithWorkspaceCoupler:v14 currentProcess:sel__initWithWorkspaceCoupler_currentProcess_eventDispatcher_ eventDispatcher:?];
     }
 
-    v28.receiver = a1;
+    v28.receiver = self;
     v28.super_class = FBLocalSynchronousSceneClientProvider;
-    a1 = objc_msgSendSuper2(&v28, sel_init);
-    if (a1)
+    self = objc_msgSendSuper2(&v28, sel_init);
+    if (self)
     {
       v15 = objc_alloc_init(MEMORY[0x1E695DF70]);
-      v16 = a1[1];
-      a1[1] = v15;
+      v16 = self[1];
+      self[1] = v15;
 
-      v17 = [MEMORY[0x1E695DF90] dictionary];
-      v18 = a1[2];
-      a1[2] = v17;
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
+      v18 = self[2];
+      self[2] = dictionary;
 
-      v19 = [MEMORY[0x1E695DF90] dictionary];
-      v20 = a1[3];
-      a1[3] = v19;
+      dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+      v20 = self[3];
+      self[3] = dictionary2;
 
       v21 = [MEMORY[0x1E695DFA8] set];
-      v22 = a1[4];
-      a1[4] = v21;
+      v22 = self[4];
+      self[4] = v21;
 
-      objc_storeStrong(a1 + 5, a3);
-      objc_storeStrong(a1 + 6, a2);
-      v23 = a1[7];
-      a1[7] = 0;
+      objc_storeStrong(self + 5, coupler);
+      objc_storeStrong(self + 6, a2);
+      v23 = self[7];
+      self[7] = 0;
 
-      objc_storeStrong(a1 + 8, a4);
-      v24 = a1[6];
+      objc_storeStrong(self + 8, process);
+      v24 = self[6];
       v26[0] = MEMORY[0x1E69E9820];
       v26[1] = 3221225472;
       v26[2] = __98__FBLocalSynchronousSceneClientProvider__initWithWorkspaceCoupler_currentProcess_eventDispatcher___block_invoke;
       v26[3] = &unk_1E783BE68;
-      a1 = a1;
-      v27 = a1;
+      self = self;
+      selfCopy = self;
       [v24 _enqueueClientConnectionBlock:v26];
     }
   }
 
-  return a1;
+  return self;
 }
 
 void __98__FBLocalSynchronousSceneClientProvider__initWithWorkspaceCoupler_currentProcess_eventDispatcher___block_invoke(uint64_t a1, void *a2)
@@ -228,13 +228,13 @@ LABEL_18:
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_sendSceneCreateFBSWorkspaceDelegateForSceneInfo:(void *)a1
+- (void)_sendSceneCreateFBSWorkspaceDelegateForSceneInfo:(void *)info
 {
   v3 = a2;
-  if (a1)
+  if (info)
   {
-    v4 = [a1 callOutQueue];
-    [v4 assertBarrierOnQueue];
+    callOutQueue = [info callOutQueue];
+    [callOutQueue assertBarrierOnQueue];
 
     if (v3)
     {
@@ -253,7 +253,7 @@ LABEL_18:
     }
 
     v6 = v5;
-    v7 = a1[7];
+    v7 = info[7];
     if (!v7)
     {
       [FBLocalSynchronousSceneClientProvider _sendSceneCreateFBSWorkspaceDelegateForSceneInfo:];
@@ -263,10 +263,10 @@ LABEL_18:
     v9[1] = 3221225472;
     v9[2] = __90__FBLocalSynchronousSceneClientProvider__sendSceneCreateFBSWorkspaceDelegateForSceneInfo___block_invoke;
     v9[3] = &unk_1E783B240;
-    v9[4] = a1;
+    v9[4] = info;
     v8 = v3;
     v10 = v8;
-    [v7 _calloutQueue_executeCalloutFromSource:a1 withBlock:v9];
+    [v7 _calloutQueue_executeCalloutFromSource:info withBlock:v9];
     [(_FBLocalSceneInfo *)v8 setPendingTransitionContext:?];
   }
 
@@ -278,7 +278,7 @@ LABEL_4:
   v2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"must invalidate before dealloc"];
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
-    NSStringFromSelector(a1);
+    NSStringFromSelector(self);
     objc_claimAutoreleasedReturnValue();
     v3 = OUTLINED_FUNCTION_12();
     v4 = NSStringFromClass(v3);
@@ -297,7 +297,7 @@ LABEL_4:
   v2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"this instance may not invalidate"];
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
-    NSStringFromSelector(a1);
+    NSStringFromSelector(self);
     objc_claimAutoreleasedReturnValue();
     v3 = OUTLINED_FUNCTION_12();
     v4 = NSStringFromClass(v3);
@@ -311,24 +311,24 @@ LABEL_4:
   __break(0);
 }
 
-- (id)fbsSceneForScene:(id)a3
+- (id)fbsSceneForScene:(id)scene
 {
-  v4 = [a3 identity];
-  v5 = [(FBLocalSynchronousSceneClientProvider *)self sceneWithIdentity:v4];
+  identity = [scene identity];
+  v5 = [(FBLocalSynchronousSceneClientProvider *)self sceneWithIdentity:identity];
 
   return v5;
 }
 
-- (id)fbsSceneWithIdentifier:(id)a3
+- (id)fbsSceneWithIdentifier:(id)identifier
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v5 = [(NSMutableDictionary *)self->_localSceneInfoByIdentity allKeys];
-  v6 = [v5 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  allKeys = [(NSMutableDictionary *)self->_localSceneInfoByIdentity allKeys];
+  v6 = [allKeys countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v6)
   {
     v7 = v6;
@@ -339,12 +339,12 @@ LABEL_4:
       {
         if (*v20 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allKeys);
         }
 
         v10 = *(*(&v19 + 1) + 8 * i);
-        v11 = [v10 identifier];
-        v12 = [v11 isEqualToString:v4];
+        identifier = [v10 identifier];
+        v12 = [identifier isEqualToString:identifierCopy];
 
         if (v12)
         {
@@ -366,7 +366,7 @@ LABEL_4:
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v7 = [allKeys countByEnumeratingWithState:&v19 objects:v23 count:16];
       if (v7)
       {
         continue;
@@ -384,23 +384,23 @@ LABEL_13:
   return v13;
 }
 
-- (id)registerHost:(id)a3 settings:(id)a4 initialClientSettings:(id)a5 fromRemnant:(id)a6 error:(id *)a7
+- (id)registerHost:(id)host settings:(id)settings initialClientSettings:(id)clientSettings fromRemnant:(id)remnant error:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = [(FBLocalSynchronousSceneClientProvider *)self callOutQueue];
-  [v16 assertBarrierOnQueue];
+  hostCopy = host;
+  settingsCopy = settings;
+  clientSettingsCopy = clientSettings;
+  remnantCopy = remnant;
+  callOutQueue = [(FBLocalSynchronousSceneClientProvider *)self callOutQueue];
+  [callOutQueue assertBarrierOnQueue];
 
-  if (v15)
+  if (remnantCopy)
   {
     [FBLocalSynchronousSceneClientProvider registerHost:a2 settings:? initialClientSettings:? fromRemnant:? error:?];
   }
 
-  v17 = [v12 identityToken];
+  identityToken = [hostCopy identityToken];
   NSClassFromString(&cfstr_Fbssceneidenti_0.isa);
-  if (!v17)
+  if (!identityToken)
   {
     [FBLocalSynchronousSceneClientProvider registerHost:a2 settings:? initialClientSettings:? fromRemnant:? error:?];
   }
@@ -410,11 +410,11 @@ LABEL_13:
     [FBLocalSynchronousSceneClientProvider registerHost:a2 settings:? initialClientSettings:? fromRemnant:? error:?];
   }
 
-  v63 = v12;
-  v18 = [v12 definition];
-  v19 = [v18 identity];
+  v63 = hostCopy;
+  definition = [hostCopy definition];
+  identity = [definition identity];
 
-  v20 = v19;
+  v20 = identity;
   NSClassFromString(&cfstr_Fbssceneidenti.isa);
   if (!v20)
   {
@@ -426,9 +426,9 @@ LABEL_13:
     [FBLocalSynchronousSceneClientProvider registerHost:a2 settings:? initialClientSettings:? fromRemnant:? error:?];
   }
 
-  v21 = [v63 specification];
+  specification = [v63 specification];
   NSClassFromString(&cfstr_Fbsscenespecif.isa);
-  if (!v21)
+  if (!specification)
   {
     [FBLocalSynchronousSceneClientProvider registerHost:a2 settings:? initialClientSettings:? fromRemnant:? error:?];
   }
@@ -438,7 +438,7 @@ LABEL_13:
     [FBLocalSynchronousSceneClientProvider registerHost:a2 settings:? initialClientSettings:? fromRemnant:? error:?];
   }
 
-  v22 = v13;
+  v22 = settingsCopy;
   NSClassFromString(&cfstr_Fbsscenesettin.isa);
   if (!v22)
   {
@@ -450,13 +450,13 @@ LABEL_13:
     [FBLocalSynchronousSceneClientProvider registerHost:a2 settings:? initialClientSettings:? fromRemnant:? error:?];
   }
 
-  [v21 settingsClass];
+  [specification settingsClass];
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     [FBLocalSynchronousSceneClientProvider registerHost:a2 settings:? initialClientSettings:? fromRemnant:? error:?];
   }
 
-  v23 = v14;
+  v23 = clientSettingsCopy;
   NSClassFromString(&cfstr_Fbssceneclient_0.isa);
   if (!v23)
   {
@@ -468,7 +468,7 @@ LABEL_13:
     [FBLocalSynchronousSceneClientProvider registerHost:a2 settings:? initialClientSettings:? fromRemnant:? error:?];
   }
 
-  [v21 clientSettingsClass];
+  [specification clientSettingsClass];
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     [FBLocalSynchronousSceneClientProvider registerHost:a2 settings:? initialClientSettings:? fromRemnant:? error:?];
@@ -499,19 +499,19 @@ LABEL_82:
     JUMPOUT(0x1A8A27BB8);
   }
 
-  v62 = v17;
+  v62 = identityToken;
   v25 = [(NSMutableDictionary *)self->_localSceneInfoByIdentity objectForKey:v20];
   if (!v25)
   {
-    v30 = [MEMORY[0x1E699FB58] parametersForSpecification:v21];
+    v30 = [MEMORY[0x1E699FB58] parametersForSpecification:specification];
     [v30 setSettings:v22];
     [v30 setClientSettings:v23];
     v31 = v22;
-    v32 = v21;
+    v32 = specification;
     v33 = objc_alloc(MEMORY[0x1E699FBC8]);
-    v34 = [MEMORY[0x1E699FC08] localHandle];
+    localHandle = [MEMORY[0x1E699FC08] localHandle];
     v35 = v62;
-    v27 = [v33 _initWithUpdater:self identityToken:v62 identity:v20 parameters:v30 hostHandle:v34];
+    v27 = [v33 _initWithUpdater:self identityToken:v62 identity:v20 parameters:v30 hostHandle:localHandle];
 
     v26 = [[_FBLocalSceneInfo alloc] initWithScene:v27];
     [(NSMutableDictionary *)self->_localSceneInfoByIdentity setObject:v26 forKey:v20];
@@ -544,7 +544,7 @@ LABEL_82:
     [FBLocalSynchronousSceneClientProvider registerHost:v27 settings:v60 initialClientSettings:? fromRemnant:? error:?];
   }
 
-  v61 = v21;
+  v61 = specification;
   v28 = v63;
   [(NSMutableDictionary *)self->_hostsByIdentity setObject:v63 forKey:v20];
   clientFutureHostsBeingSynchronized = self->_clientFutureHostsBeingSynchronized;
@@ -597,10 +597,10 @@ LABEL_82:
 
   [(NSMutableSet *)self->_clientFutureScenesBeingSynchronized addObject:v27];
 LABEL_28:
-  v41 = [v27 clientSettings];
+  clientSettings = [v27 clientSettings];
   if ((BSEqualObjects() & 1) == 0)
   {
-    v42 = [MEMORY[0x1E699FBE8] diffFromSettings:v23 toSettings:v41];
+    v42 = [MEMORY[0x1E699FBE8] diffFromSettings:v23 toSettings:clientSettings];
     if (v42)
     {
       v43 = FBLogCommon();
@@ -609,14 +609,14 @@ LABEL_28:
         [FBLocalSynchronousSceneClientProvider registerHost:settings:initialClientSettings:fromRemnant:error:];
       }
 
-      [(FBLocalSynchronousSceneClientProvider *)self _sendToHost:v63 updatedClientSettings:v41 withDiff:v42 transitionContext:0];
+      [(FBLocalSynchronousSceneClientProvider *)self _sendToHost:v63 updatedClientSettings:clientSettings withDiff:v42 transitionContext:0];
     }
   }
 
-  v44 = [v27 settings];
+  settings = [v27 settings];
   if ((BSEqualObjects() & 1) == 0)
   {
-    v45 = [MEMORY[0x1E699FC30] diffFromSettings:v44 toSettings:v22];
+    v45 = [MEMORY[0x1E699FC30] diffFromSettings:settings toSettings:v22];
     if (v45)
     {
       v46 = FBLogCommon();
@@ -691,40 +691,40 @@ LABEL_49:
   return self;
 }
 
-- (void)_sendToHost:(void *)a3 updatedClientSettings:(void *)a4 withDiff:(void *)a5 transitionContext:
+- (void)_sendToHost:(void *)host updatedClientSettings:(void *)settings withDiff:(void *)diff transitionContext:
 {
   v13 = a2;
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (a1)
+  hostCopy = host;
+  settingsCopy = settings;
+  diffCopy = diff;
+  if (self)
   {
-    v12 = [a1 callOutQueue];
-    [v12 assertBarrierOnQueue];
+    callOutQueue = [self callOutQueue];
+    [callOutQueue assertBarrierOnQueue];
 
-    if (a1[88] == 1)
+    if (self[88] == 1)
     {
       [FBLocalSynchronousSceneClientProvider _sendToHost:? updatedClientSettings:? withDiff:? transitionContext:?];
     }
 
-    [v13 clientToken:a1 didUpdateClientSettings:v9 withDiff:v10 transitionContext:v11];
+    [v13 clientToken:self didUpdateClientSettings:hostCopy withDiff:settingsCopy transitionContext:diffCopy];
   }
 }
 
-- (void)_sendToSceneWithInfo:(void *)a3 updatedSettings:(void *)a4 withDiff:(void *)a5 transitionContext:(void *)a6 completion:
+- (void)_sendToSceneWithInfo:(void *)info updatedSettings:(void *)settings withDiff:(void *)diff transitionContext:(void *)context completion:
 {
   v50 = *MEMORY[0x1E69E9840];
   v11 = a2;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  if (a1)
+  infoCopy = info;
+  settingsCopy = settings;
+  diffCopy = diff;
+  contextCopy = context;
+  if (self)
   {
-    v16 = [a1 callOutQueue];
-    [v16 assertBarrierOnQueue];
+    callOutQueue = [self callOutQueue];
+    [callOutQueue assertBarrierOnQueue];
 
-    if (a1[88] == 1)
+    if (self[88] == 1)
     {
       [FBLocalSynchronousSceneClientProvider _sendToSceneWithInfo:? updatedSettings:? withDiff:? transitionContext:? completion:?];
     }
@@ -738,8 +738,8 @@ LABEL_49:
         v27[1] = 3221225472;
         v27[2] = __116__FBLocalSynchronousSceneClientProvider__sendToSceneWithInfo_updatedSettings_withDiff_transitionContext_completion___block_invoke_225;
         v27[3] = &unk_1E783CD58;
-        v28 = v15;
-        [v17 updater:a1 didUpdateSettings:v12 withDiff:v13 transitionContext:v14 completion:v27];
+        v28 = contextCopy;
+        [v17 updater:self didUpdateSettings:infoCopy withDiff:settingsCopy transitionContext:diffCopy completion:v27];
 
 LABEL_10:
         goto LABEL_11;
@@ -763,8 +763,8 @@ LABEL_10:
     v29[3] = &unk_1E783BF98;
     v33 = &v34;
     v30 = v11;
-    v31 = v14;
-    v32 = a1;
+    v31 = diffCopy;
+    selfCopy = self;
     [v17 _callOutQueue_didCreateWithTransitionContext:v31 alternativeCreationCallout:v29 completion:0];
     if ((v35[3] & 1) == 0)
     {
@@ -781,7 +781,7 @@ LABEL_10:
         v40 = 2114;
         v41 = v24;
         v42 = 2048;
-        v43 = a1;
+        selfCopy2 = self;
         v44 = 2114;
         v45 = @"FBLocalSynchronousSceneClientProvider.m";
         v46 = 1024;
@@ -798,9 +798,9 @@ LABEL_10:
     }
 
     _Block_object_dispose(&v34, 8);
-    if (v15)
+    if (contextCopy)
     {
-      (*(v15 + 2))(v15, 1, 0);
+      (*(contextCopy + 2))(contextCopy, 1, 0);
     }
 
     goto LABEL_10;
@@ -811,137 +811,137 @@ LABEL_11:
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)unregisterHost:(id)a3
+- (void)unregisterHost:(id)host
 {
-  v10 = a3;
-  v5 = [v10 definition];
-  v6 = [v5 identity];
+  hostCopy = host;
+  definition = [hostCopy definition];
+  identity = [definition identity];
 
-  v7 = [(FBLocalSynchronousSceneClientProvider *)self callOutQueue];
-  [v7 assertBarrierOnQueue];
+  callOutQueue = [(FBLocalSynchronousSceneClientProvider *)self callOutQueue];
+  [callOutQueue assertBarrierOnQueue];
 
   if (self->_invalidated)
   {
     [FBLocalSynchronousSceneClientProvider unregisterHost:a2];
   }
 
-  v8 = [(NSMutableDictionary *)self->_localSceneInfoByIdentity objectForKey:v6];
+  v8 = [(NSMutableDictionary *)self->_localSceneInfoByIdentity objectForKey:identity];
 
   if (!v8)
   {
-    [(FBLocalSynchronousSceneClientProvider *)v6 unregisterHost:a2];
+    [(FBLocalSynchronousSceneClientProvider *)identity unregisterHost:a2];
   }
 
-  v9 = [(NSMutableDictionary *)self->_hostsByIdentity objectForKey:v6];
+  v9 = [(NSMutableDictionary *)self->_hostsByIdentity objectForKey:identity];
 
-  if (v9 != v10)
+  if (v9 != hostCopy)
   {
-    [(FBLocalSynchronousSceneClientProvider *)v6 unregisterHost:a2];
+    [(FBLocalSynchronousSceneClientProvider *)identity unregisterHost:a2];
   }
 
-  if ([(NSMutableSet *)self->_clientFutureHostsBeingSynchronized containsObject:v10])
+  if ([(NSMutableSet *)self->_clientFutureHostsBeingSynchronized containsObject:hostCopy])
   {
-    [(FBLocalSynchronousSceneClientProvider *)v6 unregisterHost:a2];
+    [(FBLocalSynchronousSceneClientProvider *)identity unregisterHost:a2];
   }
 
-  [(NSMutableDictionary *)self->_localSceneInfoByIdentity removeObjectForKey:v6];
-  [(NSMutableDictionary *)self->_hostsByIdentity removeObjectForKey:v6];
+  [(NSMutableDictionary *)self->_localSceneInfoByIdentity removeObjectForKey:identity];
+  [(NSMutableDictionary *)self->_hostsByIdentity removeObjectForKey:identity];
 }
 
-- (void)host:(id)a3 didUpdateSettings:(id)a4 withDiff:(id)a5 transitionContext:(id)a6 completion:(id)a7
+- (void)host:(id)host didUpdateSettings:(id)settings withDiff:(id)diff transitionContext:(id)context completion:(id)completion
 {
-  v24 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = [(FBLocalSynchronousSceneClientProvider *)self callOutQueue];
-  [v17 assertBarrierOnQueue];
+  hostCopy = host;
+  settingsCopy = settings;
+  diffCopy = diff;
+  contextCopy = context;
+  completionCopy = completion;
+  callOutQueue = [(FBLocalSynchronousSceneClientProvider *)self callOutQueue];
+  [callOutQueue assertBarrierOnQueue];
 
   if (self->_invalidated)
   {
     [FBLocalSynchronousSceneClientProvider host:a2 didUpdateSettings:? withDiff:? transitionContext:? completion:?];
   }
 
-  v18 = [v24 definition];
-  v19 = [v18 identity];
+  definition = [hostCopy definition];
+  identity = [definition identity];
 
-  v20 = [(NSMutableDictionary *)self->_localSceneInfoByIdentity objectForKey:v19];
+  v20 = [(NSMutableDictionary *)self->_localSceneInfoByIdentity objectForKey:identity];
   if (!v20 || (v21 = v20, (v22 = *(v20 + 16)) == 0))
   {
-    [FBLocalSynchronousSceneClientProvider host:v19 didUpdateSettings:a2 withDiff:? transitionContext:? completion:?];
+    [FBLocalSynchronousSceneClientProvider host:identity didUpdateSettings:a2 withDiff:? transitionContext:? completion:?];
   }
 
   v23 = v22;
   if ([(NSMutableSet *)self->_pendingScenes containsObject:v22])
   {
-    [FBLocalSynchronousSceneClientProvider host:v19 didUpdateSettings:a2 withDiff:? transitionContext:? completion:?];
+    [FBLocalSynchronousSceneClientProvider host:identity didUpdateSettings:a2 withDiff:? transitionContext:? completion:?];
   }
 
-  if ([(NSMutableSet *)self->_clientFutureHostsBeingSynchronized containsObject:v24])
+  if ([(NSMutableSet *)self->_clientFutureHostsBeingSynchronized containsObject:hostCopy])
   {
-    [FBLocalSynchronousSceneClientProvider host:v19 didUpdateSettings:a2 withDiff:? transitionContext:? completion:?];
+    [FBLocalSynchronousSceneClientProvider host:identity didUpdateSettings:a2 withDiff:? transitionContext:? completion:?];
   }
 
-  [(FBLocalSynchronousSceneClientProvider *)self _sendToSceneWithInfo:v21 updatedSettings:v13 withDiff:v14 transitionContext:v15 completion:v16];
+  [(FBLocalSynchronousSceneClientProvider *)self _sendToSceneWithInfo:v21 updatedSettings:settingsCopy withDiff:diffCopy transitionContext:contextCopy completion:completionCopy];
 }
 
-- (void)host:(id)a3 didInvalidateWithTransitionContext:(id)a4 completion:(id)a5
+- (void)host:(id)host didInvalidateWithTransitionContext:(id)context completion:(id)completion
 {
-  v16 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(FBLocalSynchronousSceneClientProvider *)self callOutQueue];
-  [v11 assertBarrierOnQueue];
+  hostCopy = host;
+  contextCopy = context;
+  completionCopy = completion;
+  callOutQueue = [(FBLocalSynchronousSceneClientProvider *)self callOutQueue];
+  [callOutQueue assertBarrierOnQueue];
 
   if (self->_invalidated)
   {
     [FBLocalSynchronousSceneClientProvider host:a2 didInvalidateWithTransitionContext:? completion:?];
   }
 
-  v12 = [v16 definition];
-  v13 = [v12 identity];
+  definition = [hostCopy definition];
+  identity = [definition identity];
 
-  v14 = [(NSMutableDictionary *)self->_localSceneInfoByIdentity objectForKey:v13];
+  v14 = [(NSMutableDictionary *)self->_localSceneInfoByIdentity objectForKey:identity];
   if (!v14)
   {
     [FBLocalSynchronousSceneClientProvider host:a2 didInvalidateWithTransitionContext:? completion:?];
   }
 
   v15 = v14;
-  if ([(NSMutableSet *)self->_clientFutureHostsBeingSynchronized containsObject:v16])
+  if ([(NSMutableSet *)self->_clientFutureHostsBeingSynchronized containsObject:hostCopy])
   {
-    [FBLocalSynchronousSceneClientProvider host:v13 didInvalidateWithTransitionContext:a2 completion:?];
+    [FBLocalSynchronousSceneClientProvider host:identity didInvalidateWithTransitionContext:a2 completion:?];
   }
 
-  [(FBLocalSynchronousSceneClientProvider *)self _invalidateSceneInfo:v15 transitionContext:v9];
-  if (v10)
+  [(FBLocalSynchronousSceneClientProvider *)self _invalidateSceneInfo:v15 transitionContext:contextCopy];
+  if (completionCopy)
   {
-    v10[2](v10, 1, 0);
+    completionCopy[2](completionCopy, 1, 0);
   }
 }
 
-- (void)host:(id)a3 didReceiveActions:(id)a4 forExtension:(Class)a5
+- (void)host:(id)host didReceiveActions:(id)actions forExtension:(Class)extension
 {
-  v17 = a3;
-  v9 = a4;
-  v10 = [(FBLocalSynchronousSceneClientProvider *)self callOutQueue];
-  [v10 assertBarrierOnQueue];
+  hostCopy = host;
+  actionsCopy = actions;
+  callOutQueue = [(FBLocalSynchronousSceneClientProvider *)self callOutQueue];
+  [callOutQueue assertBarrierOnQueue];
 
   if (self->_invalidated)
   {
     [FBLocalSynchronousSceneClientProvider host:a2 didReceiveActions:? forExtension:?];
   }
 
-  v11 = [v17 definition];
-  v12 = [v11 identity];
+  definition = [hostCopy definition];
+  identity = [definition identity];
 
-  if ([(NSMutableSet *)self->_clientFutureHostsBeingSynchronized containsObject:v17])
+  if ([(NSMutableSet *)self->_clientFutureHostsBeingSynchronized containsObject:hostCopy])
   {
-    [FBLocalSynchronousSceneClientProvider host:v12 didReceiveActions:a2 forExtension:?];
+    [FBLocalSynchronousSceneClientProvider host:identity didReceiveActions:a2 forExtension:?];
   }
 
-  v13 = [(NSMutableDictionary *)self->_localSceneInfoByIdentity objectForKey:v12];
+  v13 = [(NSMutableDictionary *)self->_localSceneInfoByIdentity objectForKey:identity];
   v14 = v13;
   if (v13)
   {
@@ -957,32 +957,32 @@ LABEL_11:
 
   if (v16)
   {
-    [v16 updater:self didReceiveActions:v9 forExtension:a5];
+    [v16 updater:self didReceiveActions:actionsCopy forExtension:extension];
   }
 }
 
-- (void)host:(id)a3 sendInvocation:(id)a4 withReply:(id)a5
+- (void)host:(id)host sendInvocation:(id)invocation withReply:(id)reply
 {
-  v19 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(FBLocalSynchronousSceneClientProvider *)self callOutQueue];
-  [v11 assertBarrierOnQueue];
+  hostCopy = host;
+  invocationCopy = invocation;
+  replyCopy = reply;
+  callOutQueue = [(FBLocalSynchronousSceneClientProvider *)self callOutQueue];
+  [callOutQueue assertBarrierOnQueue];
 
   if (self->_invalidated)
   {
     [FBLocalSynchronousSceneClientProvider host:a2 sendInvocation:? withReply:?];
   }
 
-  v12 = [v19 definition];
-  v13 = [v12 identity];
+  definition = [hostCopy definition];
+  identity = [definition identity];
 
-  if ([(NSMutableSet *)self->_clientFutureHostsBeingSynchronized containsObject:v19])
+  if ([(NSMutableSet *)self->_clientFutureHostsBeingSynchronized containsObject:hostCopy])
   {
-    [FBLocalSynchronousSceneClientProvider host:v13 sendInvocation:a2 withReply:?];
+    [FBLocalSynchronousSceneClientProvider host:identity sendInvocation:a2 withReply:?];
   }
 
-  v14 = [(NSMutableDictionary *)self->_localSceneInfoByIdentity objectForKey:v13];
+  v14 = [(NSMutableDictionary *)self->_localSceneInfoByIdentity objectForKey:identity];
   v15 = v14;
   if (v14)
   {
@@ -998,122 +998,122 @@ LABEL_11:
 
   if (v17)
   {
-    [v9 invokeWithReceiver:v17 replyHandler:v10];
+    [invocationCopy invokeWithReceiver:v17 replyHandler:replyCopy];
   }
 
-  else if (v10)
+  else if (replyCopy)
   {
     v18 = [MEMORY[0x1E696ABC0] bs_errorWithDomain:@"FBLocalSynchronousSceneClientProvider" code:1 configuration:&__block_literal_global_19];
-    v10[2](v10, 0, v18);
+    replyCopy[2](replyCopy, 0, v18);
   }
 }
 
-- (void)scene:(id)a3 didUpdateClientSettings:(id)a4 withDiff:(id)a5 transitionContext:(id)a6
+- (void)scene:(id)scene didUpdateClientSettings:(id)settings withDiff:(id)diff transitionContext:(id)context
 {
-  v17 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(FBLocalSynchronousSceneClientProvider *)self callOutQueue];
-  [v14 assertBarrierOnQueue];
+  sceneCopy = scene;
+  settingsCopy = settings;
+  diffCopy = diff;
+  contextCopy = context;
+  callOutQueue = [(FBLocalSynchronousSceneClientProvider *)self callOutQueue];
+  [callOutQueue assertBarrierOnQueue];
 
   if (self->_invalidated)
   {
     [FBLocalSynchronousSceneClientProvider scene:a2 didUpdateClientSettings:? withDiff:? transitionContext:?];
   }
 
-  v15 = [v17 identity];
-  if ([(NSMutableSet *)self->_clientFutureScenesBeingSynchronized containsObject:v17])
+  identity = [sceneCopy identity];
+  if ([(NSMutableSet *)self->_clientFutureScenesBeingSynchronized containsObject:sceneCopy])
   {
-    [FBLocalSynchronousSceneClientProvider scene:v15 didUpdateClientSettings:a2 withDiff:? transitionContext:?];
+    [FBLocalSynchronousSceneClientProvider scene:identity didUpdateClientSettings:a2 withDiff:? transitionContext:?];
   }
 
-  v16 = [(NSMutableDictionary *)self->_hostsByIdentity objectForKey:v15];
-  [(FBLocalSynchronousSceneClientProvider *)self _sendToHost:v16 updatedClientSettings:v11 withDiff:v12 transitionContext:v13];
+  v16 = [(NSMutableDictionary *)self->_hostsByIdentity objectForKey:identity];
+  [(FBLocalSynchronousSceneClientProvider *)self _sendToHost:v16 updatedClientSettings:settingsCopy withDiff:diffCopy transitionContext:contextCopy];
 }
 
-- (void)scene:(id)a3 didReceiveActions:(id)a4 forExtension:(Class)a5
+- (void)scene:(id)scene didReceiveActions:(id)actions forExtension:(Class)extension
 {
-  v13 = a3;
-  v9 = a4;
-  v10 = [(FBLocalSynchronousSceneClientProvider *)self callOutQueue];
-  [v10 assertBarrierOnQueue];
+  sceneCopy = scene;
+  actionsCopy = actions;
+  callOutQueue = [(FBLocalSynchronousSceneClientProvider *)self callOutQueue];
+  [callOutQueue assertBarrierOnQueue];
 
   if (self->_invalidated)
   {
     [FBLocalSynchronousSceneClientProvider scene:a2 didReceiveActions:? forExtension:?];
   }
 
-  v11 = [v13 identity];
-  if ([(NSMutableSet *)self->_clientFutureScenesBeingSynchronized containsObject:v13])
+  identity = [sceneCopy identity];
+  if ([(NSMutableSet *)self->_clientFutureScenesBeingSynchronized containsObject:sceneCopy])
   {
-    [FBLocalSynchronousSceneClientProvider scene:v11 didReceiveActions:a2 forExtension:?];
+    [FBLocalSynchronousSceneClientProvider scene:identity didReceiveActions:a2 forExtension:?];
   }
 
-  v12 = [(NSMutableDictionary *)self->_hostsByIdentity objectForKey:v11];
-  [v12 clientToken:self didReceiveActions:v9 forExtension:a5];
+  v12 = [(NSMutableDictionary *)self->_hostsByIdentity objectForKey:identity];
+  [v12 clientToken:self didReceiveActions:actionsCopy forExtension:extension];
 }
 
-- (void)scene:(id)a3 sendMessage:(id)a4 withResponse:(id)a5
+- (void)scene:(id)scene sendMessage:(id)message withResponse:(id)response
 {
-  v12 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v12 identity];
-  if ([(NSMutableSet *)self->_clientFutureScenesBeingSynchronized containsObject:v12])
+  sceneCopy = scene;
+  messageCopy = message;
+  responseCopy = response;
+  identity = [sceneCopy identity];
+  if ([(NSMutableSet *)self->_clientFutureScenesBeingSynchronized containsObject:sceneCopy])
   {
-    [FBLocalSynchronousSceneClientProvider scene:v11 sendMessage:a2 withResponse:?];
+    [FBLocalSynchronousSceneClientProvider scene:identity sendMessage:a2 withResponse:?];
   }
 
-  if (v10)
+  if (responseCopy)
   {
-    (*(v10 + 2))(v10, 0, 0);
+    (*(responseCopy + 2))(responseCopy, 0, 0);
   }
 }
 
-- (void)scene:(id)a3 invalidateWithTransitionContext:(id)a4
+- (void)scene:(id)scene invalidateWithTransitionContext:(id)context
 {
-  v11 = a3;
-  v7 = a4;
-  v8 = [(FBLocalSynchronousSceneClientProvider *)self callOutQueue];
-  [v8 assertBarrierOnQueue];
+  sceneCopy = scene;
+  contextCopy = context;
+  callOutQueue = [(FBLocalSynchronousSceneClientProvider *)self callOutQueue];
+  [callOutQueue assertBarrierOnQueue];
 
   if (self->_invalidated)
   {
     [FBLocalSynchronousSceneClientProvider scene:a2 invalidateWithTransitionContext:?];
   }
 
-  v9 = [v11 identity];
-  if ([(NSMutableSet *)self->_clientFutureScenesBeingSynchronized containsObject:v11])
+  identity = [sceneCopy identity];
+  if ([(NSMutableSet *)self->_clientFutureScenesBeingSynchronized containsObject:sceneCopy])
   {
-    [FBLocalSynchronousSceneClientProvider scene:v9 invalidateWithTransitionContext:a2];
+    [FBLocalSynchronousSceneClientProvider scene:identity invalidateWithTransitionContext:a2];
   }
 
-  v10 = [(NSMutableDictionary *)self->_hostsByIdentity objectForKey:v9];
-  [v10 clientToken:self deactivateWithContext:v7];
+  v10 = [(NSMutableDictionary *)self->_hostsByIdentity objectForKey:identity];
+  [v10 clientToken:self deactivateWithContext:contextCopy];
 }
 
-- (void)scene:(id)a3 sendInvocation:(id)a4
+- (void)scene:(id)scene sendInvocation:(id)invocation
 {
-  v12 = a3;
-  v7 = a4;
-  v8 = [(FBLocalSynchronousSceneClientProvider *)self callOutQueue];
-  [v8 assertBarrierOnQueue];
+  sceneCopy = scene;
+  invocationCopy = invocation;
+  callOutQueue = [(FBLocalSynchronousSceneClientProvider *)self callOutQueue];
+  [callOutQueue assertBarrierOnQueue];
 
   if (self->_invalidated)
   {
     [FBLocalSynchronousSceneClientProvider scene:a2 sendInvocation:?];
   }
 
-  v9 = [v12 identity];
-  if ([(NSMutableSet *)self->_clientFutureScenesBeingSynchronized containsObject:v12])
+  identity = [sceneCopy identity];
+  if ([(NSMutableSet *)self->_clientFutureScenesBeingSynchronized containsObject:sceneCopy])
   {
-    [FBLocalSynchronousSceneClientProvider scene:v9 sendInvocation:a2];
+    [FBLocalSynchronousSceneClientProvider scene:identity sendInvocation:a2];
   }
 
-  v10 = [(NSMutableDictionary *)self->_hostsByIdentity objectForKey:v9];
-  v11 = [v7 resolve];
-  [v10 clientToken:self handleInvocation:v7 withReply:v11];
+  v10 = [(NSMutableDictionary *)self->_hostsByIdentity objectForKey:identity];
+  resolve = [invocationCopy resolve];
+  [v10 clientToken:self handleInvocation:invocationCopy withReply:resolve];
 }
 
 - (id)scenes
@@ -1131,28 +1131,28 @@ LABEL_11:
   return v5;
 }
 
-- (void)sendActions:(id)a3 toWorkspaceID:(id)a4 completion:(id)a5
+- (void)sendActions:(id)actions toWorkspaceID:(id)d completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [(FBLocalSynchronousSceneClientProvider *)self callOutQueue];
-  [v12 assertBarrierOnQueue];
+  actionsCopy = actions;
+  dCopy = d;
+  completionCopy = completion;
+  callOutQueue = [(FBLocalSynchronousSceneClientProvider *)self callOutQueue];
+  [callOutQueue assertBarrierOnQueue];
 
   if (self->_invalidated)
   {
     [FBLocalSynchronousSceneClientProvider sendActions:a2 toWorkspaceID:? completion:?];
   }
 
-  if (v10)
+  if (dCopy)
   {
-    v13 = v10;
+    defaultWorkspace = dCopy;
   }
 
   else
   {
-    v14 = [(FBWorkspaceEventDispatcher *)self->_eventDispatcher domain];
-    v13 = [(FBWorkspaceDomain *)v14 defaultWorkspace];
+    domain = [(FBWorkspaceEventDispatcher *)self->_eventDispatcher domain];
+    defaultWorkspace = [(FBWorkspaceDomain *)domain defaultWorkspace];
   }
 
   v15 = [FBWorkspaceSceneRequest alloc];
@@ -1160,9 +1160,9 @@ LABEL_11:
   v18[1] = 3221225472;
   v18[2] = __78__FBLocalSynchronousSceneClientProvider_sendActions_toWorkspaceID_completion___block_invoke;
   v18[3] = &unk_1E783C2D0;
-  v19 = v11;
-  v16 = v11;
-  v17 = [(FBWorkspaceSceneRequest *)v15 initWithTargetIdentifier:v13 actions:v9 completion:v18];
+  v19 = completionCopy;
+  v16 = completionCopy;
+  v17 = [(FBWorkspaceSceneRequest *)v15 initWithTargetIdentifier:defaultWorkspace actions:actionsCopy completion:v18];
   [(FBWorkspaceEventDispatcher *)self->_eventDispatcher handleLocalSceneRequest:v17];
 }
 
@@ -1177,67 +1177,67 @@ uint64_t __78__FBLocalSynchronousSceneClientProvider_sendActions_toWorkspaceID_c
   return result;
 }
 
-- (id)createSceneFutureWithDefinition:(id)a3
+- (id)createSceneFutureWithDefinition:(id)definition
 {
-  v5 = a3;
-  v6 = [(FBLocalSynchronousSceneClientProvider *)self callOutQueue];
-  [v6 assertBarrierOnQueue];
+  definitionCopy = definition;
+  callOutQueue = [(FBLocalSynchronousSceneClientProvider *)self callOutQueue];
+  [callOutQueue assertBarrierOnQueue];
 
   if (self->_invalidated)
   {
     [FBLocalSynchronousSceneClientProvider createSceneFutureWithDefinition:a2];
   }
 
-  v7 = [v5 identity];
-  v8 = [v7 workspaceIdentifier];
+  identity = [definitionCopy identity];
+  workspaceIdentifier = [identity workspaceIdentifier];
 
-  if (!v8)
+  if (!workspaceIdentifier)
   {
-    v9 = [(FBWorkspaceEventDispatcher *)self->_eventDispatcher domain];
-    v10 = [(FBWorkspaceDomain *)v9 defaultWorkspace];
+    domain = [(FBWorkspaceEventDispatcher *)self->_eventDispatcher domain];
+    defaultWorkspace = [(FBWorkspaceDomain *)domain defaultWorkspace];
 
-    if (v10)
+    if (defaultWorkspace)
     {
       v11 = MEMORY[0x1E699FC10];
-      v12 = [v7 identifier];
-      v13 = [v11 identityForIdentifier:v12 workspaceIdentifier:v10];
+      identifier = [identity identifier];
+      v13 = [v11 identityForIdentifier:identifier workspaceIdentifier:defaultWorkspace];
 
-      v7 = v13;
+      identity = v13;
     }
   }
 
-  v14 = [v7 workspaceIdentifier];
+  workspaceIdentifier2 = [identity workspaceIdentifier];
 
-  if (!v14)
+  if (!workspaceIdentifier2)
   {
-    [(FBLocalSynchronousSceneClientProvider *)v7 createSceneFutureWithDefinition:a2];
+    [(FBLocalSynchronousSceneClientProvider *)identity createSceneFutureWithDefinition:a2];
   }
 
-  v15 = [(NSMutableDictionary *)self->_localSceneInfoByIdentity objectForKey:v7];
+  v15 = [(NSMutableDictionary *)self->_localSceneInfoByIdentity objectForKey:identity];
 
   if (v15)
   {
-    [(FBLocalSynchronousSceneClientProvider *)v7 createSceneFutureWithDefinition:a2];
+    [(FBLocalSynchronousSceneClientProvider *)identity createSceneFutureWithDefinition:a2];
   }
 
-  if ([(FBWorkspaceEventDispatcher *)self->_eventDispatcher canCreateLocalSceneWithIdentity:v7])
+  if ([(FBWorkspaceEventDispatcher *)self->_eventDispatcher canCreateLocalSceneWithIdentity:identity])
   {
-    v16 = [v5 parameters];
-    [v16 updateSettingsWithBlock:&__block_literal_global_198];
+    parameters = [definitionCopy parameters];
+    [parameters updateSettingsWithBlock:&__block_literal_global_198];
     v17 = MEMORY[0x1E699FC18];
-    v18 = [(FBWorkspaceEventDispatcher *)self->_eventDispatcher domain];
-    v19 = [(FBWorkspaceDomain *)v18 endpointPromise];
-    v20 = [(FBWorkspaceEndpointPromise *)v19 endpoint];
-    v21 = [v7 workspaceIdentifier];
-    v22 = [v7 identifier];
-    v23 = [v17 tokenWithHostEndpoint:v20 workspace:v21 identifier:v22];
+    domain2 = [(FBWorkspaceEventDispatcher *)self->_eventDispatcher domain];
+    endpointPromise = [(FBWorkspaceDomain *)domain2 endpointPromise];
+    endpoint = [(FBWorkspaceEndpointPromise *)endpointPromise endpoint];
+    workspaceIdentifier3 = [identity workspaceIdentifier];
+    identifier2 = [identity identifier];
+    v23 = [v17 tokenWithHostEndpoint:endpoint workspace:workspaceIdentifier3 identifier:identifier2];
 
     v24 = objc_alloc(MEMORY[0x1E699FBC8]);
-    v25 = [MEMORY[0x1E699FC08] localHandle];
-    v26 = [v24 _initWithUpdater:self identityToken:v23 identity:v7 parameters:v16 hostHandle:v25];
+    localHandle = [MEMORY[0x1E699FC08] localHandle];
+    v26 = [v24 _initWithUpdater:self identityToken:v23 identity:identity parameters:parameters hostHandle:localHandle];
 
     v27 = [[_FBLocalSceneInfo alloc] initWithScene:v26];
-    [(NSMutableDictionary *)self->_localSceneInfoByIdentity setObject:v27 forKey:v7];
+    [(NSMutableDictionary *)self->_localSceneInfoByIdentity setObject:v27 forKey:identity];
     [(NSMutableSet *)self->_pendingScenes addObject:v26];
   }
 
@@ -1246,7 +1246,7 @@ uint64_t __78__FBLocalSynchronousSceneClientProvider_sendActions_toWorkspaceID_c
     v28 = FBLogCommon();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
     {
-      [(FBLocalSynchronousSceneClientProvider *)v7 createSceneFutureWithDefinition:v28];
+      [(FBLocalSynchronousSceneClientProvider *)identity createSceneFutureWithDefinition:v28];
     }
 
     v26 = 0;
@@ -1255,12 +1255,12 @@ uint64_t __78__FBLocalSynchronousSceneClientProvider_sendActions_toWorkspaceID_c
   return v26;
 }
 
-- (void)activateSceneFuture:(id)a3 completion:(id)a4
+- (void)activateSceneFuture:(id)future completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(FBLocalSynchronousSceneClientProvider *)self callOutQueue];
-  [v9 assertBarrierOnQueue];
+  futureCopy = future;
+  completionCopy = completion;
+  callOutQueue = [(FBLocalSynchronousSceneClientProvider *)self callOutQueue];
+  [callOutQueue assertBarrierOnQueue];
 
   if (self->_invalidated)
   {
@@ -1268,41 +1268,41 @@ uint64_t __78__FBLocalSynchronousSceneClientProvider_sendActions_toWorkspaceID_c
   }
 
   localSceneInfoByIdentity = self->_localSceneInfoByIdentity;
-  v11 = [v7 identity];
-  v12 = [(NSMutableDictionary *)localSceneInfoByIdentity objectForKey:v11];
+  identity = [futureCopy identity];
+  v12 = [(NSMutableDictionary *)localSceneInfoByIdentity objectForKey:identity];
 
   if (!v12)
   {
     [FBLocalSynchronousSceneClientProvider activateSceneFuture:a2 completion:?];
   }
 
-  if (([(NSMutableSet *)self->_pendingScenes containsObject:v7]& 1) == 0)
+  if (([(NSMutableSet *)self->_pendingScenes containsObject:futureCopy]& 1) == 0)
   {
     [FBLocalSynchronousSceneClientProvider activateSceneFuture:a2 completion:?];
   }
 
   v13 = objc_opt_new();
-  v14 = [v7 identifier];
-  [v13 setIdentifier:v14];
+  identifier = [futureCopy identifier];
+  [v13 setIdentifier:identifier];
 
-  v15 = [v7 identity];
-  v16 = [v15 workspaceIdentifier];
-  [v13 setWorkspaceIdentifier:v16];
+  identity2 = [futureCopy identity];
+  workspaceIdentifier = [identity2 workspaceIdentifier];
+  [v13 setWorkspaceIdentifier:workspaceIdentifier];
 
-  v17 = [v7 specification];
-  [v13 setSpecification:v17];
+  specification = [futureCopy specification];
+  [v13 setSpecification:specification];
 
-  v18 = [v7 settings];
-  [v13 setInitialSettings:v18];
+  settings = [futureCopy settings];
+  [v13 setInitialSettings:settings];
 
-  v19 = [v7 clientSettings];
-  [v13 setInitialClientSettings:v19];
+  clientSettings = [futureCopy clientSettings];
+  [v13 setInitialClientSettings:clientSettings];
 
-  v20 = [v7 settings];
-  [v13 setClientFuture:{objc_msgSend(v20, "isClientFuture")}];
+  settings2 = [futureCopy settings];
+  [v13 setClientFuture:{objc_msgSend(settings2, "isClientFuture")}];
 
-  v21 = [v7 settings];
-  [(FBLocalSynchronousSceneClientProvider *)self _sendToSceneWithInfo:v12 updatedSettings:v21 withDiff:0 transitionContext:0 completion:0];
+  settings3 = [futureCopy settings];
+  [(FBLocalSynchronousSceneClientProvider *)self _sendToSceneWithInfo:v12 updatedSettings:settings3 withDiff:0 transitionContext:0 completion:0];
 
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
@@ -1310,10 +1310,10 @@ uint64_t __78__FBLocalSynchronousSceneClientProvider_sendActions_toWorkspaceID_c
   v25[3] = &unk_1E783CCE0;
   v25[4] = self;
   v26 = v12;
-  v27 = v7;
-  v28 = v8;
-  v22 = v8;
-  v23 = v7;
+  v27 = futureCopy;
+  v28 = completionCopy;
+  v22 = completionCopy;
+  v23 = futureCopy;
   v24 = v12;
   [(FBLocalSynchronousSceneClientProvider *)self requestSceneWithOptions:v13 completion:v25];
 }
@@ -1334,49 +1334,49 @@ void __72__FBLocalSynchronousSceneClientProvider_activateSceneFuture_completion_
   }
 }
 
-- (void)requestSceneWithOptions:(id)a3 completion:(id)a4
+- (void)requestSceneWithOptions:(id)options completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(FBLocalSynchronousSceneClientProvider *)self callOutQueue];
-  [v9 assertBarrierOnQueue];
+  optionsCopy = options;
+  completionCopy = completion;
+  callOutQueue = [(FBLocalSynchronousSceneClientProvider *)self callOutQueue];
+  [callOutQueue assertBarrierOnQueue];
 
   if (self->_invalidated)
   {
     [FBLocalSynchronousSceneClientProvider requestSceneWithOptions:a2 completion:?];
   }
 
-  v10 = [v7 workspaceIdentifier];
+  workspaceIdentifier = [optionsCopy workspaceIdentifier];
 
-  if (!v10)
+  if (!workspaceIdentifier)
   {
-    v11 = [(FBWorkspaceEventDispatcher *)self->_eventDispatcher domain];
-    v12 = [(FBWorkspaceDomain *)v11 defaultWorkspace];
+    domain = [(FBWorkspaceEventDispatcher *)self->_eventDispatcher domain];
+    defaultWorkspace = [(FBWorkspaceDomain *)domain defaultWorkspace];
 
-    if (v12)
+    if (defaultWorkspace)
     {
-      [v7 setWorkspaceIdentifier:v12];
+      [optionsCopy setWorkspaceIdentifier:defaultWorkspace];
     }
   }
 
-  v13 = [v7 workspaceIdentifier];
-  if (!v13)
+  workspaceIdentifier2 = [optionsCopy workspaceIdentifier];
+  if (!workspaceIdentifier2)
   {
     [FBLocalSynchronousSceneClientProvider requestSceneWithOptions:completion:];
   }
 
-  v14 = v13;
-  v15 = [MEMORY[0x1E699FBD8] localIdentity];
+  v14 = workspaceIdentifier2;
+  localIdentity = [MEMORY[0x1E699FBD8] localIdentity];
   v16 = [FBWorkspaceSceneRequest alloc];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __76__FBLocalSynchronousSceneClientProvider_requestSceneWithOptions_completion___block_invoke;
   v19[3] = &unk_1E783CD30;
-  v20 = v8;
+  v20 = completionCopy;
   v21 = a2;
   v19[4] = self;
-  v17 = v8;
-  v18 = [(FBWorkspaceSceneRequest *)v16 initWithClientIdentity:v15 targetIdentifier:v14 options:v7 completion:v19];
+  v17 = completionCopy;
+  v18 = [(FBWorkspaceSceneRequest *)v16 initWithClientIdentity:localIdentity targetIdentifier:v14 options:optionsCopy completion:v19];
   [(FBWorkspaceEventDispatcher *)self->_eventDispatcher handleLocalSceneRequest:v18];
 }
 
@@ -1472,19 +1472,19 @@ void __80__FBLocalSynchronousSceneClientProvider__invalidateSceneInfo_transition
 + (id)sharedInstance
 {
   v2 = +[FBProcessManager sharedInstance];
-  v3 = [v2 syncLocalSceneClientProvider];
+  syncLocalSceneClientProvider = [v2 syncLocalSceneClientProvider];
 
-  return v3;
+  return syncLocalSceneClientProvider;
 }
 
-- (void)_invalidateSceneInfo:(void *)a3 transitionContext:
+- (void)_invalidateSceneInfo:(void *)info transitionContext:
 {
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  infoCopy = info;
+  if (self)
   {
-    v7 = [a1 callOutQueue];
-    [v7 assertBarrierOnQueue];
+    callOutQueue = [self callOutQueue];
+    [callOutQueue assertBarrierOnQueue];
 
     if (v5)
     {
@@ -1498,7 +1498,7 @@ void __80__FBLocalSynchronousSceneClientProvider__invalidateSceneInfo_transition
 
     v9 = v8;
     v10 = v9;
-    v11 = *(a1 + 56);
+    v11 = *(self + 56);
     if (v11)
     {
       v12[0] = MEMORY[0x1E69E9820];
@@ -1506,15 +1506,15 @@ void __80__FBLocalSynchronousSceneClientProvider__invalidateSceneInfo_transition
       v12[2] = __80__FBLocalSynchronousSceneClientProvider__invalidateSceneInfo_transitionContext___block_invoke;
       v12[3] = &unk_1E783B300;
       v13 = v9;
-      v14 = v6;
-      v15 = a1;
-      [v11 _calloutQueue_executeCalloutFromSource:a1 withBlock:v12];
+      v14 = infoCopy;
+      selfCopy = self;
+      [v11 _calloutQueue_executeCalloutFromSource:self withBlock:v12];
     }
 
     else
     {
-      [*(a1 + 8) removeObject:v5];
-      [v10 _callOutQueue_willDestroyWithTransitionContext:v6 completion:0];
+      [*(self + 8) removeObject:v5];
+      [v10 _callOutQueue_willDestroyWithTransitionContext:infoCopy completion:0];
     }
 
     [v10 _callOutQueue_invalidate];
@@ -1532,9 +1532,9 @@ uint64_t __47__FBLocalSynchronousSceneClientProvider_scenes__block_invoke(uint64
   return [v3 addObject:a3];
 }
 
-- (id)sceneWithIdentity:(id)a3
+- (id)sceneWithIdentity:(id)identity
 {
-  v3 = [(NSMutableDictionary *)self->_localSceneInfoByIdentity objectForKey:a3];
+  v3 = [(NSMutableDictionary *)self->_localSceneInfoByIdentity objectForKey:identity];
   v4 = v3;
   if (v3)
   {

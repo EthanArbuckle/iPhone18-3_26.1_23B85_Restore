@@ -1,18 +1,18 @@
 @interface NLPLearnerLanguageModelingData
 + (void)initialize;
-- (BOOL)addExamples:(id)a3;
-- (BOOL)loadFromCoreDuet:(id)a3 limitSamplesTo:(unint64_t)a4;
-- (NLPLearnerLanguageModelingData)initWithLocale:(id)a3;
+- (BOOL)addExamples:(id)examples;
+- (BOOL)loadFromCoreDuet:(id)duet limitSamplesTo:(unint64_t)to;
+- (NLPLearnerLanguageModelingData)initWithLocale:(id)locale;
 - (id)nextEvaluationDataPoint;
-- (id)nextTrainingDataBatch:(unint64_t)a3;
-- (void)addPreprocessedExample:(void *)a3;
+- (id)nextTrainingDataBatch:(unint64_t)batch;
+- (void)addPreprocessedExample:(void *)example;
 @end
 
 @implementation NLPLearnerLanguageModelingData
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     sLog = os_log_create("com.apple.NLP", "NLPLearnerLanguageModelingData");
 
@@ -20,13 +20,13 @@
   }
 }
 
-- (NLPLearnerLanguageModelingData)initWithLocale:(id)a3
+- (NLPLearnerLanguageModelingData)initWithLocale:(id)locale
 {
   v15[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  localeCopy = locale;
   v13.receiver = self;
   v13.super_class = NLPLearnerLanguageModelingData;
-  v5 = [(NLPLearnerTextData *)&v13 initWithLocale:v4];
+  v5 = [(NLPLearnerTextData *)&v13 initWithLocale:localeCopy];
   if (!v5)
   {
     goto LABEL_3;
@@ -34,9 +34,9 @@
 
   -[NLPLearnerTextData setMaxSequenceLength:](v5, "setMaxSequenceLength:", [objc_opt_class() defaultMaxSequenceLength]);
   v14 = *MEMORY[0x277D23168];
-  v6 = [(NLPLearnerTextData *)v5 locale];
-  v7 = [v6 languageCode];
-  v15[0] = v7;
+  locale = [(NLPLearnerTextData *)v5 locale];
+  languageCode = [locale languageCode];
+  v15[0] = languageCode;
   [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:&v14 count:1];
   v8 = LXLexiconCreate();
   nlp::CFScopedPtr<_LXLexicon const*>::reset(&v5->_lexicon.m_ref, v8);
@@ -62,16 +62,16 @@ LABEL_3:
   return v9;
 }
 
-- (void)addPreprocessedExample:(void *)a3
+- (void)addPreprocessedExample:(void *)example
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = [(NLPLearnerLanguageModelingData *)self tokenIDMapPath];
+  tokenIDMapPath = [(NLPLearnerLanguageModelingData *)self tokenIDMapPath];
 
-  if (v5)
+  if (tokenIDMapPath)
   {
-    v6 = *a3;
-    v7 = *(a3 + 1);
-    v8 = [(NLPLearnerLanguageModelingData *)self tokenIDMapPath];
+    v6 = *example;
+    v7 = *(example + 1);
+    tokenIDMapPath2 = [(NLPLearnerLanguageModelingData *)self tokenIDMapPath];
     v9 = LMCreateMontrealIDsFromLMTokenIDSequence();
 
     if (v9)
@@ -86,8 +86,8 @@ LABEL_3:
         [(NLPLearnerLanguageModelingData *)v13 addPreprocessedExample:buf, v12];
       }
 
-      v14 = [(NLPLearnerTextData *)self sentences];
-      [v14 addObject:v11];
+      sentences = [(NLPLearnerTextData *)self sentences];
+      [sentences addObject:v11];
 
       CFRelease(v9);
     }
@@ -105,9 +105,9 @@ LABEL_3:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)loadFromCoreDuet:(id)a3 limitSamplesTo:(unint64_t)a4
+- (BOOL)loadFromCoreDuet:(id)duet limitSamplesTo:(unint64_t)to
 {
-  v6 = a3;
+  duetCopy = duet;
   v11[0] = 0;
   v11[1] = v11;
   v11[2] = 0x4812000000;
@@ -116,7 +116,7 @@ LABEL_3:
   v11[5] = &unk_25AE36D43;
   memset(&__p, 0, sizeof(__p));
   std::vector<unsigned int>::reserve(&__p, [(NLPLearnerTextData *)self maxSequenceLength]);
-  v7 = [(NLPLearnerTextData *)self locale];
+  locale = [(NLPLearnerTextData *)self locale];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __66__NLPLearnerLanguageModelingData_loadFromCoreDuet_limitSamplesTo___block_invoke;
@@ -125,7 +125,7 @@ LABEL_3:
   v10[5] = v11;
   v9.receiver = self;
   v9.super_class = NLPLearnerLanguageModelingData;
-  [(NLPLearnerTextData *)&v9 loadFromCoreDuet:v6 limitSamplesTo:a4 withLocale:v7 andLMStreamTokenizationBlock:v10];
+  [(NLPLearnerTextData *)&v9 loadFromCoreDuet:duetCopy limitSamplesTo:to withLocale:locale andLMStreamTokenizationBlock:v10];
 
   _Block_object_dispose(v11, 8);
   if (__p.__begin_)
@@ -205,22 +205,22 @@ void __66__NLPLearnerLanguageModelingData_loadFromCoreDuet_limitSamplesTo___bloc
   std::vector<unsigned int>::push_back[abi:ne200100]((*(*(a1 + 40) + 8) + 48), &v11);
 }
 
-- (id)nextTrainingDataBatch:(unint64_t)a3
+- (id)nextTrainingDataBatch:(unint64_t)batch
 {
   v22[2] = *MEMORY[0x277D85DE8];
-  v5 = [(NLPLearnerTextData *)self iterator]+ a3;
+  v5 = [(NLPLearnerTextData *)self iterator]+ batch;
   if (v5 <= [(NLPLearnerTextData *)self numSamples])
   {
-    v7 = [MEMORY[0x277CBEB18] arrayWithCapacity:a3];
-    if (a3)
+    v7 = [MEMORY[0x277CBEB18] arrayWithCapacity:batch];
+    if (batch)
     {
       v8 = 0;
       v9 = MEMORY[0x277D2A230];
       v10 = MEMORY[0x277D2A228];
       do
       {
-        v11 = [(NLPLearnerTextData *)self sentences];
-        v12 = [v11 objectAtIndexedSubscript:{v8 + -[NLPLearnerTextData iterator](self, "iterator")}];
+        sentences = [(NLPLearnerTextData *)self sentences];
+        v12 = [sentences objectAtIndexedSubscript:{v8 + -[NLPLearnerTextData iterator](self, "iterator")}];
 
         v13 = [v12 subarrayWithRange:{0, objc_msgSend(v12, "count") - 1}];
         v14 = [v12 subarrayWithRange:{1, objc_msgSend(v12, "count") - 1}];
@@ -235,10 +235,10 @@ void __66__NLPLearnerLanguageModelingData_loadFromCoreDuet_limitSamplesTo___bloc
         ++v8;
       }
 
-      while (a3 != v8);
+      while (batch != v8);
     }
 
-    [(NLPLearnerTextData *)self setIterator:[(NLPLearnerTextData *)self iterator]+ a3];
+    [(NLPLearnerTextData *)self setIterator:[(NLPLearnerTextData *)self iterator]+ batch];
     v19 = *MEMORY[0x277D2A210];
     v20 = v7;
     v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v20 forKeys:&v19 count:1];
@@ -257,15 +257,15 @@ void __66__NLPLearnerLanguageModelingData_loadFromCoreDuet_limitSamplesTo___bloc
 - (id)nextEvaluationDataPoint
 {
   v20[2] = *MEMORY[0x277D85DE8];
-  v3 = [(NLPLearnerTextData *)self iterator];
-  if (v3 >= [(NLPLearnerTextData *)self numSamples])
+  iterator = [(NLPLearnerTextData *)self iterator];
+  if (iterator >= [(NLPLearnerTextData *)self numSamples])
   {
     v12 = 0;
     goto LABEL_11;
   }
 
-  v4 = [(NLPLearnerTextData *)self sentences];
-  v5 = [v4 objectAtIndexedSubscript:{-[NLPLearnerTextData iterator](self, "iterator")}];
+  sentences = [(NLPLearnerTextData *)self sentences];
+  v5 = [sentences objectAtIndexedSubscript:{-[NLPLearnerTextData iterator](self, "iterator")}];
 
   v6 = [v5 subarrayWithRange:{0, objc_msgSend(v5, "count") - 1}];
   v7 = [v5 subarrayWithRange:{1, objc_msgSend(v5, "count") - 1}];
@@ -322,17 +322,17 @@ LABEL_11:
   return v12;
 }
 
-- (BOOL)addExamples:(id)a3
+- (BOOL)addExamples:(id)examples
 {
   v33 = *MEMORY[0x277D85DE8];
-  v19 = a3;
+  examplesCopy = examples;
   v4 = objc_alloc_init(MEMORY[0x277CCABB8]);
   [v4 setNumberStyle:1];
   v29 = 0u;
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  obj = v19;
+  obj = examplesCopy;
   v5 = [obj countByEnumeratingWithState:&v27 objects:v32 count:16];
   if (v5)
   {
@@ -394,8 +394,8 @@ LABEL_9:
             }
           }
 
-          v16 = [(NLPLearnerTextData *)self sentences];
-          [v16 addObject:v9];
+          sentences = [(NLPLearnerTextData *)self sentences];
+          [sentences addObject:v9];
 
           v5 = v21;
         }

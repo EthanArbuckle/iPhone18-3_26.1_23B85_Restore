@@ -1,5 +1,5 @@
 @interface PSDateTimePickerCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)isAccessibilityElement;
 - (CGPoint)accessibilityActivationPoint;
 - (id)accessibilityHint;
@@ -11,31 +11,31 @@
 
 @implementation PSDateTimePickerCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PSDateTimePickerCell" hasInstanceMethod:@"datePicker" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PSDateTimePickerCell" hasInstanceVariable:@"_titleLabel" withType:"UILabel"];
-  [v3 validateClass:@"UIDatePicker" hasInstanceVariable:@"_pickerView" withType:"UIView<_UIDatePickerViewComponent>"];
-  [v3 validateClass:@"_UIDatePickerIOSCompactView" hasInstanceMethod:@"timeView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"_UIDatePickerCompactTimeLabel" isKindOfClass:@"_UIDatePickerCalendarTimeLabel"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PSDateTimePickerCell" hasInstanceMethod:@"datePicker" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PSDateTimePickerCell" hasInstanceVariable:@"_titleLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"UIDatePicker" hasInstanceVariable:@"_pickerView" withType:"UIView<_UIDatePickerViewComponent>"];
+  [validationsCopy validateClass:@"_UIDatePickerIOSCompactView" hasInstanceMethod:@"timeView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"_UIDatePickerCompactTimeLabel" isKindOfClass:@"_UIDatePickerCalendarTimeLabel"];
 }
 
 - (BOOL)isAccessibilityElement
 {
   v2 = [(PSDateTimePickerCellAccessibility *)self safeUIViewForKey:@"_titleLabel"];
-  v3 = [v2 _accessibilityViewIsVisible];
+  _accessibilityViewIsVisible = [v2 _accessibilityViewIsVisible];
 
-  return v3;
+  return _accessibilityViewIsVisible;
 }
 
 - (id)accessibilityLabel
 {
   v8.receiver = self;
   v8.super_class = PSDateTimePickerCellAccessibility;
-  v3 = [(PSDateTimePickerCellAccessibility *)&v8 accessibilityLabel];
-  v4 = [(PSDateTimePickerCellAccessibility *)self accessibilityPickerView];
-  v7 = [v4 accessibilityLabel];
+  accessibilityLabel = [(PSDateTimePickerCellAccessibility *)&v8 accessibilityLabel];
+  accessibilityPickerView = [(PSDateTimePickerCellAccessibility *)self accessibilityPickerView];
+  accessibilityLabel2 = [accessibilityPickerView accessibilityLabel];
   v5 = __UIAXStringForVariables();
 
   return v5;
@@ -43,24 +43,24 @@
 
 - (id)accessibilityValue
 {
-  v2 = [(PSDateTimePickerCellAccessibility *)self accessibilityPickerTimeView];
-  v3 = [v2 accessibilityLabel];
+  accessibilityPickerTimeView = [(PSDateTimePickerCellAccessibility *)self accessibilityPickerTimeView];
+  accessibilityLabel = [accessibilityPickerTimeView accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
 - (id)accessibilityHint
 {
-  v2 = [(PSDateTimePickerCellAccessibility *)self accessibilityPickerView];
-  v3 = [v2 accessibilityHint];
+  accessibilityPickerView = [(PSDateTimePickerCellAccessibility *)self accessibilityPickerView];
+  accessibilityHint = [accessibilityPickerView accessibilityHint];
 
-  return v3;
+  return accessibilityHint;
 }
 
 - (CGPoint)accessibilityActivationPoint
 {
-  v2 = [(PSDateTimePickerCellAccessibility *)self accessibilityPickerTimeView];
-  [v2 accessibilityActivationPoint];
+  accessibilityPickerTimeView = [(PSDateTimePickerCellAccessibility *)self accessibilityPickerTimeView];
+  [accessibilityPickerTimeView accessibilityActivationPoint];
   v4 = v3;
   v6 = v5;
 
@@ -73,16 +73,16 @@
 
 - (unint64_t)accessibilityTraits
 {
-  v2 = [(PSDateTimePickerCellAccessibility *)self accessibilityPickerView];
-  v3 = [v2 accessibilityTraits];
+  accessibilityPickerView = [(PSDateTimePickerCellAccessibility *)self accessibilityPickerView];
+  accessibilityTraits = [accessibilityPickerView accessibilityTraits];
 
-  return v3;
+  return accessibilityTraits;
 }
 
 - (id)accessibilityPickerTimeView
 {
-  v2 = [(PSDateTimePickerCellAccessibility *)self accessibilityPickerView];
-  v3 = [v2 safeUIViewForKey:@"timeView"];
+  accessibilityPickerView = [(PSDateTimePickerCellAccessibility *)self accessibilityPickerView];
+  v3 = [accessibilityPickerView safeUIViewForKey:@"timeView"];
 
   return v3;
 }

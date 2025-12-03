@@ -1,34 +1,34 @@
 @interface GQDAffineGeometry
-+ (CGRect)boundsOfTransformedRect:(CGRect)a3 transform:(id)a4;
-+ (void)transformRect:(CGRect)a3 transform:(id)a4 upperLeft:(CGPoint *)a5 lowerLeft:(CGPoint *)a6 lowerRight:(CGPoint *)a7 upperRight:(CGPoint *)a8;
++ (CGRect)boundsOfTransformedRect:(CGRect)rect transform:(id)transform;
++ (void)transformRect:(CGRect)rect transform:(id)transform upperLeft:(CGPoint *)left lowerLeft:(CGPoint *)lowerLeft lowerRight:(CGPoint *)right upperRight:(CGPoint *)upperRight;
 - (CGAffineTransform)transform;
-- (CGAffineTransform)transformHasVFlip:(SEL)a3 vFlip:(BOOL)a4 hasHFlip:(BOOL)a5 hFlip:(BOOL)a6;
+- (CGAffineTransform)transformHasVFlip:(SEL)flip vFlip:(BOOL)vFlip hasHFlip:(BOOL)hFlip hFlip:(BOOL)a6;
 - (CGPoint)nonrotatedPosition;
 - (CGPoint)position;
 - (CGRect)naturalBounds;
 - (CGSize)naturalSize;
 - (CGSize)size;
 - (CGSize)sizeOfBoundingBox;
-- (int)readAttributesFromReader:(_xmlTextReader *)a3;
+- (int)readAttributesFromReader:(_xmlTextReader *)reader;
 @end
 
 @implementation GQDAffineGeometry
 
-- (int)readAttributesFromReader:(_xmlTextReader *)a3
+- (int)readAttributesFromReader:(_xmlTextReader *)reader
 {
-  sub_4290C(a3, qword_A35E8, "angle");
+  sub_4290C(reader, qword_A35E8, "angle");
   *&v5 = v5;
   self->mAngle = *&v5;
-  sub_4290C(a3, qword_A35E8, "shearXAngle");
+  sub_4290C(reader, qword_A35E8, "shearXAngle");
   *&v6 = v6;
   self->mShearXAngle = *&v6;
-  sub_4290C(a3, qword_A35E8, "shearYAngle");
+  sub_4290C(reader, qword_A35E8, "shearYAngle");
   *&v7 = v7;
   self->mShearYAngle = *&v7;
-  self->mSizesLocked = sub_42340(a3, qword_A35E8, "sizesLocked", 0);
-  self->mAspectRatioLocked = sub_42340(a3, qword_A35E8, "aspectRatioLocked", 0);
-  self->mHorizontalFlip = sub_42340(a3, qword_A35E8, "horizontalFlip", 0);
-  self->mVerticalFlip = sub_42340(a3, qword_A35E8, "verticalFlip", 0);
+  self->mSizesLocked = sub_42340(reader, qword_A35E8, "sizesLocked", 0);
+  self->mAspectRatioLocked = sub_42340(reader, qword_A35E8, "aspectRatioLocked", 0);
+  self->mHorizontalFlip = sub_42340(reader, qword_A35E8, "horizontalFlip", 0);
+  self->mVerticalFlip = sub_42340(reader, qword_A35E8, "verticalFlip", 0);
   return 1;
 }
 
@@ -114,39 +114,39 @@
   return result;
 }
 
-+ (void)transformRect:(CGRect)a3 transform:(id)a4 upperLeft:(CGPoint *)a5 lowerLeft:(CGPoint *)a6 lowerRight:(CGPoint *)a7 upperRight:(CGPoint *)a8
++ (void)transformRect:(CGRect)rect transform:(id)transform upperLeft:(CGPoint *)left lowerLeft:(CGPoint *)lowerLeft lowerRight:(CGPoint *)right upperRight:(CGPoint *)upperRight
 {
-  x = a3.origin.x;
-  y = a3.origin.y;
-  v15 = a3.origin.x + a3.size.width;
-  v16 = a3.origin.y + a3.size.height;
-  a5->x = x;
-  a5->y = y;
+  x = rect.origin.x;
+  y = rect.origin.y;
+  v15 = rect.origin.x + rect.size.width;
+  v16 = rect.origin.y + rect.size.height;
+  left->x = x;
+  left->y = y;
   v17 = v16;
-  a6->x = x;
-  a6->y = v17;
+  lowerLeft->x = x;
+  lowerLeft->y = v17;
   v18 = v15;
-  a7->x = v18;
-  a7->y = v17;
-  a8->x = v18;
-  a8->y = y;
-  [a4 transformPoint:{a5->x, a5->y}];
-  a5->x = v19;
-  a5->y = v20;
-  [a4 transformPoint:{a6->x, a6->y}];
-  a6->x = v21;
-  a6->y = v22;
-  [a4 transformPoint:{a7->x, a7->y}];
-  a7->x = v23;
-  a7->y = v24;
-  [a4 transformPoint:{a8->x, a8->y}];
-  a8->x = v25;
-  a8->y = v26;
+  right->x = v18;
+  right->y = v17;
+  upperRight->x = v18;
+  upperRight->y = y;
+  [transform transformPoint:{left->x, left->y}];
+  left->x = v19;
+  left->y = v20;
+  [transform transformPoint:{lowerLeft->x, lowerLeft->y}];
+  lowerLeft->x = v21;
+  lowerLeft->y = v22;
+  [transform transformPoint:{right->x, right->y}];
+  right->x = v23;
+  right->y = v24;
+  [transform transformPoint:{upperRight->x, upperRight->y}];
+  upperRight->x = v25;
+  upperRight->y = v26;
 }
 
-+ (CGRect)boundsOfTransformedRect:(CGRect)a3 transform:(id)a4
++ (CGRect)boundsOfTransformedRect:(CGRect)rect transform:(id)transform
 {
-  [a1 transformRect:a4 transform:&v23 upperLeft:&v21 lowerLeft:&v19 lowerRight:&v17 upperRight:{a3.origin.x, a3.origin.y, a3.size.width, a3.size.height}];
+  [self transformRect:transform transform:&v23 upperLeft:&v21 lowerLeft:&v19 lowerRight:&v17 upperRight:{rect.origin.x, rect.origin.y, rect.size.width, rect.size.height}];
   v4 = v19;
   v5 = v20;
   if (v19 >= v17)
@@ -252,10 +252,10 @@
   return self;
 }
 
-- (CGAffineTransform)transformHasVFlip:(SEL)a3 vFlip:(BOOL)a4 hasHFlip:(BOOL)a5 hFlip:(BOOL)a6
+- (CGAffineTransform)transformHasVFlip:(SEL)flip vFlip:(BOOL)vFlip hasHFlip:(BOOL)hFlip hFlip:(BOOL)a6
 {
-  v7 = a5;
-  v8 = a4;
+  hFlipCopy = hFlip;
+  vFlipCopy = vFlip;
   mHorizontalFlip = self->mHorizontalFlip;
   v12 = a6 && a7;
   mVerticalFlip = self->mVerticalFlip;
@@ -270,7 +270,7 @@
     [v15 transformStruct];
   }
 
-  v17 = v8 && v7;
+  v17 = vFlipCopy && hFlipCopy;
   __x = vdivq_f64(vmulq_f64(vcvtq_f64_f32(*&self->mShearXAngle), vdupq_n_s64(0x400921FB54442D18uLL)), vdupq_n_s64(0x4066800000000000uLL));
   v33 = tan(__x.f64[1]);
   v18.f64[0] = tan(__x.f64[0]);

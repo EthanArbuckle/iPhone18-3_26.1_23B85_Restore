@@ -1,24 +1,24 @@
 @interface TSTFormulaPredArgData
-+ (id)getPredArgDataFromCell:(id)a3;
++ (id)getPredArgDataFromCell:(id)cell;
 - (BOOL)BOOLValue;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSDate)date;
 - (NSNumber)number;
 - (NSString)string;
 - (TSCENumberValue)duration;
 - (TSTFormulaPredArgData)init;
-- (TSTFormulaPredArgData)initWithBool:(BOOL)a3;
-- (TSTFormulaPredArgData)initWithDate:(id)a3;
-- (TSTFormulaPredArgData)initWithDouble:(double)a3;
-- (TSTFormulaPredArgData)initWithDuration:(double)a3 units:(unsigned __int8)a4;
-- (TSTFormulaPredArgData)initWithNumber:(id)a3;
-- (TSTFormulaPredArgData)initWithString:(id)a3;
+- (TSTFormulaPredArgData)initWithBool:(BOOL)bool;
+- (TSTFormulaPredArgData)initWithDate:(id)date;
+- (TSTFormulaPredArgData)initWithDouble:(double)double;
+- (TSTFormulaPredArgData)initWithDuration:(double)duration units:(unsigned __int8)units;
+- (TSTFormulaPredArgData)initWithNumber:(id)number;
+- (TSTFormulaPredArgData)initWithString:(id)string;
 - (double)doubleValue;
 - (double)durationValue;
-- (id)initFromArchive:(const void *)a3;
+- (id)initFromArchive:(const void *)archive;
 - (unint64_t)hash;
 - (unsigned)durationUnits;
-- (void)encodeToArchive:(void *)a3 archiver:(id)a4;
+- (void)encodeToArchive:(void *)archive archiver:(id)archiver;
 @end
 
 @implementation TSTFormulaPredArgData
@@ -36,7 +36,7 @@
   return result;
 }
 
-- (TSTFormulaPredArgData)initWithBool:(BOOL)a3
+- (TSTFormulaPredArgData)initWithBool:(BOOL)bool
 {
   v6.receiver = self;
   v6.super_class = TSTFormulaPredArgData;
@@ -51,7 +51,7 @@
   return v4;
 }
 
-- (TSTFormulaPredArgData)initWithDouble:(double)a3
+- (TSTFormulaPredArgData)initWithDouble:(double)double
 {
   v6.receiver = self;
   v6.super_class = TSTFormulaPredArgData;
@@ -66,13 +66,13 @@
   return v4;
 }
 
-- (TSTFormulaPredArgData)initWithNumber:(id)a3
+- (TSTFormulaPredArgData)initWithNumber:(id)number
 {
-  v4 = a3;
-  v9 = v4;
-  if (v4)
+  numberCopy = number;
+  v9 = numberCopy;
+  if (numberCopy)
   {
-    objc_msgSend_doubleValue(v4, v5, v6, v7, v8);
+    objc_msgSend_doubleValue(numberCopy, v5, v6, v7, v8);
     v14 = objc_msgSend_initWithDouble_(self, v10, v11, v12, v13);
   }
 
@@ -91,26 +91,26 @@
   return v14;
 }
 
-- (TSTFormulaPredArgData)initWithDate:(id)a3
+- (TSTFormulaPredArgData)initWithDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v19.receiver = self;
   v19.super_class = TSTFormulaPredArgData;
   v5 = [(TSTFormulaPredArgData *)&v19 init];
   v10 = v5;
   if (v5)
   {
-    if (v4)
+    if (dateCopy)
     {
       v5->_dataType = 2;
-      objc_msgSend_timeIntervalSinceReferenceDate(v4, v6, v7, v8, v9);
+      objc_msgSend_timeIntervalSinceReferenceDate(dateCopy, v6, v7, v8, v9);
       TSUDecimal::operator=();
       v11.f64[0] = NAN;
       v11.f64[1] = NAN;
       *&v10->_year = vnegq_f64(v11);
       v10->_day = 0x7FFFFFFFFFFFFFFFLL;
       v16 = objc_msgSend_gregorianCalendar(TSCECalendar, v12, v13, v14, v15);
-      objc_msgSend_extractComponentsFromDate_year_month_day_(v16, v17, v4, &v10->_year, &v10->_month, &v10->_day);
+      objc_msgSend_extractComponentsFromDate_year_month_day_(v16, v17, dateCopy, &v10->_year, &v10->_month, &v10->_day);
     }
 
     else
@@ -122,9 +122,9 @@
   return v10;
 }
 
-- (TSTFormulaPredArgData)initWithString:(id)a3
+- (TSTFormulaPredArgData)initWithString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v14.receiver = self;
   v14.super_class = TSTFormulaPredArgData;
   v5 = [(TSTFormulaPredArgData *)&v14 init];
@@ -132,7 +132,7 @@
   if (v5)
   {
     v5->_dataType = 3;
-    v11 = objc_msgSend_copy(v4, v6, v7, v8, v9);
+    v11 = objc_msgSend_copy(stringCopy, v6, v7, v8, v9);
     string = v10->_string;
     v10->_string = v11;
   }
@@ -140,7 +140,7 @@
   return v10;
 }
 
-- (TSTFormulaPredArgData)initWithDuration:(double)a3 units:(unsigned __int8)a4
+- (TSTFormulaPredArgData)initWithDuration:(double)duration units:(unsigned __int8)units
 {
   v8.receiver = self;
   v8.super_class = TSTFormulaPredArgData;
@@ -150,16 +150,16 @@
   {
     v5->_dataType = 5;
     TSUDecimal::operator=();
-    v6->_units = a4;
+    v6->_units = units;
   }
 
   return v6;
 }
 
-+ (id)getPredArgDataFromCell:(id)a3
++ (id)getPredArgDataFromCell:(id)cell
 {
-  v3 = a3;
-  v8 = objc_msgSend_valueType(v3, v4, v5, v6, v7);
+  cellCopy = cell;
+  v8 = objc_msgSend_valueType(cellCopy, v4, v5, v6, v7);
   if (v8 > 5)
   {
     if (v8 <= 8)
@@ -167,19 +167,19 @@
       if (v8 == 6)
       {
         v65 = [TSTFormulaPredArgData alloc];
-        v70 = objc_msgSend_BOOLValue(v3, v66, v67, v68, v69);
+        v70 = objc_msgSend_BOOLValue(cellCopy, v66, v67, v68, v69);
         v32 = objc_msgSend_initWithBool_(v65, v71, v70, v72, v73);
         goto LABEL_21;
       }
 
       if (v8 == 7)
       {
-        v13 = objc_msgSend_durationFormat(v3, v9, v10, v11, v12);
+        v13 = objc_msgSend_durationFormat(cellCopy, v9, v10, v11, v12);
         v18 = objc_msgSend_asDurationFormat(v13, v14, v15, v16, v17);
         v23 = objc_msgSend_durationUnitLargest(v18, v19, v20, v21, v22);
 
         v24 = [TSTFormulaPredArgData alloc];
-        objc_msgSend_durationTimeIntervalValue(v3, v25, v26, v27, v28);
+        objc_msgSend_durationTimeIntervalValue(cellCopy, v25, v26, v27, v28);
         v32 = objc_msgSend_initWithDuration_units_(v24, v29, v23, v30, v31);
         goto LABEL_21;
       }
@@ -193,7 +193,7 @@
       {
 LABEL_15:
         v43 = [TSTFormulaPredArgData alloc];
-        objc_msgSend_underlyingDoubleValue(v3, v44, v45, v46, v47);
+        objc_msgSend_underlyingDoubleValue(cellCopy, v44, v45, v46, v47);
         v32 = objc_msgSend_initWithDouble_(v43, v48, v49, v50, v51);
         goto LABEL_21;
       }
@@ -203,7 +203,7 @@ LABEL_15:
 
 LABEL_16:
     v52 = [TSTFormulaPredArgData alloc];
-    v38 = objc_msgSend_formattedValue(v3, v53, v54, v55, v56);
+    v38 = objc_msgSend_formattedValue(cellCopy, v53, v54, v55, v56);
     v42 = objc_msgSend_initWithString_(v52, v57, v38, v58, v59);
 LABEL_17:
     v60 = v42;
@@ -248,7 +248,7 @@ LABEL_21:
   if (v8 == 5)
   {
     v33 = [TSTFormulaPredArgData alloc];
-    v38 = objc_msgSend_dateValue(v3, v34, v35, v36, v37);
+    v38 = objc_msgSend_dateValue(cellCopy, v34, v35, v36, v37);
     v42 = objc_msgSend_initWithDate_(v33, v39, v38, v40, v41);
     goto LABEL_17;
   }
@@ -266,7 +266,7 @@ LABEL_23:
   return v60;
 }
 
-- (id)initFromArchive:(const void *)a3
+- (id)initFromArchive:(const void *)archive
 {
   v25.receiver = self;
   v25.super_class = TSTFormulaPredArgData;
@@ -274,11 +274,11 @@ LABEL_23:
   v8 = v4;
   if (v4)
   {
-    v9 = *(a3 + 4);
+    v9 = *(archive + 4);
     if (v9)
     {
       v4->_dataType = 3;
-      v10 = objc_msgSend_tsp_stringWithProtobufString_(MEMORY[0x277CCACA8], v5, *(a3 + 3) & 0xFFFFFFFFFFFFFFFELL, v6, v7);
+      v10 = objc_msgSend_tsp_stringWithProtobufString_(MEMORY[0x277CCACA8], v5, *(archive + 3) & 0xFFFFFFFFFFFFFFFELL, v6, v7);
       string = v8->_string;
       v8->_string = v10;
     }
@@ -306,7 +306,7 @@ LABEL_11:
         v4->_dataType = 2;
         TSUDecimal::operator=();
         v8->_decimal = v24;
-        v17 = objc_msgSend_dateWithTimeIntervalSinceReferenceDate_(MEMORY[0x277CBEAA8], v13, v14, v15, v16, *(a3 + 7));
+        v17 = objc_msgSend_dateWithTimeIntervalSinceReferenceDate_(MEMORY[0x277CBEAA8], v13, v14, v15, v16, *(archive + 7));
         v22 = objc_msgSend_gregorianCalendar(TSCECalendar, v18, v19, v20, v21);
         objc_msgSend_extractComponentsFromDate_year_month_day_(v22, v23, v17, &v8->_year, &v8->_month, &v8->_day);
       }
@@ -330,7 +330,7 @@ LABEL_11:
         v4->_dataType = 5;
         TSUDecimal::operator=();
         v8->_decimal = v24;
-        v8->_units = *(a3 + 18);
+        v8->_units = *(archive + 18);
       }
     }
   }
@@ -338,30 +338,30 @@ LABEL_11:
   return v8;
 }
 
-- (void)encodeToArchive:(void *)a3 archiver:(id)a4
+- (void)encodeToArchive:(void *)archive archiver:(id)archiver
 {
-  v26 = a4;
+  archiverCopy = archiver;
   dataType = self->_dataType;
   if (dataType <= 2)
   {
     if (dataType == 1)
     {
       TSUDecimal::doubleValue(&self->_decimal);
-      *(a3 + 4) |= 2u;
-      *(a3 + 4) = v23;
+      *(archive + 4) |= 2u;
+      *(archive + 4) = v23;
       v24 = TSUDecimal::high(&self->_decimal);
-      *(a3 + 4) |= 8u;
-      *(a3 + 6) = v24;
+      *(archive + 4) |= 8u;
+      *(archive + 6) = v24;
       v25 = TSUDecimal::low(&self->_decimal);
-      *(a3 + 4) |= 4u;
-      *(a3 + 5) = v25;
+      *(archive + 4) |= 4u;
+      *(archive + 5) = v25;
     }
 
     else if (dataType == 2)
     {
       TSUDecimal::doubleValue(&self->_decimal);
-      *(a3 + 4) |= 0x10u;
-      *(a3 + 7) = v12;
+      *(archive + 4) |= 0x10u;
+      *(archive + 7) = v12;
     }
   }
 
@@ -378,22 +378,22 @@ LABEL_11:
 
         v14 = string;
         v19 = objc_msgSend_tsp_protobufString(v14, v15, v16, v17, v18);
-        sub_2212BD3C8(a3, v19);
+        sub_2212BD3C8(archive, v19);
 
         break;
       case 5u:
         TSUDecimal::doubleValue(&self->_decimal);
-        v20 = *(a3 + 4);
-        *(a3 + 4) = v20 | 0x20;
-        *(a3 + 8) = v21;
+        v20 = *(archive + 4);
+        *(archive + 4) = v20 | 0x20;
+        *(archive + 8) = v21;
         units = self->_units;
-        *(a3 + 4) = v20 | 0x60;
-        *(a3 + 18) = units;
+        *(archive + 4) = v20 | 0x60;
+        *(archive + 18) = units;
         break;
       case 6u:
         v11 = objc_msgSend_BOOLValue(self, v6, v7, v8, v9);
-        *(a3 + 4) |= 0x80u;
-        *(a3 + 76) = v11;
+        *(archive + 4) |= 0x80u;
+        *(archive + 76) = v11;
         break;
     }
   }
@@ -604,12 +604,12 @@ LABEL_12:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v9 = v4;
-  LOBYTE(v10) = self == v4;
-  if (!v4 || self == v4)
+  equalCopy = equal;
+  v9 = equalCopy;
+  LOBYTE(v10) = self == equalCopy;
+  if (!equalCopy || self == equalCopy)
   {
     goto LABEL_18;
   }

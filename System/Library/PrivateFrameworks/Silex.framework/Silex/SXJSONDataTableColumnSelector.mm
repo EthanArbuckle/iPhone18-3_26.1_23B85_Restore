@@ -1,13 +1,13 @@
 @interface SXJSONDataTableColumnSelector
-- (unint64_t)weightForSelectorKey:(id)a3;
+- (unint64_t)weightForSelectorKey:(id)key;
 @end
 
 @implementation SXJSONDataTableColumnSelector
 
-- (unint64_t)weightForSelectorKey:(id)a3
+- (unint64_t)weightForSelectorKey:(id)key
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"odd"] & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"even"))
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"odd"] & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"even"))
   {
     v5 = 1;
   }
@@ -16,7 +16,7 @@
   {
     v7.receiver = self;
     v7.super_class = SXJSONDataTableColumnSelector;
-    v5 = [(SXJSONDataTableSelector *)&v7 weightForSelectorKey:v4];
+    v5 = [(SXJSONDataTableSelector *)&v7 weightForSelectorKey:keyCopy];
   }
 
   return v5;

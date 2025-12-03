@@ -2,7 +2,7 @@
 + (id)sharedMotionDetectScheduler;
 + (id)sharedScheduler;
 + (id)sharedUnitTestScheduler;
-- (AWScheduler)initWithOptions:(id)a3;
+- (AWScheduler)initWithOptions:(id)options;
 - (AWSchedulerObserver)observer;
 - (BOOL)canActiveOperationBeEnded;
 - (BOOL)canRunMotionDetect;
@@ -10,20 +10,20 @@
 - (BOOL)shouldActivateAttentionDetectionForSampling;
 - (BOOL)shouldActivateEyeReliefForStreaming;
 - (BOOL)shouldActivateMotionDetectForSampling;
-- (id)addStreamingClient:(id)a3 withIdentifier:(id)a4;
-- (id)cancelFaceDetectStream:(id)a3 withIdentifier:(id)a4;
+- (id)addStreamingClient:(id)client withIdentifier:(id)identifier;
+- (id)cancelFaceDetectStream:(id)stream withIdentifier:(id)identifier;
 - (id)description;
-- (id)resetInterruptedStreamingClientWithIdentifier:(id)a3;
+- (id)resetInterruptedStreamingClientWithIdentifier:(id)identifier;
 - (id)streamFaceDetectEvents;
-- (unint64_t)nextSamplingTimeForSamplingInterval:(unint64_t)a3;
-- (void)addClient:(id)a3;
+- (unint64_t)nextSamplingTimeForSamplingInterval:(unint64_t)interval;
+- (void)addClient:(id)client;
 - (void)armEvents;
-- (void)handleNotification:(unint64_t)a3;
-- (void)processHIDEvent:(__IOHIDEvent *)a3 mask:(unint64_t)a4 timestamp:(unint64_t)a5 senderID:(__IOHIDService *)a6 displayUUID:(id)a7;
+- (void)handleNotification:(unint64_t)notification;
+- (void)processHIDEvent:(__IOHIDEvent *)event mask:(unint64_t)mask timestamp:(unint64_t)timestamp senderID:(__IOHIDService *)d displayUUID:(id)iD;
 - (void)reevaluate;
-- (void)removeInvalidClientsWithConnection:(id)a3;
-- (void)removeStreamingClientwithIdentifier:(id)a3;
-- (void)setClientAsInterrupted:(id)a3 forKey:(id)a4;
+- (void)removeInvalidClientsWithConnection:(id)connection;
+- (void)removeStreamingClientwithIdentifier:(id)identifier;
+- (void)setClientAsInterrupted:(id)interrupted forKey:(id)key;
 @end
 
 @implementation AWScheduler
@@ -33,8 +33,8 @@
   v62 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_queue);
   v3 = absTimeNS();
-  v4 = [(AWScheduler *)self shouldActivateAttentionDetectionForSampling];
-  if (v4)
+  shouldActivateAttentionDetectionForSampling = [(AWScheduler *)self shouldActivateAttentionDetectionForSampling];
+  if (shouldActivateAttentionDetectionForSampling)
   {
     v5 = 0;
   }
@@ -78,7 +78,7 @@
     while (v8);
   }
 
-  [(AWAttentionSampler *)self->_attentionSampler finishDeadlineComputationWithOptions:v5 | v4];
+  [(AWAttentionSampler *)self->_attentionSampler finishDeadlineComputationWithOptions:v5 | shouldActivateAttentionDetectionForSampling];
   v44 = 0u;
   v45 = 0u;
   v42 = 0u;
@@ -153,7 +153,7 @@
           v54 = 2048;
           v55 = v29;
           v56 = 2112;
-          v57 = self;
+          selfCopy3 = self;
           v58 = 2048;
           v59 = v15 / 1000000000.0;
           _os_log_impl(&dword_1BB2EF000, v20, OS_LOG_TYPE_DEFAULT, "%30s:%-4d: %13.5f: %@ next deadline %13.5f IN THE PAST!", buf, 0x30u);
@@ -212,7 +212,7 @@ LABEL_52:
                   v54 = 2048;
                   v55 = v40;
                   v56 = 2112;
-                  v57 = self;
+                  selfCopy3 = self;
                   v58 = 2048;
                   v59 = v15 / 1000000000.0;
                   v30 = "%30s:%-4d: %13.5f: %@ scheduled timer for %13.5f";
@@ -272,7 +272,7 @@ LABEL_70:
         v54 = 2048;
         v55 = v27;
         v56 = 2112;
-        v57 = self;
+        selfCopy3 = self;
         v30 = "%30s:%-4d: %13.5f: %@ no timer to schedule, waiting for next event";
         v31 = v23;
         v32 = 38;
@@ -622,11 +622,11 @@ void __56__AWScheduler_shouldActivateAttentionDetectForStreaming__block_invoke(u
   }
 }
 
-- (void)setClientAsInterrupted:(id)a3 forKey:(id)a4
+- (void)setClientAsInterrupted:(id)interrupted forKey:(id)key
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  interruptedCopy = interrupted;
+  keyCopy = key;
   if (currentLogLevel == 5)
   {
     v8 = _AALog();
@@ -643,11 +643,11 @@ void __56__AWScheduler_shouldActivateAttentionDetectForStreaming__block_invoke(u
         v10 = v9 / 1000000000.0;
       }
 
-      v15 = [v6 identifier];
+      identifier = [interruptedCopy identifier];
       *v23 = 134218242;
       *&v23[4] = v10;
       *&v23[12] = 2112;
-      *&v23[14] = v15;
+      *&v23[14] = identifier;
       v16 = "%13.5f: Adding client %@ to the interrupted clients list";
       v17 = v8;
       v18 = 22;
@@ -686,7 +686,7 @@ LABEL_20:
             v14 = v13 / 1000000000.0;
           }
 
-          v15 = [v6 identifier];
+          identifier = [interruptedCopy identifier];
           *v23 = 136315906;
           *&v23[4] = v11;
           *&v23[12] = 1024;
@@ -694,7 +694,7 @@ LABEL_20:
           *&v23[18] = 2048;
           *&v23[20] = v14;
           *&v23[28] = 2112;
-          *&v23[30] = v15;
+          *&v23[30] = identifier;
           v16 = "%30s:%-4d: %13.5f: Adding client %@ to the interrupted clients list";
           v17 = v8;
           v18 = 38;
@@ -707,21 +707,21 @@ LABEL_20:
   }
 
 LABEL_21:
-  [(NSMutableDictionary *)self->_streamingClients removeObjectForKey:v7, *v23, *&v23[16], *&v23[24], v24];
-  [(NSMutableDictionary *)self->_interruptedStreamingClients setObject:v6 forKey:v7];
+  [(NSMutableDictionary *)self->_streamingClients removeObjectForKey:keyCopy, *v23, *&v23[16], *&v23[24], v24];
+  [(NSMutableDictionary *)self->_interruptedStreamingClients setObject:interruptedCopy forKey:keyCopy];
   attentionStreamer = self->_attentionStreamer;
-  v20 = [v6 identifier];
-  [v6 streamingDuration];
-  -[AWAttentionStreamer logStreamComplete:identifier:duration:ERActivated:](attentionStreamer, "logStreamComplete:identifier:duration:ERActivated:", 128, v20, v21, [v6 activateEyeRelief]);
+  identifier2 = [interruptedCopy identifier];
+  [interruptedCopy streamingDuration];
+  -[AWAttentionStreamer logStreamComplete:identifier:duration:ERActivated:](attentionStreamer, "logStreamComplete:identifier:duration:ERActivated:", 128, identifier2, v21, [interruptedCopy activateEyeRelief]);
 
-  [v6 setStreamingDuration:0.0];
+  [interruptedCopy setStreamingDuration:0.0];
   v22 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleNotification:(unint64_t)a3
+- (void)handleNotification:(unint64_t)notification
 {
   dispatch_assert_queue_V2(self->_queue);
-  if (a3 == 4 || a3 == 1)
+  if (notification == 4 || notification == 1)
   {
     streamingClients = self->_streamingClients;
     v6[0] = MEMORY[0x1E69E9820];
@@ -729,7 +729,7 @@ LABEL_21:
     v6[2] = __34__AWScheduler_handleNotification___block_invoke;
     v6[3] = &unk_1E7F37390;
     v6[4] = self;
-    v6[5] = a3;
+    v6[5] = notification;
     [(NSMutableDictionary *)streamingClients enumerateKeysAndObjectsUsingBlock:v6];
   }
 }
@@ -748,11 +748,11 @@ void __34__AWScheduler_handleNotification___block_invoke(uint64_t a1, void *a2, 
   }
 }
 
-- (id)cancelFaceDetectStream:(id)a3 withIdentifier:(id)a4
+- (id)cancelFaceDetectStream:(id)stream withIdentifier:(id)identifier
 {
   v67[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  streamCopy = stream;
+  identifierCopy = identifier;
   dispatch_assert_queue_V2(self->_queue);
   if (![(AWAttentionStreamer *)self->_attentionStreamer isStreamerRunningWithMask:128])
   {
@@ -924,9 +924,9 @@ LABEL_44:
   }
 
 LABEL_45:
-  -[AWScheduler calculateTimeDelta:endTime:timebase:](self, "calculateTimeDelta:endTime:timebase:", [v6 streamingStartTime], mach_continuous_time(), *&self->_timebase);
-  [v6 setStreamingDuration:?];
-  [(AWScheduler *)self setClientAsInterrupted:v6 forKey:v7];
+  -[AWScheduler calculateTimeDelta:endTime:timebase:](self, "calculateTimeDelta:endTime:timebase:", [streamCopy streamingStartTime], mach_continuous_time(), *&self->_timebase);
+  [streamCopy setStreamingDuration:?];
+  [(AWScheduler *)self setClientAsInterrupted:streamCopy forKey:identifierCopy];
   if (currentLogLevel == 5)
   {
     v32 = _AALog();
@@ -944,13 +944,13 @@ LABEL_45:
       }
 
       v39 = [(NSMutableDictionary *)self->_streamingClients count];
-      v40 = [(NSMutableDictionary *)self->_streamingClients allValues];
+      allValues = [(NSMutableDictionary *)self->_streamingClients allValues];
       *v64 = 134218498;
       *&v64[4] = v34;
       *&v64[12] = 2048;
       *&v64[14] = v39;
       *&v64[22] = 2112;
-      *&v64[24] = v40;
+      *&v64[24] = allValues;
       v41 = "%13.5f: %lu streaming clients: %@";
       v42 = v32;
       v43 = 32;
@@ -990,7 +990,7 @@ LABEL_64:
           }
 
           v44 = [(NSMutableDictionary *)self->_streamingClients count];
-          v40 = [(NSMutableDictionary *)self->_streamingClients allValues];
+          allValues = [(NSMutableDictionary *)self->_streamingClients allValues];
           *v64 = 136316162;
           *&v64[4] = v35;
           *&v64[12] = 1024;
@@ -1000,7 +1000,7 @@ LABEL_64:
           *&v64[28] = 2048;
           *&v64[30] = v44;
           *&v64[38] = 2112;
-          v65 = v40;
+          v65 = allValues;
           v41 = "%30s:%-4d: %13.5f: %lu streaming clients: %@";
           v42 = v32;
           v43 = 48;
@@ -1014,10 +1014,10 @@ LABEL_64:
 
 LABEL_65:
   v45 = [(AWAttentionStreamer *)self->_attentionStreamer getStreamerOptionsWithMask:128, *v64, *&v64[8], *&v64[24], *&v64[32], v65];
-  v46 = [(AWScheduler *)self shouldActivateAttentionDetectForStreaming];
-  v47 = [(AWScheduler *)self shouldActivateEyeReliefForStreaming];
-  v48 = v47;
-  if (v46 != (v45 & 0x100) >> 8 || ((v47 ^ v45) & 1) != 0)
+  shouldActivateAttentionDetectForStreaming = [(AWScheduler *)self shouldActivateAttentionDetectForStreaming];
+  shouldActivateEyeReliefForStreaming = [(AWScheduler *)self shouldActivateEyeReliefForStreaming];
+  v48 = shouldActivateEyeReliefForStreaming;
+  if (shouldActivateAttentionDetectForStreaming != (v45 & 0x100) >> 8 || ((shouldActivateEyeReliefForStreaming ^ v45) & 1) != 0)
   {
     if (currentLogLevel == 5)
     {
@@ -1052,7 +1052,7 @@ LABEL_85:
 LABEL_87:
         v59 = [(AWAttentionStreamer *)self->_attentionStreamer cancelEventStreamWithMask:128, *v64, *&v64[8], *&v64[24]];
         v60 = 256;
-        if (!v46)
+        if (!shouldActivateAttentionDetectForStreaming)
         {
           v60 = 0;
         }
@@ -1288,22 +1288,22 @@ void __49__AWScheduler_streamFaceDetectEventsWithOptions___block_invoke_2(uint64
 
 - (id)streamFaceDetectEvents
 {
-  v3 = [(AWScheduler *)self shouldActivateAttentionDetectForStreaming];
-  v4 = [(AWScheduler *)self shouldActivateEyeReliefForStreaming];
+  shouldActivateAttentionDetectForStreaming = [(AWScheduler *)self shouldActivateAttentionDetectForStreaming];
+  shouldActivateEyeReliefForStreaming = [(AWScheduler *)self shouldActivateEyeReliefForStreaming];
   v5 = 256;
-  if (!v3)
+  if (!shouldActivateAttentionDetectForStreaming)
   {
     v5 = 0;
   }
 
-  return [(AWScheduler *)self streamFaceDetectEventsWithOptions:v5 | v4];
+  return [(AWScheduler *)self streamFaceDetectEventsWithOptions:v5 | shouldActivateEyeReliefForStreaming];
 }
 
-- (void)removeStreamingClientwithIdentifier:(id)a3
+- (void)removeStreamingClientwithIdentifier:(id)identifier
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_streamingClients objectForKey:v4];
+  identifierCopy = identifier;
+  v5 = [(NSMutableDictionary *)self->_streamingClients objectForKey:identifierCopy];
   if (!v5)
   {
     goto LABEL_24;
@@ -1386,16 +1386,16 @@ LABEL_20:
   }
 
 LABEL_22:
-  v16 = [(AWScheduler *)self cancelFaceDetectStream:v5 withIdentifier:v4, *v31, *&v31[16], *&v31[24], v32];
-  v17 = [(NSMutableDictionary *)self->_streamingClients objectForKey:v4];
+  v16 = [(AWScheduler *)self cancelFaceDetectStream:v5 withIdentifier:identifierCopy, *v31, *&v31[16], *&v31[24], v32];
+  v17 = [(NSMutableDictionary *)self->_streamingClients objectForKey:identifierCopy];
 
   if (v17)
   {
-    [(NSMutableDictionary *)self->_streamingClients removeObjectForKey:v4];
+    [(NSMutableDictionary *)self->_streamingClients removeObjectForKey:identifierCopy];
   }
 
 LABEL_24:
-  v18 = [(NSMutableDictionary *)self->_interruptedStreamingClients objectForKey:v4];
+  v18 = [(NSMutableDictionary *)self->_interruptedStreamingClients objectForKey:identifierCopy];
   if (v18)
   {
     if (currentLogLevel == 5)
@@ -1414,11 +1414,11 @@ LABEL_24:
           v21 = v20 / 1000000000.0;
         }
 
-        v26 = [v18 identifier];
+        identifier = [v18 identifier];
         *v31 = 134218242;
         *&v31[4] = v21;
         *&v31[12] = 2112;
-        *&v31[14] = v26;
+        *&v31[14] = identifier;
         v27 = "%13.5f: Removing client %@ from the list of interrupted clients";
         v28 = v19;
         v29 = 22;
@@ -1432,7 +1432,7 @@ LABEL_43:
       if (currentLogLevel < 6)
       {
 LABEL_45:
-        [(NSMutableDictionary *)self->_interruptedStreamingClients removeObjectForKey:v4, *v31, *&v31[8], *&v31[24]];
+        [(NSMutableDictionary *)self->_interruptedStreamingClients removeObjectForKey:identifierCopy, *v31, *&v31[8], *&v31[24]];
         goto LABEL_46;
       }
 
@@ -1460,7 +1460,7 @@ LABEL_45:
               v25 = v24 / 1000000000.0;
             }
 
-            v26 = [v18 identifier];
+            identifier = [v18 identifier];
             *v31 = 136315906;
             *&v31[4] = v22;
             *&v31[12] = 1024;
@@ -1468,7 +1468,7 @@ LABEL_45:
             *&v31[18] = 2048;
             *&v31[20] = v25;
             *&v31[28] = 2112;
-            *&v31[30] = v26;
+            *&v31[30] = identifier;
             v27 = "%30s:%-4d: %13.5f: Removing client %@ from the list of interrupted clients";
             v28 = v19;
             v29 = 38;
@@ -1486,18 +1486,18 @@ LABEL_46:
   v30 = *MEMORY[0x1E69E9840];
 }
 
-- (id)addStreamingClient:(id)a3 withIdentifier:(id)a4
+- (id)addStreamingClient:(id)client withIdentifier:(id)identifier
 {
   v45[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  clientCopy = client;
+  identifierCopy = identifier;
+  if (!clientCopy)
   {
     __assert_rtn("[AWScheduler addStreamingClient:withIdentifier:]", "Scheduler.m", 518, "client");
   }
 
-  v8 = v7;
-  v9 = [(NSMutableDictionary *)self->_streamingClients objectForKey:v7];
+  v8 = identifierCopy;
+  v9 = [(NSMutableDictionary *)self->_streamingClients objectForKey:identifierCopy];
 
   if (!v9)
   {
@@ -1520,7 +1520,7 @@ LABEL_46:
         *v42 = 134218242;
         *&v42[4] = v17;
         *&v42[12] = 2112;
-        *&v42[14] = v6;
+        *&v42[14] = clientCopy;
         v22 = "%13.5f: Creating new streaming client %@";
         v23 = v15;
         v24 = 22;
@@ -1534,10 +1534,10 @@ LABEL_27:
       if (currentLogLevel < 6)
       {
 LABEL_29:
-        [(NSMutableDictionary *)self->_streamingClients setObject:v6 forKey:v8, *v42, *&v42[16], *&v42[24]];
-        [(AWScheduler *)self addClient:v6];
-        [v6 setStreamingDuration:0.0];
-        [v6 setStreamingStartTime:mach_continuous_time()];
+        [(NSMutableDictionary *)self->_streamingClients setObject:clientCopy forKey:v8, *v42, *&v42[16], *&v42[24]];
+        [(AWScheduler *)self addClient:clientCopy];
+        [clientCopy setStreamingDuration:0.0];
+        [clientCopy setStreamingStartTime:mach_continuous_time()];
         v14 = 0;
         goto LABEL_30;
       }
@@ -1573,7 +1573,7 @@ LABEL_29:
             *&v42[18] = 2048;
             *&v42[20] = v21;
             *&v42[28] = 2112;
-            *&v42[30] = v6;
+            *&v42[30] = clientCopy;
             v22 = "%30s:%-4d: %13.5f: Creating new streaming client %@";
             v23 = v15;
             v24 = 38;
@@ -1633,13 +1633,13 @@ LABEL_30:
       }
 
       v34 = [(NSMutableDictionary *)self->_streamingClients count];
-      v35 = [(NSMutableDictionary *)self->_streamingClients allValues];
+      allValues = [(NSMutableDictionary *)self->_streamingClients allValues];
       *v42 = 134218498;
       *&v42[4] = v29;
       *&v42[12] = 2048;
       *&v42[14] = v34;
       *&v42[22] = 2112;
-      *&v42[24] = v35;
+      *&v42[24] = allValues;
       v36 = "%13.5f: %lu streaming clients: %@";
       v37 = v27;
       v38 = 32;
@@ -1680,7 +1680,7 @@ LABEL_48:
           }
 
           v39 = [(NSMutableDictionary *)self->_streamingClients count];
-          v35 = [(NSMutableDictionary *)self->_streamingClients allValues];
+          allValues = [(NSMutableDictionary *)self->_streamingClients allValues];
           *v42 = 136316162;
           *&v42[4] = v30;
           *&v42[12] = 1024;
@@ -1690,7 +1690,7 @@ LABEL_48:
           *&v42[28] = 2048;
           *&v42[30] = v39;
           *&v42[38] = 2112;
-          v43 = v35;
+          v43 = allValues;
           v36 = "%30s:%-4d: %13.5f: %lu streaming clients: %@";
           v37 = v27;
           v38 = 48;
@@ -1706,11 +1706,11 @@ LABEL_50:
   return v14;
 }
 
-- (id)resetInterruptedStreamingClientWithIdentifier:(id)a3
+- (id)resetInterruptedStreamingClientWithIdentifier:(id)identifier
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_interruptedStreamingClients objectForKey:v4];
+  identifierCopy = identifier;
+  v5 = [(NSMutableDictionary *)self->_interruptedStreamingClients objectForKey:identifierCopy];
   if (v5)
   {
     if (currentLogLevel == 5)
@@ -1729,11 +1729,11 @@ LABEL_50:
           v8 = v7 / 1000000000.0;
         }
 
-        v13 = [v5 identifier];
+        identifier = [v5 identifier];
         *v19 = 134218242;
         *&v19[4] = v8;
         *&v19[12] = 2112;
-        *&v19[14] = v13;
+        *&v19[14] = identifier;
         v14 = "%13.5f: Interrupted streaming client %@ restarting";
         v15 = v6;
         v16 = 22;
@@ -1747,8 +1747,8 @@ LABEL_20:
       if (currentLogLevel < 6)
       {
 LABEL_22:
-        [(NSMutableDictionary *)self->_interruptedStreamingClients removeObjectForKey:v4, *v19, *&v19[16], *&v19[24], v20];
-        [(NSMutableDictionary *)self->_streamingClients setObject:v5 forKey:v4];
+        [(NSMutableDictionary *)self->_interruptedStreamingClients removeObjectForKey:identifierCopy, *v19, *&v19[16], *&v19[24], v20];
+        [(NSMutableDictionary *)self->_streamingClients setObject:v5 forKey:identifierCopy];
         [v5 setStreamingDuration:0.0];
         [v5 setStreamingStartTime:mach_continuous_time()];
         goto LABEL_23;
@@ -1778,7 +1778,7 @@ LABEL_22:
               v12 = v11 / 1000000000.0;
             }
 
-            v13 = [v5 identifier];
+            identifier = [v5 identifier];
             *v19 = 136315906;
             *&v19[4] = v9;
             *&v19[12] = 1024;
@@ -1786,7 +1786,7 @@ LABEL_22:
             *&v19[18] = 2048;
             *&v19[20] = v12;
             *&v19[28] = 2112;
-            *&v19[30] = v13;
+            *&v19[30] = identifier;
             v14 = "%30s:%-4d: %13.5f: Interrupted streaming client %@ restarting";
             v15 = v6;
             v16 = 38;
@@ -1806,12 +1806,12 @@ LABEL_23:
   return v5;
 }
 
-- (unint64_t)nextSamplingTimeForSamplingInterval:(unint64_t)a3
+- (unint64_t)nextSamplingTimeForSamplingInterval:(unint64_t)interval
 {
-  v5 = [(AWScheduler *)self shouldActivateMotionDetectForSampling]&& ![(AWScheduler *)self shouldActivateAttentionDetectionForSampling];
+  shouldActivateAttentionDetectionForSampling = [(AWScheduler *)self shouldActivateMotionDetectForSampling]&& ![(AWScheduler *)self shouldActivateAttentionDetectionForSampling];
   attentionSampler = self->_attentionSampler;
 
-  return [(AWAttentionSampler *)attentionSampler nextSampleTimeForSamplingInterval:a3 ignoreDisplayState:v5];
+  return [(AWAttentionSampler *)attentionSampler nextSampleTimeForSamplingInterval:interval ignoreDisplayState:shouldActivateAttentionDetectionForSampling];
 }
 
 - (void)reevaluate
@@ -1851,10 +1851,10 @@ LABEL_23:
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)processHIDEvent:(__IOHIDEvent *)a3 mask:(unint64_t)a4 timestamp:(unint64_t)a5 senderID:(__IOHIDService *)a6 displayUUID:(id)a7
+- (void)processHIDEvent:(__IOHIDEvent *)event mask:(unint64_t)mask timestamp:(unint64_t)timestamp senderID:(__IOHIDService *)d displayUUID:(id)iD
 {
   v24 = *MEMORY[0x1E69E9840];
-  v12 = a7;
+  iDCopy = iD;
   dispatch_assert_queue_V2(self->_queue);
   v21 = 0u;
   v22 = 0u;
@@ -1876,7 +1876,7 @@ LABEL_23:
           objc_enumerationMutation(v13);
         }
 
-        [*(*(&v19 + 1) + 8 * v17++) notifyHIDEvent:a3 mask:a4 timestamp:a5 senderID:a6 displayUUID:{v12, v19}];
+        [*(*(&v19 + 1) + 8 * v17++) notifyHIDEvent:event mask:mask timestamp:timestamp senderID:d displayUUID:{iDCopy, v19}];
       }
 
       while (v15 != v17);
@@ -1890,10 +1890,10 @@ LABEL_23:
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeInvalidClientsWithConnection:(id)a3
+- (void)removeInvalidClientsWithConnection:(id)connection
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  connectionCopy = connection;
   dispatch_assert_queue_V2(self->_queue);
   v5 = [(NSMutableArray *)self->_clients count];
   if (!v5)
@@ -1909,7 +1909,7 @@ LABEL_23:
   do
   {
     v10 = [(NSMutableArray *)self->_clients objectAtIndex:v8, v25];
-    if (([v10 invalid] & 1) != 0 || (objc_msgSend(v10, "connection"), v11 = objc_claimAutoreleasedReturnValue(), v11, v11 == v4))
+    if (([v10 invalid] & 1) != 0 || (objc_msgSend(v10, "connection"), v11 = objc_claimAutoreleasedReturnValue(), v11, v11 == connectionCopy))
     {
       if (currentLogLevel == 5)
       {
@@ -1944,8 +1944,8 @@ LABEL_23:
         if (currentLogLevel < 6)
         {
 LABEL_25:
-          v22 = [v10 clientId];
-          [(AWScheduler *)self removeStreamingClientwithIdentifier:v22];
+          clientId = [v10 clientId];
+          [(AWScheduler *)self removeStreamingClientwithIdentifier:clientId];
 
           [v10 invalidateWithHandler:0];
           [(NSMutableArray *)self->_clients removeObjectAtIndex:v8--];
@@ -2005,8 +2005,8 @@ LABEL_26:
   while (v8 < v9);
   if (v7 != v9)
   {
-    v23 = [(AWScheduler *)self observer];
-    [v23 clientCountChangedFrom:v7 to:v9 forScheduler:self];
+    observer = [(AWScheduler *)self observer];
+    [observer clientCountChangedFrom:v7 to:v9 forScheduler:self];
 
     [(AWScheduler *)self armEvents];
   }
@@ -2016,20 +2016,20 @@ LABEL_29:
   v24 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addClient:(id)a3
+- (void)addClient:(id)client
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  clientCopy = client;
   dispatch_assert_queue_V2(self->_queue);
-  if (!v4)
+  if (!clientCopy)
   {
     __assert_rtn("[AWScheduler addClient:]", "Scheduler.m", 314, "client");
   }
 
   v5 = [(NSMutableArray *)self->_clients count];
-  [(NSMutableArray *)self->_clients addObject:v4];
-  v6 = [(AWScheduler *)self observer];
-  [v6 clientCountChangedFrom:v5 to:-[NSMutableArray count](self->_clients forScheduler:{"count"), self}];
+  [(NSMutableArray *)self->_clients addObject:clientCopy];
+  observer = [(AWScheduler *)self observer];
+  [observer clientCountChangedFrom:v5 to:-[NSMutableArray count](self->_clients forScheduler:{"count"), self}];
 
   if (currentLogLevel == 5)
   {
@@ -2132,7 +2132,7 @@ LABEL_20:
       *v30 = 134218242;
       *&v30[4] = v21;
       *&v30[12] = 2112;
-      *&v30[14] = v4;
+      *&v30[14] = clientCopy;
       v26 = "%13.5f: New client: %@";
       v27 = v19;
       v28 = 22;
@@ -2178,7 +2178,7 @@ LABEL_40:
           *&v30[18] = 2048;
           *&v30[20] = v25;
           *&v30[28] = 2112;
-          *&v30[30] = v4;
+          *&v30[30] = clientCopy;
           v26 = "%30s:%-4d: %13.5f: New client: %@";
           v27 = v19;
           v28 = 38;
@@ -2238,21 +2238,21 @@ LABEL_41:
   return v7;
 }
 
-- (AWScheduler)initWithOptions:(id)a3
+- (AWScheduler)initWithOptions:(id)options
 {
   v79 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  optionsCopy = options;
   v70.receiver = self;
   v70.super_class = AWScheduler;
   v5 = [(AWScheduler *)&v70 init];
   if (v5)
   {
-    if (!v4)
+    if (!optionsCopy)
     {
       goto LABEL_38;
     }
 
-    v6 = [v4 valueForKey:@"identifier"];
+    v6 = [optionsCopy valueForKey:@"identifier"];
     v7 = v6 == 0;
 
     if (v7)
@@ -2260,7 +2260,7 @@ LABEL_41:
       goto LABEL_38;
     }
 
-    v8 = [v4 valueForKey:@"allowFaceDetect"];
+    v8 = [optionsCopy valueForKey:@"allowFaceDetect"];
     v9 = v8 == 0;
 
     if (v9)
@@ -2268,7 +2268,7 @@ LABEL_41:
       goto LABEL_38;
     }
 
-    v10 = [v4 valueForKey:@"allowHIDEvents"];
+    v10 = [optionsCopy valueForKey:@"allowHIDEvents"];
     v11 = v10 == 0;
 
     if (v11)
@@ -2276,30 +2276,30 @@ LABEL_41:
       goto LABEL_38;
     }
 
-    v12 = [v4 valueForKey:@"allowMotionDetect"];
+    v12 = [optionsCopy valueForKey:@"allowMotionDetect"];
     v13 = v12 == 0;
 
-    if (v13 || ([v4 valueForKey:@"initForUnitTest"], v14 = objc_claimAutoreleasedReturnValue(), v15 = v14 == 0, v14, v15))
+    if (v13 || ([optionsCopy valueForKey:@"initForUnitTest"], v14 = objc_claimAutoreleasedReturnValue(), v15 = v14 == 0, v14, v15))
     {
 LABEL_38:
       v58 = 0;
       goto LABEL_37;
     }
 
-    v16 = [v4 valueForKey:@"identifier"];
+    v16 = [optionsCopy valueForKey:@"identifier"];
     v17 = *(v5 + 11);
     *(v5 + 11) = v16;
 
-    v18 = [v4 objectForKeyedSubscript:@"allowFaceDetect"];
+    v18 = [optionsCopy objectForKeyedSubscript:@"allowFaceDetect"];
     v5[73] = [v18 BOOLValue];
 
-    v19 = [v4 objectForKeyedSubscript:@"allowHIDEvents"];
+    v19 = [optionsCopy objectForKeyedSubscript:@"allowHIDEvents"];
     v5[74] = [v19 BOOLValue];
 
-    v20 = [v4 objectForKeyedSubscript:@"allowMotionDetect"];
+    v20 = [optionsCopy objectForKeyedSubscript:@"allowMotionDetect"];
     v5[75] = [v20 BOOLValue];
 
-    v21 = [v4 objectForKeyedSubscript:@"initForUnitTest"];
+    v21 = [optionsCopy objectForKeyedSubscript:@"initForUnitTest"];
     v5[76] = [v21 BOOLValue];
 
     v22 = awQueue(1);
@@ -2319,9 +2319,9 @@ LABEL_38:
     v69 = v27;
     dispatch_source_set_event_handler(v26, handler);
     dispatch_resume(*(v5 + 2));
-    v28 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v29 = *(v27 + 3);
-    *(v27 + 3) = v28;
+    *(v27 + 3) = array;
 
     v30 = objc_alloc_init(MEMORY[0x1E695DF90]);
     v31 = *(v27 + 4);

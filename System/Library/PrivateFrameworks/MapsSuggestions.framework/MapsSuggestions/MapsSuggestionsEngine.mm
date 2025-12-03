@@ -1,31 +1,31 @@
 @interface MapsSuggestionsEngine
-- (BOOL)loadStorageFromFile:(id)a3;
-- (BOOL)loadStorageFromFile:(id)a3 callback:(id)a4 callbackQueue:(id)a5;
-- (BOOL)oneShotTopSuggestionsForSink:(id)a3 count:(unint64_t)a4 transportType:(int)a5 callback:(id)a6 onQueue:(id)a7;
-- (BOOL)removeEntry:(id)a3 behavior:(int64_t)a4 handler:(id)a5;
-- (BOOL)saveStorageToFile:(id)a3 callback:(id)a4;
-- (BOOL)topSuggestionsFromStorageFile:(id)a3 sink:(id)a4 count:(unint64_t)a5 transportType:(int)a6 callback:(id)a7 onQueue:(id)a8;
-- (MapsSuggestionsEngine)initWithEntryManager:(id)a3 resourceDepot:(id)a4;
+- (BOOL)loadStorageFromFile:(id)file;
+- (BOOL)loadStorageFromFile:(id)file callback:(id)callback callbackQueue:(id)queue;
+- (BOOL)oneShotTopSuggestionsForSink:(id)sink count:(unint64_t)count transportType:(int)type callback:(id)callback onQueue:(id)queue;
+- (BOOL)removeEntry:(id)entry behavior:(int64_t)behavior handler:(id)handler;
+- (BOOL)saveStorageToFile:(id)file callback:(id)callback;
+- (BOOL)topSuggestionsFromStorageFile:(id)file sink:(id)sink count:(unint64_t)count transportType:(int)type callback:(id)callback onQueue:(id)queue;
+- (MapsSuggestionsEngine)initWithEntryManager:(id)manager resourceDepot:(id)depot;
 - (NSString)uniqueName;
-- (id)topSuggestionsForSink:(id)a3 count:(unint64_t)a4 transportType:(int)a5;
-- (id)topSuggestionsFromStorageFile:(id)a3 sink:(id)a4 count:(unint64_t)a5 transportType:(int)a6;
-- (void)addAdditionalFilter:(id)a3 forSink:(id)a4;
-- (void)feedbackForContact:(id)a3 action:(int64_t)a4;
-- (void)feedbackForEntry:(id)a3 action:(int64_t)a4;
-- (void)feedbackForMapItem:(id)a3 action:(int64_t)a4;
-- (void)removeAdditionalFilter:(id)a3 forSink:(id)a4;
-- (void)setAutomobileOptions:(id)a3;
-- (void)setMapType:(int)a3;
+- (id)topSuggestionsForSink:(id)sink count:(unint64_t)count transportType:(int)type;
+- (id)topSuggestionsFromStorageFile:(id)file sink:(id)sink count:(unint64_t)count transportType:(int)type;
+- (void)addAdditionalFilter:(id)filter forSink:(id)sink;
+- (void)feedbackForContact:(id)contact action:(int64_t)action;
+- (void)feedbackForEntry:(id)entry action:(int64_t)action;
+- (void)feedbackForMapItem:(id)item action:(int64_t)action;
+- (void)removeAdditionalFilter:(id)filter forSink:(id)sink;
+- (void)setAutomobileOptions:(id)options;
+- (void)setMapType:(int)type;
 @end
 
 @implementation MapsSuggestionsEngine
 
-- (MapsSuggestionsEngine)initWithEntryManager:(id)a3 resourceDepot:(id)a4
+- (MapsSuggestionsEngine)initWithEntryManager:(id)manager resourceDepot:(id)depot
 {
   v26 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  managerCopy = manager;
+  depotCopy = depot;
+  if (!depotCopy)
   {
     v14 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -45,11 +45,11 @@ LABEL_10:
 
 LABEL_11:
 
-    v13 = 0;
+    selfCopy = 0;
     goto LABEL_12;
   }
 
-  if (!v7)
+  if (!managerCopy)
   {
     v14 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -79,16 +79,16 @@ LABEL_11:
     optionsSerialQueue = v9->_optionsSerialQueue;
     v9->_optionsSerialQueue = v11;
 
-    objc_storeStrong(&v9->_resourceDepot, a4);
-    objc_storeStrong(&v9->_entryManager, a3);
+    objc_storeStrong(&v9->_resourceDepot, depot);
+    objc_storeStrong(&v9->_entryManager, manager);
     v9->_mapType = 0;
   }
 
   self = v9;
-  v13 = self;
+  selfCopy = self;
 LABEL_12:
 
-  return v13;
+  return selfCopy;
 }
 
 - (NSString)uniqueName
@@ -98,11 +98,11 @@ LABEL_12:
   return [v2 description];
 }
 
-- (id)topSuggestionsForSink:(id)a3 count:(unint64_t)a4 transportType:(int)a5
+- (id)topSuggestionsForSink:(id)sink count:(unint64_t)count transportType:(int)type
 {
-  v5 = *&a5;
+  v5 = *&type;
   v39 = *MEMORY[0x1E69E9840];
-  v9 = a3;
+  sinkCopy = sink;
   v10 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
   v11 = dispatch_queue_create("MapsSuggestionsEngineSynced1", v10);
 
@@ -128,7 +128,7 @@ LABEL_12:
   v22 = &v23;
   v13 = v12;
   v20 = v13;
-  [(MapsSuggestionsEngine *)self topSuggestionsForSink:v9 count:a4 transportType:v5 callback:v19 onQueue:v11];
+  [(MapsSuggestionsEngine *)self topSuggestionsForSink:sinkCopy count:count transportType:v5 callback:v19 onQueue:v11];
   dispatch_group_wait(v13, 0xFFFFFFFFFFFFFFFFLL);
   if (v24[5])
   {
@@ -170,19 +170,19 @@ void __67__MapsSuggestionsEngine_topSuggestionsForSink_count_transportType___blo
   dispatch_group_leave(*(a1 + 32));
 }
 
-- (BOOL)topSuggestionsFromStorageFile:(id)a3 sink:(id)a4 count:(unint64_t)a5 transportType:(int)a6 callback:(id)a7 onQueue:(id)a8
+- (BOOL)topSuggestionsFromStorageFile:(id)file sink:(id)sink count:(unint64_t)count transportType:(int)type callback:(id)callback onQueue:(id)queue
 {
   v40 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v16 = a7;
-  v17 = a8;
+  fileCopy = file;
+  sinkCopy = sink;
+  callbackCopy = callback;
+  queueCopy = queue;
   v18 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
   {
-    v19 = [(MapsSuggestionsEngine *)self uniqueName];
+    uniqueName = [(MapsSuggestionsEngine *)self uniqueName];
     *buf = 138412546;
-    v37 = v19;
+    v37 = uniqueName;
     v38 = 2080;
     v39 = "topSuggestionsFromStorageFileWithCallback";
     _os_log_impl(&dword_1C5126000, v18, OS_LOG_TYPE_DEBUG, "{MSgDebug} OBJECT{%@} %s BEGIN", buf, 0x16u);
@@ -195,14 +195,14 @@ void __67__MapsSuggestionsEngine_topSuggestionsForSink_count_transportType___blo
     _os_signpost_emit_with_name_impl(&dword_1C5126000, v20, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "topSuggestionsFromStorageFileWithCallback", "", buf, 2u);
   }
 
-  if (!v14)
+  if (!fileCopy)
   {
     if (_defaultCachePath_s_onceToken != -1)
     {
       [MapsSuggestionsEngine topSuggestionsFromStorageFile:sink:count:transportType:callback:onQueue:];
     }
 
-    v14 = _defaultCachePath_s_path;
+    fileCopy = _defaultCachePath_s_path;
   }
 
   objc_initWeak(buf, self);
@@ -211,16 +211,16 @@ void __67__MapsSuggestionsEngine_topSuggestionsForSink_count_transportType___blo
   v28[2] = __97__MapsSuggestionsEngine_topSuggestionsFromStorageFile_sink_count_transportType_callback_onQueue___block_invoke;
   v28[3] = &unk_1E81F6050;
   objc_copyWeak(v34, buf);
-  v21 = v14;
+  v21 = fileCopy;
   v29 = v21;
-  v22 = v15;
-  v34[1] = a5;
-  v35 = a6;
+  v22 = sinkCopy;
+  v34[1] = count;
+  typeCopy = type;
   v30 = v22;
-  v31 = self;
-  v23 = v16;
+  selfCopy = self;
+  v23 = callbackCopy;
   v33 = v23;
-  v24 = v17;
+  v24 = queueCopy;
   v32 = v24;
   v25 = dispatch_get_global_queue(0, 0);
   v26 = [(MapsSuggestionsEngine *)self loadStorageFromFile:v21 callback:v28 callbackQueue:v25];
@@ -350,18 +350,18 @@ void __97__MapsSuggestionsEngine_topSuggestionsFromStorageFile_sink_count_transp
   }
 }
 
-- (id)topSuggestionsFromStorageFile:(id)a3 sink:(id)a4 count:(unint64_t)a5 transportType:(int)a6
+- (id)topSuggestionsFromStorageFile:(id)file sink:(id)sink count:(unint64_t)count transportType:(int)type
 {
-  v6 = *&a6;
+  v6 = *&type;
   v45 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  objc_initWeak(&location, a4);
+  fileCopy = file;
+  objc_initWeak(&location, sink);
   v12 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
-    v13 = [(MapsSuggestionsEngine *)self uniqueName];
+    uniqueName = [(MapsSuggestionsEngine *)self uniqueName];
     *buf = 138412546;
-    *&buf[4] = v13;
+    *&buf[4] = uniqueName;
     *&buf[12] = 2080;
     *&buf[14] = "topSuggestionsFromStorageFile";
     _os_log_impl(&dword_1C5126000, v12, OS_LOG_TYPE_DEBUG, "{MSgDebug} OBJECT{%@} %s BEGIN", buf, 0x16u);
@@ -374,17 +374,17 @@ void __97__MapsSuggestionsEngine_topSuggestionsFromStorageFile_sink_count_transp
     _os_signpost_emit_with_name_impl(&dword_1C5126000, v14, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "topSuggestionsFromStorageFile", "", buf, 2u);
   }
 
-  if (!v11)
+  if (!fileCopy)
   {
     if (_defaultCachePath_s_onceToken != -1)
     {
       [MapsSuggestionsEngine topSuggestionsFromStorageFile:sink:count:transportType:callback:onQueue:];
     }
 
-    v11 = _defaultCachePath_s_path;
+    fileCopy = _defaultCachePath_s_path;
   }
 
-  if ([(MapsSuggestionsEngine *)self loadStorageFromFile:v11])
+  if ([(MapsSuggestionsEngine *)self loadStorageFromFile:fileCopy])
   {
     *buf = 0;
     *&buf[8] = buf;
@@ -403,7 +403,7 @@ void __97__MapsSuggestionsEngine_topSuggestionsFromStorageFile_sink_count_transp
     v33 = v17;
     v34 = buf;
     v18 = dispatch_get_global_queue(17, 0);
-    [(MapsSuggestionsEngine *)self topSuggestionsForSink:v16 count:a5 transportType:v6 callback:&v29 onQueue:v18];
+    [(MapsSuggestionsEngine *)self topSuggestionsForSink:v16 count:count transportType:v6 callback:&v29 onQueue:v18];
 
     v19 = dispatch_time(0, 1000000000);
     dispatch_semaphore_wait(v17, v19);
@@ -435,16 +435,16 @@ void __97__MapsSuggestionsEngine_topSuggestionsFromStorageFile_sink_count_transp
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      *&buf[4] = v11;
+      *&buf[4] = fileCopy;
       _os_log_impl(&dword_1C5126000, v24, OS_LOG_TYPE_ERROR, "Could not read from %@", buf, 0xCu);
     }
 
     v25 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
     {
-      v26 = [(MapsSuggestionsEngine *)self uniqueName];
+      uniqueName2 = [(MapsSuggestionsEngine *)self uniqueName];
       *buf = 138412546;
-      *&buf[4] = v26;
+      *&buf[4] = uniqueName2;
       *&buf[12] = 2080;
       *&buf[14] = "topSuggestionsFromStorageFile";
       _os_log_impl(&dword_1C5126000, v25, OS_LOG_TYPE_DEBUG, "{MSgDebug} OBJECT{%@} %s FAIL", buf, 0x16u);
@@ -495,15 +495,15 @@ void __80__MapsSuggestionsEngine_topSuggestionsFromStorageFile_sink_count_transp
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (BOOL)oneShotTopSuggestionsForSink:(id)a3 count:(unint64_t)a4 transportType:(int)a5 callback:(id)a6 onQueue:(id)a7
+- (BOOL)oneShotTopSuggestionsForSink:(id)sink count:(unint64_t)count transportType:(int)type callback:(id)callback onQueue:(id)queue
 {
-  v9 = *&a5;
+  v9 = *&type;
   v28 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a6;
-  v14 = a7;
-  v15 = v14;
-  if (!v13)
+  sinkCopy = sink;
+  callbackCopy = callback;
+  queueCopy = queue;
+  v15 = queueCopy;
+  if (!callbackCopy)
   {
     v17 = GEOFindOrCreateLog();
     if (!os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -525,7 +525,7 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if (!v14)
+  if (!queueCopy)
   {
     v17 = GEOFindOrCreateLog();
     if (!os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -545,7 +545,7 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  if (!v12)
+  if (!sinkCopy)
   {
     v17 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -568,19 +568,19 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v16 = [(MapsSuggestionsManager *)self->_entryManager oneShotTopSuggestionsForSink:v12 count:a4 transportType:v9 callback:v13 onQueue:v14];
+  v16 = [(MapsSuggestionsManager *)self->_entryManager oneShotTopSuggestionsForSink:sinkCopy count:count transportType:v9 callback:callbackCopy onQueue:queueCopy];
 LABEL_13:
 
   return v16;
 }
 
-- (void)addAdditionalFilter:(id)a3 forSink:(id)a4
+- (void)addAdditionalFilter:(id)filter forSink:(id)sink
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6)
+  filterCopy = filter;
+  sinkCopy = sink;
+  v8 = sinkCopy;
+  if (!filterCopy)
   {
     v11 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -603,7 +603,7 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if (!v7)
+  if (!sinkCopy)
   {
     v11 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -624,19 +624,19 @@ LABEL_9:
   }
 
   entryManager = self->_entryManager;
-  v10 = [v7 uniqueName];
-  [(MapsSuggestionsManager *)entryManager addAdditionalFilter:v6 forSink:v10];
+  uniqueName = [sinkCopy uniqueName];
+  [(MapsSuggestionsManager *)entryManager addAdditionalFilter:filterCopy forSink:uniqueName];
 
 LABEL_10:
 }
 
-- (void)removeAdditionalFilter:(id)a3 forSink:(id)a4
+- (void)removeAdditionalFilter:(id)filter forSink:(id)sink
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6)
+  filterCopy = filter;
+  sinkCopy = sink;
+  v8 = sinkCopy;
+  if (!filterCopy)
   {
     v11 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -659,7 +659,7 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if (!v7)
+  if (!sinkCopy)
   {
     v11 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -680,13 +680,13 @@ LABEL_9:
   }
 
   entryManager = self->_entryManager;
-  v10 = [v7 uniqueName];
-  [(MapsSuggestionsManager *)entryManager removeAdditionalFilter:v6 forSink:v10];
+  uniqueName = [sinkCopy uniqueName];
+  [(MapsSuggestionsManager *)entryManager removeAdditionalFilter:filterCopy forSink:uniqueName];
 
 LABEL_10:
 }
 
-- (void)setMapType:(int)a3
+- (void)setMapType:(int)type
 {
   optionsSerialQueue = self->_optionsSerialQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -694,7 +694,7 @@ LABEL_10:
   v4[2] = __36__MapsSuggestionsEngine_setMapType___block_invoke;
   v4[3] = &unk_1E81F5100;
   v4[4] = self;
-  v5 = a3;
+  typeCopy = type;
   dispatch_sync(optionsSerialQueue, v4);
 }
 
@@ -711,17 +711,17 @@ uint64_t __36__MapsSuggestionsEngine_setMapType___block_invoke(uint64_t result)
   return result;
 }
 
-- (void)setAutomobileOptions:(id)a3
+- (void)setAutomobileOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   optionsSerialQueue = self->_optionsSerialQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __46__MapsSuggestionsEngine_setAutomobileOptions___block_invoke;
   v7[3] = &unk_1E81F60A0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = optionsCopy;
+  v6 = optionsCopy;
   dispatch_sync(optionsSerialQueue, v7);
 }
 
@@ -743,69 +743,69 @@ id *__46__MapsSuggestionsEngine_setAutomobileOptions___block_invoke(uint64_t a1)
   return result;
 }
 
-- (BOOL)saveStorageToFile:(id)a3 callback:(id)a4
+- (BOOL)saveStorageToFile:(id)file callback:(id)callback
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  fileCopy = file;
+  callbackCopy = callback;
+  if (!fileCopy)
   {
     if (_defaultCachePath_s_onceToken != -1)
     {
       [MapsSuggestionsEngine saveStorageToFile:callback:];
     }
 
-    v6 = _defaultCachePath_s_path;
+    fileCopy = _defaultCachePath_s_path;
   }
 
-  v8 = [(MapsSuggestionsManager *)self->_entryManager saveStorageToFile:v6 callback:v7];
+  v8 = [(MapsSuggestionsManager *)self->_entryManager saveStorageToFile:fileCopy callback:callbackCopy];
 
   return v8;
 }
 
-- (BOOL)loadStorageFromFile:(id)a3
+- (BOOL)loadStorageFromFile:(id)file
 {
-  v4 = a3;
-  if (!v4)
+  fileCopy = file;
+  if (!fileCopy)
   {
     if (_defaultCachePath_s_onceToken != -1)
     {
       [MapsSuggestionsEngine saveStorageToFile:callback:];
     }
 
-    v4 = _defaultCachePath_s_path;
+    fileCopy = _defaultCachePath_s_path;
   }
 
-  v5 = [(MapsSuggestionsManager *)self->_entryManager loadStorageFromFile:v4];
+  v5 = [(MapsSuggestionsManager *)self->_entryManager loadStorageFromFile:fileCopy];
 
   return v5;
 }
 
-- (BOOL)loadStorageFromFile:(id)a3 callback:(id)a4 callbackQueue:(id)a5
+- (BOOL)loadStorageFromFile:(id)file callback:(id)callback callbackQueue:(id)queue
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v8)
+  fileCopy = file;
+  callbackCopy = callback;
+  queueCopy = queue;
+  if (!fileCopy)
   {
     if (_defaultCachePath_s_onceToken != -1)
     {
       [MapsSuggestionsEngine saveStorageToFile:callback:];
     }
 
-    v8 = _defaultCachePath_s_path;
+    fileCopy = _defaultCachePath_s_path;
   }
 
-  v11 = [(MapsSuggestionsManager *)self->_entryManager loadStorageFromFile:v8 callback:v9 callbackQueue:v10];
+  v11 = [(MapsSuggestionsManager *)self->_entryManager loadStorageFromFile:fileCopy callback:callbackCopy callbackQueue:queueCopy];
 
   return v11;
 }
 
-- (BOOL)removeEntry:(id)a3 behavior:(int64_t)a4 handler:(id)a5
+- (BOOL)removeEntry:(id)entry behavior:(int64_t)behavior handler:(id)handler
 {
   v16 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (entry)
   {
-    [(MapsSuggestionsManager *)self->_entryManager removeEntry:a3 behavior:a4 handler:a5];
+    [(MapsSuggestionsManager *)self->_entryManager removeEntry:entry behavior:behavior handler:handler];
   }
 
   else
@@ -825,13 +825,13 @@ id *__46__MapsSuggestionsEngine_setAutomobileOptions___block_invoke(uint64_t a1)
     }
   }
 
-  return a3 != 0;
+  return entry != 0;
 }
 
-- (void)feedbackForEntry:(id)a3 action:(int64_t)a4
+- (void)feedbackForEntry:(id)entry action:(int64_t)action
 {
   v14 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (entry)
   {
     entryManager = self->_entryManager;
 
@@ -856,10 +856,10 @@ id *__46__MapsSuggestionsEngine_setAutomobileOptions___block_invoke(uint64_t a1)
   }
 }
 
-- (void)feedbackForMapItem:(id)a3 action:(int64_t)a4
+- (void)feedbackForMapItem:(id)item action:(int64_t)action
 {
   v14 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (item)
   {
     entryManager = self->_entryManager;
 
@@ -884,10 +884,10 @@ id *__46__MapsSuggestionsEngine_setAutomobileOptions___block_invoke(uint64_t a1)
   }
 }
 
-- (void)feedbackForContact:(id)a3 action:(int64_t)a4
+- (void)feedbackForContact:(id)contact action:(int64_t)action
 {
   v14 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (contact)
   {
     entryManager = self->_entryManager;
 

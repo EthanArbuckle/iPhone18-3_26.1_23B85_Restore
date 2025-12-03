@@ -5,8 +5,8 @@
 - (BKSystemShellSentinel)init;
 - (BOOL)_lock_blockSystemApp;
 - (BOOL)_lock_unblockSystemApp;
-- (BOOL)_pingSystemShellForCollectiveWatchdog:(id)a3;
-- (BOOL)auditTokenRepresentsSystemApp:(id *)a3;
+- (BOOL)_pingSystemShellForCollectiveWatchdog:(id)watchdog;
+- (BOOL)auditTokenRepresentsSystemApp:(id *)app;
 - (BOOL)blockSystemApp;
 - (BOOL)collectiveWatchdogPing;
 - (BOOL)unblockSystemApp;
@@ -17,25 +17,25 @@
 - (id)_collectivePingSystemShellSet;
 - (id)_lock_currentConnectionShell;
 - (id)systemShellState;
-- (void)_addSystemShellToCollectivePingSet:(id)a3;
+- (void)_addSystemShellToCollectivePingSet:(id)set;
 - (void)_lock_bootstrapSystemApp;
-- (void)_lock_checkInWithRemoteCompletionBlock:(id)a3;
-- (void)_lock_completeCheckInForShell:(id)a3;
-- (void)_lock_completeCheckInForShell:(id)a3 completionBlock:(id)a4;
-- (void)_lock_handleRelaunchRequestFromSystemApp:(id)a3 withOptions:(unint64_t)a4;
+- (void)_lock_checkInWithRemoteCompletionBlock:(id)block;
+- (void)_lock_completeCheckInForShell:(id)shell;
+- (void)_lock_completeCheckInForShell:(id)shell completionBlock:(id)block;
+- (void)_lock_handleRelaunchRequestFromSystemApp:(id)app withOptions:(unint64_t)options;
 - (void)_lock_updatePrimarySystemApp;
-- (void)_removeSystemShellFromCollectivePingSet:(id)a3;
-- (void)checkInAfterDataMigrationUsingCompletionBlock:(id)a3;
-- (void)checkInBypassingDataMigrationUsingCompletionBlock:(id)a3;
+- (void)_removeSystemShellFromCollectivePingSet:(id)set;
+- (void)checkInAfterDataMigrationUsingCompletionBlock:(id)block;
+- (void)checkInBypassingDataMigrationUsingCompletionBlock:(id)block;
 - (void)dataMigratorDidComplete;
 - (void)finishedLaunching;
 - (void)invalidate;
-- (void)restartWithOptions:(id)a3;
-- (void)setActiveAlternateSystemAppBundleIdentifier:(id)a3;
-- (void)setWatchdogMonitoringEnabled:(id)a3;
+- (void)restartWithOptions:(id)options;
+- (void)setActiveAlternateSystemAppBundleIdentifier:(id)identifier;
+- (void)setWatchdogMonitoringEnabled:(id)enabled;
 - (void)startServerWithoutDataMigration;
-- (void)systemShellDidConnect:(id)a3 connection:(id)a4;
-- (void)terminateShellWithJobLabel:(id)a3;
+- (void)systemShellDidConnect:(id)connect connection:(id)connection;
+- (void)terminateShellWithJobLabel:(id)label;
 @end
 
 @implementation BKSystemShellSentinel
@@ -122,19 +122,19 @@ LABEL_15:
   return v3;
 }
 
-- (void)terminateShellWithJobLabel:(id)a3
+- (void)terminateShellWithJobLabel:(id)label
 {
-  v4 = a3;
+  labelCopy = label;
   os_unfair_lock_lock(&self->_lock);
   v5 = BKLogSystemShell();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v30 = v4;
+    v30 = labelCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Disable watchdog for job label: %{public}@", buf, 0xCu);
   }
 
-  sub_10002BCBC([v4 UTF8String], 0);
+  sub_10002BCBC([labelCopy UTF8String], 0);
   v6 = [(NSMutableOrderedSet *)self->_lock_connectedSystemApps copy];
   v24 = 0u;
   v25 = 0u;
@@ -162,8 +162,8 @@ LABEL_5:
     v13 = *(*(&v24 + 1) + 8 * v12);
     v14 = v13 ? v13[2] : 0;
     v15 = v14;
-    v16 = [v15 jobLabel];
-    v17 = [v4 isEqualToString:v16];
+    jobLabel = [v15 jobLabel];
+    v17 = [labelCopy isEqualToString:jobLabel];
 
     if (v17)
     {
@@ -211,38 +211,38 @@ LABEL_20:
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setWatchdogMonitoringEnabled:(id)a3
+- (void)setWatchdogMonitoringEnabled:(id)enabled
 {
-  v4 = a3;
+  enabledCopy = enabled;
   os_unfair_lock_lock(&self->_lock);
-  v6 = [(BKSystemShellSentinel *)self _lock_currentConnectionShell];
-  v5 = [v4 BOOLValue];
+  _lock_currentConnectionShell = [(BKSystemShellSentinel *)self _lock_currentConnectionShell];
+  bOOLValue = [enabledCopy BOOLValue];
 
-  sub_100070188(v6, v5);
+  sub_100070188(_lock_currentConnectionShell, bOOLValue);
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)restartWithOptions:(id)a3
+- (void)restartWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   os_unfair_lock_lock(&self->_lock);
-  v6 = [(BKSystemShellSentinel *)self _lock_currentConnectionShell];
-  v5 = [v4 unsignedIntValue];
+  _lock_currentConnectionShell = [(BKSystemShellSentinel *)self _lock_currentConnectionShell];
+  unsignedIntValue = [optionsCopy unsignedIntValue];
 
-  [(BKSystemShellSentinel *)self _lock_handleRelaunchRequestFromSystemApp:v6 withOptions:v5];
+  [(BKSystemShellSentinel *)self _lock_handleRelaunchRequestFromSystemApp:_lock_currentConnectionShell withOptions:unsignedIntValue];
   os_unfair_lock_unlock(&self->_lock);
 }
 
 - (void)finishedLaunching
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(BKSystemShellSentinel *)self _lock_currentConnectionShell];
+  _lock_currentConnectionShell = [(BKSystemShellSentinel *)self _lock_currentConnectionShell];
   v4 = BKLogSystemShell();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    if (v3)
+    if (_lock_currentConnectionShell)
     {
-      v5 = *(v3 + 16);
+      v5 = *(_lock_currentConnectionShell + 16);
     }
 
     else
@@ -251,10 +251,10 @@ LABEL_20:
     }
 
     v6 = v5;
-    v7 = [v6 bundleIdentifier];
-    if (v3)
+    bundleIdentifier = [v6 bundleIdentifier];
+    if (_lock_currentConnectionShell)
     {
-      v8 = *(v3 + 32);
+      v8 = *(_lock_currentConnectionShell + 32);
     }
 
     else
@@ -265,26 +265,26 @@ LABEL_20:
     v9 = v8;
     [v9 timeIntervalSinceNow];
     *buf = 138543618;
-    v40 = v7;
+    v40 = bundleIdentifier;
     v41 = 2048;
     v42 = -v10;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "System shell %{public}@ finished startup after %.2fs.", buf, 0x16u);
   }
 
-  if (v3)
+  if (_lock_currentConnectionShell)
   {
-    *(v3 + 10) = 1;
+    *(_lock_currentConnectionShell + 10) = 1;
   }
 
-  [(NSMutableSet *)self->_lock_shellsFinishedStartup addObject:v3];
+  [(NSMutableSet *)self->_lock_shellsFinishedStartup addObject:_lock_currentConnectionShell];
   lock_systemApp = self->_lock_systemApp;
-  if (lock_systemApp == v3)
+  if (lock_systemApp == _lock_currentConnectionShell)
   {
     v12 = IORegistryEntryFromPath(kIOMainPortDefault, "IOPower:/IOPowerConnection/IOPMrootDomain");
     IORegistryEntrySetCFProperty(v12, @"System Boot Complete", kCFBooleanTrue);
-    if (v3)
+    if (_lock_currentConnectionShell)
     {
-      v13 = *(v3 + 16);
+      v13 = *(_lock_currentConnectionShell + 16);
     }
 
     else
@@ -344,9 +344,9 @@ LABEL_20:
     dispatch_async(&_dispatch_main_q, block);
   }
 
-  if (v3)
+  if (_lock_currentConnectionShell)
   {
-    v23 = *(v3 + 16);
+    v23 = *(_lock_currentConnectionShell + 16);
   }
 
   else
@@ -356,14 +356,14 @@ LABEL_20:
 
   v24 = v23;
   os_unfair_lock_unlock(&self->_lock);
-  if (lock_systemApp == v3)
+  if (lock_systemApp == _lock_currentConnectionShell)
   {
-    v25 = [(BSCompoundAssertion *)self->_observers context];
+    context = [(BSCompoundAssertion *)self->_observers context];
     v31 = 0u;
     v32 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v26 = [v25 countByEnumeratingWithState:&v31 objects:v38 count:16];
+    v26 = [context countByEnumeratingWithState:&v31 objects:v38 count:16];
     if (v26)
     {
       v27 = v26;
@@ -374,13 +374,13 @@ LABEL_20:
         {
           if (*v32 != v28)
           {
-            objc_enumerationMutation(v25);
+            objc_enumerationMutation(context);
           }
 
           [*(*(&v31 + 1) + 8 * i) systemShellDidFinishLaunching:v24];
         }
 
-        v27 = [v25 countByEnumeratingWithState:&v31 objects:v38 count:16];
+        v27 = [context countByEnumeratingWithState:&v31 objects:v38 count:16];
       }
 
       while (v27);
@@ -391,44 +391,44 @@ LABEL_20:
   }
 }
 
-- (void)checkInBypassingDataMigrationUsingCompletionBlock:(id)a3
+- (void)checkInBypassingDataMigrationUsingCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   os_unfair_lock_lock(&self->_lock);
-  [(BKSystemShellSentinel *)self _lock_checkInWithRemoteCompletionBlock:v4];
+  [(BKSystemShellSentinel *)self _lock_checkInWithRemoteCompletionBlock:blockCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)checkInAfterDataMigrationUsingCompletionBlock:(id)a3
+- (void)checkInAfterDataMigrationUsingCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = +[BKSystemShellSentinel dataMigrationQueue];
   dispatch_assert_queue_V2(v5);
 
   os_unfair_lock_lock(&self->_lock);
-  [(BKSystemShellSentinel *)self _lock_checkInWithRemoteCompletionBlock:v4];
+  [(BKSystemShellSentinel *)self _lock_checkInWithRemoteCompletionBlock:blockCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)_lock_checkInWithRemoteCompletionBlock:(id)a3
+- (void)_lock_checkInWithRemoteCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   os_unfair_lock_assert_owner(&self->_lock);
-  v5 = [(BKSystemShellSentinel *)self _lock_currentConnectionShell];
+  _lock_currentConnectionShell = [(BKSystemShellSentinel *)self _lock_currentConnectionShell];
   v6 = BKLogSystemShell();
   v7 = v6;
-  if (v5)
+  if (_lock_currentConnectionShell)
   {
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 138543362;
-      v10 = v5;
+      v10 = _lock_currentConnectionShell;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "checkIn: %{public}@", &v9, 0xCu);
     }
 
-    [(BKSystemShellSentinel *)self _lock_completeCheckInForShell:v5 completionBlock:v4];
+    [(BKSystemShellSentinel *)self _lock_completeCheckInForShell:_lock_currentConnectionShell completionBlock:blockCopy];
   }
 
   else
@@ -440,24 +440,24 @@ LABEL_20:
     }
 
     v8 = [NSError errorWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
-    v4[2](v4, v8);
+    blockCopy[2](blockCopy, v8);
 
-    v4 = v8;
+    blockCopy = v8;
   }
 }
 
-- (void)_lock_completeCheckInForShell:(id)a3 completionBlock:(id)a4
+- (void)_lock_completeCheckInForShell:(id)shell completionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  shellCopy = shell;
+  blockCopy = block;
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
   v20[2] = sub_100072ADC;
   v20[3] = &unk_1000FC468;
   v20[4] = self;
-  v8 = v6;
+  v8 = shellCopy;
   v21 = v8;
-  v9 = v7;
+  v9 = blockCopy;
   v22 = v9;
   v10 = objc_retainBlock(v20);
   if (v8 && (v8[11] & 1) != 0)
@@ -508,15 +508,15 @@ LABEL_12:
   [(BKSystemShellSentinel *)self _lock_updatePrimarySystemApp];
 }
 
-- (void)_lock_completeCheckInForShell:(id)a3
+- (void)_lock_completeCheckInForShell:(id)shell
 {
-  v4 = a3;
+  shellCopy = shell;
   os_unfair_lock_assert_owner(&self->_lock);
   v5 = BKLogSystemShell();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(v14) = 138543362;
-    *(&v14 + 4) = v4;
+    *(&v14 + 4) = shellCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "completeCheckInForShell: %{public}@", &v14, 0xCu);
   }
 
@@ -533,18 +533,18 @@ LABEL_12:
     dispatch_async(v8, &v14);
   }
 
-  if (v4)
+  if (shellCopy)
   {
-    *(v4 + 4) = 256;
+    *(shellCopy + 4) = 256;
   }
 
   v9 = +[NSDate date];
   v10 = v9;
-  if (v4)
+  if (shellCopy)
   {
-    objc_storeStrong(v4 + 4, v9);
+    objc_storeStrong(shellCopy + 4, v9);
 
-    v11 = *(v4 + 2);
+    v11 = *(shellCopy + 2);
   }
 
   else
@@ -554,16 +554,16 @@ LABEL_12:
   }
 
   v12 = v11;
-  v13 = [v12 watchdogType];
+  watchdogType = [v12 watchdogType];
 
-  if (v13)
+  if (watchdogType)
   {
-    sub_100070188(v4, 1);
+    sub_100070188(shellCopy, 1);
   }
 
   else
   {
-    [(BKSystemShellSentinel *)self _addSystemShellToCollectivePingSet:v4];
+    [(BKSystemShellSentinel *)self _addSystemShellToCollectivePingSet:shellCopy];
   }
 }
 
@@ -689,23 +689,23 @@ LABEL_12:
   return !lock_systemAppBlocked;
 }
 
-- (void)_lock_handleRelaunchRequestFromSystemApp:(id)a3 withOptions:(unint64_t)a4
+- (void)_lock_handleRelaunchRequestFromSystemApp:(id)app withOptions:(unint64_t)options
 {
-  v4 = a4;
-  v6 = a3;
+  optionsCopy = options;
+  appCopy = app;
   os_unfair_lock_assert_owner(&self->_lock);
   v7 = BKLogSystemShell();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = BKSRestartActionOptionsDescription();
     v10 = 138543618;
-    v11 = v6;
+    v11 = appCopy;
     v12 = 2114;
     v13 = v8;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Handling exit request from %{public}@ with options: %{public}@", &v10, 0x16u);
   }
 
-  if (v4)
+  if (optionsCopy)
   {
     v9 = +[BKSDefaults localDefaults];
     [v9 setHideAppleLogoOnLaunch:1];
@@ -748,7 +748,7 @@ LABEL_12:
             _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "Updating primary system app to: %{public}@", buf, 0xCu);
           }
 
-          v21 = v8;
+          firstObject = v8;
           goto LABEL_43;
         }
       }
@@ -800,12 +800,12 @@ LABEL_12:
             }
 
             v16 = v15;
-            v17 = [v16 bundleIdentifier];
-            v18 = [v17 isEqualToString:v3];
+            bundleIdentifier = [v16 bundleIdentifier];
+            v18 = [bundleIdentifier isEqualToString:v3];
 
             if (v18)
             {
-              v21 = v14;
+              firstObject = v14;
 
               if (!v14)
               {
@@ -816,7 +816,7 @@ LABEL_12:
               if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
               {
                 *buf = 138543362;
-                v57 = v21;
+                v57 = firstObject;
                 _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "Updating primary system the alternate system app: %{public}@", buf, 0xCu);
               }
 
@@ -847,7 +847,7 @@ LABEL_39:
       _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "Updating primary system to nil because we are waiting for the alternate system app to launch", buf, 2u);
     }
 
-    v21 = 0;
+    firstObject = 0;
 LABEL_42:
 
     goto LABEL_43;
@@ -855,12 +855,12 @@ LABEL_42:
 
   if (!self->_lock_systemApp || ![(NSMutableOrderedSet *)self->_lock_connectedSystemApps containsObject:?])
   {
-    v21 = [(NSMutableOrderedSet *)self->_lock_connectedSystemApps firstObject];
+    firstObject = [(NSMutableOrderedSet *)self->_lock_connectedSystemApps firstObject];
     v3 = BKLogSystemShell();
     if (os_log_type_enabled(&v3->super.super, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v57 = v21;
+      v57 = firstObject;
       _os_log_impl(&_mh_execute_header, &v3->super.super, OS_LOG_TYPE_DEFAULT, "Updating primary system first app: %{public}@", buf, 0xCu);
     }
 
@@ -878,12 +878,12 @@ LABEL_43:
     _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "Updating primary system app to the old _systemApp: %{public}@", buf, 0xCu);
   }
 
-  v21 = self->_lock_systemApp;
+  firstObject = self->_lock_systemApp;
 LABEL_44:
   p_lock_systemApp = &self->_lock_systemApp;
-  if (self->_lock_systemApp != v21)
+  if (self->_lock_systemApp != firstObject)
   {
-    objc_storeStrong(&self->_lock_systemApp, v21);
+    objc_storeStrong(&self->_lock_systemApp, firstObject);
     v26 = *p_lock_systemApp;
     v27 = BKLogSystemShell();
     v28 = os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT);
@@ -898,9 +898,9 @@ LABEL_44:
         }
 
         v30 = v29;
-        v31 = [(BKSystemShellClient *)v30 bundleIdentifier];
+        bundleIdentifier2 = [(BKSystemShellClient *)v30 bundleIdentifier];
         *buf = 138543362;
-        v57 = v31;
+        v57 = bundleIdentifier2;
         _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEFAULT, "Now monitoring %{public}@", buf, 0xCu);
       }
     }
@@ -928,12 +928,12 @@ LABEL_44:
     }
   }
 
-  v33 = [(BSCompoundAssertion *)self->_observers context];
+  context = [(BSCompoundAssertion *)self->_observers context];
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v34 = [v33 countByEnumeratingWithState:&v42 objects:v54 count:16];
+  v34 = [context countByEnumeratingWithState:&v42 objects:v54 count:16];
   if (v34)
   {
     v35 = v34;
@@ -945,15 +945,15 @@ LABEL_44:
       {
         if (*v43 != v36)
         {
-          objc_enumerationMutation(v33);
+          objc_enumerationMutation(context);
         }
 
         v38 = *(*(&v42 + 1) + 8 * v37);
         if (objc_opt_respondsToSelector())
         {
-          if (v21)
+          if (firstObject)
           {
-            descriptor = v21->_descriptor;
+            descriptor = firstObject->_descriptor;
           }
 
           else
@@ -969,7 +969,7 @@ LABEL_44:
       }
 
       while (v35 != v37);
-      v41 = [v33 countByEnumeratingWithState:&v42 objects:v54 count:16];
+      v41 = [context countByEnumeratingWithState:&v42 objects:v54 count:16];
       v35 = v41;
     }
 
@@ -986,8 +986,8 @@ LABEL_44:
     v11 = 0u;
     v8 = 0u;
     v9 = 0u;
-    v3 = [(NSMapTable *)self->_lock_checkinCompletionsBySystemApp objectEnumerator];
-    v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+    objectEnumerator = [(NSMapTable *)self->_lock_checkinCompletionsBySystemApp objectEnumerator];
+    v4 = [objectEnumerator countByEnumeratingWithState:&v8 objects:v12 count:16];
     if (v4)
     {
       v5 = v4;
@@ -999,7 +999,7 @@ LABEL_44:
         {
           if (*v9 != v6)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(objectEnumerator);
           }
 
           (*(*(*(&v8 + 1) + 8 * v7) + 16))();
@@ -1007,7 +1007,7 @@ LABEL_44:
         }
 
         while (v5 != v7);
-        v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+        v5 = [objectEnumerator countByEnumeratingWithState:&v8 objects:v12 count:16];
       }
 
       while (v5);
@@ -1023,8 +1023,8 @@ LABEL_44:
 {
   os_unfair_lock_assert_owner(&self->_lock);
   v3 = +[BSServiceConnection currentContext];
-  v4 = [v3 remoteProcess];
-  v5 = [v4 pid];
+  remoteProcess = [v3 remoteProcess];
+  v5 = [remoteProcess pid];
 
   lock_pidToClient = self->_lock_pidToClient;
   v7 = [NSNumber numberWithInt:v5];
@@ -1033,13 +1033,13 @@ LABEL_44:
   return v8;
 }
 
-- (BOOL)_pingSystemShellForCollectiveWatchdog:(id)a3
+- (BOOL)_pingSystemShellForCollectiveWatchdog:(id)watchdog
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  watchdogCopy = watchdog;
+  v4 = watchdogCopy;
+  if (watchdogCopy)
   {
-    v5 = v3[2];
+    v5 = watchdogCopy[2];
   }
 
   else
@@ -1048,9 +1048,9 @@ LABEL_44:
   }
 
   v6 = v5;
-  v7 = [v6 watchdogType];
+  watchdogType = [v6 watchdogType];
 
-  if (v7 != 1)
+  if (watchdogType != 1)
   {
     v8 = v4 ? v4[2] : 0;
     v9 = v8;
@@ -1070,13 +1070,13 @@ LABEL_44:
       }
 
       v13 = v12;
-      v14 = [v13 remoteTarget];
+      remoteTarget = [v13 remoteTarget];
 
-      v15 = [v14 collectiveWatchdogPing];
-      v11 = v15;
+      collectiveWatchdogPing = [remoteTarget collectiveWatchdogPing];
+      v11 = collectiveWatchdogPing;
       if (v4)
       {
-        if (v15 == *(v4 + 12))
+        if (collectiveWatchdogPing == *(v4 + 12))
         {
 LABEL_21:
 
@@ -1101,7 +1101,7 @@ LABEL_20:
 
       else
       {
-        if (!v15)
+        if (!collectiveWatchdogPing)
         {
           goto LABEL_21;
         }
@@ -1130,18 +1130,18 @@ LABEL_22:
   return v11;
 }
 
-- (void)_removeSystemShellFromCollectivePingSet:(id)a3
+- (void)_removeSystemShellFromCollectivePingSet:(id)set
 {
-  v4 = a3;
+  setCopy = set;
   os_unfair_lock_lock(&self->_collectivePingDataLock);
-  [(NSMutableSet *)self->_collectivePingDataLock_collectivePingShells removeObject:v4];
+  [(NSMutableSet *)self->_collectivePingDataLock_collectivePingShells removeObject:setCopy];
 
   os_unfair_lock_unlock(&self->_collectivePingDataLock);
 }
 
-- (void)_addSystemShellToCollectivePingSet:(id)a3
+- (void)_addSystemShellToCollectivePingSet:(id)set
 {
-  v7 = a3;
+  setCopy = set;
   os_unfair_lock_lock(&self->_collectivePingDataLock);
   collectivePingDataLock_collectivePingShells = self->_collectivePingDataLock_collectivePingShells;
   if (!collectivePingDataLock_collectivePingShells)
@@ -1153,18 +1153,18 @@ LABEL_22:
     collectivePingDataLock_collectivePingShells = self->_collectivePingDataLock_collectivePingShells;
   }
 
-  [(NSMutableSet *)collectivePingDataLock_collectivePingShells addObject:v7];
+  [(NSMutableSet *)collectivePingDataLock_collectivePingShells addObject:setCopy];
   os_unfair_lock_unlock(&self->_collectivePingDataLock);
 }
 
-- (void)systemShellDidConnect:(id)a3 connection:(id)a4
+- (void)systemShellDidConnect:(id)connect connection:(id)connection
 {
-  v7 = a3;
-  v8 = a4;
+  connectCopy = connect;
+  connectionCopy = connection;
   os_unfair_lock_lock(&self->_lock);
   v9 = [BKSystemShellClient alloc];
-  v10 = v7;
-  v11 = v8;
+  v10 = connectCopy;
+  v11 = connectionCopy;
   if (v9)
   {
     v24.receiver = v9;
@@ -1173,8 +1173,8 @@ LABEL_22:
     v9 = v12;
     if (v12)
     {
-      objc_storeStrong(&v12->_heartbeat, a4);
-      objc_storeStrong(&v9->_descriptor, a3);
+      objc_storeStrong(&v12->_heartbeat, connection);
+      objc_storeStrong(&v9->_descriptor, connect);
       v13 = objc_alloc_init(NSDate);
       connectDate = v9->_connectDate;
       v9->_connectDate = v13;
@@ -1186,8 +1186,8 @@ LABEL_22:
     v9->_pendingCheckIn = 1;
   }
 
-  v15 = [v10 bundleIdentifier];
-  v16 = [v15 isEqualToString:self->_lock_activeAlternateSystemAppBundleIdentifier];
+  bundleIdentifier = [v10 bundleIdentifier];
+  v16 = [bundleIdentifier isEqualToString:self->_lock_activeAlternateSystemAppBundleIdentifier];
 
   if (v16)
   {
@@ -1196,9 +1196,9 @@ LABEL_22:
       v9->_isAlternateShell = 1;
     }
 
-    v17 = [v10 jobLabel];
+    jobLabel = [v10 jobLabel];
     lock_activeAlternateSystemAppJobLabel = self->_lock_activeAlternateSystemAppJobLabel;
-    self->_lock_activeAlternateSystemAppJobLabel = v17;
+    self->_lock_activeAlternateSystemAppJobLabel = jobLabel;
 
     v19 = BKLogSystemShell();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
@@ -1237,27 +1237,27 @@ LABEL_13:
 - (BOOL)unblockSystemApp
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(BKSystemShellSentinel *)self _lock_unblockSystemApp];
+  _lock_unblockSystemApp = [(BKSystemShellSentinel *)self _lock_unblockSystemApp];
   os_unfair_lock_unlock(&self->_lock);
-  return v3;
+  return _lock_unblockSystemApp;
 }
 
 - (BOOL)blockSystemApp
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(BKSystemShellSentinel *)self _lock_blockSystemApp];
+  _lock_blockSystemApp = [(BKSystemShellSentinel *)self _lock_blockSystemApp];
   os_unfair_lock_unlock(&self->_lock);
-  return v3;
+  return _lock_blockSystemApp;
 }
 
 - (void)dataMigratorDidComplete
 {
-  v3 = [(BSCompoundAssertion *)self->_observers context];
+  context = [(BSCompoundAssertion *)self->_observers context];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v4 = [context countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1269,7 +1269,7 @@ LABEL_13:
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(context);
         }
 
         v8 = *(*(&v9 + 1) + 8 * v7);
@@ -1282,7 +1282,7 @@ LABEL_13:
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [context countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
@@ -1317,8 +1317,8 @@ LABEL_13:
     objc_setProperty_nonatomic_copy(v3, v5, v6, 16);
   }
 
-  v7 = [(NSMutableOrderedSet *)self->_lock_connectedSystemApps array];
-  v9 = [v7 bs_map:&stru_1000FC3C0];
+  array = [(NSMutableOrderedSet *)self->_lock_connectedSystemApps array];
+  v9 = [array bs_map:&stru_1000FC3C0];
   if (v3)
   {
     objc_setProperty_nonatomic_copy(v3, v8, v9, 24);
@@ -1354,8 +1354,8 @@ LABEL_13:
 - (NSArray)systemShells
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(NSMutableOrderedSet *)self->_lock_connectedSystemApps array];
-  v4 = [v3 bs_map:&stru_1000FC380];
+  array = [(NSMutableOrderedSet *)self->_lock_connectedSystemApps array];
+  v4 = [array bs_map:&stru_1000FC380];
 
   os_unfair_lock_unlock(&self->_lock);
 
@@ -1386,11 +1386,11 @@ LABEL_13:
   return v3;
 }
 
-- (void)setActiveAlternateSystemAppBundleIdentifier:(id)a3
+- (void)setActiveAlternateSystemAppBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [v4 copy];
+  v5 = [identifierCopy copy];
 
   lock_activeAlternateSystemAppBundleIdentifier = self->_lock_activeAlternateSystemAppBundleIdentifier;
   self->_lock_activeAlternateSystemAppBundleIdentifier = v5;
@@ -1401,7 +1401,7 @@ LABEL_13:
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (BOOL)auditTokenRepresentsSystemApp:(id *)a3
+- (BOOL)auditTokenRepresentsSystemApp:(id *)app
 {
   v4 = BSPIDForAuditToken();
   if (v4 < 1)
@@ -1429,12 +1429,12 @@ LABEL_13:
   v10 = sub_1000747E0;
   v11 = &unk_1000FD128;
   v12 = v3;
-  v13 = self;
+  selfCopy = self;
   v5 = v3;
   [v5 appendBodySectionWithName:0 multilinePrefix:0 block:&v8];
-  v6 = [v5 build];
+  build = [v5 build];
 
-  return v6;
+  return build;
 }
 
 - (void)invalidate
@@ -1446,53 +1446,53 @@ LABEL_13:
 
 - (BKSystemShellSentinel)init
 {
-  v2 = self;
+  selfCopy = self;
   v3 = [[BKSystemShellServiceListener alloc] initWithSentinel:self];
-  v4 = [[BKSystemShellControlServiceListener alloc] initWithSentinel:v2];
+  v4 = [[BKSystemShellControlServiceListener alloc] initWithSentinel:selfCopy];
   v5 = v3;
   v6 = v4;
-  if (v2)
+  if (selfCopy)
   {
-    v22.receiver = v2;
+    v22.receiver = selfCopy;
     v22.super_class = BKSystemShellSentinel;
     v7 = [(BKSystemShellSentinel *)&v22 init];
-    v2 = v7;
+    selfCopy = v7;
     if (v7)
     {
       objc_storeStrong(&v7->_shellListener, v3);
-      objc_storeStrong(&v2->_controlListener, v4);
-      v2->_lock._os_unfair_lock_opaque = 0;
-      v2->_collectivePingDataLock._os_unfair_lock_opaque = 0;
-      lock_systemApp = v2->_lock_systemApp;
-      v2->_lock_systemApp = 0;
+      objc_storeStrong(&selfCopy->_controlListener, v4);
+      selfCopy->_lock._os_unfair_lock_opaque = 0;
+      selfCopy->_collectivePingDataLock._os_unfair_lock_opaque = 0;
+      lock_systemApp = selfCopy->_lock_systemApp;
+      selfCopy->_lock_systemApp = 0;
 
       v9 = +[NSMapTable strongToStrongObjectsMapTable];
-      lock_checkinCompletionsBySystemApp = v2->_lock_checkinCompletionsBySystemApp;
-      v2->_lock_checkinCompletionsBySystemApp = v9;
+      lock_checkinCompletionsBySystemApp = selfCopy->_lock_checkinCompletionsBySystemApp;
+      selfCopy->_lock_checkinCompletionsBySystemApp = v9;
 
       v11 = objc_alloc_init(NSMutableOrderedSet);
-      lock_connectedSystemApps = v2->_lock_connectedSystemApps;
-      v2->_lock_connectedSystemApps = v11;
+      lock_connectedSystemApps = selfCopy->_lock_connectedSystemApps;
+      selfCopy->_lock_connectedSystemApps = v11;
 
       v13 = objc_alloc_init(NSMutableSet);
-      lock_shellsFinishedStartup = v2->_lock_shellsFinishedStartup;
-      v2->_lock_shellsFinishedStartup = v13;
+      lock_shellsFinishedStartup = selfCopy->_lock_shellsFinishedStartup;
+      selfCopy->_lock_shellsFinishedStartup = v13;
 
       v15 = objc_alloc_init(BKSystemAppHeartbeat);
-      heartbeat = v2->_heartbeat;
-      v2->_heartbeat = v15;
+      heartbeat = selfCopy->_heartbeat;
+      selfCopy->_heartbeat = v15;
 
       v17 = objc_alloc_init(NSMutableDictionary);
-      lock_pidToClient = v2->_lock_pidToClient;
-      v2->_lock_pidToClient = v17;
+      lock_pidToClient = selfCopy->_lock_pidToClient;
+      selfCopy->_lock_pidToClient = v17;
 
       v19 = [BSCompoundAssertion assertionWithIdentifier:@"BKSystemShellSentinelObservers"];
-      observers = v2->_observers;
-      v2->_observers = v19;
+      observers = selfCopy->_observers;
+      selfCopy->_observers = v19;
     }
   }
 
-  return v2;
+  return selfCopy;
 }
 
 + (id)dataMigrationQueue

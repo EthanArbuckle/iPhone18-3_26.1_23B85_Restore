@@ -2,10 +2,10 @@
 - (BOOL)_performAuthentication;
 - (SKUIRedeemViewControllerLegacy)redeemViewController;
 - (id)_authenticationContext;
-- (id)_subOperationWithBagKey:(id)a3;
-- (void)_logResultsForSuccess:(BOOL)a3 shouldVerify:(BOOL)a4 failureReason:(id)a5 error:(id)a6;
+- (id)_subOperationWithBagKey:(id)key;
+- (void)_logResultsForSuccess:(BOOL)success shouldVerify:(BOOL)verify failureReason:(id)reason error:(id)error;
 - (void)main;
-- (void)operation:(id)a3 selectedButton:(id)a4;
+- (void)operation:(id)operation selectedButton:(id)button;
 @end
 
 @implementation SKUIRedeemIdRequiresValidationOperation
@@ -17,7 +17,7 @@
   v1 = "[SKUIRedeemIdRequiresValidationOperation main]";
 }
 
-- (void)operation:(id)a3 selectedButton:(id)a4
+- (void)operation:(id)operation selectedButton:(id)button
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -30,22 +30,22 @@
 - (BOOL)_performAuthentication
 {
   v3 = objc_alloc_init(MEMORY[0x277D7FCC8]);
-  v4 = [(SKUIRedeemIdRequiresValidationOperation *)self _authenticationContext];
-  v5 = [v4 requiredUniqueIdentifier];
+  _authenticationContext = [(SKUIRedeemIdRequiresValidationOperation *)self _authenticationContext];
+  requiredUniqueIdentifier = [_authenticationContext requiredUniqueIdentifier];
 
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
   v20 = 1;
-  if (([v3 canPerformExtendedBiometricActionsForAccountIdentifier:v5] & 1) == 0)
+  if (([v3 canPerformExtendedBiometricActionsForAccountIdentifier:requiredUniqueIdentifier] & 1) == 0)
   {
     v6 = dispatch_semaphore_create(0);
     v7 = objc_alloc(MEMORY[0x277D69A50]);
-    v8 = [(SKUIRedeemIdRequiresValidationOperation *)self _authenticationContext];
-    v9 = [v7 initWithAuthenticationContext:v8];
+    _authenticationContext2 = [(SKUIRedeemIdRequiresValidationOperation *)self _authenticationContext];
+    v9 = [v7 initWithAuthenticationContext:_authenticationContext2];
 
-    v10 = [(SKUIRedeemIdRequiresValidationOperation *)self redeemViewController];
-    [v9 set_parentViewController:v10];
+    redeemViewController = [(SKUIRedeemIdRequiresValidationOperation *)self redeemViewController];
+    [v9 set_parentViewController:redeemViewController];
 
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
@@ -80,66 +80,66 @@ intptr_t __65__SKUIRedeemIdRequiresValidationOperation__performAuthentication__b
 
 - (id)_authenticationContext
 {
-  v2 = [MEMORY[0x277D69A20] defaultStore];
-  v3 = [v2 activeAccount];
+  defaultStore = [MEMORY[0x277D69A20] defaultStore];
+  activeAccount = [defaultStore activeAccount];
 
-  if (v3)
+  if (activeAccount)
   {
-    v4 = [objc_alloc(MEMORY[0x277D69BC8]) initWithAccount:v3];
-    [v4 setPromptStyle:1];
-    [v4 setShouldCreateNewSession:1];
+    contextForSignIn = [objc_alloc(MEMORY[0x277D69BC8]) initWithAccount:activeAccount];
+    [contextForSignIn setPromptStyle:1];
+    [contextForSignIn setShouldCreateNewSession:1];
   }
 
   else
   {
-    v4 = [MEMORY[0x277D69BC8] contextForSignIn];
+    contextForSignIn = [MEMORY[0x277D69BC8] contextForSignIn];
   }
 
-  return v4;
+  return contextForSignIn;
 }
 
-- (id)_subOperationWithBagKey:(id)a3
+- (id)_subOperationWithBagKey:(id)key
 {
   v3 = MEMORY[0x277D7FD48];
-  v4 = a3;
+  keyCopy = key;
   v5 = objc_alloc_init(v3);
   v6 = objc_alloc_init(MEMORY[0x277D69BD0]);
   [v6 setITunesStoreRequest:1];
   v7 = SSVDefaultUserAgent();
   [v6 setValue:v7 forHTTPHeaderField:@"User-Agent"];
 
-  [v6 setURLBagKey:v4];
+  [v6 setURLBagKey:keyCopy];
   [v5 setRequestProperties:v6];
-  v8 = [MEMORY[0x277D7FD38] provider];
-  [v5 setDataProvider:v8];
+  provider = [MEMORY[0x277D7FD38] provider];
+  [v5 setDataProvider:provider];
 
   return v5;
 }
 
-- (void)_logResultsForSuccess:(BOOL)a3 shouldVerify:(BOOL)a4 failureReason:(id)a5 error:(id)a6
+- (void)_logResultsForSuccess:(BOOL)success shouldVerify:(BOOL)verify failureReason:(id)reason error:(id)error
 {
-  v7 = a4;
-  v8 = a3;
+  verifyCopy = verify;
+  successCopy = success;
   v16[2] = *MEMORY[0x277D85DE8];
-  v9 = a5;
-  v10 = a6;
+  reasonCopy = reason;
+  errorCopy = error;
   v15[0] = @"success";
-  v11 = [MEMORY[0x277CCABB0] numberWithBool:v8];
+  v11 = [MEMORY[0x277CCABB0] numberWithBool:successCopy];
   v15[1] = @"hasNationalId";
   v16[0] = v11;
-  v12 = [MEMORY[0x277CCABB0] numberWithInt:!v7];
+  v12 = [MEMORY[0x277CCABB0] numberWithInt:!verifyCopy];
   v16[1] = v12;
   v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:v15 count:2];
   v14 = [v13 mutableCopy];
 
-  if (v9)
+  if (reasonCopy)
   {
-    [v14 setObject:v9 forKeyedSubscript:@"failure reason"];
+    [v14 setObject:reasonCopy forKeyedSubscript:@"failure reason"];
   }
 
-  if (v10)
+  if (errorCopy)
   {
-    [v14 setObject:v10 forKeyedSubscript:@"error"];
+    [v14 setObject:errorCopy forKeyedSubscript:@"error"];
   }
 
   SSDebugLog();

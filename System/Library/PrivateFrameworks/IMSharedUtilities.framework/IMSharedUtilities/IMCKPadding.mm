@@ -1,15 +1,15 @@
 @interface IMCKPadding
-+ (id)_randomDataWithLength:(int64_t)a3;
-+ (id)paddingForMessageOfSize:(int64_t)a3;
-+ (int64_t)_paddingForType:(int)a3 originalSize:(int64_t)a4 error:(__CFError *)a5;
++ (id)_randomDataWithLength:(int64_t)length;
++ (id)paddingForMessageOfSize:(int64_t)size;
++ (int64_t)_paddingForType:(int)type originalSize:(int64_t)size error:(__CFError *)error;
 @end
 
 @implementation IMCKPadding
 
-+ (id)_randomDataWithLength:(int64_t)a3
++ (id)_randomDataWithLength:(int64_t)length
 {
-  v4 = [objc_alloc(MEMORY[0x1E695DF88]) initWithLength:a3];
-  if (SecRandomCopyBytes(*MEMORY[0x1E697B308], a3, [v4 mutableBytes]))
+  v4 = [objc_alloc(MEMORY[0x1E695DF88]) initWithLength:length];
+  if (SecRandomCopyBytes(*MEMORY[0x1E697B308], length, [v4 mutableBytes]))
   {
     if (IMOSLoggingEnabled())
     {
@@ -31,7 +31,7 @@
   }
 }
 
-+ (int64_t)_paddingForType:(int)a3 originalSize:(int64_t)a4 error:(__CFError *)a5
++ (int64_t)_paddingForType:(int)type originalSize:(int64_t)size error:(__CFError *)error
 {
   if (qword_1EB30B460 != -1)
   {
@@ -39,7 +39,7 @@
   }
 
   v8 = off_1EB30B458;
-  if (a3 == 3)
+  if (type == 3)
   {
     if (off_1EB30B458)
     {
@@ -50,7 +50,7 @@
     return 0;
   }
 
-  if (a3 != 2)
+  if (type != 2)
   {
     if (off_1EB30B458)
     {
@@ -69,12 +69,12 @@
   v9 = 2;
 LABEL_11:
 
-  return v8(a4, v9, a5);
+  return v8(size, v9, error);
 }
 
-+ (id)paddingForMessageOfSize:(int64_t)a3
++ (id)paddingForMessageOfSize:(int64_t)size
 {
-  [objc_opt_class() _paddingForType:2 originalSize:a3 error:0];
+  [objc_opt_class() _paddingForType:2 originalSize:size error:0];
   v3 = objc_opt_class();
 
   return MEMORY[0x1EEE66B58](v3, sel__randomDataWithLength_);

@@ -1,14 +1,14 @@
 @interface OrgApacheLuceneIndexDocValues_$4
-- (OrgApacheLuceneIndexDocValues_$4)initWithOrgApacheLuceneIndexSortedDocValues:(id)a3 withInt:(int)a4;
+- (OrgApacheLuceneIndexDocValues_$4)initWithOrgApacheLuceneIndexSortedDocValues:(id)values withInt:(int)int;
 - (void)dealloc;
 @end
 
 @implementation OrgApacheLuceneIndexDocValues_$4
 
-- (OrgApacheLuceneIndexDocValues_$4)initWithOrgApacheLuceneIndexSortedDocValues:(id)a3 withInt:(int)a4
+- (OrgApacheLuceneIndexDocValues_$4)initWithOrgApacheLuceneIndexSortedDocValues:(id)values withInt:(int)int
 {
-  JreStrongAssign(&self->val$dv_, a3);
-  self->val$maxDoc_ = a4;
+  JreStrongAssign(&self->val$dv_, values);
+  self->val$maxDoc_ = int;
   return self;
 }
 

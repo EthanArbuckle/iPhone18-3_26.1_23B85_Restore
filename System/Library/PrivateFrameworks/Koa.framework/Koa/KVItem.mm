@@ -1,28 +1,28 @@
 @interface KVItem
-+ (id)itemFromBuffer:(id)a3 error:(id *)a4;
-+ (id)itemFromCascadeItem:(id)a3 error:(id *)a4;
-- (BOOL)hasFieldWithType:(int64_t)a3 label:(id)a4 value:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToItem:(id)a3;
++ (id)itemFromBuffer:(id)buffer error:(id *)error;
++ (id)itemFromCascadeItem:(id)item error:(id *)error;
+- (BOOL)hasFieldWithType:(int64_t)type label:(id)label value:(id)value;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToItem:(id)item;
 - (KVItem)init;
-- (KVItem)initWithBuffer:(id)a3 verify:(BOOL)a4 copy:(BOOL)a5 error:(id *)a6;
-- (id)JSONWithIndent:(unsigned __int8)a3;
-- (id)fieldsWithType:(int64_t)a3;
-- (id)firstFieldWithType:(int64_t)a3;
-- (id)initFromDictionary:(id)a3 error:(id *)a4;
+- (KVItem)initWithBuffer:(id)buffer verify:(BOOL)verify copy:(BOOL)copy error:(id *)error;
+- (id)JSONWithIndent:(unsigned __int8)indent;
+- (id)fieldsWithType:(int64_t)type;
+- (id)firstFieldWithType:(int64_t)type;
+- (id)initFromDictionary:(id)dictionary error:(id *)error;
 - (id)itemId;
 - (int64_t)itemType;
-- (void)enumerateFieldsUsingBlock:(id)a3;
-- (void)enumerateFieldsWithLocaleType:(int64_t)a3 usingBlock:(id)a4;
+- (void)enumerateFieldsUsingBlock:(id)block;
+- (void)enumerateFieldsWithLocaleType:(int64_t)type usingBlock:(id)block;
 @end
 
 @implementation KVItem
 
-- (BOOL)hasFieldWithType:(int64_t)a3 label:(id)a4 value:(id)a5
+- (BOOL)hasFieldWithType:(int64_t)type label:(id)label value:(id)value
 {
-  v48 = a4;
-  v9 = a5;
-  v45 = self;
+  labelCopy = label;
+  valueCopy = value;
+  selfCopy = self;
   v10 = &self->_item[*self->_item[-*self->_item + 8].var0];
   v11 = &v10[*v10->var0];
   v12 = *v11->var0;
@@ -32,7 +32,7 @@
     goto LABEL_33;
   }
 
-  v46 = v9;
+  v46 = valueCopy;
   v13 = 0;
   v14 = 4 * v12;
   while (1)
@@ -50,23 +50,23 @@
       v19 = 0;
     }
 
-    if (v19 != a3)
+    if (v19 != type)
     {
       goto LABEL_24;
     }
 
     v20 = [KVField alloc];
-    v24 = objc_msgSend_initWithBuffer_root_(v20, v21, v45->_buffer, &v16[4], v22, v23);
+    v24 = objc_msgSend_initWithBuffer_root_(v20, v21, selfCopy->_buffer, &v16[4], v22, v23);
     v30 = v24;
     v31 = v47;
-    if (v48 || (objc_msgSend_label(v24, v25, v26, v27, v28, v29), (v31 = objc_claimAutoreleasedReturnValue()) != 0))
+    if (labelCopy || (objc_msgSend_label(v24, v25, v26, v27, v28, v29), (v31 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v47 = v31;
       v5 = objc_msgSend_label(v30, v25, v26, v27, v28, v29);
-      if ((objc_msgSend_isEqual_(v48, v32, v5, v33, v34, v35) & 1) == 0)
+      if ((objc_msgSend_isEqual_(labelCopy, v32, v5, v33, v34, v35) & 1) == 0)
       {
 
-        if (!v48)
+        if (!labelCopy)
         {
         }
 
@@ -115,7 +115,7 @@ LABEL_20:
     }
 
 LABEL_21:
-    if (!v48)
+    if (!labelCopy)
     {
     }
 
@@ -135,13 +135,13 @@ LABEL_24:
 
   v42 = 1;
 LABEL_32:
-  v9 = v46;
+  valueCopy = v46;
 LABEL_33:
 
   return v42;
 }
 
-- (id)firstFieldWithType:(int64_t)a3
+- (id)firstFieldWithType:(int64_t)type
 {
   v3 = &self->_item[*self->_item[-*self->_item + 8].var0];
   v4 = &v3[*v3->var0];
@@ -165,7 +165,7 @@ LABEL_33:
         v13 = 0;
       }
 
-      if (v13 == a3)
+      if (v13 == type)
       {
         break;
       }
@@ -190,7 +190,7 @@ LABEL_9:
   return v14;
 }
 
-- (id)fieldsWithType:(int64_t)a3
+- (id)fieldsWithType:(int64_t)type
 {
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v6 = &self->_item[*self->_item[-*self->_item + 8].var0];
@@ -215,7 +215,7 @@ LABEL_9:
         v15 = 0;
       }
 
-      if (v15 == a3)
+      if (v15 == type)
       {
         v16 = [KVField alloc];
         v20 = objc_msgSend_initWithBuffer_root_(v16, v17, self->_buffer, &v12[4], v18, v19);
@@ -231,30 +231,30 @@ LABEL_9:
   return v5;
 }
 
-- (void)enumerateFieldsWithLocaleType:(int64_t)a3 usingBlock:(id)a4
+- (void)enumerateFieldsWithLocaleType:(int64_t)type usingBlock:(id)block
 {
-  v6 = a4;
-  v11 = v6;
-  if (a3)
+  blockCopy = block;
+  v11 = blockCopy;
+  if (type)
   {
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = sub_2559B569C;
     v16[3] = &unk_279803D30;
-    v18 = a3;
-    v17 = v6;
+    typeCopy = type;
+    v17 = blockCopy;
     objc_msgSend_enumerateFieldsUsingBlock_(self, v12, v16, v13, v14, v15);
   }
 
   else
   {
-    objc_msgSend_enumerateFieldsUsingBlock_(self, v7, v6, v8, v9, v10);
+    objc_msgSend_enumerateFieldsUsingBlock_(self, v7, blockCopy, v8, v9, v10);
   }
 }
 
-- (void)enumerateFieldsUsingBlock:(id)a3
+- (void)enumerateFieldsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v18 = 0;
   item = self->_item;
   v6 = *item[-*item->var0 + 8].var0;
@@ -275,7 +275,7 @@ LABEL_9:
       v12 = *v11->var0;
       v13 = [KVField alloc];
       v17 = objc_msgSend_initWithBuffer_root_(v13, v14, self->_buffer, &v11[v12], v15, v16);
-      v4[2](v4, v17, v9++, &v18);
+      blockCopy[2](blockCopy, v17, v9++, &v18);
 
       v11 += 4;
       v10 -= 4;
@@ -285,14 +285,14 @@ LABEL_9:
   }
 }
 
-- (BOOL)isEqualToItem:(id)a3
+- (BOOL)isEqualToItem:(id)item
 {
-  v4 = a3;
-  v10 = v4;
-  if (v4)
+  itemCopy = item;
+  v10 = itemCopy;
+  if (itemCopy)
   {
     buffer = self->_buffer;
-    v12 = objc_msgSend_buffer(v4, v5, v6, v7, v8, v9);
+    v12 = objc_msgSend_buffer(itemCopy, v5, v6, v7, v8, v9);
     isEqual = objc_msgSend_isEqual_(buffer, v13, v12, v14, v15, v16);
   }
 
@@ -304,16 +304,16 @@ LABEL_9:
   return isEqual;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     isEqualToItem = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     isEqualToItem = objc_msgSend_isEqualToItem_(self, v6, v5, v7, v8, v9);
   }
@@ -326,21 +326,21 @@ LABEL_9:
   return isEqualToItem;
 }
 
-- (id)initFromDictionary:(id)a3 error:(id *)a4
+- (id)initFromDictionary:(id)dictionary error:(id *)error
 {
-  v92 = self;
+  selfCopy = self;
   v106[1] = *MEMORY[0x277D85DE8];
-  v96 = a3;
+  dictionaryCopy = dictionary;
   v97 = objc_alloc_init(KVItemBuilder);
-  v9 = objc_msgSend_objectForKey_(v96, v5, @"itemType", v6, v7, v8);
+  v9 = objc_msgSend_objectForKey_(dictionaryCopy, v5, @"itemType", v6, v7, v8);
   v10 = KVItemTypeFromName(v9);
 
-  v93 = objc_msgSend_objectForKey_(v96, v11, @"itemId", v12, v13, v14);
-  v17 = objc_msgSend_setItemType_itemId_error_(v97, v15, v10, v93, a4, v16);
+  v93 = objc_msgSend_objectForKey_(dictionaryCopy, v11, @"itemId", v12, v13, v14);
+  v17 = objc_msgSend_setItemType_itemId_error_(v97, v15, v10, v93, error, v16);
 
   if (v17)
   {
-    v94 = objc_msgSend_objectForKey_(v96, v18, @"fields", v19, v20, v21);
+    v94 = objc_msgSend_objectForKey_(dictionaryCopy, v18, @"fields", v19, v20, v21);
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -368,14 +368,14 @@ LABEL_9:
             {
               v84 = MEMORY[0x277CCA9B8];
               v102 = *MEMORY[0x277CCA450];
-              v40 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v32, @"Unexpected field dictionary: %@ in item: %@", v33, v34, v35, v31, v96, v92);
+              v40 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v32, @"Unexpected field dictionary: %@ in item: %@", v33, v34, v35, v31, dictionaryCopy, selfCopy);
               v103 = v40;
               v82 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v85, &v103, &v102, 1, v86);
               v89 = objc_msgSend_errorWithDomain_code_userInfo_(v84, v87, @"com.apple.koa.item.builder", 6, v82, v88);
-              if (a4 && v89)
+              if (error && v89)
               {
                 v89 = v89;
-                *a4 = v89;
+                *error = v89;
               }
 
               goto LABEL_23;
@@ -389,7 +389,7 @@ LABEL_9:
               v43 = KVLocaleTypeFromName(v40);
               v48 = objc_msgSend_objectForKey_(v31, v44, @"label", v45, v46, v47);
               v53 = objc_msgSend_objectForKey_(v31, v49, @"value", v50, v51, v52);
-              v55 = objc_msgSend_addFieldWithType_localeType_label_value_error_(v97, v54, v42, v43, v48, v53, a4);
+              v55 = objc_msgSend_addFieldWithType_localeType_label_value_error_(v97, v54, v42, v43, v48, v53, error);
               LOBYTE(v42) = v55 == 0;
 
               if (v42)
@@ -404,7 +404,7 @@ LABEL_9:
               v57 = KVFieldTypeFromName(v56);
               v62 = objc_msgSend_objectForKey_(v31, v58, @"label", v59, v60, v61);
               v67 = objc_msgSend_objectForKey_(v31, v63, @"value", v64, v65, v66);
-              v69 = objc_msgSend_addFieldWithType_label_value_error_(v97, v68, v57, v62, v67, a4);
+              v69 = objc_msgSend_addFieldWithType_label_value_error_(v97, v68, v57, v62, v67, error);
               LOBYTE(v57) = v69 == 0;
 
               if (v57)
@@ -425,22 +425,22 @@ LABEL_9:
         }
       }
 
-      v17 = objc_msgSend_buildItemWithError_(v97, v72, a4, v73, v74, v75);
+      v17 = objc_msgSend_buildItemWithError_(v97, v72, error, v73, v74, v75);
     }
 
     else
     {
       v76 = MEMORY[0x277CCA9B8];
       v105 = *MEMORY[0x277CCA450];
-      obj = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v22, @"Unexpected fields array in item: %@", v23, v24, v25, v96);
+      obj = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v22, @"Unexpected fields array in item: %@", v23, v24, v25, dictionaryCopy);
       v106[0] = obj;
       v40 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v77, v106, &v105, 1, v78);
       v81 = objc_msgSend_errorWithDomain_code_userInfo_(v76, v79, @"com.apple.koa.item.builder", 6, v40, v80);
       v82 = v81;
-      if (a4 && v81)
+      if (error && v81)
       {
         v83 = v81;
-        *a4 = v82;
+        *error = v82;
       }
 
 LABEL_23:
@@ -454,10 +454,10 @@ LABEL_24:
   return v17;
 }
 
-- (id)JSONWithIndent:(unsigned __int8)a3
+- (id)JSONWithIndent:(unsigned __int8)indent
 {
-  v5 = sub_2559C2C40(a3);
-  v6 = sub_2559C2C40(a3 + 1);
+  v5 = sub_2559C2C40(indent);
+  v6 = sub_2559C2C40(indent + 1);
   v7 = objc_alloc_init(MEMORY[0x277CCAB68]);
   objc_msgSend_appendFormat_(v7, v8, @"%@{\n", v9, v10, v11, v5);
   v17 = objc_msgSend_itemType(self, v12, v13, v14, v15, v16);
@@ -485,7 +485,7 @@ LABEL_24:
   v57[3] = &unk_279803D08;
   v47 = v7;
   v58 = v47;
-  v59 = a3;
+  indentCopy = indent;
   objc_msgSend_enumerateFieldsUsingBlock_(self, v48, v57, v49, v50, v51);
   objc_msgSend_appendFormat_(v47, v52, @"\n%@]\n%@}", v53, v54, v55, v6, v5);
 
@@ -531,12 +531,12 @@ LABEL_24:
   objc_exception_throw(v3);
 }
 
-- (KVItem)initWithBuffer:(id)a3 verify:(BOOL)a4 copy:(BOOL)a5 error:(id *)a6
+- (KVItem)initWithBuffer:(id)buffer verify:(BOOL)verify copy:(BOOL)copy error:(id *)error
 {
-  v7 = a5;
-  v8 = a4;
+  copyCopy = copy;
+  verifyCopy = verify;
   v162[1] = *MEMORY[0x277D85DE8];
-  v10 = a3;
+  bufferCopy = buffer;
   v150.receiver = self;
   v150.super_class = KVItem;
   v15 = [(KVItem *)&v150 init];
@@ -545,9 +545,9 @@ LABEL_24:
     goto LABEL_70;
   }
 
-  if (v8)
+  if (verifyCopy)
   {
-    if (v10)
+    if (bufferCopy)
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -561,16 +561,16 @@ LABEL_24:
         v160 = v57;
         v60 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v58, &v160, &v159, 1, v59);
         v63 = objc_msgSend_errorWithDomain_code_userInfo_(v49, v61, @"com.apple.koa.item.builder", 6, v60, v62);
-        if (a6 && v63)
+        if (error && v63)
         {
           v63 = v63;
-          *a6 = v63;
+          *error = v63;
         }
 
         goto LABEL_83;
       }
 
-      if (objc_msgSend_length(v10, v16, v17, v18, v19, v20))
+      if (objc_msgSend_length(bufferCopy, v16, v17, v18, v19, v20))
       {
         goto LABEL_6;
       }
@@ -580,10 +580,10 @@ LABEL_24:
       v158 = @"Buffer has length of zero";
       v45 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v11, &v158, &v157, 1, v14);
       v48 = objc_msgSend_errorWithDomain_code_userInfo_(v64, v65, @"com.apple.koa.item.builder", 6, v45, v66);
-      if (a6 && v48)
+      if (error && v48)
       {
         v48 = v48;
-        *a6 = v48;
+        *error = v48;
       }
     }
 
@@ -594,10 +594,10 @@ LABEL_24:
       v162[0] = @"Buffer is nil";
       v45 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v11, v162, &v161, 1, v14);
       v48 = objc_msgSend_errorWithDomain_code_userInfo_(v44, v46, @"com.apple.koa.item.builder", 6, v45, v47);
-      if (a6 && v48)
+      if (error && v48)
       {
         v48 = v48;
-        *a6 = v48;
+        *error = v48;
       }
     }
 
@@ -607,14 +607,14 @@ LABEL_83:
   }
 
 LABEL_6:
-  if (v7)
+  if (copyCopy)
   {
-    v21 = objc_msgSend_dataWithData_(MEMORY[0x277CBEA90], v11, v10, v12, v13, v14);
+    v21 = objc_msgSend_dataWithData_(MEMORY[0x277CBEA90], v11, bufferCopy, v12, v13, v14);
   }
 
   else
   {
-    v21 = v10;
+    v21 = bufferCopy;
   }
 
   v22 = *(v15 + 2);
@@ -622,7 +622,7 @@ LABEL_6:
 
   v33 = objc_msgSend_bytes(*(v15 + 2), v23, v24, v25, v26, v27);
   *(v15 + 1) = &v33[*v33];
-  if (!v8)
+  if (!verifyCopy)
   {
     goto LABEL_70;
   }
@@ -786,10 +786,10 @@ LABEL_71:
     v109 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v35, &v156, &v155, 1, v39);
     v112 = objc_msgSend_errorWithDomain_code_userInfo_(v108, v110, @"com.apple.koa.item.builder", 6, v109, v111);
     v113 = v112;
-    if (a6 && v112)
+    if (error && v112)
     {
       v114 = v112;
-      *a6 = v113;
+      *error = v113;
     }
 
     goto LABEL_82;
@@ -807,10 +807,10 @@ LABEL_68:
     v113 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v122, &v154, &v153, 1, v123);
     v126 = objc_msgSend_errorWithDomain_code_userInfo_(v115, v124, @"com.apple.koa.item.builder", 1, v113, v125);
     v127 = v126;
-    if (a6 && v126)
+    if (error && v126)
     {
       v128 = v126;
-      *a6 = v127;
+      *error = v127;
     }
 
     goto LABEL_81;
@@ -829,10 +829,10 @@ LABEL_68:
     v152 = v113;
     v127 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v135, &v152, &v151, 1, v136);
     v139 = objc_msgSend_errorWithDomain_code_userInfo_(v129, v137, @"com.apple.koa.item.builder", 2, v127, v138);
-    if (a6 && v139)
+    if (error && v139)
     {
       v139 = v139;
-      *a6 = v139;
+      *error = v139;
     }
 
 LABEL_81:
@@ -849,18 +849,18 @@ LABEL_84:
   return v107;
 }
 
-+ (id)itemFromCascadeItem:(id)a3 error:(id *)a4
++ (id)itemFromCascadeItem:(id)item error:(id *)error
 {
-  v6 = objc_msgSend_itemFromCascadeItem_error_(KVItemConverter, a2, a3, a4, v4, v5);
+  v6 = objc_msgSend_itemFromCascadeItem_error_(KVItemConverter, a2, item, error, v4, v5);
 
   return v6;
 }
 
-+ (id)itemFromBuffer:(id)a3 error:(id *)a4
++ (id)itemFromBuffer:(id)buffer error:(id *)error
 {
-  v5 = a3;
+  bufferCopy = buffer;
   v6 = objc_alloc(objc_opt_class());
-  v8 = objc_msgSend_initWithBuffer_verify_copy_error_(v6, v7, v5, 1, 1, a4);
+  v8 = objc_msgSend_initWithBuffer_verify_copy_error_(v6, v7, bufferCopy, 1, 1, error);
 
   return v8;
 }

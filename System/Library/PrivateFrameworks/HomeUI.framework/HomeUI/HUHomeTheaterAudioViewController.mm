@@ -1,13 +1,13 @@
 @interface HUHomeTheaterAudioViewController
-- (HUHomeTheaterAudioViewController)initWithMediaAccessoryItem:(id)a3;
-- (id)buildItemModuleControllerForModule:(id)a3;
+- (HUHomeTheaterAudioViewController)initWithMediaAccessoryItem:(id)item;
+- (id)buildItemModuleControllerForModule:(id)module;
 @end
 
 @implementation HUHomeTheaterAudioViewController
 
-- (HUHomeTheaterAudioViewController)initWithMediaAccessoryItem:(id)a3
+- (HUHomeTheaterAudioViewController)initWithMediaAccessoryItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v5 = [objc_alloc(MEMORY[0x277D14B08]) initWithDelegate:self];
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
@@ -17,12 +17,12 @@
   v14[1] = 3221225472;
   v14[2] = __63__HUHomeTheaterAudioViewController_initWithMediaAccessoryItem___block_invoke;
   v14[3] = &unk_277DBB6D8;
-  v8 = v4;
+  v8 = itemCopy;
   v15 = v8;
-  v9 = self;
-  v16 = v9;
+  selfCopy = self;
+  v16 = selfCopy;
   [v5 setItemModuleCreator:v14];
-  v13.receiver = v9;
+  v13.receiver = selfCopy;
   v13.super_class = HUHomeTheaterAudioViewController;
   v10 = [(HUItemTableViewController *)&v13 initWithItemManager:v5 tableViewStyle:1];
   if (v10)
@@ -49,16 +49,16 @@ id __63__HUHomeTheaterAudioViewController_initWithMediaAccessoryItem___block_inv
   return v8;
 }
 
-- (id)buildItemModuleControllerForModule:(id)a3
+- (id)buildItemModuleControllerForModule:(id)module
 {
-  v3 = a3;
+  moduleCopy = module;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    NSLog(&cfstr_UnexpectedModu.isa, v3);
+    NSLog(&cfstr_UnexpectedModu.isa, moduleCopy);
   }
 
-  v4 = [(HUItemModuleController *)[HUHomeTheaterAudioItemModuleController alloc] initWithModule:v3];
+  v4 = [(HUItemModuleController *)[HUHomeTheaterAudioItemModuleController alloc] initWithModule:moduleCopy];
 
   return v4;
 }

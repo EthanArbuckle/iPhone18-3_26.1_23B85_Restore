@@ -13,24 +13,24 @@
     v3 = [v4 safeValueForKey:@"tableViewCell"];
   }
 
-  v5 = [v3 accessibilityIdentification];
-  v6 = [v5 lowercaseString];
+  accessibilityIdentification = [v3 accessibilityIdentification];
+  lowercaseString = [accessibilityIdentification lowercaseString];
 
-  if ([v6 isEqualToString:@"sound-volume"])
+  if ([lowercaseString isEqualToString:@"sound-volume"])
   {
     v7 = @"sound.volume.control";
 LABEL_9:
-    v8 = accessibilityLocalizedString(v7);
+    accessibilityLabel = accessibilityLocalizedString(v7);
     goto LABEL_10;
   }
 
-  if ([v6 isEqualToString:@"brightness"])
+  if ([lowercaseString isEqualToString:@"brightness"])
   {
     v7 = @"brightness.control";
     goto LABEL_9;
   }
 
-  if ([v6 isEqualToString:@"speakingRate"])
+  if ([lowercaseString isEqualToString:@"speakingRate"])
   {
     v7 = @"speakingRate";
     goto LABEL_9;
@@ -38,9 +38,9 @@ LABEL_9:
 
   v11.receiver = self;
   v11.super_class = PreferencesSliderAccessibility;
-  v8 = [(PreferencesSliderAccessibility *)&v11 accessibilityLabel];
+  accessibilityLabel = [(PreferencesSliderAccessibility *)&v11 accessibilityLabel];
 LABEL_10:
-  v9 = v8;
+  v9 = accessibilityLabel;
 
   return v9;
 }

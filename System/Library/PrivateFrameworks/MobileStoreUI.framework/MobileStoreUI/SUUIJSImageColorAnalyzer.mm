@@ -1,22 +1,22 @@
 @interface SUUIJSImageColorAnalyzer
-- (SUUIJSImageColorAnalyzer)initWithAppContext:(id)a3 clientContext:(id)a4;
-- (void)analyzeImageAtUrl:(id)a3 :(id)a4;
-- (void)artworkRequest:(id)a3 didLoadImage:(id)a4;
+- (SUUIJSImageColorAnalyzer)initWithAppContext:(id)context clientContext:(id)clientContext;
+- (void)analyzeImageAtUrl:(id)url :(id)a4;
+- (void)artworkRequest:(id)request didLoadImage:(id)image;
 - (void)dealloc;
 @end
 
 @implementation SUUIJSImageColorAnalyzer
 
-- (SUUIJSImageColorAnalyzer)initWithAppContext:(id)a3 clientContext:(id)a4
+- (SUUIJSImageColorAnalyzer)initWithAppContext:(id)context clientContext:(id)clientContext
 {
-  v7 = a4;
+  clientContextCopy = clientContext;
   v17.receiver = self;
   v17.super_class = SUUIJSImageColorAnalyzer;
-  v8 = [(IKJSObject *)&v17 initWithAppContext:a3];
+  v8 = [(IKJSObject *)&v17 initWithAppContext:context];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_clientContext, a4);
+    objc_storeStrong(&v8->_clientContext, clientContext);
     v10 = objc_alloc_init(MEMORY[0x277CBEB38]);
     artworkRequestIDsToManagedCallbacks = v9->_artworkRequestIDsToManagedCallbacks;
     v9->_artworkRequestIDsToManagedCallbacks = v10;
@@ -42,12 +42,12 @@
   [(SUUIJSImageColorAnalyzer *)&v3 dealloc];
 }
 
-- (void)analyzeImageAtUrl:(id)a3 :(id)a4
+- (void)analyzeImageAtUrl:(id)url :(id)a4
 {
   v18[1] = *MEMORY[0x277D85DE8];
   v6 = MEMORY[0x277CBEBC0];
   v7 = a4;
-  v8 = [v6 URLWithString:a3];
+  v8 = [v6 URLWithString:url];
   v9 = +[(SSVURLDataConsumer *)SUUIImageDataConsumer];
   v10 = objc_alloc_init(SUUIArtworkRequest);
   [(SUUIResourceRequest *)v10 setCacheKey:v8];
@@ -57,11 +57,11 @@
   v11 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInteger:{-[SUUIResourceRequest requestIdentifier](v10, "requestIdentifier")}];
   [(SUUIResourceLoader *)self->_resourceLoader loadResourceWithRequest:v10 reason:1];
   v12 = [MEMORY[0x277CD4650] managedValueWithValue:v7];
-  v13 = [v7 context];
+  context = [v7 context];
 
-  v14 = [v13 virtualMachine];
+  virtualMachine = [context virtualMachine];
 
-  [v14 addManagedReference:v12 withOwner:self];
+  [virtualMachine addManagedReference:v12 withOwner:self];
   v15 = [(NSMutableDictionary *)self->_artworkRequestIDsToManagedCallbacks objectForKey:v11];
   if (v15)
   {
@@ -78,26 +78,26 @@
   [(NSMutableDictionary *)self->_artworkRequestIDsToManagedCallbacks setObject:v17 forKey:v11];
 }
 
-- (void)artworkRequest:(id)a3 didLoadImage:(id)a4
+- (void)artworkRequest:(id)request didLoadImage:(id)image
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(IKJSObject *)self appContext];
+  imageCopy = image;
+  requestCopy = request;
+  appContext = [(IKJSObject *)self appContext];
   v9 = objc_alloc(MEMORY[0x277CCABB0]);
-  v10 = [v7 requestIdentifier];
+  requestIdentifier = [requestCopy requestIdentifier];
 
-  v11 = [v9 initWithUnsignedInteger:v10];
+  v11 = [v9 initWithUnsignedInteger:requestIdentifier];
   v12 = [(NSMutableDictionary *)self->_artworkRequestIDsToManagedCallbacks objectForKey:v11];
   [(NSMutableDictionary *)self->_artworkRequestIDsToManagedCallbacks removeObjectForKey:v11];
   [(SUUIResourceLoader *)self->_resourceLoader removeAllCachedResources];
   if (v12)
   {
-    if (v6)
+    if (imageCopy)
     {
-      v13 = [SUUIImageColorAnalyzer analyzeImage:v6];
+      v13 = [SUUIImageColorAnalyzer analyzeImage:imageCopy];
       v14 = [SUUIJSAnalyzedImageColors alloc];
-      v15 = [(IKJSObject *)self appContext];
-      v16 = [(SUUIJSAnalyzedImageColors *)v14 initWithAppContext:v15 analyzedImageColors:v13];
+      appContext2 = [(IKJSObject *)self appContext];
+      v16 = [(SUUIJSAnalyzedImageColors *)v14 initWithAppContext:appContext2 analyzedImageColors:v13];
     }
 
     else
@@ -111,9 +111,9 @@
     v18[3] = &unk_2798F86C8;
     v19 = v12;
     v20 = v16;
-    v21 = self;
+    selfCopy = self;
     v17 = v16;
-    [v8 evaluate:v18 completionBlock:0];
+    [appContext evaluate:v18 completionBlock:0];
   }
 }
 

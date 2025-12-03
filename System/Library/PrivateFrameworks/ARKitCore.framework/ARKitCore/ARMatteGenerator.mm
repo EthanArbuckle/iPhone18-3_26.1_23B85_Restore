@@ -1,28 +1,28 @@
 @interface ARMatteGenerator
-- (ARMatteGenerator)initWithDevice:(id)a3 matteResolution:(int64_t)a4 useSmoothing:(BOOL)a5;
 - (ARMatteGenerator)initWithDevice:(id)device matteResolution:(ARMatteResolution)matteResolution;
+- (ARMatteGenerator)initWithDevice:(id)device matteResolution:(int64_t)resolution useSmoothing:(BOOL)smoothing;
 - (id)generateDilatedDepthFromFrame:(ARFrame *)frame commandBuffer:(id)commandBuffer;
 - (id)generateMatteFromFrame:(ARFrame *)frame commandBuffer:(id)commandBuffer;
-- (void)_commonInitWithDevice:(id)a3 matteResolution:(int64_t)a4 useSmoothing:(BOOL)a5;
-- (void)encodeCoefficients:(id)a3 frame:(id)a4 coefficientsForeground:(id)a5 coefficientsBackground:(id)a6;
-- (void)setupAlphaBufferForFrame:(id)a3;
-- (void)setupBuffersForFrame:(id)a3;
-- (void)setupDepthBufferForFrame:(id)a3;
+- (void)_commonInitWithDevice:(id)device matteResolution:(int64_t)resolution useSmoothing:(BOOL)smoothing;
+- (void)encodeCoefficients:(id)coefficients frame:(id)frame coefficientsForeground:(id)foreground coefficientsBackground:(id)background;
+- (void)setupAlphaBufferForFrame:(id)frame;
+- (void)setupBuffersForFrame:(id)frame;
+- (void)setupDepthBufferForFrame:(id)frame;
 @end
 
 @implementation ARMatteGenerator
 
-- (ARMatteGenerator)initWithDevice:(id)a3 matteResolution:(int64_t)a4 useSmoothing:(BOOL)a5
+- (ARMatteGenerator)initWithDevice:(id)device matteResolution:(int64_t)resolution useSmoothing:(BOOL)smoothing
 {
-  v5 = a5;
-  v8 = a3;
+  smoothingCopy = smoothing;
+  deviceCopy = device;
   v12.receiver = self;
   v12.super_class = ARMatteGenerator;
   v9 = [(ARMatteGenerator *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    [(ARMatteGenerator *)v9 _commonInitWithDevice:v8 matteResolution:a4 useSmoothing:v5];
+    [(ARMatteGenerator *)v9 _commonInitWithDevice:deviceCopy matteResolution:resolution useSmoothing:smoothingCopy];
   }
 
   return v10;
@@ -43,11 +43,11 @@
   return v8;
 }
 
-- (void)_commonInitWithDevice:(id)a3 matteResolution:(int64_t)a4 useSmoothing:(BOOL)a5
+- (void)_commonInitWithDevice:(id)device matteResolution:(int64_t)resolution useSmoothing:(BOOL)smoothing
 {
-  v5 = a5;
-  v26 = a3;
-  objc_storeStrong(&self->_device, a3);
+  smoothingCopy = smoothing;
+  deviceCopy = device;
+  objc_storeStrong(&self->_device, device);
   v9 = ARKitCoreBundle();
   v10 = [v9 URLForResource:@"default" withExtension:@"metallib"];
 
@@ -66,7 +66,7 @@
   }
 
   self->_enableDoubleMLResolutionMatting = v14;
-  v15 = [[ARDualGuidedFilter alloc] initWithDevice:self->_device useSmoothing:v5];
+  v15 = [[ARDualGuidedFilter alloc] initWithDevice:self->_device useSmoothing:smoothingCopy];
   dualGuidedFilter = self->_dualGuidedFilter;
   self->_dualGuidedFilter = v15;
 
@@ -85,17 +85,17 @@
   depthDilation = self->_depthDilation;
   self->_depthDilation = v24;
 
-  self->_matteResolution = a4;
+  self->_matteResolution = resolution;
 }
 
-- (void)setupAlphaBufferForFrame:(id)a3
+- (void)setupAlphaBufferForFrame:(id)frame
 {
-  v4 = a3;
+  frameCopy = frame;
   matteResolution = self->_matteResolution;
-  v12 = v4;
+  v12 = frameCopy;
   if (matteResolution == 1)
   {
-    Width = CVPixelBufferGetWidth([v4 capturedImage]) >> 1;
+    Width = CVPixelBufferGetWidth([frameCopy capturedImage]) >> 1;
     Height = CVPixelBufferGetHeight([v12 capturedImage]) >> 1;
   }
 
@@ -107,7 +107,7 @@
 
   else
   {
-    Width = CVPixelBufferGetWidth([v4 capturedImage]);
+    Width = CVPixelBufferGetWidth([frameCopy capturedImage]);
     Height = CVPixelBufferGetHeight([v12 capturedImage]);
   }
 
@@ -122,13 +122,13 @@
   }
 }
 
-- (void)setupDepthBufferForFrame:(id)a3
+- (void)setupDepthBufferForFrame:(id)frame
 {
-  v9 = a3;
-  if ([v9 estimatedDepthData])
+  frameCopy = frame;
+  if ([frameCopy estimatedDepthData])
   {
-    Width = CVPixelBufferGetWidth([v9 estimatedDepthData]);
-    Height = CVPixelBufferGetHeight([v9 estimatedDepthData]);
+    Width = CVPixelBufferGetWidth([frameCopy estimatedDepthData]);
+    Height = CVPixelBufferGetHeight([frameCopy estimatedDepthData]);
   }
 
   else
@@ -137,7 +137,7 @@
     Height = 192;
   }
 
-  if (!self->_occluderDepthDilatedTexture || [v9 estimatedDepthData] && (-[MTLTexture width](self->_occluderDepthDilatedTexture, "width") != Width || -[MTLTexture height](self->_occluderDepthDilatedTexture, "height") != Height))
+  if (!self->_occluderDepthDilatedTexture || [frameCopy estimatedDepthData] && (-[MTLTexture width](self->_occluderDepthDilatedTexture, "width") != Width || -[MTLTexture height](self->_occluderDepthDilatedTexture, "height") != Height))
   {
     v6 = [MEMORY[0x1E69741C0] texture2DDescriptorWithPixelFormat:25 width:Width height:Height mipmapped:0];
     [v6 setUsage:7];
@@ -147,13 +147,13 @@
   }
 }
 
-- (void)setupBuffersForFrame:(id)a3
+- (void)setupBuffersForFrame:(id)frame
 {
-  v4 = a3;
-  Width = CVPixelBufferGetWidth([v4 mattingScaleImagePixelBuffer]);
-  v6 = [v4 mattingScaleImagePixelBuffer];
+  frameCopy = frame;
+  Width = CVPixelBufferGetWidth([frameCopy mattingScaleImagePixelBuffer]);
+  mattingScaleImagePixelBuffer = [frameCopy mattingScaleImagePixelBuffer];
 
-  Height = CVPixelBufferGetHeight(v6);
+  Height = CVPixelBufferGetHeight(mattingScaleImagePixelBuffer);
   if (Width != [(MTLTexture *)self->_overlayCoefficientsFG width]|| Height != [(MTLTexture *)self->_overlayCoefficientsFG height])
   {
     v16 = [MEMORY[0x1E69741C0] texture2DDescriptorWithPixelFormat:115 width:Width height:Height mipmapped:0];
@@ -185,19 +185,19 @@
   }
 }
 
-- (void)encodeCoefficients:(id)a3 frame:(id)a4 coefficientsForeground:(id)a5 coefficientsBackground:(id)a6
+- (void)encodeCoefficients:(id)coefficients frame:(id)frame coefficientsForeground:(id)foreground coefficientsBackground:(id)background
 {
-  v42 = a3;
-  v10 = a4;
-  v41 = a6;
-  v40 = a5;
-  v11 = [v10 mattingScaleImagePixelBuffer];
-  v12 = [v10 segmentationBuffer];
-  v13 = [v10 capturedImage];
-  PixelFormatType = CVPixelBufferGetPixelFormatType(v13);
-  IOSurface = CVPixelBufferGetIOSurface(v12);
-  v16 = CVPixelBufferGetIOSurface(v11);
-  v17 = CVPixelBufferGetIOSurface(v13);
+  coefficientsCopy = coefficients;
+  frameCopy = frame;
+  backgroundCopy = background;
+  foregroundCopy = foreground;
+  mattingScaleImagePixelBuffer = [frameCopy mattingScaleImagePixelBuffer];
+  segmentationBuffer = [frameCopy segmentationBuffer];
+  capturedImage = [frameCopy capturedImage];
+  PixelFormatType = CVPixelBufferGetPixelFormatType(capturedImage);
+  IOSurface = CVPixelBufferGetIOSurface(segmentationBuffer);
+  v16 = CVPixelBufferGetIOSurface(mattingScaleImagePixelBuffer);
+  v17 = CVPixelBufferGetIOSurface(capturedImage);
   v18 = MEMORY[0x1E69741C0];
   Width = IOSurfaceGetWidth(v16);
   v20 = [v18 texture2DDescriptorWithPixelFormat:80 width:Width height:IOSurfaceGetHeight(v16) mipmapped:0];
@@ -224,7 +224,7 @@
   v29 = IOSurfaceGetWidth(IOSurface);
   v30 = [v28 texture2DDescriptorWithPixelFormat:10 width:v29 height:IOSurfaceGetHeight(IOSurface) mipmapped:0];
 
-  if (![v10 segmentationBuffer])
+  if (![frameCopy segmentationBuffer])
   {
     v37 = [(MTLDevice *)self->_device newTextureWithDescriptor:v30];
 LABEL_9:
@@ -240,28 +240,28 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v39 = [(MTLTexture *)self->_stencilTexture width];
-  v31 = [(MTLTexture *)self->_stencilTexture height];
+  width = [(MTLTexture *)self->_stencilTexture width];
+  height = [(MTLTexture *)self->_stencilTexture height];
   v32 = [(MTLDevice *)self->_device newTextureWithDescriptor:v30 iosurface:IOSurface plane:0];
-  v33 = [v42 computeCommandEncoder];
-  [v33 setComputePipelineState:self->_resampleAlpha];
-  [v33 setTexture:v32 atIndex:0];
-  [v33 setTexture:self->_stencilTexture atIndex:1];
-  v34 = [(MTLComputePipelineState *)self->_resampleAlpha threadExecutionWidth];
-  v35 = [(MTLComputePipelineState *)self->_resampleAlpha maxTotalThreadsPerThreadgroup];
-  v36 = [(MTLComputePipelineState *)self->_resampleAlpha threadExecutionWidth];
-  v44[0] = (v34 + v39 - 1) / v34;
-  v44[1] = (v35 / v36 + v31 - 1) / (v35 / v36);
+  computeCommandEncoder = [coefficientsCopy computeCommandEncoder];
+  [computeCommandEncoder setComputePipelineState:self->_resampleAlpha];
+  [computeCommandEncoder setTexture:v32 atIndex:0];
+  [computeCommandEncoder setTexture:self->_stencilTexture atIndex:1];
+  threadExecutionWidth = [(MTLComputePipelineState *)self->_resampleAlpha threadExecutionWidth];
+  maxTotalThreadsPerThreadgroup = [(MTLComputePipelineState *)self->_resampleAlpha maxTotalThreadsPerThreadgroup];
+  threadExecutionWidth2 = [(MTLComputePipelineState *)self->_resampleAlpha threadExecutionWidth];
+  v44[0] = (threadExecutionWidth + width - 1) / threadExecutionWidth;
+  v44[1] = (maxTotalThreadsPerThreadgroup / threadExecutionWidth2 + height - 1) / (maxTotalThreadsPerThreadgroup / threadExecutionWidth2);
   v44[2] = 1;
-  v43[0] = v34;
-  v43[1] = v35 / v36;
+  v43[0] = threadExecutionWidth;
+  v43[1] = maxTotalThreadsPerThreadgroup / threadExecutionWidth2;
   v43[2] = 1;
-  [v33 dispatchThreadgroups:v44 threadsPerThreadgroup:v43];
-  [v33 endEncoding];
+  [computeCommandEncoder dispatchThreadgroups:v44 threadsPerThreadgroup:v43];
+  [computeCommandEncoder endEncoding];
 
 LABEL_10:
-  [(ARMatteGenerator *)self setupBuffersForFrame:v10];
-  [(ARDualGuidedFilter *)self->_dualGuidedFilter encodeDualCoefficients:v42 guide:v21 stencil:self->_stencilTexture coefficientsTextureFG:v40 coefficientsTextureBG:v41];
+  [(ARMatteGenerator *)self setupBuffersForFrame:frameCopy];
+  [(ARDualGuidedFilter *)self->_dualGuidedFilter encodeDualCoefficients:coefficientsCopy guide:v21 stencil:self->_stencilTexture coefficientsTextureFG:foregroundCopy coefficientsTextureBG:backgroundCopy];
 }
 
 - (id)generateMatteFromFrame:(ARFrame *)frame commandBuffer:(id)commandBuffer
@@ -273,25 +273,25 @@ LABEL_10:
   {
     [(ARMatteGenerator *)self setupBuffersForFrame:v6];
     [(ARMatteGenerator *)self encodeCoefficients:v7 frame:v6 coefficientsForeground:self->_overlayCoefficientsFG coefficientsBackground:self->_overlayCoefficientsBG];
-    v8 = [(MTLTexture *)self->_alphaTexture width];
-    v9 = [(MTLTexture *)self->_alphaTexture height];
-    v10 = [v7 computeCommandEncoder];
-    [v10 setComputePipelineState:self->_mattingDual];
-    [v10 setTexture:self->_cameraImageTexture atIndex:0];
-    [v10 setTexture:self->_overlayCoefficientsFG atIndex:1];
-    [v10 setTexture:self->_overlayCoefficientsBG atIndex:2];
-    [v10 setTexture:self->_alphaTexture atIndex:3];
-    v11 = [(MTLComputePipelineState *)self->_mattingDual threadExecutionWidth];
-    v12 = [(MTLComputePipelineState *)self->_mattingDual maxTotalThreadsPerThreadgroup];
-    v13 = [(MTLComputePipelineState *)self->_mattingDual threadExecutionWidth];
-    v17[0] = (v11 + v8 - 1) / v11;
-    v17[1] = (v12 / v13 + v9 - 1) / (v12 / v13);
+    width = [(MTLTexture *)self->_alphaTexture width];
+    height = [(MTLTexture *)self->_alphaTexture height];
+    computeCommandEncoder = [v7 computeCommandEncoder];
+    [computeCommandEncoder setComputePipelineState:self->_mattingDual];
+    [computeCommandEncoder setTexture:self->_cameraImageTexture atIndex:0];
+    [computeCommandEncoder setTexture:self->_overlayCoefficientsFG atIndex:1];
+    [computeCommandEncoder setTexture:self->_overlayCoefficientsBG atIndex:2];
+    [computeCommandEncoder setTexture:self->_alphaTexture atIndex:3];
+    threadExecutionWidth = [(MTLComputePipelineState *)self->_mattingDual threadExecutionWidth];
+    maxTotalThreadsPerThreadgroup = [(MTLComputePipelineState *)self->_mattingDual maxTotalThreadsPerThreadgroup];
+    threadExecutionWidth2 = [(MTLComputePipelineState *)self->_mattingDual threadExecutionWidth];
+    v17[0] = (threadExecutionWidth + width - 1) / threadExecutionWidth;
+    v17[1] = (maxTotalThreadsPerThreadgroup / threadExecutionWidth2 + height - 1) / (maxTotalThreadsPerThreadgroup / threadExecutionWidth2);
     v17[2] = 1;
-    v16[0] = v11;
-    v16[1] = v12 / v13;
+    v16[0] = threadExecutionWidth;
+    v16[1] = maxTotalThreadsPerThreadgroup / threadExecutionWidth2;
     v16[2] = 1;
-    [v10 dispatchThreadgroups:v17 threadsPerThreadgroup:v16];
-    [v10 endEncoding];
+    [computeCommandEncoder dispatchThreadgroups:v17 threadsPerThreadgroup:v16];
+    [computeCommandEncoder endEncoding];
     v14 = self->_alphaTexture;
   }
 
@@ -315,31 +315,31 @@ LABEL_10:
     Width = IOSurfaceGetWidth(IOSurface);
     v11 = [v9 texture2DDescriptorWithPixelFormat:55 width:Width height:IOSurfaceGetHeight(IOSurface) mipmapped:0];
     v12 = [(MTLDevice *)self->_device newTextureWithDescriptor:v11 iosurface:IOSurface plane:0];
-    v13 = [v7 computeCommandEncoder];
-    [v13 setLabel:@"Compute depth stencil dilation"];
+    computeCommandEncoder = [v7 computeCommandEncoder];
+    [computeCommandEncoder setLabel:@"Compute depth stencil dilation"];
     dilationRadius = self->_dilationRadius;
     v15 = 16 - 2 * dilationRadius;
-    v16 = [v12 width];
-    v17 = [v12 height];
-    v18 = (v16 - 2 * dilationRadius + 15) / v15;
+    width = [v12 width];
+    height = [v12 height];
+    v18 = (width - 2 * dilationRadius + 15) / v15;
     *&v19 = 0;
     v26[0] = 0u;
     v26[2] = 0u;
     LODWORD(v26[0]) = self->_dilationRadius;
     *(&v19 + 1) = LODWORD(self->_depthScale);
     v26[1] = v19;
-    v20 = (v17 - 2 * dilationRadius + 15) / v15;
-    [v13 setComputePipelineState:self->_depthDilation];
-    [v13 setTexture:v12 atIndex:0];
-    [v13 setTexture:self->_occluderDepthDilatedTexture atIndex:1];
-    [v13 setBytes:v26 length:48 atIndex:0];
+    v20 = (height - 2 * dilationRadius + 15) / v15;
+    [computeCommandEncoder setComputePipelineState:self->_depthDilation];
+    [computeCommandEncoder setTexture:v12 atIndex:0];
+    [computeCommandEncoder setTexture:self->_occluderDepthDilatedTexture atIndex:1];
+    [computeCommandEncoder setBytes:v26 length:48 atIndex:0];
     v25[0] = v18;
     v25[1] = v20;
     v25[2] = 1;
     v23 = vdupq_n_s64(0x10uLL);
     v24 = 1;
-    [v13 dispatchThreadgroups:v25 threadsPerThreadgroup:&v23];
-    [v13 endEncoding];
+    [computeCommandEncoder dispatchThreadgroups:v25 threadsPerThreadgroup:&v23];
+    [computeCommandEncoder endEncoding];
     v21 = self->_occluderDepthDilatedTexture;
   }
 

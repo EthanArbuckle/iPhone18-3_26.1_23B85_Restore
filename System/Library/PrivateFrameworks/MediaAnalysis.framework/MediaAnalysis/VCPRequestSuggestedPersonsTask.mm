@@ -1,31 +1,31 @@
 @interface VCPRequestSuggestedPersonsTask
-+ (id)taskWithPersonWithLocalIdentifier:(id)a3 toBeConfirmedPersonSuggestions:(id)a4 toBeRejectedPersonSuggestions:(id)a5 andPhotoLibraryURL:(id)a6 andProgressHandler:(id)a7 andReply:(id)a8;
++ (id)taskWithPersonWithLocalIdentifier:(id)identifier toBeConfirmedPersonSuggestions:(id)suggestions toBeRejectedPersonSuggestions:(id)personSuggestions andPhotoLibraryURL:(id)l andProgressHandler:(id)handler andReply:(id)reply;
 - (BOOL)isCanceled;
-- (VCPRequestSuggestedPersonsTask)initWithPersonWithLocalIdentifier:(id)a3 toBeConfirmedPersonSuggestions:(id)a4 toBeRejectedPersonSuggestions:(id)a5 andPhotoLibraryURL:(id)a6 andProgressHandler:(id)a7 andReply:(id)a8;
+- (VCPRequestSuggestedPersonsTask)initWithPersonWithLocalIdentifier:(id)identifier toBeConfirmedPersonSuggestions:(id)suggestions toBeRejectedPersonSuggestions:(id)personSuggestions andPhotoLibraryURL:(id)l andProgressHandler:(id)handler andReply:(id)reply;
 - (int)run;
 - (void)dealloc;
 @end
 
 @implementation VCPRequestSuggestedPersonsTask
 
-- (VCPRequestSuggestedPersonsTask)initWithPersonWithLocalIdentifier:(id)a3 toBeConfirmedPersonSuggestions:(id)a4 toBeRejectedPersonSuggestions:(id)a5 andPhotoLibraryURL:(id)a6 andProgressHandler:(id)a7 andReply:(id)a8
+- (VCPRequestSuggestedPersonsTask)initWithPersonWithLocalIdentifier:(id)identifier toBeConfirmedPersonSuggestions:(id)suggestions toBeRejectedPersonSuggestions:(id)personSuggestions andPhotoLibraryURL:(id)l andProgressHandler:(id)handler andReply:(id)reply
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a8;
+  identifierCopy = identifier;
+  suggestionsCopy = suggestions;
+  personSuggestionsCopy = personSuggestions;
+  lCopy = l;
+  replyCopy = reply;
   v24.receiver = self;
   v24.super_class = VCPRequestSuggestedPersonsTask;
   v19 = [(VCPRequestSuggestedPersonsTask *)&v24 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_personLocalIdentifier, a3);
-    objc_storeStrong(&v20->_toBeConfirmedPersonSuggestions, a4);
-    objc_storeStrong(&v20->_toBeRejectedPersonSuggestions, a5);
-    objc_storeStrong(&v20->_photoLibraryURL, a6);
-    v21 = objc_retainBlock(v18);
+    objc_storeStrong(&v19->_personLocalIdentifier, identifier);
+    objc_storeStrong(&v20->_toBeConfirmedPersonSuggestions, suggestions);
+    objc_storeStrong(&v20->_toBeRejectedPersonSuggestions, personSuggestions);
+    objc_storeStrong(&v20->_photoLibraryURL, l);
+    v21 = objc_retainBlock(replyCopy);
     reply = v20->_reply;
     v20->_reply = v21;
   }
@@ -33,15 +33,15 @@
   return v20;
 }
 
-+ (id)taskWithPersonWithLocalIdentifier:(id)a3 toBeConfirmedPersonSuggestions:(id)a4 toBeRejectedPersonSuggestions:(id)a5 andPhotoLibraryURL:(id)a6 andProgressHandler:(id)a7 andReply:(id)a8
++ (id)taskWithPersonWithLocalIdentifier:(id)identifier toBeConfirmedPersonSuggestions:(id)suggestions toBeRejectedPersonSuggestions:(id)personSuggestions andPhotoLibraryURL:(id)l andProgressHandler:(id)handler andReply:(id)reply
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  v19 = [[VCPRequestSuggestedPersonsTask alloc] initWithPersonWithLocalIdentifier:v13 toBeConfirmedPersonSuggestions:v14 toBeRejectedPersonSuggestions:v15 andPhotoLibraryURL:v16 andProgressHandler:v17 andReply:v18];
+  identifierCopy = identifier;
+  suggestionsCopy = suggestions;
+  personSuggestionsCopy = personSuggestions;
+  lCopy = l;
+  handlerCopy = handler;
+  replyCopy = reply;
+  v19 = [[VCPRequestSuggestedPersonsTask alloc] initWithPersonWithLocalIdentifier:identifierCopy toBeConfirmedPersonSuggestions:suggestionsCopy toBeRejectedPersonSuggestions:personSuggestionsCopy andPhotoLibraryURL:lCopy andProgressHandler:handlerCopy andReply:replyCopy];
 
   return v19;
 }

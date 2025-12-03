@@ -3,7 +3,7 @@
 - (NSArray)carFocusOrderSequences;
 - (_TtC4Maps35CarMapsDesignIntegrationTestContext)init;
 - (id)desiredCards;
-- (void)configureCard:(id)a3 forKey:(id)a4;
+- (void)configureCard:(id)card forKey:(id)key;
 @end
 
 @implementation CarMapsDesignIntegrationTestContext
@@ -35,9 +35,9 @@
   return v2.super.isa;
 }
 
-- (void)configureCard:(id)a3 forKey:(id)a4
+- (void)configureCard:(id)card forKey:(id)key
 {
-  if (a4)
+  if (key)
   {
     v6 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v8 = v7;
@@ -50,14 +50,14 @@
   }
 
   swift_unknownObjectRetain();
-  v9 = self;
-  sub_1001D29D0(a3, v6, v8);
+  selfCopy = self;
+  sub_1001D29D0(card, v6, v8);
   swift_unknownObjectRelease();
 }
 
 - ($F99D9A4FB75BC57F3386B8DC8EE08D7A)mapControlsConfiguration
 {
-  v4 = self;
+  selfCopy = self;
   v5 = sub_1001D2BB0();
   v7 = v6;
   v9 = v8;

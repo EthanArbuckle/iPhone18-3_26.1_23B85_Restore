@@ -1,62 +1,62 @@
 @interface SKUIScrollingSegmentedController
-- (BOOL)_configureSegment:(id)a3 forViewController:(id)a4;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5;
-- (SKUIScrollingSegmentedController)initWithNibName:(id)a3 bundle:(id)a4;
+- (BOOL)_configureSegment:(id)segment forViewController:(id)controller;
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path;
+- (SKUIScrollingSegmentedController)initWithNibName:(id)name bundle:(id)bundle;
 - (SKUIScrollingSegmentedControllerDelegate)delegate;
 - (UIEdgeInsets)_viewControllerContentScrollViewContentInset;
 - (UIEdgeInsets)segmentedControlContentEdgeInsets;
 - (UIScrollView)scrollingTabNestedPagingScrollView;
 - (double)segmentedControlHeight;
-- (id)_indexPathOfFocusedItemAllowingLayoutIfNeeded:(BOOL)a3;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
+- (id)_indexPathOfFocusedItemAllowingLayoutIfNeeded:(BOOL)needed;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
 - (id)contentScrollView;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
 - (int64_t)segmentedControlLayoutStyle;
 - (void)_reloadTitleSegments;
-- (void)_scrollToTitlesSelectionProgress:(double)a3 animated:(BOOL)a4;
-- (void)_setViewControllers:(id)a3 viewUpdatesHandler:(id)a4;
-- (void)_titlesSegmentedControlValueChangeAction:(id)a3;
+- (void)_scrollToTitlesSelectionProgress:(double)progress animated:(BOOL)animated;
+- (void)_setViewControllers:(id)controllers viewUpdatesHandler:(id)handler;
+- (void)_titlesSegmentedControlValueChangeAction:(id)action;
 - (void)_updateScrollViewContentOffsetsToTargetContentOffsets;
 - (void)_updateTitleValueObservation;
 - (void)_updateTitlesSelectionProgress;
 - (void)_updateViewBackgroundColor;
-- (void)_viewControllerNeedsContentScrollViewUpdates:(id)a3;
-- (void)collectionView:(id)a3 didEndDisplayingCell:(id)a4 forItemAtIndexPath:(id)a5;
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5;
-- (void)contentScrollViewDidChangeForScrollingSegmentedControllerItemContext:(id)a3;
+- (void)_viewControllerNeedsContentScrollViewUpdates:(id)updates;
+- (void)collectionView:(id)view didEndDisplayingCell:(id)cell forItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path;
+- (void)contentScrollViewDidChangeForScrollingSegmentedControllerItemContext:(id)context;
 - (void)dealloc;
-- (void)decodeRestorableStateWithCoder:(id)a3;
-- (void)encodeRestorableStateWithCoder:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)replaceViewControllerAtIndex:(unint64_t)a3 withViewController:(id)a4;
-- (void)scrollViewDidChangeContentInset:(id)a3;
-- (void)scrollViewDidEndDecelerating:(id)a3;
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewWillBeginDecelerating:(id)a3;
-- (void)scrollViewWillBeginDragging:(id)a3;
-- (void)scrollingSegmentedControllerCollectionViewDidLayoutSubviews:(id)a3;
-- (void)scrollingTabAppearanceStatusWasUpdated:(id)a3;
-- (void)selectViewControllerAtIndex:(unint64_t)a3 animated:(BOOL)a4;
-- (void)setClientContext:(id)a3;
-- (void)setMaximumContentWidth:(double)a3;
-- (void)setScrollEnabled:(BOOL)a3;
-- (void)setSegmentedControlContentEdgeInsets:(UIEdgeInsets)a3;
-- (void)setSegmentedControlHeight:(double)a3;
-- (void)setSegmentedControlLayoutStyle:(int64_t)a3;
-- (void)setViewControllers:(id)a3;
-- (void)setWantsWhiteBackgroundBeyondLeftEdgeWhenBouncing:(BOOL)a3;
-- (void)setWantsWhiteBackgroundBeyondRightEdgeWhenBouncing:(BOOL)a3;
+- (void)decodeRestorableStateWithCoder:(id)coder;
+- (void)encodeRestorableStateWithCoder:(id)coder;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)replaceViewControllerAtIndex:(unint64_t)index withViewController:(id)controller;
+- (void)scrollViewDidChangeContentInset:(id)inset;
+- (void)scrollViewDidEndDecelerating:(id)decelerating;
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewWillBeginDecelerating:(id)decelerating;
+- (void)scrollViewWillBeginDragging:(id)dragging;
+- (void)scrollingSegmentedControllerCollectionViewDidLayoutSubviews:(id)subviews;
+- (void)scrollingTabAppearanceStatusWasUpdated:(id)updated;
+- (void)selectViewControllerAtIndex:(unint64_t)index animated:(BOOL)animated;
+- (void)setClientContext:(id)context;
+- (void)setMaximumContentWidth:(double)width;
+- (void)setScrollEnabled:(BOOL)enabled;
+- (void)setSegmentedControlContentEdgeInsets:(UIEdgeInsets)insets;
+- (void)setSegmentedControlHeight:(double)height;
+- (void)setSegmentedControlLayoutStyle:(int64_t)style;
+- (void)setViewControllers:(id)controllers;
+- (void)setWantsWhiteBackgroundBeyondLeftEdgeWhenBouncing:(BOOL)bouncing;
+- (void)setWantsWhiteBackgroundBeyondRightEdgeWhenBouncing:(BOOL)bouncing;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
 
 @implementation SKUIScrollingSegmentedController
 
-- (SKUIScrollingSegmentedController)initWithNibName:(id)a3 bundle:(id)a4
+- (SKUIScrollingSegmentedController)initWithNibName:(id)name bundle:(id)bundle
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  bundleCopy = bundle;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIScrollingSegmentedController initWithNibName:bundle:];
@@ -64,7 +64,7 @@
 
   v11.receiver = self;
   v11.super_class = SKUIScrollingSegmentedController;
-  v8 = [(SKUIScrollingSegmentedController *)&v11 initWithNibName:v6 bundle:v7];
+  v8 = [(SKUIScrollingSegmentedController *)&v11 initWithNibName:nameCopy bundle:bundleCopy];
   v9 = v8;
   if (v8)
   {
@@ -124,12 +124,12 @@
   v35.receiver = self;
   v35.super_class = SKUIScrollingSegmentedController;
   [(SKUIScrollingSegmentedController *)&v35 viewDidLoad];
-  v3 = [(SKUIScrollingSegmentedController *)self view];
-  v4 = [MEMORY[0x277D75348] clearColor];
-  [v3 setBackgroundColor:v4];
+  view = [(SKUIScrollingSegmentedController *)self view];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [view setBackgroundColor:clearColor];
 
   self->_viewBackgroundIsWhite = 0;
-  [v3 bounds];
+  [view bounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -141,7 +141,7 @@
   v16 = *(MEMORY[0x277CBF3A0] + 24);
   v17 = [v13 initWithFrame:?];
   [v17 setHidden:1];
-  [v3 addSubview:v17];
+  [view addSubview:v17];
   self->_contentCollectionViewItemSize.width = v10;
   self->_contentCollectionViewItemSize.height = v12;
   v18 = objc_alloc_init(MEMORY[0x277D752F0]);
@@ -186,13 +186,13 @@
   contentCollectionView = self->_contentCollectionView;
   self->_contentCollectionView = v24;
 
-  v26 = [(SKUIScrollingSegmentedControllerCollectionView *)self->_contentCollectionView panGestureRecognizer];
-  [v26 _setHysteresis:15.0];
+  panGestureRecognizer = [(SKUIScrollingSegmentedControllerCollectionView *)self->_contentCollectionView panGestureRecognizer];
+  [panGestureRecognizer _setHysteresis:15.0];
 
   [(SKUIScrollingSegmentedControllerCollectionView *)self->_contentCollectionView setAllowsSelection:0];
   v27 = self->_contentCollectionView;
-  v28 = [MEMORY[0x277D75348] clearColor];
-  [(SKUIScrollingSegmentedControllerCollectionView *)v27 setBackgroundColor:v28];
+  clearColor2 = [MEMORY[0x277D75348] clearColor];
+  [(SKUIScrollingSegmentedControllerCollectionView *)v27 setBackgroundColor:clearColor2];
 
   [(SKUIScrollingSegmentedControllerCollectionView *)self->_contentCollectionView setDataSource:self];
   [(SKUIScrollingSegmentedControllerCollectionView *)self->_contentCollectionView setDelegate:self];
@@ -203,7 +203,7 @@
   [(SKUIScrollingSegmentedControllerCollectionView *)self->_contentCollectionView setShowsVerticalScrollIndicator:0];
   [(SKUIScrollingSegmentedControllerCollectionView *)self->_contentCollectionView setPagingEnabled:1];
   [(SKUIScrollingSegmentedControllerCollectionView *)self->_contentCollectionView setScrollEnabled:self->_scrollEnabled];
-  [v3 addSubview:self->_contentCollectionView];
+  [view addSubview:self->_contentCollectionView];
   [(SKUIScrollingSegmentedController *)self _updateViewBackgroundColor];
   v29 = [[SKUIInteractiveSegmentedControl alloc] initWithFrame:v34, v14, v15, v16];
   titlesSegmentedControl = self->_titlesSegmentedControl;
@@ -234,9 +234,9 @@ SKUIStandardInteractiveDividerView *__47__SKUIScrollingSegmentedController_viewD
   v32.receiver = self;
   v32.super_class = SKUIScrollingSegmentedController;
   [(SKUIScrollingSegmentedController *)&v32 viewDidLayoutSubviews];
-  v3 = [(SKUIScrollingSegmentedController *)self view];
-  [v3 setPreservesSuperviewLayoutMargins:1];
-  [v3 bounds];
+  view = [(SKUIScrollingSegmentedController *)self view];
+  [view setPreservesSuperviewLayoutMargins:1];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -244,11 +244,11 @@ SKUIStandardInteractiveDividerView *__47__SKUIScrollingSegmentedController_viewD
   proxyScrollView = self->_proxyScrollView;
   if (proxyScrollView)
   {
-    v13 = [(SKUIProxyScrollView *)proxyScrollView superview];
+    superview = [(SKUIProxyScrollView *)proxyScrollView superview];
 
-    if (!v13)
+    if (!superview)
     {
-      [v3 addSubview:self->_proxyScrollView];
+      [view addSubview:self->_proxyScrollView];
     }
   }
 
@@ -273,12 +273,12 @@ SKUIStandardInteractiveDividerView *__47__SKUIScrollingSegmentedController_viewD
 
     self->_contentCollectionViewItemSize.width = v9;
     self->_contentCollectionViewItemSize.height = v11;
-    v21 = [(SKUIScrollingSegmentedControllerCollectionView *)self->_contentCollectionView collectionViewLayout];
+    collectionViewLayout = [(SKUIScrollingSegmentedControllerCollectionView *)self->_contentCollectionView collectionViewLayout];
     v22 = objc_alloc_init([objc_opt_class() invalidationContextClass]);
 
     [v22 setInvalidateFlowLayoutDelegateMetrics:1];
-    v23 = [(SKUIScrollingSegmentedControllerCollectionView *)self->_contentCollectionView collectionViewLayout];
-    [v23 invalidateLayoutWithContext:v22];
+    collectionViewLayout2 = [(SKUIScrollingSegmentedControllerCollectionView *)self->_contentCollectionView collectionViewLayout];
+    [collectionViewLayout2 invalidateLayoutWithContext:v22];
   }
 
   v33.origin.x = v5;
@@ -316,8 +316,8 @@ SKUIStandardInteractiveDividerView *__47__SKUIScrollingSegmentedController_viewD
   {
     v28 = SKUIMPUFoundationFramework();
     v29 = SKUIWeakLinkedSymbolForString("MPUFloatEqualToFloat", v28);
-    v30 = [(SKUIScrollingSegmentedControllerCollectionView *)self->_contentCollectionView contentOffset];
-    if ((v29(v30, v15, v31) & 1) == 0)
+    contentOffset = [(SKUIScrollingSegmentedControllerCollectionView *)self->_contentCollectionView contentOffset];
+    if ((v29(contentOffset, v15, v31) & 1) == 0)
     {
       [(SKUIScrollingSegmentedControllerCollectionView *)self->_contentCollectionView setContentOffset:v15, v14];
     }
@@ -340,8 +340,8 @@ SKUIStandardInteractiveDividerView *__47__SKUIScrollingSegmentedController_viewD
     [(SKUIProxyScrollView *)self->_proxyScrollView setDelegate:self];
     [(SKUIProxyScrollView *)self->_proxyScrollView setScrollEnabled:0];
     [(SKUIProxyScrollView *)self->_proxyScrollView setScrollsToTop:0];
-    v6 = [(SKUIScrollingSegmentedController *)self view];
-    [v6 addSubview:self->_proxyScrollView];
+    view = [(SKUIScrollingSegmentedController *)self view];
+    [view addSubview:self->_proxyScrollView];
   }
 
   v7 = self->_proxyScrollView;
@@ -349,16 +349,16 @@ SKUIStandardInteractiveDividerView *__47__SKUIScrollingSegmentedController_viewD
   return v7;
 }
 
-- (void)decodeRestorableStateWithCoder:(id)a3
+- (void)decodeRestorableStateWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectForKey:@"_SKUIScrollingSegmentedControllerStateRestorationKeySelectedViewController"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectForKey:@"_SKUIScrollingSegmentedControllerStateRestorationKeySelectedViewController"];
   if (v5)
   {
-    v6 = [(SKUIScrollingSegmentedController *)self viewControllers];
-    if ([v6 count])
+    viewControllers = [(SKUIScrollingSegmentedController *)self viewControllers];
+    if ([viewControllers count])
     {
-      v7 = [v6 indexOfObject:v5];
+      v7 = [viewControllers indexOfObject:v5];
       if (v7 != 0x7FFFFFFFFFFFFFFFLL)
       {
         [(SKUIScrollingSegmentedController *)self selectViewControllerAtIndex:v7 animated:0];
@@ -368,33 +368,33 @@ SKUIStandardInteractiveDividerView *__47__SKUIScrollingSegmentedController_viewD
 
   v8.receiver = self;
   v8.super_class = SKUIScrollingSegmentedController;
-  [(SKUIScrollingSegmentedController *)&v8 decodeRestorableStateWithCoder:v4];
+  [(SKUIScrollingSegmentedController *)&v8 decodeRestorableStateWithCoder:coderCopy];
 }
 
-- (void)encodeRestorableStateWithCoder:(id)a3
+- (void)encodeRestorableStateWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(SKUIScrollingSegmentedController *)self focusedViewControllerIndex];
-  v6 = [(SKUIScrollingSegmentedController *)self viewControllers];
-  v7 = v6;
-  if (v5 != 0x7FFFFFFFFFFFFFFFLL && v5 < [v6 count])
+  coderCopy = coder;
+  focusedViewControllerIndex = [(SKUIScrollingSegmentedController *)self focusedViewControllerIndex];
+  viewControllers = [(SKUIScrollingSegmentedController *)self viewControllers];
+  v7 = viewControllers;
+  if (focusedViewControllerIndex != 0x7FFFFFFFFFFFFFFFLL && focusedViewControllerIndex < [viewControllers count])
   {
-    v8 = [v7 objectAtIndex:v5];
-    [v4 encodeObject:v8 forKey:@"_SKUIScrollingSegmentedControllerStateRestorationKeySelectedViewController"];
+    v8 = [v7 objectAtIndex:focusedViewControllerIndex];
+    [coderCopy encodeObject:v8 forKey:@"_SKUIScrollingSegmentedControllerStateRestorationKeySelectedViewController"];
   }
 
   v9.receiver = self;
   v9.super_class = SKUIScrollingSegmentedController;
-  [(SKUIScrollingSegmentedController *)&v9 encodeRestorableStateWithCoder:v4];
+  [(SKUIScrollingSegmentedController *)&v9 encodeRestorableStateWithCoder:coderCopy];
 }
 
-- (void)setClientContext:(id)a3
+- (void)setClientContext:(id)context
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  contextCopy = context;
   v15.receiver = self;
   v15.super_class = SKUIScrollingSegmentedController;
-  [(SKUIViewController *)&v15 setClientContext:v4];
+  [(SKUIViewController *)&v15 setClientContext:contextCopy];
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
@@ -417,7 +417,7 @@ SKUIStandardInteractiveDividerView *__47__SKUIScrollingSegmentedController_viewD
         v10 = *(*(&v11 + 1) + 8 * i);
         if ([v10 conformsToProtocol:{&unk_2828EAAC0, v11}])
         {
-          [v10 setClientContext:v4];
+          [v10 setClientContext:contextCopy];
         }
       }
 
@@ -428,14 +428,14 @@ SKUIStandardInteractiveDividerView *__47__SKUIScrollingSegmentedController_viewD
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (_SKUIScrollingSegmentTitleValueObservationContext == a6)
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if (_SKUIScrollingSegmentTitleValueObservationContext == context)
   {
-    v13 = v11;
+    v13 = objectCopy;
     viewControllers = self->_viewControllers;
     if (viewControllers)
     {
@@ -443,13 +443,13 @@ SKUIStandardInteractiveDividerView *__47__SKUIScrollingSegmentedController_viewD
       if (v15 != 0x7FFFFFFFFFFFFFFFLL)
       {
         v16 = v15;
-        v17 = [(SKUIInteractiveSegmentedControl *)self->_titlesSegmentedControl segments];
-        v18 = [v17 objectAtIndex:v16];
+        segments = [(SKUIInteractiveSegmentedControl *)self->_titlesSegmentedControl segments];
+        v18 = [segments objectAtIndex:v16];
 
         if ([(SKUIScrollingSegmentedController *)self _configureSegment:v18 forViewController:v13]&& [(SKUIScrollingSegmentedController *)self isViewLoaded])
         {
-          v19 = [(SKUIScrollingSegmentedController *)self view];
-          [v19 setNeedsLayout];
+          view = [(SKUIScrollingSegmentedController *)self view];
+          [view setNeedsLayout];
         }
       }
     }
@@ -459,20 +459,20 @@ SKUIStandardInteractiveDividerView *__47__SKUIScrollingSegmentedController_viewD
   {
     v20.receiver = self;
     v20.super_class = SKUIScrollingSegmentedController;
-    [(SKUIScrollingSegmentedController *)&v20 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(SKUIScrollingSegmentedController *)&v20 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 
-- (void)scrollViewDidChangeContentInset:(id)a3
+- (void)scrollViewDidChangeContentInset:(id)inset
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (self->_proxyScrollView == v4)
+  insetCopy = inset;
+  v5 = insetCopy;
+  if (self->_proxyScrollView == insetCopy)
   {
-    v6 = [(SKUIProxyScrollView *)v4 window];
+    window = [(SKUIProxyScrollView *)insetCopy window];
 
-    if (v6)
+    if (window)
     {
       [(SKUIProxyScrollView *)v5 contentInset];
       v11.f64[0] = v7;
@@ -490,12 +490,12 @@ SKUIStandardInteractiveDividerView *__47__SKUIScrollingSegmentedController_viewD
         v16 = v15;
         v18 = v17;
         v20 = v19;
-        v21 = [(SKUIScrollingSegmentedController *)self viewControllers];
+        viewControllers = [(SKUIScrollingSegmentedController *)self viewControllers];
         v27 = 0u;
         v28 = 0u;
         v29 = 0u;
         v30 = 0u;
-        v22 = [v21 countByEnumeratingWithState:&v27 objects:v31 count:16];
+        v22 = [viewControllers countByEnumeratingWithState:&v27 objects:v31 count:16];
         if (v22)
         {
           v23 = v22;
@@ -506,14 +506,14 @@ SKUIStandardInteractiveDividerView *__47__SKUIScrollingSegmentedController_viewD
             {
               if (*v28 != v24)
               {
-                objc_enumerationMutation(v21);
+                objc_enumerationMutation(viewControllers);
               }
 
               v26 = [(NSMapTable *)self->_viewControllerToItemContext objectForKey:*(*(&v27 + 1) + 8 * i)];
               [v26 applyNewContentInset:{v14, v16, v18, v20}];
             }
 
-            v23 = [v21 countByEnumeratingWithState:&v27 objects:v31 count:16];
+            v23 = [viewControllers countByEnumeratingWithState:&v27 objects:v31 count:16];
           }
 
           while (v23);
@@ -523,22 +523,22 @@ SKUIStandardInteractiveDividerView *__47__SKUIScrollingSegmentedController_viewD
   }
 }
 
-- (void)scrollingSegmentedControllerCollectionViewDidLayoutSubviews:(id)a3
+- (void)scrollingSegmentedControllerCollectionViewDidLayoutSubviews:(id)subviews
 {
-  if (self->_contentCollectionView == a3)
+  if (self->_contentCollectionView == subviews)
   {
     [(SKUIScrollingSegmentedController *)self _updateTitlesSelectionProgress];
-    v5 = [(SKUIScrollingSegmentedController *)self _indexPathOfFocusedItemAllowingLayoutIfNeeded:0];
-    v6 = v5;
-    if (v5)
+    item = [(SKUIScrollingSegmentedController *)self _indexPathOfFocusedItemAllowingLayoutIfNeeded:0];
+    v6 = item;
+    if (item)
     {
-      v8 = v5;
-      v5 = [v5 item];
+      v8 = item;
+      item = [item item];
       v6 = v8;
-      if (self->_focusedViewControllerIndex != v5)
+      if (self->_focusedViewControllerIndex != item)
       {
-        self->_focusedViewControllerIndex = v5;
-        if (v5 != 0x7FFFFFFFFFFFFFFFLL)
+        self->_focusedViewControllerIndex = item;
+        if (item != 0x7FFFFFFFFFFFFFFFLL)
         {
           WeakRetained = objc_loadWeakRetained(&self->_delegate);
           if (objc_opt_respondsToSelector())
@@ -556,21 +556,21 @@ SKUIStandardInteractiveDividerView *__47__SKUIScrollingSegmentedController_viewD
       self->_focusedViewControllerIndex = 0x7FFFFFFFFFFFFFFFLL;
     }
 
-    MEMORY[0x2821F96F8](v5, v6);
+    MEMORY[0x2821F96F8](item, v6);
   }
 }
 
-- (void)contentScrollViewDidChangeForScrollingSegmentedControllerItemContext:(id)a3
+- (void)contentScrollViewDidChangeForScrollingSegmentedControllerItemContext:(id)context
 {
-  v8 = a3;
+  contextCopy = context;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    v5 = [v8 viewController];
+    viewController = [contextCopy viewController];
     viewControllers = self->_viewControllers;
     if (viewControllers)
     {
-      v7 = [(NSArray *)viewControllers indexOfObject:v5];
+      v7 = [(NSArray *)viewControllers indexOfObject:viewController];
       if (v7 != 0x7FFFFFFFFFFFFFFFLL)
       {
         [WeakRetained scrollingSegmentedController:self contentScrollViewDidChangeForViewControllerAtIndex:v7];
@@ -579,9 +579,9 @@ SKUIStandardInteractiveDividerView *__47__SKUIScrollingSegmentedController_viewD
   }
 }
 
-- (void)scrollingTabAppearanceStatusWasUpdated:(id)a3
+- (void)scrollingTabAppearanceStatusWasUpdated:(id)updated
 {
-  self->_scrollingTabAppearanceStatus = a3;
+  self->_scrollingTabAppearanceStatus = updated;
   if ([(SKUIScrollingSegmentedController *)self isViewLoaded])
   {
 
@@ -591,15 +591,15 @@ SKUIStandardInteractiveDividerView *__47__SKUIScrollingSegmentedController_viewD
 
 - (UIScrollView)scrollingTabNestedPagingScrollView
 {
-  v3 = [(SKUIScrollingSegmentedController *)self view];
+  view = [(SKUIScrollingSegmentedController *)self view];
   contentCollectionView = self->_contentCollectionView;
 
   return contentCollectionView;
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
-  if (self->_contentCollectionView == a3)
+  if (self->_contentCollectionView == view)
   {
     return [(NSArray *)self->_viewControllers count];
   }
@@ -610,17 +610,17 @@ SKUIStandardInteractiveDividerView *__47__SKUIScrollingSegmentedController_viewD
   }
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  if (self->_contentCollectionView == a3)
+  if (self->_contentCollectionView == view)
   {
-    v7 = a4;
-    v4 = [a3 dequeueReusableCellWithReuseIdentifier:0x282809408 forIndexPath:v7];
+    pathCopy = path;
+    v4 = [view dequeueReusableCellWithReuseIdentifier:0x282809408 forIndexPath:pathCopy];
     viewControllers = self->_viewControllers;
-    v9 = [v7 item];
+    item = [pathCopy item];
 
-    v10 = [(NSArray *)viewControllers objectAtIndex:v9];
-    v11 = [v10 view];
+    v10 = [(NSArray *)viewControllers objectAtIndex:item];
+    view = [v10 view];
     v12 = [(NSMapTable *)self->_viewControllerToItemContext objectForKey:v10];
     [(SKUIScrollingSegmentedController *)self _viewControllerContentScrollViewContentInset];
     [v12 applyNewContentInset:?];
@@ -637,41 +637,41 @@ SKUIStandardInteractiveDividerView *__47__SKUIScrollingSegmentedController_viewD
   return v4;
 }
 
-- (void)collectionView:(id)a3 didEndDisplayingCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view didEndDisplayingCell:(id)cell forItemAtIndexPath:(id)path
 {
-  v7 = a5;
-  if (self->_contentCollectionView == a3)
+  pathCopy = path;
+  if (self->_contentCollectionView == view)
   {
-    v9 = v7;
-    v8 = [(SKUIScrollingSegmentedController *)self delegate];
+    v9 = pathCopy;
+    delegate = [(SKUIScrollingSegmentedController *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      [v8 scrollingSegmentedController:self didEndDisplayingViewControllerAtIndex:{objc_msgSend(v9, "item") % -[NSArray count](self->_viewControllers, "count")}];
+      [delegate scrollingSegmentedController:self didEndDisplayingViewControllerAtIndex:{objc_msgSend(v9, "item") % -[NSArray count](self->_viewControllers, "count")}];
     }
 
-    v7 = v9;
+    pathCopy = v9;
   }
 }
 
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path
 {
-  v7 = a5;
-  if (self->_contentCollectionView == a3)
+  pathCopy = path;
+  if (self->_contentCollectionView == view)
   {
-    v9 = v7;
-    v8 = [(SKUIScrollingSegmentedController *)self delegate];
+    v9 = pathCopy;
+    delegate = [(SKUIScrollingSegmentedController *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      [v8 scrollingSegmentedController:self willDisplayViewControllerAtIndex:{objc_msgSend(v9, "item") % -[NSArray count](self->_viewControllers, "count")}];
+      [delegate scrollingSegmentedController:self willDisplayViewControllerAtIndex:{objc_msgSend(v9, "item") % -[NSArray count](self->_viewControllers, "count")}];
     }
 
-    v7 = v9;
+    pathCopy = v9;
   }
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path
 {
-  if (self->_contentCollectionView == a3)
+  if (self->_contentCollectionView == view)
   {
     p_contentCollectionViewItemSize = &self->_contentCollectionViewItemSize;
   }
@@ -698,9 +698,9 @@ SKUIStandardInteractiveDividerView *__47__SKUIScrollingSegmentedController_viewD
   return result;
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  if (self->_contentCollectionView == a3)
+  if (self->_contentCollectionView == scroll)
   {
     [(SKUIScrollingSegmentedController *)self _updateTitlesSelectionProgress];
 
@@ -708,9 +708,9 @@ SKUIStandardInteractiveDividerView *__47__SKUIScrollingSegmentedController_viewD
   }
 }
 
-- (void)scrollViewDidEndDecelerating:(id)a3
+- (void)scrollViewDidEndDecelerating:(id)decelerating
 {
-  if (self->_contentCollectionView == a3)
+  if (self->_contentCollectionView == decelerating)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     v5 = objc_opt_respondsToSelector();
@@ -723,25 +723,25 @@ SKUIStandardInteractiveDividerView *__47__SKUIScrollingSegmentedController_viewD
   }
 }
 
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate
 {
-  if (self->_contentCollectionView == a3)
+  if (self->_contentCollectionView == dragging)
   {
-    v4 = a4;
+    decelerateCopy = decelerate;
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     v7 = objc_opt_respondsToSelector();
 
     if (v7)
     {
       v8 = objc_loadWeakRetained(&self->_delegate);
-      [v8 scrollingSegmentedControllerDidEndDragging:self willDecelerate:v4];
+      [v8 scrollingSegmentedControllerDidEndDragging:self willDecelerate:decelerateCopy];
     }
   }
 }
 
-- (void)scrollViewWillBeginDecelerating:(id)a3
+- (void)scrollViewWillBeginDecelerating:(id)decelerating
 {
-  if (self->_contentCollectionView == a3)
+  if (self->_contentCollectionView == decelerating)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     v5 = objc_opt_respondsToSelector();
@@ -754,9 +754,9 @@ SKUIStandardInteractiveDividerView *__47__SKUIScrollingSegmentedController_viewD
   }
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
-  if (self->_contentCollectionView == a3)
+  if (self->_contentCollectionView == dragging)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     v5 = objc_opt_respondsToSelector();
@@ -769,18 +769,18 @@ SKUIStandardInteractiveDividerView *__47__SKUIScrollingSegmentedController_viewD
   }
 }
 
-- (void)setMaximumContentWidth:(double)a3
+- (void)setMaximumContentWidth:(double)width
 {
   v15 = *MEMORY[0x277D85DE8];
-  if (vabdd_f64(self->_maximumContentWidth, a3) > 0.00000011920929)
+  if (vabdd_f64(self->_maximumContentWidth, width) > 0.00000011920929)
   {
-    self->_maximumContentWidth = a3;
+    self->_maximumContentWidth = width;
     v10 = 0u;
     v11 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v4 = [(SKUIScrollingSegmentedControllerCollectionView *)self->_contentCollectionView visibleCells];
-    v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+    visibleCells = [(SKUIScrollingSegmentedControllerCollectionView *)self->_contentCollectionView visibleCells];
+    v5 = [visibleCells countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v5)
     {
       v6 = v5;
@@ -791,7 +791,7 @@ SKUIStandardInteractiveDividerView *__47__SKUIScrollingSegmentedController_viewD
         {
           if (*v11 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(visibleCells);
           }
 
           v9 = *(*(&v10 + 1) + 8 * i);
@@ -802,7 +802,7 @@ SKUIStandardInteractiveDividerView *__47__SKUIScrollingSegmentedController_viewD
           }
         }
 
-        v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+        v6 = [visibleCells countByEnumeratingWithState:&v10 objects:v14 count:16];
       }
 
       while (v6);
@@ -810,24 +810,24 @@ SKUIStandardInteractiveDividerView *__47__SKUIScrollingSegmentedController_viewD
   }
 }
 
-- (void)setScrollEnabled:(BOOL)a3
+- (void)setScrollEnabled:(BOOL)enabled
 {
-  if (self->_scrollEnabled != a3)
+  if (self->_scrollEnabled != enabled)
   {
-    self->_scrollEnabled = a3;
+    self->_scrollEnabled = enabled;
     [(SKUIScrollingSegmentedControllerCollectionView *)self->_contentCollectionView setScrollEnabled:?];
   }
 }
 
-- (void)setViewControllers:(id)a3
+- (void)setViewControllers:(id)controllers
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __55__SKUIScrollingSegmentedController_setViewControllers___block_invoke;
   v5[3] = &unk_2781F80F0;
   v5[4] = self;
-  v4 = self;
-  [(SKUIScrollingSegmentedController *)v4 _setViewControllers:a3 viewUpdatesHandler:v5];
+  selfCopy = self;
+  [(SKUIScrollingSegmentedController *)selfCopy _setViewControllers:controllers viewUpdatesHandler:v5];
 }
 
 void __55__SKUIScrollingSegmentedController_setViewControllers___block_invoke(uint64_t a1)
@@ -847,8 +847,8 @@ void __55__SKUIScrollingSegmentedController_setViewControllers___block_invoke(ui
 
 - (UIEdgeInsets)segmentedControlContentEdgeInsets
 {
-  v2 = [(SKUIScrollingSegmentedController *)self navigationBarTitleView];
-  [v2 layoutMargins];
+  navigationBarTitleView = [(SKUIScrollingSegmentedController *)self navigationBarTitleView];
+  [navigationBarTitleView layoutMargins];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -865,72 +865,72 @@ void __55__SKUIScrollingSegmentedController_setViewControllers___block_invoke(ui
   return result;
 }
 
-- (void)setSegmentedControlContentEdgeInsets:(UIEdgeInsets)a3
+- (void)setSegmentedControlContentEdgeInsets:(UIEdgeInsets)insets
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
-  v7 = [(SKUIScrollingSegmentedController *)self navigationBarTitleView];
-  [v7 setLayoutMargins:{top, left, bottom, right}];
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  navigationBarTitleView = [(SKUIScrollingSegmentedController *)self navigationBarTitleView];
+  [navigationBarTitleView setLayoutMargins:{top, left, bottom, right}];
 }
 
 - (double)segmentedControlHeight
 {
-  v2 = [(SKUIScrollingSegmentedController *)self navigationBarTitleView];
-  [v2 segmentedControlMinimumHeight];
+  navigationBarTitleView = [(SKUIScrollingSegmentedController *)self navigationBarTitleView];
+  [navigationBarTitleView segmentedControlMinimumHeight];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setSegmentedControlHeight:(double)a3
+- (void)setSegmentedControlHeight:(double)height
 {
-  v4 = [(SKUIScrollingSegmentedController *)self navigationBarTitleView];
-  [v4 setSegmentedControlMinimumHeight:a3];
+  navigationBarTitleView = [(SKUIScrollingSegmentedController *)self navigationBarTitleView];
+  [navigationBarTitleView setSegmentedControlMinimumHeight:height];
 }
 
 - (int64_t)segmentedControlLayoutStyle
 {
-  v2 = [(SKUIScrollingSegmentedController *)self navigationBarTitleView];
-  v3 = [v2 layoutStyle];
+  navigationBarTitleView = [(SKUIScrollingSegmentedController *)self navigationBarTitleView];
+  layoutStyle = [navigationBarTitleView layoutStyle];
 
-  return v3;
+  return layoutStyle;
 }
 
-- (void)setSegmentedControlLayoutStyle:(int64_t)a3
+- (void)setSegmentedControlLayoutStyle:(int64_t)style
 {
-  v4 = [(SKUIScrollingSegmentedController *)self navigationBarTitleView];
-  [v4 setLayoutStyle:a3];
+  navigationBarTitleView = [(SKUIScrollingSegmentedController *)self navigationBarTitleView];
+  [navigationBarTitleView setLayoutStyle:style];
 }
 
-- (void)setWantsWhiteBackgroundBeyondLeftEdgeWhenBouncing:(BOOL)a3
+- (void)setWantsWhiteBackgroundBeyondLeftEdgeWhenBouncing:(BOOL)bouncing
 {
-  if (self->_wantsWhiteBackgroundBeyondLeftEdgeWhenBouncing != a3)
+  if (self->_wantsWhiteBackgroundBeyondLeftEdgeWhenBouncing != bouncing)
   {
-    self->_wantsWhiteBackgroundBeyondLeftEdgeWhenBouncing = a3;
+    self->_wantsWhiteBackgroundBeyondLeftEdgeWhenBouncing = bouncing;
     [(SKUIScrollingSegmentedController *)self _updateViewBackgroundColor];
   }
 }
 
-- (void)setWantsWhiteBackgroundBeyondRightEdgeWhenBouncing:(BOOL)a3
+- (void)setWantsWhiteBackgroundBeyondRightEdgeWhenBouncing:(BOOL)bouncing
 {
-  if (self->_wantsWhiteBackgroundBeyondRightEdgeWhenBouncing != a3)
+  if (self->_wantsWhiteBackgroundBeyondRightEdgeWhenBouncing != bouncing)
   {
-    self->_wantsWhiteBackgroundBeyondRightEdgeWhenBouncing = a3;
+    self->_wantsWhiteBackgroundBeyondRightEdgeWhenBouncing = bouncing;
     [(SKUIScrollingSegmentedController *)self _updateViewBackgroundColor];
   }
 }
 
-- (void)replaceViewControllerAtIndex:(unint64_t)a3 withViewController:(id)a4
+- (void)replaceViewControllerAtIndex:(unint64_t)index withViewController:(id)controller
 {
-  v6 = a4;
+  controllerCopy = controller;
   v7 = [(NSArray *)self->_viewControllers mutableCopy];
-  [v7 replaceObjectAtIndex:a3 withObject:v6];
-  v8 = [(NSArray *)self->_viewControllers objectAtIndex:a3];
-  v9 = [v8 title];
-  v10 = [v6 title];
-  v11 = [v9 isEqualToString:v10];
+  [v7 replaceObjectAtIndex:index withObject:controllerCopy];
+  v8 = [(NSArray *)self->_viewControllers objectAtIndex:index];
+  title = [v8 title];
+  title2 = [controllerCopy title];
+  v11 = [title isEqualToString:title2];
 
   if (v11)
   {
@@ -941,10 +941,10 @@ void __55__SKUIScrollingSegmentedController_setViewControllers___block_invoke(ui
     v14[3] = &unk_2781FB698;
     v14[4] = self;
     v16 = v12;
-    v17 = a3;
-    v15 = v6;
-    v13 = self;
-    [(SKUIScrollingSegmentedController *)v13 _setViewControllers:v7 viewUpdatesHandler:v14];
+    indexCopy = index;
+    v15 = controllerCopy;
+    selfCopy = self;
+    [(SKUIScrollingSegmentedController *)selfCopy _setViewControllers:v7 viewUpdatesHandler:v14];
   }
 
   else
@@ -1008,22 +1008,22 @@ LABEL_12:
   [v10 setViewController:*(a1 + 40)];
 }
 
-- (void)selectViewControllerAtIndex:(unint64_t)a3 animated:(BOOL)a4
+- (void)selectViewControllerAtIndex:(unint64_t)index animated:(BOOL)animated
 {
-  if (a3 != 0x7FFFFFFFFFFFFFFFLL)
+  if (index != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v4 = a4;
-    if ([(NSArray *)self->_viewControllers count]> a3)
+    animatedCopy = animated;
+    if ([(NSArray *)self->_viewControllers count]> index)
     {
       if (([(SKUIScrollingSegmentedController *)self isViewLoaded]& 1) == 0)
       {
-        v7 = [(SKUIScrollingSegmentedController *)self view];
-        [v7 layoutIfNeeded];
+        view = [(SKUIScrollingSegmentedController *)self view];
+        [view layoutIfNeeded];
       }
 
       [(SKUIScrollingSegmentedControllerCollectionView *)self->_contentCollectionView layoutIfNeeded];
       contentCollectionView = self->_contentCollectionView;
-      v9 = [MEMORY[0x277CCAA70] indexPathForItem:a3 inSection:0];
+      v9 = [MEMORY[0x277CCAA70] indexPathForItem:index inSection:0];
       v25 = [(SKUIScrollingSegmentedControllerCollectionView *)contentCollectionView layoutAttributesForItemAtIndexPath:v9];
 
       [v25 frame];
@@ -1041,15 +1041,15 @@ LABEL_12:
       v27.origin.y = v13;
       v27.size.width = v15;
       v27.size.height = v17;
-      [(SKUIScrollingSegmentedControllerCollectionView *)self->_contentCollectionView setContentOffset:v4 animated:CGRectGetMinX(v27) - v23, v24 - v21];
+      [(SKUIScrollingSegmentedControllerCollectionView *)self->_contentCollectionView setContentOffset:animatedCopy animated:CGRectGetMinX(v27) - v23, v24 - v21];
     }
   }
 }
 
-- (void)_titlesSegmentedControlValueChangeAction:(id)a3
+- (void)_titlesSegmentedControlValueChangeAction:(id)action
 {
   titlesSegmentedControl = self->_titlesSegmentedControl;
-  if (titlesSegmentedControl == a3)
+  if (titlesSegmentedControl == action)
   {
     [(SKUIInteractiveSegmentedControl *)titlesSegmentedControl selectionProgress];
 
@@ -1057,15 +1057,15 @@ LABEL_12:
   }
 }
 
-- (BOOL)_configureSegment:(id)a3 forViewController:(id)a4
+- (BOOL)_configureSegment:(id)segment forViewController:(id)controller
 {
-  v5 = a3;
-  v6 = [a4 navigationItem];
-  v7 = [v6 title];
+  segmentCopy = segment;
+  navigationItem = [controller navigationItem];
+  title = [navigationItem title];
 
-  if (v7)
+  if (title)
   {
-    v8 = v7;
+    v8 = title;
   }
 
   else
@@ -1074,25 +1074,25 @@ LABEL_12:
   }
 
   v9 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:v8];
-  v10 = [v5 attributedTitle];
-  v11 = v10;
-  if (v10 == v9 || ([v10 isEqualToAttributedString:v9] & 1) != 0)
+  attributedTitle = [segmentCopy attributedTitle];
+  v11 = attributedTitle;
+  if (attributedTitle == v9 || ([attributedTitle isEqualToAttributedString:v9] & 1) != 0)
   {
     v12 = 0;
   }
 
   else
   {
-    [v5 setAttributedTitle:v9];
+    [segmentCopy setAttributedTitle:v9];
     v12 = 1;
   }
 
   return v12;
 }
 
-- (id)_indexPathOfFocusedItemAllowingLayoutIfNeeded:(BOOL)a3
+- (id)_indexPathOfFocusedItemAllowingLayoutIfNeeded:(BOOL)needed
 {
-  v3 = a3;
+  neededCopy = needed;
   v32 = *MEMORY[0x277D85DE8];
   [(SKUIScrollingSegmentedControllerCollectionView *)self->_contentCollectionView bounds];
   UIRectGetCenter();
@@ -1102,7 +1102,7 @@ LABEL_12:
   v9 = self->_contentCollectionView;
   [(SKUIScrollingSegmentedControllerCollectionView *)v9 contentOffset];
   v11 = v10;
-  if (v3)
+  if (neededCopy)
   {
     [(SKUIScrollingSegmentedControllerCollectionView *)v9 layoutIfNeeded];
   }
@@ -1166,8 +1166,8 @@ LABEL_12:
 - (void)_reloadTitleSegments
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = [(SKUIInteractiveSegmentedControl *)self->_titlesSegmentedControl segments];
-  v4 = [v3 mutableCopy];
+  segments = [(SKUIInteractiveSegmentedControl *)self->_titlesSegmentedControl segments];
+  v4 = [segments mutableCopy];
 
   v17 = 0u;
   v18 = 0u;
@@ -1190,10 +1190,10 @@ LABEL_12:
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
-        v12 = [v4 firstObject];
-        if (v12)
+        firstObject = [v4 firstObject];
+        if (firstObject)
         {
-          v13 = v12;
+          v13 = firstObject;
           [v4 removeObjectAtIndex:0];
         }
 
@@ -1224,13 +1224,13 @@ LABEL_12:
 
   [(SKUIInteractiveSegmentedControl *)self->_titlesSegmentedControl setSegments:v8];
   [(SKUIScrollingSegmentedController *)self _updateTitlesSelectionProgress];
-  v14 = [(SKUIScrollingSegmentedController *)self navigationBarTitleView];
-  [v14 sizeToFit];
+  navigationBarTitleView = [(SKUIScrollingSegmentedController *)self navigationBarTitleView];
+  [navigationBarTitleView sizeToFit];
 }
 
-- (void)_scrollToTitlesSelectionProgress:(double)a3 animated:(BOOL)a4
+- (void)_scrollToTitlesSelectionProgress:(double)progress animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   [(SKUIScrollingSegmentedControllerCollectionView *)self->_contentCollectionView contentSize];
   v7 = v6;
   [(SKUIScrollingSegmentedControllerCollectionView *)self->_contentCollectionView bounds];
@@ -1245,20 +1245,20 @@ LABEL_12:
   v15 = v14;
   [(SKUIScrollingSegmentedControllerCollectionView *)self->_contentCollectionView contentOffset];
   v27 = v16;
-  v17 = [(SKUIInteractiveSegmentedControl *)self->_titlesSegmentedControl segments];
-  v18 = 1.0 / [v17 count];
+  segments = [(SKUIInteractiveSegmentedControl *)self->_titlesSegmentedControl segments];
+  v18 = 1.0 / [segments count];
 
   v19 = 0.0;
   if (1.0 - v18 > 0.00000011920929)
   {
-    v19 = (a3 + v18 * -0.5) / (1.0 - v18);
+    v19 = (progress + v18 * -0.5) / (1.0 - v18);
   }
 
   v20 = v11 * v19 - v15;
-  v21 = [MEMORY[0x277D75128] sharedApplication];
-  v22 = [v21 userInterfaceLayoutDirection];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  userInterfaceLayoutDirection = [mEMORY[0x277D75128] userInterfaceLayoutDirection];
 
-  if (v22 == 1)
+  if (userInterfaceLayoutDirection == 1)
   {
     v30.origin.x = x;
     v30.origin.y = y;
@@ -1269,21 +1269,21 @@ LABEL_12:
 
   contentCollectionView = self->_contentCollectionView;
 
-  [(SKUIScrollingSegmentedControllerCollectionView *)contentCollectionView setContentOffset:v4 animated:v20, v13 + v27 - v13];
+  [(SKUIScrollingSegmentedControllerCollectionView *)contentCollectionView setContentOffset:animatedCopy animated:v20, v13 + v27 - v13];
 }
 
-- (void)_setViewControllers:(id)a3 viewUpdatesHandler:(id)a4
+- (void)_setViewControllers:(id)controllers viewUpdatesHandler:(id)handler
 {
   v80 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  controllersCopy = controllers;
+  handlerCopy = handler;
   viewControllers = self->_viewControllers;
-  if (viewControllers != v6 && ![(NSArray *)viewControllers isEqualToArray:v6])
+  if (viewControllers != controllersCopy && ![(NSArray *)viewControllers isEqualToArray:controllersCopy])
   {
-    v57 = v7;
+    v57 = handlerCopy;
     v9 = [(NSArray *)self->_viewControllers copy];
-    v56 = v6;
-    v10 = [(NSArray *)v6 copy];
+    v56 = controllersCopy;
+    v10 = [(NSArray *)controllersCopy copy];
     v11 = self->_viewControllers;
     self->_viewControllers = v10;
 
@@ -1314,9 +1314,9 @@ LABEL_12:
           v21 = *(*(&v72 + 1) + 8 * i);
           if (![(NSArray *)self->_viewControllers containsObject:v21])
           {
-            v22 = [v21 parentViewController];
+            parentViewController = [v21 parentViewController];
 
-            if (v22 == self)
+            if (parentViewController == self)
             {
               [v58 addObject:v21];
               [v21 willMoveToParentViewController:0];
@@ -1326,8 +1326,8 @@ LABEL_12:
             [v23 applyNewContentInset:{v16, v17, v18, v19}];
             if ([v21 isViewLoaded])
             {
-              v24 = [v21 view];
-              [v24 removeFromSuperview];
+              view = [v21 view];
+              [view removeFromSuperview];
             }
 
             [(NSMapTable *)self->_viewControllerToItemContext removeObjectForKey:v21];
@@ -1368,8 +1368,8 @@ LABEL_12:
             [v25 addObject:v32];
             if ([v32 conformsToProtocol:&unk_2828EAAC0])
             {
-              v33 = [(SKUIViewController *)self clientContext];
-              [v32 setClientContext:v33];
+              clientContext = [(SKUIViewController *)self clientContext];
+              [v32 setClientContext:clientContext];
             }
 
             [(SKUIScrollingSegmentedController *)self addChildViewController:v32];
@@ -1476,8 +1476,8 @@ LABEL_12:
     }
 
     [(SKUIScrollingSegmentedController *)self _updateTitleValueObservation];
-    v6 = v56;
-    v7 = v57;
+    controllersCopy = v56;
+    handlerCopy = v57;
   }
 }
 
@@ -1485,8 +1485,8 @@ LABEL_12:
 {
   if ([(SKUIScrollingSegmentedController *)self isViewLoaded])
   {
-    v3 = [(SKUIScrollingSegmentedController *)self view];
-    [v3 bounds];
+    view = [(SKUIScrollingSegmentedController *)self view];
+    [view bounds];
     Width = CGRectGetWidth(v12);
 
     [(SKUIScrollingSegmentedControllerCollectionView *)self->_contentCollectionView contentSize];
@@ -1524,8 +1524,8 @@ LABEL_12:
   v7 = v6;
   [(SKUIScrollingSegmentedControllerCollectionView *)self->_contentCollectionView contentOffset];
   v9 = (v7 + v8) / v5;
-  v10 = [(SKUIInteractiveSegmentedControl *)self->_titlesSegmentedControl segments];
-  v11 = 1.0 / [v10 count];
+  segments = [(SKUIInteractiveSegmentedControl *)self->_titlesSegmentedControl segments];
+  v11 = 1.0 / [segments count];
 
   v12 = v11 * 0.5 + (1.0 - v11) * v9;
   if (v12 < v11 * 0.5)
@@ -1543,11 +1543,11 @@ LABEL_12:
     v13 = v12;
   }
 
-  v14 = [MEMORY[0x277D75128] sharedApplication];
-  v15 = [v14 userInterfaceLayoutDirection];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  userInterfaceLayoutDirection = [mEMORY[0x277D75128] userInterfaceLayoutDirection];
 
   v16 = 1.0 - v13;
-  if (v15 != 1)
+  if (userInterfaceLayoutDirection != 1)
   {
     v16 = v13;
   }
@@ -1560,13 +1560,13 @@ LABEL_12:
 - (void)_updateTitleValueObservation
 {
   v30 = *MEMORY[0x277D85DE8];
-  v3 = [(SKUIScrollingSegmentedController *)self viewControllers];
+  viewControllers = [(SKUIScrollingSegmentedController *)self viewControllers];
   v4 = [(NSMutableArray *)self->_titleObservingViewControllers mutableCopy];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  obj = v3;
+  obj = viewControllers;
   v5 = [obj countByEnumeratingWithState:&v24 objects:v29 count:16];
   if (v5)
   {
@@ -1688,8 +1688,8 @@ LABEL_9:
       [MEMORY[0x277D75348] clearColor];
     }
     v11 = ;
-    v10 = [(SKUIScrollingSegmentedController *)self view];
-    [v10 setBackgroundColor:v11];
+    view = [(SKUIScrollingSegmentedController *)self view];
+    [view setBackgroundColor:v11];
   }
 }
 
@@ -1706,9 +1706,9 @@ LABEL_9:
   return result;
 }
 
-- (void)_viewControllerNeedsContentScrollViewUpdates:(id)a3
+- (void)_viewControllerNeedsContentScrollViewUpdates:(id)updates
 {
-  v3 = [(NSMapTable *)self->_viewControllerToItemContext objectForKey:a3];
+  v3 = [(NSMapTable *)self->_viewControllerToItemContext objectForKey:updates];
   [v3 updateAppliedContentInsetsAdjustment];
 }
 

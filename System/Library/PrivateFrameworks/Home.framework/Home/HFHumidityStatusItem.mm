@@ -1,13 +1,13 @@
 @interface HFHumidityStatusItem
-+ (id)titleStringForState:(int64_t)a3;
-+ (unint64_t)abstractCurrentModeInResponse:(id)a3;
-+ (unint64_t)abstractTargetModeInResponse:(id)a3;
-- (id)iconDescriptorForRepresentedHomeKitObjects:(id)a3;
++ (id)titleStringForState:(int64_t)state;
++ (unint64_t)abstractCurrentModeInResponse:(id)response;
++ (unint64_t)abstractTargetModeInResponse:(id)response;
+- (id)iconDescriptorForRepresentedHomeKitObjects:(id)objects;
 @end
 
 @implementation HFHumidityStatusItem
 
-- (id)iconDescriptorForRepresentedHomeKitObjects:(id)a3
+- (id)iconDescriptorForRepresentedHomeKitObjects:(id)objects
 {
   v3 = [[HFImageIconDescriptor alloc] initWithSystemImageNamed:@"humidity.fill"];
 
@@ -56,29 +56,29 @@ uint64_t __46__HFHumidityStatusItem_displayValueComparator__block_invoke_2(uint6
   return v4;
 }
 
-+ (id)titleStringForState:(int64_t)a3
++ (id)titleStringForState:(int64_t)state
 {
-  if (a3 > 4)
+  if (state > 4)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = _HFLocalizedStringWithDefaultValue(off_277DFDE58[a3], off_277DFDE58[a3], 1);
+    v4 = _HFLocalizedStringWithDefaultValue(off_277DFDE58[state], off_277DFDE58[state], 1);
   }
 
   return v4;
 }
 
-+ (unint64_t)abstractTargetModeInResponse:(id)a3
++ (unint64_t)abstractTargetModeInResponse:(id)response
 {
   v3 = *MEMORY[0x277CCF748];
-  v4 = a3;
-  v5 = [v4 responseForCharacteristicType:v3];
+  responseCopy = response;
+  v5 = [responseCopy responseForCharacteristicType:v3];
   v6 = [v5 valueWithExpectedClass:objc_opt_class()];
 
-  v7 = [v4 responseForCharacteristicType:*MEMORY[0x277CCFB30]];
+  v7 = [responseCopy responseForCharacteristicType:*MEMORY[0x277CCFB30]];
 
   v8 = [v7 valueWithExpectedClass:objc_opt_class()];
 
@@ -105,14 +105,14 @@ uint64_t __46__HFHumidityStatusItem_displayValueComparator__block_invoke_2(uint6
   return v10;
 }
 
-+ (unint64_t)abstractCurrentModeInResponse:(id)a3
++ (unint64_t)abstractCurrentModeInResponse:(id)response
 {
   v3 = *MEMORY[0x277CCF828];
-  v4 = a3;
-  v5 = [v4 responseForCharacteristicType:v3];
+  responseCopy = response;
+  v5 = [responseCopy responseForCharacteristicType:v3];
   v6 = [v5 valueWithExpectedClass:objc_opt_class()];
 
-  v7 = [v4 responseForCharacteristicType:*MEMORY[0x277CCF748]];
+  v7 = [responseCopy responseForCharacteristicType:*MEMORY[0x277CCF748]];
 
   v8 = [v7 valueWithExpectedClass:objc_opt_class()];
 
@@ -133,15 +133,15 @@ uint64_t __46__HFHumidityStatusItem_displayValueComparator__block_invoke_2(uint6
 
   else
   {
-    v11 = [v6 integerValue];
-    if (v11 == 3)
+    integerValue = [v6 integerValue];
+    if (integerValue == 3)
     {
       v10 = 2;
     }
 
     else
     {
-      v10 = v11 == 2;
+      v10 = integerValue == 2;
     }
   }
 

@@ -2,7 +2,7 @@
 - (BOOL)assetCollectionTitlePropertiesChanged;
 - (BOOL)assetContentChanged;
 - (BOOL)objectWasDeleted;
-- (PHObjectChangeDetails)initWithPHObject:(id)a3;
+- (PHObjectChangeDetails)initWithPHObject:(id)object;
 - (id)description;
 - (id)objectAfterChanges;
 - (void)_calculateDiffs;
@@ -15,9 +15,9 @@
   v8.receiver = self;
   v8.super_class = PHObjectChangeDetails;
   v3 = [(PHObjectChangeDetails *)&v8 description];
-  v4 = [(PHObjectChangeDetails *)self objectBeforeChanges];
-  v5 = [(PHObjectChangeDetails *)self objectAfterChanges];
-  v6 = [v3 stringByAppendingFormat:@" before=%@, after=%@, assetContentChanged=%d", v4, v5, -[PHObjectChangeDetails assetContentChanged](self, "assetContentChanged")];
+  objectBeforeChanges = [(PHObjectChangeDetails *)self objectBeforeChanges];
+  objectAfterChanges = [(PHObjectChangeDetails *)self objectAfterChanges];
+  v6 = [v3 stringByAppendingFormat:@" before=%@, after=%@, assetContentChanged=%d", objectBeforeChanges, objectAfterChanges, -[PHObjectChangeDetails assetContentChanged](self, "assetContentChanged")];
 
   return v6;
 }
@@ -25,9 +25,9 @@
 - (BOOL)objectWasDeleted
 {
   v2 = PLResultWithUnfairLock();
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 uint64_t __41__PHObjectChangeDetails_objectWasDeleted__block_invoke(uint64_t a1)
@@ -51,9 +51,9 @@ uint64_t __41__PHObjectChangeDetails_objectWasDeleted__block_invoke(uint64_t a1)
 - (BOOL)assetCollectionTitlePropertiesChanged
 {
   v2 = PLResultWithUnfairLock();
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 uint64_t __62__PHObjectChangeDetails_assetCollectionTitlePropertiesChanged__block_invoke(uint64_t a1)
@@ -68,9 +68,9 @@ uint64_t __62__PHObjectChangeDetails_assetCollectionTitlePropertiesChanged__bloc
 - (BOOL)assetContentChanged
 {
   v2 = PLResultWithUnfairLock();
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 uint64_t __44__PHObjectChangeDetails_assetContentChanged__block_invoke(uint64_t a1)
@@ -87,8 +87,8 @@ uint64_t __44__PHObjectChangeDetails_assetContentChanged__block_invoke(uint64_t 
   os_unfair_lock_assert_owner(&self->_stateLock);
   if (!self->_objectAfterChanges)
   {
-    v3 = [(PHObject *)self->_objectBeforeChanges photoLibrary];
-    v4 = [v3 fetchUpdatedObject:self->_objectBeforeChanges];
+    photoLibrary = [(PHObject *)self->_objectBeforeChanges photoLibrary];
+    v4 = [photoLibrary fetchUpdatedObject:self->_objectBeforeChanges];
     objectAfterChanges = self->_objectAfterChanges;
     self->_objectAfterChanges = v4;
 
@@ -109,16 +109,16 @@ uint64_t __44__PHObjectChangeDetails_assetContentChanged__block_invoke(uint64_t 
         {
           v19 = self->_objectBeforeChanges;
           v7 = self->_objectAfterChanges;
-          v8 = [(PHObject *)v19 localizedTitle];
-          v9 = [(PHObject *)v7 localizedTitle];
-          v10 = v9;
-          if (v8 == v9)
+          localizedTitle = [(PHObject *)v19 localizedTitle];
+          localizedTitle2 = [(PHObject *)v7 localizedTitle];
+          v10 = localizedTitle2;
+          if (localizedTitle == localizedTitle2)
           {
           }
 
           else
           {
-            v11 = [v8 isEqualToString:v9];
+            v11 = [localizedTitle isEqualToString:localizedTitle2];
 
             if ((v11 & 1) == 0)
             {
@@ -129,16 +129,16 @@ uint64_t __44__PHObjectChangeDetails_assetContentChanged__block_invoke(uint64_t 
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v12 = [(PHObject *)v19 subtitle];
-            v13 = [(PHObject *)v7 subtitle];
-            v14 = v13;
-            if (v12 == v13)
+            subtitle = [(PHObject *)v19 subtitle];
+            subtitle2 = [(PHObject *)v7 subtitle];
+            v14 = subtitle2;
+            if (subtitle == subtitle2)
             {
             }
 
             else
             {
-              v15 = [v12 isEqualToString:v13];
+              v15 = [subtitle isEqualToString:subtitle2];
 
               if ((v15 & 1) == 0)
               {
@@ -152,16 +152,16 @@ LABEL_21:
             }
           }
 
-          v17 = [(PHObject *)v19 titleFontName];
-          v18 = [(PHObject *)v7 titleFontName];
-          if (v17 == v18)
+          titleFontName = [(PHObject *)v19 titleFontName];
+          titleFontName2 = [(PHObject *)v7 titleFontName];
+          if (titleFontName == titleFontName2)
           {
             v16 = 0;
           }
 
           else
           {
-            v16 = [v17 isEqualToString:v18] ^ 1;
+            v16 = [titleFontName isEqualToString:titleFontName2] ^ 1;
           }
 
           goto LABEL_21;
@@ -194,16 +194,16 @@ id __43__PHObjectChangeDetails_objectAfterChanges__block_invoke(uint64_t a1)
   return v2;
 }
 
-- (PHObjectChangeDetails)initWithPHObject:(id)a3
+- (PHObjectChangeDetails)initWithPHObject:(id)object
 {
-  v5 = a3;
+  objectCopy = object;
   v9.receiver = self;
   v9.super_class = PHObjectChangeDetails;
   v6 = [(PHObjectChangeDetails *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_objectBeforeChanges, a3);
+    objc_storeStrong(&v6->_objectBeforeChanges, object);
     v7->_stateLock._os_unfair_lock_opaque = 0;
   }
 

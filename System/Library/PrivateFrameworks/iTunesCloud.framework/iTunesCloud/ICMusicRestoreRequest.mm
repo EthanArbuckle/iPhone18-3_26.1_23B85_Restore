@@ -1,40 +1,40 @@
 @interface ICMusicRestoreRequest
-- (ICMusicRestoreRequest)initWithRequestContext:(id)a3 parameters:(id)a4;
-- (id)_serializedBodyDataWithAccountID:(id)a3;
+- (ICMusicRestoreRequest)initWithRequestContext:(id)context parameters:(id)parameters;
+- (id)_serializedBodyDataWithAccountID:(id)d;
 - (void)cancel;
 - (void)execute;
-- (void)performRestoreRequestWithCompletionHandler:(id)a3;
+- (void)performRestoreRequestWithCompletionHandler:(id)handler;
 @end
 
 @implementation ICMusicRestoreRequest
 
-- (id)_serializedBodyDataWithAccountID:(id)a3
+- (id)_serializedBodyDataWithAccountID:(id)d
 {
   v55 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF90] dictionary];
+  dCopy = d;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v6 = +[ICDeviceInfo currentDeviceInfo];
-  v7 = [v6 deviceName];
+  deviceName = [v6 deviceName];
 
-  if (v7)
+  if (deviceName)
   {
-    [v5 setObject:v7 forKey:@"device-name"];
+    [dictionary setObject:deviceName forKey:@"device-name"];
   }
 
   v8 = +[ICDeviceInfo currentDeviceInfo];
-  v9 = [v8 deviceGUID];
+  deviceGUID = [v8 deviceGUID];
 
-  if (v9)
+  if (deviceGUID)
   {
-    [v5 setObject:v9 forKey:@"guid"];
+    [dictionary setObject:deviceGUID forKey:@"guid"];
   }
 
   v10 = +[ICDeviceInfo currentDeviceInfo];
-  v11 = [v10 serialNumber];
+  serialNumber = [v10 serialNumber];
 
-  if (v11)
+  if (serialNumber)
   {
-    [v5 setObject:v11 forKey:@"serial-number"];
+    [dictionary setObject:serialNumber forKey:@"serial-number"];
   }
 
   v47 = 0;
@@ -45,14 +45,14 @@
   {
     v45 = 0;
     v44 = v13;
-    v14 = ICFairPlayCopyKeyBagSyncDataWithContextID(v47, [v4 unsignedLongLongValue], 1, &v45, &v44);
+    v14 = ICFairPlayCopyKeyBagSyncDataWithContextID(v47, [dCopy unsignedLongLongValue], 1, &v45, &v44);
     v15 = v45;
     v16 = v44;
 
     v42 = v16;
     if (v14)
     {
-      [v5 setObject:v15 forKey:@"kbsync"];
+      [dictionary setObject:v15 forKey:@"kbsync"];
     }
 
     else
@@ -61,7 +61,7 @@
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543874;
-        v50 = self;
+        selfCopy3 = self;
         v51 = 2114;
         v52 = 0;
         v53 = 2114;
@@ -77,7 +77,7 @@
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v50 = self;
+      selfCopy3 = self;
       v51 = 2114;
       v52 = v13;
       _os_log_impl(&dword_1B4491000, v17, OS_LOG_TYPE_DEFAULT, "%{public}@ Getting context ID failed with error: %{public}@", buf, 0x16u);
@@ -90,40 +90,40 @@
   requestParameters = self->_requestParameters;
   if (requestParameters)
   {
-    v39 = v9;
+    v39 = deviceGUID;
     v20 = MEMORY[0x1E695DF20];
-    v21 = [(ICMusicRestoreRequestParameters *)requestParameters adamID];
+    adamID = [(ICMusicRestoreRequestParameters *)requestParameters adamID];
     [(ICMusicRestoreRequestParameters *)self->_requestParameters flavor];
-    v22 = v38 = v11;
-    v23 = [(ICMusicRestoreRequestParameters *)self->_requestParameters storeFrontID];
+    v22 = v38 = serialNumber;
+    storeFrontID = [(ICMusicRestoreRequestParameters *)self->_requestParameters storeFrontID];
     [(ICMusicRestoreRequestParameters *)self->_requestParameters mediaKind];
     v24 = v37 = v15;
     [(ICMusicRestoreRequestParameters *)self->_requestParameters accountID];
-    v40 = v5;
-    v41 = v7;
-    v26 = v25 = v4;
+    v40 = dictionary;
+    v41 = deviceName;
+    v26 = v25 = dCopy;
     [(ICMusicRestoreRequestParameters *)self->_requestParameters title];
     v28 = v27 = self;
-    v29 = [(ICMusicRestoreRequestParameters *)v27->_requestParameters matchStatus];
-    v30 = [v20 dictionaryWithObjectsAndKeys:{v21, @"item-id", v22, @"flavor", v23, @"store-front-id", v24, @"kind", v26, @"account-id", v28, @"title", v29, @"match-status", 0}];
+    matchStatus = [(ICMusicRestoreRequestParameters *)v27->_requestParameters matchStatus];
+    v30 = [v20 dictionaryWithObjectsAndKeys:{adamID, @"item-id", v22, @"flavor", storeFrontID, @"store-front-id", v24, @"kind", v26, @"account-id", v28, @"title", matchStatus, @"match-status", 0}];
 
     self = v27;
-    v4 = v25;
-    v5 = v40;
-    v7 = v41;
+    dCopy = v25;
+    dictionary = v40;
+    deviceName = v41;
 
     v15 = v37;
-    v11 = v38;
+    serialNumber = v38;
 
     v48 = v30;
     v31 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v48 count:1];
     [v40 setValue:v31 forKey:@"items"];
 
-    v9 = v39;
+    deviceGUID = v39;
   }
 
   v43 = 0;
-  v32 = [MEMORY[0x1E696AE40] dataWithPropertyList:v5 format:100 options:0 error:&v43];
+  v32 = [MEMORY[0x1E696AE40] dataWithPropertyList:dictionary format:100 options:0 error:&v43];
   v33 = v43;
 
   if (!v32)
@@ -133,7 +133,7 @@
     if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v50 = self;
+      selfCopy3 = self;
       v51 = 2114;
       v52 = v33;
       _os_log_impl(&dword_1B4491000, v35, OS_LOG_TYPE_DEFAULT, "%{public}@ Serializing request body failed with error: %{public}@", buf, 0x16u);
@@ -181,9 +181,9 @@ LABEL_5:
   }
 
   v7 = +[ICDeviceInfo currentDeviceInfo];
-  v8 = [v7 isIPod];
+  isIPod = [v7 isIPod];
 
-  if (v8)
+  if (isIPod)
   {
     goto LABEL_5;
   }
@@ -466,16 +466,16 @@ void __32__ICMusicRestoreRequest_execute__block_invoke_62(uint64_t a1, void *a2,
   [*(a1 + 32) finishWithError:v5];
 }
 
-- (void)performRestoreRequestWithCompletionHandler:(id)a3
+- (void)performRestoreRequestWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __68__ICMusicRestoreRequest_performRestoreRequestWithCompletionHandler___block_invoke;
   v6[3] = &unk_1E7BFA490;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = handlerCopy;
+  v5 = handlerCopy;
   [(ICRequestOperation *)self performRequestWithCompletionHandler:v6];
 }
 
@@ -499,18 +499,18 @@ void __68__ICMusicRestoreRequest_performRestoreRequestWithCompletionHandler___bl
   *(v8 + 304) = 0;
 }
 
-- (ICMusicRestoreRequest)initWithRequestContext:(id)a3 parameters:(id)a4
+- (ICMusicRestoreRequest)initWithRequestContext:(id)context parameters:(id)parameters
 {
-  v7 = a3;
-  v8 = a4;
+  contextCopy = context;
+  parametersCopy = parameters;
   v12.receiver = self;
   v12.super_class = ICMusicRestoreRequest;
   v9 = [(ICRequestOperation *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_requestContext, a3);
-    objc_storeStrong(&v10->_requestParameters, a4);
+    objc_storeStrong(&v9->_requestContext, context);
+    objc_storeStrong(&v10->_requestParameters, parameters);
   }
 
   return v10;

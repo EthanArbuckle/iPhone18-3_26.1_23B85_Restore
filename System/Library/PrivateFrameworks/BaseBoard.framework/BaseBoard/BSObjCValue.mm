@@ -1,13 +1,13 @@
 @interface BSObjCValue
-+ (BSObjCValue)_valueWithEncoding:(uint64_t)a1;
-+ (id)valueWithBuilder:(id)a3;
-+ (id)valueWithBuilder:(id)a3 error:(id *)a4;
-+ (id)valueWithCEncoding:(uint64_t)a1;
-+ (id)valueWithEncoding:(id)a3;
-+ (id)valueWithEncoding:(id)a3 error:(id *)a4;
-+ (void)valueForArgumentAtIndex:(void *)a3 inSignature:;
-- (BOOL)_isIndistinguishableFromValue:(uint64_t)a1;
-- (BOOL)hasQualifier:(char)a3;
++ (BSObjCValue)_valueWithEncoding:(uint64_t)encoding;
++ (id)valueWithBuilder:(id)builder;
++ (id)valueWithBuilder:(id)builder error:(id *)error;
++ (id)valueWithCEncoding:(uint64_t)encoding;
++ (id)valueWithEncoding:(id)encoding;
++ (id)valueWithEncoding:(id)encoding error:(id *)error;
++ (void)valueForArgumentAtIndex:(void *)index inSignature:;
+- (BOOL)_isIndistinguishableFromValue:(uint64_t)value;
+- (BOOL)hasQualifier:(char)qualifier;
 - (BOOL)isXPCObject;
 - (id)_prettyTypeString;
 - (id)debugDescription;
@@ -27,23 +27,23 @@
     dispatch_once(&qword_1ED44FE00, &__block_literal_global_692);
   }
 
-  v3 = [(BSObjCValue *)self isObject];
-  if (v3)
+  isObject = [(BSObjCValue *)self isObject];
+  if (isObject)
   {
     if ([(NSArray *)self->_objectProtocols containsObject:qword_1ED44FDF8])
     {
-      LOBYTE(v3) = 1;
+      LOBYTE(isObject) = 1;
     }
 
     else
     {
       objectClass = self->_objectClass;
 
-      LOBYTE(v3) = [(objc_class *)objectClass bs_isXPCObject];
+      LOBYTE(isObject) = [(objc_class *)objectClass bs_isXPCObject];
     }
   }
 
-  return v3;
+  return isObject;
 }
 
 void __41__BSObjCValue_ObjectSupport__isXPCObject__block_invoke()
@@ -59,14 +59,14 @@ void __41__BSObjCValue_ObjectSupport__isXPCObject__block_invoke()
 {
   v20 = *MEMORY[0x1E69E9840];
   v3 = objc_opt_new();
-  v4 = [(BSObjCValue *)self structMembers];
-  if ([v4 count])
+  structMembers = [(BSObjCValue *)self structMembers];
+  if ([structMembers count])
   {
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v5 = v4;
+    v5 = structMembers;
     v6 = [v5 countByEnumeratingWithState:&v14 objects:v19 count:16];
     if (v6)
     {
@@ -80,10 +80,10 @@ void __41__BSObjCValue_ObjectSupport__isXPCObject__block_invoke()
             objc_enumerationMutation(v5);
           }
 
-          v9 = [*(*(&v14 + 1) + 8 * i) structFlattenedMembers];
-          if ([v9 count])
+          structFlattenedMembers = [*(*(&v14 + 1) + 8 * i) structFlattenedMembers];
+          if ([structFlattenedMembers count])
           {
-            [v3 addObjectsFromArray:v9];
+            [v3 addObjectsFromArray:structFlattenedMembers];
           }
         }
 
@@ -108,8 +108,8 @@ void __41__BSObjCValue_ObjectSupport__isXPCObject__block_invoke()
 
   else
   {
-    v18 = self;
-    v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v18 count:1];
+    selfCopy = self;
+    v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:&selfCopy count:1];
   }
 
   v12 = v11;
@@ -121,11 +121,11 @@ void __41__BSObjCValue_ObjectSupport__isXPCObject__block_invoke()
 {
   if (self->_type == 123)
   {
-    v3 = self;
+    selfCopy = self;
     v25 = objc_opt_new();
-    v4 = [(NSString *)v3->_encoding substringWithRange:1, [(NSString *)v3->_encoding length]- 2];
+    v4 = [(NSString *)selfCopy->_encoding substringWithRange:1, [(NSString *)selfCopy->_encoding length]- 2];
     v24 = v27;
-    v23 = v3;
+    v23 = selfCopy;
     while (1)
     {
       v5 = [v4 rangeOfString:@"{" options:{0, v23, v24}];
@@ -182,7 +182,7 @@ void __41__BSObjCValue_ObjectSupport__isXPCObject__block_invoke()
           v8 = [v4 substringWithRange:{v5, v12 - v5 + 1}];
           [BSObjCValue _valueWithEncoding:v8];
           a2 = v11;
-          v17 = v3 = v23;
+          v17 = selfCopy = v23;
           [v25 addObject:v17];
 
           v18 = [v4 substringFromIndex:v12 + 1];
@@ -202,7 +202,7 @@ void __41__BSObjCValue_ObjectSupport__isXPCObject__block_invoke()
       v27[0] = __43__BSObjCValue_StructSupport__structMembers__block_invoke;
       v27[1] = &unk_1E72CB3E8;
       v29 = a2;
-      v27[2] = v3;
+      v27[2] = selfCopy;
       v28 = v25;
       [v8 enumerateSubstringsInRange:0 options:v19 usingBlock:{2, v26}];
 
@@ -423,7 +423,7 @@ void __43__BSObjCValue_StructSupport__structMembers__block_invoke(uint64_t a1, v
   }
 }
 
-+ (id)valueWithCEncoding:(uint64_t)a1
++ (id)valueWithCEncoding:(uint64_t)encoding
 {
   v24 = *MEMORY[0x1E69E9840];
   v3 = objc_opt_self();
@@ -462,7 +462,7 @@ void __43__BSObjCValue_StructSupport__structMembers__block_invoke(uint64_t a1, v
   return v5;
 }
 
-+ (BSObjCValue)_valueWithEncoding:(uint64_t)a1
++ (BSObjCValue)_valueWithEncoding:(uint64_t)encoding
 {
   v91 = *MEMORY[0x1E69E9840];
   v2 = a2;
@@ -561,7 +561,7 @@ void __43__BSObjCValue_StructSupport__structMembers__block_invoke(uint64_t a1, v
 
   v76 = v7;
   v14 = v7;
-  v15 = [v7 UTF8String];
+  uTF8String = [v7 UTF8String];
   v16 = 0;
   for (i = 0; i < [v13 length]; ++i)
   {
@@ -643,9 +643,9 @@ void __43__BSObjCValue_StructSupport__structMembers__block_invoke(uint64_t a1, v
 
   v77->_typeQualifier = v29;
   v77->_typeQualifiers = v16;
-  v77->_type = *v15;
+  v77->_type = *uTF8String;
   *sizep = 0;
-  NSGetSizeAndAlignment(v15, sizep, 0);
+  NSGetSizeAndAlignment(uTF8String, sizep, 0);
   v77->_size = *sizep;
   v77->_argumentIndex = 0x7FFFFFFFFFFFFFFFLL;
   v77->_block = [v7 hasPrefix:@"@?"];
@@ -695,8 +695,8 @@ LABEL_58:
         v77->_objectProtocols = v49;
 
         v77->_nullability = v74;
-        v51 = [(BSObjCValue *)v77 isXPCObject];
-        if (v51 && ([(objc_class *)v77->_objectClass isSubclassOfClass:BSXPCObjectBaseClass()]& 1) == 0)
+        isXPCObject = [(BSObjCValue *)v77 isXPCObject];
+        if (isXPCObject && ([(objc_class *)v77->_objectClass isSubclassOfClass:BSXPCObjectBaseClass()]& 1) == 0)
         {
           v77->_objectClass = BSXPCObjectBaseClass();
         }
@@ -721,14 +721,14 @@ LABEL_57:
       v42 = NSProtocolFromString(v41);
       if (v42)
       {
-        v44 = v35;
+        array = v35;
         if (!v35)
         {
-          v44 = [MEMORY[0x1E695DF70] array];
+          array = [MEMORY[0x1E695DF70] array];
         }
 
-        v35 = v44;
-        [v44 addObject:v42];
+        v35 = array;
+        [array addObject:v42];
       }
 
       goto LABEL_56;
@@ -776,14 +776,14 @@ LABEL_57:
         v45 = NSClassFromString(v42);
         if (v45)
         {
-          v46 = v73;
+          array2 = v73;
           if (!v73)
           {
-            v46 = [MEMORY[0x1E695DF70] array];
+            array2 = [MEMORY[0x1E695DF70] array];
           }
 
-          v73 = v46;
-          [v46 addObject:v45];
+          v73 = array2;
+          [array2 addObject:v45];
         }
 
         goto LABEL_56;
@@ -832,12 +832,12 @@ LABEL_68:
   return v77;
 }
 
-+ (void)valueForArgumentAtIndex:(void *)a3 inSignature:
++ (void)valueForArgumentAtIndex:(void *)index inSignature:
 {
   v46 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  indexCopy = index;
   v5 = objc_opt_self();
-  if (!v4)
+  if (!indexCopy)
   {
     v19 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"signature"];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -895,7 +895,7 @@ LABEL_68:
     JUMPOUT(0x18FF3B920);
   }
 
-  if ([v4 numberOfArguments] <= a2)
+  if ([indexCopy numberOfArguments] <= a2)
   {
     v29 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"index < (NSInteger)[signature numberOfArguments]"];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -924,24 +924,24 @@ LABEL_68:
     JUMPOUT(0x18FF3BA28);
   }
 
-  v6 = v4;
+  v6 = indexCopy;
   if (a2 == -1)
   {
-    v7 = [v4 methodReturnType];
+    methodReturnType = [indexCopy methodReturnType];
   }
 
   else
   {
-    v7 = [v4 getArgumentTypeAtIndex:a2];
+    methodReturnType = [indexCopy getArgumentTypeAtIndex:a2];
   }
 
-  v8 = [(BSObjCValue *)v5 valueWithCEncoding:v7];
+  v8 = [(BSObjCValue *)v5 valueWithCEncoding:methodReturnType];
   if ([v8 isBlock])
   {
-    v9 = [v4 _signatureForBlockAtArgumentIndex:a2];
+    v9 = [indexCopy _signatureForBlockAtArgumentIndex:a2];
     if (v9)
     {
-      v10 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
       for (i = 1; i < [v9 numberOfArguments]; ++i)
       {
         v12 = [(BSObjCValue *)v5 valueForArgumentAtIndex:v9 inSignature:?];
@@ -949,11 +949,11 @@ LABEL_68:
         if (v12)
         {
           *(v12 + 48) = i - 1;
-          [v10 addObject:v12];
+          [array addObject:v12];
         }
       }
 
-      v14 = [v10 copy];
+      v14 = [array copy];
       v15 = v8[10];
       v8[10] = v14;
 
@@ -966,11 +966,11 @@ LABEL_68:
   return v8;
 }
 
-- (BOOL)hasQualifier:(char)a3
+- (BOOL)hasQualifier:(char)qualifier
 {
-  if (a3 <= 85)
+  if (qualifier <= 85)
   {
-    switch(a3)
+    switch(qualifier)
     {
       case 'N':
         v3 = -5;
@@ -986,15 +986,15 @@ LABEL_68:
     return self->_typeQualifiers == 0;
   }
 
-  if (a3 > 110)
+  if (qualifier > 110)
   {
-    if (a3 == 111)
+    if (qualifier == 111)
     {
       v3 = -9;
       return (v3 | self->_typeQualifiers) == -1;
     }
 
-    if (a3 == 114)
+    if (qualifier == 114)
     {
       v3 = -2;
       return (v3 | self->_typeQualifiers) == -1;
@@ -1003,13 +1003,13 @@ LABEL_68:
     return self->_typeQualifiers == 0;
   }
 
-  if (a3 == 86)
+  if (qualifier == 86)
   {
     v3 = -65;
     return (v3 | self->_typeQualifiers) == -1;
   }
 
-  if (a3 != 110)
+  if (qualifier != 110)
   {
     return self->_typeQualifiers == 0;
   }
@@ -1021,28 +1021,28 @@ LABEL_68:
 - (id)description
 {
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [(BSObjCValue *)self _prettyTypeString];
-  v4 = [v2 stringWithFormat:@"<%@>", v3];
+  _prettyTypeString = [(BSObjCValue *)self _prettyTypeString];
+  v4 = [v2 stringWithFormat:@"<%@>", _prettyTypeString];
 
   return v4;
 }
 
 - (id)_prettyTypeString
 {
-  v1 = a1;
-  if (!a1)
+  selfCopy = self;
+  if (!self)
   {
     goto LABEL_96;
   }
 
-  if ([a1 isBlock])
+  if ([self isBlock])
   {
     v2 = [MEMORY[0x1E696AD60] stringWithString:&stru_1F03A1A98];
-    v3 = [(BSObjCValue *)*(v1 + 9) _prettyTypeString];
-    v4 = v3;
-    if (v3)
+    _prettyTypeString = [(BSObjCValue *)*(selfCopy + 9) _prettyTypeString];
+    v4 = _prettyTypeString;
+    if (_prettyTypeString)
     {
-      v5 = v3;
+      v5 = _prettyTypeString;
     }
 
     else
@@ -1053,8 +1053,8 @@ LABEL_68:
     [v2 appendString:v5];
 
     objc_msgSend(v2, "appendString:", @"(^)(");
-    v6 = [*(v1 + 10) count];
-    v7 = *(v1 + 10);
+    v6 = [*(selfCopy + 10) count];
+    v7 = *(selfCopy + 10);
     if (v6)
     {
       v60[0] = MEMORY[0x1E69E9820];
@@ -1081,7 +1081,7 @@ LABEL_68:
     }
 
     [v2 appendString:@""]);
-    v1 = [v2 copy];
+    selfCopy = [v2 copy];
 
     goto LABEL_96;
   }
@@ -1092,7 +1092,7 @@ LABEL_68:
   v57 = __Block_byref_object_copy__3;
   v58 = __Block_byref_object_dispose__3;
   v59 = 0;
-  v8 = *(v1 + 1);
+  v8 = *(selfCopy + 1);
   v9 = 0;
   while ([v8 rangeOfString:@"^" options:10] != 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -1104,7 +1104,7 @@ LABEL_68:
 
   if ([v8 hasPrefix:@"@"])
   {
-    v11 = NSStringFromClass(*(v1 + 2));
+    v11 = NSStringFromClass(*(selfCopy + 2));
     v12 = v11;
     v13 = v55;
     if (v11)
@@ -1120,13 +1120,13 @@ LABEL_68:
     v22 = v13[5];
     v13[5] = v14;
 
-    if ([*(v1 + 4) count])
+    if ([*(selfCopy + 4) count])
     {
       v23 = [v55[5] stringByAppendingString:@"<"];
       v24 = v55[5];
       v55[5] = v23;
 
-      v25 = *(v1 + 4);
+      v25 = *(selfCopy + 4);
       v53[0] = MEMORY[0x1E69E9820];
       v53[1] = 3221225472;
       v53[2] = __32__BSObjCValue__prettyTypeString__block_invoke_132;
@@ -1296,13 +1296,13 @@ LABEL_81:
     goto LABEL_81;
   }
 
-  v15 = [(NSString *)v8 bsobjc_structName];
+  bsobjc_structName = [(NSString *)v8 bsobjc_structName];
   v16 = v55[5];
-  v55[5] = v15;
+  v55[5] = bsobjc_structName;
 
   if ([v55[5] isEqualToString:@"?"])
   {
-    v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"struct[%zu]", *(v1 + 13)];
+    v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"struct[%zu]", *(selfCopy + 13)];
     v12 = v55[5];
     v55[5] = v17;
 LABEL_82:
@@ -1314,23 +1314,23 @@ LABEL_82:
   v50 = __Block_byref_object_copy__3;
   v51 = __Block_byref_object_dispose__3;
   v52 = 0;
-  v30 = [v1 typeQualifiers];
+  typeQualifiers = [selfCopy typeQualifiers];
   v43[0] = MEMORY[0x1E69E9820];
   v43[1] = 3221225472;
   v44 = __32__BSObjCValue__prettyTypeString__block_invoke_2;
   v45 = &unk_1E72CB398;
   v46 = &v47;
   v31 = v43;
-  if (v30)
+  if (typeQualifiers)
   {
     v32 = 0;
     v62 = 0;
-    v33 = vcnt_s8(v30);
+    v33 = vcnt_s8(typeQualifiers);
     v33.i16[0] = vaddlv_u8(v33);
     v34 = v33.i32[0];
     do
     {
-      if (((1 << v32) & v30) != 0)
+      if (((1 << v32) & typeQualifiers) != 0)
       {
         (v44)(v31);
         if (v62)
@@ -1378,13 +1378,13 @@ LABEL_82:
     while (v9);
   }
 
-  v1 = v55[5];
+  selfCopy = v55[5];
   _Block_object_dispose(&v47, 8);
 
   _Block_object_dispose(&v54, 8);
 LABEL_96:
 
-  return v1;
+  return selfCopy;
 }
 
 - (id)debugDescription
@@ -1392,34 +1392,34 @@ LABEL_96:
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(BSObjCValue *)self _prettyTypeString];
-  v7 = [v3 stringWithFormat:@"<%@: %p %@ (%@)>", v5, self, v6, self->_encoding];;
+  _prettyTypeString = [(BSObjCValue *)self _prettyTypeString];
+  v7 = [v3 stringWithFormat:@"<%@: %p %@ (%@)>", v5, self, _prettyTypeString, self->_encoding];;
 
   return v7;
 }
 
-- (BOOL)_isIndistinguishableFromValue:(uint64_t)a1
+- (BOOL)_isIndistinguishableFromValue:(uint64_t)value
 {
   v3 = a2;
   v4 = v3;
-  if (!a1)
+  if (!value)
   {
     goto LABEL_35;
   }
 
-  if (a1 == v3)
+  if (value == v3)
   {
     v8 = 1;
     goto LABEL_36;
   }
 
   v5 = objc_opt_class();
-  if (v5 != objc_opt_class() || *(a1 + 48) != *(v4 + 6))
+  if (v5 != objc_opt_class() || *(value + 48) != *(v4 + 6))
   {
     goto LABEL_35;
   }
 
-  v6 = *(a1 + 56);
+  v6 = *(value + 56);
   v7 = *(v4 + 7);
   if (v6 != v7)
   {
@@ -1435,7 +1435,7 @@ LABEL_96:
     }
   }
 
-  v9 = *(a1 + 96);
+  v9 = *(value + 96);
   v10 = *(v4 + 12);
   if (v9 != v10)
   {
@@ -1451,7 +1451,7 @@ LABEL_96:
     }
   }
 
-  v11 = *(a1 + 8);
+  v11 = *(value + 8);
   v12 = *(v4 + 1);
   if (v11 != v12)
   {
@@ -1467,13 +1467,13 @@ LABEL_96:
     }
   }
 
-  if (*(a1 + 88) != v4[88] || *(a1 + 90) != v4[90] || *(a1 + 104) != *(v4 + 13) || *(a1 + 16) != *(v4 + 2) || !BSEqualArrays(*(a1 + 24), *(v4 + 3)) || !BSEqualArrays(*(a1 + 32), *(v4 + 4)) || *(a1 + 64) != v4[64])
+  if (*(value + 88) != v4[88] || *(value + 90) != v4[90] || *(value + 104) != *(v4 + 13) || *(value + 16) != *(v4 + 2) || !BSEqualArrays(*(value + 24), *(v4 + 3)) || !BSEqualArrays(*(value + 32), *(v4 + 4)) || *(value + 64) != v4[64])
   {
     goto LABEL_35;
   }
 
   v13 = *(v4 + 9);
-  if (!*(a1 + 72))
+  if (!*(value + 72))
   {
     if (!v13)
     {
@@ -1491,7 +1491,7 @@ LABEL_35:
   }
 
 LABEL_30:
-  if (!BSEqualArrays(*(a1 + 80), *(v4 + 10)))
+  if (!BSEqualArrays(*(value + 80), *(v4 + 10)))
   {
     goto LABEL_35;
   }
@@ -1499,14 +1499,14 @@ LABEL_30:
   v14 = 0;
   do
   {
-    v15 = [*(a1 + 80) count];
+    v15 = [*(value + 80) count];
     v8 = v14 >= v15;
     if (v14 >= v15)
     {
       break;
     }
 
-    v16 = [*(a1 + 80) objectAtIndex:v14];
+    v16 = [*(value + 80) objectAtIndex:v14];
     v17 = [*(v4 + 10) objectAtIndex:v14];
     v18 = [(BSObjCValue *)v16 _isIndistinguishableFromValue:v17];
 
@@ -1628,14 +1628,14 @@ void __32__BSObjCValue__prettyTypeString__block_invoke_2(uint64_t a1, uint64_t a
 
 - (id)structName
 {
-  v2 = [(NSString *)self->_encoding bsobjc_structName];
-  if ([v2 isEqualToString:@"?"])
+  bsobjc_structName = [(NSString *)self->_encoding bsobjc_structName];
+  if ([bsobjc_structName isEqualToString:@"?"])
   {
 
-    v2 = 0;
+    bsobjc_structName = 0;
   }
 
-  return v2;
+  return bsobjc_structName;
 }
 
 - (id)pointerValue
@@ -1662,18 +1662,18 @@ void __32__BSObjCValue__prettyTypeString__block_invoke_2(uint64_t a1, uint64_t a
   return v4;
 }
 
-+ (id)valueWithEncoding:(id)a3
++ (id)valueWithEncoding:(id)encoding
 {
-  v3 = [a1 valueWithEncoding:a3 error:0];
+  v3 = [self valueWithEncoding:encoding error:0];
 
   return v3;
 }
 
-+ (id)valueWithEncoding:(id)a3 error:(id *)a4
++ (id)valueWithEncoding:(id)encoding error:(id *)error
 {
-  v6 = a3;
-  v7 = v6;
-  if (v6 && [v6 rangeOfString:@"("]
+  encodingCopy = encoding;
+  v7 = encodingCopy;
+  if (encodingCopy && [encodingCopy rangeOfString:@"("]
   {
     v9 = @"unions or types containing unions are not supported";
   }
@@ -1683,7 +1683,7 @@ void __32__BSObjCValue__prettyTypeString__block_invoke_2(uint64_t a1, uint64_t a
     if ([v7 length])
     {
       NSGetSizeAndAlignment([v7 UTF8String], 0, 0);
-      v8 = [(BSObjCValue *)a1 _valueWithEncoding:v7];
+      v8 = [(BSObjCValue *)self _valueWithEncoding:v7];
       v9 = 0;
       goto LABEL_10;
     }
@@ -1692,7 +1692,7 @@ void __32__BSObjCValue__prettyTypeString__block_invoke_2(uint64_t a1, uint64_t a
   }
 
   v8 = 0;
-  if (a4 && v9)
+  if (error && v9)
   {
     v10 = MEMORY[0x1E696ABC0];
     v12[0] = MEMORY[0x1E69E9820];
@@ -1702,7 +1702,7 @@ void __32__BSObjCValue__prettyTypeString__block_invoke_2(uint64_t a1, uint64_t a
     v9 = v9;
     v13 = v9;
     v14 = v7;
-    *a4 = [v10 bs_errorWithDomain:@"BSObjCRuntime" code:1 configuration:v12];
+    *error = [v10 bs_errorWithDomain:@"BSObjCRuntime" code:1 configuration:v12];
 
     v8 = 0;
   }
@@ -1730,24 +1730,24 @@ void __57__BSObjCValue_ExternalCreation__valueWithEncoding_error___block_invoke(
   [v4 setUserInfoValue:v3 forKey:@"BSObjCEncoding"];
 }
 
-+ (id)valueWithBuilder:(id)a3
++ (id)valueWithBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v5 = objc_opt_new();
-  v4[2](v4, v5);
-  v6 = [(BSCompoundAssertion *)v5 _identifier];
-  v7 = [a1 valueWithEncoding:v6 error:0];
+  builderCopy[2](builderCopy, v5);
+  _identifier = [(BSCompoundAssertion *)v5 _identifier];
+  v7 = [self valueWithEncoding:_identifier error:0];
 
   return v7;
 }
 
-+ (id)valueWithBuilder:(id)a3 error:(id *)a4
++ (id)valueWithBuilder:(id)builder error:(id *)error
 {
-  v6 = a3;
+  builderCopy = builder;
   v7 = objc_opt_new();
-  v6[2](v6, v7);
-  v8 = [(BSCompoundAssertion *)v7 _identifier];
-  v9 = [a1 valueWithEncoding:v8 error:a4];
+  builderCopy[2](builderCopy, v7);
+  _identifier = [(BSCompoundAssertion *)v7 _identifier];
+  v9 = [self valueWithEncoding:_identifier error:error];
 
   return v9;
 }

@@ -1,10 +1,10 @@
 @interface CHASActivitySetupThreeRingsOnboardingViewController
-- (CHASActivitySetupThreeRingsOnboardingViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6;
-- (CHASActivitySetupThreeRingsOnboardingViewController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6;
+- (CHASActivitySetupThreeRingsOnboardingViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout;
+- (CHASActivitySetupThreeRingsOnboardingViewController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout;
 - (id)delegate;
 - (void)didTapAcceptButton;
 - (void)didTapSkipButton;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 @end
 
@@ -12,41 +12,41 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1705C();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_17530(a3);
+  selfCopy = self;
+  sub_17530(appear);
 }
 
 - (void)didTapAcceptButton
 {
-  v2 = self;
+  selfCopy = self;
   sub_17688();
 }
 
 - (void)didTapSkipButton
 {
-  v3 = self;
-  v2 = [(CHASActivitySetupThreeRingsOnboardingViewController *)v3 delegate];
-  if (v2)
+  selfCopy = self;
+  delegate = [(CHASActivitySetupThreeRingsOnboardingViewController *)selfCopy delegate];
+  if (delegate)
   {
-    [v2 buddyControllerDone:v3];
+    [delegate buddyControllerDone:selfCopy];
     swift_unknownObjectRelease();
   }
 }
 
-- (CHASActivitySetupThreeRingsOnboardingViewController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6
+- (CHASActivitySetupThreeRingsOnboardingViewController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (CHASActivitySetupThreeRingsOnboardingViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6
+- (CHASActivitySetupThreeRingsOnboardingViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

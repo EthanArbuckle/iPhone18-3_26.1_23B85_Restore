@@ -1,11 +1,11 @@
 @interface CAFUIDevicePickerLimitedUIView
-- (_TtC5CAFUI30CAFUIDevicePickerLimitedUIView)initWithCoder:(id)a3;
-- (_TtC5CAFUI30CAFUIDevicePickerLimitedUIView)initWithFrame:(CGRect)a3;
+- (_TtC5CAFUI30CAFUIDevicePickerLimitedUIView)initWithCoder:(id)coder;
+- (_TtC5CAFUI30CAFUIDevicePickerLimitedUIView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation CAFUIDevicePickerLimitedUIView
 
-- (_TtC5CAFUI30CAFUIDevicePickerLimitedUIView)initWithCoder:(id)a3
+- (_TtC5CAFUI30CAFUIDevicePickerLimitedUIView)initWithCoder:(id)coder
 {
   v4 = (&self->super.super.super.isa + OBJC_IVAR____TtC5CAFUI30CAFUIDevicePickerLimitedUIView_presentedAction);
   *v4 = 0;
@@ -22,7 +22,7 @@
   return result;
 }
 
-- (_TtC5CAFUI30CAFUIDevicePickerLimitedUIView)initWithFrame:(CGRect)a3
+- (_TtC5CAFUI30CAFUIDevicePickerLimitedUIView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

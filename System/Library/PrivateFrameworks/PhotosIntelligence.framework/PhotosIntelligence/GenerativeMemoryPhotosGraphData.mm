@@ -1,25 +1,25 @@
 @interface GenerativeMemoryPhotosGraphData
-+ (id)getCuratedAssetPlaybackTimeRangesFor:(id)a3;
-+ (id)parsePromptInformationAsDictionaryWithMemory:(id)a3 error:(id *)a4;
++ (id)getCuratedAssetPlaybackTimeRangesFor:(id)for;
++ (id)parsePromptInformationAsDictionaryWithMemory:(id)memory error:(id *)error;
 @end
 
 @implementation GenerativeMemoryPhotosGraphData
 
-+ (id)getCuratedAssetPlaybackTimeRangesFor:(id)a3
++ (id)getCuratedAssetPlaybackTimeRangesFor:(id)for
 {
   swift_getObjCClassMetadata();
-  v4 = a3;
-  static GenerativeMemoryPhotosGraphData.getCuratedAssetPlaybackTimeRanges(for:)(v4);
+  forCopy = for;
+  static GenerativeMemoryPhotosGraphData.getCuratedAssetPlaybackTimeRanges(for:)(forCopy);
   v6 = v5;
 
   return v6;
 }
 
-+ (id)parsePromptInformationAsDictionaryWithMemory:(id)a3 error:(id *)a4
++ (id)parsePromptInformationAsDictionaryWithMemory:(id)memory error:(id *)error
 {
   swift_getObjCClassMetadata();
-  v5 = a3;
-  static GenerativeMemoryPhotosGraphData.parsePromptInformationAsDictionary(memory:)(v5);
+  memoryCopy = memory;
+  static GenerativeMemoryPhotosGraphData.parsePromptInformationAsDictionary(memory:)(memoryCopy);
 
   v6 = sub_1C755048C();
 

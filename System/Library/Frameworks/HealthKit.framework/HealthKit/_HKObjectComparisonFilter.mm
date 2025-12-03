@@ -1,21 +1,21 @@
 @interface _HKObjectComparisonFilter
-+ (BOOL)allowsEmptyContainerValuesForKeyPath:(id)a3;
-+ (BOOL)areValidTypes:(id)a3 forKeyPath:(id)a4 error:(id *)a5;
-+ (BOOL)isAllowedPredicateOperatorType:(unint64_t)a3 forKeyPath:(id)a4;
-+ (BOOL)isSupportedDevicePropertyKey:(id)a3;
-+ (BOOL)isSupportedKeyPath:(id)a3;
-+ (BOOL)isValidValue:(id)a3 forKeyPath:(id)a4 operatorType:(unint64_t)a5 dataTypes:(id)a6 error:(id *)a7;
-+ (id)allowedDataTypeClassesForKeyPath:(id)a3;
-+ (id)allowedValueClassesForKeyPath:(id)a3;
-+ (int64_t)enumRepresentationForKeyPath:(id)a3;
-- (BOOL)_acceptsDataObjectComparingDeviceProperty:(id)a3;
-- (BOOL)_acceptsDataObjectWithAppleWatchSource:(id)a3;
-- (BOOL)_acceptsDataObjectWithContributor:(id)a3;
-- (BOOL)_acceptsDataObjectWithCreationTime:(double)a3;
-- (BOOL)_acceptsDataObjectWithMetadata:(id)a3;
-- (BOOL)_acceptsDataObjectWithSource:(id)a3;
-- (BOOL)_acceptsDataObjectWithValue:(id)a3;
-- (BOOL)acceptsDataObject:(id)a3;
++ (BOOL)allowsEmptyContainerValuesForKeyPath:(id)path;
++ (BOOL)areValidTypes:(id)types forKeyPath:(id)path error:(id *)error;
++ (BOOL)isAllowedPredicateOperatorType:(unint64_t)type forKeyPath:(id)path;
++ (BOOL)isSupportedDevicePropertyKey:(id)key;
++ (BOOL)isSupportedKeyPath:(id)path;
++ (BOOL)isValidValue:(id)value forKeyPath:(id)path operatorType:(unint64_t)type dataTypes:(id)types error:(id *)error;
++ (id)allowedDataTypeClassesForKeyPath:(id)path;
++ (id)allowedValueClassesForKeyPath:(id)path;
++ (int64_t)enumRepresentationForKeyPath:(id)path;
+- (BOOL)_acceptsDataObjectComparingDeviceProperty:(id)property;
+- (BOOL)_acceptsDataObjectWithAppleWatchSource:(id)source;
+- (BOOL)_acceptsDataObjectWithContributor:(id)contributor;
+- (BOOL)_acceptsDataObjectWithCreationTime:(double)time;
+- (BOOL)_acceptsDataObjectWithMetadata:(id)metadata;
+- (BOOL)_acceptsDataObjectWithSource:(id)source;
+- (BOOL)_acceptsDataObjectWithValue:(id)value;
+- (BOOL)acceptsDataObject:(id)object;
 - (void)_configureForKeyPathDeviceProperty;
 - (void)_configureForKeyPathSource;
 - (void)_configureForMetdataKeyPath;
@@ -24,47 +24,47 @@
 
 @implementation _HKObjectComparisonFilter
 
-+ (BOOL)isSupportedDevicePropertyKey:(id)a3
++ (BOOL)isSupportedDevicePropertyKey:(id)key
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"HKDevicePropertyFirmwareVersion"] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"HKDevicePropertyHardwareVersion") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"HKDevicePropertyLocalIdentifier") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"HKDevicePropertyManufacturer") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"HKDevicePropertyModel") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"HKDevicePropertyName") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"HKDevicePropertySoftwareVersion"))
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"HKDevicePropertyFirmwareVersion"] & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"HKDevicePropertyHardwareVersion") & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"HKDevicePropertyLocalIdentifier") & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"HKDevicePropertyManufacturer") & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"HKDevicePropertyModel") & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"HKDevicePropertyName") & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"HKDevicePropertySoftwareVersion"))
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"HKDevicePropertyUDIDeviceIdentifier"];
+    v4 = [keyCopy isEqualToString:@"HKDevicePropertyUDIDeviceIdentifier"];
   }
 
   return v4;
 }
 
-+ (BOOL)isSupportedKeyPath:(id)a3
++ (BOOL)isSupportedKeyPath:(id)path
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"correlation"] & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"device") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"source") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"sourceRevision") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"UUID") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"workout") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"appleWatch") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"association") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"ratingOfExertionAssociation") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"OSBuild") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"contributor") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"creationDate") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"productType") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"localSyncIdentity"))
+  pathCopy = path;
+  if ([pathCopy isEqualToString:@"correlation"] & 1) != 0 || (objc_msgSend(pathCopy, "isEqualToString:", @"device") & 1) != 0 || (objc_msgSend(pathCopy, "isEqualToString:", @"source") & 1) != 0 || (objc_msgSend(pathCopy, "isEqualToString:", @"sourceRevision") & 1) != 0 || (objc_msgSend(pathCopy, "isEqualToString:", @"UUID") & 1) != 0 || (objc_msgSend(pathCopy, "isEqualToString:", @"workout") & 1) != 0 || (objc_msgSend(pathCopy, "isEqualToString:", @"appleWatch") & 1) != 0 || (objc_msgSend(pathCopy, "isEqualToString:", @"association") & 1) != 0 || (objc_msgSend(pathCopy, "isEqualToString:", @"ratingOfExertionAssociation") & 1) != 0 || (objc_msgSend(pathCopy, "isEqualToString:", @"OSBuild") & 1) != 0 || (objc_msgSend(pathCopy, "isEqualToString:", @"contributor") & 1) != 0 || (objc_msgSend(pathCopy, "isEqualToString:", @"creationDate") & 1) != 0 || (objc_msgSend(pathCopy, "isEqualToString:", @"productType") & 1) != 0 || (objc_msgSend(pathCopy, "isEqualToString:", @"localSyncIdentity"))
   {
     v5 = 1;
   }
 
   else
   {
-    if ([v4 hk_hasDevicePropertyKeyPathPrefix])
+    if ([pathCopy hk_hasDevicePropertyKeyPathPrefix])
     {
-      v7 = [v4 substringFromIndex:{objc_msgSend(@"device.", "length")}];
-      v5 = [a1 isSupportedDevicePropertyKey:v7];
+      v7 = [pathCopy substringFromIndex:{objc_msgSend(@"device.", "length")}];
+      v5 = [self isSupportedDevicePropertyKey:v7];
     }
 
     else
     {
-      if (![v4 hk_hasMetadataKeyPathPrefix])
+      if (![pathCopy hk_hasMetadataKeyPathPrefix])
       {
         v5 = 0;
         goto LABEL_16;
       }
 
-      v7 = [v4 substringFromIndex:{objc_msgSend(@"metadata.", "length")}];
+      v7 = [pathCopy substringFromIndex:{objc_msgSend(@"metadata.", "length")}];
       v5 = [v7 length] != 0;
     }
   }
@@ -74,7 +74,7 @@ LABEL_16:
   return v5;
 }
 
-+ (id)allowedDataTypeClassesForKeyPath:(id)a3
++ (id)allowedDataTypeClassesForKeyPath:(id)path
 {
   v3 = MEMORY[0x1E695DFD8];
   v4 = objc_opt_class();
@@ -82,10 +82,10 @@ LABEL_16:
   return [v3 setWithObject:v4];
 }
 
-+ (id)allowedValueClassesForKeyPath:(id)a3
++ (id)allowedValueClassesForKeyPath:(id)path
 {
-  v5 = a3;
-  if ([v5 isEqualToString:@"correlation"])
+  pathCopy = path;
+  if ([pathCopy isEqualToString:@"correlation"])
   {
     v6 = MEMORY[0x1E695DFD8];
 LABEL_3:
@@ -95,7 +95,7 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  if ([v5 isEqualToString:@"device"] || objc_msgSend(v5, "isEqualToString:", @"source") || objc_msgSend(v5, "isEqualToString:", @"sourceRevision") || objc_msgSend(v5, "isEqualToString:", @"UUID"))
+  if ([pathCopy isEqualToString:@"device"] || objc_msgSend(pathCopy, "isEqualToString:", @"source") || objc_msgSend(pathCopy, "isEqualToString:", @"sourceRevision") || objc_msgSend(pathCopy, "isEqualToString:", @"UUID"))
   {
     v8 = objc_alloc(MEMORY[0x1E695DFD8]);
     v9 = objc_opt_class();
@@ -104,49 +104,49 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  if ([v5 isEqualToString:@"workout"])
+  if ([pathCopy isEqualToString:@"workout"])
   {
     v6 = MEMORY[0x1E695DFD8];
     goto LABEL_3;
   }
 
-  if ([v5 isEqualToString:@"appleWatch"])
+  if ([pathCopy isEqualToString:@"appleWatch"])
   {
     goto LABEL_17;
   }
 
-  if (([v5 isEqualToString:@"association"] & 1) != 0 || objc_msgSend(v5, "isEqualToString:", @"ratingOfExertionAssociation"))
+  if (([pathCopy isEqualToString:@"association"] & 1) != 0 || objc_msgSend(pathCopy, "isEqualToString:", @"ratingOfExertionAssociation"))
   {
     v6 = MEMORY[0x1E695DFD8];
     goto LABEL_3;
   }
 
-  if (([v5 isEqualToString:@"OSBuild"] & 1) != 0 || objc_msgSend(v5, "isEqualToString:", @"productType"))
+  if (([pathCopy isEqualToString:@"OSBuild"] & 1) != 0 || objc_msgSend(pathCopy, "isEqualToString:", @"productType"))
   {
     v6 = MEMORY[0x1E695DFD8];
     goto LABEL_3;
   }
 
-  if ([v5 isEqualToString:@"contributor"])
+  if ([pathCopy isEqualToString:@"contributor"])
   {
     v6 = MEMORY[0x1E695DFD8];
     goto LABEL_3;
   }
 
-  if ([v5 isEqualToString:@"creationDate"])
+  if ([pathCopy isEqualToString:@"creationDate"])
   {
     v6 = MEMORY[0x1E695DFD8];
     goto LABEL_3;
   }
 
-  if ([v5 isEqualToString:@"localSyncIdentity"])
+  if ([pathCopy isEqualToString:@"localSyncIdentity"])
   {
 LABEL_17:
     v6 = MEMORY[0x1E695DFD8];
     goto LABEL_3;
   }
 
-  if ([v5 hk_hasDevicePropertyKeyPathPrefix])
+  if ([pathCopy hk_hasDevicePropertyKeyPathPrefix])
   {
     v13 = objc_alloc(MEMORY[0x1E695DFD8]);
     v14 = objc_opt_class();
@@ -154,10 +154,10 @@ LABEL_17:
     goto LABEL_10;
   }
 
-  if (![v5 hk_hasMetadataKeyPathPrefix])
+  if (![pathCopy hk_hasMetadataKeyPathPrefix])
   {
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v20 handleFailureInMethod:a2 object:a1 file:@"_HKObjectComparisonFilter.m" lineNumber:226 description:@"Unreachable code has been executed"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_HKObjectComparisonFilter.m" lineNumber:226 description:@"Unreachable code has been executed"];
 
     v7 = objc_alloc_init(MEMORY[0x1E695DFD8]);
     goto LABEL_10;
@@ -167,43 +167,43 @@ LABEL_17:
   v16 = objc_opt_class();
   v17 = objc_opt_class();
   v18 = [v15 initWithObjects:{v16, v17, objc_opt_class(), 0}];
-  v19 = [MEMORY[0x1E695DF20] hk_acceptedPublicMetadataValueClasses];
-  v11 = [v18 setByAddingObjectsFromSet:v19];
+  hk_acceptedPublicMetadataValueClasses = [MEMORY[0x1E695DF20] hk_acceptedPublicMetadataValueClasses];
+  v11 = [v18 setByAddingObjectsFromSet:hk_acceptedPublicMetadataValueClasses];
 
 LABEL_11:
 
   return v11;
 }
 
-+ (BOOL)isAllowedPredicateOperatorType:(unint64_t)a3 forKeyPath:(id)a4
++ (BOOL)isAllowedPredicateOperatorType:(unint64_t)type forKeyPath:(id)path
 {
-  v5 = a4;
-  if ([v5 isEqualToString:@"correlation"])
+  pathCopy = path;
+  if ([pathCopy isEqualToString:@"correlation"])
   {
-    v6 = (a3 & 0xFFFFFFFFFFFFFFFELL) == 4;
+    v6 = (type & 0xFFFFFFFFFFFFFFFELL) == 4;
     goto LABEL_9;
   }
 
-  if (([v5 isEqualToString:@"device"] & 1) != 0 || (objc_msgSend(v5, "isEqualToString:", @"source") & 1) != 0 || objc_msgSend(v5, "isEqualToString:", @"sourceRevision"))
+  if (([pathCopy isEqualToString:@"device"] & 1) != 0 || (objc_msgSend(pathCopy, "isEqualToString:", @"source") & 1) != 0 || objc_msgSend(pathCopy, "isEqualToString:", @"sourceRevision"))
   {
-    v6 = a3 == 10 || (a3 & 0xFFFFFFFFFFFFFFFELL) == 4;
+    v6 = type == 10 || (type & 0xFFFFFFFFFFFFFFFELL) == 4;
     goto LABEL_9;
   }
 
-  if ([v5 isEqualToString:@"UUID"])
+  if ([pathCopy isEqualToString:@"UUID"])
   {
-    v6 = a3 == 4 || a3 == 10;
+    v6 = type == 4 || type == 10;
     goto LABEL_9;
   }
 
-  if (([v5 isEqualToString:@"workout"] & 1) != 0 || (objc_msgSend(v5, "isEqualToString:", @"association") & 1) != 0 || objc_msgSend(v5, "isEqualToString:", @"ratingOfExertionAssociation") || objc_msgSend(v5, "isEqualToString:", @"appleWatch"))
+  if (([pathCopy isEqualToString:@"workout"] & 1) != 0 || (objc_msgSend(pathCopy, "isEqualToString:", @"association") & 1) != 0 || objc_msgSend(pathCopy, "isEqualToString:", @"ratingOfExertionAssociation") || objc_msgSend(pathCopy, "isEqualToString:", @"appleWatch"))
   {
     goto LABEL_21;
   }
 
-  if ([v5 isEqualToString:@"productType"])
+  if ([pathCopy isEqualToString:@"productType"])
   {
-    if (a3 == 7)
+    if (type == 7)
     {
 LABEL_24:
       v7 = 1;
@@ -211,31 +211,31 @@ LABEL_24:
     }
 
 LABEL_32:
-    v7 = [_HKComparisonFilter isAllowedPredicateOperatorType:a3 forKeyPath:v5];
+    v7 = [_HKComparisonFilter isAllowedPredicateOperatorType:type forKeyPath:pathCopy];
     goto LABEL_12;
   }
 
-  if (![v5 hk_hasDevicePropertyKeyPathPrefix])
+  if (![pathCopy hk_hasDevicePropertyKeyPathPrefix])
   {
-    if ([v5 hk_hasMetadataKeyPathPrefix])
+    if ([pathCopy hk_hasMetadataKeyPathPrefix])
     {
-      if (a3 == 10)
+      if (type == 10)
       {
         goto LABEL_24;
       }
     }
 
-    else if ([v5 isEqualToString:@"contributor"] || objc_msgSend(v5, "isEqualToString:", @"localSyncIdentity"))
+    else if ([pathCopy isEqualToString:@"contributor"] || objc_msgSend(pathCopy, "isEqualToString:", @"localSyncIdentity"))
     {
 LABEL_21:
-      v6 = a3 == 4;
+      v6 = type == 4;
       goto LABEL_9;
     }
 
     goto LABEL_32;
   }
 
-  v6 = a3 == 10;
+  v6 = type == 10;
 LABEL_9:
   v7 = v6;
 LABEL_12:
@@ -243,34 +243,34 @@ LABEL_12:
   return v7;
 }
 
-+ (BOOL)isValidValue:(id)a3 forKeyPath:(id)a4 operatorType:(unint64_t)a5 dataTypes:(id)a6 error:(id *)a7
++ (BOOL)isValidValue:(id)value forKeyPath:(id)path operatorType:(unint64_t)type dataTypes:(id)types error:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
-  v18.receiver = a1;
+  valueCopy = value;
+  pathCopy = path;
+  v18.receiver = self;
   v18.super_class = &OBJC_METACLASS____HKObjectComparisonFilter;
-  if (objc_msgSendSuper2(&v18, sel_isValidValue_forKeyPath_operatorType_dataTypes_error_, v12, v13, a5, a6, a7))
+  if (objc_msgSendSuper2(&v18, sel_isValidValue_forKeyPath_operatorType_dataTypes_error_, valueCopy, pathCopy, type, types, error))
   {
-    if ([v13 isEqualToString:@"device"] || objc_msgSend(v13, "isEqualToString:", @"source") || objc_msgSend(v13, "isEqualToString:", @"sourceRevision") || objc_msgSend(v13, "isEqualToString:", @"UUID"))
+    if ([pathCopy isEqualToString:@"device"] || objc_msgSend(pathCopy, "isEqualToString:", @"source") || objc_msgSend(pathCopy, "isEqualToString:", @"sourceRevision") || objc_msgSend(pathCopy, "isEqualToString:", @"UUID"))
     {
       v15 = objc_opt_class();
-      IsValueValidForDevicePropertyKeyPath = HKIsValueOrContainerValidForOperatorType(a5, v12, v15, a7);
+      IsValueValidForDevicePropertyKeyPath = HKIsValueOrContainerValidForOperatorType(type, valueCopy, v15, error);
     }
 
-    else if ([v13 hk_hasDevicePropertyKeyPathPrefix])
+    else if ([pathCopy hk_hasDevicePropertyKeyPathPrefix])
     {
-      IsValueValidForDevicePropertyKeyPath = _IsValueValidForDevicePropertyKeyPath(v12, a7);
+      IsValueValidForDevicePropertyKeyPath = _IsValueValidForDevicePropertyKeyPath(valueCopy, error);
     }
 
     else
     {
-      if (![v13 hk_hasMetadataKeyPathPrefix])
+      if (![pathCopy hk_hasMetadataKeyPathPrefix])
       {
         v14 = 1;
         goto LABEL_10;
       }
 
-      IsValueValidForDevicePropertyKeyPath = _IsMetadataValueValidForOperatorType(a5, v12, a7);
+      IsValueValidForDevicePropertyKeyPath = _IsMetadataValueValidForOperatorType(type, valueCopy, error);
     }
 
     v14 = IsValueValidForDevicePropertyKeyPath;
@@ -286,127 +286,127 @@ LABEL_10:
   return v14;
 }
 
-+ (BOOL)allowsEmptyContainerValuesForKeyPath:(id)a3
++ (BOOL)allowsEmptyContainerValuesForKeyPath:(id)path
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"device"] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"source") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"sourceRevision") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"UUID") & 1) != 0 || (objc_msgSend(v3, "hk_hasDevicePropertyKeyPathPrefix"))
+  pathCopy = path;
+  if ([pathCopy isEqualToString:@"device"] & 1) != 0 || (objc_msgSend(pathCopy, "isEqualToString:", @"source") & 1) != 0 || (objc_msgSend(pathCopy, "isEqualToString:", @"sourceRevision") & 1) != 0 || (objc_msgSend(pathCopy, "isEqualToString:", @"UUID") & 1) != 0 || (objc_msgSend(pathCopy, "hk_hasDevicePropertyKeyPathPrefix"))
   {
-    v4 = 1;
+    hk_hasMetadataKeyPathPrefix = 1;
   }
 
   else
   {
-    v4 = [v3 hk_hasMetadataKeyPathPrefix];
+    hk_hasMetadataKeyPathPrefix = [pathCopy hk_hasMetadataKeyPathPrefix];
   }
 
-  return v4;
+  return hk_hasMetadataKeyPathPrefix;
 }
 
-+ (int64_t)enumRepresentationForKeyPath:(id)a3
++ (int64_t)enumRepresentationForKeyPath:(id)path
 {
-  v5 = a3;
-  if ([v5 isEqualToString:@"correlation"])
+  pathCopy = path;
+  if ([pathCopy isEqualToString:@"correlation"])
   {
     v6 = 0;
   }
 
-  else if ([v5 isEqualToString:@"device"])
+  else if ([pathCopy isEqualToString:@"device"])
   {
     v6 = 1;
   }
 
-  else if ([v5 isEqualToString:@"source"])
+  else if ([pathCopy isEqualToString:@"source"])
   {
     v6 = 2;
   }
 
-  else if ([v5 isEqualToString:@"sourceRevision"])
+  else if ([pathCopy isEqualToString:@"sourceRevision"])
   {
     v6 = 3;
   }
 
-  else if ([v5 isEqualToString:@"UUID"])
+  else if ([pathCopy isEqualToString:@"UUID"])
   {
     v6 = 4;
   }
 
-  else if ([v5 isEqualToString:@"workout"])
+  else if ([pathCopy isEqualToString:@"workout"])
   {
     v6 = 5;
   }
 
-  else if ([v5 isEqualToString:@"appleWatch"])
+  else if ([pathCopy isEqualToString:@"appleWatch"])
   {
     v6 = 6;
   }
 
-  else if ([v5 isEqualToString:@"association"] & 1) != 0 || (objc_msgSend(v5, "isEqualToString:", @"ratingOfExertionAssociation"))
+  else if ([pathCopy isEqualToString:@"association"] & 1) != 0 || (objc_msgSend(pathCopy, "isEqualToString:", @"ratingOfExertionAssociation"))
   {
     v6 = 7;
   }
 
-  else if ([v5 isEqualToString:@"OSBuild"])
+  else if ([pathCopy isEqualToString:@"OSBuild"])
   {
     v6 = 8;
   }
 
-  else if ([v5 isEqualToString:@"contributor"])
+  else if ([pathCopy isEqualToString:@"contributor"])
   {
     v6 = 13;
   }
 
-  else if ([v5 isEqualToString:@"creationDate"])
+  else if ([pathCopy isEqualToString:@"creationDate"])
   {
     v6 = 10;
   }
 
-  else if ([v5 isEqualToString:@"productType"])
+  else if ([pathCopy isEqualToString:@"productType"])
   {
     v6 = 9;
   }
 
-  else if ([v5 isEqualToString:@"localSyncIdentity"])
+  else if ([pathCopy isEqualToString:@"localSyncIdentity"])
   {
     v6 = 14;
   }
 
-  else if ([v5 hk_hasDevicePropertyKeyPathPrefix])
+  else if ([pathCopy hk_hasDevicePropertyKeyPathPrefix])
   {
     v6 = 11;
   }
 
-  else if ([v5 hk_hasMetadataKeyPathPrefix])
+  else if ([pathCopy hk_hasMetadataKeyPathPrefix])
   {
     v6 = 12;
   }
 
   else
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:a1 file:@"_HKObjectComparisonFilter.m" lineNumber:348 description:@"Unreachable code has been executed"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_HKObjectComparisonFilter.m" lineNumber:348 description:@"Unreachable code has been executed"];
 
-    v9.receiver = a1;
+    v9.receiver = self;
     v9.super_class = &OBJC_METACLASS____HKObjectComparisonFilter;
-    v6 = objc_msgSendSuper2(&v9, sel_enumRepresentationForKeyPath_, v5);
+    v6 = objc_msgSendSuper2(&v9, sel_enumRepresentationForKeyPath_, pathCopy);
   }
 
   return v6;
 }
 
-+ (BOOL)areValidTypes:(id)a3 forKeyPath:(id)a4 error:(id *)a5
++ (BOOL)areValidTypes:(id)types forKeyPath:(id)path error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v14.receiver = a1;
+  typesCopy = types;
+  pathCopy = path;
+  v14.receiver = self;
   v14.super_class = &OBJC_METACLASS____HKObjectComparisonFilter;
-  if (objc_msgSendSuper2(&v14, sel_areValidTypes_forKeyPath_error_, v8, v9, a5))
+  if (objc_msgSendSuper2(&v14, sel_areValidTypes_forKeyPath_error_, typesCopy, pathCopy, error))
   {
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __60___HKObjectComparisonFilter_areValidTypes_forKeyPath_error___block_invoke;
     v12[3] = &unk_1E7384380;
-    v13 = v9;
-    v10 = [v8 hk_allObjectsPassTestWithError:a5 test:v12];
+    v13 = pathCopy;
+    v10 = [typesCopy hk_allObjectsPassTestWithError:error test:v12];
   }
 
   else
@@ -422,8 +422,8 @@ LABEL_10:
   v9.receiver = self;
   v9.super_class = _HKObjectComparisonFilter;
   [(_HKComparisonFilter *)&v9 configureInMemoryFilter];
-  v3 = [(_HKComparisonFilter *)self keyPath];
-  v4 = [v3 isEqualToString:@"source"];
+  keyPath = [(_HKComparisonFilter *)self keyPath];
+  v4 = [keyPath isEqualToString:@"source"];
 
   if (v4)
   {
@@ -432,20 +432,20 @@ LABEL_10:
 
   else
   {
-    v5 = [(_HKComparisonFilter *)self keyPath];
-    v6 = [v5 hk_hasDevicePropertyKeyPathPrefix];
+    keyPath2 = [(_HKComparisonFilter *)self keyPath];
+    hk_hasDevicePropertyKeyPathPrefix = [keyPath2 hk_hasDevicePropertyKeyPathPrefix];
 
-    if (v6)
+    if (hk_hasDevicePropertyKeyPathPrefix)
     {
       [(_HKObjectComparisonFilter *)self _configureForKeyPathDeviceProperty];
     }
 
     else
     {
-      v7 = [(_HKComparisonFilter *)self keyPath];
-      v8 = [v7 hk_hasMetadataKeyPathPrefix];
+      keyPath3 = [(_HKComparisonFilter *)self keyPath];
+      hk_hasMetadataKeyPathPrefix = [keyPath3 hk_hasMetadataKeyPathPrefix];
 
-      if (v8)
+      if (hk_hasMetadataKeyPathPrefix)
       {
         [(_HKObjectComparisonFilter *)self _configureForMetdataKeyPath];
       }
@@ -453,9 +453,9 @@ LABEL_10:
   }
 }
 
-- (BOOL)acceptsDataObject:(id)a3
+- (BOOL)acceptsDataObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -469,50 +469,50 @@ LABEL_10:
       case 14:
         break;
       case 1:
-        v6 = [v4 device];
+        device = [objectCopy device];
         goto LABEL_12;
       case 2:
-        v7 = [v4 _source];
-        v8 = [(_HKObjectComparisonFilter *)self _acceptsDataObjectWithSource:v7];
+        _source = [objectCopy _source];
+        v8 = [(_HKObjectComparisonFilter *)self _acceptsDataObjectWithSource:_source];
         goto LABEL_14;
       case 3:
-        v6 = [v4 sourceRevision];
+        device = [objectCopy sourceRevision];
         goto LABEL_12;
       case 4:
-        v6 = [v4 UUID];
+        device = [objectCopy UUID];
 LABEL_12:
-        v7 = v6;
-        v8 = [(_HKObjectComparisonFilter *)self _acceptsDataObjectWithValue:v6];
+        _source = device;
+        v8 = [(_HKObjectComparisonFilter *)self _acceptsDataObjectWithValue:device];
         goto LABEL_14;
       case 6:
-        v7 = [v4 _source];
-        v8 = [(_HKObjectComparisonFilter *)self _acceptsDataObjectWithAppleWatchSource:v7];
+        _source = [objectCopy _source];
+        v8 = [(_HKObjectComparisonFilter *)self _acceptsDataObjectWithAppleWatchSource:_source];
         goto LABEL_14;
       case 9:
         [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"Product type filter does not support acceptsDataObject: and cannot be used in updating queries."];
         goto LABEL_16;
       case 10:
-        [v4 _creationTimestamp];
+        [objectCopy _creationTimestamp];
         v5 = [(_HKObjectComparisonFilter *)self _acceptsDataObjectWithCreationTime:?];
         break;
       case 11:
-        v7 = [v4 device];
-        v8 = [(_HKObjectComparisonFilter *)self _acceptsDataObjectComparingDeviceProperty:v7];
+        _source = [objectCopy device];
+        v8 = [(_HKObjectComparisonFilter *)self _acceptsDataObjectComparingDeviceProperty:_source];
         goto LABEL_14;
       case 12:
-        v7 = [v4 metadata];
-        v8 = [(_HKObjectComparisonFilter *)self _acceptsDataObjectWithMetadata:v7];
+        _source = [objectCopy metadata];
+        v8 = [(_HKObjectComparisonFilter *)self _acceptsDataObjectWithMetadata:_source];
         goto LABEL_14;
       case 13:
-        v7 = [v4 contributor];
-        v8 = [(_HKObjectComparisonFilter *)self _acceptsDataObjectWithContributor:v7];
+        _source = [objectCopy contributor];
+        v8 = [(_HKObjectComparisonFilter *)self _acceptsDataObjectWithContributor:_source];
 LABEL_14:
         v5 = v8;
 
         break;
       default:
-        v9 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v9 handleFailureInMethod:1 object:self file:@"_HKObjectComparisonFilter.m" lineNumber:429 description:@"Unreachable code has been executed"];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:1 object:self file:@"_HKObjectComparisonFilter.m" lineNumber:429 description:@"Unreachable code has been executed"];
 
         goto LABEL_16;
     }
@@ -529,17 +529,17 @@ LABEL_16:
 
 - (void)_configureForKeyPathSource
 {
-  v3 = [(_HKComparisonFilter *)self operatorType];
-  v4 = [(_HKComparisonFilter *)self value];
-  v6 = v4;
-  if (v3 == 10)
+  operatorType = [(_HKComparisonFilter *)self operatorType];
+  value = [(_HKComparisonFilter *)self value];
+  v6 = value;
+  if (operatorType == 10)
   {
-    v5 = [v4 hk_containsObjectPassingTest:&__block_literal_global_145];
+    v5 = [value hk_containsObjectPassingTest:&__block_literal_global_145];
   }
 
   else
   {
-    v5 = __55___HKObjectComparisonFilter__configureForKeyPathSource__block_invoke(v4, v4);
+    v5 = __55___HKObjectComparisonFilter__configureForKeyPathSource__block_invoke(value, value);
   }
 
   self->_compareForLocalDevice = v5;
@@ -547,8 +547,8 @@ LABEL_16:
 
 - (void)_configureForKeyPathDeviceProperty
 {
-  v3 = [(_HKComparisonFilter *)self keyPath];
-  v4 = [v3 substringFromIndex:{objc_msgSend(@"device.", "length")}];
+  keyPath = [(_HKComparisonFilter *)self keyPath];
+  v4 = [keyPath substringFromIndex:{objc_msgSend(@"device.", "length")}];
 
   v10 = v4;
   if ([v10 isEqualToString:@"HKDevicePropertyFirmwareVersion"])
@@ -601,9 +601,9 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  v8 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v9 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString * _Nonnull _DevicePropertyNameForDevicePropertyKey(NSString * _Nonnull __strong)"];
-  [v8 handleFailureInFunction:v9 file:@"_HKObjectComparisonFilter.m" lineNumber:110 description:@"Unreachable code has been executed"];
+  [currentHandler handleFailureInFunction:v9 file:@"_HKObjectComparisonFilter.m" lineNumber:110 description:@"Unreachable code has been executed"];
 
   v6 = &stru_1F05FF230;
 LABEL_18:
@@ -614,19 +614,19 @@ LABEL_18:
 
 - (void)_configureForMetdataKeyPath
 {
-  v5 = [(_HKComparisonFilter *)self keyPath];
-  v3 = [v5 substringFromIndex:{objc_msgSend(@"metadata.", "length")}];
+  keyPath = [(_HKComparisonFilter *)self keyPath];
+  v3 = [keyPath substringFromIndex:{objc_msgSend(@"metadata.", "length")}];
   metadataKey = self->_metadataKey;
   self->_metadataKey = v3;
 }
 
-- (BOOL)_acceptsDataObjectWithValue:(id)a3
+- (BOOL)_acceptsDataObjectWithValue:(id)value
 {
-  v5 = a3;
+  valueCopy = value;
   if ([(_HKComparisonFilter *)self operatorType]== 10)
   {
-    v6 = [(_HKComparisonFilter *)self value];
-    v7 = [v6 containsObject:v5];
+    value = [(_HKComparisonFilter *)self value];
+    v7 = [value containsObject:valueCopy];
 LABEL_5:
     LOBYTE(self) = v7;
     goto LABEL_6;
@@ -634,21 +634,21 @@ LABEL_5:
 
   if ([(_HKComparisonFilter *)self operatorType]== 4)
   {
-    v6 = [(_HKComparisonFilter *)self value];
-    v7 = [v6 isEqual:v5];
+    value = [(_HKComparisonFilter *)self value];
+    v7 = [value isEqual:valueCopy];
     goto LABEL_5;
   }
 
   if ([(_HKComparisonFilter *)self operatorType]== 5)
   {
-    v6 = [(_HKComparisonFilter *)self value];
-    LODWORD(self) = [v6 isEqual:v5] ^ 1;
+    value = [(_HKComparisonFilter *)self value];
+    LODWORD(self) = [value isEqual:valueCopy] ^ 1;
   }
 
   else
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"_HKObjectComparisonFilter.m" lineNumber:472 description:@"Unreachable code has been executed"];
+    value = [MEMORY[0x1E696AAA8] currentHandler];
+    [value handleFailureInMethod:a2 object:self file:@"_HKObjectComparisonFilter.m" lineNumber:472 description:@"Unreachable code has been executed"];
     LOBYTE(self) = 0;
   }
 
@@ -657,11 +657,11 @@ LABEL_6:
   return self;
 }
 
-- (BOOL)_acceptsDataObjectWithSource:(id)a3
+- (BOOL)_acceptsDataObjectWithSource:(id)source
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_compareForLocalDevice && [v4 _isLocalDevice])
+  sourceCopy = source;
+  v5 = sourceCopy;
+  if (self->_compareForLocalDevice && [sourceCopy _isLocalDevice])
   {
     v6 = [(_HKComparisonFilter *)self operatorType]== 4 || [(_HKComparisonFilter *)self operatorType]== 10;
   }
@@ -674,53 +674,53 @@ LABEL_6:
   return v6;
 }
 
-- (BOOL)_acceptsDataObjectWithAppleWatchSource:(id)a3
+- (BOOL)_acceptsDataObjectWithAppleWatchSource:(id)source
 {
-  v4 = [a3 _isAppleWatch];
-  v5 = [(_HKComparisonFilter *)self value];
-  v6 = v4 ^ [v5 BOOLValue];
+  _isAppleWatch = [source _isAppleWatch];
+  value = [(_HKComparisonFilter *)self value];
+  v6 = _isAppleWatch ^ [value BOOLValue];
 
   return v6 ^ 1;
 }
 
-- (BOOL)_acceptsDataObjectWithCreationTime:(double)a3
+- (BOOL)_acceptsDataObjectWithCreationTime:(double)time
 {
-  v4 = self;
-  v5 = [(_HKComparisonFilter *)self value];
-  [v5 timeIntervalSinceReferenceDate];
-  v7 = HKCompareDoubles(a3, v6);
-  LOBYTE(v4) = HKComparisonResultMatchesPredicateOperator(v7, [(_HKComparisonFilter *)v4 operatorType]);
+  selfCopy = self;
+  value = [(_HKComparisonFilter *)self value];
+  [value timeIntervalSinceReferenceDate];
+  v7 = HKCompareDoubles(time, v6);
+  LOBYTE(selfCopy) = HKComparisonResultMatchesPredicateOperator(v7, [(_HKComparisonFilter *)selfCopy operatorType]);
 
-  return v4;
+  return selfCopy;
 }
 
-- (BOOL)_acceptsDataObjectComparingDeviceProperty:(id)a3
+- (BOOL)_acceptsDataObjectComparingDeviceProperty:(id)property
 {
-  v4 = [a3 valueForKeyPath:self->_devicePropertyName];
-  v5 = [(_HKComparisonFilter *)self value];
-  v6 = v5;
+  v4 = [property valueForKeyPath:self->_devicePropertyName];
+  value = [(_HKComparisonFilter *)self value];
+  v6 = value;
   if (v4)
   {
-    v7 = [v5 containsObject:v4];
+    v7 = [value containsObject:v4];
   }
 
   else
   {
-    v7 = [v5 count] == 0;
+    v7 = [value count] == 0;
   }
 
   return v7;
 }
 
-- (BOOL)_acceptsDataObjectWithMetadata:(id)a3
+- (BOOL)_acceptsDataObjectWithMetadata:(id)metadata
 {
-  v4 = [a3 objectForKeyedSubscript:self->_metadataKey];
+  v4 = [metadata objectForKeyedSubscript:self->_metadataKey];
   if ([(_HKComparisonFilter *)self operatorType]== 10)
   {
     if (v4)
     {
-      v5 = [(_HKComparisonFilter *)self value];
-      v6 = [v5 containsObject:v4];
+      value = [(_HKComparisonFilter *)self value];
+      v6 = [value containsObject:v4];
     }
 
     else
@@ -731,8 +731,8 @@ LABEL_6:
 
   else
   {
-    v7 = [(_HKComparisonFilter *)self value];
-    if (v7)
+    value2 = [(_HKComparisonFilter *)self value];
+    if (value2)
     {
     }
 
@@ -742,24 +742,24 @@ LABEL_6:
       goto LABEL_13;
     }
 
-    v8 = [MEMORY[0x1E695DF20] hk_acceptedPublicMetadataValueClasses];
+    hk_acceptedPublicMetadataValueClasses = [MEMORY[0x1E695DF20] hk_acceptedPublicMetadataValueClasses];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __60___HKObjectComparisonFilter__acceptsDataObjectWithMetadata___block_invoke;
     v15[3] = &unk_1E7382D18;
     v15[4] = self;
-    [v8 hk_anyObjectPassingTest:v15];
+    [hk_acceptedPublicMetadataValueClasses hk_anyObjectPassingTest:v15];
 
-    v9 = [(_HKComparisonFilter *)self value];
-    if (v9 && (v10 = v9, isKindOfClass = objc_opt_isKindOfClass(), v10, (isKindOfClass & 1) == 0))
+    value3 = [(_HKComparisonFilter *)self value];
+    if (value3 && (v10 = value3, isKindOfClass = objc_opt_isKindOfClass(), v10, (isKindOfClass & 1) == 0))
     {
       v6 = [(_HKComparisonFilter *)self operatorType]== 5;
     }
 
     else
     {
-      v12 = [(_HKComparisonFilter *)self value];
-      v13 = [v4 compare:v12];
+      value4 = [(_HKComparisonFilter *)self value];
+      v13 = [v4 compare:value4];
 
       v6 = HKComparisonResultMatchesPredicateOperator(v13, [(_HKComparisonFilter *)self operatorType]);
     }
@@ -770,16 +770,16 @@ LABEL_13:
   return v6;
 }
 
-- (BOOL)_acceptsDataObjectWithContributor:(id)a3
+- (BOOL)_acceptsDataObjectWithContributor:(id)contributor
 {
-  if (!a3)
+  if (!contributor)
   {
     return 0;
   }
 
-  v4 = [a3 UUID];
-  v5 = [(_HKComparisonFilter *)self value];
-  v6 = [v4 isEqual:v5];
+  uUID = [contributor UUID];
+  value = [(_HKComparisonFilter *)self value];
+  v6 = [uUID isEqual:value];
 
   return v6;
 }

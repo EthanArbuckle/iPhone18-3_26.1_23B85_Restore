@@ -1,21 +1,21 @@
 @interface SUSUIDDMController
-+ (BOOL)_isDeclarationRelevant:(id)a3;
-+ (id)_localizedStringForDate:(id)a3 RelativeToDate:(id)a4;
-+ (id)_scheduledAlertsForEnforcedInstallDate:(id)a3;
-+ (id)_schedulingUnitForEnforcedDate:(id)a3 withInterval:(double)a4;
-+ (id)localizedStringForKey:(id)a3;
-+ (int64_t)_indexForNextAlertInScheduling:(id)a3 forEnforcedDate:(id)a4;
-+ (unint64_t)_alertStyleForWindow:(unint64_t)a3;
-- (BOOL)_isUpdateRelevant:(id)a3;
-- (BOOL)_presentAlert:(id)a3;
++ (BOOL)_isDeclarationRelevant:(id)relevant;
++ (id)_localizedStringForDate:(id)date RelativeToDate:(id)toDate;
++ (id)_scheduledAlertsForEnforcedInstallDate:(id)date;
++ (id)_schedulingUnitForEnforcedDate:(id)date withInterval:(double)interval;
++ (id)localizedStringForKey:(id)key;
++ (int64_t)_indexForNextAlertInScheduling:(id)scheduling forEnforcedDate:(id)date;
++ (unint64_t)_alertStyleForWindow:(unint64_t)window;
+- (BOOL)_isUpdateRelevant:(id)relevant;
+- (BOOL)_presentAlert:(id)alert;
 - (BOOL)_shouldTryToInstall;
 - (BOOL)notificationsDisabledByGlobalSettings;
-- (SUSUIDDMController)initWithSUSUIController:(id)a3 withQueue:(id)a4;
-- (id)alertBodyLocallizedStrWithUpdateName:(id)a3;
-- (id)stringFromRightsOwner:(unint64_t)a3;
-- (unint64_t)decideAlertConflictWithAlertFlow:(unint64_t)a3;
+- (SUSUIDDMController)initWithSUSUIController:(id)controller withQueue:(id)queue;
+- (id)alertBodyLocallizedStrWithUpdateName:(id)name;
+- (id)stringFromRightsOwner:(unint64_t)owner;
+- (unint64_t)decideAlertConflictWithAlertFlow:(unint64_t)flow;
 - (void)_disarm;
-- (void)_doInstall:(id)a3;
+- (void)_doInstall:(id)install;
 - (void)_installNow;
 - (void)_makeScheduling;
 - (void)_presentDDMAvailableAlert;
@@ -24,91 +24,91 @@
 - (void)_scheduleNextDDMAlertWithTimer;
 - (void)_setPasscodePolicyToRequiredIfNeeded;
 - (void)_showDDMAlert;
-- (void)_showDDMAlert:(id)a3;
-- (void)_showDDMAlertNowOrInstallIfNecessary:(BOOL)a3;
-- (void)installDidFail:(id)a3;
-- (void)installDidFinish:(id)a3;
-- (void)installDidStart:(id)a3;
+- (void)_showDDMAlert:(id)alert;
+- (void)_showDDMAlertNowOrInstallIfNecessary:(BOOL)necessary;
+- (void)installDidFail:(id)fail;
+- (void)installDidFinish:(id)finish;
+- (void)installDidStart:(id)start;
 - (void)installNow;
 - (void)notifyAlertWasPresented;
-- (void)setDeclaration:(id)a3;
-- (void)setGlobalSettings:(id)a3;
-- (void)showDDMAlert:(int64_t)a3 install:(BOOL)a4;
-- (void)showNextDDMAlert:(BOOL)a3;
+- (void)setDeclaration:(id)declaration;
+- (void)setGlobalSettings:(id)settings;
+- (void)showDDMAlert:(int64_t)alert install:(BOOL)install;
+- (void)showNextDDMAlert:(BOOL)alert;
 @end
 
 @implementation SUSUIDDMController
 
-- (SUSUIDDMController)initWithSUSUIController:(id)a3 withQueue:(id)a4
+- (SUSUIDDMController)initWithSUSUIController:(id)controller withQueue:(id)queue
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, controller);
   v11 = 0;
-  objc_storeStrong(&v11, a4);
-  v4 = v13;
-  v13 = 0;
+  objc_storeStrong(&v11, queue);
+  v4 = selfCopy;
+  selfCopy = 0;
   v10.receiver = v4;
   v10.super_class = SUSUIDDMController;
   v7 = [(SUSUIDDMController *)&v10 init];
-  v13 = v7;
-  objc_storeStrong(&v13, v7);
+  selfCopy = v7;
+  objc_storeStrong(&selfCopy, v7);
   if (v7)
   {
-    objc_storeStrong(&v13->_declaration, 0);
-    objc_storeStrong(&v13->_ddmTimer, 0);
-    objc_storeStrong(&v13->_controllerClientQueue, v11);
-    objc_storeStrong(&v13->_controller, location[0]);
+    objc_storeStrong(&selfCopy->_declaration, 0);
+    objc_storeStrong(&selfCopy->_ddmTimer, 0);
+    objc_storeStrong(&selfCopy->_controllerClientQueue, v11);
+    objc_storeStrong(&selfCopy->_controller, location[0]);
     v9 = [NSDate dateWithTimeIntervalSince1970:0.0];
-    objc_storeStrong(&v13->_scheduledAlertInfo, 0);
-    objc_storeStrong(&v13->_presentedAlert, 0);
-    objc_storeStrong(&v13->_lastClassicAlertDate, v9);
-    v13->_shouldPauseAlert = 0;
-    v13->_pastDueNotificationCnt = 0;
+    objc_storeStrong(&selfCopy->_scheduledAlertInfo, 0);
+    objc_storeStrong(&selfCopy->_presentedAlert, 0);
+    objc_storeStrong(&selfCopy->_lastClassicAlertDate, v9);
+    selfCopy->_shouldPauseAlert = 0;
+    selfCopy->_pastDueNotificationCnt = 0;
     objc_storeStrong(&v9, 0);
   }
 
-  v6 = v13;
+  v6 = selfCopy;
   objc_storeStrong(&v11, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v13, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v6;
 }
 
-- (void)setDeclaration:(id)a3
+- (void)setDeclaration:(id)declaration
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  queue = v12->_controllerClientQueue;
+  objc_storeStrong(location, declaration);
+  queue = selfCopy->_controllerClientQueue;
   v4 = _NSConcreteStackBlock;
   v5 = -1073741824;
   v6 = 0;
   v7 = sub_180BC;
   v8 = &unk_5D008;
   v9 = location[0];
-  v10 = v12;
+  v10 = selfCopy;
   dispatch_async(queue, &v4);
   objc_storeStrong(&v10, 0);
   objc_storeStrong(&v9, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)setGlobalSettings:(id)a3
+- (void)setGlobalSettings:(id)settings
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  queue = v12->_controllerClientQueue;
+  objc_storeStrong(location, settings);
+  queue = selfCopy->_controllerClientQueue;
   v4 = _NSConcreteStackBlock;
   v5 = -1073741824;
   v6 = 0;
   v7 = sub_18930;
   v8 = &unk_5D008;
-  v9 = v12;
+  v9 = selfCopy;
   v10 = location[0];
   dispatch_async(queue, &v4);
   objc_storeStrong(&v10, 0);
@@ -123,9 +123,9 @@
   v4 = 0;
   if (self->_globalSettings)
   {
-    v6 = [(SUCoreDDMDeclarationGlobalSettings *)self->_globalSettings enableGlobalNotifications];
+    enableGlobalNotifications = [(SUCoreDDMDeclarationGlobalSettings *)self->_globalSettings enableGlobalNotifications];
     v5 = 1;
-    v4 = v6 != 0;
+    v4 = enableGlobalNotifications != 0;
   }
 
   if (v5)
@@ -134,26 +134,26 @@
 
   if (v4)
   {
-    v3 = [(SUCoreDDMDeclarationGlobalSettings *)self->_globalSettings enableGlobalNotifications];
-    v7 = ([v3 BOOLValue] ^ 1) & 1;
+    enableGlobalNotifications2 = [(SUCoreDDMDeclarationGlobalSettings *)self->_globalSettings enableGlobalNotifications];
+    v7 = ([enableGlobalNotifications2 BOOLValue] ^ 1) & 1;
   }
 
   return v7;
 }
 
-+ (BOOL)_isDeclarationRelevant:(id)a3
++ (BOOL)_isDeclarationRelevant:(id)relevant
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, relevant);
   v5 = 0;
   v4 = 0;
   if (location[0])
   {
-    v6 = [location[0] enforcedInstallDate];
+    enforcedInstallDate = [location[0] enforcedInstallDate];
     v5 = 1;
-    v4 = v6 != 0;
+    v4 = enforcedInstallDate != 0;
   }
 
   if (v5)
@@ -165,14 +165,14 @@
   return v8;
 }
 
-+ (id)_localizedStringForDate:(id)a3 RelativeToDate:(id)a4
++ (id)_localizedStringForDate:(id)date RelativeToDate:(id)toDate
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, date);
   v7 = 0;
-  objc_storeStrong(&v7, a4);
+  objc_storeStrong(&v7, toDate);
   v10 = &unk_6F898;
   v9 = 0;
   objc_storeStrong(&v9, &stru_5F4F0);
@@ -189,12 +189,12 @@
   return v5;
 }
 
-+ (id)localizedStringForKey:(id)a3
++ (id)localizedStringForKey:(id)key
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, key);
   v4 = sub_1D75C();
   v5 = [v4 localizedStringForKey:location[0] value:&stru_62DF0 table:@"ui_alerts"];
 
@@ -203,22 +203,22 @@
   return v5;
 }
 
-+ (id)_schedulingUnitForEnforcedDate:(id)a3 withInterval:(double)a4
++ (id)_schedulingUnitForEnforcedDate:(id)date withInterval:(double)interval
 {
-  v20 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v18 = a4;
+  objc_storeStrong(location, date);
+  intervalCopy = interval;
   v17 = @"%@";
   v16 = objc_alloc_init(_DDMAlertSchedulingUnit);
-  v12 = [location[0] dateByAddingTimeInterval:a4];
+  v12 = [location[0] dateByAddingTimeInterval:interval];
   [(_DDMAlertSchedulingUnit *)v16 setDate:?];
 
   [(_DDMAlertSchedulingUnit *)v16 setWindow:0];
-  if (a4 == 0.0)
+  if (interval == 0.0)
   {
-    v11 = [v20 localizedStringForKey:{@"SOFTWARE_UPDATE_INSTALL_ALERT_ENFORCED_NOW", a4}];
+    v11 = [selfCopy localizedStringForKey:{@"SOFTWARE_UPDATE_INSTALL_ALERT_ENFORCED_NOW", interval}];
     [(_DDMAlertSchedulingUnit *)v16 setAlertMsgFormat:?];
 
     [(_DDMAlertSchedulingUnit *)v16 setWindow:1];
@@ -226,13 +226,13 @@
 
   else
   {
-    v15 = (-v18 / 3600.0);
-    v7 = v20;
+    v15 = (-intervalCopy / 3600.0);
+    v7 = selfCopy;
     v6 = location[0];
-    v8 = [(_DDMAlertSchedulingUnit *)v16 date];
+    date = [(_DDMAlertSchedulingUnit *)v16 date];
     v14 = [v7 _localizedStringForDate:v6 RelativeToDate:?];
 
-    v10 = [v20 localizedStringForKey:@"SOFTWARE_UPDATE_INSTALL_ALERT_ENFORCED_REMINDER"];
+    v10 = [selfCopy localizedStringForKey:@"SOFTWARE_UPDATE_INSTALL_ALERT_ENFORCED_REMINDER"];
     v9 = [NSString localizedStringWithValidatedFormat:v17 validFormatSpecifiers:v14 error:?];
     [(_DDMAlertSchedulingUnit *)v16 setAlertMsgFormat:?];
 
@@ -262,51 +262,51 @@
 
 - (void)_makeScheduling
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   dispatch_assert_queue_V2(self->_controllerClientQueue);
-  location[0] = [(SUCoreDDMDeclaration *)v5->_declaration enforcedInstallDate];
+  location[0] = [(SUCoreDDMDeclaration *)selfCopy->_declaration enforcedInstallDate];
   if (location[0])
   {
     v2 = [objc_opt_class() _scheduledAlertsForEnforcedInstallDate:location[0]];
-    scheduling = v5->_scheduling;
-    v5->_scheduling = v2;
+    scheduling = selfCopy->_scheduling;
+    selfCopy->_scheduling = v2;
 
-    v5->_schedulingIndex = [objc_opt_class() _indexForNextAlertInScheduling:v5->_scheduling forEnforcedDate:location[0]];
+    selfCopy->_schedulingIndex = [objc_opt_class() _indexForNextAlertInScheduling:selfCopy->_scheduling forEnforcedDate:location[0]];
   }
 
   objc_storeStrong(location, 0);
 }
 
-+ (id)_scheduledAlertsForEnforcedInstallDate:(id)a3
++ (id)_scheduledAlertsForEnforcedInstallDate:(id)date
 {
-  v18 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, date);
   if (location[0])
   {
     v15 = +[NSMutableArray array];
     for (i = 23; i > 0; --i)
     {
-      v13 = [v18 _schedulingUnitForEnforcedDate:location[0] withInterval:(-3600 * i)];
+      v13 = [selfCopy _schedulingUnitForEnforcedDate:location[0] withInterval:(-3600 * i)];
       [v15 addObject:?];
     }
 
     v5 = v15;
-    v6 = [v18 _schedulingUnitForEnforcedDate:location[0] withInterval:-1800.0];
+    v6 = [selfCopy _schedulingUnitForEnforcedDate:location[0] withInterval:-1800.0];
     [v5 addObject:?];
 
     v7 = v15;
-    v8 = [v18 _schedulingUnitForEnforcedDate:location[0] withInterval:-600.0];
+    v8 = [selfCopy _schedulingUnitForEnforcedDate:location[0] withInterval:-600.0];
     [v7 addObject:?];
 
     v9 = v15;
-    v10 = [v18 _schedulingUnitForEnforcedDate:location[0] withInterval:-300.0];
+    v10 = [selfCopy _schedulingUnitForEnforcedDate:location[0] withInterval:-300.0];
     [v9 addObject:?];
 
     v11 = v15;
-    v12 = [v18 _schedulingUnitForEnforcedDate:location[0] withInterval:0.0];
+    v12 = [selfCopy _schedulingUnitForEnforcedDate:location[0] withInterval:0.0];
     [v11 addObject:?];
 
     v19 = v15;
@@ -326,14 +326,14 @@
   return v3;
 }
 
-+ (int64_t)_indexForNextAlertInScheduling:(id)a3 forEnforcedDate:(id)a4
++ (int64_t)_indexForNextAlertInScheduling:(id)scheduling forEnforcedDate:(id)date
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, scheduling);
   v13 = 0;
-  objc_storeStrong(&v13, a4);
+  objc_storeStrong(&v13, date);
   [v13 timeIntervalSinceNow];
   v12 = (v4 / 86400.0);
   if (v12 < 1)
@@ -341,8 +341,8 @@
     for (i = 0; i < [location[0] count]; ++i)
     {
       v8 = [location[0] objectAtIndexedSubscript:i];
-      v7 = [v8 date];
-      [v7 timeIntervalSinceNow];
+      date = [v8 date];
+      [date timeIntervalSinceNow];
       v9 = v5;
 
       if (v9 >= 0.0)
@@ -366,14 +366,14 @@ LABEL_9:
   return v15;
 }
 
-+ (unint64_t)_alertStyleForWindow:(unint64_t)a3
++ (unint64_t)_alertStyleForWindow:(unint64_t)window
 {
-  if (a3 == 1)
+  if (window == 1)
   {
     return 4;
   }
 
-  if (a3 - 2 <= 1)
+  if (window - 2 <= 1)
   {
     return 5;
   }
@@ -383,59 +383,59 @@ LABEL_9:
 
 - (void)_scheduleNextDDMAlert
 {
-  v16 = self;
+  selfCopy = self;
   v15 = a2;
   dispatch_assert_queue_V2(self->_controllerClientQueue);
-  if (v16->_schedulingIndex < 0)
+  if (selfCopy->_schedulingIndex < 0)
   {
     v11 = objc_opt_class();
-    v12 = [(SUSUIDDMController *)v16 enforcedInstallDate];
-    v2 = [v11 _schedulingUnitForEnforcedDate:(86400 * v16->_schedulingIndex) withInterval:?];
-    scheduledAlertInfo = v16->_scheduledAlertInfo;
-    v16->_scheduledAlertInfo = v2;
+    enforcedInstallDate = [(SUSUIDDMController *)selfCopy enforcedInstallDate];
+    v2 = [v11 _schedulingUnitForEnforcedDate:(86400 * selfCopy->_schedulingIndex) withInterval:?];
+    scheduledAlertInfo = selfCopy->_scheduledAlertInfo;
+    selfCopy->_scheduledAlertInfo = v2;
   }
 
   else
   {
-    schedulingIndex = v16->_schedulingIndex;
-    if (schedulingIndex >= [(NSArray *)v16->_scheduling count])
+    schedulingIndex = selfCopy->_schedulingIndex;
+    if (schedulingIndex >= [(NSArray *)selfCopy->_scheduling count])
     {
-      if (!v16->_scheduledAlertInfo)
+      if (!selfCopy->_scheduledAlertInfo)
       {
         v6 = objc_alloc_init(_DDMAlertSchedulingUnit);
-        v7 = v16->_scheduledAlertInfo;
-        v16->_scheduledAlertInfo = v6;
+        v7 = selfCopy->_scheduledAlertInfo;
+        selfCopy->_scheduledAlertInfo = v6;
       }
 
       v14 = [SUUtility randomIntWithMinVal:0 maxVal:60]+ 300.0;
       v8 = [NSDate dateWithTimeIntervalSinceNow:v14];
-      [(_DDMAlertSchedulingUnit *)v16->_scheduledAlertInfo setDate:?];
+      [(_DDMAlertSchedulingUnit *)selfCopy->_scheduledAlertInfo setDate:?];
 
-      [(_DDMAlertSchedulingUnit *)v16->_scheduledAlertInfo setWindow:1];
+      [(_DDMAlertSchedulingUnit *)selfCopy->_scheduledAlertInfo setWindow:1];
       v9 = [objc_opt_class() localizedStringForKey:@"SOFTWARE_UPDATE_INSTALL_ALERT_ENFORCED_NOW"];
-      [(_DDMAlertSchedulingUnit *)v16->_scheduledAlertInfo setAlertMsgFormat:?];
+      [(_DDMAlertSchedulingUnit *)selfCopy->_scheduledAlertInfo setAlertMsgFormat:?];
 
-      ++v16->_pastDueNotificationCnt;
+      ++selfCopy->_pastDueNotificationCnt;
     }
 
     else
     {
-      v4 = [(NSArray *)v16->_scheduling objectAtIndex:v16->_schedulingIndex];
-      v5 = v16->_scheduledAlertInfo;
-      v16->_scheduledAlertInfo = v4;
+      v4 = [(NSArray *)selfCopy->_scheduling objectAtIndex:selfCopy->_schedulingIndex];
+      v5 = selfCopy->_scheduledAlertInfo;
+      selfCopy->_scheduledAlertInfo = v4;
     }
   }
 
-  ++v16->_schedulingIndex;
+  ++selfCopy->_schedulingIndex;
   location = SUSUILog();
   if (os_log_type_enabled(location, OS_LOG_TYPE_DEFAULT))
   {
-    sub_1875C(v17, "[SUSUIDDMController _scheduleNextDDMAlert]", v16->_scheduledAlertInfo);
+    sub_1875C(v17, "[SUSUIDDMController _scheduleNextDDMAlert]", selfCopy->_scheduledAlertInfo);
     _os_log_impl(&dword_0, location, OS_LOG_TYPE_DEFAULT, "%s: [DDM] Next alert info: %{public}@", v17, 0x16u);
   }
 
   objc_storeStrong(&location, 0);
-  [(SUSUIDDMController *)v16 _scheduleNextDDMAlertWithTimer];
+  [(SUSUIDDMController *)selfCopy _scheduleNextDDMAlertWithTimer];
 }
 
 - (void)_scheduleNextDDMAlertWithTimer
@@ -448,7 +448,7 @@ LABEL_9:
   }
 
   v6 = self->_ddmTimer;
-  v7 = [(_DDMAlertSchedulingUnit *)self->_scheduledAlertInfo date];
+  date = [(_DDMAlertSchedulingUnit *)self->_scheduledAlertInfo date];
   v4 = [PCPersistentTimer initWithFireDate:v6 serviceIdentifier:"initWithFireDate:serviceIdentifier:target:selector:userInfo:" target:? selector:? userInfo:?];
   v5 = self->_ddmTimer;
   self->_ddmTimer = v4;
@@ -458,14 +458,14 @@ LABEL_9:
   [(PCPersistentTimer *)self->_ddmTimer scheduleInQueue:self->_controllerClientQueue];
 }
 
-- (void)_showDDMAlert:(id)a3
+- (void)_showDDMAlert:(id)alert
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  dispatch_assert_queue_V2(v4[5]);
-  [(dispatch_queue_t *)v4 _showDDMAlert];
+  objc_storeStrong(location, alert);
+  dispatch_assert_queue_V2(selfCopy[5]);
+  [(dispatch_queue_t *)selfCopy _showDDMAlert];
   objc_storeStrong(location, 0);
 }
 
@@ -479,10 +479,10 @@ LABEL_9:
 
 - (void)_setPasscodePolicyToRequiredIfNeeded
 {
-  v9 = self;
+  selfCopy = self;
   v8[1] = a2;
   dispatch_assert_queue_V2(self->_controllerClientQueue);
-  if ([(SUSUISoftwareUpdateController *)v9->_controller isInstallationKeybagRequired])
+  if ([(SUSUISoftwareUpdateController *)selfCopy->_controller isInstallationKeybagRequired])
   {
     v8[0] = SUSUILog();
     v7 = OS_LOG_TYPE_DEFAULT;
@@ -490,8 +490,8 @@ LABEL_9:
     {
       log = v8[0];
       type = v7;
-      v4 = [(SUSUIDDMController *)v9 enforcedInstallDate];
-      v6 = v4;
+      enforcedInstallDate = [(SUSUIDDMController *)selfCopy enforcedInstallDate];
+      v6 = enforcedInstallDate;
       sub_1875C(v11, "[SUSUIDDMController _setPasscodePolicyToRequiredIfNeeded]", v6);
       _os_log_impl(&dword_0, log, type, "%s: [DDM] Set passcode policy to SUPasscodePolicyTypeRequired for the enforced date %{public}@", v11, 0x16u);
 
@@ -499,7 +499,7 @@ LABEL_9:
     }
 
     objc_storeStrong(v8, 0);
-    [(SUSUISoftwareUpdateController *)v9->_controller _setPasscodePolicyType:2];
+    [(SUSUISoftwareUpdateController *)selfCopy->_controller _setPasscodePolicyType:2];
   }
 
   else
@@ -515,31 +515,31 @@ LABEL_9:
   }
 }
 
-- (void)_doInstall:(id)a3
+- (void)_doInstall:(id)install
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(SUSUISoftwareUpdateController *)v4->_controller installNowFromSource:1 options:location[0]];
+  objc_storeStrong(location, install);
+  [(SUSUISoftwareUpdateController *)selfCopy->_controller installNowFromSource:1 options:location[0]];
   objc_storeStrong(location, 0);
 }
 
 - (void)_installNow
 {
-  v21 = self;
+  selfCopy = self;
   v20[1] = a2;
   dispatch_assert_queue_V2(self->_controllerClientQueue);
-  v20[0] = [(SUSUIDDMController *)v21 descriptor];
-  v7 = [(SUSUISoftwareUpdateController *)v21->_controller _download];
-  v6 = [v7 descriptor];
+  v20[0] = [(SUSUIDDMController *)selfCopy descriptor];
+  _download = [(SUSUISoftwareUpdateController *)selfCopy->_controller _download];
+  descriptor = [_download descriptor];
   v8 = [v20[0] isEqualToDescriptor:?];
 
   if (v8)
   {
     v16 = objc_alloc_init(SUSUISoftwareUpdateInstallOptions);
     [(SUSUISoftwareUpdateInstallOptions *)v16 setIgnorableConstraints:1056];
-    controller = v21->_controller;
+    controller = selfCopy->_controller;
     v2 = v16;
     v9 = _NSConcreteStackBlock;
     v10 = -1073741824;
@@ -547,7 +547,7 @@ LABEL_9:
     v12 = sub_1A30C;
     v13 = &unk_5F518;
     v14 = v16;
-    v15 = v21;
+    v15 = selfCopy;
     [(SUSUISoftwareUpdateController *)controller _isUpdateInstallableWithInstallOptions:v2 andResponse:&v9];
     objc_storeStrong(&v15, 0);
     objc_storeStrong(&v14, 0);
@@ -561,9 +561,9 @@ LABEL_9:
     v18 = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(location, OS_LOG_TYPE_DEFAULT))
     {
-      v5 = [(SUSUISoftwareUpdateController *)v21->_controller _download];
-      v4 = [v5 descriptor];
-      sub_186F0(v22, "[SUSUIDDMController _installNow]", v20[0], v4);
+      _download2 = [(SUSUISoftwareUpdateController *)selfCopy->_controller _download];
+      descriptor2 = [_download2 descriptor];
+      sub_186F0(v22, "[SUSUIDDMController _installNow]", v20[0], descriptor2);
       _os_log_impl(&dword_0, location, v18, "%s: [DDM] Skipping. SUDDMManager descriptor (%{public}@) mismatches downloaded descriptor (%{public}@)", v22, 0x20u);
     }
 
@@ -576,13 +576,13 @@ LABEL_9:
 
 - (BOOL)_shouldTryToInstall
 {
-  v14 = self;
+  selfCopy = self;
   v13 = a2;
   [(NSDate *)self->_reallyEnforcedDate timeIntervalSinceNow];
   v12 = v2 <= 0.0;
   if (v2 <= 0.0)
   {
-    v12 = v14->_pastDueNotificationCnt % 0xC == 1;
+    v12 = selfCopy->_pastDueNotificationCnt % 0xC == 1;
   }
 
   oslog = SUSUILog();
@@ -598,9 +598,9 @@ LABEL_9:
     }
 
     v5 = v3;
-    v8 = [SUUtility prettyPrintDate:v14->_reallyEnforcedDate];
+    v8 = [SUUtility prettyPrintDate:selfCopy->_reallyEnforcedDate];
     v9 = v8;
-    sub_1AABC(v15, "[SUSUIDDMController _shouldTryToInstall]", v5, v9, v14->_pastDueNotificationCnt);
+    sub_1AABC(v15, "[SUSUIDDMController _shouldTryToInstall]", v5, v9, selfCopy->_pastDueNotificationCnt);
     _os_log_impl(&dword_0, log, v7, "%s: [DDM] result = %{public}@ (real enforce date: %{public}@; past due notifications cnt = %lu)", v15, 0x2Au);
 
     objc_storeStrong(&v9, 0);
@@ -610,13 +610,13 @@ LABEL_9:
   return v12;
 }
 
-- (BOOL)_presentAlert:(id)a3
+- (BOOL)_presentAlert:(id)alert
 {
-  v21 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if ([(SUSUISoftwareUpdateController *)v21->_controller settingsForeground])
+  objc_storeStrong(location, alert);
+  if ([(SUSUISoftwareUpdateController *)selfCopy->_controller settingsForeground])
   {
     v19 = SUSUILog();
     v18 = OS_LOG_TYPE_DEFAULT;
@@ -629,7 +629,7 @@ LABEL_9:
     objc_storeStrong(&v19, 0);
   }
 
-  else if ([(SUSUISoftwareUpdateController *)v21->_controller _homescreenForeground])
+  else if ([(SUSUISoftwareUpdateController *)selfCopy->_controller _homescreenForeground])
   {
     v17 = SUSUILog();
     v16 = OS_LOG_TYPE_DEFAULT;
@@ -644,21 +644,21 @@ LABEL_9:
 
   else
   {
-    v15 = [(SUSUISoftwareUpdateController *)v21->_controller _foregroundBundleID];
+    _foregroundBundleID = [(SUSUISoftwareUpdateController *)selfCopy->_controller _foregroundBundleID];
     v14 = SUSUILog();
     v13 = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      sub_1875C(v24, "[SUSUIDDMController _presentAlert:]", v15);
+      sub_1875C(v24, "[SUSUIDDMController _presentAlert:]", _foregroundBundleID);
       _os_log_impl(&dword_0, v14, v13, "%s: [DDM] [Install Alert] fgApp = %{public}@, presenting a notification (follow-up) ...", v24, 0x16u);
     }
 
     objc_storeStrong(&v14, 0);
     v12 = objc_alloc_init(SUSUIFollowUpDDMUpdate);
-    v5 = [location[0] title];
+    title = [location[0] title];
     [(SUSUIFollowUpDDMUpdate *)v12 setNotificationTitle:?];
 
-    v6 = [location[0] message];
+    message = [location[0] message];
     [(SUSUIFollowUpDDMUpdate *)v12 setNotificationInformativeText:?];
 
     v11 = +[SUSUIFollowUpPresenter sharedInstance];
@@ -671,7 +671,7 @@ LABEL_9:
     [(SUSUIFollowUpPresenter *)v11 presentFollowUp:v12 error:0];
     objc_storeStrong(&v11, 0);
     objc_storeStrong(&v12, 0);
-    objc_storeStrong(&v15, 0);
+    objc_storeStrong(&_foregroundBundleID, 0);
   }
 
   oslog = SUSUILog();
@@ -682,20 +682,20 @@ LABEL_9:
   }
 
   objc_storeStrong(&oslog, 0);
-  v4 = [(SUSUISoftwareUpdateController *)v21->_controller presentAlert:location[0]];
+  v4 = [(SUSUISoftwareUpdateController *)selfCopy->_controller presentAlert:location[0]];
   objc_storeStrong(location, 0);
   return v4;
 }
 
-- (void)_showDDMAlertNowOrInstallIfNecessary:(BOOL)a3
+- (void)_showDDMAlertNowOrInstallIfNecessary:(BOOL)necessary
 {
-  v39 = self;
+  selfCopy = self;
   v38 = a2;
-  v37 = a3;
+  necessaryCopy = necessary;
   dispatch_assert_queue_V2(self->_controllerClientQueue);
-  objc_storeStrong(&v39->_presentedAlert, 0);
-  [(SUSUISoftwareUpdateController *)v39->_controller _dismissAllAlerts];
-  if (v39->_shouldPauseAlert)
+  objc_storeStrong(&selfCopy->_presentedAlert, 0);
+  [(SUSUISoftwareUpdateController *)selfCopy->_controller _dismissAllAlerts];
+  if (selfCopy->_shouldPauseAlert)
   {
     location = SUSUILog();
     type = OS_LOG_TYPE_DEFAULT;
@@ -709,20 +709,20 @@ LABEL_9:
     return;
   }
 
-  globalSettings = v39->_globalSettings;
+  globalSettings = selfCopy->_globalSettings;
   v33 = 0;
   v31 = 0;
   v12 = 0;
   if (globalSettings)
   {
-    v34 = [(SUCoreDDMDeclarationGlobalSettings *)v39->_globalSettings enableGlobalNotifications];
+    enableGlobalNotifications = [(SUCoreDDMDeclarationGlobalSettings *)selfCopy->_globalSettings enableGlobalNotifications];
     v33 = 1;
     v12 = 0;
-    if (v34)
+    if (enableGlobalNotifications)
     {
-      v32 = [(SUCoreDDMDeclarationGlobalSettings *)v39->_globalSettings enableGlobalNotifications];
+      enableGlobalNotifications2 = [(SUCoreDDMDeclarationGlobalSettings *)selfCopy->_globalSettings enableGlobalNotifications];
       v31 = 1;
-      v12 = [v32 BOOLValue] == 0;
+      v12 = [enableGlobalNotifications2 BOOLValue] == 0;
     }
   }
 
@@ -734,13 +734,13 @@ LABEL_9:
   {
   }
 
-  if (v12 && v39->_schedulingIndex < 23)
+  if (v12 && selfCopy->_schedulingIndex < 23)
   {
     v30 = SUSUILog();
     v29 = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
     {
-      sub_1A8A4(v46, "[SUSUIDDMController _showDDMAlertNowOrInstallIfNecessary:]", v39->_schedulingIndex);
+      sub_1A8A4(v46, "[SUSUIDDMController _showDDMAlertNowOrInstallIfNecessary:]", selfCopy->_schedulingIndex);
       _os_log_impl(&dword_0, v30, v29, "%s: [DDM] This notification (%ld) is disabled by global settings; alerts will start one hour before the deadline.", v46, 0x16u);
     }
 
@@ -748,7 +748,7 @@ LABEL_9:
     return;
   }
 
-  if (![(SUSUIDDMController *)v39 currentReminderWindow])
+  if (![(SUSUIDDMController *)selfCopy currentReminderWindow])
   {
     oslog = SUSUILog();
     v26 = OS_LOG_TYPE_DEFAULT;
@@ -762,16 +762,16 @@ LABEL_9:
     return;
   }
 
-  if (!v39->_lastClassicAlertDate || (([(NSDate *)v39->_lastClassicAlertDate timeIntervalSinceNow], v25 = v5, v5 >= 0.0) ? (v11 = v25) : (v11 = -v25), v24[1] = *&v11, v4 = v11, v11 >= 60.0))
+  if (!selfCopy->_lastClassicAlertDate || (([(NSDate *)selfCopy->_lastClassicAlertDate timeIntervalSinceNow], v25 = v5, v5 >= 0.0) ? (v11 = v25) : (v11 = -v25), v24[1] = *&v11, v4 = v11, v11 >= 60.0))
   {
-    v22 = [(SUSUIDDMController *)v39 descriptor];
-    if (!v22)
+    descriptor = [(SUSUIDDMController *)selfCopy descriptor];
+    if (!descriptor)
     {
       v21 = SUSUILog();
       v20 = OS_LOG_TYPE_DEFAULT;
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
       {
-        sub_1875C(v43, "[SUSUIDDMController _showDDMAlertNowOrInstallIfNecessary:]", v39->_declaration);
+        sub_1875C(v43, "[SUSUIDDMController _showDDMAlertNowOrInstallIfNecessary:]", selfCopy->_declaration);
         _os_log_impl(&dword_0, v21, v20, "%s: [DDM] Can't show DDM alert when there's no descriptor (from the SUDDMManager) for our %{public}@", v43, 0x16u);
       }
 
@@ -780,30 +780,30 @@ LABEL_9:
       goto LABEL_51;
     }
 
-    v18 = [(SUSUISoftwareUpdateController *)v39->_controller _download];
+    _download = [(SUSUISoftwareUpdateController *)selfCopy->_controller _download];
     v17 = SUSUILog();
     v16 = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
-      sub_1875C(v42, "[SUSUIDDMController _showDDMAlertNowOrInstallIfNecessary:]", v39->_scheduledAlertInfo);
+      sub_1875C(v42, "[SUSUIDDMController _showDDMAlertNowOrInstallIfNecessary:]", selfCopy->_scheduledAlertInfo);
       _os_log_impl(&dword_0, v17, v16, "%s: [DDM] Current alert info: %{public}@", v42, 0x16u);
     }
 
     objc_storeStrong(&v17, 0);
-    if (v18)
+    if (_download)
     {
-      v9 = [v18 descriptor];
-      v10 = [v9 isEqualToDescriptor:v22];
+      descriptor2 = [_download descriptor];
+      v10 = [descriptor2 isEqualToDescriptor:descriptor];
 
       if ((v10 & 1) == 0)
       {
         v13 = SUSUILog();
         if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
         {
-          v6 = v22;
-          declaration = v39->_declaration;
-          v8 = [v18 descriptor];
-          sub_1B834(v40, "[SUSUIDDMController _showDDMAlertNowOrInstallIfNecessary:]", v6, declaration, v8);
+          v6 = descriptor;
+          declaration = selfCopy->_declaration;
+          descriptor3 = [_download descriptor];
+          sub_1B834(v40, "[SUSUIDDMController _showDDMAlertNowOrInstallIfNecessary:]", v6, declaration, descriptor3);
           _os_log_impl(&dword_0, v13, OS_LOG_TYPE_DEFAULT, "%s: [DDM] WARNING WARNING WARNING!!! We found a descriptor\n%{public}@\nfor declaration\n%{public}@\nbut we downloaded something else\n%{public}@\nDon't show the alert...", v40, 0x2Au);
         }
 
@@ -812,26 +812,26 @@ LABEL_9:
         goto LABEL_50;
       }
 
-      if (v37 && [(SUSUIDDMController *)v39 _shouldTryToInstall])
+      if (necessaryCopy && [(SUSUIDDMController *)selfCopy _shouldTryToInstall])
       {
-        [(SUSUIDDMController *)v39 _installNow];
+        [(SUSUIDDMController *)selfCopy _installNow];
       }
 
       else
       {
-        [(SUSUIDDMController *)v39 _presentDDMInstallAlert];
+        [(SUSUIDDMController *)selfCopy _presentDDMInstallAlert];
       }
     }
 
     else
     {
-      if (![(_DDMAlertSchedulingUnit *)v39->_scheduledAlertInfo window])
+      if (![(_DDMAlertSchedulingUnit *)selfCopy->_scheduledAlertInfo window])
       {
         v15 = SUSUILog();
         v14 = OS_LOG_TYPE_DEFAULT;
         if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
         {
-          sub_1875C(v41, "[SUSUIDDMController _showDDMAlertNowOrInstallIfNecessary:]", v39->_scheduledAlertInfo);
+          sub_1875C(v41, "[SUSUIDDMController _showDDMAlertNowOrInstallIfNecessary:]", selfCopy->_scheduledAlertInfo);
           _os_log_impl(&dword_0, v15, v14, "%s: [DDM] Cannot show alert because of the invalid alert info %{public}@", v41, 0x16u);
         }
 
@@ -840,14 +840,14 @@ LABEL_9:
         goto LABEL_50;
       }
 
-      [(SUSUIDDMController *)v39 _presentDDMAvailableAlert];
+      [(SUSUIDDMController *)selfCopy _presentDDMAvailableAlert];
     }
 
     v19 = 0;
 LABEL_50:
-    objc_storeStrong(&v18, 0);
+    objc_storeStrong(&_download, 0);
 LABEL_51:
-    objc_storeStrong(&v22, 0);
+    objc_storeStrong(&descriptor, 0);
     return;
   }
 
@@ -864,11 +864,11 @@ LABEL_51:
 
 - (void)_presentDDMAvailableAlert
 {
-  v8 = self;
+  selfCopy = self;
   v7[1] = a2;
   v2 = [SUSUIDDMAvailableAlertItem alloc];
-  v3 = [(SUSUIDDMController *)v8 descriptor];
-  v7[0] = [(SUSUIDDMAvailableAlertItem *)v2 initWithDescriptor:v3 softwareUpdateController:v8->_controller alertWindow:[(_DDMAlertSchedulingUnit *)v8->_scheduledAlertInfo window]];
+  descriptor = [(SUSUIDDMController *)selfCopy descriptor];
+  v7[0] = [(SUSUIDDMAvailableAlertItem *)v2 initWithDescriptor:descriptor softwareUpdateController:selfCopy->_controller alertWindow:[(_DDMAlertSchedulingUnit *)selfCopy->_scheduledAlertInfo window]];
 
   location = SUSUILog();
   v5 = OS_LOG_TYPE_DEFAULT;
@@ -879,9 +879,9 @@ LABEL_51:
   }
 
   objc_storeStrong(&location, 0);
-  if ([(SUSUIDDMController *)v8 _presentAlert:v7[0]])
+  if ([(SUSUIDDMController *)selfCopy _presentAlert:v7[0]])
   {
-    objc_storeStrong(&v8->_presentedAlert, v7[0]);
+    objc_storeStrong(&selfCopy->_presentedAlert, v7[0]);
   }
 
   else
@@ -901,11 +901,11 @@ LABEL_51:
 
 - (void)_presentDDMInstallAlert
 {
-  v8 = self;
+  selfCopy = self;
   v7[1] = a2;
   v2 = [SUSUISoftwareUpdateInstallAlertItem alloc];
-  v3 = [(SUSUISoftwareUpdateController *)v8->_controller _download];
-  v7[0] = [(SUSUISoftwareUpdateInstallAlertItem *)v2 initWithDownload:v3 style:[(SUSUIDDMController *)v8 scheduledAlertStyle] softwareUpdateController:v8->_controller tryTonightInstallOperationForecast:0 installOptions:?];
+  _download = [(SUSUISoftwareUpdateController *)selfCopy->_controller _download];
+  v7[0] = [(SUSUISoftwareUpdateInstallAlertItem *)v2 initWithDownload:_download style:[(SUSUIDDMController *)selfCopy scheduledAlertStyle] softwareUpdateController:selfCopy->_controller tryTonightInstallOperationForecast:0 installOptions:?];
 
   location = SUSUILog();
   v5 = OS_LOG_TYPE_DEFAULT;
@@ -916,9 +916,9 @@ LABEL_51:
   }
 
   objc_storeStrong(&location, 0);
-  if ([(SUSUIDDMController *)v8 _presentAlert:v7[0]])
+  if ([(SUSUIDDMController *)selfCopy _presentAlert:v7[0]])
   {
-    objc_storeStrong(&v8->_presentedAlert, v7[0]);
+    objc_storeStrong(&selfCopy->_presentedAlert, v7[0]);
   }
 
   else
@@ -943,21 +943,21 @@ LABEL_51:
   self->_lastClassicAlertDate = v2;
 }
 
-- (unint64_t)decideAlertConflictWithAlertFlow:(unint64_t)a3
+- (unint64_t)decideAlertConflictWithAlertFlow:(unint64_t)flow
 {
-  v37 = self;
+  selfCopy = self;
   v36 = a2;
-  v35 = a3;
+  flowCopy = flow;
   v34 = SUSUILog();
   v33 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
   {
     log = v34;
     type = v33;
-    v19 = SUSUIStringForInstallAlertFlow(v35);
+    v19 = SUSUIStringForInstallAlertFlow(flowCopy);
     v15 = v19;
     v32 = v15;
-    v18 = SUSUIStringForInstallAlertInstallStyle([(SUSUIDDMController *)v37 _alertStyleForCurrentWindow]);
+    v18 = SUSUIStringForInstallAlertInstallStyle([(SUSUIDDMController *)selfCopy _alertStyleForCurrentWindow]);
     v31 = v18;
     sub_186F0(v40, "[SUSUIDDMController decideAlertConflictWithAlertFlow:]", v15, v31);
     _os_log_impl(&dword_0, log, type, "%s: [DDM] Deciding conflict between classic flow (%{public}@) and DDM (%{public}@) alerts", v40, 0x20u);
@@ -968,17 +968,17 @@ LABEL_51:
 
   objc_storeStrong(&v34, 0);
   v30 = 0;
-  v29 = [(SUSUIDDMController *)v37 descriptor];
+  descriptor = [(SUSUIDDMController *)selfCopy descriptor];
   v27 = 0;
   v25 = 0;
   v14 = 1;
-  if (v29)
+  if (descriptor)
   {
-    v28 = [(SUSUISoftwareUpdateController *)v37->_controller _download];
+    _download = [(SUSUISoftwareUpdateController *)selfCopy->_controller _download];
     v27 = 1;
-    v26 = [v28 descriptor];
+    descriptor2 = [_download descriptor];
     v25 = 1;
-    v14 = [v29 isEqualToDescriptor:?] == 0;
+    v14 = [descriptor isEqualToDescriptor:?] == 0;
   }
 
   if (v25)
@@ -995,11 +995,11 @@ LABEL_51:
     v23 = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [(SUSUISoftwareUpdateController *)v37->_controller _download];
-      v12 = [v13 descriptor];
-      v11 = [v12 humanReadableUpdateName];
-      v10 = [v29 humanReadableUpdateName];
-      sub_186F0(v39, "[SUSUIDDMController decideAlertConflictWithAlertFlow:]", v11, v10);
+      _download2 = [(SUSUISoftwareUpdateController *)selfCopy->_controller _download];
+      descriptor3 = [_download2 descriptor];
+      humanReadableUpdateName = [descriptor3 humanReadableUpdateName];
+      humanReadableUpdateName2 = [descriptor humanReadableUpdateName];
+      sub_186F0(v39, "[SUSUIDDMController decideAlertConflictWithAlertFlow:]", humanReadableUpdateName, humanReadableUpdateName2);
       _os_log_impl(&dword_0, v24, v23, "%s: [DDM] Deciding no conflicts. Downloaded update (%{public}@) mismatches SUDDMManager-tracked update (%{public}@)", v39, 0x20u);
     }
 
@@ -1007,23 +1007,23 @@ LABEL_51:
     v30 = 0;
   }
 
-  else if (v37->_declaration && !v37->_shouldPauseAlert && v35)
+  else if (selfCopy->_declaration && !selfCopy->_shouldPauseAlert && flowCopy)
   {
-    if (v35 == 2 || v35 == 3 || v35 == 5)
+    if (flowCopy == 2 || flowCopy == 3 || flowCopy == 5)
     {
       v9 = (&dword_0 + 2);
     }
 
     else
     {
-      if (v35 == 4)
+      if (flowCopy == 4)
       {
         v8 = 3;
       }
 
       else
       {
-        v8 = v35 == 1;
+        v8 = flowCopy == 1;
       }
 
       v9 = v8;
@@ -1035,7 +1035,7 @@ LABEL_51:
       v30 = 2;
     }
 
-    else if ([(_DDMAlertSchedulingUnit *)v37->_scheduledAlertInfo window]- 1 > &dword_0 + 1)
+    else if ([(_DDMAlertSchedulingUnit *)selfCopy->_scheduledAlertInfo window]- 1 > &dword_0 + 1)
     {
       v30 = 2;
     }
@@ -1057,7 +1057,7 @@ LABEL_51:
   {
     v5 = oslog[0];
     v6 = v21;
-    v7 = [(SUSUIDDMController *)v37 stringFromRightsOwner:v30];
+    v7 = [(SUSUIDDMController *)selfCopy stringFromRightsOwner:v30];
     v20 = v7;
     sub_1875C(v38, "[SUSUIDDMController decideAlertConflictWithAlertFlow:]", v20);
     _os_log_impl(&dword_0, v5, v6, "%s: [DDM] Owner decision: %{public}@", v38, 0x16u);
@@ -1067,20 +1067,20 @@ LABEL_51:
 
   objc_storeStrong(oslog, 0);
   v4 = v30;
-  objc_storeStrong(&v29, 0);
+  objc_storeStrong(&descriptor, 0);
   return v4;
 }
 
-- (id)stringFromRightsOwner:(unint64_t)a3
+- (id)stringFromRightsOwner:(unint64_t)owner
 {
-  if (a3)
+  if (owner)
   {
-    if (a3 == 1)
+    if (owner == 1)
     {
       v4 = @"DDM-Alert";
     }
 
-    else if (a3 == 2)
+    else if (owner == 2)
     {
       v4 = @"Classic-Alert";
     }
@@ -1096,20 +1096,20 @@ LABEL_51:
 
 - (void)_disarm
 {
-  v6 = self;
+  selfCopy = self;
   v5[1] = a2;
   dispatch_assert_queue_V2(self->_controllerClientQueue);
-  if (v6->_ddmTimer)
+  if (selfCopy->_ddmTimer)
   {
-    [(PCPersistentTimer *)v6->_ddmTimer invalidate];
-    objc_storeStrong(&v6->_ddmTimer, 0);
+    [(PCPersistentTimer *)selfCopy->_ddmTimer invalidate];
+    objc_storeStrong(&selfCopy->_ddmTimer, 0);
   }
 
-  objc_storeStrong(&v6->_declaration, 0);
-  v6->_shouldPauseAlert = 0;
-  objc_storeStrong(&v6->_scheduledAlertInfo, 0);
-  objc_storeStrong(&v6->_scheduling, 0);
-  v6->_pastDueNotificationCnt = 0;
+  objc_storeStrong(&selfCopy->_declaration, 0);
+  selfCopy->_shouldPauseAlert = 0;
+  objc_storeStrong(&selfCopy->_scheduledAlertInfo, 0);
+  objc_storeStrong(&selfCopy->_scheduling, 0);
+  selfCopy->_pastDueNotificationCnt = 0;
   v5[0] = +[SUSUIFollowUpPresenter sharedInstance];
   v2 = v5[0];
   v4 = +[SUSUIFollowUpDDMUpdate uniqueIdentifier];
@@ -1120,18 +1120,18 @@ LABEL_51:
   objc_storeStrong(v5, 0);
 }
 
-- (id)alertBodyLocallizedStrWithUpdateName:(id)a3
+- (id)alertBodyLocallizedStrWithUpdateName:(id)name
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, name);
   v9 = 0;
-  v8 = [(_DDMAlertSchedulingUnit *)v11->_scheduledAlertInfo alertMsgFormat];
+  alertMsgFormat = [(_DDMAlertSchedulingUnit *)selfCopy->_scheduledAlertInfo alertMsgFormat];
 
-  if (v8)
+  if (alertMsgFormat)
   {
-    v7 = [(_DDMAlertSchedulingUnit *)v11->_scheduledAlertInfo alertMsgFormat];
+    alertMsgFormat2 = [(_DDMAlertSchedulingUnit *)selfCopy->_scheduledAlertInfo alertMsgFormat];
     v3 = [NSString stringWithValidatedFormat:"stringWithValidatedFormat:validFormatSpecifiers:error:" validFormatSpecifiers:location[0] error:?];
     v4 = v9;
     v9 = v3;
@@ -1149,30 +1149,30 @@ LABEL_51:
   return v6;
 }
 
-- (BOOL)_isUpdateRelevant:(id)a3
+- (BOOL)_isUpdateRelevant:(id)relevant
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if (([(SUCoreDDMDeclaration *)v10->_declaration isValidDeclaration]& 1) != 0)
+  objc_storeStrong(location, relevant);
+  if (([(SUCoreDDMDeclaration *)selfCopy->_declaration isValidDeclaration]& 1) != 0)
   {
     if (location[0])
     {
-      v8 = [(SUCoreDDMDeclaration *)v10->_declaration buildVersionString];
+      buildVersionString = [(SUCoreDDMDeclaration *)selfCopy->_declaration buildVersionString];
 
-      if (v8)
+      if (buildVersionString)
       {
-        v7 = [(SUCoreDDMDeclaration *)v10->_declaration buildVersionString];
-        v6 = [location[0] productBuildVersion];
-        v11 = [v7 isEqualToString:?] & 1;
+        buildVersionString2 = [(SUCoreDDMDeclaration *)selfCopy->_declaration buildVersionString];
+        productBuildVersion = [location[0] productBuildVersion];
+        v11 = [buildVersionString2 isEqualToString:?] & 1;
       }
 
       else
       {
-        v5 = [(SUCoreDDMDeclaration *)v10->_declaration versionString];
-        v4 = [location[0] productVersion];
-        v11 = [v5 isEqualToString:?] & 1;
+        versionString = [(SUCoreDDMDeclaration *)selfCopy->_declaration versionString];
+        productVersion = [location[0] productVersion];
+        v11 = [versionString isEqualToString:?] & 1;
       }
     }
 
@@ -1191,39 +1191,39 @@ LABEL_51:
   return v11 & 1;
 }
 
-- (void)installDidStart:(id)a3
+- (void)installDidStart:(id)start
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  queue = v12->_controllerClientQueue;
+  objc_storeStrong(location, start);
+  queue = selfCopy->_controllerClientQueue;
   v4 = _NSConcreteStackBlock;
   v5 = -1073741824;
   v6 = 0;
   v7 = sub_1CA44;
   v8 = &unk_5D008;
   v9 = location[0];
-  v10 = v12;
+  v10 = selfCopy;
   dispatch_async(queue, &v4);
   objc_storeStrong(&v10, 0);
   objc_storeStrong(&v9, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)installDidFinish:(id)a3
+- (void)installDidFinish:(id)finish
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  queue = v12->_controllerClientQueue;
+  objc_storeStrong(location, finish);
+  queue = selfCopy->_controllerClientQueue;
   v4 = _NSConcreteStackBlock;
   v5 = -1073741824;
   v6 = 0;
   v7 = sub_1CD1C;
   v8 = &unk_5D008;
-  v9 = v12;
+  v9 = selfCopy;
   v10 = location[0];
   dispatch_async(queue, &v4);
   objc_storeStrong(&v10, 0);
@@ -1231,31 +1231,31 @@ LABEL_51:
   objc_storeStrong(location, 0);
 }
 
-- (void)installDidFail:(id)a3
+- (void)installDidFail:(id)fail
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, fail);
   oslog = SUSUILog();
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
-    v3 = [location[0] humanReadableUpdateName];
-    sub_1875C(v7, "[SUSUIDDMController installDidFail:]", v3);
+    humanReadableUpdateName = [location[0] humanReadableUpdateName];
+    sub_1875C(v7, "[SUSUIDDMController installDidFail:]", humanReadableUpdateName);
     _os_log_impl(&dword_0, oslog, OS_LOG_TYPE_DEFAULT, "%s: [DDM] Failed to install %{public}@; resume showing alert...", v7, 0x16u);
   }
 
   objc_storeStrong(&oslog, 0);
-  v6->_shouldPauseAlert = 0;
+  selfCopy->_shouldPauseAlert = 0;
   objc_storeStrong(location, 0);
 }
 
-- (void)showDDMAlert:(int64_t)a3 install:(BOOL)a4
+- (void)showDDMAlert:(int64_t)alert install:(BOOL)install
 {
-  v15 = self;
+  selfCopy = self;
   v14 = a2;
-  v13 = a3;
-  v12 = a4;
+  alertCopy = alert;
+  installCopy = install;
   queue = self->_controllerClientQueue;
   v5 = _NSConcreteStackBlock;
   v6 = -1073741824;
@@ -1263,27 +1263,27 @@ LABEL_51:
   v8 = sub_1D128;
   v9 = &unk_5F540;
   v10[0] = self;
-  v10[1] = v13;
-  v11 = v12;
+  v10[1] = alertCopy;
+  v11 = installCopy;
   dispatch_async(queue, &v5);
   objc_storeStrong(v10, 0);
 }
 
-- (void)showNextDDMAlert:(BOOL)a3
+- (void)showNextDDMAlert:(BOOL)alert
 {
-  v13 = self;
+  selfCopy = self;
   v12 = a2;
-  v11 = a3;
+  alertCopy = alert;
   queue = self->_controllerClientQueue;
   v4 = _NSConcreteStackBlock;
   v5 = -1073741824;
   v6 = 0;
   v7 = sub_1D538;
   v8 = &unk_5F568;
-  v9 = self;
-  v10 = v11;
+  selfCopy2 = self;
+  v10 = alertCopy;
   dispatch_async(queue, &v4);
-  objc_storeStrong(&v9, 0);
+  objc_storeStrong(&selfCopy2, 0);
 }
 
 - (void)installNow

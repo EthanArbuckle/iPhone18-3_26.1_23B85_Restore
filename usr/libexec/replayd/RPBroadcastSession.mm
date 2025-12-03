@@ -1,39 +1,39 @@
 @interface RPBroadcastSession
-- (BOOL)showAlertForBroadcastSessionWithError:(id)a3;
+- (BOOL)showAlertForBroadcastSessionWithError:(id)error;
 - (BOOL)showResumeBroadcastAlert;
 - (id)broadcastSessionAudioQueue;
 - (id)broadcastSessionVideoQueue;
 - (id)dispatchCaptureQueue;
-- (id)enableBroadcastWithListenerEndpoint:(id)a3;
-- (unsigned)orientationFromFigTransform:(unint64_t)a3;
-- (void)captureDidFailWithError:(id)a3;
+- (id)enableBroadcastWithListenerEndpoint:(id)endpoint;
+- (unsigned)orientationFromFigTransform:(unint64_t)transform;
+- (void)captureDidFailWithError:(id)error;
 - (void)disableBroadcast;
-- (void)enableBroadcastStartCaptureWithListenerEndpoint:(id)a3 withHandler:(id)a4;
-- (void)handleBroadcastError:(id)a3;
+- (void)enableBroadcastStartCaptureWithListenerEndpoint:(id)endpoint withHandler:(id)handler;
+- (void)handleBroadcastError:(id)error;
 - (void)handleClientApplicationDidEnterBackground;
 - (void)handleClientApplicationDidEnterForeground;
 - (void)handleDeviceLockedWarning;
 - (void)handleDeviceRestrictionWarning;
 - (void)handleDisplayWarning;
-- (void)handleResumeCaptureWithCompletionHandler:(id)a3;
+- (void)handleResumeCaptureWithCompletionHandler:(id)handler;
 - (void)handleResumeContextIDFailure;
-- (void)loadBroadcastUploadExtensionWithBaseIdentifier:(id)a3 withHandler:(id)a4;
-- (void)notifyExtensionOfAction:(int64_t)a3 completion:(id)a4;
-- (void)notifyExtensionOfAudioSampleBuffer:(opaqueCMSampleBuffer *)a3 withType:(int64_t)a4;
+- (void)loadBroadcastUploadExtensionWithBaseIdentifier:(id)identifier withHandler:(id)handler;
+- (void)notifyExtensionOfAction:(int64_t)action completion:(id)completion;
+- (void)notifyExtensionOfAudioSampleBuffer:(opaqueCMSampleBuffer *)buffer withType:(int64_t)type;
 - (void)pauseSession;
-- (void)processSampleBuffer:(opaqueCMSampleBuffer *)a3 transformFlags:(unint64_t)a4;
-- (void)resumeSessionWithWindowLayerContextID:(id)a3 completionHandler:(id)a4;
-- (void)setupBroadcastWithHostBundleID:(id)a3 broadcastExtensionBundleID:(id)a4 broadcastConfigurationData:(id)a5 userInfo:(id)a6 handler:(id)a7;
-- (void)startCaptureWithHandler:(id)a3;
-- (void)stopBroadcastWithHandler:(id)a3;
-- (void)updateBroadcastURL:(id)a3;
+- (void)processSampleBuffer:(opaqueCMSampleBuffer *)buffer transformFlags:(unint64_t)flags;
+- (void)resumeSessionWithWindowLayerContextID:(id)d completionHandler:(id)handler;
+- (void)setupBroadcastWithHostBundleID:(id)d broadcastExtensionBundleID:(id)iD broadcastConfigurationData:(id)data userInfo:(id)info handler:(id)handler;
+- (void)startCaptureWithHandler:(id)handler;
+- (void)stopBroadcastWithHandler:(id)handler;
+- (void)updateBroadcastURL:(id)l;
 @end
 
 @implementation RPBroadcastSession
 
-- (void)stopBroadcastWithHandler:(id)a3
+- (void)stopBroadcastWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446978;
@@ -41,9 +41,9 @@
     v10 = 1024;
     v11 = 109;
     v12 = 2048;
-    v13 = self;
+    selfCopy = self;
     v14 = 1024;
-    v15 = [(RPSession *)self sessionState];
+    sessionState = [(RPSession *)self sessionState];
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %p stopping in session state %d", buf, 0x22u);
   }
 
@@ -51,9 +51,9 @@
   {
     v5 = [NSError _rpUserErrorForCode:-5829 userInfo:0];
     [(RPSession *)self reportSessionEndReason:v5];
-    if (v4)
+    if (handlerCopy)
     {
-      v4[2](v4, v5);
+      handlerCopy[2](handlerCopy, v5);
     }
   }
 
@@ -65,7 +65,7 @@
     v6[2] = sub_10004B2AC;
     v6[3] = &unk_1000A11E0;
     v6[4] = self;
-    v7 = v4;
+    v7 = handlerCopy;
     [(RPBroadcastSession *)self notifyExtensionOfAction:4 completion:v6];
   }
 }
@@ -92,9 +92,9 @@
   self->_broadcastConfiguration = 0;
 }
 
-- (void)updateBroadcastURL:(id)a3
+- (void)updateBroadcastURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   if (dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 136446466;
@@ -105,13 +105,13 @@
   }
 
   broadcastURL = self->_broadcastURL;
-  self->_broadcastURL = v4;
+  self->_broadcastURL = lCopy;
 }
 
-- (void)enableBroadcastStartCaptureWithListenerEndpoint:(id)a3 withHandler:(id)a4
+- (void)enableBroadcastStartCaptureWithListenerEndpoint:(id)endpoint withHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  endpointCopy = endpoint;
+  handlerCopy = handler;
   if (dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446466;
@@ -121,7 +121,7 @@
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d found broadcast info, enabling for session", buf, 0x12u);
   }
 
-  v8 = [(RPBroadcastSession *)self enableBroadcastWithListenerEndpoint:v6];
+  v8 = [(RPBroadcastSession *)self enableBroadcastWithListenerEndpoint:endpointCopy];
   if (v8)
   {
     if (dword_1000B6840 <= 2 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -130,9 +130,9 @@
     }
 
     [(RPSession *)self setSessionState:3];
-    if (v7)
+    if (handlerCopy)
     {
-      v7[2](v7, v8);
+      handlerCopy[2](handlerCopy, v8);
     }
   }
 
@@ -152,14 +152,14 @@
     v9[2] = sub_10004B9FC;
     v9[3] = &unk_1000A11E0;
     v9[4] = self;
-    v10 = v7;
+    v10 = handlerCopy;
     [(RPBroadcastSession *)self notifyExtensionOfAction:1 completion:v9];
   }
 }
 
-- (void)startCaptureWithHandler:(id)a3
+- (void)startCaptureWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446466;
@@ -171,20 +171,20 @@
 
   v5 = +[RPCaptureManager sharedInstance];
   callingPID = self->super._callingPID;
-  v7 = [(RPSession *)self microphoneEnabled];
+  microphoneEnabled = [(RPSession *)self microphoneEnabled];
   [(RPSession *)self windowSize];
   v9 = v8;
   v11 = v10;
-  v12 = [(RPSession *)self contextID];
-  v13 = [NSArray arrayWithObject:v12];
+  contextID = [(RPSession *)self contextID];
+  v13 = [NSArray arrayWithObject:contextID];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_10004BBF8;
   v15[3] = &unk_1000A1840;
   v15[4] = self;
-  v16 = v4;
-  v14 = v4;
-  [v5 startCaptureForDelegate:self forProcessID:callingPID shouldStartMicrophoneCapture:v7 windowSize:0 captureType:v13 contextIDs:v15 didStartHandler:{v9, v11}];
+  v16 = handlerCopy;
+  v14 = handlerCopy;
+  [v5 startCaptureForDelegate:self forProcessID:callingPID shouldStartMicrophoneCapture:microphoneEnabled windowSize:0 captureType:v13 contextIDs:v15 didStartHandler:{v9, v11}];
 }
 
 - (void)pauseSession
@@ -196,9 +196,9 @@
     v8 = 1024;
     v9 = 255;
     v10 = 2048;
-    v11 = self;
+    selfCopy = self;
     v12 = 1024;
-    v13 = [(RPSession *)self sessionState];
+    sessionState = [(RPSession *)self sessionState];
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %p pausing in session state %d", buf, 0x22u);
   }
 
@@ -219,10 +219,10 @@
   }
 }
 
-- (void)resumeSessionWithWindowLayerContextID:(id)a3 completionHandler:(id)a4
+- (void)resumeSessionWithWindowLayerContextID:(id)d completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  handlerCopy = handler;
   if (dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446978;
@@ -230,9 +230,9 @@
     v14 = 1024;
     v15 = 270;
     v16 = 2048;
-    v17 = self;
+    selfCopy = self;
     v18 = 1024;
-    v19 = [(RPSession *)self sessionState];
+    sessionState = [(RPSession *)self sessionState];
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %p resuming in session state %d", buf, 0x22u);
   }
 
@@ -240,17 +240,17 @@
   v10[1] = 3221225472;
   v10[2] = sub_10004C088;
   v10[3] = &unk_1000A11B8;
-  v11 = v7;
+  v11 = handlerCopy;
   v9.receiver = self;
   v9.super_class = RPBroadcastSession;
-  v8 = v7;
-  [(RPSession *)&v9 resumeSessionWithWindowLayerContextID:v6 completionHandler:v10];
+  v8 = handlerCopy;
+  [(RPSession *)&v9 resumeSessionWithWindowLayerContextID:dCopy completionHandler:v10];
   [(RPBroadcastSession *)self notifyExtensionOfAction:3 completion:&stru_1000A2578];
 }
 
-- (id)enableBroadcastWithListenerEndpoint:(id)a3
+- (id)enableBroadcastWithListenerEndpoint:(id)endpoint
 {
-  v4 = a3;
+  endpointCopy = endpoint;
   if (dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446466;
@@ -270,9 +270,9 @@
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d setting up extension proxy", buf, 0x12u);
   }
 
-  if (v4)
+  if (endpointCopy)
   {
-    v5 = [[RPBroadcastExtensionProxy alloc] initWithBroadcastUploadListenerEndpoint:v4];
+    v5 = [[RPBroadcastExtensionProxy alloc] initWithBroadcastUploadListenerEndpoint:endpointCopy];
     broadcastUploadExtensionProxy = self->_broadcastUploadExtensionProxy;
     self->_broadcastUploadExtensionProxy = v5;
   }
@@ -291,7 +291,7 @@
     v18[3] = &unk_1000A1348;
     broadcastUploadExtensionProxy = v9;
     v19 = broadcastUploadExtensionProxy;
-    v20 = self;
+    selfCopy = self;
     [(RPBroadcastExtensionProxy *)v10 establishConnectionWithHandler:v18];
     dispatch_semaphore_wait(&broadcastUploadExtensionProxy->super, 0xFFFFFFFFFFFFFFFFLL);
   }
@@ -322,9 +322,9 @@
   return 0;
 }
 
-- (void)handleBroadcastError:(id)a3
+- (void)handleBroadcastError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   if (dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446722;
@@ -332,7 +332,7 @@
     v9 = 1024;
     v10 = 335;
     v11 = 2112;
-    v12 = v4;
+    v12 = errorCopy;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d error %@", buf, 0x1Cu);
   }
 
@@ -343,18 +343,18 @@
     v5[2] = sub_10004C8B4;
     v5[3] = &unk_1000A1348;
     v5[4] = self;
-    v6 = v4;
+    v6 = errorCopy;
     [(RPBroadcastSession *)self stopBroadcastWithHandler:v5];
   }
 }
 
-- (void)setupBroadcastWithHostBundleID:(id)a3 broadcastExtensionBundleID:(id)a4 broadcastConfigurationData:(id)a5 userInfo:(id)a6 handler:(id)a7
+- (void)setupBroadcastWithHostBundleID:(id)d broadcastExtensionBundleID:(id)iD broadcastConfigurationData:(id)data userInfo:(id)info handler:(id)handler
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  dCopy = d;
+  iDCopy = iD;
+  dataCopy = data;
+  infoCopy = info;
+  handlerCopy = handler;
   if (dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446466;
@@ -364,26 +364,26 @@
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d ", buf, 0x12u);
   }
 
-  v17 = [NSBundle baseIdentifier:v13];
+  v17 = [NSBundle baseIdentifier:iDCopy];
   [(RPBroadcastSession *)self setBroadcastHostBundleId:v17];
   v21[0] = _NSConcreteStackBlock;
   v21[1] = 3221225472;
   v21[2] = sub_10004CAE4;
   v21[3] = &unk_1000A21C0;
-  v22 = v14;
-  v23 = self;
-  v24 = v15;
-  v25 = v16;
-  v18 = v16;
-  v19 = v15;
-  v20 = v14;
+  v22 = dataCopy;
+  selfCopy = self;
+  v24 = infoCopy;
+  v25 = handlerCopy;
+  v18 = handlerCopy;
+  v19 = infoCopy;
+  v20 = dataCopy;
   [(RPBroadcastSession *)self loadBroadcastUploadExtensionWithBaseIdentifier:v17 withHandler:v21];
 }
 
-- (void)loadBroadcastUploadExtensionWithBaseIdentifier:(id)a3 withHandler:(id)a4
+- (void)loadBroadcastUploadExtensionWithBaseIdentifier:(id)identifier withHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   if (dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446466;
@@ -397,10 +397,10 @@
   v9[1] = 3221225472;
   v9[2] = sub_10004CDAC;
   v9[3] = &unk_1000A25A0;
-  v10 = v5;
-  v11 = v6;
-  v7 = v5;
-  v8 = v6;
+  v10 = identifierCopy;
+  v11 = handlerCopy;
+  v7 = identifierCopy;
+  v8 = handlerCopy;
   [NSExtension extensionsWithMatchingPointName:@"com.apple.broadcast-services-upload" baseIdentifier:v7 completion:v9];
 }
 
@@ -416,27 +416,27 @@
   return v3;
 }
 
-- (void)captureDidFailWithError:(id)a3
+- (void)captureDidFailWithError:(id)error
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_10004D15C;
   v5[3] = &unk_1000A1348;
-  v6 = a3;
-  v7 = self;
-  v4 = v6;
+  errorCopy = error;
+  selfCopy = self;
+  v4 = errorCopy;
   [(RPBroadcastSession *)self stopBroadcastWithHandler:v5];
 }
 
-- (BOOL)showAlertForBroadcastSessionWithError:(id)a3
+- (BOOL)showAlertForBroadcastSessionWithError:(id)error
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && ([v4 domain], v6 = objc_claimAutoreleasedReturnValue(), v6, v6))
+  errorCopy = error;
+  v5 = errorCopy;
+  if (errorCopy && ([errorCopy domain], v6 = objc_claimAutoreleasedReturnValue(), v6, v6))
   {
-    v7 = [v5 localizedFailureReason];
+    localizedFailureReason = [v5 localizedFailureReason];
 
-    if (v7)
+    if (localizedFailureReason)
     {
       [v5 localizedFailureReason];
     }
@@ -447,8 +447,8 @@
     }
     v9 = ;
     v10 = [NSBundle _rpLocalizedStringFromFrameworkBundleWithKey:@"BROADCAST_FAILED_ALERT_MESSAGE_FORMAT"];
-    v11 = [(NSExtension *)self->_broadcastExtension infoDictionary];
-    v12 = [v11 objectForKey:_kCFBundleDisplayNameKey];
+    infoDictionary = [(NSExtension *)self->_broadcastExtension infoDictionary];
+    v12 = [infoDictionary objectForKey:_kCFBundleDisplayNameKey];
     v13 = [NSString stringWithFormat:v10, v12, v9];
 
     v14 = [NSBundle _rpLocalizedStringFromFrameworkBundleWithKey:@"BROADCAST_STATUSBAR_TAPPED_ALERT_TITLE"];
@@ -480,14 +480,14 @@
       else if (!*buf)
       {
         v26 = v9;
-        v20 = [(NSExtension *)self->_broadcastExtension identifier];
-        v21 = [LSPlugInKitProxy pluginKitProxyForIdentifier:v20];
+        identifier = [(NSExtension *)self->_broadcastExtension identifier];
+        v21 = [LSPlugInKitProxy pluginKitProxyForIdentifier:identifier];
 
-        v22 = [v21 containingBundle];
-        v23 = [v22 bundleIdentifier];
+        containingBundle = [v21 containingBundle];
+        bundleIdentifier = [containingBundle bundleIdentifier];
 
         v24 = +[LSApplicationWorkspace defaultWorkspace];
-        [v24 openApplicationWithBundleID:v23];
+        [v24 openApplicationWithBundleID:bundleIdentifier];
 
         if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
         {
@@ -548,8 +548,8 @@
     }
 
     v4 = [NSBundle _rpLocalizedStringFromFrameworkBundleWithKey:@"BROADCAST_RESUME_ALERT_MESSAGE_FORMAT"];
-    v5 = [(NSExtension *)self->_broadcastExtension infoDictionary];
-    v6 = [v5 objectForKey:_kCFBundleDisplayNameKey];
+    infoDictionary = [(NSExtension *)self->_broadcastExtension infoDictionary];
+    v6 = [infoDictionary objectForKey:_kCFBundleDisplayNameKey];
     v7 = [NSString stringWithFormat:v4, v6];
 
     v8 = [NSBundle _rpLocalizedStringFromFrameworkBundleWithKey:@"BROADCAST_STATUSBAR_TAPPED_ALERT_TITLE"];
@@ -619,7 +619,7 @@ LABEL_24:
   return 1;
 }
 
-- (void)processSampleBuffer:(opaqueCMSampleBuffer *)a3 transformFlags:(unint64_t)a4
+- (void)processSampleBuffer:(opaqueCMSampleBuffer *)buffer transformFlags:(unint64_t)flags
 {
   if (dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
@@ -644,35 +644,35 @@ LABEL_24:
 
   else
   {
-    [(RPBroadcastSession *)self notifyExtensionOfVideoSampleBuffer:a3 withType:1 sampleOrientation:[(RPBroadcastSession *)self orientationFromFigTransform:a4]];
+    [(RPBroadcastSession *)self notifyExtensionOfVideoSampleBuffer:buffer withType:1 sampleOrientation:[(RPBroadcastSession *)self orientationFromFigTransform:flags]];
   }
 }
 
-- (void)notifyExtensionOfAudioSampleBuffer:(opaqueCMSampleBuffer *)a3 withType:(int64_t)a4
+- (void)notifyExtensionOfAudioSampleBuffer:(opaqueCMSampleBuffer *)buffer withType:(int64_t)type
 {
   if (self->_broadcastExtension)
   {
     if (self->_broadcastUploadExtensionProxy)
     {
-      if (![(RPSession *)self dispatchLimitReached:a4])
+      if (![(RPSession *)self dispatchLimitReached:type])
       {
-        if (a3)
+        if (buffer)
         {
-          CFRetain(a3);
+          CFRetain(buffer);
         }
 
-        v7 = sub_1000575D0(a3, a4);
-        v8 = [(RPBroadcastSession *)self broadcastSessionAudioQueue];
+        v7 = sub_1000575D0(buffer, type);
+        broadcastSessionAudioQueue = [(RPBroadcastSession *)self broadcastSessionAudioQueue];
         v10[0] = _NSConcreteStackBlock;
         v10[1] = 3221225472;
         v10[2] = sub_10004DC90;
         v10[3] = &unk_1000A2280;
         v10[4] = self;
         v11 = v7;
-        v12 = a4;
-        v13 = a3;
+        typeCopy = type;
+        bufferCopy = buffer;
         v9 = v7;
-        dispatch_async(v8, v10);
+        dispatch_async(broadcastSessionAudioQueue, v10);
       }
     }
 
@@ -688,9 +688,9 @@ LABEL_24:
   }
 }
 
-- (void)notifyExtensionOfAction:(int64_t)a3 completion:(id)a4
+- (void)notifyExtensionOfAction:(int64_t)action completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   if (!self->_broadcastExtension)
   {
     if (dword_1000B6840 > 1 || !os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
@@ -721,16 +721,16 @@ LABEL_24:
 LABEL_15:
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, v13, buf, 0x12u);
 LABEL_16:
-    v6[2](v6);
+    completionCopy[2](completionCopy);
     goto LABEL_19;
   }
 
   v7 = +[NSMutableDictionary dictionary];
-  v8 = [NSNumber numberWithInteger:a3];
+  v8 = [NSNumber numberWithInteger:action];
   [v7 setObject:v8 forKeyedSubscript:@"RPBroadcastProcessExtensionPayloadKeyActionType"];
 
   [v7 setObject:self->_broadcastUserInfo forKeyedSubscript:@"RPBroadcastExtensionKeyExtensionUserInfo"];
-  if (a3 == 4)
+  if (action == 4)
   {
     v9 = dispatch_semaphore_create(0);
     broadcastUploadExtensionProxy = self->_broadcastUploadExtensionProxy;
@@ -747,7 +747,7 @@ LABEL_16:
       sub_1000660AC();
     }
 
-    v6[2](v6);
+    completionCopy[2](completionCopy);
   }
 
   else
@@ -757,7 +757,7 @@ LABEL_16:
     v17[1] = 3221225472;
     v17[2] = sub_10004E5E4;
     v17[3] = &unk_1000A1F28;
-    v18 = v6;
+    v18 = completionCopy;
     [(RPBroadcastExtensionProxy *)v14 processPayload:v7 completion:v17];
     v11 = v18;
   }
@@ -789,22 +789,22 @@ LABEL_19:
   return v3;
 }
 
-- (unsigned)orientationFromFigTransform:(unint64_t)a3
+- (unsigned)orientationFromFigTransform:(unint64_t)transform
 {
-  if (a3 - 1 > 6)
+  if (transform - 1 > 6)
   {
     return 1;
   }
 
   else
   {
-    return dword_100076608[a3 - 1];
+    return dword_100076608[transform - 1];
   }
 }
 
-- (void)handleResumeCaptureWithCompletionHandler:(id)a3
+- (void)handleResumeCaptureWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446978;
@@ -812,29 +812,29 @@ LABEL_19:
     v19 = 1024;
     v20 = 804;
     v21 = 2048;
-    v22 = self;
+    selfCopy = self;
     v23 = 1024;
-    v24 = [(RPSession *)self sessionState];
+    sessionState = [(RPSession *)self sessionState];
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %p resuming in session state %d", buf, 0x22u);
   }
 
   self->super._sessionIsResuming = 1;
   v5 = +[RPCaptureManager sharedInstance];
   callingPID = self->super._callingPID;
-  v7 = [(RPSession *)self microphoneEnabled];
+  microphoneEnabled = [(RPSession *)self microphoneEnabled];
   [(RPSession *)self windowSize];
   v9 = v8;
   v11 = v10;
-  v12 = [(RPSession *)self contextID];
-  v13 = [NSArray arrayWithObject:v12];
+  contextID = [(RPSession *)self contextID];
+  v13 = [NSArray arrayWithObject:contextID];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_10004E998;
   v15[3] = &unk_1000A1840;
   v15[4] = self;
-  v16 = v4;
-  v14 = v4;
-  [v5 startCaptureForDelegate:self forProcessID:callingPID shouldStartMicrophoneCapture:v7 windowSize:0 captureType:v13 contextIDs:v15 didStartHandler:{v9, v11}];
+  v16 = handlerCopy;
+  v14 = handlerCopy;
+  [v5 startCaptureForDelegate:self forProcessID:callingPID shouldStartMicrophoneCapture:microphoneEnabled windowSize:0 captureType:v13 contextIDs:v15 didStartHandler:{v9, v11}];
 }
 
 - (void)handleClientApplicationDidEnterBackground
@@ -846,7 +846,7 @@ LABEL_19:
     v5 = 1024;
     v6 = 824;
     v7 = 1024;
-    v8 = [(RPSession *)self sessionState];
+    sessionState = [(RPSession *)self sessionState];
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d session state %d", &v3, 0x18u);
   }
 
@@ -862,7 +862,7 @@ LABEL_19:
     v6 = 1024;
     v7 = 831;
     v8 = 1024;
-    v9 = [(RPSession *)self sessionState];
+    sessionState = [(RPSession *)self sessionState];
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d session state %d", buf, 0x18u);
   }
 
@@ -912,7 +912,7 @@ LABEL_19:
     v6 = 1024;
     v7 = 850;
     v8 = 1024;
-    v9 = [(RPSession *)self sessionState];
+    sessionState = [(RPSession *)self sessionState];
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d session state %d", buf, 0x18u);
   }
 
@@ -936,7 +936,7 @@ LABEL_19:
     v5 = 1024;
     v6 = 861;
     v7 = 1024;
-    v8 = [(RPSession *)self sessionState];
+    sessionState = [(RPSession *)self sessionState];
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d session state %d", &v3, 0x18u);
   }
 }
@@ -950,7 +950,7 @@ LABEL_19:
     v6 = 1024;
     v7 = 879;
     v8 = 1024;
-    v9 = [(RPSession *)self sessionState];
+    sessionState = [(RPSession *)self sessionState];
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d session state %d", buf, 0x18u);
   }
 
@@ -974,7 +974,7 @@ LABEL_19:
     v6 = 1024;
     v7 = 891;
     v8 = 1024;
-    v9 = [(RPSession *)self sessionState];
+    sessionState = [(RPSession *)self sessionState];
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d session state %d", buf, 0x18u);
   }
 

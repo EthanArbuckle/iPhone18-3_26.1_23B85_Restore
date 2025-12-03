@@ -1,6 +1,6 @@
 @interface MTRThermostatClusterPresetTypeStruct
 - (MTRThermostatClusterPresetTypeStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -27,17 +27,17 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRThermostatClusterPresetTypeStruct);
-  v5 = [(MTRThermostatClusterPresetTypeStruct *)self presetScenario];
-  [(MTRThermostatClusterPresetTypeStruct *)v4 setPresetScenario:v5];
+  presetScenario = [(MTRThermostatClusterPresetTypeStruct *)self presetScenario];
+  [(MTRThermostatClusterPresetTypeStruct *)v4 setPresetScenario:presetScenario];
 
-  v6 = [(MTRThermostatClusterPresetTypeStruct *)self numberOfPresets];
-  [(MTRThermostatClusterPresetTypeStruct *)v4 setNumberOfPresets:v6];
+  numberOfPresets = [(MTRThermostatClusterPresetTypeStruct *)self numberOfPresets];
+  [(MTRThermostatClusterPresetTypeStruct *)v4 setNumberOfPresets:numberOfPresets];
 
-  v7 = [(MTRThermostatClusterPresetTypeStruct *)self presetTypeFeatures];
-  [(MTRThermostatClusterPresetTypeStruct *)v4 setPresetTypeFeatures:v7];
+  presetTypeFeatures = [(MTRThermostatClusterPresetTypeStruct *)self presetTypeFeatures];
+  [(MTRThermostatClusterPresetTypeStruct *)v4 setPresetTypeFeatures:presetTypeFeatures];
 
   return v4;
 }

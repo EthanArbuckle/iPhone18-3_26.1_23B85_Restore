@@ -1,5 +1,5 @@
 @interface MKOpenInMapsSelectionAccessoryView
-- (MKOpenInMapsSelectionAccessoryView)initWithURL:(id)a3;
+- (MKOpenInMapsSelectionAccessoryView)initWithURL:(id)l;
 - (id)_createButton;
 - (void)_handlePress;
 - (void)layoutSubviews;
@@ -24,10 +24,10 @@
   v12 = &unk_1E76C8738;
   objc_copyWeak(&v13, &location);
   v5 = [v4 actionWithTitle:v3 image:0 identifier:0 handler:&v9];
-  v6 = [MEMORY[0x1E69DC740] borderlessButtonConfiguration];
-  [v6 setContentInsets:{4.0, 8.0, 4.0, 8.0}];
-  [v6 setTitleTextAttributesTransformer:&__block_literal_global_15397];
-  v7 = [MEMORY[0x1E69DC738] buttonWithConfiguration:v6 primaryAction:v5];
+  borderlessButtonConfiguration = [MEMORY[0x1E69DC740] borderlessButtonConfiguration];
+  [borderlessButtonConfiguration setContentInsets:{4.0, 8.0, 4.0, 8.0}];
+  [borderlessButtonConfiguration setTitleTextAttributesTransformer:&__block_literal_global_15397];
+  v7 = [MEMORY[0x1E69DC738] buttonWithConfiguration:borderlessButtonConfiguration primaryAction:v5];
   [v7 setPreferredBehavioralStyle:1];
 
   objc_destroyWeak(&v13);
@@ -59,22 +59,22 @@ id __51__MKOpenInMapsSelectionAccessoryView__createButton__block_invoke_2(uint64
   [(MKOpenInMapsSelectionAccessoryView *)&v6 layoutSubviews];
   [(MKOpenInMapsSelectionAccessoryView *)self bounds];
   v4 = v3 * 0.5;
-  v5 = [(MKOpenInMapsSelectionAccessoryView *)self layer];
-  [v5 setCornerRadius:v4];
+  layer = [(MKOpenInMapsSelectionAccessoryView *)self layer];
+  [layer setCornerRadius:v4];
 }
 
-- (MKOpenInMapsSelectionAccessoryView)initWithURL:(id)a3
+- (MKOpenInMapsSelectionAccessoryView)initWithURL:(id)l
 {
   v37[4] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  lCopy = l;
   v36.receiver = self;
   v36.super_class = MKOpenInMapsSelectionAccessoryView;
   v6 = [(MKSelectionAccessoryView *)&v36 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_url, a3);
-    v35 = v5;
+    objc_storeStrong(&v6->_url, l);
+    v35 = lCopy;
     v8 = [MEMORY[0x1E69DC888] _mapkit_colorNamed:@"DeveloperPlaceCardCaptionBackgroundColor"];
     bgColor = v7->_bgColor;
     v7->_bgColor = v8;
@@ -82,45 +82,45 @@ id __51__MKOpenInMapsSelectionAccessoryView__createButton__block_invoke_2(uint64
     [(MKOpenInMapsSelectionAccessoryView *)v7 setBackgroundColor:v7->_bgColor];
     v10 = *MEMORY[0x1E695F060];
     v11 = *(MEMORY[0x1E695F060] + 8);
-    v12 = [(MKOpenInMapsSelectionAccessoryView *)v7 layer];
-    [v12 setShadowOffset:{v10, v11}];
+    layer = [(MKOpenInMapsSelectionAccessoryView *)v7 layer];
+    [layer setShadowOffset:{v10, v11}];
 
-    v13 = [(MKOpenInMapsSelectionAccessoryView *)v7 layer];
-    [v13 setShadowRadius:15.0];
+    layer2 = [(MKOpenInMapsSelectionAccessoryView *)v7 layer];
+    [layer2 setShadowRadius:15.0];
 
-    v14 = [MEMORY[0x1E69DC888] blackColor];
-    v15 = [v14 CGColor];
-    v16 = [(MKOpenInMapsSelectionAccessoryView *)v7 layer];
-    [v16 setShadowColor:v15];
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
+    cGColor = [blackColor CGColor];
+    layer3 = [(MKOpenInMapsSelectionAccessoryView *)v7 layer];
+    [layer3 setShadowColor:cGColor];
 
-    v17 = [(MKOpenInMapsSelectionAccessoryView *)v7 layer];
+    layer4 = [(MKOpenInMapsSelectionAccessoryView *)v7 layer];
     LODWORD(v18) = 1047904911;
-    [v17 setShadowOpacity:v18];
+    [layer4 setShadowOpacity:v18];
 
-    v19 = [(MKOpenInMapsSelectionAccessoryView *)v7 _createButton];
-    [v19 setTranslatesAutoresizingMaskIntoConstraints:0];
-    [(MKOpenInMapsSelectionAccessoryView *)v7 addSubview:v19];
+    _createButton = [(MKOpenInMapsSelectionAccessoryView *)v7 _createButton];
+    [_createButton setTranslatesAutoresizingMaskIntoConstraints:0];
+    [(MKOpenInMapsSelectionAccessoryView *)v7 addSubview:_createButton];
     v29 = MEMORY[0x1E696ACD8];
-    v34 = [v19 topAnchor];
-    v33 = [(MKOpenInMapsSelectionAccessoryView *)v7 topAnchor];
-    v32 = [v34 constraintEqualToAnchor:v33];
+    topAnchor = [_createButton topAnchor];
+    topAnchor2 = [(MKOpenInMapsSelectionAccessoryView *)v7 topAnchor];
+    v32 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v37[0] = v32;
-    v31 = [v19 leadingAnchor];
-    v30 = [(MKOpenInMapsSelectionAccessoryView *)v7 leadingAnchor];
-    v20 = [v31 constraintEqualToAnchor:v30];
+    leadingAnchor = [_createButton leadingAnchor];
+    leadingAnchor2 = [(MKOpenInMapsSelectionAccessoryView *)v7 leadingAnchor];
+    v20 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v37[1] = v20;
-    v21 = [(MKOpenInMapsSelectionAccessoryView *)v7 trailingAnchor];
-    v22 = [v19 trailingAnchor];
-    v23 = [v21 constraintEqualToAnchor:v22];
+    trailingAnchor = [(MKOpenInMapsSelectionAccessoryView *)v7 trailingAnchor];
+    trailingAnchor2 = [_createButton trailingAnchor];
+    v23 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v37[2] = v23;
-    v24 = [(MKOpenInMapsSelectionAccessoryView *)v7 bottomAnchor];
-    v25 = [v19 bottomAnchor];
-    v26 = [v24 constraintEqualToAnchor:v25];
+    bottomAnchor = [(MKOpenInMapsSelectionAccessoryView *)v7 bottomAnchor];
+    bottomAnchor2 = [_createButton bottomAnchor];
+    v26 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v37[3] = v26;
     v27 = [MEMORY[0x1E695DEC8] arrayWithObjects:v37 count:4];
     [v29 activateConstraints:v27];
 
-    v5 = v35;
+    lCopy = v35;
   }
 
   return v7;

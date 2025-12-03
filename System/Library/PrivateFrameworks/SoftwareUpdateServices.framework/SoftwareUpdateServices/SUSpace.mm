@@ -1,44 +1,44 @@
 @interface SUSpace
 + (BOOL)_isOffloadUnusedAppsOn;
-+ (id)hasSufficientSpaceWithOptions:(id)a3 error:(id *)a4;
-+ (unint64_t)currentFreeSpaceForVolume:(id)a3;
-+ (unint64_t)maxPreSUStagingOptionalSpaceForUpdate:(id)a3;
-+ (void)_checkPurgeableAppOffload:(id)a3 results:(id)a4 completion:(id)a5;
-+ (void)_checkPurgeableCacheDelete:(id)a3 results:(id)a4 completion:(id)a5;
-+ (void)_checkPurgeableMASuspend:(id)a3 results:(id)a4 completion:(id)a5;
-+ (void)_purgeAppOffloadIfNeeded:(BOOL)a3 neededBytes:(unint64_t)a4 urgency:(int64_t)a5 completion:(id)a6;
-+ (void)_purgeMASuspendIfNeeded:(BOOL)a3 neededBytes:(unint64_t)a4 completion:(id)a5;
-+ (void)_runGetOffTestingIfNecessary:(BOOL)a3 handler:(id)a4;
-+ (void)_showPurgingAlertIfNecessary:(id)a3 results:(id)a4 completion:(id)a5;
-+ (void)hasSufficientSpaceWithOptions:(id)a3 withCompletion:(id)a4;
-+ (void)makeRoomForUpdate:(id)a3 completion:(id)a4;
++ (id)hasSufficientSpaceWithOptions:(id)options error:(id *)error;
++ (unint64_t)currentFreeSpaceForVolume:(id)volume;
++ (unint64_t)maxPreSUStagingOptionalSpaceForUpdate:(id)update;
++ (void)_checkPurgeableAppOffload:(id)offload results:(id)results completion:(id)completion;
++ (void)_checkPurgeableCacheDelete:(id)delete results:(id)results completion:(id)completion;
++ (void)_checkPurgeableMASuspend:(id)suspend results:(id)results completion:(id)completion;
++ (void)_purgeAppOffloadIfNeeded:(BOOL)needed neededBytes:(unint64_t)bytes urgency:(int64_t)urgency completion:(id)completion;
++ (void)_purgeMASuspendIfNeeded:(BOOL)needed neededBytes:(unint64_t)bytes completion:(id)completion;
++ (void)_runGetOffTestingIfNecessary:(BOOL)necessary handler:(id)handler;
++ (void)_showPurgingAlertIfNecessary:(id)necessary results:(id)results completion:(id)completion;
++ (void)hasSufficientSpaceWithOptions:(id)options withCompletion:(id)completion;
++ (void)makeRoomForUpdate:(id)update completion:(id)completion;
 + (void)mobileAssetResumeFromSuspension;
 @end
 
 @implementation SUSpace
 
-+ (void)_checkPurgeableCacheDelete:(id)a3 results:(id)a4 completion:(id)a5
++ (void)_checkPurgeableCacheDelete:(id)delete results:(id)results completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 enableCacheDelete])
+  deleteCopy = delete;
+  resultsCopy = results;
+  completionCopy = completion;
+  if ([deleteCopy enableCacheDelete])
   {
     v28 = [MEMORY[0x277CCACA8] stringWithFormat:@"[%@] Purgeable: enabled", @"CacheDelete"];
     SULogInfo(@"[SPACE] %s: %@", v11, v12, v13, v14, v15, v16, v17, "+[SUSpace _checkPurgeableCacheDelete:results:completion:]");
 
     v18 = MEMORY[0x277D641E8];
-    v19 = [v8 neededBytes];
-    v20 = [v8 cacheDeleteUrgency];
+    neededBytes = [deleteCopy neededBytes];
+    cacheDeleteUrgency = [deleteCopy cacheDeleteUrgency];
     v30[0] = MEMORY[0x277D85DD0];
     v30[1] = 3221225472;
     v30[2] = __57__SUSpace__checkPurgeableCacheDelete_results_completion___block_invoke;
     v30[3] = &unk_279CAB020;
-    v34 = a1;
-    v31 = v9;
-    v32 = v8;
-    v33 = v10;
-    [v18 checkPurgeableSpaceCacheDelete:v19 cacheDeleteUrgency:v20 withCompletionQueue:0 completion:v30];
+    selfCopy = self;
+    v31 = resultsCopy;
+    v32 = deleteCopy;
+    v33 = completionCopy;
+    [v18 checkPurgeableSpaceCacheDelete:neededBytes cacheDeleteUrgency:cacheDeleteUrgency withCompletionQueue:0 completion:v30];
   }
 
   else
@@ -46,9 +46,9 @@
     v29 = [MEMORY[0x277CCACA8] stringWithFormat:@"[%@] Purgeable: disabled", @"CacheDelete"];
     SULogInfo(@"[SPACE] %s: %@", v21, v22, v23, v24, v25, v26, v27, "+[SUSpace _checkPurgeableCacheDelete:results:completion:]");
 
-    [v9 setAdditionalBytesRequired:{objc_msgSend(v8, "neededBytes")}];
-    [v9 setHasSufficientFreeSpace:{objc_msgSend(v9, "additionalBytesRequired") == 0}];
-    (*(v10 + 2))(v10, 0);
+    [resultsCopy setAdditionalBytesRequired:{objc_msgSend(deleteCopy, "neededBytes")}];
+    [resultsCopy setHasSufficientFreeSpace:{objc_msgSend(resultsCopy, "additionalBytesRequired") == 0}];
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
@@ -88,39 +88,39 @@ void __57__SUSpace__checkPurgeableCacheDelete_results_completion___block_invoke(
   return v3;
 }
 
-+ (void)_checkPurgeableAppOffload:(id)a3 results:(id)a4 completion:(id)a5
++ (void)_checkPurgeableAppOffload:(id)offload results:(id)results completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 enableAppOffload];
-  if ([v9 needsCacheDelete])
+  offloadCopy = offload;
+  resultsCopy = results;
+  completionCopy = completion;
+  enableAppOffload = [offloadCopy enableAppOffload];
+  if ([resultsCopy needsCacheDelete])
   {
-    v12 = [a1 _isOffloadUnusedAppsOn];
+    _isOffloadUnusedAppsOn = [self _isOffloadUnusedAppsOn];
   }
 
   else
   {
-    v12 = 0;
+    _isOffloadUnusedAppsOn = 0;
   }
 
-  if (v11)
+  if (enableAppOffload)
   {
     v30 = [MEMORY[0x277CCACA8] stringWithFormat:@"[%@] Purgeable: enabled", @"AppOffload"];
     SULogInfo(@"[SPACE] %s: %@", v13, v14, v15, v16, v17, v18, v19, "+[SUSpace _checkPurgeableAppOffload:results:completion:]");
 
     v20 = MEMORY[0x277D641E8];
-    v21 = [v8 neededBytes];
-    v22 = [v8 appOffloadUrgency];
+    neededBytes = [offloadCopy neededBytes];
+    appOffloadUrgency = [offloadCopy appOffloadUrgency];
     v32[0] = MEMORY[0x277D85DD0];
     v32[1] = 3221225472;
     v32[2] = __56__SUSpace__checkPurgeableAppOffload_results_completion___block_invoke;
     v32[3] = &unk_279CAB020;
-    v36 = a1;
-    v33 = v9;
-    v34 = v8;
-    v35 = v10;
-    [v20 checkPurgeableSpaceOffloadApps:v21 cacheDeleteUrgency:v22 onlyAvailableBySkippingLaunchCheck:v12 withCompletionQueue:0 completion:v32];
+    selfCopy = self;
+    v33 = resultsCopy;
+    v34 = offloadCopy;
+    v35 = completionCopy;
+    [v20 checkPurgeableSpaceOffloadApps:neededBytes cacheDeleteUrgency:appOffloadUrgency onlyAvailableBySkippingLaunchCheck:_isOffloadUnusedAppsOn withCompletionQueue:0 completion:v32];
   }
 
   else
@@ -128,9 +128,9 @@ void __57__SUSpace__checkPurgeableCacheDelete_results_completion___block_invoke(
     v31 = [MEMORY[0x277CCACA8] stringWithFormat:@"[%@] Purgeable: disabled", @"AppOffload"];
     SULogInfo(@"[SPACE] %s: %@", v23, v24, v25, v26, v27, v28, v29, "+[SUSpace _checkPurgeableAppOffload:results:completion:]");
 
-    [v9 setAdditionalBytesRequired:{objc_msgSend(v8, "neededBytes")}];
-    [v9 setHasSufficientFreeSpace:{objc_msgSend(v9, "additionalBytesRequired") == 0}];
-    (*(v10 + 2))(v10, 0);
+    [resultsCopy setAdditionalBytesRequired:{objc_msgSend(offloadCopy, "neededBytes")}];
+    [resultsCopy setHasSufficientFreeSpace:{objc_msgSend(resultsCopy, "additionalBytesRequired") == 0}];
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
@@ -148,27 +148,27 @@ void __56__SUSpace__checkPurgeableAppOffload_results_completion___block_invoke(u
   (*(*(a1 + 48) + 16))();
 }
 
-+ (void)_checkPurgeableMASuspend:(id)a3 results:(id)a4 completion:(id)a5
++ (void)_checkPurgeableMASuspend:(id)suspend results:(id)results completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 enableMobileAssetSuspend])
+  suspendCopy = suspend;
+  resultsCopy = results;
+  completionCopy = completion;
+  if ([suspendCopy enableMobileAssetSuspend])
   {
     v27 = [MEMORY[0x277CCACA8] stringWithFormat:@"[%@] Purgeable: enabled", @"MobileAssetSuspend"];
     SULogInfo(@"[SPACE] %s: %@", v11, v12, v13, v14, v15, v16, v17, "+[SUSpace _checkPurgeableMASuspend:results:completion:]");
 
     v18 = MEMORY[0x277D641E8];
-    v19 = [v8 neededBytes];
+    neededBytes = [suspendCopy neededBytes];
     v29[0] = MEMORY[0x277D85DD0];
     v29[1] = 3221225472;
     v29[2] = __55__SUSpace__checkPurgeableMASuspend_results_completion___block_invoke;
     v29[3] = &unk_279CAB020;
-    v33 = a1;
-    v30 = v9;
-    v31 = v8;
-    v32 = v10;
-    [v18 mobileAssetEstimateEvictable:v19 completionQueue:0 completion:v29];
+    selfCopy = self;
+    v30 = resultsCopy;
+    v31 = suspendCopy;
+    v32 = completionCopy;
+    [v18 mobileAssetEstimateEvictable:neededBytes completionQueue:0 completion:v29];
   }
 
   else
@@ -176,9 +176,9 @@ void __56__SUSpace__checkPurgeableAppOffload_results_completion___block_invoke(u
     v28 = [MEMORY[0x277CCACA8] stringWithFormat:@"[%@] Purgeable: disabled", @"MobileAssetSuspend"];
     SULogInfo(@"[SPACE] %s: %@", v20, v21, v22, v23, v24, v25, v26, "+[SUSpace _checkPurgeableMASuspend:results:completion:]");
 
-    [v9 setAdditionalBytesRequired:{objc_msgSend(v8, "neededBytes")}];
-    [v9 setHasSufficientFreeSpace:{objc_msgSend(v9, "additionalBytesRequired") == 0}];
-    (*(v10 + 2))(v10, 0);
+    [resultsCopy setAdditionalBytesRequired:{objc_msgSend(suspendCopy, "neededBytes")}];
+    [resultsCopy setHasSufficientFreeSpace:{objc_msgSend(resultsCopy, "additionalBytesRequired") == 0}];
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
@@ -196,18 +196,18 @@ void __55__SUSpace__checkPurgeableMASuspend_results_completion___block_invoke(ui
   (*(*(a1 + 48) + 16))();
 }
 
-+ (void)hasSufficientSpaceWithOptions:(id)a3 withCompletion:(id)a4
++ (void)hasSufficientSpaceWithOptions:(id)options withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v74 = [MEMORY[0x277CCACA8] stringWithFormat:@"options = %@", v6];
+  optionsCopy = options;
+  completionCopy = completion;
+  optionsCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"options = %@", optionsCopy];
   SULogDebug(@"[SPACE] %s: %@", v8, v9, v10, v11, v12, v13, v14, "+[SUSpace hasSufficientSpaceWithOptions:withCompletion:]");
 
-  if (v7)
+  if (completionCopy)
   {
-    v15 = [MEMORY[0x277D64400] sharedCore];
-    v16 = [v6 completionQueue];
-    v17 = [v15 selectCompletionQueue:v16];
+    mEMORY[0x277D64400] = [MEMORY[0x277D64400] sharedCore];
+    completionQueue = [optionsCopy completionQueue];
+    v17 = [mEMORY[0x277D64400] selectCompletionQueue:completionQueue];
 
     v85[0] = MEMORY[0x277D85DD0];
     v85[1] = 3221225472;
@@ -215,14 +215,14 @@ void __55__SUSpace__checkPurgeableMASuspend_results_completion___block_invoke(ui
     v85[3] = &unk_279CAB070;
     v18 = v17;
     v86 = v18;
-    v87 = v7;
+    v87 = completionCopy;
     v19 = MEMORY[0x26D668B30](v85);
     v20 = objc_alloc_init(SUSpaceCheckResults);
-    if (v6)
+    if (optionsCopy)
     {
       if (+[SUUtility currentReleaseTypeIsInternal](SUUtility, "currentReleaseTypeIsInternal") && (+[SUPreferences sharedInstance](SUPreferences, "sharedInstance"), v21 = objc_claimAutoreleasedReturnValue(), v22 = [v21 useSpaceOverrides], v21, v22))
       {
-        if ([v6 enableCacheDelete])
+        if ([optionsCopy enableCacheDelete])
         {
           v23 = +[SUPreferences sharedInstance];
           -[SUSpaceCheckResults setNeedsCacheDelete:](v20, "setNeedsCacheDelete:", [v23 spaceOverrideNeedCacheDelete]);
@@ -233,7 +233,7 @@ void __55__SUSpace__checkPurgeableMASuspend_results_completion___block_invoke(ui
           [(SUSpaceCheckResults *)v20 setNeedsCacheDelete:0];
         }
 
-        if ([v6 enableAppOffload])
+        if ([optionsCopy enableAppOffload])
         {
           v62 = +[SUPreferences sharedInstance];
           -[SUSpaceCheckResults setNeedsAppOffload:](v20, "setNeedsAppOffload:", [v62 spaceOverrideNeedAppOffload]);
@@ -244,7 +244,7 @@ void __55__SUSpace__checkPurgeableMASuspend_results_completion___block_invoke(ui
           [(SUSpaceCheckResults *)v20 setNeedsAppOffload:0];
         }
 
-        if ([v6 enableMobileAssetSuspend])
+        if ([optionsCopy enableMobileAssetSuspend])
         {
           v63 = +[SUPreferences sharedInstance];
           -[SUSpaceCheckResults setNeedsMobileAssetSuspend:](v20, "setNeedsMobileAssetSuspend:", [v63 spaceOverrideNeedMobileAssetSuspend]);
@@ -256,9 +256,9 @@ void __55__SUSpace__checkPurgeableMASuspend_results_completion___block_invoke(ui
         }
 
         v64 = +[SUPreferences sharedInstance];
-        v65 = [v64 spaceOverrideHaveEnoughSpace];
+        spaceOverrideHaveEnoughSpace = [v64 spaceOverrideHaveEnoughSpace];
 
-        if (v65)
+        if (spaceOverrideHaveEnoughSpace)
         {
           [(SUSpaceCheckResults *)v20 setHasSufficientFreeSpace:1];
           [(SUSpaceCheckResults *)v20 setAdditionalBytesRequired:0];
@@ -272,7 +272,7 @@ void __55__SUSpace__checkPurgeableMASuspend_results_completion___block_invoke(ui
           v66 = [SUUtility errorWithCode:109];
         }
 
-        v79 = [MEMORY[0x277CCACA8] stringWithFormat:@"[PREFERENCES] Spoofing with result: %@", v20, v74];
+        v79 = [MEMORY[0x277CCACA8] stringWithFormat:@"[PREFERENCES] Spoofing with result: %@", v20, optionsCopy];
         SULogDebug(@"[SPACE] %s: %@", v67, v68, v69, v70, v71, v72, v73, "+[SUSpace hasSufficientSpaceWithOptions:withCompletion:]");
 
         (v19)[2](v19, v20, v66);
@@ -280,10 +280,10 @@ void __55__SUSpace__checkPurgeableMASuspend_results_completion___block_invoke(ui
 
       else
       {
-        v31 = [v6 copy];
+        v31 = [optionsCopy copy];
 
-        v32 = [a1 currentFreeSpaceForVolume:@"/"];
-        v75 = [MEMORY[0x277CCACA8] stringWithFormat:@"Current free space without purging: %llu", v32, v74];
+        v32 = [self currentFreeSpaceForVolume:@"/"];
+        v75 = [MEMORY[0x277CCACA8] stringWithFormat:@"Current free space without purging: %llu", v32, optionsCopy];
         SULogInfo(@"[SPACE] %s: %@", v33, v34, v35, v36, v37, v38, v39, "+[SUSpace hasSufficientSpaceWithOptions:withCompletion:]");
 
         v76 = [MEMORY[0x277CCACA8] stringWithFormat:@"Needed bytes: %llu", objc_msgSend(v31, "neededBytes"), v75];
@@ -296,7 +296,7 @@ void __55__SUSpace__checkPurgeableMASuspend_results_completion___block_invoke(ui
 
           [(SUSpaceCheckResults *)v20 setHasSufficientFreeSpace:1];
           (v19)[2](v19, v20, 0);
-          v6 = v31;
+          optionsCopy = v31;
         }
 
         else
@@ -308,10 +308,10 @@ void __55__SUSpace__checkPurgeableMASuspend_results_completion___block_invoke(ui
           v80[3] = &unk_279CAB0C0;
           v81 = v20;
           v83 = v19;
-          v6 = v31;
-          v82 = v6;
-          v84 = a1;
-          [a1 _checkPurgeableCacheDelete:v6 results:v81 completion:v80];
+          optionsCopy = v31;
+          v82 = optionsCopy;
+          selfCopy = self;
+          [self _checkPurgeableCacheDelete:optionsCopy results:v81 completion:v80];
         }
       }
     }
@@ -324,7 +324,7 @@ void __55__SUSpace__checkPurgeableMASuspend_results_completion___block_invoke(ui
       v54 = [SUUtility errorWithCode:22];
       (v19)[2](v19, v20, v54);
 
-      v6 = 0;
+      optionsCopy = 0;
     }
   }
 
@@ -416,9 +416,9 @@ void __56__SUSpace_hasSufficientSpaceWithOptions_withCompletion___block_invoke_4
   }
 }
 
-+ (id)hasSufficientSpaceWithOptions:(id)a3 error:(id *)a4
++ (id)hasSufficientSpaceWithOptions:(id)options error:(id *)error
 {
-  v6 = a3;
+  optionsCopy = options;
   v31 = 0;
   v32 = &v31;
   v33 = 0x3032000000;
@@ -440,7 +440,7 @@ void __56__SUSpace_hasSufficientSpaceWithOptions_withCompletion___block_invoke_4
   v24 = &v25;
   v8 = v7;
   v22 = v8;
-  [a1 hasSufficientSpaceWithOptions:v6 withCompletion:v21];
+  [self hasSufficientSpaceWithOptions:optionsCopy withCompletion:v21];
   v9 = dispatch_time(0, 300000000000);
   if (dispatch_semaphore_wait(v8, v9))
   {
@@ -449,7 +449,7 @@ void __56__SUSpace_hasSufficientSpaceWithOptions_withCompletion___block_invoke_4
 
     v17 = objc_opt_new();
     v18 = [SUUtility errorWithCode:110];
-    if (!a4)
+    if (!error)
     {
       goto LABEL_4;
     }
@@ -459,11 +459,11 @@ void __56__SUSpace_hasSufficientSpaceWithOptions_withCompletion___block_invoke_4
 
   v17 = v32[5];
   v18 = v26[5];
-  if (a4)
+  if (error)
   {
 LABEL_3:
     v18 = v18;
-    *a4 = v18;
+    *error = v18;
   }
 
 LABEL_4:
@@ -491,16 +491,16 @@ void __47__SUSpace_hasSufficientSpaceWithOptions_error___block_invoke(uint64_t a
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-+ (void)_showPurgingAlertIfNecessary:(id)a3 results:(id)a4 completion:(id)a5
++ (void)_showPurgingAlertIfNecessary:(id)necessary results:(id)results completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (([v8 needsMobileAssetSuspend] & 1) != 0 || objc_msgSend(v8, "needsAppOffload"))
+  necessaryCopy = necessary;
+  resultsCopy = results;
+  completionCopy = completion;
+  if (([resultsCopy needsMobileAssetSuspend] & 1) != 0 || objc_msgSend(resultsCopy, "needsAppOffload"))
   {
-    v10 = [v8 needsMobileAssetSuspend];
+    needsMobileAssetSuspend = [resultsCopy needsMobileAssetSuspend];
     v11 = @"Apps";
-    if (v10)
+    if (needsMobileAssetSuspend)
     {
       v11 = @"Apps and AI";
     }
@@ -518,14 +518,14 @@ void __47__SUSpace_hasSufficientSpaceWithOptions_error___block_invoke(uint64_t a
     v25[2] = __59__SUSpace__showPurgingAlertIfNecessary_results_completion___block_invoke;
     v25[3] = &unk_279CAB110;
     v25[4] = v13;
-    v26 = v9;
-    v23 = -[SUAppPurgingAlertItem initWithHandler:bytesNeeded:includingAppleIntelligence:](v22, "initWithHandler:bytesNeeded:includingAppleIntelligence:", v25, [v7 neededBytes], objc_msgSend(v8, "needsMobileAssetSuspend"));
+    v26 = completionCopy;
+    v23 = -[SUAppPurgingAlertItem initWithHandler:bytesNeeded:includingAppleIntelligence:](v22, "initWithHandler:bytesNeeded:includingAppleIntelligence:", v25, [necessaryCopy neededBytes], objc_msgSend(resultsCopy, "needsMobileAssetSuspend"));
     [v21 presentAlert:v23 animated:1];
   }
 
   else
   {
-    (*(v9 + 2))(v9, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
@@ -562,22 +562,22 @@ void __68__SUSpace__purgeCacheDeleteIfNeeded_neededBytes_urgency_completion___bl
   (*(*(a1 + 32) + 16))();
 }
 
-+ (void)_purgeAppOffloadIfNeeded:(BOOL)a3 neededBytes:(unint64_t)a4 urgency:(int64_t)a5 completion:(id)a6
++ (void)_purgeAppOffloadIfNeeded:(BOOL)needed neededBytes:(unint64_t)bytes urgency:(int64_t)urgency completion:(id)completion
 {
-  v8 = a3;
-  v10 = a6;
-  v11 = v10;
-  if (v8)
+  neededCopy = needed;
+  completionCopy = completion;
+  v11 = completionCopy;
+  if (neededCopy)
   {
     v12 = MEMORY[0x277D641E8];
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = __67__SUSpace__purgeAppOffloadIfNeeded_neededBytes_urgency_completion___block_invoke;
     v21[3] = &unk_279CAB138;
-    v23 = a1;
-    v24 = a4;
-    v22 = v10;
-    [v12 offloadAppsPurge:a4 cacheDeleteUrgency:a5 withCompletionQueue:0 completion:v21];
+    selfCopy = self;
+    bytesCopy = bytes;
+    v22 = completionCopy;
+    [v12 offloadAppsPurge:bytes cacheDeleteUrgency:urgency withCompletionQueue:0 completion:v21];
   }
 
   else
@@ -585,7 +585,7 @@ void __68__SUSpace__purgeCacheDeleteIfNeeded_neededBytes_urgency_completion___bl
     v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"[%@] Purge: not needed", @"AppOffload"];
     SULogInfo(@"[SPACE] %s: %@", v13, v14, v15, v16, v17, v18, v19, "+[SUSpace _purgeAppOffloadIfNeeded:neededBytes:urgency:completion:]");
 
-    (v11)[2](v11, a4 == 0, 0, 0);
+    (v11)[2](v11, bytes == 0, 0, 0);
   }
 }
 
@@ -598,22 +598,22 @@ void __67__SUSpace__purgeAppOffloadIfNeeded_neededBytes_urgency_completion___blo
   (*(*(a1 + 32) + 16))();
 }
 
-+ (void)_purgeMASuspendIfNeeded:(BOOL)a3 neededBytes:(unint64_t)a4 completion:(id)a5
++ (void)_purgeMASuspendIfNeeded:(BOOL)needed neededBytes:(unint64_t)bytes completion:(id)completion
 {
-  v6 = a3;
-  v8 = a5;
-  v9 = v8;
-  if (v6)
+  neededCopy = needed;
+  completionCopy = completion;
+  v9 = completionCopy;
+  if (neededCopy)
   {
     v10 = MEMORY[0x277D641E8];
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __58__SUSpace__purgeMASuspendIfNeeded_neededBytes_completion___block_invoke;
     v19[3] = &unk_279CAB138;
-    v21 = a1;
-    v22 = a4;
-    v20 = v8;
-    [v10 mobileAssetSuspend:a4 completionQueue:0 completion:v19];
+    selfCopy = self;
+    bytesCopy = bytes;
+    v20 = completionCopy;
+    [v10 mobileAssetSuspend:bytes completionQueue:0 completion:v19];
   }
 
   else
@@ -621,7 +621,7 @@ void __67__SUSpace__purgeAppOffloadIfNeeded_neededBytes_urgency_completion___blo
     v18 = [MEMORY[0x277CCACA8] stringWithFormat:@"[%@] Purge: not needed", @"MobileAssetSuspend"];
     SULogInfo(@"[SPACE] %s: %@", v11, v12, v13, v14, v15, v16, v17, "+[SUSpace _purgeMASuspendIfNeeded:neededBytes:completion:]");
 
-    (v9)[2](v9, a4 == 0, 0, 0);
+    (v9)[2](v9, bytes == 0, 0, 0);
   }
 }
 
@@ -656,11 +656,11 @@ void __42__SUSpace_mobileAssetResumeFromSuspension__block_invoke(uint64_t a1, ui
   SULogInfo(@"[SPACE] %s: %@", v3, v4, v5, v6, v7, v8, v9, "+[SUSpace mobileAssetResumeFromSuspension]_block_invoke");
 }
 
-+ (void)_runGetOffTestingIfNecessary:(BOOL)a3 handler:(id)a4
++ (void)_runGetOffTestingIfNecessary:(BOOL)necessary handler:(id)handler
 {
-  v4 = a3;
-  v5 = a4;
-  if (!v4 || !+[SUUtility currentReleaseTypeIsInternal])
+  necessaryCopy = necessary;
+  handlerCopy = handler;
+  if (!necessaryCopy || !+[SUUtility currentReleaseTypeIsInternal])
   {
     goto LABEL_7;
   }
@@ -671,13 +671,13 @@ void __42__SUSpace_mobileAssetResumeFromSuspension__block_invoke(uint64_t a1, ui
   {
 
 LABEL_7:
-    v5[2](v5);
+    handlerCopy[2](handlerCopy);
     goto LABEL_8;
   }
 
-  v8 = [MEMORY[0x277D0E530] wasEverAvailable];
+  wasEverAvailable = [MEMORY[0x277D0E530] wasEverAvailable];
 
-  if (!v8)
+  if (!wasEverAvailable)
   {
     goto LABEL_7;
   }
@@ -687,7 +687,7 @@ LABEL_7:
   v10[1] = 3221225472;
   v10[2] = __48__SUSpace__runGetOffTestingIfNecessary_handler___block_invoke;
   v10[3] = &unk_279CAB180;
-  v11 = v5;
+  v11 = handlerCopy;
   [v9 mobileAssetEstimateEvictable:0x2540BE3FFLL completionQueue:0 completion:v10];
 
 LABEL_8:
@@ -763,16 +763,16 @@ uint64_t __48__SUSpace__runGetOffTestingIfNecessary_handler___block_invoke_3(uin
   return v13();
 }
 
-+ (void)makeRoomForUpdate:(id)a3 completion:(id)a4
++ (void)makeRoomForUpdate:(id)update completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v29 = [MEMORY[0x277CCACA8] stringWithFormat:@"options = %@", v6];
+  updateCopy = update;
+  completionCopy = completion;
+  updateCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"options = %@", updateCopy];
   SULogDebug(@"[SPACE] %s: %@", v8, v9, v10, v11, v12, v13, v14, "+[SUSpace makeRoomForUpdate:completion:]");
 
-  v15 = [MEMORY[0x277D64400] sharedCore];
-  v16 = [v6 completionQueue];
-  v17 = [v15 selectCompletionQueue:v16];
+  mEMORY[0x277D64400] = [MEMORY[0x277D64400] sharedCore];
+  completionQueue = [updateCopy completionQueue];
+  v17 = [mEMORY[0x277D64400] selectCompletionQueue:completionQueue];
 
   v40[0] = 0;
   v40[1] = v40;
@@ -782,23 +782,23 @@ uint64_t __48__SUSpace__runGetOffTestingIfNecessary_handler___block_invoke_3(uin
   v36[1] = 3221225472;
   v36[2] = __40__SUSpace_makeRoomForUpdate_completion___block_invoke;
   v36[3] = &unk_279CAB1F8;
-  v18 = v7;
+  v18 = completionCopy;
   v38 = v18;
   v19 = v17;
   v37 = v19;
   v39 = v40;
   v20 = MEMORY[0x26D668B30](v36);
-  if (v6)
+  if (updateCopy)
   {
     v31[0] = MEMORY[0x277D85DD0];
     v31[1] = 3221225472;
     v31[2] = __40__SUSpace_makeRoomForUpdate_completion___block_invoke_3;
     v31[3] = &unk_279CAB2E8;
-    v35 = a1;
-    v32 = v6;
+    selfCopy = self;
+    v32 = updateCopy;
     v33 = v20;
     v34 = v40;
-    [a1 hasSufficientSpaceWithOptions:v32 withCompletion:v31];
+    [self hasSufficientSpaceWithOptions:v32 withCompletion:v31];
 
     v21 = v32;
   }
@@ -1039,12 +1039,12 @@ void __40__SUSpace_makeRoomForUpdate_completion___block_invoke_7(uint64_t a1, in
   }
 }
 
-+ (unint64_t)currentFreeSpaceForVolume:(id)a3
++ (unint64_t)currentFreeSpaceForVolume:(id)volume
 {
-  v3 = a3;
-  if (v3)
+  volumeCopy = volume;
+  if (volumeCopy)
   {
-    v4 = v3;
+    v4 = volumeCopy;
   }
 
   else
@@ -1057,65 +1057,65 @@ void __40__SUSpace_makeRoomForUpdate_completion___block_invoke_7(uint64_t a1, in
   return v5;
 }
 
-+ (unint64_t)maxPreSUStagingOptionalSpaceForUpdate:(id)a3
++ (unint64_t)maxPreSUStagingOptionalSpaceForUpdate:(id)update
 {
-  v3 = a3;
+  updateCopy = update;
   if (+[SUUtility currentReleaseTypeIsInternal])
   {
     v4 = +[SUPreferences sharedInstance];
-    v5 = [v4 useSpaceOverrides];
+    useSpaceOverrides = [v4 useSpaceOverrides];
 
-    if (v5)
+    if (useSpaceOverrides)
     {
       v43 = [MEMORY[0x277CCACA8] stringWithFormat:@"[PREFERENCES] using space overrides"];
       SULogDebug(@"[SPACE] %s: %@", v6, v7, v8, v9, v10, v11, v12, "+[SUSpace maxPreSUStagingOptionalSpaceForUpdate:]");
 
-      v13 = +[SUPreferences sharedInstance];
-      v14 = [v13 spaceOverrideMaxPSUSOptionalSize];
+      productBuildVersion = +[SUPreferences sharedInstance];
+      spaceOverrideMaxPSUSOptionalSize = [productBuildVersion spaceOverrideMaxPSUSOptionalSize];
       goto LABEL_13;
     }
   }
 
-  if (!v3)
+  if (!updateCopy)
   {
-    v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"no update provided"];
+    productBuildVersion = [MEMORY[0x277CCACA8] stringWithFormat:@"no update provided"];
     SULogInfo(@"[SPACE] %s: %@", v27, v28, v29, v30, v31, v32, v33, "+[SUSpace maxPreSUStagingOptionalSpaceForUpdate:]");
 LABEL_12:
-    v14 = 0;
+    spaceOverrideMaxPSUSOptionalSize = 0;
     goto LABEL_13;
   }
 
-  if (![v3 preSUStagingOptionalSize])
+  if (![updateCopy preSUStagingOptionalSize])
   {
     v34 = MEMORY[0x277CCACA8];
-    v13 = [v3 productBuildVersion];
-    v45 = [v34 stringWithFormat:@"no optional assets to stage for %@", v13];
+    productBuildVersion = [updateCopy productBuildVersion];
+    v45 = [v34 stringWithFormat:@"no optional assets to stage for %@", productBuildVersion];
     SULogInfo(@"[SPACE] %s: %@", v35, v36, v37, v38, v39, v40, v41, "+[SUSpace maxPreSUStagingOptionalSpaceForUpdate:]");
 
     goto LABEL_12;
   }
 
   v15 = [SUSpace currentFreeSpaceForVolume:@"/"];
-  v16 = ([SUUtility totalDiskSpaceForUpdate:v3]* 1.05);
-  v17 = [v3 minFreeSpacePostStageOptionalAssets];
-  v18 = v17 + v16;
-  if (v15 >= v17 + v16)
+  v16 = ([SUUtility totalDiskSpaceForUpdate:updateCopy]* 1.05);
+  minFreeSpacePostStageOptionalAssets = [updateCopy minFreeSpacePostStageOptionalAssets];
+  v18 = minFreeSpacePostStageOptionalAssets + v16;
+  if (v15 >= minFreeSpacePostStageOptionalAssets + v16)
   {
-    v14 = v15 - (v17 + v16);
+    spaceOverrideMaxPSUSOptionalSize = v15 - (minFreeSpacePostStageOptionalAssets + v16);
   }
 
   else
   {
-    v14 = 0;
+    spaceOverrideMaxPSUSOptionalSize = 0;
   }
 
   v19 = MEMORY[0x277CCACA8];
-  v13 = [v3 productBuildVersion];
-  v44 = [v19 stringWithFormat:@"[%@] availableFreeSpace:%lld, totalSpaceNeededIncludingBuffer(buffer:5%%):%lld, allowedSpaceForOptionalAssets:%lld", v13, v15, v18, v14];
+  productBuildVersion = [updateCopy productBuildVersion];
+  v44 = [v19 stringWithFormat:@"[%@] availableFreeSpace:%lld, totalSpaceNeededIncludingBuffer(buffer:5%%):%lld, allowedSpaceForOptionalAssets:%lld", productBuildVersion, v15, v18, spaceOverrideMaxPSUSOptionalSize];
   SULogDebug(@"[SPACE] %s: %@", v20, v21, v22, v23, v24, v25, v26, "+[SUSpace maxPreSUStagingOptionalSpaceForUpdate:]");
 
 LABEL_13:
-  return v14;
+  return spaceOverrideMaxPSUSOptionalSize;
 }
 
 @end

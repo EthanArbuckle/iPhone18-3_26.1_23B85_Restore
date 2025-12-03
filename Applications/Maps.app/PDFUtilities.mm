@@ -1,30 +1,30 @@
 @interface PDFUtilities
-+ (id)imageForType:(unsigned int)a3;
-+ (void)renderDocumentForType:(unsigned int)a3 inRect:(CGRect)a4;
++ (id)imageForType:(unsigned int)type;
++ (void)renderDocumentForType:(unsigned int)type inRect:(CGRect)rect;
 @end
 
 @implementation PDFUtilities
 
-+ (void)renderDocumentForType:(unsigned int)a3 inRect:(CGRect)a4
++ (void)renderDocumentForType:(unsigned int)type inRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = [a1 imageForType:*&a3];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v8 = [self imageForType:*&type];
   [v8 drawInRect:{x, y, width, height}];
 }
 
-+ (id)imageForType:(unsigned int)a3
++ (id)imageForType:(unsigned int)type
 {
-  if (a3 > 0xB)
+  if (type > 0xB)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = [UIImage imageNamed:*(&off_10162AC68 + a3), v3];
+    v5 = [UIImage imageNamed:*(&off_10162AC68 + type), v3];
   }
 
   return v5;

@@ -1,47 +1,47 @@
 @interface MFPhoneDeviceDriver
-+ (int)getROP:(id)a3;
++ (int)getROP:(id)p;
 - (CGRect)getCanvas;
-- (MFPhoneDeviceDriver)initWithCanvas:(CGRect)a3;
-- (id)createBitmap:(id)a3 in_width:(int)a4 in_height:(int)a5 in_planes:(int)a6 in_bitsPerPixel:(int)a7 in_bitmap:(const char *)a8 in_bitmapSize:(unsigned int)a9;
-- (id)createDIBitmap:(id)a3 in_dib:(const char *)a4 in_dibSize:(unsigned int)a5 in_usage:(int)a6;
-- (id)createDIBitmap:(id)a3 in_header:(const char *)a4 in_headerSize:(unsigned int)a5 in_bitmap:(const char *)a6 in_bitmapSize:(unsigned int)a7 in_usage:(int)a8;
-- (id)createFont:(int)a3 lfWidth:(int)a4 lfEscapement:(int)a5 lfOrientation:(int)a6 lfWeight:(int)a7 lfItalic:(BOOL)a8 lfUnderline:(BOOL)a9 lfStrikeOut:(BOOL)a10 lfCharSet:(int)a11 lfOutPrecision:(int)a12 lfClipPrecision:(unsigned __int8)a13 lfQuality:(int)a14 pitch:(int)a15 family:(int)a16 lfFaceName:(id)a17;
-- (id)createFontIndirectW:(int)a3 lfWidth:(int)a4 lfEscapement:(int)a5 lfOrientation:(int)a6 lfWeight:(int)a7 lfItalic:(BOOL)a8 lfUnderline:(BOOL)a9 lfStrikeOut:(BOOL)a10 lfCharSet:(int)a11 lfOutPrecision:(int)a12 lfClipPrecision:(unsigned __int8)a13 lfQuality:(int)a14 pitch:(int)a15 family:(int)a16 lfFaceName:(id)a17 elfFullName:(id)a18 elfStyle:(id)a19 elfVersion:(unsigned int)a20 elfStyleSize:(unsigned int)a21 elfMatch:(unsigned int)a22 elfVendorId:(unsigned int)a23 elfCulture:(unsigned int)a24;
-- (id)createHatchBrush:(id)a3 in_hatchstyle:(int)a4;
+- (MFPhoneDeviceDriver)initWithCanvas:(CGRect)canvas;
+- (id)createBitmap:(id)bitmap in_width:(int)in_width in_height:(int)in_height in_planes:(int)in_planes in_bitsPerPixel:(int)pixel in_bitmap:(const char *)in_bitmap in_bitmapSize:(unsigned int)size;
+- (id)createDIBitmap:(id)bitmap in_dib:(const char *)in_dib in_dibSize:(unsigned int)size in_usage:(int)in_usage;
+- (id)createDIBitmap:(id)bitmap in_header:(const char *)in_header in_headerSize:(unsigned int)size in_bitmap:(const char *)in_bitmap in_bitmapSize:(unsigned int)in_bitmapSize in_usage:(int)in_usage;
+- (id)createFont:(int)font lfWidth:(int)width lfEscapement:(int)escapement lfOrientation:(int)orientation lfWeight:(int)weight lfItalic:(BOOL)italic lfUnderline:(BOOL)underline lfStrikeOut:(BOOL)self0 lfCharSet:(int)self1 lfOutPrecision:(int)self2 lfClipPrecision:(unsigned __int8)self3 lfQuality:(int)self4 pitch:(int)self5 family:(int)self6 lfFaceName:(id)self7;
+- (id)createFontIndirectW:(int)w lfWidth:(int)width lfEscapement:(int)escapement lfOrientation:(int)orientation lfWeight:(int)weight lfItalic:(BOOL)italic lfUnderline:(BOOL)underline lfStrikeOut:(BOOL)self0 lfCharSet:(int)self1 lfOutPrecision:(int)self2 lfClipPrecision:(unsigned __int8)self3 lfQuality:(int)self4 pitch:(int)self5 family:(int)self6 lfFaceName:(id)self7 elfFullName:(id)self8 elfStyle:(id)self9 elfVersion:(unsigned int)version elfStyleSize:(unsigned int)size elfMatch:(unsigned int)match elfVendorId:(unsigned int)id elfCulture:(unsigned int)culture;
+- (id)createHatchBrush:(id)brush in_hatchstyle:(int)in_hatchstyle;
 - (id)createPath;
-- (id)createPatternBrush:(id)a3 usePaletteForBilevel:(BOOL)a4;
-- (id)createPen:(int)a3 in_width:(int)a4 in_colour:(id)a5 in_userStyleArray:(double *)a6;
-- (id)createRegionWithPath:(id)a3;
-- (id)createRegionWithRects:(id)a3 in_dc:(id)a4;
-- (id)createSolidBrush:(id)a3;
-- (int)activateTransform:(CGAffineTransform *)a3;
-- (int)alphaBlend:(id)a3 in_xDest:(int)a4 in_yDest:(int)a5 in_widthDest:(int)a6 in_heightDest:(int)a7 in_sourceImage:(id)a8 in_xSrc:(int)a9 in_ySrc:(int)a10 in_widthSrc:(int)a11 in_heightSrc:(int)a12 in_sourceConstantOpacity:(unsigned __int8)a13 in_useSourceAlphaChannel:(BOOL)a14 in_xform:(CGAffineTransform *)a15 in_colour:(unsigned int)a16;
-- (int)angleArc:(id)a3 x:(int)a4 y:(int)a5 radius:(unsigned int)a6 startAngle:(double)a7 sweepAngle:(double)a8;
-- (int)arc:(id)a3 nLeftRect:(int)a4 nTopRect:(int)a5 nRightRect:(int)a6 nBottomRect:(int)a7 nXStartArc:(int)a8 nYStartArc:(int)a9 nXEndArc:(int)a10 nYEndArc:(int)a11;
-- (int)arcTo:(id)a3 nLeftRect:(int)a4 nTopRect:(int)a5 nRightRect:(int)a6 nBottomRect:(int)a7 nXStartArc:(int)a8 nYStartArc:(int)a9 nXEndArc:(int)a10 nYEndArc:(int)a11;
-- (int)bezier:(id)a3 x:(int)a4 y:(int)a5 x2:(int)a6 y2:(int)a7 x3:(int)a8 y3:(int)a9 x4:(int)a10 y4:(int)a11;
-- (int)bezierTo:(id)a3 x:(int)a4 y:(int)a5 x2:(int)a6 y2:(int)a7 x3:(int)a8 y3:(int)a9;
-- (int)bitBlt:(id)a3 in_xDest:(int)a4 in_yDest:(int)a5 in_widthDest:(int)a6 in_heightDest:(int)a7 in_sourceImage:(id)a8 in_xSrc:(int)a9 in_ySrc:(int)a10 in_rop:(unsigned int)a11 in_xform:(CGAffineTransform *)a12 in_colour:(unsigned int)a13;
-- (int)chord:(id)a3 leftRect:(int)a4 topRect:(int)a5 rightRect:(int)a6 bottomRect:(int)a7 xStartArc:(int)a8 yStartArc:(int)a9 xEndArc:(int)a10 yEndArc:(int)a11;
-- (int)ellipse:(id)a3 x1:(int)a4 y1:(int)a5 x2:(int)a6 y2:(int)a7;
-- (int)excludeClipRect:(CGRect)a3;
-- (int)extTextOut:(id)a3 px:(int *)a4 py:(int *)a5 in_text:(id)a6 options:(int)a7 left:(int)a8 top:(int)a9 right:(int)a10 bottom:(int)a11 spacingValues:(int *)a12 numValues:(int)a13;
-- (int)fillRectangle:(id)a3 x1:(int)a4 y1:(int)a5 x2:(int)a6 y2:(int)a7;
-- (int)intersectClipRect:(CGRect)a3;
-- (int)lineTo:(id)a3 x:(double)a4 y:(double)a5;
-- (int)patBlt:(id)a3 in_x:(int)a4 in_y:(int)a5 in_width:(int)a6 in_height:(int)a7 in_rop:(unsigned int)a8;
-- (int)pie:(id)a3 nLeftRect:(int)a4 nTopRect:(int)a5 nRightRect:(int)a6 nBottomRect:(int)a7 nXStartArc:(int)a8 nYStartArc:(int)a9 nXEndArc:(int)a10 nYEndArc:(int)a11;
-- (int)polyPolygon:(id)a3 in_points:(CGPoint *)a4 in_polyCounts:(int *)a5 in_count:(int)a6;
-- (int)polyPolyline:(id)a3 in_points:(CGPoint *)a4 in_polyCounts:(int *)a5 in_count:(int)a6;
-- (int)polygon:(id)a3 in_points:(CGPoint *)a4 in_count:(int)a5;
-- (int)polyline:(id)a3 in_points:(CGPoint *)a4 in_count:(int)a5;
-- (int)rectangle:(id)a3 x1:(int)a4 y1:(int)a5 x2:(int)a6 y2:(int)a7;
-- (int)roundRect:(id)a3 left:(int)a4 top:(int)a5 right:(int)a6 bottom:(int)a7 rx:(double)a8 ry:(double)a9;
-- (int)setViewBox:(double)a3 top:(double)a4 width:(double)a5 height:(double)a6;
-- (int)stretchBlt:(id)a3 in_xDest:(int)a4 in_yDest:(int)a5 in_widthDest:(int)a6 in_heightDest:(int)a7 in_sourceImage:(id)a8 in_xSrc:(int)a9 in_ySrc:(int)a10 in_widthSrc:(int)a11 in_heightSrc:(int)a12 in_rop:(unsigned int)a13 in_xform:(CGAffineTransform *)a14 in_colour:(unsigned int)a15;
-- (int)textOut:(id)a3 px:(int *)a4 py:(int *)a5 in_text:(id)a6;
+- (id)createPatternBrush:(id)brush usePaletteForBilevel:(BOOL)bilevel;
+- (id)createPen:(int)pen in_width:(int)in_width in_colour:(id)in_colour in_userStyleArray:(double *)array;
+- (id)createRegionWithPath:(id)path;
+- (id)createRegionWithRects:(id)rects in_dc:(id)in_dc;
+- (id)createSolidBrush:(id)brush;
+- (int)activateTransform:(CGAffineTransform *)transform;
+- (int)alphaBlend:(id)blend in_xDest:(int)dest in_yDest:(int)in_yDest in_widthDest:(int)in_widthDest in_heightDest:(int)in_heightDest in_sourceImage:(id)image in_xSrc:(int)src in_ySrc:(int)self0 in_widthSrc:(int)self1 in_heightSrc:(int)self2 in_sourceConstantOpacity:(unsigned __int8)self3 in_useSourceAlphaChannel:(BOOL)self4 in_xform:(CGAffineTransform *)self5 in_colour:(unsigned int)self6;
+- (int)angleArc:(id)arc x:(int)x y:(int)y radius:(unsigned int)radius startAngle:(double)angle sweepAngle:(double)sweepAngle;
+- (int)arc:(id)arc nLeftRect:(int)rect nTopRect:(int)topRect nRightRect:(int)rightRect nBottomRect:(int)bottomRect nXStartArc:(int)startArc nYStartArc:(int)yStartArc nXEndArc:(int)self0 nYEndArc:(int)self1;
+- (int)arcTo:(id)to nLeftRect:(int)rect nTopRect:(int)topRect nRightRect:(int)rightRect nBottomRect:(int)bottomRect nXStartArc:(int)arc nYStartArc:(int)startArc nXEndArc:(int)self0 nYEndArc:(int)self1;
+- (int)bezier:(id)bezier x:(int)x y:(int)y x2:(int)x2 y2:(int)y2 x3:(int)x3 y3:(int)y3 x4:(int)self0 y4:(int)self1;
+- (int)bezierTo:(id)to x:(int)x y:(int)y x2:(int)x2 y2:(int)y2 x3:(int)x3 y3:(int)y3;
+- (int)bitBlt:(id)blt in_xDest:(int)dest in_yDest:(int)in_yDest in_widthDest:(int)in_widthDest in_heightDest:(int)in_heightDest in_sourceImage:(id)image in_xSrc:(int)src in_ySrc:(int)self0 in_rop:(unsigned int)self1 in_xform:(CGAffineTransform *)self2 in_colour:(unsigned int)self3;
+- (int)chord:(id)chord leftRect:(int)rect topRect:(int)topRect rightRect:(int)rightRect bottomRect:(int)bottomRect xStartArc:(int)arc yStartArc:(int)startArc xEndArc:(int)self0 yEndArc:(int)self1;
+- (int)ellipse:(id)ellipse x1:(int)x1 y1:(int)y1 x2:(int)x2 y2:(int)y2;
+- (int)excludeClipRect:(CGRect)rect;
+- (int)extTextOut:(id)out px:(int *)px py:(int *)py in_text:(id)in_text options:(int)options left:(int)left top:(int)top right:(int)self0 bottom:(int)self1 spacingValues:(int *)self2 numValues:(int)self3;
+- (int)fillRectangle:(id)rectangle x1:(int)x1 y1:(int)y1 x2:(int)x2 y2:(int)y2;
+- (int)intersectClipRect:(CGRect)rect;
+- (int)lineTo:(id)to x:(double)x y:(double)y;
+- (int)patBlt:(id)blt in_x:(int)in_x in_y:(int)in_y in_width:(int)in_width in_height:(int)in_height in_rop:(unsigned int)in_rop;
+- (int)pie:(id)pie nLeftRect:(int)rect nTopRect:(int)topRect nRightRect:(int)rightRect nBottomRect:(int)bottomRect nXStartArc:(int)arc nYStartArc:(int)startArc nXEndArc:(int)self0 nYEndArc:(int)self1;
+- (int)polyPolygon:(id)polygon in_points:(CGPoint *)in_points in_polyCounts:(int *)counts in_count:(int)in_count;
+- (int)polyPolyline:(id)polyline in_points:(CGPoint *)in_points in_polyCounts:(int *)counts in_count:(int)in_count;
+- (int)polygon:(id)polygon in_points:(CGPoint *)in_points in_count:(int)in_count;
+- (int)polyline:(id)polyline in_points:(CGPoint *)in_points in_count:(int)in_count;
+- (int)rectangle:(id)rectangle x1:(int)x1 y1:(int)y1 x2:(int)x2 y2:(int)y2;
+- (int)roundRect:(id)rect left:(int)left top:(int)top right:(int)right bottom:(int)bottom rx:(double)rx ry:(double)ry;
+- (int)setViewBox:(double)box top:(double)top width:(double)width height:(double)height;
+- (int)stretchBlt:(id)blt in_xDest:(int)dest in_yDest:(int)in_yDest in_widthDest:(int)in_widthDest in_heightDest:(int)in_heightDest in_sourceImage:(id)image in_xSrc:(int)src in_ySrc:(int)self0 in_widthSrc:(int)self1 in_heightSrc:(int)self2 in_rop:(unsigned int)self3 in_xform:(CGAffineTransform *)self4 in_colour:(unsigned int)self5;
+- (int)textOut:(id)out px:(int *)px py:(int *)py in_text:(id)in_text;
 - (void)applyTransformsToCurrentContext;
-- (void)drawBezierPath:(id)a3 dc:(id)a4 fill:(BOOL)a5 stroke:(BOOL)a6;
+- (void)drawBezierPath:(id)path dc:(id)dc fill:(BOOL)fill stroke:(BOOL)stroke;
 - (void)updateViewBoxTransform;
 @end
 
@@ -86,12 +86,12 @@
   return result;
 }
 
-- (MFPhoneDeviceDriver)initWithCanvas:(CGRect)a3
+- (MFPhoneDeviceDriver)initWithCanvas:(CGRect)canvas
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = canvas.size.height;
+  width = canvas.size.width;
+  y = canvas.origin.y;
+  x = canvas.origin.x;
   v19.receiver = self;
   v19.super_class = MFPhoneDeviceDriver;
   v7 = [(MFPhoneDeviceDriver *)&v19 init];
@@ -132,47 +132,47 @@
   return v8;
 }
 
-- (void)drawBezierPath:(id)a3 dc:(id)a4 fill:(BOOL)a5 stroke:(BOOL)a6
+- (void)drawBezierPath:(id)path dc:(id)dc fill:(BOOL)fill stroke:(BOOL)stroke
 {
-  v6 = a6;
-  v7 = a5;
-  v13 = a3;
-  v9 = a4;
-  v10 = [v9 getPath];
-  if ([v10 isOpen])
+  strokeCopy = stroke;
+  fillCopy = fill;
+  pathCopy = path;
+  dcCopy = dc;
+  getPath = [dcCopy getPath];
+  if ([getPath isOpen])
   {
-    [v10 appendBezierPath:v13 dc:v9];
+    [getPath appendBezierPath:pathCopy dc:dcCopy];
   }
 
   else
   {
-    if (v7)
+    if (fillCopy)
     {
-      v11 = [v9 getBrush];
-      [v11 fillPath:v9 in_path:v13];
+      getBrush = [dcCopy getBrush];
+      [getBrush fillPath:dcCopy in_path:pathCopy];
     }
 
-    if (v6)
+    if (strokeCopy)
     {
-      v12 = [v9 getPen];
-      [v12 strokePath:v9 in_path:v13];
+      getPen = [dcCopy getPen];
+      [getPen strokePath:dcCopy in_path:pathCopy];
     }
   }
 }
 
-+ (int)getROP:(id)a3
++ (int)getROP:(id)p
 {
-  v3 = a3;
-  v4 = [v3 getPath];
-  if ([v4 isOpen])
+  pCopy = p;
+  getPath = [pCopy getPath];
+  if ([getPath isOpen])
   {
     v5 = 3;
   }
 
   else
   {
-    v6 = [v3 getRop2];
-    if (v6 == 16)
+    getRop2 = [pCopy getRop2];
+    if (getRop2 == 16)
     {
       v7 = 1;
     }
@@ -182,7 +182,7 @@
       v7 = 2;
     }
 
-    if (v6 == 1)
+    if (getRop2 == 1)
     {
       v5 = 0;
     }
@@ -196,28 +196,28 @@
   return v5;
 }
 
-- (int)textOut:(id)a3 px:(int *)a4 py:(int *)a5 in_text:(id)a6
+- (int)textOut:(id)out px:(int *)px py:(int *)py in_text:(id)in_text
 {
   LODWORD(v8) = 0;
   LODWORD(v7) = 0;
-  return [(MFPhoneDeviceDriver *)self extTextOut:a3 px:a4 py:a5 in_text:a6 options:0 left:0 top:0 right:v7 bottom:0 spacingValues:v8 numValues:?];
+  return [(MFPhoneDeviceDriver *)self extTextOut:out px:px py:py in_text:in_text options:0 left:0 top:0 right:v7 bottom:0 spacingValues:v8 numValues:?];
 }
 
-- (int)extTextOut:(id)a3 px:(int *)a4 py:(int *)a5 in_text:(id)a6 options:(int)a7 left:(int)a8 top:(int)a9 right:(int)a10 bottom:(int)a11 spacingValues:(int *)a12 numValues:(int)a13
+- (int)extTextOut:(id)out px:(int *)px py:(int *)py in_text:(id)in_text options:(int)options left:(int)left top:(int)top right:(int)self0 bottom:(int)self1 spacingValues:(int *)self2 numValues:(int)self3
 {
-  v13 = a7;
+  optionsCopy = options;
   v113 = *MEMORY[0x277D85DE8];
-  v17 = a3;
-  v109 = a6;
-  v111 = v17;
-  v18 = [v17 getFont];
-  v104 = v13;
-  v108 = v18;
-  v19 = [v18 createCTFontEquivalent];
-  v20 = *a4;
-  v21 = *a5;
-  v22 = [v111 getPath];
-  if ([(__CFString *)v109 length])
+  outCopy = out;
+  in_textCopy = in_text;
+  v111 = outCopy;
+  getFont = [outCopy getFont];
+  v104 = optionsCopy;
+  v108 = getFont;
+  createCTFontEquivalent = [getFont createCTFontEquivalent];
+  v20 = *px;
+  v21 = *py;
+  getPath = [v111 getPath];
+  if ([(__CFString *)in_textCopy length])
   {
     if ([v111 getTextUpdateCP])
     {
@@ -232,8 +232,8 @@
       v26 = v21;
     }
 
-    v28 = v109;
-    if (!v109)
+    v28 = in_textCopy;
+    if (!in_textCopy)
     {
       v28 = &stru_286EE1130;
     }
@@ -241,16 +241,16 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v29 = [v18 faceName];
-      v30 = [v18 faceName];
-      v31 = [TCFontUtils stringByFixingString:v28 latinFontFamilyName:v29 symbolFontFamilyName:v30];
+      faceName = [getFont faceName];
+      faceName2 = [getFont faceName];
+      v31 = [TCFontUtils stringByFixingString:v28 latinFontFamilyName:faceName symbolFontFamilyName:faceName2];
 
       v32 = [(__CFString *)v31 length];
       v28 = v31;
       if (!v32)
       {
 LABEL_19:
-        CFRelease(v19);
+        CFRelease(createCTFontEquivalent);
         v27 = 0;
         goto LABEL_101;
       }
@@ -274,8 +274,8 @@ LABEL_19:
     v33 = malloc_type_malloc(2 * v32, 0x1000040BDFB0063uLL);
     bzero(v33, 2 * v32);
     v34 = malloc_type_malloc(2 * v32 + 2, 0x1000040BDFB0063uLL);
-    font = v19;
-    v101 = a4;
+    font = createCTFontEquivalent;
+    pxCopy = px;
     v103 = v32;
     advances = malloc_type_malloc(16 * v32, 0x1000040451B5BE8uLL);
     v35 = malloc_type_malloc(8 * v32, 0x6004044C4A2DFuLL);
@@ -305,7 +305,7 @@ LABEL_19:
       }
 
       v110 = v28;
-      v102 = v22;
+      v102 = getPath;
       objc_opt_class();
       characters = v34;
       if ((v32 < 1) | ((objc_opt_isKindOfClass() & 1) == 0))
@@ -365,9 +365,9 @@ LABEL_40:
         font = v39;
       }
 
-      v47 = [v111 getTextCharExtra];
-      v48 = a13;
-      v49 = a12;
+      getTextCharExtra = [v111 getTextCharExtra];
+      numValuesCopy = numValues;
+      valuesCopy = values;
       v50 = 0.0;
       if (v103 >= 1)
       {
@@ -384,29 +384,29 @@ LABEL_40:
         while (v51);
       }
 
-      v54 = v47;
+      v54 = getTextCharExtra;
       tx = v24;
-      if (a12 && a13)
+      if (values && numValues)
       {
         v55 = 0.0;
-        if (a13 >= 1)
+        if (numValues >= 1)
         {
-          v56 = a13;
-          v57 = a12;
+          numValuesCopy2 = numValues;
+          valuesCopy2 = values;
           do
           {
-            v58 = *v57++;
+            v58 = *valuesCopy2++;
             v55 = v55 + v58;
-            --v56;
+            --numValuesCopy2;
           }
 
-          while (v56);
+          while (numValuesCopy2);
         }
 
         if ((v40 & 1) != 0 || (v59 = CTFontCopyFamilyName(font), [v108 faceName], v60 = objc_claimAutoreleasedReturnValue(), v61 = objc_msgSend(v60, "isEqualToString:", v59), v60, CFRelease(v59), (v61 & 1) == 0))
         {
-          v48 = 0;
-          v49 = 0;
+          numValuesCopy = 0;
+          valuesCopy = 0;
           if (v103 < 2)
           {
             v54 = 0.0;
@@ -427,14 +427,14 @@ LABEL_40:
       Ascent = CTFontGetAscent(font);
       Descent = CTFontGetDescent(font);
       Leading = CTFontGetLeading(font);
-      v64 = [v111 getTextVerticalAlign];
+      getTextVerticalAlign = [v111 getTextVerticalAlign];
       v65 = Ascent;
       v66 = Descent;
       v67 = fabsf(v66);
       v68 = v65;
-      if (v64)
+      if (getTextVerticalAlign)
       {
-        if (v64 == 8)
+        if (getTextVerticalAlign == 8)
         {
           v68 = -v67;
         }
@@ -445,11 +445,11 @@ LABEL_40:
         }
       }
 
-      v69 = [v111 getTextHorizontalAlign];
+      getTextHorizontalAlign = [v111 getTextHorizontalAlign];
       v70 = v55;
-      if (v69 != 2)
+      if (getTextHorizontalAlign != 2)
       {
-        if (v69 == 6)
+        if (getTextHorizontalAlign == 6)
         {
           v70 = v55 * 0.5;
         }
@@ -488,8 +488,8 @@ LABEL_40:
       v75 = v67 + v65;
       if (((v104 & 2) != 0 || [v111 getBkMode] == 2) && (objc_msgSend(v102, "isOpen") & 1) == 0)
       {
-        v76 = [v111 getBkColour];
-        [v76 set];
+        getBkColour = [v111 getBkColour];
+        [getBkColour set];
 
         v116.origin.y = -v67;
         v116.size.width = v55;
@@ -500,8 +500,8 @@ LABEL_40:
 
       if (([v102 isOpen] & 1) == 0)
       {
-        v77 = [v111 getTextColour];
-        [v77 set];
+        getTextColour = [v111 getTextColour];
+        [getTextColour set];
       }
 
       Size = CTFontGetSize(font);
@@ -514,7 +514,7 @@ LABEL_40:
         v80 = 0;
         v81 = 0;
         v82 = v54;
-        v83 = v48;
+        v83 = numValuesCopy;
         v84 = 0.0;
         v85 = v105;
         v86 = &advances->width;
@@ -562,9 +562,9 @@ LABEL_92:
           }
         }
 
-        if (v49)
+        if (valuesCopy)
         {
-          v84 = v84 + v49[v80];
+          v84 = v84 + valuesCopy[v80];
         }
 
         if (!v81)
@@ -583,15 +583,15 @@ LABEL_93:
       v28 = v110;
       if (([v108 strikeout] & 1) != 0 || objc_msgSend(v108, "underline") && (objc_msgSend(v102, "isOpen") & 1) == 0)
       {
-        v90 = [v111 getTextColour];
-        [v90 set];
+        getTextColour2 = [v111 getTextColour];
+        [getTextColour2 set];
 
         [v108 fontHeight];
         CGContextSetLineWidth(v71, fabs(v91) / 20.0);
-        v92 = [v108 strikeout];
+        strikeout = [v108 strikeout];
         v93 = Leading;
         v94 = v75 + v93;
-        if (v92)
+        if (strikeout)
         {
           v95 = v94 * 0.2;
           v112.a = 0.0;
@@ -613,14 +613,14 @@ LABEL_93:
       }
 
       CGContextRestoreGState(v71);
-      *v101 = (tx + v70 + v55);
+      *pxCopy = (tx + v70 + v55);
       CFRelease(font);
       free(v105);
       free(characters);
       free(advances);
       free(v36);
       v27 = 0;
-      v22 = v102;
+      getPath = v102;
     }
 
     else
@@ -651,9 +651,9 @@ LABEL_93:
 
   else
   {
-    CFRelease(v19);
+    CFRelease(createCTFontEquivalent);
     v27 = 0;
-    v28 = v109;
+    v28 = in_textCopy;
   }
 
 LABEL_101:
@@ -661,93 +661,93 @@ LABEL_101:
   return v27;
 }
 
-- (int)arc:(id)a3 nLeftRect:(int)a4 nTopRect:(int)a5 nRightRect:(int)a6 nBottomRect:(int)a7 nXStartArc:(int)a8 nYStartArc:(int)a9 nXEndArc:(int)a10 nYEndArc:(int)a11
+- (int)arc:(id)arc nLeftRect:(int)rect nTopRect:(int)topRect nRightRect:(int)rightRect nBottomRect:(int)bottomRect nXStartArc:(int)startArc nYStartArc:(int)yStartArc nXEndArc:(int)self0 nYEndArc:(int)self1
 {
-  v17 = a3;
-  v18 = [v17 getArcDirection];
+  arcCopy = arc;
+  getArcDirection = [arcCopy getArcDirection];
   v19 = objc_alloc_init(OITSUBezierPath);
-  [(OITSUBezierPath *)v19 appendBezierPathWithArcWithEllipseBounds:v18 == 1 startRadialVector:1 endRadialVector:a4 angleSign:a5 startNewPath:(a6 - a4), (a7 - a5), a8, a9, a10, a11];
-  [(MFPhoneDeviceDriver *)self drawBezierPath:v19 dc:v17 fill:0 stroke:1];
+  [(OITSUBezierPath *)v19 appendBezierPathWithArcWithEllipseBounds:getArcDirection == 1 startRadialVector:1 endRadialVector:rect angleSign:topRect startNewPath:(rightRect - rect), (bottomRect - topRect), startArc, yStartArc, endArc, yEndArc];
+  [(MFPhoneDeviceDriver *)self drawBezierPath:v19 dc:arcCopy fill:0 stroke:1];
 
   return 0;
 }
 
-- (int)arcTo:(id)a3 nLeftRect:(int)a4 nTopRect:(int)a5 nRightRect:(int)a6 nBottomRect:(int)a7 nXStartArc:(int)a8 nYStartArc:(int)a9 nXEndArc:(int)a10 nYEndArc:(int)a11
+- (int)arcTo:(id)to nLeftRect:(int)rect nTopRect:(int)topRect nRightRect:(int)rightRect nBottomRect:(int)bottomRect nXStartArc:(int)arc nYStartArc:(int)startArc nXEndArc:(int)self0 nYEndArc:(int)self1
 {
-  v17 = a3;
-  v18 = [v17 getArcDirection];
+  toCopy = to;
+  getArcDirection = [toCopy getArcDirection];
   v19 = objc_alloc_init(OITSUBezierPath);
-  [v17 getPenPosition];
+  [toCopy getPenPosition];
   [(OITSUBezierPath *)v19 moveToPoint:?];
-  [(OITSUBezierPath *)v19 appendBezierPathWithArcWithEllipseBounds:v18 == 1 startRadialVector:0 endRadialVector:a4 angleSign:a5 startNewPath:(a6 - a4), (a7 - a5), a8, a9, a10, a11];
-  [(MFPhoneDeviceDriver *)self drawBezierPath:v19 dc:v17 fill:0 stroke:1];
+  [(OITSUBezierPath *)v19 appendBezierPathWithArcWithEllipseBounds:getArcDirection == 1 startRadialVector:0 endRadialVector:rect angleSign:topRect startNewPath:(rightRect - rect), (bottomRect - topRect), arc, startArc, endArc, yEndArc];
+  [(MFPhoneDeviceDriver *)self drawBezierPath:v19 dc:toCopy fill:0 stroke:1];
   [(OITSUBezierPath *)v19 currentPoint];
-  [v17 setPenPosition:?];
+  [toCopy setPenPosition:?];
 
   return 0;
 }
 
-- (int)angleArc:(id)a3 x:(int)a4 y:(int)a5 radius:(unsigned int)a6 startAngle:(double)a7 sweepAngle:(double)a8
+- (int)angleArc:(id)arc x:(int)x y:(int)y radius:(unsigned int)radius startAngle:(double)angle sweepAngle:(double)sweepAngle
 {
-  v14 = a3;
-  v15 = 360.0 - a7;
-  v16 = fmod(360.0 - a7, 360.0);
-  v17 = fmod(v15 - a8, 360.0);
+  arcCopy = arc;
+  v15 = 360.0 - angle;
+  v16 = fmod(360.0 - angle, 360.0);
+  v17 = fmod(v15 - sweepAngle, 360.0);
   v18 = objc_alloc_init(OITSUBezierPath);
-  [v14 getPenPosition];
+  [arcCopy getPenPosition];
   [(OITSUBezierPath *)v18 moveToPoint:?];
-  [(OITSUBezierPath *)v18 appendBezierPathWithArcWithCenter:a8 > 0.0 radius:a4 startAngle:a5 endAngle:a6 clockwise:v16, v17];
-  [(MFPhoneDeviceDriver *)self drawBezierPath:v18 dc:v14 fill:0 stroke:1];
+  [(OITSUBezierPath *)v18 appendBezierPathWithArcWithCenter:sweepAngle > 0.0 radius:x startAngle:y endAngle:radius clockwise:v16, v17];
+  [(MFPhoneDeviceDriver *)self drawBezierPath:v18 dc:arcCopy fill:0 stroke:1];
   [(OITSUBezierPath *)v18 currentPoint];
-  [v14 setPenPosition:?];
+  [arcCopy setPenPosition:?];
 
   return 0;
 }
 
-- (int)pie:(id)a3 nLeftRect:(int)a4 nTopRect:(int)a5 nRightRect:(int)a6 nBottomRect:(int)a7 nXStartArc:(int)a8 nYStartArc:(int)a9 nXEndArc:(int)a10 nYEndArc:(int)a11
+- (int)pie:(id)pie nLeftRect:(int)rect nTopRect:(int)topRect nRightRect:(int)rightRect nBottomRect:(int)bottomRect nXStartArc:(int)arc nYStartArc:(int)startArc nXEndArc:(int)self0 nYEndArc:(int)self1
 {
-  v17 = a3;
-  v18 = [v17 getArcDirection];
+  pieCopy = pie;
+  getArcDirection = [pieCopy getArcDirection];
   v19 = objc_alloc_init(OITSUBezierPath);
-  v20 = a6 - a4;
-  v21 = a7 - a5;
-  [(OITSUBezierPath *)v19 moveToPoint:vcvtd_n_f64_s32(v20, 1uLL) + a4, vcvtd_n_f64_s32(v21, 1uLL) + a5];
-  [(OITSUBezierPath *)v19 appendBezierPathWithArcWithEllipseBounds:v18 == 1 startRadialVector:0 endRadialVector:a4 angleSign:a5 startNewPath:v20, v21, a8, a9, a10, a11];
+  v20 = rightRect - rect;
+  v21 = bottomRect - topRect;
+  [(OITSUBezierPath *)v19 moveToPoint:vcvtd_n_f64_s32(v20, 1uLL) + rect, vcvtd_n_f64_s32(v21, 1uLL) + topRect];
+  [(OITSUBezierPath *)v19 appendBezierPathWithArcWithEllipseBounds:getArcDirection == 1 startRadialVector:0 endRadialVector:rect angleSign:topRect startNewPath:v20, v21, arc, startArc, endArc, yEndArc];
   [(OITSUBezierPath *)v19 closePath];
-  [(MFPhoneDeviceDriver *)self drawBezierPath:v19 dc:v17 fill:1 stroke:1];
+  [(MFPhoneDeviceDriver *)self drawBezierPath:v19 dc:pieCopy fill:1 stroke:1];
 
   return 0;
 }
 
-- (int)chord:(id)a3 leftRect:(int)a4 topRect:(int)a5 rightRect:(int)a6 bottomRect:(int)a7 xStartArc:(int)a8 yStartArc:(int)a9 xEndArc:(int)a10 yEndArc:(int)a11
+- (int)chord:(id)chord leftRect:(int)rect topRect:(int)topRect rightRect:(int)rightRect bottomRect:(int)bottomRect xStartArc:(int)arc yStartArc:(int)startArc xEndArc:(int)self0 yEndArc:(int)self1
 {
-  v17 = a3;
-  v18 = [v17 getArcDirection];
+  chordCopy = chord;
+  getArcDirection = [chordCopy getArcDirection];
   v19 = objc_alloc_init(OITSUBezierPath);
-  [(OITSUBezierPath *)v19 appendBezierPathWithArcWithEllipseBounds:v18 == 1 startRadialVector:1 endRadialVector:a4 angleSign:a5 startNewPath:(a6 - a4), (a7 - a5), a8, a9, a10, a11];
+  [(OITSUBezierPath *)v19 appendBezierPathWithArcWithEllipseBounds:getArcDirection == 1 startRadialVector:1 endRadialVector:rect angleSign:topRect startNewPath:(rightRect - rect), (bottomRect - topRect), arc, startArc, endArc, yEndArc];
   [(OITSUBezierPath *)v19 closePath];
-  [(MFPhoneDeviceDriver *)self drawBezierPath:v19 dc:v17 fill:1 stroke:1];
+  [(MFPhoneDeviceDriver *)self drawBezierPath:v19 dc:chordCopy fill:1 stroke:1];
 
   return 0;
 }
 
-- (int)polyline:(id)a3 in_points:(CGPoint *)a4 in_count:(int)a5
+- (int)polyline:(id)polyline in_points:(CGPoint *)in_points in_count:(int)in_count
 {
-  v8 = a3;
-  if (a5 >= 2)
+  polylineCopy = polyline;
+  if (in_count >= 2)
   {
     v9 = objc_alloc_init(OITSUBezierPath);
-    [(OITSUBezierPath *)v9 appendBezierPathWithPoints:a4 count:a5];
-    [(MFPhoneDeviceDriver *)self drawBezierPath:v9 dc:v8 fill:0 stroke:1];
+    [(OITSUBezierPath *)v9 appendBezierPathWithPoints:in_points count:in_count];
+    [(MFPhoneDeviceDriver *)self drawBezierPath:v9 dc:polylineCopy fill:0 stroke:1];
   }
 
   return 0;
 }
 
-- (int)polyPolyline:(id)a3 in_points:(CGPoint *)a4 in_polyCounts:(int *)a5 in_count:(int)a6
+- (int)polyPolyline:(id)polyline in_points:(CGPoint *)in_points in_polyCounts:(int *)counts in_count:(int)in_count
 {
-  v10 = a3;
-  if (a6 < 1)
+  polylineCopy = polyline;
+  if (in_count < 1)
   {
     v15 = 0;
   }
@@ -755,18 +755,18 @@ LABEL_101:
   else
   {
     v11 = 0;
-    v12 = a6;
+    in_countCopy = in_count;
     v13 = 1;
     do
     {
-      v14 = [(MFPhoneDeviceDriver *)self polyline:v10 in_points:&a4[v11] in_count:*a5];
+      v14 = [(MFPhoneDeviceDriver *)self polyline:polylineCopy in_points:&in_points[v11] in_count:*counts];
       v15 = v14;
-      if (v13 >= v12)
+      if (v13 >= in_countCopy)
       {
         break;
       }
 
-      v16 = *a5++;
+      v16 = *counts++;
       v11 += v16;
       ++v13;
     }
@@ -777,24 +777,24 @@ LABEL_101:
   return v15;
 }
 
-- (int)polygon:(id)a3 in_points:(CGPoint *)a4 in_count:(int)a5
+- (int)polygon:(id)polygon in_points:(CGPoint *)in_points in_count:(int)in_count
 {
-  v8 = a3;
-  if (a5 >= 2)
+  polygonCopy = polygon;
+  if (in_count >= 2)
   {
     v9 = objc_alloc_init(OITSUBezierPath);
-    [(OITSUBezierPath *)v9 appendBezierPathWithPoints:a4 count:a5];
+    [(OITSUBezierPath *)v9 appendBezierPathWithPoints:in_points count:in_count];
     [(OITSUBezierPath *)v9 closePath];
-    [(MFPhoneDeviceDriver *)self drawBezierPath:v9 dc:v8 fill:1 stroke:1];
+    [(MFPhoneDeviceDriver *)self drawBezierPath:v9 dc:polygonCopy fill:1 stroke:1];
   }
 
   return 0;
 }
 
-- (int)polyPolygon:(id)a3 in_points:(CGPoint *)a4 in_polyCounts:(int *)a5 in_count:(int)a6
+- (int)polyPolygon:(id)polygon in_points:(CGPoint *)in_points in_polyCounts:(int *)counts in_count:(int)in_count
 {
-  LODWORD(v6) = a6;
-  v10 = a3;
+  LODWORD(v6) = in_count;
+  polygonCopy = polygon;
   v11 = objc_alloc_init(OITSUBezierPath);
   if (v6 >= 1)
   {
@@ -802,9 +802,9 @@ LABEL_101:
     v6 = v6;
     do
     {
-      [(OITSUBezierPath *)v11 appendBezierPathWithPoints:&a4[v12] count:*a5];
+      [(OITSUBezierPath *)v11 appendBezierPathWithPoints:&in_points[v12] count:*counts];
       [(OITSUBezierPath *)v11 closePath];
-      v13 = *a5++;
+      v13 = *counts++;
       v12 += v13;
       --v6;
     }
@@ -812,158 +812,158 @@ LABEL_101:
     while (v6);
   }
 
-  [(MFPhoneDeviceDriver *)self drawBezierPath:v11 dc:v10 fill:1 stroke:1];
+  [(MFPhoneDeviceDriver *)self drawBezierPath:v11 dc:polygonCopy fill:1 stroke:1];
 
   return 0;
 }
 
-- (int)lineTo:(id)a3 x:(double)a4 y:(double)a5
+- (int)lineTo:(id)to x:(double)x y:(double)y
 {
-  v8 = a3;
+  toCopy = to;
   v9 = objc_alloc_init(OITSUBezierPath);
-  [v8 getPenPosition];
+  [toCopy getPenPosition];
   [(OITSUBezierPath *)v9 moveToPoint:?];
-  v10 = [v8 getPath];
-  v11 = [v10 isOpen];
+  getPath = [toCopy getPath];
+  isOpen = [getPath isOpen];
 
-  if (v11)
+  if (isOpen)
   {
-    [(OITSUBezierPath *)v9 lineToPoint:a4, a5];
+    [(OITSUBezierPath *)v9 lineToPoint:x, y];
   }
 
   else
   {
     v15 = *MEMORY[0x277CBF348];
-    [v8 getPenPosition];
+    [toCopy getPenPosition];
     v17.x = v12;
     v17.y = v13;
-    v16.x = a4;
-    v16.y = a5;
+    v16.x = x;
+    v16.y = y;
     calculatePreviousPointOnLine(v16, v17, &v15);
     [(OITSUBezierPath *)v9 lineToPoint:v15];
   }
 
-  [(MFPhoneDeviceDriver *)self drawBezierPath:v9 dc:v8 fill:0 stroke:1];
-  [v8 setPenPosition:{a4, a5}];
+  [(MFPhoneDeviceDriver *)self drawBezierPath:v9 dc:toCopy fill:0 stroke:1];
+  [toCopy setPenPosition:{x, y}];
 
   return 0;
 }
 
-- (int)rectangle:(id)a3 x1:(int)a4 y1:(int)a5 x2:(int)a6 y2:(int)a7
+- (int)rectangle:(id)rectangle x1:(int)x1 y1:(int)y1 x2:(int)x2 y2:(int)y2
 {
-  v12 = a3;
+  rectangleCopy = rectangle;
   v13 = objc_alloc_init(OITSUBezierPath);
   v14 = v13;
-  if (a5 <= a7)
+  if (y1 <= y2)
   {
-    v15 = a7;
+    y1Copy = y2;
   }
 
   else
   {
-    v15 = a5;
+    y1Copy = y1;
   }
 
-  v16 = v15;
-  if (a5 >= a7)
+  v16 = y1Copy;
+  if (y1 >= y2)
   {
-    v17 = a7;
+    y1Copy2 = y2;
   }
 
   else
   {
-    v17 = a5;
+    y1Copy2 = y1;
   }
 
-  v18 = v17;
-  if (a4 <= a6)
+  v18 = y1Copy2;
+  if (x1 <= x2)
   {
-    v19 = a6;
+    x1Copy = x2;
   }
 
   else
   {
-    v19 = a4;
+    x1Copy = x1;
   }
 
-  v20 = v19;
-  if (a4 >= a6)
+  v20 = x1Copy;
+  if (x1 >= x2)
   {
-    v21 = a6;
+    x1Copy2 = x2;
   }
 
   else
   {
-    v21 = a4;
+    x1Copy2 = x1;
   }
 
-  [(OITSUBezierPath *)v13 appendBezierPathWithRect:v21, v18, (v20 - v21), (v16 - v18)];
-  [(MFPhoneDeviceDriver *)self drawBezierPath:v14 dc:v12 fill:1 stroke:1];
+  [(OITSUBezierPath *)v13 appendBezierPathWithRect:x1Copy2, v18, (v20 - x1Copy2), (v16 - v18)];
+  [(MFPhoneDeviceDriver *)self drawBezierPath:v14 dc:rectangleCopy fill:1 stroke:1];
 
   return 0;
 }
 
-- (int)fillRectangle:(id)a3 x1:(int)a4 y1:(int)a5 x2:(int)a6 y2:(int)a7
+- (int)fillRectangle:(id)rectangle x1:(int)x1 y1:(int)y1 x2:(int)x2 y2:(int)y2
 {
-  v12 = a3;
+  rectangleCopy = rectangle;
   v13 = objc_alloc_init(OITSUBezierPath);
   v14 = v13;
-  if (a5 <= a7)
+  if (y1 <= y2)
   {
-    v15 = a7;
+    y1Copy = y2;
   }
 
   else
   {
-    v15 = a5;
+    y1Copy = y1;
   }
 
-  v16 = v15;
-  if (a5 >= a7)
+  v16 = y1Copy;
+  if (y1 >= y2)
   {
-    v17 = a7;
+    y1Copy2 = y2;
   }
 
   else
   {
-    v17 = a5;
+    y1Copy2 = y1;
   }
 
-  v18 = v17;
-  if (a4 <= a6)
+  v18 = y1Copy2;
+  if (x1 <= x2)
   {
-    v19 = a6;
+    x1Copy = x2;
   }
 
   else
   {
-    v19 = a4;
+    x1Copy = x1;
   }
 
-  v20 = v19;
-  if (a4 >= a6)
+  v20 = x1Copy;
+  if (x1 >= x2)
   {
-    v21 = a6;
+    x1Copy2 = x2;
   }
 
   else
   {
-    v21 = a4;
+    x1Copy2 = x1;
   }
 
-  [(OITSUBezierPath *)v13 appendBezierPathWithRect:v21, v18, (v20 - v21), (v16 - v18)];
-  [(MFPhoneDeviceDriver *)self drawBezierPath:v14 dc:v12 fill:1 stroke:0];
+  [(OITSUBezierPath *)v13 appendBezierPathWithRect:x1Copy2, v18, (v20 - x1Copy2), (v16 - v18)];
+  [(MFPhoneDeviceDriver *)self drawBezierPath:v14 dc:rectangleCopy fill:1 stroke:0];
 
   return 0;
 }
 
-- (int)roundRect:(id)a3 left:(int)a4 top:(int)a5 right:(int)a6 bottom:(int)a7 rx:(double)a8 ry:(double)a9
+- (int)roundRect:(id)rect left:(int)left top:(int)top right:(int)right bottom:(int)bottom rx:(double)rx ry:(double)ry
 {
-  v11 = *&a7;
-  v12 = *&a6;
-  v13 = *&a5;
-  v14 = *&a4;
-  v16 = a3;
+  v11 = *&bottom;
+  v12 = *&right;
+  v13 = *&top;
+  v14 = *&left;
+  rectCopy = rect;
   if (v14 >= v12)
   {
     v17 = v12;
@@ -1006,126 +1006,126 @@ LABEL_101:
     v22 = v13;
   }
 
-  if (v21 * 0.001 <= a8 && (v23 = v20, v24 = v22 - v20, v24 * 0.001 <= a9))
+  if (v21 * 0.001 <= rx && (v23 = v20, v24 = v22 - v20, v24 * 0.001 <= ry))
   {
-    if ((v21 * 0.5) >= a8)
+    if ((v21 * 0.5) >= rx)
     {
-      v26 = a8;
+      rxCopy = rx;
     }
 
     else
     {
-      v26 = (v21 * 0.5);
+      rxCopy = (v21 * 0.5);
     }
 
-    if ((v24 * 0.5) >= a9)
+    if ((v24 * 0.5) >= ry)
     {
-      v27 = a9;
+      ryCopy = ry;
     }
 
     else
     {
-      v27 = (v24 * 0.5);
+      ryCopy = (v24 * 0.5);
     }
 
     v28 = objc_alloc_init(OITSUBezierPath);
-    v33 = v27;
-    v29 = v27 + v27;
+    v33 = ryCopy;
+    v29 = ryCopy + ryCopy;
     v32 = v18;
     [OITSUBezierPath appendBezierPathWithArcWithEllipseBounds:v28 startAngle:"appendBezierPathWithArcWithEllipseBounds:startAngle:swingAngle:angleType:startNewPath:" swingAngle:0 angleType:1 startNewPath:?];
-    v30 = (v21 + v18) + v26 * -2.0;
-    [(OITSUBezierPath *)v28 appendBezierPathWithArcWithEllipseBounds:0 startAngle:0 swingAngle:v30 angleType:v23 startNewPath:v26 + v26, v29, 270.0, 90.0];
-    [(OITSUBezierPath *)v28 appendBezierPathWithArcWithEllipseBounds:0 startAngle:0 swingAngle:v30 angleType:(v24 + v23) + v33 * -2.0 startNewPath:v26 + v26, v29, 0.0, 90.0];
-    [(OITSUBezierPath *)v28 appendBezierPathWithArcWithEllipseBounds:0 startAngle:0 swingAngle:v32 angleType:(v24 + v23) + v33 * -2.0 startNewPath:v26 + v26, v29, 90.0, 90.0];
+    v30 = (v21 + v18) + rxCopy * -2.0;
+    [(OITSUBezierPath *)v28 appendBezierPathWithArcWithEllipseBounds:0 startAngle:0 swingAngle:v30 angleType:v23 startNewPath:rxCopy + rxCopy, v29, 270.0, 90.0];
+    [(OITSUBezierPath *)v28 appendBezierPathWithArcWithEllipseBounds:0 startAngle:0 swingAngle:v30 angleType:(v24 + v23) + v33 * -2.0 startNewPath:rxCopy + rxCopy, v29, 0.0, 90.0];
+    [(OITSUBezierPath *)v28 appendBezierPathWithArcWithEllipseBounds:0 startAngle:0 swingAngle:v32 angleType:(v24 + v23) + v33 * -2.0 startNewPath:rxCopy + rxCopy, v29, 90.0, 90.0];
     [(OITSUBezierPath *)v28 closePath];
-    [(MFPhoneDeviceDriver *)self drawBezierPath:v28 dc:v16 fill:1 stroke:1];
+    [(MFPhoneDeviceDriver *)self drawBezierPath:v28 dc:rectCopy fill:1 stroke:1];
 
     v25 = 0;
   }
 
   else
   {
-    v25 = [(MFPhoneDeviceDriver *)self rectangle:v16 x1:v14 y1:v13 x2:v12 y2:v11];
+    v25 = [(MFPhoneDeviceDriver *)self rectangle:rectCopy x1:v14 y1:v13 x2:v12 y2:v11];
   }
 
   return v25;
 }
 
-- (int)ellipse:(id)a3 x1:(int)a4 y1:(int)a5 x2:(int)a6 y2:(int)a7
+- (int)ellipse:(id)ellipse x1:(int)x1 y1:(int)y1 x2:(int)x2 y2:(int)y2
 {
-  v12 = a3;
+  ellipseCopy = ellipse;
   v13 = objc_alloc_init(OITSUBezierPath);
   v14 = v13;
-  if (a5 <= a7)
+  if (y1 <= y2)
   {
-    v15 = a7;
+    y1Copy = y2;
   }
 
   else
   {
-    v15 = a5;
+    y1Copy = y1;
   }
 
-  v16 = v15;
-  if (a5 >= a7)
+  v16 = y1Copy;
+  if (y1 >= y2)
   {
-    v17 = a7;
+    y1Copy2 = y2;
   }
 
   else
   {
-    v17 = a5;
+    y1Copy2 = y1;
   }
 
-  v18 = v17;
-  v19 = v16 - v17;
-  if (a4 <= a6)
+  v18 = y1Copy2;
+  v19 = v16 - y1Copy2;
+  if (x1 <= x2)
   {
-    v20 = a6;
+    x1Copy = x2;
   }
 
   else
   {
-    v20 = a4;
+    x1Copy = x1;
   }
 
-  v21 = v20;
-  if (a4 >= a6)
+  v21 = x1Copy;
+  if (x1 >= x2)
   {
-    v22 = a6;
+    x1Copy2 = x2;
   }
 
   else
   {
-    v22 = a4;
+    x1Copy2 = x1;
   }
 
-  [(OITSUBezierPath *)v13 appendBezierPathWithOvalInRect:v22, v18, v21 - v22, v19];
-  [(MFPhoneDeviceDriver *)self drawBezierPath:v14 dc:v12 fill:1 stroke:1];
+  [(OITSUBezierPath *)v13 appendBezierPathWithOvalInRect:x1Copy2, v18, v21 - x1Copy2, v19];
+  [(MFPhoneDeviceDriver *)self drawBezierPath:v14 dc:ellipseCopy fill:1 stroke:1];
 
   return 0;
 }
 
-- (int)bezierTo:(id)a3 x:(int)a4 y:(int)a5 x2:(int)a6 y2:(int)a7 x3:(int)a8 y3:(int)a9
+- (int)bezierTo:(id)to x:(int)x y:(int)y x2:(int)x2 y2:(int)y2 x3:(int)x3 y3:(int)y3
 {
-  v15 = a3;
+  toCopy = to;
   v16 = objc_alloc_init(OITSUBezierPath);
-  [v15 getPenPosition];
+  [toCopy getPenPosition];
   [(OITSUBezierPath *)v16 moveToPoint:?];
-  [(OITSUBezierPath *)v16 curveToPoint:a8 controlPoint1:a9 controlPoint2:a4, a5, a6, a7];
-  [(MFPhoneDeviceDriver *)self drawBezierPath:v16 dc:v15 fill:0 stroke:1];
-  [v15 setPenPosition:{a8, a9}];
+  [(OITSUBezierPath *)v16 curveToPoint:x3 controlPoint1:y3 controlPoint2:x, y, x2, y2];
+  [(MFPhoneDeviceDriver *)self drawBezierPath:v16 dc:toCopy fill:0 stroke:1];
+  [toCopy setPenPosition:{x3, y3}];
 
   return 0;
 }
 
-- (int)bezier:(id)a3 x:(int)a4 y:(int)a5 x2:(int)a6 y2:(int)a7 x3:(int)a8 y3:(int)a9 x4:(int)a10 y4:(int)a11
+- (int)bezier:(id)bezier x:(int)x y:(int)y x2:(int)x2 y2:(int)y2 x3:(int)x3 y3:(int)y3 x4:(int)self0 y4:(int)self1
 {
-  v17 = a3;
+  bezierCopy = bezier;
   v18 = objc_alloc_init(OITSUBezierPath);
-  [(OITSUBezierPath *)v18 moveToPoint:a4, a5];
-  [(OITSUBezierPath *)v18 curveToPoint:a10 controlPoint1:a11 controlPoint2:a6, a7, a8, a9];
-  [(MFPhoneDeviceDriver *)self drawBezierPath:v18 dc:v17 fill:0 stroke:1];
+  [(OITSUBezierPath *)v18 moveToPoint:x, y];
+  [(OITSUBezierPath *)v18 curveToPoint:x4 controlPoint1:y4 controlPoint2:x2, y2, x3, y3];
+  [(MFPhoneDeviceDriver *)self drawBezierPath:v18 dc:bezierCopy fill:0 stroke:1];
 
   return 0;
 }
@@ -1161,12 +1161,12 @@ LABEL_101:
   CGContextConcatCTM(v3, &transform);
 }
 
-- (int)setViewBox:(double)a3 top:(double)a4 width:(double)a5 height:(double)a6
+- (int)setViewBox:(double)box top:(double)top width:(double)width height:(double)height
 {
-  self->m_viewBox.origin.x = a3;
-  self->m_viewBox.origin.y = a4;
-  self->m_viewBox.size.width = a5;
-  self->m_viewBox.size.height = a6;
+  self->m_viewBox.origin.x = box;
+  self->m_viewBox.origin.y = top;
+  self->m_viewBox.size.width = width;
+  self->m_viewBox.size.height = height;
   [(MFPhoneDeviceDriver *)self updateViewBoxTransform];
   v7 = *&self->m_worldToDeviceTransform.c;
   *&v18.a = *&self->m_worldToDeviceTransform.a;
@@ -1198,24 +1198,24 @@ LABEL_101:
   return 0;
 }
 
-- (int)activateTransform:(CGAffineTransform *)a3
+- (int)activateTransform:(CGAffineTransform *)transform
 {
-  v3 = *&a3->a;
-  v4 = *&a3->c;
-  *&self->m_worldToDeviceTransform.tx = *&a3->tx;
+  v3 = *&transform->a;
+  v4 = *&transform->c;
+  *&self->m_worldToDeviceTransform.tx = *&transform->tx;
   *&self->m_worldToDeviceTransform.c = v4;
   *&self->m_worldToDeviceTransform.a = v3;
   [(MFPhoneDeviceDriver *)self applyTransformsToCurrentContext];
   return 0;
 }
 
-- (int)excludeClipRect:(CGRect)a3
+- (int)excludeClipRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if (CGRectIntersectsRect(a3, self->m_canvas))
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  if (CGRectIntersectsRect(rect, self->m_canvas))
   {
     v14.origin.x = x;
     v14.origin.y = y;
@@ -1235,36 +1235,36 @@ LABEL_101:
   return 0;
 }
 
-- (int)intersectClipRect:(CGRect)a3
+- (int)intersectClipRect:(CGRect)rect
 {
-  if (a3.size.width > 0.0 && a3.size.height > 0.0)
+  if (rect.size.width > 0.0 && rect.size.height > 0.0)
   {
-    [OITSUBezierPath clipRect:a3.origin.x, a3.origin.y, v3, v4];
+    [OITSUBezierPath clipRect:rect.origin.x, rect.origin.y, v3, v4];
   }
 
   return 0;
 }
 
-- (int)patBlt:(id)a3 in_x:(int)a4 in_y:(int)a5 in_width:(int)a6 in_height:(int)a7 in_rop:(unsigned int)a8
+- (int)patBlt:(id)blt in_x:(int)in_x in_y:(int)in_y in_width:(int)in_width in_height:(int)in_height in_rop:(unsigned int)in_rop
 {
-  v14 = a3;
-  v15 = [v14 getPath];
-  v16 = [v15 isOpen];
+  bltCopy = blt;
+  getPath = [bltCopy getPath];
+  isOpen = [getPath isOpen];
 
-  if (a8 == 11141161)
+  if (in_rop == 11141161)
   {
     v17 = 1;
   }
 
   else
   {
-    v17 = v16;
+    v17 = isOpen;
   }
 
   if ((v17 & 1) == 0)
   {
-    v18 = [v14 getRop2];
-    if (a8 == 16711778)
+    getRop2 = [bltCopy getRop2];
+    if (in_rop == 16711778)
     {
       v19 = 16;
     }
@@ -1274,7 +1274,7 @@ LABEL_101:
       v19 = 13;
     }
 
-    if (a8 == 66)
+    if (in_rop == 66)
     {
       v20 = 1;
     }
@@ -1284,71 +1284,71 @@ LABEL_101:
       v20 = v19;
     }
 
-    [v14 setRop2:v20];
+    [bltCopy setRop2:v20];
     v21 = objc_alloc_init(OITSUBezierPath);
-    [(OITSUBezierPath *)v21 appendBezierPathWithRect:a4, a5, a6, a7];
-    [(MFPhoneDeviceDriver *)self drawBezierPath:v21 dc:v14 fill:1 stroke:0];
-    [v14 setRop2:v18];
+    [(OITSUBezierPath *)v21 appendBezierPathWithRect:in_x, in_y, in_width, in_height];
+    [(MFPhoneDeviceDriver *)self drawBezierPath:v21 dc:bltCopy fill:1 stroke:0];
+    [bltCopy setRop2:getRop2];
   }
 
   return 0;
 }
 
-- (int)bitBlt:(id)a3 in_xDest:(int)a4 in_yDest:(int)a5 in_widthDest:(int)a6 in_heightDest:(int)a7 in_sourceImage:(id)a8 in_xSrc:(int)a9 in_ySrc:(int)a10 in_rop:(unsigned int)a11 in_xform:(CGAffineTransform *)a12 in_colour:(unsigned int)a13
+- (int)bitBlt:(id)blt in_xDest:(int)dest in_yDest:(int)in_yDest in_widthDest:(int)in_widthDest in_heightDest:(int)in_heightDest in_sourceImage:(id)image in_xSrc:(int)src in_ySrc:(int)self0 in_rop:(unsigned int)self1 in_xform:(CGAffineTransform *)self2 in_colour:(unsigned int)self3
 {
-  LODWORD(v15) = a13;
-  LODWORD(v14) = a11;
-  return [(MFPhoneDeviceDriver *)self stretchBlt:a3 in_xDest:*&a4 in_yDest:*&a5 in_widthDest:*&a6 in_heightDest:*&a7 in_sourceImage:a8 in_xSrc:__PAIR64__(a10 in_ySrc:a9) in_widthSrc:__PAIR64__(a7 in_heightSrc:a6) in_rop:v14 in_xform:a12 in_colour:v15];
+  LODWORD(v15) = in_colour;
+  LODWORD(v14) = in_rop;
+  return [(MFPhoneDeviceDriver *)self stretchBlt:blt in_xDest:*&dest in_yDest:*&in_yDest in_widthDest:*&in_widthDest in_heightDest:*&in_heightDest in_sourceImage:image in_xSrc:__PAIR64__(in_ySrc in_ySrc:src) in_widthSrc:__PAIR64__(in_heightDest in_heightSrc:in_widthDest) in_rop:v14 in_xform:in_xform in_colour:v15];
 }
 
-- (int)stretchBlt:(id)a3 in_xDest:(int)a4 in_yDest:(int)a5 in_widthDest:(int)a6 in_heightDest:(int)a7 in_sourceImage:(id)a8 in_xSrc:(int)a9 in_ySrc:(int)a10 in_widthSrc:(int)a11 in_heightSrc:(int)a12 in_rop:(unsigned int)a13 in_xform:(CGAffineTransform *)a14 in_colour:(unsigned int)a15
+- (int)stretchBlt:(id)blt in_xDest:(int)dest in_yDest:(int)in_yDest in_widthDest:(int)in_widthDest in_heightDest:(int)in_heightDest in_sourceImage:(id)image in_xSrc:(int)src in_ySrc:(int)self0 in_widthSrc:(int)self1 in_heightSrc:(int)self2 in_rop:(unsigned int)self3 in_xform:(CGAffineTransform *)self4 in_colour:(unsigned int)self5
 {
-  v16 = *&a7;
-  v17 = *&a6;
-  v18 = *&a5;
-  v19 = *&a4;
-  v21 = a3;
-  v22 = a8;
-  v23 = [v21 getPath];
-  v24 = [v23 isOpen];
+  v16 = *&in_heightDest;
+  v17 = *&in_widthDest;
+  v18 = *&in_yDest;
+  v19 = *&dest;
+  bltCopy = blt;
+  imageCopy = image;
+  getPath = [bltCopy getPath];
+  isOpen = [getPath isOpen];
 
-  if (a13 == 11141161)
+  if (in_rop == 11141161)
   {
     v25 = 1;
   }
 
   else
   {
-    v25 = v24;
+    v25 = isOpen;
   }
 
   if ((v25 & 1) == 0)
   {
-    if (([v22 isEmpty] & 1) != 0 || a13 == 16711778 || a13 == 66)
+    if (([imageCopy isEmpty] & 1) != 0 || in_rop == 16711778 || in_rop == 66)
     {
-      v26 = [(MFPhoneDeviceDriver *)self patBlt:v21 in_x:v19 in_y:v18 in_width:v17 in_height:v16 in_rop:a13];
+      v26 = [(MFPhoneDeviceDriver *)self patBlt:bltCopy in_x:v19 in_y:v18 in_width:v17 in_height:v16 in_rop:in_rop];
       goto LABEL_10;
     }
 
-    v28 = a9;
-    v29 = a10;
-    v30 = a11;
-    v31 = a12;
-    if (a14)
+    srcCopy = src;
+    in_ySrcCopy = in_ySrc;
+    in_widthSrcCopy = in_widthSrc;
+    in_heightSrcCopy = in_heightSrc;
+    if (in_xform)
     {
-      b = a14->b;
-      c = a14->c;
-      d = a14->d;
-      v35 = d * v29 + b * v28;
-      v28 = a14->tx + c * v29 + a14->a * v28;
-      v29 = a14->ty + v35;
-      v36 = c * v31;
-      v31 = d * v31 + b * v30;
-      v30 = v36 + a14->a * v30;
+      b = in_xform->b;
+      c = in_xform->c;
+      d = in_xform->d;
+      v35 = d * in_ySrcCopy + b * srcCopy;
+      srcCopy = in_xform->tx + c * in_ySrcCopy + in_xform->a * srcCopy;
+      in_ySrcCopy = in_xform->ty + v35;
+      v36 = c * in_heightSrcCopy;
+      in_heightSrcCopy = d * in_heightSrcCopy + b * in_widthSrcCopy;
+      in_widthSrcCopy = v36 + in_xform->a * in_widthSrcCopy;
     }
 
-    v37 = [v22 getImage];
-    [v37 drawInRect:1 fromRect:v19 isFlipped:{v18, v17, v16, v28, v29, v30, v31}];
+    getImage = [imageCopy getImage];
+    [getImage drawInRect:1 fromRect:v19 isFlipped:{v18, v17, v16, srcCopy, in_ySrcCopy, in_widthSrcCopy, in_heightSrcCopy}];
   }
 
   v26 = 0;
@@ -1357,39 +1357,39 @@ LABEL_10:
   return v26;
 }
 
-- (int)alphaBlend:(id)a3 in_xDest:(int)a4 in_yDest:(int)a5 in_widthDest:(int)a6 in_heightDest:(int)a7 in_sourceImage:(id)a8 in_xSrc:(int)a9 in_ySrc:(int)a10 in_widthSrc:(int)a11 in_heightSrc:(int)a12 in_sourceConstantOpacity:(unsigned __int8)a13 in_useSourceAlphaChannel:(BOOL)a14 in_xform:(CGAffineTransform *)a15 in_colour:(unsigned int)a16
+- (int)alphaBlend:(id)blend in_xDest:(int)dest in_yDest:(int)in_yDest in_widthDest:(int)in_widthDest in_heightDest:(int)in_heightDest in_sourceImage:(id)image in_xSrc:(int)src in_ySrc:(int)self0 in_widthSrc:(int)self1 in_heightSrc:(int)self2 in_sourceConstantOpacity:(unsigned __int8)self3 in_useSourceAlphaChannel:(BOOL)self4 in_xform:(CGAffineTransform *)self5 in_colour:(unsigned int)self6
 {
-  v21 = a8;
-  v22 = [a3 getPath];
-  if ([v22 isOpen])
+  imageCopy = image;
+  getPath = [blend getPath];
+  if ([getPath isOpen])
   {
     goto LABEL_28;
   }
 
-  v23 = [v21 isEmpty];
+  isEmpty = [imageCopy isEmpty];
 
-  if ((v23 & 1) == 0)
+  if ((isEmpty & 1) == 0)
   {
-    v25 = a9;
-    v26 = a10;
-    v27 = a11;
-    v28 = a12;
-    if (a15)
+    srcCopy = src;
+    in_ySrcCopy = in_ySrc;
+    in_widthSrcCopy = in_widthSrc;
+    in_heightSrcCopy = in_heightSrc;
+    if (in_xform)
     {
-      b = a15->b;
-      c = a15->c;
-      d = a15->d;
-      v32 = d * v26 + b * v25;
-      v25 = a15->tx + c * v26 + a15->a * v25;
-      v26 = a15->ty + v32;
-      v33 = c * v28;
-      v28 = d * v28 + b * v27;
-      v27 = v33 + a15->a * v27;
+      b = in_xform->b;
+      c = in_xform->c;
+      d = in_xform->d;
+      v32 = d * in_ySrcCopy + b * srcCopy;
+      srcCopy = in_xform->tx + c * in_ySrcCopy + in_xform->a * srcCopy;
+      in_ySrcCopy = in_xform->ty + v32;
+      v33 = c * in_heightSrcCopy;
+      in_heightSrcCopy = d * in_heightSrcCopy + b * in_widthSrcCopy;
+      in_widthSrcCopy = v33 + in_xform->a * in_widthSrcCopy;
     }
 
-    v34 = [v21 getImage];
-    v22 = v34;
-    if (!v34)
+    getImage = [imageCopy getImage];
+    getPath = getImage;
+    if (!getImage)
     {
       v24 = -1;
 LABEL_29:
@@ -1397,28 +1397,28 @@ LABEL_29:
       goto LABEL_30;
     }
 
-    v35 = a4;
-    v36 = a5;
-    v37 = a6;
-    v38 = a7;
-    if (__PAIR64__(a14, a13) == 255)
+    destCopy = dest;
+    in_yDestCopy = in_yDest;
+    in_widthDestCopy = in_widthDest;
+    in_heightDestCopy = in_heightDest;
+    if (__PAIR64__(channel, opacity) == 255)
     {
       goto LABEL_27;
     }
 
-    v39 = [v34 CGImage];
-    v40 = v39;
-    if (!v39)
+    cGImage = [getImage CGImage];
+    v40 = cGImage;
+    if (!cGImage)
     {
       goto LABEL_27;
     }
 
-    Width = CGImageGetWidth(v39);
+    Width = CGImageGetWidth(cGImage);
     Height = CGImageGetHeight(v40);
-    if (a14)
+    if (channel)
     {
-      v43 = [v21 pixelData];
-      if ([v21 pixelDataLength] == Height * 4 * Width && (v44 = TSUDeviceRGBColorSpace(), v45 = CGBitmapContextCreateWithData(v43, Width, Height, 8uLL, 4 * Width, v44, 0x2002u, 0, 0), (v46 = v45) != 0))
+      pixelData = [imageCopy pixelData];
+      if ([imageCopy pixelDataLength] == Height * 4 * Width && (v44 = TSUDeviceRGBColorSpace(), v45 = CGBitmapContextCreateWithData(pixelData, Width, Height, 8uLL, 4 * Width, v44, 0x2002u, 0, 0), (v46 = v45) != 0))
       {
         Image = CGBitmapContextCreateImage(v45);
         CGContextRelease(v46);
@@ -1429,18 +1429,18 @@ LABEL_29:
         Image = 0;
       }
 
-      if (([v21 isFlipped] & 1) == 0)
+      if (([imageCopy isFlipped] & 1) == 0)
       {
-        v55.origin.x = v25;
-        v55.origin.y = v26;
-        v55.size.width = v27;
-        v55.size.height = v28;
+        v55.origin.x = srcCopy;
+        v55.origin.y = in_ySrcCopy;
+        v55.size.width = in_widthSrcCopy;
+        v55.size.height = in_heightSrcCopy;
         v48 = 0;
-        v26 = v26 + Height + CGRectGetMidY(v55) * -2.0;
+        in_ySrcCopy = in_ySrcCopy + Height + CGRectGetMidY(v55) * -2.0;
         if (!Image)
         {
 LABEL_27:
-          [v22 drawInRect:1 fromRect:v35 isFlipped:{v36, v37, v38, v25, v26, v27, v28}];
+          [getPath drawInRect:1 fromRect:destCopy isFlipped:{in_yDestCopy, in_widthDestCopy, in_heightDestCopy, srcCopy, in_ySrcCopy, in_widthSrcCopy, in_heightSrcCopy}];
 LABEL_28:
           v24 = 0;
           goto LABEL_29;
@@ -1451,10 +1451,10 @@ LABEL_20:
         v61.size.height = Height;
         v61.origin.x = 0.0;
         v61.origin.y = 0.0;
-        v56.origin.x = v25;
-        v56.origin.y = v26;
-        v56.size.width = v27;
-        v56.size.height = v28;
+        v56.origin.x = srcCopy;
+        v56.origin.y = in_ySrcCopy;
+        v56.size.width = in_widthSrcCopy;
+        v56.size.height = in_heightSrcCopy;
         if (CGRectEqualToRect(v56, v61))
         {
           v49 = CGImageRetain(Image);
@@ -1462,10 +1462,10 @@ LABEL_20:
 
         else
         {
-          v57.origin.x = v25;
-          v57.origin.y = v26;
-          v57.size.width = v27;
-          v57.size.height = v28;
+          v57.origin.x = srcCopy;
+          v57.origin.y = in_ySrcCopy;
+          v57.size.width = in_widthSrcCopy;
+          v57.size.height = in_heightSrcCopy;
           v49 = CGImageCreateWithImageInRect(Image, v57);
         }
 
@@ -1477,27 +1477,27 @@ LABEL_20:
           CGContextSaveGState(v51);
           if (v48)
           {
-            v58.origin.x = v35;
-            v58.origin.y = v36;
-            v58.size.width = v37;
-            v58.size.height = v38;
+            v58.origin.x = destCopy;
+            v58.origin.y = in_yDestCopy;
+            v58.size.width = in_widthDestCopy;
+            v58.size.height = in_heightDestCopy;
             MidY = CGRectGetMidY(v58);
             CGContextTranslateCTM(v51, 0.0, MidY);
             CGContextScaleCTM(v51, 1.0, -1.0);
-            v59.origin.x = v35;
-            v59.origin.y = v36;
-            v59.size.width = v37;
-            v59.size.height = v38;
+            v59.origin.x = destCopy;
+            v59.origin.y = in_yDestCopy;
+            v59.size.width = in_widthDestCopy;
+            v59.size.height = in_heightDestCopy;
             v53 = CGRectGetMidY(v59);
             CGContextTranslateCTM(v51, 0.0, -v53);
           }
 
-          CGContextSetAlpha(v51, a13 / 255.0);
+          CGContextSetAlpha(v51, opacity / 255.0);
           CGContextSetBlendMode(v51, kCGBlendModeNormal);
-          v60.origin.x = v35;
-          v60.origin.y = v36;
-          v60.size.width = v37;
-          v60.size.height = v38;
+          v60.origin.x = destCopy;
+          v60.origin.y = in_yDestCopy;
+          v60.size.width = in_widthDestCopy;
+          v60.size.height = in_heightDestCopy;
           CGContextDrawImage(v51, v60, v50);
           CGContextRestoreGState(v51);
           CGImageRelease(v50);
@@ -1528,21 +1528,21 @@ LABEL_30:
   return v24;
 }
 
-- (id)createHatchBrush:(id)a3 in_hatchstyle:(int)a4
+- (id)createHatchBrush:(id)brush in_hatchstyle:(int)in_hatchstyle
 {
-  v4 = [MFPhoneHatchBrush hatchBrushWithColour:a3 in_style:*&a4];
+  v4 = [MFPhoneHatchBrush hatchBrushWithColour:brush in_style:*&in_hatchstyle];
 
   return v4;
 }
 
-- (id)createPatternBrush:(id)a3 usePaletteForBilevel:(BOOL)a4
+- (id)createPatternBrush:(id)brush usePaletteForBilevel:(BOOL)bilevel
 {
-  v4 = a4;
-  v5 = a3;
+  bilevelCopy = bilevel;
+  brushCopy = brush;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [MFPhonePatternBrush patternBrushWithBitmap:v5 usePaletteForBilevel:v4];
+    v6 = [MFPhonePatternBrush patternBrushWithBitmap:brushCopy usePaletteForBilevel:bilevelCopy];
   }
 
   else
@@ -1553,96 +1553,96 @@ LABEL_30:
   return v6;
 }
 
-- (id)createSolidBrush:(id)a3
+- (id)createSolidBrush:(id)brush
 {
-  v3 = [MFPhoneSolidBrush solidBrushWithColour:a3];
+  v3 = [MFPhoneSolidBrush solidBrushWithColour:brush];
 
   return v3;
 }
 
-- (id)createPen:(int)a3 in_width:(int)a4 in_colour:(id)a5 in_userStyleArray:(double *)a6
+- (id)createPen:(int)pen in_width:(int)in_width in_colour:(id)in_colour in_userStyleArray:(double *)array
 {
   v6 = *&self->m_combinedTransform.c;
   v9[0] = *&self->m_combinedTransform.a;
   v9[1] = v6;
   v9[2] = *&self->m_combinedTransform.tx;
-  v7 = [MFPhonePen penWithStyle:*&a3 width:*&a4 colour:a5 styleArray:a6 LPToDPTransform:v9];
+  v7 = [MFPhonePen penWithStyle:*&pen width:*&in_width colour:in_colour styleArray:array LPToDPTransform:v9];
 
   return v7;
 }
 
-- (id)createFont:(int)a3 lfWidth:(int)a4 lfEscapement:(int)a5 lfOrientation:(int)a6 lfWeight:(int)a7 lfItalic:(BOOL)a8 lfUnderline:(BOOL)a9 lfStrikeOut:(BOOL)a10 lfCharSet:(int)a11 lfOutPrecision:(int)a12 lfClipPrecision:(unsigned __int8)a13 lfQuality:(int)a14 pitch:(int)a15 family:(int)a16 lfFaceName:(id)a17
+- (id)createFont:(int)font lfWidth:(int)width lfEscapement:(int)escapement lfOrientation:(int)orientation lfWeight:(int)weight lfItalic:(BOOL)italic lfUnderline:(BOOL)underline lfStrikeOut:(BOOL)self0 lfCharSet:(int)self1 lfOutPrecision:(int)self2 lfClipPrecision:(unsigned __int8)self3 lfQuality:(int)self4 pitch:(int)self5 family:(int)self6 lfFaceName:(id)self7
 {
-  LODWORD(v21) = a16;
-  BYTE4(v20) = a13;
-  HIDWORD(v19) = a11;
-  LODWORD(v20) = a12;
-  LOWORD(v19) = __PAIR16__(a10, a9);
-  v17 = [MFFont fontWithFeatures:"fontWithFeatures:lfWidth:lfEscapement:lfOrientation:lfWeight:lfItalic:lfUnderline:lfStrikeOut:lfCharSet:lfOutPrecision:lfClipPrecision:lfQuality:pitch:family:lfFaceName:" lfWidth:*&a3 lfEscapement:*&a4 lfOrientation:*&a5 lfWeight:*&a6 lfItalic:*&a7 lfUnderline:a8 lfStrikeOut:v19 lfCharSet:v20 lfOutPrecision:*&a14 lfClipPrecision:v21 lfQuality:a17 pitch:? family:? lfFaceName:?];
+  LODWORD(v21) = family;
+  BYTE4(v20) = clipPrecision;
+  HIDWORD(v19) = set;
+  LODWORD(v20) = precision;
+  LOWORD(v19) = __PAIR16__(out, underline);
+  v17 = [MFFont fontWithFeatures:"fontWithFeatures:lfWidth:lfEscapement:lfOrientation:lfWeight:lfItalic:lfUnderline:lfStrikeOut:lfCharSet:lfOutPrecision:lfClipPrecision:lfQuality:pitch:family:lfFaceName:" lfWidth:*&font lfEscapement:*&width lfOrientation:*&escapement lfWeight:*&orientation lfItalic:*&weight lfUnderline:italic lfStrikeOut:v19 lfCharSet:v20 lfOutPrecision:*&quality lfClipPrecision:v21 lfQuality:name pitch:? family:? lfFaceName:?];
 
   return v17;
 }
 
-- (id)createFontIndirectW:(int)a3 lfWidth:(int)a4 lfEscapement:(int)a5 lfOrientation:(int)a6 lfWeight:(int)a7 lfItalic:(BOOL)a8 lfUnderline:(BOOL)a9 lfStrikeOut:(BOOL)a10 lfCharSet:(int)a11 lfOutPrecision:(int)a12 lfClipPrecision:(unsigned __int8)a13 lfQuality:(int)a14 pitch:(int)a15 family:(int)a16 lfFaceName:(id)a17 elfFullName:(id)a18 elfStyle:(id)a19 elfVersion:(unsigned int)a20 elfStyleSize:(unsigned int)a21 elfMatch:(unsigned int)a22 elfVendorId:(unsigned int)a23 elfCulture:(unsigned int)a24
+- (id)createFontIndirectW:(int)w lfWidth:(int)width lfEscapement:(int)escapement lfOrientation:(int)orientation lfWeight:(int)weight lfItalic:(BOOL)italic lfUnderline:(BOOL)underline lfStrikeOut:(BOOL)self0 lfCharSet:(int)self1 lfOutPrecision:(int)self2 lfClipPrecision:(unsigned __int8)self3 lfQuality:(int)self4 pitch:(int)self5 family:(int)self6 lfFaceName:(id)self7 elfFullName:(id)self8 elfStyle:(id)self9 elfVersion:(unsigned int)version elfStyleSize:(unsigned int)size elfMatch:(unsigned int)match elfVendorId:(unsigned int)id elfCulture:(unsigned int)culture
 {
-  LODWORD(v29) = a24;
-  LODWORD(v28) = a16;
-  BYTE4(v27) = a13;
-  HIDWORD(v26) = a11;
-  LODWORD(v27) = a12;
-  LOWORD(v26) = __PAIR16__(a10, a9);
-  v24 = [MFFont fontWithExtendedFeatures:"fontWithExtendedFeatures:lfWidth:lfEscapement:lfOrientation:lfWeight:lfItalic:lfUnderline:lfStrikeOut:lfCharSet:lfOutPrecision:lfClipPrecision:lfQuality:pitch:family:lfFaceName:elfFullName:elfStyle:elfVersion:elfStyleSize:elfMatch:elfVendorId:elfCulture:" lfWidth:*&a3 lfEscapement:*&a4 lfOrientation:*&a5 lfWeight:*&a6 lfItalic:*&a7 lfUnderline:a8 lfStrikeOut:v26 lfCharSet:v27 lfOutPrecision:*&a14 lfClipPrecision:v28 lfQuality:a17 pitch:a18 family:a19 lfFaceName:*&a20 elfFullName:*&a22 elfStyle:v29 elfVersion:? elfStyleSize:? elfMatch:? elfVendorId:? elfCulture:?];
+  LODWORD(v29) = culture;
+  LODWORD(v28) = family;
+  BYTE4(v27) = clipPrecision;
+  HIDWORD(v26) = set;
+  LODWORD(v27) = precision;
+  LOWORD(v26) = __PAIR16__(out, underline);
+  v24 = [MFFont fontWithExtendedFeatures:"fontWithExtendedFeatures:lfWidth:lfEscapement:lfOrientation:lfWeight:lfItalic:lfUnderline:lfStrikeOut:lfCharSet:lfOutPrecision:lfClipPrecision:lfQuality:pitch:family:lfFaceName:elfFullName:elfStyle:elfVersion:elfStyleSize:elfMatch:elfVendorId:elfCulture:" lfWidth:*&w lfEscapement:*&width lfOrientation:*&escapement lfWeight:*&orientation lfItalic:*&weight lfUnderline:italic lfStrikeOut:v26 lfCharSet:v27 lfOutPrecision:*&quality lfClipPrecision:v28 lfQuality:name pitch:fullName family:style lfFaceName:*&version elfFullName:*&match elfStyle:v29 elfVersion:? elfStyleSize:? elfMatch:? elfVendorId:? elfCulture:?];
 
   return v24;
 }
 
-- (id)createRegionWithRects:(id)a3 in_dc:(id)a4
+- (id)createRegionWithRects:(id)rects in_dc:(id)in_dc
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [[MFPhoneRegion alloc] initWithRects:v6 in_bounds:v7 in_dc:self->m_viewBox.origin.x, self->m_viewBox.origin.y, self->m_viewBox.size.width, self->m_viewBox.size.height];
+  rectsCopy = rects;
+  in_dcCopy = in_dc;
+  v8 = [[MFPhoneRegion alloc] initWithRects:rectsCopy in_bounds:in_dcCopy in_dc:self->m_viewBox.origin.x, self->m_viewBox.origin.y, self->m_viewBox.size.width, self->m_viewBox.size.height];
 
   return v8;
 }
 
-- (id)createRegionWithPath:(id)a3
+- (id)createRegionWithPath:(id)path
 {
-  v4 = a3;
-  v5 = [[MFPhoneRegion alloc] initWithPath:v4 in_bounds:self->m_viewBox.origin.x, self->m_viewBox.origin.y, self->m_viewBox.size.width, self->m_viewBox.size.height];
+  pathCopy = path;
+  v5 = [[MFPhoneRegion alloc] initWithPath:pathCopy in_bounds:self->m_viewBox.origin.x, self->m_viewBox.origin.y, self->m_viewBox.size.width, self->m_viewBox.size.height];
 
   return v5;
 }
 
-- (id)createDIBitmap:(id)a3 in_dib:(const char *)a4 in_dibSize:(unsigned int)a5 in_usage:(int)a6
+- (id)createDIBitmap:(id)bitmap in_dib:(const char *)in_dib in_dibSize:(unsigned int)size in_usage:(int)in_usage
 {
-  v6 = *&a6;
-  v7 = *&a5;
-  v9 = a3;
-  v10 = [(MFBitmap *)[MFPhoneBitmap alloc] initWithDIBitmap:v9 in_dib:a4 in_dibSize:v7 in_usage:v6];
+  v6 = *&in_usage;
+  v7 = *&size;
+  bitmapCopy = bitmap;
+  v10 = [(MFBitmap *)[MFPhoneBitmap alloc] initWithDIBitmap:bitmapCopy in_dib:in_dib in_dibSize:v7 in_usage:v6];
 
   return v10;
 }
 
-- (id)createDIBitmap:(id)a3 in_header:(const char *)a4 in_headerSize:(unsigned int)a5 in_bitmap:(const char *)a6 in_bitmapSize:(unsigned int)a7 in_usage:(int)a8
+- (id)createDIBitmap:(id)bitmap in_header:(const char *)in_header in_headerSize:(unsigned int)size in_bitmap:(const char *)in_bitmap in_bitmapSize:(unsigned int)in_bitmapSize in_usage:(int)in_usage
 {
-  v8 = *&a8;
-  v9 = *&a7;
-  v11 = *&a5;
-  v13 = a3;
-  v14 = [(MFBitmap *)[MFPhoneBitmap alloc] initWithDIBitmap:v13 in_header:a4 in_headerSize:v11 in_bitmap:a6 in_bitmapSize:v9 in_usage:v8];
+  v8 = *&in_usage;
+  v9 = *&in_bitmapSize;
+  v11 = *&size;
+  bitmapCopy = bitmap;
+  v14 = [(MFBitmap *)[MFPhoneBitmap alloc] initWithDIBitmap:bitmapCopy in_header:in_header in_headerSize:v11 in_bitmap:in_bitmap in_bitmapSize:v9 in_usage:v8];
 
   return v14;
 }
 
-- (id)createBitmap:(id)a3 in_width:(int)a4 in_height:(int)a5 in_planes:(int)a6 in_bitsPerPixel:(int)a7 in_bitmap:(const char *)a8 in_bitmapSize:(unsigned int)a9
+- (id)createBitmap:(id)bitmap in_width:(int)in_width in_height:(int)in_height in_planes:(int)in_planes in_bitsPerPixel:(int)pixel in_bitmap:(const char *)in_bitmap in_bitmapSize:(unsigned int)size
 {
-  v10 = *&a7;
-  v11 = *&a6;
-  v12 = *&a5;
-  v13 = *&a4;
-  v14 = a3;
-  LODWORD(v17) = a9;
-  v15 = [(MFBitmap *)[MFPhoneBitmap alloc] initWithBitmap:v14 in_width:v13 in_height:v12 in_planes:v11 in_bitsPerPixel:v10 in_bitmap:a8 in_bitmapSize:v17];
+  v10 = *&pixel;
+  v11 = *&in_planes;
+  v12 = *&in_height;
+  v13 = *&in_width;
+  bitmapCopy = bitmap;
+  LODWORD(v17) = size;
+  v15 = [(MFBitmap *)[MFPhoneBitmap alloc] initWithBitmap:bitmapCopy in_width:v13 in_height:v12 in_planes:v11 in_bitsPerPixel:v10 in_bitmap:in_bitmap in_bitmapSize:v17];
 
   return v15;
 }

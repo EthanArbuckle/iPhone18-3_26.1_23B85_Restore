@@ -1,41 +1,41 @@
 @interface AATermsUserActionReporter
-- (AATermsUserActionReporter)initWithAccount:(id)a3 parameters:(id)a4;
-- (AATermsUserActionReporter)initWithAccount:(id)a3 parameters:(id)a4 remoteServer:(id)a5;
+- (AATermsUserActionReporter)initWithAccount:(id)account parameters:(id)parameters;
+- (AATermsUserActionReporter)initWithAccount:(id)account parameters:(id)parameters remoteServer:(id)server;
 - (id)_authController;
-- (void)_createRequestForAccount:(id)a3 requestHandler:(id)a4;
+- (void)_createRequestForAccount:(id)account requestHandler:(id)handler;
 - (void)reportEvent;
 @end
 
 @implementation AATermsUserActionReporter
 
-- (AATermsUserActionReporter)initWithAccount:(id)a3 parameters:(id)a4
+- (AATermsUserActionReporter)initWithAccount:(id)account parameters:(id)parameters
 {
-  v6 = a4;
-  v7 = a3;
+  parametersCopy = parameters;
+  accountCopy = account;
   v8 = +[AARemoteServer sharedServer];
-  v9 = [(AATermsUserActionReporter *)self initWithAccount:v7 parameters:v6 remoteServer:v8];
+  v9 = [(AATermsUserActionReporter *)self initWithAccount:accountCopy parameters:parametersCopy remoteServer:v8];
 
   return v9;
 }
 
-- (AATermsUserActionReporter)initWithAccount:(id)a3 parameters:(id)a4 remoteServer:(id)a5
+- (AATermsUserActionReporter)initWithAccount:(id)account parameters:(id)parameters remoteServer:(id)server
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  accountCopy = account;
+  parametersCopy = parameters;
+  serverCopy = server;
   v17.receiver = self;
   v17.super_class = AATermsUserActionReporter;
   v12 = [(AATermsUserActionReporter *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_account, a3);
-    v14 = [v10 copy];
+    objc_storeStrong(&v12->_account, account);
+    v14 = [parametersCopy copy];
     requestDictionary = v13->_requestDictionary;
     v13->_requestDictionary = v14;
 
     v13->_requestCount = 0;
-    objc_storeStrong(&v13->_remoteServer, a5);
+    objc_storeStrong(&v13->_remoteServer, server);
   }
 
   return v13;
@@ -192,20 +192,20 @@ void __40__AATermsUserActionReporter_reportEvent__block_invoke_34(uint64_t a1, v
   return authController;
 }
 
-- (void)_createRequestForAccount:(id)a3 requestHandler:(id)a4
+- (void)_createRequestForAccount:(id)account requestHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  accountCopy = account;
+  handlerCopy = handler;
   remoteServer = self->_remoteServer;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __69__AATermsUserActionReporter__createRequestForAccount_requestHandler___block_invoke;
   v11[3] = &unk_1E7C9D790;
-  v13 = self;
-  v14 = v7;
-  v12 = v6;
-  v9 = v6;
-  v10 = v7;
+  selfCopy = self;
+  v14 = handlerCopy;
+  v12 = accountCopy;
+  v9 = accountCopy;
+  v10 = handlerCopy;
   [(AARemoteServerProtocol *)remoteServer configurationWithCompletion:v11];
 }
 

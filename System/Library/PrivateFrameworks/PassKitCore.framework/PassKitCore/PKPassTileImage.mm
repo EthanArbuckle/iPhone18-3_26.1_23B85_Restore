@@ -1,57 +1,57 @@
 @interface PKPassTileImage
 + (id)_createDefaultDisclosureImage;
-+ (id)_createForDictionary:(id)a3;
-+ (id)createImageWithImage:(id)a3 tintColor:(int64_t)a4 hasColorContent:(BOOL)a5;
-+ (id)createWithSymbolName:(id)a3 contextMenuSymbolName:(id)a4 tintColor:(int64_t)a5;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToUnresolvedImage:(id)a3;
-- (PKPassTileImage)initWithCoder:(id)a3;
++ (id)_createForDictionary:(id)dictionary;
++ (id)createImageWithImage:(id)image tintColor:(int64_t)color hasColorContent:(BOOL)content;
++ (id)createWithSymbolName:(id)name contextMenuSymbolName:(id)symbolName tintColor:(int64_t)color;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToUnresolvedImage:(id)image;
+- (PKPassTileImage)initWithCoder:(id)coder;
 - (id)_init;
-- (id)createResolvedImageWithBundle:(id)a3 privateBundle:(id)a4;
-- (uint64_t)_isEqual:(uint64_t)a1;
+- (id)createResolvedImageWithBundle:(id)bundle privateBundle:(id)privateBundle;
+- (uint64_t)_isEqual:(uint64_t)equal;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPassTileImage
 
-+ (id)_createForDictionary:(id)a3
++ (id)_createForDictionary:(id)dictionary
 {
-  if (!a3)
+  if (!dictionary)
   {
     return 0;
   }
 
-  v3 = a3;
-  v4 = [PKPassTileImage alloc];
-  v5 = v3;
-  if (v4)
+  dictionaryCopy = dictionary;
+  _init = [PKPassTileImage alloc];
+  v5 = dictionaryCopy;
+  if (_init)
   {
-    v4 = [(PKPassTileImage *)v4 _init];
-    if (v4)
+    _init = [(PKPassTileImage *)_init _init];
+    if (_init)
     {
       v6 = [v5 PKStringForKey:@"symbolName"];
-      symbolName = v4->_symbolName;
-      v4->_symbolName = v6;
+      symbolName = _init->_symbolName;
+      _init->_symbolName = v6;
 
       v8 = [v5 PKStringForKey:@"imageName"];
-      imageName = v4->_imageName;
-      v4->_imageName = v8;
+      imageName = _init->_imageName;
+      _init->_imageName = v8;
 
       v10 = [v5 PKStringForKey:@"tintColor"];
-      PKSemanticColorFromString(v10, &v4->_tintColor);
+      PKSemanticColorFromString(v10, &_init->_tintColor);
     }
   }
 
-  return v4;
+  return _init;
 }
 
 + (id)_createDefaultDisclosureImage
 {
-  v2 = [[PKPassTileImage alloc] _init];
-  [v2 setSymbolName:@"chevron.forward"];
-  [v2 setTintColor:3];
-  return v2;
+  _init = [[PKPassTileImage alloc] _init];
+  [_init setSymbolName:@"chevron.forward"];
+  [_init setTintColor:3];
+  return _init;
 }
 
 - (id)_init
@@ -61,127 +61,127 @@
   return [(PKPassTileImage *)&v3 init];
 }
 
-+ (id)createWithSymbolName:(id)a3 contextMenuSymbolName:(id)a4 tintColor:(int64_t)a5
++ (id)createWithSymbolName:(id)name contextMenuSymbolName:(id)symbolName tintColor:(int64_t)color
 {
-  v5 = a3;
-  if (a3)
+  nameCopy = name;
+  if (name)
   {
-    v7 = a4;
-    v8 = v5;
-    v5 = [[PKPassTileImage alloc] _init];
-    [v5 setSymbolName:v8];
+    symbolNameCopy = symbolName;
+    v8 = nameCopy;
+    nameCopy = [[PKPassTileImage alloc] _init];
+    [nameCopy setSymbolName:v8];
 
-    [v5 setContextMenuSymbolName:v7];
-    [v5 setTintColor:a5];
+    [nameCopy setContextMenuSymbolName:symbolNameCopy];
+    [nameCopy setTintColor:color];
   }
 
-  return v5;
+  return nameCopy;
 }
 
-+ (id)createImageWithImage:(id)a3 tintColor:(int64_t)a4 hasColorContent:(BOOL)a5
++ (id)createImageWithImage:(id)image tintColor:(int64_t)color hasColorContent:(BOOL)content
 {
-  v8 = a3;
-  if (v8)
+  imageCopy = image;
+  if (imageCopy)
   {
-    v9 = [[PKPassTileImage alloc] _init];
-    objc_storeStrong(v9 + 4, a3);
-    v9[3] = a4;
-    v10 = [v8 imageHash];
-    v11 = v9[5];
-    v9[5] = v10;
+    _init = [[PKPassTileImage alloc] _init];
+    objc_storeStrong(_init + 4, image);
+    _init[3] = color;
+    imageHash = [imageCopy imageHash];
+    v11 = _init[5];
+    _init[5] = imageHash;
 
-    *(v9 + 9) = a5;
-    *(v9 + 8) = 1;
+    *(_init + 9) = content;
+    *(_init + 8) = 1;
   }
 
   else
   {
-    v9 = 0;
+    _init = 0;
   }
 
-  return v9;
+  return _init;
 }
 
-- (id)createResolvedImageWithBundle:(id)a3 privateBundle:(id)a4
+- (id)createResolvedImageWithBundle:(id)bundle privateBundle:(id)privateBundle
 {
-  v6 = a3;
-  v7 = a4;
+  bundleCopy = bundle;
+  privateBundleCopy = privateBundle;
   if (self->_resolved)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"PKPassTileImage attempting double resolution."];
   }
 
-  v8 = [[PKPassTileImage alloc] _init];
-  objc_storeStrong(v8 + 2, self->_symbolName);
-  v8[3] = self->_tintColor;
-  *(v8 + 9) = self->_hasColorContent;
+  _init = [[PKPassTileImage alloc] _init];
+  objc_storeStrong(_init + 2, self->_symbolName);
+  _init[3] = self->_tintColor;
+  *(_init + 9) = self->_hasColorContent;
   if (!self->_symbolName)
   {
     imageName = self->_imageName;
     if (imageName)
     {
-      v10 = [PKImage imageNamed:imageName inBundle:v6 screenScale:0 suffix:0.0];
-      if (v10 || ([PKImage imageNamed:self->_imageName inBundle:v7 screenScale:0 suffix:0.0], (v10 = objc_claimAutoreleasedReturnValue()) != 0))
+      v10 = [PKImage imageNamed:imageName inBundle:bundleCopy screenScale:0 suffix:0.0];
+      if (v10 || ([PKImage imageNamed:self->_imageName inBundle:privateBundleCopy screenScale:0 suffix:0.0], (v10 = objc_claimAutoreleasedReturnValue()) != 0))
       {
-        v11 = v8[4];
-        v8[4] = v10;
+        v11 = _init[4];
+        _init[4] = v10;
         v12 = v10;
 
-        v13 = [v12 imageHash];
-        v14 = v8[5];
-        v8[5] = v13;
+        imageHash = [v12 imageHash];
+        v14 = _init[5];
+        _init[5] = imageHash;
       }
     }
   }
 
-  *(v8 + 8) = 1;
+  *(_init + 8) = 1;
 
-  return v8;
+  return _init;
 }
 
-- (PKPassTileImage)initWithCoder:(id)a3
+- (PKPassTileImage)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(PKPassTileImage *)self _init];
-  if (v5)
+  coderCopy = coder;
+  _init = [(PKPassTileImage *)self _init];
+  if (_init)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"symbolName"];
-    symbolName = v5->_symbolName;
-    v5->_symbolName = v6;
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"symbolName"];
+    symbolName = _init->_symbolName;
+    _init->_symbolName = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"image"];
-    image = v5->_image;
-    v5->_image = v8;
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"image"];
+    image = _init->_image;
+    _init->_image = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"imageHash"];
-    imageHash = v5->_imageHash;
-    v5->_imageHash = v10;
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"imageHash"];
+    imageHash = _init->_imageHash;
+    _init->_imageHash = v10;
 
-    v5->_hasColorContent = [v4 decodeBoolForKey:@"hasColorContent"];
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"tintColor"];
-    PKSemanticColorFromString(v12, &v5->_tintColor);
+    _init->_hasColorContent = [coderCopy decodeBoolForKey:@"hasColorContent"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"tintColor"];
+    PKSemanticColorFromString(v12, &_init->_tintColor);
 
-    v5->_resolved = 1;
+    _init->_resolved = 1;
   }
 
-  return v5;
+  return _init;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
+  coderCopy = coder;
   if (!self->_resolved)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"PKPassTileImage attempting unresolved XPC transfer."];
   }
 
-  [v5 encodeObject:self->_symbolName forKey:@"symbolName"];
-  [v5 encodeObject:self->_image forKey:@"image"];
-  [v5 encodeObject:self->_imageHash forKey:@"imageHash"];
+  [coderCopy encodeObject:self->_symbolName forKey:@"symbolName"];
+  [coderCopy encodeObject:self->_image forKey:@"image"];
+  [coderCopy encodeObject:self->_imageHash forKey:@"imageHash"];
   v4 = PKSemanticColorToString(self->_tintColor);
-  [v5 encodeObject:v4 forKey:@"tintColor"];
+  [coderCopy encodeObject:v4 forKey:@"tintColor"];
 
-  [v5 encodeBool:self->_hasColorContent forKey:@"hasColorContent"];
+  [coderCopy encodeBool:self->_hasColorContent forKey:@"hasColorContent"];
 }
 
 - (unint64_t)hash
@@ -206,32 +206,32 @@
   return SipHash();
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   v6 = 0;
-  if (v4 && (isKindOfClass & 1) != 0)
+  if (equalCopy && (isKindOfClass & 1) != 0)
   {
-    v6 = [(PKPassTileImage *)self _isEqual:v4];
+    v6 = [(PKPassTileImage *)self _isEqual:equalCopy];
   }
 
   return v6;
 }
 
-- (uint64_t)_isEqual:(uint64_t)a1
+- (uint64_t)_isEqual:(uint64_t)equal
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (equal)
   {
-    if (*(v3 + 8) != *(a1 + 8) || v3[3] != *(a1 + 24) || *(v3 + 9) != *(a1 + 9))
+    if (*(v3 + 8) != *(equal + 8) || v3[3] != *(equal + 24) || *(v3 + 9) != *(equal + 9))
     {
       goto LABEL_27;
     }
 
-    v5 = *(a1 + 16);
+    v5 = *(equal + 16);
     v6 = v3[2];
     v7 = v5;
     v8 = v7;
@@ -255,10 +255,10 @@
       }
     }
 
-    if (*(a1 + 8) == 1)
+    if (*(equal + 8) == 1)
     {
       v10 = v4[5];
-      v11 = *(a1 + 40);
+      v11 = *(equal + 40);
       if (v10 && v11)
       {
         if (([v10 isEqual:?] & 1) == 0)
@@ -272,14 +272,14 @@
       if (v10 == v11)
       {
 LABEL_25:
-        a1 = 1;
+        equal = 1;
         goto LABEL_28;
       }
     }
 
     else
     {
-      v12 = *(a1 + 56);
+      v12 = *(equal + 56);
       v13 = v4[7];
       v14 = v12;
       v15 = v14;
@@ -303,15 +303,15 @@ LABEL_25:
     }
 
 LABEL_27:
-    a1 = 0;
+    equal = 0;
   }
 
 LABEL_28:
 
-  return a1;
+  return equal;
 }
 
-- (BOOL)isEqualToUnresolvedImage:(id)a3
+- (BOOL)isEqualToUnresolvedImage:(id)image
 {
   if (self->_resolved)
   {
@@ -320,7 +320,7 @@ LABEL_28:
 
   else
   {
-    return [(PKPassTileImage *)self _isEqual:a3];
+    return [(PKPassTileImage *)self _isEqual:image];
   }
 }
 

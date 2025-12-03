@@ -1,15 +1,15 @@
 @interface AFHomeAccessorySiriDataSharingChangeLogEvent
-+ (id)newWithBuilder:(id)a3;
-- (AFHomeAccessorySiriDataSharingChangeLogEvent)initWithBuilder:(id)a3;
-- (AFHomeAccessorySiriDataSharingChangeLogEvent)initWithCoder:(id)a3;
-- (AFHomeAccessorySiriDataSharingChangeLogEvent)initWithDate:(id)a3 previousOptInStatus:(int64_t)a4 newOptInStatus:(int64_t)a5 changeSource:(int64_t)a6 changeReason:(id)a7 buildVersion:(id)a8 productVersion:(id)a9 schemaVersion:(id)a10 logEventIdentifier:(id)a11;
-- (AFHomeAccessorySiriDataSharingChangeLogEvent)initWithDictionaryRepresentation:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)_descriptionWithIndent:(unint64_t)a3;
++ (id)newWithBuilder:(id)builder;
+- (AFHomeAccessorySiriDataSharingChangeLogEvent)initWithBuilder:(id)builder;
+- (AFHomeAccessorySiriDataSharingChangeLogEvent)initWithCoder:(id)coder;
+- (AFHomeAccessorySiriDataSharingChangeLogEvent)initWithDate:(id)date previousOptInStatus:(int64_t)status newOptInStatus:(int64_t)inStatus changeSource:(int64_t)source changeReason:(id)reason buildVersion:(id)version productVersion:(id)productVersion schemaVersion:(id)self0 logEventIdentifier:(id)self1;
+- (AFHomeAccessorySiriDataSharingChangeLogEvent)initWithDictionaryRepresentation:(id)representation;
+- (BOOL)isEqual:(id)equal;
+- (id)_descriptionWithIndent:(unint64_t)indent;
 - (id)buildDictionaryRepresentation;
-- (id)mutatedCopyWithMutator:(id)a3;
+- (id)mutatedCopyWithMutator:(id)mutator;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AFHomeAccessorySiriDataSharingChangeLogEvent
@@ -101,13 +101,13 @@
   return v20;
 }
 
-- (AFHomeAccessorySiriDataSharingChangeLogEvent)initWithDictionaryRepresentation:(id)a3
+- (AFHomeAccessorySiriDataSharingChangeLogEvent)initWithDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  representationCopy = representation;
+  v5 = representationCopy;
+  if (representationCopy)
   {
-    v6 = [v4 objectForKey:@"date"];
+    v6 = [representationCopy objectForKey:@"date"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -216,65 +216,65 @@
     }
 
     self = [(AFHomeAccessorySiriDataSharingChangeLogEvent *)self initWithDate:v25 previousOptInStatus:v24 newOptInStatus:v23 changeSource:v11 changeReason:v13 buildVersion:v15 productVersion:v17 schemaVersion:v19 logEventIdentifier:v21];
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   date = self->_date;
-  v8 = a3;
-  [v8 encodeObject:date forKey:@"AFHomeAccessorySiriDataSharingChangeLogEvent::date"];
+  coderCopy = coder;
+  [coderCopy encodeObject:date forKey:@"AFHomeAccessorySiriDataSharingChangeLogEvent::date"];
   v5 = [MEMORY[0x1E696AD98] numberWithInteger:self->_previousOptInStatus];
-  [v8 encodeObject:v5 forKey:@"AFHomeAccessorySiriDataSharingChangeLogEvent::previousOptInStatus"];
+  [coderCopy encodeObject:v5 forKey:@"AFHomeAccessorySiriDataSharingChangeLogEvent::previousOptInStatus"];
 
   v6 = [MEMORY[0x1E696AD98] numberWithInteger:self->_newOptInStatus];
-  [v8 encodeObject:v6 forKey:@"AFHomeAccessorySiriDataSharingChangeLogEvent::newOptInStatus"];
+  [coderCopy encodeObject:v6 forKey:@"AFHomeAccessorySiriDataSharingChangeLogEvent::newOptInStatus"];
 
   v7 = [MEMORY[0x1E696AD98] numberWithInteger:self->_changeSource];
-  [v8 encodeObject:v7 forKey:@"AFHomeAccessorySiriDataSharingChangeLogEvent::changeSource"];
+  [coderCopy encodeObject:v7 forKey:@"AFHomeAccessorySiriDataSharingChangeLogEvent::changeSource"];
 
-  [v8 encodeObject:self->_changeReason forKey:@"AFHomeAccessorySiriDataSharingChangeLogEvent::changeReason"];
-  [v8 encodeObject:self->_buildVersion forKey:@"AFHomeAccessorySiriDataSharingChangeLogEvent::buildVersion"];
-  [v8 encodeObject:self->_productVersion forKey:@"AFHomeAccessorySiriDataSharingChangeLogEvent::productVersion"];
-  [v8 encodeObject:self->_schemaVersion forKey:@"AFHomeAccessorySiriDataSharingChangeLogEvent::schemaVersion"];
-  [v8 encodeObject:self->_logEventIdentifier forKey:@"AFHomeAccessorySiriDataSharingChangeLogEvent::logEventIdentifier"];
+  [coderCopy encodeObject:self->_changeReason forKey:@"AFHomeAccessorySiriDataSharingChangeLogEvent::changeReason"];
+  [coderCopy encodeObject:self->_buildVersion forKey:@"AFHomeAccessorySiriDataSharingChangeLogEvent::buildVersion"];
+  [coderCopy encodeObject:self->_productVersion forKey:@"AFHomeAccessorySiriDataSharingChangeLogEvent::productVersion"];
+  [coderCopy encodeObject:self->_schemaVersion forKey:@"AFHomeAccessorySiriDataSharingChangeLogEvent::schemaVersion"];
+  [coderCopy encodeObject:self->_logEventIdentifier forKey:@"AFHomeAccessorySiriDataSharingChangeLogEvent::logEventIdentifier"];
 }
 
-- (AFHomeAccessorySiriDataSharingChangeLogEvent)initWithCoder:(id)a3
+- (AFHomeAccessorySiriDataSharingChangeLogEvent)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v4 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFHomeAccessorySiriDataSharingChangeLogEvent::date"];
-  v5 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFHomeAccessorySiriDataSharingChangeLogEvent::previousOptInStatus"];
-  v6 = [v5 integerValue];
+  coderCopy = coder;
+  v4 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFHomeAccessorySiriDataSharingChangeLogEvent::date"];
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFHomeAccessorySiriDataSharingChangeLogEvent::previousOptInStatus"];
+  integerValue = [v5 integerValue];
 
-  v7 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFHomeAccessorySiriDataSharingChangeLogEvent::newOptInStatus"];
-  v8 = [v7 integerValue];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFHomeAccessorySiriDataSharingChangeLogEvent::newOptInStatus"];
+  integerValue2 = [v7 integerValue];
 
-  v9 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFHomeAccessorySiriDataSharingChangeLogEvent::changeSource"];
-  v10 = [v9 integerValue];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFHomeAccessorySiriDataSharingChangeLogEvent::changeSource"];
+  integerValue3 = [v9 integerValue];
 
-  v11 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFHomeAccessorySiriDataSharingChangeLogEvent::changeReason"];
-  v12 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFHomeAccessorySiriDataSharingChangeLogEvent::buildVersion"];
-  v13 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFHomeAccessorySiriDataSharingChangeLogEvent::productVersion"];
-  v14 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFHomeAccessorySiriDataSharingChangeLogEvent::schemaVersion"];
-  v15 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFHomeAccessorySiriDataSharingChangeLogEvent::logEventIdentifier"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFHomeAccessorySiriDataSharingChangeLogEvent::changeReason"];
+  v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFHomeAccessorySiriDataSharingChangeLogEvent::buildVersion"];
+  v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFHomeAccessorySiriDataSharingChangeLogEvent::productVersion"];
+  v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFHomeAccessorySiriDataSharingChangeLogEvent::schemaVersion"];
+  v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFHomeAccessorySiriDataSharingChangeLogEvent::logEventIdentifier"];
 
-  v16 = [(AFHomeAccessorySiriDataSharingChangeLogEvent *)self initWithDate:v4 previousOptInStatus:v6 newOptInStatus:v8 changeSource:v10 changeReason:v11 buildVersion:v12 productVersion:v13 schemaVersion:v14 logEventIdentifier:v15];
+  v16 = [(AFHomeAccessorySiriDataSharingChangeLogEvent *)self initWithDate:v4 previousOptInStatus:integerValue newOptInStatus:integerValue2 changeSource:integerValue3 changeReason:v11 buildVersion:v12 productVersion:v13 schemaVersion:v14 logEventIdentifier:v15];
   return v16;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v21 = 1;
   }
@@ -284,33 +284,33 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       previousOptInStatus = self->_previousOptInStatus;
       if (previousOptInStatus == [(AFHomeAccessorySiriDataSharingChangeLogEvent *)v5 previousOptInStatus]&& (newOptInStatus = self->_newOptInStatus, newOptInStatus == [(AFHomeAccessorySiriDataSharingChangeLogEvent *)v5 newOptInStatus]) && (changeSource = self->_changeSource, changeSource == [(AFHomeAccessorySiriDataSharingChangeLogEvent *)v5 changeSource]))
       {
-        v9 = [(AFHomeAccessorySiriDataSharingChangeLogEvent *)v5 date];
+        date = [(AFHomeAccessorySiriDataSharingChangeLogEvent *)v5 date];
         date = self->_date;
-        if (date == v9 || [(NSDate *)date isEqual:v9])
+        if (date == date || [(NSDate *)date isEqual:date])
         {
-          v11 = [(AFHomeAccessorySiriDataSharingChangeLogEvent *)v5 changeReason];
+          changeReason = [(AFHomeAccessorySiriDataSharingChangeLogEvent *)v5 changeReason];
           changeReason = self->_changeReason;
-          if (changeReason == v11 || [(NSString *)changeReason isEqual:v11])
+          if (changeReason == changeReason || [(NSString *)changeReason isEqual:changeReason])
           {
-            v13 = [(AFHomeAccessorySiriDataSharingChangeLogEvent *)v5 buildVersion];
+            buildVersion = [(AFHomeAccessorySiriDataSharingChangeLogEvent *)v5 buildVersion];
             buildVersion = self->_buildVersion;
-            if (buildVersion == v13 || [(NSString *)buildVersion isEqual:v13])
+            if (buildVersion == buildVersion || [(NSString *)buildVersion isEqual:buildVersion])
             {
-              v15 = [(AFHomeAccessorySiriDataSharingChangeLogEvent *)v5 productVersion];
+              productVersion = [(AFHomeAccessorySiriDataSharingChangeLogEvent *)v5 productVersion];
               productVersion = self->_productVersion;
-              if (productVersion == v15 || [(NSString *)productVersion isEqual:v15])
+              if (productVersion == productVersion || [(NSString *)productVersion isEqual:productVersion])
               {
-                v17 = [(AFHomeAccessorySiriDataSharingChangeLogEvent *)v5 schemaVersion];
+                schemaVersion = [(AFHomeAccessorySiriDataSharingChangeLogEvent *)v5 schemaVersion];
                 schemaVersion = self->_schemaVersion;
-                if (schemaVersion == v17 || [(NSString *)schemaVersion isEqual:v17])
+                if (schemaVersion == schemaVersion || [(NSString *)schemaVersion isEqual:schemaVersion])
                 {
-                  v19 = [(AFHomeAccessorySiriDataSharingChangeLogEvent *)v5 logEventIdentifier];
+                  logEventIdentifier = [(AFHomeAccessorySiriDataSharingChangeLogEvent *)v5 logEventIdentifier];
                   logEventIdentifier = self->_logEventIdentifier;
-                  v21 = logEventIdentifier == v19 || [(NSString *)logEventIdentifier isEqual:v19];
+                  v21 = logEventIdentifier == logEventIdentifier || [(NSString *)logEventIdentifier isEqual:logEventIdentifier];
                 }
 
                 else
@@ -376,7 +376,7 @@
   return v9 ^ v14;
 }
 
-- (id)_descriptionWithIndent:(unint64_t)a3
+- (id)_descriptionWithIndent:(unint64_t)indent
 {
   v4 = objc_alloc(MEMORY[0x1E696AEC0]);
   v18.receiver = self;
@@ -424,33 +424,33 @@
   return v16;
 }
 
-- (AFHomeAccessorySiriDataSharingChangeLogEvent)initWithDate:(id)a3 previousOptInStatus:(int64_t)a4 newOptInStatus:(int64_t)a5 changeSource:(int64_t)a6 changeReason:(id)a7 buildVersion:(id)a8 productVersion:(id)a9 schemaVersion:(id)a10 logEventIdentifier:(id)a11
+- (AFHomeAccessorySiriDataSharingChangeLogEvent)initWithDate:(id)date previousOptInStatus:(int64_t)status newOptInStatus:(int64_t)inStatus changeSource:(int64_t)source changeReason:(id)reason buildVersion:(id)version productVersion:(id)productVersion schemaVersion:(id)self0 logEventIdentifier:(id)self1
 {
-  v16 = a3;
-  v17 = a7;
-  v18 = a8;
-  v19 = a9;
-  v20 = a10;
-  v21 = a11;
+  dateCopy = date;
+  reasonCopy = reason;
+  versionCopy = version;
+  productVersionCopy = productVersion;
+  schemaVersionCopy = schemaVersion;
+  identifierCopy = identifier;
   v31[0] = MEMORY[0x1E69E9820];
   v31[1] = 3221225472;
   v31[2] = __183__AFHomeAccessorySiriDataSharingChangeLogEvent_initWithDate_previousOptInStatus_newOptInStatus_changeSource_changeReason_buildVersion_productVersion_schemaVersion_logEventIdentifier___block_invoke;
   v31[3] = &unk_1E7341F78;
-  v38 = a4;
-  v39 = a5;
-  v40 = a6;
-  v32 = v16;
-  v33 = v17;
-  v34 = v18;
-  v35 = v19;
-  v36 = v20;
-  v37 = v21;
-  v22 = v21;
-  v23 = v20;
-  v24 = v19;
-  v25 = v18;
-  v26 = v17;
-  v27 = v16;
+  statusCopy = status;
+  inStatusCopy = inStatus;
+  sourceCopy = source;
+  v32 = dateCopy;
+  v33 = reasonCopy;
+  v34 = versionCopy;
+  v35 = productVersionCopy;
+  v36 = schemaVersionCopy;
+  v37 = identifierCopy;
+  v22 = identifierCopy;
+  v23 = schemaVersionCopy;
+  v24 = productVersionCopy;
+  v25 = versionCopy;
+  v26 = reasonCopy;
+  v27 = dateCopy;
   v28 = [(AFHomeAccessorySiriDataSharingChangeLogEvent *)self initWithBuilder:v31];
 
   return v28;
@@ -471,49 +471,49 @@ void __183__AFHomeAccessorySiriDataSharingChangeLogEvent_initWithDate_previousOp
   [v4 setLogEventIdentifier:a1[9]];
 }
 
-- (AFHomeAccessorySiriDataSharingChangeLogEvent)initWithBuilder:(id)a3
+- (AFHomeAccessorySiriDataSharingChangeLogEvent)initWithBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v27.receiver = self;
   v27.super_class = AFHomeAccessorySiriDataSharingChangeLogEvent;
   v5 = [(AFHomeAccessorySiriDataSharingChangeLogEvent *)&v27 init];
   v6 = v5;
-  if (v4 && v5)
+  if (builderCopy && v5)
   {
     v7 = [[_AFHomeAccessorySiriDataSharingChangeLogEventMutation alloc] initWithBase:0];
-    v4[2](v4, v7);
+    builderCopy[2](builderCopy, v7);
     if ([(_AFHomeAccessorySiriDataSharingChangeLogEventMutation *)v7 isDirty])
     {
-      v8 = [(_AFHomeAccessorySiriDataSharingChangeLogEventMutation *)v7 getDate];
-      v9 = [v8 copy];
+      getDate = [(_AFHomeAccessorySiriDataSharingChangeLogEventMutation *)v7 getDate];
+      v9 = [getDate copy];
       date = v6->_date;
       v6->_date = v9;
 
       v6->_previousOptInStatus = [(_AFHomeAccessorySiriDataSharingChangeLogEventMutation *)v7 getPreviousOptInStatus];
       v6->_newOptInStatus = [(_AFHomeAccessorySiriDataSharingChangeLogEventMutation *)v7 getNewOptInStatus];
       v6->_changeSource = [(_AFHomeAccessorySiriDataSharingChangeLogEventMutation *)v7 getChangeSource];
-      v11 = [(_AFHomeAccessorySiriDataSharingChangeLogEventMutation *)v7 getChangeReason];
-      v12 = [v11 copy];
+      getChangeReason = [(_AFHomeAccessorySiriDataSharingChangeLogEventMutation *)v7 getChangeReason];
+      v12 = [getChangeReason copy];
       changeReason = v6->_changeReason;
       v6->_changeReason = v12;
 
-      v14 = [(_AFHomeAccessorySiriDataSharingChangeLogEventMutation *)v7 getBuildVersion];
-      v15 = [v14 copy];
+      getBuildVersion = [(_AFHomeAccessorySiriDataSharingChangeLogEventMutation *)v7 getBuildVersion];
+      v15 = [getBuildVersion copy];
       buildVersion = v6->_buildVersion;
       v6->_buildVersion = v15;
 
-      v17 = [(_AFHomeAccessorySiriDataSharingChangeLogEventMutation *)v7 getProductVersion];
-      v18 = [v17 copy];
+      getProductVersion = [(_AFHomeAccessorySiriDataSharingChangeLogEventMutation *)v7 getProductVersion];
+      v18 = [getProductVersion copy];
       productVersion = v6->_productVersion;
       v6->_productVersion = v18;
 
-      v20 = [(_AFHomeAccessorySiriDataSharingChangeLogEventMutation *)v7 getSchemaVersion];
-      v21 = [v20 copy];
+      getSchemaVersion = [(_AFHomeAccessorySiriDataSharingChangeLogEventMutation *)v7 getSchemaVersion];
+      v21 = [getSchemaVersion copy];
       schemaVersion = v6->_schemaVersion;
       v6->_schemaVersion = v21;
 
-      v23 = [(_AFHomeAccessorySiriDataSharingChangeLogEventMutation *)v7 getLogEventIdentifier];
-      v24 = [v23 copy];
+      getLogEventIdentifier = [(_AFHomeAccessorySiriDataSharingChangeLogEventMutation *)v7 getLogEventIdentifier];
+      v24 = [getLogEventIdentifier copy];
       logEventIdentifier = v6->_logEventIdentifier;
       v6->_logEventIdentifier = v24;
     }
@@ -522,54 +522,54 @@ void __183__AFHomeAccessorySiriDataSharingChangeLogEvent_initWithDate_previousOp
   return v6;
 }
 
-+ (id)newWithBuilder:(id)a3
++ (id)newWithBuilder:(id)builder
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:v3];
+  builderCopy = builder;
+  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:builderCopy];
 
   return v4;
 }
 
-- (id)mutatedCopyWithMutator:(id)a3
+- (id)mutatedCopyWithMutator:(id)mutator
 {
-  v4 = a3;
-  if (v4)
+  mutatorCopy = mutator;
+  if (mutatorCopy)
   {
     v5 = [[_AFHomeAccessorySiriDataSharingChangeLogEventMutation alloc] initWithBase:self];
-    v4[2](v4, v5);
+    mutatorCopy[2](mutatorCopy, v5);
     if ([(_AFHomeAccessorySiriDataSharingChangeLogEventMutation *)v5 isDirty])
     {
       v6 = objc_alloc_init(AFHomeAccessorySiriDataSharingChangeLogEvent);
-      v7 = [(_AFHomeAccessorySiriDataSharingChangeLogEventMutation *)v5 getDate];
-      v8 = [v7 copy];
+      getDate = [(_AFHomeAccessorySiriDataSharingChangeLogEventMutation *)v5 getDate];
+      v8 = [getDate copy];
       date = v6->_date;
       v6->_date = v8;
 
       v6->_previousOptInStatus = [(_AFHomeAccessorySiriDataSharingChangeLogEventMutation *)v5 getPreviousOptInStatus];
       v6->_newOptInStatus = [(_AFHomeAccessorySiriDataSharingChangeLogEventMutation *)v5 getNewOptInStatus];
       v6->_changeSource = [(_AFHomeAccessorySiriDataSharingChangeLogEventMutation *)v5 getChangeSource];
-      v10 = [(_AFHomeAccessorySiriDataSharingChangeLogEventMutation *)v5 getChangeReason];
-      v11 = [v10 copy];
+      getChangeReason = [(_AFHomeAccessorySiriDataSharingChangeLogEventMutation *)v5 getChangeReason];
+      v11 = [getChangeReason copy];
       changeReason = v6->_changeReason;
       v6->_changeReason = v11;
 
-      v13 = [(_AFHomeAccessorySiriDataSharingChangeLogEventMutation *)v5 getBuildVersion];
-      v14 = [v13 copy];
+      getBuildVersion = [(_AFHomeAccessorySiriDataSharingChangeLogEventMutation *)v5 getBuildVersion];
+      v14 = [getBuildVersion copy];
       buildVersion = v6->_buildVersion;
       v6->_buildVersion = v14;
 
-      v16 = [(_AFHomeAccessorySiriDataSharingChangeLogEventMutation *)v5 getProductVersion];
-      v17 = [v16 copy];
+      getProductVersion = [(_AFHomeAccessorySiriDataSharingChangeLogEventMutation *)v5 getProductVersion];
+      v17 = [getProductVersion copy];
       productVersion = v6->_productVersion;
       v6->_productVersion = v17;
 
-      v19 = [(_AFHomeAccessorySiriDataSharingChangeLogEventMutation *)v5 getSchemaVersion];
-      v20 = [v19 copy];
+      getSchemaVersion = [(_AFHomeAccessorySiriDataSharingChangeLogEventMutation *)v5 getSchemaVersion];
+      v20 = [getSchemaVersion copy];
       schemaVersion = v6->_schemaVersion;
       v6->_schemaVersion = v20;
 
-      v22 = [(_AFHomeAccessorySiriDataSharingChangeLogEventMutation *)v5 getLogEventIdentifier];
-      v23 = [v22 copy];
+      getLogEventIdentifier = [(_AFHomeAccessorySiriDataSharingChangeLogEventMutation *)v5 getLogEventIdentifier];
+      v23 = [getLogEventIdentifier copy];
       logEventIdentifier = v6->_logEventIdentifier;
       v6->_logEventIdentifier = v23;
     }

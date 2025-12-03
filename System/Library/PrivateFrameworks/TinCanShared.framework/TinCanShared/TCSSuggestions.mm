@@ -4,38 +4,38 @@
 - (NSArray)suggestedDestinations;
 - (NSMutableDictionary)suggestions;
 - (NSUserDefaults)defaults;
-- (TCSSuggestions)initWithContactStore:(id)a3 contacts:(id)a4;
+- (TCSSuggestions)initWithContactStore:(id)store contacts:(id)contacts;
 - (id)_destinationsFromCallHistory;
 - (id)_destinationsFromCoreRecents;
 - (id)_destinationsFromFavorites;
-- (id)_performHousekeepingOnSuggestions:(id)a3;
-- (void)_addSuggestedDestination:(id)a3 withTimestamp:(id)a4;
+- (id)_performHousekeepingOnSuggestions:(id)suggestions;
+- (void)_addSuggestedDestination:(id)destination withTimestamp:(id)timestamp;
 - (void)_deleteSuggestions;
-- (void)_deviceDidPair:(id)a3;
+- (void)_deviceDidPair:(id)pair;
 - (void)_generateNewSuggestions;
 - (void)_handleDeviceFirstUnlock;
 - (void)_invalidate;
 - (void)_notifyObserversSuggestionsChanged;
-- (void)_performIDQueryForSuggestions:(id)a3;
+- (void)_performIDQueryForSuggestions:(id)suggestions;
 - (void)_saveSuggestions;
-- (void)_startGenerationTimerWithFireDate:(id)a3;
+- (void)_startGenerationTimerWithFireDate:(id)date;
 - (void)_stopGenerationTimer;
 - (void)_syncSuggestions;
 - (void)_updateGenerationTimestamps;
-- (void)batchQueryController:(id)a3 updatedDestinationsStatus:(id)a4 onService:(id)a5 error:(id)a6;
+- (void)batchQueryController:(id)controller updatedDestinationsStatus:(id)status onService:(id)service error:(id)error;
 - (void)dealloc;
 - (void)generateNewSuggestionsIfNecessary;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setGenerationTimerEnabled:(BOOL)a3;
-- (void)setShouldObserveSuggestionsDefaultChanges:(BOOL)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setGenerationTimerEnabled:(BOOL)enabled;
+- (void)setShouldObserveSuggestionsDefaultChanges:(BOOL)changes;
 @end
 
 @implementation TCSSuggestions
 
-- (TCSSuggestions)initWithContactStore:(id)a3 contacts:(id)a4
+- (TCSSuggestions)initWithContactStore:(id)store contacts:(id)contacts
 {
-  v7 = a3;
-  v8 = a4;
+  storeCopy = store;
+  contactsCopy = contacts;
   v35.receiver = self;
   v35.super_class = TCSSuggestions;
   v9 = [(TCSSuggestions *)&v35 init];
@@ -51,18 +51,18 @@
     coreRecentsQueue = v9->_coreRecentsQueue;
     v9->_coreRecentsQueue = v14;
 
-    objc_storeStrong(&v9->_contactStore, a3);
-    objc_storeStrong(&v9->_contacts, a4);
+    objc_storeStrong(&v9->_contactStore, store);
+    objc_storeStrong(&v9->_contacts, contacts);
     [(TCSContacts *)v9->_contacts addObserver:v9];
-    v16 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     observers = v9->_observers;
-    v9->_observers = v16;
+    v9->_observers = weakObjectsHashTable;
 
     v18 = objc_opt_new();
     npsManager = v9->_npsManager;
     v9->_npsManager = v18;
 
-    v20 = [MEMORY[0x277CFBEB0] defaultProvider];
+    defaultProvider = [MEMORY[0x277CFBEB0] defaultProvider];
     objc_initWeak(&location, v9);
     v29 = MEMORY[0x277D85DD0];
     v30 = 3221225472;
@@ -71,15 +71,15 @@
     objc_copyWeak(&v33, &location);
     v21 = MEMORY[0x274388AC0](&v29);
     v22 = objc_alloc(MEMORY[0x277CFBDD0]);
-    v23 = [v20 mainThreadScheduler];
-    v24 = [v22 initWithDelay:1 options:v21 block:v20 schedulerProvider:v23 downstreamScheduler:0.3];
+    mainThreadScheduler = [defaultProvider mainThreadScheduler];
+    v24 = [v22 initWithDelay:1 options:v21 block:defaultProvider schedulerProvider:mainThreadScheduler downstreamScheduler:0.3];
     suggestionsSaveTimer = v9->_suggestionsSaveTimer;
     v9->_suggestionsSaveTimer = v24;
 
     [(TCSSuggestions *)v9 setShouldObserveSuggestionsDefaultChanges:1];
-    v26 = [MEMORY[0x277CCAB98] defaultCenter];
-    v27 = [MEMORY[0x277D2BCF8] sharedInstance];
-    [v26 addObserver:v9 selector:sel__deviceDidPair_ name:*MEMORY[0x277D2BC68] object:v27];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    mEMORY[0x277D2BCF8] = [MEMORY[0x277D2BCF8] sharedInstance];
+    [defaultCenter addObserver:v9 selector:sel__deviceDidPair_ name:*MEMORY[0x277D2BC68] object:mEMORY[0x277D2BCF8]];
 
     objc_destroyWeak(&v33);
     objc_destroyWeak(&location);
@@ -99,8 +99,8 @@ void __48__TCSSuggestions_initWithContactStore_contacts___block_invoke(uint64_t 
   [(IDSBatchIDQueryController *)self->_queryController invalidate];
   [(TCSContacts *)self->_contacts removeObserver:self];
   [(TCSSuggestions *)self setShouldObserveSuggestionsDefaultChanges:0];
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   notify_cancel(self->_firstUnlockToken);
   notify_cancel(self->_npsInitialSyncToken);
@@ -138,9 +138,9 @@ void __48__TCSSuggestions_initWithContactStore_contacts___block_invoke(uint64_t 
       _os_log_impl(&dword_26F110000, v4, OS_LOG_TYPE_DEFAULT, "TCSSuggestions will wait for first device unlock before it checks if new suggestions should be generated.", location, 2u);
     }
 
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v6 = +[TCSBehavior sharedBehavior];
-    [v5 addObserver:self selector:sel__handleDeviceFirstUnlock name:@"TCSFirstUnlockNotification" object:v6];
+    [defaultCenter addObserver:self selector:sel__handleDeviceFirstUnlock name:@"TCSFirstUnlockNotification" object:v6];
   }
 }
 
@@ -165,22 +165,22 @@ void __51__TCSSuggestions_generateNewSuggestionsIfNecessary__block_invoke(uint64
   return defaults;
 }
 
-- (void)setShouldObserveSuggestionsDefaultChanges:(BOOL)a3
+- (void)setShouldObserveSuggestionsDefaultChanges:(BOOL)changes
 {
-  if (self->_shouldObserveSuggestionsDefaultChanges != a3)
+  if (self->_shouldObserveSuggestionsDefaultChanges != changes)
   {
-    v4 = a3;
-    self->_shouldObserveSuggestionsDefaultChanges = a3;
-    v6 = [(TCSSuggestions *)self defaults];
-    v7 = v6;
-    if (v4)
+    changesCopy = changes;
+    self->_shouldObserveSuggestionsDefaultChanges = changes;
+    defaults = [(TCSSuggestions *)self defaults];
+    v7 = defaults;
+    if (changesCopy)
     {
-      [v6 addObserver:self forKeyPath:@"Suggestions" options:1 context:TCSSuggestionsObservationContext];
+      [defaults addObserver:self forKeyPath:@"Suggestions" options:1 context:TCSSuggestionsObservationContext];
     }
 
     else
     {
-      [v6 removeObserver:self forKeyPath:@"Suggestions" context:TCSSuggestionsObservationContext];
+      [defaults removeObserver:self forKeyPath:@"Suggestions" context:TCSSuggestionsObservationContext];
     }
   }
 }
@@ -189,20 +189,20 @@ void __51__TCSSuggestions_generateNewSuggestionsIfNecessary__block_invoke(uint64
 {
   if (!self->_suggestions && ([MEMORY[0x277D75128] isRunningInStoreDemoMode] & 1) == 0)
   {
-    v3 = [(TCSSuggestions *)self defaults];
-    v4 = [v3 dictionaryForKey:@"Suggestions"];
+    defaults = [(TCSSuggestions *)self defaults];
+    v4 = [defaults dictionaryForKey:@"Suggestions"];
     v5 = v4;
     if (v4)
     {
-      v6 = v4;
+      dictionary = v4;
     }
 
     else
     {
-      v6 = [MEMORY[0x277CBEAC0] dictionary];
+      dictionary = [MEMORY[0x277CBEAC0] dictionary];
     }
 
-    v7 = v6;
+    v7 = dictionary;
 
     if ([v7 count])
     {
@@ -244,18 +244,18 @@ void __51__TCSSuggestions_generateNewSuggestionsIfNecessary__block_invoke(uint64
   suggestedDestinations = self->_suggestedDestinations;
   if (!suggestedDestinations)
   {
-    v4 = [(TCSSuggestions *)self suggestions];
-    v5 = [v4 allKeys];
-    v6 = [v5 mutableCopy];
+    suggestions = [(TCSSuggestions *)self suggestions];
+    allKeys = [suggestions allKeys];
+    v6 = [allKeys mutableCopy];
 
-    v7 = [(TCSSuggestions *)self suggestions];
+    suggestions2 = [(TCSSuggestions *)self suggestions];
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __39__TCSSuggestions_suggestedDestinations__block_invoke;
     v20[3] = &unk_279DC19B8;
     v8 = v6;
     v21 = v8;
-    [v7 enumerateKeysAndObjectsUsingBlock:v20];
+    [suggestions2 enumerateKeysAndObjectsUsingBlock:v20];
 
     v9 = [MEMORY[0x277CBEA60] arrayWithArray:v8];
     v10 = self->_suggestedDestinations;
@@ -306,47 +306,47 @@ void __39__TCSSuggestions_suggestedDestinations__block_invoke(uint64_t a1, void 
   }
 }
 
-- (void)setGenerationTimerEnabled:(BOOL)a3
+- (void)setGenerationTimerEnabled:(BOOL)enabled
 {
-  if (self->_generationTimerEnabled != a3)
+  if (self->_generationTimerEnabled != enabled)
   {
-    self->_generationTimerEnabled = a3;
-    if (!a3)
+    self->_generationTimerEnabled = enabled;
+    if (!enabled)
     {
       [(TCSSuggestions *)self _stopGenerationTimer];
     }
   }
 }
 
-- (void)batchQueryController:(id)a3 updatedDestinationsStatus:(id)a4 onService:(id)a5 error:(id)a6
+- (void)batchQueryController:(id)controller updatedDestinationsStatus:(id)status onService:(id)service error:(id)error
 {
   v53 = *MEMORY[0x277D85DE8];
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
-  if ([v9 count])
+  statusCopy = status;
+  serviceCopy = service;
+  errorCopy = error;
+  if ([statusCopy count])
   {
-    if ([@"com.apple.private.alloy.tincan.audio" isEqualToString:v10])
+    if ([@"com.apple.private.alloy.tincan.audio" isEqualToString:serviceCopy])
     {
-      if (v11)
+      if (errorCopy)
       {
         _TCSInitializeLogging();
         v12 = TCSLogDefault;
         if (os_log_type_enabled(TCSLogDefault, OS_LOG_TYPE_ERROR))
         {
-          [TCSSuggestions batchQueryController:v11 updatedDestinationsStatus:v12 onService:? error:?];
+          [TCSSuggestions batchQueryController:errorCopy updatedDestinationsStatus:v12 onService:? error:?];
         }
       }
 
       else
       {
-        v39 = v10;
+        v39 = serviceCopy;
         v47 = 0u;
         v48 = 0u;
         v45 = 0u;
         v46 = 0u;
-        v40 = v9;
-        v15 = v9;
+        v40 = statusCopy;
+        v15 = statusCopy;
         v16 = [v15 countByEnumeratingWithState:&v45 objects:v52 count:16];
         if (v16)
         {
@@ -377,7 +377,7 @@ void __39__TCSSuggestions_suggestedDestinations__block_invoke(uint64_t a1, void 
           while (v17);
         }
 
-        v23 = [MEMORY[0x277CBEAA8] date];
+        date = [MEMORY[0x277CBEAA8] date];
         v41 = 0u;
         v42 = 0u;
         v43 = 0u;
@@ -399,14 +399,14 @@ void __39__TCSSuggestions_suggestedDestinations__block_invoke(uint64_t a1, void 
 
               v29 = *(*(&v41 + 1) + 8 * j);
               v30 = [(NSMutableDictionary *)self->_suggestedDestinationToStatus objectForKeyedSubscript:v29];
-              v31 = [v30 integerValue];
+              integerValue = [v30 integerValue];
 
-              if (v31 == 1)
+              if (integerValue == 1)
               {
                 suggestions = self->_suggestions;
                 if (!suggestions)
                 {
-                  v33 = [(TCSSuggestions *)self suggestions];
+                  suggestions = [(TCSSuggestions *)self suggestions];
                   suggestions = self->_suggestions;
                 }
 
@@ -425,7 +425,7 @@ void __39__TCSSuggestions_suggestedDestinations__block_invoke(uint64_t a1, void 
                     _os_log_impl(&dword_26F110000, v36, OS_LOG_TYPE_DEFAULT, "Adding new suggested and valid destination: %@", buf, 0xCu);
                   }
 
-                  [(TCSSuggestions *)self _addSuggestedDestination:v29 withTimestamp:v23];
+                  [(TCSSuggestions *)self _addSuggestedDestination:v29 withTimestamp:date];
                 }
               }
             }
@@ -436,9 +436,9 @@ void __39__TCSSuggestions_suggestedDestinations__block_invoke(uint64_t a1, void 
           while (v26);
         }
 
-        v10 = v39;
-        v9 = v40;
-        v11 = 0;
+        serviceCopy = v39;
+        statusCopy = v40;
+        errorCopy = 0;
       }
     }
 
@@ -448,7 +448,7 @@ void __39__TCSSuggestions_suggestedDestinations__block_invoke(uint64_t a1, void 
       v14 = TCSLogDefault;
       if (os_log_type_enabled(TCSLogDefault, OS_LOG_TYPE_ERROR))
       {
-        [TCSSuggestions batchQueryController:v10 updatedDestinationsStatus:v14 onService:? error:?];
+        [TCSSuggestions batchQueryController:serviceCopy updatedDestinationsStatus:v14 onService:? error:?];
       }
     }
   }
@@ -466,9 +466,9 @@ void __39__TCSSuggestions_suggestedDestinations__block_invoke(uint64_t a1, void 
   v38 = *MEMORY[0x277D85DE8];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (TCSSuggestionsObservationContext == a6)
+  if (TCSSuggestionsObservationContext == context)
   {
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
@@ -482,20 +482,20 @@ void __39__TCSSuggestions_suggestedDestinations__block_invoke(uint64_t a1, void 
   {
     v6.receiver = self;
     v6.super_class = TCSSuggestions;
-    [(TCSSuggestions *)&v6 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:?];
+    [(TCSSuggestions *)&v6 observeValueForKeyPath:path ofObject:object change:change context:?];
   }
 }
 
 - (void)_deleteSuggestions
 {
-  v3 = [(TCSSuggestions *)self defaults];
-  [v3 removeObjectForKey:@"Suggestions"];
+  defaults = [(TCSSuggestions *)self defaults];
+  [defaults removeObjectForKey:@"Suggestions"];
 
-  v4 = [(TCSSuggestions *)self defaults];
-  [v4 removeObjectForKey:@"SuggestionsFirstGenerated"];
+  defaults2 = [(TCSSuggestions *)self defaults];
+  [defaults2 removeObjectForKey:@"SuggestionsFirstGenerated"];
 
-  v5 = [(TCSSuggestions *)self defaults];
-  [v5 removeObjectForKey:@"SuggestionsPreviouslyGenerated"];
+  defaults3 = [(TCSSuggestions *)self defaults];
+  [defaults3 removeObjectForKey:@"SuggestionsPreviouslyGenerated"];
 }
 
 + (id)_descriptorForRequiredKeys
@@ -570,19 +570,19 @@ void __44__TCSSuggestions__descriptorForRequiredKeys__block_invoke()
 
   else
   {
-    v5 = [MEMORY[0x277CBEAA8] date];
-    v6 = [(TCSSuggestions *)self defaults];
-    v7 = [v6 objectForKey:@"SuggestionsFirstGenerated"];
+    date = [MEMORY[0x277CBEAA8] date];
+    defaults = [(TCSSuggestions *)self defaults];
+    v7 = [defaults objectForKey:@"SuggestionsFirstGenerated"];
 
     if (v7)
     {
-      [v5 timeIntervalSinceDate:v7];
+      [date timeIntervalSinceDate:v7];
       if (v8 <= 31536000.0)
       {
-        v10 = [(TCSSuggestions *)self defaults];
-        v11 = [v10 objectForKey:@"SuggestionsPreviouslyGenerated"];
+        defaults2 = [(TCSSuggestions *)self defaults];
+        v11 = [defaults2 objectForKey:@"SuggestionsPreviouslyGenerated"];
 
-        if (v11 && ([v5 timeIntervalSinceDate:v11], v12 < 86400.0))
+        if (v11 && ([date timeIntervalSinceDate:v11], v12 < 86400.0))
         {
           if (![(NSTimer *)self->_suggestionGenerationTimer isValid])
           {
@@ -631,9 +631,9 @@ void __44__TCSSuggestions__descriptorForRequiredKeys__block_invoke()
   return v4;
 }
 
-- (void)_startGenerationTimerWithFireDate:(id)a3
+- (void)_startGenerationTimerWithFireDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   [(TCSSuggestions *)self _stopGenerationTimer];
   if (self->_generationTimerEnabled)
   {
@@ -644,13 +644,13 @@ void __44__TCSSuggestions__descriptorForRequiredKeys__block_invoke()
     v11 = __52__TCSSuggestions__startGenerationTimerWithFireDate___block_invoke;
     v12 = &unk_279DC1A28;
     objc_copyWeak(&v13, &location);
-    v6 = [v5 initWithFireDate:v4 interval:0 repeats:&v9 block:0.0];
+    v6 = [v5 initWithFireDate:dateCopy interval:0 repeats:&v9 block:0.0];
     suggestionGenerationTimer = self->_suggestionGenerationTimer;
     self->_suggestionGenerationTimer = v6;
 
     [(NSTimer *)self->_suggestionGenerationTimer setTolerance:300.0, v9, v10, v11, v12];
-    v8 = [MEMORY[0x277CBEB88] mainRunLoop];
-    [v8 addTimer:self->_suggestionGenerationTimer forMode:*MEMORY[0x277CBE640]];
+    mainRunLoop = [MEMORY[0x277CBEB88] mainRunLoop];
+    [mainRunLoop addTimer:self->_suggestionGenerationTimer forMode:*MEMORY[0x277CBE640]];
 
     objc_destroyWeak(&v13);
     objc_destroyWeak(&location);
@@ -679,14 +679,14 @@ void __52__TCSSuggestions__startGenerationTimerWithFireDate___block_invoke(uint6
   v40 = *MEMORY[0x277D85DE8];
   dispatch_assert_queue_V2(self->_generationQueue);
   v3 = [MEMORY[0x277CBEB58] set];
-  v4 = [(TCSSuggestions *)self _destinationsFromFavorites];
-  [v3 unionSet:v4];
+  _destinationsFromFavorites = [(TCSSuggestions *)self _destinationsFromFavorites];
+  [v3 unionSet:_destinationsFromFavorites];
 
-  v5 = [(TCSSuggestions *)self _destinationsFromCallHistory];
-  [v3 unionSet:v5];
+  _destinationsFromCallHistory = [(TCSSuggestions *)self _destinationsFromCallHistory];
+  [v3 unionSet:_destinationsFromCallHistory];
 
-  v6 = [(TCSSuggestions *)self _destinationsFromCoreRecents];
-  [v3 unionSet:v6];
+  _destinationsFromCoreRecents = [(TCSSuggestions *)self _destinationsFromCoreRecents];
+  [v3 unionSet:_destinationsFromCoreRecents];
 
   [(TCSSuggestions *)self _updateGenerationTimestamps];
   v7 = [v3 count];
@@ -786,38 +786,38 @@ void __41__TCSSuggestions__generateNewSuggestions__block_invoke(uint64_t a1)
 
 - (void)_updateGenerationTimestamps
 {
-  v8 = [MEMORY[0x277CBEAA8] date];
-  v3 = [(TCSSuggestions *)self defaults];
-  v4 = [v3 objectForKey:@"SuggestionsFirstGenerated"];
+  date = [MEMORY[0x277CBEAA8] date];
+  defaults = [(TCSSuggestions *)self defaults];
+  v4 = [defaults objectForKey:@"SuggestionsFirstGenerated"];
 
   if (!v4)
   {
-    v5 = [(TCSSuggestions *)self defaults];
-    [v5 setObject:v8 forKey:@"SuggestionsFirstGenerated"];
+    defaults2 = [(TCSSuggestions *)self defaults];
+    [defaults2 setObject:date forKey:@"SuggestionsFirstGenerated"];
   }
 
-  v6 = [(TCSSuggestions *)self defaults];
-  [v6 setObject:v8 forKey:@"SuggestionsPreviouslyGenerated"];
+  defaults3 = [(TCSSuggestions *)self defaults];
+  [defaults3 setObject:date forKey:@"SuggestionsPreviouslyGenerated"];
 
-  v7 = [v8 dateByAddingTimeInterval:86400.0];
+  v7 = [date dateByAddingTimeInterval:86400.0];
   [(TCSSuggestions *)self _startGenerationTimerWithFireDate:v7];
 }
 
 - (void)_saveSuggestions
 {
   [(TCSSuggestions *)self setShouldObserveSuggestionsDefaultChanges:0];
-  v3 = [(TCSSuggestions *)self defaults];
-  v4 = v3;
+  defaults = [(TCSSuggestions *)self defaults];
+  v4 = defaults;
   suggestions = self->_suggestions;
   if (suggestions)
   {
-    [v3 setObject:suggestions forKey:@"Suggestions"];
+    [defaults setObject:suggestions forKey:@"Suggestions"];
   }
 
   else
   {
-    v6 = [MEMORY[0x277CBEAC0] dictionary];
-    [v4 setObject:v6 forKey:@"Suggestions"];
+    dictionary = [MEMORY[0x277CBEAC0] dictionary];
+    [v4 setObject:dictionary forKey:@"Suggestions"];
   }
 
   [(TCSSuggestions *)self setShouldObserveSuggestionsDefaultChanges:1];
@@ -843,14 +843,14 @@ void __41__TCSSuggestions__generateNewSuggestions__block_invoke(uint64_t a1)
   else
   {
     objc_initWeak(&location, self);
-    v7 = [*MEMORY[0x277D2BA68] UTF8String];
+    uTF8String = [*MEMORY[0x277D2BA68] UTF8String];
     v8 = MEMORY[0x277D85CD0];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __34__TCSSuggestions__syncSuggestions__block_invoke;
     v10[3] = &unk_279DC1A78;
     objc_copyWeak(&v11, &location);
-    notify_register_dispatch(v7, &self->_npsInitialSyncToken, MEMORY[0x277D85CD0], v10);
+    notify_register_dispatch(uTF8String, &self->_npsInitialSyncToken, MEMORY[0x277D85CD0], v10);
 
     objc_destroyWeak(&v11);
     objc_destroyWeak(&location);
@@ -871,16 +871,16 @@ void __34__TCSSuggestions__syncSuggestions__block_invoke(uint64_t a1, int a2)
   }
 }
 
-- (void)_addSuggestedDestination:(id)a3 withTimestamp:(id)a4
+- (void)_addSuggestedDestination:(id)destination withTimestamp:(id)timestamp
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
-  v8 = [(TCSSuggestions *)self suggestions];
+  timestampCopy = timestamp;
+  destinationCopy = destination;
+  suggestions = [(TCSSuggestions *)self suggestions];
   v12 = @"Added";
-  v13[0] = v6;
+  v13[0] = timestampCopy;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:&v12 count:1];
-  [v8 setObject:v9 forKey:v7];
+  [suggestions setObject:v9 forKey:destinationCopy];
 
   [(CNCoalescingTimer *)self->_suggestionsSaveTimer handleEvent];
   suggestedDestinations = self->_suggestedDestinations;
@@ -890,21 +890,21 @@ void __34__TCSSuggestions__syncSuggestions__block_invoke(uint64_t a1, int a2)
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_performHousekeepingOnSuggestions:(id)a3
+- (id)_performHousekeepingOnSuggestions:(id)suggestions
 {
-  v4 = a3;
-  v5 = [v4 mutableCopy];
-  v6 = [MEMORY[0x277CBEAA8] date];
+  suggestionsCopy = suggestions;
+  v5 = [suggestionsCopy mutableCopy];
+  date = [MEMORY[0x277CBEAA8] date];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __52__TCSSuggestions__performHousekeepingOnSuggestions___block_invoke;
   v12[3] = &unk_279DC1AA0;
-  v13 = v6;
-  v14 = self;
+  v13 = date;
+  selfCopy = self;
   v7 = v5;
   v15 = v7;
-  v8 = v6;
-  [v4 enumerateKeysAndObjectsUsingBlock:v12];
+  v8 = date;
+  [suggestionsCopy enumerateKeysAndObjectsUsingBlock:v12];
 
   v9 = v15;
   v10 = v7;
@@ -980,8 +980,8 @@ LABEL_13:
   v42 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v6 = [v5 entries];
-  v7 = [v6 countByEnumeratingWithState:&v39 objects:v48 count:16];
+  entries = [v5 entries];
+  v7 = [entries countByEnumeratingWithState:&v39 objects:v48 count:16];
   if (v7)
   {
     v8 = v7;
@@ -992,20 +992,20 @@ LABEL_13:
       {
         if (*v40 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(entries);
         }
 
-        v11 = [*(*(&v39 + 1) + 8 * i) contactProperty];
-        v12 = [v11 contact];
+        contactProperty = [*(*(&v39 + 1) + 8 * i) contactProperty];
+        contact = [contactProperty contact];
 
-        if (v12)
+        if (contact)
         {
-          v13 = [TCSContacts canonicalDestinationsForContact:v12];
+          v13 = [TCSContacts canonicalDestinationsForContact:contact];
           [v2 addObjectsFromArray:v13];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v39 objects:v48 count:16];
+      v8 = [entries countByEnumeratingWithState:&v39 objects:v48 count:16];
     }
 
     while (v8);
@@ -1091,20 +1091,20 @@ LABEL_13:
   v3 = [MEMORY[0x277CBEB58] set];
   v4 = objc_opt_new();
   v5 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:-2419200.0];
-  v6 = [(TCSSuggestions *)self defaults];
-  v7 = [v6 objectForKey:@"SuggestionsPreviouslyGenerated"];
+  defaults = [(TCSSuggestions *)self defaults];
+  v7 = [defaults objectForKey:@"SuggestionsPreviouslyGenerated"];
   v8 = v7;
   if (v7)
   {
-    v9 = v7;
+    distantPast = v7;
   }
 
   else
   {
-    v9 = [MEMORY[0x277CBEAA8] distantPast];
+    distantPast = [MEMORY[0x277CBEAA8] distantPast];
   }
 
-  v10 = v9;
+  v10 = distantPast;
 
   v44 = v10;
   v45 = v5;
@@ -1137,8 +1137,8 @@ LABEL_13:
         v54 = 0u;
         v55 = 0u;
         v56 = 0u;
-        v16 = [v15 remoteParticipantHandles];
-        v17 = [v16 countByEnumeratingWithState:&v53 objects:v66 count:16];
+        remoteParticipantHandles = [v15 remoteParticipantHandles];
+        v17 = [remoteParticipantHandles countByEnumeratingWithState:&v53 objects:v66 count:16];
         if (v17)
         {
           v18 = v17;
@@ -1149,19 +1149,19 @@ LABEL_13:
             {
               if (*v54 != v19)
               {
-                objc_enumerationMutation(v16);
+                objc_enumerationMutation(remoteParticipantHandles);
               }
 
               v21 = *(*(&v53 + 1) + 8 * j);
               if ([v21 type] == 2 || objc_msgSend(v21, "type") == 3)
               {
-                v22 = [v21 value];
-                v23 = [TCSContacts _canonicalDestinationForString:v22];
+                value = [v21 value];
+                v23 = [TCSContacts _canonicalDestinationForString:value];
                 [v3 addObject:v23];
               }
             }
 
-            v18 = [v16 countByEnumeratingWithState:&v53 objects:v66 count:16];
+            v18 = [remoteParticipantHandles countByEnumeratingWithState:&v53 objects:v66 count:16];
           }
 
           while (v18);
@@ -1249,7 +1249,7 @@ LABEL_13:
   v72[2] = *MEMORY[0x277D85DE8];
   dispatch_assert_queue_V2(self->_generationQueue);
   v53 = [MEMORY[0x277CBEB58] set];
-  v3 = [MEMORY[0x277D00F28] defaultInstance];
+  defaultInstance = [MEMORY[0x277D00F28] defaultInstance];
   v4 = objc_opt_new();
   v5 = MEMORY[0x277D00F30];
   v6 = *MEMORY[0x277D00EF8];
@@ -1267,23 +1267,23 @@ LABEL_13:
   v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v71 count:2];
   [v4 setDomains:v12];
 
-  v13 = [MEMORY[0x277D00F38] frecencyComparator];
-  [v4 setComparator:v13];
+  frecencyComparator = [MEMORY[0x277D00F38] frecencyComparator];
+  [v4 setComparator:frecencyComparator];
 
-  v14 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v15 = dispatch_semaphore_create(0);
   coreRecentsQueue = self->_coreRecentsQueue;
   v62[0] = MEMORY[0x277D85DD0];
   v62[1] = 3221225472;
   v62[2] = __46__TCSSuggestions__destinationsFromCoreRecents__block_invoke;
   v62[3] = &unk_279DC1AC8;
-  v17 = v14;
+  v17 = array;
   v63 = v17;
   v18 = v15;
   v64 = v18;
   v50 = v4;
-  v51 = v3;
-  [v3 performRecentsSearch:v4 queue:coreRecentsQueue completion:v62];
+  v51 = defaultInstance;
+  [defaultInstance performRecentsSearch:v4 queue:coreRecentsQueue completion:v62];
   v49 = v18;
   dispatch_semaphore_wait(v18, 0xFFFFFFFFFFFFFFFFLL);
   v58 = 0u;
@@ -1306,15 +1306,15 @@ LABEL_13:
         }
 
         v23 = *(*(&v58 + 1) + 8 * i);
-        v24 = [v23 kind];
-        if ([v7 isEqualToString:v24])
+        kind = [v23 kind];
+        if ([v7 isEqualToString:kind])
         {
         }
 
         else
         {
-          v25 = [v23 kind];
-          v26 = [v8 isEqualToString:v25];
+          kind2 = [v23 kind];
+          v26 = [v8 isEqualToString:kind2];
 
           if (!v26)
           {
@@ -1322,8 +1322,8 @@ LABEL_13:
           }
         }
 
-        v27 = [v23 address];
-        v28 = [TCSContacts _canonicalDestinationForString:v27];
+        address = [v23 address];
+        v28 = [TCSContacts _canonicalDestinationForString:address];
         [v53 addObject:v28];
       }
 
@@ -1449,21 +1449,21 @@ LABEL_3:
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_performIDQueryForSuggestions:(id)a3
+- (void)_performIDQueryForSuggestions:(id)suggestions
 {
   v35 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  suggestionsCopy = suggestions;
   [(IDSBatchIDQueryController *)self->_queryController invalidate];
-  v5 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   suggestedDestinationToStatus = self->_suggestedDestinationToStatus;
-  self->_suggestedDestinationToStatus = v5;
+  self->_suggestedDestinationToStatus = dictionary;
 
-  v7 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v8 = v4;
+  v8 = suggestionsCopy;
   v9 = [v8 countByEnumeratingWithState:&v26 objects:v34 count:16];
   if (v9)
   {
@@ -1480,7 +1480,7 @@ LABEL_3:
         }
 
         v13 = [TCSContacts _canonicalDestinationForString:*(*(&v26 + 1) + 8 * v12), v26];
-        [v7 addObject:v13];
+        [array addObject:v13];
         [(NSMutableDictionary *)self->_suggestedDestinationToStatus setObject:&unk_287F26650 forKeyedSubscript:v13];
 
         ++v12;
@@ -1498,8 +1498,8 @@ LABEL_3:
   queryController = self->_queryController;
   self->_queryController = v15;
 
-  [(IDSBatchIDQueryController *)self->_queryController setDestinations:v7];
-  v17 = [v7 count];
+  [(IDSBatchIDQueryController *)self->_queryController setDestinations:array];
+  v17 = [array count];
   _TCSInitializeLogging();
   v18 = TCSLogDefault;
   if (os_log_type_enabled(TCSLogDefault, OS_LOG_TYPE_DEFAULT))
@@ -1567,7 +1567,7 @@ LABEL_3:
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_deviceDidPair:(id)a3
+- (void)_deviceDidPair:(id)pair
 {
   _TCSInitializeLogging();
   v4 = TCSLogDefault;

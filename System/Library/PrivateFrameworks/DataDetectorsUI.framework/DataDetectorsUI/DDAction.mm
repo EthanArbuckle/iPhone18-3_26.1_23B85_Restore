@@ -1,15 +1,15 @@
 @interface DDAction
-+ (id)actionWithURL:(id)a3 result:(__DDResult *)a4 context:(id)a5;
-+ (id)actionsWithURL:(id)a3 result:(__DDResult *)a4 context:(id)a5;
++ (id)actionWithURL:(id)l result:(__DDResult *)result context:(id)context;
++ (id)actionsWithURL:(id)l result:(__DDResult *)result context:(id)context;
 + (id)clientActionsDelegate;
-+ (id)contextByAddingValue:(id)a3 toKey:(id)a4 inContext:(id)a5;
-+ (id)defaultActionWithURL:(id)a3 result:(__DDResult *)a4 context:(id)a5;
-+ (id)encodableContextWithContext:(id)a3;
-+ (id)patchedSchemeForScheme:(id)a3;
-+ (void)setClientActionsDelegate:(id)a3;
++ (id)contextByAddingValue:(id)value toKey:(id)key inContext:(id)context;
++ (id)defaultActionWithURL:(id)l result:(__DDResult *)result context:(id)context;
++ (id)encodableContextWithContext:(id)context;
++ (id)patchedSchemeForScheme:(id)scheme;
++ (void)setClientActionsDelegate:(id)delegate;
 - (BOOL)ambiguousIcon;
-- (DDAction)initWithCoder:(id)a3;
-- (DDAction)initWithURL:(id)a3 result:(__DDResult *)a4 context:(id)a5;
+- (DDAction)initWithCoder:(id)coder;
+- (DDAction)initWithURL:(id)l result:(__DDResult *)result context:(id)context;
 - (DDActionDelegate)delegate;
 - (NSArray)associatedVisualResults;
 - (UIImage)compactIcon;
@@ -17,55 +17,55 @@
 - (UIView)fallBackView;
 - (__CFArray)associatedResults;
 - (__DDResult)coalescedResult;
-- (id)_iconFromName:(id)a3;
+- (id)_iconFromName:(id)name;
 - (id)description;
 - (id)feedbackIdentifier;
 - (id)generateIdentifier;
 - (id)localizedName;
-- (id)localizedSubItemName:(BOOL)a3;
+- (id)localizedSubItemName:(BOOL)name;
 - (id)variantIconName;
 - (uint64_t)calloutFlavor;
-- (void)_openURL:(id)a3 fromView:(id)a4 options:(id)a5;
-- (void)_openURL:(id)a3 options:(id)a4 fallbackURL:(id)a5;
+- (void)_openURL:(id)l fromView:(id)view options:(id)options;
+- (void)_openURL:(id)l options:(id)options fallbackURL:(id)rL;
 - (void)addToRecents;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)invalidate;
 - (void)localizedName;
-- (void)performFromView:(id)a3;
-- (void)prepareViewControllerForActionController:(id)a3;
-- (void)setupPopoverPresentationController:(id)a3 view:(id)a4;
-- (void)updateSourceRect:(CGRect)a3;
+- (void)performFromView:(id)view;
+- (void)prepareViewControllerForActionController:(id)controller;
+- (void)setupPopoverPresentationController:(id)controller view:(id)view;
+- (void)updateSourceRect:(CGRect)rect;
 @end
 
 @implementation DDAction
 
-+ (void)setClientActionsDelegate:(id)a3
++ (void)setClientActionsDelegate:(id)delegate
 {
-  obj = a1;
-  v4 = a3;
+  obj = self;
+  delegateCopy = delegate;
   objc_sync_enter(obj);
-  objc_storeWeak(&_clientActionsDelegate, v4);
+  objc_storeWeak(&_clientActionsDelegate, delegateCopy);
 
   objc_sync_exit(obj);
 }
 
 + (id)clientActionsDelegate
 {
-  v2 = a1;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   WeakRetained = objc_loadWeakRetained(&_clientActionsDelegate);
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return WeakRetained;
 }
 
-+ (id)patchedSchemeForScheme:(id)a3
++ (id)patchedSchemeForScheme:(id)scheme
 {
-  v4 = a3;
-  if (v4 && ([a1 matchingSchemes], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "containsObject:", v4), v5, v6))
+  schemeCopy = scheme;
+  if (schemeCopy && ([self matchingSchemes], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "containsObject:", schemeCopy), v5, v6))
   {
-    v7 = v4;
+    v7 = schemeCopy;
   }
 
   else
@@ -76,24 +76,24 @@
   return v7;
 }
 
-- (DDAction)initWithURL:(id)a3 result:(__DDResult *)a4 context:(id)a5
+- (DDAction)initWithURL:(id)l result:(__DDResult *)result context:(id)context
 {
-  v9 = a3;
-  v10 = a5;
+  lCopy = l;
+  contextCopy = context;
   v19.receiver = self;
   v19.super_class = DDAction;
   v11 = [(DDAction *)&v19 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_url, a3);
-    objc_storeStrong(&v12->_context, a5);
-    if (a4)
+    objc_storeStrong(&v11->_url, l);
+    objc_storeStrong(&v12->_context, context);
+    if (result)
     {
-      v13 = DDCreateUpdatedResultWithContext(a4, v10);
+      v13 = DDCreateUpdatedResultWithContext(result, contextCopy);
       if (!v13)
       {
-        v13 = CFRetain(a4);
+        v13 = CFRetain(result);
       }
     }
 
@@ -103,11 +103,11 @@
     }
 
     v12->_result = v13;
-    v14 = [v10 objectForKeyedSubscript:@"Contact"];
+    v14 = [contextCopy objectForKeyedSubscript:@"Contact"];
     contact = v12->_contact;
     v12->_contact = v14;
 
-    v16 = [v10 objectForKeyedSubscript:@"ICS"];
+    v16 = [contextCopy objectForKeyedSubscript:@"ICS"];
     ics = v12->_ics;
     v12->_ics = v16;
 
@@ -117,31 +117,31 @@
   return v12;
 }
 
-+ (id)contextByAddingValue:(id)a3 toKey:(id)a4 inContext:(id)a5
++ (id)contextByAddingValue:(id)value toKey:(id)key inContext:(id)context
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v9)
+  valueCopy = value;
+  keyCopy = key;
+  contextCopy = context;
+  if (contextCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v10 = v9;
+      v10 = contextCopy;
     }
 
     else
     {
-      v10 = [v9 mutableCopy];
+      v10 = [contextCopy mutableCopy];
     }
 
     v11 = v10;
-    [v10 setObject:v7 forKeyedSubscript:v8];
+    [v10 setObject:valueCopy forKeyedSubscript:keyCopy];
   }
 
-  else if (v7)
+  else if (valueCopy)
   {
-    v11 = [objc_alloc(MEMORY[0x277CBEB38]) initWithObjectsAndKeys:{v7, v8, 0}];
+    v11 = [objc_alloc(MEMORY[0x277CBEB38]) initWithObjectsAndKeys:{valueCopy, keyCopy, 0}];
   }
 
   else
@@ -152,10 +152,10 @@
   return v11;
 }
 
-+ (id)encodableContextWithContext:(id)a3
++ (id)encodableContextWithContext:(id)context
 {
   v19[14] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  contextCopy = context;
   v4 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v19[0] = @"EventTitle";
   v19[1] = @"SelectedText";
@@ -191,7 +191,7 @@
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
-        v11 = [v3 objectForKeyedSubscript:{v10, v14}];
+        v11 = [contextCopy objectForKeyedSubscript:{v10, v14}];
         if (v11)
         {
           [v4 setObject:v11 forKeyedSubscript:v10];
@@ -209,64 +209,64 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v12 = a3;
+  coderCopy = coder;
   v4 = [DDAction encodableContextWithContext:self->_context];
-  [v12 encodeObject:v4 forKey:@"context"];
+  [coderCopy encodeObject:v4 forKey:@"context"];
 
   if (self->_result)
   {
     v5 = [MEMORY[0x277D04218] resultFromCoreResult:?];
-    [v12 encodeObject:v5 forKey:@"result"];
+    [coderCopy encodeObject:v5 forKey:@"result"];
   }
 
   if ([(DDAction *)self coalescedResult])
   {
     v6 = [MEMORY[0x277D04218] resultFromCoreResult:{-[DDAction coalescedResult](self, "coalescedResult")}];
-    [v12 encodeObject:v6 forKey:@"coalescedResult"];
+    [coderCopy encodeObject:v6 forKey:@"coalescedResult"];
   }
 
   else if ([(DDAction *)self associatedResults])
   {
     v10 = [MEMORY[0x277D04218] resultsFromCoreResults:{-[DDAction associatedResults](self, "associatedResults")}];
-    [v12 encodeObject:v10 forKey:@"associatedResults"];
+    [coderCopy encodeObject:v10 forKey:@"associatedResults"];
 
     associatedVisualResults = self->_associatedVisualResults;
     if (associatedVisualResults)
     {
-      [v12 encodeObject:associatedVisualResults forKey:@"associatedVisualResults"];
+      [coderCopy encodeObject:associatedVisualResults forKey:@"associatedVisualResults"];
     }
   }
 
   contact = self->_contact;
   if (contact)
   {
-    [v12 encodeObject:contact forKey:@"contact"];
+    [coderCopy encodeObject:contact forKey:@"contact"];
   }
 
   ics = self->_ics;
-  v9 = v12;
+  v9 = coderCopy;
   if (ics)
   {
-    [v12 encodeObject:ics forKey:@"event"];
-    v9 = v12;
+    [coderCopy encodeObject:ics forKey:@"event"];
+    v9 = coderCopy;
   }
 
   [v9 encodeObject:self->_url forKey:@"url"];
-  [v12 encodeBool:self->_isDefaultAction forKey:@"isDefault"];
-  [v12 encodeInteger:self->_hostApplication forKey:@"hostApplication"];
+  [coderCopy encodeBool:self->_isDefaultAction forKey:@"isDefault"];
+  [coderCopy encodeInteger:self->_hostApplication forKey:@"hostApplication"];
 }
 
-- (DDAction)initWithCoder:(id)a3
+- (DDAction)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v42.receiver = self;
   v42.super_class = DDAction;
   v5 = [(DDAction *)&v42 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"url"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"url"];
     url = v5->_url;
     v5->_url = v6;
 
@@ -285,47 +285,47 @@
     v14 = objc_opt_class();
     v15 = objc_opt_class();
     v16 = [v40 setWithObjects:{v39, v38, v37, v36, v9, v10, v11, v12, v13, v14, v15, objc_opt_class(), 0}];
-    v17 = [v4 decodeObjectOfClasses:v16 forKey:@"context"];
+    v17 = [coderCopy decodeObjectOfClasses:v16 forKey:@"context"];
     v18 = [v41 initWithDictionary:v17];
     context = v5->_context;
     v5->_context = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"contact"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"contact"];
     contact = v5->_contact;
     v5->_contact = v20;
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"event"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"event"];
     ics = v5->_ics;
     v5->_ics = v22;
 
-    if ([v4 containsValueForKey:@"result"])
+    if ([coderCopy containsValueForKey:@"result"])
     {
-      v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"result"];
+      v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"result"];
       v5->_result = CFRetain([v24 coreResult]);
     }
 
-    if ([v4 containsValueForKey:@"coalescedResult"])
+    if ([coderCopy containsValueForKey:@"coalescedResult"])
     {
-      v25 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"coalescedResult"];
+      v25 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"coalescedResult"];
       v5->_coalescedResult = CFRetain([v25 coreResult]);
 
       v5->_cachedCoalescedResult = 1;
     }
 
-    if ([v4 containsValueForKey:@"associatedResults"])
+    if ([coderCopy containsValueForKey:@"associatedResults"])
     {
       v26 = MEMORY[0x277CBEB98];
       v27 = objc_opt_class();
       v28 = [v26 setWithObjects:{v27, objc_opt_class(), 0}];
-      v29 = [v4 decodeObjectOfClasses:v28 forKey:@"associatedResults"];
+      v29 = [coderCopy decodeObjectOfClasses:v28 forKey:@"associatedResults"];
 
       v5->_associatedResults = copyCoreResultsArray(v29);
-      if ([v4 containsValueForKey:@"associatedVisualResults"])
+      if ([coderCopy containsValueForKey:@"associatedVisualResults"])
       {
         v30 = MEMORY[0x277CBEB98];
         v31 = objc_opt_class();
         v32 = [v30 setWithObjects:{v31, objc_opt_class(), 0}];
-        v33 = [v4 decodeObjectOfClasses:v32 forKey:@"associatedVisualResults"];
+        v33 = [coderCopy decodeObjectOfClasses:v32 forKey:@"associatedVisualResults"];
         associatedVisualResults = v5->_associatedVisualResults;
         v5->_associatedVisualResults = v33;
       }
@@ -333,35 +333,35 @@
       v5->_cachedAssociatedResults = 1;
     }
 
-    v5->_isDefaultAction = [v4 decodeBoolForKey:@"isDefault"];
-    v5->_hostApplication = [v4 decodeIntegerForKey:@"hostApplication"];
+    v5->_isDefaultAction = [coderCopy decodeBoolForKey:@"isDefault"];
+    v5->_hostApplication = [coderCopy decodeIntegerForKey:@"hostApplication"];
   }
 
   return v5;
 }
 
-+ (id)actionWithURL:(id)a3 result:(__DDResult *)a4 context:(id)a5
++ (id)actionWithURL:(id)l result:(__DDResult *)result context:(id)context
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [[a1 alloc] initWithURL:v9 result:a4 context:v8];
+  contextCopy = context;
+  lCopy = l;
+  v10 = [[self alloc] initWithURL:lCopy result:result context:contextCopy];
 
   return v10;
 }
 
-+ (id)actionsWithURL:(id)a3 result:(__DDResult *)a4 context:(id)a5
++ (id)actionsWithURL:(id)l result:(__DDResult *)result context:(id)context
 {
   v22 = *MEMORY[0x277D85DE8];
-  v8 = a5;
-  v9 = a3;
-  v10 = [[a1 alloc] initWithURL:v9 result:a4 context:v8];
+  contextCopy = context;
+  lCopy = l;
+  v10 = [[self alloc] initWithURL:lCopy result:result context:contextCopy];
 
-  v11 = [v10 companionAction];
-  v12 = v11;
-  if (v11)
+  companionAction = [v10 companionAction];
+  v12 = companionAction;
+  if (companionAction)
   {
     v20 = v10;
-    v21 = v11;
+    v21 = companionAction;
     v13 = MEMORY[0x277CBEA60];
     v14 = &v20;
     v15 = 2;
@@ -382,22 +382,22 @@
   return v16;
 }
 
-+ (id)defaultActionWithURL:(id)a3 result:(__DDResult *)a4 context:(id)a5
++ (id)defaultActionWithURL:(id)l result:(__DDResult *)result context:(id)context
 {
-  v8 = a3;
-  v9 = a5;
-  if ([a1 isAvailable])
+  lCopy = l;
+  contextCopy = context;
+  if ([self isAvailable])
   {
-    v10 = [a1 actionWithURL:v8 result:a4 context:v9];
-    v11 = [v10 defaultAction];
+    v10 = [self actionWithURL:lCopy result:result context:contextCopy];
+    defaultAction = [v10 defaultAction];
   }
 
   else
   {
-    v11 = 0;
+    defaultAction = 0;
   }
 
-  return v11;
+  return defaultAction;
 }
 
 - (void)dealloc
@@ -425,23 +425,23 @@
   [(DDAction *)&v6 dealloc];
 }
 
-- (void)updateSourceRect:(CGRect)a3
+- (void)updateSourceRect:(CGRect)rect
 {
-  v6 = [MEMORY[0x277CCAE60] valueWithCGRect:{a3.origin.x, a3.origin.y, a3.size.width, a3.size.height}];
+  v6 = [MEMORY[0x277CCAE60] valueWithCGRect:{rect.origin.x, rect.origin.y, rect.size.width, rect.size.height}];
   v4 = [DDAction contextByAddingValue:v6 toKey:@"SourceRect" inContext:self->_context];
   context = self->_context;
   self->_context = v4;
 }
 
-- (void)prepareViewControllerForActionController:(id)a3
+- (void)prepareViewControllerForActionController:(id)controller
 {
-  v4 = a3;
-  v5 = [(DDAction *)self viewController];
-  [v4 action:self viewControllerReady:v5];
-  [v4 action:self presentationShouldBeModal:1];
+  controllerCopy = controller;
+  viewController = [(DDAction *)self viewController];
+  [controllerCopy action:self viewControllerReady:viewController];
+  [controllerCopy action:self presentationShouldBeModal:1];
 }
 
-- (void)performFromView:(id)a3
+- (void)performFromView:(id)view
 {
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
@@ -449,23 +449,23 @@
   }
 }
 
-- (void)_openURL:(id)a3 options:(id)a4 fallbackURL:(id)a5
+- (void)_openURL:(id)l options:(id)options fallbackURL:(id)rL
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  lCopy = l;
+  optionsCopy = options;
+  rLCopy = rL;
   v11 = dispatch_get_global_queue(33, 0);
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __41__DDAction__openURL_options_fallbackURL___block_invoke;
   v15[3] = &unk_278290DF0;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v19 = self;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = lCopy;
+  v17 = optionsCopy;
+  v18 = rLCopy;
+  selfCopy = self;
+  v12 = rLCopy;
+  v13 = optionsCopy;
+  v14 = lCopy;
   dispatch_async(v11, v15);
 }
 
@@ -563,24 +563,24 @@ void __41__DDAction__openURL_options_fallbackURL___block_invoke_4(uint64_t a1, c
   }
 }
 
-- (void)_openURL:(id)a3 fromView:(id)a4 options:(id)a5
+- (void)_openURL:(id)l fromView:(id)view options:(id)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [MEMORY[0x277D75128] sharedApplication];
+  lCopy = l;
+  viewCopy = view;
+  optionsCopy = options;
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __38__DDAction__openURL_fromView_options___block_invoke;
   v15[3] = &unk_278291428;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v19 = self;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  [v11 _openURL:v14 originatingView:v13 options:v12 completionHandler:v15];
+  v16 = lCopy;
+  v17 = viewCopy;
+  v18 = optionsCopy;
+  selfCopy = self;
+  v12 = optionsCopy;
+  v13 = viewCopy;
+  v14 = lCopy;
+  [mEMORY[0x277D75128] _openURL:v14 originatingView:v13 options:v12 completionHandler:v15];
 }
 
 void __38__DDAction__openURL_fromView_options___block_invoke(uint64_t a1, char a2)
@@ -643,37 +643,37 @@ uint64_t __38__DDAction__openURL_fromView_options___block_invoke_2(uint64_t resu
   return &stru_282C1E0A8;
 }
 
-- (id)localizedSubItemName:(BOOL)a3
+- (id)localizedSubItemName:(BOOL)name
 {
-  v3 = a3;
-  v5 = [(DDAction *)self context];
-  v6 = [v5 objectForKeyedSubscript:@"ContactLabel"];
+  nameCopy = name;
+  context = [(DDAction *)self context];
+  v6 = [context objectForKeyedSubscript:@"ContactLabel"];
   if (v6)
   {
     v7 = v6;
-    v8 = [(DDAction *)self context];
-    v9 = [v8 objectForKeyedSubscript:@"ContactValue"];
+    context2 = [(DDAction *)self context];
+    v9 = [context2 objectForKeyedSubscript:@"ContactValue"];
 
     if (v9)
     {
       v10 = MEMORY[0x277CCACA8];
-      if (v3)
+      if (nameCopy)
       {
-        v11 = DDLocalizedString(@"%@: %@");
-        v12 = [(DDAction *)self context];
-        v13 = [v12 objectForKeyedSubscript:@"ContactLabel"];
-        v14 = [(DDAction *)self context];
-        v15 = [v14 objectForKeyedSubscript:@"ContactValue"];
-        v16 = [v10 stringWithFormat:v11, v13, v15];
+        context5 = DDLocalizedString(@"%@: %@");
+        context3 = [(DDAction *)self context];
+        context6 = [context3 objectForKeyedSubscript:@"ContactLabel"];
+        context4 = [(DDAction *)self context];
+        v15 = [context4 objectForKeyedSubscript:@"ContactValue"];
+        localizedName = [v10 stringWithFormat:context5, context6, v15];
       }
 
       else
       {
-        v11 = [(DDAction *)self context];
-        v12 = [v11 objectForKeyedSubscript:@"ContactLabel"];
-        v13 = [(DDAction *)self context];
-        v14 = [v13 objectForKeyedSubscript:@"ContactValue"];
-        v16 = [v10 stringWithFormat:@"%@\n%@", v12, v14];
+        context5 = [(DDAction *)self context];
+        context3 = [context5 objectForKeyedSubscript:@"ContactLabel"];
+        context6 = [(DDAction *)self context];
+        context4 = [context6 objectForKeyedSubscript:@"ContactValue"];
+        localizedName = [v10 stringWithFormat:@"%@\n%@", context3, context4];
       }
 
       goto LABEL_11;
@@ -684,23 +684,23 @@ uint64_t __38__DDAction__openURL_fromView_options___block_invoke_2(uint64_t resu
   {
   }
 
-  v17 = [(DDAction *)self context];
-  v18 = [v17 objectForKeyedSubscript:@"ContactValue"];
+  context7 = [(DDAction *)self context];
+  v18 = [context7 objectForKeyedSubscript:@"ContactValue"];
 
   if (v18)
   {
-    v19 = [(DDAction *)self context];
-    v16 = [v19 objectForKeyedSubscript:@"ContactValue"];
+    context8 = [(DDAction *)self context];
+    localizedName = [context8 objectForKeyedSubscript:@"ContactValue"];
   }
 
   else
   {
-    v16 = [(DDAction *)self localizedName];
+    localizedName = [(DDAction *)self localizedName];
   }
 
 LABEL_11:
 
-  return v16;
+  return localizedName;
 }
 
 - (__DDResult)coalescedResult
@@ -799,9 +799,9 @@ LABEL_5:
   v2 = MEMORY[0x277CCACA8];
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [MEMORY[0x277CCAD78] UUID];
-  v6 = [v5 UUIDString];
-  v7 = [v2 stringWithFormat:@"com.apple.datadetectors.%@.%@", v4, v6];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
+  v7 = [v2 stringWithFormat:@"com.apple.datadetectors.%@.%@", v4, uUIDString];
 
   return v7;
 }
@@ -815,10 +815,10 @@ LABEL_5:
 
 - (BOOL)ambiguousIcon
 {
-  v2 = [(DDAction *)self iconName];
-  if (v2)
+  iconName = [(DDAction *)self iconName];
+  if (iconName)
   {
-    v3 = [&unk_282C2CAD8 containsObject:v2];
+    v3 = [&unk_282C2CAD8 containsObject:iconName];
 
     return v3;
   }
@@ -832,23 +832,23 @@ LABEL_5:
 
 - (id)variantIconName
 {
-  v2 = [(DDAction *)self iconName];
-  v3 = [v2 stringByAppendingString:@".fill"];
+  iconName = [(DDAction *)self iconName];
+  v3 = [iconName stringByAppendingString:@".fill"];
 
   return v3;
 }
 
-- (id)_iconFromName:(id)a3
+- (id)_iconFromName:(id)name
 {
-  v3 = a3;
-  if (v3)
+  nameCopy = name;
+  if (nameCopy)
   {
-    v4 = [MEMORY[0x277D755B8] _systemImageNamed:v3];
+    v4 = [MEMORY[0x277D755B8] _systemImageNamed:nameCopy];
     if (!v4)
     {
       v5 = MEMORY[0x277D755B8];
       v6 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.DataDetectorsUI"];
-      v4 = [v5 imageNamed:v3 inBundle:v6];
+      v4 = [v5 imageNamed:nameCopy inBundle:v6];
     }
   }
 
@@ -862,28 +862,28 @@ LABEL_5:
 
 - (UIImage)icon
 {
-  v3 = [(DDAction *)self iconName];
-  v4 = [(DDAction *)self _iconFromName:v3];
+  iconName = [(DDAction *)self iconName];
+  v4 = [(DDAction *)self _iconFromName:iconName];
 
   return v4;
 }
 
 - (UIImage)compactIcon
 {
-  v3 = [(DDAction *)self variantIconName];
-  v4 = [(DDAction *)self _iconFromName:v3];
+  variantIconName = [(DDAction *)self variantIconName];
+  v4 = [(DDAction *)self _iconFromName:variantIconName];
   v5 = v4;
   if (v4)
   {
-    v6 = v4;
+    icon = v4;
   }
 
   else
   {
-    v6 = [(DDAction *)self icon];
+    icon = [(DDAction *)self icon];
   }
 
-  v7 = v6;
+  v7 = icon;
 
   return v7;
 }
@@ -915,46 +915,46 @@ LABEL_5:
   MEMORY[0x2821F96F8]();
 }
 
-- (void)setupPopoverPresentationController:(id)a3 view:(id)a4
+- (void)setupPopoverPresentationController:(id)controller view:(id)view
 {
-  v16 = a3;
-  v6 = a4;
+  controllerCopy = controller;
+  viewCopy = view;
   v7 = [(NSDictionary *)self->_context objectForKeyedSubscript:@"SourceRect"];
-  v8 = [v6 window];
+  window = [viewCopy window];
 
-  if (!v8)
+  if (!window)
   {
-    v10 = [(DDAction *)self fallBackView];
+    fallBackView = [(DDAction *)self fallBackView];
     goto LABEL_15;
   }
 
-  v9 = v6;
-  v10 = v9;
+  v9 = viewCopy;
+  fallBackView = v9;
   if (v9)
   {
     v11 = v9;
     while (![v11 isHidden])
     {
-      v12 = [v11 superview];
+      superview = [v11 superview];
 
-      v11 = v12;
-      if (!v12)
+      v11 = superview;
+      if (!superview)
       {
         goto LABEL_6;
       }
     }
 
-    v14 = [(DDAction *)self fallBackView];
+    fallBackView2 = [(DDAction *)self fallBackView];
 
-    v6 = v7;
+    viewCopy = v7;
     v7 = v11;
-    v10 = v14;
+    fallBackView = fallBackView2;
 LABEL_15:
 
     v7 = 0;
-    v15 = [v10 window];
+    window2 = [fallBackView window];
 
-    if (v15)
+    if (window2)
     {
       goto LABEL_7;
     }
@@ -963,19 +963,19 @@ LABEL_15:
   }
 
 LABEL_6:
-  v13 = [v10 window];
+  window3 = [fallBackView window];
 
-  if (v13)
+  if (window3)
   {
     goto LABEL_7;
   }
 
 LABEL_16:
 
-  v10 = 0;
+  fallBackView = 0;
 LABEL_7:
-  [v16 setSourceView:v10];
-  [v16 _setCentersPopoverIfSourceViewNotSet:1];
+  [controllerCopy setSourceView:fallBackView];
+  [controllerCopy _setCentersPopoverIfSourceViewNotSet:1];
   if (v7)
   {
     [v7 CGRectValue];
@@ -983,10 +983,10 @@ LABEL_7:
 
   else
   {
-    [v10 bounds];
+    [fallBackView bounds];
   }
 
-  [v16 setSourceRect:?];
+  [controllerCopy setSourceRect:?];
 }
 
 - (DDActionDelegate)delegate
@@ -1008,9 +1008,9 @@ LABEL_7:
   if (result)
   {
     v1 = [*(result + 56) objectForKeyedSubscript:@"kDDContextNoRoomForSubtitlesKey"];
-    v2 = [v1 BOOLValue];
+    bOOLValue = [v1 BOOLValue];
 
-    return v2;
+    return bOOLValue;
   }
 
   return result;

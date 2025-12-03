@@ -1,36 +1,36 @@
 @interface NTKGalleonCompassLayeredRingView
-- (NTKGalleonCompassLayeredRingView)initWithDevice:(id)a3;
-- (double)_incomingAlphaForFraction:(double)result withAnimationStyle:(unint64_t)a4;
-- (double)_outgoingAlphaForFraction:(double)a3 withAnimationStyle:(unint64_t)a4;
-- (double)_ringScaleFactorForBounceFraction:(double)a3;
+- (NTKGalleonCompassLayeredRingView)initWithDevice:(id)device;
+- (double)_incomingAlphaForFraction:(double)result withAnimationStyle:(unint64_t)style;
+- (double)_outgoingAlphaForFraction:(double)fraction withAnimationStyle:(unint64_t)style;
+- (double)_ringScaleFactorForBounceFraction:(double)fraction;
 - (id)_generatePrerenderedDial;
-- (id)_modeViewForMode:(unint64_t)a3;
-- (void)_applyPalette:(id)a3 toDial:(unint64_t)a4;
-- (void)_applyPaletteToDegreeDial:(id)a3;
-- (void)_applyPaletteToHourDial:(id)a3;
-- (void)_applyPaletteToMinuteDial:(id)a3;
-- (void)_setDegreePrerenderedMode:(BOOL)a3;
-- (void)_setDropShadowActive:(BOOL)a3;
-- (void)_updateDropShadowForPalette:(id)a3;
+- (id)_modeViewForMode:(unint64_t)mode;
+- (void)_applyPalette:(id)palette toDial:(unint64_t)dial;
+- (void)_applyPaletteToDegreeDial:(id)dial;
+- (void)_applyPaletteToHourDial:(id)dial;
+- (void)_applyPaletteToMinuteDial:(id)dial;
+- (void)_setDegreePrerenderedMode:(BOOL)mode;
+- (void)_setDropShadowActive:(BOOL)active;
+- (void)_updateDropShadowForPalette:(id)palette;
 - (void)_updateRingRotation;
-- (void)applyGPSRingEnableFraction:(double)a3;
-- (void)applyGPSRingEnableFraction:(double)a3 forMode:(unint64_t)a4;
-- (void)applyRingModeTransitionFraction:(double)a3 fromMode:(unint64_t)a4 toMode:(unint64_t)a5 withAnimationStyle:(unint64_t)a6;
-- (void)galleon_setProgress:(double)a3;
-- (void)setGPSRingDiameter:(double)a3;
-- (void)setGPSRingEnabled:(BOOL)a3;
-- (void)setHeading:(double)a3;
-- (void)setPalette:(id)a3;
-- (void)setRingMode:(unint64_t)a3;
-- (void)transitionToTritiumWithProgress:(float)a3;
+- (void)applyGPSRingEnableFraction:(double)fraction;
+- (void)applyGPSRingEnableFraction:(double)fraction forMode:(unint64_t)mode;
+- (void)applyRingModeTransitionFraction:(double)fraction fromMode:(unint64_t)mode toMode:(unint64_t)toMode withAnimationStyle:(unint64_t)style;
+- (void)galleon_setProgress:(double)progress;
+- (void)setGPSRingDiameter:(double)diameter;
+- (void)setGPSRingEnabled:(BOOL)enabled;
+- (void)setHeading:(double)heading;
+- (void)setPalette:(id)palette;
+- (void)setRingMode:(unint64_t)mode;
+- (void)transitionToTritiumWithProgress:(float)progress;
 @end
 
 @implementation NTKGalleonCompassLayeredRingView
 
-- (NTKGalleonCompassLayeredRingView)initWithDevice:(id)a3
+- (NTKGalleonCompassLayeredRingView)initWithDevice:(id)device
 {
-  v5 = a3;
-  objc_storeStrong(&self->_device, a3);
+  deviceCopy = device;
+  objc_storeStrong(&self->_device, device);
   v108 = 0.0;
   v106 = 0u;
   v107 = 0u;
@@ -102,22 +102,22 @@
   return v11;
 }
 
-- (void)setGPSRingDiameter:(double)a3
+- (void)setGPSRingDiameter:(double)diameter
 {
   objc_msgSend__setDegreePrerenderedMode_(self, a2, 0, v3);
   v10 = 0;
   memset(v9, 0, sizeof(v9));
   _NTKGalleonLayoutConstants(self->_device, v9);
-  objc_msgSend_setBorderWidth_(self->_ringLayer, v6, v7, v8, *v9 - a3);
+  objc_msgSend_setBorderWidth_(self->_ringLayer, v6, v7, v8, *v9 - diameter);
 }
 
-- (void)setPalette:(id)a3
+- (void)setPalette:(id)palette
 {
-  v37 = a3;
+  paletteCopy = palette;
   objc_msgSend__setDegreePrerenderedMode_(self, v5, 0, v6);
-  objc_storeStrong(&self->_palette, a3);
+  objc_storeStrong(&self->_palette, palette);
   ringLayer = self->_ringLayer;
-  v11 = objc_msgSend_outerRingBackgroundColor(v37, v8, v9, v10);
+  v11 = objc_msgSend_outerRingBackgroundColor(paletteCopy, v8, v9, v10);
   v12 = v11;
   v16 = objc_msgSend_CGColor(v12, v13, v14, v15);
   objc_msgSend_setBorderColor_(ringLayer, v17, v16, v18);
@@ -127,89 +127,89 @@
   objc_msgSend_setBackgroundColor_(v19, v24, v23, v25);
   if (objc_msgSend__compassDialVisible(self, v26, v27, v28))
   {
-    objc_msgSend__applyPaletteToDegreeDial_(self, v29, v37, v31);
+    objc_msgSend__applyPaletteToDegreeDial_(self, v29, paletteCopy, v31);
   }
 
   if (objc_msgSend__hourDialVisible(self, v29, v30, v31))
   {
-    objc_msgSend__applyPaletteToHourDial_(self, v32, v37, v34);
+    objc_msgSend__applyPaletteToHourDial_(self, v32, paletteCopy, v34);
   }
 
   if (objc_msgSend__minuteDialVisible(self, v32, v33, v34))
   {
-    objc_msgSend__applyPaletteToMinuteDial_(self, v35, v37, v36);
+    objc_msgSend__applyPaletteToMinuteDial_(self, v35, paletteCopy, v36);
   }
 }
 
-- (void)_applyPalette:(id)a3 toDial:(unint64_t)a4
+- (void)_applyPalette:(id)palette toDial:(unint64_t)dial
 {
-  v6 = a3;
-  v8 = v6;
-  if (a4 == 2)
+  paletteCopy = palette;
+  v8 = paletteCopy;
+  if (dial == 2)
   {
-    v9 = v6;
-    v6 = objc_msgSend__applyPaletteToDegreeDial_(self, v6, v6, v7);
+    v9 = paletteCopy;
+    paletteCopy = objc_msgSend__applyPaletteToDegreeDial_(self, paletteCopy, paletteCopy, v7);
   }
 
-  else if (a4 == 1)
+  else if (dial == 1)
   {
-    v9 = v6;
-    v6 = objc_msgSend__applyPaletteToMinuteDial_(self, v6, v6, v7);
+    v9 = paletteCopy;
+    paletteCopy = objc_msgSend__applyPaletteToMinuteDial_(self, paletteCopy, paletteCopy, v7);
   }
 
   else
   {
-    if (a4)
+    if (dial)
     {
       goto LABEL_8;
     }
 
-    v9 = v6;
-    v6 = objc_msgSend__applyPaletteToHourDial_(self, v6, v6, v7);
+    v9 = paletteCopy;
+    paletteCopy = objc_msgSend__applyPaletteToHourDial_(self, paletteCopy, paletteCopy, v7);
   }
 
   v8 = v9;
 LABEL_8:
 
-  MEMORY[0x2821F96F8](v6, v8);
+  MEMORY[0x2821F96F8](paletteCopy, v8);
 }
 
-- (void)_applyPaletteToDegreeDial:(id)a3
+- (void)_applyPaletteToDegreeDial:(id)dial
 {
   degreeView = self->_degreeView;
-  v9 = a3;
-  objc_msgSend_galleon_setPalette_(degreeView, v5, v9, v6);
-  objc_msgSend__updateDropShadowForPalette_(self, v7, v9, v8);
+  dialCopy = dial;
+  objc_msgSend_galleon_setPalette_(degreeView, v5, dialCopy, v6);
+  objc_msgSend__updateDropShadowForPalette_(self, v7, dialCopy, v8);
 }
 
-- (void)_applyPaletteToHourDial:(id)a3
+- (void)_applyPaletteToHourDial:(id)dial
 {
   hourView = self->_hourView;
-  v9 = a3;
-  objc_msgSend_galleon_setPalette_(hourView, v5, v9, v6);
-  objc_msgSend__updateDropShadowForPalette_(self, v7, v9, v8);
+  dialCopy = dial;
+  objc_msgSend_galleon_setPalette_(hourView, v5, dialCopy, v6);
+  objc_msgSend__updateDropShadowForPalette_(self, v7, dialCopy, v8);
 }
 
-- (void)_applyPaletteToMinuteDial:(id)a3
+- (void)_applyPaletteToMinuteDial:(id)dial
 {
   minuteView = self->_minuteView;
-  v9 = a3;
-  objc_msgSend_galleon_setPalette_(minuteView, v5, v9, v6);
-  objc_msgSend__updateDropShadowForPalette_(self, v7, v9, v8);
+  dialCopy = dial;
+  objc_msgSend_galleon_setPalette_(minuteView, v5, dialCopy, v6);
+  objc_msgSend__updateDropShadowForPalette_(self, v7, dialCopy, v8);
 }
 
-- (void)_updateDropShadowForPalette:(id)a3
+- (void)_updateDropShadowForPalette:(id)palette
 {
-  v11 = objc_msgSend_hasDropShadow(a3, a2, a3, v3);
+  v11 = objc_msgSend_hasDropShadow(palette, a2, palette, v3);
   v8 = objc_msgSend_BOOLValue(v11, v5, v6, v7);
   objc_msgSend__setDropShadowActive_(self, v9, v8, v10);
 }
 
-- (void)_setDropShadowActive:(BOOL)a3
+- (void)_setDropShadowActive:(BOOL)active
 {
-  if (self->_dropShadowActive != a3)
+  if (self->_dropShadowActive != active)
   {
-    if (a3)
+    if (active)
     {
       v34 = 0;
       v32 = 0u;
@@ -227,22 +227,22 @@ LABEL_8:
 
     else
     {
-      v21 = objc_msgSend_layer(self, a2, a3, v3);
+      v21 = objc_msgSend_layer(self, a2, active, v3);
       objc_msgSend_setShadowOpacity_(v21, v22, v23, v24, 0.0);
 
       v17 = objc_msgSend_layer(self, v25, v26, v27);
       objc_msgSend_setShadowRadius_(v17, v28, v29, v30, 0.0);
     }
 
-    self->_dropShadowActive = a3;
+    self->_dropShadowActive = active;
   }
 }
 
-- (void)setRingMode:(unint64_t)a3
+- (void)setRingMode:(unint64_t)mode
 {
   objc_msgSend__setDegreePrerenderedMode_(self, a2, 0, v3);
-  self->_ringMode = a3;
-  switch(a3)
+  self->_ringMode = mode;
+  switch(mode)
   {
     case 2uLL:
       objc_msgSend_setAlpha_(self->_hourView, v6, v7, v8, 0.0);
@@ -293,11 +293,11 @@ LABEL_8:
   }
 }
 
-- (void)setGPSRingEnabled:(BOOL)a3
+- (void)setGPSRingEnabled:(BOOL)enabled
 {
-  v4 = a3;
+  enabledCopy = enabled;
   objc_msgSend__setDegreePrerenderedMode_(self, a2, 0, v3);
-  if (v4)
+  if (enabledCopy)
   {
     v9 = 1.0;
   }
@@ -312,56 +312,56 @@ LABEL_8:
   objc_msgSend_applyGPSRingEnableFraction_forMode_(self, v10, v11, v12, v9);
 }
 
-- (id)_modeViewForMode:(unint64_t)a3
+- (id)_modeViewForMode:(unint64_t)mode
 {
-  if (a3 > 2)
+  if (mode > 2)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = *(&self->super.super.super.isa + *off_278B9EE38[a3]);
+    v4 = *(&self->super.super.super.isa + *off_278B9EE38[mode]);
   }
 
   return v4;
 }
 
-- (void)applyRingModeTransitionFraction:(double)a3 fromMode:(unint64_t)a4 toMode:(unint64_t)a5 withAnimationStyle:(unint64_t)a6
+- (void)applyRingModeTransitionFraction:(double)fraction fromMode:(unint64_t)mode toMode:(unint64_t)toMode withAnimationStyle:(unint64_t)style
 {
-  v11 = objc_msgSend__modeViewForMode_(self, a2, a4, a5);
-  v14 = objc_msgSend__modeViewForMode_(self, v12, a5, v13);
+  v11 = objc_msgSend__modeViewForMode_(self, a2, mode, toMode);
+  v14 = objc_msgSend__modeViewForMode_(self, v12, toMode, v13);
   objc_msgSend_alpha(v11, v15, v16, v17);
   v19 = v18;
-  objc_msgSend__outgoingAlphaForFraction_withAnimationStyle_(self, v20, a6, v21, a3);
+  objc_msgSend__outgoingAlphaForFraction_withAnimationStyle_(self, v20, style, v21, fraction);
   v23 = v22;
   objc_msgSend_setAlpha_(v11, v24, v25, v26);
   if (v19 == 0.0 && v23 > 0.0)
   {
     objc_msgSend_setHidden_(v11, v27, 0, v29);
-    objc_msgSend__applyPalette_toDial_(self, v30, self->_palette, a4);
+    objc_msgSend__applyPalette_toDial_(self, v30, self->_palette, mode);
   }
 
   objc_msgSend_alpha(v14, v27, v28, v29);
   v32 = v31;
-  objc_msgSend__incomingAlphaForFraction_withAnimationStyle_(self, v33, a6, v34, a3);
+  objc_msgSend__incomingAlphaForFraction_withAnimationStyle_(self, v33, style, v34, fraction);
   v36 = v35;
   objc_msgSend_setAlpha_(v14, v37, v38, v39);
   if (v32 == 0.0 && v36 > 0.0)
   {
     objc_msgSend_setHidden_(v14, v40, 0, v42);
-    objc_msgSend__applyPalette_toDial_(self, v43, self->_palette, a5);
+    objc_msgSend__applyPalette_toDial_(self, v43, self->_palette, toMode);
   }
 
-  if (a6 == 3)
+  if (style == 3)
   {
-    v52 = 1.0 - a3;
-    if (a5 == 2)
+    fractionCopy = 1.0 - fraction;
+    if (toMode == 2)
     {
-      v52 = a3;
+      fractionCopy = fraction;
     }
 
-    objc_msgSend__ringScaleFactorForBounceFraction_(self, v40, v41, v42, v52);
+    objc_msgSend__ringScaleFactorForBounceFraction_(self, v40, v41, v42, fractionCopy);
     if (v55 == 1.0)
     {
       v56 = *(MEMORY[0x277CBF2C0] + 16);
@@ -383,7 +383,7 @@ LABEL_8:
     objc_msgSend_setTransform_(self, v53, &v64, v54, *&v61.a, *&v61.c, *&v61.tx, *&v62.a, *&v62.b, *&v62.c, *&v62.d, *&v62.tx, *&v62.ty);
   }
 
-  else if (a6 == 2)
+  else if (style == 2)
   {
     CLKInterpolateBetweenFloatsClipped();
     v45 = v44;
@@ -430,80 +430,80 @@ LABEL_8:
   }
 }
 
-- (void)applyGPSRingEnableFraction:(double)a3
+- (void)applyGPSRingEnableFraction:(double)fraction
 {
   objc_msgSend__setDegreePrerenderedMode_(self, a2, 0, v3);
   if (objc_msgSend__compassDialVisible(self, v6, v7, v8))
   {
-    objc_msgSend_applyGPSRingEnableFraction_forMode_(self, v9, 2, v11, a3);
+    objc_msgSend_applyGPSRingEnableFraction_forMode_(self, v9, 2, v11, fraction);
   }
 
   if (objc_msgSend__hourDialVisible(self, v9, v10, v11))
   {
-    objc_msgSend_applyGPSRingEnableFraction_forMode_(self, v12, 0, v14, a3);
+    objc_msgSend_applyGPSRingEnableFraction_forMode_(self, v12, 0, v14, fraction);
   }
 
   if (objc_msgSend__minuteDialVisible(self, v12, v13, v14))
   {
 
-    objc_msgSend_applyGPSRingEnableFraction_forMode_(self, v15, 1, v16, a3);
+    objc_msgSend_applyGPSRingEnableFraction_forMode_(self, v15, 1, v16, fraction);
   }
 }
 
-- (void)applyGPSRingEnableFraction:(double)a3 forMode:(unint64_t)a4
+- (void)applyGPSRingEnableFraction:(double)fraction forMode:(unint64_t)mode
 {
   objc_msgSend__setDegreePrerenderedMode_(self, a2, 0, v4);
-  if (a4 <= 2)
+  if (mode <= 2)
   {
-    v11 = *(&self->super.super.super.isa + *off_278B9EE38[a4]);
+    v11 = *(&self->super.super.super.isa + *off_278B9EE38[mode]);
 
-    objc_msgSend_galleon_setProgress_(v11, v8, v9, v10, a3);
+    objc_msgSend_galleon_setProgress_(v11, v8, v9, v10, fraction);
   }
 }
 
-- (double)_ringScaleFactorForBounceFraction:(double)a3
+- (double)_ringScaleFactorForBounceFraction:(double)fraction
 {
-  if (a3 <= 0.85)
+  if (fraction <= 0.85)
   {
-    if (a3 <= 0.6)
+    if (fraction <= 0.6)
     {
-      if (a3 <= 0.0)
+      if (fraction <= 0.0)
       {
         return 1.0;
       }
 
-      objc_msgSend__easeInCurveWithFraction_(self, a2, v3, v4, a3 / 0.6);
+      objc_msgSend__easeInCurveWithFraction_(self, a2, v3, v4, fraction / 0.6);
     }
 
     else
     {
-      objc_msgSend__easeInCurveWithFraction_(self, a2, v3, v4, (a3 + -0.6) * 4.0);
+      objc_msgSend__easeInCurveWithFraction_(self, a2, v3, v4, (fraction + -0.6) * 4.0);
     }
   }
 
   else
   {
-    objc_msgSend__easeInCurveWithFraction_(self, a2, v3, v4, (a3 + -0.85) / 0.15);
+    objc_msgSend__easeInCurveWithFraction_(self, a2, v3, v4, (fraction + -0.85) / 0.15);
   }
 
   CLKInterpolateBetweenFloatsClipped();
   return result;
 }
 
-- (double)_outgoingAlphaForFraction:(double)a3 withAnimationStyle:(unint64_t)a4
+- (double)_outgoingAlphaForFraction:(double)fraction withAnimationStyle:(unint64_t)style
 {
-  if (a4 != 3)
+  if (style != 3)
   {
-    return 1.0 - a3;
+    return 1.0 - fraction;
   }
 
   CLKInterpolateBetweenFloatsClipped();
   return result;
 }
 
-- (double)_incomingAlphaForFraction:(double)result withAnimationStyle:(unint64_t)a4
+- (double)_incomingAlphaForFraction:(double)result withAnimationStyle:(unint64_t)style
 {
-  if (a4 == 3)
+  if (style == 3)
   {
     CLKInterpolateBetweenFloatsClipped();
   }
@@ -511,7 +511,7 @@ LABEL_8:
   return result;
 }
 
-- (void)transitionToTritiumWithProgress:(float)a3
+- (void)transitionToTritiumWithProgress:(float)progress
 {
   objc_msgSend__setDegreePrerenderedMode_(self, a2, 0, v3);
   degreeView = self->_degreeView;
@@ -519,15 +519,15 @@ LABEL_8:
   MEMORY[0x2821F9670](degreeView, sel_setChevronAndLabelOpacity_, v5, v6);
 }
 
-- (void)_setDegreePrerenderedMode:(BOOL)a3
+- (void)_setDegreePrerenderedMode:(BOOL)mode
 {
-  v4 = a3;
+  modeCopy = mode;
   p_degreeRotateImageView = &self->_degreeRotateImageView;
-  v7 = objc_msgSend_superview(self->_degreeRotateImageView, a2, a3, v3);
+  v7 = objc_msgSend_superview(self->_degreeRotateImageView, a2, mode, v3);
 
-  if ((((v7 == 0) ^ v4) & 1) == 0)
+  if ((((v7 == 0) ^ modeCopy) & 1) == 0)
   {
-    if (v4)
+    if (modeCopy)
     {
       if (CFAbsoluteTimeGetCurrent() < self->_dontPrerenderBefore)
       {
@@ -570,7 +570,7 @@ LABEL_8:
     objc_msgSend__updateRingRotation(self, v33, v34, v35);
   }
 
-  if (!v4)
+  if (!modeCopy)
   {
     self->_dontPrerenderBefore = CFAbsoluteTimeGetCurrent() + 0.3;
   }
@@ -591,10 +591,10 @@ LABEL_8:
   return v13;
 }
 
-- (void)setHeading:(double)a3
+- (void)setHeading:(double)heading
 {
   objc_msgSend__setDegreePrerenderedMode_(self, a2, 1, v3);
-  self->_heading = a3;
+  self->_heading = heading;
 
   objc_msgSend__updateRingRotation(self, v6, v7, v8);
 }
@@ -627,11 +627,11 @@ LABEL_8:
   }
 }
 
-- (void)galleon_setProgress:(double)a3
+- (void)galleon_setProgress:(double)progress
 {
   v8 = objc_msgSend_ringMode(self, a2, v3, v4);
 
-  objc_msgSend_applyGPSRingEnableFraction_forMode_(self, v7, v8, v9, a3);
+  objc_msgSend_applyGPSRingEnableFraction_forMode_(self, v7, v8, v9, progress);
 }
 
 @end

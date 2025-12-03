@@ -10,30 +10,30 @@
 {
   v5 = strlen(__s);
 
-  return [a1 appendBytes:__s length:v5];
+  return [self appendBytes:__s length:v5];
 }
 
 - (char)mf_convertNetworkLineEndingsToUnixInRange:()NSDataUtils
 {
-  result = [a1 length];
+  result = [self length];
   if (a4 < 2)
   {
     return result;
   }
 
   v21 = result;
-  v8 = [a1 mutableBytes];
+  mutableBytes = [self mutableBytes];
   v20 = a3;
-  v9 = (v8 + a3);
-  v10 = (v8 + a3 + a4);
+  v9 = (mutableBytes + a3);
+  v10 = (mutableBytes + a3 + a4);
   if (a4 < 1)
   {
-    result = (v8 + a3);
+    result = (mutableBytes + a3);
     goto LABEL_22;
   }
 
-  v11 = (v8 + a3);
-  v12 = (v8 + a3);
+  v11 = (mutableBytes + a3);
+  v12 = (mutableBytes + a3);
   while (1)
   {
     v13 = memchr(v12, 13, v10 - v12 - 1);
@@ -105,7 +105,7 @@ LABEL_22:
   if (v19 != a4)
   {
 
-    return [a1 setLength:&v21[v19 - a4]];
+    return [self setLength:&v21[v19 - a4]];
   }
 
   return result;
@@ -113,9 +113,9 @@ LABEL_22:
 
 - (uint64_t)mf_convertNetworkLineEndingsToUnix
 {
-  v2 = [a1 length];
+  v2 = [self length];
 
-  return [a1 mf_convertNetworkLineEndingsToUnixInRange:{0, v2}];
+  return [self mf_convertNetworkLineEndingsToUnixInRange:{0, v2}];
 }
 
 @end

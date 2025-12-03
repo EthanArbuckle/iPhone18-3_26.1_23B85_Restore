@@ -1,8 +1,8 @@
 @interface CBDeviceSettings
 - (CBDeviceSettings)init;
-- (CBDeviceSettings)initWithXPCObject:(id)a3 error:(id *)a4;
+- (CBDeviceSettings)initWithXPCObject:(id)object error:(id *)error;
 - (id)description;
-- (void)encodeWithXPCObject:(id)a3;
+- (void)encodeWithXPCObject:(id)object;
 @end
 
 @implementation CBDeviceSettings
@@ -22,13 +22,13 @@
   return v3;
 }
 
-- (void)encodeWithXPCObject:(id)a3
+- (void)encodeWithXPCObject:(id)object
 {
-  v4 = a3;
-  v5 = v4;
+  objectCopy = object;
+  v5 = objectCopy;
   if (self->_aclLinkState)
   {
-    xpc_dictionary_set_uint64(v4, "aLS", self->_aclLinkState);
+    xpc_dictionary_set_uint64(objectCopy, "aLS", self->_aclLinkState);
   }
 
   if (self->_aclPriority)
@@ -122,10 +122,10 @@
 
   name = self->_name;
   xdict = v5;
-  v11 = [(NSString *)name UTF8String];
-  if (v11)
+  uTF8String = [(NSString *)name UTF8String];
+  if (uTF8String)
   {
-    xpc_dictionary_set_string(xdict, "nm", v11);
+    xpc_dictionary_set_string(xdict, "nm", uTF8String);
   }
 
   if (self->_placementMode)
@@ -536,27 +536,27 @@ LABEL_40:
   return v3;
 }
 
-- (CBDeviceSettings)initWithXPCObject:(id)a3 error:(id *)a4
+- (CBDeviceSettings)initWithXPCObject:(id)object error:(id *)error
 {
-  v6 = a3;
+  objectCopy = object;
   v7 = [(CBDeviceSettings *)self init];
   if (!v7)
   {
-    if (a4)
+    if (error)
     {
       v40 = [objc_opt_class() description];
-      *a4 = CBErrorF(-6756, "%@ super init failed", v41, v42, v43, v44, v45, v46, v40);
+      *error = CBErrorF(-6756, "%@ super init failed", v41, v42, v43, v44, v45, v46, v40);
     }
 
     goto LABEL_83;
   }
 
-  if (MEMORY[0x1C68DFDD0](v6) != MEMORY[0x1E69E9E80])
+  if (MEMORY[0x1C68DFDD0](objectCopy) != MEMORY[0x1E69E9E80])
   {
-    if (a4)
+    if (error)
     {
       CBErrorF(-6756, "XPC non-dict", v8, v9, v10, v11, v12, v13, v47);
-      *a4 = v38 = 0;
+      *error = v38 = 0;
       goto LABEL_78;
     }
 

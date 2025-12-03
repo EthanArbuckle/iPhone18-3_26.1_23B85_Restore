@@ -1,23 +1,23 @@
 @interface CKSpeakerButton
-+ (id)speakerImageWithEnabledState:(BOOL)a3;
-+ (id)speakerImageWithOrientation:(char)a3 speakerEnabled:(BOOL)a4 shouldShowText:(BOOL)a5;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CKSpeakerButton)initWithFrame:(CGRect)a3;
-- (void)setOrientation:(char)a3;
-- (void)setShouldShowText:(BOOL)a3;
-- (void)setSpeakerEnabled:(BOOL)a3;
-- (void)touchUpInside:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
++ (id)speakerImageWithEnabledState:(BOOL)state;
++ (id)speakerImageWithOrientation:(char)orientation speakerEnabled:(BOOL)enabled shouldShowText:(BOOL)text;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CKSpeakerButton)initWithFrame:(CGRect)frame;
+- (void)setOrientation:(char)orientation;
+- (void)setShouldShowText:(BOOL)text;
+- (void)setSpeakerEnabled:(BOOL)enabled;
+- (void)touchUpInside:(id)inside;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateSpeakerImage;
 @end
 
 @implementation CKSpeakerButton
 
-- (CKSpeakerButton)initWithFrame:(CGRect)a3
+- (CKSpeakerButton)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = CKSpeakerButton;
-  v3 = [(CKSpeakerButton *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CKSpeakerButton *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -29,61 +29,61 @@
   return v4;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   v5.receiver = self;
   v5.super_class = CKSpeakerButton;
-  [(CKSpeakerButton *)&v5 sizeThatFits:a3.width, a3.height];
+  [(CKSpeakerButton *)&v5 sizeThatFits:fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;
 }
 
-- (void)setOrientation:(char)a3
+- (void)setOrientation:(char)orientation
 {
-  if (self->_orientation != a3)
+  if (self->_orientation != orientation)
   {
-    self->_orientation = a3;
+    self->_orientation = orientation;
     [(CKSpeakerButton *)self updateSpeakerImage];
   }
 }
 
-- (void)setSpeakerEnabled:(BOOL)a3
+- (void)setSpeakerEnabled:(BOOL)enabled
 {
-  if (self->_speakerEnabled != a3)
+  if (self->_speakerEnabled != enabled)
   {
-    self->_speakerEnabled = a3;
+    self->_speakerEnabled = enabled;
     [(CKSpeakerButton *)self updateSpeakerImage];
   }
 }
 
-+ (id)speakerImageWithOrientation:(char)a3 speakerEnabled:(BOOL)a4 shouldShowText:(BOOL)a5
++ (id)speakerImageWithOrientation:(char)orientation speakerEnabled:(BOOL)enabled shouldShowText:(BOOL)text
 {
-  v5 = a5;
-  v6 = a4;
-  v7 = a3;
+  textCopy = text;
+  enabledCopy = enabled;
+  orientationCopy = orientation;
   v96[1] = *MEMORY[0x1E69E9840];
   if (speakerImageWithOrientation_speakerEnabled_shouldShowText__once != -1)
   {
     +[CKSpeakerButton speakerImageWithOrientation:speakerEnabled:shouldShowText:];
   }
 
-  v90[0] = v7;
-  v90[1] = v6;
-  v90[2] = v5;
+  v90[0] = orientationCopy;
+  v90[1] = enabledCopy;
+  v90[2] = textCopy;
   v8 = [MEMORY[0x1E696B098] value:v90 withObjCType:"{?=cBB}"];
   v9 = [speakerImageWithOrientation_speakerEnabled_shouldShowText__sSpeakerImageCache objectForKey:v8];
   if (!v9)
   {
-    v88 = v6;
+    v88 = enabledCopy;
     v10 = [MEMORY[0x1E69DCAD8] configurationWithPointSize:4 weight:17.0];
     v11 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"speaker.wave.3.fill"];
     v89 = v10;
     v12 = [v11 imageWithSymbolConfiguration:v10];
-    v13 = [MEMORY[0x1E69DC888] tertiaryLabelColor];
-    v14 = [v12 imageWithTintColor:v13];
-    v15 = [MEMORY[0x1E69DC888] systemGrayColor];
-    v16 = [v14 imageWithTintColor:v15];
+    tertiaryLabelColor = [MEMORY[0x1E69DC888] tertiaryLabelColor];
+    v14 = [v12 imageWithTintColor:tertiaryLabelColor];
+    systemGrayColor = [MEMORY[0x1E69DC888] systemGrayColor];
+    v16 = [v14 imageWithTintColor:systemGrayColor];
 
     [v16 size];
     v18 = v17;
@@ -102,8 +102,8 @@
       v29 = v95;
       +[CKUIBehavior sharedBehaviors];
       v30 = v86 = v16;
-      v31 = [v30 transcriptBoldFont];
-      v96[0] = v31;
+      transcriptBoldFont = [v30 transcriptBoldFont];
+      v96[0] = transcriptBoldFont;
       v32 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v96 forKeys:&v95 count:1];
       [v28 sizeWithAttributes:v32];
       v34 = v33;
@@ -114,8 +114,8 @@
       v93 = v29;
       v26 = MEMORY[0x1E69DB648];
       v39 = +[CKUIBehavior sharedBehaviors];
-      v40 = [v39 transcriptBoldFont];
-      v94 = v40;
+      transcriptBoldFont2 = [v39 transcriptBoldFont];
+      v94 = transcriptBoldFont2;
       v41 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v94 forKeys:&v93 count:1];
       [v38 sizeWithAttributes:v41];
       v43 = v42;
@@ -139,7 +139,7 @@
     v98.height = v20;
     UIGraphicsBeginImageContextWithOptions(v98, 0, 0.0);
     v49 = *(MEMORY[0x1E695EFF8] + 8);
-    if (v7)
+    if (orientationCopy)
     {
       v99.origin.x = 0.0;
       v99.origin.y = 0.0;
@@ -154,12 +154,12 @@
     }
 
     [v16 drawInRect:{v50, v49, v18, v20}];
-    if (v5)
+    if (textCopy)
     {
       v85 = v20;
       v87 = v18 + 5.0 + v46;
       v51 = v16;
-      if (v7)
+      if (orientationCopy)
       {
         v52 = v50 + -5.0 - v46;
       }
@@ -174,8 +174,8 @@
       }
 
       v53 = v25;
-      v54 = [(__objc2_class *)v25[337] sharedBehaviors];
-      [v54 transcriptBoldTextAlignmentInsets];
+      sharedBehaviors = [(__objc2_class *)v25[337] sharedBehaviors];
+      [sharedBehaviors transcriptBoldTextAlignmentInsets];
       v56 = v55;
       v58 = v57;
       v60 = v59;
@@ -217,9 +217,9 @@
       v76 = [v73 localizedStringForKey:v75 value:&stru_1F04268F8 table:@"ChatKit"];
 
       v91 = *v26;
-      v77 = [(__objc2_class *)v53[337] sharedBehaviors];
-      v78 = [v77 transcriptBoldFont];
-      v92 = v78;
+      sharedBehaviors2 = [(__objc2_class *)v53[337] sharedBehaviors];
+      transcriptBoldFont3 = [sharedBehaviors2 transcriptBoldFont];
+      v92 = transcriptBoldFont3;
       v79 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v92 forKeys:&v91 count:1];
       [v76 drawInRect:v79 withAttributes:{v70, v71, v64 + v65, v72}];
 
@@ -229,17 +229,17 @@
 
     if (v88)
     {
-      v80 = [MEMORY[0x1E69DC888] blackColor];
+      blackColor = [MEMORY[0x1E69DC888] blackColor];
       v81 = 2;
     }
 
     else
     {
-      v80 = [MEMORY[0x1E69DC888] systemGrayColor];
+      blackColor = [MEMORY[0x1E69DC888] systemGrayColor];
       v81 = 1;
     }
 
-    [v80 set];
+    [blackColor set];
     v101.origin.x = 0.0;
     v101.origin.y = 0.0;
     v101.size.width = v48;
@@ -266,47 +266,47 @@ void __77__CKSpeakerButton_speakerImageWithOrientation_speakerEnabled_shouldShow
 
 - (void)updateSpeakerImage
 {
-  v4 = [MEMORY[0x1E69DC740] plainButtonConfiguration];
+  plainButtonConfiguration = [MEMORY[0x1E69DC740] plainButtonConfiguration];
   v3 = [CKSpeakerButton speakerImageWithEnabledState:[(CKSpeakerButton *)self isSpeakerEnabled]];
-  [v4 setImage:v3];
+  [plainButtonConfiguration setImage:v3];
 
-  [(CKSpeakerButton *)self setConfiguration:v4];
+  [(CKSpeakerButton *)self setConfiguration:plainButtonConfiguration];
 }
 
-- (void)setShouldShowText:(BOOL)a3
+- (void)setShouldShowText:(BOOL)text
 {
-  if (self->_shouldShowText != a3)
+  if (self->_shouldShowText != text)
   {
     self->_shouldShowText = 0;
     [(CKSpeakerButton *)self updateSpeakerImage];
   }
 }
 
-- (void)touchUpInside:(id)a3
+- (void)touchUpInside:(id)inside
 {
   v4 = [(CKSpeakerButton *)self isSpeakerEnabled]^ 1;
 
   [(CKSpeakerButton *)self setSpeakerEnabled:v4];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v4.receiver = self;
   v4.super_class = CKSpeakerButton;
-  [(CKSpeakerButton *)&v4 traitCollectionDidChange:a3];
+  [(CKSpeakerButton *)&v4 traitCollectionDidChange:change];
   [(CKSpeakerButton *)self updateSpeakerImage];
 }
 
-+ (id)speakerImageWithEnabledState:(BOOL)a3
++ (id)speakerImageWithEnabledState:(BOOL)state
 {
   if (speakerImageWithEnabledState__once != -1)
   {
     +[CKSpeakerButton speakerImageWithEnabledState:];
   }
 
-  v28[0] = a3;
-  v4 = [MEMORY[0x1E69DD1B8] currentTraitCollection];
-  v28[1] = [v4 userInterfaceStyle];
+  v28[0] = state;
+  currentTraitCollection = [MEMORY[0x1E69DD1B8] currentTraitCollection];
+  v28[1] = [currentTraitCollection userInterfaceStyle];
 
   v5 = [MEMORY[0x1E696B098] value:v28 withObjCType:"{?=Bq}"];
   v6 = [speakerImageWithEnabledState__sSpeakerImageCache objectForKey:v5];
@@ -324,7 +324,7 @@ void __77__CKSpeakerButton_speakerImageWithOrientation_speakerEnabled_shouldShow
 
     v12 = [v11 imageWithRenderingMode:1];
 
-    if (a3)
+    if (state)
     {
       [MEMORY[0x1E69DC888] systemBlueColor];
     }

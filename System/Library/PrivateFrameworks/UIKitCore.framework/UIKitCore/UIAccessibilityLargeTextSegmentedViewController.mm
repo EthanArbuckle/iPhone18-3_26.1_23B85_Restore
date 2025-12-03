@@ -1,35 +1,35 @@
 @interface UIAccessibilityLargeTextSegmentedViewController
-- (UIAccessibilityLargeTextSegmentedViewController)initWithSegmentedControl:(id)a3 segments:(id)a4 delegate:(id)a5;
-- (id)segmentFromSegment:(id)a3;
+- (UIAccessibilityLargeTextSegmentedViewController)initWithSegmentedControl:(id)control segments:(id)segments delegate:(id)delegate;
+- (id)segmentFromSegment:(id)segment;
 - (void)_configureSegmentViews;
-- (void)buttonPress:(id)a3;
-- (void)buttonTouchDown:(id)a3;
-- (void)buttonTouchUp:(id)a3;
+- (void)buttonPress:(id)press;
+- (void)buttonTouchDown:(id)down;
+- (void)buttonTouchUp:(id)up;
 - (void)viewDidLayoutSubviews;
 @end
 
 @implementation UIAccessibilityLargeTextSegmentedViewController
 
-- (id)segmentFromSegment:(id)a3
+- (id)segmentFromSegment:(id)segment
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v3 requiringSecureCoding:0 error:0];
+  segmentCopy = segment;
+  v4 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:segmentCopy requiringSecureCoding:0 error:0];
   v5 = [objc_alloc(MEMORY[0x1E696ACD0]) initForReadingFromData:v4 error:0];
   [v5 setRequiresSecureCoding:0];
   v6 = [v5 decodeObjectForKey:*MEMORY[0x1E696A508]];
-  v7 = [v3 backgroundColor];
-  [v6 setBackgroundColor:v7];
+  backgroundColor = [segmentCopy backgroundColor];
+  [v6 setBackgroundColor:backgroundColor];
 
-  v8 = [v3 tintColor];
-  [v6 setTintColor:v8];
+  tintColor = [segmentCopy tintColor];
+  [v6 setTintColor:tintColor];
 
-  [v6 setEnabled:{objc_msgSend(v3, "isEnabled")}];
-  objc_storeStrong(v6 + 70, v3[70]);
-  if ((v3[80] & 0x20) != 0)
+  [v6 setEnabled:{objc_msgSend(segmentCopy, "isEnabled")}];
+  objc_storeStrong(v6 + 70, segmentCopy[70]);
+  if ((segmentCopy[80] & 0x20) != 0)
   {
-    v9 = [v3 objectValue];
+    objectValue = [segmentCopy objectValue];
     v10 = [UIImageSymbolConfiguration configurationWithTextStyle:@"UICTFontTextStyleBody"];
-    v11 = [v9 imageWithConfiguration:v10];
+    v11 = [objectValue imageWithConfiguration:v10];
     [v6 setObjectValue:v11];
   }
 
@@ -39,85 +39,85 @@
     [v6[64] setAdjustsImageSizeForAccessibilityContentSizeCategory:1];
   }
 
-  v12 = [v3 accessibilityLabel];
-  [v6 setAccessibilityLabel:v12];
+  accessibilityLabel = [segmentCopy accessibilityLabel];
+  [v6 setAccessibilityLabel:accessibilityLabel];
 
   return v6;
 }
 
-- (UIAccessibilityLargeTextSegmentedViewController)initWithSegmentedControl:(id)a3 segments:(id)a4 delegate:(id)a5
+- (UIAccessibilityLargeTextSegmentedViewController)initWithSegmentedControl:(id)control segments:(id)segments delegate:(id)delegate
 {
   v55 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  controlCopy = control;
+  segmentsCopy = segments;
+  delegateCopy = delegate;
   v53.receiver = self;
   v53.super_class = UIAccessibilityLargeTextSegmentedViewController;
   v12 = [(UIViewController *)&v53 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_segmentedControl, a3);
+    objc_storeStrong(&v12->_segmentedControl, control);
     v14 = objc_alloc_init(MEMORY[0x1E695DF70]);
     segmentButtons = v13->_segmentButtons;
     v13->_segmentButtons = v14;
 
     [(UIViewController *)v13 setModalPresentationStyle:7];
-    v16 = [(UIViewController *)v13 popoverPresentationController];
-    v48 = v11;
-    [v16 setDelegate:v11];
-    [v16 setSourceView:v13->_segmentedControl];
+    popoverPresentationController = [(UIViewController *)v13 popoverPresentationController];
+    v48 = delegateCopy;
+    [popoverPresentationController setDelegate:delegateCopy];
+    [popoverPresentationController setSourceView:v13->_segmentedControl];
     if ((dyld_program_sdk_at_least() & 1) == 0)
     {
       [(UISegmentedControl *)v13->_segmentedControl bounds];
-      [v16 setSourceRect:?];
+      [popoverPresentationController setSourceRect:?];
     }
 
-    [v16 setPermittedArrowDirections:3];
+    [popoverPresentationController setPermittedArrowDirections:3];
     v17 = objc_opt_class();
-    v18 = [v9 traitCollection];
-    v19 = UISegmentedControlStyleProviderForIdiom(v17, [v18 userInterfaceIdiom]);
+    traitCollection = [controlCopy traitCollection];
+    v19 = UISegmentedControlStyleProviderForIdiom(v17, [traitCollection userInterfaceIdiom]);
 
     v47 = v19;
     if (([v19 useSelectionIndicatorStyling] & 1) == 0)
     {
-      v20 = [(UIView *)v13->_segmentedControl tintColor];
-      [v16 setArrowBackgroundColor:v20];
+      tintColor = [(UIView *)v13->_segmentedControl tintColor];
+      [popoverPresentationController setArrowBackgroundColor:tintColor];
 
-      v21 = [(UIView *)v13->_segmentedControl backgroundColor];
-      v22 = v10;
-      v23 = [v21 CGColor];
-      v24 = [(UIViewController *)v13 view];
-      v25 = [v24 layer];
-      [v25 setBackgroundColor:v23];
+      backgroundColor = [(UIView *)v13->_segmentedControl backgroundColor];
+      v22 = segmentsCopy;
+      cGColor = [backgroundColor CGColor];
+      view = [(UIViewController *)v13 view];
+      layer = [view layer];
+      [layer setBackgroundColor:cGColor];
 
-      v26 = [(UIView *)v13->_segmentedControl tintColor];
-      v27 = [v26 CGColor];
-      v28 = [(UIViewController *)v13 view];
-      v29 = [v28 layer];
-      [v29 setBorderColor:v27];
+      tintColor2 = [(UIView *)v13->_segmentedControl tintColor];
+      cGColor2 = [tintColor2 CGColor];
+      view2 = [(UIViewController *)v13 view];
+      layer2 = [view2 layer];
+      [layer2 setBorderColor:cGColor2];
 
-      v30 = [(UIViewController *)v13 view];
-      v31 = [v30 layer];
-      [v31 setBorderWidth:1.0];
+      view3 = [(UIViewController *)v13 view];
+      layer3 = [view3 layer];
+      [layer3 setBorderWidth:1.0];
 
-      v32 = [(UIViewController *)v13 view];
-      v33 = [v32 layer];
-      [v33 setCornerRadius:13.0];
+      view4 = [(UIViewController *)v13 view];
+      layer4 = [view4 layer];
+      [layer4 setCornerRadius:13.0];
 
-      v10 = v22;
+      segmentsCopy = v22;
     }
 
-    v34 = [(UIViewController *)v13 view];
-    [v34 setTranslatesAutoresizingMaskIntoConstraints:0];
+    view5 = [(UIViewController *)v13 view];
+    [view5 setTranslatesAutoresizingMaskIntoConstraints:0];
 
     v35 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v49 = 0u;
     v50 = 0u;
     v51 = 0u;
     v52 = 0u;
-    v36 = v10;
-    v37 = v10;
+    v36 = segmentsCopy;
+    v37 = segmentsCopy;
     v38 = [v37 countByEnumeratingWithState:&v49 objects:v54 count:16];
     if (v38)
     {
@@ -147,11 +147,11 @@
     v44 = v35;
 
     [(UIAccessibilityLargeTextSegmentedViewController *)v13 _configureSegmentViews];
-    v45 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v45 addObserver:v13 selector:sel__orientationChanged_ name:@"UIDeviceOrientationDidChangeNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v13 selector:sel__orientationChanged_ name:@"UIDeviceOrientationDidChangeNotification" object:0];
 
-    v10 = v36;
-    v11 = v48;
+    segmentsCopy = v36;
+    delegateCopy = v48;
   }
 
   return v13;
@@ -167,57 +167,57 @@
   [(UIStackView *)v67 setDistribution:3];
   [(UIStackView *)v67 setAlignment:0];
   [(UIStackView *)v67 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v4 = [(UIViewController *)self view];
-  [v4 addSubview:v3];
+  view = [(UIViewController *)self view];
+  [view addSubview:v3];
 
   [(UIView *)v3 addSubview:v67];
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v6 = [(UIView *)v3 centerXAnchor];
-  v7 = [(UIViewController *)self view];
-  v8 = [v7 centerXAnchor];
-  v9 = [v6 constraintEqualToAnchor:v8];
+  centerXAnchor = [(UIView *)v3 centerXAnchor];
+  view2 = [(UIViewController *)self view];
+  centerXAnchor2 = [view2 centerXAnchor];
+  v9 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   [v5 addObject:v9];
 
-  v10 = [(UIView *)v3 leadingAnchor];
-  v11 = [(UIViewController *)self view];
-  v12 = [v11 safeAreaLayoutGuide];
-  v13 = [v12 leadingAnchor];
-  v14 = [v10 constraintEqualToAnchor:v13 constant:4.0];
+  leadingAnchor = [(UIView *)v3 leadingAnchor];
+  view3 = [(UIViewController *)self view];
+  safeAreaLayoutGuide = [view3 safeAreaLayoutGuide];
+  leadingAnchor2 = [safeAreaLayoutGuide leadingAnchor];
+  v14 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:4.0];
   [v5 addObject:v14];
 
-  v15 = [(UIView *)v3 trailingAnchor];
-  v16 = [(UIViewController *)self view];
-  v17 = [v16 safeAreaLayoutGuide];
-  v18 = [v17 trailingAnchor];
-  v19 = [v15 constraintEqualToAnchor:v18 constant:-4.0];
+  trailingAnchor = [(UIView *)v3 trailingAnchor];
+  view4 = [(UIViewController *)self view];
+  safeAreaLayoutGuide2 = [view4 safeAreaLayoutGuide];
+  trailingAnchor2 = [safeAreaLayoutGuide2 trailingAnchor];
+  v19 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-4.0];
   [v5 addObject:v19];
 
-  v20 = [(UIView *)v3 topAnchor];
-  v21 = [(UIViewController *)self view];
-  v22 = [v21 safeAreaLayoutGuide];
-  v23 = [v22 topAnchor];
-  v24 = [v20 constraintEqualToAnchor:v23];
+  topAnchor = [(UIView *)v3 topAnchor];
+  view5 = [(UIViewController *)self view];
+  safeAreaLayoutGuide3 = [view5 safeAreaLayoutGuide];
+  topAnchor2 = [safeAreaLayoutGuide3 topAnchor];
+  v24 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v5 addObject:v24];
 
-  v25 = [(UIView *)v67 centerXAnchor];
-  v26 = [(UIView *)v3 centerXAnchor];
-  v27 = [v25 constraintEqualToAnchor:v26];
+  centerXAnchor3 = [(UIView *)v67 centerXAnchor];
+  centerXAnchor4 = [(UIView *)v3 centerXAnchor];
+  v27 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
   [v5 addObject:v27];
 
-  v28 = [(UIView *)v67 widthAnchor];
-  v29 = [(UIView *)v3 widthAnchor];
-  v30 = [v28 constraintEqualToAnchor:v29];
+  widthAnchor = [(UIView *)v67 widthAnchor];
+  widthAnchor2 = [(UIView *)v3 widthAnchor];
+  v30 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
   [v5 addObject:v30];
 
-  v31 = [(UIView *)v67 topAnchor];
-  v32 = [(UIView *)v3 topAnchor];
-  v33 = [v31 constraintEqualToAnchor:v32];
+  topAnchor3 = [(UIView *)v67 topAnchor];
+  topAnchor4 = [(UIView *)v3 topAnchor];
+  v33 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
   [v5 addObject:v33];
 
-  v34 = [(UIView *)v67 bottomAnchor];
+  bottomAnchor = [(UIView *)v67 bottomAnchor];
   v63 = v3;
-  v35 = [(UIView *)v3 bottomAnchor];
-  v36 = [v34 constraintEqualToAnchor:v35];
+  bottomAnchor2 = [(UIView *)v3 bottomAnchor];
+  v36 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   [v5 addObject:v36];
 
   v66 = [(NSArray *)self->_segments count];
@@ -278,8 +278,8 @@ LABEL_12:
       v48 = v46 + 16.0;
       if (!v37)
       {
-        v49 = [(UIView *)self->_segmentedControl window];
-        [v49 bounds];
+        window = [(UIView *)self->_segmentedControl window];
+        [window bounds];
         v51 = v50;
 
         if (v51 < v48 + v48)
@@ -289,8 +289,8 @@ LABEL_12:
       }
 
       [(UIStackView *)v67 addArrangedSubview:v42];
-      v52 = [v42 heightAnchor];
-      v53 = [v52 constraintEqualToConstant:v48];
+      heightAnchor = [v42 heightAnchor];
+      v53 = [heightAnchor constraintEqualToConstant:v48];
       [v5 addObject:v53];
 
       [(NSMutableArray *)self->_segmentButtons addObject:v42];
@@ -311,17 +311,17 @@ LABEL_12:
   v38 = 0.0;
 LABEL_20:
   [(UIViewController *)self setPreferredContentSize:v38, 0.0];
-  v54 = [(UIView *)v63 heightAnchor];
-  v55 = [(UIView *)v67 heightAnchor];
-  v56 = [v54 constraintEqualToAnchor:v55];
+  heightAnchor2 = [(UIView *)v63 heightAnchor];
+  heightAnchor3 = [(UIView *)v67 heightAnchor];
+  v56 = [heightAnchor2 constraintEqualToAnchor:heightAnchor3];
 
   LODWORD(v57) = 1148829696;
   [v56 setPriority:v57];
   [v5 addObject:v56];
-  v58 = [(UIView *)v63 heightAnchor];
-  v59 = [(UIViewController *)self view];
-  v60 = [v59 heightAnchor];
-  v61 = [v58 constraintLessThanOrEqualToAnchor:v60 multiplier:1.0];
+  heightAnchor4 = [(UIView *)v63 heightAnchor];
+  view6 = [(UIViewController *)self view];
+  heightAnchor5 = [view6 heightAnchor];
+  v61 = [heightAnchor4 constraintLessThanOrEqualToAnchor:heightAnchor5 multiplier:1.0];
   [v5 addObject:v61];
 
   [MEMORY[0x1E69977A0] activateConstraints:v5];
@@ -340,35 +340,35 @@ LABEL_20:
   [(UIViewController *)self setPreferredContentSize:v4, v5];
 }
 
-- (void)buttonPress:(id)a3
+- (void)buttonPress:(id)press
 {
-  v4 = a3;
-  v5 = [(UIAccessibilityLargeTextSegmentedViewController *)self originalSelectedSegment];
-  [v5 setSelected:0];
+  pressCopy = press;
+  originalSelectedSegment = [(UIAccessibilityLargeTextSegmentedViewController *)self originalSelectedSegment];
+  [originalSelectedSegment setSelected:0];
 
-  v6 = [v4 segment];
-  [v6 setSelected:1];
+  segment = [pressCopy segment];
+  [segment setSelected:1];
 
-  v7 = [(UIAccessibilityLargeTextSegmentedViewController *)self segmentedControl];
-  v8 = [(NSMutableArray *)self->_segmentButtons indexOfObject:v4];
+  segmentedControl = [(UIAccessibilityLargeTextSegmentedViewController *)self segmentedControl];
+  v8 = [(NSMutableArray *)self->_segmentButtons indexOfObject:pressCopy];
 
-  [v7 setSelectedSegmentIndex:v8];
-  v9 = [(UIAccessibilityLargeTextSegmentedViewController *)self segmentedControl];
-  [v9 _sendValueChanged];
+  [segmentedControl setSelectedSegmentIndex:v8];
+  segmentedControl2 = [(UIAccessibilityLargeTextSegmentedViewController *)self segmentedControl];
+  [segmentedControl2 _sendValueChanged];
 
   [(UIViewController *)self dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)buttonTouchDown:(id)a3
+- (void)buttonTouchDown:(id)down
 {
-  v3 = [a3 segment];
-  [v3 setHighlighted:1];
+  segment = [down segment];
+  [segment setHighlighted:1];
 }
 
-- (void)buttonTouchUp:(id)a3
+- (void)buttonTouchUp:(id)up
 {
-  v3 = [a3 segment];
-  [v3 setHighlighted:0];
+  segment = [up segment];
+  [segment setHighlighted:0];
 }
 
 @end

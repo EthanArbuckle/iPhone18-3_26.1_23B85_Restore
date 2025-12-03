@@ -1,12 +1,12 @@
 @interface PXCollectionFetchOperation
-+ (id)fetchOperationWithCollection:(id)a3 delegate:(id)a4;
++ (id)fetchOperationWithCollection:(id)collection delegate:(id)delegate;
 - (PXCollectionFetchOperation)init;
-- (PXCollectionFetchOperation)initWithCollection:(id)a3;
+- (PXCollectionFetchOperation)initWithCollection:(id)collection;
 - (PXCollectionFetchOperationDelegate)delegate;
 - (void)handleBegin;
 - (void)handleFinish;
 - (void)main;
-- (void)setDelegate:(id)a3;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation PXCollectionFetchOperation
@@ -85,14 +85,14 @@ void __41__PXCollectionFetchOperation_handleBegin__block_invoke(uint64_t a1)
   fetchOptions = self->_fetchOptions;
   if (fetchOptions)
   {
-    v9 = fetchOptions;
+    px_standardLibrarySpecificFetchOptions = fetchOptions;
   }
 
   else
   {
-    v4 = [(PXCollectionFetchOperation *)self collection];
-    v5 = [v4 photoLibrary];
-    v9 = [v5 px_standardLibrarySpecificFetchOptions];
+    collection = [(PXCollectionFetchOperation *)self collection];
+    photoLibrary = [collection photoLibrary];
+    px_standardLibrarySpecificFetchOptions = [photoLibrary px_standardLibrarySpecificFetchOptions];
   }
 
   if (([(PXCollectionFetchOperation *)self isCancelled]& 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
@@ -114,19 +114,19 @@ void __41__PXCollectionFetchOperation_handleBegin__block_invoke(uint64_t a1)
     if ([(PHCollection *)v6 assetCollectionType]== 2 && [(PHCollection *)v6 assetCollectionSubtype]== 1000000205)
     {
       v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"PXCollectionFetchOperation PHAssetCollection All Photos"];
-      [(PHFetchOptions *)v9 setImportantFetchName:v7];
+      [(PHFetchOptions *)px_standardLibrarySpecificFetchOptions setImportantFetchName:v7];
     }
 
-    v8 = [MEMORY[0x1E6978630] fetchAssetsInAssetCollection:v6 options:v9];
+    v8 = [MEMORY[0x1E6978630] fetchAssetsInAssetCollection:v6 options:px_standardLibrarySpecificFetchOptions];
   }
 
   [(PXCollectionFetchOperation *)self setOutputFetchResult:v8];
   [(PXCollectionFetchOperation *)self handleFinish];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   v5 = obj;
@@ -139,39 +139,39 @@ void __41__PXCollectionFetchOperation_handleBegin__block_invoke(uint64_t a1)
 
 - (PXCollectionFetchOperation)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXCollectionFetchOperation.m" lineNumber:39 description:{@"%s is not available as initializer", "-[PXCollectionFetchOperation init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXCollectionFetchOperation.m" lineNumber:39 description:{@"%s is not available as initializer", "-[PXCollectionFetchOperation init]"}];
 
   abort();
 }
 
-- (PXCollectionFetchOperation)initWithCollection:(id)a3
+- (PXCollectionFetchOperation)initWithCollection:(id)collection
 {
-  v6 = a3;
+  collectionCopy = collection;
   v10.receiver = self;
   v10.super_class = PXCollectionFetchOperation;
   v7 = [(PXCollectionFetchOperation *)&v10 init];
   if (v7)
   {
-    if (!v6)
+    if (!collectionCopy)
     {
-      v9 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v9 handleFailureInMethod:a2 object:v7 file:@"PXCollectionFetchOperation.m" lineNumber:31 description:{@"Invalid parameter not satisfying: %@", @"collection"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v7 file:@"PXCollectionFetchOperation.m" lineNumber:31 description:{@"Invalid parameter not satisfying: %@", @"collection"}];
     }
 
-    objc_storeStrong(&v7->_collection, a3);
+    objc_storeStrong(&v7->_collection, collection);
   }
 
   return v7;
 }
 
-+ (id)fetchOperationWithCollection:(id)a3 delegate:(id)a4
++ (id)fetchOperationWithCollection:(id)collection delegate:(id)delegate
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithCollection:v7];
+  delegateCopy = delegate;
+  collectionCopy = collection;
+  v8 = [[self alloc] initWithCollection:collectionCopy];
 
-  [v8 setDelegate:v6];
+  [v8 setDelegate:delegateCopy];
 
   return v8;
 }

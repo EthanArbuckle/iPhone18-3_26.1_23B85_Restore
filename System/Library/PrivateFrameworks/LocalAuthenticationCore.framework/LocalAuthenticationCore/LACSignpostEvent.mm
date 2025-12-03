@@ -1,19 +1,19 @@
 @interface LACSignpostEvent
-- (LACSignpostEvent)initWithSendBlock:(id)a3;
+- (LACSignpostEvent)initWithSendBlock:(id)block;
 - (void)send;
 @end
 
 @implementation LACSignpostEvent
 
-- (LACSignpostEvent)initWithSendBlock:(id)a3
+- (LACSignpostEvent)initWithSendBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v9.receiver = self;
   v9.super_class = LACSignpostEvent;
   v5 = [(LACSignpostEvent *)&v9 init];
   if (v5)
   {
-    v6 = _Block_copy(v4);
+    v6 = _Block_copy(blockCopy);
     sendBlock = v5->_sendBlock;
     v5->_sendBlock = v6;
   }

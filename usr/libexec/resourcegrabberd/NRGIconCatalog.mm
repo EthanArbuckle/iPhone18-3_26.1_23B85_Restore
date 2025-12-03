@@ -1,9 +1,9 @@
 @interface NRGIconCatalog
 - (NRGIconCatalog)init;
 - (id)readIcon;
-- (void)readIcons:(id)a3;
+- (void)readIcons:(id)icons;
 - (void)remove;
-- (void)writeIcon:(id)a3;
+- (void)writeIcon:(id)icon;
 @end
 
 @implementation NRGIconCatalog
@@ -11,32 +11,32 @@
 - (NRGIconCatalog)init
 {
   v3 = +[NSFileManager defaultManager];
-  v4 = [v3 temporaryDirectory];
+  temporaryDirectory = [v3 temporaryDirectory];
 
   v5 = +[NSUUID UUID];
   v6 = [NSString stringWithFormat:@"%@.nrg", v5];
 
-  v7 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%s/%@", [v4 fileSystemRepresentation], v6);
+  v7 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%s/%@", [temporaryDirectory fileSystemRepresentation], v6);
   v8 = [NSURL fileURLWithPath:v7];
   v9 = [(NRGIconCatalog *)self initWithURL:v8 readonly:0];
 
   return v9;
 }
 
-- (void)writeIcon:(id)a3
+- (void)writeIcon:(id)icon
 {
-  v4 = a3;
+  iconCopy = icon;
   v5 = objc_alloc_init(NRGPBDataHeader);
-  v6 = [v4 iconData];
-  v7 = [v6 checksumData];
-  [(NRGPBDataHeader *)v5 setChecksumData:v7];
+  iconData = [iconCopy iconData];
+  checksumData = [iconData checksumData];
+  [(NRGPBDataHeader *)v5 setChecksumData:checksumData];
 
-  if (![(PBMessageStreamWriter *)self->_pbWriter writeMessage:v5]|| ([(PBMessageStreamWriter *)self->_pbWriter writeMessage:v4]& 1) == 0)
+  if (![(PBMessageStreamWriter *)self->_pbWriter writeMessage:v5]|| ([(PBMessageStreamWriter *)self->_pbWriter writeMessage:iconCopy]& 1) == 0)
   {
     v8 = nrg_daemon_log();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      sub_100010DB0(v4, self, v8);
+      sub_100010DB0(iconCopy, self, v8);
     }
   }
 }
@@ -44,14 +44,14 @@
 - (id)readIcon
 {
   [(PBMessageStreamReader *)self->_pbReader setClassOfNextMessage:objc_opt_class()];
-  v3 = [(PBMessageStreamReader *)self->_pbReader nextMessage];
-  if (v3)
+  nextMessage = [(PBMessageStreamReader *)self->_pbReader nextMessage];
+  if (nextMessage)
   {
     [(PBMessageStreamReader *)self->_pbReader setClassOfNextMessage:objc_opt_class()];
-    v4 = [(PBMessageStreamReader *)self->_pbReader nextMessage];
-    v5 = [v4 iconData];
-    v6 = [v3 checksumData];
-    v7 = [v5 matchesChecksumData:v6];
+    nextMessage2 = [(PBMessageStreamReader *)self->_pbReader nextMessage];
+    iconData = [nextMessage2 iconData];
+    checksumData = [nextMessage checksumData];
+    v7 = [iconData matchesChecksumData:checksumData];
 
     if (v7)
     {
@@ -65,34 +65,34 @@
     }
   }
 
-  v4 = 0;
+  nextMessage2 = 0;
 LABEL_7:
 
-  return v4;
+  return nextMessage2;
 }
 
-- (void)readIcons:(id)a3
+- (void)readIcons:(id)icons
 {
-  v8 = a3;
-  v4 = [(NRGIconCatalog *)self readIcon];
-  if (v4)
+  iconsCopy = icons;
+  readIcon = [(NRGIconCatalog *)self readIcon];
+  if (readIcon)
   {
-    v5 = v4;
+    v5 = readIcon;
     do
     {
       v6 = objc_autoreleasePoolPush();
-      if (v8)
+      if (iconsCopy)
       {
-        v8[2]();
+        iconsCopy[2]();
       }
 
       objc_autoreleasePoolPop(v6);
-      v7 = [(NRGIconCatalog *)self readIcon];
+      readIcon2 = [(NRGIconCatalog *)self readIcon];
 
-      v5 = v7;
+      v5 = readIcon2;
     }
 
-    while (v7);
+    while (readIcon2);
   }
 }
 

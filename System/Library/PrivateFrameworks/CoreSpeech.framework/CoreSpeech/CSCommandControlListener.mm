@@ -1,12 +1,12 @@
 @interface CSCommandControlListener
 - (CSCommandControlListener)init;
 - (CSCommandControlListenerDelegate)delegate;
-- (void)CSXPCClient:(id)a3 didDisconnect:(BOOL)a4;
-- (void)_startRequestWithCompletion:(id)a3;
-- (void)audioStreamProvider:(id)a3 audioBufferAvailable:(id)a4;
-- (void)audioStreamProvider:(id)a3 didStopStreamUnexpectedly:(int64_t)a4;
-- (void)startListenWithOption:(id)a3 completion:(id)a4;
-- (void)stopListenWithCompletion:(id)a3;
+- (void)CSXPCClient:(id)client didDisconnect:(BOOL)disconnect;
+- (void)_startRequestWithCompletion:(id)completion;
+- (void)audioStreamProvider:(id)provider audioBufferAvailable:(id)available;
+- (void)audioStreamProvider:(id)provider didStopStreamUnexpectedly:(int64_t)unexpectedly;
+- (void)startListenWithOption:(id)option completion:(id)completion;
+- (void)stopListenWithCompletion:(id)completion;
 @end
 
 @implementation CSCommandControlListener
@@ -18,7 +18,7 @@
   return WeakRetained;
 }
 
-- (void)CSXPCClient:(id)a3 didDisconnect:(BOOL)a4
+- (void)CSXPCClient:(id)client didDisconnect:(BOOL)disconnect
 {
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -72,17 +72,17 @@ void __54__CSCommandControlListener_CSXPCClient_didDisconnect___block_invoke(uin
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)audioStreamProvider:(id)a3 audioBufferAvailable:(id)a4
+- (void)audioStreamProvider:(id)provider audioBufferAvailable:(id)available
 {
-  v5 = a4;
+  availableCopy = available;
   queue = self->_queue;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __69__CSCommandControlListener_audioStreamProvider_audioBufferAvailable___block_invoke;
   v8[3] = &unk_2784C6FA8;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = availableCopy;
+  v7 = availableCopy;
   dispatch_async(queue, v8);
 }
 
@@ -115,7 +115,7 @@ void __69__CSCommandControlListener_audioStreamProvider_audioBufferAvailable___b
   }
 }
 
-- (void)audioStreamProvider:(id)a3 didStopStreamUnexpectedly:(int64_t)a4
+- (void)audioStreamProvider:(id)provider didStopStreamUnexpectedly:(int64_t)unexpectedly
 {
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -149,10 +149,10 @@ void __74__CSCommandControlListener_audioStreamProvider_didStopStreamUnexpectedl
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)stopListenWithCompletion:(id)a3
+- (void)stopListenWithCompletion:(id)completion
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = *MEMORY[0x277D015D8];
   if (os_log_type_enabled(*MEMORY[0x277D015D8], OS_LOG_TYPE_DEFAULT))
   {
@@ -165,8 +165,8 @@ void __74__CSCommandControlListener_audioStreamProvider_didStopStreamUnexpectedl
   v13[1] = 3221225472;
   v13[2] = __53__CSCommandControlListener_stopListenWithCompletion___block_invoke;
   v13[3] = &unk_2784C6E20;
-  v14 = v4;
-  v6 = v4;
+  v14 = completionCopy;
+  v6 = completionCopy;
   v7 = MEMORY[0x223DD26C0](v13);
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -220,23 +220,23 @@ void __53__CSCommandControlListener_stopListenWithCompletion___block_invoke_8(ui
   }
 }
 
-- (void)_startRequestWithCompletion:(id)a3
+- (void)_startRequestWithCompletion:(id)completion
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __56__CSCommandControlListener__startRequestWithCompletion___block_invoke;
   v23[3] = &unk_2784C6E20;
-  v5 = v4;
+  v5 = completionCopy;
   v24 = v5;
   v6 = MEMORY[0x223DD26C0](v23);
   audioStreamProvider = self->_audioStreamProvider;
   if (audioStreamProvider)
   {
     v8 = MEMORY[0x277D016A0];
-    v9 = [MEMORY[0x277D01648] contextForBuiltInVoiceTrigger];
-    v10 = [v8 defaultRequestWithContext:v9];
+    contextForBuiltInVoiceTrigger = [MEMORY[0x277D01648] contextForBuiltInVoiceTrigger];
+    v10 = [v8 defaultRequestWithContext:contextForBuiltInVoiceTrigger];
     v11 = objc_opt_class();
     v12 = NSStringFromClass(v11);
     v22 = 0;
@@ -247,13 +247,13 @@ void __53__CSCommandControlListener_stopListenWithCompletion___block_invoke_8(ui
     {
       [(CSCommandControlListener *)self setAudioStream:v13];
       [v13 setDelegate:self];
-      v15 = [MEMORY[0x277D01678] noAlertOption];
+      noAlertOption = [MEMORY[0x277D01678] noAlertOption];
       v20[0] = MEMORY[0x277D85DD0];
       v20[1] = 3221225472;
       v20[2] = __56__CSCommandControlListener__startRequestWithCompletion___block_invoke_7;
       v20[3] = &unk_2784C6E20;
       v21 = v6;
-      [v13 startAudioStreamWithOption:v15 completion:v20];
+      [v13 startAudioStreamWithOption:noAlertOption completion:v20];
     }
 
     else
@@ -262,11 +262,11 @@ void __53__CSCommandControlListener_stopListenWithCompletion___block_invoke_8(ui
       if (os_log_type_enabled(*MEMORY[0x277D015D8], OS_LOG_TYPE_ERROR))
       {
         v18 = v16;
-        v19 = [v14 localizedDescription];
+        localizedDescription = [v14 localizedDescription];
         *buf = 136315394;
         v26 = "[CSCommandControlListener _startRequestWithCompletion:]";
         v27 = 2114;
-        v28 = v19;
+        v28 = localizedDescription;
         _os_log_error_impl(&dword_222E4D000, v18, OS_LOG_TYPE_ERROR, "%s AudioStreamRequest has failed : %{public}@", buf, 0x16u);
       }
 
@@ -304,10 +304,10 @@ void __56__CSCommandControlListener__startRequestWithCompletion___block_invoke(u
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)startListenWithOption:(id)a3 completion:(id)a4
+- (void)startListenWithOption:(id)option completion:(id)completion
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  completionCopy = completion;
   v6 = *MEMORY[0x277D015D8];
   if (os_log_type_enabled(*MEMORY[0x277D015D8], OS_LOG_TYPE_DEFAULT))
   {
@@ -320,8 +320,8 @@ void __56__CSCommandControlListener__startRequestWithCompletion___block_invoke(u
   v14[1] = 3221225472;
   v14[2] = __61__CSCommandControlListener_startListenWithOption_completion___block_invoke;
   v14[3] = &unk_2784C6E20;
-  v15 = v5;
-  v7 = v5;
+  v15 = completionCopy;
+  v7 = completionCopy;
   v8 = MEMORY[0x223DD26C0](v14);
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];

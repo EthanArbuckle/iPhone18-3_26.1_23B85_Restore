@@ -9,8 +9,8 @@
   if (os_variant_has_internal_content())
   {
     v2 = MEMORY[0x277CCACA8];
-    v3 = [a1 modifiedByDevice];
-    v4 = [v2 stringWithFormat:@" modifiedBy='%@'", v3];
+    modifiedByDevice = [self modifiedByDevice];
+    v4 = [v2 stringWithFormat:@" modifiedBy='%@'", modifiedByDevice];
   }
 
   else
@@ -19,14 +19,14 @@
   }
 
   v5 = MEMORY[0x277CCACA8];
-  v6 = [a1 recordType];
-  v7 = [a1 recordID];
-  v8 = [v7 recordName];
-  v9 = [a1 recordID];
-  v10 = [v9 zoneID];
-  v11 = [v10 zoneName];
-  v12 = [a1 recordChangeTag];
-  v13 = [v5 stringWithFormat:@"<CKRecord type=%@ recordName=%@ zone=%@ etag=%@%@>", v6, v8, v11, v12, v4];
+  recordType = [self recordType];
+  recordID = [self recordID];
+  recordName = [recordID recordName];
+  recordID2 = [self recordID];
+  zoneID = [recordID2 zoneID];
+  zoneName = [zoneID zoneName];
+  recordChangeTag = [self recordChangeTag];
+  v13 = [v5 stringWithFormat:@"<CKRecord type=%@ recordName=%@ zone=%@ etag=%@%@>", recordType, recordName, zoneName, recordChangeTag, v4];
 
   return v13;
 }

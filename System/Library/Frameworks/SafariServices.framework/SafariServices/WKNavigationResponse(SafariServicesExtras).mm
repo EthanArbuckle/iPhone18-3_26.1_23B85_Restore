@@ -9,66 +9,66 @@
 
 - (id)_sf_suggestedFilename
 {
-  v2 = [a1 _sf_explicitSuggestedFilename];
-  v3 = v2;
-  if (v2)
+  _sf_explicitSuggestedFilename = [self _sf_explicitSuggestedFilename];
+  v3 = _sf_explicitSuggestedFilename;
+  if (_sf_explicitSuggestedFilename)
   {
-    v4 = v2;
+    safari_filenameByFixingIllegalCharacters = _sf_explicitSuggestedFilename;
   }
 
   else
   {
-    v5 = [a1 response];
-    v6 = [v5 suggestedFilename];
-    v4 = [v6 safari_filenameByFixingIllegalCharacters];
+    response = [self response];
+    suggestedFilename = [response suggestedFilename];
+    safari_filenameByFixingIllegalCharacters = [suggestedFilename safari_filenameByFixingIllegalCharacters];
   }
 
-  return v4;
+  return safari_filenameByFixingIllegalCharacters;
 }
 
 - (id)_sf_explicitSuggestedFilename
 {
-  v2 = [a1 response];
-  if ([v2 _sf_hasAttachmentWithFilename])
+  response = [self response];
+  if ([response _sf_hasAttachmentWithFilename])
   {
-    v3 = [v2 suggestedFilename];
+    suggestedFilename = [response suggestedFilename];
 LABEL_4:
-    v4 = [v3 safari_filenameByFixingIllegalCharacters];
+    safari_filenameByFixingIllegalCharacters = [suggestedFilename safari_filenameByFixingIllegalCharacters];
     goto LABEL_5;
   }
 
-  v3 = [a1 _downloadAttribute];
-  if ([v3 length])
+  suggestedFilename = [self _downloadAttribute];
+  if ([suggestedFilename length])
   {
     goto LABEL_4;
   }
 
-  v4 = 0;
+  safari_filenameByFixingIllegalCharacters = 0;
 LABEL_5:
 
-  return v4;
+  return safari_filenameByFixingIllegalCharacters;
 }
 
 - (uint64_t)_sf_allowReloadingInMainFrame
 {
-  v2 = [a1 response];
-  v3 = [v2 URL];
-  v4 = [v3 safari_isDataURL];
+  response = [self response];
+  v3 = [response URL];
+  safari_isDataURL = [v3 safari_isDataURL];
 
-  if (!v4)
+  if (!safari_isDataURL)
   {
-    v7 = [a1 _request];
-    v8 = [v7 HTTPMethod];
-    v9 = [v8 safari_isCaseInsensitiveEqualToString:@"GET"];
+    _request = [self _request];
+    hTTPMethod = [_request HTTPMethod];
+    v9 = [hTTPMethod safari_isCaseInsensitiveEqualToString:@"GET"];
 
     if (v9)
     {
-      v10 = [a1 response];
+      response2 = [self response];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v11 = [v10 allHeaderFields];
-        v12 = [v11 safari_stringForKey:@"Accept-Ranges"];
+        allHeaderFields = [response2 allHeaderFields];
+        v12 = [allHeaderFields safari_stringForKey:@"Accept-Ranges"];
         v13 = [v12 safari_isCaseInsensitiveEqualToString:@"bytes"];
 
         if (v13)
@@ -131,14 +131,14 @@ LABEL_16:
 - (uint64_t)_sf_responsePolicy:()SafariServicesExtras uti:
 {
   *a3 = 0;
-  v7 = [a1 response];
-  v8 = [v7 MIMEType];
-  v9 = typeIdentifierForDownloadFromResponse(v7);
+  response = [self response];
+  mIMEType = [response MIMEType];
+  v9 = typeIdentifierForDownloadFromResponse(response);
   *a4 = v9;
-  v10 = _SFDownloadingFileTypeFromUTIAndMIMEType(v9, v8);
+  v10 = _SFDownloadingFileTypeFromUTIAndMIMEType(v9, mIMEType);
   *a3 = v10;
   v11 = *a4;
-  v12 = v8;
+  v12 = mIMEType;
   v13 = v12;
   v14 = 0;
   if ((v10 & 0xFFFFFFFFFFFFFFFDLL) == 0)
@@ -189,26 +189,26 @@ LABEL_16:
     }
   }
 
-  v18 = [a1 isForMainFrame];
-  if ([v7 sf_shouldDownloadDueToContentDisposition:v18])
+  isForMainFrame = [self isForMainFrame];
+  if ([response sf_shouldDownloadDueToContentDisposition:isForMainFrame])
   {
     v19 = 1;
   }
 
   else
   {
-    v20 = [a1 _downloadAttribute];
-    v19 = v20 != 0;
+    _downloadAttribute = [self _downloadAttribute];
+    v19 = _downloadAttribute != 0;
   }
 
   if (v14 == 1)
   {
-    v21 = v19 & (v18 ^ 1);
+    v21 = v19 & (isForMainFrame ^ 1);
     goto LABEL_37;
   }
 
-  v22 = [MEMORY[0x1E695E000] safari_browserDefaults];
-  v23 = [v22 BOOLForKey:*MEMORY[0x1E69B1EB8]];
+  safari_browserDefaults = [MEMORY[0x1E695E000] safari_browserDefaults];
+  v23 = [safari_browserDefaults BOOLForKey:*MEMORY[0x1E69B1EB8]];
 
   if (!v14)
   {
@@ -217,20 +217,20 @@ LABEL_16:
 
   if (v14 != 2)
   {
-    if (!(v19 | (([a1 canShowMIMEType] & 1) == 0)))
+    if (!(v19 | (([self canShowMIMEType] & 1) == 0)))
     {
       v21 = 0;
       goto LABEL_37;
     }
 
-    if ([a1 canShowMIMEType] && (objc_msgSend(v7, "_sf_allowedToOverrideContentDispositionAttachment") & v23) == 1)
+    if ([self canShowMIMEType] && (objc_msgSend(response, "_sf_allowedToOverrideContentDispositionAttachment") & v23) == 1)
     {
-      if (v18)
+      if (isForMainFrame)
       {
         goto LABEL_28;
       }
 
-      if ([a1 _sf_allowReloadingInMainFrame])
+      if ([self _sf_allowReloadingInMainFrame])
       {
         v21 = 4;
         goto LABEL_37;
@@ -248,9 +248,9 @@ LABEL_36:
     goto LABEL_37;
   }
 
-  if (v18 & 1 | !v19)
+  if (isForMainFrame & 1 | !v19)
   {
-    if ((v18 & 1) == 0)
+    if ((isForMainFrame & 1) == 0)
     {
       if (_os_feature_enabled_impl())
       {
@@ -270,7 +270,7 @@ LABEL_28:
     goto LABEL_37;
   }
 
-  if ([a1 _sf_allowReloadingInMainFrame])
+  if ([self _sf_allowReloadingInMainFrame])
   {
     v21 = 4;
   }

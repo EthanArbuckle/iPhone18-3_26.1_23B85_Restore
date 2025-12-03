@@ -1,15 +1,15 @@
 @interface HOOnboardingWelcomeViewController
 - (HOOnboardingChildViewControllerDelegate)delegate;
 - (HOOnboardingChildViewControllerNavigationBarDelegate)navigationBarDelegate;
-- (HOOnboardingWelcomeViewController)initWithDelegate:(id)a3;
-- (void)_continue:(id)a3;
+- (HOOnboardingWelcomeViewController)initWithDelegate:(id)delegate;
+- (void)_continue:(id)_continue;
 @end
 
 @implementation HOOnboardingWelcomeViewController
 
-- (HOOnboardingWelcomeViewController)initWithDelegate:(id)a3
+- (HOOnboardingWelcomeViewController)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v5 = sub_100046640(@"HOWelcomeView_Title");
   v30.receiver = self;
   v30.super_class = HOOnboardingWelcomeViewController;
@@ -45,9 +45,9 @@
 
     if ((+[HFUtilities isAMac](HFUtilities, "isAMac") & 1) != 0 || +[HFUtilities isAVisionPro])
     {
-      v22 = [(HOOnboardingWelcomeViewController *)v6 buttonTray];
+      buttonTray = [(HOOnboardingWelcomeViewController *)v6 buttonTray];
       v23 = sub_100046640(@"HOWelcomeView_FinePrint_AddAccessories");
-      [v22 addCaptionText:v23];
+      [buttonTray addCaptionText:v23];
     }
 
     v24 = +[OBBoldTrayButton boldButton];
@@ -61,17 +61,17 @@
 
     [(OBTrayButton *)v6->_continueButton addTarget:v6 action:"_continue:" forControlEvents:64];
     [(OBTrayButton *)v6->_continueButton setAccessibilityIdentifier:@"HOOnboardingWelcomeViewController.continueButton"];
-    v28 = [(HOOnboardingWelcomeViewController *)v6 buttonTray];
-    [v28 addButton:v6->_continueButton];
+    buttonTray2 = [(HOOnboardingWelcomeViewController *)v6 buttonTray];
+    [buttonTray2 addButton:v6->_continueButton];
 
     [(HOOnboardingWelcomeViewController *)v6 setModalInPresentation:1];
-    [(HOOnboardingWelcomeViewController *)v6 setDelegate:v4];
+    [(HOOnboardingWelcomeViewController *)v6 setDelegate:delegateCopy];
   }
 
   return v6;
 }
 
-- (void)_continue:(id)a3
+- (void)_continue:(id)_continue
 {
   v4 = HFLogForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -81,11 +81,11 @@
   }
 
   v5 = +[HFHomeKitDispatcher sharedDispatcher];
-  v6 = [v5 homeManager];
-  [v6 hf_enableEventLogOnboardingFlag];
+  homeManager = [v5 homeManager];
+  [homeManager hf_enableEventLogOnboardingFlag];
 
-  v7 = [(HOOnboardingWelcomeViewController *)self delegate];
-  [v7 childViewControllerDidFinish:self];
+  delegate = [(HOOnboardingWelcomeViewController *)self delegate];
+  [delegate childViewControllerDidFinish:self];
 }
 
 - (HOOnboardingChildViewControllerDelegate)delegate

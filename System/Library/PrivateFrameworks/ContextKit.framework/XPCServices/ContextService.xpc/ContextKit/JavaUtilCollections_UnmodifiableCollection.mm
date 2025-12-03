@@ -1,18 +1,18 @@
 @interface JavaUtilCollections_UnmodifiableCollection
-- (BOOL)containsAllWithJavaUtilCollection:(id)a3;
-- (BOOL)containsWithId:(id)a3;
+- (BOOL)containsAllWithJavaUtilCollection:(id)collection;
+- (BOOL)containsWithId:(id)id;
 - (BOOL)isEmpty;
 - (NSString)description;
 - (id)iterator;
 - (id)toArray;
-- (id)toArrayWithNSObjectArray:(id)a3;
+- (id)toArrayWithNSObjectArray:(id)array;
 - (int)size;
 - (void)dealloc;
 @end
 
 @implementation JavaUtilCollections_UnmodifiableCollection
 
-- (BOOL)containsWithId:(id)a3
+- (BOOL)containsWithId:(id)id
 {
   c = self->c_;
   if (!c)
@@ -20,10 +20,10 @@
     JreThrowNullPointerException();
   }
 
-  return [(JavaUtilCollection *)c containsWithId:a3];
+  return [(JavaUtilCollection *)c containsWithId:id];
 }
 
-- (BOOL)containsAllWithJavaUtilCollection:(id)a3
+- (BOOL)containsAllWithJavaUtilCollection:(id)collection
 {
   c = self->c_;
   if (!c)
@@ -31,7 +31,7 @@
     JreThrowNullPointerException();
   }
 
-  return [(JavaUtilCollection *)c containsAllWithJavaUtilCollection:a3];
+  return [(JavaUtilCollection *)c containsAllWithJavaUtilCollection:collection];
 }
 
 - (BOOL)isEmpty
@@ -81,7 +81,7 @@
   return [(JavaUtilCollection *)c toArray];
 }
 
-- (id)toArrayWithNSObjectArray:(id)a3
+- (id)toArrayWithNSObjectArray:(id)array
 {
   c = self->c_;
   if (!c)
@@ -89,7 +89,7 @@
     JreThrowNullPointerException();
   }
 
-  return [(JavaUtilCollection *)c toArrayWithNSObjectArray:a3];
+  return [(JavaUtilCollection *)c toArrayWithNSObjectArray:array];
 }
 
 - (NSString)description

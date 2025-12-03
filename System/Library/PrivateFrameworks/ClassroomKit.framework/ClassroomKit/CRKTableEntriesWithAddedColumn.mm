@@ -1,18 +1,18 @@
 @interface CRKTableEntriesWithAddedColumn
-- (CRKTableEntriesWithAddedColumn)initWithOrigin:(id)a3 index:(unint64_t)a4 entries:(id)a5;
-- (id)entryAtRow:(unint64_t)a3 column:(unint64_t)a4;
+- (CRKTableEntriesWithAddedColumn)initWithOrigin:(id)origin index:(unint64_t)index entries:(id)entries;
+- (id)entryAtRow:(unint64_t)row column:(unint64_t)column;
 @end
 
 @implementation CRKTableEntriesWithAddedColumn
 
-- (CRKTableEntriesWithAddedColumn)initWithOrigin:(id)a3 index:(unint64_t)a4 entries:(id)a5
+- (CRKTableEntriesWithAddedColumn)initWithOrigin:(id)origin index:(unint64_t)index entries:(id)entries
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = v10;
-  if (v9)
+  originCopy = origin;
+  entriesCopy = entries;
+  v11 = entriesCopy;
+  if (originCopy)
   {
-    if (v10)
+    if (entriesCopy)
     {
       goto LABEL_3;
     }
@@ -29,15 +29,15 @@
 
   [CRKTableEntriesWithAddedColumn initWithOrigin:index:entries:];
 LABEL_3:
-  if ([v9 columnCount] < a4)
+  if ([originCopy columnCount] < index)
   {
-    [CRKTableEntriesWithAddedColumn initWithOrigin:a4 index:? entries:?];
+    [CRKTableEntriesWithAddedColumn initWithOrigin:index index:? entries:?];
   }
 
-  v12 = [v9 rowCount];
-  if (v12 != [v11 count])
+  rowCount = [originCopy rowCount];
+  if (rowCount != [v11 count])
   {
-    [CRKTableEntriesWithAddedColumn initWithOrigin:v11 index:v9 entries:?];
+    [CRKTableEntriesWithAddedColumn initWithOrigin:v11 index:originCopy entries:?];
   }
 
   v18.receiver = self;
@@ -46,8 +46,8 @@ LABEL_3:
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->mOrigin, a3);
-    v14->mIndex = a4;
+    objc_storeStrong(&v13->mOrigin, origin);
+    v14->mIndex = index;
     v15 = [v11 copy];
     mEntries = v14->mEntries;
     v14->mEntries = v15;
@@ -56,19 +56,19 @@ LABEL_3:
   return v14;
 }
 
-- (id)entryAtRow:(unint64_t)a3 column:(unint64_t)a4
+- (id)entryAtRow:(unint64_t)row column:(unint64_t)column
 {
   mIndex = self->mIndex;
-  if (mIndex <= a4)
+  if (mIndex <= column)
   {
-    if (mIndex == a4)
+    if (mIndex == column)
     {
-      v6 = [(NSArray *)self->mEntries objectAtIndexedSubscript:a3];
+      v6 = [(NSArray *)self->mEntries objectAtIndexedSubscript:row];
       goto LABEL_7;
     }
 
     mOrigin = self->mOrigin;
-    --a4;
+    --column;
   }
 
   else
@@ -76,7 +76,7 @@ LABEL_3:
     mOrigin = self->mOrigin;
   }
 
-  v6 = [(CRKTableEntries *)mOrigin entryAtRow:a3 column:a4];
+  v6 = [(CRKTableEntries *)mOrigin entryAtRow:row column:column];
 LABEL_7:
 
   return v6;

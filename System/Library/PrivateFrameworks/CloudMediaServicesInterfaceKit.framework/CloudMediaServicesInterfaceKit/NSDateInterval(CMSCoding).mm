@@ -9,12 +9,12 @@
 {
   v14[2] = *MEMORY[0x277D85DE8];
   v13[0] = @"startDate";
-  v2 = [a1 startDate];
-  v3 = [v2 cmsCoded];
-  v4 = v3;
-  if (v3)
+  startDate = [self startDate];
+  cmsCoded = [startDate cmsCoded];
+  v4 = cmsCoded;
+  if (cmsCoded)
   {
-    v5 = v3;
+    v5 = cmsCoded;
   }
 
   else
@@ -24,12 +24,12 @@
 
   v13[1] = @"endDate";
   v14[0] = v5;
-  v6 = [a1 endDate];
-  v7 = [v6 cmsCoded];
-  v8 = v7;
-  if (v7)
+  endDate = [self endDate];
+  cmsCoded2 = [endDate cmsCoded];
+  v8 = cmsCoded2;
+  if (cmsCoded2)
   {
-    v9 = v7;
+    v9 = cmsCoded2;
   }
 
   else

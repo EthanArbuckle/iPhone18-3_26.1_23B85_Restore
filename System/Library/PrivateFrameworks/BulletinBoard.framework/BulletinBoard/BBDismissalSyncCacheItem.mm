@@ -1,9 +1,9 @@
 @interface BBDismissalSyncCacheItem
 - (BBDismissalSyncCacheItem)init;
-- (id)findBulletinMatch:(id)a3;
+- (id)findBulletinMatch:(id)match;
 - (id)purgeExpired;
-- (void)cacheDismissalDictionaries:(id)a3 dismissalIDs:(id)a4 forFeeds:(unint64_t)a5;
-- (void)removeBulletinMatch:(id)a3;
+- (void)cacheDismissalDictionaries:(id)dictionaries dismissalIDs:(id)ds forFeeds:(unint64_t)feeds;
+- (void)removeBulletinMatch:(id)match;
 @end
 
 @implementation BBDismissalSyncCacheItem
@@ -27,17 +27,17 @@
   return v2;
 }
 
-- (void)cacheDismissalDictionaries:(id)a3 dismissalIDs:(id)a4 forFeeds:(unint64_t)a5
+- (void)cacheDismissalDictionaries:(id)dictionaries dismissalIDs:(id)ds forFeeds:(unint64_t)feeds
 {
   v46 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v28 = a4;
-  obj = v8;
+  dictionariesCopy = dictionaries;
+  dsCopy = ds;
+  obj = dictionariesCopy;
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v9 = [v8 countByEnumeratingWithState:&v39 objects:v45 count:16];
+  v9 = [dictionariesCopy countByEnumeratingWithState:&v39 objects:v45 count:16];
   if (v9)
   {
     v10 = v9;
@@ -74,7 +74,7 @@
               v18 = *(*(&v35 + 1) + 8 * j);
               if ([v18 matchDismissalDictionary:v12])
               {
-                [v18 addFeeds:a5];
+                [v18 addFeeds:feeds];
                 goto LABEL_16;
               }
             }
@@ -89,7 +89,7 @@
           }
         }
 
-        v13 = [[BBDismissalDictionaryAndFeeds alloc] initWithDismissalDictionary:v12 andFeeds:a5];
+        v13 = [[BBDismissalDictionaryAndFeeds alloc] initWithDismissalDictionary:v12 andFeeds:feeds];
         [(NSMutableArray *)self->_dismissalDictionariesAndFeeds addObject:v13];
 LABEL_16:
       }
@@ -104,7 +104,7 @@ LABEL_16:
   v34 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v19 = v28;
+  v19 = dsCopy;
   v20 = [v19 countByEnumeratingWithState:&v31 objects:v43 count:16];
   if (v20)
   {
@@ -124,12 +124,12 @@ LABEL_16:
         if (v25)
         {
           v26 = v25;
-          [(BBDismissalItem *)v25 addFeeds:a5];
+          [(BBDismissalItem *)v25 addFeeds:feeds];
         }
 
         else
         {
-          v26 = [[BBDismissalItem alloc] initWithFeeds:a5];
+          v26 = [[BBDismissalItem alloc] initWithFeeds:feeds];
           [(NSMutableDictionary *)self->_dismissalIDToFeeds setObject:v26 forKeyedSubscript:v24];
         }
       }
@@ -143,24 +143,24 @@ LABEL_16:
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (id)findBulletinMatch:(id)a3
+- (id)findBulletinMatch:(id)match
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 dismissalID];
-  if (!v5 || ([(NSMutableDictionary *)self->_dismissalIDToFeeds objectForKeyedSubscript:v5], (v6 = objc_claimAutoreleasedReturnValue()) == 0) || (v7 = v6, v8 = [[BBDismissalSyncBulletinMatch alloc] initWithDismissalID:v5 andItem:v6], v7, !v8))
+  matchCopy = match;
+  dismissalID = [matchCopy dismissalID];
+  if (!dismissalID || ([(NSMutableDictionary *)self->_dismissalIDToFeeds objectForKeyedSubscript:dismissalID], (v6 = objc_claimAutoreleasedReturnValue()) == 0) || (v7 = v6, v8 = [[BBDismissalSyncBulletinMatch alloc] initWithDismissalID:dismissalID andItem:v6], v7, !v8))
   {
-    v9 = [MEMORY[0x277CBEB38] dictionary];
-    v10 = [v4 date];
-    if (v10)
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    date = [matchCopy date];
+    if (date)
     {
-      [v9 setObject:v10 forKeyedSubscript:@"d"];
+      [dictionary setObject:date forKeyedSubscript:@"d"];
     }
 
-    v11 = [v4 syncHash];
-    if (v11)
+    syncHash = [matchCopy syncHash];
+    if (syncHash)
     {
-      [v9 setObject:v11 forKeyedSubscript:@"h"];
+      [dictionary setObject:syncHash forKeyedSubscript:@"h"];
     }
 
     v20 = 0u;
@@ -182,7 +182,7 @@ LABEL_16:
           }
 
           v15 = *(*(&v18 + 1) + 8 * i);
-          if ([v15 matchDismissalDictionary:{v9, v18}])
+          if ([v15 matchDismissalDictionary:{dictionary, v18}])
           {
             v8 = [[BBDismissalSyncBulletinMatch alloc] initWithDismissalDictionaryItem:v15];
             goto LABEL_18;
@@ -207,21 +207,21 @@ LABEL_18:
   return v8;
 }
 
-- (void)removeBulletinMatch:(id)a3
+- (void)removeBulletinMatch:(id)match
 {
-  v6 = a3;
-  v4 = [v6 dismissalID];
-  if (v4)
+  matchCopy = match;
+  dismissalID = [matchCopy dismissalID];
+  if (dismissalID)
   {
-    [(NSMutableDictionary *)self->_dismissalIDToFeeds removeObjectForKey:v4];
+    [(NSMutableDictionary *)self->_dismissalIDToFeeds removeObjectForKey:dismissalID];
   }
 
   else
   {
-    v5 = [v6 dismissalItem];
-    if (v5)
+    dismissalItem = [matchCopy dismissalItem];
+    if (dismissalItem)
     {
-      [(NSMutableArray *)self->_dismissalDictionariesAndFeeds removeObject:v5];
+      [(NSMutableArray *)self->_dismissalDictionariesAndFeeds removeObject:dismissalItem];
     }
   }
 }

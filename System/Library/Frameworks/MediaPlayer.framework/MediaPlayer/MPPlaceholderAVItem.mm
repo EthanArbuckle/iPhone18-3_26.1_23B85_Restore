@@ -1,133 +1,133 @@
 @interface MPPlaceholderAVItem
-- (BOOL)isValidPlayerSubstituteForItem:(id)a3;
+- (BOOL)isValidPlayerSubstituteForItem:(id)item;
 - (MPPlaceholderAVItem)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)setAlbum:(id)a3;
-- (void)setArtist:(id)a3;
-- (void)setDurationFromExternalMetadata:(double)a3;
-- (void)setExplicitTrack:(BOOL)a3;
-- (void)setMainTitle:(id)a3;
-- (void)setStoreItemInt64ID:(int64_t)a3;
-- (void)setSupportsLikedState:(BOOL)a3;
+- (void)setAlbum:(id)album;
+- (void)setArtist:(id)artist;
+- (void)setDurationFromExternalMetadata:(double)metadata;
+- (void)setExplicitTrack:(BOOL)track;
+- (void)setMainTitle:(id)title;
+- (void)setStoreItemInt64ID:(int64_t)d;
+- (void)setSupportsLikedState:(BOOL)state;
 @end
 
 @implementation MPPlaceholderAVItem
 
-- (BOOL)isValidPlayerSubstituteForItem:(id)a3
+- (BOOL)isValidPlayerSubstituteForItem:(id)item
 {
-  if (self == a3)
+  if (self == item)
   {
     return 1;
   }
 
-  v3 = a3;
-  v4 = [v3 isMemberOfClass:objc_opt_class()];
+  itemCopy = item;
+  v4 = [itemCopy isMemberOfClass:objc_opt_class()];
 
   return v4;
 }
 
-- (void)setSupportsLikedState:(BOOL)a3
+- (void)setSupportsLikedState:(BOOL)state
 {
-  if (*(&self->_supportsLikedState + 5) != a3)
+  if (*(&self->_supportsLikedState + 5) != state)
   {
-    *(&self->_supportsLikedState + 5) = a3;
+    *(&self->_supportsLikedState + 5) = state;
   }
 }
 
-- (void)setStoreItemInt64ID:(int64_t)a3
+- (void)setStoreItemInt64ID:(int64_t)d
 {
-  if (self->_storeItemInt64ID != a3)
+  if (self->_storeItemInt64ID != d)
   {
-    self->_storeItemInt64ID = a3;
+    self->_storeItemInt64ID = d;
   }
 }
 
-- (void)setMainTitle:(id)a3
+- (void)setMainTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   mainTitle = self->_mainTitle;
-  if (mainTitle != v4)
+  if (mainTitle != titleCopy)
   {
-    v10 = v4;
-    v6 = [(NSString *)mainTitle isEqualToString:v4];
-    v4 = v10;
+    v10 = titleCopy;
+    v6 = [(NSString *)mainTitle isEqualToString:titleCopy];
+    titleCopy = v10;
     if (!v6)
     {
       v7 = [(NSString *)v10 copy];
       v8 = self->_mainTitle;
       self->_mainTitle = v7;
 
-      v9 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v9 postNotificationName:@"MPAVItemTitlesDidChangeNotification" object:self];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter postNotificationName:@"MPAVItemTitlesDidChangeNotification" object:self];
 
-      v4 = v10;
+      titleCopy = v10;
     }
   }
 }
 
-- (void)setExplicitTrack:(BOOL)a3
+- (void)setExplicitTrack:(BOOL)track
 {
-  if (*(&self->_supportsLikedState + 3) != a3)
+  if (*(&self->_supportsLikedState + 3) != track)
   {
-    *(&self->_supportsLikedState + 3) = a3;
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v5 postNotificationName:@"MPAVItemIsExplicitDidChangeNotification" object:self];
+    *(&self->_supportsLikedState + 3) = track;
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"MPAVItemIsExplicitDidChangeNotification" object:self];
   }
 }
 
-- (void)setDurationFromExternalMetadata:(double)a3
+- (void)setDurationFromExternalMetadata:(double)metadata
 {
-  if (vabdd_f64(self->_durationFromExternalMetadata, a3) > 2.22044605e-16)
+  if (vabdd_f64(self->_durationFromExternalMetadata, metadata) > 2.22044605e-16)
   {
-    self->_durationFromExternalMetadata = a3;
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v5 postNotificationName:@"MPAVItemDurationAvailableNotification" object:self];
+    self->_durationFromExternalMetadata = metadata;
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"MPAVItemDurationAvailableNotification" object:self];
   }
 }
 
-- (void)setArtist:(id)a3
+- (void)setArtist:(id)artist
 {
-  v4 = a3;
+  artistCopy = artist;
   artist = self->_artist;
-  if (artist != v4)
+  if (artist != artistCopy)
   {
-    v10 = v4;
-    v6 = [(NSString *)artist isEqualToString:v4];
-    v4 = v10;
+    v10 = artistCopy;
+    v6 = [(NSString *)artist isEqualToString:artistCopy];
+    artistCopy = v10;
     if (!v6)
     {
       v7 = [(NSString *)v10 copy];
       v8 = self->_artist;
       self->_artist = v7;
 
-      v9 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v9 postNotificationName:@"MPAVItemTitlesDidChangeNotification" object:self];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter postNotificationName:@"MPAVItemTitlesDidChangeNotification" object:self];
 
-      v4 = v10;
+      artistCopy = v10;
     }
   }
 }
 
-- (void)setAlbum:(id)a3
+- (void)setAlbum:(id)album
 {
-  v4 = a3;
+  albumCopy = album;
   album = self->_album;
-  if (album != v4)
+  if (album != albumCopy)
   {
-    v10 = v4;
-    v6 = [(NSString *)album isEqualToString:v4];
-    v4 = v10;
+    v10 = albumCopy;
+    v6 = [(NSString *)album isEqualToString:albumCopy];
+    albumCopy = v10;
     if (!v6)
     {
       v7 = [(NSString *)v10 copy];
       v8 = self->_album;
       self->_album = v7;
 
-      v9 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v9 postNotificationName:@"MPAVItemTitlesDidChangeNotification" object:self];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter postNotificationName:@"MPAVItemTitlesDidChangeNotification" object:self];
 
-      v4 = v10;
+      albumCopy = v10;
     }
   }
 }
@@ -138,36 +138,36 @@
   v8.receiver = self;
   v8.super_class = MPPlaceholderAVItem;
   v4 = [(MPAVItem *)&v8 description];
-  v5 = [(MPPlaceholderAVItem *)self mainTitle];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  mainTitle = [(MPPlaceholderAVItem *)self mainTitle];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, mainTitle];
 
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
-  v5 = [(MPPlaceholderAVItem *)self album];
+  album = [(MPPlaceholderAVItem *)self album];
   v6 = v4[68];
-  v4[68] = v5;
+  v4[68] = album;
 
-  v7 = [(MPPlaceholderAVItem *)self artist];
+  artist = [(MPPlaceholderAVItem *)self artist];
   v8 = v4[69];
-  v4[69] = v7;
+  v4[69] = artist;
 
   [(MPPlaceholderAVItem *)self durationFromExternalMetadata];
   v4[70] = v9;
   *(v4 + 541) = [(MPPlaceholderAVItem *)self isExplicitTrack];
   *(v4 + 542) = [(MPPlaceholderAVItem *)self isLikedStateEnabled];
-  v10 = [(MPPlaceholderAVItem *)self mainTitle];
+  mainTitle = [(MPPlaceholderAVItem *)self mainTitle];
   v11 = v4[71];
-  v4[71] = v10;
+  v4[71] = mainTitle;
 
   *(v4 + 543) = [(MPPlaceholderAVItem *)self supportsLikedState];
   v4[72] = [(MPPlaceholderAVItem *)self storeItemInt64ID];
-  v12 = [(MPPlaceholderAVItem *)self artworkCatalogBlock];
+  artworkCatalogBlock = [(MPPlaceholderAVItem *)self artworkCatalogBlock];
   v13 = v4[73];
-  v4[73] = v12;
+  v4[73] = artworkCatalogBlock;
 
   return v4;
 }

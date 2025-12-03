@@ -1,22 +1,22 @@
 @interface VUIMediaLibrary
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)title;
 - (VUIMediaLibrary)init;
-- (VUIMediaLibrary)initWithIdentifier:(id)a3 type:(unint64_t)a4 manager:(id)a5;
+- (VUIMediaLibrary)initWithIdentifier:(id)identifier type:(unint64_t)type manager:(id)manager;
 - (VUIMediaLibraryManager)manager;
-- (id)_imageLoadOperationWithParams:(id)a3 scaleToSize:(CGSize)a4 cropToFit:(BOOL)a5;
-- (id)_imageLoadParamsForImageLoaderObject:(id)a3;
+- (id)_imageLoadOperationWithParams:(id)params scaleToSize:(CGSize)size cropToFit:(BOOL)fit;
+- (id)_imageLoadParamsForImageLoaderObject:(id)object;
 - (id)_imageLoaderIdentifier;
 - (id)description;
-- (id)enqueueFetchRequests:(id)a3 completionHandler:(id)a4;
-- (id)enqueueMediaItemEntityTypesFetchWithCompletionHandler:(id)a3;
-- (id)saveMediaEntity:(id)a3 completionHandler:(id)a4;
+- (id)enqueueFetchRequests:(id)requests completionHandler:(id)handler;
+- (id)enqueueMediaItemEntityTypesFetchWithCompletionHandler:(id)handler;
+- (id)saveMediaEntity:(id)entity completionHandler:(id)handler;
 - (unint64_t)_incrementRevision;
 - (unint64_t)hash;
 - (unint64_t)revision;
 - (void)_postContentsDidChangeNotification;
-- (void)_updateWithTitle:(id)a3 connectionState:(unint64_t)a4;
-- (void)connectWithCompletionHandler:(id)a3 progressHandler:(id)a4;
+- (void)_updateWithTitle:(id)title connectionState:(unint64_t)state;
+- (void)connectWithCompletionHandler:(id)handler progressHandler:(id)progressHandler;
 @end
 
 @implementation VUIMediaLibrary
@@ -25,13 +25,13 @@
 {
   [(VUIMediaLibrary *)self _incrementRevision];
   objc_initWeak(&location, self);
-  v3 = [(VUIMediaLibrary *)self manager];
+  manager = [(VUIMediaLibrary *)self manager];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __53__VUIMediaLibrary__postContentsDidChangeNotification__block_invoke;
   v4[3] = &unk_1E872E4B8;
   objc_copyWeak(&v5, &location);
-  [v3 _enqueueCompletionQueueBlock:v4];
+  [manager _enqueueCompletionQueueBlock:v4];
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -39,11 +39,11 @@
 
 - (unint64_t)_incrementRevision
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_revision + 1;
-  v2->_revision = v3;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_revision + 1;
+  selfCopy->_revision = v3;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
@@ -78,21 +78,21 @@ void __53__VUIMediaLibrary__postContentsDidChangeNotification__block_invoke(uint
   return 0;
 }
 
-- (VUIMediaLibrary)initWithIdentifier:(id)a3 type:(unint64_t)a4 manager:(id)a5
+- (VUIMediaLibrary)initWithIdentifier:(id)identifier type:(unint64_t)type manager:(id)manager
 {
-  v8 = a3;
-  v9 = a5;
+  identifierCopy = identifier;
+  managerCopy = manager;
   v14.receiver = self;
   v14.super_class = VUIMediaLibrary;
   v10 = [(VUIMediaLibraryImageLoader *)&v14 init];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [identifierCopy copy];
     identifier = v10->_identifier;
     v10->_identifier = v11;
 
-    v10->_type = a4;
-    objc_storeWeak(&v10->_manager, v9);
+    v10->_type = type;
+    objc_storeWeak(&v10->_manager, managerCopy);
     v10->_revision = 1;
   }
 
@@ -111,30 +111,30 @@ void __53__VUIMediaLibrary__postContentsDidChangeNotification__block_invoke(uint
 
 - (unint64_t)revision
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  revision = v2->_revision;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  revision = selfCopy->_revision;
+  objc_sync_exit(selfCopy);
 
   return revision;
 }
 
-- (void)connectWithCompletionHandler:(id)a3 progressHandler:(id)a4
+- (void)connectWithCompletionHandler:(id)handler progressHandler:(id)progressHandler
 {
-  v5 = a3;
-  if (v5)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v6 = [(VUIMediaLibrary *)self manager];
+    manager = [(VUIMediaLibrary *)self manager];
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __64__VUIMediaLibrary_connectWithCompletionHandler_progressHandler___block_invoke;
     v7[3] = &unk_1E872D7E0;
-    v8 = v5;
-    [v6 _enqueueCompletionQueueBlock:v7];
+    v8 = handlerCopy;
+    [manager _enqueueCompletionQueueBlock:v7];
   }
 }
 
-- (id)enqueueMediaItemEntityTypesFetchWithCompletionHandler:(id)a3
+- (id)enqueueMediaItemEntityTypesFetchWithCompletionHandler:(id)handler
 {
   v3 = MEMORY[0x1E695DF30];
   v4 = *MEMORY[0x1E695D930];
@@ -144,7 +144,7 @@ void __53__VUIMediaLibrary__postContentsDidChangeNotification__block_invoke(uint
   return 0;
 }
 
-- (id)enqueueFetchRequests:(id)a3 completionHandler:(id)a4
+- (id)enqueueFetchRequests:(id)requests completionHandler:(id)handler
 {
   v4 = MEMORY[0x1E695DF30];
   v5 = *MEMORY[0x1E695D930];
@@ -154,7 +154,7 @@ void __53__VUIMediaLibrary__postContentsDidChangeNotification__block_invoke(uint
   return 0;
 }
 
-- (id)saveMediaEntity:(id)a3 completionHandler:(id)a4
+- (id)saveMediaEntity:(id)entity completionHandler:(id)handler
 {
   v4 = MEMORY[0x1E695DF30];
   v5 = *MEMORY[0x1E695D930];
@@ -174,7 +174,7 @@ void __53__VUIMediaLibrary__postContentsDidChangeNotification__block_invoke(uint
   return 0;
 }
 
-- (id)_imageLoadParamsForImageLoaderObject:(id)a3
+- (id)_imageLoadParamsForImageLoaderObject:(id)object
 {
   v3 = MEMORY[0x1E695DF30];
   v4 = *MEMORY[0x1E695D930];
@@ -184,7 +184,7 @@ void __53__VUIMediaLibrary__postContentsDidChangeNotification__block_invoke(uint
   return 0;
 }
 
-- (id)_imageLoadOperationWithParams:(id)a3 scaleToSize:(CGSize)a4 cropToFit:(BOOL)a5
+- (id)_imageLoadOperationWithParams:(id)params scaleToSize:(CGSize)size cropToFit:(BOOL)fit
 {
   v5 = MEMORY[0x1E695DF30];
   v6 = *MEMORY[0x1E695D930];
@@ -196,33 +196,33 @@ void __53__VUIMediaLibrary__postContentsDidChangeNotification__block_invoke(uint
 
 - (unint64_t)hash
 {
-  v3 = [(VUIMediaLibrary *)self type];
-  v4 = v3 ^ (2 * [(VUIMediaLibrary *)self revision]);
-  v5 = [(VUIMediaLibrary *)self identifier];
-  v6 = [v5 hash];
+  type = [(VUIMediaLibrary *)self type];
+  v4 = type ^ (2 * [(VUIMediaLibrary *)self revision]);
+  identifier = [(VUIMediaLibrary *)self identifier];
+  v6 = [identifier hash];
 
   return v4 ^ v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v14 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = v5;
-    v7 = [(VUIMediaLibrary *)self type];
-    if (v7 == [(VUIMediaLibrary *)v6 type]&& (v8 = [(VUIMediaLibrary *)self revision], v8 == [(VUIMediaLibrary *)v6 revision]))
+    type = [(VUIMediaLibrary *)self type];
+    if (type == [(VUIMediaLibrary *)v6 type]&& (v8 = [(VUIMediaLibrary *)self revision], v8 == [(VUIMediaLibrary *)v6 revision]))
     {
-      v9 = [(VUIMediaLibrary *)self identifier];
-      v10 = [(VUIMediaLibrary *)v6 identifier];
-      v11 = v9;
-      v12 = v10;
+      identifier = [(VUIMediaLibrary *)self identifier];
+      identifier2 = [(VUIMediaLibrary *)v6 identifier];
+      v11 = identifier;
+      v12 = identifier2;
       v13 = v12;
       if (v11 == v12)
       {
@@ -262,8 +262,8 @@ void __53__VUIMediaLibrary__postContentsDidChangeNotification__block_invoke(uint
   [v3 addObject:v4];
 
   v5 = MEMORY[0x1E696AEC0];
-  v6 = [(VUIMediaLibrary *)self identifier];
-  v7 = [v5 stringWithFormat:@"%@=%@", @"identifier", v6];
+  identifier = [(VUIMediaLibrary *)self identifier];
+  v7 = [v5 stringWithFormat:@"%@=%@", @"identifier", identifier];
   [v3 addObject:v7];
 
   v8 = MEMORY[0x1E696AEC0];
@@ -275,8 +275,8 @@ void __53__VUIMediaLibrary__postContentsDidChangeNotification__block_invoke(uint
   [v3 addObject:v11];
 
   v12 = MEMORY[0x1E696AEC0];
-  v13 = [(VUIMediaLibrary *)self title];
-  v14 = [v12 stringWithFormat:@"%@=%@", @"title", v13];
+  title = [(VUIMediaLibrary *)self title];
+  v14 = [v12 stringWithFormat:@"%@=%@", @"title", title];
   [v3 addObject:v14];
 
   v15 = MEMORY[0x1E696AEC0];
@@ -303,7 +303,7 @@ void __53__VUIMediaLibrary__postContentsDidChangeNotification__block_invoke(uint
   return v26;
 }
 
-- (void)_updateWithTitle:(id)a3 connectionState:(unint64_t)a4
+- (void)_updateWithTitle:(id)title connectionState:(unint64_t)state
 {
   v4 = MEMORY[0x1E695DF30];
   v5 = *MEMORY[0x1E695D930];

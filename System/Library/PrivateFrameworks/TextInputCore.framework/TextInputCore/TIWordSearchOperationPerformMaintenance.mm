@@ -1,5 +1,5 @@
 @interface TIWordSearchOperationPerformMaintenance
-- (TIWordSearchOperationPerformMaintenance)initWithMecabraWrapper:(id)a3;
+- (TIWordSearchOperationPerformMaintenance)initWithMecabraWrapper:(id)wrapper;
 - (void)perform;
 @end
 
@@ -8,9 +8,9 @@
 - (void)perform
 {
   v13 = *MEMORY[0x277D85DE8];
-  v3 = [(TIWordSearchOperationPerformMaintenance *)self mecabraWrapper];
+  mecabraWrapper = [(TIWordSearchOperationPerformMaintenance *)self mecabraWrapper];
 
-  if (v3)
+  if (mecabraWrapper)
   {
     v4 = os_transaction_create();
     if (TICanLogMessageAtLevel_onceToken != -1)
@@ -27,8 +27,8 @@
       _os_log_debug_impl(&dword_22CA55000, v5, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
     }
 
-    v6 = [(TIWordSearchOperationPerformMaintenance *)self mecabraWrapper];
-    [v6 mecabraRef];
+    mecabraWrapper2 = [(TIWordSearchOperationPerformMaintenance *)self mecabraWrapper];
+    [mecabraWrapper2 mecabraRef];
     MecabraPerformMaintenance();
 
     if (TICanLogMessageAtLevel_onceToken != -1)
@@ -49,16 +49,16 @@
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (TIWordSearchOperationPerformMaintenance)initWithMecabraWrapper:(id)a3
+- (TIWordSearchOperationPerformMaintenance)initWithMecabraWrapper:(id)wrapper
 {
-  v5 = a3;
+  wrapperCopy = wrapper;
   v9.receiver = self;
   v9.super_class = TIWordSearchOperationPerformMaintenance;
   v6 = [(TIWordSearchOperationPerformMaintenance *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_mecabraWrapper, a3);
+    objc_storeStrong(&v6->_mecabraWrapper, wrapper);
   }
 
   return v7;

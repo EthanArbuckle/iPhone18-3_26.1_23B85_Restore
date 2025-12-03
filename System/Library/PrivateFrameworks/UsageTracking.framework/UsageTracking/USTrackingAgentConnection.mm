@@ -8,8 +8,8 @@
 + (id)newConnection
 {
   v3 = [objc_alloc(MEMORY[0x277CCAE80]) initWithMachServiceName:@"com.apple.UsageTrackingAgent" options:4096];
-  v4 = [a1 newInterface];
-  [v3 setRemoteObjectInterface:v4];
+  newInterface = [self newInterface];
+  [v3 setRemoteObjectInterface:newInterface];
 
   return v3;
 }

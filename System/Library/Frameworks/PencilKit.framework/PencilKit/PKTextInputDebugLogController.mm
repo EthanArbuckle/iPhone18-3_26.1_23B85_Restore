@@ -2,8 +2,8 @@
 - (PKTextInputDebugLogController)init;
 - (PKTextInputDebugSharpenerLog)sharpenerLogWithCurrentContent;
 - (id)debugStateDetailViewController;
-- (void)logEntryForAppliedResult:(uint64_t)a1;
-- (void)reportDebugStateDescription:(id)a3;
+- (void)logEntryForAppliedResult:(uint64_t)result;
+- (void)reportDebugStateDescription:(id)description;
 @end
 
 @implementation PKTextInputDebugLogController
@@ -15,9 +15,9 @@
   v2 = [(PKTextInputDebugLogController *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     logEntries = v2->__logEntries;
-    v2->__logEntries = v3;
+    v2->__logEntries = array;
   }
 
   return v2;
@@ -25,41 +25,41 @@
 
 - (PKTextInputDebugSharpenerLog)sharpenerLogWithCurrentContent
 {
-  if (a1)
+  if (self)
   {
-    a1 = [[PKTextInputDebugSharpenerLog alloc] initWithLogEntries:a1->_logEntries];
+    self = [[PKTextInputDebugSharpenerLog alloc] initWithLogEntries:self->_logEntries];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
-- (void)logEntryForAppliedResult:(uint64_t)a1
+- (void)logEntryForAppliedResult:(uint64_t)result
 {
   v16 = a2;
-  if (a1 && os_variant_has_internal_diagnostics())
+  if (result && os_variant_has_internal_diagnostics())
   {
     v3 = [[PKTextInputDebugRecordingLogEntry alloc] initWithResultCommand:v16];
-    [*(a1 + 8) addObject:v3];
+    [*(result + 8) addObject:v3];
     v20 = 0;
     v21 = &v20;
     v22 = 0x2020000000;
     v23 = 0;
-    v4 = *(a1 + 8);
-    v5 = [v4 lastObject];
+    v4 = *(result + 8);
+    lastObject = [v4 lastObject];
 
-    if (v5)
+    if (lastObject)
     {
-      v6 = [v5 inputTargetContentInfo];
-      v7 = [v6 textInputTarget];
-      v8 = [v7 inputTargetIdentifier];
+      inputTargetContentInfo = [lastObject inputTargetContentInfo];
+      textInputTarget = [inputTargetContentInfo textInputTarget];
+      inputTargetIdentifier = [textInputTarget inputTargetIdentifier];
 
-      v9 = *(a1 + 8);
+      v9 = *(result + 8);
       v17[0] = MEMORY[0x1E69E9820];
       v17[1] = 3221225472;
       v17[2] = __52__PKTextInputDebugLogController__purgeOldLogEntries__block_invoke;
       v17[3] = &unk_1E82D70A8;
-      v10 = v8;
+      v10 = inputTargetIdentifier;
       v18 = v10;
       v19 = &v20;
       [v9 enumerateObjectsWithOptions:2 usingBlock:v17];
@@ -72,13 +72,13 @@
     }
 
     v21[3] = v11;
-    v12 = *(a1 + 8);
+    v12 = *(result + 8);
     v13 = [v12 count];
     v14 = v13 - v21[3];
 
     if (v14 >= 1)
     {
-      v15 = *(a1 + 8);
+      v15 = *(result + 8);
       [v15 removeObjectsInRange:{0, v14}];
     }
 
@@ -104,11 +104,11 @@ void __52__PKTextInputDebugLogController__purgeOldLogEntries__block_invoke(uint6
   }
 }
 
-- (void)reportDebugStateDescription:(id)a3
+- (void)reportDebugStateDescription:(id)description
 {
   v4 = MEMORY[0x1E695DF70];
-  v5 = a3;
-  v6 = [v4 array];
+  descriptionCopy = description;
+  array = [v4 array];
   if (self)
   {
     logEntries = self->__logEntries;
@@ -123,14 +123,14 @@ void __52__PKTextInputDebugLogController__purgeOldLogEntries__block_invoke(uint6
   v13 = 3221225472;
   v14 = __61__PKTextInputDebugLogController_reportDebugStateDescription___block_invoke;
   v15 = &unk_1E82D70D0;
-  v16 = v6;
-  v8 = v6;
+  v16 = array;
+  v8 = array;
   [(NSMutableArray *)logEntries enumerateObjectsWithOptions:0 usingBlock:&v12];
   v9 = MEMORY[0x1E696AEC0];
   v10 = [v8 componentsJoinedByString:@"\n"];
   v11 = [v9 stringWithFormat:@"\n%@", v10, v12, v13, v14, v15];
 
-  v5[2](v5, @"Log Entries", v11);
+  descriptionCopy[2](descriptionCopy, @"Log Entries", v11);
 }
 
 void __61__PKTextInputDebugLogController_reportDebugStateDescription___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -143,8 +143,8 @@ void __61__PKTextInputDebugLogController_reportDebugStateDescription___block_inv
 
 - (id)debugStateDetailViewController
 {
-  v2 = [(PKTextInputDebugLogController *)self sharpenerLogWithCurrentContent];
-  v3 = [[PKTextInputDebugSharpenerLogViewController alloc] initWithSharpenerLog:v2];
+  sharpenerLogWithCurrentContent = [(PKTextInputDebugLogController *)self sharpenerLogWithCurrentContent];
+  v3 = [[PKTextInputDebugSharpenerLogViewController alloc] initWithSharpenerLog:sharpenerLogWithCurrentContent];
 
   return v3;
 }

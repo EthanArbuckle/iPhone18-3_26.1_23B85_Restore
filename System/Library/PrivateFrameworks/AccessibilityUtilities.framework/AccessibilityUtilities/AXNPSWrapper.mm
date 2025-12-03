@@ -1,28 +1,28 @@
 @interface AXNPSWrapper
-+ (void)synchronizeNanoDomain:(id)a3 keys:(id)a4;
-- (AXNPSWrapper)initWithDomain:(id)a3;
++ (void)synchronizeNanoDomain:(id)domain keys:(id)keys;
+- (AXNPSWrapper)initWithDomain:(id)domain;
 @end
 
 @implementation AXNPSWrapper
 
-+ (void)synchronizeNanoDomain:(id)a3 keys:(id)a4
++ (void)synchronizeNanoDomain:(id)domain keys:(id)keys
 {
   v5 = MEMORY[0x1E69B3590];
-  v6 = a4;
-  v7 = a3;
+  keysCopy = keys;
+  domainCopy = domain;
   v8 = objc_alloc_init(v5);
-  [v8 synchronizeNanoDomain:v7 keys:v6];
+  [v8 synchronizeNanoDomain:domainCopy keys:keysCopy];
 }
 
-- (AXNPSWrapper)initWithDomain:(id)a3
+- (AXNPSWrapper)initWithDomain:(id)domain
 {
-  v4 = a3;
+  domainCopy = domain;
   v9.receiver = self;
   v9.super_class = AXNPSWrapper;
   v5 = [(AXNPSWrapper *)&v9 init];
   if (v5)
   {
-    v6 = [objc_alloc(MEMORY[0x1E69B3588]) initWithDomain:v4];
+    v6 = [objc_alloc(MEMORY[0x1E69B3588]) initWithDomain:domainCopy];
     wrapped = v5->_wrapped;
     v5->_wrapped = v6;
   }

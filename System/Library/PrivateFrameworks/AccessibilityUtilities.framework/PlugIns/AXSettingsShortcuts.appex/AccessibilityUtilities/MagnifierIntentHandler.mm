@@ -1,17 +1,17 @@
 @interface MagnifierIntentHandler
-- (void)handleStartMagnifier:(id)a3 completion:(id)a4;
+- (void)handleStartMagnifier:(id)magnifier completion:(id)completion;
 @end
 
 @implementation MagnifierIntentHandler
 
-- (void)handleStartMagnifier:(id)a3 completion:(id)a4
+- (void)handleStartMagnifier:(id)magnifier completion:(id)completion
 {
-  v4 = a4;
+  completionCopy = completion;
   v5 = +[ZoomServices sharedInstance];
   [v5 startMagnifier];
 
   v6 = [[AXStartMagnifierIntentResponse alloc] initWithCode:4 userActivity:0];
-  v4[2](v4, v6);
+  completionCopy[2](completionCopy, v6);
 }
 
 @end

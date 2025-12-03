@@ -1,16 +1,16 @@
 @interface STKTextInputSessionData
-- (STKTextInputSessionData)initWithText:(id)a3 simLabel:(id)a4;
-- (STKTextInputSessionData)initWithXPCDictionary:(id)a3;
-- (void)encodeWithXPCDictionary:(id)a3;
+- (STKTextInputSessionData)initWithText:(id)text simLabel:(id)label;
+- (STKTextInputSessionData)initWithXPCDictionary:(id)dictionary;
+- (void)encodeWithXPCDictionary:(id)dictionary;
 @end
 
 @implementation STKTextInputSessionData
 
-- (STKTextInputSessionData)initWithText:(id)a3 simLabel:(id)a4
+- (STKTextInputSessionData)initWithText:(id)text simLabel:(id)label
 {
   v5.receiver = self;
   v5.super_class = STKTextInputSessionData;
-  result = [(STKTextSessionData *)&v5 initWithText:a3 simLabel:a4];
+  result = [(STKTextSessionData *)&v5 initWithText:text simLabel:label];
   if (result)
   {
     result->_minimumInputLength = 0;
@@ -20,36 +20,36 @@
   return result;
 }
 
-- (void)encodeWithXPCDictionary:(id)a3
+- (void)encodeWithXPCDictionary:(id)dictionary
 {
   v6.receiver = self;
   v6.super_class = STKTextInputSessionData;
-  v4 = a3;
-  [(STKTextSessionData *)&v6 encodeWithXPCDictionary:v4];
+  dictionaryCopy = dictionary;
+  [(STKTextSessionData *)&v6 encodeWithXPCDictionary:dictionaryCopy];
   defaultText = self->_defaultText;
   BSSerializeStringToXPCDictionaryWithKey();
-  xpc_dictionary_set_BOOL(v4, "_isSecure", self->_isSecure);
-  xpc_dictionary_set_BOOL(v4, "_isDigits", self->_isDigitsOnly);
-  xpc_dictionary_set_uint64(v4, "_minLength", self->_minimumInputLength);
-  xpc_dictionary_set_uint64(v4, "_maxLength", self->_maximumInputLength);
+  xpc_dictionary_set_BOOL(dictionaryCopy, "_isSecure", self->_isSecure);
+  xpc_dictionary_set_BOOL(dictionaryCopy, "_isDigits", self->_isDigitsOnly);
+  xpc_dictionary_set_uint64(dictionaryCopy, "_minLength", self->_minimumInputLength);
+  xpc_dictionary_set_uint64(dictionaryCopy, "_maxLength", self->_maximumInputLength);
 }
 
-- (STKTextInputSessionData)initWithXPCDictionary:(id)a3
+- (STKTextInputSessionData)initWithXPCDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = STKTextInputSessionData;
-  v5 = [(STKTextSessionData *)&v9 initWithXPCDictionary:v4];
+  v5 = [(STKTextSessionData *)&v9 initWithXPCDictionary:dictionaryCopy];
   if (v5)
   {
     v6 = BSDeserializeStringFromXPCDictionaryWithKey();
     defaultText = v5->_defaultText;
     v5->_defaultText = v6;
 
-    v5->_isSecure = xpc_dictionary_get_BOOL(v4, "_isSecure");
-    v5->_isDigitsOnly = xpc_dictionary_get_BOOL(v4, "_isDigits");
-    v5->_minimumInputLength = xpc_dictionary_get_uint64(v4, "_minLength");
-    v5->_maximumInputLength = xpc_dictionary_get_uint64(v4, "_maxLength");
+    v5->_isSecure = xpc_dictionary_get_BOOL(dictionaryCopy, "_isSecure");
+    v5->_isDigitsOnly = xpc_dictionary_get_BOOL(dictionaryCopy, "_isDigits");
+    v5->_minimumInputLength = xpc_dictionary_get_uint64(dictionaryCopy, "_minLength");
+    v5->_maximumInputLength = xpc_dictionary_get_uint64(dictionaryCopy, "_maxLength");
   }
 
   return v5;

@@ -8,7 +8,7 @@
 - (BOOL)wantsManagement
 {
   EKWeakLinkClass();
-  v3 = [(EKUIManagedNavigationController *)self topViewController];
+  topViewController = [(EKUIManagedNavigationController *)self topViewController];
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
@@ -16,18 +16,18 @@
     return 1;
   }
 
-  v6 = [(EKUIManagedNavigationController *)self topViewController];
-  v7 = [v6 conformsToProtocol:&unk_1F4F40CD0];
+  topViewController2 = [(EKUIManagedNavigationController *)self topViewController];
+  v7 = [topViewController2 conformsToProtocol:&unk_1F4F40CD0];
 
   if (!v7)
   {
     return 0;
   }
 
-  v8 = [(EKUIManagedNavigationController *)self topViewController];
-  v9 = [v8 wantsManagement];
+  topViewController3 = [(EKUIManagedNavigationController *)self topViewController];
+  wantsManagement = [topViewController3 wantsManagement];
 
-  return v9;
+  return wantsManagement;
 }
 
 - (BOOL)canBeDirectlyManaged
@@ -37,10 +37,10 @@
     return 0;
   }
 
-  v4 = [(EKUIManagedNavigationController *)self topViewController];
-  if ([v4 conformsToProtocol:&unk_1F4F40CD0])
+  topViewController = [(EKUIManagedNavigationController *)self topViewController];
+  if ([topViewController conformsToProtocol:&unk_1F4F40CD0])
   {
-    v5 = [(EKUIManagedNavigationController *)self topViewController];
+    topViewController2 = [(EKUIManagedNavigationController *)self topViewController];
     v6 = objc_opt_respondsToSelector();
 
     if ((v6 & 1) == 0)
@@ -48,16 +48,16 @@
       return 1;
     }
 
-    v4 = [(EKUIManagedNavigationController *)self topViewController];
-    v3 = [v4 canBeDirectlyManaged];
+    topViewController = [(EKUIManagedNavigationController *)self topViewController];
+    canBeDirectlyManaged = [topViewController canBeDirectlyManaged];
   }
 
   else
   {
-    v3 = 1;
+    canBeDirectlyManaged = 1;
   }
 
-  return v3;
+  return canBeDirectlyManaged;
 }
 
 @end

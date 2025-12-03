@@ -1,17 +1,17 @@
 @interface PGMeaningROICriteria
-+ (id)criteriaWithDictionary:(id)a3;
++ (id)criteriaWithDictionary:(id)dictionary;
 - (BOOL)isValid;
-- (BOOL)passesForMomentNode:(id)a3 momentNodeCache:(id)a4;
+- (BOOL)passesForMomentNode:(id)node momentNodeCache:(id)cache;
 - (NSString)description;
 @end
 
 @implementation PGMeaningROICriteria
 
-+ (id)criteriaWithDictionary:(id)a3
++ (id)criteriaWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = objc_alloc_init(a1);
-  v6 = [v4 objectForKeyedSubscript:@"positiveROIs"];
+  dictionaryCopy = dictionary;
+  v5 = objc_alloc_init(self);
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"positiveROIs"];
   v7 = v6;
   v8 = MEMORY[0x277CBEBF8];
   if (v6)
@@ -27,21 +27,21 @@
   v10 = v9;
 
   [v5 setPositiveROIs:v10];
-  v11 = [v4 objectForKeyedSubscript:@"minimumNumberOfROIs"];
-  v12 = [v11 unsignedIntegerValue];
+  v11 = [dictionaryCopy objectForKeyedSubscript:@"minimumNumberOfROIs"];
+  unsignedIntegerValue = [v11 unsignedIntegerValue];
 
-  if (v12 <= 1)
+  if (unsignedIntegerValue <= 1)
   {
     v13 = 1;
   }
 
   else
   {
-    v13 = v12;
+    v13 = unsignedIntegerValue;
   }
 
   [v5 setMinimumNumberOfROIs:v13];
-  v14 = [v4 objectForKeyedSubscript:@"negativeROIs"];
+  v14 = [dictionaryCopy objectForKeyedSubscript:@"negativeROIs"];
 
   if (v14)
   {
@@ -62,26 +62,26 @@
 
 - (NSString)description
 {
-  v3 = [MEMORY[0x277CCAB68] string];
-  v4 = [(PGMeaningROICriteria *)self positiveROIs];
-  v5 = [v4 componentsJoinedByString:{@", "}];
+  string = [MEMORY[0x277CCAB68] string];
+  positiveROIs = [(PGMeaningROICriteria *)self positiveROIs];
+  v5 = [positiveROIs componentsJoinedByString:{@", "}];
 
-  v6 = [(PGMeaningROICriteria *)self negativeROIs];
-  v7 = [v6 componentsJoinedByString:{@", "}];
+  negativeROIs = [(PGMeaningROICriteria *)self negativeROIs];
+  v7 = [negativeROIs componentsJoinedByString:{@", "}];
 
-  [v3 appendFormat:@"\t\tpositiveROIs: %@\n", v5];
-  [v3 appendFormat:@"\t\tnegativeROIs: %@\n", v7];
-  [v3 appendFormat:@"\t\tminimumNumberOfROIs: %d\n", -[PGMeaningROICriteria minimumNumberOfROIs](self, "minimumNumberOfROIs")];
+  [string appendFormat:@"\t\tpositiveROIs: %@\n", v5];
+  [string appendFormat:@"\t\tnegativeROIs: %@\n", v7];
+  [string appendFormat:@"\t\tminimumNumberOfROIs: %d\n", -[PGMeaningROICriteria minimumNumberOfROIs](self, "minimumNumberOfROIs")];
 
-  return v3;
+  return string;
 }
 
 - (BOOL)isValid
 {
   v27 = *MEMORY[0x277D85DE8];
-  v3 = [(PGMeaningROICriteria *)self positiveROIs];
-  v4 = [(PGMeaningROICriteria *)self negativeROIs];
-  v5 = [v3 arrayByAddingObjectsFromArray:v4];
+  positiveROIs = [(PGMeaningROICriteria *)self positiveROIs];
+  negativeROIs = [(PGMeaningROICriteria *)self negativeROIs];
+  v5 = [positiveROIs arrayByAddingObjectsFromArray:negativeROIs];
 
   v6 = +[PGGraphROINode validROILabels];
   v20 = 0u;
@@ -110,13 +110,13 @@
         if (([v6 containsObject:{v14, v19, v20}] & 1) == 0)
         {
           v15 = +[PGLogging sharedLogging];
-          v16 = [v15 loggingConnection];
+          loggingConnection = [v15 loggingConnection];
 
-          if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
+          if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_INFO))
           {
             *buf = v19;
             v25 = v14;
-            _os_log_impl(&dword_22F0FC000, v16, OS_LOG_TYPE_INFO, "[MEANING CRITERIA] Invalid roi %@", buf, 0xCu);
+            _os_log_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_INFO, "[MEANING CRITERIA] Invalid roi %@", buf, 0xCu);
           }
 
           v12 = 0;
@@ -138,15 +138,15 @@
   return v12 & 1;
 }
 
-- (BOOL)passesForMomentNode:(id)a3 momentNodeCache:(id)a4
+- (BOOL)passesForMomentNode:(id)node momentNodeCache:(id)cache
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PGMeaningROICriteria *)self positiveROIs];
-  v9 = [v8 count];
+  nodeCopy = node;
+  cacheCopy = cache;
+  positiveROIs = [(PGMeaningROICriteria *)self positiveROIs];
+  v9 = [positiveROIs count];
 
-  v10 = [(PGMeaningROICriteria *)self negativeROIs];
-  v11 = [v10 count];
+  negativeROIs = [(PGMeaningROICriteria *)self negativeROIs];
+  v11 = [negativeROIs count];
 
   if (v9 | v11)
   {
@@ -158,7 +158,7 @@
     v16[1] = v16;
     v16[2] = 0x2020000000;
     v16[3] = 0;
-    v13 = [v7 roiNodes];
+    roiNodes = [cacheCopy roiNodes];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __60__PGMeaningROICriteria_passesForMomentNode_momentNodeCache___block_invoke;
@@ -167,7 +167,7 @@
     v15[5] = &v17;
     v15[6] = v16;
     v15[7] = v11;
-    [v13 enumerateObjectsUsingBlock:v15];
+    [roiNodes enumerateObjectsUsingBlock:v15];
     v12 = *(v18 + 24);
 
     _Block_object_dispose(v16, 8);

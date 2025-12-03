@@ -1,17 +1,17 @@
 @interface TTRIReminderDetailViewController
-- (BOOL)presentationControllerShouldDismiss:(id)a3;
+- (BOOL)presentationControllerShouldDismiss:(id)dismiss;
 - (UITableView)tableView;
-- (_TtC15RemindersUICore32TTRIReminderDetailViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)_presentationController:(id)a3 prepareAdaptivePresentationController:(id)a4;
-- (void)didTapCancel:(id)a3;
-- (void)didTapCommit:(id)a3;
-- (void)presentationControllerDidAttemptToDismiss:(id)a3;
-- (void)presentationControllerDidDismiss:(id)a3;
-- (void)presentationControllerWillDismiss:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (_TtC15RemindersUICore32TTRIReminderDetailViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)_presentationController:(id)controller prepareAdaptivePresentationController:(id)presentationController;
+- (void)didTapCancel:(id)cancel;
+- (void)didTapCommit:(id)commit;
+- (void)presentationControllerDidAttemptToDismiss:(id)dismiss;
+- (void)presentationControllerDidDismiss:(id)dismiss;
+- (void)presentationControllerWillDismiss:(id)dismiss;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
 @end
 
@@ -19,26 +19,26 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_21D808B50();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_21D809134(a3);
+  selfCopy = self;
+  sub_21D809134(appear);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = self;
+  selfCopy = self;
   sub_21D817E50();
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_21D80A7C4(a3);
+  selfCopy = self;
+  sub_21D80A7C4(disappear);
 }
 
 - (void)viewWillLayoutSubviews
@@ -62,10 +62,10 @@
   return Strong;
 }
 
-- (void)didTapCancel:(id)a3
+- (void)didTapCancel:(id)cancel
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_21DBFBC1C();
   swift_unknownObjectRelease();
   sub_21D80AB90();
@@ -73,16 +73,16 @@
   __swift_destroy_boxed_opaque_existential_0(&v5);
 }
 
-- (void)didTapCommit:(id)a3
+- (void)didTapCommit:(id)commit
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_21DBFBC1C();
   swift_unknownObjectRelease();
-  v5 = [(TTRIReminderDetailViewController *)v4 viewIfLoaded];
-  if (v5)
+  viewIfLoaded = [(TTRIReminderDetailViewController *)selfCopy viewIfLoaded];
+  if (viewIfLoaded)
   {
-    v6 = v5;
+    v6 = viewIfLoaded;
     v7 = UIView.firstResponderDescendant.getter();
 
     if (v7)
@@ -96,44 +96,44 @@
   __swift_destroy_boxed_opaque_existential_0(v9);
 }
 
-- (_TtC15RemindersUICore32TTRIReminderDetailViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC15RemindersUICore32TTRIReminderDetailViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)_presentationController:(id)a3 prepareAdaptivePresentationController:(id)a4
+- (void)_presentationController:(id)controller prepareAdaptivePresentationController:(id)presentationController
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_21D8196B4(v7);
+  controllerCopy = controller;
+  presentationControllerCopy = presentationController;
+  selfCopy = self;
+  sub_21D8196B4(presentationControllerCopy);
 }
 
-- (BOOL)presentationControllerShouldDismiss:(id)a3
+- (BOOL)presentationControllerShouldDismiss:(id)dismiss
 {
-  v4 = a3;
-  v5 = self;
+  dismissCopy = dismiss;
+  selfCopy = self;
   LOBYTE(self) = sub_21D819898();
 
   return self & 1;
 }
 
-- (void)presentationControllerDidAttemptToDismiss:(id)a3
+- (void)presentationControllerDidAttemptToDismiss:(id)dismiss
 {
-  v4 = a3;
-  v5 = self;
+  dismissCopy = dismiss;
+  selfCopy = self;
   sub_21D819A00(&unk_282ED4848, 1, &unk_21DC2B1C8);
 }
 
-- (void)presentationControllerWillDismiss:(id)a3
+- (void)presentationControllerWillDismiss:(id)dismiss
 {
-  v6 = self;
-  v3 = [(TTRIReminderDetailViewController *)v6 viewIfLoaded];
-  if (v3)
+  selfCopy = self;
+  viewIfLoaded = [(TTRIReminderDetailViewController *)selfCopy viewIfLoaded];
+  if (viewIfLoaded)
   {
-    v4 = v3;
+    v4 = viewIfLoaded;
     v5 = UIView.firstResponderDescendant.getter();
 
     if (v5)
@@ -143,10 +143,10 @@
   }
 }
 
-- (void)presentationControllerDidDismiss:(id)a3
+- (void)presentationControllerDidDismiss:(id)dismiss
 {
-  v4 = a3;
-  v5 = self;
+  dismissCopy = dismiss;
+  selfCopy = self;
   sub_21D819A00(&unk_282ED4820, 0, &unk_21DC2B1C0);
 }
 

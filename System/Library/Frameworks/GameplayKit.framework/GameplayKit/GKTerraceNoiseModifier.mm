@@ -1,5 +1,5 @@
 @interface GKTerraceNoiseModifier
-- (GKTerraceNoiseModifier)initWithPeakInputValues:(id)a3 terracesInverted:(BOOL)a4;
+- (GKTerraceNoiseModifier)initWithPeakInputValues:(id)values terracesInverted:(BOOL)inverted;
 - (double)valueAt:(GKTerraceNoiseModifier *)self;
 - (id)cloneModule;
 - (void)dealloc;
@@ -7,24 +7,24 @@
 
 @implementation GKTerraceNoiseModifier
 
-- (GKTerraceNoiseModifier)initWithPeakInputValues:(id)a3 terracesInverted:(BOOL)a4
+- (GKTerraceNoiseModifier)initWithPeakInputValues:(id)values terracesInverted:(BOOL)inverted
 {
-  v6 = a3;
+  valuesCopy = values;
   v13.receiver = self;
   v13.super_class = GKTerraceNoiseModifier;
   v7 = [(GKNoiseModifier *)&v13 initWithInputModuleCount:1];
   if (v7)
   {
-    v8 = [v6 count];
+    v8 = [valuesCopy count];
     v7->_count = v8;
-    v7->_inverted = a4;
+    v7->_inverted = inverted;
     v7->_controlPoints = malloc_type_malloc(8 * v8, 0x100004000313F17uLL);
     if (v7->_count >= 1)
     {
       v9 = 0;
       do
       {
-        v10 = [v6 objectAtIndex:v9];
+        v10 = [valuesCopy objectAtIndex:v9];
         [v10 doubleValue];
         v7->_controlPoints[v9] = v11;
 

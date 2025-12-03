@@ -1,8 +1,8 @@
 @interface HUQuickControlChildServiceGridViewController
 + (id)controlItemPredicate;
 - (HFChildServiceControlItem)controlItem;
-- (HUQuickControlChildServiceGridViewController)initWithChildServiceControlItem:(id)a3 home:(id)a4 itemUpdater:(id)a5 controlOrientation:(unint64_t)a6 preferredControl:(unint64_t)a7;
-- (HUQuickControlChildServiceGridViewController)initWithControlItems:(id)a3 home:(id)a4 itemUpdater:(id)a5 controlOrientation:(unint64_t)a6 preferredControl:(unint64_t)a7;
+- (HUQuickControlChildServiceGridViewController)initWithChildServiceControlItem:(id)item home:(id)home itemUpdater:(id)updater controlOrientation:(unint64_t)orientation preferredControl:(unint64_t)control;
+- (HUQuickControlChildServiceGridViewController)initWithControlItems:(id)items home:(id)home itemUpdater:(id)updater controlOrientation:(unint64_t)orientation preferredControl:(unint64_t)control;
 - (id)childQuickControlContentViewControllers;
 - (id)hu_preloadContent;
 - (void)viewDidLoad;
@@ -17,26 +17,26 @@
   return [HUQuickControlSingleItemPredicate predicateWithControlItemClass:v2];
 }
 
-- (HUQuickControlChildServiceGridViewController)initWithControlItems:(id)a3 home:(id)a4 itemUpdater:(id)a5 controlOrientation:(unint64_t)a6 preferredControl:(unint64_t)a7
+- (HUQuickControlChildServiceGridViewController)initWithControlItems:(id)items home:(id)home itemUpdater:(id)updater controlOrientation:(unint64_t)orientation preferredControl:(unint64_t)control
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a4;
-  if ([v12 count] != 1)
+  itemsCopy = items;
+  updaterCopy = updater;
+  homeCopy = home;
+  if ([itemsCopy count] != 1)
   {
-    NSLog(&cfstr_ShouldBeInitia_0.isa, self, v12);
+    NSLog(&cfstr_ShouldBeInitia_0.isa, self, itemsCopy);
   }
 
   v15 = objc_opt_class();
-  v16 = [v12 anyObject];
-  if (!v16)
+  anyObject = [itemsCopy anyObject];
+  if (!anyObject)
   {
     goto LABEL_9;
   }
 
   if (objc_opt_isKindOfClass())
   {
-    v17 = v16;
+    v17 = anyObject;
   }
 
   else
@@ -44,40 +44,40 @@
     v17 = 0;
   }
 
-  v18 = v16;
+  v18 = anyObject;
   if (!v17)
   {
-    v19 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v20 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"id  _Nullable NAAssertCast(Class  _Nonnull __unsafe_unretained, id  _Nonnull __strong)"}];
-    [v19 handleFailureInFunction:v20 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v15, objc_opt_class()}];
+    [currentHandler handleFailureInFunction:v20 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v15, objc_opt_class()}];
 
 LABEL_9:
     v18 = 0;
   }
 
-  v21 = [(HUQuickControlChildServiceGridViewController *)self initWithChildServiceControlItem:v18 home:v14 itemUpdater:v13 controlOrientation:a6 preferredControl:a7];
+  v21 = [(HUQuickControlChildServiceGridViewController *)self initWithChildServiceControlItem:v18 home:homeCopy itemUpdater:updaterCopy controlOrientation:orientation preferredControl:control];
   return v21;
 }
 
-- (HUQuickControlChildServiceGridViewController)initWithChildServiceControlItem:(id)a3 home:(id)a4 itemUpdater:(id)a5 controlOrientation:(unint64_t)a6 preferredControl:(unint64_t)a7
+- (HUQuickControlChildServiceGridViewController)initWithChildServiceControlItem:(id)item home:(id)home itemUpdater:(id)updater controlOrientation:(unint64_t)orientation preferredControl:(unint64_t)control
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  if (!v13)
+  itemCopy = item;
+  homeCopy = home;
+  updaterCopy = updater;
+  if (!itemCopy)
   {
-    v26 = [MEMORY[0x277CCA890] currentHandler];
-    [v26 handleFailureInMethod:a2 object:self file:@"HUQuickControlChildServiceGridViewController.m" lineNumber:36 description:{@"Invalid parameter not satisfying: %@", @"originalControlItem"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HUQuickControlChildServiceGridViewController.m" lineNumber:36 description:{@"Invalid parameter not satisfying: %@", @"originalControlItem"}];
   }
 
-  v16 = [MEMORY[0x277CBEB98] setWithObject:v13];
+  v16 = [MEMORY[0x277CBEB98] setWithObject:itemCopy];
   v29.receiver = self;
   v29.super_class = HUQuickControlChildServiceGridViewController;
-  v17 = [(HUQuickControlViewController *)&v29 initWithControlItems:v16 home:v14 itemUpdater:v15 controlOrientation:a6 preferredControl:a7];
+  v17 = [(HUQuickControlViewController *)&v29 initWithControlItems:v16 home:homeCopy itemUpdater:updaterCopy controlOrientation:orientation preferredControl:control];
 
   if (v17)
   {
-    v18 = [v13 copy];
+    v18 = [itemCopy copy];
     v19 = [HUQuickControlCollectionItemManager alloc];
     v27[0] = MEMORY[0x277D85DD0];
     v27[1] = 3221225472;
@@ -91,8 +91,8 @@ LABEL_9:
     v17->_collectionViewController = v22;
 
     [(HUQuickControlCollectionViewController *)v17->_collectionViewController setDisableItemUpdatesForOverrideCharacteristicValueChanges:1];
-    v24 = [(HUQuickControlChildServiceGridViewController *)v17 collectionViewController];
-    [(HUQuickControlChildServiceGridViewController *)v17 _subclass_configureQuickControlViewController:v24];
+    collectionViewController = [(HUQuickControlChildServiceGridViewController *)v17 collectionViewController];
+    [(HUQuickControlChildServiceGridViewController *)v17 _subclass_configureQuickControlViewController:collectionViewController];
   }
 
   return v17;
@@ -148,13 +148,13 @@ id __133__HUQuickControlChildServiceGridViewController_initWithChildServiceContr
 {
   v7.receiver = self;
   v7.super_class = HUQuickControlChildServiceGridViewController;
-  v3 = [(HUQuickControlViewController *)&v7 hu_preloadContent];
+  hu_preloadContent = [(HUQuickControlViewController *)&v7 hu_preloadContent];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __65__HUQuickControlChildServiceGridViewController_hu_preloadContent__block_invoke;
   v6[3] = &unk_277DC0788;
   v6[4] = self;
-  v4 = [v3 flatMap:v6];
+  v4 = [hu_preloadContent flatMap:v6];
 
   return v4;
 }
@@ -173,77 +173,77 @@ id __65__HUQuickControlChildServiceGridViewController_hu_preloadContent__block_i
   v38.receiver = self;
   v38.super_class = HUQuickControlChildServiceGridViewController;
   [(HUQuickControlChildServiceGridViewController *)&v38 viewDidLoad];
-  v3 = [(HUQuickControlChildServiceGridViewController *)self collectionViewController];
-  [(HUQuickControlChildServiceGridViewController *)self addChildViewController:v3];
+  collectionViewController = [(HUQuickControlChildServiceGridViewController *)self collectionViewController];
+  [(HUQuickControlChildServiceGridViewController *)self addChildViewController:collectionViewController];
 
-  v4 = [(HUQuickControlChildServiceGridViewController *)self collectionViewController];
-  v5 = [v4 view];
-  [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
+  collectionViewController2 = [(HUQuickControlChildServiceGridViewController *)self collectionViewController];
+  view = [collectionViewController2 view];
+  [view setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v6 = [(HUQuickControlChildServiceGridViewController *)self collectionViewController];
-  v7 = [v6 view];
-  [v7 setPreservesSuperviewLayoutMargins:1];
+  collectionViewController3 = [(HUQuickControlChildServiceGridViewController *)self collectionViewController];
+  view2 = [collectionViewController3 view];
+  [view2 setPreservesSuperviewLayoutMargins:1];
 
-  v8 = [(HUQuickControlChildServiceGridViewController *)self view];
-  v9 = [(HUQuickControlChildServiceGridViewController *)self collectionViewController];
-  v10 = [v9 view];
-  [v8 addSubview:v10];
+  view3 = [(HUQuickControlChildServiceGridViewController *)self view];
+  collectionViewController4 = [(HUQuickControlChildServiceGridViewController *)self collectionViewController];
+  view4 = [collectionViewController4 view];
+  [view3 addSubview:view4];
 
   v26 = MEMORY[0x277CCAAD0];
-  v37 = [(HUQuickControlChildServiceGridViewController *)self view];
-  v35 = [v37 leadingAnchor];
-  v36 = [(HUQuickControlChildServiceGridViewController *)self collectionViewController];
-  v34 = [v36 view];
-  v33 = [v34 leadingAnchor];
-  v32 = [v35 constraintEqualToAnchor:v33];
+  view5 = [(HUQuickControlChildServiceGridViewController *)self view];
+  leadingAnchor = [view5 leadingAnchor];
+  collectionViewController5 = [(HUQuickControlChildServiceGridViewController *)self collectionViewController];
+  view6 = [collectionViewController5 view];
+  leadingAnchor2 = [view6 leadingAnchor];
+  v32 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v39[0] = v32;
-  v31 = [(HUQuickControlChildServiceGridViewController *)self view];
-  v29 = [v31 trailingAnchor];
-  v30 = [(HUQuickControlChildServiceGridViewController *)self collectionViewController];
-  v28 = [v30 view];
-  v27 = [v28 trailingAnchor];
-  v25 = [v29 constraintEqualToAnchor:v27];
+  view7 = [(HUQuickControlChildServiceGridViewController *)self view];
+  trailingAnchor = [view7 trailingAnchor];
+  collectionViewController6 = [(HUQuickControlChildServiceGridViewController *)self collectionViewController];
+  view8 = [collectionViewController6 view];
+  trailingAnchor2 = [view8 trailingAnchor];
+  v25 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v39[1] = v25;
-  v24 = [(HUQuickControlChildServiceGridViewController *)self view];
-  v22 = [v24 topAnchor];
-  v23 = [(HUQuickControlChildServiceGridViewController *)self collectionViewController];
-  v21 = [v23 view];
-  v11 = [v21 topAnchor];
-  v12 = [v22 constraintEqualToAnchor:v11];
+  view9 = [(HUQuickControlChildServiceGridViewController *)self view];
+  topAnchor = [view9 topAnchor];
+  collectionViewController7 = [(HUQuickControlChildServiceGridViewController *)self collectionViewController];
+  view10 = [collectionViewController7 view];
+  topAnchor2 = [view10 topAnchor];
+  v12 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v39[2] = v12;
-  v13 = [(HUQuickControlChildServiceGridViewController *)self view];
-  v14 = [v13 bottomAnchor];
-  v15 = [(HUQuickControlChildServiceGridViewController *)self collectionViewController];
-  v16 = [v15 view];
-  v17 = [v16 bottomAnchor];
-  v18 = [v14 constraintEqualToAnchor:v17];
+  view11 = [(HUQuickControlChildServiceGridViewController *)self view];
+  bottomAnchor = [view11 bottomAnchor];
+  collectionViewController8 = [(HUQuickControlChildServiceGridViewController *)self collectionViewController];
+  view12 = [collectionViewController8 view];
+  bottomAnchor2 = [view12 bottomAnchor];
+  v18 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v39[3] = v18;
   v19 = [MEMORY[0x277CBEA60] arrayWithObjects:v39 count:4];
   [v26 activateConstraints:v19];
 
-  v20 = [(HUQuickControlChildServiceGridViewController *)self collectionViewController];
-  [v20 didMoveToParentViewController:self];
+  collectionViewController9 = [(HUQuickControlChildServiceGridViewController *)self collectionViewController];
+  [collectionViewController9 didMoveToParentViewController:self];
 }
 
 - (HFChildServiceControlItem)controlItem
 {
-  v3 = [(HUQuickControlViewController *)self controlItems];
-  v4 = [v3 count];
+  controlItems = [(HUQuickControlViewController *)self controlItems];
+  v4 = [controlItems count];
 
   if (v4 != 1)
   {
-    v5 = [(HUQuickControlViewController *)self controlItems];
-    NSLog(&cfstr_ShouldHaveExac.isa, self, v5);
+    controlItems2 = [(HUQuickControlViewController *)self controlItems];
+    NSLog(&cfstr_ShouldHaveExac.isa, self, controlItems2);
   }
 
   v6 = objc_opt_class();
-  v7 = [(HUQuickControlViewController *)self controlItems];
-  v8 = [v7 anyObject];
-  if (v8)
+  controlItems3 = [(HUQuickControlViewController *)self controlItems];
+  anyObject = [controlItems3 anyObject];
+  if (anyObject)
   {
     if (objc_opt_isKindOfClass())
     {
-      v9 = v8;
+      v9 = anyObject;
     }
 
     else
@@ -251,15 +251,15 @@ id __65__HUQuickControlChildServiceGridViewController_hu_preloadContent__block_i
       v9 = 0;
     }
 
-    v10 = v8;
+    v10 = anyObject;
     if (v9)
     {
       goto LABEL_10;
     }
 
-    v11 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"id  _Nullable NAAssertCast(Class  _Nonnull __unsafe_unretained, id  _Nonnull __strong)"}];
-    [v11 handleFailureInFunction:v12 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v6, objc_opt_class()}];
+    [currentHandler handleFailureInFunction:v12 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v6, objc_opt_class()}];
   }
 
   v10 = 0;
@@ -271,8 +271,8 @@ LABEL_10:
 - (id)childQuickControlContentViewControllers
 {
   v5[1] = *MEMORY[0x277D85DE8];
-  v2 = [(HUQuickControlChildServiceGridViewController *)self collectionViewController];
-  v5[0] = v2;
+  collectionViewController = [(HUQuickControlChildServiceGridViewController *)self collectionViewController];
+  v5[0] = collectionViewController;
   v3 = [MEMORY[0x277CBEA60] arrayWithObjects:v5 count:1];
 
   return v3;

@@ -4,39 +4,39 @@
 - (void)_invalidateLookupConnection;
 - (void)_performQueuedUpdatesIfNecessary;
 - (void)_setUpRemoteProxy;
-- (void)_setupWithXPCEndpoint:(id)a3;
+- (void)_setupWithXPCEndpoint:(id)endpoint;
 - (void)_showAuthorizationFlow;
 - (void)_showExportFlow;
-- (void)authorizationViewController:(id)a3 didCompleteWithCredential:(id)a4 error:(id)a5;
-- (void)authorizationViewController:(id)a3 didRequestCredentialForLoginChoice:(id)a4 authenticatedContext:(id)a5 completionHandler:(id)a6;
-- (void)authorizationViewControllerDidCompleteInitialPresentation:(id)a3;
+- (void)authorizationViewController:(id)controller didCompleteWithCredential:(id)credential error:(id)error;
+- (void)authorizationViewController:(id)controller didRequestCredentialForLoginChoice:(id)choice authenticatedContext:(id)context completionHandler:(id)handler;
+- (void)authorizationViewControllerDidCompleteInitialPresentation:(id)presentation;
 - (void)cableClientWillAuthenticate;
 - (void)cableClientWillConnect;
-- (void)configureWithContext:(id)a3 completion:(id)a4;
+- (void)configureWithContext:(id)context completion:(id)completion;
 - (void)dealloc;
-- (void)dismissAndPresentAgain:(id)a3;
-- (void)dismissWithError:(id)a3;
-- (void)handleButtonActions:(id)a3;
-- (void)presentNewPINEntryInterfaceWithMinLength:(unint64_t)a3;
+- (void)dismissAndPresentAgain:(id)again;
+- (void)dismissWithError:(id)error;
+- (void)handleButtonActions:(id)actions;
+- (void)presentNewPINEntryInterfaceWithMinLength:(unint64_t)length;
 - (void)presentPINEntryInterface;
-- (void)setUpWithExporterBundleID:(id)a3 exportedCredentialData:(id)a4 xpcEndpoint:(id)a5;
-- (void)setUpWithPresentationContextData:(id)a3 xpcEndpoint:(id)a4;
-- (void)updateInterfaceForUserVisibleError:(id)a3;
-- (void)updateInterfaceWithLoginChoices:(id)a3;
+- (void)setUpWithExporterBundleID:(id)d exportedCredentialData:(id)data xpcEndpoint:(id)endpoint;
+- (void)setUpWithPresentationContextData:(id)data xpcEndpoint:(id)endpoint;
+- (void)updateInterfaceForUserVisibleError:(id)error;
+- (void)updateInterfaceWithLoginChoices:(id)choices;
 @end
 
 @implementation ASViewServiceViewController
 
 - (void)_setUpRemoteProxy
 {
-  v2 = [(ASViewServiceViewController *)self _remoteViewControllerProxy];
-  [v2 setShouldDisableFadeInAnimation:1];
-  [v2 setAllowsMenuButtonDismissal:1];
-  [v2 setAllowsSiri:0];
-  [v2 setAllowsAlertStacking:1];
-  [v2 setDesiredHardwareButtonEvents:17];
-  [v2 setSwipeDismissalStyle:0];
-  [v2 setDismissalAnimationStyle:1];
+  _remoteViewControllerProxy = [(ASViewServiceViewController *)self _remoteViewControllerProxy];
+  [_remoteViewControllerProxy setShouldDisableFadeInAnimation:1];
+  [_remoteViewControllerProxy setAllowsMenuButtonDismissal:1];
+  [_remoteViewControllerProxy setAllowsSiri:0];
+  [_remoteViewControllerProxy setAllowsAlertStacking:1];
+  [_remoteViewControllerProxy setDesiredHardwareButtonEvents:17];
+  [_remoteViewControllerProxy setSwipeDismissalStyle:0];
+  [_remoteViewControllerProxy setDismissalAnimationStyle:1];
 }
 
 - (unint64_t)supportedInterfaceOrientations
@@ -59,9 +59,9 @@
   self->_authorizationViewController = v3;
 
   [(PMAuthorizationViewController *)self->_authorizationViewController setDelegate:self];
-  v5 = [(ASCAuthorizationPresentationContext *)self->_presentationContext isConditionalRegistrationRequest];
+  isConditionalRegistrationRequest = [(ASCAuthorizationPresentationContext *)self->_presentationContext isConditionalRegistrationRequest];
   v6 = self->_authorizationViewController;
-  if (v5)
+  if (isConditionalRegistrationRequest)
   {
     v7 = self->_authorizationViewController;
 
@@ -136,17 +136,17 @@
   self->_hasQueuedNewPINEntryRequest = 0;
 }
 
-- (void)updateInterfaceWithLoginChoices:(id)a3
+- (void)updateInterfaceWithLoginChoices:(id)choices
 {
-  v4 = a3;
+  choicesCopy = choices;
   interfaceUpdateQueue = self->_interfaceUpdateQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000021C0;
   v7[3] = &unk_10000C570;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = choicesCopy;
+  v6 = choicesCopy;
   dispatch_async(interfaceUpdateQueue, v7);
 }
 
@@ -161,7 +161,7 @@
   dispatch_async(interfaceUpdateQueue, block);
 }
 
-- (void)presentNewPINEntryInterfaceWithMinLength:(unint64_t)a3
+- (void)presentNewPINEntryInterfaceWithMinLength:(unint64_t)length
 {
   interfaceUpdateQueue = self->_interfaceUpdateQueue;
   block[0] = _NSConcreteStackBlock;
@@ -172,25 +172,25 @@
   dispatch_async(interfaceUpdateQueue, block);
 }
 
-- (void)updateInterfaceForUserVisibleError:(id)a3
+- (void)updateInterfaceForUserVisibleError:(id)error
 {
   authorizationViewController = self->_authorizationViewController;
-  v4 = [a3 code];
+  code = [error code];
 
-  [(PMAuthorizationViewController *)authorizationViewController pushOrUpdateBasicPaneViewControllerWithError:v4];
+  [(PMAuthorizationViewController *)authorizationViewController pushOrUpdateBasicPaneViewControllerWithError:code];
 }
 
-- (void)dismissWithError:(id)a3
+- (void)dismissWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   interfaceUpdateQueue = self->_interfaceUpdateQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100002460;
   v7[3] = &unk_10000C570;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = errorCopy;
+  v6 = errorCopy;
   dispatch_async(interfaceUpdateQueue, v7);
 }
 
@@ -214,27 +214,27 @@
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)configureWithContext:(id)a3 completion:(id)a4
+- (void)configureWithContext:(id)context completion:(id)completion
 {
-  v16 = a3;
-  v6 = a4;
+  contextCopy = context;
+  completionCopy = completion;
   v7 = _os_activity_create(&_mh_execute_header, "Authorization view service", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
   authorizationActivity = self->_authorizationActivity;
   self->_authorizationActivity = v7;
 
-  v9 = [v16 userInfo];
-  v10 = [v9 safari_dataForKey:ASCAuthorizationPresentationContextDataKey];
+  userInfo = [contextCopy userInfo];
+  v10 = [userInfo safari_dataForKey:ASCAuthorizationPresentationContextDataKey];
 
-  v11 = [v16 userInfo];
-  v12 = [v11 safari_stringForKey:ASCAuthorizationCredentialExchangeExporterBundleIDKey];
+  userInfo2 = [contextCopy userInfo];
+  v12 = [userInfo2 safari_stringForKey:ASCAuthorizationCredentialExchangeExporterBundleIDKey];
 
-  v13 = [v16 userInfo];
-  v14 = [v13 safari_dataForKey:ASCAuthorizationCredentialExchangeDataKey];
+  userInfo3 = [contextCopy userInfo];
+  v14 = [userInfo3 safari_dataForKey:ASCAuthorizationCredentialExchangeDataKey];
 
   if (v10)
   {
-    v15 = [v16 xpcEndpoint];
-    [(ASViewServiceViewController *)self setUpWithPresentationContextData:v10 xpcEndpoint:v15];
+    xpcEndpoint = [contextCopy xpcEndpoint];
+    [(ASViewServiceViewController *)self setUpWithPresentationContextData:v10 xpcEndpoint:xpcEndpoint];
   }
 
   else
@@ -244,23 +244,23 @@
       goto LABEL_6;
     }
 
-    v15 = [v16 xpcEndpoint];
-    [(ASViewServiceViewController *)self setUpWithExporterBundleID:v12 exportedCredentialData:v14 xpcEndpoint:v15];
+    xpcEndpoint = [contextCopy xpcEndpoint];
+    [(ASViewServiceViewController *)self setUpWithExporterBundleID:v12 exportedCredentialData:v14 xpcEndpoint:xpcEndpoint];
   }
 
 LABEL_6:
-  v6[2](v6);
+  completionCopy[2](completionCopy);
 }
 
-- (void)_setupWithXPCEndpoint:(id)a3
+- (void)_setupWithXPCEndpoint:(id)endpoint
 {
-  v4 = a3;
+  endpointCopy = endpoint;
   v5 = dispatch_queue_create("com.apple.AuthenticationServicesUI.InterfaceUpdateQueue", 0);
   interfaceUpdateQueue = self->_interfaceUpdateQueue;
   self->_interfaceUpdateQueue = v5;
 
   v7 = objc_opt_new();
-  [v7 _setEndpoint:v4];
+  [v7 _setEndpoint:endpointCopy];
   v8 = [[NSXPCConnection alloc] initWithListenerEndpoint:v7];
   v9 = +[ASCAuthorizationPresenterHostInterface xpcInterface];
   [v8 setRemoteObjectInterface:v9];
@@ -286,14 +286,14 @@ LABEL_6:
   objc_destroyWeak(&location);
 }
 
-- (void)setUpWithPresentationContextData:(id)a3 xpcEndpoint:(id)a4
+- (void)setUpWithPresentationContextData:(id)data xpcEndpoint:(id)endpoint
 {
-  v6 = a3;
-  [(ASViewServiceViewController *)self _setupWithXPCEndpoint:a4];
-  if ([v6 length])
+  dataCopy = data;
+  [(ASViewServiceViewController *)self _setupWithXPCEndpoint:endpoint];
+  if ([dataCopy length])
   {
     v12 = 0;
-    v7 = [NSKeyedUnarchiver unarchivedObjectOfClass:objc_opt_class() fromData:v6 error:&v12];
+    v7 = [NSKeyedUnarchiver unarchivedObjectOfClass:objc_opt_class() fromData:dataCopy error:&v12];
     v8 = v12;
     presentationContext = self->_presentationContext;
     self->_presentationContext = v7;
@@ -322,29 +322,29 @@ LABEL_6:
   }
 }
 
-- (void)setUpWithExporterBundleID:(id)a3 exportedCredentialData:(id)a4 xpcEndpoint:(id)a5
+- (void)setUpWithExporterBundleID:(id)d exportedCredentialData:(id)data xpcEndpoint:(id)endpoint
 {
-  v8 = a4;
-  v9 = a3;
-  [(ASViewServiceViewController *)self _setupWithXPCEndpoint:a5];
-  v10 = [v9 copy];
+  dataCopy = data;
+  dCopy = d;
+  [(ASViewServiceViewController *)self _setupWithXPCEndpoint:endpoint];
+  v10 = [dCopy copy];
 
   exporterBundleID = self->_exporterBundleID;
   self->_exporterBundleID = v10;
 
-  v12 = [v8 copy];
+  v12 = [dataCopy copy];
   exportedCredentialData = self->_exportedCredentialData;
   self->_exportedCredentialData = v12;
 }
 
-- (void)handleButtonActions:(id)a3
+- (void)handleButtonActions:(id)actions
 {
-  v4 = a3;
+  actionsCopy = actions;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  v5 = [actionsCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v5)
   {
     v6 = v5;
@@ -356,7 +356,7 @@ LABEL_6:
       {
         if (*v18 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(actionsCopy);
         }
 
         v10 = *(*(&v17 + 1) + 8 * i);
@@ -383,38 +383,38 @@ LABEL_6:
         [v10 sendResponseWithUnHandledEvents:{objc_msgSend(v10, "events") & ~v11}];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v6 = [actionsCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)authorizationViewController:(id)a3 didRequestCredentialForLoginChoice:(id)a4 authenticatedContext:(id)a5 completionHandler:(id)a6
+- (void)authorizationViewController:(id)controller didRequestCredentialForLoginChoice:(id)choice authenticatedContext:(id)context completionHandler:(id)handler
 {
-  v9 = a5;
-  v10 = a6;
+  contextCopy = context;
+  handlerCopy = handler;
   hostProxy = self->_hostProxy;
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_100002DE4;
   v14[3] = &unk_10000C5C0;
-  v15 = v9;
-  v16 = v10;
-  v12 = v10;
-  v13 = v9;
-  [(ASCAuthorizationPresenterHostProtocol *)hostProxy authorizationRequestInitiatedWithLoginChoice:a4 authenticatedContext:v13 completionHandler:v14];
+  v15 = contextCopy;
+  v16 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = contextCopy;
+  [(ASCAuthorizationPresenterHostProtocol *)hostProxy authorizationRequestInitiatedWithLoginChoice:choice authenticatedContext:v13 completionHandler:v14];
 }
 
-- (void)authorizationViewController:(id)a3 didCompleteWithCredential:(id)a4 error:(id)a5
+- (void)authorizationViewController:(id)controller didCompleteWithCredential:(id)credential error:(id)error
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [v8 userInfo];
+  credentialCopy = credential;
+  errorCopy = error;
+  userInfo = [errorCopy userInfo];
   v10 = AKErrorAlertShouldDismissUIAfterPresentationKey;
-  v11 = [v9 objectForKeyedSubscript:AKErrorAlertShouldDismissUIAfterPresentationKey];
+  v11 = [userInfo objectForKeyedSubscript:AKErrorAlertShouldDismissUIAfterPresentationKey];
 
-  if (v11 && ([v8 userInfo], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "safari_BOOLForKey:", v10), v12, (v13 & 1) == 0))
+  if (v11 && ([errorCopy userInfo], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "safari_BOOLForKey:", v10), v12, (v13 & 1) == 0))
   {
     v15 = sub_100001B18();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
@@ -432,11 +432,11 @@ LABEL_6:
     v16[2] = sub_100002F44;
     v16[3] = &unk_10000C548;
     v16[4] = self;
-    [(ASCAuthorizationPresenterHostProtocol *)hostProxy authorizationRequestFinishedWithCredential:v7 error:v8 completionHandler:v16];
+    [(ASCAuthorizationPresenterHostProtocol *)hostProxy authorizationRequestFinishedWithCredential:credentialCopy error:errorCopy completionHandler:v16];
   }
 }
 
-- (void)authorizationViewControllerDidCompleteInitialPresentation:(id)a3
+- (void)authorizationViewControllerDidCompleteInitialPresentation:(id)presentation
 {
   interfaceUpdateQueue = self->_interfaceUpdateQueue;
   block[0] = _NSConcreteStackBlock;
@@ -447,7 +447,7 @@ LABEL_6:
   dispatch_async(interfaceUpdateQueue, block);
 }
 
-- (void)dismissAndPresentAgain:(id)a3
+- (void)dismissAndPresentAgain:(id)again
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;

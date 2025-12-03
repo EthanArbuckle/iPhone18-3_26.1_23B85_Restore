@@ -1,8 +1,8 @@
 @interface CRXUNotificationCenter
 + (id)sharedInstance;
-- (int)addBlockObserver:(id)a3 queue:(id)a4 name:(id)a5;
-- (int)addObserver:(id)a3 selector:(SEL)a4 queue:(id)a5 name:(id)a6;
-- (void)postNotificationName:(id)a3;
+- (int)addBlockObserver:(id)observer queue:(id)queue name:(id)name;
+- (int)addObserver:(id)observer selector:(SEL)selector queue:(id)queue name:(id)name;
+- (void)postNotificationName:(id)name;
 @end
 
 @implementation CRXUNotificationCenter
@@ -13,7 +13,7 @@
   block[1] = 3221225472;
   block[2] = __40__CRXUNotificationCenter_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance___once__LINE___1 != -1)
   {
     dispatch_once(&sharedInstance___once__LINE___1, block);
@@ -31,58 +31,58 @@ uint64_t __40__CRXUNotificationCenter_sharedInstance__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)postNotificationName:(id)a3
+- (void)postNotificationName:(id)name
 {
-  v3 = [a3 UTF8String];
+  uTF8String = [name UTF8String];
 
-  notify_post(v3);
+  notify_post(uTF8String);
 }
 
-- (int)addBlockObserver:(id)a3 queue:(id)a4 name:(id)a5
+- (int)addBlockObserver:(id)observer queue:(id)queue name:(id)name
 {
-  v7 = a3;
+  observerCopy = observer;
   out_token = 0;
-  v8 = a5;
-  v9 = a4;
-  v10 = [a5 UTF8String];
-  v11 = [v9 queue];
+  nameCopy = name;
+  queueCopy = queue;
+  uTF8String = [name UTF8String];
+  queue = [queueCopy queue];
 
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __54__CRXUNotificationCenter_addBlockObserver_queue_name___block_invoke;
   v14[3] = &unk_278EA0D20;
-  v15 = v7;
-  v12 = v7;
-  notify_register_dispatch(v10, &out_token, v11, v14);
+  v15 = observerCopy;
+  v12 = observerCopy;
+  notify_register_dispatch(uTF8String, &out_token, queue, v14);
 
-  LODWORD(v10) = out_token;
-  return v10;
+  LODWORD(uTF8String) = out_token;
+  return uTF8String;
 }
 
-- (int)addObserver:(id)a3 selector:(SEL)a4 queue:(id)a5 name:(id)a6
+- (int)addObserver:(id)observer selector:(SEL)selector queue:(id)queue name:(id)name
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
+  observerCopy = observer;
+  queueCopy = queue;
+  nameCopy = name;
   out_token = 0;
-  objc_initWeak(&location, v9);
-  v12 = [v11 UTF8String];
-  v13 = [v10 queue];
+  objc_initWeak(&location, observerCopy);
+  uTF8String = [nameCopy UTF8String];
+  queue = [queueCopy queue];
   handler[0] = MEMORY[0x277D85DD0];
   handler[1] = 3221225472;
   handler[2] = __58__CRXUNotificationCenter_addObserver_selector_queue_name___block_invoke;
   handler[3] = &unk_278EA0D48;
   objc_copyWeak(v18, &location);
-  v18[1] = a4;
-  v14 = v11;
+  v18[1] = selector;
+  v14 = nameCopy;
   v17 = v14;
-  notify_register_dispatch(v12, &out_token, v13, handler);
+  notify_register_dispatch(uTF8String, &out_token, queue, handler);
 
-  LODWORD(v11) = out_token;
+  LODWORD(nameCopy) = out_token;
   objc_destroyWeak(v18);
   objc_destroyWeak(&location);
 
-  return v11;
+  return nameCopy;
 }
 
 void __58__CRXUNotificationCenter_addObserver_selector_queue_name___block_invoke(uint64_t a1, int a2)

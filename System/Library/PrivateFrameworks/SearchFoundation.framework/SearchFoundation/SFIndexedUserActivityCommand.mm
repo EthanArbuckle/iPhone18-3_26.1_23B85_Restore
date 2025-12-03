@@ -1,38 +1,38 @@
 @interface SFIndexedUserActivityCommand
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (SFIndexedUserActivityCommand)initWithCoder:(id)a3;
-- (SFIndexedUserActivityCommand)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SFIndexedUserActivityCommand)initWithCoder:(id)coder;
+- (SFIndexedUserActivityCommand)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFIndexedUserActivityCommand
 
-- (SFIndexedUserActivityCommand)initWithProtobuf:(id)a3
+- (SFIndexedUserActivityCommand)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
+  protobufCopy = protobuf;
   v12.receiver = self;
   v12.super_class = SFIndexedUserActivityCommand;
   v5 = [(SFIndexedUserActivityCommand *)&v12 init];
   if (v5)
   {
-    v6 = [v4 userActivityRequiredString];
+    userActivityRequiredString = [protobufCopy userActivityRequiredString];
 
-    if (v6)
+    if (userActivityRequiredString)
     {
-      v7 = [v4 userActivityRequiredString];
-      [(SFIndexedUserActivityCommand *)v5 setUserActivityRequiredString:v7];
+      userActivityRequiredString2 = [protobufCopy userActivityRequiredString];
+      [(SFIndexedUserActivityCommand *)v5 setUserActivityRequiredString:userActivityRequiredString2];
     }
 
-    v8 = [v4 applicationBundleIdentifier];
+    applicationBundleIdentifier = [protobufCopy applicationBundleIdentifier];
 
-    if (v8)
+    if (applicationBundleIdentifier)
     {
-      v9 = [v4 applicationBundleIdentifier];
-      [(SFIndexedUserActivityCommand *)v5 setApplicationBundleIdentifier:v9];
+      applicationBundleIdentifier2 = [protobufCopy applicationBundleIdentifier];
+      [(SFIndexedUserActivityCommand *)v5 setApplicationBundleIdentifier:applicationBundleIdentifier2];
     }
 
     v10 = v5;
@@ -46,34 +46,34 @@
   v9.receiver = self;
   v9.super_class = SFIndexedUserActivityCommand;
   v3 = [(SFCommand *)&v9 hash];
-  v4 = [(SFIndexedUserActivityCommand *)self userActivityRequiredString];
-  v5 = [v4 hash];
-  v6 = [(SFIndexedUserActivityCommand *)self applicationBundleIdentifier];
-  v7 = v5 ^ [v6 hash];
+  userActivityRequiredString = [(SFIndexedUserActivityCommand *)self userActivityRequiredString];
+  v5 = [userActivityRequiredString hash];
+  applicationBundleIdentifier = [(SFIndexedUserActivityCommand *)self applicationBundleIdentifier];
+  v7 = v5 ^ [applicationBundleIdentifier hash];
 
   return v7 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
 
   else
   {
-    if ([(SFIndexedUserActivityCommand *)v5 isMemberOfClass:objc_opt_class()])
+    if ([(SFIndexedUserActivityCommand *)equalCopy isMemberOfClass:objc_opt_class()])
     {
       v22.receiver = self;
       v22.super_class = SFIndexedUserActivityCommand;
-      if ([(SFCommand *)&v22 isEqual:v5])
+      if ([(SFCommand *)&v22 isEqual:equalCopy])
       {
-        v6 = v5;
-        v7 = [(SFIndexedUserActivityCommand *)self userActivityRequiredString];
-        v8 = [(SFIndexedUserActivityCommand *)v6 userActivityRequiredString];
-        if ((v7 != 0) == (v8 == 0))
+        v6 = equalCopy;
+        userActivityRequiredString = [(SFIndexedUserActivityCommand *)self userActivityRequiredString];
+        userActivityRequiredString2 = [(SFIndexedUserActivityCommand *)v6 userActivityRequiredString];
+        if ((userActivityRequiredString != 0) == (userActivityRequiredString2 == 0))
         {
           v11 = 0;
 LABEL_20:
@@ -81,12 +81,12 @@ LABEL_20:
           goto LABEL_21;
         }
 
-        v9 = [(SFIndexedUserActivityCommand *)self userActivityRequiredString];
-        if (v9)
+        userActivityRequiredString3 = [(SFIndexedUserActivityCommand *)self userActivityRequiredString];
+        if (userActivityRequiredString3)
         {
-          v3 = [(SFIndexedUserActivityCommand *)self userActivityRequiredString];
-          v10 = [(SFIndexedUserActivityCommand *)v6 userActivityRequiredString];
-          if (![v3 isEqual:v10])
+          userActivityRequiredString4 = [(SFIndexedUserActivityCommand *)self userActivityRequiredString];
+          userActivityRequiredString5 = [(SFIndexedUserActivityCommand *)v6 userActivityRequiredString];
+          if (![userActivityRequiredString4 isEqual:userActivityRequiredString5])
           {
             v11 = 0;
 LABEL_18:
@@ -95,13 +95,13 @@ LABEL_19:
             goto LABEL_20;
           }
 
-          v21 = v10;
+          v21 = userActivityRequiredString5;
         }
 
-        v12 = [(SFIndexedUserActivityCommand *)self applicationBundleIdentifier];
-        v13 = [(SFIndexedUserActivityCommand *)v6 applicationBundleIdentifier];
-        v14 = v13;
-        if ((v12 != 0) == (v13 == 0))
+        applicationBundleIdentifier = [(SFIndexedUserActivityCommand *)self applicationBundleIdentifier];
+        applicationBundleIdentifier2 = [(SFIndexedUserActivityCommand *)v6 applicationBundleIdentifier];
+        v14 = applicationBundleIdentifier2;
+        if ((applicationBundleIdentifier != 0) == (applicationBundleIdentifier2 == 0))
         {
 
           v11 = 0;
@@ -109,16 +109,16 @@ LABEL_19:
 
         else
         {
-          v15 = [(SFIndexedUserActivityCommand *)self applicationBundleIdentifier];
-          if (v15)
+          applicationBundleIdentifier3 = [(SFIndexedUserActivityCommand *)self applicationBundleIdentifier];
+          if (applicationBundleIdentifier3)
           {
-            v16 = v15;
-            v19 = [(SFIndexedUserActivityCommand *)self applicationBundleIdentifier];
+            v16 = applicationBundleIdentifier3;
+            applicationBundleIdentifier4 = [(SFIndexedUserActivityCommand *)self applicationBundleIdentifier];
             [(SFIndexedUserActivityCommand *)v6 applicationBundleIdentifier];
-            v17 = v20 = v3;
-            v11 = [v19 isEqual:v17];
+            v17 = v20 = userActivityRequiredString4;
+            v11 = [applicationBundleIdentifier4 isEqual:v17];
 
-            v3 = v20;
+            userActivityRequiredString4 = v20;
           }
 
           else
@@ -128,8 +128,8 @@ LABEL_19:
           }
         }
 
-        v10 = v21;
-        if (!v9)
+        userActivityRequiredString5 = v21;
+        if (!userActivityRequiredString3)
         {
           goto LABEL_19;
         }
@@ -146,17 +146,17 @@ LABEL_21:
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v10.receiver = self;
   v10.super_class = SFIndexedUserActivityCommand;
-  v4 = [(SFCommand *)&v10 copyWithZone:a3];
-  v5 = [(SFIndexedUserActivityCommand *)self userActivityRequiredString];
-  v6 = [v5 copy];
+  v4 = [(SFCommand *)&v10 copyWithZone:zone];
+  userActivityRequiredString = [(SFIndexedUserActivityCommand *)self userActivityRequiredString];
+  v6 = [userActivityRequiredString copy];
   [v4 setUserActivityRequiredString:v6];
 
-  v7 = [(SFIndexedUserActivityCommand *)self applicationBundleIdentifier];
-  v8 = [v7 copy];
+  applicationBundleIdentifier = [(SFIndexedUserActivityCommand *)self applicationBundleIdentifier];
+  v8 = [applicationBundleIdentifier copy];
   [v4 setApplicationBundleIdentifier:v8];
 
   return v4;
@@ -165,54 +165,54 @@ LABEL_21:
 - (NSData)jsonData
 {
   v2 = [[_SFPBIndexedUserActivityCommand alloc] initWithFacade:self];
-  v3 = [(_SFPBIndexedUserActivityCommand *)v2 jsonData];
+  jsonData = [(_SFPBIndexedUserActivityCommand *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBIndexedUserActivityCommand alloc] initWithFacade:self];
-  v3 = [(_SFPBIndexedUserActivityCommand *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBIndexedUserActivityCommand *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = SFIndexedUserActivityCommand;
-  [(SFCommand *)&v3 encodeWithCoder:a3];
+  [(SFCommand *)&v3 encodeWithCoder:coder];
 }
 
-- (SFIndexedUserActivityCommand)initWithCoder:(id)a3
+- (SFIndexedUserActivityCommand)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(SFIndexedUserActivityCommand *)self init];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v7 = [[_SFPBCommand alloc] initWithData:v6];
   v8 = [[SFCommand alloc] initWithProtobuf:v7];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [(SFCommand *)v8 userActivityRequiredString];
-    [(SFIndexedUserActivityCommand *)v5 setUserActivityRequiredString:v9];
+    userActivityRequiredString = [(SFCommand *)v8 userActivityRequiredString];
+    [(SFIndexedUserActivityCommand *)v5 setUserActivityRequiredString:userActivityRequiredString];
 
-    v10 = [(SFCommand *)v8 applicationBundleIdentifier];
-    [(SFIndexedUserActivityCommand *)v5 setApplicationBundleIdentifier:v10];
+    applicationBundleIdentifier = [(SFCommand *)v8 applicationBundleIdentifier];
+    [(SFIndexedUserActivityCommand *)v5 setApplicationBundleIdentifier:applicationBundleIdentifier];
 
-    v11 = [(SFCommand *)v8 commandDetail];
-    [(SFCommand *)v5 setCommandDetail:v11];
+    commandDetail = [(SFCommand *)v8 commandDetail];
+    [(SFCommand *)v5 setCommandDetail:commandDetail];
 
-    v12 = [(SFCommand *)v8 normalizedTopic];
-    [(SFCommand *)v5 setNormalizedTopic:v12];
+    normalizedTopic = [(SFCommand *)v8 normalizedTopic];
+    [(SFCommand *)v5 setNormalizedTopic:normalizedTopic];
 
-    v13 = [(SFCommand *)v8 backendData];
-    [(SFCommand *)v5 setBackendData:v13];
+    backendData = [(SFCommand *)v8 backendData];
+    [(SFCommand *)v5 setBackendData:backendData];
 
-    v14 = [(SFCommand *)v8 commandReference];
-    [(SFCommand *)v5 setCommandReference:v14];
+    commandReference = [(SFCommand *)v8 commandReference];
+    [(SFCommand *)v5 setCommandReference:commandReference];
   }
 
   return v5;

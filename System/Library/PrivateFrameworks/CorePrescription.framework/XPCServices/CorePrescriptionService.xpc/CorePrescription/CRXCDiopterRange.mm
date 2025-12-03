@@ -1,18 +1,18 @@
 @interface CRXCDiopterRange
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CRXCDiopterRange)init;
-- (CRXCDiopterRange)initWithCoder:(id)a3;
+- (CRXCDiopterRange)initWithCoder:(id)coder;
 - (NSString)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CRXCDiopterRange
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_100081658();
     swift_unknownObjectRelease();
@@ -21,7 +21,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = CRXCDiopterRange.isEqual(_:)(v8);
@@ -32,7 +32,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   CRXCDiopterRange.description.getter();
 
   v3 = sub_100081288();
@@ -40,17 +40,17 @@
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  CRXCDiopterRange.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  CRXCDiopterRange.encode(with:)(coderCopy);
 }
 
-- (CRXCDiopterRange)initWithCoder:(id)a3
+- (CRXCDiopterRange)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v4 = sub_10005A86C(v3);
+  coderCopy = coder;
+  v4 = sub_10005A86C(coderCopy);
 
   return v4;
 }

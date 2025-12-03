@@ -13,7 +13,7 @@
   block[1] = 3221225472;
   block[2] = sub_10003BDCC;
   block[3] = &unk_1000ED7E0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10010DDD8 != -1)
   {
     dispatch_once(&qword_10010DDD8, block);
@@ -108,13 +108,13 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:Finding interface name and alloc WAApple80211", &v20, 0x12u);
   }
 
-  v6 = [[WAApple80211 alloc] initByFindingInterfaceName];
-  v7 = v6;
-  if (v6)
+  initByFindingInterfaceName = [[WAApple80211 alloc] initByFindingInterfaceName];
+  v7 = initByFindingInterfaceName;
+  if (initByFindingInterfaceName)
   {
-    v8 = [v6 ifName];
+    ifName = [initByFindingInterfaceName ifName];
     infraInterfaceName = self->_infraInterfaceName;
-    self->_infraInterfaceName = v8;
+    self->_infraInterfaceName = ifName;
 
     v10 = self->_infraInterfaceName;
     if (v10 && [(NSString *)v10 length])

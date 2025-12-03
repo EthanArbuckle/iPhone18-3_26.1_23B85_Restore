@@ -1,37 +1,37 @@
 @interface CRLImageToolbarButton
-+ (id)imageSymbolConfigurationWithScale:(int64_t)a3;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
-- (CRLImageToolbarButton)initWithFrame:(CGRect)a3;
++ (id)imageSymbolConfigurationWithScale:(int64_t)scale;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
+- (CRLImageToolbarButton)initWithFrame:(CGRect)frame;
 - (void)didChangeConfiguration;
 - (void)didMoveToSuperview;
 - (void)didMoveToWindow;
-- (void)setContentEdgeInsets:(UIEdgeInsets)a3;
-- (void)setImage:(id)a3;
-- (void)setImageNamed:(id)a3;
-- (void)setLandscapePhone:(BOOL)a3;
-- (void)setOn:(BOOL)a3;
-- (void)setShouldRemoveTrailingPadding:(BOOL)a3;
-- (void)setTintAdjustmentMode:(int64_t)a3;
+- (void)setContentEdgeInsets:(UIEdgeInsets)insets;
+- (void)setImage:(id)image;
+- (void)setImageNamed:(id)named;
+- (void)setLandscapePhone:(BOOL)phone;
+- (void)setOn:(BOOL)on;
+- (void)setShouldRemoveTrailingPadding:(BOOL)padding;
+- (void)setTintAdjustmentMode:(int64_t)mode;
 - (void)tintColorDidChange;
 - (void)updateBackgroundViewColor;
 - (void)updateForCurrentTraitCollection;
-- (void)updateForTraitCollection:(id)a3;
+- (void)updateForTraitCollection:(id)collection;
 @end
 
 @implementation CRLImageToolbarButton
 
-- (CRLImageToolbarButton)initWithFrame:(CGRect)a3
+- (CRLImageToolbarButton)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = CRLImageToolbarButton;
-  v3 = [(CRLImageToolbarButton *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CRLImageToolbarButton *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     [(CRLImageToolbarButton *)v3 setExclusiveTouch:1];
     [(CRLImageToolbarButton *)v4 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v5 = [(CRLImageToolbarButton *)v4 imageView];
-    [v5 setContentMode:1];
+    imageView = [(CRLImageToolbarButton *)v4 imageView];
+    [imageView setContentMode:1];
 
     [(CRLImageToolbarButton *)v4 setPointerStyleProvider:&stru_10183C220];
     v10[0] = objc_opt_class();
@@ -43,22 +43,22 @@
   return v4;
 }
 
-- (void)setTintAdjustmentMode:(int64_t)a3
+- (void)setTintAdjustmentMode:(int64_t)mode
 {
-  if (a3 == 1)
+  if (mode == 1)
   {
-    a3 = 0;
+    mode = 0;
   }
 
   v3.receiver = self;
   v3.super_class = CRLImageToolbarButton;
-  [(CRLImageToolbarButton *)&v3 setTintAdjustmentMode:a3];
+  [(CRLImageToolbarButton *)&v3 setTintAdjustmentMode:mode];
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v4 = a3;
-  if (!v4)
+  imageCopy = image;
+  if (!imageCopy)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -87,7 +87,7 @@
     [CRLAssertionHandler handleFailureInFunction:v6 file:v7 lineNumber:64 isFatal:0 description:"nil image is set"];
   }
 
-  if (([v4 isSymbolImage] & 1) == 0)
+  if (([imageCopy isSymbolImage] & 1) == 0)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -116,17 +116,17 @@
     [CRLAssertionHandler handleFailureInFunction:v9 file:v10 lineNumber:65 isFatal:0 description:"Only vector images are supported"];
   }
 
-  if ([v4 isSymbolImage])
+  if ([imageCopy isSymbolImage])
   {
     v11 = [CRLImageToolbarButton imageSymbolConfigurationWithScale:3];
-    v12 = [v4 imageWithConfiguration:v11];
+    v12 = [imageCopy imageWithConfiguration:v11];
 
     image = self->_image;
     if (image != v12 && ([(UIImage *)image isEqual:v12]& 1) == 0)
     {
       objc_storeStrong(&self->_image, v12);
       v14 = [CRLImageToolbarButton imageSymbolConfigurationWithScale:2];
-      v15 = [v4 imageWithConfiguration:v14];
+      v15 = [imageCopy imageWithConfiguration:v14];
       landscapeImagePhone = self->_landscapeImagePhone;
       self->_landscapeImagePhone = v15;
 
@@ -135,10 +135,10 @@
   }
 }
 
-- (void)setImageNamed:(id)a3
+- (void)setImageNamed:(id)named
 {
-  v4 = a3;
-  v5 = [UIImage systemImageNamed:v4];
+  namedCopy = named;
+  v5 = [UIImage systemImageNamed:namedCopy];
   v6 = v5;
   if (v5)
   {
@@ -147,7 +147,7 @@
 
   else
   {
-    v7 = [UIImage imageNamed:v4];
+    v7 = [UIImage imageNamed:namedCopy];
   }
 
   v8 = v7;
@@ -184,20 +184,20 @@
   [(CRLImageToolbarButton *)self setImage:v8];
 }
 
-+ (id)imageSymbolConfigurationWithScale:(int64_t)a3
++ (id)imageSymbolConfigurationWithScale:(int64_t)scale
 {
-  v3 = [UIImageSymbolConfiguration configurationWithScale:a3];
+  v3 = [UIImageSymbolConfiguration configurationWithScale:scale];
   v4 = [UITraitCollection traitCollectionWithPreferredContentSizeCategory:UIContentSizeCategoryLarge];
   v5 = [v3 configurationWithTraitCollection:v4];
 
   return v5;
 }
 
-- (void)setLandscapePhone:(BOOL)a3
+- (void)setLandscapePhone:(BOOL)phone
 {
-  if (self->_landscapePhone != a3)
+  if (self->_landscapePhone != phone)
   {
-    self->_landscapePhone = a3;
+    self->_landscapePhone = phone;
     [(CRLImageToolbarButton *)self didChangeConfiguration];
   }
 }
@@ -231,21 +231,21 @@
 
 - (void)updateForCurrentTraitCollection
 {
-  v3 = [(CRLImageToolbarButton *)self traitCollection];
-  [(CRLImageToolbarButton *)self updateForTraitCollection:v3];
+  traitCollection = [(CRLImageToolbarButton *)self traitCollection];
+  [(CRLImageToolbarButton *)self updateForTraitCollection:traitCollection];
 }
 
-- (void)updateForTraitCollection:(id)a3
+- (void)updateForTraitCollection:(id)collection
 {
-  v5 = a3;
-  if ([v5 userInterfaceIdiom])
+  collectionCopy = collection;
+  if ([collectionCopy userInterfaceIdiom])
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = [v5 verticalSizeClass] == 1;
+    v4 = [collectionCopy verticalSizeClass] == 1;
   }
 
   [(CRLImageToolbarButton *)self setLandscapePhone:v4];
@@ -362,25 +362,25 @@ LABEL_52:
 
     [(UIView *)self->_onBackgroundView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIView *)self->_onBackgroundView setUserInteractionEnabled:0];
-    v26 = [(UIView *)self->_onBackgroundView layer];
-    [v26 setCornerRadius:v23];
+    layer = [(UIView *)self->_onBackgroundView layer];
+    [layer setCornerRadius:v23];
 
     [(CRLImageToolbarButton *)self updateBackgroundViewColor];
-    v27 = [(CRLImageToolbarButton *)self imageView];
-    [(CRLImageToolbarButton *)self insertSubview:self->_onBackgroundView belowSubview:v27];
-    v60 = [(UIView *)self->_onBackgroundView widthAnchor];
-    v59 = [v60 constraintEqualToConstant:v19];
+    imageView = [(CRLImageToolbarButton *)self imageView];
+    [(CRLImageToolbarButton *)self insertSubview:self->_onBackgroundView belowSubview:imageView];
+    widthAnchor = [(UIView *)self->_onBackgroundView widthAnchor];
+    v59 = [widthAnchor constraintEqualToConstant:v19];
     v63[0] = v59;
-    v58 = [(UIView *)self->_onBackgroundView heightAnchor];
-    v57 = [v58 constraintEqualToConstant:v21];
+    heightAnchor = [(UIView *)self->_onBackgroundView heightAnchor];
+    v57 = [heightAnchor constraintEqualToConstant:v21];
     v63[1] = v57;
-    v28 = [(UIView *)self->_onBackgroundView centerXAnchor];
-    v29 = [(CRLImageToolbarButton *)self centerXAnchor];
-    v30 = [v28 constraintEqualToAnchor:v29 constant:-0.5];
+    centerXAnchor = [(UIView *)self->_onBackgroundView centerXAnchor];
+    centerXAnchor2 = [(CRLImageToolbarButton *)self centerXAnchor];
+    v30 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2 constant:-0.5];
     v63[2] = v30;
-    v31 = [(UIView *)self->_onBackgroundView centerYAnchor];
-    v32 = [(CRLImageToolbarButton *)self centerYAnchor];
-    v33 = [v31 constraintEqualToAnchor:v32 constant:-0.5];
+    centerYAnchor = [(UIView *)self->_onBackgroundView centerYAnchor];
+    centerYAnchor2 = [(CRLImageToolbarButton *)self centerYAnchor];
+    v33 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2 constant:-0.5];
     v63[3] = v33;
     v34 = [NSArray arrayWithObjects:v63 count:4];
     [NSLayoutConstraint activateConstraints:v34];
@@ -396,7 +396,7 @@ LABEL_29:
     }
 
     [(UIView *)v35 removeFromSuperview];
-    v27 = self->_onBackgroundView;
+    imageView = self->_onBackgroundView;
     self->_onBackgroundView = 0;
   }
 
@@ -423,9 +423,9 @@ LABEL_32:
   v47 = v43 - MaxX;
   if (self->_shouldRemoveTrailingPadding)
   {
-    v48 = [(CRLImageToolbarButton *)self effectiveUserInterfaceLayoutDirection];
+    effectiveUserInterfaceLayoutDirection = [(CRLImageToolbarButton *)self effectiveUserInterfaceLayoutDirection];
     MaxX = v47 + -11.0;
-    if (v48)
+    if (effectiveUserInterfaceLayoutDirection)
     {
       v44 = v44 + -11.0;
     }
@@ -436,9 +436,9 @@ LABEL_32:
     }
   }
 
-  v49 = [(CRLImageToolbarButton *)self imageForState:0, MaxX];
+  maxX = [(CRLImageToolbarButton *)self imageForState:0, MaxX];
 
-  if (v3 != v49)
+  if (v3 != maxX)
   {
     v62.receiver = self;
     v62.super_class = CRLImageToolbarButton;
@@ -456,16 +456,16 @@ LABEL_32:
 
 - (void)updateBackgroundViewColor
 {
-  v6 = [(CRLImageToolbarButton *)self tintColor];
-  v3 = [v6 colorWithAlphaComponent:0.3];
-  v4 = [v3 CGColor];
-  v5 = [(UIView *)self->_onBackgroundView layer];
-  [v5 setBackgroundColor:v4];
+  tintColor = [(CRLImageToolbarButton *)self tintColor];
+  v3 = [tintColor colorWithAlphaComponent:0.3];
+  cGColor = [v3 CGColor];
+  layer = [(UIView *)self->_onBackgroundView layer];
+  [layer setBackgroundColor:cGColor];
 }
 
-- (void)setContentEdgeInsets:(UIEdgeInsets)a3
+- (void)setContentEdgeInsets:(UIEdgeInsets)insets
 {
-  v3 = [CRLAssertionHandler _atomicIncrementAssertCount:a3.top];
+  v3 = [CRLAssertionHandler _atomicIncrementAssertCount:insets.top];
   if (qword_101AD5A10 != -1)
   {
     dispatch_once(&qword_101AD5A10, &stru_10183C380);
@@ -513,9 +513,9 @@ LABEL_32:
   objc_exception_throw(v11);
 }
 
-- (void)setOn:(BOOL)a3
+- (void)setOn:(BOOL)on
 {
-  if (self->_on != a3)
+  if (self->_on != on)
   {
     v7 = v3;
     v8 = v4;
@@ -524,15 +524,15 @@ LABEL_32:
     v5[2] = sub_1000F82E4;
     v5[3] = &unk_10183C3C8;
     v5[4] = self;
-    v6 = a3;
+    onCopy = on;
     [UIView performWithoutAnimation:v5];
   }
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   [(CRLImageToolbarButton *)self bounds];
   v8 = v7 + -4.0;
   v10 = v9 + 0.0;
@@ -543,11 +543,11 @@ LABEL_32:
   return CGRectContainsPoint(*&v8, *&v13);
 }
 
-- (void)setShouldRemoveTrailingPadding:(BOOL)a3
+- (void)setShouldRemoveTrailingPadding:(BOOL)padding
 {
-  if (self->_shouldRemoveTrailingPadding != a3)
+  if (self->_shouldRemoveTrailingPadding != padding)
   {
-    self->_shouldRemoveTrailingPadding = a3;
+    self->_shouldRemoveTrailingPadding = padding;
     [(CRLImageToolbarButton *)self didChangeConfiguration];
   }
 }

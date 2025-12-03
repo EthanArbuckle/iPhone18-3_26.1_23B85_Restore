@@ -1,14 +1,14 @@
 @interface HUNoiseSettingsListenerHelper
-- (HUNoiseSettingsListenerHelper)initWithListenerAddress:(id)a3;
-- (void)addSelectorKey:(SEL)a3;
+- (HUNoiseSettingsListenerHelper)initWithListenerAddress:(id)address;
+- (void)addSelectorKey:(SEL)key;
 - (void)dealloc;
 @end
 
 @implementation HUNoiseSettingsListenerHelper
 
-- (HUNoiseSettingsListenerHelper)initWithListenerAddress:(id)a3
+- (HUNoiseSettingsListenerHelper)initWithListenerAddress:(id)address
 {
-  objc_initWeak(&location, a3);
+  objc_initWeak(&location, address);
   v7.receiver = self;
   v7.super_class = HUNoiseSettingsListenerHelper;
   v4 = [(HUNoiseSettingsListenerHelper *)&v7 init];
@@ -22,7 +22,7 @@
   return v4;
 }
 
-- (void)addSelectorKey:(SEL)a3
+- (void)addSelectorKey:(SEL)key
 {
   selectorKeys = self->_selectorKeys;
   if (!selectorKeys)
@@ -34,7 +34,7 @@
     selectorKeys = self->_selectorKeys;
   }
 
-  v8 = NSStringFromSelector(a3);
+  v8 = NSStringFromSelector(key);
   [(NSMutableArray *)selectorKeys addObject:v8];
 }
 

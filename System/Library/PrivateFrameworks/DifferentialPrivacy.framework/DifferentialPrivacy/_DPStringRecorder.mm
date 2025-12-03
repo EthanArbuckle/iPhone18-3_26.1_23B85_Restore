@@ -1,27 +1,27 @@
 @interface _DPStringRecorder
-- (BOOL)record:(id)a3;
-- (BOOL)record:(id)a3 metadata:(id)a4;
+- (BOOL)record:(id)record;
+- (BOOL)record:(id)record metadata:(id)metadata;
 - (id)description;
 @end
 
 @implementation _DPStringRecorder
 
-- (BOOL)record:(id)a3
+- (BOOL)record:(id)record
 {
-  v4 = a3;
+  recordCopy = record;
   v5 = objc_autoreleasePoolPush();
-  [(_DPDataRecorder *)self->_recorder recordStrings:v4];
+  [(_DPDataRecorder *)self->_recorder recordStrings:recordCopy];
   objc_autoreleasePoolPop(v5);
 
   return 1;
 }
 
-- (BOOL)record:(id)a3 metadata:(id)a4
+- (BOOL)record:(id)record metadata:(id)metadata
 {
-  v6 = a3;
-  v7 = a4;
+  recordCopy = record;
+  metadataCopy = metadata;
   v8 = objc_autoreleasePoolPush();
-  [(_DPDataRecorder *)self->_recorder recordStrings:v6 metadata:v7];
+  [(_DPDataRecorder *)self->_recorder recordStrings:recordCopy metadata:metadataCopy];
   objc_autoreleasePoolPop(v8);
 
   return 1;

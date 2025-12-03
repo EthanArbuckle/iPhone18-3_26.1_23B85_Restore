@@ -1,29 +1,29 @@
 @interface UIMultiSelectInteractionState
-- (BOOL)stillValidForSelectedIndexPaths:(id)a3;
+- (BOOL)stillValidForSelectedIndexPaths:(id)paths;
 - (CGPoint)startPoint;
-- (UIMultiSelectInteractionState)initWithCurrentSelection:(id)a3;
-- (id)pathsToDeselectForInterpolatedIndexPaths:(id)a3 currentlySelectedIndexPaths:(id)a4;
-- (id)pathsToSelectForInterpolatedIndexPaths:(id)a3;
-- (void)beginSelectingWithStartingIndexPath:(id)a3 otherSelectedIndexPaths:(id)a4 keepCurrentSelection:(BOOL)a5;
+- (UIMultiSelectInteractionState)initWithCurrentSelection:(id)selection;
+- (id)pathsToDeselectForInterpolatedIndexPaths:(id)paths currentlySelectedIndexPaths:(id)indexPaths;
+- (id)pathsToSelectForInterpolatedIndexPaths:(id)paths;
+- (void)beginSelectingWithStartingIndexPath:(id)path otherSelectedIndexPaths:(id)paths keepCurrentSelection:(BOOL)selection;
 - (void)endMultiselectInteraction;
-- (void)ignoreSelectionChangedNotificationsWithBlock:(id)a3;
-- (void)setOriginallySelectedIndexPaths:(id)a3;
-- (void)updateStateWithDifferenceFromCurrentSelection:(id)a3;
-- (void)updateStateWithStartingIndexPath:(id)a3 otherSelectedIndexPaths:(id)a4;
+- (void)ignoreSelectionChangedNotificationsWithBlock:(id)block;
+- (void)setOriginallySelectedIndexPaths:(id)paths;
+- (void)updateStateWithDifferenceFromCurrentSelection:(id)selection;
+- (void)updateStateWithStartingIndexPath:(id)path otherSelectedIndexPaths:(id)paths;
 @end
 
 @implementation UIMultiSelectInteractionState
 
-- (UIMultiSelectInteractionState)initWithCurrentSelection:(id)a3
+- (UIMultiSelectInteractionState)initWithCurrentSelection:(id)selection
 {
-  v4 = a3;
+  selectionCopy = selection;
   v5 = [(UIMultiSelectInteractionState *)self init];
   v6 = v5;
   if (v5)
   {
-    [(UIMultiSelectInteractionState *)v5 setOriginallySelectedIndexPaths:v4];
-    v7 = [v4 lastObject];
-    [(UIMultiSelectInteractionState *)v6 setStartIndexPath:v7];
+    [(UIMultiSelectInteractionState *)v5 setOriginallySelectedIndexPaths:selectionCopy];
+    lastObject = [selectionCopy lastObject];
+    [(UIMultiSelectInteractionState *)v6 setStartIndexPath:lastObject];
 
     [(UIMultiSelectInteractionState *)v6 setSelecting:1];
   }
@@ -31,84 +31,84 @@
   return v6;
 }
 
-- (void)setOriginallySelectedIndexPaths:(id)a3
+- (void)setOriginallySelectedIndexPaths:(id)paths
 {
-  objc_storeStrong(&self->_originallySelectedIndexPaths, a3);
-  v5 = a3;
-  [(UIMultiSelectInteractionState *)self setAllSelectedIndexPaths:v5];
+  objc_storeStrong(&self->_originallySelectedIndexPaths, paths);
+  pathsCopy = paths;
+  [(UIMultiSelectInteractionState *)self setAllSelectedIndexPaths:pathsCopy];
 }
 
-- (void)ignoreSelectionChangedNotificationsWithBlock:(id)a3
+- (void)ignoreSelectionChangedNotificationsWithBlock:(id)block
 {
   ++self->_ignoringSelectionChangedNotificationsCounter;
-  (*(a3 + 2))(a3, a2);
+  (*(block + 2))(block, a2);
   --self->_ignoringSelectionChangedNotificationsCounter;
 }
 
-- (BOOL)stillValidForSelectedIndexPaths:(id)a3
+- (BOOL)stillValidForSelectedIndexPaths:(id)paths
 {
-  v4 = a3;
-  v5 = [(UIMultiSelectInteractionState *)self allSelectedIndexPaths];
-  v6 = [v5 isEqualToArray:v4];
+  pathsCopy = paths;
+  allSelectedIndexPaths = [(UIMultiSelectInteractionState *)self allSelectedIndexPaths];
+  v6 = [allSelectedIndexPaths isEqualToArray:pathsCopy];
 
   return v6;
 }
 
-- (void)updateStateWithDifferenceFromCurrentSelection:(id)a3
+- (void)updateStateWithDifferenceFromCurrentSelection:(id)selection
 {
-  v20 = a3;
+  selectionCopy = selection;
   if (![(UIMultiSelectInteractionState *)self ignoringSelectionChangedNotifications])
   {
-    v4 = [(UIMultiSelectInteractionState *)self allSelectedIndexPaths];
+    allSelectedIndexPaths = [(UIMultiSelectInteractionState *)self allSelectedIndexPaths];
 
-    if (!v4)
+    if (!allSelectedIndexPaths)
     {
       [(UIMultiSelectInteractionState *)self setSelecting:1];
-      v8 = [v20 lastObject];
-      [(UIMultiSelectInteractionState *)self setStartIndexPath:v8];
+      lastObject = [selectionCopy lastObject];
+      [(UIMultiSelectInteractionState *)self setStartIndexPath:lastObject];
 
       [(UIMultiSelectInteractionState *)self setEndIndexPath:0];
-      [(UIMultiSelectInteractionState *)self setAllSelectedIndexPaths:v20];
+      [(UIMultiSelectInteractionState *)self setAllSelectedIndexPaths:selectionCopy];
 LABEL_14:
       [(UIMultiSelectInteractionState *)self setOriginallySelectedIndexPaths:0];
       goto LABEL_15;
     }
 
-    v5 = [(UIMultiSelectInteractionState *)self allSelectedIndexPaths];
-    v6 = [v20 differenceFromArray:v5];
+    allSelectedIndexPaths2 = [(UIMultiSelectInteractionState *)self allSelectedIndexPaths];
+    v6 = [selectionCopy differenceFromArray:allSelectedIndexPaths2];
 
-    v7 = [v6 insertions];
-    if ([v7 count])
+    insertions = [v6 insertions];
+    if ([insertions count])
     {
     }
 
     else
     {
-      v9 = [v6 removals];
-      v10 = [v9 count];
+      removals = [v6 removals];
+      v10 = [removals count];
 
       if (!v10)
       {
         [(UIMultiSelectInteractionState *)self setSelecting:1];
-        v19 = [v20 lastObject];
-        [(UIMultiSelectInteractionState *)self setStartIndexPath:v19];
+        lastObject2 = [selectionCopy lastObject];
+        [(UIMultiSelectInteractionState *)self setStartIndexPath:lastObject2];
         goto LABEL_12;
       }
     }
 
-    v11 = [v6 insertions];
-    v12 = [v11 count];
+    insertions2 = [v6 insertions];
+    v12 = [insertions2 count];
 
     if (v12)
     {
       [(UIMultiSelectInteractionState *)self setSelecting:1];
-      v13 = [v6 insertions];
+      insertions3 = [v6 insertions];
     }
 
     else
     {
-      v14 = [v6 removals];
-      v15 = [v14 count];
+      removals2 = [v6 removals];
+      v15 = [removals2 count];
 
       if (!v15)
       {
@@ -118,16 +118,16 @@ LABEL_13:
       }
 
       [(UIMultiSelectInteractionState *)self setSelecting:0];
-      v13 = [v6 removals];
+      insertions3 = [v6 removals];
     }
 
-    v16 = v13;
-    v17 = [v13 lastObject];
-    v18 = [v17 object];
-    [(UIMultiSelectInteractionState *)self setStartIndexPath:v18];
+    v16 = insertions3;
+    lastObject3 = [insertions3 lastObject];
+    object = [lastObject3 object];
+    [(UIMultiSelectInteractionState *)self setStartIndexPath:object];
 
-    v19 = [(UIMultiSelectInteractionState *)self startIndexPath];
-    [(UIMultiSelectInteractionState *)self setEndIndexPath:v19];
+    lastObject2 = [(UIMultiSelectInteractionState *)self startIndexPath];
+    [(UIMultiSelectInteractionState *)self setEndIndexPath:lastObject2];
 LABEL_12:
 
     goto LABEL_13;
@@ -136,92 +136,92 @@ LABEL_12:
 LABEL_15:
 }
 
-- (void)updateStateWithStartingIndexPath:(id)a3 otherSelectedIndexPaths:(id)a4
+- (void)updateStateWithStartingIndexPath:(id)path otherSelectedIndexPaths:(id)paths
 {
-  v9 = a3;
-  v6 = a4;
-  if (v9)
+  pathCopy = path;
+  pathsCopy = paths;
+  if (pathCopy)
   {
     [(UIMultiSelectInteractionState *)self setAllSelectedIndexPaths:0];
     [(UIMultiSelectInteractionState *)self setOriginallySelectedIndexPaths:0];
-    -[UIMultiSelectInteractionState setSelecting:](self, "setSelecting:", [v6 containsObject:v9] ^ 1);
-    [(UIMultiSelectInteractionState *)self setOriginallySelectedIndexPaths:v6];
-    [(UIMultiSelectInteractionState *)self setStartIndexPath:v9];
+    -[UIMultiSelectInteractionState setSelecting:](self, "setSelecting:", [pathsCopy containsObject:pathCopy] ^ 1);
+    [(UIMultiSelectInteractionState *)self setOriginallySelectedIndexPaths:pathsCopy];
+    [(UIMultiSelectInteractionState *)self setStartIndexPath:pathCopy];
   }
 
   else
   {
-    v7 = [(UIMultiSelectInteractionState *)self startIndexPath];
-    -[UIMultiSelectInteractionState setSelecting:](self, "setSelecting:", [v6 containsObject:v7]);
+    startIndexPath = [(UIMultiSelectInteractionState *)self startIndexPath];
+    -[UIMultiSelectInteractionState setSelecting:](self, "setSelecting:", [pathsCopy containsObject:startIndexPath]);
   }
 
-  v8 = [(UIMultiSelectInteractionState *)self originallySelectedIndexPaths];
+  originallySelectedIndexPaths = [(UIMultiSelectInteractionState *)self originallySelectedIndexPaths];
 
-  if (!v8)
+  if (!originallySelectedIndexPaths)
   {
-    [(UIMultiSelectInteractionState *)self setOriginallySelectedIndexPaths:v6];
+    [(UIMultiSelectInteractionState *)self setOriginallySelectedIndexPaths:pathsCopy];
   }
 }
 
-- (void)beginSelectingWithStartingIndexPath:(id)a3 otherSelectedIndexPaths:(id)a4 keepCurrentSelection:(BOOL)a5
+- (void)beginSelectingWithStartingIndexPath:(id)path otherSelectedIndexPaths:(id)paths keepCurrentSelection:(BOOL)selection
 {
-  v5 = a5;
-  v11 = a3;
-  v8 = a4;
-  v9 = self;
-  if (v5)
+  selectionCopy = selection;
+  pathCopy = path;
+  pathsCopy = paths;
+  selfCopy2 = self;
+  if (selectionCopy)
   {
-    v10 = v8;
+    v10 = pathsCopy;
   }
 
   else
   {
     [(UIMultiSelectInteractionState *)self setAllSelectedIndexPaths:0];
     v10 = MEMORY[0x1E695E0F0];
-    v9 = self;
+    selfCopy2 = self;
   }
 
-  [(UIMultiSelectInteractionState *)v9 setOriginallySelectedIndexPaths:v10];
-  if (v11)
+  [(UIMultiSelectInteractionState *)selfCopy2 setOriginallySelectedIndexPaths:v10];
+  if (pathCopy)
   {
-    [(UIMultiSelectInteractionState *)self setStartIndexPath:v11];
+    [(UIMultiSelectInteractionState *)self setStartIndexPath:pathCopy];
   }
 
   [(UIMultiSelectInteractionState *)self setSelecting:1];
 }
 
-- (id)pathsToSelectForInterpolatedIndexPaths:(id)a3
+- (id)pathsToSelectForInterpolatedIndexPaths:(id)paths
 {
   v4 = MEMORY[0x1E695DFA8];
-  v5 = a3;
-  v6 = [(UIMultiSelectInteractionState *)self originallySelectedIndexPaths];
-  v7 = [v4 setWithArray:v6];
+  pathsCopy = paths;
+  originallySelectedIndexPaths = [(UIMultiSelectInteractionState *)self originallySelectedIndexPaths];
+  v7 = [v4 setWithArray:originallySelectedIndexPaths];
 
   if ([(UIMultiSelectInteractionState *)self isSelecting])
   {
-    [v7 unionSet:v5];
+    [v7 unionSet:pathsCopy];
   }
 
   else
   {
-    [v7 minusSet:v5];
+    [v7 minusSet:pathsCopy];
   }
 
   return v7;
 }
 
-- (id)pathsToDeselectForInterpolatedIndexPaths:(id)a3 currentlySelectedIndexPaths:(id)a4
+- (id)pathsToDeselectForInterpolatedIndexPaths:(id)paths currentlySelectedIndexPaths:(id)indexPaths
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(UIMultiSelectInteractionState *)self pathsToSelectForInterpolatedIndexPaths:v6];
+  pathsCopy = paths;
+  indexPathsCopy = indexPaths;
+  v8 = [(UIMultiSelectInteractionState *)self pathsToSelectForInterpolatedIndexPaths:pathsCopy];
   v9 = [v8 mutableCopy];
 
-  v10 = [v7 mutableCopy];
+  v10 = [indexPathsCopy mutableCopy];
   [v10 minusSet:v9];
   if (![(UIMultiSelectInteractionState *)self isSelecting])
   {
-    [v10 unionSet:v6];
+    [v10 unionSet:pathsCopy];
   }
 
   return v10;
@@ -232,8 +232,8 @@ LABEL_15:
   multiselectInteractionCounter = self->_multiselectInteractionCounter;
   if (!multiselectInteractionCounter)
   {
-    v5 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v5 handleFailureInMethod:a2 object:self file:@"UIMultiSelectInteractionState.m" lineNumber:172 description:@"Unable to end multiselect interaction. No interaction ongoing."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIMultiSelectInteractionState.m" lineNumber:172 description:@"Unable to end multiselect interaction. No interaction ongoing."];
 
     multiselectInteractionCounter = self->_multiselectInteractionCounter;
   }

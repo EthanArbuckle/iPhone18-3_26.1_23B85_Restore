@@ -1,31 +1,31 @@
 @interface GEOImageServiceServer
-- (BOOL)handleIncomingMessage:(id)a3 withObject:(id)a4 fromPeer:(id)a5 signpostId:(unint64_t)a6;
-- (GEOImageServiceServer)initWithDaemon:(id)a3;
-- (void)calculateFreeableWithRequest:(id)a3;
-- (void)cancelImageServiceRequestWithRequest:(id)a3;
-- (void)purgeDiskCacheWithRequest:(id)a3;
-- (void)startImageServiceRequestWithRequest:(id)a3;
+- (BOOL)handleIncomingMessage:(id)message withObject:(id)object fromPeer:(id)peer signpostId:(unint64_t)id;
+- (GEOImageServiceServer)initWithDaemon:(id)daemon;
+- (void)calculateFreeableWithRequest:(id)request;
+- (void)cancelImageServiceRequestWithRequest:(id)request;
+- (void)purgeDiskCacheWithRequest:(id)request;
+- (void)startImageServiceRequestWithRequest:(id)request;
 @end
 
 @implementation GEOImageServiceServer
 
-- (BOOL)handleIncomingMessage:(id)a3 withObject:(id)a4 fromPeer:(id)a5 signpostId:(unint64_t)a6
+- (BOOL)handleIncomingMessage:(id)message withObject:(id)object fromPeer:(id)peer signpostId:(unint64_t)id
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = sub_100001334(v10);
+  messageCopy = message;
+  objectCopy = object;
+  peerCopy = peer;
+  v13 = sub_100001334(messageCopy);
   v14 = 0;
   if (v13 > 2506)
   {
     if (v13 == 2563)
     {
       v22 = objc_opt_class();
-      v23 = sub_100001388(@"ImageService", v10, v11, v22, v12);
+      v23 = sub_100001388(@"ImageService", messageCopy, objectCopy, v22, peerCopy);
       v17 = v23;
       if (v23)
       {
-        [v23 setSignpostId:a6];
+        [v23 setSignpostId:id];
         [(GEOImageServiceServer *)self cancelImageServiceRequestWithRequest:v17];
         goto LABEL_16;
       }
@@ -36,11 +36,11 @@
     if (v13 == 2507)
     {
       v18 = objc_opt_class();
-      v19 = sub_100001388(@"ImageService", v10, v11, v18, v12);
+      v19 = sub_100001388(@"ImageService", messageCopy, objectCopy, v18, peerCopy);
       v17 = v19;
       if (v19)
       {
-        [v19 setSignpostId:a6];
+        [v19 setSignpostId:id];
         [(GEOImageServiceServer *)self startImageServiceRequestWithRequest:v17];
         goto LABEL_16;
       }
@@ -54,14 +54,14 @@ LABEL_19:
   else if (v13 == 1410)
   {
     v14 = 1;
-    if (sub_100001B78(v12, v11, @"ImageService", v10, &off_100088B80, 1))
+    if (sub_100001B78(peerCopy, objectCopy, @"ImageService", messageCopy, &off_100088B80, 1))
     {
       v20 = objc_opt_class();
-      v21 = sub_100001388(@"ImageService", v10, v11, v20, v12);
+      v21 = sub_100001388(@"ImageService", messageCopy, objectCopy, v20, peerCopy);
       v17 = v21;
       if (v21)
       {
-        [v21 setSignpostId:a6];
+        [v21 setSignpostId:id];
         [(GEOImageServiceServer *)self purgeDiskCacheWithRequest:v17];
         goto LABEL_16;
       }
@@ -73,14 +73,14 @@ LABEL_19:
   else if (v13 == 1732)
   {
     v14 = 1;
-    if (sub_100001B78(v12, v11, @"ImageService", v10, &off_100088B68, 1))
+    if (sub_100001B78(peerCopy, objectCopy, @"ImageService", messageCopy, &off_100088B68, 1))
     {
       v15 = objc_opt_class();
-      v16 = sub_100001388(@"ImageService", v10, v11, v15, v12);
+      v16 = sub_100001388(@"ImageService", messageCopy, objectCopy, v15, peerCopy);
       v17 = v16;
       if (v16)
       {
-        [v16 setSignpostId:a6];
+        [v16 setSignpostId:id];
         [(GEOImageServiceServer *)self calculateFreeableWithRequest:v17];
 LABEL_16:
         v14 = 1;
@@ -98,33 +98,33 @@ LABEL_18:
   return v14;
 }
 
-- (void)purgeDiskCacheWithRequest:(id)a3
+- (void)purgeDiskCacheWithRequest:(id)request
 {
-  v4 = a3;
-  v7 = [[GEOImageServicePurgeCacheToSizeReply alloc] initWithRequest:v4];
+  requestCopy = request;
+  v7 = [[GEOImageServicePurgeCacheToSizeReply alloc] initWithRequest:requestCopy];
   persistence = self->_persistence;
-  v6 = [v4 targetSize];
+  targetSize = [requestCopy targetSize];
 
-  [v7 setAmountDeleted:{-[GEOImageServicePersistence shrinkToSize:](persistence, "shrinkToSize:", v6)}];
+  [v7 setAmountDeleted:{-[GEOImageServicePersistence shrinkToSize:](persistence, "shrinkToSize:", targetSize)}];
   [v7 send];
 }
 
-- (void)calculateFreeableWithRequest:(id)a3
+- (void)calculateFreeableWithRequest:(id)request
 {
-  v4 = a3;
-  v5 = [[GEOImageServiceCalculateFreeableSizeReply alloc] initWithRequest:v4];
+  requestCopy = request;
+  v5 = [[GEOImageServiceCalculateFreeableSizeReply alloc] initWithRequest:requestCopy];
 
   [v5 setSize:{-[GEOImageServicePersistence calculateFreeableSize](self->_persistence, "calculateFreeableSize")}];
   [v5 send];
 }
 
-- (void)cancelImageServiceRequestWithRequest:(id)a3
+- (void)cancelImageServiceRequestWithRequest:(id)request
 {
-  v4 = a3;
-  v5 = [[GEOImageServiceReplySimple alloc] initWithRequest:v4];
-  v6 = [v4 request];
+  requestCopy = request;
+  v5 = [[GEOImageServiceReplySimple alloc] initWithRequest:requestCopy];
+  request = [requestCopy request];
 
-  if (v6)
+  if (request)
   {
     v11 = 0;
     v12 = &v11;
@@ -133,7 +133,7 @@ LABEL_18:
     v15 = sub_10002DF14;
     v16 = 0;
     isolater = self->_isolater;
-    v10 = v4;
+    v10 = requestCopy;
     geo_isolate_sync_data();
     if (v12[5])
     {
@@ -153,24 +153,24 @@ LABEL_18:
   }
 }
 
-- (void)startImageServiceRequestWithRequest:(id)a3
+- (void)startImageServiceRequestWithRequest:(id)request
 {
-  v4 = a3;
-  v5 = [[GEOImageServiceReplySimple alloc] initWithRequest:v4];
-  v6 = [v4 request];
+  requestCopy = request;
+  v5 = [[GEOImageServiceReplySimple alloc] initWithRequest:requestCopy];
+  request = [requestCopy request];
 
-  if (v6)
+  if (request)
   {
     v28 = v5;
-    v7 = [v4 request];
-    v8 = [v7 imageIds];
-    v33 = [v8 mutableCopy];
+    request2 = [requestCopy request];
+    imageIds = [request2 imageIds];
+    v33 = [imageIds mutableCopy];
 
-    v9 = [v4 request];
-    v31 = [v9 width];
+    request3 = [requestCopy request];
+    width = [request3 width];
 
-    v10 = [v4 request];
-    v11 = [v10 height];
+    request4 = [requestCopy request];
+    height = [request4 height];
 
     v32 = +[NSMutableArray array];
     isolater = self->_isolater;
@@ -178,9 +178,9 @@ LABEL_18:
     v48 = 3221225472;
     v49 = sub_10002E3E0;
     v50 = &unk_100083940;
-    v51 = self;
-    v29 = v4;
-    v52 = v4;
+    selfCopy = self;
+    v29 = requestCopy;
+    v52 = requestCopy;
     geo_isolate_sync_data();
     v13 = dispatch_group_create();
     v43 = 0u;
@@ -188,11 +188,11 @@ LABEL_18:
     v45 = 0u;
     v46 = 0u;
     v27 = v52;
-    v14 = [v52 request];
-    v15 = [v14 imageIds];
+    request5 = [v52 request];
+    imageIds2 = [request5 imageIds];
 
-    obj = v15;
-    v16 = [v15 countByEnumeratingWithState:&v43 objects:v53 count:16];
+    obj = imageIds2;
+    v16 = [imageIds2 countByEnumeratingWithState:&v43 objects:v53 count:16];
     if (v16)
     {
       v17 = v16;
@@ -220,7 +220,7 @@ LABEL_18:
           v40 = v33;
           v41 = v32;
           v42 = v13;
-          [(GEOImageServicePersistence *)persistence getDataForIdentifier:v20 width:v31 height:v11 callbackQueue:global_queue callback:v39];
+          [(GEOImageServicePersistence *)persistence getDataForIdentifier:v20 width:width height:height callbackQueue:global_queue callback:v39];
 
           v19 = v19 + 1;
         }
@@ -247,7 +247,7 @@ LABEL_18:
     v25 = v33;
     dispatch_group_notify(v13, v23, block);
 
-    v4 = v29;
+    requestCopy = v29;
   }
 
   else
@@ -259,11 +259,11 @@ LABEL_18:
   }
 }
 
-- (GEOImageServiceServer)initWithDaemon:(id)a3
+- (GEOImageServiceServer)initWithDaemon:(id)daemon
 {
   v18.receiver = self;
   v18.super_class = GEOImageServiceServer;
-  v3 = [(GEOImageServiceServer *)&v18 initWithDaemon:a3];
+  v3 = [(GEOImageServiceServer *)&v18 initWithDaemon:daemon];
   if (v3)
   {
     v4 = geo_isolater_create();

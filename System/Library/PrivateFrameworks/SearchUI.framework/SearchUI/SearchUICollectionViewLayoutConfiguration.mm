@@ -1,12 +1,12 @@
 @interface SearchUICollectionViewLayoutConfiguration
-- (SearchUICollectionViewLayoutConfiguration)initWithSnapshot:(id)a3;
+- (SearchUICollectionViewLayoutConfiguration)initWithSnapshot:(id)snapshot;
 @end
 
 @implementation SearchUICollectionViewLayoutConfiguration
 
-- (SearchUICollectionViewLayoutConfiguration)initWithSnapshot:(id)a3
+- (SearchUICollectionViewLayoutConfiguration)initWithSnapshot:(id)snapshot
 {
-  v4 = a3;
+  snapshotCopy = snapshot;
   v21.receiver = self;
   v21.super_class = SearchUICollectionViewLayoutConfiguration;
   v5 = [(SearchUICollectionViewLayoutConfiguration *)&v21 init];
@@ -14,16 +14,16 @@
   {
     v6 = objc_opt_new();
     v7 = objc_opt_new();
-    v8 = [v4 sectionIdentifiers];
-    v9 = [v8 count];
+    sectionIdentifiers = [snapshotCopy sectionIdentifiers];
+    v9 = [sectionIdentifiers count];
 
     if (v9)
     {
       v10 = 0;
       do
       {
-        v11 = [v4 sectionIdentifiers];
-        v12 = [v11 objectAtIndexedSubscript:v10];
+        sectionIdentifiers2 = [snapshotCopy sectionIdentifiers];
+        v12 = [sectionIdentifiers2 objectAtIndexedSubscript:v10];
 
         if ([v12 shouldHeightMatchSection])
         {
@@ -38,8 +38,8 @@
         }
 
         ++v10;
-        v15 = [v4 sectionIdentifiers];
-        v16 = [v15 count];
+        sectionIdentifiers3 = [snapshotCopy sectionIdentifiers];
+        v16 = [sectionIdentifiers3 count];
       }
 
       while (v10 < v16);

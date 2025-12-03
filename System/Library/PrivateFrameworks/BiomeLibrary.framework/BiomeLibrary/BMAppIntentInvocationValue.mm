@@ -1,15 +1,15 @@
 @interface BMAppIntentInvocationValue
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMAppIntentInvocationValue)initWithJSONDictionary:(id)a3 error:(id *)p_isa;
-- (BMAppIntentInvocationValue)initWithValueType:(id)a3 value:(id)a4 displayRepresentation:(id)a5;
-- (BOOL)isEqual:(id)a3;
+- (BMAppIntentInvocationValue)initWithJSONDictionary:(id)dictionary error:(id *)p_isa;
+- (BMAppIntentInvocationValue)initWithValueType:(id)type value:(id)value displayRepresentation:(id)representation;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMAppIntentInvocationValue
@@ -29,25 +29,25 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMAppIntentInvocationValue *)self valueType];
-    v7 = [v5 valueType];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    valueType = [(BMAppIntentInvocationValue *)self valueType];
+    valueType2 = [v5 valueType];
+    v8 = valueType2;
+    if (valueType == valueType2)
     {
     }
 
     else
     {
-      v9 = [(BMAppIntentInvocationValue *)self valueType];
-      v10 = [v5 valueType];
-      v11 = [v9 isEqual:v10];
+      valueType3 = [(BMAppIntentInvocationValue *)self valueType];
+      valueType4 = [v5 valueType];
+      v11 = [valueType3 isEqual:valueType4];
 
       if (!v11)
       {
@@ -55,18 +55,18 @@
       }
     }
 
-    v13 = [(BMAppIntentInvocationValue *)self value];
-    v14 = [v5 value];
-    v15 = v14;
-    if (v13 == v14)
+    value = [(BMAppIntentInvocationValue *)self value];
+    value2 = [v5 value];
+    v15 = value2;
+    if (value == value2)
     {
     }
 
     else
     {
-      v16 = [(BMAppIntentInvocationValue *)self value];
-      v17 = [v5 value];
-      v18 = [v16 isEqual:v17];
+      value3 = [(BMAppIntentInvocationValue *)self value];
+      value4 = [v5 value];
+      v18 = [value3 isEqual:value4];
 
       if (!v18)
       {
@@ -78,18 +78,18 @@ LABEL_15:
       }
     }
 
-    v19 = [(BMAppIntentInvocationValue *)self displayRepresentation];
-    v20 = [v5 displayRepresentation];
-    if (v19 == v20)
+    displayRepresentation = [(BMAppIntentInvocationValue *)self displayRepresentation];
+    displayRepresentation2 = [v5 displayRepresentation];
+    if (displayRepresentation == displayRepresentation2)
     {
       v12 = 1;
     }
 
     else
     {
-      v21 = [(BMAppIntentInvocationValue *)self displayRepresentation];
-      v22 = [v5 displayRepresentation];
-      v12 = [v21 isEqual:v22];
+      displayRepresentation3 = [(BMAppIntentInvocationValue *)self displayRepresentation];
+      displayRepresentation4 = [v5 displayRepresentation];
+      v12 = [displayRepresentation3 isEqual:displayRepresentation4];
     }
 
     goto LABEL_15;
@@ -104,41 +104,41 @@ LABEL_16:
 - (id)jsonDictionary
 {
   v16[3] = *MEMORY[0x1E69E9840];
-  v3 = [(BMAppIntentInvocationValue *)self valueType];
-  v4 = [v3 jsonDictionary];
+  valueType = [(BMAppIntentInvocationValue *)self valueType];
+  jsonDictionary = [valueType jsonDictionary];
 
-  v5 = [(BMAppIntentInvocationValue *)self value];
-  v6 = [v5 base64EncodedStringWithOptions:0];
+  value = [(BMAppIntentInvocationValue *)self value];
+  v6 = [value base64EncodedStringWithOptions:0];
 
-  v7 = [(BMAppIntentInvocationValue *)self displayRepresentation];
-  v8 = [v7 jsonDictionary];
+  displayRepresentation = [(BMAppIntentInvocationValue *)self displayRepresentation];
+  jsonDictionary2 = [displayRepresentation jsonDictionary];
 
   v15[0] = @"valueType";
-  v9 = v4;
-  if (!v4)
+  null = jsonDictionary;
+  if (!jsonDictionary)
   {
-    v9 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v16[0] = v9;
+  v16[0] = null;
   v15[1] = @"value";
-  v10 = v6;
+  null2 = v6;
   if (!v6)
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v16[1] = v10;
+  v16[1] = null2;
   v15[2] = @"displayRepresentation";
-  v11 = v8;
-  if (!v8)
+  null3 = jsonDictionary2;
+  if (!jsonDictionary2)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v16[2] = v11;
+  v16[2] = null3;
   v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:v15 count:3];
-  if (v8)
+  if (jsonDictionary2)
   {
     if (v6)
     {
@@ -147,7 +147,7 @@ LABEL_16:
 
 LABEL_14:
 
-    if (v4)
+    if (jsonDictionary)
     {
       goto LABEL_10;
     }
@@ -161,7 +161,7 @@ LABEL_14:
   }
 
 LABEL_9:
-  if (v4)
+  if (jsonDictionary)
   {
     goto LABEL_10;
   }
@@ -174,11 +174,11 @@ LABEL_10:
   return v12;
 }
 
-- (BMAppIntentInvocationValue)initWithJSONDictionary:(id)a3 error:(id *)p_isa
+- (BMAppIntentInvocationValue)initWithJSONDictionary:(id)dictionary error:(id *)p_isa
 {
   v41[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"valueType"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"valueType"];
   if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v8 = 0;
@@ -205,12 +205,12 @@ LABEL_10:
     }
 
 LABEL_4:
-    v9 = [v6 objectForKeyedSubscript:@"value"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"value"];
     if (!v9 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v10 = 0;
 LABEL_7:
-      v11 = [v6 objectForKeyedSubscript:@"displayRepresentation"];
+      v11 = [dictionaryCopy objectForKeyedSubscript:@"displayRepresentation"];
       if (v11 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
       {
         objc_opt_class();
@@ -346,18 +346,18 @@ LABEL_15:
 {
   v3 = objc_opt_new();
   [(BMAppIntentInvocationValue *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_valueType)
   {
     PBDataWriterPlaceMark();
-    [(BMAppIntentInvocationValueType *)self->_valueType writeTo:v4];
+    [(BMAppIntentInvocationValueType *)self->_valueType writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
@@ -369,14 +369,14 @@ LABEL_15:
   if (self->_displayRepresentation)
   {
     PBDataWriterPlaceMark();
-    [(BMAppIntentInvocationDisplayRepresentation *)self->_displayRepresentation writeTo:v4];
+    [(BMAppIntentInvocationDisplayRepresentation *)self->_displayRepresentation writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v24.receiver = self;
   v24.super_class = BMAppIntentInvocationValue;
   v5 = [(BMEventBase *)&v24 init];
@@ -385,12 +385,12 @@ LABEL_15:
     goto LABEL_33;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     while (1)
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         goto LABEL_31;
       }
@@ -401,18 +401,18 @@ LABEL_15:
       while (1)
       {
         LOBYTE(v25) = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v25 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v25 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (v25 & 0x7F) << v7;
@@ -429,9 +429,9 @@ LABEL_15:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         goto LABEL_31;
       }
@@ -461,7 +461,7 @@ LABEL_16:
           goto LABEL_32;
         }
 
-        v16 = [[BMAppIntentInvocationValueType alloc] initByReadFrom:v4];
+        v16 = [[BMAppIntentInvocationValueType alloc] initByReadFrom:fromCopy];
         if (!v16)
         {
           goto LABEL_32;
@@ -476,8 +476,8 @@ LABEL_16:
       v5->_value = v18;
 
 LABEL_30:
-      v21 = [v4 position];
-      if (v21 >= [v4 length])
+      position2 = [fromCopy position];
+      if (position2 >= [fromCopy length])
       {
         goto LABEL_31;
       }
@@ -490,7 +490,7 @@ LABEL_30:
       goto LABEL_32;
     }
 
-    v16 = [[BMAppIntentInvocationDisplayRepresentation alloc] initByReadFrom:v4];
+    v16 = [[BMAppIntentInvocationDisplayRepresentation alloc] initByReadFrom:fromCopy];
     if (!v16)
     {
       goto LABEL_32;
@@ -506,7 +506,7 @@ LABEL_28:
   }
 
 LABEL_31:
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_32:
     v22 = 0;
@@ -524,28 +524,28 @@ LABEL_33:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMAppIntentInvocationValue *)self valueType];
-  v5 = [(BMAppIntentInvocationValue *)self value];
-  v6 = [(BMAppIntentInvocationValue *)self displayRepresentation];
-  v7 = [v3 initWithFormat:@"BMAppIntentInvocationValue with valueType: %@, value: %@, displayRepresentation: %@", v4, v5, v6];
+  valueType = [(BMAppIntentInvocationValue *)self valueType];
+  value = [(BMAppIntentInvocationValue *)self value];
+  displayRepresentation = [(BMAppIntentInvocationValue *)self displayRepresentation];
+  v7 = [v3 initWithFormat:@"BMAppIntentInvocationValue with valueType: %@, value: %@, displayRepresentation: %@", valueType, value, displayRepresentation];
 
   return v7;
 }
 
-- (BMAppIntentInvocationValue)initWithValueType:(id)a3 value:(id)a4 displayRepresentation:(id)a5
+- (BMAppIntentInvocationValue)initWithValueType:(id)type value:(id)value displayRepresentation:(id)representation
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  typeCopy = type;
+  valueCopy = value;
+  representationCopy = representation;
   v14.receiver = self;
   v14.super_class = BMAppIntentInvocationValue;
   v12 = [(BMEventBase *)&v14 init];
   if (v12)
   {
     v12->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v12->_valueType, a3);
-    objc_storeStrong(&v12->_value, a4);
-    objc_storeStrong(&v12->_displayRepresentation, a5);
+    objc_storeStrong(&v12->_valueType, type);
+    objc_storeStrong(&v12->_value, value);
+    objc_storeStrong(&v12->_displayRepresentation, representation);
   }
 
   return v12;
@@ -587,9 +587,9 @@ id __37__BMAppIntentInvocationValue_columns__block_invoke(uint64_t a1, void *a2)
   return v5;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -597,8 +597,8 @@ id __37__BMAppIntentInvocationValue_columns__block_invoke(uint64_t a1, void *a2)
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMAppIntentInvocationValue alloc] initByReadFrom:v7];
     v4 = v8;

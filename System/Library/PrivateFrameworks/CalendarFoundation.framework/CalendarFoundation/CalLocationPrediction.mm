@@ -1,15 +1,15 @@
 @interface CalLocationPrediction
-+ (id)predictedLocationOfInterestForEventTitle:(id)a3 eventLocation:(id)a4 calendarIdentifier:(id)a5 timeout:(unint64_t)a6 error:(id *)a7;
++ (id)predictedLocationOfInterestForEventTitle:(id)title eventLocation:(id)location calendarIdentifier:(id)identifier timeout:(unint64_t)timeout error:(id *)error;
 @end
 
 @implementation CalLocationPrediction
 
-+ (id)predictedLocationOfInterestForEventTitle:(id)a3 eventLocation:(id)a4 calendarIdentifier:(id)a5 timeout:(unint64_t)a6 error:(id *)a7
++ (id)predictedLocationOfInterestForEventTitle:(id)title eventLocation:(id)location calendarIdentifier:(id)identifier timeout:(unint64_t)timeout error:(id *)error
 {
   v54 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  titleCopy = title;
+  locationCopy = location;
+  identifierCopy = identifier;
   v14 = [EKWeakLinkClass(@"RTRoutineManager" 0xAuLL)];
   v40 = 0;
   v41 = &v40;
@@ -29,18 +29,18 @@
   v27[1] = 3221225472;
   v27[2] = __113__CalLocationPrediction_predictedLocationOfInterestForEventTitle_eventLocation_calendarIdentifier_timeout_error___block_invoke;
   v27[3] = &unk_1E7EC6EB0;
-  v16 = v11;
+  v16 = titleCopy;
   v28 = v16;
-  v17 = v12;
+  v17 = locationCopy;
   v29 = v17;
-  v18 = v13;
+  v18 = identifierCopy;
   v30 = v18;
   v32 = &v34;
   v33 = &v40;
   v19 = v15;
   v31 = v19;
   [v14 fetchPredictedLocationsOfInterestAssociatedToTitle:v16 location:v17 calendarIdentifier:v18 withHandler:v27];
-  if (dispatch_group_wait(v19, a6))
+  if (dispatch_group_wait(v19, timeout))
   {
     v20 = +[CalFoundationLogSubsystem defaultCategory];
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -54,23 +54,23 @@
       _os_log_error_impl(&dword_1B990D000, v20, OS_LOG_TYPE_ERROR, "Error fetching locations of interest for title %@, location: %@, calendar: %@: Request timed out", buf, 0x20u);
     }
 
-    if (a7)
+    if (error)
     {
       v46 = *MEMORY[0x1E696A578];
       v21 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Prediction timed out for title %@, location: %@, calendar: %@", v16, v17, v18];
       v47 = v21;
       v22 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v47 forKeys:&v46 count:1];
 
-      *a7 = [MEMORY[0x1E696ABC0] errorWithDomain:@"CalLocationPredictionErrorDomain" code:0 userInfo:v22];
+      *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"CalLocationPredictionErrorDomain" code:0 userInfo:v22];
     }
   }
 
-  else if (a7)
+  else if (error)
   {
     v23 = v35[5];
     if (v23)
     {
-      *a7 = v23;
+      *error = v23;
     }
   }
 

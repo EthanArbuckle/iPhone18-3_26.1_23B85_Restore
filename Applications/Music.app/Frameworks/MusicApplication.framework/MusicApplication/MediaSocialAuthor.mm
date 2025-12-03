@@ -1,13 +1,13 @@
 @interface MediaSocialAuthor
-- (id)copyWithZone:(void *)a3;
+- (id)copyWithZone:(void *)zone;
 - (int64_t)hash;
 @end
 
 @implementation MediaSocialAuthor
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
-  v3 = self;
+  selfCopy = self;
   sub_4D2BA0(v6);
 
   __swift_project_boxed_opaque_existential_1(v6, v6[3]);
@@ -18,7 +18,7 @@
 
 - (int64_t)hash
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_4D2D68();
 
   return v3;

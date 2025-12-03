@@ -14,7 +14,7 @@
   v4 = *(MEMORY[0x277CBF138] + 40);
   v6[4] = String;
   v6[5] = v4;
-  return [a1 initWithCapacity:a3 keyCallBacks:v6 valueCallBacks:MEMORY[0x277CBF150]];
+  return [self initWithCapacity:a3 keyCallBacks:v6 valueCallBacks:MEMORY[0x277CBF150]];
 }
 
 @end

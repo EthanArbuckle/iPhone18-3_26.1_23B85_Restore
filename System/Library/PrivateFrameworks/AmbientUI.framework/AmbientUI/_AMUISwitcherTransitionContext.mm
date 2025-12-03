@@ -1,47 +1,47 @@
 @interface _AMUISwitcherTransitionContext
-+ (id)contextWithFromRecord:(void *)a3 toRecord:(uint64_t)a4 direction:(uint64_t)a5 interactive:;
++ (id)contextWithFromRecord:(void *)record toRecord:(uint64_t)toRecord direction:(uint64_t)direction interactive:;
 - (AMUISwitcherItem)fromItem;
 - (AMUISwitcherItem)toItem;
-- (_AMUISwitcherTransitionContext)initWithFromRecord:(id)a3 toRecord:(id)a4 direction:(int64_t)a5 interactive:(BOOL)a6;
+- (_AMUISwitcherTransitionContext)initWithFromRecord:(id)record toRecord:(id)toRecord direction:(int64_t)direction interactive:(BOOL)interactive;
 - (double)progress;
-- (uint64_t)hasSameItemsAsFromRecord:(void *)a3 toRecord:;
-- (void)setUserInfoObject:(id)a3 forKey:(id)a4;
+- (uint64_t)hasSameItemsAsFromRecord:(void *)record toRecord:;
+- (void)setUserInfoObject:(id)object forKey:(id)key;
 @end
 
 @implementation _AMUISwitcherTransitionContext
 
-+ (id)contextWithFromRecord:(void *)a3 toRecord:(uint64_t)a4 direction:(uint64_t)a5 interactive:
++ (id)contextWithFromRecord:(void *)record toRecord:(uint64_t)toRecord direction:(uint64_t)direction interactive:
 {
-  v8 = a3;
+  recordCopy = record;
   v9 = a2;
-  v10 = [objc_alloc(objc_opt_self()) initWithFromRecord:v9 toRecord:v8 direction:a4 interactive:a5];
+  v10 = [objc_alloc(objc_opt_self()) initWithFromRecord:v9 toRecord:recordCopy direction:toRecord interactive:direction];
 
   return v10;
 }
 
-- (_AMUISwitcherTransitionContext)initWithFromRecord:(id)a3 toRecord:(id)a4 direction:(int64_t)a5 interactive:(BOOL)a6
+- (_AMUISwitcherTransitionContext)initWithFromRecord:(id)record toRecord:(id)toRecord direction:(int64_t)direction interactive:(BOOL)interactive
 {
-  v11 = a3;
-  v12 = a4;
+  recordCopy = record;
+  toRecordCopy = toRecord;
   v16.receiver = self;
   v16.super_class = _AMUISwitcherTransitionContext;
   v13 = [(_AMUISwitcherTransitionContext *)&v16 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_fromRecord, a3);
-    objc_storeStrong(&v14->_toRecord, a4);
-    v14->_direction = a5;
-    v14->_interactive = a6;
+    objc_storeStrong(&v13->_fromRecord, record);
+    objc_storeStrong(&v14->_toRecord, toRecord);
+    v14->_direction = direction;
+    v14->_interactive = interactive;
   }
 
   return v14;
 }
 
-- (void)setUserInfoObject:(id)a3 forKey:(id)a4
+- (void)setUserInfoObject:(id)object forKey:(id)key
 {
-  v10 = a3;
-  v6 = a4;
+  objectCopy = object;
+  keyCopy = key;
   userInfo = self->_userInfo;
   if (!userInfo)
   {
@@ -52,37 +52,37 @@
     userInfo = self->_userInfo;
   }
 
-  [(NSMutableDictionary *)userInfo setObject:v10 forKey:v6];
+  [(NSMutableDictionary *)userInfo setObject:objectCopy forKey:keyCopy];
 }
 
-- (uint64_t)hasSameItemsAsFromRecord:(void *)a3 toRecord:
+- (uint64_t)hasSameItemsAsFromRecord:(void *)record toRecord:
 {
   v23[2] = *MEMORY[0x277D85DE8];
   v5 = a2;
-  v6 = a3;
-  if (!a1)
+  recordCopy = record;
+  if (!self)
   {
     v19 = 0;
     goto LABEL_15;
   }
 
   v7 = MEMORY[0x277CBEB98];
-  v8 = *(a1 + 8);
-  v9 = v8;
+  v8 = *(self + 8);
+  null = v8;
   if (!v8)
   {
-    v9 = [MEMORY[0x277CBEB68] null];
+    null = [MEMORY[0x277CBEB68] null];
   }
 
-  v23[0] = v9;
-  v10 = *(a1 + 16);
-  v11 = v10;
+  v23[0] = null;
+  v10 = *(self + 16);
+  null2 = v10;
   if (!v10)
   {
-    v11 = [MEMORY[0x277CBEB68] null];
+    null2 = [MEMORY[0x277CBEB68] null];
   }
 
-  v23[1] = v11;
+  v23[1] = null2;
   v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v23 count:2];
   v13 = [v7 setWithArray:v12];
 
@@ -105,24 +105,24 @@
 
 LABEL_8:
   v14 = MEMORY[0x277CBEB98];
-  v15 = v5;
+  null3 = v5;
   if (!v5)
   {
-    v15 = [MEMORY[0x277CBEB68] null];
+    null3 = [MEMORY[0x277CBEB68] null];
   }
 
-  v22[0] = v15;
-  v16 = v6;
-  if (!v6)
+  v22[0] = null3;
+  null4 = recordCopy;
+  if (!recordCopy)
   {
-    v16 = [MEMORY[0x277CBEB68] null];
+    null4 = [MEMORY[0x277CBEB68] null];
   }
 
-  v22[1] = v16;
+  v22[1] = null4;
   v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v22 count:2];
   v18 = [v14 setWithArray:v17];
 
-  if (!v6)
+  if (!recordCopy)
   {
 
     if (v5)
@@ -150,18 +150,18 @@ LABEL_15:
 
 - (double)progress
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  v1 = *(a1 + 16);
+  v1 = *(self + 16);
   if (v1)
   {
     return *(v1 + 24);
   }
 
-  v3 = *(a1 + 8);
+  v3 = *(self + 8);
   if (v3)
   {
     v4 = *(v3 + 24);

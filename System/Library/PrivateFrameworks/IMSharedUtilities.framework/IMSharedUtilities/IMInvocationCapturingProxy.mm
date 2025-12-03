@@ -1,18 +1,18 @@
 @interface IMInvocationCapturingProxy
-- (BOOL)respondsToSelector:(SEL)a3;
-- (IMInvocationCapturingProxy)initWithProtocol:(id)a3 forwardingHandler:(id)a4;
-- (id)methodSignatureForSelector:(SEL)a3;
-- (void)forwardInvocation:(id)a3;
+- (BOOL)respondsToSelector:(SEL)selector;
+- (IMInvocationCapturingProxy)initWithProtocol:(id)protocol forwardingHandler:(id)handler;
+- (id)methodSignatureForSelector:(SEL)selector;
+- (void)forwardInvocation:(id)invocation;
 @end
 
 @implementation IMInvocationCapturingProxy
 
-- (IMInvocationCapturingProxy)initWithProtocol:(id)a3 forwardingHandler:(id)a4
+- (IMInvocationCapturingProxy)initWithProtocol:(id)protocol forwardingHandler:(id)handler
 {
-  objc_storeStrong(&self->_protocol, a3);
-  v7 = a3;
-  v8 = a4;
-  v9 = [v8 copy];
+  objc_storeStrong(&self->_protocol, protocol);
+  protocolCopy = protocol;
+  handlerCopy = handler;
+  v9 = [handlerCopy copy];
 
   forwardingHandler = self->_forwardingHandler;
   self->_forwardingHandler = v9;
@@ -20,41 +20,41 @@
   return self;
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
-  v3 = [(IMInvocationCapturingProxy *)self methodSignatureForSelector:a3];
+  v3 = [(IMInvocationCapturingProxy *)self methodSignatureForSelector:selector];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
-  MethodDescription = protocol_getMethodDescription(self->_protocol, a3, 1, 1);
+  MethodDescription = protocol_getMethodDescription(self->_protocol, selector, 1, 1);
   types = MethodDescription.types;
-  if (MethodDescription.name || (v7 = protocol_getMethodDescription(self->_protocol, a3, 0, 1), types = v7.types, v7.name) || (sel_respondsToSelector_ != a3 ? (v8 = sel_conformsToProtocol_ == a3) : (v8 = 1), !v8))
+  if (MethodDescription.name || (v7 = protocol_getMethodDescription(self->_protocol, selector, 0, 1), types = v7.types, v7.name) || (sel_respondsToSelector_ != selector ? (v8 = sel_conformsToProtocol_ == selector) : (v8 = 1), !v8))
   {
     v9 = [MEMORY[0x1E695DF68] signatureWithObjCTypes:types];
   }
 
   else
   {
-    v9 = [MEMORY[0x1E69E58C0] methodSignatureForSelector:a3];
+    v9 = [MEMORY[0x1E69E58C0] methodSignatureForSelector:selector];
   }
 
   return v9;
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
-  v4 = a3;
-  [v4 retainArguments];
+  invocationCopy = invocation;
+  [invocationCopy retainArguments];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = sub_1A861F8C8;
   aBlock[3] = &unk_1E78262E0;
-  v8 = v4;
-  v5 = v4;
+  v8 = invocationCopy;
+  v5 = invocationCopy;
   v6 = _Block_copy(aBlock);
   (*(self->_forwardingHandler + 2))(self->_forwardingHandler, [v5 selector], v6);
 }

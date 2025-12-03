@@ -1,5 +1,5 @@
 @interface JPReader
-- (BOOL)processStream:(id)a3 signatureVerifier:(id)a4 options:(unint64_t)a5 error:(id *)a6;
+- (BOOL)processStream:(id)stream signatureVerifier:(id)verifier options:(unint64_t)options error:(id *)error;
 - (JPReader)init;
 - (id)convertError;
 - (void)dealloc;
@@ -33,16 +33,16 @@
   [(JPReader *)&v3 dealloc];
 }
 
-- (BOOL)processStream:(id)a3 signatureVerifier:(id)a4 options:(unint64_t)a5 error:(id *)a6
+- (BOOL)processStream:(id)stream signatureVerifier:(id)verifier options:(unint64_t)options error:(id *)error
 {
-  v6 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(JPReader *)self backing];
-  v12 = [v10 backing];
+  optionsCopy = options;
+  verifierCopy = verifier;
+  streamCopy = stream;
+  backing = [(JPReader *)self backing];
+  backing2 = [streamCopy backing];
 
-  v13 = [v9 backing];
-  JetPackReaderProcess(v11, v12, v13, v6);
+  backing3 = [verifierCopy backing];
+  JetPackReaderProcess(backing, backing2, backing3, optionsCopy);
 }
 
 - (id)convertError

@@ -1,26 +1,26 @@
 @interface SafariImportConflictView
-+ (id)extensionsImportConflictViewWithNumberOfSuccessfullyImportedExtensions:(unint64_t)a3 numberOfExtensionsFailedToImport:(unint64_t)a4 lockupViews:(id)a5;
-+ (id)passwordsImportConflictViewWithNumberOfSuccessfullyImportedPasswords:(unint64_t)a3 numberOfPasswordsFailedToImport:(unint64_t)a4;
-- (SafariImportConflictView)initWithTitleText:(id)a3 iconName:(id)a4 detailText:(id)a5 needsDivider:(BOOL)a6;
++ (id)extensionsImportConflictViewWithNumberOfSuccessfullyImportedExtensions:(unint64_t)extensions numberOfExtensionsFailedToImport:(unint64_t)import lockupViews:(id)views;
++ (id)passwordsImportConflictViewWithNumberOfSuccessfullyImportedPasswords:(unint64_t)passwords numberOfPasswordsFailedToImport:(unint64_t)import;
+- (SafariImportConflictView)initWithTitleText:(id)text iconName:(id)name detailText:(id)detailText needsDivider:(BOOL)divider;
 - (id)horizontalDivider;
 @end
 
 @implementation SafariImportConflictView
 
-+ (id)passwordsImportConflictViewWithNumberOfSuccessfullyImportedPasswords:(unint64_t)a3 numberOfPasswordsFailedToImport:(unint64_t)a4
++ (id)passwordsImportConflictViewWithNumberOfSuccessfullyImportedPasswords:(unint64_t)passwords numberOfPasswordsFailedToImport:(unint64_t)import
 {
   v5 = _WBSLocalizedString();
-  v6 = [WBSBrowsingDataImportController localizedStringForPasswordsConflictViewWithNumberOfPasswordsFailedToImport:a4];
+  v6 = [WBSBrowsingDataImportController localizedStringForPasswordsConflictViewWithNumberOfPasswordsFailedToImport:import];
   v7 = [[SafariImportConflictView alloc] initWithTitleText:v5 iconName:@"exclamationmark.triangle" detailText:v6 needsDivider:0];
 
   return v7;
 }
 
-+ (id)extensionsImportConflictViewWithNumberOfSuccessfullyImportedExtensions:(unint64_t)a3 numberOfExtensionsFailedToImport:(unint64_t)a4 lockupViews:(id)a5
++ (id)extensionsImportConflictViewWithNumberOfSuccessfullyImportedExtensions:(unint64_t)extensions numberOfExtensionsFailedToImport:(unint64_t)import lockupViews:(id)views
 {
-  v6 = a5;
+  viewsCopy = views;
   v7 = _WBSLocalizedString();
-  v35 = +[WBSBrowsingDataImportController localizedStringForExtensionsConflictViewWithNumberOfFailedExtensionsFailedToImport:appsCount:](WBSBrowsingDataImportController, "localizedStringForExtensionsConflictViewWithNumberOfFailedExtensionsFailedToImport:appsCount:", a4, [v6 count]);
+  v35 = +[WBSBrowsingDataImportController localizedStringForExtensionsConflictViewWithNumberOfFailedExtensionsFailedToImport:appsCount:](WBSBrowsingDataImportController, "localizedStringForExtensionsConflictViewWithNumberOfFailedExtensionsFailedToImport:appsCount:", import, [viewsCopy count]);
   v36 = v7;
   v8 = [[SafariImportConflictView alloc] initWithTitleText:v7 iconName:@"puzzlepiece.extension" detailText:v35 needsDivider:1];
   v9 = objc_alloc_init(UIStackView);
@@ -33,78 +33,78 @@
   [v9 setTranslatesAutoresizingMaskIntoConstraints:0];
   [(SafariImportConflictView *)v8 addArrangedSubview:v9];
   v39 = v9;
-  v10 = [v9 widthAnchor];
+  widthAnchor = [v9 widthAnchor];
   v37 = v8;
-  v11 = [(SafariImportConflictView *)v8 layoutMarginsGuide];
-  v12 = [v11 widthAnchor];
-  v13 = [v10 constraintEqualToAnchor:v12];
+  layoutMarginsGuide = [(SafariImportConflictView *)v8 layoutMarginsGuide];
+  widthAnchor2 = [layoutMarginsGuide widthAnchor];
+  v13 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
   [v13 setActive:1];
 
-  if ([v6 count])
+  if ([viewsCopy count])
   {
     v14 = 0;
-    v38 = v6;
+    v38 = viewsCopy;
     do
     {
-      v15 = [v6 objectAtIndexedSubscript:v14];
+      v15 = [viewsCopy objectAtIndexedSubscript:v14];
       [v39 addArrangedSubview:v15];
-      v16 = [v15 leadingAnchor];
-      v17 = [v39 layoutMarginsGuide];
-      v18 = [v17 leadingAnchor];
-      v19 = [v16 constraintEqualToAnchor:v18 constant:15.0];
+      leadingAnchor = [v15 leadingAnchor];
+      layoutMarginsGuide2 = [v39 layoutMarginsGuide];
+      leadingAnchor2 = [layoutMarginsGuide2 leadingAnchor];
+      v19 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:15.0];
       v43[0] = v19;
       v41 = v15;
-      v20 = [v15 trailingAnchor];
-      v21 = [v39 layoutMarginsGuide];
-      v22 = [v21 trailingAnchor];
-      v23 = [v20 constraintEqualToAnchor:v22 constant:-15.0];
+      trailingAnchor = [v15 trailingAnchor];
+      layoutMarginsGuide3 = [v39 layoutMarginsGuide];
+      trailingAnchor2 = [layoutMarginsGuide3 trailingAnchor];
+      v23 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-15.0];
       v43[1] = v23;
       v24 = [NSArray arrayWithObjects:v43 count:2];
       [NSLayoutConstraint activateConstraints:v24];
 
-      v6 = v38;
+      viewsCopy = v38;
       if (v14 != [v38 count] - 1)
       {
-        v25 = [(SafariImportConflictView *)v37 horizontalDivider];
-        [v25 setTranslatesAutoresizingMaskIntoConstraints:0];
-        [v39 addArrangedSubview:v25];
-        v40 = [v25 leadingAnchor];
-        v26 = [v39 layoutMarginsGuide];
-        v27 = [v26 leadingAnchor];
-        v28 = [v40 constraintEqualToAnchor:v27 constant:15.0];
+        horizontalDivider = [(SafariImportConflictView *)v37 horizontalDivider];
+        [horizontalDivider setTranslatesAutoresizingMaskIntoConstraints:0];
+        [v39 addArrangedSubview:horizontalDivider];
+        leadingAnchor3 = [horizontalDivider leadingAnchor];
+        layoutMarginsGuide4 = [v39 layoutMarginsGuide];
+        leadingAnchor4 = [layoutMarginsGuide4 leadingAnchor];
+        v28 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:15.0];
         v42[0] = v28;
-        v29 = [v25 trailingAnchor];
-        v30 = [v39 layoutMarginsGuide];
-        v31 = [v30 trailingAnchor];
-        v32 = [v29 constraintEqualToAnchor:v31];
+        trailingAnchor3 = [horizontalDivider trailingAnchor];
+        layoutMarginsGuide5 = [v39 layoutMarginsGuide];
+        trailingAnchor4 = [layoutMarginsGuide5 trailingAnchor];
+        v32 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
         v42[1] = v32;
         v33 = [NSArray arrayWithObjects:v42 count:2];
         [NSLayoutConstraint activateConstraints:v33];
 
-        v6 = v38;
+        viewsCopy = v38;
       }
 
       ++v14;
     }
 
-    while (v14 < [v6 count]);
+    while (v14 < [viewsCopy count]);
   }
 
   return v37;
 }
 
-- (SafariImportConflictView)initWithTitleText:(id)a3 iconName:(id)a4 detailText:(id)a5 needsDivider:(BOOL)a6
+- (SafariImportConflictView)initWithTitleText:(id)text iconName:(id)name detailText:(id)detailText needsDivider:(BOOL)divider
 {
-  v6 = a6;
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  dividerCopy = divider;
+  textCopy = text;
+  nameCopy = name;
+  detailTextCopy = detailText;
   v73.receiver = self;
   v73.super_class = SafariImportConflictView;
   v13 = [(SafariImportConflictView *)&v73 init];
   if (v13)
   {
-    if (v6)
+    if (dividerCopy)
     {
       v14 = 9.0;
     }
@@ -114,8 +114,8 @@
       v14 = 15.0;
     }
 
-    v71 = v11;
-    v70 = v12;
+    v71 = nameCopy;
+    v70 = detailTextCopy;
     v69 = [UIFont _preferredFontForTextStyle:UIFontTextStyleTitle3 weight:UIFontWeightBold];
     v68 = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
     v67 = [UIImageSymbolConfiguration configurationWithTextStyle:UIFontTextStyleTitle3];
@@ -123,8 +123,8 @@
     v15 = +[UIColor systemGray5Color];
     [(SafariImportConflictView *)v13 setBackgroundColor:v15];
 
-    v16 = [(SafariImportConflictView *)v13 layer];
-    [v16 setCornerRadius:8.0];
+    layer = [(SafariImportConflictView *)v13 layer];
+    [layer setCornerRadius:8.0];
 
     [(SafariImportConflictView *)v13 setAxis:1];
     [(SafariImportConflictView *)v13 setAlignment:3];
@@ -140,23 +140,23 @@
     [(UIStackView *)v13->_iconAndTitleLabelStackView setDistribution:0];
     [(UIStackView *)v13->_iconAndTitleLabelStackView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(SafariImportConflictView *)v13 addArrangedSubview:v13->_iconAndTitleLabelStackView];
-    v64 = [(UIStackView *)v13->_iconAndTitleLabelStackView leadingAnchor];
-    v19 = [(SafariImportConflictView *)v13 layoutMarginsGuide];
-    [v19 leadingAnchor];
-    v20 = v72 = v10;
-    [v64 constraintEqualToAnchor:v20 constant:15.0];
-    v21 = v59 = v6;
+    leadingAnchor = [(UIStackView *)v13->_iconAndTitleLabelStackView leadingAnchor];
+    layoutMarginsGuide = [(SafariImportConflictView *)v13 layoutMarginsGuide];
+    [layoutMarginsGuide leadingAnchor];
+    v20 = v72 = textCopy;
+    [leadingAnchor constraintEqualToAnchor:v20 constant:15.0];
+    v21 = v59 = dividerCopy;
     v80[0] = v21;
-    v22 = [(UIStackView *)v13->_iconAndTitleLabelStackView trailingAnchor];
-    v23 = [(SafariImportConflictView *)v13 layoutMarginsGuide];
-    v24 = [v23 trailingAnchor];
-    v25 = [v22 constraintEqualToAnchor:v24 constant:-15.0];
+    trailingAnchor = [(UIStackView *)v13->_iconAndTitleLabelStackView trailingAnchor];
+    layoutMarginsGuide2 = [(SafariImportConflictView *)v13 layoutMarginsGuide];
+    trailingAnchor2 = [layoutMarginsGuide2 trailingAnchor];
+    v25 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-15.0];
     v80[1] = v25;
     v26 = [NSArray arrayWithObjects:v80 count:2];
     [NSLayoutConstraint activateConstraints:v26];
 
     [(SafariImportConflictView *)v13 setCustomSpacing:v13->_iconAndTitleLabelStackView afterView:5.0];
-    v65 = [UIImage systemImageNamed:v11 withConfiguration:v67];
+    v65 = [UIImage systemImageNamed:nameCopy withConfiguration:v67];
     v27 = [[UIImageView alloc] initWithImage:v65];
     [v27 setTintColor:v66];
     v28 = objc_alloc_init(NSMutableAttributedString);
@@ -190,15 +190,15 @@
     v57 = v35;
     [v36 setAttributedText:v35];
     [(SafariImportConflictView *)v13 addArrangedSubview:v36];
-    v55 = [v36 leadingAnchor];
-    v37 = [(SafariImportConflictView *)v13 layoutMarginsGuide];
-    v38 = [v37 leadingAnchor];
-    v39 = [v55 constraintEqualToAnchor:v38 constant:15.0];
+    leadingAnchor2 = [v36 leadingAnchor];
+    layoutMarginsGuide3 = [(SafariImportConflictView *)v13 layoutMarginsGuide];
+    leadingAnchor3 = [layoutMarginsGuide3 leadingAnchor];
+    v39 = [leadingAnchor2 constraintEqualToAnchor:leadingAnchor3 constant:15.0];
     v75[0] = v39;
-    v40 = [v36 trailingAnchor];
-    v41 = [(SafariImportConflictView *)v13 layoutMarginsGuide];
-    v42 = [v41 trailingAnchor];
-    v43 = [v40 constraintEqualToAnchor:v42 constant:-15.0];
+    trailingAnchor3 = [v36 trailingAnchor];
+    layoutMarginsGuide4 = [(SafariImportConflictView *)v13 layoutMarginsGuide];
+    trailingAnchor4 = [layoutMarginsGuide4 trailingAnchor];
+    v43 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4 constant:-15.0];
     v75[1] = v43;
     v44 = [NSArray arrayWithObjects:v75 count:2];
     [NSLayoutConstraint activateConstraints:v44];
@@ -206,19 +206,19 @@
     [(SafariImportConflictView *)v13 setCustomSpacing:v36 afterView:15.0];
     if (v59)
     {
-      v45 = [(SafariImportConflictView *)v13 horizontalDivider];
-      [v45 setTranslatesAutoresizingMaskIntoConstraints:0];
-      [(SafariImportConflictView *)v13 addArrangedSubview:v45];
-      [(SafariImportConflictView *)v13 setCustomSpacing:v45 afterView:9.0];
-      v56 = [v45 leadingAnchor];
-      v60 = [(SafariImportConflictView *)v13 layoutMarginsGuide];
-      v46 = [v60 leadingAnchor];
-      v47 = [v56 constraintEqualToAnchor:v46 constant:15.0];
+      horizontalDivider = [(SafariImportConflictView *)v13 horizontalDivider];
+      [horizontalDivider setTranslatesAutoresizingMaskIntoConstraints:0];
+      [(SafariImportConflictView *)v13 addArrangedSubview:horizontalDivider];
+      [(SafariImportConflictView *)v13 setCustomSpacing:horizontalDivider afterView:9.0];
+      leadingAnchor4 = [horizontalDivider leadingAnchor];
+      layoutMarginsGuide5 = [(SafariImportConflictView *)v13 layoutMarginsGuide];
+      leadingAnchor5 = [layoutMarginsGuide5 leadingAnchor];
+      v47 = [leadingAnchor4 constraintEqualToAnchor:leadingAnchor5 constant:15.0];
       v74[0] = v47;
-      v48 = [v45 trailingAnchor];
-      v49 = [(SafariImportConflictView *)v13 layoutMarginsGuide];
-      v50 = [v49 trailingAnchor];
-      v51 = [v48 constraintEqualToAnchor:v50];
+      trailingAnchor5 = [horizontalDivider trailingAnchor];
+      layoutMarginsGuide6 = [(SafariImportConflictView *)v13 layoutMarginsGuide];
+      trailingAnchor6 = [layoutMarginsGuide6 trailingAnchor];
+      v51 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
       v74[1] = v51;
       v52 = [NSArray arrayWithObjects:v74 count:2];
       [NSLayoutConstraint activateConstraints:v52];
@@ -226,9 +226,9 @@
 
     v53 = v13;
 
-    v11 = v71;
-    v10 = v72;
-    v12 = v70;
+    nameCopy = v71;
+    textCopy = v72;
+    detailTextCopy = v70;
   }
 
   return v13;
@@ -240,9 +240,9 @@
   v3 = +[UIColor systemGrayColor];
   [v2 setBackgroundColor:v3];
 
-  v4 = [v2 heightAnchor];
+  heightAnchor = [v2 heightAnchor];
   _SFOnePixel();
-  v5 = [v4 constraintEqualToConstant:?];
+  v5 = [heightAnchor constraintEqualToConstant:?];
   [v5 setActive:1];
 
   return v2;

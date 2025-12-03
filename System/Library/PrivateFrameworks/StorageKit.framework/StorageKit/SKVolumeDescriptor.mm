@@ -1,34 +1,34 @@
 @interface SKVolumeDescriptor
-+ (id)descriptorWithName:(id)a3 filesystem:(id)a4;
-+ (id)descriptorWithName:(id)a3 password:(id)a4 filesystem:(id)a5;
++ (id)descriptorWithName:(id)name filesystem:(id)filesystem;
++ (id)descriptorWithName:(id)name password:(id)password filesystem:(id)filesystem;
 - (BOOL)validateForErase;
-- (SKVolumeDescriptor)initWithCoder:(id)a3;
-- (SKVolumeDescriptor)initWithName:(id)a3 password:(id)a4 filesystem:(id)a5;
+- (SKVolumeDescriptor)initWithCoder:(id)coder;
+- (SKVolumeDescriptor)initWithName:(id)name password:(id)password filesystem:(id)filesystem;
 - (id)description;
 - (id)redactedDescription;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SKVolumeDescriptor
 
-- (SKVolumeDescriptor)initWithName:(id)a3 password:(id)a4 filesystem:(id)a5
+- (SKVolumeDescriptor)initWithName:(id)name password:(id)password filesystem:(id)filesystem
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  nameCopy = name;
+  passwordCopy = password;
+  filesystemCopy = filesystem;
   v19.receiver = self;
   v19.super_class = SKVolumeDescriptor;
   v12 = [(SKVolumeDescriptor *)&v19 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_filesystem, a5);
-    objc_storeStrong(&v13->_name, a3);
-    objc_storeStrong(&v13->_password, a4);
+    objc_storeStrong(&v12->_filesystem, filesystem);
+    objc_storeStrong(&v13->_name, name);
+    objc_storeStrong(&v13->_password, password);
     if (!v13->_name)
     {
-      v14 = [v11 majorType];
-      v15 = [v14 isEqualToString:@"msdos"];
+      majorType = [filesystemCopy majorType];
+      v15 = [majorType isEqualToString:@"msdos"];
 
       name = v13->_name;
       if (v15)
@@ -53,21 +53,21 @@ LABEL_8:
   return v13;
 }
 
-+ (id)descriptorWithName:(id)a3 filesystem:(id)a4
++ (id)descriptorWithName:(id)name filesystem:(id)filesystem
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [objc_alloc(objc_opt_class()) initWithName:v6 password:0 filesystem:v5];
+  filesystemCopy = filesystem;
+  nameCopy = name;
+  v7 = [objc_alloc(objc_opt_class()) initWithName:nameCopy password:0 filesystem:filesystemCopy];
 
   return v7;
 }
 
-+ (id)descriptorWithName:(id)a3 password:(id)a4 filesystem:(id)a5
++ (id)descriptorWithName:(id)name password:(id)password filesystem:(id)filesystem
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [objc_alloc(objc_opt_class()) initWithName:v9 password:v8 filesystem:v7];
+  filesystemCopy = filesystem;
+  passwordCopy = password;
+  nameCopy = name;
+  v10 = [objc_alloc(objc_opt_class()) initWithName:nameCopy password:passwordCopy filesystem:filesystemCopy];
 
   return v10;
 }
@@ -75,8 +75,8 @@ LABEL_8:
 - (BOOL)validateForErase
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = [(SKVolumeDescriptor *)self name];
-  v4 = [v3 length];
+  name = [(SKVolumeDescriptor *)self name];
+  v4 = [name length];
 
   if (!v4)
   {
@@ -89,19 +89,19 @@ LABEL_8:
     v20 = 136315394;
     v21 = "[SKVolumeDescriptor validateForErase]";
     v22 = 2112;
-    v23 = self;
+    selfCopy4 = self;
     v15 = "%s: Empty name on descriptor %@";
 LABEL_17:
     _os_log_impl(&dword_26BBB8000, v14, OS_LOG_TYPE_ERROR, v15, &v20, 0x16u);
     goto LABEL_18;
   }
 
-  v5 = [(SKVolumeDescriptor *)self password];
-  if (v5)
+  password = [(SKVolumeDescriptor *)self password];
+  if (password)
   {
-    v6 = v5;
-    v7 = [(SKVolumeDescriptor *)self password];
-    v8 = [v7 length];
+    v6 = password;
+    password2 = [(SKVolumeDescriptor *)self password];
+    v8 = [password2 length];
 
     if (!v8)
     {
@@ -114,20 +114,20 @@ LABEL_17:
       v20 = 136315394;
       v21 = "[SKVolumeDescriptor validateForErase]";
       v22 = 2112;
-      v23 = self;
+      selfCopy4 = self;
       v15 = "%s: Empty password on descriptor %@";
       goto LABEL_17;
     }
   }
 
-  v9 = [(SKVolumeDescriptor *)self password];
-  if (v9)
+  password3 = [(SKVolumeDescriptor *)self password];
+  if (password3)
   {
-    v10 = v9;
-    v11 = [(SKVolumeDescriptor *)self filesystem];
-    v12 = [v11 isEncrypted];
+    v10 = password3;
+    filesystem = [(SKVolumeDescriptor *)self filesystem];
+    isEncrypted = [filesystem isEncrypted];
 
-    if ((v12 & 1) == 0)
+    if ((isEncrypted & 1) == 0)
     {
       v14 = SKGetOSLog();
       if (!os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -138,14 +138,14 @@ LABEL_17:
       v20 = 136315394;
       v21 = "[SKVolumeDescriptor validateForErase]";
       v22 = 2112;
-      v23 = self;
+      selfCopy4 = self;
       v15 = "%s: Non encrypted filesystem provided with password %@";
       goto LABEL_17;
     }
   }
 
-  v13 = [(SKVolumeDescriptor *)self password];
-  if (v13)
+  password4 = [(SKVolumeDescriptor *)self password];
+  if (password4)
   {
 
 LABEL_19:
@@ -153,10 +153,10 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  v16 = [(SKVolumeDescriptor *)self filesystem];
-  v17 = [v16 isEncrypted];
+  filesystem2 = [(SKVolumeDescriptor *)self filesystem];
+  isEncrypted2 = [filesystem2 isEncrypted];
 
-  if (!v17)
+  if (!isEncrypted2)
   {
     goto LABEL_19;
   }
@@ -167,7 +167,7 @@ LABEL_19:
     v20 = 136315394;
     v21 = "[SKVolumeDescriptor validateForErase]";
     v22 = 2112;
-    v23 = self;
+    selfCopy4 = self;
     v15 = "%s: Encrypted filesystem provided without password %@";
     goto LABEL_17;
   }
@@ -180,29 +180,29 @@ LABEL_20:
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(SKVolumeDescriptor *)self name];
-  [v4 encodeObject:v5 forKey:@"name"];
+  coderCopy = coder;
+  name = [(SKVolumeDescriptor *)self name];
+  [coderCopy encodeObject:name forKey:@"name"];
 
-  v6 = [(SKVolumeDescriptor *)self filesystem];
-  v7 = [v6 dictionaryRepresentation];
-  [v4 encodeObject:v7 forKey:@"fs"];
+  filesystem = [(SKVolumeDescriptor *)self filesystem];
+  dictionaryRepresentation = [filesystem dictionaryRepresentation];
+  [coderCopy encodeObject:dictionaryRepresentation forKey:@"fs"];
 
-  v8 = [(SKVolumeDescriptor *)self password];
-  [v4 encodeObject:v8 forKey:@"password"];
+  password = [(SKVolumeDescriptor *)self password];
+  [coderCopy encodeObject:password forKey:@"password"];
 }
 
-- (SKVolumeDescriptor)initWithCoder:(id)a3
+- (SKVolumeDescriptor)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v24.receiver = self;
   v24.super_class = SKVolumeDescriptor;
   v5 = [(SKVolumeDescriptor *)&v24 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
     name = v5->_name;
     v5->_name = v6;
 
@@ -216,13 +216,13 @@ LABEL_20:
     v14 = objc_opt_class();
     v15 = objc_opt_class();
     v16 = [v23 setWithObjects:{v8, v9, v10, v11, v12, v13, v14, v15, objc_opt_class(), 0}];
-    v17 = [v4 decodeObjectOfClasses:v16 forKey:@"fs"];
+    v17 = [coderCopy decodeObjectOfClasses:v16 forKey:@"fs"];
 
     v18 = [[SKFilesystem alloc] initWithDictionaryRepresentation:v17];
     filesystem = v5->_filesystem;
     v5->_filesystem = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"password"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"password"];
     password = v5->_password;
     v5->_password = v20;
   }
@@ -235,8 +235,8 @@ LABEL_20:
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(SKVolumeDescriptor *)self filesystem];
-  v7 = [v3 stringWithFormat:@"<%@: { filesystem: %@}>", v5, v6];
+  filesystem = [(SKVolumeDescriptor *)self filesystem];
+  v7 = [v3 stringWithFormat:@"<%@: { filesystem: %@}>", v5, filesystem];
 
   return v7;
 }
@@ -246,9 +246,9 @@ LABEL_20:
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(SKVolumeDescriptor *)self name];
-  v7 = [(SKVolumeDescriptor *)self filesystem];
-  v8 = [v3 stringWithFormat:@"<%@: { name: %@, filesystem: %@}>", v5, v6, v7];
+  name = [(SKVolumeDescriptor *)self name];
+  filesystem = [(SKVolumeDescriptor *)self filesystem];
+  v8 = [v3 stringWithFormat:@"<%@: { name: %@, filesystem: %@}>", v5, name, filesystem];
 
   return v8;
 }

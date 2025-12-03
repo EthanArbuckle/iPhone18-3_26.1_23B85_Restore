@@ -1,42 +1,42 @@
 @interface RPRemoteDisplayDevice
-- (BOOL)isEqualToDevice:(id)a3;
+- (BOOL)isEqualToDevice:(id)device;
 - (NSString)persistentIdentifier;
-- (RPRemoteDisplayDevice)initWithCoder:(id)a3;
-- (RPRemoteDisplayDevice)initWithIdentifier:(id)a3 name:(id)a4 model:(id)a5 accountID:(id)a6;
-- (RPRemoteDisplayDevice)initWithKeychainDictionaryRepresentation:(id)a3;
-- (id)descriptionWithLevel:(int)a3;
+- (RPRemoteDisplayDevice)initWithCoder:(id)coder;
+- (RPRemoteDisplayDevice)initWithIdentifier:(id)identifier name:(id)name model:(id)model accountID:(id)d;
+- (RPRemoteDisplayDevice)initWithKeychainDictionaryRepresentation:(id)representation;
+- (id)descriptionWithLevel:(int)level;
 - (id)keychainDictionaryRepresentation;
-- (unsigned)updateWithEndpoint:(id)a3;
+- (unsigned)updateWithEndpoint:(id)endpoint;
 - (void)clearCameraCapabilitiesRefetchTimer;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RPRemoteDisplayDevice
 
-- (RPRemoteDisplayDevice)initWithIdentifier:(id)a3 name:(id)a4 model:(id)a5 accountID:(id)a6
+- (RPRemoteDisplayDevice)initWithIdentifier:(id)identifier name:(id)name model:(id)model accountID:(id)d
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  identifierCopy = identifier;
+  nameCopy = name;
+  modelCopy = model;
+  dCopy = d;
   v25.receiver = self;
   v25.super_class = RPRemoteDisplayDevice;
   v14 = [(RPRemoteDisplayDevice *)&v25 init];
   if (v14)
   {
-    v15 = [v10 copy];
+    v15 = [identifierCopy copy];
     idsDeviceIdentifier = v14->super._idsDeviceIdentifier;
     v14->super._idsDeviceIdentifier = v15;
 
-    v17 = [v11 copy];
+    v17 = [nameCopy copy];
     name = v14->super._name;
     v14->super._name = v17;
 
-    v19 = [v12 copy];
+    v19 = [modelCopy copy];
     model = v14->super._model;
     v14->super._model = v19;
 
-    v21 = [v13 copy];
+    v21 = [dCopy copy];
     accountID = v14->super._accountID;
     v14->super._accountID = v21;
 
@@ -46,15 +46,15 @@
   return v14;
 }
 
-- (RPRemoteDisplayDevice)initWithCoder:(id)a3
+- (RPRemoteDisplayDevice)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = RPRemoteDisplayDevice;
-  v5 = [(RPEndpoint *)&v11 initWithCoder:v4];
+  v5 = [(RPEndpoint *)&v11 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodePropertyListForKey:@"ccap"];
+    v6 = [coderCopy decodePropertyListForKey:@"ccap"];
     cameraCapabilities = v5->_cameraCapabilities;
     v5->_cameraCapabilities = v6;
 
@@ -64,7 +64,7 @@
       v5->_flags = v12;
     }
 
-    v8 = v4;
+    v8 = coderCopy;
     objc_opt_class();
     NSDecodeObjectIfPresent();
 
@@ -74,42 +74,42 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = RPRemoteDisplayDevice;
-  [(RPEndpoint *)&v8 encodeWithCoder:v4];
+  [(RPEndpoint *)&v8 encodeWithCoder:coderCopy];
   cameraCapabilities = self->_cameraCapabilities;
   if (cameraCapabilities)
   {
-    [v4 encodeObject:cameraCapabilities forKey:@"ccap"];
+    [coderCopy encodeObject:cameraCapabilities forKey:@"ccap"];
   }
 
   flags = self->_flags;
   if (flags)
   {
-    [v4 encodeInt64:flags forKey:@"fl"];
+    [coderCopy encodeInt64:flags forKey:@"fl"];
   }
 
   persistentIdentifier = self->_persistentIdentifier;
   if (persistentIdentifier)
   {
-    [v4 encodeObject:persistentIdentifier forKey:@"pi"];
+    [coderCopy encodeObject:persistentIdentifier forKey:@"pi"];
   }
 }
 
-- (BOOL)isEqualToDevice:(id)a3
+- (BOOL)isEqualToDevice:(id)device
 {
-  v4 = a3;
-  v5 = [v4 identifier];
-  if (v5)
+  deviceCopy = device;
+  identifier = [deviceCopy identifier];
+  if (identifier)
   {
-    v6 = v5;
-    v7 = [v4 identifier];
+    v6 = identifier;
+    identifier2 = [deviceCopy identifier];
     v31.receiver = self;
     v31.super_class = RPRemoteDisplayDevice;
-    v8 = [(RPEndpoint *)&v31 compareWithDeviceIdentifier:v7];
+    v8 = [(RPEndpoint *)&v31 compareWithDeviceIdentifier:identifier2];
 
     if (v8)
     {
@@ -117,14 +117,14 @@
     }
   }
 
-  v9 = [v4 idsDeviceIdentifier];
-  if (v9)
+  idsDeviceIdentifier = [deviceCopy idsDeviceIdentifier];
+  if (idsDeviceIdentifier)
   {
-    v10 = v9;
-    v11 = [v4 idsDeviceIdentifier];
+    v10 = idsDeviceIdentifier;
+    idsDeviceIdentifier2 = [deviceCopy idsDeviceIdentifier];
     v30.receiver = self;
     v30.super_class = RPRemoteDisplayDevice;
-    v12 = [(RPEndpoint *)&v30 compareWithDeviceIdentifier:v11];
+    v12 = [(RPEndpoint *)&v30 compareWithDeviceIdentifier:idsDeviceIdentifier2];
 
     if (v12)
     {
@@ -132,14 +132,14 @@
     }
   }
 
-  v13 = [v4 verifiedIdentity];
-  if (v13)
+  verifiedIdentity = [deviceCopy verifiedIdentity];
+  if (verifiedIdentity)
   {
-    v14 = v13;
-    v15 = [v4 verifiedIdentity];
+    v14 = verifiedIdentity;
+    verifiedIdentity2 = [deviceCopy verifiedIdentity];
     v29.receiver = self;
     v29.super_class = RPRemoteDisplayDevice;
-    v16 = [(RPEndpoint *)&v29 compareWithDeviceIdentifier:v15];
+    v16 = [(RPEndpoint *)&v29 compareWithDeviceIdentifier:verifiedIdentity2];
 
     if (v16)
     {
@@ -147,16 +147,16 @@
     }
   }
 
-  v17 = [v4 bleDevice];
-  v18 = [v17 rapportIdentifier];
-  if (v18)
+  bleDevice = [deviceCopy bleDevice];
+  rapportIdentifier = [bleDevice rapportIdentifier];
+  if (rapportIdentifier)
   {
-    v19 = v18;
-    v20 = [v4 bleDevice];
-    v21 = [v20 rapportIdentifier];
+    v19 = rapportIdentifier;
+    bleDevice2 = [deviceCopy bleDevice];
+    rapportIdentifier2 = [bleDevice2 rapportIdentifier];
     v28.receiver = self;
     v28.super_class = RPRemoteDisplayDevice;
-    v22 = [(RPEndpoint *)&v28 compareWithDeviceIdentifier:v21];
+    v22 = [(RPEndpoint *)&v28 compareWithDeviceIdentifier:rapportIdentifier2];
 
     if (v22)
     {
@@ -170,13 +170,13 @@ LABEL_9:
   {
   }
 
-  v24 = [v4 sessionPairingIdentifier];
-  if (v24)
+  sessionPairingIdentifier = [deviceCopy sessionPairingIdentifier];
+  if (sessionPairingIdentifier)
   {
-    v25 = [v4 sessionPairingIdentifier];
+    sessionPairingIdentifier2 = [deviceCopy sessionPairingIdentifier];
     v27.receiver = self;
     v27.super_class = RPRemoteDisplayDevice;
-    v23 = [(RPEndpoint *)&v27 compareWithDeviceIdentifier:v25];
+    v23 = [(RPEndpoint *)&v27 compareWithDeviceIdentifier:sessionPairingIdentifier2];
   }
 
   else
@@ -188,7 +188,7 @@ LABEL_15:
   return v23;
 }
 
-- (id)descriptionWithLevel:(int)a3
+- (id)descriptionWithLevel:(int)level
 {
   v4 = shouldPrintSensitiveData();
   v53 = 0;
@@ -362,11 +362,11 @@ LABEL_15:
   return v5;
 }
 
-- (unsigned)updateWithEndpoint:(id)a3
+- (unsigned)updateWithEndpoint:(id)endpoint
 {
   v7.receiver = self;
   v7.super_class = RPRemoteDisplayDevice;
-  v4 = [(RPEndpoint *)&v7 updateWithEndpoint:a3];
+  v4 = [(RPEndpoint *)&v7 updateWithEndpoint:endpoint];
   idsDeviceIdentifier = self->super._idsDeviceIdentifier;
   if (idsDeviceIdentifier && !self->_persistentIdentifier)
   {
@@ -405,10 +405,10 @@ LABEL_15:
   }
 }
 
-- (RPRemoteDisplayDevice)initWithKeychainDictionaryRepresentation:(id)a3
+- (RPRemoteDisplayDevice)initWithKeychainDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
-  v5 = [v4 objectForKey:@"idsD"];
+  representationCopy = representation;
+  v5 = [representationCopy objectForKey:@"idsD"];
 
   if (!v5)
   {
@@ -426,11 +426,11 @@ LABEL_15:
   if (!self)
   {
 LABEL_37:
-    v36 = 0;
+    selfCopy = 0;
     goto LABEL_38;
   }
 
-  v6 = [v4 objectForKey:@"idsD"];
+  v6 = [representationCopy objectForKey:@"idsD"];
   v7 = objc_opt_class();
   v8 = v6;
   if (v7)
@@ -454,7 +454,7 @@ LABEL_37:
   v10 = v9;
 
   [(RPEndpoint *)self setIdsDeviceIdentifier:v10];
-  v11 = [v4 objectForKey:@"idsD"];
+  v11 = [representationCopy objectForKey:@"idsD"];
   v12 = objc_opt_class();
   v13 = v11;
   if (v12)
@@ -478,7 +478,7 @@ LABEL_37:
   v15 = v14;
 
   [(RPRemoteDisplayDevice *)self setPersistentIdentifier:v15];
-  v16 = [v4 objectForKey:@"nm"];
+  v16 = [representationCopy objectForKey:@"nm"];
   v17 = objc_opt_class();
   v18 = v16;
   if (v17)
@@ -502,7 +502,7 @@ LABEL_37:
   v20 = v19;
 
   [(RPEndpoint *)self setName:v20];
-  v21 = [v4 objectForKey:@"md"];
+  v21 = [representationCopy objectForKey:@"md"];
   v22 = objc_opt_class();
   v23 = v21;
   if (v22)
@@ -526,7 +526,7 @@ LABEL_37:
   v25 = v24;
 
   [(RPEndpoint *)self setModel:v25];
-  v26 = [v4 objectForKey:@"aid"];
+  v26 = [representationCopy objectForKey:@"aid"];
   v27 = objc_opt_class();
   v28 = v26;
   if (v27)
@@ -550,7 +550,7 @@ LABEL_37:
   v30 = v29;
 
   [(RPEndpoint *)self setAccountID:v30];
-  v31 = [v4 objectForKey:@"altDSID"];
+  v31 = [representationCopy objectForKey:@"altDSID"];
   v32 = objc_opt_class();
   v33 = v31;
   if (v32)
@@ -575,10 +575,10 @@ LABEL_37:
 
   [(RPEndpoint *)self setAccountAltDSID:v35];
   self = self;
-  v36 = self;
+  selfCopy = self;
 LABEL_38:
 
-  return v36;
+  return selfCopy;
 }
 
 - (id)keychainDictionaryRepresentation

@@ -1,6 +1,6 @@
 @interface EKSerializableStructuredLocation
 + (id)classesForKey;
-- (EKSerializableStructuredLocation)initWithStructuredLocation:(id)a3;
+- (EKSerializableStructuredLocation)initWithStructuredLocation:(id)location;
 - (id)createStructuredLocation;
 @end
 
@@ -20,16 +20,16 @@
   return v3;
 }
 
-- (EKSerializableStructuredLocation)initWithStructuredLocation:(id)a3
+- (EKSerializableStructuredLocation)initWithStructuredLocation:(id)location
 {
-  v4 = a3;
+  locationCopy = location;
   v8.receiver = self;
   v8.super_class = EKSerializableStructuredLocation;
   v5 = [(EKSerializableStructuredLocation *)&v8 init];
   if (v5)
   {
-    v6 = [v4 calLocation];
-    [(EKSerializableStructuredLocation *)v5 setCalLocation:v6];
+    calLocation = [locationCopy calLocation];
+    [(EKSerializableStructuredLocation *)v5 setCalLocation:calLocation];
   }
 
   return v5;
@@ -37,8 +37,8 @@
 
 - (id)createStructuredLocation
 {
-  v2 = [(EKSerializableStructuredLocation *)self calLocation];
-  v3 = [EKStructuredLocation locationWithCalLocation:v2];
+  calLocation = [(EKSerializableStructuredLocation *)self calLocation];
+  v3 = [EKStructuredLocation locationWithCalLocation:calLocation];
 
   return v3;
 }

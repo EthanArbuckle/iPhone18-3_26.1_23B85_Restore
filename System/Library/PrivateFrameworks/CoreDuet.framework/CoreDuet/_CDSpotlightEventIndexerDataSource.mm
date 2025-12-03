@@ -1,40 +1,40 @@
 @interface _CDSpotlightEventIndexerDataSource
-- (_CDSpotlightEventIndexerDataSource)initWithKnowledgeStore:(id)a3 eventStream:(id)a4;
-- (id)bundleIDToSearchableItemsDictionaryFromEvents:(id)a3;
-- (id)bundleIDToSearchableItemsDictionaryWithCreationDateInInterval:(id)a3 limit:(int64_t)a4 nextBatch:(BOOL *)a5 latestCreationDate:(id *)a6 error:(id *)a7;
-- (id)earliestEventCreationDateWithError:(id *)a3;
-- (id)searchableItemIdentifiersForTombstonedEventsInInterval:(id)a3 latestTombstoneDate:(id *)a4 error:(id *)a5;
-- (id)searchableItemUniqueIdentifierWithDomain:(id)a3 indexingIdentifier:(id)a4;
+- (_CDSpotlightEventIndexerDataSource)initWithKnowledgeStore:(id)store eventStream:(id)stream;
+- (id)bundleIDToSearchableItemsDictionaryFromEvents:(id)events;
+- (id)bundleIDToSearchableItemsDictionaryWithCreationDateInInterval:(id)interval limit:(int64_t)limit nextBatch:(BOOL *)batch latestCreationDate:(id *)date error:(id *)error;
+- (id)earliestEventCreationDateWithError:(id *)error;
+- (id)searchableItemIdentifiersForTombstonedEventsInInterval:(id)interval latestTombstoneDate:(id *)date error:(id *)error;
+- (id)searchableItemUniqueIdentifierWithDomain:(id)domain indexingIdentifier:(id)identifier;
 @end
 
 @implementation _CDSpotlightEventIndexerDataSource
 
-- (_CDSpotlightEventIndexerDataSource)initWithKnowledgeStore:(id)a3 eventStream:(id)a4
+- (_CDSpotlightEventIndexerDataSource)initWithKnowledgeStore:(id)store eventStream:(id)stream
 {
-  v7 = a3;
-  v8 = a4;
+  storeCopy = store;
+  streamCopy = stream;
   v12.receiver = self;
   v12.super_class = _CDSpotlightEventIndexerDataSource;
   v9 = [(_CDSpotlightEventIndexerDataSource *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_knowledgeStore, a3);
-    objc_storeStrong(&v10->_stream, a4);
+    objc_storeStrong(&v9->_knowledgeStore, store);
+    objc_storeStrong(&v10->_stream, stream);
   }
 
   return v10;
 }
 
-- (id)earliestEventCreationDateWithError:(id *)a3
+- (id)earliestEventCreationDateWithError:(id *)error
 {
   v27[1] = *MEMORY[0x1E69E9840];
   v5 = MEMORY[0x1E696AEB0];
   v6 = NSStringFromSelector(sel_creationDate);
   v7 = [v5 sortDescriptorWithKey:v6 ascending:1];
 
-  v8 = [(_CDSpotlightEventIndexerDataSource *)self stream];
-  v27[0] = v8;
+  stream = [(_CDSpotlightEventIndexerDataSource *)self stream];
+  v27[0] = stream;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v27 count:1];
   v26 = v7;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v26 count:1];
@@ -46,33 +46,33 @@
 
   [v11 setTracker:&__block_literal_global_22];
   [v11 setReadMetadata:0];
-  v14 = [(_CDSpotlightEventIndexerDataSource *)self knowledgeStore];
+  knowledgeStore = [(_CDSpotlightEventIndexerDataSource *)self knowledgeStore];
   v25 = 0;
-  v15 = [v14 executeQuery:v11 error:&v25];
+  v15 = [knowledgeStore executeQuery:v11 error:&v25];
   v16 = v25;
 
-  if (a3)
+  if (error)
   {
     v17 = v16;
-    *a3 = v16;
+    *error = v16;
   }
 
   if (v15)
   {
-    v18 = [v15 firstObject];
-    v19 = [v18 creationDate];
-    v20 = v19;
-    if (v19)
+    firstObject = [v15 firstObject];
+    creationDate = [firstObject creationDate];
+    v20 = creationDate;
+    if (creationDate)
     {
-      v21 = v19;
+      distantPast = creationDate;
     }
 
     else
     {
-      v21 = [MEMORY[0x1E695DF00] distantPast];
+      distantPast = [MEMORY[0x1E695DF00] distantPast];
     }
 
-    v22 = v21;
+    v22 = distantPast;
   }
 
   else
@@ -85,24 +85,24 @@
   return v22;
 }
 
-- (id)searchableItemUniqueIdentifierWithDomain:(id)a3 indexingIdentifier:(id)a4
+- (id)searchableItemUniqueIdentifierWithDomain:(id)domain indexingIdentifier:(id)identifier
 {
-  v5 = a3;
-  v6 = a4;
-  if (!v5)
+  domainCopy = domain;
+  identifierCopy = identifier;
+  if (!domainCopy)
   {
 LABEL_6:
-    v8 = 0;
+    identifierCopy = 0;
     goto LABEL_7;
   }
 
-  v7 = [v5 length];
-  v8 = 0;
-  if (v6 && v7)
+  v7 = [domainCopy length];
+  identifierCopy = 0;
+  if (identifierCopy && v7)
   {
-    if ([v6 length])
+    if ([identifierCopy length])
     {
-      v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.coreduet.%@.%@", v5, v6];
+      identifierCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.coreduet.%@.%@", domainCopy, identifierCopy];
       goto LABEL_7;
     }
 
@@ -111,22 +111,22 @@ LABEL_6:
 
 LABEL_7:
 
-  return v8;
+  return identifierCopy;
 }
 
-- (id)searchableItemIdentifiersForTombstonedEventsInInterval:(id)a3 latestTombstoneDate:(id *)a4 error:(id *)a5
+- (id)searchableItemIdentifiersForTombstonedEventsInInterval:(id)interval latestTombstoneDate:(id *)date error:(id *)error
 {
   v54[2] = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  intervalCopy = interval;
   v8 = +[_DKTombstoneMetadataKey eventStreamName];
-  v9 = [(_CDSpotlightEventIndexerDataSource *)self stream];
-  v10 = [v9 name];
-  v11 = [_DKQuery predicateForObjectsWithMetadataKey:v8 andStringValue:v10];
+  stream = [(_CDSpotlightEventIndexerDataSource *)self stream];
+  name = [stream name];
+  v11 = [_DKQuery predicateForObjectsWithMetadataKey:v8 andStringValue:name];
 
-  v12 = [v7 startDate];
-  v45 = v7;
-  v13 = [v7 endDate];
-  v14 = [_DKQuery predicateForEventsWithCreationInDateRangeFromAfter:v12 to:v13];
+  startDate = [intervalCopy startDate];
+  v45 = intervalCopy;
+  endDate = [intervalCopy endDate];
+  v14 = [_DKQuery predicateForEventsWithCreationInDateRangeFromAfter:startDate to:endDate];
 
   v44 = v11;
   v54[0] = v11;
@@ -151,22 +151,22 @@ LABEL_7:
 
   [v22 setTracker:&__block_literal_global_17];
   [v22 setReadMetadata:0];
-  v25 = [(_CDSpotlightEventIndexerDataSource *)self knowledgeStore];
+  knowledgeStore = [(_CDSpotlightEventIndexerDataSource *)self knowledgeStore];
   v50 = 0;
-  v26 = [v25 executeQuery:v22 error:&v50];
+  v26 = [knowledgeStore executeQuery:v22 error:&v50];
   v27 = v50;
 
-  if (a5)
+  if (error)
   {
     v28 = v27;
-    *a5 = v27;
+    *error = v27;
   }
 
   if (v26)
   {
     v40 = v14;
-    v29 = [v26 lastObject];
-    *a4 = [v29 creationDate];
+    lastObject = [v26 lastObject];
+    *date = [lastObject creationDate];
 
     v30 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v26, "count")}];
     v46 = 0u;
@@ -188,10 +188,10 @@ LABEL_7:
             objc_enumerationMutation(v31);
           }
 
-          v36 = [*(*(&v46 + 1) + 8 * i) stringValue];
-          if (v36)
+          stringValue = [*(*(&v46 + 1) + 8 * i) stringValue];
+          if (stringValue)
           {
-            [v30 addObject:v36];
+            [v30 addObject:stringValue];
           }
         }
 
@@ -215,48 +215,48 @@ LABEL_7:
   return v37;
 }
 
-- (id)bundleIDToSearchableItemsDictionaryWithCreationDateInInterval:(id)a3 limit:(int64_t)a4 nextBatch:(BOOL *)a5 latestCreationDate:(id *)a6 error:(id *)a7
+- (id)bundleIDToSearchableItemsDictionaryWithCreationDateInInterval:(id)interval limit:(int64_t)limit nextBatch:(BOOL *)batch latestCreationDate:(id *)date error:(id *)error
 {
   v35[1] = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = [v11 startDate];
-  v13 = [v11 endDate];
+  intervalCopy = interval;
+  startDate = [intervalCopy startDate];
+  endDate = [intervalCopy endDate];
 
-  v14 = [_DKQuery predicateForEventsWithCreationInDateRangeFromAfter:v12 to:v13];
+  v14 = [_DKQuery predicateForEventsWithCreationInDateRangeFromAfter:startDate to:endDate];
 
   v15 = MEMORY[0x1E696AEB0];
   v16 = NSStringFromSelector(sel_creationDate);
   v17 = [v15 sortDescriptorWithKey:v16 ascending:1];
 
-  v18 = [(_CDSpotlightEventIndexerDataSource *)self stream];
-  v35[0] = v18;
+  stream = [(_CDSpotlightEventIndexerDataSource *)self stream];
+  v35[0] = stream;
   v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v35 count:1];
   v34 = v17;
   v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v34 count:1];
-  v21 = [_DKEventQuery eventQueryWithPredicate:v14 eventStreams:v19 offset:0 limit:a4 sortDescriptors:v20];
+  v21 = [_DKEventQuery eventQueryWithPredicate:v14 eventStreams:v19 offset:0 limit:limit sortDescriptors:v20];
 
   v22 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"_CDSpotlightEventIndexerDataSource.m"];
   v23 = [v22 stringByAppendingFormat:@":%d", 131];
   [v21 setClientName:v23];
 
   [v21 setTracker:&__block_literal_global_20_0];
-  v24 = [(_CDSpotlightEventIndexerDataSource *)self knowledgeStore];
+  knowledgeStore = [(_CDSpotlightEventIndexerDataSource *)self knowledgeStore];
   v33 = 0;
-  v25 = [v24 executeQuery:v21 error:&v33];
+  v25 = [knowledgeStore executeQuery:v21 error:&v33];
   v26 = v33;
 
-  if (a7)
+  if (error)
   {
     v27 = v26;
-    *a7 = v26;
+    *error = v26;
   }
 
   if (v25)
   {
-    v28 = [v25 lastObject];
-    *a6 = [v28 creationDate];
+    lastObject = [v25 lastObject];
+    *date = [lastObject creationDate];
 
-    *a5 = [v25 count] == a4;
+    *batch = [v25 count] == limit;
     v29 = [(_CDSpotlightEventIndexerDataSource *)self bundleIDToSearchableItemsDictionaryFromEvents:v25];
   }
 
@@ -270,7 +270,7 @@ LABEL_7:
   return v29;
 }
 
-- (id)bundleIDToSearchableItemsDictionaryFromEvents:(id)a3
+- (id)bundleIDToSearchableItemsDictionaryFromEvents:(id)events
 {
   v4 = MEMORY[0x1E695DF30];
   v5 = *MEMORY[0x1E695D930];

@@ -1,14 +1,14 @@
 @interface REMSmartList_Codable
-- (REMSmartList_Codable)initWithStore:(id)a3 account:(id)a4 parentList:(id)a5 storage:(id)a6;
+- (REMSmartList_Codable)initWithStore:(id)store account:(id)account parentList:(id)list storage:(id)storage;
 @end
 
 @implementation REMSmartList_Codable
 
-- (REMSmartList_Codable)initWithStore:(id)a3 account:(id)a4 parentList:(id)a5 storage:(id)a6
+- (REMSmartList_Codable)initWithStore:(id)store account:(id)account parentList:(id)list storage:(id)storage
 {
   v11.receiver = self;
   v11.super_class = swift_getObjectType();
-  return [(REMSmartList *)&v11 initWithStore:a3 account:a4 parentList:a5 storage:a6];
+  return [(REMSmartList *)&v11 initWithStore:store account:account parentList:list storage:storage];
 }
 
 @end

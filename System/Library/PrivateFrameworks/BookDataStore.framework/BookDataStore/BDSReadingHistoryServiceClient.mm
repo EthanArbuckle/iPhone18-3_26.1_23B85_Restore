@@ -1,9 +1,9 @@
 @interface BDSReadingHistoryServiceClient
 + (id)sharedServiceProxy;
-+ (void)clearDefaultsCachedDataWithCompletionHandler:(id)a3;
++ (void)clearDefaultsCachedDataWithCompletionHandler:(id)handler;
 - (BDSReadingHistoryServiceClient)init;
-- (void)bookWidgetReadingHistoryStateInfoWithCompletionHandler:(id)a3;
-- (void)handleSyncFileChangeWithSyncVersionInfo:(id)a3 updateInfo:(id)a4 completion:(id)a5;
+- (void)bookWidgetReadingHistoryStateInfoWithCompletionHandler:(id)handler;
+- (void)handleSyncFileChangeWithSyncVersionInfo:(id)info updateInfo:(id)updateInfo completion:(id)completion;
 @end
 
 @implementation BDSReadingHistoryServiceClient
@@ -35,26 +35,26 @@
   return v2;
 }
 
-- (void)handleSyncFileChangeWithSyncVersionInfo:(id)a3 updateInfo:(id)a4 completion:(id)a5
+- (void)handleSyncFileChangeWithSyncVersionInfo:(id)info updateInfo:(id)updateInfo completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(BDSReadingHistoryServiceClient *)self serviceProxy];
-  [v11 readingHistoryHandleSyncFileChangeWithSyncVersionInfo:v10 updateInfo:v9 completion:v8];
+  completionCopy = completion;
+  updateInfoCopy = updateInfo;
+  infoCopy = info;
+  serviceProxy = [(BDSReadingHistoryServiceClient *)self serviceProxy];
+  [serviceProxy readingHistoryHandleSyncFileChangeWithSyncVersionInfo:infoCopy updateInfo:updateInfoCopy completion:completionCopy];
 }
 
-+ (void)clearDefaultsCachedDataWithCompletionHandler:(id)a3
++ (void)clearDefaultsCachedDataWithCompletionHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   v4 = +[BDSReadingHistoryServiceClient sharedServiceProxy];
-  [v4 readingHistoryClearDefaultsCachedDataWithCompletion:v3];
+  [v4 readingHistoryClearDefaultsCachedDataWithCompletion:handlerCopy];
 }
 
-- (void)bookWidgetReadingHistoryStateInfoWithCompletionHandler:(id)a3
+- (void)bookWidgetReadingHistoryStateInfoWithCompletionHandler:(id)handler
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = BDSWidgetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -63,10 +63,10 @@
   }
 
   v6 = +[BDSBookWidgetReadingHistoryDataFile sharedInstance];
-  v7 = [v6 load];
+  load = [v6 load];
   v8 = BDSWidgetLog();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
-  if (v7)
+  if (load)
   {
     if (v9)
     {
@@ -74,9 +74,9 @@
       _os_log_impl(&dword_1E45E0000, v8, OS_LOG_TYPE_DEFAULT, "BDSReadingHistoryServiceClient bookWidgetReadingHistoryStateInfo - Compute from saved data", &v18, 2u);
     }
 
-    v10 = objc_alloc_init(BDSReadingHistoryStateEstimator);
-    v11 = [v7 stateInfo];
-    v12 = [(BDSReadingHistoryStateEstimator *)v10 estimateCurrentStateInfoWithExistingStateInfo:v11];
+    serviceProxy2 = objc_alloc_init(BDSReadingHistoryStateEstimator);
+    stateInfo = [load stateInfo];
+    v12 = [(BDSReadingHistoryStateEstimator *)serviceProxy2 estimateCurrentStateInfoWithExistingStateInfo:stateInfo];
 
     v13 = BDSWidgetLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -88,8 +88,8 @@
 
     if (v12)
     {
-      v14 = _Block_copy(v4);
-      v15 = v14;
+      v14 = _Block_copy(handlerCopy);
+      serviceProxy = v14;
       if (v14)
       {
         (*(v14 + 2))(v14, v12, 1);
@@ -104,8 +104,8 @@
         sub_1E470454C(v16);
       }
 
-      v15 = [(BDSReadingHistoryServiceClient *)self serviceProxy];
-      [v15 bookWidgetReadingHistoryStateInfoWithCompletion:v4];
+      serviceProxy = [(BDSReadingHistoryServiceClient *)self serviceProxy];
+      [serviceProxy bookWidgetReadingHistoryStateInfoWithCompletion:handlerCopy];
     }
   }
 
@@ -117,8 +117,8 @@
       _os_log_impl(&dword_1E45E0000, v8, OS_LOG_TYPE_DEFAULT, "BDSReadingHistoryServiceClient bookWidgetReadingHistoryStateInfo - Cannot load saved data, fallback to XPC call", &v18, 2u);
     }
 
-    v10 = [(BDSReadingHistoryServiceClient *)self serviceProxy];
-    [(BDSReadingHistoryStateEstimator *)v10 bookWidgetReadingHistoryStateInfoWithCompletion:v4];
+    serviceProxy2 = [(BDSReadingHistoryServiceClient *)self serviceProxy];
+    [(BDSReadingHistoryStateEstimator *)serviceProxy2 bookWidgetReadingHistoryStateInfoWithCompletion:handlerCopy];
   }
 
   v17 = *MEMORY[0x1E69E9840];

@@ -1,40 +1,40 @@
 @interface CNFRegAuthorizedAccountWebViewController
-- (BOOL)canSendURLRequest:(id)a3;
-- (void)setHeadersForRequest:(id)a3;
+- (BOOL)canSendURLRequest:(id)request;
+- (void)setHeadersForRequest:(id)request;
 @end
 
 @implementation CNFRegAuthorizedAccountWebViewController
 
-- (void)setHeadersForRequest:(id)a3
+- (void)setHeadersForRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v7.receiver = self;
   v7.super_class = CNFRegAuthorizedAccountWebViewController;
-  [(CNFRegAccountWebViewController *)&v7 setHeadersForRequest:v4];
-  v5 = [(CNFRegAccountWebViewController *)self authIdHeaderValue];
-  if (v5)
+  [(CNFRegAccountWebViewController *)&v7 setHeadersForRequest:requestCopy];
+  authIdHeaderValue = [(CNFRegAccountWebViewController *)self authIdHeaderValue];
+  if (authIdHeaderValue)
   {
-    [v4 addValue:v5 forHTTPHeaderField:@"x-vc-profile-id"];
+    [requestCopy addValue:authIdHeaderValue forHTTPHeaderField:@"x-vc-profile-id"];
   }
 
-  v6 = [(CNFRegAccountWebViewController *)self authTokenHeaderValue];
-  if (v6)
+  authTokenHeaderValue = [(CNFRegAccountWebViewController *)self authTokenHeaderValue];
+  if (authTokenHeaderValue)
   {
-    [v4 addValue:v6 forHTTPHeaderField:@"x-vc-auth-token"];
+    [requestCopy addValue:authTokenHeaderValue forHTTPHeaderField:@"x-vc-auth-token"];
   }
 }
 
-- (BOOL)canSendURLRequest:(id)a3
+- (BOOL)canSendURLRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v12.receiver = self;
   v12.super_class = CNFRegAuthorizedAccountWebViewController;
-  if (![(CNFRegAccountWebViewController *)&v12 canSendURLRequest:v4])
+  if (![(CNFRegAccountWebViewController *)&v12 canSendURLRequest:requestCopy])
   {
     goto LABEL_17;
   }
 
-  v5 = [v4 valueForHTTPHeaderField:@"x-vc-auth-token"];
+  v5 = [requestCopy valueForHTTPHeaderField:@"x-vc-auth-token"];
 
   if (!v5)
   {
@@ -62,7 +62,7 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  v6 = [v4 valueForHTTPHeaderField:@"x-vc-profile-id"];
+  v6 = [requestCopy valueForHTTPHeaderField:@"x-vc-profile-id"];
 
   if (!v6)
   {

@@ -1,39 +1,39 @@
 @interface REScriptASTObjectBuilder
-- (REScriptASTObjectBuilder)initWithTable:(id)a3;
-- (id)_errorForUnsupportedNode:(id)a3;
-- (id)buildObjectWithBinaryExpressionListNode:(id)a3 previousExpression:(id)a4 error:(id *)a5;
-- (id)buildObjectWithExpressionNode:(id)a3 error:(id *)a4;
-- (id)buildObjectWithNode:(id)a3 error:(id *)a4;
-- (id)buildObjectWithTopLevelBinaryExpression:(id)a3 error:(id *)a4;
-- (id)buildObjectWithTopLevelBinaryExpressionListNode:(id)a3 error:(id *)a4;
+- (REScriptASTObjectBuilder)initWithTable:(id)table;
+- (id)_errorForUnsupportedNode:(id)node;
+- (id)buildObjectWithBinaryExpressionListNode:(id)node previousExpression:(id)expression error:(id *)error;
+- (id)buildObjectWithExpressionNode:(id)node error:(id *)error;
+- (id)buildObjectWithNode:(id)node error:(id *)error;
+- (id)buildObjectWithTopLevelBinaryExpression:(id)expression error:(id *)error;
+- (id)buildObjectWithTopLevelBinaryExpressionListNode:(id)node error:(id *)error;
 @end
 
 @implementation REScriptASTObjectBuilder
 
-- (REScriptASTObjectBuilder)initWithTable:(id)a3
+- (REScriptASTObjectBuilder)initWithTable:(id)table
 {
-  v5 = a3;
+  tableCopy = table;
   v9.receiver = self;
   v9.super_class = REScriptASTObjectBuilder;
   v6 = [(REScriptASTObjectBuilder *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_table, a3);
+    objc_storeStrong(&v6->_table, table);
   }
 
   return v7;
 }
 
-- (id)buildObjectWithNode:(id)a3 error:(id *)a4
+- (id)buildObjectWithNode:(id)node error:(id *)error
 {
-  v6 = a3;
+  nodeCopy = node;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v20 = 0;
     v7 = &v20;
-    v8 = [(REScriptASTObjectBuilder *)self buildObjectWithIdentifierNode:v6 error:&v20];
+    v8 = [(REScriptASTObjectBuilder *)self buildObjectWithIdentifierNode:nodeCopy error:&v20];
 LABEL_19:
     v9 = v8;
     v10 = *v7;
@@ -45,7 +45,7 @@ LABEL_19:
   {
     v19 = 0;
     v7 = &v19;
-    v8 = [(REScriptASTObjectBuilder *)self buildObjectWithLiteralNode:v6 error:&v19];
+    v8 = [(REScriptASTObjectBuilder *)self buildObjectWithLiteralNode:nodeCopy error:&v19];
     goto LABEL_19;
   }
 
@@ -54,7 +54,7 @@ LABEL_19:
   {
     v18 = 0;
     v7 = &v18;
-    v8 = [(REScriptASTObjectBuilder *)self buildObjectWithExpressionNode:v6 error:&v18];
+    v8 = [(REScriptASTObjectBuilder *)self buildObjectWithExpressionNode:nodeCopy error:&v18];
     goto LABEL_19;
   }
 
@@ -63,7 +63,7 @@ LABEL_19:
   {
     v17 = 0;
     v7 = &v17;
-    v8 = [(REScriptASTObjectBuilder *)self buildObjectWithPrefixExpressionNode:v6 error:&v17];
+    v8 = [(REScriptASTObjectBuilder *)self buildObjectWithPrefixExpressionNode:nodeCopy error:&v17];
     goto LABEL_19;
   }
 
@@ -72,7 +72,7 @@ LABEL_19:
   {
     v16 = 0;
     v7 = &v16;
-    v8 = [(REScriptASTObjectBuilder *)self buildObjectWithFunctionNode:v6 error:&v16];
+    v8 = [(REScriptASTObjectBuilder *)self buildObjectWithFunctionNode:nodeCopy error:&v16];
     goto LABEL_19;
   }
 
@@ -81,7 +81,7 @@ LABEL_19:
   {
     v15 = 0;
     v7 = &v15;
-    v8 = [(REScriptASTObjectBuilder *)self buildObjectWithMemberExpressionNode:v6 error:&v15];
+    v8 = [(REScriptASTObjectBuilder *)self buildObjectWithMemberExpressionNode:nodeCopy error:&v15];
     goto LABEL_19;
   }
 
@@ -90,7 +90,7 @@ LABEL_19:
   {
     v14 = 0;
     v7 = &v14;
-    v8 = [(REScriptASTObjectBuilder *)self buildObjectWithSubscriptExpressionNode:v6 error:&v14];
+    v8 = [(REScriptASTObjectBuilder *)self buildObjectWithSubscriptExpressionNode:nodeCopy error:&v14];
     goto LABEL_19;
   }
 
@@ -99,7 +99,7 @@ LABEL_19:
   {
     v13 = 0;
     v7 = &v13;
-    v8 = [(REScriptASTObjectBuilder *)self buildObjectWithTopLevelBinaryExpression:v6 error:&v13];
+    v8 = [(REScriptASTObjectBuilder *)self buildObjectWithTopLevelBinaryExpression:nodeCopy error:&v13];
     goto LABEL_19;
   }
 
@@ -108,7 +108,7 @@ LABEL_19:
   {
     v12 = 0;
     v7 = &v12;
-    v8 = [(REScriptASTObjectBuilder *)self buildObjectWithTopLevelBinaryExpressionListNode:v6 error:&v12];
+    v8 = [(REScriptASTObjectBuilder *)self buildObjectWithTopLevelBinaryExpressionListNode:nodeCopy error:&v12];
     goto LABEL_19;
   }
 
@@ -117,37 +117,37 @@ LABEL_19:
 LABEL_20:
   if (!(v9 | v10))
   {
-    v10 = [(REScriptASTObjectBuilder *)self _errorForUnsupportedNode:v6];
+    v10 = [(REScriptASTObjectBuilder *)self _errorForUnsupportedNode:nodeCopy];
   }
 
-  if (a4)
+  if (error)
   {
     v10 = v10;
-    *a4 = v10;
+    *error = v10;
   }
 
   return v9;
 }
 
-- (id)buildObjectWithExpressionNode:(id)a3 error:(id *)a4
+- (id)buildObjectWithExpressionNode:(id)node error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 prefixExpression];
-  v8 = [(REScriptASTObjectBuilder *)self buildObjectWithNode:v7 error:a4];
+  nodeCopy = node;
+  prefixExpression = [nodeCopy prefixExpression];
+  v8 = [(REScriptASTObjectBuilder *)self buildObjectWithNode:prefixExpression error:error];
 
-  v9 = [v6 binaryExpressions];
+  binaryExpressions = [nodeCopy binaryExpressions];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = [(REScriptASTObjectBuilder *)self buildObjectWithBinaryExpressionListNode:v9 previousExpression:v8 error:a4];
+    v10 = [(REScriptASTObjectBuilder *)self buildObjectWithBinaryExpressionListNode:binaryExpressions previousExpression:v8 error:error];
     goto LABEL_5;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = [(REScriptASTObjectBuilder *)self buildObjectWithBinaryExpressionNode:v9 previousExpression:v8 error:a4];
+    v10 = [(REScriptASTObjectBuilder *)self buildObjectWithBinaryExpressionNode:binaryExpressions previousExpression:v8 error:error];
 LABEL_5:
     v11 = v10;
     if (v10)
@@ -156,15 +156,15 @@ LABEL_5:
     }
   }
 
-  if (*a4)
+  if (*error)
   {
     v11 = 0;
   }
 
   else
   {
-    [(REScriptASTObjectBuilder *)self _errorForUnsupportedNode:v9];
-    *a4 = v11 = 0;
+    [(REScriptASTObjectBuilder *)self _errorForUnsupportedNode:binaryExpressions];
+    *error = v11 = 0;
   }
 
 LABEL_9:
@@ -172,42 +172,42 @@ LABEL_9:
   return v11;
 }
 
-- (id)buildObjectWithTopLevelBinaryExpression:(id)a3 error:(id *)a4
+- (id)buildObjectWithTopLevelBinaryExpression:(id)expression error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 binaryOperator];
-  v8 = [v7 type];
+  expressionCopy = expression;
+  binaryOperator = [expressionCopy binaryOperator];
+  type = [binaryOperator type];
 
-  if ((v8 - 29) > 1)
+  if ((type - 29) > 1)
   {
     v10 = 0;
   }
 
   else
   {
-    v9 = [v6 expression];
-    v10 = [(REScriptASTObjectBuilder *)self buildObjectWithNode:v9 error:a4];
+    expression = [expressionCopy expression];
+    v10 = [(REScriptASTObjectBuilder *)self buildObjectWithNode:expression error:error];
   }
 
   return v10;
 }
 
-- (id)buildObjectWithTopLevelBinaryExpressionListNode:(id)a3 error:(id *)a4
+- (id)buildObjectWithTopLevelBinaryExpressionListNode:(id)node error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 expressions];
-  v8 = [v7 firstObject];
+  nodeCopy = node;
+  expressions = [nodeCopy expressions];
+  firstObject = [expressions firstObject];
 
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && ([(REScriptASTObjectBuilder *)self buildObjectWithTopLevelBinaryExpression:v8 error:a4], (v9 = objc_claimAutoreleasedReturnValue()) != 0))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && ([(REScriptASTObjectBuilder *)self buildObjectWithTopLevelBinaryExpression:firstObject error:error], (v9 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v10 = v9;
-    v11 = [v6 expressions];
-    v12 = [v11 mutableCopy];
+    expressions2 = [nodeCopy expressions];
+    v12 = [expressions2 mutableCopy];
 
     [v12 removeObjectAtIndex:0];
     v13 = [[REScriptASTBinaryExpressionListNode alloc] initWithExpressions:v12];
-    v14 = [(REScriptASTObjectBuilder *)self buildObjectWithBinaryExpressionListNode:v13 previousExpression:v10 error:a4];
+    v14 = [(REScriptASTObjectBuilder *)self buildObjectWithBinaryExpressionListNode:v13 previousExpression:v10 error:error];
   }
 
   else
@@ -218,22 +218,22 @@ LABEL_9:
   return v14;
 }
 
-- (id)buildObjectWithBinaryExpressionListNode:(id)a3 previousExpression:(id)a4 error:(id *)a5
+- (id)buildObjectWithBinaryExpressionListNode:(id)node previousExpression:(id)expression error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 expressions];
-  v11 = [v10 count];
+  nodeCopy = node;
+  expressionCopy = expression;
+  expressions = [nodeCopy expressions];
+  v11 = [expressions count];
 
-  v12 = v9;
+  v12 = expressionCopy;
   if (v11)
   {
     v13 = 0;
-    v14 = v9;
+    v14 = expressionCopy;
     while (1)
     {
-      v15 = [v8 expressions];
-      v16 = [v15 objectAtIndexedSubscript:v13];
+      expressions2 = [nodeCopy expressions];
+      v16 = [expressions2 objectAtIndexedSubscript:v13];
 
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -241,7 +241,7 @@ LABEL_9:
         break;
       }
 
-      v17 = [(REScriptASTObjectBuilder *)self buildObjectWithBinaryExpressionNode:v16 previousExpression:v14 error:a5];
+      v17 = [(REScriptASTObjectBuilder *)self buildObjectWithBinaryExpressionNode:v16 previousExpression:v14 error:error];
       if (!v17)
       {
         break;
@@ -257,9 +257,9 @@ LABEL_9:
       }
     }
 
-    if (a5 && !*a5)
+    if (error && !*error)
     {
-      *a5 = [(REScriptASTObjectBuilder *)self _errorForUnsupportedNode:v16];
+      *error = [(REScriptASTObjectBuilder *)self _errorForUnsupportedNode:v16];
     }
 
     v18 = 0;
@@ -275,18 +275,18 @@ LABEL_6:
   return v18;
 }
 
-- (id)_errorForUnsupportedNode:(id)a3
+- (id)_errorForUnsupportedNode:(id)node
 {
   v14[1] = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CCACA8];
-  v5 = a3;
-  v6 = [(REScriptASTObjectBuilder *)self objectTypeErrorDescription];
-  v7 = [v4 stringWithFormat:@"Unsupported expression found when creating %@", v6];
+  nodeCopy = node;
+  objectTypeErrorDescription = [(REScriptASTObjectBuilder *)self objectTypeErrorDescription];
+  v7 = [v4 stringWithFormat:@"Unsupported expression found when creating %@", objectTypeErrorDescription];
 
   v13 = @"REErrorTokenKey";
-  v8 = [v5 token];
+  token = [nodeCopy token];
 
-  v14[0] = v8;
+  v14[0] = token;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:&v13 count:1];
   v10 = RECreateErrorWithCodeMessageAndUseInfo(209, v7, v9);
 

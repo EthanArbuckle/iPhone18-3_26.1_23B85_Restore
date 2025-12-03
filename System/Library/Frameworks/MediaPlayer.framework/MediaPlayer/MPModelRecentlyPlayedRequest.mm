@@ -1,15 +1,15 @@
 @interface MPModelRecentlyPlayedRequest
-- (id)newOperationWithResponseHandler:(id)a3;
+- (id)newOperationWithResponseHandler:(id)handler;
 @end
 
 @implementation MPModelRecentlyPlayedRequest
 
-- (id)newOperationWithResponseHandler:(id)a3
+- (id)newOperationWithResponseHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = [MPModelRecentlyPlayedRequestOperation alloc];
   v6 = [(MPModelRecentlyPlayedRequest *)self copy];
-  v7 = [(MPStoreModelRequestOperation *)v5 initWithRequest:v6 responseHandler:v4];
+  v7 = [(MPStoreModelRequestOperation *)v5 initWithRequest:v6 responseHandler:handlerCopy];
 
   return v7;
 }

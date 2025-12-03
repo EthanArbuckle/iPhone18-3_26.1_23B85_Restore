@@ -1,10 +1,10 @@
 @interface _TUIFlexibleEqualWidthLayoutController
-- (void)computeWithMeasured:(double)a3 desired:(id *)a4;
+- (void)computeWithMeasured:(double)measured desired:(id *)desired;
 @end
 
 @implementation _TUIFlexibleEqualWidthLayoutController
 
-- (void)computeWithMeasured:(double)a3 desired:(id *)a4
+- (void)computeWithMeasured:(double)measured desired:(id *)desired
 {
   v5 = v4;
   v47 = [[NSHashTable alloc] initWithOptions:512 capacity:{-[NSMutableArray count](self->super._layouts, "count")}];
@@ -35,7 +35,7 @@
     while (v10);
   }
 
-  [(TUIFlexibleLayoutController *)self _lengthToAdjustWithMeasured:a4 desired:v5, a3];
+  [(TUIFlexibleLayoutController *)self _lengthToAdjustWithMeasured:desired desired:v5, measured];
   v14 = v13;
   v15 = v13 + self->super._layoutTotalLength;
   while (1)

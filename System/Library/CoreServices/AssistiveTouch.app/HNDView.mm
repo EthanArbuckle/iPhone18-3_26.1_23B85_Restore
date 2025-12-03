@@ -1,45 +1,45 @@
 @interface HNDView
-- (HNDView)initWithFrame:(CGRect)a3;
+- (HNDView)initWithFrame:(CGRect)frame;
 - (HNDViewDelegateControl)controlDelegate;
 - (id)description;
-- (void)handleRealUpEvent:(CGPoint)a3 maxOrb:(double)a4;
-- (void)setIsActive:(BOOL)a3 withDuration:(double)a4 options:(unint64_t)a5;
-- (void)setIsActive:(BOOL)a3 withDuration:(double)a4 options:(unint64_t)a5 inactiveAlpha:(double)a6;
+- (void)handleRealUpEvent:(CGPoint)event maxOrb:(double)orb;
+- (void)setIsActive:(BOOL)active withDuration:(double)duration options:(unint64_t)options;
+- (void)setIsActive:(BOOL)active withDuration:(double)duration options:(unint64_t)options inactiveAlpha:(double)alpha;
 @end
 
 @implementation HNDView
 
-- (HNDView)initWithFrame:(CGRect)a3
+- (HNDView)initWithFrame:(CGRect)frame
 {
   v5.receiver = self;
   v5.super_class = HNDView;
-  v3 = [(HNDView *)&v5 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(HNDView *)&v5 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(HNDView *)v3 setInactiveAlpha:0.2];
   return v3;
 }
 
-- (void)setIsActive:(BOOL)a3 withDuration:(double)a4 options:(unint64_t)a5
+- (void)setIsActive:(BOOL)active withDuration:(double)duration options:(unint64_t)options
 {
-  v7 = a3;
+  activeCopy = active;
   [(HNDView *)self inactiveAlpha];
 
-  [(HNDView *)self setIsActive:v7 withDuration:a5 options:a4 inactiveAlpha:v9];
+  [(HNDView *)self setIsActive:activeCopy withDuration:options options:duration inactiveAlpha:v9];
 }
 
-- (void)setIsActive:(BOOL)a3 withDuration:(double)a4 options:(unint64_t)a5 inactiveAlpha:(double)a6
+- (void)setIsActive:(BOOL)active withDuration:(double)duration options:(unint64_t)options inactiveAlpha:(double)alpha
 {
-  self->_active = a3;
+  self->_active = active;
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100064DA0;
   v6[3] = &unk_1001D4228;
   v6[4] = self;
-  v7 = a3;
-  *&v6[5] = a6;
-  [UIView animateWithDuration:a5 delay:v6 options:0 animations:a4 completion:0.0];
+  activeCopy = active;
+  *&v6[5] = alpha;
+  [UIView animateWithDuration:options delay:v6 options:0 animations:duration completion:0.0];
 }
 
-- (void)handleRealUpEvent:(CGPoint)a3 maxOrb:(double)a4
+- (void)handleRealUpEvent:(CGPoint)event maxOrb:(double)orb
 {
   WeakRetained = objc_loadWeakRetained(&self->_controlDelegate);
 
@@ -55,8 +55,8 @@
   v7.receiver = self;
   v7.super_class = HNDView;
   v3 = [(HNDView *)&v7 description];
-  v4 = [(HNDView *)self accessibilityIdentifier];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  accessibilityIdentifier = [(HNDView *)self accessibilityIdentifier];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, accessibilityIdentifier];
 
   return v5;
 }

@@ -8,15 +8,15 @@
 - (uint64_t)needToGeneratePreviews
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = [a1 attachment];
-  if ([v4 metadataExists])
+  attachment = [self attachment];
+  if ([attachment metadataExists])
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = [a1 isGeneratingPreviews] ^ 1;
+    v5 = [self isGeneratingPreviews] ^ 1;
   }
 
   v6 = os_log_create("com.apple.notes", "PreviewGeneration");
@@ -25,14 +25,14 @@
     v8 = objc_opt_class();
     v9 = NSStringFromClass(v8);
     v10 = NSStringFromSelector(a2);
-    v11 = [a1 attachment];
-    v12 = [v11 identifier];
+    attachment2 = [self attachment];
+    identifier = [attachment2 identifier];
     v13 = 138413058;
     v14 = v9;
     v15 = 2112;
     v16 = v10;
     v17 = 2112;
-    v18 = v12;
+    v18 = identifier;
     v19 = 1024;
     v20 = v5;
     _os_log_debug_impl(&dword_1D4171000, v6, OS_LOG_TYPE_DEBUG, "%@ %@ %@ return %d", &v13, 0x26u);
@@ -44,16 +44,16 @@
 - (uint64_t)generatePreviewsInOperation:()PreviewGeneration
 {
   v4 = a3;
-  if ([a1 isGeneratingPreviews])
+  if ([self isGeneratingPreviews])
   {
     v5 = 0;
   }
 
   else
   {
-    [a1 setGeneratingPreviews:1];
+    [self setGeneratingPreviews:1];
     v6 = dispatch_semaphore_create(0);
-    objc_initWeak(&location, a1);
+    objc_initWeak(&location, self);
     v28 = 0;
     v29 = &v28;
     v30 = 0x2020000000;
@@ -64,15 +64,15 @@
     v25 = __Block_byref_object_copy__23;
     v26 = __Block_byref_object_dispose__23;
     v27 = 0;
-    v7 = [a1 attachment];
-    v8 = [v7 managedObjectContext];
+    attachment = [self attachment];
+    managedObjectContext = [attachment managedObjectContext];
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __71__ICAttachmentMapModel_PreviewGeneration__generatePreviewsInOperation___block_invoke;
     v20[3] = &unk_1E846AAB8;
     objc_copyWeak(&v21, &location);
     v20[4] = &v22;
-    [v8 performBlockAndWait:v20];
+    [managedObjectContext performBlockAndWait:v20];
 
     v9 = objc_autoreleasePoolPush();
     v10 = [MEMORY[0x1E696AD68] requestWithURL:v23[5]];
@@ -88,7 +88,7 @@
 
     objc_autoreleasePoolPop(v9);
     dispatch_semaphore_wait(v19, 0xFFFFFFFFFFFFFFFFLL);
-    [a1 setGeneratingPreviews:{0, v16, 3221225472, __71__ICAttachmentMapModel_PreviewGeneration__generatePreviewsInOperation___block_invoke_12, &unk_1E846AB08}];
+    [self setGeneratingPreviews:{0, v16, 3221225472, __71__ICAttachmentMapModel_PreviewGeneration__generatePreviewsInOperation___block_invoke_12, &unk_1E846AB08}];
     v5 = *(v29 + 24);
     objc_destroyWeak(&v21);
     _Block_object_dispose(&v22, 8);

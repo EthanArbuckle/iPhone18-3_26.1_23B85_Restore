@@ -1,9 +1,9 @@
 @interface CUPairedPeer
-- (CUPairedPeer)initWithCoder:(id)a3;
+- (CUPairedPeer)initWithCoder:(id)coder;
 - (NSDictionary)groupInfo;
 - (id)description;
 - (id)detailedDescription;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CUPairedPeer
@@ -211,89 +211,89 @@ LABEL_6:
   return v16;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   acl = self->_acl;
-  v14 = v4;
+  v14 = coderCopy;
   if (acl)
   {
-    [v4 encodeObject:acl forKey:@"acl"];
-    v4 = v14;
+    [coderCopy encodeObject:acl forKey:@"acl"];
+    coderCopy = v14;
   }
 
   altIRK = self->_altIRK;
   if (altIRK)
   {
     [v14 encodeObject:altIRK forKey:@"altIRK"];
-    v4 = v14;
+    coderCopy = v14;
   }
 
   dateModified = self->_dateModified;
   if (dateModified)
   {
     [v14 encodeObject:dateModified forKey:@"dateModified"];
-    v4 = v14;
+    coderCopy = v14;
   }
 
   identifier = self->_identifier;
   if (identifier)
   {
     [v14 encodeObject:identifier forKey:@"ident"];
-    v4 = v14;
+    coderCopy = v14;
   }
 
   identifierStr = self->_identifierStr;
   if (identifierStr)
   {
     [v14 encodeObject:identifierStr forKey:@"idStr"];
-    v4 = v14;
+    coderCopy = v14;
   }
 
   info = self->_info;
   if (info)
   {
     [v14 encodeObject:info forKey:@"info"];
-    v4 = v14;
+    coderCopy = v14;
   }
 
   if (self->_label && !self->_name)
   {
     [v14 encodeObject:? forKey:?];
-    v4 = v14;
+    coderCopy = v14;
   }
 
   model = self->_model;
   if (model)
   {
     [v14 encodeObject:model forKey:@"model"];
-    v4 = v14;
+    coderCopy = v14;
   }
 
   name = self->_name;
   if (name)
   {
     [v14 encodeObject:name forKey:@"name"];
-    v4 = v14;
+    coderCopy = v14;
   }
 
   publicKey = self->_publicKey;
   if (publicKey)
   {
     [v14 encodeObject:publicKey forKey:@"pk"];
-    v4 = v14;
+    coderCopy = v14;
   }
 }
 
-- (CUPairedPeer)initWithCoder:(id)a3
+- (CUPairedPeer)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v26.receiver = self;
   v26.super_class = CUPairedPeer;
   v5 = [(CUPairedPeer *)&v26 init];
   if (v5)
   {
-    v6 = v4;
+    v6 = coderCopy;
     v7 = objc_opt_class();
     NSDecodeStandardContainerIfPresent(v6, @"acl", v7, &v5->_acl);
 

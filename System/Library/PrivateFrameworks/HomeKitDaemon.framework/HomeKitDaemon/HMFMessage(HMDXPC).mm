@@ -41,8 +41,8 @@
 
 - (uint64_t)requiresSPIEntitlement
 {
-  v1 = [a1 userInfo];
-  v2 = [v1 objectForKeyedSubscript:@"requiresSPIEntitlement"];
+  userInfo = [self userInfo];
+  v2 = [userInfo objectForKeyedSubscript:@"requiresSPIEntitlement"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -57,14 +57,14 @@
 
   v4 = v3;
 
-  v5 = [v4 BOOLValue];
-  return v5;
+  bOOLValue = [v4 BOOLValue];
+  return bOOLValue;
 }
 
 - (uint64_t)requiresNoSPIEntitlement
 {
-  v1 = [a1 userInfo];
-  v2 = [v1 objectForKeyedSubscript:@"requiresNoSPIEntitlement"];
+  userInfo = [self userInfo];
+  v2 = [userInfo objectForKeyedSubscript:@"requiresNoSPIEntitlement"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -79,14 +79,14 @@
 
   v4 = v3;
 
-  v5 = [v4 BOOLValue];
-  return v5;
+  bOOLValue = [v4 BOOLValue];
+  return bOOLValue;
 }
 
 - (uint64_t)requiresCameraClipsEntitlement
 {
-  v1 = [a1 userInfo];
-  v2 = [v1 objectForKeyedSubscript:@"requiresCameraClipsEntitlement"];
+  userInfo = [self userInfo];
+  v2 = [userInfo objectForKeyedSubscript:@"requiresCameraClipsEntitlement"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -101,14 +101,14 @@
 
   v4 = v3;
 
-  v5 = [v4 BOOLValue];
-  return v5;
+  bOOLValue = [v4 BOOLValue];
+  return bOOLValue;
 }
 
 - (uint64_t)requiresMultiUserSetupEntitlement
 {
-  v1 = [a1 userInfo];
-  v2 = [v1 objectForKeyedSubscript:@"requiresMultiUserSetupEntitlement"];
+  userInfo = [self userInfo];
+  v2 = [userInfo objectForKeyedSubscript:@"requiresMultiUserSetupEntitlement"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -123,14 +123,14 @@
 
   v4 = v3;
 
-  v5 = [v4 BOOLValue];
-  return v5;
+  bOOLValue = [v4 BOOLValue];
+  return bOOLValue;
 }
 
 - (uint64_t)requiresSetupPayloadEntitlement
 {
-  v1 = [a1 userInfo];
-  v2 = [v1 objectForKeyedSubscript:@"requiresSetupPayloadEntitlement"];
+  userInfo = [self userInfo];
+  v2 = [userInfo objectForKeyedSubscript:@"requiresSetupPayloadEntitlement"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -145,14 +145,14 @@
 
   v4 = v3;
 
-  v5 = [v4 BOOLValue];
-  return v5;
+  bOOLValue = [v4 BOOLValue];
+  return bOOLValue;
 }
 
 - (uint64_t)requiresMatterSetupPayloadEntitlement
 {
-  v1 = [a1 userInfo];
-  v2 = [v1 objectForKeyedSubscript:@"requiresMatterSetupPayloadEntitlement"];
+  userInfo = [self userInfo];
+  v2 = [userInfo objectForKeyedSubscript:@"requiresMatterSetupPayloadEntitlement"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -167,14 +167,14 @@
 
   v4 = v3;
 
-  v5 = [v4 BOOLValue];
-  return v5;
+  bOOLValue = [v4 BOOLValue];
+  return bOOLValue;
 }
 
 - (uint64_t)requiresPersonManagerEntitlement
 {
-  v1 = [a1 userInfo];
-  v2 = [v1 objectForKeyedSubscript:@"requiresPersonManagerEntitlement"];
+  userInfo = [self userInfo];
+  v2 = [userInfo objectForKeyedSubscript:@"requiresPersonManagerEntitlement"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -189,14 +189,14 @@
 
   v4 = v3;
 
-  v5 = [v4 BOOLValue];
-  return v5;
+  bOOLValue = [v4 BOOLValue];
+  return bOOLValue;
 }
 
 - (uint64_t)requiresWalletKeyEntitlement
 {
-  v1 = [a1 userInfo];
-  v2 = [v1 objectForKeyedSubscript:@"requiresWalletKeyEntitlement"];
+  userInfo = [self userInfo];
+  v2 = [userInfo objectForKeyedSubscript:@"requiresWalletKeyEntitlement"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -211,14 +211,14 @@
 
   v4 = v3;
 
-  v5 = [v4 BOOLValue];
-  return v5;
+  bOOLValue = [v4 BOOLValue];
+  return bOOLValue;
 }
 
 - (void)sendPolicy
 {
-  v1 = [a1 userInfo];
-  v2 = [v1 objectForKeyedSubscript:@"sendPolicy"];
+  userInfo = [self userInfo];
+  v2 = [userInfo objectForKeyedSubscript:@"sendPolicy"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -238,11 +238,11 @@
 
 - (void)proxyConnection
 {
-  v1 = [a1 transport];
+  transport = [self transport];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v2 = v1;
+    v2 = transport;
   }
 
   else
@@ -257,28 +257,28 @@
 
 - (uint64_t)homeManagerOptions
 {
-  v1 = [a1 proxyConnection];
-  v2 = v1;
-  if (v1)
+  proxyConnection = [self proxyConnection];
+  v2 = proxyConnection;
+  if (proxyConnection)
   {
-    v3 = [v1 homeManagerOptions];
+    homeManagerOptions = [proxyConnection homeManagerOptions];
   }
 
   else
   {
-    v3 = -1;
+    homeManagerOptions = -1;
   }
 
-  return v3;
+  return homeManagerOptions;
 }
 
 - (uint64_t)source
 {
-  v1 = a1;
+  selfCopy = self;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v2 = v1;
+    v2 = selfCopy;
   }
 
   else
@@ -290,98 +290,98 @@
 
   if (v3 && ![v3 type])
   {
-    v6 = 8;
+    intValue = 8;
   }
 
   else
   {
-    v4 = [v1 numberForKey:@"sourceType"];
+    v4 = [selfCopy numberForKey:@"sourceType"];
     v5 = v4;
     if (v4)
     {
-      v6 = [v4 intValue];
+      intValue = [v4 intValue];
     }
 
-    else if ([v1 isEntitledForSPIAccess])
+    else if ([selfCopy isEntitledForSPIAccess])
     {
-      v7 = [v1 proxyConnection];
-      v8 = [v7 clientIdentifier];
+      proxyConnection = [selfCopy proxyConnection];
+      clientIdentifier = [proxyConnection clientIdentifier];
 
-      if (HMDIsSiriClientIdentifier(v8))
+      if (HMDIsSiriClientIdentifier(clientIdentifier))
       {
-        v6 = 1;
+        intValue = 1;
       }
 
-      else if ([v8 isEqualToString:@"BackgroundShortcutRunner"])
+      else if ([clientIdentifier isEqualToString:@"BackgroundShortcutRunner"])
       {
-        v6 = 10;
+        intValue = 10;
       }
 
       else
       {
-        v6 = 5;
+        intValue = 5;
       }
     }
 
     else
     {
-      v6 = 6;
+      intValue = 6;
     }
   }
 
-  return v6;
+  return intValue;
 }
 
 - (id)companionAppBundleIdentifier
 {
-  v1 = [a1 proxyConnection];
-  v2 = [v1 companionAppBundleIdentifier];
+  proxyConnection = [self proxyConnection];
+  companionAppBundleIdentifier = [proxyConnection companionAppBundleIdentifier];
 
-  return v2;
+  return companionAppBundleIdentifier;
 }
 
 - (id)clientIdentifier
 {
-  v1 = [a1 proxyConnection];
-  v2 = [v1 clientIdentifier];
+  proxyConnection = [self proxyConnection];
+  clientIdentifier = [proxyConnection clientIdentifier];
 
-  return v2;
+  return clientIdentifier;
 }
 
 - (uint64_t)sourcePid
 {
-  v1 = [a1 proxyConnection];
-  v2 = v1;
-  if (v1)
+  proxyConnection = [self proxyConnection];
+  v2 = proxyConnection;
+  if (proxyConnection)
   {
-    v3 = [v1 clientPid];
+    clientPid = [proxyConnection clientPid];
   }
 
   else
   {
-    v3 = 0xFFFFFFFFLL;
+    clientPid = 0xFFFFFFFFLL;
   }
 
-  return v3;
+  return clientPid;
 }
 
 - (uint64_t)isBackground
 {
-  v1 = [a1 proxyConnection];
-  v2 = [v1 processInfo];
-  v3 = [v2 isBackgrounded];
+  proxyConnection = [self proxyConnection];
+  processInfo = [proxyConnection processInfo];
+  isBackgrounded = [processInfo isBackgrounded];
 
-  return v3;
+  return isBackgrounded;
 }
 
 - (uint64_t)isEntitledForVendorAccessForAccessoryWithVendorInfo:()HMDXPC
 {
-  v4 = [a3 appBundleID];
-  if ([v4 length])
+  appBundleID = [a3 appBundleID];
+  if ([appBundleID length])
   {
-    v5 = [a1 proxyConnection];
-    v6 = [v5 applicationBundleIdentifier];
-    v7 = [v4 isEqual:v6];
+    proxyConnection = [self proxyConnection];
+    applicationBundleIdentifier = [proxyConnection applicationBundleIdentifier];
+    v7 = [appBundleID isEqual:applicationBundleIdentifier];
   }
 
   else
@@ -394,175 +394,175 @@
 
 - (uint64_t)isEntitledForHomeLocationFeedbackAccess
 {
-  v1 = [a1 proxyConnection];
-  v2 = [v1 isEntitledForHomeLocationFeedbackAccess];
+  proxyConnection = [self proxyConnection];
+  isEntitledForHomeLocationFeedbackAccess = [proxyConnection isEntitledForHomeLocationFeedbackAccess];
 
-  return v2;
+  return isEntitledForHomeLocationFeedbackAccess;
 }
 
 - (uint64_t)isEntitledForAssistantIdentifiers
 {
-  v1 = [a1 proxyConnection];
-  v2 = [v1 isEntitledForAssistantIdentifiers];
+  proxyConnection = [self proxyConnection];
+  isEntitledForAssistantIdentifiers = [proxyConnection isEntitledForAssistantIdentifiers];
 
-  return v2;
+  return isEntitledForAssistantIdentifiers;
 }
 
 - (uint64_t)isEntitledForStateDump
 {
-  v1 = [a1 proxyConnection];
-  v2 = [v1 isEntitledForStateDump];
+  proxyConnection = [self proxyConnection];
+  isEntitledForStateDump = [proxyConnection isEntitledForStateDump];
 
-  return v2;
+  return isEntitledForStateDump;
 }
 
 - (uint64_t)isEntitledForSecureAccess
 {
-  v1 = [a1 proxyConnection];
-  v2 = [v1 isEntitledForSecureAccess];
+  proxyConnection = [self proxyConnection];
+  isEntitledForSecureAccess = [proxyConnection isEntitledForSecureAccess];
 
-  return v2;
+  return isEntitledForSecureAccess;
 }
 
 - (uint64_t)isEntitledForShortcutsAutomationAccess
 {
-  v2 = [a1 proxyConnection];
-  v3 = v2;
-  if (v2)
+  proxyConnection = [self proxyConnection];
+  v3 = proxyConnection;
+  if (proxyConnection)
   {
-    v4 = [v2 isEntitledForShortcutsAutomationAccess];
+    isEntitledForShortcutsAutomationAccess = [proxyConnection isEntitledForShortcutsAutomationAccess];
   }
 
-  else if ([a1 isSecureRemote])
+  else if ([self isSecureRemote])
   {
-    v5 = [a1 headers];
-    v4 = [v5 hmf_BOOLForKey:@"cl.shortcutent"];
+    headers = [self headers];
+    isEntitledForShortcutsAutomationAccess = [headers hmf_BOOLForKey:@"cl.shortcutent"];
   }
 
   else
   {
-    v4 = 0;
+    isEntitledForShortcutsAutomationAccess = 0;
   }
 
-  return v4;
+  return isEntitledForShortcutsAutomationAccess;
 }
 
 - (uint64_t)isEntitledToProvideMatterSetupPayload
 {
-  v1 = [a1 proxyConnection];
-  v2 = [v1 isEntitledToProvideMatterSetupPayload];
+  proxyConnection = [self proxyConnection];
+  isEntitledToProvideMatterSetupPayload = [proxyConnection isEntitledToProvideMatterSetupPayload];
 
-  return v2;
+  return isEntitledToProvideMatterSetupPayload;
 }
 
 - (uint64_t)isEntitledToProvideAccessorySetupPayload
 {
-  v1 = [a1 proxyConnection];
-  v2 = [v1 isEntitledToProvideAccessorySetupPayload];
+  proxyConnection = [self proxyConnection];
+  isEntitledToProvideAccessorySetupPayload = [proxyConnection isEntitledToProvideAccessorySetupPayload];
 
-  return v2;
+  return isEntitledToProvideAccessorySetupPayload;
 }
 
 - (uint64_t)isEntitledForHomeLocationAccess
 {
-  v1 = [a1 proxyConnection];
-  v2 = [v1 isEntitledForHomeLocationAccess];
+  proxyConnection = [self proxyConnection];
+  isEntitledForHomeLocationAccess = [proxyConnection isEntitledForHomeLocationAccess];
 
-  return v2;
+  return isEntitledForHomeLocationAccess;
 }
 
 - (uint64_t)isAuthorizedForLocationAccess
 {
-  v2 = [a1 proxyConnection];
-  v3 = v2;
-  if (v2)
+  proxyConnection = [self proxyConnection];
+  v3 = proxyConnection;
+  if (proxyConnection)
   {
-    v4 = [v2 isAuthorizedForLocationAccess];
+    isAuthorizedForLocationAccess = [proxyConnection isAuthorizedForLocationAccess];
   }
 
-  else if ([a1 isSecureRemote])
+  else if ([self isSecureRemote])
   {
-    v5 = [a1 headers];
-    v4 = [v5 hmf_BOOLForKey:@"cl.locauthz"];
+    headers = [self headers];
+    isAuthorizedForLocationAccess = [headers hmf_BOOLForKey:@"cl.locauthz"];
   }
 
   else
   {
-    v4 = 0;
+    isAuthorizedForLocationAccess = 0;
   }
 
-  return v4;
+  return isAuthorizedForLocationAccess;
 }
 
 - (uint64_t)isEntitledForBackgroundMode
 {
-  v1 = [a1 proxyConnection];
-  v2 = [v1 isEntitledForBackgroundMode];
+  proxyConnection = [self proxyConnection];
+  isEntitledForBackgroundMode = [proxyConnection isEntitledForBackgroundMode];
 
-  return v2;
+  return isEntitledForBackgroundMode;
 }
 
 - (uint64_t)isAuthorizedForMicrophoneAccess
 {
-  v1 = [a1 proxyConnection];
-  v2 = [v1 isAuthorizedForMicrophoneAccess];
+  proxyConnection = [self proxyConnection];
+  isAuthorizedForMicrophoneAccess = [proxyConnection isAuthorizedForMicrophoneAccess];
 
-  return v2;
+  return isAuthorizedForMicrophoneAccess;
 }
 
 - (uint64_t)isAuthorizedForHomeDataAccess
 {
-  if ([a1 isInternal] & 1) != 0 || (objc_msgSend(a1, "isRemote"))
+  if ([self isInternal] & 1) != 0 || (objc_msgSend(self, "isRemote"))
   {
     return 1;
   }
 
-  v3 = [a1 proxyConnection];
-  v4 = [v3 isAuthorizedForHomeDataAccess];
+  proxyConnection = [self proxyConnection];
+  isAuthorizedForHomeDataAccess = [proxyConnection isAuthorizedForHomeDataAccess];
 
-  return v4;
+  return isAuthorizedForHomeDataAccess;
 }
 
 - (uint64_t)isEntitledForSPIAccess
 {
-  if ([a1 isInternal])
+  if ([self isInternal])
   {
     return 1;
   }
 
-  v3 = [a1 proxyConnection];
-  v4 = [v3 isEntitledForSPIAccess];
+  proxyConnection = [self proxyConnection];
+  isEntitledForSPIAccess = [proxyConnection isEntitledForSPIAccess];
 
-  return v4;
+  return isEntitledForSPIAccess;
 }
 
 - (uint64_t)isEntitledForAPIAccess
 {
-  if ([a1 isInternal] & 1) != 0 || (objc_msgSend(a1, "isRemote"))
+  if ([self isInternal] & 1) != 0 || (objc_msgSend(self, "isRemote"))
   {
     return 1;
   }
 
-  v3 = [a1 proxyConnection];
-  v4 = [v3 isEntitledForAPIAccess];
+  proxyConnection = [self proxyConnection];
+  isEntitledForAPIAccess = [proxyConnection isEntitledForAPIAccess];
 
-  return v4;
+  return isEntitledForAPIAccess;
 }
 
 - (uint64_t)entitlements
 {
-  v1 = [a1 proxyConnection];
-  v2 = [v1 entitlements];
+  proxyConnection = [self proxyConnection];
+  entitlements = [proxyConnection entitlements];
 
-  return v2;
+  return entitlements;
 }
 
 - (id)clientName
 {
-  v1 = [a1 proxyConnection];
-  v2 = [v1 name];
+  proxyConnection = [self proxyConnection];
+  name = [proxyConnection name];
 
-  return v2;
+  return name;
 }
 
 + (id)nonSPIEntitledMessageWithName:()HMDXPC messagePayload:
@@ -574,9 +574,9 @@
   v7 = a4;
   v8 = a3;
   v9 = [v6 dictionaryWithObjects:v16 forKeys:&v15 count:1];
-  v10 = [a1 alloc];
-  v11 = [MEMORY[0x277D0F820] allMessageDestinations];
-  v12 = [v10 initWithName:v8 qualityOfService:-1 destination:v11 userInfo:v9 headers:0 payload:v7];
+  v10 = [self alloc];
+  allMessageDestinations = [MEMORY[0x277D0F820] allMessageDestinations];
+  v12 = [v10 initWithName:v8 qualityOfService:-1 destination:allMessageDestinations userInfo:v9 headers:0 payload:v7];
 
   v13 = *MEMORY[0x277D85DE8];
 
@@ -586,7 +586,7 @@
 + (id)entitledMessageWithName:()HMDXPC identifier:messagePayload:
 {
   v8 = a4;
-  v9 = [a1 entitledMessageWithName:a3 messagePayload:a5];
+  v9 = [self entitledMessageWithName:a3 messagePayload:a5];
   [v9 setIdentifier:v8];
 
   return v9;
@@ -601,9 +601,9 @@
   v7 = a4;
   v8 = a3;
   v9 = [v6 dictionaryWithObjects:v16 forKeys:&v15 count:1];
-  v10 = [a1 alloc];
-  v11 = [MEMORY[0x277D0F820] allMessageDestinations];
-  v12 = [v10 initWithName:v8 qualityOfService:-1 destination:v11 userInfo:v9 headers:0 payload:v7];
+  v10 = [self alloc];
+  allMessageDestinations = [MEMORY[0x277D0F820] allMessageDestinations];
+  v12 = [v10 initWithName:v8 qualityOfService:-1 destination:allMessageDestinations userInfo:v9 headers:0 payload:v7];
 
   v13 = *MEMORY[0x277D85DE8];
 

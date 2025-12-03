@@ -1,16 +1,16 @@
 @interface NSCoreDataCodableAdapterRegistry
 - (NSCoreDataCodableAdapterRegistry)init;
-- (id)decodeWithData:(id)a3 withAdapterNamed:(id)a4 error:(id *)a5;
-- (id)encodeWithValue:(id)a3 withAdapterNamed:(id)a4 error:(id *)a5;
+- (id)decodeWithData:(id)data withAdapterNamed:(id)named error:(id *)error;
+- (id)encodeWithValue:(id)value withAdapterNamed:(id)named error:(id *)error;
 @end
 
 @implementation NSCoreDataCodableAdapterRegistry
 
-- (id)encodeWithValue:(id)a3 withAdapterNamed:(id)a4 error:(id *)a5
+- (id)encodeWithValue:(id)value withAdapterNamed:(id)named error:(id *)error
 {
   swift_unknownObjectRetain();
-  v7 = a4;
-  v8 = self;
+  namedCopy = named;
+  selfCopy = self;
   _bridgeAnyObjectToAny(_:)();
   swift_unknownObjectRelease();
   v9 = static String._unconditionallyBridgeFromObjectiveC(_:)();
@@ -27,11 +27,11 @@
   return v16.super.isa;
 }
 
-- (id)decodeWithData:(id)a3 withAdapterNamed:(id)a4 error:(id *)a5
+- (id)decodeWithData:(id)data withAdapterNamed:(id)named error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
+  dataCopy = data;
+  namedCopy = named;
+  selfCopy = self;
   v10 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v12 = v11;
 

@@ -1,44 +1,44 @@
 @interface PGControlsView
-- (BOOL)PG_preferredVisibilityForView:(id)a3;
+- (BOOL)PG_preferredVisibilityForView:(id)view;
 - (BOOL)_showsDimmingView;
-- (CGRect)_prerollIndicatorFrameWithScaling:(double)a3;
-- (CGRect)_progressIndicatorFrameWithScaling:(double)a3;
-- (CGRect)buttonView:(id)a3 imageRectForContentRect:(CGRect)a4 proposedRect:(CGRect)a5;
-- (CGRect)buttonView:(id)a3 titleRectForContentRect:(CGRect)a4 proposedRect:(CGRect)a5;
-- (PGControlsView)initWithFrame:(CGRect)a3 viewModel:(id)a4;
-- (UIEdgeInsets)buttonView:(id)a3 contentEdgeInsetsForProposedInsets:(UIEdgeInsets)a4;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (void)_setContinuousCornerRadius:(double)a3;
-- (void)buttonViewDidReceiveTouchUpInside:(id)a3;
+- (CGRect)_prerollIndicatorFrameWithScaling:(double)scaling;
+- (CGRect)_progressIndicatorFrameWithScaling:(double)scaling;
+- (CGRect)buttonView:(id)view imageRectForContentRect:(CGRect)rect proposedRect:(CGRect)proposedRect;
+- (CGRect)buttonView:(id)view titleRectForContentRect:(CGRect)rect proposedRect:(CGRect)proposedRect;
+- (PGControlsView)initWithFrame:(CGRect)frame viewModel:(id)model;
+- (UIEdgeInsets)buttonView:(id)view contentEdgeInsetsForProposedInsets:(UIEdgeInsets)insets;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (void)_setContinuousCornerRadius:(double)radius;
+- (void)buttonViewDidReceiveTouchUpInside:(id)inside;
 - (void)dealloc;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
-- (void)setPrefersControlsHidden:(BOOL)a3;
+- (void)setPrefersControlsHidden:(BOOL)hidden;
 - (void)updateControlsAlpha;
 - (void)updateProgress;
-- (void)viewModelDidUpdateValuesFromOldValues:(id)a3;
+- (void)viewModelDidUpdateValuesFromOldValues:(id)values;
 @end
 
 @implementation PGControlsView
 
-- (PGControlsView)initWithFrame:(CGRect)a3 viewModel:(id)a4
+- (PGControlsView)initWithFrame:(CGRect)frame viewModel:(id)model
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v62[6] = *MEMORY[0x1E69E9840];
-  v10 = a4;
-  v11 = [v10 values];
+  modelCopy = model;
+  values = [modelCopy values];
   v60.receiver = self;
   v60.super_class = PGControlsView;
-  v12 = -[PGLayoutContainerView initWithFrame:wantsGlassBackground:](&v60, sel_initWithFrame_wantsGlassBackground_, [v11 controlsViewWantsGlassBackground], x, y, width, height);
+  v12 = -[PGLayoutContainerView initWithFrame:wantsGlassBackground:](&v60, sel_initWithFrame_wantsGlassBackground_, [values controlsViewWantsGlassBackground], x, y, width, height);
 
   if (v12)
   {
-    objc_storeStrong(&v12->_viewModel, a4);
-    v13 = [v10 values];
-    v12->_wantsGlassBackground = [v13 controlsViewWantsGlassBackground];
+    objc_storeStrong(&v12->_viewModel, model);
+    values2 = [modelCopy values];
+    v12->_wantsGlassBackground = [values2 controlsViewWantsGlassBackground];
 
     if (!v12->_wantsGlassBackground)
     {
@@ -85,7 +85,7 @@
     v12->_restoreButton = v26;
 
     v28 = v12->_restoreButton;
-    v55 = v10;
+    v55 = modelCopy;
     if (v12->_wantsGlassBackground)
     {
       [(PGButtonView *)v28 setCircular:1];
@@ -180,7 +180,7 @@
     displayLinkForProgressUpdates = v12->_displayLinkForProgressUpdates;
     v12->_displayLinkForProgressUpdates = v52;
 
-    v10 = v55;
+    modelCopy = v55;
     if (v12->_wantsGlassBackground || ([(UIView *)v12 PG_recursivelyDisallowGroupBlending], v12->_wantsGlassBackground))
     {
       [(UIView *)v12->_hidableItemsLayoutContainerView PG_setGlassGroupEnabled:1];
@@ -199,154 +199,154 @@
   [(PGControlsView *)&v3 dealloc];
 }
 
-- (void)_setContinuousCornerRadius:(double)a3
+- (void)_setContinuousCornerRadius:(double)radius
 {
   v5.receiver = self;
   v5.super_class = PGControlsView;
   [(PGControlsView *)&v5 _setContinuousCornerRadius:?];
-  [(UIView *)self->_dimmingView _setContinuousCornerRadius:a3];
-  [(UIView *)self->_contentLoadingIndicatorContainerView _setContinuousCornerRadius:a3];
+  [(UIView *)self->_dimmingView _setContinuousCornerRadius:radius];
+  [(UIView *)self->_contentLoadingIndicatorContainerView _setContinuousCornerRadius:radius];
 }
 
-- (void)viewModelDidUpdateValuesFromOldValues:(id)a3
+- (void)viewModelDidUpdateValuesFromOldValues:(id)values
 {
   v86 = *MEMORY[0x1E69E9840];
-  v80 = a3;
-  v4 = [(PGControlsViewModel *)self->_viewModel values];
-  -[PGButtonView setHidden:](self->_restoreButton, "setHidden:", [v4 includesRestoreButton] ^ 1);
-  -[PGButtonView setHidden:](self->_skipBackButton, "setHidden:", [v4 includesSkipBackButton] ^ 1);
-  -[PGButtonView setHidden:](self->_actionButton, "setHidden:", [v4 includesActionButton] ^ 1);
-  -[PGButtonView setHidden:](self->_skipForwardButton, "setHidden:", [v4 includesSkipForwardButton] ^ 1);
-  -[PGButtonView setHidden:](self->_cancelButton, "setHidden:", [v4 includesCancelButton] ^ 1);
-  -[PGButtonView setHidden:](self->_liveIndicatorBadgeButton, "setHidden:", [v4 includesLiveIndicatorBadge] ^ 1);
-  -[PGButtonView setEnabled:](self->_skipBackButton, "setEnabled:", [v4 isSkipBackButtonEnabled]);
-  -[PGButtonView setEnabled:](self->_actionButton, "setEnabled:", [v4 isActionButtonEnabled]);
-  -[PGButtonView setEnabled:](self->_skipForwardButton, "setEnabled:", [v4 isSkipForwardButtonEnabled]);
+  valuesCopy = values;
+  values = [(PGControlsViewModel *)self->_viewModel values];
+  -[PGButtonView setHidden:](self->_restoreButton, "setHidden:", [values includesRestoreButton] ^ 1);
+  -[PGButtonView setHidden:](self->_skipBackButton, "setHidden:", [values includesSkipBackButton] ^ 1);
+  -[PGButtonView setHidden:](self->_actionButton, "setHidden:", [values includesActionButton] ^ 1);
+  -[PGButtonView setHidden:](self->_skipForwardButton, "setHidden:", [values includesSkipForwardButton] ^ 1);
+  -[PGButtonView setHidden:](self->_cancelButton, "setHidden:", [values includesCancelButton] ^ 1);
+  -[PGButtonView setHidden:](self->_liveIndicatorBadgeButton, "setHidden:", [values includesLiveIndicatorBadge] ^ 1);
+  -[PGButtonView setEnabled:](self->_skipBackButton, "setEnabled:", [values isSkipBackButtonEnabled]);
+  -[PGButtonView setEnabled:](self->_actionButton, "setEnabled:", [values isActionButtonEnabled]);
+  -[PGButtonView setEnabled:](self->_skipForwardButton, "setEnabled:", [values isSkipForwardButtonEnabled]);
   cancelButton = self->_cancelButton;
-  v6 = [v4 cancelButtonImageTintColor];
-  if (v6)
+  cancelButtonImageTintColor = [values cancelButtonImageTintColor];
+  if (cancelButtonImageTintColor)
   {
-    [(PGButtonView *)cancelButton setTintColor:v6];
+    [(PGButtonView *)cancelButton setTintColor:cancelButtonImageTintColor];
   }
 
   else
   {
-    v7 = [(PGButtonView *)self->_cancelButton enabledTintColor];
-    [(PGButtonView *)cancelButton setTintColor:v7];
+    enabledTintColor = [(PGButtonView *)self->_cancelButton enabledTintColor];
+    [(PGButtonView *)cancelButton setTintColor:enabledTintColor];
   }
 
   v8 = self->_cancelButton;
-  v9 = [v4 cancelButtonBackgroundTintColor];
-  [(PGMaterialView *)v8 setBackgroundColor:v9];
+  cancelButtonBackgroundTintColor = [values cancelButtonBackgroundTintColor];
+  [(PGMaterialView *)v8 setBackgroundColor:cancelButtonBackgroundTintColor];
 
   skipBackButton = self->_skipBackButton;
-  v11 = [v4 skipBackButtonImageTintColor];
-  if (v11)
+  skipBackButtonImageTintColor = [values skipBackButtonImageTintColor];
+  if (skipBackButtonImageTintColor)
   {
-    [(PGButtonView *)skipBackButton setTintColor:v11];
+    [(PGButtonView *)skipBackButton setTintColor:skipBackButtonImageTintColor];
   }
 
   else
   {
-    v12 = [(PGButtonView *)self->_actionButton enabledTintColor];
-    [(PGButtonView *)skipBackButton setTintColor:v12];
+    enabledTintColor2 = [(PGButtonView *)self->_actionButton enabledTintColor];
+    [(PGButtonView *)skipBackButton setTintColor:enabledTintColor2];
   }
 
   v13 = self->_skipBackButton;
-  v14 = [v4 skipBackButtonBackgroundTintColor];
-  [(PGMaterialView *)v13 setBackgroundColor:v14];
+  skipBackButtonBackgroundTintColor = [values skipBackButtonBackgroundTintColor];
+  [(PGMaterialView *)v13 setBackgroundColor:skipBackButtonBackgroundTintColor];
 
   skipForwardButton = self->_skipForwardButton;
-  v16 = [v4 skipForwardButtonImageTintColor];
-  if (v16)
+  skipForwardButtonImageTintColor = [values skipForwardButtonImageTintColor];
+  if (skipForwardButtonImageTintColor)
   {
-    [(PGButtonView *)skipForwardButton setTintColor:v16];
+    [(PGButtonView *)skipForwardButton setTintColor:skipForwardButtonImageTintColor];
   }
 
   else
   {
-    v17 = [(PGButtonView *)self->_actionButton enabledTintColor];
-    [(PGButtonView *)skipForwardButton setTintColor:v17];
+    enabledTintColor3 = [(PGButtonView *)self->_actionButton enabledTintColor];
+    [(PGButtonView *)skipForwardButton setTintColor:enabledTintColor3];
   }
 
   v18 = self->_skipForwardButton;
-  v19 = [v4 skipForwardButtonBackgroundTintColor];
-  [(PGMaterialView *)v18 setBackgroundColor:v19];
+  skipForwardButtonBackgroundTintColor = [values skipForwardButtonBackgroundTintColor];
+  [(PGMaterialView *)v18 setBackgroundColor:skipForwardButtonBackgroundTintColor];
 
   actionButton = self->_actionButton;
-  v21 = [v4 actionButtonImageTintColor];
-  if (v21)
+  actionButtonImageTintColor = [values actionButtonImageTintColor];
+  if (actionButtonImageTintColor)
   {
-    [(PGButtonView *)actionButton setTintColor:v21];
+    [(PGButtonView *)actionButton setTintColor:actionButtonImageTintColor];
   }
 
   else
   {
-    v22 = [(PGButtonView *)self->_actionButton enabledTintColor];
-    [(PGButtonView *)actionButton setTintColor:v22];
+    enabledTintColor4 = [(PGButtonView *)self->_actionButton enabledTintColor];
+    [(PGButtonView *)actionButton setTintColor:enabledTintColor4];
   }
 
   v23 = self->_actionButton;
-  v24 = [v4 actionButtonBackgroundTintColor];
-  [(PGMaterialView *)v23 setBackgroundColor:v24];
+  actionButtonBackgroundTintColor = [values actionButtonBackgroundTintColor];
+  [(PGMaterialView *)v23 setBackgroundColor:actionButtonBackgroundTintColor];
 
   v25 = self->_cancelButton;
-  v26 = [v4 cancelButtonSystemImageName];
-  [(PGButtonView *)v25 setSystemImageName:v26];
+  cancelButtonSystemImageName = [values cancelButtonSystemImageName];
+  [(PGButtonView *)v25 setSystemImageName:cancelButtonSystemImageName];
 
   restoreButton = self->_restoreButton;
-  v28 = [v4 restoreButtonSystemImageName];
-  [(PGButtonView *)restoreButton setSystemImageName:v28];
+  restoreButtonSystemImageName = [values restoreButtonSystemImageName];
+  [(PGButtonView *)restoreButton setSystemImageName:restoreButtonSystemImageName];
 
   v29 = self->_skipBackButton;
-  v30 = [v4 skipBackButtonSystemImageName];
-  [(PGButtonView *)v29 setSystemImageName:v30];
+  skipBackButtonSystemImageName = [values skipBackButtonSystemImageName];
+  [(PGButtonView *)v29 setSystemImageName:skipBackButtonSystemImageName];
 
   v31 = self->_actionButton;
-  v32 = [v4 actionButtonSystemImageName];
-  [(PGButtonView *)v31 setSystemImageName:v32];
+  actionButtonSystemImageName = [values actionButtonSystemImageName];
+  [(PGButtonView *)v31 setSystemImageName:actionButtonSystemImageName];
 
   v33 = self->_skipForwardButton;
-  v34 = [v4 skipForwardButtonSystemImageName];
-  [(PGButtonView *)v33 setSystemImageName:v34];
+  skipForwardButtonSystemImageName = [values skipForwardButtonSystemImageName];
+  [(PGButtonView *)v33 setSystemImageName:skipForwardButtonSystemImageName];
 
   v35 = self->_restoreButton;
-  v36 = [(PGButtonView *)v35 enabledTintColor];
-  [(PGButtonView *)v35 setTintColor:v36];
+  enabledTintColor5 = [(PGButtonView *)v35 enabledTintColor];
+  [(PGButtonView *)v35 setTintColor:enabledTintColor5];
 
   v37 = self->_cancelButton;
-  v38 = [v4 cancelButtonAccessibilityIdentifier];
-  [(PGButtonView *)v37 setAccessibilityIdentifier:v38];
+  cancelButtonAccessibilityIdentifier = [values cancelButtonAccessibilityIdentifier];
+  [(PGButtonView *)v37 setAccessibilityIdentifier:cancelButtonAccessibilityIdentifier];
 
   v39 = self->_restoreButton;
-  v40 = [v4 restoreButtonAccessibilityIdentifier];
-  [(PGButtonView *)v39 setAccessibilityIdentifier:v40];
+  restoreButtonAccessibilityIdentifier = [values restoreButtonAccessibilityIdentifier];
+  [(PGButtonView *)v39 setAccessibilityIdentifier:restoreButtonAccessibilityIdentifier];
 
   v41 = self->_skipBackButton;
-  v42 = [v4 skipBackButtonAccessibilityIdentifier];
-  [(PGButtonView *)v41 setAccessibilityIdentifier:v42];
+  skipBackButtonAccessibilityIdentifier = [values skipBackButtonAccessibilityIdentifier];
+  [(PGButtonView *)v41 setAccessibilityIdentifier:skipBackButtonAccessibilityIdentifier];
 
   v43 = self->_actionButton;
-  v44 = [v4 actionButtonAccessibilityIdentifier];
-  [(PGButtonView *)v43 setAccessibilityIdentifier:v44];
+  actionButtonAccessibilityIdentifier = [values actionButtonAccessibilityIdentifier];
+  [(PGButtonView *)v43 setAccessibilityIdentifier:actionButtonAccessibilityIdentifier];
 
   v45 = self->_skipForwardButton;
-  v46 = [v4 skipForwardButtonAccessibilityIdentifier];
-  [(PGButtonView *)v45 setAccessibilityIdentifier:v46];
+  skipForwardButtonAccessibilityIdentifier = [values skipForwardButtonAccessibilityIdentifier];
+  [(PGButtonView *)v45 setAccessibilityIdentifier:skipForwardButtonAccessibilityIdentifier];
 
   v47 = self->_cancelButton;
-  v48 = [v4 cancelButtonCustomImage];
-  [(PGButtonView *)v47 setImage:v48];
+  cancelButtonCustomImage = [values cancelButtonCustomImage];
+  [(PGButtonView *)v47 setImage:cancelButtonCustomImage];
 
-  -[PGMaterialView setBackdropHidden:](self->_cancelButton, "setBackdropHidden:", [v4 cancelButtonWantsBackground] ^ 1);
-  -[PGMaterialView setBackdropHidden:](self->_restoreButton, "setBackdropHidden:", [v4 restoreButtonWantsBackground] ^ 1);
-  -[PGMaterialView setBackdropHidden:](self->_skipBackButton, "setBackdropHidden:", [v4 actionButtonsWantBackground] ^ 1);
-  -[PGMaterialView setBackdropHidden:](self->_actionButton, "setBackdropHidden:", [v4 actionButtonsWantBackground] ^ 1);
-  -[PGMaterialView setBackdropHidden:](self->_skipForwardButton, "setBackdropHidden:", [v4 actionButtonsWantBackground] ^ 1);
-  if (([v4 controlsViewWantsGlassBackground] & 1) == 0)
+  -[PGMaterialView setBackdropHidden:](self->_cancelButton, "setBackdropHidden:", [values cancelButtonWantsBackground] ^ 1);
+  -[PGMaterialView setBackdropHidden:](self->_restoreButton, "setBackdropHidden:", [values restoreButtonWantsBackground] ^ 1);
+  -[PGMaterialView setBackdropHidden:](self->_skipBackButton, "setBackdropHidden:", [values actionButtonsWantBackground] ^ 1);
+  -[PGMaterialView setBackdropHidden:](self->_actionButton, "setBackdropHidden:", [values actionButtonsWantBackground] ^ 1);
+  -[PGMaterialView setBackdropHidden:](self->_skipForwardButton, "setBackdropHidden:", [values actionButtonsWantBackground] ^ 1);
+  if (([values controlsViewWantsGlassBackground] & 1) == 0)
   {
-    v49 = [v4 actionButtonsWantBackground];
-    if (v49)
+    actionButtonsWantBackground = [values actionButtonsWantBackground];
+    if (actionButtonsWantBackground)
     {
       v50 = 23.0;
     }
@@ -356,7 +356,7 @@
       v50 = 21.0;
     }
 
-    if (v49)
+    if (actionButtonsWantBackground)
     {
       v51 = 23.0;
     }
@@ -371,17 +371,17 @@
     [(PGButtonView *)self->_skipForwardButton setGlyphSize:v50];
   }
 
-  -[PGProgressIndicator setHidden:](self->_progressIndicator, "setHidden:", [v4 includesProgressBar] ^ 1);
+  -[PGProgressIndicator setHidden:](self->_progressIndicator, "setHidden:", [values includesProgressBar] ^ 1);
   [(PGControlsView *)self updateProgress];
   [(UIView *)self->_dimmingView setHidden:[(PGControlsView *)self _showsDimmingView]^ 1];
-  v52 = [v4 isPrerollActive];
-  v53 = v52 ^ [(PGPrerollIndicatorView *)self->_prerollIndicatorView isHidden];
+  isPrerollActive = [values isPrerollActive];
+  v53 = isPrerollActive ^ [(PGPrerollIndicatorView *)self->_prerollIndicatorView isHidden];
   if ((v53 & 1) == 0)
   {
-    [(PGPrerollIndicatorView *)self->_prerollIndicatorView setHidden:v52 ^ 1u];
+    [(PGPrerollIndicatorView *)self->_prerollIndicatorView setHidden:isPrerollActive ^ 1u];
     progressIndicator = self->_progressIndicator;
-    v55 = [v4 prerollTintColor];
-    [(PGProgressIndicator *)progressIndicator setCustomElapsedTrackTintColor:v55];
+    prerollTintColor = [values prerollTintColor];
+    [(PGProgressIndicator *)progressIndicator setCustomElapsedTrackTintColor:prerollTintColor];
   }
 
   v56 = v53 ^ 1;
@@ -418,71 +418,71 @@
     [(UIView *)self->_progressIndicator PG_setGlassBackgroundEnabled:1];
   }
 
-  v62 = [v80 cancelButtonWantsBackground];
-  v63 = v62 ^ [v4 cancelButtonWantsBackground] | v56;
-  v64 = [v80 restoreButtonWantsBackground];
-  v65 = v64 ^ [v4 restoreButtonWantsBackground];
-  v66 = [v80 actionButtonsWantBackground];
-  v67 = v66 ^ [v4 actionButtonsWantBackground];
-  v68 = [v80 includesLiveIndicatorBadge];
-  v69 = v68 ^ [v4 includesLiveIndicatorBadge];
-  v70 = [v80 includesContentLoadingIndicator];
-  v71 = v70 ^ [v4 includesContentLoadingIndicator] | v69 | v67 | v65 | v63;
-  v72 = [v80 cancelButtonCustomText];
-  v73 = [v4 cancelButtonCustomText];
-  if (v72 != v73)
+  cancelButtonWantsBackground = [valuesCopy cancelButtonWantsBackground];
+  v63 = cancelButtonWantsBackground ^ [values cancelButtonWantsBackground] | v56;
+  restoreButtonWantsBackground = [valuesCopy restoreButtonWantsBackground];
+  v65 = restoreButtonWantsBackground ^ [values restoreButtonWantsBackground];
+  actionButtonsWantBackground2 = [valuesCopy actionButtonsWantBackground];
+  v67 = actionButtonsWantBackground2 ^ [values actionButtonsWantBackground];
+  includesLiveIndicatorBadge = [valuesCopy includesLiveIndicatorBadge];
+  v69 = includesLiveIndicatorBadge ^ [values includesLiveIndicatorBadge];
+  includesContentLoadingIndicator = [valuesCopy includesContentLoadingIndicator];
+  v71 = includesContentLoadingIndicator ^ [values includesContentLoadingIndicator] | v69 | v67 | v65 | v63;
+  cancelButtonCustomText = [valuesCopy cancelButtonCustomText];
+  cancelButtonCustomText2 = [values cancelButtonCustomText];
+  if (cancelButtonCustomText != cancelButtonCustomText2)
   {
-    v74 = [v80 cancelButtonCustomText];
-    v75 = [v4 cancelButtonCustomText];
-    v76 = [v74 isEqualToString:v75] ^ 1;
+    cancelButtonCustomText3 = [valuesCopy cancelButtonCustomText];
+    cancelButtonCustomText4 = [values cancelButtonCustomText];
+    v76 = [cancelButtonCustomText3 isEqualToString:cancelButtonCustomText4] ^ 1;
 
     LOBYTE(v71) = v76 | v71;
   }
 
-  v77 = [v80 cancelButtonCustomImage];
-  v78 = [v4 cancelButtonCustomImage];
+  cancelButtonCustomImage2 = [valuesCopy cancelButtonCustomImage];
+  cancelButtonCustomImage3 = [values cancelButtonCustomImage];
 
-  if (v77 != v78 || (v71 & 1) != 0)
+  if (cancelButtonCustomImage2 != cancelButtonCustomImage3 || (v71 & 1) != 0)
   {
     [(PGControlsView *)self setNeedsLayout];
     [(PGControlsView *)self layoutIfNeeded];
   }
 
   [(PGPrerollIndicatorView *)self->_prerollIndicatorView updateValues];
-  v79 = [(PGControlsView *)self PG_backdropGroupLeader];
-  [v79 updateEffects];
+  pG_backdropGroupLeader = [(PGControlsView *)self PG_backdropGroupLeader];
+  [pG_backdropGroupLeader updateEffects];
 }
 
 - (void)updateProgress
 {
   progressIndicator = self->_progressIndicator;
-  v4 = [(PGControlsViewModel *)self->_viewModel playbackState];
-  [v4 normalizedProgress];
+  playbackState = [(PGControlsViewModel *)self->_viewModel playbackState];
+  [playbackState normalizedProgress];
   [(PGProgressIndicator *)progressIndicator setProgress:?];
 
   if ([(PGControlsView *)self prefersControlsHidden]|| ([(PGControlsView *)self window], v5 = objc_claimAutoreleasedReturnValue(), v5, !v5))
   {
     displayLinkForProgressUpdates = self->_displayLinkForProgressUpdates;
-    v11 = 0;
+    width = 0;
   }
 
   else
   {
-    v6 = [(PGControlsView *)self traitCollection];
-    [v6 displayScale];
+    traitCollection = [(PGControlsView *)self traitCollection];
+    [traitCollection displayScale];
     v8 = v7;
 
     [(PGProgressIndicator *)self->_progressIndicator frame];
     Width = CGRectGetWidth(v16);
     v10 = self->_displayLinkForProgressUpdates;
-    v11 = [(PGControlsViewModel *)self->_viewModel recommendedUpdateCadenceForProgressBarWithWidthInPixels:fmax(v8, 1.0) * Width];
+    width = [(PGControlsViewModel *)self->_viewModel recommendedUpdateCadenceForProgressBarWithWidthInPixels:fmax(v8, 1.0) * Width];
     displayLinkForProgressUpdates = v10;
   }
 
-  [(PGDisplayLink *)displayLinkForProgressUpdates setPreferredFramesPerSecond:v11];
+  [(PGDisplayLink *)displayLinkForProgressUpdates setPreferredFramesPerSecond:width];
   v13 = self->_progressIndicator;
-  v14 = [(PGControlsViewModel *)self->_viewModel values];
-  -[PGProgressIndicator setIncludesWaitingToPlayIndicator:](v13, "setIncludesWaitingToPlayIndicator:", [v14 includesWaitingToPlayIndicator]);
+  values = [(PGControlsViewModel *)self->_viewModel values];
+  -[PGProgressIndicator setIncludesWaitingToPlayIndicator:](v13, "setIncludesWaitingToPlayIndicator:", [values includesWaitingToPlayIndicator]);
 }
 
 - (void)updateControlsAlpha
@@ -570,83 +570,83 @@
     }
   }
 
-  v15 = [(PGControlsViewModel *)self->_viewModel values];
-  v16 = [v15 isPrerollActive];
+  values = [(PGControlsViewModel *)self->_viewModel values];
+  isPrerollActive = [values isPrerollActive];
 
-  if (v16)
+  if (isPrerollActive)
   {
     [(PGControlsView *)self setNeedsLayout];
     [(PGControlsView *)self layoutIfNeeded];
   }
 }
 
-- (void)setPrefersControlsHidden:(BOOL)a3
+- (void)setPrefersControlsHidden:(BOOL)hidden
 {
-  if (self->_prefersControlsHidden != a3)
+  if (self->_prefersControlsHidden != hidden)
   {
-    self->_prefersControlsHidden = a3;
+    self->_prefersControlsHidden = hidden;
     [(PGControlsView *)self updateProgress];
-    v5 = [(PGControlsView *)self PG_backdropGroupLeader];
-    [v5 updateEffects];
+    pG_backdropGroupLeader = [(PGControlsView *)self PG_backdropGroupLeader];
+    [pG_backdropGroupLeader updateEffects];
   }
 }
 
-- (BOOL)PG_preferredVisibilityForView:(id)a3
+- (BOOL)PG_preferredVisibilityForView:(id)view
 {
-  v4 = a3;
-  v5 = [(PGButtonView *)v4 isHidden];
+  viewCopy = view;
+  isHidden = [(PGButtonView *)viewCopy isHidden];
   if (![(PGControlsView *)self prefersControlsHidden])
   {
-    v8 = [(PGControlsViewModel *)self->_viewModel values];
-    v6 = v8;
-    if (self->_cancelButton == v4)
+    values = [(PGControlsViewModel *)self->_viewModel values];
+    values2 = values;
+    if (self->_cancelButton == viewCopy)
     {
-      v9 = [v8 includesCancelButton];
+      includesCancelButton = [values includesCancelButton];
     }
 
-    else if (self->_restoreButton == v4)
+    else if (self->_restoreButton == viewCopy)
     {
-      v9 = [v8 includesRestoreButton];
+      includesCancelButton = [values includesRestoreButton];
     }
 
-    else if (self->_skipBackButton == v4)
+    else if (self->_skipBackButton == viewCopy)
     {
-      v9 = [v8 includesSkipBackButton];
+      includesCancelButton = [values includesSkipBackButton];
     }
 
-    else if (self->_actionButton == v4)
+    else if (self->_actionButton == viewCopy)
     {
-      v9 = [v8 includesActionButton];
+      includesCancelButton = [values includesActionButton];
     }
 
     else
     {
-      if (self->_skipForwardButton != v4)
+      if (self->_skipForwardButton != viewCopy)
       {
         goto LABEL_16;
       }
 
-      v9 = [v8 includesSkipForwardButton];
+      includesCancelButton = [values includesSkipForwardButton];
     }
 
-    LOBYTE(v5) = v9;
+    LOBYTE(isHidden) = includesCancelButton;
     goto LABEL_16;
   }
 
-  if ([(PGButtonView *)v4 isDescendantOfView:self->_prerollIndicatorView])
+  if ([(PGButtonView *)viewCopy isDescendantOfView:self->_prerollIndicatorView])
   {
-    v6 = [(PGControlsViewModel *)self->_viewModel values];
-    v7 = [v6 prerollAttributes];
-    LOBYTE(v5) = v7 != 0;
+    values2 = [(PGControlsViewModel *)self->_viewModel values];
+    prerollAttributes = [values2 prerollAttributes];
+    LOBYTE(isHidden) = prerollAttributes != 0;
 
 LABEL_16:
     goto LABEL_17;
   }
 
-  v5 &= [(PGButtonView *)v4 isDescendantOfView:self]^ 1;
+  isHidden &= [(PGButtonView *)viewCopy isDescendantOfView:self]^ 1;
 LABEL_17:
 
-  return v5;
+  return isHidden;
 }
 
 - (void)layoutSubviews
@@ -717,14 +717,14 @@ LABEL_17:
     v23 = v22;
     +[PGControlsViewLayoutMetrics defaultPrerollIndicatorHeight];
     v25 = v24;
-    v26 = [(PGControlsViewModel *)self->_viewModel values];
-    v27 = [v26 includesLiveIndicatorBadge];
+    values = [(PGControlsViewModel *)self->_viewModel values];
+    includesLiveIndicatorBadge = [values includesLiveIndicatorBadge];
 
-    if (v27)
+    if (includesLiveIndicatorBadge)
     {
-      v28 = [(PGButtonView *)self->_liveIndicatorBadgeButton text];
+      text = [(PGButtonView *)self->_liveIndicatorBadgeButton text];
 
-      if (!v28)
+      if (!text)
       {
         liveIndicatorBadgeButton = self->_liveIndicatorBadgeButton;
         v30 = [MEMORY[0x1E69DB878] systemFontOfSize:13.0 weight:*MEMORY[0x1E69DB970]];
@@ -735,12 +735,12 @@ LABEL_17:
         [(PGButtonView *)v31 setText:v32];
       }
 
-      v33 = [(PGButtonView *)self->_liveIndicatorBadgeButton text];
+      text2 = [(PGButtonView *)self->_liveIndicatorBadgeButton text];
       v241 = *MEMORY[0x1E69DB648];
-      v34 = [(PGButtonView *)self->_liveIndicatorBadgeButton font];
-      v242 = v34;
+      font = [(PGButtonView *)self->_liveIndicatorBadgeButton font];
+      v242 = font;
       v35 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v242 forKeys:&v241 count:1];
-      [v33 sizeWithAttributes:v35];
+      [text2 sizeWithAttributes:v35];
     }
 
     +[PGControlsViewLayoutMetrics defaultPrerollLiveIndicatorPadding];
@@ -780,11 +780,11 @@ LABEL_17:
     }
 
     [(PGPrerollIndicatorView *)self->_prerollIndicatorView setFrame:MinX, v77, Width, v75];
-    v78 = [(PGControlsViewModel *)self->_viewModel values];
-    v79 = [v78 includesLiveIndicatorBadge];
+    values2 = [(PGControlsViewModel *)self->_viewModel values];
+    includesLiveIndicatorBadge2 = [values2 includesLiveIndicatorBadge];
 
     v228 = v15;
-    if (v79)
+    if (includesLiveIndicatorBadge2)
     {
       v80 = *MEMORY[0x1E695EFF8];
       v81 = *(MEMORY[0x1E695EFF8] + 8);
@@ -839,11 +839,11 @@ LABEL_17:
       [(PGButtonView *)self->_restoreButton setFrame:v97, v209, v98, v99];
     }
 
-    v100 = [(PGControlsViewModel *)self->_viewModel values];
-    v101 = [v100 includesLiveIndicatorBadge];
+    values3 = [(PGControlsViewModel *)self->_viewModel values];
+    includesLiveIndicatorBadge3 = [values3 includesLiveIndicatorBadge];
 
     v206 = v21;
-    if (v101)
+    if (includesLiveIndicatorBadge3)
     {
       [(PGProgressIndicator *)self->_progressIndicator frame];
       MidY = CGRectGetMaxY(v266) * 0.5;
@@ -920,10 +920,10 @@ LABEL_17:
       }
     }
 
-    v120 = [(PGControlsViewModel *)self->_viewModel values];
-    v121 = [v120 includesContentLoadingIndicator];
+    values4 = [(PGControlsViewModel *)self->_viewModel values];
+    includesContentLoadingIndicator = [values4 includesContentLoadingIndicator];
 
-    if (v121)
+    if (includesContentLoadingIndicator)
     {
       if (!self->_contentLoadingIndicator)
       {
@@ -940,8 +940,8 @@ LABEL_17:
         [(PGLayoutContainerView *)self->_hidableItemsLayoutContainerView insertSubview:self->_contentLoadingIndicatorContainerView atIndex:0];
         [(UIView *)self->_contentLoadingIndicatorContainerView addSubview:self->_contentLoadingIndicator];
         v187 = self->_contentLoadingIndicatorContainerView;
-        v188 = [MEMORY[0x1E69DC888] darkGrayColor];
-        [(UIView *)v187 setBackgroundColor:v188];
+        darkGrayColor = [MEMORY[0x1E69DC888] darkGrayColor];
+        [(UIView *)v187 setBackgroundColor:darkGrayColor];
 
         v189 = self->_contentLoadingIndicatorContainerView;
         [(UIView *)self->_dimmingView _continuousCornerRadius];
@@ -960,11 +960,11 @@ LABEL_17:
       [(UIActivityIndicatorView *)v192 setCenter:?];
     }
 
-    [(UIView *)self->_contentLoadingIndicatorContainerView setHidden:v121 ^ 1u];
-    if ((v121 ^ 1) == [(UIActivityIndicatorView *)self->_contentLoadingIndicator isAnimating])
+    [(UIView *)self->_contentLoadingIndicatorContainerView setHidden:includesContentLoadingIndicator ^ 1u];
+    if ((includesContentLoadingIndicator ^ 1) == [(UIActivityIndicatorView *)self->_contentLoadingIndicator isAnimating])
     {
       v193 = self->_contentLoadingIndicator;
-      if (v121)
+      if (includesContentLoadingIndicator)
       {
         [(UIActivityIndicatorView *)v193 startAnimating];
       }
@@ -1028,21 +1028,21 @@ LABEL_17:
     [(PGControlsView *)self bounds];
     v46 = 32.0;
     [(PGButtonView *)v45 setFrame:CGRectGetMaxX(v247) + -32.0 + -9.0, 9.0, 32.0, 25.0];
-    v47 = [(PGMaterialView *)self->_restoreButton isBackdropHidden];
+    isBackdropHidden = [(PGMaterialView *)self->_restoreButton isBackdropHidden];
     v48 = 15.0;
-    if (!v47)
+    if (!isBackdropHidden)
     {
       v48 = 13.0;
     }
 
     [(PGButtonView *)self->_restoreButton setGlyphSize:v48];
-    v49 = [(PGControlsViewModel *)self->_viewModel values];
-    v50 = [v49 cancelButtonCustomText];
+    values5 = [(PGControlsViewModel *)self->_viewModel values];
+    cancelButtonCustomText = [values5 cancelButtonCustomText];
 
-    v51 = [(PGControlsViewModel *)self->_viewModel values];
-    v52 = [v51 cancelButtonCustomText];
+    values6 = [(PGControlsViewModel *)self->_viewModel values];
+    cancelButtonCustomText2 = [values6 cancelButtonCustomText];
 
-    if (v50)
+    if (cancelButtonCustomText)
     {
       v53 = [MEMORY[0x1E69DB878] systemFontOfSize:13.0 weight:*MEMORY[0x1E69DB970]];
       v54 = v53;
@@ -1052,7 +1052,7 @@ LABEL_17:
         v239 = *MEMORY[0x1E69DB648];
         v240 = v53;
         v56 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v240 forKeys:&v239 count:1];
-        [v52 sizeWithAttributes:v56];
+        [cancelButtonCustomText2 sizeWithAttributes:v56];
         v58 = v57;
 
         _NF = v42 > 0.0 && v42 < 1.0;
@@ -1086,25 +1086,25 @@ LABEL_17:
       v55 = 6.0;
     }
 
-    v122 = [(PGMaterialView *)self->_cancelButton isBackdropHidden];
+    isBackdropHidden2 = [(PGMaterialView *)self->_cancelButton isBackdropHidden];
     v123 = 17.0;
-    if (!v122)
+    if (!isBackdropHidden2)
     {
       v123 = 13.0;
     }
 
-    if (v50)
+    if (cancelButtonCustomText)
     {
       v123 = 11.0;
     }
 
     [(PGButtonView *)self->_cancelButton setGlyphSize:v123];
-    [(PGButtonView *)self->_cancelButton setText:v52];
+    [(PGButtonView *)self->_cancelButton setText:cancelButtonCustomText2];
     [(PGButtonView *)self->_cancelButton setFont:v54];
     v124 = self->_cancelButton;
-    v125 = [(PGControlsViewModel *)self->_viewModel values];
-    v126 = [v125 cancelButtonCustomImage];
-    [(PGButtonView *)v124 setImage:v126];
+    values7 = [(PGControlsViewModel *)self->_viewModel values];
+    cancelButtonCustomImage = [values7 cancelButtonCustomImage];
+    [(PGButtonView *)v124 setImage:cancelButtonCustomImage];
 
     [(PGButtonView *)self->_cancelButton setFrame:9.0, 9.0, v46, 25.0];
     [(PGMaterialView *)self->_cancelButton _setContinuousCornerRadius:v55];
@@ -1133,14 +1133,14 @@ LABEL_17:
     [(PGControlsView *)self updateProgress];
     [(PGControlsView *)self _prerollIndicatorFrameWithScaling:v42];
     [(PGPrerollIndicatorView *)self->_prerollIndicatorView setFrame:?];
-    v138 = [(PGControlsViewModel *)self->_viewModel values];
-    v139 = [v138 includesLiveIndicatorBadge];
+    values8 = [(PGControlsViewModel *)self->_viewModel values];
+    includesLiveIndicatorBadge4 = [values8 includesLiveIndicatorBadge];
 
-    if (v139)
+    if (includesLiveIndicatorBadge4)
     {
-      v140 = [(PGButtonView *)self->_liveIndicatorBadgeButton text];
+      text3 = [(PGButtonView *)self->_liveIndicatorBadgeButton text];
 
-      if (!v140)
+      if (!text3)
       {
         v141 = self->_liveIndicatorBadgeButton;
         v142 = [MEMORY[0x1E69DB878] systemFontOfSize:13.0 weight:*MEMORY[0x1E69DB970]];
@@ -1151,12 +1151,12 @@ LABEL_17:
         [(PGButtonView *)v143 setText:v144];
       }
 
-      v145 = [(PGButtonView *)self->_liveIndicatorBadgeButton text];
+      text4 = [(PGButtonView *)self->_liveIndicatorBadgeButton text];
       v237 = *MEMORY[0x1E69DB648];
-      v146 = [(PGButtonView *)self->_liveIndicatorBadgeButton font];
-      v238 = v146;
+      font2 = [(PGButtonView *)self->_liveIndicatorBadgeButton font];
+      v238 = font2;
       v147 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v238 forKeys:&v237 count:1];
-      [v145 sizeWithAttributes:v147];
+      [text4 sizeWithAttributes:v147];
 
       v148 = *MEMORY[0x1E695EFF8];
       v149 = *(MEMORY[0x1E695EFF8] + 8);
@@ -1173,8 +1173,8 @@ LABEL_17:
       [(PGButtonView *)self->_liveIndicatorBadgeButton setFrameOrigin:v153, v154 - CGRectGetHeight(v281)];
     }
 
-    v155 = [(PGControlsViewModel *)self->_viewModel values];
-    if ([v155 actionButtonsWantBackground])
+    values9 = [(PGControlsViewModel *)self->_viewModel values];
+    if ([values9 actionButtonsWantBackground])
     {
       v156 = 52.0;
     }
@@ -1188,8 +1188,8 @@ LABEL_17:
     v157 = v156 + v223;
     [(PGButtonView *)self->_cancelButton glyphSize];
     [(PGButtonView *)self->_restoreButton glyphSize];
-    v158 = [(PGControlsViewModel *)self->_viewModel values];
-    if ([v158 includesLiveIndicatorBadge])
+    values10 = [(PGControlsViewModel *)self->_viewModel values];
+    if ([values10 includesLiveIndicatorBadge])
     {
       [(PGButtonView *)self->_liveIndicatorBadgeButton frame];
     }
@@ -1238,10 +1238,10 @@ LABEL_17:
       }
     }
 
-    v180 = [(PGControlsViewModel *)self->_viewModel values];
-    v181 = [v180 includesContentLoadingIndicator];
+    values11 = [(PGControlsViewModel *)self->_viewModel values];
+    includesContentLoadingIndicator2 = [values11 includesContentLoadingIndicator];
 
-    if (v181)
+    if (includesContentLoadingIndicator2)
     {
       if (!self->_contentLoadingIndicator)
       {
@@ -1258,8 +1258,8 @@ LABEL_17:
         [(PGLayoutContainerView *)self->_hidableItemsLayoutContainerView insertSubview:self->_contentLoadingIndicatorContainerView atIndex:0];
         [(UIView *)self->_contentLoadingIndicatorContainerView addSubview:self->_contentLoadingIndicator];
         v199 = self->_contentLoadingIndicatorContainerView;
-        v200 = [MEMORY[0x1E69DC888] darkGrayColor];
-        [(UIView *)v199 setBackgroundColor:v200];
+        darkGrayColor2 = [MEMORY[0x1E69DC888] darkGrayColor];
+        [(UIView *)v199 setBackgroundColor:darkGrayColor2];
 
         v201 = self->_contentLoadingIndicatorContainerView;
         [(UIView *)self->_dimmingView _continuousCornerRadius];
@@ -1278,11 +1278,11 @@ LABEL_17:
       [(UIActivityIndicatorView *)v204 setCenter:?];
     }
 
-    [(UIView *)self->_contentLoadingIndicatorContainerView setHidden:v181 ^ 1u];
-    if ((v181 ^ 1) == [(UIActivityIndicatorView *)self->_contentLoadingIndicator isAnimating])
+    [(UIView *)self->_contentLoadingIndicatorContainerView setHidden:includesContentLoadingIndicator2 ^ 1u];
+    if ((includesContentLoadingIndicator2 ^ 1) == [(UIActivityIndicatorView *)self->_contentLoadingIndicator isAnimating])
     {
       v205 = self->_contentLoadingIndicator;
-      if (v181)
+      if (includesContentLoadingIndicator2)
       {
         [(UIActivityIndicatorView *)v205 startAnimating];
       }
@@ -1304,16 +1304,16 @@ LABEL_17:
   [(PGControlsView *)self updateControlsAlpha];
   if ([(PGControlsView *)self _isInAWindow])
   {
-    v3 = [(PGControlsView *)self PG_backdropGroupLeader];
-    [v3 updateEffects];
+    pG_backdropGroupLeader = [(PGControlsView *)self PG_backdropGroupLeader];
+    [pG_backdropGroupLeader updateEffects];
   }
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
   v10.receiver = self;
   v10.super_class = PGControlsView;
-  v5 = [(PGLayoutContainerView *)&v10 hitTest:a4 withEvent:a3.x, a3.y];
+  v5 = [(PGLayoutContainerView *)&v10 hitTest:event withEvent:test.x, test.y];
   v6 = v5;
   if (v5 == self)
   {
@@ -1330,33 +1330,33 @@ LABEL_17:
   return v7;
 }
 
-- (void)buttonViewDidReceiveTouchUpInside:(id)a3
+- (void)buttonViewDidReceiveTouchUpInside:(id)inside
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_restoreButton == v4)
+  insideCopy = inside;
+  v5 = insideCopy;
+  if (self->_restoreButton == insideCopy)
   {
     [(PGControlsViewModel *)self->_viewModel handleRestoreButtonTapped];
   }
 
-  else if (self->_actionButton == v4)
+  else if (self->_actionButton == insideCopy)
   {
     [(PGControlsViewModel *)self->_viewModel handleActionButtonTapped];
   }
 
-  else if (self->_skipBackButton == v4)
+  else if (self->_skipBackButton == insideCopy)
   {
     [(PGControlsViewModel *)self->_viewModel handleSkipBackButtonTapped];
   }
 
-  else if (self->_skipForwardButton == v4)
+  else if (self->_skipForwardButton == insideCopy)
   {
     [(PGControlsViewModel *)self->_viewModel handleSkipForwardButtonTapped];
   }
 
   else
   {
-    if (self->_cancelButton != v4)
+    if (self->_cancelButton != insideCopy)
     {
       goto LABEL_12;
     }
@@ -1364,27 +1364,27 @@ LABEL_17:
     [(PGControlsViewModel *)self->_viewModel handleCancelButtonTapped];
   }
 
-  v4 = v5;
+  insideCopy = v5;
 LABEL_12:
 }
 
-- (CGRect)buttonView:(id)a3 imageRectForContentRect:(CGRect)a4 proposedRect:(CGRect)a5
+- (CGRect)buttonView:(id)view imageRectForContentRect:(CGRect)rect proposedRect:(CGRect)proposedRect
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v10 = a3;
-  if (self->_cancelButton == v10)
+  height = proposedRect.size.height;
+  width = proposedRect.size.width;
+  y = proposedRect.origin.y;
+  x = proposedRect.origin.x;
+  viewCopy = view;
+  if (self->_cancelButton == viewCopy)
   {
-    v11 = [(PGControlsViewModel *)self->_viewModel values];
-    v12 = [v11 cancelButtonCustomImage];
+    values = [(PGControlsViewModel *)self->_viewModel values];
+    cancelButtonCustomImage = [values cancelButtonCustomImage];
 
-    if (v12)
+    if (cancelButtonCustomImage)
     {
-      [(PGButtonView *)v10 bounds];
+      [(PGButtonView *)viewCopy bounds];
       width = CGRectGetHeight(v17) + -4.0;
-      [(PGButtonView *)v10 bounds];
+      [(PGButtonView *)viewCopy bounds];
       height = CGRectGetHeight(v18) + -4.0;
       y = 2.0;
       x = 2.0;
@@ -1402,21 +1402,21 @@ LABEL_12:
   return result;
 }
 
-- (CGRect)buttonView:(id)a3 titleRectForContentRect:(CGRect)a4 proposedRect:(CGRect)a5
+- (CGRect)buttonView:(id)view titleRectForContentRect:(CGRect)rect proposedRect:(CGRect)proposedRect
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v10 = a3;
-  if (self->_cancelButton == v10)
+  height = proposedRect.size.height;
+  width = proposedRect.size.width;
+  y = proposedRect.origin.y;
+  x = proposedRect.origin.x;
+  viewCopy = view;
+  if (self->_cancelButton == viewCopy)
   {
-    v11 = [(PGControlsViewModel *)self->_viewModel values];
-    v12 = [v11 cancelButtonCustomText];
+    values = [(PGControlsViewModel *)self->_viewModel values];
+    cancelButtonCustomText = [values cancelButtonCustomText];
 
-    if (v12)
+    if (cancelButtonCustomText)
     {
-      [(PGButtonView *)v10 bounds];
+      [(PGButtonView *)viewCopy bounds];
       x = CGRectGetMaxX(v17) - width + -6.0;
     }
   }
@@ -1432,16 +1432,16 @@ LABEL_12:
   return result;
 }
 
-- (UIEdgeInsets)buttonView:(id)a3 contentEdgeInsetsForProposedInsets:(UIEdgeInsets)a4
+- (UIEdgeInsets)buttonView:(id)view contentEdgeInsetsForProposedInsets:(UIEdgeInsets)insets
 {
-  right = a4.right;
-  bottom = a4.bottom;
-  left = a4.left;
-  top = a4.top;
-  v8 = [(PGControlsViewModel *)self->_viewModel values];
-  v9 = [v8 cancelButtonCustomImage];
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  values = [(PGControlsViewModel *)self->_viewModel values];
+  cancelButtonCustomImage = [values cancelButtonCustomImage];
 
-  if (v9)
+  if (cancelButtonCustomImage)
   {
     v10 = 2.0;
   }
@@ -1461,18 +1461,18 @@ LABEL_12:
   return result;
 }
 
-- (CGRect)_prerollIndicatorFrameWithScaling:(double)a3
+- (CGRect)_prerollIndicatorFrameWithScaling:(double)scaling
 {
   rect = *(MEMORY[0x1E695F058] + 8);
-  [(PGControlsView *)self _progressIndicatorFrameWithScaling:a3];
+  [(PGControlsView *)self _progressIndicatorFrameWithScaling:scaling];
   x = v21.origin.x;
   y = v21.origin.y;
   width = v21.size.width;
   height = v21.size.height;
   v9 = CGRectGetWidth(v21);
   +[PGPrerollIndicatorView preferredHeight];
-  v19 = a3;
-  v11 = v10 * a3;
+  scalingCopy = scaling;
+  v11 = v10 * scaling;
   v22.origin.x = x;
   v22.origin.y = y;
   v22.size.width = width;
@@ -1494,7 +1494,7 @@ LABEL_12:
     v25.origin.y = y;
     v25.size.width = width;
     v25.size.height = height;
-    v14 = v14 - (CGRectGetHeight(v25) + (v19 * 0.5 + 0.5) * 6.0);
+    v14 = v14 - (CGRectGetHeight(v25) + (scalingCopy * 0.5 + 0.5) * 6.0);
   }
 
   v15 = MinX;
@@ -1508,11 +1508,11 @@ LABEL_12:
   return result;
 }
 
-- (CGRect)_progressIndicatorFrameWithScaling:(double)a3
+- (CGRect)_progressIndicatorFrameWithScaling:(double)scaling
 {
   [(PGControlsView *)self bounds];
-  v4 = [(PGControlsView *)self traitCollection];
-  [v4 displayScale];
+  traitCollection = [(PGControlsView *)self traitCollection];
+  [traitCollection displayScale];
 
   [(PGControlsView *)self bounds];
   CGRectGetMaxY(v15);
@@ -1542,28 +1542,28 @@ LABEL_12:
 
     else
     {
-      v6 = [(PGControlsViewModel *)self->_viewModel values];
-      v7 = [v6 includesDimmingView];
+      values = [(PGControlsViewModel *)self->_viewModel values];
+      includesDimmingView = [values includesDimmingView];
 
-      return v7;
+      return includesDimmingView;
     }
   }
 
   else
   {
-    v4 = [(PGControlsViewModel *)self->_viewModel values];
-    if ([v4 actionButtonsWantBackground])
+    values2 = [(PGControlsViewModel *)self->_viewModel values];
+    if ([values2 actionButtonsWantBackground])
     {
-      v5 = 0;
+      includesActionButton = 0;
     }
 
     else
     {
-      v8 = [(PGControlsViewModel *)self->_viewModel values];
-      v5 = [v8 includesActionButton];
+      values3 = [(PGControlsViewModel *)self->_viewModel values];
+      includesActionButton = [values3 includesActionButton];
     }
 
-    return ![(PGControlsView *)self prefersControlsHidden]& v5;
+    return ![(PGControlsView *)self prefersControlsHidden]& includesActionButton;
   }
 }
 

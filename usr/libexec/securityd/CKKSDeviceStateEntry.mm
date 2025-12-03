@@ -1,25 +1,25 @@
 @interface CKKSDeviceStateEntry
-+ (BOOL)intransactionRecordChanged:(id)a3 contextID:(id)a4 resync:(BOOL)a5 error:(id *)a6;
-+ (BOOL)intransactionRecordDeleted:(id)a3 contextID:(id)a4 resync:(BOOL)a5 error:(id *)a6;
-+ (id)allInZone:(id)a3 error:(id *)a4;
-+ (id)fromDatabase:(id)a3 contextID:(id)a4 zoneID:(id)a5 error:(id *)a6;
-+ (id)fromDatabaseRow:(id)a3;
-+ (id)intransactionCreateDeviceStateForView:(id)a3 accountTracker:(id)a4 lockStateTracker:(id)a5 error:(id *)a6;
-+ (id)nameFromCKRecordID:(id)a3;
-+ (id)tryFromDatabase:(id)a3 contextID:(id)a4 zoneID:(id)a5 error:(id *)a6;
-+ (id)tryFromDatabaseFromCKRecordID:(id)a3 contextID:(id)a4 error:(id *)a5;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)matchesCKRecord:(id)a3;
++ (BOOL)intransactionRecordChanged:(id)changed contextID:(id)d resync:(BOOL)resync error:(id *)error;
++ (BOOL)intransactionRecordDeleted:(id)deleted contextID:(id)d resync:(BOOL)resync error:(id *)error;
++ (id)allInZone:(id)zone error:(id *)error;
++ (id)fromDatabase:(id)database contextID:(id)d zoneID:(id)iD error:(id *)error;
++ (id)fromDatabaseRow:(id)row;
++ (id)intransactionCreateDeviceStateForView:(id)view accountTracker:(id)tracker lockStateTracker:(id)stateTracker error:(id *)error;
++ (id)nameFromCKRecordID:(id)d;
++ (id)tryFromDatabase:(id)database contextID:(id)d zoneID:(id)iD error:(id *)error;
++ (id)tryFromDatabaseFromCKRecordID:(id)d contextID:(id)iD error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)matchesCKRecord:(id)record;
 - (id)CKRecordName;
-- (id)cktypeToOTCliqueStatusWrapper:(id)a3;
-- (id)cliqueStatusToCKType:(id)a3;
+- (id)cktypeToOTCliqueStatusWrapper:(id)wrapper;
+- (id)cliqueStatusToCKType:(id)type;
 - (id)description;
-- (id)initForDevice:(id)a3 contextID:(id)a4 osVersion:(id)a5 lastUnlockTime:(id)a6 octagonPeerID:(id)a7 octagonStatus:(id)a8 circlePeerID:(id)a9 circleStatus:(int)a10 keyState:(id)a11 currentTLKUUID:(id)a12 currentClassAUUID:(id)a13 currentClassCUUID:(id)a14 zoneID:(id)a15 encodedCKRecord:(id)a16;
+- (id)initForDevice:(id)device contextID:(id)d osVersion:(id)version lastUnlockTime:(id)time octagonPeerID:(id)iD octagonStatus:(id)status circlePeerID:(id)peerID circleStatus:(int)self0 keyState:(id)self1 currentTLKUUID:(id)self2 currentClassAUUID:(id)self3 currentClassCUUID:(id)self4 zoneID:(id)self5 encodedCKRecord:(id)self6;
 - (id)sqlValues;
-- (id)updateCKRecord:(id)a3 zoneID:(id)a4;
+- (id)updateCKRecord:(id)record zoneID:(id)d;
 - (id)whereClauseToFindSelf;
-- (int)cktypeToSOSCCStatus:(id)a3;
-- (void)setFromCKRecord:(id)a3;
+- (int)cktypeToSOSCCStatus:(id)status;
+- (void)setFromCKRecord:(id)record;
 @end
 
 @implementation CKKSDeviceStateEntry
@@ -28,18 +28,18 @@
 {
   v3 = objc_alloc_init(NSISO8601DateFormatter);
   v57[0] = @"contextID";
-  v55 = [(CKKSCKRecordHolder *)self contextID];
-  v58[0] = v55;
+  contextID = [(CKKSCKRecordHolder *)self contextID];
+  v58[0] = contextID;
   v57[1] = @"device";
-  v54 = [(CKKSDeviceStateEntry *)self device];
-  v58[1] = v54;
+  device = [(CKKSDeviceStateEntry *)self device];
+  v58[1] = device;
   v57[2] = @"ckzone";
-  v4 = [(CKKSCKRecordHolder *)self zoneID];
-  v5 = [v4 zoneName];
+  zoneID = [(CKKSCKRecordHolder *)self zoneID];
+  zoneName = [zoneID zoneName];
 
-  if (v5)
+  if (zoneName)
   {
-    v6 = v5;
+    v6 = zoneName;
   }
 
   else
@@ -51,11 +51,11 @@
 
   v58[2] = v7;
   v57[3] = @"osversion";
-  v8 = [(CKKSDeviceStateEntry *)self osVersion];
-  v9 = v8;
-  if (v8)
+  osVersion = [(CKKSDeviceStateEntry *)self osVersion];
+  v9 = osVersion;
+  if (osVersion)
   {
-    v10 = v8;
+    v10 = osVersion;
   }
 
   else
@@ -67,19 +67,19 @@
 
   v58[3] = v11;
   v57[4] = @"lastunlock";
-  v12 = [(CKKSDeviceStateEntry *)self lastUnlockTime];
-  if (!v12 || (v13 = v12, -[CKKSDeviceStateEntry lastUnlockTime](self, "lastUnlockTime"), v14 = objc_claimAutoreleasedReturnValue(), [v3 stringFromDate:v14], v15 = objc_claimAutoreleasedReturnValue(), v14, v13, !v15))
+  lastUnlockTime = [(CKKSDeviceStateEntry *)self lastUnlockTime];
+  if (!lastUnlockTime || (v13 = lastUnlockTime, -[CKKSDeviceStateEntry lastUnlockTime](self, "lastUnlockTime"), v14 = objc_claimAutoreleasedReturnValue(), [v3 stringFromDate:v14], v15 = objc_claimAutoreleasedReturnValue(), v14, v13, !v15))
   {
     v15 = +[NSNull null];
   }
 
   v58[4] = v15;
   v57[5] = @"peerid";
-  v16 = [(CKKSDeviceStateEntry *)self circlePeerID];
-  v17 = v16;
-  if (v16)
+  circlePeerID = [(CKKSDeviceStateEntry *)self circlePeerID];
+  v17 = circlePeerID;
+  if (circlePeerID)
   {
-    v18 = v16;
+    v18 = circlePeerID;
   }
 
   else
@@ -104,12 +104,12 @@
 
   v58[6] = v21;
   v57[7] = @"octagonpeerid";
-  v22 = [(CKKSDeviceStateEntry *)self octagonPeerID];
-  v23 = v22;
+  octagonPeerID = [(CKKSDeviceStateEntry *)self octagonPeerID];
+  v23 = octagonPeerID;
   v52 = v19;
-  if (v22)
+  if (octagonPeerID)
   {
-    v24 = v22;
+    v24 = octagonPeerID;
   }
 
   else
@@ -121,15 +121,15 @@
 
   v58[7] = v25;
   v57[8] = @"octagonstatus";
-  v26 = [(CKKSDeviceStateEntry *)self octagonStatus];
-  if (!v26)
+  octagonStatus = [(CKKSDeviceStateEntry *)self octagonStatus];
+  if (!octagonStatus)
   {
     goto LABEL_21;
   }
 
-  v27 = v26;
-  v28 = [(CKKSDeviceStateEntry *)self octagonStatus];
-  [v28 status];
+  v27 = octagonStatus;
+  octagonStatus2 = [(CKKSDeviceStateEntry *)self octagonStatus];
+  [octagonStatus2 status];
   v29 = OTCliqueStatusToString();
 
   if (!v29)
@@ -140,12 +140,12 @@ LABEL_21:
 
   v58[8] = v29;
   v57[9] = @"keystate";
-  v30 = [(CKKSDeviceStateEntry *)self keyState];
-  v31 = v30;
+  keyState = [(CKKSDeviceStateEntry *)self keyState];
+  v31 = keyState;
   v56 = v3;
-  if (v30)
+  if (keyState)
   {
-    v32 = v30;
+    v32 = keyState;
   }
 
   else
@@ -157,12 +157,12 @@ LABEL_21:
 
   v58[9] = v33;
   v57[10] = @"currentTLK";
-  v34 = [(CKKSDeviceStateEntry *)self currentTLKUUID];
-  v35 = v34;
+  currentTLKUUID = [(CKKSDeviceStateEntry *)self currentTLKUUID];
+  v35 = currentTLKUUID;
   v53 = v7;
-  if (v34)
+  if (currentTLKUUID)
   {
-    v36 = v34;
+    v36 = currentTLKUUID;
   }
 
   else
@@ -174,11 +174,11 @@ LABEL_21:
 
   v58[10] = v37;
   v57[11] = @"currentClassA";
-  v38 = [(CKKSDeviceStateEntry *)self currentClassAUUID];
-  v39 = v38;
-  if (v38)
+  currentClassAUUID = [(CKKSDeviceStateEntry *)self currentClassAUUID];
+  v39 = currentClassAUUID;
+  if (currentClassAUUID)
   {
-    v40 = v38;
+    v40 = currentClassAUUID;
   }
 
   else
@@ -190,11 +190,11 @@ LABEL_21:
 
   v58[11] = v41;
   v57[12] = @"currentClassC";
-  v42 = [(CKKSDeviceStateEntry *)self currentClassCUUID];
-  v43 = v42;
-  if (v42)
+  currentClassCUUID = [(CKKSDeviceStateEntry *)self currentClassCUUID];
+  v43 = currentClassCUUID;
+  if (currentClassCUUID)
   {
-    v44 = v42;
+    v44 = currentClassCUUID;
   }
 
   else
@@ -206,8 +206,8 @@ LABEL_21:
 
   v58[12] = v45;
   v57[13] = @"ckrecord";
-  v46 = [(CKKSCKRecordHolder *)self encodedCKRecord];
-  v47 = [v46 base64EncodedStringWithOptions:0];
+  encodedCKRecord = [(CKKSCKRecordHolder *)self encodedCKRecord];
+  v47 = [encodedCKRecord base64EncodedStringWithOptions:0];
 
   if (v47)
   {
@@ -230,109 +230,109 @@ LABEL_21:
 - (id)whereClauseToFindSelf
 {
   v9[0] = @"contextID";
-  v3 = [(CKKSCKRecordHolder *)self contextID];
-  v10[0] = v3;
+  contextID = [(CKKSCKRecordHolder *)self contextID];
+  v10[0] = contextID;
   v9[1] = @"device";
-  v4 = [(CKKSDeviceStateEntry *)self device];
-  v10[1] = v4;
+  device = [(CKKSDeviceStateEntry *)self device];
+  v10[1] = device;
   v9[2] = @"ckzone";
-  v5 = [(CKKSCKRecordHolder *)self zoneID];
-  v6 = [v5 zoneName];
-  v10[2] = v6;
+  zoneID = [(CKKSCKRecordHolder *)self zoneID];
+  zoneName = [zoneID zoneName];
+  v10[2] = zoneName;
   v7 = [NSDictionary dictionaryWithObjects:v10 forKeys:v9 count:3];
 
   return v7;
 }
 
-- (void)setFromCKRecord:(id)a3
+- (void)setFromCKRecord:(id)record
 {
-  v30 = a3;
-  v4 = [v30 recordType];
-  v5 = [v4 isEqualToString:@"devicestate"];
+  recordCopy = record;
+  recordType = [recordCopy recordType];
+  v5 = [recordType isEqualToString:@"devicestate"];
 
   if ((v5 & 1) == 0)
   {
-    v26 = [v30 recordType];
-    v27 = [NSString stringWithFormat:@"CKRecordType (%@) was not %@", v26, @"devicestate"];
+    recordType2 = [recordCopy recordType];
+    v27 = [NSString stringWithFormat:@"CKRecordType (%@) was not %@", recordType2, @"devicestate"];
     v28 = [NSException exceptionWithName:@"WrongCKRecordTypeException" reason:v27 userInfo:0];
     v29 = v28;
 
     objc_exception_throw(v28);
   }
 
-  [(CKKSCKRecordHolder *)self setStoredCKRecord:v30];
-  v6 = [v30 objectForKeyedSubscript:@"osver"];
+  [(CKKSCKRecordHolder *)self setStoredCKRecord:recordCopy];
+  v6 = [recordCopy objectForKeyedSubscript:@"osver"];
   [(CKKSDeviceStateEntry *)self setOsVersion:v6];
 
-  v7 = [v30 objectForKeyedSubscript:@"lastunlock"];
+  v7 = [recordCopy objectForKeyedSubscript:@"lastunlock"];
   [(CKKSDeviceStateEntry *)self setLastUnlockTime:v7];
 
-  v8 = [v30 recordID];
-  v9 = [CKKSDeviceStateEntry nameFromCKRecordID:v8];
+  recordID = [recordCopy recordID];
+  v9 = [CKKSDeviceStateEntry nameFromCKRecordID:recordID];
   [(CKKSDeviceStateEntry *)self setDevice:v9];
 
-  v10 = [v30 objectForKeyedSubscript:@"octagonpeerid"];
+  v10 = [recordCopy objectForKeyedSubscript:@"octagonpeerid"];
   [(CKKSDeviceStateEntry *)self setOctagonPeerID:v10];
 
-  v11 = [v30 objectForKeyedSubscript:@"octagonstatus"];
+  v11 = [recordCopy objectForKeyedSubscript:@"octagonstatus"];
   v12 = [(CKKSDeviceStateEntry *)self cktypeToOTCliqueStatusWrapper:v11];
   [(CKKSDeviceStateEntry *)self setOctagonStatus:v12];
 
-  v13 = [v30 objectForKeyedSubscript:@"peerid"];
+  v13 = [recordCopy objectForKeyedSubscript:@"peerid"];
   [(CKKSDeviceStateEntry *)self setCirclePeerID:v13];
 
-  v14 = [v30 objectForKeyedSubscript:@"circle"];
+  v14 = [recordCopy objectForKeyedSubscript:@"circle"];
   [(CKKSDeviceStateEntry *)self setCircleStatus:[(CKKSDeviceStateEntry *)self cktypeToSOSCCStatus:v14]];
 
-  v15 = [v30 objectForKeyedSubscript:@"keystate"];
+  v15 = [recordCopy objectForKeyedSubscript:@"keystate"];
   v16 = sub_10011007C(v15);
   [(CKKSDeviceStateEntry *)self setKeyState:v16];
 
-  v17 = [v30 objectForKeyedSubscript:@"currentTLK"];
-  v18 = [v17 recordID];
-  v19 = [v18 recordName];
-  [(CKKSDeviceStateEntry *)self setCurrentTLKUUID:v19];
+  v17 = [recordCopy objectForKeyedSubscript:@"currentTLK"];
+  recordID2 = [v17 recordID];
+  recordName = [recordID2 recordName];
+  [(CKKSDeviceStateEntry *)self setCurrentTLKUUID:recordName];
 
-  v20 = [v30 objectForKeyedSubscript:@"currentClassA"];
-  v21 = [v20 recordID];
-  v22 = [v21 recordName];
-  [(CKKSDeviceStateEntry *)self setCurrentClassAUUID:v22];
+  v20 = [recordCopy objectForKeyedSubscript:@"currentClassA"];
+  recordID3 = [v20 recordID];
+  recordName2 = [recordID3 recordName];
+  [(CKKSDeviceStateEntry *)self setCurrentClassAUUID:recordName2];
 
-  v23 = [v30 objectForKeyedSubscript:@"currentClassC"];
-  v24 = [v23 recordID];
-  v25 = [v24 recordName];
-  [(CKKSDeviceStateEntry *)self setCurrentClassCUUID:v25];
+  v23 = [recordCopy objectForKeyedSubscript:@"currentClassC"];
+  recordID4 = [v23 recordID];
+  recordName3 = [recordID4 recordName];
+  [(CKKSDeviceStateEntry *)self setCurrentClassCUUID:recordName3];
 }
 
-- (BOOL)matchesCKRecord:(id)a3
+- (BOOL)matchesCKRecord:(id)record
 {
-  v4 = a3;
-  v5 = [v4 recordType];
-  v6 = [v5 isEqualToString:@"devicestate"];
+  recordCopy = record;
+  recordType = [recordCopy recordType];
+  v6 = [recordType isEqualToString:@"devicestate"];
 
   if (!v6)
   {
     goto LABEL_38;
   }
 
-  v7 = [v4 recordID];
-  v8 = [v7 recordName];
-  v9 = [(CKKSDeviceStateEntry *)self CKRecordName];
-  v10 = [v8 isEqualToString:v9];
+  recordID = [recordCopy recordID];
+  recordName = [recordID recordName];
+  cKRecordName = [(CKKSDeviceStateEntry *)self CKRecordName];
+  v10 = [recordName isEqualToString:cKRecordName];
 
   if (!v10)
   {
     goto LABEL_38;
   }
 
-  v11 = [(CKKSDeviceStateEntry *)self lastUnlockTime];
-  if (v11 || ([v4 objectForKeyedSubscript:@"lastunlock"], (v8 = objc_claimAutoreleasedReturnValue()) != 0))
+  lastUnlockTime = [(CKKSDeviceStateEntry *)self lastUnlockTime];
+  if (lastUnlockTime || ([recordCopy objectForKeyedSubscript:@"lastunlock"], (recordName = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v12 = [v4 objectForKeyedSubscript:@"lastunlock"];
-    v13 = [(CKKSDeviceStateEntry *)self lastUnlockTime];
-    v14 = [v12 isEqual:v13];
+    v12 = [recordCopy objectForKeyedSubscript:@"lastunlock"];
+    lastUnlockTime2 = [(CKKSDeviceStateEntry *)self lastUnlockTime];
+    v14 = [v12 isEqual:lastUnlockTime2];
 
-    if (v11)
+    if (lastUnlockTime)
     {
 
       if (!v14)
@@ -351,14 +351,14 @@ LABEL_21:
     }
   }
 
-  v15 = [(CKKSDeviceStateEntry *)self osVersion];
-  if (v15 || ([v4 objectForKeyedSubscript:@"osver"], (v8 = objc_claimAutoreleasedReturnValue()) != 0))
+  osVersion = [(CKKSDeviceStateEntry *)self osVersion];
+  if (osVersion || ([recordCopy objectForKeyedSubscript:@"osver"], (recordName = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v16 = [v4 objectForKeyedSubscript:@"osver"];
-    v17 = [(CKKSDeviceStateEntry *)self osVersion];
-    v18 = [v16 isEqualToString:v17];
+    v16 = [recordCopy objectForKeyedSubscript:@"osver"];
+    osVersion2 = [(CKKSDeviceStateEntry *)self osVersion];
+    v18 = [v16 isEqualToString:osVersion2];
 
-    if (v15)
+    if (osVersion)
     {
 
       if (!v18)
@@ -377,14 +377,14 @@ LABEL_21:
     }
   }
 
-  v19 = [(CKKSDeviceStateEntry *)self circlePeerID];
-  if (v19 || ([v4 objectForKeyedSubscript:@"peerid"], (v8 = objc_claimAutoreleasedReturnValue()) != 0))
+  circlePeerID = [(CKKSDeviceStateEntry *)self circlePeerID];
+  if (circlePeerID || ([recordCopy objectForKeyedSubscript:@"peerid"], (recordName = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v20 = [v4 objectForKeyedSubscript:@"peerid"];
-    v21 = [(CKKSDeviceStateEntry *)self circlePeerID];
-    v22 = [v20 isEqualToString:v21];
+    v20 = [recordCopy objectForKeyedSubscript:@"peerid"];
+    circlePeerID2 = [(CKKSDeviceStateEntry *)self circlePeerID];
+    v22 = [v20 isEqualToString:circlePeerID2];
 
-    if (v19)
+    if (circlePeerID)
     {
 
       if (!v22)
@@ -403,14 +403,14 @@ LABEL_21:
     }
   }
 
-  v23 = [(CKKSDeviceStateEntry *)self octagonPeerID];
-  if (v23 || ([v4 objectForKeyedSubscript:@"octagonpeerid"], (v8 = objc_claimAutoreleasedReturnValue()) != 0))
+  octagonPeerID = [(CKKSDeviceStateEntry *)self octagonPeerID];
+  if (octagonPeerID || ([recordCopy objectForKeyedSubscript:@"octagonpeerid"], (recordName = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v24 = [v4 objectForKeyedSubscript:@"octagonpeerid"];
-    v25 = [(CKKSDeviceStateEntry *)self octagonPeerID];
-    v26 = [v24 isEqualToString:v25];
+    v24 = [recordCopy objectForKeyedSubscript:@"octagonpeerid"];
+    octagonPeerID2 = [(CKKSDeviceStateEntry *)self octagonPeerID];
+    v26 = [v24 isEqualToString:octagonPeerID2];
 
-    if (v23)
+    if (octagonPeerID)
     {
 
       if (!v26)
@@ -429,22 +429,22 @@ LABEL_21:
     }
   }
 
-  v27 = [(CKKSDeviceStateEntry *)self octagonStatus];
-  if (!v27)
+  octagonStatus = [(CKKSDeviceStateEntry *)self octagonStatus];
+  if (!octagonStatus)
   {
-    v8 = [v4 objectForKeyedSubscript:@"octagonstatus"];
-    if (!v8)
+    recordName = [recordCopy objectForKeyedSubscript:@"octagonstatus"];
+    if (!recordName)
     {
       goto LABEL_33;
     }
   }
 
-  v28 = [(CKKSDeviceStateEntry *)self octagonStatus];
-  v29 = [v4 objectForKeyedSubscript:@"octagonstatus"];
+  octagonStatus2 = [(CKKSDeviceStateEntry *)self octagonStatus];
+  v29 = [recordCopy objectForKeyedSubscript:@"octagonstatus"];
   v30 = [(CKKSDeviceStateEntry *)self cktypeToOTCliqueStatusWrapper:v29];
-  v31 = [v28 isEqual:v30];
+  v31 = [octagonStatus2 isEqual:v30];
 
-  if (!v27)
+  if (!octagonStatus)
   {
 
     if ((v31 & 1) == 0)
@@ -463,85 +463,85 @@ LABEL_38:
   }
 
 LABEL_33:
-  v32 = [v4 objectForKeyedSubscript:@"circle"];
+  v32 = [recordCopy objectForKeyedSubscript:@"circle"];
   v33 = [(CKKSDeviceStateEntry *)self cktypeToSOSCCStatus:v32];
-  v34 = [(CKKSDeviceStateEntry *)self circleStatus];
+  circleStatus = [(CKKSDeviceStateEntry *)self circleStatus];
 
-  if (v33 != v34)
+  if (v33 != circleStatus)
   {
     goto LABEL_38;
   }
 
-  v35 = [v4 objectForKeyedSubscript:@"keystate"];
+  v35 = [recordCopy objectForKeyedSubscript:@"keystate"];
   v36 = sub_10011007C(v35);
-  v37 = [(CKKSDeviceStateEntry *)self keyState];
-  v38 = [v36 isEqualToString:v37];
+  keyState = [(CKKSDeviceStateEntry *)self keyState];
+  v38 = [v36 isEqualToString:keyState];
 
   if (!v38)
   {
     goto LABEL_38;
   }
 
-  v39 = [v4 objectForKeyedSubscript:@"currentTLK"];
-  v40 = [v39 recordID];
-  v41 = [v40 recordName];
-  v42 = [(CKKSDeviceStateEntry *)self currentTLKUUID];
-  v43 = [v41 isEqualToString:v42];
+  v39 = [recordCopy objectForKeyedSubscript:@"currentTLK"];
+  recordID2 = [v39 recordID];
+  recordName2 = [recordID2 recordName];
+  currentTLKUUID = [(CKKSDeviceStateEntry *)self currentTLKUUID];
+  v43 = [recordName2 isEqualToString:currentTLKUUID];
 
   if (!v43)
   {
     goto LABEL_38;
   }
 
-  v44 = [v4 objectForKeyedSubscript:@"currentClassA"];
-  v45 = [v44 recordID];
-  v46 = [v45 recordName];
-  v47 = [(CKKSDeviceStateEntry *)self currentTLKUUID];
-  v48 = [v46 isEqualToString:v47];
+  v44 = [recordCopy objectForKeyedSubscript:@"currentClassA"];
+  recordID3 = [v44 recordID];
+  recordName3 = [recordID3 recordName];
+  currentTLKUUID2 = [(CKKSDeviceStateEntry *)self currentTLKUUID];
+  v48 = [recordName3 isEqualToString:currentTLKUUID2];
 
   if (!v48)
   {
     goto LABEL_38;
   }
 
-  v49 = [v4 objectForKeyedSubscript:@"currentClassC"];
-  v50 = [v49 recordID];
-  v51 = [v50 recordName];
-  v52 = [(CKKSDeviceStateEntry *)self currentTLKUUID];
-  v53 = [v51 isEqualToString:v52];
+  v49 = [recordCopy objectForKeyedSubscript:@"currentClassC"];
+  recordID4 = [v49 recordID];
+  recordName4 = [recordID4 recordName];
+  currentTLKUUID3 = [(CKKSDeviceStateEntry *)self currentTLKUUID];
+  v53 = [recordName4 isEqualToString:currentTLKUUID3];
 
 LABEL_39:
   return v53;
 }
 
-- (id)updateCKRecord:(id)a3 zoneID:(id)a4
+- (id)updateCKRecord:(id)record zoneID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 recordID];
-  v9 = [v8 recordName];
-  v10 = [(CKKSDeviceStateEntry *)self CKRecordName];
-  v11 = [v9 isEqualToString:v10];
+  recordCopy = record;
+  dCopy = d;
+  recordID = [recordCopy recordID];
+  recordName = [recordID recordName];
+  cKRecordName = [(CKKSDeviceStateEntry *)self CKRecordName];
+  v11 = [recordName isEqualToString:cKRecordName];
 
   if ((v11 & 1) == 0)
   {
-    v50 = [v6 recordID];
-    v51 = [v50 recordName];
-    v52 = [(CKKSDeviceStateEntry *)self CKRecordName];
-    v53 = [NSString stringWithFormat:@"CKRecord name (%@) was not %@", v51, v52];
+    recordID2 = [recordCopy recordID];
+    recordName2 = [recordID2 recordName];
+    cKRecordName2 = [(CKKSDeviceStateEntry *)self CKRecordName];
+    v53 = [NSString stringWithFormat:@"CKRecord name (%@) was not %@", recordName2, cKRecordName2];
     v54 = [NSException exceptionWithName:@"WrongCKRecordNameException" reason:v53 userInfo:0];
     v55 = v54;
 
     goto LABEL_23;
   }
 
-  v12 = [v6 recordType];
-  v13 = [v12 isEqualToString:@"devicestate"];
+  recordType = [recordCopy recordType];
+  v13 = [recordType isEqualToString:@"devicestate"];
 
   if ((v13 & 1) == 0)
   {
-    v50 = [v6 recordType];
-    v56 = [NSString stringWithFormat:@"CKRecordType (%@) was not %@", v50, @"devicestate"];
+    recordID2 = [recordCopy recordType];
+    v56 = [NSString stringWithFormat:@"CKRecordType (%@) was not %@", recordID2, @"devicestate"];
     v54 = [NSException exceptionWithName:@"WrongCKRecordTypeException" reason:v56 userInfo:0];
     v57 = v54;
 
@@ -549,32 +549,32 @@ LABEL_23:
     objc_exception_throw(v54);
   }
 
-  v14 = [(CKKSDeviceStateEntry *)self osVersion];
-  [v6 setObject:v14 forKeyedSubscript:@"osver"];
+  osVersion = [(CKKSDeviceStateEntry *)self osVersion];
+  [recordCopy setObject:osVersion forKeyedSubscript:@"osver"];
 
-  v15 = [(CKKSDeviceStateEntry *)self lastUnlockTime];
-  [v6 setObject:v15 forKeyedSubscript:@"lastunlock"];
+  lastUnlockTime = [(CKKSDeviceStateEntry *)self lastUnlockTime];
+  [recordCopy setObject:lastUnlockTime forKeyedSubscript:@"lastunlock"];
 
-  v16 = [(CKKSDeviceStateEntry *)self octagonPeerID];
-  [v6 setObject:v16 forKeyedSubscript:@"octagonpeerid"];
+  octagonPeerID = [(CKKSDeviceStateEntry *)self octagonPeerID];
+  [recordCopy setObject:octagonPeerID forKeyedSubscript:@"octagonpeerid"];
 
-  v17 = [(CKKSDeviceStateEntry *)self octagonStatus];
-  v18 = [(CKKSDeviceStateEntry *)self cliqueStatusToCKType:v17];
-  [v6 setObject:v18 forKeyedSubscript:@"octagonstatus"];
+  octagonStatus = [(CKKSDeviceStateEntry *)self octagonStatus];
+  v18 = [(CKKSDeviceStateEntry *)self cliqueStatusToCKType:octagonStatus];
+  [recordCopy setObject:v18 forKeyedSubscript:@"octagonstatus"];
 
   v19 = [(CKKSDeviceStateEntry *)self sosCCStatusToCKType:[(CKKSDeviceStateEntry *)self circleStatus]];
-  [v6 setObject:v19 forKeyedSubscript:@"circle"];
+  [recordCopy setObject:v19 forKeyedSubscript:@"circle"];
 
-  v20 = [(CKKSDeviceStateEntry *)self keyState];
+  keyState = [(CKKSDeviceStateEntry *)self keyState];
   v21 = sub_10010FC60();
   v22 = v21;
-  if (!v20)
+  if (!keyState)
   {
     v24 = [v21 objectForKeyedSubscript:@"error"];
     goto LABEL_7;
   }
 
-  v23 = [v21 objectForKeyedSubscript:v20];
+  v23 = [v21 objectForKeyedSubscript:keyState];
 
   if (v23)
   {
@@ -591,83 +591,83 @@ LABEL_7:
   v22 = 0;
 LABEL_9:
 
-  [v6 setObject:v25 forKeyedSubscript:@"keystate"];
-  v27 = [(CKKSDeviceStateEntry *)self circlePeerID];
-  [v6 setObject:v27 forKeyedSubscript:@"peerid"];
+  [recordCopy setObject:v25 forKeyedSubscript:@"keystate"];
+  circlePeerID = [(CKKSDeviceStateEntry *)self circlePeerID];
+  [recordCopy setObject:circlePeerID forKeyedSubscript:@"peerid"];
 
-  v28 = [(CKKSDeviceStateEntry *)self currentTLKUUID];
-  if (v28)
+  currentTLKUUID = [(CKKSDeviceStateEntry *)self currentTLKUUID];
+  if (currentTLKUUID)
   {
     v29 = [CKReference alloc];
     v30 = [CKRecordID alloc];
-    v31 = [(CKKSDeviceStateEntry *)self currentTLKUUID];
-    v32 = [(CKKSCKRecordHolder *)self zoneID];
-    v33 = [v30 initWithRecordName:v31 zoneID:v32];
+    currentTLKUUID2 = [(CKKSDeviceStateEntry *)self currentTLKUUID];
+    zoneID = [(CKKSCKRecordHolder *)self zoneID];
+    v33 = [v30 initWithRecordName:currentTLKUUID2 zoneID:zoneID];
     v34 = [v29 initWithRecordID:v33 action:0];
-    [v6 setObject:v34 forKeyedSubscript:@"currentTLK"];
+    [recordCopy setObject:v34 forKeyedSubscript:@"currentTLK"];
   }
 
   else
   {
-    [v6 setObject:0 forKeyedSubscript:@"currentTLK"];
+    [recordCopy setObject:0 forKeyedSubscript:@"currentTLK"];
   }
 
-  v35 = [(CKKSDeviceStateEntry *)self currentClassAUUID];
-  if (v35)
+  currentClassAUUID = [(CKKSDeviceStateEntry *)self currentClassAUUID];
+  if (currentClassAUUID)
   {
     v36 = [CKReference alloc];
     v37 = [CKRecordID alloc];
-    v38 = [(CKKSDeviceStateEntry *)self currentClassAUUID];
-    v39 = [(CKKSCKRecordHolder *)self zoneID];
-    v40 = [v37 initWithRecordName:v38 zoneID:v39];
+    currentClassAUUID2 = [(CKKSDeviceStateEntry *)self currentClassAUUID];
+    zoneID2 = [(CKKSCKRecordHolder *)self zoneID];
+    v40 = [v37 initWithRecordName:currentClassAUUID2 zoneID:zoneID2];
     v41 = [v36 initWithRecordID:v40 action:0];
-    [v6 setObject:v41 forKeyedSubscript:@"currentClassA"];
+    [recordCopy setObject:v41 forKeyedSubscript:@"currentClassA"];
   }
 
   else
   {
-    [v6 setObject:0 forKeyedSubscript:@"currentClassA"];
+    [recordCopy setObject:0 forKeyedSubscript:@"currentClassA"];
   }
 
-  v42 = [(CKKSDeviceStateEntry *)self currentClassCUUID];
-  if (v42)
+  currentClassCUUID = [(CKKSDeviceStateEntry *)self currentClassCUUID];
+  if (currentClassCUUID)
   {
     v43 = [CKReference alloc];
     v44 = [CKRecordID alloc];
-    v45 = [(CKKSDeviceStateEntry *)self currentClassCUUID];
-    v46 = [(CKKSCKRecordHolder *)self zoneID];
-    v47 = [v44 initWithRecordName:v45 zoneID:v46];
+    currentClassCUUID2 = [(CKKSDeviceStateEntry *)self currentClassCUUID];
+    zoneID3 = [(CKKSCKRecordHolder *)self zoneID];
+    v47 = [v44 initWithRecordName:currentClassCUUID2 zoneID:zoneID3];
     v48 = [v43 initWithRecordID:v47 action:0];
-    [v6 setObject:v48 forKeyedSubscript:@"currentClassC"];
+    [recordCopy setObject:v48 forKeyedSubscript:@"currentClassC"];
   }
 
   else
   {
-    [v6 setObject:0 forKeyedSubscript:@"currentClassC"];
+    [recordCopy setObject:0 forKeyedSubscript:@"currentClassC"];
   }
 
-  return v6;
+  return recordCopy;
 }
 
 - (id)CKRecordName
 {
-  v2 = [(CKKSDeviceStateEntry *)self device];
-  v3 = [NSString stringWithFormat:@"ckid-%@", v2];
+  device = [(CKKSDeviceStateEntry *)self device];
+  v3 = [NSString stringWithFormat:@"ckid-%@", device];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(CKKSCKRecordHolder *)self zoneID];
-    v107 = [v5 zoneID];
-    v108 = v6;
-    v106 = [v6 isEqual:v107];
+    v5 = equalCopy;
+    zoneID = [(CKKSCKRecordHolder *)self zoneID];
+    zoneID2 = [v5 zoneID];
+    v108 = zoneID;
+    v106 = [zoneID isEqual:zoneID2];
     if (!v106)
     {
       v105 = 0;
@@ -689,15 +689,15 @@ LABEL_9:
       goto LABEL_9;
     }
 
-    v99 = [(CKKSDeviceStateEntry *)self device];
-    HIDWORD(v105) = v99 == 0;
-    if (v99 || ([v5 device], (v93 = objc_claimAutoreleasedReturnValue()) != 0))
+    device = [(CKKSDeviceStateEntry *)self device];
+    HIDWORD(v105) = device == 0;
+    if (device || ([v5 device], (v93 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v8 = [(CKKSDeviceStateEntry *)self device];
-      v95 = [v5 device];
-      v96 = v8;
+      device2 = [(CKKSDeviceStateEntry *)self device];
+      device3 = [v5 device];
+      v96 = device2;
       v9 = 1;
-      if (![v8 isEqual:?])
+      if (![device2 isEqual:?])
       {
         LODWORD(v105) = 1;
         memset(v104, 0, sizeof(v104));
@@ -725,15 +725,15 @@ LABEL_9:
       v9 = 0;
     }
 
-    v94 = [(CKKSCKRecordHolder *)self contextID];
-    HIDWORD(v104[5]) = v94 == 0;
+    contextID = [(CKKSCKRecordHolder *)self contextID];
+    HIDWORD(v104[5]) = contextID == 0;
     LODWORD(v105) = v9;
-    if (v94 || ([v5 contextID], (v89 = objc_claimAutoreleasedReturnValue()) != 0))
+    if (contextID || ([v5 contextID], (v89 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v32 = [(CKKSCKRecordHolder *)self contextID];
+      contextID2 = [(CKKSCKRecordHolder *)self contextID];
       [v5 contextID];
-      v91 = v92 = v32;
-      if (![v32 isEqual:?])
+      v91 = v92 = contextID2;
+      if (![contextID2 isEqual:?])
       {
         LODWORD(v104[0]) = 1;
         memset(v100, 0, sizeof(v100));
@@ -764,15 +764,15 @@ LABEL_9:
       HIDWORD(v104[4]) = 0;
     }
 
-    v33 = [(CKKSDeviceStateEntry *)self osVersion];
-    LODWORD(v104[5]) = v33 == 0;
-    v90 = v33;
-    if (v33 || ([v5 osVersion], (v85 = objc_claimAutoreleasedReturnValue()) != 0))
+    osVersion = [(CKKSDeviceStateEntry *)self osVersion];
+    LODWORD(v104[5]) = osVersion == 0;
+    v90 = osVersion;
+    if (osVersion || ([v5 osVersion], (v85 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v34 = [(CKKSDeviceStateEntry *)self osVersion];
-      v87 = [v5 osVersion];
-      v88 = v34;
-      if (![v34 isEqual:?])
+      osVersion2 = [(CKKSDeviceStateEntry *)self osVersion];
+      osVersion3 = [v5 osVersion];
+      v88 = osVersion2;
+      if (![osVersion2 isEqual:?])
       {
         LODWORD(v104[0]) = 1;
         *v100 = 0;
@@ -804,15 +804,15 @@ LABEL_9:
       HIDWORD(v104[3]) = 0;
     }
 
-    v35 = [(CKKSDeviceStateEntry *)self lastUnlockTime];
-    LODWORD(v104[4]) = v35 == 0;
-    v86 = v35;
-    if (v35 || ([v5 lastUnlockTime], (v81 = objc_claimAutoreleasedReturnValue()) != 0))
+    lastUnlockTime = [(CKKSDeviceStateEntry *)self lastUnlockTime];
+    LODWORD(v104[4]) = lastUnlockTime == 0;
+    v86 = lastUnlockTime;
+    if (lastUnlockTime || ([v5 lastUnlockTime], (v81 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v36 = [(CKKSDeviceStateEntry *)self lastUnlockTime];
-      v83 = [v5 lastUnlockTime];
-      v84 = v36;
-      if (![v36 isEqual:?])
+      lastUnlockTime2 = [(CKKSDeviceStateEntry *)self lastUnlockTime];
+      lastUnlockTime3 = [v5 lastUnlockTime];
+      v84 = lastUnlockTime2;
+      if (![lastUnlockTime2 isEqual:?])
       {
         LODWORD(v104[0]) = 1;
         *(v104 + 4) = 0;
@@ -846,15 +846,15 @@ LABEL_9:
       HIDWORD(v104[2]) = 0;
     }
 
-    v37 = [(CKKSDeviceStateEntry *)self octagonPeerID];
-    LODWORD(v104[3]) = v37 == 0;
-    v82 = v37;
-    if (v37 || ([v5 octagonPeerID], (v77 = objc_claimAutoreleasedReturnValue()) != 0))
+    octagonPeerID = [(CKKSDeviceStateEntry *)self octagonPeerID];
+    LODWORD(v104[3]) = octagonPeerID == 0;
+    v82 = octagonPeerID;
+    if (octagonPeerID || ([v5 octagonPeerID], (v77 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v38 = [(CKKSDeviceStateEntry *)self octagonPeerID];
-      v79 = [v5 octagonPeerID];
-      v80 = v38;
-      if (![v38 isEqual:?])
+      octagonPeerID2 = [(CKKSDeviceStateEntry *)self octagonPeerID];
+      octagonPeerID3 = [v5 octagonPeerID];
+      v80 = octagonPeerID2;
+      if (![octagonPeerID2 isEqual:?])
       {
         LODWORD(v104[0]) = 1;
         v10 = 0;
@@ -887,15 +887,15 @@ LABEL_9:
       HIDWORD(v104[1]) = 0;
     }
 
-    v39 = [(CKKSDeviceStateEntry *)self octagonStatus];
-    LODWORD(v104[2]) = v39 == 0;
-    v78 = v39;
-    if (v39 || ([v5 octagonStatus], (v73 = objc_claimAutoreleasedReturnValue()) != 0))
+    octagonStatus = [(CKKSDeviceStateEntry *)self octagonStatus];
+    LODWORD(v104[2]) = octagonStatus == 0;
+    v78 = octagonStatus;
+    if (octagonStatus || ([v5 octagonStatus], (v73 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v40 = [(CKKSDeviceStateEntry *)self octagonStatus];
-      v75 = [v5 octagonStatus];
-      v76 = v40;
-      if (![v40 isEqual:?])
+      octagonStatus2 = [(CKKSDeviceStateEntry *)self octagonStatus];
+      octagonStatus3 = [v5 octagonStatus];
+      v76 = octagonStatus2;
+      if (![octagonStatus2 isEqual:?])
       {
         LODWORD(v104[0]) = 1;
         v11 = 0;
@@ -927,15 +927,15 @@ LABEL_9:
       HIDWORD(v104[0]) = 0;
     }
 
-    v41 = [(CKKSDeviceStateEntry *)self circlePeerID];
-    LODWORD(v104[1]) = v41 == 0;
-    v74 = v41;
-    if (v41 || ([v5 circlePeerID], (v70 = objc_claimAutoreleasedReturnValue()) != 0))
+    circlePeerID = [(CKKSDeviceStateEntry *)self circlePeerID];
+    LODWORD(v104[1]) = circlePeerID == 0;
+    v74 = circlePeerID;
+    if (circlePeerID || ([v5 circlePeerID], (v70 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v42 = [(CKKSDeviceStateEntry *)self circlePeerID];
-      v71 = [v5 circlePeerID];
-      v72 = v42;
-      if (![v42 isEqual:?])
+      circlePeerID2 = [(CKKSDeviceStateEntry *)self circlePeerID];
+      circlePeerID3 = [v5 circlePeerID];
+      v72 = circlePeerID2;
+      if (![circlePeerID2 isEqual:?])
       {
         LODWORD(v104[0]) = 1;
         v12 = 0;
@@ -965,8 +965,8 @@ LABEL_9:
       LODWORD(v103) = 0;
     }
 
-    v43 = [(CKKSDeviceStateEntry *)self circleStatus];
-    if (v43 != [v5 circleStatus])
+    circleStatus = [(CKKSDeviceStateEntry *)self circleStatus];
+    if (circleStatus != [v5 circleStatus])
     {
       v12 = 0;
       v102 = 0;
@@ -988,15 +988,15 @@ LABEL_9:
       goto LABEL_9;
     }
 
-    v44 = [(CKKSDeviceStateEntry *)self keyState];
-    HIDWORD(v103) = v44 == 0;
-    v69 = v44;
-    if (v44 || ([v5 keyState], (v65 = objc_claimAutoreleasedReturnValue()) != 0))
+    keyState = [(CKKSDeviceStateEntry *)self keyState];
+    HIDWORD(v103) = keyState == 0;
+    v69 = keyState;
+    if (keyState || ([v5 keyState], (v65 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v45 = [(CKKSDeviceStateEntry *)self keyState];
-      v67 = [v5 keyState];
-      v68 = v45;
-      if (![v45 isEqual:?])
+      keyState2 = [(CKKSDeviceStateEntry *)self keyState];
+      keyState3 = [v5 keyState];
+      v68 = keyState2;
+      if (![keyState2 isEqual:?])
       {
         LODWORD(v104[0]) = 1;
         v13 = 0;
@@ -1026,15 +1026,15 @@ LABEL_9:
       LODWORD(v102) = 0;
     }
 
-    v46 = [(CKKSDeviceStateEntry *)self currentTLKUUID];
-    HIDWORD(v102) = v46 == 0;
-    v66 = v46;
-    if (v46 || ([v5 currentTLKUUID], (v61 = objc_claimAutoreleasedReturnValue()) != 0))
+    currentTLKUUID = [(CKKSDeviceStateEntry *)self currentTLKUUID];
+    HIDWORD(v102) = currentTLKUUID == 0;
+    v66 = currentTLKUUID;
+    if (currentTLKUUID || ([v5 currentTLKUUID], (v61 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v47 = [(CKKSDeviceStateEntry *)self currentTLKUUID];
-      v63 = [v5 currentTLKUUID];
-      v64 = v47;
-      if (![v47 isEqual:?])
+      currentTLKUUID2 = [(CKKSDeviceStateEntry *)self currentTLKUUID];
+      currentTLKUUID3 = [v5 currentTLKUUID];
+      v64 = currentTLKUUID2;
+      if (![currentTLKUUID2 isEqual:?])
       {
         LODWORD(v104[0]) = 1;
         v14 = 0;
@@ -1063,15 +1063,15 @@ LABEL_9:
       LODWORD(v101) = 0;
     }
 
-    v48 = [(CKKSDeviceStateEntry *)self currentClassAUUID];
-    HIDWORD(v101) = v48 == 0;
-    v62 = v48;
-    if (v48 || ([v5 currentClassAUUID], (v57 = objc_claimAutoreleasedReturnValue()) != 0))
+    currentClassAUUID = [(CKKSDeviceStateEntry *)self currentClassAUUID];
+    HIDWORD(v101) = currentClassAUUID == 0;
+    v62 = currentClassAUUID;
+    if (currentClassAUUID || ([v5 currentClassAUUID], (v57 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v49 = [(CKKSDeviceStateEntry *)self currentClassAUUID];
-      v59 = [v5 currentClassAUUID];
-      v60 = v49;
-      if (![v49 isEqual:?])
+      currentClassAUUID2 = [(CKKSDeviceStateEntry *)self currentClassAUUID];
+      currentClassAUUID3 = [v5 currentClassAUUID];
+      v60 = currentClassAUUID2;
+      if (![currentClassAUUID2 isEqual:?])
       {
         LODWORD(v104[0]) = 1;
         v16 = 0;
@@ -1099,16 +1099,16 @@ LABEL_9:
       v54 = 0;
     }
 
-    v50 = [(CKKSDeviceStateEntry *)self currentClassCUUID];
-    v98 = v50 == 0;
-    v58 = v50;
-    if (v50 || ([v5 currentClassCUUID], (v55 = objc_claimAutoreleasedReturnValue()) != 0))
+    currentClassCUUID = [(CKKSDeviceStateEntry *)self currentClassCUUID];
+    v98 = currentClassCUUID == 0;
+    v58 = currentClassCUUID;
+    if (currentClassCUUID || ([v5 currentClassCUUID], (v55 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v51 = [(CKKSDeviceStateEntry *)self currentClassCUUID];
-      v53 = [v5 currentClassCUUID];
-      v52 = [v51 isEqual:?];
+      currentClassCUUID2 = [(CKKSDeviceStateEntry *)self currentClassCUUID];
+      currentClassCUUID3 = [v5 currentClassCUUID];
+      v52 = [currentClassCUUID2 isEqual:?];
       v18 = 1;
-      v56 = v51;
+      v56 = currentClassCUUID2;
       if (!v52)
       {
         LODWORD(v104[0]) = 1;
@@ -1124,11 +1124,11 @@ LABEL_9:
 LABEL_142:
         v17 = v98;
         v15 = v54;
-        v7 = v53;
+        v7 = currentClassCUUID3;
 LABEL_9:
         if (v18)
         {
-          v97 = v4;
+          v97 = equalCopy;
           v20 = v19;
           v21 = v11;
           v22 = v5;
@@ -1150,7 +1150,7 @@ LABEL_9:
           v5 = v22;
           v11 = v21;
           v19 = v20;
-          v4 = v97;
+          equalCopy = v97;
           if (!v30)
           {
             goto LABEL_11;
@@ -1363,17 +1363,17 @@ LABEL_78:
 
 - (id)description
 {
-  v3 = [(CKKSCKRecordHolder *)self storedCKRecord];
-  v25 = [v3 modificationDate];
+  storedCKRecord = [(CKKSCKRecordHolder *)self storedCKRecord];
+  modificationDate = [storedCKRecord modificationDate];
 
-  v19 = [(CKKSCKRecordHolder *)self contextID];
-  v24 = [(CKKSDeviceStateEntry *)self device];
-  v23 = [(CKKSDeviceStateEntry *)self circlePeerID];
-  v22 = [(CKKSDeviceStateEntry *)self octagonPeerID];
-  v21 = [(CKKSDeviceStateEntry *)self osVersion];
-  v20 = [(CKKSDeviceStateEntry *)self lastUnlockTime];
-  v4 = [(CKKSCKRecordHolder *)self zoneID];
-  v5 = [v4 zoneName];
+  contextID = [(CKKSCKRecordHolder *)self contextID];
+  device = [(CKKSDeviceStateEntry *)self device];
+  circlePeerID = [(CKKSDeviceStateEntry *)self circlePeerID];
+  octagonPeerID = [(CKKSDeviceStateEntry *)self octagonPeerID];
+  osVersion = [(CKKSDeviceStateEntry *)self osVersion];
+  lastUnlockTime = [(CKKSDeviceStateEntry *)self lastUnlockTime];
+  zoneID = [(CKKSCKRecordHolder *)self zoneID];
+  zoneName = [zoneID zoneName];
   v6 = [(CKKSDeviceStateEntry *)self circleStatus]+ 1;
   if (v6 > 4)
   {
@@ -1385,11 +1385,11 @@ LABEL_78:
     v7 = off_1003454A8[v6];
   }
 
-  v8 = [(CKKSDeviceStateEntry *)self octagonStatus];
-  if (v8)
+  octagonStatus = [(CKKSDeviceStateEntry *)self octagonStatus];
+  if (octagonStatus)
   {
-    v18 = [(CKKSDeviceStateEntry *)self octagonStatus];
-    [v18 status];
+    octagonStatus2 = [(CKKSDeviceStateEntry *)self octagonStatus];
+    [octagonStatus2 status];
     v9 = OTCliqueStatusToString();
   }
 
@@ -1398,40 +1398,40 @@ LABEL_78:
     v9 = @"CliqueMissing";
   }
 
-  v10 = [(CKKSDeviceStateEntry *)self keyState];
-  v11 = [(CKKSDeviceStateEntry *)self currentTLKUUID];
-  v12 = [(CKKSDeviceStateEntry *)self currentClassAUUID];
-  v13 = [(CKKSDeviceStateEntry *)self currentClassCUUID];
-  v14 = v13;
+  keyState = [(CKKSDeviceStateEntry *)self keyState];
+  currentTLKUUID = [(CKKSDeviceStateEntry *)self currentTLKUUID];
+  currentClassAUUID = [(CKKSDeviceStateEntry *)self currentClassAUUID];
+  currentClassCUUID = [(CKKSDeviceStateEntry *)self currentClassCUUID];
+  v14 = currentClassCUUID;
   v15 = @"unknown";
-  if (v25)
+  if (modificationDate)
   {
-    v15 = v25;
+    v15 = modificationDate;
   }
 
-  v16 = [NSString stringWithFormat:@"<CKKSDeviceStateEntry[%@](%@, %@, %@, %@, %@, %@): %@ %@ %@ %@ %@ %@ upd:%@>", v19, v24, v23, v22, v21, v20, v5, v7, v9, v10, v11, v12, v13, v15];
+  v16 = [NSString stringWithFormat:@"<CKKSDeviceStateEntry[%@](%@, %@, %@, %@, %@, %@): %@ %@ %@ %@ %@ %@ upd:%@>", contextID, device, circlePeerID, octagonPeerID, osVersion, lastUnlockTime, zoneName, v7, v9, keyState, currentTLKUUID, currentClassAUUID, currentClassCUUID, v15];
 
-  if (v8)
+  if (octagonStatus)
   {
   }
 
   return v16;
 }
 
-- (id)cktypeToOTCliqueStatusWrapper:(id)a3
+- (id)cktypeToOTCliqueStatusWrapper:(id)wrapper
 {
-  v3 = a3;
-  if (!v3 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  wrapperCopy = wrapper;
+  if (!wrapperCopy || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v8 = 0;
     goto LABEL_21;
   }
 
-  v4 = [v3 unsignedIntValue];
-  v5 = v4;
-  if (v4 > 2)
+  unsignedIntValue = [wrapperCopy unsignedIntValue];
+  v5 = unsignedIntValue;
+  if (unsignedIntValue > 2)
   {
-    switch(v4)
+    switch(unsignedIntValue)
     {
       case 3:
         v6 = [OTCliqueStatusWrapper alloc];
@@ -1448,21 +1448,21 @@ LABEL_78:
     goto LABEL_12;
   }
 
-  if (!v4)
+  if (!unsignedIntValue)
   {
     v6 = [OTCliqueStatusWrapper alloc];
     v7 = 0;
     goto LABEL_20;
   }
 
-  if (v4 == 1)
+  if (unsignedIntValue == 1)
   {
     v6 = [OTCliqueStatusWrapper alloc];
     v7 = 1;
     goto LABEL_20;
   }
 
-  if (v4 != 2)
+  if (unsignedIntValue != 2)
   {
 LABEL_12:
     v9 = sub_100019104(@"ckks", 0);
@@ -1488,23 +1488,23 @@ LABEL_21:
   return v8;
 }
 
-- (id)cliqueStatusToCKType:(id)a3
+- (id)cliqueStatusToCKType:(id)type
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  typeCopy = type;
+  v4 = typeCopy;
+  if (typeCopy)
   {
-    if ([v3 status] == -1)
+    if ([typeCopy status] == -1)
     {
-      v5 = 111;
+      status = 111;
     }
 
     else
     {
-      v5 = [v4 status];
+      status = [v4 status];
     }
 
-    v6 = [NSNumber numberWithInt:v5];
+    v6 = [NSNumber numberWithInt:status];
   }
 
   else
@@ -1515,9 +1515,9 @@ LABEL_21:
   return v6;
 }
 
-- (int)cktypeToSOSCCStatus:(id)a3
+- (int)cktypeToSOSCCStatus:(id)status
 {
-  v3 = a3;
+  statusCopy = status;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -1526,11 +1526,11 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v4 = [v3 unsignedIntValue];
-  v5 = v4;
-  if (v4 + 1 >= 5)
+  unsignedIntValue = [statusCopy unsignedIntValue];
+  v5 = unsignedIntValue;
+  if (unsignedIntValue + 1 >= 5)
   {
-    if (v4 != 111)
+    if (unsignedIntValue != 111)
     {
       v6 = sub_100019104(@"ckks", 0);
       if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -1549,110 +1549,110 @@ LABEL_8:
   return v5;
 }
 
-- (id)initForDevice:(id)a3 contextID:(id)a4 osVersion:(id)a5 lastUnlockTime:(id)a6 octagonPeerID:(id)a7 octagonStatus:(id)a8 circlePeerID:(id)a9 circleStatus:(int)a10 keyState:(id)a11 currentTLKUUID:(id)a12 currentClassAUUID:(id)a13 currentClassCUUID:(id)a14 zoneID:(id)a15 encodedCKRecord:(id)a16
+- (id)initForDevice:(id)device contextID:(id)d osVersion:(id)version lastUnlockTime:(id)time octagonPeerID:(id)iD octagonStatus:(id)status circlePeerID:(id)peerID circleStatus:(int)self0 keyState:(id)self1 currentTLKUUID:(id)self2 currentClassAUUID:(id)self3 currentClassCUUID:(id)self4 zoneID:(id)self5 encodedCKRecord:(id)self6
 {
-  v35 = a3;
-  v34 = a5;
-  v33 = a6;
-  v32 = a7;
-  v31 = a8;
-  v30 = a9;
-  v29 = a11;
-  v21 = a12;
-  v22 = a13;
-  v23 = a14;
+  deviceCopy = device;
+  versionCopy = version;
+  timeCopy = time;
+  iDCopy = iD;
+  statusCopy = status;
+  peerIDCopy = peerID;
+  stateCopy = state;
+  uIDCopy = uID;
+  uUIDCopy = uUID;
+  cUUIDCopy = cUUID;
   v36.receiver = self;
   v36.super_class = CKKSDeviceStateEntry;
-  v24 = [(CKKSCKRecordHolder *)&v36 initWithCKRecordType:@"devicestate" encodedCKRecord:a16 contextID:a4 zoneID:a15];
+  v24 = [(CKKSCKRecordHolder *)&v36 initWithCKRecordType:@"devicestate" encodedCKRecord:record contextID:d zoneID:zoneID];
   v25 = v24;
   if (v24)
   {
-    objc_storeStrong(&v24->_device, a3);
-    objc_storeStrong(&v25->_osVersion, a5);
-    objc_storeStrong(&v25->_lastUnlockTime, a6);
-    objc_storeStrong(&v25->_octagonPeerID, a7);
-    objc_storeStrong(&v25->_octagonStatus, a8);
-    v25->_circleStatus = a10;
-    objc_storeStrong(&v25->_keyState, a11);
-    objc_storeStrong(&v25->_circlePeerID, a9);
-    objc_storeStrong(&v25->_currentTLKUUID, a12);
-    objc_storeStrong(&v25->_currentClassAUUID, a13);
-    objc_storeStrong(&v25->_currentClassCUUID, a14);
+    objc_storeStrong(&v24->_device, device);
+    objc_storeStrong(&v25->_osVersion, version);
+    objc_storeStrong(&v25->_lastUnlockTime, time);
+    objc_storeStrong(&v25->_octagonPeerID, iD);
+    objc_storeStrong(&v25->_octagonStatus, status);
+    v25->_circleStatus = circleStatus;
+    objc_storeStrong(&v25->_keyState, state);
+    objc_storeStrong(&v25->_circlePeerID, peerID);
+    objc_storeStrong(&v25->_currentTLKUUID, uID);
+    objc_storeStrong(&v25->_currentClassAUUID, uUID);
+    objc_storeStrong(&v25->_currentClassCUUID, cUUID);
   }
 
   return v25;
 }
 
-+ (BOOL)intransactionRecordDeleted:(id)a3 contextID:(id)a4 resync:(BOOL)a5 error:(id *)a6
++ (BOOL)intransactionRecordDeleted:(id)deleted contextID:(id)d resync:(BOOL)resync error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 zoneID];
-  v11 = [v10 zoneName];
-  v12 = sub_100019104(@"ckksdevice", v11);
+  deletedCopy = deleted;
+  dCopy = d;
+  zoneID = [deletedCopy zoneID];
+  zoneName = [zoneID zoneName];
+  v12 = sub_100019104(@"ckksdevice", zoneName);
 
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412546;
     v24 = @"devicestate";
     v25 = 2112;
-    v26 = v8;
+    v26 = deletedCopy;
     _os_log_debug_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEBUG, "CloudKit notification: deleted device state record(%@): %@", buf, 0x16u);
   }
 
   v22 = 0;
-  v13 = [CKKSDeviceStateEntry tryFromDatabaseFromCKRecordID:v8 contextID:v9 error:&v22];
+  v13 = [CKKSDeviceStateEntry tryFromDatabaseFromCKRecordID:deletedCopy contextID:dCopy error:&v22];
 
   v14 = v22;
   v21 = v14;
   [(__CFString *)v13 deleteFromDatabase:&v21];
   v15 = v21;
 
-  v16 = [v8 zoneID];
-  v17 = [v16 zoneName];
-  v18 = sub_100019104(@"ckksdevice", v17);
+  zoneID2 = [deletedCopy zoneID];
+  zoneName2 = [zoneID2 zoneName];
+  v18 = sub_100019104(@"ckksdevice", zoneName2);
 
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412802;
     v24 = v13;
     v25 = 2112;
-    v26 = v8;
+    v26 = deletedCopy;
     v27 = 2112;
     v28 = v15;
     _os_log_debug_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEBUG, "CKKSDeviceStateEntry(%@) was deleted: %@ error: %@", buf, 0x20u);
   }
 
-  if (a6 && v15)
+  if (error && v15)
   {
     v19 = v15;
-    *a6 = v15;
+    *error = v15;
   }
 
   return v15 == 0;
 }
 
-+ (BOOL)intransactionRecordChanged:(id)a3 contextID:(id)a4 resync:(BOOL)a5 error:(id *)a6
++ (BOOL)intransactionRecordChanged:(id)changed contextID:(id)d resync:(BOOL)resync error:(id *)error
 {
-  v7 = a5;
-  v9 = a3;
-  v10 = a4;
-  if (v7)
+  resyncCopy = resync;
+  changedCopy = changed;
+  dCopy = d;
+  if (resyncCopy)
   {
-    v11 = [(CKKSDeviceStateEntry *)v9 recordID];
-    v12 = [v11 recordName];
-    v13 = [(CKKSDeviceStateEntry *)v9 recordID];
-    v14 = [v13 zoneID];
+    recordID = [(CKKSDeviceStateEntry *)changedCopy recordID];
+    recordName = [recordID recordName];
+    recordID2 = [(CKKSDeviceStateEntry *)changedCopy recordID];
+    zoneID = [recordID2 zoneID];
     v37 = 0;
-    v15 = [CKKSDeviceStateEntry tryFromDatabase:v12 contextID:v10 zoneID:v14 error:&v37];
+    v15 = [CKKSDeviceStateEntry tryFromDatabase:recordName contextID:dCopy zoneID:zoneID error:&v37];
     v16 = v37;
 
     if (v16)
     {
-      v17 = [(CKKSDeviceStateEntry *)v9 recordID];
-      v18 = [v17 zoneID];
-      v19 = [v18 zoneName];
-      v20 = sub_100019104(@"ckksresync", v19);
+      recordID3 = [(CKKSDeviceStateEntry *)changedCopy recordID];
+      zoneID2 = [recordID3 zoneID];
+      zoneName = [zoneID2 zoneName];
+      v20 = sub_100019104(@"ckksresync", zoneName);
 
       if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
       {
@@ -1664,18 +1664,18 @@ LABEL_8:
 
     if (v15)
     {
-      v21 = [(CKKSDeviceStateEntry *)v15 matchesCKRecord:v9];
-      v22 = [(CKKSDeviceStateEntry *)v9 recordID];
-      v23 = [v22 zoneID];
-      v24 = [v23 zoneName];
-      v25 = sub_100019104(@"ckksresync", v24);
+      v21 = [(CKKSDeviceStateEntry *)v15 matchesCKRecord:changedCopy];
+      recordID4 = [(CKKSDeviceStateEntry *)changedCopy recordID];
+      zoneID3 = [recordID4 zoneID];
+      zoneName2 = [zoneID3 zoneName];
+      v25 = sub_100019104(@"ckksresync", zoneName2);
 
       if (v21)
       {
         if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v39 = v9;
+          v39 = changedCopy;
           _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "Already know about this current item pointer, skipping update: %@", buf, 0xCu);
         }
 
@@ -1688,28 +1688,28 @@ LABEL_8:
         *buf = 138412546;
         v39 = v15;
         v40 = 2112;
-        v41 = v9;
+        v41 = changedCopy;
         _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_ERROR, "BUG: Local current device state entry doesn't match resynced CloudKit record(s): %@ %@", buf, 0x16u);
       }
     }
 
     else
     {
-      v27 = [(CKKSDeviceStateEntry *)v9 recordID];
-      v28 = [v27 zoneID];
-      v29 = [v28 zoneName];
-      v25 = sub_100019104(@"ckksresync", v29);
+      recordID5 = [(CKKSDeviceStateEntry *)changedCopy recordID];
+      zoneID4 = [recordID5 zoneID];
+      zoneName3 = [zoneID4 zoneName];
+      v25 = sub_100019104(@"ckksresync", zoneName3);
 
       if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v39 = v9;
+        v39 = changedCopy;
         _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_ERROR, "BUG: No current device state entry matching resynced CloudKit record: %@", buf, 0xCu);
       }
     }
   }
 
-  v15 = [(CKKSCKRecordHolder *)[CKKSDeviceStateEntry alloc] initWithCKRecord:v9 contextID:v10];
+  v15 = [(CKKSCKRecordHolder *)[CKKSDeviceStateEntry alloc] initWithCKRecord:changedCopy contextID:dCopy];
   v36 = 0;
   v26 = [(CKKSSQLDatabaseObject *)v15 saveToDatabase:&v36];
   v16 = v36;
@@ -1720,10 +1720,10 @@ LABEL_8:
 
   if ((v26 & 1) == 0)
   {
-    v30 = [(CKKSDeviceStateEntry *)v9 recordID];
-    v31 = [v30 zoneID];
-    v32 = [v31 zoneName];
-    v33 = sub_100019104(@"ckksdevice", v32);
+    recordID6 = [(CKKSDeviceStateEntry *)changedCopy recordID];
+    zoneID5 = [recordID6 zoneID];
+    zoneName4 = [zoneID5 zoneName];
+    v33 = sub_100019104(@"ckksdevice", zoneName4);
 
     if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
     {
@@ -1732,14 +1732,14 @@ LABEL_8:
       v40 = 2112;
       v41 = v16;
       v42 = 2112;
-      v43 = v9;
+      v43 = changedCopy;
       _os_log_impl(&_mh_execute_header, v33, OS_LOG_TYPE_ERROR, "Failed to save device record to database: %@: %@ %@", buf, 0x20u);
     }
 
-    if (a6)
+    if (error)
     {
       v34 = v16;
-      *a6 = v16;
+      *error = v16;
     }
   }
 
@@ -1748,25 +1748,25 @@ LABEL_23:
   return v26;
 }
 
-+ (id)intransactionCreateDeviceStateForView:(id)a3 accountTracker:(id)a4 lockStateTracker:(id)a5 error:(id *)a6
++ (id)intransactionCreateDeviceStateForView:(id)view accountTracker:(id)tracker lockStateTracker:(id)stateTracker error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [v9 contextID];
-  v13 = [v10 cdpCapableiCloudAccountStatus];
-  if (v13 == 1)
+  viewCopy = view;
+  trackerCopy = tracker;
+  stateTrackerCopy = stateTracker;
+  contextID = [viewCopy contextID];
+  cdpCapableiCloudAccountStatus = [trackerCopy cdpCapableiCloudAccountStatus];
+  if (cdpCapableiCloudAccountStatus == 1)
   {
-    v14 = [v10 currentCKAccountInfo];
-    v15 = [v14 accountStatus];
+    currentCKAccountInfo = [trackerCopy currentCKAccountInfo];
+    accountStatus = [currentCKAccountInfo accountStatus];
 
-    if (v15 == 1)
+    if (accountStatus == 1)
     {
-      v16 = [v10 ckdeviceID];
-      if (!v16)
+      ckdeviceID = [trackerCopy ckdeviceID];
+      if (!ckdeviceID)
       {
-        v32 = [v9 zoneName];
-        v33 = sub_100019104(@"ckksdevice", v32);
+        zoneName = [viewCopy zoneName];
+        v33 = sub_100019104(@"ckksdevice", zoneName);
 
         if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
         {
@@ -1775,17 +1775,17 @@ LABEL_23:
         }
 
         v134 = NSLocalizedDescriptionKey;
-        v34 = [v10 currentCKAccountInfo];
-        v35 = [NSString stringWithFormat:@"No CK device ID: %@", v34];
+        currentCKAccountInfo2 = [trackerCopy currentCKAccountInfo];
+        v35 = [NSString stringWithFormat:@"No CK device ID: %@", currentCKAccountInfo2];
         v135 = v35;
         v36 = [NSDictionary dictionaryWithObjects:&v135 forKeys:&v134 count:1];
         v18 = [NSError errorWithDomain:@"CKKSErrorDomain" code:10 userInfo:v36];
 
-        if (a6)
+        if (error)
         {
           v37 = v18;
           v22 = 0;
-          *a6 = v18;
+          *error = v18;
         }
 
         else
@@ -1793,19 +1793,19 @@ LABEL_23:
           v22 = 0;
         }
 
-        v16 = 0;
+        ckdeviceID = 0;
         goto LABEL_82;
       }
 
-      v17 = [v9 zoneID];
+      zoneID = [viewCopy zoneID];
       v133 = 0;
-      v123 = [CKKSDeviceStateEntry tryFromDatabase:v16 contextID:v12 zoneID:v17 error:&v133];
+      v123 = [CKKSDeviceStateEntry tryFromDatabase:ckdeviceID contextID:contextID zoneID:zoneID error:&v133];
       v18 = v133;
 
       if (v18)
       {
-        v19 = [v9 zoneName];
-        v20 = sub_100019104(@"ckksdevice", v19);
+        zoneName2 = [viewCopy zoneName];
+        v20 = sub_100019104(@"ckksdevice", zoneName2);
 
         if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
         {
@@ -1814,11 +1814,11 @@ LABEL_23:
           _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_ERROR, "Couldn't read old CKKSDeviceStateEntry from database: %@", buf, 0xCu);
         }
 
-        if (a6)
+        if (error)
         {
           v21 = v18;
           v22 = 0;
-          *a6 = v18;
+          *error = v18;
         }
 
         else
@@ -1830,29 +1830,29 @@ LABEL_23:
         goto LABEL_81;
       }
 
-      v122 = v16;
-      v38 = [v9 contextID];
-      v39 = [v9 zoneID];
+      v122 = ckdeviceID;
+      contextID2 = [viewCopy contextID];
+      zoneID2 = [viewCopy zoneID];
       v132 = 0;
-      v40 = [CKKSCurrentKeyPointer tryFromDatabase:@"tlk" contextID:v38 zoneID:v39 error:&v132];
+      v40 = [CKKSCurrentKeyPointer tryFromDatabase:@"tlk" contextID:contextID2 zoneID:zoneID2 error:&v132];
       v41 = v132;
 
-      v42 = [v9 contextID];
-      v43 = [v9 zoneID];
+      contextID3 = [viewCopy contextID];
+      zoneID3 = [viewCopy zoneID];
       v131 = v41;
-      v117 = [CKKSCurrentKeyPointer tryFromDatabase:@"classA" contextID:v42 zoneID:v43 error:&v131];
+      v117 = [CKKSCurrentKeyPointer tryFromDatabase:@"classA" contextID:contextID3 zoneID:zoneID3 error:&v131];
       v44 = v131;
 
-      v45 = [v9 contextID];
-      v46 = [v9 zoneID];
+      contextID4 = [viewCopy contextID];
+      zoneID4 = [viewCopy zoneID];
       v130 = v44;
-      v116 = [CKKSCurrentKeyPointer tryFromDatabase:@"classC" contextID:v45 zoneID:v46 error:&v130];
+      v116 = [CKKSCurrentKeyPointer tryFromDatabase:@"classC" contextID:contextID4 zoneID:zoneID4 error:&v130];
       v47 = v130;
 
       if (v47)
       {
-        v48 = [v9 zoneName];
-        v49 = sub_100019104(@"ckksdevice", v48);
+        zoneName3 = [viewCopy zoneName];
+        v49 = sub_100019104(@"ckksdevice", zoneName3);
 
         if (os_log_type_enabled(v49, OS_LOG_TYPE_ERROR))
         {
@@ -1862,16 +1862,16 @@ LABEL_23:
         }
       }
 
-      v118 = v11;
-      v50 = [v40 currentKeyUUID];
+      v118 = stateTrackerCopy;
+      currentKeyUUID = [v40 currentKeyUUID];
       v110 = v40;
-      if (v50)
+      if (currentKeyUUID)
       {
-        v51 = [v40 currentKeyUUID];
-        v52 = [v9 contextID];
-        v53 = [v9 zoneID];
+        currentKeyUUID2 = [v40 currentKeyUUID];
+        contextID5 = [viewCopy contextID];
+        zoneID5 = [viewCopy zoneID];
         v129 = 0;
-        v54 = [CKKSKey tryFromDatabase:v51 contextID:v52 zoneID:v53 error:&v129];
+        v54 = [CKKSKey tryFromDatabase:currentKeyUUID2 contextID:contextID5 zoneID:zoneID5 error:&v129];
         v55 = v129;
       }
 
@@ -1881,14 +1881,14 @@ LABEL_23:
         v55 = 0;
       }
 
-      v57 = [v117 currentKeyUUID];
-      if (v57)
+      currentKeyUUID3 = [v117 currentKeyUUID];
+      if (currentKeyUUID3)
       {
-        v58 = [v117 currentKeyUUID];
-        v59 = [v9 contextID];
-        v60 = [v9 zoneID];
+        currentKeyUUID4 = [v117 currentKeyUUID];
+        contextID6 = [viewCopy contextID];
+        zoneID6 = [viewCopy zoneID];
         v128 = v55;
-        v121 = [CKKSKey tryFromDatabase:v58 contextID:v59 zoneID:v60 error:&v128];
+        v121 = [CKKSKey tryFromDatabase:currentKeyUUID4 contextID:contextID6 zoneID:zoneID6 error:&v128];
         v61 = v128;
 
         v55 = v61;
@@ -1899,14 +1899,14 @@ LABEL_23:
         v121 = 0;
       }
 
-      v62 = [v116 currentKeyUUID];
-      if (v62)
+      currentKeyUUID5 = [v116 currentKeyUUID];
+      if (currentKeyUUID5)
       {
-        v63 = [v116 currentKeyUUID];
-        v64 = [v9 contextID];
-        v65 = [v9 zoneID];
+        currentKeyUUID6 = [v116 currentKeyUUID];
+        contextID7 = [viewCopy contextID];
+        zoneID7 = [viewCopy zoneID];
         v127 = v55;
-        v119 = [CKKSKey tryFromDatabase:v63 contextID:v64 zoneID:v65 error:&v127];
+        v119 = [CKKSKey tryFromDatabase:currentKeyUUID6 contextID:contextID7 zoneID:zoneID7 error:&v127];
         v66 = v127;
 
         v55 = v66;
@@ -1919,8 +1919,8 @@ LABEL_23:
 
       if (v55)
       {
-        v67 = [v9 zoneName];
-        v68 = sub_100019104(@"ckksdevice", v67);
+        zoneName4 = [viewCopy zoneName];
+        v68 = sub_100019104(@"ckksdevice", zoneName4);
 
         if (os_log_type_enabled(v68, OS_LOG_TYPE_ERROR))
         {
@@ -1931,13 +1931,13 @@ LABEL_23:
       }
 
       v126 = 0;
-      v69 = [v54 ensureKeyLoadedForContextID:v12 cache:0 error:&v126];
+      v69 = [v54 ensureKeyLoadedForContextID:contextID cache:0 error:&v126];
       v70 = v126;
       if (v70)
       {
         v71 = [v118 isLockedError:v70];
-        v72 = [v9 zoneName];
-        v73 = sub_100019104(@"ckksdevice", v72);
+        zoneName5 = [viewCopy zoneName];
+        v73 = sub_100019104(@"ckksdevice", zoneName5);
 
         v74 = os_log_type_enabled(v73, OS_LOG_TYPE_ERROR);
         if (v71)
@@ -1968,14 +1968,14 @@ LABEL_23:
       }
 
       v125 = v70;
-      v76 = [v121 ensureKeyLoadedForContextID:v12 cache:0 error:&v125];
+      v76 = [v121 ensureKeyLoadedForContextID:contextID cache:0 error:&v125];
       v77 = v125;
 
       if (v77)
       {
         v78 = [v118 isLockedError:v77];
-        v79 = [v9 zoneName];
-        v80 = sub_100019104(@"ckksdevice", v79);
+        zoneName6 = [viewCopy zoneName];
+        v80 = sub_100019104(@"ckksdevice", zoneName6);
 
         v81 = os_log_type_enabled(v80, OS_LOG_TYPE_ERROR);
         if (v78)
@@ -2013,13 +2013,13 @@ LABEL_23:
       }
 
       v124 = v77;
-      v84 = [v83 ensureKeyLoadedForContextID:v12 cache:0 error:&v124];
+      v84 = [v83 ensureKeyLoadedForContextID:contextID cache:0 error:&v124];
       v18 = v124;
 
       if (v18)
       {
-        v85 = [v9 zoneName];
-        v86 = sub_100019104(@"ckksdevice", v85);
+        zoneName7 = [viewCopy zoneName];
+        v86 = sub_100019104(@"ckksdevice", zoneName7);
 
         if (os_log_type_enabled(v86, OS_LOG_TYPE_ERROR))
         {
@@ -2033,46 +2033,46 @@ LABEL_23:
 
       if ([OTSOSActualAdapter sosEnabled]_0())
       {
-        v87 = [v10 accountCirclePeerIDInitialized];
-        if ([v87 wait:500000000])
+        accountCirclePeerIDInitialized = [trackerCopy accountCirclePeerIDInitialized];
+        if ([accountCirclePeerIDInitialized wait:500000000])
         {
-          v88 = [v10 accountCirclePeerID];
+          accountCirclePeerID = [trackerCopy accountCirclePeerID];
 
-          if (v88)
+          if (accountCirclePeerID)
           {
             goto LABEL_72;
           }
 
-          v89 = [v9 zoneName];
-          v87 = sub_100019104(@"ckksdevice", v89);
+          zoneName8 = [viewCopy zoneName];
+          accountCirclePeerIDInitialized = sub_100019104(@"ckksdevice", zoneName8);
 
-          if (os_log_type_enabled(v87, OS_LOG_TYPE_ERROR))
+          if (os_log_type_enabled(accountCirclePeerIDInitialized, OS_LOG_TYPE_ERROR))
           {
             *buf = 0;
-            _os_log_impl(&_mh_execute_header, v87, OS_LOG_TYPE_ERROR, "No SOS peer ID available", buf, 2u);
+            _os_log_impl(&_mh_execute_header, accountCirclePeerIDInitialized, OS_LOG_TYPE_ERROR, "No SOS peer ID available", buf, 2u);
           }
         }
       }
 
 LABEL_72:
-      v90 = [v10 octagonInformationInitialized];
-      if ([v90 wait:500000000])
+      octagonInformationInitialized = [trackerCopy octagonInformationInitialized];
+      if ([octagonInformationInitialized wait:500000000])
       {
-        v91 = [v10 octagonPeerID];
+        octagonPeerID = [trackerCopy octagonPeerID];
 
-        if (v91)
+        if (octagonPeerID)
         {
 LABEL_77:
           v93 = [NSCalendar calendarWithIdentifier:NSCalendarIdentifierISO8601];
           v94 = [NSTimeZone timeZoneWithAbbreviation:@"UTC"];
           [v93 setTimeZone:v94];
 
-          v95 = [v118 lastUnlockTime];
+          lastUnlockTime = [v118 lastUnlockTime];
           v109 = v93;
-          if (v95)
+          if (lastUnlockTime)
           {
-            v96 = v95;
-            v115 = [v93 startOfDayForDate:v95];
+            v96 = lastUnlockTime;
+            v115 = [v93 startOfDayForDate:lastUnlockTime];
           }
 
           else
@@ -2081,39 +2081,39 @@ LABEL_77:
           }
 
           v107 = [CKKSDeviceStateEntry alloc];
-          v114 = [v9 contextID];
+          contextID8 = [viewCopy contextID];
           v113 = [OTDeviceInformationActualAdapter osVersion]_0();
-          v106 = [v10 octagonPeerID];
-          v112 = [v10 octagonStatus];
-          v111 = [v10 accountCirclePeerID];
-          v108 = [v10 currentCircleStatus];
-          v105 = [v108 status];
-          v104 = [v9 viewKeyHierarchyState];
-          v103 = [v54 uuid];
-          v102 = [v121 uuid];
+          octagonPeerID2 = [trackerCopy octagonPeerID];
+          octagonStatus = [trackerCopy octagonStatus];
+          accountCirclePeerID2 = [trackerCopy accountCirclePeerID];
+          currentCircleStatus = [trackerCopy currentCircleStatus];
+          status = [currentCircleStatus status];
+          viewKeyHierarchyState = [viewCopy viewKeyHierarchyState];
+          uuid = [v54 uuid];
+          uuid2 = [v121 uuid];
           [v83 uuid];
           v97 = v120 = v83;
-          v98 = [v9 zoneID];
-          v99 = [v123 encodedCKRecord];
-          LODWORD(v101) = v105;
-          v16 = v122;
-          v22 = [(CKKSDeviceStateEntry *)v107 initForDevice:v122 contextID:v114 osVersion:v113 lastUnlockTime:v115 octagonPeerID:v106 octagonStatus:v112 circlePeerID:v111 circleStatus:v101 keyState:v104 currentTLKUUID:v103 currentClassAUUID:v102 currentClassCUUID:v97 zoneID:v98 encodedCKRecord:v99];
+          zoneID8 = [viewCopy zoneID];
+          encodedCKRecord = [v123 encodedCKRecord];
+          LODWORD(v101) = status;
+          ckdeviceID = v122;
+          v22 = [(CKKSDeviceStateEntry *)v107 initForDevice:v122 contextID:contextID8 osVersion:v113 lastUnlockTime:v115 octagonPeerID:octagonPeerID2 octagonStatus:octagonStatus circlePeerID:accountCirclePeerID2 circleStatus:v101 keyState:viewKeyHierarchyState currentTLKUUID:uuid currentClassAUUID:uuid2 currentClassCUUID:v97 zoneID:zoneID8 encodedCKRecord:encodedCKRecord];
 
           v56 = v123;
-          v11 = v118;
+          stateTrackerCopy = v118;
 LABEL_81:
 
 LABEL_82:
           goto LABEL_83;
         }
 
-        v92 = [v9 zoneName];
-        v90 = sub_100019104(@"ckksdevice", v92);
+        zoneName9 = [viewCopy zoneName];
+        octagonInformationInitialized = sub_100019104(@"ckksdevice", zoneName9);
 
-        if (os_log_type_enabled(v90, OS_LOG_TYPE_ERROR))
+        if (os_log_type_enabled(octagonInformationInitialized, OS_LOG_TYPE_ERROR))
         {
           *buf = 0;
-          _os_log_impl(&_mh_execute_header, v90, OS_LOG_TYPE_ERROR, "No octagon peer ID available", buf, 2u);
+          _os_log_impl(&_mh_execute_header, octagonInformationInitialized, OS_LOG_TYPE_ERROR, "No octagon peer ID available", buf, 2u);
         }
       }
 
@@ -2121,43 +2121,43 @@ LABEL_82:
     }
   }
 
-  v23 = [v9 zoneName];
-  v24 = sub_100019104(@"ckksdevice", v23);
+  zoneName10 = [viewCopy zoneName];
+  v24 = sub_100019104(@"ckksdevice", zoneName10);
 
   if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
   {
-    v25 = [v10 currentCKAccountInfo];
+    currentCKAccountInfo3 = [trackerCopy currentCKAccountInfo];
     v26 = @"available";
-    if (v13 == 3)
+    if (cdpCapableiCloudAccountStatus == 3)
     {
       v26 = @"no account";
     }
 
-    if (!v13)
+    if (!cdpCapableiCloudAccountStatus)
     {
       v26 = @"unknown";
     }
 
     v27 = v26;
     *buf = 138412546;
-    v139 = v25;
+    v139 = currentCKAccountInfo3;
     v140 = 2112;
     v141 = v27;
     _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_ERROR, "No iCloud account active: %@ cdp capable account:%@", buf, 0x16u);
   }
 
   v136 = NSLocalizedDescriptionKey;
-  v28 = [v10 currentCKAccountInfo];
-  v29 = [NSString stringWithFormat:@"No active CDP Capable iCloud account: %@", v28];
+  currentCKAccountInfo4 = [trackerCopy currentCKAccountInfo];
+  v29 = [NSString stringWithFormat:@"No active CDP Capable iCloud account: %@", currentCKAccountInfo4];
   v137 = v29;
   v30 = [NSDictionary dictionaryWithObjects:&v137 forKeys:&v136 count:1];
   v18 = [NSError errorWithDomain:@"securityd" code:-67671 userInfo:v30];
 
-  if (a6)
+  if (error)
   {
     v31 = v18;
     v22 = 0;
-    *a6 = v18;
+    *error = v18;
   }
 
   else
@@ -2170,13 +2170,13 @@ LABEL_83:
   return v22;
 }
 
-+ (id)fromDatabaseRow:(id)a3
++ (id)fromDatabaseRow:(id)row
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"octagonstatus"];
-  v5 = [v4 asString];
+  rowCopy = row;
+  v4 = [rowCopy objectForKeyedSubscript:@"octagonstatus"];
+  asString = [v4 asString];
 
-  if (v5)
+  if (asString)
   {
     v43 = [[OTCliqueStatusWrapper alloc] initWithStatus:OTCliqueStatusFromString()];
   }
@@ -2187,29 +2187,29 @@ LABEL_83:
   }
 
   v26 = [CKKSDeviceStateEntry alloc];
-  v39 = [v3 objectForKeyedSubscript:@"device"];
-  v41 = [v39 asString];
-  v38 = [v3 objectForKeyedSubscript:@"contextID"];
-  v42 = [v38 asString];
-  v37 = [v3 objectForKeyedSubscript:@"osversion"];
-  v36 = [v37 asString];
-  v35 = [v3 objectForKeyedSubscript:@"lastunlock"];
-  v34 = [v35 asISO8601Date];
-  v33 = [v3 objectForKeyedSubscript:@"octagonpeerid"];
-  v32 = [v33 asString];
-  v31 = [v3 objectForKeyedSubscript:@"peerid"];
-  v6 = [v31 asString];
-  v30 = [v3 objectForKeyedSubscript:@"circlestatus"];
-  v7 = [v30 asString];
-  v40 = v5;
-  v29 = v7;
-  if (!v7)
+  v39 = [rowCopy objectForKeyedSubscript:@"device"];
+  asString2 = [v39 asString];
+  v38 = [rowCopy objectForKeyedSubscript:@"contextID"];
+  asString3 = [v38 asString];
+  v37 = [rowCopy objectForKeyedSubscript:@"osversion"];
+  asString4 = [v37 asString];
+  v35 = [rowCopy objectForKeyedSubscript:@"lastunlock"];
+  asISO8601Date = [v35 asISO8601Date];
+  v33 = [rowCopy objectForKeyedSubscript:@"octagonpeerid"];
+  asString5 = [v33 asString];
+  v31 = [rowCopy objectForKeyedSubscript:@"peerid"];
+  asString6 = [v31 asString];
+  v30 = [rowCopy objectForKeyedSubscript:@"circlestatus"];
+  asString7 = [v30 asString];
+  v40 = asString;
+  v29 = asString7;
+  if (!asString7)
   {
     goto LABEL_15;
   }
 
-  v8 = v7;
-  if (CFEqual(v7, @"kSOSCCInCircle") || CFEqual(v8, @"kSOSCCInCircle"))
+  v8 = asString7;
+  if (CFEqual(asString7, @"kSOSCCInCircle") || CFEqual(v8, @"kSOSCCInCircle"))
   {
     v24 = 0;
     goto LABEL_17;
@@ -2239,35 +2239,35 @@ LABEL_15:
 LABEL_16:
   v24 = v9;
 LABEL_17:
-  v28 = [v3 objectForKeyedSubscript:@"keystate"];
-  v21 = [v28 asString];
-  v25 = [v3 objectForKeyedSubscript:@"currentTLK"];
-  v20 = [v25 asString];
-  v23 = [v3 objectForKeyedSubscript:@"currentClassA"];
-  v10 = [v23 asString];
-  v22 = [v3 objectForKeyedSubscript:@"currentClassC"];
-  v11 = [v22 asString];
+  v28 = [rowCopy objectForKeyedSubscript:@"keystate"];
+  asString8 = [v28 asString];
+  v25 = [rowCopy objectForKeyedSubscript:@"currentTLK"];
+  asString9 = [v25 asString];
+  v23 = [rowCopy objectForKeyedSubscript:@"currentClassA"];
+  asString10 = [v23 asString];
+  v22 = [rowCopy objectForKeyedSubscript:@"currentClassC"];
+  asString11 = [v22 asString];
   v12 = [CKRecordZoneID alloc];
-  v13 = [v3 objectForKeyedSubscript:@"ckzone"];
-  v14 = [v13 asString];
-  v15 = [v12 initWithZoneName:v14 ownerName:CKCurrentUserDefaultName];
-  v16 = [v3 objectForKeyedSubscript:@"ckrecord"];
+  v13 = [rowCopy objectForKeyedSubscript:@"ckzone"];
+  asString12 = [v13 asString];
+  v15 = [v12 initWithZoneName:asString12 ownerName:CKCurrentUserDefaultName];
+  v16 = [rowCopy objectForKeyedSubscript:@"ckrecord"];
 
-  v17 = [v16 asBase64DecodedData];
+  asBase64DecodedData = [v16 asBase64DecodedData];
   LODWORD(v19) = v24;
-  v27 = [(CKKSDeviceStateEntry *)v26 initForDevice:v41 contextID:v42 osVersion:v36 lastUnlockTime:v34 octagonPeerID:v32 octagonStatus:v43 circlePeerID:v6 circleStatus:v19 keyState:v21 currentTLKUUID:v20 currentClassAUUID:v10 currentClassCUUID:v11 zoneID:v15 encodedCKRecord:v17];
+  v27 = [(CKKSDeviceStateEntry *)v26 initForDevice:asString2 contextID:asString3 osVersion:asString4 lastUnlockTime:asISO8601Date octagonPeerID:asString5 octagonStatus:v43 circlePeerID:asString6 circleStatus:v19 keyState:asString8 currentTLKUUID:asString9 currentClassAUUID:asString10 currentClassCUUID:asString11 zoneID:v15 encodedCKRecord:asBase64DecodedData];
 
   return v27;
 }
 
-+ (id)allInZone:(id)a3 error:(id *)a4
++ (id)allInZone:(id)zone error:(id *)error
 {
   v13 = @"ckzone";
-  v6 = [a3 zoneName];
-  v7 = v6;
-  if (v6)
+  zoneName = [zone zoneName];
+  v7 = zoneName;
+  if (zoneName)
   {
-    v8 = v6;
+    v8 = zoneName;
   }
 
   else
@@ -2279,17 +2279,17 @@ LABEL_17:
 
   v14 = v9;
   v10 = [NSDictionary dictionaryWithObjects:&v14 forKeys:&v13 count:1];
-  v11 = [a1 allWhere:v10 error:a4];
+  v11 = [self allWhere:v10 error:error];
 
   return v11;
 }
 
-+ (id)tryFromDatabaseFromCKRecordID:(id)a3 contextID:(id)a4 error:(id *)a5
++ (id)tryFromDatabaseFromCKRecordID:(id)d contextID:(id)iD error:(id *)error
 {
-  v8 = a4;
+  iDCopy = iD;
   v25[0] = @"device";
-  v9 = a3;
-  v10 = [a1 nameFromCKRecordID:v9];
+  dCopy = d;
+  v10 = [self nameFromCKRecordID:dCopy];
   v11 = v10;
   if (v10)
   {
@@ -2305,7 +2305,7 @@ LABEL_17:
 
   v26[0] = v13;
   v25[1] = @"contextID";
-  v14 = v8;
+  v14 = iDCopy;
   v15 = v14;
   if (v14)
   {
@@ -2321,13 +2321,13 @@ LABEL_17:
 
   v26[1] = v17;
   v25[2] = @"ckzone";
-  v18 = [v9 zoneID];
+  zoneID = [dCopy zoneID];
 
-  v19 = [v18 zoneName];
+  zoneName = [zoneID zoneName];
 
-  if (v19)
+  if (zoneName)
   {
-    v20 = v19;
+    v20 = zoneName;
   }
 
   else
@@ -2339,18 +2339,18 @@ LABEL_17:
 
   v26[2] = v21;
   v22 = [NSDictionary dictionaryWithObjects:v26 forKeys:v25 count:3];
-  v23 = [a1 tryFromDatabaseWhere:v22 error:a5];
+  v23 = [self tryFromDatabaseWhere:v22 error:error];
 
   return v23;
 }
 
-+ (id)tryFromDatabase:(id)a3 contextID:(id)a4 zoneID:(id)a5 error:(id *)a6
++ (id)tryFromDatabase:(id)database contextID:(id)d zoneID:(id)iD error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  databaseCopy = database;
+  dCopy = d;
+  iDCopy = iD;
   v28[0] = @"device";
-  v13 = v10;
+  v13 = databaseCopy;
   v14 = v13;
   if (v13)
   {
@@ -2366,7 +2366,7 @@ LABEL_17:
 
   v29[0] = v16;
   v28[1] = @"contextID";
-  v17 = v11;
+  v17 = dCopy;
   v18 = v17;
   if (v17)
   {
@@ -2382,11 +2382,11 @@ LABEL_17:
 
   v29[1] = v20;
   v28[2] = @"ckzone";
-  v21 = [v12 zoneName];
-  v22 = v21;
-  if (v21)
+  zoneName = [iDCopy zoneName];
+  v22 = zoneName;
+  if (zoneName)
   {
-    v23 = v21;
+    v23 = zoneName;
   }
 
   else
@@ -2398,18 +2398,18 @@ LABEL_17:
 
   v29[2] = v24;
   v25 = [NSDictionary dictionaryWithObjects:v29 forKeys:v28 count:3];
-  v26 = [a1 tryFromDatabaseWhere:v25 error:a6];
+  v26 = [self tryFromDatabaseWhere:v25 error:error];
 
   return v26;
 }
 
-+ (id)fromDatabase:(id)a3 contextID:(id)a4 zoneID:(id)a5 error:(id *)a6
++ (id)fromDatabase:(id)database contextID:(id)d zoneID:(id)iD error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  databaseCopy = database;
+  dCopy = d;
+  iDCopy = iD;
   v28[0] = @"device";
-  v13 = v10;
+  v13 = databaseCopy;
   v14 = v13;
   if (v13)
   {
@@ -2425,7 +2425,7 @@ LABEL_17:
 
   v29[0] = v16;
   v28[1] = @"contextID";
-  v17 = v11;
+  v17 = dCopy;
   v18 = v17;
   if (v17)
   {
@@ -2441,11 +2441,11 @@ LABEL_17:
 
   v29[1] = v20;
   v28[2] = @"ckzone";
-  v21 = [v12 zoneName];
-  v22 = v21;
-  if (v21)
+  zoneName = [iDCopy zoneName];
+  v22 = zoneName;
+  if (zoneName)
   {
-    v23 = v21;
+    v23 = zoneName;
   }
 
   else
@@ -2457,22 +2457,22 @@ LABEL_17:
 
   v29[2] = v24;
   v25 = [NSDictionary dictionaryWithObjects:v29 forKeys:v28 count:3];
-  v26 = [a1 fromDatabaseWhere:v25 error:a6];
+  v26 = [self fromDatabaseWhere:v25 error:error];
 
   return v26;
 }
 
-+ (id)nameFromCKRecordID:(id)a3
++ (id)nameFromCKRecordID:(id)d
 {
-  v3 = [a3 recordName];
-  if ([v3 hasPrefix:@"ckid-"])
+  recordName = [d recordName];
+  if ([recordName hasPrefix:@"ckid-"])
   {
-    v4 = [v3 substringFromIndex:{objc_msgSend(@"ckid-", "length")}];
+    v4 = [recordName substringFromIndex:{objc_msgSend(@"ckid-", "length")}];
 
-    v3 = v4;
+    recordName = v4;
   }
 
-  return v3;
+  return recordName;
 }
 
 @end

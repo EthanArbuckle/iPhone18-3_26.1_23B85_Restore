@@ -8,40 +8,40 @@
 
 - (void)wf_applyContentLayoutMarginsToNavigationController
 {
-  [a1 wf_contentLayoutMargins];
+  [self wf_contentLayoutMargins];
   v3 = v2;
   v5 = v4;
   v7 = v6;
   v9 = v8;
-  v10 = [a1 navigationController];
-  v11 = [v10 navigationBar];
-  [v11 setPreservesSuperviewLayoutMargins:0];
+  navigationController = [self navigationController];
+  navigationBar = [navigationController navigationBar];
+  [navigationBar setPreservesSuperviewLayoutMargins:0];
 
-  v12 = [a1 navigationController];
-  v13 = [v12 navigationBar];
-  [v13 setLayoutMargins:{v3, v5, v7, v9}];
+  navigationController2 = [self navigationController];
+  navigationBar2 = [navigationController2 navigationBar];
+  [navigationBar2 setLayoutMargins:{v3, v5, v7, v9}];
 
-  v14 = [a1 navigationItem];
-  v15 = [v14 searchController];
-  v16 = [v15 searchBar];
-  [v16 setPreservesSuperviewLayoutMargins:0];
+  navigationItem = [self navigationItem];
+  searchController = [navigationItem searchController];
+  searchBar = [searchController searchBar];
+  [searchBar setPreservesSuperviewLayoutMargins:0];
 
-  v19 = [a1 navigationItem];
-  v17 = [v19 searchController];
-  v18 = [v17 searchBar];
-  [v18 setLayoutMargins:{v3, v5, v7, v9}];
+  navigationItem2 = [self navigationItem];
+  searchController2 = [navigationItem2 searchController];
+  searchBar2 = [searchController2 searchBar];
+  [searchBar2 setLayoutMargins:{v3, v5, v7, v9}];
 }
 
 - (double)wf_contentLayoutMargins
 {
-  v2 = [a1 view];
-  [v2 layoutMargins];
+  view = [self view];
+  [view layoutMargins];
   v4 = v3;
 
-  if ([a1 viewRespectsSystemMinimumLayoutMargins])
+  if ([self viewRespectsSystemMinimumLayoutMargins])
   {
-    v5 = [a1 view];
-    [v5 bounds];
+    view2 = [self view];
+    [view2 bounds];
   }
 
   return v4;
@@ -53,13 +53,13 @@
   [v4 contentOffset];
   v6 = v5;
   v8 = v7;
-  v9 = [a1 navigationItem];
-  v10 = [v9 searchController];
-  v11 = [v10 searchBar];
+  navigationItem = [self navigationItem];
+  searchController = [navigationItem searchController];
+  searchBar = [searchController searchBar];
 
   [v4 safeAreaInsets];
   v13 = v12;
-  [v11 bounds];
+  [searchBar bounds];
   if (CGRectGetHeight(v18) != 0.0 || (v8 == -v13 ? (v14 = v13 <= 64.0) : (v14 = 1), v14))
   {
     v17 = 0;

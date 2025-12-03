@@ -1,16 +1,16 @@
 @interface AXVoiceOverPunctuationBaseChooserViewController
 - (id)punctuationGroup;
 - (id)specifiers;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
 @end
 
 @implementation AXVoiceOverPunctuationBaseChooserViewController
 
 - (id)punctuationGroup
 {
-  v2 = [(AXVoiceOverPunctuationBaseChooserViewController *)self specifier];
-  v3 = [v2 propertyForKey:@"PunctuationGroup"];
+  specifier = [(AXVoiceOverPunctuationBaseChooserViewController *)self specifier];
+  v3 = [specifier propertyForKey:@"PunctuationGroup"];
 
   return v3;
 }
@@ -43,10 +43,10 @@
     v32 = 0u;
     v33 = 0u;
     v11 = +[AXSSPunctuationManager sharedDatabase];
-    v12 = [v11 punctuationGroups];
+    punctuationGroups = [v11 punctuationGroups];
 
-    obj = v12;
-    v13 = [v12 countByEnumeratingWithState:&v32 objects:v36 count:16];
+    obj = punctuationGroups;
+    v13 = [punctuationGroups countByEnumeratingWithState:&v32 objects:v36 count:16];
     if (v13)
     {
       v14 = v13;
@@ -61,19 +61,19 @@
           }
 
           v17 = *(*(&v32 + 1) + 8 * i);
-          v18 = [v17 uuid];
-          v19 = [(AXVoiceOverPunctuationBaseChooserViewController *)self punctuationGroup];
-          v20 = [v19 uuid];
-          v21 = [v18 isEqual:v20];
+          uuid = [v17 uuid];
+          punctuationGroup = [(AXVoiceOverPunctuationBaseChooserViewController *)self punctuationGroup];
+          uuid2 = [punctuationGroup uuid];
+          v21 = [uuid isEqual:uuid2];
 
           if ((v21 & 1) == 0)
           {
-            v22 = [v17 name];
-            v23 = [PSSpecifier preferenceSpecifierNamed:v22 target:0 set:0 get:0 detail:0 cell:3 edit:0];
+            name = [v17 name];
+            v23 = [PSSpecifier preferenceSpecifierNamed:name target:0 set:0 get:0 detail:0 cell:3 edit:0];
 
-            v24 = [(AXVoiceOverPunctuationBaseChooserViewController *)self punctuationGroup];
-            v25 = [v24 uuid];
-            [v23 setProperty:v25 forKey:@"punctuationGroupUUID"];
+            punctuationGroup2 = [(AXVoiceOverPunctuationBaseChooserViewController *)self punctuationGroup];
+            uuid3 = [punctuationGroup2 uuid];
+            [v23 setProperty:uuid3 forKey:@"punctuationGroupUUID"];
 
             [v30 addObject:v23];
             v10 = v23;
@@ -96,50 +96,50 @@
   return v3;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(AXVoiceOverPunctuationBaseChooserViewController *)self specifierForIndexPath:v6];
+  pathCopy = path;
+  viewCopy = view;
+  v8 = [(AXVoiceOverPunctuationBaseChooserViewController *)self specifierForIndexPath:pathCopy];
   v9 = [v8 propertyForKey:@"punctuationGroupUUID"];
-  v10 = [(AXVoiceOverPunctuationBaseChooserViewController *)self punctuationGroup];
-  [v10 setBasePunctuationUUID:v9];
+  punctuationGroup = [(AXVoiceOverPunctuationBaseChooserViewController *)self punctuationGroup];
+  [punctuationGroup setBasePunctuationUUID:v9];
 
   v11 = AXLogPunctuationStorage();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
-    v12 = [(AXVoiceOverPunctuationBaseChooserViewController *)self punctuationGroup];
+    punctuationGroup2 = [(AXVoiceOverPunctuationBaseChooserViewController *)self punctuationGroup];
     *buf = 138412546;
     v18 = v9;
     v19 = 2112;
-    v20 = v12;
+    v20 = punctuationGroup2;
     _os_log_impl(&dword_0, v11, OS_LOG_TYPE_INFO, "Set base punctuation group: %@ for %@", buf, 0x16u);
   }
 
   v13 = +[AXSSPunctuationManager sharedDatabase];
-  v14 = [(AXVoiceOverPunctuationBaseChooserViewController *)self punctuationGroup];
-  [v13 updatePunctuationGroup:v14];
+  punctuationGroup3 = [(AXVoiceOverPunctuationBaseChooserViewController *)self punctuationGroup];
+  [v13 updatePunctuationGroup:punctuationGroup3];
 
   v15 = +[NSNotificationCenter defaultCenter];
   [v15 postNotificationName:@"AXVoiceOverPunctuationGroupChangedNotification" object:0];
 
   v16.receiver = self;
   v16.super_class = AXVoiceOverPunctuationBaseChooserViewController;
-  [(AXVoiceOverPunctuationBaseChooserViewController *)&v16 tableView:v7 didSelectRowAtIndexPath:v6];
+  [(AXVoiceOverPunctuationBaseChooserViewController *)&v16 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
 
-  [(AXVoiceOverPunctuationBaseChooserViewController *)self updateTableCheckedSelection:v6];
+  [(AXVoiceOverPunctuationBaseChooserViewController *)self updateTableCheckedSelection:pathCopy];
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v7 = a4;
-  v12 = [(AXVoiceOverPunctuationBaseChooserViewController *)self specifierForIndexPath:a5];
+  cellCopy = cell;
+  v12 = [(AXVoiceOverPunctuationBaseChooserViewController *)self specifierForIndexPath:path];
   v8 = [v12 propertyForKey:@"punctuationGroupUUID"];
-  v9 = [(AXVoiceOverPunctuationBaseChooserViewController *)self punctuationGroup];
-  v10 = [v9 basePunctuationUUID];
-  v11 = [v10 isEqual:v8];
+  punctuationGroup = [(AXVoiceOverPunctuationBaseChooserViewController *)self punctuationGroup];
+  basePunctuationUUID = [punctuationGroup basePunctuationUUID];
+  v11 = [basePunctuationUUID isEqual:v8];
 
-  [v7 setChecked:v11];
+  [cellCopy setChecked:v11];
 }
 
 @end

@@ -1,5 +1,5 @@
 @interface NowPlayingContentViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_axIsVideo;
 - (BOOL)isAccessibilityElement;
 - (id)accessibilityLabel;
@@ -8,17 +8,17 @@
 
 @implementation NowPlayingContentViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"Music.NowPlayingContentView" hasInstanceMethod:@"accessibilityPlayerVideoLayer" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AVPlayerLayer" hasInstanceMethod:@"isReadyForDisplay" withFullSignature:{"B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"Music.NowPlayingContentView" hasInstanceMethod:@"accessibilityPlayerVideoLayer" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AVPlayerLayer" hasInstanceMethod:@"isReadyForDisplay" withFullSignature:{"B", 0}];
 }
 
 - (BOOL)isAccessibilityElement
 {
-  v2 = [(NowPlayingContentViewAccessibility *)self accessibilityIdentifier];
-  v3 = [v2 isEqualToString:@"MiniPlayerArtworkNotVisible"];
+  accessibilityIdentifier = [(NowPlayingContentViewAccessibility *)self accessibilityIdentifier];
+  v3 = [accessibilityIdentifier isEqualToString:@"MiniPlayerArtworkNotVisible"];
 
   return v3 ^ 1;
 }
@@ -52,15 +52,15 @@
 {
   v7.receiver = self;
   v7.super_class = NowPlayingContentViewAccessibility;
-  v3 = [(NowPlayingContentViewAccessibility *)&v7 accessibilityTraits];
-  v4 = [(NowPlayingContentViewAccessibility *)self _axIsVideo];
+  accessibilityTraits = [(NowPlayingContentViewAccessibility *)&v7 accessibilityTraits];
+  _axIsVideo = [(NowPlayingContentViewAccessibility *)self _axIsVideo];
   v5 = *MEMORY[0x29EDC7F88];
-  if (v4)
+  if (_axIsVideo)
   {
     v5 = 0;
   }
 
-  return v5 | v3;
+  return v5 | accessibilityTraits;
 }
 
 @end

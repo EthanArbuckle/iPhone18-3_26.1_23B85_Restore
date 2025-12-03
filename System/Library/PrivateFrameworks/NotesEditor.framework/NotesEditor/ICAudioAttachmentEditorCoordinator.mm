@@ -5,31 +5,31 @@
 - (UITextView)textView;
 - (UIView)icaxMiniPlayerView;
 - (id)makeCancelAction;
-- (id)makeDeleteActionFor:(id)a3;
-- (id)makeDeleteAlertControllerFor:(id)a3;
-- (void)appendTo:(id)a3;
-- (void)audioControllerDidPlay:(id)a3;
-- (void)closeMiniPlayerFor:(id)a3;
+- (id)makeDeleteActionFor:(id)for;
+- (id)makeDeleteAlertControllerFor:(id)for;
+- (void)appendTo:(id)to;
+- (void)audioControllerDidPlay:(id)play;
+- (void)closeMiniPlayerFor:(id)for;
 - (void)dealloc;
-- (void)delete:(id)a3;
-- (void)documentPicker:(id)a3 didPickDocumentsAtURLs:(id)a4;
-- (void)documentPickerWasCancelled:(id)a3;
-- (void)eventReporterLostSession:(id)a3;
-- (void)exportCallRecordingForDataCollectionForAttachment:(id)a3;
-- (void)playFromBeginning:(id)a3;
-- (void)presentCallRecordingExportViewForAttachment:(id)a3;
-- (void)presentExportViewForAttachment:(id)a3;
-- (void)presentRecordingViewControllerForAttachment:(id)a3;
-- (void)presentReportAConcernFor:(id)a3 withPositiveFeedback:(BOOL)a4;
-- (void)presentSharingViewForAttachment:(id)a3 fromSourceView:(id)a4;
-- (void)presentSummaryFor:(id)a3;
-- (void)presentTranscriptFor:(id)a3;
-- (void)recordingDetailViewShouldDismiss:(id)a3;
-- (void)rename:(id)a3;
-- (void)scrollTo:(id)a3;
-- (void)setIsShowingInspector:(BOOL)a3;
+- (void)delete:(id)delete;
+- (void)documentPicker:(id)picker didPickDocumentsAtURLs:(id)ls;
+- (void)documentPickerWasCancelled:(id)cancelled;
+- (void)eventReporterLostSession:(id)session;
+- (void)exportCallRecordingForDataCollectionForAttachment:(id)attachment;
+- (void)playFromBeginning:(id)beginning;
+- (void)presentCallRecordingExportViewForAttachment:(id)attachment;
+- (void)presentExportViewForAttachment:(id)attachment;
+- (void)presentRecordingViewControllerForAttachment:(id)attachment;
+- (void)presentReportAConcernFor:(id)for withPositiveFeedback:(BOOL)feedback;
+- (void)presentSharingViewForAttachment:(id)attachment fromSourceView:(id)view;
+- (void)presentSummaryFor:(id)for;
+- (void)presentTranscriptFor:(id)for;
+- (void)recordingDetailViewShouldDismiss:(id)dismiss;
+- (void)rename:(id)rename;
+- (void)scrollTo:(id)to;
+- (void)setIsShowingInspector:(BOOL)inspector;
 - (void)teardown;
-- (void)textViewDidScroll:(id)a3;
+- (void)textViewDidScroll:(id)scroll;
 - (void)viewWasDismissed;
 @end
 
@@ -37,7 +37,7 @@
 
 - (void)teardown
 {
-  v2 = self;
+  selfCopy = self;
   sub_2151A60CC();
 }
 
@@ -48,76 +48,76 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)textViewDidScroll:(id)a3
+- (void)textViewDidScroll:(id)scroll
 {
-  v3 = self;
+  selfCopy = self;
   sub_2151B6D04();
 }
 
 - (void)dealloc
 {
   v3 = objc_opt_self();
-  v4 = self;
-  v5 = [v3 defaultCenter];
-  [v5 removeObserver_];
+  selfCopy = self;
+  defaultCenter = [v3 defaultCenter];
+  [defaultCenter removeObserver_];
 
-  v6.receiver = v4;
+  v6.receiver = selfCopy;
   v6.super_class = type metadata accessor for AudioAttachmentEditorCoordinator();
   [(ICAudioAttachmentEditorCoordinator *)&v6 dealloc];
 }
 
-- (void)presentRecordingViewControllerForAttachment:(id)a3
+- (void)presentRecordingViewControllerForAttachment:(id)attachment
 {
-  v5 = a3;
-  v6 = self;
-  sub_2153E1BB8(a3);
+  attachmentCopy = attachment;
+  selfCopy = self;
+  sub_2153E1BB8(attachment);
 }
 
-- (void)audioControllerDidPlay:(id)a3
+- (void)audioControllerDidPlay:(id)play
 {
   v4 = sub_21549E19C();
   v5 = *(v4 - 8);
   MEMORY[0x28223BE20](v4);
   v7 = &v9 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_21549E16C();
-  v8 = self;
+  selfCopy = self;
   sub_2153E26E8();
 
   (*(v5 + 8))(v7, v4);
 }
 
-- (void)setIsShowingInspector:(BOOL)a3
+- (void)setIsShowingInspector:(BOOL)inspector
 {
   v5 = OBJC_IVAR___ICAudioAttachmentEditorCoordinator_isShowingInspector;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = inspector;
 }
 
 - (BOOL)isShowingMiniPlayer
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_2153E36F8();
 
   return v3;
 }
 
-- (void)eventReporterLostSession:(id)a3
+- (void)eventReporterLostSession:(id)session
 {
-  v5 = a3;
-  v6 = self;
-  sub_2153E3874(a3);
+  sessionCopy = session;
+  selfCopy = self;
+  sub_2153E3874(session);
 }
 
 - (UIView)icaxMiniPlayerView
 {
-  v3 = *(&self->super.isa + OBJC_IVAR___ICAudioAttachmentEditorCoordinator_miniPlayer);
-  if (v3)
+  view = *(&self->super.isa + OBJC_IVAR___ICAudioAttachmentEditorCoordinator_miniPlayer);
+  if (view)
   {
-    v3 = [v3 view];
+    view = [view view];
     v2 = vars8;
   }
 
-  return v3;
+  return view;
 }
 
 - (ICAudioAttachmentEditorCoordinator)init
@@ -129,12 +129,12 @@
 
 - (UITextView)textView
 {
-  v2 = [*(&self->super.isa + OBJC_IVAR___ICAudioAttachmentEditorCoordinator_noteEditorViewController) textView];
+  textView = [*(&self->super.isa + OBJC_IVAR___ICAudioAttachmentEditorCoordinator_noteEditorViewController) textView];
 
-  return v2;
+  return textView;
 }
 
-- (void)presentSharingViewForAttachment:(id)a3 fromSourceView:(id)a4
+- (void)presentSharingViewForAttachment:(id)attachment fromSourceView:(id)view
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27CA5ACE0);
   MEMORY[0x28223BE20](v7 - 8);
@@ -142,37 +142,37 @@
   v10 = sub_2154A202C();
   (*(*(v10 - 8) + 56))(v9, 1, 1, v10);
   sub_2154A1FFC();
-  v11 = a3;
-  v12 = a4;
-  v13 = self;
-  v14 = v11;
-  v15 = v12;
+  attachmentCopy = attachment;
+  viewCopy = view;
+  selfCopy = self;
+  v14 = attachmentCopy;
+  v15 = viewCopy;
   v16 = sub_2154A1FEC();
   v17 = swift_allocObject();
   v18 = MEMORY[0x277D85700];
   v17[2] = v16;
   v17[3] = v18;
-  v17[4] = v13;
+  v17[4] = selfCopy;
   v17[5] = v14;
-  v17[6] = a4;
+  v17[6] = view;
   sub_2152F4D50(0, 0, v9, &unk_2154C2EB0, v17);
 }
 
-- (void)presentCallRecordingExportViewForAttachment:(id)a3
+- (void)presentCallRecordingExportViewForAttachment:(id)attachment
 {
-  v4 = a3;
-  v5 = self;
-  sub_2153E4C18(v4, 1, 0);
+  attachmentCopy = attachment;
+  selfCopy = self;
+  sub_2153E4C18(attachmentCopy, 1, 0);
 }
 
-- (void)exportCallRecordingForDataCollectionForAttachment:(id)a3
+- (void)exportCallRecordingForDataCollectionForAttachment:(id)attachment
 {
-  v4 = a3;
-  v5 = self;
-  sub_2153E4C18(v4, 1, 1);
+  attachmentCopy = attachment;
+  selfCopy = self;
+  sub_2153E4C18(attachmentCopy, 1, 1);
 }
 
-- (void)presentExportViewForAttachment:(id)a3
+- (void)presentExportViewForAttachment:(id)attachment
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27CA5ACE0);
   MEMORY[0x28223BE20](v5 - 8);
@@ -180,26 +180,26 @@
   v8 = sub_2154A202C();
   (*(*(v8 - 8) + 56))(v7, 1, 1, v8);
   sub_2154A1FFC();
-  v9 = a3;
-  v10 = self;
-  v11 = v9;
+  attachmentCopy = attachment;
+  selfCopy = self;
+  v11 = attachmentCopy;
   v12 = sub_2154A1FEC();
   v13 = swift_allocObject();
   v14 = MEMORY[0x277D85700];
   v13[2] = v12;
   v13[3] = v14;
-  v13[4] = v10;
+  v13[4] = selfCopy;
   v13[5] = v11;
   sub_2152F4D50(0, 0, v7, &unk_2154C2EA8, v13);
 }
 
 - (void)viewWasDismissed
 {
-  v2 = self;
+  selfCopy = self;
   AudioAttachmentEditorCoordinator.viewWasDismissed()();
 }
 
-- (void)recordingDetailViewShouldDismiss:(id)a3
+- (void)recordingDetailViewShouldDismiss:(id)dismiss
 {
   swift_unknownObjectRetain();
   sub_2154A2BCC();
@@ -207,105 +207,105 @@
   __swift_destroy_boxed_opaque_existential_0Tm(&v3);
 }
 
-- (void)playFromBeginning:(id)a3
+- (void)playFromBeginning:(id)beginning
 {
-  v4 = a3;
-  v5 = self;
-  _s11NotesEditor015AudioAttachmentB11CoordinatorC17playFromBeginningyySo12ICAttachmentCF_0(v4);
+  beginningCopy = beginning;
+  selfCopy = self;
+  _s11NotesEditor015AudioAttachmentB11CoordinatorC17playFromBeginningyySo12ICAttachmentCF_0(beginningCopy);
 }
 
-- (void)closeMiniPlayerFor:(id)a3
+- (void)closeMiniPlayerFor:(id)for
 {
-  v4 = a3;
-  v5 = self;
-  v6 = [v4 objectID];
+  forCopy = for;
+  selfCopy = self;
+  objectID = [forCopy objectID];
   swift_beginAccess();
-  sub_2153EED00(&v8, v6, &qword_2811995F0, 0x277CBE448, &unk_27CA5C6F0, &unk_2154BE710);
+  sub_2153EED00(&v8, objectID, &qword_2811995F0, 0x277CBE448, &unk_27CA5C6F0, &unk_2154BE710);
   v7 = v8;
   swift_endAccess();
 
-  sub_2153E2A18(0, v4);
+  sub_2153E2A18(0, forCopy);
 }
 
-- (void)scrollTo:(id)a3
+- (void)scrollTo:(id)to
 {
-  v4 = a3;
-  v9 = self;
-  v5 = [(ICAudioAttachmentEditorCoordinator *)v9 textView];
-  if (v5)
+  toCopy = to;
+  selfCopy = self;
+  textView = [(ICAudioAttachmentEditorCoordinator *)selfCopy textView];
+  if (textView)
   {
-    v6 = v5;
-    v7 = [v4 rangeInNote];
-    [(UITextView *)v6 ic_scrollRangeToVisible:v7 animated:v8 completionHandler:1, 0];
+    v6 = textView;
+    rangeInNote = [toCopy rangeInNote];
+    [(UITextView *)v6 ic_scrollRangeToVisible:rangeInNote animated:v8 completionHandler:1, 0];
   }
 }
 
-- (void)rename:(id)a3
+- (void)rename:(id)rename
 {
   v5 = objc_opt_self();
   v6 = *(&self->super.isa + OBJC_IVAR___ICAudioAttachmentEditorCoordinator_noteEditorViewController);
 
-  [v5 renameAttachment:a3 presentingViewController:v6];
+  [v5 renameAttachment:rename presentingViewController:v6];
 }
 
-- (void)presentTranscriptFor:(id)a3
+- (void)presentTranscriptFor:(id)for
 {
-  v4 = a3;
-  v5 = self;
-  AudioAttachmentEditorCoordinator.presentTranscript(for:)(v4);
+  forCopy = for;
+  selfCopy = self;
+  AudioAttachmentEditorCoordinator.presentTranscript(for:)(forCopy);
 }
 
-- (void)presentSummaryFor:(id)a3
+- (void)presentSummaryFor:(id)for
 {
-  v4 = a3;
-  v5 = self;
-  AudioAttachmentEditorCoordinator.presentSummary(for:)(v4);
+  forCopy = for;
+  selfCopy = self;
+  AudioAttachmentEditorCoordinator.presentSummary(for:)(forCopy);
 }
 
-- (void)appendTo:(id)a3
+- (void)appendTo:(id)to
 {
-  v4 = a3;
-  v5 = self;
-  _s11NotesEditor015AudioAttachmentB11CoordinatorC6append2toySo12ICAttachmentC_tF_0(v4);
+  toCopy = to;
+  selfCopy = self;
+  _s11NotesEditor015AudioAttachmentB11CoordinatorC6append2toySo12ICAttachmentC_tF_0(toCopy);
 }
 
-- (void)presentReportAConcernFor:(id)a3 withPositiveFeedback:(BOOL)a4
+- (void)presentReportAConcernFor:(id)for withPositiveFeedback:(BOOL)feedback
 {
-  v6 = a3;
-  v7 = self;
-  AudioAttachmentEditorCoordinator.presentReportAConcern(for:withPositiveFeedback:)(v6, a4);
+  forCopy = for;
+  selfCopy = self;
+  AudioAttachmentEditorCoordinator.presentReportAConcern(for:withPositiveFeedback:)(forCopy, feedback);
 }
 
-- (void)delete:(id)a3
+- (void)delete:(id)delete
 {
-  v4 = a3;
-  v5 = self;
-  v6 = [(ICAudioAttachmentEditorCoordinator *)v5 makeDeleteAlertControllerFor:v4];
-  v7 = *(&v5->super.isa + OBJC_IVAR___ICAudioAttachmentEditorCoordinator_noteEditorViewController);
-  v8 = [v7 presentedViewController];
-  if (!v8)
+  deleteCopy = delete;
+  selfCopy = self;
+  v6 = [(ICAudioAttachmentEditorCoordinator *)selfCopy makeDeleteAlertControllerFor:deleteCopy];
+  v7 = *(&selfCopy->super.isa + OBJC_IVAR___ICAudioAttachmentEditorCoordinator_noteEditorViewController);
+  presentedViewController = [v7 presentedViewController];
+  if (!presentedViewController)
   {
-    v8 = v7;
+    presentedViewController = v7;
   }
 
-  v9 = v8;
-  [v8 presentViewController:v6 animated:1 completion:0];
+  v9 = presentedViewController;
+  [presentedViewController presentViewController:v6 animated:1 completion:0];
 }
 
-- (id)makeDeleteAlertControllerFor:(id)a3
+- (id)makeDeleteAlertControllerFor:(id)for
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_2153EA94C(v4);
+  forCopy = for;
+  selfCopy = self;
+  v6 = sub_2153EA94C(forCopy);
 
   return v6;
 }
 
-- (id)makeDeleteActionFor:(id)a3
+- (id)makeDeleteActionFor:(id)for
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_2153F11BC(v4);
+  forCopy = for;
+  selfCopy = self;
+  v6 = sub_2153F11BC(forCopy);
 
   return v6;
 }
@@ -317,15 +317,15 @@
   return v2;
 }
 
-- (void)documentPickerWasCancelled:(id)a3
+- (void)documentPickerWasCancelled:(id)cancelled
 {
-  v3 = self;
+  selfCopy = self;
   _s11NotesEditor015AudioAttachmentB11CoordinatorC26documentPickerWasCancelledyySo010UIDocumentG14ViewControllerCF_0();
 }
 
-- (void)documentPicker:(id)a3 didPickDocumentsAtURLs:(id)a4
+- (void)documentPicker:(id)picker didPickDocumentsAtURLs:(id)ls
 {
-  v4 = self;
+  selfCopy = self;
   _s11NotesEditor015AudioAttachmentB11CoordinatorC26documentPickerWasCancelledyySo010UIDocumentG14ViewControllerCF_0();
 }
 

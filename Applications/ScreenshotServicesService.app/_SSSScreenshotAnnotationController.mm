@@ -1,43 +1,43 @@
 @interface _SSSScreenshotAnnotationController
-+ (id)annotationDataFromAnnotations:(id)a3;
-+ (id)annotationsFromAnnotationData:(id)a3;
-- (BOOL)_updateAnnotationsForViewState:(id)a3 createUndoCommand:(BOOL)a4;
-- (CGRect)maxPageRectWithPageIndex:(unint64_t)a3 forAnnotationController:(id)a4;
++ (id)annotationDataFromAnnotations:(id)annotations;
++ (id)annotationsFromAnnotationData:(id)data;
+- (BOOL)_updateAnnotationsForViewState:(id)state createUndoCommand:(BOOL)command;
+- (CGRect)maxPageRectWithPageIndex:(unint64_t)index forAnnotationController:(id)controller;
 - (CGRect)rectToCenterAboveKeyboard;
-- (CGRect)visibleRectOfOverlayAtPageIndex:(unint64_t)a3 forAnnotationController:(id)a4;
+- (CGRect)visibleRectOfOverlayAtPageIndex:(unint64_t)index forAnnotationController:(id)controller;
 - (_SSSScreenshotAnnotationController)init;
-- (double)modelBaseScaleFactorOfPageAtIndex:(unint64_t)a3 forAnnotationController:(id)a4;
+- (double)modelBaseScaleFactorOfPageAtIndex:(unint64_t)index forAnnotationController:(id)controller;
 - (id)contentSnapshot;
 - (id)doubleTapGestureRecognizer;
 - (id)gestureRecognizers;
-- (id)layerContainingQuickBackgroundForLoupeOnOverlayAtPageIndex:(unint64_t)a3 forAnnotationController:(id)a4;
+- (id)layerContainingQuickBackgroundForLoupeOnOverlayAtPageIndex:(unint64_t)index forAnnotationController:(id)controller;
 - (id)longPressGestureRecognizer;
-- (id)newContentSnapshotPDFDataIncludingAdornments:(BOOL)a3 atScale:(double)a4 inRect:(CGRect)a5 onOverlayAtPageIndex:(unint64_t)a6 forAnnotationController:(id)a7;
+- (id)newContentSnapshotPDFDataIncludingAdornments:(BOOL)adornments atScale:(double)scale inRect:(CGRect)rect onOverlayAtPageIndex:(unint64_t)index forAnnotationController:(id)controller;
 - (id)overlayView;
 - (id)pageModelController;
 - (id)panGestureRecognizer;
-- (id)popoverPresentingViewControllerForAnnotationController:(id)a3;
+- (id)popoverPresentingViewControllerForAnnotationController:(id)controller;
 - (id)rotationGestureRecognizer;
 - (id)tapGestureRecognizer;
-- (id)undoManagerForAnnotationController:(id)a3;
-- (void)_enableInkingOnAKController:(BOOL)a3;
+- (id)undoManagerForAnnotationController:(id)controller;
+- (void)_enableInkingOnAKController:(BOOL)controller;
 - (void)_prepareAKController;
-- (void)_updateAnnotationsCreateUndoCommand:(BOOL)a3;
-- (void)controllerDidDismissPopover:(id)a3;
+- (void)_updateAnnotationsCreateUndoCommand:(BOOL)command;
+- (void)controllerDidDismissPopover:(id)popover;
 - (void)dealloc;
-- (void)editDetectedForAnnotationController:(id)a3;
+- (void)editDetectedForAnnotationController:(id)controller;
 - (void)endedEditingWithOverlay;
-- (void)handleDrawingGestureRecognizerUpdate:(id)a3;
-- (void)installDrawingGestureRecognizer:(id)a3 forPageAtIndex:(unint64_t)a4 forAnnotationController:(id)a5;
+- (void)handleDrawingGestureRecognizerUpdate:(id)update;
+- (void)installDrawingGestureRecognizer:(id)recognizer forPageAtIndex:(unint64_t)index forAnnotationController:(id)controller;
 - (void)logDidEnterEditingWithOverlay;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)penStrokeCompletedForAnnotationController:(id)a3;
-- (void)setActive:(BOOL)a3;
-- (void)setAnnotationKitController:(id)a3 didAllocate:(BOOL)a4;
-- (void)setGesturesEnabled:(BOOL)a3;
-- (void)setScreenshot:(id)a3;
-- (void)uninstallDrawingGestureRecognizer:(id)a3 forPageAtIndex:(unint64_t)a4 forAnnotationController:(id)a5;
-- (void)updateDrawingGestureRecognizer:(id)a3 forPageAtIndex:(unint64_t)a4 withPriority:(BOOL)a5 forAnnotationController:(id)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)penStrokeCompletedForAnnotationController:(id)controller;
+- (void)setActive:(BOOL)active;
+- (void)setAnnotationKitController:(id)controller didAllocate:(BOOL)allocate;
+- (void)setGesturesEnabled:(BOOL)enabled;
+- (void)setScreenshot:(id)screenshot;
+- (void)uninstallDrawingGestureRecognizer:(id)recognizer forPageAtIndex:(unint64_t)index forAnnotationController:(id)controller;
+- (void)updateDrawingGestureRecognizer:(id)recognizer forPageAtIndex:(unint64_t)index withPriority:(BOOL)priority forAnnotationController:(id)controller;
 - (void)updateUndoState;
 @end
 
@@ -57,12 +57,12 @@
 
 - (void)dealloc
 {
-  v3 = [(_SSSScreenshotContentOverlayController *)self annotationKitController];
-  if (v3)
+  annotationKitController = [(_SSSScreenshotContentOverlayController *)self annotationKitController];
+  if (annotationKitController)
   {
-    if (-[_SSSScreenshotAnnotationController _isEditingScreenshotImage](self, "_isEditingScreenshotImage") && [v3 isOverlayViewLoadedAtIndex:0])
+    if (-[_SSSScreenshotAnnotationController _isEditingScreenshotImage](self, "_isEditingScreenshotImage") && [annotationKitController isOverlayViewLoadedAtIndex:0])
     {
-      [v3 relinquishOverlayAtIndex:0];
+      [annotationKitController relinquishOverlayAtIndex:0];
     }
 
     [(_SSSScreenshotAnnotationController *)self setAnnotationKitController:0];
@@ -82,45 +82,45 @@
 
   else
   {
-    v4 = [(_SSSScreenshotContentOverlayController *)self annotationKitController];
-    v5 = [v4 modelController];
+    annotationKitController = [(_SSSScreenshotContentOverlayController *)self annotationKitController];
+    modelController = [annotationKitController modelController];
     [(_SSSScreenshotContentOverlayController *)self viewState];
-    v3 = [v5 pageModelControllerForPage:v6];
+    v3 = [modelController pageModelControllerForPage:v6];
   }
 
   return v3;
 }
 
-- (void)setAnnotationKitController:(id)a3 didAllocate:(BOOL)a4
+- (void)setAnnotationKitController:(id)controller didAllocate:(BOOL)allocate
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(_SSSScreenshotContentOverlayController *)self annotationKitController];
-  v8 = v7;
-  if (v7 != v6)
+  allocateCopy = allocate;
+  controllerCopy = controller;
+  annotationKitController = [(_SSSScreenshotContentOverlayController *)self annotationKitController];
+  v8 = annotationKitController;
+  if (annotationKitController != controllerCopy)
   {
     if (self->_shouldTeardownAnnotationController)
     {
-      [v7 removeObserver:self forKeyPath:@"modifiedImageDescription" context:off_1000D3B60];
+      [annotationKitController removeObserver:self forKeyPath:@"modifiedImageDescription" context:off_1000D3B60];
       [v8 teardown];
     }
 
     v9.receiver = self;
     v9.super_class = _SSSScreenshotAnnotationController;
-    [(_SSSScreenshotContentOverlayController *)&v9 setAnnotationKitController:v6];
-    self->_shouldTeardownAnnotationController = v4;
-    if (v6 && v4)
+    [(_SSSScreenshotContentOverlayController *)&v9 setAnnotationKitController:controllerCopy];
+    self->_shouldTeardownAnnotationController = allocateCopy;
+    if (controllerCopy && allocateCopy)
     {
-      [v6 addObserver:self forKeyPath:@"modifiedImageDescription" options:1 context:off_1000D3B60];
+      [controllerCopy addObserver:self forKeyPath:@"modifiedImageDescription" options:1 context:off_1000D3B60];
     }
   }
 }
 
 - (void)_prepareAKController
 {
-  v3 = [(_SSSScreenshotContentOverlayController *)self annotationKitController];
+  annotationKitController = [(_SSSScreenshotContentOverlayController *)self annotationKitController];
 
-  if (v3)
+  if (annotationKitController)
   {
     [(_SSSScreenshotAnnotationController *)self setAnnotationKitController:0];
   }
@@ -146,14 +146,14 @@
   v6 = [v4 controllerWithDelegate:self];
   [(_SSSScreenshotAnnotationController *)self setAnnotationKitController:v6 didAllocate:1];
 
-  v7 = [(_SSSScreenshotContentOverlayController *)self annotationKitController];
-  [v7 setAnnotationEditingEnabled:1];
+  annotationKitController2 = [(_SSSScreenshotContentOverlayController *)self annotationKitController];
+  [annotationKitController2 setAnnotationEditingEnabled:1];
 
-  v8 = [(_SSSScreenshotContentOverlayController *)self annotationKitController];
-  [v8 setPencilAlwaysDraws:1];
+  annotationKitController3 = [(_SSSScreenshotContentOverlayController *)self annotationKitController];
+  [annotationKitController3 setPencilAlwaysDraws:1];
 
-  v9 = [(_SSSScreenshotContentOverlayController *)self annotationKitController];
-  [v9 setUseHighVisibilityDefaultInks:1];
+  annotationKitController4 = [(_SSSScreenshotContentOverlayController *)self annotationKitController];
+  [annotationKitController4 setUseHighVisibilityDefaultInks:1];
 
   v28 = 0;
   v29 = &v28;
@@ -177,87 +177,87 @@
   pageModelController = self->_pageModelController;
   self->_pageModelController = v12;
 
-  v14 = [(_SSSScreenshotContentOverlayController *)self annotationKitController];
-  v15 = [v14 modelController];
-  v16 = [v15 mutableArrayValueForKey:@"pageModelControllers"];
+  annotationKitController5 = [(_SSSScreenshotContentOverlayController *)self annotationKitController];
+  modelController = [annotationKitController5 modelController];
+  v16 = [modelController mutableArrayValueForKey:@"pageModelControllers"];
   [v16 addObject:self->_pageModelController];
 
-  v17 = [(_SSSScreenshotContentOverlayController *)self annotationKitController];
-  [v17 setCurrentPageIndex:0];
+  annotationKitController6 = [(_SSSScreenshotContentOverlayController *)self annotationKitController];
+  [annotationKitController6 setCurrentPageIndex:0];
 
   [(_SSSScreenshotAnnotationController *)self _enableInkingOnAKController:1];
-  v18 = [(_SSSScreenshotContentOverlayController *)self annotationKitController];
-  [v18 prepareOverlayAtIndex:0];
+  annotationKitController7 = [(_SSSScreenshotContentOverlayController *)self annotationKitController];
+  [annotationKitController7 prepareOverlayAtIndex:0];
 
   overlayView = self->_overlayView;
-  v20 = [(_SSSScreenshotContentOverlayController *)self annotationKitController];
-  v21 = [v20 overlayViewAtIndex:0];
+  annotationKitController8 = [(_SSSScreenshotContentOverlayController *)self annotationKitController];
+  v21 = [annotationKitController8 overlayViewAtIndex:0];
   [(_SSSScreenshotAnnotationControllerAKOverlayContainerView *)overlayView setManagedView:v21];
 
-  v22 = [(_SSSScreenshotContentOverlayController *)self annotationKitController];
-  [v22 setRulerHostingDelegate:self];
+  annotationKitController9 = [(_SSSScreenshotContentOverlayController *)self annotationKitController];
+  [annotationKitController9 setRulerHostingDelegate:self];
 }
 
-- (void)_enableInkingOnAKController:(BOOL)a3
+- (void)_enableInkingOnAKController:(BOOL)controller
 {
-  v3 = [(_SSSScreenshotContentOverlayController *)self annotationKitController];
-  [v3 setToolMode:4];
+  annotationKitController = [(_SSSScreenshotContentOverlayController *)self annotationKitController];
+  [annotationKitController setToolMode:4];
 }
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
-  v3 = a3;
-  if ([(_SSSScreenshotContentOverlayController *)self active]!= a3)
+  activeCopy = active;
+  if ([(_SSSScreenshotContentOverlayController *)self active]!= active)
   {
-    v5 = [(_SSSScreenshotContentOverlayController *)self annotationKitController];
+    annotationKitController = [(_SSSScreenshotContentOverlayController *)self annotationKitController];
 
-    if (v5)
+    if (annotationKitController)
     {
       v14.receiver = self;
       v14.super_class = _SSSScreenshotAnnotationController;
-      [(_SSSScreenshotContentOverlayController *)&v14 setActive:v3];
-      v6 = [(_SSSScreenshotAnnotationController *)self _isEditingScreenshotImage];
-      if (v3)
+      [(_SSSScreenshotContentOverlayController *)&v14 setActive:activeCopy];
+      _isEditingScreenshotImage = [(_SSSScreenshotAnnotationController *)self _isEditingScreenshotImage];
+      if (activeCopy)
       {
-        if (v6)
+        if (_isEditingScreenshotImage)
         {
-          v7 = [(_SSSScreenshotContentOverlayController *)self annotationKitController];
-          [v7 prepareOverlayAtIndex:0];
+          annotationKitController2 = [(_SSSScreenshotContentOverlayController *)self annotationKitController];
+          [annotationKitController2 prepareOverlayAtIndex:0];
 
           overlayView = self->_overlayView;
-          v9 = [(_SSSScreenshotContentOverlayController *)self annotationKitController];
-          v10 = [v9 overlayViewAtIndex:0];
+          annotationKitController3 = [(_SSSScreenshotContentOverlayController *)self annotationKitController];
+          v10 = [annotationKitController3 overlayViewAtIndex:0];
           [(_SSSScreenshotAnnotationControllerAKOverlayContainerView *)overlayView setManagedView:v10];
         }
 
-        v11 = [(_SSSScreenshotContentOverlayController *)self annotationKitController];
-        [v11 setRulerHostingDelegate:self];
+        annotationKitController4 = [(_SSSScreenshotContentOverlayController *)self annotationKitController];
+        [annotationKitController4 setRulerHostingDelegate:self];
 
         [(_SSSScreenshotAnnotationController *)self _enableInkingOnAKController:1];
       }
 
       else
       {
-        if (v6)
+        if (_isEditingScreenshotImage)
         {
           [(_SSSScreenshotAnnotationControllerAKOverlayContainerView *)self->_overlayView setManagedView:0];
-          v12 = [(_SSSScreenshotContentOverlayController *)self annotationKitController];
-          [v12 relinquishOverlayAtIndex:0];
+          annotationKitController5 = [(_SSSScreenshotContentOverlayController *)self annotationKitController];
+          [annotationKitController5 relinquishOverlayAtIndex:0];
         }
 
-        v13 = [(_SSSScreenshotContentOverlayController *)self annotationKitController];
-        [v13 setRulerHostingDelegate:0];
+        annotationKitController6 = [(_SSSScreenshotContentOverlayController *)self annotationKitController];
+        [annotationKitController6 setRulerHostingDelegate:0];
       }
     }
   }
 }
 
-- (void)setScreenshot:(id)a3
+- (void)setScreenshot:(id)screenshot
 {
-  v4 = a3;
+  screenshotCopy = screenshot;
   v11.receiver = self;
   v11.super_class = _SSSScreenshotAnnotationController;
-  [(_SSSScreenshotContentOverlayController *)&v11 setScreenshot:v4];
+  [(_SSSScreenshotContentOverlayController *)&v11 setScreenshot:screenshotCopy];
   v5 = +[NSNotificationCenter defaultCenter];
   v6 = sub_10003B1BC();
   [v5 removeObserver:self name:v6 object:0];
@@ -272,14 +272,14 @@
 
   else if ((_os_feature_enabled_impl() & 1) == 0)
   {
-    v7 = [v4 representation];
-    v8 = [v7 screenshotRepresentationAKControllerForPDF];
+    representation = [screenshotCopy representation];
+    screenshotRepresentationAKControllerForPDF = [representation screenshotRepresentationAKControllerForPDF];
 
     v9 = +[NSNotificationCenter defaultCenter];
     v10 = sub_10003B1BC();
-    [v9 addObserver:self selector:"handleDrawingGestureRecognizerUpdate:" name:v10 object:v8];
+    [v9 addObserver:self selector:"handleDrawingGestureRecognizerUpdate:" name:v10 object:screenshotRepresentationAKControllerForPDF];
 
-    [v8 _updateGestureDependencyPriority];
+    [screenshotRepresentationAKControllerForPDF _updateGestureDependencyPriority];
   }
 }
 
@@ -311,10 +311,10 @@
   v41 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v10 = [(_SSSScreenshotAnnotationController *)self pageModelController];
-  v11 = [v10 selectedAnnotations];
+  pageModelController = [(_SSSScreenshotAnnotationController *)self pageModelController];
+  selectedAnnotations = [pageModelController selectedAnnotations];
 
-  v12 = [v11 countByEnumeratingWithState:&v38 objects:v43 count:16];
+  v12 = [selectedAnnotations countByEnumeratingWithState:&v38 objects:v43 count:16];
   if (v12)
   {
     v13 = *v39;
@@ -324,7 +324,7 @@
       {
         if (*v39 != v13)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(selectedAnnotations);
         }
 
         v15 = *(*(&v38 + 1) + 8 * i);
@@ -358,7 +358,7 @@
         }
       }
 
-      v12 = [v11 countByEnumeratingWithState:&v38 objects:v43 count:16];
+      v12 = [selectedAnnotations countByEnumeratingWithState:&v38 objects:v43 count:16];
       if (v12)
       {
         continue;
@@ -376,9 +376,9 @@ LABEL_13:
   v44.size.height = height;
   if (!CGRectIsNull(v44))
   {
-    v22 = [(_SSSScreenshotContentOverlayController *)self screenshot];
-    v23 = [v22 environmentDescription];
-    [v23 imagePointSize];
+    screenshot = [(_SSSScreenshotContentOverlayController *)self screenshot];
+    environmentDescription = [screenshot environmentDescription];
+    [environmentDescription imagePointSize];
     v25 = v24;
 
     v31 = *&CGAffineTransformIdentity.c;
@@ -420,25 +420,25 @@ LABEL_13:
 
 - (id)gestureRecognizers
 {
-  v3 = [(_SSSScreenshotContentOverlayController *)self annotationKitController];
+  annotationKitController = [(_SSSScreenshotContentOverlayController *)self annotationKitController];
 
-  if (v3)
+  if (annotationKitController)
   {
-    v15 = [(_SSSScreenshotContentOverlayController *)self annotationKitController];
-    v4 = [v15 tapGestureRecognizer];
-    v16[0] = v4;
-    v5 = [(_SSSScreenshotContentOverlayController *)self annotationKitController];
-    v6 = [v5 pressGestureRecognizer];
-    v16[1] = v6;
-    v7 = [(_SSSScreenshotContentOverlayController *)self annotationKitController];
-    v8 = [v7 doubleTapGestureRecognizer];
-    v16[2] = v8;
-    v9 = [(_SSSScreenshotContentOverlayController *)self annotationKitController];
-    v10 = [v9 panGestureRecognizer];
-    v16[3] = v10;
-    v11 = [(_SSSScreenshotContentOverlayController *)self annotationKitController];
-    v12 = [v11 rotationGestureRecognizer];
-    v16[4] = v12;
+    annotationKitController2 = [(_SSSScreenshotContentOverlayController *)self annotationKitController];
+    tapGestureRecognizer = [annotationKitController2 tapGestureRecognizer];
+    v16[0] = tapGestureRecognizer;
+    annotationKitController3 = [(_SSSScreenshotContentOverlayController *)self annotationKitController];
+    pressGestureRecognizer = [annotationKitController3 pressGestureRecognizer];
+    v16[1] = pressGestureRecognizer;
+    annotationKitController4 = [(_SSSScreenshotContentOverlayController *)self annotationKitController];
+    doubleTapGestureRecognizer = [annotationKitController4 doubleTapGestureRecognizer];
+    v16[2] = doubleTapGestureRecognizer;
+    annotationKitController5 = [(_SSSScreenshotContentOverlayController *)self annotationKitController];
+    panGestureRecognizer = [annotationKitController5 panGestureRecognizer];
+    v16[3] = panGestureRecognizer;
+    annotationKitController6 = [(_SSSScreenshotContentOverlayController *)self annotationKitController];
+    rotationGestureRecognizer = [annotationKitController6 rotationGestureRecognizer];
+    v16[4] = rotationGestureRecognizer;
     v13 = [NSArray arrayWithObjects:v16 count:5];
   }
 
@@ -452,66 +452,66 @@ LABEL_13:
 
 - (id)tapGestureRecognizer
 {
-  v2 = [(_SSSScreenshotContentOverlayController *)self annotationKitController];
-  v3 = [v2 tapGestureRecognizer];
+  annotationKitController = [(_SSSScreenshotContentOverlayController *)self annotationKitController];
+  tapGestureRecognizer = [annotationKitController tapGestureRecognizer];
 
-  return v3;
+  return tapGestureRecognizer;
 }
 
 - (id)doubleTapGestureRecognizer
 {
-  v2 = [(_SSSScreenshotContentOverlayController *)self annotationKitController];
-  v3 = [v2 doubleTapGestureRecognizer];
+  annotationKitController = [(_SSSScreenshotContentOverlayController *)self annotationKitController];
+  doubleTapGestureRecognizer = [annotationKitController doubleTapGestureRecognizer];
 
-  return v3;
+  return doubleTapGestureRecognizer;
 }
 
 - (id)longPressGestureRecognizer
 {
-  v2 = [(_SSSScreenshotContentOverlayController *)self annotationKitController];
-  v3 = [v2 pressGestureRecognizer];
+  annotationKitController = [(_SSSScreenshotContentOverlayController *)self annotationKitController];
+  pressGestureRecognizer = [annotationKitController pressGestureRecognizer];
 
-  return v3;
+  return pressGestureRecognizer;
 }
 
 - (id)panGestureRecognizer
 {
-  v2 = [(_SSSScreenshotContentOverlayController *)self annotationKitController];
-  v3 = [v2 panGestureRecognizer];
+  annotationKitController = [(_SSSScreenshotContentOverlayController *)self annotationKitController];
+  panGestureRecognizer = [annotationKitController panGestureRecognizer];
 
-  return v3;
+  return panGestureRecognizer;
 }
 
 - (id)rotationGestureRecognizer
 {
-  v2 = [(_SSSScreenshotContentOverlayController *)self annotationKitController];
-  v3 = [v2 rotationGestureRecognizer];
+  annotationKitController = [(_SSSScreenshotContentOverlayController *)self annotationKitController];
+  rotationGestureRecognizer = [annotationKitController rotationGestureRecognizer];
 
-  return v3;
+  return rotationGestureRecognizer;
 }
 
-- (void)setGesturesEnabled:(BOOL)a3
+- (void)setGesturesEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v6.receiver = self;
   v6.super_class = _SSSScreenshotAnnotationController;
   [(_SSSScreenshotContentOverlayController *)&v6 setGesturesEnabled:?];
-  v5 = [(_SSSScreenshotContentOverlayController *)self annotationKitController];
-  [v5 setAnnotationEditingEnabled:v3];
+  annotationKitController = [(_SSSScreenshotContentOverlayController *)self annotationKitController];
+  [annotationKitController setAnnotationEditingEnabled:enabledCopy];
 }
 
 - (void)updateUndoState
 {
-  v3 = [(_SSSScreenshotContentOverlayController *)self annotationKitController];
-  [v3 validateUndo:0];
+  annotationKitController = [(_SSSScreenshotContentOverlayController *)self annotationKitController];
+  [annotationKitController validateUndo:0];
 
-  v4 = [(_SSSScreenshotContentOverlayController *)self annotationKitController];
-  [v4 validateRedo:0];
+  annotationKitController2 = [(_SSSScreenshotContentOverlayController *)self annotationKitController];
+  [annotationKitController2 validateRedo:0];
 }
 
 - (void)logDidEnterEditingWithOverlay
 {
-  v2 = [(_SSSScreenshotContentOverlayController *)self annotationKitController];
+  annotationKitController = [(_SSSScreenshotContentOverlayController *)self annotationKitController];
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
@@ -533,36 +533,36 @@ LABEL_13:
     _Unwind_Resume(v5);
   }
 
-  [v2 beginLogging:@"screenshotservices" documentType:*v3];
+  [annotationKitController beginLogging:@"screenshotservices" documentType:*v3];
 }
 
 - (void)endedEditingWithOverlay
 {
-  v2 = [(_SSSScreenshotContentOverlayController *)self annotationKitController];
-  [v2 endLogging];
+  annotationKitController = [(_SSSScreenshotContentOverlayController *)self annotationKitController];
+  [annotationKitController endLogging];
 }
 
-- (void)_updateAnnotationsCreateUndoCommand:(BOOL)a3
+- (void)_updateAnnotationsCreateUndoCommand:(BOOL)command
 {
-  v3 = a3;
+  commandCopy = command;
   if ([(_SSSScreenshotAnnotationController *)self _isEditingScreenshotImage])
   {
-    v6 = [(_SSSScreenshotContentOverlayController *)self viewState];
+    viewState = [(_SSSScreenshotContentOverlayController *)self viewState];
 
-    [(_SSSScreenshotAnnotationController *)self _updateAnnotationsForViewState:v6 createUndoCommand:v5, v3];
+    [(_SSSScreenshotAnnotationController *)self _updateAnnotationsForViewState:viewState createUndoCommand:v5, commandCopy];
     return;
   }
 
-  v7 = [(_SSSScreenshotContentOverlayController *)self screenshot];
-  v8 = [v7 PDFDocument];
-  v9 = [v8 pageCount];
+  screenshot = [(_SSSScreenshotContentOverlayController *)self screenshot];
+  pDFDocument = [screenshot PDFDocument];
+  pageCount = [pDFDocument pageCount];
 
-  if (v9 <= 1 && !v3)
+  if (pageCount <= 1 && !commandCopy)
   {
-    v22 = [(_SSSScreenshotContentOverlayController *)self delegate];
-    v10 = [(_SSSScreenshotContentOverlayController *)self screenshot];
-    v11 = v22;
-    v12 = v10;
+    delegate = [(_SSSScreenshotContentOverlayController *)self delegate];
+    screenshot2 = [(_SSSScreenshotContentOverlayController *)self screenshot];
+    v11 = delegate;
+    v12 = screenshot2;
     v13 = 0;
 LABEL_16:
     [v11 screenshot:v12 didHaveChangeOnPage:v13];
@@ -570,77 +570,77 @@ LABEL_16:
     return;
   }
 
-  v14 = [(_SSSScreenshotContentOverlayController *)self screenshot];
-  v15 = [v14 PDFDocument];
-  v16 = [v15 pageCount];
+  screenshot3 = [(_SSSScreenshotContentOverlayController *)self screenshot];
+  pDFDocument2 = [screenshot3 PDFDocument];
+  pageCount2 = [pDFDocument2 pageCount];
 
-  if (v16)
+  if (pageCount2)
   {
     v17 = 0;
     v18 = 0x7FFFFFFFFFFFFFFFLL;
     do
     {
-      if ([(_SSSScreenshotAnnotationController *)self _updateAnnotationsForViewState:[(_SSSScreenshotContentOverlayController *)self viewState] createUndoCommand:v17, v3])
+      if ([(_SSSScreenshotAnnotationController *)self _updateAnnotationsForViewState:[(_SSSScreenshotContentOverlayController *)self viewState] createUndoCommand:v17, commandCopy])
       {
         v18 = v17;
       }
 
       ++v17;
-      v19 = [(_SSSScreenshotContentOverlayController *)self screenshot];
-      v20 = [v19 PDFDocument];
-      v21 = [v20 pageCount];
+      screenshot4 = [(_SSSScreenshotContentOverlayController *)self screenshot];
+      pDFDocument3 = [screenshot4 PDFDocument];
+      pageCount3 = [pDFDocument3 pageCount];
     }
 
-    while (v17 < v21);
+    while (v17 < pageCount3);
     if (v18 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v22 = [(_SSSScreenshotContentOverlayController *)self delegate];
-      v10 = [(_SSSScreenshotContentOverlayController *)self screenshot];
-      v11 = v22;
-      v12 = v10;
+      delegate = [(_SSSScreenshotContentOverlayController *)self delegate];
+      screenshot2 = [(_SSSScreenshotContentOverlayController *)self screenshot];
+      v11 = delegate;
+      v12 = screenshot2;
       v13 = v18;
       goto LABEL_16;
     }
   }
 }
 
-- (BOOL)_updateAnnotationsForViewState:(id)a3 createUndoCommand:(BOOL)a4
+- (BOOL)_updateAnnotationsForViewState:(id)state createUndoCommand:(BOOL)command
 {
-  v4 = a4;
-  var1 = a3.var1;
-  var0 = a3.var0;
-  v8 = [(_SSSScreenshotContentOverlayController *)self annotationKitController];
-  v9 = [v8 modelController];
-  v10 = [v9 pageModelControllerForPage:var1];
+  commandCopy = command;
+  var1 = state.var1;
+  var0 = state.var0;
+  annotationKitController = [(_SSSScreenshotContentOverlayController *)self annotationKitController];
+  modelController = [annotationKitController modelController];
+  v10 = [modelController pageModelControllerForPage:var1];
 
   if (v10)
   {
-    v11 = [(_SSSScreenshotContentOverlayController *)self screenshot];
-    v12 = [v11 viewModificationInfoForState:{var0, var1}];
+    screenshot = [(_SSSScreenshotContentOverlayController *)self screenshot];
+    v12 = [screenshot viewModificationInfoForState:{var0, var1}];
 
-    v13 = [v10 annotations];
-    v14 = [_SSSScreenshotAnnotationController annotationDataFromAnnotations:v13];
+    annotations = [v10 annotations];
+    v14 = [_SSSScreenshotAnnotationController annotationDataFromAnnotations:annotations];
 
-    v15 = [v12 annotationNSDatas];
-    v16 = [v14 isEqual:v15];
+    annotationNSDatas = [v12 annotationNSDatas];
+    v16 = [v14 isEqual:annotationNSDatas];
     v17 = v16 ^ 1;
     if ((v16 & 1) == 0)
     {
-      v30 = v15;
+      v30 = annotationNSDatas;
       v31 = v14;
       v32 = v16 ^ 1;
       v33 = v12;
       v34 = var0;
       v35 = var1;
-      v36 = v4;
+      v36 = commandCopy;
       v18 = +[NSMutableArray array];
       v38 = 0u;
       v39 = 0u;
       v40 = 0u;
       v41 = 0u;
       v37 = v10;
-      v19 = [v10 annotations];
-      v20 = [v19 countByEnumeratingWithState:&v38 objects:v46 count:16];
+      annotations2 = [v10 annotations];
+      v20 = [annotations2 countByEnumeratingWithState:&v38 objects:v46 count:16];
       if (v20)
       {
         v21 = v20;
@@ -651,7 +651,7 @@ LABEL_16:
           {
             if (*v39 != v22)
             {
-              objc_enumerationMutation(v19);
+              objc_enumerationMutation(annotations2);
             }
 
             v24 = *(*(&v38 + 1) + 8 * i);
@@ -666,9 +666,9 @@ LABEL_16:
               v26 = os_log_create("com.apple.screenshotservices", "AnnotationEditing");
               if (os_log_type_enabled(v26, OS_LOG_TYPE_FAULT))
               {
-                v27 = [v24 displayName];
+                displayName = [v24 displayName];
                 *buf = 138412546;
-                v43 = v27;
+                v43 = displayName;
                 v44 = 2112;
                 v45 = v24;
                 _os_log_fault_impl(&_mh_execute_header, v26, OS_LOG_TYPE_FAULT, "Copied annotation was nil for annotation %@ %@", buf, 0x16u);
@@ -676,7 +676,7 @@ LABEL_16:
             }
           }
 
-          v21 = [v19 countByEnumeratingWithState:&v38 objects:v46 count:16];
+          v21 = [annotations2 countByEnumeratingWithState:&v38 objects:v46 count:16];
         }
 
         while (v21);
@@ -686,12 +686,12 @@ LABEL_16:
       [v33 setOriginalAnnotations:v18];
       v14 = v31;
       [v33 setAnnotationNSDatas:v31];
-      v28 = [(_SSSScreenshotContentOverlayController *)self screenshot];
-      [v28 promoteViewValueToModelValueForKey:1 forState:v34 createUndoCommand:{v35, v36}];
+      screenshot2 = [(_SSSScreenshotContentOverlayController *)self screenshot];
+      [screenshot2 promoteViewValueToModelValueForKey:1 forState:v34 createUndoCommand:{v35, v36}];
 
       v10 = v37;
       v17 = v32;
-      v15 = v30;
+      annotationNSDatas = v30;
     }
   }
 
@@ -703,15 +703,15 @@ LABEL_16:
   return v17;
 }
 
-+ (id)annotationDataFromAnnotations:(id)a3
++ (id)annotationDataFromAnnotations:(id)annotations
 {
-  v3 = a3;
+  annotationsCopy = annotations;
   v4 = +[NSMutableArray array];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = v3;
+  v5 = annotationsCopy;
   v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
@@ -726,8 +726,8 @@ LABEL_16:
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v12 + 1) + 8 * i) dataRepresentation];
-        [v4 addObject:v10];
+        dataRepresentation = [*(*(&v12 + 1) + 8 * i) dataRepresentation];
+        [v4 addObject:dataRepresentation];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -739,15 +739,15 @@ LABEL_16:
   return v4;
 }
 
-+ (id)annotationsFromAnnotationData:(id)a3
++ (id)annotationsFromAnnotationData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v4 = +[NSMutableArray array];
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = v3;
+  v5 = dataCopy;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v23 count:16];
   if (v6)
   {
@@ -793,33 +793,33 @@ LABEL_16:
   return v4;
 }
 
-- (void)editDetectedForAnnotationController:(id)a3
+- (void)editDetectedForAnnotationController:(id)controller
 {
   [(_SSSScreenshotAnnotationController *)self _updateAnnotationsCreateUndoCommand:0];
   if ([(_SSSScreenshotAnnotationController *)self _isEditingScreenshotImage])
   {
-    v4 = [(_SSSScreenshotContentOverlayController *)self delegate];
-    [v4 screenshotDidMakeAnnotationEditOnImage];
+    delegate = [(_SSSScreenshotContentOverlayController *)self delegate];
+    [delegate screenshotDidMakeAnnotationEditOnImage];
   }
 }
 
-- (void)penStrokeCompletedForAnnotationController:(id)a3
+- (void)penStrokeCompletedForAnnotationController:(id)controller
 {
   self->_didDrawPenStroke = 1;
   [(_SSSScreenshotAnnotationController *)self _updateAnnotations];
   if ([(_SSSScreenshotAnnotationController *)self _isEditingScreenshotImage])
   {
-    v4 = [(_SSSScreenshotContentOverlayController *)self delegate];
-    [v4 screenshotDidMakeAnnotationEditOnImage];
+    delegate = [(_SSSScreenshotContentOverlayController *)self delegate];
+    [delegate screenshotDidMakeAnnotationEditOnImage];
   }
 }
 
-- (CGRect)maxPageRectWithPageIndex:(unint64_t)a3 forAnnotationController:(id)a4
+- (CGRect)maxPageRectWithPageIndex:(unint64_t)index forAnnotationController:(id)controller
 {
   y = CGRectZero.origin.y;
-  v5 = [(_SSSScreenshotContentOverlayController *)self screenshot:a3];
-  v6 = [v5 environmentDescription];
-  [v6 imagePointSize];
+  v5 = [(_SSSScreenshotContentOverlayController *)self screenshot:index];
+  environmentDescription = [v5 environmentDescription];
+  [environmentDescription imagePointSize];
   v8 = v7;
   v10 = v9;
 
@@ -834,14 +834,14 @@ LABEL_16:
   return result;
 }
 
-- (CGRect)visibleRectOfOverlayAtPageIndex:(unint64_t)a3 forAnnotationController:(id)a4
+- (CGRect)visibleRectOfOverlayAtPageIndex:(unint64_t)index forAnnotationController:(id)controller
 {
   v22 = 0u;
   v23 = 0;
   v21 = 0u;
-  v5 = [(_SSSScreenshotContentOverlayController *)self screenshot:a3];
-  v6 = [(_SSSScreenshotContentOverlayController *)self viewState];
-  v8 = [v5 modelModificationInfoForState:{v6, v7}];
+  v5 = [(_SSSScreenshotContentOverlayController *)self screenshot:index];
+  viewState = [(_SSSScreenshotContentOverlayController *)self viewState];
+  v8 = [v5 modelModificationInfoForState:{viewState, v7}];
   v9 = v8;
   if (v8)
   {
@@ -880,25 +880,25 @@ LABEL_16:
   return CGRectApplyAffineTransform(v24, &t2);
 }
 
-- (double)modelBaseScaleFactorOfPageAtIndex:(unint64_t)a3 forAnnotationController:(id)a4
+- (double)modelBaseScaleFactorOfPageAtIndex:(unint64_t)index forAnnotationController:(id)controller
 {
-  v5 = [(_SSSScreenshotAnnotationController *)self overlayView:a3];
-  v6 = [v5 window];
+  v5 = [(_SSSScreenshotAnnotationController *)self overlayView:index];
+  window = [v5 window];
 
   v7 = 1.0;
-  if ([(_SSSScreenshotContentOverlayController *)self active]&& v6)
+  if ([(_SSSScreenshotContentOverlayController *)self active]&& window)
   {
-    v8 = [(_SSSScreenshotAnnotationController *)self overlayView];
-    [v8 bounds];
+    overlayView = [(_SSSScreenshotAnnotationController *)self overlayView];
+    [overlayView bounds];
     v10 = v9;
     v12 = v11;
     v14 = v13;
     v16 = v15;
-    v17 = [(_SSSScreenshotAnnotationController *)self overlayView];
-    [v6 convertRect:v17 fromView:{v10, v12, v14, v16}];
+    overlayView2 = [(_SSSScreenshotAnnotationController *)self overlayView];
+    [window convertRect:overlayView2 fromView:{v10, v12, v14, v16}];
     v19 = v18;
 
-    [v6 bounds];
+    [window bounds];
     if (v19 <= 0.0)
     {
       v7 = 1.0;
@@ -913,23 +913,23 @@ LABEL_16:
   return v7;
 }
 
-- (id)newContentSnapshotPDFDataIncludingAdornments:(BOOL)a3 atScale:(double)a4 inRect:(CGRect)a5 onOverlayAtPageIndex:(unint64_t)a6 forAnnotationController:(id)a7
+- (id)newContentSnapshotPDFDataIncludingAdornments:(BOOL)adornments atScale:(double)scale inRect:(CGRect)rect onOverlayAtPageIndex:(unint64_t)index forAnnotationController:(id)controller
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v14 = a7;
-  v15 = [(_SSSScreenshotContentOverlayController *)self screenshot];
-  v16 = [v15 imageProvider];
-  v17 = [v16 requestCGImageBackedUneditedImageForUIBlocking];
-  v18 = [v17 CGImage];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  controllerCopy = controller;
+  screenshot = [(_SSSScreenshotContentOverlayController *)self screenshot];
+  imageProvider = [screenshot imageProvider];
+  requestCGImageBackedUneditedImageForUIBlocking = [imageProvider requestCGImageBackedUneditedImageForUIBlocking];
+  cGImage = [requestCGImageBackedUneditedImageForUIBlocking CGImage];
 
-  v19 = [v14 overlayViewAtIndex:a6];
+  v19 = [controllerCopy overlayViewAtIndex:index];
 
-  v20 = [(_SSSScreenshotContentOverlayController *)self screenshot];
-  v21 = [v20 environmentDescription];
-  [v21 imageScale];
+  screenshot2 = [(_SSSScreenshotContentOverlayController *)self screenshot];
+  environmentDescription = [screenshot2 environmentDescription];
+  [environmentDescription imageScale];
   v23 = v22;
 
   CGAffineTransformMakeScale(&v63, v23, v23);
@@ -944,11 +944,11 @@ LABEL_16:
   v26 = v65.size.width;
   v27 = v65.size.height;
   *&v63.a = CGPointZero;
-  sx = a4;
-  v63.c = v65.size.width * a4;
-  v63.d = v65.size.height * a4;
-  v28 = CGImageGetWidth(v18);
-  v29 = CGImageGetHeight(v18);
+  sx = scale;
+  v63.c = v65.size.width * scale;
+  v63.d = v65.size.height * scale;
+  v28 = CGImageGetWidth(cGImage);
+  v29 = CGImageGetHeight(cGImage);
   v66.origin.x = v24;
   v66.origin.y = v25;
   v66.size.width = v26;
@@ -978,7 +978,7 @@ LABEL_16:
   v56 = v34;
   v36 = vcvtad_u64_f64(v34);
   v37 = vcvtad_u64_f64(v35);
-  ColorSpace = CGImageGetColorSpace(v18);
+  ColorSpace = CGImageGetColorSpace(cGImage);
   if (!ColorSpace || (v39 = ColorSpace, CGColorSpaceUsesExtendedRange(ColorSpace)) || CGColorSpaceIsWideGamutRGB(v39))
   {
     v40 = CGColorSpaceCreateWithName(kCGColorSpaceSRGB);
@@ -1010,7 +1010,7 @@ LABEL_16:
     v71.origin.y = 0.0;
     v71.size.width = v44;
     v71.size.height = v29;
-    CGContextDrawImage(v43, v71, v18);
+    CGContextDrawImage(v43, v71, cGImage);
     Image = CGBitmapContextCreateImage(v43);
     CGContextRelease(v43);
     if (!v40)
@@ -1096,68 +1096,68 @@ LABEL_17:
 
 - (id)contentSnapshot
 {
-  v2 = [(_SSSScreenshotContentOverlayController *)self delegate];
-  v3 = [v2 contentSnapshot];
+  delegate = [(_SSSScreenshotContentOverlayController *)self delegate];
+  contentSnapshot = [delegate contentSnapshot];
 
-  return v3;
+  return contentSnapshot;
 }
 
-- (id)undoManagerForAnnotationController:(id)a3
+- (id)undoManagerForAnnotationController:(id)controller
 {
-  v4 = [(_SSSScreenshotContentOverlayController *)self screenshot];
-  v5 = [v4 undoManagerForEditMode:{-[_SSSScreenshotContentOverlayController viewState](self, "viewState")}];
+  screenshot = [(_SSSScreenshotContentOverlayController *)self screenshot];
+  v5 = [screenshot undoManagerForEditMode:{-[_SSSScreenshotContentOverlayController viewState](self, "viewState")}];
 
   return v5;
 }
 
-- (id)popoverPresentingViewControllerForAnnotationController:(id)a3
+- (id)popoverPresentingViewControllerForAnnotationController:(id)controller
 {
-  v3 = [(_SSSScreenshotContentOverlayController *)self delegate];
-  v4 = [v3 viewControllerForOverlayPresentations];
+  delegate = [(_SSSScreenshotContentOverlayController *)self delegate];
+  viewControllerForOverlayPresentations = [delegate viewControllerForOverlayPresentations];
 
-  return v4;
+  return viewControllerForOverlayPresentations;
 }
 
-- (void)controllerDidDismissPopover:(id)a3
+- (void)controllerDidDismissPopover:(id)popover
 {
-  v4 = [(_SSSScreenshotAnnotationController *)self popoverPresentingViewControllerForAnnotationController:a3];
-  v3 = [v4 view];
-  [v3 setNeedsLayout];
+  v4 = [(_SSSScreenshotAnnotationController *)self popoverPresentingViewControllerForAnnotationController:popover];
+  view = [v4 view];
+  [view setNeedsLayout];
 }
 
-- (id)layerContainingQuickBackgroundForLoupeOnOverlayAtPageIndex:(unint64_t)a3 forAnnotationController:(id)a4
+- (id)layerContainingQuickBackgroundForLoupeOnOverlayAtPageIndex:(unint64_t)index forAnnotationController:(id)controller
 {
-  v4 = [(_SSSScreenshotContentOverlayController *)self delegate:a3];
-  v5 = [v4 viewContainingScreenshotContents];
-  v6 = [v5 layer];
+  v4 = [(_SSSScreenshotContentOverlayController *)self delegate:index];
+  viewContainingScreenshotContents = [v4 viewContainingScreenshotContents];
+  layer = [viewContainingScreenshotContents layer];
 
-  return v6;
+  return layer;
 }
 
-- (void)installDrawingGestureRecognizer:(id)a3 forPageAtIndex:(unint64_t)a4 forAnnotationController:(id)a5
+- (void)installDrawingGestureRecognizer:(id)recognizer forPageAtIndex:(unint64_t)index forAnnotationController:(id)controller
 {
-  v6 = a3;
-  v7 = [(_SSSScreenshotContentOverlayController *)self delegate];
-  [v7 installInterstitialGesture:v6];
+  recognizerCopy = recognizer;
+  delegate = [(_SSSScreenshotContentOverlayController *)self delegate];
+  [delegate installInterstitialGesture:recognizerCopy];
 }
 
-- (void)uninstallDrawingGestureRecognizer:(id)a3 forPageAtIndex:(unint64_t)a4 forAnnotationController:(id)a5
+- (void)uninstallDrawingGestureRecognizer:(id)recognizer forPageAtIndex:(unint64_t)index forAnnotationController:(id)controller
 {
-  v6 = a3;
-  v7 = [(_SSSScreenshotContentOverlayController *)self delegate];
-  [v7 uninstallInterstitialGesture:v6];
+  recognizerCopy = recognizer;
+  delegate = [(_SSSScreenshotContentOverlayController *)self delegate];
+  [delegate uninstallInterstitialGesture:recognizerCopy];
 }
 
-- (void)updateDrawingGestureRecognizer:(id)a3 forPageAtIndex:(unint64_t)a4 withPriority:(BOOL)a5 forAnnotationController:(id)a6
+- (void)updateDrawingGestureRecognizer:(id)recognizer forPageAtIndex:(unint64_t)index withPriority:(BOOL)priority forAnnotationController:(id)controller
 {
-  v6 = a5;
-  v8 = a3;
+  priorityCopy = priority;
+  recognizerCopy = recognizer;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v9 = [(_SSSScreenshotAnnotationController *)self gestureRecognizers];
-  v10 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  gestureRecognizers = [(_SSSScreenshotAnnotationController *)self gestureRecognizers];
+  v10 = [gestureRecognizers countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v10)
   {
     v11 = v10;
@@ -1168,66 +1168,66 @@ LABEL_17:
       {
         if (*v17 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(gestureRecognizers);
         }
 
-        [v8 requireGestureRecognizerToFail:*(*(&v16 + 1) + 8 * i)];
+        [recognizerCopy requireGestureRecognizerToFail:*(*(&v16 + 1) + 8 * i)];
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v11 = [gestureRecognizers countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v11);
   }
 
-  v14 = [(_SSSScreenshotContentOverlayController *)self delegate];
-  v15 = v14;
-  if (v6)
+  delegate = [(_SSSScreenshotContentOverlayController *)self delegate];
+  v15 = delegate;
+  if (priorityCopy)
   {
-    [v14 requireAllOtherGestureRecognizersToFailBeforeGestureRecognizer:v8];
+    [delegate requireAllOtherGestureRecognizersToFailBeforeGestureRecognizer:recognizerCopy];
   }
 
   else
   {
-    [v14 requireGestureRecognizerToFailBeforeAllOtherGestureRecognizers:v8];
+    [delegate requireGestureRecognizerToFailBeforeAllOtherGestureRecognizers:recognizerCopy];
   }
 }
 
-- (void)handleDrawingGestureRecognizerUpdate:(id)a3
+- (void)handleDrawingGestureRecognizerUpdate:(id)update
 {
-  v9 = [a3 userInfo];
-  v4 = [v9 objectForKeyedSubscript:@"drawingGestureRecognizer"];
-  v5 = [v9 objectForKeyedSubscript:@"highPriority"];
-  v6 = [v5 BOOLValue];
+  userInfo = [update userInfo];
+  v4 = [userInfo objectForKeyedSubscript:@"drawingGestureRecognizer"];
+  v5 = [userInfo objectForKeyedSubscript:@"highPriority"];
+  bOOLValue = [v5 BOOLValue];
 
-  v7 = [(_SSSScreenshotContentOverlayController *)self delegate];
-  v8 = v7;
-  if (v6)
+  delegate = [(_SSSScreenshotContentOverlayController *)self delegate];
+  v8 = delegate;
+  if (bOOLValue)
   {
-    [v7 requireAllOtherGestureRecognizersToFailBeforeGestureRecognizer:v4];
+    [delegate requireAllOtherGestureRecognizersToFailBeforeGestureRecognizer:v4];
   }
 
   else
   {
-    [v7 requireGestureRecognizerToFailBeforeAllOtherGestureRecognizers:v4];
+    [delegate requireGestureRecognizerToFailBeforeAllOtherGestureRecognizers:v4];
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (off_1000D3B60 == a6)
+  if (off_1000D3B60 == context)
   {
-    if ([a3 isEqualToString:{@"modifiedImageDescription", a4, a5}])
+    if ([path isEqualToString:{@"modifiedImageDescription", object, change}])
     {
-      v7 = [(_SSSScreenshotContentOverlayController *)self screenshot];
-      v8 = [v7 viewModificationInfo];
-      v9 = [(_SSSScreenshotContentOverlayController *)self annotationKitController];
-      v10 = [v9 modifiedImageDescription];
-      [v8 setImageDescription:v10];
+      screenshot = [(_SSSScreenshotContentOverlayController *)self screenshot];
+      viewModificationInfo = [screenshot viewModificationInfo];
+      annotationKitController = [(_SSSScreenshotContentOverlayController *)self annotationKitController];
+      modifiedImageDescription = [annotationKitController modifiedImageDescription];
+      [viewModificationInfo setImageDescription:modifiedImageDescription];
 
-      v13 = [(_SSSScreenshotContentOverlayController *)self screenshot];
-      v11 = [(_SSSScreenshotContentOverlayController *)self viewState];
-      [v13 promoteViewValueToModelValueForKey:4 forState:v11 createUndoCommand:{v12, 0}];
+      screenshot2 = [(_SSSScreenshotContentOverlayController *)self screenshot];
+      viewState = [(_SSSScreenshotContentOverlayController *)self viewState];
+      [screenshot2 promoteViewValueToModelValueForKey:4 forState:viewState createUndoCommand:{v12, 0}];
     }
   }
 
@@ -1235,7 +1235,7 @@ LABEL_17:
   {
     v14.receiver = self;
     v14.super_class = _SSSScreenshotAnnotationController;
-    [(_SSSScreenshotAnnotationController *)&v14 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:?];
+    [(_SSSScreenshotAnnotationController *)&v14 observeValueForKeyPath:path ofObject:object change:change context:?];
   }
 }
 

@@ -1,57 +1,57 @@
 @interface HUQuickControlSegmentedControlSegment
-- (HUQuickControlSegmentedControlSegment)initWithFrame:(CGRect)a3;
+- (HUQuickControlSegmentedControlSegment)initWithFrame:(CGRect)frame;
 - (NSString)title;
 - (void)_setupConstraints;
 - (void)_updateBackgroundColor;
 - (void)layoutSubviews;
-- (void)setRoundedCorners:(unint64_t)a3;
-- (void)setTitle:(id)a3;
+- (void)setRoundedCorners:(unint64_t)corners;
+- (void)setTitle:(id)title;
 @end
 
 @implementation HUQuickControlSegmentedControlSegment
 
-- (HUQuickControlSegmentedControlSegment)initWithFrame:(CGRect)a3
+- (HUQuickControlSegmentedControlSegment)initWithFrame:(CGRect)frame
 {
   v21.receiver = self;
   v21.super_class = HUQuickControlSegmentedControlSegment;
-  v3 = [(HUQuickControlSegmentedControlSegment *)&v21 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(HUQuickControlSegmentedControlSegment *)&v21 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x277D756B8]);
     [(HUQuickControlSegmentedControlSegment *)v3 setTitleLabel:v4];
 
-    v5 = [(HUQuickControlSegmentedControlSegment *)v3 titleLabel];
-    [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
+    titleLabel = [(HUQuickControlSegmentedControlSegment *)v3 titleLabel];
+    [titleLabel setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v6 = [(HUQuickControlSegmentedControlSegment *)v3 titleLabel];
-    [v6 setTextAlignment:1];
+    titleLabel2 = [(HUQuickControlSegmentedControlSegment *)v3 titleLabel];
+    [titleLabel2 setTextAlignment:1];
 
-    v7 = [MEMORY[0x277D75348] systemGrayColor];
-    v8 = [(HUQuickControlSegmentedControlSegment *)v3 titleLabel];
-    [v8 setTextColor:v7];
+    systemGrayColor = [MEMORY[0x277D75348] systemGrayColor];
+    titleLabel3 = [(HUQuickControlSegmentedControlSegment *)v3 titleLabel];
+    [titleLabel3 setTextColor:systemGrayColor];
 
     v9 = HUPillButtonTitleFont();
-    v10 = [(HUQuickControlSegmentedControlSegment *)v3 titleLabel];
-    [v10 setFont:v9];
+    titleLabel4 = [(HUQuickControlSegmentedControlSegment *)v3 titleLabel];
+    [titleLabel4 setFont:v9];
 
-    v11 = [(HUQuickControlSegmentedControlSegment *)v3 titleLabel];
-    [(HUQuickControlSegmentedControlSegment *)v3 addSubview:v11];
+    titleLabel5 = [(HUQuickControlSegmentedControlSegment *)v3 titleLabel];
+    [(HUQuickControlSegmentedControlSegment *)v3 addSubview:titleLabel5];
 
-    v12 = [(HUQuickControlSegmentedControlSegment *)v3 titleLabel];
+    titleLabel6 = [(HUQuickControlSegmentedControlSegment *)v3 titleLabel];
     LODWORD(v13) = 1148846080;
-    [v12 setContentHuggingPriority:0 forAxis:v13];
+    [titleLabel6 setContentHuggingPriority:0 forAxis:v13];
 
-    v14 = [(HUQuickControlSegmentedControlSegment *)v3 titleLabel];
+    titleLabel7 = [(HUQuickControlSegmentedControlSegment *)v3 titleLabel];
     LODWORD(v15) = 1148846080;
-    [v14 setContentHuggingPriority:1 forAxis:v15];
+    [titleLabel7 setContentHuggingPriority:1 forAxis:v15];
 
-    v16 = [(HUQuickControlSegmentedControlSegment *)v3 titleLabel];
+    titleLabel8 = [(HUQuickControlSegmentedControlSegment *)v3 titleLabel];
     LODWORD(v17) = 1148846080;
-    [v16 setContentCompressionResistancePriority:0 forAxis:v17];
+    [titleLabel8 setContentCompressionResistancePriority:0 forAxis:v17];
 
-    v18 = [(HUQuickControlSegmentedControlSegment *)v3 titleLabel];
+    titleLabel9 = [(HUQuickControlSegmentedControlSegment *)v3 titleLabel];
     LODWORD(v19) = 1148846080;
-    [v18 setContentCompressionResistancePriority:1 forAxis:v19];
+    [titleLabel9 setContentCompressionResistancePriority:1 forAxis:v19];
 
     [(HUQuickControlSegmentedControlSegment *)v3 _setupConstraints];
   }
@@ -61,27 +61,27 @@
 
 - (NSString)title
 {
-  v2 = [(HUQuickControlSegmentedControlSegment *)self titleLabel];
-  v3 = [v2 text];
+  titleLabel = [(HUQuickControlSegmentedControlSegment *)self titleLabel];
+  text = [titleLabel text];
 
-  return v3;
+  return text;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = a3;
-  v5 = [(HUQuickControlSegmentedControlSegment *)self titleLabel];
-  [v5 setText:v4];
+  titleCopy = title;
+  titleLabel = [(HUQuickControlSegmentedControlSegment *)self titleLabel];
+  [titleLabel setText:titleCopy];
 }
 
-- (void)setRoundedCorners:(unint64_t)a3
+- (void)setRoundedCorners:(unint64_t)corners
 {
-  if (self->_roundedCorners != a3)
+  if (self->_roundedCorners != corners)
   {
-    v4 = a3;
-    self->_roundedCorners = a3;
-    v6 = [(HUQuickControlSegmentedControlSegment *)self layer];
-    [v6 setMaskedCorners:v4 & 0xF];
+    cornersCopy = corners;
+    self->_roundedCorners = corners;
+    layer = [(HUQuickControlSegmentedControlSegment *)self layer];
+    [layer setMaskedCorners:cornersCopy & 0xF];
 
     [(HUQuickControlSegmentedControlSegment *)self setNeedsLayout];
   }
@@ -91,17 +91,17 @@
 {
   if ([(HUQuickControlSegmentedControlSegment *)self isSelected])
   {
-    v3 = [objc_opt_class() selectedColor];
+    selectedColor = [objc_opt_class() selectedColor];
 LABEL_5:
-    v4 = v3;
-    [(HUQuickControlSegmentedControlSegment *)self setBackgroundColor:v3];
+    v4 = selectedColor;
+    [(HUQuickControlSegmentedControlSegment *)self setBackgroundColor:selectedColor];
 
     return;
   }
 
   if ([(HUQuickControlSegmentedControlSegment *)self isHighlighted])
   {
-    v3 = [objc_opt_class() highlightedColor];
+    selectedColor = [objc_opt_class() highlightedColor];
     goto LABEL_5;
   }
 
@@ -110,52 +110,52 @@ LABEL_5:
 
 - (void)_setupConstraints
 {
-  v32 = [MEMORY[0x277CBEB18] array];
-  v3 = [(HUQuickControlSegmentedControlSegment *)self titleLabel];
-  v4 = [v3 centerXAnchor];
-  v5 = [(HUQuickControlSegmentedControlSegment *)self centerXAnchor];
-  v6 = [v4 constraintEqualToAnchor:v5];
-  [v32 addObject:v6];
+  array = [MEMORY[0x277CBEB18] array];
+  titleLabel = [(HUQuickControlSegmentedControlSegment *)self titleLabel];
+  centerXAnchor = [titleLabel centerXAnchor];
+  centerXAnchor2 = [(HUQuickControlSegmentedControlSegment *)self centerXAnchor];
+  v6 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
+  [array addObject:v6];
 
-  v7 = [(HUQuickControlSegmentedControlSegment *)self titleLabel];
-  v8 = [v7 firstBaselineAnchor];
-  v9 = [(HUQuickControlSegmentedControlSegment *)self topAnchor];
+  titleLabel2 = [(HUQuickControlSegmentedControlSegment *)self titleLabel];
+  firstBaselineAnchor = [titleLabel2 firstBaselineAnchor];
+  topAnchor = [(HUQuickControlSegmentedControlSegment *)self topAnchor];
   [objc_opt_class() borderInset];
-  v11 = [v8 constraintEqualToAnchor:v9 constant:20.0 - v10];
+  v11 = [firstBaselineAnchor constraintEqualToAnchor:topAnchor constant:20.0 - v10];
 
   LODWORD(v12) = 1144750080;
   [v11 setPriority:v12];
-  [v32 addObject:v11];
-  v13 = [(HUQuickControlSegmentedControlSegment *)self titleLabel];
-  v14 = [v13 topAnchor];
-  v15 = [(HUQuickControlSegmentedControlSegment *)self topAnchor];
-  v16 = [v14 constraintGreaterThanOrEqualToAnchor:v15];
-  [v32 addObject:v16];
+  [array addObject:v11];
+  titleLabel3 = [(HUQuickControlSegmentedControlSegment *)self titleLabel];
+  topAnchor2 = [titleLabel3 topAnchor];
+  topAnchor3 = [(HUQuickControlSegmentedControlSegment *)self topAnchor];
+  v16 = [topAnchor2 constraintGreaterThanOrEqualToAnchor:topAnchor3];
+  [array addObject:v16];
 
-  v17 = [(HUQuickControlSegmentedControlSegment *)self titleLabel];
-  v18 = [v17 lastBaselineAnchor];
-  v19 = [(HUQuickControlSegmentedControlSegment *)self bottomAnchor];
+  titleLabel4 = [(HUQuickControlSegmentedControlSegment *)self titleLabel];
+  lastBaselineAnchor = [titleLabel4 lastBaselineAnchor];
+  bottomAnchor = [(HUQuickControlSegmentedControlSegment *)self bottomAnchor];
   [objc_opt_class() borderInset];
-  v21 = [v18 constraintEqualToAnchor:v19 constant:-(10.0 - v20)];
-  [v32 addObject:v21];
+  v21 = [lastBaselineAnchor constraintEqualToAnchor:bottomAnchor constant:-(10.0 - v20)];
+  [array addObject:v21];
 
-  v22 = [(HUQuickControlSegmentedControlSegment *)self widthAnchor];
-  v23 = [(HUQuickControlSegmentedControlSegment *)self titleLabel];
-  v24 = [v23 widthAnchor];
-  v25 = [v22 constraintEqualToAnchor:v24 constant:32.0];
-  [v32 addObject:v25];
+  widthAnchor = [(HUQuickControlSegmentedControlSegment *)self widthAnchor];
+  titleLabel5 = [(HUQuickControlSegmentedControlSegment *)self titleLabel];
+  widthAnchor2 = [titleLabel5 widthAnchor];
+  v25 = [widthAnchor constraintEqualToAnchor:widthAnchor2 constant:32.0];
+  [array addObject:v25];
 
-  v26 = [(HUQuickControlSegmentedControlSegment *)self titleLabel];
-  v27 = [v26 centerXAnchor];
-  v28 = [(HUQuickControlSegmentedControlSegment *)self centerXAnchor];
-  v29 = [v27 constraintEqualToAnchor:v28];
-  [v32 addObject:v29];
+  titleLabel6 = [(HUQuickControlSegmentedControlSegment *)self titleLabel];
+  centerXAnchor3 = [titleLabel6 centerXAnchor];
+  centerXAnchor4 = [(HUQuickControlSegmentedControlSegment *)self centerXAnchor];
+  v29 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
+  [array addObject:v29];
 
-  v30 = [(HUQuickControlSegmentedControlSegment *)self widthAnchor];
-  v31 = [v30 constraintGreaterThanOrEqualToConstant:114.0];
-  [v32 addObject:v31];
+  widthAnchor3 = [(HUQuickControlSegmentedControlSegment *)self widthAnchor];
+  v31 = [widthAnchor3 constraintGreaterThanOrEqualToConstant:114.0];
+  [array addObject:v31];
 
-  [MEMORY[0x277CCAAD0] activateConstraints:v32];
+  [MEMORY[0x277CCAAD0] activateConstraints:array];
 }
 
 - (void)layoutSubviews
@@ -167,8 +167,8 @@ LABEL_5:
   {
     [(HUQuickControlSegmentedControlSegment *)self bounds];
     v4 = v3 * 0.5;
-    v5 = [(HUQuickControlSegmentedControlSegment *)self layer];
-    [v5 setCornerRadius:v4];
+    layer = [(HUQuickControlSegmentedControlSegment *)self layer];
+    [layer setCornerRadius:v4];
   }
 }
 

@@ -1,25 +1,25 @@
 @interface ADMonocularV2Pipeline
-- (ADMonocularV2Pipeline)initWithInputPrioritization:(int64_t)a3 andParameters:(id)a4;
-- (int64_t)adjustForEngine:(unint64_t)a3;
-- (int64_t)postProcessDisparity:(__CVBuffer *)a3 output:(__CVBuffer *)a4;
+- (ADMonocularV2Pipeline)initWithInputPrioritization:(int64_t)prioritization andParameters:(id)parameters;
+- (int64_t)adjustForEngine:(unint64_t)engine;
+- (int64_t)postProcessDisparity:(__CVBuffer *)disparity output:(__CVBuffer *)output;
 @end
 
 @implementation ADMonocularV2Pipeline
 
-- (int64_t)postProcessDisparity:(__CVBuffer *)a3 output:(__CVBuffer *)a4
+- (int64_t)postProcessDisparity:(__CVBuffer *)disparity output:(__CVBuffer *)output
 {
   kdebug_trace();
-  v6 = [ADUtils postProcessDepth:a3 depthOutput:a4];
+  v6 = [ADUtils postProcessDepth:disparity depthOutput:output];
   kdebug_trace();
   return v6;
 }
 
-- (ADMonocularV2Pipeline)initWithInputPrioritization:(int64_t)a3 andParameters:(id)a4
+- (ADMonocularV2Pipeline)initWithInputPrioritization:(int64_t)prioritization andParameters:(id)parameters
 {
   v35 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  parametersCopy = parameters;
   v22 = 335686160;
-  v23 = a3;
+  prioritizationCopy = prioritization;
   v24 = 0;
   v25 = 0;
   v26 = 0;
@@ -29,12 +29,12 @@
   v7 = [(ADMonocularV2Pipeline *)&v21 init];
   if (v7)
   {
-    if (!v6)
+    if (!parametersCopy)
     {
-      v6 = objc_opt_new();
+      parametersCopy = objc_opt_new();
     }
 
-    objc_storeStrong(&v7->_pipelineParameters, v6);
+    objc_storeStrong(&v7->_pipelineParameters, parametersCopy);
     if ([(ADMonocularV2PipelineParameters *)v7->_pipelineParameters networkVariantOverride]!= 1)
     {
       if (-[ADMonocularV2PipelineParameters networkVariantOverride](v7->_pipelineParameters, "networkVariantOverride") == 255 || ![MEMORY[0x277CEE958] hasANE])
@@ -64,10 +64,10 @@
       {
 LABEL_23:
         v8 = @"CVM";
-        if (a3 != 3)
+        if (prioritization != 3)
         {
 LABEL_6:
-          if (a3 == 2)
+          if (prioritization == 2)
           {
             v29 = &unk_28524A728;
             v30 = @"height_216_width_288";
@@ -78,11 +78,11 @@ LABEL_6:
 
           else
           {
-            if (a3 != 1)
+            if (prioritization != 1)
             {
               if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
               {
-                v20 = [ADUtils prioritizationAsString:a3];
+                v20 = [ADUtils prioritizationAsString:prioritization];
                 LODWORD(buf) = 138543362;
                 *(&buf + 4) = v20;
                 _os_log_error_impl(&dword_2402F6000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "MonocularV2 does not support prioritization %{public}@", &buf, 0xCu);
@@ -142,7 +142,7 @@ LABEL_24:
 
 LABEL_5:
     v8 = @"CVM4";
-    if (a3 != 3)
+    if (prioritization != 3)
     {
       goto LABEL_6;
     }
@@ -158,9 +158,9 @@ LABEL_32:
   return v18;
 }
 
-- (int64_t)adjustForEngine:(unint64_t)a3
+- (int64_t)adjustForEngine:(unint64_t)engine
 {
-  v4 = a3 - 3;
+  v4 = engine - 3;
   v5 = [ADEspressoMonocularV2InferenceDescriptor alloc];
   if (v4 >= 2)
   {

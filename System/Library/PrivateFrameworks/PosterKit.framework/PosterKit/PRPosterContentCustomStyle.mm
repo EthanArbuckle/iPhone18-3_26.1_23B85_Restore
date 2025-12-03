@@ -1,29 +1,29 @@
 @interface PRPosterContentCustomStyle
-- (BOOL)isEqual:(id)a3;
-- (PRPosterContentCustomStyle)initWithCoder:(id)a3;
-- (PRPosterContentCustomStyle)initWithIdentifier:(id)a3 localizedName:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (PRPosterContentCustomStyle)initWithCoder:(id)coder;
+- (PRPosterContentCustomStyle)initWithIdentifier:(id)identifier localizedName:(id)name;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)applyStyleWithRenderer:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)applyStyleWithRenderer:(id)renderer;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PRPosterContentCustomStyle
 
-- (PRPosterContentCustomStyle)initWithIdentifier:(id)a3 localizedName:(id)a4
+- (PRPosterContentCustomStyle)initWithIdentifier:(id)identifier localizedName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  nameCopy = name;
   v14.receiver = self;
   v14.super_class = PRPosterContentCustomStyle;
   v8 = [(PRPosterContentCustomStyle *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [identifierCopy copy];
     identifier = v8->_identifier;
     v8->_identifier = v9;
 
-    v11 = [v7 copy];
+    v11 = [nameCopy copy];
     localizedName = v8->_localizedName;
     v8->_localizedName = v11;
   }
@@ -31,10 +31,10 @@
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
@@ -44,7 +44,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       if ([(NSString *)self->_localizedName isEqual:v5->_localizedName])
       {
         v6 = [(NSString *)self->_identifier isEqual:v5->_identifier];
@@ -75,36 +75,36 @@
   return v6;
 }
 
-- (void)applyStyleWithRenderer:(id)a3
+- (void)applyStyleWithRenderer:(id)renderer
 {
-  v4 = a3;
+  rendererCopy = renderer;
   if (objc_opt_respondsToSelector())
   {
-    [v4 renderCustomStyle:self];
+    [rendererCopy renderCustomStyle:self];
   }
 }
 
-- (PRPosterContentCustomStyle)initWithCoder:(id)a3
+- (PRPosterContentCustomStyle)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"localizedName"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"localizedName"];
 
   v7 = [(PRPosterContentCustomStyle *)self initWithIdentifier:v5 localizedName:v6];
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"identifier"];
-  [v5 encodeObject:self->_localizedName forKey:@"localizedName"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
+  [coderCopy encodeObject:self->_localizedName forKey:@"localizedName"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [PRPosterContentCustomStyle allocWithZone:a3];
+  v4 = [PRPosterContentCustomStyle allocWithZone:zone];
   identifier = self->_identifier;
   localizedName = self->_localizedName;
 

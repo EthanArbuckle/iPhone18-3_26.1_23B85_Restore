@@ -10,21 +10,21 @@
   if (objc_opt_isKindOfClass())
   {
     v2 = MEMORY[0x277CCA920];
-    v3 = a1;
+    selfCopy = self;
     v4 = [v2 alloc];
-    v5 = [v3 compoundPredicateType];
-    v6 = [v3 subpredicates];
+    compoundPredicateType = [selfCopy compoundPredicateType];
+    subpredicates = [selfCopy subpredicates];
 
-    v7 = [v6 if_map:&__block_literal_global_243];
-    v8 = [v4 initWithType:v5 subpredicates:v7];
+    v7 = [subpredicates if_map:&__block_literal_global_243];
+    selfCopy2 = [v4 initWithType:compoundPredicateType subpredicates:v7];
   }
 
   else
   {
-    v8 = a1;
+    selfCopy2 = self;
   }
 
-  return v8;
+  return selfCopy2;
 }
 
 @end

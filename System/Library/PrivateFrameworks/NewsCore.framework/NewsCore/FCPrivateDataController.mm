@@ -1,55 +1,55 @@
 @interface FCPrivateDataController
-+ (BOOL)isLocalStoreKeyInternal:(id)a3;
++ (BOOL)isLocalStoreKeyInternal:(id)internal;
 + (BOOL)requiresBatchedFirstSync;
 + (BOOL)requiresHighPriorityFirstSync;
 + (BOOL)requiresPushNotificationSupport;
 + (id)backingRecordIDs;
 + (id)backingRecordZoneIDs;
 + (id)commandStoreFileName;
-+ (id)commandsToMergeLocalDataToCloud:(id)a3 privateDataDirectory:(id)a4;
++ (id)commandsToMergeLocalDataToCloud:(id)cloud privateDataDirectory:(id)directory;
 + (id)desiredKeys;
 + (id)internalLocalStoreKeys;
 + (id)localStoreFilename;
 + (int64_t)commandQueueUrgency;
 + (unint64_t)localStoreVersion;
-- (BOOL)isBackedByAnyRecordZoneIDsInSet:(id)a3;
+- (BOOL)isBackedByAnyRecordZoneIDsInSet:(id)set;
 - (BOOL)isDirty;
 - (FCPrivateDataController)init;
-- (FCPrivateDataController)initWithContext:(id)a3 pushNotificationCenter:(id)a4 storeDirectory:(id)a5;
+- (FCPrivateDataController)initWithContext:(id)context pushNotificationCenter:(id)center storeDirectory:(id)directory;
 - (NSArray)recordNamesPendingSaveToCloud;
 - (NSDate)modificationDate;
-- (id)allKnownRecordNamesWithinRecordZoneWithID:(id)a3;
+- (id)allKnownRecordNamesWithinRecordZoneWithID:(id)d;
 - (id)jsonEncodableObject;
-- (int64_t)qualityOfServiceForNextCommandInCommandQueue:(id)a3;
-- (void)_markAsDirtyAndNotifyObservers:(uint64_t)a1;
+- (int64_t)qualityOfServiceForNextCommandInCommandQueue:(id)queue;
+- (void)_markAsDirtyAndNotifyObservers:(uint64_t)observers;
 - (void)_markAsDirtyIfZonesChangedExternally;
 - (void)_notifyObservers;
-- (void)_possiblySimulateCrashWithMessage:(id)a3;
-- (void)_serialSyncUpToDate:(void *)a3 completion:;
-- (void)_syncWithCondition:(void *)a3 completion:;
+- (void)_possiblySimulateCrashWithMessage:(id)message;
+- (void)_serialSyncUpToDate:(void *)date completion:;
+- (void)_syncWithCondition:(void *)condition completion:;
 - (void)activityObservingApplicationWindowDidBecomeForeground;
-- (void)addCommandToCommandQueue:(id)a3;
-- (void)addObserver:(id)a3;
-- (void)addStateObserver:(id)a3;
+- (void)addCommandToCommandQueue:(id)queue;
+- (void)addObserver:(id)observer;
+- (void)addStateObserver:(id)observer;
 - (void)assertReadyForUse;
 - (void)createLocalStore;
 - (void)dealloc;
 - (void)disableSyncing;
 - (void)enableSyncing;
-- (void)forceSyncWithCompletion:(id)a3;
-- (void)handleSyncWithChangedRecords:(id)a3 deletedRecordNames:(id)a4;
+- (void)forceSyncWithCompletion:(id)completion;
+- (void)handleSyncWithChangedRecords:(id)records deletedRecordNames:(id)names;
 - (void)loadLocalCachesFromStore;
-- (void)mergeLocalStoreWithCloudWithPrivateDataDirectory:(id)a3;
-- (void)performFirstSyncWithCallbackQueue:(id)a3 completion:(id)a4;
-- (void)performFirstSyncWithCompletion:(id)a3;
+- (void)mergeLocalStoreWithCloudWithPrivateDataDirectory:(id)directory;
+- (void)performFirstSyncWithCallbackQueue:(id)queue completion:(id)completion;
+- (void)performFirstSyncWithCompletion:(id)completion;
 - (void)prepareForUse;
-- (void)recordSyncManager:(id)a3 stateDidChange:(id)a4;
-- (void)removeObserver:(id)a3;
-- (void)removeStateObserver:(id)a3;
-- (void)saveWithCompletion:(id)a3;
-- (void)syncWithCallbackQueue:(id)a3 completion:(id)a4;
-- (void)syncWithCompletion:(id)a3;
-- (void)zoneSyncManager:(id)a3 stateDidChange:(id)a4;
+- (void)recordSyncManager:(id)manager stateDidChange:(id)change;
+- (void)removeObserver:(id)observer;
+- (void)removeStateObserver:(id)observer;
+- (void)saveWithCompletion:(id)completion;
+- (void)syncWithCallbackQueue:(id)queue completion:(id)completion;
+- (void)syncWithCompletion:(id)completion;
+- (void)zoneSyncManager:(id)manager stateDidChange:(id)change;
 @end
 
 @implementation FCPrivateDataController
@@ -75,11 +75,11 @@
     }
 
     [(FCPrivateDataController *)self setSyncingEnabled:0];
-    v3 = [(FCPrivateDataController *)self localStore];
-    [v3 removeObjectForKey:@"sync-state"];
+    localStore = [(FCPrivateDataController *)self localStore];
+    [localStore removeObjectForKey:@"sync-state"];
 
-    v4 = [(FCPrivateDataController *)self localStore];
-    [v4 setCloudBackupEnabled:1];
+    localStore2 = [(FCPrivateDataController *)self localStore];
+    [localStore2 setCloudBackupEnabled:1];
 
     commandQueue = self->_commandQueue;
   }
@@ -87,11 +87,11 @@
   else
   {
     [0 setSyncingEnabled:0];
-    v9 = [0 localStore];
-    [v9 removeObjectForKey:@"sync-state"];
+    localStore3 = [0 localStore];
+    [localStore3 removeObjectForKey:@"sync-state"];
 
-    v10 = [0 localStore];
-    [v10 setCloudBackupEnabled:1];
+    localStore4 = [0 localStore];
+    [localStore4 setCloudBackupEnabled:1];
 
     commandQueue = 0;
   }
@@ -116,13 +116,13 @@
 
 - (void)prepareForUse
 {
-  v2 = self;
+  selfCopy = self;
   v66 = *MEMORY[0x1E69E9840];
   if (!self)
   {
-    v42 = [0 isSyncingEnabled];
+    isSyncingEnabled = [0 isSyncingEnabled];
     commandQueue = 0;
-    if ((v42 & 1) == 0)
+    if ((isSyncingEnabled & 1) == 0)
     {
       goto LABEL_30;
     }
@@ -144,17 +144,17 @@
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
   }
 
-  if ([(FCPrivateDataController *)v2 isSyncingEnabled])
+  if ([(FCPrivateDataController *)selfCopy isSyncingEnabled])
   {
-    commandQueue = v2->_commandQueue;
+    commandQueue = selfCopy->_commandQueue;
 LABEL_7:
     [(FCCommandQueue *)commandQueue resume];
-    v4 = [(FCPrivateDataController *)v2 localStore];
-    v5 = [v4 objectForKeyedSubscript:@"sync-state"];
+    localStore = [(FCPrivateDataController *)selfCopy localStore];
+    v5 = [localStore objectForKeyedSubscript:@"sync-state"];
 
     if ([v5 version] != 2)
     {
-      if (v2)
+      if (selfCopy)
       {
         v6 = objc_alloc_init(MEMORY[0x1E69B6F20]);
         [v6 setVersion:2];
@@ -165,45 +165,45 @@ LABEL_7:
         v6 = 0;
       }
 
-      v7 = [(FCPrivateDataController *)v2 localStore];
-      [v7 setObject:v6 forKeyedSubscript:@"sync-state"];
+      localStore2 = [(FCPrivateDataController *)selfCopy localStore];
+      [localStore2 setObject:v6 forKeyedSubscript:@"sync-state"];
 
       v5 = v6;
     }
 
-    v8 = [v5 zoneStates];
-    v9 = [v8 fc_dictionaryWithKeyBlock:&__block_literal_global_288];
+    zoneStates = [v5 zoneStates];
+    v9 = [zoneStates fc_dictionaryWithKeyBlock:&__block_literal_global_288];
 
-    v10 = [v5 recordStates];
-    v11 = [v10 fc_dictionaryWithKeyBlock:&__block_literal_global_291];
+    recordStates = [v5 recordStates];
+    v11 = [recordStates fc_dictionaryWithKeyBlock:&__block_literal_global_291];
 
-    v12 = [objc_opt_class() backingRecordZoneIDs];
+    backingRecordZoneIDs = [objc_opt_class() backingRecordZoneIDs];
     v55[0] = MEMORY[0x1E69E9820];
     v55[1] = 3221225472;
     v55[2] = __47__FCPrivateDataController_Setup__prepareForUse__block_invoke_3;
     v55[3] = &unk_1E7C3BCD0;
-    v55[4] = v2;
+    v55[4] = selfCopy;
     v13 = v9;
     v56 = v13;
-    v14 = [v12 fc_arrayByTransformingWithBlock:v55];
+    v14 = [backingRecordZoneIDs fc_arrayByTransformingWithBlock:v55];
 
-    v15 = [objc_opt_class() backingRecordIDs];
+    backingRecordIDs = [objc_opt_class() backingRecordIDs];
     v53[0] = MEMORY[0x1E69E9820];
     v53[1] = 3221225472;
     v53[2] = __47__FCPrivateDataController_Setup__prepareForUse__block_invoke_4;
     v53[3] = &unk_1E7C3BCF8;
-    v53[4] = v2;
+    v53[4] = selfCopy;
     v16 = v11;
     v54 = v16;
-    v17 = [v15 fc_arrayByTransformingWithBlock:v53];
+    v17 = [backingRecordIDs fc_arrayByTransformingWithBlock:v53];
 
     v18 = [MEMORY[0x1E695DEC8] fc_arrayByAddingObjectsFromArray:v17 toArray:v14];
-    if (v2)
+    if (selfCopy)
     {
-      objc_storeStrong(&v2->_syncManagers, v18);
+      objc_storeStrong(&selfCopy->_syncManagers, v18);
     }
 
-    v2->_waitingForFirstSync = [(NSArray *)v2->_syncManagers fc_containsObjectPassingTest:&__block_literal_global_296];
+    selfCopy->_waitingForFirstSync = [(NSArray *)selfCopy->_syncManagers fc_containsObjectPassingTest:&__block_literal_global_296];
     if ([objc_opt_class() requiresPushNotificationSupport])
     {
       v43 = v17;
@@ -230,10 +230,10 @@ LABEL_7:
             }
 
             v23 = *(*(&v49 + 1) + 8 * v22);
-            if (v2)
+            if (selfCopy)
             {
-              v24 = v2;
-              pushNotificationCenter = v2->_pushNotificationCenter;
+              v24 = selfCopy;
+              pushNotificationCenter = selfCopy->_pushNotificationCenter;
             }
 
             else
@@ -262,7 +262,7 @@ LABEL_7:
             [(FCPushNotificationCenter *)v26 addObserver:v23 forChangesToRecordZoneID:v28 usingBlock:v48];
 
             ++v22;
-            v2 = v24;
+            selfCopy = v24;
           }
 
           while (v20 != v22);
@@ -278,21 +278,21 @@ LABEL_7:
       v17 = v43;
     }
 
-    [(FCPrivateDataController *)v2 _markAsDirtyIfZonesChangedExternally];
+    [(FCPrivateDataController *)selfCopy _markAsDirtyIfZonesChangedExternally];
   }
 
 LABEL_30:
-  [(FCPrivateDataController *)v2 loadLocalCachesFromStore];
+  [(FCPrivateDataController *)selfCopy loadLocalCachesFromStore];
   v30 = FCPrivateDataLog;
   if (os_log_type_enabled(FCPrivateDataLog, OS_LOG_TYPE_DEFAULT))
   {
     obja = v30;
     v31 = objc_opt_class();
     v32 = NSStringFromClass(v31);
-    v33 = [(FCPrivateDataController *)v2 localStore];
-    v34 = [v33 allKeys];
-    v35 = [v34 count];
-    if ([(FCPrivateDataController *)v2 isSyncingEnabled])
+    localStore3 = [(FCPrivateDataController *)selfCopy localStore];
+    allKeys = [localStore3 allKeys];
+    v35 = [allKeys count];
+    if ([(FCPrivateDataController *)selfCopy isSyncingEnabled])
     {
       v36 = @"YES";
     }
@@ -302,7 +302,7 @@ LABEL_30:
       v36 = @"NO";
     }
 
-    if ([(FCPrivateDataController *)v2 isWaitingForFirstSync])
+    if ([(FCPrivateDataController *)selfCopy isWaitingForFirstSync])
     {
       v37 = @"YES";
     }
@@ -312,9 +312,9 @@ LABEL_30:
       v37 = @"NO";
     }
 
-    v38 = [(FCPrivateDataController *)v2 isDirty];
+    isDirty = [(FCPrivateDataController *)selfCopy isDirty];
     *buf = 138544386;
-    if (v38)
+    if (isDirty)
     {
       v39 = @"YES";
     }
@@ -336,9 +336,9 @@ LABEL_30:
     _os_log_impl(&dword_1B63EF000, obja, OS_LOG_TYPE_DEFAULT, "%{public}@ prepared for use with %lu store entries, isSyncingEnabled=%{public}@, waitingForFirstSync=%{public}@, dirty=%{public}@", buf, 0x34u);
   }
 
-  if (v2)
+  if (selfCopy)
   {
-    v2->_preparedForUse = 1;
+    selfCopy->_preparedForUse = 1;
   }
 
   v40 = *MEMORY[0x1E69E9840];
@@ -431,10 +431,10 @@ LABEL_7:
 
 - (NSDate)modificationDate
 {
-  v2 = [(FCPrivateDataController *)self localStore];
-  v3 = [v2 modificationDate];
+  localStore = [(FCPrivateDataController *)self localStore];
+  modificationDate = [localStore modificationDate];
 
-  return v3;
+  return modificationDate;
 }
 
 - (FCPrivateDataController)init
@@ -444,21 +444,21 @@ LABEL_7:
   return [(FCPrivateDataController *)&v3 init];
 }
 
-- (FCPrivateDataController)initWithContext:(id)a3 pushNotificationCenter:(id)a4 storeDirectory:(id)a5
+- (FCPrivateDataController)initWithContext:(id)context pushNotificationCenter:(id)center storeDirectory:(id)directory
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  contextCopy = context;
+  centerCopy = center;
+  directoryCopy = directory;
   v40.receiver = self;
   v40.super_class = FCPrivateDataController;
   v12 = [(FCPrivateDataController *)&v40 init];
   v13 = v12;
   if (v12)
   {
-    if (v9 && v11)
+    if (contextCopy && directoryCopy)
     {
-      objc_storeStrong(&v12->_context, a3);
-      objc_storeStrong(&v13->_pushNotificationCenter, a4);
+      objc_storeStrong(&v12->_context, context);
+      objc_storeStrong(&v13->_pushNotificationCenter, center);
       v14 = [MEMORY[0x1E696AC70] hashTableWithOptions:517];
       stateObservers = v13->_stateObservers;
       v13->_stateObservers = v14;
@@ -471,42 +471,42 @@ LABEL_7:
       syncQueue = v13->_syncQueue;
       v13->_syncQueue = v18;
 
-      v20 = [v11 copy];
+      v20 = [directoryCopy copy];
       storeDirectory = v13->_storeDirectory;
       v13->_storeDirectory = v20;
 
       v22 = objc_alloc_init(FCKeyValueStoreClassRegistry);
       [(FCKeyValueStoreClassRegistry *)v22 registerClass:objc_opt_class()];
       [objc_opt_class() populateLocalStoreClassRegistry:v22];
-      v23 = [(FCPrivateDataController *)v13 localStoreMigrator];
-      v24 = [v9 appActivityMonitor];
-      v25 = [v9 backgroundTaskable];
-      v26 = [FCKeyValueStoreSavePolicy appBackgroundPolicyWithActivityMonitor:v24 backgroundTaskable:v25];
+      localStoreMigrator = [(FCPrivateDataController *)v13 localStoreMigrator];
+      appActivityMonitor = [contextCopy appActivityMonitor];
+      backgroundTaskable = [contextCopy backgroundTaskable];
+      v26 = [FCKeyValueStoreSavePolicy appBackgroundPolicyWithActivityMonitor:appActivityMonitor backgroundTaskable:backgroundTaskable];
 
       v27 = [FCKeyValueStore alloc];
-      v28 = [objc_opt_class() localStoreFilename];
+      localStoreFilename = [objc_opt_class() localStoreFilename];
       v29 = v13->_storeDirectory;
-      v30 = -[FCKeyValueStore initWithName:directory:version:options:classRegistry:migrator:savePolicy:](v27, "initWithName:directory:version:options:classRegistry:migrator:savePolicy:", v28, v29, [objc_opt_class() localStoreVersion], 2, v22, v23, v26);
+      v30 = -[FCKeyValueStore initWithName:directory:version:options:classRegistry:migrator:savePolicy:](v27, "initWithName:directory:version:options:classRegistry:migrator:savePolicy:", localStoreFilename, v29, [objc_opt_class() localStoreVersion], 2, v22, localStoreMigrator, v26);
       localStore = v13->_localStore;
       v13->_localStore = v30;
 
       [objc_opt_class() configureKeyValueStoreForJSONHandling:v13->_localStore];
-      v32 = [v9 appActivityMonitor];
-      [v32 addObserver:v13];
+      appActivityMonitor2 = [contextCopy appActivityMonitor];
+      [appActivityMonitor2 addObserver:v13];
 
-      v33 = [objc_opt_class() commandStoreFileName];
+      commandStoreFileName = [objc_opt_class() commandStoreFileName];
       v34 = [FCCommandQueue alloc];
-      if (v33)
+      if (commandStoreFileName)
       {
         v35 = v13->_storeDirectory;
-        v36 = -[FCCommandQueue initWithContext:storeDirectory:storeFilename:urgency:suspended:delegate:](v34, "initWithContext:storeDirectory:storeFilename:urgency:suspended:delegate:", v9, v35, v33, [objc_opt_class() commandQueueUrgency], 1, v13);
+        v36 = -[FCCommandQueue initWithContext:storeDirectory:storeFilename:urgency:suspended:delegate:](v34, "initWithContext:storeDirectory:storeFilename:urgency:suspended:delegate:", contextCopy, v35, commandStoreFileName, [objc_opt_class() commandQueueUrgency], 1, v13);
         commandQueue = v13->_commandQueue;
         v13->_commandQueue = v36;
       }
 
       else
       {
-        v38 = -[FCCommandQueue initWithContext:urgency:suspended:delegate:](v34, "initWithContext:urgency:suspended:delegate:", v9, [objc_opt_class() commandQueueUrgency], 1, v13);
+        v38 = -[FCCommandQueue initWithContext:urgency:suspended:delegate:](v34, "initWithContext:urgency:suspended:delegate:", contextCopy, [objc_opt_class() commandQueueUrgency], 1, v13);
         v35 = v13->_commandQueue;
         v13->_commandQueue = v38;
       }
@@ -524,34 +524,34 @@ LABEL_7:
 
 - (void)dealloc
 {
-  v2 = self;
+  selfCopy = self;
   if (self)
   {
     self = self->_pushNotificationCenter;
   }
 
-  [(FCPushNotificationCenter *)self removeRecordZoneObserver:v2];
-  v3.receiver = v2;
+  [(FCPushNotificationCenter *)self removeRecordZoneObserver:selfCopy];
+  v3.receiver = selfCopy;
   v3.super_class = FCPrivateDataController;
   [(FCPrivateDataController *)&v3 dealloc];
 }
 
-- (void)_syncWithCondition:(void *)a3 completion:
+- (void)_syncWithCondition:(void *)condition completion:
 {
   v35 = *MEMORY[0x1E69E9840];
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  conditionCopy = condition;
+  if (self)
   {
     [MEMORY[0x1E696AF00] isMainThread];
-    if ([a1 isSyncingEnabled] && v5[2](v5))
+    if ([self isSyncingEnabled] && v5[2](v5))
     {
-      v7 = [MEMORY[0x1E695DF00] distantPast];
+      distantPast = [MEMORY[0x1E695DF00] distantPast];
       v28 = 0u;
       v29 = 0u;
       v30 = 0u;
       v31 = 0u;
-      v8 = a1[5];
+      v8 = self[5];
       v9 = [v8 countByEnumeratingWithState:&v28 objects:v34 count:16];
       if (v9)
       {
@@ -567,12 +567,12 @@ LABEL_7:
               objc_enumerationMutation(v8);
             }
 
-            v13 = [*(*(&v28 + 1) + 8 * v12) lastDirtyDate];
-            if ([v13 fc_isLaterThan:v7])
+            lastDirtyDate = [*(*(&v28 + 1) + 8 * v12) lastDirtyDate];
+            if ([lastDirtyDate fc_isLaterThan:distantPast])
             {
-              v14 = v13;
+              v14 = lastDirtyDate;
 
-              v7 = v14;
+              distantPast = v14;
             }
 
             ++v12;
@@ -596,9 +596,9 @@ LABEL_7:
         _os_log_impl(&dword_1B63EF000, v16, OS_LOG_TYPE_DEFAULT, "%{public}@ will enter sync queue", buf, 0xCu);
       }
 
-      v19 = a1[6];
-      v20 = [a1 isWaitingForFirstSync];
-      if ((v20 & [objc_opt_class() requiresHighPriorityFirstSync]) != 0)
+      v19 = self[6];
+      isWaitingForFirstSync = [self isWaitingForFirstSync];
+      if ((isWaitingForFirstSync & [objc_opt_class() requiresHighPriorityFirstSync]) != 0)
       {
         v21 = 25;
       }
@@ -612,17 +612,17 @@ LABEL_7:
       v24[1] = 3221225472;
       v24[2] = __57__FCPrivateDataController__syncWithCondition_completion___block_invoke;
       v24[3] = &unk_1E7C3BB68;
-      v24[4] = a1;
-      v25 = v7;
+      v24[4] = self;
+      v25 = distantPast;
       v26 = v5;
-      v27 = v6;
-      v22 = v7;
+      v27 = conditionCopy;
+      v22 = distantPast;
       [v19 withQualityOfService:v21 enqueueBlockForMainThread:v24];
     }
 
-    else if (v6)
+    else if (conditionCopy)
     {
-      (*(v6 + 2))(v6, 1, 0);
+      (*(conditionCopy + 2))(conditionCopy, 1, 0);
     }
   }
 
@@ -782,12 +782,12 @@ void __57__FCPrivateDataController__syncWithCondition_completion___block_invoke_
   v21 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_serialSyncUpToDate:(void *)a3 completion:
+- (void)_serialSyncUpToDate:(void *)date completion:
 {
   v42 = *MEMORY[0x1E69E9840];
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  dateCopy = date;
+  if (self)
   {
     [MEMORY[0x1E696AF00] isMainThread];
     v7 = FCPrivateDataLog;
@@ -805,19 +805,19 @@ void __57__FCPrivateDataController__syncWithCondition_completion___block_invoke_
     aBlock[1] = 3221225472;
     aBlock[2] = __58__FCPrivateDataController__serialSyncUpToDate_completion___block_invoke;
     aBlock[3] = &unk_1E7C3BC40;
-    aBlock[4] = a1;
-    v11 = v6;
+    aBlock[4] = self;
+    v11 = dateCopy;
     v38 = v11;
     v29 = v5;
     v12 = v5;
     v37 = v12;
     v13 = _Block_copy(aBlock);
-    *(a1 + 8) = [*(a1 + 40) fc_containsObjectPassingTest:&__block_literal_global_87];
+    *(self + 8) = [*(self + 40) fc_containsObjectPassingTest:&__block_literal_global_87];
     v34 = 0u;
     v35 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v14 = *(a1 + 40);
+    v14 = *(self + 40);
     v15 = [v14 countByEnumeratingWithState:&v32 objects:v39 count:16];
     if (v15)
     {
@@ -835,10 +835,10 @@ void __57__FCPrivateDataController__syncWithCondition_completion___block_invoke_
           v19 = *(*(&v32 + 1) + 8 * i);
           if (([v19 isCleanUpToDate:v12] & 1) == 0)
           {
-            v24 = [a1 context];
-            v25 = [v24 internalPrivateDataContext];
-            v26 = [v19 isAwaitingFirstSync];
-            if ((v26 & [objc_opt_class() requiresHighPriorityFirstSync]) != 0)
+            context = [self context];
+            internalPrivateDataContext = [context internalPrivateDataContext];
+            isAwaitingFirstSync = [v19 isAwaitingFirstSync];
+            if ((isAwaitingFirstSync & [objc_opt_class() requiresHighPriorityFirstSync]) != 0)
             {
               v27 = 25;
             }
@@ -854,7 +854,7 @@ void __57__FCPrivateDataController__syncWithCondition_completion___block_invoke_
             v30[3] = &unk_1E7C3BC68;
             v30[4] = v19;
             v31 = v13;
-            [v19 fetchChangesWithContext:v25 qualityOfService:v27 completionHandler:v30];
+            [v19 fetchChangesWithContext:internalPrivateDataContext qualityOfService:v27 completionHandler:v30];
 
             goto LABEL_19;
           }
@@ -889,16 +889,16 @@ LABEL_19:
   v28 = *MEMORY[0x1E69E9840];
 }
 
-- (void)syncWithCompletion:(id)a3
+- (void)syncWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __46__FCPrivateDataController_syncWithCompletion___block_invoke;
   v6[3] = &unk_1E7C37BC0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   FCPerformBlockOnMainThread(v6);
 }
 
@@ -913,19 +913,19 @@ void __46__FCPrivateDataController_syncWithCompletion___block_invoke(uint64_t a1
   [(FCPrivateDataController *)*(a1 + 32) _syncWithCondition:v2 completion:*(a1 + 40)];
 }
 
-- (void)syncWithCallbackQueue:(id)a3 completion:(id)a4
+- (void)syncWithCallbackQueue:(id)queue completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  queueCopy = queue;
+  completionCopy = completion;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __60__FCPrivateDataController_syncWithCallbackQueue_completion___block_invoke;
   v10[3] = &unk_1E7C39F98;
-  v11 = v6;
-  v12 = v7;
+  v11 = queueCopy;
+  v12 = completionCopy;
   v10[4] = self;
-  v8 = v6;
-  v9 = v7;
+  v8 = queueCopy;
+  v9 = completionCopy;
   FCPerformBlockOnMainThread(v10);
 }
 
@@ -965,9 +965,9 @@ void __60__FCPrivateDataController_syncWithCallbackQueue_completion___block_invo
   }
 }
 
-- (void)forceSyncWithCompletion:(id)a3
+- (void)forceSyncWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if (![(FCPrivateDataController *)self isWaitingForFirstSync])
   {
     v5[0] = MEMORY[0x1E69E9820];
@@ -975,7 +975,7 @@ void __60__FCPrivateDataController_syncWithCallbackQueue_completion___block_invo
     v5[2] = __51__FCPrivateDataController_forceSyncWithCompletion___block_invoke_2;
     v5[3] = &unk_1E7C37BC0;
     v5[4] = self;
-    v6 = v4;
+    v6 = completionCopy;
     FCPerformBlockOnMainThread(v5);
   }
 }
@@ -989,17 +989,17 @@ uint64_t __51__FCPrivateDataController_forceSyncWithCompletion___block_invoke_2(
   return [v2 syncWithCompletion:v3];
 }
 
-- (void)_markAsDirtyAndNotifyObservers:(uint64_t)a1
+- (void)_markAsDirtyAndNotifyObservers:(uint64_t)observers
 {
   v15 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (observers)
   {
     [MEMORY[0x1E696AF00] isMainThread];
     v10 = 0u;
     v11 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v4 = *(a1 + 40);
+    v4 = *(observers + 40);
     v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v5)
     {
@@ -1027,18 +1027,18 @@ uint64_t __51__FCPrivateDataController_forceSyncWithCompletion___block_invoke_2(
 
     if (a2)
     {
-      [(FCPrivateDataController *)a1 _notifyObservers];
+      [(FCPrivateDataController *)observers _notifyObservers];
     }
   }
 
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)performFirstSyncWithCallbackQueue:(id)a3 completion:(id)a4
+- (void)performFirstSyncWithCallbackQueue:(id)queue completion:(id)completion
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  queueCopy = queue;
+  completionCopy = completion;
   v8 = FCPrivateDataLog;
   if (os_log_type_enabled(FCPrivateDataLog, OS_LOG_TYPE_DEFAULT))
   {
@@ -1060,14 +1060,14 @@ uint64_t __51__FCPrivateDataController_forceSyncWithCompletion___block_invoke_2(
     v14[2] = __72__FCPrivateDataController_performFirstSyncWithCallbackQueue_completion___block_invoke;
     v14[3] = &unk_1E7C39F98;
     v14[4] = self;
-    v16 = v7;
-    v15 = v6;
+    v16 = completionCopy;
+    v15 = queueCopy;
     FCPerformBlockOnMainThread(v14);
   }
 
-  else if (v7)
+  else if (completionCopy)
   {
-    (*(v7 + 2))(v7, 1, 0);
+    (*(completionCopy + 2))(completionCopy, 1, 0);
   }
 
   v13 = *MEMORY[0x1E69E9840];
@@ -1122,15 +1122,15 @@ void __72__FCPrivateDataController_performFirstSyncWithCallbackQueue_completion_
   }
 }
 
-- (void)performFirstSyncWithCompletion:(id)a3
+- (void)performFirstSyncWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __58__FCPrivateDataController_performFirstSyncWithCompletion___block_invoke;
   v6[3] = &unk_1E7C3BB90;
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   [(FCPrivateDataController *)self performFirstSyncWithCallbackQueue:MEMORY[0x1E69E96A0] completion:v6];
 }
 
@@ -1145,19 +1145,19 @@ uint64_t __58__FCPrivateDataController_performFirstSyncWithCompletion___block_in
   return result;
 }
 
-- (void)saveWithCompletion:(id)a3
+- (void)saveWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(FCPrivateDataController *)self localStore];
-  [v5 saveWithCompletionHandler:v4];
+  completionCopy = completion;
+  localStore = [(FCPrivateDataController *)self localStore];
+  [localStore saveWithCompletionHandler:completionCopy];
 }
 
-- (void)addStateObserver:(id)a3
+- (void)addStateObserver:(id)observer
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  observerCopy = observer;
   [MEMORY[0x1E696AF00] isMainThread];
-  if (v4)
+  if (observerCopy)
   {
     if (self)
     {
@@ -1169,9 +1169,9 @@ uint64_t __58__FCPrivateDataController_performFirstSyncWithCompletion___block_in
       stateObservers = 0;
     }
 
-    if ([(NSHashTable *)stateObservers containsObject:v4]&& os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+    if ([(NSHashTable *)stateObservers containsObject:observerCopy]&& os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
-      v9 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%p is already an observer", v4];
+      observerCopy = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%p is already an observer", observerCopy];
       *buf = 136315906;
       v11 = "[FCPrivateDataController addStateObserver:]";
       v12 = 2080;
@@ -1179,7 +1179,7 @@ uint64_t __58__FCPrivateDataController_performFirstSyncWithCompletion___block_in
       v14 = 1024;
       v15 = 314;
       v16 = 2114;
-      v17 = v9;
+      v17 = observerCopy;
       _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
 
       if (self)
@@ -1193,7 +1193,7 @@ uint64_t __58__FCPrivateDataController_performFirstSyncWithCompletion___block_in
 LABEL_7:
       v6 = self->_stateObservers;
 LABEL_8:
-      [(NSHashTable *)v6 addObject:v4];
+      [(NSHashTable *)v6 addObject:observerCopy];
       goto LABEL_11;
     }
 
@@ -1220,12 +1220,12 @@ LABEL_11:
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeStateObserver:(id)a3
+- (void)removeStateObserver:(id)observer
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  observerCopy = observer;
   [MEMORY[0x1E696AF00] isMainThread];
-  if (v4)
+  if (observerCopy)
   {
     if (self)
     {
@@ -1237,7 +1237,7 @@ LABEL_11:
       stateObservers = 0;
     }
 
-    [(NSHashTable *)stateObservers removeObject:v4];
+    [(NSHashTable *)stateObservers removeObject:observerCopy];
   }
 
   else if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -1257,30 +1257,30 @@ LABEL_11:
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)isBackedByAnyRecordZoneIDsInSet:(id)a3
+- (BOOL)isBackedByAnyRecordZoneIDsInSet:(id)set
 {
   v3 = MEMORY[0x1E695DFD8];
-  v4 = a3;
-  v5 = [objc_opt_class() backingRecordZoneIDs];
-  v6 = [v3 setWithArray:v5];
+  setCopy = set;
+  backingRecordZoneIDs = [objc_opt_class() backingRecordZoneIDs];
+  v6 = [v3 setWithArray:backingRecordZoneIDs];
 
-  LOBYTE(v5) = [v6 intersectsSet:v4];
-  return v5;
+  LOBYTE(backingRecordZoneIDs) = [v6 intersectsSet:setCopy];
+  return backingRecordZoneIDs;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  observerCopy = observer;
   [MEMORY[0x1E696AF00] isMainThread];
-  if (v4)
+  if (observerCopy)
   {
-    v5 = [(FCPrivateDataController *)self observers];
-    v6 = [v5 containsObject:v4];
+    observers = [(FCPrivateDataController *)self observers];
+    v6 = [observers containsObject:observerCopy];
 
     if (v6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
-      v9 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%p is already an observer", v4];
+      observerCopy = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%p is already an observer", observerCopy];
       *buf = 136315906;
       v11 = "[FCPrivateDataController addObserver:]";
       v12 = 2080;
@@ -1288,12 +1288,12 @@ LABEL_11:
       v14 = 1024;
       v15 = 344;
       v16 = 2114;
-      v17 = v9;
+      v17 = observerCopy;
       _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
     }
 
-    v7 = [(FCPrivateDataController *)self observers];
-    [v7 addObject:v4];
+    observers2 = [(FCPrivateDataController *)self observers];
+    [observers2 addObject:observerCopy];
   }
 
   else
@@ -1303,7 +1303,7 @@ LABEL_11:
       goto LABEL_8;
     }
 
-    v7 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "observer != nil"];
+    observers2 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "observer != nil"];
     *buf = 136315906;
     v11 = "[FCPrivateDataController addObserver:]";
     v12 = 2080;
@@ -1311,7 +1311,7 @@ LABEL_11:
     v14 = 1024;
     v15 = 340;
     v16 = 2114;
-    v17 = v7;
+    v17 = observers2;
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
   }
 
@@ -1319,15 +1319,15 @@ LABEL_8:
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  observerCopy = observer;
   [MEMORY[0x1E696AF00] isMainThread];
-  if (v4)
+  if (observerCopy)
   {
-    v5 = [(FCPrivateDataController *)self observers];
-    [v5 removeObject:v4];
+    observers = [(FCPrivateDataController *)self observers];
+    [observers removeObject:observerCopy];
   }
 
   else
@@ -1337,7 +1337,7 @@ LABEL_8:
       goto LABEL_5;
     }
 
-    v5 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "observer != nil"];
+    observers = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "observer != nil"];
     *buf = 136315906;
     v8 = "[FCPrivateDataController removeObserver:]";
     v9 = 2080;
@@ -1345,7 +1345,7 @@ LABEL_8:
     v11 = 1024;
     v12 = 353;
     v13 = 2114;
-    v14 = v5;
+    v14 = observers;
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
   }
 
@@ -1353,10 +1353,10 @@ LABEL_5:
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addCommandToCommandQueue:(id)a3
+- (void)addCommandToCommandQueue:(id)queue
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  queueCopy = queue;
   [MEMORY[0x1E696AF00] isMainThread];
   if ((!self || !self->_commandQueue) && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
@@ -1395,7 +1395,7 @@ LABEL_5:
       commandQueue = 0;
     }
 
-    [(FCCommandQueue *)commandQueue addCommand:v4];
+    [(FCCommandQueue *)commandQueue addCommand:queueCopy];
   }
 
   v10 = *MEMORY[0x1E69E9840];
@@ -1459,8 +1459,8 @@ LABEL_5:
         v23 = 0u;
         v24 = 0u;
         v25 = 0u;
-        v12 = [v11 createdOrModifiedRecordIDs];
-        v13 = [v12 countByEnumeratingWithState:&v22 objects:v30 count:16];
+        createdOrModifiedRecordIDs = [v11 createdOrModifiedRecordIDs];
+        v13 = [createdOrModifiedRecordIDs countByEnumeratingWithState:&v22 objects:v30 count:16];
         if (v13)
         {
           v14 = v13;
@@ -1471,14 +1471,14 @@ LABEL_5:
             {
               if (*v23 != v15)
               {
-                objc_enumerationMutation(v12);
+                objc_enumerationMutation(createdOrModifiedRecordIDs);
               }
 
-              v17 = [*(*(&v22 + 1) + 8 * j) recordName];
-              [v3 addObject:v17];
+              recordName = [*(*(&v22 + 1) + 8 * j) recordName];
+              [v3 addObject:recordName];
             }
 
-            v14 = [v12 countByEnumeratingWithState:&v22 objects:v30 count:16];
+            v14 = [createdOrModifiedRecordIDs countByEnumeratingWithState:&v22 objects:v30 count:16];
           }
 
           while (v14);
@@ -1491,11 +1491,11 @@ LABEL_5:
     while (v6);
   }
 
-  v18 = [v3 allObjects];
+  allObjects = [v3 allObjects];
 
   v19 = *MEMORY[0x1E69E9840];
 
-  return v18;
+  return allObjects;
 }
 
 + (BOOL)requiresPushNotificationSupport
@@ -1732,11 +1732,11 @@ LABEL_5:
   objc_exception_throw(v6);
 }
 
-+ (id)commandsToMergeLocalDataToCloud:(id)a3 privateDataDirectory:(id)a4
++ (id)commandsToMergeLocalDataToCloud:(id)cloud privateDataDirectory:(id)directory
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  cloudCopy = cloud;
+  directoryCopy = directory;
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v7 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Abstract method"];
@@ -1760,11 +1760,11 @@ LABEL_5:
   objc_exception_throw(v11);
 }
 
-- (void)handleSyncWithChangedRecords:(id)a3 deletedRecordNames:(id)a4
+- (void)handleSyncWithChangedRecords:(id)records deletedRecordNames:(id)names
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  recordsCopy = records;
+  namesCopy = names;
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v7 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Abstract method"];
@@ -1788,10 +1788,10 @@ LABEL_5:
   objc_exception_throw(v11);
 }
 
-- (id)allKnownRecordNamesWithinRecordZoneWithID:(id)a3
+- (id)allKnownRecordNamesWithinRecordZoneWithID:(id)d
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  dCopy = d;
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v4 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Abstract method"];
@@ -1867,35 +1867,35 @@ LABEL_5:
   objc_exception_throw(v6);
 }
 
-+ (BOOL)isLocalStoreKeyInternal:(id)a3
++ (BOOL)isLocalStoreKeyInternal:(id)internal
 {
-  v4 = a3;
-  v5 = [a1 internalLocalStoreKeys];
-  v6 = [v5 containsObject:v4];
+  internalCopy = internal;
+  internalLocalStoreKeys = [self internalLocalStoreKeys];
+  v6 = [internalLocalStoreKeys containsObject:internalCopy];
 
   return v6;
 }
 
-- (void)zoneSyncManager:(id)a3 stateDidChange:(id)a4
+- (void)zoneSyncManager:(id)manager stateDidChange:(id)change
 {
   v35 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  changeCopy = change;
   [MEMORY[0x1E696AF00] isMainThread];
-  v27 = self;
-  v8 = [(FCPrivateDataController *)self localStore];
-  v9 = [v8 objectForKeyedSubscript:@"sync-state"];
+  selfCopy = self;
+  localStore = [(FCPrivateDataController *)self localStore];
+  v9 = [localStore objectForKeyedSubscript:@"sync-state"];
 
   [MEMORY[0x1E695DF70] array];
-  v29 = v28 = v7;
-  [v29 addObject:v7];
+  v29 = v28 = changeCopy;
+  [v29 addObject:changeCopy];
   v32 = 0u;
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
   v26 = v9;
-  v10 = [v9 zoneStates];
-  v11 = [v10 countByEnumeratingWithState:&v30 objects:v34 count:16];
+  zoneStates = [v9 zoneStates];
+  v11 = [zoneStates countByEnumeratingWithState:&v30 objects:v34 count:16];
   if (v11)
   {
     v12 = v11;
@@ -1907,14 +1907,14 @@ LABEL_5:
       {
         if (*v31 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(zoneStates);
         }
 
         v15 = *(*(&v30 + 1) + 8 * v14);
-        v16 = [v15 zoneName];
-        if (v6)
+        zoneName = [v15 zoneName];
+        if (managerCopy)
         {
-          v17 = v6[2];
+          v17 = managerCopy[2];
         }
 
         else
@@ -1923,8 +1923,8 @@ LABEL_5:
         }
 
         v18 = v17;
-        v19 = [v18 zoneName];
-        v20 = [v16 isEqualToString:v19];
+        zoneName2 = [v18 zoneName];
+        v20 = [zoneName isEqualToString:zoneName2];
 
         if ((v20 & 1) == 0)
         {
@@ -1935,7 +1935,7 @@ LABEL_5:
       }
 
       while (v12 != v14);
-      v21 = [v10 countByEnumeratingWithState:&v30 objects:v34 count:16];
+      v21 = [zoneStates countByEnumeratingWithState:&v30 objects:v34 count:16];
       v12 = v21;
     }
 
@@ -1945,13 +1945,13 @@ LABEL_5:
   if (v26)
   {
     v22 = [v26 copy];
-    v23 = v27;
+    v23 = selfCopy;
   }
 
   else
   {
-    v23 = v27;
-    if (v27)
+    v23 = selfCopy;
+    if (selfCopy)
     {
       v22 = objc_alloc_init(MEMORY[0x1E69B6F20]);
       [v22 setVersion:2];
@@ -1964,8 +1964,8 @@ LABEL_5:
   }
 
   [v22 setZoneStates:v29];
-  v24 = [(FCPrivateDataController *)v23 localStore];
-  [v24 setObject:v22 forKeyedSubscript:@"sync-state"];
+  localStore2 = [(FCPrivateDataController *)v23 localStore];
+  [localStore2 setObject:v22 forKeyedSubscript:@"sync-state"];
 
   v25 = *MEMORY[0x1E69E9840];
 }
@@ -1973,13 +1973,13 @@ LABEL_5:
 - (void)_notifyObservers
 {
   v14 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     v11 = 0u;
     v12 = 0u;
     v9 = 0u;
     v10 = 0u;
-    v2 = *(a1 + 56);
+    v2 = *(self + 56);
     v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
     if (v3)
     {
@@ -1998,7 +1998,7 @@ LABEL_5:
           v7 = *(*(&v9 + 1) + 8 * v6);
           if (objc_opt_respondsToSelector())
           {
-            [v7 privateDataControllerDidBecomeDirty:{a1, v9}];
+            [v7 privateDataControllerDidBecomeDirty:{self, v9}];
           }
 
           ++v6;
@@ -2015,19 +2015,19 @@ LABEL_5:
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)recordSyncManager:(id)a3 stateDidChange:(id)a4
+- (void)recordSyncManager:(id)manager stateDidChange:(id)change
 {
   v43 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  changeCopy = change;
   [MEMORY[0x1E696AF00] isMainThread];
-  v31 = self;
-  v8 = [(FCPrivateDataController *)self localStore];
-  v9 = [v8 objectForKeyedSubscript:@"sync-state"];
+  selfCopy = self;
+  localStore = [(FCPrivateDataController *)self localStore];
+  v9 = [localStore objectForKeyedSubscript:@"sync-state"];
 
-  v37 = [MEMORY[0x1E695DF70] array];
-  v32 = v7;
-  [v37 addObject:v7];
+  array = [MEMORY[0x1E695DF70] array];
+  v32 = changeCopy;
+  [array addObject:changeCopy];
   v40 = 0u;
   v41 = 0u;
   v38 = 0u;
@@ -2043,7 +2043,7 @@ LABEL_5:
   v11 = v10;
   v12 = *v39;
   v33 = *v39;
-  v34 = v6;
+  v34 = managerCopy;
   do
   {
     v13 = 0;
@@ -2056,10 +2056,10 @@ LABEL_5:
       }
 
       v14 = *(*(&v38 + 1) + 8 * v13);
-      v15 = [v14 recordName];
-      if (v6)
+      recordName = [v14 recordName];
+      if (managerCopy)
       {
-        v16 = v6[1];
+        v16 = managerCopy[1];
       }
 
       else
@@ -2068,19 +2068,19 @@ LABEL_5:
       }
 
       v17 = v16;
-      v18 = [v17 recordName];
-      if (([v15 isEqualToString:v18] & 1) == 0)
+      recordName2 = [v17 recordName];
+      if (([recordName isEqualToString:recordName2] & 1) == 0)
       {
 
 LABEL_14:
-        [v37 addObject:v14];
+        [array addObject:v14];
         goto LABEL_15;
       }
 
-      v19 = [v14 recordZoneName];
-      if (v6)
+      recordZoneName = [v14 recordZoneName];
+      if (managerCopy)
       {
-        v20 = v6[1];
+        v20 = managerCopy[1];
       }
 
       else
@@ -2089,12 +2089,12 @@ LABEL_14:
       }
 
       v21 = v20;
-      v22 = [v21 zoneID];
-      v23 = [v22 zoneName];
-      v24 = [v19 isEqualToString:v23];
+      zoneID = [v21 zoneID];
+      zoneName = [zoneID zoneName];
+      v24 = [recordZoneName isEqualToString:zoneName];
 
       v12 = v33;
-      v6 = v34;
+      managerCopy = v34;
       v11 = v35;
       if ((v24 & 1) == 0)
       {
@@ -2116,13 +2116,13 @@ LABEL_20:
   if (v30)
   {
     v26 = [v30 copy];
-    v27 = v31;
+    v27 = selfCopy;
   }
 
   else
   {
-    v27 = v31;
-    if (v31)
+    v27 = selfCopy;
+    if (selfCopy)
     {
       v26 = objc_alloc_init(MEMORY[0x1E69B6F20]);
       [v26 setVersion:2];
@@ -2134,19 +2134,19 @@ LABEL_20:
     }
   }
 
-  [v26 setRecordStates:v37];
-  v28 = [(FCPrivateDataController *)v27 localStore];
-  [v28 setObject:v26 forKeyedSubscript:@"sync-state"];
+  [v26 setRecordStates:array];
+  localStore2 = [(FCPrivateDataController *)v27 localStore];
+  [localStore2 setObject:v26 forKeyedSubscript:@"sync-state"];
 
   v29 = *MEMORY[0x1E69E9840];
 }
 
-- (int64_t)qualityOfServiceForNextCommandInCommandQueue:(id)a3
+- (int64_t)qualityOfServiceForNextCommandInCommandQueue:(id)queue
 {
   if (self)
   {
-    v3 = [self isWaitingForFirstSync];
-    if ((v3 & [objc_opt_class() requiresHighPriorityFirstSync]) != 0)
+    isWaitingForFirstSync = [self isWaitingForFirstSync];
+    if ((isWaitingForFirstSync & [objc_opt_class() requiresHighPriorityFirstSync]) != 0)
     {
       return 25;
     }
@@ -2163,21 +2163,21 @@ LABEL_20:
 - (void)_markAsDirtyIfZonesChangedExternally
 {
   v52 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v1 = [MEMORY[0x1E696AAE8] mainBundle];
-    v2 = [v1 bundleIdentifier];
-    v3 = [v2 isEqualToString:@"com.apple.news"];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
+    v3 = [bundleIdentifier isEqualToString:@"com.apple.news"];
 
     if (v3)
     {
-      v4 = [MEMORY[0x1E695DF00] distantPast];
+      distantPast = [MEMORY[0x1E695DF00] distantPast];
       v38 = 0u;
       v39 = 0u;
       v40 = 0u;
       v41 = 0u;
-      v5 = [objc_opt_class() backingRecordZoneIDs];
-      v6 = [v5 countByEnumeratingWithState:&v38 objects:v51 count:16];
+      backingRecordZoneIDs = [objc_opt_class() backingRecordZoneIDs];
+      v6 = [backingRecordZoneIDs countByEnumeratingWithState:&v38 objects:v51 count:16];
       if (v6)
       {
         v8 = v6;
@@ -2190,12 +2190,12 @@ LABEL_20:
           {
             if (*v39 != v9)
             {
-              objc_enumerationMutation(v5);
+              objc_enumerationMutation(backingRecordZoneIDs);
             }
 
             v11 = *(*(&v38 + 1) + 8 * i);
-            v12 = [v11 zoneName];
-            v13 = FCZoneLastModifiedExternallySharedPreferenceKey(v12);
+            zoneName = [v11 zoneName];
+            v13 = FCZoneLastModifiedExternallySharedPreferenceKey(zoneName);
 
             v14 = NewsCoreUserDefaults();
             v15 = [v14 objectForKey:v13];
@@ -2208,25 +2208,25 @@ LABEL_20:
                 v17 = v16;
                 v18 = objc_opt_class();
                 v19 = NSStringFromClass(v18);
-                v20 = [v11 zoneName];
+                zoneName2 = [v11 zoneName];
                 *buf = v32;
                 v44 = v19;
                 v45 = 2114;
-                v46 = v20;
+                v46 = zoneName2;
                 v47 = 2114;
-                v48 = v4;
+                v48 = distantPast;
                 v49 = 2114;
                 v50 = v15;
                 _os_log_impl(&dword_1B63EF000, v17, OS_LOG_TYPE_DEFAULT, "%{public}@ %{public}@ externally modified at %{public}@ vs local %{public}@", buf, 0x2Au);
               }
 
-              v21 = [v4 laterDate:v15];
+              v21 = [distantPast laterDate:v15];
 
-              v4 = v21;
+              distantPast = v21;
             }
           }
 
-          v8 = [v5 countByEnumeratingWithState:&v38 objects:v51 count:16];
+          v8 = [backingRecordZoneIDs countByEnumeratingWithState:&v38 objects:v51 count:16];
         }
 
         while (v8);
@@ -2236,7 +2236,7 @@ LABEL_20:
       v37 = 0u;
       v34 = 0u;
       v35 = 0u;
-      v22 = *(a1 + 40);
+      v22 = *(self + 40);
       v23 = [v22 countByEnumeratingWithState:&v34 objects:v42 count:16];
       if (v23)
       {
@@ -2253,8 +2253,8 @@ LABEL_20:
             }
 
             v28 = *(*(&v34 + 1) + 8 * j);
-            v29 = [v28 lastCleanDate];
-            v30 = [v29 fc_isEarlierThan:v4];
+            lastCleanDate = [v28 lastCleanDate];
+            v30 = [lastCleanDate fc_isEarlierThan:distantPast];
 
             if (v30)
             {
@@ -2270,7 +2270,7 @@ LABEL_20:
 
         if (v25)
         {
-          [(FCPrivateDataController *)a1 _notifyObservers];
+          [(FCPrivateDataController *)self _notifyObservers];
         }
       }
 
@@ -2620,8 +2620,8 @@ void __58__FCPrivateDataController__serialSyncUpToDate_completion___block_invoke
   }
 
   [(FCPrivateDataController *)self setSyncingEnabled:1];
-  v3 = [(FCPrivateDataController *)self localStore];
-  [v3 setCloudBackupEnabled:0];
+  localStore = [(FCPrivateDataController *)self localStore];
+  [localStore setCloudBackupEnabled:0];
 
   if (![(FCPrivateDataController *)self isSyncingEnabled]&& os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
@@ -2659,8 +2659,8 @@ void __58__FCPrivateDataController__serialSyncUpToDate_completion___block_invoke
   }
 
   [(FCPrivateDataController *)self setSyncingEnabled:0];
-  v3 = [(FCPrivateDataController *)self localStore];
-  [v3 setCloudBackupEnabled:1];
+  localStore = [(FCPrivateDataController *)self localStore];
+  [localStore setCloudBackupEnabled:1];
 
   if ([(FCPrivateDataController *)self isSyncingEnabled]&& os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
@@ -2679,10 +2679,10 @@ void __58__FCPrivateDataController__serialSyncUpToDate_completion___block_invoke
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (void)mergeLocalStoreWithCloudWithPrivateDataDirectory:(id)a3
+- (void)mergeLocalStoreWithCloudWithPrivateDataDirectory:(id)directory
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  directoryCopy = directory;
   if (self && self->_preparedForUse && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v20 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"migration actions should be called before -prepareForUse"];
@@ -2698,8 +2698,8 @@ void __58__FCPrivateDataController__serialSyncUpToDate_completion___block_invoke
   }
 
   v5 = objc_opt_class();
-  v6 = [(FCPrivateDataController *)self localStore];
-  v7 = [v5 commandsToMergeLocalDataToCloud:v6 privateDataDirectory:v4];
+  localStore = [(FCPrivateDataController *)self localStore];
+  v7 = [v5 commandsToMergeLocalDataToCloud:localStore privateDataDirectory:directoryCopy];
 
   if (v7)
   {
@@ -2820,10 +2820,10 @@ uint64_t __47__FCPrivateDataController_Setup__prepareForUse__block_invoke_6(uint
   return [v2 notifyObservers];
 }
 
-- (void)_possiblySimulateCrashWithMessage:(id)a3
+- (void)_possiblySimulateCrashWithMessage:(id)message
 {
   v10 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  messageCopy = message;
   if (NFInternalBuild())
   {
     v4 = NewsCoreUserDefaults();
@@ -2841,7 +2841,7 @@ uint64_t __47__FCPrivateDataController_Setup__prepareForUse__block_invoke_6(uint
         if (os_log_type_enabled(FCPrivateDataLog, OS_LOG_TYPE_FAULT))
         {
           v8 = 138543362;
-          v9 = v3;
+          v9 = messageCopy;
           _os_log_fault_impl(&dword_1B63EF000, v6, OS_LOG_TYPE_FAULT, "triggering simulated crash with message %{public}@", &v8, 0xCu);
         }
       }
@@ -2853,10 +2853,10 @@ uint64_t __47__FCPrivateDataController_Setup__prepareForUse__block_invoke_6(uint
 
 - (id)jsonEncodableObject
 {
-  v2 = [(FCPrivateDataController *)self localStore];
-  v3 = [v2 jsonEncodableObject];
+  localStore = [(FCPrivateDataController *)self localStore];
+  jsonEncodableObject = [localStore jsonEncodableObject];
 
-  return v3;
+  return jsonEncodableObject;
 }
 
 @end

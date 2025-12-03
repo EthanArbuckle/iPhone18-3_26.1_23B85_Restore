@@ -1,20 +1,20 @@
 @interface BKAppLifecycleObserver
 - (BKAppLifecycleObserver)init;
-- (BKAppLifecycleObserver)initWithCoordinator:(id)a3 uiApplication:(id)a4 appKitBundle:(Class)a5;
+- (BKAppLifecycleObserver)initWithCoordinator:(id)coordinator uiApplication:(id)application appKitBundle:(Class)bundle;
 - (void)dealloc;
-- (void)setOnDidBecomeActive:(id)a3;
-- (void)setOnDidBecomeFrontmost:(id)a3;
-- (void)setOnDidEnterBackground:(id)a3;
-- (void)setOnWillEnterForeground:(id)a3;
-- (void)setOnWillResignActive:(id)a3;
-- (void)setOnWillResignFrontmost:(id)a3;
+- (void)setOnDidBecomeActive:(id)active;
+- (void)setOnDidBecomeFrontmost:(id)frontmost;
+- (void)setOnDidEnterBackground:(id)background;
+- (void)setOnWillEnterForeground:(id)foreground;
+- (void)setOnWillResignActive:(id)active;
+- (void)setOnWillResignFrontmost:(id)frontmost;
 @end
 
 @implementation BKAppLifecycleObserver
 
-- (void)setOnWillEnterForeground:(id)a3
+- (void)setOnWillEnterForeground:(id)foreground
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(foreground);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -32,13 +32,13 @@
   v7 = *v6;
   *v6 = v4;
   v6[1] = v5;
-  v8 = self;
+  selfCopy = self;
   sub_100007020(v7);
 }
 
-- (void)setOnDidEnterBackground:(id)a3
+- (void)setOnDidEnterBackground:(id)background
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(background);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -56,13 +56,13 @@
   v7 = *v6;
   *v6 = v4;
   v6[1] = v5;
-  v8 = self;
+  selfCopy = self;
   sub_100007020(v7);
 }
 
-- (void)setOnWillResignActive:(id)a3
+- (void)setOnWillResignActive:(id)active
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(active);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -80,13 +80,13 @@
   v7 = *v6;
   *v6 = v4;
   v6[1] = v5;
-  v8 = self;
+  selfCopy = self;
   sub_100007020(v7);
 }
 
-- (void)setOnDidBecomeActive:(id)a3
+- (void)setOnDidBecomeActive:(id)active
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(active);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -104,13 +104,13 @@
   v7 = *v6;
   *v6 = v4;
   v6[1] = v5;
-  v8 = self;
+  selfCopy = self;
   sub_100007020(v7);
 }
 
-- (void)setOnWillResignFrontmost:(id)a3
+- (void)setOnWillResignFrontmost:(id)frontmost
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(frontmost);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -128,13 +128,13 @@
   v7 = *v6;
   *v6 = v4;
   v6[1] = v5;
-  v8 = self;
+  selfCopy = self;
   sub_100007020(v7);
 }
 
-- (void)setOnDidBecomeFrontmost:(id)a3
+- (void)setOnDidBecomeFrontmost:(id)frontmost
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(frontmost);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -152,29 +152,29 @@
   v7 = *v6;
   *v6 = v4;
   v6[1] = v5;
-  v8 = self;
+  selfCopy = self;
   sub_100007020(v7);
 }
 
-- (BKAppLifecycleObserver)initWithCoordinator:(id)a3 uiApplication:(id)a4 appKitBundle:(Class)a5
+- (BKAppLifecycleObserver)initWithCoordinator:(id)coordinator uiApplication:(id)application appKitBundle:(Class)bundle
 {
-  if (a5)
+  if (bundle)
   {
     swift_getObjCClassMetadata();
   }
 
   swift_unknownObjectRetain();
-  return sub_100006D70(a3, a4);
+  return sub_100006D70(coordinator, application);
 }
 
 - (void)dealloc
 {
   v3 = objc_opt_self();
-  v4 = self;
-  v5 = [v3 defaultCenter];
-  [v5 removeObserver:v4];
+  selfCopy = self;
+  defaultCenter = [v3 defaultCenter];
+  [defaultCenter removeObserver:selfCopy];
 
-  v6.receiver = v4;
+  v6.receiver = selfCopy;
   v6.super_class = type metadata accessor for AppLifecycleObserver();
   [(BKAppLifecycleObserver *)&v6 dealloc];
 }

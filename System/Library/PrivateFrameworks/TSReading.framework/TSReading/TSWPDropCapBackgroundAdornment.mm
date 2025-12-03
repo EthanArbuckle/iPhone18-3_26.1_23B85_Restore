@@ -1,23 +1,23 @@
 @interface TSWPDropCapBackgroundAdornment
-- (TSWPDropCapBackgroundAdornment)initWithColor:(id)a3 bounds:(CGRect)a4;
+- (TSWPDropCapBackgroundAdornment)initWithColor:(id)color bounds:(CGRect)bounds;
 - (void)dealloc;
-- (void)drawAdornmentForFragment:(const void *)a3 inContext:(CGContext *)a4 withFlags:(unsigned int)a5 state:(const void *)a6 bounds:(CGRect)a7;
+- (void)drawAdornmentForFragment:(const void *)fragment inContext:(CGContext *)context withFlags:(unsigned int)flags state:(const void *)state bounds:(CGRect)bounds;
 @end
 
 @implementation TSWPDropCapBackgroundAdornment
 
-- (TSWPDropCapBackgroundAdornment)initWithColor:(id)a3 bounds:(CGRect)a4
+- (TSWPDropCapBackgroundAdornment)initWithColor:(id)color bounds:(CGRect)bounds
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v11.receiver = self;
   v11.super_class = TSWPDropCapBackgroundAdornment;
   v9 = [(TSWPDropCapBackgroundAdornment *)&v11 init];
   if (v9)
   {
-    v9->_color = [a3 copy];
+    v9->_color = [color copy];
     v9->_bounds.origin.x = x;
     v9->_bounds.origin.y = y;
     v9->_bounds.size.width = width;
@@ -34,14 +34,14 @@
   [(TSWPDropCapBackgroundAdornment *)&v3 dealloc];
 }
 
-- (void)drawAdornmentForFragment:(const void *)a3 inContext:(CGContext *)a4 withFlags:(unsigned int)a5 state:(const void *)a6 bounds:(CGRect)a7
+- (void)drawAdornmentForFragment:(const void *)fragment inContext:(CGContext *)context withFlags:(unsigned int)flags state:(const void *)state bounds:(CGRect)bounds
 {
-  y = a7.origin.y;
-  x = a7.origin.x;
-  CGContextSetFillColorWithColor(a4, [(TSUColor *)self->_color CGColor:a3]);
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  CGContextSetFillColorWithColor(context, [(TSUColor *)self->_color CGColor:fragment]);
   v12 = CGRectOffset(self->_bounds, x, y);
 
-  CGContextFillRect(a4, v12);
+  CGContextFillRect(context, v12);
 }
 
 @end

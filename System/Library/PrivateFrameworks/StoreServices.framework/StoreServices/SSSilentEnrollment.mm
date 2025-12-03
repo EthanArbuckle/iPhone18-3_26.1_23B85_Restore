@@ -1,21 +1,21 @@
 @interface SSSilentEnrollment
-- (SSSilentEnrollment)initWithSilentEnrollmentContext:(id)a3;
-- (SSSilentEnrollment)initWithXPCEncoding:(id)a3;
+- (SSSilentEnrollment)initWithSilentEnrollmentContext:(id)context;
+- (SSSilentEnrollment)initWithXPCEncoding:(id)encoding;
 - (id)copyXPCEncoding;
 @end
 
 @implementation SSSilentEnrollment
 
-- (SSSilentEnrollment)initWithSilentEnrollmentContext:(id)a3
+- (SSSilentEnrollment)initWithSilentEnrollmentContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v9.receiver = self;
   v9.super_class = SSSilentEnrollment;
   v6 = [(SSRequest *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_context, a3);
+    objc_storeStrong(&v6->_context, context);
   }
 
   return v7;
@@ -24,46 +24,46 @@
 - (id)copyXPCEncoding
 {
   v3 = xpc_dictionary_create(0, 0, 0);
-  v4 = [(SSSilentEnrollment *)self context];
-  v5 = [v4 accountIdentifier];
-  SSXPCDictionarySetObject(v3, "0", v5);
+  context = [(SSSilentEnrollment *)self context];
+  accountIdentifier = [context accountIdentifier];
+  SSXPCDictionarySetObject(v3, "0", accountIdentifier);
 
-  v6 = [(SSSilentEnrollment *)self context];
-  v7 = [v6 headerADSID];
-  SSXPCDictionarySetObject(v3, "1", v7);
+  context2 = [(SSSilentEnrollment *)self context];
+  headerADSID = [context2 headerADSID];
+  SSXPCDictionarySetObject(v3, "1", headerADSID);
 
-  v8 = [(SSSilentEnrollment *)self context];
-  v9 = [v8 headerGSToken];
-  SSXPCDictionarySetObject(v3, "2", v9);
+  context3 = [(SSSilentEnrollment *)self context];
+  headerGSToken = [context3 headerGSToken];
+  SSXPCDictionarySetObject(v3, "2", headerGSToken);
 
-  v10 = [(SSSilentEnrollment *)self context];
-  v11 = [v10 headerGuid];
-  SSXPCDictionarySetObject(v3, "3", v11);
+  context4 = [(SSSilentEnrollment *)self context];
+  headerGuid = [context4 headerGuid];
+  SSXPCDictionarySetObject(v3, "3", headerGuid);
 
-  v12 = [(SSSilentEnrollment *)self context];
-  v13 = [v12 headerMMeClientInfo];
-  SSXPCDictionarySetObject(v3, "4", v13);
+  context5 = [(SSSilentEnrollment *)self context];
+  headerMMeClientInfo = [context5 headerMMeClientInfo];
+  SSXPCDictionarySetObject(v3, "4", headerMMeClientInfo);
 
-  v14 = [(SSSilentEnrollment *)self context];
-  v15 = [v14 headerMMeDeviceId];
-  SSXPCDictionarySetObject(v3, "5", v15);
+  context6 = [(SSSilentEnrollment *)self context];
+  headerMMeDeviceId = [context6 headerMMeDeviceId];
+  SSXPCDictionarySetObject(v3, "5", headerMMeDeviceId);
 
-  v16 = [(SSSilentEnrollment *)self context];
-  v17 = [v16 parameters];
-  SSXPCDictionarySetObject(v3, "7", v17);
+  context7 = [(SSSilentEnrollment *)self context];
+  parameters = [context7 parameters];
+  SSXPCDictionarySetObject(v3, "7", parameters);
 
-  v18 = [(SSSilentEnrollment *)self context];
-  v19 = [v18 URLString];
-  SSXPCDictionarySetObject(v3, "6", v19);
+  context8 = [(SSSilentEnrollment *)self context];
+  uRLString = [context8 URLString];
+  SSXPCDictionarySetObject(v3, "6", uRLString);
 
   return v3;
 }
 
-- (SSSilentEnrollment)initWithXPCEncoding:(id)a3
+- (SSSilentEnrollment)initWithXPCEncoding:(id)encoding
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && MEMORY[0x1DA6E0380](v4) == MEMORY[0x1E69E9E80])
+  encodingCopy = encoding;
+  v5 = encodingCopy;
+  if (encodingCopy && MEMORY[0x1DA6E0380](encodingCopy) == MEMORY[0x1E69E9E80])
   {
     v6 = [(SSRequest *)self init];
     if (!v6)

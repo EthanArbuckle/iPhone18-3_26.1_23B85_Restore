@@ -1,34 +1,34 @@
 @interface NLSessionActivityGoal
-+ (id)goalWithGoalTypeIdentifier:(unint64_t)a3 value:(id)a4 requiredDistance:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToNLSessionActivityGoal:(id)a3;
-- (NLSessionActivityGoal)initWithCoder:(id)a3;
-- (NLSessionActivityGoal)initWithGoalTypeIdentifier:(unint64_t)a3 value:(id)a4 requiredDistance:(id)a5;
++ (id)goalWithGoalTypeIdentifier:(unint64_t)identifier value:(id)value requiredDistance:(id)distance;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToNLSessionActivityGoal:(id)goal;
+- (NLSessionActivityGoal)initWithCoder:(id)coder;
+- (NLSessionActivityGoal)initWithGoalTypeIdentifier:(unint64_t)identifier value:(id)value requiredDistance:(id)distance;
 - (double)doubleValue;
-- (id)_quantityForDoubleValue:(double)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_quantityForDoubleValue:(double)value;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setRequiredDistance:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setRequiredDistance:(id)distance;
 @end
 
 @implementation NLSessionActivityGoal
 
-- (NLSessionActivityGoal)initWithGoalTypeIdentifier:(unint64_t)a3 value:(id)a4 requiredDistance:(id)a5
+- (NLSessionActivityGoal)initWithGoalTypeIdentifier:(unint64_t)identifier value:(id)value requiredDistance:(id)distance
 {
-  v9 = a4;
-  v10 = a5;
+  valueCopy = value;
+  distanceCopy = distance;
   v14.receiver = self;
   v14.super_class = NLSessionActivityGoal;
   v11 = [(NLSessionActivityGoal *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    v11->_goalTypeIdentifier = a3;
-    objc_storeStrong(&v11->_value, a4);
-    if (v10)
+    v11->_goalTypeIdentifier = identifier;
+    objc_storeStrong(&v11->_value, value);
+    if (distanceCopy)
     {
-      [(NLSessionActivityGoal *)v12 setRequiredDistance:v10];
+      [(NLSessionActivityGoal *)v12 setRequiredDistance:distanceCopy];
     }
   }
 
@@ -37,54 +37,54 @@
 
 - (double)doubleValue
 {
-  v3 = [(NLSessionActivityGoal *)self goalTypeIdentifier];
-  if (v3 == 1)
+  goalTypeIdentifier = [(NLSessionActivityGoal *)self goalTypeIdentifier];
+  if (goalTypeIdentifier == 1)
   {
     value = self->_value;
-    v6 = [MEMORY[0x1E696C510] meterUnit];
+    meterUnit = [MEMORY[0x1E696C510] meterUnit];
     goto LABEL_7;
   }
 
-  if (v3 == 2)
+  if (goalTypeIdentifier == 2)
   {
     value = self->_value;
-    v6 = [MEMORY[0x1E696C510] secondUnit];
+    meterUnit = [MEMORY[0x1E696C510] secondUnit];
     goto LABEL_7;
   }
 
   v4 = 0.0;
-  if (v3 == 3)
+  if (goalTypeIdentifier == 3)
   {
     value = self->_value;
-    v6 = [MEMORY[0x1E696C510] kilocalorieUnit];
+    meterUnit = [MEMORY[0x1E696C510] kilocalorieUnit];
 LABEL_7:
-    v7 = v6;
-    [(HKQuantity *)value doubleValueForUnit:v6];
+    v7 = meterUnit;
+    [(HKQuantity *)value doubleValueForUnit:meterUnit];
     v4 = v8;
   }
 
   return v4;
 }
 
-- (id)_quantityForDoubleValue:(double)a3
+- (id)_quantityForDoubleValue:(double)value
 {
   goalTypeIdentifier = self->_goalTypeIdentifier;
   switch(goalTypeIdentifier)
   {
     case 1uLL:
       v5 = MEMORY[0x1E696C348];
-      v6 = [MEMORY[0x1E696C510] meterUnit];
+      meterUnit = [MEMORY[0x1E696C510] meterUnit];
       goto LABEL_7;
     case 2uLL:
       v5 = MEMORY[0x1E696C348];
-      v6 = [MEMORY[0x1E696C510] secondUnit];
+      meterUnit = [MEMORY[0x1E696C510] secondUnit];
       goto LABEL_7;
     case 3uLL:
       v5 = MEMORY[0x1E696C348];
-      v6 = [MEMORY[0x1E696C510] kilocalorieUnit];
+      meterUnit = [MEMORY[0x1E696C510] kilocalorieUnit];
 LABEL_7:
-      v7 = v6;
-      v8 = [v5 quantityWithUnit:v6 doubleValue:a3];
+      v7 = meterUnit;
+      v8 = [v5 quantityWithUnit:meterUnit doubleValue:value];
 
       goto LABEL_9;
   }
@@ -95,30 +95,30 @@ LABEL_9:
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  [v5 encodeInteger:self->_goalTypeIdentifier forKey:@"NLSessionActivityGoalGoalTypeIdentifier"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:self->_goalTypeIdentifier forKey:@"NLSessionActivityGoalGoalTypeIdentifier"];
   [(NLSessionActivityGoal *)self doubleValue];
-  [v5 encodeDouble:@"NLSessionActivityGoalValue" forKey:?];
-  [v5 encodeObject:self->_value forKey:@"NLSessionActivityGoalQuantity"];
+  [coderCopy encodeDouble:@"NLSessionActivityGoalValue" forKey:?];
+  [coderCopy encodeObject:self->_value forKey:@"NLSessionActivityGoalQuantity"];
   requiredDistance = self->_requiredDistance;
   if (requiredDistance)
   {
-    [v5 encodeObject:requiredDistance forKey:@"NLSessionActivityGoalRequiredDistance"];
+    [coderCopy encodeObject:requiredDistance forKey:@"NLSessionActivityGoalRequiredDistance"];
   }
 }
 
-- (NLSessionActivityGoal)initWithCoder:(id)a3
+- (NLSessionActivityGoal)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = NLSessionActivityGoal;
   v5 = [(NLSessionActivityGoal *)&v10 init];
   if (v5)
   {
-    -[NLSessionActivityGoal setGoalTypeIdentifier:](v5, "setGoalTypeIdentifier:", [v4 decodeIntegerForKey:@"NLSessionActivityGoalGoalTypeIdentifier"]);
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"NLSessionActivityGoalQuantity"];
+    -[NLSessionActivityGoal setGoalTypeIdentifier:](v5, "setGoalTypeIdentifier:", [coderCopy decodeIntegerForKey:@"NLSessionActivityGoalGoalTypeIdentifier"]);
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"NLSessionActivityGoalQuantity"];
     if (v6)
     {
       [(NLSessionActivityGoal *)v5 setValue:v6];
@@ -126,12 +126,12 @@ LABEL_9:
 
     else
     {
-      [v4 decodeDoubleForKey:@"NLSessionActivityGoalValue"];
+      [coderCopy decodeDoubleForKey:@"NLSessionActivityGoalValue"];
       v7 = [(NLSessionActivityGoal *)v5 _quantityForDoubleValue:?];
       [(NLSessionActivityGoal *)v5 setValue:v7];
     }
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"NLSessionActivityGoalRequiredDistance"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"NLSessionActivityGoalRequiredDistance"];
     if (v8)
     {
       [(NLSessionActivityGoal *)v5 setRequiredDistance:v8];
@@ -141,19 +141,19 @@ LABEL_9:
   return v5;
 }
 
-+ (id)goalWithGoalTypeIdentifier:(unint64_t)a3 value:(id)a4 requiredDistance:(id)a5
++ (id)goalWithGoalTypeIdentifier:(unint64_t)identifier value:(id)value requiredDistance:(id)distance
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [[a1 alloc] initWithGoalTypeIdentifier:a3 value:v9 requiredDistance:v8];
+  distanceCopy = distance;
+  valueCopy = value;
+  v10 = [[self alloc] initWithGoalTypeIdentifier:identifier value:valueCopy requiredDistance:distanceCopy];
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -161,26 +161,26 @@ LABEL_9:
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(NLSessionActivityGoal *)self isEqualToNLSessionActivityGoal:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(NLSessionActivityGoal *)self isEqualToNLSessionActivityGoal:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualToNLSessionActivityGoal:(id)a3
+- (BOOL)isEqualToNLSessionActivityGoal:(id)goal
 {
-  v6 = a3;
-  v7 = [v6 goalTypeIdentifier];
-  if (v7 == [(NLSessionActivityGoal *)self goalTypeIdentifier])
+  goalCopy = goal;
+  goalTypeIdentifier = [goalCopy goalTypeIdentifier];
+  if (goalTypeIdentifier == [(NLSessionActivityGoal *)self goalTypeIdentifier])
   {
-    v8 = [v6 value];
-    v9 = [(NLSessionActivityGoal *)self value];
-    if (v8 == v9 || ([v6 value], v3 = objc_claimAutoreleasedReturnValue(), -[NLSessionActivityGoal value](self, "value"), v4 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v3, "isEqual:", v4)))
+    value = [goalCopy value];
+    value2 = [(NLSessionActivityGoal *)self value];
+    if (value == value2 || ([goalCopy value], v3 = objc_claimAutoreleasedReturnValue(), -[NLSessionActivityGoal value](self, "value"), v4 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v3, "isEqual:", v4)))
     {
-      v11 = [v6 requiredDistance];
-      v12 = [(NLSessionActivityGoal *)self requiredDistance];
-      v13 = v12;
-      if (v11 == v12)
+      requiredDistance = [goalCopy requiredDistance];
+      requiredDistance2 = [(NLSessionActivityGoal *)self requiredDistance];
+      v13 = requiredDistance2;
+      if (requiredDistance == requiredDistance2)
       {
 
         v10 = 1;
@@ -188,12 +188,12 @@ LABEL_9:
 
       else
       {
-        v14 = [v6 requiredDistance];
-        v15 = [(NLSessionActivityGoal *)self requiredDistance];
-        v10 = [v14 isEqual:v15];
+        requiredDistance3 = [goalCopy requiredDistance];
+        requiredDistance4 = [(NLSessionActivityGoal *)self requiredDistance];
+        v10 = [requiredDistance3 isEqual:requiredDistance4];
       }
 
-      if (v8 == v9)
+      if (value == value2)
       {
         goto LABEL_11;
       }
@@ -216,31 +216,31 @@ LABEL_12:
 
 - (unint64_t)hash
 {
-  v3 = [(NLSessionActivityGoal *)self value];
-  v4 = [v3 hash];
+  value = [(NLSessionActivityGoal *)self value];
+  v4 = [value hash];
 
-  v5 = [(NLSessionActivityGoal *)self requiredDistance];
-  v6 = [v5 hash];
+  requiredDistance = [(NLSessionActivityGoal *)self requiredDistance];
+  v6 = [requiredDistance hash];
 
   return v6 ^ v4 ^ self->_goalTypeIdentifier;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [NLSessionActivityGoal alloc];
-  v5 = [(NLSessionActivityGoal *)self goalTypeIdentifier];
-  v6 = [(NLSessionActivityGoal *)self value];
-  v7 = [(NLSessionActivityGoal *)self requiredDistance];
-  v8 = [(NLSessionActivityGoal *)v4 initWithGoalTypeIdentifier:v5 value:v6 requiredDistance:v7];
+  goalTypeIdentifier = [(NLSessionActivityGoal *)self goalTypeIdentifier];
+  value = [(NLSessionActivityGoal *)self value];
+  requiredDistance = [(NLSessionActivityGoal *)self requiredDistance];
+  v8 = [(NLSessionActivityGoal *)v4 initWithGoalTypeIdentifier:goalTypeIdentifier value:value requiredDistance:requiredDistance];
 
   return v8;
 }
 
-- (void)setRequiredDistance:(id)a3
+- (void)setRequiredDistance:(id)distance
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E696C510] meterUnit];
-  [(HKQuantity *)v4 doubleValueForUnit:v5];
+  distanceCopy = distance;
+  meterUnit = [MEMORY[0x1E696C510] meterUnit];
+  [(HKQuantity *)distanceCopy doubleValueForUnit:meterUnit];
   v7 = v6;
 
   if (v7 <= 0.0)
@@ -250,7 +250,7 @@ LABEL_12:
   }
 
   requiredDistance = self->_requiredDistance;
-  self->_requiredDistance = v4;
+  self->_requiredDistance = distanceCopy;
 }
 
 @end

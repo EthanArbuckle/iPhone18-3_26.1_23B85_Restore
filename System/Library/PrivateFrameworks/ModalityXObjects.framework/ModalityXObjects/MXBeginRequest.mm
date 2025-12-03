@@ -1,19 +1,19 @@
 @interface MXBeginRequest
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsInputOrigin:(id)a3;
+- (int)StringAsInputOrigin:(id)origin;
 - (int)inputOrigin;
 - (unint64_t)hash;
-- (void)addInlineLmeItems:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasEnablePartialResults:(BOOL)a3;
-- (void)setHasIsAutoPunctuationEnabled:(BOOL)a3;
-- (void)setHasIsPromptedConfirmation:(BOOL)a3;
-- (void)setHasIsPromptedDictation:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addInlineLmeItems:(id)items;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasEnablePartialResults:(BOOL)results;
+- (void)setHasIsAutoPunctuationEnabled:(BOOL)enabled;
+- (void)setHasIsPromptedConfirmation:(BOOL)confirmation;
+- (void)setHasIsPromptedDictation:(BOOL)dictation;
+- (void)writeTo:(id)to;
 @end
 
 @implementation MXBeginRequest
@@ -31,100 +31,100 @@
   }
 }
 
-- (int)StringAsInputOrigin:(id)a3
+- (int)StringAsInputOrigin:(id)origin
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UndefinedInputOrigin"])
+  originCopy = origin;
+  if ([originCopy isEqualToString:@"UndefinedInputOrigin"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"HomeButton"])
+  else if ([originCopy isEqualToString:@"HomeButton"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"RemoteButton"])
+  else if ([originCopy isEqualToString:@"RemoteButton"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"RemoteAppButton"])
+  else if ([originCopy isEqualToString:@"RemoteAppButton"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"AssistantSpeechButton"])
+  else if ([originCopy isEqualToString:@"AssistantSpeechButton"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"AssistantTextInput"])
+  else if ([originCopy isEqualToString:@"AssistantTextInput"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"PriorRequest"])
+  else if ([originCopy isEqualToString:@"PriorRequest"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"VoiceTrigger"])
+  else if ([originCopy isEqualToString:@"VoiceTrigger"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"ServerGenerated"])
+  else if ([originCopy isEqualToString:@"ServerGenerated"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"MotionGesture"])
+  else if ([originCopy isEqualToString:@"MotionGesture"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"RaiseToSpeak"])
+  else if ([originCopy isEqualToString:@"RaiseToSpeak"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"ClientGenerated"])
+  else if ([originCopy isEqualToString:@"ClientGenerated"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"TapToRefresh"])
+  else if ([originCopy isEqualToString:@"TapToRefresh"])
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:@"BackgroundRefresh"])
+  else if ([originCopy isEqualToString:@"BackgroundRefresh"])
   {
     v4 = 13;
   }
 
-  else if ([v3 isEqualToString:@"BluetoothVoiceTrigger"])
+  else if ([originCopy isEqualToString:@"BluetoothVoiceTrigger"])
   {
     v4 = 14;
   }
 
-  else if ([v3 isEqualToString:@"BluetoothDoubleTap"])
+  else if ([originCopy isEqualToString:@"BluetoothDoubleTap"])
   {
     v4 = 15;
   }
 
-  else if ([v3 isEqualToString:@"TriggerlessFollowup"])
+  else if ([originCopy isEqualToString:@"TriggerlessFollowup"])
   {
     v4 = 16;
   }
 
-  else if ([v3 isEqualToString:@"DialogButtonTap"])
+  else if ([originCopy isEqualToString:@"DialogButtonTap"])
   {
     v4 = 17;
   }
 
-  else if ([v3 isEqualToString:@"MagusFollowup"])
+  else if ([originCopy isEqualToString:@"MagusFollowup"])
   {
     v4 = 18;
   }
@@ -137,9 +137,9 @@
   return v4;
 }
 
-- (void)setHasEnablePartialResults:(BOOL)a3
+- (void)setHasEnablePartialResults:(BOOL)results
 {
-  if (a3)
+  if (results)
   {
     v3 = 2;
   }
@@ -152,9 +152,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasIsPromptedDictation:(BOOL)a3
+- (void)setHasIsPromptedDictation:(BOOL)dictation
 {
-  if (a3)
+  if (dictation)
   {
     v3 = 16;
   }
@@ -167,9 +167,9 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasIsPromptedConfirmation:(BOOL)a3
+- (void)setHasIsPromptedConfirmation:(BOOL)confirmation
 {
-  if (a3)
+  if (confirmation)
   {
     v3 = 8;
   }
@@ -182,9 +182,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasIsAutoPunctuationEnabled:(BOOL)a3
+- (void)setHasIsAutoPunctuationEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 4;
   }
@@ -197,22 +197,22 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)addInlineLmeItems:(id)a3
+- (void)addInlineLmeItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   inlineLmeItems = self->_inlineLmeItems;
-  v8 = v4;
+  v8 = itemsCopy;
   if (!inlineLmeItems)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_inlineLmeItems;
     self->_inlineLmeItems = v6;
 
-    v4 = v8;
+    itemsCopy = v8;
     inlineLmeItems = self->_inlineLmeItems;
   }
 
-  [(NSMutableArray *)inlineLmeItems addObject:v4];
+  [(NSMutableArray *)inlineLmeItems addObject:itemsCopy];
 }
 
 - (id)description
@@ -221,20 +221,20 @@
   v8.receiver = self;
   v8.super_class = MXBeginRequest;
   v4 = [(MXBeginRequest *)&v8 description];
-  v5 = [(MXBeginRequest *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(MXBeginRequest *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   requestId = self->_requestId;
   if (requestId)
   {
-    [v3 setObject:requestId forKey:@"request_id"];
+    [dictionary setObject:requestId forKey:@"request_id"];
   }
 
   if (*&self->_has)
@@ -256,8 +256,8 @@
   audioMetadata = self->_audioMetadata;
   if (audioMetadata)
   {
-    v9 = [(MXAudioMetadata *)audioMetadata dictionaryRepresentation];
-    [v4 setObject:v9 forKey:@"audio_metadata"];
+    dictionaryRepresentation = [(MXAudioMetadata *)audioMetadata dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"audio_metadata"];
   }
 
   has = self->_has;
@@ -316,10 +316,10 @@ LABEL_14:
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (self->_requestId)
   {
     PBDataWriterWriteStringField();
@@ -412,33 +412,33 @@ LABEL_11:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v10 = v4;
+  toCopy = to;
+  v10 = toCopy;
   if (self->_requestId)
   {
-    [v4 setRequestId:?];
-    v4 = v10;
+    [toCopy setRequestId:?];
+    toCopy = v10;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 8) = self->_inputOrigin;
-    *(v4 + 52) |= 1u;
+    *(toCopy + 8) = self->_inputOrigin;
+    *(toCopy + 52) |= 1u;
   }
 
   if (self->_audioMetadata)
   {
     [v10 setAudioMetadata:?];
-    v4 = v10;
+    toCopy = v10;
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(v4 + 48) = self->_enablePartialResults;
-    *(v4 + 52) |= 2u;
+    *(toCopy + 48) = self->_enablePartialResults;
+    *(toCopy + 52) |= 2u;
     has = self->_has;
     if ((has & 0x10) == 0)
     {
@@ -457,35 +457,35 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  *(v4 + 51) = self->_isPromptedDictation;
-  *(v4 + 52) |= 0x10u;
+  *(toCopy + 51) = self->_isPromptedDictation;
+  *(toCopy + 52) |= 0x10u;
   if ((*&self->_has & 8) != 0)
   {
 LABEL_10:
-    *(v4 + 50) = self->_isPromptedConfirmation;
-    *(v4 + 52) |= 8u;
+    *(toCopy + 50) = self->_isPromptedConfirmation;
+    *(toCopy + 52) |= 8u;
   }
 
 LABEL_11:
   if (self->_foregroundAppId)
   {
     [v10 setForegroundAppId:?];
-    v4 = v10;
+    toCopy = v10;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    *(v4 + 49) = self->_isAutoPunctuationEnabled;
-    *(v4 + 52) |= 4u;
+    *(toCopy + 49) = self->_isAutoPunctuationEnabled;
+    *(toCopy + 52) |= 4u;
   }
 
   if ([(MXBeginRequest *)self inlineLmeItemsCount])
   {
     [v10 clearInlineLmeItems];
-    v6 = [(MXBeginRequest *)self inlineLmeItemsCount];
-    if (v6)
+    inlineLmeItemsCount = [(MXBeginRequest *)self inlineLmeItemsCount];
+    if (inlineLmeItemsCount)
     {
-      v7 = v6;
+      v7 = inlineLmeItemsCount;
       for (i = 0; i != v7; ++i)
       {
         v9 = [(MXBeginRequest *)self inlineLmeItemsAtIndex:i];
@@ -495,11 +495,11 @@ LABEL_11:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v26 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_requestId copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_requestId copyWithZone:zone];
   v7 = *(v5 + 40);
   *(v5 + 40) = v6;
 
@@ -509,7 +509,7 @@ LABEL_11:
     *(v5 + 52) |= 1u;
   }
 
-  v8 = [(MXAudioMetadata *)self->_audioMetadata copyWithZone:a3];
+  v8 = [(MXAudioMetadata *)self->_audioMetadata copyWithZone:zone];
   v9 = *(v5 + 8);
   *(v5 + 8) = v8;
 
@@ -546,7 +546,7 @@ LABEL_6:
   }
 
 LABEL_7:
-  v11 = [(NSString *)self->_foregroundAppId copyWithZone:a3];
+  v11 = [(NSString *)self->_foregroundAppId copyWithZone:zone];
   v12 = *(v5 + 16);
   *(v5 + 16) = v11;
 
@@ -575,7 +575,7 @@ LABEL_7:
           objc_enumerationMutation(v13);
         }
 
-        v18 = [*(*(&v21 + 1) + 8 * i) copyWithZone:{a3, v21}];
+        v18 = [*(*(&v21 + 1) + 8 * i) copyWithZone:{zone, v21}];
         [v5 addInlineLmeItems:v18];
       }
 
@@ -589,16 +589,16 @@ LABEL_7:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_49;
   }
 
   requestId = self->_requestId;
-  if (requestId | *(v4 + 5))
+  if (requestId | *(equalCopy + 5))
   {
     if (![(NSString *)requestId isEqual:?])
     {
@@ -607,22 +607,22 @@ LABEL_7:
   }
 
   has = self->_has;
-  v7 = *(v4 + 52);
+  v7 = *(equalCopy + 52);
   if (has)
   {
-    if ((*(v4 + 52) & 1) == 0 || self->_inputOrigin != *(v4 + 8))
+    if ((*(equalCopy + 52) & 1) == 0 || self->_inputOrigin != *(equalCopy + 8))
     {
       goto LABEL_49;
     }
   }
 
-  else if (*(v4 + 52))
+  else if (*(equalCopy + 52))
   {
     goto LABEL_49;
   }
 
   audioMetadata = self->_audioMetadata;
-  if (audioMetadata | *(v4 + 1))
+  if (audioMetadata | *(equalCopy + 1))
   {
     if (![(MXAudioMetadata *)audioMetadata isEqual:?])
     {
@@ -632,90 +632,90 @@ LABEL_7:
     has = self->_has;
   }
 
-  v9 = *(v4 + 52);
+  v9 = *(equalCopy + 52);
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 52) & 2) == 0)
+    if ((*(equalCopy + 52) & 2) == 0)
     {
       goto LABEL_49;
     }
 
-    v14 = *(v4 + 48);
+    v14 = *(equalCopy + 48);
     if (self->_enablePartialResults)
     {
-      if ((*(v4 + 48) & 1) == 0)
+      if ((*(equalCopy + 48) & 1) == 0)
       {
         goto LABEL_49;
       }
     }
 
-    else if (*(v4 + 48))
+    else if (*(equalCopy + 48))
     {
       goto LABEL_49;
     }
   }
 
-  else if ((*(v4 + 52) & 2) != 0)
+  else if ((*(equalCopy + 52) & 2) != 0)
   {
     goto LABEL_49;
   }
 
   if ((has & 0x10) != 0)
   {
-    if ((*(v4 + 52) & 0x10) == 0)
+    if ((*(equalCopy + 52) & 0x10) == 0)
     {
       goto LABEL_49;
     }
 
-    v15 = *(v4 + 51);
+    v15 = *(equalCopy + 51);
     if (self->_isPromptedDictation)
     {
-      if ((*(v4 + 51) & 1) == 0)
+      if ((*(equalCopy + 51) & 1) == 0)
       {
         goto LABEL_49;
       }
     }
 
-    else if (*(v4 + 51))
+    else if (*(equalCopy + 51))
     {
       goto LABEL_49;
     }
   }
 
-  else if ((*(v4 + 52) & 0x10) != 0)
+  else if ((*(equalCopy + 52) & 0x10) != 0)
   {
     goto LABEL_49;
   }
 
   if ((has & 8) != 0)
   {
-    if ((*(v4 + 52) & 8) == 0)
+    if ((*(equalCopy + 52) & 8) == 0)
     {
       goto LABEL_49;
     }
 
-    v16 = *(v4 + 50);
+    v16 = *(equalCopy + 50);
     if (self->_isPromptedConfirmation)
     {
-      if ((*(v4 + 50) & 1) == 0)
+      if ((*(equalCopy + 50) & 1) == 0)
       {
         goto LABEL_49;
       }
     }
 
-    else if (*(v4 + 50))
+    else if (*(equalCopy + 50))
     {
       goto LABEL_49;
     }
   }
 
-  else if ((*(v4 + 52) & 8) != 0)
+  else if ((*(equalCopy + 52) & 8) != 0)
   {
     goto LABEL_49;
   }
 
   foregroundAppId = self->_foregroundAppId;
-  if (foregroundAppId | *(v4 + 2))
+  if (foregroundAppId | *(equalCopy + 2))
   {
     if (![(NSString *)foregroundAppId isEqual:?])
     {
@@ -725,10 +725,10 @@ LABEL_7:
     has = self->_has;
   }
 
-  v11 = *(v4 + 52);
+  v11 = *(equalCopy + 52);
   if ((has & 4) == 0)
   {
-    if ((*(v4 + 52) & 4) == 0)
+    if ((*(equalCopy + 52) & 4) == 0)
     {
       goto LABEL_23;
     }
@@ -738,28 +738,28 @@ LABEL_49:
     goto LABEL_50;
   }
 
-  if ((*(v4 + 52) & 4) == 0)
+  if ((*(equalCopy + 52) & 4) == 0)
   {
     goto LABEL_49;
   }
 
-  v17 = *(v4 + 49);
+  v17 = *(equalCopy + 49);
   if (self->_isAutoPunctuationEnabled)
   {
-    if ((*(v4 + 49) & 1) == 0)
+    if ((*(equalCopy + 49) & 1) == 0)
     {
       goto LABEL_49;
     }
   }
 
-  else if (*(v4 + 49))
+  else if (*(equalCopy + 49))
   {
     goto LABEL_49;
   }
 
 LABEL_23:
   inlineLmeItems = self->_inlineLmeItems;
-  if (inlineLmeItems | *(v4 + 3))
+  if (inlineLmeItems | *(equalCopy + 3))
   {
     v13 = [(NSMutableArray *)inlineLmeItems isEqual:?];
   }
@@ -838,23 +838,23 @@ LABEL_11:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ [(NSMutableArray *)self->_inlineLmeItems hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (*(v4 + 5))
+  fromCopy = from;
+  if (*(fromCopy + 5))
   {
     [(MXBeginRequest *)self setRequestId:?];
   }
 
-  if (*(v4 + 52))
+  if (*(fromCopy + 52))
   {
-    self->_inputOrigin = *(v4 + 8);
+    self->_inputOrigin = *(fromCopy + 8);
     *&self->_has |= 1u;
   }
 
   audioMetadata = self->_audioMetadata;
-  v6 = *(v4 + 1);
+  v6 = *(fromCopy + 1);
   if (audioMetadata)
   {
     if (v6)
@@ -868,12 +868,12 @@ LABEL_11:
     [(MXBeginRequest *)self setAudioMetadata:?];
   }
 
-  v7 = *(v4 + 52);
+  v7 = *(fromCopy + 52);
   if ((v7 & 2) != 0)
   {
-    self->_enablePartialResults = *(v4 + 48);
+    self->_enablePartialResults = *(fromCopy + 48);
     *&self->_has |= 2u;
-    v7 = *(v4 + 52);
+    v7 = *(fromCopy + 52);
     if ((v7 & 0x10) == 0)
     {
 LABEL_12:
@@ -886,29 +886,29 @@ LABEL_12:
     }
   }
 
-  else if ((*(v4 + 52) & 0x10) == 0)
+  else if ((*(fromCopy + 52) & 0x10) == 0)
   {
     goto LABEL_12;
   }
 
-  self->_isPromptedDictation = *(v4 + 51);
+  self->_isPromptedDictation = *(fromCopy + 51);
   *&self->_has |= 0x10u;
-  if ((*(v4 + 52) & 8) != 0)
+  if ((*(fromCopy + 52) & 8) != 0)
   {
 LABEL_13:
-    self->_isPromptedConfirmation = *(v4 + 50);
+    self->_isPromptedConfirmation = *(fromCopy + 50);
     *&self->_has |= 8u;
   }
 
 LABEL_14:
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(MXBeginRequest *)self setForegroundAppId:?];
   }
 
-  if ((*(v4 + 52) & 4) != 0)
+  if ((*(fromCopy + 52) & 4) != 0)
   {
-    self->_isAutoPunctuationEnabled = *(v4 + 49);
+    self->_isAutoPunctuationEnabled = *(fromCopy + 49);
     *&self->_has |= 4u;
   }
 
@@ -916,7 +916,7 @@ LABEL_14:
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v8 = *(v4 + 3);
+  v8 = *(fromCopy + 3);
   v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v9)
   {

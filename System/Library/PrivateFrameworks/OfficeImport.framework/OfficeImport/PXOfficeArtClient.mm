@@ -1,15 +1,15 @@
 @interface PXOfficeArtClient
-+ (int)readPlaceholderBoundsTrackFromNode:(_xmlNode *)a3;
-+ (int)readPlaceholderTypeFromNode:(_xmlNode *)a3;
-- (PXOfficeArtClient)initWithState:(id)a3;
++ (int)readPlaceholderBoundsTrackFromNode:(_xmlNode *)node;
++ (int)readPlaceholderTypeFromNode:(_xmlNode *)node;
+- (PXOfficeArtClient)initWithState:(id)state;
 - (PXPresentationState)presentationState;
-- (id)readClientTextField:(_xmlNode *)a3 identity:(id)a4 paragraph:(id)a5 state:(id)a6;
-- (id)readOle:(_xmlNode *)a3 state:(id)a4;
-- (void)postprocessHyperlink:(id)a3 relationship:(id)a4 state:(id)a5;
-- (void)readBlipExtWithURI:(id)a3 fromNode:(_xmlNode *)a4 toDrawable:(id)a5 state:(id)a6;
-- (void)readClientDataFromGraphicalFramePropertiesNode:(_xmlNode *)a3 toDrawable:(id)a4 state:(id)a5;
-- (void)readClientDataFromPictureNode:(_xmlNode *)a3 toImage:(id)a4 state:(id)a5;
-- (void)readClientDataFromShapeNode:(_xmlNode *)a3 toShape:(id)a4 state:(id)a5;
+- (id)readClientTextField:(_xmlNode *)field identity:(id)identity paragraph:(id)paragraph state:(id)state;
+- (id)readOle:(_xmlNode *)ole state:(id)state;
+- (void)postprocessHyperlink:(id)hyperlink relationship:(id)relationship state:(id)state;
+- (void)readBlipExtWithURI:(id)i fromNode:(_xmlNode *)node toDrawable:(id)drawable state:(id)state;
+- (void)readClientDataFromGraphicalFramePropertiesNode:(_xmlNode *)node toDrawable:(id)drawable state:(id)state;
+- (void)readClientDataFromPictureNode:(_xmlNode *)node toImage:(id)image state:(id)state;
+- (void)readClientDataFromShapeNode:(_xmlNode *)node toShape:(id)shape state:(id)state;
 @end
 
 @implementation PXOfficeArtClient
@@ -21,35 +21,35 @@
   return WeakRetained;
 }
 
-- (PXOfficeArtClient)initWithState:(id)a3
+- (PXOfficeArtClient)initWithState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v8.receiver = self;
   v8.super_class = PXOfficeArtClient;
   v5 = [(PXOfficeArtClient *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->mPresentationState, v4);
+    objc_storeWeak(&v5->mPresentationState, stateCopy);
   }
 
   return v6;
 }
 
-- (void)readClientDataFromShapeNode:(_xmlNode *)a3 toShape:(id)a4 state:(id)a5
+- (void)readClientDataFromShapeNode:(_xmlNode *)node toShape:(id)shape state:(id)state
 {
-  v19 = a4;
-  if (xmlStrEqual(a3->name, "sp"))
+  shapeCopy = shape;
+  if (xmlStrEqual(node->name, "sp"))
   {
     v7 = "nvSpPr";
   }
 
-  else if (xmlStrEqual(a3->name, "cxnSp"))
+  else if (xmlStrEqual(node->name, "cxnSp"))
   {
     v7 = "nvCxnSpPr";
   }
 
-  else if (xmlStrEqual(a3->name, "pic"))
+  else if (xmlStrEqual(node->name, "pic"))
   {
     v7 = "nvPicPr";
   }
@@ -60,24 +60,24 @@
   }
 
   WeakRetained = objc_loadWeakRetained(&self->mPresentationState);
-  v9 = [WeakRetained PXPresentationMLNamespace];
-  v10 = OCXFindChild(a3, v9, v7);
+  pXPresentationMLNamespace = [WeakRetained PXPresentationMLNamespace];
+  v10 = OCXFindChild(node, pXPresentationMLNamespace, v7);
 
   if (v10)
   {
     v11 = objc_loadWeakRetained(&self->mPresentationState);
-    v12 = [v11 PXPresentationMLNamespace];
-    v13 = OCXFindChild(v10, v12, "nvPr");
+    pXPresentationMLNamespace2 = [v11 PXPresentationMLNamespace];
+    v13 = OCXFindChild(v10, pXPresentationMLNamespace2, "nvPr");
 
     if (v13)
     {
       v14 = objc_loadWeakRetained(&self->mPresentationState);
-      v15 = [v14 PXPresentationMLNamespace];
-      v16 = OCXFindChild(v13, v15, "ph");
+      pXPresentationMLNamespace3 = [v14 PXPresentationMLNamespace];
+      v16 = OCXFindChild(v13, pXPresentationMLNamespace3, "ph");
 
       if (v16)
       {
-        v17 = [v19 ensureClientDataOfClass:objc_opt_class()];
+        v17 = [shapeCopy ensureClientDataOfClass:objc_opt_class()];
         v18 = objc_alloc_init(PDPlaceholder);
         [v17 setPlaceholder:v18];
         -[PDPlaceholder setType:](v18, "setType:", [objc_opt_class() readPlaceholderTypeFromNode:v16]);
@@ -88,25 +88,25 @@
   }
 }
 
-- (void)readClientDataFromPictureNode:(_xmlNode *)a3 toImage:(id)a4 state:(id)a5
+- (void)readClientDataFromPictureNode:(_xmlNode *)node toImage:(id)image state:(id)state
 {
-  v18 = a4;
+  imageCopy = image;
   WeakRetained = objc_loadWeakRetained(&self->mPresentationState);
-  v8 = [WeakRetained PXPresentationMLNamespace];
-  v9 = OCXFindChild(a3, v8, "nvPicPr");
+  pXPresentationMLNamespace = [WeakRetained PXPresentationMLNamespace];
+  v9 = OCXFindChild(node, pXPresentationMLNamespace, "nvPicPr");
 
   if (v9)
   {
     v10 = objc_loadWeakRetained(&self->mPresentationState);
-    v11 = [v10 PXPresentationMLNamespace];
-    v12 = OCXFindChild(v9, v11, "nvPr");
+    pXPresentationMLNamespace2 = [v10 PXPresentationMLNamespace];
+    v12 = OCXFindChild(v9, pXPresentationMLNamespace2, "nvPr");
 
     if (v12)
     {
-      v13 = [v18 ensureClientDataOfClass:objc_opt_class()];
+      v13 = [imageCopy ensureClientDataOfClass:objc_opt_class()];
       v14 = objc_loadWeakRetained(&self->mPresentationState);
-      v15 = [v14 PXPresentationMLNamespace];
-      v16 = OCXFindChild(v12, v15, "ph");
+      pXPresentationMLNamespace3 = [v14 PXPresentationMLNamespace];
+      v16 = OCXFindChild(v12, pXPresentationMLNamespace3, "ph");
 
       if (v16)
       {
@@ -119,22 +119,22 @@
   }
 }
 
-- (void)readClientDataFromGraphicalFramePropertiesNode:(_xmlNode *)a3 toDrawable:(id)a4 state:(id)a5
+- (void)readClientDataFromGraphicalFramePropertiesNode:(_xmlNode *)node toDrawable:(id)drawable state:(id)state
 {
-  v15 = a4;
+  drawableCopy = drawable;
   WeakRetained = objc_loadWeakRetained(&self->mPresentationState);
-  v8 = [WeakRetained PXPresentationMLNamespace];
-  v9 = OCXFindChild(a3, v8, "nvPr");
+  pXPresentationMLNamespace = [WeakRetained PXPresentationMLNamespace];
+  v9 = OCXFindChild(node, pXPresentationMLNamespace, "nvPr");
 
   if (v9)
   {
     v10 = objc_loadWeakRetained(&self->mPresentationState);
-    v11 = [v10 PXPresentationMLNamespace];
-    v12 = OCXFindChild(v9, v11, "ph");
+    pXPresentationMLNamespace2 = [v10 PXPresentationMLNamespace];
+    v12 = OCXFindChild(v9, pXPresentationMLNamespace2, "ph");
 
     if (v12)
     {
-      v13 = [v15 ensureClientDataOfClass:objc_opt_class()];
+      v13 = [drawableCopy ensureClientDataOfClass:objc_opt_class()];
       v14 = objc_alloc_init(PDPlaceholder);
       [v13 setPlaceholder:v14];
       -[PDPlaceholder setType:](v14, "setType:", [objc_opt_class() readPlaceholderTypeFromNode:v12]);
@@ -143,45 +143,45 @@
   }
 }
 
-- (id)readClientTextField:(_xmlNode *)a3 identity:(id)a4 paragraph:(id)a5 state:(id)a6
+- (id)readClientTextField:(_xmlNode *)field identity:(id)identity paragraph:(id)paragraph state:(id)state
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [v7 type];
-  v10 = [v9 isEqualToString:@"slidenum"];
+  identityCopy = identity;
+  paragraphCopy = paragraph;
+  type = [identityCopy type];
+  v10 = [type isEqualToString:@"slidenum"];
 
   if (v10)
   {
-    v11 = [v8 addSlideNumberField];
+    addSlideNumberField = [paragraphCopy addSlideNumberField];
   }
 
   else
   {
-    v11 = 0;
+    addSlideNumberField = 0;
   }
 
-  return v11;
+  return addSlideNumberField;
 }
 
-- (void)postprocessHyperlink:(id)a3 relationship:(id)a4 state:(id)a5
+- (void)postprocessHyperlink:(id)hyperlink relationship:(id)relationship state:(id)state
 {
-  v16 = a3;
-  v7 = a4;
-  v8 = a5;
-  v9 = [v16 action];
-  if ([v9 isEqualToString:@"ppaction://hlinksldjump"])
+  hyperlinkCopy = hyperlink;
+  relationshipCopy = relationship;
+  stateCopy = state;
+  action = [hyperlinkCopy action];
+  if ([action isEqualToString:@"ppaction://hlinksldjump"])
   {
-    v10 = [v7 type];
-    v11 = [v10 hasSuffix:@"/slide"];
+    type = [relationshipCopy type];
+    v11 = [type hasSuffix:@"/slide"];
 
     if ((v11 & 1) == 0)
     {
       [TCMessageException raise:TCInvalidFileFormatMessage];
     }
 
-    v12 = [v7 targetLocation];
-    v13 = [v8 documentState];
-    v14 = [v13 slideIndexForSlideURL:v12];
+    targetLocation = [relationshipCopy targetLocation];
+    documentState = [stateCopy documentState];
+    v14 = [documentState slideIndexForSlideURL:targetLocation];
     if (v14 == 0x7FFFFFFFFFFFFFFFLL)
     {
       [TCMessageException raise:TCInvalidFileFormatMessage];
@@ -189,21 +189,21 @@
 
     v15 = [@"ppaction://hlinksldjump?slideindex=" stringByAppendingFormat:@"%ld", v14 + 1];
 
-    [v16 setAction:v15];
+    [hyperlinkCopy setAction:v15];
   }
 
   else
   {
-    v15 = v9;
+    v15 = action;
   }
 }
 
-- (id)readOle:(_xmlNode *)a3 state:(id)a4
+- (id)readOle:(_xmlNode *)ole state:(id)state
 {
-  v36 = a4;
+  stateCopy = state;
   WeakRetained = objc_loadWeakRetained(&self->mPresentationState);
-  v6 = [WeakRetained PXPresentationMLNamespace];
-  v7 = OCXFindChild(a3, v6, "oleObj");
+  pXPresentationMLNamespace = [WeakRetained PXPresentationMLNamespace];
+  v7 = OCXFindChild(ole, pXPresentationMLNamespace, "oleObj");
 
   if (!v7)
   {
@@ -215,28 +215,28 @@
   {
     v34 = v8;
     v9 = objc_autoreleasePoolPush();
-    v10 = [v36 packagePart];
-    v11 = [v10 package];
-    v12 = [v36 OCXReadRequiredRelationshipForNode:v7 packagePart:v10];
-    v13 = [v12 targetLocation];
-    v14 = [v11 partForLocation:v13];
+    packagePart = [stateCopy packagePart];
+    package = [packagePart package];
+    v12 = [stateCopy OCXReadRequiredRelationshipForNode:v7 packagePart:packagePart];
+    targetLocation = [v12 targetLocation];
+    v14 = [package partForLocation:targetLocation];
 
-    v15 = [v14 data];
-    v16 = [v36 documentState];
-    v17 = [v16 cancelDelegate];
+    data = [v14 data];
+    documentState = [stateCopy documentState];
+    cancelDelegate = [documentState cancelDelegate];
 
     if ([v34 hasSuffix:@".12"])
     {
-      v18 = [(OCDReader *)[EXReader alloc] initWithCancelDelegate:v17];
+      v18 = [(OCDReader *)[EXReader alloc] initWithCancelDelegate:cancelDelegate];
       if ([(OCXReader *)v18 start])
       {
-        [(OCDReader *)v18 setData:v15];
-        v19 = [(EXReader *)v18 read];
+        [(OCDReader *)v18 setData:data];
+        read = [(EXReader *)v18 read];
       }
 
       else
       {
-        v19 = 0;
+        read = 0;
       }
 
       v20 = 0;
@@ -244,14 +244,14 @@
 
     else
     {
-      v20 = [OABOle readFromData:v15 cancel:v17];
-      v19 = 0;
+      v20 = [OABOle readFromData:data cancel:cancelDelegate];
+      read = 0;
     }
 
     objc_autoreleasePoolPop(v9);
-    v21 = [v12 targetLocation];
+    targetLocation2 = [v12 targetLocation];
     v8 = v34;
-    [v11 resetPartForLocation:v21];
+    [package resetPartForLocation:targetLocation2];
 
     if (v20)
     {
@@ -261,14 +261,14 @@
 
   else
   {
-    v19 = 0;
+    read = 0;
   }
 
   v22 = objc_alloc_init(OADOle);
   v20 = v22;
-  if (v19)
+  if (read)
   {
-    [(OADOle *)v22 setObject:v19];
+    [(OADOle *)v22 setObject:read];
   }
 
   if (v8)
@@ -277,13 +277,13 @@
   }
 
 LABEL_16:
-  v23 = [v36 oavState];
+  oavState = [stateCopy oavState];
   v37 = 0;
   CXOptionalStringAttribute(v7, CXNoNamespace, "spid", &v37);
   v24 = v37;
   if (v24)
   {
-    v25 = [v23 drawableForVmlShapeId:v24];
+    v25 = [oavState drawableForVmlShapeId:v24];
     if (v25)
     {
       goto LABEL_22;
@@ -293,14 +293,14 @@ LABEL_16:
   else
   {
     v26 = objc_loadWeakRetained(&self->mPresentationState);
-    v27 = [v26 PXPresentationMLNamespace];
-    v28 = OCXFindChild(v7, v27, "pic");
+    pXPresentationMLNamespace2 = [v26 PXPresentationMLNamespace];
+    v28 = OCXFindChild(v7, pXPresentationMLNamespace2, "pic");
 
     if (v28)
     {
       v29 = objc_loadWeakRetained(&self->mPresentationState);
-      v30 = [v29 PXPresentationMLNamespace];
-      v31 = [OAXDrawable readDrawableFromXmlNode:v28 inNamespace:v30 drawingState:v36];
+      pXPresentationMLNamespace3 = [v29 PXPresentationMLNamespace];
+      v31 = [OAXDrawable readDrawableFromXmlNode:v28 inNamespace:pXPresentationMLNamespace3 drawingState:stateCopy];
 
       v25 = v31;
       if (v31)
@@ -317,7 +317,7 @@ LABEL_22:
   {
     v32 = v25;
     [(OADImage *)v32 setOle:v20];
-    [v23 addDualDrawable:v32];
+    [oavState addDualDrawable:v32];
   }
 
   else
@@ -328,15 +328,15 @@ LABEL_22:
   return v32;
 }
 
-- (void)readBlipExtWithURI:(id)a3 fromNode:(_xmlNode *)a4 toDrawable:(id)a5 state:(id)a6
+- (void)readBlipExtWithURI:(id)i fromNode:(_xmlNode *)node toDrawable:(id)drawable state:(id)state
 {
-  v9 = a5;
-  v10 = a6;
-  if ([a3 isEqualToString:@"{DAA4B4D4-6D71-4841-9C94-3DE7FCFB9230}"])
+  drawableCopy = drawable;
+  stateCopy = state;
+  if ([i isEqualToString:@"{DAA4B4D4-6D71-4841-9C94-3DE7FCFB9230}"])
   {
-    v11 = OCXFindChild(a4, PXPowerPoint2010Namespace, "media");
+    v11 = OCXFindChild(node, PXPowerPoint2010Namespace, "media");
     v12 = objc_opt_class();
-    v13 = TSUDynamicCast(v12, v9);
+    v13 = TSUDynamicCast(v12, drawableCopy);
     v14 = v13;
     if (v11)
     {
@@ -367,26 +367,26 @@ LABEL_22:
         [(OADMovie *)v16 setMovieEndPoint:v20];
       }
 
-      v21 = [v10 packagePart];
-      v22 = [v10 OCXReadRelationshipForNode:v11 attributeName:"embed" packagePart:v21];
+      packagePart = [stateCopy packagePart];
+      v22 = [stateCopy OCXReadRelationshipForNode:v11 attributeName:"embed" packagePart:packagePart];
 
-      v23 = [v22 targetLocation];
+      targetLocation = [v22 targetLocation];
       v24 = [OAXMovieContext alloc];
-      v25 = [v10 packagePart];
-      v26 = [v25 package];
-      v27 = [(OCXDelayedMediaContext *)v24 initWithTargetLocation:v23 package:v26];
+      packagePart2 = [stateCopy packagePart];
+      package = [packagePart2 package];
+      v27 = [(OCXDelayedMediaContext *)v24 initWithTargetLocation:targetLocation package:package];
 
       [(OCDDelayedNode *)v16 setDelayedContext:v27];
-      [(OADLinkedMediaFile *)v16 setUrl:v23];
+      [(OADLinkedMediaFile *)v16 setUrl:targetLocation];
       -[OADLinkedMediaFile setIsExternal:](v16, "setIsExternal:", [v22 targetMode] == 1);
       [v14 setMovie:v16];
     }
   }
 }
 
-+ (int)readPlaceholderTypeFromNode:(_xmlNode *)a3
++ (int)readPlaceholderTypeFromNode:(_xmlNode *)node
 {
-  v3 = CXDefaultStringAttribute(a3, CXNoNamespace, "type", 0);
+  v3 = CXDefaultStringAttribute(node, CXNoNamespace, "type", 0);
   if (!v3)
   {
     goto LABEL_7;
@@ -411,9 +411,9 @@ LABEL_7:
   return v4;
 }
 
-+ (int)readPlaceholderBoundsTrackFromNode:(_xmlNode *)a3
++ (int)readPlaceholderBoundsTrackFromNode:(_xmlNode *)node
 {
-  NoNsProp = xmlGetNoNsProp(a3, "boundsTrack");
+  NoNsProp = xmlGetNoNsProp(node, "boundsTrack");
   if (!NoNsProp)
   {
     return 0;

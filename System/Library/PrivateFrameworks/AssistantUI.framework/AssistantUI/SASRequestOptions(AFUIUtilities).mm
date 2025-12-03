@@ -6,16 +6,16 @@
 
 - (uint64_t)afui_isTVFollowUpHearstActivation
 {
-  if ([a1 requestSource] != 9)
+  if ([self requestSource] != 9)
   {
     return 0;
   }
 
-  v2 = [a1 originalRequestOptions];
-  v3 = [v2 requestInfo];
-  v4 = [v3 afui_isRemoteHeadsetActivation];
+  originalRequestOptions = [self originalRequestOptions];
+  requestInfo = [originalRequestOptions requestInfo];
+  afui_isRemoteHeadsetActivation = [requestInfo afui_isRemoteHeadsetActivation];
 
-  return v4;
+  return afui_isRemoteHeadsetActivation;
 }
 
 @end

@@ -6,14 +6,14 @@
 
 - (int64_t)dataSize
 {
-  v2 = [MEMORY[0x277D69960] sharedMonitor];
-  [v2 sync];
+  mEMORY[0x277D69960] = [MEMORY[0x277D69960] sharedMonitor];
+  [mEMORY[0x277D69960] sync];
 
-  v3 = [MEMORY[0x277D69960] sharedMonitor];
-  v4 = [v3 storageSpace];
+  mEMORY[0x277D69960]2 = [MEMORY[0x277D69960] sharedMonitor];
+  storageSpace = [mEMORY[0x277D69960]2 storageSpace];
 
-  v5 = [v4 usedBytes];
-  return v5;
+  usedBytes = [storageSpace usedBytes];
+  return usedBytes;
 }
 
 @end

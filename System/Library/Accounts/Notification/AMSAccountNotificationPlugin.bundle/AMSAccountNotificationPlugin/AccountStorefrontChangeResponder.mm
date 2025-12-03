@@ -1,14 +1,14 @@
 @interface AccountStorefrontChangeResponder
-+ (void)accountStorefrontDidChangeWithAccount:(id)a3;
++ (void)accountStorefrontDidChangeWithAccount:(id)account;
 @end
 
 @implementation AccountStorefrontChangeResponder
 
-+ (void)accountStorefrontDidChangeWithAccount:(id)a3
++ (void)accountStorefrontDidChangeWithAccount:(id)account
 {
   swift_getObjCClassMetadata();
-  v4 = a3;
-  sub_29C8872E4(v4);
+  accountCopy = account;
+  sub_29C8872E4(accountCopy);
 }
 
 @end

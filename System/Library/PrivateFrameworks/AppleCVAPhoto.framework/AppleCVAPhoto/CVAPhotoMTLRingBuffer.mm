@@ -1,6 +1,6 @@
 @interface CVAPhotoMTLRingBuffer
-- (CVAPhotoMTLRingBuffer)initWithBytes:(const void *)a3 length:(unint64_t)a4 options:(unint64_t)a5 device:(id)a6;
-- (CVAPhotoMTLRingBuffer)initWithLength:(unint64_t)a3 options:(unint64_t)a4 device:(id)a5;
+- (CVAPhotoMTLRingBuffer)initWithBytes:(const void *)bytes length:(unint64_t)length options:(unint64_t)options device:(id)device;
+- (CVAPhotoMTLRingBuffer)initWithLength:(unint64_t)length options:(unint64_t)options device:(id)device;
 - (id).cxx_construct;
 @end
 
@@ -14,9 +14,9 @@
   return self;
 }
 
-- (CVAPhotoMTLRingBuffer)initWithBytes:(const void *)a3 length:(unint64_t)a4 options:(unint64_t)a5 device:(id)a6
+- (CVAPhotoMTLRingBuffer)initWithBytes:(const void *)bytes length:(unint64_t)length options:(unint64_t)options device:(id)device
 {
-  v10 = a6;
+  deviceCopy = device;
   v24.receiver = self;
   v24.super_class = CVAPhotoMTLRingBuffer;
   v11 = [(CVAPhotoMTLRingBuffer *)&v24 init];
@@ -25,7 +25,7 @@
     goto LABEL_8;
   }
 
-  v12 = [v10 newBufferWithBytes:a3 length:a4 options:a5];
+  v12 = [deviceCopy newBufferWithBytes:bytes length:length options:options];
   v13 = v11->_buffers.__elems_[0];
   v11->_buffers.__elems_[0] = v12;
 
@@ -34,7 +34,7 @@
     goto LABEL_8;
   }
 
-  v14 = [v10 newBufferWithBytes:a3 length:a4 options:a5];
+  v14 = [deviceCopy newBufferWithBytes:bytes length:length options:options];
   v15 = v11->_buffers.__elems_[1];
   v11->_buffers.__elems_[1] = v14;
 
@@ -43,7 +43,7 @@
     goto LABEL_8;
   }
 
-  v16 = [v10 newBufferWithBytes:a3 length:a4 options:a5];
+  v16 = [deviceCopy newBufferWithBytes:bytes length:length options:options];
   v17 = v11->_buffers.__elems_[2];
   v11->_buffers.__elems_[2] = v16;
 
@@ -52,7 +52,7 @@
     goto LABEL_8;
   }
 
-  v18 = [v10 newBufferWithBytes:a3 length:a4 options:a5];
+  v18 = [deviceCopy newBufferWithBytes:bytes length:length options:options];
   v19 = v11->_buffers.__elems_[3];
   v11->_buffers.__elems_[3] = v18;
 
@@ -61,7 +61,7 @@
     goto LABEL_8;
   }
 
-  v20 = [v10 newBufferWithBytes:a3 length:a4 options:a5];
+  v20 = [deviceCopy newBufferWithBytes:bytes length:length options:options];
   v21 = v11->_buffers.__elems_[4];
   v11->_buffers.__elems_[4] = v20;
 
@@ -79,9 +79,9 @@ LABEL_8:
   return v22;
 }
 
-- (CVAPhotoMTLRingBuffer)initWithLength:(unint64_t)a3 options:(unint64_t)a4 device:(id)a5
+- (CVAPhotoMTLRingBuffer)initWithLength:(unint64_t)length options:(unint64_t)options device:(id)device
 {
-  v8 = a5;
+  deviceCopy = device;
   v22.receiver = self;
   v22.super_class = CVAPhotoMTLRingBuffer;
   v9 = [(CVAPhotoMTLRingBuffer *)&v22 init];
@@ -90,7 +90,7 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  v10 = [v8 newBufferWithLength:a3 options:a4];
+  v10 = [deviceCopy newBufferWithLength:length options:options];
   v11 = v9->_buffers.__elems_[0];
   v9->_buffers.__elems_[0] = v10;
 
@@ -99,7 +99,7 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  v12 = [v8 newBufferWithLength:a3 options:a4];
+  v12 = [deviceCopy newBufferWithLength:length options:options];
   v13 = v9->_buffers.__elems_[1];
   v9->_buffers.__elems_[1] = v12;
 
@@ -108,7 +108,7 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  v14 = [v8 newBufferWithLength:a3 options:a4];
+  v14 = [deviceCopy newBufferWithLength:length options:options];
   v15 = v9->_buffers.__elems_[2];
   v9->_buffers.__elems_[2] = v14;
 
@@ -117,7 +117,7 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  v16 = [v8 newBufferWithLength:a3 options:a4];
+  v16 = [deviceCopy newBufferWithLength:length options:options];
   v17 = v9->_buffers.__elems_[3];
   v9->_buffers.__elems_[3] = v16;
 
@@ -126,7 +126,7 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  v18 = [v8 newBufferWithLength:a3 options:a4];
+  v18 = [deviceCopy newBufferWithLength:length options:options];
   v19 = v9->_buffers.__elems_[4];
   v9->_buffers.__elems_[4] = v18;
 

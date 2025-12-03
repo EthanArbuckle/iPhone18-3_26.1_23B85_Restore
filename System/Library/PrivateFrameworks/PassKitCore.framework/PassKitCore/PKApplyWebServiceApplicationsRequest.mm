@@ -1,36 +1,36 @@
 @interface PKApplyWebServiceApplicationsRequest
-- (PKApplyWebServiceApplicationsRequest)initWithCoder:(id)a3;
-- (id)_urlRequestWithServiceURL:(id)a3 appleAccountInformation:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (PKApplyWebServiceApplicationsRequest)initWithCoder:(id)coder;
+- (id)_urlRequestWithServiceURL:(id)l appleAccountInformation:(id)information;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKApplyWebServiceApplicationsRequest
 
-- (PKApplyWebServiceApplicationsRequest)initWithCoder:(id)a3
+- (PKApplyWebServiceApplicationsRequest)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = PKApplyWebServiceApplicationsRequest;
-  return [(PKApplyWebServiceRequest *)&v4 initWithCoder:a3];
+  return [(PKApplyWebServiceRequest *)&v4 initWithCoder:coder];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = PKApplyWebServiceApplicationsRequest;
-  [(PKApplyWebServiceRequest *)&v3 encodeWithCoder:a3];
+  [(PKApplyWebServiceRequest *)&v3 encodeWithCoder:coder];
 }
 
-- (id)_urlRequestWithServiceURL:(id)a3 appleAccountInformation:(id)a4
+- (id)_urlRequestWithServiceURL:(id)l appleAccountInformation:(id)information
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  lCopy = l;
+  informationCopy = information;
+  v8 = informationCopy;
+  if (lCopy)
   {
-    if (v7)
+    if (informationCopy)
     {
-      v9 = [(PKApplyWebServiceRequest *)self _murlRequestWithServiceURL:v6 endpointComponents:&unk_1F23B3BC0 queryParameters:0 appleAccountInformation:v7];
+      v9 = [(PKApplyWebServiceRequest *)self _murlRequestWithServiceURL:lCopy endpointComponents:&unk_1F23B3BC0 queryParameters:0 appleAccountInformation:informationCopy];
       [v9 setHTTPMethod:@"GET"];
       [v9 setCachePolicy:1];
       v10 = [v9 copy];

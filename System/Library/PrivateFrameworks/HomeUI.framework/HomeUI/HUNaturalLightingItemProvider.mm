@@ -1,22 +1,22 @@
 @interface HUNaturalLightingItemProvider
-- (HUNaturalLightingItemProvider)initWithHome:(id)a3;
+- (HUNaturalLightingItemProvider)initWithHome:(id)home;
 - (id)invalidationReasons;
 - (id)reloadItems;
-- (id)sourceItemForHomeKitObject:(id)a3;
+- (id)sourceItemForHomeKitObject:(id)object;
 @end
 
 @implementation HUNaturalLightingItemProvider
 
-- (HUNaturalLightingItemProvider)initWithHome:(id)a3
+- (HUNaturalLightingItemProvider)initWithHome:(id)home
 {
-  v5 = a3;
+  homeCopy = home;
   v11.receiver = self;
   v11.super_class = HUNaturalLightingItemProvider;
   v6 = [(HFItemProvider *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_home, a3);
+    objc_storeStrong(&v6->_home, home);
     v8 = [MEMORY[0x277CBEB58] set];
     naturalLightingItems = v7->_naturalLightingItems;
     v7->_naturalLightingItems = v8;
@@ -27,10 +27,10 @@
 
 - (id)reloadItems
 {
-  v3 = [(HUNaturalLightingItemProvider *)self home];
-  v4 = [v3 hf_homeKitObjectsSupportingNaturalLighting];
+  home = [(HUNaturalLightingItemProvider *)self home];
+  hf_homeKitObjectsSupportingNaturalLighting = [home hf_homeKitObjectsSupportingNaturalLighting];
 
-  v5 = [v4 allObjects];
+  allObjects = [hf_homeKitObjectsSupportingNaturalLighting allObjects];
   v10[4] = self;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
@@ -41,7 +41,7 @@
   v10[1] = 3221225472;
   v10[2] = __44__HUNaturalLightingItemProvider_reloadItems__block_invoke_2;
   v10[3] = &unk_277DBCDF8;
-  v6 = [(HFItemProvider *)self reloadItemsWithHomeKitObjects:v5 filter:v11 itemMap:v10];
+  v6 = [(HFItemProvider *)self reloadItemsWithHomeKitObjects:allObjects filter:v11 itemMap:v10];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __44__HUNaturalLightingItemProvider_reloadItems__block_invoke_3;
@@ -105,12 +105,12 @@ id __44__HUNaturalLightingItemProvider_reloadItems__block_invoke_3(uint64_t a1, 
   return v9;
 }
 
-- (id)sourceItemForHomeKitObject:(id)a3
+- (id)sourceItemForHomeKitObject:(id)object
 {
-  v3 = a3;
+  objectCopy = object;
   v4 = objc_alloc_init(MEMORY[0x277D148D0]);
   objc_opt_class();
-  v5 = v3;
+  v5 = objectCopy;
   if (objc_opt_isKindOfClass())
   {
     v6 = v5;
@@ -162,8 +162,8 @@ LABEL_12:
   v8[3] = *MEMORY[0x277D85DE8];
   v7.receiver = self;
   v7.super_class = HUNaturalLightingItemProvider;
-  v2 = [(HFItemProvider *)&v7 invalidationReasons];
-  v3 = [v2 mutableCopy];
+  invalidationReasons = [(HFItemProvider *)&v7 invalidationReasons];
+  v3 = [invalidationReasons mutableCopy];
 
   v4 = *MEMORY[0x277D13B68];
   v8[0] = *MEMORY[0x277D13B70];

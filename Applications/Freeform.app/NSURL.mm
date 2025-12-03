@@ -1,15 +1,15 @@
 @interface NSURL
-+ (id)crl_URLWithStringDataOnPasteboard:(id)a3 itemSet:(id)a4 pasteboardType:(id)a5;
-+ (id)crl_fileURLWithPath:(id)a3;
-+ (id)crl_urlFromUserProvidedTelephoneString:(id)a3 withDataDetector:(id)a4;
++ (id)crl_URLWithStringDataOnPasteboard:(id)pasteboard itemSet:(id)set pasteboardType:(id)type;
++ (id)crl_fileURLWithPath:(id)path;
++ (id)crl_urlFromUserProvidedTelephoneString:(id)string withDataDetector:(id)detector;
 - (BOOL)crl_canOpenURL;
-- (BOOL)crl_conformsToAnyUTI:(id)a3;
-- (BOOL)crl_conformsToUTI:(id)a3;
-- (BOOL)crl_fileSize:(unint64_t *)a3 error:(id *)a4;
-- (BOOL)crl_isFileUrlConformingToType:(id)a3;
+- (BOOL)crl_conformsToAnyUTI:(id)i;
+- (BOOL)crl_conformsToUTI:(id)i;
+- (BOOL)crl_fileSize:(unint64_t *)size error:(id *)error;
+- (BOOL)crl_isFileUrlConformingToType:(id)type;
 - (BOOL)crl_isInTemporaryDirectory;
 - (BOOL)crl_isInTrash;
-- (BOOL)crl_matchesURL:(id)a3 canCompareFileID:(BOOL)a4;
+- (BOOL)crl_matchesURL:(id)l canCompareFileID:(BOOL)d;
 - (CRLSandboxedURL)sandboxedURL;
 - (NSString)crl_UTI;
 - (id)crl_URLExceptPrivate;
@@ -18,35 +18,35 @@
 - (id)crl_prettyStringFromTelephoneURL;
 - (id)crl_reachableFileURLByDeletingUnreachablePathComponents;
 - (unint64_t)crl_fileSize;
-- (void)crl_removeCachedResourceValueForKeys:(id)a3;
+- (void)crl_removeCachedResourceValueForKeys:(id)keys;
 @end
 
 @implementation NSURL
 
 - (NSString)crl_UTI
 {
-  v2 = [(NSURL *)self path];
-  v3 = [v2 crl_pathUTI];
+  path = [(NSURL *)self path];
+  crl_pathUTI = [path crl_pathUTI];
 
-  return v3;
+  return crl_pathUTI;
 }
 
-- (BOOL)crl_conformsToUTI:(id)a3
+- (BOOL)crl_conformsToUTI:(id)i
 {
-  v4 = a3;
-  v5 = [(NSURL *)self pathExtension];
-  v6 = [v5 crl_pathExtensionConformsToUTI:v4];
+  iCopy = i;
+  pathExtension = [(NSURL *)self pathExtension];
+  v6 = [pathExtension crl_pathExtensionConformsToUTI:iCopy];
 
   return v6;
 }
 
-- (BOOL)crl_conformsToAnyUTI:(id)a3
+- (BOOL)crl_conformsToAnyUTI:(id)i
 {
-  v4 = a3;
-  v5 = [(NSURL *)self pathExtension];
-  if (v5)
+  iCopy = i;
+  pathExtension = [(NSURL *)self pathExtension];
+  if (pathExtension)
   {
-    [UTType typesWithTag:v5 tagClass:UTTagClassFilenameExtension conformingToType:0];
+    [UTType typesWithTag:pathExtension tagClass:UTTagClassFilenameExtension conformingToType:0];
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
@@ -56,7 +56,7 @@
     {
       v8 = v7;
       v9 = *v29;
-      v23 = v4;
+      v23 = iCopy;
       v21 = *v29;
       do
       {
@@ -76,7 +76,7 @@
             v27 = 0u;
             v24 = 0u;
             v25 = 0u;
-            v12 = v4;
+            v12 = iCopy;
             v13 = [v12 countByEnumeratingWithState:&v24 objects:v32 count:16];
             if (v13)
             {
@@ -92,14 +92,14 @@
                   }
 
                   v17 = *(*(&v24 + 1) + 8 * i);
-                  v18 = [v11 identifier];
-                  LOBYTE(v17) = [v18 crl_conformsToUTI:v17];
+                  identifier = [v11 identifier];
+                  LOBYTE(v17) = [identifier crl_conformsToUTI:v17];
 
                   if (v17)
                   {
 
                     v19 = 1;
-                    v4 = v23;
+                    iCopy = v23;
                     goto LABEL_23;
                   }
                 }
@@ -115,7 +115,7 @@
             }
 
             v8 = v22;
-            v4 = v23;
+            iCopy = v23;
             v9 = v21;
           }
 
@@ -153,19 +153,19 @@ LABEL_23:
   return v3;
 }
 
-- (BOOL)crl_fileSize:(unint64_t *)a3 error:(id *)a4
+- (BOOL)crl_fileSize:(unint64_t *)size error:(id *)error
 {
-  v5 = self;
+  selfCopy = self;
   [(NSURL *)self removeCachedResourceValueForKey:NSURLFileSizeKey];
   v38 = 0;
-  v29 = v5;
-  LODWORD(v5) = [(NSURL *)v5 getResourceValue:&v38 forKey:NSURLFileSizeKey error:0];
+  v29 = selfCopy;
+  LODWORD(selfCopy) = [(NSURL *)selfCopy getResourceValue:&v38 forKey:NSURLFileSizeKey error:0];
   v6 = v38;
   v7 = v6;
-  v8 = 0;
-  if (v5)
+  unsignedLongLongValue = 0;
+  if (selfCopy)
   {
-    v8 = [v6 unsignedLongLongValue];
+    unsignedLongLongValue = [v6 unsignedLongLongValue];
   }
 
   v9 = +[NSFileManager defaultManager];
@@ -180,7 +180,7 @@ LABEL_23:
   if (v11)
   {
     v12 = v11;
-    v30 = a4;
+    errorCopy = error;
     v13 = *v35;
     v14 = 1;
     do
@@ -204,7 +204,7 @@ LABEL_23:
         v19 = v32;
         if (v18)
         {
-          v8 = &v8[[v7 unsignedLongLongValue]];
+          unsignedLongLongValue = &unsignedLongLongValue[[v7 unsignedLongLongValue]];
         }
 
         else
@@ -225,26 +225,26 @@ LABEL_23:
             v22 = v20;
             v23 = objc_opt_class();
             v24 = NSStringFromClass(v23);
-            v25 = [v19 domain];
-            v26 = [v19 code];
+            domain = [v19 domain];
+            code = [v19 code];
             *buf = 138413314;
             v40 = v29;
             v41 = 2114;
             v42 = v24;
             v43 = 2114;
-            v44 = v25;
+            v44 = domain;
             v45 = 2048;
-            v46 = v26;
+            v46 = code;
             v47 = 2112;
             v48 = v19;
             _os_log_error_impl(&_mh_execute_header, v22, OS_LOG_TYPE_ERROR, "Unable to get NSURLFileSizeKey for URL: %@. errorClass=%{public}@, domain=%{public}@, code=%zd (%@) ", buf, 0x34u);
           }
 
-          if (v30)
+          if (errorCopy)
           {
             v21 = v19;
             v14 = 0;
-            *v30 = v19;
+            *errorCopy = v19;
           }
 
           else
@@ -269,9 +269,9 @@ LABEL_17:
     v14 = 1;
   }
 
-  if (a3)
+  if (size)
   {
-    *a3 = v8;
+    *size = unsignedLongLongValue;
   }
 
   return v14 & 1;
@@ -321,21 +321,21 @@ LABEL_17:
 {
   if ([(NSURL *)self isFileURL])
   {
-    v3 = self;
+    selfCopy = self;
     while (1)
     {
-      v4 = [(NSURL *)v3 path];
-      v5 = [v4 length];
+      path = [(NSURL *)selfCopy path];
+      v5 = [path length];
 
       if (v5 < 3)
       {
         break;
       }
 
-      if ([(NSURL *)v3 checkResourceIsReachableAndReturnError:0])
+      if ([(NSURL *)selfCopy checkResourceIsReachableAndReturnError:0])
       {
-        v6 = v3;
-        v3 = v6;
+        v6 = selfCopy;
+        selfCopy = v6;
         if (v6)
         {
           goto LABEL_10;
@@ -344,9 +344,9 @@ LABEL_17:
 
       else
       {
-        v7 = [(NSURL *)v3 URLByDeletingLastPathComponent];
+        uRLByDeletingLastPathComponent = [(NSURL *)selfCopy URLByDeletingLastPathComponent];
 
-        v3 = v7;
+        selfCopy = uRLByDeletingLastPathComponent;
       }
     }
 
@@ -418,16 +418,16 @@ LABEL_19:
         v17 = v16;
         v18 = objc_opt_class();
         v19 = NSStringFromClass(v18);
-        v20 = [v6 domain];
-        v21 = [v6 code];
+        domain = [v6 domain];
+        code = [v6 code];
         *buf = 138413314;
-        v30 = self;
+        selfCopy = self;
         v31 = 2114;
         v32 = v19;
         v33 = 2114;
-        v34 = v20;
+        v34 = domain;
         v35 = 2048;
-        v36 = v21;
+        v36 = code;
         v37 = 2112;
         v38 = v6;
         _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "Failed to find relationship between URL and trash directory: %@. errorClass=%{public}@, domain=%{public}@, code=%zd (%@) ", buf, 0x34u);
@@ -437,15 +437,15 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  v8 = [(NSURL *)self URLByDeletingLastPathComponent];
-  v9 = [v8 pathComponents];
-  v10 = [v9 reverseObjectEnumerator];
+  uRLByDeletingLastPathComponent = [(NSURL *)self URLByDeletingLastPathComponent];
+  pathComponents = [uRLByDeletingLastPathComponent pathComponents];
+  reverseObjectEnumerator = [pathComponents reverseObjectEnumerator];
 
   v25 = 0u;
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v11 = v10;
+  v11 = reverseObjectEnumerator;
   v12 = [v11 countByEnumeratingWithState:&v23 objects:v39 count:16];
   if (v12)
   {
@@ -484,9 +484,9 @@ LABEL_22:
   return v7;
 }
 
-+ (id)crl_fileURLWithPath:(id)a3
++ (id)crl_fileURLWithPath:(id)path
 {
-  if (a3)
+  if (path)
   {
     v4 = [NSURL fileURLWithPath:?];
   }
@@ -499,14 +499,14 @@ LABEL_22:
   return v4;
 }
 
-- (void)crl_removeCachedResourceValueForKeys:(id)a3
+- (void)crl_removeCachedResourceValueForKeys:(id)keys
 {
-  v4 = a3;
+  keysCopy = keys;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v5 = [keysCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -518,7 +518,7 @@ LABEL_22:
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(keysCopy);
         }
 
         [(NSURL *)self removeCachedResourceValueForKey:*(*(&v9 + 1) + 8 * v8)];
@@ -526,7 +526,7 @@ LABEL_22:
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [keysCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
@@ -535,29 +535,29 @@ LABEL_22:
 
 - (id)crl_pathExceptPrivate
 {
-  v2 = [(NSURL *)self path];
-  v3 = [v2 crl_pathExceptPrivate];
+  path = [(NSURL *)self path];
+  crl_pathExceptPrivate = [path crl_pathExceptPrivate];
 
-  return v3;
+  return crl_pathExceptPrivate;
 }
 
 - (id)crl_URLExceptPrivate
 {
-  v3 = [(NSURL *)self crl_pathExceptPrivate];
-  v4 = [NSURL fileURLWithPath:v3 isDirectory:[(NSURL *)self hasDirectoryPath]];
+  crl_pathExceptPrivate = [(NSURL *)self crl_pathExceptPrivate];
+  v4 = [NSURL fileURLWithPath:crl_pathExceptPrivate isDirectory:[(NSURL *)self hasDirectoryPath]];
 
   return v4;
 }
 
-- (BOOL)crl_matchesURL:(id)a3 canCompareFileID:(BOOL)a4
+- (BOOL)crl_matchesURL:(id)l canCompareFileID:(BOOL)d
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = v6;
-  v8 = self == v6;
-  if (v6 && self != v6)
+  dCopy = d;
+  lCopy = l;
+  v7 = lCopy;
+  v8 = self == lCopy;
+  if (lCopy && self != lCopy)
   {
-    if (([(NSURL *)self isEqual:v6]& 1) != 0)
+    if (([(NSURL *)self isEqual:lCopy]& 1) != 0)
     {
       v8 = 1;
     }
@@ -566,9 +566,9 @@ LABEL_22:
     {
       if ([(NSURL *)self isFileURL]&& [(NSURL *)v7 isFileURL])
       {
-        v9 = [(NSURL *)self crl_pathExceptPrivate];
-        v10 = [(NSURL *)v7 crl_pathExceptPrivate];
-        v8 = [v9 isEqualToString:v10];
+        crl_pathExceptPrivate = [(NSURL *)self crl_pathExceptPrivate];
+        crl_pathExceptPrivate2 = [(NSURL *)v7 crl_pathExceptPrivate];
+        v8 = [crl_pathExceptPrivate isEqualToString:crl_pathExceptPrivate2];
       }
 
       else
@@ -576,7 +576,7 @@ LABEL_22:
         v8 = 0;
       }
 
-      if ((v8 & 1) == 0 && v4)
+      if ((v8 & 1) == 0 && dCopy)
       {
         v16 = 0;
         v11 = [(NSURL *)self getResourceValue:&v16 forKey:NSURLFileResourceIdentifierKey error:0];
@@ -597,29 +597,29 @@ LABEL_22:
 
 - (BOOL)crl_canOpenURL
 {
-  v3 = [(NSURL *)self scheme];
-  v4 = [v3 lowercaseString];
-  v5 = [v4 isEqualToString:@"tel"];
+  scheme = [(NSURL *)self scheme];
+  lowercaseString = [scheme lowercaseString];
+  v5 = [lowercaseString isEqualToString:@"tel"];
 
   if (!v5)
   {
     return 1;
   }
 
-  v6 = [(NSURL *)self resourceSpecifier];
-  v7 = [v6 stringByRemovingPercentEncoding];
+  resourceSpecifier = [(NSURL *)self resourceSpecifier];
+  stringByRemovingPercentEncoding = [resourceSpecifier stringByRemovingPercentEncoding];
 
   v8 = +[NSCharacterSet alphanumericCharacterSet];
-  v9 = [v8 invertedSet];
-  v10 = [v7 crl_stringByRemovingCharactersInSet:v9];
+  invertedSet = [v8 invertedSet];
+  v10 = [stringByRemovingPercentEncoding crl_stringByRemovingCharactersInSet:invertedSet];
 
   v11 = [v10 length] > 2;
   return v11;
 }
 
-- (BOOL)crl_isFileUrlConformingToType:(id)a3
+- (BOOL)crl_isFileUrlConformingToType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   if ([(NSURL *)self isFileURL])
   {
     v11 = 0;
@@ -629,7 +629,7 @@ LABEL_22:
     v6 = v10;
     if (v5)
     {
-      v7 = [v5 conformsToType:v4];
+      v7 = [v5 conformsToType:typeCopy];
     }
 
     else
@@ -657,15 +657,15 @@ LABEL_22:
   return v7;
 }
 
-+ (id)crl_urlFromUserProvidedTelephoneString:(id)a3 withDataDetector:(id)a4
++ (id)crl_urlFromUserProvidedTelephoneString:(id)string withDataDetector:(id)detector
 {
-  v5 = a3;
-  v6 = a4;
+  stringCopy = string;
+  detectorCopy = detector;
   v7 = +[NSCharacterSet whitespaceAndNewlineCharacterSet];
-  v8 = [v5 stringByTrimmingCharactersInSet:v7];
+  v8 = [stringCopy stringByTrimmingCharactersInSet:v7];
 
   v9 = +[NSCharacterSet alphanumericCharacterSet];
-  v10 = [v5 rangeOfCharacterFromSet:v9];
+  v10 = [stringCopy rangeOfCharacterFromSet:v9];
 
   if ([v8 length])
   {
@@ -713,13 +713,13 @@ LABEL_12:
   v17 = v28[5];
   if (!v17)
   {
-    v18 = [v8 crl_range];
+    crl_range = [v8 crl_range];
     v26[0] = _NSConcreteStackBlock;
     v26[1] = 3221225472;
     v26[2] = sub_10026A15C;
     v26[3] = &unk_10184DAC8;
     v26[4] = &v27;
-    [v6 enumerateMatchesInString:v8 options:0 range:v18 usingBlock:{v19, v26}];
+    [detectorCopy enumerateMatchesInString:v8 options:0 range:crl_range usingBlock:{v19, v26}];
     v17 = v28[5];
     if (!v17)
     {
@@ -744,12 +744,12 @@ LABEL_16:
 
 - (id)crl_prettyStringFromTelephoneURL
 {
-  v2 = [(NSURL *)self resourceSpecifier];
-  v3 = [v2 stringByRemovingPercentEncoding];
+  resourceSpecifier = [(NSURL *)self resourceSpecifier];
+  stringByRemovingPercentEncoding = [resourceSpecifier stringByRemovingPercentEncoding];
 
-  if (v3)
+  if (stringByRemovingPercentEncoding)
   {
-    v4 = v3;
+    v4 = stringByRemovingPercentEncoding;
   }
 
   else
@@ -762,10 +762,10 @@ LABEL_16:
   return v4;
 }
 
-+ (id)crl_URLWithStringDataOnPasteboard:(id)a3 itemSet:(id)a4 pasteboardType:(id)a5
++ (id)crl_URLWithStringDataOnPasteboard:(id)pasteboard itemSet:(id)set pasteboardType:(id)type
 {
-  v7 = a3;
-  v8 = [v7 dataForPasteboardType:a5 inItemSet:a4];
+  pasteboardCopy = pasteboard;
+  v8 = [pasteboardCopy dataForPasteboardType:type inItemSet:set];
   if ([v8 count])
   {
     if ([v8 count] != 1)
@@ -798,34 +798,34 @@ LABEL_16:
       +[CRLAssertionHandler handleFailureInFunction:file:lineNumber:isFatal:description:](CRLAssertionHandler, "handleFailureInFunction:file:lineNumber:isFatal:description:", v11, v12, 323, 0, "Only pasting first item of %lu on pasteboard", [v8 count]);
     }
 
-    v13 = [v8 firstObject];
-    if (v13)
+    firstObject = [v8 firstObject];
+    if (firstObject)
     {
-      v14 = [[NSString alloc] initWithData:v13 encoding:4];
+      v14 = [[NSString alloc] initWithData:firstObject encoding:4];
       if ([v14 length])
       {
-        v15 = [NSURL URLWithString:v14];
+        firstObject2 = [NSURL URLWithString:v14];
       }
 
       else
       {
-        v16 = [v7 URLs];
-        v15 = [v16 firstObject];
+        uRLs = [pasteboardCopy URLs];
+        firstObject2 = [uRLs firstObject];
       }
     }
 
     else
     {
-      v15 = 0;
+      firstObject2 = 0;
     }
   }
 
   else
   {
-    v15 = 0;
+    firstObject2 = 0;
   }
 
-  return v15;
+  return firstObject2;
 }
 
 - (CRLSandboxedURL)sandboxedURL

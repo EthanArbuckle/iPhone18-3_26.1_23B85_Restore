@@ -1,8 +1,8 @@
 @interface BWInferenceSimpleTextureStorage
 - (BWInferenceSimpleTextureStorage)init;
 - (void)dealloc;
-- (void)setEntry:(id *)a3 forRequirement:(id)a4;
-- (void)setTexture:(id)a3 forRequirement:(id)a4;
+- (void)setEntry:(id *)entry forRequirement:(id)requirement;
+- (void)setTexture:(id)texture forRequirement:(id)requirement;
 @end
 
 @implementation BWInferenceSimpleTextureStorage
@@ -32,20 +32,20 @@
   [(BWInferenceSimpleTextureStorage *)&v3 dealloc];
 }
 
-- (void)setEntry:(id *)a3 forRequirement:(id)a4
+- (void)setEntry:(id *)entry forRequirement:(id)requirement
 {
-  v7 = a3->var0.var0;
-  v8 = a3->var1;
+  v7 = entry->var0.var0;
+  v8 = entry->var1;
   entriesByRequirement = self->_entriesByRequirement;
 
-  [(NSMapTable *)entriesByRequirement setObject:a3 forKey:a4];
+  [(NSMapTable *)entriesByRequirement setObject:entry forKey:requirement];
 }
 
-- (void)setTexture:(id)a3 forRequirement:(id)a4
+- (void)setTexture:(id)texture forRequirement:(id)requirement
 {
-  v6[0] = a3;
+  v6[0] = texture;
   v6[1] = 0;
-  [(NSMapTable *)self->_entriesByRequirement setObject:v6 forKey:a4];
+  [(NSMapTable *)self->_entriesByRequirement setObject:v6 forKey:requirement];
 }
 
 @end

@@ -1,21 +1,21 @@
 @interface MobileTimerAssistantAlarmCreate
 - (id)validateCommandArguments;
-- (void)_performWithCompletion:(id)a3;
-- (void)performWithCompletion:(id)a3;
+- (void)_performWithCompletion:(id)completion;
+- (void)performWithCompletion:(id)completion;
 @end
 
 @implementation MobileTimerAssistantAlarmCreate
 
-- (void)performWithCompletion:(id)a3
+- (void)performWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = MTLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     sub_C7CC(v5);
   }
 
-  [(MobileTimerAssistantAlarmCreate *)self _performWithCompletion:v4];
+  [(MobileTimerAssistantAlarmCreate *)self _performWithCompletion:completionCopy];
   v6 = MTLogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
@@ -23,11 +23,11 @@
   }
 }
 
-- (void)_performWithCompletion:(id)a3
+- (void)_performWithCompletion:(id)completion
 {
-  v4 = a3;
-  v53 = [(MobileTimerAssistantAlarmCreate *)self validateCommandArguments];
-  if (v53)
+  completionCopy = completion;
+  validateCommandArguments = [(MobileTimerAssistantAlarmCreate *)self validateCommandArguments];
+  if (validateCommandArguments)
   {
     v5 = MTLogForCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -35,24 +35,24 @@
       sub_C8D4();
     }
 
-    v6 = [v53 dictionary];
-    v4[2](v4, v6);
+    dictionary = [validateCommandArguments dictionary];
+    completionCopy[2](completionCopy, dictionary);
     goto LABEL_34;
   }
 
-  v6 = [(MobileTimerAssistantAlarmCreate *)self alarmToCreate];
+  dictionary = [(MobileTimerAssistantAlarmCreate *)self alarmToCreate];
   v7 = objc_opt_new();
-  v8 = [v6 relativeOffsetMinutes];
+  relativeOffsetMinutes = [dictionary relativeOffsetMinutes];
 
-  if (v8)
+  if (relativeOffsetMinutes)
   {
-    v9 = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
+    minute2 = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
     v10 = +[NSTimeZone defaultTimeZone];
-    [v9 setTimeZone:v10];
+    [minute2 setTimeZone:v10];
 
     v11 = objc_alloc_init(NSDateComponents);
-    v12 = [v6 relativeOffsetMinutes];
-    [v11 setMinute:{objc_msgSend(v12, "unsignedIntValue")}];
+    relativeOffsetMinutes2 = [dictionary relativeOffsetMinutes];
+    [v11 setMinute:{objc_msgSend(relativeOffsetMinutes2, "unsignedIntValue")}];
 
     if ([v11 minute] <= 4)
     {
@@ -60,46 +60,46 @@
     }
 
     v13 = +[NSDate date];
-    v14 = [v9 dateByAddingComponents:v11 toDate:v13 options:0];
+    v14 = [minute2 dateByAddingComponents:v11 toDate:v13 options:0];
 
-    v15 = [v9 components:96 fromDate:v14];
+    v15 = [minute2 components:96 fromDate:v14];
     [v7 setHour:{objc_msgSend(v15, "hour")}];
     [v7 setMinute:{objc_msgSend(v15, "minute")}];
   }
 
   else
   {
-    v16 = [v6 hour];
+    hour = [dictionary hour];
 
-    if (v16)
+    if (hour)
     {
-      v17 = [v6 hour];
-      [v7 setHour:{objc_msgSend(v17, "unsignedIntValue")}];
+      hour2 = [dictionary hour];
+      [v7 setHour:{objc_msgSend(hour2, "unsignedIntValue")}];
     }
 
-    v18 = [v6 minute];
+    minute = [dictionary minute];
 
-    if (!v18)
+    if (!minute)
     {
       goto LABEL_14;
     }
 
-    v9 = [v6 minute];
-    [v7 setMinute:{objc_msgSend(v9, "unsignedIntValue")}];
+    minute2 = [dictionary minute];
+    [v7 setMinute:{objc_msgSend(minute2, "unsignedIntValue")}];
   }
 
 LABEL_14:
-  v19 = [v6 frequency];
+  frequency = [dictionary frequency];
 
-  if (v19)
+  if (frequency)
   {
     v66 = 0u;
     v67 = 0u;
     v64 = 0u;
     v65 = 0u;
-    v20 = [v6 frequency];
+    frequency2 = [dictionary frequency];
     v21 = 0;
-    v22 = [v20 countByEnumeratingWithState:&v64 objects:v74 count:16];
+    v22 = [frequency2 countByEnumeratingWithState:&v64 objects:v74 count:16];
     if (v22)
     {
       v23 = *v65;
@@ -109,7 +109,7 @@ LABEL_14:
         {
           if (*v65 != v23)
           {
-            objc_enumerationMutation(v20);
+            objc_enumerationMutation(frequency2);
           }
 
           v25 = *(*(&v64 + 1) + 8 * i);
@@ -117,7 +117,7 @@ LABEL_14:
           v21 |= MTAlarmRepeatDayFromSAAlarmDayOfWeek(v26);
         }
 
-        v22 = [v20 countByEnumeratingWithState:&v64 objects:v74 count:16];
+        v22 = [frequency2 countByEnumeratingWithState:&v64 objects:v74 count:16];
       }
 
       while (v22);
@@ -126,28 +126,28 @@ LABEL_14:
     [v7 setRepeatSchedule:v21];
   }
 
-  v27 = [v6 label];
-  v28 = v27 == 0;
+  label = [dictionary label];
+  v28 = label == 0;
 
   if (!v28)
   {
-    v29 = [v6 label];
-    [v7 setTitle:v29];
+    label2 = [dictionary label];
+    [v7 setTitle:label2];
   }
 
-  v30 = [v7 sound];
-  v31 = [v30 isSilent];
+  sound = [v7 sound];
+  isSilent = [sound isSilent];
 
-  if (v31)
+  if (isSilent)
   {
     v32 = +[TLToneManager sharedToneManager];
     v33 = [v32 defaultToneIdentifierForAlertType:13];
 
-    v34 = [v7 sound];
-    v35 = [v34 vibrationIdentifier];
-    v36 = [v7 sound];
-    v37 = [v36 soundVolume];
-    v38 = [MTSound toneSoundWithIdentifier:v33 vibrationIdentifer:v35 volume:v37];
+    sound2 = [v7 sound];
+    vibrationIdentifier = [sound2 vibrationIdentifier];
+    sound3 = [v7 sound];
+    soundVolume = [sound3 soundVolume];
+    v38 = [MTSound toneSoundWithIdentifier:v33 vibrationIdentifer:vibrationIdentifier volume:soundVolume];
 
     [v7 setSound:v38];
   }
@@ -196,18 +196,18 @@ LABEL_14:
   v47 = MTLogForCategory();
   if (os_log_type_enabled(v47, OS_LOG_TYPE_DEBUG))
   {
-    v48 = [*(*&buf[8] + 40) dictionary];
-    sub_C93C(self, v48, v69);
+    dictionary2 = [*(*&buf[8] + 40) dictionary];
+    sub_C93C(self, dictionary2, v69);
   }
 
-  v49 = [*(*&buf[8] + 40) dictionary];
-  v4[2](v4, v49);
+  dictionary3 = [*(*&buf[8] + 40) dictionary];
+  completionCopy[2](completionCopy, dictionary3);
 
   v50 = MTLogForCategory();
   if (os_log_type_enabled(v50, OS_LOG_TYPE_DEBUG))
   {
-    v51 = [*(*&buf[8] + 40) dictionary];
-    sub_C9A0(self, v51, v68);
+    dictionary4 = [*(*&buf[8] + 40) dictionary];
+    sub_C9A0(self, dictionary4, v68);
   }
 
   objc_destroyWeak(&v57);
@@ -220,92 +220,92 @@ LABEL_34:
 
 - (id)validateCommandArguments
 {
-  v2 = [(MobileTimerAssistantAlarmCreate *)self alarmToCreate];
-  v3 = [v2 relativeOffsetMinutes];
+  alarmToCreate = [(MobileTimerAssistantAlarmCreate *)self alarmToCreate];
+  relativeOffsetMinutes = [alarmToCreate relativeOffsetMinutes];
 
-  if (v3)
+  if (relativeOffsetMinutes)
   {
-    v4 = [v2 relativeOffsetMinutes];
+    relativeOffsetMinutes2 = [alarmToCreate relativeOffsetMinutes];
     v28 = 0;
-    v5 = MTValidateAlarmRelativeOffsetMinutes([v4 unsignedIntegerValue], &v28);
-    v3 = v28;
+    v5 = MTValidateAlarmRelativeOffsetMinutes([relativeOffsetMinutes2 unsignedIntegerValue], &v28);
+    relativeOffsetMinutes = v28;
 
-    v6 = v3;
+    v6 = relativeOffsetMinutes;
     if (!v5)
     {
       goto LABEL_12;
     }
   }
 
-  v7 = [v2 hour];
+  hour = [alarmToCreate hour];
 
-  if (v7)
+  if (hour)
   {
-    v8 = [v2 hour];
-    v27 = v3;
-    v9 = MTValidateAlarmHour([v8 unsignedIntegerValue], &v27);
+    hour2 = [alarmToCreate hour];
+    v27 = relativeOffsetMinutes;
+    v9 = MTValidateAlarmHour([hour2 unsignedIntegerValue], &v27);
     v6 = v27;
 
-    v3 = v6;
+    relativeOffsetMinutes = v6;
     if (!v9)
     {
       goto LABEL_12;
     }
   }
 
-  v10 = [v2 minute];
+  minute = [alarmToCreate minute];
 
-  if (v10)
+  if (minute)
   {
-    v11 = [v2 minute];
-    v26 = v3;
-    v12 = MTValidateAlarmMinute([v11 unsignedIntegerValue], &v26);
+    minute2 = [alarmToCreate minute];
+    v26 = relativeOffsetMinutes;
+    v12 = MTValidateAlarmMinute([minute2 unsignedIntegerValue], &v26);
     v6 = v26;
 
-    v3 = v6;
+    relativeOffsetMinutes = v6;
     if (!v12)
     {
       goto LABEL_12;
     }
   }
 
-  v13 = [v2 frequency];
+  frequency = [alarmToCreate frequency];
 
-  if (v13)
+  if (frequency)
   {
-    v14 = [v2 frequency];
-    v25 = v3;
-    v15 = MTValidateAlarmFrequency(v14, &v25);
+    frequency2 = [alarmToCreate frequency];
+    v25 = relativeOffsetMinutes;
+    v15 = MTValidateAlarmFrequency(frequency2, &v25);
     v6 = v25;
 
-    v3 = v6;
+    relativeOffsetMinutes = v6;
     if (!v15)
     {
       goto LABEL_12;
     }
   }
 
-  v16 = [v2 label];
+  label = [alarmToCreate label];
 
-  if (v16)
+  if (label)
   {
-    v17 = [v2 label];
-    v24 = v3;
-    v18 = MTValidateAlarmLabel(v17, &v24);
+    label2 = [alarmToCreate label];
+    v24 = relativeOffsetMinutes;
+    v18 = MTValidateAlarmLabel(label2, &v24);
     v6 = v24;
 
     if (v18)
     {
       v19 = 0;
 LABEL_13:
-      v3 = v6;
+      relativeOffsetMinutes = v6;
       goto LABEL_14;
     }
 
 LABEL_12:
     v20 = [SACommandFailed alloc];
-    v21 = [v6 userInfo];
-    v22 = [v21 objectForKeyedSubscript:NSLocalizedDescriptionKey];
+    userInfo = [v6 userInfo];
+    v22 = [userInfo objectForKeyedSubscript:NSLocalizedDescriptionKey];
     v19 = [v20 initWithReason:v22];
 
     [v19 setErrorCode:{objc_msgSend(v6, "code")}];

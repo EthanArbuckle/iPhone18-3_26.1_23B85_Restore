@@ -1,18 +1,18 @@
 @interface CRLiOSInspectorLabel
 - (BOOL)p_isAccessibilitySize;
 - (CGSize)intrinsicContentSize;
-- (CRLiOSInspectorLabel)initWithFrame:(CGRect)a3;
-- (void)setNumberOfLines:(int64_t)a3;
+- (CRLiOSInspectorLabel)initWithFrame:(CGRect)frame;
+- (void)setNumberOfLines:(int64_t)lines;
 - (void)updateConstraints;
 @end
 
 @implementation CRLiOSInspectorLabel
 
-- (CRLiOSInspectorLabel)initWithFrame:(CGRect)a3
+- (CRLiOSInspectorLabel)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = CRLiOSInspectorLabel;
-  v3 = [(CRLiOSInspectorLabel *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CRLiOSInspectorLabel *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -32,14 +32,14 @@
   v7.receiver = self;
   v7.super_class = CRLiOSInspectorLabel;
   [(CRLiOSInspectorLabel *)&v7 updateConstraints];
-  v3 = [(CRLiOSInspectorLabel *)self p_isAccessibilitySize];
-  v4 = [(CRLiOSInspectorLabel *)self externalNumberOfLines];
-  if (v3)
+  p_isAccessibilitySize = [(CRLiOSInspectorLabel *)self p_isAccessibilitySize];
+  externalNumberOfLines = [(CRLiOSInspectorLabel *)self externalNumberOfLines];
+  if (p_isAccessibilitySize)
   {
-    [(CRLiOSInspectorLabel *)&v6 setNumberOfLines:v4, v5.receiver, v5.super_class, self, CRLiOSInspectorLabel];
+    [(CRLiOSInspectorLabel *)&v6 setNumberOfLines:externalNumberOfLines, v5.receiver, v5.super_class, self, CRLiOSInspectorLabel];
   }
 
-  else if (!v4)
+  else if (!externalNumberOfLines)
   {
     [(CRLiOSInspectorLabel *)&v5 setNumberOfLines:2, self, CRLiOSInspectorLabel, v6.receiver, v6.super_class];
   }
@@ -52,9 +52,9 @@
   [(CRLiOSInspectorLabel *)&v10 intrinsicContentSize];
   v4 = v3;
   v6 = v5;
-  v7 = [(CRLiOSInspectorLabel *)self containsTrailingMargin];
+  containsTrailingMargin = [(CRLiOSInspectorLabel *)self containsTrailingMargin];
   v8 = v4 + 16.0;
-  if (!v7)
+  if (!containsTrailingMargin)
   {
     v8 = v4;
   }
@@ -65,19 +65,19 @@
   return result;
 }
 
-- (void)setNumberOfLines:(int64_t)a3
+- (void)setNumberOfLines:(int64_t)lines
 {
   [(CRLiOSInspectorLabel *)self setExternalNumberOfLines:?];
   v5.receiver = self;
   v5.super_class = CRLiOSInspectorLabel;
-  [(CRLiOSInspectorLabel *)&v5 setNumberOfLines:a3];
+  [(CRLiOSInspectorLabel *)&v5 setNumberOfLines:lines];
 }
 
 - (BOOL)p_isAccessibilitySize
 {
   v2 = +[UIApplication sharedApplication];
-  v3 = [v2 preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v3);
+  preferredContentSizeCategory = [v2 preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   return IsAccessibilityCategory;
 }

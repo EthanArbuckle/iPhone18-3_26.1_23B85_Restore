@@ -1,9 +1,9 @@
 @interface _CPStartLocalSearchFeedback
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (_CPStartLocalSearchFeedback)init;
-- (_CPStartLocalSearchFeedback)initWithFacade:(id)a3;
+- (_CPStartLocalSearchFeedback)initWithFacade:(id)facade;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _CPStartLocalSearchFeedback
@@ -19,34 +19,34 @@
   return v7 ^ v8 ^ [(_CPIndexStateForFeedback *)self->_indexState hash]^ (2654435761 * self->_coreSpotlightIndexUsed) ^ (2654435761 * self->_isPhotosScopedSearch) ^ (2654435761 * self->_isSemanticSearchEligible) ^ (2654435761 * self->_spotlightInitialPageType) ^ (2654435761 * self->_spotlightBrowsingSearchScope);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_32;
   }
 
   timestamp = self->_timestamp;
-  if (timestamp != [v4 timestamp])
+  if (timestamp != [equalCopy timestamp])
   {
     goto LABEL_32;
   }
 
-  v6 = [(_CPStartLocalSearchFeedback *)self input];
-  v7 = [v4 input];
-  if ((v6 != 0) == (v7 == 0))
+  input = [(_CPStartLocalSearchFeedback *)self input];
+  input2 = [equalCopy input];
+  if ((input != 0) == (input2 == 0))
   {
     goto LABEL_31;
   }
 
-  v8 = [(_CPStartLocalSearchFeedback *)self input];
-  if (v8)
+  input3 = [(_CPStartLocalSearchFeedback *)self input];
+  if (input3)
   {
-    v9 = v8;
-    v10 = [(_CPStartLocalSearchFeedback *)self input];
-    v11 = [v4 input];
-    v12 = [v10 isEqual:v11];
+    v9 = input3;
+    input4 = [(_CPStartLocalSearchFeedback *)self input];
+    input5 = [equalCopy input];
+    v12 = [input4 isEqual:input5];
 
     if (!v12)
     {
@@ -58,20 +58,20 @@
   {
   }
 
-  v6 = [(_CPStartLocalSearchFeedback *)self uuid];
-  v7 = [v4 uuid];
-  if ((v6 != 0) == (v7 == 0))
+  input = [(_CPStartLocalSearchFeedback *)self uuid];
+  input2 = [equalCopy uuid];
+  if ((input != 0) == (input2 == 0))
   {
     goto LABEL_31;
   }
 
-  v13 = [(_CPStartLocalSearchFeedback *)self uuid];
-  if (v13)
+  uuid = [(_CPStartLocalSearchFeedback *)self uuid];
+  if (uuid)
   {
-    v14 = v13;
-    v15 = [(_CPStartLocalSearchFeedback *)self uuid];
-    v16 = [v4 uuid];
-    v17 = [v15 isEqual:v16];
+    v14 = uuid;
+    uuid2 = [(_CPStartLocalSearchFeedback *)self uuid];
+    uuid3 = [equalCopy uuid];
+    v17 = [uuid2 isEqual:uuid3];
 
     if (!v17)
     {
@@ -84,43 +84,43 @@
   }
 
   triggerEvent = self->_triggerEvent;
-  if (triggerEvent != [v4 triggerEvent])
+  if (triggerEvent != [equalCopy triggerEvent])
   {
     goto LABEL_32;
   }
 
   queryId = self->_queryId;
-  if (queryId != [v4 queryId])
+  if (queryId != [equalCopy queryId])
   {
     goto LABEL_32;
   }
 
   indexType = self->_indexType;
-  if (indexType != [v4 indexType])
+  if (indexType != [equalCopy indexType])
   {
     goto LABEL_32;
   }
 
   searchType = self->_searchType;
-  if (searchType != [v4 searchType])
+  if (searchType != [equalCopy searchType])
   {
     goto LABEL_32;
   }
 
-  v6 = [(_CPStartLocalSearchFeedback *)self originatingApp];
-  v7 = [v4 originatingApp];
-  if ((v6 != 0) == (v7 == 0))
+  input = [(_CPStartLocalSearchFeedback *)self originatingApp];
+  input2 = [equalCopy originatingApp];
+  if ((input != 0) == (input2 == 0))
   {
     goto LABEL_31;
   }
 
-  v22 = [(_CPStartLocalSearchFeedback *)self originatingApp];
-  if (v22)
+  originatingApp = [(_CPStartLocalSearchFeedback *)self originatingApp];
+  if (originatingApp)
   {
-    v23 = v22;
-    v24 = [(_CPStartLocalSearchFeedback *)self originatingApp];
-    v25 = [v4 originatingApp];
-    v26 = [v24 isEqual:v25];
+    v23 = originatingApp;
+    originatingApp2 = [(_CPStartLocalSearchFeedback *)self originatingApp];
+    originatingApp3 = [equalCopy originatingApp];
+    v26 = [originatingApp2 isEqual:originatingApp3];
 
     if (!v26)
     {
@@ -132,20 +132,20 @@
   {
   }
 
-  v6 = [(_CPStartLocalSearchFeedback *)self entityQueryCommand];
-  v7 = [v4 entityQueryCommand];
-  if ((v6 != 0) == (v7 == 0))
+  input = [(_CPStartLocalSearchFeedback *)self entityQueryCommand];
+  input2 = [equalCopy entityQueryCommand];
+  if ((input != 0) == (input2 == 0))
   {
     goto LABEL_31;
   }
 
-  v27 = [(_CPStartLocalSearchFeedback *)self entityQueryCommand];
-  if (v27)
+  entityQueryCommand = [(_CPStartLocalSearchFeedback *)self entityQueryCommand];
+  if (entityQueryCommand)
   {
-    v28 = v27;
-    v29 = [(_CPStartLocalSearchFeedback *)self entityQueryCommand];
-    v30 = [v4 entityQueryCommand];
-    v31 = [v29 isEqual:v30];
+    v28 = entityQueryCommand;
+    entityQueryCommand2 = [(_CPStartLocalSearchFeedback *)self entityQueryCommand];
+    entityQueryCommand3 = [equalCopy entityQueryCommand];
+    v31 = [entityQueryCommand2 isEqual:entityQueryCommand3];
 
     if (!v31)
     {
@@ -157,22 +157,22 @@
   {
   }
 
-  v6 = [(_CPStartLocalSearchFeedback *)self indexState];
-  v7 = [v4 indexState];
-  if ((v6 != 0) == (v7 == 0))
+  input = [(_CPStartLocalSearchFeedback *)self indexState];
+  input2 = [equalCopy indexState];
+  if ((input != 0) == (input2 == 0))
   {
 LABEL_31:
 
     goto LABEL_32;
   }
 
-  v32 = [(_CPStartLocalSearchFeedback *)self indexState];
-  if (v32)
+  indexState = [(_CPStartLocalSearchFeedback *)self indexState];
+  if (indexState)
   {
-    v33 = v32;
-    v34 = [(_CPStartLocalSearchFeedback *)self indexState];
-    v35 = [v4 indexState];
-    v36 = [v34 isEqual:v35];
+    v33 = indexState;
+    indexState2 = [(_CPStartLocalSearchFeedback *)self indexState];
+    indexState3 = [equalCopy indexState];
+    v36 = [indexState2 isEqual:indexState3];
 
     if (!v36)
     {
@@ -185,19 +185,19 @@ LABEL_31:
   }
 
   coreSpotlightIndexUsed = self->_coreSpotlightIndexUsed;
-  if (coreSpotlightIndexUsed == [v4 coreSpotlightIndexUsed])
+  if (coreSpotlightIndexUsed == [equalCopy coreSpotlightIndexUsed])
   {
     isPhotosScopedSearch = self->_isPhotosScopedSearch;
-    if (isPhotosScopedSearch == [v4 isPhotosScopedSearch])
+    if (isPhotosScopedSearch == [equalCopy isPhotosScopedSearch])
     {
       isSemanticSearchEligible = self->_isSemanticSearchEligible;
-      if (isSemanticSearchEligible == [v4 isSemanticSearchEligible])
+      if (isSemanticSearchEligible == [equalCopy isSemanticSearchEligible])
       {
         spotlightInitialPageType = self->_spotlightInitialPageType;
-        if (spotlightInitialPageType == [v4 spotlightInitialPageType])
+        if (spotlightInitialPageType == [equalCopy spotlightInitialPageType])
         {
           spotlightBrowsingSearchScope = self->_spotlightBrowsingSearchScope;
-          v37 = spotlightBrowsingSearchScope == [v4 spotlightBrowsingSearchScope];
+          v37 = spotlightBrowsingSearchScope == [equalCopy spotlightBrowsingSearchScope];
           goto LABEL_33;
         }
       }
@@ -211,26 +211,26 @@ LABEL_33:
   return v37;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  a3;
+  to;
   if ([(_CPStartLocalSearchFeedback *)self timestamp])
   {
     timestamp = self->_timestamp;
     PBDataWriterWriteUint64Field();
   }
 
-  v5 = [(_CPStartLocalSearchFeedback *)self input];
+  input = [(_CPStartLocalSearchFeedback *)self input];
 
-  if (v5)
+  if (input)
   {
     input = self->_input;
     PBDataWriterWriteStringField();
   }
 
-  v7 = [(_CPStartLocalSearchFeedback *)self uuid];
+  uuid = [(_CPStartLocalSearchFeedback *)self uuid];
 
-  if (v7)
+  if (uuid)
   {
     uuid = self->_uuid;
     PBDataWriterWriteStringField();
@@ -260,27 +260,27 @@ LABEL_33:
     PBDataWriterWriteInt32Field();
   }
 
-  v13 = [(_CPStartLocalSearchFeedback *)self originatingApp];
+  originatingApp = [(_CPStartLocalSearchFeedback *)self originatingApp];
 
-  if (v13)
+  if (originatingApp)
   {
     originatingApp = self->_originatingApp;
     PBDataWriterWriteStringField();
   }
 
-  v15 = [(_CPStartLocalSearchFeedback *)self entityQueryCommand];
+  entityQueryCommand = [(_CPStartLocalSearchFeedback *)self entityQueryCommand];
 
-  if (v15)
+  if (entityQueryCommand)
   {
-    v16 = [(_CPStartLocalSearchFeedback *)self entityQueryCommand];
+    entityQueryCommand2 = [(_CPStartLocalSearchFeedback *)self entityQueryCommand];
     PBDataWriterWriteSubmessage();
   }
 
-  v17 = [(_CPStartLocalSearchFeedback *)self indexState];
+  indexState = [(_CPStartLocalSearchFeedback *)self indexState];
 
-  if (v17)
+  if (indexState)
   {
-    v18 = [(_CPStartLocalSearchFeedback *)self indexState];
+    indexState2 = [(_CPStartLocalSearchFeedback *)self indexState];
     PBDataWriterWriteSubmessage();
   }
 
@@ -331,68 +331,68 @@ LABEL_33:
   return v2;
 }
 
-- (_CPStartLocalSearchFeedback)initWithFacade:(id)a3
+- (_CPStartLocalSearchFeedback)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v22.receiver = self;
   v22.super_class = _CPStartLocalSearchFeedback;
   v5 = [(_CPStartLocalSearchFeedback *)&v22 init];
   if (v5)
   {
-    -[_CPStartLocalSearchFeedback setTimestamp:](v5, "setTimestamp:", [v4 timestamp]);
-    v6 = [v4 input];
+    -[_CPStartLocalSearchFeedback setTimestamp:](v5, "setTimestamp:", [facadeCopy timestamp]);
+    input = [facadeCopy input];
 
-    if (v6)
+    if (input)
     {
-      v7 = [v4 input];
-      [(_CPStartLocalSearchFeedback *)v5 setInput:v7];
+      input2 = [facadeCopy input];
+      [(_CPStartLocalSearchFeedback *)v5 setInput:input2];
     }
 
-    v8 = [v4 uuid];
+    uuid = [facadeCopy uuid];
 
-    if (v8)
+    if (uuid)
     {
-      v9 = [v4 uuid];
-      [(_CPStartLocalSearchFeedback *)v5 setUuid:v9];
+      uuid2 = [facadeCopy uuid];
+      [(_CPStartLocalSearchFeedback *)v5 setUuid:uuid2];
     }
 
-    -[_CPStartLocalSearchFeedback setTriggerEvent:](v5, "setTriggerEvent:", [v4 triggerEvent]);
-    -[_CPStartLocalSearchFeedback setQueryId:](v5, "setQueryId:", [v4 queryId]);
-    -[_CPStartLocalSearchFeedback setIndexType:](v5, "setIndexType:", [v4 indexType]);
-    -[_CPStartLocalSearchFeedback setSearchType:](v5, "setSearchType:", [v4 searchType]);
-    v10 = [v4 originatingApp];
+    -[_CPStartLocalSearchFeedback setTriggerEvent:](v5, "setTriggerEvent:", [facadeCopy triggerEvent]);
+    -[_CPStartLocalSearchFeedback setQueryId:](v5, "setQueryId:", [facadeCopy queryId]);
+    -[_CPStartLocalSearchFeedback setIndexType:](v5, "setIndexType:", [facadeCopy indexType]);
+    -[_CPStartLocalSearchFeedback setSearchType:](v5, "setSearchType:", [facadeCopy searchType]);
+    originatingApp = [facadeCopy originatingApp];
 
-    if (v10)
+    if (originatingApp)
     {
-      v11 = [v4 originatingApp];
-      [(_CPStartLocalSearchFeedback *)v5 setOriginatingApp:v11];
+      originatingApp2 = [facadeCopy originatingApp];
+      [(_CPStartLocalSearchFeedback *)v5 setOriginatingApp:originatingApp2];
     }
 
-    v12 = [v4 entityQueryCommand];
+    entityQueryCommand = [facadeCopy entityQueryCommand];
 
-    if (v12)
+    if (entityQueryCommand)
     {
       v13 = [_CPPerformEntityQueryCommandForFeedback alloc];
-      v14 = [v4 entityQueryCommand];
-      v15 = [(_CPPerformEntityQueryCommandForFeedback *)v13 initWithFacade:v14];
+      entityQueryCommand2 = [facadeCopy entityQueryCommand];
+      v15 = [(_CPPerformEntityQueryCommandForFeedback *)v13 initWithFacade:entityQueryCommand2];
       [(_CPStartLocalSearchFeedback *)v5 setEntityQueryCommand:v15];
     }
 
-    v16 = [v4 indexState];
+    indexState = [facadeCopy indexState];
 
-    if (v16)
+    if (indexState)
     {
       v17 = [_CPIndexStateForFeedback alloc];
-      v18 = [v4 indexState];
-      v19 = [(_CPIndexStateForFeedback *)v17 initWithFacade:v18];
+      indexState2 = [facadeCopy indexState];
+      v19 = [(_CPIndexStateForFeedback *)v17 initWithFacade:indexState2];
       [(_CPStartLocalSearchFeedback *)v5 setIndexState:v19];
     }
 
-    -[_CPStartLocalSearchFeedback setCoreSpotlightIndexUsed:](v5, "setCoreSpotlightIndexUsed:", [v4 coreSpotlightIndexUsed]);
-    -[_CPStartLocalSearchFeedback setIsPhotosScopedSearch:](v5, "setIsPhotosScopedSearch:", [v4 isPhotosScopedSearch]);
-    -[_CPStartLocalSearchFeedback setIsSemanticSearchEligible:](v5, "setIsSemanticSearchEligible:", [v4 isSemanticSearchEligible]);
-    -[_CPStartLocalSearchFeedback setSpotlightInitialPageType:](v5, "setSpotlightInitialPageType:", [v4 spotlightInitialPageType]);
-    -[_CPStartLocalSearchFeedback setSpotlightBrowsingSearchScope:](v5, "setSpotlightBrowsingSearchScope:", [v4 spotlightBrowsingSearchScope]);
+    -[_CPStartLocalSearchFeedback setCoreSpotlightIndexUsed:](v5, "setCoreSpotlightIndexUsed:", [facadeCopy coreSpotlightIndexUsed]);
+    -[_CPStartLocalSearchFeedback setIsPhotosScopedSearch:](v5, "setIsPhotosScopedSearch:", [facadeCopy isPhotosScopedSearch]);
+    -[_CPStartLocalSearchFeedback setIsSemanticSearchEligible:](v5, "setIsSemanticSearchEligible:", [facadeCopy isSemanticSearchEligible]);
+    -[_CPStartLocalSearchFeedback setSpotlightInitialPageType:](v5, "setSpotlightInitialPageType:", [facadeCopy spotlightInitialPageType]);
+    -[_CPStartLocalSearchFeedback setSpotlightBrowsingSearchScope:](v5, "setSpotlightBrowsingSearchScope:", [facadeCopy spotlightBrowsingSearchScope]);
     v20 = v5;
   }
 

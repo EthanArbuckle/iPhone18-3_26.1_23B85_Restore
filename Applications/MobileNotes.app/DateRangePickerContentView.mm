@@ -1,14 +1,14 @@
 @interface DateRangePickerContentView
-- (_TtC11MobileNotes26DateRangePickerContentView)initWithCoder:(id)a3;
-- (_TtC11MobileNotes26DateRangePickerContentView)initWithFrame:(CGRect)a3;
-- (id)pickerView:(id)a3 titleForRow:(int64_t)a4 forComponent:(int64_t)a5;
-- (int64_t)pickerView:(id)a3 numberOfRowsInComponent:(int64_t)a4;
-- (void)pickerView:(id)a3 didSelectRow:(int64_t)a4 inComponent:(int64_t)a5;
+- (_TtC11MobileNotes26DateRangePickerContentView)initWithCoder:(id)coder;
+- (_TtC11MobileNotes26DateRangePickerContentView)initWithFrame:(CGRect)frame;
+- (id)pickerView:(id)view titleForRow:(int64_t)row forComponent:(int64_t)component;
+- (int64_t)pickerView:(id)view numberOfRowsInComponent:(int64_t)component;
+- (void)pickerView:(id)view didSelectRow:(int64_t)row inComponent:(int64_t)component;
 @end
 
 @implementation DateRangePickerContentView
 
-- (_TtC11MobileNotes26DateRangePickerContentView)initWithCoder:(id)a3
+- (_TtC11MobileNotes26DateRangePickerContentView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC11MobileNotes26DateRangePickerContentView____lazy_storage___dateRangePicker) = 0;
   result = _assertionFailure(_:_:file:line:flags:)();
@@ -16,9 +16,9 @@
   return result;
 }
 
-- (int64_t)pickerView:(id)a3 numberOfRowsInComponent:(int64_t)a4
+- (int64_t)pickerView:(id)view numberOfRowsInComponent:(int64_t)component
 {
-  if (a4 == 1)
+  if (component == 1)
   {
     if (([objc_opt_self() isArabic] & 1) == 0)
     {
@@ -28,7 +28,7 @@
     goto LABEL_6;
   }
 
-  if (!a4)
+  if (!component)
   {
     if ([objc_opt_self() isArabic])
     {
@@ -45,11 +45,11 @@ LABEL_6:
   return 0;
 }
 
-- (id)pickerView:(id)a3 titleForRow:(int64_t)a4 forComponent:(int64_t)a5
+- (id)pickerView:(id)view titleForRow:(int64_t)row forComponent:(int64_t)component
 {
-  v8 = a3;
-  v9 = self;
-  sub_1003EB2FC(a4, a5);
+  viewCopy = view;
+  selfCopy = self;
+  sub_1003EB2FC(row, component);
   v11 = v10;
 
   if (v11)
@@ -65,14 +65,14 @@ LABEL_6:
   return v12;
 }
 
-- (void)pickerView:(id)a3 didSelectRow:(int64_t)a4 inComponent:(int64_t)a5
+- (void)pickerView:(id)view didSelectRow:(int64_t)row inComponent:(int64_t)component
 {
-  v7 = a3;
-  v8 = self;
-  sub_1003EB490(v7, a5);
+  viewCopy = view;
+  selfCopy = self;
+  sub_1003EB490(viewCopy, component);
 }
 
-- (_TtC11MobileNotes26DateRangePickerContentView)initWithFrame:(CGRect)a3
+- (_TtC11MobileNotes26DateRangePickerContentView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

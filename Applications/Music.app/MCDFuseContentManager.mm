@@ -1,38 +1,38 @@
 @interface MCDFuseContentManager
 - (BOOL)offlineMode;
-- (BOOL)tableView:(id)a3 shouldUpdateFocusInContext:(id)a4;
-- (MCDFuseContentManager)initWithDataSource:(id)a3 delegate:(id)a4 viewController:(id)a5 playbackManager:(id)a6 limitedUI:(BOOL)a7 contentResults:(id)a8;
+- (BOOL)tableView:(id)view shouldUpdateFocusInContext:(id)context;
+- (MCDFuseContentManager)initWithDataSource:(id)source delegate:(id)delegate viewController:(id)controller playbackManager:(id)manager limitedUI:(BOOL)i contentResults:(id)results;
 - (MCDFuseContentManagerDelegate)delegate;
 - (UITableView)tableView;
 - (UIViewController)viewController;
-- (id)actionForHeaderInSection:(int64_t)a3;
-- (id)itemAtIndexPath:(id)a3;
-- (id)itemsInSectionAtIndex:(unint64_t)a3;
-- (id)sectionAtIndex:(unint64_t)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
+- (id)actionForHeaderInSection:(int64_t)section;
+- (id)itemAtIndexPath:(id)path;
+- (id)itemsInSectionAtIndex:(unint64_t)index;
+- (id)sectionAtIndex:(unint64_t)index;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
 - (int64_t)maximumNumberOfItemsForDisplay;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (unint64_t)cellTypeAtIndexPath:(id)a3;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (unint64_t)cellTypeAtIndexPath:(id)path;
 - (void)_invalidateLoadingTimer;
-- (void)_networkConditionsDidChange:(id)a3;
-- (void)_processResponse:(id)a3 error:(id)a4;
-- (void)_replacePlaceholderViewWithView:(id)a3;
+- (void)_networkConditionsDidChange:(id)change;
+- (void)_processResponse:(id)response error:(id)error;
+- (void)_replacePlaceholderViewWithView:(id)view;
 - (void)_updateViewForNetwork;
 - (void)clearActivityIndicatorForSelectedIndexPath;
 - (void)dealloc;
-- (void)decorateRequest:(id)a3;
+- (void)decorateRequest:(id)request;
 - (void)displayPlaceholderViewIfNeeded;
-- (void)modelResponseDidInvalidate:(id)a3;
+- (void)modelResponseDidInvalidate:(id)invalidate;
 - (void)performRefresh;
 - (void)performRequest;
-- (void)setLimitedUI:(BOOL)a3;
-- (void)setTableView:(id)a3;
+- (void)setLimitedUI:(BOOL)i;
+- (void)setTableView:(id)view;
 - (void)showContentScreen;
 - (void)showErrorScreen;
 - (void)showLoadingScreen;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)updatePlaceholderViewFrameIfNeeded;
 @end
 
@@ -45,20 +45,20 @@
   return WeakRetained;
 }
 
-- (MCDFuseContentManager)initWithDataSource:(id)a3 delegate:(id)a4 viewController:(id)a5 playbackManager:(id)a6 limitedUI:(BOOL)a7 contentResults:(id)a8
+- (MCDFuseContentManager)initWithDataSource:(id)source delegate:(id)delegate viewController:(id)controller playbackManager:(id)manager limitedUI:(BOOL)i contentResults:(id)results
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a8;
+  sourceCopy = source;
+  delegateCopy = delegate;
+  controllerCopy = controller;
+  managerCopy = manager;
+  resultsCopy = results;
   v33.receiver = self;
   v33.super_class = MCDFuseContentManager;
   v20 = [(MCDFuseContentManager *)&v33 init];
   if (v20)
   {
-    v31 = v19;
-    v32 = v15;
+    v31 = resultsCopy;
+    v32 = sourceCopy;
     v21 = objc_alloc_init(NSOperationQueue);
     operationQueue = v20->_operationQueue;
     v20->_operationQueue = v21;
@@ -67,7 +67,7 @@
     [(NSOperationQueue *)v20->_operationQueue setQualityOfService:25];
     v23 = v20->_operationQueue;
     [(MCDFuseContentManager *)v20 _queueName];
-    v25 = v24 = a7;
+    v25 = v24 = i;
     [(NSOperationQueue *)v23 setName:v25];
 
     v26 = objc_opt_new();
@@ -77,12 +77,12 @@
     [(NSOperationQueue *)v20->_refreshQueue setMaxConcurrentOperationCount:4];
     [(NSOperationQueue *)v20->_refreshQueue setQualityOfService:17];
     [(NSOperationQueue *)v20->_refreshQueue setName:@"RefreshQueue"];
-    objc_storeStrong(&v20->_dataSource, a3);
-    objc_storeWeak(&v20->_delegate, v16);
-    objc_storeWeak(&v20->_viewController, v17);
-    objc_storeStrong(&v20->_playbackManager, a6);
+    objc_storeStrong(&v20->_dataSource, source);
+    objc_storeWeak(&v20->_delegate, delegateCopy);
+    objc_storeWeak(&v20->_viewController, controllerCopy);
+    objc_storeStrong(&v20->_playbackManager, manager);
     v20->_limitedUI = v24;
-    objc_storeStrong(&v20->_contentResults, a8);
+    objc_storeStrong(&v20->_contentResults, results);
     if (v20->_contentResults)
     {
       v28 = objc_opt_new();
@@ -97,8 +97,8 @@
       [(MCDFuseContentManager *)v20 performRequest];
     }
 
-    v15 = v32;
-    v19 = v31;
+    sourceCopy = v32;
+    resultsCopy = v31;
   }
 
   return v20;
@@ -114,68 +114,68 @@
   [(MCDFuseContentManager *)&v4 dealloc];
 }
 
-- (void)decorateRequest:(id)a3
+- (void)decorateRequest:(id)request
 {
-  v16 = a3;
-  v4 = [v16 clientVersion];
+  requestCopy = request;
+  clientVersion = [requestCopy clientVersion];
 
-  if (!v4)
+  if (!clientVersion)
   {
-    [v16 setClientVersion:@"2.0"];
+    [requestCopy setClientVersion:@"2.0"];
   }
 
-  v5 = [(MCDFuseContentManager *)self dataSource];
+  dataSource = [(MCDFuseContentManager *)self dataSource];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(MCDFuseContentManager *)self dataSource];
-    [v7 timeoutInterval];
-    [v16 setTimeoutInterval:?];
+    dataSource2 = [(MCDFuseContentManager *)self dataSource];
+    [dataSource2 timeoutInterval];
+    [requestCopy setTimeoutInterval:?];
   }
 
-  v8 = [(MCDFuseContentManager *)self dataSource];
+  dataSource3 = [(MCDFuseContentManager *)self dataSource];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
-    v10 = [(MCDFuseContentManager *)self dataSource];
-    v11 = [v10 itemProperties];
-    [v16 setItemProperties:v11];
+    dataSource4 = [(MCDFuseContentManager *)self dataSource];
+    itemProperties = [dataSource4 itemProperties];
+    [requestCopy setItemProperties:itemProperties];
   }
 
-  v12 = [(MCDFuseContentManager *)self dataSource];
+  dataSource5 = [(MCDFuseContentManager *)self dataSource];
   v13 = objc_opt_respondsToSelector();
 
   if (v13)
   {
-    v14 = [(MCDFuseContentManager *)self dataSource];
-    v15 = [v14 sectionProperties];
-    [v16 setSectionProperties:v15];
+    dataSource6 = [(MCDFuseContentManager *)self dataSource];
+    sectionProperties = [dataSource6 sectionProperties];
+    [requestCopy setSectionProperties:sectionProperties];
   }
 }
 
 - (void)performRequest
 {
-  v3 = [(MCDFuseContentManager *)self contentResults];
+  contentResults = [(MCDFuseContentManager *)self contentResults];
 
-  if (!v3)
+  if (!contentResults)
   {
-    v4 = [(MCDFuseContentManager *)self _modelRequest];
-    [(MCDFuseContentManager *)self decorateRequest:v4];
+    _modelRequest = [(MCDFuseContentManager *)self _modelRequest];
+    [(MCDFuseContentManager *)self decorateRequest:_modelRequest];
     v8[0] = 0;
     v8[1] = v8;
     v8[2] = 0x3032000000;
     v8[3] = sub_1000EA3C0;
     v8[4] = sub_1000EA3D0;
-    v9 = self;
-    operationQueue = v9->_operationQueue;
+    selfCopy = self;
+    operationQueue = selfCopy->_operationQueue;
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_1000EA3D8;
     v7[3] = &unk_101098108;
     v7[4] = v8;
-    v6 = [v4 newOperationWithResponseHandler:v7];
+    v6 = [_modelRequest newOperationWithResponseHandler:v7];
     [(NSOperationQueue *)operationQueue addOperation:v6];
 
     _Block_object_dispose(v8, 8);
@@ -184,8 +184,8 @@
 
 - (void)performRefresh
 {
-  v3 = [(MCDFuseContentManager *)self _refreshRequest];
-  if (!v3)
+  _refreshRequest = [(MCDFuseContentManager *)self _refreshRequest];
+  if (!_refreshRequest)
   {
     v4 = MCDMusicGeneralLogging();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -194,61 +194,61 @@
     }
   }
 
-  [(MCDFuseContentManager *)self decorateRequest:v3];
+  [(MCDFuseContentManager *)self decorateRequest:_refreshRequest];
   v8[0] = 0;
   v8[1] = v8;
   v8[2] = 0x3032000000;
   v8[3] = sub_1000EA3C0;
   v8[4] = sub_1000EA3D0;
-  v9 = self;
-  refreshQueue = v9->_refreshQueue;
+  selfCopy = self;
+  refreshQueue = selfCopy->_refreshQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000EA544;
   v7[3] = &unk_101098108;
   v7[4] = v8;
-  v6 = [v3 newOperationWithResponseHandler:v7];
+  v6 = [_refreshRequest newOperationWithResponseHandler:v7];
   [(NSOperationQueue *)refreshQueue addOperation:v6];
 
   _Block_object_dispose(v8, 8);
 }
 
-- (id)sectionAtIndex:(unint64_t)a3
+- (id)sectionAtIndex:(unint64_t)index
 {
-  v4 = [(MCDFuseContentManager *)self lastReceivedResponse];
-  v5 = [v4 results];
-  v6 = [v5 sectionAtIndex:a3];
+  lastReceivedResponse = [(MCDFuseContentManager *)self lastReceivedResponse];
+  results = [lastReceivedResponse results];
+  v6 = [results sectionAtIndex:index];
 
   return v6;
 }
 
-- (id)itemAtIndexPath:(id)a3
+- (id)itemAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(MCDFuseContentManager *)self lastReceivedResponse];
-  v6 = [v5 results];
-  v7 = [v4 section];
+  pathCopy = path;
+  lastReceivedResponse = [(MCDFuseContentManager *)self lastReceivedResponse];
+  results = [lastReceivedResponse results];
+  section = [pathCopy section];
 
-  v8 = [v6 sectionAtIndex:v7];
+  v8 = [results sectionAtIndex:section];
 
   return v8;
 }
 
-- (id)itemsInSectionAtIndex:(unint64_t)a3
+- (id)itemsInSectionAtIndex:(unint64_t)index
 {
-  v4 = [(MCDFuseContentManager *)self lastReceivedResponse];
-  v5 = [v4 results];
-  v6 = [v5 itemsInSectionAtIndex:a3];
+  lastReceivedResponse = [(MCDFuseContentManager *)self lastReceivedResponse];
+  results = [lastReceivedResponse results];
+  v6 = [results itemsInSectionAtIndex:index];
 
   return v6;
 }
 
-- (unint64_t)cellTypeAtIndexPath:(id)a3
+- (unint64_t)cellTypeAtIndexPath:(id)path
 {
-  v3 = [(MCDFuseContentManager *)self viewController];
-  v4 = [objc_opt_class() wantsTallCells];
+  viewController = [(MCDFuseContentManager *)self viewController];
+  wantsTallCells = [objc_opt_class() wantsTallCells];
 
-  return v4;
+  return wantsTallCells;
 }
 
 - (int64_t)maximumNumberOfItemsForDisplay
@@ -264,26 +264,26 @@
   }
 }
 
-- (void)_processResponse:(id)a3 error:(id)a4
+- (void)_processResponse:(id)response error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  responseCopy = response;
+  errorCopy = error;
   v15[0] = 0;
   v15[1] = v15;
   v15[2] = 0x3032000000;
   v15[3] = sub_1000EA3C0;
   v15[4] = sub_1000EA3D0;
-  v16 = self;
+  selfCopy = self;
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_1000EA8EC;
   v10[3] = &unk_101098130;
-  v11 = v6;
-  v12 = v7;
-  v13 = v16;
+  v11 = responseCopy;
+  v12 = errorCopy;
+  v13 = selfCopy;
   v14 = v15;
-  v8 = v7;
-  v9 = v6;
+  v8 = errorCopy;
+  v9 = responseCopy;
   dispatch_async(&_dispatch_main_q, v10);
 
   _Block_object_dispose(v15, 8);
@@ -291,13 +291,13 @@
 
 - (void)clearActivityIndicatorForSelectedIndexPath
 {
-  v3 = [(MCDFuseContentManager *)self selectedIndexPath];
+  selectedIndexPath = [(MCDFuseContentManager *)self selectedIndexPath];
 
-  if (v3)
+  if (selectedIndexPath)
   {
-    v4 = [(MCDFuseContentManager *)self tableView];
-    v5 = [(MCDFuseContentManager *)self selectedIndexPath];
-    v6 = [v4 cellForRowAtIndexPath:v5];
+    tableView = [(MCDFuseContentManager *)self tableView];
+    selectedIndexPath2 = [(MCDFuseContentManager *)self selectedIndexPath];
+    v6 = [tableView cellForRowAtIndexPath:selectedIndexPath2];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -307,25 +307,25 @@
   }
 }
 
-- (void)setLimitedUI:(BOOL)a3
+- (void)setLimitedUI:(BOOL)i
 {
-  if (self->_limitedUI != a3)
+  if (self->_limitedUI != i)
   {
-    self->_limitedUI = a3;
-    v4 = [(MCDFuseContentManager *)self tableView];
-    [v4 reloadData];
+    self->_limitedUI = i;
+    tableView = [(MCDFuseContentManager *)self tableView];
+    [tableView reloadData];
   }
 }
 
-- (void)modelResponseDidInvalidate:(id)a3
+- (void)modelResponseDidInvalidate:(id)invalidate
 {
   v5 = _NSConcreteStackBlock;
   v6 = 3221225472;
   v7 = sub_1000EAC48;
   v8 = &unk_101098158;
-  v9 = self;
-  v3 = a3;
-  v10 = v3;
+  selfCopy = self;
+  invalidateCopy = invalidate;
+  v10 = invalidateCopy;
   v4 = objc_retainBlock(&v5);
   if ([NSThread isMainThread:v5])
   {
@@ -338,68 +338,68 @@
   }
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v6 = [(MCDFuseContentManager *)self lastReceivedResponse];
-  v7 = [(MCDFuseContentManager *)self allowedNumberOfItemsForDisplayWithResponse:v6 inSection:a4];
+  lastReceivedResponse = [(MCDFuseContentManager *)self lastReceivedResponse];
+  v7 = [(MCDFuseContentManager *)self allowedNumberOfItemsForDisplayWithResponse:lastReceivedResponse inSection:section];
 
   return v7;
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
-  v4 = [(MCDFuseContentManager *)self lastReceivedResponse];
-  v5 = [v4 results];
-  if (v5)
+  lastReceivedResponse = [(MCDFuseContentManager *)self lastReceivedResponse];
+  results = [lastReceivedResponse results];
+  if (results)
   {
-    v6 = [(MCDFuseContentManager *)self lastReceivedResponse];
-    v7 = [v6 results];
-    v8 = [v7 numberOfSections];
+    lastReceivedResponse2 = [(MCDFuseContentManager *)self lastReceivedResponse];
+    results2 = [lastReceivedResponse2 results];
+    numberOfSections = [results2 numberOfSections];
   }
 
   else
   {
-    v8 = 0;
+    numberOfSections = 0;
   }
 
-  return v8;
+  return numberOfSections;
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = [NSIndexPath indexPathForRow:0 inSection:a4];
+  viewCopy = view;
+  v7 = [NSIndexPath indexPathForRow:0 inSection:section];
   v8 = [(MCDFuseContentManager *)self cellTitleAtIndexPath:v7];
 
   v9 = +[CPUITableHeaderFooterView reuseIdentifier];
-  v10 = [v6 dequeueReusableHeaderFooterViewWithIdentifier:v9];
+  v10 = [viewCopy dequeueReusableHeaderFooterViewWithIdentifier:v9];
 
   [v10 setTitle:v8];
-  v11 = [(MCDFuseContentManager *)self actionForHeaderInSection:a4];
+  v11 = [(MCDFuseContentManager *)self actionForHeaderInSection:section];
   [v10 setAction:v11];
 
   return v10;
 }
 
-- (id)actionForHeaderInSection:(int64_t)a3
+- (id)actionForHeaderInSection:(int64_t)section
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_1000EAF30;
   v5[3] = &unk_101098180;
   v5[4] = self;
-  v5[5] = a3;
+  v5[5] = section;
   v3 = objc_retainBlock(v5);
 
   return v3;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MCDFuseContentManager *)self itemAtIndexPath:v7];
-  v9 = [(MCDFuseContentManager *)self cellTypeAtIndexPath:v7];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [(MCDFuseContentManager *)self itemAtIndexPath:pathCopy];
+  v9 = [(MCDFuseContentManager *)self cellTypeAtIndexPath:pathCopy];
   v10 = 0;
   v11 = 0;
   if (v9 <= 2)
@@ -410,7 +410,7 @@
       {
         if (v9 == 2)
         {
-          v10 = [(_MCDReusableCell *)MCDSiriActionCell cellForTableView:v6 indexPath:v7];
+          v10 = [(_MCDReusableCell *)MCDSiriActionCell cellForTableView:viewCopy indexPath:pathCopy];
 LABEL_22:
           v11 = 0;
           goto LABEL_23;
@@ -427,7 +427,7 @@ LABEL_22:
       v21 = MCDTableViewCell;
     }
 
-    v10 = [(__objc2_class *)v21 cellForTableView:v6 indexPath:v7];
+    v10 = [(__objc2_class *)v21 cellForTableView:viewCopy indexPath:pathCopy];
     v11 = 1;
     goto LABEL_23;
   }
@@ -437,27 +437,27 @@ LABEL_22:
     if (v9 != 3)
     {
       v12 = [CPUIGridViewBaseTableViewCell reuseIdentifierFor:2];
-      v13 = [v6 dequeueReusableCellWithIdentifier:v12 forIndexPath:v7];
+      v13 = [viewCopy dequeueReusableCellWithIdentifier:v12 forIndexPath:pathCopy];
 
       v10 = v13;
       [v10 setGridViewStyle:2];
       [v10 setContentInsets:{0.0, 8.0, 0.0, 0.0}];
-      v14 = self;
-      v15 = v7;
+      selfCopy2 = self;
+      v15 = pathCopy;
       v16 = 1;
       v17 = 0;
 LABEL_12:
-      v20 = [(MCDFuseContentManager *)v14 viewModelsAtIndexPath:v15 prefersTallArtwork:v16 withSubtitleForPlaylists:1 actionToPerform:v17];
+      v20 = [(MCDFuseContentManager *)selfCopy2 viewModelsAtIndexPath:v15 prefersTallArtwork:v16 withSubtitleForPlaylists:1 actionToPerform:v17];
       [v10 setViewModels:v20];
 
       goto LABEL_22;
     }
 
-    v10 = [CPUIImageRowCell cellForTableView:v6];
-    v22 = [(MCDFuseContentManager *)self childrenOfItemAtIndexPath:v7];
-    v23 = [(MCDFuseContentManager *)self rowCellItemConfigurationsAtIndexPath:v7];
+    v10 = [CPUIImageRowCell cellForTableView:viewCopy];
+    v22 = [(MCDFuseContentManager *)self childrenOfItemAtIndexPath:pathCopy];
+    v23 = [(MCDFuseContentManager *)self rowCellItemConfigurationsAtIndexPath:pathCopy];
     objc_initWeak(&location, self);
-    v24 = -[MCDFuseContentManager maximumNumberOfLinesInSection:](self, "maximumNumberOfLinesInSection:", [v7 section]);
+    v24 = -[MCDFuseContentManager maximumNumberOfLinesInSection:](self, "maximumNumberOfLinesInSection:", [pathCopy section]);
     v48[0] = _NSConcreteStackBlock;
     v48[1] = 3221225472;
     v48[2] = sub_1000EB5E0;
@@ -470,7 +470,7 @@ LABEL_12:
     v45[2] = sub_1000EB650;
     v45[3] = &unk_101097FD8;
     objc_copyWeak(&v47, &location);
-    v46 = v7;
+    v46 = pathCopy;
     LOBYTE(v44) = 1;
     v26 = [CPUIImageRowCellConfiguration configurationWithText:0 itemsConfigurations:v23 maximumNumberOfLines:v24 contentInsets:v48 selectGridItemBlock:v45 selectTitleBlock:0 showActivityIndicator:0.0 enabled:8.0 bundleIdentifier:0.0, 0.0, v44, 0];
     [v10 applyConfiguration:v26];
@@ -486,14 +486,14 @@ LABEL_21:
   if (v9 == 5)
   {
     v27 = [CPUIGridViewBaseTableViewCell reuseIdentifierFor:0];
-    v28 = [v6 dequeueReusableCellWithIdentifier:v27 forIndexPath:v7];
+    v28 = [viewCopy dequeueReusableCellWithIdentifier:v27 forIndexPath:pathCopy];
 
     v10 = v28;
     [v10 setGridViewStyle:0];
     v29 = [[CPUIGridViewBaseStyleOptions alloc] initWithMaximumNumberOfLines:2 condensedOptions:0 imageGridOptions:0];
     [v10 setGridViewStyleOptions:v29];
     [v10 setContentInsets:{0.0, 8.0, 0.0, 0.0}];
-    v30 = [(MCDFuseContentManager *)self viewModelsAtIndexPath:v7 prefersTallArtwork:0 withSubtitleForPlaylists:1 actionToPerform:0];
+    v30 = [(MCDFuseContentManager *)self viewModelsAtIndexPath:pathCopy prefersTallArtwork:0 withSubtitleForPlaylists:1 actionToPerform:0];
     if ([v30 count] <= 6)
     {
       v31 = [v30 count];
@@ -513,58 +513,58 @@ LABEL_21:
   if (v9 == 6)
   {
     v18 = [CPUIGridViewBaseTableViewCell reuseIdentifierFor:1];
-    v19 = [v6 dequeueReusableCellWithIdentifier:v18 forIndexPath:v7];
+    v19 = [viewCopy dequeueReusableCellWithIdentifier:v18 forIndexPath:pathCopy];
 
     v10 = v19;
     [v10 setGridViewStyle:1];
     [v10 setContentInsets:{0.0, 8.0, 0.0, 0.0}];
-    v14 = self;
-    v15 = v7;
+    selfCopy2 = self;
+    v15 = pathCopy;
     v16 = 0;
     v17 = 1;
     goto LABEL_12;
   }
 
 LABEL_23:
-  v33 = [(MCDFuseContentManager *)self delegate];
+  delegate = [(MCDFuseContentManager *)self delegate];
   v34 = objc_opt_respondsToSelector();
 
   if (v34)
   {
-    v35 = [(MCDFuseContentManager *)self delegate];
-    v36 = [v35 showRankedList];
+    delegate2 = [(MCDFuseContentManager *)self delegate];
+    showRankedList = [delegate2 showRankedList];
 
-    if (v36)
+    if (showRankedList)
     {
-      v37 = [(_MCDReusableCell *)MCDRankedContentCell cellForTableView:v6 indexPath:v7];
+      v37 = [(_MCDReusableCell *)MCDRankedContentCell cellForTableView:viewCopy indexPath:pathCopy];
 
       v10 = v37;
     }
   }
 
-  v38 = [(MCDFuseContentManager *)self lastReceivedResponse];
-  v39 = [v38 results];
-  v40 = [v39 sectionAtIndex:{objc_msgSend(v7, "section")}];
+  lastReceivedResponse = [(MCDFuseContentManager *)self lastReceivedResponse];
+  results = [lastReceivedResponse results];
+  v40 = [results sectionAtIndex:{objc_msgSend(pathCopy, "section")}];
 
   if (v11)
   {
-    v41 = [(MCDFuseContentManager *)self tableCellConfigurationBlock];
+    tableCellConfigurationBlock = [(MCDFuseContentManager *)self tableCellConfigurationBlock];
 
-    if (v41)
+    if (tableCellConfigurationBlock)
     {
-      v42 = [(MCDFuseContentManager *)self tableCellConfigurationBlock];
-      (v42)[2](v42, v10, v40, v8, v6, v7);
+      tableCellConfigurationBlock2 = [(MCDFuseContentManager *)self tableCellConfigurationBlock];
+      (tableCellConfigurationBlock2)[2](tableCellConfigurationBlock2, v10, v40, v8, viewCopy, pathCopy);
     }
   }
 
   return v10;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v16 = a4;
-  v5 = [(MCDFuseContentManager *)self tableView];
-  v6 = [v5 cellForRowAtIndexPath:v16];
+  pathCopy = path;
+  tableView = [(MCDFuseContentManager *)self tableView];
+  v6 = [tableView cellForRowAtIndexPath:pathCopy];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -572,15 +572,15 @@ LABEL_23:
     [v6 setLoading:1];
   }
 
-  v7 = [(MCDFuseContentManager *)self itemAtIndexPath:v16];
-  [(MCDFuseContentManager *)self setSelectedIndexPath:v16];
-  v8 = [(MCDFuseContentManager *)self delegate];
+  v7 = [(MCDFuseContentManager *)self itemAtIndexPath:pathCopy];
+  [(MCDFuseContentManager *)self setSelectedIndexPath:pathCopy];
+  delegate = [(MCDFuseContentManager *)self delegate];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
-    v10 = [(MCDFuseContentManager *)self delegate];
-    v11 = [v10 contentManager:self viewControllerForItem:v7 indexPath:v16];
+    delegate2 = [(MCDFuseContentManager *)self delegate];
+    v11 = [delegate2 contentManager:self viewControllerForItem:v7 indexPath:pathCopy];
   }
 
   else
@@ -588,18 +588,18 @@ LABEL_23:
     v11 = 0;
   }
 
-  v12 = [(MCDFuseContentManager *)self viewController];
-  [v11 setPlayActivityFeatureNameSourceViewController:v12];
+  viewController = [(MCDFuseContentManager *)self viewController];
+  [v11 setPlayActivityFeatureNameSourceViewController:viewController];
 
   if (v11)
   {
-    v13 = [(MCDFuseContentManager *)self delegate];
+    delegate3 = [(MCDFuseContentManager *)self delegate];
     v14 = objc_opt_respondsToSelector();
 
     if (v14)
     {
-      v15 = [(MCDFuseContentManager *)self delegate];
-      [v15 contentManager:self shouldDisplayViewController:v11];
+      delegate4 = [(MCDFuseContentManager *)self delegate];
+      [delegate4 contentManager:self shouldDisplayViewController:v11];
     }
   }
 
@@ -609,12 +609,12 @@ LABEL_23:
   }
 }
 
-- (BOOL)tableView:(id)a3 shouldUpdateFocusInContext:(id)a4
+- (BOOL)tableView:(id)view shouldUpdateFocusInContext:(id)context
 {
-  v5 = a4;
+  contextCopy = context;
   if ([(MCDFuseContentManager *)self offlineMode])
   {
-    v6 = [v5 nextFocusedItem];
+    nextFocusedItem = [contextCopy nextFocusedItem];
     objc_opt_class();
     v7 = objc_opt_isKindOfClass() ^ 1;
   }
@@ -627,53 +627,53 @@ LABEL_23:
   return v7 & 1;
 }
 
-- (void)setTableView:(id)a3
+- (void)setTableView:(id)view
 {
-  v4 = a3;
-  objc_storeWeak(&self->_tableView, v4);
-  if (v4)
+  viewCopy = view;
+  objc_storeWeak(&self->_tableView, viewCopy);
+  if (viewCopy)
   {
     v5 = objc_opt_class();
     v6 = +[(_MCDReusableCell *)MCDTableViewCell];
-    [v4 registerClass:v5 forCellReuseIdentifier:v6];
+    [viewCopy registerClass:v5 forCellReuseIdentifier:v6];
 
     v7 = objc_opt_class();
     v8 = +[(_MCDReusableCell *)MCDTallCell];
-    [v4 registerClass:v7 forCellReuseIdentifier:v8];
+    [viewCopy registerClass:v7 forCellReuseIdentifier:v8];
 
     v9 = objc_opt_class();
     v10 = +[(_MCDReusableCell *)MCDRankedContentCell];
-    [v4 registerClass:v9 forCellReuseIdentifier:v10];
+    [viewCopy registerClass:v9 forCellReuseIdentifier:v10];
 
     v11 = objc_opt_class();
     v12 = +[(_MCDReusableCell *)MCDSiriActionCell];
-    [v4 registerClass:v11 forCellReuseIdentifier:v12];
+    [viewCopy registerClass:v11 forCellReuseIdentifier:v12];
 
     v13 = objc_opt_class();
     v14 = [CPUIGridViewBaseTableViewCell reuseIdentifierFor:0];
-    [v4 registerClass:v13 forCellReuseIdentifier:v14];
+    [viewCopy registerClass:v13 forCellReuseIdentifier:v14];
 
     v15 = objc_opt_class();
     v16 = [CPUIGridViewBaseTableViewCell reuseIdentifierFor:1];
-    [v4 registerClass:v15 forCellReuseIdentifier:v16];
+    [viewCopy registerClass:v15 forCellReuseIdentifier:v16];
 
     v17 = objc_opt_class();
     v18 = [CPUIGridViewBaseTableViewCell reuseIdentifierFor:2];
-    [v4 registerClass:v17 forCellReuseIdentifier:v18];
+    [viewCopy registerClass:v17 forCellReuseIdentifier:v18];
 
     v19 = objc_opt_class();
     v20 = [CPUIGridViewBaseTableViewCell reuseIdentifierFor:3];
-    [v4 registerClass:v19 forCellReuseIdentifier:v20];
+    [viewCopy registerClass:v19 forCellReuseIdentifier:v20];
 
     v21 = objc_opt_class();
     v22 = +[CPUITableHeaderFooterView reuseIdentifier];
-    [v4 registerClass:v21 forHeaderFooterViewReuseIdentifier:v22];
+    [viewCopy registerClass:v21 forHeaderFooterViewReuseIdentifier:v22];
 
-    [v4 setRowHeight:UITableViewAutomaticDimension];
-    [v4 setEstimatedRowHeight:UITableViewAutomaticDimension];
-    [v4 setDataSource:self];
-    [v4 setDelegate:self];
-    [v4 _setHeaderAndFooterViewsFloat:0];
+    [viewCopy setRowHeight:UITableViewAutomaticDimension];
+    [viewCopy setEstimatedRowHeight:UITableViewAutomaticDimension];
+    [viewCopy setDataSource:self];
+    [viewCopy setDelegate:self];
+    [viewCopy _setHeaderAndFooterViewsFloat:0];
     v23 = +[NSNotificationCenter defaultCenter];
     v24 = MPNetworkObserverIsMusicCellularStreamingAllowedDidChangeNotification;
     v25 = +[MPNetworkObserver sharedNetworkObserver];
@@ -682,13 +682,13 @@ LABEL_23:
     v26 = +[ICEnvironmentMonitor sharedMonitor];
     [v26 registerObserver:self];
 
-    v27 = [(MCDFuseContentManager *)self delegate];
+    delegate = [(MCDFuseContentManager *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      v28 = [(MCDFuseContentManager *)self delegate];
-      v29 = [v28 hasLoadedStoreContent];
+      delegate2 = [(MCDFuseContentManager *)self delegate];
+      hasLoadedStoreContent = [delegate2 hasLoadedStoreContent];
 
-      if (v29)
+      if (hasLoadedStoreContent)
       {
         goto LABEL_7;
       }
@@ -716,9 +716,9 @@ LABEL_7:
 
 - (void)showLoadingScreen
 {
-  v3 = [(MCDFuseContentManager *)self contentResults];
+  contentResults = [(MCDFuseContentManager *)self contentResults];
 
-  if (!v3)
+  if (!contentResults)
   {
     v4 = MCDMusicGeneralLogging();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -785,91 +785,91 @@ LABEL_7:
     }
 
     [(MCDFuseContentManager *)self _replacePlaceholderViewWithView:0];
-    v4 = [(MCDFuseContentManager *)self tableView];
-    [v4 reloadData];
+    tableView = [(MCDFuseContentManager *)self tableView];
+    [tableView reloadData];
   }
 }
 
 - (void)displayPlaceholderViewIfNeeded
 {
-  v3 = [(MCDFuseContentManager *)self placeholderView];
+  placeholderView = [(MCDFuseContentManager *)self placeholderView];
 
-  if (v3)
+  if (placeholderView)
   {
-    v4 = [(MCDFuseContentManager *)self placeholderView];
-    [(MCDFuseContentManager *)self _replacePlaceholderViewWithView:v4];
+    placeholderView2 = [(MCDFuseContentManager *)self placeholderView];
+    [(MCDFuseContentManager *)self _replacePlaceholderViewWithView:placeholderView2];
   }
 }
 
 - (void)updatePlaceholderViewFrameIfNeeded
 {
-  v3 = [(MCDFuseContentManager *)self placeholderView];
-  v4 = [v3 superview];
+  placeholderView = [(MCDFuseContentManager *)self placeholderView];
+  superview = [placeholderView superview];
 
-  if (v4)
+  if (superview)
   {
-    v23 = [(MCDFuseContentManager *)self tableView];
-    [v23 frame];
+    tableView = [(MCDFuseContentManager *)self tableView];
+    [tableView frame];
     v6 = v5;
     v8 = v7;
     v10 = v9;
     v12 = v11;
-    v13 = [(MCDFuseContentManager *)self tableView];
-    [v13 safeAreaInsets];
+    tableView2 = [(MCDFuseContentManager *)self tableView];
+    [tableView2 safeAreaInsets];
     v15 = v6 + v14;
     v17 = v8 + v16;
     v19 = v10 - (v14 + v18);
     v21 = v12 - (v16 + v20);
-    v22 = [(MCDFuseContentManager *)self placeholderView];
-    [v22 setFrame:{v15, v17, v19, v21}];
+    placeholderView2 = [(MCDFuseContentManager *)self placeholderView];
+    [placeholderView2 setFrame:{v15, v17, v19, v21}];
   }
 }
 
-- (void)_replacePlaceholderViewWithView:(id)a3
+- (void)_replacePlaceholderViewWithView:(id)view
 {
-  v34 = a3;
-  v4 = [(MCDFuseContentManager *)self placeholderView];
-  v5 = [v4 superview];
+  viewCopy = view;
+  placeholderView = [(MCDFuseContentManager *)self placeholderView];
+  superview = [placeholderView superview];
 
-  if (v5)
+  if (superview)
   {
-    v6 = [(MCDFuseContentManager *)self placeholderView];
-    [v6 removeFromSuperview];
+    placeholderView2 = [(MCDFuseContentManager *)self placeholderView];
+    [placeholderView2 removeFromSuperview];
   }
 
-  [(MCDFuseContentManager *)self setPlaceholderView:v34];
-  v7 = [(MCDFuseContentManager *)self placeholderView];
-  v8 = [(MCDFuseContentManager *)self tableView];
-  [v8 setScrollEnabled:v7 == 0];
+  [(MCDFuseContentManager *)self setPlaceholderView:viewCopy];
+  placeholderView3 = [(MCDFuseContentManager *)self placeholderView];
+  tableView = [(MCDFuseContentManager *)self tableView];
+  [tableView setScrollEnabled:placeholderView3 == 0];
 
-  v9 = [(MCDFuseContentManager *)self placeholderView];
-  v10 = [(MCDFuseContentManager *)self tableView];
-  [v10 setHidden:v9 != 0];
+  placeholderView4 = [(MCDFuseContentManager *)self placeholderView];
+  tableView2 = [(MCDFuseContentManager *)self tableView];
+  [tableView2 setHidden:placeholderView4 != 0];
 
-  v11 = [(MCDFuseContentManager *)self placeholderView];
+  placeholderView5 = [(MCDFuseContentManager *)self placeholderView];
 
-  if (v11)
+  if (placeholderView5)
   {
-    v12 = [(MCDFuseContentManager *)self tableView];
-    [v12 frame];
+    tableView3 = [(MCDFuseContentManager *)self tableView];
+    [tableView3 frame];
     v14 = v13;
     v16 = v15;
     v18 = v17;
     v20 = v19;
-    v21 = [(MCDFuseContentManager *)self tableView];
-    [v21 safeAreaInsets];
+    tableView4 = [(MCDFuseContentManager *)self tableView];
+    [tableView4 safeAreaInsets];
     v23 = v14 + v22;
     v25 = v16 + v24;
     v27 = v18 - (v22 + v26);
     v29 = v20 - (v24 + v28);
 
-    v30 = [(MCDFuseContentManager *)self placeholderView];
-    [v30 setFrame:{v23, v25, v27, v29}];
+    placeholderView6 = [(MCDFuseContentManager *)self placeholderView];
+    [placeholderView6 setFrame:{v23, v25, v27, v29}];
 
-    v31 = [(MCDFuseContentManager *)self tableView];
-    v32 = [v31 superview];
-    v33 = [(MCDFuseContentManager *)self placeholderView];
-    [v32 addSubview:v33];
+    tableView5 = [(MCDFuseContentManager *)self tableView];
+    superview2 = [tableView5 superview];
+    placeholderView7 = [(MCDFuseContentManager *)self placeholderView];
+    [superview2 addSubview:placeholderView7];
   }
 }
 
@@ -880,7 +880,7 @@ LABEL_7:
   self->_loadingTimer = 0;
 }
 
-- (void)_networkConditionsDidChange:(id)a3
+- (void)_networkConditionsDidChange:(id)change
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -957,9 +957,9 @@ LABEL_7:
 
   else
   {
-    v10 = [(MCDFuseContentManager *)self placeholderView];
+    placeholderView = [(MCDFuseContentManager *)self placeholderView];
 
-    if (v10)
+    if (placeholderView)
     {
       [(MCDFuseContentManager *)self showLoadingScreen];
     }

@@ -1,9 +1,9 @@
 @interface MTRThermostatClusterAtomicResponseParams
-- (ChipError)_setFieldsFromDecodableStruct:(const void *)a3;
+- (ChipError)_setFieldsFromDecodableStruct:(const void *)struct;
 - (MTRThermostatClusterAtomicResponseParams)init;
-- (MTRThermostatClusterAtomicResponseParams)initWithDecodableStruct:(const void *)a3;
-- (MTRThermostatClusterAtomicResponseParams)initWithResponseValue:(id)a3 error:(id *)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (MTRThermostatClusterAtomicResponseParams)initWithDecodableStruct:(const void *)struct;
+- (MTRThermostatClusterAtomicResponseParams)initWithResponseValue:(id)value error:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -20,9 +20,9 @@
     statusCode = v2->_statusCode;
     v2->_statusCode = &unk_284C3E4C8;
 
-    v5 = [MEMORY[0x277CBEA60] array];
+    array = [MEMORY[0x277CBEA60] array];
     attributeStatus = v3->_attributeStatus;
-    v3->_attributeStatus = v5;
+    v3->_attributeStatus = array;
 
     timeout = v3->_timeout;
     v3->_timeout = 0;
@@ -31,17 +31,17 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRThermostatClusterAtomicResponseParams);
-  v5 = [(MTRThermostatClusterAtomicResponseParams *)self statusCode];
-  [(MTRThermostatClusterAtomicResponseParams *)v4 setStatusCode:v5];
+  statusCode = [(MTRThermostatClusterAtomicResponseParams *)self statusCode];
+  [(MTRThermostatClusterAtomicResponseParams *)v4 setStatusCode:statusCode];
 
-  v6 = [(MTRThermostatClusterAtomicResponseParams *)self attributeStatus];
-  [(MTRThermostatClusterAtomicResponseParams *)v4 setAttributeStatus:v6];
+  attributeStatus = [(MTRThermostatClusterAtomicResponseParams *)self attributeStatus];
+  [(MTRThermostatClusterAtomicResponseParams *)v4 setAttributeStatus:attributeStatus];
 
-  v7 = [(MTRThermostatClusterAtomicResponseParams *)self timeout];
-  [(MTRThermostatClusterAtomicResponseParams *)v4 setTimeout:v7];
+  timeout = [(MTRThermostatClusterAtomicResponseParams *)self timeout];
+  [(MTRThermostatClusterAtomicResponseParams *)v4 setTimeout:timeout];
 
   return v4;
 }
@@ -56,9 +56,9 @@
   return v6;
 }
 
-- (MTRThermostatClusterAtomicResponseParams)initWithResponseValue:(id)a3 error:(id *)a4
+- (MTRThermostatClusterAtomicResponseParams)initWithResponseValue:(id)value error:(id *)error
 {
-  v6 = a3;
+  valueCopy = value;
   v16.receiver = self;
   v16.super_class = MTRThermostatClusterAtomicResponseParams;
   v7 = [(MTRThermostatClusterAtomicResponseParams *)&v16 init];
@@ -68,7 +68,7 @@
     goto LABEL_10;
   }
 
-  [MTRBaseDevice _responseDataForCommand:v6 clusterID:513 commandID:253 error:a4];
+  [MTRBaseDevice _responseDataForCommand:valueCopy clusterID:513 commandID:253 error:error];
   if (v15)
   {
     sub_2393C5AAC(v14);
@@ -92,7 +92,7 @@
       }
     }
 
-    sub_238DD3F98(v8, v9, a4);
+    sub_238DD3F98(v8, v9, error);
   }
 
   v10 = 0;
@@ -103,7 +103,7 @@ LABEL_10:
   return v10;
 }
 
-- (MTRThermostatClusterAtomicResponseParams)initWithDecodableStruct:(const void *)a3
+- (MTRThermostatClusterAtomicResponseParams)initWithDecodableStruct:(const void *)struct
 {
   v10.receiver = self;
   v10.super_class = MTRThermostatClusterAtomicResponseParams;
@@ -111,7 +111,7 @@ LABEL_10:
   v5 = v4;
   if (v4)
   {
-    v6 = [(MTRThermostatClusterAtomicResponseParams *)v4 _setFieldsFromDecodableStruct:a3];
+    v6 = [(MTRThermostatClusterAtomicResponseParams *)v4 _setFieldsFromDecodableStruct:struct];
     if (!v6)
     {
       v8 = v5;
@@ -127,16 +127,16 @@ LABEL_6:
   return v8;
 }
 
-- (ChipError)_setFieldsFromDecodableStruct:(const void *)a3
+- (ChipError)_setFieldsFromDecodableStruct:(const void *)struct
 {
-  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*a3];
+  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*struct];
   [(MTRThermostatClusterAtomicResponseParams *)self setStatusCode:v5];
 
   v6 = objc_opt_new();
   sub_2393C5AAC(v20);
   v18 = 0;
   v19 = 0;
-  sub_2393C5BDC(v20, a3 + 8);
+  sub_2393C5BDC(v20, struct + 8);
   v21 = 0;
   v22 = 0;
   while (sub_238EA1A80(&v18) && sub_238EA3444(&v18))
@@ -155,8 +155,8 @@ LABEL_6:
   {
     [(MTRThermostatClusterAtomicResponseParams *)self setAttributeStatus:v6, v18];
 
-    v14 = *(a3 + 80);
-    v13 = a3 + 80;
+    v14 = *(struct + 80);
+    v13 = struct + 80;
     if (v14 == 1)
     {
       v15 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:*sub_238E0A934(v13)];

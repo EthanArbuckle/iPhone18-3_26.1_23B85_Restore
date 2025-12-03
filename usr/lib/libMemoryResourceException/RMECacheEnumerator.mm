@@ -1,49 +1,49 @@
 @interface RMECacheEnumerator
 + (id)getEPLProfilePath;
-+ (id)getGcoreSpoolWithCreateIfNecessary:(BOOL)a3;
-+ (id)getLogContainer:(BOOL)a3;
++ (id)getGcoreSpoolWithCreateIfNecessary:(BOOL)necessary;
++ (id)getLogContainer:(BOOL)container;
 + (id)getLogPathsForSystemDiagnostic;
 + (id)getLogPathsSortedByProcessFrequency;
 + (id)getLogPathsSortedByTime;
 - (id)initCacheEnumerator;
-- (id)initCacheEnumeratorWithVolume:(id)a3;
+- (id)initCacheEnumeratorWithVolume:(id)volume;
 @end
 
 @implementation RMECacheEnumerator
 
-- (id)initCacheEnumeratorWithVolume:(id)a3
+- (id)initCacheEnumeratorWithVolume:(id)volume
 {
-  v4 = a3;
+  volumeCopy = volume;
   v25.receiver = self;
   v25.super_class = RMECacheEnumerator;
   v5 = [(RMECacheEnumerator *)&v25 init];
   v6 = v5;
   if (v5)
   {
-    if (!v4)
+    if (!volumeCopy)
     {
-      v4 = @"/";
+      volumeCopy = @"/";
     }
 
-    objc_storeStrong(&v5->_volume, v4);
-    v7 = [MEMORY[0x29EDB8E70] fileURLWithPath:v4 isDirectory:1];
+    objc_storeStrong(&v5->_volume, volumeCopy);
+    v7 = [MEMORY[0x29EDB8E70] fileURLWithPath:volumeCopy isDirectory:1];
     v8 = [RMECacheEnumerator getLogContainer:0];
     if (v8 && (v9 = v8, [v8 substringFromIndex:1], v10 = objc_claimAutoreleasedReturnValue(), v9, v10))
     {
-      v11 = [v7 lastPathComponent];
-      v12 = [v10 hasPrefix:v11];
+      lastPathComponent = [v7 lastPathComponent];
+      v12 = [v10 hasPrefix:lastPathComponent];
 
       if (v12)
       {
-        v13 = [v7 URLByDeletingLastPathComponent];
+        uRLByDeletingLastPathComponent = [v7 URLByDeletingLastPathComponent];
 
-        v7 = v13;
+        v7 = uRLByDeletingLastPathComponent;
       }
 
       v14 = [v7 URLByAppendingPathComponent:v10];
       if (v14)
       {
-        v15 = [MEMORY[0x29EDB9FB8] defaultManager];
+        defaultManager = [MEMORY[0x29EDB9FB8] defaultManager];
         v16 = *MEMORY[0x29EDB8D60];
         v17 = [MEMORY[0x29EDB8D80] arrayWithObjects:{*MEMORY[0x29EDB8D40], *MEMORY[0x29EDB8D60], *MEMORY[0x29EDB8D68], *MEMORY[0x29EDB8D30], 0}];
         v22[0] = MEMORY[0x29EDCA5F8];
@@ -51,8 +51,8 @@
         v22[2] = sub_297E2675C;
         v22[3] = &unk_29EE848D0;
         v23 = v14;
-        v24 = v4;
-        v18 = [v15 enumeratorAtURL:v23 includingPropertiesForKeys:v17 options:5 errorHandler:v22];
+        v24 = volumeCopy;
+        v18 = [defaultManager enumeratorAtURL:v23 includingPropertiesForKeys:v17 options:5 errorHandler:v22];
         internalEnumerator = v6->_internalEnumerator;
         v6->_internalEnumerator = v18;
       }
@@ -101,10 +101,10 @@
 + (id)getLogPathsForSystemDiagnostic
 {
   v79 = *MEMORY[0x29EDCA608];
-  v2 = [a1 getLogPathsSortedByTime];
+  getLogPathsSortedByTime = [self getLogPathsSortedByTime];
   v53 = objc_alloc_init(MEMORY[0x29EDB8DE8]);
-  v3 = v2;
-  v52 = [MEMORY[0x29EDB8DE8] array];
+  v3 = getLogPathsSortedByTime;
+  array = [MEMORY[0x29EDB8DE8] array];
   v57 = [MEMORY[0x29EDB8DB0] dateWithTimeIntervalSinceNow:-3600.0];
   v54 = objc_alloc_init(MEMORY[0x29EDB8DE8]);
   v65 = 0u;
@@ -181,8 +181,8 @@
           objc_enumerationMutation(v17);
         }
 
-        v22 = [*(*(&v59 + 1) + 8 * j) path];
-        [v52 addObject:v22];
+        path = [*(*(&v59 + 1) + 8 * j) path];
+        [array addObject:path];
       }
 
       v19 = [v17 countByEnumeratingWithState:&v59 objects:&v69 count:16];
@@ -192,7 +192,7 @@
   }
 
   *&v65 = 0;
-  v23 = sub_297E273F4(v52, 0xF00000uLL, &v65);
+  v23 = sub_297E273F4(array, 0xF00000uLL, &v65);
   if (os_log_type_enabled(MEMORY[0x29EDCA988], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218498;
@@ -257,8 +257,8 @@
 
         v36 = *(*(&v69 + 1) + 8 * k);
         v37 = [MEMORY[0x29EDB8E70] fileURLWithPath:{v36, v48}];
-        v38 = [v37 pathExtension];
-        v39 = [v38 isEqualToString:@"lite_diag"];
+        pathExtension = [v37 pathExtension];
+        v39 = [pathExtension isEqualToString:@"lite_diag"];
 
         if (v39)
         {
@@ -321,9 +321,9 @@
   return v53;
 }
 
-+ (id)getGcoreSpoolWithCreateIfNecessary:(BOOL)a3
++ (id)getGcoreSpoolWithCreateIfNecessary:(BOOL)necessary
 {
-  v3 = a3;
+  necessaryCopy = necessary;
   v23 = *MEMORY[0x29EDCA608];
   v4 = [RMECacheEnumerator getLogContainer:1];
   v5 = v4;
@@ -331,12 +331,12 @@
   {
     v6 = [v4 stringByAppendingString:@"/gcore_spool"];
     v7 = v6;
-    if (v3)
+    if (necessaryCopy)
     {
       v8 = v6;
-      v9 = [MEMORY[0x29EDB9FB8] defaultManager];
+      defaultManager = [MEMORY[0x29EDB9FB8] defaultManager];
       v18 = 0;
-      if ([v9 fileExistsAtPath:v8 isDirectory:&v18])
+      if ([defaultManager fileExistsAtPath:v8 isDirectory:&v18])
       {
         v10 = v18 == 0;
       }
@@ -356,10 +356,10 @@
         }
 
         v17 = 0;
-        [v9 createDirectoryAtPath:v8 withIntermediateDirectories:1 attributes:0 error:&v17];
+        [defaultManager createDirectoryAtPath:v8 withIntermediateDirectories:1 attributes:0 error:&v17];
         v11 = v17;
-        v12 = [MEMORY[0x29EDB9FB8] defaultManager];
-        v13 = [v12 fileExistsAtPath:v8 isDirectory:&v18];
+        defaultManager2 = [MEMORY[0x29EDB9FB8] defaultManager];
+        v13 = [defaultManager2 fileExistsAtPath:v8 isDirectory:&v18];
 
         if (!v13 || v18 != 1)
         {
@@ -399,7 +399,7 @@ LABEL_19:
   return v14;
 }
 
-+ (id)getLogContainer:(BOOL)a3
++ (id)getLogContainer:(BOOL)container
 {
   if (qword_2A18A60E8 != -1)
   {

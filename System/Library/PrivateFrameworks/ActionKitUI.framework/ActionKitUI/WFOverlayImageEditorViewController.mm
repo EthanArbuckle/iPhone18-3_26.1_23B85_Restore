@@ -4,14 +4,14 @@
 - (WFOpacitySliderView)opacityView;
 - (WFOverlayImageEditorCanvasView)canvasView;
 - (WFOverlayImageEditorOptionsView)optionsView;
-- (WFOverlayImageEditorViewController)initWithFileRepresentations:(id)a3 overlayImage:(id)a4 completionHandler:(id)a5;
+- (WFOverlayImageEditorViewController)initWithFileRepresentations:(id)representations overlayImage:(id)image completionHandler:(id)handler;
 - (void)cancelEditingImage;
-- (void)didChangeOpacity:(id)a3;
+- (void)didChangeOpacity:(id)opacity;
 - (void)finishEditingImage;
 - (void)loadView;
 - (void)resetOverlayImageViewTransformations;
-- (void)setCurrentFile:(id)a3;
-- (void)setOpacitySliderVisible:(BOOL)a3;
+- (void)setCurrentFile:(id)file;
+- (void)setOpacitySliderVisible:(BOOL)visible;
 - (void)viewDidLoad;
 @end
 
@@ -40,27 +40,27 @@
 
 - (void)cancelEditingImage
 {
-  v3 = [(WFOverlayImageEditorViewController *)self completionHandler];
-  v4 = [MEMORY[0x277CCA9B8] userCancelledError];
-  (v3)[2](v3, 0, v4);
+  completionHandler = [(WFOverlayImageEditorViewController *)self completionHandler];
+  userCancelledError = [MEMORY[0x277CCA9B8] userCancelledError];
+  (completionHandler)[2](completionHandler, 0, userCancelledError);
 
   [(WFOverlayImageEditorViewController *)self dismissViewControllerAnimated:1 completion:0];
 }
 
 - (void)finishEditingImage
 {
-  v3 = [(WFOverlayImageEditorViewController *)self transforms];
-  v4 = [(WFOverlayImageEditorViewController *)self canvasView];
-  v5 = [v4 imageTransform];
-  v6 = [(WFOverlayImageEditorViewController *)self currentFile];
-  [v3 setObject:v5 forKey:v6];
+  transforms = [(WFOverlayImageEditorViewController *)self transforms];
+  canvasView = [(WFOverlayImageEditorViewController *)self canvasView];
+  imageTransform = [canvasView imageTransform];
+  currentFile = [(WFOverlayImageEditorViewController *)self currentFile];
+  [transforms setObject:imageTransform forKey:currentFile];
 
-  v7 = [(WFOverlayImageEditorViewController *)self fileRepresentations];
-  v8 = [(WFOverlayImageEditorViewController *)self currentFile];
-  v9 = [v7 indexOfObject:v8];
+  fileRepresentations = [(WFOverlayImageEditorViewController *)self fileRepresentations];
+  currentFile2 = [(WFOverlayImageEditorViewController *)self currentFile];
+  v9 = [fileRepresentations indexOfObject:currentFile2];
 
-  v10 = [(WFOverlayImageEditorViewController *)self fileRepresentations];
-  v11 = [v10 count];
+  fileRepresentations2 = [(WFOverlayImageEditorViewController *)self fileRepresentations];
+  v11 = [fileRepresentations2 count];
 
   if (v9 + 1 >= v11)
   {
@@ -69,23 +69,23 @@
     v22 = [(WFOverlayImageEditorProcessingView *)v20 initWithEffect:v21];
 
     [(WFOverlayImageEditorProcessingView *)v22 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v23 = [(WFOverlayImageEditorViewController *)self view];
-    [v23 addSubview:v22];
+    view = [(WFOverlayImageEditorViewController *)self view];
+    [view addSubview:v22];
 
-    v24 = [(WFOverlayImageEditorViewController *)self view];
+    view2 = [(WFOverlayImageEditorViewController *)self view];
     v25 = MEMORY[0x277CCAAD0];
     WeakRetained = objc_loadWeakRetained(&self->_optionsView);
     v27 = _NSDictionaryOfVariableBindings(&cfstr_Processingview.isa, v22, WeakRetained, 0);
     v28 = [v25 constraintsWithVisualFormat:@"V:|[processingView][_optionsView]" options:0 metrics:0 views:v27];
-    [v24 addConstraints:v28];
+    [view2 addConstraints:v28];
 
-    v29 = [(WFOverlayImageEditorViewController *)self view];
+    view3 = [(WFOverlayImageEditorViewController *)self view];
     v30 = MEMORY[0x277CCAAD0];
     v31 = _NSDictionaryOfVariableBindings(&cfstr_Processingview_0.isa, v22, 0);
     v32 = [v30 constraintsWithVisualFormat:@"H:|[processingView]|" options:0 metrics:0 views:v31];
-    [v29 addConstraints:v32];
+    [view3 addConstraints:v32];
 
-    v33 = [(WFOverlayImageEditorViewController *)self fileRepresentations];
+    fileRepresentations3 = [(WFOverlayImageEditorViewController *)self fileRepresentations];
     v36[0] = MEMORY[0x277D85DD0];
     v36[1] = 3221225472;
     v36[2] = __56__WFOverlayImageEditorViewController_finishEditingImage__block_invoke;
@@ -96,28 +96,28 @@
     v35[2] = __56__WFOverlayImageEditorViewController_finishEditingImage__block_invoke_3;
     v35[3] = &unk_278C376E0;
     v35[4] = self;
-    [v33 if_mapAsynchronously:v36 completionHandler:v35];
+    [fileRepresentations3 if_mapAsynchronously:v36 completionHandler:v35];
   }
 
   else
   {
-    v12 = [(WFOverlayImageEditorViewController *)self fileRepresentations];
-    v13 = [v12 objectAtIndexedSubscript:v9 + 1];
+    fileRepresentations4 = [(WFOverlayImageEditorViewController *)self fileRepresentations];
+    v13 = [fileRepresentations4 objectAtIndexedSubscript:v9 + 1];
     [(WFOverlayImageEditorViewController *)self setCurrentFile:v13];
 
-    v14 = [(WFOverlayImageEditorViewController *)self optionsView];
-    v15 = [v14 nextButton];
-    [v15 setEnabled:1];
+    optionsView = [(WFOverlayImageEditorViewController *)self optionsView];
+    nextButton = [optionsView nextButton];
+    [nextButton setEnabled:1];
 
-    v16 = [(WFOverlayImageEditorViewController *)self fileRepresentations];
-    v17 = [v16 count] - 2;
+    fileRepresentations5 = [(WFOverlayImageEditorViewController *)self fileRepresentations];
+    v17 = [fileRepresentations5 count] - 2;
 
     if (v9 == v17)
     {
-      v34 = [(WFOverlayImageEditorViewController *)self optionsView];
-      v18 = [v34 nextButton];
+      optionsView2 = [(WFOverlayImageEditorViewController *)self optionsView];
+      nextButton2 = [optionsView2 nextButton];
       v19 = WFLocalizedString(@"Done");
-      [v18 setTitle:v19 forState:0];
+      [nextButton2 setTitle:v19 forState:0];
     }
   }
 }
@@ -169,25 +169,25 @@ void __56__WFOverlayImageEditorViewController_finishEditingImage__block_invoke_4
 
 - (void)resetOverlayImageViewTransformations
 {
-  v2 = [(WFOverlayImageEditorViewController *)self canvasView];
-  [v2 reset];
+  canvasView = [(WFOverlayImageEditorViewController *)self canvasView];
+  [canvasView reset];
 }
 
 - (BOOL)rotationEnabled
 {
-  v2 = [(WFOverlayImageEditorViewController *)self canvasView];
-  v3 = [v2 isRotationEnabled];
+  canvasView = [(WFOverlayImageEditorViewController *)self canvasView];
+  isRotationEnabled = [canvasView isRotationEnabled];
 
-  return v3;
+  return isRotationEnabled;
 }
 
-- (void)setOpacitySliderVisible:(BOOL)a3
+- (void)setOpacitySliderVisible:(BOOL)visible
 {
-  v4 = a3;
-  if (a3)
+  visibleCopy = visible;
+  if (visible)
   {
-    v3 = [(WFOverlayImageEditorViewController *)self opacityView];
-    [v3 frame];
+    opacityView = [(WFOverlayImageEditorViewController *)self opacityView];
+    [opacityView frame];
     v7 = -v6;
   }
 
@@ -196,10 +196,10 @@ void __56__WFOverlayImageEditorViewController_finishEditingImage__block_invoke_4
     v7 = 0.0;
   }
 
-  v8 = [(WFOverlayImageEditorViewController *)self opacityViewVerticalConstraint];
-  [v8 setConstant:v7];
+  opacityViewVerticalConstraint = [(WFOverlayImageEditorViewController *)self opacityViewVerticalConstraint];
+  [opacityViewVerticalConstraint setConstant:v7];
 
-  if (v4)
+  if (visibleCopy)
   {
   }
 
@@ -219,119 +219,119 @@ void __62__WFOverlayImageEditorViewController_setOpacitySliderVisible___block_in
 
 - (BOOL)opacitySliderVisible
 {
-  v2 = [(WFOverlayImageEditorViewController *)self opacityViewVerticalConstraint];
-  [v2 constant];
+  opacityViewVerticalConstraint = [(WFOverlayImageEditorViewController *)self opacityViewVerticalConstraint];
+  [opacityViewVerticalConstraint constant];
   v4 = v3 == 0.0;
 
   return v4;
 }
 
-- (void)didChangeOpacity:(id)a3
+- (void)didChangeOpacity:(id)opacity
 {
-  v4 = a3;
-  v7 = [(WFOverlayImageEditorViewController *)self canvasView];
-  [v4 opacity];
+  opacityCopy = opacity;
+  canvasView = [(WFOverlayImageEditorViewController *)self canvasView];
+  [opacityCopy opacity];
   v6 = v5;
 
-  [v7 setOverlayImageOpacity:v6];
+  [canvasView setOverlayImageOpacity:v6];
 }
 
-- (void)setCurrentFile:(id)a3
+- (void)setCurrentFile:(id)file
 {
   v89[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  objc_storeStrong(&self->_currentFile, a3);
+  fileCopy = file;
+  objc_storeStrong(&self->_currentFile, file);
   v6 = WFImageSourceCreateFromFile();
   v7 = WFImageAtIndexFromImageSource();
   CFRelease(v6);
   v8 = [objc_alloc(MEMORY[0x277CE8858]) initForCenteringImage:self->_overlayImage inBackgroundImage:v7];
   v9 = [WFOverlayImageEditorCanvasView alloc];
-  v10 = [v7 UIImage];
-  v11 = [(WFImage *)self->_overlayImage UIImage];
-  v12 = [(WFOverlayImageEditorCanvasView *)v9 initWithBackgroundImage:v10 overlayImage:v11 transform:v8];
+  uIImage = [v7 UIImage];
+  uIImage2 = [(WFImage *)self->_overlayImage UIImage];
+  v12 = [(WFOverlayImageEditorCanvasView *)v9 initWithBackgroundImage:uIImage overlayImage:uIImage2 transform:v8];
 
   [(WFOverlayImageEditorCanvasView *)v12 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v13 = [(WFOverlayImageEditorViewController *)self canvasView];
+  canvasView = [(WFOverlayImageEditorViewController *)self canvasView];
 
-  if (!v13)
+  if (!canvasView)
   {
-    v60 = [(WFOverlayImageEditorViewController *)self view];
-    [v60 insertSubview:v12 atIndex:0];
+    view = [(WFOverlayImageEditorViewController *)self view];
+    [view insertSubview:v12 atIndex:0];
 
     v61 = objc_storeWeak(&self->_canvasView, v12);
     WeakRetained = objc_loadWeakRetained(&self->_optionsView);
     v63 = _NSDictionaryOfVariableBindings(&cfstr_CanvasviewOpti.isa, v12, WeakRetained, 0);
 
-    v64 = [(WFOverlayImageEditorViewController *)self view];
+    view2 = [(WFOverlayImageEditorViewController *)self view];
     v65 = [MEMORY[0x277CCAAD0] constraintsWithVisualFormat:@"V:|[_canvasView][_optionsView]" options:0 metrics:0 views:v63];
-    [v64 addConstraints:v65];
+    [view2 addConstraints:v65];
 
-    v66 = [(WFOverlayImageEditorViewController *)self view];
+    view3 = [(WFOverlayImageEditorViewController *)self view];
     v67 = [MEMORY[0x277CCAAD0] constraintsWithVisualFormat:@"H:|[_canvasView]|" options:0 metrics:0 views:v63];
-    [v66 addConstraints:v67];
+    [view3 addConstraints:v67];
 
-    v68 = [(WFOverlayImageEditorViewController *)self view];
-    [v68 setNeedsLayout];
+    view4 = [(WFOverlayImageEditorViewController *)self view];
+    [view4 setNeedsLayout];
 
     goto LABEL_16;
   }
 
   v73 = v8;
   v74 = v7;
-  v75 = v5;
-  v14 = [(WFOverlayImageEditorViewController *)self canvasView];
-  [v14 setUserInteractionEnabled:0];
-  v15 = [(WFOverlayImageEditorViewController *)self view];
-  [v15 insertSubview:v12 aboveSubview:v14];
+  v75 = fileCopy;
+  canvasView2 = [(WFOverlayImageEditorViewController *)self canvasView];
+  [canvasView2 setUserInteractionEnabled:0];
+  view5 = [(WFOverlayImageEditorViewController *)self view];
+  [view5 insertSubview:v12 aboveSubview:canvasView2];
 
   v88 = @"offset";
   v16 = MEMORY[0x277CCABB0];
-  v17 = [(WFOverlayImageEditorViewController *)self view];
-  [v17 frame];
+  view6 = [(WFOverlayImageEditorViewController *)self view];
+  [view6 frame];
   v19 = [v16 numberWithDouble:v18];
   v89[0] = v19;
   v72 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v89 forKeys:&v88 count:1];
 
   v20 = MEMORY[0x277CCAAD0];
-  v21 = [(WFOverlayImageEditorViewController *)self view];
-  v22 = [(WFOverlayImageEditorViewController *)self view];
-  [v22 frame];
-  v24 = [v20 constraintWithItem:v12 attribute:1 relatedBy:0 toItem:v21 attribute:1 multiplier:1.0 constant:v23];
+  view7 = [(WFOverlayImageEditorViewController *)self view];
+  view8 = [(WFOverlayImageEditorViewController *)self view];
+  [view8 frame];
+  v24 = [v20 constraintWithItem:v12 attribute:1 relatedBy:0 toItem:view7 attribute:1 multiplier:1.0 constant:v23];
 
   v25 = MEMORY[0x277CCAAD0];
-  v26 = [(WFOverlayImageEditorViewController *)self view];
-  [v26 frame];
+  view9 = [(WFOverlayImageEditorViewController *)self view];
+  [view9 frame];
   v28 = [v25 constraintWithItem:v12 attribute:7 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:v27];
 
-  v29 = [(WFOverlayImageEditorViewController *)self view];
+  view10 = [(WFOverlayImageEditorViewController *)self view];
   v71 = v24;
-  [v29 addConstraint:v24];
+  [view10 addConstraint:v24];
 
-  v30 = [(WFOverlayImageEditorViewController *)self view];
+  view11 = [(WFOverlayImageEditorViewController *)self view];
   v70 = v28;
-  [v30 addConstraint:v28];
+  [view11 addConstraint:v28];
 
-  v31 = [(WFOverlayImageEditorViewController *)self view];
+  view12 = [(WFOverlayImageEditorViewController *)self view];
   v32 = MEMORY[0x277CCAAD0];
   v33 = objc_loadWeakRetained(&self->_optionsView);
   v34 = _NSDictionaryOfVariableBindings(&cfstr_NewcanvasviewO.isa, v12, v33, 0);
   v35 = [v32 constraintsWithVisualFormat:@"V:|[newCanvasView][_optionsView]" options:0 metrics:0 views:v34];
-  [v31 addConstraints:v35];
+  [view12 addConstraints:v35];
 
-  v36 = [(WFOverlayImageEditorViewController *)self view];
-  [v36 setNeedsLayout];
+  view13 = [(WFOverlayImageEditorViewController *)self view];
+  [view13 setNeedsLayout];
 
-  v37 = [(WFOverlayImageEditorViewController *)self view];
-  [v37 layoutIfNeeded];
+  view14 = [(WFOverlayImageEditorViewController *)self view];
+  [view14 layoutIfNeeded];
 
   v85 = 0u;
   v86 = 0u;
   v83 = 0u;
   v84 = 0u;
-  v38 = [(WFOverlayImageEditorViewController *)self view];
-  v39 = [v38 constraints];
+  view15 = [(WFOverlayImageEditorViewController *)self view];
+  constraints = [view15 constraints];
 
-  v40 = [v39 countByEnumeratingWithState:&v83 objects:v87 count:16];
+  v40 = [constraints countByEnumeratingWithState:&v83 objects:v87 count:16];
   if (!v40)
   {
     goto LABEL_14;
@@ -345,50 +345,50 @@ void __62__WFOverlayImageEditorViewController_setOpacitySliderVisible___block_in
     {
       if (*v84 != v42)
       {
-        objc_enumerationMutation(v39);
+        objc_enumerationMutation(constraints);
       }
 
       v44 = *(*(&v83 + 1) + 8 * i);
-      v45 = [v44 firstItem];
-      v46 = v45;
-      if (v45 == v14)
+      firstItem = [v44 firstItem];
+      v46 = firstItem;
+      if (firstItem == canvasView2)
       {
       }
 
       else
       {
-        v47 = [v44 secondItem];
+        secondItem = [v44 secondItem];
 
-        if (v47 != v14)
+        if (secondItem != canvasView2)
         {
           continue;
         }
       }
 
-      v48 = [(WFOverlayImageEditorViewController *)self view];
-      [v48 removeConstraint:v44];
+      view16 = [(WFOverlayImageEditorViewController *)self view];
+      [view16 removeConstraint:v44];
     }
 
-    v41 = [v39 countByEnumeratingWithState:&v83 objects:v87 count:16];
+    v41 = [constraints countByEnumeratingWithState:&v83 objects:v87 count:16];
   }
 
   while (v41);
 LABEL_14:
 
   v49 = objc_loadWeakRetained(&self->_optionsView);
-  v50 = _NSDictionaryOfVariableBindings(&cfstr_OldcanvasviewO.isa, v14, v49, 0);
+  v50 = _NSDictionaryOfVariableBindings(&cfstr_OldcanvasviewO.isa, canvasView2, v49, 0);
 
-  v51 = [(WFOverlayImageEditorViewController *)self view];
+  view17 = [(WFOverlayImageEditorViewController *)self view];
   v52 = [MEMORY[0x277CCAAD0] constraintsWithVisualFormat:@"V:|[oldCanvasView][_optionsView]" options:0 metrics:0 views:v50];
-  [v51 addConstraints:v52];
+  [view17 addConstraints:v52];
 
-  v53 = [(WFOverlayImageEditorViewController *)self view];
+  view18 = [(WFOverlayImageEditorViewController *)self view];
   v54 = [MEMORY[0x277CCAAD0] constraintsWithVisualFormat:@"H:[oldCanvasView(==offset)]-(offset)-|" options:0 metrics:v72 views:v50];
-  [v53 addConstraints:v54];
+  [view18 addConstraints:v54];
 
   [v71 setConstant:0.0];
-  v55 = [(WFOverlayImageEditorViewController *)self optionsView];
-  [v55 setUserInteractionEnabled:0];
+  optionsView = [(WFOverlayImageEditorViewController *)self optionsView];
+  [optionsView setUserInteractionEnabled:0];
 
   v56 = MEMORY[0x277D75D18];
   v82[0] = MEMORY[0x277D85DD0];
@@ -400,18 +400,18 @@ LABEL_14:
   v76[1] = 3221225472;
   v76[2] = __53__WFOverlayImageEditorViewController_setCurrentFile___block_invoke_2;
   v76[3] = &unk_278C36870;
-  v77 = v14;
-  v78 = self;
+  v77 = canvasView2;
+  selfCopy = self;
   v79 = v71;
   v80 = v70;
   v81 = v12;
   v57 = v70;
   v58 = v71;
-  v59 = v14;
+  v59 = canvasView2;
   [v56 animateWithDuration:v82 animations:v76 completion:0.3];
 
   v7 = v74;
-  v5 = v75;
+  fileCopy = v75;
   v8 = v73;
 LABEL_16:
 
@@ -453,11 +453,11 @@ void __53__WFOverlayImageEditorViewController_setCurrentFile___block_invoke_2(ui
   v9.super_class = WFOverlayImageEditorViewController;
   [(WFOverlayImageEditorViewController *)&v9 viewDidLoad];
   [(WFOverlayImageEditorViewController *)self setNeedsStatusBarAppearanceUpdate];
-  v3 = [(WFOverlayImageEditorViewController *)self fileRepresentations];
-  v4 = [v3 count];
+  fileRepresentations = [(WFOverlayImageEditorViewController *)self fileRepresentations];
+  v4 = [fileRepresentations count];
 
-  v5 = [(WFOverlayImageEditorViewController *)self optionsView];
-  v6 = [v5 nextButton];
+  optionsView = [(WFOverlayImageEditorViewController *)self optionsView];
+  nextButton = [optionsView nextButton];
   if (v4 >= 2)
   {
     v7 = @"Next";
@@ -469,7 +469,7 @@ void __53__WFOverlayImageEditorViewController_setCurrentFile___block_invoke_2(ui
   }
 
   v8 = WFLocalizedString(v7);
-  [v6 setTitle:v8 forState:0];
+  [nextButton setTitle:v8 forState:0];
 }
 
 - (void)loadView
@@ -477,79 +477,79 @@ void __53__WFOverlayImageEditorViewController_setCurrentFile___block_invoke_2(ui
   v25.receiver = self;
   v25.super_class = WFOverlayImageEditorViewController;
   [(WFOverlayImageEditorViewController *)&v25 loadView];
-  v3 = [(WFOverlayImageEditorViewController *)self editorBackgroundColor];
-  v4 = [(WFOverlayImageEditorViewController *)self view];
-  [v4 setBackgroundColor:v3];
+  editorBackgroundColor = [(WFOverlayImageEditorViewController *)self editorBackgroundColor];
+  view = [(WFOverlayImageEditorViewController *)self view];
+  [view setBackgroundColor:editorBackgroundColor];
 
   v5 = objc_alloc_init(WFOverlayImageEditorOptionsView);
-  v6 = [(WFOverlayImageEditorViewController *)self editorBackgroundColor];
-  [(WFOverlayImageEditorOptionsView *)v5 setBackgroundColor:v6];
+  editorBackgroundColor2 = [(WFOverlayImageEditorViewController *)self editorBackgroundColor];
+  [(WFOverlayImageEditorOptionsView *)v5 setBackgroundColor:editorBackgroundColor2];
 
   [(WFOverlayImageEditorOptionsView *)v5 setTranslatesAutoresizingMaskIntoConstraints:0];
   [(WFOverlayImageEditorOptionsView *)v5 setDelegate:self];
-  v7 = [(WFOverlayImageEditorViewController *)self view];
-  [v7 addSubview:v5];
+  view2 = [(WFOverlayImageEditorViewController *)self view];
+  [view2 addSubview:v5];
 
   objc_storeWeak(&self->_optionsView, v5);
   v8 = objc_alloc_init(WFOpacitySliderView);
   [(WFOpacitySliderView *)v8 setTranslatesAutoresizingMaskIntoConstraints:0];
   [(WFOpacitySliderView *)v8 addTarget:self action:sel_didChangeOpacity_ forControlEvents:4096];
-  v9 = [(WFOverlayImageEditorViewController *)self view];
-  [v9 insertSubview:v8 belowSubview:v5];
+  view3 = [(WFOverlayImageEditorViewController *)self view];
+  [view3 insertSubview:v8 belowSubview:v5];
 
   objc_storeWeak(&self->_opacityView, v8);
   v10 = _NSDictionaryOfVariableBindings(&cfstr_OptionsviewOpa.isa, v5, v8, 0);
   v11 = [MEMORY[0x277CCAAD0] constraintWithItem:v8 attribute:3 relatedBy:0 toItem:v5 attribute:3 multiplier:1.0 constant:0.0];
   [(WFOverlayImageEditorViewController *)self setOpacityViewVerticalConstraint:v11];
 
-  v12 = [(WFOverlayImageEditorViewController *)self view];
-  v13 = [(WFOverlayImageEditorViewController *)self opacityViewVerticalConstraint];
-  [v12 addConstraint:v13];
+  view4 = [(WFOverlayImageEditorViewController *)self view];
+  opacityViewVerticalConstraint = [(WFOverlayImageEditorViewController *)self opacityViewVerticalConstraint];
+  [view4 addConstraint:opacityViewVerticalConstraint];
 
-  v14 = [(WFOverlayImageEditorViewController *)self view];
+  view5 = [(WFOverlayImageEditorViewController *)self view];
   v15 = [MEMORY[0x277CCAAD0] constraintsWithVisualFormat:@"H:|[opacitySliderView]|" options:0 metrics:0 views:v10];
-  [v14 addConstraints:v15];
+  [view5 addConstraints:v15];
 
-  v16 = [(WFOverlayImageEditorViewController *)self view];
+  view6 = [(WFOverlayImageEditorViewController *)self view];
   v17 = MEMORY[0x277CCAAD0];
   WeakRetained = objc_loadWeakRetained(&self->_opacityView);
   v19 = [v17 constraintWithItem:WeakRetained attribute:8 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:90.0];
-  [v16 addConstraint:v19];
+  [view6 addConstraint:v19];
 
-  v20 = [(WFOverlayImageEditorViewController *)self view];
+  view7 = [(WFOverlayImageEditorViewController *)self view];
   v21 = [MEMORY[0x277CCAAD0] constraintsWithVisualFormat:@"V:[optionsView]|" options:0 metrics:0 views:v10];
-  [v20 addConstraints:v21];
+  [view7 addConstraints:v21];
 
-  v22 = [(WFOverlayImageEditorViewController *)self view];
+  view8 = [(WFOverlayImageEditorViewController *)self view];
   v23 = [MEMORY[0x277CCAAD0] constraintsWithVisualFormat:@"H:|[optionsView]|" options:0 metrics:0 views:v10];
-  [v22 addConstraints:v23];
+  [view8 addConstraints:v23];
 
-  v24 = [(NSArray *)self->_fileRepresentations firstObject];
-  [(WFOverlayImageEditorViewController *)self setCurrentFile:v24];
+  firstObject = [(NSArray *)self->_fileRepresentations firstObject];
+  [(WFOverlayImageEditorViewController *)self setCurrentFile:firstObject];
 }
 
-- (WFOverlayImageEditorViewController)initWithFileRepresentations:(id)a3 overlayImage:(id)a4 completionHandler:(id)a5
+- (WFOverlayImageEditorViewController)initWithFileRepresentations:(id)representations overlayImage:(id)image completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  representationsCopy = representations;
+  imageCopy = image;
+  handlerCopy = handler;
   v20.receiver = self;
   v20.super_class = WFOverlayImageEditorViewController;
   v11 = [(WFOverlayImageEditorViewController *)&v20 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [representationsCopy copy];
     fileRepresentations = v11->_fileRepresentations;
     v11->_fileRepresentations = v12;
 
-    v14 = _Block_copy(v10);
+    v14 = _Block_copy(handlerCopy);
     completionHandler = v11->_completionHandler;
     v11->_completionHandler = v14;
 
-    objc_storeStrong(&v11->_overlayImage, a4);
-    v16 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+    objc_storeStrong(&v11->_overlayImage, image);
+    strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
     transforms = v11->_transforms;
-    v11->_transforms = v16;
+    v11->_transforms = strongToStrongObjectsMapTable;
 
     [(WFOverlayImageEditorViewController *)v11 setModalPresentationStyle:0];
     v18 = v11;

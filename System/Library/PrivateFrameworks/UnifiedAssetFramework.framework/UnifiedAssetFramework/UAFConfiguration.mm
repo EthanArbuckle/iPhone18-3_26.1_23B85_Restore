@@ -1,32 +1,32 @@
 @interface UAFConfiguration
-+ (BOOL)isValid:(id)a3 fileType:(id)a4 fileVersions:(id)a5 error:(id *)a6;
-+ (BOOL)isValidValue:(id)a3 key:(id)a4 kind:(Class)a5 required:(BOOL)a6 error:(id *)a7;
++ (BOOL)isValid:(id)valid fileType:(id)type fileVersions:(id)versions error:(id *)error;
++ (BOOL)isValidValue:(id)value key:(id)key kind:(Class)kind required:(BOOL)required error:(id *)error;
 @end
 
 @implementation UAFConfiguration
 
-+ (BOOL)isValidValue:(id)a3 key:(id)a4 kind:(Class)a5 required:(BOOL)a6 error:(id *)a7
++ (BOOL)isValidValue:(id)value key:(id)key kind:(Class)kind required:(BOOL)required error:(id *)error
 {
-  v8 = a6;
+  requiredCopy = required;
   v58[2] = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  if (v8)
+  valueCopy = value;
+  keyCopy = key;
+  if (requiredCopy)
   {
-    v13 = [v11 objectForKeyedSubscript:v12];
+    v13 = [valueCopy objectForKeyedSubscript:keyCopy];
 
     if (!v13)
     {
-      if (a7)
+      if (error)
       {
         v27 = MEMORY[0x1E696ABC0];
-        if (*a7)
+        if (*error)
         {
           v57[0] = *MEMORY[0x1E696A578];
-          v28 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Required key %@ has no value", v12];
+          keyCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"Required key %@ has no value", keyCopy];
           v57[1] = *MEMORY[0x1E696AA08];
-          v58[0] = v28;
-          v58[1] = *a7;
+          v58[0] = keyCopy;
+          v58[1] = *error;
           v29 = MEMORY[0x1E695DF20];
           v30 = v58;
           v31 = v57;
@@ -36,8 +36,8 @@
         else
         {
           v55 = *MEMORY[0x1E696A578];
-          v28 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Required key %@ has no value", v12];
-          v56 = v28;
+          keyCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"Required key %@ has no value", keyCopy];
+          v56 = keyCopy;
           v29 = MEMORY[0x1E695DF20];
           v30 = &v56;
           v31 = &v55;
@@ -45,7 +45,7 @@
         }
 
         v38 = [v29 dictionaryWithObjects:v30 forKeys:v31 count:v32];
-        *a7 = [v27 errorWithDomain:@"com.apple.UnifiedAssetFramework" code:-1 userInfo:v38];
+        *error = [v27 errorWithDomain:@"com.apple.UnifiedAssetFramework" code:-1 userInfo:v38];
       }
 
       v35 = UAFGetLogCategory(&UAFLogContextConfiguration);
@@ -54,7 +54,7 @@
         *buf = 136315394;
         v42 = "+[UAFConfiguration isValidValue:key:kind:required:error:]";
         v43 = 2112;
-        v44 = v12;
+        v44 = keyCopy;
         _os_log_impl(&dword_1BCF2C000, v35, OS_LOG_TYPE_DEFAULT, "%s Required key %@ has no value", buf, 0x16u);
       }
 
@@ -62,29 +62,29 @@
     }
   }
 
-  v14 = [v11 objectForKeyedSubscript:v12];
+  v14 = [valueCopy objectForKeyedSubscript:keyCopy];
 
   if (v14)
   {
-    v15 = [v11 objectForKeyedSubscript:v12];
+    v15 = [valueCopy objectForKeyedSubscript:keyCopy];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if ((isKindOfClass & 1) == 0)
     {
-      if (a7)
+      if (error)
       {
         v18 = MEMORY[0x1E696ABC0];
         v19 = *MEMORY[0x1E696A578];
-        if (*a7)
+        if (*error)
         {
           v53[0] = *MEMORY[0x1E696A578];
           v20 = MEMORY[0x1E696AEC0];
-          v21 = [v11 objectForKeyedSubscript:v12];
-          v22 = [v20 stringWithFormat:@"Key %@ is not expected kind %@: %@ vs %@", v12, a5, v21, objc_opt_class()];
+          v21 = [valueCopy objectForKeyedSubscript:keyCopy];
+          v22 = [v20 stringWithFormat:@"Key %@ is not expected kind %@: %@ vs %@", keyCopy, kind, v21, objc_opt_class()];
           v53[1] = *MEMORY[0x1E696AA08];
           v54[0] = v22;
-          v54[1] = *a7;
+          v54[1] = *error;
           v23 = MEMORY[0x1E695DF20];
           v24 = v54;
           v25 = v53;
@@ -95,8 +95,8 @@
         {
           v51 = *MEMORY[0x1E696A578];
           v33 = MEMORY[0x1E696AEC0];
-          v21 = [v11 objectForKeyedSubscript:v12];
-          v22 = [v33 stringWithFormat:@"Key %@ is not expected kind %@: %@ vs %@", v12, a5, v21, objc_opt_class()];
+          v21 = [valueCopy objectForKeyedSubscript:keyCopy];
+          v22 = [v33 stringWithFormat:@"Key %@ is not expected kind %@: %@ vs %@", keyCopy, kind, v21, objc_opt_class()];
           v52 = v22;
           v23 = MEMORY[0x1E695DF20];
           v24 = &v52;
@@ -105,19 +105,19 @@
         }
 
         v34 = [v23 dictionaryWithObjects:v24 forKeys:v25 count:v26];
-        *a7 = [v18 errorWithDomain:@"com.apple.UnifiedAssetFramework" code:-1 userInfo:v34];
+        *error = [v18 errorWithDomain:@"com.apple.UnifiedAssetFramework" code:-1 userInfo:v34];
       }
 
       v35 = UAFGetLogCategory(&UAFLogContextConfiguration);
       if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
       {
-        v36 = [v11 objectForKeyedSubscript:v12];
+        v36 = [valueCopy objectForKeyedSubscript:keyCopy];
         *buf = 136316162;
         v42 = "+[UAFConfiguration isValidValue:key:kind:required:error:]";
         v43 = 2112;
-        v44 = v12;
+        v44 = keyCopy;
         v45 = 2112;
-        v46 = a5;
+        kindCopy = kind;
         v47 = 2112;
         v48 = v36;
         v49 = 2112;
@@ -140,23 +140,23 @@ LABEL_21:
   return v17;
 }
 
-+ (BOOL)isValid:(id)a3 fileType:(id)a4 fileVersions:(id)a5 error:(id *)a6
++ (BOOL)isValid:(id)valid fileType:(id)type fileVersions:(id)versions error:(id *)error
 {
   v68[2] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [v9 objectForKeyedSubscript:@"FileType"];
-  v13 = [v10 isEqualToString:v12];
+  validCopy = valid;
+  typeCopy = type;
+  versionsCopy = versions;
+  v12 = [validCopy objectForKeyedSubscript:@"FileType"];
+  v13 = [typeCopy isEqualToString:v12];
 
   if (v13)
   {
-    v14 = [v9 objectForKeyedSubscript:@"FileVersion"];
+    v14 = [validCopy objectForKeyedSubscript:@"FileVersion"];
     v48 = 0u;
     v49 = 0u;
     v50 = 0u;
     v51 = 0u;
-    v15 = v11;
+    v15 = versionsCopy;
     v16 = [v15 countByEnumeratingWithState:&v48 objects:v56 count:16];
     if (v16)
     {
@@ -188,19 +188,19 @@ LABEL_21:
       }
     }
 
-    if (a6)
+    if (error)
     {
       v47 = MEMORY[0x1E696ABC0];
       v20 = *MEMORY[0x1E696A578];
-      if (*a6)
+      if (*error)
       {
         v54[0] = *MEMORY[0x1E696A578];
         v21 = MEMORY[0x1E696AEC0];
-        v22 = [v9 objectForKeyedSubscript:@"FileVersion"];
+        v22 = [validCopy objectForKeyedSubscript:@"FileVersion"];
         v23 = [v21 stringWithFormat:@"%@ value %@ is not one of %@", @"FileVersion", v22, v15];
         v54[1] = *MEMORY[0x1E696AA08];
         v55[0] = v23;
-        v55[1] = *a6;
+        v55[1] = *error;
         v24 = MEMORY[0x1E695DF20];
         v25 = v55;
         v26 = v54;
@@ -211,7 +211,7 @@ LABEL_21:
       {
         v52 = *MEMORY[0x1E696A578];
         v41 = MEMORY[0x1E696AEC0];
-        v22 = [v9 objectForKeyedSubscript:@"FileVersion"];
+        v22 = [validCopy objectForKeyedSubscript:@"FileVersion"];
         v23 = [v41 stringWithFormat:@"%@ value %@ is not one of %@", @"FileVersion", v22, v15];
         v53 = v23;
         v24 = MEMORY[0x1E695DF20];
@@ -221,13 +221,13 @@ LABEL_21:
       }
 
       v42 = [v24 dictionaryWithObjects:v25 forKeys:v26 count:v27];
-      *a6 = [v47 errorWithDomain:@"com.apple.UnifiedAssetFramework" code:-1 userInfo:v42];
+      *error = [v47 errorWithDomain:@"com.apple.UnifiedAssetFramework" code:-1 userInfo:v42];
     }
 
     v43 = UAFGetLogCategory(&UAFLogContextConfiguration);
     if (os_log_type_enabled(v43, OS_LOG_TYPE_DEFAULT))
     {
-      v44 = [v9 objectForKeyedSubscript:@"FileVersion"];
+      v44 = [validCopy objectForKeyedSubscript:@"FileVersion"];
       *buf = 136315906;
       v58 = "+[UAFConfiguration isValid:fileType:fileVersions:error:]";
       v59 = 2112;
@@ -246,19 +246,19 @@ LABEL_27:
 
   else
   {
-    if (a6)
+    if (error)
     {
       v28 = MEMORY[0x1E696ABC0];
       v29 = *MEMORY[0x1E696A578];
-      if (*a6)
+      if (*error)
       {
         v67[0] = *MEMORY[0x1E696A578];
         v30 = MEMORY[0x1E696AEC0];
-        v31 = [v9 objectForKeyedSubscript:@"FileType"];
-        v32 = [v30 stringWithFormat:@"%@ value %@ is not %@", @"FileType", v31, v10];
+        v31 = [validCopy objectForKeyedSubscript:@"FileType"];
+        typeCopy = [v30 stringWithFormat:@"%@ value %@ is not %@", @"FileType", v31, typeCopy];
         v67[1] = *MEMORY[0x1E696AA08];
-        v68[0] = v32;
-        v68[1] = *a6;
+        v68[0] = typeCopy;
+        v68[1] = *error;
         v33 = MEMORY[0x1E695DF20];
         v34 = v68;
         v35 = v67;
@@ -269,9 +269,9 @@ LABEL_27:
       {
         v65 = *MEMORY[0x1E696A578];
         v38 = MEMORY[0x1E696AEC0];
-        v31 = [v9 objectForKeyedSubscript:@"FileType"];
-        v32 = [v38 stringWithFormat:@"%@ value %@ is not %@", @"FileType", v31, v10];
-        v66 = v32;
+        v31 = [validCopy objectForKeyedSubscript:@"FileType"];
+        typeCopy = [v38 stringWithFormat:@"%@ value %@ is not %@", @"FileType", v31, typeCopy];
+        v66 = typeCopy;
         v33 = MEMORY[0x1E695DF20];
         v34 = &v66;
         v35 = &v65;
@@ -279,13 +279,13 @@ LABEL_27:
       }
 
       v39 = [v33 dictionaryWithObjects:v34 forKeys:v35 count:v36];
-      *a6 = [v28 errorWithDomain:@"com.apple.UnifiedAssetFramework" code:-1 userInfo:v39];
+      *error = [v28 errorWithDomain:@"com.apple.UnifiedAssetFramework" code:-1 userInfo:v39];
     }
 
     v14 = UAFGetLogCategory(&UAFLogContextConfiguration);
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v40 = [v9 objectForKeyedSubscript:@"FileType"];
+      v40 = [validCopy objectForKeyedSubscript:@"FileType"];
       *buf = 136315906;
       v58 = "+[UAFConfiguration isValid:fileType:fileVersions:error:]";
       v59 = 2112;
@@ -293,7 +293,7 @@ LABEL_27:
       v61 = 2112;
       v62 = v40;
       v63 = 2112;
-      v64 = v10;
+      v64 = typeCopy;
       _os_log_impl(&dword_1BCF2C000, v14, OS_LOG_TYPE_DEFAULT, "%s %@ value %@ is not %@", buf, 0x2Au);
     }
 

@@ -1,25 +1,25 @@
 @interface SPContextMonitor
 - (BOOL)isSystemContext;
 - (SPContextMonitor)init;
-- (SPContextMonitor)initWithCoder:(id)a3;
+- (SPContextMonitor)initWithCoder:(id)coder;
 - (id)description;
-- (void)_activate:(BOOL)a3;
+- (void)_activate:(BOOL)_activate;
 - (void)_ensureXPCStarted;
 - (void)_interrupted;
 - (void)_invalidated;
-- (void)_reportError:(id)a3;
-- (void)activateWithCompletion:(id)a3;
-- (void)contextMonitorContextChanged:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_reportError:(id)error;
+- (void)activateWithCompletion:(id)completion;
+- (void)contextMonitorContextChanged:(id)changed;
+- (void)encodeWithCoder:(id)coder;
 - (void)invalidate;
-- (void)setContextChangeFlags:(unsigned int)a3;
+- (void)setContextChangeFlags:(unsigned int)flags;
 @end
 
 @implementation SPContextMonitor
 
-- (SPContextMonitor)initWithCoder:(id)a3
+- (SPContextMonitor)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(SPContextMonitor *)self init];
   if (v5)
   {
@@ -34,12 +34,12 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   contextChangeFlags = self->_contextChangeFlags;
   if (contextChangeFlags)
   {
-    [a3 encodeInt64:contextChangeFlags forKey:@"cmcf"];
+    [coder encodeInt64:contextChangeFlags forKey:@"cmcf"];
   }
 }
 
@@ -63,28 +63,28 @@
   return v2;
 }
 
-- (void)setContextChangeFlags:(unsigned int)a3
+- (void)setContextChangeFlags:(unsigned int)flags
 {
-  v4 = self;
-  objc_sync_enter(v4);
-  if (v4->_activateCalled)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_activateCalled)
   {
-    dispatchQueue = v4->_dispatchQueue;
+    dispatchQueue = selfCopy->_dispatchQueue;
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __42__SPContextMonitor_setContextChangeFlags___block_invoke;
     v6[3] = &unk_279B97290;
-    v6[4] = v4;
-    v7 = a3;
+    v6[4] = selfCopy;
+    flagsCopy = flags;
     dispatch_async(dispatchQueue, v6);
   }
 
   else
   {
-    v4->_contextChangeFlags = a3;
+    selfCopy->_contextChangeFlags = flags;
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 void __42__SPContextMonitor_setContextChangeFlags___block_invoke(uint64_t a1)
@@ -103,17 +103,17 @@ void __42__SPContextMonitor_setContextChangeFlags___block_invoke(uint64_t a1)
   return 0;
 }
 
-- (void)activateWithCompletion:(id)a3
+- (void)activateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __43__SPContextMonitor_activateWithCompletion___block_invoke;
   v7[3] = &unk_279B972B8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -146,11 +146,11 @@ void __43__SPContextMonitor_activateWithCompletion___block_invoke(uint64_t a1)
   }
 }
 
-- (void)_activate:(BOOL)a3
+- (void)_activate:(BOOL)_activate
 {
   if (!self->_invalidateCalled)
   {
-    if (a3)
+    if (_activate)
     {
       if (gLogCategory_SPContextMonitor > 30 || gLogCategory_SPContextMonitor == -1 && !_LogCategory_Initialize())
       {
@@ -171,7 +171,7 @@ LABEL_13:
     v13[1] = 3221225472;
     v13[2] = __30__SPContextMonitor__activate___block_invoke;
     v13[3] = &unk_279B972E0;
-    v14 = a3;
+    _activateCopy = _activate;
     v13[4] = self;
     v7 = [(NSXPCConnection *)xpcCnx remoteObjectProxyWithErrorHandler:v13];
     v11[0] = MEMORY[0x277D85DD0];
@@ -179,7 +179,7 @@ LABEL_13:
     v11[2] = __30__SPContextMonitor__activate___block_invoke_2;
     v11[3] = &unk_279B972E0;
     v11[4] = self;
-    v12 = a3;
+    _activateCopy2 = _activate;
     [v7 contextMonitorActivate:self completion:v11];
 
     return;
@@ -396,14 +396,14 @@ void __30__SPContextMonitor_invalidate__block_invoke(uint64_t a1)
   }
 }
 
-- (void)contextMonitorContextChanged:(id)a3
+- (void)contextMonitorContextChanged:(id)changed
 {
-  v5 = a3;
+  changedCopy = changed;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   contextChangeHandler = self->_contextChangeHandler;
   if (contextChangeHandler)
   {
-    contextChangeHandler[2](contextChangeHandler, v5);
+    contextChangeHandler[2](contextChangeHandler, changedCopy);
   }
 
   else if (gLogCategory_SPContextMonitor <= 30 && (gLogCategory_SPContextMonitor != -1 || _LogCategory_Initialize()))
@@ -465,9 +465,9 @@ void __30__SPContextMonitor_invalidate__block_invoke(uint64_t a1)
   return isSystemContext_result;
 }
 
-- (void)_reportError:(id)a3
+- (void)_reportError:(id)error
 {
-  v6 = a3;
+  errorCopy = error;
   if (gLogCategory_SPContextMonitor <= 90 && (gLogCategory_SPContextMonitor != -1 || _LogCategory_Initialize()))
   {
     [SPContextMonitor _reportError:];
@@ -479,7 +479,7 @@ void __30__SPContextMonitor_invalidate__block_invoke(uint64_t a1)
 
   if (v4)
   {
-    (v4)[2](v4, v6);
+    (v4)[2](v4, errorCopy);
   }
 }
 

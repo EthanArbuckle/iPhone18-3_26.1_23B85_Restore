@@ -1,20 +1,20 @@
 @interface VSIdentityProviderUserAccountFetchOperation
-- (VSIdentityProviderUserAccountFetchOperation)initWithIdentityProvider:(id)a3;
+- (VSIdentityProviderUserAccountFetchOperation)initWithIdentityProvider:(id)provider;
 - (void)executionDidBegin;
 @end
 
 @implementation VSIdentityProviderUserAccountFetchOperation
 
-- (VSIdentityProviderUserAccountFetchOperation)initWithIdentityProvider:(id)a3
+- (VSIdentityProviderUserAccountFetchOperation)initWithIdentityProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   v14.receiver = self;
   v14.super_class = VSIdentityProviderUserAccountFetchOperation;
   v6 = [(VSIdentityProviderUserAccountFetchOperation *)&v14 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_provider, a3);
+    objc_storeStrong(&v6->_provider, provider);
     v8 = MEMORY[0x277CCABD8];
     v9 = objc_opt_class();
     v10 = NSStringFromClass(v9);
@@ -31,14 +31,14 @@
 - (void)executionDidBegin
 {
   v27 = *MEMORY[0x277D85DE8];
-  v2 = [(VSIdentityProviderUserAccountFetchOperation *)self provider];
+  provider = [(VSIdentityProviderUserAccountFetchOperation *)self provider];
   v3 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v4 = [v2 nonChannelAppDescriptions];
-  v5 = [v4 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  nonChannelAppDescriptions = [provider nonChannelAppDescriptions];
+  v5 = [nonChannelAppDescriptions countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v5)
   {
     v6 = v5;
@@ -50,22 +50,22 @@
       {
         if (*v23 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(nonChannelAppDescriptions);
         }
 
         v10 = *(*(&v22 + 1) + 8 * i);
-        v11 = [v10 bundleID];
+        bundleID = [v10 bundleID];
 
-        if (!v11)
+        if (!bundleID)
         {
           [MEMORY[0x277CBEAD8] raise:v8 format:@"The [appDescription bundleID] parameter must not be nil."];
         }
 
-        v12 = [v10 bundleID];
-        [v3 addObject:v12];
+        bundleID2 = [v10 bundleID];
+        [v3 addObject:bundleID2];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      v6 = [nonChannelAppDescriptions countByEnumeratingWithState:&v22 objects:v26 count:16];
     }
 
     while (v6);
@@ -83,10 +83,10 @@
   v18[2] = __64__VSIdentityProviderUserAccountFetchOperation_executionDidBegin__block_invoke_5;
   v18[3] = &unk_278B74C00;
   v18[4] = self;
-  v19 = v2;
+  v19 = provider;
   v20 = v3;
   v15 = v3;
-  v16 = v2;
+  v16 = provider;
   [v14 queryUserAccountsWithOptions:0 completion:v18];
 }
 

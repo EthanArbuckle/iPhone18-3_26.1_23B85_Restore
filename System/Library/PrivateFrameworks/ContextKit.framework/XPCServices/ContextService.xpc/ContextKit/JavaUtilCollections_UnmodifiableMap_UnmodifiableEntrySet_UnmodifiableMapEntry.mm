@@ -1,5 +1,5 @@
 @interface JavaUtilCollections_UnmodifiableMap_UnmodifiableEntrySet_UnmodifiableMapEntry
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (id)getKey;
 - (id)getValue;
@@ -9,7 +9,7 @@
 
 @implementation JavaUtilCollections_UnmodifiableMap_UnmodifiableEntrySet_UnmodifiableMapEntry
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   mapEntry = self->mapEntry_;
   if (!mapEntry)
@@ -17,7 +17,7 @@
     JreThrowNullPointerException();
   }
 
-  return [(JavaUtilMap_Entry *)mapEntry isEqual:a3];
+  return [(JavaUtilMap_Entry *)mapEntry isEqual:equal];
 }
 
 - (id)getKey

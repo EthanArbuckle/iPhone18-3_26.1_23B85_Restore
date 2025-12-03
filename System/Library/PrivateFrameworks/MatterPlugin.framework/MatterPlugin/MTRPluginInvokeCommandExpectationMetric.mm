@@ -1,42 +1,42 @@
 @interface MTRPluginInvokeCommandExpectationMetric
-+ (id)invokeCommandExpectationMetricForMetric:(id)a3;
++ (id)invokeCommandExpectationMetricForMetric:(id)metric;
 - (id)additionalCoreAnalyticsEventDictionary;
 - (id)remoteMessageID;
-- (void)setRemoteMessageID:(id)a3;
+- (void)setRemoteMessageID:(id)d;
 @end
 
 @implementation MTRPluginInvokeCommandExpectationMetric
 
-+ (id)invokeCommandExpectationMetricForMetric:(id)a3
++ (id)invokeCommandExpectationMetricForMetric:(id)metric
 {
-  v3 = a3;
-  v4 = [(MTRPluginMetric *)[MTRPluginInvokeCommandExpectationMetric alloc] initMetricWithName:@"com.apple.matter.invokeCommandExpectationEvent" sourceMetric:v3];
-  [v4 setInvokeCommandMetric:v3];
+  metricCopy = metric;
+  v4 = [(MTRPluginMetric *)[MTRPluginInvokeCommandExpectationMetric alloc] initMetricWithName:@"com.apple.matter.invokeCommandExpectationEvent" sourceMetric:metricCopy];
+  [v4 setInvokeCommandMetric:metricCopy];
 
   return v4;
 }
 
 - (id)additionalCoreAnalyticsEventDictionary
 {
-  v2 = [(MTRPluginInvokeCommandExpectationMetric *)self invokeCommandMetric];
-  v3 = [v2 additionalCoreAnalyticsEventDictionary];
+  invokeCommandMetric = [(MTRPluginInvokeCommandExpectationMetric *)self invokeCommandMetric];
+  additionalCoreAnalyticsEventDictionary = [invokeCommandMetric additionalCoreAnalyticsEventDictionary];
 
-  return v3;
+  return additionalCoreAnalyticsEventDictionary;
 }
 
 - (id)remoteMessageID
 {
-  v2 = [(MTRPluginInvokeCommandExpectationMetric *)self invokeCommandMetric];
-  v3 = [v2 remoteMessageID];
+  invokeCommandMetric = [(MTRPluginInvokeCommandExpectationMetric *)self invokeCommandMetric];
+  remoteMessageID = [invokeCommandMetric remoteMessageID];
 
-  return v3;
+  return remoteMessageID;
 }
 
-- (void)setRemoteMessageID:(id)a3
+- (void)setRemoteMessageID:(id)d
 {
-  v4 = a3;
-  v5 = [(MTRPluginInvokeCommandExpectationMetric *)self invokeCommandMetric];
-  [v5 setRemoteMessageID:v4];
+  dCopy = d;
+  invokeCommandMetric = [(MTRPluginInvokeCommandExpectationMetric *)self invokeCommandMetric];
+  [invokeCommandMetric setRemoteMessageID:dCopy];
 }
 
 @end

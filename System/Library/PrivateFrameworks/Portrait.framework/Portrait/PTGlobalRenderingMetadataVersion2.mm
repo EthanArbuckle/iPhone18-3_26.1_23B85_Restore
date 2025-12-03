@@ -1,19 +1,19 @@
 @interface PTGlobalRenderingMetadataVersion2
-- (BOOL)applyToRenderState:(id)a3 error:(id *)a4;
-- (BOOL)matchesRenderState:(id)a3;
-- (BOOL)writeToData:(id)a3 withOptions:(id)a4;
-- (PTGlobalRenderingMetadataVersion2)initWithData:(id)a3;
-- (PTGlobalRenderingMetadataVersion2)initWithMinorVersion:(unsigned int)a3;
-- (void)applyToRenderRequest:(id)a3;
+- (BOOL)applyToRenderState:(id)state error:(id *)error;
+- (BOOL)matchesRenderState:(id)state;
+- (BOOL)writeToData:(id)data withOptions:(id)options;
+- (PTGlobalRenderingMetadataVersion2)initWithData:(id)data;
+- (PTGlobalRenderingMetadataVersion2)initWithMinorVersion:(unsigned int)version;
+- (void)applyToRenderRequest:(id)request;
 @end
 
 @implementation PTGlobalRenderingMetadataVersion2
 
-- (PTGlobalRenderingMetadataVersion2)initWithMinorVersion:(unsigned int)a3
+- (PTGlobalRenderingMetadataVersion2)initWithMinorVersion:(unsigned int)version
 {
   v6.receiver = self;
   v6.super_class = PTGlobalRenderingMetadataVersion2;
-  v3 = [(PTGlobalRenderingMetadata *)&v6 initWithMajorVersion:2 minorVersion:*&a3];
+  v3 = [(PTGlobalRenderingMetadata *)&v6 initWithMajorVersion:2 minorVersion:*&version];
   if (v3)
   {
     *(&v3->super._renderingVersion + 1) = +[PTRenderPipeline latestVersion];
@@ -23,22 +23,22 @@
   return v3;
 }
 
-- (BOOL)writeToData:(id)a3 withOptions:(id)a4
+- (BOOL)writeToData:(id)data withOptions:(id)options
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PTGlobalRenderingMetadataVersion2 *)self sizeOfSerializedObjectWithOptions:v7];
-  if ([v6 length] < v8 || -[PTGlobalRenderingMetadata majorVersion](self, "majorVersion") != 2)
+  dataCopy = data;
+  optionsCopy = options;
+  v8 = [(PTGlobalRenderingMetadataVersion2 *)self sizeOfSerializedObjectWithOptions:optionsCopy];
+  if ([dataCopy length] < v8 || -[PTGlobalRenderingMetadata majorVersion](self, "majorVersion") != 2)
   {
     goto LABEL_8;
   }
 
-  v9 = [v6 mutableBytes];
-  *v9 = bswap32([(PTGlobalRenderingMetadataVersion2 *)self sizeOfSerializedObjectWithOptions:v7]);
-  v9[1] = 1684956530;
-  v9[2] = bswap32([(PTGlobalRenderingMetadata *)self majorVersion]);
-  v9[3] = bswap32([(PTGlobalRenderingMetadata *)self minorVersion]);
-  v15 = v9 + 4;
+  mutableBytes = [dataCopy mutableBytes];
+  *mutableBytes = bswap32([(PTGlobalRenderingMetadataVersion2 *)self sizeOfSerializedObjectWithOptions:optionsCopy]);
+  mutableBytes[1] = 1684956530;
+  mutableBytes[2] = bswap32([(PTGlobalRenderingMetadata *)self majorVersion]);
+  mutableBytes[3] = bswap32([(PTGlobalRenderingMetadata *)self minorVersion]);
+  v15 = mutableBytes + 4;
   [PTParameterPairSerialization appendUIntParameter:1 value:*(&self->super._renderingVersion + 1) toOutput:&v15];
   [PTParameterPairSerialization appendUIntParameter:2 value:*&self->_readSuccessAll toOutput:&v15];
   [PTParameterPairSerialization appendUIntParameter:3 value:self->_hwModelID toOutput:&v15];
@@ -50,8 +50,8 @@
   }
 
   v11 = v15;
-  v12 = v11 - [v6 bytes];
-  if (v12 == [(PTGlobalRenderingMetadataVersion2 *)self sizeOfSerializedObjectWithOptions:v7])
+  v12 = v11 - [dataCopy bytes];
+  if (v12 == [(PTGlobalRenderingMetadataVersion2 *)self sizeOfSerializedObjectWithOptions:optionsCopy])
   {
     v13 = 1;
   }
@@ -65,14 +65,14 @@ LABEL_8:
   return v13;
 }
 
-- (BOOL)matchesRenderState:(id)a3
+- (BOOL)matchesRenderState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v5 = *(&self->super._renderingVersion + 1);
-  if ([v4 renderingVersion] == v5 && (v6 = *&self->_readSuccessAll, v6 == objc_msgSend(v4, "hwModelID")))
+  if ([stateCopy renderingVersion] == v5 && (v6 = *&self->_readSuccessAll, v6 == objc_msgSend(stateCopy, "hwModelID")))
   {
     sensorID = self->_sensorID;
-    v8 = sensorID == [v4 sourceColorBitDepth];
+    v8 = sensorID == [stateCopy sourceColorBitDepth];
   }
 
   else
@@ -83,19 +83,19 @@ LABEL_8:
   return v8;
 }
 
-- (BOOL)applyToRenderState:(id)a3 error:(id *)a4
+- (BOOL)applyToRenderState:(id)state error:(id *)error
 {
-  v6 = a3;
-  if (a4 && ![PTRenderPipeline isRenderVersionSupported:*(&self->super._renderingVersion + 1)])
+  stateCopy = state;
+  if (error && ![PTRenderPipeline isRenderVersionSupported:*(&self->super._renderingVersion + 1)])
   {
-    *a4 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.Portrait.RenderingMetadata" code:2 userInfo:0];
+    *error = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.Portrait.RenderingMetadata" code:2 userInfo:0];
   }
 
-  v7 = [(PTGlobalRenderingMetadataVersion2 *)self matchesRenderState:v6];
-  [v6 setSourceColorBitDepth:self->_sensorID];
-  [v6 setRenderingVersion:*(&self->super._renderingVersion + 1)];
-  [v6 setHwModelID:*&self->_readSuccessAll];
-  [v6 prepareForRendering:!v7];
+  v7 = [(PTGlobalRenderingMetadataVersion2 *)self matchesRenderState:stateCopy];
+  [stateCopy setSourceColorBitDepth:self->_sensorID];
+  [stateCopy setRenderingVersion:*(&self->super._renderingVersion + 1)];
+  [stateCopy setHwModelID:*&self->_readSuccessAll];
+  [stateCopy prepareForRendering:!v7];
   renderingVersion = self->_renderingVersion;
   if ((renderingVersion & 1) == 0)
   {
@@ -109,12 +109,12 @@ LABEL_8:
   return renderingVersion;
 }
 
-- (void)applyToRenderRequest:(id)a3
+- (void)applyToRenderRequest:(id)request
 {
   hwModelID = self->_hwModelID;
-  v5 = a3;
-  [v5 setSensorID:hwModelID];
-  [v5 setNetworkBias:0.0];
+  requestCopy = request;
+  [requestCopy setSensorID:hwModelID];
+  [requestCopy setNetworkBias:0.0];
 
   if ((self->_renderingVersion & 1) == 0)
   {
@@ -126,18 +126,18 @@ LABEL_8:
   }
 }
 
-- (PTGlobalRenderingMetadataVersion2)initWithData:(id)a3
+- (PTGlobalRenderingMetadataVersion2)initWithData:(id)data
 {
   v53 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 bytes];
-  v6 = [(PTGlobalRenderingMetadataVersion2 *)self initWithMinorVersion:bswap32(v5[3])];
-  if (v6 && (v7 = bswap32(*v5), [v4 length] == v7) && (v7 & 7) == 0 && -[PTGlobalRenderingMetadata majorVersion](v6, "majorVersion") == 2 && -[PTGlobalRenderingMetadata majorVersion](v6, "majorVersion") == bswap32(v5[2]))
+  dataCopy = data;
+  bytes = [dataCopy bytes];
+  v6 = [(PTGlobalRenderingMetadataVersion2 *)self initWithMinorVersion:bswap32(bytes[3])];
+  if (v6 && (v7 = bswap32(*bytes), [dataCopy length] == v7) && (v7 & 7) == 0 && -[PTGlobalRenderingMetadata majorVersion](v6, "majorVersion") == 2 && -[PTGlobalRenderingMetadata majorVersion](v6, "majorVersion") == bswap32(bytes[2]))
   {
     v8 = (v7 + 0x7FFFFFFF0) >> 3;
     v50 = 0;
     LOBYTE(v6->_renderingVersion) = 1;
-    v9 = [PTParameterPairSerialization getUIntParameter:1 fromPairs:v5 + 4 numPairs:v8 didFindValue:&v50];
+    v9 = [PTParameterPairSerialization getUIntParameter:1 fromPairs:bytes + 4 numPairs:v8 didFindValue:&v50];
     *(&v6->super._renderingVersion + 1) = v9;
     v17 = [OUTLINED_FUNCTION_0_7(v9 v10];
     *&v6->_readSuccessAll = v17;
@@ -156,7 +156,7 @@ LABEL_8:
         _os_log_impl(&dword_2243FB000, v33, OS_LOG_TYPE_INFO, "Render version not supported: %i", buf, 8u);
       }
 
-      *(&v6->super._renderingVersion + 1) = [PTParameterPairSerialization getUIntParameter:5 fromPairs:v5 + 4 numPairs:v8 withDefault:*(&v6->super._renderingVersion + 1) didFindValue:&v50];
+      *(&v6->super._renderingVersion + 1) = [PTParameterPairSerialization getUIntParameter:5 fromPairs:bytes + 4 numPairs:v8 withDefault:*(&v6->super._renderingVersion + 1) didFindValue:&v50];
       v35 = _PTLogSystem();
       if (os_log_type_enabled(v35, OS_LOG_TYPE_INFO))
       {

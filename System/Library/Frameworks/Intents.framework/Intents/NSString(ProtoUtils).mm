@@ -9,7 +9,7 @@
 
 - (id)_intents_encodeForProto
 {
-  v1 = [a1 copy];
+  v1 = [self copy];
 
   return v1;
 }
@@ -23,23 +23,23 @@
   }
 
   v2 = _INSharedClassPrefixRegularExpression_regularExpression;
-  v3 = [v2 firstMatchInString:a1 options:0 range:{0, objc_msgSend(a1, "length")}];
+  v3 = [v2 firstMatchInString:self options:0 range:{0, objc_msgSend(self, "length")}];
 
   if (v3 && (v4 = [v3 rangeAtIndex:1], v4 != 0x7FFFFFFFFFFFFFFFLL))
   {
-    v7 = [a1 substringWithRange:{v4, v5}];
+    v7 = [self substringWithRange:{v4, v5}];
     [v3 range];
-    v9 = [a1 substringFromIndex:v8];
+    v9 = [self substringFromIndex:v8];
     if ([v9 length])
     {
       v10 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBase64EncodedString:v9 options:0];
       if (v10)
       {
-        v11 = [a1 _intents_allowedUnarchiverClassesForProtoAsStrings];
-        v12 = [a1 _intents_allowedUnarchiverClassesForProtoAsClasses];
-        if (v12 && v11)
+        _intents_allowedUnarchiverClassesForProtoAsStrings = [self _intents_allowedUnarchiverClassesForProtoAsStrings];
+        _intents_allowedUnarchiverClassesForProtoAsClasses = [self _intents_allowedUnarchiverClassesForProtoAsClasses];
+        if (_intents_allowedUnarchiverClassesForProtoAsClasses && _intents_allowedUnarchiverClassesForProtoAsStrings)
         {
-          if (([v11 containsObject:v7] & 1) == 0)
+          if (([_intents_allowedUnarchiverClassesForProtoAsStrings containsObject:v7] & 1) == 0)
           {
             v13 = INSiriLogContextIntents;
             if (os_log_type_enabled(INSiriLogContextIntents, OS_LOG_TYPE_ERROR))
@@ -49,17 +49,17 @@
               v23 = 2112;
               v24 = v7;
               v25 = 2112;
-              v26 = v12;
+              v26 = _intents_allowedUnarchiverClassesForProtoAsClasses;
               _os_log_error_impl(&dword_18E991000, v13, OS_LOG_TYPE_ERROR, "%s Proto references class %@ which is not an allowed class (%@)", buf, 0x20u);
             }
           }
 
           v20 = 0;
-          v6 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClasses:v12 fromData:v10 error:&v20];
+          selfCopy3 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClasses:_intents_allowedUnarchiverClassesForProtoAsClasses fromData:v10 error:&v20];
           v14 = v20;
-          if (v6)
+          if (selfCopy3)
           {
-            v15 = v6;
+            v15 = selfCopy3;
           }
 
           else
@@ -86,30 +86,30 @@
             _os_log_error_impl(&dword_18E991000, v16, OS_LOG_TYPE_ERROR, "%s Failed to find allowed classes for proto", buf, 0xCu);
           }
 
-          v6 = 0;
+          selfCopy3 = 0;
         }
       }
 
       else
       {
-        v6 = a1;
+        selfCopy3 = self;
       }
     }
 
     else
     {
-      v6 = a1;
+      selfCopy3 = self;
     }
   }
 
   else
   {
-    v6 = a1;
+    selfCopy3 = self;
   }
 
   v18 = *MEMORY[0x1E69E9840];
 
-  return v6;
+  return selfCopy3;
 }
 
 - (id)_intents_allowedUnarchiverClassesForProtoAsStrings
@@ -130,7 +130,7 @@
   block[1] = 3221225472;
   block[2] = __74__NSString_ProtoUtils___intents_allowedUnarchiverClassesForProtoAsClasses__block_invoke;
   block[3] = &unk_1E72882F8;
-  block[4] = a1;
+  block[4] = self;
   if (_intents_allowedUnarchiverClassesForProtoAsClasses_onceToken != -1)
   {
     dispatch_once(&_intents_allowedUnarchiverClassesForProtoAsClasses_onceToken, block);

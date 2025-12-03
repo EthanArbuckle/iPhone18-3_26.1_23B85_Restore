@@ -1,19 +1,19 @@
 @interface HAPBTLEControlOutputStream
 + (id)shortDescription;
 - (HAPBTLEControlOutputStream)init;
-- (HAPBTLEControlOutputStream)initWithControlType:(unsigned __int8)a3 transactionIdentifier:(id)a4 controlPayload:(id)a5 mtuLength:(unint64_t)a6 timeoutInterval:(double)a7;
+- (HAPBTLEControlOutputStream)initWithControlType:(unsigned __int8)type transactionIdentifier:(id)identifier controlPayload:(id)payload mtuLength:(unint64_t)length timeoutInterval:(double)interval;
 - (HAPBTLEControlOutputStreamDelegate)delegate;
-- (id)_nextPacketWithMaximumLength:(unint64_t)a3 error:(id *)a4;
-- (id)descriptionWithPointer:(BOOL)a3;
+- (id)_nextPacketWithMaximumLength:(unint64_t)length error:(id *)error;
+- (id)descriptionWithPointer:(BOOL)pointer;
 - (id)shortDescription;
 - (unint64_t)remainingControlPayloadLength;
-- (void)_closeWithError:(id)a3;
+- (void)_closeWithError:(id)error;
 - (void)_complete;
-- (void)_sendNextPayloadFragmentWithCompletionHandler:(id)a3;
+- (void)_sendNextPayloadFragmentWithCompletionHandler:(id)handler;
 - (void)close;
 - (void)open;
 - (void)sendNextPayloadFragment;
-- (void)setCompletionHandler:(id)a3;
+- (void)setCompletionHandler:(id)handler;
 @end
 
 @implementation HAPBTLEControlOutputStream
@@ -28,12 +28,12 @@
   objc_exception_throw(v4);
 }
 
-- (HAPBTLEControlOutputStream)initWithControlType:(unsigned __int8)a3 transactionIdentifier:(id)a4 controlPayload:(id)a5 mtuLength:(unint64_t)a6 timeoutInterval:(double)a7
+- (HAPBTLEControlOutputStream)initWithControlType:(unsigned __int8)type transactionIdentifier:(id)identifier controlPayload:(id)payload mtuLength:(unint64_t)length timeoutInterval:(double)interval
 {
-  v13 = a4;
-  v14 = a5;
-  v15 = v14;
-  if (!v13)
+  identifierCopy = identifier;
+  payloadCopy = payload;
+  v15 = payloadCopy;
+  if (!identifierCopy)
   {
     v28 = sub_10007FAA0();
     if (!os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
@@ -44,7 +44,7 @@
     goto LABEL_9;
   }
 
-  if (![v14 length])
+  if (![payloadCopy length])
   {
     v28 = sub_10007FAA0();
     if (!os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
@@ -63,7 +63,7 @@ LABEL_9:
     goto LABEL_16;
   }
 
-  if (!a6)
+  if (!length)
   {
     v28 = sub_10007FAA0();
     if (!os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
@@ -84,7 +84,7 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  if (a7 <= 0.0)
+  if (interval <= 0.0)
   {
     v28 = sub_10007FAA0();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
@@ -101,7 +101,7 @@ LABEL_16:
 
 LABEL_17:
 
-    v27 = 0;
+    selfCopy = 0;
     goto LABEL_18;
   }
 
@@ -117,14 +117,14 @@ LABEL_17:
     clientQueue = v17->_clientQueue;
     v17->_clientQueue = v20;
 
-    v17->_type = a3;
-    objc_storeStrong(&v17->_transactionIdentifier, a4);
+    v17->_type = type;
+    objc_storeStrong(&v17->_transactionIdentifier, identifier);
     v22 = [v15 copy];
     payload = v17->_payload;
     v17->_payload = v22;
 
-    v17->_mtuLength = a6;
-    v17->_timeoutInterval = a7;
+    v17->_mtuLength = length;
+    v17->_timeoutInterval = interval;
     v24 = objc_alloc_init(NSOperationQueue);
     v25 = [NSString stringWithFormat:@"%s", sub_100014728(v17, @"operationQueue")];
     [(NSOperationQueue *)v24 setName:v25];
@@ -136,10 +136,10 @@ LABEL_17:
   }
 
   self = v17;
-  v27 = self;
+  selfCopy = self;
 LABEL_18:
 
-  return v27;
+  return selfCopy;
 }
 
 + (id)shortDescription
@@ -156,11 +156,11 @@ LABEL_18:
   return [v2 shortDescription];
 }
 
-- (id)descriptionWithPointer:(BOOL)a3
+- (id)descriptionWithPointer:(BOOL)pointer
 {
-  v3 = a3;
-  v5 = [(HAPBTLEControlOutputStream *)self shortDescription];
-  if (v3)
+  pointerCopy = pointer;
+  shortDescription = [(HAPBTLEControlOutputStream *)self shortDescription];
+  if (pointerCopy)
   {
     v6 = [NSString stringWithFormat:@" %p", self];
   }
@@ -171,14 +171,14 @@ LABEL_18:
   }
 
   v7 = sub_100023350([(HAPBTLEControlOutputStream *)self type]);
-  v8 = [(HAPBTLEControlOutputStream *)self transactionIdentifier];
-  v9 = [v8 unsignedCharValue];
+  transactionIdentifier = [(HAPBTLEControlOutputStream *)self transactionIdentifier];
+  unsignedCharValue = [transactionIdentifier unsignedCharValue];
   [(HAPBTLEControlOutputStream *)self isComplete];
   v10 = HMFBooleanToString();
-  v11 = [(HAPBTLEControlOutputStream *)self payload];
-  v12 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<%@%@, Type = %@, Transaction Identifier = 0x%02x, Completed = %@, Payload Length = %tu, Remaining Payload Length = %tu>", v5, v6, v7, v9, v10, [v11 length], -[HAPBTLEControlOutputStream remainingControlPayloadLength](self, "remainingControlPayloadLength"));
+  payload = [(HAPBTLEControlOutputStream *)self payload];
+  v12 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<%@%@, Type = %@, Transaction Identifier = 0x%02x, Completed = %@, Payload Length = %tu, Remaining Payload Length = %tu>", shortDescription, v6, v7, unsignedCharValue, v10, [payload length], -[HAPBTLEControlOutputStream remainingControlPayloadLength](self, "remainingControlPayloadLength"));
 
-  if (v3)
+  if (pointerCopy)
   {
   }
 
@@ -187,8 +187,8 @@ LABEL_18:
 
 - (unint64_t)remainingControlPayloadLength
 {
-  v3 = [(HAPBTLEControlOutputStream *)self payload];
-  v4 = [v3 length];
+  payload = [(HAPBTLEControlOutputStream *)self payload];
+  v4 = [payload length];
   v5 = v4 - [(HAPBTLEControlOutputStream *)self controlPayloadWrittenLength];
 
   return v5;
@@ -196,34 +196,34 @@ LABEL_18:
 
 - (void)open
 {
-  v3 = [(HAPBTLEControlOutputStream *)self clientQueue];
+  clientQueue = [(HAPBTLEControlOutputStream *)self clientQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100044374;
   block[3] = &unk_100273348;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(clientQueue, block);
 }
 
 - (void)close
 {
-  v3 = [(HAPBTLEControlOutputStream *)self clientQueue];
+  clientQueue = [(HAPBTLEControlOutputStream *)self clientQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100044470;
   block[3] = &unk_100273348;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(clientQueue, block);
 }
 
-- (void)_closeWithError:(id)a3
+- (void)_closeWithError:(id)error
 {
-  v5 = a3;
+  errorCopy = error;
   if ([(HAPBTLEControlOutputStream *)self isOpen])
   {
     [(HAPBTLEControlOutputStream *)self setOpen:0];
-    v4 = [(HAPBTLEControlOutputStream *)self delegate];
-    [v4 controlOutputStream:self didCloseWithError:v5];
+    delegate = [(HAPBTLEControlOutputStream *)self delegate];
+    [delegate controlOutputStream:self didCloseWithError:errorCopy];
   }
 }
 
@@ -232,8 +232,8 @@ LABEL_18:
   if (![(HAPBTLEControlOutputStream *)self isComplete])
   {
     [(HAPBTLEControlOutputStream *)self setComplete:1];
-    v3 = [(HAPBTLEControlOutputStream *)self delegate];
-    [v3 controlOutputStreamDidComplete:self];
+    delegate = [(HAPBTLEControlOutputStream *)self delegate];
+    [delegate controlOutputStreamDidComplete:self];
   }
 }
 
@@ -257,29 +257,29 @@ LABEL_18:
   objc_copyWeak(&v7, &location);
   v6[4] = self;
   [v4 setCompletionBlock:v6];
-  v5 = [(HAPBTLEControlOutputStream *)self operationQueue];
-  [v5 addOperation:v4];
+  operationQueue = [(HAPBTLEControlOutputStream *)self operationQueue];
+  [operationQueue addOperation:v4];
 
   objc_destroyWeak(&v7);
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
 }
 
-- (void)_sendNextPayloadFragmentWithCompletionHandler:(id)a3
+- (void)_sendNextPayloadFragmentWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(HAPBTLEControlOutputStream *)self clientQueue];
+  handlerCopy = handler;
+  clientQueue = [(HAPBTLEControlOutputStream *)self clientQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100044A00;
   v7[3] = &unk_100273268;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  dispatch_async(clientQueue, v7);
 }
 
-- (id)_nextPacketWithMaximumLength:(unint64_t)a3 error:(id *)a4
+- (id)_nextPacketWithMaximumLength:(unint64_t)length error:(id *)error
 {
   if ([(HAPBTLEControlOutputStream *)self isComplete])
   {
@@ -287,18 +287,18 @@ LABEL_18:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
       v8 = sub_10007FAFC(0);
-      v9 = [(HAPBTLEControlOutputStream *)self shortDescription];
+      shortDescription = [(HAPBTLEControlOutputStream *)self shortDescription];
       v26 = 138543618;
       v27 = v8;
       v28 = 2112;
-      v29 = v9;
+      v29 = shortDescription;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_ERROR, "%{public}@[%@] The control output stream is complete", &v26, 0x16u);
     }
 
-    if (a4)
+    if (error)
     {
       [NSError hapErrorWithcode:1 description:@"Invalid operation." reason:@"The control output stream is complete" suggestion:0 underlyingError:0];
-      *a4 = v10 = 0;
+      *error = v10 = 0;
     }
 
     else
@@ -310,21 +310,21 @@ LABEL_18:
   else
   {
     v11 = [(HAPBTLEControlOutputStream *)self controlPayloadWrittenLength]!= 0;
-    v12 = [(HAPBTLEControlOutputStream *)self payload];
-    v13 = [(HAPBTLEControlOutputStream *)self controlPayloadWrittenLength];
-    v14 = [(HAPBTLEControlOutputStream *)self payload];
-    v15 = [v12 subdataWithRange:{v13, objc_msgSend(v14, "length") - -[HAPBTLEControlOutputStream controlPayloadWrittenLength](self, "controlPayloadWrittenLength")}];
+    payload = [(HAPBTLEControlOutputStream *)self payload];
+    controlPayloadWrittenLength = [(HAPBTLEControlOutputStream *)self controlPayloadWrittenLength];
+    payload2 = [(HAPBTLEControlOutputStream *)self payload];
+    v15 = [payload subdataWithRange:{controlPayloadWrittenLength, objc_msgSend(payload2, "length") - -[HAPBTLEControlOutputStream controlPayloadWrittenLength](self, "controlPayloadWrittenLength")}];
 
     v16 = [HAPBTLEControlPacket alloc];
-    v17 = [(HAPBTLEControlOutputStream *)self type];
-    v18 = [(HAPBTLEControlOutputStream *)self transactionIdentifier];
-    v10 = [(HAPBTLEControlPacket *)v16 initWithControlType:v17 transactionIdentifier:v18 continuationPacket:v11 packetPayload:v15 maximumLength:a3];
+    type = [(HAPBTLEControlOutputStream *)self type];
+    transactionIdentifier = [(HAPBTLEControlOutputStream *)self transactionIdentifier];
+    v10 = [(HAPBTLEControlPacket *)v16 initWithControlType:type transactionIdentifier:transactionIdentifier continuationPacket:v11 packetPayload:v15 maximumLength:length];
 
     if (v10)
     {
-      v19 = [(HAPBTLEControlOutputStream *)self controlPayloadWrittenLength];
-      v20 = [(HAPBTLEControlPacket *)v10 payload];
-      -[HAPBTLEControlOutputStream setControlPayloadWrittenLength:](self, "setControlPayloadWrittenLength:", [v20 length] + v19);
+      controlPayloadWrittenLength2 = [(HAPBTLEControlOutputStream *)self controlPayloadWrittenLength];
+      payload3 = [(HAPBTLEControlPacket *)v10 payload];
+      -[HAPBTLEControlOutputStream setControlPayloadWrittenLength:](self, "setControlPayloadWrittenLength:", [payload3 length] + controlPayloadWrittenLength2);
 
       v21 = v10;
     }
@@ -335,17 +335,17 @@ LABEL_18:
       if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
       {
         v23 = sub_10007FAFC(0);
-        v24 = [(HAPBTLEControlOutputStream *)self shortDescription];
+        shortDescription2 = [(HAPBTLEControlOutputStream *)self shortDescription];
         v26 = 138543618;
         v27 = v23;
         v28 = 2112;
-        v29 = v24;
+        v29 = shortDescription2;
         _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_ERROR, "%{public}@[%@] Failed to create control packet", &v26, 0x16u);
       }
 
-      if (a4)
+      if (error)
       {
-        *a4 = [NSError hapErrorWithcode:1 description:@"Failed to create control packet." reason:0 suggestion:0 underlyingError:0];
+        *error = [NSError hapErrorWithcode:1 description:@"Failed to create control packet." reason:0 suggestion:0 underlyingError:0];
       }
     }
   }
@@ -360,9 +360,9 @@ LABEL_18:
   return WeakRetained;
 }
 
-- (void)setCompletionHandler:(id)a3
+- (void)setCompletionHandler:(id)handler
 {
-  v4 = objc_retainBlock(a3);
+  v4 = objc_retainBlock(handler);
   objc_setAssociatedObject(self, "completionHandler", v4, 3);
 }
 

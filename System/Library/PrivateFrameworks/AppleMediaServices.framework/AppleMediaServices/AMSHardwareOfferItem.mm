@@ -1,67 +1,67 @@
 @interface AMSHardwareOfferItem
-+ (BOOL)shouldBadgeAppWithItems:(id)a3;
-+ (BOOL)shouldBadgeRowWithItems:(id)a3;
-+ (id)latestExpirationDateFromItems:(id)a3;
-- (AMSHardwareOfferItem)initWithAMSFollowUpItem:(id)a3;
-- (AMSHardwareOfferItem)initWithCoder:(id)a3;
-- (AMSHardwareOfferItem)initWithFollowUpItem:(id)a3;
-- (void)encodeWithCoder:(id)a3;
++ (BOOL)shouldBadgeAppWithItems:(id)items;
++ (BOOL)shouldBadgeRowWithItems:(id)items;
++ (id)latestExpirationDateFromItems:(id)items;
+- (AMSHardwareOfferItem)initWithAMSFollowUpItem:(id)item;
+- (AMSHardwareOfferItem)initWithCoder:(id)coder;
+- (AMSHardwareOfferItem)initWithFollowUpItem:(id)item;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AMSHardwareOfferItem
 
-- (AMSHardwareOfferItem)initWithAMSFollowUpItem:(id)a3
+- (AMSHardwareOfferItem)initWithAMSFollowUpItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v12.receiver = self;
   v12.super_class = AMSHardwareOfferItem;
   v5 = [(AMSHardwareOfferItem *)&v12 init];
   if (v5)
   {
-    v6 = [v4 backingIdentifier];
-    v7 = [v6 copy];
+    backingIdentifier = [itemCopy backingIdentifier];
+    v7 = [backingIdentifier copy];
     backingIdentifier = v5->_backingIdentifier;
     v5->_backingIdentifier = v7;
 
-    v9 = [v4 expirationDate];
+    expirationDate = [itemCopy expirationDate];
     expiration = v5->_expiration;
-    v5->_expiration = v9;
+    v5->_expiration = expirationDate;
 
-    v5->_omitBadge = ([v4 displayStyle] & 0x10) != 0;
-    v5->_omitAppBadge = ([v4 displayStyle] & 0x20) != 0;
+    v5->_omitBadge = ([itemCopy displayStyle] & 0x10) != 0;
+    v5->_omitAppBadge = ([itemCopy displayStyle] & 0x20) != 0;
   }
 
   return v5;
 }
 
-- (AMSHardwareOfferItem)initWithFollowUpItem:(id)a3
+- (AMSHardwareOfferItem)initWithFollowUpItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v12.receiver = self;
   v12.super_class = AMSHardwareOfferItem;
   v5 = [(AMSHardwareOfferItem *)&v12 init];
   if (v5)
   {
-    v6 = [v4 uniqueIdentifier];
-    v7 = [v6 copy];
+    uniqueIdentifier = [itemCopy uniqueIdentifier];
+    v7 = [uniqueIdentifier copy];
     backingIdentifier = v5->_backingIdentifier;
     v5->_backingIdentifier = v7;
 
-    v9 = [v4 expirationDate];
+    expirationDate = [itemCopy expirationDate];
     expiration = v5->_expiration;
-    v5->_expiration = v9;
+    v5->_expiration = expirationDate;
 
-    v5->_omitBadge = ([v4 displayStyle] & 0x10) != 0;
-    v5->_omitAppBadge = ([v4 displayStyle] & 0x20) != 0;
+    v5->_omitBadge = ([itemCopy displayStyle] & 0x10) != 0;
+    v5->_omitAppBadge = ([itemCopy displayStyle] & 0x20) != 0;
   }
 
   return v5;
 }
 
-+ (BOOL)shouldBadgeAppWithItems:(id)a3
++ (BOOL)shouldBadgeAppWithItems:(id)items
 {
-  v3 = [a3 allValues];
-  v4 = [v3 ams_anyWithTest:&__block_literal_global_68];
+  allValues = [items allValues];
+  v4 = [allValues ams_anyWithTest:&__block_literal_global_68];
 
   return v4;
 }
@@ -82,17 +82,17 @@ uint64_t __48__AMSHardwareOfferItem_shouldBadgeAppWithItems___block_invoke(uint6
   return v3;
 }
 
-+ (BOOL)shouldBadgeRowWithItems:(id)a3
++ (BOOL)shouldBadgeRowWithItems:(id)items
 {
-  v3 = [a3 allValues];
-  v4 = [v3 ams_anyWithTest:&__block_literal_global_12_1];
+  allValues = [items allValues];
+  v4 = [allValues ams_anyWithTest:&__block_literal_global_12_1];
 
   return v4;
 }
 
-+ (id)latestExpirationDateFromItems:(id)a3
++ (id)latestExpirationDateFromItems:(id)items
 {
-  v3 = a3;
+  itemsCopy = items;
   v7 = 0;
   v8 = &v7;
   v9 = 0x3032000000;
@@ -104,7 +104,7 @@ uint64_t __48__AMSHardwareOfferItem_shouldBadgeAppWithItems___block_invoke(uint6
   v6[2] = __54__AMSHardwareOfferItem_latestExpirationDateFromItems___block_invoke;
   v6[3] = &unk_1E73B8660;
   v6[4] = &v7;
-  [v3 enumerateKeysAndObjectsUsingBlock:v6];
+  [itemsCopy enumerateKeysAndObjectsUsingBlock:v6];
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
 
@@ -142,37 +142,37 @@ void __54__AMSHardwareOfferItem_latestExpirationDateFromItems___block_invoke(uin
 LABEL_7:
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  v4 = [(AMSHardwareOfferItem *)self backingIdentifier];
-  [v6 encodeObject:v4 forKey:@"kAMSHardwareOfferItemIdentifierKey"];
+  coderCopy = coder;
+  backingIdentifier = [(AMSHardwareOfferItem *)self backingIdentifier];
+  [coderCopy encodeObject:backingIdentifier forKey:@"kAMSHardwareOfferItemIdentifierKey"];
 
-  v5 = [(AMSHardwareOfferItem *)self expiration];
-  [v6 encodeObject:v5 forKey:@"kAMSHardwareOfferItemExpirationKey"];
+  expiration = [(AMSHardwareOfferItem *)self expiration];
+  [coderCopy encodeObject:expiration forKey:@"kAMSHardwareOfferItemExpirationKey"];
 
-  [v6 encodeBool:-[AMSHardwareOfferItem omitBadge](self forKey:{"omitBadge"), @"kAMSHardwareOfferItemOmitBadgeKey"}];
-  [v6 encodeBool:-[AMSHardwareOfferItem omitAppBadge](self forKey:{"omitAppBadge"), @"kAMSHardwareOfferItemOmitAppBadgeKey"}];
+  [coderCopy encodeBool:-[AMSHardwareOfferItem omitBadge](self forKey:{"omitBadge"), @"kAMSHardwareOfferItemOmitBadgeKey"}];
+  [coderCopy encodeBool:-[AMSHardwareOfferItem omitAppBadge](self forKey:{"omitAppBadge"), @"kAMSHardwareOfferItemOmitAppBadgeKey"}];
 }
 
-- (AMSHardwareOfferItem)initWithCoder:(id)a3
+- (AMSHardwareOfferItem)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = AMSHardwareOfferItem;
   v5 = [(AMSHardwareOfferItem *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kAMSHardwareOfferItemIdentifierKey"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kAMSHardwareOfferItemIdentifierKey"];
     backingIdentifier = v5->_backingIdentifier;
     v5->_backingIdentifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kAMSHardwareOfferItemExpirationKey"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kAMSHardwareOfferItemExpirationKey"];
     expiration = v5->_expiration;
     v5->_expiration = v8;
 
-    v5->_omitBadge = [v4 decodeBoolForKey:@"kAMSHardwareOfferItemOmitBadgeKey"];
-    v5->_omitAppBadge = [v4 decodeBoolForKey:@"kAMSHardwareOfferItemOmitAppBadgeKey"];
+    v5->_omitBadge = [coderCopy decodeBoolForKey:@"kAMSHardwareOfferItemOmitBadgeKey"];
+    v5->_omitAppBadge = [coderCopy decodeBoolForKey:@"kAMSHardwareOfferItemOmitAppBadgeKey"];
   }
 
   return v5;

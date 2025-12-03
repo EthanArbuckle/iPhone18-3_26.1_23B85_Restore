@@ -1,30 +1,30 @@
 @interface VisionCoreLabelsFileParser
-+ (BOOL)isValidLabel:(id)a3;
-+ (BOOL)parseLabels:(id *)a3 fromContentsOfURL:(id)a4 invalidLabelPlaceholderObject:(id)a5 validLabelIndexes:(id *)a6 error:(id *)a7;
++ (BOOL)isValidLabel:(id)label;
++ (BOOL)parseLabels:(id *)labels fromContentsOfURL:(id)l invalidLabelPlaceholderObject:(id)object validLabelIndexes:(id *)indexes error:(id *)error;
 @end
 
 @implementation VisionCoreLabelsFileParser
 
-+ (BOOL)parseLabels:(id *)a3 fromContentsOfURL:(id)a4 invalidLabelPlaceholderObject:(id)a5 validLabelIndexes:(id *)a6 error:(id *)a7
++ (BOOL)parseLabels:(id *)labels fromContentsOfURL:(id)l invalidLabelPlaceholderObject:(id)object validLabelIndexes:(id *)indexes error:(id *)error
 {
   v39[19] = *MEMORY[0x1E69E9840];
-  v10 = a4;
-  v11 = a5;
-  v32 = v10;
-  if (![v10 fileSystemRepresentation])
+  lCopy = l;
+  objectCopy = object;
+  v32 = lCopy;
+  if (![lCopy fileSystemRepresentation])
   {
-    if (a7)
+    if (error)
     {
-      v25 = a7;
+      errorCopy = error;
       v26 = [MEMORY[0x1E696AEC0] stringWithFormat:@"unable to open %@", v32];
-      *v25 = [MEMORY[0x1E696ABC0] VisionCoreErrorForUnavailableResourceWithLocalizedDescription:v26];
+      *errorCopy = [MEMORY[0x1E696ABC0] VisionCoreErrorForUnavailableResourceWithLocalizedDescription:v26];
     }
 
     v20 = 0;
     goto LABEL_42;
   }
 
-  v29 = a7;
+  errorCopy2 = error;
   v12 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v33 = objc_alloc_init(MEMORY[0x1E696AD50]);
   memset(&v34, 0, sizeof(v34));
@@ -104,14 +104,14 @@ LABEL_20:
     v20 = (*&v37[*(v36[0] - 24) + 16] & 5) != 0;
     if ((*&v37[*(v36[0] - 24) + 16] & 5) != 0)
     {
-      if (a3)
+      if (labels)
       {
-        *a3 = [v12 copy];
+        *labels = [v12 copy];
       }
 
-      if (a6)
+      if (indexes)
       {
-        *a6 = [v33 copy];
+        *indexes = [v33 copy];
       }
     }
 
@@ -129,7 +129,7 @@ LABEL_20:
       }
 
       v23 = [v21 initWithUTF8String:v22];
-      if ([a1 isValidLabel:v23])
+      if ([self isValidLabel:v23])
       {
         [v33 addIndex:v13];
 LABEL_28:
@@ -139,18 +139,18 @@ LABEL_28:
         continue;
       }
 
-      if (v11)
+      if (objectCopy)
       {
-        v24 = v11;
+        v24 = objectCopy;
 
         v23 = v24;
         goto LABEL_28;
       }
 
-      if (v29)
+      if (errorCopy2)
       {
-        v27 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Line %lu of %@ contains an invalid label of %@", v13 + 1, v10, v23, v38];
-        *v29 = [MEMORY[0x1E696ABC0] VisionCoreErrorForCorruptedResourceWithLocalizedDescription:v27];
+        v27 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Line %lu of %@ contains an invalid label of %@", v13 + 1, lCopy, v23, v38];
+        *errorCopy2 = [MEMORY[0x1E696ABC0] VisionCoreErrorForCorruptedResourceWithLocalizedDescription:v27];
       }
     }
 
@@ -171,13 +171,13 @@ LABEL_42:
   return v20;
 }
 
-+ (BOOL)isValidLabel:(id)a3
++ (BOOL)isValidLabel:(id)label
 {
-  v3 = a3;
+  labelCopy = label;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = labelCopy;
     if ([v4 length])
     {
       v5 = [v4 hasPrefix:@"CVML_UNKNOWN_"] ^ 1;

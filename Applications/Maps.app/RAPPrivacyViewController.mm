@@ -1,67 +1,67 @@
 @interface RAPPrivacyViewController
-- (RAPPrivacyViewController)initWithUserEnteredEmailAddress:(id)a3;
-- (void)_presentPrivacyController:(id)a3;
-- (void)presentPrivacyScreen:(id)a3;
-- (void)presentPrivacyScreenForShortcutType:(int64_t)a3 completion:(id)a4;
+- (RAPPrivacyViewController)initWithUserEnteredEmailAddress:(id)address;
+- (void)_presentPrivacyController:(id)controller;
+- (void)presentPrivacyScreen:(id)screen;
+- (void)presentPrivacyScreenForShortcutType:(int64_t)type completion:(id)completion;
 @end
 
 @implementation RAPPrivacyViewController
 
-- (void)_presentPrivacyController:(id)a3
+- (void)_presentPrivacyController:(id)controller
 {
-  v13 = a3;
+  controllerCopy = controller;
   v3 = +[UIApplication sharedApplication];
-  v4 = [v3 keyWindow];
-  v5 = [v4 rootViewController];
+  keyWindow = [v3 keyWindow];
+  rootViewController = [keyWindow rootViewController];
 
-  v6 = [v5 presentedViewController];
+  presentedViewController = [rootViewController presentedViewController];
 
-  if (v6)
+  if (presentedViewController)
   {
     do
     {
-      v7 = [v5 presentedViewController];
+      presentedViewController2 = [rootViewController presentedViewController];
 
-      v8 = [v7 presentedViewController];
+      v7PresentedViewController = [presentedViewController2 presentedViewController];
 
-      v5 = v7;
+      rootViewController = presentedViewController2;
     }
 
-    while (v8);
+    while (v7PresentedViewController);
   }
 
   else
   {
-    v7 = v5;
+    presentedViewController2 = rootViewController;
   }
 
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && sub_10000FA08(v7) == 5)
+  if ((objc_opt_isKindOfClass() & 1) != 0 && sub_10000FA08(presentedViewController2) == 5)
   {
-    [v13 setModalPresentationStyle:2];
-    [v13 setModalInPresentation:1];
-    v9 = [v7 _maps_mapsSceneDelegate];
-    v10 = [v9 rapPresenter];
-    [v10 presentViewController:v13 animated:1];
+    [controllerCopy setModalPresentationStyle:2];
+    [controllerCopy setModalInPresentation:1];
+    _maps_mapsSceneDelegate = [presentedViewController2 _maps_mapsSceneDelegate];
+    rapPresenter = [_maps_mapsSceneDelegate rapPresenter];
+    [rapPresenter presentViewController:controllerCopy animated:1];
   }
 
-  else if ([v7 isViewLoaded])
+  else if ([presentedViewController2 isViewLoaded])
   {
-    v11 = [v7 view];
-    v12 = [v11 window];
+    view = [presentedViewController2 view];
+    window = [view window];
 
-    if (v12)
+    if (window)
     {
-      [v13 setModalPresentationStyle:2];
-      [v13 setModalInPresentation:1];
-      [v7 presentViewController:v13 animated:1 completion:0];
+      [controllerCopy setModalPresentationStyle:2];
+      [controllerCopy setModalInPresentation:1];
+      [presentedViewController2 presentViewController:controllerCopy animated:1 completion:0];
     }
   }
 }
 
-- (void)presentPrivacyScreen:(id)a3
+- (void)presentPrivacyScreen:(id)screen
 {
-  v4 = a3;
+  screenCopy = screen;
   userEnteredEmailAddress = self->_userEnteredEmailAddress;
   if (userEnteredEmailAddress)
   {
@@ -75,7 +75,7 @@
 
   v7 = v6;
   v8 = objc_alloc_init(RAPReportComposerNavigationController);
-  v9 = [[_RAPPrivacyInformationController alloc] initWithCompletion:v4 emailAddress:v7 isUserEnteredEmailAddress:userEnteredEmailAddress != 0];
+  v9 = [[_RAPPrivacyInformationController alloc] initWithCompletion:screenCopy emailAddress:v7 isUserEnteredEmailAddress:userEnteredEmailAddress != 0];
   v11 = v9;
   v10 = [NSArray arrayWithObjects:&v11 count:1];
   [(RAPReportComposerNavigationController *)v8 setViewControllers:v10];
@@ -83,17 +83,17 @@
   [(RAPPrivacyViewController *)self _presentPrivacyController:v8];
 }
 
-- (void)presentPrivacyScreenForShortcutType:(int64_t)a3 completion:(id)a4
+- (void)presentPrivacyScreenForShortcutType:(int64_t)type completion:(id)completion
 {
-  v6 = a4;
-  v7 = [[_RAPPrivacyInformationController alloc] initWithShortcutType:a3 completion:v6];
+  completionCopy = completion;
+  v7 = [[_RAPPrivacyInformationController alloc] initWithShortcutType:type completion:completionCopy];
   objc_initWeak(&location, v7);
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100F53AA8;
   v9[3] = &unk_10165E0F8;
   objc_copyWeak(&v11, &location);
-  v8 = v6;
+  v8 = completionCopy;
   v10 = v8;
   [(_RAPPrivacyInformationController *)v7 setCompletion:v9];
   [(RAPPrivacyViewController *)self _presentPrivacyController:v7];
@@ -102,16 +102,16 @@
   objc_destroyWeak(&location);
 }
 
-- (RAPPrivacyViewController)initWithUserEnteredEmailAddress:(id)a3
+- (RAPPrivacyViewController)initWithUserEnteredEmailAddress:(id)address
 {
-  v5 = a3;
+  addressCopy = address;
   v9.receiver = self;
   v9.super_class = RAPPrivacyViewController;
   v6 = [(RAPPrivacyViewController *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_userEnteredEmailAddress, a3);
+    objc_storeStrong(&v6->_userEnteredEmailAddress, address);
   }
 
   return v7;

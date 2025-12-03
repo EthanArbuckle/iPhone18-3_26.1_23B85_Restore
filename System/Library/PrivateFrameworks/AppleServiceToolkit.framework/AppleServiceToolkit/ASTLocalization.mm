@@ -1,14 +1,14 @@
 @interface ASTLocalization
-+ (id)localizedStringForKey:(id)a3;
-+ (void)prepareLocalizedStringsWithCompletionHandler:(id)a3;
++ (id)localizedStringForKey:(id)key;
++ (void)prepareLocalizedStringsWithCompletionHandler:(id)handler;
 @end
 
 @implementation ASTLocalization
 
-+ (void)prepareLocalizedStringsWithCompletionHandler:(id)a3
++ (void)prepareLocalizedStringsWithCompletionHandler:(id)handler
 {
-  v3 = a3;
-  v4 = v3;
+  handlerCopy = handler;
+  v4 = handlerCopy;
   v8[0] = 0;
   v8[1] = v8;
   v8[2] = 0x3032000000;
@@ -17,7 +17,7 @@
   v9 = 0;
   if (ASTStringsTable)
   {
-    (*(v3 + 2))(v3, 1, 0);
+    (*(handlerCopy + 2))(handlerCopy, 1, 0);
   }
 
   else
@@ -27,7 +27,7 @@
     v5[2] = __64__ASTLocalization_prepareLocalizedStringsWithCompletionHandler___block_invoke;
     v5[3] = &unk_278CBD608;
     v7 = v8;
-    v6 = v3;
+    v6 = handlerCopy;
     [ASTSession requestAsset:@"strings" serverURL:0 endpoint:@"localized" completionHandler:v5];
   }
 
@@ -72,12 +72,12 @@ LABEL_7:
   (*(*(a1 + 32) + 16))();
 }
 
-+ (id)localizedStringForKey:(id)a3
++ (id)localizedStringForKey:(id)key
 {
-  v3 = a3;
-  if (!ASTStringsTable || ([ASTStringsTable objectForKeyedSubscript:v3], (v4 = objc_claimAutoreleasedReturnValue()) == 0))
+  keyCopy = key;
+  if (!ASTStringsTable || ([ASTStringsTable objectForKeyedSubscript:keyCopy], (v4 = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v4 = v3;
+    v4 = keyCopy;
   }
 
   return v4;

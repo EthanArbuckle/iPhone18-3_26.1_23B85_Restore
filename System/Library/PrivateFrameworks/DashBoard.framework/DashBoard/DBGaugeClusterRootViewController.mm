@@ -1,46 +1,46 @@
 @interface DBGaugeClusterRootViewController
 - (BOOL)_showDisclaimerLabel;
 - (BOOL)_showSerialNumber;
-- (DBGaugeClusterRootViewController)initWithEnvironment:(id)a3 workspaceIdentifier:(id)a4;
+- (DBGaugeClusterRootViewController)initWithEnvironment:(id)environment workspaceIdentifier:(id)identifier;
 - (DBInstrumentClusterEnvironment)environment;
-- (id)_disclaimerLabelWithText:(id)a3;
+- (id)_disclaimerLabelWithText:(id)text;
 - (void)_createDisclaimerLabel;
 - (void)_installLayoutViewControllerIfNeeded;
-- (void)_showAssetErrorViewWithError:(id)a3;
+- (void)_showAssetErrorViewWithError:(id)error;
 - (void)invalidate;
-- (void)session:(id)a3 showUIForScreenInfo:(id)a4 withURL:(id)a5;
-- (void)session:(id)a3 stopUIForScreenInfo:(id)a4;
+- (void)session:(id)session showUIForScreenInfo:(id)info withURL:(id)l;
+- (void)session:(id)session stopUIForScreenInfo:(id)info;
 - (void)viewDidLoad;
 @end
 
 @implementation DBGaugeClusterRootViewController
 
-- (DBGaugeClusterRootViewController)initWithEnvironment:(id)a3 workspaceIdentifier:(id)a4
+- (DBGaugeClusterRootViewController)initWithEnvironment:(id)environment workspaceIdentifier:(id)identifier
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  environmentCopy = environment;
+  identifierCopy = identifier;
   v28.receiver = self;
   v28.super_class = DBGaugeClusterRootViewController;
   v8 = [(DBGaugeClusterRootViewController *)&v28 initWithNibName:0 bundle:0];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_environment, v6);
-    v10 = [v7 copy];
+    objc_storeWeak(&v8->_environment, environmentCopy);
+    v10 = [identifierCopy copy];
     workspaceIdentifier = v9->_workspaceIdentifier;
     v9->_workspaceIdentifier = v10;
 
     WeakRetained = objc_loadWeakRetained(&v9->_environment);
-    v13 = [WeakRetained environmentConfiguration];
-    v14 = [v13 session];
-    [v14 addObserver:v9];
+    environmentConfiguration = [WeakRetained environmentConfiguration];
+    session = [environmentConfiguration session];
+    [session addObserver:v9];
 
     v15 = objc_loadWeakRetained(&v9->_environment);
-    v16 = [v15 environmentConfiguration];
-    v17 = [v16 themeController];
+    environmentConfiguration2 = [v15 environmentConfiguration];
+    themeController = [environmentConfiguration2 themeController];
 
-    if ([v17 allowsOEMIconForDisplayID:@"Center_Display"] && (v18 = objc_loadWeakRetained(&v9->_environment), objc_msgSend(v18, "environmentConfiguration"), v19 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v19, "session"), v20 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v20, "configuration"), v21 = objc_claimAutoreleasedReturnValue(), v22 = objc_msgSend(v21, "manufacturerIconVisible"), v21, v20, v19, v18, v22))
+    if ([themeController allowsOEMIconForDisplayID:@"Center_Display"] && (v18 = objc_loadWeakRetained(&v9->_environment), objc_msgSend(v18, "environmentConfiguration"), v19 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v19, "session"), v20 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v20, "configuration"), v21 = objc_claimAutoreleasedReturnValue(), v22 = objc_msgSend(v21, "manufacturerIconVisible"), v21, v20, v19, v18, v22))
     {
       v9->_OEMIconVisible = 1;
       v23 = DBLogForCategory(0xAuLL);
@@ -103,17 +103,17 @@ LABEL_14:
 
 - (void)invalidate
 {
-  v3 = [(DBGaugeClusterRootViewController *)self layoutViewController];
-  [v3 invalidate];
+  layoutViewController = [(DBGaugeClusterRootViewController *)self layoutViewController];
+  [layoutViewController invalidate];
 
-  v4 = [(DBGaugeClusterRootViewController *)self environment];
-  v5 = [v4 environmentConfiguration];
-  [v5 removeObserver:self];
+  environment = [(DBGaugeClusterRootViewController *)self environment];
+  environmentConfiguration = [environment environmentConfiguration];
+  [environmentConfiguration removeObserver:self];
 
   WeakRetained = objc_loadWeakRetained(&self->_environment);
-  v7 = [WeakRetained environmentConfiguration];
-  v8 = [v7 session];
-  [v8 removeObserver:self];
+  environmentConfiguration2 = [WeakRetained environmentConfiguration];
+  session = [environmentConfiguration2 session];
+  [session removeObserver:self];
 
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
 
@@ -123,50 +123,50 @@ LABEL_14:
 - (void)_installLayoutViewControllerIfNeeded
 {
   v54 = *MEMORY[0x277D85DE8];
-  v3 = [(DBGaugeClusterRootViewController *)self layoutViewController];
+  layoutViewController = [(DBGaugeClusterRootViewController *)self layoutViewController];
 
-  if (v3)
+  if (layoutViewController)
   {
-    v4 = DBLogForCategory(0xAuLL);
-    if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+    themeController = DBLogForCategory(0xAuLL);
+    if (os_log_type_enabled(themeController, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&dword_248146000, v4, OS_LOG_TYPE_DEFAULT, "Layout has already been loaded", buf, 2u);
+      _os_log_impl(&dword_248146000, themeController, OS_LOG_TYPE_DEFAULT, "Layout has already been loaded", buf, 2u);
     }
   }
 
   else
   {
-    v5 = [(DBGaugeClusterRootViewController *)self environment];
-    v6 = [v5 environmentConfiguration];
-    v4 = [v6 themeController];
+    environment = [(DBGaugeClusterRootViewController *)self environment];
+    environmentConfiguration = [environment environmentConfiguration];
+    themeController = [environmentConfiguration themeController];
 
-    if (v4)
+    if (themeController)
     {
-      v7 = [v4 themeAssetDocument];
+      themeAssetDocument = [themeController themeAssetDocument];
       v8 = DBLogForCategory(0xAuLL);
       if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
       {
-        v9 = [v7 documentURL];
+        documentURL = [themeAssetDocument documentURL];
         *buf = 138412290;
-        v53 = v9;
+        v53 = documentURL;
         _os_log_impl(&dword_248146000, v8, OS_LOG_TYPE_INFO, "using cluster layout: %@", buf, 0xCu);
       }
 
       v10 = [_TtC9DashBoard39DBInstrumentClusterLayoutViewController alloc];
-      v11 = [(DBGaugeClusterRootViewController *)self environment];
-      v12 = [(DBGaugeClusterRootViewController *)self environment];
-      v13 = [v12 displayInfo];
-      v14 = [v13 identifier];
-      v15 = [(DBGaugeClusterRootViewController *)self workspaceIdentifier];
+      environment2 = [(DBGaugeClusterRootViewController *)self environment];
+      environment3 = [(DBGaugeClusterRootViewController *)self environment];
+      displayInfo = [environment3 displayInfo];
+      identifier = [displayInfo identifier];
+      workspaceIdentifier = [(DBGaugeClusterRootViewController *)self workspaceIdentifier];
       v50 = 0;
-      v16 = [(DBInstrumentClusterLayoutViewController *)v10 initWithThemeController:v4 environment:v11 displayID:v14 workspaceIdentifier:v15 error:&v50];
+      v16 = [(DBInstrumentClusterLayoutViewController *)v10 initWithThemeController:themeController environment:environment2 displayID:identifier workspaceIdentifier:workspaceIdentifier error:&v50];
       v17 = v50;
 
       if (v16)
       {
         v47 = v17;
-        v49 = v7;
+        v49 = themeAssetDocument;
         [(DBGaugeClusterRootViewController *)self setLayoutViewController:v16];
         v18 = DBLogForCategory(0xAuLL);
         if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
@@ -176,42 +176,42 @@ LABEL_14:
           _os_log_impl(&dword_248146000, v18, OS_LOG_TYPE_DEFAULT, "Created gauge cluster layout view controller %@", buf, 0xCu);
         }
 
-        v19 = [(DBInstrumentClusterLayoutViewController *)v16 view];
+        view = [(DBInstrumentClusterLayoutViewController *)v16 view];
         [(DBGaugeClusterRootViewController *)self addChildViewController:v16];
-        v20 = [(DBGaugeClusterRootViewController *)self view];
-        [v20 addSubview:v19];
+        view2 = [(DBGaugeClusterRootViewController *)self view];
+        [view2 addSubview:view];
 
         v48 = v16;
         [(DBInstrumentClusterLayoutViewController *)v16 didMoveToParentViewController:self];
-        [v19 setTranslatesAutoresizingMaskIntoConstraints:0];
+        [view setTranslatesAutoresizingMaskIntoConstraints:0];
         v38 = MEMORY[0x277CCAAD0];
-        v44 = [v19 leadingAnchor];
-        v45 = [(DBGaugeClusterRootViewController *)self view];
-        v43 = [v45 leadingAnchor];
-        v42 = [v44 constraintEqualToAnchor:v43];
+        leadingAnchor = [view leadingAnchor];
+        view3 = [(DBGaugeClusterRootViewController *)self view];
+        leadingAnchor2 = [view3 leadingAnchor];
+        v42 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
         v51[0] = v42;
-        v40 = [v19 trailingAnchor];
-        v41 = [(DBGaugeClusterRootViewController *)self view];
-        v39 = [v41 trailingAnchor];
-        v37 = [v40 constraintEqualToAnchor:v39];
+        trailingAnchor = [view trailingAnchor];
+        view4 = [(DBGaugeClusterRootViewController *)self view];
+        trailingAnchor2 = [view4 trailingAnchor];
+        v37 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
         v51[1] = v37;
-        v36 = [v19 topAnchor];
-        v21 = [(DBGaugeClusterRootViewController *)self view];
-        v22 = [v21 topAnchor];
-        v23 = [v36 constraintEqualToAnchor:v22];
+        topAnchor = [view topAnchor];
+        view5 = [(DBGaugeClusterRootViewController *)self view];
+        topAnchor2 = [view5 topAnchor];
+        v23 = [topAnchor constraintEqualToAnchor:topAnchor2];
         v51[2] = v23;
-        v46 = v19;
-        v24 = [v19 bottomAnchor];
-        v25 = [(DBGaugeClusterRootViewController *)self view];
-        v26 = [v25 bottomAnchor];
-        v27 = [v24 constraintEqualToAnchor:v26];
+        v46 = view;
+        bottomAnchor = [view bottomAnchor];
+        view6 = [(DBGaugeClusterRootViewController *)self view];
+        bottomAnchor2 = [view6 bottomAnchor];
+        v27 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
         v51[3] = v27;
         v28 = [MEMORY[0x277CBEA60] arrayWithObjects:v51 count:4];
         [v38 activateConstraints:v28];
 
-        v7 = v49;
-        v29 = [v49 documentInfo];
-        v30 = [v29 objectForKey:@"removeDisclaimerLabelOverride"];
+        themeAssetDocument = v49;
+        documentInfo = [v49 documentInfo];
+        v30 = [documentInfo objectForKey:@"removeDisclaimerLabelOverride"];
 
         v31 = DBLogForCategory(0xAuLL);
         v32 = os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT);
@@ -227,11 +227,11 @@ LABEL_14:
           v16 = v48;
           if (CRIsInternalInstall())
           {
-            v33 = [MEMORY[0x277CF89D0] showDisclaimerLabel];
-            [v33 setInternalSettingsState:0];
+            showDisclaimerLabel = [MEMORY[0x277CF89D0] showDisclaimerLabel];
+            [showDisclaimerLabel setInternalSettingsState:0];
 
-            v34 = [MEMORY[0x277CF89D0] showSerialNumber];
-            [v34 setInternalSettingsState:0];
+            showSerialNumber = [MEMORY[0x277CF89D0] showSerialNumber];
+            [showSerialNumber setInternalSettingsState:0];
           }
         }
 
@@ -263,19 +263,19 @@ LABEL_14:
 
     else
     {
-      v7 = DBLogForCategory(0xAuLL);
-      if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+      themeAssetDocument = DBLogForCategory(0xAuLL);
+      if (os_log_type_enabled(themeAssetDocument, OS_LOG_TYPE_ERROR))
       {
-        [(DBGaugeClusterRootViewController *)v7 _installLayoutViewControllerIfNeeded];
+        [(DBGaugeClusterRootViewController *)themeAssetDocument _installLayoutViewControllerIfNeeded];
       }
     }
   }
 }
 
-- (void)_showAssetErrorViewWithError:(id)a3
+- (void)_showAssetErrorViewWithError:(id)error
 {
   v44[6] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  errorCopy = error;
   if (DBIsInternalInstall_onceToken_1 != -1)
   {
     [DBGaugeClusterRootViewController _showAssetErrorViewWithError:];
@@ -284,18 +284,18 @@ LABEL_14:
   if (DBIsInternalInstall_isInternal_1 == 1)
   {
     v5 = objc_alloc_init(MEMORY[0x277D75D18]);
-    v6 = [MEMORY[0x277D75348] blackColor];
-    [v5 setBackgroundColor:v6];
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    [v5 setBackgroundColor:blackColor];
 
     [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v7 = [(DBGaugeClusterRootViewController *)self view];
-    [v7 addSubview:v5];
+    view = [(DBGaugeClusterRootViewController *)self view];
+    [view addSubview:v5];
 
-    v8 = [v4 userInfo];
-    v42 = [v8 objectForKey:*MEMORY[0x277CBED58]];
+    userInfo = [errorCopy userInfo];
+    v42 = [userInfo objectForKey:*MEMORY[0x277CBED58]];
 
-    v9 = [v4 userInfo];
-    v41 = [v9 objectForKey:*MEMORY[0x277CBED38]];
+    userInfo2 = [errorCopy userInfo];
+    v41 = [userInfo2 objectForKey:*MEMORY[0x277CBED38]];
 
     v10 = objc_alloc_init(MEMORY[0x277D756B8]);
     [v10 setNumberOfLines:0];
@@ -303,51 +303,51 @@ LABEL_14:
     v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"Unable to load layout from layout document.\nAsset version: %@, identifier: %@", v42, v41];
     [v10 setText:v11];
 
-    v12 = [MEMORY[0x277D75348] whiteColor];
-    [v10 setTextColor:v12];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [v10 setTextColor:whiteColor];
 
     [v10 sizeToFit];
-    v13 = [(DBGaugeClusterRootViewController *)self view];
-    [v13 addSubview:v10];
+    view2 = [(DBGaugeClusterRootViewController *)self view];
+    [view2 addSubview:v10];
 
     [v10 setTranslatesAutoresizingMaskIntoConstraints:0];
     v29 = MEMORY[0x277CCAAD0];
-    v39 = [v5 leftAnchor];
-    v40 = [(DBGaugeClusterRootViewController *)self view];
-    v38 = [v40 leftAnchor];
-    v37 = [v39 constraintEqualToAnchor:v38];
+    leftAnchor = [v5 leftAnchor];
+    view3 = [(DBGaugeClusterRootViewController *)self view];
+    leftAnchor2 = [view3 leftAnchor];
+    v37 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
     v44[0] = v37;
-    v34 = [v5 rightAnchor];
-    v35 = [(DBGaugeClusterRootViewController *)self view];
-    v33 = [v35 rightAnchor];
-    v32 = [v34 constraintEqualToAnchor:v33];
+    rightAnchor = [v5 rightAnchor];
+    view4 = [(DBGaugeClusterRootViewController *)self view];
+    rightAnchor2 = [view4 rightAnchor];
+    v32 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
     v44[1] = v32;
     v36 = v5;
-    v30 = [v5 topAnchor];
-    v31 = [(DBGaugeClusterRootViewController *)self view];
-    v28 = [v31 topAnchor];
-    v27 = [v30 constraintEqualToAnchor:v28];
+    topAnchor = [v5 topAnchor];
+    view5 = [(DBGaugeClusterRootViewController *)self view];
+    topAnchor2 = [view5 topAnchor];
+    v27 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v44[2] = v27;
-    v25 = [v5 bottomAnchor];
-    v26 = [(DBGaugeClusterRootViewController *)self view];
-    v24 = [v26 bottomAnchor];
-    v23 = [v25 constraintEqualToAnchor:v24];
+    bottomAnchor = [v5 bottomAnchor];
+    view6 = [(DBGaugeClusterRootViewController *)self view];
+    bottomAnchor2 = [view6 bottomAnchor];
+    v23 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v44[3] = v23;
-    v14 = [v10 centerXAnchor];
-    v15 = [(DBGaugeClusterRootViewController *)self view];
-    [v15 centerXAnchor];
-    v16 = v43 = v4;
-    v17 = [v14 constraintEqualToAnchor:v16];
+    centerXAnchor = [v10 centerXAnchor];
+    view7 = [(DBGaugeClusterRootViewController *)self view];
+    [view7 centerXAnchor];
+    v16 = v43 = errorCopy;
+    v17 = [centerXAnchor constraintEqualToAnchor:v16];
     v44[4] = v17;
-    v18 = [v10 centerYAnchor];
-    v19 = [(DBGaugeClusterRootViewController *)self view];
-    v20 = [v19 centerYAnchor];
-    v21 = [v18 constraintEqualToAnchor:v20];
+    centerYAnchor = [v10 centerYAnchor];
+    view8 = [(DBGaugeClusterRootViewController *)self view];
+    centerYAnchor2 = [view8 centerYAnchor];
+    v21 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v44[5] = v21;
     v22 = [MEMORY[0x277CBEA60] arrayWithObjects:v44 count:6];
     [v29 activateConstraints:v22];
 
-    v4 = v43;
+    errorCopy = v43;
   }
 }
 
@@ -396,8 +396,8 @@ LABEL_14:
 - (void)_createDisclaimerLabel
 {
   v28 = *MEMORY[0x277D85DE8];
-  v3 = [(DBGaugeClusterRootViewController *)self appleConfidentialLabel];
-  [v3 removeFromSuperview];
+  appleConfidentialLabel = [(DBGaugeClusterRootViewController *)self appleConfidentialLabel];
+  [appleConfidentialLabel removeFromSuperview];
 
   [(DBGaugeClusterRootViewController *)self setAppleConfidentialLabel:0];
   if ([(DBGaugeClusterRootViewController *)self _showDisclaimerLabel])
@@ -439,25 +439,25 @@ LABEL_14:
     }
 
     v9 = [(DBGaugeClusterRootViewController *)self _disclaimerLabelWithText:v4];
-    v10 = [(DBGaugeClusterRootViewController *)self view];
-    [v10 addSubview:v9];
+    view = [(DBGaugeClusterRootViewController *)self view];
+    [view addSubview:v9];
 
     [v9 setTranslatesAutoresizingMaskIntoConstraints:0];
     v20 = MEMORY[0x277CCAAD0];
-    v23 = [v9 topAnchor];
-    v24 = [(DBGaugeClusterRootViewController *)self view];
-    v22 = [v24 topAnchor];
-    v21 = [v23 constraintEqualToAnchor:v22];
+    topAnchor = [v9 topAnchor];
+    view2 = [(DBGaugeClusterRootViewController *)self view];
+    topAnchor2 = [view2 topAnchor];
+    v21 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v25[0] = v21;
-    v18 = [v9 bottomAnchor];
-    v19 = [(DBGaugeClusterRootViewController *)self view];
-    v11 = [v19 topAnchor];
-    v12 = [v18 constraintEqualToAnchor:v11 constant:10.0];
+    bottomAnchor = [v9 bottomAnchor];
+    view3 = [(DBGaugeClusterRootViewController *)self view];
+    topAnchor3 = [view3 topAnchor];
+    v12 = [bottomAnchor constraintEqualToAnchor:topAnchor3 constant:10.0];
     v25[1] = v12;
-    v13 = [v9 centerXAnchor];
-    v14 = [(DBGaugeClusterRootViewController *)self view];
-    v15 = [v14 centerXAnchor];
-    v16 = [v13 constraintEqualToAnchor:v15];
+    centerXAnchor = [v9 centerXAnchor];
+    view4 = [(DBGaugeClusterRootViewController *)self view];
+    centerXAnchor2 = [view4 centerXAnchor];
+    v16 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v25[2] = v16;
     v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v25 count:3];
     [v20 activateConstraints:v17];
@@ -466,18 +466,18 @@ LABEL_14:
   }
 }
 
-- (id)_disclaimerLabelWithText:(id)a3
+- (id)_disclaimerLabelWithText:(id)text
 {
   v3 = MEMORY[0x277D756B8];
-  v4 = a3;
+  textCopy = text;
   v5 = objc_alloc_init(v3);
-  [v5 setText:v4];
+  [v5 setText:textCopy];
 
-  v6 = [MEMORY[0x277D75348] redColor];
-  [v5 setTextColor:v6];
+  redColor = [MEMORY[0x277D75348] redColor];
+  [v5 setTextColor:redColor];
 
-  v7 = [v5 font];
-  v8 = [v7 fontWithSize:10.0];
+  font = [v5 font];
+  v8 = [font fontWithSize:10.0];
   [v5 setFont:v8];
 
   [v5 setTextAlignment:1];
@@ -485,35 +485,35 @@ LABEL_14:
   return v5;
 }
 
-- (void)session:(id)a3 showUIForScreenInfo:(id)a4 withURL:(id)a5
+- (void)session:(id)session showUIForScreenInfo:(id)info withURL:(id)l
 {
   v20 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
+  infoCopy = info;
+  lCopy = l;
   if (self->_OEMIconVisible)
   {
-    v9 = [(DBGaugeClusterRootViewController *)self environment];
-    v10 = [v9 displayInfo];
-    v11 = [v7 identifier];
-    if ([v10 hasVideoStreamWithIdentifier:v11])
+    environment = [(DBGaugeClusterRootViewController *)self environment];
+    displayInfo = [environment displayInfo];
+    identifier = [infoCopy identifier];
+    if ([displayInfo hasVideoStreamWithIdentifier:identifier])
     {
-      v12 = [v8 absoluteString];
-      v13 = [v12 lowercaseString];
-      v14 = [v13 isEqualToString:@"gaugecluster:"];
+      absoluteString = [lCopy absoluteString];
+      lowercaseString = [absoluteString lowercaseString];
+      v14 = [lowercaseString isEqualToString:@"gaugecluster:"];
 
       if (v14)
       {
         v15 = DBLogForCategory(0xAuLL);
         if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
         {
-          v16 = [v7 identifier];
+          identifier2 = [infoCopy identifier];
           v18 = 138412290;
-          v19 = v16;
+          v19 = identifier2;
           _os_log_impl(&dword_248146000, v15, OS_LOG_TYPE_DEFAULT, "Showing DBGaugeClusterRootViewController - showUI received for video stream: %@", &v18, 0xCu);
         }
 
-        v17 = [(DBGaugeClusterRootViewController *)self view];
-        [v17 setHidden:0];
+        view = [(DBGaugeClusterRootViewController *)self view];
+        [view setHidden:0];
       }
     }
 
@@ -523,30 +523,30 @@ LABEL_14:
   }
 }
 
-- (void)session:(id)a3 stopUIForScreenInfo:(id)a4
+- (void)session:(id)session stopUIForScreenInfo:(id)info
 {
   v15 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  infoCopy = info;
   if (self->_OEMIconVisible)
   {
-    v6 = [(DBGaugeClusterRootViewController *)self environment];
-    v7 = [v6 displayInfo];
-    v8 = [v5 identifier];
-    v9 = [v7 hasVideoStreamWithIdentifier:v8];
+    environment = [(DBGaugeClusterRootViewController *)self environment];
+    displayInfo = [environment displayInfo];
+    identifier = [infoCopy identifier];
+    v9 = [displayInfo hasVideoStreamWithIdentifier:identifier];
 
     if (v9)
     {
       v10 = DBLogForCategory(0xAuLL);
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
-        v11 = [v5 identifier];
+        identifier2 = [infoCopy identifier];
         v13 = 138412290;
-        v14 = v11;
+        v14 = identifier2;
         _os_log_impl(&dword_248146000, v10, OS_LOG_TYPE_DEFAULT, "Hiding DBGaugeClusterRootViewController - stopUI received for video stream: %@", &v13, 0xCu);
       }
 
-      v12 = [(DBGaugeClusterRootViewController *)self view];
-      [v12 setHidden:1];
+      view = [(DBGaugeClusterRootViewController *)self view];
+      [view setHidden:1];
     }
   }
 }

@@ -9,13 +9,13 @@
 - (void)_commitDeferredInterfaceUpdates;
 - (void)_saveCurrentStateAsDeferred;
 - (void)dealloc;
-- (void)setClearButtonMode:(int64_t)a3;
-- (void)setDeferringInterfaceUpdates:(BOOL)a3;
-- (void)setFont:(id)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setPaddingTop:(float)a3 paddingLeft:(float)a4;
-- (void)setPlaceholder:(id)a3;
-- (void)setText:(id)a3;
+- (void)setClearButtonMode:(int64_t)mode;
+- (void)setDeferringInterfaceUpdates:(BOOL)updates;
+- (void)setFont:(id)font;
+- (void)setFrame:(CGRect)frame;
+- (void)setPaddingTop:(float)top paddingLeft:(float)left;
+- (void)setPlaceholder:(id)placeholder;
+- (void)setText:(id)text;
 @end
 
 @implementation SUDeferredUISearchField
@@ -27,18 +27,18 @@
   [(SUDeferredUISearchField *)&v3 dealloc];
 }
 
-- (void)setDeferringInterfaceUpdates:(BOOL)a3
+- (void)setDeferringInterfaceUpdates:(BOOL)updates
 {
   isDeferringInterfaceUpdates = self->_isDeferringInterfaceUpdates;
-  if (isDeferringInterfaceUpdates != a3)
+  if (isDeferringInterfaceUpdates != updates)
   {
     if (!isDeferringInterfaceUpdates)
     {
       [(SUDeferredUISearchField *)self _saveCurrentStateAsDeferred];
     }
 
-    self->_isDeferringInterfaceUpdates = a3;
-    if (!a3)
+    self->_isDeferringInterfaceUpdates = updates;
+    if (!updates)
     {
 
       [(SUDeferredUISearchField *)self _commitDeferredInterfaceUpdates];
@@ -132,40 +132,40 @@
   return [(SUDeferredUISearchField *)&v4 placeholder];
 }
 
-- (void)setClearButtonMode:(int64_t)a3
+- (void)setClearButtonMode:(int64_t)mode
 {
   if ([(SUDeferredUISearchField *)self isDeferringInterfaceUpdates])
   {
-    self->_deferredClearButtonMode = a3;
+    self->_deferredClearButtonMode = mode;
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = SUDeferredUISearchField;
-    [(SUDeferredUISearchField *)&v5 setClearButtonMode:a3];
+    [(SUDeferredUISearchField *)&v5 setClearButtonMode:mode];
   }
 }
 
-- (void)setFont:(id)a3
+- (void)setFont:(id)font
 {
   if ([(SUDeferredUISearchField *)self isDeferringInterfaceUpdates])
   {
     deferredFont = self->_deferredFont;
-    if (deferredFont != a3)
+    if (deferredFont != font)
     {
 
-      if (a3)
+      if (font)
       {
-        v6 = a3;
+        fontCopy = font;
       }
 
       else
       {
-        v6 = [MEMORY[0x1E695DFB0] null];
+        fontCopy = [MEMORY[0x1E695DFB0] null];
       }
 
-      self->_deferredFont = v6;
+      self->_deferredFont = fontCopy;
     }
   }
 
@@ -173,16 +173,16 @@
   {
     v7.receiver = self;
     v7.super_class = SUDeferredUISearchField;
-    [(SUDeferredUISearchField *)&v7 setFont:a3];
+    [(SUDeferredUISearchField *)&v7 setFont:font];
   }
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   if ([(SUDeferredUISearchField *)self isDeferringInterfaceUpdates])
   {
     self->_deferredFrame.origin.x = x;
@@ -199,43 +199,43 @@
   }
 }
 
-- (void)setPaddingTop:(float)a3 paddingLeft:(float)a4
+- (void)setPaddingTop:(float)top paddingLeft:(float)left
 {
   if ([(SUDeferredUISearchField *)self isDeferringInterfaceUpdates])
   {
-    self->_deferredPaddingLeft = a4;
-    self->_deferredPaddingTop = a3;
+    self->_deferredPaddingLeft = left;
+    self->_deferredPaddingTop = top;
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = SUDeferredUISearchField;
-    *&v7 = a3;
-    *&v8 = a4;
+    *&v7 = top;
+    *&v8 = left;
     [(UISearchField *)&v9 setPaddingTop:v7 paddingLeft:v8];
   }
 }
 
-- (void)setPlaceholder:(id)a3
+- (void)setPlaceholder:(id)placeholder
 {
   if ([(SUDeferredUISearchField *)self isDeferringInterfaceUpdates])
   {
     deferredPlaceholder = self->_deferredPlaceholder;
-    if (deferredPlaceholder != a3)
+    if (deferredPlaceholder != placeholder)
     {
 
-      if (a3)
+      if (placeholder)
       {
-        v6 = [a3 copy];
+        null = [placeholder copy];
       }
 
       else
       {
-        v6 = [MEMORY[0x1E695DFB0] null];
+        null = [MEMORY[0x1E695DFB0] null];
       }
 
-      self->_deferredPlaceholder = v6;
+      self->_deferredPlaceholder = null;
     }
   }
 
@@ -243,29 +243,29 @@
   {
     v7.receiver = self;
     v7.super_class = SUDeferredUISearchField;
-    [(SUDeferredUISearchField *)&v7 setPlaceholder:a3];
+    [(SUDeferredUISearchField *)&v7 setPlaceholder:placeholder];
   }
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
   if ([(SUDeferredUISearchField *)self isDeferringInterfaceUpdates])
   {
     deferredText = self->_deferredText;
-    if (deferredText != a3)
+    if (deferredText != text)
     {
 
-      if (a3)
+      if (text)
       {
-        v6 = [a3 copy];
+        null = [text copy];
       }
 
       else
       {
-        v6 = [MEMORY[0x1E695DFB0] null];
+        null = [MEMORY[0x1E695DFB0] null];
       }
 
-      self->_deferredText = v6;
+      self->_deferredText = null;
     }
   }
 
@@ -273,7 +273,7 @@
   {
     v7.receiver = self;
     v7.super_class = SUDeferredUISearchField;
-    [(SUDeferredUISearchField *)&v7 setText:a3];
+    [(SUDeferredUISearchField *)&v7 setText:text];
   }
 }
 

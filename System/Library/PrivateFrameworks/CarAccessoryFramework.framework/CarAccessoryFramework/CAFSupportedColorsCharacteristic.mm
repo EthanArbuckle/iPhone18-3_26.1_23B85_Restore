@@ -3,38 +3,38 @@
 + (void)load;
 - (CAFSupportedColors)supportedColorsValue;
 - (id)formattedValue;
-- (void)setSupportedColorsValue:(id)a3;
+- (void)setSupportedColorsValue:(id)value;
 @end
 
 @implementation CAFSupportedColorsCharacteristic
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___CAFSupportedColorsCharacteristic;
   objc_msgSendSuper2(&v2, sel_load);
 }
 
 - (CAFSupportedColors)supportedColorsValue
 {
-  v2 = [(CAFArrayCharacteristic *)self arrayValue];
-  v3 = [CAFSupportedColors supportedColorsWithArray:v2];
+  arrayValue = [(CAFArrayCharacteristic *)self arrayValue];
+  v3 = [CAFSupportedColors supportedColorsWithArray:arrayValue];
 
   return v3;
 }
 
-- (void)setSupportedColorsValue:(id)a3
+- (void)setSupportedColorsValue:(id)value
 {
-  v4 = [a3 arrayRepresentation];
-  [(CAFArrayCharacteristic *)self setArrayValue:v4];
+  arrayRepresentation = [value arrayRepresentation];
+  [(CAFArrayCharacteristic *)self setArrayValue:arrayRepresentation];
 }
 
 - (id)formattedValue
 {
-  v2 = [(CAFSupportedColorsCharacteristic *)self supportedColorsValue];
-  v3 = [v2 formattedValue];
+  supportedColorsValue = [(CAFSupportedColorsCharacteristic *)self supportedColorsValue];
+  formattedValue = [supportedColorsValue formattedValue];
 
-  return v3;
+  return formattedValue;
 }
 
 + (id)secondaryCharacteristicFormats

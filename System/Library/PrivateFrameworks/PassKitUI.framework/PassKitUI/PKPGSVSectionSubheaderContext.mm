@@ -1,6 +1,6 @@
 @interface PKPGSVSectionSubheaderContext
-- (BOOL)isEqual:(id)a3;
-- (double)positionForViewInContainerFrame:(double)a3;
+- (BOOL)isEqual:(id)equal;
+- (double)positionForViewInContainerFrame:(double)frame;
 - (unint64_t)hash;
 @end
 
@@ -15,12 +15,12 @@
   return PKObjectHash(&view);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  equalCopy = equal;
+  if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v5 = v4;
+    v5 = equalCopy;
     if (self)
     {
       if (self->_view == *&v5->f64[1])
@@ -43,22 +43,22 @@
   return self & 1;
 }
 
-- (double)positionForViewInContainerFrame:(double)a3
+- (double)positionForViewInContainerFrame:(double)frame
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  [*(a1 + 8) bounds];
+  [*(self + 8) bounds];
   v10 = v9;
   v12 = v11;
-  v13 = *(a1 + 24);
+  v13 = *(self + 24);
   v14 = a2 + v13;
-  v15 = a4 - (v13 + *(a1 + 40));
-  v16 = a5 - (*(a1 + 16) + *(a1 + 32));
-  v17 = [*(a1 + 8) layer];
-  [v17 anchorPoint];
+  v15 = a4 - (v13 + *(self + 40));
+  v16 = a5 - (*(self + 16) + *(self + 32));
+  layer = [*(self + 8) layer];
+  [layer anchorPoint];
   v19 = v18;
 
   v20.n128_f64[0] = (v15 - v10) * 0.5;

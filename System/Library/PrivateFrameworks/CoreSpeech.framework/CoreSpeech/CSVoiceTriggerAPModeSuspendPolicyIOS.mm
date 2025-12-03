@@ -8,11 +8,11 @@
 - (void)_addConditionsForIOSAOP;
 - (void)_addConditionsForIOSBargeIn;
 - (void)_addVoiceTriggerAPModeSuspendConditions;
-- (void)_handleClientRecordStateDidChange:(BOOL)a3 eventUUID:(id)a4;
+- (void)_handleClientRecordStateDidChange:(BOOL)change eventUUID:(id)d;
 - (void)_subscribeEventMonitors;
-- (void)intuitiveConvAudioCaptureMonitor:(id)a3 didStartAudioCaptureSuccessfully:(BOOL)a4 option:(id)a5 eventUUID:(id)a6;
-- (void)intuitiveConvAudioCaptureMonitorDidStopAudioCapture:(id)a3 stopStreamOption:(id)a4 eventUUID:(id)a5;
-- (void)siriClientBehaviorMonitor:(id)a3 didChangedRecordState:(BOOL)a4 withEventUUID:(id)a5 withContext:(id)a6;
+- (void)intuitiveConvAudioCaptureMonitor:(id)monitor didStartAudioCaptureSuccessfully:(BOOL)successfully option:(id)option eventUUID:(id)d;
+- (void)intuitiveConvAudioCaptureMonitorDidStopAudioCapture:(id)capture stopStreamOption:(id)option eventUUID:(id)d;
+- (void)siriClientBehaviorMonitor:(id)monitor didChangedRecordState:(BOOL)state withEventUUID:(id)d withContext:(id)context;
 @end
 
 @implementation CSVoiceTriggerAPModeSuspendPolicyIOS
@@ -20,26 +20,26 @@
 - (BOOL)_isHearstRoutedAndWithNoPhoneCall
 {
   v2 = +[CSAudioRouteChangeMonitor sharedInstance];
-  v3 = [v2 hearstRouteStatus];
+  hearstRouteStatus = [v2 hearstRouteStatus];
 
-  v4 = v3 - 1;
+  v4 = hearstRouteStatus - 1;
   v5 = +[CSPhoneCallStateMonitorFactory phoneCallStateMonitor];
-  v6 = [v5 phoneCallState];
+  phoneCallState = [v5 phoneCallState];
 
-  return v4 < 2 && v6 < 2;
+  return v4 < 2 && phoneCallState < 2;
 }
 
 - (BOOL)_isJarvisRouted
 {
   v2 = +[CSAudioRouteChangeMonitor sharedInstance];
-  v3 = [v2 jarvisConnected];
+  jarvisConnected = [v2 jarvisConnected];
 
   v4 = +[CSAudioRouteChangeMonitor sharedInstance];
-  v5 = [v4 hearstRouteStatus];
+  hearstRouteStatus = [v4 hearstRouteStatus];
 
-  if ((v5 - 3) < 0xFFFFFFFFFFFFFFFELL)
+  if ((hearstRouteStatus - 3) < 0xFFFFFFFFFFFFFFFELL)
   {
-    return v3;
+    return jarvisConnected;
   }
 
   else
@@ -51,9 +51,9 @@
 - (BOOL)_isSpeechDetectionDevicePresent
 {
   v2 = +[CSSpeechDetectionDevicePresentMonitor sharedInstance];
-  v3 = [v2 isPresent];
+  isPresent = [v2 isPresent];
 
-  if ((v3 & 1) == 0)
+  if ((isPresent & 1) == 0)
   {
     v4 = CSLogContextFacilityCoreSpeech;
     if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
@@ -64,27 +64,27 @@
     }
   }
 
-  return v3;
+  return isPresent;
 }
 
 - (BOOL)_isAudioRouteIneligibleForAP
 {
-  v3 = [(CSVoiceTriggerAPModeSuspendPolicyIOS *)self _isSpeechDetectionDevicePresent];
-  v4 = [(CSVoiceTriggerAPModeSuspendPolicyIOS *)self _isHearstRoutedAndWithNoPhoneCall];
-  v5 = [(CSVoiceTriggerAPModeSuspendPolicyIOS *)self _isJarvisRouted];
-  v6 = v3 ^ 1 | v4 | v5;
+  _isSpeechDetectionDevicePresent = [(CSVoiceTriggerAPModeSuspendPolicyIOS *)self _isSpeechDetectionDevicePresent];
+  _isHearstRoutedAndWithNoPhoneCall = [(CSVoiceTriggerAPModeSuspendPolicyIOS *)self _isHearstRoutedAndWithNoPhoneCall];
+  _isJarvisRouted = [(CSVoiceTriggerAPModeSuspendPolicyIOS *)self _isJarvisRouted];
+  v6 = _isSpeechDetectionDevicePresent ^ 1 | _isHearstRoutedAndWithNoPhoneCall | _isJarvisRouted;
   if (v6)
   {
-    v7 = v5;
+    v7 = _isJarvisRouted;
     v8 = CSLogContextFacilityCoreSpeech;
     if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_INFO))
     {
       v10 = 136315906;
       v11 = "[CSVoiceTriggerAPModeSuspendPolicyIOS _isAudioRouteIneligibleForAP]";
       v12 = 1024;
-      v13 = v3;
+      v13 = _isSpeechDetectionDevicePresent;
       v14 = 1024;
-      v15 = v4 & 1;
+      v15 = _isHearstRoutedAndWithNoPhoneCall & 1;
       v16 = 1024;
       v17 = v7 & 1;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "%s VAD is not present (%d) or Hearst routed without phone call (%d) or Jarvis routed (%d)", &v10, 0x1Eu);
@@ -97,9 +97,9 @@
 - (BOOL)_isInPhoneCallStateWithHSPhoneCallCapableRoute
 {
   v2 = +[CSPhoneCallStateMonitorFactory phoneCallStateMonitor];
-  v3 = [v2 phoneCallState];
+  phoneCallState = [v2 phoneCallState];
 
-  if (v3 == 2)
+  if (phoneCallState == 2)
   {
     v4 = +[CSUtils supportRingtoneA2DP]^ 1;
   }
@@ -122,9 +122,9 @@
 
   v7 = +[CSUtils fetchHypotheticalRouteType];
   v8 = +[CSMXRingtoneMonitor sharedInstance];
-  v9 = [v8 isAnyRingtoneCurrentlyPlaying];
+  isAnyRingtoneCurrentlyPlaying = [v8 isAnyRingtoneCurrentlyPlaying];
 
-  if (+[CSUtils supportHandsFree]&& ((v4 & 1) != 0 || ((v3 - 3) < 2 ? (v10 = 1) : (v10 = v9), v10 == 1)))
+  if (+[CSUtils supportHandsFree]&& ((v4 & 1) != 0 || ((phoneCallState - 3) < 2 ? (v10 = 1) : (v10 = isAnyRingtoneCurrentlyPlaying), v10 == 1)))
   {
     if (v7 == 1)
     {
@@ -157,9 +157,9 @@
       v21 = 1024;
       v22 = v16;
       v23 = 1024;
-      v24 = v9;
+      v24 = isAnyRingtoneCurrentlyPlaying;
       v25 = 1024;
-      v26 = v3;
+      v26 = phoneCallState;
       v27 = 1024;
       v28 = v6;
       v29 = 1024;
@@ -177,55 +177,55 @@
   return v11;
 }
 
-- (void)siriClientBehaviorMonitor:(id)a3 didChangedRecordState:(BOOL)a4 withEventUUID:(id)a5 withContext:(id)a6
+- (void)siriClientBehaviorMonitor:(id)monitor didChangedRecordState:(BOOL)state withEventUUID:(id)d withContext:(id)context
 {
-  v8 = a5;
+  dCopy = d;
   recordStateQueue = self->_recordStateQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100169290;
   block[3] = &unk_100253900;
-  v13 = a4;
+  stateCopy = state;
   block[4] = self;
-  v12 = v8;
-  v10 = v8;
+  v12 = dCopy;
+  v10 = dCopy;
   dispatch_async(recordStateQueue, block);
 }
 
-- (void)intuitiveConvAudioCaptureMonitorDidStopAudioCapture:(id)a3 stopStreamOption:(id)a4 eventUUID:(id)a5
+- (void)intuitiveConvAudioCaptureMonitorDidStopAudioCapture:(id)capture stopStreamOption:(id)option eventUUID:(id)d
 {
-  v6 = a5;
+  dCopy = d;
   recordStateQueue = self->_recordStateQueue;
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100169340;
   v9[3] = &unk_100253C48;
   v9[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = dCopy;
+  v8 = dCopy;
   dispatch_async(recordStateQueue, v9);
 }
 
-- (void)intuitiveConvAudioCaptureMonitor:(id)a3 didStartAudioCaptureSuccessfully:(BOOL)a4 option:(id)a5 eventUUID:(id)a6
+- (void)intuitiveConvAudioCaptureMonitor:(id)monitor didStartAudioCaptureSuccessfully:(BOOL)successfully option:(id)option eventUUID:(id)d
 {
-  v8 = a6;
+  dCopy = d;
   recordStateQueue = self->_recordStateQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100169400;
   block[3] = &unk_100253900;
-  v13 = a4;
+  successfullyCopy = successfully;
   block[4] = self;
-  v12 = v8;
-  v10 = v8;
+  v12 = dCopy;
+  v10 = dCopy;
   dispatch_async(recordStateQueue, block);
 }
 
-- (void)_handleClientRecordStateDidChange:(BOOL)a3 eventUUID:(id)a4
+- (void)_handleClientRecordStateDidChange:(BOOL)change eventUUID:(id)d
 {
-  v4 = a3;
-  v6 = a4;
-  if (v4)
+  changeCopy = change;
+  dCopy = d;
+  if (changeCopy)
   {
     [(CSVoiceTriggerAPModeSuspendPolicyIOS *)self setIsAssistantClientConsideredAsRecord:1];
     [(CSVoiceTriggerAPModeSuspendPolicyIOS *)self setPendingRecordingStopUUID:0];
@@ -234,7 +234,7 @@
 
   else
   {
-    [(CSVoiceTriggerAPModeSuspendPolicyIOS *)self setPendingRecordingStopUUID:v6];
+    [(CSVoiceTriggerAPModeSuspendPolicyIOS *)self setPendingRecordingStopUUID:dCopy];
     v7 = CSLogContextFacilityCoreSpeech;
     if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
     {
@@ -243,7 +243,7 @@
       v15 = 2050;
       v16 = 0x4010000000000000;
       v17 = 2114;
-      v18 = v6;
+      v18 = dCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%s Will notify Siri Client record state change to STOPPED in %{public}f seconds, eventUUID = %{public}@", buf, 0x20u);
     }
 
@@ -255,7 +255,7 @@
     v10[2] = sub_1001695E8;
     v10[3] = &unk_1002538D8;
     objc_copyWeak(&v12, buf);
-    v11 = v6;
+    v11 = dCopy;
     dispatch_after(v8, recordStateQueue, v10);
 
     objc_destroyWeak(&v12);
@@ -352,9 +352,9 @@
   if (+[CSUtils isIOSDeviceSupportingBargeIn])
   {
     v3 = +[CSFPreferences sharedPreferences];
-    v4 = [v3 forceVoiceTriggerAPMode];
+    forceVoiceTriggerAPMode = [v3 forceVoiceTriggerAPMode];
 
-    if (v4)
+    if (forceVoiceTriggerAPMode)
     {
       v5 = &stru_100253828;
 LABEL_13:

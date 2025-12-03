@@ -1,6 +1,6 @@
 @interface TBMutableTileFetchResponse
 - (TBMutableTileFetchResponse)init;
-- (void)addResponse:(id)a3;
+- (void)addResponse:(id)response;
 @end
 
 @implementation TBMutableTileFetchResponse
@@ -17,17 +17,17 @@
   return v2;
 }
 
-- (void)addResponse:(id)a3
+- (void)addResponse:(id)response
 {
-  v8 = a3;
-  v4 = [v8 tiles];
+  responseCopy = response;
+  tiles = [responseCopy tiles];
 
-  if (v4)
+  if (tiles)
   {
     mutableTiles = self->_mutableTiles;
-    v6 = [v8 tiles];
-    v7 = [v6 allObjects];
-    [(NSMutableSet *)mutableTiles addObjectsFromArray:v7];
+    tiles2 = [responseCopy tiles];
+    allObjects = [tiles2 allObjects];
+    [(NSMutableSet *)mutableTiles addObjectsFromArray:allObjects];
   }
 }
 

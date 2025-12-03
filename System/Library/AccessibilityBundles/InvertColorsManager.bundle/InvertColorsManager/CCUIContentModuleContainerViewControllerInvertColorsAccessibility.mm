@@ -1,5 +1,5 @@
 @interface CCUIContentModuleContainerViewControllerInvertColorsAccessibility
-- (BOOL)clickPresentationInteractionShouldBegin:(id)a3;
+- (BOOL)clickPresentationInteractionShouldBegin:(id)begin;
 - (void)_accessibilityLoadInvertColors;
 - (void)viewWillLayoutSubviews;
 @end
@@ -27,11 +27,11 @@
   [(CCUIContentModuleContainerViewControllerInvertColorsAccessibility *)self _accessibilityLoadInvertColors];
 }
 
-- (BOOL)clickPresentationInteractionShouldBegin:(id)a3
+- (BOOL)clickPresentationInteractionShouldBegin:(id)begin
 {
   v6.receiver = self;
   v6.super_class = CCUIContentModuleContainerViewControllerInvertColorsAccessibility;
-  v4 = [(CCUIContentModuleContainerViewControllerInvertColorsAccessibility *)&v6 clickPresentationInteractionShouldBegin:a3];
+  v4 = [(CCUIContentModuleContainerViewControllerInvertColorsAccessibility *)&v6 clickPresentationInteractionShouldBegin:begin];
   [(CCUIContentModuleContainerViewControllerInvertColorsAccessibility *)self _accessibilityLoadInvertColors];
   return v4;
 }

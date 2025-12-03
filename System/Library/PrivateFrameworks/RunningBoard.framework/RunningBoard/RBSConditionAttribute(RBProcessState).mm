@@ -10,8 +10,8 @@
   v5 = a3;
   if (_os_feature_enabled_impl())
   {
-    v4 = [a1 condition];
-    [v5 upgradeCondition:v4 toValue:{objc_msgSend(a1, "value")}];
+    condition = [self condition];
+    [v5 upgradeCondition:condition toValue:{objc_msgSend(self, "value")}];
   }
 }
 
@@ -33,7 +33,7 @@
     v12 = *MEMORY[0x277D47048];
     v26[0] = v11;
     v26[1] = v12;
-    v13 = [a1 description];
+    v13 = [self description];
     v27[1] = v13;
     v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v27 forKeys:v26 count:2];
     v15 = v9;
@@ -48,8 +48,8 @@ LABEL_7:
 
   if (([v6 ignoreRestrictions] & 1) == 0)
   {
-    v7 = [v6 originatorEntitlements];
-    v8 = [v7 rb_hasEntitlement:@"com.apple.runningboard.primitiveattribute"];
+    originatorEntitlements = [v6 originatorEntitlements];
+    v8 = [originatorEntitlements rb_hasEntitlement:@"com.apple.runningboard.primitiveattribute"];
 
     if ((v8 & 1) == 0)
     {
@@ -65,7 +65,7 @@ LABEL_7:
       v23 = *MEMORY[0x277D47048];
       v24[0] = v22;
       v24[1] = v23;
-      v13 = [a1 description];
+      v13 = [self description];
       v25[1] = v13;
       v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v25 forKeys:v24 count:2];
       v15 = v20;

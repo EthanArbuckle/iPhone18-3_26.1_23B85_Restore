@@ -1,32 +1,32 @@
 @interface BCAppIntentsAssetViewControllerInfo
-- (BCAppIntentsAssetViewControllerInfo)initWithAssetID:(id)a3 title:(id)a4 author:(id)a5 supportsTheming:(BOOL)a6;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BCAppIntentsAssetViewControllerInfo)initWithAssetID:(id)d title:(id)title author:(id)author supportsTheming:(BOOL)theming;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation BCAppIntentsAssetViewControllerInfo
 
-- (BCAppIntentsAssetViewControllerInfo)initWithAssetID:(id)a3 title:(id)a4 author:(id)a5 supportsTheming:(BOOL)a6
+- (BCAppIntentsAssetViewControllerInfo)initWithAssetID:(id)d title:(id)title author:(id)author supportsTheming:(BOOL)theming
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  dCopy = d;
+  titleCopy = title;
+  authorCopy = author;
   v22.receiver = self;
   v22.super_class = BCAppIntentsAssetViewControllerInfo;
   v13 = [(BCAppIntentsAssetViewControllerInfo *)&v22 init];
   v14 = v13;
   if (v13)
   {
-    v13->_supportsTheming = a6;
-    v15 = [v10 copy];
+    v13->_supportsTheming = theming;
+    v15 = [dCopy copy];
     assetID = v14->_assetID;
     v14->_assetID = v15;
 
-    v17 = [v11 copy];
+    v17 = [titleCopy copy];
     title = v14->_title;
     v14->_title = v17;
 
-    v19 = [v12 copy];
+    v19 = [authorCopy copy];
     author = v14->_author;
     v14->_author = v19;
   }
@@ -34,50 +34,50 @@
   return v14;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
+  equalCopy = equal;
   objc_opt_class();
   v7 = BUDynamicCast();
 
   if (v7)
   {
-    v8 = [(BCAppIntentsAssetViewControllerInfo *)self supportsTheming];
-    if (v8 == [v7 supportsTheming])
+    supportsTheming = [(BCAppIntentsAssetViewControllerInfo *)self supportsTheming];
+    if (supportsTheming == [v7 supportsTheming])
     {
-      v10 = [(BCAppIntentsAssetViewControllerInfo *)self assetID];
-      v11 = [v7 assetID];
-      if (v10 != v11)
+      assetID = [(BCAppIntentsAssetViewControllerInfo *)self assetID];
+      assetID2 = [v7 assetID];
+      if (assetID != assetID2)
       {
-        v3 = [(BCAppIntentsAssetViewControllerInfo *)self assetID];
-        v4 = [v7 assetID];
-        if (![v3 isEqualToString:v4])
+        assetID3 = [(BCAppIntentsAssetViewControllerInfo *)self assetID];
+        assetID4 = [v7 assetID];
+        if (![assetID3 isEqualToString:assetID4])
         {
           v9 = 0;
           goto LABEL_17;
         }
       }
 
-      v12 = [(BCAppIntentsAssetViewControllerInfo *)self title];
-      v13 = [v7 title];
-      if (v12 != v13)
+      title = [(BCAppIntentsAssetViewControllerInfo *)self title];
+      title2 = [v7 title];
+      if (title != title2)
       {
-        v14 = [(BCAppIntentsAssetViewControllerInfo *)self title];
-        v15 = [v7 title];
-        if (![v14 isEqualToString:v15])
+        title3 = [(BCAppIntentsAssetViewControllerInfo *)self title];
+        title4 = [v7 title];
+        if (![title3 isEqualToString:title4])
         {
           v9 = 0;
           goto LABEL_15;
         }
 
-        v27 = v15;
-        v28 = v14;
+        v27 = title4;
+        v28 = title3;
       }
 
-      v16 = [(BCAppIntentsAssetViewControllerInfo *)self author];
-      v17 = [v7 author];
-      v18 = v17;
-      if (v16 == v17)
+      author = [(BCAppIntentsAssetViewControllerInfo *)self author];
+      author2 = [v7 author];
+      v18 = author2;
+      if (author == author2)
       {
 
         v9 = 1;
@@ -86,29 +86,29 @@
       else
       {
         [(BCAppIntentsAssetViewControllerInfo *)self author];
-        v19 = v26 = v3;
+        v19 = v26 = assetID3;
         [v7 author];
-        v25 = v12;
-        v20 = v11;
-        v21 = v10;
-        v23 = v22 = v4;
+        v25 = title;
+        v20 = assetID2;
+        v21 = assetID;
+        v23 = v22 = assetID4;
         v9 = [v19 isEqualToString:v23];
 
-        v4 = v22;
-        v10 = v21;
-        v11 = v20;
-        v12 = v25;
+        assetID4 = v22;
+        assetID = v21;
+        assetID2 = v20;
+        title = v25;
 
-        v3 = v26;
+        assetID3 = v26;
       }
 
-      v15 = v27;
-      v14 = v28;
-      if (v12 == v13)
+      title4 = v27;
+      title3 = v28;
+      if (title == title2)
       {
 LABEL_16:
 
-        if (v10 == v11)
+        if (assetID == assetID2)
         {
 LABEL_18:
 
@@ -132,22 +132,22 @@ LABEL_19:
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (v5)
   {
     *(v5 + 8) = self->_supportsTheming;
-    v7 = [(NSString *)self->_assetID copyWithZone:a3];
+    v7 = [(NSString *)self->_assetID copyWithZone:zone];
     v8 = v6[2];
     v6[2] = v7;
 
-    v9 = [(NSString *)self->_title copyWithZone:a3];
+    v9 = [(NSString *)self->_title copyWithZone:zone];
     v10 = v6[3];
     v6[3] = v9;
 
-    v11 = [(NSString *)self->_author copyWithZone:a3];
+    v11 = [(NSString *)self->_author copyWithZone:zone];
     v12 = v6[4];
     v6[4] = v11;
   }

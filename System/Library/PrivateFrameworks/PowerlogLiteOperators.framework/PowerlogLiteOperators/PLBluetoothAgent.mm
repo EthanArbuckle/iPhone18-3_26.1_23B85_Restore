@@ -27,29 +27,29 @@
 - (BOOL)modulePowered;
 - (BTLocalDeviceImpl)localBluetoothDevice;
 - (PLBluetoothAgent)init;
-- (id)advertisingDataDescription:(const char *)a3 :(unint64_t)a4;
+- (id)advertisingDataDescription:(const char *)description :(unint64_t)a4;
 - (id)btHardwareChipsetQuery;
 - (void)attachSession;
 - (void)dealloc;
 - (void)initOperatorDependancies;
 - (void)log;
-- (void)logEventBackwardA2DP:(id)a3;
-- (void)logEventBackwardCBDiscovery:(id)a3;
-- (void)logEventBackwardHFP:(id)a3;
-- (void)logEventBackwardMaxDutyCycle:(id)a3;
+- (void)logEventBackwardA2DP:(id)p;
+- (void)logEventBackwardCBDiscovery:(id)discovery;
+- (void)logEventBackwardHFP:(id)p;
+- (void)logEventBackwardMaxDutyCycle:(id)cycle;
 - (void)logEventBackwardPowerProfileStats;
 - (void)logEventBackwardPowerStatsPerCore;
-- (void)logEventBackwardWirelessProximity:(id)a3;
+- (void)logEventBackwardWirelessProximity:(id)proximity;
 - (void)logEventForwardDeviceState;
 - (void)logEventForwardPairedDevices;
 - (void)logEventIntervalConnectedDevices;
-- (void)logEventIntervalHCIRawData:(id)a3;
-- (void)logEventIntervalWakeVSE:(id)a3;
-- (void)logEventPointMagnet:(id)a3;
-- (void)logEventPointMagnetOperation:(id)a3;
+- (void)logEventIntervalHCIRawData:(id)data;
+- (void)logEventIntervalWakeVSE:(id)e;
+- (void)logEventPointMagnet:(id)magnet;
+- (void)logEventPointMagnetOperation:(id)operation;
 - (void)logwithBTOnCheck;
 - (void)modelBluetoothOffPower;
-- (void)modelBluetoothPower:(id)a3;
+- (void)modelBluetoothPower:(id)power;
 @end
 
 @implementation PLBluetoothAgent
@@ -134,9 +134,9 @@ void __44__PLBluetoothAgent_initOperatorDependancies__block_invoke(uint64_t a1)
         v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"Bluetooth power ERROR: BTLocalDeviceGetModulePower: failed! %d\n", v3];
         v6 = MEMORY[0x277D3F178];
         v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBluetoothAgent.m"];
-        v8 = [v7 lastPathComponent];
+        lastPathComponent = [v7 lastPathComponent];
         v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBluetoothAgent modulePowered]"];
-        [v6 logMessage:v5 fromFile:v8 fromFunction:v9 fromLineNumber:1077];
+        [v6 logMessage:v5 fromFile:lastPathComponent fromFunction:v9 fromLineNumber:1077];
 
         v10 = PLLogCommon();
         if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -184,9 +184,9 @@ void __44__PLBluetoothAgent_initOperatorDependancies__block_invoke(uint64_t a1)
             v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"Bluetooth power ERROR: BTLocalDeviceGetDefault: failed! %d\n", Default, block, v14, v15, v16, v17];
             v7 = MEMORY[0x277D3F178];
             v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBluetoothAgent.m"];
-            v9 = [v8 lastPathComponent];
+            lastPathComponent = [v8 lastPathComponent];
             v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBluetoothAgent localBluetoothDevice]"];
-            [v7 logMessage:v6 fromFile:v9 fromFunction:v10 fromLineNumber:1052];
+            [v7 logMessage:v6 fromFile:lastPathComponent fromFunction:v10 fromLineNumber:1052];
 
             v11 = PLLogCommon();
             if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -233,15 +233,15 @@ void __44__PLBluetoothAgent_initOperatorDependancies__block_invoke(uint64_t a1)
 
       if (byte_2811F4393 == 1)
       {
-        v7 = self;
+        selfCopy = self;
         v8 = v5;
         v9 = v4;
         v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"reading detailedpowerprofile"];
         v11 = MEMORY[0x277D3F178];
         v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBluetoothAgent.m"];
-        v13 = [v12 lastPathComponent];
+        lastPathComponent = [v12 lastPathComponent];
         v14 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBluetoothAgent logEventBackwardPowerProfileStats]"];
-        [v11 logMessage:v10 fromFile:v13 fromFunction:v14 fromLineNumber:1941];
+        [v11 logMessage:v10 fromFile:lastPathComponent fromFunction:v14 fromLineNumber:1941];
 
         v15 = PLLogCommon();
         if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
@@ -253,7 +253,7 @@ void __44__PLBluetoothAgent_initOperatorDependancies__block_invoke(uint64_t a1)
 
         v4 = v9;
         v5 = v8;
-        self = v7;
+        self = selfCopy;
       }
     }
 
@@ -289,18 +289,18 @@ void __44__PLBluetoothAgent_initOperatorDependancies__block_invoke(uint64_t a1)
         if (byte_2811F4394 == 1)
         {
           v164 = v4;
-          v21 = [MEMORY[0x277CCACA8] stringWithFormat:@"ERROR: could not read power profile statistics (error: %u)", DetailedPowerProfileStatistics];
+          detailedPowerProfileStatistics = [MEMORY[0x277CCACA8] stringWithFormat:@"ERROR: could not read power profile statistics (error: %u)", DetailedPowerProfileStatistics];
           v22 = MEMORY[0x277D3F178];
           v23 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBluetoothAgent.m"];
-          v24 = [v23 lastPathComponent];
+          lastPathComponent2 = [v23 lastPathComponent];
           v25 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBluetoothAgent logEventBackwardPowerProfileStats]"];
-          [v22 logMessage:v21 fromFile:v24 fromFunction:v25 fromLineNumber:1992];
+          [v22 logMessage:detailedPowerProfileStatistics fromFile:lastPathComponent2 fromFunction:v25 fromLineNumber:1992];
 
           v26 = PLLogCommon();
           if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
           {
             *buf = 138412290;
-            v186 = v21;
+            v186 = detailedPowerProfileStatistics;
             _os_log_debug_impl(&dword_21A4C6000, v26, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
           }
 
@@ -310,22 +310,22 @@ void __44__PLBluetoothAgent_initOperatorDependancies__block_invoke(uint64_t a1)
 
       if (DetailedPowerProfileStatistics == 7)
       {
-        v27 = [(PLOperator *)self workQueue];
+        workQueue = [(PLOperator *)self workQueue];
         block[0] = MEMORY[0x277D85DD0];
         block[1] = 3221225472;
         block[2] = __53__PLBluetoothAgent_logEventBackwardPowerProfileStats__block_invoke_873;
         block[3] = &unk_2782591D0;
         block[4] = self;
-        dispatch_async(v27, block);
+        dispatch_async(workQueue, block);
       }
     }
 
     else
     {
       v165 = v4;
-      v28 = [MEMORY[0x277CBEAA8] monotonicDate];
+      monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
       lastPowerEntryDate = self->_lastPowerEntryDate;
-      self->_lastPowerEntryDate = v28;
+      self->_lastPowerEntryDate = monotonicDate;
 
       v30 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:HIDWORD(v181)];
       [v19 setObject:v30 forKeyedSubscript:@"durationTotal"];
@@ -412,10 +412,10 @@ void __44__PLBluetoothAgent_initOperatorDependancies__block_invoke(uint64_t a1)
   }
 
   v50 = +[PLBluetoothAgent shouldLogEnhancedStats];
-  v51 = [MEMORY[0x277D3F180] debugEnabled];
+  debugEnabled = [MEMORY[0x277D3F180] debugEnabled];
   if (!v50)
   {
-    if (v51)
+    if (debugEnabled)
     {
       v79 = objc_opt_class();
       v169[0] = MEMORY[0x277D85DD0];
@@ -430,15 +430,15 @@ void __44__PLBluetoothAgent_initOperatorDependancies__block_invoke(uint64_t a1)
 
       if (byte_2811F4399 == 1)
       {
-        v80 = self;
+        selfCopy2 = self;
         v81 = v5;
         v82 = v4;
         v83 = [MEMORY[0x277CCACA8] stringWithFormat:@"Getting power profile stats"];
         v84 = MEMORY[0x277D3F178];
         v85 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBluetoothAgent.m"];
-        v86 = [v85 lastPathComponent];
+        lastPathComponent3 = [v85 lastPathComponent];
         v87 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBluetoothAgent logEventBackwardPowerProfileStats]"];
-        [v84 logMessage:v83 fromFile:v86 fromFunction:v87 fromLineNumber:2113];
+        [v84 logMessage:v83 fromFile:lastPathComponent3 fromFunction:v87 fromLineNumber:2113];
 
         v88 = PLLogCommon();
         if (os_log_type_enabled(v88, OS_LOG_TYPE_DEBUG))
@@ -450,7 +450,7 @@ void __44__PLBluetoothAgent_initOperatorDependancies__block_invoke(uint64_t a1)
 
         v4 = v82;
         v5 = v81;
-        self = v80;
+        self = selfCopy2;
       }
     }
 
@@ -477,18 +477,18 @@ void __44__PLBluetoothAgent_initOperatorDependancies__block_invoke(uint64_t a1)
         if (byte_2811F439A == 1)
         {
           v92 = v4;
-          v93 = [MEMORY[0x277CCACA8] stringWithFormat:@"ERROR: could not read power profile statistics (error: %u)", PowerProfileStatistics];
+          powerProfileStatistics = [MEMORY[0x277CCACA8] stringWithFormat:@"ERROR: could not read power profile statistics (error: %u)", PowerProfileStatistics];
           v94 = MEMORY[0x277D3F178];
           v95 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBluetoothAgent.m"];
-          v96 = [v95 lastPathComponent];
+          lastPathComponent4 = [v95 lastPathComponent];
           v97 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBluetoothAgent logEventBackwardPowerProfileStats]"];
-          [v94 logMessage:v93 fromFile:v96 fromFunction:v97 fromLineNumber:2123];
+          [v94 logMessage:powerProfileStatistics fromFile:lastPathComponent4 fromFunction:v97 fromLineNumber:2123];
 
           v98 = PLLogCommon();
           if (os_log_type_enabled(v98, OS_LOG_TYPE_DEBUG))
           {
             *buf = 138412290;
-            v186 = v93;
+            v186 = powerProfileStatistics;
             _os_log_debug_impl(&dword_21A4C6000, v98, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
           }
 
@@ -498,22 +498,22 @@ void __44__PLBluetoothAgent_initOperatorDependancies__block_invoke(uint64_t a1)
 
       if (PowerProfileStatistics == 7)
       {
-        v99 = [(PLOperator *)self workQueue];
+        workQueue2 = [(PLOperator *)self workQueue];
         v167[0] = MEMORY[0x277D85DD0];
         v167[1] = 3221225472;
         v167[2] = __53__PLBluetoothAgent_logEventBackwardPowerProfileStats__block_invoke_897;
         v167[3] = &unk_2782591D0;
         v167[4] = self;
-        dispatch_async(v99, v167);
+        dispatch_async(workQueue2, v167);
       }
 
       [(PLOperator *)self logEntry:v5];
       goto LABEL_67;
     }
 
-    v104 = [MEMORY[0x277CBEAA8] monotonicDate];
+    monotonicDate2 = [MEMORY[0x277CBEAA8] monotonicDate];
     v105 = self->_lastPowerEntryDate;
-    self->_lastPowerEntryDate = v104;
+    self->_lastPowerEntryDate = monotonicDate2;
 
     v106 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:HIWORD(v184)];
     [v5 setObject:v106 forKeyedSubscript:@"TXPower"];
@@ -536,7 +536,7 @@ LABEL_66:
     goto LABEL_67;
   }
 
-  if (v51)
+  if (debugEnabled)
   {
     v52 = objc_opt_class();
     v172[0] = MEMORY[0x277D85DD0];
@@ -551,15 +551,15 @@ LABEL_66:
 
     if (byte_2811F4396 == 1)
     {
-      v53 = self;
+      selfCopy3 = self;
       v54 = v5;
       v55 = v4;
       v56 = [MEMORY[0x277CCACA8] stringWithFormat:@"Getting Enhanced BT stats"];
       v57 = MEMORY[0x277D3F178];
       v58 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBluetoothAgent.m"];
-      v59 = [v58 lastPathComponent];
+      lastPathComponent5 = [v58 lastPathComponent];
       v60 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBluetoothAgent logEventBackwardPowerProfileStats]"];
-      [v57 logMessage:v56 fromFile:v59 fromFunction:v60 fromLineNumber:2010];
+      [v57 logMessage:v56 fromFile:lastPathComponent5 fromFunction:v60 fromLineNumber:2010];
 
       v61 = PLLogCommon();
       if (os_log_type_enabled(v61, OS_LOG_TYPE_DEBUG))
@@ -571,7 +571,7 @@ LABEL_66:
 
       v4 = v55;
       v5 = v54;
-      self = v53;
+      self = selfCopy3;
     }
   }
 
@@ -619,18 +619,18 @@ LABEL_66:
       if (byte_2811F4397 == 1)
       {
         v160 = v66;
-        v72 = [MEMORY[0x277CCACA8] stringWithFormat:@"ERROR: could not read enhanced power profile statistics (error: %u)", DetailedPowerProfileStatistics];
+        detailedPowerProfileStatistics2 = [MEMORY[0x277CCACA8] stringWithFormat:@"ERROR: could not read enhanced power profile statistics (error: %u)", DetailedPowerProfileStatistics];
         v73 = MEMORY[0x277D3F178];
         v74 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBluetoothAgent.m"];
-        v75 = [v74 lastPathComponent];
+        lastPathComponent6 = [v74 lastPathComponent];
         v76 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBluetoothAgent logEventBackwardPowerProfileStats]"];
-        [v73 logMessage:v72 fromFile:v75 fromFunction:v76 fromLineNumber:2094];
+        [v73 logMessage:detailedPowerProfileStatistics2 fromFile:lastPathComponent6 fromFunction:v76 fromLineNumber:2094];
 
         v77 = PLLogCommon();
         if (os_log_type_enabled(v77, OS_LOG_TYPE_DEBUG))
         {
           *buf = 138412290;
-          v186 = v72;
+          v186 = detailedPowerProfileStatistics2;
           _os_log_debug_impl(&dword_21A4C6000, v77, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
         }
 
@@ -640,21 +640,21 @@ LABEL_66:
 
     if (DetailedPowerProfileStatistics == 7)
     {
-      v78 = [(PLOperator *)self workQueue];
+      workQueue3 = [(PLOperator *)self workQueue];
       v170[0] = MEMORY[0x277D85DD0];
       v170[1] = 3221225472;
       v170[2] = __53__PLBluetoothAgent_logEventBackwardPowerProfileStats__block_invoke_886;
       v170[3] = &unk_2782591D0;
       v170[4] = self;
-      dispatch_async(v78, v170);
+      dispatch_async(workQueue3, v170);
     }
   }
 
   else
   {
-    v112 = [MEMORY[0x277CBEAA8] monotonicDate];
+    monotonicDate3 = [MEMORY[0x277CBEAA8] monotonicDate];
     v113 = self->_lastPowerEntryDate;
-    self->_lastPowerEntryDate = v112;
+    self->_lastPowerEntryDate = monotonicDate3;
 
     v114 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:*(v63 + 1)];
     [v5 setObject:v114 forKeyedSubscript:@"TXPower"];
@@ -827,21 +827,21 @@ LABEL_67:
 - (void)logEventForwardDeviceState
 {
   v12 = [(PLOperator *)PLBluetoothAgent entryKeyForType:*MEMORY[0x277D3F5D0] andName:@"DeviceState"];
-  v3 = [(PLBluetoothAgent *)self modulePowered];
-  v4 = [(PLBluetoothAgent *)self isDiscoverable];
-  v5 = [(PLBluetoothAgent *)self isConnected];
-  v6 = [(PLBluetoothAgent *)self isConnectable];
+  modulePowered = [(PLBluetoothAgent *)self modulePowered];
+  isDiscoverable = [(PLBluetoothAgent *)self isDiscoverable];
+  isConnected = [(PLBluetoothAgent *)self isConnected];
+  isConnectable = [(PLBluetoothAgent *)self isConnectable];
   v7 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v12];
-  v8 = [MEMORY[0x277CCABB0] numberWithBool:v3];
+  v8 = [MEMORY[0x277CCABB0] numberWithBool:modulePowered];
   [v7 setObject:v8 forKeyedSubscript:@"DevicePowered"];
 
-  v9 = [MEMORY[0x277CCABB0] numberWithBool:v4];
+  v9 = [MEMORY[0x277CCABB0] numberWithBool:isDiscoverable];
   [v7 setObject:v9 forKeyedSubscript:@"DeviceDiscoverable"];
 
-  v10 = [MEMORY[0x277CCABB0] numberWithBool:v5];
+  v10 = [MEMORY[0x277CCABB0] numberWithBool:isConnected];
   [v7 setObject:v10 forKeyedSubscript:@"DeviceConnected"];
 
-  v11 = [MEMORY[0x277CCABB0] numberWithBool:v6];
+  v11 = [MEMORY[0x277CCABB0] numberWithBool:isConnectable];
   [v7 setObject:v11 forKeyedSubscript:@"DeviceConnectable"];
 
   [(PLOperator *)self logEntry:v7];
@@ -874,9 +874,9 @@ LABEL_67:
         v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"Bluetooth power ERROR: BTLocalDeviceGetDiscoverable: failed! %d\n", v3];
         v6 = MEMORY[0x277D3F178];
         v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBluetoothAgent.m"];
-        v8 = [v7 lastPathComponent];
+        lastPathComponent = [v7 lastPathComponent];
         v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBluetoothAgent isDiscoverable]"];
-        [v6 logMessage:v5 fromFile:v8 fromFunction:v9 fromLineNumber:1093];
+        [v6 logMessage:v5 fromFile:lastPathComponent fromFunction:v9 fromLineNumber:1093];
 
         v10 = PLLogCommon();
         if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -921,9 +921,9 @@ LABEL_67:
         v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"Bluetooth power ERROR: BTLocalDeviceGetConnectionStatus: failed! %d\n", v3];
         v6 = MEMORY[0x277D3F178];
         v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBluetoothAgent.m"];
-        v8 = [v7 lastPathComponent];
+        lastPathComponent = [v7 lastPathComponent];
         v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBluetoothAgent isConnected]"];
-        [v6 logMessage:v5 fromFile:v8 fromFunction:v9 fromLineNumber:1113];
+        [v6 logMessage:v5 fromFile:lastPathComponent fromFunction:v9 fromLineNumber:1113];
 
         v10 = PLLogCommon();
         if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -968,9 +968,9 @@ LABEL_67:
         v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"Bluetooth power ERROR: BTLocalDeviceGetConnectable: failed! %d\n", v3];
         v6 = MEMORY[0x277D3F178];
         v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBluetoothAgent.m"];
-        v8 = [v7 lastPathComponent];
+        lastPathComponent = [v7 lastPathComponent];
         v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBluetoothAgent isConnectable]"];
-        [v6 logMessage:v5 fromFile:v8 fromFunction:v9 fromLineNumber:1136];
+        [v6 logMessage:v5 fromFile:lastPathComponent fromFunction:v9 fromLineNumber:1136];
 
         v10 = PLLogCommon();
         if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -990,7 +990,7 @@ LABEL_67:
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___PLBluetoothAgent;
   objc_msgSendSuper2(&v2, sel_load);
 }
@@ -999,11 +999,11 @@ LABEL_67:
 {
   v9[2] = *MEMORY[0x277D85DE8];
   v8[0] = @"Magnet";
-  v3 = [a1 entryEventPointDefinitionMagnet];
+  entryEventPointDefinitionMagnet = [self entryEventPointDefinitionMagnet];
   v8[1] = @"MagnetOperation";
-  v9[0] = v3;
-  v4 = [a1 entryEventPointDefinitionMagnetOperation];
-  v9[1] = v4;
+  v9[0] = entryEventPointDefinitionMagnet;
+  entryEventPointDefinitionMagnetOperation = [self entryEventPointDefinitionMagnetOperation];
+  v9[1] = entryEventPointDefinitionMagnetOperation;
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v9 forKeys:v8 count:2];
 
   v6 = *MEMORY[0x277D85DE8];
@@ -1021,21 +1021,21 @@ LABEL_67:
   v20[0] = v14;
   v19[1] = *MEMORY[0x277D3F540];
   v15[0] = @"clientname";
-  v2 = [MEMORY[0x277D3F198] sharedInstance];
-  v3 = [v2 commonTypeDict_StringFormat];
-  v16[0] = v3;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat = [mEMORY[0x277D3F198] commonTypeDict_StringFormat];
+  v16[0] = commonTypeDict_StringFormat;
   v15[1] = @"inputBytesPerSecond";
-  v4 = [MEMORY[0x277D3F198] sharedInstance];
-  v5 = [v4 commonTypeDict_IntegerFormat];
-  v16[1] = v5;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+  v16[1] = commonTypeDict_IntegerFormat;
   v15[2] = @"packetsPerSecond";
-  v6 = [MEMORY[0x277D3F198] sharedInstance];
-  v7 = [v6 commonTypeDict_IntegerFormat];
-  v16[2] = v7;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]3 commonTypeDict_IntegerFormat];
+  v16[2] = commonTypeDict_IntegerFormat2;
   v15[3] = @"sessionId";
-  v8 = [MEMORY[0x277D3F198] sharedInstance];
-  v9 = [v8 commonTypeDict_StringFormat];
-  v16[3] = v9;
+  mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat2 = [mEMORY[0x277D3F198]4 commonTypeDict_StringFormat];
+  v16[3] = commonTypeDict_StringFormat2;
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:v15 count:4];
   v20[1] = v10;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v20 forKeys:v19 count:2];
@@ -1055,13 +1055,13 @@ LABEL_67:
   v16[0] = v2;
   v15[1] = *MEMORY[0x277D3F540];
   v11[0] = @"state";
-  v3 = [MEMORY[0x277D3F198] sharedInstance];
-  v4 = [v3 commonTypeDict_IntegerFormat];
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
   v11[1] = @"value";
-  v12[0] = v4;
-  v5 = [MEMORY[0x277D3F198] sharedInstance];
-  v6 = [v5 commonTypeDict_IntegerFormat];
-  v12[1] = v6;
+  v12[0] = commonTypeDict_IntegerFormat;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+  v12[1] = commonTypeDict_IntegerFormat2;
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v12 forKeys:v11 count:2];
   v16[1] = v7;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:v15 count:2];
@@ -1085,17 +1085,17 @@ LABEL_67:
   v39 = *MEMORY[0x277D3F540];
   v4 = v39;
   v34[0] = @"PairedDevicesName";
-  v26 = [MEMORY[0x277D3F198] sharedInstance];
-  v25 = [v26 commonTypeDict_StringFormat];
-  v35[0] = v25;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat = [mEMORY[0x277D3F198] commonTypeDict_StringFormat];
+  v35[0] = commonTypeDict_StringFormat;
   v34[1] = @"PairedDevicesDefaultName";
-  v24 = [MEMORY[0x277D3F198] sharedInstance];
-  v23 = [v24 commonTypeDict_StringFormat];
-  v35[1] = v23;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat2 = [mEMORY[0x277D3F198]2 commonTypeDict_StringFormat];
+  v35[1] = commonTypeDict_StringFormat2;
   v34[2] = @"PairedDevicesMac";
-  v22 = [MEMORY[0x277D3F198] sharedInstance];
-  v21 = [v22 commonTypeDict_StringFormat];
-  v35[2] = v21;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat3 = [mEMORY[0x277D3F198]3 commonTypeDict_StringFormat];
+  v35[2] = commonTypeDict_StringFormat3;
   v20 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v35 forKeys:v34 count:3];
   v40[1] = v20;
   v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v40 forKeys:&v38 count:2];
@@ -1108,21 +1108,21 @@ LABEL_67:
   v32[1] = v4;
   v33[0] = v18;
   v28[0] = @"DevicePowered";
-  v17 = [MEMORY[0x277D3F198] sharedInstance];
-  v5 = [v17 commonTypeDict_BoolFormat];
-  v29[0] = v5;
+  mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_BoolFormat = [mEMORY[0x277D3F198]4 commonTypeDict_BoolFormat];
+  v29[0] = commonTypeDict_BoolFormat;
   v28[1] = @"DeviceDiscoverable";
-  v6 = [MEMORY[0x277D3F198] sharedInstance];
-  v7 = [v6 commonTypeDict_BoolFormat];
-  v29[1] = v7;
+  mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_BoolFormat2 = [mEMORY[0x277D3F198]5 commonTypeDict_BoolFormat];
+  v29[1] = commonTypeDict_BoolFormat2;
   v28[2] = @"DeviceConnectable";
-  v8 = [MEMORY[0x277D3F198] sharedInstance];
-  v9 = [v8 commonTypeDict_BoolFormat];
-  v29[2] = v9;
+  mEMORY[0x277D3F198]6 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_BoolFormat3 = [mEMORY[0x277D3F198]6 commonTypeDict_BoolFormat];
+  v29[2] = commonTypeDict_BoolFormat3;
   v28[3] = @"DeviceConnected";
-  v10 = [MEMORY[0x277D3F198] sharedInstance];
-  v11 = [v10 commonTypeDict_BoolFormat];
-  v29[3] = v11;
+  mEMORY[0x277D3F198]7 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_BoolFormat4 = [mEMORY[0x277D3F198]7 commonTypeDict_BoolFormat];
+  v29[3] = commonTypeDict_BoolFormat4;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v29 forKeys:v28 count:4];
   v33[1] = v12;
   v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v33 forKeys:v32 count:2];
@@ -1141,36 +1141,36 @@ LABEL_67:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
     *buf = 67109120;
-    v32 = [MEMORY[0x277D3F208] kPLWiFiClassOfDevice];
+    kPLWiFiClassOfDevice = [MEMORY[0x277D3F208] kPLWiFiClassOfDevice];
     _os_log_debug_impl(&dword_21A4C6000, v3, OS_LOG_TYPE_DEBUG, "Wifi/BT Chipset for Device is  = %d\n", buf, 8u);
   }
 
-  if ([a1 shouldLogMarconi])
+  if ([self shouldLogMarconi])
   {
     v29[0] = @"DetailedPowerProfileStats";
-    v4 = [a1 entryEventBackwardDefinitionDetailedPowerProfileStats];
-    v30[0] = v4;
+    entryEventBackwardDefinitionDetailedPowerProfileStats = [self entryEventBackwardDefinitionDetailedPowerProfileStats];
+    v30[0] = entryEventBackwardDefinitionDetailedPowerProfileStats;
     v29[1] = @"HCITrace";
-    v5 = [a1 entryEventBackwardDefinitionHCITrace];
-    v30[1] = v5;
+    entryEventBackwardDefinitionHCITrace = [self entryEventBackwardDefinitionHCITrace];
+    v30[1] = entryEventBackwardDefinitionHCITrace;
     v29[2] = @"PowerProfileStats";
-    v6 = [a1 entryEventBackwardDefinitionPowerProfileStats];
-    v30[2] = v6;
+    entryEventBackwardDefinitionPowerProfileStats = [self entryEventBackwardDefinitionPowerProfileStats];
+    v30[2] = entryEventBackwardDefinitionPowerProfileStats;
     v29[3] = @"BTWakeupVSE";
-    v7 = [a1 entryEventBackwardWakeupVSE];
-    v30[3] = v7;
+    entryEventBackwardWakeupVSE = [self entryEventBackwardWakeupVSE];
+    v30[3] = entryEventBackwardWakeupVSE;
     v29[4] = @"WirelessProxScanDStats";
-    v8 = [a1 entryEventBackwardDefinitionWirelessProxScanDStats];
-    v30[4] = v8;
+    entryEventBackwardDefinitionWirelessProxScanDStats = [self entryEventBackwardDefinitionWirelessProxScanDStats];
+    v30[4] = entryEventBackwardDefinitionWirelessProxScanDStats;
     v29[5] = @"CBDiscoveryStats";
-    v9 = [a1 entryEventBackwardDefinitionCBDiscoveryStats];
-    v30[5] = v9;
+    entryEventBackwardDefinitionCBDiscoveryStats = [self entryEventBackwardDefinitionCBDiscoveryStats];
+    v30[5] = entryEventBackwardDefinitionCBDiscoveryStats;
     v29[6] = @"A2DPPower";
-    v10 = [a1 entryEventBackwardDefinitionA2DPPower];
-    v30[6] = v10;
+    entryEventBackwardDefinitionA2DPPower = [self entryEventBackwardDefinitionA2DPPower];
+    v30[6] = entryEventBackwardDefinitionA2DPPower;
     v29[7] = @"HFPPower";
-    v11 = [a1 entryEventBackwardDefinitionAHFPPower];
-    v30[7] = v11;
+    entryEventBackwardDefinitionAHFPPower = [self entryEventBackwardDefinitionAHFPPower];
+    v30[7] = entryEventBackwardDefinitionAHFPPower;
     v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v30 forKeys:v29 count:8];
 LABEL_5:
 
@@ -1181,116 +1181,116 @@ LABEL_9:
   if (([MEMORY[0x277D3F208] isWiFiClass:1004007] & 1) != 0 || objc_msgSend(MEMORY[0x277D3F208], "isWiFiClass:", 1004010))
   {
     v27[0] = @"HFPPower";
-    v4 = [a1 entryEventBackwardDefinitionAHFPPower];
-    v28[0] = v4;
+    entryEventBackwardDefinitionDetailedPowerProfileStats = [self entryEventBackwardDefinitionAHFPPower];
+    v28[0] = entryEventBackwardDefinitionDetailedPowerProfileStats;
     v27[1] = @"A2DPPower";
-    v5 = [a1 entryEventBackwardDefinitionA2DPPower];
-    v28[1] = v5;
+    entryEventBackwardDefinitionHCITrace = [self entryEventBackwardDefinitionA2DPPower];
+    v28[1] = entryEventBackwardDefinitionHCITrace;
     v27[2] = @"HCITrace";
-    v6 = [a1 entryEventBackwardDefinitionHCITrace];
-    v28[2] = v6;
+    entryEventBackwardDefinitionPowerProfileStats = [self entryEventBackwardDefinitionHCITrace];
+    v28[2] = entryEventBackwardDefinitionPowerProfileStats;
     v27[3] = @"MaxDutyCycle";
-    v7 = [a1 entryEventBackwardDefinitionMaxDutyCycle];
-    v28[3] = v7;
+    entryEventBackwardWakeupVSE = [self entryEventBackwardDefinitionMaxDutyCycle];
+    v28[3] = entryEventBackwardWakeupVSE;
     v27[4] = @"PowerProfileStats";
-    v8 = [a1 entryEventBackwardDefinitionPowerProfileStats];
-    v28[4] = v8;
+    entryEventBackwardDefinitionWirelessProxScanDStats = [self entryEventBackwardDefinitionPowerProfileStats];
+    v28[4] = entryEventBackwardDefinitionWirelessProxScanDStats;
     v27[5] = @"WirelessProxScanDStats";
-    v9 = [a1 entryEventBackwardDefinitionWirelessProxScanDStats];
-    v28[5] = v9;
+    entryEventBackwardDefinitionCBDiscoveryStats = [self entryEventBackwardDefinitionWirelessProxScanDStats];
+    v28[5] = entryEventBackwardDefinitionCBDiscoveryStats;
     v27[6] = @"CBDiscoveryStats";
-    v10 = [a1 entryEventBackwardDefinitionCBDiscoveryStats];
-    v28[6] = v10;
+    entryEventBackwardDefinitionA2DPPower = [self entryEventBackwardDefinitionCBDiscoveryStats];
+    v28[6] = entryEventBackwardDefinitionA2DPPower;
     v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v28 forKeys:v27 count:7];
     goto LABEL_9;
   }
 
-  if ([a1 shouldLogEnhancedStats])
+  if ([self shouldLogEnhancedStats])
   {
     v25[0] = @"PowerProfileStats";
-    v4 = [a1 entryEventBackwardDefinitionPowerProfileStats];
-    v26[0] = v4;
+    entryEventBackwardDefinitionDetailedPowerProfileStats = [self entryEventBackwardDefinitionPowerProfileStats];
+    v26[0] = entryEventBackwardDefinitionDetailedPowerProfileStats;
     v25[1] = @"EnhancedPowerProfileStats";
-    v5 = [a1 entryEventBackwardDefinitionEnhancedPowerProfileStats];
-    v26[1] = v5;
+    entryEventBackwardDefinitionHCITrace = [self entryEventBackwardDefinitionEnhancedPowerProfileStats];
+    v26[1] = entryEventBackwardDefinitionHCITrace;
     v25[2] = @"ThreadRadioPowerProfileStats";
-    v6 = [a1 entryEventBackwardDefinitionThreadRadioPowerProfileStats];
-    v26[2] = v6;
+    entryEventBackwardDefinitionPowerProfileStats = [self entryEventBackwardDefinitionThreadRadioPowerProfileStats];
+    v26[2] = entryEventBackwardDefinitionPowerProfileStats;
     v25[3] = @"HCITrace";
-    v7 = [a1 entryEventBackwardDefinitionHCITrace];
-    v26[3] = v7;
+    entryEventBackwardWakeupVSE = [self entryEventBackwardDefinitionHCITrace];
+    v26[3] = entryEventBackwardWakeupVSE;
     v25[4] = @"WirelessProxScanDStats";
-    v8 = [a1 entryEventBackwardDefinitionWirelessProxScanDStats];
-    v26[4] = v8;
+    entryEventBackwardDefinitionWirelessProxScanDStats = [self entryEventBackwardDefinitionWirelessProxScanDStats];
+    v26[4] = entryEventBackwardDefinitionWirelessProxScanDStats;
     v25[5] = @"CBDiscoveryStats";
-    v20 = [a1 entryEventBackwardDefinitionCBDiscoveryStats];
-    v26[5] = v20;
+    entryEventBackwardDefinitionCBDiscoveryStats2 = [self entryEventBackwardDefinitionCBDiscoveryStats];
+    v26[5] = entryEventBackwardDefinitionCBDiscoveryStats2;
     v25[6] = @"A2DPPower";
-    v15 = [a1 entryEventBackwardDefinitionA2DPPower];
-    v26[6] = v15;
+    entryEventBackwardDefinitionA2DPPower2 = [self entryEventBackwardDefinitionA2DPPower];
+    v26[6] = entryEventBackwardDefinitionA2DPPower2;
     v25[7] = @"HFPPower";
-    v16 = [a1 entryEventBackwardDefinitionAHFPPower];
-    v26[7] = v16;
+    entryEventBackwardDefinitionAHFPPower2 = [self entryEventBackwardDefinitionAHFPPower];
+    v26[7] = entryEventBackwardDefinitionAHFPPower2;
     v25[8] = @"BTWakeupVSE";
-    v17 = [a1 entryEventBackwardWakeupVSE];
-    v26[8] = v17;
+    entryEventBackwardWakeupVSE2 = [self entryEventBackwardWakeupVSE];
+    v26[8] = entryEventBackwardWakeupVSE2;
     v25[9] = @"MaxDutyCycle";
-    v18 = [a1 entryEventBackwardDefinitionMaxDutyCycle];
-    v26[9] = v18;
+    entryEventBackwardDefinitionMaxDutyCycle = [self entryEventBackwardDefinitionMaxDutyCycle];
+    v26[9] = entryEventBackwardDefinitionMaxDutyCycle;
     v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v26 forKeys:v25 count:10];
   }
 
   else
   {
-    if ([a1 shouldLogEnhancedStatsPerCore])
+    if ([self shouldLogEnhancedStatsPerCore])
     {
       v23[0] = @"PowerProfileStats";
-      v4 = [a1 entryEventBackwardDefinitionPowerProfileStats];
-      v24[0] = v4;
+      entryEventBackwardDefinitionDetailedPowerProfileStats = [self entryEventBackwardDefinitionPowerProfileStats];
+      v24[0] = entryEventBackwardDefinitionDetailedPowerProfileStats;
       v23[1] = @"EnhancedPowerStatsPerCore";
-      v5 = [a1 entryEventBackwardDefinitionEnhancedPowerStatsPerCore];
-      v24[1] = v5;
+      entryEventBackwardDefinitionHCITrace = [self entryEventBackwardDefinitionEnhancedPowerStatsPerCore];
+      v24[1] = entryEventBackwardDefinitionHCITrace;
       v23[2] = @"HCITrace";
-      v6 = [a1 entryEventBackwardDefinitionHCITrace];
-      v24[2] = v6;
+      entryEventBackwardDefinitionPowerProfileStats = [self entryEventBackwardDefinitionHCITrace];
+      v24[2] = entryEventBackwardDefinitionPowerProfileStats;
       v23[3] = @"WirelessProxScanDStats";
-      v7 = [a1 entryEventBackwardDefinitionWirelessProxScanDStats];
-      v24[3] = v7;
+      entryEventBackwardWakeupVSE = [self entryEventBackwardDefinitionWirelessProxScanDStats];
+      v24[3] = entryEventBackwardWakeupVSE;
       v23[4] = @"CBDiscoveryStats";
-      v8 = [a1 entryEventBackwardDefinitionCBDiscoveryStats];
-      v24[4] = v8;
+      entryEventBackwardDefinitionWirelessProxScanDStats = [self entryEventBackwardDefinitionCBDiscoveryStats];
+      v24[4] = entryEventBackwardDefinitionWirelessProxScanDStats;
       v23[5] = @"A2DPPower";
-      v9 = [a1 entryEventBackwardDefinitionA2DPPower];
-      v24[5] = v9;
+      entryEventBackwardDefinitionCBDiscoveryStats = [self entryEventBackwardDefinitionA2DPPower];
+      v24[5] = entryEventBackwardDefinitionCBDiscoveryStats;
       v23[6] = @"HFPPower";
-      v10 = [a1 entryEventBackwardDefinitionAHFPPower];
-      v24[6] = v10;
+      entryEventBackwardDefinitionA2DPPower = [self entryEventBackwardDefinitionAHFPPower];
+      v24[6] = entryEventBackwardDefinitionA2DPPower;
       v23[7] = @"BTWakeupVSE";
-      v11 = [a1 entryEventBackwardWakeupVSE];
-      v24[7] = v11;
+      entryEventBackwardDefinitionAHFPPower = [self entryEventBackwardWakeupVSE];
+      v24[7] = entryEventBackwardDefinitionAHFPPower;
       v23[8] = @"MaxDutyCycle";
-      v19 = [a1 entryEventBackwardDefinitionMaxDutyCycle];
-      v24[8] = v19;
+      entryEventBackwardDefinitionMaxDutyCycle2 = [self entryEventBackwardDefinitionMaxDutyCycle];
+      v24[8] = entryEventBackwardDefinitionMaxDutyCycle2;
       v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v24 forKeys:v23 count:9];
 
       goto LABEL_5;
     }
 
     v21[0] = @"HCITrace";
-    v4 = [a1 entryEventBackwardDefinitionHCITrace];
-    v22[0] = v4;
+    entryEventBackwardDefinitionDetailedPowerProfileStats = [self entryEventBackwardDefinitionHCITrace];
+    v22[0] = entryEventBackwardDefinitionDetailedPowerProfileStats;
     v21[1] = @"MaxDutyCycle";
-    v5 = [a1 entryEventBackwardDefinitionMaxDutyCycle];
-    v22[1] = v5;
+    entryEventBackwardDefinitionHCITrace = [self entryEventBackwardDefinitionMaxDutyCycle];
+    v22[1] = entryEventBackwardDefinitionHCITrace;
     v21[2] = @"PowerProfileStats";
-    v6 = [a1 entryEventBackwardDefinitionPowerProfileStats];
-    v22[2] = v6;
+    entryEventBackwardDefinitionPowerProfileStats = [self entryEventBackwardDefinitionPowerProfileStats];
+    v22[2] = entryEventBackwardDefinitionPowerProfileStats;
     v21[3] = @"WirelessProxScanDStats";
-    v7 = [a1 entryEventBackwardDefinitionWirelessProxScanDStats];
-    v22[3] = v7;
+    entryEventBackwardWakeupVSE = [self entryEventBackwardDefinitionWirelessProxScanDStats];
+    v22[3] = entryEventBackwardWakeupVSE;
     v21[4] = @"CBDiscoveryStats";
-    v8 = [a1 entryEventBackwardDefinitionCBDiscoveryStats];
-    v22[4] = v8;
+    entryEventBackwardDefinitionWirelessProxScanDStats = [self entryEventBackwardDefinitionCBDiscoveryStats];
+    v22[4] = entryEventBackwardDefinitionWirelessProxScanDStats;
     v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v22 forKeys:v21 count:5];
   }
 
@@ -1314,25 +1314,25 @@ LABEL_10:
   v23[0] = v17;
   v22[1] = *MEMORY[0x277D3F540];
   v18[0] = @"HFPDuration";
-  v16 = [MEMORY[0x277D3F198] sharedInstance];
-  v15 = [v16 commonTypeDict_IntegerFormat];
-  v19[0] = v15;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+  v19[0] = commonTypeDict_IntegerFormat;
   v18[1] = @"HFPpercantageePA1";
-  v3 = [MEMORY[0x277D3F198] sharedInstance];
-  v4 = [v3 commonTypeDict_IntegerFormat];
-  v19[1] = v4;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+  v19[1] = commonTypeDict_IntegerFormat2;
   v18[2] = @"HFPpercentageiPA1";
-  v5 = [MEMORY[0x277D3F198] sharedInstance];
-  v6 = [v5 commonTypeDict_IntegerFormat];
-  v19[2] = v6;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]3 commonTypeDict_IntegerFormat];
+  v19[2] = commonTypeDict_IntegerFormat3;
   v18[3] = @"HFPpercantageePA2";
-  v7 = [MEMORY[0x277D3F198] sharedInstance];
-  v8 = [v7 commonTypeDict_IntegerFormat];
-  v19[3] = v8;
+  mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat4 = [mEMORY[0x277D3F198]4 commonTypeDict_IntegerFormat];
+  v19[3] = commonTypeDict_IntegerFormat4;
   v18[4] = @"HFPpercentageiPA2";
-  v9 = [MEMORY[0x277D3F198] sharedInstance];
-  v10 = [v9 commonTypeDict_IntegerFormat];
-  v19[4] = v10;
+  mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat5 = [mEMORY[0x277D3F198]5 commonTypeDict_IntegerFormat];
+  v19[4] = commonTypeDict_IntegerFormat5;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v19 forKeys:v18 count:5];
   v23[1] = v11;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v23 forKeys:v22 count:2];
@@ -1355,17 +1355,17 @@ LABEL_10:
   v19[0] = v3;
   v18[1] = *MEMORY[0x277D3F540];
   v14[0] = @"A2DPDuration";
-  v4 = [MEMORY[0x277D3F198] sharedInstance];
-  v5 = [v4 commonTypeDict_IntegerFormat];
-  v15[0] = v5;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+  v15[0] = commonTypeDict_IntegerFormat;
   v14[1] = @"A2DPpercantageePA";
-  v6 = [MEMORY[0x277D3F198] sharedInstance];
-  v7 = [v6 commonTypeDict_IntegerFormat];
-  v15[1] = v7;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+  v15[1] = commonTypeDict_IntegerFormat2;
   v14[2] = @"A2DPpercantageiPA";
-  v8 = [MEMORY[0x277D3F198] sharedInstance];
-  v9 = [v8 commonTypeDict_IntegerFormat];
-  v15[2] = v9;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]3 commonTypeDict_IntegerFormat];
+  v15[2] = commonTypeDict_IntegerFormat3;
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:v14 count:3];
   v19[1] = v10;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v19 forKeys:v18 count:2];
@@ -1388,61 +1388,61 @@ LABEL_10:
   v41[0] = v35;
   v40[1] = *MEMORY[0x277D3F540];
   v36[0] = @"durationTotal";
-  v34 = [MEMORY[0x277D3F198] sharedInstance];
-  v33 = [v34 commonTypeDict_IntegerFormat];
-  v37[0] = v33;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+  v37[0] = commonTypeDict_IntegerFormat;
   v36[1] = @"durationActive";
-  v32 = [MEMORY[0x277D3F198] sharedInstance];
-  v31 = [v32 commonTypeDict_IntegerFormat];
-  v37[1] = v31;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+  v37[1] = commonTypeDict_IntegerFormat2;
   v36[2] = @"durationIdle";
-  v30 = [MEMORY[0x277D3F198] sharedInstance];
-  v29 = [v30 commonTypeDict_IntegerFormat];
-  v37[2] = v29;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]3 commonTypeDict_IntegerFormat];
+  v37[2] = commonTypeDict_IntegerFormat3;
   v36[3] = @"durationSleep";
-  v28 = [MEMORY[0x277D3F198] sharedInstance];
-  v27 = [v28 commonTypeDict_IntegerFormat];
-  v37[3] = v27;
+  mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat4 = [mEMORY[0x277D3F198]4 commonTypeDict_IntegerFormat];
+  v37[3] = commonTypeDict_IntegerFormat4;
   v36[4] = @"disableCounter";
-  v26 = [MEMORY[0x277D3F198] sharedInstance];
-  v25 = [v26 commonTypeDict_IntegerFormat];
-  v37[4] = v25;
+  mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat5 = [mEMORY[0x277D3F198]5 commonTypeDict_IntegerFormat];
+  v37[4] = commonTypeDict_IntegerFormat5;
   v36[5] = @"iPATxBT";
-  v24 = [MEMORY[0x277D3F198] sharedInstance];
-  v23 = [v24 commonTypeDict_IntegerFormat];
-  v37[5] = v23;
+  mEMORY[0x277D3F198]6 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat6 = [mEMORY[0x277D3F198]6 commonTypeDict_IntegerFormat];
+  v37[5] = commonTypeDict_IntegerFormat6;
   v36[6] = @"iPATxLE";
-  v22 = [MEMORY[0x277D3F198] sharedInstance];
-  v21 = [v22 commonTypeDict_IntegerFormat];
-  v37[6] = v21;
+  mEMORY[0x277D3F198]7 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat7 = [mEMORY[0x277D3F198]7 commonTypeDict_IntegerFormat];
+  v37[6] = commonTypeDict_IntegerFormat7;
   v36[7] = @"ePATxBT";
-  v20 = [MEMORY[0x277D3F198] sharedInstance];
-  v19 = [v20 commonTypeDict_IntegerFormat];
-  v37[7] = v19;
+  mEMORY[0x277D3F198]8 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat8 = [mEMORY[0x277D3F198]8 commonTypeDict_IntegerFormat];
+  v37[7] = commonTypeDict_IntegerFormat8;
   v36[8] = @"ePATxLE";
-  v18 = [MEMORY[0x277D3F198] sharedInstance];
-  v17 = [v18 commonTypeDict_IntegerFormat];
-  v37[8] = v17;
+  mEMORY[0x277D3F198]9 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat9 = [mEMORY[0x277D3F198]9 commonTypeDict_IntegerFormat];
+  v37[8] = commonTypeDict_IntegerFormat9;
   v36[9] = @"connectedRxBT";
-  v16 = [MEMORY[0x277D3F198] sharedInstance];
-  v15 = [v16 commonTypeDict_IntegerFormat];
-  v37[9] = v15;
+  mEMORY[0x277D3F198]10 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat10 = [mEMORY[0x277D3F198]10 commonTypeDict_IntegerFormat];
+  v37[9] = commonTypeDict_IntegerFormat10;
   v36[10] = @"connectedRxLE";
-  v3 = [MEMORY[0x277D3F198] sharedInstance];
-  v4 = [v3 commonTypeDict_IntegerFormat];
-  v37[10] = v4;
+  mEMORY[0x277D3F198]11 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat11 = [mEMORY[0x277D3F198]11 commonTypeDict_IntegerFormat];
+  v37[10] = commonTypeDict_IntegerFormat11;
   v36[11] = @"scanRxBT";
-  v5 = [MEMORY[0x277D3F198] sharedInstance];
-  v6 = [v5 commonTypeDict_IntegerFormat];
-  v37[11] = v6;
+  mEMORY[0x277D3F198]12 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat12 = [mEMORY[0x277D3F198]12 commonTypeDict_IntegerFormat];
+  v37[11] = commonTypeDict_IntegerFormat12;
   v36[12] = @"scanRxLE";
-  v7 = [MEMORY[0x277D3F198] sharedInstance];
-  v8 = [v7 commonTypeDict_IntegerFormat];
-  v37[12] = v8;
+  mEMORY[0x277D3F198]13 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat13 = [mEMORY[0x277D3F198]13 commonTypeDict_IntegerFormat];
+  v37[12] = commonTypeDict_IntegerFormat13;
   v36[13] = @"totalPHYCal";
-  v9 = [MEMORY[0x277D3F198] sharedInstance];
-  v10 = [v9 commonTypeDict_IntegerFormat];
-  v37[13] = v10;
+  mEMORY[0x277D3F198]14 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat14 = [mEMORY[0x277D3F198]14 commonTypeDict_IntegerFormat];
+  v37[13] = commonTypeDict_IntegerFormat14;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v37 forKeys:v36 count:14];
   v41[1] = v11;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v41 forKeys:v40 count:2];
@@ -1465,9 +1465,9 @@ LABEL_10:
   v15[0] = v3;
   v14[1] = *MEMORY[0x277D3F540];
   v10 = @"HCIRawData";
-  v4 = [MEMORY[0x277D3F198] sharedInstance];
-  v5 = [v4 commonTypeDict_RawDataFormat];
-  v11 = v5;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_RawDataFormat = [mEMORY[0x277D3F198] commonTypeDict_RawDataFormat];
+  v11 = commonTypeDict_RawDataFormat;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v11 forKeys:&v10 count:1];
   v15[1] = v6;
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:v14 count:2];
@@ -1490,13 +1490,13 @@ LABEL_10:
   v17[0] = v3;
   v16[1] = *MEMORY[0x277D3F540];
   v12[0] = @"Count";
-  v4 = [MEMORY[0x277D3F198] sharedInstance];
-  v5 = [v4 commonTypeDict_IntegerFormat];
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
   v12[1] = @"Duration";
-  v13[0] = v5;
-  v6 = [MEMORY[0x277D3F198] sharedInstance];
-  v7 = [v6 commonTypeDict_IntegerFormat];
-  v13[1] = v7;
+  v13[0] = commonTypeDict_IntegerFormat;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+  v13[1] = commonTypeDict_IntegerFormat2;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:v12 count:2];
   v17[1] = v8;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v17 forKeys:v16 count:2];
@@ -1519,25 +1519,25 @@ LABEL_10:
   v23[0] = v17;
   v22[1] = *MEMORY[0x277D3F540];
   v18[0] = @"ErrorCode";
-  v16 = [MEMORY[0x277D3F198] sharedInstance];
-  v15 = [v16 commonTypeDict_IntegerFormat];
-  v19[0] = v15;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+  v19[0] = commonTypeDict_IntegerFormat;
   v18[1] = @"TXPower";
-  v3 = [MEMORY[0x277D3F198] sharedInstance];
-  v4 = [v3 commonTypeDict_IntegerFormat];
-  v19[1] = v4;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+  v19[1] = commonTypeDict_IntegerFormat2;
   v18[2] = @"RXPower";
-  v5 = [MEMORY[0x277D3F198] sharedInstance];
-  v6 = [v5 commonTypeDict_IntegerFormat];
-  v19[2] = v6;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]3 commonTypeDict_IntegerFormat];
+  v19[2] = commonTypeDict_IntegerFormat3;
   v18[3] = @"SleepPower";
-  v7 = [MEMORY[0x277D3F198] sharedInstance];
-  v8 = [v7 commonTypeDict_IntegerFormat];
-  v19[3] = v8;
+  mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat4 = [mEMORY[0x277D3F198]4 commonTypeDict_IntegerFormat];
+  v19[3] = commonTypeDict_IntegerFormat4;
   v18[4] = @"OtherPower";
-  v9 = [MEMORY[0x277D3F198] sharedInstance];
-  v10 = [v9 commonTypeDict_IntegerFormat];
-  v19[4] = v10;
+  mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat5 = [mEMORY[0x277D3F198]5 commonTypeDict_IntegerFormat];
+  v19[4] = commonTypeDict_IntegerFormat5;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v19 forKeys:v18 count:5];
   v23[1] = v11;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v23 forKeys:v22 count:2];
@@ -1552,99 +1552,99 @@ LABEL_10:
   v71[21] = *MEMORY[0x277D85DE8];
   v2 = objc_alloc(MEMORY[0x277CBEB38]);
   v70[0] = @"ErrorCode";
-  v56 = [MEMORY[0x277D3F198] sharedInstance];
-  v55 = [v56 commonTypeDict_IntegerFormat];
-  v71[0] = v55;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+  v71[0] = commonTypeDict_IntegerFormat;
   v70[1] = @"TXPower";
-  v54 = [MEMORY[0x277D3F198] sharedInstance];
-  v53 = [v54 commonTypeDict_IntegerFormat];
-  v71[1] = v53;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+  v71[1] = commonTypeDict_IntegerFormat2;
   v70[2] = @"RXPower";
-  v52 = [MEMORY[0x277D3F198] sharedInstance];
-  v51 = [v52 commonTypeDict_IntegerFormat];
-  v71[2] = v51;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]3 commonTypeDict_IntegerFormat];
+  v71[2] = commonTypeDict_IntegerFormat3;
   v70[3] = @"SleepPower";
-  v50 = [MEMORY[0x277D3F198] sharedInstance];
-  v49 = [v50 commonTypeDict_IntegerFormat];
-  v71[3] = v49;
+  mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat4 = [mEMORY[0x277D3F198]4 commonTypeDict_IntegerFormat];
+  v71[3] = commonTypeDict_IntegerFormat4;
   v70[4] = @"OtherPower";
-  v48 = [MEMORY[0x277D3F198] sharedInstance];
-  v47 = [v48 commonTypeDict_IntegerFormat];
-  v71[4] = v47;
+  mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat5 = [mEMORY[0x277D3F198]5 commonTypeDict_IntegerFormat];
+  v71[4] = commonTypeDict_IntegerFormat5;
   v70[5] = @"iPACounter";
-  v46 = [MEMORY[0x277D3F198] sharedInstance];
-  v45 = [v46 commonTypeDict_IntegerFormat];
-  v71[5] = v45;
+  mEMORY[0x277D3F198]6 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat6 = [mEMORY[0x277D3F198]6 commonTypeDict_IntegerFormat];
+  v71[5] = commonTypeDict_IntegerFormat6;
   v70[6] = @"ePACounter";
-  v44 = [MEMORY[0x277D3F198] sharedInstance];
-  v43 = [v44 commonTypeDict_IntegerFormat];
-  v71[6] = v43;
+  mEMORY[0x277D3F198]7 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat7 = [mEMORY[0x277D3F198]7 commonTypeDict_IntegerFormat];
+  v71[6] = commonTypeDict_IntegerFormat7;
   v70[7] = @"ActiveDuration";
-  v42 = [MEMORY[0x277D3F198] sharedInstance];
-  v41 = [v42 commonTypeDict_IntegerFormat];
-  v71[7] = v41;
+  mEMORY[0x277D3F198]8 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat8 = [mEMORY[0x277D3F198]8 commonTypeDict_IntegerFormat];
+  v71[7] = commonTypeDict_IntegerFormat8;
   v70[8] = @"D3SuspendDuration";
-  v40 = [MEMORY[0x277D3F198] sharedInstance];
-  v39 = [v40 commonTypeDict_IntegerFormat];
-  v71[8] = v39;
+  mEMORY[0x277D3F198]9 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat9 = [mEMORY[0x277D3F198]9 commonTypeDict_IntegerFormat];
+  v71[8] = commonTypeDict_IntegerFormat9;
   v70[9] = @"PerstDuration";
-  v38 = [MEMORY[0x277D3F198] sharedInstance];
-  v37 = [v38 commonTypeDict_IntegerFormat];
-  v71[9] = v37;
+  mEMORY[0x277D3F198]10 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat10 = [mEMORY[0x277D3F198]10 commonTypeDict_IntegerFormat];
+  v71[9] = commonTypeDict_IntegerFormat10;
   v70[10] = @"DeepSleepDuration";
-  v36 = [MEMORY[0x277D3F198] sharedInstance];
-  v35 = [v36 commonTypeDict_IntegerFormat];
-  v71[10] = v35;
+  mEMORY[0x277D3F198]11 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat11 = [mEMORY[0x277D3F198]11 commonTypeDict_IntegerFormat];
+  v71[10] = commonTypeDict_IntegerFormat11;
   v70[11] = @"L0Duration";
-  v34 = [MEMORY[0x277D3F198] sharedInstance];
-  v33 = [v34 commonTypeDict_IntegerFormat];
-  v71[11] = v33;
+  mEMORY[0x277D3F198]12 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat12 = [mEMORY[0x277D3F198]12 commonTypeDict_IntegerFormat];
+  v71[11] = commonTypeDict_IntegerFormat12;
   v70[12] = @"L11Duration";
-  v32 = [MEMORY[0x277D3F198] sharedInstance];
-  v31 = [v32 commonTypeDict_IntegerFormat];
-  v71[12] = v31;
+  mEMORY[0x277D3F198]13 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat13 = [mEMORY[0x277D3F198]13 commonTypeDict_IntegerFormat];
+  v71[12] = commonTypeDict_IntegerFormat13;
   v70[13] = @"L12Duration";
-  v30 = [MEMORY[0x277D3F198] sharedInstance];
-  v29 = [v30 commonTypeDict_IntegerFormat];
-  v71[13] = v29;
+  mEMORY[0x277D3F198]14 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat14 = [mEMORY[0x277D3F198]14 commonTypeDict_IntegerFormat];
+  v71[13] = commonTypeDict_IntegerFormat14;
   v70[14] = @"L2Duration";
-  v28 = [MEMORY[0x277D3F198] sharedInstance];
-  v27 = [v28 commonTypeDict_IntegerFormat];
-  v71[14] = v27;
+  mEMORY[0x277D3F198]15 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat15 = [mEMORY[0x277D3F198]15 commonTypeDict_IntegerFormat];
+  v71[14] = commonTypeDict_IntegerFormat15;
   v70[15] = @"BTTimestamp";
-  v26 = [MEMORY[0x277D3F198] sharedInstance];
-  v25 = [v26 commonTypeDict_IntegerFormat];
-  v71[15] = v25;
+  mEMORY[0x277D3F198]16 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat16 = [mEMORY[0x277D3F198]16 commonTypeDict_IntegerFormat];
+  v71[15] = commonTypeDict_IntegerFormat16;
   v70[16] = @"epaTransmitPercentage";
-  v24 = [MEMORY[0x277D3F198] sharedInstance];
-  v23 = [v24 commonTypeDict_IntegerFormat];
-  v71[16] = v23;
+  mEMORY[0x277D3F198]17 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat17 = [mEMORY[0x277D3F198]17 commonTypeDict_IntegerFormat];
+  v71[16] = commonTypeDict_IntegerFormat17;
   v70[17] = @"txbfTransmitPercentage";
-  v3 = [MEMORY[0x277D3F198] sharedInstance];
-  v4 = [v3 commonTypeDict_IntegerFormat];
-  v71[17] = v4;
+  mEMORY[0x277D3F198]18 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat18 = [mEMORY[0x277D3F198]18 commonTypeDict_IntegerFormat];
+  v71[17] = commonTypeDict_IntegerFormat18;
   v70[18] = @"txbfEpaTransmitPercentage";
-  v5 = [MEMORY[0x277D3F198] sharedInstance];
-  v6 = [v5 commonTypeDict_IntegerFormat];
-  v71[18] = v6;
+  mEMORY[0x277D3F198]19 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat19 = [mEMORY[0x277D3F198]19 commonTypeDict_IntegerFormat];
+  v71[18] = commonTypeDict_IntegerFormat19;
   v70[19] = @"mrcReceivePercentage";
-  v7 = [MEMORY[0x277D3F198] sharedInstance];
-  v8 = [v7 commonTypeDict_IntegerFormat];
-  v71[19] = v8;
+  mEMORY[0x277D3F198]20 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat20 = [mEMORY[0x277D3F198]20 commonTypeDict_IntegerFormat];
+  v71[19] = commonTypeDict_IntegerFormat20;
   v70[20] = @"lpScanReceivePercentage";
-  v9 = [MEMORY[0x277D3F198] sharedInstance];
-  v10 = [v9 commonTypeDict_IntegerFormat];
-  v71[20] = v10;
+  mEMORY[0x277D3F198]21 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat21 = [mEMORY[0x277D3F198]21 commonTypeDict_IntegerFormat];
+  v71[20] = commonTypeDict_IntegerFormat21;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v71 forKeys:v70 count:21];
   v12 = [v2 initWithDictionary:v11];
 
-  v13 = [a1 getScanCoreKeys];
-  [v12 addEntriesFromDictionary:v13];
+  getScanCoreKeys = [self getScanCoreKeys];
+  [v12 addEntriesFromDictionary:getScanCoreKeys];
 
-  v14 = [a1 getBluetooth5GKeys];
-  [v12 addEntriesFromDictionary:v14];
+  getBluetooth5GKeys = [self getBluetooth5GKeys];
+  [v12 addEntriesFromDictionary:getBluetooth5GKeys];
 
-  if ([a1 areBluetooth5GAndThreadRadioLoggingEnabled])
+  if ([self areBluetooth5GAndThreadRadioLoggingEnabled])
   {
     v68[0] = *MEMORY[0x277D3F4E8];
     v66 = *MEMORY[0x277D3F568];
@@ -1714,25 +1714,25 @@ LABEL_9:
   else
   {
     v15[0] = @"rxScanPercentage";
-    v14 = [MEMORY[0x277D3F198] sharedInstance];
-    v3 = [v14 commonTypeDict_IntegerFormat];
-    v16[0] = v3;
+    mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+    v16[0] = commonTypeDict_IntegerFormat;
     v15[1] = @"mainCoreELNAOnPercentage";
-    v4 = [MEMORY[0x277D3F198] sharedInstance];
-    v5 = [v4 commonTypeDict_IntegerFormat];
-    v16[1] = v5;
+    mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+    v16[1] = commonTypeDict_IntegerFormat2;
     v15[2] = @"mainCoreELNAOffPercentage";
-    v6 = [MEMORY[0x277D3F198] sharedInstance];
-    v7 = [v6 commonTypeDict_IntegerFormat];
-    v16[2] = v7;
+    mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]3 commonTypeDict_IntegerFormat];
+    v16[2] = commonTypeDict_IntegerFormat3;
     v15[3] = @"scanCoreELNAOnPercentage";
-    v8 = [MEMORY[0x277D3F198] sharedInstance];
-    v9 = [v8 commonTypeDict_IntegerFormat];
-    v16[3] = v9;
+    mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat4 = [mEMORY[0x277D3F198]4 commonTypeDict_IntegerFormat];
+    v16[3] = commonTypeDict_IntegerFormat4;
     v15[4] = @"scanCoreELNAOffPercentage";
-    v10 = [MEMORY[0x277D3F198] sharedInstance];
-    v11 = [v10 commonTypeDict_IntegerFormat];
-    v16[4] = v11;
+    mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat5 = [mEMORY[0x277D3F198]5 commonTypeDict_IntegerFormat];
+    v16[4] = commonTypeDict_IntegerFormat5;
     v2 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:v15 count:5];
   }
 
@@ -1744,40 +1744,40 @@ LABEL_9:
 + (id)getBluetooth5GKeys
 {
   v22[8] = *MEMORY[0x277D85DE8];
-  if ([a1 areBluetooth5GAndThreadRadioLoggingEnabled])
+  if ([self areBluetooth5GAndThreadRadioLoggingEnabled])
   {
     v21[0] = @"iPA5GCounter";
-    v20 = [MEMORY[0x277D3F198] sharedInstance];
-    v19 = [v20 commonTypeDict_IntegerFormat];
-    v22[0] = v19;
+    mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+    v22[0] = commonTypeDict_IntegerFormat;
     v21[1] = @"ePA5GCounter";
-    v18 = [MEMORY[0x277D3F198] sharedInstance];
-    v17 = [v18 commonTypeDict_IntegerFormat];
-    v22[1] = v17;
+    mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+    v22[1] = commonTypeDict_IntegerFormat2;
     v21[2] = @"txbf5GTransmitPercentage";
-    v16 = [MEMORY[0x277D3F198] sharedInstance];
-    v15 = [v16 commonTypeDict_IntegerFormat];
-    v22[2] = v15;
+    mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]3 commonTypeDict_IntegerFormat];
+    v22[2] = commonTypeDict_IntegerFormat3;
     v21[3] = @"mrc5GReceivePercentage";
-    v14 = [MEMORY[0x277D3F198] sharedInstance];
-    v2 = [v14 commonTypeDict_IntegerFormat];
-    v22[3] = v2;
+    mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat4 = [mEMORY[0x277D3F198]4 commonTypeDict_IntegerFormat];
+    v22[3] = commonTypeDict_IntegerFormat4;
     v21[4] = @"epa5GTransmitPercentage";
-    v3 = [MEMORY[0x277D3F198] sharedInstance];
-    v4 = [v3 commonTypeDict_IntegerFormat];
-    v22[4] = v4;
+    mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat5 = [mEMORY[0x277D3F198]5 commonTypeDict_IntegerFormat];
+    v22[4] = commonTypeDict_IntegerFormat5;
     v21[5] = @"txbf5GEpaTransmitPercentage";
-    v5 = [MEMORY[0x277D3F198] sharedInstance];
-    v6 = [v5 commonTypeDict_IntegerFormat];
-    v22[5] = v6;
+    mEMORY[0x277D3F198]6 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat6 = [mEMORY[0x277D3F198]6 commonTypeDict_IntegerFormat];
+    v22[5] = commonTypeDict_IntegerFormat6;
     v21[6] = @"Duration5GTx";
-    v7 = [MEMORY[0x277D3F198] sharedInstance];
-    v8 = [v7 commonTypeDict_IntegerFormat];
-    v22[6] = v8;
+    mEMORY[0x277D3F198]7 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat7 = [mEMORY[0x277D3F198]7 commonTypeDict_IntegerFormat];
+    v22[6] = commonTypeDict_IntegerFormat7;
     v21[7] = @"Duration5GRx";
-    v9 = [MEMORY[0x277D3F198] sharedInstance];
-    v10 = [v9 commonTypeDict_IntegerFormat];
-    v22[7] = v10;
+    mEMORY[0x277D3F198]8 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat8 = [mEMORY[0x277D3F198]8 commonTypeDict_IntegerFormat];
+    v22[7] = commonTypeDict_IntegerFormat8;
     v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v22 forKeys:v21 count:8];
   }
 
@@ -1796,33 +1796,33 @@ LABEL_9:
   v27[6] = *MEMORY[0x277D85DE8];
   v16 = objc_alloc(MEMORY[0x277CBEB38]);
   v26[0] = @"ErrorCode";
-  v20 = [MEMORY[0x277D3F198] sharedInstance];
-  v19 = [v20 commonTypeDict_IntegerFormat];
-  v27[0] = v19;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+  v27[0] = commonTypeDict_IntegerFormat;
   v26[1] = @"RadioTimestamp";
-  v18 = [MEMORY[0x277D3F198] sharedInstance];
-  v2 = [v18 commonTypeDict_IntegerFormat];
-  v27[1] = v2;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+  v27[1] = commonTypeDict_IntegerFormat2;
   v26[2] = @"m154TransmitPercentage";
-  v3 = [MEMORY[0x277D3F198] sharedInstance];
-  v4 = [v3 commonTypeDict_IntegerFormat];
-  v27[2] = v4;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]3 commonTypeDict_IntegerFormat];
+  v27[2] = commonTypeDict_IntegerFormat3;
   v26[3] = @"m154ReceivePercentage";
-  v5 = [MEMORY[0x277D3F198] sharedInstance];
-  v6 = [v5 commonTypeDict_IntegerFormat];
-  v27[3] = v6;
+  mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat4 = [mEMORY[0x277D3F198]4 commonTypeDict_IntegerFormat];
+  v27[3] = commonTypeDict_IntegerFormat4;
   v26[4] = @"iPAThreadCounter";
-  v7 = [MEMORY[0x277D3F198] sharedInstance];
-  v8 = [v7 commonTypeDict_IntegerFormat];
-  v27[4] = v8;
+  mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat5 = [mEMORY[0x277D3F198]5 commonTypeDict_IntegerFormat];
+  v27[4] = commonTypeDict_IntegerFormat5;
   v26[5] = @"ePAThreadCounter";
-  v9 = [MEMORY[0x277D3F198] sharedInstance];
-  v10 = [v9 commonTypeDict_IntegerFormat];
-  v27[5] = v10;
+  mEMORY[0x277D3F198]6 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat6 = [mEMORY[0x277D3F198]6 commonTypeDict_IntegerFormat];
+  v27[5] = commonTypeDict_IntegerFormat6;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v27 forKeys:v26 count:6];
   v17 = [v16 initWithDictionary:v11];
 
-  if ([a1 areBluetooth5GAndThreadRadioLoggingEnabled])
+  if ([self areBluetooth5GAndThreadRadioLoggingEnabled])
   {
     v24[0] = *MEMORY[0x277D3F4E8];
     v22 = *MEMORY[0x277D3F568];
@@ -1849,189 +1849,189 @@ LABEL_9:
   v105[45] = *MEMORY[0x277D85DE8];
   v64 = objc_alloc(MEMORY[0x277CBEB38]);
   v104[0] = @"ErrorCode";
-  v98 = [MEMORY[0x277D3F198] sharedInstance];
-  v97 = [v98 commonTypeDict_IntegerFormat];
-  v105[0] = v97;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+  v105[0] = commonTypeDict_IntegerFormat;
   v104[1] = @"BTTimestamp";
-  v96 = [MEMORY[0x277D3F198] sharedInstance];
-  v95 = [v96 commonTypeDict_IntegerFormat];
-  v105[1] = v95;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+  v105[1] = commonTypeDict_IntegerFormat2;
   v104[2] = @"ActiveDuration";
-  v94 = [MEMORY[0x277D3F198] sharedInstance];
-  v93 = [v94 commonTypeDict_IntegerFormat];
-  v105[2] = v93;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]3 commonTypeDict_IntegerFormat];
+  v105[2] = commonTypeDict_IntegerFormat3;
   v104[3] = @"MainCoreTXPower";
-  v92 = [MEMORY[0x277D3F198] sharedInstance];
-  v91 = [v92 commonTypeDict_IntegerFormat];
-  v105[3] = v91;
+  mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat4 = [mEMORY[0x277D3F198]4 commonTypeDict_IntegerFormat];
+  v105[3] = commonTypeDict_IntegerFormat4;
   v104[4] = @"MainCoreRXPower";
-  v90 = [MEMORY[0x277D3F198] sharedInstance];
-  v89 = [v90 commonTypeDict_IntegerFormat];
-  v105[4] = v89;
+  mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat5 = [mEMORY[0x277D3F198]5 commonTypeDict_IntegerFormat];
+  v105[4] = commonTypeDict_IntegerFormat5;
   v104[5] = @"MainCoreSleepPower";
-  v88 = [MEMORY[0x277D3F198] sharedInstance];
-  v87 = [v88 commonTypeDict_IntegerFormat];
-  v105[5] = v87;
+  mEMORY[0x277D3F198]6 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat6 = [mEMORY[0x277D3F198]6 commonTypeDict_IntegerFormat];
+  v105[5] = commonTypeDict_IntegerFormat6;
   v104[6] = @"MainCoreOtherPower";
-  v86 = [MEMORY[0x277D3F198] sharedInstance];
-  v85 = [v86 commonTypeDict_IntegerFormat];
-  v105[6] = v85;
+  mEMORY[0x277D3F198]7 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat7 = [mEMORY[0x277D3F198]7 commonTypeDict_IntegerFormat];
+  v105[6] = commonTypeDict_IntegerFormat7;
   v104[7] = @"MainCoreRxScanPercentage";
-  v84 = [MEMORY[0x277D3F198] sharedInstance];
-  v83 = [v84 commonTypeDict_IntegerFormat];
-  v105[7] = v83;
+  mEMORY[0x277D3F198]8 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat8 = [mEMORY[0x277D3F198]8 commonTypeDict_IntegerFormat];
+  v105[7] = commonTypeDict_IntegerFormat8;
   v104[8] = @"MainCoreElnaOnPercentage";
-  v82 = [MEMORY[0x277D3F198] sharedInstance];
-  v81 = [v82 commonTypeDict_IntegerFormat];
-  v105[8] = v81;
+  mEMORY[0x277D3F198]9 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat9 = [mEMORY[0x277D3F198]9 commonTypeDict_IntegerFormat];
+  v105[8] = commonTypeDict_IntegerFormat9;
   v104[9] = @"MainCoreElnaOffPercentage";
-  v80 = [MEMORY[0x277D3F198] sharedInstance];
-  v79 = [v80 commonTypeDict_IntegerFormat];
-  v105[9] = v79;
+  mEMORY[0x277D3F198]10 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat10 = [mEMORY[0x277D3F198]10 commonTypeDict_IntegerFormat];
+  v105[9] = commonTypeDict_IntegerFormat10;
   v104[10] = @"MainCoreMrcRxPercentage";
-  v78 = [MEMORY[0x277D3F198] sharedInstance];
-  v77 = [v78 commonTypeDict_IntegerFormat];
-  v105[10] = v77;
+  mEMORY[0x277D3F198]11 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat11 = [mEMORY[0x277D3F198]11 commonTypeDict_IntegerFormat];
+  v105[10] = commonTypeDict_IntegerFormat11;
   v104[11] = @"MainCoreIpaTxPercentage";
-  v76 = [MEMORY[0x277D3F198] sharedInstance];
-  v75 = [v76 commonTypeDict_IntegerFormat];
-  v105[11] = v75;
+  mEMORY[0x277D3F198]12 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat12 = [mEMORY[0x277D3F198]12 commonTypeDict_IntegerFormat];
+  v105[11] = commonTypeDict_IntegerFormat12;
   v104[12] = @"MainCoreEpaTxPercentage";
-  v74 = [MEMORY[0x277D3F198] sharedInstance];
-  v73 = [v74 commonTypeDict_IntegerFormat];
-  v105[12] = v73;
+  mEMORY[0x277D3F198]13 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat13 = [mEMORY[0x277D3F198]13 commonTypeDict_IntegerFormat];
+  v105[12] = commonTypeDict_IntegerFormat13;
   v104[13] = @"MainCoreTxbfTxPercentage";
-  v72 = [MEMORY[0x277D3F198] sharedInstance];
-  v71 = [v72 commonTypeDict_IntegerFormat];
-  v105[13] = v71;
+  mEMORY[0x277D3F198]14 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat14 = [mEMORY[0x277D3F198]14 commonTypeDict_IntegerFormat];
+  v105[13] = commonTypeDict_IntegerFormat14;
   v104[14] = @"MainCoreEpaTxbfTxPercentage";
-  v70 = [MEMORY[0x277D3F198] sharedInstance];
-  v69 = [v70 commonTypeDict_IntegerFormat];
-  v105[14] = v69;
+  mEMORY[0x277D3F198]15 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat15 = [mEMORY[0x277D3F198]15 commonTypeDict_IntegerFormat];
+  v105[14] = commonTypeDict_IntegerFormat15;
   v104[15] = @"MainCoreM154TransmitPercentage";
-  v68 = [MEMORY[0x277D3F198] sharedInstance];
-  v67 = [v68 commonTypeDict_IntegerFormat];
-  v105[15] = v67;
+  mEMORY[0x277D3F198]16 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat16 = [mEMORY[0x277D3F198]16 commonTypeDict_IntegerFormat];
+  v105[15] = commonTypeDict_IntegerFormat16;
   v104[16] = @"MainCoreM154ReceivePercentage";
-  v66 = [MEMORY[0x277D3F198] sharedInstance];
-  v63 = [v66 commonTypeDict_IntegerFormat];
-  v105[16] = v63;
+  mEMORY[0x277D3F198]17 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat17 = [mEMORY[0x277D3F198]17 commonTypeDict_IntegerFormat];
+  v105[16] = commonTypeDict_IntegerFormat17;
   v104[17] = @"SecondaryCoreTXPower";
-  v62 = [MEMORY[0x277D3F198] sharedInstance];
-  v61 = [v62 commonTypeDict_IntegerFormat];
-  v105[17] = v61;
+  mEMORY[0x277D3F198]18 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat18 = [mEMORY[0x277D3F198]18 commonTypeDict_IntegerFormat];
+  v105[17] = commonTypeDict_IntegerFormat18;
   v104[18] = @"SecondaryCoreRXPower";
-  v60 = [MEMORY[0x277D3F198] sharedInstance];
-  v59 = [v60 commonTypeDict_IntegerFormat];
-  v105[18] = v59;
+  mEMORY[0x277D3F198]19 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat19 = [mEMORY[0x277D3F198]19 commonTypeDict_IntegerFormat];
+  v105[18] = commonTypeDict_IntegerFormat19;
   v104[19] = @"SecondaryCoreSleepPower";
-  v58 = [MEMORY[0x277D3F198] sharedInstance];
-  v57 = [v58 commonTypeDict_IntegerFormat];
-  v105[19] = v57;
+  mEMORY[0x277D3F198]20 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat20 = [mEMORY[0x277D3F198]20 commonTypeDict_IntegerFormat];
+  v105[19] = commonTypeDict_IntegerFormat20;
   v104[20] = @"SecondaryCoreOtherPower";
-  v56 = [MEMORY[0x277D3F198] sharedInstance];
-  v55 = [v56 commonTypeDict_IntegerFormat];
-  v105[20] = v55;
+  mEMORY[0x277D3F198]21 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat21 = [mEMORY[0x277D3F198]21 commonTypeDict_IntegerFormat];
+  v105[20] = commonTypeDict_IntegerFormat21;
   v104[21] = @"SecondaryCoreRxScanPercentage";
-  v54 = [MEMORY[0x277D3F198] sharedInstance];
-  v53 = [v54 commonTypeDict_IntegerFormat];
-  v105[21] = v53;
+  mEMORY[0x277D3F198]22 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat22 = [mEMORY[0x277D3F198]22 commonTypeDict_IntegerFormat];
+  v105[21] = commonTypeDict_IntegerFormat22;
   v104[22] = @"SecondaryCoreElnaOnPercentage";
-  v52 = [MEMORY[0x277D3F198] sharedInstance];
-  v51 = [v52 commonTypeDict_IntegerFormat];
-  v105[22] = v51;
+  mEMORY[0x277D3F198]23 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat23 = [mEMORY[0x277D3F198]23 commonTypeDict_IntegerFormat];
+  v105[22] = commonTypeDict_IntegerFormat23;
   v104[23] = @"SecondaryCoreElnaOffPercentage";
-  v50 = [MEMORY[0x277D3F198] sharedInstance];
-  v49 = [v50 commonTypeDict_IntegerFormat];
-  v105[23] = v49;
+  mEMORY[0x277D3F198]24 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat24 = [mEMORY[0x277D3F198]24 commonTypeDict_IntegerFormat];
+  v105[23] = commonTypeDict_IntegerFormat24;
   v104[24] = @"SecondaryCoreMrcRxPercentage";
-  v48 = [MEMORY[0x277D3F198] sharedInstance];
-  v47 = [v48 commonTypeDict_IntegerFormat];
-  v105[24] = v47;
+  mEMORY[0x277D3F198]25 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat25 = [mEMORY[0x277D3F198]25 commonTypeDict_IntegerFormat];
+  v105[24] = commonTypeDict_IntegerFormat25;
   v104[25] = @"SecondaryCoreIpaTxPercentage";
-  v46 = [MEMORY[0x277D3F198] sharedInstance];
-  v45 = [v46 commonTypeDict_IntegerFormat];
-  v105[25] = v45;
+  mEMORY[0x277D3F198]26 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat26 = [mEMORY[0x277D3F198]26 commonTypeDict_IntegerFormat];
+  v105[25] = commonTypeDict_IntegerFormat26;
   v104[26] = @"SecondaryCoreEpaTxPercentage";
-  v44 = [MEMORY[0x277D3F198] sharedInstance];
-  v43 = [v44 commonTypeDict_IntegerFormat];
-  v105[26] = v43;
+  mEMORY[0x277D3F198]27 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat27 = [mEMORY[0x277D3F198]27 commonTypeDict_IntegerFormat];
+  v105[26] = commonTypeDict_IntegerFormat27;
   v104[27] = @"SecondaryCoreTxbfTxPercentage";
-  v42 = [MEMORY[0x277D3F198] sharedInstance];
-  v41 = [v42 commonTypeDict_IntegerFormat];
-  v105[27] = v41;
+  mEMORY[0x277D3F198]28 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat28 = [mEMORY[0x277D3F198]28 commonTypeDict_IntegerFormat];
+  v105[27] = commonTypeDict_IntegerFormat28;
   v104[28] = @"SecondaryCoreEpaTxbfTxPercentage";
-  v40 = [MEMORY[0x277D3F198] sharedInstance];
-  v39 = [v40 commonTypeDict_IntegerFormat];
-  v105[28] = v39;
+  mEMORY[0x277D3F198]29 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat29 = [mEMORY[0x277D3F198]29 commonTypeDict_IntegerFormat];
+  v105[28] = commonTypeDict_IntegerFormat29;
   v104[29] = @"SecondaryCoreM154TransmitPercentage";
-  v38 = [MEMORY[0x277D3F198] sharedInstance];
-  v37 = [v38 commonTypeDict_IntegerFormat];
-  v105[29] = v37;
+  mEMORY[0x277D3F198]30 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat30 = [mEMORY[0x277D3F198]30 commonTypeDict_IntegerFormat];
+  v105[29] = commonTypeDict_IntegerFormat30;
   v104[30] = @"SecondaryCoreM154ReceivePercentage";
-  v36 = [MEMORY[0x277D3F198] sharedInstance];
-  v35 = [v36 commonTypeDict_IntegerFormat];
-  v105[30] = v35;
+  mEMORY[0x277D3F198]31 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat31 = [mEMORY[0x277D3F198]31 commonTypeDict_IntegerFormat];
+  v105[30] = commonTypeDict_IntegerFormat31;
   v104[31] = @"ScanCoreTXPower";
-  v34 = [MEMORY[0x277D3F198] sharedInstance];
-  v33 = [v34 commonTypeDict_IntegerFormat];
-  v105[31] = v33;
+  mEMORY[0x277D3F198]32 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat32 = [mEMORY[0x277D3F198]32 commonTypeDict_IntegerFormat];
+  v105[31] = commonTypeDict_IntegerFormat32;
   v104[32] = @"ScanCoreRXPower";
-  v32 = [MEMORY[0x277D3F198] sharedInstance];
-  v31 = [v32 commonTypeDict_IntegerFormat];
-  v105[32] = v31;
+  mEMORY[0x277D3F198]33 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat33 = [mEMORY[0x277D3F198]33 commonTypeDict_IntegerFormat];
+  v105[32] = commonTypeDict_IntegerFormat33;
   v104[33] = @"ScanCoreSleepPower";
-  v30 = [MEMORY[0x277D3F198] sharedInstance];
-  v29 = [v30 commonTypeDict_IntegerFormat];
-  v105[33] = v29;
+  mEMORY[0x277D3F198]34 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat34 = [mEMORY[0x277D3F198]34 commonTypeDict_IntegerFormat];
+  v105[33] = commonTypeDict_IntegerFormat34;
   v104[34] = @"ScanCoreOtherPower";
-  v28 = [MEMORY[0x277D3F198] sharedInstance];
-  v27 = [v28 commonTypeDict_IntegerFormat];
-  v105[34] = v27;
+  mEMORY[0x277D3F198]35 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat35 = [mEMORY[0x277D3F198]35 commonTypeDict_IntegerFormat];
+  v105[34] = commonTypeDict_IntegerFormat35;
   v104[35] = @"ScanCoreRxScanPercentage";
-  v26 = [MEMORY[0x277D3F198] sharedInstance];
-  v25 = [v26 commonTypeDict_IntegerFormat];
-  v105[35] = v25;
+  mEMORY[0x277D3F198]36 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat36 = [mEMORY[0x277D3F198]36 commonTypeDict_IntegerFormat];
+  v105[35] = commonTypeDict_IntegerFormat36;
   v104[36] = @"ScanCoreElnaOnPercentage";
-  v24 = [MEMORY[0x277D3F198] sharedInstance];
-  v23 = [v24 commonTypeDict_IntegerFormat];
-  v105[36] = v23;
+  mEMORY[0x277D3F198]37 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat37 = [mEMORY[0x277D3F198]37 commonTypeDict_IntegerFormat];
+  v105[36] = commonTypeDict_IntegerFormat37;
   v104[37] = @"ScanCoreElnaOffPercentage";
-  v22 = [MEMORY[0x277D3F198] sharedInstance];
-  v21 = [v22 commonTypeDict_IntegerFormat];
-  v105[37] = v21;
+  mEMORY[0x277D3F198]38 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat38 = [mEMORY[0x277D3F198]38 commonTypeDict_IntegerFormat];
+  v105[37] = commonTypeDict_IntegerFormat38;
   v104[38] = @"ScanCoreMrcRxPercentage";
-  v20 = [MEMORY[0x277D3F198] sharedInstance];
-  v19 = [v20 commonTypeDict_IntegerFormat];
-  v105[38] = v19;
+  mEMORY[0x277D3F198]39 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat39 = [mEMORY[0x277D3F198]39 commonTypeDict_IntegerFormat];
+  v105[38] = commonTypeDict_IntegerFormat39;
   v104[39] = @"ScanCoreIpaTxPercentage";
-  v18 = [MEMORY[0x277D3F198] sharedInstance];
-  v17 = [v18 commonTypeDict_IntegerFormat];
-  v105[39] = v17;
+  mEMORY[0x277D3F198]40 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat40 = [mEMORY[0x277D3F198]40 commonTypeDict_IntegerFormat];
+  v105[39] = commonTypeDict_IntegerFormat40;
   v104[40] = @"ScanCoreEpaTxPercentage";
-  v16 = [MEMORY[0x277D3F198] sharedInstance];
-  v2 = [v16 commonTypeDict_IntegerFormat];
-  v105[40] = v2;
+  mEMORY[0x277D3F198]41 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat41 = [mEMORY[0x277D3F198]41 commonTypeDict_IntegerFormat];
+  v105[40] = commonTypeDict_IntegerFormat41;
   v104[41] = @"ScanCoreTxbfTxPercentage";
-  v3 = [MEMORY[0x277D3F198] sharedInstance];
-  v4 = [v3 commonTypeDict_IntegerFormat];
-  v105[41] = v4;
+  mEMORY[0x277D3F198]42 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat42 = [mEMORY[0x277D3F198]42 commonTypeDict_IntegerFormat];
+  v105[41] = commonTypeDict_IntegerFormat42;
   v104[42] = @"ScanCoreEpaTxbfTxPercentage";
-  v5 = [MEMORY[0x277D3F198] sharedInstance];
-  v6 = [v5 commonTypeDict_IntegerFormat];
-  v105[42] = v6;
+  mEMORY[0x277D3F198]43 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat43 = [mEMORY[0x277D3F198]43 commonTypeDict_IntegerFormat];
+  v105[42] = commonTypeDict_IntegerFormat43;
   v104[43] = @"ScanCoreM154TransmitPercentage";
-  v7 = [MEMORY[0x277D3F198] sharedInstance];
-  v8 = [v7 commonTypeDict_IntegerFormat];
-  v105[43] = v8;
+  mEMORY[0x277D3F198]44 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat44 = [mEMORY[0x277D3F198]44 commonTypeDict_IntegerFormat];
+  v105[43] = commonTypeDict_IntegerFormat44;
   v104[44] = @"ScanCoreM154ReceivePercentage";
-  v9 = [MEMORY[0x277D3F198] sharedInstance];
-  v10 = [v9 commonTypeDict_IntegerFormat];
-  v105[44] = v10;
+  mEMORY[0x277D3F198]45 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat45 = [mEMORY[0x277D3F198]45 commonTypeDict_IntegerFormat];
+  v105[44] = commonTypeDict_IntegerFormat45;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v105 forKeys:v104 count:45];
   v65 = [v64 initWithDictionary:v11];
 
-  if ([a1 shouldLogEnhancedStatsPerCore])
+  if ([self shouldLogEnhancedStatsPerCore])
   {
     v102[0] = *MEMORY[0x277D3F4E8];
     v100 = *MEMORY[0x277D3F568];
@@ -2071,37 +2071,37 @@ LABEL_9:
   v30[0] = v24;
   v29[1] = *MEMORY[0x277D3F540];
   v25[0] = @"VSEType";
-  v23 = [MEMORY[0x277D3F198] sharedInstance];
-  v22 = [v23 commonTypeDict_IntegerFormat];
-  v26[0] = v22;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+  v26[0] = commonTypeDict_IntegerFormat;
   v25[1] = @"VSEReasonCode";
-  v21 = [MEMORY[0x277D3F198] sharedInstance];
-  v20 = [v21 commonTypeDict_IntegerFormat];
-  v26[1] = v20;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+  v26[1] = commonTypeDict_IntegerFormat2;
   v25[2] = @"VSEReasonString";
-  v19 = [MEMORY[0x277D3F198] sharedInstance];
-  v18 = [v19 commonTypeDict_StringFormat];
-  v26[2] = v18;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat = [mEMORY[0x277D3F198]3 commonTypeDict_StringFormat];
+  v26[2] = commonTypeDict_StringFormat;
   v25[3] = @"VSERaw";
-  v17 = [MEMORY[0x277D3F198] sharedInstance];
-  v16 = [v17 commonTypeDict_RawDataFormat];
-  v26[3] = v16;
+  mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_RawDataFormat = [mEMORY[0x277D3F198]4 commonTypeDict_RawDataFormat];
+  v26[3] = commonTypeDict_RawDataFormat;
   v25[4] = @"WakeEventType";
-  v4 = [MEMORY[0x277D3F198] sharedInstance];
-  v5 = [v4 commonTypeDict_IntegerFormat];
-  v26[4] = v5;
+  mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]5 commonTypeDict_IntegerFormat];
+  v26[4] = commonTypeDict_IntegerFormat3;
   v25[5] = @"BundleID";
-  v6 = [MEMORY[0x277D3F198] sharedInstance];
-  v7 = [v6 commonTypeDict_StringFormat_withBundleID];
-  v26[5] = v7;
+  mEMORY[0x277D3F198]6 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat_withBundleID = [mEMORY[0x277D3F198]6 commonTypeDict_StringFormat_withBundleID];
+  v26[5] = commonTypeDict_StringFormat_withBundleID;
   v25[6] = @"DeviceName";
-  v8 = [MEMORY[0x277D3F198] sharedInstance];
-  v9 = [v8 commonTypeDict_StringFormat];
-  v26[6] = v9;
+  mEMORY[0x277D3F198]7 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat2 = [mEMORY[0x277D3F198]7 commonTypeDict_StringFormat];
+  v26[6] = commonTypeDict_StringFormat2;
   v25[7] = @"PeerType";
-  v10 = [MEMORY[0x277D3F198] sharedInstance];
-  v11 = [v10 commonTypeDict_IntegerFormat];
-  v26[7] = v11;
+  mEMORY[0x277D3F198]8 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat4 = [mEMORY[0x277D3F198]8 commonTypeDict_IntegerFormat];
+  v26[7] = commonTypeDict_IntegerFormat4;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v26 forKeys:v25 count:8];
   v30[1] = v12;
   v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v30 forKeys:v29 count:2];
@@ -2159,33 +2159,33 @@ LABEL_9:
   v27[0] = v21;
   v26[1] = *MEMORY[0x277D3F540];
   v22[0] = @"apID";
-  v20 = [MEMORY[0x277D3F198] sharedInstance];
-  v19 = [v20 commonTypeDict_StringFormat];
-  v23[0] = v19;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat = [mEMORY[0x277D3F198] commonTypeDict_StringFormat];
+  v23[0] = commonTypeDict_StringFormat;
   v22[1] = @"apIX";
-  v18 = [MEMORY[0x277D3F198] sharedInstance];
-  v17 = [v18 commonTypeDict_IntegerFormat];
-  v23[1] = v17;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+  v23[1] = commonTypeDict_IntegerFormat;
   v22[2] = @"sonC";
-  v16 = [MEMORY[0x277D3F198] sharedInstance];
-  v15 = [v16 commonTypeDict_IntegerFormat];
-  v23[2] = v15;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]3 commonTypeDict_IntegerFormat];
+  v23[2] = commonTypeDict_IntegerFormat2;
   v22[3] = @"sofC";
-  v3 = [MEMORY[0x277D3F198] sharedInstance];
-  v4 = [v3 commonTypeDict_IntegerFormat];
-  v23[3] = v4;
+  mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]4 commonTypeDict_IntegerFormat];
+  v23[3] = commonTypeDict_IntegerFormat3;
   v22[4] = @"sonD";
-  v5 = [MEMORY[0x277D3F198] sharedInstance];
-  v6 = [v5 commonTypeDict_IntegerFormat];
-  v23[4] = v6;
+  mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat4 = [mEMORY[0x277D3F198]5 commonTypeDict_IntegerFormat];
+  v23[4] = commonTypeDict_IntegerFormat4;
   v22[5] = @"sofD";
-  v7 = [MEMORY[0x277D3F198] sharedInstance];
-  v8 = [v7 commonTypeDict_IntegerFormat];
-  v23[5] = v8;
+  mEMORY[0x277D3F198]6 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat5 = [mEMORY[0x277D3F198]6 commonTypeDict_IntegerFormat];
+  v23[5] = commonTypeDict_IntegerFormat5;
   v22[6] = @"dsFl";
-  v9 = [MEMORY[0x277D3F198] sharedInstance];
-  v10 = [v9 commonTypeDict_IntegerFormat];
-  v23[6] = v10;
+  mEMORY[0x277D3F198]7 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat6 = [mEMORY[0x277D3F198]7 commonTypeDict_IntegerFormat];
+  v23[6] = commonTypeDict_IntegerFormat6;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v23 forKeys:v22 count:7];
   v27[1] = v11;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v27 forKeys:v26 count:2];
@@ -2209,33 +2209,33 @@ LABEL_9:
   v28[0] = v22;
   v27[1] = *MEMORY[0x277D3F540];
   v23[0] = @"Name";
-  v21 = [MEMORY[0x277D3F198] sharedInstance];
-  v20 = [v21 commonTypeDict_StringFormat];
-  v24[0] = v20;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat = [mEMORY[0x277D3F198] commonTypeDict_StringFormat];
+  v24[0] = commonTypeDict_StringFormat;
   v23[1] = @"MAC";
-  v19 = [MEMORY[0x277D3F198] sharedInstance];
-  v18 = [v19 commonTypeDict_StringFormat];
-  v24[1] = v18;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat2 = [mEMORY[0x277D3F198]2 commonTypeDict_StringFormat];
+  v24[1] = commonTypeDict_StringFormat2;
   v23[2] = @"timestampEnd";
-  v17 = [MEMORY[0x277D3F198] sharedInstance];
-  v16 = [v17 commonTypeDict_DateFormat];
-  v24[2] = v16;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_DateFormat = [mEMORY[0x277D3F198]3 commonTypeDict_DateFormat];
+  v24[2] = commonTypeDict_DateFormat;
   v23[3] = @"DeviceType";
-  v15 = [MEMORY[0x277D3F198] sharedInstance];
-  v3 = [v15 commonTypeDict_IntegerFormat];
-  v24[3] = v3;
+  mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198]4 commonTypeDict_IntegerFormat];
+  v24[3] = commonTypeDict_IntegerFormat;
   v23[4] = @"DefaultName";
-  v4 = [MEMORY[0x277D3F198] sharedInstance];
-  v5 = [v4 commonTypeDict_StringFormat];
-  v24[4] = v5;
+  mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat3 = [mEMORY[0x277D3F198]5 commonTypeDict_StringFormat];
+  v24[4] = commonTypeDict_StringFormat3;
   v23[5] = @"IsRequest";
-  v6 = [MEMORY[0x277D3F198] sharedInstance];
-  v7 = [v6 commonTypeDict_BoolFormat];
-  v24[5] = v7;
+  mEMORY[0x277D3F198]6 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_BoolFormat = [mEMORY[0x277D3F198]6 commonTypeDict_BoolFormat];
+  v24[5] = commonTypeDict_BoolFormat;
   v23[6] = @"BundleID";
-  v8 = [MEMORY[0x277D3F198] sharedInstance];
-  v9 = [v8 commonTypeDict_StringFormat_withBundleID];
-  v24[6] = v9;
+  mEMORY[0x277D3F198]7 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat_withBundleID = [mEMORY[0x277D3F198]7 commonTypeDict_StringFormat_withBundleID];
+  v24[6] = commonTypeDict_StringFormat_withBundleID;
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v24 forKeys:v23 count:7];
   v28[1] = v10;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v28 forKeys:v27 count:2];
@@ -2261,9 +2261,9 @@ LABEL_9:
     v2->_btHardwareChipset = 0;
 
     v3->_logCount = 0;
-    v5 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     ENScanCache = v3->_ENScanCache;
-    v3->_ENScanCache = v5;
+    v3->_ENScanCache = dictionary;
 
     v7 = objc_alloc_init(MEMORY[0x277D49638]);
     beaconManager = v3->_beaconManager;
@@ -2380,22 +2380,22 @@ LABEL_9:
   }
 
   v23 = dispatch_time(0, 2000000000);
-  v24 = [(PLOperator *)self workQueue];
+  workQueue = [(PLOperator *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __44__PLBluetoothAgent_initOperatorDependancies__block_invoke_635;
   block[3] = &unk_2782591D0;
   block[4] = self;
-  dispatch_after(v23, v24, block);
+  dispatch_after(v23, workQueue, block);
 
-  v25 = [MEMORY[0x277CBEAA8] monotonicDate];
-  v26 = [MEMORY[0x277D3F0C0] sharedInstance];
-  [v26 createDistributionEventForwardWithDistributionID:47 withChildNodeNameToWeight:&unk_282C17860 withStartDate:v25];
+  monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
+  mEMORY[0x277D3F0C0] = [MEMORY[0x277D3F0C0] sharedInstance];
+  [mEMORY[0x277D3F0C0] createDistributionEventForwardWithDistributionID:47 withChildNodeNameToWeight:&unk_282C17860 withStartDate:monotonicDate];
 
   if ([MEMORY[0x277D3F208] isiPhone])
   {
-    v27 = [MEMORY[0x277D3F0C0] sharedInstance];
-    [v27 createDistributionEventForwardWithDistributionID:45 withChildNodeNameToWeight:&unk_282C17888 withStartDate:v25];
+    mEMORY[0x277D3F0C0]2 = [MEMORY[0x277D3F0C0] sharedInstance];
+    [mEMORY[0x277D3F0C0]2 createDistributionEventForwardWithDistributionID:45 withChildNodeNameToWeight:&unk_282C17888 withStartDate:monotonicDate];
   }
 
   v28 = objc_alloc(MEMORY[0x277D3F1F0]);
@@ -3013,22 +3013,22 @@ uint64_t __44__PLBluetoothAgent_initOperatorDependancies__block_invoke_2_677(uin
   return result;
 }
 
-- (void)logEventPointMagnet:(id)a3
+- (void)logEventPointMagnet:(id)magnet
 {
   v4 = *MEMORY[0x277D3F5E8];
-  v5 = a3;
+  magnetCopy = magnet;
   v7 = [(PLOperator *)PLBluetoothAgent entryKeyForType:v4 andName:@"Magnet"];
-  v6 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v7 withRawData:v5];
+  v6 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v7 withRawData:magnetCopy];
 
   [(PLOperator *)self logEntry:v6];
 }
 
-- (void)logEventPointMagnetOperation:(id)a3
+- (void)logEventPointMagnetOperation:(id)operation
 {
   v4 = *MEMORY[0x277D3F5E8];
-  v5 = a3;
+  operationCopy = operation;
   v7 = [(PLOperator *)PLBluetoothAgent entryKeyForType:v4 andName:@"MagnetOperation"];
-  v6 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v7 withRawData:v5];
+  v6 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v7 withRawData:operationCopy];
 
   [(PLOperator *)self logEntry:v6];
 }
@@ -3061,9 +3061,9 @@ uint64_t __44__PLBluetoothAgent_initOperatorDependancies__block_invoke_2_677(uin
           v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"Could not detach the Bluetooth session. (error: %d)", v4];
           v7 = MEMORY[0x277D3F178];
           v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBluetoothAgent.m"];
-          v9 = [v8 lastPathComponent];
+          lastPathComponent = [v8 lastPathComponent];
           v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBluetoothAgent dealloc]"];
-          [v7 logMessage:v6 fromFile:v9 fromFunction:v10 fromLineNumber:1034];
+          [v7 logMessage:v6 fromFile:lastPathComponent fromFunction:v10 fromLineNumber:1034];
 
           v11 = PLLogCommon();
           if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -3127,13 +3127,13 @@ uint64_t __33__PLBluetoothAgent_isConnectable__block_invoke(uint64_t a1)
 
 - (void)attachSession
 {
-  v3 = [(PLOperator *)self workQueue];
+  workQueue = [(PLOperator *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __33__PLBluetoothAgent_attachSession__block_invoke;
   block[3] = &unk_2782591D0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(workQueue, block);
 }
 
 void __33__PLBluetoothAgent_attachSession__block_invoke(uint64_t a1)
@@ -3362,13 +3362,13 @@ uint64_t __61__PLBluetoothAgent_bluetoothDeviceEvent_onDevice_withResult___block
   v115 = *MEMORY[0x277D85DE8];
   v64 = 0;
   memset(v65, 0, sizeof(v65));
-  v3 = [MEMORY[0x277CBEAA8] monotonicDate];
+  monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
   [(PLBluetoothAgent *)self localBluetoothDevice];
   PairedDevices = BTLocalDeviceGetPairedDevices();
   v5 = 0x277D3F000uLL;
   v6 = MEMORY[0x277D3F5D0];
   v7 = 0x277D3F000uLL;
-  v56 = v3;
+  v56 = monotonicDate;
   if (PairedDevices)
   {
     v8 = PairedDevices;
@@ -3396,9 +3396,9 @@ uint64_t __61__PLBluetoothAgent_bluetoothDeviceEvent_onDevice_withResult___block
     v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"Bluetooth power ERROR: BTLocalDeviceGetPairedDevices: failed! %d\n", v8];
     v11 = MEMORY[0x277D3F178];
     v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBluetoothAgent.m"];
-    v13 = [v12 lastPathComponent];
+    lastPathComponent = [v12 lastPathComponent];
     v14 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBluetoothAgent logEventForwardPairedDevices]"];
-    [v11 logMessage:v10 fromFile:v13 fromFunction:v14 fromLineNumber:1386];
+    [v11 logMessage:v10 fromFile:lastPathComponent fromFunction:v14 fromLineNumber:1386];
 
     v15 = PLLogCommon();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
@@ -3408,7 +3408,7 @@ uint64_t __61__PLBluetoothAgent_bluetoothDeviceEvent_onDevice_withResult___block
       _os_log_debug_impl(&dword_21A4C6000, v15, OS_LOG_TYPE_DEBUG, "%@", &v99, 0xCu);
     }
 
-    v3 = v56;
+    monotonicDate = v56;
     v7 = 0x277D3F000uLL;
     v6 = MEMORY[0x277D3F5D0];
 LABEL_28:
@@ -3433,9 +3433,9 @@ LABEL_29:
         v44 = [MEMORY[0x277CCACA8] stringWithFormat:@"No BT paired device, nothing to log"];
         v45 = MEMORY[0x277D3F178];
         v46 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBluetoothAgent.m"];
-        v47 = [v46 lastPathComponent];
+        lastPathComponent2 = [v46 lastPathComponent];
         v48 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBluetoothAgent logEventForwardPairedDevices]"];
-        [v45 logMessage:v44 fromFile:v47 fromFunction:v48 fromLineNumber:1415];
+        [v45 logMessage:v44 fromFile:lastPathComponent2 fromFunction:v48 fromLineNumber:1415];
 
         v49 = PLLogCommon();
         if (os_log_type_enabled(v49, OS_LOG_TYPE_DEBUG))
@@ -3445,7 +3445,7 @@ LABEL_29:
           _os_log_debug_impl(&dword_21A4C6000, v49, OS_LOG_TYPE_DEBUG, "%@", &v99, 0xCu);
         }
 
-        v3 = v56;
+        monotonicDate = v56;
         v7 = v43;
         v6 = MEMORY[0x277D3F5D0];
       }
@@ -3525,9 +3525,9 @@ LABEL_29:
       v18 = [MEMORY[0x277CCACA8] stringWithFormat:@"Bluetooth: No devices paired"];
       v19 = MEMORY[0x277D3F178];
       v20 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBluetoothAgent.m"];
-      v21 = [v20 lastPathComponent];
+      lastPathComponent3 = [v20 lastPathComponent];
       v22 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBluetoothAgent logEventForwardPairedDevices]"];
-      [v19 logMessage:v18 fromFile:v21 fromFunction:v22 fromLineNumber:1392];
+      [v19 logMessage:v18 fromFile:lastPathComponent3 fromFunction:v22 fromLineNumber:1392];
 
       v23 = PLLogCommon();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
@@ -3537,7 +3537,7 @@ LABEL_29:
         _os_log_debug_impl(&dword_21A4C6000, v23, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
       }
 
-      v3 = v56;
+      monotonicDate = v56;
       v7 = 0x277D3F000;
       v6 = MEMORY[0x277D3F5D0];
     }
@@ -3578,13 +3578,13 @@ LABEL_29:
 
       if (byte_2811F4386 == 1)
       {
-        v30 = self;
+        selfCopy = self;
         v31 = [MEMORY[0x277CCACA8] stringWithFormat:@"Bluetooth: Local device is paired to device : %s (%s) with mac : %s\n", &v99, &v83, &v68];
         v32 = MEMORY[0x277D3F178];
         v33 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBluetoothAgent.m"];
-        v34 = [v33 lastPathComponent];
+        lastPathComponent4 = [v33 lastPathComponent];
         v35 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBluetoothAgent logEventForwardPairedDevices]"];
-        [v32 logMessage:v31 fromFile:v34 fromFunction:v35 fromLineNumber:1399];
+        [v32 logMessage:v31 fromFile:lastPathComponent4 fromFunction:v35 fromLineNumber:1399];
 
         v36 = PLLogCommon();
         if (os_log_type_enabled(v36, OS_LOG_TYPE_DEBUG))
@@ -3594,8 +3594,8 @@ LABEL_29:
           _os_log_debug_impl(&dword_21A4C6000, v36, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
         }
 
-        self = v30;
-        v3 = v56;
+        self = selfCopy;
+        monotonicDate = v56;
         v7 = 0x277D3F000uLL;
       }
     }
@@ -3611,7 +3611,7 @@ LABEL_29:
     v41 = [MEMORY[0x277CCACA8] stringWithUTF8String:&v68];
     [v38 setObject:v41 forKeyedSubscript:@"PairedDevicesMac"];
 
-    [v38 setEntryDate:v3];
+    [v38 setEntryDate:monotonicDate];
     [(PLOperator *)self logEntry:v38];
     v68 = 0uLL;
     *&v69 = 0;
@@ -3706,11 +3706,11 @@ uint64_t __67__PLBluetoothAgent_logEventIntervalLeConnectedDevices_withRequest__
   return result;
 }
 
-- (void)logEventIntervalHCIRawData:(id)a3
+- (void)logEventIntervalHCIRawData:(id)data
 {
   v20 = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277D3F180];
-  v5 = a3;
+  dataCopy = data;
   if ([v4 debugEnabled])
   {
     v6 = objc_opt_class();
@@ -3729,9 +3729,9 @@ uint64_t __67__PLBluetoothAgent_logEventIntervalLeConnectedDevices_withRequest__
       v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"inside HCI trace callback logEventIntervalHCIRawData"];
       v8 = MEMORY[0x277D3F178];
       v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBluetoothAgent.m"];
-      v10 = [v9 lastPathComponent];
+      lastPathComponent = [v9 lastPathComponent];
       v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBluetoothAgent logEventIntervalHCIRawData:]"];
-      [v8 logMessage:v7 fromFile:v10 fromFunction:v11 fromLineNumber:1480];
+      [v8 logMessage:v7 fromFile:lastPathComponent fromFunction:v11 fromLineNumber:1480];
 
       v12 = PLLogCommon();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
@@ -3745,7 +3745,7 @@ uint64_t __67__PLBluetoothAgent_logEventIntervalLeConnectedDevices_withRequest__
 
   v13 = [(PLOperator *)PLBluetoothAgent entryKeyForType:*MEMORY[0x277D3F5C8] andName:@"HCITrace"];
   v14 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v13];
-  v15 = [v5 objectForKey:@"HCITrace"];
+  v15 = [dataCopy objectForKey:@"HCITrace"];
 
   [v14 setObject:v15 forKeyedSubscript:@"HCIRawData"];
   [(PLOperator *)self logEntry:v14];
@@ -3760,15 +3760,15 @@ uint64_t __47__PLBluetoothAgent_logEventIntervalHCIRawData___block_invoke(uint64
   return result;
 }
 
-- (id)advertisingDataDescription:(const char *)a3 :(unint64_t)a4
+- (id)advertisingDataDescription:(const char *)description :(unint64_t)a4
 {
   v6 = objc_alloc_init(MEMORY[0x277CCAB68]);
   if (a4 >= 2)
   {
     do
     {
-      v7 = *a3;
-      if (*a3)
+      v7 = *description;
+      if (*description)
       {
         v8 = a4 > v7;
       }
@@ -3783,16 +3783,16 @@ uint64_t __47__PLBluetoothAgent_logEventIntervalHCIRawData___block_invoke(uint64
         break;
       }
 
-      v9 = *(a3 + 1);
+      v9 = *(description + 1);
       if (v9 == 255)
       {
-        if (v7 >= 5 && a3[2] == 76)
+        if (v7 >= 5 && description[2] == 76)
         {
           v11 = 4;
           do
           {
-            v12 = v11 + (a3[(v11 + 1)] & 0x1F);
-            [v6 appendFormat:@" --%@: %d, ", @"LE_adv_type", a3[v11]];
+            v12 = v11 + (description[(v11 + 1)] & 0x1F);
+            [v6 appendFormat:@" --%@: %d, ", @"LE_adv_type", description[v11]];
             v11 = v12 + 2;
           }
 
@@ -3802,10 +3802,10 @@ uint64_t __47__PLBluetoothAgent_logEventIntervalHCIRawData___block_invoke(uint64
 
       else if (v9 == 1 && v7 >= 2)
       {
-        [v6 appendFormat:@" Flags: %#04X, ", *(a3 + 2)];
+        [v6 appendFormat:@" Flags: %#04X, ", *(description + 2)];
       }
 
-      a3 += v7 + 1;
+      description += v7 + 1;
       a4 -= v7 + 1;
     }
 
@@ -3815,10 +3815,10 @@ uint64_t __47__PLBluetoothAgent_logEventIntervalHCIRawData___block_invoke(uint64
   return v6;
 }
 
-- (void)logEventIntervalWakeVSE:(id)a3
+- (void)logEventIntervalWakeVSE:(id)e
 {
   v64 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  eCopy = e;
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
     v5 = objc_opt_class();
@@ -3834,55 +3834,55 @@ uint64_t __47__PLBluetoothAgent_logEventIntervalHCIRawData___block_invoke(uint64
 
     if (byte_2811F438B == 1)
     {
-      v6 = self;
-      v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"wake payload = %@", v4];
+      selfCopy = self;
+      eCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"wake payload = %@", eCopy];
       v8 = MEMORY[0x277D3F178];
       v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBluetoothAgent.m"];
-      v10 = [v9 lastPathComponent];
+      lastPathComponent = [v9 lastPathComponent];
       v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBluetoothAgent logEventIntervalWakeVSE:]"];
-      [v8 logMessage:v7 fromFile:v10 fromFunction:v11 fromLineNumber:1573];
+      [v8 logMessage:eCopy fromFile:lastPathComponent fromFunction:v11 fromLineNumber:1573];
 
       v12 = PLLogCommon();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412290;
-        v63 = v7;
+        v63 = eCopy;
         _os_log_debug_impl(&dword_21A4C6000, v12, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
       }
 
-      self = v6;
+      self = selfCopy;
     }
   }
 
   v60 = [(PLOperator *)PLBluetoothAgent entryKeyForType:*MEMORY[0x277D3F5C8] andName:@"BTWakeupVSE"];
   v13 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v60];
-  v14 = [v4 objectForKey:@"WakeEventType"];
-  v15 = [v4 objectForKey:@"HostWakeReport"];
+  v14 = [eCopy objectForKey:@"WakeEventType"];
+  v15 = [eCopy objectForKey:@"HostWakeReport"];
   v16 = [v15 length];
-  v59 = v4;
+  v59 = eCopy;
   if (v14)
   {
     [v13 setObject:v14 forKeyedSubscript:@"WakeEventType"];
     if ([v14 intValue] >= 1)
     {
-      v17 = [v4 objectForKey:@"BundleID"];
+      v17 = [eCopy objectForKey:@"BundleID"];
       [v13 setObject:v17 forKeyedSubscript:@"BundleID"];
 
-      v18 = [v4 objectForKey:@"DeviceName"];
+      v18 = [eCopy objectForKey:@"DeviceName"];
       [v13 setObject:v18 forKeyedSubscript:@"DeviceName"];
 
-      v19 = [v4 objectForKey:@"PeerType"];
+      v19 = [eCopy objectForKey:@"PeerType"];
       [v13 setObject:v19 forKeyedSubscript:@"PeerType"];
 
       [v13 setObject:v15 forKeyedSubscript:@"VSERaw"];
-      v20 = [v14 intValue];
-      if (v20 > 4)
+      intValue = [v14 intValue];
+      if (intValue > 4)
       {
-        if (v20 != 5)
+        if (intValue != 5)
         {
-          if (v20 == 8)
+          if (intValue == 8)
           {
-            v39 = self;
+            selfCopy2 = self;
             if (v16 <= 1)
             {
               v40 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:255];
@@ -3890,10 +3890,10 @@ uint64_t __47__PLBluetoothAgent_logEventIntervalHCIRawData___block_invoke(uint64
             }
 
             v41 = *[v15 bytes];
-            v42 = [v15 bytes];
-            v24 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v41 | (*(v42 + 1) << 8)];
+            bytes = [v15 bytes];
+            v24 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v41 | (*(bytes + 1) << 8)];
             [v13 setObject:v24 forKeyedSubscript:@"VSEReasonCode"];
-            self = v39;
+            self = selfCopy2;
             goto LABEL_59;
           }
 
@@ -3909,7 +3909,7 @@ uint64_t __47__PLBluetoothAgent_logEventIntervalHCIRawData___block_invoke(uint64
 
       else
       {
-        if ((v20 - 1) < 2)
+        if ((intValue - 1) < 2)
         {
           v21 = [MEMORY[0x277CCABB0] numberWithInt:4];
           [v13 setObject:v21 forKeyedSubscript:@"VSEType"];
@@ -3938,7 +3938,7 @@ LABEL_87:
           goto LABEL_88;
         }
 
-        if (v20 != 3)
+        if (intValue != 3)
         {
           goto LABEL_87;
         }
@@ -3988,7 +3988,7 @@ LABEL_86:
     goto LABEL_87;
   }
 
-  v58 = self;
+  selfCopy3 = self;
   v33 = ([v15 bytes] + v29);
   v32 = *v33;
   v31 = v33[1];
@@ -4004,17 +4004,17 @@ LABEL_23:
       }
     }
 
-    v35 = [MEMORY[0x277D3F208] isWatch];
+    isWatch = [MEMORY[0x277D3F208] isWatch];
     if (v32 != 4 || v31 != 62)
     {
-      self = v58;
+      self = selfCopy3;
       goto LABEL_86;
     }
 
-    v36 = &v33[v35];
+    v36 = &v33[isWatch];
     if (v30 == 2)
     {
-      self = v58;
+      self = selfCopy3;
       if (v16 >= 0x19)
       {
         if (v36[5] != 62)
@@ -4062,7 +4062,7 @@ LABEL_67:
 
     else
     {
-      self = v58;
+      self = selfCopy3;
       if (v30 == 13 && v16 >= 0x28)
       {
         if (v36[5] != 62)
@@ -4142,14 +4142,14 @@ uint64_t __44__PLBluetoothAgent_logEventIntervalWakeVSE___block_invoke(uint64_t 
 
 - (void)logEventIntervalConnectedDevices
 {
-  v118 = self;
+  selfCopy = self;
   v106 = &v104;
   v198 = *MEMORY[0x277D85DE8];
   v150 = 0;
   memset(v151, 0, sizeof(v151));
-  v113 = [MEMORY[0x277CBEAA8] monotonicDate];
+  monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
   v107 = objc_opt_new();
-  [(PLBluetoothAgent *)v118 localBluetoothDevice];
+  [(PLBluetoothAgent *)selfCopy localBluetoothDevice];
   ConnectedDevices = BTLocalDeviceGetConnectedDevices();
   if (ConnectedDevices)
   {
@@ -4168,18 +4168,18 @@ uint64_t __44__PLBluetoothAgent_logEventIntervalWakeVSE___block_invoke(uint64_t 
 
       if (byte_2811F438C == 1)
       {
-        v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"Bluetooth power ERROR: BTLocalDeviceGetConnectedDevices: failed! %d\n", ConnectedDevices];
+        connectedDevices = [MEMORY[0x277CCACA8] stringWithFormat:@"Bluetooth power ERROR: BTLocalDeviceGetConnectedDevices: failed! %d\n", ConnectedDevices];
         v5 = MEMORY[0x277D3F178];
         v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBluetoothAgent.m"];
-        v7 = [v6 lastPathComponent];
+        lastPathComponent = [v6 lastPathComponent];
         v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBluetoothAgent logEventIntervalConnectedDevices]"];
-        [v5 logMessage:v4 fromFile:v7 fromFunction:v8 fromLineNumber:1810];
+        [v5 logMessage:connectedDevices fromFile:lastPathComponent fromFunction:v8 fromLineNumber:1810];
 
         v9 = PLLogCommon();
         if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
         {
           *v182 = 138412290;
-          *&v182[4] = v4;
+          *&v182[4] = connectedDevices;
           _os_log_debug_impl(&dword_21A4C6000, v9, OS_LOG_TYPE_DEBUG, "%@", v182, 0xCu);
         }
       }
@@ -4204,9 +4204,9 @@ LABEL_111:
         v95 = [MEMORY[0x277CCACA8] stringWithFormat:@"Nothing changes in BT connected device list"];
         v96 = MEMORY[0x277D3F178];
         v97 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBluetoothAgent.m"];
-        v98 = [v97 lastPathComponent];
+        lastPathComponent2 = [v97 lastPathComponent];
         v99 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBluetoothAgent logEventIntervalConnectedDevices]"];
-        [v96 logMessage:v95 fromFile:v98 fromFunction:v99 fromLineNumber:1921];
+        [v96 logMessage:v95 fromFile:lastPathComponent2 fromFunction:v99 fromLineNumber:1921];
 
         v100 = PLLogCommon();
         if (os_log_type_enabled(v100, OS_LOG_TYPE_DEBUG))
@@ -4222,7 +4222,7 @@ LABEL_111:
     v102 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v101];
     [v102 setIsErrorEntry:1];
     [v102 setObject:@"Nothing changes in BT connected device list" forKeyedSubscript:@"__PLEntryErrorString__"];
-    [(PLOperator *)v118 logEntry:v102];
+    [(PLOperator *)selfCopy logEntry:v102];
 
     goto LABEL_119;
   }
@@ -4287,9 +4287,9 @@ LABEL_111:
       v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"Bluetooth: No devices connected"];
       v13 = MEMORY[0x277D3F178];
       v14 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBluetoothAgent.m"];
-      v15 = [v14 lastPathComponent];
+      lastPathComponent3 = [v14 lastPathComponent];
       v16 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBluetoothAgent logEventIntervalConnectedDevices]"];
-      [v13 logMessage:v12 fromFile:v15 fromFunction:v16 fromLineNumber:1817];
+      [v13 logMessage:v12 fromFile:lastPathComponent3 fromFunction:v16 fromLineNumber:1817];
 
       v17 = PLLogCommon();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
@@ -4309,14 +4309,14 @@ LABEL_18:
     *v119 = v10;
     do
     {
-      v19 = [MEMORY[0x277CBEB38] dictionary];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
       v20 = *(v151 + v18);
       if (!BTDeviceGetAddressString())
       {
         v21 = [MEMORY[0x277CCACA8] stringWithUTF8String:&v163];
         if (v21)
         {
-          [v19 setObject:v21 forKeyedSubscript:@"MAC"];
+          [dictionary setObject:v21 forKeyedSubscript:@"MAC"];
         }
       }
 
@@ -4326,7 +4326,7 @@ LABEL_18:
         v23 = [MEMORY[0x277CCACA8] stringWithUTF8String:&v166];
         if (v23)
         {
-          [v19 setObject:v23 forKeyedSubscript:@"DefaultName"];
+          [dictionary setObject:v23 forKeyedSubscript:@"DefaultName"];
         }
       }
 
@@ -4336,11 +4336,11 @@ LABEL_18:
         v25 = [MEMORY[0x277CCACA8] stringWithUTF8String:v182];
         if (v25)
         {
-          [v19 setObject:v25 forKeyedSubscript:@"Name"];
+          [dictionary setObject:v25 forKeyedSubscript:@"Name"];
         }
       }
 
-      if ([v19 count])
+      if ([dictionary count])
       {
         v26 = *(v151 + v18);
         if (!BTDeviceGetDeviceType())
@@ -4348,11 +4348,11 @@ LABEL_18:
           v27 = [MEMORY[0x277CCABB0] numberWithInt:v148];
           if (v27)
           {
-            [v19 setObject:v27 forKeyedSubscript:@"DeviceType"];
+            [dictionary setObject:v27 forKeyedSubscript:@"DeviceType"];
           }
         }
 
-        [v107 addObject:v19];
+        [v107 addObject:dictionary];
       }
 
       else
@@ -4360,9 +4360,9 @@ LABEL_18:
         v28 = [MEMORY[0x277CCACA8] stringWithFormat:@"Cannot get BT device attributes."];
         v29 = MEMORY[0x277D3F178];
         v30 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBluetoothAgent.m"];
-        v31 = [v30 lastPathComponent];
+        lastPathComponent4 = [v30 lastPathComponent];
         v32 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBluetoothAgent logEventIntervalConnectedDevices]"];
-        [v29 logMessage:v28 fromFile:v31 fromFunction:v32 fromLineNumber:1836];
+        [v29 logMessage:v28 fromFile:lastPathComponent4 fromFunction:v32 fromLineNumber:1836];
 
         v33 = PLLogCommon();
         if (os_log_type_enabled(v33, OS_LOG_TYPE_DEBUG))
@@ -4420,8 +4420,8 @@ LABEL_18:
   v162 = v34;
   v105 = [MEMORY[0x277CBEA60] arrayWithObjects:&v162 count:1];
 
-  v35 = [(PLOperator *)v118 storage];
-  v36 = [v35 entriesForKey:v112 withComparisons:v105];
+  storage = [(PLOperator *)selfCopy storage];
+  v36 = [storage entriesForKey:v112 withComparisons:v105];
 
   v115 = objc_opt_new();
   v145 = 0u;
@@ -4517,9 +4517,9 @@ LABEL_18:
             v50 = [MEMORY[0x277CCACA8] stringWithFormat:@"Bluetooth: Local device is connected to device :%@", v48];
             v51 = MEMORY[0x277D3F178];
             v52 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBluetoothAgent.m"];
-            v53 = [v52 lastPathComponent];
+            lastPathComponent5 = [v52 lastPathComponent];
             v54 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBluetoothAgent logEventIntervalConnectedDevices]"];
-            [v51 logMessage:v50 fromFile:v53 fromFunction:v54 fromLineNumber:1875];
+            [v51 logMessage:v50 fromFile:lastPathComponent5 fromFunction:v54 fromLineNumber:1875];
 
             v55 = PLLogCommon();
             if (os_log_type_enabled(v55, OS_LOG_TYPE_DEBUG))
@@ -4533,7 +4533,7 @@ LABEL_18:
 
         v56 = objc_alloc(MEMORY[0x277D3F190]);
         v57 = [v56 initWithEntryKey:v112 withRawData:v48];
-        [v57 setEntryDate:v113];
+        [v57 setEntryDate:monotonicDate];
         v136 = 0u;
         v137 = 0u;
         v134 = 0u;
@@ -4576,9 +4576,9 @@ LABEL_18:
 
                   v67 = MEMORY[0x277D3F178];
                   v68 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBluetoothAgent.m"];
-                  v69 = [v68 lastPathComponent];
+                  lastPathComponent6 = [v68 lastPathComponent];
                   v70 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBluetoothAgent logEventIntervalConnectedDevices]"];
-                  [v67 logMessage:v66 fromFile:v69 fromFunction:v70 fromLineNumber:1882];
+                  [v67 logMessage:v66 fromFile:lastPathComponent6 fromFunction:v70 fromLineNumber:1882];
 
                   v71 = PLLogCommon();
                   if (os_log_type_enabled(v71, OS_LOG_TYPE_DEBUG))
@@ -4618,9 +4618,9 @@ LABEL_18:
 
                     v79 = MEMORY[0x277D3F178];
                     v80 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBluetoothAgent.m"];
-                    v81 = [v80 lastPathComponent];
+                    lastPathComponent7 = [v80 lastPathComponent];
                     v82 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBluetoothAgent logEventIntervalConnectedDevices]"];
-                    [v79 logMessage:v78 fromFile:v81 fromFunction:v82 fromLineNumber:1895];
+                    [v79 logMessage:v78 fromFile:lastPathComponent7 fromFunction:v82 fromLineNumber:1895];
 
                     v83 = PLLogCommon();
                     if (os_log_type_enabled(v83, OS_LOG_TYPE_DEBUG))
@@ -4649,7 +4649,7 @@ LABEL_18:
           }
         }
 
-        [(PLOperator *)v118 logEntry:v57];
+        [(PLOperator *)selfCopy logEntry:v57];
         v110 = 1;
 LABEL_89:
 
@@ -4673,7 +4673,7 @@ LABEL_89:
   v155 = 0x3032000000;
   v156 = __Block_byref_object_copy__6;
   v157 = __Block_byref_object_dispose__6;
-  v158 = [MEMORY[0x277CBEAA8] monotonicDate];
+  monotonicDate2 = [MEMORY[0x277CBEAA8] monotonicDate];
   v128 = 0u;
   v129 = 0u;
   v130 = 0u;
@@ -4746,8 +4746,8 @@ LABEL_89:
         v121[3] = &unk_27825BC18;
         v121[5] = v122;
         v121[6] = &buf;
-        v121[4] = v118;
-        [(PLOperator *)v118 updateEntry:v123 withBlock:v121];
+        v121[4] = selfCopy;
+        [(PLOperator *)selfCopy updateEntry:v123 withBlock:v121];
         _Block_object_dispose(v122, 8);
 
         v110 = 1;
@@ -5113,21 +5113,21 @@ uint64_t __53__PLBluetoothAgent_logEventBackwardPowerProfileStats__block_invoke_
 
     if (EnhancedPowerStatsPerCore == 7)
     {
-      v15 = [(PLOperator *)self workQueue];
+      workQueue = [(PLOperator *)self workQueue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __53__PLBluetoothAgent_logEventBackwardPowerStatsPerCore__block_invoke;
       block[3] = &unk_2782591D0;
       block[4] = self;
-      dispatch_async(v15, block);
+      dispatch_async(workQueue, block);
     }
   }
 
   else
   {
-    v16 = [MEMORY[0x277CBEAA8] monotonicDate];
+    monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
     lastPowerEntryDate = self->_lastPowerEntryDate;
-    self->_lastPowerEntryDate = v16;
+    self->_lastPowerEntryDate = monotonicDate;
 
     v18 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:*(v8 + 4)];
     [v11 setObject:v18 forKeyedSubscript:@"TXPower"];
@@ -5336,14 +5336,14 @@ void __53__PLBluetoothAgent_logEventBackwardPowerStatsPerCore__block_invoke(uint
   return [v3 isWiFiClass:1004012];
 }
 
-- (void)logEventBackwardCBDiscovery:(id)a3
+- (void)logEventBackwardCBDiscovery:(id)discovery
 {
   v38 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  discoveryCopy = discovery;
   v25 = [(PLOperator *)PLBluetoothAgent entryKeyForType:*MEMORY[0x277D3F5C8] andName:@"CBDiscoveryStats"];
   v4 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v25];
-  v26 = v3;
-  v5 = [v3 objectForKeyedSubscript:@"agsE"];
+  v26 = discoveryCopy;
+  v5 = [discoveryCopy objectForKeyedSubscript:@"agsE"];
   v6 = v5;
   if (v5)
   {
@@ -5413,9 +5413,9 @@ void __53__PLBluetoothAgent_logEventBackwardPowerStatsPerCore__block_invoke(uint
         v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"ERROR: CBDiscovery return empty dictionary"];
         v18 = MEMORY[0x277D3F178];
         v19 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBluetoothAgent.m"];
-        v20 = [v19 lastPathComponent];
+        lastPathComponent = [v19 lastPathComponent];
         v21 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBluetoothAgent logEventBackwardCBDiscovery:]"];
-        [v18 logMessage:v17 fromFile:v20 fromFunction:v21 fromLineNumber:2277];
+        [v18 logMessage:v17 fromFile:lastPathComponent fromFunction:v21 fromLineNumber:2277];
 
         v22 = PLLogCommon();
         if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
@@ -5443,21 +5443,21 @@ uint64_t __48__PLBluetoothAgent_logEventBackwardCBDiscovery___block_invoke(uint6
   return result;
 }
 
-- (void)logEventBackwardWirelessProximity:(id)a3
+- (void)logEventBackwardWirelessProximity:(id)proximity
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  proximityCopy = proximity;
   v5 = [(PLOperator *)PLBluetoothAgent entryKeyForType:*MEMORY[0x277D3F5C8] andName:@"WirelessProxScanDStats"];
   v6 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v5];
-  if (v4)
+  if (proximityCopy)
   {
-    v7 = [v4 objectForKeyedSubscript:@"Scan"];
+    v7 = [proximityCopy objectForKeyedSubscript:@"Scan"];
     [v6 setObject:v7 forKeyedSubscript:@"ClientScanDuration"];
 
-    v8 = [v4 objectForKeyedSubscript:@"Advertise"];
+    v8 = [proximityCopy objectForKeyedSubscript:@"Advertise"];
     [v6 setObject:v8 forKeyedSubscript:@"ClientAdvDuration"];
 
-    v9 = [v4 objectForKeyedSubscript:@"AggressiveScan"];
+    v9 = [proximityCopy objectForKeyedSubscript:@"AggressiveScan"];
     [v6 setObject:v9 forKeyedSubscript:@"ClientScanConfig"];
   }
 
@@ -5481,9 +5481,9 @@ uint64_t __48__PLBluetoothAgent_logEventBackwardCBDiscovery___block_invoke(uint6
         v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"ERROR: WirelessProximity return empty dictionary"];
         v12 = MEMORY[0x277D3F178];
         v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBluetoothAgent.m"];
-        v14 = [v13 lastPathComponent];
+        lastPathComponent = [v13 lastPathComponent];
         v15 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBluetoothAgent logEventBackwardWirelessProximity:]"];
-        [v12 logMessage:v11 fromFile:v14 fromFunction:v15 fromLineNumber:2300];
+        [v12 logMessage:v11 fromFile:lastPathComponent fromFunction:v15 fromLineNumber:2300];
 
         v16 = PLLogCommon();
         if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
@@ -5510,12 +5510,12 @@ uint64_t __54__PLBluetoothAgent_logEventBackwardWirelessProximity___block_invoke
   return result;
 }
 
-- (void)logEventBackwardMaxDutyCycle:(id)a3
+- (void)logEventBackwardMaxDutyCycle:(id)cycle
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  cycleCopy = cycle;
   v5 = [(PLOperator *)PLBluetoothAgent entryKeyForType:*MEMORY[0x277D3F5C8] andName:@"MaxDutyCycle"];
-  v6 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v5 withRawData:v4];
+  v6 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v5 withRawData:cycleCopy];
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
     v7 = objc_opt_class();
@@ -5531,12 +5531,12 @@ uint64_t __54__PLBluetoothAgent_logEventBackwardWirelessProximity___block_invoke
 
     if (byte_2811F439E == 1)
     {
-      v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"Write to dB: %@", v4, block, v16, v17, v18, v19];
+      v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"Write to dB: %@", cycleCopy, block, v16, v17, v18, v19];
       v9 = MEMORY[0x277D3F178];
       v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBluetoothAgent.m"];
-      v11 = [v10 lastPathComponent];
+      lastPathComponent = [v10 lastPathComponent];
       v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBluetoothAgent logEventBackwardMaxDutyCycle:]"];
-      [v9 logMessage:v8 fromFile:v11 fromFunction:v12 fromLineNumber:2319];
+      [v9 logMessage:v8 fromFile:lastPathComponent fromFunction:v12 fromLineNumber:2319];
 
       v13 = PLLogCommon();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
@@ -5560,43 +5560,43 @@ uint64_t __49__PLBluetoothAgent_logEventBackwardMaxDutyCycle___block_invoke(uint
   return result;
 }
 
-- (void)logEventBackwardA2DP:(id)a3
+- (void)logEventBackwardA2DP:(id)p
 {
   v4 = *MEMORY[0x277D3F5C8];
-  v5 = a3;
+  pCopy = p;
   v10 = [(PLOperator *)PLBluetoothAgent entryKeyForType:v4 andName:@"A2DPPower"];
   v6 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v10];
-  v7 = [v5 objectForKey:@"Duration"];
+  v7 = [pCopy objectForKey:@"Duration"];
   [v6 setObject:v7 forKeyedSubscript:@"A2DPDuration"];
 
-  v8 = [v5 objectForKey:@"PercentageEPAPower"];
+  v8 = [pCopy objectForKey:@"PercentageEPAPower"];
   [v6 setObject:v8 forKeyedSubscript:@"A2DPpercantageePA"];
 
-  v9 = [v5 objectForKey:@"PercentageIPAPower"];
+  v9 = [pCopy objectForKey:@"PercentageIPAPower"];
 
   [v6 setObject:v9 forKeyedSubscript:@"A2DPpercantageiPA"];
   [(PLOperator *)self logEntry:v6];
 }
 
-- (void)logEventBackwardHFP:(id)a3
+- (void)logEventBackwardHFP:(id)p
 {
   v4 = *MEMORY[0x277D3F5C8];
-  v5 = a3;
+  pCopy = p;
   v12 = [(PLOperator *)PLBluetoothAgent entryKeyForType:v4 andName:@"HFPPower"];
   v6 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v12];
-  v7 = [v5 objectForKey:@"Duration"];
+  v7 = [pCopy objectForKey:@"Duration"];
   [v6 setObject:v7 forKeyedSubscript:@"HFPDuration"];
 
-  v8 = [v5 objectForKey:@"PercentageEPAPowerFirstWindow"];
+  v8 = [pCopy objectForKey:@"PercentageEPAPowerFirstWindow"];
   [v6 setObject:v8 forKeyedSubscript:@"HFPpercantageePA1"];
 
-  v9 = [v5 objectForKey:@"PercentageEPAPowerSecondWindow"];
+  v9 = [pCopy objectForKey:@"PercentageEPAPowerSecondWindow"];
   [v6 setObject:v9 forKeyedSubscript:@"HFPpercantageePA2"];
 
-  v10 = [v5 objectForKey:@"PercentageIPAPowerFirstWindow"];
+  v10 = [pCopy objectForKey:@"PercentageIPAPowerFirstWindow"];
   [v6 setObject:v10 forKeyedSubscript:@"HFPpercentageiPA1"];
 
-  v11 = [v5 objectForKey:@"PercentageIPAPowerSecondWindow"];
+  v11 = [pCopy objectForKey:@"PercentageIPAPowerSecondWindow"];
 
   [v6 setObject:v11 forKeyedSubscript:@"HFPpercentageiPA2"];
   [(PLOperator *)self logEntry:v6];
@@ -5706,25 +5706,25 @@ LABEL_37:
   return v5;
 }
 
-- (void)modelBluetoothPower:(id)a3
+- (void)modelBluetoothPower:(id)power
 {
   v201 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  powerCopy = power;
   if (([MEMORY[0x277D3F208] isHomePod] & 1) == 0)
   {
-    v150 = [(PLBluetoothAgent *)self btHardwareChipsetQuery];
+    btHardwareChipsetQuery = [(PLBluetoothAgent *)self btHardwareChipsetQuery];
     v5 = [MEMORY[0x277D3F258] powerModelForOperatorName:@"bluetooth"];
-    v6 = [v5 objectForKeyedSubscript:v150];
+    v6 = [v5 objectForKeyedSubscript:btHardwareChipsetQuery];
     v7 = [v6 objectForKeyedSubscript:@"tx"];
     [v7 doubleValue];
     v146 = v8;
 
-    v9 = [v5 objectForKeyedSubscript:v150];
+    v9 = [v5 objectForKeyedSubscript:btHardwareChipsetQuery];
     v10 = [v9 objectForKeyedSubscript:@"rx"];
     [v10 doubleValue];
     v145 = v11;
 
-    v12 = [v5 objectForKeyedSubscript:v150];
+    v12 = [v5 objectForKeyedSubscript:btHardwareChipsetQuery];
     v13 = [v12 objectForKeyedSubscript:@"other"];
     [v13 doubleValue];
     v144 = v14;
@@ -5747,9 +5747,9 @@ LABEL_37:
         v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"coefficientTxPower = %f, coefficientTxPower = %f, coefficientOtherPower = %f", *&v146, *&v145, *&v144];
         v17 = MEMORY[0x277D3F178];
         v18 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBluetoothAgent.m"];
-        v19 = [v18 lastPathComponent];
+        lastPathComponent = [v18 lastPathComponent];
         v20 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBluetoothAgent modelBluetoothPower:]"];
-        [v17 logMessage:v16 fromFile:v19 fromFunction:v20 fromLineNumber:2419];
+        [v17 logMessage:v16 fromFile:lastPathComponent fromFunction:v20 fromLineNumber:2419];
 
         v21 = PLLogCommon();
         if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
@@ -5761,19 +5761,19 @@ LABEL_37:
       }
     }
 
-    v22 = [v4 objectForKeyedSubscript:@"TXPower"];
+    v22 = [powerCopy objectForKeyedSubscript:@"TXPower"];
     [v22 doubleValue];
     v143 = v23;
 
-    v24 = [v4 objectForKeyedSubscript:@"RXPower"];
+    v24 = [powerCopy objectForKeyedSubscript:@"RXPower"];
     [v24 doubleValue];
     v26 = v25;
 
-    v27 = [v4 objectForKeyedSubscript:@"OtherPower"];
+    v27 = [powerCopy objectForKeyedSubscript:@"OtherPower"];
     [v27 doubleValue];
     v29 = v28;
 
-    v30 = [v4 objectForKeyedSubscript:@"SleepPower"];
+    v30 = [powerCopy objectForKeyedSubscript:@"SleepPower"];
     [v30 doubleValue];
     v142 = v31;
 
@@ -5787,39 +5787,39 @@ LABEL_37:
     v37 = 0.0;
     if (([MEMORY[0x277D3F208] isUsingAnOlderWifiChip] & 1) == 0)
     {
-      v38 = [v5 objectForKeyedSubscript:v150];
+      v38 = [v5 objectForKeyedSubscript:btHardwareChipsetQuery];
       v39 = [v38 objectForKeyedSubscript:@"mcon"];
       [v39 doubleValue];
       v148 = v40;
 
-      v41 = [v5 objectForKeyedSubscript:v150];
+      v41 = [v5 objectForKeyedSubscript:btHardwareChipsetQuery];
       v42 = [v41 objectForKeyedSubscript:@"mcoff"];
       [v42 doubleValue];
       v147 = v43;
 
-      v44 = [v5 objectForKeyedSubscript:v150];
+      v44 = [v5 objectForKeyedSubscript:btHardwareChipsetQuery];
       v45 = [v44 objectForKeyedSubscript:@"scon"];
       [v45 doubleValue];
       v33 = v46;
 
-      v47 = [v5 objectForKeyedSubscript:v150];
+      v47 = [v5 objectForKeyedSubscript:btHardwareChipsetQuery];
       v48 = [v47 objectForKeyedSubscript:@"scoff"];
       [v48 doubleValue];
       v32 = v49;
 
-      v50 = [v4 objectForKeyedSubscript:@"mainCoreELNAOnPercentage"];
+      v50 = [powerCopy objectForKeyedSubscript:@"mainCoreELNAOnPercentage"];
       [v50 doubleValue];
       v37 = v51;
 
-      v52 = [v4 objectForKeyedSubscript:@"mainCoreELNAOffPercentage"];
+      v52 = [powerCopy objectForKeyedSubscript:@"mainCoreELNAOffPercentage"];
       [v52 doubleValue];
       v36 = v53;
 
-      v54 = [v4 objectForKeyedSubscript:@"scanCoreELNAOnPercentage"];
+      v54 = [powerCopy objectForKeyedSubscript:@"scanCoreELNAOnPercentage"];
       [v54 doubleValue];
       v35 = v55;
 
-      v56 = [v4 objectForKeyedSubscript:@"scanCoreELNAOffPercentage"];
+      v56 = [powerCopy objectForKeyedSubscript:@"scanCoreELNAOffPercentage"];
       [v56 doubleValue];
       v34 = v57;
     }
@@ -5842,9 +5842,9 @@ LABEL_37:
         v59 = [MEMORY[0x277CCACA8] stringWithFormat:@"txDur=%f, rxDur=%f, otherDur=%f, sleepDur=%f, mcondur=%f, mcoffdur=%f, scondur=%f, scoffdur=%f", *&v143, *&v26, *&v29, v142, *&v37, *&v36, *&v35, *&v34];
         v60 = MEMORY[0x277D3F178];
         v61 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBluetoothAgent.m"];
-        v62 = [v61 lastPathComponent];
+        lastPathComponent2 = [v61 lastPathComponent];
         v63 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBluetoothAgent modelBluetoothPower:]"];
-        [v60 logMessage:v59 fromFile:v62 fromFunction:v63 fromLineNumber:2450];
+        [v60 logMessage:v59 fromFile:lastPathComponent2 fromFunction:v63 fromLineNumber:2450];
 
         v64 = PLLogCommon();
         if (os_log_type_enabled(v64, OS_LOG_TYPE_DEBUG))
@@ -5944,9 +5944,9 @@ LABEL_37:
         v75 = [MEMORY[0x277CCACA8] stringWithFormat:@"Bluetooth power=%f", *&v73];
         v76 = MEMORY[0x277D3F178];
         v77 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBluetoothAgent.m"];
-        v78 = [v77 lastPathComponent];
+        lastPathComponent3 = [v77 lastPathComponent];
         v79 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBluetoothAgent modelBluetoothPower:]"];
-        [v76 logMessage:v75 fromFile:v78 fromFunction:v79 fromLineNumber:2491];
+        [v76 logMessage:v75 fromFile:lastPathComponent3 fromFunction:v79 fromLineNumber:2491];
 
         v80 = PLLogCommon();
         if (os_log_type_enabled(v80, OS_LOG_TYPE_DEBUG))
@@ -5990,9 +5990,9 @@ LABEL_37:
         v83 = [MEMORY[0x277CCACA8] stringWithFormat:@"Types: %@", v81];
         v84 = MEMORY[0x277D3F178];
         v85 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBluetoothAgent.m"];
-        v86 = [v85 lastPathComponent];
+        lastPathComponent4 = [v85 lastPathComponent];
         v87 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBluetoothAgent modelBluetoothPower:]"];
-        [v84 logMessage:v83 fromFile:v86 fromFunction:v87 fromLineNumber:2505];
+        [v84 logMessage:v83 fromFile:lastPathComponent4 fromFunction:v87 fromLineNumber:2505];
 
         v88 = PLLogCommon();
         if (os_log_type_enabled(v88, OS_LOG_TYPE_DEBUG))
@@ -6005,7 +6005,7 @@ LABEL_37:
     }
 
     v89 = dispatch_semaphore_create(0);
-    v90 = [(PLBluetoothAgent *)self beaconManager];
+    beaconManager = [(PLBluetoothAgent *)self beaconManager];
     v179[0] = MEMORY[0x277D85DD0];
     v179[1] = 3221225472;
     v179[2] = __40__PLBluetoothAgent_modelBluetoothPower___block_invoke_1038;
@@ -6014,7 +6014,7 @@ LABEL_37:
     v181 = &v185;
     v91 = v89;
     v180 = v91;
-    [v90 allBeaconsOfTypes:v81 completion:v179];
+    [beaconManager allBeaconsOfTypes:v81 completion:v179];
 
     v92 = dispatch_time(0, 120000000000);
     if (dispatch_semaphore_wait(v91, v92) && [MEMORY[0x277D3F180] debugEnabled])
@@ -6035,9 +6035,9 @@ LABEL_37:
         v94 = [MEMORY[0x277CCACA8] stringWithFormat:@"Timed out, ItemPaired: %d", *(v186 + 24)];
         v95 = MEMORY[0x277D3F178];
         v96 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBluetoothAgent.m"];
-        v97 = [v96 lastPathComponent];
+        lastPathComponent5 = [v96 lastPathComponent];
         v98 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBluetoothAgent modelBluetoothPower:]"];
-        [v95 logMessage:v94 fromFile:v97 fromFunction:v98 fromLineNumber:2517];
+        [v95 logMessage:v94 fromFile:lastPathComponent5 fromFunction:v98 fromLineNumber:2517];
 
         v99 = PLLogCommon();
         if (os_log_type_enabled(v99, OS_LOG_TYPE_DEBUG))
@@ -6070,8 +6070,8 @@ LABEL_37:
     v197 = 0x3032000000;
     v198 = __Block_byref_object_copy__6;
     v199 = __Block_byref_object_dispose__6;
-    v100 = [v4 entryDate];
-    v200 = [v100 dateByAddingTimeInterval:-5.0];
+    entryDate = [powerCopy entryDate];
+    v200 = [entryDate dateByAddingTimeInterval:-5.0];
 
     if ([MEMORY[0x277D3F208] isiPhone])
     {
@@ -6080,9 +6080,9 @@ LABEL_37:
       v155[1] = 3221225472;
       v155[2] = __40__PLBluetoothAgent_modelBluetoothPower___block_invoke_1057;
       v155[3] = &unk_27825BC68;
-      v102 = v101;
-      v156 = v102;
-      v157 = self;
+      mEMORY[0x277D3F0C0]4 = v101;
+      v156 = mEMORY[0x277D3F0C0]4;
+      selfCopy = self;
       v159 = &v185;
       v160 = &v189;
       v161 = v169;
@@ -6090,11 +6090,11 @@ LABEL_37:
       v163 = &v174;
       v164 = &v183;
       v165 = &v170;
-      v158 = v4;
+      v158 = powerCopy;
       p_buf = &buf;
-      [v102 activateWithCompletionHandler:v155];
+      [mEMORY[0x277D3F0C0]4 activateWithCompletionHandler:v155];
 
-      v103 = v156;
+      entryDate4 = v156;
     }
 
     else
@@ -6122,9 +6122,9 @@ LABEL_37:
               v122 = [MEMORY[0x277CCACA8] stringWithFormat:@"ModelBTPower: BTpower %f > %f", v121, v175[3]];
               v123 = MEMORY[0x277D3F178];
               v124 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBluetoothAgent.m"];
-              v125 = [v124 lastPathComponent];
+              lastPathComponent6 = [v124 lastPathComponent];
               v126 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBluetoothAgent modelBluetoothPower:]"];
-              [v123 logMessage:v122 fromFile:v125 fromFunction:v126 fromLineNumber:2640];
+              [v123 logMessage:v122 fromFile:lastPathComponent6 fromFunction:v126 fromLineNumber:2640];
 
               v127 = PLLogCommon();
               if (os_log_type_enabled(v127, OS_LOG_TYPE_DEBUG))
@@ -6162,9 +6162,9 @@ LABEL_37:
               v106 = [MEMORY[0x277CCACA8] stringWithFormat:@"ModelBTPower: BTpower %f < %f", v105, v175[3]];
               v107 = MEMORY[0x277D3F178];
               v108 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBluetoothAgent.m"];
-              v109 = [v108 lastPathComponent];
+              lastPathComponent7 = [v108 lastPathComponent];
               v110 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBluetoothAgent modelBluetoothPower:]"];
-              [v107 logMessage:v106 fromFile:v109 fromFunction:v110 fromLineNumber:2636];
+              [v107 logMessage:v106 fromFile:lastPathComponent7 fromFunction:v110 fromLineNumber:2636];
 
               v111 = PLLogCommon();
               if (os_log_type_enabled(v111, OS_LOG_TYPE_DEBUG))
@@ -6204,9 +6204,9 @@ LABEL_37:
             v149 = [MEMORY[0x277CCACA8] stringWithFormat:@"ModelBTPower: BTPower: %f", *(v190[0] + 24)];
             v115 = MEMORY[0x277D3F178];
             v116 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBluetoothAgent.m"];
-            v117 = [v116 lastPathComponent];
+            lastPathComponent8 = [v116 lastPathComponent];
             v118 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBluetoothAgent modelBluetoothPower:]"];
-            [v115 logMessage:v149 fromFile:v117 fromFunction:v118 fromLineNumber:2645];
+            [v115 logMessage:v149 fromFile:lastPathComponent8 fromFunction:v118 fromLineNumber:2645];
 
             v119 = PLLogCommon();
             if (os_log_type_enabled(v119, OS_LOG_TYPE_DEBUG))
@@ -6221,21 +6221,21 @@ LABEL_37:
 
       *(*v112 + 24) = v113;
       *(v190[0] + 24) = fmax(*(v190[0] + 24) - *(v184[0] + 24), 0.0);
-      v128 = [MEMORY[0x277D3F0C0] sharedInstance];
+      mEMORY[0x277D3F0C0] = [MEMORY[0x277D3F0C0] sharedInstance];
       v129 = *(v190[0] + 24);
-      v130 = [v4 entryDate];
-      [v128 createPowerEventBackwardWithRootNodeID:50 withPower:v130 withEndDate:v129];
+      entryDate2 = [powerCopy entryDate];
+      [mEMORY[0x277D3F0C0] createPowerEventBackwardWithRootNodeID:50 withPower:entryDate2 withEndDate:v129];
 
-      v131 = [MEMORY[0x277D3F0C0] sharedInstance];
-      [v131 createPowerEventBackwardWithRootNodeID:59 withPower:*(*(&buf + 1) + 40) withEndDate:*(v168[0] + 24)];
+      mEMORY[0x277D3F0C0]2 = [MEMORY[0x277D3F0C0] sharedInstance];
+      [mEMORY[0x277D3F0C0]2 createPowerEventBackwardWithRootNodeID:59 withPower:*(*(&buf + 1) + 40) withEndDate:*(v168[0] + 24)];
 
-      v132 = [MEMORY[0x277D3F0C0] sharedInstance];
-      v133 = [v4 entryDate];
-      [v132 createPowerEventBackwardWithRootNodeID:59 withPower:v133 withEndDate:0.0];
+      mEMORY[0x277D3F0C0]3 = [MEMORY[0x277D3F0C0] sharedInstance];
+      entryDate3 = [powerCopy entryDate];
+      [mEMORY[0x277D3F0C0]3 createPowerEventBackwardWithRootNodeID:59 withPower:entryDate3 withEndDate:0.0];
 
-      v102 = [MEMORY[0x277D3F0C0] sharedInstance];
-      v103 = [v4 entryDate];
-      [v102 createDistributionEventForwardWithDistributionID:47 withChildNodeNameToWeight:&unk_282C17950 withStartDate:v103];
+      mEMORY[0x277D3F0C0]4 = [MEMORY[0x277D3F0C0] sharedInstance];
+      entryDate4 = [powerCopy entryDate];
+      [mEMORY[0x277D3F0C0]4 createDistributionEventForwardWithDistributionID:47 withChildNodeNameToWeight:&unk_282C17950 withStartDate:entryDate4];
     }
 
     if ([MEMORY[0x277D3F180] debugEnabled])
@@ -6256,9 +6256,9 @@ LABEL_37:
         v135 = [MEMORY[0x277CCACA8] stringWithFormat:@"ITpower: %f", *(v168[0] + 24)];
         v136 = MEMORY[0x277D3F178];
         v137 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBluetoothAgent.m"];
-        v138 = [v137 lastPathComponent];
+        lastPathComponent9 = [v137 lastPathComponent];
         v139 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBluetoothAgent modelBluetoothPower:]"];
-        [v136 logMessage:v135 fromFile:v138 fromFunction:v139 fromLineNumber:2668];
+        [v136 logMessage:v135 fromFile:lastPathComponent9 fromFunction:v139 fromLineNumber:2668];
 
         v140 = PLLogCommon();
         if (os_log_type_enabled(v140, OS_LOG_TYPE_DEBUG))
@@ -6963,12 +6963,12 @@ uint64_t __40__PLBluetoothAgent_modelBluetoothPower___block_invoke_1128(uint64_t
   v29 = *MEMORY[0x277D85DE8];
   if (([MEMORY[0x277D3F208] isHomePod] & 1) == 0)
   {
-    v2 = [MEMORY[0x277CBEAA8] monotonicDate];
-    v3 = [MEMORY[0x277D3F0C0] sharedInstance];
-    [v3 createPowerEventBackwardWithRootNodeID:50 withPower:v2 withEndDate:0.0];
+    monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
+    mEMORY[0x277D3F0C0] = [MEMORY[0x277D3F0C0] sharedInstance];
+    [mEMORY[0x277D3F0C0] createPowerEventBackwardWithRootNodeID:50 withPower:monotonicDate withEndDate:0.0];
 
-    v4 = [MEMORY[0x277D3F0C0] sharedInstance];
-    [v4 createPowerEventBackwardWithRootNodeID:59 withPower:v2 withEndDate:0.0];
+    mEMORY[0x277D3F0C0]2 = [MEMORY[0x277D3F0C0] sharedInstance];
+    [mEMORY[0x277D3F0C0]2 createPowerEventBackwardWithRootNodeID:59 withPower:monotonicDate withEndDate:0.0];
 
     if ([MEMORY[0x277D3F180] debugEnabled])
     {
@@ -6988,9 +6988,9 @@ uint64_t __40__PLBluetoothAgent_modelBluetoothPower___block_invoke_1128(uint64_t
         v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"ModelBTOffPower"];
         v7 = MEMORY[0x277D3F178];
         v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBluetoothAgent.m"];
-        v9 = [v8 lastPathComponent];
+        lastPathComponent = [v8 lastPathComponent];
         v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBluetoothAgent modelBluetoothOffPower]"];
-        [v7 logMessage:v6 fromFile:v9 fromFunction:v10 fromLineNumber:2688];
+        [v7 logMessage:v6 fromFile:lastPathComponent fromFunction:v10 fromLineNumber:2688];
 
         v11 = PLLogCommon();
         if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -7004,8 +7004,8 @@ uint64_t __40__PLBluetoothAgent_modelBluetoothPower___block_invoke_1128(uint64_t
 
     if ([MEMORY[0x277D3F208] isiPhone])
     {
-      v12 = [MEMORY[0x277D3F0C0] sharedInstance];
-      [v12 createPowerEventBackwardWithRootNodeID:58 withPower:v2 withEndDate:0.0];
+      mEMORY[0x277D3F0C0]3 = [MEMORY[0x277D3F0C0] sharedInstance];
+      [mEMORY[0x277D3F0C0]3 createPowerEventBackwardWithRootNodeID:58 withPower:monotonicDate withEndDate:0.0];
 
       if ([MEMORY[0x277D3F180] debugEnabled])
       {
@@ -7025,9 +7025,9 @@ uint64_t __40__PLBluetoothAgent_modelBluetoothPower___block_invoke_1128(uint64_t
           v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"ModelBTOffPower", v21, v22, v23, v24, v25];
           v15 = MEMORY[0x277D3F178];
           v16 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBluetoothAgent.m"];
-          v17 = [v16 lastPathComponent];
+          lastPathComponent2 = [v16 lastPathComponent];
           v18 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBluetoothAgent modelBluetoothOffPower]"];
-          [v15 logMessage:v14 fromFile:v17 fromFunction:v18 fromLineNumber:2693];
+          [v15 logMessage:v14 fromFile:lastPathComponent2 fromFunction:v18 fromLineNumber:2693];
 
           v19 = PLLogCommon();
           if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))

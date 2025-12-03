@@ -1,44 +1,44 @@
 @interface BAXObjectWrapper
-+ (id)BAXLocalizedNumberForNumber:(id)a3 numberStyle:(unint64_t)a4 maximumNumberOfDigitsAfterDecimalSeparator:(unint64_t)a5;
++ (id)BAXLocalizedNumberForNumber:(id)number numberStyle:(unint64_t)style maximumNumberOfDigitsAfterDecimalSeparator:(unint64_t)separator;
 - (BEAttachmentElement)baxAttachmentElement;
 - (BOOL)_accessibilityIsRTL;
-- (BOOL)_accessibilityPublicCustomRotorVisibleInTouchRotor:(id)a3;
+- (BOOL)_accessibilityPublicCustomRotorVisibleInTouchRotor:(id)rotor;
 - (BOOL)_accessibilityReadAllContinuesWithScroll;
-- (BOOL)_accessibilityScrollWithDirection:(int64_t)a3;
-- (BOOL)_accessibilityTextOperationAction:(id)a3;
-- (BOOL)_elementContainsImageForSpeakScreen:(id)a3;
+- (BOOL)_accessibilityScrollWithDirection:(int64_t)direction;
+- (BOOL)_accessibilityTextOperationAction:(id)action;
+- (BOOL)_elementContainsImageForSpeakScreen:(id)screen;
 - (BOOL)accessibilityActivate;
-- (BOOL)accessibilityScroll:(int64_t)a3;
+- (BOOL)accessibilityScroll:(int64_t)scroll;
 - (BOOL)baxElementIsInteractive;
 - (BOOL)baxIsBookContentElement;
 - (BOOL)baxIsInPictureBook;
 - (BOOL)baxNeedsAttachmentElement;
 - (BOOL)isAccessibilityElement;
-- (CGRect)_accessibilityBoundsForRange:(_NSRange)a3;
-- (CGRect)_accessibilityFrameForRange:(_NSRange)a3;
-- (CGRect)accessibilityFrameForLineNumber:(int64_t)a3;
-- (CGRect)baxBoundsForRange:(_NSRange)a3;
-- (_NSRange)_accessibilityLineRangeForPosition:(unint64_t)a3;
-- (_NSRange)_accessibilityRangeForLineNumber:(int64_t)a3;
+- (CGRect)_accessibilityBoundsForRange:(_NSRange)range;
+- (CGRect)_accessibilityFrameForRange:(_NSRange)range;
+- (CGRect)accessibilityFrameForLineNumber:(int64_t)number;
+- (CGRect)baxBoundsForRange:(_NSRange)range;
+- (_NSRange)_accessibilityLineRangeForPosition:(unint64_t)position;
+- (_NSRange)_accessibilityRangeForLineNumber:(int64_t)number;
 - (_NSRange)_accessibilitySelectedTextRange;
 - (_NSRange)baxStoredVisibleContentRange;
-- (id)_accessibilityAttributedValueForRange:(_NSRange *)a3;
+- (id)_accessibilityAttributedValueForRange:(_NSRange *)range;
 - (id)_accessibilityInternalTextLinkCustomRotors;
 - (id)_accessibilityInternalTextLinks;
 - (id)_accessibilityScrollStatus;
 - (id)_accessibilitySpeakThisString;
 - (id)_accessibilitySupportsReadingContent;
 - (id)_accessibilityTextOperations;
-- (id)_accessibilityTextRectsForSpeakThisStringRange:(_NSRange)a3 string:(id)a4 wantsSentences:(BOOL)a5;
+- (id)_accessibilityTextRectsForSpeakThisStringRange:(_NSRange)range string:(id)string wantsSentences:(BOOL)sentences;
 - (id)_axPageScrollString;
 - (id)_baxHighlightRotor;
 - (id)_bkaxSuperAccessibilityContainer;
-- (id)_iosAccessibilityAttributeValue:(int64_t)a3 forParameter:(id)a4;
-- (id)accessibilityAttributedContentForLineNumber:(int64_t)a3;
+- (id)_iosAccessibilityAttributeValue:(int64_t)value forParameter:(id)parameter;
+- (id)accessibilityAttributedContentForLineNumber:(int64_t)number;
 - (id)accessibilityAttributedPageContent;
 - (id)accessibilityAttributedValue;
 - (id)accessibilityContainer;
-- (id)accessibilityContentForLineNumber:(int64_t)a3;
+- (id)accessibilityContentForLineNumber:(int64_t)number;
 - (id)accessibilityCustomActions;
 - (id)accessibilityCustomRotors;
 - (id)accessibilityPageContent;
@@ -49,12 +49,12 @@
 - (id)description;
 - (id)rects;
 - (id)text;
-- (id)visibleLinkElements:(id)a3;
-- (int64_t)accessibilityLineNumberForPoint:(CGPoint)a3;
+- (id)visibleLinkElements:(id)elements;
+- (int64_t)accessibilityLineNumberForPoint:(CGPoint)point;
 - (unint64_t)accessibilityTraits;
-- (void)_accessibilitySetSelectedTextRange:(_NSRange)a3;
+- (void)_accessibilitySetSelectedTextRange:(_NSRange)range;
 - (void)_dispatchPageScrolledNotification;
-- (void)_oldAccessibilitySetSelectedTextRange:(_NSRange)a3;
+- (void)_oldAccessibilitySetSelectedTextRange:(_NSRange)range;
 - (void)baxInvalidateCaches;
 - (void)baxInvalidateContainerCaches;
 - (void)checkActions;
@@ -72,35 +72,35 @@
 
 - (id)baxBookContentElement
 {
-  v2 = self;
-  if (v2)
+  selfCopy = self;
+  if (selfCopy)
   {
     while (1)
     {
       NSClassFromString(@"WebAccessibilityObjectWrapper");
       if (objc_opt_isKindOfClass())
       {
-        if ([(BAXObjectWrapper *)v2 baxIsBookContentElement])
+        if ([(BAXObjectWrapper *)selfCopy baxIsBookContentElement])
         {
           break;
         }
       }
 
-      v3 = [(BAXObjectWrapper *)v2 accessibilityContainer];
+      accessibilityContainer = [(BAXObjectWrapper *)selfCopy accessibilityContainer];
 
-      v2 = v3;
-      if (!v3)
+      selfCopy = accessibilityContainer;
+      if (!accessibilityContainer)
       {
         goto LABEL_7;
       }
     }
 
-    v2 = v2;
+    selfCopy = selfCopy;
   }
 
 LABEL_7:
 
-  return v2;
+  return selfCopy;
 }
 
 - (void)baxInvalidateCaches
@@ -113,15 +113,15 @@ LABEL_7:
   [(BAXObjectWrapper *)self baxSetStoredAttributedPageContent:0];
   [(BAXObjectWrapper *)self _baxSetCachedAttachmentElement:0];
   [(BAXObjectWrapper *)self _baxSetIsTurning:0];
-  v3 = self;
-  objc_setAssociatedObject(v3, [@"StoredIsInteractiveElement" hash], 0, &dword_0 + 1);
+  selfCopy = self;
+  objc_setAssociatedObject(selfCopy, [@"StoredIsInteractiveElement" hash], 0, &dword_0 + 1);
 
-  if ([(BAXObjectWrapper *)v3 accessibilityElementCount]>= 1)
+  if ([(BAXObjectWrapper *)selfCopy accessibilityElementCount]>= 1)
   {
     v4 = 0;
     do
     {
-      v5 = [(BAXObjectWrapper *)v3 accessibilityElementAtIndex:v4];
+      v5 = [(BAXObjectWrapper *)selfCopy accessibilityElementAtIndex:v4];
       v6 = objc_opt_class();
       v7 = __BAXCastAsSafeCategory(v6, v5, 0, 0);
       v8 = v7;
@@ -133,22 +133,22 @@ LABEL_7:
       ++v4;
     }
 
-    while (v4 < [(BAXObjectWrapper *)v3 accessibilityElementCount]);
+    while (v4 < [(BAXObjectWrapper *)selfCopy accessibilityElementCount]);
   }
 }
 
 - (BEAttachmentElement)baxAttachmentElement
 {
-  v3 = [(BAXObjectWrapper *)self _baxCachedAttachmentElement];
-  if (!v3)
+  _baxCachedAttachmentElement = [(BAXObjectWrapper *)self _baxCachedAttachmentElement];
+  if (!_baxCachedAttachmentElement)
   {
     if (![(BAXObjectWrapper *)self baxNeedsAttachmentElement])
     {
       goto LABEL_5;
     }
 
-    v3 = [[BEAttachmentElement alloc] initWithObjectWrapperElement:self];
-    [(BAXObjectWrapper *)self _baxSetCachedAttachmentElement:v3];
+    _baxCachedAttachmentElement = [[BEAttachmentElement alloc] initWithObjectWrapperElement:self];
+    [(BAXObjectWrapper *)self _baxSetCachedAttachmentElement:_baxCachedAttachmentElement];
   }
 
 LABEL_5:
@@ -167,15 +167,15 @@ LABEL_5:
 {
   v4.receiver = self;
   v4.super_class = BAXObjectWrapper;
-  v2 = [(BAXObjectWrapper *)&v4 accessibilityTraits];
-  if ((UIAccessibilityTraitStaticText & v2) != 0)
+  accessibilityTraits = [(BAXObjectWrapper *)&v4 accessibilityTraits];
+  if ((UIAccessibilityTraitStaticText & accessibilityTraits) != 0)
   {
     return 0;
   }
 
-  if (((UIAccessibilityTraitAdjustable | UIAccessibilityTraitButton | UIAccessibilityTraitPopupButton | UIAccessibilityTraitRadioButton | UIAccessibilityTraitStartsMediaSession) & v2) != 0)
+  if (((UIAccessibilityTraitAdjustable | UIAccessibilityTraitButton | UIAccessibilityTraitPopupButton | UIAccessibilityTraitRadioButton | UIAccessibilityTraitStartsMediaSession) & accessibilityTraits) != 0)
   {
-    return (UIAccessibilityTraitImage & v2) == 0;
+    return (UIAccessibilityTraitImage & accessibilityTraits) == 0;
   }
 
   return 0;
@@ -187,18 +187,18 @@ LABEL_5:
   {
     v10.receiver = self;
     v10.super_class = BAXObjectWrapper;
-    v3 = [(BAXObjectWrapper *)&v10 isAccessibilityElement];
+    isAccessibilityElement = [(BAXObjectWrapper *)&v10 isAccessibilityElement];
   }
 
   else
   {
-    v4 = [(BAXObjectWrapper *)self accessibilityTraits];
-    v5 = [(BAXObjectWrapper *)self baxIsBookContentElement];
+    accessibilityTraits = [(BAXObjectWrapper *)self accessibilityTraits];
+    baxIsBookContentElement = [(BAXObjectWrapper *)self baxIsBookContentElement];
     v6 = UIAccessibilityTraitLink;
-    v7 = [(BAXObjectWrapper *)self baxElementIsInteractive];
-    if ((v6 & ~v4) != 0)
+    baxElementIsInteractive = [(BAXObjectWrapper *)self baxElementIsInteractive];
+    if ((v6 & ~accessibilityTraits) != 0)
     {
-      v8 = v7;
+      v8 = baxElementIsInteractive;
     }
 
     else
@@ -206,16 +206,16 @@ LABEL_5:
       v8 = 1;
     }
 
-    v3 = v8 | v5;
+    isAccessibilityElement = v8 | baxIsBookContentElement;
   }
 
-  return v3 & 1;
+  return isAccessibilityElement & 1;
 }
 
 - (BOOL)accessibilityActivate
 {
-  v3 = [(BAXObjectWrapper *)self accessibilityTraits];
-  v4 = (UIAccessibilityTraitLink & ~v3) != 0;
+  accessibilityTraits = [(BAXObjectWrapper *)self accessibilityTraits];
+  v4 = (UIAccessibilityTraitLink & ~accessibilityTraits) != 0;
   if ([(BAXObjectWrapper *)self baxElementIsInteractive])
   {
     v6.receiver = self;
@@ -242,16 +242,16 @@ LABEL_5:
   {
     if ([(BAXObjectWrapper *)self baxIsBookContentElement])
     {
-      v3 = [(BAXObjectWrapper *)self accessibilityPageContent];
+      accessibilityPageContent = [(BAXObjectWrapper *)self accessibilityPageContent];
       goto LABEL_9;
     }
 
     [(BAXObjectWrapper *)&v5 accessibilityValue:self];
   }
-  v3 = ;
+  accessibilityPageContent = ;
 LABEL_9:
 
-  return v3;
+  return accessibilityPageContent;
 }
 
 - (id)accessibilityAttributedValue
@@ -265,44 +265,44 @@ LABEL_9:
   {
     if ([(BAXObjectWrapper *)self baxIsBookContentElement])
     {
-      v3 = [(BAXObjectWrapper *)self accessibilityAttributedPageContent];
+      accessibilityAttributedPageContent = [(BAXObjectWrapper *)self accessibilityAttributedPageContent];
       goto LABEL_7;
     }
 
     [(BAXObjectWrapper *)&v5 accessibilityAttributedValue:self];
   }
-  v3 = ;
+  accessibilityAttributedPageContent = ;
 LABEL_7:
 
-  return v3;
+  return accessibilityAttributedPageContent;
 }
 
-- (id)_iosAccessibilityAttributeValue:(int64_t)a3 forParameter:(id)a4
+- (id)_iosAccessibilityAttributeValue:(int64_t)value forParameter:(id)parameter
 {
-  v6 = a4;
+  parameterCopy = parameter;
   if (BEBooksWebKitAccessibility())
   {
-    [(BAXObjectWrapper *)&v21 _iosAccessibilityAttributeValue:a3 forParameter:v6, v20.receiver, v20.super_class, self, BAXObjectWrapper];
+    [(BAXObjectWrapper *)&v21 _iosAccessibilityAttributeValue:value forParameter:parameterCopy, v20.receiver, v20.super_class, self, BAXObjectWrapper];
     v18 = LABEL_11:;
     goto LABEL_12;
   }
 
-  if (a3 != 92700)
+  if (value != 92700)
   {
-    [(BAXObjectWrapper *)&v20 _iosAccessibilityAttributeValue:a3 forParameter:v6, self, BAXObjectWrapper, v21.receiver, v21.super_class];
+    [(BAXObjectWrapper *)&v20 _iosAccessibilityAttributeValue:value forParameter:parameterCopy, self, BAXObjectWrapper, v21.receiver, v21.super_class];
     goto LABEL_11;
   }
 
-  [v6 pointValue];
+  [parameterCopy pointValue];
   v8 = v7;
   v10 = v9;
-  v11 = [(BAXObjectWrapper *)self _accessibilityParentView];
-  v12 = [v11 window];
+  _accessibilityParentView = [(BAXObjectWrapper *)self _accessibilityParentView];
+  window = [_accessibilityParentView window];
 
-  if (v12)
+  if (window)
   {
-    v13 = [v11 window];
-    [v13 convertPoint:v11 toView:{v8, v10}];
+    window2 = [_accessibilityParentView window];
+    [window2 convertPoint:_accessibilityParentView toView:{v8, v10}];
     v8 = v14;
     v10 = v15;
   }
@@ -329,19 +329,19 @@ LABEL_12:
 {
   v5.receiver = self;
   v5.super_class = BAXObjectWrapper;
-  v3 = [(BAXObjectWrapper *)&v5 accessibilityTraits];
+  accessibilityTraits = [(BAXObjectWrapper *)&v5 accessibilityTraits];
   if ((BEBooksWebKitAccessibility() & 1) == 0 && [(BAXObjectWrapper *)self baxIsBookContentElement])
   {
-    return v3 & ~UIAccessibilityTraitWebContent | UIAccessibilityTraitBookContent | UIAccessibilityTraitCausesPageTurn;
+    return accessibilityTraits & ~UIAccessibilityTraitWebContent | UIAccessibilityTraitBookContent | UIAccessibilityTraitCausesPageTurn;
   }
 
-  return v3;
+  return accessibilityTraits;
 }
 
-- (_NSRange)_accessibilityLineRangeForPosition:(unint64_t)a3
+- (_NSRange)_accessibilityLineRangeForPosition:(unint64_t)position
 {
-  v4 = [(BAXObjectWrapper *)self baxBookContentElement];
-  v5 = [BEAXWebContentUtilities lineRangeForCharacterPosition:a3 forBookContentElement:v4];
+  baxBookContentElement = [(BAXObjectWrapper *)self baxBookContentElement];
+  v5 = [BEAXWebContentUtilities lineRangeForCharacterPosition:position forBookContentElement:baxBookContentElement];
   v7 = v6;
 
   v8 = v5;
@@ -353,17 +353,17 @@ LABEL_12:
 
 - (_NSRange)_accessibilitySelectedTextRange
 {
-  v3 = [(BAXObjectWrapper *)self baxBookContentElement];
-  v4 = [BEAXWebContentUtilities visibleTextRangeInChapterForBookContentElement:v3];
+  baxBookContentElement = [(BAXObjectWrapper *)self baxBookContentElement];
+  v4 = [BEAXWebContentUtilities visibleTextRangeInChapterForBookContentElement:baxBookContentElement];
 
-  v5 = [(BAXObjectWrapper *)self _accessibilityTextMarkerRangeForSelection];
-  if ([v5 count] == &dword_0 + 2)
+  _accessibilityTextMarkerRangeForSelection = [(BAXObjectWrapper *)self _accessibilityTextMarkerRangeForSelection];
+  if ([_accessibilityTextMarkerRangeForSelection count] == &dword_0 + 2)
   {
-    v6 = [v5 firstObject];
-    v7 = ([(BAXObjectWrapper *)self _accessibilityRangeForTextMarker:v6]- v4);
+    firstObject = [_accessibilityTextMarkerRangeForSelection firstObject];
+    v7 = ([(BAXObjectWrapper *)self _accessibilityRangeForTextMarker:firstObject]- v4);
 
-    v8 = [v5 lastObject];
-    v9 = ([(BAXObjectWrapper *)self _accessibilityRangeForTextMarker:v8]- v4);
+    lastObject = [_accessibilityTextMarkerRangeForSelection lastObject];
+    v9 = ([(BAXObjectWrapper *)self _accessibilityRangeForTextMarker:lastObject]- v4);
 
     v11 = v7 != 0x7FFFFFFFFFFFFFFFLL && v9 != 0x7FFFFFFFFFFFFFFFLL;
     v12 = v9 > v7;
@@ -401,12 +401,12 @@ LABEL_12:
   return result;
 }
 
-- (void)_accessibilitySetSelectedTextRange:(_NSRange)a3
+- (void)_accessibilitySetSelectedTextRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  v6 = [(BAXObjectWrapper *)self baxBookContentElement];
-  v7 = [BEAXWebContentUtilities visibleTextRangeInChapterForBookContentElement:v6];
+  length = range.length;
+  location = range.location;
+  baxBookContentElement = [(BAXObjectWrapper *)self baxBookContentElement];
+  v7 = [BEAXWebContentUtilities visibleTextRangeInChapterForBookContentElement:baxBookContentElement];
 
   [(BAXObjectWrapper *)self checkActions];
   if (length)
@@ -418,8 +418,8 @@ LABEL_12:
 
   else
   {
-    v8 = [(BAXObjectWrapper *)self baxBookContentElement];
-    [BEAXWebContentUtilities frameForRange:&v7[location] forBookContentElement:0, v8];
+    baxBookContentElement2 = [(BAXObjectWrapper *)self baxBookContentElement];
+    [BEAXWebContentUtilities frameForRange:&v7[location] forBookContentElement:0, baxBookContentElement2];
     v10 = v9;
     v12 = v11;
     v14 = v13;
@@ -439,35 +439,35 @@ LABEL_12:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)_oldAccessibilitySetSelectedTextRange:(_NSRange)a3
+- (void)_oldAccessibilitySetSelectedTextRange:(_NSRange)range
 {
   v3.receiver = self;
   v3.super_class = BAXObjectWrapper;
-  [(BAXObjectWrapper *)&v3 _accessibilitySetSelectedTextRange:a3.location, a3.length];
+  [(BAXObjectWrapper *)&v3 _accessibilitySetSelectedTextRange:range.location, range.length];
 }
 
-- (id)_accessibilityAttributedValueForRange:(_NSRange *)a3
+- (id)_accessibilityAttributedValueForRange:(_NSRange *)range
 {
   if (BEBooksWebKitAccessibility())
   {
     v8.receiver = self;
     v8.super_class = BAXObjectWrapper;
-    v5 = [(BAXObjectWrapper *)&v8 _accessibilityAttributedValueForRange:a3];
+    v5 = [(BAXObjectWrapper *)&v8 _accessibilityAttributedValueForRange:range];
   }
 
   else
   {
-    v6 = [(BAXObjectWrapper *)self baxBookContentElement];
-    v5 = [BEAXWebContentUtilities attributedValueForRange:a3->location forBookContentElement:a3->length, v6];
+    baxBookContentElement = [(BAXObjectWrapper *)self baxBookContentElement];
+    v5 = [BEAXWebContentUtilities attributedValueForRange:range->location forBookContentElement:range->length, baxBookContentElement];
   }
 
   return v5;
 }
 
-- (CGRect)_accessibilityBoundsForRange:(_NSRange)a3
+- (CGRect)_accessibilityBoundsForRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   if (BEBooksWebKitAccessibility())
   {
     v23.receiver = self;
@@ -481,8 +481,8 @@ LABEL_12:
 
   else
   {
-    v14 = [(BAXObjectWrapper *)self baxBookContentElement];
-    [BEAXWebContentUtilities frameForRange:location forBookContentElement:length, v14];
+    baxBookContentElement = [(BAXObjectWrapper *)self baxBookContentElement];
+    [BEAXWebContentUtilities frameForRange:location forBookContentElement:length, baxBookContentElement];
     v7 = v15;
     v9 = v16;
     v11 = v17;
@@ -500,11 +500,11 @@ LABEL_12:
   return result;
 }
 
-- (CGRect)baxBoundsForRange:(_NSRange)a3
+- (CGRect)baxBoundsForRange:(_NSRange)range
 {
   v7.receiver = self;
   v7.super_class = BAXObjectWrapper;
-  [(BAXObjectWrapper *)&v7 _accessibilityBoundsForRange:a3.location, a3.length];
+  [(BAXObjectWrapper *)&v7 _accessibilityBoundsForRange:range.location, range.length];
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -512,16 +512,16 @@ LABEL_12:
   return result;
 }
 
-- (BOOL)_accessibilityTextOperationAction:(id)a3
+- (BOOL)_accessibilityTextOperationAction:(id)action
 {
-  v3 = a3;
+  actionCopy = action;
   v4 = +[BEAccessibilityReadingState currentReadingState];
-  v5 = [v4 performableOperations];
+  performableOperations = [v4 performableOperations];
 
-  v6 = [v5 containsObject:v3];
+  v6 = [performableOperations containsObject:actionCopy];
   if (v6)
   {
-    [BEAXWebContentUtilities performNativeAction:v3];
+    [BEAXWebContentUtilities performNativeAction:actionCopy];
   }
 
   return v6;
@@ -530,9 +530,9 @@ LABEL_12:
 - (id)_accessibilityTextOperations
 {
   v2 = +[BEAccessibilityReadingState currentReadingState];
-  v3 = [v2 performableOperations];
+  performableOperations = [v2 performableOperations];
 
-  return v3;
+  return performableOperations;
 }
 
 - (id)_accessibilitySupportsReadingContent
@@ -550,14 +550,14 @@ LABEL_12:
 {
   v14.receiver = self;
   v14.super_class = BAXObjectWrapper;
-  v3 = [(BAXObjectWrapper *)&v14 accessibilityContainer];
-  v4 = self;
-  v5 = objc_getAssociatedObject(v4, [@"StoredIsInteractiveElement" hash]);
+  accessibilityContainer = [(BAXObjectWrapper *)&v14 accessibilityContainer];
+  selfCopy = self;
+  v5 = objc_getAssociatedObject(selfCopy, [@"StoredIsInteractiveElement" hash]);
 
   if ([v5 BOOLValue])
   {
-    v6 = v3;
-    v3 = v6;
+    v6 = accessibilityContainer;
+    accessibilityContainer = v6;
     if (v6)
     {
       v7 = v6;
@@ -592,22 +592,22 @@ LABEL_12:
 
       v12 = v7;
 
-      v3 = v12;
+      accessibilityContainer = v12;
     }
   }
 
 LABEL_11:
 
-  return v3;
+  return accessibilityContainer;
 }
 
 - (id)_bkaxSuperAccessibilityContainer
 {
   v4.receiver = self;
   v4.super_class = BAXObjectWrapper;
-  v2 = [(BAXObjectWrapper *)&v4 accessibilityContainer];
+  accessibilityContainer = [(BAXObjectWrapper *)&v4 accessibilityContainer];
 
-  return v2;
+  return accessibilityContainer;
 }
 
 - (id)accessibilityPageContent
@@ -616,21 +616,21 @@ LABEL_11:
   {
     v6.receiver = self;
     v6.super_class = BAXObjectWrapper;
-    v3 = [(BAXObjectWrapper *)&v6 accessibilityPageContent];
+    accessibilityPageContent = [(BAXObjectWrapper *)&v6 accessibilityPageContent];
   }
 
   else if ([(BAXObjectWrapper *)self baxElementIsInteractive])
   {
-    v3 = 0;
+    accessibilityPageContent = 0;
   }
 
   else
   {
-    v4 = [(BAXObjectWrapper *)self accessibilityAttributedPageContent];
-    v3 = [v4 string];
+    accessibilityAttributedPageContent = [(BAXObjectWrapper *)self accessibilityAttributedPageContent];
+    accessibilityPageContent = [accessibilityAttributedPageContent string];
   }
 
-  return v3;
+  return accessibilityPageContent;
 }
 
 - (id)accessibilityAttributedPageContent
@@ -640,13 +640,13 @@ LABEL_11:
     goto LABEL_3;
   }
 
-  v5 = [(BAXObjectWrapper *)self baxBookContentElement];
-  v3 = [BEAXWebContentUtilities attributedPageContentForBookContentElement:v5];
+  baxBookContentElement = [(BAXObjectWrapper *)self baxBookContentElement];
+  v3 = [BEAXWebContentUtilities attributedPageContentForBookContentElement:baxBookContentElement];
 
   if (!v3)
   {
-    v6 = [(BAXObjectWrapper *)self baxBookContentElement];
-    v7 = [(BAXObjectWrapper *)self _elementContainsImageForSpeakScreen:v6];
+    baxBookContentElement2 = [(BAXObjectWrapper *)self baxBookContentElement];
+    v7 = [(BAXObjectWrapper *)self _elementContainsImageForSpeakScreen:baxBookContentElement2];
 
     if (!v7)
     {
@@ -665,10 +665,10 @@ LABEL_4:
   return v3;
 }
 
-- (int64_t)accessibilityLineNumberForPoint:(CGPoint)a3
+- (int64_t)accessibilityLineNumberForPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   if (BEBooksWebKitAccessibility())
   {
     v9.receiver = self;
@@ -678,57 +678,57 @@ LABEL_4:
 
   else
   {
-    v7 = [(BAXObjectWrapper *)self baxBookContentElement];
-    v8 = [BEAXWebContentUtilities lineNumberForPoint:v7 forBookContentElement:x, y];
+    baxBookContentElement = [(BAXObjectWrapper *)self baxBookContentElement];
+    v8 = [BEAXWebContentUtilities lineNumberForPoint:baxBookContentElement forBookContentElement:x, y];
 
     return v8;
   }
 }
 
-- (id)accessibilityContentForLineNumber:(int64_t)a3
+- (id)accessibilityContentForLineNumber:(int64_t)number
 {
   if (BEBooksWebKitAccessibility())
   {
     v9.receiver = self;
     v9.super_class = BAXObjectWrapper;
-    v5 = [(BAXObjectWrapper *)&v9 accessibilityContentForLineNumber:a3];
+    string = [(BAXObjectWrapper *)&v9 accessibilityContentForLineNumber:number];
   }
 
   else
   {
-    v6 = [(BAXObjectWrapper *)self baxBookContentElement];
-    v7 = [BEAXWebContentUtilities attributedStringForLineNumber:a3 forBookContentElement:v6];
-    v5 = [v7 string];
+    baxBookContentElement = [(BAXObjectWrapper *)self baxBookContentElement];
+    v7 = [BEAXWebContentUtilities attributedStringForLineNumber:number forBookContentElement:baxBookContentElement];
+    string = [v7 string];
   }
 
-  return v5;
+  return string;
 }
 
-- (id)accessibilityAttributedContentForLineNumber:(int64_t)a3
+- (id)accessibilityAttributedContentForLineNumber:(int64_t)number
 {
   if (BEBooksWebKitAccessibility())
   {
     v8.receiver = self;
     v8.super_class = BAXObjectWrapper;
-    v5 = [(BAXObjectWrapper *)&v8 accessibilityAttributedContentForLineNumber:a3];
+    v5 = [(BAXObjectWrapper *)&v8 accessibilityAttributedContentForLineNumber:number];
   }
 
   else
   {
-    v6 = [(BAXObjectWrapper *)self baxBookContentElement];
-    v5 = [BEAXWebContentUtilities attributedStringForLineNumber:a3 forBookContentElement:v6];
+    baxBookContentElement = [(BAXObjectWrapper *)self baxBookContentElement];
+    v5 = [BEAXWebContentUtilities attributedStringForLineNumber:number forBookContentElement:baxBookContentElement];
   }
 
   return v5;
 }
 
-- (CGRect)accessibilityFrameForLineNumber:(int64_t)a3
+- (CGRect)accessibilityFrameForLineNumber:(int64_t)number
 {
   if (BEBooksWebKitAccessibility())
   {
     v22.receiver = self;
     v22.super_class = BAXObjectWrapper;
-    [(BAXObjectWrapper *)&v22 accessibilityFrameForLineNumber:a3];
+    [(BAXObjectWrapper *)&v22 accessibilityFrameForLineNumber:number];
     v6 = v5;
     v8 = v7;
     v10 = v9;
@@ -737,8 +737,8 @@ LABEL_4:
 
   else
   {
-    v13 = [(BAXObjectWrapper *)self baxBookContentElement];
-    [BEAXWebContentUtilities frameForLineNumber:a3 forBookContentElement:v13];
+    baxBookContentElement = [(BAXObjectWrapper *)self baxBookContentElement];
+    [BEAXWebContentUtilities frameForLineNumber:number forBookContentElement:baxBookContentElement];
     v6 = v14;
     v8 = v15;
     v10 = v16;
@@ -756,10 +756,10 @@ LABEL_4:
   return result;
 }
 
-- (CGRect)_accessibilityFrameForRange:(_NSRange)a3
+- (CGRect)_accessibilityFrameForRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   if (BEBooksWebKitAccessibility())
   {
     v36.receiver = self;
@@ -773,8 +773,8 @@ LABEL_4:
 
   else
   {
-    v14 = [(BAXObjectWrapper *)self baxBookContentElement];
-    v15 = [BEAXWebContentUtilities chapterRangeForRange:location forBookContentElement:length, v14];
+    baxBookContentElement = [(BAXObjectWrapper *)self baxBookContentElement];
+    v15 = [BEAXWebContentUtilities chapterRangeForRange:location forBookContentElement:length, baxBookContentElement];
     v17 = v16;
 
     x = CGRectZero.origin.x;
@@ -801,13 +801,13 @@ LABEL_4:
       v22 = [NSArray arrayWithObjects:v37 count:2];
       v23 = [(BAXObjectWrapper *)self _accessibilityConvertDataArrayToTextMarkerArray:v22];
 
-      v24 = [(BAXObjectWrapper *)self baxBookContentElement];
-      v25 = [v24 lineRectsAndText];
+      baxBookContentElement2 = [(BAXObjectWrapper *)self baxBookContentElement];
+      lineRectsAndText = [baxBookContentElement2 lineRectsAndText];
 
-      if ([v25 count])
+      if ([lineRectsAndText count])
       {
-        v26 = [v25 firstObject];
-        v27 = [v26 valueForKey:@"rect"];
+        firstObject = [lineRectsAndText firstObject];
+        v27 = [firstObject valueForKey:@"rect"];
         [v27 CGRectValue];
         x = v28;
         y = v29;
@@ -828,19 +828,19 @@ LABEL_4:
   return result;
 }
 
-- (_NSRange)_accessibilityRangeForLineNumber:(int64_t)a3
+- (_NSRange)_accessibilityRangeForLineNumber:(int64_t)number
 {
   if (BEBooksWebKitAccessibility())
   {
     v11.receiver = self;
     v11.super_class = BAXObjectWrapper;
-    v5 = [(BAXObjectWrapper *)&v11 _accessibilityRangeForLineNumber:a3];
+    v5 = [(BAXObjectWrapper *)&v11 _accessibilityRangeForLineNumber:number];
   }
 
   else
   {
-    v7 = [(BAXObjectWrapper *)self baxBookContentElement];
-    v8 = [BEAXWebContentUtilities lineRangeForLineNumber:a3 forBookContentElement:v7];
+    baxBookContentElement = [(BAXObjectWrapper *)self baxBookContentElement];
+    v8 = [BEAXWebContentUtilities lineRangeForLineNumber:number forBookContentElement:baxBookContentElement];
     v10 = v9;
 
     v5 = v8;
@@ -870,8 +870,8 @@ LABEL_4:
 
 - (id)_accessibilityInternalTextLinks
 {
-  v2 = [(BAXObjectWrapper *)self baxBookContentElement];
-  v3 = [BEAXLineInfo linkElementsForElement:v2];
+  baxBookContentElement = [(BAXObjectWrapper *)self baxBookContentElement];
+  v3 = [BEAXLineInfo linkElementsForElement:baxBookContentElement];
 
   v4 = +[NSMutableArray array];
   v16 = 0u;
@@ -898,8 +898,8 @@ LABEL_4:
         {
           v11 = [UIAccessibilityLinkSubelement alloc];
           v12 = [v11 initWithAccessibilityContainer:{v10, v16}];
-          v13 = [v10 text];
-          [v12 setAccessibilityLabel:v13];
+          text = [v10 text];
+          [v12 setAccessibilityLabel:text];
 
           [v4 addObject:v12];
         }
@@ -924,21 +924,21 @@ LABEL_4:
   return v14;
 }
 
-- (id)visibleLinkElements:(id)a3
+- (id)visibleLinkElements:(id)elements
 {
-  v4 = a3;
+  elementsCopy = elements;
   v5 = +[NSMutableArray array];
   v6 = +[BEAccessibilityReadingState currentReadingState];
   if ([v6 isFixedLayoutBook])
   {
-    v7 = [(BAXObjectWrapper *)self baxBookContentElement];
-    [v7 accessibilityVisibleContentRect];
+    baxBookContentElement = [(BAXObjectWrapper *)self baxBookContentElement];
+    [baxBookContentElement accessibilityVisibleContentRect];
   }
 
   else
   {
-    v7 = +[BEAccessibilityReadingState currentReadingState];
-    [v7 primaryVisibleContentRect];
+    baxBookContentElement = +[BEAccessibilityReadingState currentReadingState];
+    [baxBookContentElement primaryVisibleContentRect];
   }
 
   v12 = v8;
@@ -950,7 +950,7 @@ LABEL_4:
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v16 = v4;
+  v16 = elementsCopy;
   v17 = [v16 countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v17)
   {
@@ -1000,27 +1000,27 @@ LABEL_4:
 
 - (id)_accessibilityInternalTextLinkCustomRotors
 {
-  v3 = [(BAXObjectWrapper *)self baxStoredLinkInfos];
+  baxStoredLinkInfos = [(BAXObjectWrapper *)self baxStoredLinkInfos];
 
-  if (!v3)
+  if (!baxStoredLinkInfos)
   {
-    v4 = [(BAXObjectWrapper *)self _accessibilityInternalTextLinks];
-    v5 = [v4 mutableCopy];
+    _accessibilityInternalTextLinks = [(BAXObjectWrapper *)self _accessibilityInternalTextLinks];
+    v5 = [_accessibilityInternalTextLinks mutableCopy];
     [(BAXObjectWrapper *)self baxSetStoredLinkInfos:v5];
   }
 
-  v6 = [(BAXObjectWrapper *)self baxStoredLinkInfos];
-  v7 = [(BAXObjectWrapper *)self visibleLinkElements:v6];
+  baxStoredLinkInfos2 = [(BAXObjectWrapper *)self baxStoredLinkInfos];
+  v7 = [(BAXObjectWrapper *)self visibleLinkElements:baxStoredLinkInfos2];
 
   if ([v7 count])
   {
     objc_initWeak(&location, self);
-    v8 = [(BAXObjectWrapper *)self baxStoredLinkRotor];
-    if (v8)
+    baxStoredLinkRotor = [(BAXObjectWrapper *)self baxStoredLinkRotor];
+    if (baxStoredLinkRotor)
     {
       objc_destroyWeak(&location);
 LABEL_7:
-      v20 = v8;
+      v20 = baxStoredLinkRotor;
       v10 = [NSArray arrayWithObjects:&v20 count:1];
 
       goto LABEL_9;
@@ -1032,14 +1032,14 @@ LABEL_7:
     v14 = sub_7DE8;
     v15 = &unk_207C8;
     objc_copyWeak(&v18, &location);
-    v16 = self;
+    selfCopy = self;
     v17 = v7;
-    v8 = [v9 initWithSystemType:1 itemSearchBlock:&v12];
-    [(BAXObjectWrapper *)self baxSetStoredLinkRotor:v8, v12, v13, v14, v15, v16];
+    baxStoredLinkRotor = [v9 initWithSystemType:1 itemSearchBlock:&v12];
+    [(BAXObjectWrapper *)self baxSetStoredLinkRotor:baxStoredLinkRotor, v12, v13, v14, v15, selfCopy];
 
     objc_destroyWeak(&v18);
     objc_destroyWeak(&location);
-    if (v8)
+    if (baxStoredLinkRotor)
     {
       goto LABEL_7;
     }
@@ -1053,8 +1053,8 @@ LABEL_9:
 
 - (id)_baxHighlightRotor
 {
-  v3 = [(BAXObjectWrapper *)self baxStoredHighlightRotor];
-  if (!v3)
+  baxStoredHighlightRotor = [(BAXObjectWrapper *)self baxStoredHighlightRotor];
+  if (!baxStoredHighlightRotor)
   {
     objc_initWeak(&location, self);
     v4 = [UIAccessibilityCustomRotor alloc];
@@ -1064,14 +1064,14 @@ LABEL_9:
     v9 = sub_8070;
     v10 = &unk_207F0;
     objc_copyWeak(&v11, &location);
-    v3 = [v4 initWithName:v5 itemSearchBlock:&v7];
+    baxStoredHighlightRotor = [v4 initWithName:v5 itemSearchBlock:&v7];
 
-    [(BAXObjectWrapper *)self baxSetStoredHighlightRotor:v3, v7, v8, v9, v10];
+    [(BAXObjectWrapper *)self baxSetStoredHighlightRotor:baxStoredHighlightRotor, v7, v8, v9, v10];
     objc_destroyWeak(&v11);
     objc_destroyWeak(&location);
   }
 
-  return v3;
+  return baxStoredHighlightRotor;
 }
 
 - (id)accessibilityCustomRotors
@@ -1079,24 +1079,24 @@ LABEL_9:
   v3 = +[NSMutableArray array];
   if ([(BAXObjectWrapper *)self baxIsBookContentElement])
   {
-    v4 = [(BAXObjectWrapper *)self _accessibilityInternalTextLinkCustomRotors];
+    _accessibilityInternalTextLinkCustomRotors = [(BAXObjectWrapper *)self _accessibilityInternalTextLinkCustomRotors];
 
-    if (v4)
+    if (_accessibilityInternalTextLinkCustomRotors)
     {
-      v5 = [(BAXObjectWrapper *)self baxStoredLinkRotor];
-      [v3 addObject:v5];
+      baxStoredLinkRotor = [(BAXObjectWrapper *)self baxStoredLinkRotor];
+      [v3 addObject:baxStoredLinkRotor];
     }
 
-    v6 = [(BAXObjectWrapper *)self _baxHighlightRotor];
-    if (v6)
+    _baxHighlightRotor = [(BAXObjectWrapper *)self _baxHighlightRotor];
+    if (_baxHighlightRotor)
     {
-      v7 = v6;
-      v8 = [(BAXObjectWrapper *)self baxIsInPictureBook];
+      v7 = _baxHighlightRotor;
+      baxIsInPictureBook = [(BAXObjectWrapper *)self baxIsInPictureBook];
 
-      if ((v8 & 1) == 0)
+      if ((baxIsInPictureBook & 1) == 0)
       {
-        v9 = [(BAXObjectWrapper *)self baxStoredHighlightRotor];
-        [v3 addObject:v9];
+        baxStoredHighlightRotor = [(BAXObjectWrapper *)self baxStoredHighlightRotor];
+        [v3 addObject:baxStoredHighlightRotor];
       }
     }
   }
@@ -1114,53 +1114,53 @@ LABEL_9:
   return v10;
 }
 
-- (BOOL)_accessibilityPublicCustomRotorVisibleInTouchRotor:(id)a3
+- (BOOL)_accessibilityPublicCustomRotorVisibleInTouchRotor:(id)rotor
 {
-  v4 = a3;
-  v5 = [(BAXObjectWrapper *)self baxStoredLinkRotor];
-  v6 = [v5 baxValueForKey:@"uuid"];
-  v7 = [v6 isEqual:v4];
+  rotorCopy = rotor;
+  baxStoredLinkRotor = [(BAXObjectWrapper *)self baxStoredLinkRotor];
+  v6 = [baxStoredLinkRotor baxValueForKey:@"uuid"];
+  v7 = [v6 isEqual:rotorCopy];
 
-  v8 = [(BAXObjectWrapper *)self baxStoredHighlightRotor];
-  v9 = [v8 baxValueForKey:@"uuid"];
-  v10 = [v9 isEqual:v4];
+  baxStoredHighlightRotor = [(BAXObjectWrapper *)self baxStoredHighlightRotor];
+  v9 = [baxStoredHighlightRotor baxValueForKey:@"uuid"];
+  v10 = [v9 isEqual:rotorCopy];
 
   return (v10 | v7) & 1;
 }
 
 - (id)_accessibilitySpeakThisString
 {
-  v3 = [(BAXObjectWrapper *)self baxBookContentElement];
-  [v3 baxSetStoredAttributedPageContent:0];
+  baxBookContentElement = [(BAXObjectWrapper *)self baxBookContentElement];
+  [baxBookContentElement baxSetStoredAttributedPageContent:0];
 
   return [(BAXObjectWrapper *)self accessibilityPageContent];
 }
 
-- (id)_accessibilityTextRectsForSpeakThisStringRange:(_NSRange)a3 string:(id)a4 wantsSentences:(BOOL)a5
+- (id)_accessibilityTextRectsForSpeakThisStringRange:(_NSRange)range string:(id)string wantsSentences:(BOOL)sentences
 {
-  length = a3.length;
-  location = a3.location;
-  v9 = a4;
-  v10 = [(BAXObjectWrapper *)self baxBookContentElement];
+  length = range.length;
+  location = range.location;
+  stringCopy = string;
+  baxBookContentElement = [(BAXObjectWrapper *)self baxBookContentElement];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
 
     goto LABEL_10;
   }
 
-  v11 = [v9 length];
+  v11 = [stringCopy length];
 
   if (!v11)
   {
 LABEL_10:
     v37.receiver = self;
     v37.super_class = BAXObjectWrapper;
-    v24 = [(BAXObjectWrapper *)&v37 _accessibilityTextRectsForSpeakThisStringRange:location string:length, v9];
+    stringCopy = [(BAXObjectWrapper *)&v37 _accessibilityTextRectsForSpeakThisStringRange:location string:length, stringCopy];
     goto LABEL_11;
   }
 
-  v12 = [(BAXObjectWrapper *)self baxBookContentElement];
-  v13 = [BEAXWebContentUtilities visibleTextRangeInChapterForBookContentElement:v12]+ location;
+  baxBookContentElement2 = [(BAXObjectWrapper *)self baxBookContentElement];
+  v13 = [BEAXWebContentUtilities visibleTextRangeInChapterForBookContentElement:baxBookContentElement2]+ location;
   v31 = 0;
   v32 = &v31;
   v33 = 0x3032000000;
@@ -1176,15 +1176,15 @@ LABEL_10:
     v39[0] = v14;
     v39[1] = v15;
     v18 = [NSArray arrayWithObjects:v39 count:2];
-    v19 = [v12 _accessibilityConvertDataArrayToTextMarkerArray:v18];
+    v19 = [baxBookContentElement2 _accessibilityConvertDataArrayToTextMarkerArray:v18];
 
     v26[0] = _NSConcreteStackBlock;
     v26[1] = 3221225472;
     v26[2] = sub_899C;
     v26[3] = &unk_20818;
-    v30 = a5;
+    sentencesCopy = sentences;
     v29 = &v31;
-    v27 = v12;
+    v27 = baxBookContentElement2;
     v17 = v19;
     v28 = v17;
     __BAXPerformSafeBlock(v26);
@@ -1192,8 +1192,8 @@ LABEL_10:
 
   if (![v32[5] count])
   {
-    v20 = [(BAXObjectWrapper *)self baxBookContentElement];
-    [BEAXWebContentUtilities frameForRange:v13 forBookContentElement:length, v20];
+    baxBookContentElement3 = [(BAXObjectWrapper *)self baxBookContentElement];
+    [BEAXWebContentUtilities frameForRange:v13 forBookContentElement:length, baxBookContentElement3];
     v21 = [NSValue valueWithCGRect:?];
     v38 = v21;
     v22 = [NSArray arrayWithObjects:&v38 count:1];
@@ -1201,28 +1201,28 @@ LABEL_10:
     v32[5] = v22;
   }
 
-  v24 = v32[5];
+  stringCopy = v32[5];
 
   _Block_object_dispose(&v31, 8);
 LABEL_11:
 
-  return v24;
+  return stringCopy;
 }
 
-- (BOOL)_elementContainsImageForSpeakScreen:(id)a3
+- (BOOL)_elementContainsImageForSpeakScreen:(id)screen
 {
-  v4 = a3;
-  v5 = [v4 accessibilityElementCount];
-  if (v5)
+  screenCopy = screen;
+  accessibilityElementCount = [screenCopy accessibilityElementCount];
+  if (accessibilityElementCount)
   {
-    v6 = v5;
+    v6 = accessibilityElementCount;
     v7 = 0;
     v8 = 0;
     v9 = UIAccessibilityTraitImage;
     while (1)
     {
       v10 = objc_opt_class();
-      v11 = [v4 accessibilityElementAtIndex:v8];
+      v11 = [screenCopy accessibilityElementAtIndex:v8];
       v12 = __BAXCastAsSafeCategory(v10, v11, 0, 0);
 
       if (v12)
@@ -1252,8 +1252,8 @@ LABEL_10:
 
 - (BOOL)baxIsBookContentElement
 {
-  v3 = [(BAXObjectWrapper *)self baxWebPageObject];
-  if (v3 && ([(BAXObjectWrapper *)self accessibilityContainer], v4 = objc_claimAutoreleasedReturnValue(), v4, v4 == v3))
+  baxWebPageObject = [(BAXObjectWrapper *)self baxWebPageObject];
+  if (baxWebPageObject && ([(BAXObjectWrapper *)self accessibilityContainer], v4 = objc_claimAutoreleasedReturnValue(), v4, v4 == baxWebPageObject))
   {
     [BEAccessibilityReadingState registerBookContentElement:self];
     v5 = 1;
@@ -1269,12 +1269,12 @@ LABEL_10:
 
 - (id)baxWebPageObject
 {
-  v2 = [(BAXObjectWrapper *)self accessibilityContainer];
-  if (v2)
+  accessibilityContainer = [(BAXObjectWrapper *)self accessibilityContainer];
+  if (accessibilityContainer)
   {
     while (1)
     {
-      v3 = [v2 accessibilityContainer];
+      v2AccessibilityContainer = [accessibilityContainer accessibilityContainer];
       NSClassFromString(@"WKAccessibilityWebPageObject");
       isKindOfClass = objc_opt_isKindOfClass();
 
@@ -1283,46 +1283,46 @@ LABEL_10:
         break;
       }
 
-      v5 = [v2 accessibilityContainer];
+      v2AccessibilityContainer2 = [accessibilityContainer accessibilityContainer];
 
-      v2 = v5;
-      if (!v5)
+      accessibilityContainer = v2AccessibilityContainer2;
+      if (!v2AccessibilityContainer2)
       {
         goto LABEL_6;
       }
     }
 
-    v2 = v2;
+    accessibilityContainer = accessibilityContainer;
   }
 
 LABEL_6:
 
-  return v2;
+  return accessibilityContainer;
 }
 
 - (BOOL)baxIsInPictureBook
 {
   v2 = +[BEAccessibilityReadingState currentReadingState];
-  v3 = [v2 isFixedLayoutBook];
+  isFixedLayoutBook = [v2 isFixedLayoutBook];
 
-  return v3;
+  return isFixedLayoutBook;
 }
 
 - (id)baxVisibleLineInfos
 {
-  v3 = [(BAXObjectWrapper *)self baxBookContentElement];
-  v4 = [BEAXWebContentUtilities visibleTextRangeInChapterForBookContentElement:v3];
+  baxBookContentElement = [(BAXObjectWrapper *)self baxBookContentElement];
+  v4 = [BEAXWebContentUtilities visibleTextRangeInChapterForBookContentElement:baxBookContentElement];
   v6 = v5;
 
-  v7 = [(BAXObjectWrapper *)self baxBookContentElement];
-  v8 = [v7 baxStoredLineInfos];
+  baxBookContentElement2 = [(BAXObjectWrapper *)self baxBookContentElement];
+  baxStoredLineInfos = [baxBookContentElement2 baxStoredLineInfos];
 
   v9 = +[NSMutableArray array];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v10 = v8;
+  v10 = baxStoredLineInfos;
   v11 = [v10 countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v11)
   {
@@ -1339,10 +1339,10 @@ LABEL_6:
         }
 
         v16 = *(*(&v25 + 1) + 8 * i);
-        v17 = [v16 rangeInChapter];
-        v18 = [v16 rangeInChapter];
-        v20 = &v18[v19];
-        if (v4 <= v17 && v17 < v14 && v4 <= v20 && v20 < v14)
+        rangeInChapter = [v16 rangeInChapter];
+        rangeInChapter2 = [v16 rangeInChapter];
+        v20 = &rangeInChapter2[v19];
+        if (v4 <= rangeInChapter && rangeInChapter < v14 && v4 <= v20 && v20 < v14)
         {
           [v9 addObject:v16];
         }
@@ -1359,23 +1359,23 @@ LABEL_6:
 
 - (id)text
 {
-  v3 = [(BAXObjectWrapper *)self textMarkerRange];
-  v4 = [(BAXObjectWrapper *)self stringForTextMarkers:v3];
+  textMarkerRange = [(BAXObjectWrapper *)self textMarkerRange];
+  v4 = [(BAXObjectWrapper *)self stringForTextMarkers:textMarkerRange];
 
   return v4;
 }
 
 - (id)rects
 {
-  v2 = [(BAXObjectWrapper *)self lineRectsAndText];
-  if (v2)
+  lineRectsAndText = [(BAXObjectWrapper *)self lineRectsAndText];
+  if (lineRectsAndText)
   {
     v3 = +[NSMutableArray array];
     v12 = 0u;
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v4 = v2;
+    v4 = lineRectsAndText;
     v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v5)
     {
@@ -1421,26 +1421,26 @@ LABEL_6:
 
 - (id)description
 {
-  v3 = [(BAXObjectWrapper *)self text];
-  if ([v3 length] > 0x3B)
+  text = [(BAXObjectWrapper *)self text];
+  if ([text length] > 0x3B)
   {
-    v5 = [v3 substringToIndex:30];
-    v6 = [v3 substringFromIndex:{objc_msgSend(v3, "length") - 30}];
+    v5 = [text substringToIndex:30];
+    v6 = [text substringFromIndex:{objc_msgSend(text, "length") - 30}];
     v4 = [NSString stringWithFormat:@"%@...%@", v5, v6];
   }
 
   else
   {
-    v4 = v3;
+    v4 = text;
   }
 
   [(BAXObjectWrapper *)self accessibilityFrame];
   v7 = NSStringFromCGRect(v14);
-  v8 = [(BAXObjectWrapper *)self baxIsBookContentElement];
+  baxIsBookContentElement = [(BAXObjectWrapper *)self baxIsBookContentElement];
   v12.receiver = self;
   v12.super_class = BAXObjectWrapper;
-  v9 = [(BAXObjectWrapper *)&v12 accessibilityTraits];
-  v10 = [NSString stringWithFormat:@"<%@ %p isBookContentElement=%d frame=%@ superTraits=%d text=%@", objc_opt_class(), self, v8, v7, v9, v4];
+  accessibilityTraits = [(BAXObjectWrapper *)&v12 accessibilityTraits];
+  v10 = [NSString stringWithFormat:@"<%@ %p isBookContentElement=%d frame=%@ superTraits=%d text=%@", objc_opt_class(), self, baxIsBookContentElement, v7, accessibilityTraits, v4];
 
   return v10;
 }
@@ -1449,10 +1449,10 @@ LABEL_6:
 {
   v2 = +[NSMutableArray array];
   v3 = +[BEAccessibilityReadingState currentReadingState];
-  v4 = [v3 isVisiblePageBookmarked];
+  isVisiblePageBookmarked = [v3 isVisiblePageBookmarked];
 
   v5 = [UIAccessibilityCustomAction alloc];
-  if (v4)
+  if (isVisiblePageBookmarked)
   {
     v6 = @"unbookmark.page";
   }
@@ -1471,14 +1471,14 @@ LABEL_6:
   return v9;
 }
 
-- (BOOL)_accessibilityScrollWithDirection:(int64_t)a3
+- (BOOL)_accessibilityScrollWithDirection:(int64_t)direction
 {
-  if (a3 == 6)
+  if (direction == 6)
   {
     return [(BAXObjectWrapper *)&v4 accessibilityScroll:3, self, BAXObjectWrapper, v5.receiver, v5.super_class];
   }
 
-  if (a3 == 5)
+  if (direction == 5)
   {
     return [(BAXObjectWrapper *)&v5 accessibilityScroll:4, v4.receiver, v4.super_class, self, BAXObjectWrapper];
   }
@@ -1486,43 +1486,43 @@ LABEL_6:
   return 0;
 }
 
-- (BOOL)accessibilityScroll:(int64_t)a3
+- (BOOL)accessibilityScroll:(int64_t)scroll
 {
-  v5 = [(BAXObjectWrapper *)self _accessibilityIsRTL];
-  if (a3 == 1 && (v5 & 1) != 0 || a3 == 2 && ((v5 ^ 1) & 1) != 0)
+  _accessibilityIsRTL = [(BAXObjectWrapper *)self _accessibilityIsRTL];
+  if (scroll == 1 && (_accessibilityIsRTL & 1) != 0 || scroll == 2 && ((_accessibilityIsRTL ^ 1) & 1) != 0)
   {
     v6 = @"next";
   }
 
   else
   {
-    v9 = a3 == 2;
-    if (!v5)
+    v9 = scroll == 2;
+    if (!_accessibilityIsRTL)
     {
-      v9 = a3 == 1;
+      v9 = scroll == 1;
     }
 
     v6 = @"previous";
     if (!v9)
     {
-      if (a3 == 5)
+      if (scroll == 5)
       {
         v6 = @"next";
       }
 
-      else if (a3 != 6)
+      else if (scroll != 6)
       {
         v10 = +[BEAccessibilityReadingState currentReadingState];
-        v11 = [v10 bookLayout];
+        bookLayout = [v10 bookLayout];
 
-        if (v11 != &dword_0 + 2)
+        if (bookLayout != &dword_0 + 2)
         {
           v13.receiver = self;
           v13.super_class = BAXObjectWrapper;
-          return [(BAXObjectWrapper *)&v13 accessibilityScroll:a3];
+          return [(BAXObjectWrapper *)&v13 accessibilityScroll:scroll];
         }
 
-        if (a3 == 3)
+        if (scroll == 3)
         {
           v12 = @"previous";
         }
@@ -1532,7 +1532,7 @@ LABEL_6:
           v12 = 0;
         }
 
-        if (a3 == 4)
+        if (scroll == 4)
         {
           v6 = @"next";
         }
@@ -1547,8 +1547,8 @@ LABEL_6:
 
   [BEAXWebContentUtilities turnPageWithDirection:v6];
   [(BAXObjectWrapper *)self _dispatchPageScrolledNotification];
-  v7 = [(BAXObjectWrapper *)self baxBookContentElement];
-  [v7 baxSetStoredAttributedPageContent:0];
+  baxBookContentElement = [(BAXObjectWrapper *)self baxBookContentElement];
+  [baxBookContentElement baxSetStoredAttributedPageContent:0];
 
   if (BEBooksWebKitAccessibility())
   {
@@ -1560,10 +1560,10 @@ LABEL_6:
 
 - (void)baxInvalidateContainerCaches
 {
-  v2 = [(BAXObjectWrapper *)self accessibilityContainer];
-  if (v2)
+  accessibilityContainer = [(BAXObjectWrapper *)self accessibilityContainer];
+  if (accessibilityContainer)
   {
-    v3 = v2;
+    v3 = accessibilityContainer;
     while (1)
     {
       NSClassFromString(@"WKAccessibilityWebPageObject");
@@ -1572,10 +1572,10 @@ LABEL_6:
         break;
       }
 
-      v4 = [v3 accessibilityContainer];
+      accessibilityContainer2 = [v3 accessibilityContainer];
 
-      v3 = v4;
-      if (!v4)
+      v3 = accessibilityContainer2;
+      if (!accessibilityContainer2)
       {
         return;
       }
@@ -1602,12 +1602,12 @@ LABEL_6:
 - (id)_accessibilityScrollStatus
 {
   v2 = +[BEAccessibilityReadingState currentReadingState];
-  v3 = [v2 pageCount];
+  pageCount = [v2 pageCount];
 
   v4 = +[BEAccessibilityReadingState currentReadingState];
-  v5 = [v4 currentPage];
+  currentPage = [v4 currentPage];
 
-  if (v3 == 0x7FFFFFFFFFFFFFFFLL)
+  if (pageCount == 0x7FFFFFFFFFFFFFFFLL)
   {
     v6 = BAXLocString(@"loading.book");
   }
@@ -1615,9 +1615,9 @@ LABEL_6:
   else
   {
     v7 = BAXLocString(@"page.num.of %@ %@");
-    v8 = [NSNumber numberWithInteger:v5];
+    v8 = [NSNumber numberWithInteger:currentPage];
     v9 = [BAXObjectWrapper BAXLocalizedNumberForNumber:v8 numberStyle:1 maximumNumberOfDigitsAfterDecimalSeparator:0];
-    v10 = [NSNumber numberWithUnsignedInteger:v3];
+    v10 = [NSNumber numberWithUnsignedInteger:pageCount];
     v11 = [BAXObjectWrapper BAXLocalizedNumberForNumber:v10 numberStyle:1 maximumNumberOfDigitsAfterDecimalSeparator:0];
     v12 = [NSString stringWithFormat:v7, v9, v11];
     v6 = __BAXStringForVariables(v12, v13, v14, v15, v16, v17, v18, v19, @"__BAXStringForVariablesSentinel");
@@ -1626,45 +1626,45 @@ LABEL_6:
   return v6;
 }
 
-+ (id)BAXLocalizedNumberForNumber:(id)a3 numberStyle:(unint64_t)a4 maximumNumberOfDigitsAfterDecimalSeparator:(unint64_t)a5
++ (id)BAXLocalizedNumberForNumber:(id)number numberStyle:(unint64_t)style maximumNumberOfDigitsAfterDecimalSeparator:(unint64_t)separator
 {
-  v7 = a3;
+  numberCopy = number;
   v8 = objc_opt_new();
-  [v8 setNumberStyle:a4];
-  [v8 setMaximumFractionDigits:a5];
-  v9 = [v8 stringFromNumber:v7];
+  [v8 setNumberStyle:style];
+  [v8 setMaximumFractionDigits:separator];
+  v9 = [v8 stringFromNumber:numberCopy];
 
   return v9;
 }
 
 - (id)_axPageScrollString
 {
-  v3 = [(BAXObjectWrapper *)self baxStoredLinkInfos];
+  baxStoredLinkInfos = [(BAXObjectWrapper *)self baxStoredLinkInfos];
 
-  if (!v3)
+  if (!baxStoredLinkInfos)
   {
-    v4 = [(BAXObjectWrapper *)self _accessibilityInternalTextLinks];
-    v5 = [v4 copy];
+    _accessibilityInternalTextLinks = [(BAXObjectWrapper *)self _accessibilityInternalTextLinks];
+    v5 = [_accessibilityInternalTextLinks copy];
     [(BAXObjectWrapper *)self baxSetStoredLinkInfos:v5];
   }
 
-  v6 = [(BAXObjectWrapper *)self baxStoredLinkInfos];
-  v7 = [(BAXObjectWrapper *)self visibleLinkElements:v6];
+  baxStoredLinkInfos2 = [(BAXObjectWrapper *)self baxStoredLinkInfos];
+  v7 = [(BAXObjectWrapper *)self visibleLinkElements:baxStoredLinkInfos2];
 
   v8 = +[BEAccessibilityReadingState currentReadingState];
-  v9 = [v8 visibleAnnotations];
+  visibleAnnotations = [v8 visibleAnnotations];
 
   v10 = [v7 count];
-  v11 = [v9 count];
+  v11 = [visibleAnnotations count];
   v12 = +[BEAccessibilityReadingState currentReadingState];
-  v13 = [v12 pageCount];
+  pageCount = [v12 pageCount];
 
   v14 = +[BEAccessibilityReadingState currentReadingState];
-  v15 = [v14 currentPage];
+  currentPage = [v14 currentPage];
   v17 = v16;
 
   v18 = &_AXSApplicationAccessibilityEnabled_ptr;
-  if (v13 == 0x7FFFFFFFFFFFFFFFLL)
+  if (pageCount == 0x7FFFFFFFFFFFFFFFLL)
   {
     v19 = BAXLocString(@"page.num.of.loading");
   }
@@ -1672,18 +1672,18 @@ LABEL_6:
   else if (v17 < 2)
   {
     v23 = BAXLocString(@"page.num.of.with.total.single %lu %lu");
-    v19 = [NSString stringWithFormat:v23, v15, v13];
+    v19 = [NSString stringWithFormat:v23, currentPage, pageCount];
   }
 
   else
   {
     BAXLocString(@"page.num.of.with.total.spread %lu %lu %lu");
-    v20 = v9;
+    v20 = visibleAnnotations;
     v22 = v21 = v7;
-    v19 = [NSString stringWithFormat:v22, v15, &v15[v17 - 1], v13];
+    v19 = [NSString stringWithFormat:v22, currentPage, &currentPage[v17 - 1], pageCount];
 
     v7 = v21;
-    v9 = v20;
+    visibleAnnotations = v20;
     v18 = &_AXSApplicationAccessibilityEnabled_ptr;
   }
 
@@ -1708,9 +1708,9 @@ LABEL_6:
   }
 
   v45 = +[BEAccessibilityReadingState currentReadingState];
-  v46 = [v45 isVisiblePageBookmarked];
+  isVisiblePageBookmarked = [v45 isVisiblePageBookmarked];
 
-  if (v46)
+  if (isVisiblePageBookmarked)
   {
     v47 = BAXLocString(@"has.bookmark");
     v55 = __BAXStringForVariables(v10, v48, v49, v50, v51, v52, v53, v54, v47);
@@ -1742,9 +1742,9 @@ LABEL_6:
 - (BOOL)_accessibilityIsRTL
 {
   v2 = +[BEAccessibilityReadingState currentReadingState];
-  v3 = [v2 isRTL];
+  isRTL = [v2 isRTL];
 
-  return v3;
+  return isRTL;
 }
 
 @end

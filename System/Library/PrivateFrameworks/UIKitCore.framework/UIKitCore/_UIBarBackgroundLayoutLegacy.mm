@@ -1,22 +1,22 @@
 @interface _UIBarBackgroundLayoutLegacy
 - (UIImage)shadowImage;
-- (_UIBarBackgroundLayoutLegacy)initWithLayout:(id)a3;
+- (_UIBarBackgroundLayoutLegacy)initWithLayout:(id)layout;
 - (double)bg1ImageAlpha;
-- (id)_blurWithStyle:(int64_t)a3 tint:(id)a4;
-- (id)_colorForStyle:(int64_t)a3;
+- (id)_blurWithStyle:(int64_t)style tint:(id)tint;
+- (id)_colorForStyle:(int64_t)style;
 - (id)bg1ShadowColor;
 - (void)configureAsTransparent;
-- (void)configureBackgroundColor:(id)a3 barStyle:(int64_t)a4 translucent:(BOOL)a5;
-- (void)configureEffectForStyle:(int64_t)a3 backgroundTintColor:(id)a4 forceOpaque:(BOOL)a5;
-- (void)configureImage:(id)a3 forceOpaque:(BOOL)a4 backgroundTintColor:(id)a5;
-- (void)configureImage:(id)a3 forceOpaque:(BOOL)a4 barStyle:(int64_t)a5;
-- (void)configureImage:(id)a3 forceTranslucent:(BOOL)a4;
-- (void)configureShadowForBarStyle:(int64_t)a3;
-- (void)configureShadowImage:(id)a3;
-- (void)configureWithEffects:(id)a3;
+- (void)configureBackgroundColor:(id)color barStyle:(int64_t)style translucent:(BOOL)translucent;
+- (void)configureEffectForStyle:(int64_t)style backgroundTintColor:(id)color forceOpaque:(BOOL)opaque;
+- (void)configureImage:(id)image forceOpaque:(BOOL)opaque backgroundTintColor:(id)color;
+- (void)configureImage:(id)image forceOpaque:(BOOL)opaque barStyle:(int64_t)style;
+- (void)configureImage:(id)image forceTranslucent:(BOOL)translucent;
+- (void)configureShadowForBarStyle:(int64_t)style;
+- (void)configureShadowImage:(id)image;
+- (void)configureWithEffects:(id)effects;
 - (void)configureWithoutShadow;
-- (void)describeInto:(id)a3;
-- (void)setTopInset:(double)a3;
+- (void)describeInto:(id)into;
+- (void)setTopInset:(double)inset;
 @end
 
 @implementation _UIBarBackgroundLayoutLegacy
@@ -59,21 +59,21 @@
   }
 }
 
-- (_UIBarBackgroundLayoutLegacy)initWithLayout:(id)a3
+- (_UIBarBackgroundLayoutLegacy)initWithLayout:(id)layout
 {
-  v4 = a3;
+  layoutCopy = layout;
   v10.receiver = self;
   v10.super_class = _UIBarBackgroundLayoutLegacy;
-  v5 = [(_UIBarBackgroundLayout *)&v10 initWithLayout:v4];
+  v5 = [(_UIBarBackgroundLayout *)&v10 initWithLayout:layoutCopy];
   v6 = v5;
   if (v5)
   {
     v5->super._useExplicitGeometry = 0;
-    if ([v4 isMemberOfClass:objc_opt_class()])
+    if ([layoutCopy isMemberOfClass:objc_opt_class()])
     {
-      v6->_translucence = *(v4 + 11);
-      objc_storeStrong(&v6->_backgroundImage, *(v4 + 12));
-      v7 = v4;
+      v6->_translucence = *(layoutCopy + 11);
+      objc_storeStrong(&v6->_backgroundImage, *(layoutCopy + 12));
+      v7 = layoutCopy;
       objc_storeStrong(&v6->_backgroundTintColor, v7[13]);
       objc_storeStrong(&v6->_backgroundEffects, v7[14]);
       objc_storeStrong(&v6->_shadowImage, v7[15]);
@@ -102,16 +102,16 @@
   }
 }
 
-- (void)setTopInset:(double)a3
+- (void)setTopInset:(double)inset
 {
-  v3 = fmax(a3, 0.0);
+  v3 = fmax(inset, 0.0);
   if (self->_topInset != v3)
   {
     self->_topInset = v3;
   }
 }
 
-- (id)_colorForStyle:(int64_t)a3
+- (id)_colorForStyle:(int64_t)style
 {
   if (self->super._interfaceIdiom == 3)
   {
@@ -121,7 +121,7 @@ LABEL_16:
   }
 
   interfaceStyle = self->super._interfaceStyle;
-  if (a3 == 4)
+  if (style == 4)
   {
     v4 = 4;
   }
@@ -133,22 +133,22 @@ LABEL_16:
 
   if (interfaceStyle == 1000 || interfaceStyle == 2)
   {
-    v6 = v4;
+    styleCopy = v4;
   }
 
   else
   {
-    v6 = a3;
+    styleCopy = style;
   }
 
-  if (v6 == 2)
+  if (styleCopy == 2)
   {
-    v6 = 1;
+    styleCopy = 1;
   }
 
-  if (v6 != 1)
+  if (styleCopy != 1)
   {
-    if (!v6)
+    if (!styleCopy)
     {
       v7 = +[UIColor systemBackgroundColor];
       goto LABEL_17;
@@ -163,14 +163,14 @@ LABEL_17:
   return v7;
 }
 
-- (id)_blurWithStyle:(int64_t)a3 tint:(id)a4
+- (id)_blurWithStyle:(int64_t)style tint:(id)tint
 {
   v24[2] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = v6;
+  tintCopy = tint;
+  v7 = tintCopy;
   if (self->super._disableTinting)
   {
-    if (!v6)
+    if (!tintCopy)
     {
       v12 = [UIBlurEffect _effectWithBlurRadius:20.0 scale:0.25];
       v24[0] = v12;
@@ -182,7 +182,7 @@ LABEL_17:
 
     v19 = 0u;
     v20 = 0u;
-    [v6 getRed:&v19 green:&v19 + 8 blue:&v20 alpha:&v20 + 8];
+    [tintCopy getRed:&v19 green:&v19 + 8 blue:&v20 alpha:&v20 + 8];
     v8 = *(&v20 + 1);
     if (*(&v20 + 1) < 1.0)
     {
@@ -209,7 +209,7 @@ LABEL_7:
 
   else
   {
-    v12 = [UIBlurEffect _effectWithStyle:a3 tintColor:v6 invertAutomaticStyle:0];
+    v12 = [UIBlurEffect _effectWithStyle:style tintColor:tintCopy invertAutomaticStyle:0];
     v21 = v12;
     v16 = MEMORY[0x1E695DEC8];
     v17 = &v21;
@@ -221,12 +221,12 @@ LABEL_10:
   return v15;
 }
 
-- (void)configureEffectForStyle:(int64_t)a3 backgroundTintColor:(id)a4 forceOpaque:(BOOL)a5
+- (void)configureEffectForStyle:(int64_t)style backgroundTintColor:(id)color forceOpaque:(BOOL)opaque
 {
-  v5 = a5;
-  v8 = a4;
-  v26 = v8;
-  if (v5)
+  opaqueCopy = opaque;
+  colorCopy = color;
+  v26 = colorCopy;
+  if (opaqueCopy)
   {
     backgroundImage = self->_backgroundImage;
     self->_backgroundImage = 0;
@@ -238,7 +238,7 @@ LABEL_10:
 
     else
     {
-      [(_UIBarBackgroundLayoutLegacy *)self _colorForStyle:a3];
+      [(_UIBarBackgroundLayoutLegacy *)self _colorForStyle:style];
     }
     v15 = ;
     v16 = &OBJC_IVAR____UIBarBackgroundLayoutLegacy__backgroundEffects;
@@ -248,7 +248,7 @@ LABEL_10:
 
   else
   {
-    if (a3 == 4)
+    if (style == 4)
     {
       backgroundEffects = self->_backgroundEffects;
       self->_backgroundEffects = 0;
@@ -259,7 +259,7 @@ LABEL_10:
       interfaceIdiom = self->super._interfaceIdiom;
       if (interfaceIdiom == 2 || interfaceIdiom == 8)
       {
-        if (a3)
+        if (style)
         {
           v13 = 4018;
         }
@@ -269,16 +269,16 @@ LABEL_10:
           v13 = 5007;
         }
 
-        v14 = [(_UIBarBackgroundLayoutLegacy *)self _blurWithStyle:v13 tint:v8];
+        v14 = [(_UIBarBackgroundLayoutLegacy *)self _blurWithStyle:v13 tint:colorCopy];
         backgroundEffects = self->_backgroundEffects;
         self->_backgroundEffects = v14;
       }
 
       else
       {
-        if (v8 && !self->super._disableTinting)
+        if (colorCopy && !self->super._disableTinting)
         {
-          backgroundEffects = v8;
+          backgroundEffects = colorCopy;
           v21 = 100;
         }
 
@@ -287,13 +287,13 @@ LABEL_10:
           v18 = dyld_program_sdk_at_least();
           backgroundEffects = 0;
           v19 = 20;
-          if (!a3)
+          if (!style)
           {
             v19 = 10;
           }
 
           v20 = 2;
-          if (!a3)
+          if (!style)
           {
             v20 = 5;
           }
@@ -328,38 +328,38 @@ LABEL_10:
   self->_translucence = v17;
 }
 
-- (void)configureBackgroundColor:(id)a3 barStyle:(int64_t)a4 translucent:(BOOL)a5
+- (void)configureBackgroundColor:(id)color barStyle:(int64_t)style translucent:(BOOL)translucent
 {
-  v5 = a5;
-  v13 = a3;
+  translucentCopy = translucent;
+  colorCopy = color;
   backgroundImage = self->_backgroundImage;
   self->_backgroundImage = 0;
 
-  self->_translucence = v5;
+  self->_translucence = translucentCopy;
   backgroundEffects = self->_backgroundEffects;
   self->_backgroundEffects = 0;
 
-  if (v13 || v5)
+  if (colorCopy || translucentCopy)
   {
-    v12 = v13;
+    v12 = colorCopy;
     backgroundTintColor = self->_backgroundTintColor;
     self->_backgroundTintColor = v12;
   }
 
   else
   {
-    v10 = [(_UIBarBackgroundLayoutLegacy *)self _colorForStyle:a4];
+    v10 = [(_UIBarBackgroundLayoutLegacy *)self _colorForStyle:style];
     backgroundTintColor = self->_backgroundTintColor;
     self->_backgroundTintColor = v10;
   }
 }
 
-- (void)configureImage:(id)a3 forceTranslucent:(BOOL)a4
+- (void)configureImage:(id)image forceTranslucent:(BOOL)translucent
 {
-  v4 = a4;
-  objc_storeStrong(&self->_backgroundImage, a3);
-  v9 = a3;
-  self->_translucence = v4;
+  translucentCopy = translucent;
+  objc_storeStrong(&self->_backgroundImage, image);
+  imageCopy = image;
+  self->_translucence = translucentCopy;
   backgroundEffects = self->_backgroundEffects;
   self->_backgroundEffects = 0;
 
@@ -367,14 +367,14 @@ LABEL_10:
   self->_backgroundTintColor = 0;
 }
 
-- (void)configureImage:(id)a3 forceOpaque:(BOOL)a4 backgroundTintColor:(id)a5
+- (void)configureImage:(id)image forceOpaque:(BOOL)opaque backgroundTintColor:(id)color
 {
-  v6 = a4;
-  v14 = a3;
-  objc_storeStrong(&self->_backgroundImage, a3);
-  v9 = a5;
+  opaqueCopy = opaque;
+  imageCopy = image;
+  objc_storeStrong(&self->_backgroundImage, image);
+  colorCopy = color;
   v10 = 2;
-  if (!v6)
+  if (!opaqueCopy)
   {
     v10 = 0;
   }
@@ -383,14 +383,14 @@ LABEL_10:
   backgroundEffects = self->_backgroundEffects;
   self->_backgroundEffects = 0;
 
-  if (v6)
+  if (opaqueCopy)
   {
-    v12 = [v9 colorWithAlphaComponent:1.0];
+    v12 = [colorCopy colorWithAlphaComponent:1.0];
   }
 
   else
   {
-    v12 = [v9 copy];
+    v12 = [colorCopy copy];
   }
 
   v13 = v12;
@@ -398,13 +398,13 @@ LABEL_10:
   objc_storeStrong(&self->_backgroundTintColor, v13);
 }
 
-- (void)configureImage:(id)a3 forceOpaque:(BOOL)a4 barStyle:(int64_t)a5
+- (void)configureImage:(id)image forceOpaque:(BOOL)opaque barStyle:(int64_t)style
 {
-  v6 = a4;
-  v12 = a3;
-  objc_storeStrong(&self->_backgroundImage, a3);
+  opaqueCopy = opaque;
+  imageCopy = image;
+  objc_storeStrong(&self->_backgroundImage, image);
   v9 = 2;
-  if (!v6)
+  if (!opaqueCopy)
   {
     v9 = 0;
   }
@@ -413,14 +413,14 @@ LABEL_10:
   backgroundEffects = self->_backgroundEffects;
   self->_backgroundEffects = 0;
 
-  if (!v12)
+  if (!imageCopy)
   {
-    v6 = 1;
+    opaqueCopy = 1;
   }
 
-  if (v6)
+  if (opaqueCopy)
   {
-    v11 = [(_UIBarBackgroundLayoutLegacy *)self _colorForStyle:a5];
+    v11 = [(_UIBarBackgroundLayoutLegacy *)self _colorForStyle:style];
   }
 
   else
@@ -429,7 +429,7 @@ LABEL_10:
   }
 
   objc_storeStrong(&self->_backgroundTintColor, v11);
-  if (v6)
+  if (opaqueCopy)
   {
   }
 }
@@ -447,17 +447,17 @@ LABEL_10:
   self->_backgroundTintColor = 0;
 }
 
-- (void)configureWithEffects:(id)a3
+- (void)configureWithEffects:(id)effects
 {
-  v8 = a3;
+  effectsCopy = effects;
   backgroundImage = self->_backgroundImage;
   self->_backgroundImage = 0;
 
   self->_translucence = 0;
-  v5 = [v8 count];
+  v5 = [effectsCopy count];
   if (v5)
   {
-    v6 = [v8 copy];
+    v6 = [effectsCopy copy];
   }
 
   else
@@ -474,10 +474,10 @@ LABEL_10:
   self->_backgroundTintColor = 0;
 }
 
-- (void)configureShadowImage:(id)a3
+- (void)configureShadowImage:(id)image
 {
-  objc_storeStrong(&self->_shadowImage, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_shadowImage, image);
+  imageCopy = image;
   shadowColor = self->_shadowColor;
   self->_shadowColor = 0;
 
@@ -487,7 +487,7 @@ LABEL_10:
   self->_hasShadow = 1;
 }
 
-- (void)configureShadowForBarStyle:(int64_t)a3
+- (void)configureShadowForBarStyle:(int64_t)style
 {
   shadowImage = self->_shadowImage;
   self->_shadowImage = 0;
@@ -495,7 +495,7 @@ LABEL_10:
   objc_storeStrong(&self->_shadowEffect, 0);
   if (!self->_shadowEffect)
   {
-    v6 = _UIBarHairlineShadowColorForBarStyle(a3);
+    v6 = _UIBarHairlineShadowColorForBarStyle(style);
     v7 = [v6 copy];
     shadowColor = self->_shadowColor;
     self->_shadowColor = v7;
@@ -504,13 +504,13 @@ LABEL_10:
   self->_hasShadow = 1;
 }
 
-- (void)describeInto:(id)a3
+- (void)describeInto:(id)into
 {
   v5.receiver = self;
   v5.super_class = _UIBarBackgroundLayoutLegacy;
-  v4 = a3;
-  [(_UIBarBackgroundLayout *)&v5 describeInto:v4];
-  [v4 appendFormat:@" _translucence=%li backgroundImage=%@ backgroundTintColor=%@ backgroundEffects=%@ shadowImage=%@ shadowColor=%@", self->_translucence, self->_backgroundImage, self->_backgroundTintColor, self->_backgroundEffects, self->_shadowImage, self->_shadowColor, v5.receiver, v5.super_class];
+  intoCopy = into;
+  [(_UIBarBackgroundLayout *)&v5 describeInto:intoCopy];
+  [intoCopy appendFormat:@" _translucence=%li backgroundImage=%@ backgroundTintColor=%@ backgroundEffects=%@ shadowImage=%@ shadowColor=%@", self->_translucence, self->_backgroundImage, self->_backgroundTintColor, self->_backgroundEffects, self->_shadowImage, self->_shadowColor, v5.receiver, v5.super_class];
 }
 
 @end

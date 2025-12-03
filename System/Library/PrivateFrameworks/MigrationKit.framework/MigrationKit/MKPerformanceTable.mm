@@ -1,42 +1,42 @@
 @interface MKPerformanceTable
-- (MKPerformanceTable)initWithJSONFile:(id)a3 analytics:(id)a4;
-- (id)createNumberFormatterWithLocale:(id)a3;
+- (MKPerformanceTable)initWithJSONFile:(id)file analytics:(id)analytics;
+- (id)createNumberFormatterWithLocale:(id)locale;
 - (id)createSizeFormatter;
 - (id)createThroughputFormatter;
-- (id)createTimeFormatterWithLocale:(id)a3;
+- (id)createTimeFormatterWithLocale:(id)locale;
 - (id)importTimesByDataClass;
-- (void)generateTableFromJSONFile:(id)a3;
+- (void)generateTableFromJSONFile:(id)file;
 - (void)writeToDisk;
 @end
 
 @implementation MKPerformanceTable
 
-- (MKPerformanceTable)initWithJSONFile:(id)a3 analytics:(id)a4
+- (MKPerformanceTable)initWithJSONFile:(id)file analytics:(id)analytics
 {
-  v6 = a3;
-  v7 = a4;
+  fileCopy = file;
+  analyticsCopy = analytics;
   v12.receiver = self;
   v12.super_class = MKPerformanceTable;
   v8 = [(MKTable *)&v12 init];
   v9 = v8;
   if (v8)
   {
-    [(MKPerformanceTable *)v8 setAnalytics:v7];
-    v10 = [v6 stringByDeletingLastPathComponent];
-    [(MKPerformanceTable *)v9 setBasePath:v10];
+    [(MKPerformanceTable *)v8 setAnalytics:analyticsCopy];
+    stringByDeletingLastPathComponent = [fileCopy stringByDeletingLastPathComponent];
+    [(MKPerformanceTable *)v9 setBasePath:stringByDeletingLastPathComponent];
 
-    [(MKPerformanceTable *)v9 generateTableFromJSONFile:v6];
+    [(MKPerformanceTable *)v9 generateTableFromJSONFile:fileCopy];
   }
 
   return v9;
 }
 
-- (void)generateTableFromJSONFile:(id)a3
+- (void)generateTableFromJSONFile:(id)file
 {
   v190 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CCAA00] defaultManager];
-  v6 = [v5 contentsAtPath:v4];
+  fileCopy = file;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v6 = [defaultManager contentsAtPath:fileCopy];
 
   if (v6)
   {
@@ -54,20 +54,20 @@
 
     else
     {
-      v108 = v4;
+      v108 = fileCopy;
       v10 = [[MKPerformanceData alloc] initWithDictionary:v7];
       v11 = [MEMORY[0x277CBEAF8] localeWithLocaleIdentifier:@"en_US"];
       v112 = [(MKPerformanceTable *)self createNumberFormatterWithLocale:v11];
       v105 = v11;
       v115 = [(MKPerformanceTable *)self createTimeFormatterWithLocale:v11];
-      v114 = [(MKPerformanceTable *)self createSizeFormatter];
-      v113 = [(MKPerformanceTable *)self createThroughputFormatter];
+      createSizeFormatter = [(MKPerformanceTable *)self createSizeFormatter];
+      createThroughputFormatter = [(MKPerformanceTable *)self createThroughputFormatter];
       v178 = 0u;
       v179 = 0u;
       v180 = 0u;
       v181 = 0u;
-      v12 = [(MKPerformanceData *)v10 dataClasses];
-      v13 = [v12 countByEnumeratingWithState:&v178 objects:v189 count:16];
+      dataClasses = [(MKPerformanceData *)v10 dataClasses];
+      v13 = [dataClasses countByEnumeratingWithState:&v178 objects:v189 count:16];
       if (v13)
       {
         v14 = v13;
@@ -79,13 +79,13 @@
           {
             if (*v179 != v16)
             {
-              objc_enumerationMutation(v12);
+              objc_enumerationMutation(dataClasses);
             }
 
             v15 += [*(*(&v178 + 1) + 8 * i) size];
           }
 
-          v14 = [v12 countByEnumeratingWithState:&v178 objects:v189 count:16];
+          v14 = [dataClasses countByEnumeratingWithState:&v178 objects:v189 count:16];
         }
 
         while (v14);
@@ -96,18 +96,18 @@
         v15 = 0;
       }
 
-      v18 = [(MKPerformanceTable *)self analytics];
-      v19 = [v18 payload];
-      v20 = [v19 elapsedTime];
+      analytics = [(MKPerformanceTable *)self analytics];
+      payload = [analytics payload];
+      elapsedTime = [payload elapsedTime];
 
       v107 = v6;
       v106 = v7;
       v109 = v10;
-      if (v20)
+      if (elapsedTime)
       {
-        v21 = [(MKPerformanceTable *)self analytics];
-        v22 = [v21 payload];
-        v23 = v15 / [v22 elapsedTime];
+        analytics2 = [(MKPerformanceTable *)self analytics];
+        payload2 = [analytics2 payload];
+        v23 = v15 / [payload2 elapsedTime];
       }
 
       else
@@ -116,20 +116,20 @@
       }
 
       v154 = MEMORY[0x277CCACA8];
-      v169 = [(MKPerformanceTable *)self analytics];
-      v164 = [v169 payload];
-      v149 = [v164 androidBrand];
-      v159 = [(MKPerformanceTable *)self analytics];
-      v24 = [v159 payload];
-      v25 = [v24 androidModel];
+      analytics3 = [(MKPerformanceTable *)self analytics];
+      payload3 = [analytics3 payload];
+      androidBrand = [payload3 androidBrand];
+      analytics4 = [(MKPerformanceTable *)self analytics];
+      payload4 = [analytics4 payload];
+      androidModel = [payload4 androidModel];
       [(MKPerformanceTable *)self analytics];
       v26 = v116 = self;
-      v27 = [v26 payload];
-      v28 = [v27 androidAPILevel];
-      v29 = [(MKPerformanceTable *)self analytics];
-      v30 = [v29 payload];
-      v31 = [v30 androidVersion];
-      v32 = [v154 stringWithFormat:@"%@ %@ - API %@ - M2iOS %@ ", v149, v25, v28, v31];
+      payload5 = [v26 payload];
+      androidAPILevel = [payload5 androidAPILevel];
+      analytics5 = [(MKPerformanceTable *)self analytics];
+      payload6 = [analytics5 payload];
+      androidVersion = [payload6 androidVersion];
+      v32 = [v154 stringWithFormat:@"%@ %@ - API %@ - M2iOS %@ ", androidBrand, androidModel, androidAPILevel, androidVersion];
 
       v104 = v32;
       v33 = [MKTableRow rowWithTitle:v32];
@@ -138,28 +138,28 @@
       v34 = +[MKTableRow separatorRow];
       [(MKTable *)v116 addRow:v34];
 
-      v170 = [MEMORY[0x277CCACA8] string];
-      v165 = [MKTableCell cellWithValue:v170 formatter:0];
+      string = [MEMORY[0x277CCACA8] string];
+      v165 = [MKTableCell cellWithValue:string formatter:0];
       v188[0] = v165;
-      v160 = [MEMORY[0x277CCACA8] string];
-      v155 = [MKTableCell cellWithValue:v160 formatter:0];
+      string2 = [MEMORY[0x277CCACA8] string];
+      v155 = [MKTableCell cellWithValue:string2 formatter:0];
       v188[1] = v155;
       v150 = [MKTableCell cellWithValue:@"Size" formatter:0 alignment:1];
       v188[2] = v150;
-      v145 = [MEMORY[0x277CCACA8] string];
-      v140 = [MKTableCell cellWithValue:v145 formatter:0];
+      string3 = [MEMORY[0x277CCACA8] string];
+      v140 = [MKTableCell cellWithValue:string3 formatter:0];
       v188[3] = v140;
-      v138 = [MEMORY[0x277CCACA8] string];
-      v135 = [MKTableCell cellWithValue:v138 formatter:0];
+      string4 = [MEMORY[0x277CCACA8] string];
+      v135 = [MKTableCell cellWithValue:string4 formatter:0];
       v188[4] = v135;
-      v132 = [MEMORY[0x277CCACA8] string];
-      v129 = [MKTableCell cellWithValue:v132 formatter:0];
+      string5 = [MEMORY[0x277CCACA8] string];
+      v129 = [MKTableCell cellWithValue:string5 formatter:0];
       v188[5] = v129;
-      v35 = [MEMORY[0x277CCACA8] string];
-      v36 = [MKTableCell cellWithValue:v35 formatter:0];
+      string6 = [MEMORY[0x277CCACA8] string];
+      v36 = [MKTableCell cellWithValue:string6 formatter:0];
       v188[6] = v36;
-      v37 = [MEMORY[0x277CCACA8] string];
-      v38 = [MKTableCell cellWithValue:v37 formatter:0];
+      string7 = [MEMORY[0x277CCACA8] string];
+      v38 = [MKTableCell cellWithValue:string7 formatter:0];
       v188[7] = v38;
       v39 = [MKTableCell cellWithValue:@"Duration" formatter:0 alignment:1];
       v188[8] = v39;
@@ -174,37 +174,37 @@
 
       v171 = [MKTableCell cellWithValue:@"Whole Migration" formatter:0];
       v187[0] = v171;
-      v166 = [MEMORY[0x277CCACA8] string];
-      v161 = [MKTableCell cellWithValue:v166 formatter:0];
+      string8 = [MEMORY[0x277CCACA8] string];
+      v161 = [MKTableCell cellWithValue:string8 formatter:0];
       v187[1] = v161;
       v156 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:v15];
-      v151 = [MKTableCell cellWithValue:v156 formatter:v114 alignment:2];
+      v151 = [MKTableCell cellWithValue:v156 formatter:createSizeFormatter alignment:2];
       v187[2] = v151;
-      v146 = [MEMORY[0x277CCACA8] string];
-      v142 = [MKTableCell cellWithValue:v146 formatter:0];
+      string9 = [MEMORY[0x277CCACA8] string];
+      v142 = [MKTableCell cellWithValue:string9 formatter:0];
       v187[3] = v142;
-      v141 = [MEMORY[0x277CCACA8] string];
-      v136 = [MKTableCell cellWithValue:v141 formatter:0];
+      string10 = [MEMORY[0x277CCACA8] string];
+      v136 = [MKTableCell cellWithValue:string10 formatter:0];
       v187[4] = v136;
-      v133 = [MEMORY[0x277CCACA8] string];
-      v130 = [MKTableCell cellWithValue:v133 formatter:0];
+      string11 = [MEMORY[0x277CCACA8] string];
+      v130 = [MKTableCell cellWithValue:string11 formatter:0];
       v187[5] = v130;
-      v127 = [MEMORY[0x277CCACA8] string];
-      v125 = [MKTableCell cellWithValue:v127 formatter:0];
+      string12 = [MEMORY[0x277CCACA8] string];
+      v125 = [MKTableCell cellWithValue:string12 formatter:0];
       v187[6] = v125;
-      v123 = [MEMORY[0x277CCACA8] string];
-      v121 = [MKTableCell cellWithValue:v123 formatter:0];
+      string13 = [MEMORY[0x277CCACA8] string];
+      v121 = [MKTableCell cellWithValue:string13 formatter:0];
       v187[7] = v121;
       v44 = MEMORY[0x277CCABB0];
-      v45 = [(MKAnalytics *)v116->_analytics payload];
-      v46 = [v44 numberWithUnsignedLongLong:{objc_msgSend(v45, "elapsedTime")}];
+      payload7 = [(MKAnalytics *)v116->_analytics payload];
+      v46 = [v44 numberWithUnsignedLongLong:{objc_msgSend(payload7, "elapsedTime")}];
       v47 = [MKTableCell cellWithValue:v46 formatter:v115 alignment:2];
       v187[8] = v47;
-      v48 = [MEMORY[0x277CCACA8] string];
-      v49 = [MKTableCell cellWithValue:v48 formatter:0];
+      string14 = [MEMORY[0x277CCACA8] string];
+      v49 = [MKTableCell cellWithValue:string14 formatter:0];
       v187[9] = v49;
       v50 = [MEMORY[0x277CCABB0] numberWithDouble:v23];
-      v51 = [MKTableCell cellWithValue:v50 formatter:v113 alignment:2];
+      v51 = [MKTableCell cellWithValue:v50 formatter:createThroughputFormatter alignment:2];
       v187[10] = v51;
       v52 = [MEMORY[0x277CBEA60] arrayWithObjects:v187 count:11];
       v53 = [MKTableRow rowWithCells:v52];
@@ -227,14 +227,14 @@
       v61 = [MKTableRow rowWithCells:v60];
       [(MKTable *)v116 addRow:v61];
 
-      v172 = [MEMORY[0x277CCACA8] string];
-      v167 = [MKTableCell cellWithValue:v172 formatter:0];
+      string15 = [MEMORY[0x277CCACA8] string];
+      v167 = [MKTableCell cellWithValue:string15 formatter:0];
       v185[0] = v167;
-      v162 = [MEMORY[0x277CCACA8] string];
-      v157 = [MKTableCell cellWithValue:v162 formatter:0];
+      string16 = [MEMORY[0x277CCACA8] string];
+      v157 = [MKTableCell cellWithValue:string16 formatter:0];
       v185[1] = v157;
-      v152 = [MEMORY[0x277CCACA8] string];
-      v147 = [MKTableCell cellWithValue:v152 formatter:0];
+      string17 = [MEMORY[0x277CCACA8] string];
+      v147 = [MKTableCell cellWithValue:string17 formatter:0];
       v185[2] = v147;
       v143 = [MKTableCell cellWithValue:@"Prep" formatter:0 alignment:1];
       v185[3] = v143;
@@ -259,8 +259,8 @@
       v71 = +[MKTableRow separatorRow];
       [(MKTable *)v116 addRow:v71];
 
-      v118 = [(MKPerformanceTable *)v116 displayNamesByDataClass];
-      v111 = [(MKPerformanceTable *)v116 importTimesByDataClass];
+      displayNamesByDataClass = [(MKPerformanceTable *)v116 displayNamesByDataClass];
+      importTimesByDataClass = [(MKPerformanceTable *)v116 importTimesByDataClass];
       v174 = 0u;
       v175 = 0u;
       v176 = 0u;
@@ -280,13 +280,13 @@
             }
 
             v73 = *(*(&v174 + 1) + 8 * j);
-            v74 = [v73 name];
-            v75 = [v118 objectForKey:v74];
+            name = [v73 name];
+            v75 = [displayNamesByDataClass objectForKey:name];
 
             if (v75)
             {
-              v76 = [v73 name];
-              v77 = [v111 objectForKey:v76];
+              name2 = [v73 name];
+              v77 = [importTimesByDataClass objectForKey:name2];
 
               [v73 preparationTime];
               v79 = v78;
@@ -311,7 +311,7 @@
               v158 = [MKTableCell cellWithValue:v163 formatter:v112 alignment:2];
               v183[1] = v158;
               v153 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:{objc_msgSend(v73, "size")}];
-              v148 = [MKTableCell cellWithValue:v153 formatter:v114 alignment:2];
+              v148 = [MKTableCell cellWithValue:v153 formatter:createSizeFormatter alignment:2];
               v183[2] = v148;
               v89 = MEMORY[0x277CCABB0];
               [v73 preparationTime];
@@ -342,10 +342,10 @@
               v95 = MEMORY[0x277CCABB0];
               [v73 transferSpeed];
               v96 = [v95 numberWithDouble:?];
-              v97 = [MKTableCell cellWithValue:v96 formatter:v113 alignment:2];
+              v97 = [MKTableCell cellWithValue:v96 formatter:createThroughputFormatter alignment:2];
               v183[9] = v97;
               v98 = [MEMORY[0x277CCABB0] numberWithDouble:v88];
-              v99 = [MKTableCell cellWithValue:v98 formatter:v113 alignment:2];
+              v99 = [MKTableCell cellWithValue:v98 formatter:createThroughputFormatter alignment:2];
               v183[10] = v99;
               v100 = [MEMORY[0x277CBEA60] arrayWithObjects:v183 count:11];
               v101 = [MKTableRow rowWithCells:v100];
@@ -366,7 +366,7 @@
       [(MKTable *)v116 addRow:v102];
 
       v6 = v107;
-      v4 = v108;
+      fileCopy = v108;
       v7 = v106;
       v8 = 0;
       p_super = &v109->super;
@@ -388,39 +388,39 @@
 - (void)writeToDisk
 {
   v18 = MEMORY[0x277CCACA8];
-  v23 = [(MKPerformanceTable *)self analytics];
-  v22 = [v23 payload];
-  v21 = [v22 androidBrand];
-  v17 = [v21 lowercaseString];
-  v20 = [(MKPerformanceTable *)self analytics];
-  v19 = [v20 payload];
-  v3 = [v19 androidModel];
-  v4 = [v3 lowercaseString];
-  v5 = [(MKPerformanceTable *)self analytics];
-  v6 = [v5 payload];
-  v7 = [v6 androidAPILevel];
-  v8 = [(MKPerformanceTable *)self analytics];
-  v9 = [v8 payload];
-  v10 = [v9 androidVersion];
-  v11 = [v18 stringWithFormat:@"perf-results_%@_%@_api-%@_v%@.csv", v17, v4, v7, v10];
+  analytics = [(MKPerformanceTable *)self analytics];
+  payload = [analytics payload];
+  androidBrand = [payload androidBrand];
+  lowercaseString = [androidBrand lowercaseString];
+  analytics2 = [(MKPerformanceTable *)self analytics];
+  payload2 = [analytics2 payload];
+  androidModel = [payload2 androidModel];
+  lowercaseString2 = [androidModel lowercaseString];
+  analytics3 = [(MKPerformanceTable *)self analytics];
+  payload3 = [analytics3 payload];
+  androidAPILevel = [payload3 androidAPILevel];
+  analytics4 = [(MKPerformanceTable *)self analytics];
+  payload4 = [analytics4 payload];
+  androidVersion = [payload4 androidVersion];
+  v11 = [v18 stringWithFormat:@"perf-results_%@_%@_api-%@_v%@.csv", lowercaseString, lowercaseString2, androidAPILevel, androidVersion];
 
   v12 = [MEMORY[0x277CCA900] characterSetWithCharactersInString:@"/ "];
   v13 = [v11 componentsSeparatedByCharactersInSet:v12];
   v14 = [v13 componentsJoinedByString:@"-"];
 
-  v15 = [(MKPerformanceTable *)self basePath];
-  v16 = [v15 stringByAppendingPathComponent:v14];
+  basePath = [(MKPerformanceTable *)self basePath];
+  v16 = [basePath stringByAppendingPathComponent:v14];
   v24.receiver = self;
   v24.super_class = MKPerformanceTable;
   [(MKTable *)&v24 writeToDisk:v16];
 }
 
-- (id)createNumberFormatterWithLocale:(id)a3
+- (id)createNumberFormatterWithLocale:(id)locale
 {
   v3 = MEMORY[0x277CCABB8];
-  v4 = a3;
+  localeCopy = locale;
   v5 = objc_alloc_init(v3);
-  [v5 setLocale:v4];
+  [v5 setLocale:localeCopy];
 
   [v5 setNumberStyle:1];
   [v5 setMaximumFractionDigits:1];
@@ -429,11 +429,11 @@
   return v5;
 }
 
-- (id)createTimeFormatterWithLocale:(id)a3
+- (id)createTimeFormatterWithLocale:(id)locale
 {
-  v3 = a3;
+  localeCopy = locale;
   v4 = objc_alloc_init(MKTimeFormatter);
-  [(MKTimeFormatter *)v4 setLocale:v3];
+  [(MKTimeFormatter *)v4 setLocale:localeCopy];
 
   return v4;
 }
@@ -464,68 +464,68 @@
 {
   v47[12] = *MEMORY[0x277D85DE8];
   v46[0] = @"accessibility_settings";
-  v45 = [(MKPerformanceTable *)self analytics];
-  v44 = [v45 payload];
-  v43 = [v44 accessibilitySettings];
-  v42 = [v43 importElapsedTime];
-  v47[0] = v42;
+  analytics = [(MKPerformanceTable *)self analytics];
+  payload = [analytics payload];
+  accessibilitySettings = [payload accessibilitySettings];
+  importElapsedTime = [accessibilitySettings importElapsedTime];
+  v47[0] = importElapsedTime;
   v46[1] = @"accounts";
-  v41 = [(MKPerformanceTable *)self analytics];
-  v40 = [v41 payload];
-  v39 = [v40 accounts];
-  v38 = [v39 importElapsedTime];
-  v47[1] = v38;
+  analytics2 = [(MKPerformanceTable *)self analytics];
+  payload2 = [analytics2 payload];
+  accounts = [payload2 accounts];
+  importElapsedTime2 = [accounts importElapsedTime];
+  v47[1] = importElapsedTime2;
   v47[2] = &unk_286AAC650;
   v46[2] = @"application";
   v46[3] = @"calendars";
-  v37 = [(MKPerformanceTable *)self analytics];
-  v36 = [v37 payload];
-  v35 = [v36 calendars];
-  v34 = [v35 importElapsedTime];
-  v47[3] = v34;
+  analytics3 = [(MKPerformanceTable *)self analytics];
+  payload3 = [analytics3 payload];
+  calendars = [payload3 calendars];
+  importElapsedTime3 = [calendars importElapsedTime];
+  v47[3] = importElapsedTime3;
   v46[4] = @"contacts";
-  v33 = [(MKPerformanceTable *)self analytics];
-  v32 = [v33 payload];
-  v31 = [v32 contacts];
-  v30 = [v31 importElapsedTime];
-  v47[4] = v30;
+  analytics4 = [(MKPerformanceTable *)self analytics];
+  payload4 = [analytics4 payload];
+  contacts = [payload4 contacts];
+  importElapsedTime4 = [contacts importElapsedTime];
+  v47[4] = importElapsedTime4;
   v46[5] = @"display_settings";
-  v29 = [(MKPerformanceTable *)self analytics];
-  v28 = [v29 payload];
-  v27 = [v28 displaySettings];
-  v26 = [v27 importElapsedTime];
-  v47[5] = v26;
+  analytics5 = [(MKPerformanceTable *)self analytics];
+  payload5 = [analytics5 payload];
+  displaySettings = [payload5 displaySettings];
+  importElapsedTime5 = [displaySettings importElapsedTime];
+  v47[5] = importElapsedTime5;
   v46[6] = @"files";
-  v25 = [(MKPerformanceTable *)self analytics];
-  v24 = [v25 payload];
-  v23 = [v24 files];
-  v22 = [v23 importElapsedTime];
-  v47[6] = v22;
+  analytics6 = [(MKPerformanceTable *)self analytics];
+  payload6 = [analytics6 payload];
+  files = [payload6 files];
+  importElapsedTime6 = [files importElapsedTime];
+  v47[6] = importElapsedTime6;
   v46[7] = @"messages";
-  v21 = [(MKPerformanceTable *)self analytics];
-  v20 = [v21 payload];
-  v19 = [v20 messages];
-  v18 = [v19 importElapsedTime];
-  v47[7] = v18;
+  analytics7 = [(MKPerformanceTable *)self analytics];
+  payload7 = [analytics7 payload];
+  messages = [payload7 messages];
+  importElapsedTime7 = [messages importElapsedTime];
+  v47[7] = importElapsedTime7;
   v46[8] = @"photos";
-  v17 = [(MKPerformanceTable *)self analytics];
-  v16 = [v17 payload];
-  v3 = [v16 photos];
-  v4 = [v3 importElapsedTime];
-  v47[8] = v4;
+  analytics8 = [(MKPerformanceTable *)self analytics];
+  payload8 = [analytics8 payload];
+  photos = [payload8 photos];
+  importElapsedTime8 = [photos importElapsedTime];
+  v47[8] = importElapsedTime8;
   v46[9] = @"videos";
-  v5 = [(MKPerformanceTable *)self analytics];
-  v6 = [v5 payload];
-  v7 = [v6 videos];
-  v8 = [v7 importElapsedTime];
-  v47[9] = v8;
+  analytics9 = [(MKPerformanceTable *)self analytics];
+  payload9 = [analytics9 payload];
+  videos = [payload9 videos];
+  importElapsedTime9 = [videos importElapsedTime];
+  v47[9] = importElapsedTime9;
   v46[10] = @"whatsapp_container";
-  v9 = [(MKPerformanceTable *)self analytics];
-  v10 = [v9 payload];
-  v11 = [v10 whatsapp];
-  v12 = [v11 importElapsedTime];
+  analytics10 = [(MKPerformanceTable *)self analytics];
+  payload10 = [analytics10 payload];
+  whatsapp = [payload10 whatsapp];
+  importElapsedTime10 = [whatsapp importElapsedTime];
   v46[11] = @"whatsapp_placeholder";
-  v47[10] = v12;
+  v47[10] = importElapsedTime10;
   v47[11] = &unk_286AAC650;
   v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v47 forKeys:v46 count:12];
 

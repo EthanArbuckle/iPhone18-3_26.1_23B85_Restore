@@ -1,25 +1,25 @@
 @interface MFRoundProgressView
-- (MFRoundProgressView)initWithFrame:(CGRect)a3;
-- (void)_displayLinkDidFire:(id)a3;
+- (MFRoundProgressView)initWithFrame:(CGRect)frame;
+- (void)_displayLinkDidFire:(id)fire;
 - (void)_startDisplayLink;
 - (void)_stopDisplayLink;
 - (void)_updateSubviews;
 - (void)_updateUIProgress;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)recalculateIncreaseProgress:(double)a3 withTimeDiff:(double)a4;
+- (void)recalculateIncreaseProgress:(double)progress withTimeDiff:(double)diff;
 - (void)resetProgress;
-- (void)setPieRadius:(double)a3;
-- (void)setProgress:(double)a3;
+- (void)setPieRadius:(double)radius;
+- (void)setProgress:(double)progress;
 @end
 
 @implementation MFRoundProgressView
 
-- (MFRoundProgressView)initWithFrame:(CGRect)a3
+- (MFRoundProgressView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = MFRoundProgressView;
-  v3 = [(MFRoundProgressView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MFRoundProgressView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -71,35 +71,35 @@
   v11 = ceil(v10 / 5.5);
   [(MFRoundProgressView *)self setPieRadius:v10 - v11 * 0.5];
   [(MFRoundProgressView *)self resetProgress];
-  v25 = [(UIView *)self->_contentView layer];
+  layer = [(UIView *)self->_contentView layer];
   sliceLayer = self->_sliceLayer;
   if (!sliceLayer)
   {
-    v13 = [MEMORY[0x1E69794A0] layer];
+    layer2 = [MEMORY[0x1E69794A0] layer];
     v14 = self->_sliceLayer;
-    self->_sliceLayer = v13;
+    self->_sliceLayer = layer2;
 
-    [v25 addSublayer:self->_sliceLayer];
+    [layer addSublayer:self->_sliceLayer];
     sliceLayer = self->_sliceLayer;
   }
 
   [(CAShapeLayer *)sliceLayer setZPosition:0.0];
   [(CAShapeLayer *)self->_sliceLayer setStrokeColor:0];
-  v15 = [MEMORY[0x1E69DC888] whiteColor];
-  -[CAShapeLayer setFillColor:](self->_sliceLayer, "setFillColor:", [v15 CGColor]);
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  -[CAShapeLayer setFillColor:](self->_sliceLayer, "setFillColor:", [whiteColor CGColor]);
   circleLayer = self->_circleLayer;
   if (!circleLayer)
   {
-    v17 = [MEMORY[0x1E69794A0] layer];
+    layer3 = [MEMORY[0x1E69794A0] layer];
     v18 = self->_circleLayer;
-    self->_circleLayer = v17;
+    self->_circleLayer = layer3;
 
-    [v25 addSublayer:self->_circleLayer];
+    [layer addSublayer:self->_circleLayer];
     circleLayer = self->_circleLayer;
   }
 
   [(CAShapeLayer *)circleLayer setZPosition:0.0];
-  -[CAShapeLayer setStrokeColor:](self->_circleLayer, "setStrokeColor:", [v15 CGColor]);
+  -[CAShapeLayer setStrokeColor:](self->_circleLayer, "setStrokeColor:", [whiteColor CGColor]);
   [(CAShapeLayer *)self->_circleLayer setFillColor:0];
   [(CAShapeLayer *)self->_circleLayer setLineWidth:v11];
   pieRadius = self->_pieRadius;
@@ -111,18 +111,18 @@
   [(CAShapeLayer *)self->_circleLayer setPath:Mutable];
   CGPathRelease(Mutable);
   v23 = [MEMORY[0x1E69DC888] colorWithWhite:0.0 alpha:0.75];
-  [v25 setShadowColor:{objc_msgSend(v23, "CGColor")}];
+  [layer setShadowColor:{objc_msgSend(v23, "CGColor")}];
 
-  [v25 setShadowOffset:{*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)}];
+  [layer setShadowOffset:{*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)}];
   LODWORD(v24) = 1.0;
-  [v25 setShadowOpacity:v24];
-  [v25 setShadowRadius:0.5];
+  [layer setShadowOpacity:v24];
+  [layer setShadowRadius:0.5];
   [(MFRoundProgressView *)self _updateUIProgress];
 }
 
-- (void)setPieRadius:(double)a3
+- (void)setPieRadius:(double)radius
 {
-  self->_pieRadius = a3;
+  self->_pieRadius = radius;
   [(MFRoundProgressView *)self bounds];
   x = v13.origin.x;
   y = v13.origin.y;
@@ -137,8 +137,8 @@
   self->_pieCenter.x = MidX;
   self->_pieCenter.y = MidY;
   pieRadius = self->_pieRadius;
-  v11 = [(MFRoundProgressView *)self layer];
-  [v11 setCornerRadius:pieRadius];
+  layer = [(MFRoundProgressView *)self layer];
+  [layer setCornerRadius:pieRadius];
 }
 
 - (void)_stopDisplayLink
@@ -161,14 +161,14 @@
     self->_displayLink = v3;
 
     v5 = self->_displayLink;
-    v6 = [MEMORY[0x1E695DFD0] mainRunLoop];
+    mainRunLoop = [MEMORY[0x1E695DFD0] mainRunLoop];
     [CADisplayLink addToRunLoop:v5 forMode:"addToRunLoop:forMode:"];
   }
 }
 
-- (void)_displayLinkDidFire:(id)a3
+- (void)_displayLinkDidFire:(id)fire
 {
-  v11 = a3;
+  fireCopy = fire;
   realProgress = self->_realProgress;
   if (realProgress != 0.0)
   {
@@ -235,9 +235,9 @@ LABEL_16:
   }
 }
 
-- (void)recalculateIncreaseProgress:(double)a3 withTimeDiff:(double)a4
+- (void)recalculateIncreaseProgress:(double)progress withTimeDiff:(double)diff
 {
-  v5 = a3 / a4;
+  v5 = progress / diff;
   [(CADisplayLink *)self->_displayLink duration];
   v7 = v5 * v6;
   if (v7 < 0.000166666667)
@@ -248,20 +248,20 @@ LABEL_16:
   self->_increaseRate = v7;
 }
 
-- (void)setProgress:(double)a3
+- (void)setProgress:(double)progress
 {
-  self->_progress = a3;
+  self->_progress = progress;
   if (!self->_displayLink && self->_realProgress <= 1.0)
   {
     [(MFRoundProgressView *)self _startDisplayLink];
   }
 
-  if (a3 > 0.0)
+  if (progress > 0.0)
   {
     realProgress = self->_realProgress;
-    if (realProgress < 1.0 && realProgress < a3)
+    if (realProgress < 1.0 && realProgress < progress)
     {
-      if (a3 >= 1.0)
+      if (progress >= 1.0)
       {
         v10 = 1.0 - self->_uiProgress;
         v11 = 0.1;
@@ -274,11 +274,11 @@ LABEL_16:
         self->_prevUpdateTimeInterval = v7;
         v9 = v7 - prevUpdateTimeInterval;
         v10 = 1.0 - self->_uiProgress;
-        v11 = v9 * (v10 / (a3 - self->_realProgress));
+        v11 = v9 * (v10 / (progress - self->_realProgress));
       }
 
       [(MFRoundProgressView *)self recalculateIncreaseProgress:v10 withTimeDiff:v11];
-      self->_realProgress = a3;
+      self->_realProgress = progress;
     }
   }
 }

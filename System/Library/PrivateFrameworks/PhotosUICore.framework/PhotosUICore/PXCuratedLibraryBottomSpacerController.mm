@@ -1,6 +1,6 @@
 @interface PXCuratedLibraryBottomSpacerController
 - (BOOL)_shouldShowSpacerForGridViewState;
-- (PXCuratedLibraryBottomSpacerController)initWithViewModel:(id)a3 extendedTraitCollection:(id)a4 layout:(id)a5 gridView:(id)a6;
+- (PXCuratedLibraryBottomSpacerController)initWithViewModel:(id)model extendedTraitCollection:(id)collection layout:(id)layout gridView:(id)view;
 - (double)visibleSpacerFraction;
 - (void)_invalidateSpacer;
 - (void)_invalidateWantsSpacer;
@@ -8,48 +8,48 @@
 - (void)_updateSpacer;
 - (void)_updateWantsSpacer;
 - (void)didPerformChanges;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)performChanges:(id)a3;
-- (void)scrollViewControllerContentBoundsDidChange:(id)a3;
-- (void)setHasAppearedOnce:(BOOL)a3;
-- (void)setWantsSpacer:(BOOL)a3;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)performChanges:(id)changes;
+- (void)scrollViewControllerContentBoundsDidChange:(id)change;
+- (void)setHasAppearedOnce:(BOOL)once;
+- (void)setWantsSpacer:(BOOL)spacer;
 @end
 
 @implementation PXCuratedLibraryBottomSpacerController
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v6 = a4;
-  v9 = a3;
-  if (CuratedLibraryViewModelObserverContext_249799 == a5)
+  changeCopy = change;
+  observableCopy = observable;
+  if (CuratedLibraryViewModelObserverContext_249799 == context)
   {
-    if ((v6 & 5) != 0)
+    if ((changeCopy & 5) != 0)
     {
 LABEL_4:
-      v11 = v9;
+      v11 = observableCopy;
       [(PXCuratedLibraryBottomSpacerController *)self _performChangeForWantsSpacerInvalidation];
-      v9 = v11;
+      observableCopy = v11;
     }
   }
 
   else
   {
-    if (ExtendedTraitCollectionObserverContext != a5)
+    if (ExtendedTraitCollectionObserverContext != context)
     {
-      v10 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v10 handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryBottomSpacerController.m" lineNumber:219 description:@"Code which should be unreachable has been reached"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryBottomSpacerController.m" lineNumber:219 description:@"Code which should be unreachable has been reached"];
 
       abort();
     }
 
-    if ((v6 & 2) != 0)
+    if ((changeCopy & 2) != 0)
     {
       goto LABEL_4;
     }
   }
 }
 
-- (void)scrollViewControllerContentBoundsDidChange:(id)a3
+- (void)scrollViewControllerContentBoundsDidChange:(id)change
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
@@ -71,49 +71,49 @@ LABEL_4:
 
 - (void)_updateSpacer
 {
-  v12 = [(PXCuratedLibraryBottomSpacerController *)self layout];
-  [v12 padding];
+  layout = [(PXCuratedLibraryBottomSpacerController *)self layout];
+  [layout padding];
   v4 = v3;
   v6 = v5;
   v8 = v7;
-  v9 = [(PXCuratedLibraryBottomSpacerController *)self gridView];
-  v10 = [v9 scrollViewController];
+  gridView = [(PXCuratedLibraryBottomSpacerController *)self gridView];
+  scrollViewController = [gridView scrollViewController];
 
-  v11 = [(PXCuratedLibraryBottomSpacerController *)self wantsSpacer];
-  if (v11)
+  wantsSpacer = [(PXCuratedLibraryBottomSpacerController *)self wantsSpacer];
+  if (wantsSpacer)
   {
-    [v10 scrollViewContentSize];
-    [v12 presentedPadding];
-    [v12 safeAreaInsets];
-    [v10 visibleRect];
-    [v10 contentInset];
-    [v10 contentInset];
-    [v12 padding];
+    [scrollViewController scrollViewContentSize];
+    [layout presentedPadding];
+    [layout safeAreaInsets];
+    [scrollViewController visibleRect];
+    [scrollViewController contentInset];
+    [scrollViewController contentInset];
+    [layout padding];
     PXEdgeInsetsEqualToEdgeInsets();
   }
 
-  [v12 setPadding:{v4, v6, 0.0, v8}];
-  [(PXCuratedLibraryBottomSpacerController *)self setHasSpacer:v11];
+  [layout setPadding:{v4, v6, 0.0, v8}];
+  [(PXCuratedLibraryBottomSpacerController *)self setHasSpacer:wantsSpacer];
 }
 
 - (void)_invalidateSpacer
 {
-  v2 = [(PXCuratedLibraryBottomSpacerController *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateSpacer];
+  updater = [(PXCuratedLibraryBottomSpacerController *)self updater];
+  [updater setNeedsUpdateOf:sel__updateSpacer];
 }
 
 - (void)_updateWantsSpacer
 {
   if ([(PXCuratedLibraryBottomSpacerController *)self hasAppearedOnce])
   {
-    v3 = [(PXCuratedLibraryBottomSpacerController *)self viewModel];
-    if ([v3 zoomLevel] == 4)
+    viewModel = [(PXCuratedLibraryBottomSpacerController *)self viewModel];
+    if ([viewModel zoomLevel] == 4)
     {
-      v4 = [(PXCuratedLibraryBottomSpacerController *)self layout];
-      v5 = [v4 allPhotosLayout];
-      v6 = [v5 fillSafeAreaBottomInset];
+      layout = [(PXCuratedLibraryBottomSpacerController *)self layout];
+      allPhotosLayout = [layout allPhotosLayout];
+      fillSafeAreaBottomInset = [allPhotosLayout fillSafeAreaBottomInset];
 
-      if (v6)
+      if (fillSafeAreaBottomInset)
       {
         if ([(PXCuratedLibraryBottomSpacerController *)self _shouldShowSpacerForGridViewState])
         {
@@ -126,11 +126,11 @@ LABEL_10:
 
         if ([(PXCuratedLibraryBottomSpacerController *)self wantsSpacer])
         {
-          v8 = [v3 zoomablePhotosViewModel];
-          v9 = v8;
-          if (v8)
+          zoomablePhotosViewModel = [viewModel zoomablePhotosViewModel];
+          v9 = zoomablePhotosViewModel;
+          if (zoomablePhotosViewModel)
           {
-            [v8 zoomState];
+            [zoomablePhotosViewModel zoomState];
             v7 = BYTE8(v13);
           }
 
@@ -158,14 +158,14 @@ LABEL_10:
 
 - (void)_invalidateWantsSpacer
 {
-  v2 = [(PXCuratedLibraryBottomSpacerController *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateWantsSpacer];
+  updater = [(PXCuratedLibraryBottomSpacerController *)self updater];
+  [updater setNeedsUpdateOf:sel__updateWantsSpacer];
 }
 
 - (BOOL)_shouldShowSpacerForGridViewState
 {
-  v3 = [(PXCuratedLibraryBottomSpacerController *)self gridView];
-  [v3 scrollViewController];
+  gridView = [(PXCuratedLibraryBottomSpacerController *)self gridView];
+  [gridView scrollViewController];
   objc_claimAutoreleasedReturnValue();
 
   [(PXCuratedLibraryBottomSpacerController *)self visibleSpacerFraction];
@@ -174,20 +174,20 @@ LABEL_10:
 
 - (double)visibleSpacerFraction
 {
-  v3 = [(PXCuratedLibraryBottomSpacerController *)self gridView];
-  v4 = [v3 scrollViewController];
-  [v4 scrollViewVisibleRect];
+  gridView = [(PXCuratedLibraryBottomSpacerController *)self gridView];
+  scrollViewController = [gridView scrollViewController];
+  [scrollViewController scrollViewVisibleRect];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [(PXCuratedLibraryBottomSpacerController *)self layout];
-  [v4 scrollViewContentSize];
+  layout = [(PXCuratedLibraryBottomSpacerController *)self layout];
+  [scrollViewController scrollViewContentSize];
   v15 = v14;
   v17 = v16;
-  [v13 presentedPadding];
+  [layout presentedPadding];
   v19 = v17 - v18;
-  [v13 safeAreaInsets];
+  [layout safeAreaInsets];
   v21 = v20;
   v23 = v22;
   v24 = v22 + v19;
@@ -223,11 +223,11 @@ LABEL_10:
   return v29;
 }
 
-- (void)performChanges:(id)a3
+- (void)performChanges:(id)changes
 {
   v3.receiver = self;
   v3.super_class = PXCuratedLibraryBottomSpacerController;
-  [(PXCuratedLibraryBottomSpacerController *)&v3 performChanges:a3];
+  [(PXCuratedLibraryBottomSpacerController *)&v3 performChanges:changes];
 }
 
 - (void)didPerformChanges
@@ -235,37 +235,37 @@ LABEL_10:
   v4.receiver = self;
   v4.super_class = PXCuratedLibraryBottomSpacerController;
   [(PXCuratedLibraryBottomSpacerController *)&v4 didPerformChanges];
-  v3 = [(PXCuratedLibraryBottomSpacerController *)self updater];
-  [v3 updateIfNeeded];
+  updater = [(PXCuratedLibraryBottomSpacerController *)self updater];
+  [updater updateIfNeeded];
 }
 
-- (void)setWantsSpacer:(BOOL)a3
+- (void)setWantsSpacer:(BOOL)spacer
 {
-  if (self->_wantsSpacer != a3)
+  if (self->_wantsSpacer != spacer)
   {
-    self->_wantsSpacer = a3;
+    self->_wantsSpacer = spacer;
     [(PXCuratedLibraryBottomSpacerController *)self _invalidateSpacer];
   }
 }
 
-- (void)setHasAppearedOnce:(BOOL)a3
+- (void)setHasAppearedOnce:(BOOL)once
 {
-  if (self->_hasAppearedOnce != a3)
+  if (self->_hasAppearedOnce != once)
   {
-    self->_hasAppearedOnce = a3;
+    self->_hasAppearedOnce = once;
     [(PXCuratedLibraryBottomSpacerController *)self _invalidateWantsSpacer];
   }
 }
 
-- (PXCuratedLibraryBottomSpacerController)initWithViewModel:(id)a3 extendedTraitCollection:(id)a4 layout:(id)a5 gridView:(id)a6
+- (PXCuratedLibraryBottomSpacerController)initWithViewModel:(id)model extendedTraitCollection:(id)collection layout:(id)layout gridView:(id)view
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  if (v12)
+  modelCopy = model;
+  collectionCopy = collection;
+  layoutCopy = layout;
+  viewCopy = view;
+  if (modelCopy)
   {
-    if (v13)
+    if (collectionCopy)
     {
       goto LABEL_3;
     }
@@ -273,22 +273,22 @@ LABEL_10:
 
   else
   {
-    v22 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v22 handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryBottomSpacerController.m" lineNumber:40 description:{@"Invalid parameter not satisfying: %@", @"viewModel"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryBottomSpacerController.m" lineNumber:40 description:{@"Invalid parameter not satisfying: %@", @"viewModel"}];
 
-    if (v13)
+    if (collectionCopy)
     {
 LABEL_3:
-      if (v14)
+      if (layoutCopy)
       {
         goto LABEL_4;
       }
 
 LABEL_10:
-      v24 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v24 handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryBottomSpacerController.m" lineNumber:42 description:{@"Invalid parameter not satisfying: %@", @"layout"}];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryBottomSpacerController.m" lineNumber:42 description:{@"Invalid parameter not satisfying: %@", @"layout"}];
 
-      if (v15)
+      if (viewCopy)
       {
         goto LABEL_5;
       }
@@ -297,23 +297,23 @@ LABEL_10:
     }
   }
 
-  v23 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v23 handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryBottomSpacerController.m" lineNumber:41 description:{@"Invalid parameter not satisfying: %@", @"extendedTraitCollection"}];
+  currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryBottomSpacerController.m" lineNumber:41 description:{@"Invalid parameter not satisfying: %@", @"extendedTraitCollection"}];
 
-  if (!v14)
+  if (!layoutCopy)
   {
     goto LABEL_10;
   }
 
 LABEL_4:
-  if (v15)
+  if (viewCopy)
   {
     goto LABEL_5;
   }
 
 LABEL_11:
-  v25 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v25 handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryBottomSpacerController.m" lineNumber:43 description:{@"Invalid parameter not satisfying: %@", @"gridView"}];
+  currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler4 handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryBottomSpacerController.m" lineNumber:43 description:{@"Invalid parameter not satisfying: %@", @"gridView"}];
 
 LABEL_5:
   v26.receiver = self;
@@ -322,14 +322,14 @@ LABEL_5:
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_viewModel, a3);
+    objc_storeStrong(&v16->_viewModel, model);
     [(PXCuratedLibraryViewModel *)v17->_viewModel registerChangeObserver:v17 context:CuratedLibraryViewModelObserverContext_249799];
-    objc_storeStrong(&v17->_extendedTraitCollection, a4);
+    objc_storeStrong(&v17->_extendedTraitCollection, collection);
     [(PXExtendedTraitCollection *)v17->_extendedTraitCollection registerChangeObserver:v17 context:ExtendedTraitCollectionObserverContext];
-    objc_storeStrong(&v17->_layout, a5);
-    objc_storeStrong(&v17->_gridView, a6);
-    v18 = [(PXGView *)v17->_gridView scrollViewController];
-    [v18 registerObserver:v17];
+    objc_storeStrong(&v17->_layout, layout);
+    objc_storeStrong(&v17->_gridView, view);
+    scrollViewController = [(PXGView *)v17->_gridView scrollViewController];
+    [scrollViewController registerObserver:v17];
     v19 = [[off_1E7721940 alloc] initWithTarget:v17];
     updater = v17->_updater;
     v17->_updater = v19;

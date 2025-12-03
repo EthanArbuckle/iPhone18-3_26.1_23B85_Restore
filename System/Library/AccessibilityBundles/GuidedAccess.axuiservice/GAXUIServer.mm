@@ -1,84 +1,84 @@
 @interface GAXUIServer
-- ($9BEB610D0CE1B1EDC3D89DA2464F985F)_rotationContextForInterestAreaViewController:(id)a3;
+- ($9BEB610D0CE1B1EDC3D89DA2464F985F)_rotationContextForInterestAreaViewController:(id)controller;
 - (AVSpeechSynthesizer)speechSynthesizer;
 - (BOOL)_isTimeRestrictionLockoutViewShowing;
 - (BOOL)allowsTouch;
-- (BOOL)isFeatureEnabledForIdentifier:(id)a3;
+- (BOOL)isFeatureEnabledForIdentifier:(id)identifier;
 - (BOOL)isInWorkspace;
-- (BOOL)shouldShowCancelButtonForPasscodeViewController:(id)a3;
+- (BOOL)shouldShowCancelButtonForPasscodeViewController:(id)controller;
 - (GAXUIServer)init;
 - (double)_minimumDelayForShowingAdditionalBannerAlert;
-- (double)desiredWindowLevelForAlertWithIdentifier:(id)a3;
-- (double)desiredWindowLevelForContentViewController:(id)a3 userInteractionEnabled:(BOOL)a4;
+- (double)desiredWindowLevelForAlertWithIdentifier:(id)identifier;
+- (double)desiredWindowLevelForContentViewController:(id)controller userInteractionEnabled:(BOOL)enabled;
 - (double)statusBarHeight;
-- (id)_archiveInterestAreaPathsForStorage:(id)a3;
-- (id)_archivedInterestAreaPathsInScreenCoordinatesForInterestAreaViewController:(id)a3;
+- (id)_archiveInterestAreaPathsForStorage:(id)storage;
+- (id)_archivedInterestAreaPathsInScreenCoordinatesForInterestAreaViewController:(id)controller;
 - (id)_debugGAXDescription;
 - (id)_preparedOverlayUserInterfaceViewController;
-- (id)_showAlertWithText:(id)a3 asBanner:(BOOL)a4 isUrgent:(BOOL)a5;
-- (id)_showAlertWithText:(id)a3 subtitleText:(id)a4 iconImage:(id)a5 asBanner:(BOOL)a6 isUrgent:(BOOL)a7 duration:(double)a8;
-- (id)_unarchivedPathMappingWithData:(id)a3;
-- (id)_unmanagedASAMRestrictedFeaturesForStyle:(int64_t)a3;
-- (id)_unmanagedASAMRestrictionDictionaryForStyle:(int64_t)a3;
-- (id)detailTextForAppRestrictionWithIdentifier:(id)a3;
-- (id)iconForAppRestrictionWithIdentifier:(id)a3;
-- (id)processMessage:(id)a3 withIdentifier:(unint64_t)a4 fromClientWithIdentifier:(id)a5 error:(id *)a6;
-- (id)styleProviderForAlertWithIdentifier:(id)a3;
-- (id)textForAppRestrictionWithIdentifier:(id)a3;
-- (int64_t)activeInterfaceOrientationForPasscodeViewController:(id)a3;
-- (int64_t)appRestrictionStateForIdentifier:(id)a3;
-- (void)_adjustContentsGeometryOfInterestAreaViewWithController:(id)a3;
-- (void)_applyInterestAreaPathsForStorage:(id)a3 toInterestAreaViewController:(id)a4 andFadeInterestAreaPathsIn:(BOOL)a5 fadeInterestAreaSpecialControlsIn:(BOOL)a6 notifyClientOfReplacedInterestAreaPathsDuringSession:(BOOL)a7;
-- (void)_changeUnmanagedASAMRestrictionStateEnabled:(BOOL)a3 style:(int64_t)a4 managedConfigurationSettings:(id)a5;
+- (id)_showAlertWithText:(id)text asBanner:(BOOL)banner isUrgent:(BOOL)urgent;
+- (id)_showAlertWithText:(id)text subtitleText:(id)subtitleText iconImage:(id)image asBanner:(BOOL)banner isUrgent:(BOOL)urgent duration:(double)duration;
+- (id)_unarchivedPathMappingWithData:(id)data;
+- (id)_unmanagedASAMRestrictedFeaturesForStyle:(int64_t)style;
+- (id)_unmanagedASAMRestrictionDictionaryForStyle:(int64_t)style;
+- (id)detailTextForAppRestrictionWithIdentifier:(id)identifier;
+- (id)iconForAppRestrictionWithIdentifier:(id)identifier;
+- (id)processMessage:(id)message withIdentifier:(unint64_t)identifier fromClientWithIdentifier:(id)withIdentifier error:(id *)error;
+- (id)styleProviderForAlertWithIdentifier:(id)identifier;
+- (id)textForAppRestrictionWithIdentifier:(id)identifier;
+- (int64_t)activeInterfaceOrientationForPasscodeViewController:(id)controller;
+- (int64_t)appRestrictionStateForIdentifier:(id)identifier;
+- (void)_adjustContentsGeometryOfInterestAreaViewWithController:(id)controller;
+- (void)_applyInterestAreaPathsForStorage:(id)storage toInterestAreaViewController:(id)controller andFadeInterestAreaPathsIn:(BOOL)in fadeInterestAreaSpecialControlsIn:(BOOL)controlsIn notifyClientOfReplacedInterestAreaPathsDuringSession:(BOOL)session;
+- (void)_changeUnmanagedASAMRestrictionStateEnabled:(BOOL)enabled style:(int64_t)style managedConfigurationSettings:(id)settings;
 - (void)_clearPasscodeDismissalTimer;
-- (void)_confirmUnmanagedASAMWithApplicationDisplayName:(id)a3 completion:(id)a4;
-- (void)_disableTelephonyIfNeededForMode:(unsigned int)a3;
-- (void)_dismissPasscodeViewAnimated:(BOOL)a3 withReason:(int64_t)a4;
-- (void)_displayBlockedIncomingCallWithSourceAddress:(id)a3 serviceIdentifier:(id)a4;
-- (void)_interestAreaViewControllerInterfaceOrientationDidUpdate:(int64_t)a3;
+- (void)_confirmUnmanagedASAMWithApplicationDisplayName:(id)name completion:(id)completion;
+- (void)_disableTelephonyIfNeededForMode:(unsigned int)mode;
+- (void)_dismissPasscodeViewAnimated:(BOOL)animated withReason:(int64_t)reason;
+- (void)_displayBlockedIncomingCallWithSourceAddress:(id)address serviceIdentifier:(id)identifier;
+- (void)_interestAreaViewControllerInterfaceOrientationDidUpdate:(int64_t)update;
 - (void)_notifyClientOfUpdatedActiveInterfaceOrientation;
-- (void)_playPreferredTimeRestrictionsSoundAndSpeakMessageIfNeeded:(id)a3;
-- (void)_presentPasscodeViewControllerForSetup:(BOOL)a3 passcodeLength:(unint64_t)a4;
+- (void)_playPreferredTimeRestrictionsSoundAndSpeakMessageIfNeeded:(id)needed;
+- (void)_presentPasscodeViewControllerForSetup:(BOOL)setup passcodeLength:(unint64_t)length;
 - (void)_presentPasscodeViewControllerForUnlock;
 - (void)_reestablishSpringboardClient;
 - (void)_restoreTelephony;
 - (void)_rotateDeviceToCurrentOrientation;
 - (void)_setupOverrides;
-- (void)_showAlertWithType:(int)a3 AsBanner:(BOOL)a4 isUrgent:(BOOL)a5 timeRestrictionRemainingTime:(id)a6 remainingLockoutDuration:(double)a7 effectiveApplicationDisplayName:(id)a8;
-- (void)_showTimeRestrictionsLockoutViewWithAppTimeRestrictionDuration:(double)a3;
+- (void)_showAlertWithType:(int)type AsBanner:(BOOL)banner isUrgent:(BOOL)urgent timeRestrictionRemainingTime:(id)time remainingLockoutDuration:(double)duration effectiveApplicationDisplayName:(id)name;
+- (void)_showTimeRestrictionsLockoutViewWithAppTimeRestrictionDuration:(double)duration;
 - (void)_validateOverrides;
-- (void)alertWithIdentifierDidAppear:(id)a3;
-- (void)alertWithIdentifierDidDisappear:(id)a3;
-- (void)applyUnmanagedASAMRestrictionsForStyle:(int64_t)a3 managedConfigurationSettings:(id)a4;
-- (void)archiveInterestAreaPathsForStorageInterestAreaViewController:(id)a3;
-- (void)biometricManager:(id)a3 attemptWasSuccessful:(BOOL)a4;
+- (void)alertWithIdentifierDidAppear:(id)appear;
+- (void)alertWithIdentifierDidDisappear:(id)disappear;
+- (void)applyUnmanagedASAMRestrictionsForStyle:(int64_t)style managedConfigurationSettings:(id)settings;
+- (void)archiveInterestAreaPathsForStorageInterestAreaViewController:(id)controller;
+- (void)biometricManager:(id)manager attemptWasSuccessful:(BOOL)successful;
 - (void)dealloc;
-- (void)getContainedViewsInFrontmostApplicationForFingerPath:(id)a3 completion:(id)a4;
-- (void)getPasscodeLengthWithCompletion:(id)a3;
-- (void)interestAreaViewController:(id)a3 didRotateFromInterfaceOrientation:(int64_t)a4;
-- (void)interestAreaViewController:(id)a3 willRotateToInterfaceOrientation:(int64_t)a4 duration:(double)a5;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)passcodeViewController:(id)a3 didFinishSettingUpPasscode:(id)a4;
-- (void)passcodeViewController:(id)a3 isPasscode:(id)a4 correctWithCompletionHandler:(id)a5;
-- (void)passcodeViewController:(id)a3 passcodeViewIsVisible:(BOOL)a4;
-- (void)passcodeViewController:(id)a3 wasDismissedWithReason:(int64_t)a4;
-- (void)processInitializationMessage:(id)a3;
-- (void)processMessageAsynchronously:(id)a3 withIdentifier:(unint64_t)a4 fromClientWithIdentifier:(id)a5 completion:(id)a6;
+- (void)getContainedViewsInFrontmostApplicationForFingerPath:(id)path completion:(id)completion;
+- (void)getPasscodeLengthWithCompletion:(id)completion;
+- (void)interestAreaViewController:(id)controller didRotateFromInterfaceOrientation:(int64_t)orientation;
+- (void)interestAreaViewController:(id)controller willRotateToInterfaceOrientation:(int64_t)orientation duration:(double)duration;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)passcodeViewController:(id)controller didFinishSettingUpPasscode:(id)passcode;
+- (void)passcodeViewController:(id)controller isPasscode:(id)passcode correctWithCompletionHandler:(id)handler;
+- (void)passcodeViewController:(id)controller passcodeViewIsVisible:(BOOL)visible;
+- (void)passcodeViewController:(id)controller wasDismissedWithReason:(int64_t)reason;
+- (void)processInitializationMessage:(id)message;
+- (void)processMessageAsynchronously:(id)asynchronously withIdentifier:(unint64_t)identifier fromClientWithIdentifier:(id)withIdentifier completion:(id)completion;
 - (void)removeUnmanagedASAMRestrictions;
-- (void)setActiveContentViewController:(id)a3;
-- (void)setAppRestrictionIdentifiers:(id)a3;
-- (void)setAppRestrictionState:(int64_t)a3 withIdentifier:(id)a4;
-- (void)setDetailTextsForAppRestrictions:(id)a3;
-- (void)setFeatureEnabled:(BOOL)a3 withIdentifier:(id)a4;
-- (void)setOverlayActiveContentViewController:(id)a3;
-- (void)setPassiveInterestAreaViewController:(id)a3;
-- (void)setShouldHideAllAlerts:(BOOL)a3;
-- (void)setStatesForAppRestrictions:(id)a3;
-- (void)setTextsForAppRestrictions:(id)a3;
-- (void)speechSynthesizer:(id)a3 didFinishSpeechUtterance:(id)a4;
-- (void)transitionToMode:(unsigned int)a3;
-- (void)updateHostedApplicationStateWithScaleFactor:(double)a3 center:(CGPoint)a4 animationDuration:(double)a5;
-- (void)updateTimeRestrictionWithDuration:(int64_t)a3 enabled:(BOOL)a4;
+- (void)setActiveContentViewController:(id)controller;
+- (void)setAppRestrictionIdentifiers:(id)identifiers;
+- (void)setAppRestrictionState:(int64_t)state withIdentifier:(id)identifier;
+- (void)setDetailTextsForAppRestrictions:(id)restrictions;
+- (void)setFeatureEnabled:(BOOL)enabled withIdentifier:(id)identifier;
+- (void)setOverlayActiveContentViewController:(id)controller;
+- (void)setPassiveInterestAreaViewController:(id)controller;
+- (void)setShouldHideAllAlerts:(BOOL)alerts;
+- (void)setStatesForAppRestrictions:(id)restrictions;
+- (void)setTextsForAppRestrictions:(id)restrictions;
+- (void)speechSynthesizer:(id)synthesizer didFinishSpeechUtterance:(id)utterance;
+- (void)transitionToMode:(unsigned int)mode;
+- (void)updateHostedApplicationStateWithScaleFactor:(double)factor center:(CGPoint)center animationDuration:(double)duration;
+- (void)updateTimeRestrictionWithDuration:(int64_t)duration enabled:(BOOL)enabled;
 @end
 
 @implementation GAXUIServer
@@ -121,10 +121,10 @@
   v3 = +[AXUIDisplayManager sharedDisplayManager];
   [v3 removeObserver:self forKeyPath:@"activeInterfaceOrientation" context:0];
 
-  v4 = [(GAXUIServer *)self springboardClient];
-  [v4 setPortDeathHandler:0];
+  springboardClient = [(GAXUIServer *)self springboardClient];
+  [springboardClient setPortDeathHandler:0];
   v9 = 0;
-  v5 = [v4 disconnectWithError:&v9];
+  v5 = [springboardClient disconnectWithError:&v9];
   v6 = v9;
   if ((v5 & 1) == 0)
   {
@@ -187,73 +187,73 @@
   return v3;
 }
 
-- (void)updateHostedApplicationStateWithScaleFactor:(double)a3 center:(CGPoint)a4 animationDuration:(double)a5
+- (void)updateHostedApplicationStateWithScaleFactor:(double)factor center:(CGPoint)center animationDuration:(double)duration
 {
-  y = a4.y;
-  x = a4.x;
+  y = center.y;
+  x = center.x;
   v10 = [NSDictionary alloc];
-  v11 = [NSNumber numberWithDouble:a5];
-  v12 = [NSNumber numberWithDouble:a3];
+  v11 = [NSNumber numberWithDouble:duration];
+  v12 = [NSNumber numberWithDouble:factor];
   v17.x = x;
   v17.y = y;
   v13 = NSStringFromCGPoint(v17);
   v15 = [v10 initWithObjectsAndKeys:{v11, @"animation duration", v12, @"hosted application scale factor", v13, @"hosted application center", 0}];
 
-  v14 = [(GAXUIServer *)self _clientMessenger];
-  [v14 sendAsynchronousMessage:v15 withIdentifier:31 targetAccessQueue:0 completion:0];
+  _clientMessenger = [(GAXUIServer *)self _clientMessenger];
+  [_clientMessenger sendAsynchronousMessage:v15 withIdentifier:31 targetAccessQueue:0 completion:0];
 }
 
-- (void)getContainedViewsInFrontmostApplicationForFingerPath:(id)a3 completion:(id)a4
+- (void)getContainedViewsInFrontmostApplicationForFingerPath:(id)path completion:(id)completion
 {
-  v6 = a4;
-  v7 = [NSKeyedArchiver archivedDataWithRootObject:a3 requiringSecureCoding:1 error:0];
+  completionCopy = completion;
+  v7 = [NSKeyedArchiver archivedDataWithRootObject:path requiringSecureCoding:1 error:0];
   v8 = [[NSDictionary alloc] initWithObjectsAndKeys:{v7, @"finger path", 0}];
-  v9 = [(GAXUIServer *)self _clientMessenger];
+  _clientMessenger = [(GAXUIServer *)self _clientMessenger];
   v10 = +[AXAccessQueue mainAccessQueue];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_2560;
   v12[3] = &unk_5CB28;
-  v13 = v6;
-  v11 = v6;
-  [v9 sendAsynchronousMessage:v8 withIdentifier:22 targetAccessQueue:v10 completion:v12];
+  v13 = completionCopy;
+  v11 = completionCopy;
+  [_clientMessenger sendAsynchronousMessage:v8 withIdentifier:22 targetAccessQueue:v10 completion:v12];
 }
 
-- (void)transitionToMode:(unsigned int)a3
+- (void)transitionToMode:(unsigned int)mode
 {
-  v6 = [NSNumber numberWithUnsignedInteger:a3];
+  v6 = [NSNumber numberWithUnsignedInteger:mode];
   v4 = [[NSDictionary alloc] initWithObjectsAndKeys:{v6, @"server mode", 0}];
-  v5 = [(GAXUIServer *)self _clientMessenger];
-  [v5 sendAsynchronousMessage:v4 withIdentifier:23 targetAccessQueue:0 completion:0];
+  _clientMessenger = [(GAXUIServer *)self _clientMessenger];
+  [_clientMessenger sendAsynchronousMessage:v4 withIdentifier:23 targetAccessQueue:0 completion:0];
 }
 
-- (void)setFeatureEnabled:(BOOL)a3 withIdentifier:(id)a4
+- (void)setFeatureEnabled:(BOOL)enabled withIdentifier:(id)identifier
 {
-  v4 = a3;
-  v6 = a4;
+  enabledCopy = enabled;
+  identifierCopy = identifier;
   v7 = [NSDictionary alloc];
-  v8 = [NSNumber numberWithBool:v4];
-  v10 = [v7 initWithObjectsAndKeys:{v8, @"system feature is enabled", v6, @"system feature identifier", 0}];
+  v8 = [NSNumber numberWithBool:enabledCopy];
+  v10 = [v7 initWithObjectsAndKeys:{v8, @"system feature is enabled", identifierCopy, @"system feature identifier", 0}];
 
-  v9 = [(GAXUIServer *)self _clientMessenger];
-  [v9 sendAsynchronousMessage:v10 withIdentifier:24 targetAccessQueue:0 completion:0];
+  _clientMessenger = [(GAXUIServer *)self _clientMessenger];
+  [_clientMessenger sendAsynchronousMessage:v10 withIdentifier:24 targetAccessQueue:0 completion:0];
 }
 
-- (void)updateTimeRestrictionWithDuration:(int64_t)a3 enabled:(BOOL)a4
+- (void)updateTimeRestrictionWithDuration:(int64_t)duration enabled:(BOOL)enabled
 {
-  v4 = a4;
-  v7 = [(GAXUIServer *)self _clientMessenger];
+  enabledCopy = enabled;
+  _clientMessenger = [(GAXUIServer *)self _clientMessenger];
   v11[0] = @"time restriction duration";
-  v8 = [NSNumber numberWithInteger:a3];
+  v8 = [NSNumber numberWithInteger:duration];
   v12[0] = v8;
   v11[1] = @"time restrictions enabled";
-  v9 = [NSNumber numberWithBool:v4];
+  v9 = [NSNumber numberWithBool:enabledCopy];
   v12[1] = v9;
   v10 = [NSDictionary dictionaryWithObjects:v12 forKeys:v11 count:2];
-  [v7 sendAsynchronousMessage:v10 withIdentifier:25 targetAccessQueue:0 completion:0];
+  [_clientMessenger sendAsynchronousMessage:v10 withIdentifier:25 targetAccessQueue:0 completion:0];
 
-  [(GAXUIServer *)self setAppTimeRestrictionsEnabled:v4];
-  [(GAXUIServer *)self setAppTimeRestrictionDurationInMinutes:a3];
+  [(GAXUIServer *)self setAppTimeRestrictionsEnabled:enabledCopy];
+  [(GAXUIServer *)self setAppTimeRestrictionDurationInMinutes:duration];
 }
 
 - (void)_validateOverrides
@@ -277,25 +277,25 @@
 
 - (double)statusBarHeight
 {
-  v2 = [(GAXUIServer *)self activeContentViewController];
+  activeContentViewController = [(GAXUIServer *)self activeContentViewController];
   objc_opt_class();
   v3 = 0.0;
   if (objc_opt_isKindOfClass())
   {
-    [v2 statusBarHeight];
+    [activeContentViewController statusBarHeight];
     v3 = v4;
   }
 
   return v3;
 }
 
-- (void)setActiveContentViewController:(id)a3
+- (void)setActiveContentViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   p_activeContentViewController = &self->_activeContentViewController;
-  if (self->_activeContentViewController != v5)
+  if (self->_activeContentViewController != controllerCopy)
   {
-    v9 = v5;
+    v9 = controllerCopy;
     v7 = +[AXUIDisplayManager sharedDisplayManager];
     v8 = v7;
     if (*p_activeContentViewController)
@@ -303,21 +303,21 @@
       [v7 removeContentViewController:*p_activeContentViewController withUserInteractionEnabled:1 forService:self context:0 completion:0];
     }
 
-    objc_storeStrong(&self->_activeContentViewController, a3);
+    objc_storeStrong(&self->_activeContentViewController, controller);
     if (v9)
     {
       [v8 addContentViewController:v9 withUserInteractionEnabled:1 forService:self context:0 completion:0];
     }
 
-    v5 = v9;
+    controllerCopy = v9;
   }
 }
 
-- (void)setOverlayActiveContentViewController:(id)a3
+- (void)setOverlayActiveContentViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   p_overlayActiveContentViewController = &self->_overlayActiveContentViewController;
-  if (self->_overlayActiveContentViewController != v5)
+  if (self->_overlayActiveContentViewController != controllerCopy)
   {
     v7 = +[AXUIDisplayManager sharedDisplayManager];
     v8 = v7;
@@ -339,27 +339,27 @@
     }
 
     [(GAXOverlayUserInterfaceViewController *)overlayActiveContentViewController setDelegate:0];
-    objc_storeStrong(&self->_overlayActiveContentViewController, a3);
+    objc_storeStrong(&self->_overlayActiveContentViewController, controller);
     [(GAXOverlayUserInterfaceViewController *)self->_overlayActiveContentViewController setDelegate:self];
-    if (v5)
+    if (controllerCopy)
     {
       v11[0] = _NSConcreteStackBlock;
       v11[1] = 3221225472;
       v11[2] = sub_2E14;
       v11[3] = &unk_5CC18;
       v11[4] = self;
-      [v8 addContentViewController:v5 withUserInteractionEnabled:1 forService:self context:0 completion:v11];
+      [v8 addContentViewController:controllerCopy withUserInteractionEnabled:1 forService:self context:0 completion:v11];
     }
   }
 }
 
-- (void)setPassiveInterestAreaViewController:(id)a3
+- (void)setPassiveInterestAreaViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   p_passiveInterestAreaViewController = &self->_passiveInterestAreaViewController;
-  if (self->_passiveInterestAreaViewController != v5)
+  if (self->_passiveInterestAreaViewController != controllerCopy)
   {
-    v10 = v5;
+    v10 = controllerCopy;
     v7 = +[AXUIDisplayManager sharedDisplayManager];
     v8 = v7;
     if (*p_passiveInterestAreaViewController)
@@ -374,14 +374,14 @@
     }
 
     [(GAXInterestAreaViewController *)passiveInterestAreaViewController setDelegate:0];
-    objc_storeStrong(&self->_passiveInterestAreaViewController, a3);
+    objc_storeStrong(&self->_passiveInterestAreaViewController, controller);
     [(GAXInterestAreaViewController *)self->_passiveInterestAreaViewController setDelegate:self];
     if (v10)
     {
       [v8 addContentViewController:v10 withUserInteractionEnabled:0 forService:self context:0 completion:0];
     }
 
-    v5 = v10;
+    controllerCopy = v10;
   }
 }
 
@@ -402,20 +402,20 @@
   return speechSynthesizer;
 }
 
-- (void)setShouldHideAllAlerts:(BOOL)a3
+- (void)setShouldHideAllAlerts:(BOOL)alerts
 {
-  if (self->_shouldHideAllAlerts != a3)
+  if (self->_shouldHideAllAlerts != alerts)
   {
-    self->_shouldHideAllAlerts = a3;
-    if (a3)
+    self->_shouldHideAllAlerts = alerts;
+    if (alerts)
     {
       v4 = +[AXUIDisplayManager sharedDisplayManager];
-      v5 = [(GAXUIServer *)self identifiersOfVisibleBannerAlerts];
+      identifiersOfVisibleBannerAlerts = [(GAXUIServer *)self identifiersOfVisibleBannerAlerts];
       v11 = 0u;
       v12 = 0u;
       v13 = 0u;
       v14 = 0u;
-      v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [identifiersOfVisibleBannerAlerts countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v6)
       {
         v7 = v6;
@@ -427,7 +427,7 @@
           {
             if (*v12 != v8)
             {
-              objc_enumerationMutation(v5);
+              objc_enumerationMutation(identifiersOfVisibleBannerAlerts);
             }
 
             [v4 hideAlertWithIdentifier:*(*(&v11 + 1) + 8 * v9) forService:self];
@@ -435,16 +435,16 @@
           }
 
           while (v7 != v9);
-          v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+          v7 = [identifiersOfVisibleBannerAlerts countByEnumeratingWithState:&v11 objects:v15 count:16];
         }
 
         while (v7);
       }
 
-      v10 = [(GAXUIServer *)self identifierOfVisibleRegularAlert];
-      if (v10)
+      identifierOfVisibleRegularAlert = [(GAXUIServer *)self identifierOfVisibleRegularAlert];
+      if (identifierOfVisibleRegularAlert)
       {
-        [v4 hideAlertWithIdentifier:v10 forService:self];
+        [v4 hideAlertWithIdentifier:identifierOfVisibleRegularAlert forService:self];
       }
 
       [(GAXUIServer *)self setIdentifiersOfVisibleBannerAlerts:0];
@@ -459,14 +459,14 @@
 
 - (double)_minimumDelayForShowingAdditionalBannerAlert
 {
-  v2 = [(GAXUIServer *)self numberOfBannerAlertsShownRecently];
+  numberOfBannerAlertsShownRecently = [(GAXUIServer *)self numberOfBannerAlertsShownRecently];
   result = 30.0;
-  if (v2 < 9)
+  if (numberOfBannerAlertsShownRecently < 9)
   {
     result = 10.0;
   }
 
-  if (v2 < 6)
+  if (numberOfBannerAlertsShownRecently < 6)
   {
     return 3.0;
   }
@@ -474,17 +474,17 @@
   return result;
 }
 
-- (void)_showAlertWithType:(int)a3 AsBanner:(BOOL)a4 isUrgent:(BOOL)a5 timeRestrictionRemainingTime:(id)a6 remainingLockoutDuration:(double)a7 effectiveApplicationDisplayName:(id)a8
+- (void)_showAlertWithType:(int)type AsBanner:(BOOL)banner isUrgent:(BOOL)urgent timeRestrictionRemainingTime:(id)time remainingLockoutDuration:(double)duration effectiveApplicationDisplayName:(id)name
 {
-  v10 = a5;
-  v11 = a4;
-  v14 = a6;
-  v15 = a8;
+  urgentCopy = urgent;
+  bannerCopy = banner;
+  timeCopy = time;
+  nameCopy = name;
   if (![(GAXUIServer *)self _isTimeRestrictionLockoutViewShowing])
   {
-    if (!v15)
+    if (!nameCopy)
     {
-      if ((a3 - 5) <= 2)
+      if ((type - 5) <= 2)
       {
         v16 = GAXLogCommon();
         if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -493,50 +493,50 @@
         }
       }
 
-      v15 = GAXLocString(@"APP_SELF_LOCK_UNKNOWN_APP_NAME");
+      nameCopy = GAXLocString(@"APP_SELF_LOCK_UNKNOWN_APP_NAME");
     }
 
     v17 = 0.0;
-    switch(a3)
+    switch(type)
     {
       case 0:
-        v18 = [(GAXUIServer *)self lastPasscodeViewDismissalReason];
+        lastPasscodeViewDismissalReason = [(GAXUIServer *)self lastPasscodeViewDismissalReason];
         v19 = @"USER_LOCKED_OUT_VIA_CANCEL";
-        if (v18 == 1)
+        if (lastPasscodeViewDismissalReason == 1)
         {
           v19 = @"USER_LOCKED_OUT_VIA_FAIL";
         }
 
-        v20 = v14;
+        v20 = timeCopy;
         v21 = v19;
-        v22 = [NSNumber numberWithUnsignedInteger:a7];
+        v22 = [NSNumber numberWithUnsignedInteger:duration];
         GAXLocString(v21);
-        v24 = v23 = v10;
+        v24 = v23 = urgentCopy;
 
         v25 = GAXLocalizedNumber(v22);
-        v26 = [NSString stringWithFormat:v24, v25];
+        nameCopy = [NSString stringWithFormat:v24, v25];
 
-        v14 = v20;
-        v10 = v23;
+        timeCopy = v20;
+        urgentCopy = v23;
         goto LABEL_26;
       case 1:
         v29 = +[AXSettings sharedInstance];
-        v30 = [v29 guidedAccessAllowsUnlockWithTouchID];
+        guidedAccessAllowsUnlockWithTouchID = [v29 guidedAccessAllowsUnlockWithTouchID];
 
-        if (v30)
+        if (guidedAccessAllowsUnlockWithTouchID)
         {
           if (AXDeviceHasPearl())
           {
             v28 = 1;
             v31 = AXLocStringKeyForExclusiveModel();
-            v26 = GAXLocString(v31);
+            nameCopy = GAXLocString(v31);
           }
 
           else
           {
             v27 = @"SESSION_RUNNING_NOTE_WITH_TOUCH_ID";
 LABEL_32:
-            v26 = GAXLocString(v27);
+            nameCopy = GAXLocString(v27);
 LABEL_33:
             v28 = 1;
           }
@@ -546,30 +546,30 @@ LABEL_33:
         {
           v28 = 1;
           v36 = AXLocStringKeyForHomeButtonAndExclusiveModel();
-          v26 = GAXLocString(v36);
+          nameCopy = GAXLocString(v36);
         }
 
 LABEL_34:
-        if (v14)
+        if (timeCopy)
         {
           v51 = v28;
-          v37 = a3;
-          v38 = v15;
-          v39 = self;
-          v40 = v11;
-          [v14 floatValue];
+          typeCopy = type;
+          v38 = nameCopy;
+          selfCopy = self;
+          v40 = bannerCopy;
+          [timeCopy floatValue];
           v42 = GAXLocalizedStringForTimeDuration(v41);
           if ([v42 length])
           {
-            v43 = v14;
-            v44 = v10;
+            v43 = timeCopy;
+            v44 = urgentCopy;
           }
 
           else
           {
-            v44 = v10;
-            v43 = v14;
-            [v14 floatValue];
+            v44 = urgentCopy;
+            v43 = timeCopy;
+            [timeCopy floatValue];
             v46 = GAXLocalizedStringForTimeDuration(v45);
 
             v42 = v46;
@@ -578,33 +578,33 @@ LABEL_34:
           v47 = GAXLocString(@"TIME_RESTRICTION_APP_TIME_REMAINING_TOP_BANNER");
           v48 = [NSString stringWithFormat:v47, v42];
 
-          v49 = [(__CFString *)v26 stringByAppendingFormat:@"\n%@", v48];
+          v49 = [(__CFString *)nameCopy stringByAppendingFormat:@"\n%@", v48];
 
-          v26 = v49;
-          v10 = v44;
-          v11 = v40;
-          v14 = v43;
-          self = v39;
-          v15 = v38;
-          a3 = v37;
+          nameCopy = v49;
+          urgentCopy = v44;
+          bannerCopy = v40;
+          timeCopy = v43;
+          self = selfCopy;
+          nameCopy = v38;
+          type = typeCopy;
           v28 = v51;
         }
 
         if (v28)
         {
-          [(GAXUIServer *)self _showAlertWithText:v26 asBanner:v11 isUrgent:v10];
+          [(GAXUIServer *)self _showAlertWithText:nameCopy asBanner:bannerCopy isUrgent:urgentCopy];
         }
 
         else
         {
-          [(GAXUIServer *)self _showAlertWithText:v26 subtitleText:0 iconImage:0 asBanner:v11 isUrgent:v10 duration:v17];
+          [(GAXUIServer *)self _showAlertWithText:nameCopy subtitleText:0 iconImage:0 asBanner:bannerCopy isUrgent:urgentCopy duration:v17];
         }
         v50 = ;
-        if (a3)
+        if (type)
         {
-          if (a3 == 3)
+          if (type == 3)
           {
-            [(GAXUIServer *)self _playPreferredTimeRestrictionsSoundAndSpeakMessageIfNeeded:v26];
+            [(GAXUIServer *)self _playPreferredTimeRestrictionsSoundAndSpeakMessageIfNeeded:nameCopy];
           }
         }
 
@@ -615,13 +615,13 @@ LABEL_34:
 
         break;
       case 2:
-        v26 = GAXLocString(@"SESSION_ENDED");
+        nameCopy = GAXLocString(@"SESSION_ENDED");
         v28 = 0;
         v17 = 2.1;
         goto LABEL_34;
       case 3:
         v28 = 1;
-        v26 = &stru_5E950;
+        nameCopy = &stru_5E950;
         goto LABEL_34;
       case 4:
         if (AXDeviceHasPearl())
@@ -638,22 +638,22 @@ LABEL_34:
       case 5:
         v22 = AXLocStringKeyForModel();
         GAXLocString(v22);
-        v33 = v32 = v14;
+        v33 = v32 = timeCopy;
         GAXLocalizedStringForTimeDuration(28800.0);
-        v35 = v34 = v10;
-        v26 = [NSString stringWithFormat:v33, v15, v35];
+        v35 = v34 = urgentCopy;
+        nameCopy = [NSString stringWithFormat:v33, nameCopy, v35];
 
-        v10 = v34;
+        urgentCopy = v34;
         goto LABEL_25;
       case 6:
       case 7:
         v22 = AXLocStringKeyForModel();
         GAXLocString(v22);
-        v33 = v32 = v14;
-        v26 = [NSString stringWithFormat:v33, v15];
+        v33 = v32 = timeCopy;
+        nameCopy = [NSString stringWithFormat:v33, nameCopy];
 LABEL_25:
 
-        v14 = v32;
+        timeCopy = v32;
 LABEL_26:
 
         goto LABEL_33;
@@ -673,46 +673,46 @@ LABEL_26:
         v27 = @"APP_SELF_LOCK_UNAVAILABLE_DEVICE_LOCKED";
         goto LABEL_32;
       default:
-        v26 = 0;
+        nameCopy = 0;
         goto LABEL_33;
     }
   }
 }
 
-- (id)_showAlertWithText:(id)a3 asBanner:(BOOL)a4 isUrgent:(BOOL)a5
+- (id)_showAlertWithText:(id)text asBanner:(BOOL)banner isUrgent:(BOOL)urgent
 {
   v5 = &AXUIAlertDisplayTimeDefaultForBanners;
-  if (!a4)
+  if (!banner)
   {
     v5 = &AXUIAlertDisplayTimeDefaultForAlerts;
   }
 
-  return [(GAXUIServer *)self _showAlertWithText:a3 subtitleText:0 iconImage:0 asBanner:a4 isUrgent:a5 duration:*v5];
+  return [(GAXUIServer *)self _showAlertWithText:text subtitleText:0 iconImage:0 asBanner:banner isUrgent:urgent duration:*v5];
 }
 
-- (id)_showAlertWithText:(id)a3 subtitleText:(id)a4 iconImage:(id)a5 asBanner:(BOOL)a6 isUrgent:(BOOL)a7 duration:(double)a8
+- (id)_showAlertWithText:(id)text subtitleText:(id)subtitleText iconImage:(id)image asBanner:(BOOL)banner isUrgent:(BOOL)urgent duration:(double)duration
 {
-  v10 = a6;
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
+  bannerCopy = banner;
+  textCopy = text;
+  subtitleTextCopy = subtitleText;
+  imageCopy = image;
   if ([(GAXUIServer *)self shouldHideAllAlerts])
   {
     goto LABEL_3;
   }
 
-  v17 = [(GAXUIServer *)self deviceRestrictedAlertIdentifier];
+  deviceRestrictedAlertIdentifier = [(GAXUIServer *)self deviceRestrictedAlertIdentifier];
 
-  if (v17)
+  if (deviceRestrictedAlertIdentifier)
   {
     goto LABEL_3;
   }
 
   +[NSDate timeIntervalSinceReferenceDate];
   v21 = v20;
-  if (v10)
+  if (bannerCopy)
   {
-    if (!a7)
+    if (!urgent)
     {
       [(GAXUIServer *)self lastBannerAlertShownTimeInterval];
       v23 = v21 - v22;
@@ -730,10 +730,10 @@ LABEL_3:
 
   else
   {
-    v26 = [(GAXUIServer *)self identifierOfVisibleRegularAlert];
-    if (v26)
+    identifierOfVisibleRegularAlert = [(GAXUIServer *)self identifierOfVisibleRegularAlert];
+    if (identifierOfVisibleRegularAlert)
     {
-      v27 = v26;
+      identifiersOfVisibleBannerAlerts = identifierOfVisibleRegularAlert;
       v18 = 0;
       goto LABEL_22;
     }
@@ -742,32 +742,32 @@ LABEL_3:
   }
 
   v28 = +[AXUIDisplayManager sharedDisplayManager];
-  v18 = [v28 showAlertWithText:v14 subtitleText:v15 iconImage:v16 type:v25 priority:20 duration:self forService:a8];
+  v18 = [v28 showAlertWithText:textCopy subtitleText:subtitleTextCopy iconImage:imageCopy type:v25 priority:20 duration:self forService:duration];
 
   if (!v18)
   {
     goto LABEL_4;
   }
 
-  v27 = [(GAXUIServer *)self identifiersOfVisibleBannerAlerts];
-  if (!v27)
+  identifiersOfVisibleBannerAlerts = [(GAXUIServer *)self identifiersOfVisibleBannerAlerts];
+  if (!identifiersOfVisibleBannerAlerts)
   {
-    v27 = objc_opt_new();
-    [(GAXUIServer *)self setIdentifiersOfVisibleBannerAlerts:v27];
+    identifiersOfVisibleBannerAlerts = objc_opt_new();
+    [(GAXUIServer *)self setIdentifiersOfVisibleBannerAlerts:identifiersOfVisibleBannerAlerts];
   }
 
-  [v27 addObject:v18];
-  if (v10)
+  [identifiersOfVisibleBannerAlerts addObject:v18];
+  if (bannerCopy)
   {
     [(GAXUIServer *)self setLastBannerAlertShownTimeInterval:v21];
-    v29 = [(GAXUIServer *)self identifiersOfBannerAlertsAboutToAppear];
-    if (!v29)
+    identifiersOfBannerAlertsAboutToAppear = [(GAXUIServer *)self identifiersOfBannerAlertsAboutToAppear];
+    if (!identifiersOfBannerAlertsAboutToAppear)
     {
-      v29 = objc_opt_new();
-      [(GAXUIServer *)self setIdentifiersOfBannerAlertsAboutToAppear:v29];
+      identifiersOfBannerAlertsAboutToAppear = objc_opt_new();
+      [(GAXUIServer *)self setIdentifiersOfBannerAlertsAboutToAppear:identifiersOfBannerAlertsAboutToAppear];
     }
 
-    [v29 addObject:v18];
+    [identifiersOfBannerAlertsAboutToAppear addObject:v18];
   }
 
   else
@@ -782,113 +782,113 @@ LABEL_4:
   return v18;
 }
 
-- (void)setAppRestrictionIdentifiers:(id)a3
+- (void)setAppRestrictionIdentifiers:(id)identifiers
 {
-  if (self->_appRestrictionIdentifiers != a3)
+  if (self->_appRestrictionIdentifiers != identifiers)
   {
-    v5 = a3;
-    v6 = [[NSArray alloc] initWithArray:v5 copyItems:1];
+    identifiersCopy = identifiers;
+    v6 = [[NSArray alloc] initWithArray:identifiersCopy copyItems:1];
 
     appRestrictionIdentifiers = self->_appRestrictionIdentifiers;
     self->_appRestrictionIdentifiers = v6;
   }
 }
 
-- (void)setStatesForAppRestrictions:(id)a3
+- (void)setStatesForAppRestrictions:(id)restrictions
 {
-  if (self->_statesForAppRestrictions != a3)
+  if (self->_statesForAppRestrictions != restrictions)
   {
-    v5 = a3;
-    v6 = [[NSDictionary alloc] initWithDictionary:v5 copyItems:1];
+    restrictionsCopy = restrictions;
+    v6 = [[NSDictionary alloc] initWithDictionary:restrictionsCopy copyItems:1];
 
     statesForAppRestrictions = self->_statesForAppRestrictions;
     self->_statesForAppRestrictions = v6;
   }
 }
 
-- (void)setTextsForAppRestrictions:(id)a3
+- (void)setTextsForAppRestrictions:(id)restrictions
 {
-  if (self->_textsForAppRestrictions != a3)
+  if (self->_textsForAppRestrictions != restrictions)
   {
-    v5 = a3;
-    v6 = [[NSDictionary alloc] initWithDictionary:v5 copyItems:1];
+    restrictionsCopy = restrictions;
+    v6 = [[NSDictionary alloc] initWithDictionary:restrictionsCopy copyItems:1];
 
     textsForAppRestrictions = self->_textsForAppRestrictions;
     self->_textsForAppRestrictions = v6;
   }
 }
 
-- (void)setDetailTextsForAppRestrictions:(id)a3
+- (void)setDetailTextsForAppRestrictions:(id)restrictions
 {
-  if (self->_detailTextsForAppRestrictions != a3)
+  if (self->_detailTextsForAppRestrictions != restrictions)
   {
-    v5 = a3;
-    v6 = [[NSDictionary alloc] initWithDictionary:v5 copyItems:1];
+    restrictionsCopy = restrictions;
+    v6 = [[NSDictionary alloc] initWithDictionary:restrictionsCopy copyItems:1];
 
     detailTextsForAppRestrictions = self->_detailTextsForAppRestrictions;
     self->_detailTextsForAppRestrictions = v6;
   }
 }
 
-- (int64_t)appRestrictionStateForIdentifier:(id)a3
+- (int64_t)appRestrictionStateForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(GAXUIServer *)self statesForAppRestrictions];
-  v6 = [v5 objectForKey:v4];
+  identifierCopy = identifier;
+  statesForAppRestrictions = [(GAXUIServer *)self statesForAppRestrictions];
+  v6 = [statesForAppRestrictions objectForKey:identifierCopy];
 
-  v7 = [v6 integerValue];
-  return v7;
+  integerValue = [v6 integerValue];
+  return integerValue;
 }
 
-- (void)setAppRestrictionState:(int64_t)a3 withIdentifier:(id)a4
+- (void)setAppRestrictionState:(int64_t)state withIdentifier:(id)identifier
 {
-  v6 = a4;
-  v9 = [(GAXUIServer *)self statesForAppRestrictions];
-  v7 = [v9 mutableCopy];
-  v8 = [NSNumber numberWithInteger:a3];
-  [v7 setObject:v8 forKey:v6];
+  identifierCopy = identifier;
+  statesForAppRestrictions = [(GAXUIServer *)self statesForAppRestrictions];
+  v7 = [statesForAppRestrictions mutableCopy];
+  v8 = [NSNumber numberWithInteger:state];
+  [v7 setObject:v8 forKey:identifierCopy];
 
   [(GAXUIServer *)self setStatesForAppRestrictions:v7];
 }
 
-- (id)iconForAppRestrictionWithIdentifier:(id)a3
+- (id)iconForAppRestrictionWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(GAXUIServer *)self styleProvider];
+  identifierCopy = identifier;
+  styleProvider = [(GAXUIServer *)self styleProvider];
   v6 = self->_appIcon;
-  v7 = [v4 isEqualToString:@"GAXProfileAllowsWebTextDefine"];
+  v7 = [identifierCopy isEqualToString:@"GAXProfileAllowsWebTextDefine"];
 
   if (v7)
   {
-    v8 = [v5 appFeatureViewDefineIcon];
+    appFeatureViewDefineIcon = [styleProvider appFeatureViewDefineIcon];
 
-    v6 = v8;
+    v6 = appFeatureViewDefineIcon;
   }
 
   return v6;
 }
 
-- (id)textForAppRestrictionWithIdentifier:(id)a3
+- (id)textForAppRestrictionWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(GAXUIServer *)self textsForAppRestrictions];
-  v6 = [v5 objectForKey:v4];
+  identifierCopy = identifier;
+  textsForAppRestrictions = [(GAXUIServer *)self textsForAppRestrictions];
+  v6 = [textsForAppRestrictions objectForKey:identifierCopy];
 
   return v6;
 }
 
-- (id)detailTextForAppRestrictionWithIdentifier:(id)a3
+- (id)detailTextForAppRestrictionWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(GAXUIServer *)self detailTextsForAppRestrictions];
-  v6 = [v5 objectForKey:v4];
+  identifierCopy = identifier;
+  detailTextsForAppRestrictions = [(GAXUIServer *)self detailTextsForAppRestrictions];
+  v6 = [detailTextsForAppRestrictions objectForKey:identifierCopy];
 
   return v6;
 }
 
-- (BOOL)isFeatureEnabledForIdentifier:(id)a3
+- (BOOL)isFeatureEnabledForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v10 = 0;
   v11 = &v10;
   v12 = 0x4010000000;
@@ -905,44 +905,44 @@ LABEL_4:
   block[4] = self;
   block[5] = &v10;
   dispatch_sync(gaxStateAccessQueue, block);
-  if ([v4 isEqualToString:@"GAXProfileAllowsKeyboardTextInput"])
+  if ([identifierCopy isEqualToString:@"GAXProfileAllowsKeyboardTextInput"])
   {
     v6 = 0x40000;
   }
 
-  else if ([v4 isEqualToString:@"GAXProfileAllowsTouch"])
+  else if ([identifierCopy isEqualToString:@"GAXProfileAllowsTouch"])
   {
     v6 = 1024;
   }
 
-  else if ([v4 isEqualToString:@"GAXProfileAllowsMotion"])
+  else if ([identifierCopy isEqualToString:@"GAXProfileAllowsMotion"])
   {
     v6 = 0x10000;
   }
 
-  else if ([v4 isEqualToString:@"GAXProfileAllowsRingerSwitch"])
+  else if ([identifierCopy isEqualToString:@"GAXProfileAllowsRingerSwitch"])
   {
     v6 = 0x8000;
   }
 
-  else if ([v4 isEqualToString:@"GAXProfileAllowsProximity"])
+  else if ([identifierCopy isEqualToString:@"GAXProfileAllowsProximity"])
   {
     v6 = 0x80000;
   }
 
-  else if ([v4 isEqualToString:@"GAXProfileAllowsLockButton"])
+  else if ([identifierCopy isEqualToString:@"GAXProfileAllowsLockButton"])
   {
     v6 = 2048;
   }
 
-  else if ([v4 isEqualToString:@"GAXProfileAllowsVolumeButtons"])
+  else if ([identifierCopy isEqualToString:@"GAXProfileAllowsVolumeButtons"])
   {
     v6 = 0x4000;
   }
 
   else
   {
-    if (([v4 isEqualToString:@"GAXProfileAllowsAutolock"] & 1) == 0)
+    if (([identifierCopy isEqualToString:@"GAXProfileAllowsAutolock"] & 1) == 0)
     {
       _AXAssert();
       v7 = 0;
@@ -969,20 +969,20 @@ LABEL_18:
   [(GAXUIServer *)self getPasscodeLengthWithCompletion:v2];
 }
 
-- (void)_presentPasscodeViewControllerForSetup:(BOOL)a3 passcodeLength:(unint64_t)a4
+- (void)_presentPasscodeViewControllerForSetup:(BOOL)setup passcodeLength:(unint64_t)length
 {
-  v5 = a3;
+  setupCopy = setup;
   [(GAXUIServer *)self setShouldHideAllAlerts:1];
   v7 = +[UIDevice currentDevice];
   v8 = [v7 userInterfaceIdiom] == &dword_0 + 1;
 
-  v11 = [(GAXUIServer *)self _preparedOverlayUserInterfaceViewController];
-  v9 = [[AXUIPasscodeViewController alloc] initWithPresentationStyle:v8 forSetup:v5 pinLength:a4];
+  _preparedOverlayUserInterfaceViewController = [(GAXUIServer *)self _preparedOverlayUserInterfaceViewController];
+  v9 = [[AXUIPasscodeViewController alloc] initWithPresentationStyle:v8 forSetup:setupCopy pinLength:length];
   [v9 setDelegate:self];
-  [v11 willPresentModalViewController];
-  [v9 presentPasscodeViewWithParentViewController:v11 animated:1];
+  [_preparedOverlayUserInterfaceViewController willPresentModalViewController];
+  [v9 presentPasscodeViewWithParentViewController:_preparedOverlayUserInterfaceViewController animated:1];
   [(GAXUIServer *)self setPasscodeViewController:v9];
-  if (!v5)
+  if (!setupCopy)
   {
     [(GAXUIServer *)self _clearPasscodeDismissalTimer];
     v10 = [NSTimer scheduledTimerWithTimeInterval:self target:"_timerDismissPasscode:" selector:0 userInfo:0 repeats:15.0];
@@ -990,40 +990,40 @@ LABEL_18:
   }
 }
 
-- (void)_dismissPasscodeViewAnimated:(BOOL)a3 withReason:(int64_t)a4
+- (void)_dismissPasscodeViewAnimated:(BOOL)animated withReason:(int64_t)reason
 {
-  v5 = a3;
-  v6 = [(GAXUIServer *)self passcodeViewController];
-  [v6 dismissPasscodeViewAnimated:v5 reason:a4];
+  animatedCopy = animated;
+  passcodeViewController = [(GAXUIServer *)self passcodeViewController];
+  [passcodeViewController dismissPasscodeViewAnimated:animatedCopy reason:reason];
 }
 
 - (void)_clearPasscodeDismissalTimer
 {
-  v3 = [(GAXUIServer *)self passcodeDismissalTimer];
-  [v3 invalidate];
+  passcodeDismissalTimer = [(GAXUIServer *)self passcodeDismissalTimer];
+  [passcodeDismissalTimer invalidate];
 
   [(GAXUIServer *)self setPasscodeDismissalTimer:0];
 }
 
-- (void)speechSynthesizer:(id)a3 didFinishSpeechUtterance:(id)a4
+- (void)speechSynthesizer:(id)synthesizer didFinishSpeechUtterance:(id)utterance
 {
-  v4 = a4;
+  utteranceCopy = utterance;
   v5 = GAXLogTimeRestrictions();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = 138477827;
-    v7 = v4;
+    v7 = utteranceCopy;
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_INFO, "Finished speaking: %{private}@", &v6, 0xCu);
   }
 }
 
-- (void)_playPreferredTimeRestrictionsSoundAndSpeakMessageIfNeeded:(id)a3
+- (void)_playPreferredTimeRestrictionsSoundAndSpeakMessageIfNeeded:(id)needed
 {
-  v4 = a3;
+  neededCopy = needed;
   v5 = +[AXSettings sharedInstance];
   v6 = [[TLAlertConfiguration alloc] initWithType:2];
-  v7 = [v5 guidedAccessToneIdentifierForTimeRestrictionEvents];
-  [v6 setToneIdentifier:v7];
+  guidedAccessToneIdentifierForTimeRestrictionEvents = [v5 guidedAccessToneIdentifierForTimeRestrictionEvents];
+  [v6 setToneIdentifier:guidedAccessToneIdentifierForTimeRestrictionEvents];
 
   [v6 setVibrationIdentifier:TLVibrationIdentifierNone];
   [v6 setShouldIgnoreRingerSwitch:1];
@@ -1035,51 +1035,51 @@ LABEL_18:
     v13[0] = 67109379;
     v13[1] = [v5 guidedAccessShouldSpeakForTimeRestrictionEvents];
     v14 = 2113;
-    v15 = v4;
+    v15 = neededCopy;
     _os_log_impl(&dword_0, v9, OS_LOG_TYPE_INFO, "Will speak: %d, %{private}@", v13, 0x12u);
   }
 
   if ([v5 guidedAccessShouldSpeakForTimeRestrictionEvents])
   {
-    v10 = [AVSpeechUtterance speechUtteranceWithString:v4];
+    v10 = [AVSpeechUtterance speechUtteranceWithString:neededCopy];
     *&v11 = AVSpeechUtteranceDefaultSpeechRate;
     [v10 setRate:v11];
-    v12 = [(GAXUIServer *)self speechSynthesizer];
-    [v12 speakUtterance:v10];
+    speechSynthesizer = [(GAXUIServer *)self speechSynthesizer];
+    [speechSynthesizer speakUtterance:v10];
   }
 }
 
-- (void)_showTimeRestrictionsLockoutViewWithAppTimeRestrictionDuration:(double)a3
+- (void)_showTimeRestrictionsLockoutViewWithAppTimeRestrictionDuration:(double)duration
 {
-  v5 = [(GAXUIServer *)self activeContentViewController];
-  if (!v5 || (v6 = v5, [(GAXUIServer *)self activeContentViewController], v7 = objc_claimAutoreleasedReturnValue(), [(GAXUIServer *)self timeRestrictionLockoutViewController], v8 = objc_claimAutoreleasedReturnValue(), v8, v7, v6, v7 != v8))
+  activeContentViewController = [(GAXUIServer *)self activeContentViewController];
+  if (!activeContentViewController || (v6 = activeContentViewController, [(GAXUIServer *)self activeContentViewController], v7 = objc_claimAutoreleasedReturnValue(), [(GAXUIServer *)self timeRestrictionLockoutViewController], v8 = objc_claimAutoreleasedReturnValue(), v8, v7, v6, v7 != v8))
   {
     v9 = GAXLocString(@"GAX_TIME_RESTRICTION_DID_EXPIRE_SPEECH_STRIMG");
     [(GAXUIServer *)self _playPreferredTimeRestrictionsSoundAndSpeakMessageIfNeeded:v9];
 
-    v10 = [(GAXUIServer *)self timeRestrictionLockoutViewController];
+    timeRestrictionLockoutViewController = [(GAXUIServer *)self timeRestrictionLockoutViewController];
 
-    if (!v10)
+    if (!timeRestrictionLockoutViewController)
     {
       v11 = [[GAXTimeRestrictionLockoutViewController alloc] initWithUIServer:self];
       [(GAXUIServer *)self setTimeRestrictionLockoutViewController:v11];
     }
 
-    v12 = [(GAXUIServer *)self timeRestrictionLockoutViewController];
-    [v12 setAppTimeRestrictionDuration:a3];
+    timeRestrictionLockoutViewController2 = [(GAXUIServer *)self timeRestrictionLockoutViewController];
+    [timeRestrictionLockoutViewController2 setAppTimeRestrictionDuration:duration];
 
-    v13 = [(GAXUIServer *)self timeRestrictionLockoutViewController];
-    [(GAXUIServer *)self setActiveContentViewController:v13];
+    timeRestrictionLockoutViewController3 = [(GAXUIServer *)self timeRestrictionLockoutViewController];
+    [(GAXUIServer *)self setActiveContentViewController:timeRestrictionLockoutViewController3];
   }
 }
 
 - (BOOL)_isTimeRestrictionLockoutViewShowing
 {
-  v3 = [(GAXUIServer *)self timeRestrictionLockoutViewController];
-  if (v3)
+  timeRestrictionLockoutViewController = [(GAXUIServer *)self timeRestrictionLockoutViewController];
+  if (timeRestrictionLockoutViewController)
   {
-    v4 = [(GAXUIServer *)self activeContentViewController];
-    v5 = v4 == v3;
+    activeContentViewController = [(GAXUIServer *)self activeContentViewController];
+    v5 = activeContentViewController == timeRestrictionLockoutViewController;
   }
 
   else
@@ -1090,9 +1090,9 @@ LABEL_18:
   return v5;
 }
 
-- ($9BEB610D0CE1B1EDC3D89DA2464F985F)_rotationContextForInterestAreaViewController:(id)a3
+- ($9BEB610D0CE1B1EDC3D89DA2464F985F)_rotationContextForInterestAreaViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v17 = 0;
   v18 = &v17;
   v19 = 0x4010000000;
@@ -1112,16 +1112,16 @@ LABEL_18:
   v6 = *(v18 + 8);
   if (v6 == 1)
   {
-    v12 = [(GAXUIServer *)self activeContentViewController];
+    activeContentViewController = [(GAXUIServer *)self activeContentViewController];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v12 = v12;
-      v13 = [v4 isEditing];
-      v14 = [v12 interestAreaViewController];
-      v10 = v14 == v4;
+      activeContentViewController = activeContentViewController;
+      isEditing = [controllerCopy isEditing];
+      interestAreaViewController = [activeContentViewController interestAreaViewController];
+      v10 = interestAreaViewController == controllerCopy;
 
-      v8 = v10 & v13;
+      v8 = v10 & isEditing;
       v7 = 0;
       v11 = 1;
       v9 = v8;
@@ -1148,8 +1148,8 @@ LABEL_10:
   v11 = 0;
   if (v6 == 2)
   {
-    v12 = [(GAXUIServer *)self passiveInterestAreaViewController];
-    v9 = v12 == v4 && [(GAXUIServer *)self allowsTouch];
+    activeContentViewController = [(GAXUIServer *)self passiveInterestAreaViewController];
+    v9 = activeContentViewController == controllerCopy && [(GAXUIServer *)self allowsTouch];
     v8 = 0;
     v7 = 1;
     v10 = v9;
@@ -1163,18 +1163,18 @@ LABEL_11:
   return ((v8 << 24) | (v7 << 32) | (v9 << 16) | (v10 << 8) | v11);
 }
 
-- (void)_applyInterestAreaPathsForStorage:(id)a3 toInterestAreaViewController:(id)a4 andFadeInterestAreaPathsIn:(BOOL)a5 fadeInterestAreaSpecialControlsIn:(BOOL)a6 notifyClientOfReplacedInterestAreaPathsDuringSession:(BOOL)a7
+- (void)_applyInterestAreaPathsForStorage:(id)storage toInterestAreaViewController:(id)controller andFadeInterestAreaPathsIn:(BOOL)in fadeInterestAreaSpecialControlsIn:(BOOL)controlsIn notifyClientOfReplacedInterestAreaPathsDuringSession:(BOOL)session
 {
-  v7 = a7;
-  v8 = a6;
-  v9 = a5;
-  v18 = a3;
-  v12 = a4;
-  v13 = v12;
-  if (v18)
+  sessionCopy = session;
+  controlsInCopy = controlsIn;
+  inCopy = in;
+  storageCopy = storage;
+  controllerCopy = controller;
+  v13 = controllerCopy;
+  if (storageCopy)
   {
-    [v12 setInterestAreaPathsForStorage:v18 animated:0];
-    if (!v9)
+    [controllerCopy setInterestAreaPathsForStorage:storageCopy animated:0];
+    if (!inCopy)
     {
       goto LABEL_4;
     }
@@ -1182,17 +1182,17 @@ LABEL_11:
     goto LABEL_3;
   }
 
-  [v12 setInterestAreaPaths:0 animated:0];
-  if (v9)
+  [controllerCopy setInterestAreaPaths:0 animated:0];
+  if (inCopy)
   {
 LABEL_3:
     [v13 setAllowsDimmingInterestAreaPaths:1 animated:1];
   }
 
 LABEL_4:
-  if (!v8)
+  if (!controlsInCopy)
   {
-    if (!v7)
+    if (!sessionCopy)
     {
       goto LABEL_7;
     }
@@ -1200,32 +1200,32 @@ LABEL_4:
     goto LABEL_6;
   }
 
-  v17 = [v13 interestAreaView];
-  [v17 setSpecialControlsVisible:1 animated:1];
+  interestAreaView = [v13 interestAreaView];
+  [interestAreaView setSpecialControlsVisible:1 animated:1];
 
-  if (v7)
+  if (sessionCopy)
   {
 LABEL_6:
     v14 = [(GAXUIServer *)self _archivedInterestAreaPathsInScreenCoordinatesForInterestAreaViewController:v13];
     v15 = [[NSDictionary alloc] initWithObjectsAndKeys:{v14, @"interest area paths in screen coordinates", 0}];
-    v16 = [(GAXUIServer *)self _clientMessenger];
-    [v16 sendAsynchronousMessage:v15 withIdentifier:28 targetAccessQueue:0 completion:0];
+    _clientMessenger = [(GAXUIServer *)self _clientMessenger];
+    [_clientMessenger sendAsynchronousMessage:v15 withIdentifier:28 targetAccessQueue:0 completion:0];
   }
 
 LABEL_7:
 }
 
-- (id)_archivedInterestAreaPathsInScreenCoordinatesForInterestAreaViewController:(id)a3
+- (id)_archivedInterestAreaPathsInScreenCoordinatesForInterestAreaViewController:(id)controller
 {
-  v3 = a3;
+  controllerCopy = controller;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
   v21 = sub_4C64;
   v22 = sub_4C74;
   v23 = 0;
-  v4 = [v3 interestAreaPathsInScreenCoordinates];
-  if (!v4)
+  interestAreaPathsInScreenCoordinates = [controllerCopy interestAreaPathsInScreenCoordinates];
+  if (!interestAreaPathsInScreenCoordinates)
   {
     v5 = [NSDate dateWithTimeIntervalSinceNow:1.0];
     while (1)
@@ -1235,7 +1235,7 @@ LABEL_7:
       [v5 timeIntervalSinceReferenceDate];
       if (v7 >= v8)
       {
-        v4 = 0;
+        interestAreaPathsInScreenCoordinates = 0;
         goto LABEL_11;
       }
 
@@ -1243,16 +1243,16 @@ LABEL_7:
       v10 = [NSDate dateWithTimeIntervalSinceNow:0.1];
       [v9 runUntilDate:v10];
 
-      if ([v3 isViewLoaded])
+      if ([controllerCopy isViewLoaded])
       {
-        v11 = [v3 view];
-        v12 = [v11 window];
+        view = [controllerCopy view];
+        window = [view window];
 
-        if (v12)
+        if (window)
         {
-          v13 = [v3 interestAreaPathsInScreenCoordinates];
+          interestAreaPathsInScreenCoordinates2 = [controllerCopy interestAreaPathsInScreenCoordinates];
 
-          if (v13)
+          if (interestAreaPathsInScreenCoordinates2)
           {
             break;
           }
@@ -1266,7 +1266,7 @@ LABEL_7:
       sub_33768(v14);
     }
 
-    v4 = [v3 interestAreaPathsInScreenCoordinates];
+    interestAreaPathsInScreenCoordinates = [controllerCopy interestAreaPathsInScreenCoordinates];
 LABEL_11:
   }
 
@@ -1275,7 +1275,7 @@ LABEL_11:
   v17[2] = sub_4C7C;
   v17[3] = &unk_5CC68;
   v17[4] = &v18;
-  [v4 enumeratePathsAndParentsUsingBlock:v17];
+  [interestAreaPathsInScreenCoordinates enumeratePathsAndParentsUsingBlock:v17];
   v15 = v19[5];
 
   _Block_object_dispose(&v18, 8);
@@ -1283,11 +1283,11 @@ LABEL_11:
   return v15;
 }
 
-- (id)_archiveInterestAreaPathsForStorage:(id)a3
+- (id)_archiveInterestAreaPathsForStorage:(id)storage
 {
-  if (a3)
+  if (storage)
   {
-    [NSKeyedArchiver archivedDataWithRootObject:a3 requiringSecureCoding:1 error:0];
+    [NSKeyedArchiver archivedDataWithRootObject:storage requiringSecureCoding:1 error:0];
   }
 
   else
@@ -1299,10 +1299,10 @@ LABEL_11:
   return v3;
 }
 
-- (void)_adjustContentsGeometryOfInterestAreaViewWithController:(id)a3
+- (void)_adjustContentsGeometryOfInterestAreaViewWithController:(id)controller
 {
-  v3 = a3;
-  v18 = [v3 interestAreaView];
+  controllerCopy = controller;
+  interestAreaView = [controllerCopy interestAreaView];
   v4 = +[UIScreen mainScreen];
   [v4 bounds];
   v6 = v5;
@@ -1311,8 +1311,8 @@ LABEL_11:
   v12 = v11;
 
   v13 = +[AXUIDisplayManager sharedDisplayManager];
-  v14 = [v13 activeInterfaceOrientation];
-  if ((v14 - 3) >= 2)
+  activeInterfaceOrientation = [v13 activeInterfaceOrientation];
+  if ((activeInterfaceOrientation - 3) >= 2)
   {
     v15 = v12;
   }
@@ -1322,7 +1322,7 @@ LABEL_11:
     v15 = v10;
   }
 
-  if ((v14 - 3) >= 2)
+  if ((activeInterfaceOrientation - 3) >= 2)
   {
     v16 = v10;
   }
@@ -1332,14 +1332,14 @@ LABEL_11:
     v16 = v12;
   }
 
-  [v18 setContentsBounds:{v6, v8, v16, v15}];
-  v17 = [v3 styleProvider];
+  [interestAreaView setContentsBounds:{v6, v8, v16, v15}];
+  styleProvider = [controllerCopy styleProvider];
 
-  [v17 applicationViewRoundedCornerRadius];
-  [v18 setContentsCornerRadius:?];
+  [styleProvider applicationViewRoundedCornerRadius];
+  [interestAreaView setContentsCornerRadius:?];
 }
 
-- (void)_disableTelephonyIfNeededForMode:(unsigned int)a3
+- (void)_disableTelephonyIfNeededForMode:(unsigned int)mode
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
@@ -1353,19 +1353,19 @@ LABEL_11:
   ICFUnregisterCallFilterResultBlockWithIdentifier();
 }
 
-- (void)_displayBlockedIncomingCallWithSourceAddress:(id)a3 serviceIdentifier:(id)a4
+- (void)_displayBlockedIncomingCallWithSourceAddress:(id)address serviceIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(GAXUIServer *)self incomingCallAlertIdentifier];
+  addressCopy = address;
+  identifierCopy = identifier;
+  incomingCallAlertIdentifier = [(GAXUIServer *)self incomingCallAlertIdentifier];
 
-  if (v8)
+  if (incomingCallAlertIdentifier)
   {
     goto LABEL_47;
   }
 
-  v56 = self;
-  v57 = v7;
+  selfCopy = self;
+  v57 = identifierCopy;
   v9 = objc_alloc_init(CNContactStore);
   v10 = [CNContactFormatter descriptorForRequiredKeysForStyle:0];
   v75[0] = v10;
@@ -1374,41 +1374,41 @@ LABEL_11:
   v75[3] = CNContactEmailAddressesKey;
   v11 = [NSArray arrayWithObjects:v75 count:4];
 
-  v12 = [CNPhoneNumber phoneNumberWithStringValue:v6];
+  v12 = [CNPhoneNumber phoneNumberWithStringValue:addressCopy];
   v13 = [CNContact predicateForContactsMatchingPhoneNumber:v12];
   v70 = 0;
   v58 = v11;
   v59 = v9;
   v14 = [v9 unifiedContactsMatchingPredicate:v13 keysToFetch:v11 error:&v70];
   v15 = v70;
-  v16 = [v14 firstObject];
+  firstObject = [v14 firstObject];
 
   v60 = v15;
   if (v15)
   {
-    v17 = GAXLogCommon();
-    if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
+    emailAddresses = GAXLogCommon();
+    if (os_log_type_enabled(emailAddresses, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
       v74 = v15;
-      _os_log_impl(&dword_0, v17, OS_LOG_TYPE_DEFAULT, "Error fetching contact matching phone number: %@", buf, 0xCu);
+      _os_log_impl(&dword_0, emailAddresses, OS_LOG_TYPE_DEFAULT, "Error fetching contact matching phone number: %@", buf, 0xCu);
     }
 
     goto LABEL_28;
   }
 
-  if (!v16)
+  if (!firstObject)
   {
-    v27 = [CNContact predicateForContactsMatchingEmailAddress:v6];
+    v27 = [CNContact predicateForContactsMatchingEmailAddress:addressCopy];
     v65 = 0;
     v28 = [v59 unifiedContactsMatchingPredicate:v27 keysToFetch:v58 error:&v65];
     v60 = v65;
-    v16 = [v28 firstObject];
+    firstObject = [v28 firstObject];
 
-    if (!v16)
+    if (!firstObject)
     {
-      v38 = 0;
-      v40 = 0;
+      sound = 0;
+      vibration = 0;
       v41 = 0;
       goto LABEL_35;
     }
@@ -1417,15 +1417,15 @@ LABEL_11:
     v64 = 0u;
     v61 = 0u;
     v62 = 0u;
-    v17 = [v16 emailAddresses];
-    v29 = [v17 countByEnumeratingWithState:&v61 objects:v71 count:16];
+    emailAddresses = [firstObject emailAddresses];
+    v29 = [emailAddresses countByEnumeratingWithState:&v61 objects:v71 count:16];
     if (!v29)
     {
       goto LABEL_28;
     }
 
     v30 = v29;
-    v54 = v16;
+    v54 = firstObject;
     v20 = 0;
     v31 = *v62;
     do
@@ -1434,27 +1434,27 @@ LABEL_11:
       {
         if (*v62 != v31)
         {
-          objc_enumerationMutation(v17);
+          objc_enumerationMutation(emailAddresses);
         }
 
         v33 = *(*(&v61 + 1) + 8 * i);
-        v34 = [v33 value];
-        v35 = [v34 isEqualToString:v6];
+        value = [v33 value];
+        v35 = [value isEqualToString:addressCopy];
 
         if (v35)
         {
-          v36 = [v33 label];
+          label = [v33 label];
 
-          v20 = v36;
+          v20 = label;
         }
       }
 
-      v30 = [v17 countByEnumeratingWithState:&v61 objects:v71 count:16];
+      v30 = [emailAddresses countByEnumeratingWithState:&v61 objects:v71 count:16];
     }
 
     while (v30);
 LABEL_26:
-    v16 = v54;
+    firstObject = v54;
     goto LABEL_29;
   }
 
@@ -1462,12 +1462,12 @@ LABEL_26:
   v69 = 0u;
   v66 = 0u;
   v67 = 0u;
-  v17 = [v16 phoneNumbers];
-  v18 = [v17 countByEnumeratingWithState:&v66 objects:v72 count:16];
+  emailAddresses = [firstObject phoneNumbers];
+  v18 = [emailAddresses countByEnumeratingWithState:&v66 objects:v72 count:16];
   if (v18)
   {
     v19 = v18;
-    v54 = v16;
+    v54 = firstObject;
     v20 = 0;
     v21 = *v67;
     do
@@ -1476,22 +1476,22 @@ LABEL_26:
       {
         if (*v67 != v21)
         {
-          objc_enumerationMutation(v17);
+          objc_enumerationMutation(emailAddresses);
         }
 
         v23 = *(*(&v66 + 1) + 8 * j);
-        v24 = [v23 value];
-        v25 = [v24 isEqual:v12];
+        value2 = [v23 value];
+        v25 = [value2 isEqual:v12];
 
         if (v25)
         {
-          v26 = [v23 label];
+          label2 = [v23 label];
 
-          v20 = v26;
+          v20 = label2;
         }
       }
 
-      v19 = [v17 countByEnumeratingWithState:&v66 objects:v72 count:16];
+      v19 = [emailAddresses countByEnumeratingWithState:&v66 objects:v72 count:16];
     }
 
     while (v19);
@@ -1504,11 +1504,11 @@ LABEL_28:
   v20 = 0;
 LABEL_29:
 
-  if (!v16)
+  if (!firstObject)
   {
     v41 = 0;
-    v40 = 0;
-    v38 = 0;
+    vibration = 0;
+    sound = 0;
     if (v20)
     {
       goto LABEL_33;
@@ -1519,13 +1519,13 @@ LABEL_35:
     goto LABEL_36;
   }
 
-  v37 = [v16 callAlert];
-  v38 = [v37 sound];
+  callAlert = [firstObject callAlert];
+  sound = [callAlert sound];
 
-  v39 = [v16 callAlert];
-  v40 = [v39 vibration];
+  callAlert2 = [firstObject callAlert];
+  vibration = [callAlert2 vibration];
 
-  v41 = [CNContactFormatter stringFromContact:v16 style:0];
+  v41 = [CNContactFormatter stringFromContact:firstObject style:0];
   if (!v20)
   {
     goto LABEL_35;
@@ -1537,14 +1537,14 @@ LABEL_33:
 LABEL_36:
   v43 = [[TLAlertConfiguration alloc] initWithType:1];
   v44 = v43;
-  if (v38)
+  if (sound)
   {
-    [v43 setToneIdentifier:v38];
+    [v43 setToneIdentifier:sound];
   }
 
-  if (v40)
+  if (vibration)
   {
-    [v44 setVibrationIdentifier:v40];
+    [v44 setVibrationIdentifier:vibration];
   }
 
   [v44 setShouldRepeat:0];
@@ -1559,11 +1559,11 @@ LABEL_36:
 
   else
   {
-    v46 = v6;
+    v46 = addressCopy;
   }
 
   v47 = [v46 copy];
-  v55 = v38;
+  v55 = sound;
   if (v42)
   {
     v48 = [v42 copy];
@@ -1578,11 +1578,11 @@ LABEL_36:
   v50 = [NSBundle bundleForClass:objc_opt_class()];
   v51 = [UIImage imageNamed:@"phone_ga" inBundle:v50];
 
-  v52 = [(GAXUIServer *)v56 _showAlertWithText:v47 subtitleText:v48 iconImage:v51 asBanner:1 isUrgent:1 duration:5.0];
-  [(GAXUIServer *)v56 setIncomingCallAlertIdentifier:v52];
-  [(GAXUIServer *)v56 setIncomingCallType:0];
+  v52 = [(GAXUIServer *)selfCopy _showAlertWithText:v47 subtitleText:v48 iconImage:v51 asBanner:1 isUrgent:1 duration:5.0];
+  [(GAXUIServer *)selfCopy setIncomingCallAlertIdentifier:v52];
+  [(GAXUIServer *)selfCopy setIncomingCallType:0];
 
-  v7 = v57;
+  identifierCopy = v57;
 LABEL_47:
 }
 
@@ -1609,12 +1609,12 @@ LABEL_47:
   [v2 postEvent:v3 systemEvent:1];
 }
 
-- (id)_unarchivedPathMappingWithData:(id)a3
+- (id)_unarchivedPathMappingWithData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v3 = a3;
-    v4 = [NSKeyedUnarchiver unarchivedObjectOfClass:objc_opt_class() fromData:v3 error:0];
+    dataCopy = data;
+    v4 = [NSKeyedUnarchiver unarchivedObjectOfClass:objc_opt_class() fromData:dataCopy error:0];
   }
 
   else
@@ -1630,28 +1630,28 @@ LABEL_47:
   v6 = +[AXUIDisplayManager sharedDisplayManager];
   v3 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v6 activeInterfaceOrientation]);
   v4 = [[NSDictionary alloc] initWithObjectsAndKeys:{v3, @"active interface orientation", 0}];
-  v5 = [(GAXUIServer *)self _clientMessenger];
-  [v5 sendAsynchronousMessage:v4 withIdentifier:2 targetAccessQueue:0 completion:0];
+  _clientMessenger = [(GAXUIServer *)self _clientMessenger];
+  [_clientMessenger sendAsynchronousMessage:v4 withIdentifier:2 targetAccessQueue:0 completion:0];
 }
 
-- (void)_interestAreaViewControllerInterfaceOrientationDidUpdate:(int64_t)a3
+- (void)_interestAreaViewControllerInterfaceOrientationDidUpdate:(int64_t)update
 {
-  v6 = [NSNumber numberWithUnsignedInteger:a3];
+  v6 = [NSNumber numberWithUnsignedInteger:update];
   v4 = [[NSDictionary alloc] initWithObjectsAndKeys:{v6, @"active interface orientation", 0}];
-  v5 = [(GAXUIServer *)self _clientMessenger];
-  [v5 sendAsynchronousMessage:v4 withIdentifier:2 targetAccessQueue:0 completion:0];
+  _clientMessenger = [(GAXUIServer *)self _clientMessenger];
+  [_clientMessenger sendAsynchronousMessage:v4 withIdentifier:2 targetAccessQueue:0 completion:0];
 }
 
 - (id)_preparedOverlayUserInterfaceViewController
 {
-  v3 = [(GAXUIServer *)self overlayActiveContentViewController];
-  if (!v3)
+  overlayActiveContentViewController = [(GAXUIServer *)self overlayActiveContentViewController];
+  if (!overlayActiveContentViewController)
   {
-    v3 = objc_opt_new();
-    v4 = [v3 view];
-    [v4 setUserInteractionEnabled:1];
+    overlayActiveContentViewController = objc_opt_new();
+    view = [overlayActiveContentViewController view];
+    [view setUserInteractionEnabled:1];
 
-    [(GAXUIServer *)self setOverlayActiveContentViewController:v3];
+    [(GAXUIServer *)self setOverlayActiveContentViewController:overlayActiveContentViewController];
   }
 
   if (![(GAXUIServer *)self isAXUIServerSceneReady])
@@ -1673,74 +1673,74 @@ LABEL_47:
     while (![(GAXUIServer *)self isAXUIServerSceneReady]);
   }
 
-  return v3;
+  return overlayActiveContentViewController;
 }
 
-- (BOOL)shouldShowCancelButtonForPasscodeViewController:(id)a3
+- (BOOL)shouldShowCancelButtonForPasscodeViewController:(id)controller
 {
   v3 = +[AXSpringBoardServer server];
-  v4 = [v3 isSystemAppFrontmost];
+  isSystemAppFrontmost = [v3 isSystemAppFrontmost];
 
-  return v4 ^ 1;
+  return isSystemAppFrontmost ^ 1;
 }
 
-- (void)passcodeViewController:(id)a3 passcodeViewIsVisible:(BOOL)a4
+- (void)passcodeViewController:(id)controller passcodeViewIsVisible:(BOOL)visible
 {
-  v4 = a4;
-  v6 = [a3 view];
-  v7 = [v6 window];
-  v8 = [v7 _contextId];
+  visibleCopy = visible;
+  view = [controller view];
+  window = [view window];
+  _contextId = [window _contextId];
 
-  v14 = [NSNumber numberWithUnsignedInteger:v8];
+  v14 = [NSNumber numberWithUnsignedInteger:_contextId];
   v9 = [NSDictionary alloc];
-  v10 = [NSNumber numberWithBool:v4];
+  v10 = [NSNumber numberWithBool:visibleCopy];
   v11 = [v9 initWithObjectsAndKeys:{v10, @"passcode is visible", v14, @"passcode window context ID", 0}];
 
-  v12 = [(GAXUIServer *)self _clientMessenger];
-  [v12 sendAsynchronousMessage:v11 withIdentifier:16 targetAccessQueue:0 completion:0];
+  _clientMessenger = [(GAXUIServer *)self _clientMessenger];
+  [_clientMessenger sendAsynchronousMessage:v11 withIdentifier:16 targetAccessQueue:0 completion:0];
 
-  if (!v4)
+  if (!visibleCopy)
   {
-    v13 = [(GAXUIServer *)self overlayActiveContentViewController];
-    [v13 didDismissModalViewController];
+    overlayActiveContentViewController = [(GAXUIServer *)self overlayActiveContentViewController];
+    [overlayActiveContentViewController didDismissModalViewController];
 
     [(GAXUIServer *)self setPasscodeViewController:0];
   }
 }
 
-- (void)passcodeViewController:(id)a3 wasDismissedWithReason:(int64_t)a4
+- (void)passcodeViewController:(id)controller wasDismissedWithReason:(int64_t)reason
 {
-  [(GAXUIServer *)self setLastPasscodeViewDismissalReason:a4];
+  [(GAXUIServer *)self setLastPasscodeViewDismissalReason:reason];
   [(GAXUIServer *)self setShouldHideAllAlerts:0];
-  if (a4 > 2)
+  if (reason > 2)
   {
-    if (a4 == 5)
+    if (reason == 5)
     {
       goto LABEL_18;
     }
 
-    if (a4 != 3)
+    if (reason != 3)
     {
 LABEL_17:
-      v9 = [NSNumber numberWithInteger:a4];
+      v9 = [NSNumber numberWithInteger:reason];
       v10 = [[NSDictionary alloc] initWithObjectsAndKeys:{v9, @"passcode view dismissal reason", 0}];
-      v11 = [(GAXUIServer *)self _clientMessenger];
+      _clientMessenger = [(GAXUIServer *)self _clientMessenger];
       v12 = +[AXAccessQueue mainAccessQueue];
       v17[0] = _NSConcreteStackBlock;
       v17[1] = 3221225472;
       v17[2] = sub_61FC;
       v17[3] = &unk_5CD70;
       v17[4] = self;
-      v17[5] = a4;
-      [v11 sendAsynchronousMessage:v10 withIdentifier:17 targetAccessQueue:v12 completion:v17];
+      v17[5] = reason;
+      [_clientMessenger sendAsynchronousMessage:v10 withIdentifier:17 targetAccessQueue:v12 completion:v17];
 
       goto LABEL_18;
     }
   }
 
-  else if (a4 != 1)
+  else if (reason != 1)
   {
-    if (a4 == 2)
+    if (reason == 2)
     {
       [(GAXUIServer *)self setTimeRestrictionLockoutDismissedForBiometrics:0];
     }
@@ -1754,7 +1754,7 @@ LABEL_17:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v19 = a4;
+      reasonCopy = reason;
       _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "Reinstating time restriction lockout view after passcode dismissal (reason: %ld)", buf, 0xCu);
     }
 
@@ -1789,13 +1789,13 @@ LABEL_16:
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     v16 = @"was canceled";
-    if (a4 == 1)
+    if (reason == 1)
     {
       v16 = @"failed";
     }
 
     *buf = 138412290;
-    v19 = v16;
+    reasonCopy = v16;
     _os_log_impl(&dword_0, v15, OS_LOG_TYPE_DEFAULT, "Passcode entry %@ while system app was frontmost. Will present passcode view again.", buf, 0xCu);
   }
 
@@ -1809,151 +1809,151 @@ LABEL_18:
   [(GAXUIServer *)self _clearPasscodeDismissalTimer];
 }
 
-- (void)passcodeViewController:(id)a3 didFinishSettingUpPasscode:(id)a4
+- (void)passcodeViewController:(id)controller didFinishSettingUpPasscode:(id)passcode
 {
-  v5 = a4;
-  v7 = [[NSDictionary alloc] initWithObjectsAndKeys:{v5, @"passcode", 0}];
+  passcodeCopy = passcode;
+  v7 = [[NSDictionary alloc] initWithObjectsAndKeys:{passcodeCopy, @"passcode", 0}];
 
-  v6 = [(GAXUIServer *)self _clientMessenger];
-  [v6 sendAsynchronousMessage:v7 withIdentifier:18 targetAccessQueue:0 completion:0];
+  _clientMessenger = [(GAXUIServer *)self _clientMessenger];
+  [_clientMessenger sendAsynchronousMessage:v7 withIdentifier:18 targetAccessQueue:0 completion:0];
 }
 
-- (void)getPasscodeLengthWithCompletion:(id)a3
+- (void)getPasscodeLengthWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(GAXUIServer *)self _clientMessenger];
+  completionCopy = completion;
+  _clientMessenger = [(GAXUIServer *)self _clientMessenger];
   v6 = +[AXAccessQueue mainAccessQueue];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_64C0;
   v8[3] = &unk_5CB28;
-  v9 = v4;
-  v7 = v4;
-  [v5 sendAsynchronousMessage:&__NSDictionary0__struct withIdentifier:20 targetAccessQueue:v6 completion:v8];
+  v9 = completionCopy;
+  v7 = completionCopy;
+  [_clientMessenger sendAsynchronousMessage:&__NSDictionary0__struct withIdentifier:20 targetAccessQueue:v6 completion:v8];
 }
 
-- (void)passcodeViewController:(id)a3 isPasscode:(id)a4 correctWithCompletionHandler:(id)a5
+- (void)passcodeViewController:(id)controller isPasscode:(id)passcode correctWithCompletionHandler:(id)handler
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [[NSDictionary alloc] initWithObjectsAndKeys:{v8, @"passcode", 0}];
+  handlerCopy = handler;
+  passcodeCopy = passcode;
+  v9 = [[NSDictionary alloc] initWithObjectsAndKeys:{passcodeCopy, @"passcode", 0}];
 
-  v10 = [(GAXUIServer *)self _clientMessenger];
+  _clientMessenger = [(GAXUIServer *)self _clientMessenger];
   v11 = +[AXAccessQueue mainAccessQueue];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_666C;
   v13[3] = &unk_5CB28;
-  v14 = v7;
-  v12 = v7;
-  [v10 sendAsynchronousMessage:v9 withIdentifier:19 targetAccessQueue:v11 completion:v13];
+  v14 = handlerCopy;
+  v12 = handlerCopy;
+  [_clientMessenger sendAsynchronousMessage:v9 withIdentifier:19 targetAccessQueue:v11 completion:v13];
 }
 
-- (int64_t)activeInterfaceOrientationForPasscodeViewController:(id)a3
+- (int64_t)activeInterfaceOrientationForPasscodeViewController:(id)controller
 {
   v3 = +[UIWindow _applicationKeyWindow];
-  v4 = [v3 windowScene];
-  v5 = [v4 interfaceOrientation];
+  windowScene = [v3 windowScene];
+  interfaceOrientation = [windowScene interfaceOrientation];
 
-  return v5;
+  return interfaceOrientation;
 }
 
-- (void)interestAreaViewController:(id)a3 willRotateToInterfaceOrientation:(int64_t)a4 duration:(double)a5
+- (void)interestAreaViewController:(id)controller willRotateToInterfaceOrientation:(int64_t)orientation duration:(double)duration
 {
-  v7 = a3;
-  v8 = [(GAXUIServer *)self _rotationContextForInterestAreaViewController:v7];
+  controllerCopy = controller;
+  v8 = [(GAXUIServer *)self _rotationContextForInterestAreaViewController:controllerCopy];
   v9 = v8 >> 8;
   if ((v8 >> 8))
   {
     v10 = v8;
-    v11 = [(GAXUIServer *)self interestAreaPathsForStorageForRotatingView];
-    if (!v11)
+    interestAreaPathsForStorageForRotatingView = [(GAXUIServer *)self interestAreaPathsForStorageForRotatingView];
+    if (!interestAreaPathsForStorageForRotatingView)
     {
-      v11 = objc_opt_new();
-      [(GAXUIServer *)self setInterestAreaPathsForStorageForRotatingView:v11];
+      interestAreaPathsForStorageForRotatingView = objc_opt_new();
+      [(GAXUIServer *)self setInterestAreaPathsForStorageForRotatingView:interestAreaPathsForStorageForRotatingView];
     }
 
-    v12 = [NSNumber numberWithUnsignedInteger:a4];
+    v12 = [NSNumber numberWithUnsignedInteger:orientation];
     v13 = [NSNumber numberWithBool:0];
-    [v11 setObject:v13 forKey:v12];
+    [interestAreaPathsForStorageForRotatingView setObject:v13 forKey:v12];
 
     if ((v10 & 0x10000) != 0)
     {
-      [v7 setAllowsDimmingInterestAreaPaths:0 animated:1];
+      [controllerCopy setAllowsDimmingInterestAreaPaths:0 animated:1];
     }
 
     if ((v10 & 0x1000000) != 0)
     {
-      v14 = [v7 interestAreaView];
-      [v14 setSpecialControlsVisible:0 animated:1];
+      interestAreaView = [controllerCopy interestAreaView];
+      [interestAreaView setSpecialControlsVisible:0 animated:1];
     }
 
     v15 = [[NSDictionary alloc] initWithObjectsAndKeys:{v12, @"interface orientation", 0}];
-    v16 = [(GAXUIServer *)self _clientMessenger];
+    _clientMessenger = [(GAXUIServer *)self _clientMessenger];
     v17 = +[AXAccessQueue mainAccessQueue];
     v20[0] = _NSConcreteStackBlock;
     v20[1] = 3221225472;
     v20[2] = sub_6968;
     v20[3] = &unk_5CD98;
     v20[4] = self;
-    v21 = v11;
+    v21 = interestAreaPathsForStorageForRotatingView;
     v22 = v12;
-    v23 = v7;
+    v23 = controllerCopy;
     v24 = v10;
     v25 = v9;
     v26 = BYTE2(v10);
     v27 = BYTE3(v10);
     v28 = BYTE4(v10);
     v18 = v12;
-    v19 = v11;
-    [v16 sendAsynchronousMessage:v15 withIdentifier:26 targetAccessQueue:v17 completion:v20];
+    v19 = interestAreaPathsForStorageForRotatingView;
+    [_clientMessenger sendAsynchronousMessage:v15 withIdentifier:26 targetAccessQueue:v17 completion:v20];
   }
 }
 
-- (void)interestAreaViewController:(id)a3 didRotateFromInterfaceOrientation:(int64_t)a4
+- (void)interestAreaViewController:(id)controller didRotateFromInterfaceOrientation:(int64_t)orientation
 {
-  v9 = a3;
-  -[GAXUIServer _interestAreaViewControllerInterfaceOrientationDidUpdate:](self, "_interestAreaViewControllerInterfaceOrientationDidUpdate:", [v9 interfaceOrientation]);
-  v5 = [(GAXUIServer *)self _rotationContextForInterestAreaViewController:v9];
+  controllerCopy = controller;
+  -[GAXUIServer _interestAreaViewControllerInterfaceOrientationDidUpdate:](self, "_interestAreaViewControllerInterfaceOrientationDidUpdate:", [controllerCopy interfaceOrientation]);
+  v5 = [(GAXUIServer *)self _rotationContextForInterestAreaViewController:controllerCopy];
   if (v5)
   {
-    [(GAXUIServer *)self _adjustContentsGeometryOfInterestAreaViewWithController:v9];
+    [(GAXUIServer *)self _adjustContentsGeometryOfInterestAreaViewWithController:controllerCopy];
   }
 
   if ((v5 & 0x100) != 0)
   {
-    v6 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v9 interfaceOrientation]);
-    v7 = [(GAXUIServer *)self interestAreaPathsForStorageForRotatingView];
-    v8 = [v7 objectForKey:v6];
+    v6 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [controllerCopy interfaceOrientation]);
+    interestAreaPathsForStorageForRotatingView = [(GAXUIServer *)self interestAreaPathsForStorageForRotatingView];
+    v8 = [interestAreaPathsForStorageForRotatingView objectForKey:v6];
     if (!v8 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      [(GAXUIServer *)self _applyInterestAreaPathsForStorage:v8 toInterestAreaViewController:v9 andFadeInterestAreaPathsIn:(v5 >> 16) & 1 fadeInterestAreaSpecialControlsIn:(v5 >> 24) & 1 notifyClientOfReplacedInterestAreaPathsDuringSession:HIDWORD(v5) & 1];
+      [(GAXUIServer *)self _applyInterestAreaPathsForStorage:v8 toInterestAreaViewController:controllerCopy andFadeInterestAreaPathsIn:(v5 >> 16) & 1 fadeInterestAreaSpecialControlsIn:(v5 >> 24) & 1 notifyClientOfReplacedInterestAreaPathsDuringSession:HIDWORD(v5) & 1];
     }
 
-    [v7 removeObjectForKey:v6];
-    if (![v7 count])
+    [interestAreaPathsForStorageForRotatingView removeObjectForKey:v6];
+    if (![interestAreaPathsForStorageForRotatingView count])
     {
       [(GAXUIServer *)self setInterestAreaPathsForStorageForRotatingView:0];
     }
   }
 }
 
-- (void)archiveInterestAreaPathsForStorageInterestAreaViewController:(id)a3
+- (void)archiveInterestAreaPathsForStorageInterestAreaViewController:(id)controller
 {
-  v4 = a3;
-  v9 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v4 interfaceOrientation]);
-  v5 = [v4 interestAreaPathsForStorage];
+  controllerCopy = controller;
+  v9 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [controllerCopy interfaceOrientation]);
+  interestAreaPathsForStorage = [controllerCopy interestAreaPathsForStorage];
 
-  v6 = [(GAXUIServer *)self _archiveInterestAreaPathsForStorage:v5];
+  v6 = [(GAXUIServer *)self _archiveInterestAreaPathsForStorage:interestAreaPathsForStorage];
 
   v7 = [[NSDictionary alloc] initWithObjectsAndKeys:{v9, @"interface orientation", v6, @"interest area paths for storage", 0}];
-  v8 = [(GAXUIServer *)self _clientMessenger];
-  [v8 sendAsynchronousMessage:v7 withIdentifier:27 targetAccessQueue:0 completion:0];
+  _clientMessenger = [(GAXUIServer *)self _clientMessenger];
+  [_clientMessenger sendAsynchronousMessage:v7 withIdentifier:27 targetAccessQueue:0 completion:0];
 }
 
-- (id)_unmanagedASAMRestrictedFeaturesForStyle:(int64_t)a3
+- (id)_unmanagedASAMRestrictedFeaturesForStyle:(int64_t)style
 {
-  if (a3 == 3)
+  if (style == 3)
   {
     v23 = MCFeatureDefinitionLookupAllowed;
     v3 = &v23;
@@ -1987,14 +1987,14 @@ LABEL_18:
   return v5;
 }
 
-- (id)_unmanagedASAMRestrictionDictionaryForStyle:(int64_t)a3
+- (id)_unmanagedASAMRestrictionDictionaryForStyle:(int64_t)style
 {
   v5 = +[NSMutableDictionary dictionary];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [(GAXUIServer *)self _unmanagedASAMRestrictedFeaturesForStyle:a3, 0];
+  v6 = [(GAXUIServer *)self _unmanagedASAMRestrictedFeaturesForStyle:style, 0];
   v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
@@ -2021,32 +2021,32 @@ LABEL_18:
   return v5;
 }
 
-- (void)applyUnmanagedASAMRestrictionsForStyle:(int64_t)a3 managedConfigurationSettings:(id)a4
+- (void)applyUnmanagedASAMRestrictionsForStyle:(int64_t)style managedConfigurationSettings:(id)settings
 {
-  v6 = a4;
-  v7 = [(GAXUIServer *)self managedConfigurationQueue];
+  settingsCopy = settings;
+  managedConfigurationQueue = [(GAXUIServer *)self managedConfigurationQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_6FF8;
   block[3] = &unk_5CDC0;
-  v10 = v6;
-  v11 = self;
-  v12 = a3;
-  v8 = v6;
-  dispatch_async(v7, block);
+  v10 = settingsCopy;
+  selfCopy = self;
+  styleCopy = style;
+  v8 = settingsCopy;
+  dispatch_async(managedConfigurationQueue, block);
 }
 
 - (void)removeUnmanagedASAMRestrictions
 {
-  v2 = [(GAXUIServer *)self managedConfigurationQueue];
-  dispatch_async(v2, &stru_5CDE0);
+  managedConfigurationQueue = [(GAXUIServer *)self managedConfigurationQueue];
+  dispatch_async(managedConfigurationQueue, &stru_5CDE0);
 }
 
-- (void)_changeUnmanagedASAMRestrictionStateEnabled:(BOOL)a3 style:(int64_t)a4 managedConfigurationSettings:(id)a5
+- (void)_changeUnmanagedASAMRestrictionStateEnabled:(BOOL)enabled style:(int64_t)style managedConfigurationSettings:(id)settings
 {
-  v6 = a3;
-  v8 = a5;
-  if ((a4 & 0xFFFFFFFFFFFFFFFDLL) != 1 && v6)
+  enabledCopy = enabled;
+  settingsCopy = settings;
+  if ((style & 0xFFFFFFFFFFFFFFFDLL) != 1 && enabledCopy)
   {
     v9 = GAXLogCommon();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
@@ -2055,9 +2055,9 @@ LABEL_18:
     }
   }
 
-  if (v6)
+  if (enabledCopy)
   {
-    [(GAXUIServer *)self applyUnmanagedASAMRestrictionsForStyle:a4 managedConfigurationSettings:v8];
+    [(GAXUIServer *)self applyUnmanagedASAMRestrictionsForStyle:style managedConfigurationSettings:settingsCopy];
   }
 
   else
@@ -2066,21 +2066,21 @@ LABEL_18:
   }
 }
 
-- (id)processMessage:(id)a3 withIdentifier:(unint64_t)a4 fromClientWithIdentifier:(id)a5 error:(id *)a6
+- (id)processMessage:(id)message withIdentifier:(unint64_t)identifier fromClientWithIdentifier:(id)withIdentifier error:(id *)error
 {
-  v10 = a3;
-  v11 = a5;
+  messageCopy = message;
+  withIdentifierCopy = withIdentifier;
   v12 = 0;
-  if (a4 <= 14)
+  if (identifier <= 14)
   {
-    if (a4 <= 4)
+    if (identifier <= 4)
     {
-      switch(a4)
+      switch(identifier)
       {
         case 1uLL:
-          v15 = [v10 objectForKey:@"gax backboard state"];
+          deviceRestrictedAlertIdentifier2 = [messageCopy objectForKey:@"gax backboard state"];
           memset(buf, 0, 28);
-          [v15 getBytes:buf length:28];
+          [deviceRestrictedAlertIdentifier2 getBytes:buf length:28];
           gaxStateAccessQueue = self->_gaxStateAccessQueue;
           v55[0] = _NSConcreteStackBlock;
           v55[1] = 3221225472;
@@ -2090,12 +2090,12 @@ LABEL_18:
           v56[0] = *buf;
           *(v56 + 12) = *&buf[12];
           dispatch_sync(gaxStateAccessQueue, v55);
-          v46 = [v10 objectForKey:@"time restriction did expire"];
-          v47 = [v46 BOOLValue];
+          v46 = [messageCopy objectForKey:@"time restriction did expire"];
+          bOOLValue = [v46 BOOLValue];
 
-          if (v47)
+          if (bOOLValue)
           {
-            v48 = [v10 objectForKey:@"time restriction duration"];
+            v48 = [messageCopy objectForKey:@"time restriction duration"];
             v49 = [v48 integerValue] * 60.0;
 
             [(GAXUIServer *)self _showTimeRestrictionsLockoutViewWithAppTimeRestrictionDuration:v49];
@@ -2103,20 +2103,20 @@ LABEL_18:
 
           break;
         case 3uLL:
-          v15 = [v10 objectForKey:@"session application identifiers"];
+          deviceRestrictedAlertIdentifier2 = [messageCopy objectForKey:@"session application identifiers"];
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) == 0)
           {
 
-            v15 = 0;
+            deviceRestrictedAlertIdentifier2 = 0;
           }
 
-          [(GAXUIServer *)self setSessionApplicationIdentifiers:v15];
+          [(GAXUIServer *)self setSessionApplicationIdentifiers:deviceRestrictedAlertIdentifier2];
           break;
         case 4uLL:
-          v15 = [v10 objectForKey:@"gax backboard state"];
+          deviceRestrictedAlertIdentifier2 = [messageCopy objectForKey:@"gax backboard state"];
           memset(buf, 0, 28);
-          [v15 getBytes:buf length:28];
+          [deviceRestrictedAlertIdentifier2 getBytes:buf length:28];
           v20 = self->_gaxStateAccessQueue;
           block[0] = _NSConcreteStackBlock;
           block[1] = 3221225472;
@@ -2134,42 +2134,42 @@ LABEL_18:
       goto LABEL_58;
     }
 
-    if (a4 <= 6)
+    if (identifier <= 6)
     {
-      if (a4 == 5)
+      if (identifier == 5)
       {
-        v25 = [v10 objectForKey:@"alert is banner"];
-        v26 = [v25 BOOLValue];
+        v25 = [messageCopy objectForKey:@"alert is banner"];
+        bOOLValue2 = [v25 BOOLValue];
 
-        v27 = [v10 objectForKey:@"alert is urgent"];
-        v28 = [v27 BOOLValue];
+        v27 = [messageCopy objectForKey:@"alert is urgent"];
+        bOOLValue3 = [v27 BOOLValue];
 
-        v29 = [v10 objectForKey:@"alert time restriction remaining time"];
-        v30 = [v10 objectForKey:@"alert text type"];
-        v31 = [v30 unsignedIntegerValue];
+        v29 = [messageCopy objectForKey:@"alert time restriction remaining time"];
+        v30 = [messageCopy objectForKey:@"alert text type"];
+        unsignedIntegerValue = [v30 unsignedIntegerValue];
 
-        v32 = [v10 objectForKey:@"alert remaining lockout duration"];
+        v32 = [messageCopy objectForKey:@"alert remaining lockout duration"];
         [v32 doubleValue];
         v34 = v33;
 
-        v35 = [v10 objectForKey:@"application name"];
-        [(GAXUIServer *)self _showAlertWithType:v31 AsBanner:v26 isUrgent:v28 timeRestrictionRemainingTime:v29 remainingLockoutDuration:v35 effectiveApplicationDisplayName:v34];
+        v35 = [messageCopy objectForKey:@"application name"];
+        [(GAXUIServer *)self _showAlertWithType:unsignedIntegerValue AsBanner:bOOLValue2 isUrgent:bOOLValue3 timeRestrictionRemainingTime:v29 remainingLockoutDuration:v35 effectiveApplicationDisplayName:v34];
       }
 
       else
       {
-        v13 = [v10 objectForKey:@"new passcode length"];
-        v14 = [v13 unsignedIntegerValue];
+        v13 = [messageCopy objectForKey:@"new passcode length"];
+        unsignedIntegerValue2 = [v13 unsignedIntegerValue];
 
-        [(GAXUIServer *)self _presentPasscodeViewControllerForSetup:1 passcodeLength:v14];
+        [(GAXUIServer *)self _presentPasscodeViewControllerForSetup:1 passcodeLength:unsignedIntegerValue2];
       }
 
       goto LABEL_59;
     }
 
-    if (a4 != 7)
+    if (identifier != 7)
     {
-      if (a4 != 14)
+      if (identifier != 14)
       {
         goto LABEL_60;
       }
@@ -2180,15 +2180,15 @@ LABEL_18:
         [(GAXUIServer *)self setShouldHideAllAlerts:0];
       }
 
-      v15 = +[AXUIDisplayManager sharedDisplayManager];
-      v21 = [(GAXUIServer *)self deviceRestrictedAlertIdentifier];
-      if (v21)
+      deviceRestrictedAlertIdentifier2 = +[AXUIDisplayManager sharedDisplayManager];
+      deviceRestrictedAlertIdentifier = [(GAXUIServer *)self deviceRestrictedAlertIdentifier];
+      if (deviceRestrictedAlertIdentifier)
       {
-        [v15 hideAlertWithIdentifier:v21 forService:self];
+        [deviceRestrictedAlertIdentifier2 hideAlertWithIdentifier:deviceRestrictedAlertIdentifier forService:self];
       }
 
       v22 = GAXLocString(@"DEVICE_IS_RESTRICTED");
-      v23 = [v15 showAlertWithText:v22 subtitleText:0 iconImage:0 type:0 priority:30 duration:self forService:AXUIAlertDisplayTimeForever];
+      v23 = [deviceRestrictedAlertIdentifier2 showAlertWithText:v22 subtitleText:0 iconImage:0 type:0 priority:30 duration:self forService:AXUIAlertDisplayTimeForever];
       [(GAXUIServer *)self setDeviceRestrictedAlertIdentifier:v23];
 
       goto LABEL_58;
@@ -2201,16 +2201,16 @@ LABEL_18:
       _os_log_impl(&dword_0, v36, OS_LOG_TYPE_DEFAULT, "Received request to show passcode view for verification.", buf, 2u);
     }
 
-    v37 = [(GAXUIServer *)self passcodeViewController];
-    v38 = [v37 isPasscodeViewVisible];
+    passcodeViewController = [(GAXUIServer *)self passcodeViewController];
+    isPasscodeViewVisible = [passcodeViewController isPasscodeViewVisible];
 
-    if (!v38)
+    if (!isPasscodeViewVisible)
     {
-      v50 = [(GAXUIServer *)self passiveInterestAreaViewController];
-      v15 = v50;
-      if (v50)
+      passiveInterestAreaViewController = [(GAXUIServer *)self passiveInterestAreaViewController];
+      deviceRestrictedAlertIdentifier2 = passiveInterestAreaViewController;
+      if (passiveInterestAreaViewController)
       {
-        [v50 setAllowsDimmingInterestAreaPaths:0 animated:1];
+        [passiveInterestAreaViewController setAllowsDimmingInterestAreaPaths:0 animated:1];
       }
 
       v51 = GAXLogCommon();
@@ -2239,13 +2239,13 @@ LABEL_58:
 
   else
   {
-    if (a4 <= 31)
+    if (identifier <= 31)
     {
-      if (a4 > 28)
+      if (identifier > 28)
       {
-        if (a4 == 29)
+        if (identifier == 29)
         {
-          v43 = [v10 objectForKey:@"time restriction duration"];
+          v43 = [messageCopy objectForKey:@"time restriction duration"];
           v44 = [v43 integerValue] * 60.0;
 
           [(GAXUIServer *)self _showTimeRestrictionsLockoutViewWithAppTimeRestrictionDuration:v44];
@@ -2253,7 +2253,7 @@ LABEL_58:
 
         else
         {
-          if (a4 != 30)
+          if (identifier != 30)
           {
             goto LABEL_60;
           }
@@ -2264,9 +2264,9 @@ LABEL_58:
         goto LABEL_59;
       }
 
-      if (a4 != 15)
+      if (identifier != 15)
       {
-        if (a4 != 21)
+        if (identifier != 21)
         {
           goto LABEL_60;
         }
@@ -2275,11 +2275,11 @@ LABEL_58:
         goto LABEL_59;
       }
 
-      v15 = [(GAXUIServer *)self deviceRestrictedAlertIdentifier];
-      if (v15)
+      deviceRestrictedAlertIdentifier2 = [(GAXUIServer *)self deviceRestrictedAlertIdentifier];
+      if (deviceRestrictedAlertIdentifier2)
       {
         v41 = +[AXUIDisplayManager sharedDisplayManager];
-        [v41 hideAlertWithIdentifier:v15 forService:self];
+        [v41 hideAlertWithIdentifier:deviceRestrictedAlertIdentifier2 forService:self];
 
         [(GAXUIServer *)self setDeviceRestrictedAlertIdentifier:0];
       }
@@ -2287,21 +2287,21 @@ LABEL_58:
       goto LABEL_58;
     }
 
-    if (a4 <= 37)
+    if (identifier <= 37)
     {
-      if (a4 != 32)
+      if (identifier != 32)
       {
-        if (a4 != 36)
+        if (identifier != 36)
         {
           goto LABEL_60;
         }
 
-        v15 = [v10 objectForKeyedSubscript:@"restrictions enabled"];
-        v16 = [v15 BOOLValue];
-        v17 = [v10 objectForKeyedSubscript:@"autonomous single app mode style"];
-        v18 = [v17 integerValue];
-        v19 = [v10 objectForKeyedSubscript:@"autonomous single app MC settings"];
-        [(GAXUIServer *)self _changeUnmanagedASAMRestrictionStateEnabled:v16 style:v18 managedConfigurationSettings:v19];
+        deviceRestrictedAlertIdentifier2 = [messageCopy objectForKeyedSubscript:@"restrictions enabled"];
+        bOOLValue4 = [deviceRestrictedAlertIdentifier2 BOOLValue];
+        v17 = [messageCopy objectForKeyedSubscript:@"autonomous single app mode style"];
+        integerValue = [v17 integerValue];
+        v19 = [messageCopy objectForKeyedSubscript:@"autonomous single app MC settings"];
+        [(GAXUIServer *)self _changeUnmanagedASAMRestrictionStateEnabled:bOOLValue4 style:integerValue managedConfigurationSettings:v19];
 
         goto LABEL_58;
       }
@@ -2318,8 +2318,8 @@ LABEL_58:
         }
       }
 
-      v24 = [(GAXUIServer *)self biometricManager];
-      [v24 startBiometricAuthentication];
+      biometricManager = [(GAXUIServer *)self biometricManager];
+      [biometricManager startBiometricAuthentication];
 LABEL_49:
 
 LABEL_59:
@@ -2327,39 +2327,39 @@ LABEL_59:
       goto LABEL_60;
     }
 
-    if (a4 == 38 || a4 == 40)
+    if (identifier == 38 || identifier == 40)
     {
-      v24 = +[NSNotificationCenter defaultCenter];
-      [v24 postNotificationName:GAXClearLiveCaptionsNotification object:0];
+      biometricManager = +[NSNotificationCenter defaultCenter];
+      [biometricManager postNotificationName:GAXClearLiveCaptionsNotification object:0];
       goto LABEL_49;
     }
   }
 
 LABEL_60:
-  if (a6)
+  if (error)
   {
-    *a6 = 0;
+    *error = 0;
   }
 
   return v12;
 }
 
-- (void)_confirmUnmanagedASAMWithApplicationDisplayName:(id)a3 completion:(id)a4
+- (void)_confirmUnmanagedASAMWithApplicationDisplayName:(id)name completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(GAXUIServer *)self activeContentViewController];
+  nameCopy = name;
+  completionCopy = completion;
+  activeContentViewController = [(GAXUIServer *)self activeContentViewController];
 
-  if (v8)
+  if (activeContentViewController)
   {
-    (*(v7 + 2))(v7, &off_61740, 0);
+    (*(completionCopy + 2))(completionCopy, &off_61740, 0);
   }
 
   else
   {
-    if (!v6)
+    if (!nameCopy)
     {
-      v6 = GAXLocString(@"APP_SELF_LOCK_UNKNOWN_APP_NAME");
+      nameCopy = GAXLocString(@"APP_SELF_LOCK_UNKNOWN_APP_NAME");
       v9 = GAXLogCommon();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
@@ -2372,28 +2372,28 @@ LABEL_60:
     v15 = 3221225472;
     v16 = sub_7DB4;
     v17 = &unk_5CE30;
-    v18 = self;
-    v19 = v7;
-    v11 = [(GAXUnmanagedASAMViewController *)v10 initWithApplicationDisplayName:v6 resultHandler:&v14];
-    [(GAXUIServer *)self setUnmanagedASAMConfirmationViewController:v11, v14, v15, v16, v17, v18];
+    selfCopy = self;
+    v19 = completionCopy;
+    v11 = [(GAXUnmanagedASAMViewController *)v10 initWithApplicationDisplayName:nameCopy resultHandler:&v14];
+    [(GAXUIServer *)self setUnmanagedASAMConfirmationViewController:v11, v14, v15, v16, v17, selfCopy];
 
     v12 = +[AXUIDisplayManager sharedDisplayManager];
-    v13 = [(GAXUIServer *)self unmanagedASAMConfirmationViewController];
-    [v12 addContentViewController:v13 withUserInteractionEnabled:1 forService:self context:0 completion:0];
+    unmanagedASAMConfirmationViewController = [(GAXUIServer *)self unmanagedASAMConfirmationViewController];
+    [v12 addContentViewController:unmanagedASAMConfirmationViewController withUserInteractionEnabled:1 forService:self context:0 completion:0];
   }
 }
 
-- (void)processMessageAsynchronously:(id)a3 withIdentifier:(unint64_t)a4 fromClientWithIdentifier:(id)a5 completion:(id)a6
+- (void)processMessageAsynchronously:(id)asynchronously withIdentifier:(unint64_t)identifier fromClientWithIdentifier:(id)withIdentifier completion:(id)completion
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  if (a4 <= 10)
+  asynchronouslyCopy = asynchronously;
+  withIdentifierCopy = withIdentifier;
+  completionCopy = completion;
+  if (identifier <= 10)
   {
-    switch(a4)
+    switch(identifier)
     {
       case 8uLL:
-        v33 = [v10 objectForKey:@"session application identifiers"];
+        v33 = [asynchronouslyCopy objectForKey:@"session application identifiers"];
         if (v33)
         {
           v34 = v33;
@@ -2407,11 +2407,11 @@ LABEL_60:
           [(GAXUIServer *)self setSessionApplicationIdentifiers:v34];
         }
 
-        v35 = [v10 objectForKey:@"server mode for disabling telephony"];
-        v36 = [v35 unsignedIntegerValue];
+        v35 = [asynchronouslyCopy objectForKey:@"server mode for disabling telephony"];
+        unsignedIntegerValue = [v35 unsignedIntegerValue];
 
-        [(GAXUIServer *)self _disableTelephonyIfNeededForMode:v36];
-        [v10 objectForKey:@"gax backboard state"];
+        [(GAXUIServer *)self _disableTelephonyIfNeededForMode:unsignedIntegerValue];
+        [asynchronouslyCopy objectForKey:@"gax backboard state"];
         v93 = memset(v117, 0, 28);
         [v93 getBytes:v117 length:28];
         gaxStateAccessQueue = self->_gaxStateAccessQueue;
@@ -2423,17 +2423,17 @@ LABEL_60:
         v116[0] = v117[0];
         *(v116 + 12) = *(v117 + 12);
         dispatch_sync(gaxStateAccessQueue, block);
-        v38 = [v10 objectForKey:@"time restriction duration"];
+        v38 = [asynchronouslyCopy objectForKey:@"time restriction duration"];
         -[GAXUIServer setAppTimeRestrictionDurationInMinutes:](self, "setAppTimeRestrictionDurationInMinutes:", [v38 integerValue]);
 
-        v39 = [v10 objectForKey:@"time restrictions enabled"];
+        v39 = [asynchronouslyCopy objectForKey:@"time restrictions enabled"];
         -[GAXUIServer setAppTimeRestrictionsEnabled:](self, "setAppTimeRestrictionsEnabled:", [v39 BOOLValue]);
 
-        v40 = [v10 objectForKey:@"application name"];
+        v40 = [asynchronouslyCopy objectForKey:@"application name"];
         [(GAXUIServer *)self setAppName:v40];
 
-        v41 = [v10 objectForKey:@"archived application icon"];
-        v94 = v11;
+        v41 = [asynchronouslyCopy objectForKey:@"archived application icon"];
+        v94 = withIdentifierCopy;
         if (v41)
         {
           v42 = [NSKeyedUnarchiver unarchivedObjectOfClass:objc_opt_class() fromData:v41 error:0];
@@ -2445,52 +2445,52 @@ LABEL_60:
           [(GAXUIServer *)self setAppIcon:0];
         }
 
-        v70 = [v10 objectForKey:@"restriction identifiers"];
+        v70 = [asynchronouslyCopy objectForKey:@"restriction identifiers"];
         [(GAXUIServer *)self setAppRestrictionIdentifiers:v70];
 
-        v71 = [v10 objectForKey:@"states for restrictions"];
+        v71 = [asynchronouslyCopy objectForKey:@"states for restrictions"];
         [(GAXUIServer *)self setStatesForAppRestrictions:v71];
 
-        v72 = [v10 objectForKey:@"texts for restrictions"];
+        v72 = [asynchronouslyCopy objectForKey:@"texts for restrictions"];
         [(GAXUIServer *)self setTextsForAppRestrictions:v72];
 
-        v73 = [v10 objectForKey:@"detail texts for restrictions"];
+        v73 = [asynchronouslyCopy objectForKey:@"detail texts for restrictions"];
         [(GAXUIServer *)self setDetailTextsForAppRestrictions:v73];
 
-        v74 = [v10 objectForKey:@"previous server mode"];
-        v75 = [v74 unsignedIntegerValue];
+        v74 = [asynchronouslyCopy objectForKey:@"previous server mode"];
+        unsignedIntegerValue2 = [v74 unsignedIntegerValue];
 
-        v76 = [v10 objectForKey:@"interest area paths for storage"];
+        v76 = [asynchronouslyCopy objectForKey:@"interest area paths for storage"];
         v77 = [(GAXUIServer *)self _unarchivedPathMappingWithData:v76];
 
-        v78 = [(GAXUIServer *)self identifierOfVisibleRegularAlert];
-        if (v78)
+        identifierOfVisibleRegularAlert = [(GAXUIServer *)self identifierOfVisibleRegularAlert];
+        if (identifierOfVisibleRegularAlert)
         {
           v79 = +[AXUIDisplayManager sharedDisplayManager];
-          [v79 hideAlertWithIdentifier:v78 forService:self];
+          [v79 hideAlertWithIdentifier:identifierOfVisibleRegularAlert forService:self];
 
           [(GAXUIServer *)self setIdentifierOfVisibleRegularAlert:0];
         }
 
-        v80 = [(GAXUIServer *)self styleProvider];
-        v81 = [(GAXUIServer *)self _preparedOverlayUserInterfaceViewController];
-        v82 = [[GAXWorkspaceViewController alloc] initWithOverlayUserInterfaceViewController:v81];
+        styleProvider = [(GAXUIServer *)self styleProvider];
+        _preparedOverlayUserInterfaceViewController = [(GAXUIServer *)self _preparedOverlayUserInterfaceViewController];
+        v82 = [[GAXWorkspaceViewController alloc] initWithOverlayUserInterfaceViewController:_preparedOverlayUserInterfaceViewController];
         [(GAXWorkspaceViewController *)v82 setUserInterfaceServer:self];
-        [(GAXWorkspaceViewController *)v82 setStyleProvider:v80];
-        [(GAXWorkspaceViewController *)v82 setUsesResumeNavigationTitles:v75 == 2];
-        v83 = [(GAXWorkspaceViewController *)v82 interestAreaViewController];
-        [v83 setInterestAreaPathsForStorage:v77];
+        [(GAXWorkspaceViewController *)v82 setStyleProvider:styleProvider];
+        [(GAXWorkspaceViewController *)v82 setUsesResumeNavigationTitles:unsignedIntegerValue2 == 2];
+        interestAreaViewController = [(GAXWorkspaceViewController *)v82 interestAreaViewController];
+        [interestAreaViewController setInterestAreaPathsForStorage:v77];
 
         [(GAXUIServer *)self setPassiveInterestAreaViewController:0];
         [(GAXUIServer *)self setActiveContentViewController:v82];
-        (*(v12 + 2))(v12, 0, 0);
+        (*(completionCopy + 2))(completionCopy, 0, 0);
 
         break;
       case 9uLL:
-        v49 = [v10 objectForKey:@"previous server mode"];
-        v50 = [v49 unsignedIntegerValue];
+        v49 = [asynchronouslyCopy objectForKey:@"previous server mode"];
+        unsignedIntegerValue3 = [v49 unsignedIntegerValue];
 
-        v51 = [(GAXUIServer *)self activeContentViewController];
+        activeContentViewController = [(GAXUIServer *)self activeContentViewController];
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
@@ -2500,7 +2500,7 @@ LABEL_60:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          if (v50)
+          if (unsignedIntegerValue3)
           {
             v52 = 3;
           }
@@ -2514,63 +2514,63 @@ LABEL_60:
           v113[1] = 3221225472;
           v113[2] = sub_8B90;
           v113[3] = &unk_5CE58;
-          v114 = v12;
-          [v51 transitionInWithContext:v52 completion:v113];
+          v114 = completionCopy;
+          [activeContentViewController transitionInWithContext:v52 completion:v113];
         }
 
         goto LABEL_63;
       case 0xAuLL:
-        v94 = v11;
-        v23 = [v10 objectForKey:@"server mode for disabling telephony"];
-        v24 = [v23 unsignedIntegerValue];
+        v94 = withIdentifierCopy;
+        v23 = [asynchronouslyCopy objectForKey:@"server mode for disabling telephony"];
+        unsignedIntegerValue4 = [v23 unsignedIntegerValue];
 
-        v25 = [v10 objectForKey:@"profile configuration"];
-        v26 = [v25 unsignedIntegerValue];
+        v25 = [asynchronouslyCopy objectForKey:@"profile configuration"];
+        unsignedIntegerValue5 = [v25 unsignedIntegerValue];
 
-        [(GAXUIServer *)self _disableTelephonyIfNeededForMode:v24];
+        [(GAXUIServer *)self _disableTelephonyIfNeededForMode:unsignedIntegerValue4];
         [(GAXUIServer *)self setNumberOfBannerAlertsShownRecently:0];
-        v27 = [(GAXUIServer *)self activeContentViewController];
+        activeContentViewController2 = [(GAXUIServer *)self activeContentViewController];
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
-        v91 = v26;
-        v92 = v27;
+        v91 = unsignedIntegerValue5;
+        v92 = activeContentViewController2;
         if (isKindOfClass)
         {
-          v29 = v27;
-          v30 = [v29 interestAreaViewController];
-          v31 = [v30 interestAreaPathsForStorage];
+          v29 = activeContentViewController2;
+          interestAreaViewController2 = [v29 interestAreaViewController];
+          interestAreaPathsForStorage = [interestAreaViewController2 interestAreaPathsForStorage];
         }
 
         else
         {
-          v53 = [v10 objectForKey:@"interest area paths for storage"];
-          v31 = [(GAXUIServer *)self _unarchivedPathMappingWithData:v53];
+          v53 = [asynchronouslyCopy objectForKey:@"interest area paths for storage"];
+          interestAreaPathsForStorage = [(GAXUIServer *)self _unarchivedPathMappingWithData:v53];
 
           v29 = 0;
-          v30 = 0;
+          interestAreaViewController2 = 0;
         }
 
         v54 = objc_opt_new();
-        v55 = [(GAXUIServer *)self styleProvider];
-        [v54 setStyleProvider:v55];
+        styleProvider2 = [(GAXUIServer *)self styleProvider];
+        [v54 setStyleProvider:styleProvider2];
 
         [v54 setEditing:0];
-        if (v30)
+        if (interestAreaViewController2)
         {
-          v56 = [v30 interestAreaView];
-          [v56 contentsBounds];
+          interestAreaView = [interestAreaViewController2 interestAreaView];
+          [interestAreaView contentsBounds];
           v58 = v57;
           v60 = v59;
           v62 = v61;
           v64 = v63;
-          v65 = [v54 interestAreaView];
-          [v65 setContentsBounds:{v58, v60, v62, v64}];
+          interestAreaView2 = [v54 interestAreaView];
+          [interestAreaView2 setContentsBounds:{v58, v60, v62, v64}];
 
-          v66 = [v30 interestAreaView];
-          [v66 contentsCornerRadius];
+          interestAreaView3 = [interestAreaViewController2 interestAreaView];
+          [interestAreaView3 contentsCornerRadius];
           v68 = v67;
-          v69 = [v54 interestAreaView];
-          [v69 setContentsCornerRadius:v68];
+          interestAreaView4 = [v54 interestAreaView];
+          [interestAreaView4 setContentsCornerRadius:v68];
         }
 
         else
@@ -2578,9 +2578,9 @@ LABEL_60:
           [(GAXUIServer *)self _adjustContentsGeometryOfInterestAreaViewWithController:v54];
         }
 
-        [v54 setInterestAreaPathsForStorage:v31];
-        v84 = [(GAXUIServer *)self allowsTouch];
-        v85 = v84;
+        [v54 setInterestAreaPathsForStorage:interestAreaPathsForStorage];
+        allowsTouch = [(GAXUIServer *)self allowsTouch];
+        v85 = allowsTouch;
         if (v29)
         {
           v86 = 0;
@@ -2588,7 +2588,7 @@ LABEL_60:
 
         else
         {
-          v86 = v84;
+          v86 = allowsTouch;
         }
 
         [v54 setAllowsDimmingInterestAreaPaths:v86];
@@ -2598,16 +2598,16 @@ LABEL_60:
         v104[2] = sub_8BA8;
         v104[3] = &unk_5CE80;
         v111 = v91;
-        v105 = v10;
-        v106 = self;
+        v105 = asynchronouslyCopy;
+        selfCopy = self;
         v87 = v54;
         v107 = v87;
         v112 = isKindOfClass & 1;
-        v88 = v31;
+        v88 = interestAreaPathsForStorage;
         v108 = v88;
         v89 = v29;
         v109 = v89;
-        v110 = v12;
+        v110 = completionCopy;
         v90 = objc_retainBlock(v104);
         [(GAXUIServer *)self setPassiveInterestAreaViewController:v87];
         if (v29)
@@ -2631,19 +2631,19 @@ LABEL_60:
         goto LABEL_63;
     }
 
-    v11 = v94;
+    withIdentifierCopy = v94;
     goto LABEL_63;
   }
 
-  if (a4 > 12)
+  if (identifier > 12)
   {
-    if (a4 == 13)
+    if (identifier == 13)
     {
-      v17 = [(GAXUIServer *)self activeContentViewController];
+      activeContentViewController3 = [(GAXUIServer *)self activeContentViewController];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v45 = v17;
+        v45 = activeContentViewController3;
       }
 
       else
@@ -2651,31 +2651,31 @@ LABEL_60:
         v45 = 0;
       }
 
-      v46 = [v45 usesResumeNavigationTitles];
+      usesResumeNavigationTitles = [v45 usesResumeNavigationTitles];
       [(GAXUIServer *)self setActiveContentViewController:0];
       [(GAXUIServer *)self _rotateDeviceToCurrentOrientation];
-      if (v46)
+      if (usesResumeNavigationTitles)
       {
         v47 = GAXLocString(@"SESSION_ENDED");
         v48 = [(GAXUIServer *)self _showAlertWithText:v47 subtitleText:0 iconImage:0 asBanner:0 isUrgent:0 duration:2.1];
       }
 
-      (*(v12 + 2))(v12, 0, 0);
+      (*(completionCopy + 2))(completionCopy, 0, 0);
       goto LABEL_53;
     }
 
-    if (a4 == 35)
+    if (identifier == 35)
     {
-      v32 = [v10 objectForKey:@"application name"];
-      [(GAXUIServer *)self _confirmUnmanagedASAMWithApplicationDisplayName:v32 completion:v12];
+      v32 = [asynchronouslyCopy objectForKey:@"application name"];
+      [(GAXUIServer *)self _confirmUnmanagedASAMWithApplicationDisplayName:v32 completion:completionCopy];
     }
   }
 
   else
   {
-    if (a4 != 11)
+    if (identifier != 11)
     {
-      v13 = [v10 objectForKey:@"session application identifiers"];
+      v13 = [asynchronouslyCopy objectForKey:@"session application identifiers"];
       if (v13)
       {
         v14 = v13;
@@ -2689,19 +2689,19 @@ LABEL_60:
         [(GAXUIServer *)self setSessionApplicationIdentifiers:v14];
       }
 
-      v15 = [v10 objectForKey:@"should restore telephony"];
-      v16 = [v15 BOOLValue];
+      v15 = [asynchronouslyCopy objectForKey:@"should restore telephony"];
+      bOOLValue = [v15 BOOLValue];
 
-      if (v16)
+      if (bOOLValue)
       {
         [(GAXUIServer *)self _restoreTelephony];
       }
 
-      v17 = [(GAXUIServer *)self activeContentViewController];
+      activeContentViewController3 = [(GAXUIServer *)self activeContentViewController];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v18 = v17;
+        v18 = activeContentViewController3;
       }
 
       else
@@ -2710,16 +2710,16 @@ LABEL_60:
       }
 
       v19 = v18;
-      v20 = [v19 usesResumeNavigationTitles];
+      usesResumeNavigationTitles2 = [v19 usesResumeNavigationTitles];
       v97[0] = _NSConcreteStackBlock;
       v97[1] = 3221225472;
       v97[2] = sub_8E90;
       v97[3] = &unk_5CEA8;
       v21 = v19;
       v98 = v21;
-      v99 = self;
-      v101 = v20;
-      v100 = v12;
+      selfCopy2 = self;
+      v101 = usesResumeNavigationTitles2;
+      v100 = completionCopy;
       v22 = objc_retainBlock(v97);
       [(GAXUIServer *)self _dismissPasscodeViewAnimated:1 withReason:5];
       if (v21)
@@ -2742,21 +2742,21 @@ LABEL_53:
       goto LABEL_63;
     }
 
-    v43 = [(GAXUIServer *)self allowsTouch];
-    v44 = [(GAXUIServer *)self passiveInterestAreaViewController];
-    [v44 setAllowsDimmingInterestAreaPaths:v43];
+    allowsTouch2 = [(GAXUIServer *)self allowsTouch];
+    passiveInterestAreaViewController = [(GAXUIServer *)self passiveInterestAreaViewController];
+    [passiveInterestAreaViewController setAllowsDimmingInterestAreaPaths:allowsTouch2];
 
     [(GAXUIServer *)self setActiveContentViewController:0];
-    (*(v12 + 2))(v12, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 
 LABEL_63:
 }
 
-- (void)processInitializationMessage:(id)a3
+- (void)processInitializationMessage:(id)message
 {
-  v4 = a3;
-  v5 = [v4 objectForKey:@"gax backboard state"];
+  messageCopy = message;
+  v5 = [messageCopy objectForKey:@"gax backboard state"];
   memset(v11, 0, 28);
   [v5 getBytes:v11 length:28];
   gaxStateAccessQueue = self->_gaxStateAccessQueue;
@@ -2768,20 +2768,20 @@ LABEL_63:
   v10[0] = v11[0];
   *(v10 + 12) = *(v11 + 12);
   dispatch_sync(gaxStateAccessQueue, block);
-  v7 = [v4 objectForKey:@"session application identifiers"];
+  v7 = [messageCopy objectForKey:@"session application identifiers"];
 
   v8 = v7;
   AXPerformBlockOnMainThread();
 }
 
-- (void)alertWithIdentifierDidAppear:(id)a3
+- (void)alertWithIdentifierDidAppear:(id)appear
 {
-  v5 = a3;
-  v4 = [(GAXUIServer *)self identifiersOfBannerAlertsAboutToAppear];
-  if ([v4 containsObject:v5])
+  appearCopy = appear;
+  identifiersOfBannerAlertsAboutToAppear = [(GAXUIServer *)self identifiersOfBannerAlertsAboutToAppear];
+  if ([identifiersOfBannerAlertsAboutToAppear containsObject:appearCopy])
   {
-    [v4 removeObject:v5];
-    if (![v4 count])
+    [identifiersOfBannerAlertsAboutToAppear removeObject:appearCopy];
+    if (![identifiersOfBannerAlertsAboutToAppear count])
     {
       [(GAXUIServer *)self setIdentifiersOfBannerAlertsAboutToAppear:0];
     }
@@ -2790,26 +2790,26 @@ LABEL_63:
   }
 }
 
-- (void)alertWithIdentifierDidDisappear:(id)a3
+- (void)alertWithIdentifierDidDisappear:(id)disappear
 {
-  v11 = a3;
-  v4 = [(GAXUIServer *)self identifiersOfVisibleBannerAlerts];
-  [v4 removeObject:v11];
-  if (![v4 count])
+  disappearCopy = disappear;
+  identifiersOfVisibleBannerAlerts = [(GAXUIServer *)self identifiersOfVisibleBannerAlerts];
+  [identifiersOfVisibleBannerAlerts removeObject:disappearCopy];
+  if (![identifiersOfVisibleBannerAlerts count])
   {
     [(GAXUIServer *)self setIdentifiersOfVisibleBannerAlerts:0];
   }
 
-  v5 = [(GAXUIServer *)self identifierOfVisibleRegularAlert];
-  v6 = [v5 isEqualToString:v11];
+  identifierOfVisibleRegularAlert = [(GAXUIServer *)self identifierOfVisibleRegularAlert];
+  v6 = [identifierOfVisibleRegularAlert isEqualToString:disappearCopy];
 
   if (v6)
   {
     [(GAXUIServer *)self setIdentifierOfVisibleRegularAlert:0];
   }
 
-  v7 = [(GAXUIServer *)self incomingCallAlertIdentifier];
-  v8 = [v7 isEqualToString:v11];
+  incomingCallAlertIdentifier = [(GAXUIServer *)self incomingCallAlertIdentifier];
+  v8 = [incomingCallAlertIdentifier isEqualToString:disappearCopy];
 
   if (v8)
   {
@@ -2817,8 +2817,8 @@ LABEL_63:
     [(GAXUIServer *)self setIncomingCallType:0];
   }
 
-  v9 = [(GAXUIServer *)self lockoutAlertIdentifier];
-  v10 = [v9 isEqualToString:v11];
+  lockoutAlertIdentifier = [(GAXUIServer *)self lockoutAlertIdentifier];
+  v10 = [lockoutAlertIdentifier isEqualToString:disappearCopy];
 
   if (v10)
   {
@@ -2826,11 +2826,11 @@ LABEL_63:
   }
 }
 
-- (double)desiredWindowLevelForAlertWithIdentifier:(id)a3
+- (double)desiredWindowLevelForAlertWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(GAXUIServer *)self lockoutAlertIdentifier];
-  v6 = [v5 isEqualToString:v4];
+  identifierCopy = identifier;
+  lockoutAlertIdentifier = [(GAXUIServer *)self lockoutAlertIdentifier];
+  v6 = [lockoutAlertIdentifier isEqualToString:identifierCopy];
 
   result = 10000005.0;
   if (v6)
@@ -2841,11 +2841,11 @@ LABEL_63:
   return result;
 }
 
-- (id)styleProviderForAlertWithIdentifier:(id)a3
+- (id)styleProviderForAlertWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(GAXUIServer *)self incomingCallAlertIdentifier];
-  v6 = [v5 isEqualToString:v4];
+  identifierCopy = identifier;
+  incomingCallAlertIdentifier = [(GAXUIServer *)self incomingCallAlertIdentifier];
+  v6 = [incomingCallAlertIdentifier isEqualToString:identifierCopy];
 
   if (v6)
   {
@@ -2860,12 +2860,12 @@ LABEL_63:
   return v7;
 }
 
-- (double)desiredWindowLevelForContentViewController:(id)a3 userInteractionEnabled:(BOOL)a4
+- (double)desiredWindowLevelForContentViewController:(id)controller userInteractionEnabled:(BOOL)enabled
 {
-  v5 = a3;
-  v6 = [(GAXUIServer *)self activeContentViewController];
+  controllerCopy = controller;
+  activeContentViewController = [(GAXUIServer *)self activeContentViewController];
 
-  if (v6 == v5)
+  if (activeContentViewController == controllerCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -2881,8 +2881,8 @@ LABEL_63:
 
   else
   {
-    v7 = [(GAXUIServer *)self overlayActiveContentViewController];
-    v8 = v7 == v5;
+    overlayActiveContentViewController = [(GAXUIServer *)self overlayActiveContentViewController];
+    v8 = overlayActiveContentViewController == controllerCopy;
 
     v9 = dbl_41EE0[v8];
   }
@@ -2890,13 +2890,13 @@ LABEL_63:
   return v9;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
   v13 = +[AXUIDisplayManager sharedDisplayManager];
-  if (v13 == v11 && [v10 isEqualToString:@"activeInterfaceOrientation"])
+  if (v13 == objectCopy && [pathCopy isEqualToString:@"activeInterfaceOrientation"])
   {
     [(GAXUIServer *)self _notifyClientOfUpdatedActiveInterfaceOrientation];
   }
@@ -2905,22 +2905,22 @@ LABEL_63:
   {
     v14.receiver = self;
     v14.super_class = GAXUIServer;
-    [(GAXUIServer *)&v14 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(GAXUIServer *)&v14 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 
-- (void)biometricManager:(id)a3 attemptWasSuccessful:(BOOL)a4
+- (void)biometricManager:(id)manager attemptWasSuccessful:(BOOL)successful
 {
-  v4 = a4;
+  successfulCopy = successful;
   v6 = GAXLogCommon();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    v14 = v4;
+    v14 = successfulCopy;
     _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "Biometric monitor attempt was successful: %i.", buf, 8u);
   }
 
-  if (v4)
+  if (successfulCopy)
   {
     [(GAXUIServer *)self setTimeRestrictionLockoutDismissedForBiometrics:0];
     v7 = &off_61768;
@@ -2933,11 +2933,11 @@ LABEL_63:
     v8 = 34;
   }
 
-  v9 = [(GAXUIServer *)self _clientMessenger];
+  _clientMessenger = [(GAXUIServer *)self _clientMessenger];
   v11 = @"passcode view dismissal reason";
   v12 = v7;
   v10 = [NSDictionary dictionaryWithObjects:&v12 forKeys:&v11 count:1];
-  [v9 sendAsynchronousMessage:v10 withIdentifier:v8 targetAccessQueue:0 completion:0];
+  [_clientMessenger sendAsynchronousMessage:v10 withIdentifier:v8 targetAccessQueue:0 completion:0];
 }
 
 - (id)_debugGAXDescription

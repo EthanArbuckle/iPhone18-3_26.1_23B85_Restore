@@ -1,14 +1,14 @@
 @interface _UITextSelectionRangeAdjustmentContainerView
 - (CGRect)endEdge;
 - (CGRect)startEdge;
-- (_UITextSelectionRangeAdjustmentContainerView)initWithFrame:(CGRect)a3;
+- (_UITextSelectionRangeAdjustmentContainerView)initWithFrame:(CGRect)frame;
 - (id)textInputView;
-- (void)_getBounds:(CGRect *)a3 position:(CGPoint *)a4 fromPreferredFrame:(CGRect)a5;
-- (void)_setPortalsLollipopDotsToContainerWindow:(BOOL)a3;
+- (void)_getBounds:(CGRect *)bounds position:(CGPoint *)position fromPreferredFrame:(CGRect)frame;
+- (void)_setPortalsLollipopDotsToContainerWindow:(BOOL)window;
 - (void)layoutSubviews;
-- (void)setHidden:(BOOL)a3;
-- (void)setSelectionGrabbers:(id)a3;
-- (void)setShapeScale:(double)a3;
+- (void)setHidden:(BOOL)hidden;
+- (void)setSelectionGrabbers:(id)grabbers;
+- (void)setShapeScale:(double)scale;
 @end
 
 @implementation _UITextSelectionRangeAdjustmentContainerView
@@ -20,12 +20,12 @@
   [(UIView *)&v49 layoutSubviews];
   if (self->_selectionGrabbersHidden)
   {
-    v3 = [(_UITextSelectionRangeAdjustmentContainerView *)self leadingLollipopView];
-    [v3 setHidden:1];
+    leadingLollipopView = [(_UITextSelectionRangeAdjustmentContainerView *)self leadingLollipopView];
+    [leadingLollipopView setHidden:1];
 
 LABEL_10:
-    v27 = [(_UITextSelectionRangeAdjustmentContainerView *)self trailingLollipopView];
-    [v27 setHidden:1];
+    trailingLollipopView = [(_UITextSelectionRangeAdjustmentContainerView *)self trailingLollipopView];
+    [trailingLollipopView setHidden:1];
     goto LABEL_15;
   }
 
@@ -39,16 +39,16 @@ LABEL_10:
   v52.size.width = v6;
   v52.size.height = v7;
   v8 = CGRectEqualToRect(v50, v52);
-  v9 = [(_UITextSelectionRangeAdjustmentContainerView *)self leadingLollipopView];
-  v10 = v9;
+  leadingLollipopView2 = [(_UITextSelectionRangeAdjustmentContainerView *)self leadingLollipopView];
+  leadingLollipopView6 = leadingLollipopView2;
   if (v8)
   {
-    [v9 setHidden:1];
+    [leadingLollipopView2 setHidden:1];
   }
 
   else
   {
-    [v9 setHidden:0];
+    [leadingLollipopView2 setHidden:0];
 
     if ([(_UITextSelectionRangeAdjustmentContainerView *)self isVertical])
     {
@@ -60,16 +60,16 @@ LABEL_10:
       v11 = 2;
     }
 
-    v12 = [(_UITextSelectionRangeAdjustmentContainerView *)self leadingLollipopView];
-    [v12 setDirection:v11];
+    leadingLollipopView3 = [(_UITextSelectionRangeAdjustmentContainerView *)self leadingLollipopView];
+    [leadingLollipopView3 setDirection:v11];
 
     v47 = 0u;
     v48 = 0u;
     v45 = 0.0;
     v46 = 0.0;
-    v13 = [(_UITextSelectionRangeAdjustmentContainerView *)self leadingLollipopView];
+    leadingLollipopView4 = [(_UITextSelectionRangeAdjustmentContainerView *)self leadingLollipopView];
     [(_UITextSelectionRangeAdjustmentContainerView *)self startEdge];
-    [v13 preferredFrameForRect:?];
+    [leadingLollipopView4 preferredFrameForRect:?];
     v15 = v14;
     v17 = v16;
     v19 = v18;
@@ -78,13 +78,13 @@ LABEL_10:
     [(_UITextSelectionRangeAdjustmentContainerView *)self _getBounds:&v47 position:&v45 fromPreferredFrame:v15, v17, v19, v21];
     v22 = v47;
     v23 = v48;
-    v24 = [(_UITextSelectionRangeAdjustmentContainerView *)self leadingLollipopView];
-    [v24 setBounds:{v22, v23}];
+    leadingLollipopView5 = [(_UITextSelectionRangeAdjustmentContainerView *)self leadingLollipopView];
+    [leadingLollipopView5 setBounds:{v22, v23}];
 
     v25 = v45;
     v26 = v46;
-    v10 = [(_UITextSelectionRangeAdjustmentContainerView *)self leadingLollipopView];
-    [v10 setCenter:{v25, v26}];
+    leadingLollipopView6 = [(_UITextSelectionRangeAdjustmentContainerView *)self leadingLollipopView];
+    [leadingLollipopView6 setCenter:{v25, v26}];
   }
 
   [(_UITextSelectionRangeAdjustmentContainerView *)self endEdge];
@@ -97,8 +97,8 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  v28 = [(_UITextSelectionRangeAdjustmentContainerView *)self trailingLollipopView];
-  [v28 setHidden:0];
+  trailingLollipopView2 = [(_UITextSelectionRangeAdjustmentContainerView *)self trailingLollipopView];
+  [trailingLollipopView2 setHidden:0];
 
   if ([(_UITextSelectionRangeAdjustmentContainerView *)self isVertical])
   {
@@ -110,16 +110,16 @@ LABEL_10:
     v29 = 8;
   }
 
-  v30 = [(_UITextSelectionRangeAdjustmentContainerView *)self trailingLollipopView];
-  [v30 setDirection:v29];
+  trailingLollipopView3 = [(_UITextSelectionRangeAdjustmentContainerView *)self trailingLollipopView];
+  [trailingLollipopView3 setDirection:v29];
 
   v47 = 0u;
   v48 = 0u;
   v45 = 0.0;
   v46 = 0.0;
-  v31 = [(_UITextSelectionRangeAdjustmentContainerView *)self trailingLollipopView];
+  trailingLollipopView4 = [(_UITextSelectionRangeAdjustmentContainerView *)self trailingLollipopView];
   [(_UITextSelectionRangeAdjustmentContainerView *)self endEdge];
-  [v31 preferredFrameForRect:?];
+  [trailingLollipopView4 preferredFrameForRect:?];
   v33 = v32;
   v35 = v34;
   v37 = v36;
@@ -128,13 +128,13 @@ LABEL_10:
   [(_UITextSelectionRangeAdjustmentContainerView *)self _getBounds:&v47 position:&v45 fromPreferredFrame:v33, v35, v37, v39];
   v40 = v47;
   v41 = v48;
-  v42 = [(_UITextSelectionRangeAdjustmentContainerView *)self trailingLollipopView];
-  [v42 setBounds:{v40, v41}];
+  trailingLollipopView5 = [(_UITextSelectionRangeAdjustmentContainerView *)self trailingLollipopView];
+  [trailingLollipopView5 setBounds:{v40, v41}];
 
   v43 = v45;
   v44 = v46;
-  v27 = [(_UITextSelectionRangeAdjustmentContainerView *)self trailingLollipopView];
-  [v27 setCenter:{v43, v44}];
+  trailingLollipopView = [(_UITextSelectionRangeAdjustmentContainerView *)self trailingLollipopView];
+  [trailingLollipopView setCenter:{v43, v44}];
 LABEL_15:
 }
 
@@ -164,12 +164,12 @@ LABEL_15:
   return result;
 }
 
-- (_UITextSelectionRangeAdjustmentContainerView)initWithFrame:(CGRect)a3
+- (_UITextSelectionRangeAdjustmentContainerView)initWithFrame:(CGRect)frame
 {
   v26[2] = *MEMORY[0x1E69E9840];
   v24.receiver = self;
   v24.super_class = _UITextSelectionRangeAdjustmentContainerView;
-  v3 = [(UIView *)&v24 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v24 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -220,16 +220,16 @@ LABEL_15:
   return v4;
 }
 
-- (void)setSelectionGrabbers:(id)a3
+- (void)setSelectionGrabbers:(id)grabbers
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  objc_storeStrong(&self->_selectionGrabbers, a3);
+  grabbersCopy = grabbers;
+  objc_storeStrong(&self->_selectionGrabbers, grabbers);
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = v5;
+  v6 = grabbersCopy;
   v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
@@ -272,10 +272,10 @@ LABEL_11:
   self->_selectionGrabbersAreConcreteImpl = v11;
 }
 
-- (void)setShapeScale:(double)a3
+- (void)setShapeScale:(double)scale
 {
   v14 = *MEMORY[0x1E69E9840];
-  self->_shapeScale = a3;
+  self->_shapeScale = scale;
   if (self->_selectionGrabbersAreConcreteImpl)
   {
     v11 = 0u;
@@ -298,7 +298,7 @@ LABEL_11:
             objc_enumerationMutation(v4);
           }
 
-          [*(*(&v9 + 1) + 8 * v8++) _setShapeScale:{a3, v9}];
+          [*(*(&v9 + 1) + 8 * v8++) _setShapeScale:{scale, v9}];
         }
 
         while (v6 != v8);
@@ -312,30 +312,30 @@ LABEL_11:
 
 - (id)textInputView
 {
-  v2 = [(UIView *)self nextResponder];
-  v3 = [v2 textInputView];
+  nextResponder = [(UIView *)self nextResponder];
+  textInputView = [nextResponder textInputView];
 
-  return v3;
+  return textInputView;
 }
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
-  v3 = a3;
+  hiddenCopy = hidden;
   v5.receiver = self;
   v5.super_class = _UITextSelectionRangeAdjustmentContainerView;
   [(UIView *)&v5 setHidden:?];
-  if (v3)
+  if (hiddenCopy)
   {
     [(_UITextSelectionRangeAdjustmentContainerView *)self _setPortalsLollipopDotsToContainerWindow:0];
   }
 }
 
-- (void)_setPortalsLollipopDotsToContainerWindow:(BOOL)a3
+- (void)_setPortalsLollipopDotsToContainerWindow:(BOOL)window
 {
   v14 = *MEMORY[0x1E69E9840];
   if (self->_selectionGrabbersAreConcreteImpl)
   {
-    v3 = a3;
+    windowCopy = window;
     v11 = 0u;
     v12 = 0u;
     v9 = 0u;
@@ -356,7 +356,7 @@ LABEL_11:
             objc_enumerationMutation(v4);
           }
 
-          [*(*(&v9 + 1) + 8 * v8++) setPortalsDotToContainerWindow:{v3, v9}];
+          [*(*(&v9 + 1) + 8 * v8++) setPortalsDotToContainerWindow:{windowCopy, v9}];
         }
 
         while (v6 != v8);
@@ -368,22 +368,22 @@ LABEL_11:
   }
 }
 
-- (void)_getBounds:(CGRect *)a3 position:(CGPoint *)a4 fromPreferredFrame:(CGRect)a5
+- (void)_getBounds:(CGRect *)bounds position:(CGPoint *)position fromPreferredFrame:(CGRect)frame
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  a3->origin = *MEMORY[0x1E695F058];
-  a3->size.width = a5.size.width;
-  a3->size.height = a5.size.height;
-  v10 = [(UIView *)self layer];
-  [v10 anchorPoint];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  bounds->origin = *MEMORY[0x1E695F058];
+  bounds->size.width = frame.size.width;
+  bounds->size.height = frame.size.height;
+  layer = [(UIView *)self layer];
+  [layer anchorPoint];
   v12 = v11;
   v14 = v13;
 
-  a4->x = x + width * v12;
-  a4->y = y + height * v14;
+  position->x = x + width * v12;
+  position->y = y + height * v14;
 }
 
 @end

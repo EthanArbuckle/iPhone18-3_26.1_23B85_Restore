@@ -1,8 +1,8 @@
 @interface DefaultSceneDelegate
 - (UIWindow)window;
 - (_TtC22ProximityReaderSceneUI20DefaultSceneDelegate)init;
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5;
-- (void)setWindow:(id)a3;
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options;
+- (void)setWindow:(id)window;
 @end
 
 @implementation DefaultSceneDelegate
@@ -14,22 +14,22 @@
   return *(&self->super.super.isa + v3);
 }
 
-- (void)setWindow:(id)a3
+- (void)setWindow:(id)window
 {
   v5 = OBJC_IVAR____TtC22ProximityReaderSceneUI20DefaultSceneDelegate_window;
   swift_beginAccess();
   v6 = *(&self->super.super.isa + v5);
-  *(&self->super.super.isa + v5) = a3;
-  v7 = a3;
+  *(&self->super.super.isa + v5) = window;
+  windowCopy = window;
 }
 
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  sub_100011BC0(v8, v9);
+  sceneCopy = scene;
+  sessionCopy = session;
+  optionsCopy = options;
+  selfCopy = self;
+  sub_100011BC0(sceneCopy, sessionCopy);
 }
 
 - (_TtC22ProximityReaderSceneUI20DefaultSceneDelegate)init

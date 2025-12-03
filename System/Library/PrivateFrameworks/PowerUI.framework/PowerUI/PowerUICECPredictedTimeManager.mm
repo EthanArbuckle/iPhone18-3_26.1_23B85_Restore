@@ -1,14 +1,14 @@
 @interface PowerUICECPredictedTimeManager
-+ (PowerUICECPredictedTimeManager)managerWithContextStore:(id)a3 withHandler:(id)a4;
++ (PowerUICECPredictedTimeManager)managerWithContextStore:(id)store withHandler:(id)handler;
 - (BOOL)hasSufficientTimeForFullCharge;
 - (BOOL)testOverrideForSignalMonitors;
-- (PowerUICECPredictedTimeManager)initWithContextStore:(id)a3 withHandler:(id)a4;
-- (double)leewayForConfidence:(double)a3;
-- (double)timeToFullChargeFromBatteryLevel:(unint64_t)a3;
+- (PowerUICECPredictedTimeManager)initWithContextStore:(id)store withHandler:(id)handler;
+- (double)leewayForConfidence:(double)confidence;
+- (double)timeToFullChargeFromBatteryLevel:(unint64_t)level;
 - (id)deadlineFromMonitors;
 - (id)predictedUnplugTime;
 - (id)testingOverrideForPredictedUnplugTime;
-- (void)monitor:(id)a3 maySuggestNewFullChargeDeadline:(id)a4;
+- (void)monitor:(id)monitor maySuggestNewFullChargeDeadline:(id)deadline;
 - (void)resetState;
 - (void)startAllMonitoring;
 - (void)stopAllMonitoring;
@@ -16,11 +16,11 @@
 
 @implementation PowerUICECPredictedTimeManager
 
-- (PowerUICECPredictedTimeManager)initWithContextStore:(id)a3 withHandler:(id)a4
+- (PowerUICECPredictedTimeManager)initWithContextStore:(id)store withHandler:(id)handler
 {
   v45[4] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  storeCopy = store;
+  handlerCopy = handler;
   v44.receiver = self;
   v44.super_class = PowerUICECPredictedTimeManager;
   v9 = [(PowerUICECPredictedTimeManager *)&v44 init];
@@ -30,7 +30,7 @@
     log = v9->_log;
     v9->_log = v10;
 
-    objc_storeStrong(&v9->_context, a3);
+    objc_storeStrong(&v9->_context, store);
     debugStatus = v9->_debugStatus;
     v9->_debugStatus = &stru_282D0B728;
 
@@ -59,9 +59,9 @@
       v9->_tModelPredition = v22;
     }
 
-    v24 = [MEMORY[0x277D36CD0] predictor];
+    predictor = [MEMORY[0x277D36CD0] predictor];
     pluggedInPredictor = v9->_pluggedInPredictor;
-    v9->_pluggedInPredictor = v24;
+    v9->_pluggedInPredictor = predictor;
 
     v26 = [(NSUserDefaults *)v9->_defaults objectForKey:@"predictedDeadline"];
 
@@ -103,7 +103,7 @@
     monitors = v9->_monitors;
     v9->_monitors = v38;
 
-    v40 = MEMORY[0x21CEF8A60](v8);
+    v40 = MEMORY[0x21CEF8A60](handlerCopy);
     handler = v9->_handler;
     v9->_handler = v40;
   }
@@ -112,19 +112,19 @@
   return v9;
 }
 
-+ (PowerUICECPredictedTimeManager)managerWithContextStore:(id)a3 withHandler:(id)a4
++ (PowerUICECPredictedTimeManager)managerWithContextStore:(id)store withHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
+  storeCopy = store;
+  handlerCopy = handler;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __70__PowerUICECPredictedTimeManager_managerWithContextStore_withHandler___block_invoke;
   v13[3] = &unk_2782D50B8;
-  v14 = v5;
-  v15 = v6;
+  v14 = storeCopy;
+  v15 = handlerCopy;
   v7 = managerWithContextStore_withHandler__onceToken;
-  v8 = v6;
-  v9 = v5;
+  v8 = handlerCopy;
+  v9 = storeCopy;
   if (v7 != -1)
   {
     dispatch_once(&managerWithContextStore_withHandler__onceToken, v13);
@@ -234,9 +234,9 @@ uint64_t __70__PowerUICECPredictedTimeManager_managerWithContextStore_withHandle
 - (id)deadlineFromMonitors
 {
   v37 = *MEMORY[0x277D85DE8];
-  v3 = [(PowerUICECPredictedTimeManager *)self testOverrideForSignalMonitors];
-  self->_tBypassSignals = v3;
-  if (v3)
+  testOverrideForSignalMonitors = [(PowerUICECPredictedTimeManager *)self testOverrideForSignalMonitors];
+  self->_tBypassSignals = testOverrideForSignalMonitors;
+  if (testOverrideForSignalMonitors)
   {
     debugStatus = self->_debugStatus;
     v5 = @"\n";
@@ -251,12 +251,12 @@ uint64_t __70__PowerUICECPredictedTimeManager_managerWithContextStore_withHandle
     v9 = self->_debugStatus;
     self->_debugStatus = v8;
 
-    v10 = [MEMORY[0x277CBEAA8] distantFuture];
+    distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
   }
 
   else
   {
-    v10 = [MEMORY[0x277CBEAA8] distantFuture];
+    distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
@@ -278,8 +278,8 @@ uint64_t __70__PowerUICECPredictedTimeManager_managerWithContextStore_withHandle
           }
 
           v15 = *(*(&v28 + 1) + 8 * i);
-          v16 = [v15 requiredFullChargeDate];
-          if (v16)
+          requiredFullChargeDate = [v15 requiredFullChargeDate];
+          if (requiredFullChargeDate)
           {
             log = self->_log;
             if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
@@ -287,22 +287,22 @@ uint64_t __70__PowerUICECPredictedTimeManager_managerWithContextStore_withHandle
               *buf = 138412546;
               v33 = v15;
               v34 = 2112;
-              v35 = v16;
+              v35 = requiredFullChargeDate;
               _os_log_impl(&dword_21B766000, log, OS_LOG_TYPE_DEFAULT, "Monitor %@ suggested %@", buf, 0x16u);
             }
 
-            v18 = [v10 earlierDate:v16];
+            v18 = [distantFuture earlierDate:requiredFullChargeDate];
 
-            if ([v18 isEqualToDate:v16])
+            if ([v18 isEqualToDate:requiredFullChargeDate])
             {
               v19 = MEMORY[0x277CCACA8];
-              v20 = [MEMORY[0x277CCA968] localizedStringFromDate:v16 dateStyle:1 timeStyle:1];
+              v20 = [MEMORY[0x277CCA968] localizedStringFromDate:requiredFullChargeDate dateStyle:1 timeStyle:1];
               v21 = [v19 stringWithFormat:@"Monitor %@ suggested %@", v15, v20];
 
               v7 = v21;
             }
 
-            v10 = v18;
+            distantFuture = v18;
           }
         }
 
@@ -325,14 +325,14 @@ uint64_t __70__PowerUICECPredictedTimeManager_managerWithContextStore_withHandle
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v33 = v10;
+      v33 = distantFuture;
       _os_log_impl(&dword_21B766000, v24, OS_LOG_TYPE_DEFAULT, "Monitors suggested: %@", buf, 0xCu);
     }
   }
 
   v25 = *MEMORY[0x277D85DE8];
 
-  return v10;
+  return distantFuture;
 }
 
 - (BOOL)hasSufficientTimeForFullCharge
@@ -341,14 +341,14 @@ uint64_t __70__PowerUICECPredictedTimeManager_managerWithContextStore_withHandle
   debugStatus = self->_debugStatus;
   self->_debugStatus = &stru_282D0B728;
 
-  v4 = [(PowerUICECPredictedTimeManager *)self predictedUnplugTime];
-  v5 = [(PowerUICECPredictedTimeManager *)self deadlineFromMonitors];
-  v6 = [(NSDate *)v4 earlierDate:v5];
+  predictedUnplugTime = [(PowerUICECPredictedTimeManager *)self predictedUnplugTime];
+  deadlineFromMonitors = [(PowerUICECPredictedTimeManager *)self deadlineFromMonitors];
+  v6 = [(NSDate *)predictedUnplugTime earlierDate:deadlineFromMonitors];
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v42 = v4;
+    v42 = predictedUnplugTime;
     _os_log_impl(&dword_21B766000, log, OS_LOG_TYPE_DEFAULT, "Model Deadline is %@", buf, 0xCu);
   }
 
@@ -356,7 +356,7 @@ uint64_t __70__PowerUICECPredictedTimeManager_managerWithContextStore_withHandle
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v42 = v5;
+    v42 = deadlineFromMonitors;
     _os_log_impl(&dword_21B766000, v8, OS_LOG_TYPE_DEFAULT, "Signal Deadline is %@", buf, 0xCu);
   }
 
@@ -380,9 +380,9 @@ uint64_t __70__PowerUICECPredictedTimeManager_managerWithContextStore_withHandle
 
   if ([(PowerUIBatteryMitigationManager *)self->_batteryMitigationManager mitigationsCurrentlyEnabled])
   {
-    v12 = [MEMORY[0x277CBEAA8] distantPast];
+    distantPast = [MEMORY[0x277CBEAA8] distantPast];
 
-    v10 = v12;
+    v10 = distantPast;
   }
 
   v13 = self->_log;
@@ -487,7 +487,7 @@ uint64_t __70__PowerUICECPredictedTimeManager_managerWithContextStore_withHandle
   return v10;
 }
 
-- (double)leewayForConfidence:(double)a3
+- (double)leewayForConfidence:(double)confidence
 {
   v23 = *MEMORY[0x277D85DE8];
   [(PowerUITrialManager *)self->_trialManager doubleFactorForName:@"thresholdForCECWithPluginModel"];
@@ -519,7 +519,7 @@ uint64_t __70__PowerUICECPredictedTimeManager_managerWithContextStore_withHandle
     }
 
     v17 = 134218240;
-    v18 = v6;
+    confidenceCopy = v6;
     v19 = 2048;
     v20 = v8;
     v11 = "Loaded threshold %f and leeway %f from trial ";
@@ -533,7 +533,7 @@ LABEL_8:
   if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
   {
     v17 = 134218496;
-    v18 = a3;
+    confidenceCopy = confidence;
     v19 = 2048;
     v20 = v6;
     v21 = 2048;
@@ -542,7 +542,7 @@ LABEL_8:
   }
 
   result = INFINITY;
-  if (v6 < a3)
+  if (v6 < confidence)
   {
     result = v8;
   }
@@ -554,15 +554,15 @@ LABEL_8:
 - (id)predictedUnplugTime
 {
   v44 = *MEMORY[0x277D85DE8];
-  v3 = [(PowerUICECPredictedTimeManager *)self testingOverrideForPredictedUnplugTime];
-  if (v3)
+  testingOverrideForPredictedUnplugTime = [(PowerUICECPredictedTimeManager *)self testingOverrideForPredictedUnplugTime];
+  if (testingOverrideForPredictedUnplugTime)
   {
     v4 = MEMORY[0x277CCACA8];
-    v5 = [MEMORY[0x277CCA968] localizedStringFromDate:v3 dateStyle:1 timeStyle:1];
+    v5 = [MEMORY[0x277CCA968] localizedStringFromDate:testingOverrideForPredictedUnplugTime dateStyle:1 timeStyle:1];
     v6 = [v4 stringWithFormat:@"ML model deadline is overriden to %@", v5];
 
     objc_storeStrong(&self->_debugStatus, v6);
-    v7 = v3;
+    v7 = testingOverrideForPredictedUnplugTime;
 LABEL_5:
     v11 = v7;
     goto LABEL_6;
@@ -590,9 +590,9 @@ LABEL_5:
     if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
     {
       v18 = log;
-      v19 = [v16 localizedDescription];
+      localizedDescription = [v16 localizedDescription];
       *buf = 138412290;
-      v37 = *&v19;
+      v37 = *&localizedDescription;
       _os_log_impl(&dword_21B766000, v18, OS_LOG_TYPE_DEFAULT, "Error querying the predictor through the client %@", buf, 0xCu);
     }
   }
@@ -629,16 +629,16 @@ LABEL_5:
       _os_log_impl(&dword_21B766000, v30, OS_LOG_TYPE_DEFAULT, "Prediction model not confident. Setting an earlier date", buf, 2u);
     }
 
-    v29 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
   }
 
   else
   {
-    v29 = v26;
+    date = v26;
   }
 
   v31 = self->_modelDeadline;
-  self->_modelDeadline = v29;
+  self->_modelDeadline = date;
 
   defaults = self->_defaults;
   [(NSDate *)self->_modelDeadline timeIntervalSinceReferenceDate];
@@ -656,9 +656,9 @@ LABEL_6:
   return v11;
 }
 
-- (double)timeToFullChargeFromBatteryLevel:(unint64_t)a3
+- (double)timeToFullChargeFromBatteryLevel:(unint64_t)level
 {
-  if (a3 == 80)
+  if (level == 80)
   {
     v3 = [PowerUISmartChargeUtilities historicalFullChargeDurationStartingAt:80 withMinimumPluginDuration:1200];
     if ([v3 count] >= 3)
@@ -682,22 +682,22 @@ LABEL_6:
     }
   }
 
-  else if (a3 - 31 > 0x2B)
+  else if (level - 31 > 0x2B)
   {
     return 14400.0;
   }
 
   else
   {
-    return (60 * (170 - a3) + 15);
+    return (60 * (170 - level) + 15);
   }
 
   return v8;
 }
 
-- (void)monitor:(id)a3 maySuggestNewFullChargeDeadline:(id)a4
+- (void)monitor:(id)monitor maySuggestNewFullChargeDeadline:(id)deadline
 {
-  [a4 timeIntervalSinceDate:self->_deadline];
+  [deadline timeIntervalSinceDate:self->_deadline];
   if (v5 < 0.0)
   {
     v6 = *(self->_handler + 2);

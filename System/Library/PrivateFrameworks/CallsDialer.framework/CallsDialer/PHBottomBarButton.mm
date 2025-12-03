@@ -1,26 +1,26 @@
 @interface PHBottomBarButton
 + (UIFont)defaultFont;
 - (BOOL)canBeEnabled;
-- (CGRect)imageRectForContentRect:(CGRect)a3;
-- (CGRect)titleRectForContentRect:(CGRect)a3;
+- (CGRect)imageRectForContentRect:(CGRect)rect;
+- (CGRect)titleRectForContentRect:(CGRect)rect;
 - (CGSize)buttonSize;
 - (CGSize)intrinsicContentSize;
 - (NSArray)ambientButtonParts;
-- (PHBottomBarButton)initWithConfiguration:(id)a3 appType:(int64_t)a4;
+- (PHBottomBarButton)initWithConfiguration:(id)configuration appType:(int64_t)type;
 - (double)titleRectYOffset;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (id)newOverlayView;
-- (id)overlayViewForConfiguration:(id)a3;
+- (id)overlayViewForConfiguration:(id)configuration;
 - (void)_performSetDisabled;
-- (void)_performSetEnabled:(BOOL)a3;
-- (void)_performSetHighlighted:(BOOL)a3;
-- (void)_performSetSelected:(BOOL)a3;
+- (void)_performSetEnabled:(BOOL)enabled;
+- (void)_performSetHighlighted:(BOOL)highlighted;
+- (void)_performSetSelected:(BOOL)selected;
 - (void)layoutSubviews;
-- (void)refreshForCallState:(int64_t)a3;
-- (void)setBackgroundColor:(id)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setOrientation:(int64_t)a3;
-- (void)setUsesSmallerFontSize:(BOOL)a3;
+- (void)refreshForCallState:(int64_t)state;
+- (void)setBackgroundColor:(id)color;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setOrientation:(int64_t)orientation;
+- (void)setUsesSmallerFontSize:(BOOL)size;
 @end
 
 @implementation PHBottomBarButton
@@ -30,12 +30,12 @@
   v5.receiver = self;
   v5.super_class = PHBottomBarButton;
   [(PHBottomBarButton *)&v5 layoutSubviews];
-  v3 = [(PHBottomBarButton *)self effectView];
+  effectView = [(PHBottomBarButton *)self effectView];
 
-  if (v3)
+  if (effectView)
   {
-    v4 = [(PHBottomBarButton *)self effectView];
-    [(PHBottomBarButton *)self sendSubviewToBack:v4];
+    effectView2 = [(PHBottomBarButton *)self effectView];
+    [(PHBottomBarButton *)self sendSubviewToBack:effectView2];
   }
 }
 
@@ -75,11 +75,11 @@
 
 - (double)titleRectYOffset
 {
-  v2 = [MEMORY[0x277D75418] currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
   result = 6.0;
-  if (v3 == 1)
+  if (userInterfaceIdiom == 1)
   {
     if (titleRectYOffset_onceToken != -1)
     {
@@ -109,10 +109,10 @@ void __32__PHBottomBarButton_defaultFont__block_invoke()
   defaultFont_defaultFontSize = *&v5;
 }
 
-- (PHBottomBarButton)initWithConfiguration:(id)a3 appType:(int64_t)a4
+- (PHBottomBarButton)initWithConfiguration:(id)configuration appType:(int64_t)type
 {
   v126[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  configurationCopy = configuration;
   v125.receiver = self;
   v125.super_class = PHBottomBarButton;
   v7 = *MEMORY[0x277CBF3A0];
@@ -125,10 +125,10 @@ void __32__PHBottomBarButton_defaultFont__block_invoke()
     goto LABEL_36;
   }
 
-  [v6 diameter];
+  [configurationCopy diameter];
   v11->_diameter = v12;
   v11->_accessoryDiameter = v12 / 3.0;
-  [(PHBottomBarButton *)v11 setAppType:a4];
+  [(PHBottomBarButton *)v11 setAppType:type];
   v13 = [PHRoundView alloc];
   *&v14 = v11->_diameter * 0.5;
   v15 = [(PHRoundView *)v13 initWithFrame:v7 cornerRadius:v8, v9, v10, v14];
@@ -136,36 +136,36 @@ void __32__PHBottomBarButton_defaultFont__block_invoke()
   v11->_roundView = v15;
 
   [(UIView *)v11->_roundView setTranslatesAutoresizingMaskIntoConstraints:0];
-  v17 = [(UIView *)v11->_roundView widthAnchor];
-  v18 = [v17 constraintEqualToConstant:v11->_diameter];
+  widthAnchor = [(UIView *)v11->_roundView widthAnchor];
+  v18 = [widthAnchor constraintEqualToConstant:v11->_diameter];
   [v18 setActive:1];
 
-  v19 = [(UIView *)v11->_roundView heightAnchor];
-  v20 = [v19 constraintEqualToConstant:v11->_diameter];
+  heightAnchor = [(UIView *)v11->_roundView heightAnchor];
+  v20 = [heightAnchor constraintEqualToConstant:v11->_diameter];
   [v20 setActive:1];
 
   [(UIView *)v11->_roundView setUserInteractionEnabled:0];
   v21 = v11->_roundView;
-  v22 = [(PHBottomBarButton *)v11 imageView];
-  [(PHBottomBarButton *)v11 insertSubview:v21 below:v22];
+  imageView = [(PHBottomBarButton *)v11 imageView];
+  [(PHBottomBarButton *)v11 insertSubview:v21 below:imageView];
 
-  v23 = [v6 action];
-  if (v23 <= 0x26 && ((1 << v23) & 0x4000000070) != 0)
+  action = [configurationCopy action];
+  if (action <= 0x26 && ((1 << action) & 0x4000000070) != 0)
   {
     if (+[PHBottomBarButtonConfiguration usesGlass])
     {
-      v24 = [(PHBottomBarButton *)v11 overlayViewForConfiguration:v6];
+      v24 = [(PHBottomBarButton *)v11 overlayViewForConfiguration:configurationCopy];
       iconView = v11->_iconView;
       v11->_iconView = v24;
 
       [(UIView *)v11->_iconView setTranslatesAutoresizingMaskIntoConstraints:0];
       [(UIView *)v11->_iconView setAutoresizingMask:18];
-      v26 = [(UIView *)v11->_iconView widthAnchor];
-      v27 = [v26 constraintEqualToConstant:v11->_diameter];
+      widthAnchor2 = [(UIView *)v11->_iconView widthAnchor];
+      v27 = [widthAnchor2 constraintEqualToConstant:v11->_diameter];
       [v27 setActive:1];
 
-      v28 = [(UIView *)v11->_iconView heightAnchor];
-      v29 = [v28 constraintEqualToConstant:v11->_diameter];
+      heightAnchor2 = [(UIView *)v11->_iconView heightAnchor];
+      v29 = [heightAnchor2 constraintEqualToConstant:v11->_diameter];
       [v29 setActive:1];
 
       v30 = 1;
@@ -183,28 +183,28 @@ void __32__PHBottomBarButton_defaultFont__block_invoke()
     if (+[PHBottomBarButtonConfiguration usesGlass])
     {
       [(PHBottomBarButton *)v11 setOverrideUserInterfaceStyle:1];
-      v31 = [v6 backgroundColor];
-      v32 = [MEMORY[0x277D75348] clearColor];
+      backgroundColor = [configurationCopy backgroundColor];
+      clearColor = [MEMORY[0x277D75348] clearColor];
 
       v33 = v11->_roundView;
-      if (v31 == v32)
+      if (backgroundColor == clearColor)
       {
         [(UIView *)v11->_roundView dialer_applySmallClearGlassBackground];
       }
 
       else
       {
-        v34 = [v6 backgroundColor];
-        [(UIView *)v33 dialer_applySmallClearGlassBackgroundWithTintColor:v34];
+        backgroundColor2 = [configurationCopy backgroundColor];
+        [(UIView *)v33 dialer_applySmallClearGlassBackgroundWithTintColor:backgroundColor2];
       }
     }
 
     v30 = 0;
   }
 
-  v35 = [v6 accessoryIcon];
+  accessoryIcon = [configurationCopy accessoryIcon];
 
-  if (v35)
+  if (accessoryIcon)
   {
     v36 = [PHRoundView alloc];
     *&v37 = v11->_accessoryDiameter * 0.5;
@@ -212,31 +212,31 @@ void __32__PHBottomBarButton_defaultFont__block_invoke()
     accessoryBackgroundView = v11->_accessoryBackgroundView;
     v11->_accessoryBackgroundView = v38;
 
-    v40 = [MEMORY[0x277D75348] systemWhiteColor];
-    [(UIView *)v11->_accessoryBackgroundView setBackgroundColor:v40];
+    systemWhiteColor = [MEMORY[0x277D75348] systemWhiteColor];
+    [(UIView *)v11->_accessoryBackgroundView setBackgroundColor:systemWhiteColor];
 
     [(UIView *)v11->_accessoryBackgroundView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v41 = [(UIView *)v11->_accessoryBackgroundView widthAnchor];
-    v42 = [v41 constraintEqualToConstant:v11->_accessoryDiameter];
+    widthAnchor3 = [(UIView *)v11->_accessoryBackgroundView widthAnchor];
+    v42 = [widthAnchor3 constraintEqualToConstant:v11->_accessoryDiameter];
     [v42 setActive:1];
 
-    v43 = [(UIView *)v11->_accessoryBackgroundView heightAnchor];
-    v44 = [v43 constraintEqualToConstant:v11->_accessoryDiameter];
+    heightAnchor3 = [(UIView *)v11->_accessoryBackgroundView heightAnchor];
+    v44 = [heightAnchor3 constraintEqualToConstant:v11->_accessoryDiameter];
     [v44 setActive:1];
 
     [(UIView *)v11->_accessoryBackgroundView setUserInteractionEnabled:0];
     v45 = v11->_accessoryBackgroundView;
-    v46 = [(PHBottomBarButton *)v11 imageView];
-    [(PHBottomBarButton *)v11 insertSubview:v45 above:v46];
+    imageView2 = [(PHBottomBarButton *)v11 imageView];
+    [(PHBottomBarButton *)v11 insertSubview:v45 above:imageView2];
 
-    v47 = [(UIView *)v11->_accessoryBackgroundView trailingAnchor];
-    v48 = [(PHBottomBarButton *)v11 trailingAnchor];
-    v49 = [v47 constraintEqualToAnchor:v48];
+    trailingAnchor = [(UIView *)v11->_accessoryBackgroundView trailingAnchor];
+    trailingAnchor2 = [(PHBottomBarButton *)v11 trailingAnchor];
+    v49 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     [v49 setActive:1];
 
-    v50 = [(UIView *)v11->_accessoryBackgroundView bottomAnchor];
-    v51 = [(PHBottomBarButton *)v11 bottomAnchor];
-    v52 = [v50 constraintEqualToAnchor:v51];
+    bottomAnchor = [(UIView *)v11->_accessoryBackgroundView bottomAnchor];
+    bottomAnchor2 = [(PHBottomBarButton *)v11 bottomAnchor];
+    v52 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     [v52 setActive:1];
 
     accessoryDiameter = v11->_accessoryDiameter;
@@ -247,52 +247,52 @@ void __32__PHBottomBarButton_defaultFont__block_invoke()
       accessoryView = v11->_accessoryView;
       v11->_accessoryView = v55;
 
-      v57 = [v6 accessoryIcon];
-      v58 = [MEMORY[0x277D75348] blackColor];
-      v59 = [v57 _flatImageWithColor:v58];
+      accessoryIcon2 = [configurationCopy accessoryIcon];
+      blackColor = [MEMORY[0x277D75348] blackColor];
+      v59 = [accessoryIcon2 _flatImageWithColor:blackColor];
       [(UIImageView *)v11->_accessoryView setImage:v59];
 
-      v60 = [MEMORY[0x277D75348] blackColor];
-      [(UIImageView *)v11->_accessoryView setTintColor:v60];
+      blackColor2 = [MEMORY[0x277D75348] blackColor];
+      [(UIImageView *)v11->_accessoryView setTintColor:blackColor2];
 
-      v61 = [MEMORY[0x277D75348] clearColor];
-      [(UIImageView *)v11->_accessoryView setBackgroundColor:v61];
+      clearColor2 = [MEMORY[0x277D75348] clearColor];
+      [(UIImageView *)v11->_accessoryView setBackgroundColor:clearColor2];
 
       [(UIImageView *)v11->_accessoryView setTranslatesAutoresizingMaskIntoConstraints:0];
-      v62 = [(UIImageView *)v11->_accessoryView widthAnchor];
-      v63 = [v62 constraintEqualToConstant:v11->_accessoryDiameter + v54 * -2.0];
+      widthAnchor4 = [(UIImageView *)v11->_accessoryView widthAnchor];
+      v63 = [widthAnchor4 constraintEqualToConstant:v11->_accessoryDiameter + v54 * -2.0];
       [v63 setActive:1];
 
-      v64 = [(UIImageView *)v11->_accessoryView heightAnchor];
-      v65 = [v64 constraintEqualToConstant:v11->_accessoryDiameter + v54 * -2.0];
+      heightAnchor4 = [(UIImageView *)v11->_accessoryView heightAnchor];
+      v65 = [heightAnchor4 constraintEqualToConstant:v11->_accessoryDiameter + v54 * -2.0];
       [v65 setActive:1];
 
       [(UIImageView *)v11->_accessoryView setUserInteractionEnabled:0];
       [(PHBottomBarButton *)v11 insertSubview:v11->_accessoryView above:v11->_accessoryBackgroundView];
-      v66 = [(UIImageView *)v11->_accessoryView trailingAnchor];
-      v67 = [(PHBottomBarButton *)v11 trailingAnchor];
-      v68 = [v66 constraintEqualToAnchor:v67 constant:-v54];
+      trailingAnchor3 = [(UIImageView *)v11->_accessoryView trailingAnchor];
+      trailingAnchor4 = [(PHBottomBarButton *)v11 trailingAnchor];
+      v68 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4 constant:-v54];
       [v68 setActive:1];
 
-      v69 = [(UIImageView *)v11->_accessoryView bottomAnchor];
-      v70 = [(PHBottomBarButton *)v11 bottomAnchor];
-      v71 = [v69 constraintEqualToAnchor:v70 constant:-v54];
+      bottomAnchor3 = [(UIImageView *)v11->_accessoryView bottomAnchor];
+      bottomAnchor4 = [(PHBottomBarButton *)v11 bottomAnchor];
+      v71 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4 constant:-v54];
       [v71 setActive:1];
     }
   }
 
-  v72 = [(PHBottomBarButton *)v11 titleLabel];
-  [v72 setAdjustsFontSizeToFitWidth:0];
+  titleLabel = [(PHBottomBarButton *)v11 titleLabel];
+  [titleLabel setAdjustsFontSizeToFitWidth:0];
 
-  v73 = [(PHBottomBarButton *)v11 titleLabel];
-  [v73 setTextAlignment:1];
+  titleLabel2 = [(PHBottomBarButton *)v11 titleLabel];
+  [titleLabel2 setTextAlignment:1];
 
-  v74 = [objc_opt_class() defaultFont];
-  v75 = [(PHBottomBarButton *)v11 titleLabel];
-  [v75 setFont:v74];
+  defaultFont = [objc_opt_class() defaultFont];
+  titleLabel3 = [(PHBottomBarButton *)v11 titleLabel];
+  [titleLabel3 setFont:defaultFont];
 
-  v76 = [(PHBottomBarButton *)v11 titleLabel];
-  [v76 setLineBreakMode:4];
+  titleLabel4 = [(PHBottomBarButton *)v11 titleLabel];
+  [titleLabel4 setLineBreakMode:4];
 
   if ([MEMORY[0x277D3A7E0] inCallBottomBarMaxTitleSize] == 1)
   {
@@ -304,127 +304,127 @@ void __32__PHBottomBarButton_defaultFont__block_invoke()
     v77 = 105.0;
   }
 
-  v78 = [(PHBottomBarButton *)v11 titleLabel];
-  [v78 setPreferredMaxLayoutWidth:v77];
+  titleLabel5 = [(PHBottomBarButton *)v11 titleLabel];
+  [titleLabel5 setPreferredMaxLayoutWidth:v77];
 
   v79 = v11->_diameter * 0.5;
-  v80 = [(PHBottomBarButton *)v11 layer];
-  [v80 setCornerRadius:v79];
+  layer = [(PHBottomBarButton *)v11 layer];
+  [layer setCornerRadius:v79];
 
   [(PHBottomBarButton *)v11 setClipsToBounds:0];
   [(PHBottomBarButton *)v11 setAdjustsImageWhenHighlighted:0];
-  v81 = [v6 title];
-  [(PHBottomBarButton *)v11 setTitle:v81 forState:0];
+  title = [configurationCopy title];
+  [(PHBottomBarButton *)v11 setTitle:title forState:0];
 
   if (!v30 || !+[PHBottomBarButtonConfiguration usesGlass])
   {
-    v82 = [v6 icon];
-    [(PHBottomBarButton *)v11 setImage:v82 forState:0];
+    icon = [configurationCopy icon];
+    [(PHBottomBarButton *)v11 setImage:icon forState:0];
   }
 
-  v83 = [(PHBottomBarButton *)v11 titleLabel];
-  [v83 setNumberOfLines:0];
+  titleLabel6 = [(PHBottomBarButton *)v11 titleLabel];
+  [titleLabel6 setNumberOfLines:0];
 
-  v84 = [v6 backgroundColor];
-  [(PHBottomBarButton *)v11 setBackgroundColor:v84];
+  backgroundColor3 = [configurationCopy backgroundColor];
+  [(PHBottomBarButton *)v11 setBackgroundColor:backgroundColor3];
 
-  v85 = [MEMORY[0x277D75348] whiteColor];
-  [(PHBottomBarButton *)v11 setTintColor:v85];
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  [(PHBottomBarButton *)v11 setTintColor:whiteColor];
 
-  v86 = [v6 accessibilityIdentifier];
-  [(PHBottomBarButton *)v11 setAccessibilityIdentifier:v86];
+  accessibilityIdentifier = [configurationCopy accessibilityIdentifier];
+  [(PHBottomBarButton *)v11 setAccessibilityIdentifier:accessibilityIdentifier];
 
-  v87 = [v6 selectedIcon];
+  selectedIcon = [configurationCopy selectedIcon];
 
-  if (v87)
+  if (selectedIcon)
   {
-    v88 = [v6 selectedIcon];
-    [(PHBottomBarButton *)v11 setImage:v88 forState:4];
+    selectedIcon2 = [configurationCopy selectedIcon];
+    [(PHBottomBarButton *)v11 setImage:selectedIcon2 forState:4];
   }
 
-  if ([v6 action] == 12 || objc_msgSend(v6, "action") == 25 || objc_msgSend(v6, "action") == 26 || objc_msgSend(v6, "action") == 27 || objc_msgSend(v6, "action") == 13 || objc_msgSend(v6, "action") == 11 || objc_msgSend(v6, "action") == 10)
+  if ([configurationCopy action] == 12 || objc_msgSend(configurationCopy, "action") == 25 || objc_msgSend(configurationCopy, "action") == 26 || objc_msgSend(configurationCopy, "action") == 27 || objc_msgSend(configurationCopy, "action") == 13 || objc_msgSend(configurationCopy, "action") == 11 || objc_msgSend(configurationCopy, "action") == 10)
   {
-    v89 = [v6 colorEffect];
+    colorEffect = [configurationCopy colorEffect];
 
-    if (v89)
+    if (colorEffect)
     {
-      v90 = [v6 colorEffect];
+      colorEffect2 = [configurationCopy colorEffect];
       v91 = [MEMORY[0x277D75210] effectWithBlurRadius:40.0];
       v92 = [objc_alloc(MEMORY[0x277D75D68]) initWithEffect:0];
       [(PHBottomBarButton *)v11 setEffectView:v92];
 
-      v126[0] = v90;
+      v126[0] = colorEffect2;
       v126[1] = v91;
       v93 = [MEMORY[0x277CBEA60] arrayWithObjects:v126 count:2];
-      v94 = [(PHBottomBarButton *)v11 effectView];
-      [v94 setBackgroundEffects:v93];
+      effectView = [(PHBottomBarButton *)v11 effectView];
+      [effectView setBackgroundEffects:v93];
 
-      v95 = [(PHBottomBarButton *)v11 effectView];
-      [v95 _setGroupName:@"PHBottomBarButtonCaptureGroup"];
+      effectView2 = [(PHBottomBarButton *)v11 effectView];
+      [effectView2 _setGroupName:@"PHBottomBarButtonCaptureGroup"];
 
-      v96 = [v6 captureView];
-      v97 = [(PHBottomBarButton *)v11 effectView];
-      [v97 _setCaptureView:v96];
+      captureView = [configurationCopy captureView];
+      effectView3 = [(PHBottomBarButton *)v11 effectView];
+      [effectView3 _setCaptureView:captureView];
     }
 
-    v98 = [(PHBottomBarButton *)v11 effectView];
-    [v98 setAutoresizingMask:18];
+    effectView4 = [(PHBottomBarButton *)v11 effectView];
+    [effectView4 setAutoresizingMask:18];
 
-    v99 = [(PHBottomBarButton *)v11 layer];
-    [v99 cornerRadius];
+    layer2 = [(PHBottomBarButton *)v11 layer];
+    [layer2 cornerRadius];
     v101 = v100;
-    v102 = [(PHBottomBarButton *)v11 effectView];
-    v103 = [v102 layer];
-    [v103 setCornerRadius:v101];
+    effectView5 = [(PHBottomBarButton *)v11 effectView];
+    layer3 = [effectView5 layer];
+    [layer3 setCornerRadius:v101];
 
-    v104 = [(PHBottomBarButton *)v11 effectView];
-    [v104 setClipsToBounds:1];
+    effectView6 = [(PHBottomBarButton *)v11 effectView];
+    [effectView6 setClipsToBounds:1];
 
-    v105 = [(PHBottomBarButton *)v11 effectView];
-    v106 = [(PHBottomBarButton *)v11 imageView];
-    [(PHBottomBarButton *)v11 insertSubview:v105 belowSubview:v106];
+    effectView7 = [(PHBottomBarButton *)v11 effectView];
+    imageView3 = [(PHBottomBarButton *)v11 imageView];
+    [(PHBottomBarButton *)v11 insertSubview:effectView7 belowSubview:imageView3];
     goto LABEL_33;
   }
 
-  v114 = [v6 backgroundMaterial];
+  backgroundMaterial = [configurationCopy backgroundMaterial];
 
-  if (v114)
+  if (backgroundMaterial)
   {
     v115 = objc_alloc(MEMORY[0x277D75D68]);
-    v116 = [v6 backgroundMaterial];
-    v117 = [v115 initWithEffect:v116];
+    backgroundMaterial2 = [configurationCopy backgroundMaterial];
+    v117 = [v115 initWithEffect:backgroundMaterial2];
     [(PHBottomBarButton *)v11 setEffectView:v117];
 
-    v118 = [(PHBottomBarButton *)v11 effectView];
-    [v118 setAutoresizingMask:18];
+    effectView8 = [(PHBottomBarButton *)v11 effectView];
+    [effectView8 setAutoresizingMask:18];
 
-    v119 = [(PHBottomBarButton *)v11 layer];
-    [v119 cornerRadius];
+    layer4 = [(PHBottomBarButton *)v11 layer];
+    [layer4 cornerRadius];
     v121 = v120;
-    v122 = [(PHBottomBarButton *)v11 effectView];
-    v123 = [v122 layer];
-    [v123 setCornerRadius:v121];
+    effectView9 = [(PHBottomBarButton *)v11 effectView];
+    layer5 = [effectView9 layer];
+    [layer5 setCornerRadius:v121];
 
-    v124 = [(PHBottomBarButton *)v11 effectView];
-    [v124 setClipsToBounds:1];
+    effectView10 = [(PHBottomBarButton *)v11 effectView];
+    [effectView10 setClipsToBounds:1];
 
-    v105 = [(PHBottomBarButton *)v11 effectView];
-    v106 = [(PHBottomBarButton *)v11 imageView];
-    [(PHBottomBarButton *)v11 insertSubview:v105 below:v106];
+    effectView7 = [(PHBottomBarButton *)v11 effectView];
+    imageView3 = [(PHBottomBarButton *)v11 imageView];
+    [(PHBottomBarButton *)v11 insertSubview:effectView7 below:imageView3];
 LABEL_33:
   }
 
-  -[UIView setAction:](v11, "setAction:", [v6 action]);
-  if ([v6 action] == 38)
+  -[UIView setAction:](v11, "setAction:", [configurationCopy action]);
+  if ([configurationCopy action] == 38)
   {
-    v107 = [v6 icon];
-    [v107 size];
+    icon2 = [configurationCopy icon];
+    [icon2 size];
     v109 = v108;
-    v110 = [v6 icon];
-    [v110 size];
+    icon3 = [configurationCopy icon];
+    [icon3 size];
     [(PHBottomBarButton *)v11 setIconSizeRatio:v109 / v111];
 
-    -[PHBottomBarButton setActionType:](v11, "setActionType:", [v6 action]);
+    -[PHBottomBarButton setActionType:](v11, "setActionType:", [configurationCopy action]);
   }
 
 LABEL_36:
@@ -433,62 +433,62 @@ LABEL_36:
   return v11;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  v4 = self;
+  selfCopy = self;
   v11.receiver = self;
   v11.super_class = PHBottomBarButton;
-  v5 = [(PHBottomBarButton *)&v11 hitTest:a4 withEvent:a3.x, a3.y];
-  if ([(PHBottomBarButton *)v4 appType]!= 2 || !v5 || ([(PHBottomBarButton *)v4 effectView], (v6 = objc_claimAutoreleasedReturnValue()) == 0) || (v7 = v6, [(PHBottomBarButton *)v4 effectView], v8 = objc_claimAutoreleasedReturnValue(), v8, v7, v5 != v8))
+  v5 = [(PHBottomBarButton *)&v11 hitTest:event withEvent:test.x, test.y];
+  if ([(PHBottomBarButton *)selfCopy appType]!= 2 || !v5 || ([(PHBottomBarButton *)selfCopy effectView], (v6 = objc_claimAutoreleasedReturnValue()) == 0) || (v7 = v6, [(PHBottomBarButton *)selfCopy effectView], v8 = objc_claimAutoreleasedReturnValue(), v8, v7, v5 != v8))
   {
-    v4 = v5;
+    selfCopy = v5;
   }
 
-  v9 = v4;
+  v9 = selfCopy;
 
-  return v4;
+  return selfCopy;
 }
 
-- (void)setOrientation:(int64_t)a3
+- (void)setOrientation:(int64_t)orientation
 {
-  if (self->_orientation != a3)
+  if (self->_orientation != orientation)
   {
     v5 = *(MEMORY[0x277CBF2C0] + 16);
     *&v9.a = *MEMORY[0x277CBF2C0];
     *&v9.c = v5;
     *&v9.tx = *(MEMORY[0x277CBF2C0] + 32);
-    if ((a3 - 2) <= 2)
+    if ((orientation - 2) <= 2)
     {
-      CGAffineTransformMakeRotation(&v9, dbl_2429ED110[a3 - 2]);
+      CGAffineTransformMakeRotation(&v9, dbl_2429ED110[orientation - 2]);
     }
 
-    self->_orientation = a3;
+    self->_orientation = orientation;
     v8 = v9;
-    v6 = [(PHBottomBarButton *)self imageView];
+    imageView = [(PHBottomBarButton *)self imageView];
     v7 = v8;
-    [v6 setTransform:&v7];
+    [imageView setTransform:&v7];
   }
 }
 
-- (void)setUsesSmallerFontSize:(BOOL)a3
+- (void)setUsesSmallerFontSize:(BOOL)size
 {
-  self->_usesSmallerFontSize = a3;
+  self->_usesSmallerFontSize = size;
   v5 = [MEMORY[0x277D74300] systemFontOfSize:10.0];
-  v4 = [(PHBottomBarButton *)self titleLabel];
-  [v4 setFont:v5];
+  titleLabel = [(PHBottomBarButton *)self titleLabel];
+  [titleLabel setFont:v5];
 }
 
-- (CGRect)imageRectForContentRect:(CGRect)a3
+- (CGRect)imageRectForContentRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
+  height = rect.size.height;
+  width = rect.size.width;
   v20.receiver = self;
   v20.super_class = PHBottomBarButton;
-  [(PHBottomBarButton *)&v20 imageRectForContentRect:a3.origin.x, a3.origin.y];
+  [(PHBottomBarButton *)&v20 imageRectForContentRect:rect.origin.x, rect.origin.y];
   v7 = v6;
   v9 = v8;
-  v10 = [(PHBottomBarButton *)self orientation];
-  if ((v10 - 3) >= 2)
+  orientation = [(PHBottomBarButton *)self orientation];
+  if ((orientation - 3) >= 2)
   {
     v11 = v9;
   }
@@ -498,15 +498,15 @@ LABEL_36:
     v11 = v7;
   }
 
-  if ((v10 - 3) < 2)
+  if ((orientation - 3) < 2)
   {
     v7 = v9;
   }
 
   x = width * 0.5 - v7 * 0.5;
   y = height * 0.5 - v11 * 0.5;
-  v14 = [MEMORY[0x277D759A0] mainScreen];
-  [v14 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   if (v15 == 1.0)
   {
     v21.origin.x = x;
@@ -531,26 +531,26 @@ LABEL_36:
   return result;
 }
 
-- (CGRect)titleRectForContentRect:(CGRect)a3
+- (CGRect)titleRectForContentRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
+  height = rect.size.height;
+  width = rect.size.width;
   v44[1] = *MEMORY[0x277D85DE8];
   v7 = *MEMORY[0x277CBF3A0];
   v6 = *(MEMORY[0x277CBF3A0] + 8);
   v8 = *(MEMORY[0x277CBF3A0] + 16);
   v9 = *(MEMORY[0x277CBF3A0] + 24);
-  v10 = [(PHBottomBarButton *)self currentTitle:a3.origin.x];
+  v10 = [(PHBottomBarButton *)self currentTitle:rect.origin.x];
   if (v10)
   {
     v11 = v10;
-    v12 = [(PHBottomBarButton *)self currentTitle];
-    v13 = [v12 length];
+    currentTitle = [(PHBottomBarButton *)self currentTitle];
+    v13 = [currentTitle length];
 
     if (v13)
     {
-      v14 = [(PHBottomBarButton *)self titleLabel];
-      [v14 preferredMaxLayoutWidth];
+      titleLabel = [(PHBottomBarButton *)self titleLabel];
+      [titleLabel preferredMaxLayoutWidth];
       v16 = v15;
       if ([(PHBottomBarButton *)self actionType]== 38)
       {
@@ -562,25 +562,25 @@ LABEL_36:
         v17 = v16;
       }
 
-      v18 = [v14 font];
-      v19 = v18;
-      if (v18)
+      font = [titleLabel font];
+      v19 = font;
+      if (font)
       {
-        v20 = v18;
+        defaultFont = font;
       }
 
       else
       {
-        v20 = [objc_opt_class() defaultFont];
+        defaultFont = [objc_opt_class() defaultFont];
       }
 
-      v21 = v20;
+      v21 = defaultFont;
 
       v43 = *MEMORY[0x277D740A8];
       v44[0] = v21;
       v22 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v44 forKeys:&v43 count:1];
-      v23 = [(PHBottomBarButton *)self currentTitle];
-      [v23 boundingRectWithSize:1 options:v22 attributes:0 context:{3.40282347e38, 3.40282347e38}];
+      currentTitle2 = [(PHBottomBarButton *)self currentTitle];
+      [currentTitle2 boundingRectWithSize:1 options:v22 attributes:0 context:{3.40282347e38, 3.40282347e38}];
       v25 = v24;
       v27 = v26;
 
@@ -597,8 +597,8 @@ LABEL_36:
 
       if (v8 == v17)
       {
-        v29 = [(PHBottomBarButton *)self currentTitle];
-        [v29 boundingRectWithSize:1 options:v22 attributes:0 context:{v17, 3.40282347e38}];
+        currentTitle3 = [(PHBottomBarButton *)self currentTitle];
+        [currentTitle3 boundingRectWithSize:1 options:v22 attributes:0 context:{v17, 3.40282347e38}];
         v31 = v30;
 
         v32 = ceil(v31);
@@ -619,9 +619,9 @@ LABEL_36:
       }
 
       v33 = ceil(width * 0.5 - v8 * 0.5);
-      v34 = [(PHBottomBarButton *)self actionType];
+      actionType = [(PHBottomBarButton *)self actionType];
       v35 = ceil((width + -15.0) * 0.5 - v8 * 0.5);
-      if (v34 == 38)
+      if (actionType == 38)
       {
         v7 = v35;
       }
@@ -635,7 +635,7 @@ LABEL_36:
       v37 = height + v36;
       if (v8 == v17 && v9 == 45.0)
       {
-        [v14 setAdjustsFontSizeToFitWidth:1];
+        [titleLabel setAdjustsFontSizeToFitWidth:1];
       }
 
       v6 = ceil(v37);
@@ -672,14 +672,14 @@ uint64_t __37__PHBottomBarButton_titleRectYOffset__block_invoke()
   if ([(UIView *)self action]== 4 || [(UIView *)self action]== 5 || [(UIView *)self action]== 6 || [(UIView *)self action]== 38)
   {
     v3 = objc_alloc(MEMORY[0x277D755E8]);
-    v4 = [(PHBottomBarButton *)self imageView];
-    v5 = [v4 image];
-    v6 = [MEMORY[0x277D75348] blackColor];
-    v7 = [v5 _flatImageWithColor:v6];
+    imageView = [(PHBottomBarButton *)self imageView];
+    image = [imageView image];
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    v7 = [image _flatImageWithColor:blackColor];
     v8 = [v3 initWithImage:v7];
 
-    v9 = [MEMORY[0x277D75348] clearColor];
-    [v8 setBackgroundColor:v9];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [v8 setBackgroundColor:clearColor];
 
     [(PHBottomBarButton *)self frame];
     [(PHBottomBarButton *)self imageRectForContentRect:?];
@@ -691,13 +691,13 @@ uint64_t __37__PHBottomBarButton_titleRectYOffset__block_invoke()
     v11 = objc_alloc(MEMORY[0x277D75D18]);
     [(PHBottomBarButton *)self bounds];
     v8 = [v11 initWithFrame:?];
-    v12 = [MEMORY[0x277D75348] blackColor];
-    [v8 setBackgroundColor:v12];
+    blackColor2 = [MEMORY[0x277D75348] blackColor];
+    [v8 setBackgroundColor:blackColor2];
 
     [(PHBottomBarButton *)self frame];
     v14 = v13 * 0.5;
-    v15 = [v8 layer];
-    [v15 setCornerRadius:v14];
+    layer = [v8 layer];
+    [layer setCornerRadius:v14];
   }
 
   [v8 setAlpha:0.400000006];
@@ -705,12 +705,12 @@ uint64_t __37__PHBottomBarButton_titleRectYOffset__block_invoke()
   return v8;
 }
 
-- (void)_performSetEnabled:(BOOL)a3
+- (void)_performSetEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   if ([(UIView *)self action]== 9 || [(UIView *)self action]== 12)
   {
-    if (v3)
+    if (enabledCopy)
     {
       v5 = 1.0;
     }
@@ -720,36 +720,36 @@ uint64_t __37__PHBottomBarButton_titleRectYOffset__block_invoke()
       v5 = 0.3;
     }
 
-    v6 = [MEMORY[0x277D75348] whiteColor];
-    v7 = [v6 colorWithAlphaComponent:v5];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    v7 = [whiteColor colorWithAlphaComponent:v5];
     [(PHBottomBarButton *)self setTintColor:v7];
   }
 
-  if (v3)
+  if (enabledCopy)
   {
     if ([(PHBottomBarButton *)self canBeEnabled])
     {
       [(PHBottomBarButton *)self setAlpha:1.0];
       if ([(UIView *)self action]== 1 || [(UIView *)self action]== 3)
       {
-        v8 = [MEMORY[0x277D75348] systemGreenColor];
+        systemGreenColor = [MEMORY[0x277D75348] systemGreenColor];
       }
 
       else
       {
-        v8 = [MEMORY[0x277D75348] systemRedColor];
+        systemGreenColor = [MEMORY[0x277D75348] systemRedColor];
       }
 
-      v9 = v8;
-      [(PHBottomBarButton *)self setBackgroundColor:v8];
+      v9 = systemGreenColor;
+      [(PHBottomBarButton *)self setBackgroundColor:systemGreenColor];
 
-      v10 = [(PHBottomBarButton *)self layer];
-      [v10 setCompositingFilter:0];
+      layer = [(PHBottomBarButton *)self layer];
+      [layer setCompositingFilter:0];
 
-      v11 = [(PHBottomBarButton *)self imageView];
-      v12 = [v11 image];
-      v13 = [MEMORY[0x277D75348] whiteColor];
-      v14 = [v12 _flatImageWithColor:v13];
+      imageView = [(PHBottomBarButton *)self imageView];
+      image = [imageView image];
+      whiteColor2 = [MEMORY[0x277D75348] whiteColor];
+      v14 = [image _flatImageWithColor:whiteColor2];
 
       [(PHBottomBarButton *)self setImage:v14 forState:0];
     }
@@ -765,18 +765,18 @@ uint64_t __37__PHBottomBarButton_titleRectYOffset__block_invoke()
 - (void)_performSetDisabled
 {
   [(PHBottomBarButton *)self setAlpha:0.0500000007];
-  v3 = [(PHBottomBarButton *)self imageView];
-  v4 = [v3 image];
-  v5 = [MEMORY[0x277D75348] blackColor];
-  v8 = [v4 _flatImageWithColor:v5];
+  imageView = [(PHBottomBarButton *)self imageView];
+  image = [imageView image];
+  blackColor = [MEMORY[0x277D75348] blackColor];
+  v8 = [image _flatImageWithColor:blackColor];
 
   [(PHBottomBarButton *)self setImage:v8 forState:0];
   [(PHBottomBarButton *)self setImage:v8 forState:2];
-  v6 = [(PHBottomBarButton *)self layer];
-  [v6 setAllowsGroupBlending:0];
+  layer = [(PHBottomBarButton *)self layer];
+  [layer setAllowsGroupBlending:0];
 
-  v7 = [(PHBottomBarButton *)self layer];
-  [v7 setAllowsGroupOpacity:0];
+  layer2 = [(PHBottomBarButton *)self layer];
+  [layer2 setAllowsGroupOpacity:0];
 }
 
 - (BOOL)canBeEnabled
@@ -786,41 +786,41 @@ uint64_t __37__PHBottomBarButton_titleRectYOffset__block_invoke()
     goto LABEL_3;
   }
 
-  v3 = [(UIView *)self action];
-  if (v3 == 1)
+  action = [(UIView *)self action];
+  if (action == 1)
   {
-    return v3;
+    return action;
   }
 
   if ([(UIView *)self action]== 7 || [(UIView *)self action]== 3)
   {
 LABEL_3:
-    LOBYTE(v3) = 1;
+    LOBYTE(action) = 1;
   }
 
   else
   {
-    LOBYTE(v3) = [(UIView *)self action]== 8;
+    LOBYTE(action) = [(UIView *)self action]== 8;
   }
 
-  return v3;
+  return action;
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  if ((((self->_overlayView == 0) ^ a3) & 1) == 0)
+  if ((((self->_overlayView == 0) ^ highlighted) & 1) == 0)
   {
     [(PHBottomBarButton *)self _performSetHighlighted:?];
   }
 }
 
-- (void)_performSetHighlighted:(BOOL)a3
+- (void)_performSetHighlighted:(BOOL)highlighted
 {
-  if (a3)
+  if (highlighted)
   {
-    v4 = [(PHBottomBarButton *)self newOverlayView];
+    newOverlayView = [(PHBottomBarButton *)self newOverlayView];
     overlayView = self->_overlayView;
-    self->_overlayView = v4;
+    self->_overlayView = newOverlayView;
 
     v6 = self->_overlayView;
 
@@ -854,57 +854,57 @@ LABEL_3:
     v15 = v10;
     v12 = v10;
     [v11 setCompletionBlock:v14];
-    v13 = [(UIView *)self->_overlayView layer];
-    [v13 addAnimation:v8 forKey:@"opacityAnimation"];
+    layer = [(UIView *)self->_overlayView layer];
+    [layer addAnimation:v8 forKey:@"opacityAnimation"];
 
     [MEMORY[0x277CD9FF0] commit];
   }
 }
 
-- (void)_performSetSelected:(BOOL)a3
+- (void)_performSetSelected:(BOOL)selected
 {
-  if (a3)
+  if (selected)
   {
-    v4 = [(PHBottomBarButton *)self backgroundColor];
-    [(PHBottomBarButton *)self setOriginalBackgroundColor:v4];
+    backgroundColor = [(PHBottomBarButton *)self backgroundColor];
+    [(PHBottomBarButton *)self setOriginalBackgroundColor:backgroundColor];
 
-    v6 = [(PHBottomBarButton *)self backgroundColor];
-    v5 = [v6 colorWithAlphaComponent:1.0];
+    backgroundColor2 = [(PHBottomBarButton *)self backgroundColor];
+    v5 = [backgroundColor2 colorWithAlphaComponent:1.0];
     [(PHBottomBarButton *)self setBackgroundColor:v5];
   }
 
   else
   {
-    v6 = [(PHBottomBarButton *)self originalBackgroundColor];
+    backgroundColor2 = [(PHBottomBarButton *)self originalBackgroundColor];
     [(PHBottomBarButton *)self setBackgroundColor:?];
   }
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
-  v6 = a3;
+  colorCopy = color;
   if (+[PHBottomBarButtonConfiguration usesGlass])
   {
     if (!self->_iconView)
     {
-      v4 = [MEMORY[0x277D75348] clearColor];
+      clearColor = [MEMORY[0x277D75348] clearColor];
 
       roundView = self->_roundView;
-      if (v4 == v6)
+      if (clearColor == colorCopy)
       {
         [(UIView *)roundView dialer_applySmallClearGlassBackground];
       }
 
       else
       {
-        [(UIView *)roundView dialer_applySmallClearGlassBackgroundWithTintColor:v6];
+        [(UIView *)roundView dialer_applySmallClearGlassBackgroundWithTintColor:colorCopy];
       }
     }
   }
 
   else
   {
-    [(UIView *)self->_roundView setBackgroundColor:v6];
+    [(UIView *)self->_roundView setBackgroundColor:colorCopy];
   }
 }
 
@@ -932,21 +932,21 @@ LABEL_3:
     [v3 addObject:v9];
   }
 
-  v10 = [(PHBottomBarButton *)self imageView];
+  imageView = [(PHBottomBarButton *)self imageView];
 
-  if (v10)
+  if (imageView)
   {
-    v11 = [(PHBottomBarButton *)self imageView];
-    v12 = [PHAmbientButtonPart partWithView:v11 type:1];
+    imageView2 = [(PHBottomBarButton *)self imageView];
+    v12 = [PHAmbientButtonPart partWithView:imageView2 type:1];
     [v3 addObject:v12];
   }
 
-  v13 = [(PHBottomBarButton *)self titleLabel];
+  titleLabel = [(PHBottomBarButton *)self titleLabel];
 
-  if (v13)
+  if (titleLabel)
   {
-    v14 = [(PHBottomBarButton *)self titleLabel];
-    v15 = [PHAmbientButtonPart partWithView:v14 type:2];
+    titleLabel2 = [(PHBottomBarButton *)self titleLabel];
+    v15 = [PHAmbientButtonPart partWithView:titleLabel2 type:2];
     [v3 addObject:v15];
   }
 
@@ -967,18 +967,18 @@ LABEL_3:
   return v3;
 }
 
-- (id)overlayViewForConfiguration:(id)a3
+- (id)overlayViewForConfiguration:(id)configuration
 {
-  v3 = a3;
-  v4 = [v3 callState];
-  v5 = [v3 action];
+  configurationCopy = configuration;
+  callState = [configurationCopy callState];
+  action = [configurationCopy action];
 
   v6 = 0;
-  if (v5 > 5)
+  if (action > 5)
   {
-    if (v5 != 6)
+    if (action != 6)
     {
-      if (v5 != 38)
+      if (action != 38)
       {
         goto LABEL_11;
       }
@@ -986,24 +986,24 @@ LABEL_3:
       goto LABEL_10;
     }
 
-    if (v4 > 2)
+    if (callState > 2)
     {
-      if (v4 == 4)
+      if (callState == 4)
       {
 LABEL_32:
         v6 = +[PHGlassCutoutCirclesOverlayViewController makeHoldAndAcceptButtonCircleView];
         goto LABEL_11;
       }
 
-      if (v4 != 3)
+      if (callState != 3)
       {
         goto LABEL_10;
       }
     }
 
-    else if (v4 != 1)
+    else if (callState != 1)
     {
-      if (v4 != 2)
+      if (callState != 2)
       {
         goto LABEL_10;
       }
@@ -1015,18 +1015,18 @@ LABEL_32:
     goto LABEL_11;
   }
 
-  if (v5 != 4)
+  if (action != 4)
   {
-    if (v5 != 5)
+    if (action != 5)
     {
       goto LABEL_11;
     }
 
-    if (v4 <= 2)
+    if (callState <= 2)
     {
-      if (v4 != 1)
+      if (callState != 1)
       {
-        if (v4 != 2)
+        if (callState != 2)
         {
           goto LABEL_10;
         }
@@ -1037,14 +1037,14 @@ LABEL_32:
       goto LABEL_24;
     }
 
-    if (v4 == 4)
+    if (callState == 4)
     {
 LABEL_31:
       v6 = +[PHGlassCutoutCirclesOverlayViewController makeEndHoldAndAcceptButtonCircleView];
       goto LABEL_11;
     }
 
-    if (v4 == 3)
+    if (callState == 3)
     {
 LABEL_24:
       v6 = +[PHGlassCutoutCirclesOverlayViewController makeEndHoldAcceptVoipButtonCircleView];
@@ -1056,11 +1056,11 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  if (v4 > 2)
+  if (callState > 2)
   {
-    if (v4 != 3)
+    if (callState != 3)
     {
-      if (v4 == 4)
+      if (callState == 4)
       {
         v6 = +[PHGlassCutoutCirclesOverlayViewController makeEndVoipAcceptButtonCircleView];
         goto LABEL_11;
@@ -1074,9 +1074,9 @@ LABEL_10:
 
   else
   {
-    if (v4 != 1)
+    if (callState != 1)
     {
-      if (v4 == 2)
+      if (callState == 2)
       {
         v6 = +[PHGlassCutoutCirclesOverlayViewController makeEndAndAcceptButtonCircleView];
         goto LABEL_11;
@@ -1093,28 +1093,28 @@ LABEL_11:
   return v6;
 }
 
-- (void)refreshForCallState:(int64_t)a3
+- (void)refreshForCallState:(int64_t)state
 {
   v5 = [PHBottomBarButtonConfiguration alloc];
-  v6 = [(UIView *)self action];
+  action = [(UIView *)self action];
   [(PHBottomBarButton *)self diameter];
-  v7 = [(PHBottomBarButtonConfiguration *)v5 initWithAction:v6 diameter:a3 callState:?];
-  v8 = [(PHBottomBarButtonConfiguration *)v7 icon];
-  [(PHBottomBarButton *)self setImage:v8 forState:0];
+  v7 = [(PHBottomBarButtonConfiguration *)v5 initWithAction:action diameter:state callState:?];
+  icon = [(PHBottomBarButtonConfiguration *)v7 icon];
+  [(PHBottomBarButton *)self setImage:icon forState:0];
 
-  v9 = [(PHBottomBarButtonConfiguration *)v7 backgroundColor];
-  [(PHBottomBarButton *)self setBackgroundColor:v9];
+  backgroundColor = [(PHBottomBarButtonConfiguration *)v7 backgroundColor];
+  [(PHBottomBarButton *)self setBackgroundColor:backgroundColor];
 
-  v10 = [(PHBottomBarButtonConfiguration *)v7 selectedIcon];
+  selectedIcon = [(PHBottomBarButtonConfiguration *)v7 selectedIcon];
 
-  if (v10)
+  if (selectedIcon)
   {
-    v11 = [(PHBottomBarButtonConfiguration *)v7 selectedIcon];
-    [(PHBottomBarButton *)self setImage:v11 forState:4];
+    selectedIcon2 = [(PHBottomBarButtonConfiguration *)v7 selectedIcon];
+    [(PHBottomBarButton *)self setImage:selectedIcon2 forState:4];
   }
 
-  v12 = [(PHBottomBarButton *)self imageView];
-  v13 = [v12 layer];
+  imageView = [(PHBottomBarButton *)self imageView];
+  layer = [imageView layer];
   v14 = *(MEMORY[0x277CD9DE8] + 80);
   v18[4] = *(MEMORY[0x277CD9DE8] + 64);
   v18[5] = v14;
@@ -1127,7 +1127,7 @@ LABEL_11:
   v17 = *(MEMORY[0x277CD9DE8] + 48);
   v18[2] = *(MEMORY[0x277CD9DE8] + 32);
   v18[3] = v17;
-  [v13 setTransform:v18];
+  [layer setTransform:v18];
 }
 
 - (CGSize)buttonSize

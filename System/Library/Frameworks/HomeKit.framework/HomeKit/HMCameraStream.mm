@@ -1,30 +1,30 @@
 @interface HMCameraStream
 + (id)logCategory;
 - (HMCameraStream)init;
-- (HMCameraStream)initWithProfileUniqueIdentifier:(id)a3 slotIdentifier:(id)a4 aspectRatio:(double)a5 sessionID:(id)a6 audioStreamSetting:(unint64_t)a7 audioDownlinkToken:(int64_t)a8 audioUplinkToken:(int64_t)a9;
-- (void)_handleAudioStreamSettingUpdate:(unint64_t)a3 withError:(id)a4 context:(id)a5 completionHandler:(id)a6;
-- (void)_issueUpdateAudioStreamSettingRequest:(unint64_t)a3 completionHandler:(id)a4;
-- (void)_updateAudioStreamSetting:(unint64_t)a3 completionHandler:(id)a4;
-- (void)_updateAudioVolume:(id)a3 completionHandler:(id)a4;
-- (void)_updateMaximumVideoResolutionQuality:(int64_t)a3 completionHandler:(id)a4;
+- (HMCameraStream)initWithProfileUniqueIdentifier:(id)identifier slotIdentifier:(id)slotIdentifier aspectRatio:(double)ratio sessionID:(id)d audioStreamSetting:(unint64_t)setting audioDownlinkToken:(int64_t)token audioUplinkToken:(int64_t)uplinkToken;
+- (void)_handleAudioStreamSettingUpdate:(unint64_t)update withError:(id)error context:(id)context completionHandler:(id)handler;
+- (void)_issueUpdateAudioStreamSettingRequest:(unint64_t)request completionHandler:(id)handler;
+- (void)_updateAudioStreamSetting:(unint64_t)setting completionHandler:(id)handler;
+- (void)_updateAudioVolume:(id)volume completionHandler:(id)handler;
+- (void)_updateMaximumVideoResolutionQuality:(int64_t)quality completionHandler:(id)handler;
 - (void)dealloc;
 - (void)updateAudioStreamSetting:(HMCameraAudioStreamSetting)audioStreamSetting completionHandler:(void *)completion;
-- (void)updateAudioVolume:(id)a3 completionHandler:(id)a4;
-- (void)updateMaximumVideoResolutionQuality:(int64_t)a3 completionHandler:(id)a4;
+- (void)updateAudioVolume:(id)volume completionHandler:(id)handler;
+- (void)updateMaximumVideoResolutionQuality:(int64_t)quality completionHandler:(id)handler;
 @end
 
 @implementation HMCameraStream
 
-- (void)_updateMaximumVideoResolutionQuality:(int64_t)a3 completionHandler:(id)a4
+- (void)_updateMaximumVideoResolutionQuality:(int64_t)quality completionHandler:(id)handler
 {
   v46 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [(HMCameraSource *)self context];
-  if (!v6)
+  handlerCopy = handler;
+  context = [(HMCameraSource *)self context];
+  if (!handlerCopy)
   {
     v31 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s: %@ cannot be nil", "-[HMCameraStream _updateMaximumVideoResolutionQuality:completionHandler:]", @"completion"];
     v32 = objc_autoreleasePoolPush();
-    v33 = self;
+    selfCopy = self;
     v34 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
     {
@@ -32,7 +32,7 @@
       *buf = 138543618;
       v43 = v35;
       v44 = 2112;
-      v45 = v31;
+      qualityCopy = v31;
       _os_log_impl(&dword_19BB39000, v34, OS_LOG_TYPE_ERROR, "%{public}@%@", buf, 0x16u);
     }
 
@@ -41,9 +41,9 @@
     objc_exception_throw(v36);
   }
 
-  v8 = v7;
+  v8 = context;
   v9 = objc_autoreleasePoolPush();
-  v10 = self;
+  selfCopy2 = self;
   v11 = HMFGetOSLogHandle();
   v12 = v11;
   if (v8)
@@ -54,51 +54,51 @@
       *buf = 138543618;
       v43 = v13;
       v44 = 2048;
-      v45 = a3;
+      qualityCopy = quality;
       _os_log_impl(&dword_19BB39000, v12, OS_LOG_TYPE_INFO, "%{public}@Updating stream video resolution quality to: %lu", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v9);
     v40[0] = @"kCameraSessionID";
-    v14 = [(HMCameraStream *)v10 sessionID];
+    sessionID = [(HMCameraStream *)selfCopy2 sessionID];
     v40[1] = @"HMCameraStreamVideoResolutionQualityMessageKey";
-    v41[0] = v14;
-    v15 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+    v41[0] = sessionID;
+    v15 = [MEMORY[0x1E696AD98] numberWithInteger:quality];
     v41[1] = v15;
     v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v41 forKeys:v40 count:2];
 
     v17 = objc_alloc(MEMORY[0x1E69A2A10]);
     v18 = objc_alloc(MEMORY[0x1E69A2A00]);
-    v19 = [(HMCameraSource *)v10 profileUniqueIdentifier];
-    v20 = [v18 initWithTarget:v19];
+    profileUniqueIdentifier = [(HMCameraSource *)selfCopy2 profileUniqueIdentifier];
+    v20 = [v18 initWithTarget:profileUniqueIdentifier];
     v21 = [v17 initWithName:@"HMCameraStreamUpdateMaximumVideoResolutionQualityMessage" destination:v20 payload:v16];
 
     v37[0] = MEMORY[0x1E69E9820];
     v37[1] = 3221225472;
     v37[2] = __73__HMCameraStream__updateMaximumVideoResolutionQuality_completionHandler___block_invoke;
     v37[3] = &unk_1E754E480;
-    v37[4] = v10;
+    v37[4] = selfCopy2;
     v22 = v8;
     v38 = v22;
-    v39 = v6;
+    v39 = handlerCopy;
     [v21 setResponseHandler:v37];
     v23 = objc_autoreleasePoolPush();
-    v24 = v10;
+    v24 = selfCopy2;
     v25 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
     {
       v26 = HMFGetLogIdentifier();
-      v27 = [(HMCameraStream *)v24 sessionID];
+      sessionID2 = [(HMCameraStream *)v24 sessionID];
       *buf = 138543618;
       v43 = v26;
       v44 = 2112;
-      v45 = v27;
+      qualityCopy = sessionID2;
       _os_log_impl(&dword_19BB39000, v25, OS_LOG_TYPE_INFO, "%{public}@Sending update video resolution quality message for session ID: %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v23);
-    v28 = [v22 messageDispatcher];
-    [v28 sendMessage:v21];
+    messageDispatcher = [v22 messageDispatcher];
+    [messageDispatcher sendMessage:v21];
   }
 
   else
@@ -109,13 +109,13 @@
       *buf = 138543618;
       v43 = v29;
       v44 = 2080;
-      v45 = "[HMCameraStream _updateMaximumVideoResolutionQuality:completionHandler:]";
+      qualityCopy = "[HMCameraStream _updateMaximumVideoResolutionQuality:completionHandler:]";
       _os_log_impl(&dword_19BB39000, v12, OS_LOG_TYPE_ERROR, "%{public}@Nil context, invoking completion - %s", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v9);
     v16 = [MEMORY[0x1E696ABC0] hmErrorWithCode:12];
-    (*(v6 + 2))(v6, v16);
+    (*(handlerCopy + 2))(handlerCopy, v16);
   }
 
   v30 = *MEMORY[0x1E69E9840];
@@ -167,17 +167,17 @@ LABEL_6:
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_handleAudioStreamSettingUpdate:(unint64_t)a3 withError:(id)a4 context:(id)a5 completionHandler:(id)a6
+- (void)_handleAudioStreamSettingUpdate:(unint64_t)update withError:(id)error context:(id)context completionHandler:(id)handler
 {
   v26 = *MEMORY[0x1E69E9840];
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  errorCopy = error;
+  contextCopy = context;
+  handlerCopy = handler;
   v13 = objc_autoreleasePoolPush();
-  v14 = self;
+  selfCopy = self;
   v15 = HMFGetOSLogHandle();
   v16 = v15;
-  if (v10)
+  if (errorCopy)
   {
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
@@ -185,7 +185,7 @@ LABEL_6:
       v22 = 138543618;
       v23 = v17;
       v24 = 2112;
-      v25 = v10;
+      v25 = errorCopy;
       _os_log_impl(&dword_19BB39000, v16, OS_LOG_TYPE_ERROR, "%{public}@Failed to update audio stream setting: %@", &v22, 0x16u);
     }
 
@@ -203,26 +203,26 @@ LABEL_6:
     }
 
     objc_autoreleasePoolPop(v13);
-    [(HMCameraStream *)v14 setInternalAudioStreamSetting:a3];
+    [(HMCameraStream *)selfCopy setInternalAudioStreamSetting:update];
   }
 
-  v19 = [v11 delegateCaller];
-  v20 = [v10 hmPublicError];
-  [v19 callCompletion:v12 error:v20];
+  delegateCaller = [contextCopy delegateCaller];
+  hmPublicError = [errorCopy hmPublicError];
+  [delegateCaller callCompletion:handlerCopy error:hmPublicError];
 
   v21 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_issueUpdateAudioStreamSettingRequest:(unint64_t)a3 completionHandler:(id)a4
+- (void)_issueUpdateAudioStreamSettingRequest:(unint64_t)request completionHandler:(id)handler
 {
   v39 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [(HMCameraSource *)self context];
-  if (!v6)
+  handlerCopy = handler;
+  context = [(HMCameraSource *)self context];
+  if (!handlerCopy)
   {
     v23 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s: %@ cannot be nil", "-[HMCameraStream _issueUpdateAudioStreamSettingRequest:completionHandler:]", @"completion"];
     v24 = objc_autoreleasePoolPush();
-    v25 = self;
+    selfCopy = self;
     v26 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
     {
@@ -239,18 +239,18 @@ LABEL_6:
     objc_exception_throw(v28);
   }
 
-  v8 = v7;
-  if (v7)
+  v8 = context;
+  if (context)
   {
     v9 = objc_alloc(MEMORY[0x1E69A2A00]);
-    v10 = [(HMCameraSource *)self profileUniqueIdentifier];
-    v11 = [v9 initWithTarget:v10];
+    profileUniqueIdentifier = [(HMCameraSource *)self profileUniqueIdentifier];
+    v11 = [v9 initWithTarget:profileUniqueIdentifier];
 
     v33[0] = @"kCameraSessionID";
-    v12 = [(HMCameraStream *)self sessionID];
+    sessionID = [(HMCameraStream *)self sessionID];
     v33[1] = @"kAudioStreamSetting";
-    v34[0] = v12;
-    v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+    v34[0] = sessionID;
+    v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:request];
     v34[1] = v13;
     v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v34 forKeys:v33 count:2];
 
@@ -260,19 +260,19 @@ LABEL_6:
     v29[2] = __74__HMCameraStream__issueUpdateAudioStreamSettingRequest_completionHandler___block_invoke;
     v29[3] = &unk_1E7549B68;
     v29[4] = self;
-    v32 = a3;
+    requestCopy = request;
     v16 = v8;
     v30 = v16;
-    v31 = v6;
+    v31 = handlerCopy;
     [v15 setResponseHandler:v29];
-    v17 = [v16 messageDispatcher];
-    [v17 sendMessage:v15];
+    messageDispatcher = [v16 messageDispatcher];
+    [messageDispatcher sendMessage:v15];
   }
 
   else
   {
     v18 = objc_autoreleasePoolPush();
-    v19 = self;
+    selfCopy2 = self;
     v20 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
@@ -286,23 +286,23 @@ LABEL_6:
 
     objc_autoreleasePoolPop(v18);
     v11 = [MEMORY[0x1E696ABC0] hmErrorWithCode:12];
-    (*(v6 + 2))(v6, v11);
+    (*(handlerCopy + 2))(handlerCopy, v11);
   }
 
   v22 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_updateAudioVolume:(id)a3 completionHandler:(id)a4
+- (void)_updateAudioVolume:(id)volume completionHandler:(id)handler
 {
   v41 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMCameraSource *)self context];
-  if (!v7)
+  volumeCopy = volume;
+  handlerCopy = handler;
+  context = [(HMCameraSource *)self context];
+  if (!handlerCopy)
   {
     v25 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s: %@ cannot be nil", "-[HMCameraStream _updateAudioVolume:completionHandler:]", @"completion"];
     v26 = objc_autoreleasePoolPush();
-    v27 = self;
+    selfCopy = self;
     v28 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
     {
@@ -319,9 +319,9 @@ LABEL_6:
     objc_exception_throw(v30);
   }
 
-  v9 = v8;
+  v9 = context;
   v10 = objc_autoreleasePoolPush();
-  v11 = self;
+  selfCopy2 = self;
   v12 = HMFGetOSLogHandle();
   v13 = v12;
   if (v9)
@@ -332,20 +332,20 @@ LABEL_6:
       *buf = 138543618;
       v38 = v14;
       v39 = 2112;
-      v40 = v6;
+      v40 = volumeCopy;
       _os_log_impl(&dword_19BB39000, v13, OS_LOG_TYPE_INFO, "%{public}@Updating audio volume to %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v10);
     v15 = objc_alloc(MEMORY[0x1E69A2A00]);
-    v16 = [(HMCameraSource *)v11 profileUniqueIdentifier];
-    v17 = [v15 initWithTarget:v16];
+    profileUniqueIdentifier = [(HMCameraSource *)selfCopy2 profileUniqueIdentifier];
+    v17 = [v15 initWithTarget:profileUniqueIdentifier];
 
     v35[0] = @"kCameraSessionID";
-    v18 = [(HMCameraStream *)v11 sessionID];
+    sessionID = [(HMCameraStream *)selfCopy2 sessionID];
     v35[1] = @"HMCameraStreamAudioVolumeSettingMessageKey";
-    v36[0] = v18;
-    v36[1] = v6;
+    v36[0] = sessionID;
+    v36[1] = volumeCopy;
     v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v36 forKeys:v35 count:2];
 
     v20 = [objc_alloc(MEMORY[0x1E69A2A10]) initWithName:@"HMCameraStreamSetAudioVolumeMessage" destination:v17 payload:v19];
@@ -353,14 +353,14 @@ LABEL_6:
     v31[1] = 3221225472;
     v31[2] = __55__HMCameraStream__updateAudioVolume_completionHandler___block_invoke;
     v31[3] = &unk_1E754D030;
-    v31[4] = v11;
-    v32 = v6;
+    v31[4] = selfCopy2;
+    v32 = volumeCopy;
     v21 = v9;
     v33 = v21;
-    v34 = v7;
+    v34 = handlerCopy;
     [v20 setResponseHandler:v31];
-    v22 = [v21 messageDispatcher];
-    [v22 sendMessage:v20];
+    messageDispatcher = [v21 messageDispatcher];
+    [messageDispatcher sendMessage:v20];
   }
 
   else
@@ -377,7 +377,7 @@ LABEL_6:
 
     objc_autoreleasePoolPop(v10);
     v17 = [MEMORY[0x1E696ABC0] hmErrorWithCode:12];
-    (*(v7 + 2))(v7, v17);
+    (*(handlerCopy + 2))(handlerCopy, v17);
   }
 
   v24 = *MEMORY[0x1E69E9840];
@@ -427,16 +427,16 @@ void __55__HMCameraStream__updateAudioVolume_completionHandler___block_invoke(ui
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_updateAudioStreamSetting:(unint64_t)a3 completionHandler:(id)a4
+- (void)_updateAudioStreamSetting:(unint64_t)setting completionHandler:(id)handler
 {
   v37 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [(HMCameraSource *)self context];
-  if (!v6)
+  handlerCopy = handler;
+  context = [(HMCameraSource *)self context];
+  if (!handlerCopy)
   {
     v23 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s: %@ cannot be nil", "-[HMCameraStream _updateAudioStreamSetting:completionHandler:]", @"completion"];
     v24 = objc_autoreleasePoolPush();
-    v25 = self;
+    selfCopy = self;
     v26 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
     {
@@ -453,9 +453,9 @@ void __55__HMCameraStream__updateAudioVolume_completionHandler___block_invoke(ui
     objc_exception_throw(v28);
   }
 
-  v8 = v7;
+  v8 = context;
   v9 = objc_autoreleasePoolPush();
-  v10 = self;
+  selfCopy2 = self;
   v11 = HMFGetOSLogHandle();
   v12 = v11;
   if (v8)
@@ -463,7 +463,7 @@ void __55__HMCameraStream__updateAudioVolume_completionHandler___block_invoke(ui
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
       v13 = HMFGetLogIdentifier();
-      v14 = HMCameraAudioStreamSettingAsString(a3);
+      v14 = HMCameraAudioStreamSettingAsString(setting);
       *buf = 138543618;
       v34 = v13;
       v35 = 2112;
@@ -472,12 +472,12 @@ void __55__HMCameraStream__updateAudioVolume_completionHandler___block_invoke(ui
     }
 
     objc_autoreleasePoolPop(v9);
-    if (a3 - 1 >= 2)
+    if (setting - 1 >= 2)
     {
-      if (a3 == 3)
+      if (setting == 3)
       {
         v17 = objc_autoreleasePoolPush();
-        v18 = v10;
+        v18 = selfCopy2;
         v19 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
         {
@@ -488,22 +488,22 @@ void __55__HMCameraStream__updateAudioVolume_completionHandler___block_invoke(ui
         }
 
         objc_autoreleasePoolPop(v17);
-        v21 = [v8 queue];
+        queue = [v8 queue];
         v29[0] = MEMORY[0x1E69E9820];
         v29[1] = 3221225472;
         v29[2] = __62__HMCameraStream__updateAudioStreamSetting_completionHandler___block_invoke;
         v29[3] = &unk_1E7547CD0;
         v29[4] = v18;
         v32 = 3;
-        v31 = v6;
+        v31 = handlerCopy;
         v30 = v8;
-        __HMPrivacyRequestAccessForService(*MEMORY[0x1E69D5588], v21, v29);
+        __HMPrivacyRequestAccessForService(*MEMORY[0x1E69D5588], queue, v29);
       }
     }
 
     else
     {
-      [(HMCameraStream *)v10 _issueUpdateAudioStreamSettingRequest:a3 completionHandler:v6];
+      [(HMCameraStream *)selfCopy2 _issueUpdateAudioStreamSettingRequest:setting completionHandler:handlerCopy];
     }
   }
 
@@ -521,7 +521,7 @@ void __55__HMCameraStream__updateAudioVolume_completionHandler___block_invoke(ui
 
     objc_autoreleasePoolPop(v9);
     v16 = [MEMORY[0x1E696ABC0] hmErrorWithCode:12];
-    (*(v6 + 2))(v6, v16);
+    (*(handlerCopy + 2))(handlerCopy, v16);
   }
 
   v22 = *MEMORY[0x1E69E9840];
@@ -568,16 +568,16 @@ void __62__HMCameraStream__updateAudioStreamSetting_completionHandler___block_in
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)updateMaximumVideoResolutionQuality:(int64_t)a3 completionHandler:(id)a4
+- (void)updateMaximumVideoResolutionQuality:(int64_t)quality completionHandler:(id)handler
 {
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [(HMCameraSource *)self context];
-  if (!v6)
+  handlerCopy = handler;
+  context = [(HMCameraSource *)self context];
+  if (!handlerCopy)
   {
     v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s: %@ cannot be nil", "-[HMCameraStream updateMaximumVideoResolutionQuality:completionHandler:]", @"completion"];
     v17 = objc_autoreleasePoolPush();
-    v18 = self;
+    selfCopy = self;
     v19 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
@@ -594,24 +594,24 @@ void __62__HMCameraStream__updateAudioStreamSetting_completionHandler___block_in
     objc_exception_throw(v21);
   }
 
-  v8 = v7;
-  if (v7)
+  v8 = context;
+  if (context)
   {
-    v9 = [v7 queue];
+    queue = [context queue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __72__HMCameraStream_updateMaximumVideoResolutionQuality_completionHandler___block_invoke;
     block[3] = &unk_1E754DB20;
     block[4] = self;
-    v24 = a3;
-    v23 = v6;
-    dispatch_async(v9, block);
+    qualityCopy = quality;
+    v23 = handlerCopy;
+    dispatch_async(queue, block);
   }
 
   else
   {
     v10 = objc_autoreleasePoolPush();
-    v11 = self;
+    selfCopy2 = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
@@ -625,23 +625,23 @@ void __62__HMCameraStream__updateAudioStreamSetting_completionHandler___block_in
 
     objc_autoreleasePoolPop(v10);
     v14 = [MEMORY[0x1E696ABC0] hmErrorWithCode:12];
-    (*(v6 + 2))(v6, v14);
+    (*(handlerCopy + 2))(handlerCopy, v14);
   }
 
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)updateAudioVolume:(id)a3 completionHandler:(id)a4
+- (void)updateAudioVolume:(id)volume completionHandler:(id)handler
 {
   v30 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMCameraSource *)self context];
-  if (!v7)
+  volumeCopy = volume;
+  handlerCopy = handler;
+  context = [(HMCameraSource *)self context];
+  if (!handlerCopy)
   {
     v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s: %@ cannot be nil", "-[HMCameraStream updateAudioVolume:completionHandler:]", @"completion"];
     v18 = objc_autoreleasePoolPush();
-    v19 = self;
+    selfCopy = self;
     v20 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
@@ -658,24 +658,24 @@ void __62__HMCameraStream__updateAudioStreamSetting_completionHandler___block_in
     objc_exception_throw(v22);
   }
 
-  v9 = v8;
-  if (v8)
+  v9 = context;
+  if (context)
   {
-    v10 = [v8 queue];
+    queue = [context queue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __54__HMCameraStream_updateAudioVolume_completionHandler___block_invoke;
     block[3] = &unk_1E754E0F8;
     block[4] = self;
-    v24 = v6;
-    v25 = v7;
-    dispatch_async(v10, block);
+    v24 = volumeCopy;
+    v25 = handlerCopy;
+    dispatch_async(queue, block);
   }
 
   else
   {
     v11 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy2 = self;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
@@ -689,7 +689,7 @@ void __62__HMCameraStream__updateAudioStreamSetting_completionHandler___block_in
 
     objc_autoreleasePoolPop(v11);
     v15 = [MEMORY[0x1E696ABC0] hmErrorWithCode:12];
-    (*(v7 + 2))(v7, v15);
+    (*(handlerCopy + 2))(handlerCopy, v15);
   }
 
   v16 = *MEMORY[0x1E69E9840];
@@ -699,12 +699,12 @@ void __62__HMCameraStream__updateAudioStreamSetting_completionHandler___block_in
 {
   v29 = *MEMORY[0x1E69E9840];
   v6 = completion;
-  v7 = [(HMCameraSource *)self context];
+  context = [(HMCameraSource *)self context];
   if (!v6)
   {
     v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s: %@ cannot be nil", "-[HMCameraStream updateAudioStreamSetting:completionHandler:]", @"completion"];
     v17 = objc_autoreleasePoolPush();
-    v18 = self;
+    selfCopy = self;
     v19 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
@@ -721,10 +721,10 @@ void __62__HMCameraStream__updateAudioStreamSetting_completionHandler___block_in
     objc_exception_throw(v21);
   }
 
-  v8 = v7;
-  if (v7)
+  v8 = context;
+  if (context)
   {
-    v9 = [v7 queue];
+    queue = [context queue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __61__HMCameraStream_updateAudioStreamSetting_completionHandler___block_invoke;
@@ -732,13 +732,13 @@ void __62__HMCameraStream__updateAudioStreamSetting_completionHandler___block_in
     block[4] = self;
     v24 = audioStreamSetting;
     v23 = v6;
-    dispatch_async(v9, block);
+    dispatch_async(queue, block);
   }
 
   else
   {
     v10 = objc_autoreleasePoolPush();
-    v11 = self;
+    selfCopy2 = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
@@ -760,42 +760,42 @@ void __62__HMCameraStream__updateAudioStreamSetting_completionHandler___block_in
 
 - (void)dealloc
 {
-  v3 = [(HMCameraSource *)self context];
-  v4 = [v3 messageDispatcher];
-  [v4 deregisterReceiver:self];
+  context = [(HMCameraSource *)self context];
+  messageDispatcher = [context messageDispatcher];
+  [messageDispatcher deregisterReceiver:self];
 
   v5.receiver = self;
   v5.super_class = HMCameraStream;
   [(HMCameraStream *)&v5 dealloc];
 }
 
-- (HMCameraStream)initWithProfileUniqueIdentifier:(id)a3 slotIdentifier:(id)a4 aspectRatio:(double)a5 sessionID:(id)a6 audioStreamSetting:(unint64_t)a7 audioDownlinkToken:(int64_t)a8 audioUplinkToken:(int64_t)a9
+- (HMCameraStream)initWithProfileUniqueIdentifier:(id)identifier slotIdentifier:(id)slotIdentifier aspectRatio:(double)ratio sessionID:(id)d audioStreamSetting:(unint64_t)setting audioDownlinkToken:(int64_t)token audioUplinkToken:(int64_t)uplinkToken
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a6;
-  if (!v16)
+  identifierCopy = identifier;
+  slotIdentifierCopy = slotIdentifier;
+  dCopy = d;
+  if (!identifierCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_9;
   }
 
-  if (!v17)
+  if (!slotIdentifierCopy)
   {
 LABEL_9:
     _HMFPreconditionFailure();
     goto LABEL_10;
   }
 
-  if (a5 == 0.0)
+  if (ratio == 0.0)
   {
 LABEL_10:
     _HMFPreconditionFailure();
     goto LABEL_11;
   }
 
-  v19 = v18;
-  if (!v18)
+  v19 = dCopy;
+  if (!dCopy)
   {
 LABEL_11:
     v25 = _HMFPreconditionFailure();
@@ -804,19 +804,19 @@ LABEL_11:
 
   v27.receiver = self;
   v27.super_class = HMCameraStream;
-  v20 = [(HMCameraSource *)&v27 initWithProfileUniqueIdentifier:v16 slotIdentifier:v17 aspectRatio:a5];
+  v20 = [(HMCameraSource *)&v27 initWithProfileUniqueIdentifier:identifierCopy slotIdentifier:slotIdentifierCopy aspectRatio:ratio];
   if (v20)
   {
     v21 = [v19 copy];
     sessionID = v20->_sessionID;
     v20->_sessionID = v21;
 
-    v20->_internalAudioStreamSetting = a7;
+    v20->_internalAudioStreamSetting = setting;
     internalAudioVolume = v20->_internalAudioVolume;
     v20->_internalAudioVolume = &unk_1F0EFE0F8;
 
-    v20->_audioDownlinkToken = a8;
-    v20->_audioUplinkToken = a9;
+    v20->_audioDownlinkToken = token;
+    v20->_audioUplinkToken = uplinkToken;
   }
 
   return v20;

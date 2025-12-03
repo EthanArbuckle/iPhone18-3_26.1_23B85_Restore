@@ -1,28 +1,28 @@
 @interface TVURLDescription
 - (CGSize)imageSize;
-- (id)initUrlWithProperties:(id)a3 imageSize:(CGSize)a4 focusSizeIncrease:(double)a5 cropCode:(id)a6 urlFormat:(id)a7;
+- (id)initUrlWithProperties:(id)properties imageSize:(CGSize)size focusSizeIncrease:(double)increase cropCode:(id)code urlFormat:(id)format;
 @end
 
 @implementation TVURLDescription
 
-- (id)initUrlWithProperties:(id)a3 imageSize:(CGSize)a4 focusSizeIncrease:(double)a5 cropCode:(id)a6 urlFormat:(id)a7
+- (id)initUrlWithProperties:(id)properties imageSize:(CGSize)size focusSizeIncrease:(double)increase cropCode:(id)code urlFormat:(id)format
 {
-  height = a4.height;
-  width = a4.width;
-  v13 = a3;
-  v14 = a6;
-  v15 = a7;
+  height = size.height;
+  width = size.width;
+  propertiesCopy = properties;
+  codeCopy = code;
+  formatCopy = format;
   v19.receiver = self;
   v19.super_class = TVURLDescription;
   v16 = [(TVURLDescription *)&v19 init];
   v17 = v16;
   if (v16)
   {
-    [(TVURLDescription *)v16 setUrl:v13];
+    [(TVURLDescription *)v16 setUrl:propertiesCopy];
     [(TVURLDescription *)v17 setImageSize:width, height];
-    [(TVURLDescription *)v17 setFocusSizeIncrease:a5];
-    [(TVURLDescription *)v17 setCropCode:v14];
-    [(TVURLDescription *)v17 setUrlFormat:v15];
+    [(TVURLDescription *)v17 setFocusSizeIncrease:increase];
+    [(TVURLDescription *)v17 setCropCode:codeCopy];
+    [(TVURLDescription *)v17 setUrlFormat:formatCopy];
   }
 
   return v17;

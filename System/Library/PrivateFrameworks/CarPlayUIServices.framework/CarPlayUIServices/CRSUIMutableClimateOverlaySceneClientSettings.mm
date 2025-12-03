@@ -2,14 +2,14 @@
 - (BOOL)isOverlayHidden;
 - (NSArray)presentedPopoverFrames;
 - (UIEdgeInsets)stepperInsets;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setPresentedPopoverFrames:(id)a3;
-- (void)setStepperInsets:(UIEdgeInsets)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setPresentedPopoverFrames:(id)frames;
+- (void)setStepperInsets:(UIEdgeInsets)insets;
 @end
 
 @implementation CRSUIMutableClimateOverlaySceneClientSettings
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [CRSUIClimateOverlaySceneClientSettings alloc];
 
@@ -18,8 +18,8 @@
 
 - (UIEdgeInsets)stepperInsets
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:2075632724];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:2075632724];
 
   [v3 UIEdgeInsetsValue];
   v5 = v4;
@@ -38,35 +38,35 @@
   return result;
 }
 
-- (void)setStepperInsets:(UIEdgeInsets)a3
+- (void)setStepperInsets:(UIEdgeInsets)insets
 {
-  v5 = [MEMORY[0x277CCAE60] valueWithUIEdgeInsets:{a3.top, a3.left, a3.bottom, a3.right}];
-  v4 = [(FBSSettings *)self otherSettings];
-  [v4 setObject:v5 forSetting:2075632724];
+  v5 = [MEMORY[0x277CCAE60] valueWithUIEdgeInsets:{insets.top, insets.left, insets.bottom, insets.right}];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  [otherSettings setObject:v5 forSetting:2075632724];
 }
 
 - (NSArray)presentedPopoverFrames
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:2075632725];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:2075632725];
 
   return v3;
 }
 
-- (void)setPresentedPopoverFrames:(id)a3
+- (void)setPresentedPopoverFrames:(id)frames
 {
-  v4 = a3;
-  v5 = [(FBSSettings *)self otherSettings];
-  [v5 setObject:v4 forSetting:2075632725];
+  framesCopy = frames;
+  otherSettings = [(FBSSettings *)self otherSettings];
+  [otherSettings setObject:framesCopy forSetting:2075632725];
 }
 
 - (BOOL)isOverlayHidden
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:2075632726];
-  v4 = [v3 BOOLValue];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:2075632726];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 @end

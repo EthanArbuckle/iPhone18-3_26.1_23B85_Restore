@@ -1,13 +1,13 @@
 @interface SKUIShareTemplateImageItemProvider
-- (SKUIShareTemplateImageItemProvider)initWithTemplateElement:(id)a3;
+- (SKUIShareTemplateImageItemProvider)initWithTemplateElement:(id)element;
 - (id)item;
 @end
 
 @implementation SKUIShareTemplateImageItemProvider
 
-- (SKUIShareTemplateImageItemProvider)initWithTemplateElement:(id)a3
+- (SKUIShareTemplateImageItemProvider)initWithTemplateElement:(id)element
 {
-  v5 = a3;
+  elementCopy = element;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIShareTemplateImageItemProvider initWithTemplateElement:];
@@ -20,7 +20,7 @@
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_templateElement, a3);
+    objc_storeStrong(&v7->_templateElement, element);
   }
 
   return v8;
@@ -34,17 +34,17 @@
   v15 = __Block_byref_object_copy__20;
   v16 = __Block_byref_object_dispose__20;
   v17 = 0;
-  v3 = [(UIActivityItemProvider *)self activityType];
-  if ([MEMORY[0x277D546D0] activityTypeShouldProvideImage:v3])
+  activityType = [(UIActivityItemProvider *)self activityType];
+  if ([MEMORY[0x277D546D0] activityTypeShouldProvideImage:activityType])
   {
-    v4 = [(SKUIShareTemplateViewElement *)self->_templateElement activityForUIActivityType:v3];
-    v5 = [v4 image];
-    v6 = [v5 URL];
+    v4 = [(SKUIShareTemplateViewElement *)self->_templateElement activityForUIActivityType:activityType];
+    image = [v4 image];
+    v6 = [image URL];
     if (v6)
     {
       v7 = [objc_alloc(MEMORY[0x277D69CD8]) initWithURL:v6];
       [v7 setITunesStoreRequest:0];
-      v8 = [[SKUIStyledImageDataConsumer alloc] initWithViewElement:v5];
+      v8 = [[SKUIStyledImageDataConsumer alloc] initWithViewElement:image];
       [(SKUIStyledImageDataConsumer *)v8 setImageSize:100.0, 100.0];
       [v7 setDataConsumer:v8];
       v11[0] = MEMORY[0x277D85DD0];

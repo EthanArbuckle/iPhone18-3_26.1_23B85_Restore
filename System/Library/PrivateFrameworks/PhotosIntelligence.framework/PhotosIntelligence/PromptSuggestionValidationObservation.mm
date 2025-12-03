@@ -1,13 +1,13 @@
 @interface PromptSuggestionValidationObservation
-- (void)photoLibraryDidChange:(id)a3;
+- (void)photoLibraryDidChange:(id)change;
 @end
 
 @implementation PromptSuggestionValidationObservation
 
-- (void)photoLibraryDidChange:(id)a3
+- (void)photoLibraryDidChange:(id)change
 {
-  v4 = a3;
-  v5 = self;
+  changeCopy = change;
+  selfCopy = self;
   sub_1C737F884();
 }
 

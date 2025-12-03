@@ -29,13 +29,13 @@
       }
 
       objc_autoreleasePoolPop(v32);
-      v28 = 0;
+      selfCopy2 = 0;
       goto LABEL_40;
     }
 
     v10 = MEMORY[0x277CCA8D8];
-    v11 = [v8 localizations];
-    v12 = [v10 preferredLocalizationsFromArray:v11];
+    localizations = [v8 localizations];
+    v12 = [v10 preferredLocalizationsFromArray:localizations];
 
     if (![v12 count])
     {
@@ -44,7 +44,7 @@
     }
 
     v13 = objc_autoreleasePoolPush();
-    v14 = a1;
+    selfCopy = self;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
@@ -56,7 +56,7 @@
       _os_log_impl(&dword_2531F8000, v15, OS_LOG_TYPE_INFO, "%{public}@Parsing using preferred localizations: %@", buf, 0x16u);
     }
 
-    v79 = v14;
+    v79 = selfCopy;
     objc_autoreleasePoolPop(v13);
     v17 = __htmlDocumentForResource(v9, v12, @"ReadMeSummary");
     v18 = __htmlDocumentForResource(v9, v12, @"ReadMe");
@@ -175,8 +175,8 @@ LABEL_28:
       goto LABEL_39;
     }
 
-    v46 = [v6 infoDictionary];
-    v47 = [v46 hmf_dictionaryForKey:@"MobileAssetProperties"];
+    infoDictionary = [v6 infoDictionary];
+    v47 = [infoDictionary hmf_dictionaryForKey:@"MobileAssetProperties"];
     v48 = v47;
     if (v47)
     {
@@ -186,9 +186,9 @@ LABEL_28:
 LABEL_37:
 
 LABEL_39:
-        a1 = [v79 initWithReleaseNotesSummary:v17 releaseNotes:v18 textReleaseNotes:v21 licenseAgreement:v80 licenseAgreementVersion:{v49, v70}];
+        self = [v79 initWithReleaseNotesSummary:v17 releaseNotes:v18 textReleaseNotes:v21 licenseAgreement:v80 licenseAgreementVersion:{v49, v70}];
 
-        v28 = a1;
+        selfCopy2 = self;
         v6 = v78;
 LABEL_40:
 
@@ -270,7 +270,7 @@ LABEL_51:
       *buf = 138543618;
       v93 = v61;
       v94 = 2112;
-      v95 = v46;
+      v95 = infoDictionary;
       v62 = "%{public}@Missing asset properites from asset info: %@";
     }
 
@@ -280,7 +280,7 @@ LABEL_51:
   }
 
   v25 = objc_autoreleasePoolPush();
-  a1 = a1;
+  self = self;
   v26 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
   {
@@ -291,11 +291,11 @@ LABEL_51:
   }
 
   objc_autoreleasePoolPop(v25);
-  v28 = 0;
+  selfCopy2 = 0;
 LABEL_41:
 
   v50 = *MEMORY[0x277D85DE8];
-  return v28;
+  return selfCopy2;
 }
 
 + (id)localizationsForBundle:()NSBundle fileManager:
@@ -304,15 +304,15 @@ LABEL_41:
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 localizations];
+    localizations = [v4 localizations];
   }
 
   else
   {
-    v6 = MEMORY[0x277CBEBF8];
+    localizations = MEMORY[0x277CBEBF8];
   }
 
-  return v6;
+  return localizations;
 }
 
 @end

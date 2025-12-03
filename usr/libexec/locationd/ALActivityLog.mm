@@ -1,13 +1,13 @@
 @interface ALActivityLog
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ALActivityLog
@@ -215,7 +215,7 @@
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   PBDataWriterWriteDoubleField();
   if (self->_activityOverrideMsg)
@@ -350,271 +350,271 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  *(a3 + 1) = *&self->_timestamp;
+  *(to + 1) = *&self->_timestamp;
   if (self->_activityOverrideMsg)
   {
-    [a3 setActivityOverrideMsg:?];
+    [to setActivityOverrideMsg:?];
   }
 
   if (self->_bodyMetrics)
   {
-    [a3 setBodyMetrics:?];
+    [to setBodyMetrics:?];
   }
 
   if (self->_motionState)
   {
-    [a3 setMotionState:?];
+    [to setMotionState:?];
   }
 
   if (self->_natalieData)
   {
-    [a3 setNatalieData:?];
+    [to setNatalieData:?];
   }
 
   if (self->_sedentaryAlarmDataDeprecated)
   {
-    [a3 setSedentaryAlarmDataDeprecated:?];
+    [to setSedentaryAlarmDataDeprecated:?];
   }
 
   if (self->_stepCountData)
   {
-    [a3 setStepCountData:?];
+    [to setStepCountData:?];
   }
 
   if (self->_strideCalDataDeprecated)
   {
-    [a3 setStrideCalDataDeprecated:?];
+    [to setStrideCalDataDeprecated:?];
   }
 
   if (self->_sessionCatherineData)
   {
-    [a3 setSessionCatherineData:?];
+    [to setSessionCatherineData:?];
   }
 
   if (self->_jacksonData)
   {
-    [a3 setJacksonData:?];
+    [to setJacksonData:?];
   }
 
   if (self->_strideCalData)
   {
-    [a3 setStrideCalData:?];
+    [to setStrideCalData:?];
   }
 
   if (self->_sedentaryAlarmData)
   {
-    [a3 setSedentaryAlarmData:?];
+    [to setSedentaryAlarmData:?];
   }
 
   if (self->_allDayHeartRate)
   {
-    [a3 setAllDayHeartRate:?];
+    [to setAllDayHeartRate:?];
   }
 
   if (self->_calorieDataDeprecated)
   {
-    [a3 setCalorieDataDeprecated:?];
+    [to setCalorieDataDeprecated:?];
   }
 
   if (self->_coarseElevationDeprecated)
   {
-    [a3 setCoarseElevationDeprecated:?];
+    [to setCoarseElevationDeprecated:?];
   }
 
   if (self->_fitnessTracking)
   {
-    [a3 setFitnessTracking:?];
+    [to setFitnessTracking:?];
   }
 
   if (self->_odometer)
   {
-    [a3 setOdometer:?];
+    [to setOdometer:?];
   }
 
   if (self->_elevationDeprecated)
   {
-    [a3 setElevationDeprecated:?];
+    [to setElevationDeprecated:?];
   }
 
   if (self->_idsStatus)
   {
-    [a3 setIdsStatus:?];
+    [to setIdsStatus:?];
   }
 
   if (self->_stairClimbingModel)
   {
-    [a3 setStairClimbingModel:?];
+    [to setStairClimbingModel:?];
   }
 
   if (self->_rowingModel)
   {
-    [a3 setRowingModel:?];
+    [to setRowingModel:?];
   }
 
   if (self->_exerciseMinute)
   {
-    [a3 setExerciseMinute:?];
+    [to setExerciseMinute:?];
   }
 
   if (self->_workoutEventDeprecated)
   {
-    [a3 setWorkoutEventDeprecated:?];
+    [to setWorkoutEventDeprecated:?];
   }
 
   if (self->_elevation)
   {
-    [a3 setElevation:?];
+    [to setElevation:?];
   }
 
   if (self->_coarseElevation)
   {
-    [a3 setCoarseElevation:?];
+    [to setCoarseElevation:?];
   }
 
   if (self->_calorieData)
   {
-    [a3 setCalorieData:?];
+    [to setCalorieData:?];
   }
 
   if (self->_workoutEvent)
   {
 
-    [a3 setWorkoutEvent:?];
+    [to setWorkoutEvent:?];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(v5 + 1) = *&self->_timestamp;
 
-  *(v5 + 2) = [(ALActivityOverrideMsg *)self->_activityOverrideMsg copyWithZone:a3];
-  *(v5 + 4) = [(ALCLBodyMetrics *)self->_bodyMetrics copyWithZone:a3];
+  *(v5 + 2) = [(ALActivityOverrideMsg *)self->_activityOverrideMsg copyWithZone:zone];
+  *(v5 + 4) = [(ALCLBodyMetrics *)self->_bodyMetrics copyWithZone:zone];
 
-  *(v5 + 15) = [(ALMotionState *)self->_motionState copyWithZone:a3];
-  *(v5 + 16) = [(ALCLNatalieDataDeprecated *)self->_natalieData copyWithZone:a3];
+  *(v5 + 15) = [(ALMotionState *)self->_motionState copyWithZone:zone];
+  *(v5 + 16) = [(ALCLNatalieDataDeprecated *)self->_natalieData copyWithZone:zone];
 
-  *(v5 + 20) = [(ALCLSedentaryAlarmDataDeprecated *)self->_sedentaryAlarmDataDeprecated copyWithZone:a3];
-  *(v5 + 23) = [(ALCLStepCountEntry *)self->_stepCountData copyWithZone:a3];
+  *(v5 + 20) = [(ALCLSedentaryAlarmDataDeprecated *)self->_sedentaryAlarmDataDeprecated copyWithZone:zone];
+  *(v5 + 23) = [(ALCLStepCountEntry *)self->_stepCountData copyWithZone:zone];
 
-  *(v5 + 25) = [(ALCLStrideCalEntryDeprecated *)self->_strideCalDataDeprecated copyWithZone:a3];
-  *(v5 + 21) = [(ALCLSessionCatherine *)self->_sessionCatherineData copyWithZone:a3];
+  *(v5 + 25) = [(ALCLStrideCalEntryDeprecated *)self->_strideCalDataDeprecated copyWithZone:zone];
+  *(v5 + 21) = [(ALCLSessionCatherine *)self->_sessionCatherineData copyWithZone:zone];
 
-  *(v5 + 14) = [(ALCLJacksonData *)self->_jacksonData copyWithZone:a3];
-  *(v5 + 24) = [(ALCLStrideCalEntry *)self->_strideCalData copyWithZone:a3];
+  *(v5 + 14) = [(ALCLJacksonData *)self->_jacksonData copyWithZone:zone];
+  *(v5 + 24) = [(ALCLStrideCalEntry *)self->_strideCalData copyWithZone:zone];
 
-  *(v5 + 19) = [(ALCLSedentaryAlarmData *)self->_sedentaryAlarmData copyWithZone:a3];
-  *(v5 + 3) = [(ALCLAllDayHeartRate *)self->_allDayHeartRate copyWithZone:a3];
+  *(v5 + 19) = [(ALCLSedentaryAlarmData *)self->_sedentaryAlarmData copyWithZone:zone];
+  *(v5 + 3) = [(ALCLAllDayHeartRate *)self->_allDayHeartRate copyWithZone:zone];
 
-  *(v5 + 6) = [(ALCMCalorieDataDeprecated *)self->_calorieDataDeprecated copyWithZone:a3];
-  *(v5 + 8) = [(ALCMCoarseElevationDeprecated *)self->_coarseElevationDeprecated copyWithZone:a3];
+  *(v5 + 6) = [(ALCMCalorieDataDeprecated *)self->_calorieDataDeprecated copyWithZone:zone];
+  *(v5 + 8) = [(ALCMCoarseElevationDeprecated *)self->_coarseElevationDeprecated copyWithZone:zone];
 
-  *(v5 + 12) = [(ALCMFitnessTracking *)self->_fitnessTracking copyWithZone:a3];
-  *(v5 + 17) = [(ALCLOdometer *)self->_odometer copyWithZone:a3];
+  *(v5 + 12) = [(ALCMFitnessTracking *)self->_fitnessTracking copyWithZone:zone];
+  *(v5 + 17) = [(ALCLOdometer *)self->_odometer copyWithZone:zone];
 
-  *(v5 + 10) = [(ALCLElevationDeprecated *)self->_elevationDeprecated copyWithZone:a3];
-  *(v5 + 13) = [(ALCLIDSStatus *)self->_idsStatus copyWithZone:a3];
+  *(v5 + 10) = [(ALCLElevationDeprecated *)self->_elevationDeprecated copyWithZone:zone];
+  *(v5 + 13) = [(ALCLIDSStatus *)self->_idsStatus copyWithZone:zone];
 
-  *(v5 + 22) = [(ALCLStairClimbingModel *)self->_stairClimbingModel copyWithZone:a3];
-  *(v5 + 18) = [(ALCLRowingModel *)self->_rowingModel copyWithZone:a3];
+  *(v5 + 22) = [(ALCLStairClimbingModel *)self->_stairClimbingModel copyWithZone:zone];
+  *(v5 + 18) = [(ALCLRowingModel *)self->_rowingModel copyWithZone:zone];
 
-  *(v5 + 11) = [(ALCMExerciseMinute *)self->_exerciseMinute copyWithZone:a3];
-  *(v5 + 27) = [(ALCMWorkoutEventDeprecated *)self->_workoutEventDeprecated copyWithZone:a3];
+  *(v5 + 11) = [(ALCMExerciseMinute *)self->_exerciseMinute copyWithZone:zone];
+  *(v5 + 27) = [(ALCMWorkoutEventDeprecated *)self->_workoutEventDeprecated copyWithZone:zone];
 
-  *(v5 + 9) = [(ALCMElevation *)self->_elevation copyWithZone:a3];
-  *(v5 + 7) = [(ALCMCoarseElevation *)self->_coarseElevation copyWithZone:a3];
+  *(v5 + 9) = [(ALCMElevation *)self->_elevation copyWithZone:zone];
+  *(v5 + 7) = [(ALCMCoarseElevation *)self->_coarseElevation copyWithZone:zone];
 
-  *(v5 + 5) = [(ALCMCalorieData *)self->_calorieData copyWithZone:a3];
-  *(v5 + 26) = [(ALCMWorkoutEvent *)self->_workoutEvent copyWithZone:a3];
+  *(v5 + 5) = [(ALCMCalorieData *)self->_calorieData copyWithZone:zone];
+  *(v5 + 26) = [(ALCMWorkoutEvent *)self->_workoutEvent copyWithZone:zone];
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
-    if (self->_timestamp == *(a3 + 1))
+    if (self->_timestamp == *(equal + 1))
     {
       activityOverrideMsg = self->_activityOverrideMsg;
-      if (!(activityOverrideMsg | *(a3 + 2)) || (v5 = [(ALActivityOverrideMsg *)activityOverrideMsg isEqual:?]) != 0)
+      if (!(activityOverrideMsg | *(equal + 2)) || (v5 = [(ALActivityOverrideMsg *)activityOverrideMsg isEqual:?]) != 0)
       {
         bodyMetrics = self->_bodyMetrics;
-        if (!(bodyMetrics | *(a3 + 4)) || (v5 = [(ALCLBodyMetrics *)bodyMetrics isEqual:?]) != 0)
+        if (!(bodyMetrics | *(equal + 4)) || (v5 = [(ALCLBodyMetrics *)bodyMetrics isEqual:?]) != 0)
         {
           motionState = self->_motionState;
-          if (!(motionState | *(a3 + 15)) || (v5 = [(ALMotionState *)motionState isEqual:?]) != 0)
+          if (!(motionState | *(equal + 15)) || (v5 = [(ALMotionState *)motionState isEqual:?]) != 0)
           {
             natalieData = self->_natalieData;
-            if (!(natalieData | *(a3 + 16)) || (v5 = [(ALCLNatalieDataDeprecated *)natalieData isEqual:?]) != 0)
+            if (!(natalieData | *(equal + 16)) || (v5 = [(ALCLNatalieDataDeprecated *)natalieData isEqual:?]) != 0)
             {
               sedentaryAlarmDataDeprecated = self->_sedentaryAlarmDataDeprecated;
-              if (!(sedentaryAlarmDataDeprecated | *(a3 + 20)) || (v5 = [(ALCLSedentaryAlarmDataDeprecated *)sedentaryAlarmDataDeprecated isEqual:?]) != 0)
+              if (!(sedentaryAlarmDataDeprecated | *(equal + 20)) || (v5 = [(ALCLSedentaryAlarmDataDeprecated *)sedentaryAlarmDataDeprecated isEqual:?]) != 0)
               {
                 stepCountData = self->_stepCountData;
-                if (!(stepCountData | *(a3 + 23)) || (v5 = [(ALCLStepCountEntry *)stepCountData isEqual:?]) != 0)
+                if (!(stepCountData | *(equal + 23)) || (v5 = [(ALCLStepCountEntry *)stepCountData isEqual:?]) != 0)
                 {
                   strideCalDataDeprecated = self->_strideCalDataDeprecated;
-                  if (!(strideCalDataDeprecated | *(a3 + 25)) || (v5 = [(ALCLStrideCalEntryDeprecated *)strideCalDataDeprecated isEqual:?]) != 0)
+                  if (!(strideCalDataDeprecated | *(equal + 25)) || (v5 = [(ALCLStrideCalEntryDeprecated *)strideCalDataDeprecated isEqual:?]) != 0)
                   {
                     sessionCatherineData = self->_sessionCatherineData;
-                    if (!(sessionCatherineData | *(a3 + 21)) || (v5 = [(ALCLSessionCatherine *)sessionCatherineData isEqual:?]) != 0)
+                    if (!(sessionCatherineData | *(equal + 21)) || (v5 = [(ALCLSessionCatherine *)sessionCatherineData isEqual:?]) != 0)
                     {
                       jacksonData = self->_jacksonData;
-                      if (!(jacksonData | *(a3 + 14)) || (v5 = [(ALCLJacksonData *)jacksonData isEqual:?]) != 0)
+                      if (!(jacksonData | *(equal + 14)) || (v5 = [(ALCLJacksonData *)jacksonData isEqual:?]) != 0)
                       {
                         strideCalData = self->_strideCalData;
-                        if (!(strideCalData | *(a3 + 24)) || (v5 = [(ALCLStrideCalEntry *)strideCalData isEqual:?]) != 0)
+                        if (!(strideCalData | *(equal + 24)) || (v5 = [(ALCLStrideCalEntry *)strideCalData isEqual:?]) != 0)
                         {
                           sedentaryAlarmData = self->_sedentaryAlarmData;
-                          if (!(sedentaryAlarmData | *(a3 + 19)) || (v5 = [(ALCLSedentaryAlarmData *)sedentaryAlarmData isEqual:?]) != 0)
+                          if (!(sedentaryAlarmData | *(equal + 19)) || (v5 = [(ALCLSedentaryAlarmData *)sedentaryAlarmData isEqual:?]) != 0)
                           {
                             allDayHeartRate = self->_allDayHeartRate;
-                            if (!(allDayHeartRate | *(a3 + 3)) || (v5 = [(ALCLAllDayHeartRate *)allDayHeartRate isEqual:?]) != 0)
+                            if (!(allDayHeartRate | *(equal + 3)) || (v5 = [(ALCLAllDayHeartRate *)allDayHeartRate isEqual:?]) != 0)
                             {
                               calorieDataDeprecated = self->_calorieDataDeprecated;
-                              if (!(calorieDataDeprecated | *(a3 + 6)) || (v5 = [(ALCMCalorieDataDeprecated *)calorieDataDeprecated isEqual:?]) != 0)
+                              if (!(calorieDataDeprecated | *(equal + 6)) || (v5 = [(ALCMCalorieDataDeprecated *)calorieDataDeprecated isEqual:?]) != 0)
                               {
                                 coarseElevationDeprecated = self->_coarseElevationDeprecated;
-                                if (!(coarseElevationDeprecated | *(a3 + 8)) || (v5 = [(ALCMCoarseElevationDeprecated *)coarseElevationDeprecated isEqual:?]) != 0)
+                                if (!(coarseElevationDeprecated | *(equal + 8)) || (v5 = [(ALCMCoarseElevationDeprecated *)coarseElevationDeprecated isEqual:?]) != 0)
                                 {
                                   fitnessTracking = self->_fitnessTracking;
-                                  if (!(fitnessTracking | *(a3 + 12)) || (v5 = [(ALCMFitnessTracking *)fitnessTracking isEqual:?]) != 0)
+                                  if (!(fitnessTracking | *(equal + 12)) || (v5 = [(ALCMFitnessTracking *)fitnessTracking isEqual:?]) != 0)
                                   {
                                     odometer = self->_odometer;
-                                    if (!(odometer | *(a3 + 17)) || (v5 = [(ALCLOdometer *)odometer isEqual:?]) != 0)
+                                    if (!(odometer | *(equal + 17)) || (v5 = [(ALCLOdometer *)odometer isEqual:?]) != 0)
                                     {
                                       elevationDeprecated = self->_elevationDeprecated;
-                                      if (!(elevationDeprecated | *(a3 + 10)) || (v5 = [(ALCLElevationDeprecated *)elevationDeprecated isEqual:?]) != 0)
+                                      if (!(elevationDeprecated | *(equal + 10)) || (v5 = [(ALCLElevationDeprecated *)elevationDeprecated isEqual:?]) != 0)
                                       {
                                         idsStatus = self->_idsStatus;
-                                        if (!(idsStatus | *(a3 + 13)) || (v5 = [(ALCLIDSStatus *)idsStatus isEqual:?]) != 0)
+                                        if (!(idsStatus | *(equal + 13)) || (v5 = [(ALCLIDSStatus *)idsStatus isEqual:?]) != 0)
                                         {
                                           stairClimbingModel = self->_stairClimbingModel;
-                                          if (!(stairClimbingModel | *(a3 + 22)) || (v5 = [(ALCLStairClimbingModel *)stairClimbingModel isEqual:?]) != 0)
+                                          if (!(stairClimbingModel | *(equal + 22)) || (v5 = [(ALCLStairClimbingModel *)stairClimbingModel isEqual:?]) != 0)
                                           {
                                             rowingModel = self->_rowingModel;
-                                            if (!(rowingModel | *(a3 + 18)) || (v5 = [(ALCLRowingModel *)rowingModel isEqual:?]) != 0)
+                                            if (!(rowingModel | *(equal + 18)) || (v5 = [(ALCLRowingModel *)rowingModel isEqual:?]) != 0)
                                             {
                                               exerciseMinute = self->_exerciseMinute;
-                                              if (!(exerciseMinute | *(a3 + 11)) || (v5 = [(ALCMExerciseMinute *)exerciseMinute isEqual:?]) != 0)
+                                              if (!(exerciseMinute | *(equal + 11)) || (v5 = [(ALCMExerciseMinute *)exerciseMinute isEqual:?]) != 0)
                                               {
                                                 workoutEventDeprecated = self->_workoutEventDeprecated;
-                                                if (!(workoutEventDeprecated | *(a3 + 27)) || (v5 = [(ALCMWorkoutEventDeprecated *)workoutEventDeprecated isEqual:?]) != 0)
+                                                if (!(workoutEventDeprecated | *(equal + 27)) || (v5 = [(ALCMWorkoutEventDeprecated *)workoutEventDeprecated isEqual:?]) != 0)
                                                 {
                                                   elevation = self->_elevation;
-                                                  if (!(elevation | *(a3 + 9)) || (v5 = [(ALCMElevation *)elevation isEqual:?]) != 0)
+                                                  if (!(elevation | *(equal + 9)) || (v5 = [(ALCMElevation *)elevation isEqual:?]) != 0)
                                                   {
                                                     coarseElevation = self->_coarseElevation;
-                                                    if (!(coarseElevation | *(a3 + 7)) || (v5 = [(ALCMCoarseElevation *)coarseElevation isEqual:?]) != 0)
+                                                    if (!(coarseElevation | *(equal + 7)) || (v5 = [(ALCMCoarseElevation *)coarseElevation isEqual:?]) != 0)
                                                     {
                                                       calorieData = self->_calorieData;
-                                                      if (!(calorieData | *(a3 + 5)) || (v5 = [(ALCMCalorieData *)calorieData isEqual:?]) != 0)
+                                                      if (!(calorieData | *(equal + 5)) || (v5 = [(ALCMCalorieData *)calorieData isEqual:?]) != 0)
                                                       {
                                                         workoutEvent = self->_workoutEvent;
-                                                        if (workoutEvent | *(a3 + 26))
+                                                        if (workoutEvent | *(equal + 26))
                                                         {
 
                                                           LOBYTE(v5) = [(ALCMWorkoutEvent *)workoutEvent isEqual:?];
@@ -720,11 +720,11 @@
   return v36 ^ [(ALCMWorkoutEvent *)self->_workoutEvent hash]^ v11;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  self->_timestamp = *(a3 + 1);
+  self->_timestamp = *(from + 1);
   activityOverrideMsg = self->_activityOverrideMsg;
-  v6 = *(a3 + 2);
+  v6 = *(from + 2);
   if (activityOverrideMsg)
   {
     if (v6)
@@ -739,7 +739,7 @@
   }
 
   bodyMetrics = self->_bodyMetrics;
-  v8 = *(a3 + 4);
+  v8 = *(from + 4);
   if (bodyMetrics)
   {
     if (v8)
@@ -754,7 +754,7 @@
   }
 
   motionState = self->_motionState;
-  v10 = *(a3 + 15);
+  v10 = *(from + 15);
   if (motionState)
   {
     if (v10)
@@ -769,7 +769,7 @@
   }
 
   natalieData = self->_natalieData;
-  v12 = *(a3 + 16);
+  v12 = *(from + 16);
   if (natalieData)
   {
     if (v12)
@@ -784,7 +784,7 @@
   }
 
   sedentaryAlarmDataDeprecated = self->_sedentaryAlarmDataDeprecated;
-  v14 = *(a3 + 20);
+  v14 = *(from + 20);
   if (sedentaryAlarmDataDeprecated)
   {
     if (v14)
@@ -799,7 +799,7 @@
   }
 
   stepCountData = self->_stepCountData;
-  v16 = *(a3 + 23);
+  v16 = *(from + 23);
   if (stepCountData)
   {
     if (v16)
@@ -814,7 +814,7 @@
   }
 
   strideCalDataDeprecated = self->_strideCalDataDeprecated;
-  v18 = *(a3 + 25);
+  v18 = *(from + 25);
   if (strideCalDataDeprecated)
   {
     if (v18)
@@ -829,7 +829,7 @@
   }
 
   sessionCatherineData = self->_sessionCatherineData;
-  v20 = *(a3 + 21);
+  v20 = *(from + 21);
   if (sessionCatherineData)
   {
     if (v20)
@@ -844,7 +844,7 @@
   }
 
   jacksonData = self->_jacksonData;
-  v22 = *(a3 + 14);
+  v22 = *(from + 14);
   if (jacksonData)
   {
     if (v22)
@@ -859,7 +859,7 @@
   }
 
   strideCalData = self->_strideCalData;
-  v24 = *(a3 + 24);
+  v24 = *(from + 24);
   if (strideCalData)
   {
     if (v24)
@@ -874,7 +874,7 @@
   }
 
   sedentaryAlarmData = self->_sedentaryAlarmData;
-  v26 = *(a3 + 19);
+  v26 = *(from + 19);
   if (sedentaryAlarmData)
   {
     if (v26)
@@ -889,7 +889,7 @@
   }
 
   allDayHeartRate = self->_allDayHeartRate;
-  v28 = *(a3 + 3);
+  v28 = *(from + 3);
   if (allDayHeartRate)
   {
     if (v28)
@@ -904,7 +904,7 @@
   }
 
   calorieDataDeprecated = self->_calorieDataDeprecated;
-  v30 = *(a3 + 6);
+  v30 = *(from + 6);
   if (calorieDataDeprecated)
   {
     if (v30)
@@ -919,7 +919,7 @@
   }
 
   coarseElevationDeprecated = self->_coarseElevationDeprecated;
-  v32 = *(a3 + 8);
+  v32 = *(from + 8);
   if (coarseElevationDeprecated)
   {
     if (v32)
@@ -934,7 +934,7 @@
   }
 
   fitnessTracking = self->_fitnessTracking;
-  v34 = *(a3 + 12);
+  v34 = *(from + 12);
   if (fitnessTracking)
   {
     if (v34)
@@ -949,7 +949,7 @@
   }
 
   odometer = self->_odometer;
-  v36 = *(a3 + 17);
+  v36 = *(from + 17);
   if (odometer)
   {
     if (v36)
@@ -964,7 +964,7 @@
   }
 
   elevationDeprecated = self->_elevationDeprecated;
-  v38 = *(a3 + 10);
+  v38 = *(from + 10);
   if (elevationDeprecated)
   {
     if (v38)
@@ -979,7 +979,7 @@
   }
 
   idsStatus = self->_idsStatus;
-  v40 = *(a3 + 13);
+  v40 = *(from + 13);
   if (idsStatus)
   {
     if (v40)
@@ -994,7 +994,7 @@
   }
 
   stairClimbingModel = self->_stairClimbingModel;
-  v42 = *(a3 + 22);
+  v42 = *(from + 22);
   if (stairClimbingModel)
   {
     if (v42)
@@ -1009,7 +1009,7 @@
   }
 
   rowingModel = self->_rowingModel;
-  v44 = *(a3 + 18);
+  v44 = *(from + 18);
   if (rowingModel)
   {
     if (v44)
@@ -1024,7 +1024,7 @@
   }
 
   exerciseMinute = self->_exerciseMinute;
-  v46 = *(a3 + 11);
+  v46 = *(from + 11);
   if (exerciseMinute)
   {
     if (v46)
@@ -1039,7 +1039,7 @@
   }
 
   workoutEventDeprecated = self->_workoutEventDeprecated;
-  v48 = *(a3 + 27);
+  v48 = *(from + 27);
   if (workoutEventDeprecated)
   {
     if (v48)
@@ -1054,7 +1054,7 @@
   }
 
   elevation = self->_elevation;
-  v50 = *(a3 + 9);
+  v50 = *(from + 9);
   if (elevation)
   {
     if (v50)
@@ -1069,7 +1069,7 @@
   }
 
   coarseElevation = self->_coarseElevation;
-  v52 = *(a3 + 7);
+  v52 = *(from + 7);
   if (coarseElevation)
   {
     if (v52)
@@ -1084,7 +1084,7 @@
   }
 
   calorieData = self->_calorieData;
-  v54 = *(a3 + 5);
+  v54 = *(from + 5);
   if (calorieData)
   {
     if (v54)
@@ -1099,7 +1099,7 @@
   }
 
   workoutEvent = self->_workoutEvent;
-  v56 = *(a3 + 26);
+  v56 = *(from + 26);
   if (workoutEvent)
   {
     if (v56)

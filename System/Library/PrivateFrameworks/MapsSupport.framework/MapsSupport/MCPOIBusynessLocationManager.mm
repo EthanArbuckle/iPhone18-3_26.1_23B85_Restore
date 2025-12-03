@@ -2,10 +2,10 @@
 + (MCPOIBusynessLocationManager)sharedLocationManager;
 - (MCPOIBusynessLocationManager)init;
 - (MCPOIBusynessLocationManagerDelegate)locationDelegate;
-- (void)fetchInferedPlaceNames:(BOOL)a3 analytics:(id)a4 completionQueue:(id)a5 completion:(id)a6;
-- (void)locationManager:(id)a3 didFailWithError:(id)a4;
-- (void)locationManager:(id)a3 didReportVisit:(id)a4;
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4;
+- (void)fetchInferedPlaceNames:(BOOL)names analytics:(id)analytics completionQueue:(id)queue completion:(id)completion;
+- (void)locationManager:(id)manager didFailWithError:(id)error;
+- (void)locationManager:(id)manager didReportVisit:(id)visit;
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations;
 - (void)requestLocation;
 - (void)requestVisit;
 @end
@@ -52,16 +52,16 @@
 
 - (void)requestLocation
 {
-  v3 = [(CLLocationManager *)self->_locationManager authorizationStatus];
+  authorizationStatus = [(CLLocationManager *)self->_locationManager authorizationStatus];
   v4 = GEOGetPOIBusynessLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     *buf = 67109120;
-    v11 = v3;
+    v11 = authorizationStatus;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "locationManager authorizationStatus %d", buf, 8u);
   }
 
-  if (v3 - 3 > 1)
+  if (authorizationStatus - 3 > 1)
   {
     [MCPOIBusynessAnalytics report:6];
     v7 = GEOGetPOIBusynessLog();
@@ -96,16 +96,16 @@
 
 - (void)requestVisit
 {
-  v3 = [(CLLocationManager *)self->_locationManager authorizationStatus];
+  authorizationStatus = [(CLLocationManager *)self->_locationManager authorizationStatus];
   v4 = GEOGetPOIBusynessLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     *buf = 67109120;
-    v11 = v3;
+    v11 = authorizationStatus;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "locationManager authorizationStatus %d", buf, 8u);
   }
 
-  if (v3 - 3 > 1)
+  if (authorizationStatus - 3 > 1)
   {
     [MCPOIBusynessAnalytics report:6];
     v7 = GEOGetPOIBusynessLog();
@@ -138,19 +138,19 @@
   dispatch_async(locationQueue, v6);
 }
 
-- (void)fetchInferedPlaceNames:(BOOL)a3 analytics:(id)a4 completionQueue:(id)a5 completion:(id)a6
+- (void)fetchInferedPlaceNames:(BOOL)names analytics:(id)analytics completionQueue:(id)queue completion:(id)completion
 {
-  v8 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if (v8)
+  namesCopy = names;
+  analyticsCopy = analytics;
+  queueCopy = queue;
+  completionCopy = completion;
+  if (namesCopy)
   {
     v13 = +[MCPOIBusynessState sharedState];
-    v14 = [v13 numberOfPlaceInferenceInLastDay];
+    numberOfPlaceInferenceInLastDay = [v13 numberOfPlaceInferenceInLastDay];
     UInteger = GEOConfigGetUInteger();
 
-    if (v14 >= UInteger)
+    if (numberOfPlaceInferenceInLastDay >= UInteger)
     {
       v16 = 2;
     }
@@ -169,24 +169,24 @@
     v16 = 0;
   }
 
-  [v10 setFidelity:v16];
+  [analyticsCopy setFidelity:v16];
   locationQueue = self->_locationQueue;
   v21[0] = _NSConcreteStackBlock;
   v21[1] = 3221225472;
   v21[2] = sub_100006340;
   v21[3] = &unk_10001CA08;
   v21[4] = self;
-  v22 = v11;
-  v23 = v12;
+  v22 = queueCopy;
+  v23 = completionCopy;
   v24 = v16;
-  v19 = v12;
-  v20 = v11;
+  v19 = completionCopy;
+  v20 = queueCopy;
   dispatch_async(locationQueue, v21);
 }
 
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations
 {
-  v5 = a4;
+  locationsCopy = locations;
   dispatch_assert_queue_V2(self->_locationQueue);
   v6 = GEOGetPOIBusynessLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
@@ -200,9 +200,9 @@
   {
     self->_listeningLocationCounter = listeningLocationCounter - 1;
     [(CLLocationManager *)self->_locationManager stopUpdatingLocation];
-    if ([v5 count])
+    if ([locationsCopy count])
     {
-      v8 = [v5 lastObject];
+      lastObject = [locationsCopy lastObject];
       v9 = GEOGetPOIBusynessLog();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
       {
@@ -210,22 +210,22 @@
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEBUG, "locationManager:calling location delegate", v11, 2u);
       }
 
-      v10 = [(MCPOIBusynessLocationManager *)self locationDelegate];
-      [v10 didUpdateLocation:v8];
+      locationDelegate = [(MCPOIBusynessLocationManager *)self locationDelegate];
+      [locationDelegate didUpdateLocation:lastObject];
     }
 
     else
     {
       [MCPOIBusynessAnalytics report:7];
-      v8 = [(MCPOIBusynessLocationManager *)self locationDelegate];
-      [v8 didUpdateLocation:0];
+      lastObject = [(MCPOIBusynessLocationManager *)self locationDelegate];
+      [lastObject didUpdateLocation:0];
     }
   }
 }
 
-- (void)locationManager:(id)a3 didReportVisit:(id)a4
+- (void)locationManager:(id)manager didReportVisit:(id)visit
 {
-  v5 = a4;
+  visitCopy = visit;
   dispatch_assert_queue_V2(self->_locationQueue);
   v6 = GEOGetPOIBusynessLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
@@ -246,19 +246,19 @@
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "locationManager:calling visit delegate", v10, 2u);
     }
 
-    v9 = [(MCPOIBusynessLocationManager *)self locationDelegate];
-    [v9 didUpdateVisit:v5];
+    locationDelegate = [(MCPOIBusynessLocationManager *)self locationDelegate];
+    [locationDelegate didUpdateVisit:visitCopy];
   }
 }
 
-- (void)locationManager:(id)a3 didFailWithError:(id)a4
+- (void)locationManager:(id)manager didFailWithError:(id)error
 {
-  v4 = a4;
+  errorCopy = error;
   v5 = GEOGetPOIBusynessLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = errorCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_ERROR, "locationManager:didFailWithError : %@", &v6, 0xCu);
   }
 }

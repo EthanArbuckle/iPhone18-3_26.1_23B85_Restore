@@ -1,17 +1,17 @@
 @interface PXSharedAlbumsActivityEntry
-+ (id)_activitiesFromCloudFeedEntries:(id)a3 inMostRecentOrder:(BOOL)a4 photoLibrary:(id)a5 plPhotoLibrary:(id)a6;
-+ (id)_assetsAddedActivitiesFromCloudFeedAssetsEntry:(id)a3 inMostRecentOrder:(BOOL)a4 withAlbumInformation:(id)a5 photoLibrary:(id)a6;
-+ (id)_assetsAddedActivityFromAssets:(id)a3 batchID:(unint64_t)a4 withAlbumInformation:(id)a5 forEntry:(id)a6 photoLibrary:(id)a7;
-+ (id)_fetchAssetsWithUUIDs:(id)a3 inPhotoLibrary:(id)a4;
-+ (id)_fetchKeyAssetUUIDForAlbumWithGUID:(id)a3 photoLibrary:(id)a4 plPhotoLibrary:(id)a5;
-+ (id)_fetchRecentActivitiesWithOptions:(id)a3 olderThanDate:(id)a4 filter:(int64_t)a5;
-+ (id)_reactionActivitiesFromCloudFeedLikeEntry:(id)a3 photoLibrary:(id)a4 plPhotoLibrary:(id)a5;
-+ (id)fetchActivitiesWithOptions:(id)a3;
-+ (id)fetchAssetsMockActivitiesWithOptions:(id)a3;
-+ (id)fetchKeyAssetsForActivity:(id)a3;
-+ (id)fetchRecentActivitiesWithOptions:(id)a3 olderThanDate:(id)a4 filter:(int64_t)a5;
-+ (unint64_t)fetchCountOfRecentFeedActivitiesWithOptions:(id)a3 newerThanDate:(id)a4;
-- (PXSharedAlbumsActivityEntry)initWithPhotoLibrary:(id)a3 uuid:(id)a4 date:(id)a5 type:(int64_t)a6 isFromMe:(BOOL)a7 contributors:(id)a8 avatarConfigurations:(id)a9 albumGUID:(id)a10 albumName:(id)a11 cloudOwnerIsAllowlisted:(BOOL)a12 message:(id)a13 keyAssetUUIDs:(id)a14 keyAssets:(id)a15 relatedCommentUUID:(id)a16 relatedUUIDs:(id)a17 underlyingObject:(id)a18;
++ (id)_activitiesFromCloudFeedEntries:(id)entries inMostRecentOrder:(BOOL)order photoLibrary:(id)library plPhotoLibrary:(id)photoLibrary;
++ (id)_assetsAddedActivitiesFromCloudFeedAssetsEntry:(id)entry inMostRecentOrder:(BOOL)order withAlbumInformation:(id)information photoLibrary:(id)library;
++ (id)_assetsAddedActivityFromAssets:(id)assets batchID:(unint64_t)d withAlbumInformation:(id)information forEntry:(id)entry photoLibrary:(id)library;
++ (id)_fetchAssetsWithUUIDs:(id)ds inPhotoLibrary:(id)library;
++ (id)_fetchKeyAssetUUIDForAlbumWithGUID:(id)d photoLibrary:(id)library plPhotoLibrary:(id)photoLibrary;
++ (id)_fetchRecentActivitiesWithOptions:(id)options olderThanDate:(id)date filter:(int64_t)filter;
++ (id)_reactionActivitiesFromCloudFeedLikeEntry:(id)entry photoLibrary:(id)library plPhotoLibrary:(id)photoLibrary;
++ (id)fetchActivitiesWithOptions:(id)options;
++ (id)fetchAssetsMockActivitiesWithOptions:(id)options;
++ (id)fetchKeyAssetsForActivity:(id)activity;
++ (id)fetchRecentActivitiesWithOptions:(id)options olderThanDate:(id)date filter:(int64_t)filter;
++ (unint64_t)fetchCountOfRecentFeedActivitiesWithOptions:(id)options newerThanDate:(id)date;
+- (PXSharedAlbumsActivityEntry)initWithPhotoLibrary:(id)library uuid:(id)uuid date:(id)date type:(int64_t)type isFromMe:(BOOL)me contributors:(id)contributors avatarConfigurations:(id)configurations albumGUID:(id)self0 albumName:(id)self1 cloudOwnerIsAllowlisted:(BOOL)self2 message:(id)self3 keyAssetUUIDs:(id)self4 keyAssets:(id)self5 relatedCommentUUID:(id)self6 relatedUUIDs:(id)self7 underlyingObject:(id)self8;
 - (id)debugDescription;
 @end
 
@@ -52,48 +52,48 @@
   return v14;
 }
 
-- (PXSharedAlbumsActivityEntry)initWithPhotoLibrary:(id)a3 uuid:(id)a4 date:(id)a5 type:(int64_t)a6 isFromMe:(BOOL)a7 contributors:(id)a8 avatarConfigurations:(id)a9 albumGUID:(id)a10 albumName:(id)a11 cloudOwnerIsAllowlisted:(BOOL)a12 message:(id)a13 keyAssetUUIDs:(id)a14 keyAssets:(id)a15 relatedCommentUUID:(id)a16 relatedUUIDs:(id)a17 underlyingObject:(id)a18
+- (PXSharedAlbumsActivityEntry)initWithPhotoLibrary:(id)library uuid:(id)uuid date:(id)date type:(int64_t)type isFromMe:(BOOL)me contributors:(id)contributors avatarConfigurations:(id)configurations albumGUID:(id)self0 albumName:(id)self1 cloudOwnerIsAllowlisted:(BOOL)self2 message:(id)self3 keyAssetUUIDs:(id)self4 keyAssets:(id)self5 relatedCommentUUID:(id)self6 relatedUUIDs:(id)self7 underlyingObject:(id)self8
 {
   v76 = *MEMORY[0x1E69E9840];
-  v20 = a3;
-  v53 = a4;
-  v21 = a4;
-  v54 = a5;
-  v66 = a5;
-  v56 = a8;
-  v22 = a9;
-  v65 = a10;
-  v23 = a11;
-  v58 = a13;
-  v24 = a14;
-  v25 = a15;
-  v57 = a16;
-  v61 = a17;
-  v63 = a18;
-  v59 = v20;
-  if (!v20)
+  libraryCopy = library;
+  uuidCopy = uuid;
+  uuidCopy2 = uuid;
+  dateCopy = date;
+  dateCopy2 = date;
+  contributorsCopy = contributors;
+  configurationsCopy = configurations;
+  dCopy = d;
+  nameCopy = name;
+  messageCopy = message;
+  dsCopy = ds;
+  assetsCopy = assets;
+  iDCopy = iD;
+  iDsCopy = iDs;
+  objectCopy = object;
+  v59 = libraryCopy;
+  if (!libraryCopy)
   {
-    v38 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v38 handleFailureInMethod:a2 object:self file:@"PXSharedAlbumsActivityEntry.m" lineNumber:102 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSharedAlbumsActivityEntry.m" lineNumber:102 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary"}];
   }
 
-  if (![v21 length])
+  if (![uuidCopy2 length])
   {
-    v39 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v39 handleFailureInMethod:a2 object:self file:@"PXSharedAlbumsActivityEntry.m" lineNumber:103 description:{@"Invalid parameter not satisfying: %@", @"uuid.length"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXSharedAlbumsActivityEntry.m" lineNumber:103 description:{@"Invalid parameter not satisfying: %@", @"uuid.length"}];
   }
 
-  v26 = v23;
-  v27 = v24;
-  if (!v66)
+  v26 = nameCopy;
+  v27 = dsCopy;
+  if (!dateCopy2)
   {
-    v40 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v40 handleFailureInMethod:a2 object:self file:@"PXSharedAlbumsActivityEntry.m" lineNumber:104 description:{@"Invalid parameter not satisfying: %@", @"date"}];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"PXSharedAlbumsActivityEntry.m" lineNumber:104 description:{@"Invalid parameter not satisfying: %@", @"date"}];
   }
 
-  if (v56)
+  if (contributorsCopy)
   {
-    if (v22)
+    if (configurationsCopy)
     {
       goto LABEL_9;
     }
@@ -101,22 +101,22 @@
 
   else
   {
-    v41 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v41 handleFailureInMethod:a2 object:self file:@"PXSharedAlbumsActivityEntry.m" lineNumber:105 description:{@"Invalid parameter not satisfying: %@", @"contributors"}];
+    currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler4 handleFailureInMethod:a2 object:self file:@"PXSharedAlbumsActivityEntry.m" lineNumber:105 description:{@"Invalid parameter not satisfying: %@", @"contributors"}];
 
-    if (v22)
+    if (configurationsCopy)
     {
       goto LABEL_9;
     }
   }
 
-  v42 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v42 handleFailureInMethod:a2 object:self file:@"PXSharedAlbumsActivityEntry.m" lineNumber:106 description:{@"Invalid parameter not satisfying: %@", @"avatarConfigurations"}];
+  currentHandler5 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler5 handleFailureInMethod:a2 object:self file:@"PXSharedAlbumsActivityEntry.m" lineNumber:106 description:{@"Invalid parameter not satisfying: %@", @"avatarConfigurations"}];
 
 LABEL_9:
-  if (v65)
+  if (dCopy)
   {
-    if (v23)
+    if (nameCopy)
     {
       goto LABEL_11;
     }
@@ -124,22 +124,22 @@ LABEL_9:
 
   else
   {
-    v43 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v43 handleFailureInMethod:a2 object:self file:@"PXSharedAlbumsActivityEntry.m" lineNumber:107 description:{@"Invalid parameter not satisfying: %@", @"albumGUID"}];
+    currentHandler6 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler6 handleFailureInMethod:a2 object:self file:@"PXSharedAlbumsActivityEntry.m" lineNumber:107 description:{@"Invalid parameter not satisfying: %@", @"albumGUID"}];
 
-    if (v23)
+    if (nameCopy)
     {
 LABEL_11:
-      if (v24)
+      if (dsCopy)
       {
         goto LABEL_12;
       }
 
 LABEL_37:
-      v45 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v45 handleFailureInMethod:a2 object:self file:@"PXSharedAlbumsActivityEntry.m" lineNumber:109 description:{@"Invalid parameter not satisfying: %@", @"keyAssetUUIDs"}];
+      currentHandler7 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler7 handleFailureInMethod:a2 object:self file:@"PXSharedAlbumsActivityEntry.m" lineNumber:109 description:{@"Invalid parameter not satisfying: %@", @"keyAssetUUIDs"}];
 
-      if (v61)
+      if (iDsCopy)
       {
         goto LABEL_13;
       }
@@ -148,55 +148,55 @@ LABEL_37:
     }
   }
 
-  v44 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v44 handleFailureInMethod:a2 object:self file:@"PXSharedAlbumsActivityEntry.m" lineNumber:108 description:{@"Invalid parameter not satisfying: %@", @"albumName"}];
+  currentHandler8 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler8 handleFailureInMethod:a2 object:self file:@"PXSharedAlbumsActivityEntry.m" lineNumber:108 description:{@"Invalid parameter not satisfying: %@", @"albumName"}];
 
-  if (!v24)
+  if (!dsCopy)
   {
     goto LABEL_37;
   }
 
 LABEL_12:
-  if (v61)
+  if (iDsCopy)
   {
     goto LABEL_13;
   }
 
 LABEL_38:
-  v46 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v46 handleFailureInMethod:a2 object:self file:@"PXSharedAlbumsActivityEntry.m" lineNumber:110 description:{@"Invalid parameter not satisfying: %@", @"relatedUUIDs"}];
+  currentHandler9 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler9 handleFailureInMethod:a2 object:self file:@"PXSharedAlbumsActivityEntry.m" lineNumber:110 description:{@"Invalid parameter not satisfying: %@", @"relatedUUIDs"}];
 
 LABEL_13:
-  if (![v56 count])
+  if (![contributorsCopy count])
   {
-    v47 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v47 handleFailureInMethod:a2 object:self file:@"PXSharedAlbumsActivityEntry.m" lineNumber:112 description:@"Must have a contributor."];
+    currentHandler10 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler10 handleFailureInMethod:a2 object:self file:@"PXSharedAlbumsActivityEntry.m" lineNumber:112 description:@"Must have a contributor."];
   }
 
-  if (![v22 count])
+  if (![configurationsCopy count])
   {
-    v48 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v48 handleFailureInMethod:a2 object:self file:@"PXSharedAlbumsActivityEntry.m" lineNumber:113 description:@"Must have an avatar configuration."];
+    currentHandler11 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler11 handleFailureInMethod:a2 object:self file:@"PXSharedAlbumsActivityEntry.m" lineNumber:113 description:@"Must have an avatar configuration."];
   }
 
-  if (a6 != 1)
+  if (type != 1)
   {
-    if ([v56 count] != 1)
+    if ([contributorsCopy count] != 1)
     {
-      v49 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v49 handleFailureInMethod:a2 object:self file:@"PXSharedAlbumsActivityEntry.m" lineNumber:115 description:@"Found multiple contributors for a non-reaction type activity entry. Only reactions can have multiple contributors."];
+      currentHandler12 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler12 handleFailureInMethod:a2 object:self file:@"PXSharedAlbumsActivityEntry.m" lineNumber:115 description:@"Found multiple contributors for a non-reaction type activity entry. Only reactions can have multiple contributors."];
     }
 
-    if ([v22 count] != 1)
+    if ([configurationsCopy count] != 1)
     {
-      v50 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v50 handleFailureInMethod:a2 object:self file:@"PXSharedAlbumsActivityEntry.m" lineNumber:116 description:@"Found multiple avatar configurations for a non-reaction type activity entry. Only reactions can have multiple contributors."];
+      currentHandler13 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler13 handleFailureInMethod:a2 object:self file:@"PXSharedAlbumsActivityEntry.m" lineNumber:116 description:@"Found multiple avatar configurations for a non-reaction type activity entry. Only reactions can have multiple contributors."];
     }
   }
 
-  v28 = [v56 firstObject];
-  v29 = [v28 displayName];
-  v30 = [v29 length];
+  firstObject = [contributorsCopy firstObject];
+  displayName = [firstObject displayName];
+  v30 = [displayName length];
 
   if (!v30)
   {
@@ -204,13 +204,13 @@ LABEL_13:
     if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
     {
       *buf = 138544130;
-      v69 = v21;
+      v69 = uuidCopy2;
       v70 = 2114;
-      v71 = v65;
+      v71 = dCopy;
       v72 = 2112;
       v73 = v26;
       v74 = 2112;
-      v75 = v66;
+      v75 = dateCopy2;
       _os_log_impl(&dword_1A3C1C000, v31, OS_LOG_TYPE_ERROR, "Contributor display name is empty/blank for activity UUID: %{public}@, in albumGUID/name %{public}@/%@, date: %@", buf, 0x2Au);
     }
   }
@@ -221,11 +221,11 @@ LABEL_13:
     if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543874;
-      v69 = v21;
+      v69 = uuidCopy2;
       v70 = 2114;
-      v71 = v65;
+      v71 = dCopy;
       v72 = 2112;
-      v73 = v66;
+      v73 = dateCopy2;
       _os_log_impl(&dword_1A3C1C000, v32, OS_LOG_TYPE_ERROR, "Album name is empty/blank for activity UUID: %{public}@, for albumGUID %{public}@, date: %@", buf, 0x20u);
     }
   }
@@ -236,12 +236,12 @@ LABEL_13:
   v34 = v33;
   if (v33)
   {
-    objc_storeStrong(&v33->_photoLibrary, a3);
-    objc_storeStrong(&v34->_uuid, v53);
-    objc_storeStrong(&v34->_date, v54);
-    v34->_type = a6;
-    v34->_isFromMe = a7;
-    v35 = [v56 copy];
+    objc_storeStrong(&v33->_photoLibrary, library);
+    objc_storeStrong(&v34->_uuid, uuidCopy);
+    objc_storeStrong(&v34->_date, dateCopy);
+    v34->_type = type;
+    v34->_isFromMe = me;
+    v35 = [contributorsCopy copy];
     contributors = v34->_contributors;
     v34->_contributors = v35;
 
@@ -251,38 +251,38 @@ LABEL_13:
   return 0;
 }
 
-+ (id)_fetchKeyAssetUUIDForAlbumWithGUID:(id)a3 photoLibrary:(id)a4 plPhotoLibrary:(id)a5
++ (id)_fetchKeyAssetUUIDForAlbumWithGUID:(id)d photoLibrary:(id)library plPhotoLibrary:(id)photoLibrary
 {
   v21 = *MEMORY[0x1E69E9840];
   v6 = MEMORY[0x1E6978770];
-  v20 = a3;
+  dCopy = d;
   v7 = MEMORY[0x1E695DEC8];
-  v8 = a4;
-  v9 = a3;
-  v10 = [v7 arrayWithObjects:&v20 count:1];
-  v11 = [v8 librarySpecificFetchOptions];
-  v12 = [v6 fetchCollectionSharesWithScopeIdentifiers:v10 options:v11];
-  v13 = [v12 firstObject];
+  libraryCopy = library;
+  dCopy2 = d;
+  v10 = [v7 arrayWithObjects:&dCopy count:1];
+  librarySpecificFetchOptions = [libraryCopy librarySpecificFetchOptions];
+  v12 = [v6 fetchCollectionSharesWithScopeIdentifiers:v10 options:librarySpecificFetchOptions];
+  firstObject = [v12 firstObject];
 
   v14 = MEMORY[0x1E6978630];
-  v15 = [v8 librarySpecificFetchOptions];
+  librarySpecificFetchOptions2 = [libraryCopy librarySpecificFetchOptions];
 
-  v16 = [v14 fetchKeyAssetsInAssetCollection:v13 options:v15];
+  v16 = [v14 fetchKeyAssetsInAssetCollection:firstObject options:librarySpecificFetchOptions2];
 
-  v17 = [v16 firstObject];
+  firstObject2 = [v16 firstObject];
 
-  v18 = [v17 uuid];
+  uuid = [firstObject2 uuid];
 
-  return v18;
+  return uuid;
 }
 
-+ (id)_fetchAssetsWithUUIDs:(id)a3 inPhotoLibrary:(id)a4
++ (id)_fetchAssetsWithUUIDs:(id)ds inPhotoLibrary:(id)library
 {
   v37 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 librarySpecificFetchOptions];
-  v8 = [MEMORY[0x1E6978630] fetchAssetsWithUUIDs:v5 options:v7];
+  dsCopy = ds;
+  libraryCopy = library;
+  librarySpecificFetchOptions = [libraryCopy librarySpecificFetchOptions];
+  v8 = [MEMORY[0x1E6978630] fetchAssetsWithUUIDs:dsCopy options:librarySpecificFetchOptions];
   v9 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v8, "count")}];
   v31 = 0u;
   v32 = 0u;
@@ -304,8 +304,8 @@ LABEL_13:
         }
 
         v15 = *(*(&v31 + 1) + 8 * i);
-        v16 = [v15 uuid];
-        [v9 setObject:v15 forKeyedSubscript:v16];
+        uuid = [v15 uuid];
+        [v9 setObject:v15 forKeyedSubscript:uuid];
       }
 
       v12 = [v10 countByEnumeratingWithState:&v31 objects:v36 count:16];
@@ -319,7 +319,7 @@ LABEL_13:
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v18 = v5;
+  v18 = dsCopy;
   v19 = [v18 countByEnumeratingWithState:&v27 objects:v35 count:16];
   if (v19)
   {
@@ -348,50 +348,50 @@ LABEL_13:
   }
 
   v24 = objc_alloc(MEMORY[0x1E69788E0]);
-  v25 = [v24 initWithObjects:v17 photoLibrary:v6 fetchType:*MEMORY[0x1E6978D98] fetchPropertySets:0 identifier:0 registerIfNeeded:0];
+  v25 = [v24 initWithObjects:v17 photoLibrary:libraryCopy fetchType:*MEMORY[0x1E6978D98] fetchPropertySets:0 identifier:0 registerIfNeeded:0];
 
   return v25;
 }
 
-+ (id)fetchKeyAssetsForActivity:(id)a3
++ (id)fetchKeyAssetsForActivity:(id)activity
 {
-  v4 = a3;
-  v5 = [v4 keyAssetUUIDs];
-  v6 = [v4 photoLibrary];
+  activityCopy = activity;
+  keyAssetUUIDs = [activityCopy keyAssetUUIDs];
+  photoLibrary = [activityCopy photoLibrary];
 
-  v7 = [a1 _fetchAssetsWithUUIDs:v5 inPhotoLibrary:v6];
+  v7 = [self _fetchAssetsWithUUIDs:keyAssetUUIDs inPhotoLibrary:photoLibrary];
 
   return v7;
 }
 
-+ (id)_reactionActivitiesFromCloudFeedLikeEntry:(id)a3 photoLibrary:(id)a4 plPhotoLibrary:(id)a5
++ (id)_reactionActivitiesFromCloudFeedLikeEntry:(id)entry photoLibrary:(id)library plPhotoLibrary:(id)photoLibrary
 {
   v28 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v21 = a4;
-  v20 = a5;
+  entryCopy = entry;
+  libraryCopy = library;
+  photoLibraryCopy = photoLibrary;
   v8 = objc_alloc_init(MEMORY[0x1E695DFA0]);
-  v22 = v7;
-  v9 = [v7 entryLikeComments];
+  v22 = entryCopy;
+  entryLikeComments = [entryCopy entryLikeComments];
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __101__PXSharedAlbumsActivityEntry__reactionActivitiesFromCloudFeedLikeEntry_photoLibrary_plPhotoLibrary___block_invoke;
   v26[3] = &unk_1E7738570;
   v10 = v8;
   v27 = v10;
-  [v9 enumerateObjectsUsingBlock:v26];
+  [entryLikeComments enumerateObjectsUsingBlock:v26];
 
   v11 = [v10 count];
   v12 = MEMORY[0x1E695E0F0];
   if (v11)
   {
-    v13 = [v22 URIRepresentation];
-    [v13 absoluteString];
+    uRIRepresentation = [v22 URIRepresentation];
+    [uRIRepresentation absoluteString];
     objc_claimAutoreleasedReturnValue();
 
     v14 = [PXSharedAlbumsActivityEntryAlbumInformation alloc];
-    v15 = [v22 entryAlbumGUID];
-    [(PXSharedAlbumsActivityEntryAlbumInformation *)v14 initWithAlbumGUID:v15 photoLibrary:v21 plPhotoLibrary:v20];
+    entryAlbumGUID = [v22 entryAlbumGUID];
+    [(PXSharedAlbumsActivityEntryAlbumInformation *)v14 initWithAlbumGUID:entryAlbumGUID photoLibrary:libraryCopy plPhotoLibrary:photoLibraryCopy];
 
     objc_alloc_init(MEMORY[0x1E695DF70]);
     v16 = [MEMORY[0x1E695DFA0] orderedSetWithCapacity:{objc_msgSend(v10, "count")}];
@@ -599,27 +599,27 @@ void __101__PXSharedAlbumsActivityEntry__reactionActivitiesFromCloudFeedLikeEntr
   }
 }
 
-+ (id)_assetsAddedActivitiesFromCloudFeedAssetsEntry:(id)a3 inMostRecentOrder:(BOOL)a4 withAlbumInformation:(id)a5 photoLibrary:(id)a6
++ (id)_assetsAddedActivitiesFromCloudFeedAssetsEntry:(id)entry inMostRecentOrder:(BOOL)order withAlbumInformation:(id)information photoLibrary:(id)library
 {
-  v23 = a4;
+  orderCopy = order;
   v54 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
-  v12 = [v9 entryAssets];
-  if ([v12 count])
+  entryCopy = entry;
+  informationCopy = information;
+  libraryCopy = library;
+  entryAssets = [entryCopy entryAssets];
+  if ([entryAssets count])
   {
     v13 = +[PXSharedAlbumsSettings sharedInstance];
-    v14 = [v13 activityEntryAssetsAddedBatchingBehavior];
+    activityEntryAssetsAddedBatchingBehavior = [v13 activityEntryAssetsAddedBatchingBehavior];
 
-    if (v14)
+    if (activityEntryAssetsAddedBatchingBehavior)
     {
       v43 = 0;
       v44 = &v43;
       v45 = 0x3032000000;
       v46 = __Block_byref_object_copy__100957;
       v47 = __Block_byref_object_dispose__100958;
-      v48 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v12, "count")}];
+      v48 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(entryAssets, "count")}];
       v41[0] = 0;
       v41[1] = v41;
       v41[2] = 0x3032000000;
@@ -641,11 +641,11 @@ void __101__PXSharedAlbumsActivityEntry__reactionActivitiesFromCloudFeedLikeEntr
       v30[2] = __130__PXSharedAlbumsActivityEntry__assetsAddedActivitiesFromCloudFeedAssetsEntry_inMostRecentOrder_withAlbumInformation_photoLibrary___block_invoke;
       v30[3] = &unk_1E7738520;
       v35 = v39;
-      v36 = v14;
+      v36 = activityEntryAssetsAddedBatchingBehavior;
       v32 = v41;
       v33 = v37;
       v34 = &v43;
-      v31 = v12;
+      v31 = entryAssets;
       [v31 enumerateObjectsUsingBlock:v30];
       if ([v44[5] count] >= 2)
       {
@@ -653,11 +653,11 @@ void __101__PXSharedAlbumsActivityEntry__reactionActivitiesFromCloudFeedLikeEntr
         if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
         {
           v16 = [v44[5] count];
-          v17 = [v9 objectID];
+          objectID = [entryCopy objectID];
           *buf = 134218242;
           v51 = v16;
           v52 = 2112;
-          v53 = v17;
+          v53 = objectID;
           _os_log_impl(&dword_1A3C1C000, v15, OS_LOG_TYPE_INFO, "[ActivityEntry] Produced %lu assets activity entries from assets-added cloud entry: %@", buf, 0x16u);
         }
       }
@@ -673,7 +673,7 @@ void __101__PXSharedAlbumsActivityEntry__reactionActivitiesFromCloudFeedLikeEntr
 
     else
     {
-      v49 = v12;
+      v49 = entryAssets;
       v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v49 count:1];
     }
 
@@ -687,22 +687,22 @@ void __101__PXSharedAlbumsActivityEntry__reactionActivitiesFromCloudFeedLikeEntr
     v24[1] = 3221225472;
     v24[2] = __130__PXSharedAlbumsActivityEntry__assetsAddedActivitiesFromCloudFeedAssetsEntry_inMostRecentOrder_withAlbumInformation_photoLibrary___block_invoke_338;
     v24[3] = &unk_1E7738548;
-    v29 = a1;
-    v25 = v10;
-    v26 = v9;
-    v27 = v11;
+    selfCopy = self;
+    v25 = informationCopy;
+    v26 = entryCopy;
+    v27 = libraryCopy;
     v28 = &v43;
     [v18 enumerateObjectsUsingBlock:v24];
     v20 = v44[5];
-    if (v23)
+    if (orderCopy)
     {
-      v21 = [v20 reverseObjectEnumerator];
-      v19 = [v21 allObjects];
+      reverseObjectEnumerator = [v20 reverseObjectEnumerator];
+      allObjects = [reverseObjectEnumerator allObjects];
     }
 
     else
     {
-      v19 = v20;
+      allObjects = v20;
     }
 
     _Block_object_dispose(&v43, 8);
@@ -710,10 +710,10 @@ void __101__PXSharedAlbumsActivityEntry__reactionActivitiesFromCloudFeedLikeEntr
 
   else
   {
-    v19 = MEMORY[0x1E695E0F0];
+    allObjects = MEMORY[0x1E695E0F0];
   }
 
-  return v19;
+  return allObjects;
 }
 
 void __130__PXSharedAlbumsActivityEntry__assetsAddedActivitiesFromCloudFeedAssetsEntry_inMostRecentOrder_withAlbumInformation_photoLibrary___block_invoke(uint64_t a1, void *a2)
@@ -793,40 +793,40 @@ void __130__PXSharedAlbumsActivityEntry__assetsAddedActivitiesFromCloudFeedAsset
   [*(*(a1[7] + 8) + 40) addObject:v7];
 }
 
-+ (id)_assetsAddedActivityFromAssets:(id)a3 batchID:(unint64_t)a4 withAlbumInformation:(id)a5 forEntry:(id)a6 photoLibrary:(id)a7
++ (id)_assetsAddedActivityFromAssets:(id)assets batchID:(unint64_t)d withAlbumInformation:(id)information forEntry:(id)entry photoLibrary:(id)library
 {
   v11 = MEMORY[0x1E696AEC0];
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a3;
-  v16 = [v13 URIRepresentation];
-  v17 = [v16 absoluteString];
-  [v11 stringWithFormat:@"%@_batch_%lu", v17, a4];
+  libraryCopy = library;
+  entryCopy = entry;
+  informationCopy = information;
+  assetsCopy = assets;
+  uRIRepresentation = [entryCopy URIRepresentation];
+  absoluteString = [uRIRepresentation absoluteString];
+  [v11 stringWithFormat:@"%@_batch_%lu", absoluteString, d];
   objc_claimAutoreleasedReturnValue();
 
   PXMap();
 }
 
-+ (id)_activitiesFromCloudFeedEntries:(id)a3 inMostRecentOrder:(BOOL)a4 photoLibrary:(id)a5 plPhotoLibrary:(id)a6
++ (id)_activitiesFromCloudFeedEntries:(id)entries inMostRecentOrder:(BOOL)order photoLibrary:(id)library plPhotoLibrary:(id)photoLibrary
 {
-  v104 = a4;
+  orderCopy = order;
   v158 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v127 = a5;
-  v9 = a6;
+  entriesCopy = entries;
+  libraryCopy = library;
+  photoLibraryCopy = photoLibrary;
   v121 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v137 = 0u;
   v138 = 0u;
   v139 = 0u;
   v140 = 0u;
-  obj = v8;
+  obj = entriesCopy;
   v123 = [obj countByEnumeratingWithState:&v137 objects:v157 count:16];
   if (v123)
   {
     v122 = *v138;
     v10 = 0x1E695D000uLL;
-    v116 = v9;
+    v116 = photoLibraryCopy;
     do
     {
       v11 = 0;
@@ -838,39 +838,39 @@ void __130__PXSharedAlbumsActivityEntry__assetsAddedActivitiesFromCloudFeedAsset
         }
 
         v12 = *(*(&v137 + 1) + 8 * v11);
-        v13 = [v12 entryDate];
+        entryDate = [v12 entryDate];
         v14 = [PXSharedAlbumsActivityEntryAlbumInformation alloc];
-        v15 = [v12 entryAlbumGUID];
-        v16 = [(PXSharedAlbumsActivityEntryAlbumInformation *)v14 initWithAlbumGUID:v15 photoLibrary:v127 plPhotoLibrary:v9];
+        entryAlbumGUID = [v12 entryAlbumGUID];
+        v16 = [(PXSharedAlbumsActivityEntryAlbumInformation *)v14 initWithAlbumGUID:entryAlbumGUID photoLibrary:libraryCopy plPhotoLibrary:photoLibraryCopy];
 
-        v17 = [v12 URIRepresentation];
-        v18 = [v17 absoluteString];
+        uRIRepresentation = [v12 URIRepresentation];
+        absoluteString = [uRIRepresentation absoluteString];
 
-        v19 = [v12 entryType];
-        if (v19 <= 3)
+        entryType = [v12 entryType];
+        if (entryType <= 3)
         {
-          if (v19 != 1)
+          if (entryType != 1)
           {
-            if (v19 != 2)
+            if (entryType != 2)
             {
-              if (v19 != 3)
+              if (entryType != 3)
               {
                 goto LABEL_59;
               }
 
-              v20 = [v12 entryAlbumGUID];
-              v21 = [PXSharedAlbumsActivityEntryAvatarConfiguration avatarFromOwnerOfPendingSharedAlbumWithGUID:v20 withPhotoLibrary:v127 plPhotoLibrary:v9];
+              entryAlbumGUID2 = [v12 entryAlbumGUID];
+              v21 = [PXSharedAlbumsActivityEntryAvatarConfiguration avatarFromOwnerOfPendingSharedAlbumWithGUID:entryAlbumGUID2 withPhotoLibrary:libraryCopy plPhotoLibrary:photoLibraryCopy];
 
               v125 = [[PXSharedAlbumsActivityEntryContributor alloc] initWithAvatarConfiguration:v21];
               v126 = v16;
-              v22 = [(PXSharedAlbumsActivityEntryAlbumInformation *)v16 albumGUID];
-              v23 = [PXSharedAlbumsActivityEntry _fetchKeyAssetUUIDForAlbumWithGUID:v22 photoLibrary:v127 plPhotoLibrary:v9];
+              albumGUID = [(PXSharedAlbumsActivityEntryAlbumInformation *)v16 albumGUID];
+              v23 = [PXSharedAlbumsActivityEntry _fetchKeyAssetUUIDForAlbumWithGUID:albumGUID photoLibrary:libraryCopy plPhotoLibrary:photoLibraryCopy];
 
               if (v23)
               {
                 v152 = v23;
                 v24 = [*(v10 + 3784) arrayWithObjects:&v152 count:1];
-                v111 = [a1 _fetchAssetsWithUUIDs:v24 inPhotoLibrary:v127];
+                v111 = [self _fetchAssetsWithUUIDs:v24 inPhotoLibrary:libraryCopy];
               }
 
               else
@@ -879,34 +879,34 @@ void __130__PXSharedAlbumsActivityEntry__assetsAddedActivitiesFromCloudFeedAsset
               }
 
               v110 = [PXSharedAlbumsActivityEntry alloc];
-              v119 = [v12 entryDate];
+              entryDate2 = [v12 entryDate];
               v151 = v125;
               v71 = [*(v10 + 3784) arrayWithObjects:&v151 count:1];
               v124 = v21;
               v150 = v21;
               v72 = [*(v10 + 3784) arrayWithObjects:&v150 count:1];
-              v73 = [(PXSharedAlbumsActivityEntryAlbumInformation *)v126 albumGUID];
-              v74 = [(PXSharedAlbumsActivityEntryAlbumInformation *)v126 albumTitle];
-              v75 = [(PXSharedAlbumsActivityEntryAlbumInformation *)v126 ownerIsAllowlisted];
+              albumGUID2 = [(PXSharedAlbumsActivityEntryAlbumInformation *)v126 albumGUID];
+              albumTitle = [(PXSharedAlbumsActivityEntryAlbumInformation *)v126 albumTitle];
+              ownerIsAllowlisted = [(PXSharedAlbumsActivityEntryAlbumInformation *)v126 ownerIsAllowlisted];
               if (v23)
               {
                 v149 = v23;
                 [*(v10 + 3784) arrayWithObjects:&v149 count:1];
-                v77 = v76 = v18;
+                v77 = v76 = absoluteString;
                 v102 = v12;
                 v78 = v111;
-                LOBYTE(v99) = v75;
-                v79 = [(PXSharedAlbumsActivityEntry *)v110 initWithPhotoLibrary:v127 uuid:v76 date:v119 type:5 isFromMe:0 contributors:v71 avatarConfigurations:v72 albumGUID:v73 albumName:v74 cloudOwnerIsAllowlisted:v99 message:0 keyAssetUUIDs:v77 keyAssets:v111 relatedCommentUUID:0 relatedUUIDs:MEMORY[0x1E695E0F0] underlyingObject:v102];
+                LOBYTE(v99) = ownerIsAllowlisted;
+                v79 = [(PXSharedAlbumsActivityEntry *)v110 initWithPhotoLibrary:libraryCopy uuid:v76 date:entryDate2 type:5 isFromMe:0 contributors:v71 avatarConfigurations:v72 albumGUID:albumGUID2 albumName:albumTitle cloudOwnerIsAllowlisted:v99 message:0 keyAssetUUIDs:v77 keyAssets:v111 relatedCommentUUID:0 relatedUUIDs:MEMORY[0x1E695E0F0] underlyingObject:v102];
 
-                v18 = v76;
+                absoluteString = v76;
               }
 
               else
               {
                 v103 = v12;
                 v78 = v111;
-                LOBYTE(v99) = v75;
-                v79 = [(PXSharedAlbumsActivityEntry *)v110 initWithPhotoLibrary:v127 uuid:v18 date:v119 type:5 isFromMe:0 contributors:v71 avatarConfigurations:v72 albumGUID:v73 albumName:v74 cloudOwnerIsAllowlisted:v99 message:0 keyAssetUUIDs:MEMORY[0x1E695E0F0] keyAssets:v111 relatedCommentUUID:0 relatedUUIDs:MEMORY[0x1E695E0F0] underlyingObject:v103];
+                LOBYTE(v99) = ownerIsAllowlisted;
+                v79 = [(PXSharedAlbumsActivityEntry *)v110 initWithPhotoLibrary:libraryCopy uuid:absoluteString date:entryDate2 type:5 isFromMe:0 contributors:v71 avatarConfigurations:v72 albumGUID:albumGUID2 albumName:albumTitle cloudOwnerIsAllowlisted:v99 message:0 keyAssetUUIDs:MEMORY[0x1E695E0F0] keyAssets:v111 relatedCommentUUID:0 relatedUUIDs:MEMORY[0x1E695E0F0] underlyingObject:v103];
               }
 
               [v121 addObject:v79];
@@ -922,41 +922,41 @@ void __130__PXSharedAlbumsActivityEntry__assetsAddedActivitiesFromCloudFeedAsset
                 goto LABEL_30;
               }
 
-              v84 = [MEMORY[0x1E696AAA8] currentHandler];
+              currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
               v85 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"+[PXSharedAlbumsActivityEntry _activitiesFromCloudFeedEntries:inMostRecentOrder:photoLibrary:plPhotoLibrary:]"];
               v90 = objc_opt_class();
               v87 = NSStringFromClass(v90);
-              v91 = [v40 px_descriptionForAssertionMessage];
-              [v84 handleFailureInFunction:v85 file:@"PXSharedAlbumsActivityEntry.m" lineNumber:353 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"entry", v87, v91}];
+              px_descriptionForAssertionMessage = [v40 px_descriptionForAssertionMessage];
+              [currentHandler handleFailureInFunction:v85 file:@"PXSharedAlbumsActivityEntry.m" lineNumber:353 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"entry", v87, px_descriptionForAssertionMessage}];
             }
 
             else
             {
-              v84 = [MEMORY[0x1E696AAA8] currentHandler];
+              currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
               v85 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"+[PXSharedAlbumsActivityEntry _activitiesFromCloudFeedEntries:inMostRecentOrder:photoLibrary:plPhotoLibrary:]"];
               v86 = objc_opt_class();
               v87 = NSStringFromClass(v86);
-              [v84 handleFailureInFunction:v85 file:@"PXSharedAlbumsActivityEntry.m" lineNumber:353 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"entry", v87}];
+              [currentHandler handleFailureInFunction:v85 file:@"PXSharedAlbumsActivityEntry.m" lineNumber:353 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"entry", v87}];
             }
 
 LABEL_30:
-            v41 = [v40 entryComments];
+            entryComments = [v40 entryComments];
             v130[0] = MEMORY[0x1E69E9820];
             v130[1] = 3221225472;
             v130[2] = __109__PXSharedAlbumsActivityEntry__activitiesFromCloudFeedEntries_inMostRecentOrder_photoLibrary_plPhotoLibrary___block_invoke;
             v130[3] = &unk_1E77384B8;
-            v136 = a1;
-            v42 = v127;
+            selfCopy = self;
+            v42 = libraryCopy;
             v131 = v42;
-            v132 = v18;
+            v132 = absoluteString;
             v133 = v40;
             v134 = v16;
             v43 = v121;
             v135 = v43;
-            [v41 enumerateObjectsUsingBlock:v130];
-            v44 = [a1 _reactionActivitiesFromCloudFeedLikeEntry:v40 photoLibrary:v42 plPhotoLibrary:v9];
+            [entryComments enumerateObjectsUsingBlock:v130];
+            v44 = [self _reactionActivitiesFromCloudFeedLikeEntry:v40 photoLibrary:v42 plPhotoLibrary:photoLibraryCopy];
             [v43 addObjectsFromArray:v44];
-            if (![v41 count] && !objc_msgSend(v44, "count"))
+            if (![entryComments count] && !objc_msgSend(v44, "count"))
             {
               v45 = PLSharingGetLog();
               if (os_log_type_enabled(v45, OS_LOG_TYPE_ERROR))
@@ -979,28 +979,28 @@ LABEL_30:
               goto LABEL_26;
             }
 
-            v80 = [MEMORY[0x1E696AAA8] currentHandler];
+            currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
             v81 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"+[PXSharedAlbumsActivityEntry _activitiesFromCloudFeedEntries:inMostRecentOrder:photoLibrary:plPhotoLibrary:]"];
             v88 = objc_opt_class();
             v83 = NSStringFromClass(v88);
-            v89 = [v40 px_descriptionForAssertionMessage];
-            [v80 handleFailureInFunction:v81 file:@"PXSharedAlbumsActivityEntry.m" lineNumber:344 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"entry", v83, v89}];
+            px_descriptionForAssertionMessage2 = [v40 px_descriptionForAssertionMessage];
+            [currentHandler2 handleFailureInFunction:v81 file:@"PXSharedAlbumsActivityEntry.m" lineNumber:344 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"entry", v83, px_descriptionForAssertionMessage2}];
           }
 
           else
           {
-            v80 = [MEMORY[0x1E696AAA8] currentHandler];
+            currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
             v81 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"+[PXSharedAlbumsActivityEntry _activitiesFromCloudFeedEntries:inMostRecentOrder:photoLibrary:plPhotoLibrary:]"];
             v82 = objc_opt_class();
             v83 = NSStringFromClass(v82);
-            [v80 handleFailureInFunction:v81 file:@"PXSharedAlbumsActivityEntry.m" lineNumber:344 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"entry", v83}];
+            [currentHandler2 handleFailureInFunction:v81 file:@"PXSharedAlbumsActivityEntry.m" lineNumber:344 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"entry", v83}];
           }
 
 LABEL_26:
-          v41 = [a1 _assetsAddedActivitiesFromCloudFeedAssetsEntry:v40 inMostRecentOrder:v104 withAlbumInformation:v16 photoLibrary:v127];
-          if ([v41 count])
+          entryComments = [self _assetsAddedActivitiesFromCloudFeedAssetsEntry:v40 inMostRecentOrder:orderCopy withAlbumInformation:v16 photoLibrary:libraryCopy];
+          if ([entryComments count])
           {
-            [v121 addObjectsFromArray:v41];
+            [v121 addObjectsFromArray:entryComments];
           }
 
           else
@@ -1017,22 +1017,22 @@ LABEL_26:
           goto LABEL_58;
         }
 
-        if (v19 - 5 < 2)
+        if (entryType - 5 < 2)
         {
-          v36 = [v12 entryInvitationRecordGUID];
-          v37 = [PXSharedAlbumsActivityEntryAvatarConfiguration avatarFromParticipantWithID:v36 withPhotoLibrary:v127 plPhotoLibrary:v9];
+          entryInvitationRecordGUID = [v12 entryInvitationRecordGUID];
+          v37 = [PXSharedAlbumsActivityEntryAvatarConfiguration avatarFromParticipantWithID:entryInvitationRecordGUID withPhotoLibrary:libraryCopy plPhotoLibrary:photoLibraryCopy];
 
           v125 = [[PXSharedAlbumsActivityEntryContributor alloc] initWithAvatarConfiguration:v37];
           v126 = v16;
-          v38 = [(PXSharedAlbumsActivityEntryAlbumInformation *)v16 albumGUID];
-          v23 = [PXSharedAlbumsActivityEntry _fetchKeyAssetUUIDForAlbumWithGUID:v38 photoLibrary:v127 plPhotoLibrary:v9];
+          albumGUID3 = [(PXSharedAlbumsActivityEntryAlbumInformation *)v16 albumGUID];
+          v23 = [PXSharedAlbumsActivityEntry _fetchKeyAssetUUIDForAlbumWithGUID:albumGUID3 photoLibrary:libraryCopy plPhotoLibrary:photoLibraryCopy];
 
-          v114 = v18;
+          v114 = absoluteString;
           if (v23)
           {
             v148 = v23;
             v39 = [*(v10 + 3784) arrayWithObjects:&v148 count:1];
-            v112 = [a1 _fetchAssetsWithUUIDs:v39 inPhotoLibrary:v127];
+            v112 = [self _fetchAssetsWithUUIDs:v39 inPhotoLibrary:libraryCopy];
           }
 
           else
@@ -1040,42 +1040,42 @@ LABEL_26:
             v112 = 0;
           }
 
-          v46 = [v12 entryType];
+          entryType2 = [v12 entryType];
           v47 = 6;
-          if (v46 != 5)
+          if (entryType2 != 5)
           {
             v47 = 7;
           }
 
           v109 = v47;
           v107 = [PXSharedAlbumsActivityEntry alloc];
-          v117 = [v12 entryDate];
+          entryDate3 = [v12 entryDate];
           v147 = v125;
           v48 = [*(v10 + 3784) arrayWithObjects:&v147 count:1];
           v124 = v37;
           v146 = v37;
           v49 = [*(v10 + 3784) arrayWithObjects:&v146 count:1];
-          v50 = [(PXSharedAlbumsActivityEntryAlbumInformation *)v126 albumGUID];
-          v51 = [(PXSharedAlbumsActivityEntryAlbumInformation *)v126 albumTitle];
-          v52 = [(PXSharedAlbumsActivityEntryAlbumInformation *)v126 ownerIsAllowlisted];
+          albumGUID4 = [(PXSharedAlbumsActivityEntryAlbumInformation *)v126 albumGUID];
+          albumTitle2 = [(PXSharedAlbumsActivityEntryAlbumInformation *)v126 albumTitle];
+          ownerIsAllowlisted2 = [(PXSharedAlbumsActivityEntryAlbumInformation *)v126 ownerIsAllowlisted];
           v53 = v10;
-          v54 = v52;
+          v54 = ownerIsAllowlisted2;
           if (v23)
           {
             v145 = v23;
             v55 = [*(v53 + 3784) arrayWithObjects:&v145 count:1];
             v56 = v112;
             LOBYTE(v99) = v54;
-            v57 = [(PXSharedAlbumsActivityEntry *)v107 initWithPhotoLibrary:v127 uuid:v114 date:v117 type:v109 isFromMe:0 contributors:v48 avatarConfigurations:v49 albumGUID:v50 albumName:v51 cloudOwnerIsAllowlisted:v99 message:0 keyAssetUUIDs:v55 keyAssets:v112 relatedCommentUUID:0 relatedUUIDs:MEMORY[0x1E695E0F0] underlyingObject:v12];
+            v57 = [(PXSharedAlbumsActivityEntry *)v107 initWithPhotoLibrary:libraryCopy uuid:v114 date:entryDate3 type:v109 isFromMe:0 contributors:v48 avatarConfigurations:v49 albumGUID:albumGUID4 albumName:albumTitle2 cloudOwnerIsAllowlisted:v99 message:0 keyAssetUUIDs:v55 keyAssets:v112 relatedCommentUUID:0 relatedUUIDs:MEMORY[0x1E695E0F0] underlyingObject:v12];
 
-            v18 = v114;
+            absoluteString = v114;
           }
 
           else
           {
             v56 = v112;
-            LOBYTE(v99) = v52;
-            v57 = [(PXSharedAlbumsActivityEntry *)v107 initWithPhotoLibrary:v127 uuid:v18 date:v117 type:v109 isFromMe:0 contributors:v48 avatarConfigurations:v49 albumGUID:v50 albumName:v51 cloudOwnerIsAllowlisted:v99 message:0 keyAssetUUIDs:MEMORY[0x1E695E0F0] keyAssets:v112 relatedCommentUUID:0 relatedUUIDs:MEMORY[0x1E695E0F0] underlyingObject:v12];
+            LOBYTE(v99) = ownerIsAllowlisted2;
+            v57 = [(PXSharedAlbumsActivityEntry *)v107 initWithPhotoLibrary:libraryCopy uuid:absoluteString date:entryDate3 type:v109 isFromMe:0 contributors:v48 avatarConfigurations:v49 albumGUID:albumGUID4 albumName:albumTitle2 cloudOwnerIsAllowlisted:v99 message:0 keyAssetUUIDs:MEMORY[0x1E695E0F0] keyAssets:v112 relatedCommentUUID:0 relatedUUIDs:MEMORY[0x1E695E0F0] underlyingObject:v12];
           }
 
           [v121 addObject:v57];
@@ -1084,18 +1084,18 @@ LABEL_56:
           goto LABEL_57;
         }
 
-        if (v19 == 4 || v19 == 7)
+        if (entryType == 4 || entryType == 7)
         {
           v26 = [PXSharedAlbumsActivityEntryAvatarConfiguration alloc];
-          v27 = [MEMORY[0x1E69BE6A8] sharingUsername];
-          v28 = [MEMORY[0x1E69BE6A8] sharingFirstName];
+          sharingUsername = [MEMORY[0x1E69BE6A8] sharingUsername];
+          sharingFirstName = [MEMORY[0x1E69BE6A8] sharingFirstName];
           [MEMORY[0x1E69BE6A8] sharingLastName];
           v29 = v126 = v16;
-          v124 = [(PXSharedAlbumsActivityEntryAvatarConfiguration *)v26 initWithEmail:v27 phone:0 firstName:v28 lastName:v29];
+          v124 = [(PXSharedAlbumsActivityEntryAvatarConfiguration *)v26 initWithEmail:sharingUsername phone:0 firstName:sharingFirstName lastName:v29];
 
-          v30 = [v12 entryType];
+          entryType3 = [v12 entryType];
           v31 = 3;
-          if (v30 != 4)
+          if (entryType3 != 4)
           {
             v31 = 4;
           }
@@ -1103,14 +1103,14 @@ LABEL_56:
           v108 = v31;
           v125 = [MEMORY[0x1E69BE6A8] sharingDisplayNameIncludingEmail:0 allowsEmail:1];
           v32 = [[PXSharedAlbumsActivityEntryContributor alloc] initWithDisplayName:v125 email:0];
-          v33 = [(PXSharedAlbumsActivityEntryAlbumInformation *)v126 albumGUID];
-          v34 = [PXSharedAlbumsActivityEntry _fetchKeyAssetUUIDForAlbumWithGUID:v33 photoLibrary:v127 plPhotoLibrary:v9];
+          albumGUID5 = [(PXSharedAlbumsActivityEntryAlbumInformation *)v126 albumGUID];
+          v34 = [PXSharedAlbumsActivityEntry _fetchKeyAssetUUIDForAlbumWithGUID:albumGUID5 photoLibrary:libraryCopy plPhotoLibrary:photoLibraryCopy];
 
           if (v34)
           {
             v156 = v34;
             v35 = [*(v10 + 3784) arrayWithObjects:&v156 count:1];
-            v106 = [a1 _fetchAssetsWithUUIDs:v35 inPhotoLibrary:v127];
+            v106 = [self _fetchAssetsWithUUIDs:v35 inPhotoLibrary:libraryCopy];
           }
 
           else
@@ -1119,45 +1119,45 @@ LABEL_56:
           }
 
           v105 = [PXSharedAlbumsActivityEntry alloc];
-          v58 = [v12 entryDate];
+          entryDate4 = [v12 entryDate];
           v113 = v32;
           v155 = v32;
           v118 = [*(v10 + 3784) arrayWithObjects:&v155 count:1];
           v154 = v124;
           v59 = [*(v10 + 3784) arrayWithObjects:&v154 count:1];
-          v60 = [(PXSharedAlbumsActivityEntryAlbumInformation *)v126 albumGUID];
-          v61 = [(PXSharedAlbumsActivityEntryAlbumInformation *)v126 albumTitle];
-          v62 = [(PXSharedAlbumsActivityEntryAlbumInformation *)v126 ownerIsAllowlisted];
+          albumGUID6 = [(PXSharedAlbumsActivityEntryAlbumInformation *)v126 albumGUID];
+          albumTitle3 = [(PXSharedAlbumsActivityEntryAlbumInformation *)v126 albumTitle];
+          ownerIsAllowlisted3 = [(PXSharedAlbumsActivityEntryAlbumInformation *)v126 ownerIsAllowlisted];
           v63 = v10;
-          v64 = v62;
+          v64 = ownerIsAllowlisted3;
           if (v34)
           {
             v153 = v34;
             [*(v63 + 3784) arrayWithObjects:&v153 count:1];
-            v66 = v65 = v18;
+            v66 = v65 = absoluteString;
             v100 = v12;
             v67 = v106;
             LOBYTE(v99) = v64;
-            v68 = v58;
-            v69 = [(PXSharedAlbumsActivityEntry *)v105 initWithPhotoLibrary:v127 uuid:v65 date:v58 type:v108 isFromMe:1 contributors:v118 avatarConfigurations:v59 albumGUID:v60 albumName:v61 cloudOwnerIsAllowlisted:v99 message:0 keyAssetUUIDs:v66 keyAssets:v106 relatedCommentUUID:0 relatedUUIDs:MEMORY[0x1E695E0F0] underlyingObject:v100];
+            v68 = entryDate4;
+            v69 = [(PXSharedAlbumsActivityEntry *)v105 initWithPhotoLibrary:libraryCopy uuid:v65 date:entryDate4 type:v108 isFromMe:1 contributors:v118 avatarConfigurations:v59 albumGUID:albumGUID6 albumName:albumTitle3 cloudOwnerIsAllowlisted:v99 message:0 keyAssetUUIDs:v66 keyAssets:v106 relatedCommentUUID:0 relatedUUIDs:MEMORY[0x1E695E0F0] underlyingObject:v100];
 
-            v18 = v65;
+            absoluteString = v65;
           }
 
           else
           {
             v101 = v12;
             v67 = v106;
-            LOBYTE(v99) = v62;
-            v68 = v58;
-            v69 = [(PXSharedAlbumsActivityEntry *)v105 initWithPhotoLibrary:v127 uuid:v18 date:v58 type:v108 isFromMe:1 contributors:v118 avatarConfigurations:v59 albumGUID:v60 albumName:v61 cloudOwnerIsAllowlisted:v99 message:0 keyAssetUUIDs:MEMORY[0x1E695E0F0] keyAssets:v106 relatedCommentUUID:0 relatedUUIDs:MEMORY[0x1E695E0F0] underlyingObject:v101];
+            LOBYTE(v99) = ownerIsAllowlisted3;
+            v68 = entryDate4;
+            v69 = [(PXSharedAlbumsActivityEntry *)v105 initWithPhotoLibrary:libraryCopy uuid:absoluteString date:entryDate4 type:v108 isFromMe:1 contributors:v118 avatarConfigurations:v59 albumGUID:albumGUID6 albumName:albumTitle3 cloudOwnerIsAllowlisted:v99 message:0 keyAssetUUIDs:MEMORY[0x1E695E0F0] keyAssets:v106 relatedCommentUUID:0 relatedUUIDs:MEMORY[0x1E695E0F0] underlyingObject:v101];
           }
 
           [v121 addObject:v69];
 LABEL_57:
-          v9 = v116;
+          photoLibraryCopy = v116;
           v10 = 0x1E695D000;
-          v41 = v125;
+          entryComments = v125;
           v16 = v126;
           v40 = v124;
 LABEL_58:
@@ -1196,7 +1196,7 @@ LABEL_59:
   v128[1] = 3221225472;
   v128[2] = __109__PXSharedAlbumsActivityEntry__activitiesFromCloudFeedEntries_inMostRecentOrder_photoLibrary_plPhotoLibrary___block_invoke_328;
   v128[3] = &__block_descriptor_33_e69_q24__0__PXSharedAlbumsActivityEntry_8__PXSharedAlbumsActivityEntry_16l;
-  v129 = v104;
+  v129 = orderCopy;
   [v121 sortUsingComparator:v128];
   v97 = [v121 copy];
 
@@ -1361,25 +1361,25 @@ uint64_t __109__PXSharedAlbumsActivityEntry__activitiesFromCloudFeedEntries_inMo
   return v10;
 }
 
-+ (id)_fetchRecentActivitiesWithOptions:(id)a3 olderThanDate:(id)a4 filter:(int64_t)a5
++ (id)_fetchRecentActivitiesWithOptions:(id)options olderThanDate:(id)date filter:(int64_t)filter
 {
   v45 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  optionsCopy = options;
+  dateCopy = date;
   v10 = PLSharedAlbumsGetLog();
   v11 = os_signpost_id_generate(v10);
   v12 = v10;
   v13 = v12;
   if (v11 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v12))
   {
-    v14 = [v8 fetchLimit];
+    fetchLimit = [optionsCopy fetchLimit];
     v15 = NSStringFromPLCloudFeedEntryFilter();
     *buf = 134218498;
-    *&buf[4] = v14;
+    *&buf[4] = fetchLimit;
     *&buf[12] = 2112;
     *&buf[14] = v15;
     *&buf[22] = 1024;
-    LODWORD(v42) = v9 != 0;
+    LODWORD(v42) = dateCopy != 0;
     _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v13, OS_SIGNPOST_INTERVAL_BEGIN, v11, "SharedAlbumsRecentActivityFetchDuration", "FetchLimit=%lu,Filter=%@,FetchingMore=%d", buf, 0x1Cu);
   }
 
@@ -1389,28 +1389,28 @@ uint64_t __109__PXSharedAlbumsActivityEntry__activitiesFromCloudFeedEntries_inMo
   v42 = __Block_byref_object_copy__100957;
   v43 = __Block_byref_object_dispose__100958;
   v44 = 0;
-  v16 = [v8 photoLibrary];
-  v17 = [v16 photoLibraryForCurrentQueueQoS];
-  v18 = [v8 fetchLimit];
+  photoLibrary = [optionsCopy photoLibrary];
+  photoLibraryForCurrentQueueQoS = [photoLibrary photoLibraryForCurrentQueueQoS];
+  fetchLimit2 = [optionsCopy fetchLimit];
   v31[0] = MEMORY[0x1E69E9820];
   v31[1] = 3221225472;
   v31[2] = __86__PXSharedAlbumsActivityEntry__fetchRecentActivitiesWithOptions_olderThanDate_filter___block_invoke;
   v31[3] = &unk_1E7738490;
-  v19 = v17;
+  v19 = photoLibraryForCurrentQueueQoS;
   v32 = v19;
-  v20 = v9;
-  v36 = v18;
-  v37 = a5;
+  v20 = dateCopy;
+  v36 = fetchLimit2;
+  filterCopy = filter;
   v33 = v20;
   v35 = buf;
-  v38 = a1;
-  v21 = v16;
+  selfCopy = self;
+  v21 = photoLibrary;
   v34 = v21;
   [v19 performBlockAndWait:v31];
   v22 = +[PXSharedAlbumsSettings sharedInstance];
-  LODWORD(v16) = [v22 simulateEmptyActivityEntries];
+  LODWORD(photoLibrary) = [v22 simulateEmptyActivityEntries];
 
-  if (v16)
+  if (photoLibrary)
   {
     v23 = PLSharingGetLog();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
@@ -1449,11 +1449,11 @@ void __86__PXSharedAlbumsActivityEntry__fetchRecentActivitiesWithOptions_olderTh
   *(v3 + 40) = v2;
 }
 
-+ (unint64_t)fetchCountOfRecentFeedActivitiesWithOptions:(id)a3 newerThanDate:(id)a4
++ (unint64_t)fetchCountOfRecentFeedActivitiesWithOptions:(id)options newerThanDate:(id)date
 {
   v37 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  optionsCopy = options;
+  dateCopy = date;
   v29 = 0;
   v30 = &v29;
   v31 = 0x2020000000;
@@ -1464,28 +1464,28 @@ void __86__PXSharedAlbumsActivityEntry__fetchRecentActivitiesWithOptions_olderTh
   v10 = v9;
   if (v8 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v9))
   {
-    v11 = [v5 fetchLimit];
+    fetchLimit = [optionsCopy fetchLimit];
     *buf = 134218242;
-    v34 = v11;
+    v34 = fetchLimit;
     v35 = 2112;
-    v36 = v6;
+    v36 = dateCopy;
     _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v10, OS_SIGNPOST_INTERVAL_BEGIN, v8, "SharedAlbumsCountOfRecentFeedActivitiesDuration", "FetchLimit=%lu,earliestDate=%@", buf, 0x16u);
   }
 
-  v12 = [v5 photoLibrary];
-  v13 = [v12 photoLibraryForCurrentQueueQoS];
-  v14 = [v5 fetchLimit];
+  photoLibrary = [optionsCopy photoLibrary];
+  photoLibraryForCurrentQueueQoS = [photoLibrary photoLibraryForCurrentQueueQoS];
+  fetchLimit2 = [optionsCopy fetchLimit];
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __89__PXSharedAlbumsActivityEntry_fetchCountOfRecentFeedActivitiesWithOptions_newerThanDate___block_invoke;
   v22[3] = &unk_1E7746470;
-  v15 = v13;
+  v15 = photoLibraryForCurrentQueueQoS;
   v23 = v15;
-  v16 = v6;
+  v16 = dateCopy;
   v24 = v16;
-  v27 = v14;
+  v27 = fetchLimit2;
   v28 = 2;
-  v17 = v5;
+  v17 = optionsCopy;
   v25 = v17;
   v26 = &v29;
   [v15 performBlockAndWait:v22];
@@ -1563,52 +1563,52 @@ void __89__PXSharedAlbumsActivityEntry_fetchCountOfRecentFeedActivitiesWithOptio
   }
 }
 
-+ (id)fetchRecentActivitiesWithOptions:(id)a3 olderThanDate:(id)a4 filter:(int64_t)a5
++ (id)fetchRecentActivitiesWithOptions:(id)options olderThanDate:(id)date filter:(int64_t)filter
 {
-  if ((a5 - 1) > 2)
+  if ((filter - 1) > 2)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = qword_1A5381BC8[a5 - 1];
+    v5 = qword_1A5381BC8[filter - 1];
   }
 
-  return [a1 _fetchRecentActivitiesWithOptions:a3 olderThanDate:a4 filter:v5];
+  return [self _fetchRecentActivitiesWithOptions:options olderThanDate:date filter:v5];
 }
 
-+ (id)fetchActivitiesWithOptions:(id)a3
++ (id)fetchActivitiesWithOptions:(id)options
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  optionsCopy = options;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
   v27 = __Block_byref_object_copy__100957;
   v28 = __Block_byref_object_dispose__100958;
   v29 = 0;
-  v5 = [v4 photoLibrary];
-  v6 = [v4 photoLibrary];
-  v7 = [v6 photoLibraryForCurrentQueueQoS];
+  photoLibrary = [optionsCopy photoLibrary];
+  photoLibrary2 = [optionsCopy photoLibrary];
+  photoLibraryForCurrentQueueQoS = [photoLibrary2 photoLibraryForCurrentQueueQoS];
 
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __58__PXSharedAlbumsActivityEntry_fetchActivitiesWithOptions___block_invoke;
   v18[3] = &unk_1E7741808;
-  v8 = v4;
+  v8 = optionsCopy;
   v19 = v8;
-  v9 = v7;
+  v9 = photoLibraryForCurrentQueueQoS;
   v20 = v9;
   v22 = &v24;
-  v23 = a1;
-  v10 = v5;
+  selfCopy = self;
+  v10 = photoLibrary;
   v21 = v10;
   [v9 performBlockAndWait:v18];
   v11 = +[PXSharedAlbumsSettings sharedInstance];
-  LODWORD(v6) = [v11 simulateEmptyActivityEntries];
+  LODWORD(photoLibrary2) = [v11 simulateEmptyActivityEntries];
 
-  if (v6)
+  if (photoLibrary2)
   {
     v12 = PLSharingGetLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -1649,27 +1649,27 @@ void __58__PXSharedAlbumsActivityEntry_fetchActivitiesWithOptions___block_invoke
   *(v3 + 40) = v2;
 }
 
-+ (id)fetchAssetsMockActivitiesWithOptions:(id)a3
++ (id)fetchAssetsMockActivitiesWithOptions:(id)options
 {
   v94[1] = *MEMORY[0x1E69E9840];
-  v3 = [a3 photoLibrary];
-  v4 = [v3 librarySpecificFetchOptions];
-  [v4 setIncludeAllPhotosSmartAlbum:1];
-  v52 = v4;
-  v5 = [MEMORY[0x1E6978650] fetchAssetCollectionsWithType:2 subtype:1000000205 options:v4];
-  v6 = [v5 firstObject];
+  photoLibrary = [options photoLibrary];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
+  [librarySpecificFetchOptions setIncludeAllPhotosSmartAlbum:1];
+  v52 = librarySpecificFetchOptions;
+  v5 = [MEMORY[0x1E6978650] fetchAssetCollectionsWithType:2 subtype:1000000205 options:librarySpecificFetchOptions];
+  firstObject = [v5 firstObject];
 
-  v74 = v3;
-  v7 = [v3 librarySpecificFetchOptions];
-  [v7 setFetchLimit:10];
+  v74 = photoLibrary;
+  librarySpecificFetchOptions2 = [photoLibrary librarySpecificFetchOptions];
+  [librarySpecificFetchOptions2 setFetchLimit:10];
   v8 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"creationDate" ascending:1];
   v94[0] = v8;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v94 count:1];
-  [v7 setSortDescriptors:v9];
+  [librarySpecificFetchOptions2 setSortDescriptors:v9];
 
-  v50 = v7;
-  v51 = v6;
-  v10 = [MEMORY[0x1E6978630] fetchAssetsInAssetCollection:v6 options:v7];
+  v50 = librarySpecificFetchOptions2;
+  v51 = firstObject;
+  v10 = [MEMORY[0x1E6978630] fetchAssetsInAssetCollection:firstObject options:librarySpecificFetchOptions2];
   v75 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v76 = 0u;
   v77 = 0u;
@@ -1695,18 +1695,18 @@ void __58__PXSharedAlbumsActivityEntry_fetchActivitiesWithOptions___block_invoke
         v13 = [[PXSharedAlbumsActivityEntryContributor alloc] initWithDisplayName:@"Jane" email:0];
         v70 = [[PXSharedAlbumsActivityEntryAvatarConfiguration alloc] initWithEmail:0 phone:0 firstName:@"Jane" lastName:0];
         v14 = [PXSharedAlbumsActivityEntry alloc];
-        v15 = [MEMORY[0x1E696AFB0] UUID];
-        v16 = [v15 UUIDString];
-        v17 = [v12 creationDate];
+        uUID = [MEMORY[0x1E696AFB0] UUID];
+        uUIDString = [uUID UUIDString];
+        creationDate = [v12 creationDate];
         v92 = v13;
         v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v92 count:1];
         v91 = v70;
         v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v91 count:1];
-        v20 = [v12 uuid];
-        v90 = v20;
+        uuid = [v12 uuid];
+        v90 = uuid;
         v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v90 count:1];
         LOBYTE(v47) = 1;
-        v22 = [(PXSharedAlbumsActivityEntry *)v14 initWithPhotoLibrary:v74 uuid:v16 date:v17 type:0 isFromMe:0 contributors:v18 avatarConfigurations:v19 albumGUID:&stru_1F1741150 albumName:@"Faves" cloudOwnerIsAllowlisted:v47 message:@"Look what we did!" keyAssetUUIDs:v21 keyAssets:0 relatedCommentUUID:0 relatedUUIDs:MEMORY[0x1E695E0F0] underlyingObject:0];
+        v22 = [(PXSharedAlbumsActivityEntry *)v14 initWithPhotoLibrary:v74 uuid:uUIDString date:creationDate type:0 isFromMe:0 contributors:v18 avatarConfigurations:v19 albumGUID:&stru_1F1741150 albumName:@"Faves" cloudOwnerIsAllowlisted:v47 message:@"Look what we did!" keyAssetUUIDs:v21 keyAssets:0 relatedCommentUUID:0 relatedUUIDs:MEMORY[0x1E695E0F0] underlyingObject:0];
 
         v73 = v22;
         [v75 addObject:v22];
@@ -1714,49 +1714,49 @@ void __58__PXSharedAlbumsActivityEntry_fetchActivitiesWithOptions___block_invoke
 
         v66 = [[PXSharedAlbumsActivityEntryAvatarConfiguration alloc] initWithEmail:0 phone:0 firstName:@"Mel" lastName:0];
         v23 = [PXSharedAlbumsActivityEntry alloc];
-        v64 = [MEMORY[0x1E696AFB0] UUID];
-        v60 = [v64 UUIDString];
+        uUID2 = [MEMORY[0x1E696AFB0] UUID];
+        uUIDString2 = [uUID2 UUIDString];
         v68 = v12;
-        v57 = [v12 creationDate];
+        creationDate2 = [v12 creationDate];
         v89 = v62;
         v56 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v89 count:1];
         v88 = v66;
         v24 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v88 count:1];
-        v58 = [v12 uuid];
-        v87 = v58;
+        uuid2 = [v12 uuid];
+        v87 = uuid2;
         v25 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v87 count:1];
-        v26 = [MEMORY[0x1E696AFB0] UUID];
-        v27 = [v26 UUIDString];
-        v28 = [(PXSharedAlbumsActivityEntry *)v22 uuid];
-        v86 = v28;
+        uUID3 = [MEMORY[0x1E696AFB0] UUID];
+        uUIDString3 = [uUID3 UUIDString];
+        uuid3 = [(PXSharedAlbumsActivityEntry *)v22 uuid];
+        v86 = uuid3;
         v29 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v86 count:1];
         LOBYTE(v48) = 1;
-        v71 = [(PXSharedAlbumsActivityEntry *)v23 initWithPhotoLibrary:v74 uuid:v60 date:v57 type:1 isFromMe:0 contributors:v56 avatarConfigurations:v24 albumGUID:&stru_1F1741150 albumName:@"Faves" cloudOwnerIsAllowlisted:v48 message:@"❤️" keyAssetUUIDs:v25 keyAssets:0 relatedCommentUUID:v27 relatedUUIDs:v29 underlyingObject:0];
+        v71 = [(PXSharedAlbumsActivityEntry *)v23 initWithPhotoLibrary:v74 uuid:uUIDString2 date:creationDate2 type:1 isFromMe:0 contributors:v56 avatarConfigurations:v24 albumGUID:&stru_1F1741150 albumName:@"Faves" cloudOwnerIsAllowlisted:v48 message:@"❤️" keyAssetUUIDs:v25 keyAssets:0 relatedCommentUUID:uUIDString3 relatedUUIDs:v29 underlyingObject:0];
 
         [v75 addObject:v71];
         v65 = [[PXSharedAlbumsActivityEntryContributor alloc] initWithDisplayName:@"Chris" email:0];
 
         v63 = [[PXSharedAlbumsActivityEntryAvatarConfiguration alloc] initWithEmail:0 phone:0 firstName:@"Chris" lastName:0];
         v30 = [PXSharedAlbumsActivityEntry alloc];
-        v67 = [MEMORY[0x1E696AFB0] UUID];
-        v31 = [v67 UUIDString];
-        v61 = [v68 creationDate];
+        uUID4 = [MEMORY[0x1E696AFB0] UUID];
+        uUIDString4 = [uUID4 UUIDString];
+        creationDate3 = [v68 creationDate];
         v85 = v65;
         v59 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v85 count:1];
         v84 = v63;
         v32 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v84 count:1];
-        v69 = [v68 uuid];
-        v83 = v69;
+        uuid4 = [v68 uuid];
+        v83 = uuid4;
         v33 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v83 count:1];
-        v34 = [MEMORY[0x1E696AFB0] UUID];
-        v35 = [v34 UUIDString];
-        v36 = [(PXSharedAlbumsActivityEntry *)v73 uuid];
-        v82 = v36;
+        uUID5 = [MEMORY[0x1E696AFB0] UUID];
+        uUIDString5 = [uUID5 UUIDString];
+        uuid5 = [(PXSharedAlbumsActivityEntry *)v73 uuid];
+        v82 = uuid5;
         v37 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v82 count:1];
         LOBYTE(v49) = 1;
         v38 = v30;
-        v39 = v31;
-        v40 = [(PXSharedAlbumsActivityEntry *)v38 initWithPhotoLibrary:v74 uuid:v31 date:v61 type:2 isFromMe:0 contributors:v59 avatarConfigurations:v32 albumGUID:&stru_1F1741150 albumName:@"Faves" cloudOwnerIsAllowlisted:v49 message:@"Neat!" keyAssetUUIDs:v33 keyAssets:0 relatedCommentUUID:v35 relatedUUIDs:v37 underlyingObject:0];
+        v39 = uUIDString4;
+        v40 = [(PXSharedAlbumsActivityEntry *)v38 initWithPhotoLibrary:v74 uuid:uUIDString4 date:creationDate3 type:2 isFromMe:0 contributors:v59 avatarConfigurations:v32 albumGUID:&stru_1F1741150 albumName:@"Faves" cloudOwnerIsAllowlisted:v49 message:@"Neat!" keyAssetUUIDs:v33 keyAssets:0 relatedCommentUUID:uUIDString5 relatedUUIDs:v37 underlyingObject:0];
 
         [v75 addObject:v40];
         v11 = v72 + 1;
@@ -1770,9 +1770,9 @@ void __58__PXSharedAlbumsActivityEntry_fetchActivitiesWithOptions___block_invoke
   }
 
   v41 = +[PXSharedAlbumsSettings sharedInstance];
-  v42 = [v41 simulateEmptyActivityEntries];
+  simulateEmptyActivityEntries = [v41 simulateEmptyActivityEntries];
 
-  if (v42)
+  if (simulateEmptyActivityEntries)
   {
     v43 = PLSharingGetLog();
     if (os_log_type_enabled(v43, OS_LOG_TYPE_DEFAULT))

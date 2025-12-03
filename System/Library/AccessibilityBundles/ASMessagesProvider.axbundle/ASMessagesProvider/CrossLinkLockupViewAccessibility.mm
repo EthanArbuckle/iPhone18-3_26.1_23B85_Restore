@@ -1,38 +1,38 @@
 @interface CrossLinkLockupViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_accessibilitySupplementaryFooterViews;
 - (id)accessibilityLabel;
 @end
 
 @implementation CrossLinkLockupViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"ASMessagesProvider.CrossLinkLockupView" hasInstanceMethod:@"accessibilityTitleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ASMessagesProvider.CrossLinkLockupView" hasInstanceMethod:@"accessibilitySubtitleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ASMessagesProvider.CrossLinkLockupView" hasInstanceMethod:@"accessibilityLockupView" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"ASMessagesProvider.CrossLinkLockupView" hasInstanceMethod:@"accessibilityTitleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ASMessagesProvider.CrossLinkLockupView" hasInstanceMethod:@"accessibilitySubtitleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ASMessagesProvider.CrossLinkLockupView" hasInstanceMethod:@"accessibilityLockupView" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel
 {
-  v3 = [(CrossLinkLockupViewAccessibility *)self _axLockupView];
+  _axLockupView = [(CrossLinkLockupViewAccessibility *)self _axLockupView];
   v4 = [(CrossLinkLockupViewAccessibility *)self safeValueForKey:@"accessibilityTitleLabel"];
   v5 = [(CrossLinkLockupViewAccessibility *)self safeValueForKey:@"accessibilitySubtitleLabel"];
-  v6 = [MEMORY[0x29EDB8DE8] array];
-  if ([v3 _accessibilityViewIsVisible])
+  array = [MEMORY[0x29EDB8DE8] array];
+  if ([_axLockupView _accessibilityViewIsVisible])
   {
-    [v6 axSafelyAddObject:v3];
+    [array axSafelyAddObject:_axLockupView];
   }
 
   if ([v4 _accessibilityViewIsVisible])
   {
-    [v6 axSafelyAddObject:v4];
+    [array axSafelyAddObject:v4];
   }
 
   if ([v5 _accessibilityViewIsVisible])
   {
-    [v6 axSafelyAddObject:v5];
+    [array axSafelyAddObject:v5];
   }
 
   v7 = AXLabelForElements();
@@ -42,10 +42,10 @@
 
 - (id)_accessibilitySupplementaryFooterViews
 {
-  v2 = [(CrossLinkLockupViewAccessibility *)self _axLockupView];
-  v3 = [v2 _accessibilitySupplementaryFooterViews];
+  _axLockupView = [(CrossLinkLockupViewAccessibility *)self _axLockupView];
+  _accessibilitySupplementaryFooterViews = [_axLockupView _accessibilitySupplementaryFooterViews];
 
-  return v3;
+  return _accessibilitySupplementaryFooterViews;
 }
 
 @end

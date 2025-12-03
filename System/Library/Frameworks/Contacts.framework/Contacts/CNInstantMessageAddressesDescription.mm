@@ -1,24 +1,24 @@
 @interface CNInstantMessageAddressesDescription
-- (BOOL)abPropertyID:(int *)a3;
-- (BOOL)canUnifyValue:(id)a3 withValue:(id)a4;
-- (BOOL)isEqualForContact:(id)a3 other:(id)a4;
-- (id)CNLabeledValueValueFromABMultiValueValue:(void *)a3;
+- (BOOL)abPropertyID:(int *)d;
+- (BOOL)canUnifyValue:(id)value withValue:(id)withValue;
+- (BOOL)isEqualForContact:(id)contact other:(id)other;
+- (id)CNLabeledValueValueFromABMultiValueValue:(void *)value;
 - (id)summarizationKeys;
-- (void)ABMultiValueValueFromCNLabeledValueValue:(id)a3;
-- (void)decodeUsingCoder:(id)a3 contact:(id)a4;
+- (void)ABMultiValueValueFromCNLabeledValueValue:(id)value;
+- (void)decodeUsingCoder:(id)coder contact:(id)contact;
 @end
 
 @implementation CNInstantMessageAddressesDescription
 
-- (BOOL)isEqualForContact:(id)a3 other:(id)a4
+- (BOOL)isEqualForContact:(id)contact other:(id)other
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 instantMessageAddresses];
-  if (!v8)
+  contactCopy = contact;
+  otherCopy = other;
+  instantMessageAddresses = [contactCopy instantMessageAddresses];
+  if (!instantMessageAddresses)
   {
-    v4 = [v7 instantMessageAddresses];
-    if (!v4)
+    instantMessageAddresses2 = [otherCopy instantMessageAddresses];
+    if (!instantMessageAddresses2)
     {
       v11 = 1;
 LABEL_6:
@@ -27,11 +27,11 @@ LABEL_6:
     }
   }
 
-  v9 = [v6 instantMessageAddresses];
-  v10 = [v7 instantMessageAddresses];
-  v11 = [v9 isEqual:v10];
+  instantMessageAddresses3 = [contactCopy instantMessageAddresses];
+  instantMessageAddresses4 = [otherCopy instantMessageAddresses];
+  v11 = [instantMessageAddresses3 isEqual:instantMessageAddresses4];
 
-  if (!v8)
+  if (!instantMessageAddresses)
   {
     goto LABEL_6;
   }
@@ -41,11 +41,11 @@ LABEL_7:
   return v11;
 }
 
-- (void)decodeUsingCoder:(id)a3 contact:(id)a4
+- (void)decodeUsingCoder:(id)coder contact:(id)contact
 {
   v15 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  coderCopy = coder;
+  contactCopy = contact;
   v12 = objc_opt_class();
   v13 = objc_opt_class();
   v14 = objc_opt_class();
@@ -54,24 +54,24 @@ LABEL_7:
   {
   }
 
-  v9 = [v5 decodeObjectOfClasses:v7 forKey:{@"_instantMessageAddresses", v12, v13}];
+  v9 = [coderCopy decodeObjectOfClasses:v7 forKey:{@"_instantMessageAddresses", v12, v13}];
   v10 = [v9 copy];
-  v11 = v6[52];
-  v6[52] = v10;
+  v11 = contactCopy[52];
+  contactCopy[52] = v10;
 }
 
-- (BOOL)canUnifyValue:(id)a3 withValue:(id)a4
+- (BOOL)canUnifyValue:(id)value withValue:(id)withValue
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v5;
-  v8 = v6;
-  v9 = [v7 username];
-  v10 = [v8 username];
-  v11 = &stru_1F094DAB0;
-  if (v9)
+  valueCopy = value;
+  withValueCopy = withValue;
+  v7 = valueCopy;
+  v8 = withValueCopy;
+  username = [v7 username];
+  username2 = [v8 username];
+  userIdentifier2 = &stru_1F094DAB0;
+  if (username)
   {
-    v12 = v9;
+    v12 = username;
   }
 
   else
@@ -79,9 +79,9 @@ LABEL_7:
     v12 = &stru_1F094DAB0;
   }
 
-  if (v10)
+  if (username2)
   {
-    v13 = v10;
+    v13 = username2;
   }
 
   else
@@ -91,11 +91,11 @@ LABEL_7:
 
   v14 = [(__CFString *)v12 localizedCaseInsensitiveCompare:v13];
 
-  v15 = [v7 service];
-  v16 = [v8 service];
-  if (v15)
+  service = [v7 service];
+  service2 = [v8 service];
+  if (service)
   {
-    v17 = v15;
+    v17 = service;
   }
 
   else
@@ -103,9 +103,9 @@ LABEL_7:
     v17 = &stru_1F094DAB0;
   }
 
-  if (v16)
+  if (service2)
   {
-    v18 = v16;
+    v18 = service2;
   }
 
   else
@@ -115,11 +115,11 @@ LABEL_7:
 
   v19 = [(__CFString *)v17 localizedCaseInsensitiveCompare:v18];
 
-  v20 = [v7 userIdentifier];
-  if (!v20)
+  userIdentifier = [v7 userIdentifier];
+  if (!userIdentifier)
   {
-    v11 = [v8 userIdentifier];
-    if (!v11)
+    userIdentifier2 = [v8 userIdentifier];
+    if (!userIdentifier2)
     {
       v23 = 1;
 LABEL_18:
@@ -128,11 +128,11 @@ LABEL_18:
     }
   }
 
-  v21 = [v7 userIdentifier];
-  v22 = [v8 userIdentifier];
-  v23 = [v21 isEqual:v22];
+  userIdentifier3 = [v7 userIdentifier];
+  userIdentifier4 = [v8 userIdentifier];
+  v23 = [userIdentifier3 isEqual:userIdentifier4];
 
-  if (!v20)
+  if (!userIdentifier)
   {
     goto LABEL_18;
   }
@@ -163,17 +163,17 @@ uint64_t __57__CNInstantMessageAddressesDescription_summarizationKeys__block_inv
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-- (BOOL)abPropertyID:(int *)a3
+- (BOOL)abPropertyID:(int *)d
 {
-  if (a3)
+  if (d)
   {
-    *a3 = *MEMORY[0x1E698A3C8];
+    *d = *MEMORY[0x1E698A3C8];
   }
 
-  return a3 != 0;
+  return d != 0;
 }
 
-- (id)CNLabeledValueValueFromABMultiValueValue:(void *)a3
+- (id)CNLabeledValueValueFromABMultiValueValue:(void *)value
 {
   if (CNLabeledValueValueFromABMultiValueValue__cn_once_token_2 != -1)
   {
@@ -181,7 +181,7 @@ uint64_t __57__CNInstantMessageAddressesDescription_summarizationKeys__block_inv
   }
 
   v5 = CNLabeledValueValueFromABMultiValueValue__cn_once_object_2;
-  v6 = [(CNMultiValuePropertyDescription *)self CNLabeledValueValueFromABMultiValueValue:a3 destinationClass:objc_opt_class() settersByABKeys:v5];
+  v6 = [(CNMultiValuePropertyDescription *)self CNLabeledValueValueFromABMultiValueValue:value destinationClass:objc_opt_class() settersByABKeys:v5];
 
   return v6;
 }
@@ -226,16 +226,16 @@ void __88__CNInstantMessageAddressesDescription_iOSAB__CNLabeledValueValueFromAB
   [v8 setService:v6];
 }
 
-- (void)ABMultiValueValueFromCNLabeledValueValue:(id)a3
+- (void)ABMultiValueValueFromCNLabeledValueValue:(id)value
 {
   v4 = ABMultiValueValueFromCNLabeledValueValue__cn_once_token_3;
-  v5 = a3;
+  valueCopy = value;
   if (v4 != -1)
   {
     [CNInstantMessageAddressesDescription(iOSAB) ABMultiValueValueFromCNLabeledValueValue:];
   }
 
-  v6 = [(CNMultiValuePropertyDescription *)self ABMultiValueValueFromCNLabeledValueValue:v5 gettersByABKeys:ABMultiValueValueFromCNLabeledValueValue__cn_once_object_3];
+  v6 = [(CNMultiValuePropertyDescription *)self ABMultiValueValueFromCNLabeledValueValue:valueCopy gettersByABKeys:ABMultiValueValueFromCNLabeledValueValue__cn_once_object_3];
 
   return v6;
 }

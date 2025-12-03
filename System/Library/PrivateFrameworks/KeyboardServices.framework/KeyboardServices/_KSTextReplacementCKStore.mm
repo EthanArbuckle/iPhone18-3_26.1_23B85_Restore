@@ -1,35 +1,35 @@
 @interface _KSTextReplacementCKStore
 - (BOOL)isAccountAvailable;
-- (_KSTextReplacementCKStore)initWithDirectoryPath:(id)a3;
-- (id)cloudEntriesFromLocalEntries:(id)a3;
-- (id)cloudRecordIDsForLocalEntries:(id)a3;
-- (id)localEntriesFromCloudEntries:(id)a3;
+- (_KSTextReplacementCKStore)initWithDirectoryPath:(id)path;
+- (id)cloudEntriesFromLocalEntries:(id)entries;
+- (id)cloudRecordIDsForLocalEntries:(id)entries;
+- (id)localEntriesFromCloudEntries:(id)entries;
 - (id)queryDeletedEntries;
 - (id)queryUpdatedLocalEntries;
 - (id)textReplacementEntries;
 - (unint64_t)countLocalEntriesToBeSynced;
-- (unint64_t)decayedSyncCountForTime:(id)a3;
+- (unint64_t)decayedSyncCountForTime:(id)time;
 - (unint64_t)getSyncCount;
 - (unint64_t)getSyncCountThresholdHalfLifeHours;
 - (unint64_t)getSyncCountThrottleThreshold;
-- (void)_requestSync:(unint64_t)a3 completionBlock:(id)a4;
-- (void)_updateSyncCount:(unint64_t)a3 success:(BOOL)a4;
-- (void)accountDidChange:(id)a3;
-- (void)addEntries:(id)a3 removeEntries:(id)a4 withCompletionHandler:(id)a5;
+- (void)_requestSync:(unint64_t)sync completionBlock:(id)block;
+- (void)_updateSyncCount:(unint64_t)count success:(BOOL)success;
+- (void)accountDidChange:(id)change;
+- (void)addEntries:(id)entries removeEntries:(id)removeEntries withCompletionHandler:(id)handler;
 - (void)dealloc;
 - (void)importSampleShortcutsIfNecessary;
-- (void)pullRemoteDataWithPriority:(unint64_t)a3 completionHandler:(id)a4;
+- (void)pullRemoteDataWithPriority:(unint64_t)priority completionHandler:(id)handler;
 - (void)pushAllLocalData;
-- (void)pushLocalChangesWithPriority:(unint64_t)a3 completionHandler:(id)a4;
-- (void)queryCloudIfFirstPullOrAccountChanged:(BOOL)a3;
-- (void)queryMigrationStatusOnCloudWithCallback:(id)a3;
-- (void)queryTextReplacementsWithCallback:(id)a3;
-- (void)queryTextReplacementsWithPredicate:(id)a3 callback:(id)a4;
+- (void)pushLocalChangesWithPriority:(unint64_t)priority completionHandler:(id)handler;
+- (void)queryCloudIfFirstPullOrAccountChanged:(BOOL)changed;
+- (void)queryMigrationStatusOnCloudWithCallback:(id)callback;
+- (void)queryTextReplacementsWithCallback:(id)callback;
+- (void)queryTextReplacementsWithPredicate:(id)predicate callback:(id)callback;
 - (void)recordSyncStatus;
 - (void)removeAllEntries;
-- (void)removeAllEntriesWithCompletionHandler:(id)a3;
-- (void)requestSync:(unint64_t)a3 withCompletionBlock:(id)a4;
-- (void)userDidDeleteRecordZone:(id)a3;
+- (void)removeAllEntriesWithCompletionHandler:(id)handler;
+- (void)requestSync:(unint64_t)sync withCompletionBlock:(id)block;
+- (void)userDidDeleteRecordZone:(id)zone;
 @end
 
 @implementation _KSTextReplacementCKStore
@@ -45,10 +45,10 @@
   dispatch_async(dataQueue, block);
 }
 
-- (_KSTextReplacementCKStore)initWithDirectoryPath:(id)a3
+- (_KSTextReplacementCKStore)initWithDirectoryPath:(id)path
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  pathCopy = path;
   v20.receiver = self;
   v20.super_class = _KSTextReplacementCKStore;
   v5 = [(_KSTextReplacementCKStore *)&v20 init];
@@ -66,7 +66,7 @@
     dataQueue = v5->_dataQueue;
     v5->_dataQueue = v11;
 
-    v13 = [[_KSTextReplacementCoreDataStore alloc] initWithDirectoryPath:v4];
+    v13 = [[_KSTextReplacementCoreDataStore alloc] initWithDirectoryPath:pathCopy];
     coreDataStore = v5->_coreDataStore;
     v5->_coreDataStore = v13;
 
@@ -76,8 +76,8 @@
     v5->_cloudKitManager = v15;
 
     [(_KSCloudKitManager *)v5->_cloudKitManager setDelegate:v5];
-    v17 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v17 addObserver:v5 selector:sel_accountDidChange_ name:@"KSCloudKitAccountDidChange" object:v5->_cloudKitManager];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v5 selector:sel_accountDidChange_ name:@"KSCloudKitAccountDidChange" object:v5->_cloudKitManager];
 
     [(_KSTextReplacementCKStore *)v5 queryCloudIfFirstPullOrAccountChanged:0];
   }
@@ -88,15 +88,15 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = _KSTextReplacementCKStore;
   [(_KSTextReplacementCKStore *)&v4 dealloc];
 }
 
-- (void)queryCloudIfFirstPullOrAccountChanged:(BOOL)a3
+- (void)queryCloudIfFirstPullOrAccountChanged:(BOOL)changed
 {
   objc_initWeak(&location, self);
   dataQueue = self->_dataQueue;
@@ -105,23 +105,23 @@
   v6[2] = __67___KSTextReplacementCKStore_queryCloudIfFirstPullOrAccountChanged___block_invoke;
   v6[3] = &unk_2797F6CD8;
   objc_copyWeak(&v7, &location);
-  v8 = a3;
+  changedCopy = changed;
   v6[4] = self;
   dispatch_async(dataQueue, v6);
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);
 }
 
-- (void)accountDidChange:(id)a3
+- (void)accountDidChange:(id)change
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKeyedSubscript:@"KSCloudKitAccountDidChangeStatusKey"];
-  v7 = [v6 integerValue];
+  changeCopy = change;
+  userInfo = [changeCopy userInfo];
+  v6 = [userInfo objectForKeyedSubscript:@"KSCloudKitAccountDidChangeStatusKey"];
+  integerValue = [v6 integerValue];
 
-  v8 = [v4 userInfo];
+  userInfo2 = [changeCopy userInfo];
 
-  v9 = [v8 objectForKeyedSubscript:@"KSCloudKitAccountDidChangeUserChangedKey"];
+  v9 = [userInfo2 objectForKeyedSubscript:@"KSCloudKitAccountDidChangeUserChangedKey"];
   LOBYTE(v6) = [v9 BOOLValue];
 
   dataQueue = self->_dataQueue;
@@ -131,28 +131,28 @@
   block[3] = &unk_2797F6D00;
   v12 = v6;
   block[4] = self;
-  block[5] = v7;
+  block[5] = integerValue;
   dispatch_async(dataQueue, block);
 }
 
 - (void)pushAllLocalData
 {
-  v3 = [(_KSTextReplacementCKStore *)self textReplacementEntries];
-  [(_KSTextReplacementCKStore *)self addEntries:v3 removeEntries:MEMORY[0x277CBEBF8] withCompletionHandler:&__block_literal_global_69];
+  textReplacementEntries = [(_KSTextReplacementCKStore *)self textReplacementEntries];
+  [(_KSTextReplacementCKStore *)self addEntries:textReplacementEntries removeEntries:MEMORY[0x277CBEBF8] withCompletionHandler:&__block_literal_global_69];
 }
 
-- (void)addEntries:(id)a3 removeEntries:(id)a4 withCompletionHandler:(id)a5
+- (void)addEntries:(id)entries removeEntries:(id)removeEntries withCompletionHandler:(id)handler
 {
   v33 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  entriesCopy = entries;
+  removeEntriesCopy = removeEntries;
+  handlerCopy = handler;
   context = objc_autoreleasePoolPush();
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v11 = [v8 countByEnumeratingWithState:&v28 objects:v32 count:16];
+  v11 = [entriesCopy countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v11)
   {
     v12 = v11;
@@ -163,21 +163,21 @@
       {
         if (*v29 != v13)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(entriesCopy);
         }
 
         v15 = *(*(&v28 + 1) + 8 * i);
         [v15 setNeedsSaveToCloud:1];
-        v16 = [v15 timestamp];
+        timestamp = [v15 timestamp];
 
-        if (!v16)
+        if (!timestamp)
         {
-          v17 = [MEMORY[0x277CBEAA8] date];
-          [v15 setTimestamp:v17];
+          date = [MEMORY[0x277CBEAA8] date];
+          [v15 setTimestamp:date];
         }
       }
 
-      v12 = [v8 countByEnumeratingWithState:&v28 objects:v32 count:16];
+      v12 = [entriesCopy countByEnumeratingWithState:&v28 objects:v32 count:16];
     }
 
     while (v12);
@@ -189,11 +189,11 @@
   block[2] = __76___KSTextReplacementCKStore_addEntries_removeEntries_withCompletionHandler___block_invoke;
   block[3] = &unk_2797F6D48;
   block[4] = self;
-  v19 = v9;
+  v19 = removeEntriesCopy;
   v25 = v19;
-  v20 = v8;
+  v20 = entriesCopy;
   v26 = v20;
-  v21 = v10;
+  v21 = handlerCopy;
   v27 = v21;
   dispatch_async(dataQueue, block);
 
@@ -212,17 +212,17 @@
   dispatch_async(dataQueue, block);
 }
 
-- (void)removeAllEntriesWithCompletionHandler:(id)a3
+- (void)removeAllEntriesWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   dataQueue = self->_dataQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __67___KSTextReplacementCKStore_removeAllEntriesWithCompletionHandler___block_invoke;
   v7[3] = &unk_2797F66D8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(dataQueue, v7);
 }
 
@@ -253,9 +253,9 @@
   return v6;
 }
 
-- (void)queryTextReplacementsWithCallback:(id)a3
+- (void)queryTextReplacementsWithCallback:(id)callback
 {
-  v4 = a3;
+  callbackCopy = callback;
   v10[0] = 0;
   v10[1] = v10;
   v10[2] = 0x3032000000;
@@ -267,19 +267,19 @@
   block[1] = 3221225472;
   block[2] = __63___KSTextReplacementCKStore_queryTextReplacementsWithCallback___block_invoke;
   block[3] = &unk_2797F6D98;
-  v8 = v4;
+  v8 = callbackCopy;
   v9 = v10;
   block[4] = self;
-  v6 = v4;
+  v6 = callbackCopy;
   dispatch_async(dataQueue, block);
 
   _Block_object_dispose(v10, 8);
 }
 
-- (void)queryTextReplacementsWithPredicate:(id)a3 callback:(id)a4
+- (void)queryTextReplacementsWithPredicate:(id)predicate callback:(id)callback
 {
-  v6 = a3;
-  v7 = a4;
+  predicateCopy = predicate;
+  callbackCopy = callback;
   v19[0] = 0;
   v19[1] = v19;
   v19[2] = 0x3032000000;
@@ -292,36 +292,36 @@
   block[1] = 3221225472;
   block[2] = __73___KSTextReplacementCKStore_queryTextReplacementsWithPredicate_callback___block_invoke;
   block[3] = &unk_2797F6DC0;
-  v14 = v6;
+  v14 = predicateCopy;
   v15 = v8;
-  v17 = v7;
+  v17 = callbackCopy;
   v18 = v19;
-  v16 = self;
-  v10 = v7;
+  selfCopy = self;
+  v10 = callbackCopy;
   v11 = v8;
-  v12 = v6;
+  v12 = predicateCopy;
   dispatch_async(dataQueue, block);
 
   _Block_object_dispose(v19, 8);
 }
 
-- (void)queryMigrationStatusOnCloudWithCallback:(id)a3
+- (void)queryMigrationStatusOnCloudWithCallback:(id)callback
 {
-  v8 = a3;
+  callbackCopy = callback;
   v4 = objc_alloc(MEMORY[0x277CBEBD0]);
   v5 = +[_KSUtilities userDefaultsSuiteName];
   v6 = [v4 initWithSuiteName:v5];
 
   v7 = ([v6 BOOLForKey:@"KSDidMigrateToCloudKitOnCloud"] & 1) != 0 || -[_KSTextReplacementCKStore ckMigrationStatusOnCloud](self, "ckMigrationStatusOnCloud");
-  v8[2](v8, v7);
+  callbackCopy[2](callbackCopy, v7);
 }
 
 - (BOOL)isAccountAvailable
 {
-  v2 = [(_KSTextReplacementCKStore *)self cloudKitManager];
-  v3 = [v2 isAccountAvailable];
+  cloudKitManager = [(_KSTextReplacementCKStore *)self cloudKitManager];
+  isAccountAvailable = [cloudKitManager isAccountAvailable];
 
-  return v3;
+  return isAccountAvailable;
 }
 
 - (unint64_t)getSyncCount
@@ -374,19 +374,19 @@
   return v6;
 }
 
-- (unint64_t)decayedSyncCountForTime:(id)a3
+- (unint64_t)decayedSyncCountForTime:(id)time
 {
-  v4 = a3;
+  timeCopy = time;
   v5 = objc_alloc(MEMORY[0x277CBEBD0]);
   v6 = +[_KSUtilities userDefaultsSuiteName];
   v7 = [v5 initWithSuiteName:v6];
 
   v8 = [v7 objectForKey:@"kTRCKLastSyncTime"];
-  v9 = [(_KSTextReplacementCKStore *)self getSyncCount];
-  v10 = [(_KSTextReplacementCKStore *)self getSyncCountThresholdHalfLifeHours];
+  getSyncCount = [(_KSTextReplacementCKStore *)self getSyncCount];
+  getSyncCountThresholdHalfLifeHours = [(_KSTextReplacementCKStore *)self getSyncCountThresholdHalfLifeHours];
   if (v8)
   {
-    [v8 timeIntervalSinceDate:v4];
+    [v8 timeIntervalSinceDate:timeCopy];
     v12 = fabs(v11);
   }
 
@@ -395,28 +395,28 @@
     v12 = 0.0;
   }
 
-  v13 = (exp2(v12 / (v10 * -3600.0)) * v9);
+  v13 = (exp2(v12 / (getSyncCountThresholdHalfLifeHours * -3600.0)) * getSyncCount);
 
   return v13;
 }
 
-- (void)requestSync:(unint64_t)a3 withCompletionBlock:(id)a4
+- (void)requestSync:(unint64_t)sync withCompletionBlock:(id)block
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [(_KSTextReplacementCKStore *)self cloudKitManager];
-  v8 = [v7 isAccountAvailable];
+  blockCopy = block;
+  cloudKitManager = [(_KSTextReplacementCKStore *)self cloudKitManager];
+  isAccountAvailable = [cloudKitManager isAccountAvailable];
 
-  if (v8)
+  if (isAccountAvailable)
   {
     *&buf = 0;
     *(&buf + 1) = &buf;
     v26 = 0x2020000000;
-    v9 = [MEMORY[0x277CBEAA8] date];
-    v10 = [(_KSTextReplacementCKStore *)self decayedSyncCountForTime:v9];
+    date = [MEMORY[0x277CBEAA8] date];
+    v10 = [(_KSTextReplacementCKStore *)self decayedSyncCountForTime:date];
 
     v27 = v10;
-    if (a3)
+    if (sync)
     {
       v11 = *(*(&buf + 1) + 24);
       if (v11 >= [(_KSTextReplacementCKStore *)self getSyncCountThrottleThreshold])
@@ -429,15 +429,15 @@
           _os_log_impl(&dword_2557E2000, v15, OS_LOG_TYPE_INFO, "%s  Skipping syncing, reached threshold", v23, 0xCu);
         }
 
-        if (v6)
+        if (blockCopy)
         {
-          v6[2](v6, 0);
+          blockCopy[2](blockCopy, 0);
         }
 
         goto LABEL_17;
       }
 
-      if (a3 == 2)
+      if (sync == 2)
       {
         dataQueue = self->_dataQueue;
         block[0] = MEMORY[0x277D85DD0];
@@ -448,7 +448,7 @@
         block[4] = self;
         v20[1] = &buf;
         v13 = v20;
-        v20[0] = v6;
+        v20[0] = blockCopy;
         dispatch_async(dataQueue, block);
       }
 
@@ -460,8 +460,8 @@
         v17[3] = &unk_2797F6E08;
         v17[4] = self;
         v18[1] = &buf;
-        v18[0] = v6;
-        [(_KSTextReplacementCKStore *)self _requestSync:a3 completionBlock:v17];
+        v18[0] = blockCopy;
+        [(_KSTextReplacementCKStore *)self _requestSync:sync completionBlock:v17];
         v13 = v18;
       }
     }
@@ -474,7 +474,7 @@
       v21[3] = &unk_2797F6E08;
       v21[4] = self;
       v22[1] = &buf;
-      v22[0] = v6;
+      v22[0] = blockCopy;
       [(_KSTextReplacementCKStore *)self _requestSync:0 completionBlock:v21];
       v13 = v22;
     }
@@ -492,9 +492,9 @@ LABEL_17:
     _os_log_impl(&dword_2557E2000, v14, OS_LOG_TYPE_INFO, "%s  User is not logged in, not syncing", &buf, 0xCu);
   }
 
-  if (v6)
+  if (blockCopy)
   {
-    v6[2](v6, 0);
+    blockCopy[2](blockCopy, 0);
   }
 
 LABEL_18:
@@ -502,14 +502,14 @@ LABEL_18:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateSyncCount:(unint64_t)a3 success:(BOOL)a4
+- (void)_updateSyncCount:(unint64_t)count success:(BOOL)success
 {
-  v4 = a4;
+  successCopy = success;
   v6 = objc_alloc(MEMORY[0x277CBEBD0]);
   v7 = +[_KSUtilities userDefaultsSuiteName];
   v11 = [v6 initWithSuiteName:v7];
 
-  if (v4)
+  if (successCopy)
   {
     v8 = 1;
   }
@@ -519,55 +519,55 @@ LABEL_18:
     v8 = 2;
   }
 
-  v9 = [MEMORY[0x277CBEAA8] date];
-  [v11 setObject:v9 forKey:@"kTRCKLastSyncTime"];
+  date = [MEMORY[0x277CBEAA8] date];
+  [v11 setObject:date forKey:@"kTRCKLastSyncTime"];
 
-  v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v8 + a3];
+  v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v8 + count];
   [v11 setObject:v10 forKey:@"kTRCKSyncCount"];
 }
 
-- (void)_requestSync:(unint64_t)a3 completionBlock:(id)a4
+- (void)_requestSync:(unint64_t)sync completionBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   syncQueue = self->_syncQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __58___KSTextReplacementCKStore__requestSync_completionBlock___block_invoke;
   block[3] = &unk_2797F6750;
-  v10 = v6;
-  v11 = a3;
+  v10 = blockCopy;
+  syncCopy = sync;
   block[4] = self;
-  v8 = v6;
+  v8 = blockCopy;
   dispatch_async(syncQueue, block);
 }
 
-- (void)pushLocalChangesWithPriority:(unint64_t)a3 completionHandler:(id)a4
+- (void)pushLocalChangesWithPriority:(unint64_t)priority completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   syncQueue = self->_syncQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __76___KSTextReplacementCKStore_pushLocalChangesWithPriority_completionHandler___block_invoke;
   block[3] = &unk_2797F6750;
   block[4] = self;
-  v10 = v6;
-  v11 = a3;
-  v8 = v6;
+  v10 = handlerCopy;
+  priorityCopy = priority;
+  v8 = handlerCopy;
   dispatch_async(syncQueue, block);
 }
 
-- (void)pullRemoteDataWithPriority:(unint64_t)a3 completionHandler:(id)a4
+- (void)pullRemoteDataWithPriority:(unint64_t)priority completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   dataQueue = self->_dataQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __74___KSTextReplacementCKStore_pullRemoteDataWithPriority_completionHandler___block_invoke;
   block[3] = &unk_2797F6750;
-  v10 = v6;
-  v11 = a3;
+  v10 = handlerCopy;
+  priorityCopy = priority;
   block[4] = self;
-  v8 = v6;
+  v8 = handlerCopy;
   dispatch_async(dataQueue, block);
 }
 
@@ -585,9 +585,9 @@ LABEL_18:
 - (unint64_t)countLocalEntriesToBeSynced
 {
   dispatch_assert_queue_V2(self->_dataQueue);
-  v3 = [(_KSTextReplacementCKStore *)self coreDataStore];
+  coreDataStore = [(_KSTextReplacementCKStore *)self coreDataStore];
   v4 = [MEMORY[0x277CCAC30] predicateWithFormat:@"needsSaveToCloud == TRUE OR wasDeleted == TRUE"];
-  v5 = [v3 countEntriesWithPredicate:v4];
+  v5 = [coreDataStore countEntriesWithPredicate:v4];
 
   return v5;
 }
@@ -636,16 +636,16 @@ LABEL_18:
   return v4;
 }
 
-- (id)cloudEntriesFromLocalEntries:(id)a3
+- (id)cloudEntriesFromLocalEntries:(id)entries
 {
   v33 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v22 = [MEMORY[0x277CBEB18] array];
+  entriesCopy = entries;
+  array = [MEMORY[0x277CBEB18] array];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  obj = v3;
+  obj = entriesCopy;
   v4 = [obj countByEnumeratingWithState:&v24 objects:v32 count:16];
   if (v4)
   {
@@ -663,28 +663,28 @@ LABEL_18:
         }
 
         v9 = *(*(&v24 + 1) + 8 * i);
-        v10 = [v9 cloudData];
+        cloudData = [v9 cloudData];
 
-        v11 = [(_KSTextReplacementCKStore *)self cloudKitManager];
-        v12 = [v9 cloudID];
-        if (v10)
+        cloudKitManager = [(_KSTextReplacementCKStore *)self cloudKitManager];
+        cloudID = [v9 cloudID];
+        if (cloudData)
         {
-          v13 = [v9 cloudData];
-          v14 = [v9 unEncryptedFields];
-          v15 = [v9 encryptedFields];
-          v16 = [v11 recordWithName:v12 type:@"TextReplacementEntry" cloudData:v13 attributes:v14 encryptedFields:v15];
+          cloudData2 = [v9 cloudData];
+          unEncryptedFields = [v9 unEncryptedFields];
+          encryptedFields = [v9 encryptedFields];
+          v16 = [cloudKitManager recordWithName:cloudID type:@"TextReplacementEntry" cloudData:cloudData2 attributes:unEncryptedFields encryptedFields:encryptedFields];
         }
 
         else
         {
-          v13 = [v9 unEncryptedFields];
-          v14 = [v9 encryptedFields];
-          v16 = [v11 recordWithName:v12 type:@"TextReplacementEntry" attributes:v13 encryptedFields:v14];
+          cloudData2 = [v9 unEncryptedFields];
+          unEncryptedFields = [v9 encryptedFields];
+          v16 = [cloudKitManager recordWithName:cloudID type:@"TextReplacementEntry" attributes:cloudData2 encryptedFields:unEncryptedFields];
         }
 
         if (v16)
         {
-          [v22 addObject:v16];
+          [array addObject:v16];
         }
 
         else
@@ -709,19 +709,19 @@ LABEL_18:
 
   v18 = *MEMORY[0x277D85DE8];
 
-  return v22;
+  return array;
 }
 
-- (id)cloudRecordIDsForLocalEntries:(id)a3
+- (id)cloudRecordIDsForLocalEntries:(id)entries
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] array];
+  entriesCopy = entries;
+  array = [MEMORY[0x277CBEB18] array];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v6 = v4;
+  v6 = entriesCopy;
   v7 = [v6 countByEnumeratingWithState:&v21 objects:v31 count:16];
   if (v7)
   {
@@ -741,12 +741,12 @@ LABEL_18:
 
         v12 = *(*(&v21 + 1) + 8 * v11);
         v13 = [(_KSTextReplacementCKStore *)self cloudKitManager:v20];
-        v14 = [v12 cloudID];
-        v15 = [v13 recordIDForName:v14];
+        cloudID = [v12 cloudID];
+        v15 = [v13 recordIDForName:cloudID];
 
         if (v15)
         {
-          [v5 addObject:v15];
+          [array addObject:v15];
         }
 
         else
@@ -754,13 +754,13 @@ LABEL_18:
           v16 = KSCategory();
           if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
           {
-            v17 = [v12 cloudID];
+            cloudID2 = [v12 cloudID];
             *buf = v20;
             v26 = "[_KSTextReplacementCKStore cloudRecordIDsForLocalEntries:]";
             v27 = 2112;
             v28 = v12;
             v29 = 2112;
-            v30 = v17;
+            v30 = cloudID2;
             _os_log_error_impl(&dword_2557E2000, v16, OS_LOG_TYPE_ERROR, "%s  >>> ERROR couldn't create recordID for entry: %@, cloudID: %@", buf, 0x20u);
           }
         }
@@ -777,19 +777,19 @@ LABEL_18:
 
   v18 = *MEMORY[0x277D85DE8];
 
-  return v5;
+  return array;
 }
 
-- (id)localEntriesFromCloudEntries:(id)a3
+- (id)localEntriesFromCloudEntries:(id)entries
 {
   v36 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB18] array];
+  entriesCopy = entries;
+  array = [MEMORY[0x277CBEB18] array];
   v29 = 0u;
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v5 = v3;
+  v5 = entriesCopy;
   v6 = [v5 countByEnumeratingWithState:&v27 objects:v35 count:16];
   if (v6)
   {
@@ -806,19 +806,19 @@ LABEL_18:
         }
 
         v10 = *(*(&v27 + 1) + 8 * i);
-        v11 = [v10 recordType];
-        v12 = [v11 isEqualToString:@"TextReplacementEntry"];
+        recordType = [v10 recordType];
+        v12 = [recordType isEqualToString:@"TextReplacementEntry"];
 
         if (v12)
         {
           v13 = [_KSTextReplacementEntry localEntryFromCloudEntry:v10];
-          [v4 addObject:v13];
+          [array addObject:v13];
         }
 
         else
         {
-          v14 = [v10 recordType];
-          v15 = [v14 isEqualToString:@"TextReplacementMigration"];
+          recordType2 = [v10 recordType];
+          v15 = [recordType2 isEqualToString:@"TextReplacementMigration"];
 
           if (!v15)
           {
@@ -826,21 +826,21 @@ LABEL_18:
           }
 
           v13 = [v10 objectForKey:@"didMigrate"];
-          v16 = [v13 BOOLValue];
-          v17 = self;
-          objc_sync_enter(v17);
-          [(_KSTextReplacementCKStore *)v17 setCkMigrationStatusOnCloud:v16];
-          objc_sync_exit(v17);
+          bOOLValue = [v13 BOOLValue];
+          selfCopy = self;
+          objc_sync_enter(selfCopy);
+          [(_KSTextReplacementCKStore *)selfCopy setCkMigrationStatusOnCloud:bOOLValue];
+          objc_sync_exit(selfCopy);
 
           v18 = objc_alloc(MEMORY[0x277CBEBD0]);
           v19 = +[_KSUtilities userDefaultsSuiteName];
           v20 = [v18 initWithSuiteName:v19];
 
-          [v20 setBool:v16 forKey:@"KSDidMigrateToCloudKitOnCloud"];
+          [v20 setBool:bOOLValue forKey:@"KSDidMigrateToCloudKitOnCloud"];
           v21 = KSCategory();
           if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
           {
-            v22 = [MEMORY[0x277CCABB0] numberWithBool:v16];
+            v22 = [MEMORY[0x277CCABB0] numberWithBool:bOOLValue];
             *buf = v25;
             v32 = "[_KSTextReplacementCKStore localEntriesFromCloudEntries:]";
             v33 = 2112;
@@ -858,12 +858,12 @@ LABEL_18:
 
   v23 = *MEMORY[0x277D85DE8];
 
-  return v4;
+  return array;
 }
 
-- (void)userDidDeleteRecordZone:(id)a3
+- (void)userDidDeleteRecordZone:(id)zone
 {
-  if ([a3 isEqualToString:@"TextReplacements"])
+  if ([zone isEqualToString:@"TextReplacements"])
   {
 
     [(_KSTextReplacementCKStore *)self removeAllEntries];

@@ -1,45 +1,45 @@
 @interface AutocompleteQueryStringMatch
 - (AutocompleteQueryStringMatch)init;
-- (AutocompleteQueryStringMatch)initWithQueryTerms:(id)a3 stringTerms:(id)a4 matchingTerms:(id)a5 totalMatchLength:(unint64_t)a6 fractionOfMatch:(double)a7 prefixLastTokenMatchCover:(id)a8 prefixMatchCover:(id)a9 prefixMatchPosition:(id)a10 prefixMatchesWordBoundary:(BOOL)a11 firstPrefixToken:(id)a12 secondPrefixToken:(id)a13;
+- (AutocompleteQueryStringMatch)initWithQueryTerms:(id)terms stringTerms:(id)stringTerms matchingTerms:(id)matchingTerms totalMatchLength:(unint64_t)length fractionOfMatch:(double)match prefixLastTokenMatchCover:(id)cover prefixMatchCover:(id)matchCover prefixMatchPosition:(id)self0 prefixMatchesWordBoundary:(BOOL)self1 firstPrefixToken:(id)self2 secondPrefixToken:(id)self3;
 @end
 
 @implementation AutocompleteQueryStringMatch
 
-- (AutocompleteQueryStringMatch)initWithQueryTerms:(id)a3 stringTerms:(id)a4 matchingTerms:(id)a5 totalMatchLength:(unint64_t)a6 fractionOfMatch:(double)a7 prefixLastTokenMatchCover:(id)a8 prefixMatchCover:(id)a9 prefixMatchPosition:(id)a10 prefixMatchesWordBoundary:(BOOL)a11 firstPrefixToken:(id)a12 secondPrefixToken:(id)a13
+- (AutocompleteQueryStringMatch)initWithQueryTerms:(id)terms stringTerms:(id)stringTerms matchingTerms:(id)matchingTerms totalMatchLength:(unint64_t)length fractionOfMatch:(double)match prefixLastTokenMatchCover:(id)cover prefixMatchCover:(id)matchCover prefixMatchPosition:(id)self0 prefixMatchesWordBoundary:(BOOL)self1 firstPrefixToken:(id)self2 secondPrefixToken:(id)self3
 {
-  v35 = a3;
-  v19 = a4;
-  v20 = a5;
-  v34 = a8;
-  v33 = a9;
-  v32 = a10;
-  v21 = a12;
-  v22 = a13;
+  termsCopy = terms;
+  stringTermsCopy = stringTerms;
+  matchingTermsCopy = matchingTerms;
+  coverCopy = cover;
+  matchCoverCopy = matchCover;
+  positionCopy = position;
+  tokenCopy = token;
+  prefixTokenCopy = prefixToken;
   v36.receiver = self;
   v36.super_class = AutocompleteQueryStringMatch;
   v23 = [(AutocompleteQueryStringMatch *)&v36 init];
   if (v23)
   {
-    v24 = [v35 copy];
+    v24 = [termsCopy copy];
     queryTerms = v23->_queryTerms;
     v23->_queryTerms = v24;
 
-    v26 = [v19 copy];
+    v26 = [stringTermsCopy copy];
     stringTerms = v23->_stringTerms;
     v23->_stringTerms = v26;
 
-    v28 = [v20 copy];
+    v28 = [matchingTermsCopy copy];
     matchingTerms = v23->_matchingTerms;
     v23->_matchingTerms = v28;
 
-    v23->_totalMatchLength = a6;
-    v23->_fractionOfMatch = a7;
-    objc_storeStrong(&v23->_prefixLastTokenMatchCover, a8);
-    objc_storeStrong(&v23->_prefixMatchCover, a9);
-    objc_storeStrong(&v23->_prefixMatchPosition, a10);
-    v23->_prefixMatchesWordBoundary = a11;
-    objc_storeStrong(&v23->_firstPrefixToken, a12);
-    objc_storeStrong(&v23->_secondPrefixToken, a13);
+    v23->_totalMatchLength = length;
+    v23->_fractionOfMatch = match;
+    objc_storeStrong(&v23->_prefixLastTokenMatchCover, cover);
+    objc_storeStrong(&v23->_prefixMatchCover, matchCover);
+    objc_storeStrong(&v23->_prefixMatchPosition, position);
+    v23->_prefixMatchesWordBoundary = boundary;
+    objc_storeStrong(&v23->_firstPrefixToken, token);
+    objc_storeStrong(&v23->_secondPrefixToken, prefixToken);
   }
 
   return v23;

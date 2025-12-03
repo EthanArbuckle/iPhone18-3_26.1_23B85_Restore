@@ -1,17 +1,17 @@
 @interface FCTopicalNodeElement
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 @end
 
 @implementation FCTopicalNodeElement
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
+  equalCopy = equal;
+  v5 = equalCopy;
   if (!self)
   {
     identifier = 0;
-    if (v4)
+    if (equalCopy)
     {
       goto LABEL_3;
     }
@@ -22,13 +22,13 @@ LABEL_6:
   }
 
   identifier = self->_identifier;
-  if (!v4)
+  if (!equalCopy)
   {
     goto LABEL_6;
   }
 
 LABEL_3:
-  v7 = v4[1];
+  v7 = equalCopy[1];
 LABEL_4:
   v8 = identifier;
   v9 = [(NSString *)v8 isEqualToString:v7];

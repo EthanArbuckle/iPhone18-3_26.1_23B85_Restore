@@ -1,16 +1,16 @@
 @interface SDNetworkResolver
-- (SDNetworkResolver)initWithNode:(__SFNode *)a3;
+- (SDNetworkResolver)initWithNode:(__SFNode *)node;
 - (SDNetworkResolverDelegate)delegate;
 - (int)start;
-- (void)bonjourResolverDidChange:(id)a3;
+- (void)bonjourResolverDidChange:(id)change;
 - (void)dealloc;
-- (void)notifyClientAboutResolve:(int)a3;
+- (void)notifyClientAboutResolve:(int)resolve;
 - (void)stop;
 @end
 
 @implementation SDNetworkResolver
 
-- (SDNetworkResolver)initWithNode:(__SFNode *)a3
+- (SDNetworkResolver)initWithNode:(__SFNode *)node
 {
   v10.receiver = self;
   v10.super_class = SDNetworkResolver;
@@ -21,7 +21,7 @@
     flags = v4->_flags;
     v4->_flags = 0;
 
-    v5->_node = CFRetain(a3);
+    v5->_node = CFRetain(node);
     protocol = v5->_protocol;
     v5->_protocol = 0;
 
@@ -42,15 +42,15 @@
   [(SDNetworkResolver *)&v3 dealloc];
 }
 
-- (void)notifyClientAboutResolve:(int)a3
+- (void)notifyClientAboutResolve:(int)resolve
 {
   v8 = objc_opt_new();
   [v8 setObject:self->_node forKeyedSubscript:kSFOperationNodeKey];
   [v8 setObject:self->_flags forKeyedSubscript:kSFOperationFlagsKey];
   [v8 setObject:self->_protocol forKeyedSubscript:kSFOperationProtocolKey];
-  if (a3)
+  if (resolve)
   {
-    v5 = [NSError errorWithDomain:@"SFNodeError" code:a3 userInfo:0];
+    v5 = [NSError errorWithDomain:@"SFNodeError" code:resolve userInfo:0];
     [v8 setObject:v5 forKeyedSubscript:kSFOperationErrorKey];
 
     v6 = 10;
@@ -67,20 +67,20 @@
   [(SDNetworkResolver *)self stop];
 }
 
-- (void)bonjourResolverDidChange:(id)a3
+- (void)bonjourResolverDidChange:(id)change
 {
-  v4 = a3;
-  v5 = [v4 error];
-  if (v5)
+  changeCopy = change;
+  error = [changeCopy error];
+  if (error)
   {
-    v6 = v5;
+    v6 = error;
     v7 = browser_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
       sub_100132474(v6, v7);
     }
 
-    v8 = self;
+    selfCopy2 = self;
     v9 = 0xFFFFFFFFLL;
     goto LABEL_16;
   }
@@ -98,9 +98,9 @@
       if (v15)
       {
         v16 = v15;
-        v17 = [v4 hostName];
-        v18 = [v4 portNumber];
-        v19 = sub_1001174F4(v14, 0, 0, v17, [v18 intValue], v16, 0, 0);
+        hostName = [changeCopy hostName];
+        portNumber = [changeCopy portNumber];
+        v19 = sub_1001174F4(v14, 0, 0, hostName, [portNumber intValue], v16, 0, 0);
 
         v20 = self->_node;
         SFNodeSetURL();
@@ -121,29 +121,29 @@
   else
   {
     v21 = self->_node;
-    v22 = [v4 portNumber];
-    [v22 intValue];
+    portNumber2 = [changeCopy portNumber];
+    [portNumber2 intValue];
     SFNodeSetPortNumber();
 
     v23 = self->_node;
-    v24 = [v4 hostName];
+    hostName2 = [changeCopy hostName];
     SFNodeSetHostName();
 
     v25 = self->_node;
-    v26 = [v4 path];
+    path = [changeCopy path];
     SFNodeSetPath();
 
     v27 = self->_node;
-    v28 = [v4 url];
+    v28 = [changeCopy url];
     SFNodeSetURL();
   }
 
   if ([(NSString *)self->_protocol isEqualToString:kSFNodeProtocolVNC])
   {
-    v8 = self;
+    selfCopy2 = self;
     v9 = 0;
 LABEL_16:
-    [(SDNetworkResolver *)v8 notifyClientAboutResolve:v9];
+    [(SDNetworkResolver *)selfCopy2 notifyClientAboutResolve:v9];
     goto LABEL_17;
   }
 

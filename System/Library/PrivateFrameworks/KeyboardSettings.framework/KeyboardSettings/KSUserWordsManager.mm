@@ -1,8 +1,8 @@
 @interface KSUserWordsManager
 - (KSUserWordsManager)init;
 - (NSArray)entries;
-- (id)addObserver:(id)a3;
-- (void)addEntries:(id)a3 removeEntries:(id)a4 withCompletionHandler:(id)a5;
+- (id)addObserver:(id)observer;
+- (void)addEntries:(id)entries removeEntries:(id)removeEntries withCompletionHandler:(id)handler;
 - (void)dealloc;
 - (void)notifyObserversOfChange;
 @end
@@ -47,7 +47,7 @@
   return result;
 }
 
-- (void)addEntries:(id)a3 removeEntries:(id)a4 withCompletionHandler:(id)a5
+- (void)addEntries:(id)entries removeEntries:(id)removeEntries withCompletionHandler:(id)handler
 {
   textReplacementStore = self->_textReplacementStore;
   v6[0] = MEMORY[0x277D85DD0];
@@ -55,8 +55,8 @@
   v6[2] = __69__KSUserWordsManager_addEntries_removeEntries_withCompletionHandler___block_invoke;
   v6[3] = &unk_2797FA178;
   v6[4] = self;
-  v6[5] = a5;
-  [(_KSTextReplacementClientStore *)textReplacementStore addEntries:a3 removeEntries:a4 withCompletionHandler:v6];
+  v6[5] = handler;
+  [(_KSTextReplacementClientStore *)textReplacementStore addEntries:entries removeEntries:removeEntries withCompletionHandler:v6];
 }
 
 void __69__KSUserWordsManager_addEntries_removeEntries_withCompletionHandler___block_invoke(uint64_t a1, uint64_t a2)
@@ -125,9 +125,9 @@ uint64_t __69__KSUserWordsManager_addEntries_removeEntries_withCompletionHandler
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (id)addObserver:(id)a3
+- (id)addObserver:(id)observer
 {
-  v4 = [a3 copy];
+  v4 = [observer copy];
   [(NSMutableArray *)self->_observers addObject:v4];
 
   return v4;

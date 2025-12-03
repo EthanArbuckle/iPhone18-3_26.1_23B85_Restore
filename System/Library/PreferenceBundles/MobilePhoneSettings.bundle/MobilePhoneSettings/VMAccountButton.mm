@@ -1,9 +1,9 @@
 @interface VMAccountButton
 + (NSCache)imageCache;
-+ (id)backgroundImageForSize:(CGSize)a3 state:(unint64_t)a4;
-+ (id)backgroundImageNameForSize:(CGSize)a3 state:(unint64_t)a4;
++ (id)backgroundImageForSize:(CGSize)size state:(unint64_t)state;
++ (id)backgroundImageNameForSize:(CGSize)size state:(unint64_t)state;
 - (CGSize)intrinsicContentSize;
-- (VMAccountButton)initWithFrame:(CGRect)a3;
+- (VMAccountButton)initWithFrame:(CGRect)frame;
 - (double)preferredIntrinsicContentSizeWidth;
 - (double)titleLabelFirstBaselineAnchorLayoutConstraintConstant;
 - (double)titleLabelLastBaselineAnchorLayoutConstraintConstant;
@@ -13,29 +13,29 @@
 
 @implementation VMAccountButton
 
-+ (id)backgroundImageNameForSize:(CGSize)a3 state:(unint64_t)a4
++ (id)backgroundImageNameForSize:(CGSize)size state:(unint64_t)state
 {
   v6 = MEMORY[0x277CCACA8];
-  v7 = NSStringFromCGSize(a3);
-  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
-  v9 = [v6 stringWithFormat:@"<%@ backgroundImage, size=%@, state=%@>", a1, v7, v8];
+  v7 = NSStringFromCGSize(size);
+  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:state];
+  v9 = [v6 stringWithFormat:@"<%@ backgroundImage, size=%@, state=%@>", self, v7, v8];
 
   return v9;
 }
 
-+ (id)backgroundImageForSize:(CGSize)a3 state:(unint64_t)a4
++ (id)backgroundImageForSize:(CGSize)size state:(unint64_t)state
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = [a1 backgroundImageNameForSize:a4 state:?];
-  v8 = [a1 imageCache];
-  v9 = [v8 objectForKey:v7];
+  height = size.height;
+  width = size.width;
+  v7 = [self backgroundImageNameForSize:state state:?];
+  imageCache = [self imageCache];
+  v9 = [imageCache objectForKey:v7];
 
   if (!v9)
   {
-    v10 = [MEMORY[0x277D75568] preferredFormat];
-    [v10 setScale:0.0];
-    v11 = [objc_alloc(MEMORY[0x277D75560]) initWithSize:v10 format:{width, height}];
+    preferredFormat = [MEMORY[0x277D75568] preferredFormat];
+    [preferredFormat setScale:0.0];
+    v11 = [objc_alloc(MEMORY[0x277D75560]) initWithSize:preferredFormat format:{width, height}];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __48__VMAccountButton_backgroundImageForSize_state___block_invoke;
@@ -43,8 +43,8 @@
     *&v15[4] = width;
     *&v15[5] = height;
     v12 = [v11 imageWithActions:v15];
-    v13 = [a1 imageCache];
-    [v13 setObject:v12 forKey:v7];
+    imageCache2 = [self imageCache];
+    [imageCache2 setObject:v12 forKey:v7];
   }
 
   return v9;
@@ -83,11 +83,11 @@ uint64_t __29__VMAccountButton_imageCache__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (VMAccountButton)initWithFrame:(CGRect)a3
+- (VMAccountButton)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = VMAccountButton;
-  v3 = [(VMAccountButton *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(VMAccountButton *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -102,13 +102,13 @@ uint64_t __29__VMAccountButton_imageCache__block_invoke()
 {
   [(VMAccountButton *)self setContentEdgeInsets:0.0, 16.0, 0.0, 16.0];
   [(VMAccountButton *)self setContentHorizontalAlignment:0];
-  v5 = [(VMAccountButton *)self titleLabel];
-  v3 = [MEMORY[0x277D74300] telephonyUIBodyShortFont];
-  [v5 setFont:v3];
+  titleLabel = [(VMAccountButton *)self titleLabel];
+  telephonyUIBodyShortFont = [MEMORY[0x277D74300] telephonyUIBodyShortFont];
+  [titleLabel setFont:telephonyUIBodyShortFont];
 
-  [v5 setTextAlignment:1];
-  v4 = [MEMORY[0x277D75348] dynamicSecondaryLabelColor];
-  [(VMAccountButton *)self setTitleColor:v4 forState:0];
+  [titleLabel setTextAlignment:1];
+  dynamicSecondaryLabelColor = [MEMORY[0x277D75348] dynamicSecondaryLabelColor];
+  [(VMAccountButton *)self setTitleColor:dynamicSecondaryLabelColor forState:0];
 }
 
 - (double)preferredIntrinsicContentSizeWidth
@@ -166,10 +166,10 @@ uint64_t __29__VMAccountButton_imageCache__block_invoke()
 
 - (double)titleLabelFirstBaselineAnchorLayoutConstraintConstant
 {
-  v2 = [(VMAccountButton *)self titleLabel];
-  v3 = [v2 font];
-  v4 = [v3 fontDescriptor];
-  v5 = [v4 objectForKey:*MEMORY[0x277D74378]];
+  titleLabel = [(VMAccountButton *)self titleLabel];
+  font = [titleLabel font];
+  fontDescriptor = [font fontDescriptor];
+  v5 = [fontDescriptor objectForKey:*MEMORY[0x277D74378]];
 
   if (v5)
   {
@@ -188,10 +188,10 @@ uint64_t __29__VMAccountButton_imageCache__block_invoke()
 
 - (double)titleLabelLastBaselineAnchorLayoutConstraintConstant
 {
-  v2 = [(VMAccountButton *)self titleLabel];
-  v3 = [v2 font];
-  v4 = [v3 fontDescriptor];
-  v5 = [v4 objectForKey:*MEMORY[0x277D74378]];
+  titleLabel = [(VMAccountButton *)self titleLabel];
+  font = [titleLabel font];
+  fontDescriptor = [font fontDescriptor];
+  v5 = [fontDescriptor objectForKey:*MEMORY[0x277D74378]];
 
   if (v5)
   {

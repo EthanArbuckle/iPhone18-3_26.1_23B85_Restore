@@ -1,41 +1,41 @@
 @interface HDMCPregnancyFeatureAdjustmentManager
 - (_TtC27HealthMenstrualCyclesDaemon37HDMCPregnancyFeatureAdjustmentManager)init;
-- (_TtC27HealthMenstrualCyclesDaemon37HDMCPregnancyFeatureAdjustmentManager)initWithPregnancyManager:(id)a3 profile:(id)a4 experienceModelProvider:(id)a5;
+- (_TtC27HealthMenstrualCyclesDaemon37HDMCPregnancyFeatureAdjustmentManager)initWithPregnancyManager:(id)manager profile:(id)profile experienceModelProvider:(id)provider;
 - (void)experienceModelManagerDidUpdateModel;
-- (void)performWorkForOperation:(id)a3 profile:(id)a4 databaseAccessibilityAssertion:(id)a5 completion:(id)a6;
-- (void)pregnancyModelDidUpdate:(id)a3;
+- (void)performWorkForOperation:(id)operation profile:(id)profile databaseAccessibilityAssertion:(id)assertion completion:(id)completion;
+- (void)pregnancyModelDidUpdate:(id)update;
 @end
 
 @implementation HDMCPregnancyFeatureAdjustmentManager
 
-- (void)pregnancyModelDidUpdate:(id)a3
+- (void)pregnancyModelDidUpdate:(id)update
 {
-  v4 = a3;
-  v5 = self;
-  sub_2293D8E60(v4);
+  updateCopy = update;
+  selfCopy = self;
+  sub_2293D8E60(updateCopy);
 }
 
-- (void)performWorkForOperation:(id)a3 profile:(id)a4 databaseAccessibilityAssertion:(id)a5 completion:(id)a6
+- (void)performWorkForOperation:(id)operation profile:(id)profile databaseAccessibilityAssertion:(id)assertion completion:(id)completion
 {
-  v10 = _Block_copy(a6);
+  v10 = _Block_copy(completion);
   v11 = swift_allocObject();
   *(v11 + 16) = v10;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = self;
+  operationCopy = operation;
+  profileCopy = profile;
+  assertionCopy = assertion;
+  selfCopy = self;
   sub_2293D99DC(sub_2293D8990, v11);
 }
 
-- (_TtC27HealthMenstrualCyclesDaemon37HDMCPregnancyFeatureAdjustmentManager)initWithPregnancyManager:(id)a3 profile:(id)a4 experienceModelProvider:(id)a5
+- (_TtC27HealthMenstrualCyclesDaemon37HDMCPregnancyFeatureAdjustmentManager)initWithPregnancyManager:(id)manager profile:(id)profile experienceModelProvider:(id)provider
 {
   swift_getObjectType();
   v13 = 0;
   memset(v12, 0, sizeof(v12));
-  v8 = a3;
-  v9 = a4;
+  managerCopy = manager;
+  profileCopy = profile;
   swift_unknownObjectRetain();
-  v10 = sub_22942816C(v8, v9, a5, 0, 0, 0, v12);
+  v10 = sub_22942816C(managerCopy, profileCopy, provider, 0, 0, 0, v12);
   swift_deallocPartialClassInstance();
   return v10;
 }
@@ -49,7 +49,7 @@
 
 - (void)experienceModelManagerDidUpdateModel
 {
-  v2 = self;
+  selfCopy = self;
   HDMCPregnancyFeatureAdjustmentManager.experienceModelManagerDidUpdateModel()();
 }
 

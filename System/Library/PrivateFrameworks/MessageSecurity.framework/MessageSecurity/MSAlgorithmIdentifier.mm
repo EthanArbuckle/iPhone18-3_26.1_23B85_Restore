@@ -1,20 +1,20 @@
 @interface MSAlgorithmIdentifier
-+ (MSAlgorithmIdentifier)algorithmIdentifierWithAsn1AlgId:(AlgorithmIdentifier *)a3 error:(id *)a4;
-+ (MSAlgorithmIdentifier)algorithmIdentifierWithOID:(id)a3;
-+ (id)digestAlgorithmWithSignatureAlgorithm:(id)a3 error:(id *)a4;
++ (MSAlgorithmIdentifier)algorithmIdentifierWithAsn1AlgId:(AlgorithmIdentifier *)id error:(id *)error;
++ (MSAlgorithmIdentifier)algorithmIdentifierWithOID:(id)d;
++ (id)digestAlgorithmWithSignatureAlgorithm:(id)algorithm error:(id *)error;
 - (AlgorithmIdentifier)encode;
-- (BOOL)isEqual:(id)a3;
-- (MSAlgorithmIdentifier)initWithAsn1AlgId:(AlgorithmIdentifier *)a3 error:(id *)a4;
-- (MSAlgorithmIdentifier)initWithOID:(id)a3;
-- (MSAlgorithmIdentifier)initWithOID:(id)a3 parameters:(id)a4;
-- (id)decode:(id)a3 error:(id *)a4;
-- (id)initDigestAlgorithmWithSignatureAlgorithm:(id)a3 error:(id *)a4;
-- (id)signatureAlgorithmWithDigestAlgorithm:(id)a3 error:(id *)a4;
-- (unint64_t)blockSize:(id *)a3;
+- (BOOL)isEqual:(id)equal;
+- (MSAlgorithmIdentifier)initWithAsn1AlgId:(AlgorithmIdentifier *)id error:(id *)error;
+- (MSAlgorithmIdentifier)initWithOID:(id)d;
+- (MSAlgorithmIdentifier)initWithOID:(id)d parameters:(id)parameters;
+- (id)decode:(id)decode error:(id *)error;
+- (id)initDigestAlgorithmWithSignatureAlgorithm:(id)algorithm error:(id *)error;
+- (id)signatureAlgorithmWithDigestAlgorithm:(id)algorithm error:(id *)error;
+- (unint64_t)blockSize:(id *)size;
 - (unint64_t)hash;
-- (unint64_t)keySize:(id *)a3;
-- (unsigned)ccAlgorithm:(id *)a3;
-- (unsigned)ccMode:(id *)a3;
+- (unint64_t)keySize:(id *)size;
+- (unsigned)ccAlgorithm:(id *)algorithm;
+- (unsigned)ccMode:(id *)mode;
 - (void)dealloc;
 @end
 
@@ -23,12 +23,12 @@
 - (unint64_t)hash
 {
   parameters = self->_parameters;
-  v4 = [(MSAlgorithmIdentifier *)self algorithm];
-  v5 = [v4 hash];
+  algorithm = [(MSAlgorithmIdentifier *)self algorithm];
+  v5 = [algorithm hash];
   if (parameters)
   {
-    v6 = [(MSAlgorithmIdentifier *)self parameters];
-    v5 += [v6 hash];
+    parameters = [(MSAlgorithmIdentifier *)self parameters];
+    v5 += [parameters hash];
   }
 
   return v5;
@@ -53,14 +53,14 @@
   v3 = malloc_type_malloc(0x18uLL, 0x10300406712BA52uLL);
   if (v3)
   {
-    v4 = [(MSAlgorithmIdentifier *)self algorithm];
-    v14 = [v4 Asn1OID];
+    algorithm = [(MSAlgorithmIdentifier *)self algorithm];
+    asn1OID = [algorithm Asn1OID];
     v15 = v5;
 
     der_copy_oid();
-    v6 = [(MSAlgorithmIdentifier *)self parameters];
+    parameters = [(MSAlgorithmIdentifier *)self parameters];
 
-    if (v6)
+    if (parameters)
     {
       v3->var1 = malloc_type_malloc(0x10uLL, 0x108004057E67DB5uLL);
       v7 = [(MSAlgorithmIdentifier *)self parameters:0];
@@ -68,17 +68,17 @@
 
       if (v8)
       {
-        v9 = [(MSAlgorithmIdentifier *)self parameters];
-        v12 = [v9 length];
+        parameters2 = [(MSAlgorithmIdentifier *)self parameters];
+        v12 = [parameters2 length];
 
-        v10 = [(MSAlgorithmIdentifier *)self parameters];
-        v13 = [v10 bytes];
+        parameters3 = [(MSAlgorithmIdentifier *)self parameters];
+        bytes = [parameters3 bytes];
       }
 
       else
       {
         v12 = 2;
-        v13 = &asn1NULL;
+        bytes = &asn1NULL;
       }
 
       MEMORY[0x259C98440](&v12, v3->var1);
@@ -93,83 +93,83 @@
   return v3;
 }
 
-+ (MSAlgorithmIdentifier)algorithmIdentifierWithOID:(id)a3
++ (MSAlgorithmIdentifier)algorithmIdentifierWithOID:(id)d
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithOID:v4];
+  dCopy = d;
+  v5 = [[self alloc] initWithOID:dCopy];
 
   return v5;
 }
 
-+ (MSAlgorithmIdentifier)algorithmIdentifierWithAsn1AlgId:(AlgorithmIdentifier *)a3 error:(id *)a4
++ (MSAlgorithmIdentifier)algorithmIdentifierWithAsn1AlgId:(AlgorithmIdentifier *)id error:(id *)error
 {
-  v4 = [[a1 alloc] initWithAsn1AlgId:a3 error:a4];
+  v4 = [[self alloc] initWithAsn1AlgId:id error:error];
 
   return v4;
 }
 
-+ (id)digestAlgorithmWithSignatureAlgorithm:(id)a3 error:(id *)a4
++ (id)digestAlgorithmWithSignatureAlgorithm:(id)algorithm error:(id *)error
 {
-  v6 = a3;
-  v7 = [[a1 alloc] initDigestAlgorithmWithSignatureAlgorithm:v6 error:a4];
+  algorithmCopy = algorithm;
+  v7 = [[self alloc] initDigestAlgorithmWithSignatureAlgorithm:algorithmCopy error:error];
 
   return v7;
 }
 
-- (MSAlgorithmIdentifier)initWithOID:(id)a3
+- (MSAlgorithmIdentifier)initWithOID:(id)d
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEA90] data];
+  dCopy = d;
+  data = [MEMORY[0x277CBEA90] data];
   if (algorithmOIDToParameters_onceToken != -1)
   {
     [MSAlgorithmIdentifier initWithOID:];
   }
 
-  v6 = [v4 OIDString];
-  v7 = [algorithmOIDToParameters_sAlgorithmOIDStringIsAbsentParameters objectForKeyedSubscript:v6];
-  v8 = [v7 BOOLValue];
+  oIDString = [dCopy OIDString];
+  v7 = [algorithmOIDToParameters_sAlgorithmOIDStringIsAbsentParameters objectForKeyedSubscript:oIDString];
+  bOOLValue = [v7 BOOLValue];
 
-  if (v8)
+  if (bOOLValue)
   {
     v9 = 0;
   }
 
   else
   {
-    v9 = v5;
+    v9 = data;
   }
 
-  v10 = [(MSAlgorithmIdentifier *)self initWithOID:v4 parameters:v9];
+  v10 = [(MSAlgorithmIdentifier *)self initWithOID:dCopy parameters:v9];
   return v10;
 }
 
-- (MSAlgorithmIdentifier)initWithOID:(id)a3 parameters:(id)a4
+- (MSAlgorithmIdentifier)initWithOID:(id)d parameters:(id)parameters
 {
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  parametersCopy = parameters;
   v12.receiver = self;
   v12.super_class = MSAlgorithmIdentifier;
   v9 = [(MSAlgorithmIdentifier *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_algorithm, a3);
-    objc_storeStrong(&v10->_parameters, a4);
+    objc_storeStrong(&v9->_algorithm, d);
+    objc_storeStrong(&v10->_parameters, parameters);
     v10->_asn1AlgId = [(MSAlgorithmIdentifier *)v10 encode];
   }
 
   return v10;
 }
 
-- (id)decode:(id)a3 error:(id *)a4
+- (id)decode:(id)decode error:(id *)error
 {
   memset(v8, 0, sizeof(v8));
-  if (nsheim_decode_AlgorithmIdentifier(a3))
+  if (nsheim_decode_AlgorithmIdentifier(decode))
   {
-    if (a4)
+    if (error)
     {
-      [MSError MSErrorWithDomain:MSErrorASN1Domain[0] code:-26275 underlyingError:*a4 description:@"unable to decode Algorithm Identifier"];
-      *a4 = v6 = 0;
+      [MSError MSErrorWithDomain:MSErrorASN1Domain[0] code:-26275 underlyingError:*error description:@"unable to decode Algorithm Identifier"];
+      *error = v6 = 0;
     }
 
     else
@@ -180,33 +180,33 @@
 
   else
   {
-    v6 = [(MSAlgorithmIdentifier *)self initWithAsn1AlgId:v8 error:a4];
+    v6 = [(MSAlgorithmIdentifier *)self initWithAsn1AlgId:v8 error:error];
     free_AlgorithmIdentifier();
   }
 
   return v6;
 }
 
-- (id)initDigestAlgorithmWithSignatureAlgorithm:(id)a3 error:(id *)a4
+- (id)initDigestAlgorithmWithSignatureAlgorithm:(id)algorithm error:(id *)error
 {
-  v6 = [a3 algorithm];
-  v7 = [MSOID digestOIDWithSignatureAlgorithm:v6 error:a4];
+  algorithm = [algorithm algorithm];
+  v7 = [MSOID digestOIDWithSignatureAlgorithm:algorithm error:error];
 
   if (v7)
   {
     self = [(MSAlgorithmIdentifier *)self initWithOID:v7];
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (MSAlgorithmIdentifier)initWithAsn1AlgId:(AlgorithmIdentifier *)a3 error:(id *)a4
+- (MSAlgorithmIdentifier)initWithAsn1AlgId:(AlgorithmIdentifier *)id error:(id *)error
 {
   v17.receiver = self;
   v17.super_class = MSAlgorithmIdentifier;
@@ -222,10 +222,10 @@ LABEL_14:
   v6->_asn1AlgId = v7;
   if (!v7)
   {
-    if (a4)
+    if (error)
     {
-      [MSError MSErrorWithDomain:MSErrorASN1Domain[0] code:-108 underlyingError:*a4 description:@"unable to allocate Algorithm Identifier"];
-      *a4 = v9 = 0;
+      [MSError MSErrorWithDomain:MSErrorASN1Domain[0] code:-108 underlyingError:*error description:@"unable to allocate Algorithm Identifier"];
+      *error = v9 = 0;
       goto LABEL_16;
     }
 
@@ -235,7 +235,7 @@ LABEL_14:
   v8 = copy_AlgorithmIdentifier();
   if (!v8)
   {
-    v10 = [MSOID OIDWithAsn1OID:v6->_asn1AlgId error:a4];
+    v10 = [MSOID OIDWithAsn1OID:v6->_asn1AlgId error:error];
     algorithm = v6->_algorithm;
     v6->_algorithm = v10;
 
@@ -249,7 +249,7 @@ LABEL_14:
           v13 = var1->var1;
           if (v13)
           {
-            v14 = [MEMORY[0x277CBEA90] dataWithBytes:v13 length:a3->var1->var0];
+            v14 = [MEMORY[0x277CBEA90] dataWithBytes:v13 length:id->var1->var0];
             parameters = v6->_parameters;
             v6->_parameters = v14;
           }
@@ -264,9 +264,9 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = [MSError MSErrorWithDomain:MSErrorASN1Domain[0] code:v8 underlyingError:*a4 description:@"unable to copy Algorithm Identifier"];
+    *error = [MSError MSErrorWithDomain:MSErrorASN1Domain[0] code:v8 underlyingError:*error description:@"unable to copy Algorithm Identifier"];
   }
 
   free(v6->_asn1AlgId);
@@ -277,58 +277,58 @@ LABEL_16:
   return v9;
 }
 
-- (id)signatureAlgorithmWithDigestAlgorithm:(id)a3 error:(id *)a4
+- (id)signatureAlgorithmWithDigestAlgorithm:(id)algorithm error:(id *)error
 {
-  v6 = a3;
-  v7 = [(MSAlgorithmIdentifier *)self algorithm];
-  v8 = [v7 isEqualToString:@"1.2.840.113549.1.1.1"];
+  algorithmCopy = algorithm;
+  algorithm = [(MSAlgorithmIdentifier *)self algorithm];
+  v8 = [algorithm isEqualToString:@"1.2.840.113549.1.1.1"];
 
   if (v8)
   {
-    v9 = [v6 algorithm];
-    v10 = [MSOID RSASignatureOIDWithDigestAlgorithm:v9 error:a4];
+    algorithm2 = [algorithmCopy algorithm];
+    v10 = [MSOID RSASignatureOIDWithDigestAlgorithm:algorithm2 error:error];
 LABEL_5:
-    a4 = v10;
+    error = v10;
 LABEL_6:
 
     goto LABEL_7;
   }
 
-  v11 = [(MSAlgorithmIdentifier *)self algorithm];
-  v12 = [v11 isEqualToString:@"1.2.840.10045.2.1"];
+  algorithm3 = [(MSAlgorithmIdentifier *)self algorithm];
+  v12 = [algorithm3 isEqualToString:@"1.2.840.10045.2.1"];
 
   if (v12)
   {
-    v9 = [v6 algorithm];
-    v10 = [MSOID ECSignatureOIDWithDigestAlgorithm:v9 error:a4];
+    algorithm2 = [algorithmCopy algorithm];
+    v10 = [MSOID ECSignatureOIDWithDigestAlgorithm:algorithm2 error:error];
     goto LABEL_5;
   }
 
-  if (a4)
+  if (error)
   {
     v14 = MSErrorCryptoDomain[0];
-    v15 = *a4;
-    v9 = [(MSAlgorithmIdentifier *)self algorithm];
-    v16 = [v9 OIDString];
-    *a4 = [MSError MSErrorWithDomain:v14 code:-50 underlyingError:v15 description:@"Algorithm Identifier %@ does not indicate a public key algorithm", v16];
+    v15 = *error;
+    algorithm2 = [(MSAlgorithmIdentifier *)self algorithm];
+    oIDString = [algorithm2 OIDString];
+    *error = [MSError MSErrorWithDomain:v14 code:-50 underlyingError:v15 description:@"Algorithm Identifier %@ does not indicate a public key algorithm", oIDString];
 
-    a4 = 0;
+    error = 0;
     goto LABEL_6;
   }
 
 LABEL_7:
 
-  return a4;
+  return error;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v5 algorithm];
-    if (![v6 isEqual:self->_algorithm])
+    algorithm = [equalCopy algorithm];
+    if (![algorithm isEqual:self->_algorithm])
     {
       v11 = 0;
       goto LABEL_16;
@@ -338,12 +338,12 @@ LABEL_7:
     if (parameters)
     {
 LABEL_4:
-      v8 = [v5 parameters];
-      if (v8)
+      parameters = [equalCopy parameters];
+      if (parameters)
       {
-        v9 = v8;
-        v10 = [v5 parameters];
-        v11 = [v10 isEqualToData:self->_parameters];
+        v9 = parameters;
+        parameters2 = [equalCopy parameters];
+        v11 = [parameters2 isEqualToData:self->_parameters];
 
         if (!parameters)
         {
@@ -365,8 +365,8 @@ LABEL_16:
       goto LABEL_17;
     }
 
-    v3 = [v5 parameters];
-    if (v3)
+    parameters3 = [equalCopy parameters];
+    if (parameters3)
     {
       if (self->_parameters)
       {
@@ -392,11 +392,11 @@ LABEL_17:
   return v11;
 }
 
-- (unsigned)ccAlgorithm:(id *)a3
+- (unsigned)ccAlgorithm:(id *)algorithm
 {
-  if (a3 && *a3)
+  if (algorithm && *algorithm)
   {
-    v5 = [*a3 copy];
+    v5 = [*algorithm copy];
   }
 
   else
@@ -409,18 +409,18 @@ LABEL_17:
     [MSAlgorithmIdentifier ccAlgorithm:];
   }
 
-  v6 = [(MSAlgorithmIdentifier *)self algorithm];
-  v7 = [v6 OIDString];
+  algorithm = [(MSAlgorithmIdentifier *)self algorithm];
+  oIDString = [algorithm OIDString];
 
   v8 = ccAlgorithm__knownEncryptionAlgs;
-  v9 = [(MSAlgorithmIdentifier *)self algorithm];
-  v10 = [v9 OIDString];
-  v11 = [v8 objectForKeyedSubscript:v10];
+  algorithm2 = [(MSAlgorithmIdentifier *)self algorithm];
+  oIDString2 = [algorithm2 OIDString];
+  v11 = [v8 objectForKeyedSubscript:oIDString2];
 
   if (v11)
   {
-    v12 = [v11 unsignedIntValue];
-    if (!a3)
+    unsignedIntValue = [v11 unsignedIntValue];
+    if (!algorithm)
     {
       goto LABEL_13;
     }
@@ -428,11 +428,11 @@ LABEL_17:
 
   else
   {
-    v13 = [MSError MSErrorWithDomain:MSErrorCMSDomain[0] code:-26275 underlyingError:v5 description:@"unknown ccAlg -- unexpected encryption algorithm: %@", v7];
+    v13 = [MSError MSErrorWithDomain:MSErrorCMSDomain[0] code:-26275 underlyingError:v5 description:@"unknown ccAlg -- unexpected encryption algorithm: %@", oIDString];
 
-    v12 = 0;
+    unsignedIntValue = 0;
     v5 = v13;
-    if (!a3)
+    if (!algorithm)
     {
       goto LABEL_13;
     }
@@ -441,12 +441,12 @@ LABEL_17:
   if (v5)
   {
     v14 = v5;
-    *a3 = v5;
+    *algorithm = v5;
   }
 
 LABEL_13:
 
-  return v12;
+  return unsignedIntValue;
 }
 
 void __37__MSAlgorithmIdentifier_ccAlgorithm___block_invoke()
@@ -516,11 +516,11 @@ void __37__MSAlgorithmIdentifier_ccAlgorithm___block_invoke()
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (unsigned)ccMode:(id *)a3
+- (unsigned)ccMode:(id *)mode
 {
-  if (a3 && *a3)
+  if (mode && *mode)
   {
-    v5 = [*a3 copy];
+    v5 = [*mode copy];
   }
 
   else
@@ -533,15 +533,15 @@ void __37__MSAlgorithmIdentifier_ccAlgorithm___block_invoke()
     [MSAlgorithmIdentifier ccMode:];
   }
 
-  v6 = [(MSAlgorithmIdentifier *)self algorithm];
-  v7 = [v6 OIDString];
+  algorithm = [(MSAlgorithmIdentifier *)self algorithm];
+  oIDString = [algorithm OIDString];
 
-  v8 = [ccMode__knownEncryptionAlgs objectForKeyedSubscript:v7];
+  v8 = [ccMode__knownEncryptionAlgs objectForKeyedSubscript:oIDString];
   v9 = v8;
   if (v8)
   {
-    v10 = [v8 unsignedIntValue];
-    if (!a3)
+    unsignedIntValue = [v8 unsignedIntValue];
+    if (!mode)
     {
       goto LABEL_13;
     }
@@ -549,11 +549,11 @@ void __37__MSAlgorithmIdentifier_ccAlgorithm___block_invoke()
 
   else
   {
-    v11 = [MSError MSErrorWithDomain:MSErrorCMSDomain[0] code:-26275 underlyingError:v5 description:@"unknown ccMode -- unexpected encryption algorithm: %@", v7];
+    v11 = [MSError MSErrorWithDomain:MSErrorCMSDomain[0] code:-26275 underlyingError:v5 description:@"unknown ccMode -- unexpected encryption algorithm: %@", oIDString];
 
-    v10 = 0;
+    unsignedIntValue = 0;
     v5 = v11;
-    if (!a3)
+    if (!mode)
     {
       goto LABEL_13;
     }
@@ -562,12 +562,12 @@ void __37__MSAlgorithmIdentifier_ccAlgorithm___block_invoke()
   if (v5)
   {
     v12 = v5;
-    *a3 = v5;
+    *mode = v5;
   }
 
 LABEL_13:
 
-  return v10;
+  return unsignedIntValue;
 }
 
 void __32__MSAlgorithmIdentifier_ccMode___block_invoke()
@@ -628,11 +628,11 @@ void __32__MSAlgorithmIdentifier_ccMode___block_invoke()
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (unint64_t)blockSize:(id *)a3
+- (unint64_t)blockSize:(id *)size
 {
-  if (a3 && *a3)
+  if (size && *size)
   {
-    v5 = [*a3 copy];
+    v5 = [*size copy];
   }
 
   else
@@ -645,15 +645,15 @@ void __32__MSAlgorithmIdentifier_ccMode___block_invoke()
     [MSAlgorithmIdentifier blockSize:];
   }
 
-  v6 = [(MSAlgorithmIdentifier *)self algorithm];
-  v7 = [v6 OIDString];
+  algorithm = [(MSAlgorithmIdentifier *)self algorithm];
+  oIDString = [algorithm OIDString];
 
-  v8 = [blockSize__knownEncryptionAlgs objectForKeyedSubscript:v7];
+  v8 = [blockSize__knownEncryptionAlgs objectForKeyedSubscript:oIDString];
   v9 = v8;
   if (v8)
   {
-    v10 = [v8 unsignedIntValue];
-    if (!a3)
+    unsignedIntValue = [v8 unsignedIntValue];
+    if (!size)
     {
       goto LABEL_13;
     }
@@ -661,11 +661,11 @@ void __32__MSAlgorithmIdentifier_ccMode___block_invoke()
 
   else
   {
-    v11 = [MSError MSErrorWithDomain:MSErrorCMSDomain[0] code:-26275 underlyingError:v5 description:@"unknown blockSize -- unexpected encryption algorithm: %@", v7];
+    v11 = [MSError MSErrorWithDomain:MSErrorCMSDomain[0] code:-26275 underlyingError:v5 description:@"unknown blockSize -- unexpected encryption algorithm: %@", oIDString];
 
-    v10 = 0;
+    unsignedIntValue = 0;
     v5 = v11;
-    if (!a3)
+    if (!size)
     {
       goto LABEL_13;
     }
@@ -674,12 +674,12 @@ void __32__MSAlgorithmIdentifier_ccMode___block_invoke()
   if (v5)
   {
     v12 = v5;
-    *a3 = v5;
+    *size = v5;
   }
 
 LABEL_13:
 
-  return v10;
+  return unsignedIntValue;
 }
 
 void __35__MSAlgorithmIdentifier_blockSize___block_invoke()
@@ -749,11 +749,11 @@ void __35__MSAlgorithmIdentifier_blockSize___block_invoke()
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (unint64_t)keySize:(id *)a3
+- (unint64_t)keySize:(id *)size
 {
-  if (a3 && *a3)
+  if (size && *size)
   {
-    v5 = [*a3 copy];
+    v5 = [*size copy];
   }
 
   else
@@ -766,15 +766,15 @@ void __35__MSAlgorithmIdentifier_blockSize___block_invoke()
     [MSAlgorithmIdentifier keySize:];
   }
 
-  v6 = [(MSAlgorithmIdentifier *)self algorithm];
-  v7 = [v6 OIDString];
+  algorithm = [(MSAlgorithmIdentifier *)self algorithm];
+  oIDString = [algorithm OIDString];
 
-  v8 = [keySize__knownEncryptionAlgs objectForKeyedSubscript:v7];
+  v8 = [keySize__knownEncryptionAlgs objectForKeyedSubscript:oIDString];
   v9 = v8;
   if (v8)
   {
-    v10 = [v8 unsignedIntValue];
-    if (!a3)
+    unsignedIntValue = [v8 unsignedIntValue];
+    if (!size)
     {
       goto LABEL_13;
     }
@@ -782,11 +782,11 @@ void __35__MSAlgorithmIdentifier_blockSize___block_invoke()
 
   else
   {
-    v11 = [MSError MSErrorWithDomain:MSErrorCMSDomain[0] code:-26275 underlyingError:v5 description:@"unknown keySize -- unexpected encryption algorithm: %@", v7];
+    v11 = [MSError MSErrorWithDomain:MSErrorCMSDomain[0] code:-26275 underlyingError:v5 description:@"unknown keySize -- unexpected encryption algorithm: %@", oIDString];
 
-    v10 = 0;
+    unsignedIntValue = 0;
     v5 = v11;
-    if (!a3)
+    if (!size)
     {
       goto LABEL_13;
     }
@@ -795,12 +795,12 @@ void __35__MSAlgorithmIdentifier_blockSize___block_invoke()
   if (v5)
   {
     v12 = v5;
-    *a3 = v5;
+    *size = v5;
   }
 
 LABEL_13:
 
-  return v10;
+  return unsignedIntValue;
 }
 
 void __33__MSAlgorithmIdentifier_keySize___block_invoke()

@@ -1,6 +1,6 @@
 @interface RPControlCenterClient
 + (id)sharedInstance;
-+ (void)getSystemBroadcastExtensionInfo:(id)a3;
++ (void)getSystemBroadcastExtensionInfo:(id)info;
 - (BOOL)currentAppUsingCamera;
 - (BOOL)fetchIsCallActive;
 - (BOOL)getHqlrAudioOnly;
@@ -10,54 +10,54 @@
 - (BOOL)isScreenRecorderAvailable;
 - (RPControlCenterClient)init;
 - (id)getSessionType;
-- (id)imageForBundleID:(id)a3 extensionInfo:(id)a4;
-- (void)addDegate:(id)a3;
-- (void)broadcastController:(id)a3 didFinishWithError:(id)a4;
-- (void)broadcastController:(id)a3 didUpdateBroadcastURL:(id)a4;
-- (void)broadcastController:(id)a3 didUpdateServiceInfo:(id)a4;
-- (void)callDelegate:(id)a3;
+- (id)imageForBundleID:(id)d extensionInfo:(id)info;
+- (void)addDegate:(id)degate;
+- (void)broadcastController:(id)controller didFinishWithError:(id)error;
+- (void)broadcastController:(id)controller didUpdateBroadcastURL:(id)l;
+- (void)broadcastController:(id)controller didUpdateServiceInfo:(id)info;
+- (void)callDelegate:(id)delegate;
 - (void)cancelReadyToRecord;
 - (void)cancelRecordingCountdown;
-- (void)countdownInterruptWithStatus:(id)a3;
+- (void)countdownInterruptWithStatus:(id)status;
 - (void)dealloc;
 - (void)endReadyToRecord;
-- (void)extensionWithBundleIDExists:(id)a3 handler:(id)a4;
+- (void)extensionWithBundleIDExists:(id)exists handler:(id)handler;
 - (void)getSystemBroadcastPickerInfo;
-- (void)loadAvailableExtensionsWithHandler:(id)a3;
-- (void)notifyClientDelegatesStart:(BOOL)a3;
-- (void)recordingTimerDidUpdate:(id)a3;
-- (void)removeDelegate:(id)a3;
+- (void)loadAvailableExtensionsWithHandler:(id)handler;
+- (void)notifyClientDelegatesStart:(BOOL)start;
+- (void)recordingTimerDidUpdate:(id)update;
+- (void)removeDelegate:(id)delegate;
 - (void)replayKitAngelDisconnected;
 - (void)requestToCancelReadyToRecord;
 - (void)resetBroadcastPickerPreferredExt;
-- (void)screenRecorder:(id)a3 didStopRecordingWithPreviewViewController:(id)a4 error:(id)a5;
-- (void)screenRecorderDidChangeAvailability:(id)a3;
-- (void)screenRecorderDidUpdateState:(id)a3;
-- (void)setCountdown:(id)a3;
-- (void)setHqlrAudioOnly:(BOOL)a3;
-- (void)setRecordingType:(unint64_t)a3;
+- (void)screenRecorder:(id)recorder didStopRecordingWithPreviewViewController:(id)controller error:(id)error;
+- (void)screenRecorderDidChangeAvailability:(id)availability;
+- (void)screenRecorderDidUpdateState:(id)state;
+- (void)setCountdown:(id)countdown;
+- (void)setHqlrAudioOnly:(BOOL)only;
+- (void)setRecordingType:(unint64_t)type;
 - (void)setUpFrontBoardServices;
 - (void)showRecordingBanner;
-- (void)startBroadcastWithBroadcastController:(id)a3 handler:(id)a4;
-- (void)startBroadcastWithExtensionBundleID:(id)a3 handler:(id)a4;
-- (void)startBroadcastWithHandler:(id)a3;
-- (void)startHQLRReadyToRecord:(id)a3;
-- (void)startHQLRWithHandler:(id)a3;
-- (void)startObservingCallIsActiveStateWithHandler:(id)a3;
+- (void)startBroadcastWithBroadcastController:(id)controller handler:(id)handler;
+- (void)startBroadcastWithExtensionBundleID:(id)d handler:(id)handler;
+- (void)startBroadcastWithHandler:(id)handler;
+- (void)startHQLRReadyToRecord:(id)record;
+- (void)startHQLRWithHandler:(id)handler;
+- (void)startObservingCallIsActiveStateWithHandler:(id)handler;
 - (void)startReadyToRecordBanner;
 - (void)startRecordingCountdown;
-- (void)startRecordingWithHandler:(id)a3;
+- (void)startRecordingWithHandler:(id)handler;
 - (void)stopCurrentSession;
-- (void)stopCurrentSession:(id)a3;
-- (void)stopHQLRRecordingWithHandler:(id)a3;
+- (void)stopCurrentSession:(id)session;
+- (void)stopHQLRRecordingWithHandler:(id)handler;
 - (void)stopObservingCallIsActiveState;
 - (void)stopReadyToRecordBanner;
 - (void)stopRecordingCalled;
-- (void)stopSystemRecordingWithHandler:(id)a3;
+- (void)stopSystemRecordingWithHandler:(id)handler;
 - (void)terminateAngelRecordingSession;
-- (void)updateCallActive:(id)a3;
+- (void)updateCallActive:(id)active;
 - (void)updateClientState;
-- (void)updateStatusIsCountingDown:(BOOL)a3 IsRecording:(BOOL)a4;
+- (void)updateStatusIsCountingDown:(BOOL)down IsRecording:(BOOL)recording;
 @end
 
 @implementation RPControlCenterClient
@@ -89,9 +89,9 @@ uint64_t __39__RPControlCenterClient_sharedInstance__block_invoke()
   v2 = [(RPControlCenterClient *)&v28 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAC18] weakObjectsPointerArray];
+    weakObjectsPointerArray = [MEMORY[0x277CCAC18] weakObjectsPointerArray];
     delegates = v2->_delegates;
-    v2->_delegates = v3;
+    v2->_delegates = weakObjectsPointerArray;
 
     currentTimerString = v2->_currentTimerString;
     v2->_currentTimerString = 0;
@@ -118,9 +118,9 @@ uint64_t __39__RPControlCenterClient_sharedInstance__block_invoke()
     [(RPScreenRecorder *)v2->_screenRecorder setDelegate:v2];
     [(RPScreenRecorder *)v2->_screenRecorder setPrivateDelegate:v2];
     [(RPScreenRecorder *)v2->_screenRecorder setSystemRecording:1];
-    v9 = [[RPBroadcastController alloc] initWithCurrentSession];
+    initWithCurrentSession = [[RPBroadcastController alloc] initWithCurrentSession];
     broadcastController = v2->_broadcastController;
-    v2->_broadcastController = v9;
+    v2->_broadcastController = initWithCurrentSession;
 
     [(RPBroadcastController *)v2->_broadcastController setDelegate:v2];
     v2->_microphoneOn = [(RPScreenRecorder *)v2->_screenRecorder isMicrophoneEnabled];
@@ -136,13 +136,13 @@ uint64_t __39__RPControlCenterClient_sharedInstance__block_invoke()
     v2->_broadcastMode = 0;
     v2->_recordingType = 0;
     [(RPControlCenterClient *)v2 updateStatusIsCountingDown:0 IsRecording:[(RPScreenRecorder *)v2->_screenRecorder isRecording]];
-    v14 = [MEMORY[0x277CBEAA8] distantPast];
+    distantPast = [MEMORY[0x277CBEAA8] distantPast];
     pickerInfoCacheTime = v2->_pickerInfoCacheTime;
-    v2->_pickerInfoCacheTime = v14;
+    v2->_pickerInfoCacheTime = distantPast;
 
-    v16 = [MEMORY[0x277CBEAA8] distantPast];
+    distantPast2 = [MEMORY[0x277CBEAA8] distantPast];
     extensionCacheTime = v2->_extensionCacheTime;
-    v2->_extensionCacheTime = v16;
+    v2->_extensionCacheTime = distantPast2;
 
     v18 = objc_opt_new();
     iconImageCache = v2->_iconImageCache;
@@ -183,7 +183,7 @@ uint64_t __39__RPControlCenterClient_sharedInstance__block_invoke()
     v11 = 1024;
     v12 = 122;
     v13 = 2048;
-    v14 = self;
+    selfCopy = self;
     _os_log_impl(&dword_23A863000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %p", buf, 0x1Cu);
   }
 
@@ -210,10 +210,10 @@ uint64_t __39__RPControlCenterClient_sharedInstance__block_invoke()
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addDegate:(id)a3
+- (void)addDegate:(id)degate
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  degateCopy = degate;
   if (__RPLogLevel <= 1 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     v6 = 136446978;
@@ -221,21 +221,21 @@ uint64_t __39__RPControlCenterClient_sharedInstance__block_invoke()
     v8 = 1024;
     v9 = 136;
     v10 = 2048;
-    v11 = self;
+    selfCopy = self;
     v12 = 2048;
-    v13 = v4;
+    v13 = degateCopy;
     _os_log_impl(&dword_23A863000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %p delegate=%p", &v6, 0x26u);
   }
 
-  [(NSPointerArray *)self->_delegates addPointer:v4];
+  [(NSPointerArray *)self->_delegates addPointer:degateCopy];
 
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeDelegate:(id)a3
+- (void)removeDelegate:(id)delegate
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  delegateCopy = delegate;
   if (__RPLogLevel <= 1 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     v9 = 136446978;
@@ -243,9 +243,9 @@ uint64_t __39__RPControlCenterClient_sharedInstance__block_invoke()
     v11 = 1024;
     v12 = 141;
     v13 = 2048;
-    v14 = self;
+    selfCopy = self;
     v15 = 2048;
-    v16 = v4;
+    v16 = delegateCopy;
     _os_log_impl(&dword_23A863000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %p delegate=%p", &v9, 0x26u);
   }
 
@@ -254,7 +254,7 @@ uint64_t __39__RPControlCenterClient_sharedInstance__block_invoke()
   {
     v6 = v5;
     v7 = 0;
-    while ([(NSPointerArray *)self->_delegates pointerAtIndex:v7]!= v4)
+    while ([(NSPointerArray *)self->_delegates pointerAtIndex:v7]!= delegateCopy)
     {
       if (v6 == ++v7)
       {
@@ -270,16 +270,16 @@ LABEL_10:
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)callDelegate:(id)a3
+- (void)callDelegate:(id)delegate
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  delegateCopy = delegate;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = [(NSPointerArray *)self->_delegates allObjects];
-  v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  allObjects = [(NSPointerArray *)self->_delegates allObjects];
+  v6 = [allObjects countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
     v7 = v6;
@@ -292,7 +292,7 @@ LABEL_10:
       {
         if (*v17 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allObjects);
         }
 
         v11 = *(*(&v16 + 1) + 8 * v10);
@@ -300,7 +300,7 @@ LABEL_10:
         v14[1] = 3221225472;
         v14[2] = __38__RPControlCenterClient_callDelegate___block_invoke;
         v14[3] = &unk_278B61CF8;
-        v12 = v4;
+        v12 = delegateCopy;
         v14[4] = v11;
         v15 = v12;
         dispatch_async(v9, v14);
@@ -309,7 +309,7 @@ LABEL_10:
       }
 
       while (v7 != v10);
-      v7 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v7 = [allObjects countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v7);
@@ -321,19 +321,19 @@ LABEL_10:
 - (void)setUpFrontBoardServices
 {
   v3 = +[RPFeatureFlagUtility sharedInstance];
-  v4 = [v3 alwaysOnDisplayEnabled];
+  alwaysOnDisplayEnabled = [v3 alwaysOnDisplayEnabled];
 
-  if (v4)
+  if (alwaysOnDisplayEnabled)
   {
-    v5 = [MEMORY[0x277D0AD20] configurationForDefaultMainDisplayMonitor];
-    [v5 setNeedsUserInteractivePriority:1];
+    configurationForDefaultMainDisplayMonitor = [MEMORY[0x277D0AD20] configurationForDefaultMainDisplayMonitor];
+    [configurationForDefaultMainDisplayMonitor setNeedsUserInteractivePriority:1];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __48__RPControlCenterClient_setUpFrontBoardServices__block_invoke;
     v8[3] = &unk_278B61D20;
     v8[4] = self;
-    [v5 setTransitionHandler:v8];
-    v6 = [MEMORY[0x277D0AD08] monitorWithConfiguration:v5];
+    [configurationForDefaultMainDisplayMonitor setTransitionHandler:v8];
+    v6 = [MEMORY[0x277D0AD08] monitorWithConfiguration:configurationForDefaultMainDisplayMonitor];
     layoutMonitor = self->_layoutMonitor;
     self->_layoutMonitor = v6;
   }
@@ -398,10 +398,10 @@ uint64_t __48__RPControlCenterClient_setUpFrontBoardServices__block_invoke_25(ui
   return [v2 terminateAngelRecordingSession];
 }
 
-- (void)loadAvailableExtensionsWithHandler:(id)a3
+- (void)loadAvailableExtensionsWithHandler:(id)handler
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   if (__RPLogLevel <= 1 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446722;
@@ -409,7 +409,7 @@ uint64_t __48__RPControlCenterClient_setUpFrontBoardServices__block_invoke_25(ui
     v11 = 1024;
     v12 = 187;
     v13 = 2048;
-    v14 = self;
+    selfCopy = self;
     _os_log_impl(&dword_23A863000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %p", buf, 0x1Cu);
   }
 
@@ -418,8 +418,8 @@ uint64_t __48__RPControlCenterClient_setUpFrontBoardServices__block_invoke_25(ui
   v7[2] = __60__RPControlCenterClient_loadAvailableExtensionsWithHandler___block_invoke;
   v7[3] = &unk_278B61D70;
   v7[4] = self;
-  v8 = v4;
-  v5 = v4;
+  v8 = handlerCopy;
+  v5 = handlerCopy;
   dispatch_async(MEMORY[0x277D85CD0], v7);
 
   v6 = *MEMORY[0x277D85DE8];
@@ -552,9 +552,9 @@ void __60__RPControlCenterClient_loadAvailableExtensionsWithHandler___block_invo
   return result;
 }
 
-- (void)setHqlrAudioOnly:(BOOL)a3
+- (void)setHqlrAudioOnly:(BOOL)only
 {
-  v3 = a3;
+  onlyCopy = only;
   v16 = *MEMORY[0x277D85DE8];
   if (__RPLogLevel <= 1 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
@@ -563,12 +563,12 @@ void __60__RPControlCenterClient_loadAvailableExtensionsWithHandler___block_invo
     v12 = 1024;
     v13 = 225;
     v14 = 1024;
-    v15 = v3;
+    v15 = onlyCopy;
     _os_log_impl(&dword_23A863000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d Setting audio only value: %d", &v10, 0x18u);
   }
 
   hqlrAudioOnly = self->_hqlrAudioOnly;
-  if (v3)
+  if (onlyCopy)
   {
     CFPreferencesSetAppValue(@"RPAudioOnlySelection", *MEMORY[0x277CBED28], @"com.apple.replayd");
     if (__RPLogLevel <= 1 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
@@ -600,7 +600,7 @@ LABEL_11:
   }
 
   CFPreferencesAppSynchronize(@"com.apple.replayd");
-  if (hqlrAudioOnly != v3)
+  if (hqlrAudioOnly != onlyCopy)
   {
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
     CFNotificationCenterPostNotification(DarwinNotifyCenter, @"com.apple.replaykit.audioOnlyPreferenceChanged", 0, 0, 1u);
@@ -614,7 +614,7 @@ LABEL_11:
     }
   }
 
-  self->_hqlrAudioOnly = v3;
+  self->_hqlrAudioOnly = onlyCopy;
   v9 = *MEMORY[0x277D85DE8];
 }
 
@@ -630,7 +630,7 @@ LABEL_11:
     v12 = 1024;
     v13 = 256;
     v14 = 2048;
-    v15 = *&v4;
+    selfCopy2 = *&v4;
     _os_log_impl(&dword_23A863000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d time since cache = %f", buf, 0x1Cu);
   }
 
@@ -643,7 +643,7 @@ LABEL_11:
       v12 = 1024;
       v13 = 267;
       v14 = 2048;
-      v15 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_23A863000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %p get cached _preferredExtension and _shouldShowMicButton", buf, 0x1Cu);
     }
   }
@@ -657,7 +657,7 @@ LABEL_11:
       v12 = 1024;
       v13 = 259;
       v14 = 2048;
-      v15 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_23A863000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %p fetching new copy of system broadcast picker info", buf, 0x1Cu);
     }
 
@@ -706,16 +706,16 @@ void __53__RPControlCenterClient_getSystemBroadcastPickerInfo__block_invoke(uint
   v10 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)getSystemBroadcastExtensionInfo:(id)a3
++ (void)getSystemBroadcastExtensionInfo:(id)info
 {
-  v3 = a3;
+  infoCopy = info;
   v4 = +[RPDaemonProxy daemonProxy];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __57__RPControlCenterClient_getSystemBroadcastExtensionInfo___block_invoke;
   v6[3] = &unk_278B61DC0;
-  v7 = v3;
-  v5 = v3;
+  v7 = infoCopy;
+  v5 = infoCopy;
   [v4 getSystemBroadcastExtensionInfo:v6];
 }
 
@@ -737,11 +737,11 @@ void __53__RPControlCenterClient_getSystemBroadcastPickerInfo__block_invoke(uint
   v3 = *MEMORY[0x277D85DE8];
 }
 
-- (void)startBroadcastWithBroadcastController:(id)a3 handler:(id)a4
+- (void)startBroadcastWithBroadcastController:(id)controller handler:(id)handler
 {
   v20 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  controllerCopy = controller;
+  handlerCopy = handler;
   if (__RPLogLevel <= 1 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446722;
@@ -749,12 +749,12 @@ void __53__RPControlCenterClient_getSystemBroadcastPickerInfo__block_invoke(uint
     v16 = 1024;
     v17 = 283;
     v18 = 2048;
-    v19 = self;
+    selfCopy = self;
     _os_log_impl(&dword_23A863000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %p", buf, 0x1Cu);
   }
 
-  objc_storeStrong(&self->_broadcastController, a3);
-  if (v7)
+  objc_storeStrong(&self->_broadcastController, controller);
+  if (controllerCopy)
   {
     [(RPBroadcastController *)self->_broadcastController setDelegate:self];
     broadcastController = self->_broadcastController;
@@ -762,7 +762,7 @@ void __53__RPControlCenterClient_getSystemBroadcastPickerInfo__block_invoke(uint
     v12[1] = 3221225472;
     v12[2] = __71__RPControlCenterClient_startBroadcastWithBroadcastController_handler___block_invoke;
     v12[3] = &unk_278B61DE8;
-    v13 = v8;
+    v13 = handlerCopy;
     [(RPBroadcastController *)broadcastController startSystemBroadcastWithHandler:v12];
     v10 = v13;
 LABEL_8:
@@ -770,10 +770,10 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if (v8)
+  if (handlerCopy)
   {
     v10 = [MEMORY[0x277CCA9B8] _rpUserErrorForCode:-5803 userInfo:0];
-    (*(v8 + 2))(v8, 0, v10);
+    (*(handlerCopy + 2))(handlerCopy, 0, v10);
     goto LABEL_8;
   }
 
@@ -793,11 +793,11 @@ uint64_t __71__RPControlCenterClient_startBroadcastWithBroadcastController_handl
   return result;
 }
 
-- (void)startBroadcastWithExtensionBundleID:(id)a3 handler:(id)a4
+- (void)startBroadcastWithExtensionBundleID:(id)d handler:(id)handler
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  handlerCopy = handler;
   if (__RPLogLevel <= 1 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446722;
@@ -805,7 +805,7 @@ uint64_t __71__RPControlCenterClient_startBroadcastWithBroadcastController_handl
     v17 = 1024;
     v18 = 300;
     v19 = 2048;
-    v20 = self;
+    selfCopy = self;
     _os_log_impl(&dword_23A863000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %p", buf, 0x1Cu);
   }
 
@@ -816,9 +816,9 @@ uint64_t __71__RPControlCenterClient_startBroadcastWithBroadcastController_handl
     v11[1] = 3221225472;
     v11[2] = __69__RPControlCenterClient_startBroadcastWithExtensionBundleID_handler___block_invoke;
     v11[3] = &unk_278B61E10;
-    v12 = v6;
-    v13 = self;
-    v14 = v7;
+    v12 = dCopy;
+    selfCopy2 = self;
+    v14 = handlerCopy;
     [(RPScreenRecorder *)screenRecorder setupSystemBroadcastWithExtension:v12 handler:v11];
 
     v9 = v12;
@@ -827,10 +827,10 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if (v7)
+  if (handlerCopy)
   {
     v9 = [MEMORY[0x277CCA9B8] _rpUserErrorForCode:-5803 userInfo:0];
-    (*(v7 + 2))(v7, 0, v9);
+    (*(handlerCopy + 2))(handlerCopy, 0, v9);
     goto LABEL_8;
   }
 
@@ -848,11 +848,11 @@ void __69__RPControlCenterClient_startBroadcastWithExtensionBundleID_handler___b
   }
 }
 
-- (void)extensionWithBundleIDExists:(id)a3 handler:(id)a4
+- (void)extensionWithBundleIDExists:(id)exists handler:(id)handler
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  existsCopy = exists;
+  handlerCopy = handler;
   if (__RPLogLevel <= 1 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446722;
@@ -860,7 +860,7 @@ void __69__RPControlCenterClient_startBroadcastWithExtensionBundleID_handler___b
     v17 = 1024;
     v18 = 320;
     v19 = 2048;
-    v20 = self;
+    selfCopy = self;
     _os_log_impl(&dword_23A863000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %p", buf, 0x1Cu);
   }
 
@@ -869,10 +869,10 @@ void __69__RPControlCenterClient_startBroadcastWithExtensionBundleID_handler___b
   v12[1] = 3221225472;
   v12[2] = __61__RPControlCenterClient_extensionWithBundleIDExists_handler___block_invoke;
   v12[3] = &unk_278B61D48;
-  v13 = v6;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v13 = existsCopy;
+  v14 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = existsCopy;
   [v8 getSystemBroadcastExtensionInfo:v12];
 
   v11 = *MEMORY[0x277D85DE8];
@@ -929,7 +929,7 @@ LABEL_11:
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateStatusIsCountingDown:(BOOL)a3 IsRecording:(BOOL)a4
+- (void)updateStatusIsCountingDown:(BOOL)down IsRecording:(BOOL)recording
 {
   v31 = *MEMORY[0x277D85DE8];
   if ([(RPControlCenterClient *)self isClientRecordingTypeHQLR])
@@ -947,11 +947,11 @@ LABEL_11:
     v7 = 156;
   }
 
-  *(&self->super.isa + v7) = a4;
-  self->_lockUIControls = self->_isCountingDown || a4;
+  *(&self->super.isa + v7) = recording;
+  self->_lockUIControls = self->_isCountingDown || recording;
 LABEL_6:
-  self->_isCountingDown = a3;
-  if (!a3)
+  self->_isCountingDown = down;
+  if (!down)
   {
     [(RPControlCenterClient *)self setHqlrCountdownStarted:0];
     [(RPControlCenterClient *)self setSystemCountdownStarted:0];
@@ -969,7 +969,7 @@ LABEL_6:
     v17 = 1024;
     v18 = 346;
     v19 = 2048;
-    v20 = self;
+    selfCopy = self;
     v21 = 1024;
     v22 = isCountingDown;
     v23 = 1024;
@@ -983,13 +983,13 @@ LABEL_6:
     _os_log_impl(&dword_23A863000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %p isCountingDown=%d recordingOn=%d highQualityLocalRecordingOn=%d lockUIControls=%d recordingType=%d", &v15, 0x3Au);
   }
 
-  if (!a3)
+  if (!down)
   {
     self->_countdownPaused = 0;
     countdownState = self->_countdownState;
     self->_countdownState = @"Countdown3";
 
-    if (!a4)
+    if (!recording)
     {
       self->_recordingType = 0;
       self->_highQualityLocalRecordingOn = 0;
@@ -1000,10 +1000,10 @@ LABEL_6:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)notifyClientDelegatesStart:(BOOL)a3
+- (void)notifyClientDelegatesStart:(BOOL)start
 {
   v16 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (start)
   {
     if (__RPLogLevel <= 1 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
@@ -1012,7 +1012,7 @@ LABEL_6:
       v12 = 1024;
       v13 = 363;
       v14 = 2048;
-      v15 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_23A863000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %p is starting", buf, 0x1Cu);
     }
 
@@ -1031,7 +1031,7 @@ LABEL_6:
       v12 = 1024;
       v13 = 370;
       v14 = 2048;
-      v15 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_23A863000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %p failed to start", buf, 0x1Cu);
     }
 
@@ -1120,10 +1120,10 @@ void __52__RPControlCenterClient_notifyClientDelegatesStart___block_invoke_48(ui
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)startRecordingWithHandler:(id)a3
+- (void)startRecordingWithHandler:(id)handler
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   if (__RPLogLevel <= 1 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446722;
@@ -1131,7 +1131,7 @@ void __52__RPControlCenterClient_notifyClientDelegatesStart___block_invoke_48(ui
     v12 = 1024;
     v13 = 380;
     v14 = 2048;
-    v15 = self;
+    selfCopy = self;
     _os_log_impl(&dword_23A863000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %p", buf, 0x1Cu);
   }
 
@@ -1139,14 +1139,14 @@ void __52__RPControlCenterClient_notifyClientDelegatesStart___block_invoke_48(ui
   if (!self->_recordingOn)
   {
     screenRecorder = self->_screenRecorder;
-    v6 = [(RPScreenRecorder *)screenRecorder isMicrophoneEnabled];
+    isMicrophoneEnabled = [(RPScreenRecorder *)screenRecorder isMicrophoneEnabled];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __51__RPControlCenterClient_startRecordingWithHandler___block_invoke;
     v8[3] = &unk_278B61E88;
     v8[4] = self;
-    v9 = v4;
-    [(RPScreenRecorder *)screenRecorder startSystemRecordingWithMicrophoneEnabled:v6 handler:v8];
+    v9 = handlerCopy;
+    [(RPScreenRecorder *)screenRecorder startSystemRecordingWithMicrophoneEnabled:isMicrophoneEnabled handler:v8];
   }
 
   v7 = *MEMORY[0x277D85DE8];
@@ -1256,10 +1256,10 @@ void __51__RPControlCenterClient_startRecordingWithHandler___block_invoke_49(uin
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)startBroadcastWithHandler:(id)a3
+- (void)startBroadcastWithHandler:(id)handler
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   if (__RPLogLevel <= 1 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446722;
@@ -1267,7 +1267,7 @@ void __51__RPControlCenterClient_startRecordingWithHandler___block_invoke_49(uin
     v14 = 1024;
     v15 = 416;
     v16 = 2048;
-    v17 = self;
+    selfCopy = self;
     _os_log_impl(&dword_23A863000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %p", buf, 0x1Cu);
   }
 
@@ -1289,8 +1289,8 @@ void __51__RPControlCenterClient_startRecordingWithHandler___block_invoke_49(uin
   v9[2] = __51__RPControlCenterClient_startBroadcastWithHandler___block_invoke_2;
   v9[3] = &unk_278B61ED8;
   v9[4] = self;
-  v10 = v4;
-  v7 = v4;
+  v10 = handlerCopy;
+  v7 = handlerCopy;
   [(RPControlCenterClient *)self startBroadcastWithExtensionBundleID:v6 handler:v9];
 
   v8 = *MEMORY[0x277D85DE8];
@@ -1438,10 +1438,10 @@ void __51__RPControlCenterClient_startBroadcastWithHandler___block_invoke_51(uin
   return v5;
 }
 
-- (void)startHQLRWithHandler:(id)a3
+- (void)startHQLRWithHandler:(id)handler
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   if (__RPLogLevel <= 1 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446722;
@@ -1449,7 +1449,7 @@ void __51__RPControlCenterClient_startBroadcastWithHandler___block_invoke_51(uin
     v18 = 1024;
     v19 = 464;
     v20 = 2048;
-    v21 = self;
+    selfCopy = self;
     _os_log_impl(&dword_23A863000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %p", buf, 0x1Cu);
   }
 
@@ -1478,15 +1478,15 @@ void __51__RPControlCenterClient_startBroadcastWithHandler___block_invoke_51(uin
     v18 = 1024;
     v19 = 476;
     v20 = 2112;
-    v21 = v9;
+    selfCopy = v9;
     _os_log_impl(&dword_23A863000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d sessionInfo %@", buf, 0x1Cu);
   }
 
   if (self->_highQualityLocalRecordingOn)
   {
-    if (v4)
+    if (handlerCopy)
     {
-      v4[2](v4);
+      handlerCopy[2](handlerCopy);
     }
   }
 
@@ -1498,7 +1498,7 @@ void __51__RPControlCenterClient_startBroadcastWithHandler___block_invoke_51(uin
     v12[2] = __46__RPControlCenterClient_startHQLRWithHandler___block_invoke;
     v12[3] = &unk_278B61E88;
     v12[4] = self;
-    v13 = v4;
+    v13 = handlerCopy;
     [(RPScreenRecorder *)screenRecorder startHQLRWithSessionInfo:v9 handler:v12];
   }
 
@@ -1612,10 +1612,10 @@ void __46__RPControlCenterClient_startHQLRWithHandler___block_invoke_70(uint64_t
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)stopCurrentSession:(id)a3
+- (void)stopCurrentSession:(id)session
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  sessionCopy = session;
   if (__RPLogLevel <= 1 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446722;
@@ -1623,7 +1623,7 @@ void __46__RPControlCenterClient_startHQLRWithHandler___block_invoke_70(uint64_t
     v14 = 1024;
     v15 = 511;
     v16 = 2048;
-    v17 = self;
+    selfCopy4 = self;
     _os_log_impl(&dword_23A863000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %p", buf, 0x1Cu);
   }
 
@@ -1636,7 +1636,7 @@ void __46__RPControlCenterClient_startHQLRWithHandler___block_invoke_70(uint64_t
       v14 = 1024;
       v15 = 536;
       v16 = 2048;
-      v17 = self;
+      selfCopy4 = self;
       _os_log_impl(&dword_23A863000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %p Stopping system broadcast", buf, 0x1Cu);
     }
 
@@ -1646,7 +1646,7 @@ void __46__RPControlCenterClient_startHQLRWithHandler___block_invoke_70(uint64_t
     v8[2] = __44__RPControlCenterClient_stopCurrentSession___block_invoke_71;
     v8[3] = &unk_278B61E88;
     v8[4] = self;
-    v9 = v4;
+    v9 = sessionCopy;
     [(RPBroadcastController *)broadcastController finishSystemBroadcastWithHandler:v8];
     v6 = v9;
     goto LABEL_16;
@@ -1659,7 +1659,7 @@ void __46__RPControlCenterClient_startHQLRWithHandler___block_invoke_70(uint64_t
     block[2] = __44__RPControlCenterClient_stopCurrentSession___block_invoke;
     block[3] = &unk_278B61D70;
     block[4] = self;
-    v11 = v4;
+    v11 = sessionCopy;
     dispatch_async(MEMORY[0x277D85CD0], block);
     v6 = v11;
 LABEL_16:
@@ -1677,11 +1677,11 @@ LABEL_16:
       v14 = 1024;
       v15 = 518;
       v16 = 2048;
-      v17 = self;
+      selfCopy4 = self;
       _os_log_impl(&dword_23A863000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %p Stopping HQLR recording", buf, 0x1Cu);
     }
 
-    [(RPControlCenterClient *)self stopHQLRRecordingWithHandler:v4];
+    [(RPControlCenterClient *)self stopHQLRRecordingWithHandler:sessionCopy];
   }
 
   else
@@ -1693,11 +1693,11 @@ LABEL_16:
       v14 = 1024;
       v15 = 521;
       v16 = 2048;
-      v17 = self;
+      selfCopy4 = self;
       _os_log_impl(&dword_23A863000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %p Stopping system recording", buf, 0x1Cu);
     }
 
-    [(RPControlCenterClient *)self stopSystemRecordingWithHandler:v4];
+    [(RPControlCenterClient *)self stopSystemRecordingWithHandler:sessionCopy];
   }
 
 LABEL_17:
@@ -1802,10 +1802,10 @@ uint64_t __44__RPControlCenterClient_stopCurrentSession___block_invoke_2(uint64_
   return result;
 }
 
-- (void)stopHQLRRecordingWithHandler:(id)a3
+- (void)stopHQLRRecordingWithHandler:(id)handler
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   if (__RPLogLevel <= 1 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446722;
@@ -1813,7 +1813,7 @@ uint64_t __44__RPControlCenterClient_stopCurrentSession___block_invoke_2(uint64_
     v12 = 1024;
     v13 = 553;
     v14 = 2048;
-    v15 = self;
+    selfCopy = self;
     _os_log_impl(&dword_23A863000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %p", buf, 0x1Cu);
   }
 
@@ -1823,8 +1823,8 @@ uint64_t __44__RPControlCenterClient_stopCurrentSession___block_invoke_2(uint64_
   v8[2] = __54__RPControlCenterClient_stopHQLRRecordingWithHandler___block_invoke;
   v8[3] = &unk_278B61E88;
   v8[4] = self;
-  v9 = v4;
-  v6 = v4;
+  v9 = handlerCopy;
+  v6 = handlerCopy;
   [(RPScreenRecorder *)screenRecorder stopHQLR:v8];
 
   v7 = *MEMORY[0x277D85DE8];
@@ -1901,10 +1901,10 @@ uint64_t __54__RPControlCenterClient_stopHQLRRecordingWithHandler___block_invoke
   return result;
 }
 
-- (void)stopSystemRecordingWithHandler:(id)a3
+- (void)stopSystemRecordingWithHandler:(id)handler
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   if (__RPLogLevel <= 1 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446722;
@@ -1912,7 +1912,7 @@ uint64_t __54__RPControlCenterClient_stopHQLRRecordingWithHandler___block_invoke
     v12 = 1024;
     v13 = 574;
     v14 = 2048;
-    v15 = self;
+    selfCopy = self;
     _os_log_impl(&dword_23A863000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %p", buf, 0x1Cu);
   }
 
@@ -1922,8 +1922,8 @@ uint64_t __54__RPControlCenterClient_stopHQLRRecordingWithHandler___block_invoke
   v8[2] = __56__RPControlCenterClient_stopSystemRecordingWithHandler___block_invoke;
   v8[3] = &unk_278B61E88;
   v8[4] = self;
-  v9 = v4;
-  v6 = v4;
+  v9 = handlerCopy;
+  v6 = handlerCopy;
   [(RPScreenRecorder *)screenRecorder stopSystemRecording:v8];
 
   v7 = *MEMORY[0x277D85DE8];
@@ -1997,7 +1997,7 @@ uint64_t __56__RPControlCenterClient_stopSystemRecordingWithHandler___block_invo
   return result;
 }
 
-- (void)setRecordingType:(unint64_t)a3
+- (void)setRecordingType:(unint64_t)type
 {
   v14 = *MEMORY[0x277D85DE8];
   if (__RPLogLevel <= 1 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
@@ -2007,13 +2007,13 @@ uint64_t __56__RPControlCenterClient_stopSystemRecordingWithHandler___block_invo
     v8 = 1024;
     v9 = 601;
     v10 = 2048;
-    v11 = self;
+    selfCopy = self;
     v12 = 1024;
-    v13 = a3;
+    typeCopy = type;
     _os_log_impl(&dword_23A863000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %p recordingType=%d", &v6, 0x22u);
   }
 
-  self->_recordingType = a3;
+  self->_recordingType = type;
   v5 = *MEMORY[0x277D85DE8];
 }
 
@@ -2021,19 +2021,19 @@ uint64_t __56__RPControlCenterClient_stopSystemRecordingWithHandler___block_invo
 {
   if ([(RPControlCenterClient *)self isClientRecordingTypeHQLR])
   {
-    v3 = [(RPControlCenterClient *)self hqlrAudioOnly];
+    hqlrAudioOnly = [(RPControlCenterClient *)self hqlrAudioOnly];
     v4 = @"hqlr";
     v5 = @"hqlrAudio";
   }
 
   else
   {
-    v3 = [(RPControlCenterClient *)self isClientRecordingTypeSystemRecording];
+    hqlrAudioOnly = [(RPControlCenterClient *)self isClientRecordingTypeSystemRecording];
     v4 = @"none";
     v5 = @"system";
   }
 
-  if (v3)
+  if (hqlrAudioOnly)
   {
     return v5;
   }
@@ -2054,7 +2054,7 @@ uint64_t __56__RPControlCenterClient_stopSystemRecordingWithHandler___block_invo
     v7 = 1024;
     v8 = 635;
     v9 = 2048;
-    v10 = self;
+    selfCopy = self;
     _os_log_impl(&dword_23A863000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %p", buf, 0x1Cu);
   }
 
@@ -2150,7 +2150,7 @@ uint64_t __42__RPControlCenterClient_updateClientState__block_invoke_92(uint64_t
 - (BOOL)isScreenRecorderAvailable
 {
   v11 = *MEMORY[0x277D85DE8];
-  v2 = [(RPScreenRecorder *)self->_screenRecorder isAvailable];
+  isAvailable = [(RPScreenRecorder *)self->_screenRecorder isAvailable];
   if (__RPLogLevel <= 1 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     v5 = 136446722;
@@ -2158,18 +2158,18 @@ uint64_t __42__RPControlCenterClient_updateClientState__block_invoke_92(uint64_t
     v7 = 1024;
     v8 = 659;
     v9 = 1024;
-    v10 = v2;
+    v10 = isAvailable;
     _os_log_impl(&dword_23A863000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d isAvailable %d", &v5, 0x18u);
   }
 
   v3 = *MEMORY[0x277D85DE8];
-  return v2;
+  return isAvailable;
 }
 
 - (BOOL)isAvailableAndInitialized
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = [(RPScreenRecorder *)self->_screenRecorder isAvailable];
+  isAvailable = [(RPScreenRecorder *)self->_screenRecorder isAvailable];
   if (__RPLogLevel <= 1 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     isInitialized = self->_isInitialized;
@@ -2178,21 +2178,21 @@ uint64_t __42__RPControlCenterClient_updateClientState__block_invoke_92(uint64_t
     v10 = 1024;
     v11 = 665;
     v12 = 1024;
-    v13 = v3;
+    v13 = isAvailable;
     v14 = 1024;
     v15 = isInitialized;
     _os_log_impl(&dword_23A863000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d isAvailable %d isInitialized %d", &v8, 0x1Eu);
   }
 
-  v5 = v3 && self->_isInitialized;
+  v5 = isAvailable && self->_isInitialized;
   v6 = *MEMORY[0x277D85DE8];
   return v5;
 }
 
-- (void)setCountdown:(id)a3
+- (void)setCountdown:(id)countdown
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"Countdown3"])
+  countdownCopy = countdown;
+  if ([countdownCopy isEqualToString:@"Countdown3"])
   {
     v5 = dispatch_time(0, 100000000);
     block[0] = MEMORY[0x277D85DD0];
@@ -2211,7 +2211,7 @@ uint64_t __42__RPControlCenterClient_updateClientState__block_invoke_92(uint64_t
     v7[2] = __38__RPControlCenterClient_setCountdown___block_invoke_2;
     v7[3] = &unk_278B61C60;
     v7[4] = self;
-    v8 = v4;
+    v8 = countdownCopy;
     dispatch_after(v6, MEMORY[0x277D85CD0], v7);
   }
 }
@@ -2370,17 +2370,17 @@ void __38__RPControlCenterClient_setCountdown___block_invoke_107()
   v0 = *MEMORY[0x277D85DE8];
 }
 
-- (void)startObservingCallIsActiveStateWithHandler:(id)a3
+- (void)startObservingCallIsActiveStateWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   fetchQueue = self->_fetchQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __68__RPControlCenterClient_startObservingCallIsActiveStateWithHandler___block_invoke;
   v7[3] = &unk_278B61D70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(fetchQueue, v7);
 }
 
@@ -2447,12 +2447,12 @@ void __55__RPControlCenterClient_stopObservingCallIsActiveState__block_invoke(ui
   v3 = *MEMORY[0x277D85DE8];
 }
 
-- (void)startHQLRReadyToRecord:(id)a3
+- (void)startHQLRReadyToRecord:(id)record
 {
-  v4 = a3;
+  recordCopy = record;
   if ([(RPControlCenterClient *)self fetchIsCallActive])
   {
-    v4[2](v4);
+    recordCopy[2](recordCopy);
   }
 
   else
@@ -2469,7 +2469,7 @@ void __55__RPControlCenterClient_stopObservingCallIsActiveState__block_invoke(ui
     v7[2] = __48__RPControlCenterClient_startHQLRReadyToRecord___block_invoke;
     v7[3] = &unk_278B61D70;
     v7[4] = self;
-    v8 = v4;
+    v8 = recordCopy;
     [(RPControlCenterClient *)self startObservingCallIsActiveStateWithHandler:v7];
   }
 }
@@ -2593,10 +2593,10 @@ void __41__RPControlCenterClient_endReadyToRecord__block_invoke(uint64_t a1, voi
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateCallActive:(id)a3
+- (void)updateCallActive:(id)active
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  activeCopy = active;
   if (__RPLogLevel <= 1 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446722;
@@ -2604,7 +2604,7 @@ void __41__RPControlCenterClient_endReadyToRecord__block_invoke(uint64_t a1, voi
     v13 = 1024;
     v14 = 785;
     v15 = 2112;
-    v16 = v4;
+    v16 = activeCopy;
     _os_log_impl(&dword_23A863000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d AVSystemController notification: %@", buf, 0x1Cu);
   }
 
@@ -2613,9 +2613,9 @@ void __41__RPControlCenterClient_endReadyToRecord__block_invoke(uint64_t a1, voi
   v8[1] = 3221225472;
   v8[2] = __42__RPControlCenterClient_updateCallActive___block_invoke;
   v8[3] = &unk_278B61C60;
-  v9 = v4;
-  v10 = self;
-  v6 = v4;
+  v9 = activeCopy;
+  selfCopy = self;
+  v6 = activeCopy;
   dispatch_async(fetchQueue, v8);
 
   v7 = *MEMORY[0x277D85DE8];
@@ -2887,21 +2887,21 @@ void __49__RPControlCenterClient_startReadyToRecordBanner__block_invoke(uint64_t
     v11 = 1024;
     v12 = 862;
     v13 = 2048;
-    v14 = self;
+    selfCopy = self;
     _os_log_impl(&dword_23A863000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %p", &v9, 0x1Cu);
   }
 
   v3 = +[RPFeatureFlagUtility sharedInstance];
-  v4 = [v3 systemBannerEnabled];
+  systemBannerEnabled = [v3 systemBannerEnabled];
 
-  if (v4)
+  if (systemBannerEnabled)
   {
     v5 = +[RPControlCenterAngelProxy sharedInstance];
     [v5 setDelegate:self];
 
     v6 = +[RPControlCenterAngelProxy sharedInstance];
-    v7 = [(RPControlCenterClient *)self getSessionType];
-    [v6 startRecordingCountdownWithSessionType:v7];
+    getSessionType = [(RPControlCenterClient *)self getSessionType];
+    [v6 startRecordingCountdownWithSessionType:getSessionType];
 
     [(RPControlCenterClient *)self setCountdown:@"Countdown3"];
   }
@@ -2919,14 +2919,14 @@ void __49__RPControlCenterClient_startReadyToRecordBanner__block_invoke(uint64_t
     v9 = 1024;
     v10 = 873;
     v11 = 2048;
-    v12 = self;
+    selfCopy = self;
     _os_log_impl(&dword_23A863000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %p", &v7, 0x1Cu);
   }
 
   v3 = +[RPFeatureFlagUtility sharedInstance];
-  v4 = [v3 systemBannerEnabled];
+  systemBannerEnabled = [v3 systemBannerEnabled];
 
-  if (v4)
+  if (systemBannerEnabled)
   {
     v5 = +[RPControlCenterAngelProxy sharedInstance];
     [v5 cancelRecordingCountdown];
@@ -2938,9 +2938,9 @@ void __49__RPControlCenterClient_startReadyToRecordBanner__block_invoke(uint64_t
 - (void)showRecordingBanner
 {
   v2 = +[RPFeatureFlagUtility sharedInstance];
-  v3 = [v2 systemBannerEnabled];
+  systemBannerEnabled = [v2 systemBannerEnabled];
 
-  if (v3)
+  if (systemBannerEnabled)
   {
     v4 = +[RPControlCenterAngelProxy sharedInstance];
     [v4 showRecordingBanner];
@@ -2950,9 +2950,9 @@ void __49__RPControlCenterClient_startReadyToRecordBanner__block_invoke(uint64_t
 - (void)stopRecordingCalled
 {
   v2 = +[RPFeatureFlagUtility sharedInstance];
-  v3 = [v2 systemBannerEnabled];
+  systemBannerEnabled = [v2 systemBannerEnabled];
 
-  if (v3)
+  if (systemBannerEnabled)
   {
     v4 = +[RPControlCenterAngelProxy sharedInstance];
     [v4 stopRecordingCalled];
@@ -2962,21 +2962,21 @@ void __49__RPControlCenterClient_startReadyToRecordBanner__block_invoke(uint64_t
 - (void)terminateAngelRecordingSession
 {
   v2 = +[RPFeatureFlagUtility sharedInstance];
-  v3 = [v2 systemBannerEnabled];
+  systemBannerEnabled = [v2 systemBannerEnabled];
 
-  if (v3)
+  if (systemBannerEnabled)
   {
     v4 = +[RPControlCenterAngelProxy sharedInstance];
     [v4 hideAndStopRecordingBanner];
   }
 }
 
-- (void)screenRecorder:(id)a3 didStopRecordingWithPreviewViewController:(id)a4 error:(id)a5
+- (void)screenRecorder:(id)recorder didStopRecordingWithPreviewViewController:(id)controller error:(id)error
 {
   v27 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  recorderCopy = recorder;
+  controllerCopy = controller;
+  errorCopy = error;
   if (__RPLogLevel <= 1 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     v15 = 136446722;
@@ -2984,7 +2984,7 @@ void __49__RPControlCenterClient_startReadyToRecordBanner__block_invoke(uint64_t
     v17 = 1024;
     v18 = 908;
     v19 = 2048;
-    v20 = self;
+    selfCopy2 = self;
     _os_log_impl(&dword_23A863000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %p", &v15, 0x1Cu);
   }
 
@@ -2999,7 +2999,7 @@ void __49__RPControlCenterClient_startReadyToRecordBanner__block_invoke(uint64_t
     v17 = 1024;
     v18 = 910;
     v19 = 2048;
-    v20 = self;
+    selfCopy2 = self;
     v21 = 1024;
     v22 = isCountingDown;
     v23 = 1024;
@@ -3009,11 +3009,11 @@ void __49__RPControlCenterClient_startReadyToRecordBanner__block_invoke(uint64_t
     _os_log_impl(&dword_23A863000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %p updated status to isCountingDown:%i lockUIControls:%i, recordingOn:%i", &v15, 0x2Eu);
   }
 
-  if (v10)
+  if (errorCopy)
   {
-    if ([v10 code] != -5815)
+    if ([errorCopy code] != -5815)
     {
-      if ([v10 code] != -5817)
+      if ([errorCopy code] != -5817)
       {
         goto LABEL_12;
       }
@@ -3023,7 +3023,7 @@ void __49__RPControlCenterClient_startReadyToRecordBanner__block_invoke(uint64_t
 
     [(RPControlCenterClient *)self notifyClientDelegatesStart:0];
 LABEL_12:
-    if ([v10 code])
+    if ([errorCopy code])
     {
       [(RPControlCenterClient *)self terminateAngelRecordingSession];
     }
@@ -3034,10 +3034,10 @@ LABEL_12:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)screenRecorderDidChangeAvailability:(id)a3
+- (void)screenRecorderDidChangeAvailability:(id)availability
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  availabilityCopy = availability;
   if (__RPLogLevel <= 1 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446722;
@@ -3045,7 +3045,7 @@ LABEL_12:
     v11 = 1024;
     v12 = 933;
     v13 = 2048;
-    v14 = self;
+    selfCopy = self;
     _os_log_impl(&dword_23A863000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %p", buf, 0x1Cu);
   }
 
@@ -3053,8 +3053,8 @@ LABEL_12:
   v7[1] = 3221225472;
   v7[2] = __61__RPControlCenterClient_screenRecorderDidChangeAvailability___block_invoke;
   v7[3] = &unk_278B61E38;
-  v8 = v4;
-  v5 = v4;
+  v8 = availabilityCopy;
+  v5 = availabilityCopy;
   [(RPControlCenterClient *)self callDelegate:v7];
 
   v6 = *MEMORY[0x277D85DE8];
@@ -3067,7 +3067,7 @@ void __61__RPControlCenterClient_screenRecorderDidChangeAvailability___block_inv
   [v3 didChangeAvailability:{objc_msgSend(v2, "isAvailable")}];
 }
 
-- (void)screenRecorderDidUpdateState:(id)a3
+- (void)screenRecorderDidUpdateState:(id)state
 {
   v20 = *MEMORY[0x277D85DE8];
   if ([(RPControlCenterClient *)self isClientRecordingTypeHQLR])
@@ -3094,26 +3094,26 @@ LABEL_6:
     v8 = 1024;
     v9 = 947;
     v10 = 2048;
-    v11 = self;
+    selfCopy = self;
     v12 = 1024;
-    v13 = [(RPControlCenterClient *)self recordingOn];
+    recordingOn = [(RPControlCenterClient *)self recordingOn];
     v14 = 1024;
-    v15 = [(RPControlCenterClient *)self microphoneOn];
+    microphoneOn = [(RPControlCenterClient *)self microphoneOn];
     v16 = 1024;
-    v17 = [(RPControlCenterClient *)self mixedRealityCameraOn];
+    mixedRealityCameraOn = [(RPControlCenterClient *)self mixedRealityCameraOn];
     v18 = 1024;
-    v19 = [(RPControlCenterClient *)self highQualityLocalRecordingOn];
+    highQualityLocalRecordingOn = [(RPControlCenterClient *)self highQualityLocalRecordingOn];
     _os_log_impl(&dword_23A863000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %p recordingOn:%d microphoneOn:%d mixedRealityCameraOn:%d highQualityLocalRecordingOn:%d", &v6, 0x34u);
   }
 
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)broadcastController:(id)a3 didFinishWithError:(id)a4
+- (void)broadcastController:(id)controller didFinishWithError:(id)error
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  errorCopy = error;
   if (__RPLogLevel <= 1 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     v12 = 136446722;
@@ -3121,7 +3121,7 @@ LABEL_6:
     v14 = 1024;
     v15 = 953;
     v16 = 2048;
-    v17 = self;
+    selfCopy2 = self;
     _os_log_impl(&dword_23A863000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %p", &v12, 0x1Cu);
   }
 
@@ -3136,7 +3136,7 @@ LABEL_6:
     v14 = 1024;
     v15 = 955;
     v16 = 2048;
-    v17 = self;
+    selfCopy2 = self;
     v18 = 1024;
     v19 = isCountingDown;
     v20 = 1024;
@@ -3146,9 +3146,9 @@ LABEL_6:
     _os_log_impl(&dword_23A863000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %p updated status to isCountingDown:%i lockUIControls:%i, recordingOn:%i", &v12, 0x2Eu);
   }
 
-  if (v7)
+  if (errorCopy)
   {
-    if ([v7 code] == -5815)
+    if ([errorCopy code] == -5815)
     {
       [(RPControlCenterClient *)self notifyClientDelegatesStart:0];
     }
@@ -3161,11 +3161,11 @@ LABEL_6:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)broadcastController:(id)a3 didUpdateServiceInfo:(id)a4
+- (void)broadcastController:(id)controller didUpdateServiceInfo:(id)info
 {
   v15 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  infoCopy = info;
   if (__RPLogLevel <= 1 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     v9 = 136446722;
@@ -3173,18 +3173,18 @@ LABEL_6:
     v11 = 1024;
     v12 = 970;
     v13 = 2048;
-    v14 = self;
+    selfCopy = self;
     _os_log_impl(&dword_23A863000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %p", &v9, 0x1Cu);
   }
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)broadcastController:(id)a3 didUpdateBroadcastURL:(id)a4
+- (void)broadcastController:(id)controller didUpdateBroadcastURL:(id)l
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  lCopy = l;
   if (__RPLogLevel <= 1 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     v9 = 136446978;
@@ -3192,18 +3192,18 @@ LABEL_6:
     v11 = 1024;
     v12 = 975;
     v13 = 2048;
-    v14 = self;
+    selfCopy = self;
     v15 = 2112;
-    v16 = v7;
+    v16 = lCopy;
     _os_log_impl(&dword_23A863000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %p broadcastURL=%@", &v9, 0x26u);
   }
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)recordingTimerDidUpdate:(id)a3
+- (void)recordingTimerDidUpdate:(id)update
 {
-  objc_storeStrong(&self->_currentTimerString, a3);
+  objc_storeStrong(&self->_currentTimerString, update);
 
   [(RPControlCenterClient *)self callDelegate:&__block_literal_global_125];
 }
@@ -3218,7 +3218,7 @@ LABEL_6:
     v6 = 1024;
     v7 = 988;
     v8 = 2048;
-    v9 = self;
+    selfCopy3 = self;
     _os_log_impl(&dword_23A863000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %p", &v4, 0x1Cu);
   }
 
@@ -3236,7 +3236,7 @@ LABEL_6:
       v6 = 1024;
       v7 = 993;
       v8 = 2048;
-      v9 = self;
+      selfCopy3 = self;
       _os_log_impl(&dword_23A863000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %p Stopping HQLR recording", &v4, 0x1Cu);
     }
 
@@ -3252,7 +3252,7 @@ LABEL_6:
       v6 = 1024;
       v7 = 996;
       v8 = 2048;
-      v9 = self;
+      selfCopy3 = self;
       _os_log_impl(&dword_23A863000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %p Stopping system recording", &v4, 0x1Cu);
     }
 
@@ -3278,8 +3278,8 @@ LABEL_6:
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [(NSPointerArray *)self->_delegates allObjects];
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  allObjects = [(NSPointerArray *)self->_delegates allObjects];
+  v4 = [allObjects countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = v4;
@@ -3291,7 +3291,7 @@ LABEL_6:
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allObjects);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
@@ -3303,7 +3303,7 @@ LABEL_6:
         dispatch_async(v7, block);
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [allObjects countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v5);
@@ -3423,10 +3423,10 @@ uint64_t __51__RPControlCenterClient_replayKitAngelDisconnected__block_invoke(ui
   return result;
 }
 
-- (void)countdownInterruptWithStatus:(id)a3
+- (void)countdownInterruptWithStatus:(id)status
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  statusCopy = status;
   if (__RPLogLevel <= 1 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446466;
@@ -3440,9 +3440,9 @@ uint64_t __51__RPControlCenterClient_replayKitAngelDisconnected__block_invoke(ui
   v7[1] = 3221225472;
   v7[2] = __54__RPControlCenterClient_countdownInterruptWithStatus___block_invoke;
   v7[3] = &unk_278B61C60;
-  v8 = v4;
-  v9 = self;
-  v5 = v4;
+  v8 = statusCopy;
+  selfCopy = self;
+  v5 = statusCopy;
   dispatch_async(MEMORY[0x277D85CD0], v7);
 
   v6 = *MEMORY[0x277D85DE8];
@@ -3472,12 +3472,12 @@ uint64_t __54__RPControlCenterClient_countdownInterruptWithStatus___block_invoke
   return result;
 }
 
-- (id)imageForBundleID:(id)a3 extensionInfo:(id)a4
+- (id)imageForBundleID:(id)d extensionInfo:(id)info
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NSDictionary *)self->_iconImageCache objectForKeyedSubscript:v6];
+  dCopy = d;
+  infoCopy = info;
+  v8 = [(NSDictionary *)self->_iconImageCache objectForKeyedSubscript:dCopy];
   if (v8)
   {
     if (__RPLogLevel <= 1 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
@@ -3502,7 +3502,7 @@ uint64_t __54__RPControlCenterClient_countdownInterruptWithStatus___block_invoke
     }
 
     v9 = MEMORY[0x277D755B8];
-    v10 = [v7 objectForKey:@"extAppImgData"];
+    v10 = [infoCopy objectForKey:@"extAppImgData"];
     v11 = [v9 imageWithData:v10];
 
     v21.width = 29.0;
@@ -3511,7 +3511,7 @@ uint64_t __54__RPControlCenterClient_countdownInterruptWithStatus___block_invoke
     [v11 drawInRect:{0.0, 0.0, 29.0, 29.0}];
     v12 = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
-    [(NSDictionary *)self->_iconImageCache setValue:v12 forKey:v6];
+    [(NSDictionary *)self->_iconImageCache setValue:v12 forKey:dCopy];
   }
 
   v13 = *MEMORY[0x277D85DE8];

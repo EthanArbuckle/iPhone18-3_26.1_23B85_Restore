@@ -1,19 +1,19 @@
 @interface DynamicTranscriptBackgroundPosterDelegate
 - (_TtC32DynamicBackgroundPosterExtension41DynamicTranscriptBackgroundPosterDelegate)init;
-- (void)updateDescriptors:(NSDictionary *)a3 withSessionInfo:(PRUpdatingSessionInfo *)a4 completion:(id)a5;
+- (void)updateDescriptors:(NSDictionary *)descriptors withSessionInfo:(PRUpdatingSessionInfo *)info completion:(id)completion;
 @end
 
 @implementation DynamicTranscriptBackgroundPosterDelegate
 
-- (void)updateDescriptors:(NSDictionary *)a3 withSessionInfo:(PRUpdatingSessionInfo *)a4 completion:(id)a5
+- (void)updateDescriptors:(NSDictionary *)descriptors withSessionInfo:(PRUpdatingSessionInfo *)info completion:(id)completion
 {
   v9 = (*(*(sub_10000CC1C(&qword_10006EA80, &qword_100050680) - 8) + 64) + 15) & 0xFFFFFFFFFFFFFFF0;
   __chkstk_darwin();
   v11 = &v20 - v10;
-  v12 = _Block_copy(a5);
+  v12 = _Block_copy(completion);
   v13 = swift_allocObject();
-  v13[2] = a3;
-  v13[3] = a4;
+  v13[2] = descriptors;
+  v13[3] = info;
   v13[4] = v12;
   v13[5] = self;
   v14 = sub_10004D2BC();
@@ -28,9 +28,9 @@
   v16[3] = 0;
   v16[4] = &unk_1000506A0;
   v16[5] = v15;
-  v17 = a3;
-  v18 = a4;
-  v19 = self;
+  descriptorsCopy = descriptors;
+  infoCopy = info;
+  selfCopy = self;
   sub_1000100A8(0, 0, v11, &unk_1000506B0, v16);
 }
 

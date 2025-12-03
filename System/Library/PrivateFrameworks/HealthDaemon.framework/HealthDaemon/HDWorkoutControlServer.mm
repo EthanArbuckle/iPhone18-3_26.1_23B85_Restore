@@ -1,55 +1,55 @@
 @interface HDWorkoutControlServer
-+ (id)createTaskServerWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6 error:(id *)a7;
++ (id)createTaskServerWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate error:(id *)error;
 + (id)requiredEntitlements;
-- (void)remote_finishAllWorkoutsWithCompletion:(id)a3;
-- (void)remote_generateFakeDataForActivityType:(int64_t)a3 minutes:(double)a4 completion:(id)a5;
+- (void)remote_finishAllWorkoutsWithCompletion:(id)completion;
+- (void)remote_generateFakeDataForActivityType:(int64_t)type minutes:(double)minutes completion:(id)completion;
 @end
 
 @implementation HDWorkoutControlServer
 
-- (void)remote_finishAllWorkoutsWithCompletion:(id)a3
+- (void)remote_finishAllWorkoutsWithCompletion:(id)completion
 {
   workoutManager = self->_workoutManager;
-  v5 = a3;
-  v6 = [(HDStandardTaskServer *)self client];
+  completionCopy = completion;
+  client = [(HDStandardTaskServer *)self client];
   v9 = 0;
-  v7 = [(HDWorkoutManager *)workoutManager finishAllWorkoutsForClient:v6 error:&v9];
+  v7 = [(HDWorkoutManager *)workoutManager finishAllWorkoutsForClient:client error:&v9];
   v8 = v9;
 
-  v5[2](v5, v7, v8);
+  completionCopy[2](completionCopy, v7, v8);
 }
 
-- (void)remote_generateFakeDataForActivityType:(int64_t)a3 minutes:(double)a4 completion:(id)a5
+- (void)remote_generateFakeDataForActivityType:(int64_t)type minutes:(double)minutes completion:(id)completion
 {
-  v11 = a5;
-  v8 = [(HDStandardTaskServer *)self profile];
-  v9 = [v8 dataCollectionManager];
+  completionCopy = completion;
+  profile = [(HDStandardTaskServer *)self profile];
+  dataCollectionManager = [profile dataCollectionManager];
 
-  if (v9)
+  if (dataCollectionManager)
   {
-    [v9 generateFakeDataForActivityType:a3 minutes:v11 completion:a4];
+    [dataCollectionManager generateFakeDataForActivityType:type minutes:completionCopy completion:minutes];
   }
 
   else
   {
-    v10 = [MEMORY[0x277CCA9B8] hk_featureUnavailableForProfileError];
-    v11[2](v11, 0, v10);
+    hk_featureUnavailableForProfileError = [MEMORY[0x277CCA9B8] hk_featureUnavailableForProfileError];
+    completionCopy[2](completionCopy, 0, hk_featureUnavailableForProfileError);
   }
 }
 
-+ (id)createTaskServerWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6 error:(id *)a7
++ (id)createTaskServerWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate error:(id *)error
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = [v13 profile];
-  v16 = [v15 workoutManager];
+  dCopy = d;
+  configurationCopy = configuration;
+  clientCopy = client;
+  delegateCopy = delegate;
+  profile = [clientCopy profile];
+  workoutManager = [profile workoutManager];
 
-  if (v16)
+  if (workoutManager)
   {
-    v17 = [(HDStandardTaskServer *)[HDWorkoutControlServer alloc] initWithUUID:v11 configuration:v12 client:v13 delegate:v14];
-    v18 = v16;
+    v17 = [(HDStandardTaskServer *)[HDWorkoutControlServer alloc] initWithUUID:dCopy configuration:configurationCopy client:clientCopy delegate:delegateCopy];
+    v18 = workoutManager;
     workoutManager = v17->_workoutManager;
     v17->_workoutManager = v18;
   }
@@ -59,10 +59,10 @@
     workoutManager = [MEMORY[0x277CCA9B8] hk_featureUnavailableForProfileError];
     if (workoutManager)
     {
-      if (a7)
+      if (error)
       {
         v20 = workoutManager;
-        *a7 = workoutManager;
+        *error = workoutManager;
       }
 
       else

@@ -4,9 +4,9 @@
 - (HFHomeAppInstallStateArbiter)init;
 - (NAFuture)homeAppInstalledFuture;
 - (NSURL)homeAppBundleURL;
-- (void)_applications:(id)a3 didInstall:(BOOL)a4;
-- (void)addObserver:(id)a3;
-- (void)removeObserver:(id)a3;
+- (void)_applications:(id)_applications didInstall:(BOOL)install;
+- (void)addObserver:(id)observer;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation HFHomeAppInstallStateArbiter
@@ -37,38 +37,38 @@ void __46__HFHomeAppInstallStateArbiter_sharedInstance__block_invoke_2()
   v2 = [(HFHomeAppInstallStateArbiter *)&v7 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     observers = v2->_observers;
-    v2->_observers = v3;
+    v2->_observers = weakObjectsHashTable;
 
     if ([(HFHomeAppInstallStateArbiter *)v2 _fastPath_isHomeAppInstalled])
     {
-      v5 = [MEMORY[0x277D2C900] futureWithResult:MEMORY[0x277CBEC38]];
-      [(HFHomeAppInstallStateArbiter *)v2 setHomeAppInstalledFuture:v5];
+      defaultWorkspace = [MEMORY[0x277D2C900] futureWithResult:MEMORY[0x277CBEC38]];
+      [(HFHomeAppInstallStateArbiter *)v2 setHomeAppInstalledFuture:defaultWorkspace];
     }
 
     else
     {
-      v5 = [MEMORY[0x277CC1E80] defaultWorkspace];
-      [v5 addObserver:v2];
+      defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
+      [defaultWorkspace addObserver:v2];
     }
   }
 
   return v2;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(HFHomeAppInstallStateArbiter *)self observers];
-  [v5 addObject:v4];
+  observerCopy = observer;
+  observers = [(HFHomeAppInstallStateArbiter *)self observers];
+  [observers addObject:observerCopy];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(HFHomeAppInstallStateArbiter *)self observers];
-  [v5 removeObject:v4];
+  observerCopy = observer;
+  observers = [(HFHomeAppInstallStateArbiter *)self observers];
+  [observers removeObject:observerCopy];
 }
 
 - (NAFuture)homeAppInstalledFuture
@@ -77,10 +77,10 @@ void __46__HFHomeAppInstallStateArbiter_sharedInstance__block_invoke_2()
   if (!homeAppInstalledFuture)
   {
     v4 = MEMORY[0x277D2C900];
-    v5 = [MEMORY[0x277D2C938] globalAsyncScheduler];
-    v6 = [v4 futureWithBlock:&__block_literal_global_9_12 scheduler:v5];
-    v7 = [MEMORY[0x277D2C938] mainThreadScheduler];
-    v8 = [v6 reschedule:v7];
+    globalAsyncScheduler = [MEMORY[0x277D2C938] globalAsyncScheduler];
+    v6 = [v4 futureWithBlock:&__block_literal_global_9_12 scheduler:globalAsyncScheduler];
+    mainThreadScheduler = [MEMORY[0x277D2C938] mainThreadScheduler];
+    v8 = [v6 reschedule:mainThreadScheduler];
     v9 = self->_homeAppInstalledFuture;
     self->_homeAppInstalledFuture = v8;
 
@@ -115,17 +115,17 @@ void __54__HFHomeAppInstallStateArbiter_homeAppInstalledFuture__block_invoke(uin
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_applications:(id)a3 didInstall:(BOOL)a4
+- (void)_applications:(id)_applications didInstall:(BOOL)install
 {
-  v4 = a4;
+  installCopy = install;
   v12 = *MEMORY[0x277D85DE8];
-  if ([a3 na_any:&__block_literal_global_15_13])
+  if ([_applications na_any:&__block_literal_global_15_13])
   {
     v6 = HFLogForCategory(0);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109120;
-      v11 = v4;
+      v11 = installCopy;
       _os_log_impl(&dword_20D9BF000, v6, OS_LOG_TYPE_DEFAULT, "Home.app install state changed: %d", buf, 8u);
     }
 
@@ -134,7 +134,7 @@ void __54__HFHomeAppInstallStateArbiter_homeAppInstalledFuture__block_invoke(uin
     v8[2] = __57__HFHomeAppInstallStateArbiter__applications_didInstall___block_invoke_16;
     v8[3] = &unk_277E00998;
     v8[4] = self;
-    v9 = v4;
+    v9 = installCopy;
     dispatch_async(MEMORY[0x277D85CD0], v8);
   }
 
@@ -194,10 +194,10 @@ void __57__HFHomeAppInstallStateArbiter__applications_didInstall___block_invoke_
 
 - (BOOL)_fastPath_isHomeAppInstalled
 {
-  v2 = [MEMORY[0x277CCA8D8] mainBundle];
-  v3 = [v2 bundleIdentifier];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
   v4 = HFPlatformSpecificHomeAppBundleID();
-  v5 = [v3 isEqualToString:v4];
+  v5 = [bundleIdentifier isEqualToString:v4];
 
   if (v5)
   {
@@ -214,10 +214,10 @@ void __57__HFHomeAppInstallStateArbiter__applications_didInstall___block_invoke_
   else
   {
     objc_opt_class();
-    v8 = [MEMORY[0x277CC1E88] bundleProxyForCurrentProcess];
+    bundleProxyForCurrentProcess = [MEMORY[0x277CC1E88] bundleProxyForCurrentProcess];
     if (objc_opt_isKindOfClass())
     {
-      v9 = v8;
+      v9 = bundleProxyForCurrentProcess;
     }
 
     else
@@ -232,10 +232,10 @@ void __57__HFHomeAppInstallStateArbiter__applications_didInstall___block_invoke_
       goto LABEL_13;
     }
 
-    v10 = [v6 containingBundle];
-    v11 = [v10 bundleIdentifier];
+    containingBundle = [v6 containingBundle];
+    bundleIdentifier2 = [containingBundle bundleIdentifier];
     v12 = HFPlatformSpecificHomeAppBundleID();
-    v13 = [v11 isEqualToString:v12];
+    v13 = [bundleIdentifier2 isEqualToString:v12];
 
     if (v13)
     {
@@ -272,9 +272,9 @@ LABEL_13:
   v3 = HFPlatformSpecificHomeAppBundleID();
   v4 = [v2 applicationProxyForIdentifier:v3];
 
-  v5 = [v4 bundleURL];
+  bundleURL = [v4 bundleURL];
 
-  return v5;
+  return bundleURL;
 }
 
 @end

@@ -1,15 +1,15 @@
 @interface CKAssistantSMSCancel
 - (id)_cancelSMS;
 - (id)_validateCancel;
-- (void)performWithCompletion:(id)a3;
+- (void)performWithCompletion:(id)completion;
 @end
 
 @implementation CKAssistantSMSCancel
 
 - (id)_validateCancel
 {
-  v2 = [(CKAssistantSMSCancel *)self identifier];
-  if (v2)
+  identifier = [(CKAssistantSMSCancel *)self identifier];
+  if (identifier)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -40,9 +40,9 @@ LABEL_7:
   return v2;
 }
 
-- (void)performWithCompletion:(id)a3
+- (void)performWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if (IMOSLoggingEnabled())
   {
     v5 = OSLogHandleForIMFoundationCategory();
@@ -53,14 +53,14 @@ LABEL_7:
     }
   }
 
-  v6 = [(CKAssistantSMSCancel *)self _validateCancel];
-  if (!v6)
+  _validateCancel = [(CKAssistantSMSCancel *)self _validateCancel];
+  if (!_validateCancel)
   {
-    v6 = [(CKAssistantSMSCancel *)self _cancelSMS];
+    _validateCancel = [(CKAssistantSMSCancel *)self _cancelSMS];
   }
 
-  v7 = [v6 dictionary];
-  v4[2](v4, v7);
+  dictionary = [_validateCancel dictionary];
+  completionCopy[2](completionCopy, dictionary);
 }
 
 @end

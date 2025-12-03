@@ -1,26 +1,26 @@
 @interface APMockMAPIResponseSettings
-+ (id)storageWithDefaultValues:(id)a3;
++ (id)storageWithDefaultValues:(id)values;
 - (NSArray)contentDataObjects;
-- (id)_parseContentDataJson:(id)a3;
+- (id)_parseContentDataJson:(id)json;
 @end
 
 @implementation APMockMAPIResponseSettings
 
-+ (id)storageWithDefaultValues:(id)a3
++ (id)storageWithDefaultValues:(id)values
 {
-  v3 = a3;
-  v4 = [[APSettingsStorageUserDefaults alloc] initWithDefaultValues:v3];
+  valuesCopy = values;
+  v4 = [[APSettingsStorageUserDefaults alloc] initWithDefaultValues:valuesCopy];
 
   return v4;
 }
 
 - (NSArray)contentDataObjects
 {
-  v3 = [(APMockMAPIResponseSettings *)self responseJson];
-  v4 = v3;
-  if (v3)
+  responseJson = [(APMockMAPIResponseSettings *)self responseJson];
+  v4 = responseJson;
+  if (responseJson)
   {
-    v5 = [v3 dataUsingEncoding:4];
+    v5 = [responseJson dataUsingEncoding:4];
     v21 = 0;
     v6 = [NSJSONSerialization JSONObjectWithData:v5 options:0 error:&v21];
     v7 = v21;
@@ -77,38 +77,38 @@
   return v8;
 }
 
-- (id)_parseContentDataJson:(id)a3
+- (id)_parseContentDataJson:(id)json
 {
-  v3 = a3;
+  jsonCopy = json;
   v4 = objc_alloc_init(APContentData);
   v5 = objc_alloc_init(APRepresentationData);
-  v6 = [v3 objectForKeyedSubscript:@"ttl"];
-  v7 = [v6 integerValue];
+  v6 = [jsonCopy objectForKeyedSubscript:@"ttl"];
+  integerValue = [v6 integerValue];
 
   v8 = +[NSDate now];
-  v9 = [v8 dateByAddingTimeInterval:v7];
+  v9 = [v8 dateByAddingTimeInterval:integerValue];
   [v4 setExpirationDate:v9];
 
-  v10 = [v3 objectForKeyedSubscript:@"adamId"];
+  v10 = [jsonCopy objectForKeyedSubscript:@"adamId"];
   [v5 setAdamID:v10];
 
-  v11 = [v3 objectForKeyedSubscript:@"metadata"];
+  v11 = [jsonCopy objectForKeyedSubscript:@"metadata"];
   [v5 setMetadata:v11];
 
-  v12 = [v3 objectForKeyedSubscript:@"journeyRelayAdGroupId"];
+  v12 = [jsonCopy objectForKeyedSubscript:@"journeyRelayAdGroupId"];
   [v5 setJourneyRelayAdGroupId:v12];
 
-  v13 = [v3 objectForKeyedSubscript:@"journeyRelayCampaignId"];
+  v13 = [jsonCopy objectForKeyedSubscript:@"journeyRelayCampaignId"];
   [v5 setJourneyRelayCampaignId:v13];
 
-  v14 = [v3 objectForKeyedSubscript:@"parentAppCheckEnabled"];
+  v14 = [jsonCopy objectForKeyedSubscript:@"parentAppCheckEnabled"];
   [v5 setParentAppCheckEnabled:{objc_msgSend(v14, "BOOLValue")}];
 
-  v15 = [v3 objectForKeyedSubscript:@"rank"];
+  v15 = [jsonCopy objectForKeyedSubscript:@"rank"];
   [v5 setRank:{objc_msgSend(v15, "integerValue")}];
 
   v16 = [NSUUID alloc];
-  v17 = [v3 objectForKeyedSubscript:@"iAdId"];
+  v17 = [jsonCopy objectForKeyedSubscript:@"iAdId"];
 
   v18 = [v16 initWithUUIDString:v17];
   [v5 setIAdID:v18];

@@ -1,17 +1,17 @@
 @interface SKLabelNodeAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)isAccessibilityElement;
 - (id)accessibilityLabel;
 @end
 
 @implementation SKLabelNodeAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SKLabelNode" hasInstanceMethod:@"text" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SKNode" hasInstanceMethod:@"alpha" withFullSignature:{"d", 0}];
-  [v3 validateClass:@"SKNode" hasInstanceMethod:@"isHidden" withFullSignature:{"B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SKLabelNode" hasInstanceMethod:@"text" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SKNode" hasInstanceMethod:@"alpha" withFullSignature:{"d", 0}];
+  [validationsCopy validateClass:@"SKNode" hasInstanceMethod:@"isHidden" withFullSignature:{"B", 0}];
 }
 
 - (BOOL)isAccessibilityElement
@@ -34,13 +34,13 @@
 {
   v5.receiver = self;
   v5.super_class = SKLabelNodeAccessibility;
-  v3 = [(SKLabelNodeAccessibility *)&v5 accessibilityLabel];
-  if (!v3)
+  accessibilityLabel = [(SKLabelNodeAccessibility *)&v5 accessibilityLabel];
+  if (!accessibilityLabel)
   {
-    v3 = [(SKLabelNodeAccessibility *)self safeValueForKey:@"text"];
+    accessibilityLabel = [(SKLabelNodeAccessibility *)self safeValueForKey:@"text"];
   }
 
-  return v3;
+  return accessibilityLabel;
 }
 
 @end

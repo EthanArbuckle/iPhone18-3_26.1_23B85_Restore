@@ -1,48 +1,48 @@
 @interface NDODefaultFolllowUpProvider
-- (BOOL)clearNotificationForItem:(id)a3 error:(id *)a4;
-- (BOOL)clearPendingFollowUpItemsWithUniqueIdentifiers:(id)a3 error:(id *)a4;
-- (BOOL)postFollowUpItem:(id)a3 error:(id *)a4;
-- (id)pendingFollowUpItems:(id *)a3;
+- (BOOL)clearNotificationForItem:(id)item error:(id *)error;
+- (BOOL)clearPendingFollowUpItemsWithUniqueIdentifiers:(id)identifiers error:(id *)error;
+- (BOOL)postFollowUpItem:(id)item error:(id *)error;
+- (id)pendingFollowUpItems:(id *)items;
 @end
 
 @implementation NDODefaultFolllowUpProvider
 
-- (BOOL)postFollowUpItem:(id)a3 error:(id *)a4
+- (BOOL)postFollowUpItem:(id)item error:(id *)error
 {
   v5 = MEMORY[0x277CFE500];
-  v6 = a3;
+  itemCopy = item;
   v7 = [[v5 alloc] initWithClientIdentifier:@"com.apple.NewDeviceOutreach"];
-  LOBYTE(a4) = [v7 postFollowUpItem:v6 error:a4];
+  LOBYTE(error) = [v7 postFollowUpItem:itemCopy error:error];
 
-  return a4;
+  return error;
 }
 
-- (BOOL)clearPendingFollowUpItemsWithUniqueIdentifiers:(id)a3 error:(id *)a4
+- (BOOL)clearPendingFollowUpItemsWithUniqueIdentifiers:(id)identifiers error:(id *)error
 {
   v5 = MEMORY[0x277CFE500];
-  v6 = a3;
+  identifiersCopy = identifiers;
   v7 = [[v5 alloc] initWithClientIdentifier:@"com.apple.NewDeviceOutreach"];
-  LOBYTE(a4) = [v7 clearPendingFollowUpItemsWithUniqueIdentifiers:v6 error:a4];
+  LOBYTE(error) = [v7 clearPendingFollowUpItemsWithUniqueIdentifiers:identifiersCopy error:error];
 
-  return a4;
+  return error;
 }
 
-- (id)pendingFollowUpItems:(id *)a3
+- (id)pendingFollowUpItems:(id *)items
 {
   v4 = [objc_alloc(MEMORY[0x277CFE500]) initWithClientIdentifier:@"com.apple.NewDeviceOutreach"];
-  v5 = [v4 pendingFollowUpItems:a3];
+  v5 = [v4 pendingFollowUpItems:items];
 
   return v5;
 }
 
-- (BOOL)clearNotificationForItem:(id)a3 error:(id *)a4
+- (BOOL)clearNotificationForItem:(id)item error:(id *)error
 {
   v5 = MEMORY[0x277CFE500];
-  v6 = a3;
+  itemCopy = item;
   v7 = [[v5 alloc] initWithClientIdentifier:@"com.apple.NewDeviceOutreach"];
-  LOBYTE(a4) = [v7 clearNotificationForItem:v6 error:a4];
+  LOBYTE(error) = [v7 clearNotificationForItem:itemCopy error:error];
 
-  return a4;
+  return error;
 }
 
 @end

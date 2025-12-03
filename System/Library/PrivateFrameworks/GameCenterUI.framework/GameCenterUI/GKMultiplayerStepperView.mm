@@ -1,5 +1,5 @@
 @interface GKMultiplayerStepperView
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4;
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in;
 - (UIButton)accessibilityDownButton;
 - (UIButton)accessibilityUpButton;
 - (void)layoutSubviews;
@@ -7,10 +7,10 @@
 
 @implementation GKMultiplayerStepperView
 
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in
 {
   swift_unknownObjectRetain();
-  v5 = self;
+  selfCopy = self;
   v6 = sub_24DFFD990();
   v8 = v7;
   v10 = v9;
@@ -29,7 +29,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_24DFFDC84();
 }
 

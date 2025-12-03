@@ -3,26 +3,26 @@
 - (BOOL)becomeFirstResponder;
 - (BOOL)canResignFirstResponder;
 - (BOOL)resignFirstResponder;
-- (SBOldBannerWindow)initWithWindowScene:(id)a3;
-- (void)setHidden:(BOOL)a3;
+- (SBOldBannerWindow)initWithWindowScene:(id)scene;
+- (void)setHidden:(BOOL)hidden;
 @end
 
 @implementation SBOldBannerWindow
 
-- (SBOldBannerWindow)initWithWindowScene:(id)a3
+- (SBOldBannerWindow)initWithWindowScene:(id)scene
 {
-  v4 = a3;
+  sceneCopy = scene;
   v9.receiver = self;
   v9.super_class = SBOldBannerWindow;
-  v5 = [(SBMainScreenActiveInterfaceOrientationWindow *)&v9 initWithWindowScene:v4 role:@"SBTraitsParticipantRoleBanner" debugName:@"bannerPresentationWindow"];
+  v5 = [(SBMainScreenActiveInterfaceOrientationWindow *)&v9 initWithWindowScene:sceneCopy role:@"SBTraitsParticipantRoleBanner" debugName:@"bannerPresentationWindow"];
   if (v5)
   {
-    v6 = [MEMORY[0x277D75348] clearColor];
-    [(SBOldBannerWindow *)v5 setBackgroundColor:v6];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(SBOldBannerWindow *)v5 setBackgroundColor:clearColor];
 
     [(SBOldBannerWindow *)v5 setOpaque:0];
     [(SBMainScreenActiveInterfaceOrientationWindow *)v5 setPassesTouchesThrough:1];
-    v7 = [MEMORY[0x277D75BB0] sharedTextEffectsWindowForWindowScene:v4];
+    v7 = [MEMORY[0x277D75BB0] sharedTextEffectsWindowForWindowScene:sceneCopy];
     [(SBOldBannerWindow *)v5 setHidden:1];
   }
 
@@ -31,45 +31,45 @@
 
 - (BOOL)_canBecomeKeyWindow
 {
-  v2 = [(SBMainScreenActiveInterfaceOrientationWindow *)self contentViewController];
-  v3 = [v2 canBecomeFirstResponder];
+  contentViewController = [(SBMainScreenActiveInterfaceOrientationWindow *)self contentViewController];
+  canBecomeFirstResponder = [contentViewController canBecomeFirstResponder];
 
-  return v3;
+  return canBecomeFirstResponder;
 }
 
 - (BOOL)becomeFirstResponder
 {
-  v2 = [(SBMainScreenActiveInterfaceOrientationWindow *)self contentViewController];
-  v3 = [v2 becomeFirstResponder];
+  contentViewController = [(SBMainScreenActiveInterfaceOrientationWindow *)self contentViewController];
+  becomeFirstResponder = [contentViewController becomeFirstResponder];
 
-  return v3;
+  return becomeFirstResponder;
 }
 
 - (BOOL)canResignFirstResponder
 {
-  v2 = [(SBMainScreenActiveInterfaceOrientationWindow *)self contentViewController];
-  v3 = [v2 canResignFirstResponder];
+  contentViewController = [(SBMainScreenActiveInterfaceOrientationWindow *)self contentViewController];
+  canResignFirstResponder = [contentViewController canResignFirstResponder];
 
-  return v3;
+  return canResignFirstResponder;
 }
 
 - (BOOL)resignFirstResponder
 {
-  v2 = [(SBMainScreenActiveInterfaceOrientationWindow *)self contentViewController];
-  v3 = [v2 resignFirstResponder];
+  contentViewController = [(SBMainScreenActiveInterfaceOrientationWindow *)self contentViewController];
+  resignFirstResponder = [contentViewController resignFirstResponder];
 
-  return v3;
+  return resignFirstResponder;
 }
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
-  v3 = a3;
-  v5 = [(SBMainScreenActiveInterfaceOrientationWindow *)self rootViewController];
-  [v5 bs_beginAppearanceTransition:v3 ^ 1 animated:0];
+  hiddenCopy = hidden;
+  rootViewController = [(SBMainScreenActiveInterfaceOrientationWindow *)self rootViewController];
+  [rootViewController bs_beginAppearanceTransition:hiddenCopy ^ 1 animated:0];
   v6.receiver = self;
   v6.super_class = SBOldBannerWindow;
-  [(SBMainScreenActiveInterfaceOrientationWindow *)&v6 setHidden:v3];
-  [v5 bs_endAppearanceTransition];
+  [(SBMainScreenActiveInterfaceOrientationWindow *)&v6 setHidden:hiddenCopy];
+  [rootViewController bs_endAppearanceTransition];
 }
 
 @end

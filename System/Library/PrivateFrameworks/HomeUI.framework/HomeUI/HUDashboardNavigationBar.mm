@@ -1,35 +1,35 @@
 @interface HUDashboardNavigationBar
-- (HUDashboardNavigationBar)initWithFrame:(CGRect)a3;
-- (void)largeTitleHeightDidChange:(double)a3;
-- (void)setOverrideTintColor:(id)a3;
+- (HUDashboardNavigationBar)initWithFrame:(CGRect)frame;
+- (void)largeTitleHeightDidChange:(double)change;
+- (void)setOverrideTintColor:(id)color;
 @end
 
 @implementation HUDashboardNavigationBar
 
-- (HUDashboardNavigationBar)initWithFrame:(CGRect)a3
+- (HUDashboardNavigationBar)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = HUDashboardNavigationBar;
-  v3 = [(HUDashboardNavigationBar *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(HUDashboardNavigationBar *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     [(HUDashboardNavigationBar *)v3 setPrefersLargeTitles:1];
-    v5 = [MEMORY[0x277D75788] hu_dashboardAppearance];
-    [(HUDashboardNavigationBar *)v4 setStandardAppearance:v5];
+    hu_dashboardAppearance = [MEMORY[0x277D75788] hu_dashboardAppearance];
+    [(HUDashboardNavigationBar *)v4 setStandardAppearance:hu_dashboardAppearance];
 
-    v6 = [objc_opt_class() defaultTintColor];
-    [(HUDashboardNavigationBar *)v4 setTintColor:v6];
+    defaultTintColor = [objc_opt_class() defaultTintColor];
+    [(HUDashboardNavigationBar *)v4 setTintColor:defaultTintColor];
   }
 
   return v4;
 }
 
-- (void)setOverrideTintColor:(id)a3
+- (void)setOverrideTintColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   v6 = self->_overrideTintColor;
-  v7 = v5;
+  v7 = colorCopy;
   v10 = v7;
   if (v6 == v7)
   {
@@ -51,7 +51,7 @@
   {
   }
 
-  objc_storeStrong(&self->_overrideTintColor, a3);
+  objc_storeStrong(&self->_overrideTintColor, color);
   if (v10)
   {
     [(HUDashboardNavigationBar *)self setTintColor:v10];
@@ -59,27 +59,27 @@
 
   else
   {
-    v9 = [objc_opt_class() defaultTintColor];
-    [(HUDashboardNavigationBar *)self setTintColor:v9];
+    defaultTintColor = [objc_opt_class() defaultTintColor];
+    [(HUDashboardNavigationBar *)self setTintColor:defaultTintColor];
   }
 
 LABEL_10:
 }
 
-- (void)largeTitleHeightDidChange:(double)a3
+- (void)largeTitleHeightDidChange:(double)change
 {
-  v5 = [(HUDashboardNavigationBar *)self titleView];
-  [v5 largeTitleHeightRange];
+  titleView = [(HUDashboardNavigationBar *)self titleView];
+  [titleView largeTitleHeightRange];
   v7 = v6;
-  v8 = v6 >= a3;
+  v8 = v6 >= change;
 
   if (v8 != [(HUDashboardNavigationBar *)self isBackgroundVisible])
   {
-    [(HUDashboardNavigationBar *)self setIsBackgroundVisible:v7 >= a3];
-    v9 = [(HUDashboardNavigationBar *)self delegate];
-    if ([v9 conformsToProtocol:&unk_282556EF8])
+    [(HUDashboardNavigationBar *)self setIsBackgroundVisible:v7 >= change];
+    delegate = [(HUDashboardNavigationBar *)self delegate];
+    if ([delegate conformsToProtocol:&unk_282556EF8])
     {
-      v10 = v9;
+      v10 = delegate;
     }
 
     else

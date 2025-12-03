@@ -1,12 +1,12 @@
 @interface CKDPStreamingAsset
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CKDPStreamingAsset
@@ -57,100 +57,100 @@
   return v6;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_assetId)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_saveAssetRequest)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_saveAssetResponse)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_retrieveAssetResponse)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   assetId = self->_assetId;
-  v10 = v4;
+  v10 = toCopy;
   if (assetId)
   {
-    objc_msgSend_setAssetId_(v4, v5, assetId);
-    v4 = v10;
+    objc_msgSend_setAssetId_(toCopy, v5, assetId);
+    toCopy = v10;
   }
 
   saveAssetRequest = self->_saveAssetRequest;
   if (saveAssetRequest)
   {
     objc_msgSend_setSaveAssetRequest_(v10, v5, saveAssetRequest);
-    v4 = v10;
+    toCopy = v10;
   }
 
   saveAssetResponse = self->_saveAssetResponse;
   if (saveAssetResponse)
   {
     objc_msgSend_setSaveAssetResponse_(v10, v5, saveAssetResponse);
-    v4 = v10;
+    toCopy = v10;
   }
 
   retrieveAssetResponse = self->_retrieveAssetResponse;
   if (retrieveAssetResponse)
   {
     objc_msgSend_setRetrieveAssetResponse_(v10, v5, retrieveAssetResponse);
-    v4 = v10;
+    toCopy = v10;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v10 = objc_msgSend_init(v7, v8, v9);
-  v12 = objc_msgSend_copyWithZone_(self->_assetId, v11, a3);
+  v12 = objc_msgSend_copyWithZone_(self->_assetId, v11, zone);
   v13 = v10[1];
   v10[1] = v12;
 
-  v15 = objc_msgSend_copyWithZone_(self->_saveAssetRequest, v14, a3);
+  v15 = objc_msgSend_copyWithZone_(self->_saveAssetRequest, v14, zone);
   v16 = v10[3];
   v10[3] = v15;
 
-  v18 = objc_msgSend_copyWithZone_(self->_saveAssetResponse, v17, a3);
+  v18 = objc_msgSend_copyWithZone_(self->_saveAssetResponse, v17, zone);
   v19 = v10[4];
   v10[4] = v18;
 
-  v21 = objc_msgSend_copyWithZone_(self->_retrieveAssetResponse, v20, a3);
+  v21 = objc_msgSend_copyWithZone_(self->_retrieveAssetResponse, v20, zone);
   v22 = v10[2];
   v10[2] = v21;
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if (objc_msgSend_isMemberOfClass_(v4, v6, v5) && ((assetId = self->_assetId, v9 = v4[1], !(assetId | v9)) || objc_msgSend_isEqual_(assetId, v7, v9)) && ((saveAssetRequest = self->_saveAssetRequest, v11 = v4[3], !(saveAssetRequest | v11)) || objc_msgSend_isEqual_(saveAssetRequest, v7, v11)) && ((saveAssetResponse = self->_saveAssetResponse, v13 = v4[4], !(saveAssetResponse | v13)) || objc_msgSend_isEqual_(saveAssetResponse, v7, v13)))
+  if (objc_msgSend_isMemberOfClass_(equalCopy, v6, v5) && ((assetId = self->_assetId, v9 = equalCopy[1], !(assetId | v9)) || objc_msgSend_isEqual_(assetId, v7, v9)) && ((saveAssetRequest = self->_saveAssetRequest, v11 = equalCopy[3], !(saveAssetRequest | v11)) || objc_msgSend_isEqual_(saveAssetRequest, v7, v11)) && ((saveAssetResponse = self->_saveAssetResponse, v13 = equalCopy[4], !(saveAssetResponse | v13)) || objc_msgSend_isEqual_(saveAssetResponse, v7, v13)))
   {
     retrieveAssetResponse = self->_retrieveAssetResponse;
-    v15 = v4[2];
+    v15 = equalCopy[2];
     if (retrieveAssetResponse | v15)
     {
       isEqual = objc_msgSend_isEqual_(retrieveAssetResponse, v7, v15);
@@ -178,23 +178,23 @@
   return v7 ^ v10 ^ objc_msgSend_hash(self->_retrieveAssetResponse, v11, v12);
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   assetId = self->_assetId;
-  v13 = v4;
-  v6 = v4[1];
+  v13 = fromCopy;
+  v6 = fromCopy[1];
   if (assetId)
   {
     if (v6)
     {
-      objc_msgSend_mergeFrom_(assetId, v4, v6);
+      objc_msgSend_mergeFrom_(assetId, fromCopy, v6);
     }
   }
 
   else if (v6)
   {
-    objc_msgSend_setAssetId_(self, v4, v6);
+    objc_msgSend_setAssetId_(self, fromCopy, v6);
   }
 
   saveAssetRequest = self->_saveAssetRequest;

@@ -1,38 +1,38 @@
 @interface IDSStunCandidate
-+ (id)candidateWithType:(unint64_t)a3 transport:(int64_t)a4 radioAccessTechnology:(unsigned int)a5 mtu:(unsigned int)a6 index:(int)a7 address:(sockaddr *)a8 external:(sockaddr *)a9;
++ (id)candidateWithType:(unint64_t)type transport:(int64_t)transport radioAccessTechnology:(unsigned int)technology mtu:(unsigned int)mtu index:(int)index address:(sockaddr *)address external:(sockaddr *)external;
 - (BOOL)hasNATIPv4Address;
 - (BOOL)hasNATIPv4External;
 - (BOOL)isCellularStunCandidate;
-- (BOOL)isCompatibleWithStunCandidate:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isSameNetworkType:(id)a3;
-- (IDSStunCandidate)initWithType:(unint64_t)a3 transport:(int64_t)a4 radioAccessTechnology:(unsigned int)a5 mtu:(unsigned int)a6 index:(int)a7 address:(sockaddr *)a8 external:(sockaddr *)a9;
+- (BOOL)isCompatibleWithStunCandidate:(id)candidate;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isSameNetworkType:(id)type;
+- (IDSStunCandidate)initWithType:(unint64_t)type transport:(int64_t)transport radioAccessTechnology:(unsigned int)technology mtu:(unsigned int)mtu index:(int)index address:(sockaddr *)address external:(sockaddr *)external;
 - (NSData)addressData;
 - (NSData)externalAddressData;
 - (NSString)addressString;
 - (NSString)externalAddressString;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unsigned)externalPort;
 - (unsigned)port;
 - (void)dealloc;
-- (void)setAddress:(const sockaddr *)a3 external:(const sockaddr *)a4;
-- (void)setExternal:(sockaddr *)a3;
-- (void)setExternalAddress:(id)a3;
-- (void)setLocalPort:(unsigned __int16)a3;
-- (void)setPrefix:(id *)a3;
+- (void)setAddress:(const sockaddr *)address external:(const sockaddr *)external;
+- (void)setExternal:(sockaddr *)external;
+- (void)setExternalAddress:(id)address;
+- (void)setLocalPort:(unsigned __int16)port;
+- (void)setPrefix:(id *)prefix;
 @end
 
 @implementation IDSStunCandidate
 
-+ (id)candidateWithType:(unint64_t)a3 transport:(int64_t)a4 radioAccessTechnology:(unsigned int)a5 mtu:(unsigned int)a6 index:(int)a7 address:(sockaddr *)a8 external:(sockaddr *)a9
++ (id)candidateWithType:(unint64_t)type transport:(int64_t)transport radioAccessTechnology:(unsigned int)technology mtu:(unsigned int)mtu index:(int)index address:(sockaddr *)address external:(sockaddr *)external
 {
-  v9 = [[IDSStunCandidate alloc] initWithType:a3 transport:a4 radioAccessTechnology:*&a5 mtu:*&a6 index:*&a7 address:a8 external:a9];
+  v9 = [[IDSStunCandidate alloc] initWithType:type transport:transport radioAccessTechnology:*&technology mtu:*&mtu index:*&index address:address external:external];
 
   return v9;
 }
 
-- (IDSStunCandidate)initWithType:(unint64_t)a3 transport:(int64_t)a4 radioAccessTechnology:(unsigned int)a5 mtu:(unsigned int)a6 index:(int)a7 address:(sockaddr *)a8 external:(sockaddr *)a9
+- (IDSStunCandidate)initWithType:(unint64_t)type transport:(int64_t)transport radioAccessTechnology:(unsigned int)technology mtu:(unsigned int)mtu index:(int)index address:(sockaddr *)address external:(sockaddr *)external
 {
   v19.receiver = self;
   v19.super_class = IDSStunCandidate;
@@ -41,32 +41,32 @@
   if (v15)
   {
     v15->_active = 1;
-    v15->_type = a3;
-    v15->_transport = a4;
-    if (a3 > 3)
+    v15->_type = type;
+    v15->_transport = transport;
+    if (type > 3)
     {
       v17 = 0;
     }
 
     else
     {
-      v17 = qword_1A7E40E50[a3];
+      v17 = qword_1A7E40E50[type];
     }
 
     v15->_priority = v17;
-    v15->_index = a7;
-    if (a8 && IsValidSA(a8))
+    v15->_index = index;
+    if (address && IsValidSA(address))
     {
-      memcpy(&v16->_address, a8, a8->sa_len);
+      memcpy(&v16->_address, address, address->sa_len);
     }
 
-    if (a9 && IsValidSA(a9))
+    if (external && IsValidSA(external))
     {
-      memcpy(&v16->_external, a9, a9->sa_len);
+      memcpy(&v16->_external, external, external->sa_len);
     }
 
-    v16->_radioAccessTechnology = a5;
-    v16->_mtu = a6;
+    v16->_radioAccessTechnology = technology;
+    v16->_mtu = mtu;
   }
 
   return v16;
@@ -126,23 +126,23 @@
   return v2;
 }
 
-- (void)setExternal:(sockaddr *)a3
+- (void)setExternal:(sockaddr *)external
 {
-  if (a3 && IsValidSA(a3))
+  if (external && IsValidSA(external))
   {
-    sa_len = a3->sa_len;
+    sa_len = external->sa_len;
 
-    memcpy(&self->_external, a3, sa_len);
+    memcpy(&self->_external, external, sa_len);
   }
 }
 
-- (void)setAddress:(const sockaddr *)a3 external:(const sockaddr *)a4
+- (void)setAddress:(const sockaddr *)address external:(const sockaddr *)external
 {
-  v4 = a4;
+  externalCopy = external;
   v34 = *MEMORY[0x1E69E9840];
-  v10 = a4;
-  __src = a3;
-  if (a3 && IsValidSA(a3))
+  externalCopy2 = external;
+  __src = address;
+  if (address && IsValidSA(address))
   {
     *&v6 = 0xAAAAAAAAAAAAAAAALL;
     *(&v6 + 1) = 0xAAAAAAAAAAAAAAAALL;
@@ -172,7 +172,7 @@
       v14 = 2080;
       v15 = v18;
       v16 = 2112;
-      v17 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_1A7AD9000, v7, OS_LOG_TYPE_DEFAULT, "update address (%s->%s) for %@.", buf, 0x20u);
     }
 
@@ -189,10 +189,10 @@
     }
 
     memcpy(&self->_address, __src, *__src);
-    v4 = v10;
+    externalCopy = externalCopy2;
   }
 
-  if (v4 && IsValidSA(v4))
+  if (externalCopy && IsValidSA(externalCopy))
   {
     *&v8 = 0xAAAAAAAAAAAAAAAALL;
     *(&v8 + 1) = 0xAAAAAAAAAAAAAAAALL;
@@ -213,7 +213,7 @@
     *v18 = v8;
     v19 = v8;
     SAToIPPortString(__str, 0x80uLL, &self->_external);
-    SAToIPPortString(v18, 0x80uLL, &v10);
+    SAToIPPortString(v18, 0x80uLL, &externalCopy2);
     v9 = OSLogHandleForTransportCategory();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
@@ -222,7 +222,7 @@
       v14 = 2080;
       v15 = v18;
       v16 = 2112;
-      v17 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_1A7AD9000, v9, OS_LOG_TYPE_DEFAULT, "update external address (%s->%s) for %@.", buf, 0x20u);
     }
 
@@ -235,19 +235,19 @@
       }
     }
 
-    memcpy(&self->_external, v10, *v10);
+    memcpy(&self->_external, externalCopy2, *externalCopy2);
   }
 }
 
-- (void)setLocalPort:(unsigned __int16)a3
+- (void)setLocalPort:(unsigned __int16)port
 {
-  if (a3)
+  if (port)
   {
-    SASetPort(&self->_address, a3);
+    SASetPort(&self->_address, port);
   }
 }
 
-- (void)setExternalAddress:(id)a3
+- (void)setExternalAddress:(id)address
 {
   v8 = *MEMORY[0x1E69E9840];
   *&v4 = 0xAAAAAAAAAAAAAAAALL;
@@ -260,7 +260,7 @@
   v7[3] = v4;
   v7[0] = v4;
   v7[1] = v4;
-  v5 = IPPortStringToSA(a3, v7);
+  v5 = IPPortStringToSA(address, v7);
   if (v5)
   {
     v6 = v5;
@@ -271,24 +271,24 @@
   }
 }
 
-- (void)setPrefix:(id *)a3
+- (void)setPrefix:(id *)prefix
 {
-  if (a3)
+  if (prefix)
   {
-    self->_prefix = *a3;
+    self->_prefix = *prefix;
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   type = self->_type;
-  v6 = (type == 3) == ([v4 type] == 3) && IsSameSA(&self->_address, objc_msgSend(v4, "address")) && IsSameSA(&self->_external, objc_msgSend(v4, "external"));
+  v6 = (type == 3) == ([equalCopy type] == 3) && IsSameSA(&self->_address, objc_msgSend(equalCopy, "address")) && IsSameSA(&self->_external, objc_msgSend(equalCopy, "external"));
 
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[IDSStunCandidate alloc] initWithType:self->_type transport:self->_transport radioAccessTechnology:self->_radioAccessTechnology mtu:self->_mtu index:self->_index address:&self->_address external:&self->_external];
   [(IDSStunCandidate *)v4 setDataSoMask:self->_dataSoMask];
@@ -302,16 +302,16 @@
   return v4;
 }
 
-- (BOOL)isCompatibleWithStunCandidate:(id)a3
+- (BOOL)isCompatibleWithStunCandidate:(id)candidate
 {
-  v4 = a3;
+  candidateCopy = candidate;
   transport = self->_transport;
-  if (transport != [v4 transport])
+  if (transport != [candidateCopy transport])
   {
     goto LABEL_14;
   }
 
-  v6 = *([v4 external] + 1);
+  v6 = *([candidateCopy external] + 1);
   if (v6 != self->_address.ss_family)
   {
     goto LABEL_14;
@@ -323,20 +323,20 @@
   }
 
   v7 = *&self->_address.__ss_pad1[2];
-  v8 = *([v4 external] + 4);
-  v9 = [(IDSStunCandidate *)self isCellularStunCandidate];
-  if (v9 == [v4 isCellularStunCandidate] || (v10 = bswap32(v7), HIBYTE(v10) != 10) && (v10 & 0xFFF00000) != 0xAC100000 && (v10 & 0xFFFF0000) != 0xC0A80000 || (LOBYTE(v11) = 0, v12 = bswap32(v8), (v12 & 0xFFFF0000) != 0xC0A80000) && (v12 & 0xFF000000) != 0xA000000 && (v12 & 0xFFF00000) != 0xAC100000)
+  v8 = *([candidateCopy external] + 4);
+  isCellularStunCandidate = [(IDSStunCandidate *)self isCellularStunCandidate];
+  if (isCellularStunCandidate == [candidateCopy isCellularStunCandidate] || (v10 = bswap32(v7), HIBYTE(v10) != 10) && (v10 & 0xFFF00000) != 0xAC100000 && (v10 & 0xFFFF0000) != 0xC0A80000 || (LOBYTE(v11) = 0, v12 = bswap32(v8), (v12 & 0xFFFF0000) != 0xC0A80000) && (v12 & 0xFF000000) != 0xA000000 && (v12 & 0xFFF00000) != 0xAC100000)
   {
     v13 = *self->_address.__ss_pad1;
-    v14 = [v4 external];
-    if (v7 != v8 || v13 != *(v14 + 2))
+    external = [candidateCopy external];
+    if (v7 != v8 || v13 != *(external + 2))
     {
 LABEL_13:
       type = self->_type;
-      if ((type == 3) == ([v4 type] == 3))
+      if ((type == 3) == ([candidateCopy type] == 3))
       {
-        v17 = [(IDSStunCandidate *)self isLinkLocalStunCandidate];
-        v11 = v17 ^ [v4 isLinkLocalStunCandidate] ^ 1;
+        isLinkLocalStunCandidate = [(IDSStunCandidate *)self isLinkLocalStunCandidate];
+        v11 = isLinkLocalStunCandidate ^ [candidateCopy isLinkLocalStunCandidate] ^ 1;
         goto LABEL_15;
       }
     }
@@ -350,15 +350,15 @@ LABEL_15:
   return v11;
 }
 
-- (BOOL)isSameNetworkType:(id)a3
+- (BOOL)isSameNetworkType:(id)type
 {
-  v4 = a3;
-  if ([v4 isCellularStunCandidate] && -[IDSStunCandidate isCellularStunCandidate](self, "isCellularStunCandidate"))
+  typeCopy = type;
+  if ([typeCopy isCellularStunCandidate] && -[IDSStunCandidate isCellularStunCandidate](self, "isCellularStunCandidate"))
   {
     v5 = 1;
   }
 
-  else if ([v4 radioAccessTechnology] && objc_msgSend(v4, "radioAccessTechnology") != 9)
+  else if ([typeCopy radioAccessTechnology] && objc_msgSend(typeCopy, "radioAccessTechnology") != 9)
   {
     v5 = 0;
   }

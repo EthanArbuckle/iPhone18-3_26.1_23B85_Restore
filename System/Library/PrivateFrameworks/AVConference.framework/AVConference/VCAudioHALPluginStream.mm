@@ -1,5 +1,5 @@
 @interface VCAudioHALPluginStream
-- (VCAudioHALPluginStream)initWithDirection:(unsigned int)a3 plugin:(id)a4 withConfig:(tagVCAudioHALPluginConfiguration *)a5;
+- (VCAudioHALPluginStream)initWithDirection:(unsigned int)direction plugin:(id)plugin withConfig:(tagVCAudioHALPluginConfiguration *)config;
 - (id)readInputBlock;
 - (id)writeMixBlock;
 - (void)dealloc;
@@ -10,12 +10,12 @@
 
 @implementation VCAudioHALPluginStream
 
-- (VCAudioHALPluginStream)initWithDirection:(unsigned int)a3 plugin:(id)a4 withConfig:(tagVCAudioHALPluginConfiguration *)a5
+- (VCAudioHALPluginStream)initWithDirection:(unsigned int)direction plugin:(id)plugin withConfig:(tagVCAudioHALPluginConfiguration *)config
 {
   v29 = *MEMORY[0x1E69E9840];
   v21.receiver = self;
   v21.super_class = VCAudioHALPluginStream;
-  v7 = [(ASDStream *)&v21 initWithDirection:*&a3 withPlugin:?];
+  v7 = [(ASDStream *)&v21 initWithDirection:*&direction withPlugin:?];
   if (!v7)
   {
     v18 = 0;
@@ -43,7 +43,7 @@ LABEL_11:
     }
   }
 
-  if (!a4)
+  if (!plugin)
   {
     [VCAudioHALPluginStream initWithDirection:v7 plugin:buf withConfig:?];
 LABEL_17:
@@ -51,20 +51,20 @@ LABEL_17:
     goto LABEL_11;
   }
 
-  if (!a5)
+  if (!config)
   {
     [VCAudioHALPluginStream initWithDirection:v7 plugin:buf withConfig:?];
     goto LABEL_17;
   }
 
-  mSampleRate = a5->sinkFormat.format.mSampleRate;
-  v12 = *&a5->sinkFormat.format.mBytesPerPacket;
-  v11 = *&a5->sinkFormat.format.mBitsPerChannel;
-  *(v7 + 280) = *&a5->sinkFormat.format.mSampleRate;
+  mSampleRate = config->sinkFormat.format.mSampleRate;
+  v12 = *&config->sinkFormat.format.mBytesPerPacket;
+  v11 = *&config->sinkFormat.format.mBitsPerChannel;
+  *(v7 + 280) = *&config->sinkFormat.format.mSampleRate;
   *(v7 + 296) = v12;
   *(v7 + 312) = v11;
-  *(v7 + 41) = a5->sinkContext;
-  *(v7 + 42) = a5->sinkProc;
+  *(v7 + 41) = config->sinkContext;
+  *(v7 + 42) = config->sinkProc;
   *(v7 + 100) = 3;
   v13 = [objc_alloc(MEMORY[0x1E698D500]) initWithSampleRate:*(v7 + 77) numChannels:1 commonPCMFormat:1 isInterleaved:mSampleRate];
   if (!v13)
@@ -73,7 +73,7 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  v14 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v15 = [v13 copy];
   if (!v15)
   {
@@ -85,11 +85,11 @@ LABEL_17:
   [v15 setSampleRate:mSampleRate];
   [v16 setMinimumSampleRate:mSampleRate];
   [v16 setMaximumSampleRate:mSampleRate];
-  [v14 addObject:v16];
+  [array addObject:v16];
 
   [v13 setSampleRate:mSampleRate];
   [v7 setPhysicalFormat:v13];
-  [v7 setPhysicalFormats:v14];
+  [v7 setPhysicalFormats:array];
   v17 = [MEMORY[0x1E6986630] weakObjectHolderWithObject:v7];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
@@ -139,7 +139,7 @@ uint64_t __62__VCAudioHALPluginStream_initWithDirection_plugin_withConfig___bloc
       v10 = 1024;
       v11 = 72;
       v12 = 2048;
-      v13 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1DB56E000, v4, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d @:@ VCAudioHALPluginStream-dealloc (%p)", buf, 0x26u);
     }
   }
@@ -166,7 +166,7 @@ uint64_t __62__VCAudioHALPluginStream_initWithDirection_plugin_withConfig___bloc
       v9 = 1024;
       v10 = 78;
       v11 = 2048;
-      v12 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1DB56E000, v4, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d @:@ VCAudioHALPluginStream-invalidate (%p)", &v5, 0x26u);
     }
   }
@@ -191,7 +191,7 @@ uint64_t __62__VCAudioHALPluginStream_initWithDirection_plugin_withConfig___bloc
       v10 = 1024;
       v11 = 97;
       v12 = 2048;
-      v13 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1DB56E000, v4, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d @:@ VCAudioHALPluginStream-readInputBlock (%p)", &v6, 0x26u);
     }
   }
@@ -216,7 +216,7 @@ uint64_t __62__VCAudioHALPluginStream_initWithDirection_plugin_withConfig___bloc
       v10 = 1024;
       v11 = 102;
       v12 = 2048;
-      v13 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1DB56E000, v4, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d @:@ VCAudioHALPluginStream-writeMixBlock (%p)", &v6, 0x26u);
     }
   }
@@ -241,7 +241,7 @@ uint64_t __62__VCAudioHALPluginStream_initWithDirection_plugin_withConfig___bloc
       v10 = 1024;
       v11 = 107;
       v12 = 2048;
-      v13 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1DB56E000, v4, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d @:@ VCAudioHALPluginStream-startStream (%p)", buf, 0x26u);
     }
   }
@@ -268,7 +268,7 @@ uint64_t __62__VCAudioHALPluginStream_initWithDirection_plugin_withConfig___bloc
       v10 = 1024;
       v11 = 112;
       v12 = 2048;
-      v13 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1DB56E000, v4, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d @:@ VCAudioHALPluginStream-stopStream (%p)", buf, 0x26u);
     }
   }

@@ -1,21 +1,21 @@
 @interface _CUIThemeModelMeshRendition
-- (id)_initWithCSIHeader:(const _csiheader *)a3 version:(unsigned int)a4;
-- (id)initForArchiving:(id)a3 withSubmeshRenditionKeys:(id)a4;
-- (unint64_t)writeToData:(id)a3;
+- (id)_initWithCSIHeader:(const _csiheader *)header version:(unsigned int)version;
+- (id)initForArchiving:(id)archiving withSubmeshRenditionKeys:(id)keys;
+- (unint64_t)writeToData:(id)data;
 - (void)dealloc;
 @end
 
 @implementation _CUIThemeModelMeshRendition
 
-- (id)initForArchiving:(id)a3 withSubmeshRenditionKeys:(id)a4
+- (id)initForArchiving:(id)archiving withSubmeshRenditionKeys:(id)keys
 {
   v8.receiver = self;
   v8.super_class = _CUIThemeModelMeshRendition;
   v6 = [(_CUIThemeModelMeshRendition *)&v8 init];
   if (v6)
   {
-    v6->_mesh = a3;
-    v6->_submeshKeys = [[NSMutableArray alloc] initWithArray:a4];
+    v6->_mesh = archiving;
+    v6->_submeshKeys = [[NSMutableArray alloc] initWithArray:keys];
   }
 
   return v6;
@@ -28,15 +28,15 @@
   [(CUIThemeRendition *)&v3 dealloc];
 }
 
-- (id)_initWithCSIHeader:(const _csiheader *)a3 version:(unsigned int)a4
+- (id)_initWithCSIHeader:(const _csiheader *)header version:(unsigned int)version
 {
   v41.receiver = self;
   v41.super_class = _CUIThemeModelMeshRendition;
-  v6 = [(CUIThemeRendition *)&v41 _initWithCSIHeader:a3 version:*&a4];
+  v6 = [(CUIThemeRendition *)&v41 _initWithCSIHeader:header version:*&version];
   if (v6)
   {
     memset(v43, 0, 92);
-    v7 = &a3->var0 + 4 * a3->var11.var0 + a3->var10;
+    v7 = &header->var0 + 4 * header->var11.var0 + header->var10;
     v9 = *(v7 + 45);
     v8 = v7 + 180;
     if (v9 != 1297040461)
@@ -162,25 +162,25 @@
   return v6;
 }
 
-- (unint64_t)writeToData:(id)a3
+- (unint64_t)writeToData:(id)data
 {
   v70 = 0;
-  v41 = [a3 length];
+  v41 = [data length];
   v47 = objc_alloc_init(NSMutableArray);
   v71 = 0x14D4F444DLL;
-  v45 = [(MDLMesh *)self->_mesh vertexCount];
-  v73 = v45;
+  vertexCount = [(MDLMesh *)self->_mesh vertexCount];
+  v73 = vertexCount;
   v75 = 0;
   v74 = 0;
   v76 = [(NSArray *)[(MDLMesh *)self->_mesh vertexBuffers] count];
   v77 = [(NSMutableArray *)self->_submeshKeys count];
-  v43 = [(MDLMesh *)self->_mesh name];
-  v72 = [v43 length];
+  name = [(MDLMesh *)self->_mesh name];
+  v72 = [name length];
   v66 = 0u;
   v67 = 0u;
   v68 = 0u;
   v69 = 0u;
-  v46 = self;
+  selfCopy = self;
   obj = [(MDLVertexDescriptor *)[(MDLMesh *)self->_mesh vertexDescriptor] attributes];
   v5 = [(NSMutableArray *)obj countByEnumeratingWithState:&v66 objects:v82 count:16];
   if (v5)
@@ -198,13 +198,13 @@
         }
 
         v10 = *(*(&v66 + 1) + 8 * i);
-        v11 = -[MDLMesh vertexAttributeDataForAttributeNamed:](v46->_mesh, "vertexAttributeDataForAttributeNamed:", [v10 name]);
+        v11 = -[MDLMesh vertexAttributeDataForAttributeNamed:](selfCopy->_mesh, "vertexAttributeDataForAttributeNamed:", [v10 name]);
         if ([(MDLVertexAttributeData *)v11 format])
         {
           v64 = 0u;
           v65 = 0u;
           v12 = +[NSMutableData data];
-          v13 = [NSData dataWithBytes:[(MDLVertexAttributeData *)v11 dataStart] length:[(MDLVertexAttributeData *)v11 stride]* v45];
+          v13 = [NSData dataWithBytes:[(MDLVertexAttributeData *)v11 dataStart] length:[(MDLVertexAttributeData *)v11 stride]* vertexCount];
           *&v64 = [(MDLVertexAttributeData *)v11 format];
           *(&v64 + 1) = [(MDLVertexAttributeData *)v11 stride];
           *&v65 = [v10 offset];
@@ -229,8 +229,8 @@
   v63 = 0u;
   v60 = 0u;
   v61 = 0u;
-  v15 = [(MDLVertexDescriptor *)[(MDLMesh *)v46->_mesh vertexDescriptor] layouts];
-  v16 = [(NSMutableArray *)v15 countByEnumeratingWithState:&v60 objects:v81 count:16];
+  layouts = [(MDLVertexDescriptor *)[(MDLMesh *)selfCopy->_mesh vertexDescriptor] layouts];
+  v16 = [(NSMutableArray *)layouts countByEnumeratingWithState:&v60 objects:v81 count:16];
   if (v16)
   {
     v17 = v16;
@@ -242,7 +242,7 @@
       {
         if (*v61 != v19)
         {
-          objc_enumerationMutation(v15);
+          objc_enumerationMutation(layouts);
         }
 
         v21 = *(*(&v60 + 1) + 8 * j);
@@ -257,15 +257,15 @@
         }
       }
 
-      v17 = [(NSMutableArray *)v15 countByEnumeratingWithState:&v60 objects:v81 count:16];
+      v17 = [(NSMutableArray *)layouts countByEnumeratingWithState:&v60 objects:v81 count:16];
     }
 
     while (v17);
   }
 
-  [a3 appendBytes:&v71 length:52];
-  v23 = [v43 UTF8String];
-  [a3 appendBytes:v23 length:v72];
+  [data appendBytes:&v71 length:52];
+  uTF8String = [name UTF8String];
+  [data appendBytes:uTF8String length:v72];
   v58 = 0u;
   v59 = 0u;
   v56 = 0u;
@@ -284,7 +284,7 @@
           objc_enumerationMutation(v47);
         }
 
-        [a3 appendData:*(*(&v56 + 1) + 8 * k)];
+        [data appendData:*(*(&v56 + 1) + 8 * k)];
       }
 
       v25 = [v47 countByEnumeratingWithState:&v56 objects:v80 count:16];
@@ -297,8 +297,8 @@
   v55 = 0u;
   v52 = 0u;
   v53 = 0u;
-  v28 = [(MDLMesh *)v46->_mesh vertexBuffers];
-  v29 = [(NSArray *)v28 countByEnumeratingWithState:&v52 objects:v79 count:16];
+  vertexBuffers = [(MDLMesh *)selfCopy->_mesh vertexBuffers];
+  v29 = [(NSArray *)vertexBuffers countByEnumeratingWithState:&v52 objects:v79 count:16];
   if (v29)
   {
     v30 = v29;
@@ -309,17 +309,17 @@
       {
         if (*v53 != v31)
         {
-          objc_enumerationMutation(v28);
+          objc_enumerationMutation(vertexBuffers);
         }
 
         v33 = *(*(&v52 + 1) + 8 * m);
         *&v64 = 0;
         *&v64 = [v33 length];
-        [a3 appendBytes:&v64 length:8];
-        [a3 appendData:{objc_msgSend(v33, "data")}];
+        [data appendBytes:&v64 length:8];
+        [data appendData:{objc_msgSend(v33, "data")}];
       }
 
-      v30 = [(NSArray *)v28 countByEnumeratingWithState:&v52 objects:v79 count:16];
+      v30 = [(NSArray *)vertexBuffers countByEnumeratingWithState:&v52 objects:v79 count:16];
     }
 
     while (v30);
@@ -329,7 +329,7 @@
   v51 = 0u;
   v48 = 0u;
   v49 = 0u;
-  submeshKeys = v46->_submeshKeys;
+  submeshKeys = selfCopy->_submeshKeys;
   v35 = [(NSMutableArray *)submeshKeys countByEnumeratingWithState:&v48 objects:v78 count:16];
   if (v35)
   {
@@ -344,10 +344,10 @@
           objc_enumerationMutation(submeshKeys);
         }
 
-        v39 = [*(*(&v48 + 1) + 8 * n) keyList];
-        v70 = 4 * CUIRenditionKeyTokenCount(v39) + 4;
-        [a3 appendBytes:&v70 length:4];
-        [a3 appendBytes:v39 length:v70];
+        keyList = [*(*(&v48 + 1) + 8 * n) keyList];
+        v70 = 4 * CUIRenditionKeyTokenCount(keyList) + 4;
+        [data appendBytes:&v70 length:4];
+        [data appendBytes:keyList length:v70];
       }
 
       v36 = [(NSMutableArray *)submeshKeys countByEnumeratingWithState:&v48 objects:v78 count:16];
@@ -356,7 +356,7 @@
     while (v36);
   }
 
-  return [a3 length] - v42;
+  return [data length] - v42;
 }
 
 @end

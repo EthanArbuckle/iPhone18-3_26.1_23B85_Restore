@@ -1,33 +1,33 @@
 @interface UIStatusBarThermalColorItemViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 - (unint64_t)accessibilityTraits;
 @end
 
 @implementation UIStatusBarThermalColorItemViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   [location[0] validateClass:@"UIStatusBarThermalColorItemView" hasInstanceVariable:@"_sunlightMode" withType:"B"];
   objc_storeStrong(location, 0);
 }
 
 - (id)accessibilityLabel
 {
-  v22 = self;
+  selfCopy = self;
   v21 = a2;
   v20[8] = 0;
   *v20 = [(UIStatusBarThermalColorItemViewAccessibility *)self safeBoolForKey:@"_sunlightMode"];
-  v16 = [(UIStatusBarThermalColorItemViewAccessibility *)v22 safeValueForKey:@"_thermalColor"];
-  v17 = [v16 intValue];
+  v16 = [(UIStatusBarThermalColorItemViewAccessibility *)selfCopy safeValueForKey:@"_thermalColor"];
+  intValue = [v16 intValue];
   MEMORY[0x29EDC9740](v16);
-  if (v17)
+  if (intValue)
   {
-    switch(v17)
+    switch(intValue)
     {
       case 1:
         v2 = accessibilityLocalizedString(@"status.thermal.warning");
@@ -95,7 +95,7 @@
 
 - (unint64_t)accessibilityTraits
 {
-  v5 = self;
+  selfCopy = self;
   v4 = a2;
   v3.receiver = self;
   v3.super_class = UIStatusBarThermalColorItemViewAccessibility;

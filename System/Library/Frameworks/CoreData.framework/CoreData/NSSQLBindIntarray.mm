@@ -1,5 +1,5 @@
 @interface NSSQLBindIntarray
-- (NSSQLBindIntarray)initWithValue:(id)a3;
+- (NSSQLBindIntarray)initWithValue:(id)value;
 - (void)dealloc;
 @end
 
@@ -15,14 +15,14 @@
   [(NSSQLBindIntarray *)&v3 dealloc];
 }
 
-- (NSSQLBindIntarray)initWithValue:(id)a3
+- (NSSQLBindIntarray)initWithValue:(id)value
 {
   v6.receiver = self;
   v6.super_class = NSSQLBindIntarray;
   v4 = [(NSSQLBindIntarray *)&v6 init];
   if (v4)
   {
-    v4->_value = a3;
+    v4->_value = value;
   }
 
   return v4;

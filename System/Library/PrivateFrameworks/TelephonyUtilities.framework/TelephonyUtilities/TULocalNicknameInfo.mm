@@ -1,8 +1,8 @@
 @interface TULocalNicknameInfo
 - (TULocalNicknameInfo)init;
-- (id)appleTVNicknameForDeviceName:(id)a3;
-- (id)formattedDisplayNameForIMNickname:(id)a3 style:(int64_t)a4;
-- (id)nicknameWithFormatterStyle:(int64_t)a3;
+- (id)appleTVNicknameForDeviceName:(id)name;
+- (id)formattedDisplayNameForIMNickname:(id)nickname style:(int64_t)style;
+- (id)nicknameWithFormatterStyle:(int64_t)style;
 @end
 
 @implementation TULocalNicknameInfo
@@ -17,36 +17,36 @@
     v3 = CUTWeakLinkClass();
     if (v3)
     {
-      v4 = [v3 sharedController];
-      [v4 connectToDaemon];
+      sharedController = [v3 sharedController];
+      [sharedController connectToDaemon];
     }
   }
 
   return v2;
 }
 
-- (id)appleTVNicknameForDeviceName:(id)a3
+- (id)appleTVNicknameForDeviceName:(id)name
 {
-  v4 = a3;
-  if (v4 && ([(TULocalNicknameInfo *)self shortNickname], (v5 = objc_claimAutoreleasedReturnValue()) != 0))
+  nameCopy = name;
+  if (nameCopy && ([(TULocalNicknameInfo *)self shortNickname], (v5 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v6 = v5;
     v7 = MEMORY[0x1E696AEC0];
     v8 = TUBundle();
     v9 = [v8 localizedStringForKey:@"%@_APPLE_TV_DEVICE_NAME_%@" value:&stru_1F098C218 table:@"TelephonyUtilities"];
-    v10 = [v7 stringWithFormat:v9, v6, v4];
+    nameCopy = [v7 stringWithFormat:v9, v6, nameCopy];
   }
 
   else
   {
     v6 = TUBundle();
-    v10 = [v6 localizedStringForKey:@"APPLE_TV" value:&stru_1F098C218 table:@"TelephonyUtilities"];
+    nameCopy = [v6 localizedStringForKey:@"APPLE_TV" value:&stru_1F098C218 table:@"TelephonyUtilities"];
   }
 
-  return v10;
+  return nameCopy;
 }
 
-- (id)nicknameWithFormatterStyle:(int64_t)a3
+- (id)nicknameWithFormatterStyle:(int64_t)style
 {
   v40 = *MEMORY[0x1E69E9840];
   v5 = CUTWeakLinkClass();
@@ -55,13 +55,13 @@
     goto LABEL_11;
   }
 
-  v6 = [v5 sharedInstance];
+  sharedInstance = [v5 sharedInstance];
   *&v35 = 0;
   *(&v35 + 1) = &v35;
   v36 = 0x3032000000;
   v37 = __Block_byref_object_copy__0;
   v38 = __Block_byref_object_dispose__0;
-  v39 = [v6 personalNickname];
+  personalNickname = [sharedInstance personalNickname];
   v7 = *(*(&v35 + 1) + 40);
   if (!v7)
   {
@@ -73,7 +73,7 @@
     v31 = &v35;
     v9 = v8;
     v30 = v9;
-    [v6 fetchPersonalNicknameWithCompletion:v29];
+    [sharedInstance fetchPersonalNicknameWithCompletion:v29];
     v10 = dispatch_time(0, 1000000000);
     if (dispatch_semaphore_wait(v9, v10))
     {
@@ -87,7 +87,7 @@
     v7 = *(*(&v35 + 1) + 40);
   }
 
-  v12 = [(TULocalNicknameInfo *)self formattedDisplayNameForIMNickname:v7 style:a3];
+  v12 = [(TULocalNicknameInfo *)self formattedDisplayNameForIMNickname:v7 style:style];
   v13 = TUDefaultLog();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
@@ -101,11 +101,11 @@
   {
 LABEL_11:
     v14 = MEMORY[0x1E695CE28];
-    v15 = [MEMORY[0x1E696AAE8] mainBundle];
-    v16 = [v15 bundleIdentifier];
-    if (v16)
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
+    if (bundleIdentifier)
     {
-      v17 = [v14 tu_contactStoreConfigurationForBundleIdentifier:v16];
+      v17 = [v14 tu_contactStoreConfigurationForBundleIdentifier:bundleIdentifier];
     }
 
     else
@@ -160,21 +160,21 @@ void __50__TULocalNicknameInfo_nicknameWithFormatterStyle___block_invoke(uint64_
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (id)formattedDisplayNameForIMNickname:(id)a3 style:(int64_t)a4
+- (id)formattedDisplayNameForIMNickname:(id)nickname style:(int64_t)style
 {
-  if (a3)
+  if (nickname)
   {
-    v5 = a3;
+    nicknameCopy = nickname;
     v6 = objc_opt_new();
-    v7 = [v5 firstName];
-    [v6 setGivenName:v7];
+    firstName = [nicknameCopy firstName];
+    [v6 setGivenName:firstName];
 
-    v8 = [v5 lastName];
+    lastName = [nicknameCopy lastName];
 
-    [v6 setFamilyName:v8];
-    v9 = [MEMORY[0x1E696ADF8] localizedStringFromPersonNameComponents:v6 style:a4 options:0];
-    v10 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
-    v11 = [v9 stringByTrimmingCharactersInSet:v10];
+    [v6 setFamilyName:lastName];
+    v9 = [MEMORY[0x1E696ADF8] localizedStringFromPersonNameComponents:v6 style:style options:0];
+    whitespaceAndNewlineCharacterSet = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+    v11 = [v9 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
   }
 
   else

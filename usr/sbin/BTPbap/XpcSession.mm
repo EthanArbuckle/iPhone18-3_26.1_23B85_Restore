@@ -1,20 +1,20 @@
 @interface XpcSession
-- (XpcSession)initWithConnection:(id)a3;
-- (const)_callStatusForCall:(id)a3;
-- (id)_predicateForType:(id)a3;
-- (void)_handleGetRecentCallMsg:(id)a3 reply:(id)a4;
-- (void)_handleGetSizeMsg:(id)a3 reply:(id)a4;
-- (void)_handleOpenMsg:(id)a3 reply:(id)a4;
-- (void)handleMsg:(id)a3;
+- (XpcSession)initWithConnection:(id)connection;
+- (const)_callStatusForCall:(id)call;
+- (id)_predicateForType:(id)type;
+- (void)_handleGetRecentCallMsg:(id)msg reply:(id)reply;
+- (void)_handleGetSizeMsg:(id)msg reply:(id)reply;
+- (void)_handleOpenMsg:(id)msg reply:(id)reply;
+- (void)handleMsg:(id)msg;
 @end
 
 @implementation XpcSession
 
-- (XpcSession)initWithConnection:(id)a3
+- (XpcSession)initWithConnection:(id)connection
 {
   v10.receiver = self;
   v10.super_class = XpcSession;
-  v3 = [(BTXpcSession *)&v10 initWithConnection:a3];
+  v3 = [(BTXpcSession *)&v10 initWithConnection:connection];
   if (v3 && NSClassFromString(@"CHManager"))
   {
     v4 = objc_alloc_init(CHManager);
@@ -33,12 +33,12 @@
   return v3;
 }
 
-- (void)handleMsg:(id)a3
+- (void)handleMsg:(id)msg
 {
-  v4 = a3;
-  v9 = [(BTXpcSession *)self stringForKey:"kMsgId" optional:0 dict:v4];
-  v5 = [(BTXpcSession *)self xpcDictForKey:"kMsgArgs" optional:1 dict:v4];
-  reply = xpc_dictionary_create_reply(v4);
+  msgCopy = msg;
+  v9 = [(BTXpcSession *)self stringForKey:"kMsgId" optional:0 dict:msgCopy];
+  v5 = [(BTXpcSession *)self xpcDictForKey:"kMsgArgs" optional:1 dict:msgCopy];
+  reply = xpc_dictionary_create_reply(msgCopy);
 
   v7 = [NSString stringWithFormat:@"_handle%@Msg:reply:", v9];
   v8 = NSSelectorFromString(v7);
@@ -54,24 +54,24 @@
   }
 }
 
-- (void)_handleOpenMsg:(id)a3 reply:(id)a4
+- (void)_handleOpenMsg:(id)msg reply:(id)reply
 {
-  v5 = a3;
-  v15 = [(BTXpcSession *)self stringForKey:"kArgType" optional:0 dict:v5];
-  v6 = [(BTXpcSession *)self numberForKey:"kArgOffset" optional:0 dict:v5];
-  v7 = [v6 unsignedIntegerValue];
+  msgCopy = msg;
+  v15 = [(BTXpcSession *)self stringForKey:"kArgType" optional:0 dict:msgCopy];
+  v6 = [(BTXpcSession *)self numberForKey:"kArgOffset" optional:0 dict:msgCopy];
+  unsignedIntegerValue = [v6 unsignedIntegerValue];
 
-  v8 = [(BTXpcSession *)self numberForKey:"kArgCount" optional:0 dict:v5];
+  v8 = [(BTXpcSession *)self numberForKey:"kArgCount" optional:0 dict:msgCopy];
 
-  v9 = [v8 unsignedIntegerValue];
+  unsignedIntegerValue2 = [v8 unsignedIntegerValue];
   v10 = [(XpcSession *)self _predicateForType:v15];
-  v11 = [(XpcSession *)self chManager];
-  v12 = [v11 coalescedCallsWithPredicate:v10 limit:0 offset:0 batchSize:0];
+  chManager = [(XpcSession *)self chManager];
+  v12 = [chManager coalescedCallsWithPredicate:v10 limit:0 offset:0 batchSize:0];
 
   v17.length = [v12 count];
   v17.location = 0;
-  v18.location = v7;
-  v18.length = v9;
+  v18.location = unsignedIntegerValue;
+  v18.length = unsignedIntegerValue2;
   v13 = NSIntersectionRange(v17, v18);
   if (v13.length)
   {
@@ -80,39 +80,39 @@
   }
 }
 
-- (void)_handleGetSizeMsg:(id)a3 reply:(id)a4
+- (void)_handleGetSizeMsg:(id)msg reply:(id)reply
 {
-  v5 = a4;
-  v6 = [(XpcSession *)self chRecentCalls];
-  xpc_dictionary_set_uint64(v5, "kValue", [v6 count]);
+  replyCopy = reply;
+  chRecentCalls = [(XpcSession *)self chRecentCalls];
+  xpc_dictionary_set_uint64(replyCopy, "kValue", [chRecentCalls count]);
 }
 
-- (void)_handleGetRecentCallMsg:(id)a3 reply:(id)a4
+- (void)_handleGetRecentCallMsg:(id)msg reply:(id)reply
 {
-  xdict = a4;
-  v6 = [(BTXpcSession *)self numberForKey:"kArgIndex" optional:0 dict:a3];
-  v7 = [v6 unsignedIntegerValue];
+  xdict = reply;
+  v6 = [(BTXpcSession *)self numberForKey:"kArgIndex" optional:0 dict:msg];
+  unsignedIntegerValue = [v6 unsignedIntegerValue];
 
-  v8 = [(XpcSession *)self chRecentCalls];
-  v9 = [v8 objectAtIndexedSubscript:v7];
+  chRecentCalls = [(XpcSession *)self chRecentCalls];
+  v9 = [chRecentCalls objectAtIndexedSubscript:unsignedIntegerValue];
 
-  v10 = [(XpcSession *)self tuCallProviderManager];
-  v11 = [v10 providerForRecentCall:v9];
+  tuCallProviderManager = [(XpcSession *)self tuCallProviderManager];
+  v11 = [tuCallProviderManager providerForRecentCall:v9];
 
-  v12 = [v9 addressBookRecordId];
+  addressBookRecordId = [v9 addressBookRecordId];
 
-  if (v12)
+  if (addressBookRecordId)
   {
-    v13 = [v9 addressBookRecordId];
-    xpc_dictionary_set_uint64(xdict, "kLegacyIdentifier", [v13 longLongValue]);
+    addressBookRecordId2 = [v9 addressBookRecordId];
+    xpc_dictionary_set_uint64(xdict, "kLegacyIdentifier", [addressBookRecordId2 longLongValue]);
   }
 
-  v14 = [v9 callerId];
+  callerId = [v9 callerId];
 
-  if (v14)
+  if (callerId)
   {
-    v15 = [v9 callerId];
-    xpc_dictionary_set_string(xdict, "kCallerId", [v15 UTF8String]);
+    callerId2 = [v9 callerId];
+    xpc_dictionary_set_string(xdict, "kCallerId", [callerId2 UTF8String]);
   }
 
   if ([v9 callStatus])
@@ -120,35 +120,35 @@
     xpc_dictionary_set_string(xdict, "kStatus", [(XpcSession *)self _callStatusForCall:v9]);
   }
 
-  v16 = [v9 date];
+  date = [v9 date];
 
-  if (v16)
+  if (date)
   {
-    v17 = [v9 date];
-    [v17 timeIntervalSince1970];
+    date2 = [v9 date];
+    [date2 timeIntervalSince1970];
     xpc_dictionary_set_date(xdict, "kDate", (v18 * 1000000000.0));
   }
 
-  v19 = [v9 callerIdLabel];
+  callerIdLabel = [v9 callerIdLabel];
 
-  if (v19)
+  if (callerIdLabel)
   {
-    v20 = [v9 callerIdLabel];
-    xpc_dictionary_set_string(xdict, "kLabel", [v20 UTF8String]);
+    callerIdLabel2 = [v9 callerIdLabel];
+    xpc_dictionary_set_string(xdict, "kLabel", [callerIdLabel2 UTF8String]);
   }
 
   if (v11)
   {
-    v21 = [v11 identifier];
-    xpc_dictionary_set_string(xdict, "kProviderIdentifier", [v21 UTF8String]);
+    identifier = [v11 identifier];
+    xpc_dictionary_set_string(xdict, "kProviderIdentifier", [identifier UTF8String]);
   }
 }
 
-- (id)_predicateForType:(id)a3
+- (id)_predicateForType:(id)type
 {
-  v3 = a3;
+  typeCopy = type;
   v4 = objc_alloc_init(NSMutableArray);
-  if ([v3 containsString:@"Incoming"])
+  if ([typeCopy containsString:@"Incoming"])
   {
     v5 = [CHRecentCall predicateForCallsWithStatus:kCHCallStatusConnectedIncoming];
     v21[0] = v5;
@@ -159,7 +159,7 @@
     [v4 addObject:v8];
   }
 
-  if ([v3 containsString:@"Outgoing"])
+  if ([typeCopy containsString:@"Outgoing"])
   {
     v9 = [CHRecentCall predicateForCallsWithStatus:kCHCallStatusConnectedOutgoing];
     v20[0] = v9;
@@ -170,19 +170,19 @@
     [v4 addObject:v12];
   }
 
-  if ([v3 containsString:@"Missed"])
+  if ([typeCopy containsString:@"Missed"])
   {
     v13 = [CHRecentCall predicateForCallsWithStatus:kCHCallStatusMissed];
     [v4 addObject:v13];
   }
 
-  if ([v3 containsString:@"Unread"])
+  if ([typeCopy containsString:@"Unread"])
   {
     v14 = [CHRecentCall predicateForCallsWithStatusRead:0];
     [v4 addObject:v14];
   }
 
-  if ([v3 containsString:@"Telephony"])
+  if ([typeCopy containsString:@"Telephony"])
   {
     v15 = [CHRecentCall predicateForCallsWithRemoteParticipantHandleType:2];
     [v4 addObject:v15];
@@ -205,19 +205,19 @@
   return v18;
 }
 
-- (const)_callStatusForCall:(id)a3
+- (const)_callStatusForCall:(id)call
 {
-  v3 = a3;
-  v4 = [v3 callStatus];
-  if ((kCHCallStatusIncoming & v4 & ~kCHCallStatusMissed) != 0)
+  callCopy = call;
+  callStatus = [callCopy callStatus];
+  if ((kCHCallStatusIncoming & callStatus & ~kCHCallStatusMissed) != 0)
   {
     v5 = "Incoming";
   }
 
   else
   {
-    v6 = [v3 callStatus];
-    if ((kCHCallStatusOutgoing & v6) != 0)
+    callStatus2 = [callCopy callStatus];
+    if ((kCHCallStatusOutgoing & callStatus2) != 0)
     {
       v5 = "Outgoing";
     }

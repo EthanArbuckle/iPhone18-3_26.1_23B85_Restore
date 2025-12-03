@@ -1,9 +1,9 @@
 @interface ENXMLWriter
-- (BOOL)startElement:(id)a3;
-- (BOOL)startElement:(id)a3 attributes:(id)a4;
-- (BOOL)writeAttributeName:(id)a3 value:(id)a4;
-- (BOOL)writeElement:(id)a3 attributes:(id)a4 content:(id)a5;
-- (ENXMLWriter)initWithDelegate:(id)a3;
+- (BOOL)startElement:(id)element;
+- (BOOL)startElement:(id)element attributes:(id)attributes;
+- (BOOL)writeAttributeName:(id)name value:(id)value;
+- (BOOL)writeElement:(id)element attributes:(id)attributes content:(id)content;
+- (ENXMLWriter)initWithDelegate:(id)delegate;
 - (ENXMLWriterDelegate)delegate;
 - (void)dealloc;
 - (void)endCDATA;
@@ -11,8 +11,8 @@
 - (void)endElement;
 - (void)startCDATA;
 - (void)startDocument;
-- (void)writeCDATA:(id)a3;
-- (void)writeString:(id)a3 raw:(BOOL)a4;
+- (void)writeCDATA:(id)a;
+- (void)writeString:(id)string raw:(BOOL)raw;
 @end
 
 @implementation ENXMLWriter
@@ -31,11 +31,11 @@
   CheckXMLResult(v2, @"xmlTextWriterEndCDATA");
 }
 
-- (void)writeCDATA:(id)a3
+- (void)writeCDATA:(id)a
 {
   xmlWriter = self->_xmlWriter;
-  v5 = a3;
-  v6 = xmlTextWriterWriteCDATA(xmlWriter, [a3 cStringUsingEncoding:4]);
+  aCopy = a;
+  v6 = xmlTextWriterWriteCDATA(xmlWriter, [a cStringUsingEncoding:4]);
 
   CheckXMLResult(v6, @"xmlTextWriterWriteCDATA");
 }
@@ -47,16 +47,16 @@
   CheckXMLResult(started, @"xmlTextWriterStartCDATA");
 }
 
-- (void)writeString:(id)a3 raw:(BOOL)a4
+- (void)writeString:(id)string raw:(BOOL)raw
 {
-  v4 = a4;
-  v6 = a3;
-  if (v6)
+  rawCopy = raw;
+  stringCopy = string;
+  if (stringCopy)
   {
     xmlWriter = self->_xmlWriter;
-    v11 = v6;
+    v11 = stringCopy;
     v8 = [v11 cStringUsingEncoding:4];
-    if (v4)
+    if (rawCopy)
     {
       v9 = xmlTextWriterWriteRaw(xmlWriter, v8);
       v10 = @"xmlTextWriterWriteRaw";
@@ -69,17 +69,17 @@
     }
 
     CheckXMLResult(v9, v10);
-    v6 = v11;
+    stringCopy = v11;
   }
 }
 
-- (BOOL)writeAttributeName:(id)a3 value:(id)a4
+- (BOOL)writeAttributeName:(id)name value:(id)value
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  nameCopy = name;
+  valueCopy = value;
+  if (valueCopy)
   {
-    v8 = v7;
+    v8 = valueCopy;
   }
 
   else
@@ -88,7 +88,7 @@
   }
 
   dtd = self->_dtd;
-  if (dtd && ![(ENXMLDTD *)dtd isAttributeLegal:v6 inElement:self->_currentElementName])
+  if (dtd && ![(ENXMLDTD *)dtd isAttributeLegal:nameCopy inElement:self->_currentElementName])
   {
     v12 = 0;
   }
@@ -97,7 +97,7 @@
   {
     v10 = [objc_alloc(MEMORY[0x277CCAB68]) initWithString:v8];
     [v10 replaceOccurrencesOfString:@"&#38;" withString:@"&" options:0 range:{0, objc_msgSend(v10, "length")}];
-    v11 = xmlTextWriterWriteAttribute(self->_xmlWriter, [v6 cStringUsingEncoding:4], objc_msgSend(v10, "cStringUsingEncoding:", 4));
+    v11 = xmlTextWriterWriteAttribute(self->_xmlWriter, [nameCopy cStringUsingEncoding:4], objc_msgSend(v10, "cStringUsingEncoding:", 4));
     CheckXMLResult(v11, @"xmlTextWriterWriteAttribute");
 
     v12 = 1;
@@ -106,13 +106,13 @@
   return v12;
 }
 
-- (BOOL)writeElement:(id)a3 attributes:(id)a4 content:(id)a5
+- (BOOL)writeElement:(id)element attributes:(id)attributes content:(id)content
 {
-  v8 = a5;
-  v9 = [(ENXMLWriter *)self startElement:a3 attributes:a4];
+  contentCopy = content;
+  v9 = [(ENXMLWriter *)self startElement:element attributes:attributes];
   if (v9)
   {
-    [(ENXMLWriter *)self writeString:v8];
+    [(ENXMLWriter *)self writeString:contentCopy];
     [(ENXMLWriter *)self endElement];
   }
 
@@ -127,19 +127,19 @@
   --self->_openElementCount;
 }
 
-- (BOOL)startElement:(id)a3 attributes:(id)a4
+- (BOOL)startElement:(id)element attributes:(id)attributes
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [(ENXMLWriter *)self startElement:a3];
+  attributesCopy = attributes;
+  v7 = [(ENXMLWriter *)self startElement:element];
   if (v7)
   {
     v19 = 0u;
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v8 = [v6 allKeys];
-    v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    allKeys = [attributesCopy allKeys];
+    v9 = [allKeys countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v9)
     {
       v10 = v9;
@@ -150,11 +150,11 @@
         {
           if (*v18 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(allKeys);
           }
 
           v13 = *(*(&v17 + 1) + 8 * i);
-          v14 = [v6 objectForKeyedSubscript:v13];
+          v14 = [attributesCopy objectForKeyedSubscript:v13];
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
@@ -162,7 +162,7 @@
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v10 = [allKeys countByEnumeratingWithState:&v17 objects:v21 count:16];
       }
 
       while (v10);
@@ -173,21 +173,21 @@
   return v7;
 }
 
-- (BOOL)startElement:(id)a3
+- (BOOL)startElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   dtd = self->_dtd;
-  if (dtd && ![(ENXMLDTD *)dtd isElementLegal:v4])
+  if (dtd && ![(ENXMLDTD *)dtd isElementLegal:elementCopy])
   {
     v7 = 0;
   }
 
   else
   {
-    started = xmlTextWriterStartElement(self->_xmlWriter, [v4 cStringUsingEncoding:4]);
+    started = xmlTextWriterStartElement(self->_xmlWriter, [elementCopy cStringUsingEncoding:4]);
     CheckXMLResult(started, @"xmlTextWriterStartElement");
     ++self->_openElementCount;
-    [(ENXMLWriter *)self setCurrentElementName:v4];
+    [(ENXMLWriter *)self setCurrentElementName:elementCopy];
     v7 = 1;
   }
 
@@ -210,7 +210,7 @@
   {
     v4 = ENXMLWriter_delegateWriteCallback;
     v5 = ENXMLWriter_delegateCloseCallback;
-    v6 = self;
+    selfCopy = self;
   }
 
   else
@@ -219,12 +219,12 @@
     contents = self->_contents;
     self->_contents = v7;
 
-    v6 = self->_contents;
+    selfCopy = self->_contents;
     v4 = ENXMLWriter_contentsWriteCallback;
     v5 = 0;
   }
 
-  IO = xmlOutputBufferCreateIO(v4, v5, v6, 0);
+  IO = xmlOutputBufferCreateIO(v4, v5, selfCopy, 0);
   self->_xmlOutputBuffer = IO;
   if (IO)
   {
@@ -255,17 +255,17 @@
   dtd = self->_dtd;
   if (dtd)
   {
-    v15 = [(ENXMLDTD *)dtd docTypeDeclaration];
+    docTypeDeclaration = [(ENXMLDTD *)dtd docTypeDeclaration];
 
-    if (v15)
+    if (docTypeDeclaration)
     {
       xmlWriter = self->_xmlWriter;
       CharEncodingName = xmlGetCharEncodingName(XML_CHAR_ENCODING_UTF8);
       started = xmlTextWriterStartDocument(xmlWriter, 0, CharEncodingName, "no");
       CheckXMLResult(started, @"xmlTextWriterStartDocument");
       v19 = self->_xmlWriter;
-      v20 = [(ENXMLDTD *)self->_dtd docTypeDeclaration];
-      v21 = xmlTextWriterWriteRaw(v19, [v20 cStringUsingEncoding:4]);
+      docTypeDeclaration2 = [(ENXMLDTD *)self->_dtd docTypeDeclaration];
+      v21 = xmlTextWriterWriteRaw(v19, [docTypeDeclaration2 cStringUsingEncoding:4]);
 
       CheckXMLResult(v21, @"xmlTextWriterWriteRaw");
     }
@@ -290,16 +290,16 @@
   [(ENXMLWriter *)&v4 dealloc];
 }
 
-- (ENXMLWriter)initWithDelegate:(id)a3
+- (ENXMLWriter)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v8.receiver = self;
   v8.super_class = ENXMLWriter;
   v5 = [(ENXMLWriter *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(ENXMLWriter *)v5 setDelegate:v4];
+    [(ENXMLWriter *)v5 setDelegate:delegateCopy];
   }
 
   return v6;

@@ -5,12 +5,12 @@
 - (id)getOutputStream;
 - (id)socksBind;
 - (int)available;
-- (void)acceptWithJavaNetSocketImpl:(id)a3;
+- (void)acceptWithJavaNetSocketImpl:(id)impl;
 - (void)close;
-- (void)connectWithJavaNetSocketAddress:(id)a3 withInt:(int)a4;
-- (void)createWithBoolean:(BOOL)a3;
+- (void)connectWithJavaNetSocketAddress:(id)address withInt:(int)int;
+- (void)createWithBoolean:(BOOL)boolean;
 - (void)dealloc;
-- (void)sendUrgentDataWithInt:(int)a3;
+- (void)sendUrgentDataWithInt:(int)int;
 - (void)shutdownInput;
 - (void)shutdownOutput;
 - (void)socksAccept;
@@ -26,22 +26,22 @@
   return self;
 }
 
-- (void)acceptWithJavaNetSocketImpl:(id)a3
+- (void)acceptWithJavaNetSocketImpl:(id)impl
 {
   if ([JavaNetPlainSocketImpl usingSocks]_0(self))
   {
     objc_opt_class();
-    if (!a3)
+    if (!impl)
     {
       JreThrowNullPointerException();
     }
 
-    if ((objc_opt_isKindOfClass() & 1) == 0 || ([JavaNetPlainSocketImpl socksBind]_0(a3), objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+    if ((objc_opt_isKindOfClass() & 1) == 0 || ([JavaNetPlainSocketImpl socksBind]_0(impl), objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       JreThrowClassCastException();
     }
 
-    [a3 socksAccept];
+    [impl socksAccept];
   }
 
   else
@@ -52,31 +52,31 @@
       objc_opt_class();
     }
 
-    if (!LibcoreIoLibcore_os_ || (v6 = [LibcoreIoLibcore_os_ acceptWithJavaIoFileDescriptor:self->super.fd_ withJavaNetInetSocketAddress:v5], !a3) || ((v7 = *(a3 + 3)) != 0 ? (v8 = v6 == 0) : (v8 = 1), v8))
+    if (!LibcoreIoLibcore_os_ || (v6 = [LibcoreIoLibcore_os_ acceptWithJavaIoFileDescriptor:self->super.fd_ withJavaNetInetSocketAddress:v5], !impl) || ((v7 = *(impl + 3)) != 0 ? (v8 = v6 == 0) : (v8 = 1), v8))
     {
       JreThrowNullPointerException();
     }
 
     [v7 setInt$WithInt:{objc_msgSend(v6, "getInt$")}];
-    JreStrongAssign(a3 + 1, [(JavaNetInetSocketAddress *)v5 getAddress]);
-    *(a3 + 4) = [(JavaNetInetSocketAddress *)v5 getPort];
-    [a3 setOptionWithInt:4102 withId:JavaLangInteger_valueOfWithInt_(0)];
-    *(a3 + 8) = LibcoreIoIoBridge_getSocketLocalPortWithJavaIoFileDescriptor_(*(a3 + 3));
+    JreStrongAssign(impl + 1, [(JavaNetInetSocketAddress *)v5 getAddress]);
+    *(impl + 4) = [(JavaNetInetSocketAddress *)v5 getPort];
+    [impl setOptionWithInt:4102 withId:JavaLangInteger_valueOfWithInt_(0)];
+    *(impl + 8) = LibcoreIoIoBridge_getSocketLocalPortWithJavaIoFileDescriptor_(*(impl + 3));
   }
 }
 
 - (void)usingSocks
 {
-  result = *(a1 + 40);
+  result = *(self + 40);
   if (result)
   {
-    v2 = [result type];
+    type = [result type];
     if ((atomic_load_explicit(JavaNetProxy_TypeEnum__initialized, memory_order_acquire) & 1) == 0)
     {
       sub_10014A084();
     }
 
-    return (v2 == qword_100557EF0);
+    return (type == qword_100557EF0);
   }
 
   return result;
@@ -84,9 +84,9 @@
 
 - (id)socksBind
 {
-  v2 = *(a1 + 24);
-  v3 = sub_10014947C(a1);
-  v4 = sub_100149408(a1);
+  v2 = *(self + 24);
+  v3 = sub_10014947C(self);
+  v4 = sub_100149408(self);
   LibcoreIoIoBridge_connectWithJavaIoFileDescriptor_withJavaNetInetAddress_withInt_(v2, v3, v4);
   if (!qword_100554928)
   {
@@ -94,8 +94,8 @@
     goto LABEL_13;
   }
 
-  sub_1001498E4(a1, 2, qword_100554928, dword_100554930);
-  v5 = [JavaNetPlainSocketImpl socksReadReply]_0(a1);
+  sub_1001498E4(self, 2, qword_100554928, dword_100554930);
+  v5 = [JavaNetPlainSocketImpl socksReadReply]_0(self);
   if (!v5)
   {
     JreThrowNullPointerException();
@@ -112,26 +112,26 @@ LABEL_13:
   if ([(JavaNetSocks4Message *)v6 getIP])
   {
     v7 = [IOSByteArray arrayWithLength:4];
-    v8 = [(JavaNetSocks4Message *)v6 getIP];
+    getIP = [(JavaNetSocks4Message *)v6 getIP];
     if ((atomic_load_explicit(JavaNioByteOrder__initialized, memory_order_acquire) & 1) == 0)
     {
       sub_10014A090();
     }
 
-    LibcoreIoMemory_pokeIntWithByteArray_withInt_withInt_withJavaNioByteOrder_(v7, 0, v8, JavaNioByteOrder_BIG_ENDIAN__);
+    LibcoreIoMemory_pokeIntWithByteArray_withInt_withInt_withJavaNioByteOrder_(v7, 0, getIP, JavaNioByteOrder_BIG_ENDIAN__);
     v9 = JavaNetInetAddress_getByAddressWithByteArray_(v7);
-    v10 = (a1 + 8);
+    v10 = (self + 8);
   }
 
   else
   {
-    v9 = sub_10014947C(a1);
-    v10 = (a1 + 8);
+    v9 = sub_10014947C(self);
+    v10 = (self + 8);
   }
 
   JreStrongAssign(v10, v9);
   result = [(JavaNetSocks4Message *)v6 getPort];
-  *(a1 + 32) = result;
+  *(self + 32) = result;
   return result;
 }
 
@@ -168,10 +168,10 @@ LABEL_13:
   objc_sync_exit(self);
 }
 
-- (void)createWithBoolean:(BOOL)a3
+- (void)createWithBoolean:(BOOL)boolean
 {
-  *(&self->super.localport_ + 4) = a3;
-  v4 = LibcoreIoIoBridge_socketWithBoolean_(a3);
+  *(&self->super.localport_ + 4) = boolean;
+  v4 = LibcoreIoIoBridge_socketWithBoolean_(boolean);
 
   JreStrongAssign(&self->super.fd_, v4);
 }
@@ -237,13 +237,13 @@ LABEL_13:
   v3 = 0;
   while (v3 <= 7)
   {
-    v4 = [a1 getInputStream];
-    if (!v4)
+    getInputStream = [self getInputStream];
+    if (!getInputStream)
     {
       JreThrowNullPointerException();
     }
 
-    v5 = [v4 readWithByteArray:-[JavaNetSocks4Message getBytes](v2 withInt:"getBytes") withInt:{v3, (8 - v3)}];
+    v5 = [getInputStream readWithByteArray:-[JavaNetSocks4Message getBytes](v2 withInt:"getBytes") withInt:{v3, (8 - v3)}];
     v3 = v5 + v3;
     if (v5 == -1)
     {
@@ -292,10 +292,10 @@ LABEL_5:
   [LibcoreIoLibcore_os_ shutdownWithJavaIoFileDescriptor:self->super.fd_ withInt:1];
 }
 
-- (void)connectWithJavaNetSocketAddress:(id)a3 withInt:(int)a4
+- (void)connectWithJavaNetSocketAddress:(id)address withInt:(int)int
 {
   objc_opt_class();
-  if (!a3)
+  if (!address)
   {
     JreThrowNullPointerException();
   }
@@ -305,16 +305,16 @@ LABEL_5:
     JreThrowClassCastException();
   }
 
-  v7 = [a3 getAddress];
-  v8 = [a3 getPort];
+  getAddress = [address getAddress];
+  getPort = [address getPort];
 
-  sub_100149018(self, v7, v8, a4);
+  sub_100149018(self, getAddress, getPort, int);
 }
 
-- (void)sendUrgentDataWithInt:(int)a3
+- (void)sendUrgentDataWithInt:(int)int
 {
-  v6 = a3;
-  v4 = [IOSByteArray arrayWithBytes:&v6 count:1];
+  intCopy = int;
+  v4 = [IOSByteArray arrayWithBytes:&intCopy count:1];
   if ((atomic_load_explicit(LibcoreIoLibcore__initialized, memory_order_acquire) & 1) == 0)
   {
     objc_opt_class();

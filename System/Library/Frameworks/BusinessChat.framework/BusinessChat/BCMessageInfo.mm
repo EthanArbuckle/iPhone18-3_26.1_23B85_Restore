@@ -1,113 +1,113 @@
 @interface BCMessageInfo
-- (BCMessageInfo)initWithDictionary:(id)a3;
-- (BCMessageInfo)initWithDictionary:(id)a3 imageDictionary:(id)a4;
-- (BCMessageInfo)initWithTitle:(id)a3 subtitle:(id)a4 style:(id)a5 alternateTitle:(id)a6 imageIdentifier:(id)a7 imageDescription:(id)a8;
+- (BCMessageInfo)initWithDictionary:(id)dictionary;
+- (BCMessageInfo)initWithDictionary:(id)dictionary imageDictionary:(id)imageDictionary;
+- (BCMessageInfo)initWithTitle:(id)title subtitle:(id)subtitle style:(id)style alternateTitle:(id)alternateTitle imageIdentifier:(id)identifier imageDescription:(id)description;
 - (NSDictionary)dictionaryValue;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 @end
 
 @implementation BCMessageInfo
 
-- (BCMessageInfo)initWithTitle:(id)a3 subtitle:(id)a4 style:(id)a5 alternateTitle:(id)a6 imageIdentifier:(id)a7 imageDescription:(id)a8
+- (BCMessageInfo)initWithTitle:(id)title subtitle:(id)subtitle style:(id)style alternateTitle:(id)alternateTitle imageIdentifier:(id)identifier imageDescription:(id)description
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
+  titleCopy = title;
+  subtitleCopy = subtitle;
+  alternateTitleCopy = alternateTitle;
+  identifierCopy = identifier;
+  descriptionCopy = description;
   v22.receiver = self;
   v22.super_class = BCMessageInfo;
   v19 = [(BCMessageInfo *)&v22 init];
   v20 = v19;
   if (v19)
   {
-    [(BCMessageInfo *)v19 setTitle:v14];
-    [(BCMessageInfo *)v20 setSubtitle:v15];
-    v20->__style = a5;
-    [(BCMessageInfo *)v20 setImageIdentifier:v17];
-    [(BCMessageInfo *)v20 setImageDescription:v18];
-    [(BCMessageInfo *)v20 setAlternateTitle:v16];
+    [(BCMessageInfo *)v19 setTitle:titleCopy];
+    [(BCMessageInfo *)v20 setSubtitle:subtitleCopy];
+    v20->__style = style;
+    [(BCMessageInfo *)v20 setImageIdentifier:identifierCopy];
+    [(BCMessageInfo *)v20 setImageDescription:descriptionCopy];
+    [(BCMessageInfo *)v20 setAlternateTitle:alternateTitleCopy];
   }
 
   return v20;
 }
 
-- (BCMessageInfo)initWithDictionary:(id)a3
+- (BCMessageInfo)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"title"];
-  v6 = [MEMORY[0x277CBEB68] null];
-  if (v5 == v6)
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"title"];
+  null = [MEMORY[0x277CBEB68] null];
+  if (v5 == null)
   {
     v7 = 0;
   }
 
   else
   {
-    v7 = [v4 objectForKeyedSubscript:@"title"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"title"];
   }
 
-  v8 = [v4 objectForKeyedSubscript:@"subtitle"];
-  v9 = [MEMORY[0x277CBEB68] null];
-  if (v8 == v9)
+  v8 = [dictionaryCopy objectForKeyedSubscript:@"subtitle"];
+  null2 = [MEMORY[0x277CBEB68] null];
+  if (v8 == null2)
   {
     v10 = 0;
   }
 
   else
   {
-    v10 = [v4 objectForKeyedSubscript:@"subtitle"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"subtitle"];
   }
 
-  v11 = [v4 objectForKeyedSubscript:@"style"];
-  v12 = [MEMORY[0x277CBEB68] null];
-  if (v11 == v12)
+  v11 = [dictionaryCopy objectForKeyedSubscript:@"style"];
+  null3 = [MEMORY[0x277CBEB68] null];
+  if (v11 == null3)
   {
     v13 = 0;
   }
 
   else
   {
-    v13 = [v4 objectForKeyedSubscript:@"style"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"style"];
   }
 
-  v14 = [v4 objectForKeyedSubscript:@"alternateTitle"];
-  v15 = [MEMORY[0x277CBEB68] null];
-  if (v14 == v15)
+  v14 = [dictionaryCopy objectForKeyedSubscript:@"alternateTitle"];
+  null4 = [MEMORY[0x277CBEB68] null];
+  if (v14 == null4)
   {
     v16 = 0;
   }
 
   else
   {
-    v16 = [v4 objectForKeyedSubscript:@"alternateTitle"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"alternateTitle"];
   }
 
-  v17 = [v4 objectForKeyedSubscript:@"imageIdentifier"];
-  v18 = [MEMORY[0x277CBEB68] null];
-  if (v17 == v18)
+  v17 = [dictionaryCopy objectForKeyedSubscript:@"imageIdentifier"];
+  null5 = [MEMORY[0x277CBEB68] null];
+  if (v17 == null5)
   {
     v19 = 0;
   }
 
   else
   {
-    v19 = [v4 objectForKeyedSubscript:@"imageIdentifier"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"imageIdentifier"];
   }
 
-  v20 = [v4 objectForKeyedSubscript:@"imageDescription"];
-  v21 = [MEMORY[0x277CBEB68] null];
-  if (v20 == v21)
+  v20 = [dictionaryCopy objectForKeyedSubscript:@"imageDescription"];
+  null6 = [MEMORY[0x277CBEB68] null];
+  if (v20 == null6)
   {
     v22 = 0;
   }
 
   else
   {
-    v22 = [v4 objectForKeyedSubscript:@"imageDescription"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"imageDescription"];
   }
 
   v23 = @"small";
@@ -123,36 +123,36 @@
   if (v7)
   {
     self = [(BCMessageInfo *)self initWithTitle:v7 subtitle:v10 style:v23 alternateTitle:v16 imageIdentifier:v19 imageDescription:v22];
-    v24 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v24 = 0;
+    selfCopy = 0;
   }
 
-  return v24;
+  return selfCopy;
 }
 
-- (BCMessageInfo)initWithDictionary:(id)a3 imageDictionary:(id)a4
+- (BCMessageInfo)initWithDictionary:(id)dictionary imageDictionary:(id)imageDictionary
 {
-  v6 = a4;
-  v7 = [(BCMessageInfo *)self initWithDictionary:a3];
+  imageDictionaryCopy = imageDictionary;
+  v7 = [(BCMessageInfo *)self initWithDictionary:dictionary];
   v8 = v7;
   if (v7)
   {
-    v9 = [(BCMessageInfo *)v7 imageIdentifier];
+    imageIdentifier = [(BCMessageInfo *)v7 imageIdentifier];
 
-    if (v9)
+    if (imageIdentifier)
     {
-      v10 = [(BCMessageInfo *)v8 imageIdentifier];
-      v11 = [v6 objectForKeyedSubscript:v10];
+      imageIdentifier2 = [(BCMessageInfo *)v8 imageIdentifier];
+      v11 = [imageDictionaryCopy objectForKeyedSubscript:imageIdentifier2];
 
-      v12 = [v11 image];
-      [(BCMessageInfo *)v8 setImage:v12];
+      image = [v11 image];
+      [(BCMessageInfo *)v8 setImage:image];
 
-      v13 = [v11 imageDescription];
-      [(BCMessageInfo *)v8 setImageDescription:v13];
+      imageDescription = [v11 imageDescription];
+      [(BCMessageInfo *)v8 setImageDescription:imageDescription];
     }
   }
 
@@ -175,48 +175,48 @@
 
 - (id)succinctDescription
 {
-  v2 = [(BCMessageInfo *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(BCMessageInfo *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
 {
   v3 = [MEMORY[0x277CF0C00] builderWithObject:self];
-  v4 = [(BCMessageInfo *)self title];
-  v5 = [v3 appendObject:v4 withName:@"title"];
+  title = [(BCMessageInfo *)self title];
+  v5 = [v3 appendObject:title withName:@"title"];
 
-  v6 = [(BCMessageInfo *)self subtitle];
-  v7 = [v3 appendObject:v6 withName:@"subtitle" skipIfNil:1];
+  subtitle = [(BCMessageInfo *)self subtitle];
+  v7 = [v3 appendObject:subtitle withName:@"subtitle" skipIfNil:1];
 
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(BCMessageInfo *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(BCMessageInfo *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = [(BCMessageInfo *)self succinctDescriptionBuilder];
-  v5 = [(BCMessageInfo *)self alternateTitle];
-  v6 = [v4 appendObject:v5 withName:@"alternateTitle" skipIfNil:1];
+  succinctDescriptionBuilder = [(BCMessageInfo *)self succinctDescriptionBuilder];
+  alternateTitle = [(BCMessageInfo *)self alternateTitle];
+  v6 = [succinctDescriptionBuilder appendObject:alternateTitle withName:@"alternateTitle" skipIfNil:1];
 
-  v7 = [(BCMessageInfo *)self imageIdentifier];
-  v8 = [v4 appendObject:v7 withName:@"imageIdentifier" skipIfNil:1];
+  imageIdentifier = [(BCMessageInfo *)self imageIdentifier];
+  v8 = [succinctDescriptionBuilder appendObject:imageIdentifier withName:@"imageIdentifier" skipIfNil:1];
 
-  v9 = [(BCMessageInfo *)self imageDescription];
-  v10 = [v4 appendObject:v9 withName:@"imageDescription" skipIfNil:1];
+  imageDescription = [(BCMessageInfo *)self imageDescription];
+  v10 = [succinctDescriptionBuilder appendObject:imageDescription withName:@"imageDescription" skipIfNil:1];
 
-  v11 = [(BCMessageInfo *)self style];
-  v12 = [v4 appendObject:v11 withName:@"style"];
+  style = [(BCMessageInfo *)self style];
+  v12 = [succinctDescriptionBuilder appendObject:style withName:@"style"];
 
-  return v4;
+  return succinctDescriptionBuilder;
 }
 
 @end

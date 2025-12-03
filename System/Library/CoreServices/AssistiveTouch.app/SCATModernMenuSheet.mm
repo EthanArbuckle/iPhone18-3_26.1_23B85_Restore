@@ -4,20 +4,20 @@
 - (NSArray)menuItems;
 - (NSString)description;
 - (SCATModernMenuSheet)init;
-- (SCATModernMenuSheet)initWithMenu:(id)a3;
+- (SCATModernMenuSheet)initWithMenu:(id)menu;
 - (SCATModernMenuSheetElementProviderDelegate)elementProviderDelegate;
 - (SCATStaticElementProvider)elementProvider;
-- (id)_filteredMenuItems:(id)a3;
+- (id)_filteredMenuItems:(id)items;
 - (id)backTitle;
-- (id)itemWithIdentifier:(id)a3;
-- (void)_insertObjectsOnSameRow:(id)a3 intoArray:(id)a4 itemsPerRow:(unint64_t)a5;
-- (void)_listenForMuteSwitchChangeIfNecessaryForItems:(id)a3;
+- (id)itemWithIdentifier:(id)identifier;
+- (void)_insertObjectsOnSameRow:(id)row intoArray:(id)array itemsPerRow:(unint64_t)perRow;
+- (void)_listenForMuteSwitchChangeIfNecessaryForItems:(id)items;
 - (void)dealloc;
-- (void)didFocusOnContext:(id)a3 oldContext:(id)a4;
+- (void)didFocusOnContext:(id)context oldContext:(id)oldContext;
 - (void)invalidateMenuItems;
-- (void)menuItemWasActivated:(id)a3;
+- (void)menuItemWasActivated:(id)activated;
 - (void)reload;
-- (void)sortMenuItemsForNumberOfItemsPerRow:(unint64_t)a3;
+- (void)sortMenuItemsForNumberOfItemsPerRow:(unint64_t)row;
 @end
 
 @implementation SCATModernMenuSheet
@@ -29,16 +29,16 @@
   return 0;
 }
 
-- (SCATModernMenuSheet)initWithMenu:(id)a3
+- (SCATModernMenuSheet)initWithMenu:(id)menu
 {
-  v4 = a3;
+  menuCopy = menu;
   v8.receiver = self;
   v8.super_class = SCATModernMenuSheet;
   v5 = [(SCATModernMenuSheet *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(SCATModernMenuSheet *)v5 setMenu:v4];
+    [(SCATModernMenuSheet *)v5 setMenu:menuCopy];
   }
 
   return v6;
@@ -48,8 +48,8 @@
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(SCATModernMenuSheet *)self menuItems];
-  v6 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v5 count]);
+  menuItems = [(SCATModernMenuSheet *)self menuItems];
+  v6 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [menuItems count]);
   v7 = [NSString stringWithFormat:@"%@<%p> items:%@", v4, self, v6];
 
   return v7;
@@ -60,8 +60,8 @@
   if (+[AXSpringBoardServer isAvailable])
   {
     v3 = +[AXSpringBoardServer server];
-    v4 = [(SCATModernMenuSheet *)self springBoardActionHandlerIdentifier];
-    [v3 removeActionHandler:v4];
+    springBoardActionHandlerIdentifier = [(SCATModernMenuSheet *)self springBoardActionHandlerIdentifier];
+    [v3 removeActionHandler:springBoardActionHandlerIdentifier];
   }
 
   v5.receiver = self;
@@ -71,10 +71,10 @@
 
 - (SCATStaticElementProvider)elementProvider
 {
-  v2 = [(SCATModernMenuSheet *)self elementProviderDelegate];
-  v3 = [v2 elementProvider];
+  elementProviderDelegate = [(SCATModernMenuSheet *)self elementProviderDelegate];
+  elementProvider = [elementProviderDelegate elementProvider];
 
-  return v3;
+  return elementProvider;
 }
 
 - (NSArray)menuItems
@@ -85,9 +85,9 @@
     v4 = +[NSMutableArray array];
     if ([(SCATModernMenuSheet *)self shouldIncludeBackItem])
     {
-      v5 = [(SCATModernMenuSheet *)self backTitle];
-      v6 = [(SCATModernMenuSheet *)self shouldUseBackItemAsDoneItem];
-      if (v6)
+      backTitle = [(SCATModernMenuSheet *)self backTitle];
+      shouldUseBackItemAsDoneItem = [(SCATModernMenuSheet *)self shouldUseBackItemAsDoneItem];
+      if (shouldUseBackItemAsDoneItem)
       {
         v7 = @"SCATIcon_general_exit";
       }
@@ -98,21 +98,21 @@
       }
 
       LOBYTE(v22) = 1;
-      v8 = [(objc_class *)[(SCATModernMenuSheet *)self _menuItemClass] itemWithIdentifier:@"private_back" delegate:self title:v5 imageName:v7 activateBehavior:2 allowedWithGuidedAccess:1 allowedWithAssistiveAccess:v22];
-      [v8 setShouldFlipForRTL:v6 ^ 1];
+      v8 = [(objc_class *)[(SCATModernMenuSheet *)self _menuItemClass] itemWithIdentifier:@"private_back" delegate:self title:backTitle imageName:v7 activateBehavior:2 allowedWithGuidedAccess:1 allowedWithAssistiveAccess:v22];
+      [v8 setShouldFlipForRTL:shouldUseBackItemAsDoneItem ^ 1];
       [(NSArray *)v4 addObject:v8];
     }
 
-    v9 = [(SCATModernMenuSheet *)self makeMenuItemsIfNeeded];
-    v10 = [(SCATModernMenuSheet *)self _filteredMenuItems:v9];
+    makeMenuItemsIfNeeded = [(SCATModernMenuSheet *)self makeMenuItemsIfNeeded];
+    v10 = [(SCATModernMenuSheet *)self _filteredMenuItems:makeMenuItemsIfNeeded];
 
     [(SCATModernMenuSheet *)self _listenForMuteSwitchChangeIfNecessaryForItems:v10];
     [(NSArray *)v4 addObjectsFromArray:v10];
     if (![(NSArray *)v4 count])
     {
-      v11 = [(SCATModernMenuSheet *)self _menuItemClass];
+      _menuItemClass = [(SCATModernMenuSheet *)self _menuItemClass];
       v12 = sub_100042B24(@"NO_ITEMS");
-      v13 = [(objc_class *)v11 itemWithIdentifier:@"private_empty" delegate:self title:v12 imageName:0 activateBehavior:2];
+      v13 = [(objc_class *)_menuItemClass itemWithIdentifier:@"private_empty" delegate:self title:v12 imageName:0 activateBehavior:2];
 
       +[SCATModernMenuItem imageSize];
       v15 = round(v14 * 44.0 / 60.0);
@@ -135,19 +135,19 @@
   return menuItems;
 }
 
-- (void)_listenForMuteSwitchChangeIfNecessaryForItems:(id)a3
+- (void)_listenForMuteSwitchChangeIfNecessaryForItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   if (+[AXSpringBoardServer isAvailable])
   {
-    v5 = [v4 axFilterObjectsUsingBlock:&stru_1001D7370];
-    v6 = [v5 firstObject];
+    v5 = [itemsCopy axFilterObjectsUsingBlock:&stru_1001D7370];
+    firstObject = [v5 firstObject];
 
     v7 = +[AXSpringBoardServer server];
-    v8 = [(SCATModernMenuSheet *)self springBoardActionHandlerIdentifier];
-    [v7 removeActionHandler:v8];
+    springBoardActionHandlerIdentifier = [(SCATModernMenuSheet *)self springBoardActionHandlerIdentifier];
+    [v7 removeActionHandler:springBoardActionHandlerIdentifier];
 
-    if (v6)
+    if (firstObject)
     {
       objc_initWeak(&location, self);
       v9 = +[AXSpringBoardServer server];
@@ -155,7 +155,7 @@
       v12[1] = 3221225472;
       v12[2] = sub_1000D6434;
       v12[3] = &unk_1001D48F0;
-      v13 = v6;
+      v13 = firstObject;
       v10[0] = _NSConcreteStackBlock;
       v10[1] = 3221225472;
       v10[2] = sub_1000D6448;
@@ -169,38 +169,38 @@
   }
 }
 
-- (void)sortMenuItemsForNumberOfItemsPerRow:(unint64_t)a3
+- (void)sortMenuItemsForNumberOfItemsPerRow:(unint64_t)row
 {
   if (![(SCATModernMenuSheet *)self areItemsSorted])
   {
     v5 = objc_alloc_init(NSMutableArray);
-    v6 = [(SCATModernMenuSheet *)self menuItems];
-    v7 = [v6 count];
+    menuItems = [(SCATModernMenuSheet *)self menuItems];
+    v7 = [menuItems count];
 
     if (v7)
     {
       v8 = 0;
       do
       {
-        v9 = [(SCATModernMenuSheet *)self menuItems];
-        v10 = [v9 objectAtIndex:v8];
+        menuItems2 = [(SCATModernMenuSheet *)self menuItems];
+        v10 = [menuItems2 objectAtIndex:v8];
 
-        v11 = [v10 menuItemGroupName];
+        menuItemGroupName = [v10 menuItemGroupName];
 
-        if (v11)
+        if (menuItemGroupName)
         {
-          v12 = [(SCATModernMenuSheet *)self menuItems];
+          menuItems3 = [(SCATModernMenuSheet *)self menuItems];
           v13 = v8 + 1;
-          v14 = [v12 axSafeObjectAtIndex:v8 + 1];
+          v14 = [menuItems3 axSafeObjectAtIndex:v8 + 1];
 
-          v15 = [v10 menuItemGroupName];
-          v16 = [v14 menuItemGroupName];
-          v17 = [v15 isEqualToString:v16];
+          menuItemGroupName2 = [v10 menuItemGroupName];
+          menuItemGroupName3 = [v14 menuItemGroupName];
+          v17 = [menuItemGroupName2 isEqualToString:menuItemGroupName3];
 
           if (v17)
           {
             v18 = [NSArray axArrayByIgnoringNilElementsWithCount:2, v10, v14];
-            [(SCATModernMenuSheet *)self _insertObjectsOnSameRow:v18 intoArray:v5 itemsPerRow:a3];
+            [(SCATModernMenuSheet *)self _insertObjectsOnSameRow:v18 intoArray:v5 itemsPerRow:row];
 
             v8 = v13;
           }
@@ -217,8 +217,8 @@
         }
 
         ++v8;
-        v19 = [(SCATModernMenuSheet *)self menuItems];
-        v20 = [v19 count];
+        menuItems4 = [(SCATModernMenuSheet *)self menuItems];
+        v20 = [menuItems4 count];
       }
 
       while (v8 < v20);
@@ -229,25 +229,25 @@
   }
 }
 
-- (void)_insertObjectsOnSameRow:(id)a3 intoArray:(id)a4 itemsPerRow:(unint64_t)a5
+- (void)_insertObjectsOnSameRow:(id)row intoArray:(id)array itemsPerRow:(unint64_t)perRow
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [v9 count];
-  v11 = [(SCATModernMenuSheet *)self numberOfItemsInFirstPage];
+  rowCopy = row;
+  arrayCopy = array;
+  v10 = [arrayCopy count];
+  numberOfItemsInFirstPage = [(SCATModernMenuSheet *)self numberOfItemsInFirstPage];
   v12 = v10;
-  if (v10 >= v11)
+  if (v10 >= numberOfItemsInFirstPage)
   {
     v12 = v10 - [(SCATModernMenuSheet *)self numberOfItemsInFirstPage];
   }
 
   v22 = 0u;
   v23 = 0u;
-  v13 = v12 % a5 == a5 - 1;
+  v13 = v12 % perRow == perRow - 1;
   *(&v20 + 1) = 0;
   v21 = 0u;
-  v14 = [v8 reverseObjectEnumerator];
-  v15 = [v14 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  reverseObjectEnumerator = [rowCopy reverseObjectEnumerator];
+  v15 = [reverseObjectEnumerator countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v15)
   {
     v16 = v15;
@@ -260,30 +260,30 @@
       {
         if (*v21 != v18)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
-        [v9 insertObject:*(*(&v20 + 1) + 8 * v19) atIndex:v17];
+        [arrayCopy insertObject:*(*(&v20 + 1) + 8 * v19) atIndex:v17];
         v19 = v19 + 1;
       }
 
       while (v16 != v19);
-      v16 = [v14 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v16 = [reverseObjectEnumerator countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v16);
   }
 }
 
-- (id)itemWithIdentifier:(id)a3
+- (id)itemWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(SCATModernMenuSheet *)self menuItems];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  menuItems = [(SCATModernMenuSheet *)self menuItems];
+  v6 = [menuItems countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = *v14;
@@ -293,12 +293,12 @@
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(menuItems);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 identifier];
-        v11 = [v10 isEqualToString:v4];
+        identifier = [v9 identifier];
+        v11 = [identifier isEqualToString:identifierCopy];
 
         if (v11)
         {
@@ -307,7 +307,7 @@
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [menuItems countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v6)
       {
         continue;
@@ -332,25 +332,25 @@ LABEL_11:
 - (void)reload
 {
   [(SCATModernMenuSheet *)self invalidateMenuItems];
-  v4 = [(SCATModernMenuSheet *)self menu];
-  v3 = [v4 menuVisualProvider];
-  [v3 didReloadSheet:self];
+  menu = [(SCATModernMenuSheet *)self menu];
+  menuVisualProvider = [menu menuVisualProvider];
+  [menuVisualProvider didReloadSheet:self];
 }
 
-- (id)_filteredMenuItems:(id)a3
+- (id)_filteredMenuItems:(id)items
 {
-  v3 = a3;
-  v4 = v3;
+  itemsCopy = items;
+  v4 = itemsCopy;
   if (AXAssistiveAccessEnabled())
   {
     v5 = [NSPredicate predicateWithBlock:&stru_1001D73D8];
-    v4 = [v3 filteredArrayUsingPredicate:v5];
+    v4 = [itemsCopy filteredArrayUsingPredicate:v5];
   }
 
   v6 = +[AXBackBoardServer server];
-  v7 = [v6 isGuidedAccessActive];
+  isGuidedAccessActive = [v6 isGuidedAccessActive];
 
-  if (v7)
+  if (isGuidedAccessActive)
   {
     v8 = [NSPredicate predicateWithBlock:&stru_1001D73F8];
     v9 = [v4 filteredArrayUsingPredicate:v8];
@@ -361,33 +361,33 @@ LABEL_11:
   return v4;
 }
 
-- (void)menuItemWasActivated:(id)a3
+- (void)menuItemWasActivated:(id)activated
 {
-  v4 = a3;
-  v5 = [v4 identifier];
-  v6 = [v5 isEqualToString:@"private_back"];
+  activatedCopy = activated;
+  identifier = [activatedCopy identifier];
+  v6 = [identifier isEqualToString:@"private_back"];
 
   if (v6)
   {
-    v7 = [(SCATModernMenuSheet *)self shouldUseBackItemAsDoneItem];
-    v8 = [(SCATModernMenuSheet *)self menu];
-    v9 = v8;
-    if (v7)
+    shouldUseBackItemAsDoneItem = [(SCATModernMenuSheet *)self shouldUseBackItemAsDoneItem];
+    menu = [(SCATModernMenuSheet *)self menu];
+    v9 = menu;
+    if (shouldUseBackItemAsDoneItem)
     {
-      [v8 hideWithCompletion:0];
+      [menu hideWithCompletion:0];
 LABEL_10:
 
       goto LABEL_11;
     }
 
-    v11 = [v8 popSheet];
+    popSheet = [menu popSheet];
 
-    if ((v11 & 1) == 0)
+    if ((popSheet & 1) == 0)
     {
       v9 = SWCHLogCommon();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
-        sub_10012B19C(self, v4, v9);
+        sub_10012B19C(self, activatedCopy, v9);
       }
 
       goto LABEL_10;
@@ -400,7 +400,7 @@ LABEL_10:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
       v12 = 138412290;
-      v13 = v4;
+      v13 = activatedCopy;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "Nobody handled this menu item activated: %@", &v12, 0xCu);
     }
   }
@@ -415,69 +415,69 @@ LABEL_11:
   return WeakRetained;
 }
 
-- (void)didFocusOnContext:(id)a3 oldContext:(id)a4
+- (void)didFocusOnContext:(id)context oldContext:(id)oldContext
 {
-  v5 = a3;
-  v6 = [v5 element];
+  contextCopy = context;
+  element = [contextCopy element];
   v7 = +[AXSettings sharedInstance];
-  v8 = [v7 switchControlScanningStyle];
+  switchControlScanningStyle = [v7 switchControlScanningStyle];
 
   objc_opt_class();
-  v51 = v6;
+  v51 = element;
   if (objc_opt_isKindOfClass())
   {
-    v9 = [v6 menuItem];
+    menuItem = [element menuItem];
     v10 = 1;
   }
 
   else
   {
-    v9 = 0;
-    v10 = [v5 selectBehavior] != 4;
+    menuItem = 0;
+    v10 = [contextCopy selectBehavior] != 4;
   }
 
-  v11 = [v5 parentGroup];
-  v52 = v5;
-  if (!v11)
+  parentGroup = [contextCopy parentGroup];
+  v52 = contextCopy;
+  if (!parentGroup)
   {
     goto LABEL_25;
   }
 
-  v12 = v11;
-  v13 = [(SCATModernMenuSheet *)self menu];
-  v14 = [v13 exitActionElement];
-  v15 = v14;
-  if (v51 == v14)
+  v12 = parentGroup;
+  menu = [(SCATModernMenuSheet *)self menu];
+  exitActionElement = [menu exitActionElement];
+  v15 = exitActionElement;
+  if (v51 == exitActionElement)
   {
 
 LABEL_25:
     if ([v51 isGroup])
     {
-      v21 = v51;
+      menuItems2 = v51;
     }
 
     else
     {
-      v21 = 0;
+      menuItems2 = 0;
     }
 
     v61 = 0u;
     v62 = 0u;
     v59 = 0u;
     v60 = 0u;
-    v32 = [(SCATModernMenuSheet *)self menuItems];
-    v33 = [v32 countByEnumeratingWithState:&v59 objects:v64 count:16];
+    menuItems = [(SCATModernMenuSheet *)self menuItems];
+    v33 = [menuItems countByEnumeratingWithState:&v59 objects:v64 count:16];
     if (!v33)
     {
 LABEL_58:
 
-      v5 = v52;
+      contextCopy = v52;
       goto LABEL_59;
     }
 
     v34 = v33;
     v35 = *v60;
-    v36 = v8 != 2 || v10;
+    v36 = switchControlScanningStyle != 2 || v10;
     v37 = v36 == 0;
     v38 = 4;
     if (!v37)
@@ -492,28 +492,28 @@ LABEL_35:
     {
       if (*v60 != v35)
       {
-        objc_enumerationMutation(v32);
+        objc_enumerationMutation(menuItems);
       }
 
       v40 = *(*(&v59 + 1) + 8 * v39);
       if (([v40 isDisabled] & 1) == 0)
       {
-        if (v40 == v9)
+        if (v40 == menuItem)
         {
           v41 = 2;
           goto LABEL_49;
         }
 
-        if (v9)
+        if (menuItem)
         {
-          v42 = [v9 scatElement];
-          v43 = [v42 parentGroup];
-          if (!v43)
+          scatElement = [menuItem scatElement];
+          parentGroup2 = [scatElement parentGroup];
+          if (!parentGroup2)
           {
-            v47 = [v40 scatElement];
-            v48 = [v47 parentGroup];
+            scatElement2 = [v40 scatElement];
+            parentGroup3 = [scatElement2 parentGroup];
 
-            if (v48)
+            if (parentGroup3)
             {
               v41 = 3;
             }
@@ -523,15 +523,15 @@ LABEL_35:
               v41 = 4;
             }
 
-            if (!v48 || !v21)
+            if (!parentGroup3 || !menuItems2)
             {
               goto LABEL_49;
             }
 
 LABEL_45:
-            v44 = [v40 scatElement];
-            v45 = [v44 parentGroup];
-            v46 = [v45 isEqual:v21];
+            scatElement3 = [v40 scatElement];
+            parentGroup4 = [scatElement3 parentGroup];
+            v46 = [parentGroup4 isEqual:menuItems2];
 
             if (v46)
             {
@@ -547,7 +547,7 @@ LABEL_45:
           }
         }
 
-        if (v21)
+        if (menuItems2)
         {
           goto LABEL_45;
         }
@@ -558,7 +558,7 @@ LABEL_49:
       [v40 setStyle:v41];
       if (v34 == ++v39)
       {
-        v49 = [v32 countByEnumeratingWithState:&v59 objects:v64 count:16];
+        v49 = [menuItems countByEnumeratingWithState:&v59 objects:v64 count:16];
         v34 = v49;
         if (!v49)
         {
@@ -571,15 +571,15 @@ LABEL_49:
   }
 
   [(SCATModernMenuSheet *)self menu];
-  v53 = self;
+  selfCopy = self;
   v16 = v10;
-  v18 = v17 = v8;
-  v19 = [v18 menuVisualProvider];
-  v20 = [v19 isElementTopLevelInMenu:v51];
+  v18 = v17 = switchControlScanningStyle;
+  menuVisualProvider = [v18 menuVisualProvider];
+  v20 = [menuVisualProvider isElementTopLevelInMenu:v51];
 
-  v8 = v17;
+  switchControlScanningStyle = v17;
   v10 = v16;
-  self = v53;
+  self = selfCopy;
 
   if (v20)
   {
@@ -590,8 +590,8 @@ LABEL_49:
   v58 = 0u;
   v55 = 0u;
   v56 = 0u;
-  v21 = [(SCATModernMenuSheet *)v53 menuItems];
-  v22 = [v21 countByEnumeratingWithState:&v55 objects:v63 count:16];
+  menuItems2 = [(SCATModernMenuSheet *)selfCopy menuItems];
+  v22 = [menuItems2 countByEnumeratingWithState:&v55 objects:v63 count:16];
   if (v22)
   {
     v23 = v22;
@@ -602,13 +602,13 @@ LABEL_49:
       {
         if (*v56 != v24)
         {
-          objc_enumerationMutation(v21);
+          objc_enumerationMutation(menuItems2);
         }
 
         v26 = *(*(&v55 + 1) + 8 * i);
-        if (!v9)
+        if (!menuItem)
         {
-          v50 = v5;
+          v50 = contextCopy;
           _AXAssert();
         }
 
@@ -617,20 +617,20 @@ LABEL_49:
           v27 = 3;
         }
 
-        else if (v26 == v9)
+        else if (v26 == menuItem)
         {
           v27 = 2;
         }
 
         else
         {
-          v28 = [v9 scatElement];
-          v29 = [v28 parentGroup];
-          v30 = [v26 scatElement];
-          v31 = [v30 parentGroup];
+          scatElement4 = [menuItem scatElement];
+          parentGroup5 = [scatElement4 parentGroup];
+          scatElement5 = [v26 scatElement];
+          parentGroup6 = [scatElement5 parentGroup];
 
-          v5 = v52;
-          if (v29 == v31)
+          contextCopy = v52;
+          if (parentGroup5 == parentGroup6)
           {
             v27 = 4;
           }
@@ -644,7 +644,7 @@ LABEL_49:
         [v26 setStyle:v27];
       }
 
-      v23 = [v21 countByEnumeratingWithState:&v55 objects:v63 count:16];
+      v23 = [menuItems2 countByEnumeratingWithState:&v55 objects:v63 count:16];
     }
 
     while (v23);
@@ -686,9 +686,9 @@ LABEL_59:
 - (BOOL)shouldIncludeTextLabels
 {
   v2 = +[AXSettings sharedInstance];
-  v3 = [v2 assistiveTouchScannerMenuLabelsEnabled];
+  assistiveTouchScannerMenuLabelsEnabled = [v2 assistiveTouchScannerMenuLabelsEnabled];
 
-  return v3;
+  return assistiveTouchScannerMenuLabelsEnabled;
 }
 
 @end

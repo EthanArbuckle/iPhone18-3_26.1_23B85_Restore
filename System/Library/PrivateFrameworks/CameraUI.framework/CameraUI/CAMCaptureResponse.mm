@@ -1,6 +1,6 @@
 @interface CAMCaptureResponse
 - (CAMCaptureResponse)init;
-- (CAMCaptureResponse)initWithType:(int64_t)a3 captureSession:(unsigned __int16)a4 coordinationInfo:(id)a5;
+- (CAMCaptureResponse)initWithType:(int64_t)type captureSession:(unsigned __int16)session coordinationInfo:(id)info;
 @end
 
 @implementation CAMCaptureResponse
@@ -12,18 +12,18 @@
   return 0;
 }
 
-- (CAMCaptureResponse)initWithType:(int64_t)a3 captureSession:(unsigned __int16)a4 coordinationInfo:(id)a5
+- (CAMCaptureResponse)initWithType:(int64_t)type captureSession:(unsigned __int16)session coordinationInfo:(id)info
 {
-  v9 = a5;
+  infoCopy = info;
   v14.receiver = self;
   v14.super_class = CAMCaptureResponse;
   v10 = [(CAMCaptureResponse *)&v14 init];
   v11 = v10;
   if (v10)
   {
-    v10->_type = a3;
-    v10->_sessionIdentifier = a4;
-    objc_storeStrong(&v10->_coordinationInfo, a5);
+    v10->_type = type;
+    v10->_sessionIdentifier = session;
+    objc_storeStrong(&v10->_coordinationInfo, info);
     v12 = v11;
   }
 

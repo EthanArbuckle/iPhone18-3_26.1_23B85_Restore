@@ -1,13 +1,13 @@
 @interface TSWPShapeStyle
-+ (id)defaultValueForProperty:(int)a3;
++ (id)defaultValueForProperty:(int)property;
 + (id)layoutProperties;
 + (id)properties;
 + (id)propertiesAllowingNSNull;
-+ (int)defaultIntValueForProperty:(int)a3;
++ (int)defaultIntValueForProperty:(int)property;
 - (NSString)presetKind;
-- (id)boxedValueForProperty:(int)a3 oldBoxedValue:(id)a4 transformedByTransform:(CGAffineTransform *)a5;
+- (id)boxedValueForProperty:(int)property oldBoxedValue:(id)value transformedByTransform:(CGAffineTransform *)transform;
 - (id)defaultParagraphStyle;
-- (void)setDefaultParagraphStyle:(id)a3;
+- (void)setDefaultParagraphStyle:(id)style;
 @end
 
 @implementation TSWPShapeStyle
@@ -18,7 +18,7 @@
   block[1] = 3221225472;
   block[2] = __28__TSWPShapeStyle_properties__block_invoke;
   block[3] = &unk_279D46770;
-  block[4] = a1;
+  block[4] = self;
   if (+[TSWPShapeStyle properties]::onceToken != -1)
   {
     dispatch_once(&+[TSWPShapeStyle properties]::onceToken, block);
@@ -59,7 +59,7 @@ TSSPropertySet *__34__TSWPShapeStyle_layoutProperties__block_invoke()
   block[1] = 3221225472;
   block[2] = __42__TSWPShapeStyle_propertiesAllowingNSNull__block_invoke;
   block[3] = &unk_279D46770;
-  block[4] = a1;
+  block[4] = self;
   if (+[TSWPShapeStyle propertiesAllowingNSNull]::onceToken != -1)
   {
     dispatch_once(&+[TSWPShapeStyle propertiesAllowingNSNull]::onceToken, block);
@@ -98,10 +98,10 @@ uint64_t __42__TSWPShapeStyle_propertiesAllowingNSNull__block_invoke_2(uint64_t 
   return result;
 }
 
-+ (int)defaultIntValueForProperty:(int)a3
++ (int)defaultIntValueForProperty:(int)property
 {
-  v5 = a3 + 107;
-  if ((a3 - 149) > 0x3E)
+  v5 = property + 107;
+  if ((property - 149) > 0x3E)
   {
     goto LABEL_8;
   }
@@ -122,28 +122,28 @@ uint64_t __42__TSWPShapeStyle_propertiesAllowingNSNull__block_invoke_2(uint64_t 
 LABEL_8:
     v8 = v3;
     v9 = v4;
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___TSWPShapeStyle;
     return objc_msgSendSuper2(&v7, sel_defaultIntValueForProperty_);
   }
 }
 
-+ (id)defaultValueForProperty:(int)a3
++ (id)defaultValueForProperty:(int)property
 {
-  if (a3 == 146)
+  if (property == 146)
   {
 LABEL_4:
 
     return [TSWPColumnStyle defaultValueForProperty:?];
   }
 
-  if (a3 != 212)
+  if (property != 212)
   {
-    if (a3 != 148)
+    if (property != 148)
     {
       v8 = v3;
       v9 = v4;
-      v7.receiver = a1;
+      v7.receiver = self;
       v7.super_class = &OBJC_METACLASS___TSWPShapeStyle;
       return objc_msgSendSuper2(&v7, sel_defaultValueForProperty_);
     }
@@ -159,10 +159,10 @@ LABEL_4:
 - (NSString)presetKind
 {
   v3 = String;
-  v4 = [(TSSStyle *)self styleIdentifier];
-  if (v4)
+  styleIdentifier = [(TSSStyle *)self styleIdentifier];
+  if (styleIdentifier)
   {
-    v5 = String(v4);
+    v5 = String(styleIdentifier);
 
     return TSWPShapePresetKindForPackageString(v5);
   }
@@ -185,40 +185,40 @@ LABEL_4:
   }
 }
 
-- (id)boxedValueForProperty:(int)a3 oldBoxedValue:(id)a4 transformedByTransform:(CGAffineTransform *)a5
+- (id)boxedValueForProperty:(int)property oldBoxedValue:(id)value transformedByTransform:(CGAffineTransform *)transform
 {
-  if (a3 == 146)
+  if (property == 146)
   {
-    v6 = [a4 copy];
-    v7 = *&a5->c;
-    v11 = *&a5->a;
+    v6 = [value copy];
+    v7 = *&transform->c;
+    v11 = *&transform->a;
     v12 = v7;
-    v13 = *&a5->tx;
+    v13 = *&transform->tx;
     [v6 transform:&v11];
   }
 
   else
   {
-    v8 = *&a5->c;
-    v11 = *&a5->a;
+    v8 = *&transform->c;
+    v11 = *&transform->a;
     v12 = v8;
-    v13 = *&a5->tx;
+    v13 = *&transform->tx;
     v10.receiver = self;
     v10.super_class = TSWPShapeStyle;
-    return [(TSDShapeStyle *)&v10 boxedValueForProperty:*&a3 oldBoxedValue:a4 transformedByTransform:&v11];
+    return [(TSDShapeStyle *)&v10 boxedValueForProperty:*&property oldBoxedValue:value transformedByTransform:&v11];
   }
 
   return v6;
 }
 
-- (void)setDefaultParagraphStyle:(id)a3
+- (void)setDefaultParagraphStyle:(id)style
 {
-  if (!a3)
+  if (!style)
   {
-    a3 = [MEMORY[0x277CBEB68] null];
+    style = [MEMORY[0x277CBEB68] null];
   }
 
-  [(TSSStyle *)self setValue:a3 forProperty:212];
+  [(TSSStyle *)self setValue:style forProperty:212];
 }
 
 - (id)defaultParagraphStyle

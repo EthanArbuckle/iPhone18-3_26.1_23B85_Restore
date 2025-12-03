@@ -1,33 +1,33 @@
 @interface NFCCardSessionDelegate
 - (_TtC7CoreNFCP33_EFB2E886CAEE49EE896FB2304411A55622NFCCardSessionDelegate)init;
 - (void)didConnectToReader;
-- (void)didDetectField:(BOOL)a3;
+- (void)didDetectField:(BOOL)field;
 - (void)didDisconnectFromReader;
 - (void)didInvalidate;
-- (void)didReceiveAPDU:(id)a3;
-- (void)didStartSession:(id)a3;
-- (void)didTerminate:(id)a3;
-- (void)fieldChanged:(BOOL)a3;
-- (void)hwStateDidChange:(unsigned int)a3;
+- (void)didReceiveAPDU:(id)u;
+- (void)didStartSession:(id)session;
+- (void)didTerminate:(id)terminate;
+- (void)fieldChanged:(BOOL)changed;
+- (void)hwStateDidChange:(unsigned int)change;
 @end
 
 @implementation NFCCardSessionDelegate
 
-- (void)fieldChanged:(BOOL)a3
+- (void)fieldChanged:(BOOL)changed
 {
-  v4 = self;
-  sub_237296578(a3);
+  selfCopy = self;
+  sub_237296578(changed);
 }
 
-- (void)didReceiveAPDU:(id)a3
+- (void)didReceiveAPDU:(id)u
 {
   v5 = sub_23728DDC0(&qword_27DE98EF8, &qword_2372D49B0);
   v6 = *(v5 - 8);
   v7 = (*(v6 + 64) + 15) & 0xFFFFFFFFFFFFFFF0;
   MEMORY[0x28223BE20]();
   v9 = v15 - v8;
-  v10 = a3;
-  v11 = self;
+  uCopy = u;
+  selfCopy = self;
   v12 = sub_2372D0FC4();
   v14 = v13;
 
@@ -44,27 +44,27 @@
 
 - (void)didConnectToReader
 {
-  v2 = self;
+  selfCopy = self;
   sub_237296970();
 }
 
 - (void)didDisconnectFromReader
 {
-  v2 = self;
+  selfCopy = self;
   sub_237296BE8();
 }
 
-- (void)didDetectField:(BOOL)a3
+- (void)didDetectField:(BOOL)field
 {
-  v4 = self;
-  sub_237296E68(a3);
+  selfCopy = self;
+  sub_237296E68(field);
 }
 
-- (void)didStartSession:(id)a3
+- (void)didStartSession:(id)session
 {
-  v4 = self;
-  v5 = a3;
-  sub_237297108(a3);
+  selfCopy = self;
+  sessionCopy = session;
+  sub_237297108(session);
 }
 
 - (void)didInvalidate
@@ -76,32 +76,32 @@
   v7 = &v9 - v6;
   v9 = xmmword_2372D4690;
   v10 = 0;
-  v8 = self;
+  selfCopy = self;
   sub_23728DDC0(&qword_27DE98EF0, &qword_2372D49A8);
   sub_2372D1154();
   (*(v4 + 8))(v7, v3);
   sub_2372D1164();
 }
 
-- (void)didTerminate:(id)a3
+- (void)didTerminate:(id)terminate
 {
-  v5 = a3;
-  v4 = self;
-  sub_2372974B8(v5);
+  terminateCopy = terminate;
+  selfCopy = self;
+  sub_2372974B8(terminateCopy);
 }
 
-- (void)hwStateDidChange:(unsigned int)a3
+- (void)hwStateDidChange:(unsigned int)change
 {
   v5 = sub_23728DDC0(&qword_27DE98EF8, &qword_2372D49B0);
   v6 = *(v5 - 8);
   v7 = (*(v6 + 64) + 15) & 0xFFFFFFFFFFFFFFF0;
   MEMORY[0x28223BE20]();
   v9 = &v11 - v8;
-  if (a3 != 2)
+  if (change != 2)
   {
     v11 = xmmword_2372D4690;
     v12 = 0;
-    v10 = self;
+    selfCopy = self;
     sub_23728DDC0(&qword_27DE98EF0, &qword_2372D49A8);
     sub_2372D1154();
     (*(v6 + 8))(v9, v5);

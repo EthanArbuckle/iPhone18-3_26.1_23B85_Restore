@@ -19,7 +19,7 @@
 
       v7 = @"brightness.button";
 LABEL_6:
-      v8 = sub_1000765EC(v7);
+      accessibilityLabel = sub_1000765EC(v7);
 
       goto LABEL_9;
     }
@@ -33,10 +33,10 @@ LABEL_6:
 
   v10.receiver = self;
   v10.super_class = BKUIToolbarButtonAccessibility;
-  v8 = [(BKUIToolbarButtonAccessibility *)&v10 accessibilityLabel];
+  accessibilityLabel = [(BKUIToolbarButtonAccessibility *)&v10 accessibilityLabel];
 LABEL_9:
 
-  return v8;
+  return accessibilityLabel;
 }
 
 @end

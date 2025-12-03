@@ -1,16 +1,16 @@
 @interface UNNotificationSettings
-+ (UNNotificationSettings)settingsWithAuthorizationStatus:(int64_t)a3 soundSetting:(int64_t)a4 badgeSetting:(int64_t)a5 alertSetting:(int64_t)a6 notificationCenterSetting:(int64_t)a7 lockScreenSetting:(int64_t)a8 carPlaySetting:(int64_t)a9 remoteNotificationsSetting:(int64_t)a10 announcementSetting:(int64_t)a11 criticalAlertSetting:(int64_t)a12 timeSensitiveSetting:(int64_t)a13 scheduledDeliverySetting:(int64_t)a14 directMessagesSetting:(int64_t)a15 alertStyle:(int64_t)a16 showPreviewsSetting:(int64_t)a17 groupingSetting:(int64_t)a18 providesAppNotificationSettings:(BOOL)a19;
-+ (UNNotificationSettings)settingsWithAuthorizationStatus:(int64_t)a3 soundSetting:(int64_t)a4 badgeSetting:(int64_t)a5 alertSetting:(int64_t)a6 notificationCenterSetting:(int64_t)a7 lockScreenSetting:(int64_t)a8 carPlaySetting:(int64_t)a9 remoteNotificationsSetting:(int64_t)a10 announcementSetting:(int64_t)a11 criticalAlertSetting:(int64_t)a12 timeSensitiveSetting:(int64_t)a13 scheduledDeliverySetting:(int64_t)a14 directMessagesSetting:(int64_t)a15 summarizationSetting:(int64_t)a16 alertStyle:(int64_t)a17 showPreviewsSetting:(int64_t)a18 groupingSetting:(int64_t)a19 providesAppNotificationSettings:(BOOL)a20;
-+ (UNNotificationSettings)settingsWithAuthorizationStatus:(int64_t)a3 soundSetting:(int64_t)a4 badgeSetting:(int64_t)a5 alertSetting:(int64_t)a6 notificationCenterSetting:(int64_t)a7 lockScreenSetting:(int64_t)a8 carPlaySetting:(int64_t)a9 remoteNotificationsSetting:(int64_t)a10 announcementSetting:(int64_t)a11 criticalAlertSetting:(int64_t)a12 timeSensitiveSetting:(int64_t)a13 scheduledDeliverySetting:(int64_t)a14 directMessagesSetting:(int64_t)a15 summarizationSetting:(int64_t)a16 prioritizationSetting:(int64_t)a17 alertStyle:(int64_t)a18 showPreviewsSetting:(int64_t)a19 groupingSetting:(int64_t)a20 providesAppNotificationSettings:(BOOL)a21;
++ (UNNotificationSettings)settingsWithAuthorizationStatus:(int64_t)status soundSetting:(int64_t)setting badgeSetting:(int64_t)badgeSetting alertSetting:(int64_t)alertSetting notificationCenterSetting:(int64_t)centerSetting lockScreenSetting:(int64_t)screenSetting carPlaySetting:(int64_t)playSetting remoteNotificationsSetting:(int64_t)self0 announcementSetting:(int64_t)self1 criticalAlertSetting:(int64_t)self2 timeSensitiveSetting:(int64_t)self3 scheduledDeliverySetting:(int64_t)self4 directMessagesSetting:(int64_t)self5 alertStyle:(int64_t)self6 showPreviewsSetting:(int64_t)self7 groupingSetting:(int64_t)self8 providesAppNotificationSettings:(BOOL)self9;
++ (UNNotificationSettings)settingsWithAuthorizationStatus:(int64_t)status soundSetting:(int64_t)setting badgeSetting:(int64_t)badgeSetting alertSetting:(int64_t)alertSetting notificationCenterSetting:(int64_t)centerSetting lockScreenSetting:(int64_t)screenSetting carPlaySetting:(int64_t)playSetting remoteNotificationsSetting:(int64_t)self0 announcementSetting:(int64_t)self1 criticalAlertSetting:(int64_t)self2 timeSensitiveSetting:(int64_t)self3 scheduledDeliverySetting:(int64_t)self4 directMessagesSetting:(int64_t)self5 summarizationSetting:(int64_t)self6 alertStyle:(int64_t)self7 showPreviewsSetting:(int64_t)self8 groupingSetting:(int64_t)self9 providesAppNotificationSettings:(BOOL)settings;
++ (UNNotificationSettings)settingsWithAuthorizationStatus:(int64_t)status soundSetting:(int64_t)setting badgeSetting:(int64_t)badgeSetting alertSetting:(int64_t)alertSetting notificationCenterSetting:(int64_t)centerSetting lockScreenSetting:(int64_t)screenSetting carPlaySetting:(int64_t)playSetting remoteNotificationsSetting:(int64_t)self0 announcementSetting:(int64_t)self1 criticalAlertSetting:(int64_t)self2 timeSensitiveSetting:(int64_t)self3 scheduledDeliverySetting:(int64_t)self4 directMessagesSetting:(int64_t)self5 summarizationSetting:(int64_t)self6 prioritizationSetting:(int64_t)self7 alertStyle:(int64_t)self8 showPreviewsSetting:(int64_t)self9 groupingSetting:(int64_t)groupingSetting providesAppNotificationSettings:(BOOL)settings;
 + (id)emptySettings;
 - (BOOL)isEligibleForIndexing;
-- (BOOL)isEqual:(id)a3;
-- (UNNotificationSettings)initWithAuthorizationStatus:(int64_t)a3 soundSetting:(int64_t)a4 badgeSetting:(int64_t)a5 alertSetting:(int64_t)a6 notificationCenterSetting:(int64_t)a7 lockScreenSetting:(int64_t)a8 carPlaySetting:(int64_t)a9 remoteNotificationsSetting:(int64_t)a10 announcementSetting:(int64_t)a11 criticalAlertSetting:(int64_t)a12 timeSensitiveSetting:(int64_t)a13 scheduledDeliverySetting:(int64_t)a14 directMessagesSetting:(int64_t)a15 summarizationSetting:(int64_t)a16 prioritizationSetting:(int64_t)a17 alertStyle:(int64_t)a18 showPreviewsSetting:(int64_t)a19 groupingSetting:(int64_t)a20 providesAppNotificationSettings:(BOOL)a21;
-- (UNNotificationSettings)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (UNNotificationSettings)initWithAuthorizationStatus:(int64_t)status soundSetting:(int64_t)setting badgeSetting:(int64_t)badgeSetting alertSetting:(int64_t)alertSetting notificationCenterSetting:(int64_t)centerSetting lockScreenSetting:(int64_t)screenSetting carPlaySetting:(int64_t)playSetting remoteNotificationsSetting:(int64_t)self0 announcementSetting:(int64_t)self1 criticalAlertSetting:(int64_t)self2 timeSensitiveSetting:(int64_t)self3 scheduledDeliverySetting:(int64_t)self4 directMessagesSetting:(int64_t)self5 summarizationSetting:(int64_t)self6 prioritizationSetting:(int64_t)self7 alertStyle:(int64_t)self8 showPreviewsSetting:(int64_t)self9 groupingSetting:(int64_t)groupingSetting providesAppNotificationSettings:(BOOL)settings;
+- (UNNotificationSettings)initWithCoder:(id)coder;
 - (id)description;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation UNNotificationSettings
@@ -19,207 +19,207 @@
 {
   v45 = MEMORY[0x1E696AEC0];
   v44 = objc_opt_class();
-  v3 = [(UNNotificationSettings *)self authorizationStatus];
-  if (v3 > UNAuthorizationStatusEphemeral)
+  authorizationStatus = [(UNNotificationSettings *)self authorizationStatus];
+  if (authorizationStatus > UNAuthorizationStatusEphemeral)
   {
     v43 = 0;
   }
 
   else
   {
-    v43 = off_1E7CFF770[v3];
+    v43 = off_1E7CFF770[authorizationStatus];
   }
 
-  v4 = [(UNNotificationSettings *)self notificationCenterSetting];
-  if (v4 > UNNotificationSettingEnabled)
+  notificationCenterSetting = [(UNNotificationSettings *)self notificationCenterSetting];
+  if (notificationCenterSetting > UNNotificationSettingEnabled)
   {
     v42 = 0;
   }
 
   else
   {
-    v42 = off_1E7CFF798[v4];
+    v42 = off_1E7CFF798[notificationCenterSetting];
   }
 
-  v5 = [(UNNotificationSettings *)self soundSetting];
-  if (v5 > UNNotificationSettingEnabled)
+  soundSetting = [(UNNotificationSettings *)self soundSetting];
+  if (soundSetting > UNNotificationSettingEnabled)
   {
     v41 = 0;
   }
 
   else
   {
-    v41 = off_1E7CFF798[v5];
+    v41 = off_1E7CFF798[soundSetting];
   }
 
-  v6 = [(UNNotificationSettings *)self badgeSetting];
-  if (v6 > UNNotificationSettingEnabled)
+  badgeSetting = [(UNNotificationSettings *)self badgeSetting];
+  if (badgeSetting > UNNotificationSettingEnabled)
   {
     v40 = 0;
   }
 
   else
   {
-    v40 = off_1E7CFF798[v6];
+    v40 = off_1E7CFF798[badgeSetting];
   }
 
-  v7 = [(UNNotificationSettings *)self lockScreenSetting];
-  if (v7 > UNNotificationSettingEnabled)
+  lockScreenSetting = [(UNNotificationSettings *)self lockScreenSetting];
+  if (lockScreenSetting > UNNotificationSettingEnabled)
   {
     v39 = 0;
   }
 
   else
   {
-    v39 = off_1E7CFF798[v7];
+    v39 = off_1E7CFF798[lockScreenSetting];
   }
 
-  v8 = [(UNNotificationSettings *)self carPlaySetting];
-  if (v8 > UNNotificationSettingEnabled)
+  carPlaySetting = [(UNNotificationSettings *)self carPlaySetting];
+  if (carPlaySetting > UNNotificationSettingEnabled)
   {
     v38 = 0;
   }
 
   else
   {
-    v38 = off_1E7CFF798[v8];
+    v38 = off_1E7CFF798[carPlaySetting];
   }
 
-  v9 = [(UNNotificationSettings *)self remoteNotificationsSetting];
-  if (v9 > 2)
+  remoteNotificationsSetting = [(UNNotificationSettings *)self remoteNotificationsSetting];
+  if (remoteNotificationsSetting > 2)
   {
     v37 = 0;
   }
 
   else
   {
-    v37 = off_1E7CFF798[v9];
+    v37 = off_1E7CFF798[remoteNotificationsSetting];
   }
 
-  v10 = [(UNNotificationSettings *)self announcementSetting];
-  if (v10 > UNNotificationSettingEnabled)
+  announcementSetting = [(UNNotificationSettings *)self announcementSetting];
+  if (announcementSetting > UNNotificationSettingEnabled)
   {
     v36 = 0;
   }
 
   else
   {
-    v36 = off_1E7CFF798[v10];
+    v36 = off_1E7CFF798[announcementSetting];
   }
 
-  v11 = [(UNNotificationSettings *)self criticalAlertSetting];
-  if (v11 > UNNotificationSettingEnabled)
+  criticalAlertSetting = [(UNNotificationSettings *)self criticalAlertSetting];
+  if (criticalAlertSetting > UNNotificationSettingEnabled)
   {
     v35 = 0;
   }
 
   else
   {
-    v35 = off_1E7CFF798[v11];
+    v35 = off_1E7CFF798[criticalAlertSetting];
   }
 
-  v12 = [(UNNotificationSettings *)self timeSensitiveSetting];
-  if (v12 > UNNotificationSettingEnabled)
+  timeSensitiveSetting = [(UNNotificationSettings *)self timeSensitiveSetting];
+  if (timeSensitiveSetting > UNNotificationSettingEnabled)
   {
     v34 = 0;
   }
 
   else
   {
-    v34 = off_1E7CFF798[v12];
+    v34 = off_1E7CFF798[timeSensitiveSetting];
   }
 
-  v13 = [(UNNotificationSettings *)self alertSetting];
-  if (v13 > UNNotificationSettingEnabled)
+  alertSetting = [(UNNotificationSettings *)self alertSetting];
+  if (alertSetting > UNNotificationSettingEnabled)
   {
     v14 = 0;
   }
 
   else
   {
-    v14 = off_1E7CFF798[v13];
+    v14 = off_1E7CFF798[alertSetting];
   }
 
-  v15 = [(UNNotificationSettings *)self scheduledDeliverySetting];
-  if (v15 > UNNotificationSettingEnabled)
+  scheduledDeliverySetting = [(UNNotificationSettings *)self scheduledDeliverySetting];
+  if (scheduledDeliverySetting > UNNotificationSettingEnabled)
   {
     v16 = 0;
   }
 
   else
   {
-    v16 = off_1E7CFF798[v15];
+    v16 = off_1E7CFF798[scheduledDeliverySetting];
   }
 
-  v17 = [(UNNotificationSettings *)self directMessagesSetting];
-  if (v17 > UNNotificationSettingEnabled)
+  directMessagesSetting = [(UNNotificationSettings *)self directMessagesSetting];
+  if (directMessagesSetting > UNNotificationSettingEnabled)
   {
     v18 = 0;
   }
 
   else
   {
-    v18 = off_1E7CFF798[v17];
+    v18 = off_1E7CFF798[directMessagesSetting];
   }
 
-  v19 = [(UNNotificationSettings *)self summarizationSetting];
-  if (v19 > 2)
+  summarizationSetting = [(UNNotificationSettings *)self summarizationSetting];
+  if (summarizationSetting > 2)
   {
     v20 = 0;
   }
 
   else
   {
-    v20 = off_1E7CFF798[v19];
+    v20 = off_1E7CFF798[summarizationSetting];
   }
 
-  v21 = [(UNNotificationSettings *)self prioritizationSetting];
-  if (v21 > 2)
+  prioritizationSetting = [(UNNotificationSettings *)self prioritizationSetting];
+  if (prioritizationSetting > 2)
   {
     v22 = 0;
   }
 
   else
   {
-    v22 = off_1E7CFF798[v21];
+    v22 = off_1E7CFF798[prioritizationSetting];
   }
 
-  v23 = [(UNNotificationSettings *)self showPreviewsSetting];
-  if (v23 > UNShowPreviewsSettingNever)
+  showPreviewsSetting = [(UNNotificationSettings *)self showPreviewsSetting];
+  if (showPreviewsSetting > UNShowPreviewsSettingNever)
   {
     v24 = 0;
   }
 
   else
   {
-    v24 = off_1E7CFF7B0[v23];
+    v24 = off_1E7CFF7B0[showPreviewsSetting];
   }
 
-  v25 = [(UNNotificationSettings *)self alertStyle];
-  if (v25 > UNAlertStyleAlert)
+  alertStyle = [(UNNotificationSettings *)self alertStyle];
+  if (alertStyle > UNAlertStyleAlert)
   {
     v26 = 0;
   }
 
   else
   {
-    v26 = off_1E7CFF7C8[v25];
+    v26 = off_1E7CFF7C8[alertStyle];
   }
 
-  v27 = [(UNNotificationSettings *)self groupingSetting];
-  if (v27 > 2)
+  groupingSetting = [(UNNotificationSettings *)self groupingSetting];
+  if (groupingSetting > 2)
   {
     v28 = 0;
   }
 
   else
   {
-    v28 = off_1E7CFF7E0[v27];
+    v28 = off_1E7CFF7E0[groupingSetting];
   }
 
-  v29 = [(UNNotificationSettings *)self providesAppNotificationSettings];
+  providesAppNotificationSettings = [(UNNotificationSettings *)self providesAppNotificationSettings];
   v30 = @"No";
-  if (v29)
+  if (providesAppNotificationSettings)
   {
     v30 = @"Yes";
   }
@@ -238,56 +238,56 @@
   return v2;
 }
 
-+ (UNNotificationSettings)settingsWithAuthorizationStatus:(int64_t)a3 soundSetting:(int64_t)a4 badgeSetting:(int64_t)a5 alertSetting:(int64_t)a6 notificationCenterSetting:(int64_t)a7 lockScreenSetting:(int64_t)a8 carPlaySetting:(int64_t)a9 remoteNotificationsSetting:(int64_t)a10 announcementSetting:(int64_t)a11 criticalAlertSetting:(int64_t)a12 timeSensitiveSetting:(int64_t)a13 scheduledDeliverySetting:(int64_t)a14 directMessagesSetting:(int64_t)a15 alertStyle:(int64_t)a16 showPreviewsSetting:(int64_t)a17 groupingSetting:(int64_t)a18 providesAppNotificationSettings:(BOOL)a19
++ (UNNotificationSettings)settingsWithAuthorizationStatus:(int64_t)status soundSetting:(int64_t)setting badgeSetting:(int64_t)badgeSetting alertSetting:(int64_t)alertSetting notificationCenterSetting:(int64_t)centerSetting lockScreenSetting:(int64_t)screenSetting carPlaySetting:(int64_t)playSetting remoteNotificationsSetting:(int64_t)self0 announcementSetting:(int64_t)self1 criticalAlertSetting:(int64_t)self2 timeSensitiveSetting:(int64_t)self3 scheduledDeliverySetting:(int64_t)self4 directMessagesSetting:(int64_t)self5 alertStyle:(int64_t)self6 showPreviewsSetting:(int64_t)self7 groupingSetting:(int64_t)self8 providesAppNotificationSettings:(BOOL)self9
 {
-  LOBYTE(v21) = a19;
-  v19 = [objc_alloc(objc_opt_class()) initWithAuthorizationStatus:a3 soundSetting:a4 badgeSetting:a5 alertSetting:a6 notificationCenterSetting:a7 lockScreenSetting:a8 carPlaySetting:a9 remoteNotificationsSetting:a10 announcementSetting:a11 criticalAlertSetting:a12 timeSensitiveSetting:a13 scheduledDeliverySetting:a14 directMessagesSetting:a15 summarizationSetting:0 prioritizationSetting:0 alertStyle:a16 showPreviewsSetting:a17 groupingSetting:a18 providesAppNotificationSettings:v21];
+  LOBYTE(v21) = settings;
+  v19 = [objc_alloc(objc_opt_class()) initWithAuthorizationStatus:status soundSetting:setting badgeSetting:badgeSetting alertSetting:alertSetting notificationCenterSetting:centerSetting lockScreenSetting:screenSetting carPlaySetting:playSetting remoteNotificationsSetting:notificationsSetting announcementSetting:announcementSetting criticalAlertSetting:criticalAlertSetting timeSensitiveSetting:sensitiveSetting scheduledDeliverySetting:deliverySetting directMessagesSetting:messagesSetting summarizationSetting:0 prioritizationSetting:0 alertStyle:style showPreviewsSetting:previewsSetting groupingSetting:groupingSetting providesAppNotificationSettings:v21];
 
   return v19;
 }
 
-+ (UNNotificationSettings)settingsWithAuthorizationStatus:(int64_t)a3 soundSetting:(int64_t)a4 badgeSetting:(int64_t)a5 alertSetting:(int64_t)a6 notificationCenterSetting:(int64_t)a7 lockScreenSetting:(int64_t)a8 carPlaySetting:(int64_t)a9 remoteNotificationsSetting:(int64_t)a10 announcementSetting:(int64_t)a11 criticalAlertSetting:(int64_t)a12 timeSensitiveSetting:(int64_t)a13 scheduledDeliverySetting:(int64_t)a14 directMessagesSetting:(int64_t)a15 summarizationSetting:(int64_t)a16 alertStyle:(int64_t)a17 showPreviewsSetting:(int64_t)a18 groupingSetting:(int64_t)a19 providesAppNotificationSettings:(BOOL)a20
++ (UNNotificationSettings)settingsWithAuthorizationStatus:(int64_t)status soundSetting:(int64_t)setting badgeSetting:(int64_t)badgeSetting alertSetting:(int64_t)alertSetting notificationCenterSetting:(int64_t)centerSetting lockScreenSetting:(int64_t)screenSetting carPlaySetting:(int64_t)playSetting remoteNotificationsSetting:(int64_t)self0 announcementSetting:(int64_t)self1 criticalAlertSetting:(int64_t)self2 timeSensitiveSetting:(int64_t)self3 scheduledDeliverySetting:(int64_t)self4 directMessagesSetting:(int64_t)self5 summarizationSetting:(int64_t)self6 alertStyle:(int64_t)self7 showPreviewsSetting:(int64_t)self8 groupingSetting:(int64_t)self9 providesAppNotificationSettings:(BOOL)settings
 {
-  LOBYTE(v22) = a20;
-  v20 = [objc_alloc(objc_opt_class()) initWithAuthorizationStatus:a3 soundSetting:a4 badgeSetting:a5 alertSetting:a6 notificationCenterSetting:a7 lockScreenSetting:a8 carPlaySetting:a9 remoteNotificationsSetting:a10 announcementSetting:a11 criticalAlertSetting:a12 timeSensitiveSetting:a13 scheduledDeliverySetting:a14 directMessagesSetting:a15 summarizationSetting:a16 prioritizationSetting:0 alertStyle:a17 showPreviewsSetting:a18 groupingSetting:a19 providesAppNotificationSettings:v22];
+  LOBYTE(v22) = settings;
+  v20 = [objc_alloc(objc_opt_class()) initWithAuthorizationStatus:status soundSetting:setting badgeSetting:badgeSetting alertSetting:alertSetting notificationCenterSetting:centerSetting lockScreenSetting:screenSetting carPlaySetting:playSetting remoteNotificationsSetting:notificationsSetting announcementSetting:announcementSetting criticalAlertSetting:criticalAlertSetting timeSensitiveSetting:sensitiveSetting scheduledDeliverySetting:deliverySetting directMessagesSetting:messagesSetting summarizationSetting:summarizationSetting prioritizationSetting:0 alertStyle:style showPreviewsSetting:previewsSetting groupingSetting:groupingSetting providesAppNotificationSettings:v22];
 
   return v20;
 }
 
-+ (UNNotificationSettings)settingsWithAuthorizationStatus:(int64_t)a3 soundSetting:(int64_t)a4 badgeSetting:(int64_t)a5 alertSetting:(int64_t)a6 notificationCenterSetting:(int64_t)a7 lockScreenSetting:(int64_t)a8 carPlaySetting:(int64_t)a9 remoteNotificationsSetting:(int64_t)a10 announcementSetting:(int64_t)a11 criticalAlertSetting:(int64_t)a12 timeSensitiveSetting:(int64_t)a13 scheduledDeliverySetting:(int64_t)a14 directMessagesSetting:(int64_t)a15 summarizationSetting:(int64_t)a16 prioritizationSetting:(int64_t)a17 alertStyle:(int64_t)a18 showPreviewsSetting:(int64_t)a19 groupingSetting:(int64_t)a20 providesAppNotificationSettings:(BOOL)a21
++ (UNNotificationSettings)settingsWithAuthorizationStatus:(int64_t)status soundSetting:(int64_t)setting badgeSetting:(int64_t)badgeSetting alertSetting:(int64_t)alertSetting notificationCenterSetting:(int64_t)centerSetting lockScreenSetting:(int64_t)screenSetting carPlaySetting:(int64_t)playSetting remoteNotificationsSetting:(int64_t)self0 announcementSetting:(int64_t)self1 criticalAlertSetting:(int64_t)self2 timeSensitiveSetting:(int64_t)self3 scheduledDeliverySetting:(int64_t)self4 directMessagesSetting:(int64_t)self5 summarizationSetting:(int64_t)self6 prioritizationSetting:(int64_t)self7 alertStyle:(int64_t)self8 showPreviewsSetting:(int64_t)self9 groupingSetting:(int64_t)groupingSetting providesAppNotificationSettings:(BOOL)settings
 {
-  LOBYTE(v23) = a21;
-  v21 = [objc_alloc(objc_opt_class()) initWithAuthorizationStatus:a3 soundSetting:a4 badgeSetting:a5 alertSetting:a6 notificationCenterSetting:a7 lockScreenSetting:a8 carPlaySetting:a9 remoteNotificationsSetting:a10 announcementSetting:a11 criticalAlertSetting:a12 timeSensitiveSetting:a13 scheduledDeliverySetting:a14 directMessagesSetting:a15 summarizationSetting:a16 prioritizationSetting:a17 alertStyle:a18 showPreviewsSetting:a19 groupingSetting:a20 providesAppNotificationSettings:v23];
+  LOBYTE(v23) = settings;
+  v21 = [objc_alloc(objc_opt_class()) initWithAuthorizationStatus:status soundSetting:setting badgeSetting:badgeSetting alertSetting:alertSetting notificationCenterSetting:centerSetting lockScreenSetting:screenSetting carPlaySetting:playSetting remoteNotificationsSetting:notificationsSetting announcementSetting:announcementSetting criticalAlertSetting:criticalAlertSetting timeSensitiveSetting:sensitiveSetting scheduledDeliverySetting:deliverySetting directMessagesSetting:messagesSetting summarizationSetting:summarizationSetting prioritizationSetting:prioritizationSetting alertStyle:style showPreviewsSetting:previewsSetting groupingSetting:groupingSetting providesAppNotificationSettings:v23];
 
   return v21;
 }
 
-- (UNNotificationSettings)initWithAuthorizationStatus:(int64_t)a3 soundSetting:(int64_t)a4 badgeSetting:(int64_t)a5 alertSetting:(int64_t)a6 notificationCenterSetting:(int64_t)a7 lockScreenSetting:(int64_t)a8 carPlaySetting:(int64_t)a9 remoteNotificationsSetting:(int64_t)a10 announcementSetting:(int64_t)a11 criticalAlertSetting:(int64_t)a12 timeSensitiveSetting:(int64_t)a13 scheduledDeliverySetting:(int64_t)a14 directMessagesSetting:(int64_t)a15 summarizationSetting:(int64_t)a16 prioritizationSetting:(int64_t)a17 alertStyle:(int64_t)a18 showPreviewsSetting:(int64_t)a19 groupingSetting:(int64_t)a20 providesAppNotificationSettings:(BOOL)a21
+- (UNNotificationSettings)initWithAuthorizationStatus:(int64_t)status soundSetting:(int64_t)setting badgeSetting:(int64_t)badgeSetting alertSetting:(int64_t)alertSetting notificationCenterSetting:(int64_t)centerSetting lockScreenSetting:(int64_t)screenSetting carPlaySetting:(int64_t)playSetting remoteNotificationsSetting:(int64_t)self0 announcementSetting:(int64_t)self1 criticalAlertSetting:(int64_t)self2 timeSensitiveSetting:(int64_t)self3 scheduledDeliverySetting:(int64_t)self4 directMessagesSetting:(int64_t)self5 summarizationSetting:(int64_t)self6 prioritizationSetting:(int64_t)self7 alertStyle:(int64_t)self8 showPreviewsSetting:(int64_t)self9 groupingSetting:(int64_t)groupingSetting providesAppNotificationSettings:(BOOL)settings
 {
   v28.receiver = self;
   v28.super_class = UNNotificationSettings;
   result = [(UNNotificationSettings *)&v28 init];
   if (result)
   {
-    result->_authorizationStatus = a3;
-    result->_soundSetting = a4;
-    result->_badgeSetting = a5;
-    result->_alertSetting = a6;
-    result->_notificationCenterSetting = a7;
-    result->_lockScreenSetting = a8;
-    result->_carPlaySetting = a9;
-    result->_remoteNotificationsSetting = a10;
-    result->_showPreviewsSetting = a19;
-    result->_criticalAlertSetting = a12;
-    result->_timeSensitiveSetting = a13;
-    result->_scheduledDeliverySetting = a14;
-    result->_directMessagesSetting = a15;
-    result->_summarizationSetting = a16;
-    result->_prioritizationSetting = a17;
-    result->_alertStyle = a18;
-    result->_announcementSetting = a11;
-    result->_groupingSetting = a20;
-    result->_providesAppNotificationSettings = a21;
+    result->_authorizationStatus = status;
+    result->_soundSetting = setting;
+    result->_badgeSetting = badgeSetting;
+    result->_alertSetting = alertSetting;
+    result->_notificationCenterSetting = centerSetting;
+    result->_lockScreenSetting = screenSetting;
+    result->_carPlaySetting = playSetting;
+    result->_remoteNotificationsSetting = notificationsSetting;
+    result->_showPreviewsSetting = previewsSetting;
+    result->_criticalAlertSetting = criticalAlertSetting;
+    result->_timeSensitiveSetting = sensitiveSetting;
+    result->_scheduledDeliverySetting = deliverySetting;
+    result->_directMessagesSetting = messagesSetting;
+    result->_summarizationSetting = summarizationSetting;
+    result->_prioritizationSetting = prioritizationSetting;
+    result->_alertStyle = style;
+    result->_announcementSetting = announcementSetting;
+    result->_groupingSetting = groupingSetting;
+    result->_providesAppNotificationSettings = settings;
   }
 
   return result;
@@ -335,80 +335,80 @@
   return v28 ^ v26;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     goto LABEL_20;
   }
 
-  v5 = [(UNNotificationSettings *)self alertSetting];
-  if (v5 != [v4 alertSetting])
+  alertSetting = [(UNNotificationSettings *)self alertSetting];
+  if (alertSetting != [equalCopy alertSetting])
   {
     goto LABEL_20;
   }
 
-  v6 = [(UNNotificationSettings *)self alertStyle];
-  if (v6 != [v4 alertStyle])
+  alertStyle = [(UNNotificationSettings *)self alertStyle];
+  if (alertStyle != [equalCopy alertStyle])
   {
     goto LABEL_20;
   }
 
-  v7 = [(UNNotificationSettings *)self authorizationStatus];
-  if (v7 != [v4 authorizationStatus])
+  authorizationStatus = [(UNNotificationSettings *)self authorizationStatus];
+  if (authorizationStatus != [equalCopy authorizationStatus])
   {
     goto LABEL_20;
   }
 
-  v8 = [(UNNotificationSettings *)self badgeSetting];
-  if (v8 != [v4 badgeSetting])
+  badgeSetting = [(UNNotificationSettings *)self badgeSetting];
+  if (badgeSetting != [equalCopy badgeSetting])
   {
     goto LABEL_20;
   }
 
-  v9 = [(UNNotificationSettings *)self carPlaySetting];
-  if (v9 != [v4 carPlaySetting])
+  carPlaySetting = [(UNNotificationSettings *)self carPlaySetting];
+  if (carPlaySetting != [equalCopy carPlaySetting])
   {
     goto LABEL_20;
   }
 
-  v10 = [(UNNotificationSettings *)self remoteNotificationsSetting];
-  if (v10 != [v4 remoteNotificationsSetting])
+  remoteNotificationsSetting = [(UNNotificationSettings *)self remoteNotificationsSetting];
+  if (remoteNotificationsSetting != [equalCopy remoteNotificationsSetting])
   {
     goto LABEL_20;
   }
 
-  v11 = [(UNNotificationSettings *)self announcementSetting];
-  if (v11 != [v4 announcementSetting])
+  announcementSetting = [(UNNotificationSettings *)self announcementSetting];
+  if (announcementSetting != [equalCopy announcementSetting])
   {
     goto LABEL_20;
   }
 
-  v12 = [(UNNotificationSettings *)self lockScreenSetting];
-  if (v12 != [v4 lockScreenSetting])
+  lockScreenSetting = [(UNNotificationSettings *)self lockScreenSetting];
+  if (lockScreenSetting != [equalCopy lockScreenSetting])
   {
     goto LABEL_20;
   }
 
-  v13 = [(UNNotificationSettings *)self notificationCenterSetting];
-  if (v13 != [v4 notificationCenterSetting])
+  notificationCenterSetting = [(UNNotificationSettings *)self notificationCenterSetting];
+  if (notificationCenterSetting != [equalCopy notificationCenterSetting])
   {
     goto LABEL_20;
   }
 
-  v14 = [(UNNotificationSettings *)self soundSetting];
-  if (v14 != [v4 soundSetting])
+  soundSetting = [(UNNotificationSettings *)self soundSetting];
+  if (soundSetting != [equalCopy soundSetting])
   {
     goto LABEL_20;
   }
 
-  v15 = [(UNNotificationSettings *)self groupingSetting];
-  if (v15 == [v4 groupingSetting] && (v16 = -[UNNotificationSettings providesAppNotificationSettings](self, "providesAppNotificationSettings"), v16 == objc_msgSend(v4, "providesAppNotificationSettings")) && (v17 = -[UNNotificationSettings criticalAlertSetting](self, "criticalAlertSetting"), v17 == objc_msgSend(v4, "criticalAlertSetting")) && (v18 = -[UNNotificationSettings timeSensitiveSetting](self, "timeSensitiveSetting"), v18 == objc_msgSend(v4, "timeSensitiveSetting")) && (v19 = -[UNNotificationSettings scheduledDeliverySetting](self, "scheduledDeliverySetting"), v19 == objc_msgSend(v4, "scheduledDeliverySetting")) && (v20 = -[UNNotificationSettings directMessagesSetting](self, "directMessagesSetting"), v20 == objc_msgSend(v4, "directMessagesSetting")) && (v21 = -[UNNotificationSettings summarizationSetting](self, "summarizationSetting"), v21 == objc_msgSend(v4, "summarizationSetting")))
+  groupingSetting = [(UNNotificationSettings *)self groupingSetting];
+  if (groupingSetting == [equalCopy groupingSetting] && (v16 = -[UNNotificationSettings providesAppNotificationSettings](self, "providesAppNotificationSettings"), v16 == objc_msgSend(equalCopy, "providesAppNotificationSettings")) && (v17 = -[UNNotificationSettings criticalAlertSetting](self, "criticalAlertSetting"), v17 == objc_msgSend(equalCopy, "criticalAlertSetting")) && (v18 = -[UNNotificationSettings timeSensitiveSetting](self, "timeSensitiveSetting"), v18 == objc_msgSend(equalCopy, "timeSensitiveSetting")) && (v19 = -[UNNotificationSettings scheduledDeliverySetting](self, "scheduledDeliverySetting"), v19 == objc_msgSend(equalCopy, "scheduledDeliverySetting")) && (v20 = -[UNNotificationSettings directMessagesSetting](self, "directMessagesSetting"), v20 == objc_msgSend(equalCopy, "directMessagesSetting")) && (v21 = -[UNNotificationSettings summarizationSetting](self, "summarizationSetting"), v21 == objc_msgSend(equalCopy, "summarizationSetting")))
   {
-    v22 = [(UNNotificationSettings *)self prioritizationSetting];
-    v23 = v22 == [v4 prioritizationSetting];
+    prioritizationSetting = [(UNNotificationSettings *)self prioritizationSetting];
+    v23 = prioritizationSetting == [equalCopy prioritizationSetting];
   }
 
   else
@@ -435,77 +435,77 @@ LABEL_20:
   return [(UNNotificationSettings *)self notificationCenterSetting]== UNNotificationSettingEnabled;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v24 = [UNMutableNotificationSettings alloc];
-  v23 = [(UNNotificationSettings *)self authorizationStatus];
-  v22 = [(UNNotificationSettings *)self soundSetting];
-  v21 = [(UNNotificationSettings *)self badgeSetting];
-  v20 = [(UNNotificationSettings *)self alertSetting];
-  v19 = [(UNNotificationSettings *)self notificationCenterSetting];
-  v18 = [(UNNotificationSettings *)self lockScreenSetting];
-  v17 = [(UNNotificationSettings *)self carPlaySetting];
-  v16 = [(UNNotificationSettings *)self remoteNotificationsSetting];
-  v15 = [(UNNotificationSettings *)self announcementSetting];
-  v4 = [(UNNotificationSettings *)self criticalAlertSetting];
-  v5 = [(UNNotificationSettings *)self timeSensitiveSetting];
-  v6 = [(UNNotificationSettings *)self scheduledDeliverySetting];
-  v7 = [(UNNotificationSettings *)self directMessagesSetting];
-  v8 = [(UNNotificationSettings *)self summarizationSetting];
-  v9 = [(UNNotificationSettings *)self prioritizationSetting];
-  v10 = [(UNNotificationSettings *)self alertStyle];
-  v11 = [(UNNotificationSettings *)self showPreviewsSetting];
-  v12 = [(UNNotificationSettings *)self groupingSetting];
+  authorizationStatus = [(UNNotificationSettings *)self authorizationStatus];
+  soundSetting = [(UNNotificationSettings *)self soundSetting];
+  badgeSetting = [(UNNotificationSettings *)self badgeSetting];
+  alertSetting = [(UNNotificationSettings *)self alertSetting];
+  notificationCenterSetting = [(UNNotificationSettings *)self notificationCenterSetting];
+  lockScreenSetting = [(UNNotificationSettings *)self lockScreenSetting];
+  carPlaySetting = [(UNNotificationSettings *)self carPlaySetting];
+  remoteNotificationsSetting = [(UNNotificationSettings *)self remoteNotificationsSetting];
+  announcementSetting = [(UNNotificationSettings *)self announcementSetting];
+  criticalAlertSetting = [(UNNotificationSettings *)self criticalAlertSetting];
+  timeSensitiveSetting = [(UNNotificationSettings *)self timeSensitiveSetting];
+  scheduledDeliverySetting = [(UNNotificationSettings *)self scheduledDeliverySetting];
+  directMessagesSetting = [(UNNotificationSettings *)self directMessagesSetting];
+  summarizationSetting = [(UNNotificationSettings *)self summarizationSetting];
+  prioritizationSetting = [(UNNotificationSettings *)self prioritizationSetting];
+  alertStyle = [(UNNotificationSettings *)self alertStyle];
+  showPreviewsSetting = [(UNNotificationSettings *)self showPreviewsSetting];
+  groupingSetting = [(UNNotificationSettings *)self groupingSetting];
   LOBYTE(v14) = [(UNNotificationSettings *)self providesAppNotificationSettings];
-  return [(UNNotificationSettings *)v24 initWithAuthorizationStatus:v23 soundSetting:v22 badgeSetting:v21 alertSetting:v20 notificationCenterSetting:v19 lockScreenSetting:v18 carPlaySetting:v17 remoteNotificationsSetting:v16 announcementSetting:v15 criticalAlertSetting:v4 timeSensitiveSetting:v5 scheduledDeliverySetting:v6 directMessagesSetting:v7 summarizationSetting:v8 prioritizationSetting:v9 alertStyle:v10 showPreviewsSetting:v11 groupingSetting:v12 providesAppNotificationSettings:v14];
+  return [(UNNotificationSettings *)v24 initWithAuthorizationStatus:authorizationStatus soundSetting:soundSetting badgeSetting:badgeSetting alertSetting:alertSetting notificationCenterSetting:notificationCenterSetting lockScreenSetting:lockScreenSetting carPlaySetting:carPlaySetting remoteNotificationsSetting:remoteNotificationsSetting announcementSetting:announcementSetting criticalAlertSetting:criticalAlertSetting timeSensitiveSetting:timeSensitiveSetting scheduledDeliverySetting:scheduledDeliverySetting directMessagesSetting:directMessagesSetting summarizationSetting:summarizationSetting prioritizationSetting:prioritizationSetting alertStyle:alertStyle showPreviewsSetting:showPreviewsSetting groupingSetting:groupingSetting providesAppNotificationSettings:v14];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:-[UNNotificationSettings alertSetting](self forKey:{"alertSetting"), @"alertSetting"}];
-  [v4 encodeInteger:-[UNNotificationSettings alertStyle](self forKey:{"alertStyle"), @"alertStyle"}];
-  [v4 encodeInteger:-[UNNotificationSettings authorizationStatus](self forKey:{"authorizationStatus"), @"authorizationStatus"}];
-  [v4 encodeInteger:-[UNNotificationSettings badgeSetting](self forKey:{"badgeSetting"), @"badgeSetting"}];
-  [v4 encodeInteger:-[UNNotificationSettings carPlaySetting](self forKey:{"carPlaySetting"), @"carPlaySetting"}];
-  [v4 encodeInteger:-[UNNotificationSettings remoteNotificationsSetting](self forKey:{"remoteNotificationsSetting"), @"remoteNotificationsSetting"}];
-  [v4 encodeInteger:-[UNNotificationSettings announcementSetting](self forKey:{"announcementSetting"), @"announcementSetting"}];
-  [v4 encodeInteger:-[UNNotificationSettings criticalAlertSetting](self forKey:{"criticalAlertSetting"), @"criticalAlertSetting"}];
-  [v4 encodeInteger:-[UNNotificationSettings timeSensitiveSetting](self forKey:{"timeSensitiveSetting"), @"timeSensitiveSetting"}];
-  [v4 encodeInteger:-[UNNotificationSettings lockScreenSetting](self forKey:{"lockScreenSetting"), @"lockScreenSetting"}];
-  [v4 encodeInteger:-[UNNotificationSettings notificationCenterSetting](self forKey:{"notificationCenterSetting"), @"notificationCenterSetting"}];
-  [v4 encodeInteger:-[UNNotificationSettings soundSetting](self forKey:{"soundSetting"), @"soundSetting"}];
-  [v4 encodeInteger:-[UNNotificationSettings showPreviewsSetting](self forKey:{"showPreviewsSetting"), @"showPreviewsSetting"}];
-  [v4 encodeInteger:-[UNNotificationSettings groupingSetting](self forKey:{"groupingSetting"), @"groupingSetting"}];
-  [v4 encodeBool:-[UNNotificationSettings providesAppNotificationSettings](self forKey:{"providesAppNotificationSettings"), @"providesAppNotificationSettings"}];
-  [v4 encodeInteger:-[UNNotificationSettings scheduledDeliverySetting](self forKey:{"scheduledDeliverySetting"), @"scheduledDeliverySetting"}];
-  [v4 encodeInteger:-[UNNotificationSettings directMessagesSetting](self forKey:{"directMessagesSetting"), @"directMessagesSetting"}];
-  [v4 encodeInteger:-[UNNotificationSettings summarizationSetting](self forKey:{"summarizationSetting"), @"summarizationSetting"}];
-  [v4 encodeInteger:-[UNNotificationSettings prioritizationSetting](self forKey:{"prioritizationSetting"), @"prioritizationSetting"}];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[UNNotificationSettings alertSetting](self forKey:{"alertSetting"), @"alertSetting"}];
+  [coderCopy encodeInteger:-[UNNotificationSettings alertStyle](self forKey:{"alertStyle"), @"alertStyle"}];
+  [coderCopy encodeInteger:-[UNNotificationSettings authorizationStatus](self forKey:{"authorizationStatus"), @"authorizationStatus"}];
+  [coderCopy encodeInteger:-[UNNotificationSettings badgeSetting](self forKey:{"badgeSetting"), @"badgeSetting"}];
+  [coderCopy encodeInteger:-[UNNotificationSettings carPlaySetting](self forKey:{"carPlaySetting"), @"carPlaySetting"}];
+  [coderCopy encodeInteger:-[UNNotificationSettings remoteNotificationsSetting](self forKey:{"remoteNotificationsSetting"), @"remoteNotificationsSetting"}];
+  [coderCopy encodeInteger:-[UNNotificationSettings announcementSetting](self forKey:{"announcementSetting"), @"announcementSetting"}];
+  [coderCopy encodeInteger:-[UNNotificationSettings criticalAlertSetting](self forKey:{"criticalAlertSetting"), @"criticalAlertSetting"}];
+  [coderCopy encodeInteger:-[UNNotificationSettings timeSensitiveSetting](self forKey:{"timeSensitiveSetting"), @"timeSensitiveSetting"}];
+  [coderCopy encodeInteger:-[UNNotificationSettings lockScreenSetting](self forKey:{"lockScreenSetting"), @"lockScreenSetting"}];
+  [coderCopy encodeInteger:-[UNNotificationSettings notificationCenterSetting](self forKey:{"notificationCenterSetting"), @"notificationCenterSetting"}];
+  [coderCopy encodeInteger:-[UNNotificationSettings soundSetting](self forKey:{"soundSetting"), @"soundSetting"}];
+  [coderCopy encodeInteger:-[UNNotificationSettings showPreviewsSetting](self forKey:{"showPreviewsSetting"), @"showPreviewsSetting"}];
+  [coderCopy encodeInteger:-[UNNotificationSettings groupingSetting](self forKey:{"groupingSetting"), @"groupingSetting"}];
+  [coderCopy encodeBool:-[UNNotificationSettings providesAppNotificationSettings](self forKey:{"providesAppNotificationSettings"), @"providesAppNotificationSettings"}];
+  [coderCopy encodeInteger:-[UNNotificationSettings scheduledDeliverySetting](self forKey:{"scheduledDeliverySetting"), @"scheduledDeliverySetting"}];
+  [coderCopy encodeInteger:-[UNNotificationSettings directMessagesSetting](self forKey:{"directMessagesSetting"), @"directMessagesSetting"}];
+  [coderCopy encodeInteger:-[UNNotificationSettings summarizationSetting](self forKey:{"summarizationSetting"), @"summarizationSetting"}];
+  [coderCopy encodeInteger:-[UNNotificationSettings prioritizationSetting](self forKey:{"prioritizationSetting"), @"prioritizationSetting"}];
 }
 
-- (UNNotificationSettings)initWithCoder:(id)a3
+- (UNNotificationSettings)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v24 = [v3 decodeIntegerForKey:@"authorizationStatus"];
-  v23 = [v3 decodeIntegerForKey:@"soundSetting"];
-  v22 = [v3 decodeIntegerForKey:@"badgeSetting"];
-  v21 = [v3 decodeIntegerForKey:@"alertSetting"];
-  v20 = [v3 decodeIntegerForKey:@"criticalAlertSetting"];
-  v18 = [v3 decodeIntegerForKey:@"timeSensitiveSetting"];
-  v19 = [v3 decodeIntegerForKey:@"notificationCenterSetting"];
-  v17 = [v3 decodeIntegerForKey:@"lockScreenSetting"];
-  v16 = [v3 decodeIntegerForKey:@"carPlaySetting"];
-  v15 = [v3 decodeIntegerForKey:@"remoteNotificationsSetting"];
-  v4 = [v3 decodeIntegerForKey:@"announcementSetting"];
-  v5 = [v3 decodeIntegerForKey:@"scheduledDeliverySetting"];
-  v6 = [v3 decodeIntegerForKey:@"directMessagesSetting"];
-  v7 = [v3 decodeIntegerForKey:@"summarizationSetting"];
-  v8 = [v3 decodeIntegerForKey:@"prioritizationSetting"];
-  v9 = [v3 decodeIntegerForKey:@"alertStyle"];
-  v10 = [v3 decodeIntegerForKey:@"showPreviewsSetting"];
-  v11 = [v3 decodeIntegerForKey:@"groupingSetting"];
-  v12 = [v3 decodeBoolForKey:@"providesAppNotificationSettings"];
+  coderCopy = coder;
+  v24 = [coderCopy decodeIntegerForKey:@"authorizationStatus"];
+  v23 = [coderCopy decodeIntegerForKey:@"soundSetting"];
+  v22 = [coderCopy decodeIntegerForKey:@"badgeSetting"];
+  v21 = [coderCopy decodeIntegerForKey:@"alertSetting"];
+  v20 = [coderCopy decodeIntegerForKey:@"criticalAlertSetting"];
+  v18 = [coderCopy decodeIntegerForKey:@"timeSensitiveSetting"];
+  v19 = [coderCopy decodeIntegerForKey:@"notificationCenterSetting"];
+  v17 = [coderCopy decodeIntegerForKey:@"lockScreenSetting"];
+  v16 = [coderCopy decodeIntegerForKey:@"carPlaySetting"];
+  v15 = [coderCopy decodeIntegerForKey:@"remoteNotificationsSetting"];
+  v4 = [coderCopy decodeIntegerForKey:@"announcementSetting"];
+  v5 = [coderCopy decodeIntegerForKey:@"scheduledDeliverySetting"];
+  v6 = [coderCopy decodeIntegerForKey:@"directMessagesSetting"];
+  v7 = [coderCopy decodeIntegerForKey:@"summarizationSetting"];
+  v8 = [coderCopy decodeIntegerForKey:@"prioritizationSetting"];
+  v9 = [coderCopy decodeIntegerForKey:@"alertStyle"];
+  v10 = [coderCopy decodeIntegerForKey:@"showPreviewsSetting"];
+  v11 = [coderCopy decodeIntegerForKey:@"groupingSetting"];
+  v12 = [coderCopy decodeBoolForKey:@"providesAppNotificationSettings"];
 
   LOBYTE(v14) = v12;
   return [(UNNotificationSettings *)self initWithAuthorizationStatus:v24 soundSetting:v23 badgeSetting:v22 alertSetting:v21 notificationCenterSetting:v19 lockScreenSetting:v17 carPlaySetting:v16 remoteNotificationsSetting:v15 announcementSetting:v4 criticalAlertSetting:v20 timeSensitiveSetting:v18 scheduledDeliverySetting:v5 directMessagesSetting:v6 summarizationSetting:v7 prioritizationSetting:v8 alertStyle:v9 showPreviewsSetting:v10 groupingSetting:v11 providesAppNotificationSettings:v14];

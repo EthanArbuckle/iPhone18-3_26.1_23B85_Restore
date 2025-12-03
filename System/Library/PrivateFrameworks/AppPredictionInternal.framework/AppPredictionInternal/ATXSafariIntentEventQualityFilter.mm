@@ -1,8 +1,8 @@
 @interface ATXSafariIntentEventQualityFilter
 - (ATXSafariIntentEventQualityFilter)init;
-- (ATXSafariIntentEventQualityFilter)initWithContextKitClient:(id)a3;
-- (BOOL)shouldAcceptSafariDonation:(id)a3;
-- (BOOL)shouldBlockURLForObjectionableContent:(id)a3;
+- (ATXSafariIntentEventQualityFilter)initWithContextKitClient:(id)client;
+- (BOOL)shouldAcceptSafariDonation:(id)donation;
+- (BOOL)shouldBlockURLForObjectionableContent:(id)content;
 @end
 
 @implementation ATXSafariIntentEventQualityFilter
@@ -15,56 +15,56 @@
   return v4;
 }
 
-- (ATXSafariIntentEventQualityFilter)initWithContextKitClient:(id)a3
+- (ATXSafariIntentEventQualityFilter)initWithContextKitClient:(id)client
 {
-  v5 = a3;
+  clientCopy = client;
   v9.receiver = self;
   v9.super_class = ATXSafariIntentEventQualityFilter;
   v6 = [(ATXSafariIntentEventQualityFilter *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_ckClient, a3);
+    objc_storeStrong(&v6->_ckClient, client);
   }
 
   return v7;
 }
 
-- (BOOL)shouldAcceptSafariDonation:(id)a3
+- (BOOL)shouldAcceptSafariDonation:(id)donation
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 bundleId];
-  v6 = [v4 intentType];
-  if ([v5 isEqualToString:@"com.apple.mobilesafari"] && objc_msgSend(v6, "isEqualToString:", @"NSUA_NSUserActivityTypeBrowsingWeb"))
+  donationCopy = donation;
+  bundleId = [donationCopy bundleId];
+  intentType = [donationCopy intentType];
+  if ([bundleId isEqualToString:@"com.apple.mobilesafari"] && objc_msgSend(intentType, "isEqualToString:", @"NSUA_NSUserActivityTypeBrowsingWeb"))
   {
-    v7 = [v4 action];
+    action = [donationCopy action];
 
-    if (!v7)
+    if (!action)
     {
-      v10 = __atxlog_handle_default();
-      if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+      webpageURL = __atxlog_handle_default();
+      if (os_log_type_enabled(webpageURL, OS_LOG_TYPE_DEFAULT))
       {
         v18 = objc_opt_class();
         v19 = NSStringFromClass(v18);
         v23 = 138412290;
         v24 = v19;
-        _os_log_impl(&dword_2263AA000, v10, OS_LOG_TYPE_DEFAULT, "%@ - No ATXAction found. Skipping this action.", &v23, 0xCu);
+        _os_log_impl(&dword_2263AA000, webpageURL, OS_LOG_TYPE_DEFAULT, "%@ - No ATXAction found. Skipping this action.", &v23, 0xCu);
       }
 
       goto LABEL_15;
     }
 
-    v8 = [v4 action];
-    v9 = [v8 userActivity];
-    v10 = [v9 webpageURL];
+    action2 = [donationCopy action];
+    userActivity = [action2 userActivity];
+    webpageURL = [userActivity webpageURL];
 
-    v11 = [v10 absoluteString];
-    v12 = [v11 length];
+    absoluteString = [webpageURL absoluteString];
+    v12 = [absoluteString length];
 
     if (v12)
     {
-      if (![(ATXSafariIntentEventQualityFilter *)self shouldBlockURLForObjectionableContent:v10])
+      if (![(ATXSafariIntentEventQualityFilter *)self shouldBlockURLForObjectionableContent:webpageURL])
       {
         v17 = 1;
         goto LABEL_16;
@@ -116,14 +116,14 @@ LABEL_17:
   return v17;
 }
 
-- (BOOL)shouldBlockURLForObjectionableContent:(id)a3
+- (BOOL)shouldBlockURLForObjectionableContent:(id)content
 {
-  v4 = a3;
-  v5 = [(ATXSafariIntentEventQualityFilter *)self ckClient];
-  v6 = [v5 level1TopicIdsForURL:v4];
+  contentCopy = content;
+  ckClient = [(ATXSafariIntentEventQualityFilter *)self ckClient];
+  v6 = [ckClient level1TopicIdsForURL:contentCopy];
 
-  LOBYTE(v4) = [v6 containsObject:@"EC9001"];
-  return v4;
+  LOBYTE(contentCopy) = [v6 containsObject:@"EC9001"];
+  return contentCopy;
 }
 
 @end

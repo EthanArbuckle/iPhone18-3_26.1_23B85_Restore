@@ -1,26 +1,26 @@
 @interface NEAppRule
-- (BOOL)checkValidityAndCollectErrors:(id)a3;
-- (BOOL)overlapsWithRule:(id)a3;
-- (BOOL)signingIdentifierAllowed:(id)a3 domainsOrAccountsRequired:(BOOL *)a4;
-- (NEAppRule)initWithCoder:(id)a3;
+- (BOOL)checkValidityAndCollectErrors:(id)errors;
+- (BOOL)overlapsWithRule:(id)rule;
+- (BOOL)signingIdentifierAllowed:(id)allowed domainsOrAccountsRequired:(BOOL *)required;
+- (NEAppRule)initWithCoder:(id)coder;
 - (NEAppRule)initWithSigningIdentifier:(NSString *)signingIdentifier;
 - (id)copyLegacyDictionary;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)initFromLegacyDictionary:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)initFromLegacyDictionary:(id)dictionary;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NEAppRule
 
-- (BOOL)signingIdentifierAllowed:(id)a3 domainsOrAccountsRequired:(BOOL *)a4
+- (BOOL)signingIdentifierAllowed:(id)allowed domainsOrAccountsRequired:(BOOL *)required
 {
-  v5 = a3;
-  *a4 = 0;
-  if ([v5 hasPrefix:@"com.apple."])
+  allowedCopy = allowed;
+  *required = 0;
+  if ([allowedCopy hasPrefix:@"com.apple."])
   {
     v6 = 0;
-    while (strcmp([v5 UTF8String], (&signingIdentifierAllowed_domainsOrAccountsRequired__com_apple_exceptions)[v6]))
+    while (strcmp([allowedCopy UTF8String], (&signingIdentifierAllowed_domainsOrAccountsRequired__com_apple_exceptions)[v6]))
     {
       v6 += 2;
       if (v6 == 24)
@@ -29,7 +29,7 @@
       }
     }
 
-    *a4 = 1;
+    *required = 1;
   }
 
 LABEL_7:
@@ -37,28 +37,28 @@ LABEL_7:
   return 1;
 }
 
-- (BOOL)overlapsWithRule:(id)a3
+- (BOOL)overlapsWithRule:(id)rule
 {
   v59 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(NEAppRule *)self matchSigningIdentifier];
-  v6 = [v4 matchSigningIdentifier];
-  v7 = [v5 isEqualToString:v6];
+  ruleCopy = rule;
+  matchSigningIdentifier = [(NEAppRule *)self matchSigningIdentifier];
+  matchSigningIdentifier2 = [ruleCopy matchSigningIdentifier];
+  v7 = [matchSigningIdentifier isEqualToString:matchSigningIdentifier2];
 
   if (!v7)
   {
     goto LABEL_46;
   }
 
-  v8 = [(NEAppRule *)self matchDomains];
-  if ([v8 count])
+  matchDomains = [(NEAppRule *)self matchDomains];
+  if ([matchDomains count])
   {
   }
 
   else
   {
-    v9 = [v4 matchDomains];
-    v10 = [v9 count];
+    matchDomains2 = [ruleCopy matchDomains];
+    v10 = [matchDomains2 count];
 
     if (!v10)
     {
@@ -68,15 +68,15 @@ LABEL_7:
     }
   }
 
-  v11 = [(NEAppRule *)self matchDomains];
-  if (![v11 count])
+  matchDomains3 = [(NEAppRule *)self matchDomains];
+  if (![matchDomains3 count])
   {
 
     goto LABEL_23;
   }
 
-  v12 = [v4 matchDomains];
-  v13 = [v12 count];
+  matchDomains4 = [ruleCopy matchDomains];
+  v13 = [matchDomains4 count];
 
   if (!v13)
   {
@@ -86,31 +86,31 @@ LABEL_23:
     goto LABEL_26;
   }
 
-  v14 = [(NEAppRule *)self matchDomains];
-  v15 = [v14 count];
+  matchDomains5 = [(NEAppRule *)self matchDomains];
+  v15 = [matchDomains5 count];
 
   if (v15)
   {
     v16 = 0;
     do
     {
-      v17 = [(NEAppRule *)self matchDomains];
-      v18 = [v17 objectAtIndexedSubscript:v16];
+      matchDomains6 = [(NEAppRule *)self matchDomains];
+      v18 = [matchDomains6 objectAtIndexedSubscript:v16];
 
-      v19 = [v4 matchDomains];
-      v20 = [v19 count];
+      matchDomains7 = [ruleCopy matchDomains];
+      v20 = [matchDomains7 count];
 
       if (v20)
       {
         v21 = 1;
         do
         {
-          v22 = [v4 matchDomains];
-          v23 = [v22 objectAtIndexedSubscript:v21 - 1];
+          matchDomains8 = [ruleCopy matchDomains];
+          v23 = [matchDomains8 objectAtIndexedSubscript:v21 - 1];
 
           v24 = ([v18 hasSuffix:v23] & 1) != 0 || objc_msgSend(v23, "hasSuffix:", v18);
-          v25 = [v4 matchDomains];
-          v26 = [v25 count];
+          matchDomains9 = [ruleCopy matchDomains];
+          v26 = [matchDomains9 count];
 
           if (v21 >= v26)
           {
@@ -129,8 +129,8 @@ LABEL_23:
       }
 
       ++v16;
-      v27 = [(NEAppRule *)self matchDomains];
-      v28 = [v27 count];
+      matchDomains10 = [(NEAppRule *)self matchDomains];
+      v28 = [matchDomains10 count];
 
       v29 = 0;
     }
@@ -145,15 +145,15 @@ LABEL_23:
   }
 
 LABEL_26:
-  v30 = [(NEAppRule *)self matchAccountIdentifiers];
-  if ([v30 count])
+  matchAccountIdentifiers = [(NEAppRule *)self matchAccountIdentifiers];
+  if ([matchAccountIdentifiers count])
   {
   }
 
   else
   {
-    v31 = [v4 matchAccountIdentifiers];
-    v32 = [v31 count];
+    matchAccountIdentifiers2 = [ruleCopy matchAccountIdentifiers];
+    v32 = [matchAccountIdentifiers2 count];
 
     if (!v32)
     {
@@ -163,31 +163,31 @@ LABEL_26:
     }
   }
 
-  v33 = [(NEAppRule *)self matchAccountIdentifiers];
-  if (![v33 count])
+  matchAccountIdentifiers3 = [(NEAppRule *)self matchAccountIdentifiers];
+  if (![matchAccountIdentifiers3 count])
   {
 
     goto LABEL_47;
   }
 
-  v34 = [v4 matchAccountIdentifiers];
-  v35 = [v34 count];
+  matchAccountIdentifiers4 = [ruleCopy matchAccountIdentifiers];
+  v35 = [matchAccountIdentifiers4 count];
 
   if (v35)
   {
-    v36 = [(NEAppRule *)self matchAccountIdentifiers];
-    v37 = [v36 count];
+    matchAccountIdentifiers5 = [(NEAppRule *)self matchAccountIdentifiers];
+    v37 = [matchAccountIdentifiers5 count];
 
     if (v37)
     {
       v38 = 0;
       do
       {
-        v39 = [(NEAppRule *)self matchAccountIdentifiers];
-        v40 = [v39 objectAtIndexedSubscript:v38];
+        matchAccountIdentifiers6 = [(NEAppRule *)self matchAccountIdentifiers];
+        v40 = [matchAccountIdentifiers6 objectAtIndexedSubscript:v38];
 
-        v41 = [v4 matchAccountIdentifiers];
-        v42 = [v41 count];
+        matchAccountIdentifiers7 = [ruleCopy matchAccountIdentifiers];
+        v42 = [matchAccountIdentifiers7 count];
 
         if (v42)
         {
@@ -195,13 +195,13 @@ LABEL_26:
           v44 = 0;
           do
           {
-            v45 = [v4 matchAccountIdentifiers];
-            v46 = [v45 objectAtIndexedSubscript:v43];
+            matchAccountIdentifiers8 = [ruleCopy matchAccountIdentifiers];
+            v46 = [matchAccountIdentifiers8 objectAtIndexedSubscript:v43];
 
             v44 |= [v40 isEqualToString:v46];
             ++v43;
-            v47 = [v4 matchAccountIdentifiers];
-            v48 = [v47 count];
+            matchAccountIdentifiers9 = [ruleCopy matchAccountIdentifiers];
+            v48 = [matchAccountIdentifiers9 count];
           }
 
           while (v43 < v48);
@@ -213,8 +213,8 @@ LABEL_26:
         }
 
         ++v38;
-        v49 = [(NEAppRule *)self matchAccountIdentifiers];
-        v50 = [v49 count];
+        matchAccountIdentifiers10 = [(NEAppRule *)self matchAccountIdentifiers];
+        v50 = [matchAccountIdentifiers10 count];
 
         v51 = 0;
       }
@@ -241,9 +241,9 @@ LABEL_47:
   v53 = ne_log_obj();
   if (os_log_type_enabled(v53, OS_LOG_TYPE_DEFAULT))
   {
-    v54 = [(NEAppRule *)self matchSigningIdentifier];
+    matchSigningIdentifier3 = [(NEAppRule *)self matchSigningIdentifier];
     v57 = 138412290;
-    v58 = v54;
+    v58 = matchSigningIdentifier3;
     _os_log_impl(&dword_1BA83C000, v53, OS_LOG_TYPE_DEFAULT, "App Rule for %@ overlaps with an existing app rule", &v57, 0xCu);
   }
 
@@ -254,22 +254,22 @@ LABEL_50:
   return v52;
 }
 
-- (id)initFromLegacyDictionary:(id)a3
+- (id)initFromLegacyDictionary:(id)dictionary
 {
   v51 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v48.receiver = self;
   v48.super_class = NEAppRule;
   v5 = [(NEAppRule *)&v48 init];
   if (v5)
   {
     v6 = *MEMORY[0x1E6982938];
-    v7 = [v4 objectForKeyedSubscript:*MEMORY[0x1E6982938]];
+    v7 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x1E6982938]];
     v8 = isa_nsarray(v7);
 
     if (v8)
     {
-      v9 = [v4 objectForKeyedSubscript:v6];
+      v9 = [dictionaryCopy objectForKeyedSubscript:v6];
       if ([v9 count])
       {
         v10 = [v9 objectAtIndexedSubscript:0];
@@ -288,12 +288,12 @@ LABEL_50:
     }
 
     v17 = *MEMORY[0x1E6982930];
-    v18 = [v4 objectForKeyedSubscript:*MEMORY[0x1E6982930]];
+    v18 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x1E6982930]];
     v19 = isa_nsarray(v18);
 
     if (v19)
     {
-      [v4 objectForKeyedSubscript:v17];
+      [dictionaryCopy objectForKeyedSubscript:v17];
       v44 = 0u;
       v45 = 0u;
       v46 = 0u;
@@ -340,12 +340,12 @@ LABEL_19:
     }
 
     v27 = *MEMORY[0x1E6982928];
-    v28 = [v4 objectForKeyedSubscript:*MEMORY[0x1E6982928]];
+    v28 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x1E6982928]];
     v29 = isa_nsarray(v28);
 
     if (v29)
     {
-      [v4 objectForKeyedSubscript:v27];
+      [dictionaryCopy objectForKeyedSubscript:v27];
       v40 = 0u;
       v41 = 0u;
       v42 = 0u;
@@ -403,52 +403,52 @@ LABEL_31:
   v15[1] = *MEMORY[0x1E69E9840];
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v4 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v5 = [(NEAppRule *)self matchSigningIdentifier];
+  matchSigningIdentifier = [(NEAppRule *)self matchSigningIdentifier];
 
-  if (v5)
+  if (matchSigningIdentifier)
   {
-    v6 = [(NEAppRule *)self matchSigningIdentifier];
-    [v3 setObject:v6 forKeyedSubscript:*MEMORY[0x1E6982948]];
+    matchSigningIdentifier2 = [(NEAppRule *)self matchSigningIdentifier];
+    [v3 setObject:matchSigningIdentifier2 forKeyedSubscript:*MEMORY[0x1E6982948]];
 
-    v7 = [(NEAppRule *)self matchSigningIdentifier];
-    [v4 setObject:v7 forKeyedSubscript:*MEMORY[0x1E6982940]];
+    matchSigningIdentifier3 = [(NEAppRule *)self matchSigningIdentifier];
+    [v4 setObject:matchSigningIdentifier3 forKeyedSubscript:*MEMORY[0x1E6982940]];
   }
 
   v15[0] = v4;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:1];
   [v3 setObject:v8 forKeyedSubscript:*MEMORY[0x1E6982938]];
 
-  v9 = [(NEAppRule *)self matchDomains];
+  matchDomains = [(NEAppRule *)self matchDomains];
 
-  if (v9)
+  if (matchDomains)
   {
-    v10 = [(NEAppRule *)self matchDomains];
-    [v3 setObject:v10 forKeyedSubscript:*MEMORY[0x1E6982930]];
+    matchDomains2 = [(NEAppRule *)self matchDomains];
+    [v3 setObject:matchDomains2 forKeyedSubscript:*MEMORY[0x1E6982930]];
   }
 
-  v11 = [(NEAppRule *)self matchAccountIdentifiers];
+  matchAccountIdentifiers = [(NEAppRule *)self matchAccountIdentifiers];
 
-  if (v11)
+  if (matchAccountIdentifiers)
   {
-    v12 = [(NEAppRule *)self matchAccountIdentifiers];
-    [v3 setObject:v12 forKeyedSubscript:*MEMORY[0x1E6982928]];
+    matchAccountIdentifiers2 = [(NEAppRule *)self matchAccountIdentifiers];
+    [v3 setObject:matchAccountIdentifiers2 forKeyedSubscript:*MEMORY[0x1E6982928]];
   }
 
   v13 = *MEMORY[0x1E69E9840];
   return v3;
 }
 
-- (BOOL)checkValidityAndCollectErrors:(id)a3
+- (BOOL)checkValidityAndCollectErrors:(id)errors
 {
   v40 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorsCopy = errors;
   v37 = 0;
-  v5 = [(NEAppRule *)self matchSigningIdentifier];
+  matchSigningIdentifier = [(NEAppRule *)self matchSigningIdentifier];
 
-  if (v5)
+  if (matchSigningIdentifier)
   {
-    v6 = [(NEAppRule *)self matchSigningIdentifier];
-    v7 = [(NEAppRule *)self signingIdentifierAllowed:v6 domainsOrAccountsRequired:&v37];
+    matchSigningIdentifier2 = [(NEAppRule *)self matchSigningIdentifier];
+    v7 = [(NEAppRule *)self signingIdentifierAllowed:matchSigningIdentifier2 domainsOrAccountsRequired:&v37];
 
     if (v7)
     {
@@ -457,14 +457,14 @@ LABEL_31:
     }
 
     v9 = MEMORY[0x1E696AEC0];
-    v10 = [(NEAppRule *)self matchSigningIdentifier];
-    v11 = [v9 stringWithFormat:@"Dis-allowed app rule signing identifier (starts with com.apple): %@", v10];
-    [NEConfiguration addError:v11 toList:v4];
+    matchSigningIdentifier3 = [(NEAppRule *)self matchSigningIdentifier];
+    v11 = [v9 stringWithFormat:@"Dis-allowed app rule signing identifier (starts with com.apple): %@", matchSigningIdentifier3];
+    [NEConfiguration addError:v11 toList:errorsCopy];
   }
 
   else
   {
-    [NEConfiguration addError:v4 toList:?];
+    [NEConfiguration addError:errorsCopy toList:?];
   }
 
   v8 = 0;
@@ -473,8 +473,8 @@ LABEL_7:
   v36 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v12 = [(NEAppRule *)self matchDomains];
-  v13 = [v12 countByEnumeratingWithState:&v33 objects:v39 count:16];
+  matchDomains = [(NEAppRule *)self matchDomains];
+  v13 = [matchDomains countByEnumeratingWithState:&v33 objects:v39 count:16];
   v28 = v13;
   if (v13)
   {
@@ -486,17 +486,17 @@ LABEL_7:
       {
         if (*v34 != v14)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(matchDomains);
         }
 
         if ((isa_nsstring(*(*(&v33 + 1) + 8 * i)) & 1) == 0)
         {
-          [NEConfiguration addError:v4 toList:?];
+          [NEConfiguration addError:errorsCopy toList:?];
           v8 = 0;
         }
       }
 
-      v15 = [v12 countByEnumeratingWithState:&v33 objects:v39 count:16];
+      v15 = [matchDomains countByEnumeratingWithState:&v33 objects:v39 count:16];
     }
 
     while (v15);
@@ -506,8 +506,8 @@ LABEL_7:
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v17 = [(NEAppRule *)self matchAccountIdentifiers];
-  v18 = [v17 countByEnumeratingWithState:&v29 objects:v38 count:16];
+  matchAccountIdentifiers = [(NEAppRule *)self matchAccountIdentifiers];
+  v18 = [matchAccountIdentifiers countByEnumeratingWithState:&v29 objects:v38 count:16];
   v19 = v18;
   if (v18)
   {
@@ -519,17 +519,17 @@ LABEL_7:
       {
         if (*v30 != v20)
         {
-          objc_enumerationMutation(v17);
+          objc_enumerationMutation(matchAccountIdentifiers);
         }
 
         if ((isa_nsstring(*(*(&v29 + 1) + 8 * j)) & 1) == 0)
         {
-          [NEConfiguration addError:v4 toList:?];
+          [NEConfiguration addError:errorsCopy toList:?];
           v8 = 0;
         }
       }
 
-      v21 = [v17 countByEnumeratingWithState:&v29 objects:v38 count:16];
+      v21 = [matchAccountIdentifiers countByEnumeratingWithState:&v29 objects:v38 count:16];
     }
 
     while (v21);
@@ -539,7 +539,7 @@ LABEL_7:
   {
     if (!(v19 | v28) && v37)
     {
-      [NEConfiguration addError:v4 toList:?];
+      [NEConfiguration addError:errorsCopy toList:?];
 LABEL_32:
       v8 = 0;
       goto LABEL_33;
@@ -548,9 +548,9 @@ LABEL_32:
     if (v19 | v28 && (v37 & 1) == 0)
     {
       v23 = MEMORY[0x1E696AEC0];
-      v24 = [(NEAppRule *)self matchSigningIdentifier];
-      v25 = [v23 stringWithFormat:@"App rule matching %@ cannot have matchDomains or matchAccountIdentifiers", v24];
-      [NEConfiguration addError:v25 toList:v4];
+      matchSigningIdentifier4 = [(NEAppRule *)self matchSigningIdentifier];
+      v25 = [v23 stringWithFormat:@"App rule matching %@ cannot have matchDomains or matchAccountIdentifiers", matchSigningIdentifier4];
+      [NEConfiguration addError:v25 toList:errorsCopy];
 
       goto LABEL_32;
     }
@@ -562,43 +562,43 @@ LABEL_33:
   return v8 & 1;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(NEAppRule *)self matchSigningIdentifier];
-  v6 = [v4 initWithSigningIdentifier:v5];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  matchSigningIdentifier = [(NEAppRule *)self matchSigningIdentifier];
+  v6 = [v4 initWithSigningIdentifier:matchSigningIdentifier];
 
-  v7 = [(NEAppRule *)self matchPath];
-  [v6 setMatchPath:v7];
+  matchPath = [(NEAppRule *)self matchPath];
+  [v6 setMatchPath:matchPath];
 
-  v8 = [(NEAppRule *)self matchDomains];
-  [v6 setMatchDomains:v8];
+  matchDomains = [(NEAppRule *)self matchDomains];
+  [v6 setMatchDomains:matchDomains];
 
-  v9 = [(NEAppRule *)self matchAccountIdentifiers];
-  [v6 setMatchAccountIdentifiers:v9];
+  matchAccountIdentifiers = [(NEAppRule *)self matchAccountIdentifiers];
+  [v6 setMatchAccountIdentifiers:matchAccountIdentifiers];
 
   [v6 setNoDivertDNS:{-[NEAppRule noDivertDNS](self, "noDivertDNS")}];
   [v6 setAllowEmptyDesignatedRequirement:{-[NEAppRule allowEmptyDesignatedRequirement](self, "allowEmptyDesignatedRequirement")}];
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v8 = a3;
-  v4 = [(NEAppRule *)self matchDomains];
-  [v8 encodeObject:v4 forKey:@"MatchDomains"];
+  coderCopy = coder;
+  matchDomains = [(NEAppRule *)self matchDomains];
+  [coderCopy encodeObject:matchDomains forKey:@"MatchDomains"];
 
-  v5 = [(NEAppRule *)self matchAccountIdentifiers];
-  [v8 encodeObject:v5 forKey:@"MatchAccountIdentifiers"];
+  matchAccountIdentifiers = [(NEAppRule *)self matchAccountIdentifiers];
+  [coderCopy encodeObject:matchAccountIdentifiers forKey:@"MatchAccountIdentifiers"];
 
-  v6 = [(NEAppRule *)self matchSigningIdentifier];
-  [v8 encodeObject:v6 forKey:@"SigningIdentifier"];
+  matchSigningIdentifier = [(NEAppRule *)self matchSigningIdentifier];
+  [coderCopy encodeObject:matchSigningIdentifier forKey:@"SigningIdentifier"];
 
-  [v8 encodeBool:-[NEAppRule allowEmptyDesignatedRequirement](self forKey:{"allowEmptyDesignatedRequirement"), @"AllowEmptyDesignatedRequirement"}];
-  v7 = [(NEAppRule *)self matchPath];
-  [v8 encodeObject:v7 forKey:@"Path"];
+  [coderCopy encodeBool:-[NEAppRule allowEmptyDesignatedRequirement](self forKey:{"allowEmptyDesignatedRequirement"), @"AllowEmptyDesignatedRequirement"}];
+  matchPath = [(NEAppRule *)self matchPath];
+  [coderCopy encodeObject:matchPath forKey:@"Path"];
 
-  [v8 encodeBool:-[NEAppRule noDivertDNS](self forKey:{"noDivertDNS"), @"NoDivertDNS"}];
+  [coderCopy encodeBool:-[NEAppRule noDivertDNS](self forKey:{"noDivertDNS"), @"NoDivertDNS"}];
 }
 
 - (void)dealloc
@@ -608,9 +608,9 @@ LABEL_33:
   [(NEAppRule *)&v2 dealloc];
 }
 
-- (NEAppRule)initWithCoder:(id)a3
+- (NEAppRule)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v21.receiver = self;
   v21.super_class = NEAppRule;
   v5 = [(NEAppRule *)&v21 init];
@@ -619,27 +619,27 @@ LABEL_33:
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"MatchDomains"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"MatchDomains"];
     matchDomains = v5->_matchDomains;
     v5->_matchDomains = v9;
 
     v11 = MEMORY[0x1E695DFD8];
     v12 = objc_opt_class();
     v13 = [v11 setWithObjects:{v12, objc_opt_class(), 0}];
-    v14 = [v4 decodeObjectOfClasses:v13 forKey:@"MatchAccountIdentifiers"];
+    v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"MatchAccountIdentifiers"];
     matchAccountIdentifiers = v5->_matchAccountIdentifiers;
     v5->_matchAccountIdentifiers = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SigningIdentifier"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SigningIdentifier"];
     matchSigningIdentifier = v5->_matchSigningIdentifier;
     v5->_matchSigningIdentifier = v16;
 
-    v5->_allowEmptyDesignatedRequirement = [v4 decodeBoolForKey:@"AllowEmptyDesignatedRequirement"];
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Path"];
+    v5->_allowEmptyDesignatedRequirement = [coderCopy decodeBoolForKey:@"AllowEmptyDesignatedRequirement"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Path"];
     matchPath = v5->_matchPath;
     v5->_matchPath = v18;
 
-    v5->_noDivertDNS = [v4 decodeBoolForKey:@"NoDivertDNS"];
+    v5->_noDivertDNS = [coderCopy decodeBoolForKey:@"NoDivertDNS"];
   }
 
   return v5;

@@ -1,14 +1,14 @@
 @interface AMSUIDynamicImpressionMetrics
-- (AMSUIDynamicImpressionMetrics)initWithIdentifier:(id)a3 fields:(id)a4 custom:(id)a5;
+- (AMSUIDynamicImpressionMetrics)initWithIdentifier:(id)identifier fields:(id)fields custom:(id)custom;
 @end
 
 @implementation AMSUIDynamicImpressionMetrics
 
-- (AMSUIDynamicImpressionMetrics)initWithIdentifier:(id)a3 fields:(id)a4 custom:(id)a5
+- (AMSUIDynamicImpressionMetrics)initWithIdentifier:(id)identifier fields:(id)fields custom:(id)custom
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  fieldsCopy = fields;
+  customCopy = custom;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2050000000;
@@ -27,7 +27,7 @@
 
   v12 = v11;
   _Block_object_dispose(&v16, 8);
-  v13 = [[v11 alloc] initWithIdentifier:v8 fields:v9 custom:v10];
+  v13 = [[v11 alloc] initWithIdentifier:identifierCopy fields:fieldsCopy custom:customCopy];
 
   return v13;
 }

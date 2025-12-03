@@ -1,9 +1,9 @@
 @interface PBFPosterGallerySmartAlbumConfigurationViewHostCell
 - (CGSize)intrinsicContentSize;
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5;
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority;
 - (void)layoutSubviews;
-- (void)setHostedView:(id)a3;
-- (void)updateContent:(id)a3;
+- (void)setHostedView:(id)view;
+- (void)updateContent:(id)content;
 @end
 
 @implementation PBFPosterGallerySmartAlbumConfigurationViewHostCell
@@ -20,9 +20,9 @@
   [(UIView *)hostedView setFrame:?];
 }
 
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority
 {
-  [(UIView *)self->_hostedView systemLayoutSizeFittingSize:a3.width withHorizontalFittingPriority:a3.height verticalFittingPriority:?];
+  [(UIView *)self->_hostedView systemLayoutSizeFittingSize:size.width withHorizontalFittingPriority:size.height verticalFittingPriority:?];
   result.height = v6;
   result.width = v5;
   return result;
@@ -36,29 +36,29 @@
   return result;
 }
 
-- (void)setHostedView:(id)a3
+- (void)setHostedView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   hostedView = self->_hostedView;
-  if (hostedView != v5)
+  if (hostedView != viewCopy)
   {
-    v8 = v5;
+    v8 = viewCopy;
     [(UIView *)hostedView removeFromSuperview];
-    objc_storeStrong(&self->_hostedView, a3);
-    v7 = [(PBFPosterGallerySmartAlbumConfigurationViewHostCell *)self contentView];
-    [v7 addSubview:self->_hostedView];
+    objc_storeStrong(&self->_hostedView, view);
+    contentView = [(PBFPosterGallerySmartAlbumConfigurationViewHostCell *)self contentView];
+    [contentView addSubview:self->_hostedView];
 
     [(PBFPosterGallerySmartAlbumConfigurationViewHostCell *)self invalidateIntrinsicContentSize];
     [(PBFPosterGallerySmartAlbumConfigurationViewHostCell *)self setNeedsLayout];
-    v5 = v8;
+    viewCopy = v8;
   }
 }
 
-- (void)updateContent:(id)a3
+- (void)updateContent:(id)content
 {
-  if (a3)
+  if (content)
   {
-    (*(a3 + 2))(a3, self->_hostedView);
+    (*(content + 2))(content, self->_hostedView);
   }
 
   [(PBFPosterGallerySmartAlbumConfigurationViewHostCell *)self invalidateIntrinsicContentSize];

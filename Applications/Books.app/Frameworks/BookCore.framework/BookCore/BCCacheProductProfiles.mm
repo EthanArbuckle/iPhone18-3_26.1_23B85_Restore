@@ -1,9 +1,9 @@
 @interface BCCacheProductProfiles
 - (BCCacheProductProfiles)init;
-- (void)_fetchedProfile:(id)a3 withIdentifier:(id)a4;
-- (void)batchFetchCoverURLsFor:(id)a3 completion:(id)a4;
-- (void)fetchCoverURLsFor:(id)a3 immediately:(BOOL)a4 completion:(id)a5;
-- (void)performFetch:(id)a3;
+- (void)_fetchedProfile:(id)profile withIdentifier:(id)identifier;
+- (void)batchFetchCoverURLsFor:(id)for completion:(id)completion;
+- (void)fetchCoverURLsFor:(id)for immediately:(BOOL)immediately completion:(id)completion;
+- (void)performFetch:(id)fetch;
 @end
 
 @implementation BCCacheProductProfiles
@@ -43,55 +43,55 @@
   return v3;
 }
 
-- (void)fetchCoverURLsFor:(id)a3 immediately:(BOOL)a4 completion:(id)a5
+- (void)fetchCoverURLsFor:(id)for immediately:(BOOL)immediately completion:(id)completion
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
+  immediatelyCopy = immediately;
+  forCopy = for;
+  completionCopy = completion;
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_34B8;
   v13[3] = &unk_2C7B30;
   v13[4] = self;
-  v10 = v8;
+  v10 = forCopy;
   v14 = v10;
-  v11 = v9;
+  v11 = completionCopy;
   v15 = v11;
   os_unfair_lock_lock(&self->_accessLock);
   sub_34B8(v13);
   os_unfair_lock_unlock(&self->_accessLock);
-  if (v6)
+  if (immediatelyCopy)
   {
-    v12 = [NSMutableSet setWithObject:v10];
-    [(BCCacheProductProfiles *)self performFetch:v12];
+    coalescedFetch = [NSMutableSet setWithObject:v10];
+    [(BCCacheProductProfiles *)self performFetch:coalescedFetch];
   }
 
   else
   {
-    v12 = [(BCCacheProductProfiles *)self coalescedFetch];
-    [v12 signalWithCompletion:&stru_2C7B70];
+    coalescedFetch = [(BCCacheProductProfiles *)self coalescedFetch];
+    [coalescedFetch signalWithCompletion:&stru_2C7B70];
   }
 }
 
-- (void)batchFetchCoverURLsFor:(id)a3 completion:(id)a4
+- (void)batchFetchCoverURLsFor:(id)for completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  forCopy = for;
+  completionCopy = completion;
   v7 = +[AEUserPublishing sharedInstance];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_3680;
   v10[3] = &unk_2C7B98;
-  v11 = v5;
-  v12 = v6;
-  v8 = v6;
-  v9 = v5;
+  v11 = forCopy;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = forCopy;
   [v7 profilesForStoreIDs:v9 keyProfile:@"kAEUserPublishingLookProfileProduct" completion:v10];
 }
 
-- (void)_fetchedProfile:(id)a3 withIdentifier:(id)a4
+- (void)_fetchedProfile:(id)profile withIdentifier:(id)identifier
 {
-  v6 = a3;
+  profileCopy = profile;
   v26 = 0;
   v27 = &v26;
   v28 = 0x3032000000;
@@ -103,9 +103,9 @@
   v21 = sub_3BA8;
   v22 = &unk_2C7BC0;
   v25 = &v26;
-  v23 = self;
-  v7 = a4;
-  v24 = v7;
+  selfCopy = self;
+  identifierCopy = identifier;
+  v24 = identifierCopy;
   v8 = v20;
   os_unfair_lock_lock(&self->_accessLock);
   v21(v8);
@@ -131,9 +131,9 @@
         }
 
         v13 = *(*(&v16 + 1) + 8 * v12);
-        v14 = [v6 expiration];
-        v15 = [v6 error];
-        (*(v13 + 16))(v13, v6, v14, v15);
+        expiration = [profileCopy expiration];
+        error = [profileCopy error];
+        (*(v13 + 16))(v13, profileCopy, expiration, error);
 
         v12 = v12 + 1;
       }
@@ -148,7 +148,7 @@
   _Block_object_dispose(&v26, 8);
 }
 
-- (void)performFetch:(id)a3
+- (void)performFetch:(id)fetch
 {
   v17 = 0;
   v18 = &v17;
@@ -161,8 +161,8 @@
   v13 = sub_3E08;
   v14 = &unk_2C7AE0;
   v16 = &v17;
-  v4 = a3;
-  v15 = v4;
+  fetchCopy = fetch;
+  v15 = fetchCopy;
   v5 = v12;
   os_unfair_lock_lock(&self->_accessLock);
   v13(v5);
@@ -176,7 +176,7 @@
   v9[3] = &unk_2C7C38;
   v11 = &v17;
   v9[4] = self;
-  v8 = v4;
+  v8 = fetchCopy;
   v10 = v8;
   [v6 profilesForStoreIDs:v7 keyProfile:@"kAEUserPublishingLookProfileProduct" completion:v9];
 

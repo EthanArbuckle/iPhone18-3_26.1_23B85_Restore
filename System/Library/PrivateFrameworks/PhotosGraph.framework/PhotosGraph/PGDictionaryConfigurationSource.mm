@@ -1,19 +1,19 @@
 @interface PGDictionaryConfigurationSource
-- (PGDictionaryConfigurationSource)initWithDictionary:(id)a3;
+- (PGDictionaryConfigurationSource)initWithDictionary:(id)dictionary;
 @end
 
 @implementation PGDictionaryConfigurationSource
 
-- (PGDictionaryConfigurationSource)initWithDictionary:(id)a3
+- (PGDictionaryConfigurationSource)initWithDictionary:(id)dictionary
 {
-  v5 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = PGDictionaryConfigurationSource;
   v6 = [(PGDictionaryConfigurationSource *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_configurationData, a3);
+    objc_storeStrong(&v6->_configurationData, dictionary);
   }
 
   return v7;

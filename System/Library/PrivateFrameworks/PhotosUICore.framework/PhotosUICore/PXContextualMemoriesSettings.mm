@@ -7,11 +7,11 @@
 
 - (NSArray)peopleNames
 {
-  v2 = [(PXContextualMemoriesPeopleSetting *)self->_peopleSetting peopleNames];
-  v3 = v2;
-  if (v2)
+  peopleNames = [(PXContextualMemoriesPeopleSetting *)self->_peopleSetting peopleNames];
+  v3 = peopleNames;
+  if (peopleNames)
   {
-    v4 = v2;
+    v4 = peopleNames;
   }
 
   else

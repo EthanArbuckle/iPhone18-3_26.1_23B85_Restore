@@ -2,8 +2,8 @@
 - (NSString)applicationNameForUserAgent;
 - (QueryController)init;
 - (id)createResultObject;
-- (void)sessionReceivedBagWithEnabledDomains:(id)a3;
-- (void)updateCorrectionDict:(id)a3;
+- (void)sessionReceivedBagWithEnabledDomains:(id)domains;
+- (void)updateCorrectionDict:(id)dict;
 @end
 
 @implementation QueryController
@@ -49,9 +49,9 @@ void __46__QueryController_applicationNameForUserAgent__block_invoke(uint64_t a1
   return [(QueryController *)&v3 init];
 }
 
-- (void)sessionReceivedBagWithEnabledDomains:(id)a3
+- (void)sessionReceivedBagWithEnabledDomains:(id)domains
 {
-  SPSetInternetDomainsAvailable([a3 count] != 0);
+  SPSetInternetDomainsAvailable([domains count] != 0);
   v4 = [objc_alloc(MEMORY[0x1E695E000]) initWithSuiteName:@"com.apple.searchd"];
   if (self->_session)
   {
@@ -68,11 +68,11 @@ void __46__QueryController_applicationNameForUserAgent__block_invoke(uint64_t a1
   }
 }
 
-- (void)updateCorrectionDict:(id)a3
+- (void)updateCorrectionDict:(id)dict
 {
-  v3 = a3;
+  dictCopy = dict;
   v4 = +[SPCorrectionProxy sharedHandler];
-  [v4 updateWithFileHandle:v3];
+  [v4 updateWithFileHandle:dictCopy];
 }
 
 @end

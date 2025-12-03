@@ -1,12 +1,12 @@
 @interface SYLinkableContentItemFinder
-- (BOOL)_shouldIncludeAsLinkableUserActivity:(id)a3 bundleID:(id)a4 foregroundBundleIDs:(id)a5 excludedActivities:(id)a6;
+- (BOOL)_shouldIncludeAsLinkableUserActivity:(id)activity bundleID:(id)d foregroundBundleIDs:(id)ds excludedActivities:(id)activities;
 - (SYLinkableContentItemFinder)init;
 - (SYLinkableContentItemFinderDelegate)delegate;
-- (void)_activityFetchingFinishedWithActivities:(id)a3 appBundleIDs:(id)a4 foregroundBundleIDs:(id)a5 completion:(id)a6;
-- (void)_fetchActiveLinkableUserActivitiesExcluding:(id)a3 completion:(id)a4;
-- (void)_updateForegroundAppsFromDisplayLayout:(id)a3;
+- (void)_activityFetchingFinishedWithActivities:(id)activities appBundleIDs:(id)ds foregroundBundleIDs:(id)iDs completion:(id)completion;
+- (void)_fetchActiveLinkableUserActivitiesExcluding:(id)excluding completion:(id)completion;
+- (void)_updateForegroundAppsFromDisplayLayout:(id)layout;
 - (void)dealloc;
-- (void)fetchLinkableContentItemsExcludingActivities:(id)a3 completion:(id)a4;
+- (void)fetchLinkableContentItemsExcludingActivities:(id)activities completion:(id)completion;
 - (void)handleRemoteCurrentActivityDidChange;
 @end
 
@@ -45,13 +45,13 @@
 
     v8 = v7;
     _Block_object_dispose(&v24, 8);
-    v9 = [v7 configurationForDefaultMainDisplayMonitor];
+    configurationForDefaultMainDisplayMonitor = [v7 configurationForDefaultMainDisplayMonitor];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __35__SYLinkableContentItemFinder_init__block_invoke;
     v15[3] = &unk_27856BA90;
     objc_copyWeak(&v16, &location);
-    [v9 setTransitionHandler:v15];
+    [configurationForDefaultMainDisplayMonitor setTransitionHandler:v15];
     v24 = 0;
     v25 = &v24;
     v26 = 0x2050000000;
@@ -70,7 +70,7 @@
 
     v11 = v10;
     _Block_object_dispose(&v24, 8);
-    v12 = [v10 monitorWithConfiguration:v9];
+    v12 = [v10 monitorWithConfiguration:configurationForDefaultMainDisplayMonitor];
     displayLayoutMonitor = v2->__displayLayoutMonitor;
     v2->__displayLayoutMonitor = v12;
 
@@ -110,8 +110,8 @@ void __35__SYLinkableContentItemFinder_init__block_invoke(uint64_t a1, uint64_t 
     _os_log_impl(&dword_225901000, v3, OS_LOG_TYPE_INFO, "Deallocating", buf, 2u);
   }
 
-  v4 = [(SYLinkableContentItemFinder *)self _displayLayoutMonitor];
-  [v4 invalidate];
+  _displayLayoutMonitor = [(SYLinkableContentItemFinder *)self _displayLayoutMonitor];
+  [_displayLayoutMonitor invalidate];
 
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterRemoveObserver(DarwinNotifyCenter, self, @"SYRemoteCurrentActivityDidChange", 0);
@@ -120,10 +120,10 @@ void __35__SYLinkableContentItemFinder_init__block_invoke(uint64_t a1, uint64_t 
   [(SYLinkableContentItemFinder *)&v6 dealloc];
 }
 
-- (void)fetchLinkableContentItemsExcludingActivities:(id)a3 completion:(id)a4
+- (void)fetchLinkableContentItemsExcludingActivities:(id)activities completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  activitiesCopy = activities;
+  completionCopy = completion;
   v9 = os_log_create("com.apple.synapse", "LinkableItemFinder");
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -133,19 +133,19 @@ void __35__SYLinkableContentItemFinder_init__block_invoke(uint64_t a1, uint64_t 
 
   [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
   v11 = v10;
-  v12 = [(SYLinkableContentItemFinder *)self _itemFinderQueue];
+  _itemFinderQueue = [(SYLinkableContentItemFinder *)self _itemFinderQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __87__SYLinkableContentItemFinder_fetchLinkableContentItemsExcludingActivities_completion___block_invoke;
   block[3] = &unk_27856BB08;
   block[4] = self;
-  v16 = v7;
+  v16 = activitiesCopy;
   v18 = v11;
   v19 = a2;
-  v17 = v8;
-  v13 = v8;
-  v14 = v7;
-  dispatch_async(v12, block);
+  v17 = completionCopy;
+  v13 = completionCopy;
+  v14 = activitiesCopy;
+  dispatch_async(_itemFinderQueue, block);
 }
 
 void __87__SYLinkableContentItemFinder_fetchLinkableContentItemsExcludingActivities_completion___block_invoke(uint64_t a1)
@@ -311,24 +311,24 @@ LABEL_17:
   v33 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_fetchActiveLinkableUserActivitiesExcluding:(id)a3 completion:(id)a4
+- (void)_fetchActiveLinkableUserActivitiesExcluding:(id)excluding completion:(id)completion
 {
   v40 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  excludingCopy = excluding;
+  completionCopy = completion;
+  if (!completionCopy)
   {
     [SYLinkableContentItemFinder _fetchActiveLinkableUserActivitiesExcluding:a2 completion:self];
   }
 
-  v9 = [(SYLinkableContentItemFinder *)self _currentForegroundAppBundleIDs];
-  if (v9)
+  _currentForegroundAppBundleIDs = [(SYLinkableContentItemFinder *)self _currentForegroundAppBundleIDs];
+  if (_currentForegroundAppBundleIDs)
   {
     v10 = os_log_create("com.apple.synapse", "LinkableItemFinder");
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v9;
+      *(&buf + 4) = _currentForegroundAppBundleIDs;
       v11 = "Allowing activities from foreground apps only: %@";
       v12 = v10;
       v13 = OS_LOG_TYPE_INFO;
@@ -343,16 +343,16 @@ LABEL_6:
     if ([(SYLinkableContentItemFinder *)self _foregroundAppLoadRetriesRemaining]>= 1)
     {
       v21 = dispatch_time(0, 50000000);
-      v22 = [(SYLinkableContentItemFinder *)self _itemFinderQueue];
+      _itemFinderQueue = [(SYLinkableContentItemFinder *)self _itemFinderQueue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __86__SYLinkableContentItemFinder__fetchActiveLinkableUserActivitiesExcluding_completion___block_invoke;
       block[3] = &unk_27856B510;
       block[4] = self;
-      v30 = v7;
-      v31 = v8;
-      v23 = v7;
-      dispatch_after(v21, v22, block);
+      v30 = excludingCopy;
+      v31 = completionCopy;
+      v23 = excludingCopy;
+      dispatch_after(v21, _itemFinderQueue, block);
 
       [(SYLinkableContentItemFinder *)self set_foregroundAppLoadRetriesRemaining:[(SYLinkableContentItemFinder *)self _foregroundAppLoadRetriesRemaining]- 1];
       goto LABEL_16;
@@ -394,12 +394,12 @@ LABEL_6:
   v25[1] = 3221225472;
   v25[2] = __86__SYLinkableContentItemFinder__fetchActiveLinkableUserActivitiesExcluding_completion___block_invoke_24;
   v25[3] = &unk_27856BB58;
-  v18 = v8;
+  v18 = completionCopy;
   v28 = v18;
   v25[4] = self;
-  v26 = v9;
-  v27 = v7;
-  v19 = v7;
+  v26 = _currentForegroundAppBundleIDs;
+  v27 = excludingCopy;
+  v19 = excludingCopy;
   if (([v17 _currentUserActivityProxiesWithOptions:0 matching:0 completionHandler:v25] & 1) == 0)
   {
     v20 = os_log_create("com.apple.synapse", "LinkableItemFinder");
@@ -587,15 +587,15 @@ void __86__SYLinkableContentItemFinder__fetchActiveLinkableUserActivitiesExcludi
   objc_sync_exit(v7);
 }
 
-- (BOOL)_shouldIncludeAsLinkableUserActivity:(id)a3 bundleID:(id)a4 foregroundBundleIDs:(id)a5 excludedActivities:(id)a6
+- (BOOL)_shouldIncludeAsLinkableUserActivity:(id)activity bundleID:(id)d foregroundBundleIDs:(id)ds excludedActivities:(id)activities
 {
   v26 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a6;
-  if (SYIsLinkableUserActivity(v8))
+  activityCopy = activity;
+  dCopy = d;
+  activitiesCopy = activities;
+  if (SYIsLinkableUserActivity(activityCopy))
   {
-    if (![v10 count])
+    if (![activitiesCopy count])
     {
       v16 = 1;
       goto LABEL_16;
@@ -605,7 +605,7 @@ void __86__SYLinkableContentItemFinder__fetchActiveLinkableUserActivitiesExcludi
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v11 = v10;
+    v11 = activitiesCopy;
     v12 = [v11 countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (!v12)
     {
@@ -624,7 +624,7 @@ LABEL_5:
         objc_enumerationMutation(v11);
       }
 
-      if (SYEquivalentUserActivities(v8, *(*(&v19 + 1) + 8 * v15)))
+      if (SYEquivalentUserActivities(activityCopy, *(*(&v19 + 1) + 8 * v15)))
       {
         break;
       }
@@ -649,7 +649,7 @@ LABEL_5:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v25 = v9;
+      v25 = dCopy;
       _os_log_impl(&dword_225901000, v11, OS_LOG_TYPE_INFO, "Ignoring user activity from %@. No usable identifier.", buf, 0xCu);
     }
   }
@@ -662,35 +662,35 @@ LABEL_16:
   return v16;
 }
 
-- (void)_activityFetchingFinishedWithActivities:(id)a3 appBundleIDs:(id)a4 foregroundBundleIDs:(id)a5 completion:(id)a6
+- (void)_activityFetchingFinishedWithActivities:(id)activities appBundleIDs:(id)ds foregroundBundleIDs:(id)iDs completion:(id)completion
 {
   v40 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v9, "count")}];
-  v14 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v9, "count")}];
-  if (v11)
+  activitiesCopy = activities;
+  dsCopy = ds;
+  iDsCopy = iDs;
+  completionCopy = completion;
+  v13 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(activitiesCopy, "count")}];
+  v14 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(activitiesCopy, "count")}];
+  if (iDsCopy)
   {
     v37 = 0u;
     v38 = 0u;
     v36 = 0u;
     v35 = 0u;
-    v15 = v11;
+    v15 = iDsCopy;
     v16 = [v15 countByEnumeratingWithState:&v35 objects:v39 count:16];
     if (v16)
     {
       v17 = v16;
-      v25 = v12;
-      v18 = v10;
+      v25 = completionCopy;
+      v18 = dsCopy;
       v19 = *v36;
       do
       {
         v20 = v15;
         for (i = 0; i != v17; ++i)
         {
-          v22 = v9;
+          v22 = activitiesCopy;
           if (*v36 != v19)
           {
             objc_enumerationMutation(v20);
@@ -705,7 +705,7 @@ LABEL_16:
           v32 = v23;
           v33 = v13;
           v34 = v14;
-          v9 = v22;
+          activitiesCopy = v22;
           [v22 enumerateKeysAndObjectsUsingBlock:v30];
         }
 
@@ -714,8 +714,8 @@ LABEL_16:
       }
 
       while (v17);
-      v10 = v18;
-      v12 = v25;
+      dsCopy = v18;
+      completionCopy = v25;
     }
   }
 
@@ -725,15 +725,15 @@ LABEL_16:
     v26[1] = 3221225472;
     v26[2] = __115__SYLinkableContentItemFinder__activityFetchingFinishedWithActivities_appBundleIDs_foregroundBundleIDs_completion___block_invoke_2;
     v26[3] = &unk_27856BBA8;
-    v27 = v10;
+    v27 = dsCopy;
     v28 = v13;
     v29 = v14;
-    [v9 enumerateKeysAndObjectsUsingBlock:v26];
+    [activitiesCopy enumerateKeysAndObjectsUsingBlock:v26];
 
     v15 = v27;
   }
 
-  v12[2](v12, v13, v14, 0);
+  completionCopy[2](completionCopy, v13, v14, 0);
   v24 = *MEMORY[0x277D85DE8];
 }
 
@@ -759,17 +759,17 @@ void __115__SYLinkableContentItemFinder__activityFetchingFinishedWithActivities_
   }
 }
 
-- (void)_updateForegroundAppsFromDisplayLayout:(id)a3
+- (void)_updateForegroundAppsFromDisplayLayout:(id)layout
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] array];
+  layoutCopy = layout;
+  array = [MEMORY[0x277CBEB18] array];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = [v4 elements];
-  v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  elements = [layoutCopy elements];
+  v7 = [elements countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
     v8 = v7;
@@ -780,31 +780,31 @@ void __115__SYLinkableContentItemFinder__activityFetchingFinishedWithActivities_
       {
         if (*v18 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(elements);
         }
 
         v11 = *(*(&v17 + 1) + 8 * i);
         if ([v11 isUIApplicationElement])
         {
-          v12 = [v11 bundleIdentifier];
+          bundleIdentifier = [v11 bundleIdentifier];
 
-          if (v12)
+          if (bundleIdentifier)
           {
-            v13 = [v11 bundleIdentifier];
-            [v5 addObject:v13];
+            bundleIdentifier2 = [v11 bundleIdentifier];
+            [array addObject:bundleIdentifier2];
           }
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v8 = [elements countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v8);
   }
 
-  v14 = [(SYLinkableContentItemFinder *)self _foregroundAppBundleIDs];
-  [(SYLinkableContentItemFinder *)self set_foregroundAppBundleIDs:v5];
-  if (!v14)
+  _foregroundAppBundleIDs = [(SYLinkableContentItemFinder *)self _foregroundAppBundleIDs];
+  [(SYLinkableContentItemFinder *)self set_foregroundAppBundleIDs:array];
+  if (!_foregroundAppBundleIDs)
   {
     if ([(SYLinkableContentItemFinder *)self _foregroundAppLoadRetriesRemaining])
     {
@@ -814,11 +814,11 @@ void __115__SYLinkableContentItemFinder__activityFetchingFinishedWithActivities_
     goto LABEL_13;
   }
 
-  if (([v5 isEqualToArray:v14] & 1) == 0)
+  if (([array isEqualToArray:_foregroundAppBundleIDs] & 1) == 0)
   {
 LABEL_13:
-    v15 = [(SYLinkableContentItemFinder *)self delegate];
-    [v15 linkableItemFinderItemsMightHaveChanged:self];
+    delegate = [(SYLinkableContentItemFinder *)self delegate];
+    [delegate linkableItemFinderItemsMightHaveChanged:self];
   }
 
 LABEL_14:
@@ -828,13 +828,13 @@ LABEL_14:
 
 - (void)handleRemoteCurrentActivityDidChange
 {
-  v3 = [(SYLinkableContentItemFinder *)self _itemFinderQueue];
+  _itemFinderQueue = [(SYLinkableContentItemFinder *)self _itemFinderQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __67__SYLinkableContentItemFinder_handleRemoteCurrentActivityDidChange__block_invoke;
   block[3] = &unk_27856B880;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(_itemFinderQueue, block);
 }
 
 void __67__SYLinkableContentItemFinder_handleRemoteCurrentActivityDidChange__block_invoke(uint64_t a1)

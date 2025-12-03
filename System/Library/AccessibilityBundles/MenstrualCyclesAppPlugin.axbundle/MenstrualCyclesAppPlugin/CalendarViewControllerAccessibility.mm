@@ -1,26 +1,26 @@
 @interface CalendarViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (id)calendarDataSource:(id)a3 cellForItemIn:(id)a4 date:(id)a5 dayComponent:(int64_t)a6 indexPath:(id)a7;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (id)calendarDataSource:(id)source cellForItemIn:(id)in date:(id)date dayComponent:(int64_t)component indexPath:(id)path;
 @end
 
 @implementation CalendarViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MenstrualCyclesAppPlugin.CalendarDayCell" isKindOfClass:@"UICollectionViewCell"];
-  [v3 validateClass:@"MenstrualCyclesAppPlugin.CalendarViewController" hasInstanceMethod:@"calendarDataSource:cellForItemIn:date:dayComponent:indexPath:" withFullSignature:{"@", "@", "@", "q", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MenstrualCyclesAppPlugin.CalendarDayCell" isKindOfClass:@"UICollectionViewCell"];
+  [validationsCopy validateClass:@"MenstrualCyclesAppPlugin.CalendarViewController" hasInstanceMethod:@"calendarDataSource:cellForItemIn:date:dayComponent:indexPath:" withFullSignature:{"@", "@", "@", "q", "@", 0}];
 }
 
-- (id)calendarDataSource:(id)a3 cellForItemIn:(id)a4 date:(id)a5 dayComponent:(int64_t)a6 indexPath:(id)a7
+- (id)calendarDataSource:(id)source cellForItemIn:(id)in date:(id)date dayComponent:(int64_t)component indexPath:(id)path
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  sourceCopy = source;
+  inCopy = in;
+  dateCopy = date;
+  pathCopy = path;
   v20.receiver = self;
   v20.super_class = CalendarViewControllerAccessibility;
-  v16 = [(CalendarViewControllerAccessibility *)&v20 calendarDataSource:v12 cellForItemIn:v13 date:v14 dayComponent:a6 indexPath:v15];
+  v16 = [(CalendarViewControllerAccessibility *)&v20 calendarDataSource:sourceCopy cellForItemIn:inCopy date:dateCopy dayComponent:component indexPath:pathCopy];
   objc_opt_class();
   v17 = __UIAccessibilityCastAsClass();
   objc_opt_class();

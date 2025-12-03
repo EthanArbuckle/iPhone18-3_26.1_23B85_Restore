@@ -1,61 +1,61 @@
 @interface APAdDataResponseTranslator
-- (APAdDataResponseTranslator)initWithResponse:(id)a3 forRequester:(id)a4 contentIdentifier:(id)a5 withContext:(id)a6 placement:(int64_t)a7;
-- (id)translate:(id *)a3;
+- (APAdDataResponseTranslator)initWithResponse:(id)response forRequester:(id)requester contentIdentifier:(id)identifier withContext:(id)context placement:(int64_t)placement;
+- (id)translate:(id *)translate;
 @end
 
 @implementation APAdDataResponseTranslator
 
-- (APAdDataResponseTranslator)initWithResponse:(id)a3 forRequester:(id)a4 contentIdentifier:(id)a5 withContext:(id)a6 placement:(int64_t)a7
+- (APAdDataResponseTranslator)initWithResponse:(id)response forRequester:(id)requester contentIdentifier:(id)identifier withContext:(id)context placement:(int64_t)placement
 {
-  v13 = a5;
-  v14 = a6;
+  identifierCopy = identifier;
+  contextCopy = context;
   v18.receiver = self;
   v18.super_class = APAdDataResponseTranslator;
-  v15 = [(APResponseDataTranslator *)&v18 initWithResponse:a3 forRequester:a4];
+  v15 = [(APResponseDataTranslator *)&v18 initWithResponse:response forRequester:requester];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_contentIdentifier, a5);
-    objc_storeStrong(&v16->_context, a6);
-    v16->_placement = a7;
+    objc_storeStrong(&v15->_contentIdentifier, identifier);
+    objc_storeStrong(&v16->_context, context);
+    v16->_placement = placement;
   }
 
   return v16;
 }
 
-- (id)translate:(id *)a3
+- (id)translate:(id *)translate
 {
-  v5 = [(APResponseDataTranslator *)self requester];
-  v6 = [(APResponseDataTranslator *)self response];
-  v7 = [v6 adOriginalRequesterId];
-  v8 = [v5 requestFromRequestID:v7];
+  requester = [(APResponseDataTranslator *)self requester];
+  response = [(APResponseDataTranslator *)self response];
+  adOriginalRequesterId = [response adOriginalRequesterId];
+  v8 = [requester requestFromRequestID:adOriginalRequesterId];
 
   if (v8)
   {
     v9 = [APContentDataInternal alloc];
-    v10 = [(APResponseDataTranslator *)self response];
-    v11 = [(APAdDataResponseTranslator *)self contentIdentifier];
-    v12 = [(APAdDataResponseTranslator *)self context];
-    v13 = [v12 identifier];
-    v14 = [(APAdDataResponseTranslator *)self placement];
-    v15 = [(APAdDataResponseTranslator *)self context];
-    [v15 maxSize];
-    v16 = [(APContentDataInternal *)v9 initWithAdData:v10 identifier:v11 contextIdentifier:v13 placementType:v14 maxSize:?];
+    response2 = [(APResponseDataTranslator *)self response];
+    contentIdentifier = [(APAdDataResponseTranslator *)self contentIdentifier];
+    context = [(APAdDataResponseTranslator *)self context];
+    identifier = [context identifier];
+    placement = [(APAdDataResponseTranslator *)self placement];
+    context2 = [(APAdDataResponseTranslator *)self context];
+    [context2 maxSize];
+    v16 = [(APContentDataInternal *)v9 initWithAdData:response2 identifier:contentIdentifier contextIdentifier:identifier placementType:placement maxSize:?];
 
-    v17 = [(APContentDataInternal *)v16 content];
-    *a3 = [v17 error];
+    content = [(APContentDataInternal *)v16 content];
+    *translate = [content error];
   }
 
   else
   {
-    v17 = [(APResponseDataTranslator *)self response];
-    v18 = [v17 adDataResponseIdentifier];
-    v19 = [(APResponseDataTranslator *)self response];
-    v20 = [v19 adOriginalRequesterId];
-    v21 = [(APResponseDataTranslator *)self requester];
-    v22 = [v21 requestIdentifier];
-    v23 = [NSString stringWithFormat:@"Ad %@ with original requester id (%@) was returned to wrong requester (%@)", v18, v20, v22];
-    *a3 = [APLegacyInterfaceError validationErrorWithCode:4506 andReason:v23];
+    content = [(APResponseDataTranslator *)self response];
+    adDataResponseIdentifier = [content adDataResponseIdentifier];
+    response3 = [(APResponseDataTranslator *)self response];
+    adOriginalRequesterId2 = [response3 adOriginalRequesterId];
+    requester2 = [(APResponseDataTranslator *)self requester];
+    requestIdentifier = [requester2 requestIdentifier];
+    v23 = [NSString stringWithFormat:@"Ad %@ with original requester id (%@) was returned to wrong requester (%@)", adDataResponseIdentifier, adOriginalRequesterId2, requestIdentifier];
+    *translate = [APLegacyInterfaceError validationErrorWithCode:4506 andReason:v23];
 
     v16 = 0;
   }

@@ -1,22 +1,22 @@
 @interface _ANEStorageHelper
-+ (BOOL)_markPurgeablePath:(id)a3 error:(id *)a4;
-+ (BOOL)garbageCollectDanglingModelsAtPath:(id)a3;
-+ (BOOL)markPathAndDirectParentPurgeable:(id)a3 error:(id *)a4;
-+ (BOOL)removeDirectoryAtPath:(id)a3;
-+ (BOOL)removeShapesDirectoryAtPath:(id)a3;
-+ (BOOL)setAccessTime:(id)a3 forModelFilePath:(id)a4;
-+ (BOOL)updateAccessTimeForFilePath:(id)a3;
++ (BOOL)_markPurgeablePath:(id)path error:(id *)error;
++ (BOOL)garbageCollectDanglingModelsAtPath:(id)path;
++ (BOOL)markPathAndDirectParentPurgeable:(id)purgeable error:(id *)error;
++ (BOOL)removeDirectoryAtPath:(id)path;
++ (BOOL)removeShapesDirectoryAtPath:(id)path;
++ (BOOL)setAccessTime:(id)time forModelFilePath:(id)path;
++ (BOOL)updateAccessTimeForFilePath:(id)path;
 + (id)createModelCacheDictionary;
-+ (id)getAccessTimeForFilePath:(id)a3;
-+ (id)memoryMapModelAtPath:(id)a3 isPrecompiled:(BOOL)a4 modelAttributes:(id *)a5;
-+ (id)memoryMapWeightAtPath:(id)a3;
-+ (id)mergeModelCacheStorageInformation:(id)a3 with:(id)a4;
-+ (id)sizeOfDirectoryAtPath:(id)a3 recursionLevel:(unint64_t)a4;
-+ (id)sizeOfModelCacheAtPath:(id)a3 purgeSubdirectories:(BOOL)a4;
-+ (id)uniqueFirstLevelSubdirectories:(id)a3;
-+ (void)addSubdirectoryDetails:(id)a3 directoryPath:(id)a4 size:(unint64_t)a5;
++ (id)getAccessTimeForFilePath:(id)path;
++ (id)memoryMapModelAtPath:(id)path isPrecompiled:(BOOL)precompiled modelAttributes:(id *)attributes;
++ (id)memoryMapWeightAtPath:(id)path;
++ (id)mergeModelCacheStorageInformation:(id)information with:(id)with;
++ (id)sizeOfDirectoryAtPath:(id)path recursionLevel:(unint64_t)level;
++ (id)sizeOfModelCacheAtPath:(id)path purgeSubdirectories:(BOOL)subdirectories;
++ (id)uniqueFirstLevelSubdirectories:(id)subdirectories;
++ (void)addSubdirectoryDetails:(id)details directoryPath:(id)path size:(unint64_t)size;
 + (void)initialize;
-+ (void)removeFilePath:(id)a3 ifDate:(id)a4 olderThanSecond:(id)a5;
++ (void)removeFilePath:(id)path ifDate:(id)date olderThanSecond:(id)second;
 @end
 
 @implementation _ANEStorageHelper
@@ -29,12 +29,12 @@
   }
 }
 
-+ (BOOL)removeDirectoryAtPath:(id)a3
++ (BOOL)removeDirectoryAtPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v5 = +[NSFileManager defaultManager];
   v12 = 0;
-  v6 = [v5 removeItemAtPath:v4 error:&v12];
+  v6 = [v5 removeItemAtPath:pathCopy error:&v12];
   v7 = v12;
 
   if ((v6 & 1) == 0)
@@ -47,7 +47,7 @@
       *buf = 138412802;
       v14 = v10;
       v15 = 2112;
-      v16 = v4;
+      v16 = pathCopy;
       v17 = 2112;
       v18 = v7;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "%@: directoryPath=%@ : err=%@", buf, 0x20u);
@@ -57,12 +57,12 @@
   return v6;
 }
 
-+ (BOOL)removeShapesDirectoryAtPath:(id)a3
++ (BOOL)removeShapesDirectoryAtPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v18 = 1;
   v5 = +[NSFileManager defaultManager];
-  v6 = [v5 fileExistsAtPath:v4 isDirectory:&v18];
+  v6 = [v5 fileExistsAtPath:pathCopy isDirectory:&v18];
 
   if (v6)
   {
@@ -74,13 +74,13 @@
       *buf = 138412546;
       v20 = v9;
       v21 = 2112;
-      v22 = v4;
+      v22 = pathCopy;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "%@: Removing compiled JIT models associated with =%@ :", buf, 0x16u);
     }
 
     v10 = +[NSFileManager defaultManager];
     v17 = 0;
-    v11 = [v10 removeItemAtPath:v4 error:&v17];
+    v11 = [v10 removeItemAtPath:pathCopy error:&v17];
     v12 = v17;
 
     if ((v11 & 1) == 0)
@@ -93,7 +93,7 @@
         *buf = 138412802;
         v20 = v15;
         v21 = 2112;
-        v22 = v4;
+        v22 = pathCopy;
         v23 = 2112;
         v24 = v12;
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "%@: directoryPath=%@ : err=%@", buf, 0x20u);
@@ -109,21 +109,21 @@
   return v11;
 }
 
-+ (id)memoryMapModelAtPath:(id)a3 isPrecompiled:(BOOL)a4 modelAttributes:(id *)a5
++ (id)memoryMapModelAtPath:(id)path isPrecompiled:(BOOL)precompiled modelAttributes:(id *)attributes
 {
-  v8 = a3;
+  pathCopy = path;
   v9 = qword_1000364F8;
   if (os_log_type_enabled(qword_1000364F8, OS_LOG_TYPE_DEBUG))
   {
-    sub_10001D9B8(v9, a2, v8);
+    sub_10001D9B8(v9, a2, pathCopy);
   }
 
-  v10 = v8;
-  v11 = [v8 UTF8String];
+  v10 = pathCopy;
+  uTF8String = [pathCopy UTF8String];
   v45 = 0;
   v46 = &v45;
   v47 = 0x2020000000;
-  v48 = open(v11, 256);
+  v48 = open(uTF8String, 256);
   if (*(v46 + 6) == -1)
   {
     v20 = qword_1000364F8;
@@ -136,7 +136,7 @@
       v59.st_dev = 138413058;
       *&v59.st_mode = v21;
       WORD2(v59.st_ino) = 2080;
-      *(&v59.st_ino + 6) = v11;
+      *(&v59.st_ino + 6) = uTF8String;
       HIWORD(v59.st_gid) = 1024;
       v59.st_rdev = v22;
       *(&v59.st_rdev + 2) = 2080;
@@ -160,7 +160,7 @@
       *buf = 138413058;
       v50 = v30;
       v51 = 2080;
-      v52 = v11;
+      v52 = uTF8String;
       v53 = 1024;
       *v54 = v31;
       *&v54[4] = 2080;
@@ -195,7 +195,7 @@
       *buf = 138413570;
       v50 = v34;
       v51 = 2080;
-      v52 = v11;
+      v52 = uTF8String;
       v53 = 2048;
       *v54 = st_size;
       *&v54[8] = 1024;
@@ -219,7 +219,7 @@ LABEL_22:
   v41[2] = sub_10000A5A8;
   v41[3] = &unk_100030908;
   v41[4] = a2;
-  v41[5] = v11;
+  v41[5] = uTF8String;
   v14 = [v13 initWithBytesNoCopy:v12 length:v59.st_size deallocator:v41];
   v15 = v14;
   if (v14)
@@ -227,14 +227,14 @@ LABEL_22:
     v16 = v14;
     [v15 bytes];
     [v15 length];
-    *a5 = ANECCreateModelDictionary();
-    if (!a4 && ([objc_opt_class() updateAccessTimeForFilePath:v8] & 1) == 0)
+    *attributes = ANECCreateModelDictionary();
+    if (!precompiled && ([objc_opt_class() updateAccessTimeForFilePath:pathCopy] & 1) == 0)
     {
       v17 = qword_1000364F8;
       if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
       {
         v18 = NSStringFromSelector(a2);
-        sub_10001DA68(v18, v8, buf, v17);
+        sub_10001DA68(v18, pathCopy, buf, v17);
       }
     }
 
@@ -256,7 +256,7 @@ LABEL_22:
       *buf = 138412546;
       v50 = v28;
       v51 = 2080;
-      v52 = v11;
+      v52 = uTF8String;
       _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_INFO, "%@: nil modelData for %s", buf, 0x16u);
     }
 
@@ -269,21 +269,21 @@ LABEL_27:
   return v15;
 }
 
-+ (id)memoryMapWeightAtPath:(id)a3
++ (id)memoryMapWeightAtPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v5 = qword_1000364F8;
   if (os_log_type_enabled(qword_1000364F8, OS_LOG_TYPE_DEBUG))
   {
-    sub_10001DAD0(v5, a2, v4);
+    sub_10001DAD0(v5, a2, pathCopy);
   }
 
-  v6 = v4;
-  v7 = [v4 UTF8String];
+  v6 = pathCopy;
+  uTF8String = [pathCopy UTF8String];
   v37 = 0;
   v38 = &v37;
   v39 = 0x2020000000;
-  v40 = open(v7, 256);
+  v40 = open(uTF8String, 256);
   if (*(v38 + 6) == -1)
   {
     v12 = qword_1000364F8;
@@ -296,7 +296,7 @@ LABEL_27:
       v51.st_dev = 138413058;
       *&v51.st_mode = v13;
       WORD2(v51.st_ino) = 2080;
-      *(&v51.st_ino + 6) = v7;
+      *(&v51.st_ino + 6) = uTF8String;
       HIWORD(v51.st_gid) = 1024;
       v51.st_rdev = v14;
       *(&v51.st_rdev + 2) = 2080;
@@ -320,7 +320,7 @@ LABEL_27:
       *buf = 138413058;
       v42 = v22;
       v43 = 2080;
-      v44 = v7;
+      v44 = uTF8String;
       v45 = 1024;
       *v46 = v23;
       *&v46[4] = 2080;
@@ -355,7 +355,7 @@ LABEL_27:
       *buf = 138413570;
       v42 = v26;
       v43 = 2080;
-      v44 = v7;
+      v44 = uTF8String;
       v45 = 2048;
       *v46 = st_size;
       *&v46[8] = 1024;
@@ -379,7 +379,7 @@ LABEL_17:
   v33[2] = sub_10000AEB8;
   v33[3] = &unk_100030908;
   v33[4] = a2;
-  v33[5] = v7;
+  v33[5] = uTF8String;
   v10 = [v9 initWithBytesNoCopy:v8 length:v51.st_size deallocator:v33];
   if (v10)
   {
@@ -401,7 +401,7 @@ LABEL_17:
       *buf = 138412546;
       v42 = v20;
       v43 = 2080;
-      v44 = v7;
+      v44 = uTF8String;
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_INFO, "%@: nil modelData for %s", buf, 0x16u);
     }
 
@@ -414,13 +414,13 @@ LABEL_22:
   return v10;
 }
 
-+ (BOOL)setAccessTime:(id)a3 forModelFilePath:(id)a4
++ (BOOL)setAccessTime:(id)time forModelFilePath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  timeCopy = time;
+  pathCopy = path;
+  if (timeCopy)
   {
-    [v6 timeIntervalSince1970];
+    [timeCopy timeIntervalSince1970];
   }
 
   else
@@ -429,7 +429,7 @@ LABEL_22:
   }
 
   value = v8;
-  v9 = setxattr([v7 UTF8String], objc_msgSend(@"kANEAccessSeconds", "UTF8String"), &value, 8uLL, 0, 1);
+  v9 = setxattr([pathCopy UTF8String], objc_msgSend(@"kANEAccessSeconds", "UTF8String"), &value, 8uLL, 0, 1);
   if (v9 < 0)
   {
     v10 = qword_1000364F8;
@@ -441,7 +441,7 @@ LABEL_22:
       *buf = 138413570;
       v17 = v13;
       v18 = 2112;
-      v19 = v7;
+      v19 = pathCopy;
       v20 = 2112;
       v21 = @"kANEAccessSeconds";
       v22 = 2048;
@@ -457,11 +457,11 @@ LABEL_22:
   return v9 >= 0;
 }
 
-+ (id)getAccessTimeForFilePath:(id)a3
++ (id)getAccessTimeForFilePath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   value = 1.79769313e308;
-  if ((getxattr([v4 UTF8String], objc_msgSend(@"kANEAccessSeconds", "UTF8String"), &value, 8uLL, 0, 1) & 0x8000000000000000) == 0)
+  if ((getxattr([pathCopy UTF8String], objc_msgSend(@"kANEAccessSeconds", "UTF8String"), &value, 8uLL, 0, 1) & 0x8000000000000000) == 0)
   {
     v5 = [NSDate dateWithTimeIntervalSince1970:value];
     goto LABEL_8;
@@ -479,7 +479,7 @@ LABEL_22:
       *buf = 138413570;
       v15 = v9;
       v16 = 2112;
-      v17 = v4;
+      v17 = pathCopy;
       v18 = 2112;
       v19 = @"kANEAccessSeconds";
       v20 = 2048;
@@ -501,7 +501,7 @@ LABEL_12:
     *buf = 138413570;
     v15 = v9;
     v16 = 2112;
-    v17 = v4;
+    v17 = pathCopy;
     v18 = 2112;
     v19 = @"kANEAccessSeconds";
     v20 = 2048;
@@ -520,17 +520,17 @@ LABEL_8:
   return v5;
 }
 
-+ (BOOL)updateAccessTimeForFilePath:(id)a3
++ (BOOL)updateAccessTimeForFilePath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v5 = qword_1000364F8;
   if (os_log_type_enabled(qword_1000364F8, OS_LOG_TYPE_DEBUG))
   {
-    sub_10001DB80(v5, a2, v4);
+    sub_10001DB80(v5, a2, pathCopy);
   }
 
   v6 = [NSDate dateWithTimeIntervalSinceNow:0.0];
-  v7 = [objc_opt_class() getAccessTimeForFilePath:v4];
+  v7 = [objc_opt_class() getAccessTimeForFilePath:pathCopy];
   v8 = v7;
   if (v7)
   {
@@ -542,14 +542,14 @@ LABEL_8:
       v14 = qword_1000364F8;
       if (os_log_type_enabled(qword_1000364F8, OS_LOG_TYPE_DEBUG))
       {
-        sub_10001DC2C(v14, a2, v4);
+        sub_10001DC2C(v14, a2, pathCopy);
       }
 
       goto LABEL_11;
     }
   }
 
-  if ([objc_opt_class() setAccessTime:v6 forModelFilePath:v4])
+  if ([objc_opt_class() setAccessTime:v6 forModelFilePath:pathCopy])
   {
 LABEL_11:
     v13 = 1;
@@ -568,19 +568,19 @@ LABEL_12:
   return v13;
 }
 
-+ (void)removeFilePath:(id)a3 ifDate:(id)a4 olderThanSecond:(id)a5
++ (void)removeFilePath:(id)path ifDate:(id)date olderThanSecond:(id)second
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = a4;
-  v10 = [v9 compare:v8];
-  v11 = [v9 compare:v8];
+  pathCopy = path;
+  secondCopy = second;
+  dateCopy = date;
+  v10 = [dateCopy compare:secondCopy];
+  v11 = [dateCopy compare:secondCopy];
 
   if (v10 == -1 || !v11)
   {
     v12 = +[NSFileManager defaultManager];
     v15 = 0;
-    v13 = [v12 removeItemAtPath:v7 error:&v15];
+    v13 = [v12 removeItemAtPath:pathCopy error:&v15];
     v14 = v15;
 
     if ((v13 & 1) == 0 && os_log_type_enabled(qword_1000364F8, OS_LOG_TYPE_ERROR))
@@ -590,9 +590,9 @@ LABEL_12:
   }
 }
 
-+ (BOOL)garbageCollectDanglingModelsAtPath:(id)a3
++ (BOOL)garbageCollectDanglingModelsAtPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v76 = mach_continuous_time();
   spid = os_signpost_id_generate(qword_1000364F8);
   v5 = qword_1000364F8;
@@ -603,7 +603,7 @@ LABEL_12:
     *buf = 138412546;
     *v98 = v7;
     *&v98[8] = 2112;
-    *v99 = v4;
+    *v99 = pathCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "%@: START - pathURL=%@", buf, 0x16u);
   }
 
@@ -615,7 +615,7 @@ LABEL_12:
   v96[2] = sub_10000C21C;
   v96[3] = &unk_100030950;
   v96[4] = a2;
-  v10 = [v8 enumeratorAtURL:v4 includingPropertiesForKeys:v9 options:0 errorHandler:v96];
+  v10 = [v8 enumeratorAtURL:pathCopy includingPropertiesForKeys:v9 options:0 errorHandler:v96];
 
   kdebug_trace();
   v11 = qword_1000364F8;
@@ -627,7 +627,7 @@ LABEL_12:
     _os_signpost_emit_with_name_impl(&_mh_execute_header, v12, OS_SIGNPOST_EVENT, spid, "_ANED_MODELCACHE_GC", "", buf, 2u);
   }
 
-  v78 = v4;
+  v78 = pathCopy;
 
   v94 = 0u;
   v95 = 0u;
@@ -673,15 +673,15 @@ LABEL_12:
         _os_log_debug_impl(&_mh_execute_header, v51, OS_LOG_TYPE_DEBUG, "%@: ---> url=%@", buf, 0x16u);
       }
 
-      v19 = [v17 lastPathComponent];
-      v20 = [v15[141] modelBinaryName];
-      v21 = [v19 isEqualToString:v20];
+      lastPathComponent = [v17 lastPathComponent];
+      modelBinaryName = [v15[141] modelBinaryName];
+      v21 = [lastPathComponent isEqualToString:modelBinaryName];
 
       if (v21)
       {
-        v22 = [v17 URLByDeletingLastPathComponent];
-        v23 = [v15[141] modelSourceStoreName];
-        v24 = [v22 URLByAppendingPathComponent:v23];
+        uRLByDeletingLastPathComponent = [v17 URLByDeletingLastPathComponent];
+        modelSourceStoreName = [v15[141] modelSourceStoreName];
+        v24 = [uRLByDeletingLastPathComponent URLByAppendingPathComponent:modelSourceStoreName];
 
         v91 = 0;
         v25 = [NSString stringWithContentsOfURL:v24 encoding:4 error:&v91];
@@ -707,7 +707,7 @@ LABEL_12:
           {
             kdebug_trace();
             v27 = qword_1000364F8;
-            v28 = v27;
+            path = v27;
             if (v82 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v27))
             {
               *buf = 67109888;
@@ -718,7 +718,7 @@ LABEL_12:
               *&v99[2] = v86;
               *v100 = 2048;
               *&v100[2] = v83;
-              v29 = v28;
+              v29 = path;
               v30 = spid;
               v31 = "%u, ok:%u, attemptedCount:%lu, removedCount:%lu";
               v32 = 34;
@@ -744,19 +744,19 @@ LABEL_12:
               v15 = &ANECCreateModelDictionary_ptr;
             }
 
-            v37 = [v15[141] modelCacheRetainName];
-            v38 = [v22 URLByAppendingPathComponent:v37];
-            v28 = [v38 path];
+            modelCacheRetainName = [v15[141] modelCacheRetainName];
+            v38 = [uRLByDeletingLastPathComponent URLByAppendingPathComponent:modelCacheRetainName];
+            path = [v38 path];
 
             v39 = qword_1000364F8;
             if (os_log_type_enabled(qword_1000364F8, OS_LOG_TYPE_INFO))
             {
               *buf = 138412290;
-              *v98 = v28;
+              *v98 = path;
               _os_log_impl(&_mh_execute_header, v39, OS_LOG_TYPE_INFO, "modelCacheRetainPath=%@", buf, 0xCu);
             }
 
-            v40 = [v8 fileExistsAtPath:v28 isDirectory:&v90];
+            v40 = [v8 fileExistsAtPath:path isDirectory:&v90];
             v41 = qword_1000364F8;
             if (os_log_type_enabled(qword_1000364F8, OS_LOG_TYPE_INFO))
             {
@@ -768,10 +768,10 @@ LABEL_12:
             if (v40)
             {
               v42 = +[_ANEStrings modelBinaryName];
-              v43 = [v22 URLByAppendingPathComponent:v42];
-              v44 = [v43 path];
+              v43 = [uRLByDeletingLastPathComponent URLByAppendingPathComponent:v42];
+              path2 = [v43 path];
 
-              v45 = [objc_opt_class() getAccessTimeForFilePath:v44];
+              v45 = [objc_opt_class() getAccessTimeForFilePath:path2];
               if (v45)
               {
                 v46 = [NSDate dateWithTimeIntervalSinceNow:0.0];
@@ -820,7 +820,7 @@ LABEL_12:
             else
             {
               v89 = v88;
-              v55 = [v81 removeItemAtURL:v22 error:&v89];
+              v55 = [v81 removeItemAtURL:uRLByDeletingLastPathComponent error:&v89];
               v58 = v89;
 
               v59 = qword_1000364F8;
@@ -838,7 +838,7 @@ LABEL_12:
 
                 *v98 = v61;
                 *&v98[8] = 2112;
-                *v99 = v22;
+                *v99 = uRLByDeletingLastPathComponent;
                 *&v99[8] = 2112;
                 *v100 = v63;
                 _os_log_impl(&_mh_execute_header, v60, OS_LOG_TYPE_INFO, "%@: Remove modelDirURL=%@ : %@", buf, 0x20u);
@@ -893,12 +893,12 @@ LABEL_12:
 
           kdebug_trace();
           v33 = qword_1000364F8;
-          v28 = v33;
+          path = v33;
           if (v82 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v33))
           {
             *buf = 67109120;
             *v98 = 1;
-            v29 = v28;
+            v29 = path;
             v30 = spid;
             v31 = "%u";
             v32 = 8;
@@ -949,16 +949,16 @@ LABEL_60:
   return 1;
 }
 
-+ (id)uniqueFirstLevelSubdirectories:(id)a3
++ (id)uniqueFirstLevelSubdirectories:(id)subdirectories
 {
-  v3 = a3;
+  subdirectoriesCopy = subdirectories;
   v4 = objc_autoreleasePoolPush();
   v5 = +[NSMutableSet set];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = v3;
+  v6 = subdirectoriesCopy;
   v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
@@ -973,9 +973,9 @@ LABEL_60:
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v15 + 1) + 8 * i) pathComponents];
-        v12 = [v11 firstObject];
-        [v5 addObject:v12];
+        pathComponents = [*(*(&v15 + 1) + 8 * i) pathComponents];
+        firstObject = [pathComponents firstObject];
+        [v5 addObject:firstObject];
       }
 
       v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -990,9 +990,9 @@ LABEL_60:
   return v13;
 }
 
-+ (id)sizeOfDirectoryAtPath:(id)a3 recursionLevel:(unint64_t)a4
++ (id)sizeOfDirectoryAtPath:(id)path recursionLevel:(unint64_t)level
 {
-  v5 = a3;
+  pathCopy = path;
   v49 = objc_autoreleasePoolPush();
   v69[0] = off_100036338;
   v6 = [NSNumber numberWithUnsignedInteger:0];
@@ -1004,13 +1004,13 @@ LABEL_60:
 
   v9 = +[NSFileManager defaultManager];
   v61 = 0;
-  v55 = v5;
-  v10 = [v9 attributesOfItemAtPath:v5 error:&v61];
+  v55 = pathCopy;
+  v10 = [v9 attributesOfItemAtPath:pathCopy error:&v61];
   v11 = v61;
   if (v10)
   {
-    v12 = [v10 fileSize];
-    v13 = [NSNumber numberWithUnsignedInteger:v12];
+    fileSize = [v10 fileSize];
+    v13 = [NSNumber numberWithUnsignedInteger:fileSize];
     [v8 setObject:v13 forKeyedSubscript:off_100036338];
 
     v14 = [v8 objectForKeyedSubscript:off_100036340];
@@ -1019,10 +1019,10 @@ LABEL_60:
     v16 = v15;
     if (v15)
     {
-      [a1 addSubdirectoryDetails:v15 directoryPath:v55 size:v12];
+      [self addSubdirectoryDetails:v15 directoryPath:v55 size:fileSize];
     }
 
-    if (a4)
+    if (level)
     {
       v60 = v11;
       v17 = [v9 subpathsOfDirectoryAtPath:v55 error:&v60];
@@ -1036,7 +1036,7 @@ LABEL_60:
         v47 = v10;
         v48 = v9;
         aSelectora = v8;
-        v19 = [a1 uniqueFirstLevelSubdirectories:v17];
+        v19 = [self uniqueFirstLevelSubdirectories:v17];
         v50 = [&__NSDictionary0__struct mutableCopy];
         v56 = 0u;
         v57 = 0u;
@@ -1048,7 +1048,7 @@ LABEL_60:
         if (v20)
         {
           v22 = v20;
-          v23 = a4 - 1;
+          v23 = level - 1;
           v24 = *v57;
           do
           {
@@ -1060,16 +1060,16 @@ LABEL_60:
               }
 
               v26 = [v55 stringByAppendingPathComponent:*(*(&v56 + 1) + 8 * i)];
-              v27 = [a1 sizeOfDirectoryAtPath:v26 recursionLevel:v23];
+              v27 = [self sizeOfDirectoryAtPath:v26 recursionLevel:v23];
               v28 = [v27 objectForKeyedSubscript:off_100036338];
-              v29 = [v28 unsignedIntegerValue];
+              unsignedIntegerValue = [v28 unsignedIntegerValue];
 
-              if (v29)
+              if (unsignedIntegerValue)
               {
                 v30 = [aSelectora objectForKeyedSubscript:off_100036338];
-                v31 = [v30 unsignedIntegerValue];
+                unsignedIntegerValue2 = [v30 unsignedIntegerValue];
 
-                v32 = [NSNumber numberWithUnsignedInteger:&v29[v31]];
+                v32 = [NSNumber numberWithUnsignedInteger:&unsignedIntegerValue[unsignedIntegerValue2]];
                 p_cache = &OBJC_METACLASS____ANEXPCServiceHelper.cache;
                 [aSelectora setObject:v32 forKeyedSubscript:off_100036338];
 
@@ -1158,16 +1158,16 @@ LABEL_60:
   return v35;
 }
 
-+ (void)addSubdirectoryDetails:(id)a3 directoryPath:(id)a4 size:(unint64_t)a5
++ (void)addSubdirectoryDetails:(id)details directoryPath:(id)path size:(unint64_t)size
 {
-  v7 = a3;
-  v8 = [a4 lastPathComponent];
-  v11 = v8;
-  v9 = [NSNumber numberWithUnsignedLongLong:a5];
+  detailsCopy = details;
+  lastPathComponent = [path lastPathComponent];
+  v11 = lastPathComponent;
+  v9 = [NSNumber numberWithUnsignedLongLong:size];
   v12 = v9;
   v10 = [NSDictionary dictionaryWithObjects:&v12 forKeys:&v11 count:1];
 
-  [v7 addEntriesFromDictionary:v10];
+  [detailsCopy addEntriesFromDictionary:v10];
 }
 
 + (id)createModelCacheDictionary
@@ -1182,23 +1182,23 @@ LABEL_60:
   return v3;
 }
 
-+ (id)sizeOfModelCacheAtPath:(id)a3 purgeSubdirectories:(BOOL)a4
++ (id)sizeOfModelCacheAtPath:(id)path purgeSubdirectories:(BOOL)subdirectories
 {
-  v51 = a4;
-  v5 = a3;
+  subdirectoriesCopy = subdirectories;
+  pathCopy = path;
   v6 = objc_autoreleasePoolPush();
-  v7 = [objc_opt_class() createModelCacheDictionary];
+  createModelCacheDictionary = [objc_opt_class() createModelCacheDictionary];
   v8 = +[NSFileManager defaultManager];
   v59 = 0;
-  v9 = [v8 attributesOfItemAtPath:v5 error:&v59];
+  v9 = [v8 attributesOfItemAtPath:pathCopy error:&v59];
   v10 = v59;
   if (v9)
   {
     v11 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v9 fileSize]);
-    [v7 setObject:v11 forKeyedSubscript:off_100036338];
+    [createModelCacheDictionary setObject:v11 forKeyedSubscript:off_100036338];
 
     v58 = v10;
-    v12 = [v8 subpathsOfDirectoryAtPath:v5 error:&v58];
+    v12 = [v8 subpathsOfDirectoryAtPath:pathCopy error:&v58];
     v13 = v58;
 
     if (v12)
@@ -1207,9 +1207,9 @@ LABEL_60:
       v44 = v12;
       v45 = v9;
       v46 = v8;
-      v50 = v7;
+      v50 = createModelCacheDictionary;
       v47 = v6;
-      v14 = [a1 uniqueFirstLevelSubdirectories:v12];
+      v14 = [self uniqueFirstLevelSubdirectories:v12];
       v49 = [&__NSDictionary0__struct mutableCopy];
       v54 = 0u;
       v55 = 0u;
@@ -1217,12 +1217,12 @@ LABEL_60:
       v57 = 0u;
       obj = v14;
       v15 = [obj countByEnumeratingWithState:&v54 objects:v60 count:16];
-      v16 = v51;
+      v16 = subdirectoriesCopy;
       if (v15)
       {
         v17 = v15;
         v18 = *v55;
-        v52 = v5;
+        v52 = pathCopy;
         do
         {
           v19 = 0;
@@ -1233,10 +1233,10 @@ LABEL_60:
               objc_enumerationMutation(obj);
             }
 
-            v20 = [v5 stringByAppendingPathComponent:*(*(&v54 + 1) + 8 * v19)];
-            v21 = [a1 sizeOfDirectoryAtPath:v20 recursionLevel:3];
+            v20 = [pathCopy stringByAppendingPathComponent:*(*(&v54 + 1) + 8 * v19)];
+            v21 = [self sizeOfDirectoryAtPath:v20 recursionLevel:3];
             v22 = [v21 objectForKeyedSubscript:off_100036338];
-            v23 = [v22 unsignedIntegerValue];
+            unsignedIntegerValue = [v22 unsignedIntegerValue];
 
             if (!v16)
             {
@@ -1254,7 +1254,7 @@ LABEL_60:
               v64 = v20;
               _os_log_debug_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEBUG, "%@: removing %@", buf, 0x16u);
 
-              v5 = v52;
+              pathCopy = v52;
             }
 
             if (![_ANEStorageHelper removeDirectoryAtPath:v20])
@@ -1270,25 +1270,25 @@ LABEL_60:
                 v64 = v20;
                 _os_log_error_impl(&_mh_execute_header, v32, OS_LOG_TYPE_ERROR, "%@: FAILED to remove %@", buf, 0x16u);
 
-                v5 = v52;
+                pathCopy = v52;
               }
             }
 
             else
             {
 LABEL_12:
-              if (v23)
+              if (unsignedIntegerValue)
               {
                 v25 = [v50 objectForKeyedSubscript:off_100036338];
-                v26 = [v25 unsignedIntegerValue];
+                unsignedIntegerValue2 = [v25 unsignedIntegerValue];
 
-                v27 = &v23[v26];
-                v5 = v52;
+                v27 = &unsignedIntegerValue[unsignedIntegerValue2];
+                pathCopy = v52;
                 v28 = [NSNumber numberWithUnsignedInteger:v27];
-                v16 = v51;
+                v16 = subdirectoriesCopy;
                 [v50 setObject:v28 forKeyedSubscript:off_100036338];
 
-                [a1 addSubdirectoryDetails:v49 directoryPath:v20 size:v23];
+                [self addSubdirectoryDetails:v49 directoryPath:v20 size:unsignedIntegerValue];
               }
             }
 
@@ -1303,7 +1303,7 @@ LABEL_12:
       }
 
       v34 = [v49 copy];
-      v7 = v50;
+      createModelCacheDictionary = v50;
       [v50 setObject:v34 forKeyedSubscript:off_100036340];
 
       v35 = [v50 copy];
@@ -1326,14 +1326,14 @@ LABEL_12:
           *buf = 138412802;
           v62 = v42;
           v63 = 2112;
-          v64 = v5;
+          v64 = pathCopy;
           v65 = 2112;
           v66 = v13;
           _os_log_error_impl(&_mh_execute_header, v41, OS_LOG_TYPE_ERROR, "%@: subpathsOfDirectoryAtPath:error: failed. modelDirectoryPath=%@ : err=%@", buf, 0x20u);
         }
       }
 
-      v35 = [v7 copy];
+      v35 = [createModelCacheDictionary copy];
     }
 
     v10 = v13;
@@ -1349,13 +1349,13 @@ LABEL_12:
       *buf = 138412802;
       v62 = v40;
       v63 = 2112;
-      v64 = v5;
+      v64 = pathCopy;
       v65 = 2112;
       v66 = v10;
       _os_log_error_impl(&_mh_execute_header, v39, OS_LOG_TYPE_ERROR, "%@: attributesOfItemAtPath:error: failed. modelDirectoryPath=%@ : err=%@", buf, 0x20u);
     }
 
-    v35 = [v7 copy];
+    v35 = [createModelCacheDictionary copy];
   }
 
   objc_autoreleasePoolPop(v6);
@@ -1363,31 +1363,31 @@ LABEL_12:
   return v35;
 }
 
-+ (id)mergeModelCacheStorageInformation:(id)a3 with:(id)a4
++ (id)mergeModelCacheStorageInformation:(id)information with:(id)with
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [objc_opt_class() createModelCacheDictionary];
-  v8 = [v5 objectForKeyedSubscript:off_100036338];
-  v9 = [v8 unsignedLongLongValue];
+  informationCopy = information;
+  withCopy = with;
+  createModelCacheDictionary = [objc_opt_class() createModelCacheDictionary];
+  v8 = [informationCopy objectForKeyedSubscript:off_100036338];
+  unsignedLongLongValue = [v8 unsignedLongLongValue];
 
-  v10 = [v6 objectForKeyedSubscript:off_100036338];
-  v11 = [v10 unsignedLongLongValue];
+  v10 = [withCopy objectForKeyedSubscript:off_100036338];
+  unsignedLongLongValue2 = [v10 unsignedLongLongValue];
 
-  v12 = [NSNumber numberWithUnsignedLongLong:&v9[v11]];
-  v34 = v7;
-  [v7 setObject:v12 forKeyedSubscript:off_100036338];
+  v12 = [NSNumber numberWithUnsignedLongLong:&unsignedLongLongValue[unsignedLongLongValue2]];
+  v34 = createModelCacheDictionary;
+  [createModelCacheDictionary setObject:v12 forKeyedSubscript:off_100036338];
 
-  v36 = v5;
-  v13 = [v5 objectForKeyedSubscript:off_100036340];
-  v35 = v6;
-  v14 = [v6 objectForKeyedSubscript:off_100036340];
-  v15 = [v13 allKeys];
-  v16 = [NSSet setWithArray:v15];
+  v36 = informationCopy;
+  v13 = [informationCopy objectForKeyedSubscript:off_100036340];
+  v35 = withCopy;
+  v14 = [withCopy objectForKeyedSubscript:off_100036340];
+  allKeys = [v13 allKeys];
+  v16 = [NSSet setWithArray:allKeys];
 
-  v17 = [v14 allKeys];
+  allKeys2 = [v14 allKeys];
   v33 = v16;
-  v18 = [v16 setByAddingObjectsFromArray:v17];
+  v18 = [v16 setByAddingObjectsFromArray:allKeys2];
 
   v19 = [&__NSDictionary0__struct mutableCopy];
   v38 = 0u;
@@ -1411,12 +1411,12 @@ LABEL_12:
 
         v24 = *(*(&v38 + 1) + 8 * i);
         v25 = [v13 objectForKeyedSubscript:v24];
-        v26 = [v25 unsignedIntegerValue];
+        unsignedIntegerValue = [v25 unsignedIntegerValue];
 
         v27 = [v14 objectForKeyedSubscript:v24];
-        v28 = [v27 unsignedIntegerValue];
+        unsignedIntegerValue2 = [v27 unsignedIntegerValue];
 
-        v29 = [NSNumber numberWithUnsignedInteger:&v26[v28]];
+        v29 = [NSNumber numberWithUnsignedInteger:&unsignedIntegerValue[unsignedIntegerValue2]];
         [v19 setObject:v29 forKeyedSubscript:v24];
       }
 
@@ -1434,27 +1434,27 @@ LABEL_12:
   return v31;
 }
 
-+ (BOOL)_markPurgeablePath:(id)a3 error:(id *)a4
++ (BOOL)_markPurgeablePath:(id)path error:(id *)error
 {
-  v5 = a3;
-  v6 = [v5 UTF8String];
-  v7 = open(v6, 0);
+  pathCopy = path;
+  uTF8String = [pathCopy UTF8String];
+  v7 = open(uTF8String, 0);
   if (v7 < 0)
   {
     v16 = qword_1000364F8;
     if (os_log_type_enabled(qword_1000364F8, OS_LOG_TYPE_ERROR))
     {
-      sub_10001DE80(v6, v16);
+      sub_10001DE80(uTF8String, v16);
     }
 
     v17 = *__error();
     v34 = NSFilePathErrorKey;
-    v35 = v5;
+    v35 = pathCopy;
     v18 = [NSDictionary dictionaryWithObjects:&v35 forKeys:&v34 count:1];
     v15 = [NSError errorWithDomain:NSPOSIXErrorDomain code:v17 userInfo:v18];
 
     v10 = 0;
-    if (a4)
+    if (error)
     {
       goto LABEL_14;
     }
@@ -1475,7 +1475,7 @@ LABEL_12:
         v21 = v11;
         v22 = *__error();
         *buf = 136315906;
-        v27 = v6;
+        v27 = uTF8String;
         v28 = 1024;
         v29 = v12;
         v30 = 1024;
@@ -1487,7 +1487,7 @@ LABEL_12:
 
       v13 = *__error();
       v24 = NSFilePathErrorKey;
-      v25 = v5;
+      v25 = pathCopy;
       v14 = [NSDictionary dictionaryWithObjects:&v25 forKeys:&v24 count:1];
       v15 = [NSError errorWithDomain:NSPOSIXErrorDomain code:v13 userInfo:v14];
     }
@@ -1496,31 +1496,31 @@ LABEL_12:
     {
       if (os_log_type_enabled(qword_1000364F8, OS_LOG_TYPE_DEBUG))
       {
-        sub_10001DDFC(v6, &v23, v11);
+        sub_10001DDFC(uTF8String, &v23, v11);
       }
 
       v15 = 0;
     }
 
     close(v8);
-    if (a4)
+    if (error)
     {
 LABEL_14:
       v19 = v15;
-      *a4 = v15;
+      *error = v15;
     }
   }
 
   return v10;
 }
 
-+ (BOOL)markPathAndDirectParentPurgeable:(id)a3 error:(id *)a4
++ (BOOL)markPathAndDirectParentPurgeable:(id)purgeable error:(id *)error
 {
-  v5 = a3;
-  if ([objc_opt_class() _markPurgeablePath:v5 error:a4])
+  purgeableCopy = purgeable;
+  if ([objc_opt_class() _markPurgeablePath:purgeableCopy error:error])
   {
-    v6 = [v5 stringByDeletingLastPathComponent];
-    v7 = [objc_opt_class() _markPurgeablePath:v6 error:a4];
+    stringByDeletingLastPathComponent = [purgeableCopy stringByDeletingLastPathComponent];
+    v7 = [objc_opt_class() _markPurgeablePath:stringByDeletingLastPathComponent error:error];
   }
 
   else

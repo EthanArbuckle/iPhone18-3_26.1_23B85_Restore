@@ -1,27 +1,27 @@
 @interface HUSceneServicePickerViewController
-- (BOOL)_canSelectMediaAccessoryItem:(id)a3;
-- (BOOL)canSelectItem:(id)a3 indexPath:(id)a4;
-- (HUSceneServicePickerViewController)initWithActionSetBuilder:(id)a3 servicePickerDelegate:(id)a4;
-- (HUSceneServicePickerViewController)initWithServiceGridItemManager:(id)a3;
+- (BOOL)_canSelectMediaAccessoryItem:(id)item;
+- (BOOL)canSelectItem:(id)item indexPath:(id)path;
+- (HUSceneServicePickerViewController)initWithActionSetBuilder:(id)builder servicePickerDelegate:(id)delegate;
+- (HUSceneServicePickerViewController)initWithServiceGridItemManager:(id)manager;
 - (HUSceneServicePickerViewControllerDelegate)servicePickerDelegate;
 - (id)_updateActionSetBuilder;
-- (id)layoutOptionsForSection:(int64_t)a3;
-- (void)_cancel:(id)a3;
-- (void)_done:(id)a3;
-- (void)_presentUnsupportedAlertWithTitle:(id)a3 message:(id)a4;
+- (id)layoutOptionsForSection:(int64_t)section;
+- (void)_cancel:(id)_cancel;
+- (void)_done:(id)_done;
+- (void)_presentUnsupportedAlertWithTitle:(id)title message:(id)message;
 - (void)_validateDoneButton;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)configureCell:(id)a3 forItem:(id)a4;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)configureCell:(id)cell forItem:(id)item;
 - (void)didChangeSelection;
-- (void)itemManagerDidUpdate:(id)a3;
+- (void)itemManagerDidUpdate:(id)update;
 @end
 
 @implementation HUSceneServicePickerViewController
 
-- (HUSceneServicePickerViewController)initWithActionSetBuilder:(id)a3 servicePickerDelegate:(id)a4
+- (HUSceneServicePickerViewController)initWithActionSetBuilder:(id)builder servicePickerDelegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
+  builderCopy = builder;
+  delegateCopy = delegate;
   v9 = [HUServiceGridItemManager alloc];
   v10 = [(HUSelectableServiceGridViewController *)HUSceneServicePickerViewController defaultItemProviderCreatorWithOptions:13];
   v11 = [(HUServiceGridItemManager *)v9 initWithDelegate:self shouldGroupByRoom:1 itemProvidersCreator:v10];
@@ -32,22 +32,22 @@
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_actionSetBuilder, a3);
-    objc_storeWeak(&v13->_servicePickerDelegate, v8);
+    objc_storeStrong(&v12->_actionSetBuilder, builder);
+    objc_storeWeak(&v13->_servicePickerDelegate, delegateCopy);
     v14 = _HULocalizedStringWithDefaultValue(@"HUSceneServicePickerTitle", @"HUSceneServicePickerTitle", 1);
     [(HUSceneServicePickerViewController *)v13 setTitle:v14];
 
     v15 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:1 target:v13 action:sel__cancel_];
-    v16 = [(HUSceneServicePickerViewController *)v13 navigationItem];
-    [v16 setLeftBarButtonItem:v15];
+    navigationItem = [(HUSceneServicePickerViewController *)v13 navigationItem];
+    [navigationItem setLeftBarButtonItem:v15];
 
     v17 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:0 target:v13 action:sel__done_];
-    v18 = [(HUSceneServicePickerViewController *)v13 navigationItem];
-    [v18 setRightBarButtonItem:v17];
+    navigationItem2 = [(HUSceneServicePickerViewController *)v13 navigationItem];
+    [navigationItem2 setRightBarButtonItem:v17];
 
-    v19 = [MEMORY[0x277D75348] systemGroupedBackgroundColor];
-    v20 = [(HUSceneServicePickerViewController *)v13 collectionView];
-    [v20 setBackgroundColor:v19];
+    systemGroupedBackgroundColor = [MEMORY[0x277D75348] systemGroupedBackgroundColor];
+    collectionView = [(HUSceneServicePickerViewController *)v13 collectionView];
+    [collectionView setBackgroundColor:systemGroupedBackgroundColor];
 
     [(HUSceneServicePickerViewController *)v13 setModalInPresentation:1];
   }
@@ -55,55 +55,55 @@
   return v13;
 }
 
-- (HUSceneServicePickerViewController)initWithServiceGridItemManager:(id)a3
+- (HUSceneServicePickerViewController)initWithServiceGridItemManager:(id)manager
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v6 = NSStringFromSelector(sel_initWithActionSetBuilder_servicePickerDelegate_);
-  [v5 handleFailureInMethod:a2 object:self file:@"HUSceneServicePickerViewController.m" lineNumber:54 description:{@"%s is unavailable; use %@ instead", "-[HUSceneServicePickerViewController initWithServiceGridItemManager:]", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUSceneServicePickerViewController.m" lineNumber:54 description:{@"%s is unavailable; use %@ instead", "-[HUSceneServicePickerViewController initWithServiceGridItemManager:]", v6}];
 
   return 0;
 }
 
-- (void)_cancel:(id)a3
+- (void)_cancel:(id)_cancel
 {
-  v4 = [(HUSceneServicePickerViewController *)self servicePickerDelegate];
-  [v4 sceneServicePickerDidFinish:self];
+  servicePickerDelegate = [(HUSceneServicePickerViewController *)self servicePickerDelegate];
+  [servicePickerDelegate sceneServicePickerDidFinish:self];
 }
 
-- (void)_done:(id)a3
+- (void)_done:(id)_done
 {
-  v4 = a3;
-  v5 = [(HUSceneServicePickerViewController *)self navigationItem];
-  v6 = [v5 rightBarButtonItem];
+  _doneCopy = _done;
+  navigationItem = [(HUSceneServicePickerViewController *)self navigationItem];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
 
   v7 = [objc_alloc(MEMORY[0x277D750E8]) initWithActivityIndicatorStyle:100];
   v8 = [objc_alloc(MEMORY[0x277D751E0]) initWithCustomView:v7];
-  v9 = [(HUSceneServicePickerViewController *)self navigationItem];
-  [v9 setRightBarButtonItem:v8];
+  navigationItem2 = [(HUSceneServicePickerViewController *)self navigationItem];
+  [navigationItem2 setRightBarButtonItem:v8];
 
   [v7 startAnimating];
-  v10 = [(HUSceneServicePickerViewController *)self _updateActionSetBuilder];
+  _updateActionSetBuilder = [(HUSceneServicePickerViewController *)self _updateActionSetBuilder];
   objc_initWeak(&location, self);
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __44__HUSceneServicePickerViewController__done___block_invoke;
   v19[3] = &unk_277DB94A8;
   objc_copyWeak(&v20, &location);
-  v11 = [v10 addSuccessBlock:v19];
+  v11 = [_updateActionSetBuilder addSuccessBlock:v19];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __44__HUSceneServicePickerViewController__done___block_invoke_2;
   v17[3] = &unk_277DB94D0;
   objc_copyWeak(&v18, &location);
-  v12 = [v10 addFailureBlock:v17];
+  v12 = [_updateActionSetBuilder addFailureBlock:v17];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __44__HUSceneServicePickerViewController__done___block_invoke_4;
   v15[3] = &unk_277DB7158;
   v15[4] = self;
-  v13 = v6;
+  v13 = rightBarButtonItem;
   v16 = v13;
-  v14 = [v10 addCompletionBlock:v15];
+  v14 = [_updateActionSetBuilder addCompletionBlock:v15];
 
   objc_destroyWeak(&v18);
   objc_destroyWeak(&v20);
@@ -145,15 +145,15 @@ void __44__HUSceneServicePickerViewController__done___block_invoke_4(uint64_t a1
   [(HUSceneServicePickerViewController *)self _validateDoneButton];
 }
 
-- (void)itemManagerDidUpdate:(id)a3
+- (void)itemManagerDidUpdate:(id)update
 {
   v28.receiver = self;
   v28.super_class = HUSceneServicePickerViewController;
-  [(HUSelectableServiceGridViewController *)&v28 itemManagerDidUpdate:a3];
+  [(HUSelectableServiceGridViewController *)&v28 itemManagerDidUpdate:update];
   v4 = MEMORY[0x277CBEB98];
-  v5 = [(HUSceneServicePickerViewController *)self actionSetBuilder];
-  v6 = [v5 actions];
-  v7 = [v6 na_map:&__block_literal_global_35];
+  actionSetBuilder = [(HUSceneServicePickerViewController *)self actionSetBuilder];
+  actions = [actionSetBuilder actions];
+  v7 = [actions na_map:&__block_literal_global_35];
   v8 = [v4 setWithArray:v7];
 
   if (!v8)
@@ -161,22 +161,22 @@ void __44__HUSceneServicePickerViewController__done___block_invoke_4(uint64_t a1
     v8 = [MEMORY[0x277CBEB98] set];
   }
 
-  v9 = [(HUSceneServicePickerViewController *)self actionSetBuilder];
-  v10 = [v9 mediaAction];
+  actionSetBuilder2 = [(HUSceneServicePickerViewController *)self actionSetBuilder];
+  mediaAction = [actionSetBuilder2 mediaAction];
 
-  v11 = [v10 mediaProfiles];
-  v12 = [v11 na_flatMap:&__block_literal_global_38_0];
+  mediaProfiles = [mediaAction mediaProfiles];
+  v12 = [mediaProfiles na_flatMap:&__block_literal_global_38_0];
 
   if (!v12)
   {
     v12 = [MEMORY[0x277CBEB98] set];
   }
 
-  v13 = [(HUSceneServicePickerViewController *)self existingActionSetCharacteristics];
-  if ([v13 isEqualToSet:v8])
+  existingActionSetCharacteristics = [(HUSceneServicePickerViewController *)self existingActionSetCharacteristics];
+  if ([existingActionSetCharacteristics isEqualToSet:v8])
   {
-    v14 = [(HUSceneServicePickerViewController *)self existingActionSetMediaProfiles];
-    v15 = [v14 isEqualToSet:v12];
+    existingActionSetMediaProfiles = [(HUSceneServicePickerViewController *)self existingActionSetMediaProfiles];
+    v15 = [existingActionSetMediaProfiles isEqualToSet:v12];
 
     if (v15)
     {
@@ -190,15 +190,15 @@ void __44__HUSceneServicePickerViewController__done___block_invoke_4(uint64_t a1
 
   [(HUSceneServicePickerViewController *)self setExistingActionSetCharacteristics:v8];
   [(HUSceneServicePickerViewController *)self setExistingActionSetMediaProfiles:v12];
-  v16 = [(HUItemCollectionViewController *)self itemManager];
-  v17 = [v16 allDisplayedItems];
+  itemManager = [(HUItemCollectionViewController *)self itemManager];
+  allDisplayedItems = [itemManager allDisplayedItems];
   v22 = MEMORY[0x277D85DD0];
   v23 = 3221225472;
   v24 = __59__HUSceneServicePickerViewController_itemManagerDidUpdate___block_invoke_4;
   v25 = &unk_277DB95B0;
   v26 = v8;
   v27 = v12;
-  v18 = [v17 na_filter:&v22];
+  v18 = [allDisplayedItems na_filter:&v22];
 
   v19 = objc_alloc(MEMORY[0x277D14868]);
   v20 = [v19 initWithFromSet:{v18, v22, v23, v24, v25}];
@@ -311,14 +311,14 @@ uint64_t __59__HUSceneServicePickerViewController_itemManagerDidUpdate___block_i
   return v6;
 }
 
-- (id)layoutOptionsForSection:(int64_t)a3
+- (id)layoutOptionsForSection:(int64_t)section
 {
   v7.receiver = self;
   v7.super_class = HUSceneServicePickerViewController;
   v4 = [(HUServiceGridViewController *)&v7 layoutOptionsForSection:?];
   v5 = [v4 copy];
 
-  if (!a3)
+  if (!section)
   {
     [v5 sectionTitleMargin];
     [v5 setSectionTitleMargin:40.0];
@@ -327,26 +327,26 @@ uint64_t __59__HUSceneServicePickerViewController_itemManagerDidUpdate___block_i
   return v5;
 }
 
-- (void)configureCell:(id)a3 forItem:(id)a4
+- (void)configureCell:(id)cell forItem:(id)item
 {
-  v6 = a3;
+  cellCopy = cell;
   v7.receiver = self;
   v7.super_class = HUSceneServicePickerViewController;
-  [(HUSelectableServiceGridViewController *)&v7 configureCell:v6 forItem:a4];
+  [(HUSelectableServiceGridViewController *)&v7 configureCell:cellCopy forItem:item];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v6 setShouldColorDescription:0];
+    [cellCopy setShouldColorDescription:0];
   }
 }
 
-- (BOOL)canSelectItem:(id)a3 indexPath:(id)a4
+- (BOOL)canSelectItem:(id)item indexPath:(id)path
 {
-  v5 = a3;
+  itemCopy = item;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v7 = v5;
+    v7 = itemCopy;
     if ([v7 conformsToProtocol:&unk_28251AFC0])
     {
       v8 = v7;
@@ -359,8 +359,8 @@ uint64_t __59__HUSceneServicePickerViewController_itemManagerDidUpdate___block_i
 
     v9 = v8;
 
-    v10 = [v9 accessories];
-    v11 = [v10 na_any:&__block_literal_global_104];
+    accessories = [v9 accessories];
+    v11 = [accessories na_any:&__block_literal_global_104];
 
     if (v11)
     {
@@ -381,7 +381,7 @@ uint64_t __59__HUSceneServicePickerViewController_itemManagerDidUpdate___block_i
 
     v14 = v13;
 
-    v15 = [v14 sourceItem];
+    sourceItem = [v14 sourceItem];
 
     objc_opt_class();
     LOBYTE(v14) = objc_opt_isKindOfClass();
@@ -403,11 +403,11 @@ uint64_t __59__HUSceneServicePickerViewController_itemManagerDidUpdate___block_i
       v18 = v17;
 
       objc_opt_class();
-      v19 = [v18 sourceItem];
+      sourceItem2 = [v18 sourceItem];
 
       if (objc_opt_isKindOfClass())
       {
-        v20 = v19;
+        v20 = sourceItem2;
       }
 
       else
@@ -417,19 +417,19 @@ uint64_t __59__HUSceneServicePickerViewController_itemManagerDidUpdate___block_i
 
       v21 = v20;
 
-      v6 = [(HUSceneServicePickerViewController *)self _canSelectMediaAccessoryItem:v21];
+      containsActions = [(HUSceneServicePickerViewController *)self _canSelectMediaAccessoryItem:v21];
       goto LABEL_21;
     }
 
     if (![v12 conformsToProtocol:&unk_28251B560])
     {
 LABEL_7:
-      v6 = 0;
+      containsActions = 0;
     }
 
     else
     {
-      v6 = [v12 containsActions];
+      containsActions = [v12 containsActions];
     }
 
 LABEL_21:
@@ -437,21 +437,21 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  v6 = 1;
+  containsActions = 1;
 LABEL_22:
 
-  return v6;
+  return containsActions;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
   v36 = *MEMORY[0x277D85DE8];
   v33.receiver = self;
   v33.super_class = HUSceneServicePickerViewController;
-  v6 = a4;
-  [(HUSelectableServiceGridViewController *)&v33 collectionView:a3 didSelectItemAtIndexPath:v6];
+  pathCopy = path;
+  [(HUSelectableServiceGridViewController *)&v33 collectionView:view didSelectItemAtIndexPath:pathCopy];
   v7 = [(HUItemCollectionViewController *)self itemManager:v33.receiver];
-  v8 = [v7 displayedItemAtIndexPath:v6];
+  v8 = [v7 displayedItemAtIndexPath:pathCopy];
 
   v9 = v8;
   if ([v9 conformsToProtocol:&unk_28251AFC0])
@@ -466,8 +466,8 @@ LABEL_22:
 
   v11 = v10;
 
-  v12 = [v11 accessories];
-  v13 = [v12 na_any:&__block_literal_global_116];
+  accessories = [v11 accessories];
+  v13 = [accessories na_any:&__block_literal_global_116];
 
   if (v13)
   {
@@ -499,7 +499,7 @@ LABEL_29:
 
   v18 = v17;
 
-  v19 = [v18 sourceItem];
+  sourceItem = [v18 sourceItem];
 
   objc_opt_class();
   LOBYTE(v18) = objc_opt_isKindOfClass();
@@ -521,11 +521,11 @@ LABEL_29:
     v22 = v21;
 
     objc_opt_class();
-    v23 = [v22 sourceItem];
+    sourceItem2 = [v22 sourceItem];
 
     if (objc_opt_isKindOfClass())
     {
-      v24 = v23;
+      v24 = sourceItem2;
     }
 
     else
@@ -537,10 +537,10 @@ LABEL_29:
 
     if (![v25 allowsAppleMusicAccount] || (objc_msgSend(v25, "supportsMediaAction") & 1) != 0)
     {
-      v26 = [(HUItemCollectionViewController *)self itemManager];
-      v27 = [v26 home];
+      itemManager = [(HUItemCollectionViewController *)self itemManager];
+      home = [itemManager home];
 
-      if ([v27 hf_hasEnabledResident] && (objc_msgSend(v27, "hf_enabledResidentsSupportsMediaActions") & 1) == 0)
+      if ([home hf_hasEnabledResident] && (objc_msgSend(home, "hf_enabledResidentsSupportsMediaActions") & 1) == 0)
       {
         if ([v25 mediaAccessoryItemType] == 7)
         {
@@ -558,13 +558,13 @@ LABEL_29:
       goto LABEL_27;
     }
 
-    v29 = [v25 mediaAccessoryItemType];
-    v30 = v29;
-    if (v29 > 3)
+    mediaAccessoryItemType = [v25 mediaAccessoryItemType];
+    v30 = mediaAccessoryItemType;
+    if (mediaAccessoryItemType > 3)
     {
-      if ((v29 - 5) >= 5)
+      if ((mediaAccessoryItemType - 5) >= 5)
       {
-        if (v29 == 4)
+        if (mediaAccessoryItemType == 4)
         {
           v31 = @"HUSceneServicePickerUnsupportedHomePodStereoPairMessage";
           goto LABEL_43;
@@ -576,15 +576,15 @@ LABEL_29:
 
     else
     {
-      if ((v29 - 2) < 2)
+      if ((mediaAccessoryItemType - 2) < 2)
       {
         v31 = @"HUSceneServicePickerUnsupportedHomePodMessage";
         goto LABEL_43;
       }
 
-      if (v29)
+      if (mediaAccessoryItemType)
       {
-        if (v29 == 1)
+        if (mediaAccessoryItemType == 1)
         {
           v31 = @"HUSceneServicePickerUnsupportedAppleTVMessage";
 LABEL_43:
@@ -611,12 +611,12 @@ LABEL_27:
 LABEL_30:
 }
 
-- (void)_presentUnsupportedAlertWithTitle:(id)a3 message:(id)a4
+- (void)_presentUnsupportedAlertWithTitle:(id)title message:(id)message
 {
   v6 = MEMORY[0x277D75110];
-  v7 = a4;
-  v8 = _HULocalizedStringWithDefaultValue(a3, a3, 1);
-  v9 = _HULocalizedStringWithDefaultValue(v7, v7, 1);
+  messageCopy = message;
+  v8 = _HULocalizedStringWithDefaultValue(title, title, 1);
+  v9 = _HULocalizedStringWithDefaultValue(messageCopy, messageCopy, 1);
 
   v13 = [v6 alertControllerWithTitle:v8 message:v9 preferredStyle:1];
 
@@ -628,33 +628,33 @@ LABEL_30:
   [(HUControllableItemCollectionViewController *)self presentViewController:v13 animated:1 completion:0];
 }
 
-- (BOOL)_canSelectMediaAccessoryItem:(id)a3
+- (BOOL)_canSelectMediaAccessoryItem:(id)item
 {
-  v4 = a3;
-  if ([v4 allowsAppleMusicAccount])
+  itemCopy = item;
+  if ([itemCopy allowsAppleMusicAccount])
   {
-    v5 = [v4 supportsMediaAction];
+    supportsMediaAction = [itemCopy supportsMediaAction];
   }
 
   else
   {
-    v5 = 1;
+    supportsMediaAction = 1;
   }
 
-  v6 = [(HUItemCollectionViewController *)self itemManager];
-  v7 = [v6 home];
+  itemManager = [(HUItemCollectionViewController *)self itemManager];
+  home = [itemManager home];
 
-  if ([v7 hf_hasEnabledResident])
+  if ([home hf_hasEnabledResident])
   {
-    v8 = [v7 hf_enabledResidentsSupportsMediaActions];
+    hf_enabledResidentsSupportsMediaActions = [home hf_enabledResidentsSupportsMediaActions];
   }
 
   else
   {
-    v8 = 1;
+    hf_enabledResidentsSupportsMediaActions = 1;
   }
 
-  return v5 & v8;
+  return supportsMediaAction & hf_enabledResidentsSupportsMediaActions;
 }
 
 - (id)_updateActionSetBuilder
@@ -662,19 +662,19 @@ LABEL_30:
   v137 = *MEMORY[0x277D85DE8];
   v70 = objc_alloc_init(MEMORY[0x277D2C900]);
   val = self;
-  v73 = [(HUSelectableServiceGridViewController *)self selectedItems];
-  v3 = [(HUItemCollectionViewController *)self itemManager];
-  v81 = [v3 home];
+  selectedItems = [(HUSelectableServiceGridViewController *)self selectedItems];
+  itemManager = [(HUItemCollectionViewController *)self itemManager];
+  home = [itemManager home];
 
-  v84 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v127 = 0u;
   v128 = 0u;
   v125 = 0u;
   v126 = 0u;
-  v4 = [(HUSceneServicePickerViewController *)val actionSetBuilder];
-  v5 = [v4 actions];
+  actionSetBuilder = [(HUSceneServicePickerViewController *)val actionSetBuilder];
+  actions = [actionSetBuilder actions];
 
-  v6 = [v5 countByEnumeratingWithState:&v125 objects:v136 count:16];
+  v6 = [actions countByEnumeratingWithState:&v125 objects:v136 count:16];
   if (v6)
   {
     v7 = *v126;
@@ -684,38 +684,38 @@ LABEL_30:
       {
         if (*v126 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(actions);
         }
 
         v9 = *(*(&v125 + 1) + 8 * i);
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v10 = [v9 characteristic];
-          v11 = [v10 uniqueIdentifier];
+          characteristic = [v9 characteristic];
+          uniqueIdentifier = [characteristic uniqueIdentifier];
 
-          if (v11)
+          if (uniqueIdentifier)
           {
-            [v84 setObject:v9 forKeyedSubscript:v11];
+            [dictionary setObject:v9 forKeyedSubscript:uniqueIdentifier];
           }
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v125 objects:v136 count:16];
+      v6 = [actions countByEnumeratingWithState:&v125 objects:v136 count:16];
     }
 
     while (v6);
   }
 
-  v12 = [(HUSceneServicePickerViewController *)val actionSetBuilder];
-  v13 = [v12 actions];
-  v85 = [v13 na_filter:&__block_literal_global_156];
+  actionSetBuilder2 = [(HUSceneServicePickerViewController *)val actionSetBuilder];
+  actions2 = [actionSetBuilder2 actions];
+  v85 = [actions2 na_filter:&__block_literal_global_156];
 
   v123 = 0u;
   v124 = 0u;
   v121 = 0u;
   v122 = 0u;
-  obj = [v73 deletions];
+  obj = [selectedItems deletions];
   v74 = [obj countByEnumeratingWithState:&v121 objects:v135 count:16];
   if (v74)
   {
@@ -737,12 +737,12 @@ LABEL_30:
 
         if ([v14 conformsToProtocol:&unk_28251AFC0])
         {
-          v76 = [v14 services];
+          services = [v14 services];
           v119 = 0u;
           v120 = 0u;
           v117 = 0u;
           v118 = 0u;
-          v78 = [v76 countByEnumeratingWithState:&v117 objects:v134 count:16];
+          v78 = [services countByEnumeratingWithState:&v117 objects:v134 count:16];
           if (v78)
           {
             v77 = *v118;
@@ -754,7 +754,7 @@ LABEL_30:
                 if (*v118 != v77)
                 {
                   v16 = v15;
-                  objc_enumerationMutation(v76);
+                  objc_enumerationMutation(services);
                   v15 = v16;
                 }
 
@@ -764,8 +764,8 @@ LABEL_30:
                 v114 = 0u;
                 v115 = 0u;
                 v116 = 0u;
-                v18 = [v17 characteristics];
-                v19 = [v18 countByEnumeratingWithState:&v113 objects:v133 count:16];
+                characteristics = [v17 characteristics];
+                v19 = [characteristics countByEnumeratingWithState:&v113 objects:v133 count:16];
                 if (v19)
                 {
                   v20 = *v114;
@@ -775,27 +775,27 @@ LABEL_30:
                     {
                       if (*v114 != v20)
                       {
-                        objc_enumerationMutation(v18);
+                        objc_enumerationMutation(characteristics);
                       }
 
                       v22 = *(*(&v113 + 1) + 8 * k);
-                      v23 = [v22 uniqueIdentifier];
-                      v24 = v23 == 0;
+                      uniqueIdentifier2 = [v22 uniqueIdentifier];
+                      v24 = uniqueIdentifier2 == 0;
 
                       if (!v24)
                       {
-                        v25 = [v22 uniqueIdentifier];
-                        v26 = [v84 objectForKeyedSubscript:v25];
+                        uniqueIdentifier3 = [v22 uniqueIdentifier];
+                        v26 = [dictionary objectForKeyedSubscript:uniqueIdentifier3];
 
                         if (v26)
                         {
-                          v27 = [(HUSceneServicePickerViewController *)val actionSetBuilder];
-                          [v27 removeAction:v26];
+                          actionSetBuilder3 = [(HUSceneServicePickerViewController *)val actionSetBuilder];
+                          [actionSetBuilder3 removeAction:v26];
                         }
                       }
                     }
 
-                    v19 = [v18 countByEnumeratingWithState:&v113 objects:v133 count:16];
+                    v19 = [characteristics countByEnumeratingWithState:&v113 objects:v133 count:16];
                   }
 
                   while (v19);
@@ -805,8 +805,8 @@ LABEL_30:
                 v112 = 0u;
                 v109 = 0u;
                 v110 = 0u;
-                v82 = [v17 hf_lightProfiles];
-                v28 = [v82 countByEnumeratingWithState:&v109 objects:v132 count:16];
+                hf_lightProfiles = [v17 hf_lightProfiles];
+                v28 = [hf_lightProfiles countByEnumeratingWithState:&v109 objects:v132 count:16];
                 if (v28)
                 {
                   v86 = *v110;
@@ -816,7 +816,7 @@ LABEL_30:
                     {
                       if (*v110 != v86)
                       {
-                        objc_enumerationMutation(v82);
+                        objc_enumerationMutation(hf_lightProfiles);
                       }
 
                       v30 = *(*(&v109 + 1) + 8 * m);
@@ -839,13 +839,13 @@ LABEL_30:
                             }
 
                             v35 = *(*(&v105 + 1) + 8 * n);
-                            v36 = [v35 lightProfile];
-                            v37 = [v36 isEqual:v30];
+                            lightProfile = [v35 lightProfile];
+                            v37 = [lightProfile isEqual:v30];
 
                             if (v37)
                             {
-                              v38 = [(HUSceneServicePickerViewController *)val actionSetBuilder];
-                              [v38 removeAction:v35];
+                              actionSetBuilder4 = [(HUSceneServicePickerViewController *)val actionSetBuilder];
+                              [actionSetBuilder4 removeAction:v35];
 
                               goto LABEL_51;
                             }
@@ -864,7 +864,7 @@ LABEL_30:
 LABEL_51:
                     }
 
-                    v28 = [v82 countByEnumeratingWithState:&v109 objects:v132 count:16];
+                    v28 = [hf_lightProfiles countByEnumeratingWithState:&v109 objects:v132 count:16];
                   }
 
                   while (v28);
@@ -874,7 +874,7 @@ LABEL_51:
               }
 
               while (v80 + 1 != v78);
-              v78 = [v76 countByEnumeratingWithState:&v117 objects:v134 count:16];
+              v78 = [services countByEnumeratingWithState:&v117 objects:v134 count:16];
             }
 
             while (v78);
@@ -888,16 +888,16 @@ LABEL_51:
     while (v74);
   }
 
-  v39 = [(HUSceneServicePickerViewController *)val actionSetBuilder];
-  v79 = [v39 mediaAction];
+  actionSetBuilder5 = [(HUSceneServicePickerViewController *)val actionSetBuilder];
+  mediaAction = [actionSetBuilder5 mediaAction];
 
-  v87 = [v79 mediaProfiles];
+  mediaProfiles = [mediaAction mediaProfiles];
   v103 = 0u;
   v104 = 0u;
   v101 = 0u;
   v102 = 0u;
-  v83 = [v73 deletions];
-  v40 = [v83 countByEnumeratingWithState:&v101 objects:v130 count:16];
+  deletions = [selectedItems deletions];
+  v40 = [deletions countByEnumeratingWithState:&v101 objects:v130 count:16];
   if (v40)
   {
     v41 = *v102;
@@ -907,7 +907,7 @@ LABEL_51:
       {
         if (*v102 != v41)
         {
-          objc_enumerationMutation(v83);
+          objc_enumerationMutation(deletions);
         }
 
         v43 = *(*(&v101 + 1) + 8 * ii);
@@ -917,12 +917,12 @@ LABEL_51:
         }
 
         v44 = v43;
-        v45 = [v44 accessories];
-        v46 = [v45 anyObject];
-        if ([v46 hf_isSiriEndpoint])
+        accessories = [v44 accessories];
+        anyObject = [accessories anyObject];
+        if ([anyObject hf_isSiriEndpoint])
         {
-          v47 = [v44 services];
-          v48 = [v47 count] != 0;
+          services2 = [v44 services];
+          v48 = [services2 count] != 0;
         }
 
         else
@@ -936,43 +936,43 @@ LABEL_51:
           v99[1] = 3221225472;
           v99[2] = __61__HUSceneServicePickerViewController__updateActionSetBuilder__block_invoke_2;
           v99[3] = &unk_277DB95F8;
-          v100 = v45;
-          v49 = [v87 na_filter:v99];
+          v100 = accessories;
+          v49 = [mediaProfiles na_filter:v99];
 
-          v87 = v49;
+          mediaProfiles = v49;
         }
       }
 
-      v40 = [v83 countByEnumeratingWithState:&v101 objects:v130 count:16];
+      v40 = [deletions countByEnumeratingWithState:&v101 objects:v130 count:16];
     }
 
     while (v40);
   }
 
-  if (v79)
+  if (mediaAction)
   {
-    if ([v87 count])
+    if ([mediaProfiles count])
     {
-      [v79 setMediaProfiles:v87];
-      v50 = [(HUSceneServicePickerViewController *)val actionSetBuilder];
-      [v50 updateAction:v79];
+      [mediaAction setMediaProfiles:mediaProfiles];
+      actionSetBuilder6 = [(HUSceneServicePickerViewController *)val actionSetBuilder];
+      [actionSetBuilder6 updateAction:mediaAction];
     }
 
     else
     {
-      v50 = [(HUSceneServicePickerViewController *)val actionSetBuilder];
-      [v50 removeAction:v79];
+      actionSetBuilder6 = [(HUSceneServicePickerViewController *)val actionSetBuilder];
+      [actionSetBuilder6 removeAction:mediaAction];
     }
   }
 
-  v51 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v97 = 0u;
   v98 = 0u;
   v95 = 0u;
   v96 = 0u;
-  v52 = [v73 additions];
-  v53 = [v73 updates];
-  v54 = [v52 setByAddingObjectsFromSet:v53];
+  additions = [selectedItems additions];
+  updates = [selectedItems updates];
+  v54 = [additions setByAddingObjectsFromSet:updates];
 
   v55 = [v54 countByEnumeratingWithState:&v95 objects:v129 count:16];
   if (v55)
@@ -995,10 +995,10 @@ LABEL_51:
 
         if ([v58 conformsToProtocol:&unk_28251B560])
         {
-          v59 = [v58 currentStateActionBuildersForHome:v81];
+          v59 = [v58 currentStateActionBuildersForHome:home];
           if (v59)
           {
-            [v51 addObject:v59];
+            [array addObject:v59];
           }
         }
       }
@@ -1010,8 +1010,8 @@ LABEL_51:
   }
 
   v60 = MEMORY[0x277D2C900];
-  v61 = [MEMORY[0x277D2C938] mainThreadScheduler];
-  v62 = [v60 combineAllFutures:v51 ignoringErrors:0 scheduler:v61];
+  mainThreadScheduler = [MEMORY[0x277D2C938] mainThreadScheduler];
+  v62 = [v60 combineAllFutures:array ignoringErrors:0 scheduler:mainThreadScheduler];
 
   objc_initWeak(&location, val);
   v91[0] = MEMORY[0x277D85DD0];
@@ -1133,12 +1133,12 @@ void __61__HUSceneServicePickerViewController__updateActionSetBuilder__block_inv
 
 - (void)_validateDoneButton
 {
-  v7 = [(HUSelectableServiceGridViewController *)self selectedItems];
-  v3 = [v7 toSet];
-  v4 = [v3 count] != 0;
-  v5 = [(HUSceneServicePickerViewController *)self navigationItem];
-  v6 = [v5 rightBarButtonItem];
-  [v6 setEnabled:v4];
+  selectedItems = [(HUSelectableServiceGridViewController *)self selectedItems];
+  toSet = [selectedItems toSet];
+  v4 = [toSet count] != 0;
+  navigationItem = [(HUSceneServicePickerViewController *)self navigationItem];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
+  [rightBarButtonItem setEnabled:v4];
 }
 
 - (HUSceneServicePickerViewControllerDelegate)servicePickerDelegate

@@ -1,14 +1,14 @@
 @interface ATXInstalledSuggestedPagesTracker
 - (ATXInstalledSuggestedPagesTracker)init;
-- (ATXInstalledSuggestedPagesTracker)initWithPath:(id)a3;
+- (ATXInstalledSuggestedPagesTracker)initWithPath:(id)path;
 - (id)_allInstalledPages;
 - (id)allInstalledPages;
-- (id)identifierOfSuggestedPageForModeUUID:(id)a3;
-- (int64_t)suggestedPageTypeWithIdentifier:(id)a3;
-- (void)_serializePages:(id)a3;
-- (void)removePagesWithIdentifiersNotInSet:(id)a3;
-- (void)storePageIdentifier:(id)a3 modeUUID:(id)a4 forPageType:(int64_t)a5;
-- (void)trackSuggestedHomePageWithAction:(int64_t)a3 pageType:(int64_t)a4 identifier:(id)a5;
+- (id)identifierOfSuggestedPageForModeUUID:(id)d;
+- (int64_t)suggestedPageTypeWithIdentifier:(id)identifier;
+- (void)_serializePages:(id)pages;
+- (void)removePagesWithIdentifiersNotInSet:(id)set;
+- (void)storePageIdentifier:(id)identifier modeUUID:(id)d forPageType:(int64_t)type;
+- (void)trackSuggestedHomePageWithAction:(int64_t)action pageType:(int64_t)type identifier:(id)identifier;
 @end
 
 @implementation ATXInstalledSuggestedPagesTracker
@@ -38,9 +38,9 @@
   return v4;
 }
 
-- (ATXInstalledSuggestedPagesTracker)initWithPath:(id)a3
+- (ATXInstalledSuggestedPagesTracker)initWithPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v17.receiver = self;
   v17.super_class = ATXInstalledSuggestedPagesTracker;
   v5 = [(ATXInstalledSuggestedPagesTracker *)&v17 init];
@@ -53,7 +53,7 @@
 
     v9 = objc_alloc(MEMORY[0x1E698AFF0]);
     v10 = __atxlog_handle_modes();
-    v11 = [v9 initWithCacheFilePath:v4 loggingHandle:v10 debugName:@"installed suggested pages"];
+    v11 = [v9 initWithCacheFilePath:pathCopy loggingHandle:v10 debugName:@"installed suggested pages"];
     cache = v5->_cache;
     v5->_cache = v11;
 
@@ -98,9 +98,9 @@ void __54__ATXInstalledSuggestedPagesTracker_allInstalledPages__block_invoke(uin
   *(v3 + 40) = v2;
 }
 
-- (int64_t)suggestedPageTypeWithIdentifier:(id)a3
+- (int64_t)suggestedPageTypeWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -111,9 +111,9 @@ void __54__ATXInstalledSuggestedPagesTracker_allInstalledPages__block_invoke(uin
   block[2] = __69__ATXInstalledSuggestedPagesTracker_suggestedPageTypeWithIdentifier___block_invoke;
   block[3] = &unk_1E80C3A00;
   block[4] = self;
-  v10 = v4;
+  v10 = identifierCopy;
   v11 = &v12;
-  v6 = v4;
+  v6 = identifierCopy;
   dispatch_sync(queue, block);
   v7 = v13[3];
 
@@ -148,9 +148,9 @@ void __69__ATXInstalledSuggestedPagesTracker_suggestedPageTypeWithIdentifier___b
   }
 }
 
-- (id)identifierOfSuggestedPageForModeUUID:(id)a3
+- (id)identifierOfSuggestedPageForModeUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -163,9 +163,9 @@ void __69__ATXInstalledSuggestedPagesTracker_suggestedPageTypeWithIdentifier___b
   block[2] = __74__ATXInstalledSuggestedPagesTracker_identifierOfSuggestedPageForModeUUID___block_invoke;
   block[3] = &unk_1E80C3A00;
   block[4] = self;
-  v10 = v4;
+  v10 = dCopy;
   v11 = &v12;
-  v6 = v4;
+  v6 = dCopy;
   dispatch_sync(queue, block);
   v7 = v13[5];
 
@@ -205,28 +205,28 @@ void __74__ATXInstalledSuggestedPagesTracker_identifierOfSuggestedPageForModeUUI
   }
 }
 
-- (void)_serializePages:(id)a3
+- (void)_serializePages:(id)pages
 {
-  v5 = a3;
+  pagesCopy = pages;
   dispatch_assert_queue_V2(self->_queue);
   v4 = objc_autoreleasePoolPush();
-  [(ATXGenericFileBasedCache *)self->_cache storeSecureCodedObject:v5 error:0];
+  [(ATXGenericFileBasedCache *)self->_cache storeSecureCodedObject:pagesCopy error:0];
   objc_autoreleasePoolPop(v4);
 }
 
-- (void)trackSuggestedHomePageWithAction:(int64_t)a3 pageType:(int64_t)a4 identifier:(id)a5
+- (void)trackSuggestedHomePageWithAction:(int64_t)action pageType:(int64_t)type identifier:(id)identifier
 {
-  v8 = a5;
+  identifierCopy = identifier;
   queue = self->_queue;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __90__ATXInstalledSuggestedPagesTracker_trackSuggestedHomePageWithAction_pageType_identifier___block_invoke;
   v11[3] = &unk_1E80C16D8;
-  v14 = a4;
-  v15 = a3;
-  v12 = v8;
-  v13 = self;
-  v10 = v8;
+  typeCopy = type;
+  actionCopy = action;
+  v12 = identifierCopy;
+  selfCopy = self;
+  v10 = identifierCopy;
   dispatch_async(queue, v11);
 }
 
@@ -236,21 +236,21 @@ void __90__ATXInstalledSuggestedPagesTracker_trackSuggestedHomePageWithAction_pa
   [*(a1[5] + 24) sendEvent:v2];
 }
 
-- (void)storePageIdentifier:(id)a3 modeUUID:(id)a4 forPageType:(int64_t)a5
+- (void)storePageIdentifier:(id)identifier modeUUID:(id)d forPageType:(int64_t)type
 {
-  v8 = a3;
-  v9 = a4;
+  identifierCopy = identifier;
+  dCopy = d;
   queue = self->_queue;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __78__ATXInstalledSuggestedPagesTracker_storePageIdentifier_modeUUID_forPageType___block_invoke;
   v13[3] = &unk_1E80C2DC0;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v16 = a5;
-  v11 = v9;
-  v12 = v8;
+  v14 = identifierCopy;
+  v15 = dCopy;
+  typeCopy = type;
+  v11 = dCopy;
+  v12 = identifierCopy;
   dispatch_async(queue, v13);
 }
 
@@ -289,17 +289,17 @@ void __78__ATXInstalledSuggestedPagesTracker_storePageIdentifier_modeUUID_forPag
   [*(a1 + 32) _serializePages:v5];
 }
 
-- (void)removePagesWithIdentifiersNotInSet:(id)a3
+- (void)removePagesWithIdentifiersNotInSet:(id)set
 {
-  v4 = a3;
+  setCopy = set;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __72__ATXInstalledSuggestedPagesTracker_removePagesWithIdentifiersNotInSet___block_invoke;
   v7[3] = &unk_1E80C0958;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = setCopy;
+  v6 = setCopy;
   dispatch_async(queue, v7);
 }
 

@@ -1,17 +1,17 @@
 @interface SAKPerfState
-- (void)nextSampleForThread:(int)a3 isOnCore:;
+- (void)nextSampleForThread:(int)thread isOnCore:;
 @end
 
 @implementation SAKPerfState
 
-- (void)nextSampleForThread:(int)a3 isOnCore:
+- (void)nextSampleForThread:(int)thread isOnCore:
 {
-  if (a1)
+  if (self)
   {
-    v4 = *(a1 + 8);
+    v4 = *(self + 8);
     v5 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:a2];
     v6 = v5;
-    if (a3)
+    if (thread)
     {
       [v4 addObject:v5];
     }

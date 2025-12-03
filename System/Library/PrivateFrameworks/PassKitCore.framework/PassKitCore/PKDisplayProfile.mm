@@ -1,20 +1,20 @@
 @interface PKDisplayProfile
-+ (Class)classForDisplayProfileType:(int64_t)a3;
-+ (id)displayProfileOfType:(int64_t)a3 withDictionary:(id)a4 bundle:(id)a5;
-- (PKDisplayProfile)initWithCoder:(id)a3;
-- (PKDisplayProfile)initWithDictionary:(id)a3 bundle:(id)a4;
++ (Class)classForDisplayProfileType:(int64_t)type;
++ (id)displayProfileOfType:(int64_t)type withDictionary:(id)dictionary bundle:(id)bundle;
+- (PKDisplayProfile)initWithCoder:(id)coder;
+- (PKDisplayProfile)initWithDictionary:(id)dictionary bundle:(id)bundle;
 @end
 
 @implementation PKDisplayProfile
 
-+ (id)displayProfileOfType:(int64_t)a3 withDictionary:(id)a4 bundle:(id)a5
++ (id)displayProfileOfType:(int64_t)type withDictionary:(id)dictionary bundle:(id)bundle
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [a1 classForDisplayProfileType:a3];
+  dictionaryCopy = dictionary;
+  bundleCopy = bundle;
+  v10 = [self classForDisplayProfileType:type];
   if (v10)
   {
-    v11 = [[v10 alloc] initWithDictionary:v8 bundle:v9];
+    v11 = [[v10 alloc] initWithDictionary:dictionaryCopy bundle:bundleCopy];
   }
 
   else
@@ -25,9 +25,9 @@
   return v11;
 }
 
-+ (Class)classForDisplayProfileType:(int64_t)a3
++ (Class)classForDisplayProfileType:(int64_t)type
 {
-  if (a3)
+  if (type)
   {
     v4 = 0;
   }
@@ -40,14 +40,14 @@
   return v4;
 }
 
-- (PKDisplayProfile)initWithDictionary:(id)a3 bundle:(id)a4
+- (PKDisplayProfile)initWithDictionary:(id)dictionary bundle:(id)bundle
 {
   v5.receiver = self;
   v5.super_class = PKDisplayProfile;
-  return [(PKDisplayProfile *)&v5 init:a3];
+  return [(PKDisplayProfile *)&v5 init:dictionary];
 }
 
-- (PKDisplayProfile)initWithCoder:(id)a3
+- (PKDisplayProfile)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = PKDisplayProfile;

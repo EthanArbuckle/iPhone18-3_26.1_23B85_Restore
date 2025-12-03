@@ -1,14 +1,14 @@
 @interface HDMedicationPregnancyListConceptObserver
 + (id)_predicateForNonactiveDismissedInteractions;
 - (HDMedicationPregnancyListConceptObserver)init;
-- (HDMedicationPregnancyListConceptObserver)initWithProfile:(id)a3;
-- (uint64_t)_deleteNonactiveDismissedInteractionsWithTransaction:(NSObject *)a3 error:;
-- (void)_deleteNonactiveDismissedInteractionsWithTransaction:(uint64_t)a1;
-- (void)database:(id)a3 protectedDataDidBecomeAvailable:(BOOL)a4;
-- (void)profileDidBecomeReady:(id)a3;
-- (void)userDomainConceptManager:(id)a3 didAddUserDomainConcepts:(id)a4 transaction:(id)a5;
-- (void)userDomainConceptManager:(id)a3 didDeleteUserDomainConcepts:(id)a4 transaction:(id)a5;
-- (void)userDomainConceptManager:(id)a3 didUpdateUserDomainConcepts:(id)a4 transaction:(id)a5;
+- (HDMedicationPregnancyListConceptObserver)initWithProfile:(id)profile;
+- (uint64_t)_deleteNonactiveDismissedInteractionsWithTransaction:(NSObject *)transaction error:;
+- (void)_deleteNonactiveDismissedInteractionsWithTransaction:(uint64_t)transaction;
+- (void)database:(id)database protectedDataDidBecomeAvailable:(BOOL)available;
+- (void)profileDidBecomeReady:(id)ready;
+- (void)userDomainConceptManager:(id)manager didAddUserDomainConcepts:(id)concepts transaction:(id)transaction;
+- (void)userDomainConceptManager:(id)manager didDeleteUserDomainConcepts:(id)concepts transaction:(id)transaction;
+- (void)userDomainConceptManager:(id)manager didUpdateUserDomainConcepts:(id)concepts transaction:(id)transaction;
 @end
 
 @implementation HDMedicationPregnancyListConceptObserver
@@ -23,47 +23,47 @@
   return 0;
 }
 
-- (HDMedicationPregnancyListConceptObserver)initWithProfile:(id)a3
+- (HDMedicationPregnancyListConceptObserver)initWithProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   v10.receiver = self;
   v10.super_class = HDMedicationPregnancyListConceptObserver;
   v5 = [(HDMedicationPregnancyListConceptObserver *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    v7 = objc_storeWeak(&v5->_profile, v4);
+    v7 = objc_storeWeak(&v5->_profile, profileCopy);
     atomic_store(1u, &v6->_shouldQueryMedicationListToDeleteDismissedInteractionsIfNeeded);
     v8 = v7;
-    [v4 registerProfileReadyObserver:v6 queue:0];
+    [profileCopy registerProfileReadyObserver:v6 queue:0];
   }
 
   return v6;
 }
 
-- (void)database:(id)a3 protectedDataDidBecomeAvailable:(BOOL)a4
+- (void)database:(id)database protectedDataDidBecomeAvailable:(BOOL)available
 {
-  v4 = a4;
-  v6 = a3;
+  availableCopy = available;
+  databaseCopy = database;
   if (self)
   {
-    if (v4)
+    if (availableCopy)
     {
       v7 = atomic_load(&self->_shouldQueryMedicationListToDeleteDismissedInteractionsIfNeeded);
       if (v7)
       {
-        v8 = v6;
+        v8 = databaseCopy;
         [(HDMedicationPregnancyListConceptObserver *)self _deleteNonactiveDismissedInteractionsWithTransaction:?];
-        v6 = v8;
+        databaseCopy = v8;
       }
     }
   }
 }
 
-- (void)profileDidBecomeReady:(id)a3
+- (void)profileDidBecomeReady:(id)ready
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  readyCopy = ready;
   _HKInitializeLogging();
   v5 = HKLogMedication();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_INFO);
@@ -80,18 +80,18 @@
     }
   }
 
-  v9 = [v4 userDomainConceptManager];
-  [v9 addSynchronousUserDomainConceptObserver:self];
+  userDomainConceptManager = [readyCopy userDomainConceptManager];
+  [userDomainConceptManager addSynchronousUserDomainConceptObserver:self];
 
-  v10 = [v4 database];
-  [v10 addProtectedDataObserver:self];
+  database = [readyCopy database];
+  [database addProtectedDataObserver:self];
 
-  v11 = [v4 database];
+  database2 = [readyCopy database];
 
-  v12 = [v11 isProtectedDataAvailable];
+  isProtectedDataAvailable = [database2 isProtectedDataAvailable];
   if (self)
   {
-    if (v12)
+    if (isProtectedDataAvailable)
     {
       v13 = atomic_load(&self->_shouldQueryMedicationListToDeleteDismissedInteractionsIfNeeded);
       if (v13)
@@ -149,9 +149,9 @@ BOOL __94__HDMedicationPregnancyListConceptObserver__doUserDomainConceptsContain
   return v3;
 }
 
-- (void)userDomainConceptManager:(id)a3 didAddUserDomainConcepts:(id)a4 transaction:(id)a5
+- (void)userDomainConceptManager:(id)manager didAddUserDomainConcepts:(id)concepts transaction:(id)transaction
 {
-  v10 = OUTLINED_FUNCTION_1_2(self, a2, a3);
+  v10 = OUTLINED_FUNCTION_1_2(self, a2, manager);
   v8 = v6;
   v9 = v7;
   if (v5 && [v8 hk_containsObjectPassingTest:&__block_literal_global_4])
@@ -160,31 +160,31 @@ BOOL __94__HDMedicationPregnancyListConceptObserver__doUserDomainConceptsContain
   }
 }
 
-- (void)_deleteNonactiveDismissedInteractionsWithTransaction:(uint64_t)a1
+- (void)_deleteNonactiveDismissedInteractionsWithTransaction:(uint64_t)transaction
 {
-  if (a1)
+  if (transaction)
   {
     v7 = 0;
-    v3 = [(HDMedicationPregnancyListConceptObserver *)a1 _deleteNonactiveDismissedInteractionsWithTransaction:a2 error:&v7];
+    v3 = [(HDMedicationPregnancyListConceptObserver *)transaction _deleteNonactiveDismissedInteractionsWithTransaction:a2 error:&v7];
     v4 = v7;
     v5 = v4;
     if (v3)
     {
-      v6 = 0;
+      hk_isDatabaseAccessibilityError = 0;
     }
 
     else
     {
-      v6 = [v4 hk_isDatabaseAccessibilityError];
+      hk_isDatabaseAccessibilityError = [v4 hk_isDatabaseAccessibilityError];
     }
 
-    atomic_store(v6, (a1 + 16));
+    atomic_store(hk_isDatabaseAccessibilityError, (transaction + 16));
   }
 }
 
-- (void)userDomainConceptManager:(id)a3 didUpdateUserDomainConcepts:(id)a4 transaction:(id)a5
+- (void)userDomainConceptManager:(id)manager didUpdateUserDomainConcepts:(id)concepts transaction:(id)transaction
 {
-  v10 = OUTLINED_FUNCTION_1_2(self, a2, a3);
+  v10 = OUTLINED_FUNCTION_1_2(self, a2, manager);
   v8 = v6;
   v9 = v7;
   if (v5 && [v8 hk_containsObjectPassingTest:&__block_literal_global_4])
@@ -193,9 +193,9 @@ BOOL __94__HDMedicationPregnancyListConceptObserver__doUserDomainConceptsContain
   }
 }
 
-- (void)userDomainConceptManager:(id)a3 didDeleteUserDomainConcepts:(id)a4 transaction:(id)a5
+- (void)userDomainConceptManager:(id)manager didDeleteUserDomainConcepts:(id)concepts transaction:(id)transaction
 {
-  v10 = OUTLINED_FUNCTION_1_2(self, a2, a3);
+  v10 = OUTLINED_FUNCTION_1_2(self, a2, manager);
   v8 = v6;
   v9 = v7;
   if (v5 && [v8 hk_containsObjectPassingTest:&__block_literal_global_4])
@@ -204,11 +204,11 @@ BOOL __94__HDMedicationPregnancyListConceptObserver__doUserDomainConceptsContain
   }
 }
 
-- (uint64_t)_deleteNonactiveDismissedInteractionsWithTransaction:(NSObject *)a3 error:
+- (uint64_t)_deleteNonactiveDismissedInteractionsWithTransaction:(NSObject *)transaction error:
 {
   v32 = *MEMORY[0x277D85DE8];
   v5 = a2;
-  if (a1)
+  if (self)
   {
     v6 = HKSensitiveLogItem();
     v7 = +[HDMedicationPregnancyListConceptObserver _predicateForNonactiveDismissedInteractions];
@@ -232,7 +232,7 @@ LABEL_4:
           _os_log_impl(&dword_25181C000, v11, OS_LOG_TYPE_DEFAULT, "[%{public}@] Deleted %@ dismissed interactions for non-active medications", buf, 0x16u);
         }
 
-        a1 = 1;
+        self = 1;
         goto LABEL_16;
       }
     }
@@ -240,15 +240,15 @@ LABEL_4:
     else
     {
       v14 = MEMORY[0x277D10920];
-      WeakRetained = objc_loadWeakRetained((a1 + 8));
-      v16 = [WeakRetained database];
+      WeakRetained = objc_loadWeakRetained((self + 8));
+      database = [WeakRetained database];
       v27 = 0;
       v25[0] = MEMORY[0x277D85DD0];
       v25[1] = 3221225472;
       v25[2] = __103__HDMedicationPregnancyListConceptObserver__deleteNonactiveDismissedInteractionsWithTransaction_error___block_invoke;
       v25[3] = &unk_2796CD388;
       v26 = v7;
-      v17 = [v14 performWriteTransactionWithHealthDatabase:v16 error:&v27 block:v25];
+      v17 = [v14 performWriteTransactionWithHealthDatabase:database error:&v27 block:v25];
       v10 = v27;
 
       if (v17)
@@ -272,11 +272,11 @@ LABEL_4:
     v11 = v10;
     if (v11)
     {
-      if (a3)
+      if (transaction)
       {
         v19 = v11;
-        a1 = 0;
-        *a3 = v11;
+        self = 0;
+        *transaction = v11;
 LABEL_15:
         v10 = v11;
 LABEL_16:
@@ -287,14 +287,14 @@ LABEL_16:
       _HKLogDroppedError();
     }
 
-    a1 = 0;
+    self = 0;
     goto LABEL_15;
   }
 
 LABEL_17:
 
   v20 = *MEMORY[0x277D85DE8];
-  return a1;
+  return self;
 }
 
 @end

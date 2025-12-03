@@ -1,34 +1,34 @@
 @interface PXTimelineScheduler
 - (PXTimelineScheduler)init;
-- (PXTimelineScheduler)initWithTimelineDataSource:(id)a3;
-- (id)_coalesceRepeatedTimelineEntries:(id)a3;
+- (PXTimelineScheduler)initWithTimelineDataSource:(id)source;
+- (id)_coalesceRepeatedTimelineEntries:(id)entries;
 - (id)_findBestAssetsAndRemoveFromSource;
-- (id)_findBestContentAndRemoveFromSourceAtDate:(id)a3 options:(id)a4;
+- (id)_findBestContentAndRemoveFromSourceAtDate:(id)date options:(id)options;
 - (id)_findBestFeaturedPhotoAndRemoveFromSource;
-- (id)_scheduledTimelineEntriesWithOptions:(id)a3 atDate:(id)a4;
-- (id)_sortedTimelineEntriesForMemoriesAtDate:(id)a3;
-- (id)_timelineAtDate:(id)a3 startOfDayCandidatesIndex:(int64_t)a4 timelineEntryByBestContentInterval:(id)a5 options:(id)a6;
-- (id)_timelineEntriesFromAssetCollections:(id)a3;
-- (id)_timelineEntriesFromAssets:(id)a3;
-- (id)_timelineEntryByBestContentIntervalAtDate:(id)a3 numberOfDays:(int64_t)a4 options:(id)a5;
-- (id)scheduledTimelineEntriesWithOptions:(id)a3;
-- (int64_t)_startOfDayIndexWithOffsetDay:(int64_t)a3 entriesCount:(int64_t)a4 perDayLimit:(int64_t)a5 options:(id)a6;
-- (void)_initTimelineEntriesAtDate:(id)a3 options:(id)a4;
+- (id)_scheduledTimelineEntriesWithOptions:(id)options atDate:(id)date;
+- (id)_sortedTimelineEntriesForMemoriesAtDate:(id)date;
+- (id)_timelineAtDate:(id)date startOfDayCandidatesIndex:(int64_t)index timelineEntryByBestContentInterval:(id)interval options:(id)options;
+- (id)_timelineEntriesFromAssetCollections:(id)collections;
+- (id)_timelineEntriesFromAssets:(id)assets;
+- (id)_timelineEntryByBestContentIntervalAtDate:(id)date numberOfDays:(int64_t)days options:(id)options;
+- (id)scheduledTimelineEntriesWithOptions:(id)options;
+- (int64_t)_startOfDayIndexWithOffsetDay:(int64_t)day entriesCount:(int64_t)count perDayLimit:(int64_t)limit options:(id)options;
+- (void)_initTimelineEntriesAtDate:(id)date options:(id)options;
 @end
 
 @implementation PXTimelineScheduler
 
-- (id)_coalesceRepeatedTimelineEntries:(id)a3
+- (id)_coalesceRepeatedTimelineEntries:(id)entries
 {
   v27 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 firstObject];
+  entriesCopy = entries;
+  firstObject = [entriesCopy firstObject];
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v6 = v3;
+  v6 = entriesCopy;
   v7 = [v6 countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v7)
   {
@@ -45,36 +45,36 @@
         }
 
         v11 = *(*(&v22 + 1) + 8 * v10);
-        v12 = [v4 localIdentifier];
-        v13 = [v11 localIdentifier];
-        v14 = [v12 isEqualToString:v13];
+        localIdentifier = [firstObject localIdentifier];
+        localIdentifier2 = [v11 localIdentifier];
+        v14 = [localIdentifier isEqualToString:localIdentifier2];
 
         if (!v14)
         {
-          [v5 addObject:v4];
-          v17 = v4;
-          v4 = v11;
+          [v5 addObject:firstObject];
+          proactiveCriterion3 = firstObject;
+          firstObject = v11;
           goto LABEL_10;
         }
 
-        v15 = [v11 endTime];
-        [v4 setEndTime:v15];
+        endTime = [v11 endTime];
+        [firstObject setEndTime:endTime];
 
-        v16 = [v4 proactiveCriterion];
-        if (v16)
+        proactiveCriterion = [firstObject proactiveCriterion];
+        if (proactiveCriterion)
         {
-          v17 = v16;
+          proactiveCriterion3 = proactiveCriterion;
 LABEL_10:
 
           goto LABEL_11;
         }
 
-        v18 = [v11 proactiveCriterion];
+        proactiveCriterion2 = [v11 proactiveCriterion];
 
-        if (v18)
+        if (proactiveCriterion2)
         {
-          v17 = [v11 proactiveCriterion];
-          [v4 setProactiveCriterion:v17];
+          proactiveCriterion3 = [v11 proactiveCriterion];
+          [firstObject setProactiveCriterion:proactiveCriterion3];
           goto LABEL_10;
         }
 
@@ -90,42 +90,42 @@ LABEL_11:
     while (v19);
   }
 
-  v20 = [v5 lastObject];
+  lastObject = [v5 lastObject];
 
-  if (v4 != v20)
+  if (firstObject != lastObject)
   {
-    [v5 addObject:v4];
+    [v5 addObject:firstObject];
   }
 
   return v5;
 }
 
-- (id)_timelineAtDate:(id)a3 startOfDayCandidatesIndex:(int64_t)a4 timelineEntryByBestContentInterval:(id)a5 options:(id)a6
+- (id)_timelineAtDate:(id)date startOfDayCandidatesIndex:(int64_t)index timelineEntryByBestContentInterval:(id)interval options:(id)options
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
-  v39 = self;
-  v12 = [(PXTimelineScheduler *)self timelineCandidates];
-  v40 = [v12 count];
+  dateCopy = date;
+  intervalCopy = interval;
+  optionsCopy = options;
+  selfCopy = self;
+  timelineCandidates = [(PXTimelineScheduler *)self timelineCandidates];
+  v40 = [timelineCandidates count];
 
-  v37 = [MEMORY[0x1E695DEE8] currentCalendar];
-  v13 = [v37 startOfDayForDate:v9];
-  v14 = [MEMORY[0x1E695DF00] distantPast];
-  v41 = v10;
-  v15 = [v10 allKeys];
-  v16 = [v15 sortedArrayUsingSelector:sel_compare_];
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+  v13 = [currentCalendar startOfDayForDate:dateCopy];
+  distantPast = [MEMORY[0x1E695DF00] distantPast];
+  v41 = intervalCopy;
+  allKeys = [intervalCopy allKeys];
+  v16 = [allKeys sortedArrayUsingSelector:sel_compare_];
 
   v42 = v16;
   v17 = [v16 objectAtIndexedSubscript:0];
-  v38 = v11;
-  [v11 timelineEntryDuration];
+  v38 = optionsCopy;
+  [optionsCopy timelineEntryDuration];
   v19 = v18;
-  v45 = v9;
-  v20 = [v9 dateByAddingTimeInterval:86400.0];
+  v45 = dateCopy;
+  v20 = [dateCopy dateByAddingTimeInterval:86400.0];
   v43 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v46 = v20;
-  if ([v20 compare:v14] == 1)
+  if ([v20 compare:distantPast] == 1)
   {
     v44 = 0;
     v21 = 0x1E696A000uLL;
@@ -141,8 +141,8 @@ LABEL_11:
       {
         if ([v45 compare:v23] == -1)
         {
-          v34 = [(PXTimelineScheduler *)v39 timelineCandidates];
-          v35 = [v34 objectAtIndex:a4];
+          timelineCandidates2 = [(PXTimelineScheduler *)selfCopy timelineCandidates];
+          v35 = [timelineCandidates2 objectAtIndex:index];
           v29 = [v35 copy];
 
           v22 = v40;
@@ -153,7 +153,7 @@ LABEL_11:
           v29 = 0;
         }
 
-        a4 = (a4 + 1) % v22;
+        index = (index + 1) % v22;
         if (!v29)
         {
           goto LABEL_17;
@@ -162,8 +162,8 @@ LABEL_11:
 
       else
       {
-        v27 = [v17 endDate];
-        v28 = [v23 laterDate:v27];
+        endDate = [v17 endDate];
+        v28 = [v23 laterDate:endDate];
 
         if ([v45 compare:v28] == -1)
         {
@@ -203,86 +203,86 @@ LABEL_11:
       [v29 setEndTime:v23];
       [v43 addObject:v29];
 LABEL_17:
-      v14 = v23;
+      distantPast = v23;
 
-      v13 = v14;
+      v13 = distantPast;
     }
 
-    while ([v46 compare:v14] == 1);
+    while ([v46 compare:distantPast] == 1);
   }
 
   return v43;
 }
 
-- (int64_t)_startOfDayIndexWithOffsetDay:(int64_t)a3 entriesCount:(int64_t)a4 perDayLimit:(int64_t)a5 options:(id)a6
+- (int64_t)_startOfDayIndexWithOffsetDay:(int64_t)day entriesCount:(int64_t)count perDayLimit:(int64_t)limit options:(id)options
 {
-  v9 = a6;
-  v10 = [v9 numberOfTimelines];
+  optionsCopy = options;
+  numberOfTimelines = [optionsCopy numberOfTimelines];
   v11 = 0;
-  if (a4 && a5 && v10)
+  if (count && limit && numberOfTimelines)
   {
-    if (a3)
+    if (day)
     {
-      if (a3 >= 0)
+      if (day >= 0)
       {
-        v12 = a3;
+        dayCopy = day;
       }
 
       else
       {
-        v12 = -a3;
+        dayCopy = -day;
       }
 
-      v13 = a5 % a4;
+      v13 = limit % count;
       do
       {
-        v13 = (v13 + a5) % a4;
-        --v12;
+        v13 = (v13 + limit) % count;
+        --dayCopy;
       }
 
-      while (v12);
-      if (a3 >= 0)
+      while (dayCopy);
+      if (day >= 0)
       {
-        a3 = v13 - a5 % a4;
+        day = v13 - limit % count;
       }
 
       else
       {
-        a3 = a5 % a4 - v13;
+        day = limit % count - v13;
       }
     }
 
-    v11 = (([v9 timelineIndex] * a4 / v10 + a3) % a4 + a4) % a4;
+    v11 = (([optionsCopy timelineIndex] * count / numberOfTimelines + day) % count + count) % count;
   }
 
   return v11;
 }
 
-- (id)_timelineEntryByBestContentIntervalAtDate:(id)a3 numberOfDays:(int64_t)a4 options:(id)a5
+- (id)_timelineEntryByBestContentIntervalAtDate:(id)date numberOfDays:(int64_t)days options:(id)options
 {
   v61 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a5;
-  [v8 bestContentEntryDuration];
+  dateCopy = date;
+  optionsCopy = options;
+  [optionsCopy bestContentEntryDuration];
   v10 = v9;
-  [v8 timelineEntryDuration];
+  [optionsCopy timelineEntryDuration];
   v12 = v11;
   if (fmod(v10, v11) != 0.0)
   {
     PXAssertGetLog();
   }
 
-  v13 = [v8 bestContentStartTimeHours];
-  if ([v13 count])
+  bestContentStartTimeHours = [optionsCopy bestContentStartTimeHours];
+  if ([bestContentStartTimeHours count])
   {
-    v47 = v8;
-    v48 = v7;
+    v47 = optionsCopy;
+    v48 = dateCopy;
     v58 = 0u;
     v59 = 0u;
     v56 = 0u;
     v57 = 0u;
-    v46 = v13;
-    v14 = v13;
+    v46 = bestContentStartTimeHours;
+    v14 = bestContentStartTimeHours;
     v15 = [v14 countByEnumeratingWithState:&v56 objects:v60 count:16];
     if (v15)
     {
@@ -310,8 +310,8 @@ LABEL_17:
       while (v16);
     }
 
-    v20 = [(PXTimelineScheduler *)self bestContent];
-    v21 = [v20 count];
+    bestContent = [(PXTimelineScheduler *)self bestContent];
+    v21 = [bestContent count];
 
     v22 = [v14 count];
     if (v21 >= v22)
@@ -324,11 +324,11 @@ LABEL_17:
       v23 = v21;
     }
 
-    v24 = a4;
-    v25 = v23 * a4;
-    v26 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:v23 * a4];
-    v45 = [MEMORY[0x1E695DEE8] currentCalendar];
-    [v45 startOfDayForDate:v48];
+    daysCopy2 = days;
+    v25 = v23 * days;
+    days = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:v23 * days];
+    currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+    [currentCalendar startOfDayForDate:v48];
     v50 = v49 = v25;
     if (v25)
     {
@@ -338,8 +338,8 @@ LABEL_17:
       do
       {
         v55 = v28;
-        v29 = v28 / v24;
-        v30 = [v14 objectAtIndexedSubscript:{v28 / v24, v44}];
+        v29 = v28 / daysCopy2;
+        v30 = [v14 objectAtIndexedSubscript:{v28 / daysCopy2, v44}];
         v31 = [v30 integerValue] * 3600.0;
         if (fmod(v31, v12) != 0.0)
         {
@@ -349,25 +349,25 @@ LABEL_17:
         v54 = v30;
         v32 = [v50 dateByAddingTimeInterval:v31];
         v33 = [objc_alloc(MEMORY[0x1E696AB80]) initWithStartDate:v32 duration:v10];
-        v34 = [(PXTimelineScheduler *)self bestContent];
-        [v34 objectAtIndexedSubscript:v29];
+        bestContent2 = [(PXTimelineScheduler *)self bestContent];
+        [bestContent2 objectAtIndexedSubscript:v29];
         v36 = v35 = self;
         v53 = v33;
-        [v26 setObject:v36 forKeyedSubscript:v33];
+        [days setObject:v36 forKeyedSubscript:v33];
 
         v37 = v32;
         v52 = v37;
-        v38 = a4 - 1;
-        if (v24 >= 2)
+        v38 = days - 1;
+        if (daysCopy2 >= 2)
         {
           do
           {
             v39 = [v37 dateByAddingTimeInterval:86400.0];
 
             v40 = [objc_alloc(MEMORY[0x1E696AB80]) initWithStartDate:v39 duration:v10];
-            v41 = [(PXTimelineScheduler *)v35 bestContent];
-            v42 = [v41 objectAtIndexedSubscript:v29];
-            [v26 setObject:v42 forKeyedSubscript:v40];
+            bestContent3 = [(PXTimelineScheduler *)v35 bestContent];
+            v42 = [bestContent3 objectAtIndexedSubscript:v29];
+            [days setObject:v42 forKeyedSubscript:v40];
 
             v37 = v39;
             --v38;
@@ -376,42 +376,42 @@ LABEL_17:
           while (v38);
         }
 
-        v24 = a4;
-        v28 = v55 + a4;
+        daysCopy2 = days;
+        v28 = v55 + days;
         self = v35;
       }
 
-      while (v55 + a4 < v49);
+      while (v55 + days < v49);
     }
 
-    v8 = v47;
-    v7 = v48;
-    v13 = v46;
+    optionsCopy = v47;
+    dateCopy = v48;
+    bestContentStartTimeHours = v46;
   }
 
   else
   {
-    if ([v13 count])
+    if ([bestContentStartTimeHours count])
     {
       PXAssertGetLog();
     }
 
-    v26 = MEMORY[0x1E695E0F8];
+    days = MEMORY[0x1E695E0F8];
   }
 
-  return v26;
+  return days;
 }
 
-- (id)_timelineEntriesFromAssetCollections:(id)a3
+- (id)_timelineEntriesFromAssetCollections:(id)collections
 {
   v39 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  collectionsCopy = collections;
   v30 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  obj = v3;
+  obj = collectionsCopy;
   v4 = [obj countByEnumeratingWithState:&v34 objects:v38 count:16];
   if (v4)
   {
@@ -435,24 +435,24 @@ LABEL_17:
         {
           v10 = v6;
           v11 = v7;
-          v12 = [(PXTimelineScheduler *)self timelineDataSource];
-          v13 = [v12 keyAssetByFeaturedPhotoLocalIdentifier];
-          v14 = [v9 localIdentifier];
-          v15 = [v13 objectForKeyedSubscript:v14];
+          timelineDataSource = [(PXTimelineScheduler *)self timelineDataSource];
+          keyAssetByFeaturedPhotoLocalIdentifier = [timelineDataSource keyAssetByFeaturedPhotoLocalIdentifier];
+          localIdentifier = [v9 localIdentifier];
+          v15 = [keyAssetByFeaturedPhotoLocalIdentifier objectForKeyedSubscript:localIdentifier];
 
-          v16 = [(PXTimelineScheduler *)self timelineDataSource];
-          v17 = [v16 suggestedCropByFeaturedPhotoLocalIdentifier];
-          v18 = [v9 localIdentifier];
-          v19 = [v17 objectForKeyedSubscript:v18];
+          timelineDataSource2 = [(PXTimelineScheduler *)self timelineDataSource];
+          suggestedCropByFeaturedPhotoLocalIdentifier = [timelineDataSource2 suggestedCropByFeaturedPhotoLocalIdentifier];
+          localIdentifier2 = [v9 localIdentifier];
+          v19 = [suggestedCropByFeaturedPhotoLocalIdentifier objectForKeyedSubscript:localIdentifier2];
 
-          v20 = [(PXTimelineScheduler *)self timelineDataSource];
-          v21 = [v20 sourceType];
+          timelineDataSource3 = [(PXTimelineScheduler *)self timelineDataSource];
+          sourceType = [timelineDataSource3 sourceType];
           v22 = [PXTimelineEntry alloc];
           v23 = v22;
-          if (v21 == 1)
+          if (sourceType == 1)
           {
-            v24 = [v20 sourceIdentifier];
-            v25 = [(PXTimelineEntry *)v23 initWithAlbumFeaturedPhoto:v9 localAlbumIdentifier:v24 andFeaturedPhotoKeyAsset:v15 suggestedCrop:v19];
+            sourceIdentifier = [timelineDataSource3 sourceIdentifier];
+            v25 = [(PXTimelineEntry *)v23 initWithAlbumFeaturedPhoto:v9 localAlbumIdentifier:sourceIdentifier andFeaturedPhotoKeyAsset:v15 suggestedCrop:v19];
           }
 
           else
@@ -473,10 +473,10 @@ LABEL_17:
             goto LABEL_15;
           }
 
-          v26 = [(PXTimelineScheduler *)self timelineDataSource];
-          v27 = [v26 keyAssetByMemoryLocalIdentifier];
-          v28 = [v9 localIdentifier];
-          v15 = [v27 objectForKeyedSubscript:v28];
+          timelineDataSource4 = [(PXTimelineScheduler *)self timelineDataSource];
+          keyAssetByMemoryLocalIdentifier = [timelineDataSource4 keyAssetByMemoryLocalIdentifier];
+          localIdentifier3 = [v9 localIdentifier];
+          v15 = [keyAssetByMemoryLocalIdentifier objectForKeyedSubscript:localIdentifier3];
 
           v25 = [[PXTimelineEntry alloc] initWithMemory:v9 andMemoryKeyAsset:v15];
         }
@@ -500,16 +500,16 @@ LABEL_15:
   return v30;
 }
 
-- (id)_timelineEntriesFromAssets:(id)a3
+- (id)_timelineEntriesFromAssets:(id)assets
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  assetsCopy = assets;
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = v3;
+  v5 = assetsCopy;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
@@ -542,22 +542,22 @@ LABEL_15:
   return v4;
 }
 
-- (id)_sortedTimelineEntriesForMemoriesAtDate:(id)a3
+- (id)_sortedTimelineEntriesForMemoriesAtDate:(id)date
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PXTimelineScheduler *)self timelineDataSource];
-  v6 = [v5 memories];
+  dateCopy = date;
+  timelineDataSource = [(PXTimelineScheduler *)self timelineDataSource];
+  memories = [timelineDataSource memories];
 
   v29[0] = MEMORY[0x1E69E9820];
   v29[1] = 3221225472;
   v29[2] = __63__PXTimelineScheduler__sortedTimelineEntriesForMemoriesAtDate___block_invoke;
   v29[3] = &unk_1E773B910;
-  v21 = v4;
+  v21 = dateCopy;
   v30 = v21;
-  v7 = [v6 sortedArrayUsingComparator:v29];
-  v22 = v6;
-  v24 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v6, "count")}];
+  v7 = [memories sortedArrayUsingComparator:v29];
+  v22 = memories;
+  v24 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(memories, "count")}];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
@@ -578,10 +578,10 @@ LABEL_15:
         }
 
         v12 = *(*(&v25 + 1) + 8 * i);
-        v13 = [(PXTimelineScheduler *)self timelineDataSource];
-        v14 = [v13 keyAssetByMemoryLocalIdentifier];
-        v15 = [v12 localIdentifier];
-        v16 = [v14 objectForKeyedSubscript:v15];
+        timelineDataSource2 = [(PXTimelineScheduler *)self timelineDataSource];
+        keyAssetByMemoryLocalIdentifier = [timelineDataSource2 keyAssetByMemoryLocalIdentifier];
+        localIdentifier = [v12 localIdentifier];
+        v16 = [keyAssetByMemoryLocalIdentifier objectForKeyedSubscript:localIdentifier];
 
         v17 = [[PXTimelineEntry alloc] initWithMemory:v12 andMemoryKeyAsset:v16];
         if (v17)
@@ -598,8 +598,8 @@ LABEL_15:
 
   if ([v24 count] == 1)
   {
-    v18 = [v24 firstObject];
-    v19 = [v18 copy];
+    firstObject = [v24 firstObject];
+    v19 = [firstObject copy];
     [v24 addObject:v19];
   }
 
@@ -636,12 +636,12 @@ uint64_t __63__PXTimelineScheduler__sortedTimelineEntriesForMemoriesAtDate___blo
 - (id)_findBestAssetsAndRemoveFromSource
 {
   v6[1] = *MEMORY[0x1E69E9840];
-  v2 = [(PXTimelineScheduler *)self photoAssetsTimelineEntries];
-  v3 = [v2 firstObject];
+  photoAssetsTimelineEntries = [(PXTimelineScheduler *)self photoAssetsTimelineEntries];
+  firstObject = [photoAssetsTimelineEntries firstObject];
 
-  if (v3)
+  if (firstObject)
   {
-    v6[0] = v3;
+    v6[0] = firstObject;
     v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:1];
   }
 
@@ -656,26 +656,26 @@ uint64_t __63__PXTimelineScheduler__sortedTimelineEntriesForMemoriesAtDate___blo
 - (id)_findBestFeaturedPhotoAndRemoveFromSource
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v3 = [(PXTimelineScheduler *)self featuredPhotoTimelineEntries];
-  v4 = [v3 firstObject];
+  featuredPhotoTimelineEntries = [(PXTimelineScheduler *)self featuredPhotoTimelineEntries];
+  firstObject = [featuredPhotoTimelineEntries firstObject];
 
-  if (v4)
+  if (firstObject)
   {
-    v5 = [(PXTimelineScheduler *)self memoryTimelineEntries];
-    v6 = [v5 count];
-    v7 = [(PXTimelineScheduler *)self featuredPhotoTimelineEntries];
-    v8 = [v7 count] + v6;
+    memoryTimelineEntries = [(PXTimelineScheduler *)self memoryTimelineEntries];
+    v6 = [memoryTimelineEntries count];
+    featuredPhotoTimelineEntries2 = [(PXTimelineScheduler *)self featuredPhotoTimelineEntries];
+    v8 = [featuredPhotoTimelineEntries2 count] + v6;
 
     if (v8 >= 0xB)
     {
-      v9 = [(PXTimelineScheduler *)self featuredPhotoTimelineEntries];
-      v10 = [v9 mutableCopy];
+      featuredPhotoTimelineEntries3 = [(PXTimelineScheduler *)self featuredPhotoTimelineEntries];
+      v10 = [featuredPhotoTimelineEntries3 mutableCopy];
 
       [v10 removeObjectAtIndex:0];
       [(PXTimelineScheduler *)self setFeaturedPhotoTimelineEntries:v10];
     }
 
-    v13[0] = v4;
+    v13[0] = firstObject;
     v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:1];
   }
 
@@ -687,20 +687,20 @@ uint64_t __63__PXTimelineScheduler__sortedTimelineEntriesForMemoriesAtDate___blo
   return v11;
 }
 
-- (id)_findBestContentAndRemoveFromSourceAtDate:(id)a3 options:(id)a4
+- (id)_findBestContentAndRemoveFromSourceAtDate:(id)date options:(id)options
 {
   v47 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PXTimelineScheduler *)self timelineDataSource];
-  v9 = [v8 memories];
-  v10 = [v9 count];
+  dateCopy = date;
+  optionsCopy = options;
+  timelineDataSource = [(PXTimelineScheduler *)self timelineDataSource];
+  memories = [timelineDataSource memories];
+  v10 = [memories count];
 
   if (v10)
   {
-    v11 = [(PXTimelineScheduler *)self _sortedTimelineEntriesForMemoriesAtDate:v6];
-    v12 = [v7 bestContentStartTimeHours];
-    v13 = [v12 count];
+    v11 = [(PXTimelineScheduler *)self _sortedTimelineEntriesForMemoriesAtDate:dateCopy];
+    bestContentStartTimeHours = [optionsCopy bestContentStartTimeHours];
+    v13 = [bestContentStartTimeHours count];
 
     v14 = [v11 count];
     if (v13 >= v14)
@@ -716,12 +716,12 @@ uint64_t __63__PXTimelineScheduler__sortedTimelineEntriesForMemoriesAtDate___blo
     v16 = [v11 subarrayWithRange:{0, v15}];
     v17 = [v16 mutableCopy];
 
-    v18 = [v7 timelineIndex];
-    v19 = v18 % [v17 count];
+    timelineIndex = [optionsCopy timelineIndex];
+    v19 = timelineIndex % [v17 count];
     v20 = PLMemoriesGetLog();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
     {
-      v21 = +[PXTimelineSize sizeDescriptionForSizeClass:](PXTimelineSize, "sizeDescriptionForSizeClass:", [v7 timelineForSize]);
+      v21 = +[PXTimelineSize sizeDescriptionForSizeClass:](PXTimelineSize, "sizeDescriptionForSizeClass:", [optionsCopy timelineForSize]);
       *buf = 138412546;
       v44 = v21;
       v45 = 2048;
@@ -732,16 +732,16 @@ uint64_t __63__PXTimelineScheduler__sortedTimelineEntriesForMemoriesAtDate___blo
     while (v19)
     {
       --v19;
-      v22 = [v17 firstObject];
-      [v17 addObject:v22];
+      firstObject = [v17 firstObject];
+      [v17 addObject:firstObject];
 
       [v17 removeObjectAtIndex:0];
     }
 
-    v23 = [(PXTimelineScheduler *)self memoryTimelineEntries];
-    v24 = [v23 count];
-    v25 = [(PXTimelineScheduler *)self featuredPhotoTimelineEntries];
-    v26 = [v25 count] + v24;
+    memoryTimelineEntries = [(PXTimelineScheduler *)self memoryTimelineEntries];
+    v24 = [memoryTimelineEntries count];
+    featuredPhotoTimelineEntries = [(PXTimelineScheduler *)self featuredPhotoTimelineEntries];
+    v26 = [featuredPhotoTimelineEntries count] + v24;
 
     if (v26 < 0xB)
     {
@@ -749,8 +749,8 @@ uint64_t __63__PXTimelineScheduler__sortedTimelineEntriesForMemoriesAtDate___blo
       v41 = 0u;
       v38 = 0u;
       v39 = 0u;
-      v28 = [(PXTimelineScheduler *)self memoryTimelineEntries];
-      v32 = [v28 countByEnumeratingWithState:&v38 objects:v42 count:16];
+      memoryTimelineEntries2 = [(PXTimelineScheduler *)self memoryTimelineEntries];
+      v32 = [memoryTimelineEntries2 countByEnumeratingWithState:&v38 objects:v42 count:16];
       if (v32)
       {
         v33 = v32;
@@ -761,7 +761,7 @@ uint64_t __63__PXTimelineScheduler__sortedTimelineEntriesForMemoriesAtDate___blo
           {
             if (*v39 != v34)
             {
-              objc_enumerationMutation(v28);
+              objc_enumerationMutation(memoryTimelineEntries2);
             }
 
             v36 = *(*(&v38 + 1) + 8 * i);
@@ -771,7 +771,7 @@ uint64_t __63__PXTimelineScheduler__sortedTimelineEntriesForMemoriesAtDate___blo
             }
           }
 
-          v33 = [v28 countByEnumeratingWithState:&v38 objects:v42 count:16];
+          v33 = [memoryTimelineEntries2 countByEnumeratingWithState:&v38 objects:v42 count:16];
         }
 
         while (v33);
@@ -780,19 +780,19 @@ uint64_t __63__PXTimelineScheduler__sortedTimelineEntriesForMemoriesAtDate___blo
 
     else
     {
-      v27 = [(PXTimelineScheduler *)self memoryTimelineEntries];
-      v28 = [v27 mutableCopy];
+      memoryTimelineEntries3 = [(PXTimelineScheduler *)self memoryTimelineEntries];
+      memoryTimelineEntries2 = [memoryTimelineEntries3 mutableCopy];
 
-      [v28 removeObjectsInArray:v17];
-      [(PXTimelineScheduler *)self setMemoryTimelineEntries:v28];
+      [memoryTimelineEntries2 removeObjectsInArray:v17];
+      [(PXTimelineScheduler *)self setMemoryTimelineEntries:memoryTimelineEntries2];
     }
   }
 
   else
   {
-    v29 = [(PXTimelineScheduler *)self timelineDataSource];
-    v30 = [v29 assets];
-    v31 = [v30 count];
+    timelineDataSource2 = [(PXTimelineScheduler *)self timelineDataSource];
+    assets = [timelineDataSource2 assets];
+    v31 = [assets count];
 
     if (v31)
     {
@@ -809,11 +809,11 @@ uint64_t __63__PXTimelineScheduler__sortedTimelineEntriesForMemoriesAtDate___blo
   return v17;
 }
 
-- (id)_scheduledTimelineEntriesWithOptions:(id)a3 atDate:(id)a4
+- (id)_scheduledTimelineEntriesWithOptions:(id)options atDate:(id)date
 {
   v63 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  optionsCopy = options;
+  dateCopy = date;
   v8 = PLTimelineGetLog();
   v9 = os_signpost_id_make_with_pointer(v8, self);
   if (v9 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
@@ -826,52 +826,52 @@ uint64_t __63__PXTimelineScheduler__sortedTimelineEntriesForMemoriesAtDate___blo
     }
   }
 
-  v11 = v7;
-  [(PXTimelineScheduler *)self _initTimelineEntriesAtDate:v7 options:v6];
-  v12 = [(PXTimelineScheduler *)self timelineCandidates];
-  v13 = [v12 count];
+  v11 = dateCopy;
+  [(PXTimelineScheduler *)self _initTimelineEntriesAtDate:dateCopy options:optionsCopy];
+  timelineCandidates = [(PXTimelineScheduler *)self timelineCandidates];
+  v13 = [timelineCandidates count];
 
   if (v13)
   {
     v14 = v13;
-    v15 = [(PXTimelineScheduler *)self timelineDataSource];
-    v16 = [v15 memories];
-    v17 = [v16 firstObject];
-    v18 = [v17 creationDate];
-    v19 = v18;
-    v56 = v15;
-    if (v18)
+    timelineDataSource = [(PXTimelineScheduler *)self timelineDataSource];
+    memories = [timelineDataSource memories];
+    firstObject = [memories firstObject];
+    creationDate = [firstObject creationDate];
+    v19 = creationDate;
+    v56 = timelineDataSource;
+    if (creationDate)
     {
-      v20 = v18;
+      creationDate3 = creationDate;
     }
 
     else
     {
-      v54 = [v15 featuredPhotos];
-      v27 = [v54 firstObject];
-      v28 = [v27 creationDate];
-      v29 = v28;
-      if (v28)
+      featuredPhotos = [timelineDataSource featuredPhotos];
+      firstObject2 = [featuredPhotos firstObject];
+      creationDate2 = [firstObject2 creationDate];
+      v29 = creationDate2;
+      if (creationDate2)
       {
-        v20 = v28;
+        creationDate3 = creationDate2;
       }
 
       else
       {
-        v52 = [v15 assets];
-        v50 = [v52 firstObject];
-        v20 = [v50 creationDate];
+        assets = [timelineDataSource assets];
+        firstObject3 = [assets firstObject];
+        creationDate3 = [firstObject3 creationDate];
       }
 
-      v11 = v7;
+      v11 = dateCopy;
     }
 
-    v30 = [MEMORY[0x1E695DEE8] currentCalendar];
-    v55 = v20;
-    v31 = [v30 startOfDayForDate:v20];
-    v51 = [v30 startOfDayForDate:v11];
+    currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+    v55 = creationDate3;
+    v31 = [currentCalendar startOfDayForDate:creationDate3];
+    v51 = [currentCalendar startOfDayForDate:v11];
     v53 = v31;
-    v32 = [v30 components:16 fromDate:v31 toDate:? options:?];
+    v32 = [currentCalendar components:16 fromDate:v31 toDate:? options:?];
     v33 = [v32 day];
 
     v34 = PLMemoriesGetLog();
@@ -883,21 +883,21 @@ uint64_t __63__PXTimelineScheduler__sortedTimelineEntriesForMemoriesAtDate___blo
       _os_log_impl(&dword_1A3C1C000, v34, OS_LOG_TYPE_DEBUG, "Timeline - day difference: %ld", buf, 0xCu);
     }
 
-    v36 = [(PXTimelineScheduler *)self _timelineEntryByBestContentIntervalAtDate:v11 numberOfDays:2 options:v6];
-    [v6 bestContentEntryDuration];
+    v36 = [(PXTimelineScheduler *)self _timelineEntryByBestContentIntervalAtDate:v11 numberOfDays:2 options:optionsCopy];
+    [optionsCopy bestContentEntryDuration];
     v38 = v37 * [v36 count] * -0.5 + 86400.0;
-    [v6 timelineEntryDuration];
+    [optionsCopy timelineEntryDuration];
     if (fmod(v38, v39) != 0.0)
     {
       PXAssertGetLog();
     }
 
-    [v6 timelineEntryDuration];
-    v41 = [(PXTimelineScheduler *)self _startOfDayIndexWithOffsetDay:v33 entriesCount:v35 perDayLimit:(v38 / v40) options:v6];
+    [optionsCopy timelineEntryDuration];
+    v41 = [(PXTimelineScheduler *)self _startOfDayIndexWithOffsetDay:v33 entriesCount:v35 perDayLimit:(v38 / v40) options:optionsCopy];
     v42 = PLMemoriesGetLog();
     if (os_log_type_enabled(v42, OS_LOG_TYPE_DEBUG))
     {
-      v43 = +[PXTimelineSize sizeDescriptionForSizeClass:](PXTimelineSize, "sizeDescriptionForSizeClass:", [v6 timelineForSize]);
+      v43 = +[PXTimelineSize sizeDescriptionForSizeClass:](PXTimelineSize, "sizeDescriptionForSizeClass:", [optionsCopy timelineForSize]);
       *buf = 138412802;
       v58 = v43;
       v59 = 2048;
@@ -907,10 +907,10 @@ uint64_t __63__PXTimelineScheduler__sortedTimelineEntriesForMemoriesAtDate___blo
       _os_log_impl(&dword_1A3C1C000, v42, OS_LOG_TYPE_DEBUG, "Scheduler start of day index for [%@]: %zd, candidates count: %tu", buf, 0x20u);
     }
 
-    v44 = [(PXTimelineScheduler *)self _timelineAtDate:v11 startOfDayCandidatesIndex:v41 timelineEntryByBestContentInterval:v36 options:v6];
+    v44 = [(PXTimelineScheduler *)self _timelineAtDate:v11 startOfDayCandidatesIndex:v41 timelineEntryByBestContentInterval:v36 options:optionsCopy];
     v25 = [(PXTimelineScheduler *)self _coalesceRepeatedTimelineEntries:v44];
-    v45 = [v25 firstObject];
-    [v45 setStartTime:v11];
+    firstObject4 = [v25 firstObject];
+    [firstObject4 setStartTime:v11];
 
     v46 = PLTimelineGetLog();
     v47 = os_signpost_id_make_with_pointer(v46, self);
@@ -956,41 +956,41 @@ uint64_t __63__PXTimelineScheduler__sortedTimelineEntriesForMemoriesAtDate___blo
   return v25;
 }
 
-- (void)_initTimelineEntriesAtDate:(id)a3 options:(id)a4
+- (void)_initTimelineEntriesAtDate:(id)date options:(id)options
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PXTimelineScheduler *)self timelineDataSource];
-  v9 = [v8 memories];
-  v10 = [(PXTimelineScheduler *)self _timelineEntriesFromAssetCollections:v9];
+  optionsCopy = options;
+  dateCopy = date;
+  timelineDataSource = [(PXTimelineScheduler *)self timelineDataSource];
+  memories = [timelineDataSource memories];
+  v10 = [(PXTimelineScheduler *)self _timelineEntriesFromAssetCollections:memories];
   [(PXTimelineScheduler *)self setMemoryTimelineEntries:v10];
 
-  v11 = [v8 featuredPhotos];
-  v12 = [(PXTimelineScheduler *)self _timelineEntriesFromAssetCollections:v11];
+  featuredPhotos = [timelineDataSource featuredPhotos];
+  v12 = [(PXTimelineScheduler *)self _timelineEntriesFromAssetCollections:featuredPhotos];
   [(PXTimelineScheduler *)self setFeaturedPhotoTimelineEntries:v12];
 
-  v13 = [v8 assets];
-  v14 = [(PXTimelineScheduler *)self _timelineEntriesFromAssets:v13];
+  assets = [timelineDataSource assets];
+  v14 = [(PXTimelineScheduler *)self _timelineEntriesFromAssets:assets];
   [(PXTimelineScheduler *)self setPhotoAssetsTimelineEntries:v14];
 
-  v15 = [(PXTimelineScheduler *)self _findBestContentAndRemoveFromSourceAtDate:v7 options:v6];
+  v15 = [(PXTimelineScheduler *)self _findBestContentAndRemoveFromSourceAtDate:dateCopy options:optionsCopy];
 
   [(PXTimelineScheduler *)self setBestContent:v15];
   v16 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v17 = [(PXTimelineScheduler *)self featuredPhotoTimelineEntries];
-  [v16 addObjectsFromArray:v17];
+  featuredPhotoTimelineEntries = [(PXTimelineScheduler *)self featuredPhotoTimelineEntries];
+  [v16 addObjectsFromArray:featuredPhotoTimelineEntries];
 
-  v18 = [(PXTimelineScheduler *)self memoryTimelineEntries];
-  [v16 addObjectsFromArray:v18];
+  memoryTimelineEntries = [(PXTimelineScheduler *)self memoryTimelineEntries];
+  [v16 addObjectsFromArray:memoryTimelineEntries];
 
-  v19 = [(PXTimelineScheduler *)self photoAssetsTimelineEntries];
-  [v16 addObjectsFromArray:v19];
+  photoAssetsTimelineEntries = [(PXTimelineScheduler *)self photoAssetsTimelineEntries];
+  [v16 addObjectsFromArray:photoAssetsTimelineEntries];
 
   [(PXTimelineScheduler *)self setTimelineCandidates:v16];
   if ([v16 count])
   {
-    v20 = [(PXTimelineScheduler *)self bestContent];
-    v21 = [v20 count];
+    bestContent = [(PXTimelineScheduler *)self bestContent];
+    v21 = [bestContent count];
 
     if (!v21)
     {
@@ -999,26 +999,26 @@ uint64_t __63__PXTimelineScheduler__sortedTimelineEntriesForMemoriesAtDate___blo
   }
 }
 
-- (id)scheduledTimelineEntriesWithOptions:(id)a3
+- (id)scheduledTimelineEntriesWithOptions:(id)options
 {
   v4 = MEMORY[0x1E695DF00];
-  v5 = a3;
-  v6 = [v4 date];
-  v7 = [(PXTimelineScheduler *)self _scheduledTimelineEntriesWithOptions:v5 atDate:v6];
+  optionsCopy = options;
+  date = [v4 date];
+  v7 = [(PXTimelineScheduler *)self _scheduledTimelineEntriesWithOptions:optionsCopy atDate:date];
 
   return v7;
 }
 
-- (PXTimelineScheduler)initWithTimelineDataSource:(id)a3
+- (PXTimelineScheduler)initWithTimelineDataSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   v8.receiver = self;
   v8.super_class = PXTimelineScheduler;
   v5 = [(PXTimelineScheduler *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(PXTimelineScheduler *)v5 setTimelineDataSource:v4];
+    [(PXTimelineScheduler *)v5 setTimelineDataSource:sourceCopy];
   }
 
   return v6;
@@ -1026,8 +1026,8 @@ uint64_t __63__PXTimelineScheduler__sortedTimelineEntriesForMemoriesAtDate___blo
 
 - (PXTimelineScheduler)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXTimelineScheduler.m" lineNumber:42 description:{@"%s is not available as initializer", "-[PXTimelineScheduler init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXTimelineScheduler.m" lineNumber:42 description:{@"%s is not available as initializer", "-[PXTimelineScheduler init]"}];
 
   abort();
 }

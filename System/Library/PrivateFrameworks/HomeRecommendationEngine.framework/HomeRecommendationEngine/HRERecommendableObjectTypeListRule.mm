@@ -1,45 +1,45 @@
 @interface HRERecommendableObjectTypeListRule
-+ (id)ruleRequiringOneOfTypes:(id)a3;
-- (BOOL)passesWithHomeObjects:(id)a3;
-- (HRERecommendableObjectTypeListRule)initWithRequiredTypeGroup:(id)a3;
++ (id)ruleRequiringOneOfTypes:(id)types;
+- (BOOL)passesWithHomeObjects:(id)objects;
+- (HRERecommendableObjectTypeListRule)initWithRequiredTypeGroup:(id)group;
 @end
 
 @implementation HRERecommendableObjectTypeListRule
 
-- (HRERecommendableObjectTypeListRule)initWithRequiredTypeGroup:(id)a3
+- (HRERecommendableObjectTypeListRule)initWithRequiredTypeGroup:(id)group
 {
-  v4 = a3;
+  groupCopy = group;
   v9.receiver = self;
   v9.super_class = HRERecommendableObjectTypeListRule;
-  v5 = [(HRERule *)&v9 _init];
-  if (v5)
+  _init = [(HRERule *)&v9 _init];
+  if (_init)
   {
-    v6 = [v4 copy];
-    typesSatisfyingRequirement = v5->_typesSatisfyingRequirement;
-    v5->_typesSatisfyingRequirement = v6;
+    v6 = [groupCopy copy];
+    typesSatisfyingRequirement = _init->_typesSatisfyingRequirement;
+    _init->_typesSatisfyingRequirement = v6;
   }
 
-  return v5;
+  return _init;
 }
 
-+ (id)ruleRequiringOneOfTypes:(id)a3
++ (id)ruleRequiringOneOfTypes:(id)types
 {
-  v3 = a3;
-  v4 = [[HRERecommendableObjectTypeListRule alloc] initWithRequiredTypeGroup:v3];
+  typesCopy = types;
+  v4 = [[HRERecommendableObjectTypeListRule alloc] initWithRequiredTypeGroup:typesCopy];
 
   return v4;
 }
 
-- (BOOL)passesWithHomeObjects:(id)a3
+- (BOOL)passesWithHomeObjects:(id)objects
 {
-  v4 = a3;
+  objectsCopy = objects;
   v5 = objc_opt_class();
-  v6 = [(HRERecommendableObjectTypeListRule *)self typesSatisfyingRequirement];
-  v7 = [v5 _types:v6 notMatchedByObjects:v4];
+  typesSatisfyingRequirement = [(HRERecommendableObjectTypeListRule *)self typesSatisfyingRequirement];
+  v7 = [v5 _types:typesSatisfyingRequirement notMatchedByObjects:objectsCopy];
 
   v8 = [v7 count];
-  v9 = [(HRERecommendableObjectTypeListRule *)self typesSatisfyingRequirement];
-  LOBYTE(v8) = v8 < [v9 count];
+  typesSatisfyingRequirement2 = [(HRERecommendableObjectTypeListRule *)self typesSatisfyingRequirement];
+  LOBYTE(v8) = v8 < [typesSatisfyingRequirement2 count];
 
   return v8;
 }

@@ -1,6 +1,6 @@
 @interface INReportIncidentIntent
 - (CLPlacemark)userLocation;
-- (INReportIncidentIntent)initWithIncidentType:(id)a3 startTime:(id)a4 isClear:(id)a5 userLocation:(id)a6 additionalDetails:(id)a7;
+- (INReportIncidentIntent)initWithIncidentType:(id)type startTime:(id)time isClear:(id)clear userLocation:(id)location additionalDetails:(id)details;
 - (NSNumber)isClear;
 - (NSNumber)startTime;
 - (NSString)additionalDetails;
@@ -8,29 +8,29 @@
 - (id)_dictionaryRepresentation;
 - (id)_metadata;
 - (id)_typedBackingStore;
-- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)a3 containingAppBundleId:(id)a4;
-- (void)_setMetadata:(id)a3;
-- (void)setAdditionalDetails:(id)a3;
-- (void)setIncidentType:(id)a3;
-- (void)setIsClear:(id)a3;
-- (void)setStartTime:(id)a3;
-- (void)setUserLocation:(id)a3;
+- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)options containingAppBundleId:(id)id;
+- (void)_setMetadata:(id)metadata;
+- (void)setAdditionalDetails:(id)details;
+- (void)setIncidentType:(id)type;
+- (void)setIsClear:(id)clear;
+- (void)setStartTime:(id)time;
+- (void)setUserLocation:(id)location;
 @end
 
 @implementation INReportIncidentIntent
 
-- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)a3 containingAppBundleId:(id)a4
+- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)options containingAppBundleId:(id)id
 {
-  v6 = a4;
-  v7 = [(INReportIncidentIntent *)self _typedBackingStore];
-  v13 = v6;
-  v8 = [v7 copy];
-  v9 = [v7 userLocation];
-  v10 = INIntentSlotValueRedactedLocationFromLocation(v9, a3, v13);
+  idCopy = id;
+  _typedBackingStore = [(INReportIncidentIntent *)self _typedBackingStore];
+  v13 = idCopy;
+  v8 = [_typedBackingStore copy];
+  userLocation = [_typedBackingStore userLocation];
+  v10 = INIntentSlotValueRedactedLocationFromLocation(userLocation, options, v13);
   [v8 setUserLocation:v10];
 
-  v11 = [v7 additionalDetails];
-  v12 = INIntentSlotValueRedactedStringFromString(v11, a3, v13);
+  additionalDetails = [_typedBackingStore additionalDetails];
+  v12 = INIntentSlotValueRedactedStringFromString(additionalDetails, options, v13);
 
   [v8 setAdditionalDetails:v12];
   [(INIntent *)self setBackingStore:v8];
@@ -40,64 +40,64 @@
 {
   v18[5] = *MEMORY[0x1E69E9840];
   v17[0] = @"incidentType";
-  v3 = [(INReportIncidentIntent *)self incidentType];
-  v4 = v3;
-  if (!v3)
+  incidentType = [(INReportIncidentIntent *)self incidentType];
+  v4 = incidentType;
+  if (!incidentType)
   {
-    v3 = [MEMORY[0x1E695DFB0] null];
+    incidentType = [MEMORY[0x1E695DFB0] null];
   }
 
-  v18[0] = v3;
+  v18[0] = incidentType;
   v17[1] = @"startTime";
-  v5 = [(INReportIncidentIntent *)self startTime];
-  v6 = v5;
-  if (!v5)
+  startTime = [(INReportIncidentIntent *)self startTime];
+  null = startTime;
+  if (!startTime)
   {
-    v6 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v18[1] = v6;
+  v18[1] = null;
   v17[2] = @"isClear";
-  v7 = [(INReportIncidentIntent *)self isClear];
-  v8 = v7;
-  if (!v7)
+  isClear = [(INReportIncidentIntent *)self isClear];
+  null2 = isClear;
+  if (!isClear)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v18[2] = v8;
+  v18[2] = null2;
   v17[3] = @"userLocation";
-  v9 = [(INReportIncidentIntent *)self userLocation];
-  v10 = v9;
-  if (!v9)
+  userLocation = [(INReportIncidentIntent *)self userLocation];
+  null3 = userLocation;
+  if (!userLocation)
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v18[3] = v10;
+  v18[3] = null3;
   v17[4] = @"additionalDetails";
-  v11 = [(INReportIncidentIntent *)self additionalDetails];
-  v12 = v11;
-  if (!v11)
+  additionalDetails = [(INReportIncidentIntent *)self additionalDetails];
+  null4 = additionalDetails;
+  if (!additionalDetails)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v18[4] = v12;
+  v18[4] = null4;
   v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:v17 count:5];
-  if (!v11)
+  if (!additionalDetails)
   {
   }
 
-  if (!v9)
+  if (!userLocation)
   {
   }
 
-  if (!v7)
+  if (!isClear)
   {
   }
 
-  if (!v5)
+  if (!startTime)
   {
   }
 
@@ -110,65 +110,65 @@
   return v13;
 }
 
-- (void)setAdditionalDetails:(id)a3
+- (void)setAdditionalDetails:(id)details
 {
-  v4 = a3;
-  v6 = [(INReportIncidentIntent *)self _typedBackingStore];
-  v5 = INIntentSlotValueTransformToString(v4);
+  detailsCopy = details;
+  _typedBackingStore = [(INReportIncidentIntent *)self _typedBackingStore];
+  v5 = INIntentSlotValueTransformToString(detailsCopy);
 
-  [v6 setAdditionalDetails:v5];
+  [_typedBackingStore setAdditionalDetails:v5];
 }
 
 - (NSString)additionalDetails
 {
-  v2 = [(INReportIncidentIntent *)self _typedBackingStore];
-  v3 = [v2 additionalDetails];
-  v4 = INIntentSlotValueTransformFromString(v3);
+  _typedBackingStore = [(INReportIncidentIntent *)self _typedBackingStore];
+  additionalDetails = [_typedBackingStore additionalDetails];
+  v4 = INIntentSlotValueTransformFromString(additionalDetails);
 
   return v4;
 }
 
-- (void)setUserLocation:(id)a3
+- (void)setUserLocation:(id)location
 {
-  v4 = a3;
-  v6 = [(INReportIncidentIntent *)self _typedBackingStore];
-  v5 = INIntentSlotValueTransformToLocation(v4);
+  locationCopy = location;
+  _typedBackingStore = [(INReportIncidentIntent *)self _typedBackingStore];
+  v5 = INIntentSlotValueTransformToLocation(locationCopy);
 
-  [v6 setUserLocation:v5];
+  [_typedBackingStore setUserLocation:v5];
 }
 
 - (CLPlacemark)userLocation
 {
-  v2 = [(INReportIncidentIntent *)self _typedBackingStore];
-  v3 = [v2 userLocation];
-  v4 = INIntentSlotValueTransformFromLocation(v3);
+  _typedBackingStore = [(INReportIncidentIntent *)self _typedBackingStore];
+  userLocation = [_typedBackingStore userLocation];
+  v4 = INIntentSlotValueTransformFromLocation(userLocation);
 
   return v4;
 }
 
-- (void)setIsClear:(id)a3
+- (void)setIsClear:(id)clear
 {
-  v5 = a3;
-  v4 = [(INReportIncidentIntent *)self _typedBackingStore];
-  if (v5)
+  clearCopy = clear;
+  _typedBackingStore = [(INReportIncidentIntent *)self _typedBackingStore];
+  if (clearCopy)
   {
-    [v4 setIsClear:{objc_msgSend(v5, "BOOLValue")}];
+    [_typedBackingStore setIsClear:{objc_msgSend(clearCopy, "BOOLValue")}];
   }
 
   else
   {
-    [v4 setHasIsClear:0];
+    [_typedBackingStore setHasIsClear:0];
   }
 }
 
 - (NSNumber)isClear
 {
-  v3 = [(INReportIncidentIntent *)self _typedBackingStore];
-  if ([v3 hasIsClear])
+  _typedBackingStore = [(INReportIncidentIntent *)self _typedBackingStore];
+  if ([_typedBackingStore hasIsClear])
   {
     v4 = MEMORY[0x1E696AD98];
-    v5 = [(INReportIncidentIntent *)self _typedBackingStore];
-    v6 = [v4 numberWithBool:{objc_msgSend(v5, "isClear")}];
+    _typedBackingStore2 = [(INReportIncidentIntent *)self _typedBackingStore];
+    v6 = [v4 numberWithBool:{objc_msgSend(_typedBackingStore2, "isClear")}];
   }
 
   else
@@ -179,30 +179,30 @@
   return v6;
 }
 
-- (void)setStartTime:(id)a3
+- (void)setStartTime:(id)time
 {
-  v5 = a3;
-  v4 = [(INReportIncidentIntent *)self _typedBackingStore];
-  if (v5)
+  timeCopy = time;
+  _typedBackingStore = [(INReportIncidentIntent *)self _typedBackingStore];
+  if (timeCopy)
   {
-    [v5 doubleValue];
-    [v4 setStartTime:?];
+    [timeCopy doubleValue];
+    [_typedBackingStore setStartTime:?];
   }
 
   else
   {
-    [v4 setHasStartTime:0];
+    [_typedBackingStore setHasStartTime:0];
   }
 }
 
 - (NSNumber)startTime
 {
-  v3 = [(INReportIncidentIntent *)self _typedBackingStore];
-  if ([v3 hasStartTime])
+  _typedBackingStore = [(INReportIncidentIntent *)self _typedBackingStore];
+  if ([_typedBackingStore hasStartTime])
   {
     v4 = MEMORY[0x1E696AD98];
-    v5 = [(INReportIncidentIntent *)self _typedBackingStore];
-    [v5 startTime];
+    _typedBackingStore2 = [(INReportIncidentIntent *)self _typedBackingStore];
+    [_typedBackingStore2 startTime];
     v6 = [v4 numberWithDouble:?];
   }
 
@@ -214,69 +214,69 @@
   return v6;
 }
 
-- (void)setIncidentType:(id)a3
+- (void)setIncidentType:(id)type
 {
-  v4 = a3;
-  v6 = [(INReportIncidentIntent *)self _typedBackingStore];
-  v5 = INIntentSlotValueTransformToSupportedTrafficIncidentType(v4);
+  typeCopy = type;
+  _typedBackingStore = [(INReportIncidentIntent *)self _typedBackingStore];
+  v5 = INIntentSlotValueTransformToSupportedTrafficIncidentType(typeCopy);
 
-  [v6 setIncidentType:v5];
+  [_typedBackingStore setIncidentType:v5];
 }
 
 - (NSString)incidentType
 {
-  v2 = [(INReportIncidentIntent *)self _typedBackingStore];
-  v3 = [v2 incidentType];
-  v4 = INIntentSlotValueTransformFromSupportedTrafficIncidentType(v3);
+  _typedBackingStore = [(INReportIncidentIntent *)self _typedBackingStore];
+  incidentType = [_typedBackingStore incidentType];
+  v4 = INIntentSlotValueTransformFromSupportedTrafficIncidentType(incidentType);
 
   return v4;
 }
 
-- (INReportIncidentIntent)initWithIncidentType:(id)a3 startTime:(id)a4 isClear:(id)a5 userLocation:(id)a6 additionalDetails:(id)a7
+- (INReportIncidentIntent)initWithIncidentType:(id)type startTime:(id)time isClear:(id)clear userLocation:(id)location additionalDetails:(id)details
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  typeCopy = type;
+  timeCopy = time;
+  clearCopy = clear;
+  locationCopy = location;
+  detailsCopy = details;
   v20.receiver = self;
   v20.super_class = INReportIncidentIntent;
   v17 = [(INIntent *)&v20 init];
   v18 = v17;
   if (v17)
   {
-    [(INReportIncidentIntent *)v17 setIncidentType:v12];
-    [(INReportIncidentIntent *)v18 setStartTime:v13];
-    [(INReportIncidentIntent *)v18 setIsClear:v14];
-    [(INReportIncidentIntent *)v18 setUserLocation:v15];
-    [(INReportIncidentIntent *)v18 setAdditionalDetails:v16];
+    [(INReportIncidentIntent *)v17 setIncidentType:typeCopy];
+    [(INReportIncidentIntent *)v18 setStartTime:timeCopy];
+    [(INReportIncidentIntent *)v18 setIsClear:clearCopy];
+    [(INReportIncidentIntent *)v18 setUserLocation:locationCopy];
+    [(INReportIncidentIntent *)v18 setAdditionalDetails:detailsCopy];
   }
 
   return v18;
 }
 
-- (void)_setMetadata:(id)a3
+- (void)_setMetadata:(id)metadata
 {
-  v4 = a3;
-  v5 = [(INReportIncidentIntent *)self _typedBackingStore];
-  [v5 setIntentMetadata:v4];
+  metadataCopy = metadata;
+  _typedBackingStore = [(INReportIncidentIntent *)self _typedBackingStore];
+  [_typedBackingStore setIntentMetadata:metadataCopy];
 }
 
 - (id)_metadata
 {
-  v2 = [(INReportIncidentIntent *)self _typedBackingStore];
-  v3 = [v2 intentMetadata];
+  _typedBackingStore = [(INReportIncidentIntent *)self _typedBackingStore];
+  intentMetadata = [_typedBackingStore intentMetadata];
 
-  return v3;
+  return intentMetadata;
 }
 
 - (id)_typedBackingStore
 {
-  v2 = [(INIntent *)self backingStore];
+  backingStore = [(INIntent *)self backingStore];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = backingStore;
   }
 
   else

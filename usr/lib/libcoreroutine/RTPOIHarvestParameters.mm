@@ -1,15 +1,15 @@
 @interface RTPOIHarvestParameters
-- (RTPOIHarvestParameters)initWithDefaultsManager:(id)a3;
-- (RTPOIHarvestParameters)initWithHarvestMask:(unint64_t)a3 locationLookupWindowMaxMinutes:(double)a4 locationLookupWindowMinMinutes:(double)a5 locationUncertaintyThreshold:(double)a6 maxLocationsPerFingerprint:(unint64_t)a7;
+- (RTPOIHarvestParameters)initWithDefaultsManager:(id)manager;
+- (RTPOIHarvestParameters)initWithHarvestMask:(unint64_t)mask locationLookupWindowMaxMinutes:(double)minutes locationLookupWindowMinMinutes:(double)minMinutes locationUncertaintyThreshold:(double)threshold maxLocationsPerFingerprint:(unint64_t)fingerprint;
 - (id)description;
 @end
 
 @implementation RTPOIHarvestParameters
 
-- (RTPOIHarvestParameters)initWithHarvestMask:(unint64_t)a3 locationLookupWindowMaxMinutes:(double)a4 locationLookupWindowMinMinutes:(double)a5 locationUncertaintyThreshold:(double)a6 maxLocationsPerFingerprint:(unint64_t)a7
+- (RTPOIHarvestParameters)initWithHarvestMask:(unint64_t)mask locationLookupWindowMaxMinutes:(double)minutes locationLookupWindowMinMinutes:(double)minMinutes locationUncertaintyThreshold:(double)threshold maxLocationsPerFingerprint:(unint64_t)fingerprint
 {
-  v7 = self;
-  if (a4 <= 0.0)
+  selfCopy = self;
+  if (minutes <= 0.0)
   {
     v15 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -24,7 +24,7 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  if (a5 <= 0.0)
+  if (minMinutes <= 0.0)
   {
     v15 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -37,7 +37,7 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  if (a6 <= 0.0)
+  if (threshold <= 0.0)
   {
     v15 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -50,7 +50,7 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  if (!a7)
+  if (!fingerprint)
   {
     v15 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -71,36 +71,36 @@ LABEL_17:
   v13 = [(RTPOIHarvestParameters *)&v18 init];
   if (v13)
   {
-    v13->_harvestMask = a3;
-    v13->_locationLookupWindowMaxMinutes = a4;
-    v13->_locationLookupWindowMinMinutes = a5;
-    v13->_locationUncertaintyThreshold = a6;
-    v13->_maxLocationsPerFingerprint = a7;
+    v13->_harvestMask = mask;
+    v13->_locationLookupWindowMaxMinutes = minutes;
+    v13->_locationLookupWindowMinMinutes = minMinutes;
+    v13->_locationUncertaintyThreshold = threshold;
+    v13->_maxLocationsPerFingerprint = fingerprint;
   }
 
-  v7 = v13;
-  v14 = v7;
+  selfCopy = v13;
+  v14 = selfCopy;
 LABEL_18:
 
   return v14;
 }
 
-- (RTPOIHarvestParameters)initWithDefaultsManager:(id)a3
+- (RTPOIHarvestParameters)initWithDefaultsManager:(id)manager
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  managerCopy = manager;
+  v5 = managerCopy;
+  if (managerCopy)
   {
-    v6 = [v4 objectForKey:@"RTDefaultsPOIHarvestHarvestMask"];
+    v6 = [managerCopy objectForKey:@"RTDefaultsPOIHarvestHarvestMask"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [v6 unsignedIntegerValue];
+      unsignedIntegerValue = [v6 unsignedIntegerValue];
     }
 
     else
     {
-      v7 = -24577;
+      unsignedIntegerValue = -24577;
     }
 
     v10 = [v5 objectForKey:@"RTDefaultsPOIHarvestLookupWindowMaxMinutes"];
@@ -138,17 +138,17 @@ LABEL_18:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v20 = [v19 unsignedIntegerValue];
+      unsignedIntegerValue2 = [v19 unsignedIntegerValue];
     }
 
     else
     {
-      v20 = 300;
+      unsignedIntegerValue2 = 300;
     }
 
-    self = [(RTPOIHarvestParameters *)self initWithHarvestMask:v7 locationLookupWindowMaxMinutes:v20 locationLookupWindowMinMinutes:v11 locationUncertaintyThreshold:v14 maxLocationsPerFingerprint:v18];
+    self = [(RTPOIHarvestParameters *)self initWithHarvestMask:unsignedIntegerValue locationLookupWindowMaxMinutes:unsignedIntegerValue2 locationLookupWindowMinMinutes:v11 locationUncertaintyThreshold:v14 maxLocationsPerFingerprint:v18];
 
-    v9 = self;
+    selfCopy = self;
   }
 
   else
@@ -160,10 +160,10 @@ LABEL_18:
       _os_log_error_impl(&dword_2304B3000, v8, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: defaultsManager", v22, 2u);
     }
 
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
 - (id)description

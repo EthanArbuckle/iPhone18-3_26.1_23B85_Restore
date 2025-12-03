@@ -1,25 +1,25 @@
 @interface WDAudiogramListDataProvider
 - (NSArray)audiogramSamples;
 - (id)sampleTypes;
-- (id)textForObject:(id)a3;
-- (id)titleForSection:(unint64_t)a3;
+- (id)textForObject:(id)object;
+- (id)titleForSection:(unint64_t)section;
 @end
 
 @implementation WDAudiogramListDataProvider
 
 - (NSArray)audiogramSamples
 {
-  v2 = [(WDSampleListDataProvider *)self samples];
-  v3 = [v2 allSamples];
+  samples = [(WDSampleListDataProvider *)self samples];
+  allSamples = [samples allSamples];
 
-  return v3;
+  return allSamples;
 }
 
 - (id)sampleTypes
 {
   v6[1] = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277CCD720] audiogramSampleType];
-  v6[0] = v2;
+  audiogramSampleType = [MEMORY[0x277CCD720] audiogramSampleType];
+  v6[0] = audiogramSampleType;
   v3 = [MEMORY[0x277CBEA60] arrayWithObjects:v6 count:1];
 
   v4 = *MEMORY[0x277D85DE8];
@@ -27,15 +27,15 @@
   return v3;
 }
 
-- (id)textForObject:(id)a3
+- (id)textForObject:(id)object
 {
-  v3 = [MEMORY[0x277CCDD30] sharedBehavior];
-  v4 = [v3 features];
-  v5 = [v4 yodel];
+  mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+  features = [mEMORY[0x277CCDD30] features];
+  yodel = [features yodel];
 
   v6 = HKHealthKitFrameworkBundle();
   v7 = v6;
-  if (v5)
+  if (yodel)
   {
     v8 = @"Localizable-Yodel";
   }
@@ -50,11 +50,11 @@
   return v9;
 }
 
-- (id)titleForSection:(unint64_t)a3
+- (id)titleForSection:(unint64_t)section
 {
   v5.receiver = self;
   v5.super_class = WDAudiogramListDataProvider;
-  v3 = [(WDSampleListDataProvider *)&v5 titleForSection:a3];
+  v3 = [(WDSampleListDataProvider *)&v5 titleForSection:section];
 
   return v3;
 }

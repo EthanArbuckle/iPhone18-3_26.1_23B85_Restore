@@ -1,20 +1,20 @@
 @interface NTKEditOptionPickerSideView
-- (NTKEditOptionPickerSideView)initWithFrame:(CGRect)a3;
-- (void)applyContentTransform:(CGAffineTransform *)a3;
-- (void)setOptionView:(id)a3;
+- (NTKEditOptionPickerSideView)initWithFrame:(CGRect)frame;
+- (void)applyContentTransform:(CGAffineTransform *)transform;
+- (void)setOptionView:(id)view;
 @end
 
 @implementation NTKEditOptionPickerSideView
 
-- (NTKEditOptionPickerSideView)initWithFrame:(CGRect)a3
+- (NTKEditOptionPickerSideView)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = NTKEditOptionPickerSideView;
-  v3 = [(NTKEditOptionPickerSideView *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(NTKEditOptionPickerSideView *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x277D75348] blackColor];
-    [(NTKEditOptionPickerSideView *)v3 setBackgroundColor:v4];
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    [(NTKEditOptionPickerSideView *)v3 setBackgroundColor:blackColor];
 
     v5 = MEMORY[0x277CBF2C0];
     v6 = *(MEMORY[0x277CBF2C0] + 16);
@@ -27,20 +27,20 @@
   return v3;
 }
 
-- (void)setOptionView:(id)a3
+- (void)setOptionView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   optionView = self->_optionView;
-  if (optionView != v5)
+  if (optionView != viewCopy)
   {
-    v7 = [(UIView *)optionView superview];
+    superview = [(UIView *)optionView superview];
 
-    if (v7 == self)
+    if (superview == self)
     {
       [(UIView *)self->_optionView removeFromSuperview];
     }
 
-    objc_storeStrong(&self->_optionView, a3);
+    objc_storeStrong(&self->_optionView, view);
     if (self->_optionView)
     {
       [(NTKEditOptionPickerSideView *)self addSubview:?];
@@ -56,18 +56,18 @@
   [(NTKEditOptionPickerSideView *)self _applyContentAlpha];
 }
 
-- (void)applyContentTransform:(CGAffineTransform *)a3
+- (void)applyContentTransform:(CGAffineTransform *)transform
 {
-  v4 = *&a3->c;
-  v3 = *&a3->tx;
-  *&self->_contentTransform.a = *&a3->a;
+  v4 = *&transform->c;
+  v3 = *&transform->tx;
+  *&self->_contentTransform.a = *&transform->a;
   *&self->_contentTransform.c = v4;
   *&self->_contentTransform.tx = v3;
   optionView = self->_optionView;
-  v6 = *&a3->c;
-  v7[0] = *&a3->a;
+  v6 = *&transform->c;
+  v7[0] = *&transform->a;
   v7[1] = v6;
-  v7[2] = *&a3->tx;
+  v7[2] = *&transform->tx;
   [(UIView *)optionView setTransform:v7];
 }
 

@@ -11,12 +11,12 @@
 + (BOOL)wantsEnablement
 {
   v3 = +[HTPrefs sharedPrefs];
-  v4 = [v3 pdseHTPeriodDays];
-  v5 = [a1 prefixForDefaults];
-  v6 = sub_10000BE10(v5);
-  LOBYTE(v4) = sub_10000BB68(v4, 2, v6);
+  pdseHTPeriodDays = [v3 pdseHTPeriodDays];
+  prefixForDefaults = [self prefixForDefaults];
+  v6 = sub_10000BE10(prefixForDefaults);
+  LOBYTE(pdseHTPeriodDays) = sub_10000BB68(pdseHTPeriodDays, 2, v6);
 
-  return v4;
+  return pdseHTPeriodDays;
 }
 
 + (BOOL)willEnableDiagnostics
@@ -24,9 +24,9 @@
   v3 = sub_10000B598();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [a1 prefixForDefaults];
+    prefixForDefaults = [self prefixForDefaults];
     v7 = 138412290;
-    v8 = v4;
+    v8 = prefixForDefaults;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "PDSE: Enable HangTracer: set necessary settings with HT's Self-Enablement prefix = %@", &v7, 0xCu);
   }
 
@@ -37,15 +37,15 @@
     _os_signpost_emit_with_name_impl(&_mh_execute_header, v5, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "HTSelfEnable.DisableToEnable", " enableTelemetry=YES ", &v7, 2u);
   }
 
-  [a1 writeEnablementSettings];
+  [self writeEnablementSettings];
 
   return 1;
 }
 
 + (void)writeEnablementSettings
 {
-  v3 = [a1 prefixForDefaults];
-  v4 = sub_100000F10(@"HangTracerEnabled", v3);
+  prefixForDefaults = [self prefixForDefaults];
+  v4 = sub_100000F10(@"HangTracerEnabled", prefixForDefaults);
   CFPreferencesSetValue(v4, kCFBooleanTrue, @"com.apple.da", @"mobile", kCFPreferencesAnyHost);
 
   v5 = sub_10000B598();
@@ -54,8 +54,8 @@
     sub_10000D01C();
   }
 
-  v6 = [a1 prefixForDefaults];
-  v7 = sub_100000F10(@"HangTracerReportPeriod", v6);
+  prefixForDefaults2 = [self prefixForDefaults];
+  v7 = sub_100000F10(@"HangTracerReportPeriod", prefixForDefaults2);
   CFPreferencesSetValue(v7, [NSNumber numberWithDouble:3600.0], @"com.apple.da", @"mobile", kCFPreferencesAnyHost);
 
   v8 = sub_10000B598();
@@ -64,8 +64,8 @@
     sub_10000D0B8();
   }
 
-  v9 = [a1 prefixForDefaults];
-  v10 = sub_100000F10(@"HangTracerDailyThirdPartyLogLimit", v9);
+  prefixForDefaults3 = [self prefixForDefaults];
+  v10 = sub_100000F10(@"HangTracerDailyThirdPartyLogLimit", prefixForDefaults3);
   CFPreferencesSetValue(v10, [NSNumber numberWithInt:0], @"com.apple.da", @"mobile", kCFPreferencesAnyHost);
 
   v11 = sub_10000B598();
@@ -75,12 +75,12 @@
   }
 
   v12 = +[HTPrefs sharedPrefs];
-  v13 = [v12 pdseAllowEnableTailspin];
+  pdseAllowEnableTailspin = [v12 pdseAllowEnableTailspin];
 
-  if (v13)
+  if (pdseAllowEnableTailspin)
   {
-    v14 = [a1 prefixForDefaults];
-    v15 = sub_100000F10(@"HangTracerEnableTailspin", v14);
+    prefixForDefaults4 = [self prefixForDefaults];
+    v15 = sub_100000F10(@"HangTracerEnableTailspin", prefixForDefaults4);
     CFPreferencesSetValue(v15, kCFBooleanTrue, @"com.apple.da", @"mobile", kCFPreferencesAnyHost);
 
     v16 = sub_10000B598();
@@ -98,9 +98,9 @@
   v3 = sub_10000B598();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [a1 prefixForDefaults];
+    prefixForDefaults = [self prefixForDefaults];
     *buf = 138412290;
-    v26 = v4;
+    v26 = prefixForDefaults;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "HTSE: Disable HTSE: disable tailspin and delete all settings with Self-Enablement prefix = %@", buf, 0xCu);
   }
 
@@ -108,9 +108,9 @@
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v19 = a1;
-  v5 = [a1 prefixForDefaults];
-  v6 = sub_100000F48(@"com.apple.da", @"mobile", v5);
+  selfCopy = self;
+  prefixForDefaults2 = [self prefixForDefaults];
+  v6 = sub_100000F48(@"com.apple.da", @"mobile", prefixForDefaults2);
 
   v7 = [v6 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v7)
@@ -144,8 +144,8 @@
   }
 
   CFPreferencesSynchronize(@"com.apple.da", @"mobile", kCFPreferencesAnyHost);
-  v13 = [v19 prefixForDefaults];
-  v14 = sub_100000F48(@"com.apple.da", @"mobile", v13);
+  prefixForDefaults3 = [selfCopy prefixForDefaults];
+  v14 = sub_100000F48(@"com.apple.da", @"mobile", prefixForDefaults3);
   v15 = [v14 count];
 
   v16 = sub_10000B598();
@@ -154,7 +154,7 @@
   {
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
-      sub_10000D1F0(v19, v17);
+      sub_10000D1F0(selfCopy, v17);
     }
   }
 

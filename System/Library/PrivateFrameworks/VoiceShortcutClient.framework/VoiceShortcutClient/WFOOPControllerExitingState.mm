@@ -1,15 +1,15 @@
 @interface WFOOPControllerExitingState
-- (BOOL)canTransitionToState:(id)a3;
+- (BOOL)canTransitionToState:(id)state;
 @end
 
 @implementation WFOOPControllerExitingState
 
-- (BOOL)canTransitionToState:(id)a3
+- (BOOL)canTransitionToState:(id)state
 {
-  v4 = a3;
-  if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  stateCopy = state;
+  if (stateCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    if ([v4 stage] == 2)
+    if ([stateCopy stage] == 2)
     {
       v5 = 1;
     }
@@ -18,10 +18,10 @@
     {
       v8.receiver = self;
       v8.super_class = WFOOPControllerExitingState;
-      v5 = [(WFOOPControllerState *)&v8 canTransitionToState:v4];
+      v5 = [(WFOOPControllerState *)&v8 canTransitionToState:stateCopy];
     }
 
-    v6 = v4;
+    v6 = stateCopy;
   }
 
   else

@@ -1,34 +1,34 @@
 @interface ICASCollaborationAccessType
-- (ICASCollaborationAccessType)initWithCollaborationAccessType:(int64_t)a3;
-- (id)toJsonValueAndReturnError:(id *)a3;
+- (ICASCollaborationAccessType)initWithCollaborationAccessType:(int64_t)type;
+- (id)toJsonValueAndReturnError:(id *)error;
 @end
 
 @implementation ICASCollaborationAccessType
 
-- (ICASCollaborationAccessType)initWithCollaborationAccessType:(int64_t)a3
+- (ICASCollaborationAccessType)initWithCollaborationAccessType:(int64_t)type
 {
   v5.receiver = self;
   v5.super_class = ICASCollaborationAccessType;
   result = [(ICASCollaborationAccessType *)&v5 init];
   if (result)
   {
-    result->_collaborationAccessType = a3;
+    result->_collaborationAccessType = type;
   }
 
   return result;
 }
 
-- (id)toJsonValueAndReturnError:(id *)a3
+- (id)toJsonValueAndReturnError:(id *)error
 {
-  v3 = [(ICASCollaborationAccessType *)self collaborationAccessType];
-  if ((v3 - 1) > 2)
+  collaborationAccessType = [(ICASCollaborationAccessType *)self collaborationAccessType];
+  if ((collaborationAccessType - 1) > 2)
   {
     return @"unknown";
   }
 
   else
   {
-    return off_2799AF210[v3 - 1];
+    return off_2799AF210[collaborationAccessType - 1];
   }
 }
 

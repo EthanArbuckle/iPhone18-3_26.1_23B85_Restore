@@ -8,9 +8,9 @@
 - (void)removeObjectForKey:(id)key;
 - (void)setCountLimit:(NSUInteger)countLimit;
 - (void)setDelegate:(id)delegate;
-- (void)setEvictsObjectsWhenApplicationEntersBackground:(BOOL)a3;
+- (void)setEvictsObjectsWhenApplicationEntersBackground:(BOOL)background;
 - (void)setEvictsObjectsWithDiscardedContent:(BOOL)evictsObjectsWithDiscardedContent;
-- (void)setMinimumObjectCount:(unint64_t)a3;
+- (void)setMinimumObjectCount:(unint64_t)count;
 - (void)setName:(NSString *)name;
 - (void)setObject:(id)obj forKey:(id)key;
 - (void)setObject:(id)obj forKey:(id)key cost:(NSUInteger)g;
@@ -21,7 +21,7 @@
 
 - (NSCache)init
 {
-  v2 = self;
+  selfCopy = self;
   v7 = *MEMORY[0x1E69E9840];
   v5 = 0;
   *(&attrs.version + 1) = 0;
@@ -38,19 +38,19 @@
   if (cache_create("", &attrs, &v5))
   {
 
-    v2 = 0;
+    selfCopy = 0;
   }
 
   else
   {
-    v2->_cache = v5;
-    v2->_evictsDiscarded = 1;
-    v2->_notificationLock._os_unfair_lock_opaque = 0;
-    [(NSCache *)v2 setEvictsObjectsWhenApplicationEntersBackground:1];
+    selfCopy->_cache = v5;
+    selfCopy->_evictsDiscarded = 1;
+    selfCopy->_notificationLock._os_unfair_lock_opaque = 0;
+    [(NSCache *)selfCopy setEvictsObjectsWhenApplicationEntersBackground:1];
   }
 
   v3 = *MEMORY[0x1E69E9840];
-  return v2;
+  return selfCopy;
 }
 
 - (void)removeAllObjects
@@ -314,12 +314,12 @@ LABEL_27:
   MEMORY[0x1EEE6EB78](cache, countLimit);
 }
 
-- (void)setMinimumObjectCount:(unint64_t)a3
+- (void)setMinimumObjectCount:(unint64_t)count
 {
   __NSCheckReentrancy(self, a2);
   cache = self->_cache;
 
-  MEMORY[0x1EEE6EB80](cache, a3);
+  MEMORY[0x1EEE6EB80](cache, count);
 }
 
 - (void)setEvictsObjectsWithDiscardedContent:(BOOL)evictsObjectsWithDiscardedContent
@@ -338,18 +338,18 @@ LABEL_27:
   self->_evictsDiscarded = v3;
 }
 
-- (void)setEvictsObjectsWhenApplicationEntersBackground:(BOOL)a3
+- (void)setEvictsObjectsWhenApplicationEntersBackground:(BOOL)background
 {
-  if (self->_evictOnSuspension == a3)
+  if (self->_evictOnSuspension == background)
   {
     return;
   }
 
-  v4 = a3;
-  self->_evictOnSuspension = a3;
+  backgroundCopy = background;
+  self->_evictOnSuspension = background;
   LocalCenter = CFNotificationCenterGetLocalCenter();
   os_unfair_lock_lock(&self->_notificationLock);
-  if (v4)
+  if (backgroundCopy)
   {
     if (!self->_observesNotification)
     {

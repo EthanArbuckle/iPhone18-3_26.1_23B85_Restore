@@ -1,38 +1,38 @@
 @interface ENUIVerificationCodeEntryView
 + (id)generatorFieldFont;
-- (CGRect)caretRectForPosition:(id)a3;
-- (CGRect)firstRectForRange:(id)a3;
-- (ENUIVerificationCodeEntryView)initWithFrame:(CGRect)a3;
+- (CGRect)caretRectForPosition:(id)position;
+- (CGRect)firstRectForRange:(id)range;
+- (ENUIVerificationCodeEntryView)initWithFrame:(CGRect)frame;
 - (NSString)stringValue;
 - (UITextInputDelegate)inputDelegate;
 - (UITextInputTokenizer)tokenizer;
 - (UITextPosition)endOfDocument;
 - (UITextRange)selectedTextRange;
-- (id)characterRangeByExtendingPosition:(id)a3 inDirection:(int64_t)a4;
-- (id)positionFromPosition:(id)a3 offset:(int64_t)a4;
-- (id)textInRange:(id)a3;
-- (id)textRangeFromPosition:(id)a3 toPosition:(id)a4;
-- (int64_t)comparePosition:(id)a3 toPosition:(id)a4;
-- (int64_t)offsetFromPosition:(id)a3 toPosition:(id)a4;
+- (id)characterRangeByExtendingPosition:(id)position inDirection:(int64_t)direction;
+- (id)positionFromPosition:(id)position offset:(int64_t)offset;
+- (id)textInRange:(id)range;
+- (id)textRangeFromPosition:(id)position toPosition:(id)toPosition;
+- (int64_t)comparePosition:(id)position toPosition:(id)toPosition;
+- (int64_t)offsetFromPosition:(id)position toPosition:(id)toPosition;
 - (void)_syncStringValueToLabels;
-- (void)_updateFonts:(id)a3;
+- (void)_updateFonts:(id)fonts;
 - (void)dealloc;
 - (void)deleteBackward;
 - (void)emitCodeEnteredNotification;
-- (void)insertText:(id)a3;
-- (void)passcodeFieldTapped:(id)a3;
-- (void)replaceRange:(id)a3 withText:(id)a4;
-- (void)setStringValue:(id)a3;
+- (void)insertText:(id)text;
+- (void)passcodeFieldTapped:(id)tapped;
+- (void)replaceRange:(id)range withText:(id)text;
+- (void)setStringValue:(id)value;
 - (void)updateConstraints;
 @end
 
 @implementation ENUIVerificationCodeEntryView
 
-- (ENUIVerificationCodeEntryView)initWithFrame:(CGRect)a3
+- (ENUIVerificationCodeEntryView)initWithFrame:(CGRect)frame
 {
   v25.receiver = self;
   v25.super_class = ENUIVerificationCodeEntryView;
-  v3 = [(ENUIVerificationCodeEntryView *)&v25 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(ENUIVerificationCodeEntryView *)&v25 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -42,7 +42,7 @@
     v4->_stringValue = v5;
 
     v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v8 = [objc_opt_class() generatorFieldFont];
+    generatorFieldFont = [objc_opt_class() generatorFieldFont];
     v9 = *MEMORY[0x277CBF3A0];
     v10 = *(MEMORY[0x277CBF3A0] + 8);
     v11 = *(MEMORY[0x277CBF3A0] + 16);
@@ -52,7 +52,7 @@
     {
       v14 = [objc_alloc(MEMORY[0x277D756B8]) initWithFrame:{v9, v10, v11, v12}];
       [v14 setTranslatesAutoresizingMaskIntoConstraints:0];
-      [v14 setFont:v8];
+      [v14 setFont:generatorFieldFont];
       [v14 setText:@"—"];
       [v14 setLineBreakMode:2];
       [v14 setTextAlignment:1];
@@ -81,8 +81,8 @@
 
     [(ENUIVerificationCodeEntryView *)v4 addGestureRecognizer:v4->_tapGestureRecognizer];
     v4->_passcodeFieldDisabled = 0;
-    v23 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v23 addObserver:v4 selector:sel__updateFonts_ name:*MEMORY[0x277D76810] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v4 selector:sel__updateFonts_ name:*MEMORY[0x277D76810] object:0];
   }
 
   return v4;
@@ -90,18 +90,18 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277D76810] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D76810] object:0];
 
   v4.receiver = self;
   v4.super_class = ENUIVerificationCodeEntryView;
   [(ENUIVerificationCodeEntryView *)&v4 dealloc];
 }
 
-- (void)_updateFonts:(id)a3
+- (void)_updateFonts:(id)fonts
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = [objc_opt_class() generatorFieldFont];
+  generatorFieldFont = [objc_opt_class() generatorFieldFont];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -122,7 +122,7 @@
           objc_enumerationMutation(v5);
         }
 
-        [*(*(&v11 + 1) + 8 * v9++) setFont:{v4, v11}];
+        [*(*(&v11 + 1) + 8 * v9++) setFont:{generatorFieldFont, v11}];
       }
 
       while (v7 != v9);
@@ -166,29 +166,29 @@
   }
 
   v3 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v4 = [(ENUIVerificationCodeEntryView *)self traitCollection];
-  v5 = [v4 preferredContentSizeCategory];
-  v6 = [objc_opt_class() maximumContentSizeCategory];
-  v7 = UIContentSizeCategoryCompareToCategory(v5, v6);
+  traitCollection = [(ENUIVerificationCodeEntryView *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  maximumContentSizeCategory = [objc_opt_class() maximumContentSizeCategory];
+  v7 = UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, maximumContentSizeCategory);
 
   if (v7 == NSOrderedDescending)
   {
     v8 = MEMORY[0x277D75C80];
-    v37[0] = v4;
-    v9 = [objc_opt_class() maximumContentSizeCategory];
-    v10 = [v8 traitCollectionWithPreferredContentSizeCategory:v9];
+    v37[0] = traitCollection;
+    maximumContentSizeCategory2 = [objc_opt_class() maximumContentSizeCategory];
+    v10 = [v8 traitCollectionWithPreferredContentSizeCategory:maximumContentSizeCategory2];
     v37[1] = v10;
     v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v37 count:2];
     v12 = [v8 traitCollectionWithTraitsFromCollections:v11];
 
-    v4 = v12;
+    traitCollection = v12;
   }
 
   v13 = MEMORY[0x277D75520];
-  v14 = [objc_opt_class() textStyle];
-  v15 = [v13 metricsForTextStyle:v14];
-  v33 = v4;
-  [v15 scaledValueForValue:v4 compatibleWithTraitCollection:25.0];
+  textStyle = [objc_opt_class() textStyle];
+  v15 = [v13 metricsForTextStyle:textStyle];
+  v33 = traitCollection;
+  [v15 scaledValueForValue:traitCollection compatibleWithTraitCollection:25.0];
   v17 = v16;
 
   v18 = objc_alloc_init(MEMORY[0x277CBEB38]);
@@ -198,8 +198,8 @@
     if (i)
     {
       v21 = [(NSArray *)self->_generatorFields objectAtIndexedSubscript:i];
-      v22 = [(NSArray *)self->_generatorFields firstObject];
-      v23 = [v20 constraintWithItem:v21 attribute:11 relatedBy:0 toItem:v22 attribute:11 multiplier:1.0 constant:0.0];
+      firstObject = [(NSArray *)self->_generatorFields firstObject];
+      v23 = [v20 constraintWithItem:v21 attribute:11 relatedBy:0 toItem:firstObject attribute:11 multiplier:1.0 constant:0.0];
       [v3 addObject:v23];
     }
 
@@ -208,8 +208,8 @@
       v35 = @"generatorLabel";
       v21 = [(NSArray *)self->_generatorFields objectAtIndexedSubscript:0];
       v36 = v21;
-      v22 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v36 forKeys:&v35 count:1];
-      v23 = [v20 constraintsWithVisualFormat:@"V:|[generatorLabel]|" options:0 metrics:0 views:v22];
+      firstObject = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v36 forKeys:&v35 count:1];
+      v23 = [v20 constraintsWithVisualFormat:@"V:|[generatorLabel]|" options:0 metrics:0 views:firstObject];
       [v3 addObjectsFromArray:v23];
     }
 
@@ -253,17 +253,17 @@
   return v2;
 }
 
-- (void)setStringValue:(id)a3
+- (void)setStringValue:(id)value
 {
-  v10 = a3;
-  if ([v10 length] >= 9)
+  valueCopy = value;
+  if ([valueCopy length] >= 9)
   {
     [(ENUIVerificationCodeEntryView *)a2 setStringValue:?];
   }
 
-  v5 = [MEMORY[0x277CCA900] decimalDigitCharacterSet];
-  v6 = [v5 invertedSet];
-  v7 = [v10 rangeOfCharacterFromSet:v6];
+  decimalDigitCharacterSet = [MEMORY[0x277CCA900] decimalDigitCharacterSet];
+  invertedSet = [decimalDigitCharacterSet invertedSet];
+  v7 = [valueCopy rangeOfCharacterFromSet:invertedSet];
 
   if (v7 != 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -271,7 +271,7 @@
   }
 
   stringValue = self->_stringValue;
-  v9 = [v10 copy];
+  v9 = [valueCopy copy];
   [(NSMutableString *)stringValue setString:v9];
 
   [(ENUIVerificationCodeEntryView *)self _syncStringValueToLabels];
@@ -282,17 +282,17 @@
   }
 }
 
-- (void)insertText:(id)a3
+- (void)insertText:(id)text
 {
-  v8 = a3;
-  if (-[NSMutableString length](self->_stringValue, "length") != 8 && ([v8 isEqualToString:@"\n"] & 1) == 0)
+  textCopy = text;
+  if (-[NSMutableString length](self->_stringValue, "length") != 8 && ([textCopy isEqualToString:@"\n"] & 1) == 0)
   {
-    v4 = [MEMORY[0x277CCA900] decimalDigitCharacterSet];
-    v5 = [v4 invertedSet];
+    decimalDigitCharacterSet = [MEMORY[0x277CCA900] decimalDigitCharacterSet];
+    invertedSet = [decimalDigitCharacterSet invertedSet];
 
-    if ([v8 rangeOfCharacterFromSet:v5] == 0x7FFFFFFFFFFFFFFFLL && objc_msgSend(v8, "length"))
+    if ([textCopy rangeOfCharacterFromSet:invertedSet] == 0x7FFFFFFFFFFFFFFFLL && objc_msgSend(textCopy, "length"))
     {
-      [(NSMutableString *)self->_stringValue appendString:v8];
+      [(NSMutableString *)self->_stringValue appendString:textCopy];
       [(ENUIVerificationCodeEntryView *)self _syncStringValueToLabels];
       if ([(NSMutableString *)self->_stringValue length]== 8)
       {
@@ -300,12 +300,12 @@
         [(ENUIVerificationCodeEntryView *)self performSelector:sel_emitCodeEnteredNotification withObject:0 afterDelay:1.0];
       }
 
-      v6 = [(ENUIVerificationCodeEntryView *)self didEnterDigit];
+      didEnterDigit = [(ENUIVerificationCodeEntryView *)self didEnterDigit];
 
-      if (v6)
+      if (didEnterDigit)
       {
-        v7 = [(ENUIVerificationCodeEntryView *)self didEnterDigit];
-        v7[2]();
+        didEnterDigit2 = [(ENUIVerificationCodeEntryView *)self didEnterDigit];
+        didEnterDigit2[2]();
       }
     }
   }
@@ -322,7 +322,7 @@
   }
 }
 
-- (void)passcodeFieldTapped:(id)a3
+- (void)passcodeFieldTapped:(id)tapped
 {
   if ([(ENUIVerificationCodeEntryView *)self canBecomeFirstResponder])
   {
@@ -334,22 +334,22 @@
 + (id)generatorFieldFont
 {
   v3 = MEMORY[0x277D74300];
-  v4 = [a1 textStyle];
-  v5 = [a1 maximumContentSizeCategory];
-  v6 = [v3 _preferredFontForTextStyle:v4 maximumContentSizeCategory:v5];
+  textStyle = [self textStyle];
+  maximumContentSizeCategory = [self maximumContentSizeCategory];
+  v6 = [v3 _preferredFontForTextStyle:textStyle maximumContentSizeCategory:maximumContentSizeCategory];
 
   return v6;
 }
 
-- (id)textInRange:(id)a3
+- (id)textInRange:(id)range
 {
-  v4 = a3;
+  rangeCopy = range;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     stringValue = self->_stringValue;
-    v6 = [v4 range];
-    v8 = [(NSMutableString *)stringValue substringWithRange:v6, v7];
+    range = [rangeCopy range];
+    v8 = [(NSMutableString *)stringValue substringWithRange:range, v7];
   }
 
   else
@@ -360,22 +360,22 @@
   return v8;
 }
 
-- (void)replaceRange:(id)a3 withText:(id)a4
+- (void)replaceRange:(id)range withText:(id)text
 {
-  v12 = a3;
-  v6 = a4;
+  rangeCopy = range;
+  textCopy = text;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     stringValue = self->_stringValue;
-    v8 = [v12 range];
-    [(NSMutableString *)stringValue replaceCharactersInRange:v8 withString:v9, v6];
-    v10 = [(ENUIVerificationCodeEntryView *)self didEnterDigit];
+    range = [rangeCopy range];
+    [(NSMutableString *)stringValue replaceCharactersInRange:range withString:v9, textCopy];
+    didEnterDigit = [(ENUIVerificationCodeEntryView *)self didEnterDigit];
 
-    if (v10)
+    if (didEnterDigit)
     {
-      v11 = [(ENUIVerificationCodeEntryView *)self didEnterDigit];
-      v11[2]();
+      didEnterDigit2 = [(ENUIVerificationCodeEntryView *)self didEnterDigit];
+      didEnterDigit2[2]();
     }
   }
 }
@@ -394,22 +394,22 @@
   return [ENUITextPosition positionWithLocation:v2];
 }
 
-- (id)textRangeFromPosition:(id)a3 toPosition:(id)a4
+- (id)textRangeFromPosition:(id)position toPosition:(id)toPosition
 {
-  v5 = a3;
-  v6 = a4;
+  positionCopy = position;
+  toPositionCopy = toPosition;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v5;
+    v7 = positionCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = v6;
-      v9 = [v7 location];
-      v10 = [v8 location];
+      v8 = toPositionCopy;
+      location = [v7 location];
+      location2 = [v8 location];
 
-      v11 = +[ENUITextRange rangeWithRange:](ENUITextRange, "rangeWithRange:", v9, v10 - [v7 location]);
+      v11 = +[ENUITextRange rangeWithRange:](ENUITextRange, "rangeWithRange:", location, location2 - [v7 location]);
     }
 
     else
@@ -426,11 +426,11 @@
   return v11;
 }
 
-- (id)positionFromPosition:(id)a3 offset:(int64_t)a4
+- (id)positionFromPosition:(id)position offset:(int64_t)offset
 {
-  v6 = a3;
+  positionCopy = position;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && (v7 = [v6 location] + a4, v7 <= -[NSMutableString length](self->_stringValue, "length")))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && (v7 = [positionCopy location] + offset, v7 <= -[NSMutableString length](self->_stringValue, "length")))
   {
     v8 = [ENUITextPosition positionWithLocation:v7];
   }
@@ -443,23 +443,23 @@
   return v8;
 }
 
-- (int64_t)comparePosition:(id)a3 toPosition:(id)a4
+- (int64_t)comparePosition:(id)position toPosition:(id)toPosition
 {
-  v5 = a3;
-  v6 = a4;
+  positionCopy = position;
+  toPositionCopy = toPosition;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v5;
+    v7 = positionCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = v6;
-      v9 = [v7 location];
-      if (v9 >= [v8 location])
+      v8 = toPositionCopy;
+      location = [v7 location];
+      if (location >= [v8 location])
       {
-        v11 = [v7 location];
-        v10 = v11 > [v8 location];
+        location2 = [v7 location];
+        v10 = location2 > [v8 location];
       }
 
       else
@@ -482,19 +482,19 @@
   return v10;
 }
 
-- (int64_t)offsetFromPosition:(id)a3 toPosition:(id)a4
+- (int64_t)offsetFromPosition:(id)position toPosition:(id)toPosition
 {
-  v5 = a3;
-  v6 = a4;
+  positionCopy = position;
+  toPositionCopy = toPosition;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v5;
+    v7 = positionCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = [v6 location];
-      v9 = v8 - [v7 location];
+      location = [toPositionCopy location];
+      v9 = location - [v7 location];
     }
 
     else
@@ -518,13 +518,13 @@
   return v2;
 }
 
-- (id)characterRangeByExtendingPosition:(id)a3 inDirection:(int64_t)a4
+- (id)characterRangeByExtendingPosition:(id)position inDirection:(int64_t)direction
 {
-  v4 = a3;
+  positionCopy = position;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = +[ENUITextRange rangeWithRange:](ENUITextRange, "rangeWithRange:", [v4 location], 0);
+    v5 = +[ENUITextRange rangeWithRange:](ENUITextRange, "rangeWithRange:", [positionCopy location], 0);
   }
 
   else
@@ -535,7 +535,7 @@
   return v5;
 }
 
-- (CGRect)firstRectForRange:(id)a3
+- (CGRect)firstRectForRange:(id)range
 {
   v3 = *MEMORY[0x277CBF3A0];
   v4 = *(MEMORY[0x277CBF3A0] + 8);
@@ -548,7 +548,7 @@
   return result;
 }
 
-- (CGRect)caretRectForPosition:(id)a3
+- (CGRect)caretRectForPosition:(id)position
 {
   v3 = *MEMORY[0x277CBF3A0];
   v4 = *(MEMORY[0x277CBF3A0] + 8);

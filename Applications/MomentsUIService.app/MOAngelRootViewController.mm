@@ -1,13 +1,13 @@
 @interface MOAngelRootViewController
-- (_TtC16MomentsUIService25MOAngelRootViewController)initWithCoder:(id)a3;
-- (_TtC16MomentsUIService25MOAngelRootViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)onboardingSettingsViewControllerDidTapDoneButton:(id)a3;
-- (void)sheetPresentationControllerDidChangeSelectedDetentIdentifier:(id)a3;
+- (_TtC16MomentsUIService25MOAngelRootViewController)initWithCoder:(id)coder;
+- (_TtC16MomentsUIService25MOAngelRootViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)onboardingSettingsViewControllerDidTapDoneButton:(id)button;
+- (void)sheetPresentationControllerDidChangeSelectedDetentIdentifier:(id)identifier;
 @end
 
 @implementation MOAngelRootViewController
 
-- (_TtC16MomentsUIService25MOAngelRootViewController)initWithCoder:(id)a3
+- (_TtC16MomentsUIService25MOAngelRootViewController)initWithCoder:(id)coder
 {
   swift_unknownObjectWeakInit();
   *(&self->super.super.super.isa + OBJC_IVAR____TtC16MomentsUIService25MOAngelRootViewController_presentedSheetController) = 0;
@@ -17,25 +17,25 @@
   return result;
 }
 
-- (_TtC16MomentsUIService25MOAngelRootViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC16MomentsUIService25MOAngelRootViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)sheetPresentationControllerDidChangeSelectedDetentIdentifier:(id)a3
+- (void)sheetPresentationControllerDidChangeSelectedDetentIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = self;
-  MOAngelRootViewController.sheetPresentationControllerDidChangeSelectedDetentIdentifier(_:)(v4);
+  identifierCopy = identifier;
+  selfCopy = self;
+  MOAngelRootViewController.sheetPresentationControllerDidChangeSelectedDetentIdentifier(_:)(identifierCopy);
 }
 
-- (void)onboardingSettingsViewControllerDidTapDoneButton:(id)a3
+- (void)onboardingSettingsViewControllerDidTapDoneButton:(id)button
 {
-  v4 = a3;
-  v5 = self;
-  specialized MOAngelRootViewController.onboardingSettingsViewControllerDidTapDoneButton(_:)(v4);
+  buttonCopy = button;
+  selfCopy = self;
+  specialized MOAngelRootViewController.onboardingSettingsViewControllerDidTapDoneButton(_:)(buttonCopy);
 }
 
 @end

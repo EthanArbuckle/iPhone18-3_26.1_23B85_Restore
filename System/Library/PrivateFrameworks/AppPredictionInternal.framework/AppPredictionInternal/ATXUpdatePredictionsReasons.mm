@@ -1,23 +1,23 @@
 @interface ATXUpdatePredictionsReasons
-+ (id)stringForUpdatePredictionsReason:(unint64_t)a3;
++ (id)stringForUpdatePredictionsReason:(unint64_t)reason;
 @end
 
 @implementation ATXUpdatePredictionsReasons
 
-+ (id)stringForUpdatePredictionsReason:(unint64_t)a3
++ (id)stringForUpdatePredictionsReason:(unint64_t)reason
 {
-  if (a3 < 0x18)
+  if (reason < 0x18)
   {
-    return off_27859A6D0[a3];
+    return off_27859A6D0[reason];
   }
 
   v5 = __atxlog_handle_default();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
-    [(ATXUpdatePredictionsReasons *)a3 stringForUpdatePredictionsReason:v5];
+    [(ATXUpdatePredictionsReasons *)reason stringForUpdatePredictionsReason:v5];
   }
 
-  [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE658] format:{@"stringForUpdatePredictionsReason called with invalid ATXUpdatePredictionsReason value of %lu", a3}];
+  [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE658] format:{@"stringForUpdatePredictionsReason called with invalid ATXUpdatePredictionsReason value of %lu", reason}];
   return @"Error";
 }
 

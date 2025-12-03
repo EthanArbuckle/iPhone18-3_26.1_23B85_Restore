@@ -1,11 +1,11 @@
 @interface _MRCreateHostedEndpointResponseProtobuf
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _MRCreateHostedEndpointResponseProtobuf
@@ -16,26 +16,26 @@
   v8.receiver = self;
   v8.super_class = _MRCreateHostedEndpointResponseProtobuf;
   v4 = [(_MRCreateHostedEndpointResponseProtobuf *)&v8 description];
-  v5 = [(_MRCreateHostedEndpointResponseProtobuf *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(_MRCreateHostedEndpointResponseProtobuf *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   groupUID = self->_groupUID;
   if (groupUID)
   {
-    [v3 setObject:groupUID forKey:@"groupUID"];
+    [dictionary setObject:groupUID forKey:@"groupUID"];
   }
 
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (self->_groupUID)
   {
@@ -43,32 +43,32 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   groupUID = self->_groupUID;
   if (groupUID)
   {
-    [a3 setGroupUID:groupUID];
+    [to setGroupUID:groupUID];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_groupUID copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_groupUID copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
     groupUID = self->_groupUID;
-    if (groupUID | v4[1])
+    if (groupUID | equalCopy[1])
     {
       v6 = [(NSString *)groupUID isEqual:?];
     }
@@ -87,9 +87,9 @@
   return v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  if (*(a3 + 1))
+  if (*(from + 1))
   {
     [(_MRCreateHostedEndpointResponseProtobuf *)self setGroupUID:?];
   }

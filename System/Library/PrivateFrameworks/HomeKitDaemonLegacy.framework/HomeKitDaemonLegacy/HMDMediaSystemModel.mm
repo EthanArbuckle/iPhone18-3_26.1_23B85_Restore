@@ -11,20 +11,20 @@
   v35 = *MEMORY[0x277D85DE8];
   [MEMORY[0x277CBEB58] set];
   v25 = v24 = self;
-  v3 = [(HMDBackingStoreModelObject *)self parentUUID];
+  parentUUID = [(HMDBackingStoreModelObject *)self parentUUID];
 
-  if (v3)
+  if (parentUUID)
   {
-    v4 = [(HMDBackingStoreModelObject *)self parentUUID];
-    [v25 addObject:v4];
+    parentUUID2 = [(HMDBackingStoreModelObject *)self parentUUID];
+    [v25 addObject:parentUUID2];
   }
 
   v28 = 0u;
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v5 = [(HMDMediaSystemModel *)self mediaSystemComponents];
-  v6 = [v5 countByEnumeratingWithState:&v26 objects:v34 count:16];
+  mediaSystemComponents = [(HMDMediaSystemModel *)self mediaSystemComponents];
+  v6 = [mediaSystemComponents countByEnumeratingWithState:&v26 objects:v34 count:16];
   if (v6)
   {
     v8 = v6;
@@ -39,7 +39,7 @@
       {
         if (*v27 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(mediaSystemComponents);
         }
 
         v12 = *(*(&v26 + 1) + 8 * i);
@@ -58,14 +58,14 @@
           if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
           {
             HMFGetLogIdentifier();
-            v19 = v18 = v5;
+            v19 = v18 = mediaSystemComponents;
             *buf = v22;
             v31 = v19;
             v32 = 2112;
             v33 = v12;
             _os_log_impl(&dword_2531F8000, v17, OS_LOG_TYPE_INFO, "%{public}@Accessory UUID is nil for media component: %@", buf, 0x16u);
 
-            v5 = v18;
+            mediaSystemComponents = v18;
             v9 = v23;
           }
 
@@ -74,7 +74,7 @@
         }
       }
 
-      v8 = [v5 countByEnumeratingWithState:&v26 objects:v34 count:16];
+      v8 = [mediaSystemComponents countByEnumeratingWithState:&v26 objects:v34 count:16];
     }
 
     while (v8);
@@ -91,7 +91,7 @@
   block[1] = 3221225472;
   block[2] = __33__HMDMediaSystemModel_properties__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (properties_onceToken_97883 != -1)
   {
     dispatch_once(&properties_onceToken_97883, block);

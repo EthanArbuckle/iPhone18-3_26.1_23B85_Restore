@@ -1,20 +1,20 @@
 @interface RBSProcessHostIdentifierPredicate
-- (BOOL)matchesProcess:(id)a3;
+- (BOOL)matchesProcess:(id)process;
 @end
 
 @implementation RBSProcessHostIdentifierPredicate
 
-- (BOOL)matchesProcess:(id)a3
+- (BOOL)matchesProcess:(id)process
 {
-  v4 = [a3 identity];
-  if ([v4 isXPCService])
+  identity = [process identity];
+  if ([identity isXPCService])
   {
-    v5 = [v4 hostIdentifier];
-    v6 = v5;
-    if (v5)
+    hostIdentifier = [identity hostIdentifier];
+    v6 = hostIdentifier;
+    if (hostIdentifier)
     {
-      v7 = [v5 rbs_pid];
-      v8 = v7 == [(RBSProcessIdentifier *)self->super._identifier rbs_pid];
+      rbs_pid = [hostIdentifier rbs_pid];
+      v8 = rbs_pid == [(RBSProcessIdentifier *)self->super._identifier rbs_pid];
     }
 
     else

@@ -1,21 +1,21 @@
 @interface IDSProtoKeyTransparencyLoggableData
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addApplicationPublicIdentity:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasNgmVersion:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addApplicationPublicIdentity:(id)identity;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasNgmVersion:(BOOL)version;
+- (void)writeTo:(id)to;
 @end
 
 @implementation IDSProtoKeyTransparencyLoggableData
 
-- (void)setHasNgmVersion:(BOOL)a3
+- (void)setHasNgmVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 2;
   }
@@ -28,22 +28,22 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)addApplicationPublicIdentity:(id)a3
+- (void)addApplicationPublicIdentity:(id)identity
 {
-  v4 = a3;
+  identityCopy = identity;
   applicationPublicIdentitys = self->_applicationPublicIdentitys;
-  v8 = v4;
+  v8 = identityCopy;
   if (!applicationPublicIdentitys)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_applicationPublicIdentitys;
     self->_applicationPublicIdentitys = v6;
 
-    v4 = v8;
+    identityCopy = v8;
     applicationPublicIdentitys = self->_applicationPublicIdentitys;
   }
 
-  [(NSMutableArray *)applicationPublicIdentitys addObject:v4];
+  [(NSMutableArray *)applicationPublicIdentitys addObject:identityCopy];
 }
 
 - (id)description
@@ -51,8 +51,8 @@
   v7.receiver = self;
   v7.super_class = IDSProtoKeyTransparencyLoggableData;
   v3 = [(IDSProtoKeyTransparencyLoggableData *)&v7 description];
-  v4 = [(IDSProtoKeyTransparencyLoggableData *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(IDSProtoKeyTransparencyLoggableData *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -104,8 +104,8 @@
             objc_enumerationMutation(v10);
           }
 
-          v15 = [*(*(&v17 + 1) + 8 * i) dictionaryRepresentation];
-          [v9 addObject:v15];
+          dictionaryRepresentation = [*(*(&v17 + 1) + 8 * i) dictionaryRepresentation];
+          [v9 addObject:dictionaryRepresentation];
         }
 
         v12 = [(NSMutableArray *)v10 countByEnumeratingWithState:&v17 objects:v21 count:16];
@@ -120,9 +120,9 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_ngmPublicIdentity)
   {
     PBDataWriterWriteDataField();
@@ -169,37 +169,37 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v10 = v4;
+  toCopy = to;
+  v10 = toCopy;
   if (self->_ngmPublicIdentity)
   {
-    [v4 setNgmPublicIdentity:?];
-    v4 = v10;
+    [toCopy setNgmPublicIdentity:?];
+    toCopy = v10;
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(v4 + 8) = self->_ngmVersion;
-    *(v4 + 36) |= 2u;
+    *(toCopy + 8) = self->_ngmVersion;
+    *(toCopy + 36) |= 2u;
     has = self->_has;
   }
 
   if (has)
   {
-    *(v4 + 4) = self->_ktVersion;
-    *(v4 + 36) |= 1u;
+    *(toCopy + 4) = self->_ktVersion;
+    *(toCopy + 36) |= 1u;
   }
 
   if ([(IDSProtoKeyTransparencyLoggableData *)self applicationPublicIdentitysCount])
   {
     [v10 clearApplicationPublicIdentitys];
-    v6 = [(IDSProtoKeyTransparencyLoggableData *)self applicationPublicIdentitysCount];
-    if (v6)
+    applicationPublicIdentitysCount = [(IDSProtoKeyTransparencyLoggableData *)self applicationPublicIdentitysCount];
+    if (applicationPublicIdentitysCount)
     {
-      v7 = v6;
+      v7 = applicationPublicIdentitysCount;
       for (i = 0; i != v7; ++i)
       {
         v9 = [(IDSProtoKeyTransparencyLoggableData *)self applicationPublicIdentityAtIndex:i];
@@ -209,10 +209,10 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSData *)self->_ngmPublicIdentity copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSData *)self->_ngmPublicIdentity copyWithZone:zone];
   v7 = v5[3];
   v5[3] = v6;
 
@@ -249,7 +249,7 @@
           objc_enumerationMutation(v9);
         }
 
-        v14 = [*(*(&v16 + 1) + 8 * i) copyWithZone:{a3, v16}];
+        v14 = [*(*(&v16 + 1) + 8 * i) copyWithZone:{zone, v16}];
         [v5 addApplicationPublicIdentity:v14];
       }
 
@@ -262,16 +262,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_16;
   }
 
   ngmPublicIdentity = self->_ngmPublicIdentity;
-  if (ngmPublicIdentity | *(v4 + 3))
+  if (ngmPublicIdentity | *(equalCopy + 3))
   {
     if (![(NSData *)ngmPublicIdentity isEqual:?])
     {
@@ -281,13 +281,13 @@
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 36) & 2) == 0 || self->_ngmVersion != *(v4 + 8))
+    if ((*(equalCopy + 36) & 2) == 0 || self->_ngmVersion != *(equalCopy + 8))
     {
       goto LABEL_16;
     }
   }
 
-  else if ((*(v4 + 36) & 2) != 0)
+  else if ((*(equalCopy + 36) & 2) != 0)
   {
 LABEL_16:
     v7 = 0;
@@ -296,19 +296,19 @@ LABEL_16:
 
   if (*&self->_has)
   {
-    if ((*(v4 + 36) & 1) == 0 || self->_ktVersion != *(v4 + 4))
+    if ((*(equalCopy + 36) & 1) == 0 || self->_ktVersion != *(equalCopy + 4))
     {
       goto LABEL_16;
     }
   }
 
-  else if (*(v4 + 36))
+  else if (*(equalCopy + 36))
   {
     goto LABEL_16;
   }
 
   applicationPublicIdentitys = self->_applicationPublicIdentitys;
-  if (applicationPublicIdentitys | *(v4 + 1))
+  if (applicationPublicIdentitys | *(equalCopy + 1))
   {
     v7 = [(NSMutableArray *)applicationPublicIdentitys isEqual:?];
   }
@@ -350,25 +350,25 @@ LABEL_3:
   return v4 ^ v3 ^ v5 ^ [(NSMutableArray *)self->_applicationPublicIdentitys hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (*(v4 + 3))
+  fromCopy = from;
+  if (*(fromCopy + 3))
   {
     [(IDSProtoKeyTransparencyLoggableData *)self setNgmPublicIdentity:?];
   }
 
-  v5 = *(v4 + 36);
+  v5 = *(fromCopy + 36);
   if ((v5 & 2) != 0)
   {
-    self->_ngmVersion = *(v4 + 8);
+    self->_ngmVersion = *(fromCopy + 8);
     *&self->_has |= 2u;
-    v5 = *(v4 + 36);
+    v5 = *(fromCopy + 36);
   }
 
   if (v5)
   {
-    self->_ktVersion = *(v4 + 4);
+    self->_ktVersion = *(fromCopy + 4);
     *&self->_has |= 1u;
   }
 
@@ -376,7 +376,7 @@ LABEL_3:
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v6 = *(v4 + 1);
+  v6 = *(fromCopy + 1);
   v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {

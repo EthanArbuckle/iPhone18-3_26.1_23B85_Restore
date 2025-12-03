@@ -82,15 +82,15 @@
 
 - (uint64_t)_setInputDelegate:()WKPrivate
 {
-  *a1 = &unk_1F10F8DE0;
-  objc_destroyWeak(a1 + 1);
+  *self = &unk_1F10F8DE0;
+  objc_destroyWeak(self + 1);
 
-  return bmalloc::api::tzoneFree(a1, v2);
+  return bmalloc::api::tzoneFree(self, v2);
 }
 
 - (void)_setInputDelegate:()WKPrivate
 {
-  WeakRetained = objc_loadWeakRetained((a1 + 8));
+  WeakRetained = objc_loadWeakRetained((self + 8));
   if (WeakRetained)
   {
     v11 = WeakRetained;
@@ -217,12 +217,12 @@
 
 - (uint64_t)_setInputDelegate:
 {
-  result = WebKit::CompletionHandlerCallChecker::completionHandlerHasBeenCalled(*(a1 + 40));
+  result = WebKit::CompletionHandlerCallChecker::completionHandlerHasBeenCalled(*(self + 40));
   if ((result & 1) == 0)
   {
-    *(*(a1 + 40) + 24) = 1;
+    *(*(self + 40) + 24) = 1;
 
-    return WTF::CompletionHandler<void ()(void)>::operator()((a1 + 32));
+    return WTF::CompletionHandler<void ()(void)>::operator()((self + 32));
   }
 
   return result;
@@ -230,37 +230,23 @@
 
 - (uint64_t)_frames:()WKPrivate
 {
-  *a1 = &unk_1F10F94D0;
-  v2 = *(a1 + 16);
-  *(a1 + 16) = 0;
+  *self = &unk_1F10F94D0;
+  v2 = *(self + 16);
+  *(self + 16) = 0;
   if (v2)
   {
     CFRelease(*(v2 + 8));
   }
 
-  _Block_release(*(a1 + 8));
-  return a1;
-}
-
-{
-  *a1 = &unk_1F10F94D0;
-  v2 = *(a1 + 16);
-  *(a1 + 16) = 0;
-  if (v2)
-  {
-    CFRelease(*(v2 + 8));
-  }
-
-  _Block_release(*(a1 + 8));
-
-  return WTF::fastFree(a1, v3);
+  _Block_release(*(self + 8));
+  return self;
 }
 
 - (void)_frames:()WKPrivate
 {
   if (*(a2 + 368))
   {
-    API::FrameTreeNode::create(a2, *(a1 + 16), &v7);
+    API::FrameTreeNode::create(a2, *(self + 16), &v7);
     v3 = *(v7 + 8);
     if (v3)
     {
@@ -274,7 +260,7 @@
       v4 = v3;
     }
 
-    (*(*(a1 + 8) + 16))();
+    (*(*(self + 8) + 16))();
     if (v3)
     {
     }
@@ -289,7 +275,7 @@
 
   else
   {
-    v6 = *(*(a1 + 8) + 16);
+    v6 = *(*(self + 8) + 16);
 
     v6();
   }
@@ -297,30 +283,16 @@
 
 - (uint64_t)_frameTrees:()WKPrivate
 {
-  *a1 = &unk_1F10F94F8;
-  v2 = *(a1 + 16);
-  *(a1 + 16) = 0;
+  *self = &unk_1F10F94F8;
+  v2 = *(self + 16);
+  *(self + 16) = 0;
   if (v2)
   {
     CFRelease(*(v2 + 8));
   }
 
-  _Block_release(*(a1 + 8));
-  return a1;
-}
-
-{
-  *a1 = &unk_1F10F94F8;
-  v2 = *(a1 + 16);
-  *(a1 + 16) = 0;
-  if (v2)
-  {
-    CFRelease(*(v2 + 8));
-  }
-
-  _Block_release(*(a1 + 8));
-
-  return WTF::fastFree(a1, v3);
+  _Block_release(*(self + 8));
+  return self;
 }
 
 - (void)_frameTrees:()WKPrivate
@@ -332,7 +304,7 @@
     v6 = *a2;
     for (i = 368 * v5; i; i -= 368)
     {
-      API::FrameTreeNode::create(v6, *(a1 + 16), &v11);
+      API::FrameTreeNode::create(v6, *(self + 16), &v11);
       v8 = *(v11 + 8);
       if (v8)
       {
@@ -362,7 +334,7 @@
     }
   }
 
-  (*(*(a1 + 8) + 16))();
+  (*(*(self + 8) + 16))();
   if (v4)
   {
   }
@@ -370,30 +342,16 @@
 
 - (uint64_t)_frameInfoFromHandle:()WKPrivate completionHandler:
 {
-  *a1 = &unk_1F10F9520;
-  v2 = *(a1 + 16);
-  *(a1 + 16) = 0;
+  *self = &unk_1F10F9520;
+  v2 = *(self + 16);
+  *(self + 16) = 0;
   if (v2)
   {
     CFRelease(*(v2 + 8));
   }
 
-  _Block_release(*(a1 + 8));
-  return a1;
-}
-
-{
-  *a1 = &unk_1F10F9520;
-  v2 = *(a1 + 16);
-  *(a1 + 16) = 0;
-  if (v2)
-  {
-    CFRelease(*(v2 + 8));
-  }
-
-  _Block_release(*(a1 + 8));
-
-  return WTF::fastFree(a1, v3);
+  _Block_release(*(self + 8));
+  return self;
 }
 
 - (void)_frameInfoFromHandle:()WKPrivate completionHandler:
@@ -401,7 +359,7 @@
   if (*(a2 + 352))
   {
     v4 = API::Object::newObject(0x180uLL, 59);
-    v5 = *(API::FrameInfo::FrameInfo(v4, a2, (a1 + 16)) + 8);
+    v5 = *(API::FrameInfo::FrameInfo(v4, a2, (self + 16)) + 8);
     if (v5)
     {
       objc_opt_class();
@@ -414,7 +372,7 @@
       v6 = v5;
     }
 
-    (*(*(a1 + 8) + 16))();
+    (*(*(self + 8) + 16))();
     if (v5)
     {
     }
@@ -426,7 +384,7 @@
 
   else
   {
-    v8 = *(*(a1 + 8) + 16);
+    v8 = *(*(self + 8) + 16);
 
     v8();
   }
@@ -434,7 +392,7 @@
 
 - (uint64_t)_executeEditCommand:()WKPrivate argument:completion:
 {
-  result = *(a1 + 8);
+  result = *(self + 8);
   if (result)
   {
     return (*(result + 16))(result, 1);
@@ -445,10 +403,10 @@
 
 - (uint64_t)_startTextManipulationsWithConfiguration:()WKPrivate completion:
 {
-  *a1 = &unk_1F10F9598;
-  _Block_release(a1[1]);
+  *self = &unk_1F10F9598;
+  _Block_release(self[1]);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(self, v2);
 }
 
 - (void)_startTextManipulationsWithConfiguration:()WKPrivate completion:
@@ -642,7 +600,7 @@ LABEL_56:
     v33 = &stru_1F1147748;
   }
 
-  *a1 = [(_WKTextManipulationItem *)v30 initWithIdentifier:v40 tokens:v3 isSubframe:*(v38 + 8) isCrossSiteSubframe:*(v38 + 9)];
+  *self = [(_WKTextManipulationItem *)v30 initWithIdentifier:v40 tokens:v3 isSubframe:*(v38 + 8) isCrossSiteSubframe:*(v38 + 9)];
   v35 = v40;
   v40 = 0;
   if (v35)
@@ -673,7 +631,7 @@ LABEL_52:
   v2 = *a2;
   *a2 = 0;
   *(a2 + 8) = 0;
-  result = (*(*(a1 + 8) + 16))();
+  result = (*(*(self + 8) + 16))();
   if (v2)
   {
 
@@ -685,27 +643,15 @@ LABEL_52:
 
 - (uint64_t)_completeTextManipulationForItems:()WKPrivate completion:
 {
-  *a1 = &unk_1F10F95E8;
-  _Block_release(*(a1 + 16));
-  v2 = *(a1 + 8);
-  *(a1 + 8) = 0;
+  *self = &unk_1F10F95E8;
+  _Block_release(*(self + 16));
+  v2 = *(self + 8);
+  *(self + 8) = 0;
   if (v2)
   {
   }
 
-  return a1;
-}
-
-{
-  *a1 = &unk_1F10F95E8;
-  _Block_release(*(a1 + 16));
-  v3 = *(a1 + 8);
-  *(a1 + 8) = 0;
-  if (v3)
-  {
-  }
-
-  return WTF::fastFree(a1, v2);
+  return self;
 }
 
 - (void)_completeTextManipulationForItems:()WKPrivate completion:
@@ -717,9 +663,9 @@ LABEL_52:
   *(a2 + 8) = 0;
   if (v3)
   {
-    v14 = a1;
+    selfCopy = self;
     v15 = v2;
-    v4 = *(a1 + 8);
+    v4 = *(self + 8);
     v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v3];
     v6 = 32 * v3;
     v7 = (v2 + 16);
@@ -745,7 +691,7 @@ LABEL_52:
     }
 
     while (v6);
-    a1 = v14;
+    self = selfCopy;
     v2 = v15;
   }
 
@@ -754,7 +700,7 @@ LABEL_52:
     v5 = 0;
   }
 
-  (*(*(a1 + 16) + 16))();
+  (*(*(self + 16) + 16))();
   if (v5)
   {
   }
@@ -767,10 +713,10 @@ LABEL_52:
 
 - (uint64_t)_dataTaskWithRequest:()WKPrivate runAtForegroundPriority:completionHandler:
 {
-  *a1 = &unk_1F10F9610;
-  _Block_release(a1[1]);
+  *self = &unk_1F10F9610;
+  _Block_release(self[1]);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(self, v2);
 }
 
 - (void)_dataTaskWithRequest:()WKPrivate runAtForegroundPriority:completionHandler:
@@ -783,7 +729,7 @@ LABEL_52:
 
   else
   {
-    (*(*(a1 + 8) + 16))();
+    (*(*(self + 8) + 16))();
     v4 = *(a2 + 8);
 
     CFRelease(v4);
@@ -792,10 +738,10 @@ LABEL_52:
 
 - (uint64_t)_convertPoint:()WKPrivate fromFrame:toMainFrameCoordinates:
 {
-  *a1 = &unk_1F10F9638;
-  _Block_release(a1[1]);
+  *self = &unk_1F10F9638;
+  _Block_release(self[1]);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(self, v2);
 }
 
 - (void)_convertPoint:()WKPrivate fromFrame:toMainFrameCoordinates:
@@ -803,13 +749,13 @@ LABEL_52:
   if (a3)
   {
     WebCore::FloatPoint::operator CGPoint();
-    (*(*(a1 + 8) + 16))();
+    (*(*(self + 8) + 16))();
   }
 
   else
   {
     v4 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"WKErrorDomain" code:1 userInfo:0];
-    (*(*(a1 + 8) + 16))(0.0, 0.0);
+    (*(*(self + 8) + 16))(0.0, 0.0);
     if (v4)
     {
     }
@@ -818,10 +764,10 @@ LABEL_52:
 
 - (uint64_t)_convertRect:()WKPrivate fromFrame:toMainFrameCoordinates:
 {
-  *a1 = &unk_1F10F9660;
-  _Block_release(a1[1]);
+  *self = &unk_1F10F9660;
+  _Block_release(self[1]);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(self, v2);
 }
 
 - (void)_convertRect:()WKPrivate fromFrame:toMainFrameCoordinates:
@@ -829,13 +775,13 @@ LABEL_52:
   if (*(a2 + 16))
   {
     WebCore::FloatRect::operator CGRect();
-    (*(*(a1 + 8) + 16))();
+    (*(*(self + 8) + 16))();
   }
 
   else
   {
     v3 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"WKErrorDomain" code:1 userInfo:0];
-    (*(*(a1 + 8) + 16))(0.0, 0.0, 0.0, 0.0);
+    (*(*(self + 8) + 16))(0.0, 0.0, 0.0, 0.0);
     if (v3)
     {
     }
@@ -844,16 +790,16 @@ LABEL_52:
 
 - (uint64_t)_textFragmentDirectiveFromSelectionWithCompletionHandler:()WKPrivate
 {
-  *a1 = &unk_1F10F96D8;
-  _Block_release(a1[1]);
+  *self = &unk_1F10F96D8;
+  _Block_release(self[1]);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(self, v2);
 }
 
 - (void)_textFragmentDirectiveFromSelectionWithCompletionHandler:()WKPrivate
 {
   WTF::URL::createCFURL(&v4, this);
-  (*(*(a1 + 8) + 16))();
+  (*(*(self + 8) + 16))();
   v3 = v4;
   v4 = 0;
   if (v3)
@@ -863,23 +809,15 @@ LABEL_52:
 
 - (uint64_t)_requestAllTextWithCompletionHandler:()WKPrivate
 {
-  *a1 = &unk_1F10F9700;
-  _Block_release(*(a1 + 16));
-  objc_destroyWeak((a1 + 8));
-  return a1;
-}
-
-{
-  *a1 = &unk_1F10F9700;
-  _Block_release(*(a1 + 16));
-  objc_destroyWeak((a1 + 8));
-
-  return WTF::fastFree(a1, v2);
+  *self = &unk_1F10F9700;
+  _Block_release(*(self + 16));
+  objc_destroyWeak((self + 8));
+  return self;
 }
 
 - (void)_requestAllTextWithCompletionHandler:()WKPrivate
 {
-  WeakRetained = objc_loadWeakRetained((a1 + 8));
+  WeakRetained = objc_loadWeakRetained((self + 8));
   if (WeakRetained)
   {
     v11 = WeakRetained;
@@ -907,7 +845,7 @@ LABEL_52:
       }
     }
 
-    (*(*(a1 + 16) + 16))();
+    (*(*(self + 16) + 16))();
     if (v5)
     {
     }
@@ -915,7 +853,7 @@ LABEL_52:
 
   else
   {
-    v10 = *(*(a1 + 16) + 16);
+    v10 = *(*(self + 16) + 16);
 
     v10();
   }
@@ -923,10 +861,10 @@ LABEL_52:
 
 - (uint64_t)_requestTargetedElementInfo:()WKPrivate completionHandler:
 {
-  *a1 = &unk_1F10F9728;
-  _Block_release(a1[1]);
+  *self = &unk_1F10F9728;
+  _Block_release(self[1]);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(self, v2);
 }
 
 - (void)_requestTargetedElementInfo:()WKPrivate completionHandler:
@@ -955,7 +893,7 @@ LABEL_52:
     }
   }
 
-  (*(*(a1 + 8) + 16))();
+  (*(*(self + 8) + 16))();
   if (v8)
   {
   }
@@ -963,10 +901,10 @@ LABEL_52:
 
 - (uint64_t)_requestAllTargetableElementsInfo:()WKPrivate completionHandler:
 {
-  *a1 = &unk_1F10F9750;
-  _Block_release(a1[1]);
+  *self = &unk_1F10F9750;
+  _Block_release(self[1]);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(self, v2);
 }
 
 - (void)_requestAllTargetableElementsInfo:()WKPrivate completionHandler:
@@ -1014,7 +952,7 @@ LABEL_52:
     while (v5 != v6);
   }
 
-  (*(*(a1 + 8) + 16))();
+  (*(*(self + 8) + 16))();
   if (v12)
   {
   }
@@ -1022,30 +960,16 @@ LABEL_52:
 
 - (uint64_t)_loadAndDecodeImage:()WKPrivate constrainedToSize:maximumBytesFromNetwork:completionHandler:
 {
-  *a1 = &unk_1F10F9778;
-  v3 = *(a1 + 16);
-  *(a1 + 16) = 0;
+  *self = &unk_1F10F9778;
+  v3 = *(self + 16);
+  *(self + 16) = 0;
   if (v3 && atomic_fetch_add_explicit(v3, 0xFFFFFFFE, memory_order_relaxed) == 2)
   {
     WTF::StringImpl::destroy(v3, a2);
   }
 
-  _Block_release(*(a1 + 8));
-  return a1;
-}
-
-{
-  *a1 = &unk_1F10F9778;
-  v3 = *(a1 + 16);
-  *(a1 + 16) = 0;
-  if (v3 && atomic_fetch_add_explicit(v3, 0xFFFFFFFE, memory_order_relaxed) == 2)
-  {
-    WTF::StringImpl::destroy(v3, a2);
-  }
-
-  _Block_release(*(a1 + 8));
-
-  return WTF::fastFree(a1, v4);
+  _Block_release(*(self + 8));
+  return self;
 }
 
 - (void)_loadAndDecodeImage:()WKPrivate constrainedToSize:maximumBytesFromNetwork:completionHandler:
@@ -1057,7 +981,7 @@ LABEL_52:
     v5 = objc_alloc(MEMORY[0x1E69DCAB8]);
     WebCore::ShareableBitmap::makeCGImageCopy(&cf, v4);
     v6 = [v5 initWithCGImage:cf];
-    (*(*(a1 + 1) + 16))();
+    (*(*(self + 1) + 16))();
     if (v6)
     {
     }
@@ -1084,13 +1008,13 @@ LABEL_52:
 
   if (*(this + 80) != 1)
   {
-    mpark::throw_bad_variant_access(a1);
+    mpark::throw_bad_variant_access(self);
   }
 
   if (*(this + 60))
   {
     WebCore::ResourceError::nsError(this);
-    v3 = *(*(a1 + 1) + 16);
+    v3 = *(*(self + 1) + 16);
 
     v3();
   }
@@ -1099,7 +1023,7 @@ LABEL_52:
   {
     WebCore::internalError();
     WebCore::ResourceError::nsError(&cf);
-    (*(*(a1 + 1) + 16))();
+    (*(*(self + 1) + 16))();
     v10 = v17;
     v17 = 0;
     if (v10)
@@ -1176,7 +1100,7 @@ LABEL_52:
       WTF::StringImpl::destroy(v19, v16);
     }
 
-    (*(*(a1 + 8) + 16))();
+    (*(*(self + 8) + 16))();
     if (v17)
     {
     }
@@ -1238,7 +1162,7 @@ LABEL_23:
       v27 = v21;
     }
 
-    (*(*(a1 + 8) + 16))();
+    (*(*(self + 8) + 16))();
     v28 = v35[0];
     v35[0] = 0;
     if (v28)
@@ -1285,10 +1209,10 @@ LABEL_23:
 
 - (uint64_t)_createIconDataFromImageData:()WKPrivate withLengths:completionHandler:
 {
-  *a1 = &unk_1F10F97C8;
-  _Block_release(a1[1]);
+  *self = &unk_1F10F97C8;
+  _Block_release(self[1]);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(self, v2);
 }
 
 - (void)_createIconDataFromImageData:()WKPrivate withLengths:completionHandler:
@@ -1306,7 +1230,7 @@ LABEL_23:
       v5 = v4;
     }
 
-    (*(*(a1 + 8) + 16))();
+    (*(*(self + 8) + 16))();
     v6 = v9;
     v9 = 0;
     if (v6)
@@ -1326,7 +1250,7 @@ LABEL_23:
     v10 = *MEMORY[0x1E696A578];
     v11[0] = @"Failed to decode data";
     v8 = [v7 initWithDomain:@"WKErrorDomain" code:1 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v11, &v10, 1)}];
-    (*(*(a1 + 8) + 16))();
+    (*(*(self + 8) + 16))();
     if (v8)
     {
     }
@@ -1335,10 +1259,10 @@ LABEL_23:
 
 - (uint64_t)_decodeImageData:()WKPrivate preferredSize:completionHandler:
 {
-  *a1 = &unk_1F10F97F0;
-  _Block_release(a1[1]);
+  *self = &unk_1F10F97F0;
+  _Block_release(self[1]);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(self, v2);
 }
 
 - (void)_decodeImageData:()WKPrivate preferredSize:completionHandler:
@@ -1363,7 +1287,7 @@ LABEL_23:
     else if (!v5)
     {
 LABEL_5:
-      (*(*(a1 + 8) + 16))();
+      (*(*(self + 8) + 16))();
       return;
     }
 
@@ -1375,7 +1299,7 @@ LABEL_5:
   v10 = *MEMORY[0x1E696A578];
   cf[0] = @"Failed to decode data";
   v9 = [v8 initWithDomain:@"WKErrorDomain" code:1 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", cf, &v10, 1)}];
-  (*(*(a1 + 8) + 16))();
+  (*(*(self + 8) + 16))();
   if (v9)
   {
   }
@@ -1383,55 +1307,55 @@ LABEL_5:
 
 - (uint64_t)_loadServiceWorker:()WKPrivate usingModules:completionHandler:
 {
-  *a1 = &unk_1F10F9818;
-  _Block_release(a1[1]);
+  *self = &unk_1F10F9818;
+  _Block_release(self[1]);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(self, v2);
 }
 
 - (uint64_t)_didLoadAppInitiatedRequest:()WKPrivate
 {
-  *a1 = &unk_1F10F9840;
-  _Block_release(a1[1]);
+  *self = &unk_1F10F9840;
+  _Block_release(self[1]);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(self, v2);
 }
 
 - (uint64_t)_didLoadNonAppInitiatedRequest:()WKPrivate
 {
-  *a1 = &unk_1F10F9868;
-  _Block_release(a1[1]);
+  *self = &unk_1F10F9868;
+  _Block_release(self[1]);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(self, v2);
 }
 
 - (uint64_t)_suspendPage:()WKPrivate
 {
-  *a1 = &unk_1F10F9890;
-  _Block_release(a1[1]);
+  *self = &unk_1F10F9890;
+  _Block_release(self[1]);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(self, v2);
 }
 
 - (uint64_t)_resumePage:()WKPrivate
 {
-  *a1 = &unk_1F10F98B8;
-  _Block_release(a1[1]);
+  *self = &unk_1F10F98B8;
+  _Block_release(self[1]);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(self, v2);
 }
 
 - (uint64_t)_getPDFFirstPageSizeInFrame:()WKPrivate completionHandler:
 {
-  *a1 = &unk_1F10F98E0;
-  _Block_release(a1[1]);
+  *self = &unk_1F10F98E0;
+  _Block_release(self[1]);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(self, v2);
 }
 
 - (uint64_t)_sessionStateWithFilter:()WKPrivate
 {
-  v2 = *(a1 + 8);
+  v2 = *(self + 8);
   if (!v2)
   {
     return 1;
@@ -1456,7 +1380,7 @@ LABEL_5:
 
 - (uint64_t)_insertAttachmentWithFileWrapper:()WKPrivate contentType:completion:
 {
-  result = *(a1 + 8);
+  result = *(self + 8);
   if (result)
   {
     return (*(result + 16))(result, 1);
@@ -1467,10 +1391,10 @@ LABEL_5:
 
 - (uint64_t)_showWarningViewWithURL:()WKPrivate title:warning:detailsWithLinks:completionHandler:
 {
-  *a1 = &unk_1F10F9958;
-  _Block_release(a1[1]);
+  *self = &unk_1F10F9958;
+  _Block_release(self[1]);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(self, v2);
 }
 
 - (WTF::StringImpl)_showWarningViewWithURL:()WKPrivate title:warning:detailsWithLinks:completionHandler:
@@ -1487,7 +1411,7 @@ LABEL_5:
     v9 = *(a2 + 8);
     v10 = *(a2 + 24);
     WTF::URL::createCFURL(&v11, &v8);
-    (*(*(a1 + 1) + 16))();
+    (*(*(self + 1) + 16))();
     v7 = v11;
     v11 = 0;
     if (v7)
@@ -1506,10 +1430,10 @@ LABEL_5:
   {
     if (*(a2 + 40))
     {
-      mpark::throw_bad_variant_access(a1);
+      mpark::throw_bad_variant_access(self);
     }
 
-    v3 = *(*(a1 + 1) + 16);
+    v3 = *(*(self + 1) + 16);
 
     return v3();
   }
@@ -1519,10 +1443,10 @@ LABEL_5:
 
 - (uint64_t)_isJITEnabled:()WKPrivate
 {
-  *a1 = &unk_1F10F9980;
-  _Block_release(a1[1]);
+  *self = &unk_1F10F9980;
+  _Block_release(self[1]);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(self, v2);
 }
 
 - (uint64_t)_saveResources:()WKPrivate suggestedFileName:completionHandler:
@@ -1551,7 +1475,7 @@ LABEL_5:
 
     v14[0] = v12;
     v8 = [v5 initWithDomain:@"WKErrorDomain" code:1 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v14, &v13, 1)}];
-    (*(*(a1 + 8) + 16))();
+    (*(*(self + 8) + 16))();
     if (v8)
     {
     }
@@ -1571,7 +1495,7 @@ LABEL_5:
 
   else
   {
-    v3 = *(*(a1 + 8) + 16);
+    v3 = *(*(self + 8) + 16);
 
     return v3();
   }
@@ -1605,7 +1529,7 @@ LABEL_5:
 
     v14[0] = v12;
     v8 = [v5 initWithDomain:@"WKErrorDomain" code:1 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v14, &v13, 1)}];
-    (*(*(a1 + 8) + 16))();
+    (*(*(self + 8) + 16))();
     if (v8)
     {
     }
@@ -1625,7 +1549,7 @@ LABEL_5:
 
   else
   {
-    v3 = *(*(a1 + 8) + 16);
+    v3 = *(*(self + 8) + 16);
 
     return v3();
   }
@@ -1648,17 +1572,17 @@ LABEL_5:
     }
   }
 
-  v3 = *(*(a1 + 8) + 16);
+  v3 = *(*(self + 8) + 16);
 
   return v3();
 }
 
 - (uint64_t)_getContentsAsStringWithCompletionHandler:()WKPrivate
 {
-  *a1 = &unk_1F10F9A20;
-  _Block_release(a1[1]);
+  *self = &unk_1F10F9A20;
+  _Block_release(self[1]);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(self, v2);
 }
 
 - (void)_getContentsAsStringWithCompletionHandler:()WKPrivate
@@ -1681,7 +1605,7 @@ LABEL_5:
     v5 = &stru_1F1147748;
   }
 
-  (*(*(a1 + 8) + 16))();
+  (*(*(self + 8) + 16))();
   v7 = v8;
   v8 = 0;
   if (v7)
@@ -1699,30 +1623,16 @@ LABEL_5:
 
 - (uint64_t)_getContentsAsStringWithCompletionHandlerKeepIPCConnectionAliveForTesting:()WKPrivate
 {
-  *a1 = &unk_1F10F9A48;
-  v2 = *(a1 + 16);
-  *(a1 + 16) = 0;
+  *self = &unk_1F10F9A48;
+  v2 = *(self + 16);
+  *(self + 16) = 0;
   if (v2)
   {
     WTF::ThreadSafeRefCountedAndCanMakeThreadSafeWeakPtr<IPC::Connection,(WTF::DestructionThread)2>::deref(v2);
   }
 
-  _Block_release(*(a1 + 8));
-  return a1;
-}
-
-{
-  *a1 = &unk_1F10F9A48;
-  v2 = *(a1 + 16);
-  *(a1 + 16) = 0;
-  if (v2)
-  {
-    WTF::ThreadSafeRefCountedAndCanMakeThreadSafeWeakPtr<IPC::Connection,(WTF::DestructionThread)2>::deref(v2);
-  }
-
-  _Block_release(*(a1 + 8));
-
-  return WTF::fastFree(a1, v3);
+  _Block_release(*(self + 8));
+  return self;
 }
 
 - (void)_getContentsAsStringWithCompletionHandlerKeepIPCConnectionAliveForTesting:()WKPrivate
@@ -1745,7 +1655,7 @@ LABEL_5:
     v5 = &stru_1F1147748;
   }
 
-  (*(*(a1 + 8) + 16))();
+  (*(*(self + 8) + 16))();
   v7 = v8;
   v8 = 0;
   if (v7)
@@ -1763,10 +1673,10 @@ LABEL_5:
 
 - (uint64_t)_getContentsOfAllFramesAsStringWithCompletionHandler:()WKPrivate
 {
-  *a1 = &unk_1F10F9A70;
-  _Block_release(a1[1]);
+  *self = &unk_1F10F9A70;
+  _Block_release(self[1]);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(self, v2);
 }
 
 - (void)_getContentsOfAllFramesAsStringWithCompletionHandler:()WKPrivate
@@ -1789,7 +1699,7 @@ LABEL_5:
     v5 = &stru_1F1147748;
   }
 
-  (*(*(a1 + 8) + 16))();
+  (*(*(self + 8) + 16))();
   v7 = v8;
   v8 = 0;
   if (v7)
@@ -1807,10 +1717,10 @@ LABEL_5:
 
 - (uint64_t)_getContentsAsAttributedStringWithCompletionHandler:()WKPrivate
 {
-  *a1 = &unk_1F10F9A98;
-  _Block_release(a1[1]);
+  *self = &unk_1F10F9A98;
+  _Block_release(self[1]);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(self, v2);
 }
 
 - (void)_getContentsAsAttributedStringWithCompletionHandler:()WKPrivate
@@ -1826,7 +1736,7 @@ LABEL_5:
     createNSError(WKErrorUnknown, 0, &v6);
   }
 
-  (*(*(a1 + 8) + 16))();
+  (*(*(self + 8) + 16))();
   v4 = v6;
   v6 = 0;
   if (v4)
@@ -1842,15 +1752,15 @@ LABEL_5:
 
 - (uint64_t)_getApplicationManifestWithCompletionHandler:()WKPrivate
 {
-  *a1 = &unk_1F10F9AC0;
-  _Block_release(a1[1]);
+  *self = &unk_1F10F9AC0;
+  _Block_release(self[1]);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(self, v2);
 }
 
 - (void)_getApplicationManifestWithCompletionHandler:()WKPrivate
 {
-  v3 = *(a1 + 8);
+  v3 = *(self + 8);
   if (v3)
   {
     if (*(a2 + 272) == 1)
@@ -1863,7 +1773,7 @@ LABEL_5:
 
       else
       {
-        (*(*(a1 + 8) + 16))();
+        (*(*(self + 8) + 16))();
         v4 = v6;
         v6 = 0;
         if (v4)
@@ -1889,25 +1799,25 @@ LABEL_5:
     WTF::StringImpl::operator NSString *();
   }
 
-  v3 = *(*(a1 + 8) + 16);
+  v3 = *(*(self + 8) + 16);
 
   return v3();
 }
 
 - (uint64_t)_clearServiceWorkerEntitlementOverride:()WKPrivate
 {
-  *a1 = &unk_1F10F9B10;
-  _Block_release(a1[1]);
+  *self = &unk_1F10F9B10;
+  _Block_release(self[1]);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(self, v2);
 }
 
 - (uint64_t)_getProcessDisplayNameWithCompletionHandler:()WKPrivate
 {
-  *a1 = &unk_1F10F9B38;
-  _Block_release(a1[1]);
+  *self = &unk_1F10F9B38;
+  _Block_release(self[1]);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(self, v2);
 }
 
 - (void)_getProcessDisplayNameWithCompletionHandler:()WKPrivate
@@ -1929,7 +1839,7 @@ LABEL_5:
     v5 = &stru_1F1147748;
   }
 
-  (*(*(a1 + 8) + 16))();
+  (*(*(self + 8) + 16))();
   v6 = v7;
   v7 = 0;
   if (v6)
@@ -1939,7 +1849,7 @@ LABEL_5:
 
 - (uint64_t)_removeDataDetectedLinks:()WKPrivate
 {
-  v3 = *(a1 + 16);
+  v3 = *(self + 16);
   if (v3)
   {
     v4 = *(v3 + 8);
@@ -1955,7 +1865,7 @@ LABEL_5:
     }
   }
 
-  result = *(a1 + 8);
+  result = *(self + 8);
   if (result)
   {
     v8 = *(result + 16);
@@ -1968,87 +1878,79 @@ LABEL_5:
 
 - (uint64_t)_setDisplayCaptureState:()WKPrivate completionHandler:
 {
-  *a1 = &unk_1F10F9BB0;
-  _Block_release(a1[1]);
+  *self = &unk_1F10F9BB0;
+  _Block_release(self[1]);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(self, v2);
 }
 
 - (uint64_t)_setSystemAudioCaptureState:()WKPrivate completionHandler:
 {
-  *a1 = &unk_1F10F9C00;
-  _Block_release(a1[1]);
+  *self = &unk_1F10F9C00;
+  _Block_release(self[1]);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(self, v2);
 }
 
 - (uint64_t)_resetVisibilityAdjustmentsForTargetedElements:()WKPrivate completionHandler:
 {
-  *a1 = &unk_1F10F9C50;
-  _Block_release(a1[1]);
+  *self = &unk_1F10F9C50;
+  _Block_release(self[1]);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(self, v2);
 }
 
 - (uint64_t)_adjustVisibilityForTargetedElements:()WKPrivate completionHandler:
 {
-  *a1 = &unk_1F10F9C78;
-  _Block_release(a1[1]);
+  *self = &unk_1F10F9C78;
+  _Block_release(self[1]);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(self, v2);
 }
 
 - (uint64_t)_numberOfVisibilityAdjustmentRectsWithCompletionHandler:()WKPrivate
 {
-  *a1 = &unk_1F10F9CA0;
-  _Block_release(a1[1]);
+  *self = &unk_1F10F9CA0;
+  _Block_release(self[1]);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(self, v2);
 }
 
 - (uint64_t)_playPredominantOrNowPlayingMediaSession:()WKPrivate
 {
-  *a1 = &unk_1F10F9CC8;
-  _Block_release(a1[1]);
+  *self = &unk_1F10F9CC8;
+  _Block_release(self[1]);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(self, v2);
 }
 
 - (uint64_t)_pauseNowPlayingMediaSession:()WKPrivate
 {
-  *a1 = &unk_1F10F9CF0;
-  _Block_release(a1[1]);
+  *self = &unk_1F10F9CF0;
+  _Block_release(self[1]);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(self, v2);
 }
 
 - (uint64_t)_simulateClickOverFirstMatchingTextInViewportWithUserInteraction:()WKPrivate completionHandler:
 {
-  *a1 = &unk_1F10F9D18;
-  _Block_release(a1[1]);
+  *self = &unk_1F10F9D18;
+  _Block_release(self[1]);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(self, v2);
 }
 
 - (uint64_t)_targetedPreviewForElementWithID:()WKPrivate completionHandler:
 {
-  *a1 = &unk_1F10F9D40;
-  objc_destroyWeak((a1 + 16));
-  _Block_release(*(a1 + 8));
-  return a1;
-}
-
-{
-  *a1 = &unk_1F10F9D40;
-  objc_destroyWeak((a1 + 16));
-  _Block_release(*(a1 + 8));
-
-  return WTF::fastFree(a1, v2);
+  *self = &unk_1F10F9D40;
+  objc_destroyWeak((self + 16));
+  _Block_release(*(self + 8));
+  return self;
 }
 
 - (void)_targetedPreviewForElementWithID:()WKPrivate completionHandler:
 {
-  WeakRetained = objc_loadWeakRetained((a1 + 16));
+  WeakRetained = objc_loadWeakRetained((self + 16));
   if (WeakRetained)
   {
     v5 = WeakRetained;
@@ -2161,7 +2063,7 @@ LABEL_5:
         WTF::fastFree(v23, v13);
       }
 
-      (*(*(a1 + 8) + 16))(*(a1 + 8), v18, v14, v15, v16, v17);
+      (*(*(self + 8) + 16))(*(self + 8), v18, v14, v15, v16, v17);
       if (v18)
       {
       }
@@ -2169,13 +2071,13 @@ LABEL_5:
 
     else
     {
-      (*(*(a1 + 8) + 16))();
+      (*(*(self + 8) + 16))();
     }
   }
 
   else
   {
-    v24 = *(*(a1 + 8) + 16);
+    v24 = *(*(self + 8) + 16);
 
     v24();
   }
@@ -2183,20 +2085,20 @@ LABEL_5:
 
 - (void)_setShouldSuppressTopColorExtensionView:()WKPrivate
 {
-  v2 = a1[1];
-  *a1 = &unk_1F10F9D68;
-  a1[1] = 0;
+  v2 = self[1];
+  *self = &unk_1F10F9D68;
+  self[1] = 0;
   if (v2)
   {
   }
 
-  return a1;
+  return self;
 }
 
 - (uint64_t)_setShouldSuppressTopColorExtensionView:()WKPrivate
 {
-  [*(a1 + 8) _updateFixedColorExtensionViews];
-  v2 = *(a1 + 8);
+  [*(self + 8) _updateFixedColorExtensionViews];
+  v2 = *(self + 8);
 
   return [v2 _updateTopScrollPocketCaptureColor];
 }

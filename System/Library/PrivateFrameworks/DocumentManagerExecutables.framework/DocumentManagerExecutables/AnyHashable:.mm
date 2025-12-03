@@ -6,7 +6,7 @@
 
 - (uint64_t)Any
 {
-  v4 = *(a1 + 32);
+  v4 = *(self + 32);
   if (a3)
   {
     v5 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();

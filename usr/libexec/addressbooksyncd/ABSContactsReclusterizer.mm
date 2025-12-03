@@ -1,11 +1,11 @@
 @interface ABSContactsReclusterizer
 + (id)sharedInstance;
 - (ABSContactsReclusterizer)init;
-- (void)_insureContact:(id)a3 isClustered:(id)a4;
-- (void)_insureContactsAreSolo:(id)a3;
+- (void)_insureContact:(id)contact isClustered:(id)clustered;
+- (void)_insureContactsAreSolo:(id)solo;
 - (void)_processClusters;
 - (void)_registerForNotifications;
-- (void)stashCluster:(id)a3 forGuid:(id)a4;
+- (void)stashCluster:(id)cluster forGuid:(id)guid;
 @end
 
 @implementation ABSContactsReclusterizer
@@ -43,20 +43,20 @@
   return v2;
 }
 
-- (void)stashCluster:(id)a3 forGuid:(id)a4
+- (void)stashCluster:(id)cluster forGuid:(id)guid
 {
-  v6 = a3;
-  v7 = a4;
+  clusterCopy = cluster;
+  guidCopy = guid;
   q = self->_q;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000144E8;
   block[3] = &unk_10005D100;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = guidCopy;
+  v13 = clusterCopy;
+  v9 = clusterCopy;
+  v10 = guidCopy;
   dispatch_sync(q, block);
 }
 
@@ -87,7 +87,7 @@
   block[3] = &unk_10005D018;
   block[4] = self;
   block[5] = &v26;
-  v20 = self;
+  selfCopy = self;
   dispatch_sync(q, block);
   if ([v27[5] count])
   {
@@ -144,7 +144,7 @@
 
           else
           {
-            [(ABSContactsReclusterizer *)v20 _insureContact:v14 isClustered:v15];
+            [(ABSContactsReclusterizer *)selfCopy _insureContact:v14 isClustered:v15];
           }
         }
 
@@ -156,7 +156,7 @@
 
     if ([v8 count])
     {
-      [(ABSContactsReclusterizer *)v20 _insureContactsAreSolo:v8];
+      [(ABSContactsReclusterizer *)selfCopy _insureContactsAreSolo:v8];
     }
 
     v17 = +[ABSContactsInterface sharedInstance];
@@ -174,23 +174,23 @@
   _Block_object_dispose(&v26, 8);
 }
 
-- (void)_insureContactsAreSolo:(id)a3
+- (void)_insureContactsAreSolo:(id)solo
 {
-  v3 = a3;
+  soloCopy = solo;
   v4 = +[ABSContactsInterface sharedInstance];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100014AE4;
   v6[3] = &unk_10005D190;
-  v7 = v3;
-  v5 = v3;
+  v7 = soloCopy;
+  v5 = soloCopy;
   [v4 accessAssert:v6];
 }
 
-- (void)_insureContact:(id)a3 isClustered:(id)a4
+- (void)_insureContact:(id)contact isClustered:(id)clustered
 {
-  v5 = a3;
-  v6 = a4;
+  contactCopy = contact;
+  clusteredCopy = clustered;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -203,11 +203,11 @@
   v16[2] = sub_100015038;
   v16[3] = &unk_10005D1B8;
   v18 = &v19;
-  v8 = v5;
+  v8 = contactCopy;
   v17 = v8;
   [v7 accessAssert:v16];
 
-  if (([v20[5] isEqual:v6] & 1) == 0 && objc_msgSend(v6, "haveAllContacts_LOCKED"))
+  if (([v20[5] isEqual:clusteredCopy] & 1) == 0 && objc_msgSend(clusteredCopy, "haveAllContacts_LOCKED"))
   {
     v9 = +[ABSContactsInterface sharedInstance];
     v15[0] = _NSConcreteStackBlock;
@@ -230,7 +230,7 @@
     v12[1] = 3221225472;
     v12[2] = sub_10001513C;
     v12[3] = &unk_10005D258;
-    v13 = v6;
+    v13 = clusteredCopy;
     v14 = v8;
     [v11 mutateAssert:v12];
   }

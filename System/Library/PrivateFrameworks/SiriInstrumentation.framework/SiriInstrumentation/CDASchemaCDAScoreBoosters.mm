@@ -1,68 +1,68 @@
 @interface CDASchemaCDAScoreBoosters
-- (BOOL)isEqual:(id)a3;
-- (CDASchemaCDAScoreBoosters)initWithDictionary:(id)a3;
-- (CDASchemaCDAScoreBoosters)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (CDASchemaCDAScoreBoosters)initWithDictionary:(id)dictionary;
+- (CDASchemaCDAScoreBoosters)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasIsTrump:(BOOL)a3;
-- (void)setHasRecentAlarmBoost:(BOOL)a3;
-- (void)setHasRecentMotionBoost:(BOOL)a3;
-- (void)setHasRecentPlaybackBoost:(BOOL)a3;
-- (void)setHasRecentRaiseToWakeBoost:(BOOL)a3;
-- (void)setHasRecentSiriRequestBoost:(BOOL)a3;
-- (void)setHasRecentUnlockBoost:(BOOL)a3;
-- (void)setHasTrumpReason:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasIsTrump:(BOOL)trump;
+- (void)setHasRecentAlarmBoost:(BOOL)boost;
+- (void)setHasRecentMotionBoost:(BOOL)boost;
+- (void)setHasRecentPlaybackBoost:(BOOL)boost;
+- (void)setHasRecentRaiseToWakeBoost:(BOOL)boost;
+- (void)setHasRecentSiriRequestBoost:(BOOL)boost;
+- (void)setHasRecentUnlockBoost:(BOOL)boost;
+- (void)setHasTrumpReason:(BOOL)reason;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CDASchemaCDAScoreBoosters
 
-- (CDASchemaCDAScoreBoosters)initWithDictionary:(id)a3
+- (CDASchemaCDAScoreBoosters)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v20.receiver = self;
   v20.super_class = CDASchemaCDAScoreBoosters;
   v5 = [(CDASchemaCDAScoreBoosters *)&v20 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"deviceBoost"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"deviceBoost"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[CDASchemaCDAScoreBoosters setDeviceBoost:](v5, "setDeviceBoost:", [v6 unsignedIntValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"recentUnlockBoost"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"recentUnlockBoost"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[CDASchemaCDAScoreBoosters setRecentUnlockBoost:](v5, "setRecentUnlockBoost:", [v7 unsignedIntValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"recentRaiseToWakeBoost"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"recentRaiseToWakeBoost"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[CDASchemaCDAScoreBoosters setRecentRaiseToWakeBoost:](v5, "setRecentRaiseToWakeBoost:", [v8 unsignedIntValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:{@"recentSiriRequestBoost", v8}];
+    v9 = [dictionaryCopy objectForKeyedSubscript:{@"recentSiriRequestBoost", v8}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[CDASchemaCDAScoreBoosters setRecentSiriRequestBoost:](v5, "setRecentSiriRequestBoost:", [v9 unsignedIntValue]);
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"recentMotionBoost"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"recentMotionBoost"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[CDASchemaCDAScoreBoosters setRecentMotionBoost:](v5, "setRecentMotionBoost:", [v10 unsignedIntValue]);
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"recentPlaybackBoost"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"recentPlaybackBoost"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -70,7 +70,7 @@
     }
 
     v19 = v7;
-    v12 = [v4 objectForKeyedSubscript:@"isTrump"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"isTrump"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -78,14 +78,14 @@
     }
 
     v13 = v6;
-    v14 = [v4 objectForKeyedSubscript:@"trumpReason"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"trumpReason"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[CDASchemaCDAScoreBoosters setTrumpReason:](v5, "setTrumpReason:", [v14 intValue]);
     }
 
-    v15 = [v4 objectForKeyedSubscript:@"recentAlarmBoost"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"recentAlarmBoost"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -98,30 +98,30 @@
   return v5;
 }
 
-- (CDASchemaCDAScoreBoosters)initWithJSON:(id)a3
+- (CDASchemaCDAScoreBoosters)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(CDASchemaCDAScoreBoosters *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(CDASchemaCDAScoreBoosters *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(CDASchemaCDAScoreBoosters *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -134,12 +134,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if (has)
   {
     v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[CDASchemaCDAScoreBoosters deviceBoost](self, "deviceBoost")}];
-    [v3 setObject:v5 forKeyedSubscript:@"deviceBoost"];
+    [dictionary setObject:v5 forKeyedSubscript:@"deviceBoost"];
 
     has = self->_has;
     if ((has & 0x40) == 0)
@@ -160,7 +160,7 @@ LABEL_3:
   }
 
   v6 = [MEMORY[0x1E696AD98] numberWithBool:{-[CDASchemaCDAScoreBoosters isTrump](self, "isTrump")}];
-  [v3 setObject:v6 forKeyedSubscript:@"isTrump"];
+  [dictionary setObject:v6 forKeyedSubscript:@"isTrump"];
 
   has = self->_has;
   if ((has & 0x100) == 0)
@@ -176,7 +176,7 @@ LABEL_4:
 
 LABEL_13:
   v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[CDASchemaCDAScoreBoosters recentAlarmBoost](self, "recentAlarmBoost")}];
-  [v3 setObject:v7 forKeyedSubscript:@"recentAlarmBoost"];
+  [dictionary setObject:v7 forKeyedSubscript:@"recentAlarmBoost"];
 
   has = self->_has;
   if ((has & 0x10) == 0)
@@ -192,7 +192,7 @@ LABEL_5:
 
 LABEL_14:
   v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[CDASchemaCDAScoreBoosters recentMotionBoost](self, "recentMotionBoost")}];
-  [v3 setObject:v8 forKeyedSubscript:@"recentMotionBoost"];
+  [dictionary setObject:v8 forKeyedSubscript:@"recentMotionBoost"];
 
   has = self->_has;
   if ((has & 0x20) == 0)
@@ -208,7 +208,7 @@ LABEL_6:
 
 LABEL_15:
   v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[CDASchemaCDAScoreBoosters recentPlaybackBoost](self, "recentPlaybackBoost")}];
-  [v3 setObject:v9 forKeyedSubscript:@"recentPlaybackBoost"];
+  [dictionary setObject:v9 forKeyedSubscript:@"recentPlaybackBoost"];
 
   has = self->_has;
   if ((has & 4) == 0)
@@ -224,7 +224,7 @@ LABEL_7:
 
 LABEL_16:
   v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[CDASchemaCDAScoreBoosters recentRaiseToWakeBoost](self, "recentRaiseToWakeBoost")}];
-  [v3 setObject:v10 forKeyedSubscript:@"recentRaiseToWakeBoost"];
+  [dictionary setObject:v10 forKeyedSubscript:@"recentRaiseToWakeBoost"];
 
   has = self->_has;
   if ((has & 8) == 0)
@@ -237,7 +237,7 @@ LABEL_8:
 
 LABEL_18:
     v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[CDASchemaCDAScoreBoosters recentUnlockBoost](self, "recentUnlockBoost")}];
-    [v3 setObject:v12 forKeyedSubscript:@"recentUnlockBoost"];
+    [dictionary setObject:v12 forKeyedSubscript:@"recentUnlockBoost"];
 
     if ((*&self->_has & 0x80) == 0)
     {
@@ -256,13 +256,13 @@ LABEL_19:
       v14 = off_1E78D2890[v13];
     }
 
-    [v3 setObject:v14 forKeyedSubscript:@"trumpReason"];
+    [dictionary setObject:v14 forKeyedSubscript:@"trumpReason"];
     goto LABEL_23;
   }
 
 LABEL_17:
   v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[CDASchemaCDAScoreBoosters recentSiriRequestBoost](self, "recentSiriRequestBoost")}];
-  [v3 setObject:v11 forKeyedSubscript:@"recentSiriRequestBoost"];
+  [dictionary setObject:v11 forKeyedSubscript:@"recentSiriRequestBoost"];
 
   has = self->_has;
   if ((has & 2) != 0)
@@ -277,9 +277,9 @@ LABEL_9:
   }
 
 LABEL_23:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -407,16 +407,16 @@ LABEL_10:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_38;
   }
 
   has = self->_has;
-  v6 = v4[22];
+  v6 = equalCopy[22];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_38;
@@ -425,13 +425,13 @@ LABEL_10:
   if (*&has)
   {
     deviceBoost = self->_deviceBoost;
-    if (deviceBoost != [v4 deviceBoost])
+    if (deviceBoost != [equalCopy deviceBoost])
     {
       goto LABEL_38;
     }
 
     has = self->_has;
-    v6 = v4[22];
+    v6 = equalCopy[22];
   }
 
   v8 = (*&has >> 1) & 1;
@@ -443,13 +443,13 @@ LABEL_10:
   if (v8)
   {
     recentUnlockBoost = self->_recentUnlockBoost;
-    if (recentUnlockBoost != [v4 recentUnlockBoost])
+    if (recentUnlockBoost != [equalCopy recentUnlockBoost])
     {
       goto LABEL_38;
     }
 
     has = self->_has;
-    v6 = v4[22];
+    v6 = equalCopy[22];
   }
 
   v10 = (*&has >> 2) & 1;
@@ -461,13 +461,13 @@ LABEL_10:
   if (v10)
   {
     recentRaiseToWakeBoost = self->_recentRaiseToWakeBoost;
-    if (recentRaiseToWakeBoost != [v4 recentRaiseToWakeBoost])
+    if (recentRaiseToWakeBoost != [equalCopy recentRaiseToWakeBoost])
     {
       goto LABEL_38;
     }
 
     has = self->_has;
-    v6 = v4[22];
+    v6 = equalCopy[22];
   }
 
   v12 = (*&has >> 3) & 1;
@@ -479,13 +479,13 @@ LABEL_10:
   if (v12)
   {
     recentSiriRequestBoost = self->_recentSiriRequestBoost;
-    if (recentSiriRequestBoost != [v4 recentSiriRequestBoost])
+    if (recentSiriRequestBoost != [equalCopy recentSiriRequestBoost])
     {
       goto LABEL_38;
     }
 
     has = self->_has;
-    v6 = v4[22];
+    v6 = equalCopy[22];
   }
 
   v14 = (*&has >> 4) & 1;
@@ -497,13 +497,13 @@ LABEL_10:
   if (v14)
   {
     recentMotionBoost = self->_recentMotionBoost;
-    if (recentMotionBoost != [v4 recentMotionBoost])
+    if (recentMotionBoost != [equalCopy recentMotionBoost])
     {
       goto LABEL_38;
     }
 
     has = self->_has;
-    v6 = v4[22];
+    v6 = equalCopy[22];
   }
 
   v16 = (*&has >> 5) & 1;
@@ -515,13 +515,13 @@ LABEL_10:
   if (v16)
   {
     recentPlaybackBoost = self->_recentPlaybackBoost;
-    if (recentPlaybackBoost != [v4 recentPlaybackBoost])
+    if (recentPlaybackBoost != [equalCopy recentPlaybackBoost])
     {
       goto LABEL_38;
     }
 
     has = self->_has;
-    v6 = v4[22];
+    v6 = equalCopy[22];
   }
 
   v18 = (*&has >> 6) & 1;
@@ -533,13 +533,13 @@ LABEL_10:
   if (v18)
   {
     isTrump = self->_isTrump;
-    if (isTrump != [v4 isTrump])
+    if (isTrump != [equalCopy isTrump])
     {
       goto LABEL_38;
     }
 
     has = self->_has;
-    v6 = v4[22];
+    v6 = equalCopy[22];
   }
 
   v20 = (*&has >> 7) & 1;
@@ -551,10 +551,10 @@ LABEL_10:
   if (v20)
   {
     trumpReason = self->_trumpReason;
-    if (trumpReason == [v4 trumpReason])
+    if (trumpReason == [equalCopy trumpReason])
     {
       has = self->_has;
-      v6 = v4[22];
+      v6 = equalCopy[22];
       goto LABEL_34;
     }
 
@@ -573,7 +573,7 @@ LABEL_34:
   if (v22)
   {
     recentAlarmBoost = self->_recentAlarmBoost;
-    if (recentAlarmBoost != [v4 recentAlarmBoost])
+    if (recentAlarmBoost != [equalCopy recentAlarmBoost])
     {
       goto LABEL_38;
     }
@@ -585,9 +585,9 @@ LABEL_39:
   return v24;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -704,9 +704,9 @@ LABEL_10:
 LABEL_11:
 }
 
-- (void)setHasRecentAlarmBoost:(BOOL)a3
+- (void)setHasRecentAlarmBoost:(BOOL)boost
 {
-  if (a3)
+  if (boost)
   {
     v3 = 256;
   }
@@ -719,9 +719,9 @@ LABEL_11:
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasTrumpReason:(BOOL)a3
+- (void)setHasTrumpReason:(BOOL)reason
 {
-  if (a3)
+  if (reason)
   {
     v3 = 128;
   }
@@ -734,9 +734,9 @@ LABEL_11:
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasIsTrump:(BOOL)a3
+- (void)setHasIsTrump:(BOOL)trump
 {
-  if (a3)
+  if (trump)
   {
     v3 = 64;
   }
@@ -749,9 +749,9 @@ LABEL_11:
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasRecentPlaybackBoost:(BOOL)a3
+- (void)setHasRecentPlaybackBoost:(BOOL)boost
 {
-  if (a3)
+  if (boost)
   {
     v3 = 32;
   }
@@ -764,9 +764,9 @@ LABEL_11:
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasRecentMotionBoost:(BOOL)a3
+- (void)setHasRecentMotionBoost:(BOOL)boost
 {
-  if (a3)
+  if (boost)
   {
     v3 = 16;
   }
@@ -779,9 +779,9 @@ LABEL_11:
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasRecentSiriRequestBoost:(BOOL)a3
+- (void)setHasRecentSiriRequestBoost:(BOOL)boost
 {
-  if (a3)
+  if (boost)
   {
     v3 = 8;
   }
@@ -794,9 +794,9 @@ LABEL_11:
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasRecentRaiseToWakeBoost:(BOOL)a3
+- (void)setHasRecentRaiseToWakeBoost:(BOOL)boost
 {
-  if (a3)
+  if (boost)
   {
     v3 = 4;
   }
@@ -809,9 +809,9 @@ LABEL_11:
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasRecentUnlockBoost:(BOOL)a3
+- (void)setHasRecentUnlockBoost:(BOOL)boost
 {
-  if (a3)
+  if (boost)
   {
     v3 = 2;
   }

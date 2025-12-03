@@ -1,24 +1,24 @@
 @interface AMSUIWebWalletPassAction
-- (AMSUIWebWalletPassAction)initWithJSObject:(id)a3 context:(id)a4;
+- (AMSUIWebWalletPassAction)initWithJSObject:(id)object context:(id)context;
 - (id)_attemptLynxProvisioning;
-- (id)_lookupPassForIdentifier:(unint64_t)a3;
+- (id)_lookupPassForIdentifier:(unint64_t)identifier;
 - (id)runAction;
 @end
 
 @implementation AMSUIWebWalletPassAction
 
-- (AMSUIWebWalletPassAction)initWithJSObject:(id)a3 context:(id)a4
+- (AMSUIWebWalletPassAction)initWithJSObject:(id)object context:(id)context
 {
-  v6 = a3;
+  objectCopy = object;
   v15.receiver = self;
   v15.super_class = AMSUIWebWalletPassAction;
-  v7 = [(AMSUIWebAction *)&v15 initWithJSObject:v6 context:a4];
+  v7 = [(AMSUIWebAction *)&v15 initWithJSObject:objectCopy context:context];
   if (v7)
   {
-    v8 = [v6 objectForKeyedSubscript:@"attemptLynxProvisioning"];
+    v8 = [objectCopy objectForKeyedSubscript:@"attemptLynxProvisioning"];
     if (objc_opt_respondsToSelector())
     {
-      v9 = [v6 objectForKeyedSubscript:@"attemptLynxProvisioning"];
+      v9 = [objectCopy objectForKeyedSubscript:@"attemptLynxProvisioning"];
       v7->_attemptLynxProvisioning = [v9 BOOLValue];
     }
 
@@ -27,20 +27,20 @@
       v7->_attemptLynxProvisioning = 0;
     }
 
-    v10 = [v6 objectForKeyedSubscript:@"lookupFeatureIdentifier"];
+    v10 = [objectCopy objectForKeyedSubscript:@"lookupFeatureIdentifier"];
     if (v10)
     {
       if (objc_opt_respondsToSelector())
       {
-        v11 = [v10 longLongValue];
+        longLongValue = [v10 longLongValue];
       }
 
       else
       {
-        v11 = 0;
+        longLongValue = 0;
       }
 
-      v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v11];
+      v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:longLongValue];
       lookupFeature = v7->_lookupFeature;
       v7->_lookupFeature = v12;
     }
@@ -53,7 +53,7 @@
 {
   v11.receiver = self;
   v11.super_class = AMSUIWebWalletPassAction;
-  v3 = [(AMSUIWebAction *)&v11 runAction];
+  runAction = [(AMSUIWebAction *)&v11 runAction];
   v4 = [MEMORY[0x1E698CAD0] promiseWithResult:MEMORY[0x1E695E0F8]];
   if ([(AMSUIWebWalletPassAction *)self attemptLynxProvisioning])
   {
@@ -67,9 +67,9 @@
     v4 = v5;
   }
 
-  v6 = [(AMSUIWebWalletPassAction *)self lookupFeature];
+  lookupFeature = [(AMSUIWebWalletPassAction *)self lookupFeature];
 
-  if (v6)
+  if (lookupFeature)
   {
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
@@ -181,27 +181,27 @@ id __37__AMSUIWebWalletPassAction_runAction__block_invoke_4(uint64_t a1, void *a
 - (id)_attemptLynxProvisioning
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E698C968] sharedWebUIConfig];
-  if (!v3)
+  mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedWebUIConfig];
+  if (!mEMORY[0x1E698C968])
   {
-    v3 = [MEMORY[0x1E698C968] sharedConfig];
+    mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
   }
 
-  v4 = [v3 OSLogObject];
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v5 = objc_opt_class();
-    v6 = [(AMSUIWebAction *)self context];
-    v7 = [v6 logKey];
+    context = [(AMSUIWebAction *)self context];
+    logKey = [context logKey];
     *buf = 138543618;
     v18 = v5;
     v19 = 2114;
-    v20 = v7;
-    _os_log_impl(&dword_1BB036000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Attempting Lynx provisioning...", buf, 0x16u);
+    v20 = logKey;
+    _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Attempting Lynx provisioning...", buf, 0x16u);
   }
 
   v8 = objc_alloc_init(MEMORY[0x1E698C7F0]);
-  v9 = [getPKAccountServiceClass() sharedInstance];
+  sharedInstance = [getPKAccountServiceClass() sharedInstance];
   if (objc_opt_respondsToSelector())
   {
     v14[0] = MEMORY[0x1E69E9820];
@@ -209,8 +209,8 @@ id __37__AMSUIWebWalletPassAction_runAction__block_invoke_4(uint64_t a1, void *a
     v14[2] = __52__AMSUIWebWalletPassAction__attemptLynxProvisioning__block_invoke;
     v14[3] = &unk_1E7F24990;
     v15 = v8;
-    v16 = self;
-    [v9 attemptAppleStoredValueSetupWithCompletion:v14];
+    selfCopy = self;
+    [sharedInstance attemptAppleStoredValueSetupWithCompletion:v14];
     v10 = v15;
   }
 
@@ -301,32 +301,32 @@ void __52__AMSUIWebWalletPassAction__attemptLynxProvisioning__block_invoke_78(ui
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_lookupPassForIdentifier:(unint64_t)a3
+- (id)_lookupPassForIdentifier:(unint64_t)identifier
 {
   v25 = *MEMORY[0x1E69E9840];
-  v5 = [MEMORY[0x1E698C968] sharedWebUIConfig];
-  if (!v5)
+  mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedWebUIConfig];
+  if (!mEMORY[0x1E698C968])
   {
-    v5 = [MEMORY[0x1E698C968] sharedConfig];
+    mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
   }
 
-  v6 = [v5 OSLogObject];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v7 = objc_opt_class();
-    v8 = [(AMSUIWebAction *)self context];
-    v9 = [v8 logKey];
+    context = [(AMSUIWebAction *)self context];
+    logKey = [context logKey];
     *buf = 138543874;
     v20 = v7;
     v21 = 2114;
-    v22 = v9;
+    v22 = logKey;
     v23 = 2048;
-    v24 = a3;
-    _os_log_impl(&dword_1BB036000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Looking up pass: %ld", buf, 0x20u);
+    identifierCopy = identifier;
+    _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Looking up pass: %ld", buf, 0x20u);
   }
 
   v10 = [objc_alloc(MEMORY[0x1E698CAD0]) initWithTimeout:30.0];
-  v11 = [getPKAccountServiceClass() sharedInstance];
+  sharedInstance = [getPKAccountServiceClass() sharedInstance];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __53__AMSUIWebWalletPassAction__lookupPassForIdentifier___block_invoke;
@@ -334,7 +334,7 @@ void __52__AMSUIWebWalletPassAction__attemptLynxProvisioning__block_invoke_78(ui
   v17[4] = self;
   v12 = v10;
   v18 = v12;
-  [v11 defaultAccountForFeature:a3 completion:v17];
+  [sharedInstance defaultAccountForFeature:identifier completion:v17];
 
   v13 = v18;
   v14 = v12;

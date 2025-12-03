@@ -9,12 +9,12 @@
   [(PPTBasicTest *)self setTestTimeout:120];
   [(PPTBasicTest *)self setRunning:1];
   [(PPTBasicTest *)self startPPTTest];
-  v3 = [(PPTBasicTest *)self asset];
+  asset = [(PPTBasicTest *)self asset];
 
-  if (v3)
+  if (asset)
   {
-    v4 = [(PPTBasicTest *)self bookshelf];
-    if (!v4)
+    bookshelf = [(PPTBasicTest *)self bookshelf];
+    if (!bookshelf)
     {
       v5 = sub_1001E65B0();
       if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -24,9 +24,9 @@
       }
     }
 
-    v6 = [(PPTBasicTest *)self asset];
-    v7 = [v6 assetID];
-    [v4 scrollToMakeLibraryAssetIDVisible:v7];
+    asset2 = [(PPTBasicTest *)self asset];
+    assetID = [asset2 assetID];
+    [bookshelf scrollToMakeLibraryAssetIDVisible:assetID];
 
     v8 = dispatch_time(0, 2000000000);
     block[0] = _NSConcreteStackBlock;

@@ -1,49 +1,49 @@
 @interface ATXLockscreenEvent
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
-- (ATXLockscreenEvent)initWithAbsoluteDate:(double)a3 eventType:(int)a4 blendingCacheId:(id)a5 suggestionIds:(id)a6;
-- (ATXLockscreenEvent)initWithCoder:(id)a3;
-- (ATXLockscreenEvent)initWithDate:(id)a3 eventType:(int)a4 blendingCacheId:(id)a5 suggestionIds:(id)a6;
-- (ATXLockscreenEvent)initWithProto:(id)a3;
-- (ATXLockscreenEvent)initWithProtoData:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToATXLockscreenEvent:(id)a3;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
+- (ATXLockscreenEvent)initWithAbsoluteDate:(double)date eventType:(int)type blendingCacheId:(id)id suggestionIds:(id)ids;
+- (ATXLockscreenEvent)initWithCoder:(id)coder;
+- (ATXLockscreenEvent)initWithDate:(id)date eventType:(int)type blendingCacheId:(id)id suggestionIds:(id)ids;
+- (ATXLockscreenEvent)initWithProto:(id)proto;
+- (ATXLockscreenEvent)initWithProtoData:(id)data;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToATXLockscreenEvent:(id)event;
 - (NSDate)date;
 - (id)encodeAsProto;
 - (id)jsonDict;
 - (id)proto;
-- (id)sessionProcessingOptionsForSessionType:(int64_t)a3;
+- (id)sessionProcessingOptionsForSessionType:(int64_t)type;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)updateUIFeedbackSession:(id)a3 uiCacheConsumerSubType:(unsigned __int8)a4;
+- (void)encodeWithCoder:(id)coder;
+- (void)updateUIFeedbackSession:(id)session uiCacheConsumerSubType:(unsigned __int8)type;
 @end
 
 @implementation ATXLockscreenEvent
 
-- (ATXLockscreenEvent)initWithDate:(id)a3 eventType:(int)a4 blendingCacheId:(id)a5 suggestionIds:(id)a6
+- (ATXLockscreenEvent)initWithDate:(id)date eventType:(int)type blendingCacheId:(id)id suggestionIds:(id)ids
 {
-  v7 = *&a4;
-  v10 = a6;
-  v11 = a5;
-  [a3 timeIntervalSince1970];
-  v12 = [(ATXLockscreenEvent *)self initWithAbsoluteDate:v7 eventType:v11 blendingCacheId:v10 suggestionIds:?];
+  v7 = *&type;
+  idsCopy = ids;
+  idCopy = id;
+  [date timeIntervalSince1970];
+  v12 = [(ATXLockscreenEvent *)self initWithAbsoluteDate:v7 eventType:idCopy blendingCacheId:idsCopy suggestionIds:?];
 
   return v12;
 }
 
-- (ATXLockscreenEvent)initWithAbsoluteDate:(double)a3 eventType:(int)a4 blendingCacheId:(id)a5 suggestionIds:(id)a6
+- (ATXLockscreenEvent)initWithAbsoluteDate:(double)date eventType:(int)type blendingCacheId:(id)id suggestionIds:(id)ids
 {
-  v11 = a5;
-  v12 = a6;
+  idCopy = id;
+  idsCopy = ids;
   v16.receiver = self;
   v16.super_class = ATXLockscreenEvent;
   v13 = [(ATXLockscreenEvent *)&v16 init];
   v14 = v13;
   if (v13)
   {
-    v13->_absoluteDate = a3;
-    v13->_eventType = a4;
-    objc_storeStrong(&v13->_blendingCacheId, a5);
-    objc_storeStrong(&v14->_suggestionIds, a6);
+    v13->_absoluteDate = date;
+    v13->_eventType = type;
+    objc_storeStrong(&v13->_blendingCacheId, id);
+    objc_storeStrong(&v14->_suggestionIds, ids);
   }
 
   return v14;
@@ -56,7 +56,7 @@
   return v2;
 }
 
-- (id)sessionProcessingOptionsForSessionType:(int64_t)a3
+- (id)sessionProcessingOptionsForSessionType:(int64_t)type
 {
   v3 = self->_eventType - 2;
   if (v3 > 2)
@@ -70,11 +70,11 @@
   }
 }
 
-- (void)updateUIFeedbackSession:(id)a3 uiCacheConsumerSubType:(unsigned __int8)a4
+- (void)updateUIFeedbackSession:(id)session uiCacheConsumerSubType:(unsigned __int8)type
 {
-  v5 = a3;
+  sessionCopy = session;
   eventType = self->_eventType;
-  v10 = v5;
+  v10 = sessionCopy;
   if (eventType == 3)
   {
     suggestionIds = self->_suggestionIds;
@@ -100,19 +100,19 @@ LABEL_7:
   v8 = 0;
   suggestionIds = 0;
 LABEL_8:
-  [v5 updateEngagedUUIDs:v8 rejectedUUIDs:suggestionIds shownUUIDs:v7];
-  v5 = v10;
+  [sessionCopy updateEngagedUUIDs:v8 rejectedUUIDs:suggestionIds shownUUIDs:v7];
+  sessionCopy = v10;
 LABEL_9:
-  [v5 updateConsumerSubTypeIfUnset:22];
+  [sessionCopy updateConsumerSubTypeIfUnset:22];
   [v10 updateBlendingUICacheUpdateUUIDIfUnset:self->_blendingCacheId];
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4 == 1)
+  if (version == 1)
   {
-    v5 = a3;
-    v6 = [[a1 alloc] initWithProtoData:v5];
+    dataCopy = data;
+    v6 = [[self alloc] initWithProtoData:dataCopy];
   }
 
   else
@@ -129,8 +129,8 @@ LABEL_9:
   v3 = [(NSArray *)self->_suggestionIds _pas_mappedArrayWithTransform:&__block_literal_global_57];
   v15[0] = @"date";
   v4 = MEMORY[0x1E696AD98];
-  v5 = [(ATXLockscreenEvent *)self date];
-  [v5 timeIntervalSinceReferenceDate];
+  date = [(ATXLockscreenEvent *)self date];
+  [date timeIntervalSinceReferenceDate];
   v6 = [v4 numberWithDouble:?];
   v16[0] = v6;
   v15[1] = @"eventType";
@@ -147,12 +147,12 @@ LABEL_9:
 
   v16[1] = v8;
   v15[2] = @"blendingCacheId";
-  v9 = [(NSUUID *)self->_blendingCacheId UUIDString];
-  v10 = v9;
+  uUIDString = [(NSUUID *)self->_blendingCacheId UUIDString];
+  v10 = uUIDString;
   v11 = @"nil";
-  if (v9)
+  if (uUIDString)
   {
-    v12 = v9;
+    v12 = uUIDString;
   }
 
   else
@@ -175,19 +175,19 @@ LABEL_9:
 
 - (id)encodeAsProto
 {
-  v2 = [(ATXLockscreenEvent *)self proto];
-  v3 = [v2 data];
+  proto = [(ATXLockscreenEvent *)self proto];
+  data = [proto data];
 
-  return v3;
+  return data;
 }
 
-- (ATXLockscreenEvent)initWithProto:(id)a3
+- (ATXLockscreenEvent)initWithProto:(id)proto
 {
-  v4 = a3;
-  if (!v4)
+  protoCopy = proto;
+  if (!protoCopy)
   {
 LABEL_10:
-    v12 = 0;
+    selfCopy = 0;
     goto LABEL_15;
   }
 
@@ -203,15 +203,15 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  v5 = v4;
+  v5 = protoCopy;
   if ([(ATXPBLockscreenEvent *)v5 hasDate]&& (v6 = [(ATXPBLockscreenEvent *)v5 date], [(ATXPBLockscreenEvent *)v5 hasEventType]))
   {
-    v7 = [(ATXPBLockscreenEvent *)v5 eventType];
+    eventType = [(ATXPBLockscreenEvent *)v5 eventType];
     if ([(ATXPBLockscreenEvent *)v5 hasBlendingCacheId])
     {
       v8 = objc_alloc(MEMORY[0x1E696AFB0]);
-      v9 = [(ATXPBLockscreenEvent *)v5 blendingCacheId];
-      v10 = [v8 initWithUUIDString:v9];
+      blendingCacheId = [(ATXPBLockscreenEvent *)v5 blendingCacheId];
+      v10 = [v8 initWithUUIDString:blendingCacheId];
     }
 
     else
@@ -219,20 +219,20 @@ LABEL_10:
       v10 = 0;
     }
 
-    v13 = [(ATXPBLockscreenEvent *)v5 suggestionIds];
-    v14 = [v13 _pas_mappedArrayWithTransform:&__block_literal_global_46_1];
+    suggestionIds = [(ATXPBLockscreenEvent *)v5 suggestionIds];
+    v14 = [suggestionIds _pas_mappedArrayWithTransform:&__block_literal_global_46_1];
 
-    self = [(ATXLockscreenEvent *)self initWithAbsoluteDate:v7 eventType:v10 blendingCacheId:v14 suggestionIds:v6];
-    v12 = self;
+    self = [(ATXLockscreenEvent *)self initWithAbsoluteDate:eventType eventType:v10 blendingCacheId:v14 suggestionIds:v6];
+    selfCopy = self;
   }
 
   else
   {
-    v12 = 0;
+    selfCopy = 0;
   }
 
 LABEL_15:
-  return v12;
+  return selfCopy;
 }
 
 id __36__ATXLockscreenEvent_initWithProto___block_invoke(uint64_t a1, void *a2)
@@ -244,23 +244,23 @@ id __36__ATXLockscreenEvent_initWithProto___block_invoke(uint64_t a1, void *a2)
   return v4;
 }
 
-- (ATXLockscreenEvent)initWithProtoData:(id)a3
+- (ATXLockscreenEvent)initWithProtoData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[ATXPBLockscreenEvent alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[ATXPBLockscreenEvent alloc] initWithData:dataCopy];
 
     self = [(ATXLockscreenEvent *)self initWithProto:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (id)proto
@@ -272,8 +272,8 @@ id __36__ATXLockscreenEvent_initWithProto___block_invoke(uint64_t a1, void *a2)
   blendingCacheId = self->_blendingCacheId;
   if (blendingCacheId)
   {
-    v5 = [(NSUUID *)blendingCacheId UUIDString];
-    [(ATXPBLockscreenEvent *)v3 setBlendingCacheId:v5];
+    uUIDString = [(NSUUID *)blendingCacheId UUIDString];
+    [(ATXPBLockscreenEvent *)v3 setBlendingCacheId:uUIDString];
   }
 
   if (self->_suggestionIds)
@@ -298,8 +298,8 @@ id __36__ATXLockscreenEvent_initWithProto___block_invoke(uint64_t a1, void *a2)
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v14 + 1) + 8 * i) UUIDString];
-          [v6 addObject:v12];
+          uUIDString2 = [*(*(&v14 + 1) + 8 * i) UUIDString];
+          [v6 addObject:uUIDString2];
         }
 
         v9 = [(NSArray *)v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -314,63 +314,63 @@ id __36__ATXLockscreenEvent_initWithProto___block_invoke(uint64_t a1, void *a2)
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(ATXLockscreenEvent *)self encodeAsProto];
-  [v4 encodeObject:v5 forKey:@"protobufData"];
+  coderCopy = coder;
+  encodeAsProto = [(ATXLockscreenEvent *)self encodeAsProto];
+  [coderCopy encodeObject:encodeAsProto forKey:@"protobufData"];
 }
 
-- (ATXLockscreenEvent)initWithCoder:(id)a3
+- (ATXLockscreenEvent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = MEMORY[0x1E69C5D78];
   v6 = objc_opt_class();
   v7 = __atxlog_handle_default();
-  v8 = [v5 robustDecodeObjectOfClass:v6 forKey:@"protobufData" withCoder:v4 expectNonNull:1 errorDomain:@"com.apple.duetexpertd.ATXLockscreenEvent" errorCode:-1 logHandle:v7];
+  v8 = [v5 robustDecodeObjectOfClass:v6 forKey:@"protobufData" withCoder:coderCopy expectNonNull:1 errorDomain:@"com.apple.duetexpertd.ATXLockscreenEvent" errorCode:-1 logHandle:v7];
 
-  if (v8 && ([v4 error], v9 = objc_claimAutoreleasedReturnValue(), v9, !v9))
+  if (v8 && ([coderCopy error], v9 = objc_claimAutoreleasedReturnValue(), v9, !v9))
   {
     self = [(ATXLockscreenEvent *)self initWithProtoData:v8];
-    v10 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXLockscreenEvent *)self isEqualToATXLockscreenEvent:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXLockscreenEvent *)self isEqualToATXLockscreenEvent:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToATXLockscreenEvent:(id)a3
+- (BOOL)isEqualToATXLockscreenEvent:(id)event
 {
-  v4 = a3;
-  v5 = v4;
-  v6 = self->_absoluteDate - *(v4 + 1);
+  eventCopy = event;
+  v5 = eventCopy;
+  v6 = self->_absoluteDate - *(eventCopy + 1);
   if (v6 < 0.0)
   {
     v6 = -v6;
   }
 
-  if (v6 > 2.22044605e-16 || self->_eventType != *(v4 + 4))
+  if (v6 > 2.22044605e-16 || self->_eventType != *(eventCopy + 4))
   {
     goto LABEL_7;
   }

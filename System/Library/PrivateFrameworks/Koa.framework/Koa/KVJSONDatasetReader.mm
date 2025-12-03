@@ -1,6 +1,6 @@
 @interface KVJSONDatasetReader
-- (BOOL)enumerateItemsWithError:(id *)a3 usingBlock:(id)a4;
-- (KVJSONDatasetReader)initWithDictionary:(id)a3 error:(id *)a4;
+- (BOOL)enumerateItemsWithError:(id *)error usingBlock:(id)block;
+- (KVJSONDatasetReader)initWithDictionary:(id)dictionary error:(id *)error;
 - (NSString)description;
 @end
 
@@ -13,10 +13,10 @@
   return v5;
 }
 
-- (BOOL)enumerateItemsWithError:(id *)a3 usingBlock:(id)a4
+- (BOOL)enumerateItemsWithError:(id *)error usingBlock:(id)block
 {
   v58 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  blockCopy = block;
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
@@ -50,10 +50,10 @@
         v34 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v32, &v56, &v55, 1, v33);
         v37 = objc_msgSend_errorWithDomain_code_userInfo_(v31, v35, @"com.apple.koa.profile", 10, v34, v36);
         v38 = v37;
-        if (a3 && v37)
+        if (error && v37)
         {
           v39 = v37;
-          *a3 = v38;
+          *error = v38;
         }
 
 LABEL_21:
@@ -74,23 +74,23 @@ LABEL_23:
         v54 = v34;
         v38 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v41, &v54, &v53, 1, v42);
         v45 = objc_msgSend_errorWithDomain_code_userInfo_(v40, v43, @"com.apple.koa.profile", 10, v38, v44);
-        if (a3 && v45)
+        if (error && v45)
         {
           v45 = v45;
-          *a3 = v45;
+          *error = v45;
         }
 
         goto LABEL_21;
       }
 
       v22 = [KVItem alloc];
-      v26 = objc_msgSend_initFromDictionary_error_(v22, v23, v17, a3, v24, v25);
+      v26 = objc_msgSend_initFromDictionary_error_(v22, v23, v17, error, v24, v25);
       if (!v26)
       {
         goto LABEL_22;
       }
 
-      v27 = v6[2](v6, v26);
+      v27 = blockCopy[2](blockCopy, v26);
 
       if ((v27 & 1) == 0)
       {
@@ -114,10 +114,10 @@ LABEL_24:
   return v30;
 }
 
-- (KVJSONDatasetReader)initWithDictionary:(id)a3 error:(id *)a4
+- (KVJSONDatasetReader)initWithDictionary:(id)dictionary error:(id *)error
 {
   v59[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  dictionaryCopy = dictionary;
   v55.receiver = self;
   v55.super_class = KVJSONDatasetReader;
   v11 = [(KVJSONDatasetReader *)&v55 init];
@@ -126,7 +126,7 @@ LABEL_24:
     goto LABEL_7;
   }
 
-  v12 = objc_msgSend_objectForKey_(v6, v7, @"datasetInfo", v8, v9, v10);
+  v12 = objc_msgSend_objectForKey_(dictionaryCopy, v7, @"datasetInfo", v8, v9, v10);
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -143,7 +143,7 @@ LABEL_24:
   }
 
   v13 = [KVDatasetInfo alloc];
-  v17 = objc_msgSend_initFromDictionary_error_(v13, v14, v12, a4, v15, v16);
+  v17 = objc_msgSend_initFromDictionary_error_(v13, v14, v12, error, v15, v16);
   datasetInfo = v11->_datasetInfo;
   v11->_datasetInfo = v17;
 
@@ -155,7 +155,7 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v23 = objc_msgSend_objectForKey_(v6, v19, @"items", v20, v21, v22);
+  v23 = objc_msgSend_objectForKey_(dictionaryCopy, v19, @"items", v20, v21, v22);
   items = v11->_items;
   v11->_items = v23;
 
@@ -175,10 +175,10 @@ LABEL_13:
       v37 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v51, &v57, &v56, 1, v52);
       v40 = objc_msgSend_errorWithDomain_code_userInfo_(v43, v53, @"com.apple.koa.profile", 10, v37, v54);
 LABEL_9:
-      if (a4 && v40)
+      if (error && v40)
       {
         v40 = v40;
-        *a4 = v40;
+        *error = v40;
       }
 
       goto LABEL_13;

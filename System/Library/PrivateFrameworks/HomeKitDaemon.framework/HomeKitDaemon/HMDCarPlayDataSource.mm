@@ -31,26 +31,26 @@ void __35__HMDCarPlayDataSource_logCategory__block_invoke()
   v18 = *MEMORY[0x277D85DE8];
   v3 = objc_alloc_init(MEMORY[0x277D02B18]);
   [v3 activate];
-  v4 = [v3 currentKnownNetworkProfile];
-  v5 = v4;
-  if (v4)
+  currentKnownNetworkProfile = [v3 currentKnownNetworkProfile];
+  v5 = currentKnownNetworkProfile;
+  if (currentKnownNetworkProfile)
   {
-    v6 = [v4 isCarPlay];
+    isCarPlay = [currentKnownNetworkProfile isCarPlay];
   }
 
   else
   {
-    v6 = 0;
+    isCarPlay = 0;
   }
 
   [v3 invalidate];
   v7 = objc_autoreleasePoolPush();
-  v8 = self;
+  selfCopy = self;
   v9 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
     v10 = HMFGetLogIdentifier();
-    v11 = [MEMORY[0x277CCABB0] numberWithBool:v6];
+    v11 = [MEMORY[0x277CCABB0] numberWithBool:isCarPlay];
     v14 = 138543618;
     v15 = v10;
     v16 = 2112;
@@ -60,16 +60,16 @@ void __35__HMDCarPlayDataSource_logCategory__block_invoke()
 
   objc_autoreleasePoolPop(v7);
   v12 = *MEMORY[0x277D85DE8];
-  return v6;
+  return isCarPlay;
 }
 
 - (BOOL)synchronouslyFetchIsCarPlayConnectedStatus
 {
-  v2 = [objc_alloc(MEMORY[0x277CF89F8]) initAndWaitUntilSessionUpdated];
-  v3 = [v2 currentSession];
-  v4 = [v3 isPaired];
+  initAndWaitUntilSessionUpdated = [objc_alloc(MEMORY[0x277CF89F8]) initAndWaitUntilSessionUpdated];
+  currentSession = [initAndWaitUntilSessionUpdated currentSession];
+  isPaired = [currentSession isPaired];
 
-  return v4;
+  return isPaired;
 }
 
 @end

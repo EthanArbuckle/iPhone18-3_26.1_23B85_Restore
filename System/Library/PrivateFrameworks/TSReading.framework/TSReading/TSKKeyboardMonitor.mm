@@ -4,34 +4,34 @@
 + (BOOL)keyboardIsAnimatingOutOrUndocking;
 + (BOOL)keyboardIsVisibleAndDocked;
 + (id)_singletonAlloc;
-+ (id)allocWithZone:(_NSZone *)a3;
++ (id)allocWithZone:(_NSZone *)zone;
 + (id)sharedKeyboardMonitor;
-+ (void)addKeyboardObserver:(id)a3;
-+ (void)afterKeyboardAnimationPerformBlock:(id)a3;
-+ (void)removeKeyboardObserver:(id)a3;
-+ (void)setKeyboardHiddenByModalObserver:(id)a3;
-+ (void)setModalKeyboardObserver:(id)a3;
++ (void)addKeyboardObserver:(id)observer;
++ (void)afterKeyboardAnimationPerformBlock:(id)block;
++ (void)removeKeyboardObserver:(id)observer;
++ (void)setKeyboardHiddenByModalObserver:(id)observer;
++ (void)setModalKeyboardObserver:(id)observer;
 - (CGRect)keyboardFrame;
 - (TSKKeyboardMonitor)init;
-- (double)keyboardHeightInView:(id)a3;
+- (double)keyboardHeightInView:(id)view;
 - (id)p_keyboardFrameView;
-- (void)addKeyboardObserver:(id)a3;
-- (void)afterKeyboardAnimationPerformBlock:(id)a3;
+- (void)addKeyboardObserver:(id)observer;
+- (void)afterKeyboardAnimationPerformBlock:(id)block;
 - (void)dealloc;
-- (void)p_KeyboardDidChangeFrame:(id)a3;
-- (void)p_KeyboardWillChangeFrame:(id)a3;
-- (void)p_enumerateObserversUsingBlock:(id)a3;
+- (void)p_KeyboardDidChangeFrame:(id)frame;
+- (void)p_KeyboardWillChangeFrame:(id)frame;
+- (void)p_enumerateObserversUsingBlock:(id)block;
 - (void)p_installKeyboardNotifications;
-- (void)p_keyboardDidHideOrUndock:(id)a3;
-- (void)p_keyboardDidShowOrDock:(id)a3;
-- (void)p_keyboardWillHideOrUndock:(id)a3;
-- (void)p_keyboardWillShowOrDock:(id)a3;
-- (void)p_performAnimationCompletionBlocksWithVisible:(BOOL)a3;
+- (void)p_keyboardDidHideOrUndock:(id)undock;
+- (void)p_keyboardDidShowOrDock:(id)dock;
+- (void)p_keyboardWillHideOrUndock:(id)undock;
+- (void)p_keyboardWillShowOrDock:(id)dock;
+- (void)p_performAnimationCompletionBlocksWithVisible:(BOOL)visible;
 - (void)p_removeKeyboardNotifications;
-- (void)p_updateKeyboardInfoFromNotification:(id)a3;
-- (void)removeKeyboardObserver:(id)a3;
-- (void)setKeyboardHiddenByModalObserver:(id)a3;
-- (void)setModalKeyboardObserver:(id)a3;
+- (void)p_updateKeyboardInfoFromNotification:(id)notification;
+- (void)removeKeyboardObserver:(id)observer;
+- (void)setKeyboardHiddenByModalObserver:(id)observer;
+- (void)setModalKeyboardObserver:(id)observer;
 @end
 
 @implementation TSKKeyboardMonitor
@@ -64,9 +64,9 @@
   self->_completionBlocks = 0;
   if (self->_exclusiveKeyboardObserver)
   {
-    v4 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSKKeyboardMonitor dealloc]"];
-    [v4 handleFailureInFunction:v5 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKKeyboardMonitor.m"), 123, @"expected nil value for '%s'", "_exclusiveKeyboardObserver"}];
+    [currentHandler handleFailureInFunction:v5 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKKeyboardMonitor.m"), 123, @"expected nil value for '%s'", "_exclusiveKeyboardObserver"}];
   }
 
   v6.receiver = self;
@@ -74,7 +74,7 @@
   [(TSKKeyboardMonitor *)&v6 dealloc];
 }
 
-- (void)addKeyboardObserver:(id)a3
+- (void)addKeyboardObserver:(id)observer
 {
   keyboardObservers = self->_keyboardObservers;
   if (!keyboardObservers)
@@ -83,20 +83,20 @@
     self->_keyboardObservers = keyboardObservers;
   }
 
-  if (([(__CFArray *)keyboardObservers containsObject:a3]& 1) == 0)
+  if (([(__CFArray *)keyboardObservers containsObject:observer]& 1) == 0)
   {
     v6 = self->_keyboardObservers;
 
-    [(__CFArray *)v6 addObject:a3];
+    [(__CFArray *)v6 addObject:observer];
   }
 }
 
-- (void)removeKeyboardObserver:(id)a3
+- (void)removeKeyboardObserver:(id)observer
 {
   keyboardObservers = self->_keyboardObservers;
   if (keyboardObservers)
   {
-    [(__CFArray *)self->_keyboardObservers removeObject:a3];
+    [(__CFArray *)self->_keyboardObservers removeObject:observer];
     if (![(__CFArray *)keyboardObservers count])
     {
       CFRelease(self->_keyboardObservers);
@@ -105,32 +105,32 @@
   }
 }
 
-- (void)setModalKeyboardObserver:(id)a3
+- (void)setModalKeyboardObserver:(id)observer
 {
-  if (a3 && self->_exclusiveKeyboardObserver)
+  if (observer && self->_exclusiveKeyboardObserver)
   {
-    v5 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSKKeyboardMonitor setModalKeyboardObserver:]"];
-    [v5 handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKKeyboardMonitor.m"), 163, @"setModalKeyboardObserver is in a bad state."}];
+    [currentHandler handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKKeyboardMonitor.m"), 163, @"setModalKeyboardObserver is in a bad state."}];
   }
 
-  self->_exclusiveKeyboardObserver = a3;
+  self->_exclusiveKeyboardObserver = observer;
 }
 
-- (void)setKeyboardHiddenByModalObserver:(id)a3
+- (void)setKeyboardHiddenByModalObserver:(id)observer
 {
-  if (self->_exclusiveKeyboardObserver != a3)
+  if (self->_exclusiveKeyboardObserver != observer)
   {
-    v4 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSKKeyboardMonitor setKeyboardHiddenByModalObserver:]"];
-    [v4 handleFailureInFunction:v5 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKKeyboardMonitor.m"), 170, @"setKeyboardHiddenByModalObserver - called by a non exclusive observer."}];
+    [currentHandler handleFailureInFunction:v5 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKKeyboardMonitor.m"), 170, @"setKeyboardHiddenByModalObserver - called by a non exclusive observer."}];
   }
 
   *&self->_keyboardIsVisibleAndDocked = 0;
   self->_keyboardIsAnimatingOutOrUndocking = 0;
 }
 
-- (void)afterKeyboardAnimationPerformBlock:(id)a3
+- (void)afterKeyboardAnimationPerformBlock:(id)block
 {
   completionBlocks = self->_completionBlocks;
   if (!completionBlocks)
@@ -139,14 +139,14 @@
     self->_completionBlocks = completionBlocks;
   }
 
-  v6 = [a3 copy];
+  v6 = [block copy];
 
   [(NSMutableArray *)completionBlocks addObject:v6];
 }
 
 + (id)_singletonAlloc
 {
-  v3.receiver = a1;
+  v3.receiver = self;
   v3.super_class = &OBJC_METACLASS___TSKKeyboardMonitor;
   return objc_msgSendSuper2(&v3, sel_allocWithZone_, 0);
 }
@@ -156,110 +156,110 @@
   result = sharedKeyboardMonitor_sSingletonInstance;
   if (!sharedKeyboardMonitor_sSingletonInstance)
   {
-    objc_sync_enter(a1);
+    objc_sync_enter(self);
     if (!sharedKeyboardMonitor_sSingletonInstance)
     {
-      v4 = [objc_msgSend(a1 "_singletonAlloc")];
+      v4 = [objc_msgSend(self "_singletonAlloc")];
       __dmb(0xBu);
       sharedKeyboardMonitor_sSingletonInstance = v4;
       if (!v4)
       {
-        v5 = [MEMORY[0x277D6C290] currentHandler];
+        currentHandler = [MEMORY[0x277D6C290] currentHandler];
         v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[TSKKeyboardMonitor sharedKeyboardMonitor]"];
-        [v5 handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKKeyboardMonitor.m"), 188, @"Couldn't create singleton instance of %@", a1}];
+        [currentHandler handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKKeyboardMonitor.m"), 188, @"Couldn't create singleton instance of %@", self}];
       }
     }
 
-    objc_sync_exit(a1);
+    objc_sync_exit(self);
     return sharedKeyboardMonitor_sSingletonInstance;
   }
 
   return result;
 }
 
-+ (id)allocWithZone:(_NSZone *)a3
++ (id)allocWithZone:(_NSZone *)zone
 {
-  v3 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[TSKKeyboardMonitor allocWithZone:]"];
-  [v3 handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKKeyboardMonitor.m"), 188, @"Don't alloc a singleton"}];
+  [currentHandler handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKKeyboardMonitor.m"), 188, @"Don't alloc a singleton"}];
   return 0;
 }
 
-+ (void)addKeyboardObserver:(id)a3
++ (void)addKeyboardObserver:(id)observer
 {
-  v4 = [a1 sharedKeyboardMonitor];
+  sharedKeyboardMonitor = [self sharedKeyboardMonitor];
 
-  [v4 addKeyboardObserver:a3];
+  [sharedKeyboardMonitor addKeyboardObserver:observer];
 }
 
-+ (void)removeKeyboardObserver:(id)a3
++ (void)removeKeyboardObserver:(id)observer
 {
-  v4 = [a1 sharedKeyboardMonitor];
+  sharedKeyboardMonitor = [self sharedKeyboardMonitor];
 
-  [v4 removeKeyboardObserver:a3];
+  [sharedKeyboardMonitor removeKeyboardObserver:observer];
 }
 
-+ (void)setModalKeyboardObserver:(id)a3
++ (void)setModalKeyboardObserver:(id)observer
 {
-  v4 = [a1 sharedKeyboardMonitor];
+  sharedKeyboardMonitor = [self sharedKeyboardMonitor];
 
-  [v4 setModalKeyboardObserver:a3];
+  [sharedKeyboardMonitor setModalKeyboardObserver:observer];
 }
 
-+ (void)setKeyboardHiddenByModalObserver:(id)a3
++ (void)setKeyboardHiddenByModalObserver:(id)observer
 {
-  v4 = [a1 sharedKeyboardMonitor];
+  sharedKeyboardMonitor = [self sharedKeyboardMonitor];
 
-  [v4 setKeyboardHiddenByModalObserver:a3];
+  [sharedKeyboardMonitor setKeyboardHiddenByModalObserver:observer];
 }
 
 + (BOOL)keyboardIsVisibleAndDocked
 {
-  v2 = [a1 sharedKeyboardMonitor];
+  sharedKeyboardMonitor = [self sharedKeyboardMonitor];
 
-  return [v2 keyboardIsVisibleAndDocked];
+  return [sharedKeyboardMonitor keyboardIsVisibleAndDocked];
 }
 
 + (BOOL)keyboardIsAnimating
 {
-  v2 = [a1 sharedKeyboardMonitor];
+  sharedKeyboardMonitor = [self sharedKeyboardMonitor];
 
-  return [v2 keyboardIsAnimating];
+  return [sharedKeyboardMonitor keyboardIsAnimating];
 }
 
 + (BOOL)keyboardIsAnimatingInOrDocking
 {
-  v2 = [a1 sharedKeyboardMonitor];
+  sharedKeyboardMonitor = [self sharedKeyboardMonitor];
 
-  return [v2 keyboardIsAnimatingInOrDocking];
+  return [sharedKeyboardMonitor keyboardIsAnimatingInOrDocking];
 }
 
 + (BOOL)keyboardIsAnimatingOutOrUndocking
 {
-  v2 = [a1 sharedKeyboardMonitor];
+  sharedKeyboardMonitor = [self sharedKeyboardMonitor];
 
-  return [v2 keyboardIsAnimatingOutOrUndocking];
+  return [sharedKeyboardMonitor keyboardIsAnimatingOutOrUndocking];
 }
 
-+ (void)afterKeyboardAnimationPerformBlock:(id)a3
++ (void)afterKeyboardAnimationPerformBlock:(id)block
 {
-  v4 = [a1 sharedKeyboardMonitor];
+  sharedKeyboardMonitor = [self sharedKeyboardMonitor];
 
-  [v4 afterKeyboardAnimationPerformBlock:a3];
+  [sharedKeyboardMonitor afterKeyboardAnimationPerformBlock:block];
 }
 
-- (double)keyboardHeightInView:(id)a3
+- (double)keyboardHeightInView:(id)view
 {
-  v5 = [(TSKKeyboardMonitor *)self p_keyboardFrameView];
+  p_keyboardFrameView = [(TSKKeyboardMonitor *)self p_keyboardFrameView];
   [(TSKKeyboardMonitor *)self keyboardFrame];
   if (v9 <= 0.0)
   {
     return 0.0;
   }
 
-  [objc_msgSend(a3 "superview")];
+  [objc_msgSend(view "superview")];
   v11 = v10;
-  [a3 frame];
+  [view frame];
   return fmax(v12 - v11, 0.0);
 }
 
@@ -267,48 +267,48 @@
 {
   if (![-[UIWindow subviews](self->_rootWindow "subviews")] || (result = objc_msgSend(-[UIWindow subviews](self->_rootWindow, "subviews"), "objectAtIndex:", 0)) == 0)
   {
-    v4 = [MEMORY[0x277D75128] sharedApplication];
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
 
-    return [v4 keyWindow];
+    return [mEMORY[0x277D75128] keyWindow];
   }
 
   return result;
 }
 
-- (void)p_updateKeyboardInfoFromNotification:(id)a3
+- (void)p_updateKeyboardInfoFromNotification:(id)notification
 {
   objc_opt_class();
-  v5 = [a3 userInfo];
-  [v5 objectForKey:*MEMORY[0x277D76BB8]];
+  userInfo = [notification userInfo];
+  [userInfo objectForKey:*MEMORY[0x277D76BB8]];
   v6 = TSUDynamicCast();
   if (v6)
   {
     v7 = v6;
-    v8 = [(TSKKeyboardMonitor *)self p_keyboardFrameView];
-    if (!v8)
+    p_keyboardFrameView = [(TSKKeyboardMonitor *)self p_keyboardFrameView];
+    if (!p_keyboardFrameView)
     {
-      v9 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler = [MEMORY[0x277D6C290] currentHandler];
       v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSKKeyboardMonitor p_updateKeyboardInfoFromNotification:]"];
-      [v9 handleFailureInFunction:v10 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKKeyboardMonitor.m"), 289, @"Can't calculate keyboard bounds without a root view."}];
+      [currentHandler handleFailureInFunction:v10 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKKeyboardMonitor.m"), 289, @"Can't calculate keyboard bounds without a root view."}];
     }
 
     [v7 CGRectValue];
-    [v8 convertRect:0 fromView:?];
+    [p_keyboardFrameView convertRect:0 fromView:?];
     self->_keyboardFrame.origin.x = v11;
     self->_keyboardFrame.origin.y = v12;
     self->_keyboardFrame.size.width = v13;
     self->_keyboardFrame.size.height = v14;
     [(UIWindow *)self->_rootWindow frame];
-    [v8 convertRect:0 fromView:?];
+    [p_keyboardFrameView convertRect:0 fromView:?];
     self->_onScreenHeight = v15 - self->_keyboardFrame.origin.y;
   }
 
-  v16 = [a3 userInfo];
-  [objc_msgSend(v16 objectForKey:{*MEMORY[0x277D76B78]), "doubleValue"}];
+  userInfo2 = [notification userInfo];
+  [objc_msgSend(userInfo2 objectForKey:{*MEMORY[0x277D76B78]), "doubleValue"}];
   self->_keyboardAnimationDuration = v17;
 }
 
-- (void)p_performAnimationCompletionBlocksWithVisible:(BOOL)a3
+- (void)p_performAnimationCompletionBlocksWithVisible:(BOOL)visible
 {
   v19 = *MEMORY[0x277D85DE8];
   v14 = 0u;
@@ -337,7 +337,7 @@
         v12[2] = __68__TSKKeyboardMonitor_p_performAnimationCompletionBlocksWithVisible___block_invoke;
         v12[3] = &unk_279D47A88;
         v12[4] = v11;
-        v13 = a3;
+        visibleCopy = visible;
         dispatch_async(v9, v12);
       }
 
@@ -352,25 +352,25 @@
 
 - (void)p_installKeyboardNotifications
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 addObserver:self selector:sel_p_keyboardWillShowOrDock_ name:*MEMORY[0x277D76C60] object:0];
-  [v3 addObserver:self selector:sel_p_keyboardDidShowOrDock_ name:*MEMORY[0x277D76BA8] object:0];
-  [v3 addObserver:self selector:sel_p_keyboardWillHideOrUndock_ name:*MEMORY[0x277D76C50] object:0];
-  [v3 addObserver:self selector:sel_p_keyboardDidHideOrUndock_ name:*MEMORY[0x277D76BA0] object:0];
-  [v3 addObserver:self selector:sel_p_KeyboardWillChangeFrame_ name:*MEMORY[0x277D76C48] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_p_keyboardWillShowOrDock_ name:*MEMORY[0x277D76C60] object:0];
+  [defaultCenter addObserver:self selector:sel_p_keyboardDidShowOrDock_ name:*MEMORY[0x277D76BA8] object:0];
+  [defaultCenter addObserver:self selector:sel_p_keyboardWillHideOrUndock_ name:*MEMORY[0x277D76C50] object:0];
+  [defaultCenter addObserver:self selector:sel_p_keyboardDidHideOrUndock_ name:*MEMORY[0x277D76BA0] object:0];
+  [defaultCenter addObserver:self selector:sel_p_KeyboardWillChangeFrame_ name:*MEMORY[0x277D76C48] object:0];
   v4 = *MEMORY[0x277D76B98];
 
-  [v3 addObserver:self selector:sel_p_KeyboardDidChangeFrame_ name:v4 object:0];
+  [defaultCenter addObserver:self selector:sel_p_KeyboardDidChangeFrame_ name:v4 object:0];
 }
 
 - (void)p_removeKeyboardNotifications
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
 
-  [v3 removeObserver:self];
+  [defaultCenter removeObserver:self];
 }
 
-- (void)p_enumerateObserversUsingBlock:(id)a3
+- (void)p_enumerateObserversUsingBlock:(id)block
 {
   if (self->_exclusiveKeyboardObserver)
   {
@@ -389,12 +389,12 @@
   }
 
   v6 = Copy;
-  [(__CFArray *)Copy enumerateObjectsUsingBlock:a3];
+  [(__CFArray *)Copy enumerateObjectsUsingBlock:block];
 
   CFRelease(v6);
 }
 
-- (void)p_keyboardWillShowOrDock:(id)a3
+- (void)p_keyboardWillShowOrDock:(id)dock
 {
   [(TSKKeyboardMonitor *)self p_updateKeyboardInfoFromNotification:?];
   if (fabs(self->_keyboardFrame.size.width) >= 0.00999999978 && fabs(self->_keyboardFrame.size.height) >= 0.00999999978)
@@ -410,7 +410,7 @@
     v5[1] = 3221225472;
     v5[2] = __47__TSKKeyboardMonitor_p_keyboardWillShowOrDock___block_invoke_2;
     v5[3] = &unk_279D47AD0;
-    v5[4] = a3;
+    v5[4] = dock;
     [(TSKKeyboardMonitor *)self p_enumerateObserversUsingBlock:v5];
   }
 
@@ -420,7 +420,7 @@
     if (self->_keyboardIsVisibleAndDocked)
     {
 
-      [(TSKKeyboardMonitor *)self p_keyboardWillHideOrUndock:a3];
+      [(TSKKeyboardMonitor *)self p_keyboardWillHideOrUndock:dock];
     }
 
     else
@@ -455,13 +455,13 @@ uint64_t __47__TSKKeyboardMonitor_p_keyboardWillShowOrDock___block_invoke_2(uint
   return result;
 }
 
-- (void)p_keyboardDidShowOrDock:(id)a3
+- (void)p_keyboardDidShowOrDock:(id)dock
 {
   if (self->_weAreFakingAHideEvent)
   {
     if (!self->_suppressDidHide)
     {
-      [(TSKKeyboardMonitor *)self p_keyboardDidHideOrUndock:a3];
+      [(TSKKeyboardMonitor *)self p_keyboardDidHideOrUndock:dock];
     }
 
     *&self->_weAreFakingAHideEvent = 256;
@@ -470,13 +470,13 @@ uint64_t __47__TSKKeyboardMonitor_p_keyboardWillShowOrDock___block_invoke_2(uint
 
   else if (self->_keyboardIsAnimatingInOrDocking)
   {
-    [(TSKKeyboardMonitor *)self p_updateKeyboardInfoFromNotification:a3];
+    [(TSKKeyboardMonitor *)self p_updateKeyboardInfoFromNotification:dock];
     self->_keyboardIsAnimatingInOrDocking = 0;
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
     v5[2] = __46__TSKKeyboardMonitor_p_keyboardDidShowOrDock___block_invoke;
     v5[3] = &unk_279D47AD0;
-    v5[4] = a3;
+    v5[4] = dock;
     [(TSKKeyboardMonitor *)self p_enumerateObserversUsingBlock:v5];
     [(TSKKeyboardMonitor *)self p_performAnimationCompletionBlocksWithVisible:1];
   }
@@ -495,7 +495,7 @@ uint64_t __46__TSKKeyboardMonitor_p_keyboardDidShowOrDock___block_invoke(uint64_
   return result;
 }
 
-- (void)p_keyboardWillHideOrUndock:(id)a3
+- (void)p_keyboardWillHideOrUndock:(id)undock
 {
   self->_suppressDidHide = 0;
   [(TSKKeyboardMonitor *)self p_updateKeyboardInfoFromNotification:?];
@@ -513,7 +513,7 @@ uint64_t __46__TSKKeyboardMonitor_p_keyboardDidShowOrDock___block_invoke(uint64_
     v5[1] = 3221225472;
     v5[2] = __49__TSKKeyboardMonitor_p_keyboardWillHideOrUndock___block_invoke_2;
     v5[3] = &unk_279D47AD0;
-    v5[4] = a3;
+    v5[4] = undock;
     [(TSKKeyboardMonitor *)self p_enumerateObserversUsingBlock:v5];
   }
 }
@@ -543,7 +543,7 @@ uint64_t __49__TSKKeyboardMonitor_p_keyboardWillHideOrUndock___block_invoke_2(ui
   return result;
 }
 
-- (void)p_keyboardDidHideOrUndock:(id)a3
+- (void)p_keyboardDidHideOrUndock:(id)undock
 {
   if (self->_keyboardIsAnimatingOutOrUndocking)
   {
@@ -555,7 +555,7 @@ uint64_t __49__TSKKeyboardMonitor_p_keyboardWillHideOrUndock___block_invoke_2(ui
     v7[1] = 3221225472;
     v7[2] = __48__TSKKeyboardMonitor_p_keyboardDidHideOrUndock___block_invoke;
     v7[3] = &unk_279D47AD0;
-    v7[4] = a3;
+    v7[4] = undock;
     [(TSKKeyboardMonitor *)self p_enumerateObserversUsingBlock:v7];
     [(TSKKeyboardMonitor *)self p_performAnimationCompletionBlocksWithVisible:0];
     self->_lastHideWasFake = 0;
@@ -575,14 +575,14 @@ uint64_t __48__TSKKeyboardMonitor_p_keyboardDidHideOrUndock___block_invoke(uint6
   return result;
 }
 
-- (void)p_KeyboardWillChangeFrame:(id)a3
+- (void)p_KeyboardWillChangeFrame:(id)frame
 {
   [(TSKKeyboardMonitor *)self p_updateKeyboardInfoFromNotification:?];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __48__TSKKeyboardMonitor_p_KeyboardWillChangeFrame___block_invoke;
   v5[3] = &unk_279D47AD0;
-  v5[4] = a3;
+  v5[4] = frame;
   [(TSKKeyboardMonitor *)self p_enumerateObserversUsingBlock:v5];
 }
 
@@ -599,14 +599,14 @@ uint64_t __48__TSKKeyboardMonitor_p_KeyboardWillChangeFrame___block_invoke(uint6
   return result;
 }
 
-- (void)p_KeyboardDidChangeFrame:(id)a3
+- (void)p_KeyboardDidChangeFrame:(id)frame
 {
   [(TSKKeyboardMonitor *)self p_updateKeyboardInfoFromNotification:?];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __47__TSKKeyboardMonitor_p_KeyboardDidChangeFrame___block_invoke;
   v5[3] = &unk_279D47AD0;
-  v5[4] = a3;
+  v5[4] = frame;
   [(TSKKeyboardMonitor *)self p_enumerateObserversUsingBlock:v5];
 }
 

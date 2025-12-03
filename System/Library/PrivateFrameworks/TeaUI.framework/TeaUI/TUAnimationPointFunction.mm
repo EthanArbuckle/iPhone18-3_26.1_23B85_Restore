@@ -1,28 +1,28 @@
 @interface TUAnimationPointFunction
 - (CGPoint)endValue;
-- (CGPoint)solveForTime:(double)a3;
+- (CGPoint)solveForTime:(double)time;
 - (CGPoint)startValue;
-- (TUAnimationPointFunction)initWithTimingFunction:(id)a3 startRect:(CGPoint)a4 endRect:(CGPoint)a5 speed:(double)a6;
+- (TUAnimationPointFunction)initWithTimingFunction:(id)function startRect:(CGPoint)rect endRect:(CGPoint)endRect speed:(double)speed;
 - (void)_reloadFunctions;
 @end
 
 @implementation TUAnimationPointFunction
 
-- (TUAnimationPointFunction)initWithTimingFunction:(id)a3 startRect:(CGPoint)a4 endRect:(CGPoint)a5 speed:(double)a6
+- (TUAnimationPointFunction)initWithTimingFunction:(id)function startRect:(CGPoint)rect endRect:(CGPoint)endRect speed:(double)speed
 {
-  y = a5.y;
-  x = a5.x;
-  v9 = a4.y;
-  v10 = a4.x;
-  v12 = a3;
+  y = endRect.y;
+  x = endRect.x;
+  v9 = rect.y;
+  v10 = rect.x;
+  functionCopy = function;
   v17.receiver = self;
   v17.super_class = TUAnimationPointFunction;
   v13 = [(TUAnimationPointFunction *)&v17 init];
   if (v13)
   {
-    if (v12)
+    if (functionCopy)
     {
-      v14 = v12;
+      v14 = functionCopy;
     }
 
     else
@@ -37,20 +37,20 @@
     v13->_startValue.y = v9;
     v13->_endValue.x = x;
     v13->_endValue.y = y;
-    v13->_speed = a6;
+    v13->_speed = speed;
     [(TUAnimationPointFunction *)v13 _reloadFunctions];
   }
 
   return v13;
 }
 
-- (CGPoint)solveForTime:(double)a3
+- (CGPoint)solveForTime:(double)time
 {
-  v5 = [(TUAnimationPointFunction *)self xFunction];
-  [v5 solveForTime:a3];
+  xFunction = [(TUAnimationPointFunction *)self xFunction];
+  [xFunction solveForTime:time];
   v7 = v6;
-  v8 = [(TUAnimationPointFunction *)self yFunction];
-  [v8 solveForTime:a3];
+  yFunction = [(TUAnimationPointFunction *)self yFunction];
+  [yFunction solveForTime:time];
   v10 = v9;
 
   v11 = v7;

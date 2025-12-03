@@ -1,21 +1,21 @@
 @interface SBAppProtectionShieldViewController
-- (SBAppProtectionShieldViewController)initWithAssistant:(id)a3 systemAppOutlet:(id)a4;
+- (SBAppProtectionShieldViewController)initWithAssistant:(id)assistant systemAppOutlet:(id)outlet;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation SBAppProtectionShieldViewController
 
-- (SBAppProtectionShieldViewController)initWithAssistant:(id)a3 systemAppOutlet:(id)a4
+- (SBAppProtectionShieldViewController)initWithAssistant:(id)assistant systemAppOutlet:(id)outlet
 {
-  v6 = a3;
-  v7 = a4;
+  assistantCopy = assistant;
+  outletCopy = outlet;
   v12.receiver = self;
   v12.super_class = SBAppProtectionShieldViewController;
   v8 = [(SBAppProtectionShieldViewController *)&v12 initWithNibName:0 bundle:0];
   if (v8)
   {
-    v9 = [[SBAppProtectionShieldView alloc] initWithAssistant:v6 systemAppOutlet:v7];
+    v9 = [[SBAppProtectionShieldView alloc] initWithAssistant:assistantCopy systemAppOutlet:outletCopy];
     shieldView = v8->_shieldView;
     v8->_shieldView = v9;
   }
@@ -28,8 +28,8 @@
   v4.receiver = self;
   v4.super_class = SBAppProtectionShieldViewController;
   [(SBAppProtectionShieldViewController *)&v4 viewDidLoad];
-  v3 = [(SBAppProtectionShieldViewController *)self view];
-  [v3 addSubview:self->_shieldView];
+  view = [(SBAppProtectionShieldViewController *)self view];
+  [view addSubview:self->_shieldView];
 }
 
 - (void)viewWillLayoutSubviews
@@ -38,8 +38,8 @@
   v5.super_class = SBAppProtectionShieldViewController;
   [(SBAppProtectionShieldViewController *)&v5 viewWillLayoutSubviews];
   shieldView = self->_shieldView;
-  v4 = [(SBAppProtectionShieldViewController *)self view];
-  [v4 bounds];
+  view = [(SBAppProtectionShieldViewController *)self view];
+  [view bounds];
   [(SBAppProtectionShieldView *)shieldView setFrame:?];
 }
 

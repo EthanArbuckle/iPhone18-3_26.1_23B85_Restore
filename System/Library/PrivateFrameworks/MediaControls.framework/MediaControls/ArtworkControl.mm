@@ -1,10 +1,10 @@
 @interface ArtworkControl
 - (BOOL)isHighlighted;
-- (_TtC13MediaControls14ArtworkControl)initWithCoder:(id)a3;
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5;
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4;
+- (_TtC13MediaControls14ArtworkControl)initWithCoder:(id)coder;
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region;
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region;
 - (void)layoutSubviews;
-- (void)setHighlighted:(BOOL)a3;
+- (void)setHighlighted:(BOOL)highlighted;
 - (void)updateVisualStyling;
 @end
 
@@ -17,21 +17,21 @@
   return [(ArtworkControl *)&v3 isHighlighted];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v5 = type metadata accessor for ArtworkControl();
   v9.receiver = self;
   v9.super_class = v5;
-  v6 = self;
-  v7 = [(ArtworkControl *)&v9 isHighlighted];
-  v8.receiver = v6;
+  selfCopy = self;
+  isHighlighted = [(ArtworkControl *)&v9 isHighlighted];
+  v8.receiver = selfCopy;
   v8.super_class = v5;
-  [(ArtworkControl *)&v8 setHighlighted:v3];
-  sub_1A22B5584(v7);
+  [(ArtworkControl *)&v8 setHighlighted:highlightedCopy];
+  sub_1A22B5584(isHighlighted);
 }
 
-- (_TtC13MediaControls14ArtworkControl)initWithCoder:(id)a3
+- (_TtC13MediaControls14ArtworkControl)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC13MediaControls14ArtworkControl_artworkView;
   type metadata accessor for ArtworkView();
@@ -54,27 +54,27 @@
 
 - (void)updateVisualStyling
 {
-  v2 = self;
+  selfCopy = self;
   sub_1A22B5A54();
 }
 
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region
 {
   sub_1A2115288(0, &qword_1EB088D28);
   v6 = *(&self->super.super.super.super.isa + OBJC_IVAR____TtC13MediaControls14ArtworkControl_artworkView);
-  v7 = self;
-  v8 = [(ArtworkControl *)v7 bounds];
-  (*((*MEMORY[0x1E69E7D40] & *v6) + 0xD0))(v8);
+  selfCopy = self;
+  bounds = [(ArtworkControl *)selfCopy bounds];
+  (*((*MEMORY[0x1E69E7D40] & *v6) + 0xD0))(bounds);
   v9 = sub_1A22E6AB8();
 
   return v9;
 }
 
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  interactionCopy = interaction;
+  regionCopy = region;
+  selfCopy = self;
   v9 = sub_1A22B5E3C();
 
   return v9;

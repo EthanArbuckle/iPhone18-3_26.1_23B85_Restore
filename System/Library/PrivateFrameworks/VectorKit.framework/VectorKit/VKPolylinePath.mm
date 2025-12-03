@@ -1,8 +1,8 @@
 @interface VKPolylinePath
 - (GEOComposedRouteSection)section;
-- (Matrix<float,)convertCoordinateToTile:(id *)a3;
-- (VKPolylinePath)initWithOverlay:(id)a3 section:(id)a4 matchedPathSegments:(id)a5;
-- (VKPolylinePath)initWithOverlay:(id)a3 section:(id)a4 routeStartIndex:(unsigned int)a5 routeEndIndex:(unsigned int)a6 matchedPathSegments:(id)a7 elevationSource:(void *)a8 elevationSourceContext:(void *)a9;
+- (Matrix<float,)convertCoordinateToTile:(id *)tile;
+- (VKPolylinePath)initWithOverlay:(id)overlay section:(id)section matchedPathSegments:(id)segments;
+- (VKPolylinePath)initWithOverlay:(id)overlay section:(id)section routeStartIndex:(unsigned int)index routeEndIndex:(unsigned int)endIndex matchedPathSegments:(id)segments elevationSource:(void *)source elevationSourceContext:(void *)context;
 - (id).cxx_construct;
 - (id)description;
 @end
@@ -41,7 +41,7 @@
   return [MEMORY[0x1E696AEC0] stringWithFormat:@"<VKPolylinePath %p>: %f - %f, snappedPath:%s", self, (self->_routeStart.offset + self->_routeStart.index), (self->_routeEnd.offset + self->_routeEnd.index), v2];
 }
 
-- (Matrix<float,)convertCoordinateToTile:(id *)a3
+- (Matrix<float,)convertCoordinateToTile:(id *)tile
 {
   GEOMapPoint3DForCoordinate();
   v5 = v4;
@@ -83,33 +83,33 @@
   return result;
 }
 
-- (VKPolylinePath)initWithOverlay:(id)a3 section:(id)a4 routeStartIndex:(unsigned int)a5 routeEndIndex:(unsigned int)a6 matchedPathSegments:(id)a7 elevationSource:(void *)a8 elevationSourceContext:(void *)a9
+- (VKPolylinePath)initWithOverlay:(id)overlay section:(id)section routeStartIndex:(unsigned int)index routeEndIndex:(unsigned int)endIndex matchedPathSegments:(id)segments elevationSource:(void *)source elevationSourceContext:(void *)context
 {
   v162 = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v16 = a4;
-  v136 = v15;
-  v137 = a7;
-  v17 = [(VKPolylinePath *)self initWithOverlay:v15 section:v16 matchedPathSegments:?];
+  overlayCopy = overlay;
+  sectionCopy = section;
+  v136 = overlayCopy;
+  segmentsCopy = segments;
+  v17 = [(VKPolylinePath *)self initWithOverlay:overlayCopy section:sectionCopy matchedPathSegments:?];
   v18 = v17;
   if (v17)
   {
     WeakRetained = objc_loadWeakRetained(&v17->_section);
-    v20 = [WeakRetained composedRouteSegment];
+    composedRouteSegment = [WeakRetained composedRouteSegment];
 
-    v134 = v20;
-    v135 = [v20 composedRoute];
-    v18->_routeStart.index = a5;
+    v134 = composedRouteSegment;
+    composedRoute = [composedRouteSegment composedRoute];
+    v18->_routeStart.index = index;
     v18->_routeStart.offset = 0.0;
-    v18->_routeEnd.index = a6;
+    v18->_routeEnd.index = endIndex;
     v18->_routeEnd.offset = 0.0;
-    if (v137)
+    if (segmentsCopy)
     {
       v158 = 0u;
       v159 = 0u;
       v156 = 0u;
       v157 = 0u;
-      v21 = v137;
+      v21 = segmentsCopy;
       v22 = 0;
       v23 = [v21 countByEnumeratingWithState:&v156 objects:v161 count:16];
       if (v23)
@@ -144,9 +144,9 @@
       if (v140)
       {
         v139 = *v153;
-        if (a8)
+        if (source)
         {
-          v26 = a9 == 0;
+          v26 = context == 0;
         }
 
         else
@@ -176,9 +176,9 @@
               v37 = v36;
               v39 = v38;
               v41 = v40;
-              if (v16)
+              if (sectionCopy)
               {
-                [v16 bounds];
+                [sectionCopy bounds];
                 v42 = v146;
                 v43 = v147;
                 v44 = v148;
@@ -207,7 +207,7 @@
                 v146 = v31;
                 v147 = v33;
                 v148 = v35;
-                v51 = (*(*a8 + 16))(a8, &v146, a9);
+                v51 = (*(*source + 16))(source, &v146, context);
                 if ((v51 & 0x100000000) != 0)
                 {
                   v48 = *&v51;
@@ -383,17 +383,17 @@
 
     else
     {
-      v85 = [v16 startPointIndex];
-      v86 = a6 - a5 + 1;
+      startPointIndex = [sectionCopy startPointIndex];
+      v86 = endIndex - index + 1;
       std::vector<gm::Matrix<float,3,1>>::reserve(&v18->_points.__begin_, v86);
       std::vector<gdc::Entity>::reserve(&v18->_polylineCoordinates.__begin_, v86);
-      if (a6 - a5 != -1)
+      if (endIndex - index != -1)
       {
         v87 = 0;
-        v88 = a5 - v85;
-        if (a8)
+        v88 = index - startPointIndex;
+        if (source)
         {
-          v89 = a9 == 0;
+          v89 = context == 0;
         }
 
         else
@@ -402,18 +402,18 @@
         }
 
         v90 = !v89;
-        v144 = a5 - v85;
+        v144 = index - startPointIndex;
         do
         {
-          v91 = [v16 points] + 12 * (v88 + v87);
+          v91 = [sectionCopy points] + 12 * (v88 + v87);
           v93 = *v91;
           v92 = *(v91 + 4);
           v94 = *(v91 + 8);
           if (v90)
           {
-            if (v16)
+            if (sectionCopy)
             {
-              [v16 bounds];
+              [sectionCopy bounds];
             }
 
             GEOCoordinate3DForMapPoint();
@@ -421,7 +421,7 @@
             v146 = v97;
             v147 = v98;
             v148 = v95;
-            v99 = (*(*a8 + 16))(a8, &v146, a9);
+            v99 = (*(*source + 16))(source, &v146, context);
             if ((v99 & 0x100000000) != 0)
             {
               v100 = *&v99;
@@ -432,11 +432,11 @@
               v100 = v96;
             }
 
-            if (v16)
+            if (sectionCopy)
             {
-              [v16 bounds];
+              [sectionCopy bounds];
               v101 = v148;
-              [v16 bounds];
+              [sectionCopy bounds];
               v102 = v145;
             }
 
@@ -525,7 +525,7 @@ LABEL_116:
           }
 
           v18->_points.__end_ = v105;
-          v117 = v87 + a5;
+          v117 = v87 + index;
           v119 = v18->_polylineCoordinates.__end_;
           v118 = v18->_polylineCoordinates.__cap_;
           if (v119 >= v118)
@@ -595,20 +595,20 @@ LABEL_115:
       }
     }
 
-    [v16 lengthScaleFactor];
+    [sectionCopy lengthScaleFactor];
     v18->_sectionLengthScaleFactor = v131;
-    [v135 stepDistanceFromPoint:0 toPoint:*&v18->_routeStart];
+    [composedRoute stepDistanceFromPoint:0 toPoint:*&v18->_routeStart];
     v18->_startDistance = v132;
   }
 
   return v18;
 }
 
-- (VKPolylinePath)initWithOverlay:(id)a3 section:(id)a4 matchedPathSegments:(id)a5
+- (VKPolylinePath)initWithOverlay:(id)overlay section:(id)section matchedPathSegments:(id)segments
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  overlayCopy = overlay;
+  sectionCopy = section;
+  segmentsCopy = segments;
   v14.receiver = self;
   v14.super_class = VKPolylinePath;
   v11 = [(VKPolylinePath *)&v14 init];
@@ -617,10 +617,10 @@ LABEL_115:
   {
     v11->_gradientTraffic.blend = 0.0;
     *&v11->_gradientTraffic.start = 771;
-    objc_storeWeak(&v11->_overlay, v8);
-    objc_storeWeak(&v12->_section, v9);
+    objc_storeWeak(&v11->_overlay, overlayCopy);
+    objc_storeWeak(&v12->_section, sectionCopy);
     v12->_startDistance = -1.0;
-    objc_storeStrong(&v12->_matchedPathSegments, a5);
+    objc_storeStrong(&v12->_matchedPathSegments, segments);
   }
 
   return v12;

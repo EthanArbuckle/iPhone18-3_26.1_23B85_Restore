@@ -1,12 +1,12 @@
 @interface SmallContactCardCollectionViewCell
-- (_TtC18ASMessagesProvider34SmallContactCardCollectionViewCell)initWithCoder:(id)a3;
+- (_TtC18ASMessagesProvider34SmallContactCardCollectionViewCell)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
 @end
 
 @implementation SmallContactCardCollectionViewCell
 
-- (_TtC18ASMessagesProvider34SmallContactCardCollectionViewCell)initWithCoder:(id)a3
+- (_TtC18ASMessagesProvider34SmallContactCardCollectionViewCell)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC18ASMessagesProvider34SmallContactCardCollectionViewCell_itemLayoutContext;
   v5 = sub_75C840();

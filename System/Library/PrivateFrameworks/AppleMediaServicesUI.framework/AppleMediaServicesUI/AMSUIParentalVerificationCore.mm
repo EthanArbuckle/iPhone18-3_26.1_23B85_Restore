@@ -1,20 +1,20 @@
 @interface AMSUIParentalVerificationCore
-+ (BOOL)_isCardOnFileOnStack:(id)a3;
-+ (id)_allowedAccountParameters:(id)a3;
-+ (id)_minimumAgeFrom:(id)a3;
-+ (id)_tokenFromObject:(id)a3;
-+ (id)_tokenResultFromTokenString:(id)a3;
++ (BOOL)_isCardOnFileOnStack:(id)stack;
++ (id)_allowedAccountParameters:(id)parameters;
++ (id)_minimumAgeFrom:(id)from;
++ (id)_tokenFromObject:(id)object;
++ (id)_tokenResultFromTokenString:(id)string;
 @end
 
 @implementation AMSUIParentalVerificationCore
 
-+ (id)_tokenFromObject:(id)a3
++ (id)_tokenFromObject:(id)object
 {
-  v3 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = objectCopy;
   }
 
   else
@@ -70,21 +70,21 @@
   return v7;
 }
 
-+ (id)_tokenResultFromTokenString:(id)a3
++ (id)_tokenResultFromTokenString:(id)string
 {
-  v3 = [a3 dataUsingEncoding:4];
+  v3 = [string dataUsingEncoding:4];
   v4 = [[AMSPaymentVerificationTokenResult alloc] initWithTokenData:v3];
 
   return v4;
 }
 
-+ (BOOL)_isCardOnFileOnStack:(id)a3
++ (BOOL)_isCardOnFileOnStack:(id)stack
 {
-  v3 = a3;
+  stackCopy = stack;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = stackCopy;
   }
 
   else
@@ -122,45 +122,45 @@
 
       if (v9)
       {
-        v7 = [v9 BOOLValue];
+        bOOLValue = [v9 BOOLValue];
       }
 
       else
       {
-        v7 = 0;
+        bOOLValue = 0;
       }
     }
 
     else
     {
-      v7 = 0;
+      bOOLValue = 0;
     }
   }
 
   else
   {
-    v7 = 0;
+    bOOLValue = 0;
   }
 
-  return v7;
+  return bOOLValue;
 }
 
-+ (id)_allowedAccountParameters:(id)a3
++ (id)_allowedAccountParameters:(id)parameters
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __59__AMSUIParentalVerificationCore__allowedAccountParameters___block_invoke;
   v5[3] = &unk_1E7F25528;
   v6 = &unk_1F394ABA8;
-  v3 = [a3 ams_filterUsingTest:v5];
+  v3 = [parameters ams_filterUsingTest:v5];
 
   return v3;
 }
 
-+ (id)_minimumAgeFrom:(id)a3
++ (id)_minimumAgeFrom:(id)from
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"adultMinimumAge"];
+  fromCopy = from;
+  v4 = [fromCopy objectForKeyedSubscript:@"adultMinimumAge"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -179,7 +179,7 @@
 
   else
   {
-    v7 = [v3 objectForKeyedSubscript:@"adultMinimumAge"];
+    v7 = [fromCopy objectForKeyedSubscript:@"adultMinimumAge"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {

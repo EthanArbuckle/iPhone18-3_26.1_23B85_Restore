@@ -1,21 +1,21 @@
 @interface PUPXPhotoKitAddToLastUsedAlbumActionPerformer
-+ (BOOL)canPerformOnAsset:(id)a3 inAssetCollection:(id)a4 person:(id)a5 socialGroup:(id)a6;
-+ (id)localizedTitleForUseCase:(unint64_t)a3 actionManager:(id)a4;
-- (id)localizedTitleForUseCase:(unint64_t)a3;
-- (void)_performUserInteractionTaskWithAssets:(id)a3;
++ (BOOL)canPerformOnAsset:(id)asset inAssetCollection:(id)collection person:(id)person socialGroup:(id)group;
++ (id)localizedTitleForUseCase:(unint64_t)case actionManager:(id)manager;
+- (id)localizedTitleForUseCase:(unint64_t)case;
+- (void)_performUserInteractionTaskWithAssets:(id)assets;
 - (void)performBackgroundTask;
 - (void)performUserInteractionTask;
 @end
 
 @implementation PUPXPhotoKitAddToLastUsedAlbumActionPerformer
 
-- (id)localizedTitleForUseCase:(unint64_t)a3
+- (id)localizedTitleForUseCase:(unint64_t)case
 {
   v3 = MEMORY[0x1E69C3320];
-  v4 = [(PXPhotoKitAssetActionPerformer *)self assets];
-  v5 = [v4 firstObject];
-  v6 = [v5 photoLibrary];
-  v7 = [v3 commandTitleWithPhotoLibrary:v6];
+  assets = [(PXPhotoKitAssetActionPerformer *)self assets];
+  firstObject = [assets firstObject];
+  photoLibrary = [firstObject photoLibrary];
+  v7 = [v3 commandTitleWithPhotoLibrary:photoLibrary];
 
   return v7;
 }
@@ -26,17 +26,17 @@
   v4 = v3;
   if (v3)
   {
-    v5 = [(PXAddAssetsToLastUsedAssetCollectionAction *)v3 underlyingAction];
-    [PUPXPhotoKitAddToAlbumActionPerformer _configureAction:v5];
+    underlyingAction = [(PXAddAssetsToLastUsedAssetCollectionAction *)v3 underlyingAction];
+    [PUPXPhotoKitAddToAlbumActionPerformer _configureAction:underlyingAction];
 
-    v6 = [(PXActionPerformer *)self undoManager];
+    undoManager = [(PXActionPerformer *)self undoManager];
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __70__PUPXPhotoKitAddToLastUsedAlbumActionPerformer_performBackgroundTask__block_invoke;
     v7[3] = &unk_1E7B7FB70;
     v7[4] = self;
     v8 = v4;
-    [(PXAddAssetsToLastUsedAssetCollectionAction *)v8 executeWithUndoManager:v6 completionHandler:v7];
+    [(PXAddAssetsToLastUsedAssetCollectionAction *)v8 executeWithUndoManager:undoManager completionHandler:v7];
   }
 
   else
@@ -66,13 +66,13 @@ void __70__PUPXPhotoKitAddToLastUsedAlbumActionPerformer_performBackgroundTask__
   }
 }
 
-- (void)_performUserInteractionTaskWithAssets:(id)a3
+- (void)_performUserInteractionTaskWithAssets:(id)assets
 {
   v24 = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E69C3320];
-  v5 = a3;
+  assetsCopy = assets;
   v21 = 0;
-  v6 = [[v4 alloc] initWithAssets:v5 error:&v21];
+  v6 = [[v4 alloc] initWithAssets:assetsCopy error:&v21];
 
   v7 = v21;
   preparedAction = self->_preparedAction;
@@ -89,15 +89,15 @@ void __70__PUPXPhotoKitAddToLastUsedAlbumActionPerformer_performBackgroundTask__
     }
   }
 
-  v10 = [(PXAddAssetsToLastUsedAssetCollectionAction *)self->_preparedAction targetAssetCollection];
-  v11 = [v10 localizedTitle];
-  if (!v11)
+  targetAssetCollection = [(PXAddAssetsToLastUsedAssetCollectionAction *)self->_preparedAction targetAssetCollection];
+  localizedTitle = [targetAssetCollection localizedTitle];
+  if (!localizedTitle)
   {
     v12 = PXAssertGetLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_FAULT))
     {
       *buf = 138412290;
-      v23 = v10;
+      v23 = targetAssetCollection;
       _os_log_fault_impl(&dword_1B36F3000, v12, OS_LOG_TYPE_FAULT, "missing title for album %@", buf, 0xCu);
     }
   }
@@ -107,8 +107,8 @@ void __70__PUPXPhotoKitAddToLastUsedAlbumActionPerformer_performBackgroundTask__
   v17 = 3221225472;
   v18 = __87__PUPXPhotoKitAddToLastUsedAlbumActionPerformer__performUserInteractionTaskWithAssets___block_invoke;
   v19 = &unk_1E7B7DB98;
-  v20 = v11;
-  v14 = v11;
+  v20 = localizedTitle;
+  v14 = localizedTitle;
   v15 = [v13 show:&v16];
   [(PXActionPerformer *)self completeUserInteractionTaskWithSuccess:1 error:0, v16, v17, v18, v19];
 }
@@ -131,8 +131,8 @@ uint64_t __87__PUPXPhotoKitAddToLastUsedAlbumActionPerformer__performUserInterac
 - (void)performUserInteractionTask
 {
   objc_initWeak(&location, self);
-  v3 = [(PXPhotoKitAssetActionPerformer *)self assets];
-  v4 = [(PXActionPerformer *)self presentationEnvironment];
+  assets = [(PXPhotoKitAssetActionPerformer *)self assets];
+  presentationEnvironment = [(PXActionPerformer *)self presentationEnvironment];
   objc_copyWeak(&v5, &location);
   PXPromptToSaveUnsavedSyndicatedAssetsIfNecessary();
 
@@ -158,26 +158,26 @@ void __75__PUPXPhotoKitAddToLastUsedAlbumActionPerformer_performUserInteractionT
   }
 }
 
-+ (id)localizedTitleForUseCase:(unint64_t)a3 actionManager:(id)a4
++ (id)localizedTitleForUseCase:(unint64_t)case actionManager:(id)manager
 {
   v4 = MEMORY[0x1E69C3320];
-  v5 = [a4 photoLibrary];
-  v6 = [v4 commandTitleWithPhotoLibrary:v5];
+  photoLibrary = [manager photoLibrary];
+  v6 = [v4 commandTitleWithPhotoLibrary:photoLibrary];
 
   return v6;
 }
 
-+ (BOOL)canPerformOnAsset:(id)a3 inAssetCollection:(id)a4 person:(id)a5 socialGroup:(id)a6
++ (BOOL)canPerformOnAsset:(id)asset inAssetCollection:(id)collection person:(id)person socialGroup:(id)group
 {
   v22 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  if (![PUPXPhotoKitAddToAlbumActionPerformer canPerformOnAsset:v9 inAssetCollection:a4 person:a5 socialGroup:a6])
+  assetCopy = asset;
+  if (![PUPXPhotoKitAddToAlbumActionPerformer canPerformOnAsset:assetCopy inAssetCollection:collection person:person socialGroup:group])
   {
     v13 = PLUIGetLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412290;
-      v19 = v9;
+      v19 = assetCopy;
       _os_log_impl(&dword_1B36F3000, v13, OS_LOG_TYPE_DEBUG, "can't add %@ to last used album because PUPXPhotoKitAddToAlbumActionPerformer denies it", buf, 0xCu);
     }
 
@@ -185,9 +185,9 @@ void __75__PUPXPhotoKitAddToLastUsedAlbumActionPerformer_performUserInteractionT
   }
 
   v10 = MEMORY[0x1E69C3320];
-  v11 = [v9 photoLibrary];
+  photoLibrary = [assetCopy photoLibrary];
   v17 = 0;
-  v12 = [v10 targetAssetCollectionInPhotoLibrary:v11 error:&v17];
+  v12 = [v10 targetAssetCollectionInPhotoLibrary:photoLibrary error:&v17];
   v13 = v17;
 
   if (!v12)
@@ -196,7 +196,7 @@ void __75__PUPXPhotoKitAddToLastUsedAlbumActionPerformer_performUserInteractionT
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412546;
-      v19 = v9;
+      v19 = assetCopy;
       v20 = 2112;
       v21 = v13;
       _os_log_impl(&dword_1B36F3000, v15, OS_LOG_TYPE_DEBUG, "can't add %@ to last used album because the target asset collection is missing: %@", buf, 0x16u);

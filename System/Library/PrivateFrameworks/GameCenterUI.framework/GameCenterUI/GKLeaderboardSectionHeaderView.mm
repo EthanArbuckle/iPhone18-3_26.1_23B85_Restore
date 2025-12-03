@@ -1,8 +1,8 @@
 @interface GKLeaderboardSectionHeaderView
-- (id)attributedStringWithSymbol:(id)a3;
+- (id)attributedStringWithSymbol:(id)symbol;
 - (void)awakeFromNib;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)updateHighlightsWithGameRecord:(id)a3 leaderboardCount:(int64_t)a4 setCount:(int64_t)a5;
+- (void)traitCollectionDidChange:(id)change;
+- (void)updateHighlightsWithGameRecord:(id)record leaderboardCount:(int64_t)count setCount:(int64_t)setCount;
 - (void)updateLayout;
 @end
 
@@ -14,10 +14,10 @@
   v26.super_class = GKLeaderboardSectionHeaderView;
   [(GKLeaderboardSectionHeaderView *)&v26 awakeFromNib];
   v3 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-  v4 = [(GKLeaderboardSectionHeaderView *)self traitCollection];
-  v5 = [v4 preferredContentSizeCategory];
+  traitCollection = [(GKLeaderboardSectionHeaderView *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
 
-  if (UIContentSizeCategoryIsAccessibilityCategory(v5))
+  if (UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory))
   {
     v6 = @"GKLeaderboardMetadataViewAX_iOS";
   }
@@ -33,57 +33,57 @@
   }
 
   v7 = [v3 loadNibNamed:v6 owner:self options:0];
-  v8 = [v7 firstObject];
-  [(GKLeaderboardSectionHeaderView *)self setPersonalView:v8];
+  firstObject = [v7 firstObject];
+  [(GKLeaderboardSectionHeaderView *)self setPersonalView:firstObject];
 
   v9 = [v3 loadNibNamed:v6 owner:self options:0];
-  v10 = [v9 firstObject];
-  [(GKLeaderboardSectionHeaderView *)self setSocialView:v10];
+  firstObject2 = [v9 firstObject];
+  [(GKLeaderboardSectionHeaderView *)self setSocialView:firstObject2];
 
-  v11 = [(GKLeaderboardSectionHeaderView *)self container];
-  v12 = [(GKLeaderboardSectionHeaderView *)self personalView];
-  [v11 addArrangedSubview:v12];
+  container = [(GKLeaderboardSectionHeaderView *)self container];
+  personalView = [(GKLeaderboardSectionHeaderView *)self personalView];
+  [container addArrangedSubview:personalView];
 
-  v13 = [(GKLeaderboardSectionHeaderView *)self container];
-  v14 = [(GKLeaderboardSectionHeaderView *)self socialView];
-  [v13 addArrangedSubview:v14];
+  container2 = [(GKLeaderboardSectionHeaderView *)self container];
+  socialView = [(GKLeaderboardSectionHeaderView *)self socialView];
+  [container2 addArrangedSubview:socialView];
 
-  v15 = [(GKLeaderboardSectionHeaderView *)self personalView];
+  personalView2 = [(GKLeaderboardSectionHeaderView *)self personalView];
   v16 = GKGameCenterUIFrameworkBundle();
   v17 = GKGetLocalizedStringFromTableInBundle();
   v18 = GKGameCenterUIFrameworkBundle();
   v19 = GKGetLocalizedStringFromTableInBundle();
-  [v15 configureWithRank:@"👏" title:v17 footnote:v19 vibrant:0];
+  [personalView2 configureWithRank:@"👏" title:v17 footnote:v19 vibrant:0];
 
-  v20 = [(GKLeaderboardSectionHeaderView *)self socialView];
+  socialView2 = [(GKLeaderboardSectionHeaderView *)self socialView];
   v21 = [(GKLeaderboardSectionHeaderView *)self formattedNumber:&unk_286188CB8];
   v22 = GKGameCenterUIFrameworkBundle();
   v23 = GKGetLocalizedStringFromTableInBundle();
   v24 = GKGameCenterUIFrameworkBundle();
   v25 = GKGetLocalizedStringFromTableInBundle();
-  [v20 configureWithRank:v21 title:v23 footnote:v25 vibrant:1];
+  [socialView2 configureWithRank:v21 title:v23 footnote:v25 vibrant:1];
 
   [(GKLeaderboardSectionHeaderView *)self updateLayout];
 }
 
 - (void)updateLayout
 {
-  v3 = [(GKLeaderboardSectionHeaderView *)self traitCollection];
-  category = [v3 preferredContentSizeCategory];
+  traitCollection = [(GKLeaderboardSectionHeaderView *)self traitCollection];
+  category = [traitCollection preferredContentSizeCategory];
 
   if (!UIContentSizeCategoryIsAccessibilityCategory(category))
   {
-    v7 = [(GKLeaderboardSectionHeaderView *)self traitCollection];
-    v8 = [v7 verticalSizeClass] == 1;
+    traitCollection2 = [(GKLeaderboardSectionHeaderView *)self traitCollection];
+    v8 = [traitCollection2 verticalSizeClass] == 1;
 
     goto LABEL_11;
   }
 
-  v4 = [MEMORY[0x277D75C80] currentTraitCollection];
-  if ([v4 horizontalSizeClass] == 1)
+  currentTraitCollection = [MEMORY[0x277D75C80] currentTraitCollection];
+  if ([currentTraitCollection horizontalSizeClass] == 1)
   {
-    v5 = [MEMORY[0x277D75C80] currentTraitCollection];
-    v6 = [v5 verticalSizeClass] == 2;
+    currentTraitCollection2 = [MEMORY[0x277D75C80] currentTraitCollection];
+    v6 = [currentTraitCollection2 verticalSizeClass] == 2;
   }
 
   else
@@ -108,26 +108,26 @@ LABEL_8:
 
   v8 = 1;
 LABEL_11:
-  v9 = [(GKLeaderboardSectionHeaderView *)self container];
-  [v9 setAxis:v8];
+  container = [(GKLeaderboardSectionHeaderView *)self container];
+  [container setAxis:v8];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v4.receiver = self;
   v4.super_class = GKLeaderboardSectionHeaderView;
-  [(GKLeaderboardSectionHeaderView *)&v4 traitCollectionDidChange:a3];
+  [(GKLeaderboardSectionHeaderView *)&v4 traitCollectionDidChange:change];
   [(GKLeaderboardSectionHeaderView *)self updateLayout];
 }
 
-- (id)attributedStringWithSymbol:(id)a3
+- (id)attributedStringWithSymbol:(id)symbol
 {
   v18[2] = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CCAB48];
-  v4 = a3;
+  symbolCopy = symbol;
   v5 = objc_alloc_init(v3);
   v6 = MEMORY[0x277D74270];
-  v7 = [MEMORY[0x277D755B8] systemImageNamed:v4];
+  v7 = [MEMORY[0x277D755B8] systemImageNamed:symbolCopy];
 
   v8 = [v6 textAttachmentWithImage:v7];
 
@@ -146,36 +146,36 @@ LABEL_11:
   v17[0] = *MEMORY[0x277D740A8];
   v17[1] = v13;
   v18[0] = v11;
-  v14 = [MEMORY[0x277D75348] labelColor];
-  v18[1] = v14;
+  labelColor = [MEMORY[0x277D75348] labelColor];
+  v18[1] = labelColor;
   v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:v17 count:2];
   [v5 addAttributes:v15 range:{0, objc_msgSend(v5, "length")}];
 
   return v5;
 }
 
-- (void)updateHighlightsWithGameRecord:(id)a3 leaderboardCount:(int64_t)a4 setCount:(int64_t)a5
+- (void)updateHighlightsWithGameRecord:(id)record leaderboardCount:(int64_t)count setCount:(int64_t)setCount
 {
-  v24 = a3;
+  recordCopy = record;
   v8 = GKGameCenterUIFrameworkBundle();
   v9 = GKGetLocalizedStringFromTableInBundle();
 
   v10 = GKGameCenterUIFrameworkBundle();
   v11 = GKGetLocalizedStringFromTableInBundle();
 
-  v12 = [(GKLeaderboardSectionHeaderView *)self personalView];
-  if (a5 > 0)
+  personalView = [(GKLeaderboardSectionHeaderView *)self personalView];
+  if (setCount > 0)
   {
-    a4 = a5;
+    count = setCount;
   }
 
-  v13 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
+  v13 = [MEMORY[0x277CCABB0] numberWithInteger:count];
   v14 = [(GKLeaderboardSectionHeaderView *)self formattedNumber:v13];
   v15 = MEMORY[0x277CCACA8];
   v16 = GKGameCenterUIFrameworkBundle();
   v17 = GKGetLocalizedStringFromTableInBundle();
-  v18 = [v15 localizedStringWithFormat:v17, a4];
-  [v12 configureWithRank:v14 title:v18 footnote:v9 altFootnote:v11 vibrant:1];
+  v18 = [v15 localizedStringWithFormat:v17, count];
+  [personalView configureWithRank:v14 title:v18 footnote:v9 altFootnote:v11 vibrant:1];
 
   if (![(GKLeaderboardSectionHeaderView *)self dataUpdated])
   {
@@ -187,7 +187,7 @@ LABEL_11:
     v27[1] = 3221225472;
     v27[2] = __91__GKLeaderboardSectionHeaderView_updateHighlightsWithGameRecord_leaderboardCount_setCount___block_invoke;
     v27[3] = &unk_279669A20;
-    v28 = v24;
+    v28 = recordCopy;
     v22 = v21;
     v29 = v22;
     [v22 perform:v27];

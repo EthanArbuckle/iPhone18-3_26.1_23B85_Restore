@@ -1,86 +1,86 @@
 @interface SYDKeyValue
-+ (BOOL)keyValueRecordHasAssetWithoutFile:(id)a3;
-+ (id)keyFromKeyValueRecord:(id)a3;
-+ (id)keyFromUnencryptedKeyValueRecordName:(id)a3;
-+ (id)recordFieldKeyForValueModificationDateInStoreType:(int64_t)a3;
-+ (id)recordNameForUnencryptedKey:(id)a3;
-+ (void)deleteFilesForAssetsInKeyValueRecord:(id)a3;
-- (BOOL)updateWithServerRecord:(id)a3;
++ (BOOL)keyValueRecordHasAssetWithoutFile:(id)file;
++ (id)keyFromKeyValueRecord:(id)record;
++ (id)keyFromUnencryptedKeyValueRecordName:(id)name;
++ (id)recordFieldKeyForValueModificationDateInStoreType:(int64_t)type;
++ (id)recordNameForUnencryptedKey:(id)key;
++ (void)deleteFilesForAssetsInKeyValueRecord:(id)record;
+- (BOOL)updateWithServerRecord:(id)record;
 - (CKRecord)serverSystemFieldsRecord;
 - (CKRecordID)recordID;
 - (NSString)key;
 - (NSString)storeIdentifier;
-- (SYDKeyValue)initWithKey:(id)a3 storeIdentifier:(id)a4;
+- (SYDKeyValue)initWithKey:(id)key storeIdentifier:(id)identifier;
 - (id)description;
-- (id)recordRepresentationForStoreType:(int64_t)a3;
+- (id)recordRepresentationForStoreType:(int64_t)type;
 - (id)redactedDescription;
 - (void)markForDeletion;
-- (void)mergeDataFromRecord:(id)a3;
+- (void)mergeDataFromRecord:(id)record;
 - (void)serverSystemFieldsRecord;
-- (void)setServerSystemFieldsRecord:(id)a3;
-- (void)setValue:(id)a3;
-- (void)setValue:(id)a3 withModificationDate:(id)a4;
+- (void)setServerSystemFieldsRecord:(id)record;
+- (void)setValue:(id)value;
+- (void)setValue:(id)value withModificationDate:(id)date;
 @end
 
 @implementation SYDKeyValue
 
 - (NSString)storeIdentifier
 {
-  v2 = [(SYDKeyValue *)self keyID];
-  v3 = [v2 storeIdentifier];
+  keyID = [(SYDKeyValue *)self keyID];
+  storeIdentifier = [keyID storeIdentifier];
 
-  return v3;
+  return storeIdentifier;
 }
 
 - (NSString)key
 {
-  v2 = [(SYDKeyValue *)self keyID];
-  v3 = [v2 key];
+  keyID = [(SYDKeyValue *)self keyID];
+  v3 = [keyID key];
 
   return v3;
 }
 
 - (CKRecordID)recordID
 {
-  v3 = [(SYDKeyValue *)self recordName];
-  if (!v3)
+  recordName = [(SYDKeyValue *)self recordName];
+  if (!recordName)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE658] format:{@"Trying to get a record ID for a keyValue that has not been assigned a record name yet: %@", self}];
   }
 
-  v4 = [(SYDKeyValue *)self storeIdentifier];
-  v5 = SYDStoreZoneID(v4);
+  storeIdentifier = [(SYDKeyValue *)self storeIdentifier];
+  v5 = SYDStoreZoneID(storeIdentifier);
 
   if (!v5)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE658] format:{@"Trying to get a record ID for a keyValue that does not have an associated zoneID: %@", self}];
   }
 
-  v6 = [objc_alloc(MEMORY[0x277CBC5D0]) initWithRecordName:v3 zoneID:v5];
+  v6 = [objc_alloc(MEMORY[0x277CBC5D0]) initWithRecordName:recordName zoneID:v5];
 
   return v6;
 }
 
-- (SYDKeyValue)initWithKey:(id)a3 storeIdentifier:(id)a4
+- (SYDKeyValue)initWithKey:(id)key storeIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  identifierCopy = identifier;
   v18.receiver = self;
   v18.super_class = SYDKeyValue;
   v8 = [(SYDKeyValue *)&v18 init];
   if (v8)
   {
-    if (![v6 length])
+    if (![keyCopy length])
     {
-      [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE658] format:{@"Trying to init a keyValue without a key: %@", v6}];
+      [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE658] format:{@"Trying to init a keyValue without a key: %@", keyCopy}];
     }
 
-    if (![v7 length])
+    if (![identifierCopy length])
     {
-      [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE658] format:{@"Trying to init a keyValue without a store identifier: %@", v7}];
+      [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE658] format:{@"Trying to init a keyValue without a store identifier: %@", identifierCopy}];
     }
 
-    v9 = [[SYDKeyID alloc] initWithKey:v6 storeIdentifier:v7];
+    v9 = [[SYDKeyID alloc] initWithKey:keyCopy storeIdentifier:identifierCopy];
     keyID = v8->_keyID;
     v8->_keyID = v9;
 
@@ -112,9 +112,9 @@
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
   v6 = [(SYDKeyValue *)self key];
-  v7 = [(SYDKeyValue *)self storeIdentifier];
-  v8 = [(SYDKeyValue *)self recordName];
-  if (v8)
+  storeIdentifier = [(SYDKeyValue *)self storeIdentifier];
+  recordName = [(SYDKeyValue *)self recordName];
+  if (recordName)
   {
     v9 = @" recordName=";
   }
@@ -124,11 +124,11 @@
     v9 = &stru_287CEF040;
   }
 
-  v10 = [(SYDKeyValue *)self recordName];
-  v11 = v10;
-  if (v10)
+  recordName2 = [(SYDKeyValue *)self recordName];
+  v11 = recordName2;
+  if (recordName2)
   {
-    v12 = v10;
+    v12 = recordName2;
   }
 
   else
@@ -136,7 +136,7 @@
     v12 = &stru_287CEF040;
   }
 
-  [v3 appendFormat:@"<%@: %p; key=%@ storeIdentifier=%@%@%@>", v5, self, v6, v7, v9, v12];
+  [v3 appendFormat:@"<%@: %p; key=%@ storeIdentifier=%@%@%@>", v5, self, v6, storeIdentifier, v9, v12];
 
   return v3;
 }
@@ -146,9 +146,9 @@
   v3 = objc_alloc_init(MEMORY[0x277CCAB68]);
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(SYDKeyValue *)self storeIdentifier];
-  v7 = [(SYDKeyValue *)self recordName];
-  if (v7)
+  storeIdentifier = [(SYDKeyValue *)self storeIdentifier];
+  recordName = [(SYDKeyValue *)self recordName];
+  if (recordName)
   {
     v8 = @" recordName=";
   }
@@ -158,11 +158,11 @@
     v8 = &stru_287CEF040;
   }
 
-  v9 = [(SYDKeyValue *)self recordName];
-  v10 = v9;
-  if (v9)
+  recordName2 = [(SYDKeyValue *)self recordName];
+  v10 = recordName2;
+  if (recordName2)
   {
-    v11 = v9;
+    v11 = recordName2;
   }
 
   else
@@ -170,19 +170,19 @@
     v11 = &stru_287CEF040;
   }
 
-  [v3 appendFormat:@"<%@: %p; storeIdentifier=%@%@%@>", v5, self, v6, v8, v11];
+  [v3 appendFormat:@"<%@: %p; storeIdentifier=%@%@%@>", v5, self, storeIdentifier, v8, v11];
 
   return v3;
 }
 
-- (void)setValue:(id)a3
+- (void)setValue:(id)value
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_value != v4)
+  valueCopy = value;
+  v5 = valueCopy;
+  if (self->_value != valueCopy)
   {
-    v12 = v4;
-    if (v4 && (v6 = [MEMORY[0x277CCAC58] propertyList:v4 isValidForFormat:200], v5 = v12, (v6 & 1) == 0))
+    v12 = valueCopy;
+    if (valueCopy && (v6 = [MEMORY[0x277CCAC58] propertyList:valueCopy isValidForFormat:200], v5 = v12, (v6 & 1) == 0))
     {
       v9 = MEMORY[0x277CBEAD8];
       v10 = *MEMORY[0x277CBE660];
@@ -202,27 +202,27 @@
   MEMORY[0x2821F96F8]();
 }
 
-- (void)setValue:(id)a3 withModificationDate:(id)a4
+- (void)setValue:(id)value withModificationDate:(id)date
 {
-  v6 = a4;
-  [(SYDKeyValue *)self setValue:a3];
-  [(SYDKeyValue *)self setValueModificationDate:v6];
+  dateCopy = date;
+  [(SYDKeyValue *)self setValue:value];
+  [(SYDKeyValue *)self setValueModificationDate:dateCopy];
 }
 
 - (void)markForDeletion
 {
   [(SYDKeyValue *)self setValue:0];
-  v3 = [MEMORY[0x277CBEAA8] date];
-  [(SYDKeyValue *)self setValueModificationDate:v3];
+  date = [MEMORY[0x277CBEAA8] date];
+  [(SYDKeyValue *)self setValueModificationDate:date];
 }
 
 - (CKRecord)serverSystemFieldsRecord
 {
-  v2 = [(SYDKeyValue *)self serverSystemFieldsRecordData];
-  if (v2)
+  serverSystemFieldsRecordData = [(SYDKeyValue *)self serverSystemFieldsRecordData];
+  if (serverSystemFieldsRecordData)
   {
     v8 = 0;
-    v3 = [objc_alloc(MEMORY[0x277CCAAC8]) initForReadingFromData:v2 error:&v8];
+    v3 = [objc_alloc(MEMORY[0x277CCAAC8]) initForReadingFromData:serverSystemFieldsRecordData error:&v8];
     v4 = v8;
     v5 = [objc_alloc(MEMORY[0x277CBC5A0]) initWithCoder:v3];
     if (v4)
@@ -243,17 +243,17 @@
   return v5;
 }
 
-- (void)setServerSystemFieldsRecord:(id)a3
+- (void)setServerSystemFieldsRecord:(id)record
 {
-  v4 = a3;
-  if (v4)
+  recordCopy = record;
+  if (recordCopy)
   {
     v5 = [objc_alloc(MEMORY[0x277CCAAB0]) initRequiringSecureCoding:1];
-    [v4 encodeSystemFieldsWithCoder:v5];
-    v6 = [v5 encodedData];
-    if (v6)
+    [recordCopy encodeSystemFieldsWithCoder:v5];
+    encodedData = [v5 encodedData];
+    if (encodedData)
     {
-      [(SYDKeyValue *)self setServerSystemFieldsRecordData:v6];
+      [(SYDKeyValue *)self setServerSystemFieldsRecordData:encodedData];
     }
 
     else
@@ -261,7 +261,7 @@
       v7 = SYDGetCloudKitLog();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_FAULT))
       {
-        [SYDKeyValue setServerSystemFieldsRecord:v4];
+        [SYDKeyValue setServerSystemFieldsRecord:recordCopy];
       }
     }
   }
@@ -272,11 +272,11 @@
   }
 }
 
-- (BOOL)updateWithServerRecord:(id)a3
+- (BOOL)updateWithServerRecord:(id)record
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  recordCopy = record;
+  if (!recordCopy)
   {
     v6 = SYDGetCloudKitLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
@@ -288,22 +288,22 @@
     goto LABEL_14;
   }
 
-  v5 = [(SYDKeyValue *)self serverSystemFieldsRecord];
-  v6 = v5;
-  if (!v5)
+  serverSystemFieldsRecord = [(SYDKeyValue *)self serverSystemFieldsRecord];
+  v6 = serverSystemFieldsRecord;
+  if (!serverSystemFieldsRecord)
   {
     v11 = SYDGetCloudKitLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
-      [SYDKeyValue updateWithServerRecord:v4];
+      [SYDKeyValue updateWithServerRecord:recordCopy];
     }
 
     goto LABEL_10;
   }
 
-  v7 = [v5 recordID];
-  v8 = [v4 recordID];
-  v9 = [v7 isEqual:v8];
+  recordID = [serverSystemFieldsRecord recordID];
+  recordID2 = [recordCopy recordID];
+  v9 = [recordID isEqual:recordID2];
 
   v10 = SYDGetCloudKitLog();
   v11 = v10;
@@ -311,14 +311,14 @@
   {
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
-      v13 = [v6 recordID];
-      v14 = [v13 syd_shortDescription];
-      v15 = [v4 recordID];
-      v16 = [v15 syd_shortDescription];
+      recordID3 = [v6 recordID];
+      syd_shortDescription = [recordID3 syd_shortDescription];
+      recordID4 = [recordCopy recordID];
+      syd_shortDescription2 = [recordID4 syd_shortDescription];
       v19 = 138412546;
-      v20 = v14;
+      v20 = syd_shortDescription;
       v21 = 2112;
-      v22 = v16;
+      v22 = syd_shortDescription2;
       _os_log_impl(&dword_26C384000, v11, OS_LOG_TYPE_INFO, "Mismatched recordIDs. Keeping current record: %@, ignoring new record: %@", &v19, 0x16u);
     }
 
@@ -329,12 +329,12 @@ LABEL_14:
 
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
-    [(SYDKeyValue *)v6 updateWithServerRecord:v4, v11];
+    [(SYDKeyValue *)v6 updateWithServerRecord:recordCopy, v11];
   }
 
 LABEL_10:
 
-  [(SYDKeyValue *)self setServerSystemFieldsRecord:v4];
+  [(SYDKeyValue *)self setServerSystemFieldsRecord:recordCopy];
   v12 = 1;
 LABEL_15:
 
@@ -342,93 +342,93 @@ LABEL_15:
   return v12;
 }
 
-- (void)mergeDataFromRecord:(id)a3
+- (void)mergeDataFromRecord:(id)record
 {
   v53 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  recordCopy = record;
   v5 = SYDGetCloudKitLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [SYDKeyValue mergeDataFromRecord:?];
   }
 
-  v6 = [v4 recordType];
-  v7 = [v6 isEqualToString:@"KVSRecord"];
+  recordType = [recordCopy recordType];
+  v7 = [recordType isEqualToString:@"KVSRecord"];
 
   if (v7)
   {
     v8 = 0;
 LABEL_7:
-    v11 = [(SYDKeyValue *)self serverSystemFieldsRecord];
-    v12 = v11;
-    if (v11)
+    serverSystemFieldsRecord = [(SYDKeyValue *)self serverSystemFieldsRecord];
+    v12 = serverSystemFieldsRecord;
+    if (serverSystemFieldsRecord)
     {
-      v13 = [v11 recordType];
-      v14 = [v4 recordType];
-      v15 = [v13 isEqualToString:v14];
+      recordType2 = [serverSystemFieldsRecord recordType];
+      recordType3 = [recordCopy recordType];
+      v15 = [recordType2 isEqualToString:recordType3];
 
       if ((v15 & 1) == 0)
       {
         v21 = SYDGetCloudKitLog();
         if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
         {
-          [(SYDKeyValue *)v4 mergeDataFromRecord:v12];
+          [(SYDKeyValue *)recordCopy mergeDataFromRecord:v12];
         }
 
         goto LABEL_73;
       }
     }
 
-    v16 = [(SYDKeyValue *)self serverSystemFieldsRecord];
-    v17 = [v16 modificationDate];
-    v18 = [v4 modificationDate];
-    v19 = [v17 compare:v18];
+    serverSystemFieldsRecord2 = [(SYDKeyValue *)self serverSystemFieldsRecord];
+    modificationDate = [serverSystemFieldsRecord2 modificationDate];
+    modificationDate2 = [recordCopy modificationDate];
+    v19 = [modificationDate compare:modificationDate2];
 
     if (v19 == -1)
     {
       v20 = SYDGetCloudKitLog();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
       {
-        [SYDKeyValue mergeDataFromRecord:v4];
+        [SYDKeyValue mergeDataFromRecord:recordCopy];
       }
     }
 
-    [(SYDKeyValue *)self updateWithServerRecord:v4];
+    [(SYDKeyValue *)self updateWithServerRecord:recordCopy];
     v21 = [objc_opt_class() recordFieldKeyForValueModificationDateInStoreType:v8];
-    v22 = [v4 objectForKeyedSubscript:v21];
+    v22 = [recordCopy objectForKeyedSubscript:v21];
     if (v7)
     {
-      v23 = [v4 objectForKeyedSubscript:@"value"];
+      assetContent2 = [recordCopy objectForKeyedSubscript:@"value"];
       v24 = @"assetValue";
     }
 
     else
     {
-      v25 = [v4 encryptedValues];
-      v23 = [v25 objectForKeyedSubscript:@"valueData"];
+      encryptedValues = [recordCopy encryptedValues];
+      assetContent2 = [encryptedValues objectForKeyedSubscript:@"valueData"];
 
       v24 = @"valueDataAsset";
     }
 
-    v26 = [v4 objectForKeyedSubscript:v24];
+    v26 = [recordCopy objectForKeyedSubscript:v24];
     if (v22)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
 LABEL_28:
-        if (!v23 && v26)
+        if (!assetContent2 && v26)
         {
-          v30 = [v26 fileURL];
+          fileURL = [v26 fileURL];
 
-          if (!v30)
+          if (!fileURL)
           {
-            v38 = [v26 assetContent];
+            assetContent = [v26 assetContent];
 
-            if (v38)
+            if (assetContent)
             {
-              v23 = [v26 assetContent];
-              if (v23)
+              assetContent2 = [v26 assetContent];
+              if (assetContent2)
               {
                 goto LABEL_37;
               }
@@ -439,7 +439,7 @@ LABEL_28:
               v39 = SYDGetCloudKitLog();
               if (os_log_type_enabled(v39, OS_LOG_TYPE_DEBUG))
               {
-                [SYDKeyValue mergeDataFromRecord:v4];
+                [SYDKeyValue mergeDataFromRecord:recordCopy];
               }
             }
 
@@ -447,9 +447,9 @@ LABEL_28:
           }
 
           v31 = MEMORY[0x277CBEA90];
-          v32 = [v26 fileURL];
+          fileURL2 = [v26 fileURL];
           v50 = 0;
-          v23 = [v31 dataWithContentsOfURL:v32 options:0 error:&v50];
+          assetContent2 = [v31 dataWithContentsOfURL:fileURL2 options:0 error:&v50];
           v33 = v50;
 
           if (v33)
@@ -462,7 +462,7 @@ LABEL_28:
           }
         }
 
-        if (v23)
+        if (assetContent2)
         {
 LABEL_37:
           objc_opt_class();
@@ -482,18 +482,18 @@ LABEL_37:
           }
 
 LABEL_49:
-          v23 = 0;
+          assetContent2 = 0;
 LABEL_50:
           if (!v22)
           {
             goto LABEL_72;
           }
 
-          v40 = [(SYDKeyValue *)self valueModificationDate];
-          v41 = v40;
-          if (v40)
+          valueModificationDate = [(SYDKeyValue *)self valueModificationDate];
+          v41 = valueModificationDate;
+          if (valueModificationDate)
           {
-            v42 = [v40 compare:v22];
+            v42 = [valueModificationDate compare:v22];
             if (v42)
             {
               if (v42 == -1)
@@ -535,7 +535,7 @@ LABEL_71:
 
 LABEL_58:
 
-          if (v23)
+          if (assetContent2)
           {
             v44 = SYDGetCloudKitLog();
             if (os_log_type_enabled(v44, OS_LOG_TYPE_DEBUG))
@@ -544,7 +544,7 @@ LABEL_58:
             }
 
             v49 = 0;
-            v45 = [MEMORY[0x277CCAC58] propertyListWithData:v23 options:0 format:0 error:&v49];
+            v45 = [MEMORY[0x277CCAC58] propertyListWithData:assetContent2 options:0 format:0 error:&v49];
             v46 = v49;
             v41 = v46;
             if (!v45 || v46)
@@ -572,11 +572,11 @@ LABEL_73:
         }
 
 LABEL_47:
-        v23 = SYDGetCloudKitLog();
-        if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
+        assetContent2 = SYDGetCloudKitLog();
+        if (os_log_type_enabled(assetContent2, OS_LOG_TYPE_INFO))
         {
           *buf = 0;
-          _os_log_impl(&dword_26C384000, v23, OS_LOG_TYPE_INFO, "No value data in record", buf, 2u);
+          _os_log_impl(&dword_26C384000, assetContent2, OS_LOG_TYPE_INFO, "No value data in record", buf, 2u);
         }
 
         goto LABEL_49;
@@ -607,8 +607,8 @@ LABEL_47:
     goto LABEL_28;
   }
 
-  v9 = [v4 recordType];
-  v10 = [v9 isEqualToString:@"EncryptedKeyValue"];
+  recordType4 = [recordCopy recordType];
+  v10 = [recordType4 isEqualToString:@"EncryptedKeyValue"];
 
   if (v10)
   {
@@ -619,7 +619,7 @@ LABEL_47:
   v12 = SYDGetCloudKitLog();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
   {
-    [SYDKeyValue mergeDataFromRecord:v4];
+    [SYDKeyValue mergeDataFromRecord:recordCopy];
   }
 
 LABEL_74:
@@ -627,43 +627,43 @@ LABEL_74:
   v48 = *MEMORY[0x277D85DE8];
 }
 
-- (id)recordRepresentationForStoreType:(int64_t)a3
+- (id)recordRepresentationForStoreType:(int64_t)type
 {
-  v5 = [(SYDKeyValue *)self serverSystemFieldsRecord];
-  v6 = v5;
-  if (a3 <= 3)
+  serverSystemFieldsRecord = [(SYDKeyValue *)self serverSystemFieldsRecord];
+  v6 = serverSystemFieldsRecord;
+  if (type <= 3)
   {
-    v7 = off_279D2F9C8[a3];
-    if (v5)
+    v7 = off_279D2F9C8[type];
+    if (serverSystemFieldsRecord)
     {
       goto LABEL_3;
     }
 
 LABEL_8:
     v12 = objc_alloc(MEMORY[0x277CBC5A0]);
-    v13 = [(SYDKeyValue *)self recordID];
-    v6 = [v12 initWithRecordType:v7 recordID:v13];
+    recordID = [(SYDKeyValue *)self recordID];
+    v6 = [v12 initWithRecordType:v7 recordID:recordID];
 
     goto LABEL_9;
   }
 
   v7 = 0;
-  if (!v5)
+  if (!serverSystemFieldsRecord)
   {
     goto LABEL_8;
   }
 
 LABEL_3:
-  v8 = [v5 recordType];
-  v9 = [v8 isEqualToString:v7];
+  recordType = [serverSystemFieldsRecord recordType];
+  v9 = [recordType isEqualToString:v7];
 
   if (v9)
   {
 LABEL_9:
     v14 = MEMORY[0x277CCAC58];
-    v15 = [(SYDKeyValue *)self value];
+    value = [(SYDKeyValue *)self value];
     v33 = 0;
-    v16 = [v14 dataWithPropertyList:v15 format:200 options:0 error:&v33];
+    v16 = [v14 dataWithPropertyList:value format:200 options:0 error:&v33];
     v10 = v33;
 
     if (!v16 || v10)
@@ -689,8 +689,8 @@ LABEL_9:
       }
 
       v19 = objc_alloc(MEMORY[0x277CBC190]);
-      v20 = [*MEMORY[0x277CE1E38] identifier];
-      v21 = [v19 initWithAssetContent:v16 itemTypeHint:v20];
+      identifier = [*MEMORY[0x277CE1E38] identifier];
+      v21 = [v19 initWithAssetContent:v16 itemTypeHint:identifier];
     }
 
     if (v21)
@@ -716,38 +716,38 @@ LABEL_9:
       goto LABEL_36;
     }
 
-    if ((a3 - 1) >= 3)
+    if ((type - 1) >= 3)
     {
-      if (a3)
+      if (type)
       {
         goto LABEL_35;
       }
 
       [v6 setObject:v23 forKeyedSubscript:@"value"];
       [v6 setObject:v21 forKeyedSubscript:@"assetValue"];
-      v31 = [(SYDKeyValue *)self valueModificationDate];
+      valueModificationDate = [(SYDKeyValue *)self valueModificationDate];
 
-      if (!v31)
+      if (!valueModificationDate)
       {
         goto LABEL_35;
       }
 
-      v28 = [(SYDKeyValue *)self valueModificationDate];
-      [v6 setObject:v28 forKeyedSubscript:@"localModificationDate"];
+      valueModificationDate2 = [(SYDKeyValue *)self valueModificationDate];
+      [v6 setObject:valueModificationDate2 forKeyedSubscript:@"localModificationDate"];
     }
 
     else
     {
-      v24 = [v6 encryptedValues];
-      [v24 setObject:v23 forKeyedSubscript:@"valueData"];
+      encryptedValues = [v6 encryptedValues];
+      [encryptedValues setObject:v23 forKeyedSubscript:@"valueData"];
 
       [v6 setObject:v21 forKeyedSubscript:@"valueDataAsset"];
-      v25 = [(SYDKeyValue *)self valueModificationDate];
+      valueModificationDate3 = [(SYDKeyValue *)self valueModificationDate];
 
-      if (v25)
+      if (valueModificationDate3)
       {
-        v26 = [(SYDKeyValue *)self valueModificationDate];
-        [v6 setObject:v26 forKeyedSubscript:@"valueModificationDate"];
+        valueModificationDate4 = [(SYDKeyValue *)self valueModificationDate];
+        [v6 setObject:valueModificationDate4 forKeyedSubscript:@"valueModificationDate"];
       }
 
       v27 = [(SYDKeyValue *)self key];
@@ -757,9 +757,9 @@ LABEL_9:
         goto LABEL_35;
       }
 
-      v28 = [(SYDKeyValue *)self key];
-      v29 = [v6 encryptedValues];
-      [v29 setObject:v28 forKeyedSubscript:@"key"];
+      valueModificationDate2 = [(SYDKeyValue *)self key];
+      encryptedValues2 = [v6 encryptedValues];
+      [encryptedValues2 setObject:valueModificationDate2 forKeyedSubscript:@"key"];
     }
 
 LABEL_35:
@@ -781,28 +781,28 @@ LABEL_37:
   return v11;
 }
 
-+ (id)keyFromKeyValueRecord:(id)a3
++ (id)keyFromKeyValueRecord:(id)record
 {
-  v4 = a3;
-  v5 = [v4 recordType];
-  v6 = [v5 isEqualToString:@"KVSRecord"];
+  recordCopy = record;
+  recordType = [recordCopy recordType];
+  v6 = [recordType isEqualToString:@"KVSRecord"];
 
   if (v6)
   {
-    v7 = [v4 recordID];
-    v8 = [v7 recordName];
-    v9 = [a1 keyFromUnencryptedKeyValueRecordName:v8];
+    recordID = [recordCopy recordID];
+    recordName = [recordID recordName];
+    v9 = [self keyFromUnencryptedKeyValueRecordName:recordName];
 
     goto LABEL_5;
   }
 
-  v10 = [v4 recordType];
-  v11 = [v10 isEqualToString:@"EncryptedKeyValue"];
+  recordType2 = [recordCopy recordType];
+  v11 = [recordType2 isEqualToString:@"EncryptedKeyValue"];
 
   if (v11)
   {
-    v7 = [v4 encryptedValues];
-    v9 = [v7 objectForKeyedSubscript:@"key"];
+    recordID = [recordCopy encryptedValues];
+    v9 = [recordID objectForKeyedSubscript:@"key"];
 LABEL_5:
 
     if (v9)
@@ -814,7 +814,7 @@ LABEL_5:
   v12 = SYDGetCloudKitLog();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
   {
-    [SYDKeyValue keyFromKeyValueRecord:v4];
+    [SYDKeyValue keyFromKeyValueRecord:recordCopy];
   }
 
   v9 = 0;
@@ -823,29 +823,29 @@ LABEL_9:
   return v9;
 }
 
-+ (id)keyFromUnencryptedKeyValueRecordName:(id)a3
++ (id)keyFromUnencryptedKeyValueRecordName:(id)name
 {
   v3 = MEMORY[0x277CBEA90];
-  v4 = a3;
-  v5 = [[v3 alloc] initWithBase64EncodedString:v4 options:0];
+  nameCopy = name;
+  v5 = [[v3 alloc] initWithBase64EncodedString:nameCopy options:0];
 
   v6 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v5 encoding:4];
 
   return v6;
 }
 
-+ (id)recordNameForUnencryptedKey:(id)a3
++ (id)recordNameForUnencryptedKey:(id)key
 {
-  v3 = [a3 dataUsingEncoding:4];
+  v3 = [key dataUsingEncoding:4];
   v4 = [v3 base64EncodedStringWithOptions:0];
 
   return v4;
 }
 
-+ (void)deleteFilesForAssetsInKeyValueRecord:(id)a3
++ (void)deleteFilesForAssetsInKeyValueRecord:(id)record
 {
   v33 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  recordCopy = record;
   if (deleteFilesForAssetsInKeyValueRecord__onceToken != -1)
   {
     +[SYDKeyValue deleteFilesForAssetsInKeyValueRecord:];
@@ -873,29 +873,29 @@ LABEL_9:
         }
 
         v10 = *(*(&v24 + 1) + 8 * i);
-        v11 = [v3 objectForKeyedSubscript:{v10, v22}];
+        v11 = [recordCopy objectForKeyedSubscript:{v10, v22}];
         v12 = v11;
         if (v11)
         {
-          v13 = [v11 fileURL];
+          fileURL = [v11 fileURL];
 
-          if (v13)
+          if (fileURL)
           {
             v14 = SYDGetCloudKitLog();
             if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
             {
-              v20 = [v3 recordID];
+              recordID = [recordCopy recordID];
               *buf = 138412546;
               v29 = v10;
               v30 = 2112;
-              v31 = v20;
+              v31 = recordID;
               _os_log_debug_impl(&dword_26C384000, v14, OS_LOG_TYPE_DEBUG, "Deleting file for asset (%@) in key value record %@", buf, 0x16u);
             }
 
-            v15 = [MEMORY[0x277CCAA00] defaultManager];
-            v16 = [v12 fileURL];
+            defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+            fileURL2 = [v12 fileURL];
             v23 = 0;
-            v17 = [v15 removeItemAtURL:v16 error:&v23];
+            v17 = [defaultManager removeItemAtURL:fileURL2 error:&v23];
             v18 = v23;
 
             if ((v17 & 1) == 0)
@@ -927,15 +927,15 @@ void __52__SYDKeyValue_deleteFilesForAssetsInKeyValueRecord___block_invoke()
   deleteFilesForAssetsInKeyValueRecord__assetFieldKeys = &unk_287CF24D8;
 }
 
-+ (BOOL)keyValueRecordHasAssetWithoutFile:(id)a3
++ (BOOL)keyValueRecordHasAssetWithoutFile:(id)file
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"assetValue"];
-  if (v4 || ([v3 objectForKeyedSubscript:@"valueDataAsset"], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
+  fileCopy = file;
+  v4 = [fileCopy objectForKeyedSubscript:@"assetValue"];
+  if (v4 || ([fileCopy objectForKeyedSubscript:@"valueDataAsset"], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v5 = v4;
-    v6 = [v4 fileURL];
-    v7 = v6 == 0;
+    fileURL = [v4 fileURL];
+    v7 = fileURL == 0;
   }
 
   else
@@ -946,9 +946,9 @@ void __52__SYDKeyValue_deleteFilesForAssetsInKeyValueRecord___block_invoke()
   return v7;
 }
 
-+ (id)recordFieldKeyForValueModificationDateInStoreType:(int64_t)a3
++ (id)recordFieldKeyForValueModificationDateInStoreType:(int64_t)type
 {
-  if ((a3 - 1) >= 3)
+  if ((type - 1) >= 3)
   {
     return @"localModificationDate";
   }

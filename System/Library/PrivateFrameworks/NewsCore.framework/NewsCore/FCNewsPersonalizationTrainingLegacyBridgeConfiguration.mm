@@ -1,13 +1,13 @@
 @interface FCNewsPersonalizationTrainingLegacyBridgeConfiguration
-- (FCNewsPersonalizationTrainingLegacyBridgeConfiguration)initWithDictionary:(id)a3;
+- (FCNewsPersonalizationTrainingLegacyBridgeConfiguration)initWithDictionary:(id)dictionary;
 - (id)description;
 @end
 
 @implementation FCNewsPersonalizationTrainingLegacyBridgeConfiguration
 
-- (FCNewsPersonalizationTrainingLegacyBridgeConfiguration)initWithDictionary:(id)a3
+- (FCNewsPersonalizationTrainingLegacyBridgeConfiguration)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v26.receiver = self;
   v26.super_class = FCNewsPersonalizationTrainingLegacyBridgeConfiguration;
   v5 = [(FCNewsPersonalizationTrainingLegacyBridgeConfiguration *)&v26 init];
@@ -67,27 +67,27 @@
 
     else
     {
-      v5->_priorStatelessAggregatesWithLegacyAggregates = FCAppConfigurationBoolValue(v4, @"priorStatelessAggregatesWithLegacyAggregates2", 0);
-      v5->_avoidDoubleCountingWhenPrioringWithLegacyAggregates = FCAppConfigurationBoolValue(v4, @"avoidDoubleCountingWhenPrioringWithLegacyAggregates", 1);
-      v5->_allowAllLegacyAggregatesToActAsPriors = FCAppConfigurationBoolValue(v4, @"allowAllLegacyAggregatesToActAsPriors", 0);
-      v15 = FCAppConfigurationDoubleValue(v4, @"legacyMultiplier", 1.0);
+      v5->_priorStatelessAggregatesWithLegacyAggregates = FCAppConfigurationBoolValue(dictionaryCopy, @"priorStatelessAggregatesWithLegacyAggregates2", 0);
+      v5->_avoidDoubleCountingWhenPrioringWithLegacyAggregates = FCAppConfigurationBoolValue(dictionaryCopy, @"avoidDoubleCountingWhenPrioringWithLegacyAggregates", 1);
+      v5->_allowAllLegacyAggregatesToActAsPriors = FCAppConfigurationBoolValue(dictionaryCopy, @"allowAllLegacyAggregatesToActAsPriors", 0);
+      v15 = FCAppConfigurationDoubleValue(dictionaryCopy, @"legacyMultiplier", 1.0);
       if (v15 < 0.0)
       {
         v15 = 1.0;
       }
 
       v5->_legacyMultiplier = v15;
-      v16 = FCAppConfigurationDoubleValue(v4, @"legacyDecayRate", 0.98);
+      v16 = FCAppConfigurationDoubleValue(dictionaryCopy, @"legacyDecayRate", 0.98);
       if (v16 < 0.0)
       {
         v16 = 0.98;
       }
 
       v5->_legacyDecayRate = v16;
-      v5->_createStatelessAggregatesWhichOnlyExistInLegacy = FCAppConfigurationBoolValue(v4, @"createStatelessAggregatesWhichOnlyExistInLegacy2", 0);
-      v5->_legacyMaxLinearImpressionCount = FCAppConfigurationIntegerValue(v4, @"legacyMaxLinearImpressionCount", 555);
-      v5->_statelessMaxLinearImpressionCount = FCAppConfigurationIntegerValue(v4, @"statelessMaxLinearImpressionCount", 2500);
-      v5->_disablePrioringBaseline = FCAppConfigurationBoolValue(v4, @"disablePrioringBaseline", 0);
+      v5->_createStatelessAggregatesWhichOnlyExistInLegacy = FCAppConfigurationBoolValue(dictionaryCopy, @"createStatelessAggregatesWhichOnlyExistInLegacy2", 0);
+      v5->_legacyMaxLinearImpressionCount = FCAppConfigurationIntegerValue(dictionaryCopy, @"legacyMaxLinearImpressionCount", 555);
+      v5->_statelessMaxLinearImpressionCount = FCAppConfigurationIntegerValue(dictionaryCopy, @"statelessMaxLinearImpressionCount", 2500);
+      v5->_disablePrioringBaseline = FCAppConfigurationBoolValue(dictionaryCopy, @"disablePrioringBaseline", 0);
     }
   }
 

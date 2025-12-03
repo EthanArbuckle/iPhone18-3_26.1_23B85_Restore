@@ -1,31 +1,31 @@
 @interface GESSAlgIsometricParameterizeExtended
-- (BOOL)run:(id)a3;
-- (BOOL)setFaceIntensity:(float *)a3 size:(unint64_t)a4;
+- (BOOL)run:(id)run;
+- (BOOL)setFaceIntensity:(float *)intensity size:(unint64_t)size;
 - (id).cxx_construct;
 - (id)returnReport;
 @end
 
 @implementation GESSAlgIsometricParameterizeExtended
 
-- (BOOL)setFaceIntensity:(float *)a3 size:(unint64_t)a4
+- (BOOL)setFaceIntensity:(float *)intensity size:(unint64_t)size
 {
   v7 = objc_alloc(MEMORY[0x277CBEA90]);
-  v9 = objc_msgSend_initWithBytesNoCopy_length_freeWhenDone_(v7, v8, a3, a4, 0);
+  v9 = objc_msgSend_initWithBytesNoCopy_length_freeWhenDone_(v7, v8, intensity, size, 0);
   faceIntensityData = self->_faceIntensityData;
   self->_faceIntensityData = v9;
 
   return 1;
 }
 
-- (BOOL)run:(id)a3
+- (BOOL)run:(id)run
 {
   v105 = *MEMORY[0x277D85DE8];
-  v91 = self;
-  v4 = a3;
+  selfCopy = self;
+  runCopy = run;
   objc_msgSend_setAlgStatus_(self, v5, 1, v6);
-  if ((objc_msgSend_valid(v4, v7, v8, v9) & 1) != 0 && objc_msgSend_meshType(v4, v10, v11, v12) == 1)
+  if ((objc_msgSend_valid(runCopy, v7, v8, v9) & 1) != 0 && objc_msgSend_meshType(runCopy, v10, v11, v12) == 1)
   {
-    v19 = objc_msgSend_meshImpl(v4, v13, v14, v15);
+    v19 = objc_msgSend_meshImpl(runCopy, v13, v14, v15);
     options = self->_options;
     if (!options)
     {
@@ -126,7 +126,7 @@
     v100[3] = 0;
     v101[3] = 0;
     v102 = &unk_285F95D48;
-    v103 = &v91;
+    v103 = &selfCopy;
     v104 = &v102;
     sub_24BD55BF0(&v102, v101);
     sub_24BD55A9C(&v102);
@@ -141,12 +141,12 @@
     sub_24BC9F00C(v92);
     if (v72)
     {
-      objc_msgSend_setAlgStatus_(v91, v73, 3, v74, v77);
+      objc_msgSend_setAlgStatus_(selfCopy, v73, 3, v74, v77);
     }
 
     else
     {
-      objc_msgSend_setAlgStatus_(v91, v73, 2, v74, v77);
+      objc_msgSend_setAlgStatus_(selfCopy, v73, 2, v74, v77);
     }
 
     sub_24BD55A9C(v101);

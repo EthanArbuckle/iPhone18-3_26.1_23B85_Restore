@@ -133,19 +133,19 @@
         v37 = v52.origin.y;
         v38 = v52.size.width;
         v24 = v52.size.height;
-        v25 = [[(CIImage *)inputImage imageByClampingToExtent] imageByUnpremultiplyingAlpha];
+        imageByUnpremultiplyingAlpha = [[(CIImage *)inputImage imageByClampingToExtent] imageByUnpremultiplyingAlpha];
         if (v12)
         {
-          v26 = [[(CIImage *)inputSource imageByClampingToExtent] imageByUnpremultiplyingAlpha];
+          imageByUnpremultiplyingAlpha2 = [[(CIImage *)inputSource imageByClampingToExtent] imageByUnpremultiplyingAlpha];
           v27 = [CIKernel kernelWithInternalRepresentation:&CI::_CBHorzGuided];
-          v46[0] = v26;
-          v46[1] = v25;
+          v46[0] = imageByUnpremultiplyingAlpha2;
+          v46[1] = imageByUnpremultiplyingAlpha;
           v46[2] = v18;
           v46[3] = v20;
           v46[4] = v19;
           v28 = -[CIKernel applyWithExtent:roiCallback:arguments:](v27, "applyWithExtent:roiCallback:arguments:", v41, [MEMORY[0x1E695DEC8] arrayWithObjects:v46 count:5], v21, v22, v23, v35);
           v29 = [CIKernel kernelWithInternalRepresentation:&CI::_CBVertGuided];
-          v45[0] = v26;
+          v45[0] = imageByUnpremultiplyingAlpha2;
           v45[1] = v28;
           v45[2] = v18;
           v45[3] = v20;
@@ -157,7 +157,7 @@
         else
         {
           v32 = [CIKernel kernelWithInternalRepresentation:&CI::_CBHorz];
-          v44[0] = v25;
+          v44[0] = imageByUnpremultiplyingAlpha;
           v44[1] = v18;
           v44[2] = v20;
           v44[3] = v19;

@@ -1,13 +1,13 @@
 @interface SLComposeServiceViewController
 + (id)_imageAttachmentLoadDownsamplePreviewQueue;
 - (BOOL)_areAttachmentsReady;
-- (CGRect)sheetFrameForViewController:(id)a3;
-- (CGRect)sheetFrameForViewController:(id)a3 topSpaceProportion:(double)a4 topSpaceOffset:(double)a5;
+- (CGRect)sheetFrameForViewController:(id)controller;
+- (CGRect)sheetFrameForViewController:(id)controller topSpaceProportion:(double)proportion topSpaceOffset:(double)offset;
 - (CGSize)_intrinsicSheetSize;
 - (NSString)contentText;
-- (SLComposeServiceViewController)initWithCoder:(id)a3;
-- (SLComposeServiceViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (SLComposeServiceViewController)initWithServiceIconImage:(id)a3;
+- (SLComposeServiceViewController)initWithCoder:(id)coder;
+- (SLComposeServiceViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (SLComposeServiceViewController)initWithServiceIconImage:(id)image;
 - (UITextView)textView;
 - (UIView)loadPreviewView;
 - (UIView)sheetView;
@@ -15,76 +15,76 @@
 - (id)URLAttachments;
 - (id)previewImageSource;
 - (int64_t)_previewDisplayFormat;
-- (void)_addAttachment:(id)a3;
+- (void)_addAttachment:(id)attachment;
 - (void)_adjustContentViewIntrinsicHeightForPreviewView;
 - (void)_animateCardSendFinished;
 - (void)_animateSheetCancelFinished;
 - (void)_animateSheetPresentationFinished;
-- (void)_animateVignetteMaskFromSheetFrame:(CGRect)a3 toSheetFrame:(CGRect)a4 duration:(double)a5;
-- (void)_convertExtensionItemProvidersToAttachments:(id)a3;
-- (void)_downsampleImageAttachment:(id)a3;
-- (void)_imageAttachmentDataDidLoad:(id)a3;
-- (void)_loadImageAttachmentData:(id)a3;
+- (void)_animateVignetteMaskFromSheetFrame:(CGRect)frame toSheetFrame:(CGRect)sheetFrame duration:(double)duration;
+- (void)_convertExtensionItemProvidersToAttachments:(id)attachments;
+- (void)_downsampleImageAttachment:(id)attachment;
+- (void)_imageAttachmentDataDidLoad:(id)load;
+- (void)_loadImageAttachmentData:(id)data;
 - (void)_loadPreviewView;
-- (void)_performCommonInitialization:(id)a3;
-- (void)_positionSheetViewAnimatedForViewController:(id)a3;
-- (void)_positionSheetViewForViewController:(id)a3;
-- (void)_positionVignetteForSheetFrame:(CGRect)a3;
+- (void)_performCommonInitialization:(id)initialization;
+- (void)_positionSheetViewAnimatedForViewController:(id)controller;
+- (void)_positionSheetViewForViewController:(id)controller;
+- (void)_positionVignetteForSheetFrame:(CGRect)frame;
 - (void)_presentSheet;
 - (void)_presentedViewControllerContentSizeDidChange;
-- (void)_setViewControllerForTrackingSheetSize:(id)a3;
+- (void)_setViewControllerForTrackingSheetSize:(id)size;
 - (void)_updateContentViewWithCharactersRemaining;
 - (void)_willAppearInRemoteViewController;
-- (void)animateCardSendOrientation:(int64_t)a3;
-- (void)animateSheetCancelWithDuration:(double)a3;
-- (void)animateSheetPresentationWithDuration:(double)a3;
-- (void)cancelButtonTapped:(id)a3;
+- (void)animateCardSendOrientation:(int64_t)orientation;
+- (void)animateSheetCancelWithDuration:(double)duration;
+- (void)animateSheetPresentationWithDuration:(double)duration;
+- (void)cancelButtonTapped:(id)tapped;
 - (void)dealloc;
 - (void)didReceiveMemoryWarning;
 - (void)didSelectCancel;
 - (void)didSelectPost;
-- (void)hideKeyboardAnimated:(BOOL)a3;
-- (void)hideKeyboardWithAnimationTime:(double)a3;
-- (void)keyboardDidChange:(id)a3;
-- (void)keyboardWillShow:(id)a3;
+- (void)hideKeyboardAnimated:(BOOL)animated;
+- (void)hideKeyboardWithAnimationTime:(double)time;
+- (void)keyboardDidChange:(id)change;
+- (void)keyboardWillShow:(id)show;
 - (void)loadView;
-- (void)navigationController:(id)a3 didShowViewController:(id)a4 animated:(BOOL)a5;
-- (void)navigationController:(id)a3 willShowViewController:(id)a4 animated:(BOOL)a5;
-- (void)networkActivityIndicatorNotification:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)navigationController:(id)controller didShowViewController:(id)viewController animated:(BOOL)animated;
+- (void)navigationController:(id)controller willShowViewController:(id)viewController animated:(BOOL)animated;
+- (void)networkActivityIndicatorNotification:(id)notification;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)popConfigurationViewController;
 - (void)positionSheetView;
-- (void)postButtonTapped:(id)a3;
+- (void)postButtonTapped:(id)tapped;
 - (void)pushConfigurationViewController:(UIViewController *)viewController;
 - (void)reloadConfigurationItems;
 - (void)send;
 - (void)setAutoCompletionViewController:(UIViewController *)autoCompletionViewController;
 - (void)setCharactersRemaining:(NSNumber *)charactersRemaining;
 - (void)setPlaceholder:(NSString *)placeholder;
-- (void)setPostButtonTitle:(id)a3;
-- (void)setServiceIconImage:(id)a3;
-- (void)setSheetFrame:(CGRect)a3;
-- (void)setTitle:(id)a3;
-- (void)shouldShowNetworkActivityIndicator:(BOOL)a3;
-- (void)showKeyboardAnimated:(BOOL)a3;
-- (void)showKeyboardWithAnimationTime:(double)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setPostButtonTitle:(id)title;
+- (void)setServiceIconImage:(id)image;
+- (void)setSheetFrame:(CGRect)frame;
+- (void)setTitle:(id)title;
+- (void)shouldShowNetworkActivityIndicator:(BOOL)indicator;
+- (void)showKeyboardAnimated:(BOOL)animated;
+- (void)showKeyboardWithAnimationTime:(double)time;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateKeyboardSize;
 - (void)updateSheetForVerticalSizeClass;
 - (void)validateContent;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation SLComposeServiceViewController
 
-- (void)_performCommonInitialization:(id)a3
+- (void)_performCommonInitialization:(id)initialization
 {
-  objc_storeStrong(&self->_serviceIconImage, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_serviceIconImage, initialization);
+  initializationCopy = initialization;
   self->_unfulfilledItemProviderRepresentations = 0;
   v6 = objc_opt_new();
   attachments = self->_attachments;
@@ -96,27 +96,27 @@
 
   self->_triggerPresentationAnimationOnKeyboard = 1;
   self->_maxImageAttachmentSize = 2048000;
-  v10 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v10 addObserver:self selector:sel_keyboardDidChange_ name:*MEMORY[0x1E69DDF68] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_keyboardDidChange_ name:*MEMORY[0x1E69DDF68] object:0];
 
-  v11 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v11 addObserver:self selector:sel_keyboardWillShow_ name:*MEMORY[0x1E69DE080] object:0];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter2 addObserver:self selector:sel_keyboardWillShow_ name:*MEMORY[0x1E69DE080] object:0];
 
-  v12 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v12 addObserver:self selector:sel_keyboardWillHide_ name:*MEMORY[0x1E69DE078] object:0];
+  defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter3 addObserver:self selector:sel_keyboardWillHide_ name:*MEMORY[0x1E69DE078] object:0];
 
-  v13 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v13 addObserver:self selector:sel_networkActivityIndicatorNotification_ name:SLShowNetworkActivityIndicatorNotification object:0];
+  defaultCenter4 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter4 addObserver:self selector:sel_networkActivityIndicatorNotification_ name:SLShowNetworkActivityIndicatorNotification object:0];
 
-  v14 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v14 addObserver:self selector:sel_networkActivityIndicatorNotification_ name:SLHideNetworkActivityIndicatorNotification object:0];
+  defaultCenter5 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter5 addObserver:self selector:sel_networkActivityIndicatorNotification_ name:SLHideNetworkActivityIndicatorNotification object:0];
 
   [(SLComposeServiceViewController *)self setShouldForceNonAnimatedTransition:1];
 }
 
-- (SLComposeServiceViewController)initWithServiceIconImage:(id)a3
+- (SLComposeServiceViewController)initWithServiceIconImage:(id)image
 {
-  v5 = a3;
+  imageCopy = image;
   _SLLog(v3, 6, @"SLComposeServiceViewController initWithServiceIconImage:");
   v9.receiver = self;
   v9.super_class = SLComposeServiceViewController;
@@ -124,20 +124,20 @@
   v7 = v6;
   if (v6)
   {
-    [(SLComposeServiceViewController *)v6 _performCommonInitialization:v5];
+    [(SLComposeServiceViewController *)v6 _performCommonInitialization:imageCopy];
   }
 
   return v7;
 }
 
-- (SLComposeServiceViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (SLComposeServiceViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  v7 = a4;
-  v8 = a3;
+  bundleCopy = bundle;
+  nameCopy = name;
   _SLLog(v4, 7, @"SLComposeServiceViewController initWithNibName:bundle:");
   v11.receiver = self;
   v11.super_class = SLComposeServiceViewController;
-  v9 = [(SLComposeServiceViewController *)&v11 initWithNibName:v8 bundle:v7];
+  v9 = [(SLComposeServiceViewController *)&v11 initWithNibName:nameCopy bundle:bundleCopy];
 
   if (v9)
   {
@@ -147,13 +147,13 @@
   return v9;
 }
 
-- (SLComposeServiceViewController)initWithCoder:(id)a3
+- (SLComposeServiceViewController)initWithCoder:(id)coder
 {
-  v5 = a3;
+  coderCopy = coder;
   _SLLog(v3, 7, @"SLComposeServiceViewController initWithCoder:");
   v8.receiver = self;
   v8.super_class = SLComposeServiceViewController;
-  v6 = [(SLComposeServiceViewController *)&v8 initWithCoder:v5];
+  v6 = [(SLComposeServiceViewController *)&v8 initWithCoder:coderCopy];
 
   if (v6)
   {
@@ -167,8 +167,8 @@
 {
   _SLLog(v2, 7, @"SLComposeServiceViewController dealloc %@");
   [(SLComposeServiceViewController *)self _setViewControllerForTrackingSheetSize:0, self];
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v6.receiver = self;
   v6.super_class = SLComposeServiceViewController;
@@ -190,21 +190,21 @@
   return previewImageSource;
 }
 
-- (void)_positionSheetViewForViewController:(id)a3
+- (void)_positionSheetViewForViewController:(id)controller
 {
-  v13 = a3;
-  v5 = [(SLComposeServiceViewController *)self preventSheetPositionChanges];
+  controllerCopy = controller;
+  preventSheetPositionChanges = [(SLComposeServiceViewController *)self preventSheetPositionChanges];
   v6 = @"NO";
-  if (v5)
+  if (preventSheetPositionChanges)
   {
     v6 = @"YES";
   }
 
   v12 = v6;
   _SLLog(v3, 7, @"SLComposeServiceViewController _positionSheetViewForViewController: %@ preventSheetPositionChanges %@");
-  if (![(SLComposeServiceViewController *)self preventSheetPositionChanges:v13])
+  if (![(SLComposeServiceViewController *)self preventSheetPositionChanges:controllerCopy])
   {
-    [(SLComposeServiceViewController *)self sheetFrameForViewController:v13];
+    [(SLComposeServiceViewController *)self sheetFrameForViewController:controllerCopy];
     x = v15.origin.x;
     y = v15.origin.y;
     width = v15.size.width;
@@ -220,41 +220,41 @@
 - (void)positionSheetView
 {
   _SLLog(v2, 7, @"SLComposeServiceViewController positionSheetView");
-  v5 = [(SLComposeServiceViewController *)self navigationController];
-  v4 = [v5 topViewController];
-  [(SLComposeServiceViewController *)self _positionSheetViewForViewController:v4];
+  navigationController = [(SLComposeServiceViewController *)self navigationController];
+  topViewController = [navigationController topViewController];
+  [(SLComposeServiceViewController *)self _positionSheetViewForViewController:topViewController];
 }
 
 - (void)updateSheetForVerticalSizeClass
 {
   v4 = MEMORY[0x1E696B098];
-  v5 = [(SLComposeServiceViewController *)self contentView];
-  [v5 intrinsicContentSize];
+  contentView = [(SLComposeServiceViewController *)self contentView];
+  [contentView intrinsicContentSize];
   v7 = [v4 valueWithCGSize:?];
   _SLLog(v2, 7, @"SLComposeServiceViewController updateSheetForVerticalSizeClass self.contentView.intrinsicContentSize %@");
 
-  v8 = [(SLComposeServiceViewController *)self sheetRootViewController];
-  v6 = [(SLComposeServiceViewController *)self contentView];
-  [v6 intrinsicContentSize];
-  [v8 updateContentViewSize:?];
+  sheetRootViewController = [(SLComposeServiceViewController *)self sheetRootViewController];
+  contentView2 = [(SLComposeServiceViewController *)self contentView];
+  [contentView2 intrinsicContentSize];
+  [sheetRootViewController updateContentViewSize:?];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
+  changeCopy = change;
   v21.receiver = self;
   v21.super_class = SLComposeServiceViewController;
-  [(SLComposeServiceViewController *)&v21 traitCollectionDidChange:v5];
-  v6 = [(SLComposeServiceViewController *)self traitCollection];
-  v7 = [v6 verticalSizeClass];
-  v8 = [v5 verticalSizeClass];
+  [(SLComposeServiceViewController *)&v21 traitCollectionDidChange:changeCopy];
+  traitCollection = [(SLComposeServiceViewController *)self traitCollection];
+  verticalSizeClass = [traitCollection verticalSizeClass];
+  verticalSizeClass2 = [changeCopy verticalSizeClass];
 
-  if (v7 != v8)
+  if (verticalSizeClass != verticalSizeClass2)
   {
     v9 = MEMORY[0x1E696AD98];
-    v10 = [(SLComposeServiceViewController *)self traitCollection];
-    v11 = [v9 numberWithInteger:{objc_msgSend(v10, "verticalSizeClass")}];
-    v20 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v5, "verticalSizeClass")}];
+    traitCollection2 = [(SLComposeServiceViewController *)self traitCollection];
+    v11 = [v9 numberWithInteger:{objc_msgSend(traitCollection2, "verticalSizeClass")}];
+    v20 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(changeCopy, "verticalSizeClass")}];
     _SLLog(v3, 7, @"SLComposeServiceViewController traitCollectionDidChange verticalSizeClass changed to %@ from %@");
 
     if (self->_waitingForAnimateAlongsideTransitionBlock)
@@ -270,25 +270,25 @@
     }
   }
 
-  v12 = [(SLComposeServiceViewController *)self traitCollection];
-  v13 = [v12 preferredContentSizeCategory];
-  v14 = [v5 preferredContentSizeCategory];
-  v15 = [v13 isEqualToString:v14];
+  traitCollection3 = [(SLComposeServiceViewController *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection3 preferredContentSizeCategory];
+  preferredContentSizeCategory2 = [changeCopy preferredContentSizeCategory];
+  v15 = [preferredContentSizeCategory isEqualToString:preferredContentSizeCategory2];
 
   if ((v15 & 1) == 0)
   {
-    v16 = [(SLComposeServiceViewController *)self contentView];
-    v17 = [v16 accessoryView];
+    contentView = [(SLComposeServiceViewController *)self contentView];
+    accessoryView = [contentView accessoryView];
 
-    if (v17)
+    if (accessoryView)
     {
       v18 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDD10]];
-      [v17 setFont:v18];
+      [accessoryView setFont:v18];
     }
   }
 }
 
-- (void)keyboardWillShow:(id)a3
+- (void)keyboardWillShow:(id)show
 {
   _SLLog(v3, 7, @"keyboardWillShow");
   if (self->_triggerPresentationAnimationOnKeyboard)
@@ -298,75 +298,75 @@
   }
 }
 
-- (void)showKeyboardAnimated:(BOOL)a3
+- (void)showKeyboardAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   if (![(SLComposeServiceViewController *)self suppressKeyboard])
   {
-    v5 = [(SLComposeServiceViewController *)self contentView];
-    v6 = [v5 textView];
-    [v6 becomeFirstResponder];
+    contentView = [(SLComposeServiceViewController *)self contentView];
+    textView = [contentView textView];
+    [textView becomeFirstResponder];
 
     if ((UIKeyboardIsAutomaticAppearanceEnabled() & 1) == 0)
     {
 
-      MEMORY[0x1EEE4DE18](v3);
+      MEMORY[0x1EEE4DE18](animatedCopy);
     }
   }
 }
 
-- (void)hideKeyboardAnimated:(BOOL)a3
+- (void)hideKeyboardAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v4 = [(SLComposeServiceViewController *)self contentView];
-  v5 = [v4 textView];
-  [v5 resignFirstResponder];
+  animatedCopy = animated;
+  contentView = [(SLComposeServiceViewController *)self contentView];
+  textView = [contentView textView];
+  [textView resignFirstResponder];
 
   if ((UIKeyboardIsAutomaticAppearanceEnabled() & 1) == 0)
   {
 
-    MEMORY[0x1EEE4DE28](v3);
+    MEMORY[0x1EEE4DE28](animatedCopy);
   }
 }
 
-- (void)showKeyboardWithAnimationTime:(double)a3
+- (void)showKeyboardWithAnimationTime:(double)time
 {
   if (![(SLComposeServiceViewController *)self suppressKeyboard])
   {
-    v5 = [(SLComposeServiceViewController *)self contentView];
-    [v5 becomeFirstResponder];
+    contentView = [(SLComposeServiceViewController *)self contentView];
+    [contentView becomeFirstResponder];
 
     if (UIKeyboardIsAutomaticAppearanceEnabled())
     {
-      v6.n128_f64[0] = a3;
+      v6.n128_f64[0] = time;
 
       MEMORY[0x1EEE4DF40](0, v6);
     }
 
     else
     {
-      v6.n128_f64[0] = a3;
+      v6.n128_f64[0] = time;
 
       MEMORY[0x1EEE4DE20](0, v6);
     }
   }
 }
 
-- (void)hideKeyboardWithAnimationTime:(double)a3
+- (void)hideKeyboardWithAnimationTime:(double)time
 {
-  v4 = [(SLComposeServiceViewController *)self contentView];
-  [v4 resignFirstResponder];
+  contentView = [(SLComposeServiceViewController *)self contentView];
+  [contentView resignFirstResponder];
 
   if (UIKeyboardIsAutomaticAppearanceEnabled())
   {
-    v5.n128_f64[0] = a3;
+    v5.n128_f64[0] = time;
 
     MEMORY[0x1EEE4DF60](0, v5);
   }
 
   else
   {
-    v5.n128_f64[0] = a3;
+    v5.n128_f64[0] = time;
 
     MEMORY[0x1EEE4DE30](0, v5);
   }
@@ -375,9 +375,9 @@
 - (void)setCharactersRemaining:(NSNumber *)charactersRemaining
 {
   objc_storeStrong(&self->_charactersRemaining, charactersRemaining);
-  v4 = [(SLComposeServiceViewController *)self contentView];
+  contentView = [(SLComposeServiceViewController *)self contentView];
 
-  if (v4)
+  if (contentView)
   {
 
     [(SLComposeServiceViewController *)self _updateContentViewWithCharactersRemaining];
@@ -387,22 +387,22 @@
 - (void)_updateContentViewWithCharactersRemaining
 {
   charactersRemaining = self->_charactersRemaining;
-  v4 = [(SLComposeServiceViewController *)self contentView];
-  v15 = v4;
+  contentView = [(SLComposeServiceViewController *)self contentView];
+  v15 = contentView;
   if (charactersRemaining)
   {
-    v5 = [v4 accessoryView];
+    accessoryView = [contentView accessoryView];
 
-    v15 = v5;
-    if (!v5)
+    v15 = accessoryView;
+    if (!accessoryView)
     {
       v6 = objc_alloc(MEMORY[0x1E69DCC10]);
       v15 = [v6 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
       v7 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDD10]];
       [v15 setFont:v7];
 
-      v8 = [MEMORY[0x1E69DC888] clearColor];
-      [v15 setBackgroundColor:v8];
+      clearColor = [MEMORY[0x1E69DC888] clearColor];
+      [v15 setBackgroundColor:clearColor];
 
       [v15 setAlpha:0.699999988];
     }
@@ -411,66 +411,66 @@
     v10 = [v9 stringFromNumber:self->_charactersRemaining];
     [v15 setText:v10];
 
-    v11 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [v15 setTextColor:v11];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [v15 setTextColor:secondaryLabelColor];
 
-    v12 = [(SLComposeServiceViewController *)self contentView];
-    v13 = [v12 accessoryView];
+    contentView2 = [(SLComposeServiceViewController *)self contentView];
+    accessoryView2 = [contentView2 accessoryView];
 
-    if (!v13)
+    if (!accessoryView2)
     {
-      v14 = [(SLComposeServiceViewController *)self contentView];
-      [v14 setAccessoryView:v15];
+      contentView3 = [(SLComposeServiceViewController *)self contentView];
+      [contentView3 setAccessoryView:v15];
     }
   }
 
   else
   {
-    [v4 setAccessoryView:0];
+    [contentView setAccessoryView:0];
   }
 }
 
 - (UITextView)textView
 {
-  v2 = [(SLComposeServiceViewController *)self contentView];
-  v3 = [v2 textView];
+  contentView = [(SLComposeServiceViewController *)self contentView];
+  textView = [contentView textView];
 
-  return v3;
+  return textView;
 }
 
 - (NSString)contentText
 {
-  v2 = [(SLComposeServiceViewController *)self textView];
-  v3 = [v2 text];
+  textView = [(SLComposeServiceViewController *)self textView];
+  text = [textView text];
 
-  return v3;
+  return text;
 }
 
 - (void)setPlaceholder:(NSString *)placeholder
 {
   objc_storeStrong(&self->_placeholder, placeholder);
   v5 = placeholder;
-  v6 = [(SLComposeServiceViewController *)self contentView];
-  v7 = [v6 placeholderLabel];
-  [v7 setText:v5];
+  contentView = [(SLComposeServiceViewController *)self contentView];
+  placeholderLabel = [contentView placeholderLabel];
+  [placeholderLabel setText:v5];
 
-  v8 = [(SLComposeServiceViewController *)self contentView];
-  v9 = [v8 placeholderLabel];
-  [v9 sizeToFit];
+  contentView2 = [(SLComposeServiceViewController *)self contentView];
+  placeholderLabel2 = [contentView2 placeholderLabel];
+  [placeholderLabel2 sizeToFit];
 
-  v10 = [(SLComposeServiceViewController *)self contentView];
-  [v10 setNeedsLayout];
+  contentView3 = [(SLComposeServiceViewController *)self contentView];
+  [contentView3 setNeedsLayout];
 }
 
-- (void)_addAttachment:(id)a3
+- (void)_addAttachment:(id)attachment
 {
-  v5 = a3;
+  attachmentCopy = attachment;
   _SLLog(v3, 6, @"SLComposeServiceViewController _addAttachment: %@");
-  [(NSMutableArray *)self->_attachments addObject:v5, v5];
-  if (self->_maxImageAttachmentSize && ![v5 type])
+  [(NSMutableArray *)self->_attachments addObject:attachmentCopy, attachmentCopy];
+  if (self->_maxImageAttachmentSize && ![attachmentCopy type])
   {
-    [v5 setDownsampleStatus:1];
-    [(SLComposeServiceViewController *)self _loadImageAttachmentData:v5];
+    [attachmentCopy setDownsampleStatus:1];
+    [(SLComposeServiceViewController *)self _loadImageAttachmentData:attachmentCopy];
   }
 
   [(SLComposeServiceViewController *)self validateContent];
@@ -488,8 +488,8 @@
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [(SLComposeServiceViewController *)self attachments];
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  attachments = [(SLComposeServiceViewController *)self attachments];
+  v4 = [attachments countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -500,7 +500,7 @@
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(attachments);
         }
 
         v8 = *(*(&v10 + 1) + 8 * i);
@@ -511,7 +511,7 @@
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [attachments countByEnumeratingWithState:&v10 objects:v14 count:16];
       v2 = 1;
       if (v5)
       {
@@ -534,32 +534,32 @@ LABEL_15:
 
 - (void)validateContent
 {
-  v3 = [(SLComposeServiceViewController *)self contentView];
-  v4 = [v3 textView];
-  v5 = [v4 text];
-  v6 = [v5 length] != 0;
-  v7 = [(SLComposeServiceViewController *)self contentView];
-  v8 = [v7 placeholderLabel];
-  [v8 setHidden:v6];
+  contentView = [(SLComposeServiceViewController *)self contentView];
+  textView = [contentView textView];
+  text = [textView text];
+  v6 = [text length] != 0;
+  contentView2 = [(SLComposeServiceViewController *)self contentView];
+  placeholderLabel = [contentView2 placeholderLabel];
+  [placeholderLabel setHidden:v6];
 
   if ([(SLComposeServiceViewController *)self isContentValid])
   {
-    v9 = [(SLComposeServiceViewController *)self _areAttachmentsReady];
+    _areAttachmentsReady = [(SLComposeServiceViewController *)self _areAttachmentsReady];
   }
 
   else
   {
-    v9 = 0;
+    _areAttachmentsReady = 0;
   }
 
-  v10 = [(SLComposeServiceViewController *)self sheetRootViewController];
-  [v10 setPostButtonEnabled:v9];
+  sheetRootViewController = [(SLComposeServiceViewController *)self sheetRootViewController];
+  [sheetRootViewController setPostButtonEnabled:_areAttachmentsReady];
 }
 
 - (id)URLAttachments
 {
-  v2 = [(SLComposeServiceViewController *)self attachments];
-  v3 = [v2 objectsPassingTest:&__block_literal_global_6];
+  attachments = [(SLComposeServiceViewController *)self attachments];
+  v3 = [attachments objectsPassingTest:&__block_literal_global_6];
 
   return v3;
 }
@@ -592,15 +592,15 @@ void __76__SLComposeServiceViewController__imageAttachmentLoadDownsamplePreviewQ
   _imageAttachmentLoadDownsamplePreviewQueue__queue = v0;
 }
 
-- (void)_loadImageAttachmentData:(id)a3
+- (void)_loadImageAttachmentData:(id)data
 {
-  v5 = a3;
-  if (([v5 startedPayloadLoad] & 1) == 0)
+  dataCopy = data;
+  if (([dataCopy startedPayloadLoad] & 1) == 0)
   {
-    [v5 setStartedPayloadLoad:1];
+    [dataCopy setStartedPayloadLoad:1];
     _SLLog(v3, 7, @"SLComposeServiceViewController _loadImageAttachmentData: %@");
     objc_initWeak(&location, self);
-    objc_initWeak(&from, v5);
+    objc_initWeak(&from, dataCopy);
     v27[0] = MEMORY[0x1E69E9820];
     v27[1] = 3221225472;
     v27[2] = __59__SLComposeServiceViewController__loadImageAttachmentData___block_invoke;
@@ -608,50 +608,50 @@ void __76__SLComposeServiceViewController__imageAttachmentLoadDownsamplePreviewQ
     objc_copyWeak(&v28, &location);
     objc_copyWeak(&v29, &from);
     v6 = MEMORY[0x1C6917BF0](v27);
-    v7 = [v5 identifier];
-    v8 = [v5 itemProvider];
-    v9 = [v5 typeIdentifier];
-    v10 = [v5 payload];
+    identifier = [dataCopy identifier];
+    itemProvider = [dataCopy itemProvider];
+    typeIdentifier = [dataCopy typeIdentifier];
+    payload = [dataCopy payload];
 
-    if (v10)
+    if (payload)
     {
       v6[2](v6, 0, 0);
     }
 
     else
     {
-      v11 = [v5 payloadSourceFileURL];
+      payloadSourceFileURL = [dataCopy payloadSourceFileURL];
 
-      if (v11)
+      if (payloadSourceFileURL)
       {
-        v16 = [v5 payloadSourceFileURL];
+        payloadSourceFileURL2 = [dataCopy payloadSourceFileURL];
         _SLLog(v3, 7, @"SLComposeServiceViewController _loadImageAttachmentData: %@ loading from %@");
 
-        v12 = [v5 payloadSourceFileURL];
+        payloadSourceFileURL3 = [dataCopy payloadSourceFileURL];
         v13 = +[SLComposeServiceViewController _imageAttachmentLoadDownsamplePreviewQueue];
         block[0] = MEMORY[0x1E69E9820];
         block[1] = 3221225472;
         block[2] = __59__SLComposeServiceViewController__loadImageAttachmentData___block_invoke_3;
         block[3] = &unk_1E8175928;
-        v23 = v12;
-        v24 = v7;
-        v25 = v9;
+        v23 = payloadSourceFileURL3;
+        v24 = identifier;
+        v25 = typeIdentifier;
         v26 = v6;
-        v14 = v12;
+        v14 = payloadSourceFileURL3;
         dispatch_async(v13, block);
       }
 
       else
       {
         _SLLog(v3, 7, @"SLComposeServiceViewController _loadImageAttachmentData: %@ loading from itemProvider for typeIdentifier %@");
-        v15 = [SLComposeServiceViewController _imageAttachmentLoadDownsamplePreviewQueue:v7];
+        v15 = [SLComposeServiceViewController _imageAttachmentLoadDownsamplePreviewQueue:identifier];
         v17[0] = MEMORY[0x1E69E9820];
         v17[1] = 3221225472;
         v17[2] = __59__SLComposeServiceViewController__loadImageAttachmentData___block_invoke_4;
         v17[3] = &unk_1E8175928;
-        v18 = v8;
-        v19 = v9;
-        v20 = v7;
+        v18 = itemProvider;
+        v19 = typeIdentifier;
+        v20 = identifier;
         v21 = v6;
         dispatch_async(v15, v17);
 
@@ -813,37 +813,37 @@ void __59__SLComposeServiceViewController__loadImageAttachmentData___block_invok
   (*(*(a1 + 56) + 16))(*(a1 + 56), v5, *(a1 + 48), v4);
 }
 
-- (void)_imageAttachmentDataDidLoad:(id)a3
+- (void)_imageAttachmentDataDidLoad:(id)load
 {
-  v5 = a3;
+  loadCopy = load;
   _SLLog(v3, 7, @"SLComposeServiceViewController _imageAttachmentDataDidLoad: %@");
-  if ([v5 downsampleStatus] == 1)
+  if ([loadCopy downsampleStatus] == 1)
   {
-    [(SLComposeServiceViewController *)self _downsampleImageAttachment:v5];
+    [(SLComposeServiceViewController *)self _downsampleImageAttachment:loadCopy];
   }
 
-  if ([v5 needsAnotherPreviewGeneration])
+  if ([loadCopy needsAnotherPreviewGeneration])
   {
-    v6 = [(SLComposeServiceViewController *)self contentView];
-    v7 = [v6 previewView];
+    contentView = [(SLComposeServiceViewController *)self contentView];
+    previewView = [contentView previewView];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v9 = [(SLComposeServiceViewController *)self contentView];
-      v10 = [v9 previewView];
-      objc_initWeak(&location, v10);
+      contentView2 = [(SLComposeServiceViewController *)self contentView];
+      previewView2 = [contentView2 previewView];
+      objc_initWeak(&location, previewView2);
 
-      v11 = [(SLComposeServiceViewController *)self previewImageSource];
+      previewImageSource = [(SLComposeServiceViewController *)self previewImageSource];
       v12 = +[SLComposeServiceViewController _imageAttachmentLoadDownsamplePreviewQueue];
       v13[0] = MEMORY[0x1E69E9820];
       v13[1] = 3221225472;
       v13[2] = __62__SLComposeServiceViewController__imageAttachmentDataDidLoad___block_invoke;
       v13[3] = &unk_1E8176480;
       objc_copyWeak(&v15, &location);
-      v14 = v5;
-      [v11 previewImageForAttachment:v14 queueToBlockWhileDownsampling:v12 resultBlock:v13];
+      v14 = loadCopy;
+      [previewImageSource previewImageForAttachment:v14 queueToBlockWhileDownsampling:v12 resultBlock:v13];
 
       objc_destroyWeak(&v15);
       objc_destroyWeak(&location);
@@ -897,26 +897,26 @@ uint64_t __62__SLComposeServiceViewController__imageAttachmentDataDidLoad___bloc
   return MEMORY[0x1EEE66C38]();
 }
 
-- (void)_downsampleImageAttachment:(id)a3
+- (void)_downsampleImageAttachment:(id)attachment
 {
-  v5 = a3;
+  attachmentCopy = attachment;
   v11 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:{-[SLComposeServiceViewController maxImageAttachmentSize](self, "maxImageAttachmentSize")}];
   _SLLog(v3, 6, @"SLComposeServiceViewController _downsampleImageAttachment: %@ starting downsampling of attached image to max size %@");
 
-  [v5 setDownsampleStatus:{2, v5, v11}];
+  [attachmentCopy setDownsampleStatus:{2, attachmentCopy, v11}];
   objc_initWeak(&location, self);
-  v6 = [v5 payload];
-  v7 = [(SLComposeServiceViewController *)self maxImageAttachmentSize];
+  payload = [attachmentCopy payload];
+  maxImageAttachmentSize = [(SLComposeServiceViewController *)self maxImageAttachmentSize];
   v8 = +[SLComposeServiceViewController _imageAttachmentLoadDownsamplePreviewQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __61__SLComposeServiceViewController__downsampleImageAttachment___block_invoke;
   block[3] = &unk_1E81764F8;
-  v15[1] = v7;
-  v13 = v6;
-  v14 = v5;
-  v9 = v5;
-  v10 = v6;
+  v15[1] = maxImageAttachmentSize;
+  v13 = payload;
+  v14 = attachmentCopy;
+  v9 = attachmentCopy;
+  v10 = payload;
   objc_copyWeak(v15, &location);
   dispatch_async(v8, block);
 
@@ -980,17 +980,17 @@ void __61__SLComposeServiceViewController__downsampleImageAttachment___block_inv
 - (void)_loadPreviewView
 {
   _SLLog(v2, 6, @"SLComposeServiceViewController:_loadPreviewView");
-  v4 = [(SLComposeServiceViewController *)self loadPreviewView];
-  v8 = v4;
-  if (v4)
+  loadPreviewView = [(SLComposeServiceViewController *)self loadPreviewView];
+  v8 = loadPreviewView;
+  if (loadPreviewView)
   {
-    v7 = v4;
+    v7 = loadPreviewView;
     _SLLog(v2, 6, @"SLComposeServiceViewController:_loadPreviewView preview created: %@");
-    v5 = [(SLComposeServiceViewController *)self contentView];
-    [v5 setPreviewView:v8];
+    contentView = [(SLComposeServiceViewController *)self contentView];
+    [contentView setPreviewView:v8];
 
-    v6 = [(SLComposeServiceViewController *)self view];
-    [v6 setNeedsUpdateConstraints];
+    view = [(SLComposeServiceViewController *)self view];
+    [view setNeedsUpdateConstraints];
 
     [(SLComposeServiceViewController *)self _adjustContentViewIntrinsicHeightForPreviewView];
   }
@@ -1003,20 +1003,20 @@ void __61__SLComposeServiceViewController__downsampleImageAttachment___block_inv
 
 - (void)_adjustContentViewIntrinsicHeightForPreviewView
 {
-  v18 = [MEMORY[0x1E69DC938] currentDevice];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [MEMORY[0x1E69DC938] currentDevice];
-    v4 = [v3 userInterfaceIdiom];
+    currentDevice2 = [MEMORY[0x1E69DC938] currentDevice];
+    userInterfaceIdiom = [currentDevice2 userInterfaceIdiom];
 
-    if (v4 != 1)
+    if (userInterfaceIdiom != 1)
     {
       return;
     }
 
-    v5 = [(SLComposeServiceViewController *)self contentView];
-    v6 = [v5 previewView];
-    [v6 intrinsicContentSize];
+    contentView = [(SLComposeServiceViewController *)self contentView];
+    previewView = [contentView previewView];
+    [previewView intrinsicContentSize];
     v8 = v7;
 
     v9 = v8 + -90.0 + 120.0;
@@ -1025,8 +1025,8 @@ void __61__SLComposeServiceViewController__downsampleImageAttachment___block_inv
       return;
     }
 
-    v10 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v10 scale];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen scale];
     v12 = v11;
 
     v13 = round(v9 + v9) * 0.5;
@@ -1041,13 +1041,13 @@ void __61__SLComposeServiceViewController__downsampleImageAttachment___block_inv
       v15 = v13;
     }
 
-    v16 = [(SLComposeServiceViewController *)self contentView];
-    [v16 setIntrinsicSize:2 forVerticalSizeClass:{*MEMORY[0x1E69DE788], v15}];
+    contentView2 = [(SLComposeServiceViewController *)self contentView];
+    [contentView2 setIntrinsicSize:2 forVerticalSizeClass:{*MEMORY[0x1E69DE788], v15}];
 
-    v18 = [(SLComposeServiceViewController *)self sheetRootViewController];
-    v17 = [(SLComposeServiceViewController *)self contentView];
-    [v17 intrinsicContentSize];
-    [v18 updateContentViewSize:?];
+    currentDevice = [(SLComposeServiceViewController *)self sheetRootViewController];
+    contentView3 = [(SLComposeServiceViewController *)self contentView];
+    [contentView3 intrinsicContentSize];
+    [currentDevice updateContentViewSize:?];
   }
 }
 
@@ -1058,8 +1058,8 @@ void __61__SLComposeServiceViewController__downsampleImageAttachment___block_inv
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v2 = [(SLComposeServiceViewController *)self attachments];
-  v3 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  attachments = [(SLComposeServiceViewController *)self attachments];
+  v3 = [attachments countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v3)
   {
     v4 = v3;
@@ -1071,18 +1071,18 @@ void __61__SLComposeServiceViewController__downsampleImageAttachment___block_inv
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(attachments);
         }
 
-        v8 = [*(*(&v11 + 1) + 8 * i) type];
-        if (v8 > 9)
+        type = [*(*(&v11 + 1) + 8 * i) type];
+        if (type > 9)
         {
           v9 = 1;
         }
 
         else
         {
-          v9 = qword_1C23F44C8[v8];
+          v9 = qword_1C23F44C8[type];
         }
 
         if (v5 <= v9)
@@ -1091,7 +1091,7 @@ void __61__SLComposeServiceViewController__downsampleImageAttachment___block_inv
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v4 = [attachments countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v4);
@@ -1107,10 +1107,10 @@ void __61__SLComposeServiceViewController__downsampleImageAttachment___block_inv
 
 - (UIView)loadPreviewView
 {
-  v3 = self;
+  selfCopy = self;
   v56[1] = *MEMORY[0x1E69E9840];
-  v4 = [(SLComposeServiceViewController *)self attachments];
-  v5 = [v4 count];
+  attachments = [(SLComposeServiceViewController *)self attachments];
+  v5 = [attachments count];
 
   if (!v5)
   {
@@ -1119,28 +1119,28 @@ void __61__SLComposeServiceViewController__downsampleImageAttachment___block_inv
     goto LABEL_55;
   }
 
-  v6 = [(SLComposeServiceViewController *)v3 _previewDisplayFormat];
-  v7 = [(SLComposeServiceViewController *)v3 attachments];
-  v8 = v7;
-  if (v6 > 3)
+  _previewDisplayFormat = [(SLComposeServiceViewController *)selfCopy _previewDisplayFormat];
+  attachments2 = [(SLComposeServiceViewController *)selfCopy attachments];
+  v8 = attachments2;
+  if (_previewDisplayFormat > 3)
   {
-    if (v6 != 4)
+    if (_previewDisplayFormat != 4)
     {
-      if (v6 == 5)
+      if (_previewDisplayFormat == 5)
       {
-        v11 = [v7 firstObjectPassingTest:&__block_literal_global_142];
+        v11 = [attachments2 firstObjectPassingTest:&__block_literal_global_142];
 
         if (v11)
         {
-          v17 = [v11 previewImage];
-          if (v17)
+          previewImage = [v11 previewImage];
+          if (previewImage)
           {
           }
 
           else if ([v11 itemProviderPreviewType] != 1)
           {
-            v18 = [(SLComposeServiceViewController *)v3 attachments];
-            v19 = [v18 firstObjectPassingTest:&__block_literal_global_144];
+            attachments3 = [(SLComposeServiceViewController *)selfCopy attachments];
+            v19 = [attachments3 firstObjectPassingTest:&__block_literal_global_144];
 
             v11 = v19;
             if (!v19)
@@ -1157,10 +1157,10 @@ LABEL_33:
         goto LABEL_36;
       }
 
-      if (v6 != 6)
+      if (_previewDisplayFormat != 6)
       {
 LABEL_21:
-        v11 = [v7 objectAtIndex:0];
+        v11 = [attachments2 objectAtIndex:0];
 
         if (!v11)
         {
@@ -1170,7 +1170,7 @@ LABEL_21:
         goto LABEL_33;
       }
 
-      v11 = [v7 firstObjectPassingTest:&__block_literal_global_146];
+      v11 = [attachments2 firstObjectPassingTest:&__block_literal_global_146];
 
       if (!v11)
       {
@@ -1185,17 +1185,17 @@ LABEL_34:
       goto LABEL_35;
     }
 
-    v11 = [v7 firstObjectPassingTest:&__block_literal_global_131];
+    v11 = [attachments2 firstObjectPassingTest:&__block_literal_global_131];
 
     if (!v11)
     {
       goto LABEL_36;
     }
 
-    v14 = [v11 previewImage];
-    if (v14)
+    previewImage2 = [v11 previewImage];
+    if (previewImage2)
     {
-      v15 = v14;
+      v15 = previewImage2;
       v16 = 0;
     }
 
@@ -1208,8 +1208,8 @@ LABEL_34:
       }
 
       _SLLog(v2, 7, @"SLComposeServiceViewController looking for image attachment to act as preview for SLAttachmentDisplayMusicAlbum");
-      v37 = [(SLComposeServiceViewController *)v3 attachments];
-      v15 = [v37 firstObjectPassingTest:&__block_literal_global_136];
+      attachments4 = [(SLComposeServiceViewController *)selfCopy attachments];
+      v15 = [attachments4 firstObjectPassingTest:&__block_literal_global_136];
 
       v16 = v15 == 0;
       if (v15)
@@ -1229,9 +1229,9 @@ LABEL_35:
     goto LABEL_38;
   }
 
-  if (v6 == 1)
+  if (_previewDisplayFormat == 1)
   {
-    v11 = [v7 firstObjectPassingTest:&__block_literal_global_128];
+    v11 = [attachments2 firstObjectPassingTest:&__block_literal_global_128];
 
     if (!v11)
     {
@@ -1242,9 +1242,9 @@ LABEL_35:
     goto LABEL_34;
   }
 
-  if (v6 == 2)
+  if (_previewDisplayFormat == 2)
   {
-    v11 = [v7 firstObjectPassingTest:&__block_literal_global_125];
+    v11 = [attachments2 firstObjectPassingTest:&__block_literal_global_125];
 
     if (v11)
     {
@@ -1255,12 +1255,12 @@ LABEL_35:
     goto LABEL_36;
   }
 
-  if (v6 != 3)
+  if (_previewDisplayFormat != 3)
   {
     goto LABEL_21;
   }
 
-  v9 = [v7 objectsPassingTest:&__block_literal_global_122];
+  v9 = [attachments2 objectsPassingTest:&__block_literal_global_122];
 
   v40 = v9;
   if (![v9 count])
@@ -1305,12 +1305,12 @@ LABEL_38:
         }
 
         v25 = *(*(&v51 + 1) + 8 * i);
-        v26 = [v25 previewImage];
+        previewImage3 = [v25 previewImage];
 
-        if (v26)
+        if (previewImage3)
         {
-          v27 = [v25 previewImage];
-          [(SLSheetImagePreviewView *)v10 setPreviewImage:v27 forAttachment:v25];
+          previewImage4 = [v25 previewImage];
+          [(SLSheetImagePreviewView *)v10 setPreviewImage:previewImage4 forAttachment:v25];
         }
 
         else
@@ -1323,11 +1323,11 @@ LABEL_38:
           v28 = v10;
           v48 = v28;
           v49 = v25;
-          v50 = v3;
+          v50 = selfCopy;
           v29 = MEMORY[0x1C6917BF0](v47);
           [(SLSheetBevelledImageView *)v28 ensurePlaceholderPreviewImage];
-          v30 = [v25 itemProvider];
-          if (!v30 || (v31 = v30, v32 = v3, v33 = [v25 itemProviderPreviewType], v31, v34 = v33 == 2, v3 = v32, v34))
+          itemProvider = [v25 itemProvider];
+          if (!itemProvider || (v31 = itemProvider, v32 = selfCopy, v33 = [v25 itemProviderPreviewType], v31, v34 = v33 == 2, selfCopy = v32, v34))
           {
             v29[2](v29);
           }
@@ -1335,7 +1335,7 @@ LABEL_38:
           else
           {
             _SLLog(v2, 7, @"SLComposeServiceViewController trying to load itemProvider previewImage");
-            v35 = [v25 itemProvider];
+            itemProvider2 = [v25 itemProvider];
             v43[0] = MEMORY[0x1E69E9820];
             v43[1] = 3221225472;
             v43[2] = __49__SLComposeServiceViewController_loadPreviewView__block_invoke_13;
@@ -1343,12 +1343,12 @@ LABEL_38:
             v44 = v28;
             v45 = v25;
             v46 = v29;
-            [v35 loadPreviewImageWithOptions:0 completionHandler:v43];
+            [itemProvider2 loadPreviewImageWithOptions:0 completionHandler:v43];
 
-            v3 = v32;
+            selfCopy = v32;
           }
 
-          v27 = v48;
+          previewImage4 = v48;
         }
       }
 
@@ -1547,8 +1547,8 @@ uint64_t __49__SLComposeServiceViewController_loadPreviewView__block_invoke_14(u
 
   else
   {
-    v4 = [(SLComposeServiceViewController *)self extensionContext];
-    [v4 completeRequestReturningItems:0 completionHandler:0];
+    extensionContext = [(SLComposeServiceViewController *)self extensionContext];
+    [extensionContext completeRequestReturningItems:0 completionHandler:0];
   }
 }
 
@@ -1563,9 +1563,9 @@ uint64_t __49__SLComposeServiceViewController_loadPreviewView__block_invoke_14(u
 
   else
   {
-    v5 = [(SLComposeServiceViewController *)self extensionContext];
+    extensionContext = [(SLComposeServiceViewController *)self extensionContext];
     v4 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A250] code:3072 userInfo:0];
-    [v5 cancelRequestWithError:v4];
+    [extensionContext cancelRequestWithError:v4];
   }
 }
 
@@ -1581,16 +1581,16 @@ uint64_t __49__SLComposeServiceViewController_loadPreviewView__block_invoke_14(u
 {
   if (self->_didFirstSheetActionLoad)
   {
-    v6 = [(SLComposeServiceViewController *)self configurationItems];
-    if (![v6 count])
+    configurationItems = [(SLComposeServiceViewController *)self configurationItems];
+    if (![configurationItems count])
     {
-      v4 = [(SLComposeServiceViewController *)self sheetActions];
+      sheetActions = [(SLComposeServiceViewController *)self sheetActions];
 
-      v6 = v4;
+      configurationItems = sheetActions;
     }
 
-    v5 = [(SLComposeServiceViewController *)self sheetRootViewController];
-    [v5 setConfigurationItems:v6];
+    sheetRootViewController = [(SLComposeServiceViewController *)self sheetRootViewController];
+    [sheetRootViewController setConfigurationItems:configurationItems];
 
     [(SLComposeServiceViewController *)self positionSheetView];
   }
@@ -1601,41 +1601,41 @@ uint64_t __49__SLComposeServiceViewController_loadPreviewView__block_invoke_14(u
   v4 = viewController;
   [(UIViewController *)v4 setExtendedLayoutIncludesOpaqueBars:1];
   [(UIViewController *)v4 setEdgesForExtendedLayout:0];
-  v5 = [(SLComposeServiceViewController *)self navigationController];
-  [v5 pushViewController:v4 animated:1];
+  navigationController = [(SLComposeServiceViewController *)self navigationController];
+  [navigationController pushViewController:v4 animated:1];
 
   [(SLComposeServiceViewController *)self hideKeyboardAnimated:1];
 }
 
-- (void)_setViewControllerForTrackingSheetSize:(id)a3
+- (void)_setViewControllerForTrackingSheetSize:(id)size
 {
-  v4 = a3;
+  sizeCopy = size;
   [(UIViewController *)self->_viewControllerForTrackingSheetSize removeObserver:self forKeyPath:@"preferredContentSize"];
-  [(UIViewController *)v4 addObserver:self forKeyPath:@"preferredContentSize" options:1 context:0];
+  [(UIViewController *)sizeCopy addObserver:self forKeyPath:@"preferredContentSize" options:1 context:0];
   viewControllerForTrackingSheetSize = self->_viewControllerForTrackingSheetSize;
-  self->_viewControllerForTrackingSheetSize = v4;
+  self->_viewControllerForTrackingSheetSize = sizeCopy;
 }
 
-- (void)navigationController:(id)a3 willShowViewController:(id)a4 animated:(BOOL)a5
+- (void)navigationController:(id)controller willShowViewController:(id)viewController animated:(BOOL)animated
 {
-  v7 = a4;
+  viewControllerCopy = viewController;
   _SLLog(v5, 7, @"navigationController:willShowViewController:animated:");
-  v8 = [(SLComposeServiceViewController *)self sheetRootViewController];
-  v9 = v8 != v7;
+  sheetRootViewController = [(SLComposeServiceViewController *)self sheetRootViewController];
+  v9 = sheetRootViewController != viewControllerCopy;
 
   self->_isPresentingActionViewController = v9;
-  [(SLComposeServiceViewController *)self _positionSheetViewAnimatedForViewController:v7];
+  [(SLComposeServiceViewController *)self _positionSheetViewAnimatedForViewController:viewControllerCopy];
 
   [(SLComposeServiceViewController *)self setPreventSheetPositionChanges:1];
 }
 
-- (void)navigationController:(id)a3 didShowViewController:(id)a4 animated:(BOOL)a5
+- (void)navigationController:(id)controller didShowViewController:(id)viewController animated:(BOOL)animated
 {
-  v8 = a4;
+  viewControllerCopy = viewController;
   _SLLog(v5, 7, @"navigationController:didShowViewController:");
-  v7 = [(SLComposeServiceViewController *)self sheetRootViewController];
+  sheetRootViewController = [(SLComposeServiceViewController *)self sheetRootViewController];
 
-  if (v7 == v8)
+  if (sheetRootViewController == viewControllerCopy)
   {
     [(SLComposeServiceViewController *)self _setViewControllerForTrackingSheetSize:0];
     [(SLComposeServiceViewController *)self showKeyboardAnimated:1];
@@ -1643,11 +1643,11 @@ uint64_t __49__SLComposeServiceViewController_loadPreviewView__block_invoke_14(u
 
   else
   {
-    [(SLComposeServiceViewController *)self _setViewControllerForTrackingSheetSize:v8];
+    [(SLComposeServiceViewController *)self _setViewControllerForTrackingSheetSize:viewControllerCopy];
   }
 
   [(SLComposeServiceViewController *)self setPreventSheetPositionChanges:0];
-  [(SLComposeServiceViewController *)self _positionSheetViewAnimatedForViewController:v8];
+  [(SLComposeServiceViewController *)self _positionSheetViewAnimatedForViewController:viewControllerCopy];
 }
 
 - (void)_presentedViewControllerContentSizeDidChange
@@ -1666,15 +1666,15 @@ uint64_t __49__SLComposeServiceViewController_loadPreviewView__block_invoke_14(u
   _SLLog(v2, 7, @"_presentedViewControllerContentSizeDidChange, isPresentingActionViewController=%@");
   if (self->_isPresentingActionViewController || self->_autoCompletionViewController && self->_autoCompletionViewControllerAffectsSheetSize)
   {
-    v7 = [(SLComposeServiceViewController *)self navigationController];
-    v5 = [v7 topViewController];
-    [(SLComposeServiceViewController *)self _positionSheetViewAnimatedForViewController:v5];
+    navigationController = [(SLComposeServiceViewController *)self navigationController];
+    topViewController = [navigationController topViewController];
+    [(SLComposeServiceViewController *)self _positionSheetViewAnimatedForViewController:topViewController];
   }
 }
 
-- (void)_positionSheetViewAnimatedForViewController:(id)a3
+- (void)_positionSheetViewAnimatedForViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   _SLLog(v3, 7, @"_positionSheetViewAnimated");
   if (self->_hasPresentedSheet)
   {
@@ -1686,7 +1686,7 @@ uint64_t __49__SLComposeServiceViewController_loadPreviewView__block_invoke_14(u
       v8[2] = __78__SLComposeServiceViewController__positionSheetViewAnimatedForViewController___block_invoke;
       v8[3] = &unk_1E81765C0;
       v8[4] = self;
-      v9 = v5;
+      v9 = controllerCopy;
       v10 = 0x3FD999999999999ALL;
       [v7 animateWithDuration:2 delay:v8 options:0 animations:0.4 completion:0.0];
 
@@ -1721,17 +1721,17 @@ void __78__SLComposeServiceViewController__positionSheetViewAnimatedForViewContr
   [v11 _animateVignetteMaskFromSheetFrame:v4 toSheetFrame:v6 duration:{v8, v10, v12, v13, v14, v15, *(a1 + 48)}];
 }
 
-- (void)_animateVignetteMaskFromSheetFrame:(CGRect)a3 toSheetFrame:(CGRect)a4 duration:(double)a5
+- (void)_animateVignetteMaskFromSheetFrame:(CGRect)frame toSheetFrame:(CGRect)sheetFrame duration:(double)duration
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v10 = a3.size.height;
-  v11 = a3.size.width;
-  v12 = a3.origin.y;
-  v13 = a3.origin.x;
-  if (!CGRectEqualToRect(a3, a4))
+  height = sheetFrame.size.height;
+  width = sheetFrame.size.width;
+  y = sheetFrame.origin.y;
+  x = sheetFrame.origin.x;
+  v10 = frame.size.height;
+  v11 = frame.size.width;
+  v12 = frame.origin.y;
+  v13 = frame.origin.x;
+  if (!CGRectEqualToRect(frame, sheetFrame))
   {
     v23.origin.x = v13;
     v23.origin.y = v12;
@@ -1767,9 +1767,9 @@ void __78__SLComposeServiceViewController__positionSheetViewAnimatedForViewContr
 
 - (void)popConfigurationViewController
 {
-  v5 = [(SLComposeServiceViewController *)self navigationController];
-  v3 = [(SLComposeServiceViewController *)self sheetRootViewController];
-  v4 = [v5 popToViewController:v3 animated:1];
+  navigationController = [(SLComposeServiceViewController *)self navigationController];
+  sheetRootViewController = [(SLComposeServiceViewController *)self sheetRootViewController];
+  v4 = [navigationController popToViewController:sheetRootViewController animated:1];
 }
 
 - (void)setAutoCompletionViewController:(UIViewController *)autoCompletionViewController
@@ -1789,33 +1789,33 @@ void __78__SLComposeServiceViewController__positionSheetViewAnimatedForViewContr
       self->_autoCompletionViewController = 0;
 
       self->_autoCompletionViewControllerAffectsSheetSize = 0;
-      v7 = [(SLComposeServiceViewController *)self navigationController];
-      v8 = [v7 topViewController];
-      [(SLComposeServiceViewController *)self _positionSheetViewAnimatedForViewController:v8];
+      navigationController = [(SLComposeServiceViewController *)self navigationController];
+      topViewController = [navigationController topViewController];
+      [(SLComposeServiceViewController *)self _positionSheetViewAnimatedForViewController:topViewController];
 
-      v9 = [(SLComposeServiceViewController *)self sheetRootViewController];
+      sheetRootViewController = [(SLComposeServiceViewController *)self sheetRootViewController];
       v22[0] = MEMORY[0x1E69E9820];
       v22[1] = 3221225472;
       v22[2] = __66__SLComposeServiceViewController_setAutoCompletionViewController___block_invoke;
       v22[3] = &unk_1E81757C8;
       v22[4] = self;
-      [v9 dismissAutoCompletionViewControllerWithContentViewChangeBlock:v22];
+      [sheetRootViewController dismissAutoCompletionViewControllerWithContentViewChangeBlock:v22];
 
-      v10 = [(SLComposeServiceViewController *)self contentView];
-      v11 = [v10 textView];
-      [v11 becomeFirstResponder];
+      contentView = [(SLComposeServiceViewController *)self contentView];
+      textView = [contentView textView];
+      [textView becomeFirstResponder];
     }
 
     if (v5)
     {
       objc_storeStrong(&self->_autoCompletionViewController, autoCompletionViewController);
-      v12 = [MEMORY[0x1E69DC938] currentDevice];
+      currentDevice = [MEMORY[0x1E69DC938] currentDevice];
       if (objc_opt_respondsToSelector())
       {
-        v13 = [MEMORY[0x1E69DC938] currentDevice];
-        v14 = [v13 userInterfaceIdiom];
+        currentDevice2 = [MEMORY[0x1E69DC938] currentDevice];
+        userInterfaceIdiom = [currentDevice2 userInterfaceIdiom];
 
-        if (v14 == 1)
+        if (userInterfaceIdiom == 1)
         {
           self->_autoCompletionViewControllerAffectsSheetSize = 1;
           [(UIViewController *)v5 addObserver:self forKeyPath:@"preferredContentSize" options:1 context:0];
@@ -1826,24 +1826,24 @@ void __78__SLComposeServiceViewController__positionSheetViewAnimatedForViewContr
       {
       }
 
-      v15 = [(SLComposeServiceViewController *)self contentView];
-      [v15 preflightAutoCompletionModeWithApparentHeight:46.0];
+      contentView2 = [(SLComposeServiceViewController *)self contentView];
+      [contentView2 preflightAutoCompletionModeWithApparentHeight:46.0];
 
-      v16 = [(SLComposeServiceViewController *)self sheetRootViewController];
+      sheetRootViewController2 = [(SLComposeServiceViewController *)self sheetRootViewController];
       v21[0] = MEMORY[0x1E69E9820];
       v21[1] = 3221225472;
       v21[2] = __66__SLComposeServiceViewController_setAutoCompletionViewController___block_invoke_2;
       v21[3] = &unk_1E81757C8;
       v21[4] = self;
-      [v16 presentAutoCompletionViewController:v5 apparentContentHeight:v21 contentViewChangeBlock:46.0];
+      [sheetRootViewController2 presentAutoCompletionViewController:v5 apparentContentHeight:v21 contentViewChangeBlock:46.0];
 
-      v17 = [(SLComposeServiceViewController *)self contentView];
-      v18 = [v17 textView];
-      [v18 becomeFirstResponder];
+      contentView3 = [(SLComposeServiceViewController *)self contentView];
+      textView2 = [contentView3 textView];
+      [textView2 becomeFirstResponder];
 
-      v19 = [(SLComposeServiceViewController *)self navigationController];
-      v20 = [v19 topViewController];
-      [(SLComposeServiceViewController *)self _positionSheetViewAnimatedForViewController:v20];
+      navigationController2 = [(SLComposeServiceViewController *)self navigationController];
+      topViewController2 = [navigationController2 topViewController];
+      [(SLComposeServiceViewController *)self _positionSheetViewAnimatedForViewController:topViewController2];
     }
   }
 }
@@ -1860,58 +1860,58 @@ void __66__SLComposeServiceViewController_setAutoCompletionViewController___bloc
   [v1 beginAutoCompletionMode];
 }
 
-- (void)setPostButtonTitle:(id)a3
+- (void)setPostButtonTitle:(id)title
 {
-  v4 = a3;
-  v5 = [(SLComposeServiceViewController *)self sheetRootViewController];
-  [v5 setPostButtonTitle:v4];
+  titleCopy = title;
+  sheetRootViewController = [(SLComposeServiceViewController *)self sheetRootViewController];
+  [sheetRootViewController setPostButtonTitle:titleCopy];
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
   v6.receiver = self;
   v6.super_class = SLComposeServiceViewController;
-  v4 = a3;
-  [(SLComposeServiceViewController *)&v6 setTitle:v4];
+  titleCopy = title;
+  [(SLComposeServiceViewController *)&v6 setTitle:titleCopy];
   v5 = [(SLComposeServiceViewController *)self sheetRootViewController:v6.receiver];
-  [v5 setTitle:v4];
+  [v5 setTitle:titleCopy];
 }
 
-- (void)setServiceIconImage:(id)a3
+- (void)setServiceIconImage:(id)image
 {
-  objc_storeStrong(&self->_serviceIconImage, a3);
-  v5 = a3;
-  v6 = [(SLComposeServiceViewController *)self sheetRootViewController];
-  [v6 setServiceIconImage:v5];
+  objc_storeStrong(&self->_serviceIconImage, image);
+  imageCopy = image;
+  sheetRootViewController = [(SLComposeServiceViewController *)self sheetRootViewController];
+  [sheetRootViewController setServiceIconImage:imageCopy];
 }
 
-- (void)cancelButtonTapped:(id)a3
+- (void)cancelButtonTapped:(id)tapped
 {
   _SLLog(v3, 6, @"SLComposeServiceViewController:cancelButtonTapped");
 
   [(SLComposeServiceViewController *)self cancel];
 }
 
-- (void)postButtonTapped:(id)a3
+- (void)postButtonTapped:(id)tapped
 {
   self->_inPostButtonTapped = 1;
   _SLLog(v3, 6, @"postButtonTapped");
-  v5 = [(SLComposeServiceViewController *)self contentView];
-  v6 = [v5 textView];
-  [v6 setEditable:0];
+  contentView = [(SLComposeServiceViewController *)self contentView];
+  textView = [contentView textView];
+  [textView setEditable:0];
 
-  v7 = [MEMORY[0x1E69DC668] sharedApplication];
-  -[SLComposeServiceViewController animateCardSendOrientation:](self, "animateCardSendOrientation:", [v7 statusBarOrientation]);
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  -[SLComposeServiceViewController animateCardSendOrientation:](self, "animateCardSendOrientation:", [mEMORY[0x1E69DC668] statusBarOrientation]);
 
   [(SLComposeServiceViewController *)self hideKeyboardAnimated:1];
 }
 
-- (void)animateCardSendOrientation:(int64_t)a3
+- (void)animateCardSendOrientation:(int64_t)orientation
 {
   _SLLog(v3, 6, @"SLComposeServiceViewController-animateSendCard");
   [(SLComposeServiceViewController *)self setPreventSheetPositionChanges:1];
-  v5 = [(SLComposeServiceViewController *)self sheetView];
-  [v5 frame];
+  sheetView = [(SLComposeServiceViewController *)self sheetView];
+  [sheetView frame];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -1999,8 +1999,8 @@ uint64_t __61__SLComposeServiceViewController_animateCardSendOrientation___block
 {
   _SLLog(v2, 7, @"animateCardSend animation finished");
   [(SLComposeServiceViewController *)self didSelectPost];
-  v4 = [(SLComposeServiceViewController *)self sheetView];
-  [v4 setHidden:1];
+  sheetView = [(SLComposeServiceViewController *)self sheetView];
+  [sheetView setHidden:1];
 
   [(SLComposeServiceViewController *)self setPreventSheetPositionChanges:0];
 }
@@ -2017,33 +2017,33 @@ uint64_t __61__SLComposeServiceViewController_animateCardSendOrientation___block
   }
 }
 
-- (void)animateSheetPresentationWithDuration:(double)a3
+- (void)animateSheetPresentationWithDuration:(double)duration
 {
   _SLLog(v3, 7, @"animateSheetPresentationWithDuration:");
   [(SLComposeServiceViewController *)self positionSheetView];
-  v6 = [(SLComposeServiceViewController *)self sheetView];
-  [v6 frame];
+  sheetView = [(SLComposeServiceViewController *)self sheetView];
+  [sheetView frame];
   [(SLComposeServiceViewController *)self _positionVignetteForSheetFrame:?];
 
-  v7 = [(SLComposeServiceViewController *)self sheetView];
-  [v7 setHidden:0];
+  sheetView2 = [(SLComposeServiceViewController *)self sheetView];
+  [sheetView2 setHidden:0];
 
   [(SLComposeServiceViewController *)self setPreventSheetPositionChanges:1];
-  v8 = [(SLComposeServiceViewController *)self sheetView];
-  v9 = [v8 layer];
-  [v9 setAllowsGroupOpacity:0];
+  sheetView3 = [(SLComposeServiceViewController *)self sheetView];
+  layer = [sheetView3 layer];
+  [layer setAllowsGroupOpacity:0];
 
   v10 = *(MEMORY[0x1E695EFD0] + 16);
   *&v16.a = *MEMORY[0x1E695EFD0];
   *&v16.c = v10;
   *&v16.tx = *(MEMORY[0x1E695EFD0] + 32);
   CGAffineTransformScale(&v17, &v16, 1.26, 1.26);
-  v11 = [(SLComposeServiceViewController *)self sheetView];
+  sheetView4 = [(SLComposeServiceViewController *)self sheetView];
   v16 = v17;
-  [v11 setTransform:&v16];
+  [sheetView4 setTransform:&v16];
 
-  v12 = [(SLComposeServiceViewController *)self sheetView];
-  [v12 setAlpha:0.0];
+  sheetView5 = [(SLComposeServiceViewController *)self sheetView];
+  [sheetView5 setAlpha:0.0];
 
   LODWORD(v13) = 1.0;
   [(SLSheetMasklayer *)self->_vignetteLayer setOpacity:v13];
@@ -2053,14 +2053,14 @@ uint64_t __61__SLComposeServiceViewController_animateCardSendOrientation___block
   v15[1] = 3221225472;
   v15[2] = __71__SLComposeServiceViewController_animateSheetPresentationWithDuration___block_invoke;
   v15[3] = &unk_1E8176610;
-  *&v15[5] = a3;
+  *&v15[5] = duration;
   v15[4] = self;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __71__SLComposeServiceViewController_animateSheetPresentationWithDuration___block_invoke_2;
   v14[3] = &unk_1E8175DB8;
   v14[4] = self;
-  [MEMORY[0x1E69DD250] animateWithDuration:327680 delay:v15 options:v14 animations:a3 completion:0.0];
+  [MEMORY[0x1E69DD250] animateWithDuration:327680 delay:v15 options:v14 animations:duration completion:0.0];
 }
 
 void __71__SLComposeServiceViewController_animateSheetPresentationWithDuration___block_invoke(uint64_t a1)
@@ -2122,12 +2122,12 @@ uint64_t __71__SLComposeServiceViewController_animateSheetPresentationWithDurati
   [(SLComposeServiceViewController *)self presentationAnimationDidFinish];
 }
 
-- (void)animateSheetCancelWithDuration:(double)a3
+- (void)animateSheetCancelWithDuration:(double)duration
 {
   [(SLComposeServiceViewController *)self setPreventSheetPositionChanges:1];
-  v5 = [(SLComposeServiceViewController *)self sheetView];
-  v6 = [v5 layer];
-  [v6 setAllowsGroupOpacity:0];
+  sheetView = [(SLComposeServiceViewController *)self sheetView];
+  layer = [sheetView layer];
+  [layer setAllowsGroupOpacity:0];
 
   [(SLSheetMasklayer *)self->_vignetteLayer removeSheetCutout];
   [(SLSheetMasklayer *)self->_vignetteLayer setOpacity:0.0];
@@ -2135,14 +2135,14 @@ uint64_t __71__SLComposeServiceViewController_animateSheetPresentationWithDurati
   v8[1] = 3221225472;
   v8[2] = __65__SLComposeServiceViewController_animateSheetCancelWithDuration___block_invoke;
   v8[3] = &unk_1E8176610;
-  *&v8[5] = a3;
+  *&v8[5] = duration;
   v8[4] = self;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __65__SLComposeServiceViewController_animateSheetCancelWithDuration___block_invoke_2;
   v7[3] = &unk_1E8175DB8;
   v7[4] = self;
-  [MEMORY[0x1E69DD250] animateWithDuration:0 delay:v8 options:v7 animations:a3 completion:0.0];
+  [MEMORY[0x1E69DD250] animateWithDuration:0 delay:v8 options:v7 animations:duration completion:0.0];
 }
 
 void __65__SLComposeServiceViewController_animateSheetCancelWithDuration___block_invoke(uint64_t a1)
@@ -2187,13 +2187,13 @@ uint64_t __65__SLComposeServiceViewController_animateSheetCancelWithDuration___b
 - (void)_animateSheetCancelFinished
 {
   [(SLComposeServiceViewController *)self setPreventSheetPositionChanges:0];
-  v3 = [(SLComposeServiceViewController *)self sheetView];
-  [v3 setHidden:1];
+  sheetView = [(SLComposeServiceViewController *)self sheetView];
+  [sheetView setHidden:1];
 
   [(SLComposeServiceViewController *)self didSelectCancel];
 }
 
-- (void)keyboardDidChange:(id)a3
+- (void)keyboardDidChange:(id)change
 {
   _SLLog(v3, 6, @"SLComposeServiceViewController-keyboardDidChange");
   if (self->_hasPresentedSheet && ![(SLComposeServiceViewController *)self preventSheetPositionChanges])
@@ -2216,12 +2216,12 @@ uint64_t __65__SLComposeServiceViewController_animateSheetCancelWithDuration___b
   [(SLComposeServiceViewController *)self positionSheetView];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  if ([v11 isEqualToString:@"preferredContentSize"])
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if ([pathCopy isEqualToString:@"preferredContentSize"])
   {
     _SLLog(v6, 7, @"Received KVO for preferredContentSize on presented action VC");
     [(SLComposeServiceViewController *)self _presentedViewControllerContentSizeDidChange];
@@ -2231,42 +2231,42 @@ uint64_t __65__SLComposeServiceViewController_animateSheetCancelWithDuration___b
   {
     v14.receiver = self;
     v14.super_class = SLComposeServiceViewController;
-    [(SLComposeServiceViewController *)&v14 observeValueForKeyPath:v11 ofObject:v12 change:v13 context:a6];
+    [(SLComposeServiceViewController *)&v14 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 
-- (void)setSheetFrame:(CGRect)a3
+- (void)setSheetFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v12 = [MEMORY[0x1E696B098] valueWithCGRect:?];
   _SLLog(v3, 7, @"SLComposeServiceViewControlller setSheetFrame: %@");
 
-  v9 = [(SLComposeServiceViewController *)self navigationController];
-  v10 = [v9 view];
-  [v10 setFrame:{x, y, width, height}];
+  navigationController = [(SLComposeServiceViewController *)self navigationController];
+  view = [navigationController view];
+  [view setFrame:{x, y, width, height}];
 
   maskView = self->_maskView;
 
   [(UIView *)maskView setFrame:x, y, width, height];
 }
 
-- (void)_positionVignetteForSheetFrame:(CGRect)a3
+- (void)_positionVignetteForSheetFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v24 = NSStringFromCGRect(a3);
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  v24 = NSStringFromCGRect(frame);
   _SLLog(v3, 7, @"SLComposeServiceViewControlller _positionVignetteForSheetFrame: %@");
 
-  v9 = [(SLComposeServiceViewController *)self view];
-  [v9 bounds];
+  view = [(SLComposeServiceViewController *)self view];
+  [view bounds];
   v11 = v10;
-  v12 = [(SLComposeServiceViewController *)self view];
-  [v12 bounds];
+  view2 = [(SLComposeServiceViewController *)self view];
+  [view2 bounds];
   [(SLSheetMasklayer *)self->_vignetteLayer setFrame:0.0, 0.0, v11, height + v13 + 0.0];
 
   [(SLSheetMasklayer *)self->_vignetteLayer frame];
@@ -2292,20 +2292,20 @@ uint64_t __65__SLComposeServiceViewController_animateSheetCancelWithDuration___b
 
 - (UIView)sheetView
 {
-  v2 = [(SLComposeServiceViewController *)self navigationController];
-  v3 = [v2 view];
+  navigationController = [(SLComposeServiceViewController *)self navigationController];
+  view = [navigationController view];
 
-  return v3;
+  return view;
 }
 
 - (CGSize)_intrinsicSheetSize
 {
-  v3 = [(SLComposeServiceViewController *)self contentView];
-  [v3 invalidateIntrinsicContentSize];
+  contentView = [(SLComposeServiceViewController *)self contentView];
+  [contentView invalidateIntrinsicContentSize];
 
-  v4 = [MEMORY[0x1E69DC668] sharedApplication];
-  v5 = [v4 preferredContentSizeCategory];
-  if (UIContentSizeCategoryIsAccessibilityCategory(v5))
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  preferredContentSizeCategory = [mEMORY[0x1E69DC668] preferredContentSizeCategory];
+  if (UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory))
   {
     v6 = 70.0;
   }
@@ -2315,20 +2315,20 @@ uint64_t __65__SLComposeServiceViewController_animateSheetCancelWithDuration___b
     v6 = 44.0;
   }
 
-  v7 = [MEMORY[0x1E69DC938] currentDevice];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
   if (objc_opt_respondsToSelector())
   {
-    v8 = [MEMORY[0x1E69DC938] currentDevice];
-    v9 = [v8 userInterfaceIdiom];
+    currentDevice2 = [MEMORY[0x1E69DC938] currentDevice];
+    userInterfaceIdiom = [currentDevice2 userInterfaceIdiom];
 
-    if (v9 == 1)
+    if (userInterfaceIdiom == 1)
     {
-      v10 = [(SLComposeServiceViewController *)self contentView];
-      [v10 intrinsicContentSize];
+      contentView2 = [(SLComposeServiceViewController *)self contentView];
+      [contentView2 intrinsicContentSize];
       v12 = v11;
-      v13 = [(SLComposeServiceViewController *)self sheetRootViewController];
-      v14 = [v13 configurationItems];
-      v15 = v12 + [v14 count] * v6 + 44.0;
+      sheetRootViewController = [(SLComposeServiceViewController *)self sheetRootViewController];
+      configurationItems = [sheetRootViewController configurationItems];
+      v15 = v12 + [configurationItems count] * v6 + 44.0;
       goto LABEL_12;
     }
   }
@@ -2337,8 +2337,8 @@ uint64_t __65__SLComposeServiceViewController_animateSheetCancelWithDuration___b
   {
   }
 
-  v16 = [(SLComposeServiceViewController *)self traitCollection];
-  if ([v16 verticalSizeClass] == 2)
+  traitCollection = [(SLComposeServiceViewController *)self traitCollection];
+  if ([traitCollection verticalSizeClass] == 2)
   {
     v17 = 44.0;
   }
@@ -2348,26 +2348,26 @@ uint64_t __65__SLComposeServiceViewController_animateSheetCancelWithDuration___b
     v17 = 32.0;
   }
 
-  v10 = [(SLComposeServiceViewController *)self contentView];
-  [v10 intrinsicContentSize];
+  contentView2 = [(SLComposeServiceViewController *)self contentView];
+  [contentView2 intrinsicContentSize];
   v19 = v18;
-  v13 = [(SLComposeServiceViewController *)self sheetRootViewController];
-  v14 = [v13 configurationItems];
-  v15 = v17 + v19 + [v14 count] * v6;
+  sheetRootViewController = [(SLComposeServiceViewController *)self sheetRootViewController];
+  configurationItems = [sheetRootViewController configurationItems];
+  v15 = v17 + v19 + [configurationItems count] * v6;
 LABEL_12:
 
-  v20 = [(SLComposeServiceViewController *)self view];
-  [v20 bounds];
+  view = [(SLComposeServiceViewController *)self view];
+  [view bounds];
   v22 = v21;
 
   v23 = v22 + -30.0;
-  v24 = [MEMORY[0x1E69DC938] currentDevice];
+  currentDevice3 = [MEMORY[0x1E69DC938] currentDevice];
   if (objc_opt_respondsToSelector())
   {
-    v25 = [MEMORY[0x1E69DC938] currentDevice];
-    v26 = [v25 userInterfaceIdiom];
+    currentDevice4 = [MEMORY[0x1E69DC938] currentDevice];
+    userInterfaceIdiom2 = [currentDevice4 userInterfaceIdiom];
 
-    if (v26 == 1)
+    if (userInterfaceIdiom2 == 1)
     {
       v27 = 390.0;
       goto LABEL_17;
@@ -2392,29 +2392,29 @@ LABEL_17:
   return result;
 }
 
-- (CGRect)sheetFrameForViewController:(id)a3
+- (CGRect)sheetFrameForViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E69DC938] currentDevice];
+  controllerCopy = controller;
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
 
     goto LABEL_6;
   }
 
-  v6 = [MEMORY[0x1E69DC938] currentDevice];
-  v7 = [v6 userInterfaceIdiom];
+  currentDevice2 = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice2 userInterfaceIdiom];
 
-  if (v7 != 1 || ([(SLComposeServiceViewController *)self interfaceOrientation]- 1) >= 2)
+  if (userInterfaceIdiom != 1 || ([(SLComposeServiceViewController *)self interfaceOrientation]- 1) >= 2)
   {
 LABEL_6:
-    v10 = [MEMORY[0x1E69DC938] currentDevice];
+    currentDevice3 = [MEMORY[0x1E69DC938] currentDevice];
     if (objc_opt_respondsToSelector())
     {
-      v11 = [MEMORY[0x1E69DC938] currentDevice];
-      v12 = [v11 userInterfaceIdiom];
+      currentDevice4 = [MEMORY[0x1E69DC938] currentDevice];
+      userInterfaceIdiom2 = [currentDevice4 userInterfaceIdiom];
 
-      if (v12 == 1 && ([(SLComposeServiceViewController *)self interfaceOrientation]- 3) < 2)
+      if (userInterfaceIdiom2 == 1 && ([(SLComposeServiceViewController *)self interfaceOrientation]- 3) < 2)
       {
         v9 = 0.0;
         v8 = 50.0;
@@ -2434,7 +2434,7 @@ LABEL_6:
   v8 = 0.0;
   v9 = 0.550000012;
 LABEL_12:
-  [(SLComposeServiceViewController *)self sheetFrameForViewController:v4 topSpaceProportion:v9 topSpaceOffset:v8];
+  [(SLComposeServiceViewController *)self sheetFrameForViewController:controllerCopy topSpaceProportion:v9 topSpaceOffset:v8];
   v14 = v13;
   v16 = v15;
   v18 = v17;
@@ -2451,31 +2451,31 @@ LABEL_12:
   return result;
 }
 
-- (CGRect)sheetFrameForViewController:(id)a3 topSpaceProportion:(double)a4 topSpaceOffset:(double)a5
+- (CGRect)sheetFrameForViewController:(id)controller topSpaceProportion:(double)proportion topSpaceOffset:(double)offset
 {
-  v9 = a3;
+  controllerCopy = controller;
   [MEMORY[0x1E69DCBB8] sizeForInterfaceOrientation:{-[SLComposeServiceViewController interfaceOrientation](self, "interfaceOrientation")}];
   v11 = v10;
   [(SLComposeServiceViewController *)self _intrinsicSheetSize];
   v13 = v12;
   v15 = v14;
-  v16 = [(SLComposeServiceViewController *)self view];
-  [v16 bounds];
+  view = [(SLComposeServiceViewController *)self view];
+  [view bounds];
   v18 = v17;
 
-  v19 = [(SLComposeServiceViewController *)self view];
-  [v19 bounds];
+  view2 = [(SLComposeServiceViewController *)self view];
+  [view2 bounds];
   v21 = v20 - v11 - v15;
 
-  v22 = v21 * a4;
-  if (v21 * a4 < 20.0)
+  v22 = v21 * proportion;
+  if (v21 * proportion < 20.0)
   {
     v22 = 20.0;
   }
 
-  v23 = v22 + a5;
-  v24 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v24 scale];
+  v23 = v22 + offset;
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen scale];
   v26 = v25;
 
   v27 = round(v23 + v23) * 0.5;
@@ -2490,11 +2490,11 @@ LABEL_12:
     v29 = v27;
   }
 
-  v30 = [MEMORY[0x1E69DC938] currentDevice];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
   if (objc_opt_respondsToSelector())
   {
-    v31 = [MEMORY[0x1E69DC938] currentDevice];
-    v32 = [v31 userInterfaceIdiom];
+    currentDevice2 = [MEMORY[0x1E69DC938] currentDevice];
+    userInterfaceIdiom = [currentDevice2 userInterfaceIdiom];
 
     if (v15 > v18 - (v11 + 15.0))
     {
@@ -2506,7 +2506,7 @@ LABEL_12:
       v33 = v15;
     }
 
-    if (v32 == 1)
+    if (userInterfaceIdiom == 1)
     {
       v18 = v18 - (v11 + 15.0);
       v15 = v33;
@@ -2517,8 +2517,8 @@ LABEL_12:
   {
   }
 
-  v34 = [(SLComposeServiceViewController *)self view];
-  [v34 bounds];
+  view3 = [(SLComposeServiceViewController *)self view];
+  [view3 bounds];
   v36 = v35;
 
   if (!self->_isPresentingActionViewController)
@@ -2531,8 +2531,8 @@ LABEL_12:
     goto LABEL_18;
   }
 
-  v37 = [(SLComposeServiceViewController *)self view];
-  [v37 bounds];
+  view4 = [(SLComposeServiceViewController *)self view];
+  [view4 bounds];
   v39 = v38 - v29;
   [(SLComposeServiceViewController *)self _sheetMinBottomMarginForVerticalSizeClass];
   v18 = v39 - v40;
@@ -2545,12 +2545,12 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  [v9 preferredContentSize];
+  [controllerCopy preferredContentSize];
   v42 = v41;
 LABEL_19:
-  v44 = [(SLComposeServiceViewController *)self navigationController];
-  v45 = [v44 navigationBar];
-  [v45 bounds];
+  navigationController = [(SLComposeServiceViewController *)self navigationController];
+  navigationBar = [navigationController navigationBar];
+  [navigationBar bounds];
   v47 = v42 + v46;
 
   if (v47 >= v18)
@@ -2569,14 +2569,14 @@ LABEL_19:
   }
 
 LABEL_24:
-  v49 = [MEMORY[0x1E696AD98] numberWithDouble:a4];
-  v50 = [MEMORY[0x1E696AD98] numberWithDouble:a5];
+  v49 = [MEMORY[0x1E696AD98] numberWithDouble:proportion];
+  v50 = [MEMORY[0x1E696AD98] numberWithDouble:offset];
   v51 = MEMORY[0x1E696AD98];
-  v52 = [(SLComposeServiceViewController *)self traitCollection];
-  v53 = [v51 numberWithInteger:{objc_msgSend(v52, "horizontalSizeClass")}];
+  traitCollection = [(SLComposeServiceViewController *)self traitCollection];
+  v53 = [v51 numberWithInteger:{objc_msgSend(traitCollection, "horizontalSizeClass")}];
   v54 = MEMORY[0x1E696AD98];
-  v55 = [(SLComposeServiceViewController *)self traitCollection];
-  v56 = [v54 numberWithInteger:{objc_msgSend(v55, "verticalSizeClass")}];
+  traitCollection2 = [(SLComposeServiceViewController *)self traitCollection];
+  v56 = [v54 numberWithInteger:{objc_msgSend(traitCollection2, "verticalSizeClass")}];
   v57 = [MEMORY[0x1E696AD98] numberWithInteger:{-[SLComposeServiceViewController interfaceOrientation](self, "interfaceOrientation")}];
   v62 = [MEMORY[0x1E696B098] valueWithCGRect:{(v36 - v13) * 0.5, v29, v13, v15}];
   _SLLog(v5, 7, @"SLComposeServiceViewController sheetFrameForViewController:topSpaceProportion: %@ topSpaceOffset: %@ horizontalSizeClass %@ verticalSizeClass %@ orientation %@ => %@");
@@ -2594,20 +2594,20 @@ LABEL_24:
 
 - (double)_sheetMinBottomMarginForVerticalSizeClass
 {
-  v2 = [(SLComposeServiceViewController *)self traitCollection];
-  if ([v2 verticalSizeClass] != 1)
+  traitCollection = [(SLComposeServiceViewController *)self traitCollection];
+  if ([traitCollection verticalSizeClass] != 1)
   {
 
     return 44.0;
   }
 
-  v3 = [MEMORY[0x1E69DC938] currentDevice];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [MEMORY[0x1E69DC938] currentDevice];
-    v5 = [v4 userInterfaceIdiom];
+    currentDevice2 = [MEMORY[0x1E69DC938] currentDevice];
+    userInterfaceIdiom = [currentDevice2 userInterfaceIdiom];
 
-    if (!v5)
+    if (!userInterfaceIdiom)
     {
       return 22.0;
     }
@@ -2636,26 +2636,26 @@ LABEL_24:
   _SLLog(v2, 7, @"willAppearInRemoteViewController finish");
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v8 = a4;
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
   v9 = [MEMORY[0x1E696B098] valueWithCGSize:{width, height}];
   v10 = MEMORY[0x1E696AD98];
-  v11 = [(SLComposeServiceViewController *)self traitCollection];
-  v12 = [v10 numberWithInteger:{objc_msgSend(v11, "horizontalSizeClass")}];
+  traitCollection = [(SLComposeServiceViewController *)self traitCollection];
+  v12 = [v10 numberWithInteger:{objc_msgSend(traitCollection, "horizontalSizeClass")}];
   v13 = MEMORY[0x1E696AD98];
-  v14 = [(SLComposeServiceViewController *)self traitCollection];
-  v21 = [v13 numberWithInteger:{objc_msgSend(v14, "verticalSizeClass")}];
+  traitCollection2 = [(SLComposeServiceViewController *)self traitCollection];
+  v21 = [v13 numberWithInteger:{objc_msgSend(traitCollection2, "verticalSizeClass")}];
   _SLLog(v4, 7, @"SLComposeServiceViewController viewWillTransitionToSize: %@ withTransitionCoordinator: horizontalSizeClass %@ verticalSizeClass %@");
 
   v27.receiver = self;
   v27.super_class = SLComposeServiceViewController;
-  [(SLComposeServiceViewController *)&v27 viewWillTransitionToSize:v8 withTransitionCoordinator:width, height, v9, v12, v21];
-  if (v8)
+  [(SLComposeServiceViewController *)&v27 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height, v9, v12, v21];
+  if (coordinatorCopy)
   {
-    [v8 targetTransform];
+    [coordinatorCopy targetTransform];
   }
 
   else
@@ -2664,8 +2664,8 @@ LABEL_24:
   }
 
   IsIdentity = CGAffineTransformIsIdentity(&v26);
-  v16 = [(SLComposeServiceViewController *)self sheetView];
-  [v16 frame];
+  sheetView = [(SLComposeServiceViewController *)self sheetView];
+  [sheetView frame];
   self->_sheetFrameStartingRotation.origin.x = v17;
   self->_sheetFrameStartingRotation.origin.y = v18;
   self->_sheetFrameStartingRotation.size.width = v19;
@@ -2685,7 +2685,7 @@ LABEL_24:
   v22[3] = &unk_1E8176638;
   v23 = IsIdentity;
   v22[4] = self;
-  [v8 animateAlongsideTransition:v24 completion:v22];
+  [coordinatorCopy animateAlongsideTransition:v24 completion:v22];
 }
 
 void __85__SLComposeServiceViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke(uint64_t a1, void *a2)
@@ -2781,69 +2781,69 @@ void __85__SLComposeServiceViewController_viewWillTransitionToSize_withTransitio
   self->_vignetteLayer = v6;
 
   [(SLSheetMasklayer *)self->_vignetteLayer removeAllAnimations];
-  v8 = [(SLComposeServiceViewController *)self view];
-  [v8 bounds];
+  view = [(SLComposeServiceViewController *)self view];
+  [view bounds];
   [(SLSheetMasklayer *)self->_vignetteLayer setFrame:?];
 
   [(SLSheetMasklayer *)self->_vignetteLayer setOpacity:0.0];
   [(SLSheetMasklayer *)self->_vignetteLayer setNeedsDisplay];
   [(SLSheetMasklayer *)self->_vignetteLayer setAllowsGroupOpacity:0];
-  v9 = [(SLComposeServiceViewController *)self view];
-  v10 = [v9 layer];
-  [v10 addSublayer:self->_vignetteLayer];
+  view2 = [(SLComposeServiceViewController *)self view];
+  layer = [view2 layer];
+  [layer addSublayer:self->_vignetteLayer];
 
   v11 = objc_alloc_init(SLSheetRootViewController);
   [(SLComposeServiceViewController *)self setSheetRootViewController:v11];
 
-  v12 = [(SLComposeServiceViewController *)self title];
-  v13 = [(SLComposeServiceViewController *)self sheetRootViewController];
-  [v13 setTitle:v12];
+  title = [(SLComposeServiceViewController *)self title];
+  sheetRootViewController = [(SLComposeServiceViewController *)self sheetRootViewController];
+  [sheetRootViewController setTitle:title];
 
   v14 = *MEMORY[0x1E69DE3D0];
-  v15 = [(SLComposeServiceViewController *)self sheetRootViewController];
-  v16 = [v15 tableView];
-  [v16 setRowHeight:v14];
+  sheetRootViewController2 = [(SLComposeServiceViewController *)self sheetRootViewController];
+  tableView = [sheetRootViewController2 tableView];
+  [tableView setRowHeight:v14];
 
   v17 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDCF8]];
   [v17 lineHeight];
   v19 = v18 + v18;
-  v20 = [(SLComposeServiceViewController *)self sheetRootViewController];
-  v21 = [v20 tableView];
-  [v21 setEstimatedRowHeight:v19];
+  sheetRootViewController3 = [(SLComposeServiceViewController *)self sheetRootViewController];
+  tableView2 = [sheetRootViewController3 tableView];
+  [tableView2 setEstimatedRowHeight:v19];
 
-  v22 = [(SLComposeServiceViewController *)self sheetRootViewController];
-  v23 = [v22 tableView];
-  v24 = [v23 backgroundView];
-  [v24 setOpaque:0];
+  sheetRootViewController4 = [(SLComposeServiceViewController *)self sheetRootViewController];
+  tableView3 = [sheetRootViewController4 tableView];
+  backgroundView = [tableView3 backgroundView];
+  [backgroundView setOpaque:0];
 
-  v25 = [MEMORY[0x1E69DC888] clearColor];
-  v26 = [(SLComposeServiceViewController *)self sheetRootViewController];
-  v27 = [v26 tableView];
-  v28 = [v27 backgroundView];
-  [v28 setBackgroundColor:v25];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  sheetRootViewController5 = [(SLComposeServiceViewController *)self sheetRootViewController];
+  tableView4 = [sheetRootViewController5 tableView];
+  backgroundView2 = [tableView4 backgroundView];
+  [backgroundView2 setBackgroundColor:clearColor];
 
-  v29 = [(SLComposeServiceViewController *)self sheetRootViewController];
-  v30 = [v29 tableView];
-  [v30 setOpaque:0];
+  sheetRootViewController6 = [(SLComposeServiceViewController *)self sheetRootViewController];
+  tableView5 = [sheetRootViewController6 tableView];
+  [tableView5 setOpaque:0];
 
-  v31 = [MEMORY[0x1E69DC888] clearColor];
-  v32 = [(SLComposeServiceViewController *)self sheetRootViewController];
-  v33 = [v32 tableView];
-  [v33 setBackgroundColor:v31];
+  clearColor2 = [MEMORY[0x1E69DC888] clearColor];
+  sheetRootViewController7 = [(SLComposeServiceViewController *)self sheetRootViewController];
+  tableView6 = [sheetRootViewController7 tableView];
+  [tableView6 setBackgroundColor:clearColor2];
 
   v34 = objc_alloc_init(SLSheetContentView);
   [(SLComposeServiceViewController *)self setContentView:v34];
 
-  v35 = [MEMORY[0x1E69DC938] currentDevice];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
   if (objc_opt_respondsToSelector())
   {
-    v36 = [MEMORY[0x1E69DC938] currentDevice];
-    v37 = [v36 userInterfaceIdiom];
+    currentDevice2 = [MEMORY[0x1E69DC938] currentDevice];
+    userInterfaceIdiom = [currentDevice2 userInterfaceIdiom];
 
-    if (v37 == 1)
+    if (userInterfaceIdiom == 1)
     {
-      v38 = [(SLComposeServiceViewController *)self contentView];
-      v39 = v38;
+      contentView = [(SLComposeServiceViewController *)self contentView];
+      v39 = contentView;
       v40 = *MEMORY[0x1E69DE788];
       v41 = 120.0;
       v42 = 2;
@@ -2855,16 +2855,16 @@ void __85__SLComposeServiceViewController_viewWillTransitionToSize_withTransitio
   {
   }
 
-  v43 = [(SLComposeServiceViewController *)self contentView];
+  contentView2 = [(SLComposeServiceViewController *)self contentView];
   v44 = *MEMORY[0x1E69DE788];
-  [v43 setIntrinsicSize:2 forVerticalSizeClass:{*MEMORY[0x1E69DE788], 138.0}];
+  [contentView2 setIntrinsicSize:2 forVerticalSizeClass:{*MEMORY[0x1E69DE788], 138.0}];
 
-  v45 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v45 bounds];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen bounds];
   v47 = v46;
 
-  v38 = [(SLComposeServiceViewController *)self contentView];
-  v39 = v38;
+  contentView = [(SLComposeServiceViewController *)self contentView];
+  v39 = contentView;
   if (v47 <= 320.0)
   {
     v41 = 80.0;
@@ -2878,111 +2878,111 @@ void __85__SLComposeServiceViewController_viewWillTransitionToSize_withTransitio
   v40 = v44;
   v42 = 1;
 LABEL_9:
-  [v38 setIntrinsicSize:v42 forVerticalSizeClass:{v40, v41}];
+  [contentView setIntrinsicSize:v42 forVerticalSizeClass:{v40, v41}];
 
-  v48 = [(SLComposeServiceViewController *)self contentView];
-  v49 = [(SLComposeServiceViewController *)self sheetRootViewController];
-  [v49 setContentView:v48];
+  contentView3 = [(SLComposeServiceViewController *)self contentView];
+  sheetRootViewController8 = [(SLComposeServiceViewController *)self sheetRootViewController];
+  [sheetRootViewController8 setContentView:contentView3];
 
-  v50 = [(SLComposeServiceViewController *)self sheetRootViewController];
-  [v50 setDelegate:self];
+  sheetRootViewController9 = [(SLComposeServiceViewController *)self sheetRootViewController];
+  [sheetRootViewController9 setDelegate:self];
 
-  v51 = [(SLComposeServiceViewController *)self title];
-  v52 = [(SLComposeServiceViewController *)self sheetRootViewController];
-  [v52 setTitle:v51];
+  title2 = [(SLComposeServiceViewController *)self title];
+  sheetRootViewController10 = [(SLComposeServiceViewController *)self sheetRootViewController];
+  [sheetRootViewController10 setTitle:title2];
 
   serviceIconImage = self->_serviceIconImage;
-  v54 = [(SLComposeServiceViewController *)self sheetRootViewController];
-  [v54 setServiceIconImage:serviceIconImage];
+  sheetRootViewController11 = [(SLComposeServiceViewController *)self sheetRootViewController];
+  [sheetRootViewController11 setServiceIconImage:serviceIconImage];
 
   v55 = [SLSheetNavigationController alloc];
-  v56 = [(SLComposeServiceViewController *)self sheetRootViewController];
-  v57 = [(SLSheetNavigationController *)v55 initWithRootViewController:v56];
+  sheetRootViewController12 = [(SLComposeServiceViewController *)self sheetRootViewController];
+  v57 = [(SLSheetNavigationController *)v55 initWithRootViewController:sheetRootViewController12];
   [(SLComposeServiceViewController *)self setNavigationController:v57];
 
-  v58 = [(SLComposeServiceViewController *)self navigationController];
-  [v58 setDelegate:self];
+  navigationController = [(SLComposeServiceViewController *)self navigationController];
+  [navigationController setDelegate:self];
 
-  v59 = [(SLComposeServiceViewController *)self navigationController];
-  [v59 _setBuiltinTransitionStyle:1];
+  navigationController2 = [(SLComposeServiceViewController *)self navigationController];
+  [navigationController2 _setBuiltinTransitionStyle:1];
 
-  v60 = [(SLComposeServiceViewController *)self navigationController];
-  [v60 willMoveToParentViewController:self];
+  navigationController3 = [(SLComposeServiceViewController *)self navigationController];
+  [navigationController3 willMoveToParentViewController:self];
 
-  v61 = [(SLComposeServiceViewController *)self navigationController];
-  [(SLComposeServiceViewController *)self addChildViewController:v61];
+  navigationController4 = [(SLComposeServiceViewController *)self navigationController];
+  [(SLComposeServiceViewController *)self addChildViewController:navigationController4];
 
-  v62 = [(SLComposeServiceViewController *)self view];
-  v63 = [(SLComposeServiceViewController *)self navigationController];
-  v64 = [v63 view];
-  [v62 addSubview:v64];
+  view3 = [(SLComposeServiceViewController *)self view];
+  navigationController5 = [(SLComposeServiceViewController *)self navigationController];
+  view4 = [navigationController5 view];
+  [view3 addSubview:view4];
 
-  v65 = [(SLComposeServiceViewController *)self navigationController];
-  [v65 didMoveToParentViewController:self];
+  navigationController6 = [(SLComposeServiceViewController *)self navigationController];
+  [navigationController6 didMoveToParentViewController:self];
 
-  v66 = [(SLComposeServiceViewController *)self navigationController];
-  v67 = [v66 view];
-  [v67 setAutoresizingMask:5];
+  navigationController7 = [(SLComposeServiceViewController *)self navigationController];
+  view5 = [navigationController7 view];
+  [view5 setAutoresizingMask:5];
 
-  v68 = [(SLComposeServiceViewController *)self contentView];
-  v69 = [v68 textView];
-  [v69 setReturnKeyType:0];
+  contentView4 = [(SLComposeServiceViewController *)self contentView];
+  textView = [contentView4 textView];
+  [textView setReturnKeyType:0];
 
-  v70 = [(SLComposeServiceViewController *)self contentView];
-  v71 = [v70 textView];
-  [v71 setDelegate:self];
+  contentView5 = [(SLComposeServiceViewController *)self contentView];
+  textView2 = [contentView5 textView];
+  [textView2 setDelegate:self];
 
-  v72 = [(SLComposeServiceViewController *)self placeholder];
-  v73 = [(SLComposeServiceViewController *)self contentView];
-  v74 = [v73 placeholderLabel];
-  [v74 setText:v72];
+  placeholder = [(SLComposeServiceViewController *)self placeholder];
+  contentView6 = [(SLComposeServiceViewController *)self contentView];
+  placeholderLabel = [contentView6 placeholderLabel];
+  [placeholderLabel setText:placeholder];
 
-  v75 = [(SLComposeServiceViewController *)self contentView];
-  v76 = [v75 placeholderLabel];
-  [v76 sizeToFit];
+  contentView7 = [(SLComposeServiceViewController *)self contentView];
+  placeholderLabel2 = [contentView7 placeholderLabel];
+  [placeholderLabel2 sizeToFit];
 
   [(SLComposeServiceViewController *)self _updateContentViewWithCharactersRemaining];
-  v77 = [(SLComposeServiceViewController *)self sheetView];
-  [v77 setHidden:1];
+  sheetView = [(SLComposeServiceViewController *)self sheetView];
+  [sheetView setHidden:1];
 
   [(SLComposeServiceViewController *)self setSuppressKeyboard:1];
-  v78 = [(SLComposeServiceViewController *)self extensionContext];
-  if (!v78)
+  extensionContext = [(SLComposeServiceViewController *)self extensionContext];
+  if (!extensionContext)
   {
     return;
   }
 
-  v79 = v78;
-  v80 = [(SLComposeServiceViewController *)self extensionContext];
-  v81 = [v80 inputItems];
-  if (v81)
+  v79 = extensionContext;
+  extensionContext2 = [(SLComposeServiceViewController *)self extensionContext];
+  inputItems = [extensionContext2 inputItems];
+  if (inputItems)
   {
-    v82 = v81;
-    v83 = [(SLComposeServiceViewController *)self extensionContext];
-    v84 = [v83 inputItems];
-    v85 = [v84 count];
+    v82 = inputItems;
+    extensionContext3 = [(SLComposeServiceViewController *)self extensionContext];
+    inputItems2 = [extensionContext3 inputItems];
+    v85 = [inputItems2 count];
 
     if (!v85)
     {
       return;
     }
 
-    v86 = [(SLComposeServiceViewController *)self extensionContext];
-    v87 = [v86 inputItems];
-    v79 = [v87 objectAtIndexedSubscript:0];
+    extensionContext4 = [(SLComposeServiceViewController *)self extensionContext];
+    inputItems3 = [extensionContext4 inputItems];
+    v79 = [inputItems3 objectAtIndexedSubscript:0];
 
-    v88 = [v79 attributedTitle];
-    v94 = [v79 attributedContentText];
+    attributedTitle = [v79 attributedTitle];
+    attributedContentText = [v79 attributedContentText];
     _SLLog(v2, 7, @"SLComposeServiceViewController loadView using extensionItem.attributedTitle %@ extensionItem.attributedContentText %@");
 
-    v89 = [v79 attributedContentText];
-    v90 = [v89 string];
-    v91 = [(SLComposeServiceViewController *)self contentView];
-    v92 = [v91 textView];
-    [v92 setText:v90];
+    attributedContentText2 = [v79 attributedContentText];
+    string = [attributedContentText2 string];
+    contentView8 = [(SLComposeServiceViewController *)self contentView];
+    textView3 = [contentView8 textView];
+    [textView3 setText:string];
 
-    v93 = [v79 attachments];
-    [(SLComposeServiceViewController *)self _convertExtensionItemProvidersToAttachments:v93];
+    attachments = [v79 attachments];
+    [(SLComposeServiceViewController *)self _convertExtensionItemProvidersToAttachments:attachments];
 
     [(SLComposeServiceViewController *)self validateContent];
   }
@@ -2992,14 +2992,14 @@ LABEL_9:
   }
 }
 
-- (void)_convertExtensionItemProvidersToAttachments:(id)a3
+- (void)_convertExtensionItemProvidersToAttachments:(id)attachments
 {
   v36 = *MEMORY[0x1E69E9840];
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  obj = a3;
+  obj = attachments;
   v3 = [obj countByEnumeratingWithState:&v29 objects:v35 count:16];
   if (v3)
   {
@@ -3329,41 +3329,41 @@ LABEL_30:
   v5.receiver = self;
   v5.super_class = SLComposeServiceViewController;
   [(SLComposeServiceViewController *)&v5 viewDidLoad];
-  v4 = [(SLComposeServiceViewController *)self view];
-  [v4 setNeedsUpdateConstraints];
+  view = [(SLComposeServiceViewController *)self view];
+  [view setNeedsUpdateConstraints];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = a3;
+  appearCopy = appear;
   v9 = [MEMORY[0x1E696AD98] numberWithBool:?];
   _SLLog(v3, 7, @"SLComposeServiceViewController viewWillAppear: %@ begin");
 
   v11.receiver = self;
   v11.super_class = SLComposeServiceViewController;
-  [(SLComposeServiceViewController *)&v11 viewWillAppear:v4, v9];
+  [(SLComposeServiceViewController *)&v11 viewWillAppear:appearCopy, v9];
   [(SLComposeServiceViewController *)self updateSheetForVerticalSizeClass];
   [(SLComposeServiceViewController *)self _loadPreviewView];
-  v6 = [(SLComposeServiceViewController *)self configurationItems];
-  if (![v6 count])
+  configurationItems = [(SLComposeServiceViewController *)self configurationItems];
+  if (![configurationItems count])
   {
-    v7 = [(SLComposeServiceViewController *)self sheetActions];
+    sheetActions = [(SLComposeServiceViewController *)self sheetActions];
 
-    v6 = v7;
+    configurationItems = sheetActions;
   }
 
-  v8 = [(SLComposeServiceViewController *)self sheetRootViewController];
-  [v8 setConfigurationItems:v6];
+  sheetRootViewController = [(SLComposeServiceViewController *)self sheetRootViewController];
+  [sheetRootViewController setConfigurationItems:configurationItems];
 
   self->_didFirstSheetActionLoad = 1;
   [(SLComposeServiceViewController *)self positionSheetView];
-  v10 = [MEMORY[0x1E696AD98] numberWithBool:v4];
+  v10 = [MEMORY[0x1E696AD98] numberWithBool:appearCopy];
   _SLLog(v3, 7, @"SLComposeServiceViewController viewWillAppear: %@ end");
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v5 = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  v5 = [MEMORY[0x1E696AD98] numberWithBool:appear];
   _SLLog(v3, 7, @"SLComposeServiceViewController viewDidAppear: %@");
 
   self->_wasPresented = 1;
@@ -3372,11 +3372,11 @@ LABEL_30:
   [(SLComposeServiceViewController *)self showKeyboardAnimated:0];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v3.receiver = self;
   v3.super_class = SLComposeServiceViewController;
-  [(SLComposeServiceViewController *)&v3 viewDidDisappear:a3];
+  [(SLComposeServiceViewController *)&v3 viewDidDisappear:disappear];
 }
 
 - (void)didReceiveMemoryWarning
@@ -3387,18 +3387,18 @@ LABEL_30:
   [(SLComposeServiceViewController *)&v4 didReceiveMemoryWarning];
 }
 
-- (void)shouldShowNetworkActivityIndicator:(BOOL)a3
+- (void)shouldShowNetworkActivityIndicator:(BOOL)indicator
 {
-  v3 = a3;
-  v5 = [(SLComposeServiceViewController *)self extensionContext];
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:v3];
-  [v5 shouldShowNetworkActivityIndicator:v4];
+  indicatorCopy = indicator;
+  extensionContext = [(SLComposeServiceViewController *)self extensionContext];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:indicatorCopy];
+  [extensionContext shouldShowNetworkActivityIndicator:v4];
 }
 
-- (void)networkActivityIndicatorNotification:(id)a3
+- (void)networkActivityIndicatorNotification:(id)notification
 {
-  v4 = [a3 name];
-  -[SLComposeServiceViewController shouldShowNetworkActivityIndicator:](self, "shouldShowNetworkActivityIndicator:", [v4 isEqualToString:SLShowNetworkActivityIndicatorNotification]);
+  name = [notification name];
+  -[SLComposeServiceViewController shouldShowNetworkActivityIndicator:](self, "shouldShowNetworkActivityIndicator:", [name isEqualToString:SLShowNetworkActivityIndicatorNotification]);
 }
 
 @end

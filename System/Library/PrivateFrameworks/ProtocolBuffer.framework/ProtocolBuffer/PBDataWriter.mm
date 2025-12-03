@@ -1,18 +1,18 @@
 @interface PBDataWriter
-- (BOOL)writeData:(id)a3;
+- (BOOL)writeData:(id)data;
 - (PBDataWriter)init;
-- (PBDataWriter)initWithInitialCapacity:(unint64_t)a3;
-- (unint64_t)write:(const char *)a3 maxLength:(unint64_t)a4;
-- (void)writeBareVarint:(unint64_t)a3;
-- (void)writeBigEndianFixed16:(unsigned __int16)a3;
-- (void)writeBigEndianFixed32:(unsigned int)a3;
-- (void)writeBigEndianShortThenString:(id)a3;
-- (void)writeData:(id)a3 forTag:(unsigned int)a4;
-- (void)writeInt8:(char)a3;
-- (void)writeProtoBuffer:(id)a3;
-- (void)writeSint64:(int64_t)a3 forTag:(unsigned int)a4;
-- (void)writeTag:(unsigned int)a3 andType:(unsigned __int8)a4;
-- (void)writeUint8:(unsigned __int8)a3;
+- (PBDataWriter)initWithInitialCapacity:(unint64_t)capacity;
+- (unint64_t)write:(const char *)write maxLength:(unint64_t)length;
+- (void)writeBareVarint:(unint64_t)varint;
+- (void)writeBigEndianFixed16:(unsigned __int16)fixed16;
+- (void)writeBigEndianFixed32:(unsigned int)fixed32;
+- (void)writeBigEndianShortThenString:(id)string;
+- (void)writeData:(id)data forTag:(unsigned int)tag;
+- (void)writeInt8:(char)int8;
+- (void)writeProtoBuffer:(id)buffer;
+- (void)writeSint64:(int64_t)sint64 forTag:(unsigned int)tag;
+- (void)writeTag:(unsigned int)tag andType:(unsigned __int8)type;
+- (void)writeUint8:(unsigned __int8)uint8;
 @end
 
 @implementation PBDataWriter
@@ -32,11 +32,11 @@
   return v2;
 }
 
-- (void)writeTag:(unsigned int)a3 andType:(unsigned __int8)a4
+- (void)writeTag:(unsigned int)tag andType:(unsigned __int8)type
 {
-  if (a3 != -1)
+  if (tag != -1)
   {
-    v4 = a4;
+    typeCopy = type;
     data = self->_data;
     end = data->end;
     p = data->p;
@@ -56,10 +56,10 @@
       p = self->_data->p;
     }
 
-    v11 = v4 | (8 * a3);
+    v11 = typeCopy | (8 * tag);
     if (v11 < 0x80)
     {
-      LOBYTE(v12) = v4 | (8 * a3);
+      LOBYTE(v12) = typeCopy | (8 * tag);
     }
 
     else
@@ -80,7 +80,7 @@
   }
 }
 
-- (void)writeBareVarint:(unint64_t)a3
+- (void)writeBareVarint:(unint64_t)varint
 {
   data = self->_data;
   end = data->end;
@@ -101,19 +101,19 @@
     p = self->_data->p;
   }
 
-  if (a3 < 0x80)
+  if (varint < 0x80)
   {
-    LOBYTE(v9) = a3;
+    LOBYTE(v9) = varint;
   }
 
   else
   {
     do
     {
-      *p++ = a3 | 0x80;
-      v9 = a3 >> 7;
-      v10 = a3 >> 14;
-      a3 >>= 7;
+      *p++ = varint | 0x80;
+      v9 = varint >> 7;
+      v10 = varint >> 14;
+      varint >>= 7;
     }
 
     while (v10);
@@ -123,7 +123,7 @@
   self->_data->p = p + 1;
 }
 
-- (void)writeUint8:(unsigned __int8)a3
+- (void)writeUint8:(unsigned __int8)uint8
 {
   data = self->_data;
   end = data->end;
@@ -146,10 +146,10 @@
   }
 
   data->p = p + 1;
-  *p = a3;
+  *p = uint8;
 }
 
-- (void)writeInt8:(char)a3
+- (void)writeInt8:(char)int8
 {
   data = self->_data;
   end = data->end;
@@ -172,13 +172,13 @@
   }
 
   data->p = p + 1;
-  *p = a3;
+  *p = int8;
 }
 
-- (void)writeProtoBuffer:(id)a3
+- (void)writeProtoBuffer:(id)buffer
 {
-  v4 = a3;
-  v5 = [v4 length];
+  bufferCopy = buffer;
+  v5 = [bufferCopy length];
   v6 = v5;
   v7 = v5 + 4;
   data = self->_data;
@@ -208,7 +208,7 @@
   v13[2] = __33__PBDataWriter_writeProtoBuffer___block_invoke;
   v13[3] = &unk_1E833D520;
   v13[4] = self;
-  [v4 enumerateByteRangesUsingBlock:v13];
+  [bufferCopy enumerateByteRangesUsingBlock:v13];
 }
 
 void *__33__PBDataWriter_writeProtoBuffer___block_invoke(uint64_t a1, const void *a2, int a3, size_t __n)
@@ -218,14 +218,14 @@ void *__33__PBDataWriter_writeProtoBuffer___block_invoke(uint64_t a1, const void
   return result;
 }
 
-- (void)writeBigEndianShortThenString:(id)a3
+- (void)writeBigEndianShortThenString:(id)string
 {
-  v5 = a3;
-  v6 = [a3 UTF8String];
-  if (v6)
+  stringCopy = string;
+  uTF8String = [string UTF8String];
+  if (uTF8String)
   {
-    v7 = v6;
-    v8 = strlen(v6);
+    v7 = uTF8String;
+    v8 = strlen(uTF8String);
     v9 = bswap32(v8) >> 16;
     data = self->_data;
     end = data->end;
@@ -284,7 +284,7 @@ void *__33__PBDataWriter_writeProtoBuffer___block_invoke(uint64_t a1, const void
   }
 }
 
-- (void)writeBigEndianFixed32:(unsigned int)a3
+- (void)writeBigEndianFixed32:(unsigned int)fixed32
 {
   data = self->_data;
   end = data->end;
@@ -306,13 +306,13 @@ void *__33__PBDataWriter_writeProtoBuffer___block_invoke(uint64_t a1, const void
     p = self->_data->p;
   }
 
-  *p = bswap32(a3);
+  *p = bswap32(fixed32);
   self->_data->p += 4;
 }
 
-- (void)writeBigEndianFixed16:(unsigned __int16)a3
+- (void)writeBigEndianFixed16:(unsigned __int16)fixed16
 {
-  v3 = a3;
+  fixed16Copy = fixed16;
   data = self->_data;
   end = data->end;
   p = data->p;
@@ -333,58 +333,58 @@ void *__33__PBDataWriter_writeProtoBuffer___block_invoke(uint64_t a1, const void
     p = self->_data->p;
   }
 
-  *p = __rev16(v3);
+  *p = __rev16(fixed16Copy);
   self->_data->p += 2;
 }
 
-- (BOOL)writeData:(id)a3
+- (BOOL)writeData:(id)data
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __26__PBDataWriter_writeData___block_invoke;
   v4[3] = &unk_1E833D520;
   v4[4] = self;
-  [a3 enumerateByteRangesUsingBlock:v4];
+  [data enumerateByteRangesUsingBlock:v4];
   return 1;
 }
 
-- (unint64_t)write:(const char *)a3 maxLength:(unint64_t)a4
+- (unint64_t)write:(const char *)write maxLength:(unint64_t)length
 {
   data = self->_data;
   end = data->end;
   p = data->p;
-  if (end < &p[a4])
+  if (end < &p[length])
   {
-    if (end - data->buffer <= a4)
+    if (end - data->buffer <= length)
     {
-      v10 = a4;
+      lengthCopy = length;
     }
 
     else
     {
-      v10 = end - data->buffer;
+      lengthCopy = end - data->buffer;
     }
 
-    [(PBMutableData *)data _pb_growCapacityBy:v10];
+    [(PBMutableData *)data _pb_growCapacityBy:lengthCopy];
     p = self->_data->p;
   }
 
-  memcpy(p, a3, a4);
-  self->_data->p += a4;
-  return a4;
+  memcpy(p, write, length);
+  self->_data->p += length;
+  return length;
 }
 
-- (void)writeData:(id)a3 forTag:(unsigned int)a4
+- (void)writeData:(id)data forTag:(unsigned int)tag
 {
-  if (a3)
+  if (data)
   {
-    PBDataWriterWriteDataField(self, a3, a4);
+    PBDataWriterWriteDataField(self, data, tag);
   }
 }
 
-- (void)writeSint64:(int64_t)a3 forTag:(unsigned int)a4
+- (void)writeSint64:(int64_t)sint64 forTag:(unsigned int)tag
 {
-  v7 = 2 * a3;
+  v7 = 2 * sint64;
   data = self->_data;
   end = data->end;
   if (end < data->p + 16)
@@ -404,14 +404,14 @@ void *__33__PBDataWriter_writeProtoBuffer___block_invoke(uint64_t a1, const void
     data = self->_data;
   }
 
-  v12 = v7 ^ (a3 >> 63);
-  if (a4 != -1)
+  v12 = v7 ^ (sint64 >> 63);
+  if (tag != -1)
   {
-    v13 = 8 * a4;
+    v13 = 8 * tag;
     p = data->p;
     if (v13 < 0x80)
     {
-      LOBYTE(v15) = 8 * a4;
+      LOBYTE(v15) = 8 * tag;
     }
 
     else
@@ -435,7 +435,7 @@ void *__33__PBDataWriter_writeProtoBuffer___block_invoke(uint64_t a1, const void
   v17 = data->p;
   if (v12 < 0x80)
   {
-    v18 = v7 ^ (a3 >> 63);
+    v18 = v7 ^ (sint64 >> 63);
   }
 
   else
@@ -455,7 +455,7 @@ void *__33__PBDataWriter_writeProtoBuffer___block_invoke(uint64_t a1, const void
   self->_data->p = v17 + 1;
 }
 
-- (PBDataWriter)initWithInitialCapacity:(unint64_t)a3
+- (PBDataWriter)initWithInitialCapacity:(unint64_t)capacity
 {
   v10.receiver = self;
   v10.super_class = PBDataWriter;
@@ -463,17 +463,17 @@ void *__33__PBDataWriter_writeProtoBuffer___block_invoke(uint64_t a1, const void
   if (v4)
   {
     v5 = [PBMutableData alloc];
-    if (a3 <= 0x100)
+    if (capacity <= 0x100)
     {
-      v6 = 256;
+      capacityCopy = 256;
     }
 
     else
     {
-      v6 = a3;
+      capacityCopy = capacity;
     }
 
-    v7 = [(PBMutableData *)v5 initWithCapacity:v6];
+    v7 = [(PBMutableData *)v5 initWithCapacity:capacityCopy];
     data = v4->_data;
     v4->_data = v7;
   }

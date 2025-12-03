@@ -1,34 +1,34 @@
 @interface SKUIRedeemCameraView
-- (BOOL)textFieldShouldBeginEditing:(id)a3;
-- (BOOL)textFieldShouldEndEditing:(id)a3;
-- (BOOL)textFieldShouldReturn:(id)a3;
-- (SKUIRedeemCameraView)initWithClientContext:(id)a3;
+- (BOOL)textFieldShouldBeginEditing:(id)editing;
+- (BOOL)textFieldShouldEndEditing:(id)editing;
+- (BOOL)textFieldShouldReturn:(id)return;
+- (SKUIRedeemCameraView)initWithClientContext:(id)context;
 - (SKUIRedeemCameraViewDelegate)delegate;
-- (id)_newTextFieldWithClientContext:(id)a3 placeholderColor:(id)a4;
+- (id)_newTextFieldWithClientContext:(id)context placeholderColor:(id)color;
 - (void)_hideKeyboard;
-- (void)_iTunesPassLearnMoreAction:(id)a3;
-- (void)_landingButtonAction:(id)a3;
+- (void)_iTunesPassLearnMoreAction:(id)action;
+- (void)_landingButtonAction:(id)action;
 - (void)_pauseRedeemer;
 - (void)_resumeRedeemer;
-- (void)_showRedeemer:(BOOL)a3;
-- (void)_tapGestureAction:(id)a3;
-- (void)_termsButtonAction:(id)a3;
+- (void)_showRedeemer:(BOOL)redeemer;
+- (void)_tapGestureAction:(id)action;
+- (void)_termsButtonAction:(id)action;
 - (void)dealloc;
-- (void)keyboardDidShow:(id)a3;
-- (void)keyboardWillHide:(id)a3;
-- (void)keyboardWillShow:(id)a3;
+- (void)keyboardDidShow:(id)show;
+- (void)keyboardWillHide:(id)hide;
+- (void)keyboardWillShow:(id)show;
 - (void)layoutSubviews;
-- (void)setEnabled:(BOOL)a3;
-- (void)setITunesPassConfiguration:(id)a3;
-- (void)setText:(id)a3;
-- (void)textFieldTextDidChange:(id)a3;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setITunesPassConfiguration:(id)configuration;
+- (void)setText:(id)text;
+- (void)textFieldTextDidChange:(id)change;
 @end
 
 @implementation SKUIRedeemCameraView
 
-- (SKUIRedeemCameraView)initWithClientContext:(id)a3
+- (SKUIRedeemCameraView)initWithClientContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIRedeemCameraView initWithClientContext:];
@@ -40,24 +40,24 @@
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_clientContext, a3);
-    v8 = [[SKUIRedeemCameraLandingView alloc] initWithClientContext:v5];
+    objc_storeStrong(&v6->_clientContext, context);
+    v8 = [[SKUIRedeemCameraLandingView alloc] initWithClientContext:contextCopy];
     landingView = v7->_landingView;
     v7->_landingView = v8;
 
-    v10 = [(SKUIRedeemCameraLandingView *)v7->_landingView button];
-    [v10 addTarget:v7 action:sel__landingButtonAction_ forControlEvents:64];
+    button = [(SKUIRedeemCameraLandingView *)v7->_landingView button];
+    [button addTarget:v7 action:sel__landingButtonAction_ forControlEvents:64];
 
     [(SKUIRedeemCameraView *)v7 addSubview:v7->_landingView];
-    v11 = [(SKUIRedeemCameraView *)v7 tintColor];
-    v12 = [(SKUIRedeemCameraView *)v7 _newTextFieldWithClientContext:v5 placeholderColor:v11];
+    tintColor = [(SKUIRedeemCameraView *)v7 tintColor];
+    v12 = [(SKUIRedeemCameraView *)v7 _newTextFieldWithClientContext:contextCopy placeholderColor:tintColor];
     textField = v7->_textField;
     v7->_textField = v12;
 
     [(SKUIRedeemTextField *)v7->_textField setDelegate:v7];
     [(SKUIRedeemCameraView *)v7 addSubview:v7->_textField];
     v14 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:0.5];
-    v15 = [(SKUIRedeemCameraView *)v7 _newTextFieldWithClientContext:v5 placeholderColor:v14];
+    v15 = [(SKUIRedeemCameraView *)v7 _newTextFieldWithClientContext:contextCopy placeholderColor:v14];
     inputAccessoryTextField = v7->_inputAccessoryTextField;
     v7->_inputAccessoryTextField = v15;
 
@@ -82,9 +82,9 @@
     v7->_termsButton = &v22->super;
 
     v24 = v7->_termsButton;
-    if (v5)
+    if (contextCopy)
     {
-      [v5 localizedStringForKey:@"REDEEM_TERMS_LINK" inTable:@"Redeem"];
+      [contextCopy localizedStringForKey:@"REDEEM_TERMS_LINK" inTable:@"Redeem"];
     }
 
     else
@@ -94,26 +94,26 @@
     v25 = ;
     [(UIButton *)v24 setTitle:v25 forState:0];
 
-    v26 = [(UIButton *)v7->_termsButton titleLabel];
+    titleLabel = [(UIButton *)v7->_termsButton titleLabel];
     v27 = [MEMORY[0x277D74300] systemFontOfSize:12.0];
-    [v26 setFont:v27];
+    [titleLabel setFont:v27];
 
     v28 = v7->_termsButton;
     v29 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:0.6];
     [(UIButton *)v28 setTitleColor:v29 forState:0];
 
     v30 = v7->_termsButton;
-    v31 = [MEMORY[0x277D75348] blackColor];
-    [(UIButton *)v30 setTitleColor:v31 forState:1];
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    [(UIButton *)v30 setTitleColor:blackColor forState:1];
 
     [(UIButton *)v7->_termsButton addTarget:v7 action:sel__termsButtonAction_ forControlEvents:64];
     [(SKUIRedeemCameraView *)v7 addSubview:v7->_termsButton];
-    v32 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v32 addObserver:v7 selector:sel_keyboardWillShow_ name:*MEMORY[0x277D76C60] object:0];
-    [v32 addObserver:v7 selector:sel_keyboardDidShow_ name:*MEMORY[0x277D76BA8] object:0];
-    [v32 addObserver:v7 selector:sel_keyboardWillHide_ name:*MEMORY[0x277D76C50] object:0];
-    [v32 addObserver:v7 selector:sel_keyboardDidHide_ name:*MEMORY[0x277D76BA0] object:0];
-    [v32 addObserver:v7 selector:sel_textFieldTextDidChange_ name:*MEMORY[0x277D770B0] object:v7->_inputAccessoryTextField];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v7 selector:sel_keyboardWillShow_ name:*MEMORY[0x277D76C60] object:0];
+    [defaultCenter addObserver:v7 selector:sel_keyboardDidShow_ name:*MEMORY[0x277D76BA8] object:0];
+    [defaultCenter addObserver:v7 selector:sel_keyboardWillHide_ name:*MEMORY[0x277D76C50] object:0];
+    [defaultCenter addObserver:v7 selector:sel_keyboardDidHide_ name:*MEMORY[0x277D76BA0] object:0];
+    [defaultCenter addObserver:v7 selector:sel_textFieldTextDidChange_ name:*MEMORY[0x277D770B0] object:v7->_inputAccessoryTextField];
   }
 
   return v7;
@@ -121,12 +121,12 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277D76C60] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x277D76BA8] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x277D76C50] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x277D76BA0] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x277D770B0] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D76C60] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D76BA8] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D76C50] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D76BA0] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D770B0] object:0];
   [(SKUIRedeemTextField *)self->_textField setDelegate:0];
   [(SKUIRedeemTextField *)self->_inputAccessoryTextField setDelegate:0];
   [(SKUIRedeemITunesPassLockup *)self->_iTunesPassLockup removeTarget:self action:0 forControlEvents:0xFFFFFFFFLL];
@@ -136,14 +136,14 @@
   [(SKUIRedeemCameraView *)&v4 dealloc];
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   textField = self->_textField;
-  if (a3)
+  if (enabled)
   {
-    v6 = [MEMORY[0x277D75348] blackColor];
-    [(SKUIRedeemTextField *)textField setTextColor:v6];
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    [(SKUIRedeemTextField *)textField setTextColor:blackColor];
 
     inputAccessoryTextField = self->_inputAccessoryTextField;
     [MEMORY[0x277D75348] blackColor];
@@ -160,23 +160,23 @@
   v9 = ;
   [(SKUIRedeemTextField *)inputAccessoryTextField setTextColor:v9];
 
-  [(SKUIRedeemTextField *)self->_textField setEnabled:v3];
-  [(SKUIRedeemTextField *)self->_inputAccessoryTextField setEnabled:v3];
+  [(SKUIRedeemTextField *)self->_textField setEnabled:enabledCopy];
+  [(SKUIRedeemTextField *)self->_inputAccessoryTextField setEnabled:enabledCopy];
 
-  [(SKUIRedeemCameraView *)self setUserInteractionEnabled:v3];
+  [(SKUIRedeemCameraView *)self setUserInteractionEnabled:enabledCopy];
 }
 
-- (void)setITunesPassConfiguration:(id)a3
+- (void)setITunesPassConfiguration:(id)configuration
 {
-  v8 = a3;
-  if (self->_iTunesPassConfiguration != v8)
+  configurationCopy = configuration;
+  if (self->_iTunesPassConfiguration != configurationCopy)
   {
     [(SKUIRedeemITunesPassLockup *)self->_iTunesPassLockup removeTarget:self action:0 forControlEvents:0xFFFFFFFFLL];
     [(SKUIRedeemITunesPassLockup *)self->_iTunesPassLockup removeFromSuperview];
     iTunesPassLockup = self->_iTunesPassLockup;
     self->_iTunesPassLockup = 0;
 
-    objc_storeStrong(&self->_iTunesPassConfiguration, a3);
+    objc_storeStrong(&self->_iTunesPassConfiguration, configuration);
     if (self->_iTunesPassConfiguration)
     {
       v6 = [[SKUIRedeemITunesPassLockup alloc] initWithITunesPassConfiguration:self->_iTunesPassConfiguration clientContext:self->_clientContext];
@@ -189,27 +189,27 @@
   }
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
-  v9 = a3;
-  v4 = [(SKUIRedeemTextField *)self->_textField text];
-  v5 = [v4 isEqualToString:v9];
+  textCopy = text;
+  text = [(SKUIRedeemTextField *)self->_textField text];
+  v5 = [text isEqualToString:textCopy];
 
   if ((v5 & 1) == 0)
   {
-    [(SKUIRedeemTextField *)self->_textField setText:v9];
+    [(SKUIRedeemTextField *)self->_textField setText:textCopy];
   }
 
-  v6 = [(SKUIRedeemTextField *)self->_inputAccessoryTextField text];
-  v7 = [v6 isEqualToString:v9];
+  text2 = [(SKUIRedeemTextField *)self->_inputAccessoryTextField text];
+  v7 = [text2 isEqualToString:textCopy];
 
   if ((v7 & 1) == 0)
   {
-    [(SKUIRedeemTextField *)self->_inputAccessoryTextField setText:v9];
+    [(SKUIRedeemTextField *)self->_inputAccessoryTextField setText:textCopy];
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained SKUIRedeemCameraView:self textFieldDidChange:v9];
+  [WeakRetained SKUIRedeemCameraView:self textFieldDidChange:textCopy];
 }
 
 - (void)layoutSubviews
@@ -235,8 +235,8 @@
     v50 = v13;
     if (self->_iTunesPassLockup)
     {
-      v17 = [MEMORY[0x277D759A0] mainScreen];
-      [v17 bounds];
+      mainScreen = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen bounds];
       v19 = v18;
 
       v20 = v19 <= 480.0;
@@ -269,8 +269,8 @@
     {
       v45 = *(MEMORY[0x277CBF3A0] + 16);
       v46 = *(MEMORY[0x277CBF3A0] + 24);
-      v26 = [MEMORY[0x277D759A0] mainScreen];
-      [v26 bounds];
+      mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen2 bounds];
       v28 = v27 > 480.0;
 
       v20 = 0;
@@ -334,21 +334,21 @@
   [v43 setFrame:{v13, v16, v8, v15}];
 }
 
-- (void)keyboardWillShow:(id)a3
+- (void)keyboardWillShow:(id)show
 {
   if (self->_displayRedeem)
   {
     v9[9] = v3;
     v9[10] = v4;
-    v6 = [(SKUIRedeemTextField *)self->_textField text];
-    [(SKUIRedeemCameraView *)self setText:v6];
+    text = [(SKUIRedeemTextField *)self->_textField text];
+    [(SKUIRedeemCameraView *)self setText:text];
 
     [(SKUIRedeemCameraView *)self _pauseRedeemer];
     [(SKUIRedeemCameraView *)self addSubview:self->_overlay];
     [(SKUIRedeemCameraView *)self setNeedsLayout];
     overlay = self->_overlay;
-    v8 = [MEMORY[0x277D75348] blackColor];
-    [(UIView *)overlay setBackgroundColor:v8];
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    [(UIView *)overlay setBackgroundColor:blackColor];
 
     [(UIView *)self->_overlay setAlpha:0.0];
     v9[0] = MEMORY[0x277D85DD0];
@@ -374,7 +374,7 @@ uint64_t __41__SKUIRedeemCameraView_keyboardWillShow___block_invoke(uint64_t a1)
   return [v2 setAlpha:v4];
 }
 
-- (void)keyboardDidShow:(id)a3
+- (void)keyboardDidShow:(id)show
 {
   if (self->_displayRedeem)
   {
@@ -382,12 +382,12 @@ uint64_t __41__SKUIRedeemCameraView_keyboardWillShow___block_invoke(uint64_t a1)
   }
 }
 
-- (void)keyboardWillHide:(id)a3
+- (void)keyboardWillHide:(id)hide
 {
   if (!self->_displayRedeem)
   {
-    v4 = [(SKUIRedeemTextField *)self->_inputAccessoryTextField text];
-    [(SKUIRedeemCameraView *)self setText:v4];
+    text = [(SKUIRedeemTextField *)self->_inputAccessoryTextField text];
+    [(SKUIRedeemCameraView *)self setText:text];
 
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
@@ -413,15 +413,15 @@ uint64_t __41__SKUIRedeemCameraView_keyboardWillHide___block_invoke_2(uint64_t r
   return result;
 }
 
-- (void)textFieldTextDidChange:(id)a3
+- (void)textFieldTextDidChange:(id)change
 {
-  v4 = [(SKUIRedeemTextField *)self->_inputAccessoryTextField text];
-  [(SKUIRedeemCameraView *)self setText:v4];
+  text = [(SKUIRedeemTextField *)self->_inputAccessoryTextField text];
+  [(SKUIRedeemCameraView *)self setText:text];
 }
 
-- (BOOL)textFieldShouldBeginEditing:(id)a3
+- (BOOL)textFieldShouldBeginEditing:(id)editing
 {
-  if (self->_textField == a3)
+  if (self->_textField == editing)
   {
     self->_displayRedeem = 1;
   }
@@ -429,19 +429,19 @@ uint64_t __41__SKUIRedeemCameraView_keyboardWillHide___block_invoke_2(uint64_t r
   return 1;
 }
 
-- (BOOL)textFieldShouldReturn:(id)a3
+- (BOOL)textFieldShouldReturn:(id)return
 {
-  v4 = a3;
+  returnCopy = return;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v6 = [v4 text];
+  text = [returnCopy text];
 
-  [WeakRetained SKUIRedeemCameraView:self textFieldDidRedeem:v6];
+  [WeakRetained SKUIRedeemCameraView:self textFieldDidRedeem:text];
   return 1;
 }
 
-- (BOOL)textFieldShouldEndEditing:(id)a3
+- (BOOL)textFieldShouldEndEditing:(id)editing
 {
-  if (self->_textField == a3)
+  if (self->_textField == editing)
   {
     self->_displayRedeem = 0;
   }
@@ -449,23 +449,23 @@ uint64_t __41__SKUIRedeemCameraView_keyboardWillHide___block_invoke_2(uint64_t r
   return 1;
 }
 
-- (void)_iTunesPassLearnMoreAction:(id)a3
+- (void)_iTunesPassLearnMoreAction:(id)action
 {
-  v4 = [(SKUIRedeemCameraView *)self delegate];
+  delegate = [(SKUIRedeemCameraView *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 showITunesPassLearnMoreForSKUIRedeemCameraView:self];
+    [delegate showITunesPassLearnMoreForSKUIRedeemCameraView:self];
   }
 }
 
-- (void)_landingButtonAction:(id)a3
+- (void)_landingButtonAction:(id)action
 {
   [(SKUIRedeemCameraView *)self setText:&stru_2827FFAC8];
 
   [(SKUIRedeemCameraView *)self _showRedeemer:1];
 }
 
-- (void)_tapGestureAction:(id)a3
+- (void)_tapGestureAction:(id)action
 {
   if ([(SKUIRedeemCameraView *)self _isShowingRedeemer])
   {
@@ -482,10 +482,10 @@ uint64_t __41__SKUIRedeemCameraView_keyboardWillHide___block_invoke_2(uint64_t r
   }
 }
 
-- (void)_termsButtonAction:(id)a3
+- (void)_termsButtonAction:(id)action
 {
-  v3 = [MEMORY[0x277CBEBC0] termsAndConditionsURL];
-  SKUIMetricsOpenURL(v3);
+  termsAndConditionsURL = [MEMORY[0x277CBEBC0] termsAndConditionsURL];
+  SKUIMetricsOpenURL(termsAndConditionsURL);
 }
 
 - (void)_hideKeyboard
@@ -496,11 +496,11 @@ uint64_t __41__SKUIRedeemCameraView_keyboardWillHide___block_invoke_2(uint64_t r
   [(SKUIRedeemTextField *)textField resignFirstResponder];
 }
 
-- (id)_newTextFieldWithClientContext:(id)a3 placeholderColor:(id)a4
+- (id)_newTextFieldWithClientContext:(id)context placeholderColor:(id)color
 {
   v18[2] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  contextCopy = context;
+  colorCopy = color;
   v7 = [[SKUIRedeemTextField alloc] initWithFrame:0.0, 0.0, 1.0, 44.0];
   [(SKUIRedeemTextField *)v7 setAutocorrectionType:1];
   [(SKUIRedeemTextField *)v7 setAutocapitalizationType:3];
@@ -511,22 +511,22 @@ uint64_t __41__SKUIRedeemCameraView_keyboardWillHide___block_invoke_2(uint64_t r
   v10 = *MEMORY[0x277D740C0];
   v17[0] = v9;
   v17[1] = v10;
-  v11 = v6;
-  if (!v6)
+  v11 = colorCopy;
+  if (!colorCopy)
   {
     v11 = [MEMORY[0x277D75348] colorWithWhite:0.7 alpha:1.0];
   }
 
   v18[1] = v11;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:v17 count:2];
-  if (!v6)
+  if (!colorCopy)
   {
   }
 
   v13 = objc_alloc(MEMORY[0x277CCA898]);
-  if (v5)
+  if (contextCopy)
   {
-    [v5 localizedStringForKey:@"CAMERA_REDEEM_ENTER_CODE" inTable:@"Redeem"];
+    [contextCopy localizedStringForKey:@"CAMERA_REDEEM_ENTER_CODE" inTable:@"Redeem"];
   }
 
   else
@@ -552,7 +552,7 @@ uint64_t __41__SKUIRedeemCameraView_keyboardWillHide___block_invoke_2(uint64_t r
   [WeakRetained startRedeemerViewForSKUIRedeemCameraView:self];
 }
 
-- (void)_showRedeemer:(BOOL)a3
+- (void)_showRedeemer:(BOOL)redeemer
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained presentFullScreenCameraViewForSKUIRedeemCameraView:self];

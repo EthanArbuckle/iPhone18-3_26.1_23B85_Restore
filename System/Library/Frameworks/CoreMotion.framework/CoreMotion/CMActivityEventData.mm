@@ -1,32 +1,32 @@
 @interface CMActivityEventData
-+ (id)actionName:(int64_t)a3;
-+ (id)eventTypeName:(int64_t)a3;
-+ (id)reasonName:(int64_t)a3;
-- (CMActivityEventData)initWithBinarySampleRepresentation:(id)a3 metadata:(id)a4 timestamp:(double)a5;
-- (CMActivityEventData)initWithCoder:(id)a3;
-- (CMActivityEventData)initWithStartDate:(id)a3 eventType:(int64_t)a4 action:(int64_t)a5 reason:(int64_t)a6 workoutType:(int64_t)a7;
++ (id)actionName:(int64_t)name;
++ (id)eventTypeName:(int64_t)name;
++ (id)reasonName:(int64_t)name;
+- (CMActivityEventData)initWithBinarySampleRepresentation:(id)representation metadata:(id)metadata timestamp:(double)timestamp;
+- (CMActivityEventData)initWithCoder:(id)coder;
+- (CMActivityEventData)initWithStartDate:(id)date eventType:(int64_t)type action:(int64_t)action reason:(int64_t)reason workoutType:(int64_t)workoutType;
 - (NSString)description;
 - (id)binarySampleRepresentation;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)sr_dictionaryRepresentation;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CMActivityEventData
 
-- (CMActivityEventData)initWithStartDate:(id)a3 eventType:(int64_t)a4 action:(int64_t)a5 reason:(int64_t)a6 workoutType:(int64_t)a7
+- (CMActivityEventData)initWithStartDate:(id)date eventType:(int64_t)type action:(int64_t)action reason:(int64_t)reason workoutType:(int64_t)workoutType
 {
   v19.receiver = self;
   v19.super_class = CMActivityEventData;
   v12 = [(CMActivityEventData *)&v19 init];
   if (v12)
   {
-    v12->_startDate = a3;
-    v12->_eventType = a4;
-    v12->_action = a5;
-    v12->_reason = a6;
-    v12->_workoutType = a7;
+    v12->_startDate = date;
+    v12->_eventType = type;
+    v12->_action = action;
+    v12->_reason = reason;
+    v12->_workoutType = workoutType;
     __asm { FMOV            V0.2D, #-1.0 }
 
     *&v12->_heartRateRecoveryStartTime = _Q0;
@@ -42,10 +42,10 @@
   [(CMActivityEventData *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   result = objc_msgSend_initWithStartDate_eventType_action_reason_workoutType_(v7, v8, self->_startDate, self->_eventType, self->_action, self->_reason, self->_workoutType);
   if (result)
   {
@@ -56,7 +56,7 @@
   return result;
 }
 
-- (CMActivityEventData)initWithCoder:(id)a3
+- (CMActivityEventData)initWithCoder:(id)coder
 {
   v16.receiver = self;
   v16.super_class = CMActivityEventData;
@@ -64,42 +64,42 @@
   if (v4)
   {
     v5 = objc_opt_class();
-    v4->_startDate = objc_msgSend_decodeObjectOfClass_forKey_(a3, v6, v5, @"kCCMActivityEventDataCodingKeyStartDate");
-    v4->_eventType = objc_msgSend_decodeIntegerForKey_(a3, v7, @"kCMActivityEventDataCodingKeyEventType");
-    v4->_action = objc_msgSend_decodeIntegerForKey_(a3, v8, @"kCMActivityEventDataCodingKeyAction");
-    v4->_reason = objc_msgSend_decodeIntegerForKey_(a3, v9, @"kCMActivityEventDataCodingKeyReason");
-    v4->_workoutType = objc_msgSend_decodeIntegerForKey_(a3, v10, @"kCMActivityEventDataCodingKeyWorkoutType");
-    objc_msgSend_decodeDoubleForKey_(a3, v11, @"kCMActivityEventDataCodingKeyRecoveryStart");
+    v4->_startDate = objc_msgSend_decodeObjectOfClass_forKey_(coder, v6, v5, @"kCCMActivityEventDataCodingKeyStartDate");
+    v4->_eventType = objc_msgSend_decodeIntegerForKey_(coder, v7, @"kCMActivityEventDataCodingKeyEventType");
+    v4->_action = objc_msgSend_decodeIntegerForKey_(coder, v8, @"kCMActivityEventDataCodingKeyAction");
+    v4->_reason = objc_msgSend_decodeIntegerForKey_(coder, v9, @"kCMActivityEventDataCodingKeyReason");
+    v4->_workoutType = objc_msgSend_decodeIntegerForKey_(coder, v10, @"kCMActivityEventDataCodingKeyWorkoutType");
+    objc_msgSend_decodeDoubleForKey_(coder, v11, @"kCMActivityEventDataCodingKeyRecoveryStart");
     v4->_heartRateRecoveryStartTime = v12;
-    objc_msgSend_decodeDoubleForKey_(a3, v13, @"kCMActivityEventDataCodingKeyRecoveryEnd");
+    objc_msgSend_decodeDoubleForKey_(coder, v13, @"kCMActivityEventDataCodingKeyRecoveryEnd");
     v4->_heartRateRecoveryEndTime = v14;
   }
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  objc_msgSend_encodeObject_forKey_(a3, a2, self->_startDate, @"kCCMActivityEventDataCodingKeyStartDate");
-  objc_msgSend_encodeInteger_forKey_(a3, v5, self->_eventType, @"kCMActivityEventDataCodingKeyEventType");
-  objc_msgSend_encodeInteger_forKey_(a3, v6, self->_action, @"kCMActivityEventDataCodingKeyAction");
-  objc_msgSend_encodeInteger_forKey_(a3, v7, self->_reason, @"kCMActivityEventDataCodingKeyReason");
-  objc_msgSend_encodeInteger_forKey_(a3, v8, self->_workoutType, @"kCMActivityEventDataCodingKeyWorkoutType");
-  objc_msgSend_encodeDouble_forKey_(a3, v9, @"kCMActivityEventDataCodingKeyRecoveryStart", self->_heartRateRecoveryStartTime);
+  objc_msgSend_encodeObject_forKey_(coder, a2, self->_startDate, @"kCCMActivityEventDataCodingKeyStartDate");
+  objc_msgSend_encodeInteger_forKey_(coder, v5, self->_eventType, @"kCMActivityEventDataCodingKeyEventType");
+  objc_msgSend_encodeInteger_forKey_(coder, v6, self->_action, @"kCMActivityEventDataCodingKeyAction");
+  objc_msgSend_encodeInteger_forKey_(coder, v7, self->_reason, @"kCMActivityEventDataCodingKeyReason");
+  objc_msgSend_encodeInteger_forKey_(coder, v8, self->_workoutType, @"kCMActivityEventDataCodingKeyWorkoutType");
+  objc_msgSend_encodeDouble_forKey_(coder, v9, @"kCMActivityEventDataCodingKeyRecoveryStart", self->_heartRateRecoveryStartTime);
   heartRateRecoveryEndTime = self->_heartRateRecoveryEndTime;
 
-  objc_msgSend_encodeDouble_forKey_(a3, v10, @"kCMActivityEventDataCodingKeyRecoveryEnd", heartRateRecoveryEndTime);
+  objc_msgSend_encodeDouble_forKey_(coder, v10, @"kCMActivityEventDataCodingKeyRecoveryEnd", heartRateRecoveryEndTime);
 }
 
-+ (id)eventTypeName:(int64_t)a3
++ (id)eventTypeName:(int64_t)name
 {
   v3 = @"WorkoutPrediction";
-  if (a3 != 1)
+  if (name != 1)
   {
     v3 = 0;
   }
 
-  if (a3)
+  if (name)
   {
     return v3;
   }
@@ -110,15 +110,15 @@
   }
 }
 
-+ (id)actionName:(int64_t)a3
++ (id)actionName:(int64_t)name
 {
   v3 = @"Stop";
-  if (a3 != 1)
+  if (name != 1)
   {
     v3 = 0;
   }
 
-  if (a3)
+  if (name)
   {
     return v3;
   }
@@ -129,16 +129,16 @@
   }
 }
 
-+ (id)reasonName:(int64_t)a3
++ (id)reasonName:(int64_t)name
 {
-  if (a3 > 0x16)
+  if (name > 0x16)
   {
     return 0;
   }
 
   else
   {
-    return off_1E7535E08[a3];
+    return off_1E7535E08[name];
   }
 }
 
@@ -164,9 +164,9 @@
   return v5;
 }
 
-- (CMActivityEventData)initWithBinarySampleRepresentation:(id)a3 metadata:(id)a4 timestamp:(double)a5
+- (CMActivityEventData)initWithBinarySampleRepresentation:(id)representation metadata:(id)metadata timestamp:(double)timestamp
 {
-  if (objc_msgSend_length(a3, a2, a3, a4, a5))
+  if (objc_msgSend_length(representation, a2, representation, metadata, timestamp))
   {
     v14.receiver = self;
     v14.super_class = CMActivityEventData;
@@ -175,7 +175,7 @@
     {
       v8 = MEMORY[0x1E696ACD0];
       v9 = objc_opt_class();
-      v11 = objc_msgSend_unarchivedObjectOfClass_fromData_error_(v8, v10, v9, a3, 0);
+      v11 = objc_msgSend_unarchivedObjectOfClass_fromData_error_(v8, v10, v9, representation, 0);
       if (v11)
       {
         v12 = v11;

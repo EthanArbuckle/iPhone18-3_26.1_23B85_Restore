@@ -1,40 +1,40 @@
 @interface ICCollaborationUIController
 + (ICCollaborationUIController)sharedInstance;
-+ (void)showSharingUIWithSanityChecksForFolder:(id)a3 presentingViewController:(id)a4 showSharingUIBlock:(id)a5;
++ (void)showSharingUIWithSanityChecksForFolder:(id)folder presentingViewController:(id)controller showSharingUIBlock:(id)block;
 - (ICAccount)account;
 - (ICCollaborationUIController)init;
-- (id)backgroundContextForCollaborationController:(id)a3;
-- (id)cloudSharingControllerForObject:(id)a3;
-- (id)eventReporterForURL:(id)a3;
-- (id)itemThumbnailDataForCloudSharingController:(id)a3;
-- (id)itemTitleForCloudSharingController:(id)a3;
-- (id)itemTypeForCloudSharingController:(id)a3;
-- (id)viewContextForCollaborationController:(id)a3;
-- (id)windowSceneForURL:(id)a3;
+- (id)backgroundContextForCollaborationController:(id)controller;
+- (id)cloudSharingControllerForObject:(id)object;
+- (id)eventReporterForURL:(id)l;
+- (id)itemThumbnailDataForCloudSharingController:(id)controller;
+- (id)itemTitleForCloudSharingController:(id)controller;
+- (id)itemTypeForCloudSharingController:(id)controller;
+- (id)viewContextForCollaborationController:(id)controller;
+- (id)windowSceneForURL:(id)l;
 - (void)_cloudSharingControllerDidActivateShowSharedFolder;
-- (void)_cloudSharingControllerDidModifyPrimarySwitch:(BOOL)a3;
-- (void)associateWindowScene:(id)a3 withURL:(id)a4;
-- (void)cloudSharingControllerDidSaveShare:(id)a3;
-- (void)cloudSharingControllerDidStopSharing:(id)a3;
-- (void)collaborationController:(id)a3 fetchShareMetadataWithURLs:(id)a4 completion:(id)a5;
-- (void)collaborationController:(id)a3 showQuotaExceededAlertIfNeededWithRecordID:(id)a4 accountID:(id)a5;
-- (void)collaborationController:(id)a3 userAcceptedInvitationWithShareMetadata:(id)a4 associatedObjectID:(id)a5;
-- (void)didFailToUpdateShareWithError:(id)a3;
-- (void)fetchAndAcceptShareMetadataWithURL:(id)a3 windowScene:(id)a4 managedObjectContext:(id)a5 alertBlock:(id)a6 showObjectBlock:(id)a7;
-- (void)notesCloudContextDidFetchShare:(id)a3;
-- (void)populateParticipantDetailsForCloudSharingController:(id)a3;
-- (void)presentFolderActivityViewControllerWithFolder:(id)a3 presentingViewController:(id)a4 sourceItem:(id)a5 sourceView:(id)a6 sourceRect:(CGRect)a7 completion:(id)a8;
-- (void)presentSendNoteActivityViewControllerWithPresentingWindow:(id)a3 presentingViewController:(id)a4 sourceItem:(id)a5 sourceView:(id)a6 sourceRect:(CGRect)a7 note:(id)a8 excludedTypes:(id)a9 eventReporter:(id)a10 didPresentActivityHandler:(id)a11;
-- (void)processShareAcceptanceWithMetadata:(id)a3 windowScene:(id)a4 managedObjectContext:(id)a5 alertBlock:(id)a6 showObjectBlock:(id)a7;
-- (void)showCloudSharingControllerForFolder:(id)a3 presentingViewController:(id)a4 popoverBarButtonItem:(id)a5 presented:(id)a6 dismissed:(id)a7;
-- (void)showCloudSharingControllerForNote:(id)a3 presentingViewController:(id)a4 popoverBarButtonItem:(id)a5 presented:(id)a6 dismissed:(id)a7;
-- (void)showFolderActivityViewControllerWithFolder:(id)a3 presentingViewController:(id)a4 sourceItem:(id)a5 sourceView:(id)a6 sourceRect:(CGRect)a7 itemProvider:(id)a8 completion:(id)a9;
-- (void)trackCollaborationActionAddPeopleForObject:(id)a3 share:(id)a4 isInviting:(BOOL)a5;
-- (void)trackCollaborationActionFirstShareForObject:(id)a3 share:(id)a4 isInviting:(BOOL)a5;
-- (void)trackCollaborationActionSecondCancelForObject:(id)a3 share:(id)a4 isInviting:(BOOL)a5;
-- (void)trackCollaborationActionSecondShareForObject:(id)a3 share:(id)a4 isInviting:(BOOL)a5;
-- (void)trackCollaborationNotificationAcceptanceForObject:(id)a3 shareURL:(id)a4;
-- (void)trackShareActionForNote:(id)a3 activityType:(id)a4 collaborationSelected:(BOOL)a5 countOfCollaboratorsAdded:(int64_t)a6 countOfCollaboratorsRemoved:(int64_t)a7 startInvitedCount:(int64_t)a8 startAcceptedCount:(int64_t)a9 endInvitedCount:(int64_t)a10 endAcceptedCount:(int64_t)a11;
+- (void)_cloudSharingControllerDidModifyPrimarySwitch:(BOOL)switch;
+- (void)associateWindowScene:(id)scene withURL:(id)l;
+- (void)cloudSharingControllerDidSaveShare:(id)share;
+- (void)cloudSharingControllerDidStopSharing:(id)sharing;
+- (void)collaborationController:(id)controller fetchShareMetadataWithURLs:(id)ls completion:(id)completion;
+- (void)collaborationController:(id)controller showQuotaExceededAlertIfNeededWithRecordID:(id)d accountID:(id)iD;
+- (void)collaborationController:(id)controller userAcceptedInvitationWithShareMetadata:(id)metadata associatedObjectID:(id)d;
+- (void)didFailToUpdateShareWithError:(id)error;
+- (void)fetchAndAcceptShareMetadataWithURL:(id)l windowScene:(id)scene managedObjectContext:(id)context alertBlock:(id)block showObjectBlock:(id)objectBlock;
+- (void)notesCloudContextDidFetchShare:(id)share;
+- (void)populateParticipantDetailsForCloudSharingController:(id)controller;
+- (void)presentFolderActivityViewControllerWithFolder:(id)folder presentingViewController:(id)controller sourceItem:(id)item sourceView:(id)view sourceRect:(CGRect)rect completion:(id)completion;
+- (void)presentSendNoteActivityViewControllerWithPresentingWindow:(id)window presentingViewController:(id)controller sourceItem:(id)item sourceView:(id)view sourceRect:(CGRect)rect note:(id)note excludedTypes:(id)types eventReporter:(id)self0 didPresentActivityHandler:(id)self1;
+- (void)processShareAcceptanceWithMetadata:(id)metadata windowScene:(id)scene managedObjectContext:(id)context alertBlock:(id)block showObjectBlock:(id)objectBlock;
+- (void)showCloudSharingControllerForFolder:(id)folder presentingViewController:(id)controller popoverBarButtonItem:(id)item presented:(id)presented dismissed:(id)dismissed;
+- (void)showCloudSharingControllerForNote:(id)note presentingViewController:(id)controller popoverBarButtonItem:(id)item presented:(id)presented dismissed:(id)dismissed;
+- (void)showFolderActivityViewControllerWithFolder:(id)folder presentingViewController:(id)controller sourceItem:(id)item sourceView:(id)view sourceRect:(CGRect)rect itemProvider:(id)provider completion:(id)completion;
+- (void)trackCollaborationActionAddPeopleForObject:(id)object share:(id)share isInviting:(BOOL)inviting;
+- (void)trackCollaborationActionFirstShareForObject:(id)object share:(id)share isInviting:(BOOL)inviting;
+- (void)trackCollaborationActionSecondCancelForObject:(id)object share:(id)share isInviting:(BOOL)inviting;
+- (void)trackCollaborationActionSecondShareForObject:(id)object share:(id)share isInviting:(BOOL)inviting;
+- (void)trackCollaborationNotificationAcceptanceForObject:(id)object shareURL:(id)l;
+- (void)trackShareActionForNote:(id)note activityType:(id)type collaborationSelected:(BOOL)selected countOfCollaboratorsAdded:(int64_t)added countOfCollaboratorsRemoved:(int64_t)removed startInvitedCount:(int64_t)count startAcceptedCount:(int64_t)acceptedCount endInvitedCount:(int64_t)self0 endAcceptedCount:(int64_t)self1;
 @end
 
 @implementation ICCollaborationUIController
@@ -68,42 +68,42 @@
   return v2;
 }
 
-- (void)associateWindowScene:(id)a3 withURL:(id)a4
+- (void)associateWindowScene:(id)scene withURL:(id)l
 {
-  v12 = a3;
-  v6 = a4;
-  if (v6)
+  sceneCopy = scene;
+  lCopy = l;
+  if (lCopy)
   {
-    v7 = v6;
-    v8 = [[NSURLComponents alloc] initWithURL:v6 resolvingAgainstBaseURL:0];
+    v7 = lCopy;
+    v8 = [[NSURLComponents alloc] initWithURL:lCopy resolvingAgainstBaseURL:0];
     [v8 setQuery:0];
     v9 = [v8 URL];
 
-    v10 = [(ICCollaborationUIController *)self windowScenesByObjectID];
-    objc_sync_enter(v10);
-    v11 = [(ICCollaborationUIController *)self windowScenesByObjectID];
-    [v11 setObject:v12 forKey:v9];
+    windowScenesByObjectID = [(ICCollaborationUIController *)self windowScenesByObjectID];
+    objc_sync_enter(windowScenesByObjectID);
+    windowScenesByObjectID2 = [(ICCollaborationUIController *)self windowScenesByObjectID];
+    [windowScenesByObjectID2 setObject:sceneCopy forKey:v9];
 
-    objc_sync_exit(v10);
+    objc_sync_exit(windowScenesByObjectID);
   }
 }
 
-- (id)windowSceneForURL:(id)a3
+- (id)windowSceneForURL:(id)l
 {
-  v4 = a3;
-  if (v4)
+  lCopy = l;
+  if (lCopy)
   {
-    v5 = v4;
-    v6 = [[NSURLComponents alloc] initWithURL:v4 resolvingAgainstBaseURL:0];
+    v5 = lCopy;
+    v6 = [[NSURLComponents alloc] initWithURL:lCopy resolvingAgainstBaseURL:0];
     [v6 setQuery:0];
     v7 = [v6 URL];
 
-    v8 = [(ICCollaborationUIController *)self windowScenesByObjectID];
-    objc_sync_enter(v8);
-    v9 = [(ICCollaborationUIController *)self windowScenesByObjectID];
-    v10 = [v9 objectForKey:v7];
+    windowScenesByObjectID = [(ICCollaborationUIController *)self windowScenesByObjectID];
+    objc_sync_enter(windowScenesByObjectID);
+    windowScenesByObjectID2 = [(ICCollaborationUIController *)self windowScenesByObjectID];
+    v10 = [windowScenesByObjectID2 objectForKey:v7];
 
-    objc_sync_exit(v8);
+    objc_sync_exit(windowScenesByObjectID);
   }
 
   else
@@ -114,9 +114,9 @@
   return v10;
 }
 
-- (id)eventReporterForURL:(id)a3
+- (id)eventReporterForURL:(id)l
 {
-  if (a3)
+  if (l)
   {
     v3 = [(ICCollaborationUIController *)self windowSceneForURL:?];
     v4 = [ICNAEventReporter alloc];
@@ -133,33 +133,33 @@
 
 - (ICAccount)account
 {
-  v3 = [(ICCollaborationUIController *)self note];
-  v4 = [v3 folder];
-  v5 = [v4 account];
-  v6 = v5;
-  if (v5)
+  note = [(ICCollaborationUIController *)self note];
+  folder = [note folder];
+  account = [folder account];
+  v6 = account;
+  if (account)
   {
-    v7 = v5;
+    account2 = account;
   }
 
   else
   {
-    v8 = [(ICCollaborationUIController *)self folder];
-    v7 = [v8 account];
+    folder2 = [(ICCollaborationUIController *)self folder];
+    account2 = [folder2 account];
   }
 
-  return v7;
+  return account2;
 }
 
-- (id)cloudSharingControllerForObject:(id)a3
+- (id)cloudSharingControllerForObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v5 = os_log_create("com.apple.notes", "Collaboration");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [v4 shortLoggingDescription];
+    shortLoggingDescription = [objectCopy shortLoggingDescription];
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v6;
+    *(&buf + 4) = shortLoggingDescription;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Creating cloud sharing controller for %@", &buf, 0xCu);
   }
 
@@ -169,9 +169,9 @@
   v20 = sub_1000BA848;
   v21 = sub_1000BA858;
   v22 = 0;
-  v7 = [v4 cloudAccount];
-  v8 = [v7 identifier];
-  v9 = [v8 length] == 0;
+  cloudAccount = [objectCopy cloudAccount];
+  identifier = [cloudAccount identifier];
+  v9 = [identifier length] == 0;
 
   if (v9)
   {
@@ -190,10 +190,10 @@
     v13[1] = 3221225472;
     v13[2] = sub_1000BA860;
     v13[3] = &unk_100645928;
-    v14 = v7;
-    v16 = self;
+    v14 = cloudAccount;
+    selfCopy = self;
     p_buf = &buf;
-    v15 = v4;
+    v15 = objectCopy;
     [v14 performBlockInPersonaContext:v13];
     v10 = *(*(&buf + 1) + 40);
   }
@@ -203,24 +203,24 @@
   return v10;
 }
 
-- (void)showCloudSharingControllerForFolder:(id)a3 presentingViewController:(id)a4 popoverBarButtonItem:(id)a5 presented:(id)a6 dismissed:(id)a7
+- (void)showCloudSharingControllerForFolder:(id)folder presentingViewController:(id)controller popoverBarButtonItem:(id)item presented:(id)presented dismissed:(id)dismissed
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  [(ICCollaborationUIController *)self setPresentingBarButtonItem:v14];
-  [(ICCollaborationUIController *)self setPresentingViewController:v13];
-  [(ICCollaborationUIController *)self setFolder:v12];
+  folderCopy = folder;
+  controllerCopy = controller;
+  itemCopy = item;
+  presentedCopy = presented;
+  dismissedCopy = dismissed;
+  [(ICCollaborationUIController *)self setPresentingBarButtonItem:itemCopy];
+  [(ICCollaborationUIController *)self setPresentingViewController:controllerCopy];
+  [(ICCollaborationUIController *)self setFolder:folderCopy];
   [(ICCollaborationUIController *)self setNote:0];
-  v17 = [v12 account];
-  v18 = [v17 identifier];
+  account = [folderCopy account];
+  identifier = [account identifier];
 
-  v19 = [v13 ic_windowScene];
-  v20 = [v12 objectID];
-  v21 = [v20 URIRepresentation];
-  [(ICCollaborationUIController *)self associateWindowScene:v19 withURL:v21];
+  ic_windowScene = [controllerCopy ic_windowScene];
+  objectID = [folderCopy objectID];
+  uRIRepresentation = [objectID URIRepresentation];
+  [(ICCollaborationUIController *)self associateWindowScene:ic_windowScene withURL:uRIRepresentation];
 
   v22 = objc_opt_class();
   v29[0] = _NSConcreteStackBlock;
@@ -228,84 +228,84 @@
   v29[2] = sub_1000BB134;
   v29[3] = &unk_100648458;
   v29[4] = self;
-  v30 = v12;
-  v31 = v18;
-  v32 = v14;
-  v33 = v13;
-  v34 = v16;
-  v35 = v15;
-  v23 = v15;
-  v24 = v13;
-  v25 = v14;
-  v26 = v16;
-  v27 = v18;
-  v28 = v12;
+  v30 = folderCopy;
+  v31 = identifier;
+  v32 = itemCopy;
+  v33 = controllerCopy;
+  v34 = dismissedCopy;
+  v35 = presentedCopy;
+  v23 = presentedCopy;
+  v24 = controllerCopy;
+  v25 = itemCopy;
+  v26 = dismissedCopy;
+  v27 = identifier;
+  v28 = folderCopy;
   [v22 showSharingUIWithSanityChecksForFolder:v28 presentingViewController:v24 showSharingUIBlock:v29];
 }
 
-- (void)showCloudSharingControllerForNote:(id)a3 presentingViewController:(id)a4 popoverBarButtonItem:(id)a5 presented:(id)a6 dismissed:(id)a7
+- (void)showCloudSharingControllerForNote:(id)note presentingViewController:(id)controller popoverBarButtonItem:(id)item presented:(id)presented dismissed:(id)dismissed
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  [(ICCollaborationUIController *)self setPresentingBarButtonItem:v14];
-  [(ICCollaborationUIController *)self setPresentingViewController:v13];
-  [(ICCollaborationUIController *)self setNote:v12];
+  noteCopy = note;
+  controllerCopy = controller;
+  itemCopy = item;
+  presentedCopy = presented;
+  dismissedCopy = dismissed;
+  [(ICCollaborationUIController *)self setPresentingBarButtonItem:itemCopy];
+  [(ICCollaborationUIController *)self setPresentingViewController:controllerCopy];
+  [(ICCollaborationUIController *)self setNote:noteCopy];
   [(ICCollaborationUIController *)self setFolder:0];
-  v17 = [(ICCollaborationUIController *)self account];
-  v18 = [v13 ic_windowScene];
-  v19 = [v12 objectID];
-  v20 = [v19 URIRepresentation];
-  [(ICCollaborationUIController *)self associateWindowScene:v18 withURL:v20];
+  account = [(ICCollaborationUIController *)self account];
+  ic_windowScene = [controllerCopy ic_windowScene];
+  objectID = [noteCopy objectID];
+  uRIRepresentation = [objectID URIRepresentation];
+  [(ICCollaborationUIController *)self associateWindowScene:ic_windowScene withURL:uRIRepresentation];
 
   v21 = +[ICCollaborationController sharedInstance];
-  v22 = [(ICCollaborationUIController *)self note];
+  note = [(ICCollaborationUIController *)self note];
   v29[0] = _NSConcreteStackBlock;
   v29[1] = 3221225472;
   v29[2] = sub_1000BB6C0;
   v29[3] = &unk_100648458;
-  v30 = v17;
-  v31 = self;
-  v32 = v12;
-  v33 = v14;
-  v34 = v13;
-  v35 = v16;
-  v36 = v15;
-  v23 = v15;
-  v24 = v13;
-  v25 = v14;
-  v26 = v16;
-  v27 = v12;
-  v28 = v17;
-  [v21 fetchShareIfNecessaryForObject:v22 completionHandler:v29];
+  v30 = account;
+  selfCopy = self;
+  v32 = noteCopy;
+  v33 = itemCopy;
+  v34 = controllerCopy;
+  v35 = dismissedCopy;
+  v36 = presentedCopy;
+  v23 = presentedCopy;
+  v24 = controllerCopy;
+  v25 = itemCopy;
+  v26 = dismissedCopy;
+  v27 = noteCopy;
+  v28 = account;
+  [v21 fetchShareIfNecessaryForObject:note completionHandler:v29];
 }
 
-- (void)didFailToUpdateShareWithError:(id)a3
+- (void)didFailToUpdateShareWithError:(id)error
 {
-  v4 = a3;
-  v5 = [(ICCollaborationUIController *)self presentingViewController];
+  errorCopy = error;
+  presentingViewController = [(ICCollaborationUIController *)self presentingViewController];
 
-  if (!v5)
+  if (!presentingViewController)
   {
     goto LABEL_11;
   }
 
-  v6 = v4;
-  v7 = [v6 domain];
-  if ([v7 isEqualToString:CKErrorDomain])
+  v6 = errorCopy;
+  domain = [v6 domain];
+  if ([domain isEqualToString:CKErrorDomain])
   {
     goto LABEL_5;
   }
 
-  v8 = [v6 userInfo];
-  v9 = [v8 objectForKeyedSubscript:NSUnderlyingErrorKey];
+  userInfo = [v6 userInfo];
+  v9 = [userInfo objectForKeyedSubscript:NSUnderlyingErrorKey];
 
   if (v9)
   {
-    v7 = [v6 userInfo];
-    v10 = [v7 objectForKeyedSubscript:NSUnderlyingErrorKey];
+    domain = [v6 userInfo];
+    v10 = [domain objectForKeyedSubscript:NSUnderlyingErrorKey];
 
     v6 = v10;
 LABEL_5:
@@ -335,8 +335,8 @@ LABEL_5:
 
   if ([v6 code] == 2)
   {
-    v14 = [v6 userInfo];
-    v15 = [v14 objectForKeyedSubscript:CKPartialErrorsByItemIDKey];
+    userInfo2 = [v6 userInfo];
+    v15 = [userInfo2 objectForKeyedSubscript:CKPartialErrorsByItemIDKey];
 
     v19[0] = _NSConcreteStackBlock;
     v19[1] = 3221225472;
@@ -349,8 +349,8 @@ LABEL_5:
 
   v16 = v27[5];
   v17 = v21[5];
-  v18 = [(ICCollaborationUIController *)self presentingViewController];
-  [UIAlertController ic_showAlertWithTitle:v16 message:v17 viewController:v18];
+  presentingViewController2 = [(ICCollaborationUIController *)self presentingViewController];
+  [UIAlertController ic_showAlertWithTitle:v16 message:v17 viewController:presentingViewController2];
 
   _Block_object_dispose(&v20, 8);
   _Block_object_dispose(&v26, 8);
@@ -358,45 +358,45 @@ LABEL_5:
 LABEL_11:
 }
 
-- (void)presentSendNoteActivityViewControllerWithPresentingWindow:(id)a3 presentingViewController:(id)a4 sourceItem:(id)a5 sourceView:(id)a6 sourceRect:(CGRect)a7 note:(id)a8 excludedTypes:(id)a9 eventReporter:(id)a10 didPresentActivityHandler:(id)a11
+- (void)presentSendNoteActivityViewControllerWithPresentingWindow:(id)window presentingViewController:(id)controller sourceItem:(id)item sourceView:(id)view sourceRect:(CGRect)rect note:(id)note excludedTypes:(id)types eventReporter:(id)self0 didPresentActivityHandler:(id)self1
 {
-  height = a7.size.height;
-  width = a7.size.width;
-  y = a7.origin.y;
-  x = a7.origin.x;
-  v20 = a3;
-  v21 = a4;
-  v22 = a5;
-  v23 = a6;
-  v24 = a8;
-  v25 = a10;
-  v26 = a11;
-  if (v22 | v23)
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  windowCopy = window;
+  controllerCopy = controller;
+  itemCopy = item;
+  viewCopy = view;
+  noteCopy = note;
+  reporterCopy = reporter;
+  handlerCopy = handler;
+  if (itemCopy | viewCopy)
   {
-    [v21 ic_windowScene];
-    v27 = v33 = v20;
-    v28 = [v24 objectID];
-    v29 = [v28 URIRepresentation];
-    [(ICCollaborationUIController *)self associateWindowScene:v27 withURL:v29];
+    [controllerCopy ic_windowScene];
+    v27 = v33 = windowCopy;
+    objectID = [noteCopy objectID];
+    uRIRepresentation = [objectID URIRepresentation];
+    [(ICCollaborationUIController *)self associateWindowScene:v27 withURL:uRIRepresentation];
 
-    v30 = [v24 visibleTopLevelAttachments];
-    v31 = [v30 allObjects];
+    visibleTopLevelAttachments = [noteCopy visibleTopLevelAttachments];
+    allObjects = [visibleTopLevelAttachments allObjects];
     v34[0] = _NSConcreteStackBlock;
     v34[1] = 3221225472;
     v34[2] = sub_1000BC3D8;
     v34[3] = &unk_100648520;
-    v35 = v24;
-    v36 = v21;
-    v37 = v25;
-    v38 = v22;
-    v39 = v23;
+    v35 = noteCopy;
+    v36 = controllerCopy;
+    v37 = reporterCopy;
+    v38 = itemCopy;
+    v39 = viewCopy;
     v41 = x;
     v42 = y;
     v43 = width;
     v44 = height;
-    v40 = v26;
-    v20 = v33;
-    [ICDocCamPDFGenerator generatePDFsIfNecessaryForGalleryAttachments:v31 displayWindow:v33 presentingViewController:v36 completionHandler:v34];
+    v40 = handlerCopy;
+    windowCopy = v33;
+    [ICDocCamPDFGenerator generatePDFsIfNecessaryForGalleryAttachments:allObjects displayWindow:v33 presentingViewController:v36 completionHandler:v34];
 
     v32 = v35;
   }
@@ -411,36 +411,36 @@ LABEL_11:
   }
 }
 
-- (void)presentFolderActivityViewControllerWithFolder:(id)a3 presentingViewController:(id)a4 sourceItem:(id)a5 sourceView:(id)a6 sourceRect:(CGRect)a7 completion:(id)a8
+- (void)presentFolderActivityViewControllerWithFolder:(id)folder presentingViewController:(id)controller sourceItem:(id)item sourceView:(id)view sourceRect:(CGRect)rect completion:(id)completion
 {
-  height = a7.size.height;
-  width = a7.size.width;
-  y = a7.origin.y;
-  x = a7.origin.x;
-  v17 = a3;
-  v18 = a4;
-  v19 = a5;
-  v20 = a6;
-  v21 = a8;
-  v22 = v21;
-  if (v19 | v20)
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  folderCopy = folder;
+  controllerCopy = controller;
+  itemCopy = item;
+  viewCopy = view;
+  completionCopy = completion;
+  v22 = completionCopy;
+  if (itemCopy | viewCopy)
   {
-    v23 = [v18 ic_windowScene];
-    v24 = [v17 objectID];
-    v25 = [v24 URIRepresentation];
-    [(ICCollaborationUIController *)self associateWindowScene:v23 withURL:v25];
+    ic_windowScene = [controllerCopy ic_windowScene];
+    objectID = [folderCopy objectID];
+    uRIRepresentation = [objectID URIRepresentation];
+    [(ICCollaborationUIController *)self associateWindowScene:ic_windowScene withURL:uRIRepresentation];
 
     v50[0] = _NSConcreteStackBlock;
     v50[1] = 3221225472;
     v50[2] = sub_1000BCDD4;
     v50[3] = &unk_100648570;
     v50[4] = self;
-    v26 = v17;
+    v26 = folderCopy;
     v51 = v26;
-    v39 = v18;
+    v39 = controllerCopy;
     v52 = v39;
-    v53 = v19;
-    v54 = v20;
+    v53 = itemCopy;
+    v54 = viewCopy;
     v56 = x;
     v57 = y;
     v58 = width;
@@ -510,8 +510,8 @@ LABEL_15:
     v45 = v34;
     v46 = v27;
     v35 = objc_retainBlock(v44);
-    v38 = [v34 rootSharedNotesIncludingChildFolders];
-    v37 = [v34 rootSharedFoldersInDescendantsIncludingSelf];
+    rootSharedNotesIncludingChildFolders = [v34 rootSharedNotesIncludingChildFolders];
+    rootSharedFoldersInDescendantsIncludingSelf = [v34 rootSharedFoldersInDescendantsIncludingSelf];
     v40[0] = _NSConcreteStackBlock;
     v40[1] = 3221225472;
     v40[2] = sub_1000BD230;
@@ -520,51 +520,51 @@ LABEL_15:
     v42 = v35;
     v43 = v30;
     v36 = v35;
-    [ICMoveAlertUtilities postAlertForSharingFolderWithSharedNotes:v38 sharedSubfolders:v37 presentingViewController:v39 shareHandler:v40 cancelHandler:0];
+    [ICMoveAlertUtilities postAlertForSharingFolderWithSharedNotes:rootSharedNotesIncludingChildFolders sharedSubfolders:rootSharedFoldersInDescendantsIncludingSelf presentingViewController:v39 shareHandler:v40 cancelHandler:0];
 
     goto LABEL_15;
   }
 
-  if (v21)
+  if (completionCopy)
   {
-    (*(v21 + 2))(v21);
+    (*(completionCopy + 2))(completionCopy);
   }
 
 LABEL_16:
 }
 
-- (void)showFolderActivityViewControllerWithFolder:(id)a3 presentingViewController:(id)a4 sourceItem:(id)a5 sourceView:(id)a6 sourceRect:(CGRect)a7 itemProvider:(id)a8 completion:(id)a9
+- (void)showFolderActivityViewControllerWithFolder:(id)folder presentingViewController:(id)controller sourceItem:(id)item sourceView:(id)view sourceRect:(CGRect)rect itemProvider:(id)provider completion:(id)completion
 {
-  height = a7.size.height;
-  width = a7.size.width;
-  y = a7.origin.y;
-  x = a7.origin.x;
-  v18 = a3;
-  v19 = a4;
-  v20 = a5;
-  v21 = a6;
-  v22 = a8;
-  v23 = a9;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  folderCopy = folder;
+  controllerCopy = controller;
+  itemCopy = item;
+  viewCopy = view;
+  providerCopy = provider;
+  completionCopy = completion;
   v43 = 0;
   v44 = &v43;
   v45 = 0x3032000000;
   v46 = sub_1000BA848;
   v47 = sub_1000BA858;
   v48 = 0;
-  v24 = [v18 managedObjectContext];
+  managedObjectContext = [folderCopy managedObjectContext];
   v40[0] = _NSConcreteStackBlock;
   v40[1] = 3221225472;
   v40[2] = sub_1000BD6A0;
   v40[3] = &unk_1006463C8;
   v42 = &v43;
-  v25 = v18;
+  v25 = folderCopy;
   v41 = v25;
-  [v24 performBlockAndWait:v40];
+  [managedObjectContext performBlockAndWait:v40];
 
   v26 = [ICActivityItemProvider alloc];
   v27 = v44[5];
   v28 = +[ICCollaborationController shareSheetFolderThumbnailImage];
-  v29 = [(ICActivityItemProvider *)v26 initWithItemProvider:v22 title:v27 image:v28];
+  v29 = [(ICActivityItemProvider *)v26 initWithItemProvider:providerCopy title:v27 image:v28];
 
   v30 = [UIActivityViewController alloc];
   v50 = v29;
@@ -577,8 +577,8 @@ LABEL_16:
   v33 = [NSArray arrayWithObjects:v49 count:3];
   [v32 setExcludedActivityTypes:v33];
 
-  v34 = [v25 account];
-  [v32 setIsContentManaged:{objc_msgSend(v34, "isManaged")}];
+  account = [v25 account];
+  [v32 setIsContentManaged:{objc_msgSend(account, "isManaged")}];
 
   if (+[UIDevice ic_isVision])
   {
@@ -598,29 +598,29 @@ LABEL_16:
   v36 = v25;
   v39 = v36;
   [v32 setCompletionWithItemsHandler:v38];
-  v37 = [v32 popoverPresentationController];
-  [v37 setSourceItem:v20];
-  [v37 setSourceView:v21];
-  [v37 setSourceRect:{x, y, width, height}];
-  [v37 setPermittedArrowDirections:3];
-  [v37 _setIgnoreBarButtonItemSiblings:1];
-  [v19 ic_replacePresentedViewControllerWithViewController:v32 animated:1 completion:v23];
+  popoverPresentationController = [v32 popoverPresentationController];
+  [popoverPresentationController setSourceItem:itemCopy];
+  [popoverPresentationController setSourceView:viewCopy];
+  [popoverPresentationController setSourceRect:{x, y, width, height}];
+  [popoverPresentationController setPermittedArrowDirections:3];
+  [popoverPresentationController _setIgnoreBarButtonItemSiblings:1];
+  [controllerCopy ic_replacePresentedViewControllerWithViewController:v32 animated:1 completion:completionCopy];
 
   _Block_object_dispose(&v43, 8);
 }
 
-+ (void)showSharingUIWithSanityChecksForFolder:(id)a3 presentingViewController:(id)a4 showSharingUIBlock:(id)a5
++ (void)showSharingUIWithSanityChecksForFolder:(id)folder presentingViewController:(id)controller showSharingUIBlock:(id)block
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  folderCopy = folder;
+  controllerCopy = controller;
+  blockCopy = block;
   v25[0] = _NSConcreteStackBlock;
   v25[1] = 3221225472;
   v25[2] = sub_1000BD998;
   v25[3] = &unk_100645E80;
-  v10 = v7;
+  v10 = folderCopy;
   v26 = v10;
-  v11 = v9;
+  v11 = blockCopy;
   v27 = v11;
   v12 = objc_retainBlock(v25);
   v13 = +[NSMutableArray array];
@@ -634,7 +634,7 @@ LABEL_16:
 
     if (v14 == 4)
     {
-      [ICMoveAlertUtilities postAlertForSharingFolderContainingLockedOrJoinedRootObjectsWithGuiltyObjects:v13 presentingViewController:v8 completionHandler:0];
+      [ICMoveAlertUtilities postAlertForSharingFolderContainingLockedOrJoinedRootObjectsWithGuiltyObjects:v13 presentingViewController:controllerCopy completionHandler:0];
       goto LABEL_9;
     }
 
@@ -647,9 +647,9 @@ LABEL_8:
     v23 = v15;
     v24 = v12;
     v16 = objc_retainBlock(&v19);
-    v17 = [v15 rootSharedNotesIncludingChildFolders];
-    v18 = [v15 rootSharedFoldersInDescendantsIncludingSelf];
-    [ICMoveAlertUtilities postAlertForSharingFolderWithSharedNotes:v17 sharedSubfolders:v18 presentingViewController:v8 shareHandler:v16 cancelHandler:0];
+    rootSharedNotesIncludingChildFolders = [v15 rootSharedNotesIncludingChildFolders];
+    rootSharedFoldersInDescendantsIncludingSelf = [v15 rootSharedFoldersInDescendantsIncludingSelf];
+    [ICMoveAlertUtilities postAlertForSharingFolderWithSharedNotes:rootSharedNotesIncludingChildFolders sharedSubfolders:rootSharedFoldersInDescendantsIncludingSelf presentingViewController:controllerCopy shareHandler:v16 cancelHandler:0];
 
     goto LABEL_9;
   }
@@ -668,47 +668,47 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)cloudSharingControllerDidSaveShare:(id)a3
+- (void)cloudSharingControllerDidSaveShare:(id)share
 {
-  v4 = a3;
-  v5 = [v4 share];
-  v6 = [(ICCollaborationUIController *)self account];
+  shareCopy = share;
+  share = [shareCopy share];
+  account = [(ICCollaborationUIController *)self account];
   v7 = os_log_create("com.apple.notes", "Collaboration");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v5 ic_loggingDescription];
+    ic_loggingDescription = [share ic_loggingDescription];
     v11 = 138412290;
-    v12 = v8;
+    v12 = ic_loggingDescription;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Cloud sharing controller did save share: %@", &v11, 0xCu);
   }
 
   v9 = +[ICCollaborationController sharedInstance];
-  v10 = [v6 identifier];
-  [v9 didSaveShare:v5 accountID:v10];
+  identifier = [account identifier];
+  [v9 didSaveShare:share accountID:identifier];
 
-  [(ICCollaborationUIController *)self populateParticipantDetailsForCloudSharingController:v4];
+  [(ICCollaborationUIController *)self populateParticipantDetailsForCloudSharingController:shareCopy];
 }
 
-- (void)populateParticipantDetailsForCloudSharingController:(id)a3
+- (void)populateParticipantDetailsForCloudSharingController:(id)controller
 {
-  v27 = a3;
-  v4 = [v27 share];
-  v29 = self;
-  v5 = [(ICCollaborationUIController *)self presentingViewController];
-  v6 = [v5 traitCollection];
-  v28 = [v6 ic_isDark];
+  controllerCopy = controller;
+  share = [controllerCopy share];
+  selfCopy = self;
+  presentingViewController = [(ICCollaborationUIController *)self presentingViewController];
+  traitCollection = [presentingViewController traitCollection];
+  ic_isDark = [traitCollection ic_isDark];
 
   v7 = [NSMutableDictionary alloc];
-  v8 = [v4 participants];
-  v9 = [v7 initWithCapacity:{objc_msgSend(v8, "count")}];
+  participants = [share participants];
+  v9 = [v7 initWithCapacity:{objc_msgSend(participants, "count")}];
 
   v32 = 0u;
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v26 = v4;
-  v10 = [v4 participants];
-  v11 = [v10 countByEnumeratingWithState:&v30 objects:v34 count:16];
+  v26 = share;
+  participants2 = [share participants];
+  v11 = [participants2 countByEnumeratingWithState:&v30 objects:v34 count:16];
   if (v11)
   {
     v12 = v11;
@@ -719,150 +719,150 @@ LABEL_9:
       {
         if (*v31 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(participants2);
         }
 
         v15 = *(*(&v30 + 1) + 8 * i);
         if ([v15 acceptanceStatus] == 2)
         {
           v16 = objc_alloc_init(_UIShareParticipantDetails);
-          v17 = [v15 userIdentity];
-          v18 = [v17 userRecordID];
-          v19 = [v18 recordName];
-          [v16 setParticipantID:v19];
+          userIdentity = [v15 userIdentity];
+          userRecordID = [userIdentity userRecordID];
+          recordName = [userRecordID recordName];
+          [v16 setParticipantID:recordName];
 
           [v16 setDetailText:0];
-          v20 = [v16 participantID];
-          v21 = [(ICCollaborationUIController *)v29 note];
-          v22 = [ICCollaborationController highlightColorForUserID:v20 inNote:v21 isDark:v28];
+          participantID = [v16 participantID];
+          note = [(ICCollaborationUIController *)selfCopy note];
+          v22 = [ICCollaborationController highlightColorForUserID:participantID inNote:note isDark:ic_isDark];
           [v16 setParticipantColor:v22];
 
-          v23 = [v15 userIdentity];
-          v24 = [v23 userRecordID];
-          v25 = [v24 recordName];
-          [v9 setObject:v16 forKey:v25];
+          userIdentity2 = [v15 userIdentity];
+          userRecordID2 = [userIdentity2 userRecordID];
+          recordName2 = [userRecordID2 recordName];
+          [v9 setObject:v16 forKey:recordName2];
         }
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v30 objects:v34 count:16];
+      v12 = [participants2 countByEnumeratingWithState:&v30 objects:v34 count:16];
     }
 
     while (v12);
   }
 
-  [v27 _setParticipantDetails:v9];
+  [controllerCopy _setParticipantDetails:v9];
 }
 
-- (void)cloudSharingControllerDidStopSharing:(id)a3
+- (void)cloudSharingControllerDidStopSharing:(id)sharing
 {
-  v4 = [a3 share];
-  v5 = [(ICCollaborationUIController *)self account];
+  share = [sharing share];
+  account = [(ICCollaborationUIController *)self account];
   v6 = os_log_create("com.apple.notes", "Collaboration");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v4 ic_loggingDescription];
+    ic_loggingDescription = [share ic_loggingDescription];
     v11 = 138412290;
-    v12 = v7;
+    v12 = ic_loggingDescription;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Cloud sharing controller did stop sharing: %@", &v11, 0xCu);
   }
 
   v8 = +[ICCollaborationController sharedInstance];
-  v9 = [v4 recordID];
-  v10 = [v5 identifier];
-  [v8 didStopSharing:v4 recordID:v9 accountID:v10];
+  recordID = [share recordID];
+  identifier = [account identifier];
+  [v8 didStopSharing:share recordID:recordID accountID:identifier];
 }
 
-- (id)itemThumbnailDataForCloudSharingController:(id)a3
+- (id)itemThumbnailDataForCloudSharingController:(id)controller
 {
-  v4 = [(ICCollaborationUIController *)self note];
+  note = [(ICCollaborationUIController *)self note];
 
-  if (v4)
+  if (note)
   {
     v5 = +[ICCollaborationController shareSheetNoteThumbnailImage];
 LABEL_5:
     v7 = v5;
-    v8 = [v5 ic_PNGData];
+    ic_PNGData = [v5 ic_PNGData];
 
     goto LABEL_6;
   }
 
-  v6 = [(ICCollaborationUIController *)self folder];
+  folder = [(ICCollaborationUIController *)self folder];
 
-  if (v6)
+  if (folder)
   {
     v5 = +[ICCollaborationController shareSheetFolderThumbnailImage];
     goto LABEL_5;
   }
 
-  v8 = 0;
+  ic_PNGData = 0;
 LABEL_6:
 
-  return v8;
+  return ic_PNGData;
 }
 
-- (id)itemTypeForCloudSharingController:(id)a3
+- (id)itemTypeForCloudSharingController:(id)controller
 {
-  v4 = [(ICCollaborationUIController *)self note];
-  v5 = [v4 shareType];
-  v6 = v5;
-  if (v5)
+  note = [(ICCollaborationUIController *)self note];
+  shareType = [note shareType];
+  v6 = shareType;
+  if (shareType)
   {
-    v7 = v5;
+    shareType2 = shareType;
   }
 
   else
   {
-    v8 = [(ICCollaborationUIController *)self folder];
-    v7 = [v8 shareType];
+    folder = [(ICCollaborationUIController *)self folder];
+    shareType2 = [folder shareType];
   }
 
-  return v7;
+  return shareType2;
 }
 
-- (id)itemTitleForCloudSharingController:(id)a3
+- (id)itemTitleForCloudSharingController:(id)controller
 {
-  v4 = [(ICCollaborationUIController *)self note];
+  note = [(ICCollaborationUIController *)self note];
 
-  if (v4)
+  if (note)
   {
-    v5 = [(ICCollaborationUIController *)self note];
-    v6 = [v5 shareTitle];
+    note2 = [(ICCollaborationUIController *)self note];
+    shareTitle = [note2 shareTitle];
 LABEL_5:
 
     goto LABEL_6;
   }
 
-  v7 = [(ICCollaborationUIController *)self folder];
+  folder = [(ICCollaborationUIController *)self folder];
 
-  if (v7)
+  if (folder)
   {
-    v5 = +[NSBundle mainBundle];
-    v8 = [v5 localizedStringForKey:@"Share Folder: %@" value:&stru_100661CF0 table:0];
-    v9 = [(ICCollaborationUIController *)self folder];
-    v10 = [v9 shareTitle];
-    v6 = [NSString localizedStringWithFormat:v8, v10];
+    note2 = +[NSBundle mainBundle];
+    v8 = [note2 localizedStringForKey:@"Share Folder: %@" value:&stru_100661CF0 table:0];
+    folder2 = [(ICCollaborationUIController *)self folder];
+    shareTitle2 = [folder2 shareTitle];
+    shareTitle = [NSString localizedStringWithFormat:v8, shareTitle2];
 
     goto LABEL_5;
   }
 
-  v6 = 0;
+  shareTitle = 0;
 LABEL_6:
 
-  return v6;
+  return shareTitle;
 }
 
-- (void)_cloudSharingControllerDidModifyPrimarySwitch:(BOOL)a3
+- (void)_cloudSharingControllerDidModifyPrimarySwitch:(BOOL)switch
 {
-  v3 = a3;
+  switchCopy = switch;
   v5 = os_log_create("com.apple.notes", "Collaboration");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    sub_1004DD958(v3, v5);
+    sub_1004DD958(switchCopy, v5);
   }
 
-  v6 = [(ICCollaborationUIController *)self note];
-  v7 = [v6 recordID];
-  [ICShareNotifier setShouldPreventNotifications:v3 forRecordID:v7];
+  note = [(ICCollaborationUIController *)self note];
+  recordID = [note recordID];
+  [ICShareNotifier setShouldPreventNotifications:switchCopy forRecordID:recordID];
 }
 
 - (void)_cloudSharingControllerDidActivateShowSharedFolder
@@ -877,17 +877,17 @@ LABEL_6:
   +[CATransaction commit];
 }
 
-- (void)fetchAndAcceptShareMetadataWithURL:(id)a3 windowScene:(id)a4 managedObjectContext:(id)a5 alertBlock:(id)a6 showObjectBlock:(id)a7
+- (void)fetchAndAcceptShareMetadataWithURL:(id)l windowScene:(id)scene managedObjectContext:(id)context alertBlock:(id)block showObjectBlock:(id)objectBlock
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  if (v12)
+  lCopy = l;
+  contextCopy = context;
+  blockCopy = block;
+  objectBlockCopy = objectBlock;
+  if (lCopy)
   {
-    [(ICCollaborationUIController *)self associateWindowScene:a4 withURL:v12];
+    [(ICCollaborationUIController *)self associateWindowScene:scene withURL:lCopy];
     v16 = +[ICCollaborationController sharedInstance];
-    [v16 fetchAndAcceptShareMetadataWithURL:v12 managedObjectContext:v13 alertBlock:v14 showObjectBlock:v15];
+    [v16 fetchAndAcceptShareMetadataWithURL:lCopy managedObjectContext:contextCopy alertBlock:blockCopy showObjectBlock:objectBlockCopy];
   }
 
   else
@@ -900,27 +900,27 @@ LABEL_6:
   }
 }
 
-- (void)processShareAcceptanceWithMetadata:(id)a3 windowScene:(id)a4 managedObjectContext:(id)a5 alertBlock:(id)a6 showObjectBlock:(id)a7
+- (void)processShareAcceptanceWithMetadata:(id)metadata windowScene:(id)scene managedObjectContext:(id)context alertBlock:(id)block showObjectBlock:(id)objectBlock
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  if (v12)
+  metadataCopy = metadata;
+  sceneCopy = scene;
+  contextCopy = context;
+  blockCopy = block;
+  objectBlockCopy = objectBlock;
+  if (metadataCopy)
   {
-    v17 = [v12 share];
-    v18 = [v17 URL];
+    share = [metadataCopy share];
+    v18 = [share URL];
 
     if (v18)
     {
-      v19 = [v12 share];
-      v20 = [v19 URL];
-      [(ICCollaborationUIController *)self associateWindowScene:v13 withURL:v20];
+      share2 = [metadataCopy share];
+      v20 = [share2 URL];
+      [(ICCollaborationUIController *)self associateWindowScene:sceneCopy withURL:v20];
     }
 
     v21 = +[ICCollaborationController sharedInstance];
-    [v21 processShareAcceptanceWithMetadata:v12 managedObjectContext:v14 alertBlock:v15 showObjectBlock:v16];
+    [v21 processShareAcceptanceWithMetadata:metadataCopy managedObjectContext:contextCopy alertBlock:blockCopy showObjectBlock:objectBlockCopy];
   }
 
   else
@@ -933,18 +933,18 @@ LABEL_6:
   }
 }
 
-- (void)notesCloudContextDidFetchShare:(id)a3
+- (void)notesCloudContextDidFetchShare:(id)share
 {
-  v3 = a3;
+  shareCopy = share;
   objc_opt_class();
-  v4 = [v3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:ICNotesCloudContextDidFetchShareNotificationShareKey];
+  userInfo = [shareCopy userInfo];
+  v5 = [userInfo objectForKeyedSubscript:ICNotesCloudContextDidFetchShareNotificationShareKey];
   v6 = ICCheckedDynamicCast();
 
   objc_opt_class();
-  v7 = [v3 userInfo];
+  userInfo2 = [shareCopy userInfo];
 
-  v8 = [v7 objectForKeyedSubscript:ICNotesCloudContextDidFetchShareNotificationAccountIDKey];
+  v8 = [userInfo2 objectForKeyedSubscript:ICNotesCloudContextDidFetchShareNotificationAccountIDKey];
   v9 = ICCheckedDynamicCast();
 
   v10 = [v6 URL];
@@ -952,7 +952,7 @@ LABEL_6:
   if (v10)
   {
     v11 = +[ICSharedWithYouController sharedController];
-    v12 = [v11 managedObjectContext];
+    managedObjectContext = [v11 managedObjectContext];
 
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
@@ -960,8 +960,8 @@ LABEL_6:
     v15[3] = &unk_100645D40;
     v16 = v6;
     v17 = v9;
-    v18 = v12;
-    v13 = v12;
+    v18 = managedObjectContext;
+    v13 = managedObjectContext;
     [v13 performBlockAndWait:v15];
 
     v14 = v16;
@@ -979,72 +979,72 @@ LABEL_6:
   }
 }
 
-- (void)trackCollaborationActionAddPeopleForObject:(id)a3 share:(id)a4 isInviting:(BOOL)a5
+- (void)trackCollaborationActionAddPeopleForObject:(id)object share:(id)share isInviting:(BOOL)inviting
 {
-  v5 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [v9 objectID];
-  v11 = [v10 URIRepresentation];
-  v12 = [(ICCollaborationUIController *)self eventReporterForURL:v11];
+  invitingCopy = inviting;
+  shareCopy = share;
+  objectCopy = object;
+  objectID = [objectCopy objectID];
+  uRIRepresentation = [objectID URIRepresentation];
+  v12 = [(ICCollaborationUIController *)self eventReporterForURL:uRIRepresentation];
 
-  [v12 submitCollaborationActionEventForCloudSyncingObject:v9 share:v8 isInviting:v5 inviteStep:1];
+  [v12 submitCollaborationActionEventForCloudSyncingObject:objectCopy share:shareCopy isInviting:invitingCopy inviteStep:1];
 }
 
-- (void)trackCollaborationActionFirstShareForObject:(id)a3 share:(id)a4 isInviting:(BOOL)a5
+- (void)trackCollaborationActionFirstShareForObject:(id)object share:(id)share isInviting:(BOOL)inviting
 {
-  v5 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [v9 objectID];
-  v11 = [v10 URIRepresentation];
-  v12 = [(ICCollaborationUIController *)self eventReporterForURL:v11];
+  invitingCopy = inviting;
+  shareCopy = share;
+  objectCopy = object;
+  objectID = [objectCopy objectID];
+  uRIRepresentation = [objectID URIRepresentation];
+  v12 = [(ICCollaborationUIController *)self eventReporterForURL:uRIRepresentation];
 
-  [v12 submitCollaborationActionEventForCloudSyncingObject:v9 share:v8 isInviting:v5 inviteStep:2];
+  [v12 submitCollaborationActionEventForCloudSyncingObject:objectCopy share:shareCopy isInviting:invitingCopy inviteStep:2];
 }
 
-- (void)trackCollaborationActionSecondShareForObject:(id)a3 share:(id)a4 isInviting:(BOOL)a5
+- (void)trackCollaborationActionSecondShareForObject:(id)object share:(id)share isInviting:(BOOL)inviting
 {
-  v5 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [v9 objectID];
-  v11 = [v10 URIRepresentation];
-  v12 = [(ICCollaborationUIController *)self eventReporterForURL:v11];
+  invitingCopy = inviting;
+  shareCopy = share;
+  objectCopy = object;
+  objectID = [objectCopy objectID];
+  uRIRepresentation = [objectID URIRepresentation];
+  v12 = [(ICCollaborationUIController *)self eventReporterForURL:uRIRepresentation];
 
-  [v12 submitCollaborationActionEventForCloudSyncingObject:v9 share:v8 isInviting:v5 inviteStep:3];
+  [v12 submitCollaborationActionEventForCloudSyncingObject:objectCopy share:shareCopy isInviting:invitingCopy inviteStep:3];
 }
 
-- (void)trackCollaborationActionSecondCancelForObject:(id)a3 share:(id)a4 isInviting:(BOOL)a5
+- (void)trackCollaborationActionSecondCancelForObject:(id)object share:(id)share isInviting:(BOOL)inviting
 {
-  v5 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [v9 objectID];
-  v11 = [v10 URIRepresentation];
-  v12 = [(ICCollaborationUIController *)self eventReporterForURL:v11];
+  invitingCopy = inviting;
+  shareCopy = share;
+  objectCopy = object;
+  objectID = [objectCopy objectID];
+  uRIRepresentation = [objectID URIRepresentation];
+  v12 = [(ICCollaborationUIController *)self eventReporterForURL:uRIRepresentation];
 
-  [v12 submitCollaborationActionEventForCloudSyncingObject:v9 share:v8 isInviting:v5 inviteStep:4];
+  [v12 submitCollaborationActionEventForCloudSyncingObject:objectCopy share:shareCopy isInviting:invitingCopy inviteStep:4];
 }
 
-- (void)trackShareActionForNote:(id)a3 activityType:(id)a4 collaborationSelected:(BOOL)a5 countOfCollaboratorsAdded:(int64_t)a6 countOfCollaboratorsRemoved:(int64_t)a7 startInvitedCount:(int64_t)a8 startAcceptedCount:(int64_t)a9 endInvitedCount:(int64_t)a10 endAcceptedCount:(int64_t)a11
+- (void)trackShareActionForNote:(id)note activityType:(id)type collaborationSelected:(BOOL)selected countOfCollaboratorsAdded:(int64_t)added countOfCollaboratorsRemoved:(int64_t)removed startInvitedCount:(int64_t)count startAcceptedCount:(int64_t)acceptedCount endInvitedCount:(int64_t)self0 endAcceptedCount:(int64_t)self1
 {
-  v14 = a5;
-  v17 = a4;
-  v18 = a3;
-  v19 = [v18 objectID];
-  v20 = [v19 URIRepresentation];
-  v21 = [(ICCollaborationUIController *)self eventReporterForURL:v20];
+  selectedCopy = selected;
+  typeCopy = type;
+  noteCopy = note;
+  objectID = [noteCopy objectID];
+  uRIRepresentation = [objectID URIRepresentation];
+  v21 = [(ICCollaborationUIController *)self eventReporterForURL:uRIRepresentation];
 
-  [v21 submitNoteSharrowEventForModernNote:v18 activityType:v17 collaborationSelected:v14 countOfCollaboratorsAdded:a6 countOfCollaboratorsRemoved:a7 startInvitedCount:a8 startAcceptedCount:a9 endInvitedCount:a10 endAcceptedCount:a11];
+  [v21 submitNoteSharrowEventForModernNote:noteCopy activityType:typeCopy collaborationSelected:selectedCopy countOfCollaboratorsAdded:added countOfCollaboratorsRemoved:removed startInvitedCount:count startAcceptedCount:acceptedCount endInvitedCount:invitedCount endAcceptedCount:endAcceptedCount];
 }
 
-- (void)trackCollaborationNotificationAcceptanceForObject:(id)a3 shareURL:(id)a4
+- (void)trackCollaborationNotificationAcceptanceForObject:(id)object shareURL:(id)l
 {
-  v12 = a4;
-  v6 = [a3 objectID];
-  v7 = [v6 URIRepresentation];
-  v8 = [(ICCollaborationUIController *)self eventReporterForURL:v7];
+  lCopy = l;
+  objectID = [object objectID];
+  uRIRepresentation = [objectID URIRepresentation];
+  v8 = [(ICCollaborationUIController *)self eventReporterForURL:uRIRepresentation];
   v9 = v8;
   if (v8)
   {
@@ -1053,7 +1053,7 @@ LABEL_6:
 
   else
   {
-    v10 = [(ICCollaborationUIController *)self eventReporterForURL:v12];
+    v10 = [(ICCollaborationUIController *)self eventReporterForURL:lCopy];
   }
 
   v11 = v10;
@@ -1061,54 +1061,54 @@ LABEL_6:
   [v11 submitCollabNotificationEventWithAction:1];
 }
 
-- (id)viewContextForCollaborationController:(id)a3
+- (id)viewContextForCollaborationController:(id)controller
 {
   v3 = +[ICNoteContext sharedContext];
-  v4 = [v3 managedObjectContext];
+  managedObjectContext = [v3 managedObjectContext];
 
-  return v4;
+  return managedObjectContext;
 }
 
-- (id)backgroundContextForCollaborationController:(id)a3
+- (id)backgroundContextForCollaborationController:(id)controller
 {
   v3 = +[ICNoteContext sharedContext];
-  v4 = [v3 workerManagedObjectContext];
+  workerManagedObjectContext = [v3 workerManagedObjectContext];
 
-  return v4;
+  return workerManagedObjectContext;
 }
 
-- (void)collaborationController:(id)a3 fetchShareMetadataWithURLs:(id)a4 completion:(id)a5
+- (void)collaborationController:(id)controller fetchShareMetadataWithURLs:(id)ls completion:(id)completion
 {
-  v6 = a5;
-  v7 = a4;
+  completionCopy = completion;
+  lsCopy = ls;
   v8 = +[ICSharedWithYouController sharedController];
-  [v8 fetchShareMetadataWithURLs:v7 completion:v6];
+  [v8 fetchShareMetadataWithURLs:lsCopy completion:completionCopy];
 }
 
-- (void)collaborationController:(id)a3 userAcceptedInvitationWithShareMetadata:(id)a4 associatedObjectID:(id)a5
+- (void)collaborationController:(id)controller userAcceptedInvitationWithShareMetadata:(id)metadata associatedObjectID:(id)d
 {
-  v6 = a5;
-  v7 = a4;
+  dCopy = d;
+  metadataCopy = metadata;
   v8 = +[ICSharedWithYouController sharedController];
-  [v8 userAcceptedInvitationWithShareMetadata:v7 associatedObjectID:v6];
+  [v8 userAcceptedInvitationWithShareMetadata:metadataCopy associatedObjectID:dCopy];
 }
 
-- (void)collaborationController:(id)a3 showQuotaExceededAlertIfNeededWithRecordID:(id)a4 accountID:(id)a5
+- (void)collaborationController:(id)controller showQuotaExceededAlertIfNeededWithRecordID:(id)d accountID:(id)iD
 {
-  v7 = a5;
-  v8 = a4;
+  iDCopy = iD;
+  dCopy = d;
   v9 = [ICQuotaExceededAlertController alloc];
   v10 = +[NSDate now];
-  v14 = [(ICQuotaExceededAlertController *)v9 initWithRecordID:v8 accountID:v7 date:v10];
+  v14 = [(ICQuotaExceededAlertController *)v9 initWithRecordID:dCopy accountID:iDCopy date:v10];
 
   [(ICQuotaExceededAlertController *)v14 setIgnoresDebouncing:1];
-  v11 = [(ICCollaborationUIController *)self presentingViewController];
-  v12 = [v11 ic_windowScene];
-  v13 = [v12 keyWindow];
+  presentingViewController = [(ICCollaborationUIController *)self presentingViewController];
+  ic_windowScene = [presentingViewController ic_windowScene];
+  keyWindow = [ic_windowScene keyWindow];
 
-  if (v13)
+  if (keyWindow)
   {
-    [(ICQuotaExceededAlertController *)v14 showIfNeededFromWindow:v13];
+    [(ICQuotaExceededAlertController *)v14 showIfNeededFromWindow:keyWindow];
   }
 }
 

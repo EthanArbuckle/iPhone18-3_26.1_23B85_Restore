@@ -8,7 +8,7 @@
 - (void)invalidate
 {
   v2 = *(*(&self->super.isa + OBJC_IVAR____TtC13AppProtection37APExtensionSubjectMonitorSubscription_registry) + OBJC_IVAR___APExtensionSubjectMonitorRegistry_state);
-  v3 = self;
+  selfCopy = self;
 
   os_unfair_lock_lock((v2 + 28));
   sub_185B0B274((v2 + 16));

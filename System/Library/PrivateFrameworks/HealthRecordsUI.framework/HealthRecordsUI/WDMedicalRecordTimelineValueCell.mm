@@ -1,11 +1,11 @@
 @interface WDMedicalRecordTimelineValueCell
 + (double)_titleLabelTopToFirstBaseline;
 - (id)_generateValueDisplayAttributedString;
-- (id)_generateValueDisplayAttributedStringWithValueFont:(id)a3 unitFont:(id)a4;
-- (void)setAttributedSubtitleText:(id)a3;
-- (void)setSubtitle:(id)a3;
-- (void)setTitle:(id)a3;
-- (void)setValue:(id)a3 unit:(id)a4;
+- (id)_generateValueDisplayAttributedStringWithValueFont:(id)font unitFont:(id)unitFont;
+- (void)setAttributedSubtitleText:(id)text;
+- (void)setSubtitle:(id)subtitle;
+- (void)setTitle:(id)title;
+- (void)setValue:(id)value unit:(id)unit;
 - (void)setupSubviews;
 - (void)updateConstraints;
 @end
@@ -20,202 +20,202 @@
   v3 = objc_alloc_init(MEMORY[0x1E69DCC10]);
   [(WDMedicalRecordTimelineValueCell *)self setTitleLabel:v3];
 
-  v4 = [objc_opt_class() _titleLabelFont];
-  v5 = [(WDMedicalRecordTimelineValueCell *)self titleLabel];
-  [v5 setFont:v4];
+  _titleLabelFont = [objc_opt_class() _titleLabelFont];
+  titleLabel = [(WDMedicalRecordTimelineValueCell *)self titleLabel];
+  [titleLabel setFont:_titleLabelFont];
 
-  v6 = [MEMORY[0x1E69DC888] labelColor];
-  v7 = [(WDMedicalRecordTimelineValueCell *)self titleLabel];
-  [v7 setTextColor:v6];
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  titleLabel2 = [(WDMedicalRecordTimelineValueCell *)self titleLabel];
+  [titleLabel2 setTextColor:labelColor];
 
-  v8 = [(WDMedicalRecordTimelineValueCell *)self titleLabel];
-  [v8 setNumberOfLines:8];
+  titleLabel3 = [(WDMedicalRecordTimelineValueCell *)self titleLabel];
+  [titleLabel3 setNumberOfLines:8];
 
-  v9 = [(WDMedicalRecordTimelineValueCell *)self titleLabel];
-  [v9 setLineBreakMode:5];
+  titleLabel4 = [(WDMedicalRecordTimelineValueCell *)self titleLabel];
+  [titleLabel4 setLineBreakMode:5];
 
-  v10 = [(WDMedicalRecordTimelineValueCell *)self titleLabel];
-  [v10 setTranslatesAutoresizingMaskIntoConstraints:0];
+  titleLabel5 = [(WDMedicalRecordTimelineValueCell *)self titleLabel];
+  [titleLabel5 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v11 = [(WDMedicalRecordTimelineValueCell *)self contentView];
-  v12 = [(WDMedicalRecordTimelineValueCell *)self titleLabel];
-  [v11 addSubview:v12];
+  contentView = [(WDMedicalRecordTimelineValueCell *)self contentView];
+  titleLabel6 = [(WDMedicalRecordTimelineValueCell *)self titleLabel];
+  [contentView addSubview:titleLabel6];
 
   v13 = objc_alloc_init(MEMORY[0x1E69DCC10]);
   [(WDMedicalRecordTimelineValueCell *)self setSubtitleLabel:v13];
 
   v14 = [MEMORY[0x1E69DB878] _preferredFontForTextStyle:*MEMORY[0x1E69DDD80] variant:1280];
-  v15 = [(WDMedicalRecordTimelineValueCell *)self subtitleLabel];
-  [v15 setFont:v14];
+  subtitleLabel = [(WDMedicalRecordTimelineValueCell *)self subtitleLabel];
+  [subtitleLabel setFont:v14];
 
-  v16 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  v17 = [(WDMedicalRecordTimelineValueCell *)self subtitleLabel];
-  [v17 setTextColor:v16];
+  secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  subtitleLabel2 = [(WDMedicalRecordTimelineValueCell *)self subtitleLabel];
+  [subtitleLabel2 setTextColor:secondaryLabelColor];
 
-  v18 = [(WDMedicalRecordTimelineValueCell *)self subtitleLabel];
-  [v18 setTranslatesAutoresizingMaskIntoConstraints:0];
+  subtitleLabel3 = [(WDMedicalRecordTimelineValueCell *)self subtitleLabel];
+  [subtitleLabel3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v19 = [(WDMedicalRecordTimelineValueCell *)self contentView];
-  v20 = [(WDMedicalRecordTimelineValueCell *)self subtitleLabel];
-  [v19 addSubview:v20];
+  contentView2 = [(WDMedicalRecordTimelineValueCell *)self contentView];
+  subtitleLabel4 = [(WDMedicalRecordTimelineValueCell *)self subtitleLabel];
+  [contentView2 addSubview:subtitleLabel4];
 
   v21 = objc_alloc_init(MEMORY[0x1E69DCC10]);
   [(WDMedicalRecordTimelineValueCell *)self setValueLabel:v21];
 
-  v22 = [(WDMedicalRecordTimelineValueCell *)self valueLabel];
-  [v22 setNumberOfLines:3];
+  valueLabel = [(WDMedicalRecordTimelineValueCell *)self valueLabel];
+  [valueLabel setNumberOfLines:3];
 
-  v23 = [objc_opt_class() _valueLabelFontSingleLine];
-  v24 = [(WDMedicalRecordTimelineValueCell *)self valueLabel];
-  [v24 setFont:v23];
+  _valueLabelFontSingleLine = [objc_opt_class() _valueLabelFontSingleLine];
+  valueLabel2 = [(WDMedicalRecordTimelineValueCell *)self valueLabel];
+  [valueLabel2 setFont:_valueLabelFontSingleLine];
 
-  v25 = [MEMORY[0x1E69DC888] hk_clinicalRecordValueColor];
-  v26 = [(WDMedicalRecordTimelineValueCell *)self valueLabel];
-  [v26 setTextColor:v25];
+  hk_clinicalRecordValueColor = [MEMORY[0x1E69DC888] hk_clinicalRecordValueColor];
+  valueLabel3 = [(WDMedicalRecordTimelineValueCell *)self valueLabel];
+  [valueLabel3 setTextColor:hk_clinicalRecordValueColor];
 
-  v27 = [(WDMedicalRecordTimelineValueCell *)self valueLabel];
-  [v27 setTranslatesAutoresizingMaskIntoConstraints:0];
+  valueLabel4 = [(WDMedicalRecordTimelineValueCell *)self valueLabel];
+  [valueLabel4 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v28 = [(WDMedicalRecordTimelineValueCell *)self contentView];
-  v29 = [(WDMedicalRecordTimelineValueCell *)self valueLabel];
-  [v28 addSubview:v29];
+  contentView3 = [(WDMedicalRecordTimelineValueCell *)self contentView];
+  valueLabel5 = [(WDMedicalRecordTimelineValueCell *)self valueLabel];
+  [contentView3 addSubview:valueLabel5];
 
-  v30 = [(WDMedicalRecordTimelineValueCell *)self titleLabel];
-  v31 = [v30 leadingAnchor];
-  v32 = [(WDMedicalRecordGroupableCell *)self pillBackgroundView];
-  v33 = [v32 leadingAnchor];
-  v34 = [v31 constraintEqualToAnchor:v33 constant:16.0];
+  titleLabel7 = [(WDMedicalRecordTimelineValueCell *)self titleLabel];
+  leadingAnchor = [titleLabel7 leadingAnchor];
+  pillBackgroundView = [(WDMedicalRecordGroupableCell *)self pillBackgroundView];
+  leadingAnchor2 = [pillBackgroundView leadingAnchor];
+  v34 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:16.0];
   [v34 setActive:1];
 
-  v35 = [(WDMedicalRecordTimelineValueCell *)self valueLabel];
-  v36 = [v35 topAnchor];
-  v37 = [(WDMedicalRecordGroupableCell *)self pillBackgroundView];
-  v38 = [v37 topAnchor];
-  v39 = [v36 constraintEqualToAnchor:v38 constant:7.0];
+  valueLabel6 = [(WDMedicalRecordTimelineValueCell *)self valueLabel];
+  topAnchor = [valueLabel6 topAnchor];
+  pillBackgroundView2 = [(WDMedicalRecordGroupableCell *)self pillBackgroundView];
+  topAnchor2 = [pillBackgroundView2 topAnchor];
+  v39 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:7.0];
   [v39 setActive:1];
 
-  v40 = [(WDMedicalRecordTimelineValueCell *)self valueLabel];
-  v41 = [v40 firstBaselineAnchor];
-  v42 = [(WDMedicalRecordTimelineValueCell *)self titleLabel];
-  v43 = [v42 firstBaselineAnchor];
-  v44 = [v41 constraintEqualToAnchor:v43];
+  valueLabel7 = [(WDMedicalRecordTimelineValueCell *)self valueLabel];
+  firstBaselineAnchor = [valueLabel7 firstBaselineAnchor];
+  titleLabel8 = [(WDMedicalRecordTimelineValueCell *)self titleLabel];
+  firstBaselineAnchor2 = [titleLabel8 firstBaselineAnchor];
+  v44 = [firstBaselineAnchor constraintEqualToAnchor:firstBaselineAnchor2];
   [v44 setActive:1];
 
-  v45 = [(WDMedicalRecordTimelineValueCell *)self valueLabel];
-  v46 = [v45 leadingAnchor];
-  v47 = [(WDMedicalRecordGroupableCell *)self pillBackgroundView];
-  v48 = [v47 leadingAnchor];
-  v49 = [v46 constraintEqualToAnchor:v48 constant:16.0];
+  valueLabel8 = [(WDMedicalRecordTimelineValueCell *)self valueLabel];
+  leadingAnchor3 = [valueLabel8 leadingAnchor];
+  pillBackgroundView3 = [(WDMedicalRecordGroupableCell *)self pillBackgroundView];
+  leadingAnchor4 = [pillBackgroundView3 leadingAnchor];
+  v49 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:16.0];
   [(WDMedicalRecordTimelineValueCell *)self setValueLeftAlignConstraint:v49];
 
-  v50 = [(WDMedicalRecordTimelineValueCell *)self valueLabel];
-  v51 = [v50 trailingAnchor];
-  v52 = [(WDMedicalRecordGroupableCell *)self pillBackgroundView];
-  v53 = [v52 trailingAnchor];
-  v54 = [v51 constraintEqualToAnchor:v53 constant:-16.0];
+  valueLabel9 = [(WDMedicalRecordTimelineValueCell *)self valueLabel];
+  trailingAnchor = [valueLabel9 trailingAnchor];
+  pillBackgroundView4 = [(WDMedicalRecordGroupableCell *)self pillBackgroundView];
+  trailingAnchor2 = [pillBackgroundView4 trailingAnchor];
+  v54 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-16.0];
   [(WDMedicalRecordTimelineValueCell *)self setValueRightAlignConstraint:v54];
 
-  v55 = [(WDMedicalRecordTimelineValueCell *)self titleLabel];
-  v56 = [v55 trailingAnchor];
-  v57 = [(WDMedicalRecordTimelineValueCell *)self valueLabel];
-  v58 = [v57 leadingAnchor];
-  v59 = [v56 constraintLessThanOrEqualToAnchor:v58 constant:-16.0];
+  titleLabel9 = [(WDMedicalRecordTimelineValueCell *)self titleLabel];
+  trailingAnchor3 = [titleLabel9 trailingAnchor];
+  valueLabel10 = [(WDMedicalRecordTimelineValueCell *)self valueLabel];
+  leadingAnchor5 = [valueLabel10 leadingAnchor];
+  v59 = [trailingAnchor3 constraintLessThanOrEqualToAnchor:leadingAnchor5 constant:-16.0];
   [(WDMedicalRecordTimelineValueCell *)self setTitleValueGapConstraint:v59];
 
-  v60 = [(WDMedicalRecordTimelineValueCell *)self titleLabel];
-  v61 = [v60 widthAnchor];
-  v62 = [v61 constraintEqualToConstant:0.0];
+  titleLabel10 = [(WDMedicalRecordTimelineValueCell *)self titleLabel];
+  widthAnchor = [titleLabel10 widthAnchor];
+  v62 = [widthAnchor constraintEqualToConstant:0.0];
   [(WDMedicalRecordTimelineValueCell *)self setTitleWidthConstraint:v62];
 
-  v63 = [(WDMedicalRecordTimelineValueCell *)self valueLabel];
-  v64 = [v63 widthAnchor];
-  v65 = [v64 constraintEqualToConstant:0.0];
+  valueLabel11 = [(WDMedicalRecordTimelineValueCell *)self valueLabel];
+  widthAnchor2 = [valueLabel11 widthAnchor];
+  v65 = [widthAnchor2 constraintEqualToConstant:0.0];
   [(WDMedicalRecordTimelineValueCell *)self setValueWidthConstraint:v65];
 
-  v66 = [(WDMedicalRecordTimelineValueCell *)self titleWidthConstraint];
-  [v66 setActive:1];
+  titleWidthConstraint = [(WDMedicalRecordTimelineValueCell *)self titleWidthConstraint];
+  [titleWidthConstraint setActive:1];
 
-  v67 = [(WDMedicalRecordTimelineValueCell *)self valueWidthConstraint];
-  [v67 setActive:1];
+  valueWidthConstraint = [(WDMedicalRecordTimelineValueCell *)self valueWidthConstraint];
+  [valueWidthConstraint setActive:1];
 
-  v68 = [(WDMedicalRecordTimelineValueCell *)self titleLabel];
-  v69 = [v68 heightAnchor];
-  v70 = [v69 constraintEqualToConstant:0.0];
+  titleLabel11 = [(WDMedicalRecordTimelineValueCell *)self titleLabel];
+  heightAnchor = [titleLabel11 heightAnchor];
+  v70 = [heightAnchor constraintEqualToConstant:0.0];
   [(WDMedicalRecordTimelineValueCell *)self setTitleHeightConstraint:v70];
 
-  v71 = [(WDMedicalRecordTimelineValueCell *)self valueLabel];
-  v72 = [v71 heightAnchor];
-  v73 = [v72 constraintEqualToConstant:0.0];
+  valueLabel12 = [(WDMedicalRecordTimelineValueCell *)self valueLabel];
+  heightAnchor2 = [valueLabel12 heightAnchor];
+  v73 = [heightAnchor2 constraintEqualToConstant:0.0];
   [(WDMedicalRecordTimelineValueCell *)self setValueHeightConstraint:v73];
 
-  v74 = [(WDMedicalRecordTimelineValueCell *)self titleHeightConstraint];
+  titleHeightConstraint = [(WDMedicalRecordTimelineValueCell *)self titleHeightConstraint];
   LODWORD(v75) = 1148829696;
-  [v74 setPriority:v75];
+  [titleHeightConstraint setPriority:v75];
 
-  v76 = [(WDMedicalRecordTimelineValueCell *)self valueHeightConstraint];
+  valueHeightConstraint = [(WDMedicalRecordTimelineValueCell *)self valueHeightConstraint];
   LODWORD(v77) = 1148829696;
-  [v76 setPriority:v77];
+  [valueHeightConstraint setPriority:v77];
 
-  v78 = [(WDMedicalRecordTimelineValueCell *)self titleHeightConstraint];
-  [v78 setActive:1];
+  titleHeightConstraint2 = [(WDMedicalRecordTimelineValueCell *)self titleHeightConstraint];
+  [titleHeightConstraint2 setActive:1];
 
-  v79 = [(WDMedicalRecordTimelineValueCell *)self valueHeightConstraint];
-  [v79 setActive:1];
+  valueHeightConstraint2 = [(WDMedicalRecordTimelineValueCell *)self valueHeightConstraint];
+  [valueHeightConstraint2 setActive:1];
 
-  v80 = [(WDMedicalRecordTimelineValueCell *)self subtitleLabel];
-  v81 = [v80 leadingAnchor];
-  v82 = [(WDMedicalRecordGroupableCell *)self pillBackgroundView];
-  v83 = [v82 leadingAnchor];
-  v84 = [v81 constraintEqualToAnchor:v83 constant:16.0];
+  subtitleLabel5 = [(WDMedicalRecordTimelineValueCell *)self subtitleLabel];
+  leadingAnchor6 = [subtitleLabel5 leadingAnchor];
+  pillBackgroundView5 = [(WDMedicalRecordGroupableCell *)self pillBackgroundView];
+  leadingAnchor7 = [pillBackgroundView5 leadingAnchor];
+  v84 = [leadingAnchor6 constraintEqualToAnchor:leadingAnchor7 constant:16.0];
   [v84 setActive:1];
 
-  v85 = [(WDMedicalRecordTimelineValueCell *)self subtitleLabel];
-  v86 = [v85 trailingAnchor];
-  v87 = [(WDMedicalRecordGroupableCell *)self pillBackgroundView];
-  v88 = [v87 trailingAnchor];
-  v89 = [v86 constraintEqualToAnchor:v88 constant:-16.0];
+  subtitleLabel6 = [(WDMedicalRecordTimelineValueCell *)self subtitleLabel];
+  trailingAnchor4 = [subtitleLabel6 trailingAnchor];
+  pillBackgroundView6 = [(WDMedicalRecordGroupableCell *)self pillBackgroundView];
+  trailingAnchor5 = [pillBackgroundView6 trailingAnchor];
+  v89 = [trailingAnchor4 constraintEqualToAnchor:trailingAnchor5 constant:-16.0];
   [v89 setActive:1];
 
-  v90 = [(WDMedicalRecordTimelineValueCell *)self subtitleLabel];
-  v91 = [v90 bottomAnchor];
-  v92 = [(WDMedicalRecordGroupableCell *)self pillBackgroundView];
-  v93 = [v92 bottomAnchor];
-  v94 = [v91 constraintEqualToAnchor:v93 constant:-12.0];
+  subtitleLabel7 = [(WDMedicalRecordTimelineValueCell *)self subtitleLabel];
+  bottomAnchor = [subtitleLabel7 bottomAnchor];
+  pillBackgroundView7 = [(WDMedicalRecordGroupableCell *)self pillBackgroundView];
+  bottomAnchor2 = [pillBackgroundView7 bottomAnchor];
+  v94 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-12.0];
   [v94 setActive:1];
 
-  v95 = [(WDMedicalRecordTimelineValueCell *)self subtitleLabel];
-  v96 = [v95 topAnchor];
-  v97 = [(WDMedicalRecordTimelineValueCell *)self valueLabel];
-  v98 = [v97 bottomAnchor];
-  v99 = [v96 constraintGreaterThanOrEqualToAnchor:v98 constant:2.0];
+  subtitleLabel8 = [(WDMedicalRecordTimelineValueCell *)self subtitleLabel];
+  topAnchor3 = [subtitleLabel8 topAnchor];
+  valueLabel13 = [(WDMedicalRecordTimelineValueCell *)self valueLabel];
+  bottomAnchor3 = [valueLabel13 bottomAnchor];
+  v99 = [topAnchor3 constraintGreaterThanOrEqualToAnchor:bottomAnchor3 constant:2.0];
   [v99 setActive:1];
 
-  v100 = [(WDMedicalRecordTimelineValueCell *)self subtitleLabel];
-  v101 = [v100 topAnchor];
-  v102 = [(WDMedicalRecordTimelineValueCell *)self titleLabel];
-  v103 = [v102 bottomAnchor];
-  v104 = [v101 constraintGreaterThanOrEqualToAnchor:v103 constant:2.0];
+  subtitleLabel9 = [(WDMedicalRecordTimelineValueCell *)self subtitleLabel];
+  topAnchor4 = [subtitleLabel9 topAnchor];
+  titleLabel12 = [(WDMedicalRecordTimelineValueCell *)self titleLabel];
+  bottomAnchor4 = [titleLabel12 bottomAnchor];
+  v104 = [topAnchor4 constraintGreaterThanOrEqualToAnchor:bottomAnchor4 constant:2.0];
   [v104 setActive:1];
 
-  v105 = [(WDMedicalRecordGroupableCell *)self pillBackgroundView];
-  v106 = [v105 bottomAnchor];
-  v107 = [(WDMedicalRecordTimelineValueCell *)self valueLabel];
-  v108 = [v107 bottomAnchor];
-  v109 = [v106 constraintGreaterThanOrEqualToAnchor:v108 constant:10.0];
+  pillBackgroundView8 = [(WDMedicalRecordGroupableCell *)self pillBackgroundView];
+  bottomAnchor5 = [pillBackgroundView8 bottomAnchor];
+  valueLabel14 = [(WDMedicalRecordTimelineValueCell *)self valueLabel];
+  bottomAnchor6 = [valueLabel14 bottomAnchor];
+  v109 = [bottomAnchor5 constraintGreaterThanOrEqualToAnchor:bottomAnchor6 constant:10.0];
   [v109 setActive:1];
 
-  v110 = [(WDMedicalRecordGroupableCell *)self pillBackgroundView];
-  v111 = [v110 bottomAnchor];
-  v112 = [(WDMedicalRecordTimelineValueCell *)self titleLabel];
-  v113 = [v112 bottomAnchor];
-  v114 = [v111 constraintGreaterThanOrEqualToAnchor:v113 constant:10.0];
+  pillBackgroundView9 = [(WDMedicalRecordGroupableCell *)self pillBackgroundView];
+  bottomAnchor7 = [pillBackgroundView9 bottomAnchor];
+  titleLabel13 = [(WDMedicalRecordTimelineValueCell *)self titleLabel];
+  bottomAnchor8 = [titleLabel13 bottomAnchor];
+  v114 = [bottomAnchor7 constraintGreaterThanOrEqualToAnchor:bottomAnchor8 constant:10.0];
   [v114 setActive:1];
 
-  v115 = [(WDMedicalRecordGroupableCell *)self pillBackgroundView];
-  v116 = [v115 bottomAnchor];
-  v117 = [(WDMedicalRecordTimelineValueCell *)self subtitleLabel];
-  v118 = [v117 lastBaselineAnchor];
-  v119 = [v116 constraintGreaterThanOrEqualToAnchor:v118 constant:12.0];
+  pillBackgroundView10 = [(WDMedicalRecordGroupableCell *)self pillBackgroundView];
+  bottomAnchor9 = [pillBackgroundView10 bottomAnchor];
+  subtitleLabel10 = [(WDMedicalRecordTimelineValueCell *)self subtitleLabel];
+  lastBaselineAnchor = [subtitleLabel10 lastBaselineAnchor];
+  v119 = [bottomAnchor9 constraintGreaterThanOrEqualToAnchor:lastBaselineAnchor constant:12.0];
   [(WDMedicalRecordTimelineValueCell *)self setSubtitleBottomConstraint:v119];
 }
 
@@ -224,79 +224,79 @@
   v19.receiver = self;
   v19.super_class = WDMedicalRecordTimelineValueCell;
   [(WDMedicalRecordTimelineValueCell *)&v19 updateConstraints];
-  v3 = [(WDMedicalRecordTimelineValueCell *)self contentView];
-  [v3 frame];
+  contentView = [(WDMedicalRecordTimelineValueCell *)self contentView];
+  [contentView frame];
   v4 = CGRectGetWidth(v20) + -32.0;
 
-  v5 = [(WDMedicalRecordTimelineValueCell *)self valueLabel];
-  [v5 sizeThatFits:{v4 * 0.67 + -16.0, 1.79769313e308}];
+  valueLabel = [(WDMedicalRecordTimelineValueCell *)self valueLabel];
+  [valueLabel sizeThatFits:{v4 * 0.67 + -16.0, 1.79769313e308}];
   v7 = v6;
   v9 = v8;
 
-  v10 = [(WDMedicalRecordTimelineValueCell *)self titleLabel];
-  [v10 sizeThatFits:{v4 - v7 + -48.0, 1.79769313e308}];
+  titleLabel = [(WDMedicalRecordTimelineValueCell *)self titleLabel];
+  [titleLabel sizeThatFits:{v4 - v7 + -48.0, 1.79769313e308}];
   v12 = v11;
   v14 = v13;
 
-  v15 = [(WDMedicalRecordTimelineValueCell *)self titleWidthConstraint];
-  [v15 setConstant:v12];
+  titleWidthConstraint = [(WDMedicalRecordTimelineValueCell *)self titleWidthConstraint];
+  [titleWidthConstraint setConstant:v12];
 
-  v16 = [(WDMedicalRecordTimelineValueCell *)self valueWidthConstraint];
-  [v16 setConstant:v7];
+  valueWidthConstraint = [(WDMedicalRecordTimelineValueCell *)self valueWidthConstraint];
+  [valueWidthConstraint setConstant:v7];
 
-  v17 = [(WDMedicalRecordTimelineValueCell *)self titleHeightConstraint];
-  [v17 setConstant:v14];
+  titleHeightConstraint = [(WDMedicalRecordTimelineValueCell *)self titleHeightConstraint];
+  [titleHeightConstraint setConstant:v14];
 
-  v18 = [(WDMedicalRecordTimelineValueCell *)self valueHeightConstraint];
-  [v18 setConstant:v9];
+  valueHeightConstraint = [(WDMedicalRecordTimelineValueCell *)self valueHeightConstraint];
+  [valueHeightConstraint setConstant:v9];
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
   v24[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (![(NSString *)self->_titleString isEqualToString:v4])
+  titleCopy = title;
+  if (![(NSString *)self->_titleString isEqualToString:titleCopy])
   {
-    v5 = [v4 copy];
+    v5 = [titleCopy copy];
     titleString = self->_titleString;
     self->_titleString = v5;
 
     v7 = self->_titleString;
-    v8 = [(WDMedicalRecordTimelineValueCell *)self titleLabel];
-    [v8 setText:v7];
+    titleLabel = [(WDMedicalRecordTimelineValueCell *)self titleLabel];
+    [titleLabel setText:v7];
 
     v9 = [(NSString *)self->_titleString length];
     v10 = MEMORY[0x1E696ACD8];
     if (v9)
     {
-      v11 = [(WDMedicalRecordTimelineValueCell *)self valueLeftAlignConstraint];
-      v24[0] = v11;
+      valueLeftAlignConstraint = [(WDMedicalRecordTimelineValueCell *)self valueLeftAlignConstraint];
+      v24[0] = valueLeftAlignConstraint;
       v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:1];
       [v10 deactivateConstraints:v12];
 
       v13 = MEMORY[0x1E696ACD8];
-      v14 = [(WDMedicalRecordTimelineValueCell *)self valueRightAlignConstraint];
-      v23[0] = v14;
-      v15 = [(WDMedicalRecordTimelineValueCell *)self titleValueGapConstraint];
-      v23[1] = v15;
+      valueRightAlignConstraint = [(WDMedicalRecordTimelineValueCell *)self valueRightAlignConstraint];
+      v23[0] = valueRightAlignConstraint;
+      titleValueGapConstraint = [(WDMedicalRecordTimelineValueCell *)self titleValueGapConstraint];
+      v23[1] = titleValueGapConstraint;
       v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:2];
       [v13 activateConstraints:v16];
     }
 
     else
     {
-      v17 = [(WDMedicalRecordTimelineValueCell *)self valueRightAlignConstraint];
-      v22[0] = v17;
-      v18 = [(WDMedicalRecordTimelineValueCell *)self titleValueGapConstraint];
-      v22[1] = v18;
+      valueRightAlignConstraint2 = [(WDMedicalRecordTimelineValueCell *)self valueRightAlignConstraint];
+      v22[0] = valueRightAlignConstraint2;
+      titleValueGapConstraint2 = [(WDMedicalRecordTimelineValueCell *)self titleValueGapConstraint];
+      v22[1] = titleValueGapConstraint2;
       v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:2];
       [v10 deactivateConstraints:v19];
 
       v20 = MEMORY[0x1E696ACD8];
-      v14 = [(WDMedicalRecordTimelineValueCell *)self valueLeftAlignConstraint];
-      v21 = v14;
-      v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v21 count:1];
-      [v20 activateConstraints:v15];
+      valueRightAlignConstraint = [(WDMedicalRecordTimelineValueCell *)self valueLeftAlignConstraint];
+      v21 = valueRightAlignConstraint;
+      titleValueGapConstraint = [MEMORY[0x1E695DEC8] arrayWithObjects:&v21 count:1];
+      [v20 activateConstraints:titleValueGapConstraint];
     }
 
     [(WDMedicalRecordTimelineValueCell *)self setNeedsUpdateConstraints];
@@ -304,64 +304,64 @@
   }
 }
 
-- (void)setSubtitle:(id)a3
+- (void)setSubtitle:(id)subtitle
 {
-  v10 = a3;
+  subtitleCopy = subtitle;
   if (![(NSString *)self->_subtitleString isEqualToString:?])
   {
-    v4 = [v10 copy];
+    v4 = [subtitleCopy copy];
     subtitleString = self->_subtitleString;
     self->_subtitleString = v4;
 
     v6 = self->_subtitleString;
-    v7 = [(WDMedicalRecordTimelineValueCell *)self subtitleLabel];
-    [v7 setText:v6];
+    subtitleLabel = [(WDMedicalRecordTimelineValueCell *)self subtitleLabel];
+    [subtitleLabel setText:v6];
 
     v8 = [(NSString *)self->_subtitleString length]!= 0;
-    v9 = [(WDMedicalRecordTimelineValueCell *)self subtitleBottomConstraint];
-    [v9 setActive:v8];
+    subtitleBottomConstraint = [(WDMedicalRecordTimelineValueCell *)self subtitleBottomConstraint];
+    [subtitleBottomConstraint setActive:v8];
 
     [(WDMedicalRecordTimelineValueCell *)self setNeedsUpdateConstraints];
     [(WDMedicalRecordTimelineValueCell *)self setNeedsLayout];
   }
 }
 
-- (void)setValue:(id)a3 unit:(id)a4
+- (void)setValue:(id)value unit:(id)unit
 {
-  v13 = a3;
-  v6 = a4;
-  if (![(NSString *)self->_valueString isEqualToString:v13]|| ![(NSString *)self->_unitString isEqualToString:v6])
+  valueCopy = value;
+  unitCopy = unit;
+  if (![(NSString *)self->_valueString isEqualToString:valueCopy]|| ![(NSString *)self->_unitString isEqualToString:unitCopy])
   {
-    v7 = [v13 copy];
+    v7 = [valueCopy copy];
     valueString = self->_valueString;
     self->_valueString = v7;
 
-    v9 = [v6 copy];
+    v9 = [unitCopy copy];
     unitString = self->_unitString;
     self->_unitString = v9;
 
-    v11 = [(WDMedicalRecordTimelineValueCell *)self _generateValueDisplayAttributedString];
-    v12 = [(WDMedicalRecordTimelineValueCell *)self valueLabel];
-    [v12 setAttributedText:v11];
+    _generateValueDisplayAttributedString = [(WDMedicalRecordTimelineValueCell *)self _generateValueDisplayAttributedString];
+    valueLabel = [(WDMedicalRecordTimelineValueCell *)self valueLabel];
+    [valueLabel setAttributedText:_generateValueDisplayAttributedString];
 
     [(WDMedicalRecordTimelineValueCell *)self setNeedsUpdateConstraints];
   }
 }
 
-- (void)setAttributedSubtitleText:(id)a3
+- (void)setAttributedSubtitleText:(id)text
 {
-  v4 = a3;
-  v5 = [(WDMedicalRecordTimelineValueCell *)self subtitleLabel];
-  [v5 setAttributedText:v4];
+  textCopy = text;
+  subtitleLabel = [(WDMedicalRecordTimelineValueCell *)self subtitleLabel];
+  [subtitleLabel setAttributedText:textCopy];
 }
 
 - (id)_generateValueDisplayAttributedString
 {
-  v3 = [objc_opt_class() _valueLabelFontSingleLine];
-  v4 = [objc_opt_class() _unitLabelFontSingleLine];
-  v5 = [(WDMedicalRecordTimelineValueCell *)self _generateValueDisplayAttributedStringWithValueFont:v3 unitFont:v4];
-  v6 = [(WDMedicalRecordTimelineValueCell *)self contentView];
-  [v6 bounds];
+  _valueLabelFontSingleLine = [objc_opt_class() _valueLabelFontSingleLine];
+  _unitLabelFontSingleLine = [objc_opt_class() _unitLabelFontSingleLine];
+  v5 = [(WDMedicalRecordTimelineValueCell *)self _generateValueDisplayAttributedStringWithValueFont:_valueLabelFontSingleLine unitFont:_unitLabelFontSingleLine];
+  contentView = [(WDMedicalRecordTimelineValueCell *)self contentView];
+  [contentView bounds];
   v7 = (CGRectGetWidth(v23) + -32.0) * 0.67 + -16.0;
 
   [v5 boundingRectWithSize:1 options:0 context:{v7, 1.79769313e308}];
@@ -369,7 +369,7 @@
   v11 = v10;
   v13 = v12;
   v15 = v14;
-  [v3 lineHeight];
+  [_valueLabelFontSingleLine lineHeight];
   v17 = v16;
   v24.origin.x = v9;
   v24.origin.y = v11;
@@ -377,28 +377,28 @@
   v24.size.height = v15;
   if (CGRectGetHeight(v24) + v17 * -2.0 >= 2.22044605e-16)
   {
-    v18 = [objc_opt_class() _valueLabelFontMultipleLines];
+    _valueLabelFontMultipleLines = [objc_opt_class() _valueLabelFontMultipleLines];
 
-    v19 = [objc_opt_class() _unitLabelFontMultipleLines];
+    _unitLabelFontMultipleLines = [objc_opt_class() _unitLabelFontMultipleLines];
 
-    v20 = [(WDMedicalRecordTimelineValueCell *)self _generateValueDisplayAttributedStringWithValueFont:v18 unitFont:v19];
+    v20 = [(WDMedicalRecordTimelineValueCell *)self _generateValueDisplayAttributedStringWithValueFont:_valueLabelFontMultipleLines unitFont:_unitLabelFontMultipleLines];
 
     v5 = v20;
-    v4 = v19;
-    v3 = v18;
+    _unitLabelFontSingleLine = _unitLabelFontMultipleLines;
+    _valueLabelFontSingleLine = _valueLabelFontMultipleLines;
   }
 
   return v5;
 }
 
-- (id)_generateValueDisplayAttributedStringWithValueFont:(id)a3 unitFont:(id)a4
+- (id)_generateValueDisplayAttributedStringWithValueFont:(id)font unitFont:(id)unitFont
 {
   v43[2] = *MEMORY[0x1E69E9840];
-  v36 = a3;
-  v6 = a4;
+  fontCopy = font;
+  unitFontCopy = unitFont;
   v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v8 = [(WDMedicalRecordTimelineValueCell *)self value];
-  v9 = [v8 length];
+  value = [(WDMedicalRecordTimelineValueCell *)self value];
+  v9 = [value length];
 
   v10 = MEMORY[0x1E69DB648];
   v11 = MEMORY[0x1E69DB650];
@@ -406,19 +406,19 @@
   if (v9)
   {
     v13 = objc_alloc(MEMORY[0x1E696AAB0]);
-    v14 = [(WDMedicalRecordTimelineValueCell *)self value];
-    v15 = v14;
-    if (v14)
+    value2 = [(WDMedicalRecordTimelineValueCell *)self value];
+    v15 = value2;
+    if (value2)
     {
-      v12 = v14;
+      v12 = value2;
     }
 
     v16 = *v11;
     v42[0] = *v10;
     v42[1] = v16;
-    v43[0] = v36;
-    v17 = [MEMORY[0x1E69DC888] hk_clinicalRecordValueColor];
-    v43[1] = v17;
+    v43[0] = fontCopy;
+    hk_clinicalRecordValueColor = [MEMORY[0x1E69DC888] hk_clinicalRecordValueColor];
+    v43[1] = hk_clinicalRecordValueColor;
     v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v43 forKeys:v42 count:2];
     v19 = [v13 initWithString:v12 attributes:v18];
 
@@ -426,8 +426,8 @@
     [v7 addObject:v19];
   }
 
-  v20 = [(WDMedicalRecordTimelineValueCell *)self unit];
-  v21 = [v20 length];
+  unit = [(WDMedicalRecordTimelineValueCell *)self unit];
+  v21 = [unit length];
 
   if (v21)
   {
@@ -436,7 +436,7 @@
       v22 = objc_alloc(MEMORY[0x1E696AAB0]);
       v23 = *v10;
       v40 = *v10;
-      v41 = v6;
+      v41 = unitFontCopy;
       v24 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v41 forKeys:&v40 count:1];
       v25 = [v22 initWithString:@" " attributes:v24];
 
@@ -449,11 +449,11 @@
     }
 
     v26 = objc_alloc(MEMORY[0x1E696AAB0]);
-    v27 = [(WDMedicalRecordTimelineValueCell *)self unit];
-    v28 = v27;
-    if (v27)
+    unit2 = [(WDMedicalRecordTimelineValueCell *)self unit];
+    v28 = unit2;
+    if (unit2)
     {
-      v29 = v27;
+      v29 = unit2;
     }
 
     else
@@ -464,9 +464,9 @@
     v30 = *v11;
     v38[0] = v23;
     v38[1] = v30;
-    v39[0] = v6;
-    v31 = [MEMORY[0x1E69DC888] hk_clinicalRecordUnitColor];
-    v39[1] = v31;
+    v39[0] = unitFontCopy;
+    hk_clinicalRecordUnitColor = [MEMORY[0x1E69DC888] hk_clinicalRecordUnitColor];
+    v39[1] = hk_clinicalRecordUnitColor;
     v32 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v39 forKeys:v38 count:2];
     v33 = [v26 initWithString:v29 attributes:v32];
 
@@ -488,8 +488,8 @@
 
 + (double)_titleLabelTopToFirstBaseline
 {
-  v2 = [objc_opt_class() _titleLabelFont];
-  [v2 _scaledValueForValue:27.0];
+  _titleLabelFont = [objc_opt_class() _titleLabelFont];
+  [_titleLabelFont _scaledValueForValue:27.0];
   v4 = v3;
 
   return v4;

@@ -1,15 +1,15 @@
 @interface ServiceSubscriptionOfferViewController
-- (void)configureWithContext:(id)a3 completion:(id)a4;
+- (void)configureWithContext:(id)context completion:(id)completion;
 - (void)didDismissOfferSheet;
-- (void)prepareForActivationWithContext:(id)a3 completion:(id)a4;
+- (void)prepareForActivationWithContext:(id)context completion:(id)completion;
 @end
 
 @implementation ServiceSubscriptionOfferViewController
 
-- (void)configureWithContext:(id)a3 completion:(id)a4
+- (void)configureWithContext:(id)context completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  completionCopy = completion;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138543362;
@@ -17,9 +17,9 @@
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "[%{public}@]: Did receive request to display offer code sheet.", &buf, 0xCu);
   }
 
-  v8 = [(ServiceSubscriptionOfferViewController *)self _remoteViewControllerProxy];
-  [v8 setAllowsMenuButtonDismissal:1];
-  [v8 setAllowsAlertStacking:1];
+  _remoteViewControllerProxy = [(ServiceSubscriptionOfferViewController *)self _remoteViewControllerProxy];
+  [_remoteViewControllerProxy setAllowsMenuButtonDismissal:1];
+  [_remoteViewControllerProxy setAllowsAlertStacking:1];
   v17 = 0;
   v18 = &v17;
   v19 = 0x2050000000;
@@ -39,31 +39,31 @@
   v10 = v9;
   _Block_object_dispose(&v17, 8);
   v11 = [v9 alloc];
-  v12 = [v6 userInfo];
-  v13 = [v11 initWithParameters:v12];
+  userInfo = [contextCopy userInfo];
+  v13 = [v11 initWithParameters:userInfo];
 
   [(ServiceSubscriptionOfferViewController *)self addChildViewController:v13];
-  v14 = [v13 view];
-  v15 = [(ServiceSubscriptionOfferViewController *)self view];
-  [v15 bounds];
-  [v14 setFrame:?];
+  view = [v13 view];
+  view2 = [(ServiceSubscriptionOfferViewController *)self view];
+  [view2 bounds];
+  [view setFrame:?];
 
-  v16 = [(ServiceSubscriptionOfferViewController *)self view];
-  [v16 addSubview:v14];
+  view3 = [(ServiceSubscriptionOfferViewController *)self view];
+  [view3 addSubview:view];
 
   [v13 didMoveToParentViewController:self];
   [v13 setDelegate:self];
-  if (v7)
+  if (completionCopy)
   {
-    v7[2](v7);
+    completionCopy[2](completionCopy);
   }
 }
 
-- (void)prepareForActivationWithContext:(id)a3 completion:(id)a4
+- (void)prepareForActivationWithContext:(id)context completion:(id)completion
 {
-  if (a4)
+  if (completion)
   {
-    (*(a4 + 2))(a4);
+    (*(completion + 2))(completion);
   }
 }
 
@@ -78,7 +78,7 @@
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "[%{public}@]: Offer sheet did dismiss.", buf, 0xCu);
   }
 

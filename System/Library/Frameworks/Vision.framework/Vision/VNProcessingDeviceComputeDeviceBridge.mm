@@ -1,24 +1,24 @@
 @interface VNProcessingDeviceComputeDeviceBridge
 - (NSString)description;
-- (VNProcessingDeviceComputeDeviceBridge)initWithProcessingDevice:(id)a3;
-- (id)forwardingTargetForSelector:(SEL)a3;
+- (VNProcessingDeviceComputeDeviceBridge)initWithProcessingDevice:(id)device;
+- (id)forwardingTargetForSelector:(SEL)selector;
 @end
 
 @implementation VNProcessingDeviceComputeDeviceBridge
 
-- (id)forwardingTargetForSelector:(SEL)a3
+- (id)forwardingTargetForSelector:(SEL)selector
 {
-  v5 = [(VNProcessingDevice *)self->_processingDevice computeDevice];
+  computeDevice = [(VNProcessingDevice *)self->_processingDevice computeDevice];
   if (objc_opt_respondsToSelector())
   {
-    v6 = v5;
+    v6 = computeDevice;
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = VNProcessingDeviceComputeDeviceBridge;
-    v6 = [(VNProcessingDeviceComputeDeviceBridge *)&v9 forwardingTargetForSelector:a3];
+    v6 = [(VNProcessingDeviceComputeDeviceBridge *)&v9 forwardingTargetForSelector:selector];
   }
 
   v7 = v6;
@@ -31,23 +31,23 @@
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(VNProcessingDeviceComputeDeviceBridge *)self processingDevice];
-  v7 = [(VNProcessingDeviceComputeDeviceBridge *)self computeDevice];
-  v8 = [v3 initWithFormat:@"%@ [ %@ --> %@ ]", v5, v6, v7];
+  processingDevice = [(VNProcessingDeviceComputeDeviceBridge *)self processingDevice];
+  computeDevice = [(VNProcessingDeviceComputeDeviceBridge *)self computeDevice];
+  v8 = [v3 initWithFormat:@"%@ [ %@ --> %@ ]", v5, processingDevice, computeDevice];
 
   return v8;
 }
 
-- (VNProcessingDeviceComputeDeviceBridge)initWithProcessingDevice:(id)a3
+- (VNProcessingDeviceComputeDeviceBridge)initWithProcessingDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v9.receiver = self;
   v9.super_class = VNProcessingDeviceComputeDeviceBridge;
   v6 = [(VNProcessingDeviceComputeDeviceBridge *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_processingDevice, a3);
+    objc_storeStrong(&v6->_processingDevice, device);
   }
 
   return v7;

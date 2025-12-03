@@ -1,20 +1,20 @@
 @interface VUIPlaybackPositionInfo
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation VUIPlaybackPositionInfo
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(VUIPlaybackPositionInfo);
-  v5 = [(VUIPlaybackPositionInfo *)self bookmarkTime];
-  [(VUIPlaybackPositionInfo *)v4 setBookmarkTime:v5];
+  bookmarkTime = [(VUIPlaybackPositionInfo *)self bookmarkTime];
+  [(VUIPlaybackPositionInfo *)v4 setBookmarkTime:bookmarkTime];
 
-  v6 = [(VUIPlaybackPositionInfo *)self playCount];
-  [(VUIPlaybackPositionInfo *)v4 setPlayCount:v6];
+  playCount = [(VUIPlaybackPositionInfo *)self playCount];
+  [(VUIPlaybackPositionInfo *)v4 setPlayCount:playCount];
 
-  v7 = [(VUIPlaybackPositionInfo *)self hasBeenPlayed];
-  [(VUIPlaybackPositionInfo *)v4 setHasBeenPlayed:v7];
+  hasBeenPlayed = [(VUIPlaybackPositionInfo *)self hasBeenPlayed];
+  [(VUIPlaybackPositionInfo *)v4 setHasBeenPlayed:hasBeenPlayed];
 
   return v4;
 }

@@ -3,9 +3,9 @@
 + (NEFilterControlVerdict)dropVerdictWithUpdateRules:(BOOL)updateRules;
 + (NEFilterControlVerdict)updateRules;
 - (NEFilterControlVerdict)init;
-- (NEFilterControlVerdict)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (NEFilterControlVerdict)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NEFilterControlVerdict
@@ -24,11 +24,11 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = NEFilterControlVerdict;
-  result = [(NEFilterNewFlowVerdict *)&v7 copyWithZone:a3];
+  result = [(NEFilterNewFlowVerdict *)&v7 copyWithZone:zone];
   if (self)
   {
     updateRules = self->_updateRules;
@@ -70,37 +70,37 @@ LABEL_4:
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = NEFilterControlVerdict;
-  v4 = a3;
-  [(NEFilterNewFlowVerdict *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(NEFilterNewFlowVerdict *)&v6 encodeWithCoder:coderCopy];
   if (self)
   {
-    [v4 encodeBool:self->_updateRules forKey:{@"UpdateRules", v6.receiver, v6.super_class}];
+    [coderCopy encodeBool:self->_updateRules forKey:{@"UpdateRules", v6.receiver, v6.super_class}];
     handledByDataProvider = self->_handledByDataProvider;
   }
 
   else
   {
-    [v4 encodeBool:0 forKey:{@"UpdateRules", v6.receiver, v6.super_class}];
+    [coderCopy encodeBool:0 forKey:{@"UpdateRules", v6.receiver, v6.super_class}];
     handledByDataProvider = 0;
   }
 
-  [v4 encodeBool:handledByDataProvider forKey:@"HandleByDataProvider"];
+  [coderCopy encodeBool:handledByDataProvider forKey:@"HandleByDataProvider"];
 }
 
-- (NEFilterControlVerdict)initWithCoder:(id)a3
+- (NEFilterControlVerdict)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = NEFilterControlVerdict;
-  v5 = [(NEFilterNewFlowVerdict *)&v7 initWithCoder:v4];
+  v5 = [(NEFilterNewFlowVerdict *)&v7 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_updateRules = [v4 decodeBoolForKey:@"UpdateRules"];
-    v5->_handledByDataProvider = [v4 decodeBoolForKey:@"HandleByDataProvider"];
+    v5->_updateRules = [coderCopy decodeBoolForKey:@"UpdateRules"];
+    v5->_handledByDataProvider = [coderCopy decodeBoolForKey:@"HandleByDataProvider"];
   }
 
   return v5;

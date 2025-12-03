@@ -1,9 +1,9 @@
 @interface FMDEventLoggerFacilityOnDisk
 - (FMDEventLoggerFacilityOnDisk)init;
 - (id)loggedEvents;
-- (void)_logEvent:(id)a3;
+- (void)_logEvent:(id)event;
 - (void)loadLogs;
-- (void)logEvent:(id)a3;
+- (void)logEvent:(id)event;
 - (void)reset;
 @end
 
@@ -25,15 +25,15 @@
     [(FMDEventLoggerFacilityOnDisk *)v2 setCachedLogFileURL:v7];
 
     v8 = [FMDataArchiver alloc];
-    v9 = [(FMDEventLoggerFacilityOnDisk *)v2 cachedLogFileURL];
-    v10 = [v8 initWithFileURL:v9];
+    cachedLogFileURL = [(FMDEventLoggerFacilityOnDisk *)v2 cachedLogFileURL];
+    v10 = [v8 initWithFileURL:cachedLogFileURL];
     [(FMDEventLoggerFacilityOnDisk *)v2 setArchiver:v10];
 
-    v11 = [(FMDEventLoggerFacilityOnDisk *)v2 archiver];
-    [v11 setBackedUp:0];
+    archiver = [(FMDEventLoggerFacilityOnDisk *)v2 archiver];
+    [archiver setBackedUp:0];
 
-    v12 = [(FMDEventLoggerFacilityOnDisk *)v2 archiver];
-    [v12 setCreateDirectories:1];
+    archiver2 = [(FMDEventLoggerFacilityOnDisk *)v2 archiver];
+    [archiver2 setCreateDirectories:1];
 
     v13 = dispatch_queue_create("FMDEventLoggerFacilityOnDisk.serialQueue", 0);
     [(FMDEventLoggerFacilityOnDisk *)v2 setSerialQueue:v13];
@@ -44,45 +44,45 @@
   return v2;
 }
 
-- (void)logEvent:(id)a3
+- (void)logEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   objc_initWeak(&location, self);
-  v5 = [(FMDEventLoggerFacilityOnDisk *)self serialQueue];
+  serialQueue = [(FMDEventLoggerFacilityOnDisk *)self serialQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001B4160;
   block[3] = &unk_1002CD288;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, block);
+  v8 = eventCopy;
+  v6 = eventCopy;
+  dispatch_async(serialQueue, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
 }
 
-- (void)_logEvent:(id)a3
+- (void)_logEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   if ([(FMDEventLoggerFacilityOnDisk *)self shouldLog])
   {
-    v5 = [(FMDEventLoggerFacilityOnDisk *)self logs];
-    [v5 addObject:v4];
-    v6 = [v5 count];
+    logs = [(FMDEventLoggerFacilityOnDisk *)self logs];
+    [logs addObject:eventCopy];
+    v6 = [logs count];
     if (v6 > qword_100313450)
     {
-      [v5 removeObjectAtIndex:0];
+      [logs removeObjectAtIndex:0];
     }
 
     v7 = sub_100002880();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
-      sub_10022D614(v5, v7);
+      sub_10022D614(logs, v7);
     }
 
-    v8 = [(FMDEventLoggerFacilityOnDisk *)self archiver];
-    v9 = [v8 saveArray:v5];
+    archiver = [(FMDEventLoggerFacilityOnDisk *)self archiver];
+    v9 = [archiver saveArray:logs];
 
     if (v9)
     {
@@ -98,10 +98,10 @@
 - (void)reset
 {
   v3 = +[NSFileManager defaultManager];
-  v4 = [(FMDEventLoggerFacilityOnDisk *)self cachedLogFileURL];
-  v5 = [v4 path];
+  cachedLogFileURL = [(FMDEventLoggerFacilityOnDisk *)self cachedLogFileURL];
+  path = [cachedLogFileURL path];
   v8 = 0;
-  [v3 removeItemAtPath:v5 error:&v8];
+  [v3 removeItemAtPath:path error:&v8];
   v6 = v8;
 
   if (v6)
@@ -124,14 +124,14 @@
   v10 = sub_10000AB34;
   v11 = sub_100002B64;
   v12 = 0;
-  v3 = [(FMDEventLoggerFacilityOnDisk *)self serialQueue];
+  serialQueue = [(FMDEventLoggerFacilityOnDisk *)self serialQueue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1001B44A4;
   v6[3] = &unk_1002CD260;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(serialQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -141,10 +141,10 @@
 
 - (void)loadLogs
 {
-  v3 = [(FMDEventLoggerFacilityOnDisk *)self archiver];
+  archiver = [(FMDEventLoggerFacilityOnDisk *)self archiver];
   v4 = [NSSet setWithObject:objc_opt_class()];
   v15 = 0;
-  v5 = [v3 readArrayAndClasses:v4 error:&v15];
+  v5 = [archiver readArrayAndClasses:v4 error:&v15];
   v6 = v15;
 
   if (v6)
@@ -169,7 +169,7 @@
   }
 
   objc_initWeak(buf, self);
-  v10 = [(FMDEventLoggerFacilityOnDisk *)self serialQueue];
+  serialQueue = [(FMDEventLoggerFacilityOnDisk *)self serialQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001B4730;
@@ -177,7 +177,7 @@
   objc_copyWeak(&v14, buf);
   v13 = v9;
   v11 = v9;
-  dispatch_async(v10, block);
+  dispatch_async(serialQueue, block);
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(buf);

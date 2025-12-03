@@ -1,22 +1,22 @@
 @interface DYCaptureSessionInfo
-+ (id)symbolicatorSignatureFromCaptureStore:(id)a3;
-+ (int)platformOfCaptureStore:(id)a3;
-+ (unsigned)graphicsAPIOfCaptureStore:(id)a3;
++ (id)symbolicatorSignatureFromCaptureStore:(id)store;
++ (int)platformOfCaptureStore:(id)store;
++ (unsigned)graphicsAPIOfCaptureStore:(id)store;
 - (BOOL)harvestStateAtEnd;
 - (BOOL)lockGraphicsAfterCompletion;
 - (BOOL)suspendAfterCompletion;
 - (BOOL)triggerOnNextGraphicsCommand;
 - (DYCaptureSessionInfo)init;
-- (DYCaptureSessionInfo)initWithCaptureStore:(id)a3;
+- (DYCaptureSessionInfo)initWithCaptureStore:(id)store;
 - (NSArray)guestAppArguments;
 - (NSDictionary)guestAppEnvironment;
 - (NSString)guestAppBundleIdentifier;
 - (NSString)guestAppCurrentDirectory;
 - (NSString)guestAppPath;
 - (NSString)guestAppTitle;
-- (id)labelForQueueID:(unint64_t)a3;
-- (id)labelForThreadID:(unint64_t)a3;
-- (int)linkTimeVersionForLibrary:(id)a3;
+- (id)labelForQueueID:(unint64_t)d;
+- (id)labelForThreadID:(unint64_t)d;
+- (int)linkTimeVersionForLibrary:(id)library;
 - (unsigned)frameLimit;
 - (unsigned)triggerFrame;
 - (void)dealloc;
@@ -24,9 +24,9 @@
 
 @implementation DYCaptureSessionInfo
 
-+ (unsigned)graphicsAPIOfCaptureStore:(id)a3
++ (unsigned)graphicsAPIOfCaptureStore:(id)store
 {
-  v3 = [a3 metadataValueForKey:*MEMORY[0x277D0B080]];
+  v3 = [store metadataValueForKey:*MEMORY[0x277D0B080]];
   if (v3)
   {
 
@@ -36,16 +36,16 @@
   return v3;
 }
 
-+ (id)symbolicatorSignatureFromCaptureStore:(id)a3
++ (id)symbolicatorSignatureFromCaptureStore:(id)store
 {
-  v3 = [a3 copyAdjunctDataForFilename:@"(cs-sig)" error:0];
+  v3 = [store copyAdjunctDataForFilename:@"(cs-sig)" error:0];
 
   return v3;
 }
 
-+ (int)platformOfCaptureStore:(id)a3
++ (int)platformOfCaptureStore:(id)store
 {
-  v3 = [objc_msgSend(a3 openFileWithFilename:@"(device info)" error:{0), "decodeArchivedObject"}];
+  v3 = [objc_msgSend(store openFileWithFilename:@"(device info)" error:{0), "decodeArchivedObject"}];
 
   return [v3 platform];
 }
@@ -57,33 +57,33 @@
   return 0;
 }
 
-- (DYCaptureSessionInfo)initWithCaptureStore:(id)a3
+- (DYCaptureSessionInfo)initWithCaptureStore:(id)store
 {
   v16.receiver = self;
   v16.super_class = DYCaptureSessionInfo;
   v4 = [(DYCaptureSessionInfo *)&v16 init];
   if (v4)
   {
-    v5 = [a3 metadataValueForKey:*MEMORY[0x277D0B070]];
+    v5 = [store metadataValueForKey:*MEMORY[0x277D0B070]];
     if (!v5)
     {
-      v5 = [objc_msgSend(a3 metadataValueForKey:{@"kDYCaptureArchiveCaptureSessionInfoMetadataKey", "objectForKey:", @"kDysonCapturedFrameCountKey"}];
+      v5 = [objc_msgSend(store metadataValueForKey:{@"kDYCaptureArchiveCaptureSessionInfoMetadataKey", "objectForKey:", @"kDysonCapturedFrameCountKey"}];
     }
 
-    v4->_launchDictionary = [a3 metadataValueForKey:*MEMORY[0x277D0B098]];
-    v4->_configurationDictionary = [a3 metadataValueForKey:*MEMORY[0x277D0B078]];
+    v4->_launchDictionary = [store metadataValueForKey:*MEMORY[0x277D0B098]];
+    v4->_configurationDictionary = [store metadataValueForKey:*MEMORY[0x277D0B078]];
     v4->_capturedFramesCount = [v5 unsignedIntegerValue];
-    v4->_guestAppWasLinkedOnApexOrLater = [objc_msgSend(a3 metadataValueForKey:{*MEMORY[0x277D0B0A0]), "BOOLValue"}];
-    v4->_guestAppInfoPlist = [a3 metadataValueForKey:*MEMORY[0x277D0B0A8]];
-    v4->_libraryLinkTimeVersions = [a3 metadataValueForKey:*MEMORY[0x277D0B0B0]];
-    v4->_graphicsApi = [DYCaptureSessionInfo graphicsAPIOfCaptureStore:a3];
-    v6 = [a3 metadataValueForKey:*MEMORY[0x277D0B088]];
-    if (v6)
+    v4->_guestAppWasLinkedOnApexOrLater = [objc_msgSend(store metadataValueForKey:{*MEMORY[0x277D0B0A0]), "BOOLValue"}];
+    v4->_guestAppInfoPlist = [store metadataValueForKey:*MEMORY[0x277D0B0A8]];
+    v4->_libraryLinkTimeVersions = [store metadataValueForKey:*MEMORY[0x277D0B0B0]];
+    v4->_graphicsApi = [DYCaptureSessionInfo graphicsAPIOfCaptureStore:store];
+    uTF8String = [store metadataValueForKey:*MEMORY[0x277D0B088]];
+    if (uTF8String)
     {
-      v4->_version.version = [v6 intValue];
-      v7 = [a3 metadataValueForKey:*MEMORY[0x277D0B090]];
+      v4->_version.version = [uTF8String intValue];
+      v7 = [store metadataValueForKey:*MEMORY[0x277D0B090]];
       v4->_patchVersion = v7;
-      v6 = [(NSString *)v7 UTF8String];
+      uTF8String = [(NSString *)v7 UTF8String];
     }
 
     else
@@ -91,43 +91,43 @@
       v4->_version.version = 0;
     }
 
-    v4->_version.patch = v6;
+    v4->_version.patch = uTF8String;
     v4->_interposerVersion = &v4->_version;
-    v8 = [a3 metadataValueForKey:*MEMORY[0x277D0B0B8]];
+    v8 = [store metadataValueForKey:*MEMORY[0x277D0B0B8]];
     if (v8)
     {
-      v9 = [v8 unsignedIntValue];
+      unsignedIntValue = [v8 unsignedIntValue];
     }
 
     else
     {
-      v9 = +[DYDeviceInfo defaultNativePointerSize];
+      unsignedIntValue = +[DYDeviceInfo defaultNativePointerSize];
     }
 
-    v4->_nativePointerSize = v9;
-    v10 = [a3 metadataValueForKey:*MEMORY[0x277D0B068]];
+    v4->_nativePointerSize = unsignedIntValue;
+    v10 = [store metadataValueForKey:*MEMORY[0x277D0B068]];
     if (v10)
     {
       v4->_isBoundaryLess = [v10 BOOLValue];
     }
 
-    if ([a3 resolveFilename:@"(control device info)" error:0])
+    if ([store resolveFilename:@"(control device info)" error:0])
     {
-      v4->_controlDeviceInfo = [objc_msgSend(a3 openFileWithFilename:@"(control device info)" error:{0), "decodeArchivedObject"}];
+      v4->_controlDeviceInfo = [objc_msgSend(store openFileWithFilename:@"(control device info)" error:{0), "decodeArchivedObject"}];
     }
 
-    if ([a3 resolveFilename:@"is_almond" error:0])
+    if ([store resolveFilename:@"is_almond" error:0])
     {
       v4->_isAlmond = 1;
     }
 
-    v11 = [objc_msgSend(a3 openFileWithFilename:@"(queue/thread labels)" error:{0), "decodeArchivedObject"}];
+    v11 = [objc_msgSend(store openFileWithFilename:@"(queue/thread labels)" error:{0), "decodeArchivedObject"}];
     v4->_queueLabels = [v11 objectForKey:@"queues"];
     v4->_threadLabels = [v11 objectForKey:@"threads"];
-    if (![a3 resolveFilename:@"(device info)" error:0])
+    if (![store resolveFilename:@"(device info)" error:0])
     {
       v4->_deviceInfo = objc_alloc_init(DYDeviceInfo);
-      v12 = [objc_msgSend(a3 metadataValueForKey:{@"kDYCaptureArchiveCaptureSessionInfoMetadataKey", "objectForKey:", @"kDYPArchiveType"}];
+      v12 = [objc_msgSend(store metadataValueForKey:{@"kDYCaptureArchiveCaptureSessionInfoMetadataKey", "objectForKey:", @"kDYPArchiveType"}];
       if ([v12 isEqualToString:@"kDYEmbeddedArchiveType"])
       {
         deviceInfo = v4->_deviceInfo;
@@ -149,7 +149,7 @@
       return v4;
     }
 
-    v4->_deviceInfo = [objc_msgSend(a3 openFileWithFilename:@"(device info)" error:{0), "decodeArchivedObject"}];
+    v4->_deviceInfo = [objc_msgSend(store openFileWithFilename:@"(device info)" error:{0), "decodeArchivedObject"}];
   }
 
   return v4;
@@ -246,9 +246,9 @@
   return [v2 BOOLValue];
 }
 
-- (int)linkTimeVersionForLibrary:(id)a3
+- (int)linkTimeVersionForLibrary:(id)library
 {
-  v3 = [(NSDictionary *)self->_libraryLinkTimeVersions objectForKey:a3];
+  v3 = [(NSDictionary *)self->_libraryLinkTimeVersions objectForKey:library];
   if (!v3)
   {
     return -1;
@@ -257,18 +257,18 @@
   return [v3 intValue];
 }
 
-- (id)labelForQueueID:(unint64_t)a3
+- (id)labelForQueueID:(unint64_t)d
 {
   queueLabels = self->_queueLabels;
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:d];
 
   return [(NSDictionary *)queueLabels objectForKey:v4];
 }
 
-- (id)labelForThreadID:(unint64_t)a3
+- (id)labelForThreadID:(unint64_t)d
 {
   threadLabels = self->_threadLabels;
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:d];
 
   return [(NSDictionary *)threadLabels objectForKey:v4];
 }

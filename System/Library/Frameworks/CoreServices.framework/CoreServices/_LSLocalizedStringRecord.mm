@@ -1,10 +1,10 @@
 @interface _LSLocalizedStringRecord
-+ (id)sanitizeString:(id)a3;
++ (id)sanitizeString:(id)string;
 - (NSDictionary)allStringValues;
 - (NSString)defaultStringValue;
-- (id)_missingBundleLocsWithContext:(LSContext *)a3 tableID:(unsigned int)a4 unitID:(unsigned int)a5 unitBytes:(const LocalizedString *)a6;
+- (id)_missingBundleLocsWithContext:(LSContext *)context tableID:(unsigned int)d unitID:(unsigned int)iD unitBytes:(const LocalizedString *)bytes;
 - (id)debugDescription;
-- (id)stringValueWithPreferredLocalizations:(id)a3;
+- (id)stringValueWithPreferredLocalizations:(id)localizations;
 @end
 
 @implementation _LSLocalizedStringRecord
@@ -44,17 +44,17 @@
   return v6;
 }
 
-+ (id)sanitizeString:(id)a3
++ (id)sanitizeString:(id)string
 {
-  v3 = a3;
-  v4 = _LSBalanceBiDiControlCharacters(v3);
+  stringCopy = string;
+  v4 = _LSBalanceBiDiControlCharacters(stringCopy);
 
   v5 = _LSReplaceForbiddenCharacters(v4, 1);
 
   return v5;
 }
 
-- (id)stringValueWithPreferredLocalizations:(id)a3
+- (id)stringValueWithPreferredLocalizations:(id)localizations
 {
   v13 = 0;
   v14 = &v13;
@@ -67,14 +67,14 @@
   v12[1] = 3221225472;
   v12[2] = __66___LSLocalizedStringRecord_stringValueWithPreferredLocalizations___block_invoke;
   v12[3] = &unk_1E6A1D250;
-  v12[4] = a3;
+  v12[4] = localizations;
   v12[5] = &v13;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __66___LSLocalizedStringRecord_stringValueWithPreferredLocalizations___block_invoke_2;
   v11[3] = &unk_1E6A1D278;
   v11[4] = self;
-  v11[5] = a3;
+  v11[5] = localizations;
   v11[6] = &v13;
   v11[7] = a2;
   [(LSRecord *)self _ifAttached:v12 else:v11];
@@ -92,10 +92,10 @@
   return v9;
 }
 
-- (id)_missingBundleLocsWithContext:(LSContext *)a3 tableID:(unsigned int)a4 unitID:(unsigned int)a5 unitBytes:(const LocalizedString *)a6
+- (id)_missingBundleLocsWithContext:(LSContext *)context tableID:(unsigned int)d unitID:(unsigned int)iD unitBytes:(const LocalizedString *)bytes
 {
   v24 = *MEMORY[0x1E69E9840];
-  v7 = LaunchServices::LocalizedString::getBundleLocs(a6, a3->db);
+  v7 = LaunchServices::LocalizedString::getBundleLocs(bytes, context->db);
   v8 = objc_alloc(MEMORY[0x1E695DFA8]);
   if (v7)
   {
@@ -112,10 +112,10 @@
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v11 = [(_LSLocalizedStringRecord *)self _allUnsanitizedStringValues];
-  v12 = [v11 allKeys];
+  _allUnsanitizedStringValues = [(_LSLocalizedStringRecord *)self _allUnsanitizedStringValues];
+  allKeys = [_allUnsanitizedStringValues allKeys];
 
-  v13 = [v12 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  v13 = [allKeys countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v13)
   {
     v14 = *v20;
@@ -125,29 +125,29 @@
       {
         if (*v20 != v14)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(allKeys);
         }
 
         [v10 removeObject:*(*(&v19 + 1) + 8 * i)];
       }
 
-      v13 = [v12 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v13 = [allKeys countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v13);
   }
 
-  v16 = [v10 allObjects];
+  allObjects = [v10 allObjects];
 
   v17 = *MEMORY[0x1E69E9840];
 
-  return v16;
+  return allObjects;
 }
 
 - (NSDictionary)allStringValues
 {
-  v2 = [(_LSLocalizedStringRecord *)self _allUnsanitizedStringValues];
-  v3 = [v2 count];
+  _allUnsanitizedStringValues = [(_LSLocalizedStringRecord *)self _allUnsanitizedStringValues];
+  v3 = [_allUnsanitizedStringValues count];
   if (v3)
   {
     v4 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:v3];
@@ -159,7 +159,7 @@
     v16 = v5;
     v6 = v4;
     v15 = v6;
-    [v2 enumerateKeysAndObjectsUsingBlock:&v11];
+    [_allUnsanitizedStringValues enumerateKeysAndObjectsUsingBlock:&v11];
     v7 = [v6 copy];
   }
 
@@ -187,8 +187,8 @@
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
   v4 = objc_opt_class();
-  v5 = [(_LSLocalizedStringRecord *)self stringValue];
-  v6 = [v3 initWithFormat:@"<%@ %p> %@", v4, self, v5];
+  stringValue = [(_LSLocalizedStringRecord *)self stringValue];
+  v6 = [v3 initWithFormat:@"<%@ %p> %@", v4, self, stringValue];
 
   return v6;
 }

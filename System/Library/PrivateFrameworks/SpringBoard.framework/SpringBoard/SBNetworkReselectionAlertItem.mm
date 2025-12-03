@@ -1,21 +1,21 @@
 @interface SBNetworkReselectionAlertItem
-- (SBNetworkReselectionAlertItem)initWithSlot:(int64_t)a3;
+- (SBNetworkReselectionAlertItem)initWithSlot:(int64_t)slot;
 - (id)lockLabel;
 - (id)shortLockLabel;
 - (void)_showPrefs;
-- (void)configure:(BOOL)a3 requirePasscodeForActions:(BOOL)a4;
+- (void)configure:(BOOL)configure requirePasscodeForActions:(BOOL)actions;
 - (void)performUnlockAction;
 @end
 
 @implementation SBNetworkReselectionAlertItem
 
-- (SBNetworkReselectionAlertItem)initWithSlot:(int64_t)a3
+- (SBNetworkReselectionAlertItem)initWithSlot:(int64_t)slot
 {
-  v5 = [MEMORY[0x277CCA8D8] mainBundle];
-  v6 = [v5 localizedStringForKey:@"NETWORK_LOST" value:&stru_283094718 table:@"SpringBoard"];
-  v7 = [MEMORY[0x277CCA8D8] mainBundle];
-  v8 = [v7 localizedStringForKey:@"NETWORK_LOST_TEXT" value:&stru_283094718 table:@"SpringBoard"];
-  v9 = [(SBPhoneAlertItem *)self initWithTitle:v6 bodyText:v8 slot:a3];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v6 = [mainBundle localizedStringForKey:@"NETWORK_LOST" value:&stru_283094718 table:@"SpringBoard"];
+  mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
+  v8 = [mainBundle2 localizedStringForKey:@"NETWORK_LOST_TEXT" value:&stru_283094718 table:@"SpringBoard"];
+  v9 = [(SBPhoneAlertItem *)self initWithTitle:v6 bodyText:v8 slot:slot];
 
   return v9;
 }
@@ -28,16 +28,16 @@
 
 - (id)lockLabel
 {
-  v2 = [MEMORY[0x277CCA8D8] mainBundle];
-  v3 = [v2 localizedStringForKey:@"NETWORK_LOST_LOCK_LABEL" value:&stru_283094718 table:@"SpringBoard"];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v3 = [mainBundle localizedStringForKey:@"NETWORK_LOST_LOCK_LABEL" value:&stru_283094718 table:@"SpringBoard"];
 
   return v3;
 }
 
 - (id)shortLockLabel
 {
-  v2 = [MEMORY[0x277CCA8D8] mainBundle];
-  v3 = [v2 localizedStringForKey:@"NETWORK_LOST_LOCK_LABEL_SHORT" value:&stru_283094718 table:@"SpringBoard"];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v3 = [mainBundle localizedStringForKey:@"NETWORK_LOST_LOCK_LABEL_SHORT" value:&stru_283094718 table:@"SpringBoard"];
 
   return v3;
 }
@@ -49,16 +49,16 @@
   [(SBAlertItem *)self deactivate];
 }
 
-- (void)configure:(BOOL)a3 requirePasscodeForActions:(BOOL)a4
+- (void)configure:(BOOL)configure requirePasscodeForActions:(BOOL)actions
 {
-  v5 = [(SBAlertItem *)self alertController:a3];
-  v6 = [SBApp telephonyStateProvider];
-  v7 = [(SBPhoneAlertItem *)self slot];
-  v8 = [v6 subscriptionInfoForSlot:v7];
+  v5 = [(SBAlertItem *)self alertController:configure];
+  telephonyStateProvider = [SBApp telephonyStateProvider];
+  slot = [(SBPhoneAlertItem *)self slot];
+  v8 = [telephonyStateProvider subscriptionInfoForSlot:slot];
   v9 = [v8 registrationRejectionCauseCode] - 2;
-  if (v7 && [v6 isDualSIMEnabled])
+  if (slot && [telephonyStateProvider isDualSIMEnabled])
   {
-    if (v7 == 1)
+    if (slot == 1)
     {
       v10 = 2;
     }
@@ -68,7 +68,7 @@
       v10 = 1;
     }
 
-    v11 = [v6 isSIMPresentForSlot:v10];
+    v11 = [telephonyStateProvider isSIMPresentForSlot:v10];
   }
 
   else
@@ -76,15 +76,15 @@
     v11 = 0;
   }
 
-  v12 = [MEMORY[0x277CCA8D8] mainBundle];
-  v13 = v12;
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v13 = mainBundle;
   v31 = v8;
   if (v9 > 4)
   {
-    v14 = [v12 localizedStringForKey:@"NETWORK_LOST" value:&stru_283094718 table:@"SpringBoard"];
+    v14 = [mainBundle localizedStringForKey:@"NETWORK_LOST" value:&stru_283094718 table:@"SpringBoard"];
 
     v15 = MEMORY[0x277CCACA8];
-    v16 = [MEMORY[0x277CCA8D8] mainBundle];
+    mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
     if (v11)
     {
       v17 = @"NETWORK_LOST_TEXT_FORMAT";
@@ -96,17 +96,17 @@
 
   else
   {
-    v14 = [v12 localizedStringForKey:@"NETWORK_RESTRICTED" value:&stru_283094718 table:@"SpringBoard"];
+    v14 = [mainBundle localizedStringForKey:@"NETWORK_RESTRICTED" value:&stru_283094718 table:@"SpringBoard"];
 
     v15 = MEMORY[0x277CCACA8];
-    v16 = [MEMORY[0x277CCA8D8] mainBundle];
+    mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
     if (v11)
     {
       v17 = @"NETWORK_RESTRICTED_TEXT_FORMAT";
 LABEL_13:
-      v18 = [v16 localizedStringForKey:v17 value:&stru_283094718 table:@"SpringBoard-gemini"];
-      v19 = [v8 SIMLabel];
-      v20 = [v15 stringWithFormat:v18, v19];
+      v18 = [mainBundle2 localizedStringForKey:v17 value:&stru_283094718 table:@"SpringBoard-gemini"];
+      sIMLabel = [v8 SIMLabel];
+      v20 = [v15 stringWithFormat:v18, sIMLabel];
 
       goto LABEL_17;
     }
@@ -114,17 +114,17 @@ LABEL_13:
     v21 = @"NETWORK_RESTRICTED_TEXT";
   }
 
-  v18 = [v16 localizedStringForKey:v21 value:&stru_283094718 table:@"SpringBoard"];
+  v18 = [mainBundle2 localizedStringForKey:v21 value:&stru_283094718 table:@"SpringBoard"];
   v20 = [v15 stringWithFormat:v18];
 LABEL_17:
 
   [v5 setTitle:v14];
   [v5 setMessage:v20];
-  if (!a3)
+  if (!configure)
   {
     v22 = MEMORY[0x277D750F8];
-    v23 = [MEMORY[0x277CCA8D8] mainBundle];
-    v24 = [v23 localizedStringForKey:@"DISMISS_ALERT" value:&stru_283094718 table:@"SpringBoard"];
+    mainBundle3 = [MEMORY[0x277CCA8D8] mainBundle];
+    v24 = [mainBundle3 localizedStringForKey:@"DISMISS_ALERT" value:&stru_283094718 table:@"SpringBoard"];
     v33[0] = MEMORY[0x277D85DD0];
     v33[1] = 3221225472;
     v33[2] = __69__SBNetworkReselectionAlertItem_configure_requirePasscodeForActions___block_invoke;
@@ -134,8 +134,8 @@ LABEL_17:
     [v5 addAction:v25];
 
     v26 = MEMORY[0x277D750F8];
-    v27 = [MEMORY[0x277CCA8D8] mainBundle];
-    v28 = [v27 localizedStringForKey:@"SETTINGS" value:&stru_283094718 table:@"SpringBoard"];
+    mainBundle4 = [MEMORY[0x277CCA8D8] mainBundle];
+    v28 = [mainBundle4 localizedStringForKey:@"SETTINGS" value:&stru_283094718 table:@"SpringBoard"];
     v32[0] = MEMORY[0x277D85DD0];
     v32[1] = 3221225472;
     v32[2] = __69__SBNetworkReselectionAlertItem_configure_requirePasscodeForActions___block_invoke_2;

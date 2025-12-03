@@ -1,7 +1,7 @@
 @interface ATXCacheReader
-- (ATXCacheReader)initWithCacheBasePath:(id)a3;
-- (id)readCacheFileForCachePath:(id)a3;
-- (id)readCacheFileForConsumerSubtype:(unsigned __int8)a3;
+- (ATXCacheReader)initWithCacheBasePath:(id)path;
+- (id)readCacheFileForCachePath:(id)path;
+- (id)readCacheFileForConsumerSubtype:(unsigned __int8)subtype;
 - (void)_handleDirChange;
 - (void)dealloc;
 @end
@@ -33,9 +33,9 @@ uint64_t __25__ATXCacheReader_dealloc__block_invoke(uint64_t a1, uint64_t a2)
   return result;
 }
 
-- (ATXCacheReader)initWithCacheBasePath:(id)a3
+- (ATXCacheReader)initWithCacheBasePath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v29.receiver = self;
   v29.super_class = ATXCacheReader;
   v5 = [(ATXCacheReader *)&v29 init];
@@ -47,25 +47,25 @@ uint64_t __25__ATXCacheReader_dealloc__block_invoke(uint64_t a1, uint64_t a2)
     v9 = *(v5 + 1);
     *(v5 + 1) = v8;
 
-    if (v4)
+    if (pathCopy)
     {
-      v10 = v4;
+      v10 = pathCopy;
       v12 = (v5 + 16);
-      v11 = *(v5 + 2);
+      appPredictionDirectory = *(v5 + 2);
       *(v5 + 2) = v10;
     }
 
     else
     {
-      v11 = [MEMORY[0x1E698B010] appPredictionDirectory];
-      v13 = [v11 stringByAppendingPathComponent:@"caches/ATXCacheFile"];
+      appPredictionDirectory = [MEMORY[0x1E698B010] appPredictionDirectory];
+      v13 = [appPredictionDirectory stringByAppendingPathComponent:@"caches/ATXCacheFile"];
       v12 = (v5 + 16);
       v14 = *(v5 + 2);
       *(v5 + 2) = v13;
     }
 
-    v15 = [*v12 stringByDeletingLastPathComponent];
-    v16 = open([v15 UTF8String], 0x8000);
+    stringByDeletingLastPathComponent = [*v12 stringByDeletingLastPathComponent];
+    v16 = open([stringByDeletingLastPathComponent UTF8String], 0x8000);
     if ((v16 & 0x80000000) == 0)
     {
       v17 = v16;
@@ -104,22 +104,22 @@ void __40__ATXCacheReader_initWithCacheBasePath___block_invoke(uint64_t a1)
   [WeakRetained _handleDirChange];
 }
 
-- (id)readCacheFileForConsumerSubtype:(unsigned __int8)a3
+- (id)readCacheFileForConsumerSubtype:(unsigned __int8)subtype
 {
-  v3 = a3;
+  subtypeCopy = subtype;
   v5 = +[ATXAppPredictorAssetMapping assetMappingWithCachedAssets];
-  v6 = [v5 getFullCachePathWithBaseCachePath:self->_cacheBasePath consumerSubType:v3];
+  v6 = [v5 getFullCachePathWithBaseCachePath:self->_cacheBasePath consumerSubType:subtypeCopy];
 
   v7 = [(ATXCacheReader *)self readCacheFileForCachePath:v6];
 
   return v7;
 }
 
-- (id)readCacheFileForCachePath:(id)a3
+- (id)readCacheFileForCachePath:(id)path
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  pathCopy = path;
+  v5 = pathCopy;
+  if (pathCopy)
   {
     v12 = 0;
     v13 = &v12;
@@ -132,7 +132,7 @@ void __40__ATXCacheReader_initWithCacheBasePath___block_invoke(uint64_t a1)
     v9[1] = 3221225472;
     v9[2] = __44__ATXCacheReader_readCacheFileForCachePath___block_invoke;
     v9[3] = &unk_1E80C40F0;
-    v10 = v4;
+    v10 = pathCopy;
     v11 = &v12;
     [(_PASLock *)lock runWithLockAcquired:v9];
     v7 = v13[5];

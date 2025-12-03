@@ -1,15 +1,15 @@
 @interface LiveLookupCallIdentity
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsIdentityType:(id)a3;
+- (int)StringAsIdentityType:(id)type;
 - (int)identityType;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasIdentityType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasIdentityType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation LiveLookupCallIdentity
@@ -27,9 +27,9 @@
   }
 }
 
-- (void)setHasIdentityType:(BOOL)a3
+- (void)setHasIdentityType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }
@@ -42,20 +42,20 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (int)StringAsIdentityType:(id)a3
+- (int)StringAsIdentityType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"IDENTITY_CATEGORY_UNSPECIFIED"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"IDENTITY_CATEGORY_UNSPECIFIED"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"IDENTITY_CATEGORY_PERSON"])
+  else if ([typeCopy isEqualToString:@"IDENTITY_CATEGORY_PERSON"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"IDENTITY_CATEGORY_BUSINESS"])
+  else if ([typeCopy isEqualToString:@"IDENTITY_CATEGORY_BUSINESS"])
   {
     v4 = 2;
   }
@@ -73,8 +73,8 @@
   v7.receiver = self;
   v7.super_class = LiveLookupCallIdentity;
   v3 = [(LiveLookupCallIdentity *)&v7 description];
-  v4 = [(LiveLookupCallIdentity *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(LiveLookupCallIdentity *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -92,8 +92,8 @@
   icon = self->_icon;
   if (icon)
   {
-    v7 = [(LiveLookupIcon *)icon dictionaryRepresentation];
-    [v4 setObject:v7 forKey:@"icon"];
+    dictionaryRepresentation = [(LiveLookupIcon *)icon dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"icon"];
   }
 
   has = self->_has;
@@ -124,20 +124,20 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v8 = v4;
+  toCopy = to;
+  v8 = toCopy;
   if (self->_name)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_icon)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v8;
+    toCopy = v8;
   }
 
   has = self->_has;
@@ -145,7 +145,7 @@
   {
     cacheExpiryMinutes = self->_cacheExpiryMinutes;
     PBDataWriterWriteUint32Field();
-    v4 = v8;
+    toCopy = v8;
     has = self->_has;
   }
 
@@ -153,49 +153,49 @@
   {
     identityType = self->_identityType;
     PBDataWriterWriteInt32Field();
-    v4 = v8;
+    toCopy = v8;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_name)
   {
-    [v4 setName:?];
-    v4 = v6;
+    [toCopy setName:?];
+    toCopy = v6;
   }
 
   if (self->_icon)
   {
     [v6 setIcon:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if (has)
   {
-    *(v4 + 2) = self->_cacheExpiryMinutes;
-    *(v4 + 40) |= 1u;
+    *(toCopy + 2) = self->_cacheExpiryMinutes;
+    *(toCopy + 40) |= 1u;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    *(v4 + 6) = self->_identityType;
-    *(v4 + 40) |= 2u;
+    *(toCopy + 6) = self->_identityType;
+    *(toCopy + 40) |= 2u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_name copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_name copyWithZone:zone];
   v7 = v5[4];
   v5[4] = v6;
 
-  v8 = [(LiveLookupIcon *)self->_icon copyWithZone:a3];
+  v8 = [(LiveLookupIcon *)self->_icon copyWithZone:zone];
   v9 = v5[2];
   v5[2] = v8;
 
@@ -216,16 +216,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_15;
   }
 
   name = self->_name;
-  if (name | *(v4 + 4))
+  if (name | *(equalCopy + 4))
   {
     if (![(NSString *)name isEqual:?])
     {
@@ -234,7 +234,7 @@
   }
 
   icon = self->_icon;
-  if (icon | *(v4 + 2))
+  if (icon | *(equalCopy + 2))
   {
     if (![(LiveLookupIcon *)icon isEqual:?])
     {
@@ -244,23 +244,23 @@
 
   if (*&self->_has)
   {
-    if ((*(v4 + 40) & 1) == 0 || self->_cacheExpiryMinutes != *(v4 + 2))
+    if ((*(equalCopy + 40) & 1) == 0 || self->_cacheExpiryMinutes != *(equalCopy + 2))
     {
       goto LABEL_15;
     }
   }
 
-  else if (*(v4 + 40))
+  else if (*(equalCopy + 40))
   {
 LABEL_15:
     v7 = 0;
     goto LABEL_16;
   }
 
-  v7 = (*(v4 + 40) & 2) == 0;
+  v7 = (*(equalCopy + 40) & 2) == 0;
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 40) & 2) == 0 || self->_identityType != *(v4 + 6))
+    if ((*(equalCopy + 40) & 2) == 0 || self->_identityType != *(equalCopy + 6))
     {
       goto LABEL_15;
     }
@@ -301,18 +301,18 @@ LABEL_3:
   return v4 ^ v3 ^ v5 ^ v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v8 = v4;
-  if (*(v4 + 4))
+  fromCopy = from;
+  v8 = fromCopy;
+  if (*(fromCopy + 4))
   {
     [(LiveLookupCallIdentity *)self setName:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
   icon = self->_icon;
-  v6 = *(v4 + 2);
+  v6 = *(fromCopy + 2);
   if (icon)
   {
     if (!v6)
@@ -333,19 +333,19 @@ LABEL_3:
     [(LiveLookupCallIdentity *)self setIcon:?];
   }
 
-  v4 = v8;
+  fromCopy = v8;
 LABEL_9:
-  v7 = *(v4 + 40);
+  v7 = *(fromCopy + 40);
   if (v7)
   {
-    self->_cacheExpiryMinutes = *(v4 + 2);
+    self->_cacheExpiryMinutes = *(fromCopy + 2);
     *&self->_has |= 1u;
-    v7 = *(v4 + 40);
+    v7 = *(fromCopy + 40);
   }
 
   if ((v7 & 2) != 0)
   {
-    self->_identityType = *(v4 + 6);
+    self->_identityType = *(fromCopy + 6);
     *&self->_has |= 2u;
   }
 

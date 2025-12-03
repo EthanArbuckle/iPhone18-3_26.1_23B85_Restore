@@ -1,55 +1,55 @@
 @interface DTDeviceInfoService
-+ (void)registerCapabilities:(id)a3;
-- (DTDeviceInfoService)initWithChannel:(id)a3;
++ (void)registerCapabilities:(id)capabilities;
+- (DTDeviceInfoService)initWithChannel:(id)channel;
 - (id)_configurationProperties;
 - (id)_getIOMFBProperties;
-- (id)_lookupInt32Sysctl:(const char *)a3;
-- (id)_lookupInt64Sysctl:(const char *)a3;
-- (id)_processDictionaryForProcInfo:(id)a3;
+- (id)_lookupInt32Sysctl:(const char *)sysctl;
+- (id)_lookupInt64Sysctl:(const char *)sysctl;
+- (id)_processDictionaryForProcInfo:(id)info;
 - (id)allAnalysisModes;
-- (id)counterAnalysisWithName:(id)a3;
-- (id)createSignatureFromLibraryUUID:(id)a3 sharedCacheUUID:(id)a4 andPath:(id)a5;
-- (id)deepSymbolOwnerSignatureForPid:(id)a3 uuid:(id)a4;
-- (id)directoryListingForPath:(id)a3;
-- (id)execnameForPid:(id)a3;
+- (id)counterAnalysisWithName:(id)name;
+- (id)createSignatureFromLibraryUUID:(id)d sharedCacheUUID:(id)iD andPath:(id)path;
+- (id)deepSymbolOwnerSignatureForPid:(id)pid uuid:(id)uuid;
+- (id)directoryListingForPath:(id)path;
+- (id)execnameForPid:(id)pid;
 - (id)hardwareInformation;
-- (id)iconDescriptionFileForAppPath:(id)a3;
-- (id)isRunningPid:(id)a3;
+- (id)iconDescriptionFileForAppPath:(id)path;
+- (id)isRunningPid:(id)pid;
 - (id)kpepDatabase;
-- (id)lookupSysctl:(const char *)a3;
+- (id)lookupSysctl:(const char *)sysctl;
 - (id)machKernelName;
 - (id)machTimeInfo;
-- (id)nameForUID:(id)a3;
+- (id)nameForUID:(id)d;
 - (id)productVersion;
 - (id)retrieveHardwareCounterConfigurableOffset;
-- (id)runningProcessWithPid:(id)a3;
+- (id)runningProcessWithPid:(id)pid;
 - (id)runningProcesses;
-- (id)symbolicatorSignatureForPid:(id)a3 trackingSelector:(id)a4;
+- (id)symbolicatorSignatureForPid:(id)pid trackingSelector:(id)selector;
 - (id)traceCodesFile;
 - (id)uniqueID;
 - (int)hwCPUsubtype;
 - (int)hwCPUtype;
 - (int)numberOfCpus;
 - (int)numberOfPhysicalCpus;
-- (void)enableExpiredPidTracking:(id)a3;
-- (void)messageReceived:(id)a3;
-- (void)unregisterSignatureTrackingForPid:(id)a3;
+- (void)enableExpiredPidTracking:(id)tracking;
+- (void)messageReceived:(id)received;
+- (void)unregisterSignatureTrackingForPid:(id)pid;
 @end
 
 @implementation DTDeviceInfoService
 
-+ (void)registerCapabilities:(id)a3
++ (void)registerCapabilities:(id)capabilities
 {
-  v4 = a3;
-  [v4 publishCapability:DTDefaultDeviceInfoServiceIdentifier withVersion:117 forClass:a1];
+  capabilitiesCopy = capabilities;
+  [capabilitiesCopy publishCapability:DTDefaultDeviceInfoServiceIdentifier withVersion:117 forClass:self];
   v13 = 0;
   v14 = 0;
   v15 = 0;
-  v5 = [MEMORY[0x277CCAC38] processInfo];
-  v6 = v5;
-  if (v5)
+  processInfo = [MEMORY[0x277CCAC38] processInfo];
+  v6 = processInfo;
+  if (processInfo)
   {
-    [v5 operatingSystemVersion];
+    [processInfo operatingSystemVersion];
   }
 
   else
@@ -61,31 +61,31 @@
 
   v7 = 10000 * (v13 & ~(v13 >> 63)) + 100 * (v14 & ~(v14 >> 63));
   v8 = v15 & ~(v15 >> 63);
-  [v4 publishCapability:@"com.apple.instruments.server.services.deviceinfo.systemversion" withVersion:(v7 + v8) forClass:a1];
-  [v4 publishCapability:@"com.apple.instruments.server.services.deviceinfo.recordOptions" withVersion:1 forClass:a1];
+  [capabilitiesCopy publishCapability:@"com.apple.instruments.server.services.deviceinfo.systemversion" withVersion:(v7 + v8) forClass:self];
+  [capabilitiesCopy publishCapability:@"com.apple.instruments.server.services.deviceinfo.recordOptions" withVersion:1 forClass:self];
   v9 = objc_autoreleasePoolPush();
   v10 = MTLCreateSystemDefaultDevice();
   if (v10)
   {
-    [v4 publishCapability:@"com.apple.instruments.server.services.deviceinfo.metal" withVersion:1 forClass:a1];
+    [capabilitiesCopy publishCapability:@"com.apple.instruments.server.services.deviceinfo.metal" withVersion:1 forClass:self];
   }
 
   objc_autoreleasePoolPop(v9);
-  [v4 publishCapability:@"com.apple.instruments.server.services.deviceinfo.condition-inducer" withVersion:1 forClass:a1];
-  [v4 publishCapability:@"com.apple.instruments.server.services.deviceinfo.energytracing.location" withVersion:1 forClass:a1];
-  [v4 publishCapability:@"com.apple.instruments.target.user-page-size" withVersion:getpagesize() forClass:a1];
+  [capabilitiesCopy publishCapability:@"com.apple.instruments.server.services.deviceinfo.condition-inducer" withVersion:1 forClass:self];
+  [capabilitiesCopy publishCapability:@"com.apple.instruments.server.services.deviceinfo.energytracing.location" withVersion:1 forClass:self];
+  [capabilitiesCopy publishCapability:@"com.apple.instruments.target.user-page-size" withVersion:getpagesize() forClass:self];
   v11.numer = 0;
   v16 = 4;
   sysctlbyname("hw.physicalcpu_max", &v11, &v16, 0, 0);
-  [v4 publishCapability:@"com.apple.instruments.target.physical-cpus" withVersion:v11.numer forClass:a1];
-  [v4 publishCapability:@"com.apple.instruments.target.logical-cpus" withVersion:DTGetCoreCount() forClass:a1];
-  [v4 publishCapability:@"com.apple.instruments.target.ios" withVersion:(v7 + v8) forClass:a1];
-  [v4 publishCapability:@"com.apple.instruments.server.services.deviceinfo.app-life-cycle" withVersion:1 forClass:a1];
-  [v4 publishCapability:@"com.apple.instruments.server.services.deviceinfo.dyld-tracing" withVersion:1 forClass:a1];
-  [v4 publishCapability:@"com.apple.instruments.server.services.deviceinfo.scenekit-tracing" withVersion:1 forClass:a1];
-  [v4 publishCapability:@"com.apple.instruments.server.services.deviceinfo.gcd-perf" withVersion:1 forClass:a1];
-  [v4 publishCapability:@"com.apple.instruments.server.services.deviceinfo.gpu-allocation" withVersion:1 forClass:a1];
-  [v4 publishCapability:@"com.apple.instruments.server.services.deviceinfo.counters.advertising" withVersion:1 forClass:a1];
+  [capabilitiesCopy publishCapability:@"com.apple.instruments.target.physical-cpus" withVersion:v11.numer forClass:self];
+  [capabilitiesCopy publishCapability:@"com.apple.instruments.target.logical-cpus" withVersion:DTGetCoreCount() forClass:self];
+  [capabilitiesCopy publishCapability:@"com.apple.instruments.target.ios" withVersion:(v7 + v8) forClass:self];
+  [capabilitiesCopy publishCapability:@"com.apple.instruments.server.services.deviceinfo.app-life-cycle" withVersion:1 forClass:self];
+  [capabilitiesCopy publishCapability:@"com.apple.instruments.server.services.deviceinfo.dyld-tracing" withVersion:1 forClass:self];
+  [capabilitiesCopy publishCapability:@"com.apple.instruments.server.services.deviceinfo.scenekit-tracing" withVersion:1 forClass:self];
+  [capabilitiesCopy publishCapability:@"com.apple.instruments.server.services.deviceinfo.gcd-perf" withVersion:1 forClass:self];
+  [capabilitiesCopy publishCapability:@"com.apple.instruments.server.services.deviceinfo.gpu-allocation" withVersion:1 forClass:self];
+  [capabilitiesCopy publishCapability:@"com.apple.instruments.server.services.deviceinfo.counters.advertising" withVersion:1 forClass:self];
   v12 = 0;
   v16 = 4;
   if (sysctlbyname("kern.monotonic.supported", &v12, &v16, 0, 0) < 0 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
@@ -95,22 +95,22 @@
 
   if (v12 >= 1)
   {
-    [v4 publishCapability:@"com.apple.instruments.server.services.deviceinfo.counters" withVersion:1 forClass:a1];
+    [capabilitiesCopy publishCapability:@"com.apple.instruments.server.services.deviceinfo.counters" withVersion:1 forClass:self];
   }
 
   v11 = 0;
   mach_timebase_info(&v11);
-  [v4 publishCapability:@"com.apple.instruments.target.mtb.numer" withVersion:v11.numer forClass:a1];
-  [v4 publishCapability:@"com.apple.instruments.target.mtb.denom" withVersion:v11.denom forClass:a1];
-  [v4 publishCapability:@"com.apple.instruments.server.services.deviceinfo.devicesymbolication" withVersion:1 forClass:a1];
+  [capabilitiesCopy publishCapability:@"com.apple.instruments.target.mtb.numer" withVersion:v11.numer forClass:self];
+  [capabilitiesCopy publishCapability:@"com.apple.instruments.target.mtb.denom" withVersion:v11.denom forClass:self];
+  [capabilitiesCopy publishCapability:@"com.apple.instruments.server.services.deviceinfo.devicesymbolication" withVersion:1 forClass:self];
 }
 
-- (DTDeviceInfoService)initWithChannel:(id)a3
+- (DTDeviceInfoService)initWithChannel:(id)channel
 {
-  v4 = a3;
+  channelCopy = channel;
   v22.receiver = self;
   v22.super_class = DTDeviceInfoService;
-  v5 = [(DTXService *)&v22 initWithChannel:v4];
+  v5 = [(DTXService *)&v22 initWithChannel:channelCopy];
   if (v5)
   {
     v6 = objc_opt_new();
@@ -132,7 +132,7 @@
     v19[3] = &unk_278EF14D8;
     v13 = v5;
     v20 = v13;
-    v21 = v4;
+    v21 = channelCopy;
     v14 = pid_watcher_connect(0, v12, v19);
     dtsecurityPidWatcher = v13->_dtsecurityPidWatcher;
     v13->_dtsecurityPidWatcher = v14;
@@ -145,11 +145,11 @@
   return v5;
 }
 
-- (void)messageReceived:(id)a3
+- (void)messageReceived:(id)received
 {
   v26[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 errorStatus] == 2)
+  receivedCopy = received;
+  if ([receivedCopy errorStatus] == 2)
   {
     trackingSymbolicatorQueue = self->_trackingSymbolicatorQueue;
     block[0] = MEMORY[0x277D85DD0];
@@ -169,7 +169,7 @@
 
   else
   {
-    v7 = [v4 stringForMessageKey:@"infoRequest"];
+    v7 = [receivedCopy stringForMessageKey:@"infoRequest"];
     v8 = [v7 isEqualToString:@"ktraceMachineInformation"];
 
     if (v8)
@@ -186,30 +186,30 @@
         v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v26 forKeys:&v25 count:1];
         v14 = [v10 errorWithDomain:v11 code:15 userInfo:v13];
 
-        v15 = [v4 newReplyWithError:v14];
+        v15 = [receivedCopy newReplyWithError:v14];
       }
 
       else
       {
-        v15 = [v4 newReplyWithObject:v23];
+        v15 = [receivedCopy newReplyWithObject:v23];
       }
 
-      v21 = [(DTXService *)self channel];
-      [v21 sendControlAsync:v15 replyHandler:0];
+      channel = [(DTXService *)self channel];
+      [channel sendControlAsync:v15 replyHandler:0];
     }
 
     else
     {
-      v16 = [v4 stringForMessageKey:@"infoRequest"];
+      v16 = [receivedCopy stringForMessageKey:@"infoRequest"];
       v17 = [v16 isEqualToString:@"configurationInformation"];
 
       if (v17)
       {
-        v18 = [(DTDeviceInfoService *)self _configurationProperties];
-        v19 = [v4 newReplyWithObject:v18];
+        _configurationProperties = [(DTDeviceInfoService *)self _configurationProperties];
+        v19 = [receivedCopy newReplyWithObject:_configurationProperties];
 
-        v20 = [(DTXService *)self channel];
-        [v20 sendControlAsync:v19 replyHandler:0];
+        channel2 = [(DTXService *)self channel];
+        [channel2 sendControlAsync:v19 replyHandler:0];
       }
     }
   }
@@ -236,7 +236,7 @@
   }
 
   mach_timebase_info(&info);
-  v4 = [MEMORY[0x277CBEBB0] localTimeZone];
+  localTimeZone = [MEMORY[0x277CBEBB0] localTimeZone];
   v5 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:0];
   v15[0] = v5;
   v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:info.numer];
@@ -247,8 +247,8 @@
   v15[3] = v8;
   v9 = [MEMORY[0x277CCABB0] numberWithDouble:0 / 1000000000.0 + 0];
   v15[4] = v9;
-  v10 = [v4 name];
-  v15[5] = v10;
+  name = [localTimeZone name];
+  v15[5] = name;
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:6];
 
   v12 = *MEMORY[0x277D85DE8];
@@ -256,47 +256,47 @@
   return v11;
 }
 
-- (id)_processDictionaryForProcInfo:(id)a3
+- (id)_processDictionaryForProcInfo:(id)info
 {
   v51[5] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([v3 isZombie])
+  infoCopy = info;
+  if ([infoCopy isZombie])
   {
     v4 = 0;
     goto LABEL_36;
   }
 
-  v5 = [v3 pid];
+  v5 = [infoCopy pid];
   if (qword_27EE84210 != -1)
   {
     sub_24802C3A8();
   }
 
-  v6 = [MEMORY[0x277CBEB38] dictionary];
-  v7 = v6;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v7 = dictionary;
   if (v5 == dword_27EE84208)
   {
-    [v6 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:DTDeviceInfoRunningProcessIsMatchingServicePid];
+    [dictionary setObject:MEMORY[0x277CBEC38] forKeyedSubscript:DTDeviceInfoRunningProcessIsMatchingServicePid];
   }
 
-  if ([v3 shouldAnalyzeWithCorpse])
+  if ([infoCopy shouldAnalyzeWithCorpse])
   {
     [v7 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:DTDeviceInfoRunningProcessShouldAnalyzeWithCorpse];
   }
 
   v8 = qword_27EE84218;
-  if (!qword_27EE84218 || ([v3 valueForEnvVar:@"XPC_SIMULATOR_LAUNCHD_NAME"], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v8, "isEqualToString:", v9), v9, v10))
+  if (!qword_27EE84218 || ([infoCopy valueForEnvVar:@"XPC_SIMULATOR_LAUNCHD_NAME"], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v8, "isEqualToString:", v9), v9, v10))
   {
     v11 = MEMORY[0x277CBEAA8];
-    v12 = [v3 startTime];
-    [v3 startTime];
-    v49 = [v11 dateWithTimeIntervalSince1970:v13 / 1000000.0 + v12];
-    if ([v3 isCFM])
+    startTime = [infoCopy startTime];
+    [infoCopy startTime];
+    v49 = [v11 dateWithTimeIntervalSince1970:v13 / 1000000.0 + startTime];
+    if ([infoCopy isCFM])
     {
-      v14 = [v3 requestedAppName];
-      v15 = [v14 lastPathComponent];
+      requestedAppName = [infoCopy requestedAppName];
+      lastPathComponent = [requestedAppName lastPathComponent];
 
-      if (!v15)
+      if (!lastPathComponent)
       {
         goto LABEL_15;
       }
@@ -304,35 +304,35 @@
 
     else
     {
-      v15 = [v3 name];
-      if (!v15)
+      lastPathComponent = [infoCopy name];
+      if (!lastPathComponent)
       {
 LABEL_15:
-        v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"PID %d", v5];
+        lastPathComponent = [MEMORY[0x277CCACA8] stringWithFormat:@"PID %d", v5];
       }
     }
 
     v16 = objc_alloc(MEMORY[0x277CC1E70]);
     v17 = MEMORY[0x277CBEBC0];
-    v18 = [v3 realAppName];
-    v19 = [v18 rangeOfString:@".app" options:4];
+    realAppName = [infoCopy realAppName];
+    v19 = [realAppName rangeOfString:@".app" options:4];
     if (v19 == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v21 = v18;
+      v21 = realAppName;
     }
 
     else
     {
-      [v18 substringToIndex:v19 + v20];
+      [realAppName substringToIndex:v19 + v20];
       v46 = v5;
       v22 = v47 = v7;
-      v23 = [v18 lastPathComponent];
-      v24 = [v22 lastPathComponent];
-      [v24 stringByDeletingPathExtension];
-      v26 = v25 = v15;
-      v27 = [v23 isEqualToString:v26];
+      lastPathComponent2 = [realAppName lastPathComponent];
+      lastPathComponent3 = [v22 lastPathComponent];
+      [lastPathComponent3 stringByDeletingPathExtension];
+      v26 = v25 = lastPathComponent;
+      v27 = [lastPathComponent2 isEqualToString:v26];
 
-      v15 = v25;
+      lastPathComponent = v25;
       if (v27)
       {
         v28 = v22;
@@ -340,7 +340,7 @@ LABEL_15:
 
       else
       {
-        v28 = v18;
+        v28 = realAppName;
       }
 
       v21 = v28;
@@ -354,15 +354,15 @@ LABEL_15:
 
     if (v30)
     {
-      v31 = [v30 bundleIdentifier];
+      bundleIdentifier = [v30 bundleIdentifier];
     }
 
     else
     {
-      v31 = 0;
+      bundleIdentifier = 0;
     }
 
-    v32 = [v3 isSemiCriticalProcess] ^ 1;
+    v32 = [infoCopy isSemiCriticalProcess] ^ 1;
     if (v30)
     {
       v33 = v32;
@@ -379,31 +379,31 @@ LABEL_15:
     v50[1] = DTDeviceInfoRunningProcessIsApplicationKey;
     v35 = [MEMORY[0x277CCABB0] numberWithBool:v33];
     v51[1] = v35;
-    v51[2] = v15;
-    v48 = v15;
+    v51[2] = lastPathComponent;
+    v48 = lastPathComponent;
     v50[2] = DTDeviceInfoRunningProcessNameKey;
     v50[3] = DTDeviceInfoRunningProcessRealAppNameKey;
-    v36 = [v3 realAppName];
+    realAppName2 = [infoCopy realAppName];
     v50[4] = DTDeviceInfoRunningProcessStartDateKey;
-    v51[3] = v36;
+    v51[3] = realAppName2;
     v51[4] = v49;
     v37 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v51 forKeys:v50 count:5];
     [v7 addEntriesFromDictionary:v37];
 
-    if (v31)
+    if (bundleIdentifier)
     {
-      [v7 setObject:v31 forKeyedSubscript:DTDeviceInfoRunningProcessBundleIdentifierKey];
+      [v7 setObject:bundleIdentifier forKeyedSubscript:DTDeviceInfoRunningProcessBundleIdentifierKey];
     }
 
     v38 = MEMORY[0x277D46F48];
     v39 = [MEMORY[0x277D46F50] identifierWithPid:v5];
     v40 = [v38 handleForIdentifier:v39 error:0];
 
-    v41 = [v40 currentState];
-    if ([v41 taskState] == 4)
+    currentState = [v40 currentState];
+    if ([currentState taskState] == 4)
     {
-      v42 = [v41 endowmentNamespaces];
-      v43 = [v42 containsObject:*MEMORY[0x277D0AC90]];
+      endowmentNamespaces = [currentState endowmentNamespaces];
+      v43 = [endowmentNamespaces containsObject:*MEMORY[0x277D0AC90]];
 
       if (v43)
       {
@@ -428,14 +428,14 @@ LABEL_36:
 - (id)runningProcesses
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v4 = objc_alloc_init(MEMORY[0x277D6AF90]);
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = [v4 allProcInfos];
-  v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  allProcInfos = [v4 allProcInfos];
+  v6 = [allProcInfos countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
     v7 = v6;
@@ -446,43 +446,43 @@ LABEL_36:
       {
         if (*v17 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allProcInfos);
         }
 
         v10 = [(DTDeviceInfoService *)self _processDictionaryForProcInfo:*(*(&v16 + 1) + 8 * i)];
         if (v10)
         {
-          [v3 addObject:v10];
+          [array addObject:v10];
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v7 = [allProcInfos countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v7);
   }
 
-  v11 = [MEMORY[0x277CCAC38] processInfo];
-  v12 = [v11 environment];
-  v13 = [v12 objectForKeyedSubscript:@"XPC_SIMULATOR_LAUNCHD_NAME"];
+  processInfo = [MEMORY[0x277CCAC38] processInfo];
+  environment = [processInfo environment];
+  v13 = [environment objectForKeyedSubscript:@"XPC_SIMULATOR_LAUNCHD_NAME"];
 
   if (!v13)
   {
-    [v3 addObject:&unk_285A36ED0];
+    [array addObject:&unk_285A36ED0];
   }
 
   v14 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return array;
 }
 
-- (id)nameForUID:(id)a3
+- (id)nameForUID:(id)d
 {
-  v3 = a3;
-  v4 = [v3 intValue];
+  dCopy = d;
+  intValue = [dCopy intValue];
   if (qword_27EE84220)
   {
-    v5 = [qword_27EE84220 objectForKey:v3];
+    v5 = [qword_27EE84220 objectForKey:dCopy];
     if (v5)
     {
       goto LABEL_11;
@@ -496,11 +496,11 @@ LABEL_36:
     qword_27EE84220 = v6;
   }
 
-  v8 = getpwuid(v4);
+  v8 = getpwuid(intValue);
   if (v8 && v8->pw_name && *v8->pw_name && ([MEMORY[0x277CCACA8] stringWithUTF8String:?], (v9 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v5 = v9;
-    [qword_27EE84220 setObject:v9 forKey:v3];
+    [qword_27EE84220 setObject:v9 forKey:dCopy];
   }
 
   else
@@ -511,19 +511,19 @@ LABEL_36:
 LABEL_11:
   if ([(__CFString *)v5 isEqualToString:@"root"])
   {
-    v10 = [MEMORY[0x277CCA8D8] mainBundle];
-    v11 = v10;
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    v11 = mainBundle;
     v12 = @"root";
 LABEL_15:
-    v13 = [v10 localizedStringForKey:v12 value:&stru_285A19CB8 table:0];
+    v13 = [mainBundle localizedStringForKey:v12 value:&stru_285A19CB8 table:0];
 
     goto LABEL_17;
   }
 
   if ([(__CFString *)v5 isEqualToString:@"nobody"])
   {
-    v10 = [MEMORY[0x277CCA8D8] mainBundle];
-    v11 = v10;
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    v11 = mainBundle;
     v12 = @"nobody";
     goto LABEL_15;
   }
@@ -534,14 +534,14 @@ LABEL_17:
   return v13;
 }
 
-- (id)execnameForPid:(id)a3
+- (id)execnameForPid:(id)pid
 {
   v12 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 intValue];
-  if (v4 < 1)
+  pidCopy = pid;
+  intValue = [pidCopy intValue];
+  if (intValue < 1)
   {
-    if (!v4)
+    if (!intValue)
     {
       CSSymbolicatorCreateWithMachKernel();
       CSSymbolicatorGetAOutSymbolOwner();
@@ -564,7 +564,7 @@ LABEL_17:
     }
   }
 
-  else if (proc_pidpath(v4, buffer, 0x400u) >= 1)
+  else if (proc_pidpath(intValue, buffer, 0x400u) >= 1)
   {
     v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:buffer];
     if (v5)
@@ -574,7 +574,7 @@ LABEL_17:
   }
 
   v7 = +[DTExpiredPidCacheService defaultCache];
-  v8 = [v7 signatureForExpiredPid:v3];
+  v8 = [v7 signatureForExpiredPid:pidCopy];
 
   if (v8 && (CSSymbolicatorCreateWithSignature(), (CSIsNull() & 1) == 0))
   {
@@ -603,15 +603,15 @@ LABEL_19:
   return v5;
 }
 
-- (id)isRunningPid:(id)a3
+- (id)isRunningPid:(id)pid
 {
-  v3 = [a3 intValue];
+  intValue = [pid intValue];
   v4 = objc_alloc_init(MEMORY[0x277D6AF90]);
   v5 = v4;
   v6 = MEMORY[0x277CCABB0];
-  if (v3)
+  if (intValue)
   {
-    v7 = [v4 procInfoWithPID:v3];
+    v7 = [v4 procInfoWithPID:intValue];
     v8 = [v6 numberWithBool:v7 != 0];
   }
 
@@ -623,12 +623,12 @@ LABEL_19:
   return v8;
 }
 
-- (id)runningProcessWithPid:(id)a3
+- (id)runningProcessWithPid:(id)pid
 {
-  v4 = [a3 intValue];
-  if (v4)
+  intValue = [pid intValue];
+  if (intValue)
   {
-    v5 = v4;
+    v5 = intValue;
     v6 = objc_alloc_init(MEMORY[0x277D6AF90]);
     v7 = [v6 procInfoWithPID:v5];
     if (v7)
@@ -721,16 +721,16 @@ LABEL_19:
   return v3;
 }
 
-- (id)deepSymbolOwnerSignatureForPid:(id)a3 uuid:(id)a4
+- (id)deepSymbolOwnerSignatureForPid:(id)pid uuid:(id)uuid
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  pidCopy = pid;
+  uuidCopy = uuid;
+  if (uuidCopy)
   {
-    v8 = [v6 unsignedIntValue];
-    if (v8 == -1)
+    unsignedIntValue = [pidCopy unsignedIntValue];
+    if (unsignedIntValue == -1)
     {
-      v12 = v7;
+      v12 = uuidCopy;
       CSSymbolicatorCreateWithMachKernelFlagsAndNotification();
       v18 = 0;
       v19 = 0;
@@ -748,7 +748,7 @@ LABEL_19:
 
     else
     {
-      v9 = v8;
+      v9 = unsignedIntValue;
       v18 = 0;
       v19 = &v18;
       v20 = 0x3032000000;
@@ -756,7 +756,7 @@ LABEL_19:
       v22 = sub_247F72FF8;
       v23 = 0;
       v17 = 0uLL;
-      [v7 getUUIDBytes:&v17];
+      [uuidCopy getUUIDBytes:&v17];
       trackingSymbolicatorQueue = self->_trackingSymbolicatorQueue;
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
@@ -780,30 +780,30 @@ LABEL_19:
   return Signature;
 }
 
-- (id)symbolicatorSignatureForPid:(id)a3 trackingSelector:(id)a4
+- (id)symbolicatorSignatureForPid:(id)pid trackingSelector:(id)selector
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  pidCopy = pid;
+  selectorCopy = selector;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
   v23 = sub_247F72FE8;
   v24 = sub_247F72FF8;
   v25 = 0;
-  v8 = [v6 unsignedIntValue];
-  if (v8)
+  unsignedIntValue = [pidCopy unsignedIntValue];
+  if (unsignedIntValue)
   {
     trackingSymbolicatorQueue = self->_trackingSymbolicatorQueue;
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = sub_247F73288;
     block[3] = &unk_278EF1528;
-    v15 = v7;
-    v16 = self;
-    v17 = v6;
+    v15 = selectorCopy;
+    selfCopy = self;
+    v17 = pidCopy;
     v18 = &v20;
-    v19 = v8;
+    v19 = unsignedIntValue;
     dispatch_sync(trackingSymbolicatorQueue, block);
     v10 = v21[5];
     if (!v10)
@@ -811,7 +811,7 @@ LABEL_19:
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
       {
         *buf = 67109120;
-        v27 = v8;
+        v27 = unsignedIntValue;
         _os_log_impl(&dword_247F67000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "Device Info Service was unable to create symbolicator for PID %d", buf, 8u);
       }
 
@@ -835,26 +835,26 @@ LABEL_19:
   return Signature;
 }
 
-- (void)unregisterSignatureTrackingForPid:(id)a3
+- (void)unregisterSignatureTrackingForPid:(id)pid
 {
-  v4 = a3;
+  pidCopy = pid;
   trackingSymbolicatorQueue = self->_trackingSymbolicatorQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = sub_247F73450;
   v7[3] = &unk_278EF1550;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = pidCopy;
+  v6 = pidCopy;
   dispatch_sync(trackingSymbolicatorQueue, v7);
 }
 
-- (void)enableExpiredPidTracking:(id)a3
+- (void)enableExpiredPidTracking:(id)tracking
 {
-  v4 = a3;
+  trackingCopy = tracking;
   expiredPidTrackingEnabled = self->_expiredPidTrackingEnabled;
-  v7 = v4;
-  if (expiredPidTrackingEnabled != [v4 BOOLValue])
+  v7 = trackingCopy;
+  if (expiredPidTrackingEnabled != [trackingCopy BOOLValue])
   {
     self->_expiredPidTrackingEnabled = [v7 BOOLValue];
     v6 = +[DTExpiredPidCacheService defaultCache];
@@ -862,21 +862,21 @@ LABEL_19:
   }
 }
 
-- (id)directoryListingForPath:(id)a3
+- (id)directoryListingForPath:(id)path
 {
   v3 = MEMORY[0x277CCAA00];
-  v4 = a3;
-  v5 = [v3 defaultManager];
+  pathCopy = path;
+  defaultManager = [v3 defaultManager];
   v8 = 0;
-  v6 = [v5 contentsOfDirectoryAtPath:v4 error:&v8];
+  v6 = [defaultManager contentsOfDirectoryAtPath:pathCopy error:&v8];
 
   return v6;
 }
 
-- (id)iconDescriptionFileForAppPath:(id)a3
+- (id)iconDescriptionFileForAppPath:(id)path
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEBC0] fileURLWithPath:v4];
+  pathCopy = path;
+  v5 = [MEMORY[0x277CBEBC0] fileURLWithPath:pathCopy];
   if (!NSClassFromString(&cfstr_Isicon.isa))
   {
     v20 = 0;
@@ -889,9 +889,9 @@ LABEL_19:
   v9 = v8;
   if (v8)
   {
-    v10 = [v8 CGImage];
-    Width = CGImageGetWidth(v10);
-    Height = CGImageGetHeight(v10);
+    cGImage = [v8 CGImage];
+    Width = CGImageGetWidth(cGImage);
+    Height = CGImageGetHeight(cGImage);
     DeviceRGB = CGColorSpaceCreateDeviceRGB();
     if (DeviceRGB)
     {
@@ -906,7 +906,7 @@ LABEL_19:
         v33.origin.x = 0.0;
         v33.origin.y = 0.0;
         c = v16;
-        CGContextDrawImage(v16, v33, v10);
+        CGContextDrawImage(v16, v33, cGImage);
         v17 = [MEMORY[0x277CBEA90] dataWithBytesNoCopy:v15 length:32 * Width * Height freeWhenDone:1];
         v29 = MEMORY[0x277CBEAC0];
         v18 = [MEMORY[0x277CCABB0] numberWithInt:Width];
@@ -933,7 +933,7 @@ LABEL_19:
     logHandle = self->_logHandle;
     if (os_log_type_enabled(logHandle, OS_LOG_TYPE_ERROR))
     {
-      sub_24802C3BC(v4, logHandle, v22, v23, v24, v25, v26, v27);
+      sub_24802C3BC(pathCopy, logHandle, v22, v23, v24, v25, v26, v27);
     }
   }
 
@@ -945,12 +945,12 @@ LABEL_13:
   return v20;
 }
 
-- (id)createSignatureFromLibraryUUID:(id)a3 sharedCacheUUID:(id)a4 andPath:(id)a5
+- (id)createSignatureFromLibraryUUID:(id)d sharedCacheUUID:(id)iD andPath:(id)path
 {
   v28[2] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  iDCopy = iD;
+  pathCopy = path;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
@@ -959,8 +959,8 @@ LABEL_13:
   v27 = 0;
   v28[0] = 0;
   v28[1] = 0;
-  [v8 getUUIDBytes:v28];
-  v11 = [(DTDSCSymbolicatorCache *)self->_sharedCacheSymbolicators symbolicatorForSharedCacheUUID:v9];
+  [dCopy getUUIDBytes:v28];
+  v11 = [(DTDSCSymbolicatorCache *)self->_sharedCacheSymbolicators symbolicatorForSharedCacheUUID:iDCopy];
   v13 = v12;
   if ((CSIsNull() & 1) == 0)
   {
@@ -968,7 +968,7 @@ LABEL_13:
     v19[1] = 3221225472;
     v19[2] = sub_247F73A2C;
     v19[3] = &unk_278EF1578;
-    v20 = v10;
+    v20 = pathCopy;
     v21 = &v22;
     MEMORY[0x24C1C22F0](v11, v13, v28, 0x8000000000000000, v19);
   }
@@ -976,8 +976,8 @@ LABEL_13:
   v14 = v23[5];
   if (!v14)
   {
-    v15 = v10;
-    [v10 UTF8String];
+    v15 = pathCopy;
+    [pathCopy UTF8String];
     CSSymbolicatorForeachSymbolicatorWithPath();
     v14 = v23[5];
   }
@@ -1059,8 +1059,8 @@ LABEL_13:
 
   v9 = [v8 mutableCopy];
   v10 = objc_alloc_init(DTDeviceProcessorTraceState);
-  v11 = [(DTDeviceProcessorTraceState *)v10 dictionaryRepresentation];
-  [v9 setObject:v11 forKeyedSubscript:@"ProcessorTraceState"];
+  dictionaryRepresentation = [(DTDeviceProcessorTraceState *)v10 dictionaryRepresentation];
+  [v9 setObject:dictionaryRepresentation forKeyedSubscript:@"ProcessorTraceState"];
 
   v12 = [v9 copy];
   v13 = *MEMORY[0x277D85DE8];
@@ -1068,23 +1068,23 @@ LABEL_13:
   return v12;
 }
 
-- (id)lookupSysctl:(const char *)a3
+- (id)lookupSysctl:(const char *)sysctl
 {
   size = 0;
-  sysctlbyname(a3, 0, &size, 0, 0);
+  sysctlbyname(sysctl, 0, &size, 0, 0);
   v4 = malloc_type_malloc(size, 0x30C0E75CuLL);
-  sysctlbyname(a3, v4, &size, 0, 0);
+  sysctlbyname(sysctl, v4, &size, 0, 0);
   v5 = [MEMORY[0x277CCACA8] stringWithCString:v4 encoding:1];
   free(v4);
 
   return v5;
 }
 
-- (id)_lookupInt32Sysctl:(const char *)a3
+- (id)_lookupInt32Sysctl:(const char *)sysctl
 {
   v7 = 0;
   v6 = 4;
-  v3 = sysctlbyname(a3, &v7, &v6, 0, 0);
+  v3 = sysctlbyname(sysctl, &v7, &v6, 0, 0);
   v4 = 0;
   if (!v3)
   {
@@ -1094,11 +1094,11 @@ LABEL_13:
   return v4;
 }
 
-- (id)_lookupInt64Sysctl:(const char *)a3
+- (id)_lookupInt64Sysctl:(const char *)sysctl
 {
   v6 = 8;
   v7 = 0;
-  v3 = sysctlbyname(a3, &v7, &v6, 0, 0);
+  v3 = sysctlbyname(sysctl, &v7, &v6, 0, 0);
   v4 = 0;
   if (!v3)
   {
@@ -1122,7 +1122,7 @@ LABEL_13:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v9 = CFProperty;
+      stringValue = CFProperty;
     }
 
     else
@@ -1134,10 +1134,10 @@ LABEL_13:
         goto LABEL_10;
       }
 
-      v9 = [CFProperty stringValue];
+      stringValue = [CFProperty stringValue];
     }
 
-    v11 = v9;
+    v11 = stringValue;
 
     if (!v11)
     {
@@ -1274,10 +1274,10 @@ LABEL_7:
     [v3 setObject:v6 forKeyedSubscript:DTDeviceInfoConfigMemSizeSizeKey];
   }
 
-  v7 = [(DTDeviceInfoService *)self _getIOMFBProperties];
-  if (v7)
+  _getIOMFBProperties = [(DTDeviceInfoService *)self _getIOMFBProperties];
+  if (_getIOMFBProperties)
   {
-    [v3 addEntriesFromDictionary:v7];
+    [v3 addEntriesFromDictionary:_getIOMFBProperties];
   }
 
   return v3;
@@ -1348,11 +1348,11 @@ LABEL_8:
   return kpepDB;
 }
 
-- (id)counterAnalysisWithName:(id)a3
+- (id)counterAnalysisWithName:(id)name
 {
-  v3 = a3;
-  NSLog(&cfstr_QueryingAnalys.isa, v3);
-  v4 = [XRBottlenecksAnalysisModeManager counterAnalysisWithName:v3];
+  nameCopy = name;
+  NSLog(&cfstr_QueryingAnalys.isa, nameCopy);
+  v4 = [XRBottlenecksAnalysisModeManager counterAnalysisWithName:nameCopy];
 
   return v4;
 }

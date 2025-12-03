@@ -2,7 +2,7 @@
 - (void)_onQueue_doWorkIfNecessary;
 - (void)dealloc;
 - (void)flush;
-- (void)performWork:(id)a3;
+- (void)performWork:(id)work;
 @end
 
 @implementation NPKWorkQueue
@@ -23,7 +23,7 @@
         workQueueName = self->_workQueueName;
         v7 = [(NSMutableArray *)self->_remainingWork count];
         *buf = 134218498;
-        v11 = self;
+        selfCopy = self;
         v12 = 2112;
         v13 = workQueueName;
         v14 = 2048;
@@ -52,26 +52,26 @@ void __23__NPKWorkQueue_dealloc__block_invoke(uint64_t a1, void *a2)
   v26 = *MEMORY[0x277D85DE8];
   if (![(NPKWorkQueue *)self performingWork])
   {
-    v3 = [(NPKWorkQueue *)self remainingWork];
-    v4 = [v3 count];
+    remainingWork = [(NPKWorkQueue *)self remainingWork];
+    v4 = [remainingWork count];
 
     if (v4)
     {
       [(NPKWorkQueue *)self setPerformingWork:1];
-      v5 = [(NPKWorkQueue *)self remainingWork];
-      v6 = [v5 firstObject];
+      remainingWork2 = [(NPKWorkQueue *)self remainingWork];
+      firstObject = [remainingWork2 firstObject];
 
-      v7 = [(NPKWorkQueue *)self remainingWork];
-      [v7 removeObjectAtIndex:0];
+      remainingWork3 = [(NPKWorkQueue *)self remainingWork];
+      [remainingWork3 removeObjectAtIndex:0];
 
-      v8 = [v6 workBlock];
-      v9 = [v6 transaction];
+      workBlock = [firstObject workBlock];
+      transaction = [firstObject transaction];
       aBlock[0] = MEMORY[0x277D85DD0];
       aBlock[1] = 3221225472;
       aBlock[2] = __42__NPKWorkQueue__onQueue_doWorkIfNecessary__block_invoke;
       aBlock[3] = &unk_2799454E0;
       aBlock[4] = self;
-      v10 = v9;
+      v10 = transaction;
       v23 = v10;
       v11 = _Block_copy(aBlock);
       v12 = pk_Payment_log();
@@ -82,30 +82,30 @@ void __23__NPKWorkQueue_dealloc__block_invoke(uint64_t a1, void *a2)
         v14 = pk_Payment_log();
         if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
         {
-          v15 = [(NPKWorkQueue *)self workQueueName];
+          workQueueName = [(NPKWorkQueue *)self workQueueName];
           *buf = 138412290;
-          v25 = v15;
+          v25 = workQueueName;
           _os_log_impl(&dword_25B300000, v14, OS_LOG_TYPE_DEFAULT, "Notice: Work queue %@: starting next work block", buf, 0xCu);
         }
       }
 
-      v16 = [(NPKWorkQueue *)self callbackQueue];
+      callbackQueue = [(NPKWorkQueue *)self callbackQueue];
 
-      if (v16)
+      if (callbackQueue)
       {
-        v17 = [(NPKWorkQueue *)self callbackQueue];
+        callbackQueue2 = [(NPKWorkQueue *)self callbackQueue];
         v19[0] = MEMORY[0x277D85DD0];
         v19[1] = 3221225472;
         v19[2] = __42__NPKWorkQueue__onQueue_doWorkIfNecessary__block_invoke_6;
         v19[3] = &unk_2799486C0;
-        v20 = v8;
+        v20 = workBlock;
         v21 = v11;
-        dispatch_async(v17, v19);
+        dispatch_async(callbackQueue2, v19);
       }
 
       else
       {
-        (v8)[2](v8, v11);
+        (workBlock)[2](workBlock, v11);
       }
     }
   }
@@ -192,9 +192,9 @@ uint64_t __42__NPKWorkQueue__onQueue_doWorkIfNecessary__block_invoke_3(uint64_t 
   return result;
 }
 
-- (void)performWork:(id)a3
+- (void)performWork:(id)work
 {
-  v4 = a3;
+  workCopy = work;
   if ([(NPKWorkQueue *)self takeOutTransactions])
   {
     v5 = pk_General_log();
@@ -219,17 +219,17 @@ uint64_t __42__NPKWorkQueue__onQueue_doWorkIfNecessary__block_invoke_3(uint64_t 
     v9 = 0;
   }
 
-  v10 = [(NPKWorkQueue *)self queue];
+  queue = [(NPKWorkQueue *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __28__NPKWorkQueue_performWork___block_invoke;
   block[3] = &unk_279945A48;
   block[4] = self;
   v14 = v9;
-  v15 = v4;
-  v11 = v4;
+  v15 = workCopy;
+  v11 = workCopy;
   v12 = v9;
-  dispatch_async(v10, block);
+  dispatch_async(queue, block);
 }
 
 uint64_t __28__NPKWorkQueue_performWork___block_invoke(uint64_t a1)
@@ -256,20 +256,20 @@ uint64_t __28__NPKWorkQueue_performWork___block_invoke(uint64_t a1)
     {
       workQueueName = self->_workQueueName;
       *buf = 138412546;
-      v11 = self;
+      selfCopy = self;
       v12 = 2112;
       v13 = workQueueName;
       _os_log_impl(&dword_25B300000, v5, OS_LOG_TYPE_DEFAULT, "Notice: Work queue %@, %@: Requested to flush pending works", buf, 0x16u);
     }
   }
 
-  v7 = [(NPKWorkQueue *)self queue];
+  queue = [(NPKWorkQueue *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __21__NPKWorkQueue_flush__block_invoke;
   block[3] = &unk_279944F98;
   block[4] = self;
-  dispatch_async(v7, block);
+  dispatch_async(queue, block);
 
   v8 = *MEMORY[0x277D85DE8];
 }

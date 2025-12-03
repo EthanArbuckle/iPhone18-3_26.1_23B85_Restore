@@ -1,12 +1,12 @@
 @interface STScreenTimeDiagnosticExtension
-- (id)attachmentsForParameters:(id)a3;
+- (id)attachmentsForParameters:(id)parameters;
 @end
 
 @implementation STScreenTimeDiagnosticExtension
 
-- (id)attachmentsForParameters:(id)a3
+- (id)attachmentsForParameters:(id)parameters
 {
-  v3 = a3;
+  parametersCopy = parameters;
   v4 = objc_opt_new();
   v42 = 0;
   v5 = [v4 collectScreenTimeDatabaseAndReturnError:&v42];
@@ -27,7 +27,7 @@
     sub_100002E60(v6, v8, v9, v10, v11, v12, v13, v14);
   }
 
-  v15 = [v3 objectForKeyedSubscript:@"DEExtensionAttachmentsParamConsentProvidedKey"];
+  v15 = [parametersCopy objectForKeyedSubscript:@"DEExtensionAttachmentsParamConsentProvidedKey"];
 
   if ([v15 BOOLValue])
   {

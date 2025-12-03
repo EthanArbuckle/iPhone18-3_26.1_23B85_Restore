@@ -1,53 +1,53 @@
 @interface SBChainableModifier
-+ (BOOL)modifierUnderTest:(id)a3 containsChildModifierKindOfClass:(Class)a4;
-+ (Class)makeDynamicSubclassWithDescriptor:(id)a3 implementation:(id)a4 forSelector:(SEL)a5 ofProtocol:(id)a6;
++ (BOOL)modifierUnderTest:(id)test containsChildModifierKindOfClass:(Class)class;
++ (Class)makeDynamicSubclassWithDescriptor:(id)descriptor implementation:(id)implementation forSelector:(SEL)selector ofProtocol:(id)protocol;
 + (id)baseClassForQueryProtocol;
 + (id)contextProtocol;
 + (id)contextSelectors;
 + (id)eventSelectors;
-+ (id)newCacheWithSelectorList:(id)a3 subsequentMethodCacheFunc:(void *)a4 cachingDictionary:(id)a5;
++ (id)newCacheWithSelectorList:(id)list subsequentMethodCacheFunc:(void *)func cachingDictionary:(id)dictionary;
 + (id)newContextCache;
 + (id)newEventCache;
 + (id)newQueryCache;
 + (id)queryProtocol;
 + (id)querySelectors;
 + (void)_initalizeIMPCaching;
-+ (void)verifyModifierImplements:(BOOL)a3 methodsOfProtocol:(id)a4;
++ (void)verifyModifierImplements:(BOOL)implements methodsOfProtocol:(id)protocol;
 - (BOOL)_anyDescendentImplementsAnyContextMethod;
 - (BOOL)_anyDescendentImplementsAnyEventMethod;
 - (BOOL)_anyDescendentImplementsAnyQueryMethod;
-- (BOOL)containsChildModifier:(id)a3;
+- (BOOL)containsChildModifier:(id)modifier;
 - (SBChainableModifier)init;
 - (SBChainableModifierDelegate)delegate;
-- (id)_forwardEvent:(id)a3 toChildModifier:(id)a4;
+- (id)_forwardEvent:(id)event toChildModifier:(id)modifier;
 - (id)_lastDeepChildModifier;
-- (id)childModifierByKey:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)childModifierByKey:(id)key;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugPotentialChildModifiers;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)handleEvent:(id)a3;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)handleEvent:(id)event;
 - (id)succinctDescription;
 - (unint64_t)childModifierCount;
-- (void)_addChildModifier:(id)a3 atLevel:(int64_t)a4 key:(id)a5 queryResponse:(unint64_t)a6 contextResponse:(unint64_t)a7 eventResponse:(unint64_t)a8;
-- (void)_insertModifier:(id)a3 afterModifier:(id)a4 queryResponse:(unint64_t)a5 contextResponse:(unint64_t)a6 eventResponse:(unint64_t)a7;
+- (void)_addChildModifier:(id)modifier atLevel:(int64_t)level key:(id)key queryResponse:(unint64_t)response contextResponse:(unint64_t)contextResponse eventResponse:(unint64_t)eventResponse;
+- (void)_insertModifier:(id)modifier afterModifier:(id)afterModifier queryResponse:(unint64_t)response contextResponse:(unint64_t)contextResponse eventResponse:(unint64_t)eventResponse;
 - (void)_notifyChildrenDidMoveToParentIfNeeded;
-- (void)_removeChildModifier:(id)a3 queryResponse:(unint64_t)a4 contextResponse:(unint64_t)a5 eventResponse:(unint64_t)a6;
-- (void)addChildModifier:(id)a3 atLevel:(int64_t)a4 key:(id)a5;
+- (void)_removeChildModifier:(id)modifier queryResponse:(unint64_t)response contextResponse:(unint64_t)contextResponse eventResponse:(unint64_t)eventResponse;
+- (void)addChildModifier:(id)modifier atLevel:(int64_t)level key:(id)key;
 - (void)dealloc;
-- (void)didMoveToParentModifier:(id)a3;
-- (void)enumerateChildModifiersWithBlock:(id)a3;
+- (void)didMoveToParentModifier:(id)modifier;
+- (void)enumerateChildModifiersWithBlock:(id)block;
 - (void)init;
-- (void)performTransactionWithTemporaryChildModifier:(id)a3 usingBlock:(id)a4;
-- (void)provideNextQueryImplementation:(id)a3 forSelector:(SEL)a4;
-- (void)providePreviousContextImplementation:(id)a3 forSelector:(SEL)a4;
+- (void)performTransactionWithTemporaryChildModifier:(id)modifier usingBlock:(id)block;
+- (void)provideNextQueryImplementation:(id)implementation forSelector:(SEL)selector;
+- (void)providePreviousContextImplementation:(id)implementation forSelector:(SEL)selector;
 - (void)recomputeQueryCache;
-- (void)removeChildModifier:(id)a3;
-- (void)setContextCacheCoordinator:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setEventCacheCoordinator:(id)a3;
-- (void)setQueryCacheCoordinator:(id)a3;
-- (void)verifyInternalIntegrityAfterHandlingEvent:(id)a3;
+- (void)removeChildModifier:(id)modifier;
+- (void)setContextCacheCoordinator:(id)coordinator;
+- (void)setDelegate:(id)delegate;
+- (void)setEventCacheCoordinator:(id)coordinator;
+- (void)setQueryCacheCoordinator:(id)coordinator;
+- (void)verifyInternalIntegrityAfterHandlingEvent:(id)event;
 @end
 
 @implementation SBChainableModifier
@@ -61,8 +61,8 @@
 
 + (id)newContextCache
 {
-  v3 = [a1 contextSelectors];
-  v4 = [a1 newCacheWithSelectorList:v3 subsequentMethodCacheFunc:PreviousContextMethodCacheForMethodCache cachingDictionary:staticPrototypeContextCacheForClass];
+  contextSelectors = [self contextSelectors];
+  v4 = [self newCacheWithSelectorList:contextSelectors subsequentMethodCacheFunc:PreviousContextMethodCacheForMethodCache cachingDictionary:staticPrototypeContextCacheForClass];
 
   return v4;
 }
@@ -72,7 +72,7 @@
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
-  v9 = [(SBChainableModifierMethodCache *)self->_queryCache hasNonTrampolineIMPs];
+  hasNonTrampolineIMPs = [(SBChainableModifierMethodCache *)self->_queryCache hasNonTrampolineIMPs];
   if (v7[3])
   {
     v3 = 1;
@@ -106,19 +106,19 @@
   v4 = [(SBChainableModifier *)&v12 init];
   if (v4)
   {
-    v5 = [objc_opt_class() newQueryCache];
+    newQueryCache = [objc_opt_class() newQueryCache];
     queryCache = v4->_queryCache;
-    v4->_queryCache = v5;
+    v4->_queryCache = newQueryCache;
 
     [(SBChainableModifierMethodCache *)v4->_queryCache setModifier:v4];
-    v7 = [objc_opt_class() newContextCache];
+    newContextCache = [objc_opt_class() newContextCache];
     contextCache = v4->_contextCache;
-    v4->_contextCache = v7;
+    v4->_contextCache = newContextCache;
 
     [(SBChainableModifierMethodCache *)v4->_contextCache setModifier:v4];
-    v9 = [objc_opt_class() newEventCache];
+    newEventCache = [objc_opt_class() newEventCache];
     eventCache = v4->_eventCache;
-    v4->_eventCache = v9;
+    v4->_eventCache = newEventCache;
 
     [(SBChainableModifierMethodCache *)v4->_eventCache setModifier:v4];
     v4->_state = 0;
@@ -130,8 +130,8 @@
 + (id)contextSelectors
 {
   v2 = staticContextSelectorsForBaseClass;
-  v3 = [a1 baseClassForQueryProtocol];
-  v4 = [v2 objectForKey:v3];
+  baseClassForQueryProtocol = [self baseClassForQueryProtocol];
+  v4 = [v2 objectForKey:baseClassForQueryProtocol];
 
   return v4;
 }
@@ -141,7 +141,7 @@
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
-  v9 = [(SBChainableModifierMethodCache *)self->_contextCache hasNonTrampolineIMPs];
+  hasNonTrampolineIMPs = [(SBChainableModifierMethodCache *)self->_contextCache hasNonTrampolineIMPs];
   if (v7[3])
   {
     v3 = 1;
@@ -164,8 +164,8 @@
 
 + (id)newQueryCache
 {
-  v3 = [a1 querySelectors];
-  v4 = [a1 newCacheWithSelectorList:v3 subsequentMethodCacheFunc:NextQueryMethodCacheForMethodCache cachingDictionary:staticPrototypeQueryCacheForClass];
+  querySelectors = [self querySelectors];
+  v4 = [self newCacheWithSelectorList:querySelectors subsequentMethodCacheFunc:NextQueryMethodCacheForMethodCache cachingDictionary:staticPrototypeQueryCacheForClass];
 
   return v4;
 }
@@ -173,16 +173,16 @@
 + (id)querySelectors
 {
   v2 = staticQuerySelectorsForBaseClass;
-  v3 = [a1 baseClassForQueryProtocol];
-  v4 = [v2 objectForKey:v3];
+  baseClassForQueryProtocol = [self baseClassForQueryProtocol];
+  v4 = [v2 objectForKey:baseClassForQueryProtocol];
 
   return v4;
 }
 
 + (id)baseClassForQueryProtocol
 {
-  v2 = a1;
-  if (objc_opt_class() == v2)
+  selfCopy = self;
+  if (objc_opt_class() == selfCopy)
   {
     v5 = 0;
   }
@@ -191,25 +191,25 @@
   {
     while (1)
     {
-      v3 = [v2 methodForSelector:sel_queryProtocol];
-      if (v3 != [objc_msgSend(v2 "superclass")])
+      v3 = [selfCopy methodForSelector:sel_queryProtocol];
+      if (v3 != [objc_msgSend(selfCopy "superclass")])
       {
         break;
       }
 
-      v4 = [v2 superclass];
+      v4 = [selfCopy superclass];
 
-      v2 = v4;
+      selfCopy = v4;
       if (v4 == objc_opt_class())
       {
         v5 = 0;
-        v2 = v4;
+        selfCopy = v4;
         goto LABEL_7;
       }
     }
 
-    v2 = v2;
-    v5 = v2;
+    selfCopy = selfCopy;
+    v5 = selfCopy;
   }
 
 LABEL_7:
@@ -220,16 +220,16 @@ LABEL_7:
 + (id)eventSelectors
 {
   v2 = staticEventSelectorsForBaseClass;
-  v3 = [a1 baseClassForQueryProtocol];
-  v4 = [v2 objectForKey:v3];
+  baseClassForQueryProtocol = [self baseClassForQueryProtocol];
+  v4 = [v2 objectForKey:baseClassForQueryProtocol];
 
   return v4;
 }
 
 + (id)newEventCache
 {
-  v3 = [a1 eventSelectors];
-  v4 = [a1 newCacheWithSelectorList:v3 subsequentMethodCacheFunc:NextEventMethodCacheForMethodCache cachingDictionary:staticPrototypeEventCacheForClass];
+  eventSelectors = [self eventSelectors];
+  v4 = [self newCacheWithSelectorList:eventSelectors subsequentMethodCacheFunc:NextEventMethodCacheForMethodCache cachingDictionary:staticPrototypeEventCacheForClass];
 
   return v4;
 }
@@ -241,26 +241,26 @@ LABEL_7:
   v10 = 0x3032000000;
   v11 = __Block_byref_object_copy__124;
   v12 = __Block_byref_object_dispose__124;
-  v2 = self;
-  v13 = v2;
+  selfCopy = self;
+  v13 = selfCopy;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __45__SBChainableModifier__lastDeepChildModifier__block_invoke;
   v7[3] = &unk_2783C1748;
   v7[4] = &v8;
-  [(SBChainableModifier *)v2 enumerateChildModifiersWithBlock:v7];
+  [(SBChainableModifier *)selfCopy enumerateChildModifiersWithBlock:v7];
   v3 = v9[5];
-  if (v3 == v2)
+  if (v3 == selfCopy)
   {
-    v4 = v2;
+    _lastDeepChildModifier = selfCopy;
   }
 
   else
   {
-    v4 = [(SBChainableModifier *)v3 _lastDeepChildModifier];
+    _lastDeepChildModifier = [(SBChainableModifier *)v3 _lastDeepChildModifier];
   }
 
-  v5 = v4;
+  v5 = _lastDeepChildModifier;
   _Block_object_dispose(&v8, 8);
 
   return v5;
@@ -283,8 +283,8 @@ LABEL_7:
 - (void)dealloc
 {
   [(SBChainableModifier *)self enumerateChildModifiersWithBlock:&__block_literal_global_391];
-  v3 = [(SBChainableModifier *)self nextQueryModifier];
-  [v3 setPreviousContextModifier:0];
+  nextQueryModifier = [(SBChainableModifier *)self nextQueryModifier];
+  [nextQueryModifier setPreviousContextModifier:0];
 
   v4.receiver = self;
   v4.super_class = SBChainableModifier;
@@ -296,7 +296,7 @@ LABEL_7:
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
-  v9 = [(SBChainableModifierMethodCache *)self->_eventCache hasNonTrampolineIMPs];
+  hasNonTrampolineIMPs = [(SBChainableModifierMethodCache *)self->_eventCache hasNonTrampolineIMPs];
   if (v7[3])
   {
     v3 = 1;
@@ -328,60 +328,60 @@ uint64_t __61__SBChainableModifier__anyDescendentImplementsAnyEventMethod__block
 + (void)_initalizeIMPCaching
 {
   OUTLINED_FUNCTION_3_1();
-  v2 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v3 = NSStringFromSelector(v1);
   OUTLINED_FUNCTION_0_3();
   [v4 handleFailureInMethod:v0 object:v3 file:? lineNumber:? description:?];
 }
 
-- (void)provideNextQueryImplementation:(id)a3 forSelector:(SEL)a4
+- (void)provideNextQueryImplementation:(id)implementation forSelector:(SEL)selector
 {
-  v6 = a3;
+  implementationCopy = implementation;
   v7 = objc_opt_class();
-  v8 = [v7 queryProtocol];
-  v9 = [v7 makeDynamicSubclassWithDescriptor:@"NextQuery" implementation:v6 forSelector:a4 ofProtocol:v8];
+  queryProtocol = [v7 queryProtocol];
+  v9 = [v7 makeDynamicSubclassWithDescriptor:@"NextQuery" implementation:implementationCopy forSelector:selector ofProtocol:queryProtocol];
 
   v10 = objc_alloc_init(v9);
   [(SBChainableModifier *)self _insertModifier:v10 afterModifier:self queryResponse:0 contextResponse:0 eventResponse:0];
 }
 
-- (void)providePreviousContextImplementation:(id)a3 forSelector:(SEL)a4
+- (void)providePreviousContextImplementation:(id)implementation forSelector:(SEL)selector
 {
-  v6 = a3;
+  implementationCopy = implementation;
   v7 = objc_opt_class();
-  v8 = [v7 contextProtocol];
-  v9 = [v7 makeDynamicSubclassWithDescriptor:@"PreviousContext" implementation:v6 forSelector:a4 ofProtocol:v8];
+  contextProtocol = [v7 contextProtocol];
+  v9 = [v7 makeDynamicSubclassWithDescriptor:@"PreviousContext" implementation:implementationCopy forSelector:selector ofProtocol:contextProtocol];
 
   v11 = objc_alloc_init(v9);
-  v10 = [(SBChainableModifier *)self previousContextModifier];
-  [(SBChainableModifier *)self _insertModifier:v11 afterModifier:v10 queryResponse:0 contextResponse:0 eventResponse:0];
+  previousContextModifier = [(SBChainableModifier *)self previousContextModifier];
+  [(SBChainableModifier *)self _insertModifier:v11 afterModifier:previousContextModifier queryResponse:0 contextResponse:0 eventResponse:0];
 }
 
-+ (Class)makeDynamicSubclassWithDescriptor:(id)a3 implementation:(id)a4 forSelector:(SEL)a5 ofProtocol:(id)a6
++ (Class)makeDynamicSubclassWithDescriptor:(id)descriptor implementation:(id)implementation forSelector:(SEL)selector ofProtocol:(id)protocol
 {
-  v10 = a6;
-  v11 = a4;
-  v12 = a3;
-  MethodDescription = protocol_getMethodDescription(v10, a5, 1, 1);
+  protocolCopy = protocol;
+  implementationCopy = implementation;
+  descriptorCopy = descriptor;
+  MethodDescription = protocol_getMethodDescription(protocolCopy, selector, 1, 1);
   if (!MethodDescription.name)
   {
     +[SBChainableModifier(RuntimeProviding) makeDynamicSubclassWithDescriptor:implementation:forSelector:ofProtocol:];
   }
 
-  v14 = [a1 baseClassForQueryProtocol];
+  baseClassForQueryProtocol = [self baseClassForQueryProtocol];
   v15 = MEMORY[0x277CCACA8];
   v16 = objc_opt_class();
   v17 = NSStringFromClass(v16);
-  v18 = [MEMORY[0x277CCAD78] UUID];
-  v19 = [v18 UUIDString];
-  v20 = [v15 stringWithFormat:@"%@-%@-%@", v17, v12, v19];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
+  v20 = [v15 stringWithFormat:@"%@-%@-%@", v17, descriptorCopy, uUIDString];
 
-  ClassPair = objc_allocateClassPair(v14, [v20 UTF8String], 0);
+  ClassPair = objc_allocateClassPair(baseClassForQueryProtocol, [v20 UTF8String], 0);
   objc_registerClassPair(ClassPair);
-  v22 = imp_implementationWithBlock(v11);
-  LOBYTE(v18) = class_addMethod(ClassPair, a5, v22, MethodDescription.types);
+  v22 = imp_implementationWithBlock(implementationCopy);
+  LOBYTE(uUID) = class_addMethod(ClassPair, selector, v22, MethodDescription.types);
 
-  if ((v18 & 1) == 0)
+  if ((uUID & 1) == 0)
   {
     +[SBChainableModifier(RuntimeProviding) makeDynamicSubclassWithDescriptor:implementation:forSelector:ofProtocol:];
   }
@@ -391,9 +391,9 @@ uint64_t __61__SBChainableModifier__anyDescendentImplementsAnyEventMethod__block
   return ClassPair;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   v5 = obj;
@@ -409,10 +409,10 @@ uint64_t __61__SBChainableModifier__anyDescendentImplementsAnyEventMethod__block
   }
 }
 
-- (id)handleEvent:(id)a3
+- (id)handleEvent:(id)event
 {
   v74 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  eventCopy = event;
   v62 = 0;
   v63 = &v62;
   v64 = 0x3032000000;
@@ -444,7 +444,7 @@ uint64_t __61__SBChainableModifier__anyDescendentImplementsAnyEventMethod__block
   v54[2] = __35__SBChainableModifier_handleEvent___block_invoke_3;
   v54[3] = &unk_2783C16F8;
   v54[4] = self;
-  v33 = v4;
+  v33 = eventCopy;
   v55 = v33;
   v32 = v5;
   v56 = v32;
@@ -476,17 +476,17 @@ uint64_t __61__SBChainableModifier__anyDescendentImplementsAnyEventMethod__block
         }
 
         v13 = *(*(&v48 + 1) + 8 * i);
-        v14 = [(SBChainableModifier *)self loggingCategory];
-        if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
+        loggingCategory = [(SBChainableModifier *)self loggingCategory];
+        if (os_log_type_enabled(loggingCategory, OS_LOG_TYPE_INFO))
         {
           v15 = objc_opt_class();
           v16 = NSStringFromClass(v15);
-          v17 = [v13 succinctDescription];
+          succinctDescription = [v13 succinctDescription];
           *buf = 138412546;
           v70 = v16;
           v71 = 2112;
-          v72 = v17;
-          _os_log_impl(&dword_21ED4E000, v14, OS_LOG_TYPE_INFO, "[%@] Removing child modifier %@ because its state is Completed.", buf, 0x16u);
+          v72 = succinctDescription;
+          _os_log_impl(&dword_21ED4E000, loggingCategory, OS_LOG_TYPE_INFO, "[%@] Removing child modifier %@ because its state is Completed.", buf, 0x16u);
         }
 
         [(SBChainableModifier *)self removeChildModifier:v13];
@@ -511,7 +511,7 @@ uint64_t __61__SBChainableModifier__anyDescendentImplementsAnyEventMethod__block
   v43[3] = &unk_2783C1720;
   v31 = v7;
   v44 = v31;
-  v45 = self;
+  selfCopy = self;
   v30 = v33;
   v46 = v30;
   v34 = v32;
@@ -549,11 +549,11 @@ uint64_t __61__SBChainableModifier__anyDescendentImplementsAnyEventMethod__block
         {
           v25 = objc_opt_class();
           v26 = NSStringFromClass(v25);
-          v27 = [v23 succinctDescription];
+          succinctDescription2 = [v23 succinctDescription];
           *buf = 138412546;
           v70 = v26;
           v71 = 2112;
-          v72 = v27;
+          v72 = succinctDescription2;
           _os_log_impl(&dword_21ED4E000, v24, OS_LOG_TYPE_INFO, "[%@] Removing child modifier %@ because its state is Completed.", buf, 0x16u);
         }
 
@@ -679,9 +679,9 @@ void __35__SBChainableModifier_handleEvent___block_invoke_2_18(uint64_t a1, void
   return v2;
 }
 
-- (BOOL)containsChildModifier:(id)a3
+- (BOOL)containsChildModifier:(id)modifier
 {
-  v4 = a3;
+  modifierCopy = modifier;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
@@ -690,7 +690,7 @@ void __35__SBChainableModifier_handleEvent___block_invoke_2_18(uint64_t a1, void
   v7[1] = 3221225472;
   v7[2] = __45__SBChainableModifier_containsChildModifier___block_invoke;
   v7[3] = &unk_2783C1770;
-  v5 = v4;
+  v5 = modifierCopy;
   v8 = v5;
   v9 = &v10;
   [(SBChainableModifier *)self enumerateChildModifiersWithBlock:v7];
@@ -712,32 +712,32 @@ uint64_t __45__SBChainableModifier_containsChildModifier___block_invoke(uint64_t
   return result;
 }
 
-- (void)enumerateChildModifiersWithBlock:(id)a3
+- (void)enumerateChildModifiersWithBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(SBChainableModifier *)self nextQueryModifier];
+  blockCopy = block;
+  nextQueryModifier = [(SBChainableModifier *)self nextQueryModifier];
   v10 = 0;
-  if (v5)
+  if (nextQueryModifier)
   {
-    v6 = v5;
+    v6 = nextQueryModifier;
     v7 = 0;
     do
     {
-      v8 = [v6 parentModifier];
+      parentModifier = [v6 parentModifier];
 
-      if (v8 == self)
+      if (parentModifier == self)
       {
-        v4[2](v4, v6, v7++, &v10);
+        blockCopy[2](blockCopy, v6, v7++, &v10);
       }
 
-      v9 = [v6 nextQueryModifier];
+      nextQueryModifier2 = [v6 nextQueryModifier];
 
-      if (!v9)
+      if (!nextQueryModifier2)
       {
         break;
       }
 
-      v6 = v9;
+      v6 = nextQueryModifier2;
     }
 
     while ((v10 & 1) == 0);
@@ -746,23 +746,23 @@ uint64_t __45__SBChainableModifier_containsChildModifier___block_invoke(uint64_t
 
 - (id)debugPotentialChildModifiers
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __51__SBChainableModifier_debugPotentialChildModifiers__block_invoke;
   v6[3] = &unk_2783C16D0;
-  v4 = v3;
+  v4 = array;
   v7 = v4;
   [(SBChainableModifier *)self enumerateChildModifiersWithBlock:v6];
 
   return v4;
 }
 
-- (void)addChildModifier:(id)a3 atLevel:(int64_t)a4 key:(id)a5
+- (void)addChildModifier:(id)modifier atLevel:(int64_t)level key:(id)key
 {
-  v8 = a5;
-  v12 = a3;
-  if ([v12 _anyDescendentImplementsAnyQueryMethod])
+  keyCopy = key;
+  modifierCopy = modifier;
+  if ([modifierCopy _anyDescendentImplementsAnyQueryMethod])
   {
     v9 = 0;
   }
@@ -772,7 +772,7 @@ uint64_t __45__SBChainableModifier_containsChildModifier___block_invoke(uint64_t
     v9 = 3;
   }
 
-  if ([v12 _anyDescendentImplementsAnyContextMethod])
+  if ([modifierCopy _anyDescendentImplementsAnyContextMethod])
   {
     v10 = 0;
   }
@@ -782,7 +782,7 @@ uint64_t __45__SBChainableModifier_containsChildModifier___block_invoke(uint64_t
     v10 = 3;
   }
 
-  if ([v12 _anyDescendentImplementsAnyEventMethod])
+  if ([modifierCopy _anyDescendentImplementsAnyEventMethod])
   {
     v11 = 0;
   }
@@ -792,13 +792,13 @@ uint64_t __45__SBChainableModifier_containsChildModifier___block_invoke(uint64_t
     v11 = 3;
   }
 
-  [(SBChainableModifier *)self _addChildModifier:v12 atLevel:a4 key:v8 queryResponse:v9 contextResponse:v10 eventResponse:v11];
+  [(SBChainableModifier *)self _addChildModifier:modifierCopy atLevel:level key:keyCopy queryResponse:v9 contextResponse:v10 eventResponse:v11];
 }
 
-- (void)_addChildModifier:(id)a3 atLevel:(int64_t)a4 key:(id)a5 queryResponse:(unint64_t)a6 contextResponse:(unint64_t)a7 eventResponse:(unint64_t)a8
+- (void)_addChildModifier:(id)modifier atLevel:(int64_t)level key:(id)key queryResponse:(unint64_t)response contextResponse:(unint64_t)contextResponse eventResponse:(unint64_t)eventResponse
 {
-  v15 = a3;
-  v16 = a5;
+  modifierCopy = modifier;
+  keyCopy = key;
   v41[0] = 0;
   v41[1] = v41;
   v41[2] = 0x2020000000;
@@ -808,41 +808,41 @@ uint64_t __45__SBChainableModifier_containsChildModifier___block_invoke(uint64_t
   v37 = 0x3032000000;
   v38 = __Block_byref_object_copy__124;
   v39 = __Block_byref_object_dispose__124;
-  v17 = self;
-  v40 = v17;
+  selfCopy = self;
+  v40 = selfCopy;
   v24 = MEMORY[0x277D85DD0];
   v25 = 3221225472;
   v26 = __97__SBChainableModifier__addChildModifier_atLevel_key_queryResponse_contextResponse_eventResponse___block_invoke;
   v27 = &unk_2783C1798;
-  v18 = v16;
+  v18 = keyCopy;
   v33 = a2;
   v28 = v18;
-  v29 = v17;
-  v19 = v15;
+  v29 = selfCopy;
+  v19 = modifierCopy;
   v30 = v19;
   v31 = v41;
-  v34 = a4;
+  levelCopy = level;
   v32 = &v35;
-  [(SBChainableModifier *)v17 enumerateChildModifiersWithBlock:&v24];
+  [(SBChainableModifier *)selfCopy enumerateChildModifiersWithBlock:&v24];
   [v19 setKey:{v18, v24, v25, v26, v27}];
-  [v19 setParentModifier:v17];
-  [v19 setModifierLevel:a4];
+  [v19 setParentModifier:selfCopy];
+  [v19 setModifierLevel:level];
   v20 = v36[5];
-  if (v20 == v17)
+  if (v20 == selfCopy)
   {
-    v21 = v20;
+    _lastDeepChildModifier = v20;
   }
 
   else
   {
-    v21 = [(SBChainableModifier *)v20 _lastDeepChildModifier];
+    _lastDeepChildModifier = [(SBChainableModifier *)v20 _lastDeepChildModifier];
   }
 
-  v22 = v21;
-  [(SBChainableModifier *)v17 _insertModifier:v19 afterModifier:v21 queryResponse:a6 contextResponse:a7 eventResponse:a8];
-  if (v17->_parentModifier || (WeakRetained = objc_loadWeakRetained(&v17->_delegate), WeakRetained, WeakRetained))
+  v22 = _lastDeepChildModifier;
+  [(SBChainableModifier *)selfCopy _insertModifier:v19 afterModifier:_lastDeepChildModifier queryResponse:response contextResponse:contextResponse eventResponse:eventResponse];
+  if (selfCopy->_parentModifier || (WeakRetained = objc_loadWeakRetained(&selfCopy->_delegate), WeakRetained, WeakRetained))
   {
-    [v19 didMoveToParentModifier:v17];
+    [v19 didMoveToParentModifier:selfCopy];
   }
 
   _Block_object_dispose(&v35, 8);
@@ -876,10 +876,10 @@ void __97__SBChainableModifier__addChildModifier_atLevel_key_queryResponse_conte
   }
 }
 
-- (void)removeChildModifier:(id)a3
+- (void)removeChildModifier:(id)modifier
 {
-  v7 = a3;
-  if ([v7 _anyDescendentImplementsAnyQueryMethod])
+  modifierCopy = modifier;
+  if ([modifierCopy _anyDescendentImplementsAnyQueryMethod])
   {
     v4 = 0;
   }
@@ -889,7 +889,7 @@ void __97__SBChainableModifier__addChildModifier_atLevel_key_queryResponse_conte
     v4 = 3;
   }
 
-  if ([v7 _anyDescendentImplementsAnyContextMethod])
+  if ([modifierCopy _anyDescendentImplementsAnyContextMethod])
   {
     v5 = 0;
   }
@@ -899,7 +899,7 @@ void __97__SBChainableModifier__addChildModifier_atLevel_key_queryResponse_conte
     v5 = 3;
   }
 
-  if ([v7 _anyDescendentImplementsAnyEventMethod])
+  if ([modifierCopy _anyDescendentImplementsAnyEventMethod])
   {
     v6 = 0;
   }
@@ -909,41 +909,41 @@ void __97__SBChainableModifier__addChildModifier_atLevel_key_queryResponse_conte
     v6 = 3;
   }
 
-  [(SBChainableModifier *)self _removeChildModifier:v7 queryResponse:v4 contextResponse:v5 eventResponse:v6];
+  [(SBChainableModifier *)self _removeChildModifier:modifierCopy queryResponse:v4 contextResponse:v5 eventResponse:v6];
 }
 
-- (void)_removeChildModifier:(id)a3 queryResponse:(unint64_t)a4 contextResponse:(unint64_t)a5 eventResponse:(unint64_t)a6
+- (void)_removeChildModifier:(id)modifier queryResponse:(unint64_t)response contextResponse:(unint64_t)contextResponse eventResponse:(unint64_t)eventResponse
 {
-  v17 = a3;
-  [v17 setState:1];
-  v10 = [v17 _lastDeepChildModifier];
-  v11 = [v17 previousContextModifier];
-  v12 = [v10 nextQueryModifier];
-  [v11 setNextQueryModifier:v12];
-  [v12 setPreviousContextModifier:v11];
-  [v17 setPreviousContextModifier:0];
-  [v10 setNextQueryModifier:0];
-  v13 = [(SBChainableModifier *)self queryCacheCoordinator];
-  [v13 performResponse:a4];
+  modifierCopy = modifier;
+  [modifierCopy setState:1];
+  _lastDeepChildModifier = [modifierCopy _lastDeepChildModifier];
+  previousContextModifier = [modifierCopy previousContextModifier];
+  nextQueryModifier = [_lastDeepChildModifier nextQueryModifier];
+  [previousContextModifier setNextQueryModifier:nextQueryModifier];
+  [nextQueryModifier setPreviousContextModifier:previousContextModifier];
+  [modifierCopy setPreviousContextModifier:0];
+  [_lastDeepChildModifier setNextQueryModifier:0];
+  queryCacheCoordinator = [(SBChainableModifier *)self queryCacheCoordinator];
+  [queryCacheCoordinator performResponse:response];
 
-  v14 = [(SBChainableModifier *)self contextCacheCoordinator];
-  [v14 performResponse:a5];
+  contextCacheCoordinator = [(SBChainableModifier *)self contextCacheCoordinator];
+  [contextCacheCoordinator performResponse:contextResponse];
 
-  v15 = [(SBChainableModifier *)self eventCacheCoordinator];
-  [v15 performResponse:a6];
+  eventCacheCoordinator = [(SBChainableModifier *)self eventCacheCoordinator];
+  [eventCacheCoordinator performResponse:eventResponse];
 
-  v16 = [v17 parentModifier];
+  parentModifier = [modifierCopy parentModifier];
 
-  if (v16 == self)
+  if (parentModifier == self)
   {
-    [v17 setParentModifier:0];
-    [v17 didMoveToParentModifier:0];
+    [modifierCopy setParentModifier:0];
+    [modifierCopy didMoveToParentModifier:0];
   }
 }
 
-- (id)childModifierByKey:(id)a3
+- (id)childModifierByKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -954,7 +954,7 @@ void __97__SBChainableModifier__addChildModifier_atLevel_key_queryResponse_conte
   v8[1] = 3221225472;
   v8[2] = __42__SBChainableModifier_childModifierByKey___block_invoke;
   v8[3] = &unk_2783C1770;
-  v5 = v4;
+  v5 = keyCopy;
   v9 = v5;
   v10 = &v11;
   [(SBChainableModifier *)self enumerateChildModifiersWithBlock:v8];
@@ -978,23 +978,23 @@ void __42__SBChainableModifier_childModifierByKey___block_invoke(uint64_t a1, vo
   }
 }
 
-- (void)performTransactionWithTemporaryChildModifier:(id)a3 usingBlock:(id)a4
+- (void)performTransactionWithTemporaryChildModifier:(id)modifier usingBlock:(id)block
 {
-  v16 = a3;
-  v6 = a4;
-  v7 = [v16 _anyDescendentImplementsAnyQueryMethod];
-  v8 = [v16 _anyDescendentImplementsAnyContextMethod];
-  v9 = [v16 parentModifier];
+  modifierCopy = modifier;
+  blockCopy = block;
+  _anyDescendentImplementsAnyQueryMethod = [modifierCopy _anyDescendentImplementsAnyQueryMethod];
+  _anyDescendentImplementsAnyContextMethod = [modifierCopy _anyDescendentImplementsAnyContextMethod];
+  parentModifier = [modifierCopy parentModifier];
 
-  if (v9 == self)
+  if (parentModifier == self)
   {
-    v6[2](v6);
+    blockCopy[2](blockCopy);
   }
 
   else
   {
-    v10 = v8 == 0;
-    if (v8)
+    v10 = _anyDescendentImplementsAnyContextMethod == 0;
+    if (_anyDescendentImplementsAnyContextMethod)
     {
       v11 = 2;
     }
@@ -1014,8 +1014,8 @@ void __42__SBChainableModifier_childModifierByKey___block_invoke(uint64_t a1, vo
       v12 = 1;
     }
 
-    v13 = v7 == 0;
-    if (v7)
+    v13 = _anyDescendentImplementsAnyQueryMethod == 0;
+    if (_anyDescendentImplementsAnyQueryMethod)
     {
       v14 = 2;
     }
@@ -1035,26 +1035,26 @@ void __42__SBChainableModifier_childModifierByKey___block_invoke(uint64_t a1, vo
       v15 = 1;
     }
 
-    [(SBChainableModifier *)self _addChildModifier:v16 atLevel:0 key:0 queryResponse:v15 contextResponse:v12 eventResponse:v12];
-    [v16 willPerformAsTemporaryChildModifier];
-    v6[2](v6);
-    [(SBChainableModifier *)self _removeChildModifier:v16 queryResponse:v14 contextResponse:v11 eventResponse:v11];
+    [(SBChainableModifier *)self _addChildModifier:modifierCopy atLevel:0 key:0 queryResponse:v15 contextResponse:v12 eventResponse:v12];
+    [modifierCopy willPerformAsTemporaryChildModifier];
+    blockCopy[2](blockCopy);
+    [(SBChainableModifier *)self _removeChildModifier:modifierCopy queryResponse:v14 contextResponse:v11 eventResponse:v11];
   }
 }
 
-+ (void)verifyModifierImplements:(BOOL)a3 methodsOfProtocol:(id)a4
++ (void)verifyModifierImplements:(BOOL)implements methodsOfProtocol:(id)protocol
 {
-  v6 = a4;
+  protocolCopy = protocol;
   *outCount = 0;
   v7 = 1;
-  v8 = protocol_copyMethodDescriptionList(v6, 1, 1, &outCount[1]);
-  v21 = a1;
+  v8 = protocol_copyMethodDescriptionList(protocolCopy, 1, 1, &outCount[1]);
+  selfCopy = self;
   v9 = objc_opt_class();
   v10 = class_copyMethodList(v9, outCount);
   v11 = objc_alloc_init(MEMORY[0x277CCAB68]);
   if (!outCount[1])
   {
-    v20 = 0;
+    selfCopy = 0;
     goto LABEL_17;
   }
 
@@ -1066,7 +1066,7 @@ void __42__SBChainableModifier_childModifierByKey___block_invoke(uint64_t a1, vo
     if (!outCount[0])
     {
 LABEL_7:
-      if (!a3)
+      if (!implements)
       {
         goto LABEL_9;
       }
@@ -1094,7 +1094,7 @@ LABEL_8:
       }
     }
 
-    if (!a3)
+    if (!implements)
     {
       goto LABEL_8;
     }
@@ -1108,14 +1108,14 @@ LABEL_9:
   {
     v18 = MEMORY[0x277CCACA8];
     v19 = [v11 substringWithRange:{0, objc_msgSend(v11, "length") - 2}];
-    v20 = [v18 stringWithFormat:@"Invalid %ld method(s): %@", v13, v19, v21];
+    selfCopy = [v18 stringWithFormat:@"Invalid %ld method(s): %@", v13, v19, selfCopy];
 
     v7 = 0;
   }
 
   else
   {
-    v20 = 0;
+    selfCopy = 0;
     v7 = 1;
   }
 
@@ -1124,19 +1124,19 @@ LABEL_17:
   free(v10);
   if ((v7 & 1) == 0)
   {
-    [(SBChainableModifier *)v21 verifyModifierImplements:a3 methodsOfProtocol:v6, v20];
+    [(SBChainableModifier *)selfCopy verifyModifierImplements:implements methodsOfProtocol:protocolCopy, selfCopy];
   }
 }
 
 - (void)recomputeQueryCache
 {
-  v5 = [(SBChainableModifierMethodCache *)self->_queryCache cacheCoordinator];
-  v3 = [objc_opt_class() newQueryCache];
+  cacheCoordinator = [(SBChainableModifierMethodCache *)self->_queryCache cacheCoordinator];
+  newQueryCache = [objc_opt_class() newQueryCache];
   queryCache = self->_queryCache;
-  self->_queryCache = v3;
+  self->_queryCache = newQueryCache;
 
   [(SBChainableModifierMethodCache *)self->_queryCache setModifier:self];
-  [(SBChainableModifierMethodCache *)self->_queryCache setCacheCoordinator:v5];
+  [(SBChainableModifierMethodCache *)self->_queryCache setCacheCoordinator:cacheCoordinator];
 }
 
 + (id)contextProtocol
@@ -1169,7 +1169,7 @@ LABEL_17:
   objc_exception_throw(v10);
 }
 
-- (void)verifyInternalIntegrityAfterHandlingEvent:(id)a3
+- (void)verifyInternalIntegrityAfterHandlingEvent:(id)event
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
@@ -1188,30 +1188,30 @@ void __65__SBChainableModifier_verifyInternalIntegrityAfterHandlingEvent___block
   }
 }
 
-- (void)didMoveToParentModifier:(id)a3
+- (void)didMoveToParentModifier:(id)modifier
 {
-  if (a3)
+  if (modifier)
   {
     [(SBChainableModifier *)self _notifyChildrenDidMoveToParentIfNeeded];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v3 = objc_opt_class();
 
   return objc_alloc_init(v3);
 }
 
-- (id)_forwardEvent:(id)a3 toChildModifier:(id)a4
+- (id)_forwardEvent:(id)event toChildModifier:(id)modifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 handleEvent:v6];
+  eventCopy = event;
+  modifierCopy = modifier;
+  v8 = [modifierCopy handleEvent:eventCopy];
   if (v8)
   {
     v9 = v8;
-    v10 = [(SBChainableModifier *)self responseForProposedChildResponse:v8 childModifier:v7 event:v6];
+    v10 = [(SBChainableModifier *)self responseForProposedChildResponse:v8 childModifier:modifierCopy event:eventCopy];
   }
 
   else
@@ -1222,13 +1222,13 @@ void __65__SBChainableModifier_verifyInternalIntegrityAfterHandlingEvent___block
   return v10;
 }
 
-- (void)_insertModifier:(id)a3 afterModifier:(id)a4 queryResponse:(unint64_t)a5 contextResponse:(unint64_t)a6 eventResponse:(unint64_t)a7
+- (void)_insertModifier:(id)modifier afterModifier:(id)afterModifier queryResponse:(unint64_t)response contextResponse:(unint64_t)contextResponse eventResponse:(unint64_t)eventResponse
 {
-  v21 = a3;
-  v12 = a4;
-  if (v21)
+  modifierCopy = modifier;
+  afterModifierCopy = afterModifier;
+  if (modifierCopy)
   {
-    if (v12)
+    if (afterModifierCopy)
     {
       goto LABEL_3;
     }
@@ -1237,7 +1237,7 @@ void __65__SBChainableModifier_verifyInternalIntegrityAfterHandlingEvent___block
   else
   {
     [SBChainableModifier _insertModifier:afterModifier:queryResponse:contextResponse:eventResponse:];
-    if (v12)
+    if (afterModifierCopy)
     {
       goto LABEL_3;
     }
@@ -1245,42 +1245,42 @@ void __65__SBChainableModifier_verifyInternalIntegrityAfterHandlingEvent___block
 
   [SBChainableModifier _insertModifier:afterModifier:queryResponse:contextResponse:eventResponse:];
 LABEL_3:
-  v13 = [(SBChainableModifier *)self queryCacheCoordinator];
-  [v21 setQueryCacheCoordinator:v13];
+  queryCacheCoordinator = [(SBChainableModifier *)self queryCacheCoordinator];
+  [modifierCopy setQueryCacheCoordinator:queryCacheCoordinator];
 
-  v14 = [(SBChainableModifier *)self contextCacheCoordinator];
-  [v21 setContextCacheCoordinator:v14];
+  contextCacheCoordinator = [(SBChainableModifier *)self contextCacheCoordinator];
+  [modifierCopy setContextCacheCoordinator:contextCacheCoordinator];
 
-  v15 = [(SBChainableModifier *)self eventCacheCoordinator];
-  [v21 setEventCacheCoordinator:v15];
+  eventCacheCoordinator = [(SBChainableModifier *)self eventCacheCoordinator];
+  [modifierCopy setEventCacheCoordinator:eventCacheCoordinator];
 
-  v16 = [v12 nextQueryModifier];
-  v17 = [v21 _lastDeepChildModifier];
-  [v12 setNextQueryModifier:v21];
-  [v21 setPreviousContextModifier:v12];
-  [v17 setNextQueryModifier:v16];
-  [v16 setPreviousContextModifier:v17];
-  v18 = [(SBChainableModifier *)self queryCacheCoordinator];
-  [v18 performResponse:a5];
+  nextQueryModifier = [afterModifierCopy nextQueryModifier];
+  _lastDeepChildModifier = [modifierCopy _lastDeepChildModifier];
+  [afterModifierCopy setNextQueryModifier:modifierCopy];
+  [modifierCopy setPreviousContextModifier:afterModifierCopy];
+  [_lastDeepChildModifier setNextQueryModifier:nextQueryModifier];
+  [nextQueryModifier setPreviousContextModifier:_lastDeepChildModifier];
+  queryCacheCoordinator2 = [(SBChainableModifier *)self queryCacheCoordinator];
+  [queryCacheCoordinator2 performResponse:response];
 
-  v19 = [(SBChainableModifier *)self contextCacheCoordinator];
-  [v19 performResponse:a6];
+  contextCacheCoordinator2 = [(SBChainableModifier *)self contextCacheCoordinator];
+  [contextCacheCoordinator2 performResponse:contextResponse];
 
-  v20 = [(SBChainableModifier *)self eventCacheCoordinator];
-  [v20 performResponse:a7];
+  eventCacheCoordinator2 = [(SBChainableModifier *)self eventCacheCoordinator];
+  [eventCacheCoordinator2 performResponse:eventResponse];
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBChainableModifier *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBChainableModifier *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
+  prefixCopy = prefix;
   v5 = [MEMORY[0x277CF0C00] builderWithObject:self];
   v6 = [v5 appendObject:self->_key withName:@"key"];
   if (self->_state)
@@ -1294,17 +1294,17 @@ LABEL_3:
   }
 
   v8 = [v5 appendObject:v7 withName:@"state"];
-  v9 = [(SBChainableModifier *)self debugPotentialChildModifiers];
-  if (-[SBChainableModifier childModifierCount](self, "childModifierCount") || [v9 count])
+  debugPotentialChildModifiers = [(SBChainableModifier *)self debugPotentialChildModifiers];
+  if (-[SBChainableModifier childModifierCount](self, "childModifierCount") || [debugPotentialChildModifiers count])
   {
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __61__SBChainableModifier_descriptionBuilderWithMultilinePrefix___block_invoke;
     v11[3] = &unk_2783A9BD8;
-    v12 = v4;
-    v13 = self;
+    v12 = prefixCopy;
+    selfCopy = self;
     v14 = v5;
-    v15 = v9;
+    v15 = debugPotentialChildModifiers;
     [v14 appendBodySectionWithName:@"children" multilinePrefix:v12 block:v11];
   }
 
@@ -1406,15 +1406,15 @@ void __61__SBChainableModifier_descriptionBuilderWithMultilinePrefix___block_inv
 
 - (id)succinctDescription
 {
-  v2 = [(SBChainableModifier *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBChainableModifier *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-+ (BOOL)modifierUnderTest:(id)a3 containsChildModifierKindOfClass:(Class)a4
++ (BOOL)modifierUnderTest:(id)test containsChildModifierKindOfClass:(Class)class
 {
-  v5 = a3;
+  testCopy = test;
   v8 = 0;
   v9 = &v8;
   v10 = 0x2020000000;
@@ -1424,12 +1424,12 @@ void __61__SBChainableModifier_descriptionBuilderWithMultilinePrefix___block_inv
   v7[2] = __74__SBChainableModifier_modifierUnderTest_containsChildModifierKindOfClass___block_invoke;
   v7[3] = &unk_2783C1810;
   v7[4] = &v8;
-  v7[5] = a4;
-  [v5 enumerateChildModifiersWithBlock:v7];
-  LOBYTE(a4) = *(v9 + 24);
+  v7[5] = class;
+  [testCopy enumerateChildModifiersWithBlock:v7];
+  LOBYTE(class) = *(v9 + 24);
   _Block_object_dispose(&v8, 8);
 
-  return a4;
+  return class;
 }
 
 uint64_t __74__SBChainableModifier_modifierUnderTest_containsChildModifierKindOfClass___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3, _BYTE *a4)
@@ -1444,44 +1444,44 @@ uint64_t __74__SBChainableModifier_modifierUnderTest_containsChildModifierKindOf
   return result;
 }
 
-+ (id)newCacheWithSelectorList:(id)a3 subsequentMethodCacheFunc:(void *)a4 cachingDictionary:(id)a5
++ (id)newCacheWithSelectorList:(id)list subsequentMethodCacheFunc:(void *)func cachingDictionary:(id)dictionary
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [v9 objectForKey:a1];
+  listCopy = list;
+  dictionaryCopy = dictionary;
+  v10 = [dictionaryCopy objectForKey:self];
   if (!v10)
   {
-    v11 = [objc_opt_class() baseClassForQueryProtocol];
-    v12 = malloc_type_calloc(v8[1], 8uLL, 0x80040B8603338uLL);
-    if (v8[1] >= 1)
+    baseClassForQueryProtocol = [objc_opt_class() baseClassForQueryProtocol];
+    v12 = malloc_type_calloc(listCopy[1], 8uLL, 0x80040B8603338uLL);
+    if (listCopy[1] >= 1)
     {
-      v19 = a4;
+      funcCopy = func;
       v13 = 0;
       v14 = 1;
 LABEL_4:
       v20 = v14;
       do
       {
-        v15 = *(v8[2] + 8 * v13);
-        v16 = [a1 instanceMethodForSelector:{v15, v19}];
-        if (v16 != [v11 instanceMethodForSelector:v15])
+        v15 = *(listCopy[2] + 8 * v13);
+        v16 = [self instanceMethodForSelector:{v15, funcCopy}];
+        if (v16 != [baseClassForQueryProtocol instanceMethodForSelector:v15])
         {
           v14 = 0;
           v12[v13++] = v16;
-          if (v13 < v8[1])
+          if (v13 < listCopy[1])
           {
             goto LABEL_4;
           }
 
-          a4 = v19;
+          func = funcCopy;
           goto LABEL_12;
         }
 
         ++v13;
       }
 
-      while (v13 < v8[1]);
-      a4 = v19;
+      while (v13 < listCopy[1]);
+      func = funcCopy;
       if ((v20 & 1) == 0)
       {
         goto LABEL_12;
@@ -1491,8 +1491,8 @@ LABEL_4:
     free(v12);
     v12 = 0;
 LABEL_12:
-    v10 = [[SBChainableModifierMethodCache alloc] initWithIMPs:v12 selectorList:v8 subsequentMethodCacheFunc:a4];
-    [v9 setObject:v10 forKey:a1];
+    v10 = [[SBChainableModifierMethodCache alloc] initWithIMPs:v12 selectorList:listCopy subsequentMethodCacheFunc:func];
+    [dictionaryCopy setObject:v10 forKey:self];
   }
 
   v17 = [(SBChainableModifierMethodCache *)v10 copy];
@@ -1500,53 +1500,53 @@ LABEL_12:
   return v17;
 }
 
-- (void)setQueryCacheCoordinator:(id)a3
+- (void)setQueryCacheCoordinator:(id)coordinator
 {
-  v4 = a3;
-  v5 = [(SBChainableModifierMethodCache *)self->_queryCache cacheCoordinator];
+  coordinatorCopy = coordinator;
+  cacheCoordinator = [(SBChainableModifierMethodCache *)self->_queryCache cacheCoordinator];
 
-  if (v5 != v4)
+  if (cacheCoordinator != coordinatorCopy)
   {
-    [(SBChainableModifierMethodCache *)self->_queryCache setCacheCoordinator:v4];
+    [(SBChainableModifierMethodCache *)self->_queryCache setCacheCoordinator:coordinatorCopy];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __48__SBChainableModifier_setQueryCacheCoordinator___block_invoke;
     v6[3] = &unk_2783C16D0;
-    v7 = v4;
+    v7 = coordinatorCopy;
     [(SBChainableModifier *)self enumerateChildModifiersWithBlock:v6];
   }
 }
 
-- (void)setEventCacheCoordinator:(id)a3
+- (void)setEventCacheCoordinator:(id)coordinator
 {
-  v4 = a3;
-  v5 = [(SBChainableModifierMethodCache *)self->_eventCache cacheCoordinator];
+  coordinatorCopy = coordinator;
+  cacheCoordinator = [(SBChainableModifierMethodCache *)self->_eventCache cacheCoordinator];
 
-  if (v5 != v4)
+  if (cacheCoordinator != coordinatorCopy)
   {
-    [(SBChainableModifierMethodCache *)self->_eventCache setCacheCoordinator:v4];
+    [(SBChainableModifierMethodCache *)self->_eventCache setCacheCoordinator:coordinatorCopy];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __48__SBChainableModifier_setEventCacheCoordinator___block_invoke;
     v6[3] = &unk_2783C16D0;
-    v7 = v4;
+    v7 = coordinatorCopy;
     [(SBChainableModifier *)self enumerateChildModifiersWithBlock:v6];
   }
 }
 
-- (void)setContextCacheCoordinator:(id)a3
+- (void)setContextCacheCoordinator:(id)coordinator
 {
-  v4 = a3;
-  v5 = [(SBChainableModifierMethodCache *)self->_contextCache cacheCoordinator];
+  coordinatorCopy = coordinator;
+  cacheCoordinator = [(SBChainableModifierMethodCache *)self->_contextCache cacheCoordinator];
 
-  if (v5 != v4)
+  if (cacheCoordinator != coordinatorCopy)
   {
-    [(SBChainableModifierMethodCache *)self->_contextCache setCacheCoordinator:v4];
+    [(SBChainableModifierMethodCache *)self->_contextCache setCacheCoordinator:coordinatorCopy];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __50__SBChainableModifier_setContextCacheCoordinator___block_invoke;
     v6[3] = &unk_2783C16D0;
-    v7 = v4;
+    v7 = coordinatorCopy;
     [(SBChainableModifier *)self enumerateChildModifiersWithBlock:v6];
   }
 }
@@ -1569,7 +1569,7 @@ uint64_t __63__SBChainableModifier__anyDescendentImplementsAnyContextMethod__blo
 
 - (void)init
 {
-  v1 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   OUTLINED_FUNCTION_0_3();
   [v0 handleFailureInMethod:? object:? file:? lineNumber:? description:?];
 }

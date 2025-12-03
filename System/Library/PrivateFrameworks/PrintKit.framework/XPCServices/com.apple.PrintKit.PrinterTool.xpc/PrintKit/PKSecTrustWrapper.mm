@@ -1,11 +1,11 @@
 @interface PKSecTrustWrapper
-- (PKSecTrustWrapper)initWithTrust:(__SecTrust *)a3;
+- (PKSecTrustWrapper)initWithTrust:(__SecTrust *)trust;
 - (void)dealloc;
 @end
 
 @implementation PKSecTrustWrapper
 
-- (PKSecTrustWrapper)initWithTrust:(__SecTrust *)a3
+- (PKSecTrustWrapper)initWithTrust:(__SecTrust *)trust
 {
   v7.receiver = self;
   v7.super_class = PKSecTrustWrapper;
@@ -13,8 +13,8 @@
   v5 = v4;
   if (v4)
   {
-    v4->_trustRef = a3;
-    CFRetain(a3);
+    v4->_trustRef = trust;
+    CFRetain(trust);
   }
 
   return v5;

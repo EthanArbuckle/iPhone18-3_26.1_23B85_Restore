@@ -1,32 +1,32 @@
 @interface MBSQLiteResultSet
-- (BOOL)enumerateWithError:(id *)a3 block:(id)a4;
-- (id)_initWithDatabase:(id)a3 creationError:(id)a4 resultSet:(id)a5;
+- (BOOL)enumerateWithError:(id *)error block:(id)block;
+- (id)_initWithDatabase:(id)database creationError:(id)error resultSet:(id)set;
 @end
 
 @implementation MBSQLiteResultSet
 
-- (id)_initWithDatabase:(id)a3 creationError:(id)a4 resultSet:(id)a5
+- (id)_initWithDatabase:(id)database creationError:(id)error resultSet:(id)set
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  databaseCopy = database;
+  errorCopy = error;
+  setCopy = set;
   v15.receiver = self;
   v15.super_class = MBSQLiteResultSet;
   v12 = [(MBSQLiteResultSet *)&v15 init];
   p_isa = &v12->super.isa;
   if (v12)
   {
-    objc_storeStrong(&v12->_database, a3);
-    objc_storeStrong(p_isa + 2, a5);
-    objc_storeStrong(p_isa + 3, a4);
+    objc_storeStrong(&v12->_database, database);
+    objc_storeStrong(p_isa + 2, set);
+    objc_storeStrong(p_isa + 3, error);
   }
 
   return p_isa;
 }
 
-- (BOOL)enumerateWithError:(id *)a3 block:(id)a4
+- (BOOL)enumerateWithError:(id *)error block:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   creationError = self->_creationError;
   if (!creationError)
   {
@@ -43,16 +43,16 @@
       v16[2] = sub_10019D3CC;
       v16[3] = &unk_1003C0918;
       v17 = v11;
-      v18 = v6;
+      v18 = blockCopy;
       v14 = v11;
-      v9 = [(MBSQLiteDB *)database performWithConnection:a3 accessor:v16];
+      v9 = [(MBSQLiteDB *)database performWithConnection:error accessor:v16];
 
       goto LABEL_10;
     }
 
-    if (a3)
+    if (error)
     {
-      v8 = [(MBSQLiteDB *)self->_database _invalidatedError];
+      _invalidatedError = [(MBSQLiteDB *)self->_database _invalidatedError];
       goto LABEL_4;
     }
 
@@ -61,15 +61,15 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if (!a3)
+  if (!error)
   {
     goto LABEL_9;
   }
 
-  v8 = creationError;
+  _invalidatedError = creationError;
 LABEL_4:
   v9 = 0;
-  *a3 = v8;
+  *error = _invalidatedError;
 LABEL_10:
 
   return v9;

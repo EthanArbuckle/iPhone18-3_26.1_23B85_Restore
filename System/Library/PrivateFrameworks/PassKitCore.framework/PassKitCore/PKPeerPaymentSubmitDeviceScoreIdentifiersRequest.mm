@@ -1,16 +1,16 @@
 @interface PKPeerPaymentSubmitDeviceScoreIdentifiersRequest
-- (id)_urlRequestWithServiceURL:(id)a3 appleAccountInformation:(id)a4;
+- (id)_urlRequestWithServiceURL:(id)l appleAccountInformation:(id)information;
 @end
 
 @implementation PKPeerPaymentSubmitDeviceScoreIdentifiersRequest
 
-- (id)_urlRequestWithServiceURL:(id)a3 appleAccountInformation:(id)a4
+- (id)_urlRequestWithServiceURL:(id)l appleAccountInformation:(id)information
 {
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6)
+  lCopy = l;
+  informationCopy = information;
+  v8 = informationCopy;
+  if (!lCopy)
   {
     v11 = PKLogFacilityTypeGetObject(0xCuLL);
     if (!os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -30,7 +30,7 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  if (!v7)
+  if (!informationCopy)
   {
     v11 = PKLogFacilityTypeGetObject(0xCuLL);
     if (!os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -71,26 +71,26 @@ LABEL_16:
   v24[1] = paymentIdentifier;
   v24[2] = @"submitDeviceScoreIdentifiers";
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:3];
-  v11 = [(PKPeerPaymentWebServiceRequest *)self _murlRequestWithServiceURL:v6 endpointComponents:v10 queryParameters:0 appleAccountInformation:v8];
+  v11 = [(PKPeerPaymentWebServiceRequest *)self _murlRequestWithServiceURL:lCopy endpointComponents:v10 queryParameters:0 appleAccountInformation:v8];
 
   [v11 setHTTPMethod:@"POST"];
   [v11 setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-  v12 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   requestDeviceScoreIdentifier = self->_requestDeviceScoreIdentifier;
   if (requestDeviceScoreIdentifier)
   {
-    v14 = [(NSUUID *)requestDeviceScoreIdentifier UUIDString];
-    [v12 setObject:v14 forKey:@"requestDeviceScoreIdentifier"];
+    uUIDString = [(NSUUID *)requestDeviceScoreIdentifier UUIDString];
+    [dictionary setObject:uUIDString forKey:@"requestDeviceScoreIdentifier"];
   }
 
   sendDeviceScoreIdentifier = self->_sendDeviceScoreIdentifier;
   if (sendDeviceScoreIdentifier)
   {
-    v16 = [(NSUUID *)sendDeviceScoreIdentifier UUIDString];
-    [v12 setObject:v16 forKey:@"sendDeviceScoreIdentifier"];
+    uUIDString2 = [(NSUUID *)sendDeviceScoreIdentifier UUIDString];
+    [dictionary setObject:uUIDString2 forKey:@"sendDeviceScoreIdentifier"];
   }
 
-  v17 = [objc_opt_class() _HTTPBodyWithDictionary:v12];
+  v17 = [objc_opt_class() _HTTPBodyWithDictionary:dictionary];
   [v11 setHTTPBody:v17];
 
   v18 = [v11 copy];

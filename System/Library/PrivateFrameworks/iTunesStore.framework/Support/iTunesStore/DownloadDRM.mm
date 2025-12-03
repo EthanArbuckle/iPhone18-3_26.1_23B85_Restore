@@ -1,15 +1,15 @@
 @interface DownloadDRM
-- (DownloadDRM)initWithSinfArray:(id)a3;
+- (DownloadDRM)initWithSinfArray:(id)array;
 - (NSArray)sinfs;
-- (id)_sinfsArrayWithDataKey:(id)a3;
-- (id)firstDataForSinfDataKey:(id)a3;
-- (id)sinfForIdentifier:(int64_t)a3;
+- (id)_sinfsArrayWithDataKey:(id)key;
+- (id)firstDataForSinfDataKey:(id)key;
+- (id)sinfForIdentifier:(int64_t)identifier;
 - (void)dealloc;
 @end
 
 @implementation DownloadDRM
 
-- (DownloadDRM)initWithSinfArray:(id)a3
+- (DownloadDRM)initWithSinfArray:(id)array
 {
   v17.receiver = self;
   v17.super_class = DownloadDRM;
@@ -21,7 +21,7 @@
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v6 = [a3 countByEnumeratingWithState:&v13 objects:v18 count:16];
+    v6 = [array countByEnumeratingWithState:&v13 objects:v18 count:16];
     if (v6)
     {
       v7 = v6;
@@ -33,7 +33,7 @@
         {
           if (*v14 != v8)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(array);
           }
 
           v10 = [[DownloadSinf alloc] initWithDictionary:*(*(&v13 + 1) + 8 * v9)];
@@ -47,7 +47,7 @@
         }
 
         while (v7 != v9);
-        v7 = [a3 countByEnumeratingWithState:&v13 objects:v18 count:16];
+        v7 = [array countByEnumeratingWithState:&v13 objects:v18 count:16];
       }
 
       while (v7);
@@ -66,7 +66,7 @@
   [(DownloadDRM *)&v3 dealloc];
 }
 
-- (id)firstDataForSinfDataKey:(id)a3
+- (id)firstDataForSinfDataKey:(id)key
 {
   v9 = 0u;
   v10 = 0u;
@@ -87,7 +87,7 @@ LABEL_3:
         objc_enumerationMutation(sinfs);
       }
 
-      result = [*(*(&v9 + 1) + 8 * v8) dataForSinfDataKey:a3];
+      result = [*(*(&v9 + 1) + 8 * v8) dataForSinfDataKey:key];
       if (result)
       {
         break;
@@ -110,7 +110,7 @@ LABEL_3:
   return result;
 }
 
-- (id)sinfForIdentifier:(int64_t)a3
+- (id)sinfForIdentifier:(int64_t)identifier
 {
   v10 = 0u;
   v11 = 0u;
@@ -133,7 +133,7 @@ LABEL_3:
         }
 
         v9 = *(*(&v10 + 1) + 8 * v8);
-        if ([v9 identifier] == a3)
+        if ([v9 identifier] == identifier)
         {
           return v9;
         }
@@ -163,15 +163,15 @@ LABEL_3:
   return v2;
 }
 
-- (id)_sinfsArrayWithDataKey:(id)a3
+- (id)_sinfsArrayWithDataKey:(id)key
 {
   v5 = objc_alloc_init(NSMutableArray);
-  v6 = [(DownloadDRM *)self sinfs];
+  sinfs = [(DownloadDRM *)self sinfs];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v7 = [(NSArray *)v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v7 = [(NSArray *)sinfs countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -183,10 +183,10 @@ LABEL_3:
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(sinfs);
         }
 
-        v11 = [*(*(&v14 + 1) + 8 * v10) dataForSinfDataKey:a3];
+        v11 = [*(*(&v14 + 1) + 8 * v10) dataForSinfDataKey:key];
         if (v11)
         {
           [v5 addObject:v11];
@@ -196,7 +196,7 @@ LABEL_3:
       }
 
       while (v8 != v10);
-      v8 = [(NSArray *)v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v8 = [(NSArray *)sinfs countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v8);

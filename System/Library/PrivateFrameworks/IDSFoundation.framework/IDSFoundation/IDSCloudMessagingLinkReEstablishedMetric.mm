@@ -1,21 +1,21 @@
 @interface IDSCloudMessagingLinkReEstablishedMetric
-- (IDSCloudMessagingLinkReEstablishedMetric)initWithInactiveTime:(double)a3 linkType:(unint64_t)a4 priorLinkType:(unint64_t)a5;
+- (IDSCloudMessagingLinkReEstablishedMetric)initWithInactiveTime:(double)time linkType:(unint64_t)type priorLinkType:(unint64_t)linkType;
 - (NSCopying)awdRepresentation;
 - (NSDictionary)dictionaryRepresentation;
 @end
 
 @implementation IDSCloudMessagingLinkReEstablishedMetric
 
-- (IDSCloudMessagingLinkReEstablishedMetric)initWithInactiveTime:(double)a3 linkType:(unint64_t)a4 priorLinkType:(unint64_t)a5
+- (IDSCloudMessagingLinkReEstablishedMetric)initWithInactiveTime:(double)time linkType:(unint64_t)type priorLinkType:(unint64_t)linkType
 {
   v9.receiver = self;
   v9.super_class = IDSCloudMessagingLinkReEstablishedMetric;
   result = [(IDSCloudMessagingLinkReEstablishedMetric *)&v9 init];
   if (result)
   {
-    result->_inactiveTime = a3;
-    result->_linkType = a4;
-    result->_priorLinkType = a5;
+    result->_inactiveTime = time;
+    result->_linkType = type;
+    result->_priorLinkType = linkType;
   }
 
   return result;

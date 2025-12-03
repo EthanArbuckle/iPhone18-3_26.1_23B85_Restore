@@ -11,7 +11,7 @@
 {
   v2[0] = 0;
   v2[1] = 0;
-  [a1 getValue:v2];
+  [self getValue:v2];
   return v2[0];
 }
 
@@ -20,7 +20,7 @@
   *x8_0 = 0;
   x8_0[1] = 0;
   x8_0[2] = 0;
-  return [a1 getValue:x8_0];
+  return [self getValue:x8_0];
 }
 
 + (id)valueWithPXDisplayAssetDetailedCounts:()PXDisplayAsset

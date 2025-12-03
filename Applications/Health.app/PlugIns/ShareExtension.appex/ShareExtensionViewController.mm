@@ -1,19 +1,19 @@
 @interface ShareExtensionViewController
-- (BOOL)_containsPasswordProtectedData:(id)a3;
-- (BOOL)_preflightForCDA:(id)a3;
-- (id)_extractFirstOccurrenceOfTagRule:(id)a3 extactor:(id)a4;
-- (void)_addDocumentForPreview:(id)a3;
+- (BOOL)_containsPasswordProtectedData:(id)data;
+- (BOOL)_preflightForCDA:(id)a;
+- (id)_extractFirstOccurrenceOfTagRule:(id)rule extactor:(id)extactor;
+- (void)_addDocumentForPreview:(id)preview;
 - (void)_allShareProvidersFinished;
 - (void)_dismissShareExtension;
-- (void)_extractZipContent:(id)a3;
+- (void)_extractZipContent:(id)content;
 - (void)_fetchShareData;
-- (void)_importAlertWithTitle:(id)a3 message:(id)a4 doneHandler:(id)a5;
+- (void)_importAlertWithTitle:(id)title message:(id)message doneHandler:(id)handler;
 - (void)_incomingDocument;
-- (void)_logError:(id)a3 message:(id)a4;
+- (void)_logError:(id)error message:(id)message;
 - (void)_passwordProtectedZip;
 - (void)_postDocumentPreview;
-- (void)_prepareXMLData:(id)a3;
-- (void)_saveDocumentsAction:(id)a3;
+- (void)_prepareXMLData:(id)data;
+- (void)_saveDocumentsAction:(id)action;
 - (void)_shareProviderFinished;
 - (void)_shareProviderLoading;
 - (void)viewDidLoad;
@@ -27,8 +27,8 @@
   v11.super_class = ShareExtensionViewController;
   [(ShareExtensionViewController *)&v11 viewDidLoad];
   v3 = +[UIColor systemBackgroundColor];
-  v4 = [(ShareExtensionViewController *)self view];
-  [v4 setBackgroundColor:v3];
+  view = [(ShareExtensionViewController *)self view];
+  [view setBackgroundColor:v3];
 
   v5 = [[HKLoadingShareViewController alloc] initWithNibName:0 bundle:0];
   loadingShareViewController = self->_loadingShareViewController;
@@ -41,9 +41,9 @@
   v8 = [NSArray arrayWithObjects:&v12 count:1];
   [(ShareExtensionViewController *)self setViewControllers:v8];
 
-  v9 = [(ShareExtensionViewController *)self view];
+  view2 = [(ShareExtensionViewController *)self view];
   v10 = HKHealthTintColor();
-  [v9 setTintColor:v10];
+  [view2 setTintColor:v10];
 
   [(ShareExtensionViewController *)self _fetchShareData];
 }
@@ -57,16 +57,16 @@
   self->_providerLoadingCount = 0;
   self->_incomingDocumentCount = 0;
   self->_passwordProtectedZipCount = 0;
-  v5 = [(ShareExtensionViewController *)self extensionContext];
-  v6 = v5;
-  if (!v5)
+  extensionContext = [(ShareExtensionViewController *)self extensionContext];
+  v6 = extensionContext;
+  if (!extensionContext)
   {
     [(ShareExtensionViewController *)self _logError:0 message:@"No extension context present"];
     goto LABEL_25;
   }
 
-  v19 = v5;
-  [v5 inputItems];
+  v19 = extensionContext;
+  [extensionContext inputItems];
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
@@ -89,12 +89,12 @@
       }
 
       v23 = v7;
-      v8 = [*(*(&v30 + 1) + 8 * v7) attachments];
+      attachments = [*(*(&v30 + 1) + 8 * v7) attachments];
       v26 = 0u;
       v27 = 0u;
       v28 = 0u;
       v29 = 0u;
-      v9 = [v8 countByEnumeratingWithState:&v26 objects:v34 count:16];
+      v9 = [attachments countByEnumeratingWithState:&v26 objects:v34 count:16];
       if (v9)
       {
         v10 = v9;
@@ -105,7 +105,7 @@
           {
             if (*v27 != v11)
             {
-              objc_enumerationMutation(v8);
+              objc_enumerationMutation(attachments);
             }
 
             v13 = *(*(&v26 + 1) + 8 * i);
@@ -139,13 +139,13 @@ LABEL_17:
               goto LABEL_17;
             }
 
-            v17 = [v13 registeredTypeIdentifiers];
-            v18 = [NSString stringWithFormat:@"Unable to handle item: %@", v17];
+            registeredTypeIdentifiers = [v13 registeredTypeIdentifiers];
+            v18 = [NSString stringWithFormat:@"Unable to handle item: %@", registeredTypeIdentifiers];
 
             [(ShareExtensionViewController *)self _logError:0 message:v18];
           }
 
-          v10 = [v8 countByEnumeratingWithState:&v26 objects:v34 count:16];
+          v10 = [attachments countByEnumeratingWithState:&v26 objects:v34 count:16];
         }
 
         while (v10);
@@ -165,10 +165,10 @@ LABEL_23:
 LABEL_25:
 }
 
-- (void)_extractZipContent:(id)a3
+- (void)_extractZipContent:(id)content
 {
-  v4 = [a3 path];
-  v5 = [[_HKZipArchiveExtractor alloc] initWithPathname:v4];
+  path = [content path];
+  v5 = [[_HKZipArchiveExtractor alloc] initWithPathname:path];
   v9[4] = self;
   v10 = 0;
   v9[0] = _NSConcreteStackBlock;
@@ -188,13 +188,13 @@ LABEL_25:
   }
 }
 
-- (BOOL)_containsPasswordProtectedData:(id)a3
+- (BOOL)_containsPasswordProtectedData:(id)data
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  dataCopy = data;
+  v4 = dataCopy;
+  if (dataCopy)
   {
-    v5 = [v3 subdataWithRange:{0, 50}];
+    v5 = [dataCopy subdataWithRange:{0, 50}];
     v6 = [[NSString alloc] initWithData:v5 encoding:4];
     v7 = v6;
     if (v6 && [v6 length])
@@ -226,15 +226,15 @@ LABEL_7:
   return v9;
 }
 
-- (void)_prepareXMLData:(id)a3
+- (void)_prepareXMLData:(id)data
 {
-  v4 = a3;
-  if ([(ShareExtensionViewController *)self _preflightForCDA:v4])
+  dataCopy = data;
+  if ([(ShareExtensionViewController *)self _preflightForCDA:dataCopy])
   {
     [(ShareExtensionViewController *)self _incomingDocument];
     v5 = +[NSDate date];
     v8 = 0;
-    v6 = [HKCDADocumentSample CDADocumentSampleWithData:v4 startDate:v5 endDate:v5 metadata:0 validationError:&v8];
+    v6 = [HKCDADocumentSample CDADocumentSampleWithData:dataCopy startDate:v5 endDate:v5 metadata:0 validationError:&v8];
     v7 = v8;
     if (v6)
     {
@@ -253,16 +253,16 @@ LABEL_7:
   }
 }
 
-- (BOOL)_preflightForCDA:(id)a3
+- (BOOL)_preflightForCDA:(id)a
 {
-  v4 = a3;
+  aCopy = a;
   v5 = objc_alloc_init(_HKXMLExtractor);
   [v5 addTagSpecificationForExtraction:@"ClinicalDocument/title"];
   [v5 addTagSpecificationForExtraction:@"ClinicalDocument/component/structuredBody/component/section/templateId/@root"];
-  [v5 parseWithData:v4];
+  [v5 parseWithData:aCopy];
   v6 = [(ShareExtensionViewController *)self _extractFirstOccurrenceOfTagRule:@"ClinicalDocument/title" extactor:v5];
   v7 = [(ShareExtensionViewController *)self _extractFirstOccurrenceOfTagRule:@"ClinicalDocument/component/structuredBody/component/section/templateId/@root" extactor:v5];
-  v8 = [v4 length];
+  v8 = [aCopy length];
 
   v9 = 0;
   if (v8 <= 0x4C4B3E)
@@ -283,9 +283,9 @@ LABEL_7:
   return v9;
 }
 
-- (id)_extractFirstOccurrenceOfTagRule:(id)a3 extactor:(id)a4
+- (id)_extractFirstOccurrenceOfTagRule:(id)rule extactor:(id)extactor
 {
-  v4 = [a4 getDataForTagSpecification:a3];
+  v4 = [extactor getDataForTagSpecification:rule];
   if ([v4 count])
   {
     v5 = [v4 objectAtIndex:0];
@@ -393,27 +393,27 @@ LABEL_13:
 
   v6 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:1 target:self action:"_dismissShareExtension"];
   v7 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:3 target:self action:"_saveDocumentsAction:"];
-  v8 = [(HKDocumentPickerViewController *)self->_documentPickerController navigationItem];
-  [v8 setLeftBarButtonItem:v6];
-  [v8 setRightBarButtonItem:v7];
+  navigationItem = [(HKDocumentPickerViewController *)self->_documentPickerController navigationItem];
+  [navigationItem setLeftBarButtonItem:v6];
+  [navigationItem setRightBarButtonItem:v7];
   v9 = [(NSMutableArray *)self->_documentsForPreview count]== 1;
-  v10 = [v8 rightBarButtonItem];
-  [v10 setEnabled:v9];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
+  [rightBarButtonItem setEnabled:v9];
 
   v11 = [NSBundle bundleWithIdentifier:@"com.apple.HealthUI"];
   v12 = [v11 localizedStringForKey:@"CDA_SHARE_DOCUMENT_TITLE" value:&stru_100008520 table:@"HealthUI-Localizable"];
-  [v8 setTitle:v12];
+  [navigationItem setTitle:v12];
 
   v20 = self->_documentPickerController;
   v13 = [NSArray arrayWithObjects:&v20 count:1];
   [(ShareExtensionViewController *)self setViewControllers:v13];
 
-  v14 = [(ShareExtensionViewController *)self view];
-  [v14 frame];
+  view = [(ShareExtensionViewController *)self view];
+  [view frame];
   CGAffineTransformMakeTranslation(&v19, 0.0, v15);
-  v16 = [(ShareExtensionViewController *)self view];
+  view2 = [(ShareExtensionViewController *)self view];
   v18 = v19;
-  [v16 setTransform:&v18];
+  [view2 setTransform:&v18];
 
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
@@ -423,12 +423,12 @@ LABEL_13:
   [UIView animateWithDuration:v17 animations:0.2];
 }
 
-- (void)_saveDocumentsAction:(id)a3
+- (void)_saveDocumentsAction:(id)action
 {
-  v4 = [(HKDocumentPickerViewController *)self->_documentPickerController enabledSamples];
-  v5 = [v4 allObjects];
+  enabledSamples = [(HKDocumentPickerViewController *)self->_documentPickerController enabledSamples];
+  allObjects = [enabledSamples allObjects];
 
-  if ([v5 count])
+  if ([allObjects count])
   {
     v6 = objc_alloc_init(HKHealthStore);
     v7[0] = _NSConcreteStackBlock;
@@ -436,7 +436,7 @@ LABEL_13:
     v7[2] = sub_100001FFC;
     v7[3] = &unk_1000082C8;
     v7[4] = self;
-    [v6 saveObjects:v5 withCompletion:v7];
+    [v6 saveObjects:allObjects withCompletion:v7];
   }
 
   else
@@ -460,50 +460,50 @@ LABEL_13:
   [UIView animateWithDuration:v3 animations:v2 completion:0.2];
 }
 
-- (void)_importAlertWithTitle:(id)a3 message:(id)a4 doneHandler:(id)a5
+- (void)_importAlertWithTitle:(id)title message:(id)message doneHandler:(id)handler
 {
-  v8 = a5;
-  v9 = [UIAlertController alertControllerWithTitle:a3 message:a4 preferredStyle:1];
+  handlerCopy = handler;
+  v9 = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:1];
   v10 = [NSBundle bundleWithIdentifier:@"com.apple.HealthUI"];
   v11 = [v10 localizedStringForKey:@"SHARE_ALERT_OK" value:&stru_100008520 table:@"HealthUI-Localizable"];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_1000024DC;
   v14[3] = &unk_100008318;
-  v15 = v8;
-  v12 = v8;
+  v15 = handlerCopy;
+  v12 = handlerCopy;
   v13 = [UIAlertAction actionWithTitle:v11 style:0 handler:v14];
 
   [v9 addAction:v13];
   [(ShareExtensionViewController *)self presentViewController:v9 animated:1 completion:0];
 }
 
-- (void)_logError:(id)a3 message:(id)a4
+- (void)_logError:(id)error message:(id)message
 {
-  v5 = a3;
-  v6 = a4;
+  errorCopy = error;
+  messageCopy = message;
   _HKInitializeLogging();
   v7 = HKLogWellnessDashboard();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_ERROR);
-  if (v5 && v6)
+  if (errorCopy && messageCopy)
   {
     if (v8)
     {
-      sub_100002CB0(v6, v5, v7);
+      sub_100002CB0(messageCopy, errorCopy, v7);
     }
   }
 
-  else if (v5)
+  else if (errorCopy)
   {
     if (v8)
     {
-      sub_100002C18(v5, v7);
+      sub_100002C18(errorCopy, v7);
     }
   }
 
   else if (v8)
   {
-    sub_100002BA0(v6, v7);
+    sub_100002BA0(messageCopy, v7);
   }
 }
 
@@ -527,15 +527,15 @@ LABEL_13:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)_addDocumentForPreview:(id)a3
+- (void)_addDocumentForPreview:(id)preview
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100002768;
   v4[3] = &unk_100008340;
   v4[4] = self;
-  v5 = a3;
-  v3 = v5;
+  previewCopy = preview;
+  v3 = previewCopy;
   dispatch_async(&_dispatch_main_q, v4);
 }
 

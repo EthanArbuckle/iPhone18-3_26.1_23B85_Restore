@@ -1,14 +1,14 @@
 @interface FormatPuzzleEmbedViewController
-- (_TtC8NewsFeed31FormatPuzzleEmbedViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC8NewsFeed31FormatPuzzleEmbedViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation FormatPuzzleEmbedViewController
 
-- (_TtC8NewsFeed31FormatPuzzleEmbedViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC8NewsFeed31FormatPuzzleEmbedViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
@@ -17,25 +17,25 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   FormatPuzzleEmbedViewController.viewDidLoad()();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  FormatPuzzleEmbedViewController.viewWillAppear(_:)(a3);
+  selfCopy = self;
+  FormatPuzzleEmbedViewController.viewWillAppear(_:)(appear);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v4 = self;
-  FormatPuzzleEmbedViewController.viewWillDisappear(_:)(a3);
+  selfCopy = self;
+  FormatPuzzleEmbedViewController.viewWillDisappear(_:)(disappear);
 }
 
 - (void)viewWillLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   FormatPuzzleEmbedViewController.viewWillLayoutSubviews()();
 }
 

@@ -1,5 +1,5 @@
 @interface SUPurchaseContinuation
-- (SUPurchaseContinuation)initWithPurchase:(id)a3;
+- (SUPurchaseContinuation)initWithPurchase:(id)purchase;
 - (void)cancel;
 - (void)dealloc;
 - (void)start;
@@ -7,12 +7,12 @@
 
 @implementation SUPurchaseContinuation
 
-- (SUPurchaseContinuation)initWithPurchase:(id)a3
+- (SUPurchaseContinuation)initWithPurchase:(id)purchase
 {
   v4 = [(SUPurchaseContinuation *)self init];
   if (v4)
   {
-    v4->_purchase = a3;
+    v4->_purchase = purchase;
   }
 
   return v4;
@@ -35,10 +35,10 @@
 
 - (void)start
 {
-  v3 = [(SUPurchaseContinuation *)self purchaseManager];
+  purchaseManager = [(SUPurchaseContinuation *)self purchaseManager];
   purchase = self->_purchase;
 
-  [(SUPurchaseManager *)v3 addFuturePurchase:purchase];
+  [(SUPurchaseManager *)purchaseManager addFuturePurchase:purchase];
 }
 
 @end

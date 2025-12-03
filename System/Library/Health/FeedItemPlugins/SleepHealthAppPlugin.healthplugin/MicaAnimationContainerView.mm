@@ -1,11 +1,11 @@
 @interface MicaAnimationContainerView
-- (_TtC20SleepHealthAppPlugin26MicaAnimationContainerView)initWithCoder:(id)a3;
-- (_TtC20SleepHealthAppPlugin26MicaAnimationContainerView)initWithFrame:(CGRect)a3;
+- (_TtC20SleepHealthAppPlugin26MicaAnimationContainerView)initWithCoder:(id)coder;
+- (_TtC20SleepHealthAppPlugin26MicaAnimationContainerView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation MicaAnimationContainerView
 
-- (_TtC20SleepHealthAppPlugin26MicaAnimationContainerView)initWithCoder:(id)a3
+- (_TtC20SleepHealthAppPlugin26MicaAnimationContainerView)initWithCoder:(id)coder
 {
   sub_29E7544C8();
   sub_29E7544B8();
@@ -20,7 +20,7 @@
   return result;
 }
 
-- (_TtC20SleepHealthAppPlugin26MicaAnimationContainerView)initWithFrame:(CGRect)a3
+- (_TtC20SleepHealthAppPlugin26MicaAnimationContainerView)initWithFrame:(CGRect)frame
 {
   sub_29E7544C8();
   sub_29E7544B8();

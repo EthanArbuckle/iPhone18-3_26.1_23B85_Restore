@@ -1,21 +1,21 @@
 @interface SCWWatchlistRemoveFromWatchlistOrderCommand
-- (SCWWatchlistRemoveFromWatchlistOrderCommand)initWithCoder:(id)a3;
-- (SCWWatchlistRemoveFromWatchlistOrderCommand)initWithWatchlistIdentifier:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)executeWithZone:(id)a3;
+- (SCWWatchlistRemoveFromWatchlistOrderCommand)initWithCoder:(id)coder;
+- (SCWWatchlistRemoveFromWatchlistOrderCommand)initWithWatchlistIdentifier:(id)identifier;
+- (void)encodeWithCoder:(id)coder;
+- (void)executeWithZone:(id)zone;
 @end
 
 @implementation SCWWatchlistRemoveFromWatchlistOrderCommand
 
-- (SCWWatchlistRemoveFromWatchlistOrderCommand)initWithWatchlistIdentifier:(id)a3
+- (SCWWatchlistRemoveFromWatchlistOrderCommand)initWithWatchlistIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = SCWWatchlistRemoveFromWatchlistOrderCommand;
   v5 = [(SCWWatchlistRemoveFromWatchlistOrderCommand *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identifierCopy copy];
     watchlistIdentifier = v5->_watchlistIdentifier;
     v5->_watchlistIdentifier = v6;
   }
@@ -23,16 +23,16 @@
   return v5;
 }
 
-- (void)executeWithZone:(id)a3
+- (void)executeWithZone:(id)zone
 {
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __63__SCWWatchlistRemoveFromWatchlistOrderCommand_executeWithZone___block_invoke;
   aBlock[3] = &unk_1E85E3320;
   aBlock[4] = self;
-  v3 = a3;
+  zoneCopy = zone;
   v4 = _Block_copy(aBlock);
-  [v3 createOrUpdateRecordWithName:@"watchlistorder" recordType:@"WatchlistOrder" modifyBlock:v4];
+  [zoneCopy createOrUpdateRecordWithName:@"watchlistorder" recordType:@"WatchlistOrder" modifyBlock:v4];
 }
 
 void __63__SCWWatchlistRemoveFromWatchlistOrderCommand_executeWithZone___block_invoke(uint64_t a1, void *a2)
@@ -52,32 +52,32 @@ void __63__SCWWatchlistRemoveFromWatchlistOrderCommand_executeWithZone___block_i
   [v9 setObject:v8 forKeyedSubscript:@"watchlistIDs"];
 }
 
-- (SCWWatchlistRemoveFromWatchlistOrderCommand)initWithCoder:(id)a3
+- (SCWWatchlistRemoveFromWatchlistOrderCommand)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"watchlistIdentifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"watchlistIdentifier"];
 
   if (v5)
   {
     self = [(SCWWatchlistRemoveFromWatchlistOrderCommand *)self initWithWatchlistIdentifier:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  v7 = v6;
+  v7 = selfCopy;
 
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(SCWWatchlistRemoveFromWatchlistOrderCommand *)self watchlistIdentifier];
-  [v4 encodeObject:v5 forKey:@"watchlistIdentifier"];
+  coderCopy = coder;
+  watchlistIdentifier = [(SCWWatchlistRemoveFromWatchlistOrderCommand *)self watchlistIdentifier];
+  [coderCopy encodeObject:watchlistIdentifier forKey:@"watchlistIdentifier"];
 }
 
 @end

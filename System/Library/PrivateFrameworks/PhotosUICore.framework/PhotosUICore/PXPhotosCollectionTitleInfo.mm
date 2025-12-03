@@ -1,14 +1,14 @@
 @interface PXPhotosCollectionTitleInfo
 - (_TtC12PhotosUICore27PXPhotosCollectionTitleInfo)init;
-- (_TtC12PhotosUICore27PXPhotosCollectionTitleInfo)initWithAssetCollection:(id)a3;
+- (_TtC12PhotosUICore27PXPhotosCollectionTitleInfo)initWithAssetCollection:(id)collection;
 @end
 
 @implementation PXPhotosCollectionTitleInfo
 
-- (_TtC12PhotosUICore27PXPhotosCollectionTitleInfo)initWithAssetCollection:(id)a3
+- (_TtC12PhotosUICore27PXPhotosCollectionTitleInfo)initWithAssetCollection:(id)collection
 {
   ObjectType = swift_getObjectType();
-  if (a3)
+  if (collection)
   {
     swift_unknownObjectRetain();
     PXDisplayAssetCollection.photosCollectionTitleInfo.getter(&v9);

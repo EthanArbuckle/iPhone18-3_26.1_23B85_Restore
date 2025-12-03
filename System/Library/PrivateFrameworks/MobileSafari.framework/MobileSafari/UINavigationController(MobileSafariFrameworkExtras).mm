@@ -6,11 +6,11 @@
 
 - (uint64_t)safari_prefersHalfHeightSheetPresentationWithLoweredBar
 {
-  v1 = [a1 viewControllers];
-  v2 = [v1 firstObject];
-  v3 = [v2 safari_prefersHalfHeightSheetPresentationWithLoweredBar];
+  viewControllers = [self viewControllers];
+  firstObject = [viewControllers firstObject];
+  safari_prefersHalfHeightSheetPresentationWithLoweredBar = [firstObject safari_prefersHalfHeightSheetPresentationWithLoweredBar];
 
-  return v3;
+  return safari_prefersHalfHeightSheetPresentationWithLoweredBar;
 }
 
 @end

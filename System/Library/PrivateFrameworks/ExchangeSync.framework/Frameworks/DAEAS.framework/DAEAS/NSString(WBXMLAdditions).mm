@@ -18,7 +18,7 @@
 
   else
   {
-    v1 = [a1 conformsToProtocol:&unk_285D64D60];
+    v1 = [self conformsToProtocol:&unk_285D64D60];
     acceptsTopLevelLeaves___result_62 = v1;
     acceptsTopLevelLeaves___haveChecked_61 = 1;
   }
@@ -35,7 +35,7 @@
 
   else
   {
-    v1 = [a1 conformsToProtocol:&unk_285D5E660];
+    v1 = [self conformsToProtocol:&unk_285D5E660];
     parsingLeafNode___result_64 = v1;
     parsingLeafNode___haveChecked_63 = 1;
   }
@@ -52,7 +52,7 @@
 
   else
   {
-    v1 = [a1 conformsToProtocol:&unk_285D64A10];
+    v1 = [self conformsToProtocol:&unk_285D64A10];
     parsingWithSubItems___result_66 = v1;
     parsingWithSubItems___haveChecked_65 = 1;
   }
@@ -69,7 +69,7 @@
 
   else
   {
-    v1 = [a1 conformsToProtocol:&unk_285D5F9B0];
+    v1 = [self conformsToProtocol:&unk_285D5F9B0];
     frontingBasicTypes___result_68 = v1;
     frontingBasicTypes___haveChecked_67 = 1;
   }
@@ -86,7 +86,7 @@
 
   else
   {
-    v1 = [a1 conformsToProtocol:&unk_285D6EED0];
+    v1 = [self conformsToProtocol:&unk_285D6EED0];
     notifyOfUnknownTokens___result_70 = v1;
     notifyOfUnknownTokens___haveChecked_69 = 1;
   }
@@ -102,7 +102,7 @@
   v16 = a5;
   v17 = a6;
   v18 = a7;
-  v19 = [v14 currentByte];
+  currentByte = [v14 currentByte];
   [v14 advanceOffsetByAmount:1];
   v40 = v16;
   if ([v14 currentByte] != 3)
@@ -115,7 +115,7 @@
     if (os_log_type_enabled(v31, v32))
     {
       *buf = 134217984;
-      v43 = [v14 curOffset];
+      curOffset = [v14 curOffset];
       _os_log_impl(&dword_24A0AC000, v31, v32, "Failure at index %lld:", buf, 0xCu);
     }
 
@@ -126,7 +126,7 @@
     }
 
     *buf = 138412290;
-    v43 = v29;
+    curOffset = v29;
     goto LABEL_23;
   }
 
@@ -153,19 +153,19 @@
 
   v25 = v15;
   v26 = v20 - v23;
-  a1 = [a1 initWithBytes:v21 length:v20 - v23 encoding:4];
-  if (!a1)
+  self = [self initWithBytes:v21 length:v20 - v23 encoding:4];
+  if (!self)
   {
     v27 = DALoggingwithCategory();
     v28 = *(MEMORY[0x277D03988] + 3);
     if (os_log_type_enabled(v27, v28))
     {
       *buf = 67109120;
-      LODWORD(v43) = v26;
+      LODWORD(curOffset) = v26;
       _os_log_impl(&dword_24A0AC000, v27, v28, "Dropping a string of length %d, as it isn't valid UTF-8.", buf, 8u);
     }
 
-    a1 = [0 initWithString:&stru_285D39BD0];
+    self = [0 initWithString:&stru_285D39BD0];
   }
 
   if (v41 == 1)
@@ -180,15 +180,15 @@
     goto LABEL_25;
   }
 
-  v29 = [MEMORY[0x277CCACA8] stringWithFormat:@"Expected END_TOKEN after the string for token %x, but had %x", v19, objc_msgSend(v14, "currentByte")];
+  v29 = [MEMORY[0x277CCACA8] stringWithFormat:@"Expected END_TOKEN after the string for token %x, but had %x", currentByte, objc_msgSend(v14, "currentByte")];
   v30 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d - Failure at index %lld:", "/Library/Caches/com.apple.xbs/Sources/ExchangeSync/ActiveSync/Utilities/WBXMLAdditions.m", 115, objc_msgSend(v14, "curOffset")];
   v34 = DALoggingwithCategory();
   v32 = *(MEMORY[0x277D03988] + 3);
   if (os_log_type_enabled(v34, v32))
   {
-    v35 = [v14 curOffset];
+    curOffset2 = [v14 curOffset];
     *buf = 134217984;
-    v43 = v35;
+    curOffset = curOffset2;
     _os_log_impl(&dword_24A0AC000, v34, v32, "Failure at index %lld:", buf, 0xCu);
   }
 
@@ -196,7 +196,7 @@
   if (os_log_type_enabled(v33, v32))
   {
     *buf = 138412290;
-    v43 = v29;
+    curOffset = v29;
 LABEL_23:
     _os_log_impl(&dword_24A0AC000, v33, v32, "failure reason was %@", buf, 0xCu);
   }
@@ -205,20 +205,20 @@ LABEL_24:
 
   [v14 setParseErrorReason:v30];
 LABEL_25:
-  v36 = [v14 parseErrorReason];
+  parseErrorReason = [v14 parseErrorReason];
 
-  if (v36)
+  if (parseErrorReason)
   {
-    v37 = 0;
+    selfCopy = 0;
   }
 
   else
   {
-    v37 = a1;
+    selfCopy = self;
   }
 
   v38 = *MEMORY[0x277D85DE8];
-  return v37;
+  return selfCopy;
 }
 
 @end

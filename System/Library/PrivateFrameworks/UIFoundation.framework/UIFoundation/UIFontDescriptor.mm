@@ -4,14 +4,14 @@
 + (UIFontDescriptor)fontDescriptorWithName:(NSString *)fontName size:(CGFloat)size;
 + (UIFontDescriptor)preferredFontDescriptorWithTextStyle:(UIFontTextStyle)style;
 + (UIFontDescriptor)preferredFontDescriptorWithTextStyle:(UIFontTextStyle)style compatibleWithTraitCollection:(UITraitCollection *)traitCollection;
-+ (id)_createMungledDictionary:(id)a3;
-+ (id)_preferredFontDescriptorWithTextStyle:(id)a3 addingSymbolicTraits:(unsigned int)a4 compatibleWithTraitCollection:(id)a5;
-+ (id)_preferredFontDescriptorWithTextStyle:(id)a3 addingSymbolicTraits:(unsigned int)a4 design:(id)a5 weight:(double)a6 compatibleWithTraitCollection:(id)a7;
-+ (id)_preferredFontDescriptorWithTextStyle:(id)a3 design:(id)a4 weight:(double)a5;
-+ (id)_preferredFontDescriptorWithTextStyle:(id)a3 design:(id)a4 weight:(double)a5 compatibleWithTraitCollection:(id)a6;
-+ (id)_preferredFontDescriptorWithTextStyle:(id)a3 weight:(double)a4;
-+ (id)defaultFontDescriptorWithTextStyle:(id)a3 addingSymbolicTraits:(unsigned int)a4 options:(unint64_t)a5;
-+ (id)preferredFontDescriptorWithTextStyle:(id)a3 addingSymbolicTraits:(unsigned int)a4 options:(unint64_t)a5;
++ (id)_createMungledDictionary:(id)dictionary;
++ (id)_preferredFontDescriptorWithTextStyle:(id)style addingSymbolicTraits:(unsigned int)traits compatibleWithTraitCollection:(id)collection;
++ (id)_preferredFontDescriptorWithTextStyle:(id)style addingSymbolicTraits:(unsigned int)traits design:(id)design weight:(double)weight compatibleWithTraitCollection:(id)collection;
++ (id)_preferredFontDescriptorWithTextStyle:(id)style design:(id)design weight:(double)weight;
++ (id)_preferredFontDescriptorWithTextStyle:(id)style design:(id)design weight:(double)weight compatibleWithTraitCollection:(id)collection;
++ (id)_preferredFontDescriptorWithTextStyle:(id)style weight:(double)weight;
++ (id)defaultFontDescriptorWithTextStyle:(id)style addingSymbolicTraits:(unsigned int)traits options:(unint64_t)options;
++ (id)preferredFontDescriptorWithTextStyle:(id)style addingSymbolicTraits:(unsigned int)traits options:(unint64_t)options;
 - (CGAffineTransform)_matrix;
 - (CGAffineTransform)matrix;
 - (CGFloat)pointSize;
@@ -23,15 +23,15 @@
 - (UIFontDescriptor)fontDescriptorWithFamily:(NSString *)newFamily;
 - (UIFontDescriptor)fontDescriptorWithMatrix:(CGAffineTransform *)matrix;
 - (UIFontDescriptor)fontDescriptorWithSize:(CGFloat)newPointSize;
-- (UIFontDescriptor)fontDescriptorWithSymbolicTraits:(unsigned int)a3 mask:(unsigned int)a4;
+- (UIFontDescriptor)fontDescriptorWithSymbolicTraits:(unsigned int)traits mask:(unsigned int)mask;
 - (UIFontDescriptor)init;
 - (UIFontDescriptor)initWithCoder:(NSCoder *)coder;
 - (id)_NSAffineTransform;
-- (id)_fontDescriptorWithMatrix:(CGAffineTransform *)a3;
-- (id)_swapWithFontAttributes:(id)a3 options:(unint64_t)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_fontDescriptorWithMatrix:(CGAffineTransform *)matrix;
+- (id)_swapWithFontAttributes:(id)attributes options:(unint64_t)options;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation UIFontDescriptor
@@ -55,26 +55,26 @@
   return result;
 }
 
-+ (id)_createMungledDictionary:(id)a3
++ (id)_createMungledDictionary:(id)dictionary
 {
-  if (a3)
+  if (dictionary)
   {
-    v4 = a3;
-    v5 = [a3 objectForKey:@"NSFontMatrixAttribute"];
-    if (v5 && (v6 = v5, v7 = *MEMORY[0x1E6965800], ![v4 objectForKey:*MEMORY[0x1E6965800]]))
+    dictionaryCopy = dictionary;
+    v5 = [dictionary objectForKey:@"NSFontMatrixAttribute"];
+    if (v5 && (v6 = v5, v7 = *MEMORY[0x1E6965800], ![dictionaryCopy objectForKey:*MEMORY[0x1E6965800]]))
     {
-      v4 = [v4 mutableCopy];
+      dictionaryCopy = [dictionaryCopy mutableCopy];
       [v6 CGAffineTransformValue];
       v11 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytes:&v12 length:48];
-      [v4 setObject:v11 forKey:v7];
+      [dictionaryCopy setObject:v11 forKey:v7];
     }
 
     else
     {
-      v8 = v4;
+      v8 = dictionaryCopy;
     }
 
-    return v4;
+    return dictionaryCopy;
   }
 
   else
@@ -85,9 +85,9 @@
   }
 }
 
-- (id)_swapWithFontAttributes:(id)a3 options:(unint64_t)a4
+- (id)_swapWithFontAttributes:(id)attributes options:(unint64_t)options
 {
-  v5 = [UIFontDescriptor _createMungledDictionary:a3];
+  v5 = [UIFontDescriptor _createMungledDictionary:attributes];
   v6 = CTFontDescriptorCreateWithAttributesAndOptions();
 
   return v6;
@@ -95,14 +95,14 @@
 
 - (UIFontDescriptor)init
 {
-  v3 = [MEMORY[0x1E695DF20] dictionary];
+  dictionary = [MEMORY[0x1E695DF20] dictionary];
 
-  return [(UIFontDescriptor *)self initWithFontAttributes:v3];
+  return [(UIFontDescriptor *)self initWithFontAttributes:dictionary];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [UIFontDescriptor allocWithZone:a3];
+  v4 = [UIFontDescriptor allocWithZone:zone];
   attributes = self->_attributes;
 
   return [(UIFontDescriptor *)v4 initWithFontAttributes:attributes];
@@ -117,66 +117,66 @@
 
 + (UIFontDescriptor)preferredFontDescriptorWithTextStyle:(UIFontTextStyle)style compatibleWithTraitCollection:(UITraitCollection *)traitCollection
 {
-  v6 = [(UITraitCollection *)traitCollection preferredContentSizeCategory];
+  preferredContentSizeCategory = [(UITraitCollection *)traitCollection preferredContentSizeCategory];
   v7 = __UIGetLegibilityWeight(traitCollection);
 
-  return __UIFontDescriptorWithTextStyle(style, v6, 0, 0, 0, 0, v7);
+  return __UIFontDescriptorWithTextStyle(style, preferredContentSizeCategory, 0, 0, 0, 0, v7);
 }
 
-+ (id)preferredFontDescriptorWithTextStyle:(id)a3 addingSymbolicTraits:(unsigned int)a4 options:(unint64_t)a5
++ (id)preferredFontDescriptorWithTextStyle:(id)style addingSymbolicTraits:(unsigned int)traits options:(unint64_t)options
 {
-  v5 = *&a4;
-  v7 = [UIFont _preferredContentSizeCategory:a5];
+  v5 = *&traits;
+  v7 = [UIFont _preferredContentSizeCategory:options];
 
-  return __UIFontDescriptorWithTextStyle(a3, v7, 0, v5, 0, 0, -1);
+  return __UIFontDescriptorWithTextStyle(style, v7, 0, v5, 0, 0, -1);
 }
 
-+ (id)_preferredFontDescriptorWithTextStyle:(id)a3 weight:(double)a4
++ (id)_preferredFontDescriptorWithTextStyle:(id)style weight:(double)weight
 {
-  v5 = [MEMORY[0x1E696AD98] numberWithDouble:a4];
+  v5 = [MEMORY[0x1E696AD98] numberWithDouble:weight];
 
-  return __UIFontDescriptorWithTextStyle(a3, 0, 0, 0, 0, v5, -1);
+  return __UIFontDescriptorWithTextStyle(style, 0, 0, 0, 0, v5, -1);
 }
 
-+ (id)_preferredFontDescriptorWithTextStyle:(id)a3 design:(id)a4 weight:(double)a5
++ (id)_preferredFontDescriptorWithTextStyle:(id)style design:(id)design weight:(double)weight
 {
-  v7 = [MEMORY[0x1E696AD98] numberWithDouble:a5];
+  v7 = [MEMORY[0x1E696AD98] numberWithDouble:weight];
 
-  return __UIFontDescriptorWithTextStyle(a3, 0, 0, 0, a4, v7, -1);
+  return __UIFontDescriptorWithTextStyle(style, 0, 0, 0, design, v7, -1);
 }
 
-+ (id)_preferredFontDescriptorWithTextStyle:(id)a3 design:(id)a4 weight:(double)a5 compatibleWithTraitCollection:(id)a6
++ (id)_preferredFontDescriptorWithTextStyle:(id)style design:(id)design weight:(double)weight compatibleWithTraitCollection:(id)collection
 {
-  v10 = [a6 preferredContentSizeCategory];
-  v11 = [MEMORY[0x1E696AD98] numberWithDouble:a5];
-  v12 = __UIGetLegibilityWeight(a6);
+  preferredContentSizeCategory = [collection preferredContentSizeCategory];
+  v11 = [MEMORY[0x1E696AD98] numberWithDouble:weight];
+  v12 = __UIGetLegibilityWeight(collection);
 
-  return __UIFontDescriptorWithTextStyle(a3, v10, 0, 0, a4, v11, v12);
+  return __UIFontDescriptorWithTextStyle(style, preferredContentSizeCategory, 0, 0, design, v11, v12);
 }
 
-+ (id)_preferredFontDescriptorWithTextStyle:(id)a3 addingSymbolicTraits:(unsigned int)a4 design:(id)a5 weight:(double)a6 compatibleWithTraitCollection:(id)a7
++ (id)_preferredFontDescriptorWithTextStyle:(id)style addingSymbolicTraits:(unsigned int)traits design:(id)design weight:(double)weight compatibleWithTraitCollection:(id)collection
 {
-  v10 = *&a4;
-  v12 = [a7 preferredContentSizeCategory];
-  v13 = [MEMORY[0x1E696AD98] numberWithDouble:a6];
-  v14 = __UIGetLegibilityWeight(a7);
+  v10 = *&traits;
+  preferredContentSizeCategory = [collection preferredContentSizeCategory];
+  v13 = [MEMORY[0x1E696AD98] numberWithDouble:weight];
+  v14 = __UIGetLegibilityWeight(collection);
 
-  return __UIFontDescriptorWithTextStyle(a3, v12, 0, v10, a5, v13, v14);
+  return __UIFontDescriptorWithTextStyle(style, preferredContentSizeCategory, 0, v10, design, v13, v14);
 }
 
-+ (id)_preferredFontDescriptorWithTextStyle:(id)a3 addingSymbolicTraits:(unsigned int)a4 compatibleWithTraitCollection:(id)a5
++ (id)_preferredFontDescriptorWithTextStyle:(id)style addingSymbolicTraits:(unsigned int)traits compatibleWithTraitCollection:(id)collection
 {
-  v6 = *&a4;
-  v8 = [a5 preferredContentSizeCategory];
-  v9 = __UIGetLegibilityWeight(a5);
+  v6 = *&traits;
+  preferredContentSizeCategory = [collection preferredContentSizeCategory];
+  v9 = __UIGetLegibilityWeight(collection);
 
-  return __UIFontDescriptorWithTextStyle(a3, v8, 0, v6, 0, 0, v9);
+  return __UIFontDescriptorWithTextStyle(style, preferredContentSizeCategory, 0, v6, 0, 0, v9);
 }
 
-+ (id)defaultFontDescriptorWithTextStyle:(id)a3 addingSymbolicTraits:(unsigned int)a4 options:(unint64_t)a5
++ (id)defaultFontDescriptorWithTextStyle:(id)style addingSymbolicTraits:(unsigned int)traits options:(unint64_t)options
 {
-  v5 = *&a4;
-  result = __UIFontDescriptorWithTextStyle(a3, 0, 1, *&a4, 0, 0, -1);
+  v5 = *&traits;
+  result = __UIFontDescriptorWithTextStyle(style, 0, 1, *&traits, 0, 0, -1);
   if (v5)
   {
 
@@ -188,7 +188,7 @@
 
 + (UIFontDescriptor)fontDescriptorWithFontAttributes:(NSDictionary *)attributes
 {
-  v3 = [[a1 alloc] initWithFontAttributes:attributes];
+  v3 = [[self alloc] initWithFontAttributes:attributes];
 
   return v3;
 }
@@ -197,7 +197,7 @@
 {
   v7 = objc_alloc(MEMORY[0x1E695DF20]);
   v8 = [v7 initWithObjectsAndKeys:{fontName, @"NSFontNameAttribute", objc_msgSend(MEMORY[0x1E696AD98], "numberWithDouble:", size), @"NSFontSizeAttribute", 0}];
-  v9 = [[a1 alloc] initWithFontAttributes:v8];
+  v9 = [[self alloc] initWithFontAttributes:v8];
 
   return v9;
 }
@@ -273,20 +273,20 @@ uint64_t __34__UIFontDescriptor_initWithCoder___block_invoke()
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  if ([a3 allowsKeyedCoding])
+  if ([coder allowsKeyedCoding])
   {
-    v5 = [(UIFontDescriptor *)self fontAttributes];
-    v6 = [(NSDictionary *)v5 objectForKey:@"NSCTFontUIUsageAttribute"];
+    fontAttributes = [(UIFontDescriptor *)self fontAttributes];
+    v6 = [(NSDictionary *)fontAttributes objectForKey:@"NSCTFontUIUsageAttribute"];
     v7 = [v6 isEqualToString:*MEMORY[0x1E6965710]];
     v8 = [v6 isEqualToString:*MEMORY[0x1E6965718]];
-    v9 = [(NSDictionary *)v5 objectForKey:@"NSColor"];
+    v9 = [(NSDictionary *)fontAttributes objectForKey:@"NSColor"];
     v10 = v9;
     v11 = v7 | v8;
     if ((v11 & 1) != 0 || v9)
     {
-      v12 = [(NSDictionary *)v5 mutableCopy];
+      v12 = [(NSDictionary *)fontAttributes mutableCopy];
       v13 = v12;
       if (v11)
       {
@@ -305,13 +305,13 @@ uint64_t __34__UIFontDescriptor_initWithCoder___block_invoke()
         [v13 removeObjectForKey:@"NSColor"];
       }
 
-      v5 = v13;
+      fontAttributes = v13;
     }
 
-    [a3 encodeObject:v5 forKey:@"UIFontDescriptorAttributes"];
+    [coder encodeObject:fontAttributes forKey:@"UIFontDescriptorAttributes"];
     Options = CTFontDescriptorGetOptions();
 
-    [a3 encodeInteger:Options forKey:@"UIFontDescriptorOptions"];
+    [coder encodeInteger:Options forKey:@"UIFontDescriptorOptions"];
   }
 }
 
@@ -331,7 +331,7 @@ uint64_t __34__UIFontDescriptor_initWithCoder___block_invoke()
 {
   v7 = objc_alloc(MEMORY[0x1E695DF20]);
   v8 = [v7 initWithObjectsAndKeys:{fontName, @"NSFontNameAttribute", objc_msgSend(MEMORY[0x1E696B098], "valueWithBytes:objCType:", matrix, "{CGAffineTransform=dddddd}"), @"NSFontMatrixAttribute", 0}];
-  v9 = [[a1 alloc] initWithFontAttributes:v8];
+  v9 = [[self alloc] initWithFontAttributes:v8];
 
   return v9;
 }
@@ -346,16 +346,16 @@ uint64_t __34__UIFontDescriptor_initWithCoder___block_invoke()
   return v7;
 }
 
-- (UIFontDescriptor)fontDescriptorWithSymbolicTraits:(unsigned int)a3 mask:(unsigned int)a4
+- (UIFontDescriptor)fontDescriptorWithSymbolicTraits:(unsigned int)traits mask:(unsigned int)mask
 {
-  CopyWithSymbolicTraits = CTFontDescriptorCreateCopyWithSymbolicTraits(self, a3, a4);
+  CopyWithSymbolicTraits = CTFontDescriptorCreateCopyWithSymbolicTraits(self, traits, mask);
 
   return CopyWithSymbolicTraits;
 }
 
-- (id)_fontDescriptorWithMatrix:(CGAffineTransform *)a3
+- (id)_fontDescriptorWithMatrix:(CGAffineTransform *)matrix
 {
-  v4 = [MEMORY[0x1E695DF20] dictionaryWithObject:objc_msgSend(MEMORY[0x1E696B098] forKey:{"valueWithBytes:objCType:", a3, "{CGAffineTransform=dddddd}"), @"NSFontMatrixAttribute"}];
+  v4 = [MEMORY[0x1E695DF20] dictionaryWithObject:objc_msgSend(MEMORY[0x1E696B098] forKey:{"valueWithBytes:objCType:", matrix, "{CGAffineTransform=dddddd}"), @"NSFontMatrixAttribute"}];
 
   return [(UIFontDescriptor *)self fontDescriptorByAddingAttributes:v4];
 }

@@ -1,19 +1,19 @@
 @interface ARWorldTrackingParticipantAnchorData
-- (ARWorldTrackingParticipantAnchorData)initWithAnchors:(id)a3;
-- (id)anchorsForCameraWithTransform:(double)a3 referenceOriginTransform:(double)a4 existingAnchors:(double)a5 anchorsToRemove:(float32x4_t)a6;
+- (ARWorldTrackingParticipantAnchorData)initWithAnchors:(id)anchors;
+- (id)anchorsForCameraWithTransform:(double)transform referenceOriginTransform:(double)originTransform existingAnchors:(double)anchors anchorsToRemove:(float32x4_t)remove;
 @end
 
 @implementation ARWorldTrackingParticipantAnchorData
 
-- (ARWorldTrackingParticipantAnchorData)initWithAnchors:(id)a3
+- (ARWorldTrackingParticipantAnchorData)initWithAnchors:(id)anchors
 {
-  v4 = a3;
+  anchorsCopy = anchors;
   v9.receiver = self;
   v9.super_class = ARWorldTrackingParticipantAnchorData;
   v5 = [(ARWorldTrackingParticipantAnchorData *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [anchorsCopy copy];
     anchors = v5->_anchors;
     v5->_anchors = v6;
   }
@@ -21,15 +21,15 @@
   return v5;
 }
 
-- (id)anchorsForCameraWithTransform:(double)a3 referenceOriginTransform:(double)a4 existingAnchors:(double)a5 anchorsToRemove:(float32x4_t)a6
+- (id)anchorsForCameraWithTransform:(double)transform referenceOriginTransform:(double)originTransform existingAnchors:(double)anchors anchorsToRemove:(float32x4_t)remove
 {
   v38 = *MEMORY[0x1E69E9840];
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v10 = [a1 anchors];
-  v11 = [v10 countByEnumeratingWithState:&v28 objects:v37 count:16];
+  anchors = [self anchors];
+  v11 = [anchors countByEnumeratingWithState:&v28 objects:v37 count:16];
   if (v11)
   {
     v12 = v11;
@@ -40,7 +40,7 @@
       {
         if (*v29 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(anchors);
         }
 
         v15 = *(*(&v28 + 1) + 8 * i);
@@ -56,7 +56,7 @@
         *v36 = 0u;
         do
         {
-          *(&v33 + v16 * 16) = vmlaq_laneq_f32(vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(a6, COERCE_FLOAT(v32[v16])), a7, *&v32[v16], 1), a8, v32[v16], 2), a9, v32[v16], 3);
+          *(&v33 + v16 * 16) = vmlaq_laneq_f32(vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(remove, COERCE_FLOAT(v32[v16])), a7, *&v32[v16], 1), a8, v32[v16], 2), a9, v32[v16], 3);
           ++v16;
         }
 
@@ -64,16 +64,16 @@
         [v15 setTransform:{*&v33, *&v34, *&v35, v36[0]}];
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v28 objects:v37 count:16];
+      v12 = [anchors countByEnumeratingWithState:&v28 objects:v37 count:16];
     }
 
     while (v12);
   }
 
-  v21 = [a1 anchors];
-  v22 = [v21 allObjects];
+  anchors2 = [self anchors];
+  allObjects = [anchors2 allObjects];
 
-  return v22;
+  return allObjects;
 }
 
 @end

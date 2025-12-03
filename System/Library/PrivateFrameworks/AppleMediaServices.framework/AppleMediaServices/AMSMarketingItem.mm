@@ -1,5 +1,5 @@
 @interface AMSMarketingItem
-- (AMSMarketingItem)initWithDictionary:(id)a3;
+- (AMSMarketingItem)initWithDictionary:(id)dictionary;
 - (NSArray)itemActions;
 - (NSArray)relatedContent;
 - (NSArray)videos;
@@ -17,16 +17,16 @@
 
 @implementation AMSMarketingItem
 
-- (AMSMarketingItem)initWithDictionary:(id)a3
+- (AMSMarketingItem)initWithDictionary:(id)dictionary
 {
-  v5 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = AMSMarketingItem;
   v6 = [(AMSMarketingItem *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_rawValues, a3);
+    objc_storeStrong(&v6->_rawValues, dictionary);
   }
 
   return v7;
@@ -35,8 +35,8 @@
 - (NSDictionary)artworkDictionary
 {
   v3 = off_1F0719CD8(off_1F0719C70);
-  v4 = [(AMSMarketingItem *)self rawValues];
-  v5 = [v4 valueForKeyPath:v3];
+  rawValues = [(AMSMarketingItem *)self rawValues];
+  v5 = [rawValues valueForKeyPath:v3];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -108,8 +108,8 @@ LABEL_10:
 - (NSString)badge
 {
   v3 = off_1F0719CD8(off_1F0719C78);
-  v4 = [(AMSMarketingItem *)self rawValues];
-  v5 = [v4 valueForKeyPath:v3];
+  rawValues = [(AMSMarketingItem *)self rawValues];
+  v5 = [rawValues valueForKeyPath:v3];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -128,8 +128,8 @@ LABEL_10:
 - (NSString)campaignID
 {
   v3 = off_1F0719CD8(off_1F0719C80);
-  v4 = [(AMSMarketingItem *)self rawValues];
-  v5 = [v4 valueForKeyPath:v3];
+  rawValues = [(AMSMarketingItem *)self rawValues];
+  v5 = [rawValues valueForKeyPath:v3];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -148,8 +148,8 @@ LABEL_10:
 - (NSString)itemID
 {
   v2 = qword_1F0719C58;
-  v3 = [(AMSMarketingItem *)self rawValues];
-  v4 = [v3 objectForKeyedSubscript:v2];
+  rawValues = [(AMSMarketingItem *)self rawValues];
+  v4 = [rawValues objectForKeyedSubscript:v2];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -170,8 +170,8 @@ LABEL_10:
   v3 = off_1F0719C88;
   v4 = off_1F0719CD8;
   v5 = off_1F0719CD8(v3);
-  v6 = [(AMSMarketingItem *)self rawValues];
-  v7 = [v6 valueForKeyPath:v5];
+  rawValues = [(AMSMarketingItem *)self rawValues];
+  v7 = [rawValues valueForKeyPath:v5];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -186,8 +186,8 @@ LABEL_10:
 
   v9 = qword_1F0719C90;
   v10 = v4(v9);
-  v11 = [(AMSMarketingItem *)self rawValues];
-  v12 = [v11 valueForKeyPath:v10];
+  rawValues2 = [(AMSMarketingItem *)self rawValues];
+  v12 = [rawValues2 valueForKeyPath:v10];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -232,8 +232,8 @@ AMSMarketingItemAction *__31__AMSMarketingItem_itemActions__block_invoke(uint64_
 - (NSArray)relatedContent
 {
   v3 = off_1F0719D80();
-  v4 = [(AMSMarketingItem *)self rawValues];
-  v5 = [v4 valueForKeyPath:v3];
+  rawValues = [(AMSMarketingItem *)self rawValues];
+  v5 = [rawValues valueForKeyPath:v3];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -252,8 +252,8 @@ AMSMarketingItemAction *__31__AMSMarketingItem_itemActions__block_invoke(uint64_
 - (NSString)serviceType
 {
   v3 = off_1F0719CD8(off_1F0719C98);
-  v4 = [(AMSMarketingItem *)self rawValues];
-  v5 = [v4 valueForKeyPath:v3];
+  rawValues = [(AMSMarketingItem *)self rawValues];
+  v5 = [rawValues valueForKeyPath:v3];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -272,8 +272,8 @@ AMSMarketingItemAction *__31__AMSMarketingItem_itemActions__block_invoke(uint64_
 - (NSString)subtitle
 {
   v3 = off_1F0719CD8(off_1F0719CA0);
-  v4 = [(AMSMarketingItem *)self rawValues];
-  v5 = [v4 valueForKeyPath:v3];
+  rawValues = [(AMSMarketingItem *)self rawValues];
+  v5 = [rawValues valueForKeyPath:v3];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -292,8 +292,8 @@ AMSMarketingItemAction *__31__AMSMarketingItem_itemActions__block_invoke(uint64_
 - (NSString)templateID
 {
   v3 = off_1F0719CD8(off_1F0719CA8);
-  v4 = [(AMSMarketingItem *)self rawValues];
-  v5 = [v4 valueForKeyPath:v3];
+  rawValues = [(AMSMarketingItem *)self rawValues];
+  v5 = [rawValues valueForKeyPath:v3];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -312,8 +312,8 @@ AMSMarketingItemAction *__31__AMSMarketingItem_itemActions__block_invoke(uint64_
 - (NSString)title
 {
   v3 = off_1F0719CD8(off_1F0719CB8);
-  v4 = [(AMSMarketingItem *)self rawValues];
-  v5 = [v4 valueForKeyPath:v3];
+  rawValues = [(AMSMarketingItem *)self rawValues];
+  v5 = [rawValues valueForKeyPath:v3];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -332,8 +332,8 @@ AMSMarketingItemAction *__31__AMSMarketingItem_itemActions__block_invoke(uint64_
 - (NSString)type
 {
   v2 = qword_1F0719C68;
-  v3 = [(AMSMarketingItem *)self rawValues];
-  v4 = [v3 objectForKeyedSubscript:v2];
+  rawValues = [(AMSMarketingItem *)self rawValues];
+  v4 = [rawValues objectForKeyedSubscript:v2];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -352,8 +352,8 @@ AMSMarketingItemAction *__31__AMSMarketingItem_itemActions__block_invoke(uint64_
 - (NSArray)videos
 {
   v3 = off_1F0719CD8(off_1F0719CC8);
-  v4 = [(AMSMarketingItem *)self rawValues];
-  v5 = [v4 valueForKeyPath:v3];
+  rawValues = [(AMSMarketingItem *)self rawValues];
+  allValues = [rawValues valueForKeyPath:v3];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -363,12 +363,12 @@ AMSMarketingItemAction *__31__AMSMarketingItem_itemActions__block_invoke(uint64_
     goto LABEL_5;
   }
 
-  v6 = v5;
+  v6 = allValues;
 
   if (v6)
   {
-    v5 = [v6 allValues];
-    v7 = [v5 ams_mapWithTransformIgnoresNil:&__block_literal_global_10_0];
+    allValues = [v6 allValues];
+    v7 = [allValues ams_mapWithTransformIgnoresNil:&__block_literal_global_10_0];
 LABEL_5:
 
     goto LABEL_6;
@@ -409,10 +409,10 @@ LABEL_6:
 
 - (id)video
 {
-  v2 = [(AMSMarketingItem *)self videos];
-  v3 = [v2 firstObject];
+  videos = [(AMSMarketingItem *)self videos];
+  firstObject = [videos firstObject];
 
-  return v3;
+  return firstObject;
 }
 
 @end

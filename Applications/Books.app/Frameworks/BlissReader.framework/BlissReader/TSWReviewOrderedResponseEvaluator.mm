@@ -1,20 +1,20 @@
 @interface TSWReviewOrderedResponseEvaluator
-- (id)evaluateBlockIfCorrect:(id)a3 blockIfIncorrect:(id)a4 blockIfMissing:(id)a5;
+- (id)evaluateBlockIfCorrect:(id)correct blockIfIncorrect:(id)incorrect blockIfMissing:(id)missing;
 @end
 
 @implementation TSWReviewOrderedResponseEvaluator
 
-- (id)evaluateBlockIfCorrect:(id)a3 blockIfIncorrect:(id)a4 blockIfMissing:(id)a5
+- (id)evaluateBlockIfCorrect:(id)correct blockIfIncorrect:(id)incorrect blockIfMissing:(id)missing
 {
-  v8 = [(TSWReviewResponseEvaluator *)self dataSource];
-  v9 = [(TSWReviewResponseEvaluatorDataSource *)v8 response];
+  dataSource = [(TSWReviewResponseEvaluator *)self dataSource];
+  response = [(TSWReviewResponseEvaluatorDataSource *)dataSource response];
   objc_opt_class();
-  [(TSWReviewResponse *)v9 answerState];
+  [(TSWReviewResponse *)response answerState];
   v10 = TSUDynamicCast();
-  v11 = [(TSWReviewResponseEvaluatorDataSource *)v8 choiceCount];
-  if (v11)
+  choiceCount = [(TSWReviewResponseEvaluatorDataSource *)dataSource choiceCount];
+  if (choiceCount)
   {
-    v12 = v11;
+    v12 = choiceCount;
     v13 = 0;
     v14 = 0;
     v15 = 0;
@@ -26,9 +26,9 @@
       {
         if (v17 == 0x7FFFFFFFFFFFFFFFLL)
         {
-          if (a5)
+          if (missing)
           {
-            (*(a5 + 2))(a5, 0x7FFFFFFFFFFFFFFFLL);
+            (*(missing + 2))(missing, 0x7FFFFFFFFFFFFFFFLL);
           }
 
           ++v15;
@@ -36,9 +36,9 @@
 
         else
         {
-          if (a4)
+          if (incorrect)
           {
-            (*(a4 + 2))(a4, v17);
+            (*(incorrect + 2))(incorrect, v17);
           }
 
           ++v16;
@@ -47,9 +47,9 @@
 
       else
       {
-        if (a3)
+        if (correct)
         {
-          (*(a3 + 2))(a3, v13);
+          (*(correct + 2))(correct, v13);
         }
 
         ++v14;

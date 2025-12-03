@@ -1,31 +1,31 @@
 @interface UISystemNavigationActionDestinationContext
-+ (id)systemNavigationActionContextWithTitle:(id)a3 andURL:(id)a4;
-+ (id)systemNavigationActionContextWithTitle:(id)a3 bundleId:(id)a4;
-+ (id)systemNavigationActionContextWithTitle:(id)a3 sceneIdentifier:(id)a4;
-+ (id)systemNavigationActionContextWithURL:(id)a3;
++ (id)systemNavigationActionContextWithTitle:(id)title andURL:(id)l;
++ (id)systemNavigationActionContextWithTitle:(id)title bundleId:(id)id;
++ (id)systemNavigationActionContextWithTitle:(id)title sceneIdentifier:(id)identifier;
++ (id)systemNavigationActionContextWithURL:(id)l;
 - (NSString)debugDescription;
-- (UISystemNavigationActionDestinationContext)initWithXPCDictionary:(id)a3;
-- (void)encodeWithXPCDictionary:(id)a3;
+- (UISystemNavigationActionDestinationContext)initWithXPCDictionary:(id)dictionary;
+- (void)encodeWithXPCDictionary:(id)dictionary;
 @end
 
 @implementation UISystemNavigationActionDestinationContext
 
-+ (id)systemNavigationActionContextWithTitle:(id)a3 andURL:(id)a4
++ (id)systemNavigationActionContextWithTitle:(id)title andURL:(id)l
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  titleCopy = title;
+  lCopy = l;
+  v8 = lCopy;
+  if (titleCopy)
   {
-    v9 = [a1 systemNavigationActionContextWithTitle:v6 bundleId:0];
+    v9 = [self systemNavigationActionContextWithTitle:titleCopy bundleId:0];
 LABEL_5:
     v10 = v9;
     goto LABEL_6;
   }
 
-  if (v7)
+  if (lCopy)
   {
-    v9 = [a1 systemNavigationActionContextWithURL:v7];
+    v9 = [self systemNavigationActionContextWithURL:lCopy];
     goto LABEL_5;
   }
 
@@ -35,42 +35,42 @@ LABEL_6:
   return v10;
 }
 
-+ (id)systemNavigationActionContextWithTitle:(id)a3 bundleId:(id)a4
++ (id)systemNavigationActionContextWithTitle:(id)title bundleId:(id)id
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = objc_alloc_init(a1);
-  [v8 setTitle:v7];
+  idCopy = id;
+  titleCopy = title;
+  v8 = objc_alloc_init(self);
+  [v8 setTitle:titleCopy];
 
-  [v8 setBundleId:v6];
+  [v8 setBundleId:idCopy];
 
   return v8;
 }
 
-+ (id)systemNavigationActionContextWithTitle:(id)a3 sceneIdentifier:(id)a4
++ (id)systemNavigationActionContextWithTitle:(id)title sceneIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = objc_alloc_init(a1);
-  [v8 setTitle:v7];
+  identifierCopy = identifier;
+  titleCopy = title;
+  v8 = objc_alloc_init(self);
+  [v8 setTitle:titleCopy];
 
-  [v8 setSceneIdentifier:v6];
+  [v8 setSceneIdentifier:identifierCopy];
 
   return v8;
 }
 
-+ (id)systemNavigationActionContextWithURL:(id)a3
++ (id)systemNavigationActionContextWithURL:(id)l
 {
-  v4 = a3;
-  v5 = objc_alloc_init(a1);
-  [v5 setURL:v4];
+  lCopy = l;
+  v5 = objc_alloc_init(self);
+  [v5 setURL:lCopy];
 
   return v5;
 }
 
-- (UISystemNavigationActionDestinationContext)initWithXPCDictionary:(id)a3
+- (UISystemNavigationActionDestinationContext)initWithXPCDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v20.receiver = self;
   v20.super_class = UISystemNavigationActionDestinationContext;
   v5 = [(UISystemNavigationActionDestinationContext *)&v20 init];
@@ -110,9 +110,9 @@ LABEL_6:
   return v5;
 }
 
-- (void)encodeWithXPCDictionary:(id)a3
+- (void)encodeWithXPCDictionary:(id)dictionary
 {
-  v7 = a3;
+  dictionaryCopy = dictionary;
   if ([(NSString *)self->_title length])
   {
     BSSerializeStringToXPCDictionaryWithKey();
@@ -126,15 +126,15 @@ LABEL_6:
   URL = self->_URL;
   if (URL)
   {
-    v5 = [(NSURL *)URL absoluteString];
+    absoluteString = [(NSURL *)URL absoluteString];
     BSSerializeStringToXPCDictionaryWithKey();
   }
 
-  v6 = v7;
+  v6 = dictionaryCopy;
   if (self->_sceneIdentifier)
   {
     BSSerializeStringToXPCDictionaryWithKey();
-    v6 = v7;
+    v6 = dictionaryCopy;
   }
 }
 
@@ -162,8 +162,8 @@ LABEL_6:
     if (URL)
     {
       v6 = MEMORY[0x1E696AEC0];
-      v7 = [(NSURL *)URL absoluteString];
-      v8 = [v6 stringWithFormat:@"<%@: URL: %@>", self, v7];
+      absoluteString = [(NSURL *)URL absoluteString];
+      v8 = [v6 stringWithFormat:@"<%@: URL: %@>", self, absoluteString];
 
       goto LABEL_9;
     }

@@ -1,17 +1,17 @@
 @interface NTKCFaceDetailAlbumChooserViewController
-- (NTKCFaceDetailAlbumChooserViewController)initWithPhotosEditor:(id)a3 forFace:(id)a4 inGallery:(BOOL)a5;
+- (NTKCFaceDetailAlbumChooserViewController)initWithPhotosEditor:(id)editor forFace:(id)face inGallery:(BOOL)gallery;
 - (NTKCFaceDetailAlbumChooserViewControllerDelegate)delegate;
-- (void)_albumChooserDidFinish:(id)a3;
+- (void)_albumChooserDidFinish:(id)finish;
 @end
 
 @implementation NTKCFaceDetailAlbumChooserViewController
 
-- (NTKCFaceDetailAlbumChooserViewController)initWithPhotosEditor:(id)a3 forFace:(id)a4 inGallery:(BOOL)a5
+- (NTKCFaceDetailAlbumChooserViewController)initWithPhotosEditor:(id)editor forFace:(id)face inGallery:(BOOL)gallery
 {
-  v5 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[_NTKCFaceDetailAlbumChooserViewController alloc] initWithPhotosEditor:v9 forFace:v8 inGallery:v5];
+  galleryCopy = gallery;
+  faceCopy = face;
+  editorCopy = editor;
+  v10 = [[_NTKCFaceDetailAlbumChooserViewController alloc] initWithPhotosEditor:editorCopy forFace:faceCopy inGallery:galleryCopy];
 
   v14.receiver = self;
   v14.super_class = NTKCFaceDetailAlbumChooserViewController;
@@ -26,10 +26,10 @@
   return v12;
 }
 
-- (void)_albumChooserDidFinish:(id)a3
+- (void)_albumChooserDidFinish:(id)finish
 {
-  v4 = [(NTKCFaceDetailAlbumChooserViewController *)self delegate];
-  [v4 albumChooserDidFinish:self];
+  delegate = [(NTKCFaceDetailAlbumChooserViewController *)self delegate];
+  [delegate albumChooserDidFinish:self];
 }
 
 - (NTKCFaceDetailAlbumChooserViewControllerDelegate)delegate

@@ -8,10 +8,10 @@
 - (uint64_t)ttriAccessibilityShowContextMenuAtPoint:()AccessibilityBridging
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = a1;
-  if (v5)
+  selfCopy = self;
+  if (selfCopy)
   {
-    v6 = v5;
+    v6 = selfCopy;
     v7 = 0;
     do
     {
@@ -19,8 +19,8 @@
       v20 = 0u;
       v17 = 0u;
       v18 = 0u;
-      v8 = [v6 interactions];
-      v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      interactions = [v6 interactions];
+      v9 = [interactions countByEnumeratingWithState:&v17 objects:v21 count:16];
       if (v9)
       {
         v10 = v9;
@@ -31,7 +31,7 @@
           {
             if (*v18 != v11)
             {
-              objc_enumerationMutation(v8);
+              objc_enumerationMutation(interactions);
             }
 
             v13 = *(*(&v17 + 1) + 8 * i);
@@ -52,7 +52,7 @@
             }
           }
 
-          v10 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+          v10 = [interactions countByEnumeratingWithState:&v17 objects:v21 count:16];
           if (v10)
           {
             continue;
@@ -64,12 +64,12 @@
 
 LABEL_16:
 
-      v15 = [v6 superview];
+      superview = [v6 superview];
 
-      v6 = v15;
+      v6 = superview;
     }
 
-    while (v15);
+    while (superview);
   }
 
   else
@@ -82,7 +82,7 @@ LABEL_16:
 
 - (id)ttriAccessibilityShouldUseViewHierarchyForFindingScrollParent
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = UIView_0;
   return objc_msgSendSuper2(&v2, sel__accessibilityShouldUseViewHierarchyForFindingScrollParent);
 }

@@ -1,33 +1,33 @@
 @interface DODMLASRSchemaDODMLASRDecodingMetrics
-- (BOOL)isEqual:(id)a3;
-- (DODMLASRSchemaDODMLASRDecodingMetrics)initWithDictionary:(id)a3;
-- (DODMLASRSchemaDODMLASRDecodingMetrics)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (DODMLASRSchemaDODMLASRDecodingMetrics)initWithDictionary:(id)dictionary;
+- (DODMLASRSchemaDODMLASRDecodingMetrics)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addLanguageModelInterpolationWeights:(id)a3;
-- (void)addPostprocessingEntityCategoryCounts:(id)a3;
-- (void)addPreprocessingEntityCategoryCounts:(id)a3;
-- (void)setHasAverageActiveTokensPerFrame:(BOOL)a3;
-- (void)setHasJitLanguageModelEnrollmentDurationInMs:(BOOL)a3;
-- (void)setHasJitQueryDurationInMs:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addLanguageModelInterpolationWeights:(id)weights;
+- (void)addPostprocessingEntityCategoryCounts:(id)counts;
+- (void)addPreprocessingEntityCategoryCounts:(id)counts;
+- (void)setHasAverageActiveTokensPerFrame:(BOOL)frame;
+- (void)setHasJitLanguageModelEnrollmentDurationInMs:(BOOL)ms;
+- (void)setHasJitQueryDurationInMs:(BOOL)ms;
+- (void)writeTo:(id)to;
 @end
 
 @implementation DODMLASRSchemaDODMLASRDecodingMetrics
 
-- (DODMLASRSchemaDODMLASRDecodingMetrics)initWithDictionary:(id)a3
+- (DODMLASRSchemaDODMLASRDecodingMetrics)initWithDictionary:(id)dictionary
 {
   v57 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v53.receiver = self;
   v53.super_class = DODMLASRSchemaDODMLASRDecodingMetrics;
   v5 = [(DODMLASRSchemaDODMLASRDecodingMetrics *)&v53 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"wallRealTimeFactor"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"wallRealTimeFactor"];
     objc_opt_class();
     v40 = v6;
     if (objc_opt_isKindOfClass())
@@ -36,7 +36,7 @@
       [(DODMLASRSchemaDODMLASRDecodingMetrics *)v5 setWallRealTimeFactor:?];
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"languageModelInterpolationWeights"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"languageModelInterpolationWeights"];
     objc_opt_class();
     v39 = v7;
     if (objc_opt_isKindOfClass())
@@ -76,7 +76,7 @@
       }
     }
 
-    v15 = [v4 objectForKeyedSubscript:@"averageActiveTokensPerFrame"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"averageActiveTokensPerFrame"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -84,21 +84,21 @@
       [(DODMLASRSchemaDODMLASRDecodingMetrics *)v5 setAverageActiveTokensPerFrame:?];
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"jitQueryDurationInMs"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"jitQueryDurationInMs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[DODMLASRSchemaDODMLASRDecodingMetrics setJitQueryDurationInMs:](v5, "setJitQueryDurationInMs:", [v16 unsignedLongLongValue]);
     }
 
-    v17 = [v4 objectForKeyedSubscript:@"jitLanguageModelEnrollmentDurationInMs"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"jitLanguageModelEnrollmentDurationInMs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[DODMLASRSchemaDODMLASRDecodingMetrics setJitLanguageModelEnrollmentDurationInMs:](v5, "setJitLanguageModelEnrollmentDurationInMs:", [v17 unsignedLongLongValue]);
     }
 
-    v18 = [v4 objectForKeyedSubscript:@"preprocessingEntityCategoryCounts"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"preprocessingEntityCategoryCounts"];
     objc_opt_class();
     v37 = v16;
     v38 = v15;
@@ -143,7 +143,7 @@
       v18 = v19;
     }
 
-    v27 = [v4 objectForKeyedSubscript:@"postprocessingEntityCategoryCounts"];
+    v27 = [dictionaryCopy objectForKeyedSubscript:@"postprocessingEntityCategoryCounts"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -191,30 +191,30 @@
   return v5;
 }
 
-- (DODMLASRSchemaDODMLASRDecodingMetrics)initWithJSON:(id)a3
+- (DODMLASRSchemaDODMLASRDecodingMetrics)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(DODMLASRSchemaDODMLASRDecodingMetrics *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(DODMLASRSchemaDODMLASRDecodingMetrics *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(DODMLASRSchemaDODMLASRDecodingMetrics *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -228,14 +228,14 @@
 - (id)dictionaryRepresentation
 {
   v51 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 2) != 0)
   {
     v5 = MEMORY[0x1E696AD98];
     [(DODMLASRSchemaDODMLASRDecodingMetrics *)self averageActiveTokensPerFrame];
     v6 = [v5 numberWithFloat:?];
-    [v3 setObject:v6 forKeyedSubscript:@"averageActiveTokensPerFrame"];
+    [dictionary setObject:v6 forKeyedSubscript:@"averageActiveTokensPerFrame"];
 
     has = self->_has;
   }
@@ -243,7 +243,7 @@
   if ((has & 8) != 0)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[DODMLASRSchemaDODMLASRDecodingMetrics jitLanguageModelEnrollmentDurationInMs](self, "jitLanguageModelEnrollmentDurationInMs")}];
-    [v3 setObject:v7 forKeyedSubscript:@"jitLanguageModelEnrollmentDurationInMs"];
+    [dictionary setObject:v7 forKeyedSubscript:@"jitLanguageModelEnrollmentDurationInMs"];
 
     has = self->_has;
   }
@@ -251,12 +251,12 @@
   if ((has & 4) != 0)
   {
     v8 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[DODMLASRSchemaDODMLASRDecodingMetrics jitQueryDurationInMs](self, "jitQueryDurationInMs")}];
-    [v3 setObject:v8 forKeyedSubscript:@"jitQueryDurationInMs"];
+    [dictionary setObject:v8 forKeyedSubscript:@"jitQueryDurationInMs"];
   }
 
   if ([(NSArray *)self->_languageModelInterpolationWeights count])
   {
-    v9 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v44 = 0u;
     v45 = 0u;
     v46 = 0u;
@@ -276,16 +276,16 @@
             objc_enumerationMutation(v10);
           }
 
-          v15 = [*(*(&v44 + 1) + 8 * i) dictionaryRepresentation];
-          if (v15)
+          dictionaryRepresentation = [*(*(&v44 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation)
           {
-            [v9 addObject:v15];
+            [array addObject:dictionaryRepresentation];
           }
 
           else
           {
-            v16 = [MEMORY[0x1E695DFB0] null];
-            [v9 addObject:v16];
+            null = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null];
           }
         }
 
@@ -295,12 +295,12 @@
       while (v12);
     }
 
-    [v3 setObject:v9 forKeyedSubscript:@"languageModelInterpolationWeights"];
+    [dictionary setObject:array forKeyedSubscript:@"languageModelInterpolationWeights"];
   }
 
   if ([(NSArray *)self->_postprocessingEntityCategoryCounts count])
   {
-    v17 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     v40 = 0u;
     v41 = 0u;
     v42 = 0u;
@@ -320,16 +320,16 @@
             objc_enumerationMutation(v18);
           }
 
-          v23 = [*(*(&v40 + 1) + 8 * j) dictionaryRepresentation];
-          if (v23)
+          dictionaryRepresentation2 = [*(*(&v40 + 1) + 8 * j) dictionaryRepresentation];
+          if (dictionaryRepresentation2)
           {
-            [v17 addObject:v23];
+            [array2 addObject:dictionaryRepresentation2];
           }
 
           else
           {
-            v24 = [MEMORY[0x1E695DFB0] null];
-            [v17 addObject:v24];
+            null2 = [MEMORY[0x1E695DFB0] null];
+            [array2 addObject:null2];
           }
         }
 
@@ -339,12 +339,12 @@
       while (v20);
     }
 
-    [v3 setObject:v17 forKeyedSubscript:@"postprocessingEntityCategoryCounts"];
+    [dictionary setObject:array2 forKeyedSubscript:@"postprocessingEntityCategoryCounts"];
   }
 
   if ([(NSArray *)self->_preprocessingEntityCategoryCounts count])
   {
-    v25 = [MEMORY[0x1E695DF70] array];
+    array3 = [MEMORY[0x1E695DF70] array];
     v36 = 0u;
     v37 = 0u;
     v38 = 0u;
@@ -364,16 +364,16 @@
             objc_enumerationMutation(v26);
           }
 
-          v31 = [*(*(&v36 + 1) + 8 * k) dictionaryRepresentation];
-          if (v31)
+          dictionaryRepresentation3 = [*(*(&v36 + 1) + 8 * k) dictionaryRepresentation];
+          if (dictionaryRepresentation3)
           {
-            [v25 addObject:v31];
+            [array3 addObject:dictionaryRepresentation3];
           }
 
           else
           {
-            v32 = [MEMORY[0x1E695DFB0] null];
-            [v25 addObject:v32];
+            null3 = [MEMORY[0x1E695DFB0] null];
+            [array3 addObject:null3];
           }
         }
 
@@ -383,7 +383,7 @@
       while (v28);
     }
 
-    [v3 setObject:v25 forKeyedSubscript:@"preprocessingEntityCategoryCounts"];
+    [dictionary setObject:array3 forKeyedSubscript:@"preprocessingEntityCategoryCounts"];
   }
 
   if (*&self->_has)
@@ -391,12 +391,12 @@
     v33 = MEMORY[0x1E696AD98];
     [(DODMLASRSchemaDODMLASRDecodingMetrics *)self wallRealTimeFactor];
     v34 = [v33 numberWithFloat:?];
-    [v3 setObject:v34 forKeyedSubscript:@"wallRealTimeFactor"];
+    [dictionary setObject:v34 forKeyedSubscript:@"wallRealTimeFactor"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -504,15 +504,15 @@ LABEL_24:
   return v20 ^ [(NSArray *)self->_postprocessingEntityCategoryCounts hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_31;
   }
 
-  if ((*&self->_has & 1) != (v4[64] & 1))
+  if ((*&self->_has & 1) != (equalCopy[64] & 1))
   {
     goto LABEL_31;
   }
@@ -520,27 +520,27 @@ LABEL_24:
   if (*&self->_has)
   {
     wallRealTimeFactor = self->_wallRealTimeFactor;
-    [v4 wallRealTimeFactor];
+    [equalCopy wallRealTimeFactor];
     if (wallRealTimeFactor != v6)
     {
       goto LABEL_31;
     }
   }
 
-  v7 = [(DODMLASRSchemaDODMLASRDecodingMetrics *)self languageModelInterpolationWeights];
-  v8 = [v4 languageModelInterpolationWeights];
-  if ((v7 != 0) == (v8 == 0))
+  languageModelInterpolationWeights = [(DODMLASRSchemaDODMLASRDecodingMetrics *)self languageModelInterpolationWeights];
+  languageModelInterpolationWeights2 = [equalCopy languageModelInterpolationWeights];
+  if ((languageModelInterpolationWeights != 0) == (languageModelInterpolationWeights2 == 0))
   {
     goto LABEL_30;
   }
 
-  v9 = [(DODMLASRSchemaDODMLASRDecodingMetrics *)self languageModelInterpolationWeights];
-  if (v9)
+  languageModelInterpolationWeights3 = [(DODMLASRSchemaDODMLASRDecodingMetrics *)self languageModelInterpolationWeights];
+  if (languageModelInterpolationWeights3)
   {
-    v10 = v9;
-    v11 = [(DODMLASRSchemaDODMLASRDecodingMetrics *)self languageModelInterpolationWeights];
-    v12 = [v4 languageModelInterpolationWeights];
-    v13 = [v11 isEqual:v12];
+    v10 = languageModelInterpolationWeights3;
+    languageModelInterpolationWeights4 = [(DODMLASRSchemaDODMLASRDecodingMetrics *)self languageModelInterpolationWeights];
+    languageModelInterpolationWeights5 = [equalCopy languageModelInterpolationWeights];
+    v13 = [languageModelInterpolationWeights4 isEqual:languageModelInterpolationWeights5];
 
     if (!v13)
     {
@@ -554,7 +554,7 @@ LABEL_24:
 
   has = self->_has;
   v15 = (*&has >> 1) & 1;
-  v16 = v4[64];
+  v16 = equalCopy[64];
   if (v15 != ((v16 >> 1) & 1))
   {
     goto LABEL_31;
@@ -563,14 +563,14 @@ LABEL_24:
   if (v15)
   {
     averageActiveTokensPerFrame = self->_averageActiveTokensPerFrame;
-    [v4 averageActiveTokensPerFrame];
+    [equalCopy averageActiveTokensPerFrame];
     if (averageActiveTokensPerFrame != v18)
     {
       goto LABEL_31;
     }
 
     has = self->_has;
-    v16 = v4[64];
+    v16 = equalCopy[64];
   }
 
   v19 = (*&has >> 2) & 1;
@@ -582,13 +582,13 @@ LABEL_24:
   if (v19)
   {
     jitQueryDurationInMs = self->_jitQueryDurationInMs;
-    if (jitQueryDurationInMs != [v4 jitQueryDurationInMs])
+    if (jitQueryDurationInMs != [equalCopy jitQueryDurationInMs])
     {
       goto LABEL_31;
     }
 
     has = self->_has;
-    v16 = v4[64];
+    v16 = equalCopy[64];
   }
 
   v21 = (*&has >> 3) & 1;
@@ -600,26 +600,26 @@ LABEL_24:
   if (v21)
   {
     jitLanguageModelEnrollmentDurationInMs = self->_jitLanguageModelEnrollmentDurationInMs;
-    if (jitLanguageModelEnrollmentDurationInMs != [v4 jitLanguageModelEnrollmentDurationInMs])
+    if (jitLanguageModelEnrollmentDurationInMs != [equalCopy jitLanguageModelEnrollmentDurationInMs])
     {
       goto LABEL_31;
     }
   }
 
-  v7 = [(DODMLASRSchemaDODMLASRDecodingMetrics *)self preprocessingEntityCategoryCounts];
-  v8 = [v4 preprocessingEntityCategoryCounts];
-  if ((v7 != 0) == (v8 == 0))
+  languageModelInterpolationWeights = [(DODMLASRSchemaDODMLASRDecodingMetrics *)self preprocessingEntityCategoryCounts];
+  languageModelInterpolationWeights2 = [equalCopy preprocessingEntityCategoryCounts];
+  if ((languageModelInterpolationWeights != 0) == (languageModelInterpolationWeights2 == 0))
   {
     goto LABEL_30;
   }
 
-  v23 = [(DODMLASRSchemaDODMLASRDecodingMetrics *)self preprocessingEntityCategoryCounts];
-  if (v23)
+  preprocessingEntityCategoryCounts = [(DODMLASRSchemaDODMLASRDecodingMetrics *)self preprocessingEntityCategoryCounts];
+  if (preprocessingEntityCategoryCounts)
   {
-    v24 = v23;
-    v25 = [(DODMLASRSchemaDODMLASRDecodingMetrics *)self preprocessingEntityCategoryCounts];
-    v26 = [v4 preprocessingEntityCategoryCounts];
-    v27 = [v25 isEqual:v26];
+    v24 = preprocessingEntityCategoryCounts;
+    preprocessingEntityCategoryCounts2 = [(DODMLASRSchemaDODMLASRDecodingMetrics *)self preprocessingEntityCategoryCounts];
+    preprocessingEntityCategoryCounts3 = [equalCopy preprocessingEntityCategoryCounts];
+    v27 = [preprocessingEntityCategoryCounts2 isEqual:preprocessingEntityCategoryCounts3];
 
     if (!v27)
     {
@@ -631,17 +631,17 @@ LABEL_24:
   {
   }
 
-  v7 = [(DODMLASRSchemaDODMLASRDecodingMetrics *)self postprocessingEntityCategoryCounts];
-  v8 = [v4 postprocessingEntityCategoryCounts];
-  if ((v7 != 0) == (v8 == 0))
+  languageModelInterpolationWeights = [(DODMLASRSchemaDODMLASRDecodingMetrics *)self postprocessingEntityCategoryCounts];
+  languageModelInterpolationWeights2 = [equalCopy postprocessingEntityCategoryCounts];
+  if ((languageModelInterpolationWeights != 0) == (languageModelInterpolationWeights2 == 0))
   {
 LABEL_30:
 
     goto LABEL_31;
   }
 
-  v28 = [(DODMLASRSchemaDODMLASRDecodingMetrics *)self postprocessingEntityCategoryCounts];
-  if (!v28)
+  postprocessingEntityCategoryCounts = [(DODMLASRSchemaDODMLASRDecodingMetrics *)self postprocessingEntityCategoryCounts];
+  if (!postprocessingEntityCategoryCounts)
   {
 
 LABEL_34:
@@ -649,10 +649,10 @@ LABEL_34:
     goto LABEL_32;
   }
 
-  v29 = v28;
-  v30 = [(DODMLASRSchemaDODMLASRDecodingMetrics *)self postprocessingEntityCategoryCounts];
-  v31 = [v4 postprocessingEntityCategoryCounts];
-  v32 = [v30 isEqual:v31];
+  v29 = postprocessingEntityCategoryCounts;
+  postprocessingEntityCategoryCounts2 = [(DODMLASRSchemaDODMLASRDecodingMetrics *)self postprocessingEntityCategoryCounts];
+  postprocessingEntityCategoryCounts3 = [equalCopy postprocessingEntityCategoryCounts];
+  v32 = [postprocessingEntityCategoryCounts2 isEqual:postprocessingEntityCategoryCounts3];
 
   if (v32)
   {
@@ -666,10 +666,10 @@ LABEL_32:
   return v33;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v36 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     PBDataWriterWriteFloatField();
@@ -790,45 +790,45 @@ LABEL_14:
   }
 }
 
-- (void)addPostprocessingEntityCategoryCounts:(id)a3
+- (void)addPostprocessingEntityCategoryCounts:(id)counts
 {
-  v4 = a3;
+  countsCopy = counts;
   postprocessingEntityCategoryCounts = self->_postprocessingEntityCategoryCounts;
-  v8 = v4;
+  v8 = countsCopy;
   if (!postprocessingEntityCategoryCounts)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_postprocessingEntityCategoryCounts;
-    self->_postprocessingEntityCategoryCounts = v6;
+    self->_postprocessingEntityCategoryCounts = array;
 
-    v4 = v8;
+    countsCopy = v8;
     postprocessingEntityCategoryCounts = self->_postprocessingEntityCategoryCounts;
   }
 
-  [(NSArray *)postprocessingEntityCategoryCounts addObject:v4];
+  [(NSArray *)postprocessingEntityCategoryCounts addObject:countsCopy];
 }
 
-- (void)addPreprocessingEntityCategoryCounts:(id)a3
+- (void)addPreprocessingEntityCategoryCounts:(id)counts
 {
-  v4 = a3;
+  countsCopy = counts;
   preprocessingEntityCategoryCounts = self->_preprocessingEntityCategoryCounts;
-  v8 = v4;
+  v8 = countsCopy;
   if (!preprocessingEntityCategoryCounts)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_preprocessingEntityCategoryCounts;
-    self->_preprocessingEntityCategoryCounts = v6;
+    self->_preprocessingEntityCategoryCounts = array;
 
-    v4 = v8;
+    countsCopy = v8;
     preprocessingEntityCategoryCounts = self->_preprocessingEntityCategoryCounts;
   }
 
-  [(NSArray *)preprocessingEntityCategoryCounts addObject:v4];
+  [(NSArray *)preprocessingEntityCategoryCounts addObject:countsCopy];
 }
 
-- (void)setHasJitLanguageModelEnrollmentDurationInMs:(BOOL)a3
+- (void)setHasJitLanguageModelEnrollmentDurationInMs:(BOOL)ms
 {
-  if (a3)
+  if (ms)
   {
     v3 = 8;
   }
@@ -841,9 +841,9 @@ LABEL_14:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasJitQueryDurationInMs:(BOOL)a3
+- (void)setHasJitQueryDurationInMs:(BOOL)ms
 {
-  if (a3)
+  if (ms)
   {
     v3 = 4;
   }
@@ -856,9 +856,9 @@ LABEL_14:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasAverageActiveTokensPerFrame:(BOOL)a3
+- (void)setHasAverageActiveTokensPerFrame:(BOOL)frame
 {
-  if (a3)
+  if (frame)
   {
     v3 = 2;
   }
@@ -871,40 +871,40 @@ LABEL_14:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)addLanguageModelInterpolationWeights:(id)a3
+- (void)addLanguageModelInterpolationWeights:(id)weights
 {
-  v4 = a3;
+  weightsCopy = weights;
   languageModelInterpolationWeights = self->_languageModelInterpolationWeights;
-  v8 = v4;
+  v8 = weightsCopy;
   if (!languageModelInterpolationWeights)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_languageModelInterpolationWeights;
-    self->_languageModelInterpolationWeights = v6;
+    self->_languageModelInterpolationWeights = array;
 
-    v4 = v8;
+    weightsCopy = v8;
     languageModelInterpolationWeights = self->_languageModelInterpolationWeights;
   }
 
-  [(NSArray *)languageModelInterpolationWeights addObject:v4];
+  [(NSArray *)languageModelInterpolationWeights addObject:weightsCopy];
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v13.receiver = self;
   v13.super_class = DODMLASRSchemaDODMLASRDecodingMetrics;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(DODMLASRSchemaDODMLASRDecodingMetrics *)self languageModelInterpolationWeights:v13.receiver];
-  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:v4];
+  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:policyCopy];
   [(DODMLASRSchemaDODMLASRDecodingMetrics *)self setLanguageModelInterpolationWeights:v7];
 
-  v8 = [(DODMLASRSchemaDODMLASRDecodingMetrics *)self preprocessingEntityCategoryCounts];
-  v9 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v8 underConditions:v4];
+  preprocessingEntityCategoryCounts = [(DODMLASRSchemaDODMLASRDecodingMetrics *)self preprocessingEntityCategoryCounts];
+  v9 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:preprocessingEntityCategoryCounts underConditions:policyCopy];
   [(DODMLASRSchemaDODMLASRDecodingMetrics *)self setPreprocessingEntityCategoryCounts:v9];
 
-  v10 = [(DODMLASRSchemaDODMLASRDecodingMetrics *)self postprocessingEntityCategoryCounts];
-  v11 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v10 underConditions:v4];
+  postprocessingEntityCategoryCounts = [(DODMLASRSchemaDODMLASRDecodingMetrics *)self postprocessingEntityCategoryCounts];
+  v11 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:postprocessingEntityCategoryCounts underConditions:policyCopy];
 
   [(DODMLASRSchemaDODMLASRDecodingMetrics *)self setPostprocessingEntityCategoryCounts:v11];
 

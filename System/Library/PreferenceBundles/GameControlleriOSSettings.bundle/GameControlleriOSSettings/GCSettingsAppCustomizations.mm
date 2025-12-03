@@ -1,11 +1,11 @@
 @interface GCSettingsAppCustomizations
 - (id)newSpecifiers;
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)updateSearchResultsForSearchController:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)updateSearchResultsForSearchController:(id)controller;
 - (void)viewDidLoad;
 @end
 
@@ -20,33 +20,33 @@
   v3 = [[UISearchController alloc] initWithSearchResultsController:0];
   [(GCSettingsAppCustomizations *)self setSearchController:v3];
 
-  v4 = [(GCSettingsAppCustomizations *)self searchController];
-  [v4 setSearchResultsUpdater:self];
+  searchController = [(GCSettingsAppCustomizations *)self searchController];
+  [searchController setSearchResultsUpdater:self];
 
-  v5 = [(GCSettingsAppCustomizations *)self searchController];
-  v6 = [v5 searchBar];
-  [v6 setKeyboardType:0];
+  searchController2 = [(GCSettingsAppCustomizations *)self searchController];
+  searchBar = [searchController2 searchBar];
+  [searchBar setKeyboardType:0];
 
   v7 = sub_9E38(@"SEARCH_APPS_PLACEHOLDER");
-  v8 = [(GCSettingsAppCustomizations *)self searchController];
-  v9 = [v8 searchBar];
-  [v9 setPlaceholder:v7];
+  searchController3 = [(GCSettingsAppCustomizations *)self searchController];
+  searchBar2 = [searchController3 searchBar];
+  [searchBar2 setPlaceholder:v7];
 
-  v10 = [(GCSettingsAppCustomizations *)self searchController];
-  v11 = [v10 searchBar];
-  [v11 setAutocorrectionType:1];
+  searchController4 = [(GCSettingsAppCustomizations *)self searchController];
+  searchBar3 = [searchController4 searchBar];
+  [searchBar3 setAutocorrectionType:1];
 
-  v12 = [(GCSettingsAppCustomizations *)self searchController];
-  v13 = [(GCSettingsAppCustomizations *)self navigationItem];
-  [v13 setSearchController:v12];
+  searchController5 = [(GCSettingsAppCustomizations *)self searchController];
+  navigationItem = [(GCSettingsAppCustomizations *)self navigationItem];
+  [navigationItem setSearchController:searchController5];
 
-  v14 = [(GCSettingsAppCustomizations *)self navigationItem];
-  [v14 setHidesSearchBarWhenScrolling:0];
+  navigationItem2 = [(GCSettingsAppCustomizations *)self navigationItem];
+  [navigationItem2 setHidesSearchBarWhenScrolling:0];
 
   [(GCSettingsAppCustomizations *)self setDefinesPresentationContext:1];
   v15 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:0 target:self action:"dismissView:"];
-  v16 = [(GCSettingsAppCustomizations *)self navigationItem];
-  [v16 setRightBarButtonItem:v15];
+  navigationItem3 = [(GCSettingsAppCustomizations *)self navigationItem];
+  [navigationItem3 setRightBarButtonItem:v15];
 }
 
 - (id)specifiers
@@ -55,9 +55,9 @@
   v4 = *&self->PSListController_opaque[OBJC_IVAR___PSListController__specifiers];
   if (!v4)
   {
-    v5 = [(GCSettingsAppCustomizations *)self newSpecifiers];
+    newSpecifiers = [(GCSettingsAppCustomizations *)self newSpecifiers];
     v6 = *&self->PSListController_opaque[v3];
-    *&self->PSListController_opaque[v3] = v5;
+    *&self->PSListController_opaque[v3] = newSpecifiers;
 
     v4 = *&self->PSListController_opaque[v3];
   }
@@ -68,8 +68,8 @@
 - (id)newSpecifiers
 {
   v3 = objc_alloc_init(NSMutableArray);
-  v4 = [(GCSettingsAppCustomizations *)self filteredApps];
-  if (v4)
+  filteredApps = [(GCSettingsAppCustomizations *)self filteredApps];
+  if (filteredApps)
   {
     [(GCSettingsAppCustomizations *)self filteredApps];
   }
@@ -103,8 +103,8 @@
         }
 
         v12 = *(*(&v16 + 1) + 8 * v10);
-        v13 = [v12 localizedName];
-        v8 = [PSSpecifier preferenceSpecifierNamed:v13 target:self set:0 get:0 detail:0 cell:3 edit:0];
+        localizedName = [v12 localizedName];
+        v8 = [PSSpecifier preferenceSpecifierNamed:localizedName target:self set:0 get:0 detail:0 cell:3 edit:0];
 
         [v8 setProperty:v12 forKey:@"ApplicationRecord"];
         [v3 addObject:v8];
@@ -122,11 +122,11 @@
   return v3;
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
-  v4 = a3;
-  v5 = [(GCSettingsAppCustomizations *)self filteredApps];
-  if (v5)
+  viewCopy = view;
+  filteredApps = [(GCSettingsAppCustomizations *)self filteredApps];
+  if (filteredApps)
   {
     [(GCSettingsAppCustomizations *)self filteredApps];
   }
@@ -137,7 +137,7 @@
   }
   v6 = ;
 
-  [v4 setBackgroundView:0];
+  [viewCopy setBackgroundView:0];
   if ([v6 count])
   {
     v7 = 1;
@@ -145,9 +145,9 @@
 
   else
   {
-    v8 = [(GCSettingsAppCustomizations *)self apps];
+    apps = [(GCSettingsAppCustomizations *)self apps];
 
-    if (v6 == v8)
+    if (v6 == apps)
     {
       v9 = objc_alloc_init(UILabel);
       v10 = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
@@ -162,8 +162,8 @@
 
       [v9 setTextAlignment:1];
       [v9 sizeToFit];
-      [v4 setBackgroundView:v9];
-      [v4 setSeparatorStyle:0];
+      [viewCopy setBackgroundView:v9];
+      [viewCopy setSeparatorStyle:0];
     }
 
     v7 = 0;
@@ -172,9 +172,9 @@
   return v7;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v5 = [(GCSettingsAppCustomizations *)self filteredApps:a3];
+  v5 = [(GCSettingsAppCustomizations *)self filteredApps:view];
   if (v5)
   {
     [(GCSettingsAppCustomizations *)self filteredApps];
@@ -190,66 +190,66 @@
   return v7;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v17.receiver = self;
   v17.super_class = GCSettingsAppCustomizations;
-  v6 = a4;
-  v7 = [(GCSettingsAppCustomizations *)&v17 tableView:a3 cellForRowAtIndexPath:v6];
-  v8 = [(GCSettingsAppCustomizations *)self specifierAtIndexPath:v6, v17.receiver, v17.super_class];
+  pathCopy = path;
+  v7 = [(GCSettingsAppCustomizations *)&v17 tableView:view cellForRowAtIndexPath:pathCopy];
+  v8 = [(GCSettingsAppCustomizations *)self specifierAtIndexPath:pathCopy, v17.receiver, v17.super_class];
 
   v9 = [v8 propertyForKey:@"ApplicationRecord"];
-  v10 = [v7 titleLabel];
-  v11 = [v9 localizedName];
-  [v10 setText:v11];
+  titleLabel = [v7 titleLabel];
+  localizedName = [v9 localizedName];
+  [titleLabel setText:localizedName];
 
-  v12 = [v9 bundleIdentifier];
-  v13 = [GCSettingsAppIcon appIconImageForBundleIdentifier:v12];
-  v14 = [v13 UIImage];
+  bundleIdentifier = [v9 bundleIdentifier];
+  v13 = [GCSettingsAppIcon appIconImageForBundleIdentifier:bundleIdentifier];
+  uIImage = [v13 UIImage];
 
-  [v8 setProperty:v14 forKey:PSIconImageKey];
-  v15 = [v7 iconImageView];
-  [v15 setImage:v14];
+  [v8 setProperty:uIImage forKey:PSIconImageKey];
+  iconImageView = [v7 iconImageView];
+  [iconImageView setImage:uIImage];
 
   return v7;
 }
 
-- (void)updateSearchResultsForSearchController:(id)a3
+- (void)updateSearchResultsForSearchController:(id)controller
 {
-  v4 = [a3 searchBar];
-  v11 = [v4 text];
+  searchBar = [controller searchBar];
+  text = [searchBar text];
 
-  v5 = [(__CFString *)v11 length];
+  v5 = [(__CFString *)text length];
   v6 = &stru_10B508;
   if (v5)
   {
-    v6 = v11;
+    v6 = text;
   }
 
   v7 = v6;
   [(GCSettingsAppCustomizations *)self setFilteredApps:0];
   if ([(__CFString *)v7 length])
   {
-    v8 = [(GCSettingsAppCustomizations *)self apps];
+    apps = [(GCSettingsAppCustomizations *)self apps];
     v9 = [NSPredicate predicateWithFormat:@"localizedName CONTAINS[c] %@", v7];
-    v10 = [v8 filteredArrayUsingPredicate:v9];
+    v10 = [apps filteredArrayUsingPredicate:v9];
     [(GCSettingsAppCustomizations *)self setFilteredApps:v10];
   }
 
   [(GCSettingsAppCustomizations *)self reloadSpecifiers];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v10 = -[NSArray objectAtIndex:](self->_apps, "objectAtIndex:", [a4 row]);
-  v5 = [(GCSettingsAppCustomizations *)self parentController];
+  v10 = -[NSArray objectAtIndex:](self->_apps, "objectAtIndex:", [path row]);
+  parentController = [(GCSettingsAppCustomizations *)self parentController];
   v6 = [GCControllerSettings alloc];
-  v7 = [v10 bundleIdentifier];
-  v8 = [v5 device];
-  v9 = [v6 initWithBundleIdentifier:v7 forController:v8];
+  bundleIdentifier = [v10 bundleIdentifier];
+  device = [parentController device];
+  v9 = [v6 initWithBundleIdentifier:bundleIdentifier forController:device];
 
   [v9 setCustomizationsEnabled:1];
-  [v5 reloadSpecifiers];
+  [parentController reloadSpecifiers];
   [(GCSettingsAppCustomizations *)self dismissViewControllerAnimated:1 completion:0];
 }
 

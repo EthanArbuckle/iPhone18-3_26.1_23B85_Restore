@@ -1,28 +1,28 @@
 @interface BRCSharingSaveShareOperation
-- (BRCSharingSaveShareOperation)initWithShare:(id)a3 zone:(id)a4 sessionContext:(id)a5;
+- (BRCSharingSaveShareOperation)initWithShare:(id)share zone:(id)zone sessionContext:(id)context;
 - (id)createActivity;
 - (void)main;
-- (void)performAfterUnsharingParentShareTurdIfNecessary:(id)a3;
+- (void)performAfterUnsharingParentShareTurdIfNecessary:(id)necessary;
 @end
 
 @implementation BRCSharingSaveShareOperation
 
-- (BRCSharingSaveShareOperation)initWithShare:(id)a3 zone:(id)a4 sessionContext:(id)a5
+- (BRCSharingSaveShareOperation)initWithShare:(id)share zone:(id)zone sessionContext:(id)context
 {
   v8 = MEMORY[0x277CBC4F8];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [v8 br_sharingMisc];
-  [(_BRCOperation *)self setGroup:v12];
+  contextCopy = context;
+  zoneCopy = zone;
+  shareCopy = share;
+  br_sharingMisc = [v8 br_sharingMisc];
+  [(_BRCOperation *)self setGroup:br_sharingMisc];
 
-  v13 = [v11 recordID];
-  v14 = [v13 recordName];
-  v15 = [@"sharing/save-share" stringByAppendingPathComponent:v14];
+  recordID = [shareCopy recordID];
+  recordName = [recordID recordName];
+  v15 = [@"sharing/save-share" stringByAppendingPathComponent:recordName];
 
   v18.receiver = self;
   v18.super_class = BRCSharingSaveShareOperation;
-  v16 = [(BRCSharingModifyShareOperation *)&v18 initWithName:v15 zone:v10 share:v11 sessionContext:v9];
+  v16 = [(BRCSharingModifyShareOperation *)&v18 initWithName:v15 zone:zoneCopy share:shareCopy sessionContext:contextCopy];
 
   return v16;
 }
@@ -34,20 +34,20 @@
   return v2;
 }
 
-- (void)performAfterUnsharingParentShareTurdIfNecessary:(id)a3
+- (void)performAfterUnsharingParentShareTurdIfNecessary:(id)necessary
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(BRCServerZone *)self->super._serverZone mangledID];
-  v6 = [BRCUserDefaults defaultsForMangledID:v5];
-  v7 = [v6 maxSyncPathDepth];
+  necessaryCopy = necessary;
+  mangledID = [(BRCServerZone *)self->super._serverZone mangledID];
+  v6 = [BRCUserDefaults defaultsForMangledID:mangledID];
+  maxSyncPathDepth = [v6 maxSyncPathDepth];
 
-  v8 = [(BRCServerZone *)self->super._serverZone clientZone];
-  v9 = [v8 db];
+  clientZone = [(BRCServerZone *)self->super._serverZone clientZone];
+  v9 = [clientZone db];
   itemID = self->super._itemID;
-  v11 = [(BRCServerZone *)self->super._serverZone dbRowID];
-  v12 = [(BRCServerZone *)self->super._serverZone dbRowID];
-  v13 = [v9 itemIDWithSQL:{@" WITH RECURSIVE item_parents (item_id, item_sharing_options, item_parent_id) AS(         SELECT item_id, item_sharing_options, item_parent_id FROM server_items           WHERE item_id = %@ AND zone_rowid = %@       UNION ALL          SELECT li.item_id, li.item_sharing_options, li.item_parent_id FROM server_items AS li     INNER JOIN item_parents AS p WHERE li.zone_rowid = %@ AND p.item_parent_id = li.item_id          LIMIT %u)        SELECT item_id FROM item_parents WHERE (item_sharing_options & %lu) == 4 AND item_id != %@ ", itemID, v11, v12, v7, 124, self->super._itemID}];
+  dbRowID = [(BRCServerZone *)self->super._serverZone dbRowID];
+  dbRowID2 = [(BRCServerZone *)self->super._serverZone dbRowID];
+  v13 = [v9 itemIDWithSQL:{@" WITH RECURSIVE item_parents (item_id, item_sharing_options, item_parent_id) AS(         SELECT item_id, item_sharing_options, item_parent_id FROM server_items           WHERE item_id = %@ AND zone_rowid = %@       UNION ALL          SELECT li.item_id, li.item_sharing_options, li.item_parent_id FROM server_items AS li     INNER JOIN item_parents AS p WHERE li.zone_rowid = %@ AND p.item_parent_id = li.item_id          LIMIT %u)        SELECT item_id FROM item_parents WHERE (item_sharing_options & %lu) == 4 AND item_id != %@ ", itemID, dbRowID, dbRowID2, maxSyncPathDepth, 124, self->super._itemID}];
 
   if (v13)
   {
@@ -63,8 +63,8 @@
     }
 
     v16 = objc_alloc(MEMORY[0x277CBC5D0]);
-    v17 = [(BRCServerZone *)self->super._serverZone zoneID];
-    v18 = [v16 initShareIDWithItemID:v13 zoneID:v17];
+    zoneID = [(BRCServerZone *)self->super._serverZone zoneID];
+    v18 = [v16 initShareIDWithItemID:v13 zoneID:zoneID];
 
     v19 = objc_alloc(MEMORY[0x277CBC4A0]);
     v25 = v18;
@@ -76,14 +76,14 @@
     v23[2] = __80__BRCSharingSaveShareOperation_performAfterUnsharingParentShareTurdIfNecessary___block_invoke;
     v23[3] = &unk_2785030C0;
     v23[4] = self;
-    v24 = v4;
+    v24 = necessaryCopy;
     [v21 setModifyRecordsCompletionBlock:v23];
     [(_BRCOperation *)self addSubOperation:v21];
   }
 
   else
   {
-    (*(v4 + 2))(v4, self, 0);
+    (*(necessaryCopy + 2))(necessaryCopy, self, 0);
   }
 
   v22 = *MEMORY[0x277D85DE8];

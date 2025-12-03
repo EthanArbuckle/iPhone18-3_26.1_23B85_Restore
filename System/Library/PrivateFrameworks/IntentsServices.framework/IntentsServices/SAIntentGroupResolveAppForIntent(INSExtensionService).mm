@@ -20,8 +20,8 @@
     _os_log_impl(&dword_25553C000, v9, OS_LOG_TYPE_INFO, "%s ins_resolveAppForIntent: %@", &v16, 0x16u);
   }
 
-  v10 = [a1 appsList];
-  v11 = [v10 valueForKey:@"appIdentifyingInfo"];
+  appsList = [self appsList];
+  v11 = [appsList valueForKey:@"appIdentifyingInfo"];
   v12 = [v11 valueForKey:@"bundleId"];
 
   v13 = *v8;
@@ -35,7 +35,7 @@
   }
 
   v14 = objc_alloc_init(MEMORY[0x277D47428]);
-  [v14 setAppsList:v10];
+  [v14 setAppsList:appsList];
   v7[2](v7, v14, 0);
 
   v15 = *MEMORY[0x277D85DE8];

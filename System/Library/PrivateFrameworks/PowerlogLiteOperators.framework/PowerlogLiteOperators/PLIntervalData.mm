@@ -1,9 +1,9 @@
 @interface PLIntervalData
 - (PLIntervalData)init;
-- (void)addMetric:(id)a3;
+- (void)addMetric:(id)metric;
 - (void)resetMetrics;
 - (void)submitIntervalData;
-- (void)submitToCA:(id)a3;
+- (void)submitToCA:(id)a;
 @end
 
 @implementation PLIntervalData
@@ -12,7 +12,7 @@
 {
   if ([MEMORY[0x277D3F208] isHomePod])
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -37,28 +37,28 @@
     }
 
     self = v4;
-    v3 = self;
+    selfCopy = self;
   }
 
-  return v3;
+  return selfCopy;
 }
 
-- (void)addMetric:(id)a3
+- (void)addMetric:(id)metric
 {
-  v4 = a3;
-  if (v4)
+  metricCopy = metric;
+  if (metricCopy)
   {
-    v8 = v4;
-    v5 = [v4 metricKey];
+    v8 = metricCopy;
+    metricKey = [metricCopy metricKey];
 
-    v4 = v8;
-    if (v5)
+    metricCopy = v8;
+    if (metricKey)
     {
       metrics = self->_metrics;
-      v7 = [v8 metricKey];
-      [(NSMutableDictionary *)metrics setObject:v8 forKey:v7];
+      metricKey2 = [v8 metricKey];
+      [(NSMutableDictionary *)metrics setObject:v8 forKey:metricKey2];
 
-      v4 = v8;
+      metricCopy = v8;
     }
   }
 }
@@ -73,16 +73,16 @@ uint64_t __64__PLIntervalData_updateMetric_withTimestamp_forEvent_withValue___bl
 - (void)resetMetrics
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = [(PLIntervalData *)self metrics];
+  metrics = [(PLIntervalData *)self metrics];
 
-  if (v3)
+  if (metrics)
   {
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v4 = [(PLIntervalData *)self metrics];
-    v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    metrics2 = [(PLIntervalData *)self metrics];
+    v5 = [metrics2 countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v5)
     {
       v6 = v5;
@@ -94,19 +94,19 @@ uint64_t __64__PLIntervalData_updateMetric_withTimestamp_forEvent_withValue___bl
         {
           if (*v14 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(metrics2);
           }
 
           v9 = *(*(&v13 + 1) + 8 * v8);
-          v10 = [(PLIntervalData *)self metrics];
-          v11 = [v10 objectForKeyedSubscript:v9];
+          metrics3 = [(PLIntervalData *)self metrics];
+          v11 = [metrics3 objectForKeyedSubscript:v9];
 
           [v11 resetMetric];
           ++v8;
         }
 
         while (v6 != v8);
-        v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v6 = [metrics2 countByEnumeratingWithState:&v13 objects:v17 count:16];
       }
 
       while (v6);
@@ -119,17 +119,17 @@ uint64_t __64__PLIntervalData_updateMetric_withTimestamp_forEvent_withValue___bl
 - (void)submitIntervalData
 {
   v40 = *MEMORY[0x277D85DE8];
-  v3 = [(PLIntervalData *)self metrics];
+  metrics = [(PLIntervalData *)self metrics];
 
-  if (v3)
+  if (metrics)
   {
     v4 = objc_opt_new();
     v33 = 0u;
     v34 = 0u;
     v35 = 0u;
     v36 = 0u;
-    v5 = [(PLIntervalData *)self metrics];
-    v6 = [v5 countByEnumeratingWithState:&v33 objects:v39 count:16];
+    metrics2 = [(PLIntervalData *)self metrics];
+    v6 = [metrics2 countByEnumeratingWithState:&v33 objects:v39 count:16];
     if (v6)
     {
       v7 = v6;
@@ -140,26 +140,26 @@ uint64_t __64__PLIntervalData_updateMetric_withTimestamp_forEvent_withValue___bl
         {
           if (*v34 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(metrics2);
           }
 
           v10 = *(*(&v33 + 1) + 8 * i);
-          v11 = [(PLIntervalData *)self metrics];
-          v12 = [v11 objectForKeyedSubscript:v10];
+          metrics3 = [(PLIntervalData *)self metrics];
+          v12 = [metrics3 objectForKeyedSubscript:v10];
 
           [v12 constructMetricValueForInterval:self->_currentInterval];
           v13 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v12, "metricValue")}];
-          v14 = [v12 metricKey];
-          [v4 setObject:v13 forKeyedSubscript:v14];
+          metricKey = [v12 metricKey];
+          [v4 setObject:v13 forKeyedSubscript:metricKey];
 
-          v15 = [v12 getBinnedMetricValue];
-          v16 = [v12 bitPosition];
+          getBinnedMetricValue = [v12 getBinnedMetricValue];
+          bitPosition = [v12 bitPosition];
           currentInterval = self->_currentInterval;
-          self->_aggdValue |= v15 << v16;
+          self->_aggdValue |= getBinnedMetricValue << bitPosition;
           [v12 updateMetricWithTimestamp:currentInterval forEvent:2 withValue:0];
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v33 objects:v39 count:16];
+        v7 = [metrics2 countByEnumeratingWithState:&v33 objects:v39 count:16];
       }
 
       while (v7);
@@ -185,9 +185,9 @@ uint64_t __64__PLIntervalData_updateMetric_withTimestamp_forEvent_withValue___bl
         v21 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ : %llu", v19, self->_aggdValue];
         v22 = MEMORY[0x277D3F178];
         v23 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLAggregateUsageService.m"];
-        v24 = [v23 lastPathComponent];
+        lastPathComponent = [v23 lastPathComponent];
         v25 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLIntervalData submitIntervalData]"];
-        [v22 logMessage:v21 fromFile:v24 fromFunction:v25 fromLineNumber:360];
+        [v22 logMessage:v21 fromFile:lastPathComponent fromFunction:v25 fromLineNumber:360];
 
         v26 = PLLogCommon();
         if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
@@ -222,11 +222,11 @@ uint64_t __36__PLIntervalData_submitIntervalData__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)submitToCA:(id)a3
+- (void)submitToCA:(id)a
 {
-  v5 = a3;
+  aCopy = a;
   AnalyticsSendEventLazy();
-  v4 = v5;
+  v4 = aCopy;
   AnalyticsSendEventLazy();
   v3 = v4;
   AnalyticsSendEventLazy();

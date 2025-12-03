@@ -1,9 +1,9 @@
 @interface PearlErrorDataController
-- (id)findRequestedHardwareDiagnostic:(id *)a3;
-- (id)processResultsForReport:(id)a3;
-- (id)runRequestedHardwareDiagnostic:(id)a3 error:(id *)a4;
+- (id)findRequestedHardwareDiagnostic:(id *)diagnostic;
+- (id)processResultsForReport:(id)report;
+- (id)runRequestedHardwareDiagnostic:(id)diagnostic error:(id *)error;
 - (id)workingDirectory;
-- (void)finishWithError:(id)a3;
+- (void)finishWithError:(id)error;
 - (void)start;
 @end
 
@@ -33,34 +33,34 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v8 = [v6 results];
-  if (v8)
+  results = [v6 results];
+  if (results)
   {
-    v9 = v8;
-    v10 = [v6 results];
-    v11 = [v10 count];
+    v9 = results;
+    results2 = [v6 results];
+    v11 = [results2 count];
 
     if (v11)
     {
       v12 = [(PearlErrorDataController *)self processResultsForReport:v6];
-      v13 = [(PearlErrorDataController *)self result];
-      [v13 setData:v12];
+      result = [(PearlErrorDataController *)self result];
+      [result setData:v12];
     }
   }
 
-  v14 = [v6 error];
-  [(PearlErrorDataController *)self finishWithError:v14];
+  error = [v6 error];
+  [(PearlErrorDataController *)self finishWithError:error];
 
 LABEL_10:
 }
 
-- (id)processResultsForReport:(id)a3
+- (id)processResultsForReport:(id)report
 {
-  v3 = a3;
+  reportCopy = report;
   v21 = objc_opt_new();
-  v18 = v3;
-  v4 = [v3 dictionaryRepresentation];
-  v5 = [v4 objectForKeyedSubscript:@"results"];
+  v18 = reportCopy;
+  dictionaryRepresentation = [reportCopy dictionaryRepresentation];
+  v5 = [dictionaryRepresentation objectForKeyedSubscript:@"results"];
 
   v24 = 0u;
   v25 = 0u;
@@ -108,62 +108,62 @@ LABEL_10:
   return v16;
 }
 
-- (void)finishWithError:(id)a3
+- (void)finishWithError:(id)error
 {
-  v4 = a3;
-  if (v4)
+  errorCopy = error;
+  if (errorCopy)
   {
     v5 = DiagnosticLogHandleForCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
-      sub_100001BDC(v4, v5);
+      sub_100001BDC(errorCopy, v5);
     }
 
-    v6 = [v4 domain];
-    v7 = [v6 isEqualToString:@"com.apple.DiagnosticsService.Diagnostic-8068.errorDomain"];
+    domain = [errorCopy domain];
+    v7 = [domain isEqualToString:@"com.apple.DiagnosticsService.Diagnostic-8068.errorDomain"];
 
     if (v7)
     {
-      v8 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v4 code]);
-      v9 = [(PearlErrorDataController *)self result];
-      [v9 setStatusCode:v8];
+      v8 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [errorCopy code]);
+      result = [(PearlErrorDataController *)self result];
+      [result setStatusCode:v8];
     }
 
     else
     {
-      v11 = [v4 domain];
-      v12 = [v11 isEqualToString:HDErrorDomain];
+      domain2 = [errorCopy domain];
+      v12 = [domain2 isEqualToString:HDErrorDomain];
 
       if (v12)
       {
-        v13 = [(PearlErrorDataController *)self result];
-        v8 = v13;
+        result2 = [(PearlErrorDataController *)self result];
+        v8 = result2;
         v14 = &off_100004440;
       }
 
       else
       {
-        v15 = [v4 domain];
-        v16 = [v15 isEqualToString:HDIOReportErrorDomain];
+        domain3 = [errorCopy domain];
+        v16 = [domain3 isEqualToString:HDIOReportErrorDomain];
 
         if (v16)
         {
-          v13 = [(PearlErrorDataController *)self result];
-          v8 = v13;
+          result2 = [(PearlErrorDataController *)self result];
+          v8 = result2;
           v14 = &off_100004458;
         }
 
         else
         {
-          v17 = [v4 domain];
-          v18 = [v17 isEqualToString:HDCapturePlugInErrorDomain];
+          domain4 = [errorCopy domain];
+          v18 = [domain4 isEqualToString:HDCapturePlugInErrorDomain];
 
           if (v18)
           {
-            v19 = [v4 code];
-            v13 = [(PearlErrorDataController *)self result];
-            v8 = v13;
-            if (v19 == 213)
+            code = [errorCopy code];
+            result2 = [(PearlErrorDataController *)self result];
+            v8 = result2;
+            if (code == 213)
             {
               v14 = &off_100004470;
             }
@@ -176,53 +176,53 @@ LABEL_10:
 
           else
           {
-            v13 = [(PearlErrorDataController *)self result];
-            v8 = v13;
+            result2 = [(PearlErrorDataController *)self result];
+            v8 = result2;
             v14 = &off_1000044A0;
           }
         }
       }
 
-      [v13 setStatusCode:v14];
+      [result2 setStatusCode:v14];
     }
 
     v27[0] = @"code";
-    v20 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v4 code]);
+    v20 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [errorCopy code]);
     v28[0] = v20;
     v27[1] = @"domain";
-    v21 = [v4 domain];
-    v28[1] = v21;
+    domain5 = [errorCopy domain];
+    v28[1] = domain5;
     v27[2] = @"description";
-    v22 = [v4 localizedDescription];
-    v28[2] = v22;
-    v10 = [NSDictionary dictionaryWithObjects:v28 forKeys:v27 count:3];
+    localizedDescription = [errorCopy localizedDescription];
+    v28[2] = localizedDescription;
+    result5 = [NSDictionary dictionaryWithObjects:v28 forKeys:v27 count:3];
 
-    v23 = [(PearlErrorDataController *)self result];
-    v24 = [v23 data];
-    v25 = [NSMutableDictionary dictionaryWithDictionary:v24];
+    result3 = [(PearlErrorDataController *)self result];
+    data = [result3 data];
+    v25 = [NSMutableDictionary dictionaryWithDictionary:data];
 
-    [v25 setObject:v10 forKeyedSubscript:@"error"];
-    v26 = [(PearlErrorDataController *)self result];
-    [v26 setData:v25];
+    [v25 setObject:result5 forKeyedSubscript:@"error"];
+    result4 = [(PearlErrorDataController *)self result];
+    [result4 setData:v25];
   }
 
   else
   {
-    v10 = [(PearlErrorDataController *)self result];
-    [v10 setStatusCode:&off_1000044B8];
+    result5 = [(PearlErrorDataController *)self result];
+    [result5 setStatusCode:&off_1000044B8];
   }
 
   [(PearlErrorDataController *)self setFinished:1];
 }
 
-- (id)findRequestedHardwareDiagnostic:(id *)a3
+- (id)findRequestedHardwareDiagnostic:(id *)diagnostic
 {
   v5 = +[HDLab defaultLab];
-  v6 = [(PearlErrorDataController *)self inputs];
-  v7 = [v6 testType];
-  v8 = [v7 unsignedIntegerValue];
+  inputs = [(PearlErrorDataController *)self inputs];
+  testType = [inputs testType];
+  unsignedIntegerValue = [testType unsignedIntegerValue];
 
-  if (v8 == 1)
+  if (unsignedIntegerValue == 1)
   {
     v9 = @"PearlFaultDiagnostic";
   }
@@ -232,45 +232,45 @@ LABEL_10:
     v9 = @"PearlIOReportDiagnostic";
   }
 
-  v10 = [v5 availableDiagnostics];
-  v11 = [v10 objectForKeyedSubscript:v9];
+  availableDiagnostics = [v5 availableDiagnostics];
+  v11 = [availableDiagnostics objectForKeyedSubscript:v9];
 
-  if (a3 && !v11)
+  if (diagnostic && !v11)
   {
-    v12 = [NSString stringWithFormat:@"Could not find requested hardware diagnostic (%@).", v9, NSLocalizedDescriptionKey];
-    v16 = v12;
+    nSLocalizedDescriptionKey = [NSString stringWithFormat:@"Could not find requested hardware diagnostic (%@).", v9, NSLocalizedDescriptionKey];
+    v16 = nSLocalizedDescriptionKey;
     v13 = [NSDictionary dictionaryWithObjects:&v16 forKeys:&v15 count:1];
-    *a3 = [NSError errorWithDomain:@"com.apple.DiagnosticsService.Diagnostic-8068.errorDomain" code:-1 userInfo:v13];
+    *diagnostic = [NSError errorWithDomain:@"com.apple.DiagnosticsService.Diagnostic-8068.errorDomain" code:-1 userInfo:v13];
   }
 
   return v11;
 }
 
-- (id)runRequestedHardwareDiagnostic:(id)a3 error:(id *)a4
+- (id)runRequestedHardwareDiagnostic:(id)diagnostic error:(id *)error
 {
-  v6 = a3;
-  v7 = [(PearlErrorDataController *)self inputs];
-  v8 = [v7 testType];
-  v9 = [v8 unsignedIntegerValue];
+  diagnosticCopy = diagnostic;
+  inputs = [(PearlErrorDataController *)self inputs];
+  testType = [inputs testType];
+  unsignedIntegerValue = [testType unsignedIntegerValue];
 
-  if (v9 == 1)
+  if (unsignedIntegerValue == 1)
   {
     v29[0] = HDDiagnosticAnalysisParametersKey;
     v27 = @"frameCount";
-    v22 = [(PearlErrorDataController *)self inputs];
-    v21 = [v22 frameCount];
-    v28 = v21;
+    inputs2 = [(PearlErrorDataController *)self inputs];
+    frameCount = [inputs2 frameCount];
+    v28 = frameCount;
     v10 = [NSDictionary dictionaryWithObjects:&v28 forKeys:&v27 count:1];
     v30[0] = v10;
     v29[1] = HDDiagnosticExperimentParametersKey;
     v25[0] = @"frameCount";
-    v11 = [(PearlErrorDataController *)self inputs];
-    v12 = [v11 frameCount];
+    inputs3 = [(PearlErrorDataController *)self inputs];
+    frameCount2 = [inputs3 frameCount];
     v25[1] = @"timeout";
-    v26[0] = v12;
-    v13 = [(PearlErrorDataController *)self inputs];
-    v14 = [v13 timeout];
-    v26[1] = v14;
+    v26[0] = frameCount2;
+    inputs4 = [(PearlErrorDataController *)self inputs];
+    timeout = [inputs4 timeout];
+    v26[1] = timeout;
     v15 = [NSDictionary dictionaryWithObjects:v26 forKeys:v25 count:2];
     v30[1] = v15;
     v16 = [NSDictionary dictionaryWithObjects:v30 forKeys:v29 count:2];
@@ -281,14 +281,14 @@ LABEL_10:
     v16 = &__NSDictionary0__struct;
   }
 
-  v17 = [v6 runWithParameters:v16 host:self error:a4];
+  v17 = [diagnosticCopy runWithParameters:v16 host:self error:error];
   v18 = v17;
-  if (a4 && !v17)
+  if (error && !v17)
   {
     v23 = NSLocalizedDescriptionKey;
     v24 = @"No report, nor error were retrieved.";
     v19 = [NSDictionary dictionaryWithObjects:&v24 forKeys:&v23 count:1];
-    *a4 = [NSError errorWithDomain:@"com.apple.DiagnosticsService.Diagnostic-8068.errorDomain" code:-3 userInfo:v19];
+    *error = [NSError errorWithDomain:@"com.apple.DiagnosticsService.Diagnostic-8068.errorDomain" code:-3 userInfo:v19];
   }
 
   return v18;

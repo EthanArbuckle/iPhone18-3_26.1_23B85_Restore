@@ -1,10 +1,10 @@
 @interface MoreHistoryView
-- (_TtC17SequoiaTranslator15MoreHistoryView)initWithCoder:(id)a3;
+- (_TtC17SequoiaTranslator15MoreHistoryView)initWithCoder:(id)coder;
 @end
 
 @implementation MoreHistoryView
 
-- (_TtC17SequoiaTranslator15MoreHistoryView)initWithCoder:(id)a3
+- (_TtC17SequoiaTranslator15MoreHistoryView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC17SequoiaTranslator15MoreHistoryView_paddingDefault) = 0x4028000000000000;
   v4 = OBJC_IVAR____TtC17SequoiaTranslator15MoreHistoryView_moreHistoryLabel;

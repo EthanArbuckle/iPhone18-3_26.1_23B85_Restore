@@ -3,21 +3,21 @@
 - (BOOL)_isIPad;
 - (BOOL)_styleIsActuallyGoingToBlur;
 - (BOOL)alwaysShowLocalVideo;
-- (BOOL)application:(id)a3 openURL:(id)a4 options:(id)a5;
+- (BOOL)application:(id)application openURL:(id)l options:(id)options;
 - (BOOL)showsTelephonyRecents;
 - (BOOL)tabBarFillsScreen;
 - (BOOL)usesBlendModes;
 - (id)_fetchScrollView;
 - (id)recentsController;
-- (id)scrollTestsWithCount:(int64_t)a3 forScrollView:(id)a4 name:(id)a5;
+- (id)scrollTestsWithCount:(int64_t)count forScrollView:(id)view name:(id)name;
 - (int64_t)backdropStyle;
-- (void)applicationDidFinishLaunching:(id)a3;
-- (void)applicationOpenURL:(id)a3;
-- (void)handleRecentsDetailsViewURL:(id)a3;
-- (void)handleVideoMessagePlaybackURL:(id)a3;
-- (void)performScrollTestWithName:(id)a3 options:(id)a4;
-- (void)performTestWithName:(id)a3 options:(id)a4;
-- (void)userNotificationCenter:(id)a3 willPresentNotification:(id)a4 withCompletionHandler:(id)a5;
+- (void)applicationDidFinishLaunching:(id)launching;
+- (void)applicationOpenURL:(id)l;
+- (void)handleRecentsDetailsViewURL:(id)l;
+- (void)handleVideoMessagePlaybackURL:(id)l;
+- (void)performScrollTestWithName:(id)name options:(id)options;
+- (void)performTestWithName:(id)name options:(id)options;
+- (void)userNotificationCenter:(id)center willPresentNotification:(id)notification withCompletionHandler:(id)handler;
 @end
 
 @implementation FaceTimeApplication
@@ -25,41 +25,41 @@
 - (BOOL)alwaysShowLocalVideo
 {
   v3 = +[UIDevice currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  userInterfaceIdiom = [v3 userInterfaceIdiom];
 
-  if (v4)
+  if (userInterfaceIdiom)
   {
     if ([(FaceTimeApplication *)self tabBarFillsScreen])
     {
-      v5 = [(FaceTimeApplication *)self _isBlurUI];
-      if (v5)
+      _isBlurUI = [(FaceTimeApplication *)self _isBlurUI];
+      if (_isBlurUI)
       {
 
-        LOBYTE(v5) = [(FaceTimeApplication *)self _styleIsActuallyGoingToBlur];
+        LOBYTE(_isBlurUI) = [(FaceTimeApplication *)self _styleIsActuallyGoingToBlur];
       }
     }
 
     else
     {
-      LOBYTE(v5) = 1;
+      LOBYTE(_isBlurUI) = 1;
     }
   }
 
   else
   {
-    LOBYTE(v5) = 0;
+    LOBYTE(_isBlurUI) = 0;
   }
 
-  return v5;
+  return _isBlurUI;
 }
 
 - (BOOL)tabBarFillsScreen
 {
-  v2 = [(PhoneApplication *)self rootViewController];
-  v3 = [v2 traitCollection];
+  rootViewController = [(PhoneApplication *)self rootViewController];
+  traitCollection = [rootViewController traitCollection];
 
-  LOBYTE(v2) = [v3 horizontalSizeClass] == 1;
-  return v2;
+  LOBYTE(rootViewController) = [traitCollection horizontalSizeClass] == 1;
+  return rootViewController;
 }
 
 - (BOOL)_styleIsActuallyGoingToBlur
@@ -92,12 +92,12 @@
   {
     v4 = +[FTApplicationServices sharedInstance];
     v5 = [PHRecentsController alloc];
-    v6 = [(FaceTimeApplication *)self callHistoryController];
-    v7 = [v4 callProviderManager];
-    v8 = [v4 contactStore];
-    v9 = [v4 suggestedContactStore];
-    v10 = [v4 metadataCache];
-    v11 = [(PHRecentsController *)v5 initWithCallHistoryController:v6 callProviderManager:v7 contactStore:v8 suggestedContactStore:v9 metadataCache:v10];
+    callHistoryController = [(FaceTimeApplication *)self callHistoryController];
+    callProviderManager = [v4 callProviderManager];
+    contactStore = [v4 contactStore];
+    suggestedContactStore = [v4 suggestedContactStore];
+    metadataCache = [v4 metadataCache];
+    v11 = [(PHRecentsController *)v5 initWithCallHistoryController:callHistoryController callProviderManager:callProviderManager contactStore:contactStore suggestedContactStore:suggestedContactStore metadataCache:metadataCache];
     v12 = self->_recentsController;
     self->_recentsController = v11;
 
@@ -110,9 +110,9 @@
 - (BOOL)showsTelephonyRecents
 {
   v2 = +[CNKFeatures sharedInstance];
-  v3 = [v2 isFaceTimeLaunchPageEnabled];
+  isFaceTimeLaunchPageEnabled = [v2 isFaceTimeLaunchPageEnabled];
 
-  if (v3 & 1) != 0 || ([UIApp isDeviceCapableOfTelephonyCalls])
+  if (isFaceTimeLaunchPageEnabled & 1) != 0 || ([UIApp isDeviceCapableOfTelephonyCalls])
   {
     return 0;
   }
@@ -120,27 +120,27 @@
   return +[TUCallCapabilities supportsTelephonyCalls];
 }
 
-- (void)applicationDidFinishLaunching:(id)a3
+- (void)applicationDidFinishLaunching:(id)launching
 {
   v7.receiver = self;
   v7.super_class = FaceTimeApplication;
-  [(PhoneApplication *)&v7 applicationDidFinishLaunching:a3];
-  v4 = [(PhoneApplication *)self rootViewController];
-  [v4 createFaceTimeFirstRunViewIfNeeded];
+  [(PhoneApplication *)&v7 applicationDidFinishLaunching:launching];
+  rootViewController = [(PhoneApplication *)self rootViewController];
+  [rootViewController createFaceTimeFirstRunViewIfNeeded];
 
   +[PHThumperSetupController showThumperAvailableDialogIfNecessary];
   v5 = +[UNUserNotificationCenter currentNotificationCenter];
   [(FaceTimeApplication *)self setNotificationCenter:v5];
 
-  v6 = [(FaceTimeApplication *)self notificationCenter];
-  [v6 setDelegate:self];
+  notificationCenter = [(FaceTimeApplication *)self notificationCenter];
+  [notificationCenter setDelegate:self];
 
   +[CNKNameAndPhotoUtilities prewarm];
 }
 
-- (BOOL)application:(id)a3 openURL:(id)a4 options:(id)a5
+- (BOOL)application:(id)application openURL:(id)l options:(id)options
 {
-  v6 = a4;
+  lCopy = l;
   v7 = sub_100003B9C();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -148,89 +148,89 @@
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "FaceTime was launched via URL", &v13, 2u);
   }
 
-  v8 = [v6 pseudonymForLinkDetailsView];
+  pseudonymForLinkDetailsView = [lCopy pseudonymForLinkDetailsView];
 
-  if (v8)
+  if (pseudonymForLinkDetailsView)
   {
     v9 = sub_100003B9C();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 138412290;
-      v14 = v8;
+      v14 = pseudonymForLinkDetailsView;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Showing link detail view for pseudonym %@", &v13, 0xCu);
     }
 
-    v10 = [(PhoneApplication *)self rootViewController];
-    v11 = [v10 faceTimeContainerViewController];
-    [v11 showLinkDetailViewControllerForPseudonym:v8];
+    rootViewController = [(PhoneApplication *)self rootViewController];
+    faceTimeContainerViewController = [rootViewController faceTimeContainerViewController];
+    [faceTimeContainerViewController showLinkDetailViewControllerForPseudonym:pseudonymForLinkDetailsView];
   }
 
   return 1;
 }
 
-- (void)handleVideoMessagePlaybackURL:(id)a3
+- (void)handleVideoMessagePlaybackURL:(id)l
 {
-  v4 = a3;
-  v5 = [v4 videoMessageUUID];
+  lCopy = l;
+  videoMessageUUID = [lCopy videoMessageUUID];
   v6 = sub_100003B9C();
-  v7 = v6;
-  if (v5)
+  rootViewController = v6;
+  if (videoMessageUUID)
   {
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 138412290;
-      v10 = v5;
-      _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Showing video message player for message UUID %@", &v9, 0xCu);
+      v10 = videoMessageUUID;
+      _os_log_impl(&_mh_execute_header, rootViewController, OS_LOG_TYPE_DEFAULT, "Showing video message player for message UUID %@", &v9, 0xCu);
     }
 
-    v7 = [(PhoneApplication *)self rootViewController];
-    v8 = [v7 faceTimeContainerViewController];
-    [v8 showVideoPlayerForMessageWithUUID:v5];
+    rootViewController = [(PhoneApplication *)self rootViewController];
+    faceTimeContainerViewController = [rootViewController faceTimeContainerViewController];
+    [faceTimeContainerViewController showVideoPlayerForMessageWithUUID:videoMessageUUID];
   }
 
   else if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
   {
-    sub_1000C4CE8(v4, v7);
+    sub_1000C4CE8(lCopy, rootViewController);
   }
 }
 
-- (void)handleRecentsDetailsViewURL:(id)a3
+- (void)handleRecentsDetailsViewURL:(id)l
 {
-  v4 = a3;
-  v5 = [v4 recentsUniqueID];
+  lCopy = l;
+  recentsUniqueID = [lCopy recentsUniqueID];
   v6 = sub_100003B9C();
-  v7 = v6;
-  if (v5)
+  rootViewController = v6;
+  if (recentsUniqueID)
   {
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 138412290;
-      v10 = v5;
-      _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Showing recents details view for call with uniqueID: %@", &v9, 0xCu);
+      v10 = recentsUniqueID;
+      _os_log_impl(&_mh_execute_header, rootViewController, OS_LOG_TYPE_DEFAULT, "Showing recents details view for call with uniqueID: %@", &v9, 0xCu);
     }
 
-    v7 = [(PhoneApplication *)self rootViewController];
-    v8 = [v7 faceTimeContainerViewController];
-    [v8 presentRecentsDetailsViewFor:v5];
+    rootViewController = [(PhoneApplication *)self rootViewController];
+    faceTimeContainerViewController = [rootViewController faceTimeContainerViewController];
+    [faceTimeContainerViewController presentRecentsDetailsViewFor:recentsUniqueID];
   }
 
   else if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
   {
-    sub_1000C4D60(v4, v7);
+    sub_1000C4D60(lCopy, rootViewController);
   }
 }
 
-- (void)applicationOpenURL:(id)a3
+- (void)applicationOpenURL:(id)l
 {
-  v4 = a3;
-  if ([v4 isFaceTimeAppVideoMessagePlaybackURL])
+  lCopy = l;
+  if ([lCopy isFaceTimeAppVideoMessagePlaybackURL])
   {
-    [(FaceTimeApplication *)self handleVideoMessagePlaybackURL:v4];
+    [(FaceTimeApplication *)self handleVideoMessagePlaybackURL:lCopy];
   }
 
-  else if ([v4 isFaceTimeRecentsDetailsViewURL])
+  else if ([lCopy isFaceTimeRecentsDetailsViewURL])
   {
-    [(FaceTimeApplication *)self handleRecentsDetailsViewURL:v4];
+    [(FaceTimeApplication *)self handleRecentsDetailsViewURL:lCopy];
   }
 }
 
@@ -264,17 +264,17 @@
   return v3;
 }
 
-- (void)userNotificationCenter:(id)a3 willPresentNotification:(id)a4 withCompletionHandler:(id)a5
+- (void)userNotificationCenter:(id)center willPresentNotification:(id)notification withCompletionHandler:(id)handler
 {
-  v13 = a5;
-  v7 = [a4 request];
-  v8 = [v7 content];
-  v9 = [v8 categoryIdentifier];
+  handlerCopy = handler;
+  request = [notification request];
+  content = [request content];
+  categoryIdentifier = [content categoryIdentifier];
 
-  if ([v9 length])
+  if ([categoryIdentifier length])
   {
     v10 = +[FaceTimeApplication allowedNotificationCategories];
-    if ([v10 containsObject:v9])
+    if ([v10 containsObject:categoryIdentifier])
     {
 
 LABEL_6:
@@ -284,7 +284,7 @@ LABEL_6:
 
     if ([(FaceTimeApplication *)self applicationState])
     {
-      v11 = [v9 isEqualToString:@"group-facetime-invite"];
+      v11 = [categoryIdentifier isEqualToString:@"group-facetime-invite"];
 
       if (v11)
       {
@@ -299,28 +299,28 @@ LABEL_6:
 
   v12 = 0;
 LABEL_9:
-  v13[2](v13, v12);
+  handlerCopy[2](handlerCopy, v12);
 }
 
-- (void)performTestWithName:(id)a3 options:(id)a4
+- (void)performTestWithName:(id)name options:(id)options
 {
-  v7 = a3;
-  v6 = a4;
-  if ([v7 hasPrefix:@"Scroll"] && ((objc_msgSend(v7, "hasSuffix:", @"Recents") & 1) != 0 || (objc_msgSend(v7, "hasSuffix:", @"RecentsGlitch") & 1) != 0 || objc_msgSend(v7, "hasSuffix:", @"RecentsGlitchExtended")))
+  nameCopy = name;
+  optionsCopy = options;
+  if ([nameCopy hasPrefix:@"Scroll"] && ((objc_msgSend(nameCopy, "hasSuffix:", @"Recents") & 1) != 0 || (objc_msgSend(nameCopy, "hasSuffix:", @"RecentsGlitch") & 1) != 0 || objc_msgSend(nameCopy, "hasSuffix:", @"RecentsGlitchExtended")))
   {
-    [(FaceTimeApplication *)self performScrollTestWithName:v7 options:v6];
+    [(FaceTimeApplication *)self performScrollTestWithName:nameCopy options:optionsCopy];
   }
 }
 
-- (void)performScrollTestWithName:(id)a3 options:(id)a4
+- (void)performScrollTestWithName:(id)name options:(id)options
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 objectForKeyedSubscript:@"offset"];
+  nameCopy = name;
+  optionsCopy = options;
+  v8 = [optionsCopy objectForKeyedSubscript:@"offset"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || (v9 = [v8 intValue], (v9 - 0x7FFFFFFF) <= 1))
   {
-    [(FaceTimeApplication *)self _ftFailedTest:v6];
+    [(FaceTimeApplication *)self _ftFailedTest:nameCopy];
     v10 = sub_100003B9C();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
@@ -330,27 +330,27 @@ LABEL_9:
     v9 = 0x7FFFFFFFLL;
   }
 
-  v17 = [v7 objectForKeyedSubscript:@"iterations"];
+  v17 = [optionsCopy objectForKeyedSubscript:@"iterations"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    v18 = [v17 intValue];
-    if ((v18 - 0x7FFFFFFF) > 1)
+    intValue = [v17 intValue];
+    if ((intValue - 0x7FFFFFFF) > 1)
     {
       if (v9 == 0x7FFFFFFF)
       {
         goto LABEL_13;
       }
 
-      v26 = v18;
-      if (([v6 hasSuffix:@"Recents"] & 1) == 0 && (objc_msgSend(v6, "hasSuffix:", @"RecentsGlitch") & 1) == 0 && !objc_msgSend(v6, "hasSuffix:", @"RecentsGlitchExtended") || (-[FaceTimeApplication _fetchScrollView](self, "_fetchScrollView"), (v27 = objc_claimAutoreleasedReturnValue()) == 0))
+      v26 = intValue;
+      if (([nameCopy hasSuffix:@"Recents"] & 1) == 0 && (objc_msgSend(nameCopy, "hasSuffix:", @"RecentsGlitch") & 1) == 0 && !objc_msgSend(nameCopy, "hasSuffix:", @"RecentsGlitchExtended") || (-[FaceTimeApplication _fetchScrollView](self, "_fetchScrollView"), (v27 = objc_claimAutoreleasedReturnValue()) == 0))
       {
-        [(FaceTimeApplication *)self _ftFailedTest:v6];
+        [(FaceTimeApplication *)self _ftFailedTest:nameCopy];
         v19 = sub_100003B9C();
         if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
         {
-          sub_1000C4F40(v6, v19, v34, v35, v36, v37, v38, v39);
+          sub_1000C4F40(nameCopy, v19, v34, v35, v36, v37, v38, v39);
         }
 
         goto LABEL_12;
@@ -361,14 +361,14 @@ LABEL_9:
       if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
       {
         v41 = 138412546;
-        v42 = v6;
+        v42 = nameCopy;
         v43 = 2112;
-        v44 = v7;
+        v44 = optionsCopy;
         _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, "Performing scroll test %@ with the following options: %@", &v41, 0x16u);
       }
 
-      [(FaceTimeApplication *)self _ftStartedTest:v6];
-      v29 = [v7 objectForKey:@"recapBased"];
+      [(FaceTimeApplication *)self _ftStartedTest:nameCopy];
+      v29 = [optionsCopy objectForKey:@"recapBased"];
       if ([v29 BOOLValue])
       {
         v30 = +[RPTTestRunner isRecapAvailable];
@@ -382,8 +382,8 @@ LABEL_9:
             _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_DEFAULT, "Running recap based scroll view test", &v41, 2u);
           }
 
-          v32 = [(FaceTimeApplication *)self scrollTestsWithCount:v26 forScrollView:v19 name:v6];
-          v33 = [RPTGroupScrollTestParameters newWithTestName:v6 parameters:v32 completionHandler:&stru_10010B718];
+          v32 = [(FaceTimeApplication *)self scrollTestsWithCount:v26 forScrollView:v19 name:nameCopy];
+          v33 = [RPTGroupScrollTestParameters newWithTestName:nameCopy parameters:v32 completionHandler:&stru_10010B718];
 
           [RPTTestRunner runTestWithParameters:v33];
           goto LABEL_12;
@@ -394,12 +394,12 @@ LABEL_9:
       {
       }
 
-      [v19 _performScrollTest:v6 iterations:v26 delta:v9];
+      [v19 _performScrollTest:nameCopy iterations:v26 delta:v9];
       v40 = sub_100003B9C();
       if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
       {
         v41 = 138412290;
-        v42 = v6;
+        v42 = nameCopy;
         _os_log_impl(&_mh_execute_header, v40, OS_LOG_TYPE_DEFAULT, "Finished test %@", &v41, 0xCu);
       }
 
@@ -407,7 +407,7 @@ LABEL_9:
     }
   }
 
-  [(FaceTimeApplication *)self _ftFailedTest:v6];
+  [(FaceTimeApplication *)self _ftFailedTest:nameCopy];
   v19 = sub_100003B9C();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
   {
@@ -419,12 +419,12 @@ LABEL_12:
 LABEL_13:
 }
 
-- (id)scrollTestsWithCount:(int64_t)a3 forScrollView:(id)a4 name:(id)a5
+- (id)scrollTestsWithCount:(int64_t)count forScrollView:(id)view name:(id)name
 {
-  v7 = a4;
-  v8 = a5;
+  viewCopy = view;
+  nameCopy = name;
   v9 = objc_alloc_init(NSMutableArray);
-  if (a3 >= 2)
+  if (count >= 2)
   {
     v10 = 0;
     do
@@ -435,22 +435,22 @@ LABEL_13:
       v16[2] = sub_10003AA84;
       v16[3] = &unk_10010AF00;
       v16[4] = v10;
-      v12 = [v11 initWithTestName:v8 scrollView:v7 completionHandler:v16];
+      v12 = [v11 initWithTestName:nameCopy scrollView:viewCopy completionHandler:v16];
       [v12 setShouldFlick:0];
       [v9 addObject:v12];
 
       ++v10;
     }
 
-    while (a3 - 1 != v10);
+    while (count - 1 != v10);
   }
 
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_10003AB30;
   v15[3] = &unk_10010AF00;
-  v15[4] = a3;
-  v13 = [[RPTScrollViewTestParameters alloc] initWithTestName:v8 scrollView:v7 completionHandler:v15];
+  v15[4] = count;
+  v13 = [[RPTScrollViewTestParameters alloc] initWithTestName:nameCopy scrollView:viewCopy completionHandler:v15];
   [v9 addObject:v13];
 
   return v9;
@@ -458,11 +458,11 @@ LABEL_13:
 
 - (id)_fetchScrollView
 {
-  v2 = [(PhoneApplication *)self rootViewController];
-  v3 = [v2 faceTimeContainerViewController];
-  v4 = [v3 collectionView];
+  rootViewController = [(PhoneApplication *)self rootViewController];
+  faceTimeContainerViewController = [rootViewController faceTimeContainerViewController];
+  collectionView = [faceTimeContainerViewController collectionView];
 
-  return v4;
+  return collectionView;
 }
 
 @end

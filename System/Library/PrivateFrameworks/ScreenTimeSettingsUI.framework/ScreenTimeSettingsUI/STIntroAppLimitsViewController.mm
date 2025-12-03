@@ -1,23 +1,23 @@
 @interface STIntroAppLimitsViewController
 - (STIntroAppLimitsTableViewController)tableViewController;
-- (STIntroAppLimitsViewController)initWithIntroductionModel:(id)a3 continueHandler:(id)a4;
-- (void)_allowanceSelectedCategoriesDidChange:(id)a3;
-- (void)_allowanceTimeDidChange:(id)a3;
-- (void)_notNow:(id)a3;
-- (void)_setAppLimit:(id)a3;
-- (void)_updateSetAppLimitButtonWithTime:(id)a3 selectedCategories:(id)a4;
+- (STIntroAppLimitsViewController)initWithIntroductionModel:(id)model continueHandler:(id)handler;
+- (void)_allowanceSelectedCategoriesDidChange:(id)change;
+- (void)_allowanceTimeDidChange:(id)change;
+- (void)_notNow:(id)now;
+- (void)_setAppLimit:(id)limit;
+- (void)_updateSetAppLimitButtonWithTime:(id)time selectedCategories:(id)categories;
 - (void)dealloc;
 - (void)loadView;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setTableViewController:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setTableViewController:(id)controller;
 @end
 
 @implementation STIntroAppLimitsViewController
 
-- (STIntroAppLimitsViewController)initWithIntroductionModel:(id)a3 continueHandler:(id)a4
+- (STIntroAppLimitsViewController)initWithIntroductionModel:(id)model continueHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  modelCopy = model;
+  handlerCopy = handler;
   v8 = +[STScreenTimeSettingsUIBundle bundle];
   v9 = [v8 localizedStringForKey:@"IntroAppLimitsTitle" value:&stru_28766E5A8 table:0];
   v10 = [v8 localizedStringForKey:@"IntroAppLimitsDetail" value:&stru_28766E5A8 table:0];
@@ -25,10 +25,10 @@
   v17.super_class = STIntroAppLimitsViewController;
   v11 = [(OBTableWelcomeController *)&v17 initWithTitle:v9 detailText:v10 symbolName:@"hourglass"];
   model = v11->_model;
-  v11->_model = v6;
-  v13 = v6;
+  v11->_model = modelCopy;
+  v13 = modelCopy;
 
-  v14 = [v7 copy];
+  v14 = [handlerCopy copy];
   continueHandler = v11->_continueHandler;
   v11->_continueHandler = v14;
 
@@ -37,9 +37,9 @@
 
 - (void)dealloc
 {
-  v3 = [(STIntroAppLimitsViewController *)self tableViewController];
-  [v3 removeObserver:self forKeyPath:@"allowance.time" context:"KVOContextIntroAppLimitsViewController"];
-  [v3 removeObserver:self forKeyPath:@"allowance.categoryIdentifiers" context:"KVOContextIntroAppLimitsViewController"];
+  tableViewController = [(STIntroAppLimitsViewController *)self tableViewController];
+  [tableViewController removeObserver:self forKeyPath:@"allowance.time" context:"KVOContextIntroAppLimitsViewController"];
+  [tableViewController removeObserver:self forKeyPath:@"allowance.categoryIdentifiers" context:"KVOContextIntroAppLimitsViewController"];
 
   v4.receiver = self;
   v4.super_class = STIntroAppLimitsViewController;
@@ -50,15 +50,15 @@
 {
   v4.receiver = self;
   v4.super_class = STIntroAppLimitsViewController;
-  v2 = [(STTableWelcomeController *)&v4 tableViewController];
+  tableViewController = [(STTableWelcomeController *)&v4 tableViewController];
 
-  return v2;
+  return tableViewController;
 }
 
-- (void)setTableViewController:(id)a3
+- (void)setTableViewController:(id)controller
 {
-  v5 = a3;
-  if (v5)
+  controllerCopy = controller;
+  if (controllerCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -67,14 +67,14 @@
     }
   }
 
-  v6 = [(STIntroAppLimitsViewController *)self tableViewController];
-  [v6 removeObserver:self forKeyPath:@"allowance.time" context:"KVOContextIntroAppLimitsViewController"];
-  [v6 removeObserver:self forKeyPath:@"allowance.categoryIdentifiers" context:"KVOContextIntroAppLimitsViewController"];
+  tableViewController = [(STIntroAppLimitsViewController *)self tableViewController];
+  [tableViewController removeObserver:self forKeyPath:@"allowance.time" context:"KVOContextIntroAppLimitsViewController"];
+  [tableViewController removeObserver:self forKeyPath:@"allowance.categoryIdentifiers" context:"KVOContextIntroAppLimitsViewController"];
   v7.receiver = self;
   v7.super_class = STIntroAppLimitsViewController;
-  [(STTableWelcomeController *)&v7 setTableViewController:v5];
-  [v5 addObserver:self forKeyPath:@"allowance.time" options:1 context:"KVOContextIntroAppLimitsViewController"];
-  [v5 addObserver:self forKeyPath:@"allowance.categoryIdentifiers" options:5 context:"KVOContextIntroAppLimitsViewController"];
+  [(STTableWelcomeController *)&v7 setTableViewController:controllerCopy];
+  [controllerCopy addObserver:self forKeyPath:@"allowance.time" options:1 context:"KVOContextIntroAppLimitsViewController"];
+  [controllerCopy addObserver:self forKeyPath:@"allowance.categoryIdentifiers" options:5 context:"KVOContextIntroAppLimitsViewController"];
 }
 
 - (void)loadView
@@ -83,11 +83,11 @@
   v17.super_class = STIntroAppLimitsViewController;
   [(OBTableWelcomeController *)&v17 loadView];
   v3 = +[STScreenTimeSettingsUIBundle bundle];
-  v4 = [(STIntroAppLimitsViewController *)self buttonTray];
-  v5 = [(STIntroductionViewModel *)self->_model allowance];
-  v6 = [v5 allowanceEnabled];
+  buttonTray = [(STIntroAppLimitsViewController *)self buttonTray];
+  allowance = [(STIntroductionViewModel *)self->_model allowance];
+  allowanceEnabled = [allowance allowanceEnabled];
 
-  if (v6)
+  if (allowanceEnabled)
   {
     v7 = @"IntroAppLimitsContinueButton";
   }
@@ -97,7 +97,7 @@
     v7 = @"IntroAppLimitsSetAppLimitButton";
   }
 
-  if (v6)
+  if (allowanceEnabled)
   {
     v8 = @"IntroAppLimitsTurnOffAppLimitButton";
   }
@@ -109,55 +109,55 @@
 
   v9 = [v3 localizedStringForKey:v7 value:&stru_28766E5A8 table:0];
   v10 = [v3 localizedStringForKey:v8 value:&stru_28766E5A8 table:0];
-  v11 = [MEMORY[0x277D37618] boldButton];
-  [v11 setAccessibilityIdentifier:@"IntroAppLimitsSetAppLimitButton"];
-  [v11 setTitle:v9 forState:0];
-  [v11 addTarget:self action:sel__setAppLimit_ forControlEvents:0x2000];
-  [v11 setEnabled:0];
-  [v4 addButton:v11];
-  [(STIntroAppLimitsViewController *)self setSetAppLimitButton:v11];
-  v12 = [MEMORY[0x277D37650] linkButton];
-  [v12 setAccessibilityIdentifier:@"IntroAppLimitsSetUpLaterButton"];
-  [v12 setTitle:v10 forState:0];
-  [v12 addTarget:self action:sel__notNow_ forControlEvents:0x2000];
-  [v4 addButton:v12];
+  boldButton = [MEMORY[0x277D37618] boldButton];
+  [boldButton setAccessibilityIdentifier:@"IntroAppLimitsSetAppLimitButton"];
+  [boldButton setTitle:v9 forState:0];
+  [boldButton addTarget:self action:sel__setAppLimit_ forControlEvents:0x2000];
+  [boldButton setEnabled:0];
+  [buttonTray addButton:boldButton];
+  [(STIntroAppLimitsViewController *)self setSetAppLimitButton:boldButton];
+  linkButton = [MEMORY[0x277D37650] linkButton];
+  [linkButton setAccessibilityIdentifier:@"IntroAppLimitsSetUpLaterButton"];
+  [linkButton setTitle:v10 forState:0];
+  [linkButton addTarget:self action:sel__notNow_ forControlEvents:0x2000];
+  [buttonTray addButton:linkButton];
   v13 = MEMORY[0x277D75AC8];
   v14 = +[STScreenTimeSettingsUIBundle bundle];
   v15 = [v13 storyboardWithName:@"STIntroAppLimitsTableViewController" bundle:v14];
 
-  v16 = [v15 instantiateInitialViewController];
-  [(STIntroAppLimitsViewController *)self setTableViewController:v16];
+  instantiateInitialViewController = [v15 instantiateInitialViewController];
+  [(STIntroAppLimitsViewController *)self setTableViewController:instantiateInitialViewController];
 }
 
-- (void)_setAppLimit:(id)a3
+- (void)_setAppLimit:(id)limit
 {
-  v4 = [(STIntroAppLimitsViewController *)self tableViewController];
-  v5 = [v4 allowance];
-  v6 = [(STIntroAppLimitsViewController *)self model];
-  [v6 setAllowance:v5];
+  tableViewController = [(STIntroAppLimitsViewController *)self tableViewController];
+  allowance = [tableViewController allowance];
+  model = [(STIntroAppLimitsViewController *)self model];
+  [model setAllowance:allowance];
 
-  v7 = [(STIntroAppLimitsViewController *)self continueHandler];
-  v7[2]();
+  continueHandler = [(STIntroAppLimitsViewController *)self continueHandler];
+  continueHandler[2]();
 }
 
-- (void)_notNow:(id)a3
+- (void)_notNow:(id)now
 {
-  v3 = [(STIntroAppLimitsViewController *)self continueHandler];
-  v3[2]();
+  continueHandler = [(STIntroAppLimitsViewController *)self continueHandler];
+  continueHandler[2]();
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a5;
-  if (a6 == "KVOContextIntroAppLimitsViewController")
+  pathCopy = path;
+  changeCopy = change;
+  if (context == "KVOContextIntroAppLimitsViewController")
   {
-    if ([v10 isEqualToString:@"allowance.time"])
+    if ([pathCopy isEqualToString:@"allowance.time"])
     {
-      v12 = [v11 objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
-      v13 = [MEMORY[0x277CBEB68] null];
+      v12 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
+      null = [MEMORY[0x277CBEB68] null];
 
-      if (v12 == v13)
+      if (v12 == null)
       {
 
         v12 = 0;
@@ -168,15 +168,15 @@
 
     else
     {
-      if (![v10 isEqualToString:@"allowance.categoryIdentifiers"])
+      if (![pathCopy isEqualToString:@"allowance.categoryIdentifiers"])
       {
         goto LABEL_12;
       }
 
-      v12 = [v11 objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
-      v14 = [MEMORY[0x277CBEB68] null];
+      v12 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
+      null2 = [MEMORY[0x277CBEB68] null];
 
-      if (v12 == v14)
+      if (v12 == null2)
       {
 
         v12 = 0;
@@ -190,33 +190,33 @@
 
   v15.receiver = self;
   v15.super_class = STIntroAppLimitsViewController;
-  [(STTableWelcomeController *)&v15 observeValueForKeyPath:v10 ofObject:a4 change:v11 context:a6];
+  [(STTableWelcomeController *)&v15 observeValueForKeyPath:pathCopy ofObject:object change:changeCopy context:context];
 LABEL_12:
 }
 
-- (void)_allowanceTimeDidChange:(id)a3
+- (void)_allowanceTimeDidChange:(id)change
 {
-  v4 = a3;
-  v7 = [(STIntroAppLimitsViewController *)self tableViewController];
-  v5 = [v7 allowance];
-  v6 = [v5 categoryIdentifiers];
-  [(STIntroAppLimitsViewController *)self _updateSetAppLimitButtonWithTime:v4 selectedCategories:v6];
+  changeCopy = change;
+  tableViewController = [(STIntroAppLimitsViewController *)self tableViewController];
+  allowance = [tableViewController allowance];
+  categoryIdentifiers = [allowance categoryIdentifiers];
+  [(STIntroAppLimitsViewController *)self _updateSetAppLimitButtonWithTime:changeCopy selectedCategories:categoryIdentifiers];
 }
 
-- (void)_allowanceSelectedCategoriesDidChange:(id)a3
+- (void)_allowanceSelectedCategoriesDidChange:(id)change
 {
-  v4 = a3;
-  v7 = [(STIntroAppLimitsViewController *)self tableViewController];
-  v5 = [v7 allowance];
-  v6 = [v5 time];
-  [(STIntroAppLimitsViewController *)self _updateSetAppLimitButtonWithTime:v6 selectedCategories:v4];
+  changeCopy = change;
+  tableViewController = [(STIntroAppLimitsViewController *)self tableViewController];
+  allowance = [tableViewController allowance];
+  time = [allowance time];
+  [(STIntroAppLimitsViewController *)self _updateSetAppLimitButtonWithTime:time selectedCategories:changeCopy];
 }
 
-- (void)_updateSetAppLimitButtonWithTime:(id)a3 selectedCategories:(id)a4
+- (void)_updateSetAppLimitButtonWithTime:(id)time selectedCategories:(id)categories
 {
-  if (a3)
+  if (time)
   {
-    v5 = [a4 count] != 0;
+    v5 = [categories count] != 0;
   }
 
   else
@@ -224,8 +224,8 @@ LABEL_12:
     v5 = 0;
   }
 
-  v6 = [(STIntroAppLimitsViewController *)self setAppLimitButton];
-  [v6 setEnabled:v5];
+  setAppLimitButton = [(STIntroAppLimitsViewController *)self setAppLimitButton];
+  [setAppLimitButton setEnabled:v5];
 }
 
 - (void)setTableViewController:(uint64_t)a1 .cold.1(uint64_t a1, uint64_t a2)

@@ -1,16 +1,16 @@
 @interface USOSerializedGraph
 - (NSString)printedForm;
-- (USOSerializedGraph)initWithCoder:(id)a3;
-- (USOSerializedGraph)initWithNodes:(id)a3 edges:(id)a4;
-- (USOSerializedGraph)initWithNodes:(id)a3 edges:(id)a4 identifiers:(id)a5 alignments:(id)a6;
-- (USOSerializedGraph)initWithUsoGraph:(const void *)a3 withError:(id *)a4;
-- (const)getOrCreateEdgeName:(id)a3 withVocabManager:(shared_ptr<siri:(id *)a5 :ontology::UsoVocabManager>)a4 withError:;
-- (const)getOrCreateNodeName:(id)a3 withVocabManager:(shared_ptr<siri:(id *)a5 :ontology::UsoVocabManager>)a4 withError:;
-- (const)getOrCreateVerbName:(id)a3 withVocabManager:(shared_ptr<siri:(id *)a5 :ontology::UsoVocabManager>)a4 withError:;
-- (id)createSerializedNode:(const UsoGraphNode *)a3 withError:(id *)a4;
-- (id)getIdentifiersIfExists:(const UsoGraphNode *)a3 nodeIndex:(unint64_t)a4;
-- (id)getUtteranceAlignmentsIfExists:(const UsoGraphNode *)a3 nodeIndex:(unint64_t)a4;
-- (void)encodeWithCoder:(id)a3;
+- (USOSerializedGraph)initWithCoder:(id)coder;
+- (USOSerializedGraph)initWithNodes:(id)nodes edges:(id)edges;
+- (USOSerializedGraph)initWithNodes:(id)nodes edges:(id)edges identifiers:(id)identifiers alignments:(id)alignments;
+- (USOSerializedGraph)initWithUsoGraph:(const void *)graph withError:(id *)error;
+- (const)getOrCreateEdgeName:(id)name withVocabManager:(shared_ptr<siri:(id *)manager :ontology::UsoVocabManager>)a4 withError:;
+- (const)getOrCreateNodeName:(id)name withVocabManager:(shared_ptr<siri:(id *)manager :ontology::UsoVocabManager>)a4 withError:;
+- (const)getOrCreateVerbName:(id)name withVocabManager:(shared_ptr<siri:(id *)manager :ontology::UsoVocabManager>)a4 withError:;
+- (id)createSerializedNode:(const UsoGraphNode *)node withError:(id *)error;
+- (id)getIdentifiersIfExists:(const UsoGraphNode *)exists nodeIndex:(unint64_t)index;
+- (id)getUtteranceAlignmentsIfExists:(const UsoGraphNode *)exists nodeIndex:(unint64_t)index;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation USOSerializedGraph
@@ -93,28 +93,28 @@
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v9 = a3;
-  v4 = [(USOSerializedGraph *)self nodes];
-  [v9 encodeObject:v4 forKey:@"nodes"];
+  coderCopy = coder;
+  nodes = [(USOSerializedGraph *)self nodes];
+  [coderCopy encodeObject:nodes forKey:@"nodes"];
 
-  v5 = [(USOSerializedGraph *)self edges];
-  [v9 encodeObject:v5 forKey:@"edges"];
+  edges = [(USOSerializedGraph *)self edges];
+  [coderCopy encodeObject:edges forKey:@"edges"];
 
-  v6 = [(USOSerializedGraph *)self identifiers];
-  [v9 encodeObject:v6 forKey:@"identifiers"];
+  identifiers = [(USOSerializedGraph *)self identifiers];
+  [coderCopy encodeObject:identifiers forKey:@"identifiers"];
 
-  v7 = [(USOSerializedGraph *)self alignments];
-  [v9 encodeObject:v7 forKey:@"alignments"];
+  alignments = [(USOSerializedGraph *)self alignments];
+  [coderCopy encodeObject:alignments forKey:@"alignments"];
 
-  v8 = [(USOSerializedGraph *)self printedForm];
-  [v9 encodeObject:v8 forKey:@"printedForm"];
+  printedForm = [(USOSerializedGraph *)self printedForm];
+  [coderCopy encodeObject:printedForm forKey:@"printedForm"];
 }
 
-- (USOSerializedGraph)initWithCoder:(id)a3
+- (USOSerializedGraph)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v30.receiver = self;
   v30.super_class = USOSerializedGraph;
   v5 = [(USOSerializedGraph *)&v30 init];
@@ -123,32 +123,32 @@
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"nodes"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"nodes"];
     nodes = v5->_nodes;
     v5->_nodes = v9;
 
     v11 = MEMORY[0x1E695DFD8];
     v12 = objc_opt_class();
     v13 = [v11 setWithObjects:{v12, objc_opt_class(), 0}];
-    v14 = [v4 decodeObjectOfClasses:v13 forKey:@"edges"];
+    v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"edges"];
     edges = v5->_edges;
     v5->_edges = v14;
 
     v16 = MEMORY[0x1E695DFD8];
     v17 = objc_opt_class();
     v18 = [v16 setWithObjects:{v17, objc_opt_class(), 0}];
-    v19 = [v4 decodeObjectOfClasses:v18 forKey:@"identifiers"];
+    v19 = [coderCopy decodeObjectOfClasses:v18 forKey:@"identifiers"];
     identifiers = v5->_identifiers;
     v5->_identifiers = v19;
 
     v21 = MEMORY[0x1E695DFD8];
     v22 = objc_opt_class();
     v23 = [v21 setWithObjects:{v22, objc_opt_class(), 0}];
-    v24 = [v4 decodeObjectOfClasses:v23 forKey:@"alignments"];
+    v24 = [coderCopy decodeObjectOfClasses:v23 forKey:@"alignments"];
     alignments = v5->_alignments;
     v5->_alignments = v24;
 
-    v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"printedForm"];
+    v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"printedForm"];
     printedForm = v5->_printedForm;
     v5->_printedForm = v26;
 
@@ -158,16 +158,16 @@
   return v5;
 }
 
-- (const)getOrCreateEdgeName:(id)a3 withVocabManager:(shared_ptr<siri:(id *)a5 :ontology::UsoVocabManager>)a4 withError:
+- (const)getOrCreateEdgeName:(id)name withVocabManager:(shared_ptr<siri:(id *)manager :ontology::UsoVocabManager>)a4 withError:
 {
   var1 = a4.var1;
   var0 = a4.var0;
-  v7 = a3;
-  v8 = [v7 usoElementId];
+  nameCopy = name;
+  usoElementId = [nameCopy usoElementId];
   v9 = *var0;
-  if (v8)
+  if (usoElementId)
   {
-    EdgeName = siri::ontology::UsoVocabManager::getEdgeName(v9, v8);
+    EdgeName = siri::ontology::UsoVocabManager::getEdgeName(v9, usoElementId);
     if (v11)
     {
       CustomEdgeName = EdgeName;
@@ -177,7 +177,7 @@
     {
       if (var1)
       {
-        v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid edge element id: %d", v8];
+        v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid edge element id: %d", usoElementId];
         v17 = [MEMORY[0x1E695DF20] dictionaryWithObject:v16 forKey:*MEMORY[0x1E696A578]];
         *var1 = [MEMORY[0x1E696ABC0] errorWithDomain:@"USOSerializedGraphErrorDomain" code:5 userInfo:v17];
       }
@@ -188,10 +188,10 @@
 
   else
   {
-    v13 = [v7 edgeLabel];
-    v14 = [v13 UTF8String];
-    v15 = [v7 edgeLabel];
-    std::string::basic_string[abi:ne200100](__p, v14, [v15 lengthOfBytesUsingEncoding:4]);
+    edgeLabel = [nameCopy edgeLabel];
+    uTF8String = [edgeLabel UTF8String];
+    edgeLabel2 = [nameCopy edgeLabel];
+    std::string::basic_string[abi:ne200100](__p, uTF8String, [edgeLabel2 lengthOfBytesUsingEncoding:4]);
     CustomEdgeName = siri::ontology::UsoVocabManager::createCustomEdgeName(v9, __p);
     if (v20 < 0)
     {
@@ -202,18 +202,18 @@
   return CustomEdgeName;
 }
 
-- (const)getOrCreateVerbName:(id)a3 withVocabManager:(shared_ptr<siri:(id *)a5 :ontology::UsoVocabManager>)a4 withError:
+- (const)getOrCreateVerbName:(id)name withVocabManager:(shared_ptr<siri:(id *)manager :ontology::UsoVocabManager>)a4 withError:
 {
   var1 = a4.var1;
   var0 = a4.var0;
-  v7 = a3;
-  v8 = [v7 usoVerbId];
-  v9 = [v8 intValue];
+  nameCopy = name;
+  usoVerbId = [nameCopy usoVerbId];
+  intValue = [usoVerbId intValue];
 
   v10 = *var0;
-  if (v9)
+  if (intValue)
   {
-    VerbName = siri::ontology::UsoVocabManager::getVerbName(v10, v9);
+    VerbName = siri::ontology::UsoVocabManager::getVerbName(v10, intValue);
     if (v12)
     {
       CustomVerbName = VerbName;
@@ -223,7 +223,7 @@
     {
       if (var1)
       {
-        v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid verb element id: %d", v9];
+        v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid verb element id: %d", intValue];
         v18 = [MEMORY[0x1E695DF20] dictionaryWithObject:v17 forKey:*MEMORY[0x1E696A578]];
         *var1 = [MEMORY[0x1E696ABC0] errorWithDomain:@"USOSerializedGraphErrorDomain" code:6 userInfo:v18];
       }
@@ -234,10 +234,10 @@
 
   else
   {
-    v14 = [v7 verbLabel];
-    v15 = [v14 UTF8String];
-    v16 = [v7 verbLabel];
-    std::string::basic_string[abi:ne200100](__p, v15, [v16 lengthOfBytesUsingEncoding:4]);
+    verbLabel = [nameCopy verbLabel];
+    uTF8String = [verbLabel UTF8String];
+    verbLabel2 = [nameCopy verbLabel];
+    std::string::basic_string[abi:ne200100](__p, uTF8String, [verbLabel2 lengthOfBytesUsingEncoding:4]);
     CustomVerbName = siri::ontology::UsoVocabManager::createCustomVerbName(v10, __p);
     if (v21 < 0)
     {
@@ -248,16 +248,16 @@
   return CustomVerbName;
 }
 
-- (const)getOrCreateNodeName:(id)a3 withVocabManager:(shared_ptr<siri:(id *)a5 :ontology::UsoVocabManager>)a4 withError:
+- (const)getOrCreateNodeName:(id)name withVocabManager:(shared_ptr<siri:(id *)manager :ontology::UsoVocabManager>)a4 withError:
 {
   var1 = a4.var1;
   var0 = a4.var0;
-  v7 = a3;
-  v8 = [v7 usoElementId];
+  nameCopy = name;
+  usoElementId = [nameCopy usoElementId];
   v9 = *var0;
-  if (v8)
+  if (usoElementId)
   {
-    v10 = siri::ontology::UsoVocabManager::getOntologyName<siri::ontology::OntologyNodeName>(v9, v8);
+    v10 = siri::ontology::UsoVocabManager::getOntologyName<siri::ontology::OntologyNodeName>(v9, usoElementId);
     if (v11)
     {
       CustomEntityName = v10;
@@ -267,7 +267,7 @@
     {
       if (var1)
       {
-        v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid node element id: %d", v8];
+        v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid node element id: %d", usoElementId];
         v17 = [MEMORY[0x1E695DF20] dictionaryWithObject:v16 forKey:*MEMORY[0x1E696A578]];
         *var1 = [MEMORY[0x1E696ABC0] errorWithDomain:@"USOSerializedGraphErrorDomain" code:5 userInfo:v17];
       }
@@ -278,10 +278,10 @@
 
   else
   {
-    v13 = [v7 entityLabel];
-    v14 = [v13 UTF8String];
-    v15 = [v7 entityLabel];
-    std::string::basic_string[abi:ne200100](__p, v14, [v15 lengthOfBytesUsingEncoding:4]);
+    entityLabel = [nameCopy entityLabel];
+    uTF8String = [entityLabel UTF8String];
+    entityLabel2 = [nameCopy entityLabel];
+    std::string::basic_string[abi:ne200100](__p, uTF8String, [entityLabel2 lengthOfBytesUsingEncoding:4]);
     CustomEntityName = siri::ontology::UsoVocabManager::createCustomEntityName(v9, __p);
     if (v20 < 0)
     {
@@ -292,7 +292,7 @@
   return CustomEntityName;
 }
 
-- (USOSerializedGraph)initWithUsoGraph:(const void *)a3 withError:(id *)a4
+- (USOSerializedGraph)initWithUsoGraph:(const void *)graph withError:(id *)error
 {
   obj = objc_alloc_init(MEMORY[0x1E695DF70]);
   v34 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -301,8 +301,8 @@
   v42 = 0u;
   v43 = 0u;
   v44 = 1065353216;
-  v32 = a3;
-  siri::ontology::UsoGraph::getNodes(a3, &v40);
+  graphCopy = graph;
+  siri::ontology::UsoGraph::getNodes(graph, &v40);
   v6 = v40;
   v7 = v41;
   if (v40 == v41)
@@ -317,7 +317,7 @@
   do
   {
     v10 = *v9;
-    v11 = [(USOSerializedGraph *)self createSerializedNode:*v9 withError:a4, v32, v33];
+    v11 = [(USOSerializedGraph *)self createSerializedNode:*v9 withError:error, graphCopy, v33];
     if (!v11)
     {
       goto LABEL_43;
@@ -414,7 +414,7 @@ LABEL_24:
     operator delete(v6);
   }
 
-  siri::ontology::UsoGraph::getEdges(v32, &v40);
+  siri::ontology::UsoGraph::getEdges(graphCopy, &v40);
   v6 = v40;
   v20 = v41;
   if (v40 == v41)
@@ -430,7 +430,7 @@ LABEL_35:
     objc_storeStrong(&self->_identifiers, v38);
     objc_storeStrong(&self->_alignments, v35);
     std::ostringstream::basic_ostringstream[abi:ne200100](&v40);
-    siri::ontology::UsoGraph::prettyPrint(v32, &v40);
+    siri::ontology::UsoGraph::prettyPrint(graphCopy, &v40);
   }
 
   v21 = v40;
@@ -441,7 +441,7 @@ LABEL_35:
     v24 = std::__hash_table<std::__hash_value_type<unsigned long long,unsigned long long>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,unsigned long long>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,unsigned long long>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,unsigned long long>>>::find<unsigned long long>(v42, *(&v42 + 1), **v21);
     if (!v24)
     {
-      if (!a4)
+      if (!error)
       {
         goto LABEL_43;
       }
@@ -466,11 +466,11 @@ LABEL_35:
         v28 = *v28;
       }
 
-      v29 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{v28, v32}];
+      v29 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{v28, graphCopy}];
       [(USOSerializedGraphEdge *)v27 setEdgeLabel:v29];
     }
 
-    [v34 addObject:{v27, v32}];
+    [v34 addObject:{v27, graphCopy}];
 
     if (++v21 == v20)
     {
@@ -478,14 +478,14 @@ LABEL_35:
     }
   }
 
-  if (!a4)
+  if (!error)
   {
     goto LABEL_43;
   }
 
   v30 = [MEMORY[0x1E696ABC0] errorWithDomain:@"USOSerializedGraphErrorDomain" code:2 userInfo:0];
 LABEL_42:
-  *a4 = v30;
+  *error = v30;
 LABEL_43:
   if (v6)
   {
@@ -497,16 +497,16 @@ LABEL_43:
   return 0;
 }
 
-- (id)createSerializedNode:(const UsoGraphNode *)a3 withError:(id *)a4
+- (id)createSerializedNode:(const UsoGraphNode *)node withError:(id *)error
 {
   v6 = objc_alloc_init(USOSerializedGraphNode);
-  v7 = (*(a3->var0 + 2))(a3);
+  v7 = (*(node->var0 + 2))(node);
   if (v7 > 2)
   {
     switch(v7)
     {
       case 3:
-        v19 = *a3->var0;
+        v19 = *node->var0;
         if (!v20)
         {
           __cxa_bad_cast();
@@ -550,7 +550,7 @@ LABEL_43:
 
         goto LABEL_45;
       case 4:
-        v36 = *a3->var0;
+        v36 = *node->var0;
         if (!v37)
         {
           __cxa_bad_cast();
@@ -567,7 +567,7 @@ LABEL_43:
         [(USOSerializedGraphNode *)v6 setIntegerPayload:v14];
         goto LABEL_44;
       case 5:
-        v15 = *a3->var0;
+        v15 = *node->var0;
         if (!v16)
         {
           __cxa_bad_cast();
@@ -606,7 +606,7 @@ LABEL_45:
       case 0:
         goto LABEL_5;
       case 1:
-        v27 = *a3->var0;
+        v27 = *node->var0;
         if (!v28)
         {
           __cxa_bad_cast();
@@ -647,7 +647,7 @@ LABEL_45:
         goto LABEL_44;
       case 2:
 LABEL_5:
-        v8 = *a3->var0;
+        v8 = *node->var0;
         if (!v9)
         {
           __cxa_bad_cast();
@@ -672,10 +672,10 @@ LABEL_5:
     }
   }
 
-  if (a4)
+  if (error)
   {
     v25 = [MEMORY[0x1E695DF20] dictionaryWithObject:@"Unknown UsoGraphNode" forKey:*MEMORY[0x1E696A578]];
-    *a4 = [MEMORY[0x1E696ABC0] errorWithDomain:@"USOSerializedGraphErrorDomain" code:4 userInfo:v25];
+    *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"USOSerializedGraphErrorDomain" code:4 userInfo:v25];
   }
 
   v26 = 0;
@@ -684,9 +684,9 @@ LABEL_46:
   return v26;
 }
 
-- (id)getUtteranceAlignmentsIfExists:(const UsoGraphNode *)a3 nodeIndex:(unint64_t)a4
+- (id)getUtteranceAlignmentsIfExists:(const UsoGraphNode *)exists nodeIndex:(unint64_t)index
 {
-  v5 = *a3->var0;
+  v5 = *exists->var0;
   if (!v6 || (v7 = v6, v6[7] == v6[8]))
   {
     v16 = 0;
@@ -738,16 +738,16 @@ LABEL_46:
       operator delete(v9);
     }
 
-    v16 = [[USOSerializedUtteranceAlignment alloc] initWithNodeIndex:a4 asrHypothesisIndex:**v7[7] spans:v8];
+    v16 = [[USOSerializedUtteranceAlignment alloc] initWithNodeIndex:index asrHypothesisIndex:**v7[7] spans:v8];
   }
 
   return v16;
 }
 
-- (id)getIdentifiersIfExists:(const UsoGraphNode *)a3 nodeIndex:(unint64_t)a4
+- (id)getIdentifiersIfExists:(const UsoGraphNode *)exists nodeIndex:(unint64_t)index
 {
   v32 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v5 = *a3->var0;
+  v5 = *exists->var0;
   if (v6)
   {
     siri::ontology::UsoEntityNode::getIdentifiers(v6, &v35);
@@ -888,7 +888,7 @@ LABEL_46:
           v26 = 0;
         }
 
-        v27 = [[USOSerializedIdentifier alloc] initWithNodeIndex:a4 value:v14 appBundleId:v18 namespaceString:v20 probability:v22 sourceComponent:v23 groupIndex:v24 interpretationGroup:v26];
+        v27 = [[USOSerializedIdentifier alloc] initWithNodeIndex:index value:v14 appBundleId:v18 namespaceString:v20 probability:v22 sourceComponent:v23 groupIndex:v24 interpretationGroup:v26];
         [v32 addObject:v27];
 
         ++v9;
@@ -908,46 +908,46 @@ LABEL_46:
   return v32;
 }
 
-- (USOSerializedGraph)initWithNodes:(id)a3 edges:(id)a4 identifiers:(id)a5 alignments:(id)a6
+- (USOSerializedGraph)initWithNodes:(id)nodes edges:(id)edges identifiers:(id)identifiers alignments:(id)alignments
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  nodesCopy = nodes;
+  edgesCopy = edges;
+  identifiersCopy = identifiers;
+  alignmentsCopy = alignments;
   v18.receiver = self;
   v18.super_class = USOSerializedGraph;
   v15 = [(USOSerializedGraph *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_nodes, a3);
-    objc_storeStrong(&v16->_edges, a4);
-    objc_storeStrong(&v16->_identifiers, a5);
-    objc_storeStrong(&v16->_alignments, a6);
+    objc_storeStrong(&v15->_nodes, nodes);
+    objc_storeStrong(&v16->_edges, edges);
+    objc_storeStrong(&v16->_identifiers, identifiers);
+    objc_storeStrong(&v16->_alignments, alignments);
   }
 
   return v16;
 }
 
-- (USOSerializedGraph)initWithNodes:(id)a3 edges:(id)a4
+- (USOSerializedGraph)initWithNodes:(id)nodes edges:(id)edges
 {
-  v7 = a3;
-  v8 = a4;
+  nodesCopy = nodes;
+  edgesCopy = edges;
   v16.receiver = self;
   v16.super_class = USOSerializedGraph;
   v9 = [(USOSerializedGraph *)&v16 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_nodes, a3);
-    objc_storeStrong(&v10->_edges, a4);
-    v11 = [MEMORY[0x1E695DEC8] array];
+    objc_storeStrong(&v9->_nodes, nodes);
+    objc_storeStrong(&v10->_edges, edges);
+    array = [MEMORY[0x1E695DEC8] array];
     identifiers = v10->_identifiers;
-    v10->_identifiers = v11;
+    v10->_identifiers = array;
 
-    v13 = [MEMORY[0x1E695DEC8] array];
+    array2 = [MEMORY[0x1E695DEC8] array];
     alignments = v10->_alignments;
-    v10->_alignments = v13;
+    v10->_alignments = array2;
   }
 
   return v10;

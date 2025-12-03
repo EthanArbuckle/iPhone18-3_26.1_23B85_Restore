@@ -1,19 +1,19 @@
 @interface MDAnnouncementsManager
-- (BOOL)_announcementRegionContainsCoordinate:(id)a3 coordinate:(id)a4;
-- (BOOL)_announcementsDocumentNeedsUpdate:(id)a3 announcementsURL:(id)a4;
-- (BOOL)_pointInPolygon:(CLLocationCoordinate2D)a3 polygonPoints:(CLLocationCoordinate2D *)a4 numberOfPolygonPoints:(unint64_t)a5;
-- (MDAnnouncementsManager)initWithState:(id)a3;
+- (BOOL)_announcementRegionContainsCoordinate:(id)coordinate coordinate:(id)a4;
+- (BOOL)_announcementsDocumentNeedsUpdate:(id)update announcementsURL:(id)l;
+- (BOOL)_pointInPolygon:(CLLocationCoordinate2D)polygon polygonPoints:(CLLocationCoordinate2D *)points numberOfPolygonPoints:(unint64_t)polygonPoints;
+- (MDAnnouncementsManager)initWithState:(id)state;
 - (id)_announcementsFilePath;
 - (id)_announcementsFromDisk;
 - (id)_announcementsURLPath;
-- (id)_getAnnouncementWithID:(id)a3 announcementID:(id)a4;
-- (void)_updateAnnouncementIfNecessary:(id)a3 withCompletionHandler:(id)a4;
-- (void)_updateAnnouncementsDocumentFromURL:(id)a3 announcementsFromDisk:(id)a4 withCompletionHandler:(id)a5;
+- (id)_getAnnouncementWithID:(id)d announcementID:(id)iD;
+- (void)_updateAnnouncementIfNecessary:(id)necessary withCompletionHandler:(id)handler;
+- (void)_updateAnnouncementsDocumentFromURL:(id)l announcementsFromDisk:(id)disk withCompletionHandler:(id)handler;
 - (void)clearCurrentAnnouncement;
-- (void)fetchActiveAnnouncement:(id)a3;
+- (void)fetchActiveAnnouncement:(id)announcement;
 - (void)reset;
 - (void)taskExpired;
-- (void)update:(id)a3;
+- (void)update:(id)update;
 @end
 
 @implementation MDAnnouncementsManager
@@ -21,8 +21,8 @@
 - (id)_announcementsFromDisk
 {
   v3 = [NSData alloc];
-  v4 = [(MDAnnouncementsManager *)self _announcementsFilePath];
-  v5 = [v3 initWithContentsOfURL:v4];
+  _announcementsFilePath = [(MDAnnouncementsManager *)self _announcementsFilePath];
+  v5 = [v3 initWithContentsOfURL:_announcementsFilePath];
 
   if (v5)
   {
@@ -47,9 +47,9 @@
   return v4;
 }
 
-- (MDAnnouncementsManager)initWithState:(id)a3
+- (MDAnnouncementsManager)initWithState:(id)state
 {
-  v5 = a3;
+  stateCopy = state;
   v11.receiver = self;
   v11.super_class = MDAnnouncementsManager;
   v6 = [(MDAnnouncementsManager *)&v11 init];
@@ -60,15 +60,15 @@
     announcementsQueue = v6->_announcementsQueue;
     v6->_announcementsQueue = v8;
 
-    objc_storeStrong(&v6->_state, a3);
+    objc_storeStrong(&v6->_state, state);
   }
 
   return v6;
 }
 
-- (void)fetchActiveAnnouncement:(id)a3
+- (void)fetchActiveAnnouncement:(id)announcement
 {
-  v4 = a3;
+  announcementCopy = announcement;
   objc_initWeak(&location, self);
   announcementsQueue = self->_announcementsQueue;
   block[0] = _NSConcreteStackBlock;
@@ -76,8 +76,8 @@
   block[2] = sub_1000171B8;
   block[3] = &unk_10003D2B8;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = announcementCopy;
+  v6 = announcementCopy;
   dispatch_async(announcementsQueue, block);
 
   objc_destroyWeak(&v9);
@@ -112,9 +112,9 @@
   objc_destroyWeak(&location);
 }
 
-- (void)update:(id)a3
+- (void)update:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   if (([GEOKeyBagNotification canAccessFilesWithProtection:3]& 1) != 0)
   {
     objc_initWeak(location, self);
@@ -124,7 +124,7 @@
     v7[2] = sub_1000178FC;
     v7[3] = &unk_10003D2B8;
     objc_copyWeak(&v9, location);
-    v8 = v4;
+    v8 = updateCopy;
     dispatch_async(announcementsQueue, v7);
 
     objc_destroyWeak(&v9);
@@ -140,27 +140,27 @@
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_ERROR, "Cannot update announcements, the device has not been unlocked since boot", location, 2u);
     }
 
-    v4[2](v4);
+    updateCopy[2](updateCopy);
   }
 }
 
-- (void)_updateAnnouncementsDocumentFromURL:(id)a3 announcementsFromDisk:(id)a4 withCompletionHandler:(id)a5
+- (void)_updateAnnouncementsDocumentFromURL:(id)l announcementsFromDisk:(id)disk withCompletionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  lCopy = l;
+  diskCopy = disk;
+  handlerCopy = handler;
   v11 = GEOFindOrCreateLog();
   v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG);
-  if (v8)
+  if (lCopy)
   {
     if (v12)
     {
       *buf = 138412290;
-      v29 = v8;
+      v29 = lCopy;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEBUG, "Fetch announcements from server @: %@", buf, 0xCu);
     }
 
-    v13 = [[NSMutableURLRequest alloc] initWithURL:v8];
+    v13 = [[NSMutableURLRequest alloc] initWithURL:lCopy];
     [v13 setHTTPShouldHandleCookies:0];
     v14 = [MDState getDefault:@"AnnouncementsETag"];
     if (v14)
@@ -170,17 +170,17 @@
 
     v15 = +[NSURLSession sharedSession];
     v16 = MapsAppBundleId;
-    v17 = [v15 configuration];
-    [v17 set_sourceApplicationBundleIdentifier:v16];
+    configuration = [v15 configuration];
+    [configuration set_sourceApplicationBundleIdentifier:v16];
 
     v20 = _NSConcreteStackBlock;
     v21 = 3221225472;
     v22 = sub_100017C34;
     v23 = &unk_10003D300;
-    v27 = v10;
-    v24 = self;
-    v25 = v9;
-    v26 = v8;
+    v27 = handlerCopy;
+    selfCopy = self;
+    v25 = diskCopy;
+    v26 = lCopy;
     v18 = [v15 dataTaskWithRequest:v13 completionHandler:&v20];
     urlTask = self->_urlTask;
     self->_urlTask = v18;
@@ -196,14 +196,14 @@
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEBUG, "No announcements URL present. Not updating announcements document", buf, 2u);
     }
 
-    v10[2](v10);
+    handlerCopy[2](handlerCopy);
   }
 }
 
-- (void)_updateAnnouncementIfNecessary:(id)a3 withCompletionHandler:(id)a4
+- (void)_updateAnnouncementIfNecessary:(id)necessary withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  necessaryCopy = necessary;
+  handlerCopy = handler;
   v8 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -213,32 +213,32 @@
 
   GEOConfigGetDouble();
   v10 = v9;
-  v11 = [(MDState *)self->_state locationManager];
+  locationManager = [(MDState *)self->_state locationManager];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_1000182D0;
   v14[3] = &unk_10003D328;
-  v15 = v6;
-  v16 = v7;
+  v15 = necessaryCopy;
+  v16 = handlerCopy;
   v14[4] = self;
-  v12 = v6;
-  v13 = v7;
-  [v11 fetchSingleLocationWithAccuracy:v14 timeout:v10 completionHandler:5.0];
+  v12 = necessaryCopy;
+  v13 = handlerCopy;
+  [locationManager fetchSingleLocationWithAccuracy:v14 timeout:v10 completionHandler:5.0];
 }
 
-- (BOOL)_announcementsDocumentNeedsUpdate:(id)a3 announcementsURL:(id)a4
+- (BOOL)_announcementsDocumentNeedsUpdate:(id)update announcementsURL:(id)l
 {
-  if (!a3)
+  if (!update)
   {
     return 1;
   }
 
-  v4 = a4;
+  lCopy = l;
   v5 = [MDState getDefault:@"LastAnnouncementsURL"];
-  v6 = [v4 absoluteString];
+  absoluteString = [lCopy absoluteString];
 
-  LODWORD(v4) = [v6 isEqualToString:v5];
-  if (v4)
+  LODWORD(lCopy) = [absoluteString isEqualToString:v5];
+  if (lCopy)
   {
     v7 = [MDState getDefault:@"AnnouncementsLastUpdated"];
     [v7 doubleValue];
@@ -257,13 +257,13 @@
   return v12;
 }
 
-- (BOOL)_announcementRegionContainsCoordinate:(id)a3 coordinate:(id)a4
+- (BOOL)_announcementRegionContainsCoordinate:(id)coordinate coordinate:(id)a4
 {
   var1 = a4.var1;
   var0 = a4.var0;
-  v7 = a3;
-  v8 = v7;
-  if (!v7 || ![v7 containsCoordinate:{var0, var1}])
+  coordinateCopy = coordinate;
+  v8 = coordinateCopy;
+  if (!coordinateCopy || ![coordinateCopy containsCoordinate:{var0, var1}])
   {
     goto LABEL_15;
   }
@@ -287,8 +287,8 @@ LABEL_15:
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v9 = [v8 vertexs];
-  v10 = [v9 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  vertexs = [v8 vertexs];
+  v10 = [vertexs countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v10)
   {
     v11 = v10;
@@ -303,7 +303,7 @@ LABEL_15:
       {
         if (*v24 != v13)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(vertexs);
         }
 
         v16 = *(*(&v23 + 1) + 8 * v14);
@@ -316,7 +316,7 @@ LABEL_15:
       }
 
       while (v11 != v14);
-      v11 = [v9 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      v11 = [vertexs countByEnumeratingWithState:&v23 objects:v27 count:16];
     }
 
     while (v11);
@@ -334,20 +334,20 @@ LABEL_16:
   return v20;
 }
 
-- (id)_getAnnouncementWithID:(id)a3 announcementID:(id)a4
+- (id)_getAnnouncementWithID:(id)d announcementID:(id)iD
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  dCopy = d;
+  iDCopy = iD;
+  v7 = iDCopy;
+  if (iDCopy)
   {
-    v8 = [v6 unsignedIntValue];
+    unsignedIntValue = [iDCopy unsignedIntValue];
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v9 = [v5 announcements];
-    v10 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    announcements = [dCopy announcements];
+    v10 = [announcements countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v10)
     {
       v11 = v10;
@@ -358,18 +358,18 @@ LABEL_16:
         {
           if (*v18 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(announcements);
           }
 
           v14 = *(*(&v17 + 1) + 8 * i);
-          if ([v14 announcementID] == v8)
+          if ([v14 announcementID] == unsignedIntValue)
           {
             v15 = v14;
             goto LABEL_12;
           }
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v11 = [announcements countByEnumeratingWithState:&v17 objects:v21 count:16];
         if (v11)
         {
           continue;
@@ -397,27 +397,27 @@ LABEL_12:
   if ([v2 length])
   {
     v3 = +[GEOPlatform sharedPlatform];
-    v4 = [v3 osVersion];
+    osVersion = [v3 osVersion];
 
     v5 = +[GEOPlatform sharedPlatform];
-    v6 = [v5 buildVersion];
+    buildVersion = [v5 buildVersion];
 
     v7 = +[GEOPlatform sharedPlatform];
-    v8 = [v7 hardwareIdentifier];
+    hardwareIdentifier = [v7 hardwareIdentifier];
 
-    if (v4 && v6 && v8)
+    if (osVersion && buildVersion && hardwareIdentifier)
     {
       v9 = +[NSLocale preferredLanguages];
       v10 = +[GEOResourceManifestManager modernManager];
-      v11 = [v10 activeTileGroup];
-      v12 = [v11 announcementsSupportedLanguages];
+      activeTileGroup = [v10 activeTileGroup];
+      announcementsSupportedLanguages = [activeTileGroup announcementsSupportedLanguages];
 
-      v35 = v12;
-      v13 = [NSLocale mostPreferredLanguageOf:v12 withPreferredLanguages:v9 forUsage:1 options:0];
-      if (!v13)
+      v35 = announcementsSupportedLanguages;
+      firstObject = [NSLocale mostPreferredLanguageOf:announcementsSupportedLanguages withPreferredLanguages:v9 forUsage:1 options:0];
+      if (!firstObject)
       {
-        v13 = [v9 firstObject];
-        if (!v13)
+        firstObject = [v9 firstObject];
+        if (!firstObject)
         {
           v14 = GEOFindOrCreateLog();
           if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -426,26 +426,26 @@ LABEL_12:
             _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "No preferredLanguages list found. Falling back to 'en'", buf, 2u);
           }
 
-          v13 = @"en";
+          firstObject = @"en";
         }
       }
 
       v49[0] = @"os";
       v49[1] = @"os_version";
       v50[0] = @"ios";
-      v50[1] = v4;
+      v50[1] = osVersion;
       v49[2] = @"os_build";
       v49[3] = @"hardware";
-      v50[2] = v6;
-      v50[3] = v8;
+      v50[2] = buildVersion;
+      v50[3] = hardwareIdentifier;
       v49[4] = @"lang";
-      v34 = v13;
-      v50[4] = v13;
+      v34 = firstObject;
+      v50[4] = firstObject;
       v42 = [NSDictionary dictionaryWithObjects:v50 forKeys:v49 count:5];
-      v38 = v6;
-      v39 = v4;
+      v38 = buildVersion;
+      v39 = osVersion;
       v36 = v9;
-      v37 = v8;
+      v37 = hardwareIdentifier;
       if (qword_10004AC88 != -1)
       {
         sub_100021B94();
@@ -461,8 +461,8 @@ LABEL_12:
       }
 
       v18 = v16;
-      v19 = [v42 allKeys];
-      v20 = [v19 sortedArrayUsingComparator:&stru_10003D388];
+      allKeys = [v42 allKeys];
+      v20 = [allKeys sortedArrayUsingComparator:&stru_10003D388];
 
       v45 = 0u;
       v46 = 0u;
@@ -511,10 +511,10 @@ LABEL_12:
       v31 = [NSURL URLWithString:v30];
 
       v2 = v30;
-      v6 = v38;
-      v4 = v39;
+      buildVersion = v38;
+      osVersion = v39;
       v32 = v36;
-      v8 = v37;
+      hardwareIdentifier = v37;
     }
 
     else
@@ -538,16 +538,16 @@ LABEL_12:
   return v31;
 }
 
-- (BOOL)_pointInPolygon:(CLLocationCoordinate2D)a3 polygonPoints:(CLLocationCoordinate2D *)a4 numberOfPolygonPoints:(unint64_t)a5
+- (BOOL)_pointInPolygon:(CLLocationCoordinate2D)polygon polygonPoints:(CLLocationCoordinate2D *)points numberOfPolygonPoints:(unint64_t)polygonPoints
 {
   v5 = 0;
-  if (a5)
+  if (polygonPoints)
   {
     v6 = 0;
-    p_longitude = &a4->longitude;
+    p_longitude = &points->longitude;
     do
     {
-      if (v6 < a5 - 1)
+      if (v6 < polygonPoints - 1)
       {
         v8 = v6 + 1;
       }
@@ -557,7 +557,7 @@ LABEL_12:
         v8 = 0;
       }
 
-      v9 = &a4[v8];
+      v9 = &points[v8];
       longitude = v9->longitude;
       if (*p_longitude > longitude || *p_longitude == longitude && *(p_longitude - 1) > v9->latitude)
       {
@@ -571,14 +571,14 @@ LABEL_12:
         v11 = v6;
       }
 
-      if (a3.longitude >= longitude)
+      if (polygon.longitude >= longitude)
       {
-        v12 = &a4[v8];
+        v12 = &points[v8];
         v13 = v12->longitude;
-        if (a3.longitude < v13)
+        if (polygon.longitude < v13)
         {
           v14 = v13 - longitude;
-          if (v14 != 0.0 && a3.latitude < (v12->latitude - a4[v11].latitude) * (a3.longitude - longitude) / v14 + a4[v11].latitude)
+          if (v14 != 0.0 && polygon.latitude < (v12->latitude - points[v11].latitude) * (polygon.longitude - longitude) / v14 + points[v11].latitude)
           {
             v5 ^= 1u;
           }
@@ -589,7 +589,7 @@ LABEL_12:
       p_longitude += 2;
     }
 
-    while (a5 != v6);
+    while (polygonPoints != v6);
   }
 
   return v5 & 1;
@@ -598,8 +598,8 @@ LABEL_12:
 - (void)taskExpired
 {
   [(NSURLSessionDataTask *)self->_urlTask cancel];
-  v3 = [(MDState *)self->_state locationManager];
-  [v3 cancelSingleLocationFetch];
+  locationManager = [(MDState *)self->_state locationManager];
+  [locationManager cancelSingleLocationFetch];
 }
 
 @end

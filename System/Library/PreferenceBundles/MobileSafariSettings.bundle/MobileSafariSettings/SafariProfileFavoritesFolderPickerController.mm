@@ -1,8 +1,8 @@
 @interface SafariProfileFavoritesFolderPickerController
 - (id)specifiers;
-- (void)_selectNewFolder:(id)a3;
-- (void)setSpecifier:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)_selectNewFolder:(id)folder;
+- (void)setSpecifier:(id)specifier;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation SafariProfileFavoritesFolderPickerController
@@ -14,21 +14,21 @@
     v3 = [UIBarButtonItem alloc];
     v4 = SafariSettingsLocalizedString(@"Titlebar Button Name for Creating New Folder", @"Profiles");
     v5 = [v3 initWithTitle:v4 style:0 target:self action:"_selectNewFolder:"];
-    v6 = [(SafariProfileFavoritesFolderPickerController *)self navigationItem];
-    [v6 setRightBarButtonItem:v5];
+    navigationItem = [(SafariProfileFavoritesFolderPickerController *)self navigationItem];
+    [navigationItem setRightBarButtonItem:v5];
   }
 
   v31.receiver = self;
   v31.super_class = SafariProfileFavoritesFolderPickerController;
-  v7 = [(SafariFavoritesFolderPickerContoller *)&v31 specifiers];
+  specifiers = [(SafariFavoritesFolderPickerContoller *)&v31 specifiers];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v24 = [WeakRetained currentFavoritesFolderServerID];
+  currentFavoritesFolderServerID = [WeakRetained currentFavoritesFolderServerID];
 
   v29 = 0u;
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v9 = v7;
+  v9 = specifiers;
   v10 = [v9 countByEnumeratingWithState:&v27 objects:v32 count:16];
   if (v10)
   {
@@ -61,9 +61,9 @@
 
         else
         {
-          v20 = [v17 bookmark];
-          v21 = [v20 serverID];
-          v26 = [v21 isEqualToString:v24];
+          bookmark = [v17 bookmark];
+          serverID = [bookmark serverID];
+          v26 = [serverID isEqualToString:currentFavoritesFolderServerID];
 
           if (v26)
           {
@@ -97,36 +97,36 @@ LABEL_17:
   return v9;
 }
 
-- (void)setSpecifier:(id)a3
+- (void)setSpecifier:(id)specifier
 {
   v9.receiver = self;
   v9.super_class = SafariProfileFavoritesFolderPickerController;
-  v4 = a3;
-  [(SafariProfileFavoritesFolderPickerController *)&v9 setSpecifier:v4];
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKeyedSubscript:@"delegate"];
+  specifierCopy = specifier;
+  [(SafariProfileFavoritesFolderPickerController *)&v9 setSpecifier:specifierCopy];
+  userInfo = [specifierCopy userInfo];
+  v6 = [userInfo objectForKeyedSubscript:@"delegate"];
   objc_storeWeak(&self->_delegate, v6);
 
-  v7 = [v4 userInfo];
+  userInfo2 = [specifierCopy userInfo];
 
-  v8 = [v7 objectForKeyedSubscript:@"isCreatingNewProfile"];
+  v8 = [userInfo2 objectForKeyedSubscript:@"isCreatingNewProfile"];
   self->_isCreatingNewProfile = [v8 BOOLValue];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v21.receiver = self;
   v21.super_class = SafariProfileFavoritesFolderPickerController;
-  v6 = a4;
-  [(SafariFavoritesFolderPickerContoller *)&v21 tableView:a3 didSelectRowAtIndexPathWithoutChangingDefaultFavorites:v6];
-  v7 = [(SafariProfileFavoritesFolderPickerController *)self indexForIndexPath:v6, v21.receiver, v21.super_class];
+  pathCopy = path;
+  [(SafariFavoritesFolderPickerContoller *)&v21 tableView:view didSelectRowAtIndexPathWithoutChangingDefaultFavorites:pathCopy];
+  v7 = [(SafariProfileFavoritesFolderPickerController *)self indexForIndexPath:pathCopy, v21.receiver, v21.super_class];
 
   v8 = [(SafariProfileFavoritesFolderPickerController *)self specifierAtIndex:v7];
   v9 = [v8 propertyForKey:@"FolderPickerItem"];
-  v10 = [v9 bookmark];
-  v11 = [v10 serverID];
+  bookmark = [v9 bookmark];
+  serverID = [bookmark serverID];
 
-  if (!v11)
+  if (!serverID)
   {
     if (!+[WebBookmarkCollection lockSync])
     {
@@ -137,31 +137,31 @@ LABEL_17:
 
     v12 = +[WebBookmarkCollection safariBookmarkCollection];
     v13 = +[NSUUID UUID];
-    v14 = [v13 UUIDString];
-    v15 = [v9 bookmark];
-    [v12 setServerID:v14 forBookmark:v15];
+    uUIDString = [v13 UUIDString];
+    bookmark2 = [v9 bookmark];
+    [v12 setServerID:uUIDString forBookmark:bookmark2];
 
     +[WebBookmarkCollection unlockSync];
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v17 = [v9 bookmark];
-  v18 = [v17 serverID];
-  [WeakRetained profileFavoritesFolderPickerController:self didSelectFolderWithServerID:v18];
+  bookmark3 = [v9 bookmark];
+  serverID2 = [bookmark3 serverID];
+  [WeakRetained profileFavoritesFolderPickerController:self didSelectFolderWithServerID:serverID2];
 
-  v19 = [(SafariProfileFavoritesFolderPickerController *)self navigationController];
-  v20 = [v19 popViewControllerAnimated:1];
+  navigationController = [(SafariProfileFavoritesFolderPickerController *)self navigationController];
+  v20 = [navigationController popViewControllerAnimated:1];
 
 LABEL_5:
 }
 
-- (void)_selectNewFolder:(id)a3
+- (void)_selectNewFolder:(id)folder
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained didSelectNewFolderInProfileFavoritesFolderPickerController:self];
 
-  v6 = [(SafariProfileFavoritesFolderPickerController *)self navigationController];
-  v5 = [v6 popViewControllerAnimated:1];
+  navigationController = [(SafariProfileFavoritesFolderPickerController *)self navigationController];
+  v5 = [navigationController popViewControllerAnimated:1];
 }
 
 @end

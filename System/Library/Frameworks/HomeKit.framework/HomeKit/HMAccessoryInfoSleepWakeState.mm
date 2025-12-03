@@ -1,8 +1,8 @@
 @interface HMAccessoryInfoSleepWakeState
-- (BOOL)isEqual:(id)a3;
-- (HMAccessoryInfoSleepWakeState)initWithProtoData:(id)a3;
-- (HMAccessoryInfoSleepWakeState)initWithProtoPayload:(id)a3;
-- (HMAccessoryInfoSleepWakeState)initWithSleepWakeState:(unint64_t)a3;
+- (BOOL)isEqual:(id)equal;
+- (HMAccessoryInfoSleepWakeState)initWithProtoData:(id)data;
+- (HMAccessoryInfoSleepWakeState)initWithProtoPayload:(id)payload;
+- (HMAccessoryInfoSleepWakeState)initWithSleepWakeState:(unint64_t)state;
 - (id)description;
 - (id)protoData;
 - (id)protoPayload;
@@ -10,10 +10,10 @@
 
 @implementation HMAccessoryInfoSleepWakeState
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -23,7 +23,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -34,8 +34,8 @@
     v6 = v5;
     if (v6)
     {
-      v7 = [(HMAccessoryInfoSleepWakeState *)self sleepWakeState];
-      v8 = v7 == [(HMAccessoryInfoSleepWakeState *)v6 sleepWakeState];
+      sleepWakeState = [(HMAccessoryInfoSleepWakeState *)self sleepWakeState];
+      v8 = sleepWakeState == [(HMAccessoryInfoSleepWakeState *)v6 sleepWakeState];
     }
 
     else
@@ -47,28 +47,28 @@
   return v8;
 }
 
-- (HMAccessoryInfoSleepWakeState)initWithProtoData:(id)a3
+- (HMAccessoryInfoSleepWakeState)initWithProtoData:(id)data
 {
-  v4 = a3;
-  v5 = [[HMAccessoryInfoProtoSleepWakeStateEvent alloc] initWithData:v4];
+  dataCopy = data;
+  v5 = [[HMAccessoryInfoProtoSleepWakeStateEvent alloc] initWithData:dataCopy];
 
   v6 = [(HMAccessoryInfoSleepWakeState *)self initWithProtoPayload:v5];
   return v6;
 }
 
-- (HMAccessoryInfoSleepWakeState)initWithProtoPayload:(id)a3
+- (HMAccessoryInfoSleepWakeState)initWithProtoPayload:(id)payload
 {
-  v4 = [a3 sleepWakeState];
+  sleepWakeState = [payload sleepWakeState];
 
-  return [(HMAccessoryInfoSleepWakeState *)self initWithSleepWakeState:v4];
+  return [(HMAccessoryInfoSleepWakeState *)self initWithSleepWakeState:sleepWakeState];
 }
 
 - (id)protoData
 {
-  v2 = [(HMAccessoryInfoSleepWakeState *)self protoPayload];
-  v3 = [v2 data];
+  protoPayload = [(HMAccessoryInfoSleepWakeState *)self protoPayload];
+  data = [protoPayload data];
 
-  return v3;
+  return data;
 }
 
 - (id)protoPayload
@@ -91,14 +91,14 @@
   return v6;
 }
 
-- (HMAccessoryInfoSleepWakeState)initWithSleepWakeState:(unint64_t)a3
+- (HMAccessoryInfoSleepWakeState)initWithSleepWakeState:(unint64_t)state
 {
   v5.receiver = self;
   v5.super_class = HMAccessoryInfoSleepWakeState;
   result = [(HMAccessoryInfoSleepWakeState *)&v5 init];
   if (result)
   {
-    result->_sleepWakeState = a3;
+    result->_sleepWakeState = state;
   }
 
   return result;

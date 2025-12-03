@@ -1,56 +1,56 @@
 @interface CUIKSuggestionDescriptionGenerator
-+ (id)brandedOriginDescriptionStringWithAppName:(id)a3;
-+ (id)coalescedInfoForSuggestionNotifications:(id)a3;
-+ (id)originDescriptionStringWithAppName:(id)a3;
++ (id)brandedOriginDescriptionStringWithAppName:(id)name;
++ (id)coalescedInfoForSuggestionNotifications:(id)notifications;
++ (id)originDescriptionStringWithAppName:(id)name;
 @end
 
 @implementation CUIKSuggestionDescriptionGenerator
 
-+ (id)originDescriptionStringWithAppName:(id)a3
++ (id)originDescriptionStringWithAppName:(id)name
 {
-  v3 = a3;
-  if (!v3)
+  nameCopy = name;
+  if (!nameCopy)
   {
     v4 = CUIKBundle();
-    v3 = [v4 localizedStringForKey:@"Apps" value:&stru_1F4AA8958 table:0];
+    nameCopy = [v4 localizedStringForKey:@"Apps" value:&stru_1F4AA8958 table:0];
   }
 
   v5 = MEMORY[0x1E696AEC0];
   v6 = CUIKBundle();
   v7 = [v6 localizedStringForKey:@"Found in %@" value:&stru_1F4AA8958 table:0];
-  v8 = [v5 localizedStringWithFormat:v7, v3];
+  nameCopy = [v5 localizedStringWithFormat:v7, nameCopy];
 
-  return v8;
+  return nameCopy;
 }
 
-+ (id)brandedOriginDescriptionStringWithAppName:(id)a3
++ (id)brandedOriginDescriptionStringWithAppName:(id)name
 {
-  v3 = a3;
-  if (!v3)
+  nameCopy = name;
+  if (!nameCopy)
   {
     v4 = CUIKBundle();
-    v3 = [v4 localizedStringForKey:@"Apps" value:&stru_1F4AA8958 table:0];
+    nameCopy = [v4 localizedStringForKey:@"Apps" value:&stru_1F4AA8958 table:0];
   }
 
   v5 = MEMORY[0x1E696AEC0];
   v6 = CUIKBundle();
   v7 = [v6 localizedStringForKey:@"Siri Found in %@" value:&stru_1F4AA8958 table:0];
-  v8 = [v5 localizedStringWithFormat:v7, v3];
+  nameCopy = [v5 localizedStringWithFormat:v7, nameCopy];
 
-  return v8;
+  return nameCopy;
 }
 
-+ (id)coalescedInfoForSuggestionNotifications:(id)a3
++ (id)coalescedInfoForSuggestionNotifications:(id)notifications
 {
   v50 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  notificationsCopy = notifications;
   v4 = objc_opt_new();
-  v5 = [v3 firstObject];
+  firstObject = [notificationsCopy firstObject];
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
-  v6 = v3;
+  v6 = notificationsCopy;
   v7 = [v6 countByEnumeratingWithState:&v44 objects:v49 count:16];
   if (v7)
   {
@@ -66,15 +66,15 @@
         }
 
         v11 = *(*(&v44 + 1) + 8 * i);
-        v12 = [v11 startDate];
-        v13 = [v5 startDate];
-        v14 = [v12 compare:v13];
+        startDate = [v11 startDate];
+        startDate2 = [firstObject startDate];
+        v14 = [startDate compare:startDate2];
 
         if (v14 == -1)
         {
           v15 = v11;
 
-          v5 = v15;
+          firstObject = v15;
         }
       }
 
@@ -84,11 +84,11 @@
     while (v8);
   }
 
-  v16 = [v5 startDate];
-  v17 = v16;
-  if (v16)
+  startDate3 = [firstObject startDate];
+  v17 = startDate3;
+  if (startDate3)
   {
-    v18 = [v16 localizedYearMonthAndDayStringShortened:0];
+    v18 = [startDate3 localizedYearMonthAndDayStringShortened:0];
     v19 = MEMORY[0x1E696AEC0];
     v20 = CUIKBundle();
     v21 = [v20 localizedStringForKey:@"Beginning on: %@" value:&stru_1F4AA8958 table:0];
@@ -96,8 +96,8 @@
     [v4 addObject:v22];
   }
 
-  v23 = [v6 firstObject];
-  v24 = [v23 originAppName];
+  firstObject2 = [v6 firstObject];
+  originAppName = [firstObject2 originAppName];
 
   v42 = 0u;
   v43 = 0u;
@@ -118,13 +118,13 @@
           objc_enumerationMutation(v25);
         }
 
-        v30 = [*(*(&v40 + 1) + 8 * j) originAppName];
-        v31 = [v30 isEqualToString:v24];
+        originAppName2 = [*(*(&v40 + 1) + 8 * j) originAppName];
+        v31 = [originAppName2 isEqualToString:originAppName];
 
         if ((v31 & 1) == 0)
         {
 
-          v24 = 0;
+          originAppName = 0;
           goto LABEL_22;
         }
       }
@@ -141,7 +141,7 @@
 
 LABEL_22:
 
-  v32 = [CUIKSuggestionDescriptionGenerator brandedOriginDescriptionStringWithAppName:v24];
+  v32 = [CUIKSuggestionDescriptionGenerator brandedOriginDescriptionStringWithAppName:originAppName];
   [v4 addObject:v32];
 
   v33 = MEMORY[0x1E696AEC0];
@@ -150,7 +150,7 @@ LABEL_22:
   v36 = [v33 localizedStringWithFormat:v35, objc_msgSend(v25, "count")];
 
   v37 = [v4 componentsJoinedByString:@"\n"];
-  v38 = [[CUIKSuggestionCoalescedInfo alloc] initWithTitle:v36 descriptionText:v37 earliestSuggestionNotification:v5];
+  v38 = [[CUIKSuggestionCoalescedInfo alloc] initWithTitle:v36 descriptionText:v37 earliestSuggestionNotification:firstObject];
 
   return v38;
 }

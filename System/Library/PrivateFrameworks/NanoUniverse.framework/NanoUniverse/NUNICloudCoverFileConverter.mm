@@ -1,8 +1,8 @@
 @interface NUNICloudCoverFileConverter
-- (BOOL)_combineFilesAt:(id)a3 to:(id)a4 error:(id *)a5;
-- (BOOL)_convertFileAt:(id)a3 to:(id)a4 error:(id *)a5;
-- (BOOL)combineFilesAt:(id)a3 to:(id)a4 error:(id *)a5;
-- (BOOL)convertFileAt:(id)a3 to:(id)a4 error:(id *)a5;
+- (BOOL)_combineFilesAt:(id)at to:(id)to error:(id *)error;
+- (BOOL)_convertFileAt:(id)at to:(id)to error:(id *)error;
+- (BOOL)combineFilesAt:(id)at to:(id)to error:(id *)error;
+- (BOOL)convertFileAt:(id)at to:(id)to error:(id *)error;
 - (NUNICloudCoverFileConverter)init;
 @end
 
@@ -23,10 +23,10 @@
   return v2;
 }
 
-- (BOOL)convertFileAt:(id)a3 to:(id)a4 error:(id *)a5
+- (BOOL)convertFileAt:(id)at to:(id)to error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  atCopy = at;
+  toCopy = to;
   v19 = 0;
   v20 = &v19;
   v21 = 0x2020000000;
@@ -37,12 +37,12 @@
   block[2] = __54__NUNICloudCoverFileConverter_convertFileAt_to_error___block_invoke;
   block[3] = &unk_27995F418;
   block[4] = self;
-  v15 = v8;
-  v16 = v9;
+  v15 = atCopy;
+  v16 = toCopy;
   v17 = &v19;
-  v18 = a5;
-  v11 = v9;
-  v12 = v8;
+  errorCopy = error;
+  v11 = toCopy;
+  v12 = atCopy;
   dispatch_sync(privateQueue, block);
   LOBYTE(privateQueue) = *(v20 + 24);
 
@@ -57,10 +57,10 @@ uint64_t __54__NUNICloudCoverFileConverter_convertFileAt_to_error___block_invoke
   return result;
 }
 
-- (BOOL)combineFilesAt:(id)a3 to:(id)a4 error:(id *)a5
+- (BOOL)combineFilesAt:(id)at to:(id)to error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  atCopy = at;
+  toCopy = to;
   v19 = 0;
   v20 = &v19;
   v21 = 0x2020000000;
@@ -71,12 +71,12 @@ uint64_t __54__NUNICloudCoverFileConverter_convertFileAt_to_error___block_invoke
   block[2] = __55__NUNICloudCoverFileConverter_combineFilesAt_to_error___block_invoke;
   block[3] = &unk_27995F418;
   block[4] = self;
-  v15 = v8;
-  v16 = v9;
+  v15 = atCopy;
+  v16 = toCopy;
   v17 = &v19;
-  v18 = a5;
-  v11 = v9;
-  v12 = v8;
+  errorCopy = error;
+  v11 = toCopy;
+  v12 = atCopy;
   dispatch_sync(privateQueue, block);
   LOBYTE(privateQueue) = *(v20 + 24);
 
@@ -91,10 +91,10 @@ uint64_t __55__NUNICloudCoverFileConverter_combineFilesAt_to_error___block_invok
   return result;
 }
 
-- (BOOL)_convertFileAt:(id)a3 to:(id)a4 error:(id *)a5
+- (BOOL)_convertFileAt:(id)at to:(id)to error:(id *)error
 {
-  v7 = a4;
-  v8 = _NUNICreateImageFromURL(a3, a5);
+  toCopy = to;
+  v8 = _NUNICreateImageFromURL(at, error);
   if (v8)
   {
     v9 = v8;
@@ -137,13 +137,13 @@ uint64_t __55__NUNICloudCoverFileConverter_combineFilesAt_to_error___block_invok
 
     while (v20 > 3);
     v21 = [objc_alloc(MEMORY[0x277CBEB28]) initWithLength:(v17 + 8)];
-    v22 = [v21 mutableBytes];
-    *v22 = 7;
-    *(v22 + 2) = ((v18 & 0x3F) << 8) | 9;
-    *(v22 + 4) = 134219776;
-    _NUNIGenerateAllMipmapsR8((v22 + 8), [v15 bytes]);
-    v23 = [v7 path];
-    v24 = [v21 writeToFile:v23 options:268435457 error:a5];
+    mutableBytes = [v21 mutableBytes];
+    *mutableBytes = 7;
+    *(mutableBytes + 2) = ((v18 & 0x3F) << 8) | 9;
+    *(mutableBytes + 4) = 134219776;
+    _NUNIGenerateAllMipmapsR8((mutableBytes + 8), [v15 bytes]);
+    path = [toCopy path];
+    v24 = [v21 writeToFile:path options:268435457 error:error];
   }
 
   else
@@ -154,19 +154,19 @@ uint64_t __55__NUNICloudCoverFileConverter_combineFilesAt_to_error___block_invok
   return v24;
 }
 
-- (BOOL)_combineFilesAt:(id)a3 to:(id)a4 error:(id *)a5
+- (BOOL)_combineFilesAt:(id)at to:(id)to error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  if ([v7 count])
+  atCopy = at;
+  toCopy = to;
+  if ([atCopy count])
   {
     v9 = 0;
     v10 = 0;
     v11 = 0;
     while (1)
     {
-      v12 = [v7 objectAtIndexedSubscript:v9];
-      v13 = _NUNICreateImageFromURL(v12, a5);
+      v12 = [atCopy objectAtIndexedSubscript:v9];
+      v13 = _NUNICreateImageFromURL(v12, error);
 
       if (!v13)
       {
@@ -186,7 +186,7 @@ uint64_t __55__NUNICloudCoverFileConverter_combineFilesAt_to_error___block_invok
       v10 = _NUNIEqualize(v16, Width, Height);
 
       _NUNIAddCloudLayer(v10, v11, Width, Height);
-      if ([v7 count] <= ++v9)
+      if ([atCopy count] <= ++v9)
       {
         goto LABEL_9;
       }
@@ -233,13 +233,13 @@ LABEL_9:
 
     while (v22 > 3);
     v23 = [objc_alloc(MEMORY[0x277CBEB28]) initWithLength:(v19 + 8)];
-    v24 = [v23 mutableBytes];
-    *v24 = 7;
-    *(v24 + 2) = ((v20 & 0x3F) << 8) | 9;
-    *(v24 + 4) = 134219776;
-    _NUNIGenerateAllMipmapsR8((v24 + 8), [v17 bytes]);
-    v25 = [v8 path];
-    v26 = [v23 writeToFile:v25 options:268435457 error:a5];
+    mutableBytes = [v23 mutableBytes];
+    *mutableBytes = 7;
+    *(mutableBytes + 2) = ((v20 & 0x3F) << 8) | 9;
+    *(mutableBytes + 4) = 134219776;
+    _NUNIGenerateAllMipmapsR8((mutableBytes + 8), [v17 bytes]);
+    path = [toCopy path];
+    v26 = [v23 writeToFile:path options:268435457 error:error];
 
     v11 = v17;
   }

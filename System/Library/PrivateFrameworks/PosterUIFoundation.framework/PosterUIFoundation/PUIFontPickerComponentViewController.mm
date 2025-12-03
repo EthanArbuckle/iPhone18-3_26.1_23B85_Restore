@@ -1,39 +1,39 @@
 @interface PUIFontPickerComponentViewController
-+ (id)defaultFontIdentifiersForRole:(id)a3 titleString:(id)a4;
-+ (id)defaultItemsForRole:(id)a3 text:(id)a4;
++ (id)defaultFontIdentifiersForRole:(id)role titleString:(id)string;
++ (id)defaultItemsForRole:(id)role text:(id)text;
 - (BOOL)_shouldShowWeightSlider;
-- (PUIFontPickerComponentViewController)initWithItems:(id)a3 selectedItem:(id)a4 role:(id)a5 titleString:(id)a6;
+- (PUIFontPickerComponentViewController)initWithItems:(id)items selectedItem:(id)item role:(id)role titleString:(id)string;
 - (PUIFontPickerComponentViewControllerDelegate)delegate;
 - (double)estimatedHeight;
 - (id)configureFontPickerViewIfNecessary;
-- (id)contentStringForFont:(id)a3 locale:(id)a4;
+- (id)contentStringForFont:(id)font locale:(id)locale;
 - (id)contentStringNumberFormatter;
 - (void)_updateWeightSliderVisibility;
 - (void)filterFontViewsByLocale;
-- (void)fontSliderDidUpdateWeight:(id)a3;
+- (void)fontSliderDidUpdateWeight:(id)weight;
 - (void)loadView;
-- (void)setFontWeight:(double)a3;
-- (void)setLocale:(id)a3;
+- (void)setFontWeight:(double)weight;
+- (void)setLocale:(id)locale;
 - (void)updateLayoutForCurrentSize;
 - (void)viewDidLayoutSubviews;
 @end
 
 @implementation PUIFontPickerComponentViewController
 
-+ (id)defaultFontIdentifiersForRole:(id)a3 titleString:(id)a4
++ (id)defaultFontIdentifiersForRole:(id)role titleString:(id)string
 {
   v14[4] = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  if ([a3 isEqual:*MEMORY[0x1E69C5218]])
+  stringCopy = string;
+  if ([role isEqual:*MEMORY[0x1E69C5218]])
   {
     v14[0] = @"PRTimeFontIdentifierSFPro";
     v14[1] = @"PRTimeFontIdentifierSFRounded";
     v14[2] = @"PRTimeFontIdentifierNewYorkAlpha";
     v14[3] = @"PRTimeFontIdentifierSFCondensed";
     v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:4];
-    if ([v5 length])
+    if ([stringCopy length])
     {
-      v7 = [getPRIncomingCallFontsProviderClass() timeFontIdentifiersForText:v5 availableFonts:v6];
+      v7 = [getPRIncomingCallFontsProviderClass() timeFontIdentifiersForText:stringCopy availableFonts:v6];
     }
 
     else
@@ -76,9 +76,9 @@
   return v10;
 }
 
-+ (id)defaultItemsForRole:(id)a3 text:(id)a4
++ (id)defaultItemsForRole:(id)role text:(id)text
 {
-  v4 = [a1 defaultFontIdentifiersForRole:a3 titleString:a4];
+  v4 = [self defaultFontIdentifiersForRole:role titleString:text];
   v5 = [v4 bs_map:&__block_literal_global_21];
 
   return v5;
@@ -94,37 +94,37 @@ PUIFontPickerItem *__65__PUIFontPickerComponentViewController_defaultItemsForRol
   return v4;
 }
 
-- (PUIFontPickerComponentViewController)initWithItems:(id)a3 selectedItem:(id)a4 role:(id)a5 titleString:(id)a6
+- (PUIFontPickerComponentViewController)initWithItems:(id)items selectedItem:(id)item role:(id)role titleString:(id)string
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  itemsCopy = items;
+  itemCopy = item;
+  roleCopy = role;
+  stringCopy = string;
   v21.receiver = self;
   v21.super_class = PUIFontPickerComponentViewController;
   v14 = [(PUIFontPickerComponentViewController *)&v21 init];
   if (v14)
   {
-    v15 = [v10 copy];
+    v15 = [itemsCopy copy];
     items = v14->_items;
     v14->_items = v15;
 
-    v17 = v11;
-    if (!v11)
+    firstObject = itemCopy;
+    if (!itemCopy)
     {
-      v17 = [v10 firstObject];
+      firstObject = [itemsCopy firstObject];
     }
 
-    objc_storeStrong(&v14->_selectedItem, v17);
-    if (!v11)
+    objc_storeStrong(&v14->_selectedItem, firstObject);
+    if (!itemCopy)
     {
     }
 
-    objc_storeStrong(&v14->_role, a5);
-    objc_storeStrong(&v14->_titleString, a6);
-    v18 = [MEMORY[0x1E695DF58] currentLocale];
+    objc_storeStrong(&v14->_role, role);
+    objc_storeStrong(&v14->_titleString, string);
+    currentLocale = [MEMORY[0x1E695DF58] currentLocale];
     locale = v14->_locale;
-    v14->_locale = v18;
+    v14->_locale = currentLocale;
 
     v14->_fontSize = 50.0;
   }
@@ -140,8 +140,8 @@ PUIFontPickerItem *__65__PUIFontPickerComponentViewController_defaultItemsForRol
   }
 
   v3 = contentStringNumberFormatter_numberFormatter;
-  v4 = [(PUIFontPickerComponentViewController *)self locale];
-  [v3 setLocale:v4];
+  locale = [(PUIFontPickerComponentViewController *)self locale];
+  [v3 setLocale:locale];
 
   v5 = contentStringNumberFormatter_numberFormatter;
 
@@ -159,27 +159,27 @@ uint64_t __68__PUIFontPickerComponentViewController_contentStringNumberFormatter
   return [v2 setNumberStyle:1];
 }
 
-- (id)contentStringForFont:(id)a3 locale:(id)a4
+- (id)contentStringForFont:(id)font locale:(id)locale
 {
   v27[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
-  v9 = [(PUIFontPickerComponentViewController *)self role];
-  v10 = [v9 isEqualToString:*MEMORY[0x1E69C5218]];
+  fontCopy = font;
+  localeCopy = locale;
+  v8 = fontCopy;
+  role = [(PUIFontPickerComponentViewController *)self role];
+  v10 = [role isEqualToString:*MEMORY[0x1E69C5218]];
 
   if (v10)
   {
     v11 = [getPRIncomingCallFontsProviderClass() sampleStringForFont:v8 displayingText:self->_titleString];
-    v13 = v12;
+    contentStringNumberFormatter = v12;
 
-    v14 = v13;
+    v14 = contentStringNumberFormatter;
   }
 
   else
   {
-    v13 = [(PUIFontPickerComponentViewController *)self contentStringNumberFormatter];
-    v11 = [v13 stringFromNumber:&unk_1F1C92928];
+    contentStringNumberFormatter = [(PUIFontPickerComponentViewController *)self contentStringNumberFormatter];
+    v11 = [contentStringNumberFormatter stringFromNumber:&unk_1F1C92928];
     v14 = v8;
   }
 
@@ -191,8 +191,8 @@ uint64_t __68__PUIFontPickerComponentViewController_contentStringNumberFormatter
   v18 = [v16 dictionaryWithDictionary:v17];
 
   v19 = MEMORY[0x1E695DF58];
-  v20 = [v7 localeIdentifier];
-  v21 = [v19 componentsFromLocaleIdentifier:v20];
+  localeIdentifier = [localeCopy localeIdentifier];
+  v21 = [v19 componentsFromLocaleIdentifier:localeIdentifier];
   v22 = [v21 objectForKeyedSubscript:@"numbers"];
 
   if (PUINumberingSystemTypeRequiresLanguageTagging(v22))
@@ -210,7 +210,7 @@ uint64_t __68__PUIFontPickerComponentViewController_contentStringNumberFormatter
 {
   v45[1] = *MEMORY[0x1E69E9840];
   v3 = objc_alloc_init(MEMORY[0x1E69DD250]);
-  v4 = [(PUIFontPickerComponentViewController *)self configureFontPickerViewIfNecessary];
+  configureFontPickerViewIfNecessary = [(PUIFontPickerComponentViewController *)self configureFontPickerViewIfNecessary];
   v5 = objc_alloc_init(PUIStyleFontWeightSlider);
   fontWeightSlider = self->_fontWeightSlider;
   self->_fontWeightSlider = &v5->super;
@@ -218,9 +218,9 @@ uint64_t __68__PUIFontPickerComponentViewController_contentStringNumberFormatter
   [(UISlider *)self->_fontWeightSlider addTarget:self action:sel_fontSliderDidUpdateWeight_ forControlEvents:4096];
   [(UISlider *)self->_fontWeightSlider setHidden:[(PUIFontPickerComponentViewController *)self _shouldShowWeightSlider]^ 1];
   v7 = self->_fontWeightSlider;
-  v8 = [(PUIFontPickerComponentViewController *)self _shouldShowWeightSlider];
+  _shouldShowWeightSlider = [(PUIFontPickerComponentViewController *)self _shouldShowWeightSlider];
   v9 = 0.0;
-  if (v8)
+  if (_shouldShowWeightSlider)
   {
     v9 = 1.0;
   }
@@ -236,10 +236,10 @@ uint64_t __68__PUIFontPickerComponentViewController_contentStringNumberFormatter
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v45 count:1];
   v14 = [v12 arrayWithArray:v13];
 
-  if (v4)
+  if (configureFontPickerViewIfNecessary)
   {
-    [v3 addSubview:v4];
-    [v14 insertObject:v4 atIndex:0];
+    [v3 addSubview:configureFontPickerViewIfNecessary];
+    [v14 insertObject:configureFontPickerViewIfNecessary atIndex:0];
   }
 
   v41 = v14;
@@ -250,40 +250,40 @@ uint64_t __68__PUIFontPickerComponentViewController_contentStringNumberFormatter
   [v15 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v3 addSubview:v15];
   v33 = MEMORY[0x1E696ACD8];
-  v40 = [v15 leadingAnchor];
-  v39 = [v3 leadingAnchor];
-  v38 = [v40 constraintEqualToAnchor:v39];
+  leadingAnchor = [v15 leadingAnchor];
+  leadingAnchor2 = [v3 leadingAnchor];
+  v38 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v44[0] = v38;
-  v37 = [v15 trailingAnchor];
-  v36 = [v3 trailingAnchor];
-  v35 = [v37 constraintEqualToAnchor:v36];
+  trailingAnchor = [v15 trailingAnchor];
+  trailingAnchor2 = [v3 trailingAnchor];
+  v35 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v44[1] = v35;
-  v34 = [v15 topAnchor];
-  v32 = [v3 topAnchor];
-  v31 = [v34 constraintEqualToAnchor:v32];
+  topAnchor = [v15 topAnchor];
+  topAnchor2 = [v3 topAnchor];
+  v31 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v44[2] = v31;
-  v30 = [v15 bottomAnchor];
+  bottomAnchor = [v15 bottomAnchor];
   v42 = v3;
-  v29 = [v3 bottomAnchor];
-  v16 = [v30 constraintEqualToAnchor:v29];
+  bottomAnchor2 = [v3 bottomAnchor];
+  v16 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v44[3] = v16;
-  v17 = [(UISlider *)self->_fontWeightSlider widthAnchor];
-  v18 = [v15 widthAnchor];
-  v19 = [v17 constraintEqualToAnchor:v18 constant:-72.0];
+  widthAnchor = [(UISlider *)self->_fontWeightSlider widthAnchor];
+  widthAnchor2 = [v15 widthAnchor];
+  v19 = [widthAnchor constraintEqualToAnchor:widthAnchor2 constant:-72.0];
   v44[4] = v19;
-  v20 = [(UISlider *)self->_fontWeightSlider heightAnchor];
-  v21 = [v20 constraintEqualToConstant:34.0];
+  heightAnchor = [(UISlider *)self->_fontWeightSlider heightAnchor];
+  v21 = [heightAnchor constraintEqualToConstant:34.0];
   v44[5] = v21;
   [MEMORY[0x1E695DEC8] arrayWithObjects:v44 count:6];
-  v23 = v22 = v4;
+  v23 = v22 = configureFontPickerViewIfNecessary;
   [v33 activateConstraints:v23];
 
   if (v22)
   {
     v24 = MEMORY[0x1E696ACD8];
-    v25 = [v22 widthAnchor];
-    v26 = [v15 widthAnchor];
-    v27 = [v25 constraintEqualToAnchor:v26];
+    widthAnchor3 = [v22 widthAnchor];
+    widthAnchor4 = [v15 widthAnchor];
+    v27 = [widthAnchor3 constraintEqualToAnchor:widthAnchor4];
     v43 = v27;
     v28 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v43 count:1];
     [v24 activateConstraints:v28];
@@ -297,8 +297,8 @@ uint64_t __68__PUIFontPickerComponentViewController_contentStringNumberFormatter
 - (id)configureFontPickerViewIfNecessary
 {
   v58 = *MEMORY[0x1E69E9840];
-  v3 = [(PUIFontPickerComponentViewController *)self items];
-  v4 = [v3 count];
+  items = [(PUIFontPickerComponentViewController *)self items];
+  v4 = [items count];
 
   if (v4 > 1)
   {
@@ -308,12 +308,12 @@ uint64_t __68__PUIFontPickerComponentViewController_contentStringNumberFormatter
     v54 = 0u;
     v51 = 0u;
     v52 = 0u;
-    v6 = [(PUIFontPickerComponentViewController *)self items];
-    v7 = [v6 countByEnumeratingWithState:&v51 objects:v57 count:16];
+    items2 = [(PUIFontPickerComponentViewController *)self items];
+    v7 = [items2 countByEnumeratingWithState:&v51 objects:v57 count:16];
     if (v7)
     {
       v8 = *v52;
-      obj = v6;
+      obj = items2;
       do
       {
         for (i = 0; i != v7; ++i)
@@ -324,12 +324,12 @@ uint64_t __68__PUIFontPickerComponentViewController_contentStringNumberFormatter
           }
 
           v10 = *(*(&v51 + 1) + 8 * i);
-          v11 = [v10 font];
-          v12 = [v11 effectiveFontForRole:self->_role ignoringWeight:1];
+          font = [v10 font];
+          v12 = [font effectiveFontForRole:self->_role ignoringWeight:1];
           v13 = [v12 fontWithSize:self->_fontSize];
 
-          v14 = [(PUIFontPickerComponentViewController *)self locale];
-          v15 = [(PUIFontPickerComponentViewController *)self contentStringForFont:v13 locale:v14];
+          locale = [(PUIFontPickerComponentViewController *)self locale];
+          v15 = [(PUIFontPickerComponentViewController *)self contentStringForFont:v13 locale:locale];
 
           largestItemHeight = self->_largestItemHeight;
           [v15 size];
@@ -344,8 +344,8 @@ uint64_t __68__PUIFontPickerComponentViewController_contentStringNumberFormatter
           }
 
           self->_largestItemHeight = v18;
-          v19 = [(PUIFontPickerComponentViewController *)self role];
-          v20 = objc_alloc_init([PUIStyleFontPickerButton fontPickerButtonClassForRole:v19]);
+          role = [(PUIFontPickerComponentViewController *)self role];
+          v20 = objc_alloc_init([PUIStyleFontPickerButton fontPickerButtonClassForRole:role]);
 
           [v20 configureWithAttributedString:v15];
           objc_initWeak(&from, v20);
@@ -373,7 +373,7 @@ uint64_t __68__PUIFontPickerComponentViewController_contentStringNumberFormatter
           objc_destroyWeak(&from);
         }
 
-        v6 = obj;
+        items2 = obj;
         v7 = [obj countByEnumeratingWithState:&v51 objects:v57 count:16];
       }
 
@@ -381,14 +381,14 @@ uint64_t __68__PUIFontPickerComponentViewController_contentStringNumberFormatter
     }
 
     [(PUIFontPickerComponentViewController *)self setCellViews:v46];
-    v23 = [MEMORY[0x1E695DF70] array];
-    [v23 addObjectsFromArray:v46];
-    v24 = [objc_alloc(MEMORY[0x1E69DCF90]) initWithArrangedSubviews:v23];
+    array = [MEMORY[0x1E695DF70] array];
+    [array addObjectsFromArray:v46];
+    v24 = [objc_alloc(MEMORY[0x1E69DCF90]) initWithArrangedSubviews:array];
     [v24 setAxis:0];
     [v24 setAlignment:1];
     [v24 setSpacing:20.0];
     [v24 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v34 = v23;
+    v34 = array;
     v5 = objc_alloc_init(MEMORY[0x1E69DCEF8]);
     [v5 setContentInset:{0.0, 36.0, 0.0, 36.0}];
     [v5 setShowsVerticalScrollIndicator:0];
@@ -399,31 +399,31 @@ uint64_t __68__PUIFontPickerComponentViewController_contentStringNumberFormatter
     if ([v24 effectiveUserInterfaceLayoutDirection] == 1)
     {
       CGAffineTransformMakeRotation(&from, 3.14159265);
-      [v24 setTransform:{&from, v23}];
+      [v24 setTransform:{&from, array}];
       CGAffineTransformMakeRotation(&from, 3.14159265);
       [v5 setTransform:&from];
     }
 
     v36 = MEMORY[0x1E696ACD8];
     obja = [v24 leadingAnchor];
-    v43 = [v5 leadingAnchor];
-    v42 = [obja constraintEqualToAnchor:v43];
+    leadingAnchor = [v5 leadingAnchor];
+    v42 = [obja constraintEqualToAnchor:leadingAnchor];
     v56[0] = v42;
-    v41 = [v24 trailingAnchor];
-    v40 = [v5 trailingAnchor];
-    v39 = [v41 constraintEqualToAnchor:v40];
+    trailingAnchor = [v24 trailingAnchor];
+    trailingAnchor2 = [v5 trailingAnchor];
+    v39 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v56[1] = v39;
-    v38 = [v24 topAnchor];
-    v37 = [v5 topAnchor];
-    v25 = [v38 constraintEqualToAnchor:v37];
+    topAnchor = [v24 topAnchor];
+    topAnchor2 = [v5 topAnchor];
+    v25 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v56[2] = v25;
-    v26 = [v24 bottomAnchor];
-    v27 = [v5 bottomAnchor];
-    v28 = [v26 constraintEqualToAnchor:v27];
+    bottomAnchor = [v24 bottomAnchor];
+    bottomAnchor2 = [v5 bottomAnchor];
+    v28 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v56[3] = v28;
-    v29 = [v24 heightAnchor];
-    v30 = [v5 heightAnchor];
-    v31 = [v29 constraintEqualToAnchor:v30];
+    heightAnchor = [v24 heightAnchor];
+    heightAnchor2 = [v5 heightAnchor];
+    v31 = [heightAnchor constraintEqualToAnchor:heightAnchor2];
     v56[4] = v31;
     v32 = [MEMORY[0x1E695DEC8] arrayWithObjects:v56 count:5];
     [v36 activateConstraints:v32];
@@ -474,23 +474,23 @@ void __74__PUIFontPickerComponentViewController_configureFontPickerViewIfNecessa
   [WeakRetained _updateWeightSliderVisibility];
 }
 
-- (void)setFontWeight:(double)a3
+- (void)setFontWeight:(double)weight
 {
-  if (self->_fontWeight != a3)
+  if (self->_fontWeight != weight)
   {
-    self->_fontWeight = a3;
-    *&a3 = a3;
-    [(UISlider *)self->_fontWeightSlider setValue:a3];
+    self->_fontWeight = weight;
+    *&weight = weight;
+    [(UISlider *)self->_fontWeightSlider setValue:weight];
   }
 }
 
-- (void)fontSliderDidUpdateWeight:(id)a3
+- (void)fontSliderDidUpdateWeight:(id)weight
 {
-  v4 = a3;
-  [v4 value];
+  weightCopy = weight;
+  [weightCopy value];
   self->_fontWeight = v5;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [v4 value];
+  [weightCopy value];
   v7 = v6;
 
   [WeakRetained fontPickerComponentViewController:self didChangeFontWeight:v7];
@@ -498,7 +498,7 @@ void __74__PUIFontPickerComponentViewController_configureFontPickerViewIfNecessa
 
 - (BOOL)_shouldShowWeightSlider
 {
-  v3 = [(PUIFontPickerComponentViewController *)self delegate];
+  delegate = [(PUIFontPickerComponentViewController *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if ((v4 & 1) == 0)
@@ -506,30 +506,30 @@ void __74__PUIFontPickerComponentViewController_configureFontPickerViewIfNecessa
     return 0;
   }
 
-  v5 = [(PUIFontPickerComponentViewController *)self delegate];
-  v6 = [v5 fontPickerComponentViewControllerShouldShowWeightSliderForSelectedFont:self];
+  delegate2 = [(PUIFontPickerComponentViewController *)self delegate];
+  v6 = [delegate2 fontPickerComponentViewControllerShouldShowWeightSliderForSelectedFont:self];
 
   return v6;
 }
 
 - (void)_updateWeightSliderVisibility
 {
-  v3 = [(PUIFontPickerComponentViewController *)self _shouldShowWeightSlider];
+  _shouldShowWeightSlider = [(PUIFontPickerComponentViewController *)self _shouldShowWeightSlider];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __69__PUIFontPickerComponentViewController__updateWeightSliderVisibility__block_invoke;
   v11[3] = &unk_1E7855740;
   v11[4] = self;
-  v12 = v3;
+  v12 = _shouldShowWeightSlider;
   v4 = MEMORY[0x1AC5769F0](v11);
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __69__PUIFontPickerComponentViewController__updateWeightSliderVisibility__block_invoke_2;
   v9[3] = &unk_1E7855740;
   v9[4] = self;
-  v10 = v3;
+  v10 = _shouldShowWeightSlider;
   v5 = MEMORY[0x1AC5769F0](v9);
-  if (v3)
+  if (_shouldShowWeightSlider)
   {
     v4[2](v4);
     [MEMORY[0x1E69DD250] animateWithDuration:0 delay:v5 options:0 animations:0.15 completion:0.3];
@@ -578,30 +578,30 @@ void __69__PUIFontPickerComponentViewController__updateWeightSliderVisibility__b
 - (void)updateLayoutForCurrentSize
 {
   v49 = *MEMORY[0x1E69E9840];
-  v3 = [(PUIFontPickerComponentViewController *)self isUsingSmallerSizing];
+  isUsingSmallerSizing = [(PUIFontPickerComponentViewController *)self isUsingSmallerSizing];
   v4 = MEMORY[0x1E696ACD8];
-  v5 = [(PUIFontPickerComponentViewController *)self widthCellConstraints];
-  [v4 deactivateConstraints:v5];
+  widthCellConstraints = [(PUIFontPickerComponentViewController *)self widthCellConstraints];
+  [v4 deactivateConstraints:widthCellConstraints];
 
   v6 = MEMORY[0x1E696ACD8];
-  v7 = [(PUIFontPickerComponentViewController *)self heightCellConstraints];
-  [v6 deactivateConstraints:v7];
+  heightCellConstraints = [(PUIFontPickerComponentViewController *)self heightCellConstraints];
+  [v6 deactivateConstraints:heightCellConstraints];
 
   v8 = 52.0;
-  if (v3)
+  if (isUsingSmallerSizing)
   {
     v8 = 50.0;
   }
 
   self->_fontSize = v8;
-  v43 = [MEMORY[0x1E695DF70] array];
-  v42 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
-  v9 = [(PUIFontPickerComponentViewController *)self cellViews];
-  v10 = [v9 countByEnumeratingWithState:&v44 objects:v48 count:16];
+  cellViews = [(PUIFontPickerComponentViewController *)self cellViews];
+  v10 = [cellViews countByEnumeratingWithState:&v44 objects:v48 count:16];
   if (v10)
   {
     v11 = v10;
@@ -612,55 +612,55 @@ void __69__PUIFontPickerComponentViewController__updateWeightSliderVisibility__b
       {
         if (*v45 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(cellViews);
         }
 
         v14 = *(*(&v44 + 1) + 8 * i);
-        v15 = [v14 contentFont];
-        v16 = [(PUIFontPickerComponentViewController *)self locale];
-        v17 = [(PUIFontPickerComponentViewController *)self contentStringForFont:v15 locale:v16];
+        contentFont = [v14 contentFont];
+        locale = [(PUIFontPickerComponentViewController *)self locale];
+        v17 = [(PUIFontPickerComponentViewController *)self contentStringForFont:contentFont locale:locale];
 
         [v14 configureWithAttributedString:v17];
-        [v14 setUsingSmallerSizing:v3];
-        v18 = [v14 widthCellConstraint];
-        [v43 addObject:v18];
+        [v14 setUsingSmallerSizing:isUsingSmallerSizing];
+        widthCellConstraint = [v14 widthCellConstraint];
+        [array addObject:widthCellConstraint];
 
-        v19 = [v14 heightCellConstraint];
-        [v42 addObject:v19];
+        heightCellConstraint = [v14 heightCellConstraint];
+        [array2 addObject:heightCellConstraint];
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v44 objects:v48 count:16];
+      v11 = [cellViews countByEnumeratingWithState:&v44 objects:v48 count:16];
     }
 
     while (v11);
   }
 
-  v20 = [v43 copy];
+  v20 = [array copy];
   widthCellConstraints = self->_widthCellConstraints;
   self->_widthCellConstraints = v20;
 
-  v22 = [v42 copy];
+  v22 = [array2 copy];
   heightCellConstraints = self->_heightCellConstraints;
   self->_heightCellConstraints = v22;
 
   if ([(PUIFontPickerComponentViewController *)self isViewLoaded])
   {
-    v24 = [(PUIFontPickerComponentViewController *)self view];
-    [v24 bounds];
+    view = [(PUIFontPickerComponentViewController *)self view];
+    [view bounds];
     v26 = v25;
 
     if (self->_configuredViewWidth != v26)
     {
-      v27 = [(PUIFontPickerComponentViewController *)self role];
-      v28 = [PUIStyleFontPickerButton fontPickerButtonClassForRole:v27];
+      role = [(PUIFontPickerComponentViewController *)self role];
+      v28 = [PUIStyleFontPickerButton fontPickerButtonClassForRole:role];
 
-      [(objc_class *)v28 defaultFontPickerButtonSizeUsingSmallerSizing:v3];
+      [(objc_class *)v28 defaultFontPickerButtonSizeUsingSmallerSizing:isUsingSmallerSizing];
       v30 = v26 - v29;
-      v31 = [(PUIFontPickerComponentViewController *)self stackViewLeadingConstraint];
-      [v31 constant];
+      stackViewLeadingConstraint = [(PUIFontPickerComponentViewController *)self stackViewLeadingConstraint];
+      [stackViewLeadingConstraint constant];
       v33 = v32;
-      v34 = [(PUIFontPickerComponentViewController *)self stackViewTrailingConstraint];
-      [v34 constant];
+      stackViewTrailingConstraint = [(PUIFontPickerComponentViewController *)self stackViewTrailingConstraint];
+      [stackViewTrailingConstraint constant];
       v36 = v33 - v35;
 
       if (v30 >= v36)
@@ -673,8 +673,8 @@ void __69__PUIFontPickerComponentViewController__updateWeightSliderVisibility__b
         v37 = v30 * 0.5;
       }
 
-      v38 = [(PUIFontPickerComponentViewController *)self stackViewLeadingConstraint];
-      v39 = v38;
+      stackViewLeadingConstraint2 = [(PUIFontPickerComponentViewController *)self stackViewLeadingConstraint];
+      v39 = stackViewLeadingConstraint2;
       if (v37 >= 0.0)
       {
         v40 = v37;
@@ -685,10 +685,10 @@ void __69__PUIFontPickerComponentViewController__updateWeightSliderVisibility__b
         v40 = 0.0;
       }
 
-      [v38 setConstant:v40];
+      [stackViewLeadingConstraint2 setConstant:v40];
 
-      v41 = [(PUIFontPickerComponentViewController *)self stackViewTrailingConstraint];
-      [v41 setConstant:{fmin(-v37, 0.0)}];
+      stackViewTrailingConstraint2 = [(PUIFontPickerComponentViewController *)self stackViewTrailingConstraint];
+      [stackViewTrailingConstraint2 setConstant:{fmin(-v37, 0.0)}];
 
       self->_configuredViewWidth = v26;
     }
@@ -700,8 +700,8 @@ void __69__PUIFontPickerComponentViewController__updateWeightSliderVisibility__b
   v8.receiver = self;
   v8.super_class = PUIFontPickerComponentViewController;
   [(PUIFontPickerComponentViewController *)&v8 viewDidLayoutSubviews];
-  v3 = [(PUIFontPickerComponentViewController *)self view];
-  [v3 bounds];
+  view = [(PUIFontPickerComponentViewController *)self view];
+  [view bounds];
   v5 = v4;
 
   if (v5 > 375.0)
@@ -721,8 +721,8 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v7 = [MEMORY[0x1E69DC938] currentDevice];
-  v6 = [v7 userInterfaceIdiom] != 1;
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  v6 = [currentDevice userInterfaceIdiom] != 1;
 
   if (((v6 ^ [(PUIFontPickerComponentViewController *)self isUsingSmallerSizing]) & 1) == 0)
   {
@@ -734,19 +734,19 @@ LABEL_6:
   [(PUIFontPickerComponentViewController *)self updateLayoutForCurrentSize];
 }
 
-- (void)setLocale:(id)a3
+- (void)setLocale:(id)locale
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (self->_locale != v5)
+  localeCopy = locale;
+  if (self->_locale != localeCopy)
   {
-    objc_storeStrong(&self->_locale, a3);
+    objc_storeStrong(&self->_locale, locale);
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v6 = [(PUIFontPickerComponentViewController *)self cellViews];
-    v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    cellViews = [(PUIFontPickerComponentViewController *)self cellViews];
+    v7 = [cellViews countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v7)
     {
       v8 = v7;
@@ -757,19 +757,19 @@ LABEL_6:
         {
           if (*v16 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(cellViews);
           }
 
           v11 = *(*(&v15 + 1) + 8 * i);
-          v12 = [v11 contentFont];
-          v13 = [(PUIFontPickerComponentViewController *)self locale];
-          v14 = [(PUIFontPickerComponentViewController *)self contentStringForFont:v12 locale:v13];
+          contentFont = [v11 contentFont];
+          locale = [(PUIFontPickerComponentViewController *)self locale];
+          v14 = [(PUIFontPickerComponentViewController *)self contentStringForFont:contentFont locale:locale];
 
           [v11 configureWithAttributedString:v14];
           [v11 invalidateIntrinsicContentSize];
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v8 = [cellViews countByEnumeratingWithState:&v15 objects:v19 count:16];
       }
 
       while (v8);
@@ -806,21 +806,21 @@ LABEL_6:
           }
 
           v8 = *(*(&v20 + 1) + 8 * i);
-          v9 = [v8 contentFont];
-          v10 = [(PUIFontPickerComponentViewController *)self locale];
-          v11 = [(PUIFontPickerComponentViewController *)self contentStringForFont:v9 locale:v10];
-          v12 = [v11 string];
+          contentFont = [v8 contentFont];
+          locale = [(PUIFontPickerComponentViewController *)self locale];
+          v11 = [(PUIFontPickerComponentViewController *)self contentStringForFont:contentFont locale:locale];
+          string = [v11 string];
 
-          v13 = [v8 contentFont];
-          v14 = [v13 fontDescriptor];
-          v15 = [v14 objectForKey:v6];
+          contentFont2 = [v8 contentFont];
+          fontDescriptor = [contentFont2 fontDescriptor];
+          v15 = [fontDescriptor objectForKey:v6];
 
-          if ([v12 length])
+          if ([string length])
           {
             v16 = 0;
             do
             {
-              v17 = [v15 characterIsMember:{objc_msgSend(v12, "characterAtIndex:", v16)}];
+              v17 = [v15 characterIsMember:{objc_msgSend(string, "characterAtIndex:", v16)}];
               if ((v17 & 1) == 0)
               {
                 break;
@@ -829,7 +829,7 @@ LABEL_6:
               ++v16;
             }
 
-            while (v16 < [v12 length]);
+            while (v16 < [string length]);
           }
 
           else
@@ -866,9 +866,9 @@ LABEL_6:
 {
   if (([(PUIFontPickerComponentViewController *)self isViewLoaded]& 1) == 0 && [(NSArray *)self->_items count]>= 2)
   {
-    v3 = [(PUIFontPickerComponentViewController *)self isUsingSmallerSizing];
+    isUsingSmallerSizing = [(PUIFontPickerComponentViewController *)self isUsingSmallerSizing];
     v4 = 64.0;
-    if (v3)
+    if (isUsingSmallerSizing)
     {
       v4 = 62.0;
     }

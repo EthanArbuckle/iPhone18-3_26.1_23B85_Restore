@@ -1,11 +1,11 @@
 @interface _UINavigationControllerRefreshControlHost
-+ (BOOL)canHostRefreshControlOwnedByScrollView:(id)a3 inNavigationController:(id)a4;
-- (BOOL)isHostingRefreshControlOwnedByScrollView:(id)a3;
++ (BOOL)canHostRefreshControlOwnedByScrollView:(id)view inNavigationController:(id)controller;
+- (BOOL)isHostingRefreshControlOwnedByScrollView:(id)view;
 - (NSString)description;
 - (UINavigationController)navigationController;
 - (UIRefreshControl)refreshControl;
 - (UIScrollView)scrollView;
-- (_UINavigationControllerRefreshControlHost)initWithNavigationController:(id)a3 scrollView:(id)a4;
+- (_UINavigationControllerRefreshControlHost)initWithNavigationController:(id)controller scrollView:(id)view;
 - (_UINavigationControllerRefreshControlHostDelegate)delegate;
 - (double)_alphaForRefreshingControlStateWithPossiblyObstructedContent;
 - (double)_thresholdForObstructedContentFullAlpha;
@@ -16,12 +16,12 @@
 - (void)_removeRefreshControlFromContainerView;
 - (void)_updateFadeOutProgress;
 - (void)dealloc;
-- (void)decrementInsetHeight:(double)a3;
-- (void)incrementInsetHeight:(double)a3;
-- (void)refreshControl:(id)a3 didChangeToState:(int64_t)a4 fromState:(int64_t)a5;
-- (void)setHostContainerView:(id)a3;
-- (void)setRestingHeightOfRefreshControl:(double)a3;
-- (void)setUnobstructedHeight:(double)a3;
+- (void)decrementInsetHeight:(double)height;
+- (void)incrementInsetHeight:(double)height;
+- (void)refreshControl:(id)control didChangeToState:(int64_t)state fromState:(int64_t)fromState;
+- (void)setHostContainerView:(id)view;
+- (void)setRestingHeightOfRefreshControl:(double)control;
+- (void)setUnobstructedHeight:(double)height;
 - (void)stopAnimations;
 @end
 
@@ -29,11 +29,11 @@
 
 - (void)_removeRefreshControlFromContainerView
 {
-  v3 = [(_UINavigationControllerRefreshControlHost *)self refreshControl];
-  if (v3)
+  refreshControl = [(_UINavigationControllerRefreshControlHost *)self refreshControl];
+  if (refreshControl)
   {
-    v6 = v3;
-    [v3 removeFromSuperview];
+    v6 = refreshControl;
+    [refreshControl removeFromSuperview];
     WeakRetained = objc_loadWeakRetained(&self->_scrollView);
     [WeakRetained _removeScrollViewScrollObserver:v6];
 
@@ -41,7 +41,7 @@
     refreshControlConstraints = self->_refreshControlConstraints;
     self->_refreshControlConstraints = 0;
 
-    v3 = v6;
+    refreshControl = v6;
   }
 }
 
@@ -54,39 +54,39 @@
 
 - (void)_installRefreshControlIntoContainerView
 {
-  v18 = [(_UINavigationControllerRefreshControlHost *)self refreshControl];
+  refreshControl = [(_UINavigationControllerRefreshControlHost *)self refreshControl];
   WeakRetained = objc_loadWeakRetained(&self->_refreshControl);
 
   if (WeakRetained)
   {
-    v4 = [MEMORY[0x1E695DF70] array];
-    v5 = [v18 heightAnchor];
-    v6 = [v5 constraintEqualToConstant:60.0];
-    [(NSArray *)v4 addObject:v6];
+    array = [MEMORY[0x1E695DF70] array];
+    heightAnchor = [refreshControl heightAnchor];
+    v6 = [heightAnchor constraintEqualToConstant:60.0];
+    [(NSArray *)array addObject:v6];
 
-    v7 = [v18 centerYAnchor];
-    v8 = [(UIView *)self->_hostContainerView centerYAnchor];
-    v9 = [v7 constraintEqualToAnchor:v8];
-    [(NSArray *)v4 addObject:v9];
+    centerYAnchor = [refreshControl centerYAnchor];
+    centerYAnchor2 = [(UIView *)self->_hostContainerView centerYAnchor];
+    v9 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
+    [(NSArray *)array addObject:v9];
 
-    v10 = [v18 leftAnchor];
-    v11 = [(UIView *)self->_hostContainerView leftAnchor];
-    v12 = [v10 constraintEqualToAnchor:v11];
-    [(NSArray *)v4 addObject:v12];
+    leftAnchor = [refreshControl leftAnchor];
+    leftAnchor2 = [(UIView *)self->_hostContainerView leftAnchor];
+    v12 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
+    [(NSArray *)array addObject:v12];
 
-    v13 = [v18 rightAnchor];
-    v14 = [(UIView *)self->_hostContainerView rightAnchor];
-    v15 = [v13 constraintEqualToAnchor:v14];
-    [(NSArray *)v4 addObject:v15];
+    rightAnchor = [refreshControl rightAnchor];
+    rightAnchor2 = [(UIView *)self->_hostContainerView rightAnchor];
+    v15 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
+    [(NSArray *)array addObject:v15];
 
-    [v18 setTranslatesAutoresizingMaskIntoConstraints:0];
-    [(UIView *)self->_hostContainerView addSubview:v18];
-    [MEMORY[0x1E69977A0] activateConstraints:v4];
+    [refreshControl setTranslatesAutoresizingMaskIntoConstraints:0];
+    [(UIView *)self->_hostContainerView addSubview:refreshControl];
+    [MEMORY[0x1E69977A0] activateConstraints:array];
     refreshControlConstraints = self->_refreshControlConstraints;
-    self->_refreshControlConstraints = v4;
+    self->_refreshControlConstraints = array;
 
     v17 = objc_loadWeakRetained(&self->_scrollView);
-    [v17 _addScrollViewScrollObserver:v18];
+    [v17 _addScrollViewScrollObserver:refreshControl];
   }
 }
 
@@ -106,14 +106,14 @@
   return v4;
 }
 
-- (_UINavigationControllerRefreshControlHost)initWithNavigationController:(id)a3 scrollView:(id)a4
+- (_UINavigationControllerRefreshControlHost)initWithNavigationController:(id)controller scrollView:(id)view
 {
-  v7 = a3;
-  v8 = a4;
-  if (([objc_opt_class() canHostRefreshControlOwnedByScrollView:v8 inNavigationController:v7] & 1) == 0)
+  controllerCopy = controller;
+  viewCopy = view;
+  if (([objc_opt_class() canHostRefreshControlOwnedByScrollView:viewCopy inNavigationController:controllerCopy] & 1) == 0)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"_UINavigationControllerRefreshControlHost.m" lineNumber:26 description:@"invalid parameters"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UINavigationControllerRefreshControlHost.m" lineNumber:26 description:@"invalid parameters"];
   }
 
   v15.receiver = self;
@@ -122,10 +122,10 @@
   v10 = v9;
   if (v9)
   {
-    objc_storeWeak(&v9->_navigationController, v7);
-    objc_storeWeak(&v10->_scrollView, v8);
-    v11 = [v8 refreshControl];
-    objc_storeWeak(&v10->_refreshControl, v11);
+    objc_storeWeak(&v9->_navigationController, controllerCopy);
+    objc_storeWeak(&v10->_scrollView, viewCopy);
+    refreshControl = [viewCopy refreshControl];
+    objc_storeWeak(&v10->_refreshControl, refreshControl);
 
     WeakRetained = objc_loadWeakRetained(&v10->_refreshControl);
     [WeakRetained _setHost:v10];
@@ -136,9 +136,9 @@
   return v10;
 }
 
-- (void)setRestingHeightOfRefreshControl:(double)a3
+- (void)setRestingHeightOfRefreshControl:(double)control
 {
-  v3 = fmax(a3, 0.0);
+  v3 = fmax(control, 0.0);
   if (self->_restingHeightOfRefreshControl != v3)
   {
     self->_restingHeightOfRefreshControl = v3;
@@ -207,41 +207,41 @@
   [UIView performWithoutAnimation:v2];
 }
 
-+ (BOOL)canHostRefreshControlOwnedByScrollView:(id)a3 inNavigationController:(id)a4
++ (BOOL)canHostRefreshControlOwnedByScrollView:(id)view inNavigationController:(id)controller
 {
-  v5 = a3;
-  v6 = [a4 navigationBar];
-  if ([v6 supportsRefreshControlHosting])
+  viewCopy = view;
+  navigationBar = [controller navigationBar];
+  if ([navigationBar supportsRefreshControlHosting])
   {
-    v7 = [v5 refreshControl];
-    if (v7)
+    refreshControl = [viewCopy refreshControl];
+    if (refreshControl)
     {
-      v8 = [v6 _hasVariableHeight];
+      _hasVariableHeight = [navigationBar _hasVariableHeight];
     }
 
     else
     {
-      v8 = 0;
+      _hasVariableHeight = 0;
     }
   }
 
   else
   {
-    v8 = 0;
+    _hasVariableHeight = 0;
   }
 
-  return v8;
+  return _hasVariableHeight;
 }
 
-- (BOOL)isHostingRefreshControlOwnedByScrollView:(id)a3
+- (BOOL)isHostingRefreshControlOwnedByScrollView:(id)view
 {
-  v4 = a3;
-  v5 = [(_UINavigationControllerRefreshControlHost *)self scrollView];
-  if (v5 == v4)
+  viewCopy = view;
+  scrollView = [(_UINavigationControllerRefreshControlHost *)self scrollView];
+  if (scrollView == viewCopy)
   {
-    v7 = [(_UINavigationControllerRefreshControlHost *)self refreshControl];
-    v8 = [v4 refreshControl];
-    v6 = v7 == v8;
+    refreshControl = [(_UINavigationControllerRefreshControlHost *)self refreshControl];
+    refreshControl2 = [viewCopy refreshControl];
+    v6 = refreshControl == refreshControl2;
   }
 
   else
@@ -252,31 +252,31 @@
   return v6;
 }
 
-- (void)setHostContainerView:(id)a3
+- (void)setHostContainerView:(id)view
 {
-  v11 = a3;
-  if (v11)
+  viewCopy = view;
+  if (viewCopy)
   {
     WeakRetained = objc_loadWeakRetained(&self->_refreshControl);
     [WeakRetained _setHost:self];
   }
 
-  if (self->_hostContainerView != v11)
+  if (self->_hostContainerView != viewCopy)
   {
     v6 = objc_loadWeakRetained(&self->_refreshControl);
-    v7 = [v6 superview];
+    superview = [v6 superview];
 
-    if (v7 != v11)
+    if (superview != viewCopy)
     {
       [(_UINavigationControllerRefreshControlHost *)self _removeRefreshControlFromContainerView];
     }
 
-    objc_storeStrong(&self->_hostContainerView, a3);
+    objc_storeStrong(&self->_hostContainerView, view);
     v8 = objc_loadWeakRetained(&self->_refreshControl);
-    v9 = [v8 superview];
+    superview2 = [v8 superview];
     hostContainerView = self->_hostContainerView;
 
-    if (v9 != hostContainerView)
+    if (superview2 != hostContainerView)
     {
       [(_UINavigationControllerRefreshControlHost *)self _installRefreshControlIntoContainerView];
     }
@@ -291,7 +291,7 @@
   [(_UINavigationControllerRefreshControlHost *)&v3 dealloc];
 }
 
-- (void)setUnobstructedHeight:(double)a3
+- (void)setUnobstructedHeight:(double)height
 {
   hostContainerView = self->_hostContainerView;
   if (hostContainerView)
@@ -299,45 +299,45 @@
     UIRoundToViewScale(hostContainerView);
   }
 
-  if (self->_unobstructedHeight != a3)
+  if (self->_unobstructedHeight != height)
   {
-    self->_unobstructedHeight = a3;
+    self->_unobstructedHeight = height;
 
     [(_UINavigationControllerRefreshControlHost *)self _notifyLayoutDidChange];
   }
 }
 
-- (void)incrementInsetHeight:(double)a3
+- (void)incrementInsetHeight:(double)height
 {
   [(_UINavigationControllerRefreshControlHost *)self restingHeightOfRefreshControl];
-  v6 = v5 + a3;
+  v6 = v5 + height;
 
   [(_UINavigationControllerRefreshControlHost *)self setRestingHeightOfRefreshControl:v6];
 }
 
-- (void)decrementInsetHeight:(double)a3
+- (void)decrementInsetHeight:(double)height
 {
   [(_UINavigationControllerRefreshControlHost *)self restingHeightOfRefreshControl];
-  v6 = v5 - a3;
+  v6 = v5 - height;
 
   [(_UINavigationControllerRefreshControlHost *)self setRestingHeightOfRefreshControl:v6];
 }
 
-- (void)refreshControl:(id)a3 didChangeToState:(int64_t)a4 fromState:(int64_t)a5
+- (void)refreshControl:(id)control didChangeToState:(int64_t)state fromState:(int64_t)fromState
 {
-  [(_UINavigationControllerRefreshControlHost *)self _notifyLayoutDidChange:a3];
-  if (a4 == 4)
+  [(_UINavigationControllerRefreshControlHost *)self _notifyLayoutDidChange:control];
+  if (state == 4)
   {
-    v7 = [(_UINavigationControllerRefreshControlHost *)self scrollView];
-    [v7 _contentOffsetAnimationDuration];
+    scrollView = [(_UINavigationControllerRefreshControlHost *)self scrollView];
+    [scrollView _contentOffsetAnimationDuration];
     v9 = v8;
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __87___UINavigationControllerRefreshControlHost_refreshControl_didChangeToState_fromState___block_invoke;
     v11[3] = &unk_1E70F35B8;
-    v12 = v7;
-    v13 = self;
-    v10 = v7;
+    v12 = scrollView;
+    selfCopy = self;
+    v10 = scrollView;
     [UIView animateWithDuration:v11 animations:v9];
   }
 }
@@ -345,16 +345,16 @@
 - (void)_notifyLayoutDidChange
 {
   [(_UINavigationControllerRefreshControlHost *)self _updateFadeOutProgress];
-  v3 = [(_UINavigationControllerRefreshControlHost *)self delegate];
-  if (v3)
+  delegate = [(_UINavigationControllerRefreshControlHost *)self delegate];
+  if (delegate)
   {
     WeakRetained = objc_loadWeakRetained(&self->_navigationController);
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __67___UINavigationControllerRefreshControlHost__notifyLayoutDidChange__block_invoke;
     v5[3] = &unk_1E70F35B8;
-    v6 = v3;
-    v7 = self;
+    v6 = delegate;
+    selfCopy = self;
     [WeakRetained _performWhileIgnoringUpdateTopViewFramesToMatchScrollOffset:v5];
   }
 }
@@ -362,21 +362,21 @@
 - (void)_updateFadeOutProgress
 {
   WeakRetained = objc_loadWeakRetained(&self->_refreshControl);
-  v4 = [WeakRetained refreshControlState];
+  refreshControlState = [WeakRetained refreshControlState];
 
-  if (v4 > 6)
+  if (refreshControlState > 6)
   {
     v5 = 0.0;
   }
 
-  else if (((1 << v4) & 0x47) != 0)
+  else if (((1 << refreshControlState) & 0x47) != 0)
   {
     v5 = 1.0;
   }
 
   else
   {
-    if (((1 << v4) & 0x28) != 0)
+    if (((1 << refreshControlState) & 0x28) != 0)
     {
       [(_UINavigationControllerRefreshControlHost *)self _alphaForRefreshingControlStateWithPossiblyObstructedContent];
     }

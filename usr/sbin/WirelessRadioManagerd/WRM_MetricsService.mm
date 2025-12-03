@@ -1,5 +1,5 @@
 @interface WRM_MetricsService
-+ (WRM_MetricsService)allocWithZone:(_NSZone *)a3;
++ (WRM_MetricsService)allocWithZone:(_NSZone *)zone;
 + (id)getSingleton;
 - (WRMAGCStats)getWRMAGCStats;
 - (WRMAntSelPolicyStats)getWRMAntSelPolicyStats;
@@ -16,17 +16,17 @@
 - (WRM_MetricsService)init;
 - (id)getQueue;
 - (id)getiRATMetricHORecordCache;
-- (void)appCountUpdate:(WRMMetricsAppType *)a3 :(unint64_t)a4;
+- (void)appCountUpdate:(WRMMetricsAppType *)update :(unint64_t)a4;
 - (void)dealloc;
 - (void)dumpiRATCellToWifi;
 - (void)dumpiRATWifiToCell;
-- (void)getOpModeReasonStr:(int)a3 :(char *)a4;
-- (void)getReasonStr:(int)a3 :(char *)a4;
-- (void)getTelephonyReasonStr:(int)a3 :(char *)a4;
+- (void)getOpModeReasonStr:(int)str :(char *)a4;
+- (void)getReasonStr:(int)str :(char *)a4;
+- (void)getTelephonyReasonStr:(int)str :(char *)a4;
 - (void)initAWDService;
 - (void)initFaceTimeHandoverMetrics;
 - (void)initLTECoexMetrics;
-- (void)mobCountUpdate:(WRMMetricsMobilityStatus *)a3 :(int)a4;
+- (void)mobCountUpdate:(WRMMetricsMobilityStatus *)update :(int)a4;
 - (void)reset5GVersusWiFiMetrics;
 - (void)resetAGCStats;
 - (void)resetAntSelPolicyStats;
@@ -39,7 +39,7 @@
 - (void)resetiRATMetricCellularToWifi;
 - (void)resetiRATMetricLinkPrefInit;
 - (void)resetiRATMetricWiFiToCellular;
-- (void)updateiRATMetricLinkInit:(int)a3;
+- (void)updateiRATMetricLinkInit:(int)init;
 @end
 
 @implementation WRM_MetricsService
@@ -50,7 +50,7 @@
   block[1] = 3221225472;
   block[2] = sub_100157668;
   block[3] = &unk_10023DB28;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1002B8208 != -1)
   {
     dispatch_once(&qword_1002B8208, block);
@@ -228,11 +228,11 @@
   [(WRM_MetricsService *)&v13 dealloc];
 }
 
-+ (WRM_MetricsService)allocWithZone:(_NSZone *)a3
++ (WRM_MetricsService)allocWithZone:(_NSZone *)zone
 {
-  v3 = [a1 getSingleton];
+  getSingleton = [self getSingleton];
 
-  return v3;
+  return getSingleton;
 }
 
 - (void)initFaceTimeHandoverMetrics
@@ -255,24 +255,24 @@
   }
 }
 
-- (void)updateiRATMetricLinkInit:(int)a3
+- (void)updateiRATMetricLinkInit:(int)init
 {
   [WCM_Logging logLevel:25 message:@"========= %s ================", "[WRM_MetricsService updateiRATMetricLinkInit:]"];
   v5 = "WRM_IWLAN_CELLULAR";
-  if (a3 == 1)
+  if (init == 1)
   {
     v5 = "WRM_IWLAN_WIFI";
   }
 
   [WCM_Logging logLevel:25 message:@"%s: link %s", "[WRM_MetricsService updateiRATMetricLinkInit:]", v5];
-  if (a3 == 1)
+  if (init == 1)
   {
     v6 = 216;
   }
 
   else
   {
-    if (a3)
+    if (init)
     {
       goto LABEL_8;
     }
@@ -287,15 +287,15 @@ LABEL_8:
   [WCM_Logging logLevel:25 message:@"===================================================="];
 }
 
-- (void)getReasonStr:(int)a3 :(char *)a4
+- (void)getReasonStr:(int)str :(char *)a4
 {
   v4 = a4;
   *a4 = 4271950;
-  if (a3)
+  if (str)
   {
     for (i = 0; i != 16; ++i)
     {
-      if ((dword_1001AE248[i] & a3) != 0)
+      if ((dword_1001AE248[i] & str) != 0)
       {
         v4 += sprintf(v4, "%s", off_100242438[i]);
       }
@@ -322,7 +322,7 @@ LABEL_8:
   [WCM_Logging logLevel:25 message:@"W2C Stats: reason [wifi DPD :%d noReady:%d snr:%d rssi:%d arq:%d load:%d bcn:%d sym:%d rtp:%d Cellular Good:%d]", miRATMetrics->mWifiToCell.reason.nBrokenBH_DPD_or_Video, miRATMetrics->mWifiToCell.reason.nWiFiNotReady, miRATMetrics->mWifiToCell.reason.nWiFiBadSNR, miRATMetrics->mWifiToCell.reason.nWiFiBadRSSI, miRATMetrics->mWifiToCell.reason.nWiFiBadARQ, miRATMetrics->mWifiToCell.reason.nWiFiBadLoad, miRATMetrics->mWifiToCell.reason.nWiFiBadBrokenBH_SIP_VideoStall, miRATMetrics->mWifiToCell.reason.nWiFiBadSymptom, miRATMetrics->mWifiToCell.reason.nWiFiBadRTP, miRATMetrics->mWifiToCell.reason.nWiFiCellularGood];
 }
 
-- (void)appCountUpdate:(WRMMetricsAppType *)a3 :(unint64_t)a4
+- (void)appCountUpdate:(WRMMetricsAppType *)update :(unint64_t)a4
 {
   if (a4)
   {
@@ -331,19 +331,19 @@ LABEL_8:
       return;
     }
 
-    a3 = (a3 + 4);
+    update = (update + 4);
   }
 
-  ++a3->nData;
+  ++update->nData;
 }
 
-- (void)mobCountUpdate:(WRMMetricsMobilityStatus *)a3 :(int)a4
+- (void)mobCountUpdate:(WRMMetricsMobilityStatus *)update :(int)a4
 {
   if (a4 > 1)
   {
     if (a4 == 2)
     {
-      a3 = (a3 + 8);
+      update = (update + 8);
     }
 
     else
@@ -353,7 +353,7 @@ LABEL_8:
         return;
       }
 
-      a3 = (a3 + 12);
+      update = (update + 12);
     }
   }
 
@@ -364,10 +364,10 @@ LABEL_8:
       return;
     }
 
-    a3 = (a3 + 4);
+    update = (update + 4);
   }
 
-  ++a3->nStationary;
+  ++update->nStationary;
 }
 
 - (WRMMetriciRATLinkPrefInit)getiRATMetricLinkPrefInit
@@ -665,15 +665,15 @@ LABEL_8:
   }
 }
 
-- (void)getTelephonyReasonStr:(int)a3 :(char *)a4
+- (void)getTelephonyReasonStr:(int)str :(char *)a4
 {
   v4 = a4;
   *a4 = 4271950;
-  if (a3)
+  if (str)
   {
     for (i = 0; i != 8; ++i)
     {
-      if ((dword_1001AE288[i] & a3) != 0)
+      if ((dword_1001AE288[i] & str) != 0)
       {
         v7 = "tMode";
         if (i <= 6)
@@ -692,15 +692,15 @@ LABEL_8:
   }
 }
 
-- (void)getOpModeReasonStr:(int)a3 :(char *)a4
+- (void)getOpModeReasonStr:(int)str :(char *)a4
 {
   v4 = a4;
   *a4 = 4271950;
-  if (a3)
+  if (str)
   {
     for (i = 0; i != 7; ++i)
     {
-      if ((dword_1001AE2A8[i] & a3) != 0)
+      if ((dword_1001AE2A8[i] & str) != 0)
       {
         v7 = "oMusicLPMAssertion";
         if (i <= 5)

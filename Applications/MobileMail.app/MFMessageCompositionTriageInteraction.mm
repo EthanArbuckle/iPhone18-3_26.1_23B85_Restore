@@ -1,7 +1,7 @@
 @interface MFMessageCompositionTriageInteraction
 + (OS_os_log)log;
-+ (id)compositionRepresentationRequestForMessage:(id)a3;
-+ (id)interactionWithContentRequest:(id)a3 scene:(id)a4;
++ (id)compositionRepresentationRequestForMessage:(id)message;
++ (id)interactionWithContentRequest:(id)request scene:(id)scene;
 - (BOOL)_hasIncompleteAttachments;
 - (BOOL)_noSelection;
 - (BOOL)_selectedTextContainsAttachments;
@@ -13,8 +13,8 @@
 - (unint64_t)includeAttachmentsForCurrentPolicy;
 - (unint64_t)shouldIncludeAttachments;
 - (unint64_t)shouldLoadRestOfMessage;
-- (void)_performInteractionAfterPreparation:(id)a3 completion:(id)a4;
-- (void)presentComposeWithContext:(id)a3;
+- (void)_performInteractionAfterPreparation:(id)preparation completion:(id)completion;
+- (void)presentComposeWithContext:(id)context;
 @end
 
 @implementation MFMessageCompositionTriageInteraction
@@ -25,7 +25,7 @@
   block[1] = 3221225472;
   block[2] = sub_1001E5AFC;
   block[3] = &unk_10064C4F8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1006DD590 != -1)
   {
     dispatch_once(&qword_1006DD590, block);
@@ -36,33 +36,33 @@
   return v2;
 }
 
-+ (id)compositionRepresentationRequestForMessage:(id)a3
++ (id)compositionRepresentationRequestForMessage:(id)message
 {
-  v3 = a3;
+  messageCopy = message;
   v4 = [MessageContentRepresentationRequest alloc];
-  v5 = [v4 initWithMessage:v3 includeSuggestions:0 representationType:EMContentRepresentationTypeHTML delegate:0];
+  v5 = [v4 initWithMessage:messageCopy includeSuggestions:0 representationType:EMContentRepresentationTypeHTML delegate:0];
 
   return v5;
 }
 
-+ (id)interactionWithContentRequest:(id)a3 scene:(id)a4
++ (id)interactionWithContentRequest:(id)request scene:(id)scene
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = objc_alloc_init(a1);
+  requestCopy = request;
+  sceneCopy = scene;
+  v8 = objc_alloc_init(self);
   v9 = [MSMessageListItemSelection alloc];
-  v10 = [v6 message];
-  v15 = v10;
+  message = [requestCopy message];
+  v15 = message;
   v11 = [NSArray arrayWithObjects:&v15 count:1];
   v12 = [v9 initWithMessageListItems:v11];
   [v8 setMessageListItemSelection:v12];
 
-  [v8 setContentRequest:v6];
-  v13 = [v7 daemonInterface];
-  [v8 setDaemonInterface:v13];
+  [v8 setContentRequest:requestCopy];
+  daemonInterface = [sceneCopy daemonInterface];
+  [v8 setDaemonInterface:daemonInterface];
 
   [v8 setPromptForAttachmentsResult:0];
-  [v8 setScene:v7];
+  [v8 setScene:sceneCopy];
 
   return v8;
 }
@@ -84,30 +84,30 @@
 
 - (EMMessage)emailMessage
 {
-  v2 = [(MFTriageInteraction *)self messageListItemSelection];
-  v3 = [v2 messageListItems];
-  v4 = [v3 firstObject];
-  v5 = [v4 displayMessage];
-  v6 = [v5 result];
+  messageListItemSelection = [(MFTriageInteraction *)self messageListItemSelection];
+  messageListItems = [messageListItemSelection messageListItems];
+  firstObject = [messageListItems firstObject];
+  displayMessage = [firstObject displayMessage];
+  result = [displayMessage result];
 
-  return v6;
+  return result;
 }
 
 - (BOOL)_hasIncompleteAttachments
 {
-  v2 = [(MFMessageCompositionTriageInteraction *)self contentRequest];
-  v3 = [v2 resultIfAvailable];
+  contentRequest = [(MFMessageCompositionTriageInteraction *)self contentRequest];
+  resultIfAvailable = [contentRequest resultIfAvailable];
 
-  v4 = [v3 relatedContentItems];
-  v5 = [v4 ef_any:&stru_100654968];
+  relatedContentItems = [resultIfAvailable relatedContentItems];
+  v5 = [relatedContentItems ef_any:&stru_100654968];
 
   return v5;
 }
 
 - (unint64_t)includeAttachmentsForCurrentPolicy
 {
-  v3 = [(MFMessageCompositionTriageInteraction *)self attachmentPolicy];
-  if (v3 == 3)
+  attachmentPolicy = [(MFMessageCompositionTriageInteraction *)self attachmentPolicy];
+  if (attachmentPolicy == 3)
   {
     if ([(MFMessageCompositionTriageInteraction *)self includeAttachmentsWithoutPrompting])
     {
@@ -120,12 +120,12 @@
     }
   }
 
-  else if (v3 == 2)
+  else if (attachmentPolicy == 2)
   {
     return 0;
   }
 
-  else if (v3)
+  else if (attachmentPolicy)
   {
     return 2;
   }
@@ -139,29 +139,29 @@
 
 - (unint64_t)shouldLoadRestOfMessage
 {
-  v3 = [(MFMessageCompositionTriageInteraction *)self shouldPromptToLoadRestOfMessage];
-  v4 = [(MFMessageCompositionTriageInteraction *)self promptForAttachmentsResult];
-  if (!v4)
+  shouldPromptToLoadRestOfMessage = [(MFMessageCompositionTriageInteraction *)self shouldPromptToLoadRestOfMessage];
+  promptForAttachmentsResult = [(MFMessageCompositionTriageInteraction *)self promptForAttachmentsResult];
+  if (!promptForAttachmentsResult)
   {
-    v4 = [(MFMessageCompositionTriageInteraction *)self includeAttachmentsForCurrentPolicy];
+    promptForAttachmentsResult = [(MFMessageCompositionTriageInteraction *)self includeAttachmentsForCurrentPolicy];
   }
 
-  v5 = [(MFMessageCompositionTriageInteraction *)self contentRequest];
-  v6 = [v5 resultIfAvailable];
+  contentRequest = [(MFMessageCompositionTriageInteraction *)self contentRequest];
+  resultIfAvailable = [contentRequest resultIfAvailable];
 
-  if (v6)
+  if (resultIfAvailable)
   {
-    v7 = [v6 hasMoreContent];
-    v8 = v7;
-    if ((v3 & 1) == 0)
+    hasMoreContent = [resultIfAvailable hasMoreContent];
+    v8 = hasMoreContent;
+    if ((shouldPromptToLoadRestOfMessage & 1) == 0)
     {
-      if (v7)
+      if (hasMoreContent)
       {
         goto LABEL_15;
       }
 
 LABEL_13:
-      if (v4 != 2 || ![(MFMessageCompositionTriageInteraction *)self _hasIncompleteAttachments])
+      if (promptForAttachmentsResult != 2 || ![(MFMessageCompositionTriageInteraction *)self _hasIncompleteAttachments])
       {
         v9 = 1;
         goto LABEL_17;
@@ -173,7 +173,7 @@ LABEL_13:
 
   else
   {
-    if ((v3 & 1) == 0)
+    if ((shouldPromptToLoadRestOfMessage & 1) == 0)
     {
 LABEL_15:
       v9 = 2;
@@ -205,25 +205,25 @@ LABEL_17:
 
 - (BOOL)_selectedTextContainsAttachments
 {
-  v2 = [(MFMessageCompositionTriageInteraction *)self originalContent];
-  v3 = [v2 firstObject];
-  v4 = [v3 containsString:@"<attachment"];
+  originalContent = [(MFMessageCompositionTriageInteraction *)self originalContent];
+  firstObject = [originalContent firstObject];
+  v4 = [firstObject containsString:@"<attachment"];
 
   return v4;
 }
 
 - (BOOL)_noSelection
 {
-  v2 = [(MFMessageCompositionTriageInteraction *)self originalContent];
-  v3 = v2 == 0;
+  originalContent = [(MFMessageCompositionTriageInteraction *)self originalContent];
+  v3 = originalContent == 0;
 
   return v3;
 }
 
 - (unint64_t)shouldIncludeAttachments
 {
-  v3 = [(MFMessageCompositionTriageInteraction *)self emailMessage];
-  if (![v3 hasAttachments])
+  emailMessage = [(MFMessageCompositionTriageInteraction *)self emailMessage];
+  if (![emailMessage hasAttachments])
   {
 
     return 1;
@@ -231,9 +231,9 @@ LABEL_17:
 
   if (![(MFMessageCompositionTriageInteraction *)self _noSelection])
   {
-    v5 = [(MFMessageCompositionTriageInteraction *)self _selectedTextContainsAttachments];
+    _selectedTextContainsAttachments = [(MFMessageCompositionTriageInteraction *)self _selectedTextContainsAttachments];
 
-    if (v5)
+    if (_selectedTextContainsAttachments)
     {
       goto LABEL_7;
     }
@@ -248,11 +248,11 @@ LABEL_7:
 
 - (id)_confirmLoadingRestOfMessage
 {
-  v3 = [(MFMessageCompositionTriageInteraction *)self shouldLoadRestOfMessage];
-  if (v3)
+  shouldLoadRestOfMessage = [(MFMessageCompositionTriageInteraction *)self shouldLoadRestOfMessage];
+  if (shouldLoadRestOfMessage)
   {
-    v4 = [NSNumber numberWithInt:v3 == 2];
-    v5 = [EFFuture futureWithResult:v4];
+    v4 = [NSNumber numberWithInt:shouldLoadRestOfMessage == 2];
+    future = [EFFuture futureWithResult:v4];
   }
 
   else
@@ -291,19 +291,19 @@ LABEL_7:
     [v10 addAction:v18];
 
     [(MFTriageInteraction *)self _presentConfirmationSheet:v10];
-    v5 = [v17 future];
+    future = [v17 future];
   }
 
-  return v5;
+  return future;
 }
 
 - (id)_confirmIncludingAttachments
 {
-  v3 = [(MFMessageCompositionTriageInteraction *)self shouldIncludeAttachments];
-  if (v3)
+  shouldIncludeAttachments = [(MFMessageCompositionTriageInteraction *)self shouldIncludeAttachments];
+  if (shouldIncludeAttachments)
   {
-    v4 = [NSNumber numberWithInt:v3 == 2];
-    v5 = [EFFuture futureWithResult:v4];
+    v4 = [NSNumber numberWithInt:shouldIncludeAttachments == 2];
+    future = [EFFuture futureWithResult:v4];
   }
 
   else
@@ -341,28 +341,28 @@ LABEL_7:
 
     [v10 addAction:v14];
     [v10 addAction:v18];
-    v19 = [v10 title];
-    [v19 setAccessibilityIdentifier:MSAccessibiltyIdentifierIncludeAttachmentsAlert];
+    title = [v10 title];
+    [title setAccessibilityIdentifier:MSAccessibiltyIdentifierIncludeAttachmentsAlert];
 
     [v14 setAccessibilityIdentifier:MSAccessibiltyIdentifierIncludeAttachmentsAlertYesInclude];
     [v18 setAccessibilityIdentifier:MSAccessibiltyIdentifierIncludeAttachmentsAlertNoInclude];
     [(MFTriageInteraction *)self _presentConfirmationSheet:v10];
-    v5 = [v17 future];
+    future = [v17 future];
   }
 
-  return v5;
+  return future;
 }
 
-- (void)_performInteractionAfterPreparation:(id)a3 completion:(id)a4
+- (void)_performInteractionAfterPreparation:(id)preparation completion:(id)completion
 {
-  v5 = a4;
-  v6 = [(MFMessageCompositionTriageInteraction *)self _confirmIncludingAttachments];
+  completionCopy = completion;
+  _confirmIncludingAttachments = [(MFMessageCompositionTriageInteraction *)self _confirmIncludingAttachments];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_1001E6D58;
   v15[3] = &unk_100654990;
   v15[4] = self;
-  v7 = [v6 then:v15];
+  v7 = [_confirmIncludingAttachments then:v15];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_1001E6DD0;
@@ -375,7 +375,7 @@ LABEL_7:
   v12[2] = sub_1001E6E44;
   v12[3] = &unk_100653278;
   v12[4] = self;
-  v9 = v5;
+  v9 = completionCopy;
   v13 = v9;
   [v8 addSuccessBlock:v12];
   if (v9)
@@ -390,63 +390,63 @@ LABEL_7:
   }
 }
 
-- (void)presentComposeWithContext:(id)a3
+- (void)presentComposeWithContext:(id)context
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  contextCopy = context;
+  v5 = contextCopy;
+  if (contextCopy)
   {
-    [v4 setShowKeyboardImmediately:1];
-    v6 = [(MFMessageCompositionTriageInteraction *)self scene];
-    v7 = [(MFMessageCompositionTriageInteraction *)self fromAddress];
+    [contextCopy setShowKeyboardImmediately:1];
+    scene = [(MFMessageCompositionTriageInteraction *)self scene];
+    fromAddress = [(MFMessageCompositionTriageInteraction *)self fromAddress];
 
-    if (v7)
+    if (fromAddress)
     {
-      v8 = [(MFMessageCompositionTriageInteraction *)self fromAddress];
-      [v5 setPreferredSendingEmailAddress:v8];
+      fromAddress2 = [(MFMessageCompositionTriageInteraction *)self fromAddress];
+      [v5 setPreferredSendingEmailAddress:fromAddress2];
     }
 
     else
     {
       v20 = 1;
-      v8 = [v6 composeAccountIsDefault:&v20];
-      v9 = [v8 emailAddresses];
-      v10 = [v9 firstObject];
-      v11 = [v10 simpleAddress];
-      [v5 setPreferredSendingEmailAddress:v11];
+      fromAddress2 = [scene composeAccountIsDefault:&v20];
+      emailAddresses = [fromAddress2 emailAddresses];
+      firstObject = [emailAddresses firstObject];
+      simpleAddress = [firstObject simpleAddress];
+      [v5 setPreferredSendingEmailAddress:simpleAddress];
     }
 
     [v5 setLoadRest:{-[MFMessageCompositionTriageInteraction loadRestOfMessage](self, "loadRestOfMessage")}];
     [v5 setIncludeAttachments:{-[MFMessageCompositionTriageInteraction promptForAttachmentsResult](self, "promptForAttachmentsResult") == 2}];
-    v12 = [(MFMessageCompositionTriageInteraction *)self loadingContext];
-    [v5 setLoadingContext:v12];
+    loadingContext = [(MFMessageCompositionTriageInteraction *)self loadingContext];
+    [v5 setLoadingContext:loadingContext];
 
-    v13 = [(MFMessageCompositionTriageInteraction *)self mailboxObjectID];
-    v14 = [v13 serializedRepresentation];
-    [v5 setSerializedMailboxObjectID:v14];
+    mailboxObjectID = [(MFMessageCompositionTriageInteraction *)self mailboxObjectID];
+    serializedRepresentation = [mailboxObjectID serializedRepresentation];
+    [v5 setSerializedMailboxObjectID:serializedRepresentation];
 
-    v15 = [(MFMessageCompositionTriageInteraction *)self originalContent];
-    v16 = [v15 count];
+    originalContent = [(MFMessageCompositionTriageInteraction *)self originalContent];
+    v16 = [originalContent count];
 
     if (v16)
     {
-      v17 = [(MFMessageCompositionTriageInteraction *)self originalContent];
-      [v5 setOriginalContent:v17];
+      originalContent2 = [(MFMessageCompositionTriageInteraction *)self originalContent];
+      [v5 setOriginalContent:originalContent2];
     }
 
-    v18 = [(MFTriageInteraction *)self isTriggeredFromMenuAction];
-    if (v18)
+    isTriggeredFromMenuAction = [(MFTriageInteraction *)self isTriggeredFromMenuAction];
+    if (isTriggeredFromMenuAction)
     {
-      v19 = [(MFTriageInteraction *)self presentationSource];
+      presentationSource = [(MFTriageInteraction *)self presentationSource];
     }
 
     else
     {
-      v19 = 0;
+      presentationSource = 0;
     }
 
-    [v6 showComposeWithContext:v5 animated:1 initialTitle:0 presentationSource:v19 completionBlock:0];
-    if (v18)
+    [scene showComposeWithContext:v5 animated:1 initialTitle:0 presentationSource:presentationSource completionBlock:0];
+    if (isTriggeredFromMenuAction)
     {
     }
   }

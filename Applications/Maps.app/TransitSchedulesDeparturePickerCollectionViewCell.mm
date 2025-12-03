@@ -1,11 +1,11 @@
 @interface TransitSchedulesDeparturePickerCollectionViewCell
-- (TransitSchedulesDeparturePickerCollectionViewCell)initWithFrame:(CGRect)a3;
+- (TransitSchedulesDeparturePickerCollectionViewCell)initWithFrame:(CGRect)frame;
 - (TransitSchedulesDeparturePickerCollectionViewCellDelegate)delegate;
-- (id)statusStringForDeparture:(id)a3;
-- (id)titleForDeparture:(id)a3;
-- (void)_updateDeparturePickerWithSelectedDeparture:(id)a3;
+- (id)statusStringForDeparture:(id)departure;
+- (id)titleForDeparture:(id)departure;
+- (void)_updateDeparturePickerWithSelectedDeparture:(id)departure;
 - (void)configureViews;
-- (void)setDepartures:(id)a3 withSelectedDeparture:(id)a4 referenceDate:(id)a5 timeZone:(id)a6 timeDisplayStyle:(unint64_t)a7;
+- (void)setDepartures:(id)departures withSelectedDeparture:(id)departure referenceDate:(id)date timeZone:(id)zone timeDisplayStyle:(unint64_t)style;
 @end
 
 @implementation TransitSchedulesDeparturePickerCollectionViewCell
@@ -17,62 +17,62 @@
   return WeakRetained;
 }
 
-- (id)statusStringForDeparture:(id)a3
+- (id)statusStringForDeparture:(id)departure
 {
-  v4 = a3;
-  if ([v4 isCanceled])
+  departureCopy = departure;
+  if ([departureCopy isCanceled])
   {
     v5 = +[NSBundle mainBundle];
-    v6 = v5;
+    liveStatusString = v5;
     v7 = @"Schedules Departure cell status - Canceled";
   }
 
   else
   {
-    v8 = [v4 liveStatus] == 0;
-    v9 = [(TransitSchedulesDepartureBaseViewCell *)self referenceDate];
-    LODWORD(v8) = [v4 isPastDepartureRelativeToDate:v9 usingGracePeriod:v8];
+    v8 = [departureCopy liveStatus] == 0;
+    referenceDate = [(TransitSchedulesDepartureBaseViewCell *)self referenceDate];
+    LODWORD(v8) = [departureCopy isPastDepartureRelativeToDate:referenceDate usingGracePeriod:v8];
 
     if (!v8)
     {
-      v6 = [v4 liveStatusString];
-      if (v6)
+      liveStatusString = [departureCopy liveStatusString];
+      if (liveStatusString)
       {
         v11 = [MKServerFormattedStringParameters alloc];
         MKFormattedStringOptionsMakeDefault();
         v12 = [v11 initWithOptions:&v19 variableOverrides:0];
-        v13 = [[MKServerFormattedString alloc] initWithGeoServerString:v6 parameters:v12];
+        v13 = [[MKServerFormattedString alloc] initWithGeoServerString:liveStatusString parameters:v12];
         v14 = [v13 multiPartAttributedStringWithAttributes:&__NSDictionary0__struct];
-        v15 = [v14 attributedString];
-        v10 = [v15 string];
+        attributedString = [v14 attributedString];
+        string = [attributedString string];
       }
 
       else
       {
-        v12 = [(TransitSchedulesDepartureBaseViewCell *)self emphasizedLowFrequencyDepartureDateForDeparture:v4];
-        v16 = [(TransitSchedulesDepartureBaseViewCell *)self dateFormatter];
-        v17 = [v16 stringFromDate:v12];
+        v12 = [(TransitSchedulesDepartureBaseViewCell *)self emphasizedLowFrequencyDepartureDateForDeparture:departureCopy];
+        dateFormatter = [(TransitSchedulesDepartureBaseViewCell *)self dateFormatter];
+        v17 = [dateFormatter stringFromDate:v12];
 
-        v10 = [NSString _navigation_formattedDescriptionForLiveStatus:[(TransitSchedulesDepartureBaseViewCell *)self effectiveLiveStatusForDeparture:v4] updatedDepartureTimeString:v17];
+        string = [NSString _navigation_formattedDescriptionForLiveStatus:[(TransitSchedulesDepartureBaseViewCell *)self effectiveLiveStatusForDeparture:departureCopy] updatedDepartureTimeString:v17];
       }
 
       goto LABEL_10;
     }
 
     v5 = +[NSBundle mainBundle];
-    v6 = v5;
+    liveStatusString = v5;
     v7 = @"Schedules Departure cell status - Departed";
   }
 
-  v10 = [v5 localizedStringForKey:v7 value:@"localized string not found" table:0];
+  string = [v5 localizedStringForKey:v7 value:@"localized string not found" table:0];
 LABEL_10:
 
-  return v10;
+  return string;
 }
 
-- (void)_updateDeparturePickerWithSelectedDeparture:(id)a3
+- (void)_updateDeparturePickerWithSelectedDeparture:(id)departure
 {
-  v14 = a3;
+  departureCopy = departure;
   val = self;
   if (![(NSArray *)self->_departures count])
   {
@@ -115,7 +115,7 @@ LABEL_10:
         objc_copyWeak(&v17, buf);
         v16[4] = v9;
         v11 = [UIAction actionWithTitle:v10 image:0 identifier:v10 handler:v16];
-        [v11 setState:{objc_msgSend(v14, "tripIdentifier") == objc_msgSend(v9, "tripIdentifier")}];
+        [v11 setState:{objc_msgSend(departureCopy, "tripIdentifier") == objc_msgSend(v9, "tripIdentifier")}];
         [v5 addObject:v11];
 
         objc_destroyWeak(&v17);
@@ -133,11 +133,11 @@ LABEL_10:
   objc_destroyWeak(buf);
 }
 
-- (id)titleForDeparture:(id)a3
+- (id)titleForDeparture:(id)departure
 {
-  v4 = a3;
-  v5 = [(TransitSchedulesDepartureBaseViewCell *)self timeStringForDeparture:v4];
-  v6 = [(TransitSchedulesDeparturePickerCollectionViewCell *)self statusStringForDeparture:v4];
+  departureCopy = departure;
+  v5 = [(TransitSchedulesDepartureBaseViewCell *)self timeStringForDeparture:departureCopy];
+  v6 = [(TransitSchedulesDeparturePickerCollectionViewCell *)self statusStringForDeparture:departureCopy];
 
   v7 = +[NSBundle mainBundle];
   v8 = [v7 localizedStringForKey:@"[Transit Schedules] %@ time · %@ status" value:@"localized string not found" table:0];
@@ -147,63 +147,63 @@ LABEL_10:
   return v9;
 }
 
-- (void)setDepartures:(id)a3 withSelectedDeparture:(id)a4 referenceDate:(id)a5 timeZone:(id)a6 timeDisplayStyle:(unint64_t)a7
+- (void)setDepartures:(id)departures withSelectedDeparture:(id)departure referenceDate:(id)date timeZone:(id)zone timeDisplayStyle:(unint64_t)style
 {
-  v12 = a5;
-  v16 = a4;
-  v13 = a3;
-  [(TransitSchedulesDepartureBaseViewCell *)self setTimeZone:a6];
-  [(TransitSchedulesDepartureBaseViewCell *)self setReferenceDate:v12];
+  dateCopy = date;
+  departureCopy = departure;
+  departuresCopy = departures;
+  [(TransitSchedulesDepartureBaseViewCell *)self setTimeZone:zone];
+  [(TransitSchedulesDepartureBaseViewCell *)self setReferenceDate:dateCopy];
 
-  [(TransitSchedulesDepartureBaseViewCell *)self setTimeDisplayStyle:a7];
-  v14 = [v13 copy];
+  [(TransitSchedulesDepartureBaseViewCell *)self setTimeDisplayStyle:style];
+  v14 = [departuresCopy copy];
 
   departures = self->_departures;
   self->_departures = v14;
 
-  [(TransitSchedulesDeparturePickerCollectionViewCell *)self _updateDeparturePickerWithSelectedDeparture:v16];
+  [(TransitSchedulesDeparturePickerCollectionViewCell *)self _updateDeparturePickerWithSelectedDeparture:departureCopy];
 }
 
 - (void)configureViews
 {
-  v3 = [(TransitSchedulesDeparturePickerCollectionViewCell *)self contentView];
+  contentView = [(TransitSchedulesDeparturePickerCollectionViewCell *)self contentView];
   v4 = [UIButton buttonWithType:124];
   picker = self->_picker;
   self->_picker = v4;
 
-  v6 = [(UIButton *)self->_picker titleLabel];
-  [v6 setTextAlignment:0];
+  titleLabel = [(UIButton *)self->_picker titleLabel];
+  [titleLabel setTextAlignment:0];
 
   [(UIButton *)self->_picker setContentHorizontalAlignment:1];
   [(UIButton *)self->_picker setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UIButton *)self->_picker setShowsMenuAsPrimaryAction:1];
   [(UIButton *)self->_picker setContextMenuInteractionEnabled:1];
-  [v3 addSubview:self->_picker];
-  v19 = [(UIButton *)self->_picker leadingAnchor];
-  v18 = [v3 leadingAnchor];
-  v17 = [v19 constraintEqualToAnchor:v18];
+  [contentView addSubview:self->_picker];
+  leadingAnchor = [(UIButton *)self->_picker leadingAnchor];
+  leadingAnchor2 = [contentView leadingAnchor];
+  v17 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v20[0] = v17;
-  v16 = [(UIButton *)self->_picker trailingAnchor];
-  v7 = [v3 trailingAnchor];
-  v8 = [v16 constraintEqualToAnchor:v7];
+  trailingAnchor = [(UIButton *)self->_picker trailingAnchor];
+  trailingAnchor2 = [contentView trailingAnchor];
+  v8 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v20[1] = v8;
-  v9 = [(UIButton *)self->_picker topAnchor];
-  v10 = [v3 topAnchor];
-  v11 = [v9 constraintEqualToAnchor:v10];
+  topAnchor = [(UIButton *)self->_picker topAnchor];
+  topAnchor2 = [contentView topAnchor];
+  v11 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v20[2] = v11;
-  v12 = [(UIButton *)self->_picker bottomAnchor];
-  v13 = [v3 bottomAnchor];
-  v14 = [v12 constraintEqualToAnchor:v13];
+  bottomAnchor = [(UIButton *)self->_picker bottomAnchor];
+  bottomAnchor2 = [contentView bottomAnchor];
+  v14 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v20[3] = v14;
   v15 = [NSArray arrayWithObjects:v20 count:4];
   [NSLayoutConstraint activateConstraints:v15];
 }
 
-- (TransitSchedulesDeparturePickerCollectionViewCell)initWithFrame:(CGRect)a3
+- (TransitSchedulesDeparturePickerCollectionViewCell)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = TransitSchedulesDeparturePickerCollectionViewCell;
-  v3 = [(TransitSchedulesDeparturePickerCollectionViewCell *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(TransitSchedulesDeparturePickerCollectionViewCell *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

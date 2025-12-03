@@ -1,100 +1,100 @@
 @interface CarAlertButtonView
-- (CarAlertButtonView)initWithTitle:(id)a3 image:(id)a4;
-- (void)_setHighlightsForHitView:(id)a3;
+- (CarAlertButtonView)initWithTitle:(id)title image:(id)image;
+- (void)_setHighlightsForHitView:(id)view;
 - (void)_setupConstraints;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
-- (void)setHighlighted:(BOOL)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation CarAlertButtonView
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
   v7.receiver = self;
   v7.super_class = CarAlertButtonView;
-  v6 = a3;
-  [(CarAlertButtonView *)&v7 touchesEnded:v6 withEvent:a4];
-  LODWORD(a4) = sub_100C74008(v6);
+  endedCopy = ended;
+  [(CarAlertButtonView *)&v7 touchesEnded:endedCopy withEvent:event];
+  LODWORD(event) = sub_100C74008(endedCopy);
 
-  if (a4)
+  if (event)
   {
     [(CarAlertButtonView *)self setHighlighted:0, v7.receiver, v7.super_class];
   }
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
   v7.receiver = self;
   v7.super_class = CarAlertButtonView;
-  v6 = a3;
-  [(CarAlertButtonView *)&v7 touchesCancelled:v6 withEvent:a4];
-  LODWORD(a4) = sub_100C74008(v6);
+  cancelledCopy = cancelled;
+  [(CarAlertButtonView *)&v7 touchesCancelled:cancelledCopy withEvent:event];
+  LODWORD(event) = sub_100C74008(cancelledCopy);
 
-  if (a4)
+  if (event)
   {
     [(CarAlertButtonView *)self setHighlighted:0, v7.receiver, v7.super_class];
   }
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
+  movedCopy = moved;
+  eventCopy = event;
   v14.receiver = self;
   v14.super_class = CarAlertButtonView;
-  [(CarAlertButtonView *)&v14 touchesMoved:v6 withEvent:v7];
-  if (sub_100C74008(v6))
+  [(CarAlertButtonView *)&v14 touchesMoved:movedCopy withEvent:eventCopy];
+  if (sub_100C74008(movedCopy))
   {
-    v8 = [v6 anyObject];
-    [v8 locationInView:self];
+    anyObject = [movedCopy anyObject];
+    [anyObject locationInView:self];
     v10 = v9;
     v12 = v11;
 
-    v13 = [(CarAlertButtonView *)self hitTest:v7 withEvent:v10, v12];
+    v13 = [(CarAlertButtonView *)self hitTest:eventCopy withEvent:v10, v12];
     [(CarAlertButtonView *)self _setHighlightsForHitView:v13];
   }
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
+  beganCopy = began;
+  eventCopy = event;
   v14.receiver = self;
   v14.super_class = CarAlertButtonView;
-  [(CarAlertButtonView *)&v14 touchesBegan:v6 withEvent:v7];
-  if (sub_100C74008(v6))
+  [(CarAlertButtonView *)&v14 touchesBegan:beganCopy withEvent:eventCopy];
+  if (sub_100C74008(beganCopy))
   {
-    v8 = [v6 anyObject];
-    [v8 locationInView:self];
+    anyObject = [beganCopy anyObject];
+    [anyObject locationInView:self];
     v10 = v9;
     v12 = v11;
 
-    v13 = [(CarAlertButtonView *)self hitTest:v7 withEvent:v10, v12];
+    v13 = [(CarAlertButtonView *)self hitTest:eventCopy withEvent:v10, v12];
     [(CarAlertButtonView *)self _setHighlightsForHitView:v13];
   }
 }
 
-- (void)_setHighlightsForHitView:(id)a3
+- (void)_setHighlightsForHitView:(id)view
 {
-  if (a3 == self)
+  if (view == self)
   {
     [(CarAlertButtonView *)self setHighlighted:1];
   }
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
-  v5 = [a3 nextFocusedItem];
-  [(CarAlertButtonView *)self setHighlighted:v5 == self];
+  nextFocusedItem = [context nextFocusedItem];
+  [(CarAlertButtonView *)self setHighlighted:nextFocusedItem == self];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  if (a3)
+  if (highlighted)
   {
     v7 = +[UIColor _carSystemFocusLabelColor];
     +[UIColor _carSystemFocusColor];
@@ -115,75 +115,75 @@
 
 - (void)_setupConstraints
 {
-  v30 = [(UILabel *)self->_titleLabel leadingAnchor];
-  v29 = [(CarAlertButtonView *)self leadingAnchor];
-  v28 = [v30 constraintEqualToAnchor:v29 constant:12.0];
+  leadingAnchor = [(UILabel *)self->_titleLabel leadingAnchor];
+  leadingAnchor2 = [(CarAlertButtonView *)self leadingAnchor];
+  v28 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:12.0];
   v31[0] = v28;
-  v27 = [(UILabel *)self->_titleLabel firstBaselineAnchor];
-  v26 = [(CarAlertButtonView *)self topAnchor];
-  v25 = [v27 constraintEqualToAnchor:v26 constant:28.0];
+  firstBaselineAnchor = [(UILabel *)self->_titleLabel firstBaselineAnchor];
+  topAnchor = [(CarAlertButtonView *)self topAnchor];
+  v25 = [firstBaselineAnchor constraintEqualToAnchor:topAnchor constant:28.0];
   v31[1] = v25;
-  v24 = [(CarAlertButtonView *)self bottomAnchor];
-  v23 = [(UILabel *)self->_titleLabel lastBaselineAnchor];
-  v22 = [v24 constraintEqualToAnchor:v23 constant:14.0];
+  bottomAnchor = [(CarAlertButtonView *)self bottomAnchor];
+  lastBaselineAnchor = [(UILabel *)self->_titleLabel lastBaselineAnchor];
+  v22 = [bottomAnchor constraintEqualToAnchor:lastBaselineAnchor constant:14.0];
   v31[2] = v22;
-  v21 = [(CarAlertButtonView *)self trailingAnchor];
-  v20 = [(UILabel *)self->_titleLabel trailingAnchor];
-  v19 = [v21 constraintGreaterThanOrEqualToAnchor:v20 constant:12.0];
+  trailingAnchor = [(CarAlertButtonView *)self trailingAnchor];
+  trailingAnchor2 = [(UILabel *)self->_titleLabel trailingAnchor];
+  v19 = [trailingAnchor constraintGreaterThanOrEqualToAnchor:trailingAnchor2 constant:12.0];
   v31[3] = v19;
-  v18 = [(UIImageView *)self->_imageView leadingAnchor];
-  v17 = [(UILabel *)self->_titleLabel trailingAnchor];
-  v16 = [v18 constraintGreaterThanOrEqualToAnchor:v17 constant:12.0];
+  leadingAnchor3 = [(UIImageView *)self->_imageView leadingAnchor];
+  trailingAnchor3 = [(UILabel *)self->_titleLabel trailingAnchor];
+  v16 = [leadingAnchor3 constraintGreaterThanOrEqualToAnchor:trailingAnchor3 constant:12.0];
   v31[4] = v16;
-  v15 = [(UIImageView *)self->_imageView centerYAnchor];
-  v14 = [(CarAlertButtonView *)self centerYAnchor];
-  v13 = [v15 constraintEqualToAnchor:v14];
+  centerYAnchor = [(UIImageView *)self->_imageView centerYAnchor];
+  centerYAnchor2 = [(CarAlertButtonView *)self centerYAnchor];
+  v13 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v31[5] = v13;
-  v3 = [(CarAlertButtonView *)self trailingAnchor];
-  v4 = [(UIImageView *)self->_imageView trailingAnchor];
-  v5 = [v3 constraintGreaterThanOrEqualToAnchor:v4 constant:12.0];
+  trailingAnchor4 = [(CarAlertButtonView *)self trailingAnchor];
+  trailingAnchor5 = [(UIImageView *)self->_imageView trailingAnchor];
+  v5 = [trailingAnchor4 constraintGreaterThanOrEqualToAnchor:trailingAnchor5 constant:12.0];
   v31[6] = v5;
-  v6 = [(UIImageView *)self->_imageView topAnchor];
-  v7 = [(CarAlertButtonView *)self topAnchor];
-  v8 = [v6 constraintGreaterThanOrEqualToAnchor:v7 constant:8.0];
+  topAnchor2 = [(UIImageView *)self->_imageView topAnchor];
+  topAnchor3 = [(CarAlertButtonView *)self topAnchor];
+  v8 = [topAnchor2 constraintGreaterThanOrEqualToAnchor:topAnchor3 constant:8.0];
   v31[7] = v8;
-  v9 = [(CarAlertButtonView *)self bottomAnchor];
-  v10 = [(UIImageView *)self->_imageView bottomAnchor];
-  v11 = [v9 constraintGreaterThanOrEqualToAnchor:v10 constant:8.0];
+  bottomAnchor2 = [(CarAlertButtonView *)self bottomAnchor];
+  bottomAnchor3 = [(UIImageView *)self->_imageView bottomAnchor];
+  v11 = [bottomAnchor2 constraintGreaterThanOrEqualToAnchor:bottomAnchor3 constant:8.0];
   v31[8] = v11;
   v12 = [NSArray arrayWithObjects:v31 count:9];
   [NSLayoutConstraint activateConstraints:v12];
 }
 
-- (CarAlertButtonView)initWithTitle:(id)a3 image:(id)a4
+- (CarAlertButtonView)initWithTitle:(id)title image:(id)image
 {
-  v6 = a3;
-  v7 = a4;
+  titleCopy = title;
+  imageCopy = image;
   v18.receiver = self;
   v18.super_class = CarAlertButtonView;
   y = CGRectZero.origin.y;
   width = CGRectZero.size.width;
   height = CGRectZero.size.height;
-  v11 = [(CarAlertButtonView *)&v18 initWithFrame:CGRectZero.origin.x, y, width, height];
-  v12 = v11;
-  if (v11)
+  height = [(CarAlertButtonView *)&v18 initWithFrame:CGRectZero.origin.x, y, width, height];
+  v12 = height;
+  if (height)
   {
-    [(CarAlertButtonView *)v11 setAccessibilityIdentifier:@"CarAlertButton"];
-    v13 = [[UIImageView alloc] initWithImage:v7];
+    [(CarAlertButtonView *)height setAccessibilityIdentifier:@"CarAlertButton"];
+    v13 = [[UIImageView alloc] initWithImage:imageCopy];
     imageView = v12->_imageView;
     v12->_imageView = v13;
 
     [(UIImageView *)v12->_imageView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIImageView *)v12->_imageView setContentMode:1];
     [(UIImageView *)v12->_imageView setAccessibilityIdentifier:@"ImageView"];
-    objc_storeStrong(&v12->_image, a4);
+    objc_storeStrong(&v12->_image, image);
     [(CarAlertButtonView *)v12 addSubview:v12->_imageView];
     v15 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
     titleLabel = v12->_titleLabel;
     v12->_titleLabel = v15;
 
     [(UILabel *)v12->_titleLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-    [(UILabel *)v12->_titleLabel setText:v6];
+    [(UILabel *)v12->_titleLabel setText:titleCopy];
     [(UILabel *)v12->_titleLabel setAccessibilityIdentifier:@"TitleLabel"];
     [(CarAlertButtonView *)v12 addSubview:v12->_titleLabel];
     [(CarAlertButtonView *)v12 _setupConstraints];

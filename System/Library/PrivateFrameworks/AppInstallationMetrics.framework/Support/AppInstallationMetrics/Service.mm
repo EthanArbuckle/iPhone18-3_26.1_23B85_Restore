@@ -1,15 +1,15 @@
 @interface Service
 - (_TtC28AppInstallationMetricsDaemon7Service)init;
-- (void)handleAppInstall:(id)a3 reply:(id)a4;
+- (void)handleAppInstall:(id)install reply:(id)reply;
 @end
 
 @implementation Service
 
-- (void)handleAppInstall:(id)a3 reply:(id)a4
+- (void)handleAppInstall:(id)install reply:(id)reply
 {
-  v6 = _Block_copy(a4);
-  v7 = a3;
-  v12 = self;
+  v6 = _Block_copy(reply);
+  installCopy = install;
+  selfCopy = self;
   v8 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v10 = v9;
 

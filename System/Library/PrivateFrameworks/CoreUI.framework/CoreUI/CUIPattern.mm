@@ -1,22 +1,22 @@
 @interface CUIPattern
 - (CGPattern)_newPattern;
 - (CGPattern)pattern;
-- (CUIPattern)initWithImageRef:(CGImage *)a3;
+- (CUIPattern)initWithImageRef:(CGImage *)ref;
 - (id)description;
 - (void)dealloc;
-- (void)setPatternInContext:(CGContext *)a3;
+- (void)setPatternInContext:(CGContext *)context;
 @end
 
 @implementation CUIPattern
 
-- (CUIPattern)initWithImageRef:(CGImage *)a3
+- (CUIPattern)initWithImageRef:(CGImage *)ref
 {
   v6.receiver = self;
   v6.super_class = CUIPattern;
   v4 = [(CUIPattern *)&v6 init];
   if (v4)
   {
-    v4->_patternImage = CGImageRetain(a3);
+    v4->_patternImage = CGImageRetain(ref);
     v4->_alpha = 1.0;
   }
 
@@ -65,12 +65,12 @@
   return result;
 }
 
-- (void)setPatternInContext:(CGContext *)a3
+- (void)setPatternInContext:(CGContext *)context
 {
-  _CUISetPattern(a3, [(CUIPattern *)self pattern]);
+  _CUISetPattern(context, [(CUIPattern *)self pattern]);
   alpha = self->_alpha;
 
-  CGContextSetAlpha(a3, alpha);
+  CGContextSetAlpha(context, alpha);
 }
 
 - (id)description

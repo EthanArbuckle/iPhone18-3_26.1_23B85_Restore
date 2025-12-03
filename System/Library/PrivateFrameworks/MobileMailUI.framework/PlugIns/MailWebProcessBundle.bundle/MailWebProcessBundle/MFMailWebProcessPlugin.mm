@@ -4,8 +4,8 @@
 - (MFMailWebProcessPlugin)init;
 - (NSString)remoteContentNoProxySchemePrefix;
 - (NSString)remoteContentProxySchemePrefix;
-- (void)webProcessPlugIn:(id)a3 didCreateBrowserContextController:(id)a4;
-- (void)webProcessPlugIn:(id)a3 willDestroyBrowserContextController:(id)a4;
+- (void)webProcessPlugIn:(id)in didCreateBrowserContextController:(id)controller;
+- (void)webProcessPlugIn:(id)in willDestroyBrowserContextController:(id)controller;
 @end
 
 @implementation MFMailWebProcessPlugin
@@ -44,42 +44,42 @@
 
 - (NSString)remoteContentProxySchemePrefix
 {
-  v2 = [(WKWebProcessPlugInController *)self->_controller parameters];
-  v3 = [v2 valueForKey:@"remoteContentProxySchemePrefix"];
+  parameters = [(WKWebProcessPlugInController *)self->_controller parameters];
+  v3 = [parameters valueForKey:@"remoteContentProxySchemePrefix"];
 
   return v3;
 }
 
 - (NSString)remoteContentNoProxySchemePrefix
 {
-  v2 = [(WKWebProcessPlugInController *)self->_controller parameters];
-  v3 = [v2 valueForKey:@"remoteContentNoProxySchemePrefix"];
+  parameters = [(WKWebProcessPlugInController *)self->_controller parameters];
+  v3 = [parameters valueForKey:@"remoteContentNoProxySchemePrefix"];
 
   return v3;
 }
 
 - (BOOL)isMailPrivacyProtectionAllowed
 {
-  v2 = [(WKWebProcessPlugInController *)self->_controller parameters];
-  v3 = [v2 valueForKey:@"isMailPrivacyProtectionAllowed"];
-  v4 = [v3 BOOLValue];
+  parameters = [(WKWebProcessPlugInController *)self->_controller parameters];
+  v3 = [parameters valueForKey:@"isMailPrivacyProtectionAllowed"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
-- (void)webProcessPlugIn:(id)a3 didCreateBrowserContextController:(id)a4
+- (void)webProcessPlugIn:(id)in didCreateBrowserContextController:(id)controller
 {
-  v6 = a4;
-  v5 = [[MFMailWebProcessPlugInPageController alloc] initWithPlugIn:self contextController:v6];
-  [(NSMapTable *)self->_pageControllersByContext setObject:v5 forKey:v6];
+  controllerCopy = controller;
+  v5 = [[MFMailWebProcessPlugInPageController alloc] initWithPlugIn:self contextController:controllerCopy];
+  [(NSMapTable *)self->_pageControllersByContext setObject:v5 forKey:controllerCopy];
 }
 
-- (void)webProcessPlugIn:(id)a3 willDestroyBrowserContextController:(id)a4
+- (void)webProcessPlugIn:(id)in willDestroyBrowserContextController:(id)controller
 {
-  v6 = a4;
+  controllerCopy = controller;
   v5 = [(NSMapTable *)self->_pageControllersByContext objectForKey:?];
   [v5 invalidate];
-  [(NSMapTable *)self->_pageControllersByContext removeObjectForKey:v6];
+  [(NSMapTable *)self->_pageControllersByContext removeObjectForKey:controllerCopy];
 }
 
 @end

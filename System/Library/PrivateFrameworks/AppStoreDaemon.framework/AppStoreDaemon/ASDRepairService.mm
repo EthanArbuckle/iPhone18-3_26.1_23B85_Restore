@@ -1,9 +1,9 @@
 @interface ASDRepairService
 + (id)defaultService;
-- (BOOL)isCoastGuardUnrepairableAppWithItemID:(unint64_t)a3 externalVersionID:(unint64_t)a4;
-- (id)_asynchronousRemoteObjectProxyWithErrorHandler:(uint64_t)a1;
-- (void)refreshKeybagWithReplyHandler:(id)a3;
-- (void)repairAppWithOptions:(id)a3 replyHandler:(id)a4;
+- (BOOL)isCoastGuardUnrepairableAppWithItemID:(unint64_t)d externalVersionID:(unint64_t)iD;
+- (id)_asynchronousRemoteObjectProxyWithErrorHandler:(uint64_t)handler;
+- (void)refreshKeybagWithReplyHandler:(id)handler;
+- (void)repairAppWithOptions:(id)options replyHandler:(id)handler;
 @end
 
 @implementation ASDRepairService
@@ -41,9 +41,9 @@ void __34__ASDRepairService_defaultService__block_invoke()
   _MergedGlobals_54 = v0;
 }
 
-- (void)refreshKeybagWithReplyHandler:(id)a3
+- (void)refreshKeybagWithReplyHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v9 = 0;
   v10 = &v9;
   v11 = 0x3032000000;
@@ -58,9 +58,9 @@ void __34__ASDRepairService_defaultService__block_invoke()
   v5 = [(ASDRepairService *)self _asynchronousRemoteObjectProxyWithErrorHandler:v8];
   if (v10[5])
   {
-    if (v4)
+    if (handlerCopy)
     {
-      v4[2](v4, 0);
+      handlerCopy[2](handlerCopy, 0);
     }
   }
 
@@ -70,7 +70,7 @@ void __34__ASDRepairService_defaultService__block_invoke()
     v6[1] = 3221225472;
     v6[2] = __50__ASDRepairService_refreshKeybagWithReplyHandler___block_invoke_2;
     v6[3] = &unk_1E7CDB758;
-    v7 = v4;
+    v7 = handlerCopy;
     [v5 refreshKeybagWithReplyHandler:v6];
   }
 
@@ -93,12 +93,12 @@ uint64_t __50__ASDRepairService_refreshKeybagWithReplyHandler___block_invoke(uin
   return MEMORY[0x1EEE66BB8](v6, v4);
 }
 
-- (id)_asynchronousRemoteObjectProxyWithErrorHandler:(uint64_t)a1
+- (id)_asynchronousRemoteObjectProxyWithErrorHandler:(uint64_t)handler
 {
   v3 = a2;
-  if (a1)
+  if (handler)
   {
-    v4 = *(a1 + 8);
+    v4 = *(handler + 8);
     v9 = 0;
     v5 = [v4 getRepairServiceWithError:&v9];
     v6 = v9;
@@ -133,19 +133,19 @@ uint64_t __50__ASDRepairService_refreshKeybagWithReplyHandler___block_invoke_2(u
   return result;
 }
 
-- (void)repairAppWithOptions:(id)a3 replyHandler:(id)a4
+- (void)repairAppWithOptions:(id)options replyHandler:(id)handler
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  optionsCopy = options;
+  handlerCopy = handler;
+  v8 = handlerCopy;
   if (self)
   {
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __63__ASDRepairService__callRepairServiceWithOptions_replyHandler___block_invoke;
     v14[3] = &unk_1E7CDB730;
-    v9 = v7;
+    v9 = handlerCopy;
     v15 = v9;
     v10 = [(ASDRepairService *)self _asynchronousRemoteObjectProxyWithErrorHandler:v14];
     if (v10)
@@ -153,9 +153,9 @@ uint64_t __50__ASDRepairService_refreshKeybagWithReplyHandler___block_invoke_2(u
       v11 = ASDLogHandleForCategory(13);
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
-        v12 = [(ASDRepairOptions *)v6 copyUserInfoDictionary];
+        copyUserInfoDictionary = [(ASDRepairOptions *)optionsCopy copyUserInfoDictionary];
         LODWORD(buf) = 138412290;
-        *(&buf + 4) = v12;
+        *(&buf + 4) = copyUserInfoDictionary;
         _os_log_impl(&dword_1B8220000, v11, OS_LOG_TYPE_DEFAULT, "(RepairService) Calling repair service with options: %@", &buf, 0xCu);
       }
 
@@ -164,19 +164,19 @@ uint64_t __50__ASDRepairService_refreshKeybagWithReplyHandler___block_invoke_2(u
       v17 = __63__ASDRepairService__callRepairServiceWithOptions_replyHandler___block_invoke_12;
       v18 = &unk_1E7CDDC10;
       v19 = v9;
-      [v10 repairAppWithOptions:v6 replyHandler:&buf];
+      [v10 repairAppWithOptions:optionsCopy replyHandler:&buf];
     }
   }
 
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)isCoastGuardUnrepairableAppWithItemID:(unint64_t)a3 externalVersionID:(unint64_t)a4
+- (BOOL)isCoastGuardUnrepairableAppWithItemID:(unint64_t)d externalVersionID:(unint64_t)iD
 {
   v6 = objc_alloc_init(ASDCoastGuard);
-  LOBYTE(a4) = [(ASDCoastGuard *)v6 isUnrepairableAppWithItemID:a3 externalVersionID:a4];
+  LOBYTE(iD) = [(ASDCoastGuard *)v6 isUnrepairableAppWithItemID:d externalVersionID:iD];
 
-  return a4;
+  return iD;
 }
 
 void __63__ASDRepairService__callRepairServiceWithOptions_replyHandler___block_invoke(uint64_t a1, void *a2)

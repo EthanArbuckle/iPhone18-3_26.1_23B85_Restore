@@ -1,5 +1,5 @@
 @interface ITAttentionAwarenessContext
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (ITAttentionAwarenessContext)init;
 @end
 
@@ -12,23 +12,23 @@
   v2 = [(ITAttentionAwarenessContext *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAD78] UUID];
+    uUID = [MEMORY[0x277CCAD78] UUID];
     identifier = v2->_identifier;
-    v2->_identifier = v3;
+    v2->_identifier = uUID;
   }
 
   return v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
   if (v5 == objc_opt_class())
   {
     identifier = self->_identifier;
-    v8 = [v4 identifier];
-    v6 = [(NSUUID *)identifier isEqual:v8];
+    identifier = [equalCopy identifier];
+    v6 = [(NSUUID *)identifier isEqual:identifier];
   }
 
   else

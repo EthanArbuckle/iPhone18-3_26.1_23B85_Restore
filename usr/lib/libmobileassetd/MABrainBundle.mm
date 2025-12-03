@@ -1,17 +1,17 @@
 @interface MABrainBundle
-+ (BOOL)destageCurrent:(id *)a3;
-+ (BOOL)destageProposed:(id *)a3;
-+ (BOOL)stageProposed:(id)a3 error:(id *)a4;
++ (BOOL)destageCurrent:(id *)current;
++ (BOOL)destageProposed:(id *)proposed;
++ (BOOL)stageProposed:(id)proposed error:(id *)error;
 + (void)garbageCollect;
-- (BOOL)graft:(id *)a3;
+- (BOOL)graft:(id *)graft;
 - (BOOL)hasValidCurrentBootOnlyTicket;
 - (BOOL)isGrafted;
-- (BOOL)isGraftedPath:(id)a3;
+- (BOOL)isGraftedPath:(id)path;
 - (BOOL)isPersonalized;
-- (BOOL)personalize:(id)a3 options:(id)a4 error:(id *)a5;
-- (BOOL)stageCurrent:(id *)a3;
-- (BOOL)ungraft:(id *)a3;
-- (MABrainBundle)initWithPath:(id)a3;
+- (BOOL)personalize:(id)personalize options:(id)options error:(id *)error;
+- (BOOL)stageCurrent:(id *)current;
+- (BOOL)ungraft:(id *)ungraft;
+- (MABrainBundle)initWithPath:(id)path;
 - (NSDictionary)brainInfo;
 - (NSString)brainPath;
 - (NSString)currentBootOnlyTicketPath;
@@ -21,7 +21,7 @@
 
 @implementation MABrainBundle
 
-+ (BOOL)destageCurrent:(id *)a3
++ (BOOL)destageCurrent:(id *)current
 {
   v4 = [@"/private/var/MobileSoftwareUpdate/MobileAsset/MobileAssetBrain" stringByAppendingPathComponent:@".current"];
   v5 = +[MABrainBundle currentTargetPath];
@@ -29,7 +29,7 @@
   if (v5)
   {
     v6 = +[NSFileManager defaultManager];
-    v7 = [v6 removeItemAtPath:v4 error:a3];
+    v7 = [v6 removeItemAtPath:v4 error:current];
   }
 
   else
@@ -40,7 +40,7 @@
   return v7;
 }
 
-+ (BOOL)destageProposed:(id *)a3
++ (BOOL)destageProposed:(id *)proposed
 {
   v4 = [@"/private/var/MobileSoftwareUpdate/MobileAsset/MobileAssetBrain" stringByAppendingPathComponent:@".proposed"];
   v5 = +[MABrainBundle proposedTargetPath];
@@ -48,7 +48,7 @@
   if (v5)
   {
     v6 = +[NSFileManager defaultManager];
-    v7 = [v6 removeItemAtPath:v4 error:a3];
+    v7 = [v6 removeItemAtPath:v4 error:proposed];
   }
 
   else
@@ -59,21 +59,21 @@
   return v7;
 }
 
-+ (BOOL)stageProposed:(id)a3 error:(id *)a4
++ (BOOL)stageProposed:(id)proposed error:(id *)error
 {
-  v4 = a3;
+  proposedCopy = proposed;
   v5 = [@"/private/var/MobileSoftwareUpdate/MobileAsset/MobileAssetBrain" stringByAppendingPathComponent:@".proposed"];
-  v6 = [v4 lastPathComponent];
-  v7 = safeAtomicWriteToPath(v6, v5);
+  lastPathComponent = [proposedCopy lastPathComponent];
+  v7 = safeAtomicWriteToPath(lastPathComponent, v5);
 
   if ((v7 & 1) == 0)
   {
     v8 = _MADLog(@"Brain");
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [v4 lastPathComponent];
+      lastPathComponent2 = [proposedCopy lastPathComponent];
       v11 = 138412546;
-      v12 = v9;
+      v12 = lastPathComponent2;
       v13 = 2112;
       v14 = v5;
       _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "[MAB] Failed to write stagingName final path component(%@) to proposed path(%@)", &v11, 0x16u);
@@ -123,20 +123,20 @@ LABEL_7:
   v12 = [v11 mutableCopy];
 
   v13 = +[MABrainBundle currentTargetPath];
-  v14 = [v13 lastPathComponent];
+  lastPathComponent = [v13 lastPathComponent];
 
-  if (v14)
+  if (lastPathComponent)
   {
-    [v12 addObject:v14];
+    [v12 addObject:lastPathComponent];
   }
 
   v15 = _MADLog(@"Brain");
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     v16 = @"nil";
-    if (v14)
+    if (lastPathComponent)
     {
-      v16 = v14;
+      v16 = lastPathComponent;
     }
 
     *buf = 138412290;
@@ -227,31 +227,31 @@ LABEL_15:
   return 1;
 }
 
-- (MABrainBundle)initWithPath:(id)a3
+- (MABrainBundle)initWithPath:(id)path
 {
-  v5 = a3;
+  pathCopy = path;
   v9.receiver = self;
   v9.super_class = MABrainBundle;
   v6 = [(MABrainBundle *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_bundlePath, a3);
+    objc_storeStrong(&v6->_bundlePath, path);
   }
 
   return v7;
 }
 
-- (BOOL)personalize:(id)a3 options:(id)a4 error:(id *)a5
+- (BOOL)personalize:(id)personalize options:(id)options error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  personalizeCopy = personalize;
+  optionsCopy = options;
   AMAuthInstallLogSetHandler();
   v9 = [NSURL fileURLWithPath:self->_bundlePath];
-  v10 = [v7 stringByAppendingPathComponent:@"Restore"];
+  v10 = [personalizeCopy stringByAppendingPathComponent:@"Restore"];
   v74 = [NSURL fileURLWithPath:v10];
-  v11 = [v8 objectForKeyedSubscript:@"ssoToken"];
-  [v8 objectForKeyedSubscript:@"AuthInstallOptions"];
+  v11 = [optionsCopy objectForKeyedSubscript:@"ssoToken"];
+  [optionsCopy objectForKeyedSubscript:@"AuthInstallOptions"];
 
   v73 = v11;
   if (!&_AMAuthInstallSetUpdaterRequestEntry)
@@ -273,8 +273,8 @@ LABEL_15:
     v71 = 0;
     v72 = 0;
     v75 = &__NSDictionary0__struct;
-    v22 = a5;
-    if (!a5)
+    errorCopy5 = error;
+    if (!error)
     {
       goto LABEL_45;
     }
@@ -305,7 +305,7 @@ LABEL_15:
     v19 = 0;
     v75 = &__NSDictionary0__struct;
 LABEL_39:
-    v22 = a5;
+    errorCopy5 = error;
     goto LABEL_40;
   }
 
@@ -484,7 +484,7 @@ LABEL_38:
     v48 = [NSDictionary dictionaryWithObjects:&v96 forKeys:&v95 count:1];
     v16 = [NSError errorWithDomain:@"MobileAssetBrainErrorDomain" code:102 userInfo:v48];
 
-    v22 = a5;
+    errorCopy5 = error;
 LABEL_50:
     v19 = v66;
     goto LABEL_40;
@@ -502,7 +502,7 @@ LABEL_50:
       v51 = [NSDictionary dictionaryWithObjects:&v94 forKeys:&v93 count:1];
       v16 = [NSError errorWithDomain:@"MobileAssetBrainErrorDomain" code:102 userInfo:v51];
 
-      v22 = a5;
+      errorCopy5 = error;
       goto LABEL_50;
     }
   }
@@ -572,7 +572,7 @@ LABEL_59:
   v16 = [NSError errorWithDomain:@"MobileAssetBrainErrorDomain" code:102 userInfo:v61];
 
   objc_autoreleasePoolPop(context);
-  v22 = a5;
+  errorCopy5 = error;
   CFRelease(cf);
 LABEL_40:
   if (v12)
@@ -581,13 +581,13 @@ LABEL_40:
   }
 
   v9 = v67;
-  if (v22)
+  if (errorCopy5)
   {
 LABEL_43:
     if (v16)
     {
       v43 = v16;
-      *v22 = v16;
+      *errorCopy5 = v16;
     }
   }
 
@@ -598,35 +598,35 @@ LABEL_45:
 
 - (BOOL)isGrafted
 {
-  v2 = self;
-  v3 = [(MABrainBundle *)self graftPath];
-  LOBYTE(v2) = [(MABrainBundle *)v2 isGraftedPath:v3];
+  selfCopy = self;
+  graftPath = [(MABrainBundle *)self graftPath];
+  LOBYTE(selfCopy) = [(MABrainBundle *)selfCopy isGraftedPath:graftPath];
 
-  return v2;
+  return selfCopy;
 }
 
-- (BOOL)isGraftedPath:(id)a3
+- (BOOL)isGraftedPath:(id)path
 {
   v6[0] = 0;
   v6[1] = 0;
-  v3 = fsctl([a3 fileSystemRepresentation], 0xC0104A66uLL, v6, 1u);
+  v3 = fsctl([path fileSystemRepresentation], 0xC0104A66uLL, v6, 1u);
   return BYTE4(v6[0]) && v3 == 0;
 }
 
-- (BOOL)stageCurrent:(id *)a3
+- (BOOL)stageCurrent:(id *)current
 {
   v4 = [@"/private/var/MobileSoftwareUpdate/MobileAsset/MobileAssetBrain" stringByAppendingPathComponent:@".current"];
-  v5 = [(MABrainBundle *)self bundleId];
-  v6 = safeAtomicWriteToPath(v5, v4);
+  bundleId = [(MABrainBundle *)self bundleId];
+  v6 = safeAtomicWriteToPath(bundleId, v4);
 
   if ((v6 & 1) == 0)
   {
     v7 = _MADLog(@"Brain");
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      v8 = [(MABrainBundle *)self bundleId];
+      bundleId2 = [(MABrainBundle *)self bundleId];
       v10 = 138412290;
-      v11 = v8;
+      v11 = bundleId2;
       _os_log_impl(&dword_0, v7, OS_LOG_TYPE_ERROR, "[MAB] Failed to mark bundle(%@) as current brain.", &v10, 0xCu);
     }
   }
@@ -634,11 +634,11 @@ LABEL_45:
   return v6;
 }
 
-- (BOOL)graft:(id *)a3
+- (BOOL)graft:(id *)graft
 {
   v5 = +[NSMutableDictionary dictionary];
-  v6 = [(MABrainBundle *)self graftPath];
-  v7 = [(MABrainBundle *)self cryptexPath];
+  graftPath = [(MABrainBundle *)self graftPath];
+  cryptexPath = [(MABrainBundle *)self cryptexPath];
   v59 = 0;
   memset(&v58, 0, sizeof(v58));
   v57[0] = 0;
@@ -683,7 +683,7 @@ LABEL_45:
   v73[2] = &off_4F8000;
   v8 = [NSDictionary dictionaryWithObjects:v73 forKeys:v72 count:3];
   v9 = v8;
-  if (!v6)
+  if (!graftPath)
   {
     v53 = v8;
     v70 = NSDebugDescriptionErrorKey;
@@ -702,7 +702,7 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if (!v7)
+  if (!cryptexPath)
   {
     v53 = v8;
     v68 = NSDebugDescriptionErrorKey;
@@ -713,24 +713,24 @@ LABEL_8:
     goto LABEL_7;
   }
 
-  if ([(MABrainBundle *)self isGraftedPath:v6])
+  if ([(MABrainBundle *)self isGraftedPath:graftPath])
   {
     v10 = 0;
     v11 = 1;
     goto LABEL_26;
   }
 
-  v52 = a3;
+  graftCopy = graft;
   v19 = v5;
   v20 = +[NSFileManager defaultManager];
-  v21 = [v20 fileExistsAtPath:v6 isDirectory:&v59];
+  v21 = [v20 fileExistsAtPath:graftPath isDirectory:&v59];
 
   v53 = v9;
   if ((v21 & 1) == 0)
   {
     v22 = +[NSFileManager defaultManager];
     v56 = 0;
-    v23 = [v22 createDirectoryAtPath:v6 withIntermediateDirectories:1 attributes:v9 error:&v56];
+    v23 = [v22 createDirectoryAtPath:graftPath withIntermediateDirectories:1 attributes:v9 error:&v56];
     v10 = v56;
 
     if (v23)
@@ -749,7 +749,7 @@ LABEL_8:
 
   v29 = +[NSFileManager defaultManager];
   v55 = 0;
-  v30 = [v29 removeItemAtPath:v6 error:&v55];
+  v30 = [v29 removeItemAtPath:graftPath error:&v55];
   v10 = v55;
 
   if (!v30)
@@ -761,7 +761,7 @@ LABEL_23:
 
   v31 = +[NSFileManager defaultManager];
   v54 = v10;
-  v32 = [v31 createDirectoryAtPath:v6 withIntermediateDirectories:1 attributes:v53 error:&v54];
+  v32 = [v31 createDirectoryAtPath:graftPath withIntermediateDirectories:1 attributes:v53 error:&v54];
   v33 = v54;
 
   if (v32)
@@ -769,15 +769,15 @@ LABEL_23:
     v10 = v33;
 LABEL_16:
     v5 = v19;
-    a3 = v52;
-    if (lstat([v6 fileSystemRepresentation], &v58))
+    graft = graftCopy;
+    if (lstat([graftPath fileSystemRepresentation], &v58))
     {
       v24 = _MADLog(@"Brain");
       if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
       {
-        v25 = [v6 fileSystemRepresentation];
+        fileSystemRepresentation = [graftPath fileSystemRepresentation];
         *buf = 136315138;
-        v63 = v25;
+        v63 = fileSystemRepresentation;
         _os_log_impl(&dword_0, v24, OS_LOG_TYPE_ERROR, "[MAB] Could not lstat %s", buf, 0xCu);
       }
 
@@ -788,7 +788,7 @@ LABEL_16:
       v67[0] = @"lstat failed";
       v67[1] = v15;
       v66[2] = @"graftPath";
-      v67[2] = v6;
+      v67[2] = graftPath;
       v26 = v67;
       v27 = v66;
       v28 = 3;
@@ -801,25 +801,25 @@ LABEL_51:
 
     if ([(MABrainBundle *)self isPersonalized]|| [(MABrainBundle *)self isGloballySigned])
     {
-      v35 = [(MABrainBundle *)self cryptexPath];
-      v36 = open([v35 fileSystemRepresentation], 0);
+      cryptexPath2 = [(MABrainBundle *)self cryptexPath];
+      v36 = open([cryptexPath2 fileSystemRepresentation], 0);
 
       if (v36 < 0)
       {
         [v5 setObject:@"open()" forKeyedSubscript:@"syscall"];
-        v42 = [(MABrainBundle *)self cryptexPath];
-        [v5 setObject:v42 forKeyedSubscript:@"path"];
+        cryptexPath3 = [(MABrainBundle *)self cryptexPath];
+        [v5 setObject:cryptexPath3 forKeyedSubscript:@"path"];
 
 LABEL_45:
         v44 = _MADLog(@"Brain");
         if (os_log_type_enabled(v44, OS_LOG_TYPE_ERROR))
         {
-          v45 = [v7 fileSystemRepresentation];
-          v46 = [v6 fileSystemRepresentation];
+          fileSystemRepresentation2 = [cryptexPath fileSystemRepresentation];
+          fileSystemRepresentation3 = [graftPath fileSystemRepresentation];
           *buf = 136315394;
-          v63 = v45;
+          v63 = fileSystemRepresentation2;
           v64 = 2080;
-          v65 = v46;
+          v65 = fileSystemRepresentation3;
           _os_log_impl(&dword_0, v44, OS_LOG_TYPE_ERROR, "[MAB] Could not graft %s to %s", buf, 0x16u);
         }
 
@@ -842,20 +842,20 @@ LABEL_45:
         v61[1] = v15;
         v60[2] = @"cryptexPath";
         v60[3] = @"graftPath";
-        v61[2] = v7;
-        v61[3] = v6;
+        v61[2] = cryptexPath;
+        v61[3] = graftPath;
         v26 = v61;
         v27 = v60;
         v28 = 4;
         goto LABEL_51;
       }
 
-      v37 = [(MABrainBundle *)self ticketPath];
-      v51 = open([v37 fileSystemRepresentation], 0);
+      ticketPath = [(MABrainBundle *)self ticketPath];
+      v51 = open([ticketPath fileSystemRepresentation], 0);
       if (v51 < 0)
       {
         [v5 setObject:@"open()" forKeyedSubscript:@"syscall"];
-        [v5 setObject:v37 forKeyedSubscript:@"path"];
+        [v5 setObject:ticketPath forKeyedSubscript:@"path"];
         v41 = -1;
       }
 
@@ -866,20 +866,20 @@ LABEL_45:
         if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v63 = v37;
+          v63 = ticketPath;
           _os_log_impl(&dword_0, v38, OS_LOG_TYPE_DEFAULT, "[MAB] Found MA brain ticket: %@", buf, 0xCu);
         }
 
-        v49 = v37;
+        v49 = ticketPath;
 
-        v39 = [(MABrainBundle *)self rootHashPath];
-        v40 = open([v39 fileSystemRepresentation], 0);
+        rootHashPath = [(MABrainBundle *)self rootHashPath];
+        v40 = open([rootHashPath fileSystemRepresentation], 0);
 
         if (v40 < 0)
         {
           [v5 setObject:@"open()" forKeyedSubscript:@"syscall"];
-          v43 = [(MABrainBundle *)self rootHashPath];
-          [v5 setObject:v43 forKeyedSubscript:@"path"];
+          rootHashPath2 = [(MABrainBundle *)self rootHashPath];
+          [v5 setObject:rootHashPath2 forKeyedSubscript:@"path"];
 
           v41 = -1;
         }
@@ -889,7 +889,7 @@ LABEL_45:
           DWORD2(v74) = v51;
           v75 = v40;
           *&v76 = 16;
-          [v6 fileSystemRepresentation];
+          [graftPath fileSystemRepresentation];
           [(MABrainBundle *)self graftdmgType];
           v41 = graftdmg();
           if (v41)
@@ -903,7 +903,7 @@ LABEL_45:
 
         close(v51);
         v36 = v50;
-        v37 = v49;
+        ticketPath = v49;
       }
 
       close(v36);
@@ -912,7 +912,7 @@ LABEL_45:
     else
     {
       v57[0] = v58.st_ino;
-      v41 = fsctl([v7 fileSystemRepresentation], 0x80104A63uLL, v57, 0);
+      v41 = fsctl([cryptexPath fileSystemRepresentation], 0x80104A63uLL, v57, 0);
     }
 
     if (!v41)
@@ -921,16 +921,16 @@ LABEL_45:
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        v63 = v7;
+        v63 = cryptexPath;
         v64 = 2112;
-        v65 = v6;
+        v65 = graftPath;
         _os_log_impl(&dword_0, v12, OS_LOG_TYPE_DEFAULT, "[MAB] Successfully grafted %@ onto %@", buf, 0x16u);
       }
 
       v11 = 1;
 LABEL_9:
 
-      if (a3)
+      if (graft)
       {
         goto LABEL_10;
       }
@@ -947,8 +947,8 @@ LABEL_25:
   v10 = v33;
 LABEL_24:
   v5 = v19;
-  a3 = v52;
-  if (!v52)
+  graft = graftCopy;
+  if (!graftCopy)
   {
     goto LABEL_25;
   }
@@ -958,7 +958,7 @@ LABEL_10:
   if (v10)
   {
     v18 = v10;
-    *a3 = v10;
+    *graft = v10;
   }
 
 LABEL_26:
@@ -966,14 +966,14 @@ LABEL_26:
   return v11;
 }
 
-- (BOOL)ungraft:(id *)a3
+- (BOOL)ungraft:(id *)ungraft
 {
   v5 = +[NSMutableDictionary dictionary];
-  v6 = [(MABrainBundle *)self graftPath];
+  graftPath = [(MABrainBundle *)self graftPath];
   v22 = 0;
-  if (v6)
+  if (graftPath)
   {
-    if ([(MABrainBundle *)self isGraftedPath:v6])
+    if ([(MABrainBundle *)self isGraftedPath:graftPath])
     {
       if (&_ungraftdmg)
       {
@@ -983,14 +983,14 @@ LABEL_26:
           [v5 setObject:@"UNGRAFTDMG_NOFORCE" forKeyedSubscript:@"ungraft_param"];
         }
 
-        [v6 fileSystemRepresentation];
+        [graftPath fileSystemRepresentation];
         v11 = ungraftdmg();
         v12 = @"ungraftdmg()";
       }
 
       else
       {
-        v11 = fsctl([v6 fileSystemRepresentation], 0x80084A64uLL, &v22, 0);
+        v11 = fsctl([graftPath fileSystemRepresentation], 0x80084A64uLL, &v22, 0);
         v12 = @"fsctl()";
       }
 
@@ -1000,9 +1000,9 @@ LABEL_26:
       {
         if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
         {
-          v15 = [v6 fileSystemRepresentation];
+          fileSystemRepresentation = [graftPath fileSystemRepresentation];
           *buf = 136315138;
-          v24 = v15;
+          v24 = fileSystemRepresentation;
           _os_log_impl(&dword_0, v14, OS_LOG_TYPE_ERROR, "[MAB] Could not ungraft %s", buf, 0xCu);
         }
 
@@ -1024,7 +1024,7 @@ LABEL_26:
         v28[0] = @"ungraft failed";
         v28[1] = v8;
         v27[2] = @"graftPath";
-        v28[2] = v6;
+        v28[2] = graftPath;
         v7 = [NSDictionary dictionaryWithObjects:v28 forKeys:v27 count:3];
         v9 = 105;
         v10 = v7;
@@ -1034,7 +1034,7 @@ LABEL_26:
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        v24 = v6;
+        v24 = graftPath;
         v25 = 2112;
         v26 = v12;
         _os_log_impl(&dword_0, v14, OS_LOG_TYPE_DEFAULT, "[MAB] Successfully ungrafted %@ from the file system using %@", buf, 0x16u);
@@ -1056,11 +1056,11 @@ LABEL_16:
   v18 = [NSError errorWithDomain:@"MobileAssetBrainErrorDomain" code:v9 userInfo:v10];
 
   v19 = 0;
-  if (a3 && v18)
+  if (ungraft && v18)
   {
     v20 = v18;
     v19 = 0;
-    *a3 = v18;
+    *ungraft = v18;
   }
 
 LABEL_23:
@@ -1071,19 +1071,19 @@ LABEL_23:
 - (BOOL)isPersonalized
 {
   v3 = +[NSFileManager defaultManager];
-  v4 = [(MABrainBundle *)self ticketPath];
-  v5 = [v3 fileExistsAtPath:v4];
+  ticketPath = [(MABrainBundle *)self ticketPath];
+  v5 = [v3 fileExistsAtPath:ticketPath];
 
   return v5;
 }
 
 - (BOOL)hasValidCurrentBootOnlyTicket
 {
-  v2 = [(MABrainBundle *)self currentBootOnlyTicketPath];
-  if (v2)
+  currentBootOnlyTicketPath = [(MABrainBundle *)self currentBootOnlyTicketPath];
+  if (currentBootOnlyTicketPath)
   {
     v3 = +[NSFileManager defaultManager];
-    v4 = [v3 fileExistsAtPath:v2];
+    v4 = [v3 fileExistsAtPath:currentBootOnlyTicketPath];
   }
 
   else
@@ -1122,10 +1122,10 @@ LABEL_23:
 
 - (unsigned)graftdmgType
 {
-  v2 = [(MABrainBundle *)self hasValidCurrentBootOnlyTicket];
+  hasValidCurrentBootOnlyTicket = [(MABrainBundle *)self hasValidCurrentBootOnlyTicket];
   v3 = _MADLog(@"Brain");
   v4 = os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT);
-  if (v2)
+  if (hasValidCurrentBootOnlyTicket)
   {
     if (v4)
     {
@@ -1152,8 +1152,8 @@ LABEL_23:
 
 - (NSString)brainPath
 {
-  v2 = [(MABrainBundle *)self graftPath];
-  v3 = [v2 stringByAppendingPathComponent:@"/usr/lib/libmobileassetd.dylib"];
+  graftPath = [(MABrainBundle *)self graftPath];
+  v3 = [graftPath stringByAppendingPathComponent:@"/usr/lib/libmobileassetd.dylib"];
 
   return v3;
 }

@@ -1,21 +1,21 @@
 @interface VCImageRotationConverter
-- (VCImageRotationConverter)initWithRotationAngle:(unsigned int)a3 width:(unint64_t)a4 height:(unint64_t)a5 formatType:(unsigned int)a6;
+- (VCImageRotationConverter)initWithRotationAngle:(unsigned int)angle width:(unint64_t)width height:(unint64_t)height formatType:(unsigned int)type;
 @end
 
 @implementation VCImageRotationConverter
 
-- (VCImageRotationConverter)initWithRotationAngle:(unsigned int)a3 width:(unint64_t)a4 height:(unint64_t)a5 formatType:(unsigned int)a6
+- (VCImageRotationConverter)initWithRotationAngle:(unsigned int)angle width:(unint64_t)width height:(unint64_t)height formatType:(unsigned int)type
 {
   v15 = *MEMORY[0x1E69E9840];
   v14.receiver = self;
   v14.super_class = VCImageRotationConverter;
-  v9 = [(VCImageRotationConverterBase *)&v14 initWithRotationAngle:*&a3 formatType:*&a6];
+  v9 = [(VCImageRotationConverterBase *)&v14 initWithRotationAngle:*&angle formatType:*&type];
   v10 = v9;
   if (v9)
   {
-    if (a3 == 90 || a3 == 270)
+    if (angle == 90 || angle == 270)
     {
-      [(VCImageConverterBase *)v9 setUpBufferPoolForOutputWidth:a5 outputHeight:a4];
+      [(VCImageConverterBase *)v9 setUpBufferPoolForOutputWidth:height outputHeight:width];
     }
 
     else
@@ -26,7 +26,7 @@
         v12 = *MEMORY[0x1E6986650];
         if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_ERROR))
         {
-          [VCImageRotationConverter initWithRotationAngle:v11 width:a3 height:v12 formatType:?];
+          [VCImageRotationConverter initWithRotationAngle:v11 width:angle height:v12 formatType:?];
         }
       }
 

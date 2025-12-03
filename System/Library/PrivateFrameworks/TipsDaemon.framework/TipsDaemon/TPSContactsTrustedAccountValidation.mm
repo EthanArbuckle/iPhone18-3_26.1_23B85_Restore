@@ -1,33 +1,33 @@
 @interface TPSContactsTrustedAccountValidation
-- (BOOL)_primaryAccountCanHaveTrustedAccountType:(unint64_t)a3;
-- (void)_hasAssignmentForTrustedAccountType:(unint64_t)a3 completion:(id)a4;
-- (void)validateBeneficiaryAssignmentWithCompletion:(id)a3;
-- (void)validateCustodianAssignmentWithCompletion:(id)a3;
-- (void)validateWithCompletion:(id)a3;
+- (BOOL)_primaryAccountCanHaveTrustedAccountType:(unint64_t)type;
+- (void)_hasAssignmentForTrustedAccountType:(unint64_t)type completion:(id)completion;
+- (void)validateBeneficiaryAssignmentWithCompletion:(id)completion;
+- (void)validateCustodianAssignmentWithCompletion:(id)completion;
+- (void)validateWithCompletion:(id)completion;
 @end
 
 @implementation TPSContactsTrustedAccountValidation
 
-- (void)validateWithCompletion:(id)a3
+- (void)validateWithCompletion:(id)completion
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  [(TPSContactsTrustedAccountValidation *)self setCompletionHandler:v4];
-  v5 = [(TPSTargetingValidation *)self value];
-  if (v5 && ([(TPSTargetingValidation *)self value], v6 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v6, v5, (isKindOfClass & 1) != 0))
+  completionCopy = completion;
+  [(TPSContactsTrustedAccountValidation *)self setCompletionHandler:completionCopy];
+  value = [(TPSTargetingValidation *)self value];
+  if (value && ([(TPSTargetingValidation *)self value], v6 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v6, value, (isKindOfClass & 1) != 0))
   {
-    v8 = [MEMORY[0x277CF0130] sharedInstance];
-    v9 = [v8 primaryAuthKitAccount];
-    [(TPSContactsTrustedAccountValidation *)self setPrimaryAccount:v9];
+    mEMORY[0x277CF0130] = [MEMORY[0x277CF0130] sharedInstance];
+    primaryAuthKitAccount = [mEMORY[0x277CF0130] primaryAuthKitAccount];
+    [(TPSContactsTrustedAccountValidation *)self setPrimaryAccount:primaryAuthKitAccount];
 
-    v10 = [(TPSTargetingValidation *)self value];
-    -[TPSContactsTrustedAccountValidation setDesiredValue:](self, "setDesiredValue:", [v10 TPSSafeBoolForKey:@"value"]);
+    value2 = [(TPSTargetingValidation *)self value];
+    -[TPSContactsTrustedAccountValidation setDesiredValue:](self, "setDesiredValue:", [value2 TPSSafeBoolForKey:@"value"]);
 
-    v11 = [(TPSTargetingValidation *)self value];
-    v12 = [v11 TPSSafeIntegerForKey:@"accountType"];
+    value3 = [(TPSTargetingValidation *)self value];
+    v12 = [value3 TPSSafeIntegerForKey:@"accountType"];
 
-    v13 = [(TPSTargetingValidation *)self value];
-    v14 = [v13 TPSSafeUIntegerForKey:@"statusType"];
+    value4 = [(TPSTargetingValidation *)self value];
+    v14 = [value4 TPSSafeUIntegerForKey:@"statusType"];
 
     v15 = [(TPSContactsTrustedAccountValidation *)self _primaryAccountCanHaveTrustedAccountType:v12];
     if (v14 == 2)
@@ -57,17 +57,17 @@
 
   else
   {
-    v16 = [MEMORY[0x277D71778] targeting];
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
+    targeting = [MEMORY[0x277D71778] targeting];
+    if (os_log_type_enabled(targeting, OS_LOG_TYPE_INFO))
     {
-      v17 = [(TPSTargetingValidation *)self value];
-      v18 = [(TPSTargetingValidation *)self value];
+      value5 = [(TPSTargetingValidation *)self value];
+      value6 = [(TPSTargetingValidation *)self value];
       *buf = 138412546;
-      v26 = v17;
+      v26 = value5;
       v27 = 2112;
       v28 = objc_opt_class();
       v19 = v28;
-      _os_log_impl(&dword_232D6F000, v16, OS_LOG_TYPE_INFO, "Unexpected value: %@ with class %@.", buf, 0x16u);
+      _os_log_impl(&dword_232D6F000, targeting, OS_LOG_TYPE_INFO, "Unexpected value: %@ with class %@.", buf, 0x16u);
     }
 
     v20 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:22 userInfo:0];
@@ -84,25 +84,25 @@ void __62__TPSContactsTrustedAccountValidation_validateWithCompletion___block_in
   [WeakRetained reportCompletionWithResult:a2 error:v5];
 }
 
-- (BOOL)_primaryAccountCanHaveTrustedAccountType:(unint64_t)a3
+- (BOOL)_primaryAccountCanHaveTrustedAccountType:(unint64_t)type
 {
-  if (a3 == 2)
+  if (type == 2)
   {
-    v4 = [MEMORY[0x277CF0130] sharedInstance];
-    v5 = [(TPSContactsTrustedAccountValidation *)self primaryAccount];
-    v6 = [v4 canHaveCustodianForAccount:v5];
+    mEMORY[0x277CF0130] = [MEMORY[0x277CF0130] sharedInstance];
+    primaryAccount = [(TPSContactsTrustedAccountValidation *)self primaryAccount];
+    v6 = [mEMORY[0x277CF0130] canHaveCustodianForAccount:primaryAccount];
   }
 
   else
   {
-    if (a3 != 1)
+    if (type != 1)
     {
       return 0;
     }
 
-    v4 = [MEMORY[0x277CF0130] sharedInstance];
-    v5 = [(TPSContactsTrustedAccountValidation *)self primaryAccount];
-    v6 = [v4 canHaveBeneficiaryForAccount:v5];
+    mEMORY[0x277CF0130] = [MEMORY[0x277CF0130] sharedInstance];
+    primaryAccount = [(TPSContactsTrustedAccountValidation *)self primaryAccount];
+    v6 = [mEMORY[0x277CF0130] canHaveBeneficiaryForAccount:primaryAccount];
   }
 
   v7 = v6;
@@ -110,18 +110,18 @@ void __62__TPSContactsTrustedAccountValidation_validateWithCompletion___block_in
   return v7;
 }
 
-- (void)_hasAssignmentForTrustedAccountType:(unint64_t)a3 completion:(id)a4
+- (void)_hasAssignmentForTrustedAccountType:(unint64_t)type completion:(id)completion
 {
-  v6 = a4;
-  v8 = v6;
-  if (a3 == 2)
+  completionCopy = completion;
+  v8 = completionCopy;
+  if (type == 2)
   {
-    [(TPSContactsTrustedAccountValidation *)self validateCustodianAssignmentWithCompletion:v6];
+    [(TPSContactsTrustedAccountValidation *)self validateCustodianAssignmentWithCompletion:completionCopy];
   }
 
-  else if (a3 == 1)
+  else if (type == 1)
   {
-    [(TPSContactsTrustedAccountValidation *)self validateBeneficiaryAssignmentWithCompletion:v6];
+    [(TPSContactsTrustedAccountValidation *)self validateBeneficiaryAssignmentWithCompletion:completionCopy];
   }
 
   else
@@ -131,9 +131,9 @@ void __62__TPSContactsTrustedAccountValidation_validateWithCompletion___block_in
   }
 }
 
-- (void)validateBeneficiaryAssignmentWithCompletion:(id)a3
+- (void)validateBeneficiaryAssignmentWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -149,7 +149,7 @@ void __62__TPSContactsTrustedAccountValidation_validateWithCompletion___block_in
     v8[2] = __83__TPSContactsTrustedAccountValidation_validateBeneficiaryAssignmentWithCompletion___block_invoke;
     v8[3] = &unk_2789B0500;
     objc_copyWeak(&v11, &location);
-    v9 = v4;
+    v9 = completionCopy;
     v10 = &v13;
     [v5 fetchBeneficiariesWithCompletion:v8];
 
@@ -159,14 +159,14 @@ void __62__TPSContactsTrustedAccountValidation_validateWithCompletion___block_in
 
   else
   {
-    v6 = [MEMORY[0x277D71778] targeting];
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    targeting = [MEMORY[0x277D71778] targeting];
+    if (os_log_type_enabled(targeting, OS_LOG_TYPE_ERROR))
     {
       [TPSContactsTrustedAccountValidation validateBeneficiaryAssignmentWithCompletion:];
     }
 
     v7 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:12 userInfo:0];
-    (*(v4 + 2))(v4, 0, v7);
+    (*(completionCopy + 2))(completionCopy, 0, v7);
   }
 
   _Block_object_dispose(&v13, 8);
@@ -197,9 +197,9 @@ void __83__TPSContactsTrustedAccountValidation_validateBeneficiaryAssignmentWith
   }
 }
 
-- (void)validateCustodianAssignmentWithCompletion:(id)a3
+- (void)validateCustodianAssignmentWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -215,7 +215,7 @@ void __83__TPSContactsTrustedAccountValidation_validateBeneficiaryAssignmentWith
     v8[2] = __81__TPSContactsTrustedAccountValidation_validateCustodianAssignmentWithCompletion___block_invoke;
     v8[3] = &unk_2789B0500;
     objc_copyWeak(&v11, &location);
-    v9 = v4;
+    v9 = completionCopy;
     v10 = &v13;
     [v5 fetchTrustedContactsWithCompletion:v8];
 
@@ -225,14 +225,14 @@ void __83__TPSContactsTrustedAccountValidation_validateBeneficiaryAssignmentWith
 
   else
   {
-    v6 = [MEMORY[0x277D71778] targeting];
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    targeting = [MEMORY[0x277D71778] targeting];
+    if (os_log_type_enabled(targeting, OS_LOG_TYPE_ERROR))
     {
       [TPSContactsTrustedAccountValidation validateCustodianAssignmentWithCompletion:];
     }
 
     v7 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:12 userInfo:0];
-    (*(v4 + 2))(v4, 0, v7);
+    (*(completionCopy + 2))(completionCopy, 0, v7);
   }
 
   _Block_object_dispose(&v13, 8);

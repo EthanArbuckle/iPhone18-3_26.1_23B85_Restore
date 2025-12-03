@@ -1,5 +1,5 @@
 @interface ASNavigationController
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3;
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container;
 - (void)viewDidLoad;
 @end
 
@@ -12,26 +12,26 @@
   [(ASNavigationController *)&v8 viewDidLoad];
   [(ASNavigationController *)self _setBuiltinTransitionStyle:1];
   v3 = objc_alloc_init(MEMORY[0x1E69DCAB8]);
-  v4 = [(ASNavigationController *)self navigationBar];
-  [v4 setBackgroundImage:v3 forBarMetrics:0];
+  navigationBar = [(ASNavigationController *)self navigationBar];
+  [navigationBar setBackgroundImage:v3 forBarMetrics:0];
 
-  v5 = [(ASNavigationController *)self navigationBar];
-  [v5 setTranslucent:1];
+  navigationBar2 = [(ASNavigationController *)self navigationBar];
+  [navigationBar2 setTranslucent:1];
 
-  v6 = [MEMORY[0x1E69DC888] clearColor];
-  v7 = [(ASNavigationController *)self view];
-  [v7 setBackgroundColor:v6];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  view = [(ASNavigationController *)self view];
+  [view setBackgroundColor:clearColor];
 }
 
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container
 {
   v4 = *MEMORY[0x1E695F060];
   v5 = *(MEMORY[0x1E695F060] + 8);
-  v6 = a3;
+  containerCopy = container;
   [(ASNavigationController *)self setPreferredContentSize:v4, v5];
   v7.receiver = self;
   v7.super_class = ASNavigationController;
-  [(ASNavigationController *)&v7 preferredContentSizeDidChangeForChildContentContainer:v6];
+  [(ASNavigationController *)&v7 preferredContentSizeDidChangeForChildContentContainer:containerCopy];
 }
 
 @end

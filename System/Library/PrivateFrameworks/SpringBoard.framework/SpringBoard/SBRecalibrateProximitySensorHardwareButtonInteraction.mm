@@ -1,34 +1,34 @@
 @interface SBRecalibrateProximitySensorHardwareButtonInteraction
-- (BOOL)_disallowsAnyPressForReason:(id *)a3;
+- (BOOL)_disallowsAnyPressForReason:(id *)reason;
 - (BOOL)consumeInitialPressDown;
 - (BOOL)consumeSinglePressUp;
-- (SBRecalibrateProximitySensorHardwareButtonInteraction)initWithProximitySensorManager:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
+- (SBRecalibrateProximitySensorHardwareButtonInteraction)initWithProximitySensorManager:(id)manager;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
 - (id)hardwareButtonGestureParameters;
 @end
 
 @implementation SBRecalibrateProximitySensorHardwareButtonInteraction
 
-- (SBRecalibrateProximitySensorHardwareButtonInteraction)initWithProximitySensorManager:(id)a3
+- (SBRecalibrateProximitySensorHardwareButtonInteraction)initWithProximitySensorManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v9.receiver = self;
   v9.super_class = SBRecalibrateProximitySensorHardwareButtonInteraction;
   v6 = [(SBRecalibrateProximitySensorHardwareButtonInteraction *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_sensorManager, a3);
+    objc_storeStrong(&v6->_sensorManager, manager);
   }
 
   return v7;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v7.receiver = self;
   v7.super_class = SBRecalibrateProximitySensorHardwareButtonInteraction;
-  v4 = [(SBHardwareButtonGestureParametersProviderBase *)&v7 descriptionBuilderWithMultilinePrefix:a3];
+  v4 = [(SBHardwareButtonGestureParametersProviderBase *)&v7 descriptionBuilderWithMultilinePrefix:prefix];
   v5 = [v4 appendBool:self->_didResetProxCalibration withName:@"didResetProxCalibration"];
 
   return v4;
@@ -38,9 +38,9 @@
 {
   v10 = *MEMORY[0x277D85DE8];
   self->_didResetProxCalibration = 0;
-  v4 = [(SBProximitySensorManager *)self->_sensorManager isObjectInProximity];
+  isObjectInProximity = [(SBProximitySensorManager *)self->_sensorManager isObjectInProximity];
   result = 0;
-  if (v4)
+  if (isObjectInProximity)
   {
     if (MGGetBoolAnswer())
     {
@@ -87,21 +87,21 @@
   return didResetProxCalibration;
 }
 
-- (BOOL)_disallowsAnyPressForReason:(id *)a3
+- (BOOL)_disallowsAnyPressForReason:(id *)reason
 {
-  *a3 = 0;
-  v4 = [(SBProximitySensorManager *)self->_sensorManager isObjectInProximity];
-  if (v4)
+  *reason = 0;
+  isObjectInProximity = [(SBProximitySensorManager *)self->_sensorManager isObjectInProximity];
+  if (isObjectInProximity)
   {
-    v4 = MGGetBoolAnswer();
-    if (v4)
+    isObjectInProximity = MGGetBoolAnswer();
+    if (isObjectInProximity)
     {
-      *a3 = @"object in proximity && opposed lock/volume buttons";
-      LOBYTE(v4) = 1;
+      *reason = @"object in proximity && opposed lock/volume buttons";
+      LOBYTE(isObjectInProximity) = 1;
     }
   }
 
-  return v4;
+  return isObjectInProximity;
 }
 
 - (id)hardwareButtonGestureParameters

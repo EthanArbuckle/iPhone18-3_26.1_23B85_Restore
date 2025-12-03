@@ -1,10 +1,10 @@
 @interface DMDEffectivePolicy
-- (void)setExcludedIdentifiers:(id)a3;
+- (void)setExcludedIdentifiers:(id)identifiers;
 @end
 
 @implementation DMDEffectivePolicy
 
-- (void)setExcludedIdentifiers:(id)a3
+- (void)setExcludedIdentifiers:(id)identifiers
 {
   v3 = DMFPolicyLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_FAULT))

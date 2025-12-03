@@ -1,28 +1,28 @@
 @interface CKPackageDownloadTask
-- (CKPackageDownloadTask)initWithPackage:(id)a3 trackProgress:(BOOL)a4;
+- (CKPackageDownloadTask)initWithPackage:(id)package trackProgress:(BOOL)progress;
 - (void)cancel;
-- (void)setManifestAsset:(id)a3;
-- (void)setSectionAssets:(id)a3;
+- (void)setManifestAsset:(id)asset;
+- (void)setSectionAssets:(id)assets;
 @end
 
 @implementation CKPackageDownloadTask
 
-- (CKPackageDownloadTask)initWithPackage:(id)a3 trackProgress:(BOOL)a4
+- (CKPackageDownloadTask)initWithPackage:(id)package trackProgress:(BOOL)progress
 {
-  v4 = a4;
-  v7 = a3;
+  progressCopy = progress;
+  packageCopy = package;
   v34.receiver = self;
   v34.super_class = CKPackageDownloadTask;
   v8 = [(CKPackageDownloadTask *)&v34 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_package, a3);
-    if (v4)
+    objc_storeStrong(&v8->_package, package);
+    if (progressCopy)
     {
       v10 = objc_alloc(MEMORY[0x277CCACA8]);
-      v13 = objc_msgSend_recordKey(v7, v11, v12);
-      v16 = objc_msgSend_record(v7, v14, v15);
+      v13 = objc_msgSend_recordKey(packageCopy, v11, v12);
+      v16 = objc_msgSend_record(packageCopy, v14, v15);
       v19 = objc_msgSend_recordID(v16, v17, v18);
       v22 = objc_msgSend_recordName(v19, v20, v21);
       v24 = objc_msgSend_initWithFormat_(v10, v23, @"down|%@|%@", v13, v22);
@@ -45,15 +45,15 @@
   return v9;
 }
 
-- (void)setManifestAsset:(id)a3
+- (void)setManifestAsset:(id)asset
 {
   v18[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v6 = v4;
+  assetCopy = asset;
+  v6 = assetCopy;
   manifestAsset = self->_manifestAsset;
   if (manifestAsset)
   {
-    v8 = manifestAsset == v4;
+    v8 = manifestAsset == assetCopy;
   }
 
   else
@@ -83,14 +83,14 @@
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setSectionAssets:(id)a3
+- (void)setSectionAssets:(id)assets
 {
-  v4 = a3;
-  v6 = v4;
+  assetsCopy = assets;
+  v6 = assetsCopy;
   sectionAssets = self->_sectionAssets;
   if (sectionAssets)
   {
-    v8 = sectionAssets == v4;
+    v8 = sectionAssets == assetsCopy;
   }
 
   else

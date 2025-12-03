@@ -1,23 +1,23 @@
 @interface RSABSSATokenReady
-- (RSABSSATokenReady)initWithTokenContent:(id)a3 tokenSignature:(id)a4 keyId:(id)a5;
+- (RSABSSATokenReady)initWithTokenContent:(id)content tokenSignature:(id)signature keyId:(id)id;
 @end
 
 @implementation RSABSSATokenReady
 
-- (RSABSSATokenReady)initWithTokenContent:(id)a3 tokenSignature:(id)a4 keyId:(id)a5
+- (RSABSSATokenReady)initWithTokenContent:(id)content tokenSignature:(id)signature keyId:(id)id
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  contentCopy = content;
+  signatureCopy = signature;
+  idCopy = id;
   v15.receiver = self;
   v15.super_class = RSABSSATokenReady;
   v12 = [(RSABSSATokenReady *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_keyId, a5);
-    objc_storeStrong(&v13->_signature, a4);
-    objc_storeStrong(&v13->_tokenContent, a3);
+    objc_storeStrong(&v12->_keyId, id);
+    objc_storeStrong(&v13->_signature, signature);
+    objc_storeStrong(&v13->_tokenContent, content);
   }
 
   return v13;

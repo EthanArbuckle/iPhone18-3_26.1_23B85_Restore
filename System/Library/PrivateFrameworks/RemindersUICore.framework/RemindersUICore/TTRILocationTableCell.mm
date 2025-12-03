@@ -1,14 +1,14 @@
 @interface TTRILocationTableCell
 - (CGPoint)accessibilityActivationPoint;
-- (_TtC15RemindersUICore21TTRILocationTableCell)initWithCoder:(id)a3;
-- (_TtC15RemindersUICore21TTRILocationTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (_TtC15RemindersUICore21TTRILocationTableCell)initWithCoder:(id)coder;
+- (_TtC15RemindersUICore21TTRILocationTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 @end
 
 @implementation TTRILocationTableCell
 
-- (_TtC15RemindersUICore21TTRILocationTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC15RemindersUICore21TTRILocationTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
     v4 = sub_21DBFA16C();
   }
@@ -22,7 +22,7 @@
   return sub_21DA86454(v4, v5);
 }
 
-- (_TtC15RemindersUICore21TTRILocationTableCell)initWithCoder:(id)a3
+- (_TtC15RemindersUICore21TTRILocationTableCell)initWithCoder:(id)coder
 {
   result = sub_21DBFC31C();
   __break(1u);

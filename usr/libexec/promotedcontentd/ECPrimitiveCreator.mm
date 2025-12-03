@@ -1,27 +1,27 @@
 @interface ECPrimitiveCreator
 - (_TtC7Metrics18ECPrimitiveCreator)init;
-- (void)recordMetric:(int64_t)a3 forPurpose:(int64_t)a4 properties:(id)a5 internalProperties:(id)a6 order:(int64_t)a7 options:(int64_t)a8;
+- (void)recordMetric:(int64_t)metric forPurpose:(int64_t)purpose properties:(id)properties internalProperties:(id)internalProperties order:(int64_t)order options:(int64_t)options;
 @end
 
 @implementation ECPrimitiveCreator
 
-- (void)recordMetric:(int64_t)a3 forPurpose:(int64_t)a4 properties:(id)a5 internalProperties:(id)a6 order:(int64_t)a7 options:(int64_t)a8
+- (void)recordMetric:(int64_t)metric forPurpose:(int64_t)purpose properties:(id)properties internalProperties:(id)internalProperties order:(int64_t)order options:(int64_t)options
 {
-  v11 = a5;
-  if (a5)
+  propertiesCopy = properties;
+  if (properties)
   {
     sub_1001E27A8(&unk_1004D5850);
-    v11 = sub_100398E68();
+    propertiesCopy = sub_100398E68();
   }
 
-  if (a6)
+  if (internalProperties)
   {
     sub_1001E27A8(&unk_1004D4400);
-    a6 = sub_100398E68();
+    internalProperties = sub_100398E68();
   }
 
-  v15 = self;
-  sub_100341B1C(a3, a4, v11, a6, a7, a8);
+  selfCopy = self;
+  sub_100341B1C(metric, purpose, propertiesCopy, internalProperties, order, options);
 }
 
 - (_TtC7Metrics18ECPrimitiveCreator)init

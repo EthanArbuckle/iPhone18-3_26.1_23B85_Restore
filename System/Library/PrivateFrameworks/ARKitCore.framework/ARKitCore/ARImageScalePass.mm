@@ -1,26 +1,26 @@
 @interface ARImageScalePass
-- (ARImageScalePass)initWithDescription:(id)a3;
+- (ARImageScalePass)initWithDescription:(id)description;
 - (CGSize)scaledSize;
-- (__CVBuffer)scalePixelBuffer:(__CVBuffer *)a3;
+- (__CVBuffer)scalePixelBuffer:(__CVBuffer *)buffer;
 - (void)dealloc;
-- (void)setConversionPixelFormatType:(unsigned int)a3;
+- (void)setConversionPixelFormatType:(unsigned int)type;
 @end
 
 @implementation ARImageScalePass
 
-- (ARImageScalePass)initWithDescription:(id)a3
+- (ARImageScalePass)initWithDescription:(id)description
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  descriptionCopy = description;
   v25.receiver = self;
   v25.super_class = ARImageScalePass;
   v5 = [(ARImageScalePass *)&v25 init];
   if (v5)
   {
-    [v4 size];
+    [descriptionCopy size];
     v5->_scaledSize.width = v6;
     v5->_scaledSize.height = v7;
-    v5->_conversionPixelFormatType = [v4 pixelBufferFormat];
+    v5->_conversionPixelFormatType = [descriptionCopy pixelBufferFormat];
     if (VTPixelTransferSessionCreate(0, &v5->_vtPixelTransferSession))
     {
       vtPixelTransferSession = v5->_vtPixelTransferSession;
@@ -163,32 +163,32 @@ LABEL_26:
   [(ARImageScalePass *)&v6 dealloc];
 }
 
-- (void)setConversionPixelFormatType:(unsigned int)a3
+- (void)setConversionPixelFormatType:(unsigned int)type
 {
-  if ([(ARImageScalePass *)self conversionPixelFormatType]!= a3)
+  if ([(ARImageScalePass *)self conversionPixelFormatType]!= type)
   {
-    self->_conversionPixelFormatType = a3;
+    self->_conversionPixelFormatType = type;
     CVPixelBufferPoolRelease(self->_scaledPixelBufferPool);
     self->_scaledPixelBufferPool = 0;
   }
 }
 
-- (__CVBuffer)scalePixelBuffer:(__CVBuffer *)a3
+- (__CVBuffer)scalePixelBuffer:(__CVBuffer *)buffer
 {
   v26 = *MEMORY[0x1E69E9840];
   conversionPixelFormatType = self->_conversionPixelFormatType;
   if (!conversionPixelFormatType)
   {
-    conversionPixelFormatType = CVPixelBufferGetPixelFormatType(a3);
+    conversionPixelFormatType = CVPixelBufferGetPixelFormatType(buffer);
   }
 
   [(ARImageScalePass *)self scaledSize];
   v8 = ARCreateCVPixelBufferFromPool(&self->_scaledPixelBufferPool, conversionPixelFormatType, self, @"scaling pass pool", v6, v7);
-  CVPixelBufferLockBaseAddress(a3, 1uLL);
+  CVPixelBufferLockBaseAddress(buffer, 1uLL);
   CVPixelBufferLockBaseAddress(v8, 0);
-  v9 = VTPixelTransferSessionTransferImage(self->_vtPixelTransferSession, a3, v8);
+  v9 = VTPixelTransferSessionTransferImage(self->_vtPixelTransferSession, buffer, v8);
   CVPixelBufferUnlockBaseAddress(v8, 0);
-  CVPixelBufferUnlockBaseAddress(a3, 1uLL);
+  CVPixelBufferUnlockBaseAddress(buffer, 1uLL);
   if (v9)
   {
     CVPixelBufferRelease(v8);
@@ -209,7 +209,7 @@ LABEL_26:
         v20 = 138543874;
         v21 = v14;
         v22 = 2048;
-        v23 = self;
+        selfCopy2 = self;
         v24 = 1024;
         v25 = v9;
         v15 = "%{public}@ <%p>: Unable to scale image with error %d";
@@ -227,7 +227,7 @@ LABEL_11:
       v20 = 138543874;
       v21 = v14;
       v22 = 2048;
-      v23 = self;
+      selfCopy2 = self;
       v24 = 1024;
       v25 = v9;
       v15 = "Error: %{public}@ <%p>: Unable to scale image with error %d";

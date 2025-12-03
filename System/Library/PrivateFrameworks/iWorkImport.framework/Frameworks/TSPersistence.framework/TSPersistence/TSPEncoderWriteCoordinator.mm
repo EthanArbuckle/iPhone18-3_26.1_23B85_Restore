@@ -1,22 +1,22 @@
 @interface TSPEncoderWriteCoordinator
-- (BOOL)shouldDelayArchivingObject:(id)a3;
+- (BOOL)shouldDelayArchivingObject:(id)object;
 - (TSPEncoderWriteCoordinator)init;
-- (TSPEncoderWriteCoordinator)initWithEncoder:(id)a3 context:(id)a4 archiverClass:(Class)a5 delegate:(id)a6;
+- (TSPEncoderWriteCoordinator)initWithEncoder:(id)encoder context:(id)context archiverClass:(Class)class delegate:(id)delegate;
 - (TSPObjectContext)context;
-- (id)componentWriter:(id)a3 wantsComponentOfObject:(id)a4 componentReadVersion:(unint64_t *)a5;
-- (id)componentWriterWantsDelayedObjects:(id)a3;
-- (id)proxyForReferencedObject:(id)a3;
+- (id)componentWriter:(id)writer wantsComponentOfObject:(id)object componentReadVersion:(unint64_t *)version;
+- (id)componentWriterWantsDelayedObjects:(id)objects;
+- (id)proxyForReferencedObject:(id)object;
 - (unint64_t)objectTargetType;
-- (void)addDataFinalizeHandlerForSuccessfulSave:(id)a3;
-- (void)archiverManager:(id)a3 didCreateArchiver:(id)a4;
-- (void)componentWriter:(id)a3 canSkipArchivingStronglyReferencedObject:(id)a4 fromComponentRootObject:(id)a5 completion:(id)a6;
+- (void)addDataFinalizeHandlerForSuccessfulSave:(id)save;
+- (void)archiverManager:(id)manager didCreateArchiver:(id)archiver;
+- (void)componentWriter:(id)writer canSkipArchivingStronglyReferencedObject:(id)object fromComponentRootObject:(id)rootObject completion:(id)completion;
 - (void)dealloc;
-- (void)delayArchivingOfObject:(id)a3;
-- (void)setProxy:(id)a3 forReferencedObject:(id)a4;
-- (void)skipArchivingObject:(id)a3;
+- (void)delayArchivingOfObject:(id)object;
+- (void)setProxy:(id)proxy forReferencedObject:(id)object;
+- (void)skipArchivingObject:(id)object;
 - (void)stopCapturingSnapshots;
-- (void)willModifyObject:(id)a3 options:(unint64_t)a4;
-- (void)writeRootObject:(id)a3 completion:(id)a4;
+- (void)willModifyObject:(id)object options:(unint64_t)options;
+- (void)writeRootObject:(id)object completion:(id)completion;
 @end
 
 @implementation TSPEncoderWriteCoordinator
@@ -37,25 +37,25 @@
   objc_exception_throw(v13);
 }
 
-- (TSPEncoderWriteCoordinator)initWithEncoder:(id)a3 context:(id)a4 archiverClass:(Class)a5 delegate:(id)a6
+- (TSPEncoderWriteCoordinator)initWithEncoder:(id)encoder context:(id)context archiverClass:(Class)class delegate:(id)delegate
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  encoderCopy = encoder;
+  contextCopy = context;
+  delegateCopy = delegate;
   v32.receiver = self;
   v32.super_class = TSPEncoderWriteCoordinator;
   v14 = [(TSPEncoderWriteCoordinator *)&v32 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_encoder, a3);
-    objc_storeWeak(&v15->_context, v12);
+    objc_storeStrong(&v14->_encoder, encoder);
+    objc_storeWeak(&v15->_context, contextCopy);
     v16 = [TSPArchiverManager alloc];
-    v18 = objc_msgSend_initWithDelegate_archiverClass_archiverFlags_(v16, v17, v15, a5, 0);
+    v18 = objc_msgSend_initWithDelegate_archiverClass_archiverFlags_(v16, v17, v15, class, 0);
     archiverManager = v15->_archiverManager;
     v15->_archiverManager = v18;
 
-    objc_storeWeak(&v15->_delegate, v13);
+    objc_storeWeak(&v15->_delegate, delegateCopy);
     v20 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v21 = dispatch_queue_create("TSPEncoderWriteCoordinator.Access", v20);
     accessQueue = v15->_accessQueue;
@@ -94,17 +94,17 @@
   [(TSPEncoderWriteCoordinator *)&v4 dealloc];
 }
 
-- (void)writeRootObject:(id)a3 completion:(id)a4
+- (void)writeRootObject:(id)object completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  objectCopy = object;
+  completionCopy = completion;
   v10 = objc_msgSend_newRootObjectComponentWriteChannel(self->_encoder, v8, v9);
   v11 = [TSPComponent alloc];
-  v13 = objc_msgSend_initWithDelegate_rootObject_(v11, v12, 0, v6);
+  v13 = objc_msgSend_initWithDelegate_rootObject_(v11, v12, 0, objectCopy);
   v14 = [TSPComponentWriter alloc];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v18 = objc_msgSend_componentWriterMode(WeakRetained, v16, v17);
-  v20 = objc_msgSend_initWithComponent_locator_rootObject_delegate_mode_packageIdentifier_objectReferenceMapOrNil_writeChannel_archiverManager_(v14, v19, v13, 0, v6, self, v18, 1, 0, v10, self->_archiverManager);
+  v20 = objc_msgSend_initWithComponent_locator_rootObject_delegate_mode_packageIdentifier_objectReferenceMapOrNil_writeChannel_archiverManager_(v14, v19, v13, 0, objectCopy, self, v18, 1, 0, v10, self->_archiverManager);
 
   v21 = objc_loadWeakRetained(&self->_delegate);
   v22 = dispatch_get_global_queue(0, 0);
@@ -115,19 +115,19 @@
   v27[4] = v10;
   v27[5] = v20;
   v27[6] = v21;
-  v23 = v6;
+  v23 = objectCopy;
   v28 = v23;
-  v29 = self;
-  v24 = v7;
+  selfCopy = self;
+  v24 = completionCopy;
   v30 = v22;
   v31 = v24;
   v25 = v22;
   objc_msgSend_writeWithCompletionQueue_completion_(v20, v26, v25, v27);
 }
 
-- (BOOL)shouldDelayArchivingObject:(id)a3
+- (BOOL)shouldDelayArchivingObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -137,10 +137,10 @@
   block[1] = 3221225472;
   block[2] = sub_276ACB874;
   block[3] = &unk_27A6E2C00;
-  v9 = v4;
+  v9 = objectCopy;
   v10 = &v11;
   block[4] = self;
-  v6 = v4;
+  v6 = objectCopy;
   dispatch_sync(accessQueue, block);
   LOBYTE(accessQueue) = *(v12 + 24);
 
@@ -148,10 +148,10 @@
   return accessQueue;
 }
 
-- (void)delayArchivingOfObject:(id)a3
+- (void)delayArchivingOfObject:(id)object
 {
-  v4 = a3;
-  v7 = objc_msgSend_context(v4, v5, v6);
+  objectCopy = object;
+  v7 = objc_msgSend_context(objectCopy, v5, v6);
   WeakRetained = objc_loadWeakRetained(&self->_context);
 
   if (v7 != WeakRetained)
@@ -170,17 +170,17 @@
   v19[2] = sub_276ACBA14;
   v19[3] = &unk_27A6E2898;
   v19[4] = self;
-  v20 = v4;
-  v18 = v4;
+  v20 = objectCopy;
+  v18 = objectCopy;
   dispatch_async(accessQueue, v19);
 }
 
-- (void)setProxy:(id)a3 forReferencedObject:(id)a4
+- (void)setProxy:(id)proxy forReferencedObject:(id)object
 {
-  v6 = a3;
-  v7 = a4;
+  proxyCopy = proxy;
+  objectCopy = object;
   self->_hasProxyObjects = 1;
-  v10 = objc_msgSend_context(v6, v8, v9);
+  v10 = objc_msgSend_context(proxyCopy, v8, v9);
   WeakRetained = objc_loadWeakRetained(&self->_context);
 
   if (v10 != WeakRetained)
@@ -193,7 +193,7 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v19, v20);
   }
 
-  v21 = objc_msgSend_context(v7, v12, v13);
+  v21 = objc_msgSend_context(objectCopy, v12, v13);
   v22 = objc_loadWeakRetained(&self->_context);
 
   if (v21 != v22)
@@ -212,18 +212,18 @@
   block[2] = sub_276ACBD30;
   block[3] = &unk_27A6E29B0;
   block[4] = self;
-  v35 = v6;
-  v36 = v7;
-  v32 = v7;
-  v33 = v6;
+  v35 = proxyCopy;
+  v36 = objectCopy;
+  v32 = objectCopy;
+  v33 = proxyCopy;
   dispatch_async(accessQueue, block);
 }
 
-- (void)skipArchivingObject:(id)a3
+- (void)skipArchivingObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   self->_hasProxyObjects = 1;
-  v7 = objc_msgSend_context(v4, v5, v6);
+  v7 = objc_msgSend_context(objectCopy, v5, v6);
   WeakRetained = objc_loadWeakRetained(&self->_context);
 
   if (v7 != WeakRetained)
@@ -242,8 +242,8 @@
   v19[2] = sub_276ACBEB4;
   v19[3] = &unk_27A6E2898;
   v19[4] = self;
-  v20 = v4;
-  v18 = v4;
+  v20 = objectCopy;
+  v18 = objectCopy;
   dispatch_async(accessQueue, v19);
 }
 
@@ -255,36 +255,36 @@
   return v5;
 }
 
-- (void)willModifyObject:(id)a3 options:(unint64_t)a4
+- (void)willModifyObject:(id)object options:(unint64_t)options
 {
-  if ((a4 & 1) == 0)
+  if ((options & 1) == 0)
   {
     v5 = atomic_load(&self->_didStopCapturingSnapshots);
-    if ((v5 & 1) == 0 && (objc_msgSend_shouldDelayArchivingObject_(self, a2, a3) & 1) == 0)
+    if ((v5 & 1) == 0 && (objc_msgSend_shouldDelayArchivingObject_(self, a2, object) & 1) == 0)
     {
       archiverManager = self->_archiverManager;
 
-      objc_msgSend_archiveObjectWithHighPriority_(archiverManager, v7, a3);
+      objc_msgSend_archiveObjectWithHighPriority_(archiverManager, v7, object);
     }
   }
 }
 
-- (void)componentWriter:(id)a3 canSkipArchivingStronglyReferencedObject:(id)a4 fromComponentRootObject:(id)a5 completion:(id)a6
+- (void)componentWriter:(id)writer canSkipArchivingStronglyReferencedObject:(id)object fromComponentRootObject:(id)rootObject completion:(id)completion
 {
-  v14 = a6;
+  completionCopy = completion;
   v6 = MEMORY[0x277D81150];
   v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v7, "[TSPEncoderWriteCoordinator componentWriter:canSkipArchivingStronglyReferencedObject:fromComponentRootObject:completion:]");
   v10 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v9, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/persistence/src/TSPEncoderWriteCoordinator.mm");
   objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v6, v11, v8, v10, 218, 0, "We should not skip strongly referenced objects.");
 
   objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v12, v13);
-  if (v14)
+  if (completionCopy)
   {
-    v14[2](v14, 0);
+    completionCopy[2](completionCopy, 0);
   }
 }
 
-- (id)componentWriterWantsDelayedObjects:(id)a3
+- (id)componentWriterWantsDelayedObjects:(id)objects
 {
   v7 = 0;
   v8 = &v7;
@@ -306,36 +306,36 @@
   return v4;
 }
 
-- (id)componentWriter:(id)a3 wantsComponentOfObject:(id)a4 componentReadVersion:(unint64_t *)a5
+- (id)componentWriter:(id)writer wantsComponentOfObject:(id)object componentReadVersion:(unint64_t *)version
 {
-  if (a5)
+  if (version)
   {
-    *a5 = 0;
+    *version = 0;
   }
 
   return 0;
 }
 
-- (void)addDataFinalizeHandlerForSuccessfulSave:(id)a3
+- (void)addDataFinalizeHandlerForSuccessfulSave:(id)save
 {
-  if (a3)
+  if (save)
   {
     dataFinalizeHandlers = self->_dataFinalizeHandlers;
-    v5 = _Block_copy(a3);
+    v5 = _Block_copy(save);
     objc_msgSend_addObject_(dataFinalizeHandlers, v4, v5);
   }
 }
 
-- (void)archiverManager:(id)a3 didCreateArchiver:(id)a4
+- (void)archiverManager:(id)manager didCreateArchiver:(id)archiver
 {
   v6 = TSUProtocolCast();
   objc_msgSend_setProxyObjectMapping_(v6, v5, self, &unk_2885F81A8);
 }
 
-- (id)proxyForReferencedObject:(id)a3
+- (id)proxyForReferencedObject:(id)object
 {
-  v4 = a3;
-  v5 = v4;
+  objectCopy = object;
+  v5 = objectCopy;
   if (self->_hasProxyObjects)
   {
     WeakRetained = objc_loadWeakRetained(&self->_context);
@@ -383,7 +383,7 @@
 
   else
   {
-    v10 = v4;
+    v10 = objectCopy;
   }
 
   return v10;

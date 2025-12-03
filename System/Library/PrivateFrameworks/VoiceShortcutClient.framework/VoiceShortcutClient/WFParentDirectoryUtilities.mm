@@ -1,37 +1,37 @@
 @interface WFParentDirectoryUtilities
-+ (id)commonRootForFileURLs:(id)a3;
++ (id)commonRootForFileURLs:(id)ls;
 @end
 
 @implementation WFParentDirectoryUtilities
 
-+ (id)commonRootForFileURLs:(id)a3
++ (id)commonRootForFileURLs:(id)ls
 {
-  v3 = a3;
-  v4 = [v3 firstObject];
-  v5 = [v4 pathComponents];
+  lsCopy = ls;
+  firstObject = [lsCopy firstObject];
+  pathComponents = [firstObject pathComponents];
 
-  if (v5)
+  if (pathComponents)
   {
-    if ([v3 count] == 1)
+    if ([lsCopy count] == 1)
     {
-      v6 = [v3 firstObject];
-      v7 = [v6 URLByDeletingLastPathComponent];
+      firstObject2 = [lsCopy firstObject];
+      uRLByDeletingLastPathComponent = [firstObject2 URLByDeletingLastPathComponent];
     }
 
     else
     {
-      if ([v3 count] >= 2)
+      if ([lsCopy count] >= 2)
       {
         v8 = 1;
         do
         {
-          v9 = [v3 objectAtIndex:v8];
-          v10 = [v9 pathComponents];
+          v9 = [lsCopy objectAtIndex:v8];
+          pathComponents2 = [v9 pathComponents];
 
-          v11 = [v5 count];
-          if ([v10 count] < v11)
+          v11 = [pathComponents count];
+          if ([pathComponents2 count] < v11)
           {
-            v11 = [v10 count];
+            v11 = [pathComponents2 count];
           }
 
           v12 = 0;
@@ -39,8 +39,8 @@
           {
             while (1)
             {
-              v13 = [v5 objectAtIndex:v12];
-              v14 = [v10 objectAtIndex:v12];
+              v13 = [pathComponents objectAtIndex:v12];
+              v14 = [pathComponents2 objectAtIndex:v12];
               v15 = [v13 isEqualToString:v14];
 
               if (!v15)
@@ -56,14 +56,14 @@
             }
           }
 
-          if (v12 < [v5 count])
+          if (v12 < [pathComponents count])
           {
-            v16 = [v5 subarrayWithRange:{0, v12}];
+            v16 = [pathComponents subarrayWithRange:{0, v12}];
 
-            v5 = v16;
+            pathComponents = v16;
           }
 
-          v17 = [v5 count];
+          v17 = [pathComponents count];
 
           if (!v17)
           {
@@ -73,19 +73,19 @@
           ++v8;
         }
 
-        while (v8 < [v3 count]);
+        while (v8 < [lsCopy count]);
       }
 
-      v7 = [MEMORY[0x1E695DFF8] fileURLWithPathComponents:v5];
+      uRLByDeletingLastPathComponent = [MEMORY[0x1E695DFF8] fileURLWithPathComponents:pathComponents];
     }
   }
 
   else
   {
-    v7 = 0;
+    uRLByDeletingLastPathComponent = 0;
   }
 
-  return v7;
+  return uRLByDeletingLastPathComponent;
 }
 
 @end

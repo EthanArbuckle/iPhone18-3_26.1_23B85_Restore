@@ -1,52 +1,52 @@
 @interface PRCompanionRangingClientProxy
-- (BOOL)startRangingMangagerAndCompanion:(id *)a3;
-- (BOOL)stopRangingMangagerAndCompanion:(id *)a3;
-- (PRCompanionRangingClientProxy)initWithConnection:(id)a3 queue:(id)a4;
+- (BOOL)startRangingMangagerAndCompanion:(id *)companion;
+- (BOOL)stopRangingMangagerAndCompanion:(id *)companion;
+- (PRCompanionRangingClientProxy)initWithConnection:(id)connection queue:(id)queue;
 - (id).cxx_construct;
 - (void)activate;
-- (void)cleanupRangingManagerAndCompanionAfterError:(id)a3;
+- (void)cleanupRangingManagerAndCompanionAfterError:(id)error;
 - (void)combineAndReportLocalAndCompanionRangingRequestStatus;
 - (void)configureCompanionForRanging;
-- (void)configureForCompanionRanging:(id)a3 options:(id)a4 reply:(id)a5;
-- (void)connectWithClientInfo:(id)a3;
+- (void)configureForCompanionRanging:(id)ranging options:(id)options reply:(id)reply;
+- (void)connectWithClientInfo:(id)info;
 - (void)dealloc;
 - (void)deinitCompanion;
-- (void)didFailWithError:(id)a3;
-- (void)didReceiveNewSolutions:(id)a3;
-- (void)didReceiveSessionStartNotification:(id)a3;
-- (void)findMyAccessoryManager:(id)a3 didCompleteRangingOnDevice:(id)a4 withStatus:(unsigned int)a5 endReason:(unsigned __int8)a6 error:(id)a7;
-- (void)findMyAccessoryManager:(id)a3 didConfigureRangingOnDevice:(id)a4 withStatus:(unsigned int)a5 error:(id)a6;
-- (void)findMyAccessoryManager:(id)a3 didConnectDevice:(id)a4 error:(id)a5;
-- (void)findMyAccessoryManager:(id)a3 didDeinitRangingOnDevice:(id)a4 withStatus:(unsigned int)a5 error:(id)a6;
-- (void)findMyAccessoryManager:(id)a3 didDisconnectDevice:(id)a4;
-- (void)findMyAccessoryManager:(id)a3 didFailWithError:(id)a4 forDevice:(id)a5;
-- (void)findMyAccessoryManager:(id)a3 didHaveRangingMovementOnDevice:(id)a4;
-- (void)findMyAccessoryManager:(id)a3 didInitRangingOnDevice:(id)a4 withStatus:(unsigned int)a5 error:(id)a6;
-- (void)findMyAccessoryManager:(id)a3 didPrepareRangingOnDevice:(id)a4 withConnInterval:(id)a5 error:(id)a6;
-- (void)findMyAccessoryManager:(id)a3 didStartRangingOnDevice:(id)a4 error:(id)a5;
-- (void)handleError:(id)a3;
-- (void)initCompanion:(id)a3;
-- (void)rangingRequestDidUpdateStatus:(unint64_t)a3;
-- (void)rangingServiceDidUpdateState:(unint64_t)a3 cause:(int64_t)a4;
-- (void)recordUsageOfCompanionRanging:(id)a3 usageParameters:(id)a4;
-- (void)remoteDevice:(id)a3 didChangeState:(int64_t)a4;
-- (void)reportRangingRequestStatusUpdate:(unint64_t)a3;
-- (void)startCompanionRanging:(id)a3 options:(id)a4 reply:(id)a5;
+- (void)didFailWithError:(id)error;
+- (void)didReceiveNewSolutions:(id)solutions;
+- (void)didReceiveSessionStartNotification:(id)notification;
+- (void)findMyAccessoryManager:(id)manager didCompleteRangingOnDevice:(id)device withStatus:(unsigned int)status endReason:(unsigned __int8)reason error:(id)error;
+- (void)findMyAccessoryManager:(id)manager didConfigureRangingOnDevice:(id)device withStatus:(unsigned int)status error:(id)error;
+- (void)findMyAccessoryManager:(id)manager didConnectDevice:(id)device error:(id)error;
+- (void)findMyAccessoryManager:(id)manager didDeinitRangingOnDevice:(id)device withStatus:(unsigned int)status error:(id)error;
+- (void)findMyAccessoryManager:(id)manager didDisconnectDevice:(id)device;
+- (void)findMyAccessoryManager:(id)manager didFailWithError:(id)error forDevice:(id)device;
+- (void)findMyAccessoryManager:(id)manager didHaveRangingMovementOnDevice:(id)device;
+- (void)findMyAccessoryManager:(id)manager didInitRangingOnDevice:(id)device withStatus:(unsigned int)status error:(id)error;
+- (void)findMyAccessoryManager:(id)manager didPrepareRangingOnDevice:(id)device withConnInterval:(id)interval error:(id)error;
+- (void)findMyAccessoryManager:(id)manager didStartRangingOnDevice:(id)device error:(id)error;
+- (void)handleError:(id)error;
+- (void)initCompanion:(id)companion;
+- (void)rangingRequestDidUpdateStatus:(unint64_t)status;
+- (void)rangingServiceDidUpdateState:(unint64_t)state cause:(int64_t)cause;
+- (void)recordUsageOfCompanionRanging:(id)ranging usageParameters:(id)parameters;
+- (void)remoteDevice:(id)device didChangeState:(int64_t)state;
+- (void)reportRangingRequestStatusUpdate:(unint64_t)update;
+- (void)startCompanionRanging:(id)ranging options:(id)options reply:(id)reply;
 - (void)startRangingMangager;
-- (void)stopCompanionRanging:(id)a3 reply:(id)a4;
+- (void)stopCompanionRanging:(id)ranging reply:(id)reply;
 - (void)terminate;
 @end
 
 @implementation PRCompanionRangingClientProxy
 
-- (PRCompanionRangingClientProxy)initWithConnection:(id)a3 queue:(id)a4
+- (PRCompanionRangingClientProxy)initWithConnection:(id)connection queue:(id)queue
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  connectionCopy = connection;
+  queueCopy = queue;
+  v9 = queueCopy;
+  if (connectionCopy)
   {
-    if (v8)
+    if (queueCopy)
     {
       goto LABEL_3;
     }
@@ -79,11 +79,11 @@ LABEL_3:
     startOptions = v10->_startOptions;
     v10->_startOptions = 0;
 
-    v13 = [[PRNSXPCConnection alloc] initWithConnection:v7];
+    v13 = [[PRNSXPCConnection alloc] initWithConnection:connectionCopy];
     connWrapper = v11->_connWrapper;
     v11->_connWrapper = v13;
 
-    objc_storeStrong(&v11->_queue, a4);
+    objc_storeStrong(&v11->_queue, queue);
     objc_initWeak(&location, v11);
     sub_10033857C();
   }
@@ -98,22 +98,22 @@ LABEL_3:
   return 0;
 }
 
-- (void)connectWithClientInfo:(id)a3
+- (void)connectWithClientInfo:(id)info
 {
-  v5 = a3;
+  infoCopy = info;
   v6 = qword_1009F9820;
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v5 objectForKey:PRProcessNameKey];
-    v8 = [v5 objectForKey:PRProcessIdentifierKey];
+    v7 = [infoCopy objectForKey:PRProcessNameKey];
+    v8 = [infoCopy objectForKey:PRProcessIdentifierKey];
     v9 = 138412546;
     v10 = v7;
     v11 = 1024;
-    v12 = [v8 intValue];
+    intValue = [v8 intValue];
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "PRCompanionRanging: XPC connection created. Process name: %@, pid: %d", &v9, 0x12u);
   }
 
-  objc_storeStrong(&self->_clientInfo, a3);
+  objc_storeStrong(&self->_clientInfo, info);
   [(PRCompanionRangingClientProxy *)self activate];
 }
 
@@ -219,15 +219,15 @@ LABEL_3:
   self->_clientVoucher.voucher = 0;
 }
 
-- (void)handleError:(id)a3
+- (void)handleError:(id)error
 {
-  v4 = a3;
-  v5 = [v4 domain];
-  if ([v5 isEqualToString:kCLErrorDomainPrivate])
+  errorCopy = error;
+  domain = [errorCopy domain];
+  if ([domain isEqualToString:kCLErrorDomainPrivate])
   {
-    v6 = [v4 code];
+    code = [errorCopy code];
 
-    if (v6 == 12)
+    if (code == 12)
     {
       [(PRCompanionRangingClientProxy *)self remoteDevice:self->_companion didChangeState:3];
     }
@@ -237,25 +237,25 @@ LABEL_3:
   {
   }
 
-  [(PRCompanionRangingClientProxy *)self cleanupRangingManagerAndCompanionAfterError:v4];
+  [(PRCompanionRangingClientProxy *)self cleanupRangingManagerAndCompanionAfterError:errorCopy];
   connWrapper = self->_connWrapper;
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100332070;
   v9[3] = &unk_10098B638;
-  v8 = v4;
+  v8 = errorCopy;
   v10 = v8;
   [(PRRangingClientProtocol *)connWrapper actOnRemoteObjectAndScheduleBarrierBlock:v9];
 }
 
-- (void)didFailWithError:(id)a3
+- (void)didFailWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = qword_1009F9820;
   if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v12 = v4;
+    v12 = errorCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "#companion-retry didFailWithError: %@", buf, 0xCu);
   }
 
@@ -266,17 +266,17 @@ LABEL_3:
   v8[2] = sub_100332248;
   v8[3] = &unk_10098B940;
   objc_copyWeak(&v10, buf);
-  v9 = v4;
-  v7 = v4;
+  v9 = errorCopy;
+  v7 = errorCopy;
   dispatch_async(queue, v8);
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(buf);
 }
 
-- (void)didReceiveNewSolutions:(id)a3
+- (void)didReceiveNewSolutions:(id)solutions
 {
-  v4 = a3;
+  solutionsCopy = solutions;
   voucher = self->_clientVoucher.voucher;
   v11[0] = &self->_clientVoucher;
   v6 = voucher;
@@ -286,26 +286,26 @@ LABEL_3:
   v9[1] = 3221225472;
   v9[2] = sub_10033238C;
   v9[3] = &unk_10098B638;
-  v10 = v4;
-  v8 = v4;
+  v10 = solutionsCopy;
+  v8 = solutionsCopy;
   [(PRRangingClientProtocol *)connWrapper actOnRemoteObjectAndScheduleBarrierBlock:v9];
 
   sub_1000523AC(v11);
 }
 
-- (void)rangingServiceDidUpdateState:(unint64_t)a3 cause:(int64_t)a4
+- (void)rangingServiceDidUpdateState:(unint64_t)state cause:(int64_t)cause
 {
   connWrapper = self->_connWrapper;
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_10033248C;
   v5[3] = &unk_10098B658;
-  v5[4] = a3;
-  v5[5] = a4;
+  v5[4] = state;
+  v5[5] = cause;
   [(PRRangingClientProtocol *)connWrapper actOnRemoteObjectAndScheduleBarrierBlock:v5];
 }
 
-- (void)reportRangingRequestStatusUpdate:(unint64_t)a3
+- (void)reportRangingRequestStatusUpdate:(unint64_t)update
 {
   p_clientVoucher = &self->_clientVoucher;
   voucher = self->_clientVoucher.voucher;
@@ -317,7 +317,7 @@ LABEL_3:
   v8[1] = 3221225472;
   v8[2] = sub_1003325CC;
   v8[3] = &unk_10098B678;
-  v8[4] = a3;
+  v8[4] = update;
   [(OS_voucher *)v7 actOnRemoteObjectAndScheduleBarrierBlock:v8];
   sub_1000523AC(v9);
 }
@@ -402,7 +402,7 @@ LABEL_11:
   }
 }
 
-- (void)rangingRequestDidUpdateStatus:(unint64_t)a3
+- (void)rangingRequestDidUpdateStatus:(unint64_t)status
 {
   objc_initWeak(&location, self);
   queue = self->_queue;
@@ -411,30 +411,30 @@ LABEL_11:
   v6[2] = sub_1003329BC;
   v6[3] = &unk_1009A56D0;
   objc_copyWeak(v7, &location);
-  v7[1] = a3;
+  v7[1] = status;
   v6[4] = self;
   dispatch_async(queue, v6);
   objc_destroyWeak(v7);
   objc_destroyWeak(&location);
 }
 
-- (void)remoteDevice:(id)a3 didChangeState:(int64_t)a4
+- (void)remoteDevice:(id)device didChangeState:(int64_t)state
 {
-  v6 = a3;
+  deviceCopy = device;
   connWrapper = self->_connWrapper;
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100332F2C;
   v9[3] = &unk_10098BB48;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
+  v10 = deviceCopy;
+  stateCopy = state;
+  v8 = deviceCopy;
   [(PRRangingClientProtocol *)connWrapper actOnRemoteObjectAndScheduleBarrierBlock:v9];
 }
 
-- (void)didReceiveSessionStartNotification:(id)a3
+- (void)didReceiveSessionStartNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   objc_initWeak(&location, self);
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -442,19 +442,19 @@ LABEL_11:
   block[2] = sub_100333088;
   block[3] = &unk_10098B940;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = notificationCopy;
+  v6 = notificationCopy;
   dispatch_async(queue, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
 }
 
-- (void)configureForCompanionRanging:(id)a3 options:(id)a4 reply:(id)a5
+- (void)configureForCompanionRanging:(id)ranging options:(id)options reply:(id)reply
 {
-  v58 = a3;
-  v9 = a4;
-  v10 = a5;
+  rangingCopy = ranging;
+  optionsCopy = options;
+  replyCopy = reply;
   v11 = qword_1009F9820;
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -468,37 +468,37 @@ LABEL_11:
   }
 
   v14 = +[NSUserDefaults standardUserDefaults];
-  v57 = [v14 dictionaryRepresentation];
+  dictionaryRepresentation = [v14 dictionaryRepresentation];
 
-  v15 = [v57 objectForKey:@"R1Preamble"];
+  v15 = [dictionaryRepresentation objectForKey:@"R1Preamble"];
   v16 = v15;
   if (v15)
   {
-    v17 = [v15 integerValue];
+    integerValue = [v15 integerValue];
     v18 = qword_1009F9820;
     if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      *&buf[4] = v17;
+      *&buf[4] = integerValue;
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "Setting special R1 preamble %lli", buf, 0xCu);
     }
 
     v84[0] = PRP2PArgsRxPreamble;
-    v19 = [NSNumber numberWithInteger:v17];
+    v19 = [NSNumber numberWithInteger:integerValue];
     v85[0] = v19;
     v84[1] = PRP2PArgsTxPreamble;
-    v20 = [NSNumber numberWithInteger:v17];
+    v20 = [NSNumber numberWithInteger:integerValue];
     v85[1] = v20;
     v21 = [NSDictionary dictionaryWithObjects:v85 forKeys:v84 count:2];
 
     v22 = objc_alloc_init(NSMutableDictionary);
     [v22 addEntriesFromDictionary:v21];
-    if (v9)
+    if (optionsCopy)
     {
-      [v22 addEntriesFromDictionary:v9];
+      [v22 addEntriesFromDictionary:optionsCopy];
     }
 
-    v9 = v22;
+    optionsCopy = v22;
   }
 
   else
@@ -548,29 +548,29 @@ LABEL_11:
       v35 = [NSDictionary dictionaryWithObjects:&v83 forKeys:&v82 count:1];
       v36 = PRErrorWithCodeAndUserInfo(999, v35);
 
-      v10[2](v10, 0, v36);
+      replyCopy[2](replyCopy, 0, v36);
       goto LABEL_65;
     }
   }
 
-  if ([v58 deviceType] != 3 || (objc_msgSend(v58, "UUID"), v27 = objc_claimAutoreleasedReturnValue(), v28 = v27 == 0, v27, v28))
+  if ([rangingCopy deviceType] != 3 || (objc_msgSend(rangingCopy, "UUID"), v27 = objc_claimAutoreleasedReturnValue(), v28 = v27 == 0, v27, v28))
   {
     v80 = NSLocalizedDescriptionKey;
     v81 = @"Remote device must be PRDeviceTypeCompanion and have a valid UUID.";
     v33 = [NSDictionary dictionaryWithObjects:&v81 forKeys:&v80 count:1];
     v34 = PRErrorWithCodeAndUserInfo(100, v33);
 
-    v10[2](v10, 0, v34);
+    replyCopy[2](replyCopy, 0, v34);
     goto LABEL_65;
   }
 
-  objc_storeStrong(&self->_companion, a3);
+  objc_storeStrong(&self->_companion, ranging);
   v79 = 0;
-  v29 = [(PRRemoteDevice *)self->_companion roseMACAddress];
-  [v29 getBytes:&v79 range:{0, 8}];
+  roseMACAddress = [(PRRemoteDevice *)self->_companion roseMACAddress];
+  [roseMACAddress getBytes:&v79 range:{0, 8}];
 
-  v30 = [(PRRemoteDevice *)self->_companion UUID];
-  [v30 getUUIDBytes:&v78];
+  uUID = [(PRRemoteDevice *)self->_companion UUID];
+  [uUID getUUIDBytes:&v78];
 
   v31 = v79;
   engaged = self->_peerDescriptor.__engaged_;
@@ -595,7 +595,7 @@ LABEL_11:
   }
 
   HIBYTE(v67) = 0;
-  v37 = [v9 objectForKey:@"GattRanging"];
+  v37 = [optionsCopy objectForKey:@"GattRanging"];
   v38 = v37;
   if (v37)
   {
@@ -639,10 +639,10 @@ LABEL_11:
     if (sub_1003299D8(v42, &v64, v65, 0))
     {
       sub_10019B9DC(&v64, buf);
-      if (v9)
+      if (optionsCopy)
       {
         v63 = 0;
-        v45 = sub_10002A358(v9, v73, &v63);
+        v45 = sub_10002A358(optionsCopy, v73, &v63);
         v46 = v63;
         v47 = v46;
         if ((v45 & 1) == 0)
@@ -652,7 +652,7 @@ LABEL_11:
             sub_1004C0A08();
           }
 
-          v10[2](v10, 0, v47);
+          replyCopy[2](replyCopy, 0, v47);
           goto LABEL_61;
         }
       }
@@ -698,7 +698,7 @@ LABEL_11:
       v51 = [NSDictionary dictionaryWithObjects:&v71 forKeys:&v70 count:1];
       v47 = PRErrorWithCodeAndUserInfo(999, v51);
 
-      v10[2](v10, 0, v47);
+      replyCopy[2](replyCopy, 0, v47);
 LABEL_61:
 
       goto LABEL_62;
@@ -709,7 +709,7 @@ LABEL_61:
     v54 = [NSDictionary dictionaryWithObjects:&v75 forKeys:&v74 count:1];
     v55 = PRErrorWithCodeAndUserInfo(999, v54);
 
-    v10[2](v10, 0, v55);
+    replyCopy[2](replyCopy, 0, v55);
   }
 
   else
@@ -719,7 +719,7 @@ LABEL_61:
     v52 = [NSDictionary dictionaryWithObjects:&v77 forKeys:&v76 count:1];
     v53 = PRErrorWithCodeAndUserInfo(999, v52);
 
-    v10[2](v10, 0, v53);
+    replyCopy[2](replyCopy, 0, v53);
   }
 
 LABEL_62:
@@ -731,11 +731,11 @@ LABEL_62:
 LABEL_65:
 }
 
-- (void)startCompanionRanging:(id)a3 options:(id)a4 reply:(id)a5
+- (void)startCompanionRanging:(id)ranging options:(id)options reply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  rangingCopy = ranging;
+  optionsCopy = options;
+  replyCopy = reply;
   v11 = qword_1009F9820;
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -744,15 +744,15 @@ LABEL_65:
     *buf = 138412546;
     v39 = v12;
     v40 = 1024;
-    v41 = [v13 intValue];
+    intValue = [v13 intValue];
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "PRCompanionRanging: XPC command - startCompanionRanging. Process name: %@, pid: %d", buf, 0x12u);
   }
 
-  if ([v8 deviceType] == 3 && (objc_msgSend(v8, "UUID"), (v14 = objc_claimAutoreleasedReturnValue()) != 0) && (engaged = self->_peerDescriptor.__engaged_, v14, engaged))
+  if ([rangingCopy deviceType] == 3 && (objc_msgSend(rangingCopy, "UUID"), (v14 = objc_claimAutoreleasedReturnValue()) != 0) && (engaged = self->_peerDescriptor.__engaged_, v14, engaged))
   {
-    v16 = [v8 UUID];
-    v17 = [(PRRemoteDevice *)self->_companion UUID];
-    v18 = [v16 isEqual:v17];
+    uUID = [rangingCopy UUID];
+    uUID2 = [(PRRemoteDevice *)self->_companion UUID];
+    v18 = [uUID isEqual:uUID2];
 
     if (v18)
     {
@@ -762,7 +762,7 @@ LABEL_65:
         {
           if (self->_companionRangingState == 1)
           {
-            objc_storeStrong(&self->_startOptions, a4);
+            objc_storeStrong(&self->_startOptions, options);
             v27 = 0;
             v19 = [(PRCompanionRangingClientProxy *)self startRangingMangagerAndCompanion:&v27];
             v20 = v27;
@@ -773,7 +773,7 @@ LABEL_65:
               self->_clientRequestState = 3;
             }
 
-            (v10)[2](v10, v19, v21);
+            (replyCopy)[2](replyCopy, v19, v21);
           }
 
           else
@@ -783,7 +783,7 @@ LABEL_65:
             v26 = [NSDictionary dictionaryWithObjects:&v29 forKeys:&v28 count:1];
             v20 = PRErrorWithCodeAndUserInfo(102, v26);
 
-            (v10)[2](v10, 0, v20);
+            (replyCopy)[2](replyCopy, 0, v20);
           }
         }
 
@@ -794,7 +794,7 @@ LABEL_65:
           v25 = [NSDictionary dictionaryWithObjects:&v31 forKeys:&v30 count:1];
           v20 = PRErrorWithCodeAndUserInfo(102, v25);
 
-          (v10)[2](v10, 0, v20);
+          (replyCopy)[2](replyCopy, 0, v20);
         }
       }
 
@@ -805,7 +805,7 @@ LABEL_65:
         v24 = [NSDictionary dictionaryWithObjects:&v33 forKeys:&v32 count:1];
         v20 = PRErrorWithCodeAndUserInfo(102, v24);
 
-        (v10)[2](v10, 0, v20);
+        (replyCopy)[2](replyCopy, 0, v20);
       }
     }
 
@@ -816,7 +816,7 @@ LABEL_65:
       v23 = [NSDictionary dictionaryWithObjects:&v35 forKeys:&v34 count:1];
       v20 = PRErrorWithCodeAndUserInfo(100, v23);
 
-      (v10)[2](v10, 0, v20);
+      (replyCopy)[2](replyCopy, 0, v20);
     }
   }
 
@@ -827,11 +827,11 @@ LABEL_65:
     v22 = [NSDictionary dictionaryWithObjects:&v37 forKeys:&v36 count:1];
     v20 = PRErrorWithCodeAndUserInfo(100, v22);
 
-    (v10)[2](v10, 0, v20);
+    (replyCopy)[2](replyCopy, 0, v20);
   }
 }
 
-- (BOOL)startRangingMangagerAndCompanion:(id *)a3
+- (BOOL)startRangingMangagerAndCompanion:(id *)companion
 {
   companionRangingState = self->_companionRangingState;
   if (companionRangingState == 1)
@@ -844,8 +844,8 @@ LABEL_65:
     }
 
     companionRangingManager = self->_companionRangingManager;
-    v7 = [(PRRemoteDevice *)self->_companion UUID];
-    [(CLFindMyAccessoryManager *)companionRangingManager prepareRangingOnDevice:v7];
+    uUID = [(PRRemoteDevice *)self->_companion UUID];
+    [(CLFindMyAccessoryManager *)companionRangingManager prepareRangingOnDevice:uUID];
 
     self->_companionRangingState = 2;
   }
@@ -875,12 +875,12 @@ LABEL_65:
     }
 
     self->_lastStartScheduledTooSoon = 0;
-    v4 = 1500000;
+    intValue = 1500000;
   }
 
   else
   {
-    v4 = 510000;
+    intValue = 510000;
   }
 
   v5 = +[NSUserDefaults standardUserDefaults];
@@ -888,19 +888,19 @@ LABEL_65:
   v7 = v6;
   if (v6)
   {
-    v8 = 1000 * [v6 intValue];
+    intValue2 = 1000 * [v6 intValue];
     v9 = qword_1009F9820;
     if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109120;
-      *&buf[4] = v8;
+      *&buf[4] = intValue2;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "PRCompanionRanging: listeningWindowSizeUsec overridden by user to %u", buf, 8u);
     }
   }
 
   else
   {
-    v8 = 3000;
+    intValue2 = 3000;
   }
 
   startOptions = self->_startOptions;
@@ -912,12 +912,12 @@ LABEL_65:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v4 = [v11 intValue];
+        intValue = [v11 intValue];
         v12 = qword_1009F9820;
         if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 134217984;
-          *&buf[4] = v4;
+          *&buf[4] = intValue;
           _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "PRCompanionRanging: startCompanionRanging override startTimeOffsetUsec: %llu", buf, 0xCu);
         }
       }
@@ -929,12 +929,12 @@ LABEL_65:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v8 = [v13 intValue];
+        intValue2 = [v13 intValue];
         v14 = qword_1009F9820;
         if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 67109120;
-          *&buf[4] = v8;
+          *&buf[4] = intValue2;
           _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "PRCompanionRanging: startCompanionRanging override listeningWindowSizeUsec: %u", buf, 8u);
         }
       }
@@ -975,9 +975,9 @@ LABEL_65:
   v35 = v19;
   v36 = *&self->_peerDescriptor.var0.__val_.bt_adv_address.var0.__val_.__elems_[2];
   v37 = 1;
-  v38 = val * vcvtad_u64_f64(v4 / val);
+  v38 = val * vcvtad_u64_f64(intValue / val);
   v39 = 2;
-  v40 = v8;
+  v40 = intValue2;
   v41 = 0;
   v42 = &_mh_execute_header & 0xFFFFFFFF00000000 | val;
   v43 = 0u;
@@ -990,8 +990,8 @@ LABEL_65:
   }
 
   companionRangingManager = self->_companionRangingManager;
-  v22 = [(PRRemoteDevice *)self->_companion UUID];
-  [(CLFindMyAccessoryManager *)companionRangingManager startEventCounterForDevice:v22];
+  uUID = [(PRRemoteDevice *)self->_companion UUID];
+  [(CLFindMyAccessoryManager *)companionRangingManager startEventCounterForDevice:uUID];
 
   v23 = qword_1009F9820;
   if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
@@ -1033,10 +1033,10 @@ LABEL_65:
   self->_localRangingState = 2;
 }
 
-- (void)stopCompanionRanging:(id)a3 reply:(id)a4
+- (void)stopCompanionRanging:(id)ranging reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  rangingCopy = ranging;
+  replyCopy = reply;
   v8 = qword_1009F9820;
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -1045,11 +1045,11 @@ LABEL_65:
     *buf = 138412546;
     v21 = v9;
     v22 = 1024;
-    v23 = [v10 intValue];
+    intValue = [v10 intValue];
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "PRCompanionRanging: XPC command - stopCompanionRanging. Process name: %@, pid: %d", buf, 0x12u);
   }
 
-  if ([v6 deviceType] == 3 && (objc_msgSend(v6, "UUID"), (v11 = objc_claimAutoreleasedReturnValue()) != 0) && (engaged = self->_peerDescriptor.__engaged_, v11, engaged))
+  if ([rangingCopy deviceType] == 3 && (objc_msgSend(rangingCopy, "UUID"), (v11 = objc_claimAutoreleasedReturnValue()) != 0) && (engaged = self->_peerDescriptor.__engaged_, v11, engaged))
   {
     v17 = 0;
     v13 = [(PRCompanionRangingClientProxy *)self stopRangingMangagerAndCompanion:&v17];
@@ -1061,7 +1061,7 @@ LABEL_65:
       self->_clientRequestState = 5;
     }
 
-    (v7)[2](v7, v13, v15);
+    (replyCopy)[2](replyCopy, v13, v15);
   }
 
   else
@@ -1071,21 +1071,21 @@ LABEL_65:
     v16 = [NSDictionary dictionaryWithObjects:&v19 forKeys:&v18 count:1];
     v14 = PRErrorWithCodeAndUserInfo(100, v16);
 
-    (v7)[2](v7, 0, v14);
+    (replyCopy)[2](replyCopy, 0, v14);
   }
 }
 
-- (BOOL)stopRangingMangagerAndCompanion:(id *)a3
+- (BOOL)stopRangingMangagerAndCompanion:(id *)companion
 {
   localRangingState = self->_localRangingState;
   if ((localRangingState - 2) < 2)
   {
-    if (a3)
+    if (companion)
     {
       v33 = NSLocalizedDescriptionKey;
       v34 = @"Received stopCompanionRanging while Local ranging is starting.  ";
-      v6 = [NSDictionary dictionaryWithObjects:&v34 forKeys:&v33 count:1];
-      v7 = PRErrorWithCodeAndUserInfo(103, v6);
+      uUID = [NSDictionary dictionaryWithObjects:&v34 forKeys:&v33 count:1];
+      v7 = PRErrorWithCodeAndUserInfo(103, uUID);
       goto LABEL_8;
     }
   }
@@ -1122,7 +1122,7 @@ LABEL_65:
         sub_10000AD84(v22);
       }
 
-      if (a3)
+      if (companion)
       {
         v11 = v8;
       }
@@ -1139,7 +1139,7 @@ LABEL_65:
         v30[0] = @"Failed to stop ranging";
         v30[1] = @"Stop ranging failed.";
         v12 = [NSDictionary dictionaryWithObjects:v30 forKeys:v29 count:2];
-        *a3 = PRErrorWithCodeAndUserInfo(103, v12);
+        *companion = PRErrorWithCodeAndUserInfo(103, v12);
       }
 
       v13 = qword_1009F9820;
@@ -1150,19 +1150,19 @@ LABEL_65:
       }
 
       companionRangingManager = self->_companionRangingManager;
-      v6 = [(PRRemoteDevice *)self->_companion UUID];
-      [(CLFindMyAccessoryManager *)companionRangingManager stopEventCounterForDevice:v6];
+      uUID = [(PRRemoteDevice *)self->_companion UUID];
+      [(CLFindMyAccessoryManager *)companionRangingManager stopEventCounterForDevice:uUID];
       goto LABEL_26;
     }
 
-    if (a3)
+    if (companion)
     {
       v31[0] = NSLocalizedDescriptionKey;
       v31[1] = NSLocalizedFailureReasonErrorKey;
       v32[0] = @"Failed to stop ranging";
       v32[1] = @"No service request.";
-      v6 = [NSDictionary dictionaryWithObjects:v32 forKeys:v31 count:2];
-      v7 = PRErrorWithCodeAndUserInfo(103, v6);
+      uUID = [NSDictionary dictionaryWithObjects:v32 forKeys:v31 count:2];
+      v7 = PRErrorWithCodeAndUserInfo(103, uUID);
       goto LABEL_8;
     }
   }
@@ -1175,15 +1175,15 @@ LABEL_65:
       goto LABEL_31;
     }
 
-    if (a3)
+    if (companion)
     {
       v35 = NSLocalizedDescriptionKey;
       v36 = @"Local ranging state is not valid, cannot stop.  ";
-      v6 = [NSDictionary dictionaryWithObjects:&v36 forKeys:&v35 count:1];
-      v7 = PRErrorWithCodeAndUserInfo(103, v6);
+      uUID = [NSDictionary dictionaryWithObjects:&v36 forKeys:&v35 count:1];
+      v7 = PRErrorWithCodeAndUserInfo(103, uUID);
 LABEL_8:
       v8 = 0;
-      *a3 = v7;
+      *companion = v7;
 LABEL_26:
 
       goto LABEL_31;
@@ -1195,15 +1195,15 @@ LABEL_31:
   companionRangingState = self->_companionRangingState;
   if ((companionRangingState - 2) < 3)
   {
-    if (a3)
+    if (companion)
     {
       v25 = NSLocalizedDescriptionKey;
       v26 = @"Received stopCompanionRanging while Companion ranging is starting.  ";
-      v16 = [NSDictionary dictionaryWithObjects:&v26 forKeys:&v25 count:1];
-      v17 = PRErrorWithCodeAndUserInfo(103, v16);
+      uUID2 = [NSDictionary dictionaryWithObjects:&v26 forKeys:&v25 count:1];
+      v17 = PRErrorWithCodeAndUserInfo(103, uUID2);
 LABEL_38:
       v8 = 0;
-      *a3 = v17;
+      *companion = v17;
 LABEL_43:
 
       return v8;
@@ -1223,19 +1223,19 @@ LABEL_43:
 
     self->_companionRangingState = 6;
     v19 = self->_companionRangingManager;
-    v16 = [(PRRemoteDevice *)self->_companion UUID];
-    [(CLFindMyAccessoryManager *)v19 stopRangingOnDevice:v16];
+    uUID2 = [(PRRemoteDevice *)self->_companion UUID];
+    [(CLFindMyAccessoryManager *)v19 stopRangingOnDevice:uUID2];
     goto LABEL_43;
   }
 
   if (!companionRangingState)
   {
-    if (a3)
+    if (companion)
     {
       v27 = NSLocalizedDescriptionKey;
       v28 = @"Companion ranging state is not valid, cannot stop.  ";
-      v16 = [NSDictionary dictionaryWithObjects:&v28 forKeys:&v27 count:1];
-      v17 = PRErrorWithCodeAndUserInfo(103, v16);
+      uUID2 = [NSDictionary dictionaryWithObjects:&v28 forKeys:&v27 count:1];
+      v17 = PRErrorWithCodeAndUserInfo(103, uUID2);
       goto LABEL_38;
     }
 
@@ -1245,9 +1245,9 @@ LABEL_43:
   return v8;
 }
 
-- (void)cleanupRangingManagerAndCompanionAfterError:(id)a3
+- (void)cleanupRangingManagerAndCompanionAfterError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   cleaningUponDidFail = self->_cleaningUponDidFail;
   v6 = qword_1009F9820;
   v7 = os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT);
@@ -1256,7 +1256,7 @@ LABEL_43:
     if (v7)
     {
       *buf = 138412290;
-      *&buf[4] = v4;
+      *&buf[4] = errorCopy;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Received an error while cleaning up: %@", buf, 0xCu);
     }
   }
@@ -1321,14 +1321,14 @@ LABEL_43:
   }
 }
 
-- (void)recordUsageOfCompanionRanging:(id)a3 usageParameters:(id)a4
+- (void)recordUsageOfCompanionRanging:(id)ranging usageParameters:(id)parameters
 {
-  v20 = a4;
-  v5 = [v20 objectForKeyedSubscript:@"FirstRange"];
-  v6 = [v20 objectForKeyedSubscript:@"SessionDuration"];
-  v7 = [v20 objectForKeyedSubscript:@"ProductUUID"];
+  parametersCopy = parameters;
+  v5 = [parametersCopy objectForKeyedSubscript:@"FirstRange"];
+  v6 = [parametersCopy objectForKeyedSubscript:@"SessionDuration"];
+  v7 = [parametersCopy objectForKeyedSubscript:@"ProductUUID"];
   v8 = v7;
-  if (a3 && v5 && v6 && v7)
+  if (ranging && v5 && v6 && v7)
   {
     v9 = +[NSUserDefaults standardUserDefaults];
     [v9 doubleForKey:@"UsageAnalyticsThreshold_ItemFinding_FirstRange"];
@@ -1373,15 +1373,15 @@ LABEL_43:
   }
 }
 
-- (void)initCompanion:(id)a3
+- (void)initCompanion:(id)companion
 {
-  v4 = a3;
+  companionCopy = companion;
   v5 = qword_1009F9820;
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 UUID];
+    uUID = [companionCopy UUID];
     v11 = 138412290;
-    v12 = v6;
+    v12 = uUID;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Init companion. UUID: %@", &v11, 0xCu);
   }
 
@@ -1394,9 +1394,9 @@ LABEL_43:
 
   self->_companionRoseState = 1;
   companionRangingManager = self->_companionRangingManager;
-  v9 = [v4 UUID];
-  v10 = [v4 roseMACAddress];
-  [(CLFindMyAccessoryManager *)companionRangingManager initRangingOnDevice:v9 macAddress:v10];
+  uUID2 = [companionCopy UUID];
+  roseMACAddress = [companionCopy roseMACAddress];
+  [(CLFindMyAccessoryManager *)companionRangingManager initRangingOnDevice:uUID2 macAddress:roseMACAddress];
 }
 
 - (void)deinitCompanion
@@ -1406,9 +1406,9 @@ LABEL_43:
     v3 = qword_1009F9820;
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
-      v4 = [(PRRemoteDevice *)self->_companion UUID];
+      uUID = [(PRRemoteDevice *)self->_companion UUID];
       v8 = 138412290;
-      v9 = v4;
+      v9 = uUID;
       _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Deinit companion. UUID: %@", &v8, 0xCu);
     }
 
@@ -1421,8 +1421,8 @@ LABEL_43:
     }
 
     companionRangingManager = self->_companionRangingManager;
-    v7 = [(PRRemoteDevice *)self->_companion UUID];
-    [(CLFindMyAccessoryManager *)companionRangingManager deinitRangingOnDevice:v7];
+    uUID2 = [(PRRemoteDevice *)self->_companion UUID];
+    [(CLFindMyAccessoryManager *)companionRangingManager deinitRangingOnDevice:uUID2];
   }
 }
 
@@ -1431,9 +1431,9 @@ LABEL_43:
   v3 = qword_1009F9820;
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(PRRemoteDevice *)self->_companion UUID];
+    uUID = [(PRRemoteDevice *)self->_companion UUID];
     *buf = 138412290;
-    v40 = v4;
+    v40 = uUID;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Configure companion for ranging. UUID: %@", buf, 0xCu);
   }
 
@@ -1523,10 +1523,10 @@ LABEL_43:
 
         self->_companionRoseState = 2;
         companionRangingManager = self->_companionRangingManager;
-        v24 = [(PRRemoteDevice *)self->_companion UUID];
-        v25 = [(PRRemoteDevice *)self->_companion roseMACAddress];
+        uUID2 = [(PRRemoteDevice *)self->_companion UUID];
+        roseMACAddress = [(PRRemoteDevice *)self->_companion roseMACAddress];
         LOWORD(v31) = HIWORD(v32);
-        [(CLFindMyAccessoryManager *)companionRangingManager configureRangingOnDevice:v24 macAddress:v25 countryCode:v32 uwbChannel:BYTE1(v32) & 3 acqPreamble:(BYTE1(v32) >> 2) & 3 trackingPreamble:(BYTE1(v32) >> 4) & 3 interval:v31];
+        [(CLFindMyAccessoryManager *)companionRangingManager configureRangingOnDevice:uUID2 macAddress:roseMACAddress countryCode:v32 uwbChannel:BYTE1(v32) & 3 acqPreamble:(BYTE1(v32) >> 2) & 3 trackingPreamble:(BYTE1(v32) >> 4) & 3 interval:v31];
       }
 
       else
@@ -1534,9 +1534,9 @@ LABEL_43:
         v33 = NSLocalizedDescriptionKey;
         v34 = @"Failed to construct companion range config command.";
         v30 = [NSDictionary dictionaryWithObjects:&v34 forKeys:&v33 count:1];
-        v24 = PRErrorWithCodeAndUserInfo(101, v30);
+        uUID2 = PRErrorWithCodeAndUserInfo(101, v30);
 
-        [(PRCompanionRangingClientProxy *)self handleError:v24];
+        [(PRCompanionRangingClientProxy *)self handleError:uUID2];
       }
     }
 
@@ -1567,18 +1567,18 @@ LABEL_43:
   }
 }
 
-- (void)findMyAccessoryManager:(id)a3 didFailWithError:(id)a4 forDevice:(id)a5
+- (void)findMyAccessoryManager:(id)manager didFailWithError:(id)error forDevice:(id)device
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v10 || self->_companionRangingManager == v8 && (-[PRRemoteDevice UUID](self->_companion, "UUID"), v11 = objc_claimAutoreleasedReturnValue(), v12 = [v10 isEqual:v11], v11, (v12 & 1) != 0))
+  managerCopy = manager;
+  errorCopy = error;
+  deviceCopy = device;
+  if (!deviceCopy || self->_companionRangingManager == managerCopy && (-[PRRemoteDevice UUID](self->_companion, "UUID"), v11 = objc_claimAutoreleasedReturnValue(), v12 = [deviceCopy isEqual:v11], v11, (v12 & 1) != 0))
   {
     v13 = qword_1009F9820;
     if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v19 = v9;
+      v19 = errorCopy;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "_companionRangingManager didFailWithError #companion-retry error:%@", buf, 0xCu);
     }
 
@@ -1596,14 +1596,14 @@ LABEL_43:
   }
 }
 
-- (void)findMyAccessoryManager:(id)a3 didConnectDevice:(id)a4 error:(id)a5
+- (void)findMyAccessoryManager:(id)manager didConnectDevice:(id)device error:(id)error
 {
-  v8 = a4;
-  v9 = a5;
-  if (self->_companionRangingManager == a3)
+  deviceCopy = device;
+  errorCopy = error;
+  if (self->_companionRangingManager == manager)
   {
-    v10 = [(PRRemoteDevice *)self->_companion UUID];
-    v11 = [v8 isEqual:v10];
+    uUID = [(PRRemoteDevice *)self->_companion UUID];
+    v11 = [deviceCopy isEqual:uUID];
 
     if (v11)
     {
@@ -1611,11 +1611,11 @@ LABEL_43:
       if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v20 = v9;
+        v20 = errorCopy;
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "_companionRangingManager didConnectDevice #companion-retry error:%@", buf, 0xCu);
       }
 
-      if (v9)
+      if (errorCopy)
       {
         self->_companionConnectionState = 0;
         v17 = NSLocalizedDescriptionKey;
@@ -1637,7 +1637,7 @@ LABEL_43:
         if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v20 = v8;
+          v20 = deviceCopy;
           _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "------ new connection: %@", buf, 0xCu);
         }
 
@@ -1652,13 +1652,13 @@ LABEL_43:
   }
 }
 
-- (void)findMyAccessoryManager:(id)a3 didDisconnectDevice:(id)a4
+- (void)findMyAccessoryManager:(id)manager didDisconnectDevice:(id)device
 {
-  v6 = a4;
-  if (self->_companionRangingManager == a3)
+  deviceCopy = device;
+  if (self->_companionRangingManager == manager)
   {
-    v7 = [(PRRemoteDevice *)self->_companion UUID];
-    v8 = [v6 isEqual:v7];
+    uUID = [(PRRemoteDevice *)self->_companion UUID];
+    v8 = [deviceCopy isEqual:uUID];
 
     if (v8)
     {
@@ -1725,14 +1725,14 @@ LABEL_43:
   }
 }
 
-- (void)findMyAccessoryManager:(id)a3 didConfigureRangingOnDevice:(id)a4 withStatus:(unsigned int)a5 error:(id)a6
+- (void)findMyAccessoryManager:(id)manager didConfigureRangingOnDevice:(id)device withStatus:(unsigned int)status error:(id)error
 {
-  v10 = a4;
-  v11 = a6;
-  if (self->_companionRangingManager == a3)
+  deviceCopy = device;
+  errorCopy = error;
+  if (self->_companionRangingManager == manager)
   {
-    v12 = [(PRRemoteDevice *)self->_companion UUID];
-    v13 = [v10 isEqual:v12];
+    uUID = [(PRRemoteDevice *)self->_companion UUID];
+    v13 = [deviceCopy isEqual:uUID];
 
     if (v13)
     {
@@ -1740,9 +1740,9 @@ LABEL_43:
       if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        v25 = v11;
+        v25 = errorCopy;
         v26 = 1024;
-        v27 = a5;
+        statusCopy = status;
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "_companionRangingManager didConfigureRangingOnDevice #companion-retry error:%@, status:%d", buf, 0x12u);
       }
 
@@ -1762,7 +1762,7 @@ LABEL_43:
         goto LABEL_13;
       }
 
-      if (v11)
+      if (errorCopy)
       {
         v20 = NSLocalizedDescriptionKey;
         v21 = @"Error configuring ranging parameters on peer.";
@@ -1798,17 +1798,17 @@ LABEL_13:
 LABEL_14:
 }
 
-- (void)findMyAccessoryManager:(id)a3 didInitRangingOnDevice:(id)a4 withStatus:(unsigned int)a5 error:(id)a6
+- (void)findMyAccessoryManager:(id)manager didInitRangingOnDevice:(id)device withStatus:(unsigned int)status error:(id)error
 {
-  v10 = a4;
-  v11 = a6;
-  if (self->_companionRangingManager != a3)
+  deviceCopy = device;
+  errorCopy = error;
+  if (self->_companionRangingManager != manager)
   {
     goto LABEL_27;
   }
 
-  v12 = [(PRRemoteDevice *)self->_companion UUID];
-  v13 = [v10 isEqual:v12];
+  uUID = [(PRRemoteDevice *)self->_companion UUID];
+  v13 = [deviceCopy isEqual:uUID];
 
   if ((v13 & 1) == 0)
   {
@@ -1819,9 +1819,9 @@ LABEL_14:
   if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v29 = v11;
+    v29 = errorCopy;
     v30 = 1024;
-    v31 = a5;
+    statusCopy = status;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "_companionRangingManager didInitRoseOnDevice #companion-retry error:%@, status:%d", buf, 0x12u);
   }
 
@@ -1842,7 +1842,7 @@ LABEL_14:
   }
 
   v15 = qword_1009F9820;
-  if (!v11)
+  if (!errorCopy)
   {
     if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
     {
@@ -1854,12 +1854,12 @@ LABEL_14:
     if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109120;
-      LODWORD(v29) = a5;
+      LODWORD(v29) = status;
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "Expected Ready ROSE_STATUS: 0x%x", buf, 8u);
     }
 
     v17 = +[NSUserDefaults standardUserDefaults];
-    if ((a5 == 1) | [v17 BOOLForKey:@"B389_SimulateLowPower"] & 1)
+    if ((status == 1) | [v17 BOOLForKey:@"B389_SimulateLowPower"] & 1)
     {
       v24 = NSLocalizedDescriptionKey;
       v25 = @"Failed to initialize ranging on accessory";
@@ -1876,7 +1876,7 @@ LABEL_14:
 
     else
     {
-      if (!a5)
+      if (!status)
       {
         [(PRCompanionRangingClientProxy *)self configureCompanionForRanging];
         goto LABEL_26;
@@ -1904,18 +1904,18 @@ LABEL_26:
     sub_1004C0CB8();
   }
 
-  [(PRCompanionRangingClientProxy *)self handleError:v11];
+  [(PRCompanionRangingClientProxy *)self handleError:errorCopy];
 LABEL_27:
 }
 
-- (void)findMyAccessoryManager:(id)a3 didDeinitRangingOnDevice:(id)a4 withStatus:(unsigned int)a5 error:(id)a6
+- (void)findMyAccessoryManager:(id)manager didDeinitRangingOnDevice:(id)device withStatus:(unsigned int)status error:(id)error
 {
-  v9 = a4;
-  v10 = a6;
-  if (self->_companionRangingManager == a3)
+  deviceCopy = device;
+  errorCopy = error;
+  if (self->_companionRangingManager == manager)
   {
-    v11 = [(PRRemoteDevice *)self->_companion UUID];
-    v12 = [v9 isEqual:v11];
+    uUID = [(PRRemoteDevice *)self->_companion UUID];
+    v12 = [deviceCopy isEqual:uUID];
 
     if (v12)
     {
@@ -1923,7 +1923,7 @@ LABEL_27:
       if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v28 = v10;
+        v28 = errorCopy;
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "_companionRangingManager didDeinitRangingOnDevice #companion-retry error:%@", buf, 0xCu);
       }
 
@@ -1932,30 +1932,30 @@ LABEL_27:
         v25 = NSLocalizedDescriptionKey;
         v26 = @"Unexpected didDeinitRangingOnDevice";
         v16 = [NSDictionary dictionaryWithObjects:&v26 forKeys:&v25 count:1];
-        v15 = PRErrorWithCodeAndUserInfo(301, v16);
+        uUID2 = PRErrorWithCodeAndUserInfo(301, v16);
 
         if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
         {
           sub_1004C0DA4();
         }
 
-        [(PRCompanionRangingClientProxy *)self handleError:v15];
+        [(PRCompanionRangingClientProxy *)self handleError:uUID2];
         goto LABEL_20;
       }
 
-      if (v10)
+      if (errorCopy)
       {
         v21 = NSLocalizedDescriptionKey;
         v22 = @"Error deiniting R1 on companion";
         v14 = [NSDictionary dictionaryWithObjects:&v22 forKeys:&v21 count:1];
-        v15 = PRErrorWithCodeAndUserInfo(301, v14);
+        uUID2 = PRErrorWithCodeAndUserInfo(301, v14);
 
         if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
         {
           sub_1004C0DE0();
         }
 
-        [(PRCompanionRangingClientProxy *)self handleError:v15];
+        [(PRCompanionRangingClientProxy *)self handleError:uUID2];
         goto LABEL_20;
       }
 
@@ -1977,8 +1977,8 @@ LABEL_27:
         }
 
         companionRangingManager = self->_companionRangingManager;
-        v15 = [(PRRemoteDevice *)self->_companion UUID];
-        [(CLFindMyAccessoryManager *)companionRangingManager disconnectDevice:v15];
+        uUID2 = [(PRRemoteDevice *)self->_companion UUID];
+        [(CLFindMyAccessoryManager *)companionRangingManager disconnectDevice:uUID2];
         goto LABEL_20;
       }
 
@@ -1988,23 +1988,23 @@ LABEL_16:
         v23 = NSLocalizedDescriptionKey;
         v24 = @"Unexpected BT connection state";
         v18 = [NSDictionary dictionaryWithObjects:&v24 forKeys:&v23 count:1];
-        v15 = PRErrorWithCodeAndUserInfo(301, v18);
+        uUID2 = PRErrorWithCodeAndUserInfo(301, v18);
 
-        [(PRCompanionRangingClientProxy *)self handleError:v15];
+        [(PRCompanionRangingClientProxy *)self handleError:uUID2];
 LABEL_20:
       }
     }
   }
 }
 
-- (void)findMyAccessoryManager:(id)a3 didStartRangingOnDevice:(id)a4 error:(id)a5
+- (void)findMyAccessoryManager:(id)manager didStartRangingOnDevice:(id)device error:(id)error
 {
-  v8 = a4;
-  v9 = a5;
-  if (self->_companionRangingManager == a3)
+  deviceCopy = device;
+  errorCopy = error;
+  if (self->_companionRangingManager == manager)
   {
-    v10 = [(PRRemoteDevice *)self->_companion UUID];
-    v11 = [v8 isEqual:v10];
+    uUID = [(PRRemoteDevice *)self->_companion UUID];
+    v11 = [deviceCopy isEqual:uUID];
 
     if (v11)
     {
@@ -2012,7 +2012,7 @@ LABEL_20:
       if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v22 = v9;
+        v22 = errorCopy;
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "_companionRangingManager didStartRangingOnDevice #companion-retry error:%@", buf, 0xCu);
       }
 
@@ -2032,7 +2032,7 @@ LABEL_20:
         goto LABEL_13;
       }
 
-      if (v9)
+      if (errorCopy)
       {
         v17 = NSLocalizedDescriptionKey;
         v18 = @"Error starting ranging on companion";
@@ -2065,15 +2065,15 @@ LABEL_13:
 LABEL_14:
 }
 
-- (void)findMyAccessoryManager:(id)a3 didCompleteRangingOnDevice:(id)a4 withStatus:(unsigned int)a5 endReason:(unsigned __int8)a6 error:(id)a7
+- (void)findMyAccessoryManager:(id)manager didCompleteRangingOnDevice:(id)device withStatus:(unsigned int)status endReason:(unsigned __int8)reason error:(id)error
 {
-  v8 = a6;
-  v12 = a4;
-  v13 = a7;
-  if (self->_companionRangingManager == a3)
+  reasonCopy = reason;
+  deviceCopy = device;
+  errorCopy = error;
+  if (self->_companionRangingManager == manager)
   {
-    v14 = [(PRRemoteDevice *)self->_companion UUID];
-    v15 = [v12 isEqual:v14];
+    uUID = [(PRRemoteDevice *)self->_companion UUID];
+    v15 = [deviceCopy isEqual:uUID];
 
     if (v15)
     {
@@ -2081,13 +2081,13 @@ LABEL_14:
       if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
       {
         *buf = 138413058;
-        v33 = v12;
+        v33 = deviceCopy;
         v34 = 2112;
-        v35 = v13;
+        v35 = errorCopy;
         v36 = 1024;
-        v37 = v8;
+        v37 = reasonCopy;
         v38 = 1024;
-        v39 = a5;
+        statusCopy2 = status;
         _os_log_error_impl(&_mh_execute_header, v16, OS_LOG_TYPE_ERROR, "_companionRangingManager didCompleteRoseRangingOnDevice #companion-retry on device: %@, error: %@, endReason: %d, status: %d", buf, 0x22u);
       }
 
@@ -2107,7 +2107,7 @@ LABEL_14:
         goto LABEL_13;
       }
 
-      if (v13)
+      if (errorCopy)
       {
         v28 = NSLocalizedDescriptionKey;
         v29 = @"Error reported upon ranging complete";
@@ -2118,13 +2118,13 @@ LABEL_14:
         if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
         {
           *buf = 138413058;
-          v33 = v12;
+          v33 = deviceCopy;
           v34 = 2112;
-          v35 = v13;
+          v35 = errorCopy;
           v36 = 1024;
-          v37 = v8;
+          v37 = reasonCopy;
           v38 = 1024;
-          v39 = a5;
+          statusCopy2 = status;
           _os_log_error_impl(&_mh_execute_header, v19, OS_LOG_TYPE_ERROR, "CLFindMyAccessoryManager failed to complete Rose ranging on device: %@, error: %@, endReason: %d, status: %d", buf, 0x22u);
         }
 
@@ -2145,11 +2145,11 @@ LABEL_14:
         if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 67109120;
-          LODWORD(v33) = a5;
+          LODWORD(v33) = status;
           _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "Range Complete Event ROSE_STATUS: 0x%x #companion-retry", buf, 8u);
         }
 
-        if (a5 == 7)
+        if (status == 7)
         {
           self->_lastStartScheduledTooSoon = 1;
         }
@@ -2157,7 +2157,7 @@ LABEL_14:
         else
         {
           self->_lastStartScheduledTooSoon = 0;
-          if (a5 == 14 || !a5)
+          if (status == 14 || !status)
           {
             self->_companionRangingState = 1;
             v25 = 0;
@@ -2191,13 +2191,13 @@ LABEL_13:
   }
 }
 
-- (void)findMyAccessoryManager:(id)a3 didHaveRangingMovementOnDevice:(id)a4
+- (void)findMyAccessoryManager:(id)manager didHaveRangingMovementOnDevice:(id)device
 {
-  v6 = a4;
-  if (self->_companionRangingManager == a3)
+  deviceCopy = device;
+  if (self->_companionRangingManager == manager)
   {
-    v7 = [(PRRemoteDevice *)self->_companion UUID];
-    v8 = [v6 isEqual:v7];
+    uUID = [(PRRemoteDevice *)self->_companion UUID];
+    v8 = [deviceCopy isEqual:uUID];
 
     if (v8)
     {
@@ -2213,28 +2213,28 @@ LABEL_13:
   }
 }
 
-- (void)findMyAccessoryManager:(id)a3 didPrepareRangingOnDevice:(id)a4 withConnInterval:(id)a5 error:(id)a6
+- (void)findMyAccessoryManager:(id)manager didPrepareRangingOnDevice:(id)device withConnInterval:(id)interval error:(id)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (self->_companionRangingManager == v10)
+  managerCopy = manager;
+  deviceCopy = device;
+  intervalCopy = interval;
+  errorCopy = error;
+  if (self->_companionRangingManager == managerCopy)
   {
-    v14 = [(PRRemoteDevice *)self->_companion UUID];
-    v15 = [v11 isEqual:v14];
+    uUID = [(PRRemoteDevice *)self->_companion UUID];
+    v15 = [deviceCopy isEqual:uUID];
 
     if (v15)
     {
       v16 = qword_1009F9820;
-      if (v13)
+      if (errorCopy)
       {
         if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
         {
           sub_1004C0F78();
         }
 
-        [(PRCompanionRangingClientProxy *)self handleError:v13];
+        [(PRCompanionRangingClientProxy *)self handleError:errorCopy];
       }
 
       else
@@ -2260,7 +2260,7 @@ LABEL_13:
           [(PRCompanionRangingClientProxy *)self handleError:v18];
         }
 
-        self->_connectionIntervalUs.var0.__val_ = [v12 unsignedLongLongValue];
+        self->_connectionIntervalUs.var0.__val_ = [intervalCopy unsignedLongLongValue];
         self->_connectionIntervalUs.__engaged_ = 1;
         v19 = qword_1009F9820;
         if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))

@@ -1,25 +1,25 @@
 @interface MFAttachmentLibraryDataProvider
 - (EDAttachmentPersistenceManager)persistenceManager;
-- (MFAttachmentLibraryDataProvider)initWithLibrary:(id)a3;
+- (MFAttachmentLibraryDataProvider)initWithLibrary:(id)library;
 - (MFMailMessageLibrary)messageLibrary;
-- (_MFAttachmentDataFetchResult)_fetchDataForAttachment:(SEL)a3 consumer:(id)a4 progress:(id)a5;
-- (id)messageForAttachment:(id)a3;
-- (id)storageLocationForAttachment:(id)a3 withMessage:(id)a4;
-- (void)fetchDataForAttachment:(id)a3 consumer:(id)a4 progress:(id)a5 completion:(id)a6;
+- (_MFAttachmentDataFetchResult)_fetchDataForAttachment:(SEL)attachment consumer:(id)consumer progress:(id)progress;
+- (id)messageForAttachment:(id)attachment;
+- (id)storageLocationForAttachment:(id)attachment withMessage:(id)message;
+- (void)fetchDataForAttachment:(id)attachment consumer:(id)consumer progress:(id)progress completion:(id)completion;
 @end
 
 @implementation MFAttachmentLibraryDataProvider
 
-- (MFAttachmentLibraryDataProvider)initWithLibrary:(id)a3
+- (MFAttachmentLibraryDataProvider)initWithLibrary:(id)library
 {
-  v4 = a3;
+  libraryCopy = library;
   v8.receiver = self;
   v8.super_class = MFAttachmentLibraryDataProvider;
   v5 = [(MFAttachmentLibraryDataProvider *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(MFAttachmentLibraryDataProvider *)v5 setMessageLibrary:v4];
+    [(MFAttachmentLibraryDataProvider *)v5 setMessageLibrary:libraryCopy];
   }
 
   return v6;
@@ -30,11 +30,11 @@
   persistenceManager = self->_persistenceManager;
   if (!persistenceManager)
   {
-    v4 = [(MFAttachmentLibraryDataProvider *)self messageLibrary];
-    v5 = [v4 persistence];
-    v6 = [v5 attachmentPersistenceManager];
+    messageLibrary = [(MFAttachmentLibraryDataProvider *)self messageLibrary];
+    persistence = [messageLibrary persistence];
+    attachmentPersistenceManager = [persistence attachmentPersistenceManager];
     v7 = self->_persistenceManager;
-    self->_persistenceManager = v6;
+    self->_persistenceManager = attachmentPersistenceManager;
 
     persistenceManager = self->_persistenceManager;
   }
@@ -42,28 +42,28 @@
   return persistenceManager;
 }
 
-- (void)fetchDataForAttachment:(id)a3 consumer:(id)a4 progress:(id)a5 completion:(id)a6
+- (void)fetchDataForAttachment:(id)attachment consumer:(id)consumer progress:(id)progress completion:(id)completion
 {
-  v10 = a3;
-  v11 = a6;
+  attachmentCopy = attachment;
+  completionCopy = completion;
   memset(v12, 170, sizeof(v12));
-  [(MFAttachmentLibraryDataProvider *)self _fetchDataForAttachment:v10 consumer:a4 progress:a5];
-  [v10 updatePathIfNeeded];
-  (*(v11 + 2))(v11, LOBYTE(v12[0]), v12[1], LOBYTE(v12[2]));
+  [(MFAttachmentLibraryDataProvider *)self _fetchDataForAttachment:attachmentCopy consumer:consumer progress:progress];
+  [attachmentCopy updatePathIfNeeded];
+  (*(completionCopy + 2))(completionCopy, LOBYTE(v12[0]), v12[1], LOBYTE(v12[2]));
 }
 
-- (_MFAttachmentDataFetchResult)_fetchDataForAttachment:(SEL)a3 consumer:(id)a4 progress:(id)a5
+- (_MFAttachmentDataFetchResult)_fetchDataForAttachment:(SEL)attachment consumer:(id)consumer progress:(id)progress
 {
   v66 = *MEMORY[0x1E69E9840];
-  v10 = a4;
-  v11 = a5;
+  consumerCopy = consumer;
+  progressCopy = progress;
   v55 = a6;
   v12 = EDAttachmentsLog();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = [v10 ef_publicDescription];
+    ef_publicDescription = [consumerCopy ef_publicDescription];
     *buf = 138543362;
-    v63 = v13;
+    v63 = ef_publicDescription;
     _os_log_impl(&dword_1B0389000, v12, OS_LOG_TYPE_DEFAULT, "In _fetchDataForAttachment for attachment %{public}@", buf, 0xCu);
   }
 
@@ -74,24 +74,24 @@
   v14 = v55;
   v58 = v14;
   v56 = _Block_copy(aBlock);
-  v15 = [v10 url];
-  v16 = [v15 mf_lastPartNumber];
-  if (v16)
+  v15 = [consumerCopy url];
+  mf_lastPartNumber = [v15 mf_lastPartNumber];
+  if (mf_lastPartNumber)
   {
-    v17 = [v10 readFromDisk];
-    if (v17)
+    readFromDisk = [consumerCopy readFromDisk];
+    if (readFromDisk)
     {
-      [v11 appendData:v17];
-      [v11 done];
+      [progressCopy appendData:readFromDisk];
+      [progressCopy done];
       v18 = EDAttachmentsLog();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
-        v19 = [v17 length];
-        v20 = [v10 ef_publicDescription];
+        v19 = [readFromDisk length];
+        ef_publicDescription2 = [consumerCopy ef_publicDescription];
         *buf = 134218242;
         v63 = v19;
         v64 = 2114;
-        v65 = v20;
+        v65 = ef_publicDescription2;
         _os_log_impl(&dword_1B0389000, v18, OS_LOG_TYPE_DEFAULT, "Got data (%{iec-bytes}llu) for attachment %{public}@.", buf, 0x16u);
       }
 
@@ -103,39 +103,39 @@
 
     else
     {
-      v53 = [(MFAttachmentLibraryDataProvider *)self messageForAttachment:v10];
-      v54 = [v53 messageStore];
-      [v54 downloadMimePartNumber:v16 message:v53 withProgressBlock:v56];
-      [v10 updatePathIfNeeded];
-      v17 = [v10 readFromDisk];
-      if (v17)
+      v53 = [(MFAttachmentLibraryDataProvider *)self messageForAttachment:consumerCopy];
+      messageStore = [v53 messageStore];
+      [messageStore downloadMimePartNumber:mf_lastPartNumber message:v53 withProgressBlock:v56];
+      [consumerCopy updatePathIfNeeded];
+      readFromDisk = [consumerCopy readFromDisk];
+      if (readFromDisk)
       {
         v24 = EDAttachmentsLog();
         if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
         {
-          v25 = [v17 length];
-          v26 = [v10 ef_publicDescription];
+          v25 = [readFromDisk length];
+          ef_publicDescription3 = [consumerCopy ef_publicDescription];
           *buf = 134218242;
           v63 = v25;
           v64 = 2114;
-          v65 = v26;
+          v65 = ef_publicDescription3;
           _os_log_impl(&dword_1B0389000, v24, OS_LOG_TYPE_DEFAULT, "Got data (%{iec-bytes}llu) for attachment %{public}@.", buf, 0x16u);
         }
 
-        [v11 appendData:v17];
-        [v11 done];
+        [progressCopy appendData:readFromDisk];
+        [progressCopy done];
         if (objc_opt_respondsToSelector())
         {
-          v27 = [v11 data];
-          v28 = v27 == 0;
+          data = [progressCopy data];
+          v28 = data == 0;
 
           if (v28)
           {
             v29 = EDAttachmentsLog();
             if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
             {
-              v30 = [v10 ef_publicDescription];
-              [MFAttachmentLibraryDataProvider _fetchDataForAttachment:v30 consumer:buf progress:v29];
+              ef_publicDescription4 = [consumerCopy ef_publicDescription];
+              [MFAttachmentLibraryDataProvider _fetchDataForAttachment:ef_publicDescription4 consumer:buf progress:v29];
             }
           }
         }
@@ -151,33 +151,33 @@
         v31 = EDAttachmentsLog();
         if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
         {
-          v32 = [v10 ef_publicDescription];
-          [MFAttachmentLibraryDataProvider _fetchDataForAttachment:v32 consumer:buf progress:v31];
+          ef_publicDescription5 = [consumerCopy ef_publicDescription];
+          [MFAttachmentLibraryDataProvider _fetchDataForAttachment:ef_publicDescription5 consumer:buf progress:v31];
         }
 
-        v33 = [v10 decodeFilterWithDataConsumer:v11];
+        v33 = [consumerCopy decodeFilterWithDataConsumer:progressCopy];
         v34 = objc_alloc(MEMORY[0x1E69AD750]);
         v61 = v33;
         v35 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v61 count:1];
-        v52 = [v34 initWithConsumers:v35 expectedSize:{objc_msgSend(v10, "encodedFileSize")}];
+        v52 = [v34 initWithConsumers:v35 expectedSize:{objc_msgSend(consumerCopy, "encodedFileSize")}];
 
         [v52 setProgressBlock:v56];
-        v36 = [v53 messageBody];
-        v51 = [v36 partWithNumber:v16];
+        messageBody = [v53 messageBody];
+        v51 = [messageBody partWithNumber:mf_lastPartNumber];
 
-        v37 = [v51 range];
-        v39 = [v54 dataForMimePart:v51 inRange:v37 withConsumer:v38 downloadIfNecessary:{v52, 1}];
-        [v10 updatePathIfNeeded];
+        range = [v51 range];
+        v39 = [messageStore dataForMimePart:v51 inRange:range withConsumer:v38 downloadIfNecessary:{v52, 1}];
+        [consumerCopy updatePathIfNeeded];
         if (v39)
         {
           v40 = EDAttachmentsLog();
           if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
           {
             v49 = v33;
-            v41 = [v10 ef_publicDescription];
+            ef_publicDescription6 = [consumerCopy ef_publicDescription];
             *v59 = 138543362;
-            v60 = v41;
-            v42 = v41;
+            v60 = ef_publicDescription6;
+            v42 = ef_publicDescription6;
             _os_log_impl(&dword_1B0389000, v40, OS_LOG_TYPE_DEFAULT, "Got data for attachment %{public}@.", v59, 0xCu);
 
             v33 = v49;
@@ -192,10 +192,10 @@
           if (os_log_type_enabled(v44, OS_LOG_TYPE_DEFAULT))
           {
             v50 = v33;
-            v45 = [v10 ef_publicDescription];
+            ef_publicDescription7 = [consumerCopy ef_publicDescription];
             *v59 = 138543362;
-            v60 = v45;
-            v46 = v45;
+            v60 = ef_publicDescription7;
+            v46 = ef_publicDescription7;
             _os_log_impl(&dword_1B0389000, v44, OS_LOG_TYPE_DEFAULT, "Failed to get data for attachment %{public}@.", v59, 0xCu);
 
             v33 = v50;
@@ -205,7 +205,7 @@
         }
 
         [v52 done];
-        [v11 done];
+        [progressCopy done];
         retstr->var0 = v39;
         retstr->var1 = v43;
         retstr->var2 = v39;
@@ -219,9 +219,9 @@
     v22 = EDAttachmentsLog();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
-      v23 = [v10 ef_publicDescription];
+      ef_publicDescription8 = [consumerCopy ef_publicDescription];
       *buf = 138543362;
-      v63 = v23;
+      v63 = ef_publicDescription8;
       _os_log_impl(&dword_1B0389000, v22, OS_LOG_TYPE_DEFAULT, "No part number for attachment %{public}@", buf, 0xCu);
     }
 
@@ -242,42 +242,42 @@ uint64_t __77__MFAttachmentLibraryDataProvider__fetchDataForAttachment_consumer_
   return [v6 setCompletedUnitCount:a2];
 }
 
-- (id)messageForAttachment:(id)a3
+- (id)messageForAttachment:(id)attachment
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 part];
-  v6 = [v5 mimeBody];
-  v7 = [v6 message];
+  attachmentCopy = attachment;
+  part = [attachmentCopy part];
+  mimeBody = [part mimeBody];
+  message = [mimeBody message];
 
-  if (!v7)
+  if (!message)
   {
-    v8 = [v4 url];
-    v9 = [v8 mf_rowID];
+    v8 = [attachmentCopy url];
+    mf_rowID = [v8 mf_rowID];
 
-    if (v9 == *MEMORY[0x1E699A728])
+    if (mf_rowID == *MEMORY[0x1E699A728])
     {
-      v10 = EDAttachmentsLog();
-      if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+      mailbox = EDAttachmentsLog();
+      if (os_log_type_enabled(mailbox, OS_LOG_TYPE_ERROR))
       {
-        v11 = [v4 url];
-        [(MFAttachmentLibraryDataProvider *)v11 messageForAttachment:v10];
+        v11 = [attachmentCopy url];
+        [(MFAttachmentLibraryDataProvider *)v11 messageForAttachment:mailbox];
       }
 
-      v7 = 0;
+      message = 0;
     }
 
     else
     {
-      v12 = [(MFAttachmentLibraryDataProvider *)self messageLibrary];
-      v7 = [v12 messageWithLibraryID:v9 options:4227087 inMailbox:0];
+      messageLibrary = [(MFAttachmentLibraryDataProvider *)self messageLibrary];
+      message = [messageLibrary messageWithLibraryID:mf_rowID options:4227087 inMailbox:0];
 
-      v10 = [v7 mailbox];
-      v13 = [v10 account];
-      v14 = [v13 storeForMailboxUid:v10];
+      mailbox = [message mailbox];
+      account = [mailbox account];
+      v14 = [account storeForMailboxUid:mailbox];
       if (v14)
       {
-        [v7 setMessageStore:v14];
+        [message setMessageStore:v14];
       }
 
       else
@@ -285,9 +285,9 @@ uint64_t __77__MFAttachmentLibraryDataProvider__fetchDataForAttachment_consumer_
         v15 = MFLogGeneral();
         if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
         {
-          v16 = [v7 ef_publicDescription];
+          ef_publicDescription = [message ef_publicDescription];
           v19 = 138543362;
-          v20 = v16;
+          v20 = ef_publicDescription;
           _os_log_impl(&dword_1B0389000, v15, OS_LOG_TYPE_INFO, "#Attachments failed to find a store for message %{public}@, things may behave unexpectedly", &v19, 0xCu);
         }
       }
@@ -296,12 +296,12 @@ uint64_t __77__MFAttachmentLibraryDataProvider__fetchDataForAttachment_consumer_
 
   v17 = *MEMORY[0x1E69E9840];
 
-  return v7;
+  return message;
 }
 
-- (id)storageLocationForAttachment:(id)a3 withMessage:(id)a4
+- (id)storageLocationForAttachment:(id)attachment withMessage:(id)message
 {
-  v4 = [a4 storageLocationForAttachment:a3];
+  v4 = [message storageLocationForAttachment:attachment];
 
   return v4;
 }

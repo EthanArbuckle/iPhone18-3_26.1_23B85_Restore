@@ -1,15 +1,15 @@
 @interface HUCameraEventRecordingCell
 - (CALayer)badgeLayer;
 - (HMCameraClip)recordingEvent;
-- (HUCameraEventRecordingCell)initWithFrame:(CGRect)a3;
+- (HUCameraEventRecordingCell)initWithFrame:(CGRect)frame;
 - (HUClipScrubberTimeController)timeController;
 - (HURecordingEventCellFamiliarFacesView)familiarFacesView;
 - (UIView)dayBoundaryView;
 - (UIView)posterFramesContainerView;
-- (id)_badgeImageForSignificantEventReasons:(id)a3;
+- (id)_badgeImageForSignificantEventReasons:(id)reasons;
 - (id)accessibilityLabel;
 - (unint64_t)numberOfFramesNeeded;
-- (void)_updateBadgeLayerWithImage:(id)a3 inRect:(CGRect)a4;
+- (void)_updateBadgeLayerWithImage:(id)image inRect:(CGRect)rect;
 - (void)addDayBoundaryIfNeeded;
 - (void)addDebugMarker;
 - (void)addPosterFrameViews;
@@ -19,45 +19,45 @@
 - (void)hideFamiliarFaces;
 - (void)prepareForReuse;
 - (void)preparePosterFrameViewsForReuse;
-- (void)showFamiliarFacesWithMaxWidth:(double)a3;
-- (void)updateBadgeLayerWithEvents:(id)a3 inRect:(CGRect)a4;
+- (void)showFamiliarFacesWithMaxWidth:(double)width;
+- (void)updateBadgeLayerWithEvents:(id)events inRect:(CGRect)rect;
 - (void)updateFamiliarFaces;
 - (void)updateVideoCacheMarker;
-- (void)updateWithCameraClipEvent:(id)a3 mode:(unint64_t)a4 portraitMode:(BOOL)a5 timeController:(id)a6;
-- (void)videoCacheDidAddVideo:(id)a3;
-- (void)videoCacheDidRemoveVideo:(id)a3;
+- (void)updateWithCameraClipEvent:(id)event mode:(unint64_t)mode portraitMode:(BOOL)portraitMode timeController:(id)controller;
+- (void)videoCacheDidAddVideo:(id)video;
+- (void)videoCacheDidRemoveVideo:(id)video;
 @end
 
 @implementation HUCameraEventRecordingCell
 
-- (HUCameraEventRecordingCell)initWithFrame:(CGRect)a3
+- (HUCameraEventRecordingCell)initWithFrame:(CGRect)frame
 {
   v12.receiver = self;
   v12.super_class = HUCameraEventRecordingCell;
-  v3 = [(HUCameraEventRecordingCell *)&v12 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(HUCameraEventRecordingCell *)&v12 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(HUCameraEventRecordingCell *)v3 posterFramesContainerView];
-    [(HUCameraEventRecordingCell *)v4 addSubview:v5];
+    posterFramesContainerView = [(HUCameraEventRecordingCell *)v3 posterFramesContainerView];
+    [(HUCameraEventRecordingCell *)v4 addSubview:posterFramesContainerView];
 
-    v6 = [(HUCameraEventRecordingCell *)v4 dayBoundaryView];
-    [(HUCameraEventRecordingCell *)v4 addSubview:v6];
+    dayBoundaryView = [(HUCameraEventRecordingCell *)v4 dayBoundaryView];
+    [(HUCameraEventRecordingCell *)v4 addSubview:dayBoundaryView];
 
-    v7 = [(HUCameraEventRecordingCell *)v4 layer];
-    [v7 setCornerRadius:8.0];
+    layer = [(HUCameraEventRecordingCell *)v4 layer];
+    [layer setCornerRadius:8.0];
 
     [(HUCameraEventRecordingCell *)v4 setOpaque:0];
-    v8 = [(HUCameraEventRecordingCell *)v4 familiarFacesView];
-    [(HUCameraEventRecordingCell *)v4 addSubview:v8];
+    familiarFacesView = [(HUCameraEventRecordingCell *)v4 familiarFacesView];
+    [(HUCameraEventRecordingCell *)v4 addSubview:familiarFacesView];
 
     if ([MEMORY[0x277D14500] markCachedVideoAsGreenInTimeline])
     {
-      v9 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v9 addObserver:v4 selector:sel_videoCacheDidAddVideo_ name:*MEMORY[0x277D137A8] object:0];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter addObserver:v4 selector:sel_videoCacheDidAddVideo_ name:*MEMORY[0x277D137A8] object:0];
 
-      v10 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v10 addObserver:v4 selector:sel_videoCacheDidRemoveVideo_ name:*MEMORY[0x277D137B0] object:0];
+      defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter2 addObserver:v4 selector:sel_videoCacheDidRemoveVideo_ name:*MEMORY[0x277D137B0] object:0];
     }
   }
 
@@ -68,8 +68,8 @@
 {
   if ([MEMORY[0x277D14500] markCachedVideoAsGreenInTimeline])
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 removeObserver:self];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter removeObserver:self];
   }
 
   v4.receiver = self;
@@ -77,13 +77,13 @@
   [(HUCameraEventRecordingCell *)&v4 dealloc];
 }
 
-- (void)videoCacheDidAddVideo:(id)a3
+- (void)videoCacheDidAddVideo:(id)video
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:@"uniqueIdentifier"];
-  v6 = [(HUCameraEventRecordingCell *)self recordingEvent];
-  v7 = [v6 uniqueIdentifier];
-  v8 = [v5 isEqual:v7];
+  userInfo = [video userInfo];
+  v5 = [userInfo objectForKeyedSubscript:@"uniqueIdentifier"];
+  recordingEvent = [(HUCameraEventRecordingCell *)self recordingEvent];
+  uniqueIdentifier = [recordingEvent uniqueIdentifier];
+  v8 = [v5 isEqual:uniqueIdentifier];
 
   if (v8)
   {
@@ -102,13 +102,13 @@ void __52__HUCameraEventRecordingCell_videoCacheDidAddVideo___block_invoke(uint6
   [v1 setHidden:0];
 }
 
-- (void)videoCacheDidRemoveVideo:(id)a3
+- (void)videoCacheDidRemoveVideo:(id)video
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:@"uniqueIdentifier"];
-  v6 = [(HUCameraEventRecordingCell *)self recordingEvent];
-  v7 = [v6 uniqueIdentifier];
-  v8 = [v5 isEqual:v7];
+  userInfo = [video userInfo];
+  v5 = [userInfo objectForKeyedSubscript:@"uniqueIdentifier"];
+  recordingEvent = [(HUCameraEventRecordingCell *)self recordingEvent];
+  uniqueIdentifier = [recordingEvent uniqueIdentifier];
+  v8 = [v5 isEqual:uniqueIdentifier];
 
   if (v8)
   {
@@ -136,8 +136,8 @@ void __55__HUCameraEventRecordingCell_videoCacheDidRemoveVideo___block_invoke(ui
     v5 = self->_familiarFacesView;
     self->_familiarFacesView = v4;
 
-    v6 = [(HURecordingEventCellFamiliarFacesView *)self->_familiarFacesView layer];
-    [v6 setOpacity:0.0];
+    layer = [(HURecordingEventCellFamiliarFacesView *)self->_familiarFacesView layer];
+    [layer setOpacity:0.0];
 
     familiarFacesView = self->_familiarFacesView;
   }
@@ -145,19 +145,19 @@ void __55__HUCameraEventRecordingCell_videoCacheDidRemoveVideo___block_invoke(ui
   return familiarFacesView;
 }
 
-- (void)updateBadgeLayerWithEvents:(id)a3 inRect:(CGRect)a4
+- (void)updateBadgeLayerWithEvents:(id)events inRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = a3;
-  v10 = [(HUCameraEventRecordingCell *)self timeController];
-  [v10 posterFrameWidth];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  eventsCopy = events;
+  timeController = [(HUCameraEventRecordingCell *)self timeController];
+  [timeController posterFrameWidth];
   v12 = v11;
 
-  v13 = [(HUCameraEventRecordingCell *)self timeController];
-  [v13 timeScale];
+  timeController2 = [(HUCameraEventRecordingCell *)self timeController];
+  [timeController2 timeScale];
   v15 = v14;
 
   v59[0] = 0;
@@ -180,8 +180,8 @@ void __55__HUCameraEventRecordingCell_videoCacheDidRemoveVideo___block_invoke(ui
   v57[2] = 0x3032000000;
   v57[3] = __Block_byref_object_copy__9;
   v57[4] = __Block_byref_object_dispose__9;
-  v18 = [(HUCameraEventRecordingCell *)self recordingEvent];
-  v58 = [v18 dateOfOccurrence];
+  recordingEvent = [(HUCameraEventRecordingCell *)self recordingEvent];
+  dateOfOccurrence = [recordingEvent dateOfOccurrence];
 
   v55[0] = 0;
   v55[1] = v55;
@@ -202,14 +202,14 @@ void __55__HUCameraEventRecordingCell_videoCacheDidRemoveVideo___block_invoke(ui
   v35 = __64__HUCameraEventRecordingCell_updateBadgeLayerWithEvents_inRect___block_invoke;
   v36 = &unk_277DBC140;
   v40 = v59;
-  v21 = v9;
+  v21 = eventsCopy;
   v46 = v17;
   v37 = v21;
   v41 = v57;
   v44 = v15;
   v22 = v19;
   v38 = v22;
-  v39 = self;
+  selfCopy = self;
   v42 = v55;
   v43 = &v47;
   v45 = v12;
@@ -225,15 +225,15 @@ void __55__HUCameraEventRecordingCell_videoCacheDidRemoveVideo___block_invoke(ui
   v26 = v48[5];
   v27 = v48[6];
   v28 = v48[7];
-  v29 = [(HUCameraEventRecordingCell *)self badgeLayer];
-  [v29 setFrame:{v25, v26, v27, v28}];
+  badgeLayer = [(HUCameraEventRecordingCell *)self badgeLayer];
+  [badgeLayer setFrame:{v25, v26, v27, v28}];
 
-  v30 = [v23 CGImage];
-  v31 = [(HUCameraEventRecordingCell *)self badgeLayer];
-  [v31 setContents:v30];
+  cGImage = [v23 CGImage];
+  badgeLayer2 = [(HUCameraEventRecordingCell *)self badgeLayer];
+  [badgeLayer2 setContents:cGImage];
 
-  v32 = [(HUCameraEventRecordingCell *)self badgeLayer];
-  [v32 setHidden:0];
+  badgeLayer3 = [(HUCameraEventRecordingCell *)self badgeLayer];
+  [badgeLayer3 setHidden:0];
 
   [MEMORY[0x277CD9FF0] commit];
   _Block_object_dispose(&v47, 8);
@@ -357,31 +357,31 @@ LABEL_12:
   }
 }
 
-- (void)_updateBadgeLayerWithImage:(id)a3 inRect:(CGRect)a4
+- (void)_updateBadgeLayerWithImage:(id)image inRect:(CGRect)rect
 {
-  height = a4.size.height;
-  x = a4.origin.x;
-  v7 = a3;
-  [v7 size];
+  height = rect.size.height;
+  x = rect.origin.x;
+  imageCopy = image;
+  [imageCopy size];
   v9 = v8;
-  [v7 size];
+  [imageCopy size];
   v11 = v10;
-  v12 = [(HUCameraEventRecordingCell *)self badgeLayer];
-  [v12 setFrame:{x + -9.0, height * 0.5 + -9.0, v9, v11}];
+  badgeLayer = [(HUCameraEventRecordingCell *)self badgeLayer];
+  [badgeLayer setFrame:{x + -9.0, height * 0.5 + -9.0, v9, v11}];
 
-  v13 = [v7 CGImage];
-  v14 = [(HUCameraEventRecordingCell *)self badgeLayer];
-  [v14 setContents:v13];
+  cGImage = [imageCopy CGImage];
+  badgeLayer2 = [(HUCameraEventRecordingCell *)self badgeLayer];
+  [badgeLayer2 setContents:cGImage];
 
-  v15 = [(HUCameraEventRecordingCell *)self badgeLayer];
-  [v15 setHidden:0];
+  badgeLayer3 = [(HUCameraEventRecordingCell *)self badgeLayer];
+  [badgeLayer3 setHidden:0];
 }
 
-- (id)_badgeImageForSignificantEventReasons:(id)a3
+- (id)_badgeImageForSignificantEventReasons:(id)reasons
 {
-  v3 = a3;
+  reasonsCopy = reasons;
   v4 = [@"CameraEventMarker" mutableCopy];
-  if ([v3 containsObject:&unk_282491358])
+  if ([reasonsCopy containsObject:&unk_282491358])
   {
     v5 = @"_InsufficientAnalysis";
 LABEL_11:
@@ -389,22 +389,22 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if ([v3 containsObject:&unk_282491370])
+  if ([reasonsCopy containsObject:&unk_282491370])
   {
     [v4 appendString:@"_Person"];
   }
 
-  if ([v3 containsObject:&unk_282491388])
+  if ([reasonsCopy containsObject:&unk_282491388])
   {
     [v4 appendString:@"_Animal"];
   }
 
-  if ([v3 containsObject:&unk_2824913A0])
+  if ([reasonsCopy containsObject:&unk_2824913A0])
   {
     [v4 appendString:@"_Vehicle"];
   }
 
-  if ([v3 containsObject:&unk_2824913B8])
+  if ([reasonsCopy containsObject:&unk_2824913B8])
   {
     v5 = @"_Package";
     goto LABEL_11;
@@ -416,19 +416,19 @@ LABEL_12:
   return v6;
 }
 
-- (void)updateWithCameraClipEvent:(id)a3 mode:(unint64_t)a4 portraitMode:(BOOL)a5 timeController:(id)a6
+- (void)updateWithCameraClipEvent:(id)event mode:(unint64_t)mode portraitMode:(BOOL)portraitMode timeController:(id)controller
 {
-  v6 = a5;
-  v10 = a6;
-  v11 = a3;
-  [(HUCameraEventRecordingCell *)self setDisplayMode:a4];
-  [(HUCameraEventRecordingCell *)self setRecordingEvent:v11];
+  portraitModeCopy = portraitMode;
+  controllerCopy = controller;
+  eventCopy = event;
+  [(HUCameraEventRecordingCell *)self setDisplayMode:mode];
+  [(HUCameraEventRecordingCell *)self setRecordingEvent:eventCopy];
 
-  [(HUCameraEventRecordingCell *)self setPortraitMode:v6];
-  [(HUCameraEventRecordingCell *)self setTimeController:v10];
+  [(HUCameraEventRecordingCell *)self setPortraitMode:portraitModeCopy];
+  [(HUCameraEventRecordingCell *)self setTimeController:controllerCopy];
 
-  v12 = [(HUCameraEventRecordingCell *)self recordingEvent];
-  if ([v12 hf_isPlayable])
+  recordingEvent = [(HUCameraEventRecordingCell *)self recordingEvent];
+  if ([recordingEvent hf_isPlayable])
   {
     [objc_opt_class() backgroundColor];
   }
@@ -438,8 +438,8 @@ LABEL_12:
     [MEMORY[0x277D75348] systemRedColor];
   }
   v13 = ;
-  v14 = [(HUCameraEventRecordingCell *)self posterFramesContainerView];
-  [v14 setBackgroundColor:v13];
+  posterFramesContainerView = [(HUCameraEventRecordingCell *)self posterFramesContainerView];
+  [posterFramesContainerView setBackgroundColor:v13];
 
   [(HUCameraEventRecordingCell *)self addPosterFrameViews];
   [(HUCameraEventRecordingCell *)self addDayBoundaryIfNeeded];
@@ -451,8 +451,8 @@ LABEL_12:
 
 - (unint64_t)numberOfFramesNeeded
 {
-  v3 = [(HUCameraEventRecordingCell *)self timeController];
-  [v3 posterFrameWidth];
+  timeController = [(HUCameraEventRecordingCell *)self timeController];
+  [timeController posterFrameWidth];
   v5 = v4;
 
   [(HUCameraEventRecordingCell *)self frame];
@@ -461,30 +461,30 @@ LABEL_12:
 
 - (void)addPosterFrameViews
 {
-  v3 = [(HUCameraEventRecordingCell *)self timeController];
-  [v3 posterFrameWidth];
+  timeController = [(HUCameraEventRecordingCell *)self timeController];
+  [timeController posterFrameWidth];
   v5 = v4;
 
-  v6 = [(HUCameraEventRecordingCell *)self numberOfFramesNeeded];
-  if (v6)
+  numberOfFramesNeeded = [(HUCameraEventRecordingCell *)self numberOfFramesNeeded];
+  if (numberOfFramesNeeded)
   {
-    v7 = v6;
+    v7 = numberOfFramesNeeded;
     v8 = 0.0;
     v9 = 0.0;
     do
     {
       v10 = [HUPosterFrameViewCache dequeuePosterFrameViewForWidth:v5];
       [v10 setFrame:{v9, 0.0, v5, 33.0}];
-      v11 = [(HUCameraEventRecordingCell *)self posterFramesContainerView];
-      [v11 addSubview:v10];
+      posterFramesContainerView = [(HUCameraEventRecordingCell *)self posterFramesContainerView];
+      [posterFramesContainerView addSubview:v10];
 
-      v12 = [(HUCameraEventRecordingCell *)self recordingEvent];
-      [v10 displayImageForClip:v12 atTimeOffset:v8];
+      recordingEvent = [(HUCameraEventRecordingCell *)self recordingEvent];
+      [v10 displayImageForClip:recordingEvent atTimeOffset:v8];
 
       [v10 setShouldShowLineSeparator:--v7 != 0];
       v9 = v5 + v9;
-      v13 = [(HUCameraEventRecordingCell *)self timeController];
-      [v13 timeScale];
+      timeController2 = [(HUCameraEventRecordingCell *)self timeController];
+      [timeController2 timeScale];
       v8 = v8 + v14;
     }
 
@@ -495,8 +495,8 @@ LABEL_12:
 - (void)addDayBoundaryIfNeeded
 {
   v3 = MEMORY[0x277D14500];
-  v4 = [(HUCameraEventRecordingCell *)self recordingEvent];
-  v17 = [v3 percentageOfDurationUntilNextDayForEvent:v4];
+  recordingEvent = [(HUCameraEventRecordingCell *)self recordingEvent];
+  v17 = [v3 percentageOfDurationUntilNextDayForEvent:recordingEvent];
 
   if (v17 || (-[HUCameraEventRecordingCell recordingEvent](self, "recordingEvent"), v5 = objc_claimAutoreleasedReturnValue(), [v5 dateOfOccurrence], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "hf_isMidnight"), v6, v5, v7))
   {
@@ -506,8 +506,8 @@ LABEL_12:
     v11 = v9 * v10;
     [(HUCameraEventRecordingCell *)self bounds];
     v13 = v12 + -14.0;
-    v14 = [(HUCameraEventRecordingCell *)self dayBoundaryView];
-    [v14 setFrame:{v11, 7.0, 1.0, v13}];
+    dayBoundaryView = [(HUCameraEventRecordingCell *)self dayBoundaryView];
+    [dayBoundaryView setFrame:{v11, 7.0, 1.0, v13}];
 
     v15 = 0;
   }
@@ -517,8 +517,8 @@ LABEL_12:
     v15 = 1;
   }
 
-  v16 = [(HUCameraEventRecordingCell *)self dayBoundaryView];
-  [v16 setHidden:v15];
+  dayBoundaryView2 = [(HUCameraEventRecordingCell *)self dayBoundaryView];
+  [dayBoundaryView2 setHidden:v15];
 }
 
 - (void)displayReachabilityErrorUI
@@ -530,14 +530,14 @@ LABEL_12:
 
 - (void)drawEventMarkers
 {
-  v3 = [(HUCameraEventRecordingCell *)self recordingEvent];
+  recordingEvent = [(HUCameraEventRecordingCell *)self recordingEvent];
 
-  if (v3)
+  if (recordingEvent)
   {
-    v6 = [(HUCameraEventRecordingCell *)self recordingEvent];
-    v4 = [v6 hf_sortedSignificantEvents];
+    recordingEvent2 = [(HUCameraEventRecordingCell *)self recordingEvent];
+    hf_sortedSignificantEvents = [recordingEvent2 hf_sortedSignificantEvents];
     [(HUCameraEventRecordingCell *)self bounds];
-    [(HUCameraEventRecordingCell *)self updateBadgeLayerWithEvents:v4 inRect:?];
+    [(HUCameraEventRecordingCell *)self updateBadgeLayerWithEvents:hf_sortedSignificantEvents inRect:?];
   }
 
   else
@@ -557,8 +557,8 @@ LABEL_12:
 {
   if ([MEMORY[0x277D14500] markCachedVideoAsGreenInTimeline])
   {
-    v3 = [(HUCameraEventRecordingCell *)self posterFramesContainerView];
-    [v3 bounds];
+    posterFramesContainerView = [(HUCameraEventRecordingCell *)self posterFramesContainerView];
+    [posterFramesContainerView bounds];
     v5 = v4;
     v7 = v6;
 
@@ -567,85 +567,85 @@ LABEL_12:
     self->_debugMarkerLayer = v8;
 
     [(CALayer *)self->_debugMarkerLayer setFrame:v5, 0.0, v7, 4.0];
-    v10 = [MEMORY[0x277D75348] systemGreenColor];
-    -[CALayer setBackgroundColor:](self->_debugMarkerLayer, "setBackgroundColor:", [v10 CGColor]);
+    systemGreenColor = [MEMORY[0x277D75348] systemGreenColor];
+    -[CALayer setBackgroundColor:](self->_debugMarkerLayer, "setBackgroundColor:", [systemGreenColor CGColor]);
 
     [(CALayer *)self->_debugMarkerLayer setHidden:1];
-    v12 = [(HUCameraEventRecordingCell *)self posterFramesContainerView];
-    v11 = [v12 layer];
-    [v11 addSublayer:self->_debugMarkerLayer];
+    posterFramesContainerView2 = [(HUCameraEventRecordingCell *)self posterFramesContainerView];
+    layer = [posterFramesContainerView2 layer];
+    [layer addSublayer:self->_debugMarkerLayer];
   }
 }
 
 - (void)updateFamiliarFaces
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = [(HUCameraEventRecordingCell *)self recordingEvent];
-  v4 = [v3 hf_allEventsContainingPeopleInClip];
+  recordingEvent = [(HUCameraEventRecordingCell *)self recordingEvent];
+  hf_allEventsContainingPeopleInClip = [recordingEvent hf_allEventsContainingPeopleInClip];
 
   v5 = HFLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    v9 = [(HUCameraEventRecordingCell *)self recordingEvent];
-    v10 = [(HUCameraEventRecordingCell *)self recordingEvent];
-    v11 = [v10 hf_sortedSignificantEvents];
+    recordingEvent2 = [(HUCameraEventRecordingCell *)self recordingEvent];
+    recordingEvent3 = [(HUCameraEventRecordingCell *)self recordingEvent];
+    hf_sortedSignificantEvents = [recordingEvent3 hf_sortedSignificantEvents];
     v12 = 138412802;
-    v13 = v4;
+    v13 = hf_allEventsContainingPeopleInClip;
     v14 = 2112;
-    v15 = v9;
+    v15 = recordingEvent2;
     v16 = 2112;
-    v17 = v11;
+    v17 = hf_sortedSignificantEvents;
     _os_log_debug_impl(&dword_20CEB6000, v5, OS_LOG_TYPE_DEBUG, "PersonEvents:%@ for clip:%@, with events:%@", &v12, 0x20u);
   }
 
-  v6 = [v4 count];
+  v6 = [hf_allEventsContainingPeopleInClip count];
   if (v6)
   {
-    v7 = [(HUCameraEventRecordingCell *)self familiarFacesView];
-    v8 = [(HUCameraEventRecordingCell *)self recordingEvent];
-    [v7 updateWithPersonEvents:v4 forCameraClip:v8];
+    familiarFacesView = [(HUCameraEventRecordingCell *)self familiarFacesView];
+    recordingEvent4 = [(HUCameraEventRecordingCell *)self recordingEvent];
+    [familiarFacesView updateWithPersonEvents:hf_allEventsContainingPeopleInClip forCameraClip:recordingEvent4];
   }
 
   [(HUCameraEventRecordingCell *)self setHasFamiliarFaces:v6 != 0];
 }
 
-- (void)showFamiliarFacesWithMaxWidth:(double)a3
+- (void)showFamiliarFacesWithMaxWidth:(double)width
 {
-  v5 = [(HUCameraEventRecordingCell *)self hasFamiliarFaces];
-  v9 = [(HUCameraEventRecordingCell *)self familiarFacesView];
-  v6 = [v9 layer];
-  v8 = v6;
-  if (v5)
+  hasFamiliarFaces = [(HUCameraEventRecordingCell *)self hasFamiliarFaces];
+  familiarFacesView = [(HUCameraEventRecordingCell *)self familiarFacesView];
+  layer = [familiarFacesView layer];
+  v8 = layer;
+  if (hasFamiliarFaces)
   {
     LODWORD(v7) = 1.0;
-    [v6 setOpacity:v7];
+    [layer setOpacity:v7];
 
-    v9 = [(HUCameraEventRecordingCell *)self familiarFacesView];
-    [v9 resizeWithMaxWidth:a3];
+    familiarFacesView = [(HUCameraEventRecordingCell *)self familiarFacesView];
+    [familiarFacesView resizeWithMaxWidth:width];
   }
 
   else
   {
-    [v6 setOpacity:0.0];
+    [layer setOpacity:0.0];
   }
 }
 
 - (void)hideFamiliarFaces
 {
-  v3 = [(HUCameraEventRecordingCell *)self familiarFacesView];
-  v2 = [v3 layer];
-  [v2 setOpacity:0.0];
+  familiarFacesView = [(HUCameraEventRecordingCell *)self familiarFacesView];
+  layer = [familiarFacesView layer];
+  [layer setOpacity:0.0];
 }
 
 - (void)preparePosterFrameViewsForReuse
 {
-  v3 = [(HUCameraEventRecordingCell *)self posterFramesContainerView];
-  v4 = [v3 subviews];
-  [v4 enumerateObjectsUsingBlock:&__block_literal_global_84];
+  posterFramesContainerView = [(HUCameraEventRecordingCell *)self posterFramesContainerView];
+  subviews = [posterFramesContainerView subviews];
+  [subviews enumerateObjectsUsingBlock:&__block_literal_global_84];
 
-  v6 = [(HUCameraEventRecordingCell *)self posterFramesContainerView];
-  v5 = [v6 subviews];
-  [v5 makeObjectsPerformSelector:sel_removeFromSuperview];
+  posterFramesContainerView2 = [(HUCameraEventRecordingCell *)self posterFramesContainerView];
+  subviews2 = [posterFramesContainerView2 subviews];
+  [subviews2 makeObjectsPerformSelector:sel_removeFromSuperview];
 }
 
 - (void)prepareForReuse
@@ -654,14 +654,14 @@ LABEL_12:
   v6.super_class = HUCameraEventRecordingCell;
   [(HUCameraEventRecordingCell *)&v6 prepareForReuse];
   [(HUCameraEventRecordingCell *)self preparePosterFrameViewsForReuse];
-  v3 = [(HUCameraEventRecordingCell *)self familiarFacesView];
-  v4 = [v3 layer];
-  [v4 setOpacity:0.0];
+  familiarFacesView = [(HUCameraEventRecordingCell *)self familiarFacesView];
+  layer = [familiarFacesView layer];
+  [layer setOpacity:0.0];
 
   [MEMORY[0x277CD9FF0] begin];
   [MEMORY[0x277CD9FF0] setValue:*MEMORY[0x277CBED28] forKey:*MEMORY[0x277CDA918]];
-  v5 = [(HUCameraEventRecordingCell *)self badgeLayer];
-  [v5 setContents:0];
+  badgeLayer = [(HUCameraEventRecordingCell *)self badgeLayer];
+  [badgeLayer setContents:0];
 
   [MEMORY[0x277CD9FF0] commit];
 }
@@ -671,12 +671,12 @@ LABEL_12:
   if ([MEMORY[0x277D14500] markCachedVideoAsGreenInTimeline])
   {
     v3 = MEMORY[0x277D14500];
-    v4 = [(HUCameraEventRecordingCell *)self recordingEvent];
-    v6 = [v3 videoDestinationURLForCameraClip:v4];
+    recordingEvent = [(HUCameraEventRecordingCell *)self recordingEvent];
+    v6 = [v3 videoDestinationURLForCameraClip:recordingEvent];
 
     LODWORD(v3) = [v6 checkResourceIsReachableAndReturnError:0];
-    v5 = [(HUCameraEventRecordingCell *)self debugMarkerLayer];
-    [v5 setHidden:v3 ^ 1];
+    debugMarkerLayer = [(HUCameraEventRecordingCell *)self debugMarkerLayer];
+    [debugMarkerLayer setHidden:v3 ^ 1];
   }
 }
 
@@ -685,20 +685,20 @@ LABEL_12:
   if ([MEMORY[0x277D14CE8] isInternalInstall])
   {
     v3 = MEMORY[0x277CCACA8];
-    v4 = [(HUCameraEventRecordingCell *)self recordingEvent];
-    v5 = [v4 uniqueIdentifier];
-    v6 = [(HUCameraEventRecordingCell *)self recordingEvent];
-    v7 = [v6 dateOfOccurrence];
-    v8 = [v3 stringWithFormat:@"Recording Event UUID:%@ Date:%@", v5, v7];
+    recordingEvent = [(HUCameraEventRecordingCell *)self recordingEvent];
+    uniqueIdentifier = [recordingEvent uniqueIdentifier];
+    recordingEvent2 = [(HUCameraEventRecordingCell *)self recordingEvent];
+    dateOfOccurrence = [recordingEvent2 dateOfOccurrence];
+    hu_accessibilityStringForSignificantEvents = [v3 stringWithFormat:@"Recording Event UUID:%@ Date:%@", uniqueIdentifier, dateOfOccurrence];
   }
 
   else
   {
-    v4 = [(HUCameraEventRecordingCell *)self recordingEvent];
-    v8 = [v4 hu_accessibilityStringForSignificantEvents];
+    recordingEvent = [(HUCameraEventRecordingCell *)self recordingEvent];
+    hu_accessibilityStringForSignificantEvents = [recordingEvent hu_accessibilityStringForSignificantEvents];
   }
 
-  return v8;
+  return hu_accessibilityStringForSignificantEvents;
 }
 
 - (CALayer)badgeLayer
@@ -706,17 +706,17 @@ LABEL_12:
   badgeLayer = self->_badgeLayer;
   if (!badgeLayer)
   {
-    v4 = [MEMORY[0x277CD9ED0] layer];
-    v5 = [MEMORY[0x277D75348] clearColor];
-    -[CALayer setBackgroundColor:](v4, "setBackgroundColor:", [v5 CGColor]);
+    layer = [MEMORY[0x277CD9ED0] layer];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    -[CALayer setBackgroundColor:](layer, "setBackgroundColor:", [clearColor CGColor]);
 
-    [(CALayer *)v4 setCornerRadius:9.0];
-    [(CALayer *)v4 setOpaque:0];
-    v6 = [(HUCameraEventRecordingCell *)self layer];
-    [v6 addSublayer:v4];
+    [(CALayer *)layer setCornerRadius:9.0];
+    [(CALayer *)layer setOpaque:0];
+    layer2 = [(HUCameraEventRecordingCell *)self layer];
+    [layer2 addSublayer:layer];
 
     v7 = self->_badgeLayer;
-    self->_badgeLayer = v4;
+    self->_badgeLayer = layer;
 
     badgeLayer = self->_badgeLayer;
   }
@@ -732,12 +732,12 @@ LABEL_12:
     [(HUCameraEventRecordingCell *)self bounds];
     v6 = [objc_alloc(MEMORY[0x277D75D18]) initWithFrame:{v4, 7.0, v5, 33.0}];
     [(UIView *)v6 setAutoresizingMask:18];
-    v7 = [objc_opt_class() backgroundColor];
-    [(UIView *)v6 setBackgroundColor:v7];
+    backgroundColor = [objc_opt_class() backgroundColor];
+    [(UIView *)v6 setBackgroundColor:backgroundColor];
 
     [(UIView *)v6 setClipsToBounds:1];
-    v8 = [(UIView *)v6 layer];
-    [v8 setCornerRadius:8.0];
+    layer = [(UIView *)v6 layer];
+    [layer setCornerRadius:8.0];
 
     v9 = self->_posterFramesContainerView;
     self->_posterFramesContainerView = v6;
@@ -756,11 +756,11 @@ LABEL_12:
     v4 = objc_alloc(MEMORY[0x277D75D18]);
     [(HUCameraEventRecordingCell *)self bounds];
     v5 = [v4 initWithFrame:?];
-    v6 = [MEMORY[0x277D75348] systemWhiteColor];
-    [(UIView *)v5 setBackgroundColor:v6];
+    systemWhiteColor = [MEMORY[0x277D75348] systemWhiteColor];
+    [(UIView *)v5 setBackgroundColor:systemWhiteColor];
 
-    v7 = [(UIView *)v5 layer];
-    [v7 setCornerRadius:2.0];
+    layer = [(UIView *)v5 layer];
+    [layer setCornerRadius:2.0];
 
     v8 = self->_dayBoundaryView;
     self->_dayBoundaryView = v5;

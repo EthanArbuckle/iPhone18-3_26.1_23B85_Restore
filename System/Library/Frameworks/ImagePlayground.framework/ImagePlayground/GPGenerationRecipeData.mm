@@ -1,29 +1,29 @@
 @interface GPGenerationRecipeData
 - (GPGenerationRecipeData)init;
-- (GPGenerationRecipeData)initWithCoder:(id)a3;
-- (GPGenerationRecipeData)initWithUnderlyingData:(id)a3;
+- (GPGenerationRecipeData)initWithCoder:(id)coder;
+- (GPGenerationRecipeData)initWithUnderlyingData:(id)data;
 - (NSData)underlyingData;
 - (id)getDrawOnImageRecipe;
 - (id)getRecipeInfo;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation GPGenerationRecipeData
 
-- (GPGenerationRecipeData)initWithCoder:(id)a3
+- (GPGenerationRecipeData)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"underlyingData"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"underlyingData"];
 
   v6 = [(GPGenerationRecipeData *)self initWithUnderlyingData:v5];
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(GPGenerationRecipeData *)self underlyingData];
-  [v4 encodeObject:v5 forKey:@"underlyingData"];
+  coderCopy = coder;
+  underlyingData = [(GPGenerationRecipeData *)self underlyingData];
+  [coderCopy encodeObject:underlyingData forKey:@"underlyingData"];
 }
 
 - (NSData)underlyingData
@@ -37,9 +37,9 @@
   return v4;
 }
 
-- (GPGenerationRecipeData)initWithUnderlyingData:(id)a3
+- (GPGenerationRecipeData)initWithUnderlyingData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v5 = sub_1D2AC5F24();
   v7 = v6;
 
@@ -53,7 +53,7 @@
 
 - (id)getRecipeInfo
 {
-  v2 = self;
+  selfCopy = self;
   v3 = GPGenerationRecipeData.getRecipeInfo()();
 
   if (v3)
@@ -71,7 +71,7 @@
 
 - (id)getDrawOnImageRecipe
 {
-  v2 = self;
+  selfCopy = self;
   GPGenerationRecipeData.getDrawOnImageRecipe()(v3);
   v5 = v4;
 

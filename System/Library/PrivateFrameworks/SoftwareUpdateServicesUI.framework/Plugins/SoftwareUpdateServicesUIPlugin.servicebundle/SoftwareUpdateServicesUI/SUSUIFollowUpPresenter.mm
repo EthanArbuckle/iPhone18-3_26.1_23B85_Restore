@@ -1,11 +1,11 @@
 @interface SUSUIFollowUpPresenter
 + (id)sharedInstance;
-- (BOOL)FollowUpWithIdentifierIsPresented:(id)a3;
+- (BOOL)FollowUpWithIdentifierIsPresented:(id)presented;
 - (BOOL)clearAllFollowUps;
-- (BOOL)clearFollowUpWithIdentifiers:(id)a3;
-- (BOOL)presentFollowUp:(id)a3 error:(id *)a4;
+- (BOOL)clearFollowUpWithIdentifiers:(id)identifiers;
+- (BOOL)presentFollowUp:(id)up error:(id *)error;
 - (SUSUIFollowUpPresenter)init;
-- (id)_followUpItemForSUSUIFollowUp:(id)a3;
+- (id)_followUpItemForSUSUIFollowUp:(id)up;
 @end
 
 @implementation SUSUIFollowUpPresenter
@@ -51,28 +51,28 @@
   return v7;
 }
 
-- (BOOL)presentFollowUp:(id)a3 error:(id *)a4
+- (BOOL)presentFollowUp:(id)up error:(id *)error
 {
-  v22 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v20 = a4;
+  objc_storeStrong(location, up);
+  errorCopy = error;
   v15 = 0;
   v16 = &v15;
   v17 = 0x20000000;
   v18 = 32;
   v19 = 0;
-  queue = v22->_queue;
+  queue = selfCopy->_queue;
   v8 = _NSConcreteStackBlock;
   v9 = -1073741824;
   v10 = 0;
   v11 = sub_405D4;
   v12 = &unk_61768;
-  v13 = v22;
+  v13 = selfCopy;
   v14[0] = location[0];
   v14[1] = &v15;
-  v14[2] = v20;
+  v14[2] = errorCopy;
   dispatch_sync(queue, &v8);
   v7 = *(v16 + 24);
   objc_storeStrong(v14, 0);
@@ -82,25 +82,25 @@
   return v7 & 1;
 }
 
-- (BOOL)clearFollowUpWithIdentifiers:(id)a3
+- (BOOL)clearFollowUpWithIdentifiers:(id)identifiers
 {
-  v19 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, identifiers);
   v13 = 0;
   v14 = &v13;
   v15 = 0x20000000;
   v16 = 32;
   v17 = 0;
-  queue = v19->_queue;
+  queue = selfCopy->_queue;
   v6 = _NSConcreteStackBlock;
   v7 = -1073741824;
   v8 = 0;
   v9 = sub_40894;
   v10 = &unk_61790;
   v12[1] = &v13;
-  v11 = v19;
+  v11 = selfCopy;
   v12[0] = location[0];
   dispatch_sync(queue, &v6);
   v5 = *(v14 + 24);
@@ -113,7 +113,7 @@
 
 - (BOOL)clearAllFollowUps
 {
-  v17 = self;
+  selfCopy = self;
   v16 = a2;
   v11 = 0;
   v12 = &v11;
@@ -135,24 +135,24 @@
   return v4 & 1;
 }
 
-- (BOOL)FollowUpWithIdentifierIsPresented:(id)a3
+- (BOOL)FollowUpWithIdentifierIsPresented:(id)presented
 {
-  v19 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, presented);
   v13 = 0;
   v14 = &v13;
   v15 = 0x20000000;
   v16 = 32;
   v17 = 0;
-  queue = v19->_queue;
+  queue = selfCopy->_queue;
   v6 = _NSConcreteStackBlock;
   v7 = -1073741824;
   v8 = 0;
   v9 = sub_40D94;
   v10 = &unk_617B8;
-  v11 = v19;
+  v11 = selfCopy;
   v12[0] = location[0];
   v12[1] = &v13;
   dispatch_sync(queue, &v6);
@@ -164,68 +164,68 @@
   return v5 & 1;
 }
 
-- (id)_followUpItemForSUSUIFollowUp:(id)a3
+- (id)_followUpItemForSUSUIFollowUp:(id)up
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, up);
   if (location[0])
   {
     v26 = objc_alloc_init(FLFollowUpItem);
-    v14 = [location[0] title];
+    title = [location[0] title];
     [v26 setTitle:?];
 
-    v15 = [location[0] informativeText];
+    informativeText = [location[0] informativeText];
     [v26 setInformativeText:?];
 
-    v16 = [location[0] informativeFooterText];
+    informativeFooterText = [location[0] informativeFooterText];
     [v26 setInformativeFooterText:?];
 
-    v17 = [objc_opt_class() uniqueIdentifier];
+    uniqueIdentifier = [objc_opt_class() uniqueIdentifier];
     [v26 setUniqueIdentifier:?];
 
-    v18 = [location[0] groupIdentifier];
+    groupIdentifier = [location[0] groupIdentifier];
     [v26 setGroupIdentifier:?];
 
-    v19 = [location[0] targetBundleIdentifier];
+    targetBundleIdentifier = [location[0] targetBundleIdentifier];
     [v26 setTargetBundleIdentifier:?];
 
-    v20 = [location[0] userInfo];
+    userInfo = [location[0] userInfo];
     [v26 setUserInfo:?];
 
     [v26 setDisplayStyle:{objc_msgSend(location[0], "displayStyle")}];
-    v21 = [location[0] actions];
+    actions = [location[0] actions];
     [v26 setActions:?];
 
     if ([location[0] allowNotification])
     {
       v25 = objc_alloc_init(FLFollowUpNotification);
-      v8 = [location[0] notificationTitle];
+      notificationTitle = [location[0] notificationTitle];
       [v25 setTitle:?];
 
-      v9 = [location[0] notificationInformativeText];
+      notificationInformativeText = [location[0] notificationInformativeText];
       [v25 setInformativeText:?];
 
-      v10 = [location[0] notificationUnlockActionLabel];
+      notificationUnlockActionLabel = [location[0] notificationUnlockActionLabel];
       [v25 setUnlockActionLabel:?];
 
       [location[0] notificationFrequency];
       [v25 setFrequency:?];
-      v11 = [location[0] notificationActivateAction];
+      notificationActivateAction = [location[0] notificationActivateAction];
       [v25 setActivateAction:?];
 
-      v12 = [location[0] notificationClearAction];
+      notificationClearAction = [location[0] notificationClearAction];
       [v25 setClearAction:?];
 
-      v13 = [location[0] notificationOptions];
-      if (v13)
+      notificationOptions = [location[0] notificationOptions];
+      if (notificationOptions)
       {
         v5 = +[FLFollowUpNotification defaultOptions];
         v24 = [NSMutableSet setWithSet:?];
 
         v6 = v24;
-        v7 = [location[0] notificationOptions];
+        notificationOptions2 = [location[0] notificationOptions];
         [(NSMutableSet *)v6 addObjectsFromArray:?];
 
         [v25 setOptions:v24];

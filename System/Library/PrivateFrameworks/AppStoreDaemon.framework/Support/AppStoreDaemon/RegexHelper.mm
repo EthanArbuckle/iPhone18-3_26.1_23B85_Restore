@@ -1,17 +1,17 @@
 @interface RegexHelper
-+ (id)matchURL:(id)a3 toPatterns:(id)a4;
++ (id)matchURL:(id)l toPatterns:(id)patterns;
 @end
 
 @implementation RegexHelper
 
-+ (id)matchURL:(id)a3 toPatterns:(id)a4
++ (id)matchURL:(id)l toPatterns:(id)patterns
 {
-  v18 = a3;
+  lCopy = l;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  obj = a4;
+  obj = patterns;
   v5 = [obj countByEnumeratingWithState:&v21 objects:v27 count:16];
   if (v5)
   {
@@ -44,9 +44,9 @@
 
         else
         {
-          v13 = [v18 absoluteString];
-          v14 = [v18 absoluteString];
-          v15 = [v10 numberOfMatchesInString:v13 options:2 range:{0, objc_msgSend(v14, "length")}];
+          absoluteString = [lCopy absoluteString];
+          absoluteString2 = [lCopy absoluteString];
+          v15 = [v10 numberOfMatchesInString:absoluteString options:2 range:{0, objc_msgSend(absoluteString2, "length")}];
 
           if (v15)
           {

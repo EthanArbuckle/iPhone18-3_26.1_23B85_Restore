@@ -1,9 +1,9 @@
 @interface STKAlertSessionEventQueue
 - (STKAlertSessionEventQueue)init;
-- (id)acquireEventQueueHaltingAssertionForReason:(id)a3;
+- (id)acquireEventQueueHaltingAssertionForReason:(id)reason;
 - (void)_queue_dequeueEventsIfPossible;
-- (void)_queue_enqueueEvent:(id)a3;
-- (void)enqueue:(id)a3;
+- (void)_queue_enqueueEvent:(id)event;
+- (void)enqueue:(id)enqueue;
 @end
 
 @implementation STKAlertSessionEventQueue
@@ -23,17 +23,17 @@
   return v2;
 }
 
-- (id)acquireEventQueueHaltingAssertionForReason:(id)a3
+- (id)acquireEventQueueHaltingAssertionForReason:(id)reason
 {
   v4 = MEMORY[0x277CF0CE8];
-  v5 = a3;
+  reasonCopy = reason;
   v6 = [v4 alloc];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __72__STKAlertSessionEventQueue_acquireEventQueueHaltingAssertionForReason___block_invoke;
   v15[3] = &unk_279B4C670;
   v15[4] = self;
-  v7 = [v6 initWithIdentifier:@"stk.telephony.eventQueueHaltingAssertion" forReason:v5 invalidationBlock:v15];
+  v7 = [v6 initWithIdentifier:@"stk.telephony.eventQueueHaltingAssertion" forReason:reasonCopy invalidationBlock:v15];
 
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -97,43 +97,43 @@ uint64_t __72__STKAlertSessionEventQueue_acquireEventQueueHaltingAssertionForRea
   return [v2 addObject:v6];
 }
 
-- (void)enqueue:(id)a3
+- (void)enqueue:(id)enqueue
 {
-  v4 = a3;
+  enqueueCopy = enqueue;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __37__STKAlertSessionEventQueue_enqueue___block_invoke;
   v7[3] = &unk_279B4C698;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = enqueueCopy;
+  v6 = enqueueCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)_queue_enqueueEvent:(id)a3
+- (void)_queue_enqueueEvent:(id)event
 {
-  v10 = a3;
+  eventCopy = event;
   queue = self->_queue;
   BSDispatchQueueAssert();
-  v5 = v10;
-  if (v10)
+  v5 = eventCopy;
+  if (eventCopy)
   {
     queue_eventQueue = self->_queue_eventQueue;
     if (!queue_eventQueue)
     {
-      v7 = [MEMORY[0x277CBEB18] array];
+      array = [MEMORY[0x277CBEB18] array];
       v8 = self->_queue_eventQueue;
-      self->_queue_eventQueue = v7;
+      self->_queue_eventQueue = array;
 
       queue_eventQueue = self->_queue_eventQueue;
     }
 
-    v9 = MEMORY[0x266731D40](v10);
+    v9 = MEMORY[0x266731D40](eventCopy);
     [(NSMutableArray *)queue_eventQueue addObject:v9];
 
     [(STKAlertSessionEventQueue *)self _queue_dequeueEventsIfPossible];
-    v5 = v10;
+    v5 = eventCopy;
   }
 }
 

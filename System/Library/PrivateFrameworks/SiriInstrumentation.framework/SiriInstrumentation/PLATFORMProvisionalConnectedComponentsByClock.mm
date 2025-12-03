@@ -1,25 +1,25 @@
 @interface PLATFORMProvisionalConnectedComponentsByClock
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (PLATFORMProvisionalConnectedComponentsByClock)initWithDictionary:(id)a3;
-- (PLATFORMProvisionalConnectedComponentsByClock)initWithJSON:(id)a3;
+- (PLATFORMProvisionalConnectedComponentsByClock)initWithDictionary:(id)dictionary;
+- (PLATFORMProvisionalConnectedComponentsByClock)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
-- (void)addConnectedComponents:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addConnectedComponents:(id)components;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PLATFORMProvisionalConnectedComponentsByClock
 
-- (PLATFORMProvisionalConnectedComponentsByClock)initWithDictionary:(id)a3
+- (PLATFORMProvisionalConnectedComponentsByClock)initWithDictionary:(id)dictionary
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v21.receiver = self;
   v21.super_class = PLATFORMProvisionalConnectedComponentsByClock;
   v5 = [(PLATFORMProvisionalConnectedComponentsByClock *)&v21 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"connectedComponents"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"connectedComponents"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -69,30 +69,30 @@
   return v5;
 }
 
-- (PLATFORMProvisionalConnectedComponentsByClock)initWithJSON:(id)a3
+- (PLATFORMProvisionalConnectedComponentsByClock)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(PLATFORMProvisionalConnectedComponentsByClock *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(PLATFORMProvisionalConnectedComponentsByClock *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(PLATFORMProvisionalConnectedComponentsByClock *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -106,10 +106,10 @@
 - (id)dictionaryRepresentation
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSArray *)self->_connectedComponents count])
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
@@ -129,16 +129,16 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v13 + 1) + 8 * i) dictionaryRepresentation];
-          if (v10)
+          dictionaryRepresentation = [*(*(&v13 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation)
           {
-            [v4 addObject:v10];
+            [array addObject:dictionaryRepresentation];
           }
 
           else
           {
-            v11 = [MEMORY[0x1E695DFB0] null];
-            [v4 addObject:v11];
+            null = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null];
           }
         }
 
@@ -148,26 +148,26 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKeyedSubscript:@"connectedComponents"];
+    [dictionary setObject:array forKeyedSubscript:@"connectedComponents"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3, v13];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary, v13];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(PLATFORMProvisionalConnectedComponentsByClock *)self connectedComponents];
-    v6 = [v4 connectedComponents];
-    v7 = v6;
-    if ((v5 != 0) != (v6 == 0))
+    connectedComponents = [(PLATFORMProvisionalConnectedComponentsByClock *)self connectedComponents];
+    connectedComponents2 = [equalCopy connectedComponents];
+    v7 = connectedComponents2;
+    if ((connectedComponents != 0) != (connectedComponents2 == 0))
     {
-      v8 = [(PLATFORMProvisionalConnectedComponentsByClock *)self connectedComponents];
-      if (!v8)
+      connectedComponents3 = [(PLATFORMProvisionalConnectedComponentsByClock *)self connectedComponents];
+      if (!connectedComponents3)
       {
 
 LABEL_10:
@@ -175,10 +175,10 @@ LABEL_10:
         goto LABEL_8;
       }
 
-      v9 = v8;
-      v10 = [(PLATFORMProvisionalConnectedComponentsByClock *)self connectedComponents];
-      v11 = [v4 connectedComponents];
-      v12 = [v10 isEqual:v11];
+      v9 = connectedComponents3;
+      connectedComponents4 = [(PLATFORMProvisionalConnectedComponentsByClock *)self connectedComponents];
+      connectedComponents5 = [equalCopy connectedComponents];
+      v12 = [connectedComponents4 isEqual:connectedComponents5];
 
       if (v12)
       {
@@ -197,10 +197,10 @@ LABEL_8:
   return v13;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -233,22 +233,22 @@ LABEL_8:
   }
 }
 
-- (void)addConnectedComponents:(id)a3
+- (void)addConnectedComponents:(id)components
 {
-  v4 = a3;
+  componentsCopy = components;
   connectedComponents = self->_connectedComponents;
-  v8 = v4;
+  v8 = componentsCopy;
   if (!connectedComponents)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_connectedComponents;
-    self->_connectedComponents = v6;
+    self->_connectedComponents = array;
 
-    v4 = v8;
+    componentsCopy = v8;
     connectedComponents = self->_connectedComponents;
   }
 
-  [(NSArray *)connectedComponents addObject:v4];
+  [(NSArray *)connectedComponents addObject:componentsCopy];
 }
 
 @end

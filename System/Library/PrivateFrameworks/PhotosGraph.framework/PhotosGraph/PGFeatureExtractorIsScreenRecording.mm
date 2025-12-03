@@ -1,18 +1,18 @@
 @interface PGFeatureExtractorIsScreenRecording
 - (id)featureNames;
-- (id)floatVectorWithEntity:(id)a3 error:(id *)a4;
+- (id)floatVectorWithEntity:(id)entity error:(id *)error;
 @end
 
 @implementation PGFeatureExtractorIsScreenRecording
 
-- (id)floatVectorWithEntity:(id)a3 error:(id *)a4
+- (id)floatVectorWithEntity:(id)entity error:(id *)error
 {
-  v5 = [a3 isScreenRecording];
+  isScreenRecording = [entity isScreenRecording];
   v6 = MEMORY[0x277D22C40];
-  v7 = [(PGFeatureExtractorIsScreenRecording *)self featureLength];
-  *&v8 = v5;
+  featureLength = [(PGFeatureExtractorIsScreenRecording *)self featureLength];
+  *&v8 = isScreenRecording;
 
-  return [v6 vectorRepeatingFloat:v7 count:v8];
+  return [v6 vectorRepeatingFloat:featureLength count:v8];
 }
 
 - (id)featureNames

@@ -1,25 +1,25 @@
 @interface SBUIContinuityAccessorySceneHostComponent
-- (void)sceneDidInvalidate:(id)a3 withContext:(id)a4;
-- (void)setScene:(id)a3;
+- (void)sceneDidInvalidate:(id)invalidate withContext:(id)context;
+- (void)setScene:(id)scene;
 @end
 
 @implementation SBUIContinuityAccessorySceneHostComponent
 
-- (void)setScene:(id)a3
+- (void)setScene:(id)scene
 {
   v8.receiver = self;
   v8.super_class = SBUIContinuityAccessorySceneHostComponent;
-  [(FBSSceneComponent *)&v8 setScene:a3];
+  [(FBSSceneComponent *)&v8 setScene:scene];
   v4 = +[SBUIAccessorySceneManager sharedInstance];
-  v5 = [(FBSSceneComponent *)self hostScene];
-  v6 = [v4 registerAccessoryScene:v5];
+  hostScene = [(FBSSceneComponent *)self hostScene];
+  v6 = [v4 registerAccessoryScene:hostScene];
   sceneRegistration = self->_sceneRegistration;
   self->_sceneRegistration = v6;
 }
 
-- (void)sceneDidInvalidate:(id)a3 withContext:(id)a4
+- (void)sceneDidInvalidate:(id)invalidate withContext:(id)context
 {
-  [(BSInvalidatable *)self->_sceneRegistration invalidate:a3];
+  [(BSInvalidatable *)self->_sceneRegistration invalidate:invalidate];
   sceneRegistration = self->_sceneRegistration;
   self->_sceneRegistration = 0;
 }

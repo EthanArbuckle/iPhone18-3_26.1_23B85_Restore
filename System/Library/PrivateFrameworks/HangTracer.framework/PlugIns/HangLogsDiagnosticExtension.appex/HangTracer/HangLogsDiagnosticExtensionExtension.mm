@@ -1,10 +1,10 @@
 @interface HangLogsDiagnosticExtensionExtension
-- (id)attachmentsForParameters:(id)a3;
+- (id)attachmentsForParameters:(id)parameters;
 @end
 
 @implementation HangLogsDiagnosticExtensionExtension
 
-- (id)attachmentsForParameters:(id)a3
+- (id)attachmentsForParameters:(id)parameters
 {
   v74 = 0;
   v3 = +[NSFileManager defaultManager];

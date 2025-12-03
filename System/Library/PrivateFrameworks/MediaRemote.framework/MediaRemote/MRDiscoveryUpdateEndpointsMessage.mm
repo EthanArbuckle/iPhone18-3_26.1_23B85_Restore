@@ -1,26 +1,26 @@
 @interface MRDiscoveryUpdateEndpointsMessage
-- (MRDiscoveryUpdateEndpointsMessage)initWithEndpoints:(id)a3 configuration:(id)a4;
-- (MRDiscoveryUpdateEndpointsMessage)initWithUnderlyingCodableMessage:(id)a3 error:(id)a4;
+- (MRDiscoveryUpdateEndpointsMessage)initWithEndpoints:(id)endpoints configuration:(id)configuration;
+- (MRDiscoveryUpdateEndpointsMessage)initWithUnderlyingCodableMessage:(id)message error:(id)error;
 @end
 
 @implementation MRDiscoveryUpdateEndpointsMessage
 
-- (MRDiscoveryUpdateEndpointsMessage)initWithUnderlyingCodableMessage:(id)a3 error:(id)a4
+- (MRDiscoveryUpdateEndpointsMessage)initWithUnderlyingCodableMessage:(id)message error:(id)error
 {
-  v6 = a3;
+  messageCopy = message;
   v16.receiver = self;
   v16.super_class = MRDiscoveryUpdateEndpointsMessage;
-  v7 = [(MRProtocolMessage *)&v16 initWithUnderlyingCodableMessage:v6 error:a4];
+  v7 = [(MRProtocolMessage *)&v16 initWithUnderlyingCodableMessage:messageCopy error:error];
   if (v7)
   {
     v8 = [MRAVRoutingDiscoverySessionConfiguration alloc];
-    v9 = [v6 configuration];
-    v10 = [(MRAVRoutingDiscoverySessionConfiguration *)v8 initWithProtobuf:v9];
+    configuration = [messageCopy configuration];
+    v10 = [(MRAVRoutingDiscoverySessionConfiguration *)v8 initWithProtobuf:configuration];
     configuration = v7->_configuration;
     v7->_configuration = v10;
 
-    v12 = [v6 endpoints];
-    v13 = [v12 mr_map:&__block_literal_global_33];
+    endpoints = [messageCopy endpoints];
+    v13 = [endpoints mr_map:&__block_literal_global_33];
     endpoints = v7->_endpoints;
     v7->_endpoints = v13;
   }
@@ -36,30 +36,30 @@ MRAVDistantEndpoint *__76__MRDiscoveryUpdateEndpointsMessage_initWithUnderlyingC
   return v3;
 }
 
-- (MRDiscoveryUpdateEndpointsMessage)initWithEndpoints:(id)a3 configuration:(id)a4
+- (MRDiscoveryUpdateEndpointsMessage)initWithEndpoints:(id)endpoints configuration:(id)configuration
 {
-  v6 = a3;
-  v7 = a4;
+  endpointsCopy = endpoints;
+  configurationCopy = configuration;
   v18.receiver = self;
   v18.super_class = MRDiscoveryUpdateEndpointsMessage;
   v8 = [(MRProtocolMessage *)&v18 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [endpointsCopy copy];
     endpoints = v8->_endpoints;
     v8->_endpoints = v9;
 
-    v11 = [v7 copy];
+    v11 = [configurationCopy copy];
     configuration = v8->_configuration;
     v8->_configuration = v11;
 
     v13 = objc_alloc_init(_MRDiscoveryUpdateEndpointsProtobufMessage);
-    v14 = [v6 mr_map:&__block_literal_global_29];
+    v14 = [endpointsCopy mr_map:&__block_literal_global_29];
     v15 = [v14 mutableCopy];
     [(_MRDiscoveryUpdateEndpointsProtobufMessage *)v13 setEndpoints:v15];
 
-    v16 = [v7 protobuf];
-    [(_MRDiscoveryUpdateEndpointsProtobufMessage *)v13 setConfiguration:v16];
+    protobuf = [configurationCopy protobuf];
+    [(_MRDiscoveryUpdateEndpointsProtobufMessage *)v13 setConfiguration:protobuf];
 
     [(MRProtocolMessage *)v8 setUnderlyingCodableMessage:v13];
   }

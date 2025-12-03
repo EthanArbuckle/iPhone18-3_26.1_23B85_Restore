@@ -1,18 +1,18 @@
 @interface CTXPCDeleteZoneRequest
 + (id)allowedClassesForArguments;
-- (CTXPCDeleteZoneRequest)initWithZone:(id)a3;
+- (CTXPCDeleteZoneRequest)initWithZone:(id)zone;
 - (id)zoneID;
-- (void)performRequestWithHandler:(id)a3 completionHandler:(id)a4;
+- (void)performRequestWithHandler:(id)handler completionHandler:(id)completionHandler;
 @end
 
 @implementation CTXPCDeleteZoneRequest
 
-- (CTXPCDeleteZoneRequest)initWithZone:(id)a3
+- (CTXPCDeleteZoneRequest)initWithZone:(id)zone
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  zoneCopy = zone;
   v10 = @"zone";
-  v11[0] = v4;
+  v11[0] = zoneCopy;
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:&v10 count:1];
   v9.receiver = self;
   v9.super_class = CTXPCDeleteZoneRequest;
@@ -22,18 +22,18 @@
   return v6;
 }
 
-- (void)performRequestWithHandler:(id)a3 completionHandler:(id)a4
+- (void)performRequestWithHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CTXPCDeleteZoneRequest *)self zoneID];
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
+  zoneID = [(CTXPCDeleteZoneRequest *)self zoneID];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __70__CTXPCDeleteZoneRequest_performRequestWithHandler_completionHandler___block_invoke;
   v10[3] = &unk_1E6A45E38;
-  v9 = v7;
+  v9 = completionHandlerCopy;
   v11 = v9;
-  [v6 deleteZone:v8 completion:v10];
+  [handlerCopy deleteZone:zoneID completion:v10];
 }
 
 void __70__CTXPCDeleteZoneRequest_performRequestWithHandler_completionHandler___block_invoke(uint64_t a1, uint64_t a2)
@@ -45,7 +45,7 @@ void __70__CTXPCDeleteZoneRequest_performRequestWithHandler_completionHandler___
 
 + (id)allowedClassesForArguments
 {
-  v5.receiver = a1;
+  v5.receiver = self;
   v5.super_class = &OBJC_METACLASS___CTXPCDeleteZoneRequest;
   v2 = objc_msgSendSuper2(&v5, sel_allowedClassesForArguments);
   v3 = [v2 setByAddingObject:objc_opt_class()];
@@ -55,8 +55,8 @@ void __70__CTXPCDeleteZoneRequest_performRequestWithHandler_completionHandler___
 
 - (id)zoneID
 {
-  v2 = [(CTXPCMessage *)self namedArguments];
-  v3 = [v2 objectForKey:@"zone"];
+  namedArguments = [(CTXPCMessage *)self namedArguments];
+  v3 = [namedArguments objectForKey:@"zone"];
   v4 = CTThrowingCastIfClass<NSString>(v3);
 
   return v4;

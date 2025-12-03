@@ -1,8 +1,8 @@
 @interface SBAmbientMotionDetectionWakeAttributeMonitor
 + (SBAmbientMotionDetectionWakeAttributeMonitor)sharedInstance;
 - (SBAmbientMotionDetectionWakeAttributeMonitor)init;
-- (void)_setShouldEnableMotionDetectionWake:(BOOL)a3;
-- (void)addObserver:(id)a3;
+- (void)_setShouldEnableMotionDetectionWake:(BOOL)wake;
+- (void)addObserver:(id)observer;
 @end
 
 @implementation SBAmbientMotionDetectionWakeAttributeMonitor
@@ -33,45 +33,45 @@ void __62__SBAmbientMotionDetectionWakeAttributeMonitor_sharedInstance__block_in
   v2 = [(SBAmbientMotionDetectionWakeAttributeMonitor *)&v7 init];
   if (v2)
   {
-    v3 = [SBApp blshService];
-    v4 = [v3 localAssertionService];
+    blshService = [SBApp blshService];
+    localAssertionService = [blshService localAssertionService];
 
-    v5 = [(BLSHLocalAssertionAttributeHandler *)SBEnableMotionDetectionWakeAttributeHandler registerHandlerForService:v4];
+    v5 = [(BLSHLocalAssertionAttributeHandler *)SBEnableMotionDetectionWakeAttributeHandler registerHandlerForService:localAssertionService];
   }
 
   return v2;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   observers = self->_observers;
-  v8 = v4;
+  v8 = observerCopy;
   if (!observers)
   {
-    v6 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     v7 = self->_observers;
-    self->_observers = v6;
+    self->_observers = weakObjectsHashTable;
 
-    v4 = v8;
+    observerCopy = v8;
     observers = self->_observers;
   }
 
-  [(NSHashTable *)observers addObject:v4];
+  [(NSHashTable *)observers addObject:observerCopy];
 }
 
-- (void)_setShouldEnableMotionDetectionWake:(BOOL)a3
+- (void)_setShouldEnableMotionDetectionWake:(BOOL)wake
 {
   v14 = *MEMORY[0x277D85DE8];
-  if (self->_shouldEnableMotionDetectionWake != a3)
+  if (self->_shouldEnableMotionDetectionWake != wake)
   {
-    self->_shouldEnableMotionDetectionWake = a3;
+    self->_shouldEnableMotionDetectionWake = wake;
     v9 = 0u;
     v10 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v4 = [(NSHashTable *)self->_observers allObjects];
-    v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+    allObjects = [(NSHashTable *)self->_observers allObjects];
+    v5 = [allObjects countByEnumeratingWithState:&v9 objects:v13 count:16];
     if (v5)
     {
       v6 = v5;
@@ -83,14 +83,14 @@ void __62__SBAmbientMotionDetectionWakeAttributeMonitor_sharedInstance__block_in
         {
           if (*v10 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(allObjects);
           }
 
           [*(*(&v9 + 1) + 8 * v8++) motionDetectionWakeAttributeMonitor:self didUpdateShouldEnableMotionDetectionWake:self->_shouldEnableMotionDetectionWake];
         }
 
         while (v6 != v8);
-        v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+        v6 = [allObjects countByEnumeratingWithState:&v9 objects:v13 count:16];
       }
 
       while (v6);

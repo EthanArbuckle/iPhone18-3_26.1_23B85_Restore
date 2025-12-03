@@ -1,53 +1,53 @@
 @interface DKCanonicalVersion
-+ (DKCanonicalVersion)canonicalVersionWithString:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToCanonicalVersion:(id)a3;
-- (BOOL)isNewerThan:(id)a3;
-- (DKCanonicalVersion)initWithCoder:(id)a3;
-- (DKCanonicalVersion)initWithString:(id)a3;
-- (id)_parseParts:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (DKCanonicalVersion)canonicalVersionWithString:(id)string;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToCanonicalVersion:(id)version;
+- (BOOL)isNewerThan:(id)than;
+- (DKCanonicalVersion)initWithCoder:(id)coder;
+- (DKCanonicalVersion)initWithString:(id)string;
+- (id)_parseParts:(id)parts;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DKCanonicalVersion
 
-+ (DKCanonicalVersion)canonicalVersionWithString:(id)a3
++ (DKCanonicalVersion)canonicalVersionWithString:(id)string
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithString:v4];
+  stringCopy = string;
+  v5 = [[self alloc] initWithString:stringCopy];
 
   return v5;
 }
 
-- (DKCanonicalVersion)initWithString:(id)a3
+- (DKCanonicalVersion)initWithString:(id)string
 {
-  v5 = a3;
+  stringCopy = string;
   v11.receiver = self;
   v11.super_class = DKCanonicalVersion;
   v6 = [(DKCanonicalVersion *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    v8 = [(DKCanonicalVersion *)v6 _parseParts:v5];
+    v8 = [(DKCanonicalVersion *)v6 _parseParts:stringCopy];
     parts = v7->_parts;
     v7->_parts = v8;
 
-    objc_storeStrong(&v7->_string, a3);
+    objc_storeStrong(&v7->_string, string);
   }
 
   return v7;
 }
 
-- (BOOL)isNewerThan:(id)a3
+- (BOOL)isNewerThan:(id)than
 {
-  v4 = a3;
-  v5 = [(DKCanonicalVersion *)self parts];
-  v6 = [v5 count];
+  thanCopy = than;
+  parts = [(DKCanonicalVersion *)self parts];
+  v6 = [parts count];
 
-  v7 = [v4 parts];
-  v8 = [v7 count];
+  parts2 = [thanCopy parts];
+  v8 = [parts2 count];
 
   if (v6 >= v8)
   {
@@ -65,10 +65,10 @@
     v11 = 1;
     do
     {
-      v12 = [(DKCanonicalVersion *)self parts];
-      v13 = [v12 objectAtIndexedSubscript:v10];
-      v14 = [v4 parts];
-      v15 = [v14 objectAtIndexedSubscript:v10];
+      parts3 = [(DKCanonicalVersion *)self parts];
+      v13 = [parts3 objectAtIndexedSubscript:v10];
+      parts4 = [thanCopy parts];
+      v15 = [parts4 objectAtIndexedSubscript:v10];
       v16 = [v13 compare:v15];
 
       if (v16 == 1)
@@ -77,10 +77,10 @@
         goto LABEL_12;
       }
 
-      v17 = [(DKCanonicalVersion *)self parts];
-      v18 = [v17 objectAtIndexedSubscript:v10];
-      v19 = [v4 parts];
-      v20 = [v19 objectAtIndexedSubscript:v10];
+      parts5 = [(DKCanonicalVersion *)self parts];
+      v18 = [parts5 objectAtIndexedSubscript:v10];
+      parts6 = [thanCopy parts];
+      v20 = [parts6 objectAtIndexedSubscript:v10];
       v21 = [v18 isEqual:v20];
 
       v11 &= v21;
@@ -99,10 +99,10 @@
   else
   {
 LABEL_9:
-    v22 = [(DKCanonicalVersion *)self parts];
-    v23 = [v22 count];
-    v24 = [v4 parts];
-    v25 = v23 > [v24 count];
+    parts7 = [(DKCanonicalVersion *)self parts];
+    v23 = [parts7 count];
+    parts8 = [thanCopy parts];
+    v25 = v23 > [parts8 count];
   }
 
 LABEL_12:
@@ -110,9 +110,9 @@ LABEL_12:
   return v25;
 }
 
-- (DKCanonicalVersion)initWithCoder:(id)a3
+- (DKCanonicalVersion)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = DKCanonicalVersion;
   v5 = [(DKCanonicalVersion *)&v14 init];
@@ -121,11 +121,11 @@ LABEL_12:
     v6 = MEMORY[0x277CBEB98];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"parts"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"parts"];
     parts = v5->_parts;
     v5->_parts = v9;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"string"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"string"];
     string = v5->_string;
     v5->_string = v11;
   }
@@ -133,24 +133,24 @@ LABEL_12:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(DKCanonicalVersion *)self parts];
-  [v4 encodeObject:v5 forKey:@"parts"];
+  coderCopy = coder;
+  parts = [(DKCanonicalVersion *)self parts];
+  [coderCopy encodeObject:parts forKey:@"parts"];
 
-  v6 = [(DKCanonicalVersion *)self string];
-  [v4 encodeObject:v6 forKey:@"string"];
+  string = [(DKCanonicalVersion *)self string];
+  [coderCopy encodeObject:string forKey:@"string"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSArray *)self->_parts copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSArray *)self->_parts copyWithZone:zone];
   v7 = v5[2];
   v5[2] = v6;
 
-  v8 = [(NSString *)self->_string copyWithZone:a3];
+  v8 = [(NSString *)self->_string copyWithZone:zone];
   v9 = v5[1];
   v5[1] = v8;
 
@@ -159,44 +159,44 @@ LABEL_12:
 
 - (unint64_t)hash
 {
-  v2 = [(DKCanonicalVersion *)self parts];
-  v3 = [v2 hash];
+  parts = [(DKCanonicalVersion *)self parts];
+  v3 = [parts hash];
 
   return v3;
 }
 
-- (BOOL)isEqualToCanonicalVersion:(id)a3
+- (BOOL)isEqualToCanonicalVersion:(id)version
 {
-  v4 = a3;
-  v5 = [(DKCanonicalVersion *)self parts];
-  v6 = [v4 parts];
+  versionCopy = version;
+  parts = [(DKCanonicalVersion *)self parts];
+  parts2 = [versionCopy parts];
 
-  LOBYTE(v4) = [v5 isEqual:v6];
-  return v4;
+  LOBYTE(versionCopy) = [parts isEqual:parts2];
+  return versionCopy;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = self == v4;
+  equalCopy = equal;
+  v5 = self == equalCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(DKCanonicalVersion *)self isEqualToCanonicalVersion:v4];
+    v5 = [(DKCanonicalVersion *)self isEqualToCanonicalVersion:equalCopy];
   }
 
   return v5;
 }
 
-- (id)_parseParts:(id)a3
+- (id)_parseParts:(id)parts
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB18] array];
-  if (v3)
+  partsCopy = parts;
+  array = [MEMORY[0x277CBEB18] array];
+  if (partsCopy)
   {
     v5 = objc_autoreleasePoolPush();
-    v6 = [v3 componentsSeparatedByString:@"."];
+    v6 = [partsCopy componentsSeparatedByString:@"."];
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
@@ -216,7 +216,7 @@ LABEL_12:
           }
 
           v11 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(*(*(&v14 + 1) + 8 * i), "integerValue")}];
-          [v4 addObject:v11];
+          [array addObject:v11];
         }
 
         v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -230,7 +230,7 @@ LABEL_12:
 
   v12 = *MEMORY[0x277D85DE8];
 
-  return v4;
+  return array;
 }
 
 @end

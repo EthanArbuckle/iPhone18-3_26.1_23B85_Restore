@@ -1,34 +1,34 @@
 @interface BYBackupMetadata
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (id)expressSettings;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasAppAnalyticsOptIn:(BOOL)a3;
-- (void)setHasAutoDownloadEnabled:(BOOL)a3;
-- (void)setHasAutoUpdateEnabled:(BOOL)a3;
-- (void)setHasDeviceAnalyticsOptIn:(BOOL)a3;
-- (void)setHasDidSeeTrueTonePane:(BOOL)a3;
-- (void)setHasFindMyiPhoneOptIn:(BOOL)a3;
-- (void)setHasHomeButtonHapticKind:(BOOL)a3;
-- (void)setHasLocationServicesOptIn:(BOOL)a3;
-- (void)setHasMessagesContactsPresented:(BOOL)a3;
-- (void)setHasScreenTimeEnabled:(BOOL)a3;
-- (void)setHasSettingsContactsPresented:(BOOL)a3;
-- (void)setHasSettingsDataUsagePresented:(BOOL)a3;
-- (void)setHasSiriDataSharingOptIn:(BOOL)a3;
-- (void)setHasSiriOptIn:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasAppAnalyticsOptIn:(BOOL)in;
+- (void)setHasAutoDownloadEnabled:(BOOL)enabled;
+- (void)setHasAutoUpdateEnabled:(BOOL)enabled;
+- (void)setHasDeviceAnalyticsOptIn:(BOOL)in;
+- (void)setHasDidSeeTrueTonePane:(BOOL)pane;
+- (void)setHasFindMyiPhoneOptIn:(BOOL)in;
+- (void)setHasHomeButtonHapticKind:(BOOL)kind;
+- (void)setHasLocationServicesOptIn:(BOOL)in;
+- (void)setHasMessagesContactsPresented:(BOOL)presented;
+- (void)setHasScreenTimeEnabled:(BOOL)enabled;
+- (void)setHasSettingsContactsPresented:(BOOL)presented;
+- (void)setHasSettingsDataUsagePresented:(BOOL)presented;
+- (void)setHasSiriDataSharingOptIn:(BOOL)in;
+- (void)setHasSiriOptIn:(BOOL)in;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BYBackupMetadata
 
-- (void)setHasHomeButtonHapticKind:(BOOL)a3
+- (void)setHasHomeButtonHapticKind:(BOOL)kind
 {
-  if (a3)
+  if (kind)
   {
     v3 = 8;
   }
@@ -41,9 +41,9 @@
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasDeviceAnalyticsOptIn:(BOOL)a3
+- (void)setHasDeviceAnalyticsOptIn:(BOOL)in
 {
-  if (a3)
+  if (in)
   {
     v3 = 4;
   }
@@ -56,9 +56,9 @@
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasAppAnalyticsOptIn:(BOOL)a3
+- (void)setHasAppAnalyticsOptIn:(BOOL)in
 {
-  if (a3)
+  if (in)
   {
     v3 = 2;
   }
@@ -71,9 +71,9 @@
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (void)setHasLocationServicesOptIn:(BOOL)a3
+- (void)setHasLocationServicesOptIn:(BOOL)in
 {
-  if (a3)
+  if (in)
   {
     v3 = 256;
   }
@@ -86,9 +86,9 @@
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasFindMyiPhoneOptIn:(BOOL)a3
+- (void)setHasFindMyiPhoneOptIn:(BOOL)in
 {
-  if (a3)
+  if (in)
   {
     v3 = 128;
   }
@@ -101,9 +101,9 @@
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasSiriOptIn:(BOOL)a3
+- (void)setHasSiriOptIn:(BOOL)in
 {
-  if (a3)
+  if (in)
   {
     v3 = 0x4000;
   }
@@ -116,9 +116,9 @@
   *&self->_has = *&self->_has & 0xBFFF | v3;
 }
 
-- (void)setHasScreenTimeEnabled:(BOOL)a3
+- (void)setHasScreenTimeEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 1024;
   }
@@ -131,9 +131,9 @@
   *&self->_has = *&self->_has & 0xFBFF | v3;
 }
 
-- (void)setHasAutoUpdateEnabled:(BOOL)a3
+- (void)setHasAutoUpdateEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 32;
   }
@@ -146,9 +146,9 @@
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasDidSeeTrueTonePane:(BOOL)a3
+- (void)setHasDidSeeTrueTonePane:(BOOL)pane
 {
-  if (a3)
+  if (pane)
   {
     v3 = 64;
   }
@@ -161,9 +161,9 @@
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasAutoDownloadEnabled:(BOOL)a3
+- (void)setHasAutoDownloadEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 16;
   }
@@ -176,9 +176,9 @@
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasSiriDataSharingOptIn:(BOOL)a3
+- (void)setHasSiriDataSharingOptIn:(BOOL)in
 {
-  if (a3)
+  if (in)
   {
     v3 = 0x2000;
   }
@@ -191,9 +191,9 @@
   *&self->_has = *&self->_has & 0xDFFF | v3;
 }
 
-- (void)setHasMessagesContactsPresented:(BOOL)a3
+- (void)setHasMessagesContactsPresented:(BOOL)presented
 {
-  if (a3)
+  if (presented)
   {
     v3 = 512;
   }
@@ -206,9 +206,9 @@
   *&self->_has = *&self->_has & 0xFDFF | v3;
 }
 
-- (void)setHasSettingsContactsPresented:(BOOL)a3
+- (void)setHasSettingsContactsPresented:(BOOL)presented
 {
-  if (a3)
+  if (presented)
   {
     v3 = 2048;
   }
@@ -221,9 +221,9 @@
   *&self->_has = *&self->_has & 0xF7FF | v3;
 }
 
-- (void)setHasSettingsDataUsagePresented:(BOOL)a3
+- (void)setHasSettingsDataUsagePresented:(BOOL)presented
 {
-  if (a3)
+  if (presented)
   {
     v3 = 4096;
   }
@@ -242,29 +242,29 @@
   v8.receiver = self;
   v8.super_class = BYBackupMetadata;
   v4 = [(BYBackupMetadata *)&v8 description];
-  v5 = [(BYBackupMetadata *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(BYBackupMetadata *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_version];
-  [v3 setObject:v4 forKey:@"version"];
+  [dictionary setObject:v4 forKey:@"version"];
 
   nanoRegistryData = self->_nanoRegistryData;
   if (nanoRegistryData)
   {
-    [v3 setObject:nanoRegistryData forKey:@"nanoRegistryData"];
+    [dictionary setObject:nanoRegistryData forKey:@"nanoRegistryData"];
   }
 
   has = self->_has;
   if ((has & 8) != 0)
   {
     v20 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_homeButtonHapticKind];
-    [v3 setObject:v20 forKey:@"homeButtonHapticKind"];
+    [dictionary setObject:v20 forKey:@"homeButtonHapticKind"];
 
     has = self->_has;
     if ((has & 4) == 0)
@@ -285,7 +285,7 @@ LABEL_5:
   }
 
   v21 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_deviceAnalyticsOptIn];
-  [v3 setObject:v21 forKey:@"deviceAnalyticsOptIn"];
+  [dictionary setObject:v21 forKey:@"deviceAnalyticsOptIn"];
 
   has = self->_has;
   if ((has & 2) == 0)
@@ -301,7 +301,7 @@ LABEL_6:
 
 LABEL_39:
   v22 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_appAnalyticsOptIn];
-  [v3 setObject:v22 forKey:@"appAnalyticsOptIn"];
+  [dictionary setObject:v22 forKey:@"appAnalyticsOptIn"];
 
   has = self->_has;
   if ((has & 0x100) == 0)
@@ -317,7 +317,7 @@ LABEL_7:
 
 LABEL_40:
   v23 = [MEMORY[0x1E696AD98] numberWithBool:self->_locationServicesOptIn];
-  [v3 setObject:v23 forKey:@"locationServicesOptIn"];
+  [dictionary setObject:v23 forKey:@"locationServicesOptIn"];
 
   has = self->_has;
   if ((has & 0x80) == 0)
@@ -333,7 +333,7 @@ LABEL_8:
 
 LABEL_41:
   v24 = [MEMORY[0x1E696AD98] numberWithBool:self->_findMyiPhoneOptIn];
-  [v3 setObject:v24 forKey:@"findMyiPhoneOptIn"];
+  [dictionary setObject:v24 forKey:@"findMyiPhoneOptIn"];
 
   has = self->_has;
   if ((has & 0x4000) == 0)
@@ -349,7 +349,7 @@ LABEL_9:
 
 LABEL_42:
   v25 = [MEMORY[0x1E696AD98] numberWithBool:self->_siriOptIn];
-  [v3 setObject:v25 forKey:@"siriOptIn"];
+  [dictionary setObject:v25 forKey:@"siriOptIn"];
 
   has = self->_has;
   if ((has & 0x400) == 0)
@@ -365,7 +365,7 @@ LABEL_10:
 
 LABEL_43:
   v26 = [MEMORY[0x1E696AD98] numberWithBool:self->_screenTimeEnabled];
-  [v3 setObject:v26 forKey:@"screenTimeEnabled"];
+  [dictionary setObject:v26 forKey:@"screenTimeEnabled"];
 
   has = self->_has;
   if ((has & 0x20) == 0)
@@ -381,7 +381,7 @@ LABEL_11:
 
 LABEL_44:
   v27 = [MEMORY[0x1E696AD98] numberWithBool:self->_autoUpdateEnabled];
-  [v3 setObject:v27 forKey:@"autoUpdateEnabled"];
+  [dictionary setObject:v27 forKey:@"autoUpdateEnabled"];
 
   has = self->_has;
   if ((has & 0x40) == 0)
@@ -397,27 +397,27 @@ LABEL_12:
 
 LABEL_45:
   v28 = [MEMORY[0x1E696AD98] numberWithBool:self->_didSeeTrueTonePane];
-  [v3 setObject:v28 forKey:@"didSeeTrueTonePane"];
+  [dictionary setObject:v28 forKey:@"didSeeTrueTonePane"];
 
   if (*&self->_has)
   {
 LABEL_13:
     v7 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_userInterfaceStyleMode];
-    [v3 setObject:v7 forKey:@"userInterfaceStyleMode"];
+    [dictionary setObject:v7 forKey:@"userInterfaceStyleMode"];
   }
 
 LABEL_14:
   walletData = self->_walletData;
   if (walletData)
   {
-    [v3 setObject:walletData forKey:@"walletData"];
+    [dictionary setObject:walletData forKey:@"walletData"];
   }
 
   v9 = self->_has;
   if ((v9 & 0x10) != 0)
   {
     v10 = [MEMORY[0x1E696AD98] numberWithBool:self->_autoDownloadEnabled];
-    [v3 setObject:v10 forKey:@"autoDownloadEnabled"];
+    [dictionary setObject:v10 forKey:@"autoDownloadEnabled"];
 
     v9 = self->_has;
   }
@@ -425,32 +425,32 @@ LABEL_14:
   if ((v9 & 0x2000) != 0)
   {
     v11 = [MEMORY[0x1E696AD98] numberWithBool:self->_siriDataSharingOptIn];
-    [v3 setObject:v11 forKey:@"siriDataSharingOptIn"];
+    [dictionary setObject:v11 forKey:@"siriDataSharingOptIn"];
   }
 
   universalData = self->_universalData;
   if (universalData)
   {
-    [v3 setObject:universalData forKey:@"universalData"];
+    [dictionary setObject:universalData forKey:@"universalData"];
   }
 
   seedEnrollmentProgram = self->_seedEnrollmentProgram;
   if (seedEnrollmentProgram)
   {
-    [v3 setObject:seedEnrollmentProgram forKey:@"seedEnrollmentProgram"];
+    [dictionary setObject:seedEnrollmentProgram forKey:@"seedEnrollmentProgram"];
   }
 
   seedEnrollmentAssetAudience = self->_seedEnrollmentAssetAudience;
   if (seedEnrollmentAssetAudience)
   {
-    [v3 setObject:seedEnrollmentAssetAudience forKey:@"seedEnrollmentAssetAudience"];
+    [dictionary setObject:seedEnrollmentAssetAudience forKey:@"seedEnrollmentAssetAudience"];
   }
 
   v15 = self->_has;
   if ((v15 & 0x200) != 0)
   {
     v29 = [MEMORY[0x1E696AD98] numberWithBool:self->_messagesContactsPresented];
-    [v3 setObject:v29 forKey:@"messagesContactsPresented"];
+    [dictionary setObject:v29 forKey:@"messagesContactsPresented"];
 
     v15 = self->_has;
     if ((v15 & 0x800) == 0)
@@ -471,36 +471,36 @@ LABEL_28:
   }
 
   v30 = [MEMORY[0x1E696AD98] numberWithBool:self->_settingsContactsPresented];
-  [v3 setObject:v30 forKey:@"settingsContactsPresented"];
+  [dictionary setObject:v30 forKey:@"settingsContactsPresented"];
 
   if ((*&self->_has & 0x1000) != 0)
   {
 LABEL_29:
     v16 = [MEMORY[0x1E696AD98] numberWithBool:self->_settingsDataUsagePresented];
-    [v3 setObject:v16 forKey:@"settingsDataUsagePresented"];
+    [dictionary setObject:v16 forKey:@"settingsDataUsagePresented"];
   }
 
 LABEL_30:
   seedEnrollmentCatalogID = self->_seedEnrollmentCatalogID;
   if (seedEnrollmentCatalogID)
   {
-    [v3 setObject:seedEnrollmentCatalogID forKey:@"seedEnrollmentCatalogID"];
+    [dictionary setObject:seedEnrollmentCatalogID forKey:@"seedEnrollmentCatalogID"];
   }
 
   actionButtonData = self->_actionButtonData;
   if (actionButtonData)
   {
-    [v3 setObject:actionButtonData forKey:@"actionButtonData"];
+    [dictionary setObject:actionButtonData forKey:@"actionButtonData"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   version = self->_version;
-  v25 = v4;
+  v25 = toCopy;
   PBDataWriterWriteUint32Field();
   if (self->_nanoRegistryData)
   {
@@ -736,22 +736,22 @@ LABEL_31:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v4[20] = self->_version;
-  v8 = v4;
+  toCopy = to;
+  toCopy[20] = self->_version;
+  v8 = toCopy;
   if (self->_nanoRegistryData)
   {
-    [v4 setNanoRegistryData:?];
-    v4 = v8;
+    [toCopy setNanoRegistryData:?];
+    toCopy = v8;
   }
 
   has = self->_has;
   if ((has & 8) != 0)
   {
-    v4[8] = self->_homeButtonHapticKind;
-    *(v4 + 54) |= 8u;
+    toCopy[8] = self->_homeButtonHapticKind;
+    *(toCopy + 54) |= 8u;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -770,8 +770,8 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  v4[7] = self->_deviceAnalyticsOptIn;
-  *(v4 + 54) |= 4u;
+  toCopy[7] = self->_deviceAnalyticsOptIn;
+  *(toCopy + 54) |= 4u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -785,8 +785,8 @@ LABEL_6:
   }
 
 LABEL_39:
-  v4[6] = self->_appAnalyticsOptIn;
-  *(v4 + 54) |= 2u;
+  toCopy[6] = self->_appAnalyticsOptIn;
+  *(toCopy + 54) |= 2u;
   has = self->_has;
   if ((has & 0x100) == 0)
   {
@@ -800,8 +800,8 @@ LABEL_7:
   }
 
 LABEL_40:
-  *(v4 + 100) = self->_locationServicesOptIn;
-  *(v4 + 54) |= 0x100u;
+  *(toCopy + 100) = self->_locationServicesOptIn;
+  *(toCopy + 54) |= 0x100u;
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -815,8 +815,8 @@ LABEL_8:
   }
 
 LABEL_41:
-  *(v4 + 99) = self->_findMyiPhoneOptIn;
-  *(v4 + 54) |= 0x80u;
+  *(toCopy + 99) = self->_findMyiPhoneOptIn;
+  *(toCopy + 54) |= 0x80u;
   has = self->_has;
   if ((has & 0x4000) == 0)
   {
@@ -830,8 +830,8 @@ LABEL_9:
   }
 
 LABEL_42:
-  *(v4 + 106) = self->_siriOptIn;
-  *(v4 + 54) |= 0x4000u;
+  *(toCopy + 106) = self->_siriOptIn;
+  *(toCopy + 54) |= 0x4000u;
   has = self->_has;
   if ((has & 0x400) == 0)
   {
@@ -845,8 +845,8 @@ LABEL_10:
   }
 
 LABEL_43:
-  *(v4 + 102) = self->_screenTimeEnabled;
-  *(v4 + 54) |= 0x400u;
+  *(toCopy + 102) = self->_screenTimeEnabled;
+  *(toCopy + 54) |= 0x400u;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -860,8 +860,8 @@ LABEL_11:
   }
 
 LABEL_44:
-  *(v4 + 97) = self->_autoUpdateEnabled;
-  *(v4 + 54) |= 0x20u;
+  *(toCopy + 97) = self->_autoUpdateEnabled;
+  *(toCopy + 54) |= 0x20u;
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -875,59 +875,59 @@ LABEL_12:
   }
 
 LABEL_45:
-  *(v4 + 98) = self->_didSeeTrueTonePane;
-  *(v4 + 54) |= 0x40u;
+  *(toCopy + 98) = self->_didSeeTrueTonePane;
+  *(toCopy + 54) |= 0x40u;
   if (*&self->_has)
   {
 LABEL_13:
-    *(v4 + 1) = self->_userInterfaceStyleMode;
-    *(v4 + 54) |= 1u;
+    *(toCopy + 1) = self->_userInterfaceStyleMode;
+    *(toCopy + 54) |= 1u;
   }
 
 LABEL_14:
   if (self->_walletData)
   {
     [v8 setWalletData:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   v6 = self->_has;
   if ((v6 & 0x10) != 0)
   {
-    *(v4 + 96) = self->_autoDownloadEnabled;
-    *(v4 + 54) |= 0x10u;
+    *(toCopy + 96) = self->_autoDownloadEnabled;
+    *(toCopy + 54) |= 0x10u;
     v6 = self->_has;
   }
 
   if ((v6 & 0x2000) != 0)
   {
-    *(v4 + 105) = self->_siriDataSharingOptIn;
-    *(v4 + 54) |= 0x2000u;
+    *(toCopy + 105) = self->_siriDataSharingOptIn;
+    *(toCopy + 54) |= 0x2000u;
   }
 
   if (self->_universalData)
   {
     [v8 setUniversalData:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_seedEnrollmentProgram)
   {
     [v8 setSeedEnrollmentProgram:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_seedEnrollmentAssetAudience)
   {
     [v8 setSeedEnrollmentAssetAudience:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   v7 = self->_has;
   if ((v7 & 0x200) != 0)
   {
-    *(v4 + 101) = self->_messagesContactsPresented;
-    *(v4 + 54) |= 0x200u;
+    *(toCopy + 101) = self->_messagesContactsPresented;
+    *(toCopy + 54) |= 0x200u;
     v7 = self->_has;
     if ((v7 & 0x800) == 0)
     {
@@ -946,34 +946,34 @@ LABEL_28:
     goto LABEL_28;
   }
 
-  *(v4 + 103) = self->_settingsContactsPresented;
-  *(v4 + 54) |= 0x800u;
+  *(toCopy + 103) = self->_settingsContactsPresented;
+  *(toCopy + 54) |= 0x800u;
   if ((*&self->_has & 0x1000) != 0)
   {
 LABEL_29:
-    *(v4 + 104) = self->_settingsDataUsagePresented;
-    *(v4 + 54) |= 0x1000u;
+    *(toCopy + 104) = self->_settingsDataUsagePresented;
+    *(toCopy + 54) |= 0x1000u;
   }
 
 LABEL_30:
   if (self->_seedEnrollmentCatalogID)
   {
     [v8 setSeedEnrollmentCatalogID:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_actionButtonData)
   {
     [v8 setActionButtonData:?];
-    v4 = v8;
+    toCopy = v8;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(v5 + 80) = self->_version;
-  v6 = [(NSData *)self->_nanoRegistryData copyWithZone:a3];
+  v6 = [(NSData *)self->_nanoRegistryData copyWithZone:zone];
   v7 = *(v5 + 40);
   *(v5 + 40) = v6;
 
@@ -1115,7 +1115,7 @@ LABEL_11:
   }
 
 LABEL_12:
-  v9 = [(NSData *)self->_walletData copyWithZone:a3];
+  v9 = [(NSData *)self->_walletData copyWithZone:zone];
   v10 = *(v5 + 88);
   *(v5 + 88) = v9;
 
@@ -1133,15 +1133,15 @@ LABEL_12:
     *(v5 + 108) |= 0x2000u;
   }
 
-  v12 = [(NSData *)self->_universalData copyWithZone:a3];
+  v12 = [(NSData *)self->_universalData copyWithZone:zone];
   v13 = *(v5 + 72);
   *(v5 + 72) = v12;
 
-  v14 = [(NSString *)self->_seedEnrollmentProgram copyWithZone:a3];
+  v14 = [(NSString *)self->_seedEnrollmentProgram copyWithZone:zone];
   v15 = *(v5 + 64);
   *(v5 + 64) = v14;
 
-  v16 = [(NSString *)self->_seedEnrollmentAssetAudience copyWithZone:a3];
+  v16 = [(NSString *)self->_seedEnrollmentAssetAudience copyWithZone:zone];
   v17 = *(v5 + 48);
   *(v5 + 48) = v16;
 
@@ -1181,32 +1181,32 @@ LABEL_19:
   }
 
 LABEL_20:
-  v19 = [(NSString *)self->_seedEnrollmentCatalogID copyWithZone:a3];
+  v19 = [(NSString *)self->_seedEnrollmentCatalogID copyWithZone:zone];
   v20 = *(v5 + 56);
   *(v5 + 56) = v19;
 
-  v21 = [(NSData *)self->_actionButtonData copyWithZone:a3];
+  v21 = [(NSData *)self->_actionButtonData copyWithZone:zone];
   v22 = *(v5 + 16);
   *(v5 + 16) = v21;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_121;
   }
 
-  if (self->_version != *(v4 + 20))
+  if (self->_version != *(equalCopy + 20))
   {
     goto LABEL_121;
   }
 
   nanoRegistryData = self->_nanoRegistryData;
-  if (nanoRegistryData | *(v4 + 5))
+  if (nanoRegistryData | *(equalCopy + 5))
   {
     if (![(NSData *)nanoRegistryData isEqual:?])
     {
@@ -1215,10 +1215,10 @@ LABEL_20:
   }
 
   has = self->_has;
-  v7 = *(v4 + 54);
+  v7 = *(equalCopy + 54);
   if ((has & 8) != 0)
   {
-    if ((v7 & 8) == 0 || self->_homeButtonHapticKind != *(v4 + 8))
+    if ((v7 & 8) == 0 || self->_homeButtonHapticKind != *(equalCopy + 8))
     {
       goto LABEL_121;
     }
@@ -1231,7 +1231,7 @@ LABEL_20:
 
   if ((has & 4) != 0)
   {
-    if ((v7 & 4) == 0 || self->_deviceAnalyticsOptIn != *(v4 + 7))
+    if ((v7 & 4) == 0 || self->_deviceAnalyticsOptIn != *(equalCopy + 7))
     {
       goto LABEL_121;
     }
@@ -1244,7 +1244,7 @@ LABEL_20:
 
   if ((has & 2) != 0)
   {
-    if ((v7 & 2) == 0 || self->_appAnalyticsOptIn != *(v4 + 6))
+    if ((v7 & 2) == 0 || self->_appAnalyticsOptIn != *(equalCopy + 6))
     {
       goto LABEL_121;
     }
@@ -1257,27 +1257,27 @@ LABEL_20:
 
   if ((*&self->_has & 0x100) != 0)
   {
-    if ((*(v4 + 54) & 0x100) == 0)
+    if ((*(equalCopy + 54) & 0x100) == 0)
     {
       goto LABEL_121;
     }
 
-    v8 = *(v4 + 100);
+    v8 = *(equalCopy + 100);
     if (self->_locationServicesOptIn)
     {
-      if ((*(v4 + 100) & 1) == 0)
+      if ((*(equalCopy + 100) & 1) == 0)
       {
         goto LABEL_121;
       }
     }
 
-    else if (*(v4 + 100))
+    else if (*(equalCopy + 100))
     {
       goto LABEL_121;
     }
   }
 
-  else if ((*(v4 + 54) & 0x100) != 0)
+  else if ((*(equalCopy + 54) & 0x100) != 0)
   {
     goto LABEL_121;
   }
@@ -1289,16 +1289,16 @@ LABEL_20:
       goto LABEL_121;
     }
 
-    v9 = *(v4 + 99);
+    v9 = *(equalCopy + 99);
     if (self->_findMyiPhoneOptIn)
     {
-      if ((*(v4 + 99) & 1) == 0)
+      if ((*(equalCopy + 99) & 1) == 0)
       {
         goto LABEL_121;
       }
     }
 
-    else if (*(v4 + 99))
+    else if (*(equalCopy + 99))
     {
       goto LABEL_121;
     }
@@ -1311,54 +1311,54 @@ LABEL_20:
 
   if ((*&self->_has & 0x4000) != 0)
   {
-    if ((*(v4 + 54) & 0x4000) == 0)
+    if ((*(equalCopy + 54) & 0x4000) == 0)
     {
       goto LABEL_121;
     }
 
-    v10 = *(v4 + 106);
+    v10 = *(equalCopy + 106);
     if (self->_siriOptIn)
     {
-      if ((*(v4 + 106) & 1) == 0)
+      if ((*(equalCopy + 106) & 1) == 0)
       {
         goto LABEL_121;
       }
     }
 
-    else if (*(v4 + 106))
+    else if (*(equalCopy + 106))
     {
       goto LABEL_121;
     }
   }
 
-  else if ((*(v4 + 54) & 0x4000) != 0)
+  else if ((*(equalCopy + 54) & 0x4000) != 0)
   {
     goto LABEL_121;
   }
 
   if ((*&self->_has & 0x400) != 0)
   {
-    if ((*(v4 + 54) & 0x400) == 0)
+    if ((*(equalCopy + 54) & 0x400) == 0)
     {
       goto LABEL_121;
     }
 
-    v11 = *(v4 + 102);
+    v11 = *(equalCopy + 102);
     if (self->_screenTimeEnabled)
     {
-      if ((*(v4 + 102) & 1) == 0)
+      if ((*(equalCopy + 102) & 1) == 0)
       {
         goto LABEL_121;
       }
     }
 
-    else if (*(v4 + 102))
+    else if (*(equalCopy + 102))
     {
       goto LABEL_121;
     }
   }
 
-  else if ((*(v4 + 54) & 0x400) != 0)
+  else if ((*(equalCopy + 54) & 0x400) != 0)
   {
     goto LABEL_121;
   }
@@ -1370,16 +1370,16 @@ LABEL_20:
       goto LABEL_121;
     }
 
-    v12 = *(v4 + 97);
+    v12 = *(equalCopy + 97);
     if (self->_autoUpdateEnabled)
     {
-      if ((*(v4 + 97) & 1) == 0)
+      if ((*(equalCopy + 97) & 1) == 0)
       {
         goto LABEL_121;
       }
     }
 
-    else if (*(v4 + 97))
+    else if (*(equalCopy + 97))
     {
       goto LABEL_121;
     }
@@ -1397,16 +1397,16 @@ LABEL_20:
       goto LABEL_121;
     }
 
-    v13 = *(v4 + 98);
+    v13 = *(equalCopy + 98);
     if (self->_didSeeTrueTonePane)
     {
-      if ((*(v4 + 98) & 1) == 0)
+      if ((*(equalCopy + 98) & 1) == 0)
       {
         goto LABEL_121;
       }
     }
 
-    else if (*(v4 + 98))
+    else if (*(equalCopy + 98))
     {
       goto LABEL_121;
     }
@@ -1419,7 +1419,7 @@ LABEL_20:
 
   if (has)
   {
-    if ((v7 & 1) == 0 || self->_userInterfaceStyleMode != *(v4 + 1))
+    if ((v7 & 1) == 0 || self->_userInterfaceStyleMode != *(equalCopy + 1))
     {
       goto LABEL_121;
     }
@@ -1431,7 +1431,7 @@ LABEL_20:
   }
 
   walletData = self->_walletData;
-  if (walletData | *(v4 + 11))
+  if (walletData | *(equalCopy + 11))
   {
     if (![(NSData *)walletData isEqual:?])
     {
@@ -1441,7 +1441,7 @@ LABEL_20:
     has = self->_has;
   }
 
-  v15 = *(v4 + 54);
+  v15 = *(equalCopy + 54);
   if ((has & 0x10) != 0)
   {
     if ((v15 & 0x10) == 0)
@@ -1449,16 +1449,16 @@ LABEL_20:
       goto LABEL_121;
     }
 
-    v20 = *(v4 + 96);
+    v20 = *(equalCopy + 96);
     if (self->_autoDownloadEnabled)
     {
-      if ((*(v4 + 96) & 1) == 0)
+      if ((*(equalCopy + 96) & 1) == 0)
       {
         goto LABEL_121;
       }
     }
 
-    else if (*(v4 + 96))
+    else if (*(equalCopy + 96))
     {
       goto LABEL_121;
     }
@@ -1471,39 +1471,39 @@ LABEL_20:
 
   if ((has & 0x2000) != 0)
   {
-    if ((*(v4 + 54) & 0x2000) == 0)
+    if ((*(equalCopy + 54) & 0x2000) == 0)
     {
       goto LABEL_121;
     }
 
-    v21 = *(v4 + 105);
+    v21 = *(equalCopy + 105);
     if (self->_siriDataSharingOptIn)
     {
-      if ((*(v4 + 105) & 1) == 0)
+      if ((*(equalCopy + 105) & 1) == 0)
       {
         goto LABEL_121;
       }
     }
 
-    else if (*(v4 + 105))
+    else if (*(equalCopy + 105))
     {
       goto LABEL_121;
     }
   }
 
-  else if ((*(v4 + 54) & 0x2000) != 0)
+  else if ((*(equalCopy + 54) & 0x2000) != 0)
   {
     goto LABEL_121;
   }
 
   universalData = self->_universalData;
-  if (universalData | *(v4 + 9) && ![(NSData *)universalData isEqual:?])
+  if (universalData | *(equalCopy + 9) && ![(NSData *)universalData isEqual:?])
   {
     goto LABEL_121;
   }
 
   seedEnrollmentProgram = self->_seedEnrollmentProgram;
-  if (seedEnrollmentProgram | *(v4 + 8))
+  if (seedEnrollmentProgram | *(equalCopy + 8))
   {
     if (![(NSString *)seedEnrollmentProgram isEqual:?])
     {
@@ -1512,7 +1512,7 @@ LABEL_20:
   }
 
   seedEnrollmentAssetAudience = self->_seedEnrollmentAssetAudience;
-  if (seedEnrollmentAssetAudience | *(v4 + 6))
+  if (seedEnrollmentAssetAudience | *(equalCopy + 6))
   {
     if (![(NSString *)seedEnrollmentAssetAudience isEqual:?])
     {
@@ -1520,64 +1520,64 @@ LABEL_20:
     }
   }
 
-  v19 = *(v4 + 54);
+  v19 = *(equalCopy + 54);
   if ((*&self->_has & 0x200) != 0)
   {
-    if ((*(v4 + 54) & 0x200) == 0)
+    if ((*(equalCopy + 54) & 0x200) == 0)
     {
       goto LABEL_121;
     }
 
-    v22 = *(v4 + 101);
+    v22 = *(equalCopy + 101);
     if (self->_messagesContactsPresented)
     {
-      if ((*(v4 + 101) & 1) == 0)
+      if ((*(equalCopy + 101) & 1) == 0)
       {
         goto LABEL_121;
       }
     }
 
-    else if (*(v4 + 101))
+    else if (*(equalCopy + 101))
     {
       goto LABEL_121;
     }
   }
 
-  else if ((*(v4 + 54) & 0x200) != 0)
+  else if ((*(equalCopy + 54) & 0x200) != 0)
   {
     goto LABEL_121;
   }
 
   if ((*&self->_has & 0x800) != 0)
   {
-    if ((*(v4 + 54) & 0x800) == 0)
+    if ((*(equalCopy + 54) & 0x800) == 0)
     {
       goto LABEL_121;
     }
 
-    v23 = *(v4 + 103);
+    v23 = *(equalCopy + 103);
     if (self->_settingsContactsPresented)
     {
-      if ((*(v4 + 103) & 1) == 0)
+      if ((*(equalCopy + 103) & 1) == 0)
       {
         goto LABEL_121;
       }
     }
 
-    else if (*(v4 + 103))
+    else if (*(equalCopy + 103))
     {
       goto LABEL_121;
     }
   }
 
-  else if ((*(v4 + 54) & 0x800) != 0)
+  else if ((*(equalCopy + 54) & 0x800) != 0)
   {
     goto LABEL_121;
   }
 
   if ((*&self->_has & 0x1000) == 0)
   {
-    if ((*(v4 + 54) & 0x1000) == 0)
+    if ((*(equalCopy + 54) & 0x1000) == 0)
     {
       goto LABEL_116;
     }
@@ -1587,34 +1587,34 @@ LABEL_121:
     goto LABEL_122;
   }
 
-  if ((*(v4 + 54) & 0x1000) == 0)
+  if ((*(equalCopy + 54) & 0x1000) == 0)
   {
     goto LABEL_121;
   }
 
-  v28 = *(v4 + 104);
+  v28 = *(equalCopy + 104);
   if (self->_settingsDataUsagePresented)
   {
-    if ((*(v4 + 104) & 1) == 0)
+    if ((*(equalCopy + 104) & 1) == 0)
     {
       goto LABEL_121;
     }
   }
 
-  else if (*(v4 + 104))
+  else if (*(equalCopy + 104))
   {
     goto LABEL_121;
   }
 
 LABEL_116:
   seedEnrollmentCatalogID = self->_seedEnrollmentCatalogID;
-  if (seedEnrollmentCatalogID | *(v4 + 7) && ![(NSString *)seedEnrollmentCatalogID isEqual:?])
+  if (seedEnrollmentCatalogID | *(equalCopy + 7) && ![(NSString *)seedEnrollmentCatalogID isEqual:?])
   {
     goto LABEL_121;
   }
 
   actionButtonData = self->_actionButtonData;
-  if (actionButtonData | *(v4 + 2))
+  if (actionButtonData | *(equalCopy + 2))
   {
     v26 = [(NSData *)actionButtonData isEqual:?];
   }
@@ -1834,23 +1834,23 @@ LABEL_34:
   return v15 ^ [(NSData *)self->_actionButtonData hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  self->_version = *(v4 + 20);
-  v8 = v4;
-  if (*(v4 + 5))
+  fromCopy = from;
+  self->_version = *(fromCopy + 20);
+  v8 = fromCopy;
+  if (*(fromCopy + 5))
   {
     [(BYBackupMetadata *)self setNanoRegistryData:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  v5 = *(v4 + 54);
+  v5 = *(fromCopy + 54);
   if ((v5 & 8) != 0)
   {
-    self->_homeButtonHapticKind = *(v4 + 8);
+    self->_homeButtonHapticKind = *(fromCopy + 8);
     *&self->_has |= 8u;
-    v5 = *(v4 + 54);
+    v5 = *(fromCopy + 54);
     if ((v5 & 4) == 0)
     {
 LABEL_5:
@@ -1868,9 +1868,9 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  self->_deviceAnalyticsOptIn = *(v4 + 7);
+  self->_deviceAnalyticsOptIn = *(fromCopy + 7);
   *&self->_has |= 4u;
-  v5 = *(v4 + 54);
+  v5 = *(fromCopy + 54);
   if ((v5 & 2) == 0)
   {
 LABEL_6:
@@ -1883,9 +1883,9 @@ LABEL_6:
   }
 
 LABEL_39:
-  self->_appAnalyticsOptIn = *(v4 + 6);
+  self->_appAnalyticsOptIn = *(fromCopy + 6);
   *&self->_has |= 2u;
-  v5 = *(v4 + 54);
+  v5 = *(fromCopy + 54);
   if ((v5 & 0x100) == 0)
   {
 LABEL_7:
@@ -1898,9 +1898,9 @@ LABEL_7:
   }
 
 LABEL_40:
-  self->_locationServicesOptIn = *(v4 + 100);
+  self->_locationServicesOptIn = *(fromCopy + 100);
   *&self->_has |= 0x100u;
-  v5 = *(v4 + 54);
+  v5 = *(fromCopy + 54);
   if ((v5 & 0x80) == 0)
   {
 LABEL_8:
@@ -1913,9 +1913,9 @@ LABEL_8:
   }
 
 LABEL_41:
-  self->_findMyiPhoneOptIn = *(v4 + 99);
+  self->_findMyiPhoneOptIn = *(fromCopy + 99);
   *&self->_has |= 0x80u;
-  v5 = *(v4 + 54);
+  v5 = *(fromCopy + 54);
   if ((v5 & 0x4000) == 0)
   {
 LABEL_9:
@@ -1928,9 +1928,9 @@ LABEL_9:
   }
 
 LABEL_42:
-  self->_siriOptIn = *(v4 + 106);
+  self->_siriOptIn = *(fromCopy + 106);
   *&self->_has |= 0x4000u;
-  v5 = *(v4 + 54);
+  v5 = *(fromCopy + 54);
   if ((v5 & 0x400) == 0)
   {
 LABEL_10:
@@ -1943,9 +1943,9 @@ LABEL_10:
   }
 
 LABEL_43:
-  self->_screenTimeEnabled = *(v4 + 102);
+  self->_screenTimeEnabled = *(fromCopy + 102);
   *&self->_has |= 0x400u;
-  v5 = *(v4 + 54);
+  v5 = *(fromCopy + 54);
   if ((v5 & 0x20) == 0)
   {
 LABEL_11:
@@ -1958,9 +1958,9 @@ LABEL_11:
   }
 
 LABEL_44:
-  self->_autoUpdateEnabled = *(v4 + 97);
+  self->_autoUpdateEnabled = *(fromCopy + 97);
   *&self->_has |= 0x20u;
-  v5 = *(v4 + 54);
+  v5 = *(fromCopy + 54);
   if ((v5 & 0x40) == 0)
   {
 LABEL_12:
@@ -1973,60 +1973,60 @@ LABEL_12:
   }
 
 LABEL_45:
-  self->_didSeeTrueTonePane = *(v4 + 98);
+  self->_didSeeTrueTonePane = *(fromCopy + 98);
   *&self->_has |= 0x40u;
-  if (*(v4 + 54))
+  if (*(fromCopy + 54))
   {
 LABEL_13:
-    self->_userInterfaceStyleMode = *(v4 + 1);
+    self->_userInterfaceStyleMode = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
 LABEL_14:
-  if (*(v4 + 11))
+  if (*(fromCopy + 11))
   {
     [(BYBackupMetadata *)self setWalletData:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  v6 = *(v4 + 54);
+  v6 = *(fromCopy + 54);
   if ((v6 & 0x10) != 0)
   {
-    self->_autoDownloadEnabled = *(v4 + 96);
+    self->_autoDownloadEnabled = *(fromCopy + 96);
     *&self->_has |= 0x10u;
-    v6 = *(v4 + 54);
+    v6 = *(fromCopy + 54);
   }
 
   if ((v6 & 0x2000) != 0)
   {
-    self->_siriDataSharingOptIn = *(v4 + 105);
+    self->_siriDataSharingOptIn = *(fromCopy + 105);
     *&self->_has |= 0x2000u;
   }
 
-  if (*(v4 + 9))
+  if (*(fromCopy + 9))
   {
     [(BYBackupMetadata *)self setUniversalData:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 8))
+  if (*(fromCopy + 8))
   {
     [(BYBackupMetadata *)self setSeedEnrollmentProgram:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 6))
+  if (*(fromCopy + 6))
   {
     [(BYBackupMetadata *)self setSeedEnrollmentAssetAudience:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  v7 = *(v4 + 54);
+  v7 = *(fromCopy + 54);
   if ((v7 & 0x200) != 0)
   {
-    self->_messagesContactsPresented = *(v4 + 101);
+    self->_messagesContactsPresented = *(fromCopy + 101);
     *&self->_has |= 0x200u;
-    v7 = *(v4 + 54);
+    v7 = *(fromCopy + 54);
     if ((v7 & 0x800) == 0)
     {
 LABEL_28:
@@ -2039,31 +2039,31 @@ LABEL_28:
     }
   }
 
-  else if ((*(v4 + 54) & 0x800) == 0)
+  else if ((*(fromCopy + 54) & 0x800) == 0)
   {
     goto LABEL_28;
   }
 
-  self->_settingsContactsPresented = *(v4 + 103);
+  self->_settingsContactsPresented = *(fromCopy + 103);
   *&self->_has |= 0x800u;
-  if ((*(v4 + 54) & 0x1000) != 0)
+  if ((*(fromCopy + 54) & 0x1000) != 0)
   {
 LABEL_29:
-    self->_settingsDataUsagePresented = *(v4 + 104);
+    self->_settingsDataUsagePresented = *(fromCopy + 104);
     *&self->_has |= 0x1000u;
   }
 
 LABEL_30:
-  if (*(v4 + 7))
+  if (*(fromCopy + 7))
   {
     [(BYBackupMetadata *)self setSeedEnrollmentCatalogID:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(BYBackupMetadata *)self setActionButtonData:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 }
 
@@ -2071,8 +2071,8 @@ LABEL_30:
 {
   v3 = objc_alloc_init(MEMORY[0x1E69CA9D8]);
   v4 = objc_alloc(MEMORY[0x1E69C65B8]);
-  v5 = [(BYBackupMetadata *)self universalData];
-  v6 = [v4 initWithData:v5];
+  universalData = [(BYBackupMetadata *)self universalData];
+  v6 = [v4 initWithData:universalData];
 
   if (SASExpressSettingsReadFrom())
   {

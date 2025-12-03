@@ -1,56 +1,56 @@
 @interface PLSwipeInteraction
 - (BOOL)_shouldContinuePresentingActionButtons;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
 - (CGPoint)_panLocation;
-- (PLSwipeInteraction)initWithDelegate:(id)a3;
+- (PLSwipeInteraction)initWithDelegate:(id)delegate;
 - (PLSwipeInteractionDelegate)delegate;
 - (UIView)view;
 - (UIView)viewToMove;
-- (double)_actionButtonTriggerDistanceForView:(id)a3;
+- (double)_actionButtonTriggerDistanceForView:(id)view;
 - (double)_panHorizontalTranslation;
 - (double)_panHorizontalVelocity;
-- (double)_updateActionRevealStateForTargetPosition:(double)a3 currentPosition:(double)a4 velocity:(double)a5;
-- (id)senderForActionWithIdentifier:(id)a3;
-- (unint64_t)_interfaceEdgeForLayoutLocation:(unint64_t)a3;
-- (unint64_t)_interfaceEdgeToPresentOnForComparisonValue:(double)a3;
-- (unint64_t)_interfaceEdgeToPresentOnForInitialPanTranslation:(double)a3 andInitialPanVelocity:(double)a4;
-- (unint64_t)_layoutLocationForInterfaceEdge:(unint64_t)a3;
+- (double)_updateActionRevealStateForTargetPosition:(double)position currentPosition:(double)currentPosition velocity:(double)velocity;
+- (id)senderForActionWithIdentifier:(id)identifier;
+- (unint64_t)_interfaceEdgeForLayoutLocation:(unint64_t)location;
+- (unint64_t)_interfaceEdgeToPresentOnForComparisonValue:(double)value;
+- (unint64_t)_interfaceEdgeToPresentOnForInitialPanTranslation:(double)translation andInitialPanVelocity:(double)velocity;
+- (unint64_t)_layoutLocationForInterfaceEdge:(unint64_t)edge;
 - (void)_actuateFeedbackForDefaultActionLockedIfNecessary;
 - (void)_actuateFeedbackForDefaultActionUnlockedIfNecessary;
-- (void)_addActionButtonViewsAtLayoutLocation:(unint64_t)a3 interfaceEdge:(unint64_t)a4;
-- (void)_addActionButtonsAndRevealAnimated:(BOOL)a3 fastAnimation:(BOOL)a4 layoutLocation:(unint64_t)a5 completion:(id)a6;
-- (void)_handlePanGesture:(id)a3;
-- (void)_hideAnimated:(BOOL)a3 fastAnimation:(BOOL)a4 velocity:(double)a5 completion:(id)a6;
-- (void)_performSwipeHintingForLayoutLocation:(unint64_t)a3;
+- (void)_addActionButtonViewsAtLayoutLocation:(unint64_t)location interfaceEdge:(unint64_t)edge;
+- (void)_addActionButtonsAndRevealAnimated:(BOOL)animated fastAnimation:(BOOL)animation layoutLocation:(unint64_t)location completion:(id)completion;
+- (void)_handlePanGesture:(id)gesture;
+- (void)_hideAnimated:(BOOL)animated fastAnimation:(BOOL)animation velocity:(double)velocity completion:(id)completion;
+- (void)_performSwipeHintingForLayoutLocation:(unint64_t)location;
 - (void)_removeActionButtons;
-- (void)_revealToPosition:(double)a3 animated:(BOOL)a4 fastAnimation:(BOOL)a5 velocity:(double)a6 completion:(id)a7;
-- (void)_setViewPosition:(double)a3 withVelocity:(double)a4 usingNonInteractiveSpring:(BOOL)a5 animated:(BOOL)a6 completion:(id)a7;
-- (void)_setViewPositionHelper:(double)a3 withVelocity:(double)a4 usingNonInteractiveSpring:(BOOL)a5 animated:(BOOL)a6 completion:(id)a7;
+- (void)_revealToPosition:(double)position animated:(BOOL)animated fastAnimation:(BOOL)animation velocity:(double)velocity completion:(id)completion;
+- (void)_setViewPosition:(double)position withVelocity:(double)velocity usingNonInteractiveSpring:(BOOL)spring animated:(BOOL)animated completion:(id)completion;
+- (void)_setViewPositionHelper:(double)helper withVelocity:(double)velocity usingNonInteractiveSpring:(BOOL)spring animated:(BOOL)animated completion:(id)completion;
 - (void)_setupContentOffsetFloatAnimatableProperty;
-- (void)_updateActionButtonRevealPercentageForTargetPosition:(double)a3;
-- (void)_updatePosition:(double)a3;
-- (void)_updateRevealPercentage:(double)a3;
-- (void)_updateTargetPosition:(double)a3;
-- (void)didMoveToView:(id)a3;
-- (void)hideActionsAnimated:(BOOL)a3 fastAnimation:(BOOL)a4 completion:(id)a5;
-- (void)revealActionsForLayoutLocation:(unint64_t)a3 completion:(id)a4;
-- (void)setMaterialGroupNameBase:(id)a3;
-- (void)setPerformingSwipeHinting:(BOOL)a3;
-- (void)willMoveToView:(id)a3;
+- (void)_updateActionButtonRevealPercentageForTargetPosition:(double)position;
+- (void)_updatePosition:(double)position;
+- (void)_updateRevealPercentage:(double)percentage;
+- (void)_updateTargetPosition:(double)position;
+- (void)didMoveToView:(id)view;
+- (void)hideActionsAnimated:(BOOL)animated fastAnimation:(BOOL)animation completion:(id)completion;
+- (void)revealActionsForLayoutLocation:(unint64_t)location completion:(id)completion;
+- (void)setMaterialGroupNameBase:(id)base;
+- (void)setPerformingSwipeHinting:(BOOL)hinting;
+- (void)willMoveToView:(id)view;
 @end
 
 @implementation PLSwipeInteraction
 
-- (PLSwipeInteraction)initWithDelegate:(id)a3
+- (PLSwipeInteraction)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v10.receiver = self;
   v10.super_class = PLSwipeInteraction;
   v5 = [(PLSwipeInteraction *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
     v6->_animationCount = 0;
     v7 = [objc_alloc(MEMORY[0x277D757F8]) initWithTarget:v6 action:sel__handlePanGesture_];
     panGestureRecognizer = v6->_panGestureRecognizer;
@@ -65,18 +65,18 @@
   return v6;
 }
 
-- (void)revealActionsForLayoutLocation:(unint64_t)a3 completion:(id)a4
+- (void)revealActionsForLayoutLocation:(unint64_t)location completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   [(PLSwipeInteraction *)self setPerformingSwipeHinting:0];
   actionButtonsPresentingView = self->_actionButtonsPresentingView;
   if (actionButtonsPresentingView)
   {
-    if ([(PLActionButtonsPresentingView *)actionButtonsPresentingView layoutLocation]== a3)
+    if ([(PLActionButtonsPresentingView *)actionButtonsPresentingView layoutLocation]== location)
     {
-      if (v6)
+      if (completionCopy)
       {
-        v6[2](v6);
+        completionCopy[2](completionCopy);
       }
     }
 
@@ -87,43 +87,43 @@
       v8[2] = __64__PLSwipeInteraction_revealActionsForLayoutLocation_completion___block_invoke;
       v8[3] = &unk_278425530;
       v8[4] = self;
-      v10 = a3;
-      v9 = v6;
+      locationCopy = location;
+      v9 = completionCopy;
       [(PLSwipeInteraction *)self hideActionsAnimated:1 fastAnimation:1 completion:v8];
     }
   }
 
   else
   {
-    [(PLSwipeInteraction *)self _addActionButtonsAndRevealAnimated:1 fastAnimation:1 layoutLocation:a3 completion:v6];
+    [(PLSwipeInteraction *)self _addActionButtonsAndRevealAnimated:1 fastAnimation:1 layoutLocation:location completion:completionCopy];
   }
 }
 
-- (void)hideActionsAnimated:(BOOL)a3 fastAnimation:(BOOL)a4 completion:(id)a5
+- (void)hideActionsAnimated:(BOOL)animated fastAnimation:(BOOL)animation completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
-  v11 = a5;
+  animationCopy = animation;
+  animatedCopy = animated;
+  completionCopy = completion;
   [(PLSwipeInteraction *)self setPerformingSwipeHinting:0];
-  v8 = [(PLSwipeInteraction *)self viewToMove];
-  [v8 frame];
+  viewToMove = [(PLSwipeInteraction *)self viewToMove];
+  [viewToMove frame];
   v10 = v9;
 
   if (self->_actionButtonsPresentingView || v10 != 0.0)
   {
     [(UIPanGestureRecognizer *)self->_panGestureRecognizer setState:4];
-    [(PLSwipeInteraction *)self _hideAnimated:v6 fastAnimation:v5 velocity:v11 completion:0.0];
+    [(PLSwipeInteraction *)self _hideAnimated:animatedCopy fastAnimation:animationCopy velocity:completionCopy completion:0.0];
   }
 }
 
-- (id)senderForActionWithIdentifier:(id)a3
+- (id)senderForActionWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(PLActionButtonsPresentingView *)self->_actionButtonsPresentingView actionButtonsView];
-  v6 = v5;
-  if (v5)
+  identifierCopy = identifier;
+  actionButtonsView = [(PLActionButtonsPresentingView *)self->_actionButtonsPresentingView actionButtonsView];
+  v6 = actionButtonsView;
+  if (actionButtonsView)
   {
-    v7 = [v5 senderForActionWithIdentifier:v4];
+    v7 = [actionButtonsView senderForActionWithIdentifier:identifierCopy];
   }
 
   else
@@ -134,28 +134,28 @@
   return v7;
 }
 
-- (void)setMaterialGroupNameBase:(id)a3
+- (void)setMaterialGroupNameBase:(id)base
 {
-  v7 = a3;
+  baseCopy = base;
   if (![(NSString *)self->_materialGroupNameBase isEqualToString:?])
   {
-    objc_storeStrong(&self->_materialGroupNameBase, a3);
-    v5 = [(PLActionButtonsPresentingView *)self->_actionButtonsPresentingView actionButtonsView];
-    v6 = v5;
-    if (v5)
+    objc_storeStrong(&self->_materialGroupNameBase, base);
+    actionButtonsView = [(PLActionButtonsPresentingView *)self->_actionButtonsPresentingView actionButtonsView];
+    v6 = actionButtonsView;
+    if (actionButtonsView)
     {
-      [v5 setMaterialGroupNameBase:v7];
+      [actionButtonsView setMaterialGroupNameBase:baseCopy];
     }
   }
 }
 
-- (void)willMoveToView:(id)a3
+- (void)willMoveToView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   WeakRetained = objc_loadWeakRetained(&self->_view);
 
   v5 = WeakRetained;
-  if (WeakRetained && WeakRetained != v4)
+  if (WeakRetained && WeakRetained != viewCopy)
   {
     [WeakRetained removeGestureRecognizer:self->_panGestureRecognizer];
     defaultActionFeedbackGenerator = self->_defaultActionFeedbackGenerator;
@@ -167,28 +167,28 @@
   }
 }
 
-- (void)didMoveToView:(id)a3
+- (void)didMoveToView:(id)view
 {
-  v6 = a3;
-  objc_storeWeak(&self->_view, v6);
-  if (v6)
+  viewCopy = view;
+  objc_storeWeak(&self->_view, viewCopy);
+  if (viewCopy)
   {
-    [v6 addGestureRecognizer:self->_panGestureRecognizer];
-    v4 = [objc_alloc(MEMORY[0x277D76288]) initWithStyle:1 view:v6];
+    [viewCopy addGestureRecognizer:self->_panGestureRecognizer];
+    v4 = [objc_alloc(MEMORY[0x277D76288]) initWithStyle:1 view:viewCopy];
     defaultActionFeedbackGenerator = self->_defaultActionFeedbackGenerator;
     self->_defaultActionFeedbackGenerator = v4;
   }
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  beginCopy = begin;
   if ([(PLSwipeInteraction *)self _shouldContinuePresentingActionButtons])
   {
     WeakRetained = objc_loadWeakRetained(&self->_view);
     panGestureRecognizer = self->_panGestureRecognizer;
-    if (WeakRetained && panGestureRecognizer == v4)
+    if (WeakRetained && panGestureRecognizer == beginCopy)
     {
       if (self->_actionButtonsPresentingView)
       {
@@ -205,10 +205,10 @@ LABEL_11:
       if (v17)
       {
         v18 = [(PLSwipeInteraction *)self _layoutLocationForInterfaceEdge:v17];
-        v19 = [(PLSwipeInteraction *)self delegate];
+        delegate = [(PLSwipeInteraction *)self delegate];
         if (objc_opt_respondsToSelector())
         {
-          v7 = [v19 swipeInteraction:self shouldRevealActionsFromLayoutLocation:v18];
+          v7 = [delegate swipeInteraction:self shouldRevealActionsFromLayoutLocation:v18];
         }
 
         else
@@ -223,7 +223,7 @@ LABEL_11:
       if (os_log_type_enabled(PLLogInteraction, OS_LOG_TYPE_DEFAULT))
       {
         v21 = 138543362;
-        v22 = self;
+        selfCopy2 = self;
         v10 = "%{public}@: Denying pan gesture. Pan gesture translation and velocity are both 0. Cannot infer edge to reveal action buttons on.";
         v11 = v20;
         v12 = 12;
@@ -238,9 +238,9 @@ LABEL_11:
       {
         v9 = self->_actionButtonsPresentingView != 0;
         v21 = 138543874;
-        v22 = self;
+        selfCopy2 = self;
         v23 = 1026;
-        v24 = panGestureRecognizer == v4;
+        v24 = panGestureRecognizer == beginCopy;
         v25 = 1026;
         v26 = v9;
         v10 = "%{public}@: Denying pan gesture. recognizerMatches: %{public}d actionsRevealed: %{public}d";
@@ -264,10 +264,10 @@ LABEL_12:
 
 - (BOOL)_shouldContinuePresentingActionButtons
 {
-  v3 = [(PLSwipeInteraction *)self delegate];
+  delegate = [(PLSwipeInteraction *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 shouldContinuePresentingActionButtonsForSwipeInteraction:self];
+    v4 = [delegate shouldContinuePresentingActionButtonsForSwipeInteraction:self];
   }
 
   else
@@ -278,25 +278,25 @@ LABEL_12:
   return v4;
 }
 
-- (unint64_t)_interfaceEdgeToPresentOnForInitialPanTranslation:(double)a3 andInitialPanVelocity:(double)a4
+- (unint64_t)_interfaceEdgeToPresentOnForInitialPanTranslation:(double)translation andInitialPanVelocity:(double)velocity
 {
-  if (a3 == 0.0)
+  if (translation == 0.0)
   {
-    a3 = a4;
+    translation = velocity;
   }
 
-  return [(PLSwipeInteraction *)self _interfaceEdgeToPresentOnForComparisonValue:a3];
+  return [(PLSwipeInteraction *)self _interfaceEdgeToPresentOnForComparisonValue:translation];
 }
 
-- (unint64_t)_interfaceEdgeToPresentOnForComparisonValue:(double)a3
+- (unint64_t)_interfaceEdgeToPresentOnForComparisonValue:(double)value
 {
   v3 = 2;
-  if (a3 > 0.0)
+  if (value > 0.0)
   {
     v3 = 1;
   }
 
-  if (a3 == 0.0)
+  if (value == 0.0)
   {
     return 0;
   }
@@ -307,38 +307,38 @@ LABEL_12:
   }
 }
 
-- (unint64_t)_layoutLocationForInterfaceEdge:(unint64_t)a3
+- (unint64_t)_layoutLocationForInterfaceEdge:(unint64_t)edge
 {
-  if (!a3)
+  if (!edge)
   {
     [(PLSwipeInteraction *)a2 _layoutLocationForInterfaceEdge:?];
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_view);
-  v6 = [WeakRetained _shouldReverseLayoutDirection];
+  _shouldReverseLayoutDirection = [WeakRetained _shouldReverseLayoutDirection];
 
   v7 = 1;
-  if (v6)
+  if (_shouldReverseLayoutDirection)
   {
     v7 = 2;
   }
 
-  return v7 != a3;
+  return v7 != edge;
 }
 
-- (unint64_t)_interfaceEdgeForLayoutLocation:(unint64_t)a3
+- (unint64_t)_interfaceEdgeForLayoutLocation:(unint64_t)location
 {
   WeakRetained = objc_loadWeakRetained(&self->_view);
-  v5 = [WeakRetained _shouldReverseLayoutDirection];
+  _shouldReverseLayoutDirection = [WeakRetained _shouldReverseLayoutDirection];
 
-  if (a3)
+  if (location)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v5;
+    v6 = _shouldReverseLayoutDirection;
   }
 
   v7 = v6 == 0;
@@ -348,7 +348,7 @@ LABEL_12:
     v8 = 2;
   }
 
-  if (((a3 == 1) & v5) != 0)
+  if (((location == 1) & _shouldReverseLayoutDirection) != 0)
   {
     return 1;
   }
@@ -416,15 +416,15 @@ LABEL_12:
   return result;
 }
 
-- (void)_handlePanGesture:(id)a3
+- (void)_handlePanGesture:(id)gesture
 {
   v42 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  gestureCopy = gesture;
   [(PLSwipeInteraction *)self setPerformingSwipeHinting:0];
-  v5 = [(PLSwipeInteraction *)self delegate];
+  delegate = [(PLSwipeInteraction *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 swipeInteractionDidSignificantUserInteraction:self];
+    [delegate swipeInteractionDidSignificantUserInteraction:self];
   }
 
   if ([(PLSwipeInteraction *)self _shouldContinuePresentingActionButtons])
@@ -433,8 +433,8 @@ LABEL_12:
     v7 = v6;
     [(PLSwipeInteraction *)self _panHorizontalVelocity];
     v9 = v8;
-    v10 = [v4 state];
-    switch(v10)
+    state = [gestureCopy state];
+    switch(state)
     {
       case 3:
         [(PLSwipeInteraction *)self _updateActionRevealStateForTargetPosition:v7 + self->_panGestureStartingPosition + v9 * 0.05 currentPosition:v7 + self->_panGestureStartingPosition velocity:v9];
@@ -477,9 +477,9 @@ LABEL_12:
       case 1:
         if (_UISolariumEnabled() && (objc_opt_respondsToSelector() & 1) != 0)
         {
-          v11 = ([v5 buttonsGlassBackgroundStateForSwipeInteraction:self] - 1) < 2;
-          v12 = [(PLActionButtonsPresentingView *)self->_actionButtonsPresentingView actionButtonsView];
-          v13 = v11 ^ [v12 hasGlassBackground];
+          v11 = ([delegate buttonsGlassBackgroundStateForSwipeInteraction:self] - 1) < 2;
+          actionButtonsView = [(PLActionButtonsPresentingView *)self->_actionButtonsPresentingView actionButtonsView];
+          v13 = v11 ^ [actionButtonsView hasGlassBackground];
         }
 
         else
@@ -489,19 +489,19 @@ LABEL_12:
 
         if (objc_opt_respondsToSelector())
         {
-          [v5 buttonsGlassLuminanceForSwipeInteraction:self];
+          [delegate buttonsGlassLuminanceForSwipeInteraction:self];
           v20 = v19;
-          v21 = [(PLActionButtonsPresentingView *)self->_actionButtonsPresentingView actionButtonsView];
-          [v21 glassLuminance];
+          actionButtonsView2 = [(PLActionButtonsPresentingView *)self->_actionButtonsPresentingView actionButtonsView];
+          [actionButtonsView2 glassLuminance];
           v13 = v22 != v20;
         }
 
         if (objc_opt_respondsToSelector())
         {
-          v23 = [v5 buttonCustomBackgroundColorForSwipeInteraction:self];
-          v24 = [(PLActionButtonsPresentingView *)self->_actionButtonsPresentingView actionButtonsView];
-          v25 = [v24 customBackgroundColor];
-          v26 = v25 != v23;
+          v23 = [delegate buttonCustomBackgroundColorForSwipeInteraction:self];
+          actionButtonsView3 = [(PLActionButtonsPresentingView *)self->_actionButtonsPresentingView actionButtonsView];
+          customBackgroundColor = [actionButtonsView3 customBackgroundColor];
+          v26 = customBackgroundColor != v23;
         }
 
         else
@@ -512,9 +512,9 @@ LABEL_12:
         actionButtonsPresentingView = self->_actionButtonsPresentingView;
         if (actionButtonsPresentingView)
         {
-          v28 = [(PLActionButtonsPresentingView *)actionButtonsPresentingView actionButtonsView];
+          actionButtonsView4 = [(PLActionButtonsPresentingView *)actionButtonsPresentingView actionButtonsView];
 
-          if (v28 && ((v13 | v26) & 1) != 0)
+          if (actionButtonsView4 && ((v13 | v26) & 1) != 0)
           {
             [(PLSwipeInteraction *)self _removeActionButtons];
           }
@@ -551,7 +551,7 @@ LABEL_12:
 LABEL_36:
           if (objc_opt_respondsToSelector())
           {
-            [v5 swipeInteractionDidBeginRevealingActions:self];
+            [delegate swipeInteractionDidBeginRevealingActions:self];
           }
         }
 
@@ -580,48 +580,48 @@ void __40__PLSwipeInteraction__handlePanGesture___block_invoke(uint64_t a1)
   }
 }
 
-- (double)_updateActionRevealStateForTargetPosition:(double)a3 currentPosition:(double)a4 velocity:(double)a5
+- (double)_updateActionRevealStateForTargetPosition:(double)position currentPosition:(double)currentPosition velocity:(double)velocity
 {
   WeakRetained = objc_loadWeakRetained(&self->_viewToMove);
-  v10 = [(PLActionButtonsPresentingView *)self->_actionButtonsPresentingView interfaceEdge];
+  interfaceEdge = [(PLActionButtonsPresentingView *)self->_actionButtonsPresentingView interfaceEdge];
   actionButtonsPresentingView = self->_actionButtonsPresentingView;
   Width = 0.0;
   if (actionButtonsPresentingView)
   {
-    v13 = fabs(a5);
-    v14 = v10 == 2 ? a5 > 0.0 : a5 < 0.0;
-    v15 = [(PLActionButtonsPresentingView *)actionButtonsPresentingView interfaceEdge];
+    v13 = fabs(velocity);
+    v14 = interfaceEdge == 2 ? velocity > 0.0 : velocity < 0.0;
+    interfaceEdge2 = [(PLActionButtonsPresentingView *)actionButtonsPresentingView interfaceEdge];
     v16 = v13 > 100.0 && v14;
-    v17 = fabs(a3) < 45.0 || v15 == 0;
+    v17 = fabs(position) < 45.0 || interfaceEdge2 == 0;
     if (!v17 && !v16)
     {
       if (![WeakRetained _shouldReverseLayoutDirection])
       {
-        a4 = a3;
+        currentPosition = position;
       }
 
-      v18 = [(PLActionButtonsPresentingView *)self->_actionButtonsPresentingView actionButtonsView];
-      [(PLSwipeInteraction *)self _actionButtonTriggerDistanceForView:v18];
+      actionButtonsView = [(PLActionButtonsPresentingView *)self->_actionButtonsPresentingView actionButtonsView];
+      [(PLSwipeInteraction *)self _actionButtonTriggerDistanceForView:actionButtonsView];
       v20 = v19;
-      v21 = [v18 defaultAction];
+      defaultAction = [actionButtonsView defaultAction];
 
-      if (v21 && fabs(a4) > v20)
+      if (defaultAction && fabs(currentPosition) > v20)
       {
         [WeakRetained bounds];
         Width = CGRectGetWidth(v26);
-        v22 = [(PLActionButtonsPresentingView *)self->_actionButtonsPresentingView interfaceEdge];
+        interfaceEdge3 = [(PLActionButtonsPresentingView *)self->_actionButtonsPresentingView interfaceEdge];
         v23 = -(Width + 8.0);
       }
 
       else
       {
-        [v18 defaultWidth];
+        [actionButtonsView defaultWidth];
         Width = v24 + 8.0;
-        v22 = [(PLActionButtonsPresentingView *)self->_actionButtonsPresentingView interfaceEdge];
+        interfaceEdge3 = [(PLActionButtonsPresentingView *)self->_actionButtonsPresentingView interfaceEdge];
         v23 = -Width;
       }
 
-      if (v22 == 2)
+      if (interfaceEdge3 == 2)
       {
         Width = v23;
       }
@@ -657,35 +657,35 @@ void __40__PLSwipeInteraction__handlePanGesture___block_invoke(uint64_t a1)
   }
 }
 
-- (void)_addActionButtonsAndRevealAnimated:(BOOL)a3 fastAnimation:(BOOL)a4 layoutLocation:(unint64_t)a5 completion:(id)a6
+- (void)_addActionButtonsAndRevealAnimated:(BOOL)animated fastAnimation:(BOOL)animation layoutLocation:(unint64_t)location completion:(id)completion
 {
-  v7 = a4;
-  v8 = a3;
-  v15 = a6;
-  [(PLSwipeInteraction *)self _addActionButtonViewsAtLayoutLocation:a5 interfaceEdge:[(PLSwipeInteraction *)self _interfaceEdgeForLayoutLocation:a5]];
-  v10 = [(PLActionButtonsPresentingView *)self->_actionButtonsPresentingView actionButtonsView];
-  [v10 defaultWidth];
+  animationCopy = animation;
+  animatedCopy = animated;
+  completionCopy = completion;
+  [(PLSwipeInteraction *)self _addActionButtonViewsAtLayoutLocation:location interfaceEdge:[(PLSwipeInteraction *)self _interfaceEdgeForLayoutLocation:location]];
+  actionButtonsView = [(PLActionButtonsPresentingView *)self->_actionButtonsPresentingView actionButtonsView];
+  [actionButtonsView defaultWidth];
   v12 = v11;
 
-  v13 = [(PLActionButtonsPresentingView *)self->_actionButtonsPresentingView interfaceEdge];
+  interfaceEdge = [(PLActionButtonsPresentingView *)self->_actionButtonsPresentingView interfaceEdge];
   v14 = v12 + 8.0;
-  if (v13 == 2)
+  if (interfaceEdge == 2)
   {
     v14 = -(v12 + 8.0);
   }
 
-  [(PLSwipeInteraction *)self _revealToPosition:v8 animated:v7 fastAnimation:v15 velocity:v14 completion:0.0];
+  [(PLSwipeInteraction *)self _revealToPosition:animatedCopy animated:animationCopy fastAnimation:completionCopy velocity:v14 completion:0.0];
 }
 
-- (void)_revealToPosition:(double)a3 animated:(BOOL)a4 fastAnimation:(BOOL)a5 velocity:(double)a6 completion:(id)a7
+- (void)_revealToPosition:(double)position animated:(BOOL)animated fastAnimation:(BOOL)animation velocity:(double)velocity completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v12 = a7;
-  v13 = [(PLSwipeInteraction *)self delegate];
+  animationCopy = animation;
+  animatedCopy = animated;
+  completionCopy = completion;
+  delegate = [(PLSwipeInteraction *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v13 swipeInteractionDidBeginRevealingActions:self];
+    [delegate swipeInteractionDidBeginRevealingActions:self];
   }
 
   objc_initWeak(&location, self);
@@ -694,9 +694,9 @@ void __40__PLSwipeInteraction__handlePanGesture___block_invoke(uint64_t a1)
   v15[2] = __83__PLSwipeInteraction__revealToPosition_animated_fastAnimation_velocity_completion___block_invoke;
   v15[3] = &unk_278425558;
   objc_copyWeak(&v17, &location);
-  v14 = v12;
+  v14 = completionCopy;
   v16 = v14;
-  [(PLSwipeInteraction *)self _setViewPosition:v8 withVelocity:v9 usingNonInteractiveSpring:v15 animated:a3 completion:a6];
+  [(PLSwipeInteraction *)self _setViewPosition:animationCopy withVelocity:animatedCopy usingNonInteractiveSpring:v15 animated:position completion:velocity];
 
   objc_destroyWeak(&v17);
   objc_destroyWeak(&location);
@@ -724,15 +724,15 @@ void __83__PLSwipeInteraction__revealToPosition_animated_fastAnimation_velocity_
   }
 }
 
-- (void)_hideAnimated:(BOOL)a3 fastAnimation:(BOOL)a4 velocity:(double)a5 completion:(id)a6
+- (void)_hideAnimated:(BOOL)animated fastAnimation:(BOOL)animation velocity:(double)velocity completion:(id)completion
 {
-  v7 = a4;
-  v8 = a3;
-  v10 = a6;
-  v11 = [(PLSwipeInteraction *)self delegate];
+  animationCopy = animation;
+  animatedCopy = animated;
+  completionCopy = completion;
+  delegate = [(PLSwipeInteraction *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v11 swipeInteractionDidBeginHidingActions:self];
+    [delegate swipeInteractionDidBeginHidingActions:self];
   }
 
   objc_initWeak(&location, self);
@@ -741,9 +741,9 @@ void __83__PLSwipeInteraction__revealToPosition_animated_fastAnimation_velocity_
   v13[2] = __70__PLSwipeInteraction__hideAnimated_fastAnimation_velocity_completion___block_invoke;
   v13[3] = &unk_278425558;
   objc_copyWeak(&v15, &location);
-  v12 = v10;
+  v12 = completionCopy;
   v14 = v12;
-  [(PLSwipeInteraction *)self _setViewPosition:v7 withVelocity:v8 usingNonInteractiveSpring:v13 animated:0.0 completion:a5];
+  [(PLSwipeInteraction *)self _setViewPosition:animationCopy withVelocity:animatedCopy usingNonInteractiveSpring:v13 animated:0.0 completion:velocity];
 
   objc_destroyWeak(&v15);
   objc_destroyWeak(&location);
@@ -773,21 +773,21 @@ void __70__PLSwipeInteraction__hideAnimated_fastAnimation_velocity_completion___
   }
 }
 
-- (void)_setViewPosition:(double)a3 withVelocity:(double)a4 usingNonInteractiveSpring:(BOOL)a5 animated:(BOOL)a6 completion:(id)a7
+- (void)_setViewPosition:(double)position withVelocity:(double)velocity usingNonInteractiveSpring:(BOOL)spring animated:(BOOL)animated completion:(id)completion
 {
-  v7 = a6;
-  v8 = a5;
-  v12 = a7;
+  animatedCopy = animated;
+  springCopy = spring;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __98__PLSwipeInteraction__setViewPosition_withVelocity_usingNonInteractiveSpring_animated_completion___block_invoke;
   v14[3] = &unk_278425580;
   objc_copyWeak(v16, &location);
-  v16[1] = *&a3;
-  v13 = v12;
+  v16[1] = *&position;
+  v13 = completionCopy;
   v15 = v13;
-  [(PLSwipeInteraction *)self _setViewPositionHelper:v8 withVelocity:v7 usingNonInteractiveSpring:v14 animated:a3 completion:a4];
+  [(PLSwipeInteraction *)self _setViewPositionHelper:springCopy withVelocity:animatedCopy usingNonInteractiveSpring:v14 animated:position completion:velocity];
 
   objc_destroyWeak(v16);
   objc_destroyWeak(&location);
@@ -822,11 +822,11 @@ void __98__PLSwipeInteraction__setViewPosition_withVelocity_usingNonInteractiveS
   }
 }
 
-- (void)_setViewPositionHelper:(double)a3 withVelocity:(double)a4 usingNonInteractiveSpring:(BOOL)a5 animated:(BOOL)a6 completion:(id)a7
+- (void)_setViewPositionHelper:(double)helper withVelocity:(double)velocity usingNonInteractiveSpring:(BOOL)spring animated:(BOOL)animated completion:(id)completion
 {
-  v7 = a6;
-  v8 = a5;
-  v12 = a7;
+  animatedCopy = animated;
+  springCopy = spring;
+  completionCopy = completion;
   animationCompletion = self->_animationCompletion;
   self->_animationCompletion = 0;
 
@@ -835,17 +835,17 @@ void __98__PLSwipeInteraction__setViewPosition_withVelocity_usingNonInteractiveS
 
   v15 = self->_targetPositionAnimatableProperty;
   [(UIViewFloatAnimatableProperty *)v15 value];
-  if (vabdd_f64(v16, a3) >= 2.22044605e-16)
+  if (vabdd_f64(v16, helper) >= 2.22044605e-16)
   {
     v30[0] = MEMORY[0x277D85DD0];
     v30[1] = 3221225472;
     v30[2] = __104__PLSwipeInteraction__setViewPositionHelper_withVelocity_usingNonInteractiveSpring_animated_completion___block_invoke;
     v30[3] = &unk_2784253A0;
     v31 = v15;
-    v32 = a3;
+    helperCopy = helper;
     v19 = MEMORY[0x223D70F60](v30);
-    v20 = MEMORY[0x223D70F60](v12);
-    if (v7)
+    v20 = MEMORY[0x223D70F60](completionCopy);
+    if (animatedCopy)
     {
       v21 = self->_animationCompletion;
       self->_animationCompletion = v20;
@@ -858,14 +858,14 @@ void __98__PLSwipeInteraction__setViewPosition_withVelocity_usingNonInteractiveS
       v27 = &unk_2784255A8;
       objc_copyWeak(&v28, &location);
       v22 = MEMORY[0x223D70F60](&v24);
-      if (v8)
+      if (springCopy)
       {
         [MEMORY[0x277D75D18] _animateUsingSpringInteractive:0 animations:v19 completion:{v22, v24, v25, v26, v27}];
       }
 
       else
       {
-        [MEMORY[0x277D75D18] _animateUsingSpringWithTension:0 friction:v19 interactive:v22 animations:fabs(a4) * 0.1 + 180.0 completion:{25.0, v24, v25, v26, v27}];
+        [MEMORY[0x277D75D18] _animateUsingSpringWithTension:0 friction:v19 interactive:v22 animations:fabs(velocity) * 0.1 + 180.0 completion:{25.0, v24, v25, v26, v27}];
       }
 
       objc_destroyWeak(&v28);
@@ -886,15 +886,15 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  if (v12)
+  if (completionCopy)
   {
     if (!self->_animationCount)
     {
-      v12[2](v12);
+      completionCopy[2](completionCopy);
       goto LABEL_13;
     }
 
-    v17 = MEMORY[0x223D70F60](v12);
+    v17 = MEMORY[0x223D70F60](completionCopy);
     v18 = self->_animationCompletion;
     self->_animationCompletion = v17;
     goto LABEL_12;
@@ -938,14 +938,14 @@ void __104__PLSwipeInteraction__setViewPositionHelper_withVelocity_usingNonInter
   }
 }
 
-- (double)_actionButtonTriggerDistanceForView:(id)a3
+- (double)_actionButtonTriggerDistanceForView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   WeakRetained = objc_loadWeakRetained(&self->_viewToMove);
   [WeakRetained bounds];
   Width = CGRectGetWidth(v10);
 
-  [v4 defaultWidth];
+  [viewCopy defaultWidth];
   v8 = v7;
 
   return fmax(Width * 0.5, (v8 + 8.0) * 1.1);
@@ -993,22 +993,22 @@ uint64_t __64__PLSwipeInteraction__setupContentOffsetFloatAnimatableProperty__bl
   return MEMORY[0x2821F96F8](WeakRetained, v2);
 }
 
-- (void)_updateTargetPosition:(double)a3
+- (void)_updateTargetPosition:(double)position
 {
   [(PLSwipeInteraction *)self _updatePosition:?];
 
-  [(PLSwipeInteraction *)self _updateActionButtonRevealPercentageForTargetPosition:a3];
+  [(PLSwipeInteraction *)self _updateActionButtonRevealPercentageForTargetPosition:position];
 }
 
-- (void)_updatePosition:(double)a3
+- (void)_updatePosition:(double)position
 {
   WeakRetained = objc_loadWeakRetained(&self->_viewToMove);
   [WeakRetained frame];
-  [WeakRetained setFrame:a3];
-  v5 = [(PLSwipeInteraction *)self delegate];
+  [WeakRetained setFrame:position];
+  delegate = [(PLSwipeInteraction *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 swipeInteraction:self didMoveToNewXPosition:a3];
+    [delegate swipeInteraction:self didMoveToNewXPosition:position];
   }
 
   v6 = MEMORY[0x223D70F60](self->_performWithoutRetargetingAnimationCompletion);
@@ -1021,16 +1021,16 @@ uint64_t __64__PLSwipeInteraction__setupContentOffsetFloatAnimatableProperty__bl
   }
 }
 
-- (void)_updateActionButtonRevealPercentageForTargetPosition:(double)a3
+- (void)_updateActionButtonRevealPercentageForTargetPosition:(double)position
 {
   WeakRetained = objc_loadWeakRetained(&self->_viewToMove);
   [WeakRetained bounds];
   Width = CGRectGetWidth(v16);
-  v6 = [(PLActionButtonsPresentingView *)self->_actionButtonsPresentingView actionButtonsView];
+  actionButtonsView = [(PLActionButtonsPresentingView *)self->_actionButtonsPresentingView actionButtonsView];
   v7 = 8.0;
   if (_UISolariumEnabled())
   {
-    if ([v6 hasGlassBackground])
+    if ([actionButtonsView hasGlassBackground])
     {
       v7 = 0.0;
     }
@@ -1041,55 +1041,55 @@ uint64_t __64__PLSwipeInteraction__setupContentOffsetFloatAnimatableProperty__bl
     }
   }
 
-  v8 = fabs(a3);
+  v8 = fabs(position);
   if (v8 <= v7)
   {
     [(PLSwipeInteraction *)self _updateRevealPercentage:0.0];
-    [v6 setHighlightDefaultActionButton:0];
+    [actionButtonsView setHighlightDefaultActionButton:0];
   }
 
   else
   {
-    if (v6)
+    if (actionButtonsView)
     {
-      [v6 defaultWidth];
+      [actionButtonsView defaultWidth];
       if (v9 > 0.0)
       {
-        [v6 defaultWidth];
+        [actionButtonsView defaultWidth];
         [(PLSwipeInteraction *)self _updateRevealPercentage:(v8 - v7) / v10];
       }
     }
 
-    [(PLSwipeInteraction *)self _actionButtonTriggerDistanceForView:v6];
+    [(PLSwipeInteraction *)self _actionButtonTriggerDistanceForView:actionButtonsView];
     v12 = v11;
-    [v6 setHighlightDefaultActionButton:v8 > v11];
-    if (v8 > v12 && [v6 actionButtonCount] >= 2)
+    [actionButtonsView setHighlightDefaultActionButton:v8 > v11];
+    if (v8 > v12 && [actionButtonsView actionButtonCount] >= 2)
     {
       [(PLSwipeInteraction *)self _actuateFeedbackForDefaultActionLockedIfNecessary];
     }
 
     if ([(UIPanGestureRecognizer *)self->_panGestureRecognizer state]!= 2 && v8 > Width * 0.98 && ![(PLActionButtonsPresentingView *)self->_actionButtonsPresentingView defaultActionTriggered])
     {
-      v13 = [v6 defaultAction];
-      [v13 performWithSender:self target:0];
+      defaultAction = [actionButtonsView defaultAction];
+      [defaultAction performWithSender:self target:0];
       [(PLActionButtonsPresentingView *)self->_actionButtonsPresentingView setDefaultActionTriggered:1];
     }
   }
 }
 
-- (void)_updateRevealPercentage:(double)a3
+- (void)_updateRevealPercentage:(double)percentage
 {
   actionButtonsPresentingView = self->_actionButtonsPresentingView;
-  if (a3 > 0.0)
+  if (percentage > 0.0)
   {
-    v72 = [(PLActionButtonsPresentingView *)actionButtonsPresentingView actionButtonsView];
-    [v72 defaultWidth];
+    actionButtonsView = [(PLActionButtonsPresentingView *)actionButtonsPresentingView actionButtonsView];
+    [actionButtonsView defaultWidth];
     v7 = v6;
-    if (![v72 hasGlassBackground])
+    if (![actionButtonsView hasGlassBackground])
     {
-      if (v7 * a3 >= 30.0)
+      if (v7 * percentage >= 30.0)
       {
-        v17 = v7 * a3;
+        v17 = v7 * percentage;
       }
 
       else
@@ -1097,7 +1097,7 @@ uint64_t __64__PLSwipeInteraction__setupContentOffsetFloatAnimatableProperty__bl
         v17 = 30.0;
       }
 
-      [(PLActionButtonsPresentingView *)self->_actionButtonsPresentingView setAlpha:fmin(a3, 1.0) * ((v17 + -30.0) / (v7 * 0.5 + -30.0))];
+      [(PLActionButtonsPresentingView *)self->_actionButtonsPresentingView setAlpha:fmin(percentage, 1.0) * ((v17 + -30.0) / (v7 * 0.5 + -30.0))];
 LABEL_34:
       WeakRetained = objc_loadWeakRetained(&self->_viewToMove);
       [WeakRetained frame];
@@ -1106,9 +1106,9 @@ LABEL_34:
       v43 = v42;
       v45 = v44;
       [(PLActionButtonsPresentingView *)self->_actionButtonsPresentingView frame];
-      v46 = [(PLActionButtonsPresentingView *)self->_actionButtonsPresentingView interfaceEdge];
+      interfaceEdge = [(PLActionButtonsPresentingView *)self->_actionButtonsPresentingView interfaceEdge];
       v47 = 0.0;
-      if (v46 == 2)
+      if (interfaceEdge == 2)
       {
         v74.origin.x = v39;
         v74.origin.y = v41;
@@ -1117,14 +1117,14 @@ LABEL_34:
         v47 = CGRectGetWidth(v74) - v17;
       }
 
-      v48 = [(PLActionButtonsPresentingView *)self->_actionButtonsPresentingView actionButtonsView];
-      v49 = [v48 isVerticallyStacked];
+      actionButtonsView2 = [(PLActionButtonsPresentingView *)self->_actionButtonsPresentingView actionButtonsView];
+      isVerticallyStacked = [actionButtonsView2 isVerticallyStacked];
 
-      if (v49)
+      if (isVerticallyStacked)
       {
         v50 = MEMORY[0x277D76620];
-        v51 = [*MEMORY[0x277D76620] preferredContentSizeCategory];
-        if (UIContentSizeCategoryIsAccessibilityCategory(v51))
+        preferredContentSizeCategory = [*MEMORY[0x277D76620] preferredContentSizeCategory];
+        if (UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory))
         {
           v52 = 0.0;
         }
@@ -1150,8 +1150,8 @@ LABEL_34:
         v77.size.width = v43;
         v77.size.height = v45;
         Height = CGRectGetHeight(v77);
-        v56 = [*v50 preferredContentSizeCategory];
-        IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v56);
+        preferredContentSizeCategory2 = [*v50 preferredContentSizeCategory];
+        IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory2);
         v58 = 0.6;
         if (IsAccessibilityCategory)
         {
@@ -1176,10 +1176,10 @@ LABEL_34:
       }
 
       [(PLActionButtonsPresentingView *)self->_actionButtonsPresentingView setFrame:v47, v54, v17, v59];
-      [v72 setStretchedWidth:v17];
-      [v72 setNeedsLayout];
-      [v72 sizeToFit];
-      [v72 frame];
+      [actionButtonsView setStretchedWidth:v17];
+      [actionButtonsView setNeedsLayout];
+      [actionButtonsView sizeToFit];
+      [actionButtonsView frame];
       v61 = v60;
       v63 = v62;
       v65 = v64;
@@ -1191,7 +1191,7 @@ LABEL_34:
       v81.size.width = v65;
       v81.size.height = v67;
       v69 = MaxX - CGRectGetWidth(v81);
-      if (v46 == 2)
+      if (interfaceEdge == 2)
       {
         v70 = v69;
       }
@@ -1201,7 +1201,7 @@ LABEL_34:
         v70 = *MEMORY[0x277CBF348];
       }
 
-      if (v46 == 2)
+      if (interfaceEdge == 2)
       {
         v71 = 0.0;
       }
@@ -1215,35 +1215,35 @@ LABEL_34:
       v82.origin.y = v71;
       v82.size.width = v65;
       v82.size.height = v67;
-      [v72 setFrame:{v70, v71, CGRectGetWidth(v82), v59}];
+      [actionButtonsView setFrame:{v70, v71, CGRectGetWidth(v82), v59}];
       [(PLActionButtonsPresentingView *)self->_actionButtonsPresentingView setHidden:0];
 
       return;
     }
 
-    v8 = [v72 buttonsStackView];
-    v9 = [v8 arrangedSubviews];
-    [v8 spacing];
+    buttonsStackView = [actionButtonsView buttonsStackView];
+    arrangedSubviews = [buttonsStackView arrangedSubviews];
+    [buttonsStackView spacing];
     v11 = v10;
     v12 = -v10;
-    v13 = fmin(a3, 1.0) * v7;
+    v13 = fmin(percentage, 1.0) * v7;
     v14 = objc_loadWeakRetained(&self->_view);
-    v15 = [v14 _shouldReverseLayoutDirection];
+    _shouldReverseLayoutDirection = [v14 _shouldReverseLayoutDirection];
 
-    v16 = [(PLActionButtonsPresentingView *)self->_actionButtonsPresentingView interfaceEdge];
-    if (v15)
+    interfaceEdge2 = [(PLActionButtonsPresentingView *)self->_actionButtonsPresentingView interfaceEdge];
+    if (_shouldReverseLayoutDirection)
     {
-      if (v16 != 1)
+      if (interfaceEdge2 != 1)
       {
         goto LABEL_15;
       }
     }
 
-    else if (v16 != 2)
+    else if (interfaceEdge2 != 2)
     {
 LABEL_15:
-      v20 = -(v11 - a3 * v7);
-      v21 = [v9 count];
+      v20 = -(v11 - percentage * v7);
+      v21 = [arrangedSubviews count];
       v22 = (v7 + v12 * (v21 - 1)) / v21;
       v23 = v13 / (v11 + v22);
       v24 = vcvtms_u32_f32(v23);
@@ -1281,13 +1281,13 @@ LABEL_15:
 
         do
         {
-          v32 = [v9 objectAtIndexedSubscript:v27];
+          v32 = [arrangedSubviews objectAtIndexedSubscript:v27];
           v33 = v32;
           v34 = 0.0;
           if (v27 <= v25)
           {
             v34 = 1.0;
-            if (v25 == v27 && a3 < 1.0)
+            if (v25 == v27 && percentage < 1.0)
             {
               v36 = v31;
             }
@@ -1314,28 +1314,28 @@ LABEL_15:
       goto LABEL_34;
     }
 
-    v18 = [v9 reverseObjectEnumerator];
-    v19 = [v18 allObjects];
+    reverseObjectEnumerator = [arrangedSubviews reverseObjectEnumerator];
+    allObjects = [reverseObjectEnumerator allObjects];
 
-    v9 = v19;
+    arrangedSubviews = allObjects;
     goto LABEL_15;
   }
 
   [(PLActionButtonsPresentingView *)actionButtonsPresentingView setHidden:1];
 }
 
-- (void)_addActionButtonViewsAtLayoutLocation:(unint64_t)a3 interfaceEdge:(unint64_t)a4
+- (void)_addActionButtonViewsAtLayoutLocation:(unint64_t)location interfaceEdge:(unint64_t)edge
 {
   v39 = *MEMORY[0x277D85DE8];
-  v7 = [(PLSwipeInteraction *)self delegate];
-  if ((objc_opt_respondsToSelector() & 1) == 0 || ![v7 swipeInteraction:self shouldRevealActionsFromLayoutLocation:a3])
+  delegate = [(PLSwipeInteraction *)self delegate];
+  if ((objc_opt_respondsToSelector() & 1) == 0 || ![delegate swipeInteraction:self shouldRevealActionsFromLayoutLocation:location])
   {
     goto LABEL_26;
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v8 = [v7 swipeInteraction:self actionsToRevealFromLayoutLocation:a3];
+    v8 = [delegate swipeInteraction:self actionsToRevealFromLayoutLocation:location];
     v9 = v8;
     if (v8 && [v8 count])
     {
@@ -1421,7 +1421,7 @@ LABEL_37:
     goto LABEL_38;
   }
 
-  if ((objc_opt_respondsToSelector() & 1) == 0 || ([v7 viewToMoveForSwipeInteraction:self], (v17 = objc_claimAutoreleasedReturnValue()) == 0))
+  if ((objc_opt_respondsToSelector() & 1) == 0 || ([delegate viewToMoveForSwipeInteraction:self], (v17 = objc_claimAutoreleasedReturnValue()) == 0))
   {
     if (os_log_type_enabled(PLLogInteraction, OS_LOG_TYPE_DEBUG))
     {
@@ -1439,7 +1439,7 @@ LABEL_37:
     objc_storeWeak(&self->_viewToMove, v18);
     if ([v10 count] >= 2 && (objc_opt_respondsToSelector() & 1) != 0)
     {
-      v32 = [v7 shouldVerticallyStackButtonsForSwipeInteraction:self];
+      v32 = [delegate shouldVerticallyStackButtonsForSwipeInteraction:self];
     }
 
     else
@@ -1449,15 +1449,15 @@ LABEL_37:
 
     if (objc_opt_respondsToSelector())
     {
-      [v7 buttonsCornerRadiusForSwipeInteraction:self];
+      [delegate buttonsCornerRadiusForSwipeInteraction:self];
     }
 
-    v33 = a4;
+    edgeCopy = edge;
     if (_UISolariumEnabled())
     {
       if (objc_opt_respondsToSelector())
       {
-        v21 = [v7 buttonsGlassBackgroundStateForSwipeInteraction:self];
+        v21 = [delegate buttonsGlassBackgroundStateForSwipeInteraction:self];
         v22 = (v21 - 1) < 2;
       }
 
@@ -1469,12 +1469,12 @@ LABEL_37:
 
       if (objc_opt_respondsToSelector())
       {
-        [v7 buttonsGlassBackgroundSmoothnessForSwipeInteraction:self];
+        [delegate buttonsGlassBackgroundSmoothnessForSwipeInteraction:self];
       }
 
       if (objc_opt_respondsToSelector())
       {
-        v23 = [v7 buttonsGlassBackgroundIdForSwipeInteraction:self];
+        v23 = [delegate buttonsGlassBackgroundIdForSwipeInteraction:self];
       }
 
       else
@@ -1484,7 +1484,7 @@ LABEL_37:
 
       if (objc_opt_respondsToSelector())
       {
-        [v7 buttonsGlassLuminanceForSwipeInteraction:self];
+        [delegate buttonsGlassLuminanceForSwipeInteraction:self];
       }
     }
 
@@ -1502,7 +1502,7 @@ LABEL_37:
     {
       if (objc_opt_respondsToSelector())
       {
-        v26 = [v7 buttonCustomBackgroundColorForSwipeInteraction:self];
+        v26 = [delegate buttonCustomBackgroundColorForSwipeInteraction:self];
         [(PLPlatterActionButtonsView *)v25 setCustomBackgroundColor:v26];
         [(PLPlatterActionButtonsView *)v25 setBackgroundMaterialRecipe:0];
         [(PLPlatterActionButtonsView *)v25 setMaterialGroupNameBase:0];
@@ -1510,7 +1510,7 @@ LABEL_37:
 
       else if (objc_opt_respondsToSelector())
       {
-        v27 = [v7 buttonsRecipeForSwipeInteraction:self];
+        v27 = [delegate buttonsRecipeForSwipeInteraction:self];
         [(PLPlatterActionButtonsView *)v25 setCustomBackgroundColor:0];
         [(PLPlatterActionButtonsView *)v25 setBackgroundMaterialRecipe:v27];
         [(PLPlatterActionButtonsView *)v25 setMaterialGroupNameBase:self->_materialGroupNameBase];
@@ -1518,18 +1518,18 @@ LABEL_37:
 
       if (objc_opt_respondsToSelector())
       {
-        v28 = [v7 buttonsTintColorForSwipeInteraction:self];
+        v28 = [delegate buttonsTintColorForSwipeInteraction:self];
         [(PLPlatterActionButtonsView *)v25 setBackgroundTintColor:v28];
       }
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v29 = [v7 buttonsTextColorForSwipeInteraction:self];
+      v29 = [delegate buttonsTextColorForSwipeInteraction:self];
       [(PLPlatterActionButtonsView *)v25 setTextColor:v29];
     }
 
-    v30 = [[PLActionButtonsPresentingView alloc] initWithActionButtonsView:v25 interfaceEdge:v33 layoutLocation:a3];
+    v30 = [[PLActionButtonsPresentingView alloc] initWithActionButtonsView:v25 interfaceEdge:edgeCopy layoutLocation:location];
     actionButtonsPresentingView = self->_actionButtonsPresentingView;
     self->_actionButtonsPresentingView = v30;
 
@@ -1551,12 +1551,12 @@ LABEL_38:
   [(PLSwipeInteraction *)self setDidPlayHaptic:0];
 }
 
-- (void)setPerformingSwipeHinting:(BOOL)a3
+- (void)setPerformingSwipeHinting:(BOOL)hinting
 {
-  if (self->_performingSwipeHinting != a3)
+  if (self->_performingSwipeHinting != hinting)
   {
-    self->_performingSwipeHinting = a3;
-    if (!a3)
+    self->_performingSwipeHinting = hinting;
+    if (!hinting)
     {
       dispatch_block_cancel(self->_swipeHintingHideAnimationBlock);
       swipeHintingHideAnimationBlock = self->_swipeHintingHideAnimationBlock;
@@ -1565,7 +1565,7 @@ LABEL_38:
   }
 }
 
-- (void)_performSwipeHintingForLayoutLocation:(unint64_t)a3
+- (void)_performSwipeHintingForLayoutLocation:(unint64_t)location
 {
   if (self->_actionButtonsPresentingView)
   {
@@ -1576,7 +1576,7 @@ LABEL_38:
   else
   {
     [(PLSwipeInteraction *)self setPerformingSwipeHinting:1];
-    [(PLSwipeInteraction *)self _addActionButtonsAndRevealAnimated:1 fastAnimation:0 layoutLocation:a3 completion:0];
+    [(PLSwipeInteraction *)self _addActionButtonsAndRevealAnimated:1 fastAnimation:0 layoutLocation:location completion:0];
     objc_initWeak(&location, self);
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;

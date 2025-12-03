@@ -1,18 +1,18 @@
 @interface ASCompetitionGraphView
 + (id)companionGraph;
 + (id)gizmoGraph;
-- (ASCompetitionGraphView)initWithFrame:(CGRect)a3;
-- (double)_firstBarOriginXForDateLabelOriginX:(double)result dateLabelWidth:(double)a4;
-- (double)_percentForScoreAtIndex:(unint64_t)a3 scores:(id)a4 maxScore:(unint64_t)a5;
+- (ASCompetitionGraphView)initWithFrame:(CGRect)frame;
+- (double)_firstBarOriginXForDateLabelOriginX:(double)result dateLabelWidth:(double)width;
+- (double)_percentForScoreAtIndex:(unint64_t)index scores:(id)scores maxScore:(unint64_t)score;
 - (double)lastBaselineY;
 - (id)_allScores;
-- (id)_attributesForDateLabelWithDate:(id)a3;
+- (id)_attributesForDateLabelWithDate:(id)date;
 - (unint64_t)_maxDailyScore;
 - (unint64_t)_minDailyScore;
-- (void)drawRect:(CGRect)a3;
+- (void)drawRect:(CGRect)rect;
 - (void)layoutSubviews;
-- (void)setCompetition:(id)a3;
-- (void)setDateFormat:(id)a3;
+- (void)setCompetition:(id)competition;
+- (void)setDateFormat:(id)format;
 @end
 
 @implementation ASCompetitionGraphView
@@ -21,8 +21,8 @@
 {
   v2 = [ASCompetitionGraphView alloc];
   v3 = [(ASCompetitionGraphView *)v2 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
-  v4 = [MEMORY[0x277D75348] clearColor];
-  [(ASCompetitionGraphView *)v3 setBackgroundColor:v4];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [(ASCompetitionGraphView *)v3 setBackgroundColor:clearColor];
 
   [(ASCompetitionGraphView *)v3 setAlignment:1];
   [(ASCompetitionGraphView *)v3 setDateFormat:@"EEE"];
@@ -43,12 +43,12 @@
   v7 = [MEMORY[0x277D74300] defaultFontForTextStyle:v5];
   [(ASCompetitionGraphView *)v3 setDateFont:v7];
 
-  v8 = [(ASCompetitionGraphView *)v3 currentDateFont];
-  [v8 _scaledValueForValue:13.0];
+  currentDateFont = [(ASCompetitionGraphView *)v3 currentDateFont];
+  [currentDateFont _scaledValueForValue:13.0];
   [(ASCompetitionGraphView *)v3 setDayLabelBaselineOffset:?];
 
-  v9 = [MEMORY[0x277D75348] fu_systemTextGreyColor];
-  [(ASCompetitionGraphView *)v3 setDateColor:v9];
+  fu_systemTextGreyColor = [MEMORY[0x277D75348] fu_systemTextGreyColor];
+  [(ASCompetitionGraphView *)v3 setDateColor:fu_systemTextGreyColor];
 
   return v3;
 }
@@ -71,22 +71,22 @@
   v5 = [MEMORY[0x277D74300] fu_mediumSausageFontOfSize:11.0];
   [(ASCompetitionGraphView *)v3 setDateFont:v5];
 
-  v6 = [MEMORY[0x277D75348] whiteColor];
-  [(ASCompetitionGraphView *)v3 setDateColor:v6];
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  [(ASCompetitionGraphView *)v3 setDateColor:whiteColor];
 
-  v7 = [MEMORY[0x277D75348] blackColor];
-  [(ASCompetitionGraphView *)v3 setHighlightedDateColor:v7];
+  blackColor = [MEMORY[0x277D75348] blackColor];
+  [(ASCompetitionGraphView *)v3 setHighlightedDateColor:blackColor];
 
   [(ASCompetitionGraphView *)v3 setBottomPadding:5.0];
 
   return v3;
 }
 
-- (ASCompetitionGraphView)initWithFrame:(CGRect)a3
+- (ASCompetitionGraphView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = ASCompetitionGraphView;
-  v3 = [(ASCompetitionGraphView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(ASCompetitionGraphView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x277CCA968]);
@@ -104,35 +104,35 @@
   v4.receiver = self;
   v4.super_class = ASCompetitionGraphView;
   [(ASCompetitionGraphView *)&v4 layoutSubviews];
-  v3 = [(ASCompetitionGraphView *)self layer];
-  [v3 setNeedsDisplay];
+  layer = [(ASCompetitionGraphView *)self layer];
+  [layer setNeedsDisplay];
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v149 = *MEMORY[0x277D85DE8];
-  v8 = [(ASCompetition *)self->_competition durationDateComponents];
-  v9 = [v8 day];
+  durationDateComponents = [(ASCompetition *)self->_competition durationDateComponents];
+  v9 = [durationDateComponents day];
 
   if ([(ASCompetition *)self->_competition isDailyScoreCapped])
   {
-    v134 = [(ASCompetition *)self->_competition maximumNumberOfPointsPerDay];
+    maximumNumberOfPointsPerDay = [(ASCompetition *)self->_competition maximumNumberOfPointsPerDay];
   }
 
   else
   {
-    v10 = [(ASCompetitionGraphView *)self _maxDailyScore];
+    _maxDailyScore = [(ASCompetitionGraphView *)self _maxDailyScore];
     v11 = 100;
-    if (v10 > 0x64)
+    if (_maxDailyScore > 0x64)
     {
-      v11 = v10;
+      v11 = _maxDailyScore;
     }
 
-    v134 = v11;
+    maximumNumberOfPointsPerDay = v11;
   }
 
   barWidth = self->_barWidth;
@@ -146,7 +146,7 @@
   v129 = CGPathCreateMutable();
   v123 = CGPathCreateMutable();
   v136 = CGPathCreateMutable();
-  v122 = [MEMORY[0x277D75348] as_competitionGraphBackgroundGold];
+  as_competitionGraphBackgroundGold = [MEMORY[0x277D75348] as_competitionGraphBackgroundGold];
   v137 = [MEMORY[0x277D75348] as_colorForParticipant:0 competition:self->_competition];
   v121 = [v137 colorWithAlphaComponent:0.5];
   v135 = [MEMORY[0x277D75348] as_colorForParticipant:1 competition:self->_competition];
@@ -161,8 +161,8 @@
   CGContextSetLineWidth(CurrentContext, self->_barWidth);
   c = CurrentContext;
   CGContextSetLineCap(CurrentContext, kCGLineCapButt);
-  v17 = [(ASCompetition *)self->_competition startDate];
-  v18 = v17;
+  startDate = [(ASCompetition *)self->_competition startDate];
+  v18 = startDate;
   v118 = v14;
   if (v9)
   {
@@ -172,13 +172,13 @@
     v125 = *MEMORY[0x277D740A8];
     v126 = *MEMORY[0x277D740C0];
     v20 = 0x27E34E000uLL;
-    v21 = v17;
+    v21 = startDate;
     v127 = v15;
     v133 = v9;
     do
     {
-      v22 = [MEMORY[0x277CBEAA8] date];
-      v140 = [v21 hk_isAfterDate:v22];
+      date = [MEMORY[0x277CBEAA8] date];
+      v140 = [v21 hk_isAfterDate:date];
 
       v23 = self->_horizontalInset + v19 * v131;
       v24 = [(ASCompetitionGraphView *)self _attributesForDateLabelWithDate:v21];
@@ -199,8 +199,8 @@
 
       if (self->_highlightsCurrentDay)
       {
-        v31 = [MEMORY[0x277CBEA80] hk_gregorianCalendar];
-        v32 = [v31 isDateInToday:v21];
+        hk_gregorianCalendar = [MEMORY[0x277CBEA80] hk_gregorianCalendar];
+        v32 = [hk_gregorianCalendar isDateInToday:v21];
 
         v33 = &OBJC_IVAR___ASCompetitionGraphView__dateFont;
         if (v32)
@@ -241,12 +241,12 @@
         v155.size.height = v28;
         v139 = v38;
         v42 = CGRectGetMidY(v155) + -6.5;
-        v43 = [v39 CGColor];
+        cGColor = [v39 CGColor];
 
-        v147 = v43;
-        v44 = [v40 CGColor];
+        v147 = cGColor;
+        cGColor2 = [v40 CGColor];
 
-        v148 = v44;
+        v148 = cGColor2;
         v45 = [MEMORY[0x277CBEA60] arrayWithObjects:&v147 count:2];
         v46 = CGGradientCreateWithColors(0, v45, 0);
 
@@ -350,12 +350,12 @@
 
       v75 = self->_maxBarHeight + v74;
       v76 = v72 + self->_barWidth + self->_spaceBetweenBars;
-      v77 = [(ASCompetition *)self->_competition opponentScores];
-      [(ASCompetitionGraphView *)self _percentForScoreAtIndex:v19 scores:v77 maxScore:v134];
+      opponentScores = [(ASCompetition *)self->_competition opponentScores];
+      [(ASCompetitionGraphView *)self _percentForScoreAtIndex:v19 scores:opponentScores maxScore:maximumNumberOfPointsPerDay];
       v79 = v78;
 
-      v80 = [(ASCompetition *)self->_competition scores];
-      [(ASCompetitionGraphView *)self _percentForScoreAtIndex:v19 scores:v80 maxScore:v134];
+      scores = [(ASCompetition *)self->_competition scores];
+      [(ASCompetitionGraphView *)self _percentForScoreAtIndex:v19 scores:scores maxScore:maximumNumberOfPointsPerDay];
       v82 = v81;
 
       v83 = v79 * self->_maxBarHeight;
@@ -416,8 +416,8 @@ LABEL_34:
       v163.size.width = v100;
       v163.size.height = v101;
       CGPathAddRoundedRect(v136, 0, v163, v99, v99);
-      v102 = [MEMORY[0x277CBEA80] hk_gregorianCalendar];
-      v18 = [v102 dateByAddingUnit:16 value:1 toDate:v21 options:0];
+      hk_gregorianCalendar2 = [MEMORY[0x277CBEA80] hk_gregorianCalendar];
+      v18 = [hk_gregorianCalendar2 dateByAddingUnit:16 value:1 toDate:v21 options:0];
 
       ++v19;
       v21 = v18;
@@ -457,9 +457,9 @@ LABEL_34:
     while (v103 != 4);
     [(ASCompetitionGraphView *)self maxBarHeight];
     v108 = MEMORY[0x277D74300];
-    v109 = v122;
+    v109 = as_competitionGraphBackgroundGold;
     v110 = [v108 fu_sausageFontOfSize:13.0];
-    v111 = ASCompetitionZeroPaddedScoreString(v134);
+    v111 = ASCompetitionZeroPaddedScoreString(maximumNumberOfPointsPerDay);
     v112 = objc_alloc(MEMORY[0x277CCA898]);
     v113 = *MEMORY[0x277D740C0];
     v146[0] = *MEMORY[0x277D740A8];
@@ -473,9 +473,9 @@ LABEL_34:
     [v115 drawInRect:{v118 - v116 + -1.0, 0.0, v116, v117}];
   }
 
-  _DrawPathWithColor(c, Mutable, v122);
-  _DrawPathWithColor(c, v15, v122);
-  _DrawPathWithColor(c, v136, v122);
+  _DrawPathWithColor(c, Mutable, as_competitionGraphBackgroundGold);
+  _DrawPathWithColor(c, v15, as_competitionGraphBackgroundGold);
+  _DrawPathWithColor(c, v136, as_competitionGraphBackgroundGold);
   _DrawPathWithColor(c, v130, v137);
   _DrawPathWithColor(c, path, v121);
   _DrawPathWithColor(c, v129, v135);
@@ -490,16 +490,16 @@ LABEL_34:
   UIGraphicsPopContext();
 }
 
-- (void)setCompetition:(id)a3
+- (void)setCompetition:(id)competition
 {
-  objc_storeStrong(&self->_competition, a3);
+  objc_storeStrong(&self->_competition, competition);
 
   [(ASCompetitionGraphView *)self setNeedsLayout];
 }
 
-- (void)setDateFormat:(id)a3
+- (void)setDateFormat:(id)format
 {
-  [(NSDateFormatter *)self->_dateFormatter setDateFormat:a3];
+  [(NSDateFormatter *)self->_dateFormatter setDateFormat:format];
 
   [(ASCompetitionGraphView *)self setNeedsLayout];
 }
@@ -524,7 +524,7 @@ LABEL_34:
   return v3 + v4 + maxBarHeight + v7;
 }
 
-- (id)_attributesForDateLabelWithDate:(id)a3
+- (id)_attributesForDateLabelWithDate:(id)date
 {
   v18[2] = *MEMORY[0x277D85DE8];
   v4 = &OBJC_IVAR___ASCompetitionGraphView__dateFont;
@@ -532,9 +532,9 @@ LABEL_34:
   if (self->_highlightsCurrentDay)
   {
     v6 = MEMORY[0x277CBEA80];
-    v7 = a3;
-    v8 = [v6 hk_gregorianCalendar];
-    v9 = [v8 isDateInToday:v7];
+    dateCopy = date;
+    hk_gregorianCalendar = [v6 hk_gregorianCalendar];
+    v9 = [hk_gregorianCalendar isDateInToday:dateCopy];
 
     if (v9)
     {
@@ -557,11 +557,11 @@ LABEL_34:
   return v15;
 }
 
-- (double)_firstBarOriginXForDateLabelOriginX:(double)result dateLabelWidth:(double)a4
+- (double)_firstBarOriginXForDateLabelOriginX:(double)result dateLabelWidth:(double)width
 {
   if (!self->_alignment)
   {
-    result = a4 * 0.5 + result - self->_barWidth - self->_spaceBetweenBars * 0.5;
+    result = width * 0.5 + result - self->_barWidth - self->_spaceBetweenBars * 0.5;
   }
 
   if (self->_showsBackgroundDateGuide)
@@ -575,12 +575,12 @@ LABEL_34:
 - (unint64_t)_maxDailyScore
 {
   v15 = *MEMORY[0x277D85DE8];
-  v2 = [(ASCompetitionGraphView *)self _allScores];
+  _allScores = [(ASCompetitionGraphView *)self _allScores];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v3 = [_allScores countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v3)
   {
     v4 = v3;
@@ -592,17 +592,17 @@ LABEL_34:
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(_allScores);
         }
 
-        v8 = [*(*(&v10 + 1) + 8 * i) unsignedIntegerValue];
-        if (v5 <= v8)
+        unsignedIntegerValue = [*(*(&v10 + 1) + 8 * i) unsignedIntegerValue];
+        if (v5 <= unsignedIntegerValue)
         {
-          v5 = v8;
+          v5 = unsignedIntegerValue;
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v4 = [_allScores countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v4);
@@ -619,14 +619,14 @@ LABEL_34:
 - (unint64_t)_minDailyScore
 {
   v16 = *MEMORY[0x277D85DE8];
-  v2 = [(ASCompetitionGraphView *)self _allScores];
-  if ([v2 count])
+  _allScores = [(ASCompetitionGraphView *)self _allScores];
+  if ([_allScores count])
   {
     v13 = 0u;
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v3 = v2;
+    v3 = _allScores;
     v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v4)
     {
@@ -642,10 +642,10 @@ LABEL_34:
             objc_enumerationMutation(v3);
           }
 
-          v9 = [*(*(&v11 + 1) + 8 * i) unsignedIntegerValue];
-          if (v7 >= v9)
+          unsignedIntegerValue = [*(*(&v11 + 1) + 8 * i) unsignedIntegerValue];
+          if (v7 >= unsignedIntegerValue)
           {
-            v7 = v9;
+            v7 = unsignedIntegerValue;
           }
         }
 
@@ -671,25 +671,25 @@ LABEL_34:
 
 - (id)_allScores
 {
-  v3 = [(ASCompetition *)self->_competition scores];
-  v4 = [(ASCompetition *)self->_competition opponentScores];
-  v5 = [v3 arrayByAddingObjectsFromArray:v4];
+  scores = [(ASCompetition *)self->_competition scores];
+  opponentScores = [(ASCompetition *)self->_competition opponentScores];
+  v5 = [scores arrayByAddingObjectsFromArray:opponentScores];
 
   return v5;
 }
 
-- (double)_percentForScoreAtIndex:(unint64_t)a3 scores:(id)a4 maxScore:(unint64_t)a5
+- (double)_percentForScoreAtIndex:(unint64_t)index scores:(id)scores maxScore:(unint64_t)score
 {
-  v7 = a4;
+  scoresCopy = scores;
   v8 = 0.0;
-  if ([v7 count] > a3)
+  if ([scoresCopy count] > index)
   {
-    v9 = [v7 objectAtIndexedSubscript:a3];
-    v10 = [v9 unsignedIntegerValue];
+    v9 = [scoresCopy objectAtIndexedSubscript:index];
+    unsignedIntegerValue = [v9 unsignedIntegerValue];
 
-    if (v10)
+    if (unsignedIntegerValue)
     {
-      v8 = v10 / a5;
+      v8 = unsignedIntegerValue / score;
     }
   }
 

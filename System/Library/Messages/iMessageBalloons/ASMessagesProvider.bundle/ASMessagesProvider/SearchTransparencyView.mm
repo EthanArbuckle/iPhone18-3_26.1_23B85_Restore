@@ -1,12 +1,12 @@
 @interface SearchTransparencyView
-- (_TtC18ASMessagesProvider22SearchTransparencyView)initWithCoder:(id)a3;
+- (_TtC18ASMessagesProvider22SearchTransparencyView)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
 @end
 
 @implementation SearchTransparencyView
 
-- (_TtC18ASMessagesProvider22SearchTransparencyView)initWithCoder:(id)a3
+- (_TtC18ASMessagesProvider22SearchTransparencyView)initWithCoder:(id)coder
 {
   v4 = sub_7666D0();
   v5 = *(v4 - 8);

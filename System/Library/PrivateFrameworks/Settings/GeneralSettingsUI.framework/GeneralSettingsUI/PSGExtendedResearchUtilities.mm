@@ -1,7 +1,7 @@
 @interface PSGExtendedResearchUtilities
 + (BOOL)getCanShowExtendedResearch;
 + (id)getExtendedResearchSettingsBundleName;
-+ (int64_t)_getFileSize:(const char *)a3;
++ (int64_t)_getFileSize:(const char *)size;
 @end
 
 @implementation PSGExtendedResearchUtilities
@@ -64,10 +64,10 @@
   return v4;
 }
 
-+ (int64_t)_getFileSize:(const char *)a3
++ (int64_t)_getFileSize:(const char *)size
 {
   memset(&v4, 0, sizeof(v4));
-  if (stat(a3, &v4) == -1)
+  if (stat(size, &v4) == -1)
   {
     return 0;
   }

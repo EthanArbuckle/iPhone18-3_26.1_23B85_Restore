@@ -1,21 +1,21 @@
 @interface PXCloudQuotaOfferController
-- (id)initForDismissibleOffers:(BOOL)a3;
-- (id)presentingViewControllerForBannerView:(id)a3;
+- (id)initForDismissibleOffers:(BOOL)offers;
+- (id)presentingViewControllerForBannerView:(id)view;
 - (int64_t)_mockOfferLevel;
 - (void)_updateInformationView;
 - (void)dealloc;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)settings:(id)a3 changedValueForKey:(id)a4;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)settings:(id)settings changedValueForKey:(id)key;
 @end
 
 @implementation PXCloudQuotaOfferController
 
-- (void)settings:(id)a3 changedValueForKey:(id)a4
+- (void)settings:(id)settings changedValueForKey:(id)key
 {
-  v5 = a4;
+  keyCopy = key;
   v6 = NSStringFromSelector(sel_cloudQuotaOfferLevel);
-  v7 = [v5 isEqualToString:v6];
+  v7 = [keyCopy isEqualToString:v6];
 
   if (v7)
   {
@@ -24,9 +24,9 @@
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (a6 == &PXCloudQuotaOfferControllerUserDefaultsContext)
+  if (context == &PXCloudQuotaOfferControllerUserDefaultsContext)
   {
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
@@ -40,45 +40,45 @@
   {
     v6.receiver = self;
     v6.super_class = PXCloudQuotaOfferController;
-    [(PXCloudQuotaOfferController *)&v6 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:?];
+    [(PXCloudQuotaOfferController *)&v6 observeValueForKeyPath:path ofObject:object change:change context:?];
   }
 }
 
-- (id)presentingViewControllerForBannerView:(id)a3
+- (id)presentingViewControllerForBannerView:(id)view
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  viewCopy = view;
   v5 = PLUserStatusGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 offer];
-    v7 = PXCloudQuotaOfferDebugDescription(v6);
+    offer = [viewCopy offer];
+    v7 = PXCloudQuotaOfferDebugDescription(offer);
     v10 = 138543362;
     v11 = v7;
     _os_log_impl(&dword_1A3C1C000, v5, OS_LOG_TYPE_DEFAULT, "Presenting view controller for offer:%{public}@", &v10, 0xCu);
   }
 
-  v8 = [(PXCloudQuotaController *)self presentingViewControllerForInformationView];
+  presentingViewControllerForInformationView = [(PXCloudQuotaController *)self presentingViewControllerForInformationView];
 
-  return v8;
+  return presentingViewControllerForInformationView;
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  if (PXCloudQuotaOfferProviderObservationContext_89668 == a5)
+  if (PXCloudQuotaOfferProviderObservationContext_89668 == context)
   {
-    [(PXCloudQuotaOfferController *)self _updateInformationView:a3];
+    [(PXCloudQuotaOfferController *)self _updateInformationView:observable];
   }
 }
 
 - (void)_updateInformationView
 {
   v32[3] = *MEMORY[0x1E69E9840];
-  v3 = [(PXCloudQuotaOfferController *)self _mockOfferLevel];
-  if (v3)
+  _mockOfferLevel = [(PXCloudQuotaOfferController *)self _mockOfferLevel];
+  if (_mockOfferLevel)
   {
-    v4 = v3;
-    if (v3 == 1)
+    v4 = _mockOfferLevel;
+    if (_mockOfferLevel == 1)
     {
       v5 = PLUserStatusGetLog();
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -131,9 +131,9 @@
 
     v9 = v8;
     _Block_object_dispose(&v26, 8);
-    v10 = [(PXCloudQuotaOfferController *)self dismissibleOffers];
+    dismissibleOffers = [(PXCloudQuotaOfferController *)self dismissibleOffers];
     offerProvider = self->_offerProvider;
-    if (v10)
+    if (dismissibleOffers)
     {
       [(PXCloudQuotaOfferProvider *)offerProvider dismissibleOffer];
     }
@@ -172,9 +172,9 @@
         _os_log_impl(&dword_1A3C1C000, v15, OS_LOG_TYPE_DEFAULT, "<%{public}@:%p> Create information banner for %@ offer:%{public}@", buf, 0x2Au);
       }
 
-      v20 = [(PXCloudQuotaOfferController *)self dismissibleOffers];
+      dismissibleOffers2 = [(PXCloudQuotaOfferController *)self dismissibleOffers];
       v21 = [v8 alloc];
-      if (v20)
+      if (dismissibleOffers2)
       {
         v22 = [v21 initWithDismissibleOffer:v14];
       }
@@ -213,34 +213,34 @@
 - (int64_t)_mockOfferLevel
 {
   v2 = +[PXCPLStatusSettings sharedInstance];
-  v3 = [v2 cloudQuotaOfferLevel];
-  if (!v3)
+  cloudQuotaOfferLevel = [v2 cloudQuotaOfferLevel];
+  if (!cloudQuotaOfferLevel)
   {
     v4 = _SharedDefaults();
     v5 = [v4 stringForKey:@"PXCloudQuotaControllerOfferLevelMock"];
 
     if ([v5 isEqualToString:@"no-offer"])
     {
-      v3 = 1;
+      cloudQuotaOfferLevel = 1;
     }
 
     else if ([v5 isEqualToString:@"almost-full"])
     {
-      v3 = 2;
+      cloudQuotaOfferLevel = 2;
     }
 
     else if ([v5 isEqualToString:@"full"])
     {
-      v3 = 3;
+      cloudQuotaOfferLevel = 3;
     }
 
     else
     {
-      v3 = 0;
+      cloudQuotaOfferLevel = 0;
     }
   }
 
-  return v3;
+  return cloudQuotaOfferLevel;
 }
 
 - (void)dealloc
@@ -252,7 +252,7 @@
     *buf = 138543618;
     v8 = objc_opt_class();
     v9 = 2048;
-    v10 = self;
+    selfCopy = self;
     v4 = v8;
     _os_log_impl(&dword_1A3C1C000, v3, OS_LOG_TYPE_DEBUG, "<%{public}@:%p> dealloc", buf, 0x16u);
   }
@@ -265,7 +265,7 @@
   [(PXCloudQuotaOfferController *)&v6 dealloc];
 }
 
-- (id)initForDismissibleOffers:(BOOL)a3
+- (id)initForDismissibleOffers:(BOOL)offers
 {
   v11.receiver = self;
   v11.super_class = PXCloudQuotaOfferController;
@@ -273,7 +273,7 @@
   p_isa = &v4->super.super.isa;
   if (v4)
   {
-    v4->_dismissibleOffers = a3;
+    v4->_dismissibleOffers = offers;
     v6 = +[PXCloudQuotaOfferProvider currentOfferProvider];
     v7 = p_isa[3];
     p_isa[3] = v6;

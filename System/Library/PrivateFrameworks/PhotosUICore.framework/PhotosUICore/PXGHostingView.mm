@@ -1,47 +1,47 @@
 @interface PXGHostingView
-- (PXGHostingView)initWithFrame:(CGRect)a3;
+- (PXGHostingView)initWithFrame:(CGRect)frame;
 - (void)_updatePresenter;
 - (void)didMoveToWindow;
-- (void)hostingController:(id)a3 didRenderFrame:(id)a4;
+- (void)hostingController:(id)controller didRenderFrame:(id)frame;
 - (void)layoutSubviews;
-- (void)setBounds:(CGRect)a3;
-- (void)setHostingController:(id)a3;
+- (void)setBounds:(CGRect)bounds;
+- (void)setHostingController:(id)controller;
 @end
 
 @implementation PXGHostingView
 
-- (void)hostingController:(id)a3 didRenderFrame:(id)a4
+- (void)hostingController:(id)controller didRenderFrame:(id)frame
 {
-  v9 = a4;
-  v6 = a3;
-  v7 = [(PXGHostingView *)self hostingController];
+  frameCopy = frame;
+  controllerCopy = controller;
+  hostingController = [(PXGHostingView *)self hostingController];
 
-  if (v7 == v6)
+  if (hostingController == controllerCopy)
   {
-    v8 = [(PXGHostingView *)self pixelBufferView];
-    [v8 enqueuePixelBuffer:{objc_msgSend(v9, "pixelBuffer")}];
+    pixelBufferView = [(PXGHostingView *)self pixelBufferView];
+    [pixelBufferView enqueuePixelBuffer:{objc_msgSend(frameCopy, "pixelBuffer")}];
   }
 }
 
-- (void)setHostingController:(id)a3
+- (void)setHostingController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   hostingController = self->_hostingController;
-  if (hostingController != v5)
+  if (hostingController != controllerCopy)
   {
-    v10 = v5;
+    v10 = controllerCopy;
     [(PXGHostingController *)hostingController unregisterFrameObserver:self];
-    objc_storeStrong(&self->_hostingController, a3);
-    v7 = [(PXGHostingView *)self pixelBufferView];
-    [v7 enqueuePixelBuffer:0];
+    objc_storeStrong(&self->_hostingController, controller);
+    pixelBufferView = [(PXGHostingView *)self pixelBufferView];
+    [pixelBufferView enqueuePixelBuffer:0];
 
     [(PXGHostingController *)self->_hostingController registerFrameObserver:self];
-    v8 = [(PXGHostingController *)v10 addPresenter];
+    addPresenter = [(PXGHostingController *)v10 addPresenter];
     presenter = self->_presenter;
-    self->_presenter = v8;
+    self->_presenter = addPresenter;
 
     [(PXGHostingView *)self setNeedsLayout];
-    v5 = v10;
+    controllerCopy = v10;
   }
 }
 
@@ -79,11 +79,11 @@ void __34__PXGHostingView__updatePresenter__block_invoke(uint64_t a1, void *a2)
   [(PXGHostingView *)self setNeedsLayout];
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
   v4.receiver = self;
   v4.super_class = PXGHostingView;
-  [(PXGHostingView *)&v4 setBounds:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(PXGHostingView *)&v4 setBounds:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
   [(PXGHostingView *)self setNeedsLayout];
 }
 
@@ -97,17 +97,17 @@ void __34__PXGHostingView__updatePresenter__block_invoke(uint64_t a1, void *a2)
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(PXGHostingView *)self pixelBufferView];
-  [v11 setFrame:{v4, v6, v8, v10}];
+  pixelBufferView = [(PXGHostingView *)self pixelBufferView];
+  [pixelBufferView setFrame:{v4, v6, v8, v10}];
 
   [(PXGHostingView *)self _updatePresenter];
 }
 
-- (PXGHostingView)initWithFrame:(CGRect)a3
+- (PXGHostingView)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = PXGHostingView;
-  v3 = [(PXGHostingView *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PXGHostingView *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [PXPixelBufferView alloc];

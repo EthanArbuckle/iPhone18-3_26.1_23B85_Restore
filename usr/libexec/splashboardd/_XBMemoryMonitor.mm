@@ -1,9 +1,9 @@
 @interface _XBMemoryMonitor
 - (_XBMemoryMonitor)init;
 - (id)_getProcessMemoryUsed;
-- (void)_publishMemoryReportForPressureType:(id)a3;
+- (void)_publishMemoryReportForPressureType:(id)type;
 - (void)_setupProcessMemoryPressureMonitor;
-- (void)recordMemoryForBundleID:(id)a3;
+- (void)recordMemoryForBundleID:(id)d;
 @end
 
 @implementation _XBMemoryMonitor
@@ -27,9 +27,9 @@
   return v3;
 }
 
-- (void)recordMemoryForBundleID:(id)a3
+- (void)recordMemoryForBundleID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   os_unfair_lock_assert_not_owner(&self->_accessLock);
   os_unfair_lock_lock(&self->_accessLock);
   v6 = [(NSMutableArray *)self->_accessLock_memoryRecords count];
@@ -38,32 +38,32 @@
     sub_1000060C4(a2, self);
   }
 
-  v7 = [(_XBMemoryMonitor *)self _getProcessMemoryUsed];
-  if (v7)
+  _getProcessMemoryUsed = [(_XBMemoryMonitor *)self _getProcessMemoryUsed];
+  if (_getProcessMemoryUsed)
   {
     if (v6 == 10)
     {
       [(NSMutableArray *)self->_accessLock_memoryRecords removeObjectAtIndex:0];
     }
 
-    if (!v5)
+    if (!dCopy)
     {
-      v5 = @"<nil>";
+      dCopy = @"<nil>";
     }
 
     v14[0] = @"bundleID";
     v14[1] = @"memory";
-    v15[0] = v5;
-    v15[1] = v7;
+    v15[0] = dCopy;
+    v15[1] = _getProcessMemoryUsed;
     v8 = [NSDictionary dictionaryWithObjects:v15 forKeys:v14 count:2];
     [(NSMutableArray *)self->_accessLock_memoryRecords addObject:v8];
     v9 = sub_1000010B0();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
       v10 = 138543618;
-      v11 = v7;
+      v11 = _getProcessMemoryUsed;
       v12 = 2114;
-      v13 = v5;
+      v13 = dCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "Recorded process memory: %{public}@ Bytes while processing bundleID: %{public}@", &v10, 0x16u);
     }
   }
@@ -73,7 +73,7 @@
     v8 = sub_1000010B0();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      sub_100006138(v5, v8);
+      sub_100006138(dCopy, v8);
     }
   }
 
@@ -100,11 +100,11 @@
   }
 }
 
-- (void)_publishMemoryReportForPressureType:(id)a3
+- (void)_publishMemoryReportForPressureType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   v5 = objc_alloc_init(SDRDiagnosticReporter);
-  v6 = [v5 signatureWithDomain:@"SplashBoard" type:@"MemoryPressure" subType:v4 detectedProcess:@"splashboardd" triggerThresholdValues:0];
+  v6 = [v5 signatureWithDomain:@"SplashBoard" type:@"MemoryPressure" subType:typeCopy detectedProcess:@"splashboardd" triggerThresholdValues:0];
   v14 = kSymptomDiagnosticActionGetNetworkInfo;
   v15 = &__kCFBooleanFalse;
   v7 = [NSDictionary dictionaryWithObjects:&v15 forKeys:&v14 count:1];
@@ -116,10 +116,10 @@
   v11[1] = 3221225472;
   v11[2] = sub_1000059E4;
   v11[3] = &unk_10000C7D0;
-  v12 = v4;
+  v12 = typeCopy;
   v13 = v8;
   v9 = v8;
-  v10 = v4;
+  v10 = typeCopy;
   [v5 snapshotWithSignature:v6 duration:v9 events:0 payload:v7 actions:v11 reply:0.0];
 }
 

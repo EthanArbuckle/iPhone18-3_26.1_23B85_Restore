@@ -1,15 +1,15 @@
 @interface HKMeasureDisplayType
 - (HKObjectType)objectType;
-- (void)setMeasureGraphSeries:(id)a3;
+- (void)setMeasureGraphSeries:(id)series;
 @end
 
 @implementation HKMeasureDisplayType
 
-- (void)setMeasureGraphSeries:(id)a3
+- (void)setMeasureGraphSeries:(id)series
 {
   v4 = *(&self->super.super.super.isa + OBJC_IVAR___HKMeasureDisplayType_measureGraphSeries);
-  *(&self->super.super.super.isa + OBJC_IVAR___HKMeasureDisplayType_measureGraphSeries) = a3;
-  v3 = a3;
+  *(&self->super.super.super.isa + OBJC_IVAR___HKMeasureDisplayType_measureGraphSeries) = series;
+  seriesCopy = series;
 }
 
 - (HKObjectType)objectType

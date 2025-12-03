@@ -1,29 +1,29 @@
 @interface PKPGSVTransitionInterstitialController
-+ (id)createInView:(id)a3 withProvider:(id)a4 containerAlpha:(double)a5 deactivationHandler:(id)a6;
-- (BOOL)isCurrentProvider:(id)a3;
-- (BOOL)isInView:(id)a3;
++ (id)createInView:(id)view withProvider:(id)provider containerAlpha:(double)alpha deactivationHandler:(id)handler;
+- (BOOL)isCurrentProvider:(id)provider;
+- (BOOL)isInView:(id)view;
 - (void)_beginTimeout;
-- (void)_createDefaultInterstitialsIn:(void *)a3 forViews:;
-- (void)_createPlaceholderInterstitialsIn:(unint64_t)a3 forCount:(int)a4 push:;
-- (void)_setNeedsUpdateForCurrentProvider:(uint64_t)a1;
+- (void)_createDefaultInterstitialsIn:(void *)in forViews:;
+- (void)_createPlaceholderInterstitialsIn:(unint64_t)in forCount:(int)count push:;
+- (void)_setNeedsUpdateForCurrentProvider:(uint64_t)provider;
 - (void)_updateActive;
 - (void)_updateBindings;
 - (void)dealloc;
 - (void)invalidate;
-- (void)pushProvider:(id)a3 withContainerAlpha:(double)a4 context:(void *)a5;
-- (void)setNeedsUpdateForProvider:(id)a3;
-- (void)transferToView:(id)a3 withDeactivationHandler:(id)a4;
-- (void)updateCurrentProvider:(id)a3 withContainerAlpha:(double)a4;
-- (void)updateExistingViewsForCurrentProviderAnimated:(BOOL)a3 withContainerAlpha:(double)a4;
+- (void)pushProvider:(id)provider withContainerAlpha:(double)alpha context:(void *)context;
+- (void)setNeedsUpdateForProvider:(id)provider;
+- (void)transferToView:(id)view withDeactivationHandler:(id)handler;
+- (void)updateCurrentProvider:(id)provider withContainerAlpha:(double)alpha;
+- (void)updateExistingViewsForCurrentProviderAnimated:(BOOL)animated withContainerAlpha:(double)alpha;
 @end
 
 @implementation PKPGSVTransitionInterstitialController
 
-+ (id)createInView:(id)a3 withProvider:(id)a4 containerAlpha:(double)a5 deactivationHandler:(id)a6
++ (id)createInView:(id)view withProvider:(id)provider containerAlpha:(double)alpha deactivationHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
+  viewCopy = view;
+  providerCopy = provider;
+  handlerCopy = handler;
   if (UIAccessibilityIsReduceMotionEnabled())
   {
     v12 = 0;
@@ -33,9 +33,9 @@ LABEL_22:
   }
 
   v13 = [PKPGSVTransitionInterstitialController alloc];
-  v14 = v9;
-  v15 = v10;
-  result = v11;
+  v14 = viewCopy;
+  v15 = providerCopy;
+  result = handlerCopy;
   v17 = result;
   if (!v13)
   {
@@ -51,13 +51,13 @@ LABEL_22:
     {
       v19 = v18;
       v41 = v17;
-      v20 = [MEMORY[0x1E696AC70] pk_weakObjectsHashTableUsingPointerPersonality];
+      pk_weakObjectsHashTableUsingPointerPersonality = [MEMORY[0x1E696AC70] pk_weakObjectsHashTableUsingPointerPersonality];
       v21 = *(v19 + 120);
-      *(v19 + 120) = v20;
+      *(v19 + 120) = pk_weakObjectsHashTableUsingPointerPersonality;
 
-      v22 = [MEMORY[0x1E696AD18] pk_createStrongPointerPersonalityToStrongObjects];
+      pk_createStrongPointerPersonalityToStrongObjects = [MEMORY[0x1E696AD18] pk_createStrongPointerPersonalityToStrongObjects];
       v23 = *(v19 + 32);
-      *(v19 + 32) = v22;
+      *(v19 + 32) = pk_createStrongPointerPersonalityToStrongObjects;
 
       v24 = objc_alloc_init(MEMORY[0x1E695DF70]);
       v25 = *(v19 + 72);
@@ -78,7 +78,7 @@ LABEL_22:
       [*(v19 + 64) setSpeed:1.6];
       v40 = v14;
       objc_storeWeak((v19 + 8), v14);
-      *(v19 + 16) = a5;
+      *(v19 + 16) = alpha;
       *(v19 + 106) = 1;
       objc_storeWeak((v19 + 112), v15);
       [(PKPGSVTransitionInterstitialController *)v19 _updateBindings];
@@ -166,12 +166,12 @@ LABEL_21:
 - (void)_updateBindings
 {
   v43 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v2 = [*(a1 + 120) allObjects];
-    v3 = [v2 mutableCopy];
+    allObjects = [*(self + 120) allObjects];
+    v3 = [allObjects mutableCopy];
 
-    if (*(a1 + 136))
+    if (*(self + 136))
     {
       v4 = 0;
     }
@@ -184,14 +184,14 @@ LABEL_21:
       aBlock[2] = __57__PKPGSVTransitionInterstitialController__updateBindings__block_invoke;
       aBlock[3] = &unk_1E8023AE8;
       v37 = v3;
-      v38 = a1;
+      selfCopy = self;
       v4 = v5;
       v39 = v4;
       v6 = _Block_copy(aBlock);
-      WeakRetained = objc_loadWeakRetained((a1 + 96));
+      WeakRetained = objc_loadWeakRetained((self + 96));
       v6[2](v6, WeakRetained);
 
-      v8 = objc_loadWeakRetained((a1 + 112));
+      v8 = objc_loadWeakRetained((self + 112));
       v6[2](v6, v8);
     }
 
@@ -217,7 +217,7 @@ LABEL_21:
               objc_enumerationMutation(v9);
             }
 
-            [*(a1 + 120) removeObject:*(*(&v32 + 1) + 8 * v13++)];
+            [*(self + 120) removeObject:*(*(&v32 + 1) + 8 * v13++)];
           }
 
           while (v11 != v13);
@@ -247,7 +247,7 @@ LABEL_21:
               objc_enumerationMutation(v14);
             }
 
-            [*(*(&v28 + 1) + 8 * v18++) unbindInterstitialController:a1];
+            [*(*(&v28 + 1) + 8 * v18++) unbindInterstitialController:self];
           }
 
           while (v16 != v18);
@@ -278,7 +278,7 @@ LABEL_21:
             objc_enumerationMutation(v19);
           }
 
-          [*(*(&v24 + 1) + 8 * v23++) bindInterstitialController:{a1, v24}];
+          [*(*(&v24 + 1) + 8 * v23++) bindInterstitialController:{self, v24}];
         }
 
         while (v21 != v23);
@@ -368,21 +368,21 @@ LABEL_16:
   return v19;
 }
 
-- (void)_createDefaultInterstitialsIn:(void *)a3 forViews:
+- (void)_createDefaultInterstitialsIn:(void *)in forViews:
 {
   v5 = a2;
-  v6 = a3;
-  if (v5 && (v7 = v6) != 0)
+  inCopy = in;
+  if (v5 && (v7 = inCopy) != 0)
   {
     v8 = [v5 count];
     v26 = [v7 count];
     if (v8 < v26)
     {
-      WeakRetained = objc_loadWeakRetained((a1 + 8));
+      WeakRetained = objc_loadWeakRetained((self + 8));
       if (WeakRetained)
       {
         v24 = v5;
-        objc_initWeak(&location, a1);
+        objc_initWeak(&location, self);
         aBlock[0] = MEMORY[0x1E69E9820];
         aBlock[1] = 3221225472;
         aBlock[2] = __81__PKPGSVTransitionInterstitialController__createDefaultInterstitialsIn_forViews___block_invoke;
@@ -395,17 +395,17 @@ LABEL_16:
         {
           v11 = v7;
           v12 = [v7 objectAtIndexedSubscript:{v8, v23}];
-          v13 = [*(a1 + 32) objectForKey:v12];
+          v13 = [*(self + 32) objectForKey:v12];
           if (!v13)
           {
             v13 = [[PKPGSVTransitionInterstitialItem alloc] initWithView:v12];
-            [*(a1 + 32) setObject:v13 forKey:v12];
+            [*(self + 32) setObject:v13 forKey:v12];
           }
 
           v14 = [PKPGSVTransitionInterstitialView alloc];
-          v15 = *(a1 + 56);
-          v16 = *(a1 + 64);
-          v17 = *(a1 + 16);
+          v15 = *(self + 56);
+          v16 = *(self + 64);
+          v17 = *(self + 16);
           v18 = v13;
           v19 = WeakRetained;
           v20 = v15;
@@ -444,33 +444,33 @@ LABEL_15:
 
 - (void)_beginTimeout
 {
-  if (a1 && (*(a1 + 136) & 1) == 0)
+  if (self && (*(self + 136) & 1) == 0)
   {
-    v2 = *(a1 + 48);
+    v2 = *(self + 48);
     if (v2)
     {
       dispatch_source_cancel(v2);
-      v3 = *(a1 + 48);
-      *(a1 + 48) = 0;
+      v3 = *(self + 48);
+      *(self + 48) = 0;
     }
 
     v4 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, MEMORY[0x1E69E96A0]);
-    v5 = *(a1 + 48);
-    *(a1 + 48) = v4;
+    v5 = *(self + 48);
+    *(self + 48) = v4;
 
-    v6 = *(a1 + 48);
+    v6 = *(self + 48);
     v7 = dispatch_time(0, 750000000);
     dispatch_source_set_timer(v6, v7, 0xFFFFFFFFFFFFFFFFLL, 0x5F5E100uLL);
-    objc_initWeak(&location, a1);
-    v8 = *(a1 + 48);
+    objc_initWeak(&location, self);
+    v8 = *(self + 48);
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __55__PKPGSVTransitionInterstitialController__beginTimeout__block_invoke;
     v9[3] = &unk_1E8010998;
     objc_copyWeak(&v10, &location);
     dispatch_source_set_event_handler(v8, v9);
-    dispatch_resume(*(a1 + 48));
-    [(PKPGSVTransitionInterstitialController *)a1 _updateActive];
+    dispatch_resume(*(self + 48));
+    [(PKPGSVTransitionInterstitialController *)self _updateActive];
     objc_destroyWeak(&v10);
     objc_destroyWeak(&location);
   }
@@ -488,16 +488,16 @@ LABEL_15:
 
   if (!self->_invalidated)
   {
-    v5 = [(NSMapTable *)self->_items objectEnumerator];
-    v6 = [v5 allObjects];
+    objectEnumerator = [(NSMapTable *)self->_items objectEnumerator];
+    allObjects = [objectEnumerator allObjects];
 
-    if ([v6 count])
+    if ([allObjects count])
     {
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __49__PKPGSVTransitionInterstitialController_dealloc__block_invoke;
       block[3] = &unk_1E8010970;
-      v9 = v6;
+      v9 = allObjects;
       dispatch_async(MEMORY[0x1E69E96A0], block);
     }
   }
@@ -544,49 +544,49 @@ void __49__PKPGSVTransitionInterstitialController_dealloc__block_invoke(uint64_t
 - (void)_updateActive
 {
   v22 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    if (*(a1 + 136))
+    if (*(self + 136))
     {
-      if (!*(a1 + 137))
+      if (!*(self + 137))
       {
         return;
       }
 
-      *(a1 + 137) = 0;
+      *(self + 137) = 0;
       goto LABEL_5;
     }
 
-    if (*(a1 + 24))
+    if (*(self + 24))
     {
       return;
     }
 
-    if (*(a1 + 128))
+    if (*(self + 128))
     {
-      if ((*(a1 + 137) & 1) == 0)
+      if ((*(self + 137) & 1) == 0)
       {
-        *(a1 + 137) = 1;
+        *(self + 137) = 1;
       }
     }
 
     else
     {
-      v5 = *(a1 + 48);
+      v5 = *(self + 48);
       v6 = v5 != 0;
-      if (*(a1 + 137) != v6)
+      if (*(self + 137) != v6)
       {
-        *(a1 + 137) = v6;
+        *(self + 137) = v6;
         if (!v5)
         {
-          v7 = [*(a1 + 32) keyEnumerator];
-          v8 = [v7 allObjects];
+          keyEnumerator = [*(self + 32) keyEnumerator];
+          allObjects = [keyEnumerator allObjects];
 
           v19 = 0u;
           v20 = 0u;
           v17 = 0u;
           v18 = 0u;
-          v9 = v8;
+          v9 = allObjects;
           v10 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
           if (v10)
           {
@@ -602,11 +602,11 @@ void __49__PKPGSVTransitionInterstitialController_dealloc__block_invoke(uint64_t
                 }
 
                 v14 = *(*(&v17 + 1) + 8 * i);
-                v15 = [*(a1 + 32) objectForKey:{v14, v17}];
+                v15 = [*(self + 32) objectForKey:{v14, v17}];
                 v16 = v15;
                 if (!v15 || (*(v15 + 40) & 1) != 0 || ![*(v15 + 32) count])
                 {
-                  [*(a1 + 32) removeObjectForKey:v14];
+                  [*(self + 32) removeObjectForKey:v14];
                   [(PKPGSVTransitionInterstitialItem *)v16 invalidate];
                 }
               }
@@ -618,12 +618,12 @@ void __49__PKPGSVTransitionInterstitialController_dealloc__block_invoke(uint64_t
           }
 
 LABEL_5:
-          v2 = *(a1 + 40);
+          v2 = *(self + 40);
           if (v2)
           {
             v3 = *(v2 + 16);
-            v4 = a1;
-            v3(v2, v4);
+            selfCopy = self;
+            v3(v2, selfCopy);
           }
         }
       }
@@ -672,8 +672,8 @@ void __55__PKPGSVTransitionInterstitialController__beginTimeout__block_invoke(ui
     [(NSMutableArray *)self->_leadingInterstitials removeAllObjects];
     v6 = [(NSMutableArray *)self->_trailingInterstitials copy];
     [(NSMutableArray *)self->_trailingInterstitials removeAllObjects];
-    v7 = [(NSMapTable *)self->_items objectEnumerator];
-    v8 = [v7 allObjects];
+    objectEnumerator = [(NSMapTable *)self->_items objectEnumerator];
+    allObjects = [objectEnumerator allObjects];
 
     [(NSMapTable *)self->_items removeAllObjects];
     __52__PKPGSVTransitionInterstitialController_invalidate__block_invoke(v5);
@@ -682,7 +682,7 @@ void __55__PKPGSVTransitionInterstitialController__beginTimeout__block_invoke(ui
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v9 = v8;
+    v9 = allObjects;
     v10 = [v9 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v10)
     {
@@ -828,11 +828,11 @@ void __57__PKPGSVTransitionInterstitialController__updateBindings__block_invoke(
   }
 }
 
-- (void)_createPlaceholderInterstitialsIn:(unint64_t)a3 forCount:(int)a4 push:
+- (void)_createPlaceholderInterstitialsIn:(unint64_t)in forCount:(int)count push:
 {
   v7 = a2;
   v8 = v7;
-  if (!a1)
+  if (!self)
   {
 LABEL_26:
 
@@ -842,13 +842,13 @@ LABEL_26:
   if (v7)
   {
     v9 = [v7 count];
-    if (v9 < a3)
+    if (v9 < in)
     {
       v10 = v9;
-      WeakRetained = objc_loadWeakRetained((a1 + 8));
+      WeakRetained = objc_loadWeakRetained((self + 8));
       if (WeakRetained)
       {
-        objc_initWeak(&location, a1);
+        objc_initWeak(&location, self);
         v29 = MEMORY[0x1E69E9820];
         v30 = 3221225472;
         v31 = __90__PKPGSVTransitionInterstitialController__createPlaceholderInterstitialsIn_forCount_push___block_invoke;
@@ -860,7 +860,7 @@ LABEL_26:
         v15 = *(MEMORY[0x1E695F050] + 8);
         v16 = *(MEMORY[0x1E695F050] + 16);
         v17 = *(MEMORY[0x1E695F050] + 24);
-        if (v10 && a4)
+        if (v10 && count)
         {
           for (i = 0; i != v10; ++i)
           {
@@ -879,8 +879,8 @@ LABEL_26:
         v35.size.width = v16;
         v35.size.height = v17;
         IsNull = CGRectIsNull(v35);
-        v24 = a3 - v13;
-        if (a3 > v13)
+        v24 = in - v13;
+        if (in > v13)
         {
           if (IsNull)
           {
@@ -907,7 +907,7 @@ LABEL_26:
             v27 = [PKPGSVTransitionInterstitialView alloc];
             if (v27)
             {
-              v28 = [(PKPGSVTransitionInterstitialView *)v27 _initForItem:WeakRetained inView:*(a1 + 56) withSpringFactory:*(a1 + 64) dismissalSpringFactory:v12 defaultSize:v26 containerAlpha:v25 activationObserver:*(a1 + 16)];
+              v28 = [(PKPGSVTransitionInterstitialView *)v27 _initForItem:WeakRetained inView:*(self + 56) withSpringFactory:*(self + 64) dismissalSpringFactory:v12 defaultSize:v26 containerAlpha:v25 activationObserver:*(self + 16)];
             }
 
             else
@@ -916,7 +916,7 @@ LABEL_26:
             }
 
             [v8 addObject:{v28, v29, v30, v31, v32}];
-            if (a4)
+            if (count)
             {
               [(PKPGSVTransitionInterstitialView *)v28 resolveIndeterminatePositionWithPriorItemFrame:v14 animated:v15, v16, v17];
             }
@@ -996,21 +996,21 @@ void __81__PKPGSVTransitionInterstitialController__createDefaultInterstitialsIn_
   }
 }
 
-- (void)setNeedsUpdateForProvider:(id)a3
+- (void)setNeedsUpdateForProvider:(id)provider
 {
-  v4 = a3;
-  if (v4)
+  providerCopy = provider;
+  if (providerCopy)
   {
     if (!self->_invalidated)
     {
-      v7 = v4;
+      v7 = providerCopy;
       WeakRetained = objc_loadWeakRetained(&self->_currentProvider);
 
-      v4 = v7;
-      if (WeakRetained == v7 || (v6 = objc_loadWeakRetained(&self->_previousProvider), v6, v4 = v7, v6 == v7))
+      providerCopy = v7;
+      if (WeakRetained == v7 || (v6 = objc_loadWeakRetained(&self->_previousProvider), v6, providerCopy = v7, v6 == v7))
       {
         [(PKPGSVTransitionInterstitialController *)self _setNeedsUpdateForCurrentProvider:?];
-        v4 = v7;
+        providerCopy = v7;
       }
     }
   }
@@ -1021,36 +1021,36 @@ void __81__PKPGSVTransitionInterstitialController__createDefaultInterstitialsIn_
   }
 }
 
-- (void)_setNeedsUpdateForCurrentProvider:(uint64_t)a1
+- (void)_setNeedsUpdateForCurrentProvider:(uint64_t)provider
 {
-  if (a1 && (*(a1 + 136) & 1) == 0)
+  if (provider && (*(provider + 136) & 1) == 0)
   {
     if (a2)
     {
-      if (*(a1 + 104) == 1)
+      if (*(provider + 104) == 1)
       {
-        *(a1 + 105) = 1;
+        *(provider + 105) = 1;
         return;
       }
 
-      *(a1 + 104) = 1;
-      WeakRetained = objc_loadWeakRetained((a1 + 112));
+      *(provider + 104) = 1;
+      WeakRetained = objc_loadWeakRetained((provider + 112));
       v5 = WeakRetained == 0;
     }
 
     else
     {
-      if (*(a1 + 88) == 1)
+      if (*(provider + 88) == 1)
       {
-        *(a1 + 89) = 1;
+        *(provider + 89) = 1;
         return;
       }
 
-      *(a1 + 88) = 1;
-      v6 = objc_loadWeakRetained((a1 + 96));
+      *(provider + 88) = 1;
+      v6 = objc_loadWeakRetained((provider + 96));
       if (!v6)
       {
-        *(a1 + 88) = 0;
+        *(provider + 88) = 0;
         return;
       }
 
@@ -1063,7 +1063,7 @@ void __81__PKPGSVTransitionInterstitialController__createDefaultInterstitialsIn_
     aBlock[2] = __76__PKPGSVTransitionInterstitialController__setNeedsUpdateForCurrentProvider___block_invoke;
     aBlock[3] = &unk_1E8023B10;
     v19 = a2;
-    aBlock[4] = a1;
+    aBlock[4] = provider;
     v7 = _Block_copy(aBlock);
     if (v5)
     {
@@ -1073,10 +1073,10 @@ void __81__PKPGSVTransitionInterstitialController__createDefaultInterstitialsIn_
 
     else
     {
-      v10 = [WeakRetained leadingViewsForInterstitialController:a1];
+      v10 = [WeakRetained leadingViewsForInterstitialController:provider];
       v9 = v7[2](v7, v10);
 
-      v11 = [WeakRetained trailingViewsForInterstitialController:a1];
+      v11 = [WeakRetained trailingViewsForInterstitialController:provider];
       v8 = v7[2](v7, v11);
     }
 
@@ -1084,20 +1084,20 @@ void __81__PKPGSVTransitionInterstitialController__createDefaultInterstitialsIn_
     v16[1] = 3221225472;
     v16[2] = __76__PKPGSVTransitionInterstitialController__setNeedsUpdateForCurrentProvider___block_invoke_2;
     v16[3] = &unk_1E8023B38;
-    v16[4] = a1;
+    v16[4] = provider;
     v17 = a2;
     v12 = _Block_copy(v16);
     v13 = v12;
-    v14 = *(a1 + 24);
-    *(a1 + 24) = 1;
+    v14 = *(provider + 24);
+    *(provider + 24) = 1;
     if (a2)
     {
-      -[PKPGSVTransitionInterstitialController _createPlaceholderInterstitialsIn:forCount:push:](a1, *(a1 + 72), [v9 count], 0);
-      -[PKPGSVTransitionInterstitialController _createPlaceholderInterstitialsIn:forCount:push:](a1, *(a1 + 80), [v8 count], 0);
-      (*(v13 + 2))(v13, *(a1 + 72), v9);
-      (*(v13 + 2))(v13, *(a1 + 80), v8);
-      *(a1 + 104) = 0;
-      if ((*(a1 + 105) & 1) == 0)
+      -[PKPGSVTransitionInterstitialController _createPlaceholderInterstitialsIn:forCount:push:](provider, *(provider + 72), [v9 count], 0);
+      -[PKPGSVTransitionInterstitialController _createPlaceholderInterstitialsIn:forCount:push:](provider, *(provider + 80), [v8 count], 0);
+      (*(v13 + 2))(v13, *(provider + 72), v9);
+      (*(v13 + 2))(v13, *(provider + 80), v8);
+      *(provider + 104) = 0;
+      if ((*(provider + 105) & 1) == 0)
       {
         goto LABEL_19;
       }
@@ -1106,20 +1106,20 @@ void __81__PKPGSVTransitionInterstitialController__createDefaultInterstitialsIn_
     else
     {
       v15 = (v12 + 16);
-      (*(v12 + 2))(v12, *(a1 + 72), v9);
-      (*v15)(v13, *(a1 + 80), v8);
-      *(a1 + 88) = 0;
-      if (*(a1 + 89) != 1)
+      (*(v12 + 2))(v12, *(provider + 72), v9);
+      (*v15)(v13, *(provider + 80), v8);
+      *(provider + 88) = 0;
+      if (*(provider + 89) != 1)
       {
 LABEL_19:
-        *(a1 + 24) = v14;
-        [(PKPGSVTransitionInterstitialController *)a1 _updateActive];
+        *(provider + 24) = v14;
+        [(PKPGSVTransitionInterstitialController *)provider _updateActive];
 
         return;
       }
     }
 
-    [(PKPGSVTransitionInterstitialController *)a1 _setNeedsUpdateForCurrentProvider:a2];
+    [(PKPGSVTransitionInterstitialController *)provider _setNeedsUpdateForCurrentProvider:a2];
     goto LABEL_19;
   }
 }
@@ -1309,29 +1309,29 @@ void __76__PKPGSVTransitionInterstitialController__setNeedsUpdateForCurrentProvi
   }
 }
 
-- (BOOL)isInView:(id)a3
+- (BOOL)isInView:(id)view
 {
   v3 = 0;
-  if (a3 && !self->_invalidated)
+  if (view && !self->_invalidated)
   {
-    v5 = a3;
+    viewCopy = view;
     WeakRetained = objc_loadWeakRetained(&self->_container);
-    v3 = WeakRetained == v5;
+    v3 = WeakRetained == viewCopy;
   }
 
   return v3;
 }
 
-- (void)transferToView:(id)a3 withDeactivationHandler:(id)a4
+- (void)transferToView:(id)view withDeactivationHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  viewCopy = view;
+  handlerCopy = handler;
+  if (viewCopy)
   {
-    v8 = v7;
+    v8 = handlerCopy;
     if (!self->_invalidated)
     {
-      objc_storeWeak(&self->_container, v6);
+      objc_storeWeak(&self->_container, viewCopy);
       v9 = _Block_copy(v8);
       deactivation = self->_deactivation;
       self->_deactivation = v9;
@@ -1340,7 +1340,7 @@ void __76__PKPGSVTransitionInterstitialController__setNeedsUpdateForCurrentProvi
       aBlock[1] = 3221225472;
       aBlock[2] = __81__PKPGSVTransitionInterstitialController_transferToView_withDeactivationHandler___block_invoke;
       aBlock[3] = &unk_1E8014878;
-      v13 = v6;
+      v13 = viewCopy;
       v11 = _Block_copy(aBlock);
       self->_deferUpdateActive = 1;
       v11[2](v11, self->_leadingInterstitials);
@@ -1433,9 +1433,9 @@ void __81__PKPGSVTransitionInterstitialController_transferToView_withDeactivatio
   }
 }
 
-- (void)pushProvider:(id)a3 withContainerAlpha:(double)a4 context:(void *)a5
+- (void)pushProvider:(id)provider withContainerAlpha:(double)alpha context:(void *)context
 {
-  v8 = a3;
+  providerCopy = provider;
   if (self->_updatingCurrentProvider || self->_updatingPreviousProvider || self->_currentProviderDirty || self->_previousProviderDirty)
   {
     __break(1u);
@@ -1443,7 +1443,7 @@ void __81__PKPGSVTransitionInterstitialController_transferToView_withDeactivatio
 
   else
   {
-    v9 = v8;
+    v9 = providerCopy;
     if (!self->_invalidated)
     {
       timeout = self->_timeout;
@@ -1454,8 +1454,8 @@ void __81__PKPGSVTransitionInterstitialController_transferToView_withDeactivatio
         self->_timeout = 0;
       }
 
-      self->_alpha = a4;
-      self->_context = a5;
+      self->_alpha = alpha;
+      self->_context = context;
       WeakRetained = objc_loadWeakRetained(&self->_currentProvider);
       objc_storeWeak(&self->_previousProvider, WeakRetained);
 
@@ -1468,7 +1468,7 @@ void __81__PKPGSVTransitionInterstitialController_transferToView_withDeactivatio
       aBlock[2] = __82__PKPGSVTransitionInterstitialController_pushProvider_withContainerAlpha_context___block_invoke;
       aBlock[3] = &unk_1E8023B60;
       aBlock[4] = self;
-      *&aBlock[5] = a4;
+      *&aBlock[5] = alpha;
       v13 = _Block_copy(aBlock);
       if (v9)
       {
@@ -1490,7 +1490,7 @@ void __81__PKPGSVTransitionInterstitialController_transferToView_withDeactivatio
       v20[2] = __82__PKPGSVTransitionInterstitialController_pushProvider_withContainerAlpha_context___block_invoke_2;
       v20[3] = &unk_1E8023B88;
       v20[4] = self;
-      *&v20[5] = a4;
+      *&v20[5] = alpha;
       v18 = _Block_copy(v20);
       self->_deferUpdateActive = 1;
       -[PKPGSVTransitionInterstitialController _createPlaceholderInterstitialsIn:forCount:push:](self, self->_leadingInterstitials, [v15 count], 1);
@@ -1667,13 +1667,13 @@ void __82__PKPGSVTransitionInterstitialController_pushProvider_withContainerAlph
   }
 }
 
-- (BOOL)isCurrentProvider:(id)a3
+- (BOOL)isCurrentProvider:(id)provider
 {
-  if (a3)
+  if (provider)
   {
-    v4 = a3;
+    providerCopy = provider;
     WeakRetained = objc_loadWeakRetained(&self->_currentProvider);
-    v6 = WeakRetained == v4;
+    v6 = WeakRetained == providerCopy;
   }
 
   else
@@ -1684,9 +1684,9 @@ void __82__PKPGSVTransitionInterstitialController_pushProvider_withContainerAlph
   return v6;
 }
 
-- (void)updateCurrentProvider:(id)a3 withContainerAlpha:(double)a4
+- (void)updateCurrentProvider:(id)provider withContainerAlpha:(double)alpha
 {
-  v6 = a3;
+  providerCopy = provider;
   if (self->_updatingCurrentProvider || self->_currentProviderDirty)
   {
     __break(1u);
@@ -1694,13 +1694,13 @@ void __82__PKPGSVTransitionInterstitialController_pushProvider_withContainerAlph
 
   else
   {
-    v7 = v6;
+    v7 = providerCopy;
     if (!self->_invalidated)
     {
-      self->_alpha = a4;
-      self->_currentProviderExisted = v6 != 0;
-      v8 = v6;
-      objc_storeWeak(&self->_currentProvider, v6);
+      self->_alpha = alpha;
+      self->_currentProviderExisted = providerCopy != 0;
+      v8 = providerCopy;
+      objc_storeWeak(&self->_currentProvider, providerCopy);
       [(PKPGSVTransitionInterstitialController *)self _updateBindings];
       [(PKPGSVTransitionInterstitialController *)self _setNeedsUpdateForCurrentProvider:?];
       v7 = v8;
@@ -1708,7 +1708,7 @@ void __82__PKPGSVTransitionInterstitialController_pushProvider_withContainerAlph
   }
 }
 
-- (void)updateExistingViewsForCurrentProviderAnimated:(BOOL)a3 withContainerAlpha:(double)a4
+- (void)updateExistingViewsForCurrentProviderAnimated:(BOOL)animated withContainerAlpha:(double)alpha
 {
   if (self->_updatingCurrentProvider || self->_currentProviderDirty)
   {
@@ -1717,12 +1717,12 @@ void __82__PKPGSVTransitionInterstitialController_pushProvider_withContainerAlph
 
   else if (!self->_invalidated)
   {
-    self->_alpha = a4;
+    self->_alpha = alpha;
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __107__PKPGSVTransitionInterstitialController_updateExistingViewsForCurrentProviderAnimated_withContainerAlpha___block_invoke;
     v6[3] = &unk_1E8023BB0;
-    v7 = a3;
+    animatedCopy = animated;
     v6[4] = self;
     v5 = _Block_copy(v6);
     v5[2](v5, self->_leadingInterstitials);

@@ -1,30 +1,30 @@
 @interface RUIModernHeaderView
-- (RUIModernHeaderView)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5;
-- (double)headerHeightForWidth:(double)a3 inView:(id)a4;
+- (RUIModernHeaderView)initWithTitle:(id)title detailText:(id)text icon:(id)icon;
+- (double)headerHeightForWidth:(double)width inView:(id)view;
 - (double)iconToHeaderLabelPadding;
 - (double)topPadding;
-- (void)setDetailText:(id)a3 attributes:(id)a4;
-- (void)setIconImage:(id)a3;
-- (void)setSubHeaderText:(id)a3 baseURL:(id)a4 attributes:(id)a5;
-- (void)setText:(id)a3 baseURL:(id)a4 attributes:(id)a5;
+- (void)setDetailText:(id)text attributes:(id)attributes;
+- (void)setIconImage:(id)image;
+- (void)setSubHeaderText:(id)text baseURL:(id)l attributes:(id)attributes;
+- (void)setText:(id)text baseURL:(id)l attributes:(id)attributes;
 - (void)updateDetailText;
 @end
 
 @implementation RUIModernHeaderView
 
-- (RUIModernHeaderView)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5
+- (RUIModernHeaderView)initWithTitle:(id)title detailText:(id)text icon:(id)icon
 {
-  v9 = a4;
+  textCopy = text;
   v17.receiver = self;
   v17.super_class = RUIModernHeaderView;
-  v10 = [(RUIModernHeaderView *)&v17 initWithTitle:a3 detailText:v9 icon:a5];
+  v10 = [(RUIModernHeaderView *)&v17 initWithTitle:title detailText:textCopy icon:icon];
   v11 = v10;
   if (v10)
   {
-    v12 = [(RUIModernHeaderView *)v10 headerLabel];
-    [v12 _setHyphenationFactor:0.0];
+    headerLabel = [(RUIModernHeaderView *)v10 headerLabel];
+    [headerLabel _setHyphenationFactor:0.0];
 
-    objc_storeStrong(&v11->_detailText, a4);
+    objc_storeStrong(&v11->_detailText, text);
     v13 = +[RUIPlatform isSolariumEnabled];
     v14 = 60.0;
     if (v13)
@@ -65,24 +65,24 @@
   return result;
 }
 
-- (double)headerHeightForWidth:(double)a3 inView:(id)a4
+- (double)headerHeightForWidth:(double)width inView:(id)view
 {
   LODWORD(v4) = 1148846080;
   LODWORD(v5) = 1112014848;
-  [(RUIModernHeaderView *)self systemLayoutSizeFittingSize:a4 withHorizontalFittingPriority:a3 verticalFittingPriority:*(MEMORY[0x277D76C78] + 8), v4, v5];
+  [(RUIModernHeaderView *)self systemLayoutSizeFittingSize:view withHorizontalFittingPriority:width verticalFittingPriority:*(MEMORY[0x277D76C78] + 8), v4, v5];
   return v6;
 }
 
-- (void)setText:(id)a3 baseURL:(id)a4 attributes:(id)a5
+- (void)setText:(id)text baseURL:(id)l attributes:(id)attributes
 {
-  objc_storeStrong(&self->_detailText, a3);
-  v7 = a4;
-  [(RUIModernHeaderView *)self setBaseURL:v7];
+  objc_storeStrong(&self->_detailText, text);
+  lCopy = l;
+  [(RUIModernHeaderView *)self setBaseURL:lCopy];
 
   [(RUIModernHeaderView *)self updateDetailText];
 }
 
-- (void)setDetailText:(id)a3 attributes:(id)a4
+- (void)setDetailText:(id)text attributes:(id)attributes
 {
   if (_isInternalInstall())
   {
@@ -95,20 +95,20 @@
   }
 }
 
-- (void)setSubHeaderText:(id)a3 baseURL:(id)a4 attributes:(id)a5
+- (void)setSubHeaderText:(id)text baseURL:(id)l attributes:(id)attributes
 {
-  objc_storeStrong(&self->_subHeaderText, a3);
-  v7 = a4;
-  [(RUIModernHeaderView *)self setBaseURL:v7];
+  objc_storeStrong(&self->_subHeaderText, text);
+  lCopy = l;
+  [(RUIModernHeaderView *)self setBaseURL:lCopy];
 
   [(RUIModernHeaderView *)self updateDetailText];
 }
 
-- (void)setIconImage:(id)a3
+- (void)setIconImage:(id)image
 {
   v3.receiver = self;
   v3.super_class = RUIModernHeaderView;
-  [(RUIModernHeaderView *)&v3 setIcon:a3 accessibilityLabel:0];
+  [(RUIModernHeaderView *)&v3 setIcon:image accessibilityLabel:0];
 }
 
 - (void)updateDetailText
@@ -139,9 +139,9 @@ LABEL_8:
   v8.receiver = self;
   v8.super_class = RUIModernHeaderView;
   [(RUIModernHeaderView *)&v8 setDetailText:v5];
-  v6 = [(RUIModernHeaderView *)self detailLabel];
-  v7 = [(RUIModernHeaderView *)self baseURL];
-  [v6 setMarkdown:v5 baseURL:v7];
+  detailLabel = [(RUIModernHeaderView *)self detailLabel];
+  baseURL = [(RUIModernHeaderView *)self baseURL];
+  [detailLabel setMarkdown:v5 baseURL:baseURL];
 }
 
 @end

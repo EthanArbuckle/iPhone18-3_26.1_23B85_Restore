@@ -3,46 +3,46 @@
 - (UISearchController)searchController;
 - (UITableViewHeaderFooterView)firstSectionHeaderView;
 - (VSIdentityProviderPickerViewControllerDelegate)delegate;
-- (VSIdentityProviderPickerViewController_iOS)initWithStyle:(int64_t)a3;
-- (id)_createTableHeaderContentConfiguration:(id)a3;
+- (VSIdentityProviderPickerViewController_iOS)initWithStyle:(int64_t)style;
+- (id)_createTableHeaderContentConfiguration:(id)configuration;
 - (id)_titleForTableHeaderView;
 - (id)_titleForViewController;
 - (id)filteredTableView;
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
 - (id)titleForTableFooterView;
-- (void)_cancelButtonPressed:(id)a3;
+- (void)_cancelButtonPressed:(id)pressed;
 - (void)_didPickAdditionalIdentityProviders;
-- (void)_didPickIdentityProvider:(id)a3;
-- (void)_didPickStorefront:(id)a3;
-- (void)_performSelectionForIdentityProvider:(id)a3;
-- (void)_showAboutPrivacy:(id)a3;
-- (void)_showPrivacySheet:(id)a3;
+- (void)_didPickIdentityProvider:(id)provider;
+- (void)_didPickStorefront:(id)storefront;
+- (void)_performSelectionForIdentityProvider:(id)provider;
+- (void)_showAboutPrivacy:(id)privacy;
+- (void)_showPrivacySheet:(id)sheet;
 - (void)_updateTableHeaderTitle;
-- (void)handleDestination:(id)a3 completion:(id)a4;
-- (void)handleSignInActionWithCompletion:(id)a3;
-- (void)setCancellationAllowed:(BOOL)a3;
-- (void)setRequestedStorefrontCountryCode:(id)a3 defaultToDeveloperProviders:(BOOL)a4;
-- (void)setRequestingAppDisplayName:(id)a3;
-- (void)setResourceTitle:(id)a3;
-- (void)setSearchString:(id)a3;
-- (void)setSectionContentInset:(UIEdgeInsets)a3;
-- (void)showPrivacySheet:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableViewDidFinishReload:(id)a3;
+- (void)handleDestination:(id)destination completion:(id)completion;
+- (void)handleSignInActionWithCompletion:(id)completion;
+- (void)setCancellationAllowed:(BOOL)allowed;
+- (void)setRequestedStorefrontCountryCode:(id)code defaultToDeveloperProviders:(BOOL)providers;
+- (void)setRequestingAppDisplayName:(id)name;
+- (void)setResourceTitle:(id)title;
+- (void)setSearchString:(id)string;
+- (void)setSectionContentInset:(UIEdgeInsets)inset;
+- (void)showPrivacySheet:(id)sheet;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableViewDidFinishReload:(id)reload;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)willMoveToParentViewController:(id)a3;
+- (void)willMoveToParentViewController:(id)controller;
 @end
 
 @implementation VSIdentityProviderPickerViewController_iOS
 
-- (VSIdentityProviderPickerViewController_iOS)initWithStyle:(int64_t)a3
+- (VSIdentityProviderPickerViewController_iOS)initWithStyle:(int64_t)style
 {
   v50[1] = *MEMORY[0x277D85DE8];
   v49.receiver = self;
   v49.super_class = VSIdentityProviderPickerViewController_iOS;
-  v3 = [(VSIdentityProviderPickerViewController_iOS *)&v49 initWithStyle:a3];
+  v3 = [(VSIdentityProviderPickerViewController_iOS *)&v49 initWithStyle:style];
   v4 = v3;
   if (v3)
   {
@@ -134,30 +134,30 @@
   return v4;
 }
 
-- (void)setResourceTitle:(id)a3
+- (void)setResourceTitle:(id)title
 {
-  v4 = [a3 copy];
+  v4 = [title copy];
   resourceTitle = self->_resourceTitle;
   self->_resourceTitle = v4;
 
   [(VSIdentityProviderPickerViewController_iOS *)self _updateTableHeaderTitle];
 }
 
-- (void)setRequestingAppDisplayName:(id)a3
+- (void)setRequestingAppDisplayName:(id)name
 {
-  v4 = [a3 copy];
+  v4 = [name copy];
   requestingAppDisplayName = self->_requestingAppDisplayName;
   self->_requestingAppDisplayName = v4;
 
   [(VSIdentityProviderPickerViewController_iOS *)self _updateTableHeaderTitle];
 }
 
-- (void)setSearchString:(id)a3
+- (void)setSearchString:(id)string
 {
-  v6 = a3;
+  stringCopy = string;
   if (![(NSString *)self->_searchString isEqualToString:?])
   {
-    objc_storeStrong(&self->_searchString, a3);
+    objc_storeStrong(&self->_searchString, string);
     if ([(VSIdentityProviderPickerViewController_iOS *)self additionalProvidersMode]== 6)
     {
       [(VSIdentityProviderPickerViewController_iOS *)self storefrontFilter];
@@ -168,73 +168,73 @@
       [(VSIdentityProviderPickerViewController_iOS *)self filter];
     }
     v5 = ;
-    [v5 setSearchQuery:v6];
+    [v5 setSearchQuery:stringCopy];
   }
 }
 
-- (void)setRequestedStorefrontCountryCode:(id)a3 defaultToDeveloperProviders:(BOOL)a4
+- (void)setRequestedStorefrontCountryCode:(id)code defaultToDeveloperProviders:(BOOL)providers
 {
-  v4 = a4;
-  v23 = a3;
-  objc_storeStrong(&self->_requestedStorefrontCountryCode, a3);
-  v7 = [(VSIdentityProviderPickerViewController_iOS *)self additionalProvidersMode];
-  if (!v23 && v7 - 7 <= 0xFFFFFFFFFFFFFFFDLL)
+  providersCopy = providers;
+  codeCopy = code;
+  objc_storeStrong(&self->_requestedStorefrontCountryCode, code);
+  additionalProvidersMode = [(VSIdentityProviderPickerViewController_iOS *)self additionalProvidersMode];
+  if (!codeCopy && additionalProvidersMode - 7 <= 0xFFFFFFFFFFFFFFFDLL)
   {
-    v8 = [(VSIdentityProviderPickerViewController_iOS *)self identityProviders];
-    [(VSIdentityProviderPickerViewController_iOS *)self setIdentityProvidersToDisplay:v8];
+    identityProviders = [(VSIdentityProviderPickerViewController_iOS *)self identityProviders];
+    [(VSIdentityProviderPickerViewController_iOS *)self setIdentityProvidersToDisplay:identityProviders];
     goto LABEL_19;
   }
 
-  v9 = [(VSIdentityProviderPickerViewController_iOS *)self providersByStorefrontCountryCode];
+  providersByStorefrontCountryCode = [(VSIdentityProviderPickerViewController_iOS *)self providersByStorefrontCountryCode];
 
-  if (!v9)
+  if (!providersByStorefrontCountryCode)
   {
     v10 = objc_alloc_init(VSIdentityProviderStorefrontParser);
-    v11 = [(VSIdentityProviderPickerViewController_iOS *)self identityProviders];
-    [(VSIdentityProviderStorefrontParser *)v10 setAllIdentityProviders:v11];
+    identityProviders2 = [(VSIdentityProviderPickerViewController_iOS *)self identityProviders];
+    [(VSIdentityProviderStorefrontParser *)v10 setAllIdentityProviders:identityProviders2];
 
-    v12 = [(VSIdentityProviderPickerViewController_iOS *)self allStorefronts];
-    if (v12)
+    allStorefronts = [(VSIdentityProviderPickerViewController_iOS *)self allStorefronts];
+    if (allStorefronts)
     {
-      [(VSIdentityProviderStorefrontParser *)v10 setAllStorefronts:v12 withCurrentStorefrontCode:v23];
+      [(VSIdentityProviderStorefrontParser *)v10 setAllStorefronts:allStorefronts withCurrentStorefrontCode:codeCopy];
     }
 
-    v13 = [(VSIdentityProviderStorefrontParser *)v10 identityProvidersByStorefront];
-    v14 = [(VSIdentityProviderStorefrontParser *)v10 tvProviderSupportedStorefronts];
-    [(VSIdentityProviderPickerViewController_iOS *)self setProvidersByStorefrontCountryCode:v13];
-    [(VSIdentityProviderPickerViewController_iOS *)self setTvProviderSupportedStorefronts:v14];
+    identityProvidersByStorefront = [(VSIdentityProviderStorefrontParser *)v10 identityProvidersByStorefront];
+    tvProviderSupportedStorefronts = [(VSIdentityProviderStorefrontParser *)v10 tvProviderSupportedStorefronts];
+    [(VSIdentityProviderPickerViewController_iOS *)self setProvidersByStorefrontCountryCode:identityProvidersByStorefront];
+    [(VSIdentityProviderPickerViewController_iOS *)self setTvProviderSupportedStorefronts:tvProviderSupportedStorefronts];
   }
 
-  v15 = [(VSIdentityProviderPickerViewController_iOS *)self providersByStorefrontCountryCode];
-  if (!v23)
+  providersByStorefrontCountryCode2 = [(VSIdentityProviderPickerViewController_iOS *)self providersByStorefrontCountryCode];
+  if (!codeCopy)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The requestedStorefrontCountryCode parameter must not be nil."];
   }
 
-  v8 = [v15 valueForKey:?];
+  identityProviders = [providersByStorefrontCountryCode2 valueForKey:?];
 
-  v16 = [(VSIdentityProviderPickerViewController_iOS *)self providersByStorefrontCountryCode];
-  v17 = [v16 valueForKey:@"__"];
+  providersByStorefrontCountryCode3 = [(VSIdentityProviderPickerViewController_iOS *)self providersByStorefrontCountryCode];
+  v17 = [providersByStorefrontCountryCode3 valueForKey:@"__"];
 
-  if (v4 && v17 && ([v17 allIdentityProviders], v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v18, "count"), v18, v19))
+  if (providersCopy && v17 && ([v17 allIdentityProviders], v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v18, "count"), v18, v19))
   {
-    v20 = [v17 allIdentityProviders];
+    allIdentityProviders = [v17 allIdentityProviders];
   }
 
   else
   {
-    if (!v8)
+    if (!identityProviders)
     {
       v22 = 6;
       goto LABEL_18;
     }
 
-    v21 = v8;
+    v21 = identityProviders;
     [v21 featureProvidersInCurrentStorefront];
-    v20 = [v21 allIdentityProviders];
+    allIdentityProviders = [v21 allIdentityProviders];
   }
 
-  [(VSIdentityProviderPickerViewController_iOS *)self setIdentityProvidersToDisplay:v20];
+  [(VSIdentityProviderPickerViewController_iOS *)self setIdentityProvidersToDisplay:allIdentityProviders];
 
   v22 = 5;
 LABEL_18:
@@ -248,11 +248,11 @@ LABEL_19:
   firstSectionHeaderView = self->_firstSectionHeaderView;
   if (!firstSectionHeaderView)
   {
-    v4 = [(VSIdentityProviderPickerViewController_iOS *)self _titleForTableHeaderView];
-    if (v4)
+    _titleForTableHeaderView = [(VSIdentityProviderPickerViewController_iOS *)self _titleForTableHeaderView];
+    if (_titleForTableHeaderView)
     {
       v5 = objc_alloc_init(MEMORY[0x277D75B70]);
-      v6 = [(VSIdentityProviderPickerViewController_iOS *)self _createTableHeaderContentConfiguration:v4];
+      v6 = [(VSIdentityProviderPickerViewController_iOS *)self _createTableHeaderContentConfiguration:_titleForTableHeaderView];
       [(UITableViewHeaderFooterView *)v5 setContentConfiguration:v6];
     }
 
@@ -280,48 +280,48 @@ LABEL_8:
   return firstSectionHeaderView;
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = [(VSIdentityProviderPickerViewController_iOS *)self tableView];
+  viewCopy = view;
+  tableView = [(VSIdentityProviderPickerViewController_iOS *)self tableView];
 
-  v8 = 0;
-  if (!a4 && v7 == v6)
+  firstSectionHeaderView = 0;
+  if (!section && tableView == viewCopy)
   {
-    v8 = [(VSIdentityProviderPickerViewController_iOS *)self firstSectionHeaderView];
+    firstSectionHeaderView = [(VSIdentityProviderPickerViewController_iOS *)self firstSectionHeaderView];
   }
 
-  return v8;
+  return firstSectionHeaderView;
 }
 
-- (id)_createTableHeaderContentConfiguration:(id)a3
+- (id)_createTableHeaderContentConfiguration:(id)configuration
 {
   v3 = MEMORY[0x277D756E0];
-  v4 = a3;
-  v5 = [v3 headerConfiguration];
-  [v5 setSecondaryText:v4];
+  configurationCopy = configuration;
+  headerConfiguration = [v3 headerConfiguration];
+  [headerConfiguration setSecondaryText:configurationCopy];
 
-  return v5;
+  return headerConfiguration;
 }
 
 - (void)_updateTableHeaderTitle
 {
-  v3 = [(VSIdentityProviderPickerViewController_iOS *)self _titleForTableHeaderView];
-  if (v3)
+  _titleForTableHeaderView = [(VSIdentityProviderPickerViewController_iOS *)self _titleForTableHeaderView];
+  if (_titleForTableHeaderView)
   {
-    v9 = v3;
-    v4 = [(VSIdentityProviderPickerViewController_iOS *)self firstSectionHeaderView];
+    v9 = _titleForTableHeaderView;
+    firstSectionHeaderView = [(VSIdentityProviderPickerViewController_iOS *)self firstSectionHeaderView];
     v5 = [(VSIdentityProviderPickerViewController_iOS *)self _createTableHeaderContentConfiguration:v9];
-    [v4 setContentConfiguration:v5];
+    [firstSectionHeaderView setContentConfiguration:v5];
 
-    v6 = [(VSIdentityProviderPickerViewController_iOS *)self parentViewController];
-    v7 = [(VSIdentityProviderPickerViewController_iOS *)self _titleForViewController];
-    [v6 setTitle:v7];
+    parentViewController = [(VSIdentityProviderPickerViewController_iOS *)self parentViewController];
+    _titleForViewController = [(VSIdentityProviderPickerViewController_iOS *)self _titleForViewController];
+    [parentViewController setTitle:_titleForViewController];
 
-    v8 = [(VSIdentityProviderPickerViewController_iOS *)self _titleForViewController];
-    [(VSIdentityProviderPickerViewController_iOS *)self setTitle:v8];
+    _titleForViewController2 = [(VSIdentityProviderPickerViewController_iOS *)self _titleForViewController];
+    [(VSIdentityProviderPickerViewController_iOS *)self setTitle:_titleForViewController2];
 
-    v3 = v9;
+    _titleForTableHeaderView = v9;
   }
 }
 
@@ -333,26 +333,26 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v4 = [(VSIdentityProviderPickerViewController_iOS *)self resourceTitle];
-  if ([v4 length])
+  resourceTitle = [(VSIdentityProviderPickerViewController_iOS *)self resourceTitle];
+  if ([resourceTitle length])
   {
-    v5 = [MEMORY[0x277CCA8D8] vs_frameworkBundle];
-    v6 = [v5 localizedStringForKey:@"IDENTITY_PROVIDER_PICKER_APP_MESSAGE_FORMAT" value:0 table:0];
+    vs_frameworkBundle = [MEMORY[0x277CCA8D8] vs_frameworkBundle];
+    requestingAppDisplayName2 = [vs_frameworkBundle localizedStringForKey:@"IDENTITY_PROVIDER_PICKER_APP_MESSAGE_FORMAT" value:0 table:0];
 
     v7 = MEMORY[0x277CCACA8];
-    v8 = [(VSIdentityProviderPickerViewController_iOS *)self requestingAppDisplayName];
-    [v7 stringWithFormat:v6, v4, v8];
+    requestingAppDisplayName = [(VSIdentityProviderPickerViewController_iOS *)self requestingAppDisplayName];
+    [v7 stringWithFormat:requestingAppDisplayName2, resourceTitle, requestingAppDisplayName];
   }
 
   else
   {
-    v6 = [(VSIdentityProviderPickerViewController_iOS *)self requestingAppDisplayName];
-    if (!v6)
+    requestingAppDisplayName2 = [(VSIdentityProviderPickerViewController_iOS *)self requestingAppDisplayName];
+    if (!requestingAppDisplayName2)
     {
-      v12 = [(VSIdentityProviderPickerViewController_iOS *)self additionalProvidersMode];
-      v13 = [MEMORY[0x277CCA8D8] vs_frameworkBundle];
-      v8 = v13;
-      if (v12 == 6)
+      additionalProvidersMode = [(VSIdentityProviderPickerViewController_iOS *)self additionalProvidersMode];
+      vs_frameworkBundle2 = [MEMORY[0x277CCA8D8] vs_frameworkBundle];
+      requestingAppDisplayName = vs_frameworkBundle2;
+      if (additionalProvidersMode == 6)
       {
         v14 = @"REGIONS_PICKER_SETTINGS_MESSAGE_TV";
       }
@@ -362,14 +362,14 @@ LABEL_8:
         v14 = @"IDENTITY_PROVIDER_PICKER_HEADER";
       }
 
-      v10 = [v13 localizedStringForKey:v14 value:0 table:0];
+      v10 = [vs_frameworkBundle2 localizedStringForKey:v14 value:0 table:0];
       goto LABEL_8;
     }
 
-    v9 = [MEMORY[0x277CCA8D8] vs_frameworkBundle];
-    v8 = [v9 localizedStringForKey:@"IDENTITY_PROVIDER_PICKER_APP_MESSAGE_NO_RESOURCE_TITLE_FORMAT" value:0 table:0];
+    vs_frameworkBundle3 = [MEMORY[0x277CCA8D8] vs_frameworkBundle];
+    requestingAppDisplayName = [vs_frameworkBundle3 localizedStringForKey:@"IDENTITY_PROVIDER_PICKER_APP_MESSAGE_NO_RESOURCE_TITLE_FORMAT" value:0 table:0];
 
-    [MEMORY[0x277CCACA8] stringWithFormat:v8, v6, v15];
+    [MEMORY[0x277CCACA8] stringWithFormat:requestingAppDisplayName, requestingAppDisplayName2, v15];
   }
   v10 = ;
 LABEL_8:
@@ -382,12 +382,12 @@ LABEL_9:
 
 - (id)titleForTableFooterView
 {
-  v2 = [(VSIdentityProviderPickerViewController_iOS *)self additionalProvidersMode];
+  additionalProvidersMode = [(VSIdentityProviderPickerViewController_iOS *)self additionalProvidersMode];
   v3 = 0;
-  if (v2 <= 6 && ((1 << v2) & 0x64) != 0)
+  if (additionalProvidersMode <= 6 && ((1 << additionalProvidersMode) & 0x64) != 0)
   {
-    v4 = [MEMORY[0x277CCA8D8] vs_frameworkBundle];
-    v3 = [v4 localizedStringForKey:@"IDENTITY_PROVIDER_PICKER_SETTINGS_FOOTER" value:0 table:0];
+    vs_frameworkBundle = [MEMORY[0x277CCA8D8] vs_frameworkBundle];
+    v3 = [vs_frameworkBundle localizedStringForKey:@"IDENTITY_PROVIDER_PICKER_SETTINGS_FOOTER" value:0 table:0];
   }
 
   return v3;
@@ -395,86 +395,86 @@ LABEL_9:
 
 - (id)_titleForViewController
 {
-  v2 = [(VSIdentityProviderPickerViewController_iOS *)self additionalProvidersMode];
-  if (v2 > 6)
+  additionalProvidersMode = [(VSIdentityProviderPickerViewController_iOS *)self additionalProvidersMode];
+  if (additionalProvidersMode > 6)
   {
     v5 = 0;
   }
 
   else
   {
-    v3 = off_279E1A4B8[v2];
-    v4 = [MEMORY[0x277CCA8D8] vs_frameworkBundle];
-    v5 = [v4 localizedStringForKey:v3 value:0 table:0];
+    v3 = off_279E1A4B8[additionalProvidersMode];
+    vs_frameworkBundle = [MEMORY[0x277CCA8D8] vs_frameworkBundle];
+    v5 = [vs_frameworkBundle localizedStringForKey:v3 value:0 table:0];
   }
 
   return v5;
 }
 
-- (void)_didPickIdentityProvider:(id)a3
+- (void)_didPickIdentityProvider:(id)provider
 {
-  v5 = a3;
-  v4 = [(VSIdentityProviderPickerViewController_iOS *)self delegate];
+  providerCopy = provider;
+  delegate = [(VSIdentityProviderPickerViewController_iOS *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 identityProviderPickerViewController:self didPickIdentityProvider:v5];
+    [delegate identityProviderPickerViewController:self didPickIdentityProvider:providerCopy];
   }
 }
 
 - (void)_didPickAdditionalIdentityProviders
 {
-  v5 = [(VSIdentityProviderPickerViewController_iOS *)self delegate];
-  v3 = [(VSIdentityProviderPickerViewController_iOS *)self additionalProvidersMode];
-  if ((objc_opt_respondsToSelector() & 1) != 0 && v3 - 7 <= 0xFFFFFFFFFFFFFFFDLL)
+  delegate = [(VSIdentityProviderPickerViewController_iOS *)self delegate];
+  additionalProvidersMode = [(VSIdentityProviderPickerViewController_iOS *)self additionalProvidersMode];
+  if ((objc_opt_respondsToSelector() & 1) != 0 && additionalProvidersMode - 7 <= 0xFFFFFFFFFFFFFFFDLL)
   {
-    [v5 identityProviderPickerViewControllerDidPickAdditionalIdentityProviders:self];
+    [delegate identityProviderPickerViewControllerDidPickAdditionalIdentityProviders:self];
   }
 
   else
   {
-    v4 = [(VSIdentityProviderPickerViewController_iOS *)self searchBarDelegate];
-    [v4 clearText];
+    searchBarDelegate = [(VSIdentityProviderPickerViewController_iOS *)self searchBarDelegate];
+    [searchBarDelegate clearText];
 
     [(VSIdentityProviderPickerViewController_iOS *)self setAdditionalProvidersMode:6];
     [(VSIdentityProviderPickerViewController_iOS *)self _updateTableHeaderTitle];
   }
 }
 
-- (void)_didPickStorefront:(id)a3
+- (void)_didPickStorefront:(id)storefront
 {
-  v4 = a3;
-  v5 = [(VSIdentityProviderPickerViewController_iOS *)self searchBarDelegate];
-  [v5 clearText];
+  storefrontCopy = storefront;
+  searchBarDelegate = [(VSIdentityProviderPickerViewController_iOS *)self searchBarDelegate];
+  [searchBarDelegate clearText];
 
-  v6 = [v4 identitifer];
+  identitifer = [storefrontCopy identitifer];
 
-  [(VSIdentityProviderPickerViewController_iOS *)self setRequestedStorefrontCountryCode:v6];
+  [(VSIdentityProviderPickerViewController_iOS *)self setRequestedStorefrontCountryCode:identitifer];
 
   [(VSIdentityProviderPickerViewController_iOS *)self _updateTableHeaderTitle];
 }
 
-- (void)_cancelButtonPressed:(id)a3
+- (void)_cancelButtonPressed:(id)pressed
 {
-  v4 = [(VSIdentityProviderPickerViewController_iOS *)self delegate];
+  delegate = [(VSIdentityProviderPickerViewController_iOS *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 identityProviderPickerViewControllerDidCancel:self];
+    [delegate identityProviderPickerViewControllerDidCancel:self];
   }
 }
 
-- (void)_showAboutPrivacy:(id)a3
+- (void)_showAboutPrivacy:(id)privacy
 {
-  v4 = [(VSIdentityProviderPickerViewController_iOS *)self onboardingInfoCenter];
-  [v4 presentDetailsFromViewController:self];
+  onboardingInfoCenter = [(VSIdentityProviderPickerViewController_iOS *)self onboardingInfoCenter];
+  [onboardingInfoCenter presentDetailsFromViewController:self];
 }
 
-- (void)_performSelectionForIdentityProvider:(id)a3
+- (void)_performSelectionForIdentityProvider:(id)provider
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  providerCopy = provider;
+  v5 = providerCopy;
+  if (providerCopy)
   {
-    [(VSIdentityProviderPickerViewController_iOS *)self _didPickIdentityProvider:v4];
+    [(VSIdentityProviderPickerViewController_iOS *)self _didPickIdentityProvider:providerCopy];
   }
 
   else
@@ -483,12 +483,12 @@ LABEL_9:
   }
 }
 
-- (void)setCancellationAllowed:(BOOL)a3
+- (void)setCancellationAllowed:(BOOL)allowed
 {
-  if (self->_cancellationAllowed != a3)
+  if (self->_cancellationAllowed != allowed)
   {
-    self->_cancellationAllowed = a3;
-    if (a3)
+    self->_cancellationAllowed = allowed;
+    if (allowed)
     {
       v6 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:1 target:self action:sel__cancelButtonPressed_];
     }
@@ -498,15 +498,15 @@ LABEL_9:
       v6 = 0;
     }
 
-    v5 = [(VSIdentityProviderPickerViewController_iOS *)self navigationItem];
-    [v5 setLeftBarButtonItem:v6];
+    navigationItem = [(VSIdentityProviderPickerViewController_iOS *)self navigationItem];
+    [navigationItem setLeftBarButtonItem:v6];
   }
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v14 = a4;
-  v6 = [a3 dataSource];
+  pathCopy = path;
+  dataSource = [view dataSource];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -517,18 +517,18 @@ LABEL_9:
     [v7 raise:v8 format:{@"Unexpectedly, tableViewDataSource was %@, instead of VSIdentityProviderTableViewDataSource.", v10}];
   }
 
-  v11 = v6;
+  v11 = dataSource;
   if ([v11 additionalProvidersMode] == 6)
   {
-    v12 = [v11 storefrontAtIndexPath:v14];
+    v12 = [v11 storefrontAtIndexPath:pathCopy];
     [(VSIdentityProviderPickerViewController_iOS *)self _didPickStorefront:v12];
   }
 
   else
   {
-    v12 = [v11 identityProviderForRowAtIndexPath:v14];
-    v13 = [(VSIdentityProviderPickerViewController_iOS *)self searchController];
-    if ([v13 isActive])
+    v12 = [v11 identityProviderForRowAtIndexPath:pathCopy];
+    searchController = [(VSIdentityProviderPickerViewController_iOS *)self searchController];
+    if ([searchController isActive])
     {
       [(VSIdentityProviderPickerViewController_iOS *)self setSelectedIdentityProvider:v12];
       [(VSIdentityProviderPickerViewController_iOS *)self dismissSearchControllerAnimated:1 completion:0];
@@ -541,18 +541,18 @@ LABEL_9:
   }
 }
 
-- (void)tableViewDidFinishReload:(id)a3
+- (void)tableViewDidFinishReload:(id)reload
 {
-  v7 = a3;
-  [v7 contentOffset];
+  reloadCopy = reload;
+  [reloadCopy contentOffset];
   v4 = v3;
-  v5 = [v7 tableHeaderView];
-  v6 = v5;
-  if (v5)
+  tableHeaderView = [reloadCopy tableHeaderView];
+  v6 = tableHeaderView;
+  if (tableHeaderView)
   {
-    [v5 bounds];
-    [v7 convertRect:v6 fromView:?];
-    [v7 scrollRectToVisible:0 animated:?];
+    [tableHeaderView bounds];
+    [reloadCopy convertRect:v6 fromView:?];
+    [reloadCopy scrollRectToVisible:0 animated:?];
   }
 
   else
@@ -562,10 +562,10 @@ LABEL_9:
       goto LABEL_6;
     }
 
-    [v7 vs_scrollToTopAnimated:0];
+    [reloadCopy vs_scrollToTopAnimated:0];
   }
 
-  [v7 setNeedsFocusUpdate];
+  [reloadCopy setNeedsFocusUpdate];
 LABEL_6:
 }
 
@@ -582,87 +582,87 @@ LABEL_6:
   v35.receiver = self;
   v35.super_class = VSIdentityProviderPickerViewController_iOS;
   [(VSIdentityProviderPickerViewController_iOS *)&v35 viewDidLoad];
-  v3 = [(VSIdentityProviderPickerViewController_iOS *)self tableView];
-  v4 = [MEMORY[0x277D75348] clearColor];
-  [v3 setSectionIndexBackgroundColor:v4];
+  tableView = [(VSIdentityProviderPickerViewController_iOS *)self tableView];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [tableView setSectionIndexBackgroundColor:clearColor];
 
-  v5 = [(VSIdentityProviderPickerViewController_iOS *)self unfilteredDataSource];
-  [v5 setTableView:v3];
-  v6 = [objc_alloc(MEMORY[0x277D75B58]) initWithStyle:{objc_msgSend(v3, "style")}];
-  v7 = [v6 tableView];
-  v8 = [MEMORY[0x277D75348] clearColor];
-  [v7 setSectionIndexBackgroundColor:v8];
+  unfilteredDataSource = [(VSIdentityProviderPickerViewController_iOS *)self unfilteredDataSource];
+  [unfilteredDataSource setTableView:tableView];
+  v6 = [objc_alloc(MEMORY[0x277D75B58]) initWithStyle:{objc_msgSend(tableView, "style")}];
+  tableView2 = [v6 tableView];
+  clearColor2 = [MEMORY[0x277D75348] clearColor];
+  [tableView2 setSectionIndexBackgroundColor:clearColor2];
 
-  [v7 setDelegate:self];
-  v9 = [(VSIdentityProviderPickerViewController_iOS *)self filteredDataSource];
-  [v9 setTableView:v7];
+  [tableView2 setDelegate:self];
+  filteredDataSource = [(VSIdentityProviderPickerViewController_iOS *)self filteredDataSource];
+  [filteredDataSource setTableView:tableView2];
   v32 = v6;
   v10 = [objc_alloc(MEMORY[0x277D759F0]) initWithSearchResultsController:v6];
   [v10 setHidesNavigationBarDuringPresentation:0];
   [(VSIdentityProviderPickerViewController_iOS *)self setSearchController:v10];
-  v11 = [v10 searchBar];
-  v12 = [(VSIdentityProviderPickerViewController_iOS *)self searchBarDelegate];
-  v31 = v11;
-  [v12 setSearchBar:v11];
+  searchBar = [v10 searchBar];
+  searchBarDelegate = [(VSIdentityProviderPickerViewController_iOS *)self searchBarDelegate];
+  v31 = searchBar;
+  [searchBarDelegate setSearchBar:searchBar];
 
-  v13 = [(VSIdentityProviderPickerViewController_iOS *)self additionalProvidersMode];
-  v14 = [MEMORY[0x277CBEB18] array];
-  v15 = [(VSIdentityProviderPickerViewController_iOS *)self titleForTableFooterView];
-  if (v15)
+  additionalProvidersMode = [(VSIdentityProviderPickerViewController_iOS *)self additionalProvidersMode];
+  array = [MEMORY[0x277CBEB18] array];
+  titleForTableFooterView = [(VSIdentityProviderPickerViewController_iOS *)self titleForTableFooterView];
+  if (titleForTableFooterView)
   {
-    [v14 addObject:v15];
+    [array addObject:titleForTableFooterView];
   }
 
-  if (v13 == 3)
+  if (additionalProvidersMode == 3)
   {
-    v16 = 0;
+    localizedButtonTitle = 0;
   }
 
   else
   {
-    v17 = [(VSIdentityProviderPickerViewController_iOS *)self onboardingInfoCenter];
-    v18 = [v17 tvProviderPrivacyButtonViewController];
+    onboardingInfoCenter = [(VSIdentityProviderPickerViewController_iOS *)self onboardingInfoCenter];
+    tvProviderPrivacyButtonViewController = [onboardingInfoCenter tvProviderPrivacyButtonViewController];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v29 = v9;
-      v19 = v5;
-      v20 = [v18 flow];
-      v16 = [v20 localizedButtonTitle];
+      v29 = filteredDataSource;
+      v19 = unfilteredDataSource;
+      flow = [tvProviderPrivacyButtonViewController flow];
+      localizedButtonTitle = [flow localizedButtonTitle];
 
-      if (v16)
+      if (localizedButtonTitle)
       {
-        [v14 addObject:v16];
+        [array addObject:localizedButtonTitle];
       }
 
-      v5 = v19;
-      v9 = v29;
+      unfilteredDataSource = v19;
+      filteredDataSource = v29;
     }
 
     else
     {
-      v16 = 0;
+      localizedButtonTitle = 0;
     }
   }
 
-  v21 = [MEMORY[0x277CCAB68] string];
+  string = [MEMORY[0x277CCAB68] string];
   v33[0] = MEMORY[0x277D85DD0];
   v33[1] = 3221225472;
   v33[2] = __57__VSIdentityProviderPickerViewController_iOS_viewDidLoad__block_invoke;
   v33[3] = &unk_279E1A498;
-  v22 = v21;
+  v22 = string;
   v34 = v22;
-  [v14 enumerateObjectsUsingBlock:v33];
+  [array enumerateObjectsUsingBlock:v33];
   if ([v22 length])
   {
-    v28 = v5;
-    v30 = v9;
+    v28 = unfilteredDataSource;
+    v30 = filteredDataSource;
     v23 = [MEMORY[0x277D3FAD8] groupSpecifierWithID:@"footer"];
     [v23 setProperty:v22 forKey:*MEMORY[0x277D3FF70]];
-    if (v16)
+    if (localizedButtonTitle)
     {
-      v36.location = [v22 rangeOfString:v16];
+      v36.location = [v22 rangeOfString:localizedButtonTitle];
       v24 = NSStringFromRange(v36);
       [v23 setProperty:v24 forKey:*MEMORY[0x277D3FF58]];
 
@@ -677,55 +677,55 @@ LABEL_6:
     [v27 setPreservesSuperviewLayoutMargins:1];
     [(VSIdentityProviderPickerViewController_iOS *)self setFooterView:v27];
 
-    v5 = v28;
-    v9 = v30;
+    unfilteredDataSource = v28;
+    filteredDataSource = v30;
   }
 }
 
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section
 {
-  if ([a3 numberOfSections] - 1 == a4)
+  if ([view numberOfSections] - 1 == section)
   {
-    v5 = [(VSIdentityProviderPickerViewController_iOS *)self footerView];
+    footerView = [(VSIdentityProviderPickerViewController_iOS *)self footerView];
   }
 
   else
   {
-    v5 = 0;
+    footerView = 0;
   }
 
-  return v5;
+  return footerView;
 }
 
 - (id)filteredTableView
 {
-  v2 = [(VSIdentityProviderPickerViewController_iOS *)self filteredDataSource];
-  v3 = [v2 tableView];
+  filteredDataSource = [(VSIdentityProviderPickerViewController_iOS *)self filteredDataSource];
+  tableView = [filteredDataSource tableView];
 
-  return v3;
+  return tableView;
 }
 
-- (void)setSectionContentInset:(UIEdgeInsets)a3
+- (void)setSectionContentInset:(UIEdgeInsets)inset
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
-  v8 = [(VSIdentityProviderPickerViewController_iOS *)self tableView];
-  [v8 _setSectionContentInset:{top, left, bottom, right}];
+  right = inset.right;
+  bottom = inset.bottom;
+  left = inset.left;
+  top = inset.top;
+  tableView = [(VSIdentityProviderPickerViewController_iOS *)self tableView];
+  [tableView _setSectionContentInset:{top, left, bottom, right}];
 
-  v9 = [(VSIdentityProviderPickerViewController_iOS *)self filteredTableView];
-  [v9 _setSectionContentInset:{top, left, bottom, right}];
+  filteredTableView = [(VSIdentityProviderPickerViewController_iOS *)self filteredTableView];
+  [filteredTableView _setSectionContentInset:{top, left, bottom, right}];
 }
 
-- (void)willMoveToParentViewController:(id)a3
+- (void)willMoveToParentViewController:(id)controller
 {
-  v4 = a3;
-  if (!v4)
+  controllerCopy = controller;
+  if (!controllerCopy)
   {
-    v5 = [(VSIdentityProviderPickerViewController_iOS *)self presentedViewController];
+    presentedViewController = [(VSIdentityProviderPickerViewController_iOS *)self presentedViewController];
 
-    if (v5)
+    if (presentedViewController)
     {
       [(VSIdentityProviderPickerViewController_iOS *)self dismissViewControllerAnimated:0 completion:0];
     }
@@ -733,7 +733,7 @@ LABEL_6:
 
   v6.receiver = self;
   v6.super_class = VSIdentityProviderPickerViewController_iOS;
-  [(VSIdentityProviderPickerViewController_iOS *)&v6 willMoveToParentViewController:v4];
+  [(VSIdentityProviderPickerViewController_iOS *)&v6 willMoveToParentViewController:controllerCopy];
 }
 
 - (void)viewDidLayoutSubviews
@@ -742,20 +742,20 @@ LABEL_6:
   v5.super_class = VSIdentityProviderPickerViewController_iOS;
   [(VSIdentityProviderPickerViewController_iOS *)&v5 viewDidLayoutSubviews];
   [(VSIdentityProviderPickerViewController_iOS *)self setLayoutMarginsFollowReadableWidth:[(VSIdentityProviderPickerViewController_iOS *)self _shouldInsetListView]];
-  v3 = [(VSIdentityProviderPickerViewController_iOS *)self tableView];
-  [v3 _setSectionContentInsetFollowsLayoutMargins:{-[VSIdentityProviderPickerViewController_iOS _shouldInsetListView](self, "_shouldInsetListView")}];
+  tableView = [(VSIdentityProviderPickerViewController_iOS *)self tableView];
+  [tableView _setSectionContentInsetFollowsLayoutMargins:{-[VSIdentityProviderPickerViewController_iOS _shouldInsetListView](self, "_shouldInsetListView")}];
 
-  v4 = [(VSIdentityProviderPickerViewController_iOS *)self filteredTableView];
-  [v4 _setSectionContentInsetFollowsLayoutMargins:{-[VSIdentityProviderPickerViewController_iOS _shouldInsetListView](self, "_shouldInsetListView")}];
+  filteredTableView = [(VSIdentityProviderPickerViewController_iOS *)self filteredTableView];
+  [filteredTableView _setSectionContentInsetFollowsLayoutMargins:{-[VSIdentityProviderPickerViewController_iOS _shouldInsetListView](self, "_shouldInsetListView")}];
 }
 
 - (BOOL)_shouldInsetListView
 {
-  v2 = [(VSIdentityProviderPickerViewController_iOS *)self view];
-  v3 = [MEMORY[0x277D759A0] mainScreen];
-  v4 = [v3 traitCollection];
+  view = [(VSIdentityProviderPickerViewController_iOS *)self view];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  traitCollection = [mainScreen traitCollection];
 
-  if ([v4 userInterfaceIdiom] == 1)
+  if ([traitCollection userInterfaceIdiom] == 1)
   {
     v5 = 1;
   }
@@ -767,19 +767,19 @@ LABEL_6:
       goto LABEL_11;
     }
 
-    [v2 frame];
+    [view frame];
     Width = CGRectGetWidth(v13);
     v7 = [MEMORY[0x277CBEB98] setWithObjects:{*MEMORY[0x277D76820], *MEMORY[0x277D76818], 0}];
-    v8 = [v4 preferredContentSizeCategory];
-    v9 = [v7 containsObject:v8];
+    preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+    v9 = [v7 containsObject:preferredContentSizeCategory];
 
-    v10 = [v4 horizontalSizeClass];
+    horizontalSizeClass = [traitCollection horizontalSizeClass];
     if (Width <= 320.0 && (v9 & 1) != 0)
     {
       goto LABEL_11;
     }
 
-    v11 = v10 != 2 || Width <= 320.0;
+    v11 = horizontalSizeClass != 2 || Width <= 320.0;
     v5 = 1;
     if (v11 || (v9 & 1) == 0)
     {
@@ -794,65 +794,65 @@ LABEL_11:
   return v5;
 }
 
-- (void)showPrivacySheet:(id)a3
+- (void)showPrivacySheet:(id)sheet
 {
-  v4 = a3;
-  v5 = [(VSIdentityProviderPickerViewController_iOS *)self presentedViewController];
+  sheetCopy = sheet;
+  presentedViewController = [(VSIdentityProviderPickerViewController_iOS *)self presentedViewController];
 
-  if (v5)
+  if (presentedViewController)
   {
-    v6 = [(VSIdentityProviderPickerViewController_iOS *)self presentedViewController];
+    presentedViewController2 = [(VSIdentityProviderPickerViewController_iOS *)self presentedViewController];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __63__VSIdentityProviderPickerViewController_iOS_showPrivacySheet___block_invoke;
     v7[3] = &unk_279E19848;
     v7[4] = self;
-    v8 = v4;
-    [v6 dismissViewControllerAnimated:1 completion:v7];
+    v8 = sheetCopy;
+    [presentedViewController2 dismissViewControllerAnimated:1 completion:v7];
   }
 
   else
   {
-    [(VSIdentityProviderPickerViewController_iOS *)self _showPrivacySheet:v4];
+    [(VSIdentityProviderPickerViewController_iOS *)self _showPrivacySheet:sheetCopy];
   }
 }
 
-- (void)_showPrivacySheet:(id)a3
+- (void)_showPrivacySheet:(id)sheet
 {
   v4 = [MEMORY[0x277D37678] presenterForPrivacySplashWithIdentifier:0x2880B9F90];
   [v4 setPresentingViewController:self];
   [v4 present];
 }
 
-- (void)handleDestination:(id)a3 completion:(id)a4
+- (void)handleDestination:(id)destination completion:(id)completion
 {
-  v11 = a3;
-  v6 = a4;
-  if ([v11 isEqual:@"signIn"])
+  destinationCopy = destination;
+  completionCopy = completion;
+  if ([destinationCopy isEqual:@"signIn"])
   {
-    [(VSIdentityProviderPickerViewController_iOS *)self handleSignInActionWithCompletion:v6];
+    [(VSIdentityProviderPickerViewController_iOS *)self handleSignInActionWithCompletion:completionCopy];
   }
 
   else
   {
     v7 = MEMORY[0x277CCACA8];
     v8 = [(VSIdentityProviderPickerViewController_iOS *)self debugDescription];
-    v9 = [v7 stringWithFormat:@"Unexpected destination %@ for %@", v11, v8];
+    v9 = [v7 stringWithFormat:@"Unexpected destination %@ for %@", destinationCopy, v8];
     v10 = VSDestinationError(2, v9);
-    v6[2](v6, 0, v10);
+    completionCopy[2](completionCopy, 0, v10);
   }
 }
 
-- (void)handleSignInActionWithCompletion:(id)a3
+- (void)handleSignInActionWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __79__VSIdentityProviderPickerViewController_iOS_handleSignInActionWithCompletion___block_invoke;
   v6[3] = &unk_279E1A470;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   [(UIViewController *)self vs_makeTopmostInNavigationStack:1 completion:v6];
 }
 

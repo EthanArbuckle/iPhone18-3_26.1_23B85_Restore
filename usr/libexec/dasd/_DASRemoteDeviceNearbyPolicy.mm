@@ -1,7 +1,7 @@
 @interface _DASRemoteDeviceNearbyPolicy
 + (id)policyInstance;
 - (_DASRemoteDeviceNearbyPolicy)init;
-- (id)responseForActivity:(id)a3 withState:(id)a4;
+- (id)responseForActivity:(id)activity withState:(id)state;
 @end
 
 @implementation _DASRemoteDeviceNearbyPolicy
@@ -27,7 +27,7 @@
   block[1] = 3221225472;
   block[2] = sub_10011A030;
   block[3] = &unk_1001B54A0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10020B990 != -1)
   {
     dispatch_once(&qword_10020B990, block);
@@ -38,19 +38,19 @@
   return v2;
 }
 
-- (id)responseForActivity:(id)a3 withState:(id)a4
+- (id)responseForActivity:(id)activity withState:(id)state
 {
-  v5 = a3;
-  v6 = [v5 remoteDevice];
+  activityCopy = activity;
+  remoteDevice = [activityCopy remoteDevice];
   v7 = +[_DASDaemon sharedInstance];
   v8 = [_DASRemoteDeviceNearbyMonitor sharedMonitorWithDaemon:v7];
 
-  [v8 registerForRemoteDeviceWithActivity:v5];
-  LODWORD(v5) = [v8 isRemoteDeviceNearby:v6];
+  [v8 registerForRemoteDeviceWithActivity:activityCopy];
+  LODWORD(activityCopy) = [v8 isRemoteDeviceNearby:remoteDevice];
   v9 = [[_DASPolicyResponseRationale alloc] initWithPolicyName:self->_policyName];
   v10 = v9;
   v11 = 1.0;
-  if (v5)
+  if (activityCopy)
   {
     v12 = 0;
   }

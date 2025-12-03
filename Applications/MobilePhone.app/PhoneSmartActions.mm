@@ -9,8 +9,8 @@
 - (NSString)appBundleIdentifier;
 - (_TtC11MobilePhone17PhoneSmartActions)init;
 - (id)getAppActionTitle;
-- (void)setAppBundleIdentifier:(id)a3;
-- (void)setParameters:(id)a3;
+- (void)setAppBundleIdentifier:(id)identifier;
+- (void)setParameters:(id)parameters;
 @end
 
 @implementation PhoneSmartActions
@@ -24,7 +24,7 @@
   return v2;
 }
 
-- (void)setAppBundleIdentifier:(id)a3
+- (void)setAppBundleIdentifier:(id)identifier
 {
   v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v6 = v5;
@@ -43,7 +43,7 @@
   return v2.super.isa;
 }
 
-- (void)setParameters:(id)a3
+- (void)setParameters:(id)parameters
 {
   v4 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
   v5 = OBJC_IVAR____TtC11MobilePhone17PhoneSmartActions_parameters;
@@ -95,7 +95,7 @@
 
 - (id)getAppActionTitle
 {
-  v2 = self;
+  selfCopy = self;
   object = PhoneSmartActions.getAppActionTitle()().value._object;
 
   if (object)

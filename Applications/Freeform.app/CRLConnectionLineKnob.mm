@@ -1,8 +1,8 @@
 @interface CRLConnectionLineKnob
-- (_TtC8Freeform21CRLConnectionLineKnob)initWithImage:(id)a3 highlightedImage:(id)a4 radius:(double)a5 tag:(unint64_t)a6 onRep:(id)a7;
+- (_TtC8Freeform21CRLConnectionLineKnob)initWithImage:(id)image highlightedImage:(id)highlightedImage radius:(double)radius tag:(unint64_t)tag onRep:(id)rep;
 - (id)createKnobRenderable;
-- (void)cursorEnteredKnobAtPoint:(CGPoint)a3 withPlatformObject:(id)a4;
-- (void)cursorExitedKnobAtPoint:(CGPoint)a3 withPlatformObject:(id)a4;
+- (void)cursorEnteredKnobAtPoint:(CGPoint)point withPlatformObject:(id)object;
+- (void)cursorExitedKnobAtPoint:(CGPoint)point withPlatformObject:(id)object;
 - (void)didCreateKnobRenderable;
 - (void)updateRenderableImage;
 @end
@@ -11,52 +11,52 @@
 
 - (void)updateRenderableImage
 {
-  v2 = self;
+  selfCopy = self;
   sub_100D6BEB0();
 }
 
 - (id)createKnobRenderable
 {
   v3 = objc_opt_self();
-  v4 = self;
-  v5 = [v3 renderable];
-  v6 = [(CRLCanvasButtonKnob *)v4 knobImage];
-  if (v6)
+  selfCopy = self;
+  renderable = [v3 renderable];
+  knobImage = [(CRLCanvasButtonKnob *)selfCopy knobImage];
+  if (knobImage)
   {
-    v7 = v6;
-    [v6 size];
+    v7 = knobImage;
+    [knobImage size];
   }
 
-  [v5 setBounds:sub_10011ECB4()];
+  [renderable setBounds:sub_10011ECB4()];
 
-  return v5;
+  return renderable;
 }
 
 - (void)didCreateKnobRenderable
 {
-  v2 = self;
+  selfCopy = self;
   sub_100D6C074();
 }
 
-- (void)cursorEnteredKnobAtPoint:(CGPoint)a3 withPlatformObject:(id)a4
+- (void)cursorEnteredKnobAtPoint:(CGPoint)point withPlatformObject:(id)object
 {
-  y = a3.y;
-  x = a3.x;
-  v8 = a4;
-  v9 = self;
-  sub_100D6C190(a4, x, y);
+  y = point.y;
+  x = point.x;
+  objectCopy = object;
+  selfCopy = self;
+  sub_100D6C190(object, x, y);
 }
 
-- (void)cursorExitedKnobAtPoint:(CGPoint)a3 withPlatformObject:(id)a4
+- (void)cursorExitedKnobAtPoint:(CGPoint)point withPlatformObject:(id)object
 {
-  y = a3.y;
-  x = a3.x;
-  v8 = a4;
-  v9 = self;
-  sub_100D6C314(a4, x, y);
+  y = point.y;
+  x = point.x;
+  objectCopy = object;
+  selfCopy = self;
+  sub_100D6C314(object, x, y);
 }
 
-- (_TtC8Freeform21CRLConnectionLineKnob)initWithImage:(id)a3 highlightedImage:(id)a4 radius:(double)a5 tag:(unint64_t)a6 onRep:(id)a7
+- (_TtC8Freeform21CRLConnectionLineKnob)initWithImage:(id)image highlightedImage:(id)highlightedImage radius:(double)radius tag:(unint64_t)tag onRep:(id)rep
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

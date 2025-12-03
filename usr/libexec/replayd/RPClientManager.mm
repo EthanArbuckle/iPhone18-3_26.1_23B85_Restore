@@ -1,14 +1,14 @@
 @interface RPClientManager
 + (id)sharedInstance;
 - (RPClientManager)init;
-- (id)getClientContainingBundleID:(id)a3;
-- (id)getClientForBroadcastWithHostBundleID:(id)a3;
-- (id)getClientMatchingBundleID:(id)a3;
-- (id)getClientWithBundleID:(id)a3;
-- (void)addClient:(id)a3;
+- (id)getClientContainingBundleID:(id)d;
+- (id)getClientForBroadcastWithHostBundleID:(id)d;
+- (id)getClientMatchingBundleID:(id)d;
+- (id)getClientWithBundleID:(id)d;
+- (void)addClient:(id)client;
 - (void)dealloc;
-- (void)removeClient:(id)a3;
-- (void)stopAllClientsWithHandler:(id)a3;
+- (void)removeClient:(id)client;
+- (void)stopAllClientsWithHandler:(id)handler;
 @end
 
 @implementation RPClientManager
@@ -64,7 +64,7 @@
     v6 = 1024;
     v7 = 44;
     v8 = 2048;
-    v9 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %p", buf, 0x1Cu);
   }
 
@@ -73,46 +73,46 @@
   [(RPClientManager *)&v3 dealloc];
 }
 
-- (void)addClient:(id)a3
+- (void)addClient:(id)client
 {
   bundleIDToClientDictionary = self->_bundleIDToClientDictionary;
-  v5 = a3;
-  v6 = [v5 clientBundleID];
-  [(NSMutableDictionary *)bundleIDToClientDictionary setObject:v5 forKey:v6];
+  clientCopy = client;
+  clientBundleID = [clientCopy clientBundleID];
+  [(NSMutableDictionary *)bundleIDToClientDictionary setObject:clientCopy forKey:clientBundleID];
 
-  v9 = [v5 clientBundleID];
+  clientBundleID2 = [clientCopy clientBundleID];
   mainBundleIDToBundleID = self->_mainBundleIDToBundleID;
-  v8 = [v5 clientMainBundleID];
+  clientMainBundleID = [clientCopy clientMainBundleID];
 
-  [(NSMutableDictionary *)mainBundleIDToBundleID setObject:v9 forKeyedSubscript:v8];
+  [(NSMutableDictionary *)mainBundleIDToBundleID setObject:clientBundleID2 forKeyedSubscript:clientMainBundleID];
 }
 
-- (void)removeClient:(id)a3
+- (void)removeClient:(id)client
 {
-  v4 = a3;
-  [v4 stopCurrentActiveSessionWithHandler:&stru_1000A1E48];
-  [v4 invalidate];
+  clientCopy = client;
+  [clientCopy stopCurrentActiveSessionWithHandler:&stru_1000A1E48];
+  [clientCopy invalidate];
   bundleIDToClientDictionary = self->_bundleIDToClientDictionary;
-  v6 = [v4 clientBundleID];
-  [(NSMutableDictionary *)bundleIDToClientDictionary removeObjectForKey:v6];
+  clientBundleID = [clientCopy clientBundleID];
+  [(NSMutableDictionary *)bundleIDToClientDictionary removeObjectForKey:clientBundleID];
 
   mainBundleIDToBundleID = self->_mainBundleIDToBundleID;
-  v8 = [v4 clientMainBundleID];
+  clientMainBundleID = [clientCopy clientMainBundleID];
 
-  [(NSMutableDictionary *)mainBundleIDToBundleID setObject:0 forKeyedSubscript:v8];
+  [(NSMutableDictionary *)mainBundleIDToBundleID setObject:0 forKeyedSubscript:clientMainBundleID];
 }
 
-- (id)getClientWithBundleID:(id)a3
+- (id)getClientWithBundleID:(id)d
 {
-  v4 = a3;
-  if (v4 && ([(NSMutableDictionary *)self->_bundleIDToClientDictionary objectForKeyedSubscript:v4], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
+  dCopy = d;
+  if (dCopy && ([(NSMutableDictionary *)self->_bundleIDToClientDictionary objectForKeyedSubscript:dCopy], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
   {
-    v6 = [(NSMutableDictionary *)self->_bundleIDToClientDictionary objectForKeyedSubscript:v4];
+    v6 = [(NSMutableDictionary *)self->_bundleIDToClientDictionary objectForKeyedSubscript:dCopy];
   }
 
   else
   {
-    v7 = [(NSMutableDictionary *)self->_mainBundleIDToBundleID objectForKeyedSubscript:v4];
+    v7 = [(NSMutableDictionary *)self->_mainBundleIDToBundleID objectForKeyedSubscript:dCopy];
     if (v7)
     {
       v6 = [(NSMutableDictionary *)self->_bundleIDToClientDictionary objectForKeyedSubscript:v7];
@@ -127,12 +127,12 @@
   return v6;
 }
 
-- (id)getClientForBroadcastWithHostBundleID:(id)a3
+- (id)getClientForBroadcastWithHostBundleID:(id)d
 {
-  v4 = a3;
-  if (v4 && ([(NSMutableDictionary *)self->_bundleIDToClientDictionary objectForKeyedSubscript:v4], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
+  dCopy = d;
+  if (dCopy && ([(NSMutableDictionary *)self->_bundleIDToClientDictionary objectForKeyedSubscript:dCopy], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
   {
-    v6 = [(NSMutableDictionary *)self->_bundleIDToClientDictionary objectForKeyedSubscript:v4];
+    v6 = [(NSMutableDictionary *)self->_bundleIDToClientDictionary objectForKeyedSubscript:dCopy];
   }
 
   else
@@ -141,8 +141,8 @@
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v7 = [(NSMutableDictionary *)self->_bundleIDToClientDictionary allValues];
-    v8 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
+    allValues = [(NSMutableDictionary *)self->_bundleIDToClientDictionary allValues];
+    v8 = [allValues countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v8)
     {
       v9 = v8;
@@ -153,19 +153,19 @@
         {
           if (*v19 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(allValues);
           }
 
           v12 = *(*(&v18 + 1) + 8 * i);
-          v13 = [v12 clientBundleID];
-          v14 = [v13 componentsSeparatedByString:@".pid."];
+          clientBundleID = [v12 clientBundleID];
+          v14 = [clientBundleID componentsSeparatedByString:@".pid."];
 
           if (v14)
           {
             if ([v14 count])
             {
               v15 = [v14 objectAtIndexedSubscript:0];
-              v16 = [v4 isEqualToString:v15];
+              v16 = [dCopy isEqualToString:v15];
 
               if (v16)
               {
@@ -177,7 +177,7 @@
           }
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
+        v9 = [allValues countByEnumeratingWithState:&v18 objects:v22 count:16];
         if (v9)
         {
           continue;
@@ -195,15 +195,15 @@ LABEL_16:
   return v6;
 }
 
-- (id)getClientContainingBundleID:(id)a3
+- (id)getClientContainingBundleID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(NSMutableDictionary *)self->_bundleIDToClientDictionary allValues];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  allValues = [(NSMutableDictionary *)self->_bundleIDToClientDictionary allValues];
+  v6 = [allValues countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = *v14;
@@ -213,12 +213,12 @@ LABEL_16:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allValues);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 clientBundleID];
-        v11 = [v10 containsString:v4];
+        clientBundleID = [v9 clientBundleID];
+        v11 = [clientBundleID containsString:dCopy];
 
         if (v11)
         {
@@ -227,7 +227,7 @@ LABEL_16:
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [allValues countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v6)
       {
         continue;
@@ -242,12 +242,12 @@ LABEL_11:
   return v6;
 }
 
-- (id)getClientMatchingBundleID:(id)a3
+- (id)getClientMatchingBundleID:(id)d
 {
-  v4 = a3;
-  if (v4 && ([(NSMutableDictionary *)self->_bundleIDToClientDictionary objectForKeyedSubscript:v4], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
+  dCopy = d;
+  if (dCopy && ([(NSMutableDictionary *)self->_bundleIDToClientDictionary objectForKeyedSubscript:dCopy], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
   {
-    v6 = [(NSMutableDictionary *)self->_bundleIDToClientDictionary objectForKeyedSubscript:v4];
+    v6 = [(NSMutableDictionary *)self->_bundleIDToClientDictionary objectForKeyedSubscript:dCopy];
   }
 
   else
@@ -258,9 +258,9 @@ LABEL_11:
   return v6;
 }
 
-- (void)stopAllClientsWithHandler:(id)a3
+- (void)stopAllClientsWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446466;
@@ -279,9 +279,9 @@ LABEL_11:
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v6 = [(NSMutableDictionary *)self->_bundleIDToClientDictionary allValues];
-  v7 = [v6 countByEnumeratingWithState:&v20 objects:v28 count:16];
-  v13 = v4;
+  allValues = [(NSMutableDictionary *)self->_bundleIDToClientDictionary allValues];
+  v7 = [allValues countByEnumeratingWithState:&v20 objects:v28 count:16];
+  v13 = handlerCopy;
   if (v7)
   {
     v8 = *v21;
@@ -291,7 +291,7 @@ LABEL_11:
       {
         if (*v21 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allValues);
         }
 
         v10 = *(*(&v20 + 1) + 8 * i);
@@ -314,7 +314,7 @@ LABEL_11:
         [v10 stopCurrentActiveSessionWithHandler:v17];
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v20 objects:v28 count:16];
+      v7 = [allValues countByEnumeratingWithState:&v20 objects:v28 count:16];
     }
 
     while (v7);

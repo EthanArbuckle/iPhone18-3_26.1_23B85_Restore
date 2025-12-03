@@ -1,14 +1,14 @@
 @interface CRLDrawableZOrderArranger
 - (BOOL)canBringDrawablesForward;
 - (BOOL)canSendDrawablesBackward;
-- (BOOL)isZOrderChangeRecord:(id)a3;
-- (BOOL)p_forcesPlacementOnBottom:(id)a3;
-- (BOOL)p_forcesPlacementOnTop:(id)a3;
+- (BOOL)isZOrderChangeRecord:(id)record;
+- (BOOL)p_forcesPlacementOnBottom:(id)bottom;
+- (BOOL)p_forcesPlacementOnTop:(id)top;
 - (BOOL)p_usingRelativeZOrder;
 - (CRLCanvasEditor)canvasEditor;
 - (CRLDrawableZOrderArranger)init;
-- (CRLDrawableZOrderArranger)initWithCanvasEditor:(id)a3;
-- (id)commandToSetZOrderOfInfos:(id)a3 toIndexes:(id)a4 coalesceable:(BOOL)a5;
+- (CRLDrawableZOrderArranger)initWithCanvasEditor:(id)editor;
+- (id)commandToSetZOrderOfInfos:(id)infos toIndexes:(id)indexes coalesceable:(BOOL)coalesceable;
 - (id)p_selectedInfos;
 - (id)p_zOrderSiblings;
 - (id)p_zOrderSiblingsForRelativeOrder;
@@ -18,37 +18,37 @@
 - (unint64_t)indexOfNextLowerCanvasObject;
 - (unint64_t)maxZValueForArrangeInspector;
 - (unint64_t)minZValueForArrangeInspector;
-- (unint64_t)p_indexOfChildren:(id)a3 inContainer:(id)a4;
+- (unint64_t)p_indexOfChildren:(id)children inContainer:(id)container;
 - (unint64_t)p_maxIndex;
-- (unint64_t)p_maxRelativeZValueOfChildrenInTopLevelContainer:(id)a3;
-- (unint64_t)p_maxZValueOfChildren:(id)a3 inContainer:(id)a4;
+- (unint64_t)p_maxRelativeZValueOfChildrenInTopLevelContainer:(id)container;
+- (unint64_t)p_maxZValueOfChildren:(id)children inContainer:(id)container;
 - (unint64_t)p_minIndex;
-- (unint64_t)p_minZValueOfChildren:(id)a3 inContainer:(id)a4;
-- (unint64_t)p_relativeIndexOfChildrenInTopLevelContainer:(id)a3;
+- (unint64_t)p_minZValueOfChildren:(id)children inContainer:(id)container;
+- (unint64_t)p_relativeIndexOfChildrenInTopLevelContainer:(id)container;
 - (unint64_t)p_zOrderIndex;
 - (void)arrangeInspectorDidEndChangingZValue;
-- (void)arrangeInspectorDidSetZValue:(unint64_t)a3 forContainer:(id)a4;
+- (void)arrangeInspectorDidSetZValue:(unint64_t)value forContainer:(id)container;
 - (void)arrangeInspectorWillBeginChangingZValue;
 - (void)moveBackForArrangeInspector;
 - (void)moveFrontForArrangeInspector;
 - (void)moveToBackForArrangeInspector;
 - (void)moveToFrontForArrangeInspector;
-- (void)registerTargetForChanges:(id)a3;
-- (void)unregisterTargetForChanges:(id)a3;
+- (void)registerTargetForChanges:(id)changes;
+- (void)unregisterTargetForChanges:(id)changes;
 @end
 
 @implementation CRLDrawableZOrderArranger
 
-- (CRLDrawableZOrderArranger)initWithCanvasEditor:(id)a3
+- (CRLDrawableZOrderArranger)initWithCanvasEditor:(id)editor
 {
-  v4 = a3;
+  editorCopy = editor;
   v8.receiver = self;
   v8.super_class = CRLDrawableZOrderArranger;
   v5 = [(CRLDrawableZOrderArranger *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->mCanvasEditor, v4);
+    objc_storeWeak(&v5->mCanvasEditor, editorCopy);
   }
 
   return v6;
@@ -104,54 +104,54 @@
   objc_exception_throw(v10);
 }
 
-- (id)commandToSetZOrderOfInfos:(id)a3 toIndexes:(id)a4 coalesceable:(BOOL)a5
+- (id)commandToSetZOrderOfInfos:(id)infos toIndexes:(id)indexes coalesceable:(BOOL)coalesceable
 {
-  v7 = a3;
-  v8 = a4;
+  infosCopy = infos;
+  indexesCopy = indexes;
   v9 = [_TtC8Freeform34CRLCommandReorderContainerChildren alloc];
   WeakRetained = objc_loadWeakRetained(&self->mCanvasEditor);
-  v11 = [WeakRetained interactiveCanvasController];
-  v12 = [v11 board];
-  v13 = [v12 rootContainer];
-  v14 = [(CRLCommandReorderContainerChildren *)v9 initWithParentContainer:v13 childrenToMove:v7 targetIndices:v8];
+  interactiveCanvasController = [WeakRetained interactiveCanvasController];
+  board = [interactiveCanvasController board];
+  rootContainer = [board rootContainer];
+  v14 = [(CRLCommandReorderContainerChildren *)v9 initWithParentContainer:rootContainer childrenToMove:infosCopy targetIndices:indexesCopy];
 
   return v14;
 }
 
-- (void)registerTargetForChanges:(id)a3
+- (void)registerTargetForChanges:(id)changes
 {
-  v4 = a3;
-  v7 = [(CRLDrawableZOrderArranger *)self canvasEditor];
-  v5 = [v7 interactiveCanvasController];
-  v6 = [v5 changeNotifier];
-  [v6 addObserver:v4 forChangeSourceOfClass:objc_opt_class()];
+  changesCopy = changes;
+  canvasEditor = [(CRLDrawableZOrderArranger *)self canvasEditor];
+  interactiveCanvasController = [canvasEditor interactiveCanvasController];
+  changeNotifier = [interactiveCanvasController changeNotifier];
+  [changeNotifier addObserver:changesCopy forChangeSourceOfClass:objc_opt_class()];
 }
 
-- (void)unregisterTargetForChanges:(id)a3
+- (void)unregisterTargetForChanges:(id)changes
 {
-  v4 = a3;
-  v7 = [(CRLDrawableZOrderArranger *)self canvasEditor];
-  v5 = [v7 interactiveCanvasController];
-  v6 = [v5 changeNotifier];
-  [v6 removeObserver:v4 forChangeSourceOfClass:objc_opt_class()];
+  changesCopy = changes;
+  canvasEditor = [(CRLDrawableZOrderArranger *)self canvasEditor];
+  interactiveCanvasController = [canvasEditor interactiveCanvasController];
+  changeNotifier = [interactiveCanvasController changeNotifier];
+  [changeNotifier removeObserver:changesCopy forChangeSourceOfClass:objc_opt_class()];
 }
 
-- (BOOL)isZOrderChangeRecord:(id)a3
+- (BOOL)isZOrderChangeRecord:(id)record
 {
-  v3 = a3;
+  recordCopy = record;
   v8 = 0;
   v9 = &v8;
   v10 = 0x2020000000;
   v11 = 0;
-  if ([v3 kind] == 1)
+  if ([recordCopy kind] == 1)
   {
-    v4 = [v3 details];
+    details = [recordCopy details];
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_1005B09E8;
     v7[3] = &unk_10184D300;
     v7[4] = &v8;
-    [v4 enumeratePropertiesUsingBlock:v7];
+    [details enumeratePropertiesUsingBlock:v7];
   }
 
   v5 = *(v9 + 24);
@@ -163,10 +163,10 @@
 - (unint64_t)minZValueForArrangeInspector
 {
   WeakRetained = objc_loadWeakRetained(&self->mCanvasEditor);
-  v4 = [WeakRetained interactiveCanvasController];
-  v5 = [v4 hasSelectedInfosInMultipleContainers];
+  interactiveCanvasController = [WeakRetained interactiveCanvasController];
+  hasSelectedInfosInMultipleContainers = [interactiveCanvasController hasSelectedInfosInMultipleContainers];
 
-  if (v5)
+  if (hasSelectedInfosInMultipleContainers)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -201,10 +201,10 @@
 - (unint64_t)maxZValueForArrangeInspector
 {
   WeakRetained = objc_loadWeakRetained(&self->mCanvasEditor);
-  v4 = [WeakRetained interactiveCanvasController];
-  v5 = [v4 hasSelectedInfosInMultipleContainers];
+  interactiveCanvasController = [WeakRetained interactiveCanvasController];
+  hasSelectedInfosInMultipleContainers = [interactiveCanvasController hasSelectedInfosInMultipleContainers];
 
-  if (v5)
+  if (hasSelectedInfosInMultipleContainers)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -239,10 +239,10 @@
 - (unint64_t)currentZValueForArrangeInspector
 {
   WeakRetained = objc_loadWeakRetained(&self->mCanvasEditor);
-  v4 = [WeakRetained interactiveCanvasController];
-  v5 = [v4 hasSelectedInfosInMultipleContainers];
+  interactiveCanvasController = [WeakRetained interactiveCanvasController];
+  hasSelectedInfosInMultipleContainers = [interactiveCanvasController hasSelectedInfosInMultipleContainers];
 
-  if (v5)
+  if (hasSelectedInfosInMultipleContainers)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -283,30 +283,30 @@
 - (BOOL)canSendDrawablesBackward
 {
   WeakRetained = objc_loadWeakRetained(&self->mCanvasEditor);
-  v4 = [WeakRetained interactiveCanvasController];
+  interactiveCanvasController = [WeakRetained interactiveCanvasController];
 
-  if (![v4 hasSelectedInfosInMultipleContainers])
+  if (![interactiveCanvasController hasSelectedInfosInMultipleContainers])
   {
-    v14 = [(CRLDrawableZOrderArranger *)self currentZValueForArrangeInspector];
-    v15 = [(CRLDrawableZOrderArranger *)self p_selectedInfos];
-    v16 = [v15 count];
+    currentZValueForArrangeInspector = [(CRLDrawableZOrderArranger *)self currentZValueForArrangeInspector];
+    p_selectedInfos = [(CRLDrawableZOrderArranger *)self p_selectedInfos];
+    v16 = [p_selectedInfos count];
 
     if (v16 < 2)
     {
-      v18 = [(CRLDrawableZOrderArranger *)self p_selectedInfos];
-      v19 = [v18 count];
+      p_selectedInfos2 = [(CRLDrawableZOrderArranger *)self p_selectedInfos];
+      v19 = [p_selectedInfos2 count];
 
       if (v19 == 1)
       {
-        v20 = [(CRLDrawableZOrderArranger *)self indexOfNextLowerCanvasObject];
-        v17 = v14 != 0x7FFFFFFFFFFFFFFFLL && v14 > v20;
+        indexOfNextLowerCanvasObject = [(CRLDrawableZOrderArranger *)self indexOfNextLowerCanvasObject];
+        v17 = currentZValueForArrangeInspector != 0x7FFFFFFFFFFFFFFFLL && currentZValueForArrangeInspector > indexOfNextLowerCanvasObject;
         goto LABEL_21;
       }
     }
 
-    else if (v14 != 0x7FFFFFFFFFFFFFFFLL)
+    else if (currentZValueForArrangeInspector != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v17 = v14 > [(CRLDrawableZOrderArranger *)self minZValueForArrangeInspector];
+      v17 = currentZValueForArrangeInspector > [(CRLDrawableZOrderArranger *)self minZValueForArrangeInspector];
 LABEL_21:
       v13 = v17;
       goto LABEL_25;
@@ -316,13 +316,13 @@ LABEL_21:
     goto LABEL_25;
   }
 
-  v5 = [(CRLDrawableZOrderArranger *)self p_selectedInfos];
+  p_selectedInfos3 = [(CRLDrawableZOrderArranger *)self p_selectedInfos];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v6 = [v4 containersForSelection];
-  v7 = [v6 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  containersForSelection = [interactiveCanvasController containersForSelection];
+  v7 = [containersForSelection countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v7)
   {
     v8 = v7;
@@ -333,19 +333,19 @@ LABEL_21:
       {
         if (*v23 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(containersForSelection);
         }
 
         v11 = *(*(&v22 + 1) + 8 * i);
-        v12 = [(CRLDrawableZOrderArranger *)self p_indexOfChildren:v5 inContainer:v11];
-        if (v12 != 0x7FFFFFFFFFFFFFFFLL && v12 > [(CRLDrawableZOrderArranger *)self p_minZValueOfChildren:v5 inContainer:v11])
+        v12 = [(CRLDrawableZOrderArranger *)self p_indexOfChildren:p_selectedInfos3 inContainer:v11];
+        if (v12 != 0x7FFFFFFFFFFFFFFFLL && v12 > [(CRLDrawableZOrderArranger *)self p_minZValueOfChildren:p_selectedInfos3 inContainer:v11])
         {
           v13 = 1;
           goto LABEL_16;
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      v8 = [containersForSelection countByEnumeratingWithState:&v22 objects:v26 count:16];
       if (v8)
       {
         continue;
@@ -365,30 +365,30 @@ LABEL_25:
 - (BOOL)canBringDrawablesForward
 {
   WeakRetained = objc_loadWeakRetained(&self->mCanvasEditor);
-  v4 = [WeakRetained interactiveCanvasController];
+  interactiveCanvasController = [WeakRetained interactiveCanvasController];
 
-  if (![v4 hasSelectedInfosInMultipleContainers])
+  if (![interactiveCanvasController hasSelectedInfosInMultipleContainers])
   {
-    v14 = [(CRLDrawableZOrderArranger *)self currentZValueForArrangeInspector];
-    v15 = [(CRLDrawableZOrderArranger *)self p_selectedInfos];
-    v16 = [v15 count];
+    currentZValueForArrangeInspector = [(CRLDrawableZOrderArranger *)self currentZValueForArrangeInspector];
+    p_selectedInfos = [(CRLDrawableZOrderArranger *)self p_selectedInfos];
+    v16 = [p_selectedInfos count];
 
     if (v16 < 2)
     {
-      v18 = [(CRLDrawableZOrderArranger *)self p_selectedInfos];
-      v19 = [v18 count];
+      p_selectedInfos2 = [(CRLDrawableZOrderArranger *)self p_selectedInfos];
+      v19 = [p_selectedInfos2 count];
 
       if (v19 == 1)
       {
-        v20 = [(CRLDrawableZOrderArranger *)self indexOfNextHigherCanvasObject];
-        v17 = v14 == 0x7FFFFFFFFFFFFFFFLL || v14 >= v20;
+        indexOfNextHigherCanvasObject = [(CRLDrawableZOrderArranger *)self indexOfNextHigherCanvasObject];
+        v17 = currentZValueForArrangeInspector == 0x7FFFFFFFFFFFFFFFLL || currentZValueForArrangeInspector >= indexOfNextHigherCanvasObject;
         goto LABEL_21;
       }
     }
 
-    else if (v14 != 0x7FFFFFFFFFFFFFFFLL)
+    else if (currentZValueForArrangeInspector != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v17 = v14 >= [(CRLDrawableZOrderArranger *)self maxZValueForArrangeInspector];
+      v17 = currentZValueForArrangeInspector >= [(CRLDrawableZOrderArranger *)self maxZValueForArrangeInspector];
 LABEL_21:
       v13 = !v17;
       goto LABEL_25;
@@ -398,13 +398,13 @@ LABEL_21:
     goto LABEL_25;
   }
 
-  v5 = [(CRLDrawableZOrderArranger *)self p_selectedInfos];
+  p_selectedInfos3 = [(CRLDrawableZOrderArranger *)self p_selectedInfos];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v6 = [v4 containersForSelection];
-  v7 = [v6 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  containersForSelection = [interactiveCanvasController containersForSelection];
+  v7 = [containersForSelection countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v7)
   {
     v8 = v7;
@@ -415,19 +415,19 @@ LABEL_21:
       {
         if (*v23 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(containersForSelection);
         }
 
         v11 = *(*(&v22 + 1) + 8 * i);
-        v12 = [(CRLDrawableZOrderArranger *)self p_indexOfChildren:v5 inContainer:v11];
-        if (v12 != 0x7FFFFFFFFFFFFFFFLL && v12 < [(CRLDrawableZOrderArranger *)self p_maxZValueOfChildren:v5 inContainer:v11])
+        v12 = [(CRLDrawableZOrderArranger *)self p_indexOfChildren:p_selectedInfos3 inContainer:v11];
+        if (v12 != 0x7FFFFFFFFFFFFFFFLL && v12 < [(CRLDrawableZOrderArranger *)self p_maxZValueOfChildren:p_selectedInfos3 inContainer:v11])
         {
           v13 = 1;
           goto LABEL_16;
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      v8 = [containersForSelection countByEnumeratingWithState:&v22 objects:v26 count:16];
       if (v8)
       {
         continue;
@@ -454,24 +454,24 @@ LABEL_25:
   [v4 willChangeValueForKey:@"canSendDrawablesBackward"];
 
   v5 = objc_loadWeakRetained(&self->mCanvasEditor);
-  v6 = [v5 interactiveCanvasController];
-  v7 = [v6 commandController];
-  [v7 openGroup];
+  interactiveCanvasController = [v5 interactiveCanvasController];
+  commandController = [interactiveCanvasController commandController];
+  [commandController openGroup];
 
   v10 = objc_loadWeakRetained(&self->mCanvasEditor);
-  v8 = [v10 interactiveCanvasController];
-  v9 = [v8 commandController];
-  [v9 enableProgressiveEnqueuingInCurrentGroup];
+  interactiveCanvasController2 = [v10 interactiveCanvasController];
+  commandController2 = [interactiveCanvasController2 commandController];
+  [commandController2 enableProgressiveEnqueuingInCurrentGroup];
 }
 
-- (void)arrangeInspectorDidSetZValue:(unint64_t)a3 forContainer:(id)a4
+- (void)arrangeInspectorDidSetZValue:(unint64_t)value forContainer:(id)container
 {
-  v6 = a4;
+  containerCopy = container;
   WeakRetained = objc_loadWeakRetained(&self->mCanvasEditor);
-  v8 = [WeakRetained interactiveCanvasController];
-  v9 = [v8 hasSelectedInfosInMultipleContainers];
+  interactiveCanvasController = [WeakRetained interactiveCanvasController];
+  hasSelectedInfosInMultipleContainers = [interactiveCanvasController hasSelectedInfosInMultipleContainers];
 
-  if (!v6 && v9)
+  if (!containerCopy && hasSelectedInfosInMultipleContainers)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -499,21 +499,21 @@ LABEL_25:
     v12 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLCanvas/CRLDrawableZOrderArranger.m"];
     [CRLAssertionHandler handleFailureInFunction:v11 file:v12 lineNumber:147 isFatal:0 description:"If we have a cross-container selection, the container whose z-order is being changed must be specified!"];
 
-    v13 = [(CRLDrawableZOrderArranger *)self p_selectedInfos];
+    p_selectedInfos = [(CRLDrawableZOrderArranger *)self p_selectedInfos];
     goto LABEL_16;
   }
 
-  v13 = [(CRLDrawableZOrderArranger *)self p_selectedInfos];
-  if (!v6)
+  p_selectedInfos = [(CRLDrawableZOrderArranger *)self p_selectedInfos];
+  if (!containerCopy)
   {
 LABEL_16:
-    v20 = [(CRLDrawableZOrderArranger *)self p_zOrderedSelectedObjects];
+    p_zOrderedSelectedObjects = [(CRLDrawableZOrderArranger *)self p_zOrderedSelectedObjects];
     goto LABEL_17;
   }
 
   v14 = objc_opt_class();
-  v15 = [v6 childInfos];
-  v16 = sub_100014370(v14, v15);
+  childInfos = [containerCopy childInfos];
+  v16 = sub_100014370(v14, childInfos);
   v17 = v16;
   v18 = &__NSArray0__struct;
   if (v16)
@@ -523,15 +523,15 @@ LABEL_16:
 
   v19 = v18;
 
-  v20 = [v19 crl_arrayWithObjectsInSet:v13];
+  p_zOrderedSelectedObjects = [v19 crl_arrayWithObjectsInSet:p_selectedInfos];
 
 LABEL_17:
-  v21 = [v20 count];
+  v21 = [p_zOrderedSelectedObjects count];
   if (v21)
   {
     v22 = v21;
-    v23 = [(CRLDrawableZOrderArranger *)self p_minZValueOfChildren:v13 inContainer:v6];
-    v24 = [(CRLDrawableZOrderArranger *)self p_maxZValueOfChildren:v13 inContainer:v6];
+    v23 = [(CRLDrawableZOrderArranger *)self p_minZValueOfChildren:p_selectedInfos inContainer:containerCopy];
+    v24 = [(CRLDrawableZOrderArranger *)self p_maxZValueOfChildren:p_selectedInfos inContainer:containerCopy];
     if (v24 < v23)
     {
       +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -557,8 +557,8 @@ LABEL_17:
       }
 
       v26 = [NSString stringWithUTF8String:"[CRLDrawableZOrderArranger arrangeInspectorDidSetZValue:forContainer:]"];
-      v27 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLCanvas/CRLDrawableZOrderArranger.m"];
-      [CRLAssertionHandler handleFailureInFunction:v26 file:v27 lineNumber:166 isFatal:0 description:"Max index for z-order is below min index! This is not good. Skipping z-order operation entirely."];
+      interactiveCanvasController2 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLCanvas/CRLDrawableZOrderArranger.m"];
+      [CRLAssertionHandler handleFailureInFunction:v26 file:interactiveCanvasController2 lineNumber:166 isFatal:0 description:"Max index for z-order is below min index! This is not good. Skipping z-order operation entirely."];
 LABEL_46:
 
       goto LABEL_47;
@@ -567,26 +567,26 @@ LABEL_46:
     v28 = v24;
     if ([(CRLDrawableZOrderArranger *)self p_usingRelativeZOrder])
     {
-      v29 = [(CRLDrawableZOrderArranger *)self p_zOrderSiblingsForRelativeOrder];
-      v30 = [v29 objectAtIndexedSubscript:a3];
+      p_zOrderSiblingsForRelativeOrder = [(CRLDrawableZOrderArranger *)self p_zOrderSiblingsForRelativeOrder];
+      v30 = [p_zOrderSiblingsForRelativeOrder objectAtIndexedSubscript:value];
 
       v31 = [NSSet setWithObject:v30];
-      a3 = [(CRLDrawableZOrderArranger *)self p_indexOfChildren:v31 inContainer:0];
+      value = [(CRLDrawableZOrderArranger *)self p_indexOfChildren:v31 inContainer:0];
     }
 
-    if (a3 >= v28)
+    if (value >= v28)
     {
-      v32 = v28;
+      valueCopy = v28;
     }
 
     else
     {
-      v32 = a3;
+      valueCopy = value;
     }
 
-    if (a3 >= v23)
+    if (value >= v23)
     {
-      v33 = v32;
+      v33 = valueCopy;
     }
 
     else
@@ -594,22 +594,22 @@ LABEL_46:
       v33 = v23;
     }
 
-    if (v33 != [(CRLDrawableZOrderArranger *)self p_indexOfChildren:v13 inContainer:v6])
+    if (v33 != [(CRLDrawableZOrderArranger *)self p_indexOfChildren:p_selectedInfos inContainer:containerCopy])
     {
       v26 = [[NSIndexSet alloc] initWithIndexesInRange:{v33 - v22 + 1, v22}];
       v34 = objc_loadWeakRetained(&self->mCanvasEditor);
-      v27 = [v34 interactiveCanvasController];
+      interactiveCanvasController2 = [v34 interactiveCanvasController];
 
-      v35 = [v27 commandController];
-      if (!v6)
+      commandController = [interactiveCanvasController2 commandController];
+      if (!containerCopy)
       {
-        v36 = [v27 topLevelContainerInfoForEditing];
+        topLevelContainerInfoForEditing = [interactiveCanvasController2 topLevelContainerInfoForEditing];
         v37 = objc_opt_class();
-        v6 = sub_1003038E0(v36, v37, 1, v38, v39, v40, v41, v42, &OBJC_PROTOCOL___CRLContainerInfo);
+        containerCopy = sub_1003038E0(topLevelContainerInfoForEditing, v37, 1, v38, v39, v40, v41, v42, &OBJC_PROTOCOL___CRLContainerInfo);
 
-        if (v6)
+        if (containerCopy)
         {
-          v43 = v6;
+          v43 = containerCopy;
         }
       }
 
@@ -621,24 +621,24 @@ LABEL_46:
       if (objc_opt_isKindOfClass())
       {
         v47 = objc_opt_class();
-        v48 = sub_100013F00(v47, v6);
-        v52 = [v20 crl_arrayOfObjectsPassingTest:&stru_101872590];
+        v48 = sub_100013F00(v47, containerCopy);
+        v52 = [p_zOrderedSelectedObjects crl_arrayOfObjectsPassingTest:&stru_101872590];
         v49 = v46;
-        v50 = v35;
+        v50 = commandController;
         v51 = [[_TtC8Freeform34CRLCommandReorderContainerChildren alloc] initWithParentContainer:v48 childrenToMove:v52 targetIndices:v26];
         [v50 enqueueCommand:v51 withSelectionBehavior:v49];
         self->mCanCoalesceZOrderCommand = 1;
 
-        v35 = v50;
+        commandController = v50;
         v46 = v49;
       }
 
       else
       {
-        v48 = [(CRLDrawableZOrderArranger *)self commandToSetZOrderOfInfos:v20 toIndexes:v26 coalesceable:self->mCanCoalesceZOrderCommand];
+        v48 = [(CRLDrawableZOrderArranger *)self commandToSetZOrderOfInfos:p_zOrderedSelectedObjects toIndexes:v26 coalesceable:self->mCanCoalesceZOrderCommand];
         if (v48)
         {
-          [v35 enqueueCommand:v48 withSelectionBehavior:v46];
+          [commandController enqueueCommand:v48 withSelectionBehavior:v46];
           self->mCanCoalesceZOrderCommand = 1;
         }
       }
@@ -659,33 +659,33 @@ LABEL_47:
   [v4 didChangeValueForKey:@"canSendDrawablesBackward"];
 
   v7 = objc_loadWeakRetained(&self->mCanvasEditor);
-  v5 = [v7 interactiveCanvasController];
-  v6 = [v5 commandController];
-  [v6 closeGroup];
+  interactiveCanvasController = [v7 interactiveCanvasController];
+  commandController = [interactiveCanvasController commandController];
+  [commandController closeGroup];
 }
 
 - (void)moveToBackForArrangeInspector
 {
   WeakRetained = objc_loadWeakRetained(&self->mCanvasEditor);
-  v4 = [WeakRetained interactiveCanvasController];
+  interactiveCanvasController = [WeakRetained interactiveCanvasController];
 
-  v5 = [v4 commandController];
+  commandController = [interactiveCanvasController commandController];
   [(CRLDrawableZOrderArranger *)self arrangeInspectorWillBeginChangingZValue];
-  [v5 openGroup];
+  [commandController openGroup];
   v6 = +[NSBundle mainBundle];
   v7 = [v6 localizedStringForKey:@"Send to Back" value:0 table:@"UndoStrings"];
 
-  [v5 setCurrentGroupActionString:v7];
-  if ([v4 hasSelectedInfosInMultipleContainers])
+  [commandController setCurrentGroupActionString:v7];
+  if ([interactiveCanvasController hasSelectedInfosInMultipleContainers])
   {
     v19 = v7;
-    v8 = [(CRLDrawableZOrderArranger *)self p_selectedInfos];
+    p_selectedInfos = [(CRLDrawableZOrderArranger *)self p_selectedInfos];
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v9 = [v4 containersForSelection];
-    v10 = [v9 countByEnumeratingWithState:&v20 objects:v24 count:16];
+    containersForSelection = [interactiveCanvasController containersForSelection];
+    v10 = [containersForSelection countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v10)
     {
       v11 = v10;
@@ -696,19 +696,19 @@ LABEL_47:
         {
           if (*v21 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(containersForSelection);
           }
 
           v14 = *(*(&v20 + 1) + 8 * i);
-          v15 = [(CRLDrawableZOrderArranger *)self p_indexOfChildren:v8 inContainer:v14];
-          v16 = [(CRLDrawableZOrderArranger *)self p_minZValueOfChildren:v8 inContainer:v14];
+          v15 = [(CRLDrawableZOrderArranger *)self p_indexOfChildren:p_selectedInfos inContainer:v14];
+          v16 = [(CRLDrawableZOrderArranger *)self p_minZValueOfChildren:p_selectedInfos inContainer:v14];
           if (v15 != v16)
           {
             [(CRLDrawableZOrderArranger *)self arrangeInspectorDidSetZValue:v16 forContainer:v14];
           }
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v20 objects:v24 count:16];
+        v11 = [containersForSelection countByEnumeratingWithState:&v20 objects:v24 count:16];
       }
 
       while (v11);
@@ -719,40 +719,40 @@ LABEL_47:
 
   else
   {
-    v17 = [(CRLDrawableZOrderArranger *)self currentZValueForArrangeInspector];
-    v18 = [(CRLDrawableZOrderArranger *)self minZValueForArrangeInspector];
-    if (v17 != v18)
+    currentZValueForArrangeInspector = [(CRLDrawableZOrderArranger *)self currentZValueForArrangeInspector];
+    minZValueForArrangeInspector = [(CRLDrawableZOrderArranger *)self minZValueForArrangeInspector];
+    if (currentZValueForArrangeInspector != minZValueForArrangeInspector)
     {
-      [(CRLDrawableZOrderArranger *)self arrangeInspectorDidSetZValue:v18 forContainer:0];
+      [(CRLDrawableZOrderArranger *)self arrangeInspectorDidSetZValue:minZValueForArrangeInspector forContainer:0];
     }
   }
 
-  [v5 closeGroup];
+  [commandController closeGroup];
   [(CRLDrawableZOrderArranger *)self arrangeInspectorDidEndChangingZValue];
 }
 
 - (void)moveBackForArrangeInspector
 {
   WeakRetained = objc_loadWeakRetained(&self->mCanvasEditor);
-  v4 = [WeakRetained interactiveCanvasController];
+  interactiveCanvasController = [WeakRetained interactiveCanvasController];
 
-  v5 = [v4 commandController];
+  commandController = [interactiveCanvasController commandController];
   [(CRLDrawableZOrderArranger *)self arrangeInspectorWillBeginChangingZValue];
-  [v5 openGroup];
+  [commandController openGroup];
   v6 = +[NSBundle mainBundle];
   v7 = [v6 localizedStringForKey:@"Send Backward" value:0 table:@"UndoStrings"];
 
-  [v5 setCurrentGroupActionString:v7];
-  if ([v4 hasSelectedInfosInMultipleContainers])
+  [commandController setCurrentGroupActionString:v7];
+  if ([interactiveCanvasController hasSelectedInfosInMultipleContainers])
   {
     v17 = v7;
-    v8 = [(CRLDrawableZOrderArranger *)self p_selectedInfos];
+    p_selectedInfos = [(CRLDrawableZOrderArranger *)self p_selectedInfos];
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v9 = [v4 containersForSelection];
-    v10 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
+    containersForSelection = [interactiveCanvasController containersForSelection];
+    v10 = [containersForSelection countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v10)
     {
       v11 = v10;
@@ -763,18 +763,18 @@ LABEL_47:
         {
           if (*v19 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(containersForSelection);
           }
 
           v14 = *(*(&v18 + 1) + 8 * i);
-          v15 = [(CRLDrawableZOrderArranger *)self p_indexOfChildren:v8 inContainer:v14];
-          if (v15 > [(CRLDrawableZOrderArranger *)self p_minZValueOfChildren:v8 inContainer:v14])
+          v15 = [(CRLDrawableZOrderArranger *)self p_indexOfChildren:p_selectedInfos inContainer:v14];
+          if (v15 > [(CRLDrawableZOrderArranger *)self p_minZValueOfChildren:p_selectedInfos inContainer:v14])
           {
             [(CRLDrawableZOrderArranger *)self arrangeInspectorDidSetZValue:v15 - 1 forContainer:v14];
           }
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
+        v11 = [containersForSelection countByEnumeratingWithState:&v18 objects:v22 count:16];
       }
 
       while (v11);
@@ -785,39 +785,39 @@ LABEL_47:
 
   else
   {
-    v16 = [(CRLDrawableZOrderArranger *)self currentZValueForArrangeInspector];
-    if (v16 > [(CRLDrawableZOrderArranger *)self minZValueForArrangeInspector])
+    currentZValueForArrangeInspector = [(CRLDrawableZOrderArranger *)self currentZValueForArrangeInspector];
+    if (currentZValueForArrangeInspector > [(CRLDrawableZOrderArranger *)self minZValueForArrangeInspector])
     {
       [(CRLDrawableZOrderArranger *)self arrangeInspectorDidSetZValue:[(CRLDrawableZOrderArranger *)self indexOfNextLowerCanvasObject] forContainer:0];
     }
   }
 
-  [v5 closeGroup];
+  [commandController closeGroup];
   [(CRLDrawableZOrderArranger *)self arrangeInspectorDidEndChangingZValue];
 }
 
 - (void)moveFrontForArrangeInspector
 {
   WeakRetained = objc_loadWeakRetained(&self->mCanvasEditor);
-  v4 = [WeakRetained interactiveCanvasController];
+  interactiveCanvasController = [WeakRetained interactiveCanvasController];
 
-  v5 = [v4 commandController];
+  commandController = [interactiveCanvasController commandController];
   [(CRLDrawableZOrderArranger *)self arrangeInspectorWillBeginChangingZValue];
-  [v5 openGroup];
+  [commandController openGroup];
   v6 = +[NSBundle mainBundle];
   v7 = [v6 localizedStringForKey:@"Bring Forward" value:0 table:@"UndoStrings"];
 
-  [v5 setCurrentGroupActionString:v7];
-  if ([v4 hasSelectedInfosInMultipleContainers])
+  [commandController setCurrentGroupActionString:v7];
+  if ([interactiveCanvasController hasSelectedInfosInMultipleContainers])
   {
     v17 = v7;
-    v8 = [(CRLDrawableZOrderArranger *)self p_selectedInfos];
+    p_selectedInfos = [(CRLDrawableZOrderArranger *)self p_selectedInfos];
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v9 = [v4 containersForSelection];
-    v10 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
+    containersForSelection = [interactiveCanvasController containersForSelection];
+    v10 = [containersForSelection countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v10)
     {
       v11 = v10;
@@ -828,18 +828,18 @@ LABEL_47:
         {
           if (*v19 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(containersForSelection);
           }
 
           v14 = *(*(&v18 + 1) + 8 * i);
-          v15 = [(CRLDrawableZOrderArranger *)self p_indexOfChildren:v8 inContainer:v14];
-          if (v15 < [(CRLDrawableZOrderArranger *)self p_maxZValueOfChildren:v8 inContainer:v14])
+          v15 = [(CRLDrawableZOrderArranger *)self p_indexOfChildren:p_selectedInfos inContainer:v14];
+          if (v15 < [(CRLDrawableZOrderArranger *)self p_maxZValueOfChildren:p_selectedInfos inContainer:v14])
           {
             [(CRLDrawableZOrderArranger *)self arrangeInspectorDidSetZValue:v15 + 1 forContainer:v14];
           }
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
+        v11 = [containersForSelection countByEnumeratingWithState:&v18 objects:v22 count:16];
       }
 
       while (v11);
@@ -850,39 +850,39 @@ LABEL_47:
 
   else
   {
-    v16 = [(CRLDrawableZOrderArranger *)self currentZValueForArrangeInspector];
-    if (v16 < [(CRLDrawableZOrderArranger *)self maxZValueForArrangeInspector])
+    currentZValueForArrangeInspector = [(CRLDrawableZOrderArranger *)self currentZValueForArrangeInspector];
+    if (currentZValueForArrangeInspector < [(CRLDrawableZOrderArranger *)self maxZValueForArrangeInspector])
     {
       [(CRLDrawableZOrderArranger *)self arrangeInspectorDidSetZValue:[(CRLDrawableZOrderArranger *)self indexOfNextHigherCanvasObject] forContainer:0];
     }
   }
 
-  [v5 closeGroup];
+  [commandController closeGroup];
   [(CRLDrawableZOrderArranger *)self arrangeInspectorDidEndChangingZValue];
 }
 
 - (void)moveToFrontForArrangeInspector
 {
   WeakRetained = objc_loadWeakRetained(&self->mCanvasEditor);
-  v4 = [WeakRetained interactiveCanvasController];
+  interactiveCanvasController = [WeakRetained interactiveCanvasController];
 
-  v5 = [v4 commandController];
+  commandController = [interactiveCanvasController commandController];
   [(CRLDrawableZOrderArranger *)self arrangeInspectorWillBeginChangingZValue];
-  [v5 openGroup];
+  [commandController openGroup];
   v6 = +[NSBundle mainBundle];
   v7 = [v6 localizedStringForKey:@"Bring to Front" value:0 table:@"UndoStrings"];
 
-  [v5 setCurrentGroupActionString:v7];
-  if ([v4 hasSelectedInfosInMultipleContainers])
+  [commandController setCurrentGroupActionString:v7];
+  if ([interactiveCanvasController hasSelectedInfosInMultipleContainers])
   {
     v19 = v7;
-    v8 = [(CRLDrawableZOrderArranger *)self p_selectedInfos];
+    p_selectedInfos = [(CRLDrawableZOrderArranger *)self p_selectedInfos];
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v9 = [v4 containersForSelection];
-    v10 = [v9 countByEnumeratingWithState:&v20 objects:v24 count:16];
+    containersForSelection = [interactiveCanvasController containersForSelection];
+    v10 = [containersForSelection countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v10)
     {
       v11 = v10;
@@ -893,19 +893,19 @@ LABEL_47:
         {
           if (*v21 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(containersForSelection);
           }
 
           v14 = *(*(&v20 + 1) + 8 * i);
-          v15 = [(CRLDrawableZOrderArranger *)self p_indexOfChildren:v8 inContainer:v14];
-          v16 = [(CRLDrawableZOrderArranger *)self p_maxZValueOfChildren:v8 inContainer:v14];
+          v15 = [(CRLDrawableZOrderArranger *)self p_indexOfChildren:p_selectedInfos inContainer:v14];
+          v16 = [(CRLDrawableZOrderArranger *)self p_maxZValueOfChildren:p_selectedInfos inContainer:v14];
           if (v15 != v16)
           {
             [(CRLDrawableZOrderArranger *)self arrangeInspectorDidSetZValue:v16 forContainer:v14];
           }
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v20 objects:v24 count:16];
+        v11 = [containersForSelection countByEnumeratingWithState:&v20 objects:v24 count:16];
       }
 
       while (v11);
@@ -916,33 +916,33 @@ LABEL_47:
 
   else
   {
-    v17 = [(CRLDrawableZOrderArranger *)self currentZValueForArrangeInspector];
-    v18 = [(CRLDrawableZOrderArranger *)self maxZValueForArrangeInspector];
-    if (v17 != v18)
+    currentZValueForArrangeInspector = [(CRLDrawableZOrderArranger *)self currentZValueForArrangeInspector];
+    maxZValueForArrangeInspector = [(CRLDrawableZOrderArranger *)self maxZValueForArrangeInspector];
+    if (currentZValueForArrangeInspector != maxZValueForArrangeInspector)
     {
-      [(CRLDrawableZOrderArranger *)self arrangeInspectorDidSetZValue:v18 forContainer:0];
+      [(CRLDrawableZOrderArranger *)self arrangeInspectorDidSetZValue:maxZValueForArrangeInspector forContainer:0];
     }
   }
 
-  [v5 closeGroup];
+  [commandController closeGroup];
   [(CRLDrawableZOrderArranger *)self arrangeInspectorDidEndChangingZValue];
 }
 
 - (unint64_t)indexOfNextHigherCanvasObject
 {
-  v3 = [(CRLDrawableZOrderArranger *)self currentZValueForArrangeInspector];
-  v4 = [(CRLDrawableZOrderArranger *)self p_zOrderSiblings];
-  v5 = [v4 objectAtIndexedSubscript:v3];
+  currentZValueForArrangeInspector = [(CRLDrawableZOrderArranger *)self currentZValueForArrangeInspector];
+  p_zOrderSiblings = [(CRLDrawableZOrderArranger *)self p_zOrderSiblings];
+  v5 = [p_zOrderSiblings objectAtIndexedSubscript:currentZValueForArrangeInspector];
   v6 = [(CRLDrawableZOrderArranger *)self p_forcesPlacementOnTop:v5];
   v7 = [(CRLDrawableZOrderArranger *)self p_forcesPlacementOnBottom:v5];
-  v8 = [(CRLDrawableZOrderArranger *)self maxZValueForArrangeInspector];
-  v9 = v3 + 1;
-  if (v3 + 1 <= v8)
+  maxZValueForArrangeInspector = [(CRLDrawableZOrderArranger *)self maxZValueForArrangeInspector];
+  v9 = currentZValueForArrangeInspector + 1;
+  if (currentZValueForArrangeInspector + 1 <= maxZValueForArrangeInspector)
   {
-    v10 = v8;
+    v10 = maxZValueForArrangeInspector;
     while (1)
     {
-      v11 = [v4 objectAtIndexedSubscript:v9];
+      v11 = [p_zOrderSiblings objectAtIndexedSubscript:v9];
       if (v6)
       {
         break;
@@ -988,7 +988,7 @@ LABEL_8:
   }
 
 LABEL_15:
-  v9 = v3;
+  v9 = currentZValueForArrangeInspector;
 LABEL_17:
 
   return v9;
@@ -996,16 +996,16 @@ LABEL_17:
 
 - (unint64_t)indexOfNextLowerCanvasObject
 {
-  v3 = [(CRLDrawableZOrderArranger *)self currentZValueForArrangeInspector];
-  v4 = [(CRLDrawableZOrderArranger *)self p_zOrderSiblings];
-  v5 = [v4 objectAtIndexedSubscript:v3];
+  currentZValueForArrangeInspector = [(CRLDrawableZOrderArranger *)self currentZValueForArrangeInspector];
+  p_zOrderSiblings = [(CRLDrawableZOrderArranger *)self p_zOrderSiblings];
+  v5 = [p_zOrderSiblings objectAtIndexedSubscript:currentZValueForArrangeInspector];
   v6 = [(CRLDrawableZOrderArranger *)self p_forcesPlacementOnTop:v5];
   v7 = [(CRLDrawableZOrderArranger *)self p_forcesPlacementOnBottom:v5];
-  v8 = [(CRLDrawableZOrderArranger *)self minZValueForArrangeInspector];
-  if (v3 != v8)
+  minZValueForArrangeInspector = [(CRLDrawableZOrderArranger *)self minZValueForArrangeInspector];
+  if (currentZValueForArrangeInspector != minZValueForArrangeInspector)
   {
-    v9 = v8;
-    v10 = v3 - 1;
+    v9 = minZValueForArrangeInspector;
+    v10 = currentZValueForArrangeInspector - 1;
     while (1)
     {
       if (v10 < v9)
@@ -1013,7 +1013,7 @@ LABEL_17:
         goto LABEL_16;
       }
 
-      v11 = [v4 objectAtIndexedSubscript:v10];
+      v11 = [p_zOrderSiblings objectAtIndexedSubscript:v10];
       if (v6)
       {
         break;
@@ -1059,7 +1059,7 @@ LABEL_9:
   }
 
 LABEL_16:
-  v10 = v3;
+  v10 = currentZValueForArrangeInspector;
 LABEL_17:
 
   return v10;
@@ -1068,14 +1068,14 @@ LABEL_17:
 - (id)p_zOrderSiblings
 {
   WeakRetained = objc_loadWeakRetained(&self->mCanvasEditor);
-  v4 = [WeakRetained interactiveCanvasController];
+  interactiveCanvasController = [WeakRetained interactiveCanvasController];
 
-  v5 = [v4 topLevelContainerInfoForEditing];
+  topLevelContainerInfoForEditing = [interactiveCanvasController topLevelContainerInfoForEditing];
   v6 = objc_loadWeakRetained(&self->mCanvasEditor);
-  v7 = [v6 interactiveCanvasController];
-  v8 = [v7 hasSelectedInfosInMultipleContainers];
+  interactiveCanvasController2 = [v6 interactiveCanvasController];
+  hasSelectedInfosInMultipleContainers = [interactiveCanvasController2 hasSelectedInfosInMultipleContainers];
 
-  if (v8)
+  if (hasSelectedInfosInMultipleContainers)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -1104,11 +1104,11 @@ LABEL_17:
     [CRLAssertionHandler handleFailureInFunction:v10 file:v11 lineNumber:480 isFatal:0 description:"Should not get the generic z-order siblings for a cross-container selection"];
   }
 
-  if (v5)
+  if (topLevelContainerInfoForEditing)
   {
     v12 = objc_opt_class();
-    v13 = [v5 childInfos];
-    v14 = sub_100014370(v12, v13);
+    childInfos = [topLevelContainerInfoForEditing childInfos];
+    v14 = sub_100014370(v12, childInfos);
     v15 = v14;
     v16 = &__NSArray0__struct;
     if (v14)
@@ -1121,8 +1121,8 @@ LABEL_17:
 
   else
   {
-    v13 = [(CRLDrawableZOrderArranger *)self p_selectedInfos];
-    v17 = [v4 topLevelZOrderedSiblingsOfInfos:v13];
+    childInfos = [(CRLDrawableZOrderArranger *)self p_selectedInfos];
+    v17 = [interactiveCanvasController topLevelZOrderedSiblingsOfInfos:childInfos];
   }
 
   return v17;
@@ -1131,8 +1131,8 @@ LABEL_17:
 - (BOOL)p_usingRelativeZOrder
 {
   WeakRetained = objc_loadWeakRetained(&self->mCanvasEditor);
-  v3 = [WeakRetained interactiveCanvasController];
-  v4 = [v3 topLevelContainerInfoForEditing];
+  interactiveCanvasController = [WeakRetained interactiveCanvasController];
+  topLevelContainerInfoForEditing = [interactiveCanvasController topLevelContainerInfoForEditing];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -1141,18 +1141,18 @@ LABEL_17:
 
 - (id)p_zOrderSiblingsForRelativeOrder
 {
-  v55 = [(CRLDrawableZOrderArranger *)self p_selectedInfos];
-  v3 = [(CRLDrawableZOrderArranger *)self p_zOrderSiblings];
-  v4 = [[NSMapTable alloc] initWithKeyOptions:512 valueOptions:0 capacity:{objc_msgSend(v3, "count")}];
+  p_selectedInfos = [(CRLDrawableZOrderArranger *)self p_selectedInfos];
+  p_zOrderSiblings = [(CRLDrawableZOrderArranger *)self p_zOrderSiblings];
+  v4 = [[NSMapTable alloc] initWithKeyOptions:512 valueOptions:0 capacity:{objc_msgSend(p_zOrderSiblings, "count")}];
   v54 = objc_alloc_init(NSMutableArray);
   WeakRetained = objc_loadWeakRetained(&self->mCanvasEditor);
-  v6 = [WeakRetained interactiveCanvasController];
+  interactiveCanvasController = [WeakRetained interactiveCanvasController];
 
   v71 = 0u;
   v72 = 0u;
   v69 = 0u;
   v70 = 0u;
-  obj = v3;
+  obj = p_zOrderSiblings;
   v7 = [obj countByEnumeratingWithState:&v69 objects:v83 count:16];
   if (v7)
   {
@@ -1168,12 +1168,12 @@ LABEL_17:
         }
 
         v11 = *(*(&v69 + 1) + 8 * i);
-        v12 = [v6 layoutForInfo:v11];
+        v12 = [interactiveCanvasController layoutForInfo:v11];
         v13 = v12;
         if (v12)
         {
-          v14 = [v12 geometry];
-          [v14 frame];
+          geometry = [v12 geometry];
+          [geometry frame];
           v15 = [NSValue valueWithCGRect:?];
           [v4 setObject:v15 forKeyedSubscript:v11];
         }
@@ -1209,7 +1209,7 @@ LABEL_17:
   v65 = 0u;
   v62 = 0u;
   v63 = 0u;
-  v56 = v55;
+  v56 = p_selectedInfos;
   v20 = [v56 countByEnumeratingWithState:&v62 objects:v82 count:16];
   if (v20)
   {
@@ -1353,9 +1353,9 @@ LABEL_17:
 
 - (id)p_zOrderedSelectedObjects
 {
-  v3 = [(CRLDrawableZOrderArranger *)self p_zOrderSiblings];
-  v4 = [(CRLDrawableZOrderArranger *)self p_selectedInfos];
-  v5 = [v3 crl_arrayWithObjectsInSet:v4];
+  p_zOrderSiblings = [(CRLDrawableZOrderArranger *)self p_zOrderSiblings];
+  p_selectedInfos = [(CRLDrawableZOrderArranger *)self p_selectedInfos];
+  v5 = [p_zOrderSiblings crl_arrayWithObjectsInSet:p_selectedInfos];
 
   return v5;
 }
@@ -1363,10 +1363,10 @@ LABEL_17:
 - (unint64_t)p_minIndex
 {
   WeakRetained = objc_loadWeakRetained(&self->mCanvasEditor);
-  v4 = [WeakRetained interactiveCanvasController];
-  v5 = [v4 hasSelectedInfosInMultipleContainers];
+  interactiveCanvasController = [WeakRetained interactiveCanvasController];
+  hasSelectedInfosInMultipleContainers = [interactiveCanvasController hasSelectedInfosInMultipleContainers];
 
-  if (v5)
+  if (hasSelectedInfosInMultipleContainers)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -1395,28 +1395,28 @@ LABEL_17:
     [CRLAssertionHandler handleFailureInFunction:v7 file:v8 lineNumber:566 isFatal:0 description:"Cannot get the generic min index for a cross-container selection"];
   }
 
-  v9 = [(CRLDrawableZOrderArranger *)self p_selectedInfos];
-  v10 = [(CRLDrawableZOrderArranger *)self p_minZValueOfChildren:v9 inContainer:0];
+  p_selectedInfos = [(CRLDrawableZOrderArranger *)self p_selectedInfos];
+  v10 = [(CRLDrawableZOrderArranger *)self p_minZValueOfChildren:p_selectedInfos inContainer:0];
 
   return v10;
 }
 
-- (unint64_t)p_minZValueOfChildren:(id)a3 inContainer:(id)a4
+- (unint64_t)p_minZValueOfChildren:(id)children inContainer:(id)container
 {
-  v5 = a3;
-  v6 = v5;
-  if (a4)
+  childrenCopy = children;
+  v6 = childrenCopy;
+  if (container)
   {
-    v7 = [a4 childInfos];
-    v8 = [v7 crl_arrayWithObjectsInSet:v6];
+    childInfos = [container childInfos];
+    v8 = [childInfos crl_arrayWithObjectsInSet:v6];
 
     v9 = [v8 count];
-    v6 = v7;
+    v6 = childInfos;
   }
 
   else
   {
-    v9 = [v5 count];
+    v9 = [childrenCopy count];
   }
 
   if (v9)
@@ -1430,33 +1430,33 @@ LABEL_17:
   }
 }
 
-- (BOOL)p_forcesPlacementOnTop:(id)a3
+- (BOOL)p_forcesPlacementOnTop:(id)top
 {
-  v3 = a3;
+  topCopy = top;
   v4 = objc_opt_class();
-  v5 = sub_100013F00(v4, v3);
+  v5 = sub_100013F00(v4, topCopy);
 
-  LOBYTE(v3) = [v5 forcesPlacementOnTop];
-  return v3;
+  LOBYTE(topCopy) = [v5 forcesPlacementOnTop];
+  return topCopy;
 }
 
-- (BOOL)p_forcesPlacementOnBottom:(id)a3
+- (BOOL)p_forcesPlacementOnBottom:(id)bottom
 {
-  v3 = a3;
+  bottomCopy = bottom;
   v4 = objc_opt_class();
-  v5 = sub_100013F00(v4, v3);
+  v5 = sub_100013F00(v4, bottomCopy);
 
-  LOBYTE(v3) = [v5 forcesPlacementOnBottom];
-  return v3;
+  LOBYTE(bottomCopy) = [v5 forcesPlacementOnBottom];
+  return bottomCopy;
 }
 
 - (unint64_t)p_maxIndex
 {
   WeakRetained = objc_loadWeakRetained(&self->mCanvasEditor);
-  v4 = [WeakRetained interactiveCanvasController];
-  v5 = [v4 hasSelectedInfosInMultipleContainers];
+  interactiveCanvasController = [WeakRetained interactiveCanvasController];
+  hasSelectedInfosInMultipleContainers = [interactiveCanvasController hasSelectedInfosInMultipleContainers];
 
-  if (v5)
+  if (hasSelectedInfosInMultipleContainers)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -1485,16 +1485,16 @@ LABEL_17:
     [CRLAssertionHandler handleFailureInFunction:v7 file:v8 lineNumber:591 isFatal:0 description:"Cannot get the generic max index for a cross-container selection"];
   }
 
-  v9 = [(CRLDrawableZOrderArranger *)self p_usingRelativeZOrder];
-  v10 = [(CRLDrawableZOrderArranger *)self p_selectedInfos];
-  if (v9)
+  p_usingRelativeZOrder = [(CRLDrawableZOrderArranger *)self p_usingRelativeZOrder];
+  p_selectedInfos = [(CRLDrawableZOrderArranger *)self p_selectedInfos];
+  if (p_usingRelativeZOrder)
   {
-    v11 = [(CRLDrawableZOrderArranger *)self p_maxRelativeZValueOfChildrenInTopLevelContainer:v10];
+    v11 = [(CRLDrawableZOrderArranger *)self p_maxRelativeZValueOfChildrenInTopLevelContainer:p_selectedInfos];
   }
 
   else
   {
-    v11 = [(CRLDrawableZOrderArranger *)self p_maxZValueOfChildren:v10 inContainer:0];
+    v11 = [(CRLDrawableZOrderArranger *)self p_maxZValueOfChildren:p_selectedInfos inContainer:0];
   }
 
   v12 = v11;
@@ -1502,21 +1502,21 @@ LABEL_17:
   return v12;
 }
 
-- (unint64_t)p_maxZValueOfChildren:(id)a3 inContainer:(id)a4
+- (unint64_t)p_maxZValueOfChildren:(id)children inContainer:(id)container
 {
-  v6 = a3;
-  v7 = a4;
+  childrenCopy = children;
+  containerCopy = container;
   WeakRetained = objc_loadWeakRetained(&self->mCanvasEditor);
-  v9 = [WeakRetained interactiveCanvasController];
+  interactiveCanvasController = [WeakRetained interactiveCanvasController];
 
-  if (v7)
+  if (containerCopy)
   {
-    [v7 childInfos];
+    [containerCopy childInfos];
   }
 
   else
   {
-    [v9 topLevelZOrderedSiblingsOfInfos:v6];
+    [interactiveCanvasController topLevelZOrderedSiblingsOfInfos:childrenCopy];
   }
   v10 = ;
   v11 = [v10 count];
@@ -1534,10 +1534,10 @@ LABEL_17:
   return v12;
 }
 
-- (unint64_t)p_maxRelativeZValueOfChildrenInTopLevelContainer:(id)a3
+- (unint64_t)p_maxRelativeZValueOfChildrenInTopLevelContainer:(id)container
 {
-  v3 = [(CRLDrawableZOrderArranger *)self p_zOrderSiblingsForRelativeOrder];
-  v4 = [v3 count];
+  p_zOrderSiblingsForRelativeOrder = [(CRLDrawableZOrderArranger *)self p_zOrderSiblingsForRelativeOrder];
+  v4 = [p_zOrderSiblingsForRelativeOrder count];
 
   if (v4)
   {
@@ -1550,14 +1550,14 @@ LABEL_17:
   }
 }
 
-- (unint64_t)p_indexOfChildren:(id)a3 inContainer:(id)a4
+- (unint64_t)p_indexOfChildren:(id)children inContainer:(id)container
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  childrenCopy = children;
+  containerCopy = container;
+  v8 = containerCopy;
+  if (containerCopy)
   {
-    [v7 childInfos];
+    [containerCopy childInfos];
   }
 
   else
@@ -1565,11 +1565,11 @@ LABEL_17:
     [(CRLDrawableZOrderArranger *)self p_zOrderSiblings];
   }
   v9 = ;
-  v10 = [v9 crl_arrayWithObjectsInSet:v6];
+  v10 = [v9 crl_arrayWithObjectsInSet:childrenCopy];
   if ([v10 count])
   {
-    v11 = [v10 lastObject];
-    v12 = [v9 indexOfObjectIdenticalTo:v11];
+    lastObject = [v10 lastObject];
+    v12 = [v9 indexOfObjectIdenticalTo:lastObject];
   }
 
   else
@@ -1580,16 +1580,16 @@ LABEL_17:
   return v12;
 }
 
-- (unint64_t)p_relativeIndexOfChildrenInTopLevelContainer:(id)a3
+- (unint64_t)p_relativeIndexOfChildrenInTopLevelContainer:(id)container
 {
-  v4 = a3;
-  v5 = [(CRLDrawableZOrderArranger *)self p_zOrderSiblingsForRelativeOrder];
-  v6 = [v5 crl_arrayWithObjectsInSet:v4];
+  containerCopy = container;
+  p_zOrderSiblingsForRelativeOrder = [(CRLDrawableZOrderArranger *)self p_zOrderSiblingsForRelativeOrder];
+  v6 = [p_zOrderSiblingsForRelativeOrder crl_arrayWithObjectsInSet:containerCopy];
 
   if ([v6 count])
   {
-    v7 = [v6 lastObject];
-    v8 = [v5 indexOfObjectIdenticalTo:v7];
+    lastObject = [v6 lastObject];
+    v8 = [p_zOrderSiblingsForRelativeOrder indexOfObjectIdenticalTo:lastObject];
   }
 
   else
@@ -1603,10 +1603,10 @@ LABEL_17:
 - (unint64_t)p_zOrderIndex
 {
   WeakRetained = objc_loadWeakRetained(&self->mCanvasEditor);
-  v4 = [WeakRetained interactiveCanvasController];
-  v5 = [v4 hasSelectedInfosInMultipleContainers];
+  interactiveCanvasController = [WeakRetained interactiveCanvasController];
+  hasSelectedInfosInMultipleContainers = [interactiveCanvasController hasSelectedInfosInMultipleContainers];
 
-  if (v5)
+  if (hasSelectedInfosInMultipleContainers)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -1635,16 +1635,16 @@ LABEL_17:
     [CRLAssertionHandler handleFailureInFunction:v7 file:v8 lineNumber:635 isFatal:0 description:"Cannot get the generic max index for a cross-container selection"];
   }
 
-  v9 = [(CRLDrawableZOrderArranger *)self p_usingRelativeZOrder];
-  v10 = [(CRLDrawableZOrderArranger *)self p_selectedInfos];
-  if (v9)
+  p_usingRelativeZOrder = [(CRLDrawableZOrderArranger *)self p_usingRelativeZOrder];
+  p_selectedInfos = [(CRLDrawableZOrderArranger *)self p_selectedInfos];
+  if (p_usingRelativeZOrder)
   {
-    v11 = [(CRLDrawableZOrderArranger *)self p_relativeIndexOfChildrenInTopLevelContainer:v10];
+    v11 = [(CRLDrawableZOrderArranger *)self p_relativeIndexOfChildrenInTopLevelContainer:p_selectedInfos];
   }
 
   else
   {
-    v11 = [(CRLDrawableZOrderArranger *)self p_indexOfChildren:v10 inContainer:0];
+    v11 = [(CRLDrawableZOrderArranger *)self p_indexOfChildren:p_selectedInfos inContainer:0];
   }
 
   v12 = v11;
@@ -1655,12 +1655,12 @@ LABEL_17:
 - (id)p_selectedInfos
 {
   WeakRetained = objc_loadWeakRetained(&self->mCanvasEditor);
-  v3 = [WeakRetained interactiveCanvasController];
+  interactiveCanvasController = [WeakRetained interactiveCanvasController];
 
-  v4 = [v3 selectionModelTranslator];
-  v5 = [v3 editorController];
-  v6 = [v5 selectionPath];
-  v7 = [v4 boardItemsForSelectionPath:v6];
+  selectionModelTranslator = [interactiveCanvasController selectionModelTranslator];
+  editorController = [interactiveCanvasController editorController];
+  selectionPath = [editorController selectionPath];
+  v7 = [selectionModelTranslator boardItemsForSelectionPath:selectionPath];
 
   return v7;
 }

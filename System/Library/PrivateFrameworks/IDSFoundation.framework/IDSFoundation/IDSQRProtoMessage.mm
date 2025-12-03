@@ -1,20 +1,20 @@
 @interface IDSQRProtoMessage
 + (id)dataWithEmptyUnAllocBindResponse;
-- (BOOL)_setupAllocbindRequest:(id)a3 candidatePair:(id)a4 options:(id)a5;
-- (BOOL)_setupCallModeUpdateRequest:(id)a3 candidatePair:(id)a4 options:(id)a5;
-- (BOOL)_setupChannelConfigRequest:(id)a3 candidatePair:(id)a4 options:(id)a5;
-- (BOOL)_setupInfoRequest:(id)a3 candidatePair:(id)a4 options:(id)a5;
-- (BOOL)_setupParticipantUpdateRequest:(id)a3 candidatePair:(id)a4 options:(id)a5;
-- (BOOL)_setupPluginControlRequest:(id)a3 candidatePair:(id)a4 options:(id)a5;
-- (BOOL)_setupPutmaterialRequest:(id)a3 candidatePair:(id)a4 options:(id)a5;
-- (BOOL)_setupRegisterAckRequest:(id)a3 candidatePair:(id)a4 options:(id)a5;
-- (BOOL)_setupRegisterRequest:(id)a3 candidatePair:(id)a4 options:(id)a5;
-- (BOOL)_setupSessionInfoRequest:(id)a3 candidatePair:(id)a4 options:(id)a5;
-- (BOOL)_setupStatsRequest:(id)a3 candidatePair:(id)a4 options:(id)a5;
-- (BOOL)_setupTestRequest:(id)a3 candidatePair:(id)a4 options:(id)a5;
-- (BOOL)_setupUnallocbindRequest:(id)a3 candidatePair:(id)a4 options:(id)a5;
-- (IDSQRProtoMessage)initWithData:(id)a3;
-- (IDSQRProtoMessage)initWithType:(int)a3 candidatePair:(id)a4 options:(id)a5;
+- (BOOL)_setupAllocbindRequest:(id)request candidatePair:(id)pair options:(id)options;
+- (BOOL)_setupCallModeUpdateRequest:(id)request candidatePair:(id)pair options:(id)options;
+- (BOOL)_setupChannelConfigRequest:(id)request candidatePair:(id)pair options:(id)options;
+- (BOOL)_setupInfoRequest:(id)request candidatePair:(id)pair options:(id)options;
+- (BOOL)_setupParticipantUpdateRequest:(id)request candidatePair:(id)pair options:(id)options;
+- (BOOL)_setupPluginControlRequest:(id)request candidatePair:(id)pair options:(id)options;
+- (BOOL)_setupPutmaterialRequest:(id)request candidatePair:(id)pair options:(id)options;
+- (BOOL)_setupRegisterAckRequest:(id)request candidatePair:(id)pair options:(id)options;
+- (BOOL)_setupRegisterRequest:(id)request candidatePair:(id)pair options:(id)options;
+- (BOOL)_setupSessionInfoRequest:(id)request candidatePair:(id)pair options:(id)options;
+- (BOOL)_setupStatsRequest:(id)request candidatePair:(id)pair options:(id)options;
+- (BOOL)_setupTestRequest:(id)request candidatePair:(id)pair options:(id)options;
+- (BOOL)_setupUnallocbindRequest:(id)request candidatePair:(id)pair options:(id)options;
+- (IDSQRProtoMessage)initWithData:(id)data;
+- (IDSQRProtoMessage)initWithType:(int)type candidatePair:(id)pair options:(id)options;
 - (id)allocbindResponse;
 - (id)callModeUpdateResponse;
 - (id)channelConfigResponse;
@@ -41,18 +41,18 @@
 
 @implementation IDSQRProtoMessage
 
-- (IDSQRProtoMessage)initWithType:(int)a3 candidatePair:(id)a4 options:(id)a5
+- (IDSQRProtoMessage)initWithType:(int)type candidatePair:(id)pair options:(id)options
 {
-  v6 = *&a3;
+  v6 = *&type;
   v62 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
+  pairCopy = pair;
+  optionsCopy = options;
   v57.receiver = self;
   v57.super_class = IDSQRProtoMessage;
   v10 = [(IDSQRProtoMessage *)&v57 init];
   if (v10)
   {
-    if (![v8 isRelayStunCandidatePair] || (objc_msgSend(v8, "isValidRelayStunCandidatePair") & 1) == 0)
+    if (![pairCopy isRelayStunCandidatePair] || (objc_msgSend(pairCopy, "isValidRelayStunCandidatePair") & 1) == 0)
     {
       v16 = OSLogHandleForTransportCategory();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
@@ -90,8 +90,8 @@
           v36 = objc_alloc_init(IDSQRProtoUnAllocBindRequest);
           [(IDSQRProtoH3Message *)v10->_message setUnallocbindRequest:v36];
 
-          v37 = [(IDSQRProtoH3Message *)v10->_message unallocbindRequest];
-          v15 = [(IDSQRProtoMessage *)v10 _setupUnallocbindRequest:v37 candidatePair:v8 options:v9];
+          unallocbindRequest = [(IDSQRProtoH3Message *)v10->_message unallocbindRequest];
+          v15 = [(IDSQRProtoMessage *)v10 _setupUnallocbindRequest:unallocbindRequest candidatePair:pairCopy options:optionsCopy];
         }
 
         else
@@ -100,7 +100,7 @@
           {
             if (v6 == 27)
             {
-              v21 = [v9 objectForKeyedSubscript:@"gl-option-materials-request-key"];
+              v21 = [optionsCopy objectForKeyedSubscript:@"gl-option-materials-request-key"];
               if (v21)
               {
                 [(IDSQRProtoH3Message *)v10->_message setGetmaterialRequest:v21];
@@ -150,8 +150,8 @@ LABEL_45:
           v40 = objc_alloc_init(IDSQRProtoPutMaterialRequest);
           [(IDSQRProtoH3Message *)v10->_message setPutmaterialRequest:v40];
 
-          v41 = [(IDSQRProtoH3Message *)v10->_message putmaterialRequest];
-          v15 = [(IDSQRProtoMessage *)v10 _setupPutmaterialRequest:v41 candidatePair:v8 options:v9];
+          putmaterialRequest = [(IDSQRProtoH3Message *)v10->_message putmaterialRequest];
+          v15 = [(IDSQRProtoMessage *)v10 _setupPutmaterialRequest:putmaterialRequest candidatePair:pairCopy options:optionsCopy];
         }
 
         goto LABEL_44;
@@ -164,8 +164,8 @@ LABEL_45:
           v32 = objc_alloc_init(IDSQRProtoCallModeUpdateRequest);
           [(IDSQRProtoH3Message *)v10->_message setCallmodeupdateRequest:v32];
 
-          v33 = [(IDSQRProtoH3Message *)v10->_message callmodeupdateRequest];
-          v15 = [(IDSQRProtoMessage *)v10 _setupCallModeUpdateRequest:v33 candidatePair:v8 options:v9];
+          callmodeupdateRequest = [(IDSQRProtoH3Message *)v10->_message callmodeupdateRequest];
+          v15 = [(IDSQRProtoMessage *)v10 _setupCallModeUpdateRequest:callmodeupdateRequest candidatePair:pairCopy options:optionsCopy];
         }
 
         else
@@ -178,8 +178,8 @@ LABEL_45:
           v24 = objc_alloc_init(IDSQRH3ChannelConfigRequest);
           [(IDSQRProtoH3Message *)v10->_message setChannelconfigRequest:v24];
 
-          v25 = [(IDSQRProtoH3Message *)v10->_message channelconfigRequest];
-          v15 = [(IDSQRProtoMessage *)v10 _setupChannelConfigRequest:v25 candidatePair:v8 options:v9];
+          channelconfigRequest = [(IDSQRProtoH3Message *)v10->_message channelconfigRequest];
+          v15 = [(IDSQRProtoMessage *)v10 _setupChannelConfigRequest:channelconfigRequest candidatePair:pairCopy options:optionsCopy];
         }
       }
 
@@ -188,8 +188,8 @@ LABEL_45:
         v28 = objc_alloc_init(IDSQRProtoH3EndToEndChannelRegisterRequest);
         [(IDSQRProtoH3Message *)v10->_message setRegisterRequest:v28];
 
-        v29 = [(IDSQRProtoH3Message *)v10->_message registerRequest];
-        v15 = [(IDSQRProtoMessage *)v10 _setupRegisterRequest:v29 candidatePair:v8 options:v9];
+        registerRequest = [(IDSQRProtoH3Message *)v10->_message registerRequest];
+        v15 = [(IDSQRProtoMessage *)v10 _setupRegisterRequest:registerRequest candidatePair:pairCopy options:optionsCopy];
       }
 
       else
@@ -202,8 +202,8 @@ LABEL_45:
         v17 = objc_alloc_init(IDSQRProtoH3EndToEndChannelRegisterAckRequest);
         [(IDSQRProtoH3Message *)v10->_message setRegisterAckRequest:v17];
 
-        v18 = [(IDSQRProtoH3Message *)v10->_message registerAckRequest];
-        v15 = [(IDSQRProtoMessage *)v10 _setupRegisterAckRequest:v18 candidatePair:v8 options:v9];
+        registerAckRequest = [(IDSQRProtoH3Message *)v10->_message registerAckRequest];
+        v15 = [(IDSQRProtoMessage *)v10 _setupRegisterAckRequest:registerAckRequest candidatePair:pairCopy options:optionsCopy];
       }
     }
 
@@ -215,24 +215,24 @@ LABEL_45:
           v34 = objc_alloc_init(IDSQRProtoAllocBindRequest);
           [(IDSQRProtoH3Message *)v10->_message setAllocbindRequest:v34];
 
-          v35 = [(IDSQRProtoH3Message *)v10->_message allocbindRequest];
-          v15 = [(IDSQRProtoMessage *)v10 _setupAllocbindRequest:v35 candidatePair:v8 options:v9];
+          allocbindRequest = [(IDSQRProtoH3Message *)v10->_message allocbindRequest];
+          v15 = [(IDSQRProtoMessage *)v10 _setupAllocbindRequest:allocbindRequest candidatePair:pairCopy options:optionsCopy];
 
           break;
         case 5:
           v38 = objc_alloc_init(IDSQRProtoInfoRequest);
           [(IDSQRProtoH3Message *)v10->_message setInfoRequest:v38];
 
-          v39 = [(IDSQRProtoH3Message *)v10->_message infoRequest];
-          v15 = [(IDSQRProtoMessage *)v10 _setupInfoRequest:v39 candidatePair:v8 options:v9];
+          infoRequest = [(IDSQRProtoH3Message *)v10->_message infoRequest];
+          v15 = [(IDSQRProtoMessage *)v10 _setupInfoRequest:infoRequest candidatePair:pairCopy options:optionsCopy];
 
           break;
         case 7:
           v19 = objc_alloc_init(IDSQRProtoParticipantUpdateRequest);
           [(IDSQRProtoH3Message *)v10->_message setParticipantupdateRequest:v19];
 
-          v20 = [(IDSQRProtoH3Message *)v10->_message participantupdateRequest];
-          v15 = [(IDSQRProtoMessage *)v10 _setupParticipantUpdateRequest:v20 candidatePair:v8 options:v9];
+          participantupdateRequest = [(IDSQRProtoH3Message *)v10->_message participantupdateRequest];
+          v15 = [(IDSQRProtoMessage *)v10 _setupParticipantUpdateRequest:participantupdateRequest candidatePair:pairCopy options:optionsCopy];
 
           break;
         default:
@@ -247,8 +247,8 @@ LABEL_45:
         v30 = objc_alloc_init(IDSQRProtoStatsRequest);
         [(IDSQRProtoH3Message *)v10->_message setStatsRequest:v30];
 
-        v31 = [(IDSQRProtoH3Message *)v10->_message statsRequest];
-        v15 = [(IDSQRProtoMessage *)v10 _setupStatsRequest:v31 candidatePair:v8 options:v9];
+        statsRequest = [(IDSQRProtoH3Message *)v10->_message statsRequest];
+        v15 = [(IDSQRProtoMessage *)v10 _setupStatsRequest:statsRequest candidatePair:pairCopy options:optionsCopy];
       }
 
       else
@@ -261,8 +261,8 @@ LABEL_45:
         v22 = objc_alloc_init(IDSQRProtoTestRequest);
         [(IDSQRProtoH3Message *)v10->_message setTestRequest:v22];
 
-        v23 = [(IDSQRProtoH3Message *)v10->_message testRequest];
-        v15 = [(IDSQRProtoMessage *)v10 _setupTestRequest:v23 candidatePair:v8 options:v9];
+        testRequest = [(IDSQRProtoH3Message *)v10->_message testRequest];
+        v15 = [(IDSQRProtoMessage *)v10 _setupTestRequest:testRequest candidatePair:pairCopy options:optionsCopy];
       }
     }
 
@@ -275,8 +275,8 @@ LABEL_45:
           v13 = objc_alloc_init(IDSQRProtoSessionInfoRequest);
           [(IDSQRProtoH3Message *)v10->_message setSessioninfoRequest:v13];
 
-          v14 = [(IDSQRProtoH3Message *)v10->_message sessioninfoRequest];
-          v15 = [(IDSQRProtoMessage *)v10 _setupSessionInfoRequest:v14 candidatePair:v8 options:v9];
+          sessioninfoRequest = [(IDSQRProtoH3Message *)v10->_message sessioninfoRequest];
+          v15 = [(IDSQRProtoMessage *)v10 _setupSessionInfoRequest:sessioninfoRequest candidatePair:pairCopy options:optionsCopy];
 
           goto LABEL_44;
         }
@@ -338,8 +338,8 @@ LABEL_68:
       v26 = objc_alloc_init(IDSQRProtoPluginControlRequest);
       [(IDSQRProtoH3Message *)v10->_message setPlugincontrolRequest:v26];
 
-      v27 = [(IDSQRProtoH3Message *)v10->_message plugincontrolRequest];
-      v15 = [(IDSQRProtoMessage *)v10 _setupPluginControlRequest:v27 candidatePair:v8 options:v9];
+      plugincontrolRequest = [(IDSQRProtoH3Message *)v10->_message plugincontrolRequest];
+      v15 = [(IDSQRProtoMessage *)v10 _setupPluginControlRequest:plugincontrolRequest candidatePair:pairCopy options:optionsCopy];
     }
 
 LABEL_44:
@@ -358,21 +358,21 @@ LABEL_69:
   return v47;
 }
 
-- (BOOL)_setupAllocbindRequest:(id)a3 candidatePair:(id)a4 options:(id)a5
+- (BOOL)_setupAllocbindRequest:(id)request candidatePair:(id)pair options:(id)options
 {
   v138 = *MEMORY[0x1E69E9840];
-  v122 = a3;
-  v120 = a4;
-  theDict = a5;
-  v119 = [v120 softwareData];
-  v117 = [v119 length];
+  requestCopy = request;
+  pairCopy = pair;
+  theDict = options;
+  softwareData = [pairCopy softwareData];
+  v117 = [softwareData length];
   if (v117 <= 2)
   {
     v28 = OSLogHandleForTransportCategory();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v135 = v119;
+      v135 = softwareData;
       _os_log_impl(&dword_1A7AD9000, v28, OS_LOG_TYPE_DEFAULT, "invalid software data %@", buf, 0xCu);
     }
 
@@ -391,39 +391,39 @@ LABEL_69:
 
   else
   {
-    [v122 setServiceId:{__rev16(*(objc_msgSend(v119, "bytes") + 1))}];
-    v7 = [MEMORY[0x1E69A60B8] sharedInstance];
-    v116 = [v7 productName];
+    [requestCopy setServiceId:{__rev16(*(objc_msgSend(softwareData, "bytes") + 1))}];
+    mEMORY[0x1E69A60B8] = [MEMORY[0x1E69A60B8] sharedInstance];
+    productName = [mEMORY[0x1E69A60B8] productName];
 
-    v8 = [MEMORY[0x1E69A60B8] sharedInstance];
-    v115 = [v8 productVersion];
+    mEMORY[0x1E69A60B8]2 = [MEMORY[0x1E69A60B8] sharedInstance];
+    productVersion = [mEMORY[0x1E69A60B8]2 productVersion];
 
-    v9 = [MEMORY[0x1E69A60B8] sharedInstance];
-    v114 = [v9 productBuildVersion];
+    mEMORY[0x1E69A60B8]3 = [MEMORY[0x1E69A60B8] sharedInstance];
+    productBuildVersion = [mEMORY[0x1E69A60B8]3 productBuildVersion];
 
-    v113 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@, %@, %@", v116, v115, v114];
-    [v122 setClientOsVersion:v113];
-    v10 = [MEMORY[0x1E69A60B8] sharedInstance];
-    v112 = [v10 model];
+    v114 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@, %@, %@", productName, productVersion, productBuildVersion];
+    [requestCopy setClientOsVersion:v114];
+    mEMORY[0x1E69A60B8]4 = [MEMORY[0x1E69A60B8] sharedInstance];
+    model = [mEMORY[0x1E69A60B8]4 model];
 
-    [v122 setClientHwVersion:v112];
-    v11 = [v120 capabilityFlags];
+    [requestCopy setClientHwVersion:model];
+    capabilityFlags = [pairCopy capabilityFlags];
     Value = 0;
     if (theDict && @"gl-option-is-lightweight-participant-key")
     {
       Value = CFDictionaryGetValue(theDict, @"gl-option-is-lightweight-participant-key");
     }
 
-    v13 = [Value BOOLValue];
+    bOOLValue = [Value BOOLValue];
     v14 = 0;
-    if (v13)
+    if (bOOLValue)
     {
-      v15 = v11 & 0xFFFFFFFFFFDF7FFFLL | 0x8000;
+      v15 = capabilityFlags & 0xFFFFFFFFFFDF7FFFLL | 0x8000;
     }
 
     else
     {
-      v15 = v11;
+      v15 = capabilityFlags;
     }
 
     if (theDict && @"gl-option-is-facetime-session")
@@ -431,10 +431,10 @@ LABEL_69:
       v14 = CFDictionaryGetValue(theDict, @"gl-option-is-facetime-session");
     }
 
-    v16 = [v14 BOOLValue];
-    v17 = [v120 isSharedQRSession];
+    bOOLValue2 = [v14 BOOLValue];
+    isSharedQRSession = [pairCopy isSharedQRSession];
     v18 = 0;
-    if ((v17 & v16) != 0)
+    if ((isSharedQRSession & bOOLValue2) != 0)
     {
       v19 = v15 | 0x90000;
     }
@@ -449,9 +449,9 @@ LABEL_69:
       v18 = CFDictionaryGetValue(theDict, @"gl-option-uplink-nack-disabled");
     }
 
-    v20 = [v18 BOOLValue];
+    bOOLValue3 = [v18 BOOLValue];
     v21 = 0;
-    if (v20)
+    if (bOOLValue3)
     {
       v19 &= ~0x80000uLL;
     }
@@ -461,9 +461,9 @@ LABEL_69:
       v21 = CFDictionaryGetValue(theDict, @"gs-shortmki-enabled-key");
     }
 
-    v22 = [v21 BOOLValue];
+    bOOLValue4 = [v21 BOOLValue];
     v23 = 0;
-    if (v22)
+    if (bOOLValue4)
     {
       v19 |= 0x800000uLL;
     }
@@ -473,9 +473,9 @@ LABEL_69:
       v23 = CFDictionaryGetValue(theDict, @"gs-dl-participantid-removal-supported-key");
     }
 
-    v24 = [v23 BOOLValue];
+    bOOLValue5 = [v23 BOOLValue];
     v25 = 0;
-    if (v24)
+    if (bOOLValue5)
     {
       v19 |= 0x2000000uLL;
     }
@@ -490,7 +490,7 @@ LABEL_69:
       v19 |= 0x400000uLL;
     }
 
-    [v122 setCapabilities:v19];
+    [requestCopy setCapabilities:v19];
     v26 = OSLogHandleForTransportCategory();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
     {
@@ -520,7 +520,7 @@ LABEL_69:
       if (v27)
       {
         v109 = v27;
-        [v122 setCallModeInfo:?];
+        [requestCopy setCallModeInfo:?];
       }
 
       else
@@ -536,7 +536,7 @@ LABEL_69:
       if (v29)
       {
         v108 = v29;
-        [v122 setFastPluginRequests:?];
+        [requestCopy setFastPluginRequests:?];
       }
 
       else
@@ -545,13 +545,13 @@ LABEL_69:
       }
     }
 
-    v30 = [v120 stateFlags];
-    [v122 setStateFlags:v30];
+    stateFlags = [pairCopy stateFlags];
+    [requestCopy setStateFlags:stateFlags];
     v31 = OSLogHandleForTransportCategory();
     if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109120;
-      LODWORD(v135) = v30;
+      LODWORD(v135) = stateFlags;
       _os_log_impl(&dword_1A7AD9000, v31, OS_LOG_TYPE_DEFAULT, "_setupAllocbindRequest: final stateFlags: %x", buf, 8u);
     }
 
@@ -559,28 +559,28 @@ LABEL_69:
     {
       if (_IDSShouldLogTransport())
       {
-        v104 = v30;
+        v104 = stateFlags;
         _IDSLogTransport(@"GL", @"IDS", @"_setupAllocbindRequest: final stateFlags: %x");
         if (_IDSShouldLog())
         {
-          v104 = v30;
+          v104 = stateFlags;
           _IDSLogV(0, @"IDSFoundation", @"GL", @"_setupAllocbindRequest: final stateFlags: %x");
         }
       }
     }
 
-    if ([v120 isSharedQRSession])
+    if ([pairCopy isSharedQRSession])
     {
-      v32 = [v120 relaySessionInfo];
-      v33 = [v32 publishedStreams];
+      relaySessionInfo = [pairCopy relaySessionInfo];
+      publishedStreams = [relaySessionInfo publishedStreams];
 
-      v34 = [v120 relaySessionInfo];
-      v35 = [v34 subscribedStreams];
+      relaySessionInfo2 = [pairCopy relaySessionInfo];
+      subscribedStreams = [relaySessionInfo2 subscribedStreams];
 
-      v36 = [v120 relaySessionInfo];
-      LODWORD(v34) = [v36 maxConcurrentStreams];
+      relaySessionInfo3 = [pairCopy relaySessionInfo];
+      LODWORD(relaySessionInfo2) = [relaySessionInfo3 maxConcurrentStreams];
 
-      sub_1A7C3A534(v122, v33, v35, v34);
+      sub_1A7C3A534(requestCopy, publishedStreams, subscribedStreams, relaySessionInfo2);
     }
 
     v37 = 0;
@@ -589,11 +589,11 @@ LABEL_69:
       v37 = CFDictionaryGetValue(theDict, @"gl-option-additional-binding");
     }
 
-    v38 = [v37 unsignedIntValue];
-    if (([v120 isSelfQRSession] & 1) == 0)
+    unsignedIntValue = [v37 unsignedIntValue];
+    if (([pairCopy isSelfQRSession] & 1) == 0)
     {
-      v39 = [v120 local];
-      v40 = [v39 isCellularStunCandidate];
+      local = [pairCopy local];
+      isCellularStunCandidate = [local isCellularStunCandidate];
 
       if (@"gl-option-should-auto-disconnect-for-standard-participant")
       {
@@ -615,7 +615,7 @@ LABEL_69:
         v42 = 0;
       }
 
-      v43 = [v42 BOOLValue];
+      bOOLValue6 = [v42 BOOLValue];
       v44 = +[IDSServerBag sharedInstance];
       v45 = [v44 objectForKey:@"ids-disallow-qr-auto-disconnect"];
 
@@ -623,7 +623,7 @@ LABEL_69:
       if (os_log_type_enabled(v46, OS_LOG_TYPE_DEFAULT))
       {
         v47 = @"NO";
-        if (v43)
+        if (bOOLValue6)
         {
           v48 = @"YES";
         }
@@ -633,7 +633,7 @@ LABEL_69:
           v48 = @"NO";
         }
 
-        if (v13)
+        if (bOOLValue)
         {
           v47 = @"YES";
         }
@@ -647,8 +647,8 @@ LABEL_69:
 
       if (os_log_shim_legacy_logging_enabled() && _IDSShouldLogTransport())
       {
-        v49 = v43 ? @"YES" : @"NO";
-        v50 = v13 ? @"YES" : @"NO";
+        v49 = bOOLValue6 ? @"YES" : @"NO";
+        v50 = bOOLValue ? @"YES" : @"NO";
         v105 = v49;
         v107 = v50;
         _IDSLogTransport(@"GL", @"IDS", @"_setupAllocbindRequest: auto disconnect supported: %@, isLightweightParticipant: %@");
@@ -660,8 +660,8 @@ LABEL_69:
         }
       }
 
-      v51 = (v38 & 0x30 | v40);
-      if (v43)
+      v51 = (unsignedIntValue & 0x30 | isCellularStunCandidate);
+      if (bOOLValue6)
       {
         if ([v45 BOOLValue])
         {
@@ -691,7 +691,7 @@ LABEL_69:
         }
       }
 
-      [v122 setChannelBindingInfo:{v51, v105, v107}];
+      [requestCopy setChannelBindingInfo:{v51, v105, v107}];
       v53 = OSLogHandleForTransportCategory();
       if (os_log_type_enabled(v53, OS_LOG_TYPE_DEFAULT))
       {
@@ -724,7 +724,7 @@ LABEL_69:
         v54 = objc_alloc_init(IDSQRProtoQuicConnectionInfo);
         [(IDSQRProtoQuicConnectionInfo *)v54 setQuicConnectionType:0];
         [(IDSQRProtoQuicConnectionInfo *)v54 setQuicConnectionId:v111];
-        [v122 addQuicConnectionInfo:v54];
+        [requestCopy addQuicConnectionInfo:v54];
       }
 
       else
@@ -742,7 +742,7 @@ LABEL_69:
         v55 = objc_alloc_init(IDSQRProtoQuicConnectionInfo);
         [(IDSQRProtoQuicConnectionInfo *)v55 setQuicConnectionType:1];
         [(IDSQRProtoQuicConnectionInfo *)v55 setQuicConnectionId:v110];
-        [v122 addQuicConnectionInfo:v55];
+        [requestCopy addQuicConnectionInfo:v55];
       }
 
       else
@@ -780,10 +780,10 @@ LABEL_69:
         v58 = CFDictionaryGetValue(theDict, @"gl-option-server-test-option-tle-disabled");
       }
 
-      v59 = [v58 BOOLValue];
+      bOOLValue7 = [v58 BOOLValue];
       v60 = objc_alloc_init(IDSQRProtoExperimentOverride);
       [(IDSQRProtoExperimentOverride *)v60 setExperimentName:@"tled"];
-      [(IDSQRProtoExperimentOverride *)v60 setValue:v59];
+      [(IDSQRProtoExperimentOverride *)v60 setValue:bOOLValue7];
       [v118 addObject:v60];
     }
 
@@ -791,7 +791,7 @@ LABEL_69:
     {
       v61 = objc_alloc_init(IDSQRProtoAllocBindTestOption);
       [(IDSQRProtoAllocBindTestOption *)v61 setExperimentOverrides:v118];
-      [v122 setTestOption:v61];
+      [requestCopy setTestOption:v61];
     }
 
     if (theDict)
@@ -802,8 +802,8 @@ LABEL_69:
         if (v62)
         {
           v63 = v62;
-          v64 = [MEMORY[0x1E695DF70] array];
-          [v122 setSessionExperiments:v64];
+          array = [MEMORY[0x1E695DF70] array];
+          [requestCopy setSessionExperiments:array];
 
           v130 = 0u;
           v131 = 0u;
@@ -867,8 +867,8 @@ LABEL_140:
                   }
                 }
 
-                v76 = [v122 sessionExperiments];
-                [v76 addObject:v71];
+                sessionExperiments = [requestCopy sessionExperiments];
+                [sessionExperiments addObject:v71];
 
                 goto LABEL_147;
               }
@@ -960,7 +960,7 @@ LABEL_164:
         if (v82)
         {
           v83 = v82;
-          v84 = [MEMORY[0x1E695DF70] array];
+          array2 = [MEMORY[0x1E695DF70] array];
           v126 = 0u;
           v127 = 0u;
           v124 = 0u;
@@ -981,14 +981,14 @@ LABEL_164:
 
                 v89 = *(*(&v124 + 1) + 8 * i);
                 v90 = objc_alloc_init(IDSQRProtoAllocBindStaleLink);
-                v91 = [v89 localIP];
-                [(IDSQRProtoAllocBindStaleLink *)v90 setClientAddress:v91];
+                localIP = [v89 localIP];
+                [(IDSQRProtoAllocBindStaleLink *)v90 setClientAddress:localIP];
 
-                v92 = [v89 serverIP];
-                [(IDSQRProtoAllocBindStaleLink *)v90 setServerAddress:v92];
+                serverIP = [v89 serverIP];
+                [(IDSQRProtoAllocBindStaleLink *)v90 setServerAddress:serverIP];
 
                 -[IDSQRProtoAllocBindStaleLink setLinkId:](v90, "setLinkId:", [v89 linkID]);
-                [v84 addObject:v90];
+                [array2 addObject:v90];
               }
 
               v86 = [v85 countByEnumeratingWithState:&v124 objects:v132 count:16];
@@ -997,7 +997,7 @@ LABEL_164:
             while (v86);
           }
 
-          [v122 setStaleLinks:v84];
+          [requestCopy setStaleLinks:array2];
         }
       }
     }
@@ -1010,7 +1010,7 @@ LABEL_164:
         if (v93)
         {
           v94 = v93;
-          [v122 setServerBlob:v93];
+          [requestCopy setServerBlob:v93];
         }
       }
     }
@@ -1023,7 +1023,7 @@ LABEL_164:
         if (v95)
         {
           v96 = v95;
-          [v122 setClientContextBlob:v95];
+          [requestCopy setClientContextBlob:v95];
         }
       }
     }
@@ -1034,17 +1034,17 @@ LABEL_164:
       v97 = CFDictionaryGetValue(theDict, @"gl-option-ids-context-reason-key");
     }
 
-    v98 = [v97 intValue];
-    if (v98)
+    intValue = [v97 intValue];
+    if (intValue)
     {
-      [v122 setReason:v98];
+      [requestCopy setReason:intValue];
     }
 
     v99 = [(__CFDictionary *)theDict objectForKeyedSubscript:@"gl-option-materials-key"];
-    [v122 setMaterials:v99];
+    [requestCopy setMaterials:v99];
 
-    v100 = [v122 materials];
-    v101 = [v100 description];
+    materials = [requestCopy materials];
+    v101 = [materials description];
 
     v123 = v101;
     cut_dispatch_log_queue();
@@ -1053,36 +1053,36 @@ LABEL_164:
   return v117 > 2;
 }
 
-- (BOOL)_setupInfoRequest:(id)a3 candidatePair:(id)a4 options:(id)a5
+- (BOOL)_setupInfoRequest:(id)request candidatePair:(id)pair options:(id)options
 {
-  v6 = a3;
-  v7 = [a4 relaySessionToken];
-  [v6 setAccessToken:v7];
-  [v6 setInfoFlags:7];
+  requestCopy = request;
+  relaySessionToken = [pair relaySessionToken];
+  [requestCopy setAccessToken:relaySessionToken];
+  [requestCopy setInfoFlags:7];
 
   return 1;
 }
 
-- (BOOL)_setupParticipantUpdateRequest:(id)a3 candidatePair:(id)a4 options:(id)a5
+- (BOOL)_setupParticipantUpdateRequest:(id)request candidatePair:(id)pair options:(id)options
 {
   v35 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  requestCopy = request;
+  pairCopy = pair;
+  optionsCopy = options;
   Value = 0;
-  if (v9 && @"gl-option-participant-update-request-type")
+  if (optionsCopy && @"gl-option-participant-update-request-type")
   {
-    Value = CFDictionaryGetValue(v9, @"gl-option-participant-update-request-type");
+    Value = CFDictionaryGetValue(optionsCopy, @"gl-option-participant-update-request-type");
   }
 
-  v11 = [Value unsignedShortValue];
-  [v7 setOperationFlags:v11];
-  if (v11)
+  unsignedShortValue = [Value unsignedShortValue];
+  [requestCopy setOperationFlags:unsignedShortValue];
+  if (unsignedShortValue)
   {
     v12 = 0;
-    if (v9 && @"gl-option-participant-update-blocked-participantIDs")
+    if (optionsCopy && @"gl-option-participant-update-blocked-participantIDs")
     {
-      v12 = CFDictionaryGetValue(v9, @"gl-option-participant-update-blocked-participantIDs");
+      v12 = CFDictionaryGetValue(optionsCopy, @"gl-option-participant-update-blocked-participantIDs");
     }
 
     v13 = v12;
@@ -1104,7 +1104,7 @@ LABEL_164:
             objc_enumerationMutation(v13);
           }
 
-          [v7 addParticipantIdList:{objc_msgSend(*(*(&v29 + 1) + 8 * i), "unsignedLongLongValue")}];
+          [requestCopy addParticipantIdList:{objc_msgSend(*(*(&v29 + 1) + 8 * i), "unsignedLongLongValue")}];
         }
 
         v15 = [v13 countByEnumeratingWithState:&v29 objects:v34 count:16];
@@ -1115,17 +1115,17 @@ LABEL_164:
   }
 
   v18 = 0;
-  if (v9 && @"gl-option-participant-update-request-counter")
+  if (optionsCopy && @"gl-option-participant-update-request-counter")
   {
-    v18 = CFDictionaryGetValue(v9, @"gl-option-participant-update-request-counter");
+    v18 = CFDictionaryGetValue(optionsCopy, @"gl-option-participant-update-request-counter");
   }
 
-  [v7 setSessionStateCounter:{objc_msgSend(v18, "unsignedIntValue")}];
-  if (v9)
+  [requestCopy setSessionStateCounter:{objc_msgSend(v18, "unsignedIntValue")}];
+  if (optionsCopy)
   {
     if (@"gl-option-ids-context-blob-key")
     {
-      v19 = CFDictionaryGetValue(v9, @"gl-option-ids-context-blob-key");
+      v19 = CFDictionaryGetValue(optionsCopy, @"gl-option-ids-context-blob-key");
       if (v19)
       {
         v20 = v19;
@@ -1144,7 +1144,7 @@ LABEL_164:
         v26 = [v25 mutableCopy];
         [(IDSQRProtoMaterial *)v24 setMaterialInfos:v26];
 
-        [v7 setClientContextBlob:v24];
+        [requestCopy setClientContextBlob:v24];
       }
     }
   }
@@ -1152,16 +1152,16 @@ LABEL_164:
   return 1;
 }
 
-- (BOOL)_setupRegisterRequest:(id)a3 candidatePair:(id)a4 options:(id)a5
+- (BOOL)_setupRegisterRequest:(id)request candidatePair:(id)pair options:(id)options
 {
   v29 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v8 candidatePairToken];
-  if (v10)
+  requestCopy = request;
+  pairCopy = pair;
+  optionsCopy = options;
+  candidatePairToken = [pairCopy candidatePairToken];
+  if (candidatePairToken)
   {
-    v11 = [v9 objectForKeyedSubscript:@"gl-option-reliable-unicast-reliable-link-uuid"];
+    v11 = [optionsCopy objectForKeyedSubscript:@"gl-option-reliable-unicast-reliable-link-uuid"];
     v12 = v11;
     if (!v11)
     {
@@ -1193,23 +1193,23 @@ LABEL_164:
     v13 = [MEMORY[0x1E695DEF0] dataWithBytes:buf length:16];
     if (v13)
     {
-      [v7 setE2eChannelUuid:v13];
-      v14 = [v9 objectForKeyedSubscript:@"gl-option-reliable-unicast-local-relay-id"];
-      v15 = [v14 unsignedIntValue];
+      [requestCopy setE2eChannelUuid:v13];
+      v14 = [optionsCopy objectForKeyedSubscript:@"gl-option-reliable-unicast-local-relay-id"];
+      unsignedIntValue = [v14 unsignedIntValue];
 
-      v16 = v15;
-      if (v15)
+      v16 = unsignedIntValue;
+      if (unsignedIntValue)
       {
-        v17 = [v9 objectForKeyedSubscript:@"gl-option-reliable-unicast-remote-relay-id"];
-        v18 = [v17 unsignedIntValue];
+        v17 = [optionsCopy objectForKeyedSubscript:@"gl-option-reliable-unicast-remote-relay-id"];
+        unsignedIntValue2 = [v17 unsignedIntValue];
 
-        if (v18)
+        if (unsignedIntValue2)
         {
           v19 = objc_alloc_init(IDSQRProtoH3EndToEndChannelRegisterE2EChannelInfo);
           [(IDSQRProtoH3EndToEndChannelRegisterE2EChannelInfo *)v19 setQuicClientLinkId:v16];
-          [(IDSQRProtoH3EndToEndChannelRegisterE2EChannelInfo *)v19 setQuicServerLinkId:v18];
+          [(IDSQRProtoH3EndToEndChannelRegisterE2EChannelInfo *)v19 setQuicServerLinkId:unsignedIntValue2];
           [(IDSQRProtoH3EndToEndChannelRegisterE2EChannelInfo *)v19 setServerGeneratedConnectionIds:1];
-          [v7 setChannelInfo:v19];
+          [requestCopy setChannelInfo:v19];
 
           v20 = 1;
 LABEL_40:
@@ -1312,16 +1312,16 @@ LABEL_42:
   return v20;
 }
 
-- (BOOL)_setupRegisterAckRequest:(id)a3 candidatePair:(id)a4 options:(id)a5
+- (BOOL)_setupRegisterAckRequest:(id)request candidatePair:(id)pair options:(id)options
 {
   v21 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v8 candidatePairToken];
-  if (v10)
+  requestCopy = request;
+  pairCopy = pair;
+  optionsCopy = options;
+  candidatePairToken = [pairCopy candidatePairToken];
+  if (candidatePairToken)
   {
-    v11 = [v9 objectForKeyedSubscript:@"gl-option-reliable-unicast-reliable-link-uuid"];
+    v11 = [optionsCopy objectForKeyedSubscript:@"gl-option-reliable-unicast-reliable-link-uuid"];
     v12 = v11;
     if (v11)
     {
@@ -1331,8 +1331,8 @@ LABEL_42:
       v14 = v13 != 0;
       if (v13)
       {
-        [v7 setE2eChannelUuid:v13];
-        [v7 setAccept:1];
+        [requestCopy setE2eChannelUuid:v13];
+        [requestCopy setAccept:1];
       }
 
       else
@@ -1410,118 +1410,118 @@ LABEL_42:
   return v14;
 }
 
-- (BOOL)_setupPluginControlRequest:(id)a3 candidatePair:(id)a4 options:(id)a5
+- (BOOL)_setupPluginControlRequest:(id)request candidatePair:(id)pair options:(id)options
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  requestCopy = request;
+  pairCopy = pair;
+  optionsCopy = options;
   Value = 0;
-  if (v9 && @"gl-option-plugin-operation")
+  if (optionsCopy && @"gl-option-plugin-operation")
   {
-    Value = CFDictionaryGetValue(v9, @"gl-option-plugin-operation");
+    Value = CFDictionaryGetValue(optionsCopy, @"gl-option-plugin-operation");
   }
 
-  v11 = [Value unsignedIntValue];
+  unsignedIntValue = [Value unsignedIntValue];
   v12 = 0;
-  if (v9 && @"gl-option-plugin-name")
+  if (optionsCopy && @"gl-option-plugin-name")
   {
-    v12 = CFDictionaryGetValue(v9, @"gl-option-plugin-name");
+    v12 = CFDictionaryGetValue(optionsCopy, @"gl-option-plugin-name");
   }
 
   v13 = v12;
   v14 = 0;
-  if (v9 && @"gl-option-plugin-raw-public-key")
+  if (optionsCopy && @"gl-option-plugin-raw-public-key")
   {
-    v14 = CFDictionaryGetValue(v9, @"gl-option-plugin-raw-public-key");
+    v14 = CFDictionaryGetValue(optionsCopy, @"gl-option-plugin-raw-public-key");
   }
 
   v15 = v14;
-  [v7 setPluginOperation:v11];
-  [v7 setPluginName:v13];
-  [v7 setPluginClientRawPublicKey:v15];
+  [requestCopy setPluginOperation:unsignedIntValue];
+  [requestCopy setPluginName:v13];
+  [requestCopy setPluginClientRawPublicKey:v15];
 
   return 1;
 }
 
-- (BOOL)_setupSessionInfoRequest:(id)a3 candidatePair:(id)a4 options:(id)a5
+- (BOOL)_setupSessionInfoRequest:(id)request candidatePair:(id)pair options:(id)options
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v8 isSharedQRSession];
-  if (v10)
+  requestCopy = request;
+  pairCopy = pair;
+  optionsCopy = options;
+  isSharedQRSession = [pairCopy isSharedQRSession];
+  if (isSharedQRSession)
   {
     Value = 0;
-    if (v9 && @"gl-option-sessioninfo-request-type")
+    if (optionsCopy && @"gl-option-sessioninfo-request-type")
     {
-      Value = CFDictionaryGetValue(v9, @"gl-option-sessioninfo-request-type");
+      Value = CFDictionaryGetValue(optionsCopy, @"gl-option-sessioninfo-request-type");
     }
 
     if ([Value intValue] == 2)
     {
       v12 = 0;
-      if (v9 && @"gl-option-sessioninfo-generation-counter")
+      if (optionsCopy && @"gl-option-sessioninfo-generation-counter")
       {
-        v12 = CFDictionaryGetValue(v9, @"gl-option-sessioninfo-generation-counter");
+        v12 = CFDictionaryGetValue(optionsCopy, @"gl-option-sessioninfo-generation-counter");
       }
 
-      [v7 setGenerationCounter:{objc_msgSend(v12, "unsignedIntValue")}];
+      [requestCopy setGenerationCounter:{objc_msgSend(v12, "unsignedIntValue")}];
       v13 = 0;
-      if (v9 && @"gl-option-sessioninfo-published-streams")
+      if (optionsCopy && @"gl-option-sessioninfo-published-streams")
       {
-        v13 = CFDictionaryGetValue(v9, @"gl-option-sessioninfo-published-streams");
+        v13 = CFDictionaryGetValue(optionsCopy, @"gl-option-sessioninfo-published-streams");
       }
 
       v14 = v13;
       v15 = 0;
-      if (v9 && @"gl-option-sessioninfo-subscribed-streams")
+      if (optionsCopy && @"gl-option-sessioninfo-subscribed-streams")
       {
-        v15 = CFDictionaryGetValue(v9, @"gl-option-sessioninfo-subscribed-streams");
+        v15 = CFDictionaryGetValue(optionsCopy, @"gl-option-sessioninfo-subscribed-streams");
       }
 
       v16 = v15;
       v17 = 0;
-      if (v9 && @"gl-option-sessioninfo-max-concurrent-streams")
+      if (optionsCopy && @"gl-option-sessioninfo-max-concurrent-streams")
       {
-        v17 = CFDictionaryGetValue(v9, @"gl-option-sessioninfo-max-concurrent-streams");
+        v17 = CFDictionaryGetValue(optionsCopy, @"gl-option-sessioninfo-max-concurrent-streams");
       }
 
-      sub_1A7C3A534(v7, v14, v16, [v17 unsignedCharValue]);
+      sub_1A7C3A534(requestCopy, v14, v16, [v17 unsignedCharValue]);
       v18 = 0;
-      if (v9 && @"gl-option-sessioninfo-relay-link-id")
+      if (optionsCopy && @"gl-option-sessioninfo-relay-link-id")
       {
-        v18 = CFDictionaryGetValue(v9, @"gl-option-sessioninfo-relay-link-id");
+        v18 = CFDictionaryGetValue(optionsCopy, @"gl-option-sessioninfo-relay-link-id");
       }
 
-      v19 = [v18 unsignedShortValue];
-      if (v19)
+      unsignedShortValue = [v18 unsignedShortValue];
+      if (unsignedShortValue)
       {
-        [v7 setLinkId:v19];
+        [requestCopy setLinkId:unsignedShortValue];
       }
     }
 
     v20 = 0;
-    if (v9 && @"gl-option-sessioninfo-command-flag")
+    if (optionsCopy && @"gl-option-sessioninfo-command-flag")
     {
-      v20 = CFDictionaryGetValue(v9, @"gl-option-sessioninfo-command-flag");
+      v20 = CFDictionaryGetValue(optionsCopy, @"gl-option-sessioninfo-command-flag");
     }
 
-    v21 = [v20 unsignedIntValue];
-    if (v21)
+    unsignedIntValue = [v20 unsignedIntValue];
+    if (unsignedIntValue)
     {
-      [v7 setCommandFlags:v21];
+      [requestCopy setCommandFlags:unsignedIntValue];
     }
 
     v22 = 0;
-    if (v9 && @"gl-option-sessioninfo-request-id")
+    if (optionsCopy && @"gl-option-sessioninfo-request-id")
     {
-      v22 = CFDictionaryGetValue(v9, @"gl-option-sessioninfo-request-id");
+      v22 = CFDictionaryGetValue(optionsCopy, @"gl-option-sessioninfo-request-id");
     }
 
-    v23 = [v22 unsignedIntValue];
-    if (v23)
+    unsignedIntValue2 = [v22 unsignedIntValue];
+    if (unsignedIntValue2)
     {
-      [v7 setRequestId:v23];
+      [requestCopy setRequestId:unsignedIntValue2];
     }
   }
 
@@ -1547,17 +1547,17 @@ LABEL_42:
     }
   }
 
-  return v10;
+  return isSharedQRSession;
 }
 
-- (BOOL)_setupPutmaterialRequest:(id)a3 candidatePair:(id)a4 options:(id)a5
+- (BOOL)_setupPutmaterialRequest:(id)request candidatePair:(id)pair options:(id)options
 {
-  v6 = a5;
-  v7 = a3;
-  v8 = [v6 objectForKeyedSubscript:@"gl-option-materials-key"];
-  [v7 setMaterials:v8];
+  optionsCopy = options;
+  requestCopy = request;
+  v8 = [optionsCopy objectForKeyedSubscript:@"gl-option-materials-key"];
+  [requestCopy setMaterials:v8];
 
-  v9 = [v6 objectForKeyedSubscript:@"gl-option-materials-key"];
+  v9 = [optionsCopy objectForKeyedSubscript:@"gl-option-materials-key"];
 
   v10 = [v9 description];
 
@@ -1567,49 +1567,49 @@ LABEL_42:
   return 1;
 }
 
-- (BOOL)_setupCallModeUpdateRequest:(id)a3 candidatePair:(id)a4 options:(id)a5
+- (BOOL)_setupCallModeUpdateRequest:(id)request candidatePair:(id)pair options:(id)options
 {
-  v6 = a3;
-  v7 = [a5 objectForKeyedSubscript:@"gl-option-call-mode-update-info-key"];
-  [v6 setCallModeInfo:v7];
+  requestCopy = request;
+  v7 = [options objectForKeyedSubscript:@"gl-option-call-mode-update-info-key"];
+  [requestCopy setCallModeInfo:v7];
 
   return 1;
 }
 
-- (BOOL)_setupStatsRequest:(id)a3 candidatePair:(id)a4 options:(id)a5
+- (BOOL)_setupStatsRequest:(id)request candidatePair:(id)pair options:(id)options
 {
-  v8 = a3;
-  v9 = a5;
+  requestCopy = request;
+  optionsCopy = options;
   startTime = self->_startTime;
-  v11 = a4;
+  pairCopy = pair;
   v12 = ntpTime32(startTime);
-  [v11 serverLatency];
+  [pairCopy serverLatency];
   v14 = v13;
 
   v15 = v14 * 1000.0;
-  [v8 setClientTimestampNtp:v12];
+  [requestCopy setClientTimestampNtp:v12];
   Value = 0;
-  if (v9 && @"report-p2p-session-key")
+  if (optionsCopy && @"report-p2p-session-key")
   {
-    Value = CFDictionaryGetValue(v9, @"report-p2p-session-key");
+    Value = CFDictionaryGetValue(optionsCopy, @"report-p2p-session-key");
   }
 
   if ([Value BOOLValue])
   {
-    [v8 setP2pConnection:1];
+    [requestCopy setP2pConnection:1];
   }
 
   if (v15)
   {
-    [v8 setClientLatencyMs:v15];
+    [requestCopy setClientLatencyMs:v15];
   }
 
-  if (v9 && @"gl-option-stats-sent-packets" && CFDictionaryGetValue(v9, @"gl-option-stats-sent-packets"))
+  if (optionsCopy && @"gl-option-stats-sent-packets" && CFDictionaryGetValue(optionsCopy, @"gl-option-stats-sent-packets"))
   {
     goto LABEL_15;
   }
 
-  if (!v9 || !@"gl-option-stats-received-packets" || !CFDictionaryGetValue(v9, @"gl-option-stats-received-packets"))
+  if (!optionsCopy || !@"gl-option-stats-received-packets" || !CFDictionaryGetValue(optionsCopy, @"gl-option-stats-received-packets"))
   {
     goto LABEL_20;
   }
@@ -1617,7 +1617,7 @@ LABEL_42:
   if (@"gl-option-stats-sent-packets")
   {
 LABEL_15:
-    v17 = CFDictionaryGetValue(v9, @"gl-option-stats-sent-packets");
+    v17 = CFDictionaryGetValue(optionsCopy, @"gl-option-stats-sent-packets");
   }
 
   else
@@ -1625,10 +1625,10 @@ LABEL_15:
     v17 = 0;
   }
 
-  [v8 setSentPackets:{objc_msgSend(v17, "unsignedIntValue")}];
+  [requestCopy setSentPackets:{objc_msgSend(v17, "unsignedIntValue")}];
   if (@"gl-option-stats-received-packets")
   {
-    v18 = CFDictionaryGetValue(v9, @"gl-option-stats-received-packets");
+    v18 = CFDictionaryGetValue(optionsCopy, @"gl-option-stats-received-packets");
   }
 
   else
@@ -1636,53 +1636,53 @@ LABEL_15:
     v18 = 0;
   }
 
-  [v8 setReceivedPackets:{objc_msgSend(v18, "unsignedIntValue")}];
+  [requestCopy setReceivedPackets:{objc_msgSend(v18, "unsignedIntValue")}];
 LABEL_20:
 
   return 1;
 }
 
-- (BOOL)_setupTestRequest:(id)a3 candidatePair:(id)a4 options:(id)a5
+- (BOOL)_setupTestRequest:(id)request candidatePair:(id)pair options:(id)options
 {
   v31 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  requestCopy = request;
+  pairCopy = pair;
+  optionsCopy = options;
   Value = 0;
-  if (v9 && @"gl-option-test-options-flags")
+  if (optionsCopy && @"gl-option-test-options-flags")
   {
-    Value = CFDictionaryGetValue(v9, @"gl-option-test-options-flags");
+    Value = CFDictionaryGetValue(optionsCopy, @"gl-option-test-options-flags");
   }
 
-  v11 = [Value unsignedIntValue];
+  unsignedIntValue = [Value unsignedIntValue];
   v12 = 0;
-  if (v9 && @"gl-option-test-requested-message-type")
+  if (optionsCopy && @"gl-option-test-requested-message-type")
   {
-    v12 = CFDictionaryGetValue(v9, @"gl-option-test-requested-message-type");
+    v12 = CFDictionaryGetValue(optionsCopy, @"gl-option-test-requested-message-type");
   }
 
-  v13 = [v12 unsignedIntValue];
+  unsignedIntValue2 = [v12 unsignedIntValue];
   v14 = 0;
-  if (v9 && @"gl-option-test-requested-error-code-type")
+  if (optionsCopy && @"gl-option-test-requested-error-code-type")
   {
-    v14 = CFDictionaryGetValue(v9, @"gl-option-test-requested-error-code-type");
+    v14 = CFDictionaryGetValue(optionsCopy, @"gl-option-test-requested-error-code-type");
   }
 
-  v15 = [v14 unsignedIntValue];
+  unsignedIntValue3 = [v14 unsignedIntValue];
   v16 = 0;
-  if (v9 && @"gl-option-test-sub-operation")
+  if (optionsCopy && @"gl-option-test-sub-operation")
   {
-    v16 = CFDictionaryGetValue(v9, @"gl-option-test-sub-operation");
+    v16 = CFDictionaryGetValue(optionsCopy, @"gl-option-test-sub-operation");
   }
 
   v17 = v16;
-  [v7 setTestOptionFlags:v11];
-  if (v11 == 8)
+  [requestCopy setTestOptionFlags:unsignedIntValue];
+  if (unsignedIntValue == 8)
   {
-    v18 = v13;
-    [v7 setRequestedMessageType:v18];
-    v19 = v15;
-    [v7 setRequestedErrorCode:v19];
+    v18 = unsignedIntValue2;
+    [requestCopy setRequestedMessageType:v18];
+    v19 = unsignedIntValue3;
+    [requestCopy setRequestedErrorCode:v19];
     v20 = OSLogHandleForTransportCategory();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
@@ -1714,26 +1714,26 @@ LABEL_20:
     }
   }
 
-  [v7 setSubOperation:{v17, v22, v23, v24}];
+  [requestCopy setSubOperation:{v17, v22, v23, v24}];
 
   return 1;
 }
 
-- (BOOL)_setupUnallocbindRequest:(id)a3 candidatePair:(id)a4 options:(id)a5
+- (BOOL)_setupUnallocbindRequest:(id)request candidatePair:(id)pair options:(id)options
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
-  if (v9)
+  requestCopy = request;
+  pairCopy = pair;
+  optionsCopy = options;
+  v10 = optionsCopy;
+  if (optionsCopy)
   {
     if (@"gl-option-ids-context-blob-key")
     {
-      v11 = CFDictionaryGetValue(v9, @"gl-option-ids-context-blob-key");
+      v11 = CFDictionaryGetValue(optionsCopy, @"gl-option-ids-context-blob-key");
       if (v11)
       {
         v12 = v11;
-        [v7 setClientContextBlob:v11];
+        [requestCopy setClientContextBlob:v11];
       }
     }
   }
@@ -1744,45 +1744,45 @@ LABEL_20:
     Value = CFDictionaryGetValue(v10, @"gl-option-ids-context-reason-key");
   }
 
-  [v7 setReason:{objc_msgSend(Value, "intValue")}];
+  [requestCopy setReason:{objc_msgSend(Value, "intValue")}];
 
   return 1;
 }
 
-- (BOOL)_setupChannelConfigRequest:(id)a3 candidatePair:(id)a4 options:(id)a5
+- (BOOL)_setupChannelConfigRequest:(id)request candidatePair:(id)pair options:(id)options
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  requestCopy = request;
+  pairCopy = pair;
+  optionsCopy = options;
   Value = 0;
-  if (v9 && @"gl-option-channel-config-override-idle-timeout-key")
+  if (optionsCopy && @"gl-option-channel-config-override-idle-timeout-key")
   {
-    Value = CFDictionaryGetValue(v9, @"gl-option-channel-config-override-idle-timeout-key");
+    Value = CFDictionaryGetValue(optionsCopy, @"gl-option-channel-config-override-idle-timeout-key");
   }
 
-  [v7 setOverrideIdleTimeoutSeconds:{objc_msgSend(Value, "unsignedIntValue")}];
+  [requestCopy setOverrideIdleTimeoutSeconds:{objc_msgSend(Value, "unsignedIntValue")}];
   v11 = 0;
-  if (v9 && @"gl-option-channel-config-counter-key")
+  if (optionsCopy && @"gl-option-channel-config-counter-key")
   {
-    v11 = CFDictionaryGetValue(v9, @"gl-option-channel-config-counter-key");
+    v11 = CFDictionaryGetValue(optionsCopy, @"gl-option-channel-config-counter-key");
   }
 
-  [v7 setConfigCounter:{objc_msgSend(v11, "unsignedIntValue")}];
+  [requestCopy setConfigCounter:{objc_msgSend(v11, "unsignedIntValue")}];
 
   return 1;
 }
 
-- (IDSQRProtoMessage)initWithData:(id)a3
+- (IDSQRProtoMessage)initWithData:(id)data
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dataCopy = data;
   v19.receiver = self;
   v19.super_class = IDSQRProtoMessage;
   v5 = [(IDSQRProtoMessage *)&v19 init];
   if (v5)
   {
     v5->_startTime = ids_monotonic_time();
-    v6 = [[IDSQRProtoH3Message alloc] initWithData:v4];
+    v6 = [[IDSQRProtoH3Message alloc] initWithData:dataCopy];
     message = v5->_message;
     v5->_message = v6;
 
@@ -1793,7 +1793,7 @@ LABEL_20:
       *buf = 138412546;
       v21 = v9;
       v22 = 2112;
-      v23 = v4;
+      v23 = dataCopy;
       _os_log_impl(&dword_1A7AD9000, v8, OS_LOG_TYPE_DEFAULT, "created proto message %@ with %@", buf, 0x16u);
     }
 
@@ -1802,19 +1802,19 @@ LABEL_20:
       if (_IDSShouldLogTransport())
       {
         v17 = v5->_message;
-        v18 = v4;
+        v18 = dataCopy;
         _IDSLogTransport(@"GL", @"IDS", @"created proto message %@ with %@");
         if (_IDSShouldLog())
         {
           v17 = v5->_message;
-          v18 = v4;
+          v18 = dataCopy;
           _IDSLogV(0, @"IDSFoundation", @"GL", @"created proto message %@ with %@");
         }
       }
     }
 
     v10 = [(IDSQRProtoH3Message *)v5->_message description:v17];
-    v11 = [v4 debugDescription];
+    v11 = [dataCopy debugDescription];
     v12 = v10;
     v13 = v11;
     cut_dispatch_log_queue();
@@ -1837,330 +1837,330 @@ LABEL_13:
 {
   if ([(IDSQRProtoH3Message *)self->_message innerMessage]== 2 && [(IDSQRProtoH3Message *)self->_message hasAllocbindResponse])
   {
-    v3 = [(IDSQRProtoH3Message *)self->_message allocbindResponse];
+    allocbindResponse = [(IDSQRProtoH3Message *)self->_message allocbindResponse];
   }
 
   else
   {
-    v3 = 0;
+    allocbindResponse = 0;
   }
 
-  return v3;
+  return allocbindResponse;
 }
 
 - (id)infoResponse
 {
   if ([(IDSQRProtoH3Message *)self->_message hasInfoResponse])
   {
-    v3 = [(IDSQRProtoH3Message *)self->_message infoResponse];
+    infoResponse = [(IDSQRProtoH3Message *)self->_message infoResponse];
   }
 
   else
   {
-    v3 = 0;
+    infoResponse = 0;
   }
 
-  return v3;
+  return infoResponse;
 }
 
 - (id)participantUpdateResponse
 {
   if ([(IDSQRProtoH3Message *)self->_message hasParticipantupdateResponse])
   {
-    v3 = [(IDSQRProtoH3Message *)self->_message participantupdateResponse];
+    participantupdateResponse = [(IDSQRProtoH3Message *)self->_message participantupdateResponse];
   }
 
   else
   {
-    v3 = 0;
+    participantupdateResponse = 0;
   }
 
-  return v3;
+  return participantupdateResponse;
 }
 
 - (id)pluginControlResponse
 {
   if ([(IDSQRProtoH3Message *)self->_message hasPlugincontrolResponse])
   {
-    v3 = [(IDSQRProtoH3Message *)self->_message plugincontrolResponse];
+    plugincontrolResponse = [(IDSQRProtoH3Message *)self->_message plugincontrolResponse];
   }
 
   else
   {
-    v3 = 0;
+    plugincontrolResponse = 0;
   }
 
-  return v3;
+  return plugincontrolResponse;
 }
 
 - (id)sessionInfoResponse
 {
   if ([(IDSQRProtoH3Message *)self->_message hasSessioninfoResponse])
   {
-    v3 = [(IDSQRProtoH3Message *)self->_message sessioninfoResponse];
+    sessioninfoResponse = [(IDSQRProtoH3Message *)self->_message sessioninfoResponse];
   }
 
   else
   {
-    v3 = 0;
+    sessioninfoResponse = 0;
   }
 
-  return v3;
+  return sessioninfoResponse;
 }
 
 - (id)getMaterialResponse
 {
   if ([(IDSQRProtoH3Message *)self->_message hasGetmaterialResponse])
   {
-    v3 = [(IDSQRProtoH3Message *)self->_message getmaterialResponse];
+    getmaterialResponse = [(IDSQRProtoH3Message *)self->_message getmaterialResponse];
   }
 
   else
   {
-    v3 = 0;
+    getmaterialResponse = 0;
   }
 
-  return v3;
+  return getmaterialResponse;
 }
 
 - (id)putMaterialResponse
 {
   if ([(IDSQRProtoH3Message *)self->_message hasPutmaterialResponse])
   {
-    v3 = [(IDSQRProtoH3Message *)self->_message putmaterialResponse];
+    putmaterialResponse = [(IDSQRProtoH3Message *)self->_message putmaterialResponse];
   }
 
   else
   {
-    v3 = 0;
+    putmaterialResponse = 0;
   }
 
-  return v3;
+  return putmaterialResponse;
 }
 
 - (id)callModeUpdateResponse
 {
   if ([(IDSQRProtoH3Message *)self->_message hasCallmodeupdateResponse])
   {
-    v3 = [(IDSQRProtoH3Message *)self->_message callmodeupdateResponse];
+    callmodeupdateResponse = [(IDSQRProtoH3Message *)self->_message callmodeupdateResponse];
   }
 
   else
   {
-    v3 = 0;
+    callmodeupdateResponse = 0;
   }
 
-  return v3;
+  return callmodeupdateResponse;
 }
 
 - (id)statsResponse
 {
   if ([(IDSQRProtoH3Message *)self->_message hasStatsResponse])
   {
-    v3 = [(IDSQRProtoH3Message *)self->_message statsResponse];
+    statsResponse = [(IDSQRProtoH3Message *)self->_message statsResponse];
   }
 
   else
   {
-    v3 = 0;
+    statsResponse = 0;
   }
 
-  return v3;
+  return statsResponse;
 }
 
 - (id)testResponse
 {
   if ([(IDSQRProtoH3Message *)self->_message hasTestResponse])
   {
-    v3 = [(IDSQRProtoH3Message *)self->_message testResponse];
+    testResponse = [(IDSQRProtoH3Message *)self->_message testResponse];
   }
 
   else
   {
-    v3 = 0;
+    testResponse = 0;
   }
 
-  return v3;
+  return testResponse;
 }
 
 - (id)unallocbindResponse
 {
   if ([(IDSQRProtoH3Message *)self->_message hasUnallocbindResponse])
   {
-    v3 = [(IDSQRProtoH3Message *)self->_message unallocbindResponse];
+    unallocbindResponse = [(IDSQRProtoH3Message *)self->_message unallocbindResponse];
   }
 
   else
   {
-    v3 = 0;
+    unallocbindResponse = 0;
   }
 
-  return v3;
+  return unallocbindResponse;
 }
 
 - (id)diagnosticIndication
 {
   if ([(IDSQRProtoH3Message *)self->_message hasDiagnosticIndication])
   {
-    v3 = [(IDSQRProtoH3Message *)self->_message diagnosticIndication];
+    diagnosticIndication = [(IDSQRProtoH3Message *)self->_message diagnosticIndication];
   }
 
   else
   {
-    v3 = 0;
+    diagnosticIndication = 0;
   }
 
-  return v3;
+  return diagnosticIndication;
 }
 
 - (id)errorIndication
 {
   if ([(IDSQRProtoH3Message *)self->_message hasErrorIndication])
   {
-    v3 = [(IDSQRProtoH3Message *)self->_message errorIndication];
+    errorIndication = [(IDSQRProtoH3Message *)self->_message errorIndication];
   }
 
   else
   {
-    v3 = 0;
+    errorIndication = 0;
   }
 
-  return v3;
+  return errorIndication;
 }
 
 - (id)goAwayIndication
 {
   if ([(IDSQRProtoH3Message *)self->_message hasGoawayIndication])
   {
-    v3 = [(IDSQRProtoH3Message *)self->_message goawayIndication];
+    goawayIndication = [(IDSQRProtoH3Message *)self->_message goawayIndication];
   }
 
   else
   {
-    v3 = 0;
+    goawayIndication = 0;
   }
 
-  return v3;
+  return goawayIndication;
 }
 
 - (id)participantUpdateIndication
 {
   if ([(IDSQRProtoH3Message *)self->_message hasParticipantupdateIndication])
   {
-    v3 = [(IDSQRProtoH3Message *)self->_message participantupdateIndication];
+    participantupdateIndication = [(IDSQRProtoH3Message *)self->_message participantupdateIndication];
   }
 
   else
   {
-    v3 = 0;
+    participantupdateIndication = 0;
   }
 
-  return v3;
+  return participantupdateIndication;
 }
 
 - (id)pluginControlIndication
 {
   if ([(IDSQRProtoH3Message *)self->_message hasPlugincontrolIndication])
   {
-    v3 = [(IDSQRProtoH3Message *)self->_message plugincontrolIndication];
+    plugincontrolIndication = [(IDSQRProtoH3Message *)self->_message plugincontrolIndication];
   }
 
   else
   {
-    v3 = 0;
+    plugincontrolIndication = 0;
   }
 
-  return v3;
+  return plugincontrolIndication;
 }
 
 - (id)reallocateIndication
 {
   if ([(IDSQRProtoH3Message *)self->_message hasReallocateIndication])
   {
-    v3 = [(IDSQRProtoH3Message *)self->_message reallocateIndication];
+    reallocateIndication = [(IDSQRProtoH3Message *)self->_message reallocateIndication];
   }
 
   else
   {
-    v3 = 0;
+    reallocateIndication = 0;
   }
 
-  return v3;
+  return reallocateIndication;
 }
 
 - (id)sessionInfoIndication
 {
   if ([(IDSQRProtoH3Message *)self->_message hasSessioninfoIndication])
   {
-    v3 = [(IDSQRProtoH3Message *)self->_message sessioninfoIndication];
+    sessioninfoIndication = [(IDSQRProtoH3Message *)self->_message sessioninfoIndication];
   }
 
   else
   {
-    v3 = 0;
+    sessioninfoIndication = 0;
   }
 
-  return v3;
+  return sessioninfoIndication;
 }
 
 - (id)putMaterialIndication
 {
   if ([(IDSQRProtoH3Message *)self->_message hasPutmaterialIndication])
   {
-    v3 = [(IDSQRProtoH3Message *)self->_message putmaterialIndication];
+    putmaterialIndication = [(IDSQRProtoH3Message *)self->_message putmaterialIndication];
   }
 
   else
   {
-    v3 = 0;
+    putmaterialIndication = 0;
   }
 
-  return v3;
+  return putmaterialIndication;
 }
 
 - (id)registerIndication
 {
   if ([(IDSQRProtoH3Message *)self->_message hasRegisterIndication])
   {
-    v3 = [(IDSQRProtoH3Message *)self->_message registerIndication];
+    registerIndication = [(IDSQRProtoH3Message *)self->_message registerIndication];
   }
 
   else
   {
-    v3 = 0;
+    registerIndication = 0;
   }
 
-  return v3;
+  return registerIndication;
 }
 
 - (id)registerResponse
 {
   if ([(IDSQRProtoH3Message *)self->_message hasRegisterResponse])
   {
-    v3 = [(IDSQRProtoH3Message *)self->_message registerResponse];
+    registerResponse = [(IDSQRProtoH3Message *)self->_message registerResponse];
   }
 
   else
   {
-    v3 = 0;
+    registerResponse = 0;
   }
 
-  return v3;
+  return registerResponse;
 }
 
 - (id)channelConfigResponse
 {
   if ([(IDSQRProtoH3Message *)self->_message hasChannelconfigResponse])
   {
-    v3 = [(IDSQRProtoH3Message *)self->_message channelconfigResponse];
+    channelconfigResponse = [(IDSQRProtoH3Message *)self->_message channelconfigResponse];
   }
 
   else
   {
-    v3 = 0;
+    channelconfigResponse = 0;
   }
 
-  return v3;
+  return channelconfigResponse;
 }
 
 + (id)dataWithEmptyUnAllocBindResponse
@@ -2169,9 +2169,9 @@ LABEL_13:
   v3 = objc_alloc_init(IDSQRProtoUnAllocBindResponse);
   [(IDSQRProtoH3Message *)v2 setUnallocbindResponse:v3];
 
-  v4 = [(IDSQRProtoH3Message *)v2 data];
+  data = [(IDSQRProtoH3Message *)v2 data];
 
-  return v4;
+  return data;
 }
 
 @end

@@ -1,11 +1,11 @@
 @interface VCCryptoInfo
-- (VCCryptoInfo)initWithSRTPInfo:(tagSRTPINFO *)a3;
+- (VCCryptoInfo)initWithSRTPInfo:(tagSRTPINFO *)info;
 - (void)dealloc;
 @end
 
 @implementation VCCryptoInfo
 
-- (VCCryptoInfo)initWithSRTPInfo:(tagSRTPINFO *)a3
+- (VCCryptoInfo)initWithSRTPInfo:(tagSRTPINFO *)info
 {
   v8 = *MEMORY[0x1E69E9840];
   v7.receiver = self;
@@ -14,7 +14,7 @@
   v5 = v4;
   if (v4)
   {
-    memcpy(&v4->_SRTPInfo, a3, sizeof(v4->_SRTPInfo));
+    memcpy(&v4->_SRTPInfo, info, sizeof(v4->_SRTPInfo));
   }
 
   return v5;

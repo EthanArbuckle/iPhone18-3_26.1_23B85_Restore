@@ -1,32 +1,32 @@
 @interface Client
 - (_TtC13MediaRemoteUI6Client)init;
 - (int64_t)hash;
-- (void)connectForBannerPresentation:(id)a3 reason:(id)a4 reply:(id)a5;
-- (void)revokeAllBannersWithReply:(id)a3;
-- (void)revokeBannerWithIdentifier:(id)a3 withReply:(id)a4;
+- (void)connectForBannerPresentation:(id)presentation reason:(id)reason reply:(id)reply;
+- (void)revokeAllBannersWithReply:(id)reply;
+- (void)revokeBannerWithIdentifier:(id)identifier withReply:(id)reply;
 @end
 
 @implementation Client
 
-- (void)connectForBannerPresentation:(id)a3 reason:(id)a4 reply:(id)a5
+- (void)connectForBannerPresentation:(id)presentation reason:(id)reason reply:(id)reply
 {
-  v7 = _Block_copy(a5);
+  v7 = _Block_copy(reply);
   v8 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v10 = v9;
   _Block_copy(v7);
-  v11 = a3;
-  v12 = self;
-  sub_100020FB0(v11, v8, v10, v12, v7);
+  presentationCopy = presentation;
+  selfCopy = self;
+  sub_100020FB0(presentationCopy, v8, v10, selfCopy, v7);
   _Block_release(v7);
   _Block_release(v7);
 }
 
-- (void)revokeAllBannersWithReply:(id)a3
+- (void)revokeAllBannersWithReply:(id)reply
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(reply);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
-  v6 = self;
+  selfCopy = self;
   static os_log_type_t.default.getter();
   if (qword_10006FF80 != -1)
   {
@@ -37,20 +37,20 @@
   sub_100031E64(0x757165722044524DLL, 0xEB00000000747365, sub_100021DF0, v5);
 }
 
-- (void)revokeBannerWithIdentifier:(id)a3 withReply:(id)a4
+- (void)revokeBannerWithIdentifier:(id)identifier withReply:(id)reply
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(reply);
   v6 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v8 = v7;
   v9 = swift_allocObject();
   *(v9 + 16) = v5;
-  v10 = self;
+  selfCopy = self;
   sub_10001EE08(v6, v8, sub_100021DAC, v9);
 }
 
 - (int64_t)hash
 {
-  v2 = self;
+  selfCopy = self;
   v3 = UUID.hashValue.getter();
 
   return v3;

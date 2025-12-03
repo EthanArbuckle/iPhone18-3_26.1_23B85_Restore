@@ -1,23 +1,23 @@
 @interface UIEventAttributionView
 + (BKSHIDEventAuthenticationMessage)lastEventMessage;
-+ (void)_attemptAuthenticationWithEvent:(uint64_t)a1;
-+ (void)setLastEventMessage:(id)a3;
-- (UIEventAttributionView)initWithCoder:(id)a3;
-- (UIEventAttributionView)initWithFrame:(CGRect)a3;
++ (void)_attemptAuthenticationWithEvent:(uint64_t)event;
++ (void)setLastEventMessage:(id)message;
+- (UIEventAttributionView)initWithCoder:(id)coder;
+- (UIEventAttributionView)initWithFrame:(CGRect)frame;
 - (void)_commonInit;
 - (void)_updateLayerContents;
 - (void)didMoveToSuperview;
 - (void)didMoveToWindow;
-- (void)setHidden:(BOOL)a3;
+- (void)setHidden:(BOOL)hidden;
 @end
 
 @implementation UIEventAttributionView
 
-- (UIEventAttributionView)initWithFrame:(CGRect)a3
+- (UIEventAttributionView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = UIEventAttributionView;
-  v3 = [(UIView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -27,11 +27,11 @@
   return v4;
 }
 
-- (UIEventAttributionView)initWithCoder:(id)a3
+- (UIEventAttributionView)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = UIEventAttributionView;
-  v3 = [(UIView *)&v6 initWithCoder:a3];
+  v3 = [(UIView *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -80,12 +80,12 @@ void __46__UIEventAttributionView__updateLayerContents__block_invoke(uint64_t a1
   }
 }
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
   v5.receiver = self;
   v5.super_class = UIEventAttributionView;
   [(UIView *)&v5 setHidden:?];
-  if (!a3)
+  if (!hidden)
   {
     [(UIEventAttributionView *)self _updateLayerContents];
   }
@@ -129,16 +129,16 @@ void __46__UIEventAttributionView__updateLayerContents__block_invoke(uint64_t a1
   return v3;
 }
 
-+ (void)setLastEventMessage:(id)a3
++ (void)setLastEventMessage:(id)message
 {
-  v3 = a3;
+  messageCopy = message;
   v4 = _eventMessageQueue();
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __46__UIEventAttributionView_setLastEventMessage___block_invoke;
   block[3] = &unk_1E70F3590;
-  v7 = v3;
-  v5 = v3;
+  v7 = messageCopy;
+  v5 = messageCopy;
   dispatch_sync(v4, block);
 }
 
@@ -149,16 +149,16 @@ void __46__UIEventAttributionView_setLastEventMessage___block_invoke(uint64_t a1
   __eventMessageQueue_lastEventAttributionAuthenticationMessage = v1;
 }
 
-+ (void)_attemptAuthenticationWithEvent:(uint64_t)a1
++ (void)_attemptAuthenticationWithEvent:(uint64_t)event
 {
   v6 = a2;
   v2 = objc_opt_self();
   v3 = v6;
   if (__slotContent)
   {
-    v4 = [v6 _authenticationMessage];
-    v5 = v4;
-    if (v4 && [v4 context] == 1589136771)
+    _authenticationMessage = [v6 _authenticationMessage];
+    v5 = _authenticationMessage;
+    if (_authenticationMessage && [_authenticationMessage context] == 1589136771)
     {
       [v2 setLastEventMessage:v5];
     }

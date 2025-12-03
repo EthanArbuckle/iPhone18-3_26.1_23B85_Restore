@@ -1,19 +1,19 @@
 @interface ANAnnounceReachability
-+ (id)stringForAnnounceReachabilityLevel:(unint64_t)a3;
++ (id)stringForAnnounceReachabilityLevel:(unint64_t)level;
 - (ANAnnounceReachability)init;
 - (ANAnnounceReachabilityDelegate)delegate;
-- (unint64_t)announceReachabilityForHomeName:(id)a3;
-- (unint64_t)announceReachabilityForHomeUUID:(id)a3;
-- (unint64_t)announceReachabilityForRoomName:(id)a3 inHomeName:(id)a4;
-- (unint64_t)announceReachabilityForRoomUUID:(id)a3 inHomeUUID:(id)a4;
+- (unint64_t)announceReachabilityForHomeName:(id)name;
+- (unint64_t)announceReachabilityForHomeUUID:(id)d;
+- (unint64_t)announceReachabilityForRoomName:(id)name inHomeName:(id)homeName;
+- (unint64_t)announceReachabilityForRoomUUID:(id)d inHomeUUID:(id)iD;
 - (void)_start;
 - (void)dealloc;
 - (void)invalidate;
-- (void)reachabilityLevel:(unint64_t)a3 didChangeForHomeName:(id)a4;
-- (void)reachabilityLevel:(unint64_t)a3 didChangeForHomeUUID:(id)a4;
-- (void)reachabilityLevel:(unint64_t)a3 didChangeForRoomName:(id)a4 inHomeName:(id)a5;
-- (void)reachabilityLevel:(unint64_t)a3 didChangeForRoomUUID:(id)a4 inHomeUUID:(id)a5;
-- (void)setDelegate:(id)a3;
+- (void)reachabilityLevel:(unint64_t)level didChangeForHomeName:(id)name;
+- (void)reachabilityLevel:(unint64_t)level didChangeForHomeUUID:(id)d;
+- (void)reachabilityLevel:(unint64_t)level didChangeForRoomName:(id)name inHomeName:(id)homeName;
+- (void)reachabilityLevel:(unint64_t)level didChangeForRoomUUID:(id)d inHomeUUID:(id)iD;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation ANAnnounceReachability
@@ -124,13 +124,13 @@ void __30__ANAnnounceReachability_init__block_invoke_81(uint64_t a1)
 - (void)invalidate
 {
   objc_storeWeak(&self->_delegate, 0);
-  v3 = [(ANAnnounceReachability *)self connection];
-  [v3 invalidate];
+  connection = [(ANAnnounceReachability *)self connection];
+  [connection invalidate];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   if (obj)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -161,9 +161,9 @@ LABEL_6:
   return WeakRetained;
 }
 
-- (unint64_t)announceReachabilityForHomeName:(id)a3
+- (unint64_t)announceReachabilityForHomeName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -180,7 +180,7 @@ LABEL_6:
   v9[2] = __58__ANAnnounceReachability_announceReachabilityForHomeName___block_invoke_85;
   v9[3] = &unk_2784E25F8;
   v9[4] = &v11;
-  [v6 announceReachabilityForHomeName:v4 reply:v9];
+  [v6 announceReachabilityForHomeName:nameCopy reply:v9];
 
   v7 = v12[3];
   _Block_object_dispose(&v11, 8);
@@ -198,10 +198,10 @@ void __58__ANAnnounceReachability_announceReachabilityForHomeName___block_invoke
   }
 }
 
-- (unint64_t)announceReachabilityForRoomName:(id)a3 inHomeName:(id)a4
+- (unint64_t)announceReachabilityForRoomName:(id)name inHomeName:(id)homeName
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  homeNameCopy = homeName;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
@@ -218,7 +218,7 @@ void __58__ANAnnounceReachability_announceReachabilityForHomeName___block_invoke
   v12[2] = __69__ANAnnounceReachability_announceReachabilityForRoomName_inHomeName___block_invoke_87;
   v12[3] = &unk_2784E25F8;
   v12[4] = &v14;
-  [v9 announceReachabilityForRoomName:v6 inHomeName:v7 reply:v12];
+  [v9 announceReachabilityForRoomName:nameCopy inHomeName:homeNameCopy reply:v12];
 
   v10 = v15[3];
   _Block_object_dispose(&v14, 8);
@@ -236,9 +236,9 @@ void __69__ANAnnounceReachability_announceReachabilityForRoomName_inHomeName___b
   }
 }
 
-- (unint64_t)announceReachabilityForHomeUUID:(id)a3
+- (unint64_t)announceReachabilityForHomeUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -255,7 +255,7 @@ void __69__ANAnnounceReachability_announceReachabilityForRoomName_inHomeName___b
   v9[2] = __58__ANAnnounceReachability_announceReachabilityForHomeUUID___block_invoke_88;
   v9[3] = &unk_2784E25F8;
   v9[4] = &v11;
-  [v6 announceReachabilityForHomeUUID:v4 reply:v9];
+  [v6 announceReachabilityForHomeUUID:dCopy reply:v9];
 
   v7 = v12[3];
   _Block_object_dispose(&v11, 8);
@@ -273,10 +273,10 @@ void __58__ANAnnounceReachability_announceReachabilityForHomeUUID___block_invoke
   }
 }
 
-- (unint64_t)announceReachabilityForRoomUUID:(id)a3 inHomeUUID:(id)a4
+- (unint64_t)announceReachabilityForRoomUUID:(id)d inHomeUUID:(id)iD
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  iDCopy = iD;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
@@ -293,7 +293,7 @@ void __58__ANAnnounceReachability_announceReachabilityForHomeUUID___block_invoke
   v12[2] = __69__ANAnnounceReachability_announceReachabilityForRoomUUID_inHomeUUID___block_invoke_89;
   v12[3] = &unk_2784E25F8;
   v12[4] = &v14;
-  [v9 announceReachabilityForRoomUUID:v6 inHomeUUID:v7 reply:v12];
+  [v9 announceReachabilityForRoomUUID:dCopy inHomeUUID:iDCopy reply:v12];
 
   v10 = v15[3];
   _Block_object_dispose(&v14, 8);
@@ -311,19 +311,19 @@ void __69__ANAnnounceReachability_announceReachabilityForRoomUUID_inHomeUUID___b
   }
 }
 
-+ (id)stringForAnnounceReachabilityLevel:(unint64_t)a3
++ (id)stringForAnnounceReachabilityLevel:(unint64_t)level
 {
-  if (a3)
+  if (level)
   {
-    v3 = a3;
+    levelCopy = level;
     v4 = objc_opt_new();
     v5 = v4;
-    if (v3)
+    if (levelCopy)
     {
       [v4 addObject:@"Local"];
     }
 
-    if ((v3 & 2) != 0)
+    if ((levelCopy & 2) != 0)
     {
       [v5 addObject:@"Remote"];
     }
@@ -343,13 +343,13 @@ void __69__ANAnnounceReachability_announceReachabilityForRoomUUID_inHomeUUID___b
 
 - (void)_start
 {
-  v3 = [(ANAnnounceReachability *)self connection];
+  connection = [(ANAnnounceReachability *)self connection];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __32__ANAnnounceReachability__start__block_invoke;
   v6[3] = &unk_2784E23F8;
   v6[4] = self;
-  v4 = [v3 remoteObjectProxyWithErrorHandler:v6];
+  v4 = [connection remoteObjectProxyWithErrorHandler:v6];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __32__ANAnnounceReachability__start__block_invoke_105;
@@ -380,115 +380,115 @@ void __32__ANAnnounceReachability__start__block_invoke_105(uint64_t a1)
   }
 }
 
-- (void)reachabilityLevel:(unint64_t)a3 didChangeForHomeName:(id)a4
+- (void)reachabilityLevel:(unint64_t)level didChangeForHomeName:(id)name
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  nameCopy = name;
   v7 = [(ANAnnounceReachability *)self log];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [ANAnnounceReachability stringForAnnounceReachabilityLevel:a3];
+    v8 = [ANAnnounceReachability stringForAnnounceReachabilityLevel:level];
     v13 = 138412546;
-    v14 = v6;
+    v14 = nameCopy;
     v15 = 2112;
     v16 = v8;
     _os_log_impl(&dword_2237C8000, v7, OS_LOG_TYPE_DEFAULT, "Reachability updated for Home = %@: %@", &v13, 0x16u);
   }
 
-  v9 = [(ANAnnounceReachability *)self delegate];
+  delegate = [(ANAnnounceReachability *)self delegate];
   v10 = objc_opt_respondsToSelector();
 
   if (v10)
   {
-    v11 = [(ANAnnounceReachability *)self delegate];
-    [v11 announceReachability:self didUpdateReachabilityLevel:a3 forHomeName:v6];
+    delegate2 = [(ANAnnounceReachability *)self delegate];
+    [delegate2 announceReachability:self didUpdateReachabilityLevel:level forHomeName:nameCopy];
   }
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)reachabilityLevel:(unint64_t)a3 didChangeForRoomName:(id)a4 inHomeName:(id)a5
+- (void)reachabilityLevel:(unint64_t)level didChangeForRoomName:(id)name inHomeName:(id)homeName
 {
   v22 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
+  nameCopy = name;
+  homeNameCopy = homeName;
   v10 = [(ANAnnounceReachability *)self log];
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [ANAnnounceReachability stringForAnnounceReachabilityLevel:a3];
+    v11 = [ANAnnounceReachability stringForAnnounceReachabilityLevel:level];
     v16 = 138412802;
-    v17 = v9;
+    v17 = homeNameCopy;
     v18 = 2112;
-    v19 = v8;
+    v19 = nameCopy;
     v20 = 2112;
     v21 = v11;
     _os_log_impl(&dword_2237C8000, v10, OS_LOG_TYPE_DEFAULT, "Reachability updated for Home = %@, Room = %@: %@", &v16, 0x20u);
   }
 
-  v12 = [(ANAnnounceReachability *)self delegate];
+  delegate = [(ANAnnounceReachability *)self delegate];
   v13 = objc_opt_respondsToSelector();
 
   if (v13)
   {
-    v14 = [(ANAnnounceReachability *)self delegate];
-    [v14 announceReachability:self didUpdateReachabilityLevel:a3 forRoomName:v8 inHomeName:v9];
+    delegate2 = [(ANAnnounceReachability *)self delegate];
+    [delegate2 announceReachability:self didUpdateReachabilityLevel:level forRoomName:nameCopy inHomeName:homeNameCopy];
   }
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)reachabilityLevel:(unint64_t)a3 didChangeForHomeUUID:(id)a4
+- (void)reachabilityLevel:(unint64_t)level didChangeForHomeUUID:(id)d
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  dCopy = d;
   v7 = [(ANAnnounceReachability *)self log];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [ANAnnounceReachability stringForAnnounceReachabilityLevel:a3];
+    v8 = [ANAnnounceReachability stringForAnnounceReachabilityLevel:level];
     v13 = 138412546;
-    v14 = v6;
+    v14 = dCopy;
     v15 = 2112;
     v16 = v8;
     _os_log_impl(&dword_2237C8000, v7, OS_LOG_TYPE_DEFAULT, "Reachability updated for Home = %@: %@", &v13, 0x16u);
   }
 
-  v9 = [(ANAnnounceReachability *)self delegate];
+  delegate = [(ANAnnounceReachability *)self delegate];
   v10 = objc_opt_respondsToSelector();
 
   if (v10)
   {
-    v11 = [(ANAnnounceReachability *)self delegate];
-    [v11 announceReachability:self didUpdateReachabilityLevel:a3 forHomeUUID:v6];
+    delegate2 = [(ANAnnounceReachability *)self delegate];
+    [delegate2 announceReachability:self didUpdateReachabilityLevel:level forHomeUUID:dCopy];
   }
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)reachabilityLevel:(unint64_t)a3 didChangeForRoomUUID:(id)a4 inHomeUUID:(id)a5
+- (void)reachabilityLevel:(unint64_t)level didChangeForRoomUUID:(id)d inHomeUUID:(id)iD
 {
   v22 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
+  dCopy = d;
+  iDCopy = iD;
   v10 = [(ANAnnounceReachability *)self log];
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [ANAnnounceReachability stringForAnnounceReachabilityLevel:a3];
+    v11 = [ANAnnounceReachability stringForAnnounceReachabilityLevel:level];
     v16 = 138412802;
-    v17 = v9;
+    v17 = iDCopy;
     v18 = 2112;
-    v19 = v8;
+    v19 = dCopy;
     v20 = 2112;
     v21 = v11;
     _os_log_impl(&dword_2237C8000, v10, OS_LOG_TYPE_DEFAULT, "Reachability updated for Home = %@, Room = %@: %@", &v16, 0x20u);
   }
 
-  v12 = [(ANAnnounceReachability *)self delegate];
+  delegate = [(ANAnnounceReachability *)self delegate];
   v13 = objc_opt_respondsToSelector();
 
   if (v13)
   {
-    v14 = [(ANAnnounceReachability *)self delegate];
-    [v14 announceReachability:self didUpdateReachabilityLevel:a3 forRoomUUID:v8 inHomeUUID:v9];
+    delegate2 = [(ANAnnounceReachability *)self delegate];
+    [delegate2 announceReachability:self didUpdateReachabilityLevel:level forRoomUUID:dCopy inHomeUUID:iDCopy];
   }
 
   v15 = *MEMORY[0x277D85DE8];

@@ -1,23 +1,23 @@
 @interface _HDMedicalRecordEntityEncoder
-+ (void)_resetConceptIndexDueToError:(void *)a3 profile:;
-- (BOOL)applyPropertiesToObject:(id)a3 persistentID:(int64_t)a4 row:(HDSQLiteRow *)a5 error:(id *)a6;
-- (_HDMedicalRecordEntityEncoder)initWithHealthEntityClass:(Class)a3 profile:(id)a4 transaction:(id)a5 purpose:(int64_t)a6 encodingOptions:(id)a7 authorizationFilter:(id)a8;
-- (id)createBareObjectWithRow:(HDSQLiteRow *)a3;
-- (id)objectForPersistentID:(int64_t)a3 row:(HDSQLiteRow *)a4 error:(id *)a5;
++ (void)_resetConceptIndexDueToError:(void *)error profile:;
+- (BOOL)applyPropertiesToObject:(id)object persistentID:(int64_t)d row:(HDSQLiteRow *)row error:(id *)error;
+- (_HDMedicalRecordEntityEncoder)initWithHealthEntityClass:(Class)class profile:(id)profile transaction:(id)transaction purpose:(int64_t)purpose encodingOptions:(id)options authorizationFilter:(id)filter;
+- (id)createBareObjectWithRow:(HDSQLiteRow *)row;
+- (id)objectForPersistentID:(int64_t)d row:(HDSQLiteRow *)row error:(id *)error;
 - (id)orderedProperties;
 @end
 
 @implementation _HDMedicalRecordEntityEncoder
 
-- (_HDMedicalRecordEntityEncoder)initWithHealthEntityClass:(Class)a3 profile:(id)a4 transaction:(id)a5 purpose:(int64_t)a6 encodingOptions:(id)a7 authorizationFilter:(id)a8
+- (_HDMedicalRecordEntityEncoder)initWithHealthEntityClass:(Class)class profile:(id)profile transaction:(id)transaction purpose:(int64_t)purpose encodingOptions:(id)options authorizationFilter:(id)filter
 {
-  v14 = a7;
+  optionsCopy = options;
   v18.receiver = self;
   v18.super_class = _HDMedicalRecordEntityEncoder;
-  v15 = [(HDEntityEncoder *)&v18 initWithHealthEntityClass:a3 profile:a4 transaction:a5 purpose:a6 encodingOptions:v14 authorizationFilter:a8];
+  v15 = [(HDEntityEncoder *)&v18 initWithHealthEntityClass:class profile:profile transaction:transaction purpose:purpose encodingOptions:optionsCopy authorizationFilter:filter];
   if (v15)
   {
-    v16 = [v14 objectForKeyedSubscript:@"SkipApplyingConceptIndex"];
+    v16 = [optionsCopy objectForKeyedSubscript:@"SkipApplyingConceptIndex"];
     v15->_skipApplyingConceptIndex = [v16 BOOLValue];
   }
 
@@ -40,27 +40,27 @@
   v9[10] = @"country";
   v9[11] = @"state";
   v3 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:12];
-  v4 = [(HDEntityEncoder *)self superclassEncoder];
-  v5 = [v4 orderedProperties];
-  v6 = [v3 arrayByAddingObjectsFromArray:v5];
+  superclassEncoder = [(HDEntityEncoder *)self superclassEncoder];
+  orderedProperties = [superclassEncoder orderedProperties];
+  v6 = [v3 arrayByAddingObjectsFromArray:orderedProperties];
 
   v7 = *MEMORY[0x277D85DE8];
 
   return v6;
 }
 
-- (id)createBareObjectWithRow:(HDSQLiteRow *)a3
+- (id)createBareObjectWithRow:(HDSQLiteRow *)row
 {
-  v3 = [objc_alloc(MEMORY[0x277CCD5F8]) _init];
+  _init = [objc_alloc(MEMORY[0x277CCD5F8]) _init];
 
-  return v3;
+  return _init;
 }
 
-- (id)objectForPersistentID:(int64_t)a3 row:(HDSQLiteRow *)a4 error:(id *)a5
+- (id)objectForPersistentID:(int64_t)d row:(HDSQLiteRow *)row error:(id *)error
 {
   v72 = *MEMORY[0x277D85DE8];
-  v9 = [(_HDMedicalRecordEntityEncoder *)self createBareObjectWithRow:a4];
-  if ([(_HDMedicalRecordEntityEncoder *)self applyPropertiesToObject:v9 persistentID:a3 row:a4 error:a5])
+  v9 = [(_HDMedicalRecordEntityEncoder *)self createBareObjectWithRow:row];
+  if ([(_HDMedicalRecordEntityEncoder *)self applyPropertiesToObject:v9 persistentID:d row:row error:error])
   {
     if (self->_skipApplyingConceptIndex)
     {
@@ -69,19 +69,19 @@ LABEL_36:
       goto LABEL_45;
     }
 
-    v10 = [(HDEntityEncoder *)self profile];
+    profile = [(HDEntityEncoder *)self profile];
     v50 = 0;
     v11 = v9;
-    v12 = v10;
+    v12 = profile;
     v13 = objc_opt_self();
     v49 = v11;
-    v14 = [v11 UUID];
-    v15 = [HDConceptIndexEntity conceptIndexEntriesForSampleUUID:v14 type:0 profile:v12 error:&v50];
+    uUID = [v11 UUID];
+    v15 = [HDConceptIndexEntity conceptIndexEntriesForSampleUUID:uUID type:0 profile:v12 error:&v50];
 
     if (v15)
     {
-      v48 = [v12 internalContentDatabaseManager];
-      if (![v15 count] || v48)
+      internalContentDatabaseManager = [v12 internalContentDatabaseManager];
+      if (![v15 count] || internalContentDatabaseManager)
       {
         if ([v15 count])
         {
@@ -99,7 +99,7 @@ LABEL_36:
             v65 = __Block_byref_object_copy__142;
             v66 = __Block_byref_object_dispose__142;
             v67 = 0;
-            v20 = [v12 internalContentDatabaseManager];
+            internalContentDatabaseManager2 = [v12 internalContentDatabaseManager];
             v60 = v13;
             v61 = 0;
             v55[0] = MEMORY[0x277D85DD0];
@@ -112,7 +112,7 @@ LABEL_36:
             v57 = v42;
             v44 = obja;
             v58 = v44;
-            LOBYTE(v18) = [v20 performTransactionWithError:&v61 transactionHandler:v55];
+            LOBYTE(v18) = [internalContentDatabaseManager2 performTransactionWithError:&v61 transactionHandler:v55];
             v43 = v61;
 
             if (v18)
@@ -247,7 +247,7 @@ LABEL_13:
     if (os_log_type_enabled(*MEMORY[0x277CCC2C0], OS_LOG_TYPE_ERROR))
     {
       *buf = 134349314;
-      v69 = a3;
+      dCopy = d;
       v70 = 2114;
       v71 = v34;
       _os_log_error_impl(&dword_228986000, v36, OS_LOG_TYPE_ERROR, "Failed to apply concept index to medical record entity with persistent ID %{public}lld: %{public}@", buf, 0x16u);
@@ -257,10 +257,10 @@ LABEL_13:
     v38 = v37;
     if (v37)
     {
-      if (a5)
+      if (error)
       {
         v39 = v37;
-        *a5 = v38;
+        *error = v38;
       }
 
       else
@@ -278,11 +278,11 @@ LABEL_45:
   return v35;
 }
 
-+ (void)_resetConceptIndexDueToError:(void *)a3 profile:
++ (void)_resetConceptIndexDueToError:(void *)error profile:
 {
   v12 = *MEMORY[0x277D85DE8];
   v4 = a2;
-  v5 = a3;
+  errorCopy = error;
   objc_opt_self();
   _HKInitializeLogging();
   v6 = HKLogHealthOntology();
@@ -294,29 +294,29 @@ LABEL_45:
     _os_log_error_impl(&dword_228986000, v6, OS_LOG_TYPE_ERROR, "Resetting concept index due to error %{public}@", &v10, 0xCu);
   }
 
-  v7 = [v5 conceptIndexManager];
+  conceptIndexManager = [errorCopy conceptIndexManager];
 
-  [v7 resetWithReindex];
+  [conceptIndexManager resetWithReindex];
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)applyPropertiesToObject:(id)a3 persistentID:(int64_t)a4 row:(HDSQLiteRow *)a5 error:(id *)a6
+- (BOOL)applyPropertiesToObject:(id)object persistentID:(int64_t)d row:(HDSQLiteRow *)row error:(id *)error
 {
   v45 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = [(HDEntityEncoder *)self superclassEncoder];
-  LODWORD(a4) = [v11 applyPropertiesToObject:v10 persistentID:a4 row:a5 error:a6];
+  objectCopy = object;
+  superclassEncoder = [(HDEntityEncoder *)self superclassEncoder];
+  LODWORD(d) = [superclassEncoder applyPropertiesToObject:objectCopy persistentID:d row:row error:error];
 
-  if (a4)
+  if (d)
   {
     v12 = HDSQLiteColumnWithNameAsString();
-    [v10 _setNote:v12];
+    [objectCopy _setNote:v12];
 
-    [v10 _setEnteredInError:HDSQLiteColumnWithNameAsBoolean()];
+    [objectCopy _setEnteredInError:HDSQLiteColumnWithNameAsBoolean()];
     v13 = HDSQLiteColumnWithNameAsDate();
-    [v10 _setModifiedDate:v13];
+    [objectCopy _setModifiedDate:v13];
 
-    [v10 _setExtractionVersion:HDSQLiteColumnWithNameAsInt64()];
+    [objectCopy _setExtractionVersion:HDSQLiteColumnWithNameAsInt64()];
     v14 = HDSQLiteColumnWithNameAsString();
     v40 = 0;
     v15 = [MEMORY[0x277CCD3B8] FHIRIdentifierWithString:v14 error:&v40];
@@ -325,14 +325,14 @@ LABEL_45:
     if (v15)
     {
       v17 = [objc_alloc(MEMORY[0x277CCD600]) initWithFHIRIdentifier:v15];
-      [v10 _setOriginIdentifier:v17];
+      [objectCopy _setOriginIdentifier:v17];
 LABEL_4:
 
       v18 = HDSQLiteColumnWithNameAsString();
       if (v18)
       {
         v19 = [objc_alloc(MEMORY[0x277CBEAF8]) initWithLocaleIdentifier:v18];
-        [v10 _setLocale:v19];
+        [objectCopy _setLocale:v19];
       }
 
       v20 = HDSQLiteColumnWithNameAsDate();
@@ -341,13 +341,13 @@ LABEL_4:
       if (v20 && v21)
       {
         v23 = [MEMORY[0x277CCD900] semanticDateWithKeyPath:v21 date:v20];
-        [v10 _setSortDate:v23];
+        [objectCopy _setSortDate:v23];
       }
 
       v24 = HDSQLiteColumnWithNameAsString();
       if (v24)
       {
-        [v10 _setCountry:v24];
+        [objectCopy _setCountry:v24];
       }
 
       else
@@ -361,7 +361,7 @@ LABEL_4:
         }
       }
 
-      [v10 _setState:HDSQLiteColumnWithNameAsInt64()];
+      [objectCopy _setState:HDSQLiteColumnWithNameAsInt64()];
 
       v25 = 1;
       goto LABEL_18;
@@ -388,11 +388,11 @@ LABEL_4:
       v18 = v26;
       if (v18)
       {
-        if (a6)
+        if (error)
         {
           v35 = v18;
           v25 = 0;
-          *a6 = v18;
+          *error = v18;
 LABEL_18:
 
           goto LABEL_19;
@@ -406,19 +406,19 @@ LABEL_18:
     {
       v28 = v27;
       v18 = [(HDSQLiteEntity *)[HDOriginalSignedClinicalDataRecordEntity alloc] initWithPersistentID:v27];
-      v29 = [(HDEntityEncoder *)self database];
-      v17 = [(HDSQLiteEntity *)v18 UUIDForProperty:@"sync_identifier" database:v29];
+      database = [(HDEntityEncoder *)self database];
+      v17 = [(HDSQLiteEntity *)v18 UUIDForProperty:@"sync_identifier" database:database];
 
       if (v17)
       {
 
         v30 = [objc_alloc(MEMORY[0x277CCD600]) initWithSignedClinicalDataRecordIdentifier:v17];
-        [v10 _setOriginIdentifier:v30];
+        [objectCopy _setOriginIdentifier:v30];
 
         goto LABEL_4;
       }
 
-      [MEMORY[0x277CCA9B8] hk_assignError:a6 code:100 format:{@"There is no original signed clinical data record with persistent id %lld", v28}];
+      [MEMORY[0x277CCA9B8] hk_assignError:error code:100 format:{@"There is no original signed clinical data record with persistent id %lld", v28}];
     }
 
     v25 = 0;

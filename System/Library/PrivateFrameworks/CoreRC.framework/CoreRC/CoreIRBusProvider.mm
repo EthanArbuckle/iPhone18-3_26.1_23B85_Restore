@@ -1,51 +1,51 @@
 @interface CoreIRBusProvider
 + (NSSet)deviceDictClasses;
-- (BOOL)addMappingsFromRemote:(id)a3 toLearningSession:(id)a4;
-- (BOOL)deleteDevicePrefsWithUUID:(id)a3 UUIDKey:(id)a4;
-- (BOOL)mergePersistentMappingsFromSession:(id)a3 ofDevice:(id)a4;
+- (BOOL)addMappingsFromRemote:(id)remote toLearningSession:(id)session;
+- (BOOL)deleteDevicePrefsWithUUID:(id)d UUIDKey:(id)key;
+- (BOOL)mergePersistentMappingsFromSession:(id)session ofDevice:(id)device;
 - (BOOL)recreateDevices;
-- (BOOL)saveDevicePrefsWithDict:(id)a3 error:(id *)a4;
-- (BOOL)setPairedAppleRemote:(id)a3 error:(id *)a4;
-- (BOOL)setPrefsPropertyForUUID:(id)a3 UUIDKey:(id)a4 object:(id)a5 key:(id)a6;
-- (BOOL)setProperty:(id)a3 forKey:(id)a4 error:(id *)a5;
-- (BOOL)updatePersistentValue:(id)a3 forProperty:(id)a4 ofDevice:(id)a5;
-- (CoreIRBusProvider)initWithInterface:(id)a3;
-- (id)_addDeviceWithType:(unint64_t)a3 matching:(id)a4 transportProperties:(id)a5 error:(id *)a6;
-- (id)addDeviceWithType:(unint64_t)a3 matching:(id)a4 error:(id *)a5;
-- (id)addDeviceWithType:(unint64_t)a3 matching:(id)a4 learningSession:(id)a5 error:(id *)a6;
-- (id)copyDevicePrefs:(id *)a3;
-- (id)copyPrefsPropertyForUUID:(id)a3 UUIDKey:(id)a4 key:(id)a5;
-- (id)getExistingDeviceWithType:(unint64_t)a3 matching:(id)a4;
-- (id)propertyForKey:(id)a3 error:(id *)a4;
+- (BOOL)saveDevicePrefsWithDict:(id)dict error:(id *)error;
+- (BOOL)setPairedAppleRemote:(id)remote error:(id *)error;
+- (BOOL)setPrefsPropertyForUUID:(id)d UUIDKey:(id)key object:(id)object key:(id)a6;
+- (BOOL)setProperty:(id)property forKey:(id)key error:(id *)error;
+- (BOOL)updatePersistentValue:(id)value forProperty:(id)property ofDevice:(id)device;
+- (CoreIRBusProvider)initWithInterface:(id)interface;
+- (id)_addDeviceWithType:(unint64_t)type matching:(id)matching transportProperties:(id)properties error:(id *)error;
+- (id)addDeviceWithType:(unint64_t)type matching:(id)matching error:(id *)error;
+- (id)addDeviceWithType:(unint64_t)type matching:(id)matching learningSession:(id)session error:(id *)error;
+- (id)copyDevicePrefs:(id *)prefs;
+- (id)copyPrefsPropertyForUUID:(id)d UUIDKey:(id)key key:(id)a5;
+- (id)getExistingDeviceWithType:(unint64_t)type matching:(id)matching;
+- (id)propertyForKey:(id)key error:(id *)error;
 - (id)thirdPartyRemotes;
 - (uint64_t)updateAllowHibernation;
 - (uint64_t)updateLearnedProtocols;
-- (void)_recreatePairedDeviceFromDefaults:(id)a3 key:(id)a4;
-- (void)_removeMappingForCommand:(unint64_t)a3 from:(id)a4;
+- (void)_recreatePairedDeviceFromDefaults:(id)defaults key:(id)key;
+- (void)_removeMappingForCommand:(unint64_t)command from:(id)from;
 - (void)dealloc;
-- (void)didAddDevice:(id)a3;
-- (void)didRemoveDevice:(id)a3;
-- (void)interface:(id)a3 receivedCommand:(id)a4;
+- (void)didAddDevice:(id)device;
+- (void)didRemoveDevice:(id)device;
+- (void)interface:(id)interface receivedCommand:(id)command;
 - (void)migrateOldRemotes;
-- (void)setManager:(id)a3;
+- (void)setManager:(id)manager;
 - (void)updateAllowHibernation;
 - (void)updateLearnedProtocols;
-- (void)willAddToManager:(id)a3;
-- (void)willRemoveDevice:(id)a3;
+- (void)willAddToManager:(id)manager;
+- (void)willRemoveDevice:(id)device;
 @end
 
 @implementation CoreIRBusProvider
 
-- (CoreIRBusProvider)initWithInterface:(id)a3
+- (CoreIRBusProvider)initWithInterface:(id)interface
 {
   v8.receiver = self;
   v8.super_class = CoreIRBusProvider;
   v4 = [(CoreIRBus *)&v8 init];
   if (v4)
   {
-    v5 = a3;
-    v4->_interface = v5;
-    if (v5 && ([(IRInterface *)v5 setDelegate:v4], v6 = [[CoreIRDeviceProvider alloc] initWithBus:v4 local:1], (v4->_localDevice = v6) != 0))
+    interfaceCopy = interface;
+    v4->_interface = interfaceCopy;
+    if (interfaceCopy && ([(IRInterface *)interfaceCopy setDelegate:v4], v6 = [[CoreIRDeviceProvider alloc] initWithBus:v4 local:1], (v4->_localDevice = v6) != 0))
     {
       [(CoreIRDevice *)v4->_localDevice setIsTransmitter:[(IRInterface *)v4->_interface isTxInterface]];
       [(CoreIRDevice *)v4->_localDevice setIsReceiver:[(IRInterface *)v4->_interface isRxInterface]];
@@ -150,9 +150,9 @@ LABEL_13:
   [(CoreIRBus *)&v3 dealloc];
 }
 
-- (void)setManager:(id)a3
+- (void)setManager:(id)manager
 {
-  if (a3)
+  if (manager)
   {
     v4.receiver = self;
     v4.super_class = CoreIRBusProvider;
@@ -169,7 +169,7 @@ LABEL_13:
   }
 }
 
-- (void)willAddToManager:(id)a3
+- (void)willAddToManager:(id)manager
 {
   if (gLogCategory_CoreRCBus <= 10 && (gLogCategory_CoreRCBus != -1 || _LogCategory_Initialize()))
   {
@@ -184,51 +184,51 @@ LABEL_13:
 
   v5.receiver = self;
   v5.super_class = CoreIRBusProvider;
-  [(CoreRCBus *)&v5 willAddToManager:a3];
+  [(CoreRCBus *)&v5 willAddToManager:manager];
 }
 
-- (BOOL)setProperty:(id)a3 forKey:(id)a4 error:(id *)a5
+- (BOOL)setProperty:(id)property forKey:(id)key error:(id *)error
 {
   if (gLogCategory_CoreRCBus <= 10 && (gLogCategory_CoreRCBus != -1 || _LogCategory_Initialize()))
   {
-    v11 = self;
-    v12 = a4;
+    selfCopy = self;
+    keyCopy = key;
     LogPrintF();
   }
 
-  v9 = [(CoreIRBusProvider *)self interface:v11];
+  v9 = [(CoreIRBusProvider *)self interface:selfCopy];
 
-  return [(CoreRCInterface *)v9 setProperty:a3 forKey:a4 error:a5];
+  return [(CoreRCInterface *)v9 setProperty:property forKey:key error:error];
 }
 
-- (id)propertyForKey:(id)a3 error:(id *)a4
+- (id)propertyForKey:(id)key error:(id *)error
 {
   v10 = 0;
   if (gLogCategory_CoreRCBus <= 10 && (gLogCategory_CoreRCBus != -1 || _LogCategory_Initialize()))
   {
-    v8 = self;
-    v9 = a3;
+    selfCopy = self;
+    keyCopy = key;
     LogPrintF();
   }
 
-  result = [(CoreRCInterface *)[(CoreIRBusProvider *)self interface:v8] propertyForKey:a3 error:&v10];
-  if (a4)
+  result = [(CoreRCInterface *)[(CoreIRBusProvider *)self interface:selfCopy] propertyForKey:key error:&v10];
+  if (error)
   {
     if (!result)
     {
-      *a4 = v10;
+      *error = v10;
     }
   }
 
   return result;
 }
 
-- (void)didRemoveDevice:(id)a3
+- (void)didRemoveDevice:(id)device
 {
   v5.receiver = self;
   v5.super_class = CoreIRBusProvider;
   [(CoreRCBus *)&v5 didRemoveDevice:?];
-  if ([a3 is3rdPartyRemote])
+  if ([device is3rdPartyRemote])
   {
     [(CoreIRBusProvider *)self updateLearnedProtocols];
   }
@@ -270,12 +270,12 @@ LABEL_13:
 
   if (gLogCategory_CoreRCBus <= 10 && (gLogCategory_CoreRCBus != -1 || _LogCategory_Initialize()))
   {
-    v10 = self;
+    selfCopy = self;
     v11 = v7;
     LogPrintF();
   }
 
-  if (![(CoreRCBus *)self setAllowHibernation:v7 error:&v16, v10, v11])
+  if (![(CoreRCBus *)self setAllowHibernation:v7 error:&v16, selfCopy, v11])
   {
     [(CoreIRBusProvider *)v7 updateAllowHibernation];
   }
@@ -291,8 +291,8 @@ LABEL_13:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [(CoreRCBus *)self devices];
-  v4 = [(NSSet *)v3 countByEnumeratingWithState:&v11 objects:v16 count:16];
+  devices = [(CoreRCBus *)self devices];
+  v4 = [(NSSet *)devices countByEnumeratingWithState:&v11 objects:v16 count:16];
   if (v4)
   {
     v5 = v4;
@@ -304,7 +304,7 @@ LABEL_13:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(devices);
         }
 
         v9 = *(*(&v11 + 1) + 8 * i);
@@ -314,7 +314,7 @@ LABEL_13:
         }
       }
 
-      v5 = [(NSSet *)v3 countByEnumeratingWithState:&v11 objects:v16 count:16];
+      v5 = [(NSSet *)devices countByEnumeratingWithState:&v11 objects:v16 count:16];
     }
 
     while (v5);
@@ -343,9 +343,9 @@ LABEL_13:
 
 - (id)thirdPartyRemotes
 {
-  v2 = [(CoreRCBus *)self devices];
+  devices = [(CoreRCBus *)self devices];
 
-  return [(NSSet *)v2 objectsPassingTest:&__block_literal_global];
+  return [(NSSet *)devices objectsPassingTest:&__block_literal_global];
 }
 
 uint64_t __38__CoreIRBusProvider_thirdPartyRemotes__block_invoke(uint64_t a1, void *a2)
@@ -364,34 +364,34 @@ uint64_t __38__CoreIRBusProvider_thirdPartyRemotes__block_invoke(uint64_t a1, vo
   return result;
 }
 
-- (id)addDeviceWithType:(unint64_t)a3 matching:(id)a4 learningSession:(id)a5 error:(id *)a6
+- (id)addDeviceWithType:(unint64_t)type matching:(id)matching learningSession:(id)session error:(id *)error
 {
   v29[1] = *MEMORY[0x277D85DE8];
   v25 = 0;
   v28 = @"CoreIRDLearntDevicePropertyMatching";
-  v29[0] = a4;
+  v29[0] = matching;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v29 forKeys:&v28 count:1];
   if (gLogCategory_CoreRCBus <= 50 && (gLogCategory_CoreRCBus != -1 || _LogCategory_Initialize()))
   {
-    v23 = a4;
-    v24 = a5;
-    v21 = self;
-    v22 = a3;
+    matchingCopy = matching;
+    sessionCopy = session;
+    selfCopy = self;
+    typeCopy = type;
     LogPrintF();
   }
 
-  if (a5 && [a5 mappings])
+  if (session && [session mappings])
   {
-    v12 = [(CoreIRBusProvider *)self _addDeviceWithType:a3 matching:a4 transportProperties:v11 error:&v25];
+    v12 = [(CoreIRBusProvider *)self _addDeviceWithType:type matching:matching transportProperties:v11 error:&v25];
     if (v12)
     {
       v13 = v12;
       if (gLogCategory_CoreRCBus <= 50 && (gLogCategory_CoreRCBus != -1 || _LogCategory_Initialize()))
       {
-        [CoreIRBusProvider addDeviceWithType:a5 matching:? learningSession:? error:?];
+        [CoreIRBusProvider addDeviceWithType:session matching:? learningSession:? error:?];
       }
 
-      if ([v13 setMappingWithSession:a5 error:{&v25, v21, v22, v23, v24}])
+      if ([v13 setMappingWithSession:session error:{&v25, selfCopy, typeCopy, matchingCopy, sessionCopy}])
       {
         if ([(IRInterface *)[(CoreIRBusProvider *)self interface] isTxInterface]&& [(IRInterface *)[(CoreIRBusProvider *)self interface] isRxInterface])
         {
@@ -413,13 +413,13 @@ uint64_t __38__CoreIRBusProvider_thirdPartyRemotes__block_invoke(uint64_t a1, vo
           v14 = 0;
         }
 
-        v15 = [a5 mappings];
+        mappings = [session mappings];
         v16 = MEMORY[0x277CBEB38];
         v27[0] = [v13 uniqueID];
         v27[1] = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v14];
-        v27[2] = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-        v27[3] = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(a5, "reason")}];
-        v27[4] = v15;
+        v27[2] = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:type];
+        v27[3] = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(session, "reason")}];
+        v27[4] = mappings;
         v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v27 count:5];
         v26[0] = @"CoreIRDevicePrefDictUUID";
         v26[1] = @"CoreIRDevicePrefDictInterfaceType";
@@ -429,7 +429,7 @@ uint64_t __38__CoreIRBusProvider_thirdPartyRemotes__block_invoke(uint64_t a1, vo
         v18 = [v16 dictionaryWithObjects:v17 forKeys:{objc_msgSend(MEMORY[0x277CBEA60], "arrayWithObjects:count:", v26, 5)}];
         [v18 addEntriesFromDictionary:v11];
         [v18 addEntriesFromDictionary:{objc_msgSend(v13, "persistentProperties")}];
-        [(CoreIRBusProvider *)self saveDevicePrefsWithDict:v18 error:a6];
+        [(CoreIRBusProvider *)self saveDevicePrefsWithDict:v18 error:error];
         [(CoreRCBus *)self addDevice:v13];
         goto LABEL_21;
       }
@@ -442,9 +442,9 @@ uint64_t __38__CoreIRBusProvider_thirdPartyRemotes__block_invoke(uint64_t a1, vo
   }
 
   v13 = 0;
-  if (a6)
+  if (error)
   {
-    *a6 = v25;
+    *error = v25;
   }
 
 LABEL_21:
@@ -452,7 +452,7 @@ LABEL_21:
   return v13;
 }
 
-- (id)_addDeviceWithType:(unint64_t)a3 matching:(id)a4 transportProperties:(id)a5 error:(id *)a6
+- (id)_addDeviceWithType:(unint64_t)type matching:(id)matching transportProperties:(id)properties error:(id *)error
 {
   v14 = 0;
   v9 = [-[CoreRCBus manager](self "manager")];
@@ -462,9 +462,9 @@ LABEL_21:
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) != 0 && ([v10 isLocalDevice] & 1) == 0)
     {
-      [v10 setMatchingDict:a4];
-      [v10 setIsTransmitter:a3 & 1];
-      [v10 setIsReceiver:(a3 >> 4) & 1];
+      [v10 setMatchingDict:matching];
+      [v10 setIsTransmitter:type & 1];
+      [v10 setIsReceiver:(type >> 4) & 1];
       goto LABEL_5;
     }
 
@@ -479,9 +479,9 @@ LABEL_21:
   v13 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:v12 userInfo:0];
   v14 = v13;
   v10 = 0;
-  if (a6)
+  if (error)
   {
-    *a6 = v13;
+    *error = v13;
   }
 
 LABEL_5:
@@ -493,16 +493,16 @@ LABEL_5:
   return v10;
 }
 
-- (id)getExistingDeviceWithType:(unint64_t)a3 matching:(id)a4
+- (id)getExistingDeviceWithType:(unint64_t)type matching:(id)matching
 {
-  v5 = a3;
+  typeCopy = type;
   v19 = *MEMORY[0x277D85DE8];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = [(CoreRCBus *)self devices];
-  v7 = [(NSSet *)v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  devices = [(CoreRCBus *)self devices];
+  v7 = [(NSSet *)devices countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -513,11 +513,11 @@ LABEL_5:
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(devices);
         }
 
         v11 = *(*(&v14 + 1) + 8 * i);
-        if ((([v11 isTransmitter] ^ v5) & 1) == 0 && ((v5 & 0x10) == 0) != objc_msgSend(v11, "isReceiver") && objc_msgSend(objc_msgSend(v11, "matchingDict"), "isEqual:", a4))
+        if ((([v11 isTransmitter] ^ typeCopy) & 1) == 0 && ((typeCopy & 0x10) == 0) != objc_msgSend(v11, "isReceiver") && objc_msgSend(objc_msgSend(v11, "matchingDict"), "isEqual:", matching))
         {
           if (gLogCategory_CoreRCBus <= 50 && (gLogCategory_CoreRCBus != -1 || _LogCategory_Initialize()))
           {
@@ -528,7 +528,7 @@ LABEL_5:
         }
       }
 
-      v8 = [(NSSet *)v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v8 = [(NSSet *)devices countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v8)
       {
         continue;
@@ -544,10 +544,10 @@ LABEL_15:
   return v11;
 }
 
-- (BOOL)addMappingsFromRemote:(id)a3 toLearningSession:(id)a4
+- (BOOL)addMappingsFromRemote:(id)remote toLearningSession:(id)session
 {
   v43 = *MEMORY[0x277D85DE8];
-  v4 = [a3 objectForKey:@"buttons"];
+  v4 = [remote objectForKey:@"buttons"];
   if (v4)
   {
     v5 = v4;
@@ -628,7 +628,7 @@ LABEL_4:
           v28[j] = [objc_msgSend(v24 objectAtIndex:{j), "unsignedLongLongValue"}];
         }
 
-        if (([a4 addMappingWithProtocolID:v12 options:0 commandToMap:v37 commands:v21 commandCount:v18 repeats:v28 repeatCount:v26] & 1) == 0)
+        if (([session addMappingWithProtocolID:v12 options:0 commandToMap:v37 commands:v21 commandCount:v18 repeats:v28 repeatCount:v26] & 1) == 0)
         {
           free(v21);
           free(v28);
@@ -679,9 +679,9 @@ LABEL_35:
   return v30;
 }
 
-- (void)_recreatePairedDeviceFromDefaults:(id)a3 key:(id)a4
+- (void)_recreatePairedDeviceFromDefaults:(id)defaults key:(id)key
 {
-  v5 = [a3 objectForKey:a4];
+  v5 = [defaults objectForKey:key];
   if (v5)
   {
     v6 = v5;
@@ -706,20 +706,20 @@ LABEL_35:
   }
 }
 
-- (void)willRemoveDevice:(id)a3
+- (void)willRemoveDevice:(id)device
 {
-  -[CoreIRBusProvider deleteDevicePrefsWithUUID:UUIDKey:](self, "deleteDevicePrefsWithUUID:UUIDKey:", [a3 uniqueID], @"CoreIRDevicePrefDictUUID");
+  -[CoreIRBusProvider deleteDevicePrefsWithUUID:UUIDKey:](self, "deleteDevicePrefsWithUUID:UUIDKey:", [device uniqueID], @"CoreIRDevicePrefDictUUID");
   v5.receiver = self;
   v5.super_class = CoreIRBusProvider;
-  [(CoreIRBus *)&v5 willRemoveDevice:a3];
+  [(CoreIRBus *)&v5 willRemoveDevice:device];
 }
 
-- (BOOL)saveDevicePrefsWithDict:(id)a3 error:(id *)a4
+- (BOOL)saveDevicePrefsWithDict:(id)dict error:(id *)error
 {
-  v4 = a3;
+  dictCopy = dict;
   v74 = *MEMORY[0x277D85DE8];
   v53 = 0;
-  if (!a3)
+  if (!dict)
   {
     v22 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:-6705 userInfo:0];
     LODWORD(v13) = 0;
@@ -751,19 +751,19 @@ LABEL_62:
     v22 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:-6756 userInfo:0];
     LODWORD(v13) = 0;
     v21 = 0;
-    LODWORD(v4) = 0;
+    LODWORD(dictCopy) = 0;
     goto LABEL_61;
   }
 
   v7 = [v6 mutableCopy];
 LABEL_6:
   v8 = v7;
-  if (!v7 || (v9 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v4 requiringSecureCoding:1 error:&v53]) == 0)
+  if (!v7 || (v9 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:dictCopy requiringSecureCoding:1 error:&v53]) == 0)
   {
     v22 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:-6728 userInfo:0];
     LODWORD(v13) = 0;
     v21 = 0;
-    LODWORD(v4) = 0;
+    LODWORD(dictCopy) = 0;
     v10 = 0;
     goto LABEL_62;
   }
@@ -778,7 +778,7 @@ LABEL_6:
   {
     v12 = v11;
     v13 = 0;
-    v4 = 0;
+    dictCopy = 0;
     v14 = *v50;
     while (2)
     {
@@ -803,8 +803,8 @@ LABEL_6:
         }
 
         v18 = [v17 length];
-        v19 = __CFADD__(v4, v18);
-        v4 += v18;
+        v19 = __CFADD__(dictCopy, v18);
+        dictCopy += v18;
         if (v19)
         {
 LABEL_29:
@@ -829,7 +829,7 @@ LABEL_29:
   else
   {
     v13 = 0;
-    v4 = 0;
+    dictCopy = 0;
   }
 
   if ([v10 length] > v13)
@@ -838,9 +838,9 @@ LABEL_29:
   }
 
   v20 = [v10 length];
-  v19 = __CFADD__(v4, v20);
-  v4 += v20;
-  if (v19 || v4 > 0xE1000)
+  v19 = __CFADD__(dictCopy, v20);
+  dictCopy += v20;
+  if (v19 || dictCopy > 0xE1000)
   {
     v22 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:-6751 userInfo:0];
     v21 = 0;
@@ -852,7 +852,7 @@ LABEL_29:
   [objc_msgSend(MEMORY[0x277CBEBD0] "standardUserDefaults")];
   if (gLogCategory_CoreRCBus <= 50 && (gLogCategory_CoreRCBus != -1 || _LogCategory_Initialize()))
   {
-    [(CoreIRBusProvider *)v10 saveDevicePrefsWithDict:v4 error:v8];
+    [(CoreIRBusProvider *)v10 saveDevicePrefsWithDict:dictCopy error:v8];
   }
 
   v21 = 1;
@@ -923,11 +923,11 @@ LABEL_31:
       v21 = v40;
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
       {
-        v35 = [v53 code];
+        code = [v53 code];
         v36 = [v38 length];
         v37 = [v39 count];
         *buf = 67111168;
-        v55 = v35;
+        v55 = code;
         v56 = 1024;
         v57 = v36;
         v58 = 1024;
@@ -935,7 +935,7 @@ LABEL_31:
         v60 = 1024;
         v61 = v37;
         v62 = 1024;
-        v63 = v4;
+        v63 = dictCopy;
         v64 = 1024;
         v65 = v26;
         v66 = 1024;
@@ -952,7 +952,7 @@ LABEL_31:
 
 LABEL_48:
 
-  if (a4)
+  if (error)
   {
     v31 = v21;
   }
@@ -970,24 +970,24 @@ LABEL_48:
       v32 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:-6700 userInfo:0];
     }
 
-    *a4 = v32;
+    *error = v32;
   }
 
   v33 = *MEMORY[0x277D85DE8];
   return v21;
 }
 
-- (BOOL)deleteDevicePrefsWithUUID:(id)a3 UUIDKey:(id)a4
+- (BOOL)deleteDevicePrefsWithUUID:(id)d UUIDKey:(id)key
 {
   v23 = *MEMORY[0x277D85DE8];
-  if (!a4)
+  if (!key)
   {
     goto LABEL_33;
   }
 
   if (gLogCategory_CoreRCBus <= 50 && (gLogCategory_CoreRCBus != -1 || _LogCategory_Initialize()))
   {
-    [CoreIRBusProvider deleteDevicePrefsWithUUID:a3 UUIDKey:?];
+    [CoreIRBusProvider deleteDevicePrefsWithUUID:d UUIDKey:?];
   }
 
   v6 = [objc_msgSend(MEMORY[0x277CBEBD0] "standardUserDefaults")];
@@ -1026,8 +1026,8 @@ LABEL_48:
             v12 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClasses:+[CoreIRBusProvider deviceDictClasses](CoreIRBusProvider fromData:"deviceDictClasses") error:{v11, &v17}];
             if (v12)
             {
-              v13 = [v12 objectForKeyedSubscript:a4];
-              if (v13 && [a3 isEqual:v13])
+              v13 = [v12 objectForKeyedSubscript:key];
+              if (v13 && [d isEqual:v13])
               {
                 [v6 removeObject:v11];
                 [objc_msgSend(MEMORY[0x277CBEBD0] "standardUserDefaults")];
@@ -1064,7 +1064,7 @@ LABEL_48:
 
       if (gLogCategory_CoreRCBus <= 60 && (gLogCategory_CoreRCBus != -1 || _LogCategory_Initialize()))
       {
-        [CoreIRBusProvider deleteDevicePrefsWithUUID:a3 UUIDKey:?];
+        [CoreIRBusProvider deleteDevicePrefsWithUUID:d UUIDKey:?];
       }
     }
   }
@@ -1076,43 +1076,43 @@ LABEL_33:
   }
 
 LABEL_25:
-  [(CoreIRBusProvider *)a3 deleteDevicePrefsWithUUID:v6 UUIDKey:&v17];
+  [(CoreIRBusProvider *)d deleteDevicePrefsWithUUID:v6 UUIDKey:&v17];
   result = v17;
 LABEL_30:
   v16 = *MEMORY[0x277D85DE8];
   return result;
 }
 
-- (BOOL)setPrefsPropertyForUUID:(id)a3 UUIDKey:(id)a4 object:(id)a5 key:(id)a6
+- (BOOL)setPrefsPropertyForUUID:(id)d UUIDKey:(id)key object:(id)object key:(id)a6
 {
-  v7 = 0;
+  standardUserDefaults = 0;
   v35 = *MEMORY[0x277D85DE8];
-  if (a3 && a4 && a5 && a6)
+  if (d && key && object && a6)
   {
     if (gLogCategory_CoreRCBus <= 10 && (gLogCategory_CoreRCBus != -1 || _LogCategory_Initialize()))
     {
-      v25 = a5;
+      objectCopy = object;
       v26 = a6;
-      v24 = [a3 UUIDString];
+      uUIDString = [d UUIDString];
       LogPrintF();
     }
 
-    v7 = [objc_msgSend(MEMORY[0x277CBEBD0] standardUserDefaults];
-    if (v7)
+    standardUserDefaults = [objc_msgSend(MEMORY[0x277CBEBD0] standardUserDefaults];
+    if (standardUserDefaults)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v7 = [v7 mutableCopy];
-        if (v7 && +[CoreIRBusProvider deviceDictClasses])
+        standardUserDefaults = [standardUserDefaults mutableCopy];
+        if (standardUserDefaults && +[CoreIRBusProvider deviceDictClasses])
         {
-          v27 = a5;
+          objectCopy2 = object;
           v28 = a6;
           v32 = 0u;
           v33 = 0u;
           v30 = 0u;
           v31 = 0u;
-          v11 = [v7 countByEnumeratingWithState:&v30 objects:v34 count:16];
+          v11 = [standardUserDefaults countByEnumeratingWithState:&v30 objects:v34 count:16];
           if (v11)
           {
             v12 = v11;
@@ -1124,7 +1124,7 @@ LABEL_30:
               {
                 if (*v31 != v13)
                 {
-                  objc_enumerationMutation(v7);
+                  objc_enumerationMutation(standardUserDefaults);
                 }
 
                 v15 = *(*(&v30 + 1) + 8 * v14);
@@ -1133,19 +1133,19 @@ LABEL_30:
                 if (v16)
                 {
                   v17 = v16;
-                  v18 = [v16 objectForKeyedSubscript:a4];
-                  if (v18 && [a3 isEqual:v18])
+                  v18 = [v16 objectForKeyedSubscript:key];
+                  if (v18 && [d isEqual:v18])
                   {
-                    [v7 removeObject:v15];
-                    [v17 setObject:v27 forKey:v28];
+                    [standardUserDefaults removeObject:v15];
+                    [v17 setObject:objectCopy2 forKey:v28];
                     v21 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v17 requiringSecureCoding:1 error:&v29];
                     if (!v21)
                     {
-                      [CoreIRBusProvider setPrefsPropertyForUUID:v7 UUIDKey:? object:? key:?];
+                      [CoreIRBusProvider setPrefsPropertyForUUID:standardUserDefaults UUIDKey:? object:? key:?];
                       goto LABEL_29;
                     }
 
-                    [v7 addObject:v21];
+                    [standardUserDefaults addObject:v21];
                     [objc_msgSend(MEMORY[0x277CBEBD0] "standardUserDefaults")];
                     [objc_msgSend(MEMORY[0x277CBEBD0] "standardUserDefaults")];
                     if (gLogCategory_CoreRCBus <= 10 && (gLogCategory_CoreRCBus != -1 || _LogCategory_Initialize()))
@@ -1167,7 +1167,7 @@ LABEL_30:
               }
 
               while (v12 != v14);
-              v19 = [v7 countByEnumeratingWithState:&v30 objects:v34 count:16];
+              v19 = [standardUserDefaults countByEnumeratingWithState:&v30 objects:v34 count:16];
               v12 = v19;
               if (v19)
               {
@@ -1180,14 +1180,14 @@ LABEL_30:
 
           if (gLogCategory_CoreRCBus <= 60 && (gLogCategory_CoreRCBus != -1 || _LogCategory_Initialize()))
           {
-            [CoreIRBusProvider setPrefsPropertyForUUID:a3 UUIDKey:? object:? key:?];
+            [CoreIRBusProvider setPrefsPropertyForUUID:d UUIDKey:? object:? key:?];
           }
         }
       }
 
       else
       {
-        v7 = 0;
+        standardUserDefaults = 0;
       }
     }
   }
@@ -1200,7 +1200,7 @@ LABEL_29:
 
   if (gLogCategory_CoreRCBus != -1 || (v20 = _LogCategory_Initialize()) != 0)
   {
-    [CoreIRBusProvider setPrefsPropertyForUUID:a3 UUIDKey:? object:? key:?];
+    [CoreIRBusProvider setPrefsPropertyForUUID:d UUIDKey:? object:? key:?];
 LABEL_33:
     LOBYTE(v20) = 0;
   }
@@ -1210,18 +1210,18 @@ LABEL_39:
   return v20;
 }
 
-- (id)copyPrefsPropertyForUUID:(id)a3 UUIDKey:(id)a4 key:(id)a5
+- (id)copyPrefsPropertyForUUID:(id)d UUIDKey:(id)key key:(id)a5
 {
   v6 = 0;
   v25 = *MEMORY[0x277D85DE8];
-  if (!a3 || !a4 || !a5)
+  if (!d || !key || !a5)
   {
     goto LABEL_17;
   }
 
   if (gLogCategory_CoreRCBus <= 50 && (gLogCategory_CoreRCBus != -1 || _LogCategory_Initialize()))
   {
-    [CoreIRBusProvider copyPrefsPropertyForUUID:a3 UUIDKey:? key:?];
+    [CoreIRBusProvider copyPrefsPropertyForUUID:d UUIDKey:? key:?];
   }
 
   v10 = [(CoreIRBusProvider *)self copyDevicePrefs:0];
@@ -1240,10 +1240,10 @@ LABEL_10:
       }
 
       v15 = *(*(&v20 + 1) + 8 * v14);
-      v16 = [v15 objectForKeyedSubscript:a4];
+      v16 = [v15 objectForKeyedSubscript:key];
       if (v16)
       {
-        if ([a3 isEqual:v16])
+        if ([d isEqual:v16])
         {
           break;
         }
@@ -1276,7 +1276,7 @@ LABEL_17:
 
   if (gLogCategory_CoreRCBus <= 90 && (gLogCategory_CoreRCBus != -1 || _LogCategory_Initialize()))
   {
-    [CoreIRBusProvider copyPrefsPropertyForUUID:a3 UUIDKey:? key:?];
+    [CoreIRBusProvider copyPrefsPropertyForUUID:d UUIDKey:? key:?];
   }
 
   v17 = 0;
@@ -1285,28 +1285,28 @@ LABEL_23:
   return v17;
 }
 
-- (BOOL)updatePersistentValue:(id)a3 forProperty:(id)a4 ofDevice:(id)a5
+- (BOOL)updatePersistentValue:(id)value forProperty:(id)property ofDevice:(id)device
 {
   if (gLogCategory_CoreRCBus <= 10 && (gLogCategory_CoreRCBus != -1 || _LogCategory_Initialize()))
   {
     [CoreIRBusProvider updatePersistentValue:forProperty:ofDevice:];
-    if (a4)
+    if (property)
     {
       goto LABEL_5;
     }
 
 LABEL_11:
-    [CoreIRBusProvider updatePersistentValue:a5 forProperty:&v10 ofDevice:?];
+    [CoreIRBusProvider updatePersistentValue:device forProperty:&v10 ofDevice:?];
     return v10;
   }
 
-  if (!a4)
+  if (!property)
   {
     goto LABEL_11;
   }
 
 LABEL_5:
-  if (!a3 || !a5 || !-[CoreIRBusProvider setPrefsPropertyForUUID:UUIDKey:object:key:](self, "setPrefsPropertyForUUID:UUIDKey:object:key:", [a5 uniqueID], @"CoreIRDevicePrefDictUUID", a3, a4))
+  if (!value || !device || !-[CoreIRBusProvider setPrefsPropertyForUUID:UUIDKey:object:key:](self, "setPrefsPropertyForUUID:UUIDKey:object:key:", [device uniqueID], @"CoreIRDevicePrefDictUUID", value, property))
   {
     goto LABEL_11;
   }
@@ -1314,7 +1314,7 @@ LABEL_5:
   return 1;
 }
 
-- (BOOL)mergePersistentMappingsFromSession:(id)a3 ofDevice:(id)a4
+- (BOOL)mergePersistentMappingsFromSession:(id)session ofDevice:(id)device
 {
   v25 = *MEMORY[0x277D85DE8];
   if (gLogCategory_CoreRCBus <= 50 && (gLogCategory_CoreRCBus != -1 || _LogCategory_Initialize()))
@@ -1325,13 +1325,13 @@ LABEL_5:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [a3 mappings];
-    if (a4)
+    mappings = [session mappings];
+    if (device)
     {
-      v8 = v7;
-      if (v7)
+      v8 = mappings;
+      if (mappings)
       {
-        v9 = -[CoreIRBusProvider copyPrefsPropertyForUUID:UUIDKey:key:](self, "copyPrefsPropertyForUUID:UUIDKey:key:", [a4 uniqueID], @"CoreIRDevicePrefDictUUID", @"CoreIRDevicePrefDictMappings");
+        v9 = -[CoreIRBusProvider copyPrefsPropertyForUUID:UUIDKey:key:](self, "copyPrefsPropertyForUUID:UUIDKey:key:", [device uniqueID], @"CoreIRDevicePrefDictUUID", @"CoreIRDevicePrefDictMappings");
         if (v9)
         {
           v22 = 0u;
@@ -1378,7 +1378,7 @@ LABEL_5:
           v8 = v9;
         }
 
-        v16 = -[CoreIRBusProvider setPrefsPropertyForUUID:UUIDKey:object:key:](self, "setPrefsPropertyForUUID:UUIDKey:object:key:", [a4 uniqueID], @"CoreIRDevicePrefDictUUID", v8, @"CoreIRDevicePrefDictMappings");
+        v16 = -[CoreIRBusProvider setPrefsPropertyForUUID:UUIDKey:object:key:](self, "setPrefsPropertyForUUID:UUIDKey:object:key:", [device uniqueID], @"CoreIRDevicePrefDictUUID", v8, @"CoreIRDevicePrefDictMappings");
 
         if (v16)
         {
@@ -1407,7 +1407,7 @@ LABEL_28:
   return v17;
 }
 
-- (void)interface:(id)a3 receivedCommand:(id)a4
+- (void)interface:(id)interface receivedCommand:(id)command
 {
   if (gLogCategory_CoreRCBus <= 10 && (gLogCategory_CoreRCBus != -1 || _LogCategory_Initialize()))
   {
@@ -1416,10 +1416,10 @@ LABEL_28:
 
   localDevice = self->_localDevice;
 
-  [(CoreIRDeviceProvider *)localDevice handleIRCommand:a4];
+  [(CoreIRDeviceProvider *)localDevice handleIRCommand:command];
 }
 
-- (void)didAddDevice:(id)a3
+- (void)didAddDevice:(id)device
 {
   v6 = 0;
   v5.receiver = self;
@@ -1428,7 +1428,7 @@ LABEL_28:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if ([a3 is3rdPartyRemote])
+    if ([device is3rdPartyRemote])
     {
       [(CoreIRBusProvider *)self updateLearnedProtocols];
       if (![(IRInterface *)[(CoreIRBusProvider *)self interface] canWakeFor3rdPartyIR]&& ![(CoreRCBus *)self setAllowHibernation:0 error:&v6]&& gLogCategory_CoreRCBus <= 90 && (gLogCategory_CoreRCBus != -1 || _LogCategory_Initialize()))
@@ -1439,29 +1439,29 @@ LABEL_28:
   }
 }
 
-- (id)addDeviceWithType:(unint64_t)a3 matching:(id)a4 error:(id *)a5
+- (id)addDeviceWithType:(unint64_t)type matching:(id)matching error:(id *)error
 {
   v25[1] = *MEMORY[0x277D85DE8];
   v21 = 0;
   v24 = @"CoreIRTransportPropertyMatching";
-  v25[0] = a4;
+  v25[0] = matching;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v25 forKeys:&v24 count:1];
   if (gLogCategory_CoreRCBus <= 10 && (gLogCategory_CoreRCBus != -1 || _LogCategory_Initialize()))
   {
-    v19 = self;
-    v20 = a4;
+    selfCopy = self;
+    matchingCopy = matching;
     LogPrintF();
   }
 
-  v10 = [(CoreIRBusProvider *)self getExistingDeviceWithType:a3 matching:a4, v19, v20];
-  if (v10)
+  matchingCopy = [(CoreIRBusProvider *)self getExistingDeviceWithType:type matching:matching, selfCopy, matchingCopy];
+  if (matchingCopy)
   {
-    v12 = v10;
+    v12 = matchingCopy;
   }
 
   else
   {
-    v11 = [(CoreIRBusProvider *)self _addDeviceWithType:a3 matching:a4 transportProperties:v9 error:&v21];
+    v11 = [(CoreIRBusProvider *)self _addDeviceWithType:type matching:matching transportProperties:v9 error:&v21];
     if (v11)
     {
       v12 = v11;
@@ -1488,7 +1488,7 @@ LABEL_28:
       v14 = MEMORY[0x277CBEB38];
       v23[0] = [v12 uniqueID];
       v23[1] = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v13];
-      v23[2] = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+      v23[2] = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:type];
       v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v23 count:3];
       v22[0] = @"CoreIRDevicePrefDictUUID";
       v22[1] = @"CoreIRDevicePrefDictInterfaceType";
@@ -1496,16 +1496,16 @@ LABEL_28:
       v16 = [v14 dictionaryWithObjects:v15 forKeys:{objc_msgSend(MEMORY[0x277CBEA60], "arrayWithObjects:count:", v22, 3)}];
       [v16 addEntriesFromDictionary:v9];
       [v16 addEntriesFromDictionary:{objc_msgSend(v12, "persistentProperties")}];
-      [(CoreIRBusProvider *)self saveDevicePrefsWithDict:v16 error:a5];
+      [(CoreIRBusProvider *)self saveDevicePrefsWithDict:v16 error:error];
       [(CoreRCBus *)self addDevice:v12];
     }
 
     else
     {
       v12 = 0;
-      if (a5)
+      if (error)
       {
-        *a5 = v21;
+        *error = v21;
       }
     }
   }
@@ -1545,7 +1545,7 @@ LABEL_28:
   {
     if (gLogCategory_CoreRCBus <= 40 && (gLogCategory_CoreRCBus != -1 || _LogCategory_Initialize()))
     {
-      v29 = obj;
+      mappings = obj;
       LogPrintF();
     }
 
@@ -1570,11 +1570,11 @@ LABEL_28:
           OUTLINED_FUNCTION_1_1();
           if (v5 ^ v6 | v4 && (v18 != -1 || OUTLINED_FUNCTION_2_1()))
           {
-            v29 = v17;
+            mappings = v17;
             LogPrintF();
           }
 
-          v19 = [v17 valueForKey:{@"name", v29}];
+          v19 = [v17 valueForKey:{@"name", mappings}];
           if (v19)
           {
             v23 = v19;
@@ -1589,11 +1589,11 @@ LABEL_28:
             {
               if (gLogCategory_CoreRCBus <= 10 && (gLogCategory_CoreRCBus != -1 || OUTLINED_FUNCTION_2_1()))
               {
-                v29 = [(CoreIRLearningSessionProvider *)v24 mappings];
+                mappings = [(CoreIRLearningSessionProvider *)v24 mappings];
                 LogPrintF();
               }
 
-              v25 = [(CoreIRBusProvider *)self addDeviceWithType:1 matching:v31 learningSession:v24 error:v33, v29];
+              v25 = [(CoreIRBusProvider *)self addDeviceWithType:1 matching:v31 learningSession:v24 error:v33, mappings];
               if (!v25)
               {
                 v27 = -6700;
@@ -1654,7 +1654,7 @@ LABEL_56:
       [v30 synchronize];
       if (gLogCategory_CoreRCBus <= 90 && (gLogCategory_CoreRCBus != -1 || _LogCategory_Initialize()))
       {
-        v29 = v14;
+        mappings = v14;
         LogPrintF();
       }
     }
@@ -1676,7 +1676,7 @@ LABEL_69:
   }
 
 LABEL_57:
-  [v8 setBool:1 forKey:{@"HasMigrated", v29}];
+  [v8 setBool:1 forKey:{@"HasMigrated", mappings}];
   [v8 synchronize];
   if (gLogCategory_CoreRCBus <= 40 && (gLogCategory_CoreRCBus != -1 || _LogCategory_Initialize()))
   {
@@ -1700,13 +1700,13 @@ LABEL_61:
   -[CoreIRBusProvider _recreatePairedDeviceFromDefaults:key:](self, "_recreatePairedDeviceFromDefaults:key:", [MEMORY[0x277CBEBD0] standardUserDefaults], @"CoreIRAppleRemotePrefPairedUID");
   if (gLogCategory_CoreRCBus <= 50 && (gLogCategory_CoreRCBus != -1 || _LogCategory_Initialize()))
   {
-    v36 = [(IRInterface *)[(CoreIRBusProvider *)self interface] isRxInterface];
-    v38 = [(IRInterface *)[(CoreIRBusProvider *)self interface] isTxInterface];
-    v34 = self;
+    isRxInterface = [(IRInterface *)[(CoreIRBusProvider *)self interface] isRxInterface];
+    isTxInterface = [(IRInterface *)[(CoreIRBusProvider *)self interface] isTxInterface];
+    selfCopy = self;
     LogPrintF();
   }
 
-  v3 = [(CoreIRBusProvider *)self copyDevicePrefs:&v44, v34, v36, v38];
+  v3 = [(CoreIRBusProvider *)self copyDevicePrefs:&v44, selfCopy, isRxInterface, isTxInterface];
   v4 = v3;
   if (v3)
   {
@@ -1732,11 +1732,11 @@ LABEL_8:
         v9 = *(*(&v40 + 1) + 8 * v8);
         if (gLogCategory_CoreRCBus <= 50 && (gLogCategory_CoreRCBus != -1 || _LogCategory_Initialize()))
         {
-          v35 = v9;
+          selfCopy3 = v9;
           LogPrintF();
         }
 
-        v10 = [-[CoreIRBusProvider objectForKey:](v9 objectForKey:{@"CoreIRDevicePrefDictInterfaceType", v35, v37), "unsignedIntegerValue"}];
+        v10 = [-[CoreIRBusProvider objectForKey:](v9 objectForKey:{@"CoreIRDevicePrefDictInterfaceType", selfCopy3, v37), "unsignedIntegerValue"}];
         if ([(IRInterface *)[(CoreIRBusProvider *)self interface] isTxInterface]&& (v10 & 0xFFFFFFFFFFFFFFEFLL) == 1 || [(IRInterface *)[(CoreIRBusProvider *)self interface] isRxInterface]&& (v10 & 0xFFFFFFFFFFFFFFFELL) == 0x10)
         {
           [-[CoreIRBusProvider objectForKey:](v9 objectForKey:{@"CoreIRDevicePrefDictType", "unsignedIntegerValue"}];
@@ -1756,7 +1756,7 @@ LABEL_8:
             OUTLINED_FUNCTION_1_1();
             if (v15 ^ v16 | v14 && (v19 != -1 || OUTLINED_FUNCTION_2_1()))
             {
-              v35 = self;
+              selfCopy3 = self;
               v37 = v18;
               LogPrintF();
             }
@@ -1784,11 +1784,11 @@ LABEL_50:
             OUTLINED_FUNCTION_1_1();
             if (v15 ^ v16 | v14 && (v25 != -1 || OUTLINED_FUNCTION_2_1()))
             {
-              v35 = [(CoreIRLearningSessionProvider *)v24 mappings];
+              selfCopy3 = [(CoreIRLearningSessionProvider *)v24 mappings];
               LogPrintF();
             }
 
-            v26 = [v21 setMappingWithSession:v24 error:{&v44, v35}];
+            v26 = [v21 setMappingWithSession:v24 error:{&v44, selfCopy3}];
 
             if ((v26 & 1) == 0)
             {
@@ -1805,7 +1805,7 @@ LABEL_50:
           OUTLINED_FUNCTION_1_1();
           if (v15 ^ v16 | v14 && (v13 != -1 || OUTLINED_FUNCTION_2_1()))
           {
-            v35 = self;
+            selfCopy3 = self;
             v37 = v12;
             LogPrintF();
           }
@@ -1820,7 +1820,7 @@ LABEL_50:
             }
 
 LABEL_43:
-            [v21 setPersistentProperties:{v9, v35}];
+            [v21 setPersistentProperties:{v9, selfCopy3}];
             v27 = [(CoreIRBusProvider *)v9 objectForKeyedSubscript:@"CoreIRDevicePrefDictUUID"];
             if (!v27)
             {
@@ -1830,7 +1830,7 @@ LABEL_48:
               v31 = -6700;
 LABEL_49:
               v28 = 0;
-              v44 = [v29 errorWithDomain:v30 code:v31 userInfo:{0, v35}];
+              v44 = [v29 errorWithDomain:v30 code:v31 userInfo:{0, selfCopy3}];
 LABEL_51:
               v4 = obj;
               goto LABEL_52;
@@ -1873,7 +1873,7 @@ LABEL_52:
   return v28;
 }
 
-- (id)copyDevicePrefs:(id *)a3
+- (id)copyDevicePrefs:(id *)prefs
 {
   v22[17] = *MEMORY[0x277D85DE8];
   v22[0] = 0;
@@ -1908,7 +1908,7 @@ LABEL_19:
               objc_enumerationMutation(v5);
             }
 
-            v12 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClasses:+[CoreIRBusProvider deviceDictClasses](CoreIRBusProvider fromData:"deviceDictClasses" error:{v21), *(8 * v11), v22}];
+            v12 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClasses:+[CoreIRBusProvider deviceDictClasses](CoreIRBusProvider fromData:"deviceDictClasses" error:{localizedDescription), *(8 * v11), v22}];
             if (v12)
             {
               v12 = [v6 addObject:v12];
@@ -1918,7 +1918,7 @@ LABEL_19:
             {
               if (gLogCategory_CoreRCBus != -1 || (v12 = _LogCategory_Initialize(), v12))
               {
-                v21 = [v22[0] localizedDescription];
+                localizedDescription = [v22[0] localizedDescription];
                 v12 = LogPrintF();
               }
             }
@@ -1948,7 +1948,7 @@ LABEL_19:
   v19 = *MEMORY[0x277CCA590];
   v20 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:v18 userInfo:0];
   v22[0] = v20;
-  if (a3)
+  if (prefs)
   {
     if (!v20)
     {
@@ -1956,7 +1956,7 @@ LABEL_19:
     }
 
     v6 = 0;
-    *a3 = v20;
+    *prefs = v20;
   }
 
   else
@@ -1977,12 +1977,12 @@ LABEL_20:
   return v6;
 }
 
-- (void)_removeMappingForCommand:(unint64_t)a3 from:(id)a4
+- (void)_removeMappingForCommand:(unint64_t)command from:(id)from
 {
   v36 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (command)
   {
-    v10 = OUTLINED_FUNCTION_5_0(self, a2, a3, a4, v4, v5, v6, v7, 0, 0, 0, 0, 0, 0, 0, 0, v32, v34);
+    v10 = OUTLINED_FUNCTION_5_0(self, a2, command, from, v4, v5, v6, v7, 0, 0, 0, 0, 0, 0, 0, 0, v32, v34);
     if (v10)
     {
       v11 = v10;
@@ -1993,14 +1993,14 @@ LABEL_20:
         {
           if (*v26 != v12)
           {
-            objc_enumerationMutation(a4);
+            objc_enumerationMutation(from);
           }
 
           v14 = *(v25 + 8 * i);
           v15 = [objc_msgSend(v14 objectForKeyedSubscript:{@"CoreIRLearningSessionCommand", "unsignedIntegerValue"}];
-          if (v15 == a3)
+          if (v15 == command)
           {
-            [a4 removeObject:v14];
+            [from removeObject:v14];
             goto LABEL_12;
           }
         }
@@ -2020,9 +2020,9 @@ LABEL_12:
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)setPairedAppleRemote:(id)a3 error:(id *)a4
+- (BOOL)setPairedAppleRemote:(id)remote error:(id *)error
 {
-  if ([(CoreIRBus *)self pairedAppleRemote]== a3)
+  if ([(CoreIRBus *)self pairedAppleRemote]== remote)
   {
     if (gLogCategory_CoreRCBus <= 40 && (gLogCategory_CoreRCBus != -1 || _LogCategory_Initialize()))
     {
@@ -2034,25 +2034,25 @@ LABEL_12:
 
   else
   {
-    v7 = [(CoreIRBusProvider *)self interface];
-    if (a3)
+    interface = [(CoreIRBusProvider *)self interface];
+    if (remote)
     {
-      v8 = a3;
+      remoteCopy = remote;
     }
 
     else
     {
-      v8 = [(CoreIRBus *)self pairedAppleRemote];
+      remoteCopy = [(CoreIRBus *)self pairedAppleRemote];
     }
 
-    v9 = [(IRInterface *)v7 setPairState:a3 != 0 forDeviceUID:[(CoreIRDevice *)v8 deviceUID] error:a4];
+    v9 = [(IRInterface *)interface setPairState:remote != 0 forDeviceUID:[(CoreIRDevice *)remoteCopy deviceUID] error:error];
     if (v9)
     {
-      v10 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-      v11 = [v10 objectForKey:@"CoreIRAppleRemotePrefPairedUID"];
-      if (a3)
+      standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+      v11 = [standardUserDefaults objectForKey:@"CoreIRAppleRemotePrefPairedUID"];
+      if (remote)
       {
-        v12 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:{objc_msgSend(a3, "deviceUID")}];
+        v12 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:{objc_msgSend(remote, "deviceUID")}];
       }
 
       else
@@ -2062,21 +2062,21 @@ LABEL_12:
 
       if (v11 != v12 && ([v11 isEqual:v12] & 1) == 0)
       {
-        if (a3)
+        if (remote)
         {
-          [v10 setObject:v12 forKey:@"CoreIRAppleRemotePrefPairedUID"];
+          [standardUserDefaults setObject:v12 forKey:@"CoreIRAppleRemotePrefPairedUID"];
         }
 
         else
         {
-          [v10 removeObjectForKey:@"CoreIRAppleRemotePrefPairedUID"];
+          [standardUserDefaults removeObjectForKey:@"CoreIRAppleRemotePrefPairedUID"];
         }
       }
 
-      [v10 synchronize];
+      [standardUserDefaults synchronize];
       v14.receiver = self;
       v14.super_class = CoreIRBusProvider;
-      LOBYTE(v9) = [(CoreIRBus *)&v14 setPairedAppleRemote:a3 error:a4];
+      LOBYTE(v9) = [(CoreIRBus *)&v14 setPairedAppleRemote:remote error:error];
     }
   }
 

@@ -20,8 +20,8 @@
 - (void)daemonUserDataLibraryDirectory;
 - (void)init;
 - (void)installcoordinationdUserDataLibraryDirectory;
-- (void)setErroneousContainerCleanupDone:(BOOL)a3;
-- (void)setHaveUpdatedAppExtensionDataContainersWithParentID:(BOOL)a3;
+- (void)setErroneousContainerCleanupDone:(BOOL)done;
+- (void)setHaveUpdatedAppExtensionDataContainersWithParentID:(BOOL)d;
 @end
 
 @implementation MIDaemonConfiguration
@@ -166,13 +166,13 @@ LABEL_25:
 LABEL_48:
   v14.receiver = v2;
   v14.super_class = MIDaemonConfiguration;
-  v8 = [(MIGlobalConfiguration *)&v14 installdJetsamLimit];
-  if (v8 <= 0xC00000)
+  installdJetsamLimit = [(MIGlobalConfiguration *)&v14 installdJetsamLimit];
+  if (installdJetsamLimit <= 0xC00000)
   {
     [(MIDaemonConfiguration *)&v13 init];
   }
 
-  v2->_estimatedAvailableMemoryForValidation = v8 - 12582912;
+  v2->_estimatedAvailableMemoryForValidation = installdJetsamLimit - 12582912;
   if ([(MIGlobalConfiguration *)v2 isSharediPad]|| (MGGetBoolAnswer() & 1) != 0)
   {
     v9 = 0;
@@ -194,7 +194,7 @@ LABEL_48:
   block[1] = 3221225472;
   block[2] = __39__MIDaemonConfiguration_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_daemonConfigOnceToken != -1)
   {
     dispatch_once(&sharedInstance_daemonConfigOnceToken, block);
@@ -226,8 +226,8 @@ uint64_t __39__MIDaemonConfiguration_sharedInstance__block_invoke()
       [(MIDaemonConfiguration *)&v10 daemonUserDataLibraryDirectory];
     }
 
-    v6 = [v4 containerURL];
-    v7 = [v6 URLByAppendingPathComponent:@"Library" isDirectory:1];
+    containerURL = [v4 containerURL];
+    v7 = [containerURL URLByAppendingPathComponent:@"Library" isDirectory:1];
     v8 = self->_daemonUserDataLibraryDirectory;
     self->_daemonUserDataLibraryDirectory = v7;
 
@@ -261,8 +261,8 @@ uint64_t __39__MIDaemonConfiguration_sharedInstance__block_invoke()
       [(MIDaemonConfiguration *)&v10 installcoordinationdUserDataLibraryDirectory];
     }
 
-    v6 = [v4 containerURL];
-    v7 = [v6 URLByAppendingPathComponent:@"Library" isDirectory:1];
+    containerURL = [v4 containerURL];
+    v7 = [containerURL URLByAppendingPathComponent:@"Library" isDirectory:1];
     v8 = self->_installcoordinationdUserDataLibraryDirectory;
     self->_installcoordinationdUserDataLibraryDirectory = v7;
 
@@ -284,24 +284,24 @@ uint64_t __39__MIDaemonConfiguration_sharedInstance__block_invoke()
 
 - (NSURL)currentUserDataDirectory
 {
-  v2 = [(MIDaemonConfiguration *)self daemonUserDataLibraryDirectory];
-  v3 = [v2 URLByAppendingPathComponent:@"MobileInstallation" isDirectory:1];
+  daemonUserDataLibraryDirectory = [(MIDaemonConfiguration *)self daemonUserDataLibraryDirectory];
+  v3 = [daemonUserDataLibraryDirectory URLByAppendingPathComponent:@"MobileInstallation" isDirectory:1];
 
   return v3;
 }
 
 - (NSURL)currentUserCachesDirectory
 {
-  v2 = [(MIDaemonConfiguration *)self daemonUserDataLibraryDirectory];
-  v3 = [v2 URLByAppendingPathComponent:@"Caches" isDirectory:1];
+  daemonUserDataLibraryDirectory = [(MIDaemonConfiguration *)self daemonUserDataLibraryDirectory];
+  v3 = [daemonUserDataLibraryDirectory URLByAppendingPathComponent:@"Caches" isDirectory:1];
 
   return v3;
 }
 
 - (NSURL)currentUserInstallCoordinationCachesDirectory
 {
-  v2 = [(MIDaemonConfiguration *)self installcoordinationdUserDataLibraryDirectory];
-  v3 = [v2 URLByAppendingPathComponent:@"Caches" isDirectory:1];
+  installcoordinationdUserDataLibraryDirectory = [(MIDaemonConfiguration *)self installcoordinationdUserDataLibraryDirectory];
+  v3 = [installcoordinationdUserDataLibraryDirectory URLByAppendingPathComponent:@"Caches" isDirectory:1];
 
   return v3;
 }
@@ -446,11 +446,11 @@ uint64_t __51__MIDaemonConfiguration_localSigningIsUnrestricted__block_invoke(ui
   return v3;
 }
 
-- (void)setErroneousContainerCleanupDone:(BOOL)a3
+- (void)setErroneousContainerCleanupDone:(BOOL)done
 {
-  v3 = a3;
+  doneCopy = done;
   v4 = [objc_alloc(MEMORY[0x1E695E000]) initWithSuiteName:@"com.apple.mobile.installation"];
-  [v4 setBool:v3 forKey:@"ErroneousContainerCleanupDone"];
+  [v4 setBool:doneCopy forKey:@"ErroneousContainerCleanupDone"];
 }
 
 - (BOOL)haveUpdatedAppExtensionDataContainersWithParentID
@@ -461,7 +461,7 @@ uint64_t __51__MIDaemonConfiguration_localSigningIsUnrestricted__block_invoke(ui
   return v3;
 }
 
-- (void)setHaveUpdatedAppExtensionDataContainersWithParentID:(BOOL)a3
+- (void)setHaveUpdatedAppExtensionDataContainersWithParentID:(BOOL)d
 {
   v3 = [objc_alloc(MEMORY[0x1E695E000]) initWithSuiteName:@"com.apple.mobile.installation"];
   [v3 setObject:&unk_1F2888DF0 forKey:@"ExtensionDataContainerParentIDUpdateVersion"];
@@ -471,72 +471,72 @@ uint64_t __51__MIDaemonConfiguration_localSigningIsUnrestricted__block_invoke(ui
 {
   v9.receiver = self;
   v9.super_class = MIDaemonConfiguration;
-  v2 = [(MIGlobalConfiguration *)&v9 builtInApplicationBundleIDs];
+  builtInApplicationBundleIDs = [(MIGlobalConfiguration *)&v9 builtInApplicationBundleIDs];
   v3 = MIDiskImageManagerProxy();
   v4 = v3;
   if (v3)
   {
     v5 = [v3 appBundleIDsOnAttachedEntityType:1];
-    v6 = [v2 setByAddingObjectsFromSet:v5];
+    v6 = [builtInApplicationBundleIDs setByAddingObjectsFromSet:v5];
 
     v7 = [v4 appBundleIDsOnAttachedEntityType:2];
-    v2 = [v6 setByAddingObjectsFromSet:v7];
+    builtInApplicationBundleIDs = [v6 setByAddingObjectsFromSet:v7];
   }
 
-  return v2;
+  return builtInApplicationBundleIDs;
 }
 
 - (NSURL)journalStorageBaseURL
 {
-  v2 = [(MIGlobalConfiguration *)self dataDirectory];
-  v3 = [v2 URLByAppendingPathComponent:@"Journal" isDirectory:1];
+  dataDirectory = [(MIGlobalConfiguration *)self dataDirectory];
+  v3 = [dataDirectory URLByAppendingPathComponent:@"Journal" isDirectory:1];
 
   return v3;
 }
 
 - (NSURL)currentUserJournalStorageBaseURL
 {
-  v2 = [(MIDaemonConfiguration *)self currentUserDataDirectory];
-  v3 = [v2 URLByAppendingPathComponent:@"Journal" isDirectory:1];
+  currentUserDataDirectory = [(MIDaemonConfiguration *)self currentUserDataDirectory];
+  v3 = [currentUserDataDirectory URLByAppendingPathComponent:@"Journal" isDirectory:1];
 
   return v3;
 }
 
 - (NSURL)launchServicesOperationStorageBaseURL
 {
-  v2 = [(MIGlobalConfiguration *)self dataDirectory];
-  v3 = [v2 URLByAppendingPathComponent:@"LaunchServicesOperations" isDirectory:1];
+  dataDirectory = [(MIGlobalConfiguration *)self dataDirectory];
+  v3 = [dataDirectory URLByAppendingPathComponent:@"LaunchServicesOperations" isDirectory:1];
 
   return v3;
 }
 
 - (NSURL)launchServicesOperationLookAsideStorageBaseURL
 {
-  v2 = [(MIGlobalConfiguration *)self dataDirectory];
-  v3 = [v2 URLByAppendingPathComponent:@"ReconcilingLSOperations" isDirectory:1];
+  dataDirectory = [(MIGlobalConfiguration *)self dataDirectory];
+  v3 = [dataDirectory URLByAppendingPathComponent:@"ReconcilingLSOperations" isDirectory:1];
 
   return v3;
 }
 
 - (NSURL)currentUserLaunchServicesOperationStorageBaseURL
 {
-  v2 = [(MIDaemonConfiguration *)self currentUserDataDirectory];
-  v3 = [v2 URLByAppendingPathComponent:@"LaunchServicesOperations" isDirectory:1];
+  currentUserDataDirectory = [(MIDaemonConfiguration *)self currentUserDataDirectory];
+  v3 = [currentUserDataDirectory URLByAppendingPathComponent:@"LaunchServicesOperations" isDirectory:1];
 
   return v3;
 }
 
 - (NSURL)currentUserLaunchServicesOperationLookAsideStorageBaseURL
 {
-  v2 = [(MIDaemonConfiguration *)self currentUserDataDirectory];
-  v3 = [v2 URLByAppendingPathComponent:@"ReconcilingLSOperations" isDirectory:1];
+  currentUserDataDirectory = [(MIDaemonConfiguration *)self currentUserDataDirectory];
+  v3 = [currentUserDataDirectory URLByAppendingPathComponent:@"ReconcilingLSOperations" isDirectory:1];
 
   return v3;
 }
 
 - (void)init
 {
-  OUTLINED_FUNCTION_1(a1, a2);
+  OUTLINED_FUNCTION_1(self, a2);
   os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR);
   OUTLINED_FUNCTION_0_0();
   _os_crash_msg();
@@ -545,7 +545,7 @@ uint64_t __51__MIDaemonConfiguration_localSigningIsUnrestricted__block_invoke(ui
 
 - (void)daemonUserDataLibraryDirectory
 {
-  OUTLINED_FUNCTION_1(a1, a2);
+  OUTLINED_FUNCTION_1(self, a2);
   os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR);
   OUTLINED_FUNCTION_0_0();
   _os_crash_msg();
@@ -554,7 +554,7 @@ uint64_t __51__MIDaemonConfiguration_localSigningIsUnrestricted__block_invoke(ui
 
 - (void)installcoordinationdUserDataLibraryDirectory
 {
-  OUTLINED_FUNCTION_1(a1, a2);
+  OUTLINED_FUNCTION_1(self, a2);
   os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR);
   OUTLINED_FUNCTION_0_0();
   _os_crash_msg();

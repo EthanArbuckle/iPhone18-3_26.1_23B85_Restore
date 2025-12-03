@@ -1,40 +1,40 @@
 @interface WFUserSettings
-+ (id)_arrayByConvertingLinesInStringsAtPath:(id)a3;
++ (id)_arrayByConvertingLinesInStringsAtPath:(id)path;
 + (id)_metasiteDomainNamesArray;
 + (id)_sharedMetasiteDomainNamesDictionary;
 + (id)_sharedMetasiteExceptionsDomainNamesArray;
 + (id)metasitesExceptionPath;
 + (id)metasitesPath;
-- (BOOL)_addManagedDefaults:(id)a3;
-- (BOOL)_setManagedDefaults:(id)a3;
+- (BOOL)_addManagedDefaults:(id)defaults;
+- (BOOL)_setManagedDefaults:(id)defaults;
 - (BOOL)alwaysAllowHTTPS;
-- (BOOL)autoWhitelistContainsURL:(id)a3;
+- (BOOL)autoWhitelistContainsURL:(id)l;
 - (BOOL)contentFilterEnabled;
-- (BOOL)contentFilterListsAllowURL:(id)a3;
-- (BOOL)contentFilterOverriddenBlackListContainsURL:(id)a3;
-- (BOOL)contentFilterOverriddenList:(id)a3 containsURL:(id)a4;
-- (BOOL)contentFilterOverriddenWhiteListContainsURL:(id)a3;
-- (BOOL)contentFilterOverriddenWhiteListContainsURL:(id)a3 withAppleAllowList:(id)a4;
+- (BOOL)contentFilterListsAllowURL:(id)l;
+- (BOOL)contentFilterOverriddenBlackListContainsURL:(id)l;
+- (BOOL)contentFilterOverriddenList:(id)list containsURL:(id)l;
+- (BOOL)contentFilterOverriddenWhiteListContainsURL:(id)l;
+- (BOOL)contentFilterOverriddenWhiteListContainsURL:(id)l withAppleAllowList:(id)list;
 - (BOOL)contentFilterOverridesEnabled;
 - (BOOL)overridesAllowed;
 - (BOOL)restrictWebEnabled;
-- (BOOL)whiteListContainsURL:(id)a3;
+- (BOOL)whiteListContainsURL:(id)l;
 - (BOOL)whiteListEnabled;
 - (NSArray)contentFilterOverriddenBlackListedSites;
 - (NSArray)contentFilterOverriddenWhiteListedSites;
 - (NSArray)whiteListAllowedSites;
-- (WFUserSettings)initWithUserName:(id)a3;
-- (id)_userSettingsForUser:(id)a3;
+- (WFUserSettings)initWithUserName:(id)name;
+- (id)_userSettingsForUser:(id)user;
 - (id)contentFilterOverriddenBlackListedSitesBuffer;
-- (id)contentFilterOverriddenWhiteListedSitesBufferWithAdditionalURLStrings:(id)a3;
+- (id)contentFilterOverriddenWhiteListedSitesBufferWithAdditionalURLStrings:(id)strings;
 - (id)whiteListedSitesBuffer;
 - (int64_t)restrictionType;
 - (void)dealloc;
-- (void)setContentFilterOverriddenBlackListedSites:(id)a3;
-- (void)setContentFilterOverriddenWhiteListedSites:(id)a3;
-- (void)setOverridesAllowed:(BOOL)a3;
-- (void)setRestrictionType:(int64_t)a3;
-- (void)setWhiteListAllowedSites:(id)a3;
+- (void)setContentFilterOverriddenBlackListedSites:(id)sites;
+- (void)setContentFilterOverriddenWhiteListedSites:(id)sites;
+- (void)setOverridesAllowed:(BOOL)allowed;
+- (void)setRestrictionType:(int64_t)type;
+- (void)setWhiteListAllowedSites:(id)sites;
 - (void)whiteListedSitesBuffer;
 @end
 
@@ -90,29 +90,29 @@
   return result;
 }
 
-- (BOOL)_setManagedDefaults:(id)a3
+- (BOOL)_setManagedDefaults:(id)defaults
 {
-  v4 = [(WFUserSettings *)self _managedDefaultsPath];
+  _managedDefaultsPath = [(WFUserSettings *)self _managedDefaultsPath];
 
-  return [a3 writeToFile:v4 atomically:1];
+  return [defaults writeToFile:_managedDefaultsPath atomically:1];
 }
 
-- (BOOL)_addManagedDefaults:(id)a3
+- (BOOL)_addManagedDefaults:(id)defaults
 {
   v5 = [objc_msgSend(MEMORY[0x277CBEAC0] dictionaryWithContentsOfFile:{-[WFUserSettings _managedDefaultsPath](self, "_managedDefaultsPath")), "mutableCopy"}];
   v6 = v5;
   if (v5)
   {
-    [v5 addEntriesFromDictionary:a3];
-    a3 = v6;
+    [v5 addEntriesFromDictionary:defaults];
+    defaults = v6;
   }
 
-  v7 = [(WFUserSettings *)self _setManagedDefaults:a3];
+  v7 = [(WFUserSettings *)self _setManagedDefaults:defaults];
 
   return v7;
 }
 
-- (WFUserSettings)initWithUserName:(id)a3
+- (WFUserSettings)initWithUserName:(id)name
 {
   v7.receiver = self;
   v7.super_class = WFUserSettings;
@@ -120,7 +120,7 @@
   v5 = v4;
   if (v4)
   {
-    [(WFUserSettings *)v4 setUserName:a3];
+    [(WFUserSettings *)v4 setUserName:name];
   }
 
   return v5;
@@ -134,9 +134,9 @@
   [(WFUserSettings *)&v3 dealloc];
 }
 
-- (void)setRestrictionType:(int64_t)a3
+- (void)setRestrictionType:(int64_t)type
 {
-  switch(a3)
+  switch(type)
   {
     case 2:
       [(WFUserSettings *)self _addManagedDefaults:&unk_2882713E8];
@@ -171,13 +171,13 @@ LABEL_7:
   return [v2 objectForKey:@"filterWhitelist"];
 }
 
-- (void)setContentFilterOverriddenWhiteListedSites:(id)a3
+- (void)setContentFilterOverriddenWhiteListedSites:(id)sites
 {
   v5[1] = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (sites)
   {
     v4 = @"filterWhitelist";
-    v5[0] = a3;
+    v5[0] = sites;
     -[WFUserSettings _addManagedDefaults:](self, "_addManagedDefaults:", [MEMORY[0x277CBEAC0] dictionaryWithObjects:v5 forKeys:&v4 count:1]);
   }
 
@@ -191,13 +191,13 @@ LABEL_7:
   return [v2 objectForKey:@"filterBlacklist"];
 }
 
-- (void)setContentFilterOverriddenBlackListedSites:(id)a3
+- (void)setContentFilterOverriddenBlackListedSites:(id)sites
 {
   v5[1] = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (sites)
   {
     v4 = @"filterBlacklist";
-    v5[0] = a3;
+    v5[0] = sites;
     -[WFUserSettings _addManagedDefaults:](self, "_addManagedDefaults:", [MEMORY[0x277CBEAC0] dictionaryWithObjects:v5 forKeys:&v4 count:1]);
   }
 
@@ -211,13 +211,13 @@ LABEL_7:
   return [v2 objectForKey:@"siteWhitelist"];
 }
 
-- (void)setWhiteListAllowedSites:(id)a3
+- (void)setWhiteListAllowedSites:(id)sites
 {
   v5[1] = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (sites)
   {
     v4 = @"siteWhitelist";
-    v5[0] = a3;
+    v5[0] = sites;
     -[WFUserSettings _addManagedDefaults:](self, "_addManagedDefaults:", [MEMORY[0x277CBEAC0] dictionaryWithObjects:v5 forKeys:&v4 count:1]);
   }
 
@@ -238,11 +238,11 @@ LABEL_7:
   }
 }
 
-- (void)setOverridesAllowed:(BOOL)a3
+- (void)setOverridesAllowed:(BOOL)allowed
 {
   v6[1] = *MEMORY[0x277D85DE8];
   v5 = @"noOverridingAllowed";
-  v6[0] = [MEMORY[0x277CCABB0] numberWithBool:!a3];
+  v6[0] = [MEMORY[0x277CCABB0] numberWithBool:!allowed];
   -[WFUserSettings _addManagedDefaults:](self, "_addManagedDefaults:", [MEMORY[0x277CBEAC0] dictionaryWithObjects:v6 forKeys:&v5 count:1]);
   v4 = *MEMORY[0x277D85DE8];
 }
@@ -264,34 +264,34 @@ LABEL_7:
   return [v3 BOOLValue];
 }
 
-- (BOOL)contentFilterListsAllowURL:(id)a3
+- (BOOL)contentFilterListsAllowURL:(id)l
 {
-  v5 = [objc_msgSend(a3 "scheme")];
+  v5 = [objc_msgSend(l "scheme")];
   if (([v5 isEqualToString:@"https"] & 1) == 0 && !objc_msgSend(v5, "isEqualToString:", @"http"))
   {
     return 1;
   }
 
-  v6 = [a3 absoluteString];
+  absoluteString = [l absoluteString];
   if ([(WFUserSettings *)self contentFilterOverridesEnabled])
   {
-    if ([(WFUserSettings *)self contentFilterOverriddenBlackListContainsURL:v6])
+    if ([(WFUserSettings *)self contentFilterOverriddenBlackListContainsURL:absoluteString])
     {
       return 0;
     }
 
-    if ([(WFUserSettings *)self contentFilterOverriddenWhiteListContainsURL:v6]|| [(WFUserSettings *)self autoWhitelistContainsURL:a3])
+    if ([(WFUserSettings *)self contentFilterOverriddenWhiteListContainsURL:absoluteString]|| [(WFUserSettings *)self autoWhitelistContainsURL:l])
     {
       return 1;
     }
   }
 
-  if (![(WFUserSettings *)self whiteListEnabled]|| [(WFUserSettings *)self whiteListContainsURL:v6])
+  if (![(WFUserSettings *)self whiteListEnabled]|| [(WFUserSettings *)self whiteListContainsURL:absoluteString])
   {
     return 1;
   }
 
-  return [(WFUserSettings *)self autoWhitelistContainsURL:a3];
+  return [(WFUserSettings *)self autoWhitelistContainsURL:l];
 }
 
 - (BOOL)restrictWebEnabled
@@ -362,19 +362,19 @@ LABEL_7:
   return [v3 BOOLValue];
 }
 
-- (id)_userSettingsForUser:(id)a3
+- (id)_userSettingsForUser:(id)user
 {
   p_userSettings = &self->_userSettings;
   if (!self->_userSettings)
   {
-    v5 = [(WFUserSettings *)self _managedDefaultsPath];
-    if (v5)
+    _managedDefaultsPath = [(WFUserSettings *)self _managedDefaultsPath];
+    if (_managedDefaultsPath)
     {
-      *p_userSettings = [MEMORY[0x277CBEAC0] dictionaryWithContentsOfFile:v5];
+      *p_userSettings = [MEMORY[0x277CBEAC0] dictionaryWithContentsOfFile:_managedDefaultsPath];
       v6 = __WFDefaultLog();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
       {
-        [(WFUserSettings *)a3 _userSettingsForUser:v6];
+        [(WFUserSettings *)user _userSettingsForUser:v6];
       }
     }
   }
@@ -382,7 +382,7 @@ LABEL_7:
   return *p_userSettings;
 }
 
-- (id)contentFilterOverriddenWhiteListedSitesBufferWithAdditionalURLStrings:(id)a3
+- (id)contentFilterOverriddenWhiteListedSitesBufferWithAdditionalURLStrings:(id)strings
 {
   v28 = *MEMORY[0x277D85DE8];
   if (!self->_contentFilterOverriddenWhiteListedSitesBuffer)
@@ -394,7 +394,7 @@ LABEL_7:
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v8 = [a3 countByEnumeratingWithState:&v22 objects:v27 count:16];
+    v8 = [strings countByEnumeratingWithState:&v22 objects:v27 count:16];
     if (v8)
     {
       v9 = v8;
@@ -405,27 +405,27 @@ LABEL_7:
         {
           if (*v23 != v10)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(strings);
           }
 
           [(WFWhitelistSiteBuffer *)self->_contentFilterOverriddenWhiteListedSitesBuffer addURLString:*(*(&v22 + 1) + 8 * i)];
         }
 
-        v9 = [a3 countByEnumeratingWithState:&v22 objects:v27 count:16];
+        v9 = [strings countByEnumeratingWithState:&v22 objects:v27 count:16];
       }
 
       while (v9);
     }
 
-    v12 = [(WFUserSettings *)self contentFilterOverriddenWhiteListedSites];
-    if (v12)
+    contentFilterOverriddenWhiteListedSites = [(WFUserSettings *)self contentFilterOverriddenWhiteListedSites];
+    if (contentFilterOverriddenWhiteListedSites)
     {
-      v13 = v12;
+      v13 = contentFilterOverriddenWhiteListedSites;
       v20 = 0u;
       v21 = 0u;
       v18 = 0u;
       v19 = 0u;
-      v14 = [(NSArray *)v12 countByEnumeratingWithState:&v18 objects:v26 count:16];
+      v14 = [(NSArray *)contentFilterOverriddenWhiteListedSites countByEnumeratingWithState:&v18 objects:v26 count:16];
       if (v14)
       {
         v15 = v14;
@@ -461,15 +461,15 @@ LABEL_7:
   if (!self->_contentFilterOverriddenBlackListedSitesBuffer)
   {
     self->_contentFilterOverriddenBlackListedSitesBuffer = objc_alloc_init(WFWhitelistSiteBuffer);
-    v5 = [(WFUserSettings *)self contentFilterOverriddenBlackListedSites];
-    if (v5)
+    contentFilterOverriddenBlackListedSites = [(WFUserSettings *)self contentFilterOverriddenBlackListedSites];
+    if (contentFilterOverriddenBlackListedSites)
     {
-      v6 = v5;
+      v6 = contentFilterOverriddenBlackListedSites;
       v13 = 0u;
       v14 = 0u;
       v11 = 0u;
       v12 = 0u;
-      v7 = [(NSArray *)v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [(NSArray *)contentFilterOverriddenBlackListedSites countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v7)
       {
         v8 = v7;
@@ -506,15 +506,15 @@ LABEL_7:
   {
     self->_whiteListedSitesBuffer = objc_alloc_init(WFWhitelistSiteBuffer);
     [(WFWhitelistSiteBuffer *)self->_contentFilterOverriddenWhiteListedSitesBuffer addURLString:@"https://setup.icloud.com"];
-    v5 = [(WFUserSettings *)self whiteListAllowedSites];
-    if (v5)
+    whiteListAllowedSites = [(WFUserSettings *)self whiteListAllowedSites];
+    if (whiteListAllowedSites)
     {
-      v6 = v5;
+      v6 = whiteListAllowedSites;
       v18 = 0u;
       v19 = 0u;
       v16 = 0u;
       v17 = 0u;
-      v7 = [(NSArray *)v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v7 = [(NSArray *)whiteListAllowedSites countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v7)
       {
         v8 = v7;
@@ -563,14 +563,14 @@ LABEL_7:
   return result;
 }
 
-- (BOOL)contentFilterOverriddenList:(id)a3 containsURL:(id)a4
+- (BOOL)contentFilterOverriddenList:(id)list containsURL:(id)l
 {
-  v5 = [a4 WF_stringByProperlyFixingPercentEscapesUsingEncoding:4];
+  v5 = [l WF_stringByProperlyFixingPercentEscapesUsingEncoding:4];
   if (v5 && (v6 = [MEMORY[0x277CBEBC0] URLWithString:v5]) != 0)
   {
     v7 = [objc_msgSend(v6 "absoluteString")];
 
-    return [a3 containsURLString:v7];
+    return [list containsURLString:v7];
   }
 
   else
@@ -585,73 +585,73 @@ LABEL_7:
   }
 }
 
-- (BOOL)contentFilterOverriddenWhiteListContainsURL:(id)a3 withAppleAllowList:(id)a4
+- (BOOL)contentFilterOverriddenWhiteListContainsURL:(id)l withAppleAllowList:(id)list
 {
   v12 = *MEMORY[0x277D85DE8];
   v7 = __WFDefaultLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v10 = 138412290;
-    v11 = a3;
+    lCopy = l;
     _os_log_impl(&dword_272D73000, v7, OS_LOG_TYPE_INFO, "Checking if %@ is in contentFilterOverriddenWhiteList:withAppleAllowList", &v10, 0xCu);
   }
 
-  result = -[WFUserSettings contentFilterOverriddenList:containsURL:](self, "contentFilterOverriddenList:containsURL:", -[WFUserSettings contentFilterOverriddenWhiteListedSitesBufferWithAdditionalURLStrings:](self, "contentFilterOverriddenWhiteListedSitesBufferWithAdditionalURLStrings:", [a4 allowList]), a3);
+  result = -[WFUserSettings contentFilterOverriddenList:containsURL:](self, "contentFilterOverriddenList:containsURL:", -[WFUserSettings contentFilterOverriddenWhiteListedSitesBufferWithAdditionalURLStrings:](self, "contentFilterOverriddenWhiteListedSitesBufferWithAdditionalURLStrings:", [list allowList]), l);
   v9 = *MEMORY[0x277D85DE8];
   return result;
 }
 
-- (BOOL)contentFilterOverriddenWhiteListContainsURL:(id)a3
+- (BOOL)contentFilterOverriddenWhiteListContainsURL:(id)l
 {
   v10 = *MEMORY[0x277D85DE8];
   v5 = __WFDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v8 = 138412290;
-    v9 = a3;
+    lCopy = l;
     _os_log_impl(&dword_272D73000, v5, OS_LOG_TYPE_INFO, "Checking if %@ is in contentFilterOverriddenWhiteList", &v8, 0xCu);
   }
 
-  result = [(WFUserSettings *)self contentFilterOverriddenList:[(WFUserSettings *)self contentFilterOverriddenWhiteListedSitesBuffer] containsURL:a3];
+  result = [(WFUserSettings *)self contentFilterOverriddenList:[(WFUserSettings *)self contentFilterOverriddenWhiteListedSitesBuffer] containsURL:l];
   v7 = *MEMORY[0x277D85DE8];
   return result;
 }
 
-- (BOOL)contentFilterOverriddenBlackListContainsURL:(id)a3
+- (BOOL)contentFilterOverriddenBlackListContainsURL:(id)l
 {
   v10 = *MEMORY[0x277D85DE8];
   v5 = __WFDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v8 = 138412290;
-    v9 = a3;
+    lCopy = l;
     _os_log_impl(&dword_272D73000, v5, OS_LOG_TYPE_INFO, "Checking if %@ is in contentFilterOverriddenBlackList", &v8, 0xCu);
   }
 
-  result = [(WFUserSettings *)self contentFilterOverriddenList:[(WFUserSettings *)self contentFilterOverriddenBlackListedSitesBuffer] containsURL:a3];
+  result = [(WFUserSettings *)self contentFilterOverriddenList:[(WFUserSettings *)self contentFilterOverriddenBlackListedSitesBuffer] containsURL:l];
   v7 = *MEMORY[0x277D85DE8];
   return result;
 }
 
-- (BOOL)whiteListContainsURL:(id)a3
+- (BOOL)whiteListContainsURL:(id)l
 {
   v10 = *MEMORY[0x277D85DE8];
   v5 = __WFDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v8 = 138412290;
-    v9 = a3;
+    lCopy = l;
     _os_log_impl(&dword_272D73000, v5, OS_LOG_TYPE_INFO, "Checking if %@ is in whiteList", &v8, 0xCu);
   }
 
-  result = [(WFUserSettings *)self contentFilterOverriddenList:[(WFUserSettings *)self whiteListedSitesBuffer] containsURL:a3];
+  result = [(WFUserSettings *)self contentFilterOverriddenList:[(WFUserSettings *)self whiteListedSitesBuffer] containsURL:l];
   v7 = *MEMORY[0x277D85DE8];
   return result;
 }
 
-- (BOOL)autoWhitelistContainsURL:(id)a3
+- (BOOL)autoWhitelistContainsURL:(id)l
 {
-  v3 = [objc_msgSend(a3 "host")];
+  v3 = [objc_msgSend(l "host")];
   if ([v3 isEqualToString:@"apple.com"] & 1) != 0 || (objc_msgSend(v3, "hasSuffix:", @".apple.com") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"icloud.com") & 1) != 0 || (objc_msgSend(v3, "hasSuffix:", @".icloud.com") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"me.com") & 1) != 0 || (objc_msgSend(v3, "hasSuffix:", @".me.com") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"mac.com"))
   {
     return 1;
@@ -674,11 +674,11 @@ LABEL_7:
   return [v2 pathForResource:@"metasites_exceptions" ofType:@"txt"];
 }
 
-+ (id)_arrayByConvertingLinesInStringsAtPath:(id)a3
++ (id)_arrayByConvertingLinesInStringsAtPath:(id)path
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = [MEMORY[0x277CBEB18] array];
-  v5 = [MEMORY[0x277CCACA8] stringWithContentsOfFile:a3 encoding:4 error:0];
+  array = [MEMORY[0x277CBEB18] array];
+  v5 = [MEMORY[0x277CCACA8] stringWithContentsOfFile:path encoding:4 error:0];
   if (v5)
   {
     v6 = [v5 componentsSeparatedByString:@"\n"];
@@ -703,7 +703,7 @@ LABEL_7:
           v11 = *(*(&v15 + 1) + 8 * i);
           if ([v11 length] && (objc_msgSend(v11, "hasPrefix:", @"#") & 1) == 0)
           {
-            [v4 addObject:v11];
+            [array addObject:v11];
           }
         }
 
@@ -713,7 +713,7 @@ LABEL_7:
       while (v8);
     }
 
-    result = [MEMORY[0x277CBEA60] arrayWithArray:v4];
+    result = [MEMORY[0x277CBEA60] arrayWithArray:array];
   }
 
   else
@@ -733,7 +733,7 @@ LABEL_7:
 
 + (id)_metasiteDomainNamesArray
 {
-  v2 = [a1 _arrayByConvertingLinesInStringsAtPath:{objc_msgSend(objc_opt_class(), "metasitesPath")}];
+  v2 = [self _arrayByConvertingLinesInStringsAtPath:{objc_msgSend(objc_opt_class(), "metasitesPath")}];
   if (!v2)
   {
     v3 = __WFDefaultLog();
@@ -750,7 +750,7 @@ LABEL_7:
 {
   if (!_sharedMetasiteExceptionsDomainNamesArray_result_0)
   {
-    _sharedMetasiteExceptionsDomainNamesArray_result_0 = [a1 _arrayByConvertingLinesInStringsAtPath:{objc_msgSend(objc_opt_class(), "metasitesExceptionPath")}];
+    _sharedMetasiteExceptionsDomainNamesArray_result_0 = [self _arrayByConvertingLinesInStringsAtPath:{objc_msgSend(objc_opt_class(), "metasitesExceptionPath")}];
     v2 = _sharedMetasiteExceptionsDomainNamesArray_result_0;
     if (!_sharedMetasiteExceptionsDomainNamesArray_result_0)
     {
@@ -770,8 +770,8 @@ LABEL_7:
   result = _sharedMetasiteDomainNamesDictionary_result_0;
   if (!_sharedMetasiteDomainNamesDictionary_result_0)
   {
-    v4 = [a1 _metasiteDomainNamesArray];
-    _sharedMetasiteDomainNamesDictionary_result_0 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v4 forKeys:v4];
+    _metasiteDomainNamesArray = [self _metasiteDomainNamesArray];
+    _sharedMetasiteDomainNamesDictionary_result_0 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:_metasiteDomainNamesArray forKeys:_metasiteDomainNamesArray];
     v5 = _sharedMetasiteDomainNamesDictionary_result_0;
     return _sharedMetasiteDomainNamesDictionary_result_0;
   }

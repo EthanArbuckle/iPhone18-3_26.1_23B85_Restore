@@ -1,34 +1,34 @@
 @interface VoiceOverVerbosityController
-- (id)actionConfirmation:(id)a3;
-- (id)actionsFeedbackString:(id)a3;
-- (id)capitalLetterString:(id)a3;
-- (id)containerFeedback:(id)a3;
-- (id)customLabelsString:(id)a3;
-- (id)deletionFeedbackString:(id)a3;
-- (id)emojiSuffix:(id)a3;
-- (id)emojisFeedback:(id)a3;
-- (id)flashlightNotifications:(id)a3;
-- (id)hintsEnabled:(id)a3;
-- (id)linkFeedbackString:(id)a3;
-- (id)listAnnotationString:(id)a3;
-- (id)mediaDescriptionsString:(id)a3;
-- (id)moreContentFeedback:(id)a3;
-- (id)numberFeedbackString:(id)a3;
-- (id)punctuationLevel:(id)a3;
-- (id)rotorSummaryFeedback:(id)a3;
-- (id)rowColumnNumbers:(id)a3;
-- (id)sceneDescriptionsString:(id)a3;
-- (id)speakNotifications:(id)a3;
+- (id)actionConfirmation:(id)confirmation;
+- (id)actionsFeedbackString:(id)string;
+- (id)capitalLetterString:(id)string;
+- (id)containerFeedback:(id)feedback;
+- (id)customLabelsString:(id)string;
+- (id)deletionFeedbackString:(id)string;
+- (id)emojiSuffix:(id)suffix;
+- (id)emojisFeedback:(id)feedback;
+- (id)flashlightNotifications:(id)notifications;
+- (id)hintsEnabled:(id)enabled;
+- (id)linkFeedbackString:(id)string;
+- (id)listAnnotationString:(id)string;
+- (id)mediaDescriptionsString:(id)string;
+- (id)moreContentFeedback:(id)feedback;
+- (id)numberFeedbackString:(id)string;
+- (id)punctuationLevel:(id)level;
+- (id)rotorSummaryFeedback:(id)feedback;
+- (id)rowColumnNumbers:(id)numbers;
+- (id)sceneDescriptionsString:(id)string;
+- (id)speakNotifications:(id)notifications;
 - (id)specifiers;
-- (id)tableHeaders:(id)a3;
-- (id)traitFeedbackString:(id)a3;
-- (id)voiceOverQuickNavAnnouncementFeedbackString:(id)a3;
-- (void)setActionConfirmation:(id)a3 specifier:(id)a4;
-- (void)setEmojiSuffixEnabled:(id)a3 specifier:(id)a4;
-- (void)setHintsEnabled:(id)a3 specifier:(id)a4;
-- (void)setRowColummNumbers:(id)a3 specifier:(id)a4;
-- (void)setSpeakNotifications:(id)a3 specifier:(id)a4;
-- (void)setTableHeaders:(id)a3 specifier:(id)a4;
+- (id)tableHeaders:(id)headers;
+- (id)traitFeedbackString:(id)string;
+- (id)voiceOverQuickNavAnnouncementFeedbackString:(id)string;
+- (void)setActionConfirmation:(id)confirmation specifier:(id)specifier;
+- (void)setEmojiSuffixEnabled:(id)enabled specifier:(id)specifier;
+- (void)setHintsEnabled:(id)enabled specifier:(id)specifier;
+- (void)setRowColummNumbers:(id)numbers specifier:(id)specifier;
+- (void)setSpeakNotifications:(id)notifications specifier:(id)specifier;
+- (void)setTableHeaders:(id)headers specifier:(id)specifier;
 - (void)viewDidLoad;
 @end
 
@@ -322,8 +322,8 @@ void __43__VoiceOverVerbosityController_viewDidLoad__block_invoke_16(uint64_t a1
     [v9 setProperty:&__kCFBooleanFalse forKey:v7];
     [v4 addObject:v9];
     v11 = +[AXSettings sharedInstance];
-    v12 = [v11 voiceOverCustomLabels];
-    v13 = [v12 count];
+    voiceOverCustomLabels = [v11 voiceOverCustomLabels];
+    v13 = [voiceOverCustomLabels count];
 
     if (v13)
     {
@@ -381,7 +381,7 @@ void __43__VoiceOverVerbosityController_viewDidLoad__block_invoke_16(uint64_t a1
     if (MGGetBoolAnswer() && _os_feature_enabled_impl())
     {
       v28 = settingsLocString(@"FLASHLIGHT_NOTIFICATIONS", @"VoiceOverSettings");
-      v29 = self;
+      selfCopy2 = self;
       v30 = [PSSpecifier preferenceSpecifierNamed:v28 target:self set:0 get:"flashlightNotifications:" detail:objc_opt_class() cell:2 edit:0];
 
       [v30 setProperty:&__kCFBooleanFalse forKey:v90];
@@ -397,7 +397,7 @@ void __43__VoiceOverVerbosityController_viewDidLoad__block_invoke_16(uint64_t a1
     else
     {
       v31 = v4;
-      v29 = self;
+      selfCopy2 = self;
     }
 
     v32 = +[PSSpecifier emptyGroupSpecifier];
@@ -406,14 +406,14 @@ void __43__VoiceOverVerbosityController_viewDidLoad__block_invoke_16(uint64_t a1
     [v32 setProperty:&__kCFBooleanTrue forKey:v27];
     [v31 addObject:v32];
     v34 = settingsLocString(@"CAPITAL_LETTER", @"VoiceOverSettings");
-    v35 = [PSSpecifier preferenceSpecifierNamed:v34 target:v29 set:0 get:"capitalLetterString:" detail:objc_opt_class() cell:2 edit:0];
+    v35 = [PSSpecifier preferenceSpecifierNamed:v34 target:selfCopy2 set:0 get:"capitalLetterString:" detail:objc_opt_class() cell:2 edit:0];
 
     [v35 setProperty:@"voiceOverCapitalLetterFeedback" forKey:v91];
     [v35 setProperty:&__kCFBooleanFalse forKey:v90];
     [v35 setProperty:&__kCFBooleanTrue forKey:v33];
     [v31 addObject:v35];
     v36 = settingsLocString(@"DELETION_FEEDBACK", @"VoiceOverSettings");
-    v37 = [PSSpecifier preferenceSpecifierNamed:v36 target:v29 set:0 get:"deletionFeedbackString:" detail:objc_opt_class() cell:2 edit:0];
+    v37 = [PSSpecifier preferenceSpecifierNamed:v36 target:selfCopy2 set:0 get:"deletionFeedbackString:" detail:objc_opt_class() cell:2 edit:0];
 
     [v37 setProperty:@"voiceOverDeletionFeedback" forKey:v91];
     [v37 setProperty:&__kCFBooleanFalse forKey:v90];
@@ -421,7 +421,7 @@ void __43__VoiceOverVerbosityController_viewDidLoad__block_invoke_16(uint64_t a1
     [v37 setProperty:&__kCFBooleanTrue forKey:v33];
     [v31 addObject:v37];
     v38 = settingsLocString(@"LINK_ATTACHMENT_FEEDBACK", @"VoiceOverSettings");
-    v39 = [PSSpecifier preferenceSpecifierNamed:v38 target:v29 set:0 get:"linkFeedbackString:" detail:objc_opt_class() cell:2 edit:0];
+    v39 = [PSSpecifier preferenceSpecifierNamed:v38 target:selfCopy2 set:0 get:"linkFeedbackString:" detail:objc_opt_class() cell:2 edit:0];
 
     [v39 setProperty:&__block_literal_global_464 forKey:@"setValueSelectedBlock"];
     [v39 setProperty:&__block_literal_global_466 forKey:@"getValueSelectedBlock"];
@@ -431,7 +431,7 @@ void __43__VoiceOverVerbosityController_viewDidLoad__block_invoke_16(uint64_t a1
     [v39 setProperty:&__kCFBooleanTrue forKey:v33];
     [v31 addObject:v39];
     v40 = settingsLocString(@"ACTIONS_FEEDBACK", @"VoiceOverSettings");
-    v41 = [PSSpecifier preferenceSpecifierNamed:v40 target:v29 set:0 get:"actionsFeedbackString:" detail:objc_opt_class() cell:2 edit:0];
+    v41 = [PSSpecifier preferenceSpecifierNamed:v40 target:selfCopy2 set:0 get:"actionsFeedbackString:" detail:objc_opt_class() cell:2 edit:0];
 
     [v41 setProperty:&__block_literal_global_476 forKey:@"setValueSelectedBlock"];
     [v41 setProperty:&__block_literal_global_478 forKey:?];
@@ -443,7 +443,7 @@ void __43__VoiceOverVerbosityController_viewDidLoad__block_invoke_16(uint64_t a1
     [v41 setProperty:&__kCFBooleanTrue forKey:v33];
     [v31 addObject:v41];
     v43 = settingsLocString(@"MORE_CONTENT_FEEDBACK", @"VoiceOverSettings");
-    v44 = [PSSpecifier preferenceSpecifierNamed:v43 target:v29 set:0 get:"moreContentFeedback:" detail:objc_opt_class() cell:2 edit:0];
+    v44 = [PSSpecifier preferenceSpecifierNamed:v43 target:selfCopy2 set:0 get:"moreContentFeedback:" detail:objc_opt_class() cell:2 edit:0];
 
     [v44 setProperty:&__block_literal_global_501 forKey:@"setValueSelectedBlock"];
     [v44 setProperty:&__block_literal_global_503 forKey:@"getValueSelectedBlock"];
@@ -453,7 +453,7 @@ void __43__VoiceOverVerbosityController_viewDidLoad__block_invoke_16(uint64_t a1
     [v44 setProperty:&__kCFBooleanTrue forKey:v33];
     [v31 addObject:v44];
     v45 = settingsLocString(@"CONTAINER_FEEDBACK", @"VoiceOverSettings");
-    v46 = [PSSpecifier preferenceSpecifierNamed:v45 target:v29 set:0 get:"containerFeedback:" detail:objc_opt_class() cell:2 edit:0];
+    v46 = [PSSpecifier preferenceSpecifierNamed:v45 target:selfCopy2 set:0 get:"containerFeedback:" detail:objc_opt_class() cell:2 edit:0];
 
     [v46 setProperty:&__block_literal_global_513 forKey:@"setValueSelectedBlock"];
     [v46 setProperty:&__block_literal_global_515 forKey:@"getValueSelectedBlock"];
@@ -462,20 +462,20 @@ void __43__VoiceOverVerbosityController_viewDidLoad__block_invoke_16(uint64_t a1
     [v46 setProperty:&__kCFBooleanTrue forKey:v33];
     [v31 addObject:v46];
     v47 = settingsLocString(@"NUMBER_FEEDBACK", @"VoiceOverSettings");
-    v48 = [PSSpecifier preferenceSpecifierNamed:v47 target:v29 set:0 get:"numberFeedbackString:" detail:objc_opt_class() cell:2 edit:0];
+    v48 = [PSSpecifier preferenceSpecifierNamed:v47 target:selfCopy2 set:0 get:"numberFeedbackString:" detail:objc_opt_class() cell:2 edit:0];
 
     [v48 setProperty:@"voiceOverNumberFeedback" forKey:v91];
     [v48 setProperty:&__kCFBooleanFalse forKey:v90];
     [v48 setProperty:? forKey:?];
     [v31 addObject:v48];
     v49 = settingsLocString(@"PREDICTIVE_TEXT_FEEDBACK", @"VoiceOverSettings");
-    v88 = v29;
-    v50 = [PSSpecifier preferenceSpecifierNamed:v49 target:v29 set:0 get:0 detail:objc_opt_class() cell:1 edit:0];
+    v88 = selfCopy2;
+    v50 = [PSSpecifier preferenceSpecifierNamed:v49 target:selfCopy2 set:0 get:0 detail:objc_opt_class() cell:1 edit:0];
 
     [v50 setProperty:@"PREDICTIVE_TEXT_FEEDBACK" forKey:v91];
     [v31 addObject:v50];
     v51 = settingsLocString(@"LIST_ANNOTATION", @"VoiceOverSettings");
-    v52 = [PSSpecifier preferenceSpecifierNamed:v51 target:v29 set:0 get:"listAnnotationString:" detail:objc_opt_class() cell:2 edit:0];
+    v52 = [PSSpecifier preferenceSpecifierNamed:v51 target:selfCopy2 set:0 get:"listAnnotationString:" detail:objc_opt_class() cell:2 edit:0];
 
     [v52 setProperty:&__kCFBooleanTrue forKey:@"ignoreSoundOption"];
     [v52 setProperty:&__kCFBooleanTrue forKey:@"ignorePitchOption"];
@@ -496,13 +496,13 @@ void __43__VoiceOverVerbosityController_viewDidLoad__block_invoke_16(uint64_t a1
     [v55 setProperty:&__kCFBooleanTrue forKey:v86];
     [v31 addObject:v55];
     v57 = settingsLocString(@"SPEAK_TABLE_HEADERS", @"VoiceOverSettings");
-    v58 = [PSSpecifier preferenceSpecifierNamed:v57 target:v29 set:"setTableHeaders:specifier:" get:"tableHeaders:" detail:0 cell:6 edit:0];
+    v58 = [PSSpecifier preferenceSpecifierNamed:v57 target:selfCopy2 set:"setTableHeaders:specifier:" get:"tableHeaders:" detail:0 cell:6 edit:0];
 
     [v58 setProperty:@"speakTableHeader" forKey:v91];
     [v58 setProperty:&__kCFBooleanTrue forKey:v86];
     [v31 addObject:v58];
     v59 = settingsLocString(@"SPEAK_TABLE_ROW_COLUMN", @"VoiceOverSettings");
-    v60 = [PSSpecifier preferenceSpecifierNamed:v59 target:v29 set:"setRowColummNumbers:specifier:" get:"rowColumnNumbers:" detail:0 cell:6 edit:0];
+    v60 = [PSSpecifier preferenceSpecifierNamed:v59 target:selfCopy2 set:"setRowColummNumbers:specifier:" get:"rowColumnNumbers:" detail:0 cell:6 edit:0];
 
     [v60 setProperty:&__kCFBooleanTrue forKey:v90];
     [v60 setProperty:&__kCFBooleanTrue forKey:v86];
@@ -514,13 +514,13 @@ void __43__VoiceOverVerbosityController_viewDidLoad__block_invoke_16(uint64_t a1
     [v62 setProperty:&__kCFBooleanTrue forKey:v86];
     [v31 addObject:v62];
     v63 = settingsLocString(@"ACTION_CONFIRMATION", @"VoiceOverSettings");
-    v64 = [PSSpecifier preferenceSpecifierNamed:v63 target:v29 set:"setActionConfirmation:specifier:" get:"actionConfirmation:" detail:0 cell:6 edit:0];
+    v64 = [PSSpecifier preferenceSpecifierNamed:v63 target:selfCopy2 set:"setActionConfirmation:specifier:" get:"actionConfirmation:" detail:0 cell:6 edit:0];
 
     [v64 setProperty:&__kCFBooleanTrue forKey:v86];
     [v64 setProperty:&__kCFBooleanTrue forKey:v90];
     [v31 addObject:v64];
     v65 = settingsLocString(@"ROTOR_SUMMARY", @"VoiceOverSettings");
-    v66 = [PSSpecifier preferenceSpecifierNamed:v65 target:v29 set:0 get:"rotorSummaryFeedback:" detail:objc_opt_class() cell:2 edit:0];
+    v66 = [PSSpecifier preferenceSpecifierNamed:v65 target:selfCopy2 set:0 get:"rotorSummaryFeedback:" detail:objc_opt_class() cell:2 edit:0];
 
     [v66 setProperty:&__block_literal_global_580 forKey:@"setValueSelectedBlock"];
     [v66 setProperty:&__block_literal_global_582_0 forKey:@"getValueSelectedBlock"];
@@ -539,7 +539,7 @@ void __43__VoiceOverVerbosityController_viewDidLoad__block_invoke_16(uint64_t a1
     [v67 setProperty:&__kCFBooleanFalse forKey:v90];
     [v31 addObject:v67];
     v69 = settingsLocString(@"EMOJIS", @"VoiceOverSettings");
-    v70 = [PSSpecifier preferenceSpecifierNamed:v69 target:v29 set:0 get:"emojisFeedback:" detail:objc_opt_class() cell:2 edit:0];
+    v70 = [PSSpecifier preferenceSpecifierNamed:v69 target:selfCopy2 set:0 get:"emojisFeedback:" detail:objc_opt_class() cell:2 edit:0];
 
     [v70 setProperty:&__block_literal_global_595 forKey:@"setValueSelectedBlock"];
     [v70 setProperty:&__block_literal_global_597 forKey:@"getValueSelectedBlock"];
@@ -550,7 +550,7 @@ void __43__VoiceOverVerbosityController_viewDidLoad__block_invoke_16(uint64_t a1
     [v70 setProperty:&__kCFBooleanTrue forKey:v86];
     [v31 addObject:v70];
     v71 = settingsLocString(@"EMOJI_SUFFIX", @"VoiceOverSettings");
-    v72 = [PSSpecifier preferenceSpecifierNamed:v71 target:v29 set:"setEmojiSuffixEnabled:specifier:" get:"emojiSuffix:" detail:0 cell:6 edit:0];
+    v72 = [PSSpecifier preferenceSpecifierNamed:v71 target:selfCopy2 set:"setEmojiSuffixEnabled:specifier:" get:"emojiSuffix:" detail:0 cell:6 edit:0];
 
     [v72 setProperty:&__kCFBooleanTrue forKey:v90];
     [v72 setProperty:&__kCFBooleanTrue forKey:v86];
@@ -771,7 +771,7 @@ int64_t __42__VoiceOverVerbosityController_specifiers__block_invoke_23(id a1)
   return v2;
 }
 
-- (id)flashlightNotifications:(id)a3
+- (id)flashlightNotifications:(id)notifications
 {
   v3 = +[AXSettings sharedInstance];
   if ([v3 voiceOverFlashlightNotificationsEnabled])
@@ -789,7 +789,7 @@ int64_t __42__VoiceOverVerbosityController_specifiers__block_invoke_23(id a1)
   return v5;
 }
 
-- (id)emojisFeedback:(id)a3
+- (id)emojisFeedback:(id)feedback
 {
   v3 = +[AXSettings sharedInstance];
   v4 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v3 voiceOverVerbosityEmojiFeedback]);
@@ -798,7 +798,7 @@ int64_t __42__VoiceOverVerbosityController_specifiers__block_invoke_23(id a1)
   return v5;
 }
 
-- (id)linkFeedbackString:(id)a3
+- (id)linkFeedbackString:(id)string
 {
   v3 = +[AXSettings sharedInstance];
   v4 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v3 voiceOverLinkFeedback]);
@@ -807,7 +807,7 @@ int64_t __42__VoiceOverVerbosityController_specifiers__block_invoke_23(id a1)
   return v5;
 }
 
-- (id)traitFeedbackString:(id)a3
+- (id)traitFeedbackString:(id)string
 {
   v3 = +[AXSettings sharedInstance];
   v4 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v3 voiceOverTraitFeedback]);
@@ -816,7 +816,7 @@ int64_t __42__VoiceOverVerbosityController_specifiers__block_invoke_23(id a1)
   return v5;
 }
 
-- (id)containerFeedback:(id)a3
+- (id)containerFeedback:(id)feedback
 {
   v3 = +[AXSettings sharedInstance];
   v4 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v3 voiceOverContainerOutputFeedback]);
@@ -825,7 +825,7 @@ int64_t __42__VoiceOverVerbosityController_specifiers__block_invoke_23(id a1)
   return v5;
 }
 
-- (id)rotorSummaryFeedback:(id)a3
+- (id)rotorSummaryFeedback:(id)feedback
 {
   v3 = +[AXSettings sharedInstance];
   v4 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v3 voiceOverRotorSummaryFeedback]);
@@ -834,7 +834,7 @@ int64_t __42__VoiceOverVerbosityController_specifiers__block_invoke_23(id a1)
   return v5;
 }
 
-- (id)listAnnotationString:(id)a3
+- (id)listAnnotationString:(id)string
 {
   v3 = +[AXSettings sharedInstance];
   v4 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v3 voiceOverListAnnotation]);
@@ -843,7 +843,7 @@ int64_t __42__VoiceOverVerbosityController_specifiers__block_invoke_23(id a1)
   return v5;
 }
 
-- (id)moreContentFeedback:(id)a3
+- (id)moreContentFeedback:(id)feedback
 {
   v3 = +[AXSettings sharedInstance];
   v4 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v3 voiceOverMoreContentOutputFeedback]);
@@ -852,18 +852,18 @@ int64_t __42__VoiceOverVerbosityController_specifiers__block_invoke_23(id a1)
   return v5;
 }
 
-- (id)numberFeedbackString:(id)a3
+- (id)numberFeedbackString:(id)string
 {
   v3 = +[AXSettings sharedInstance];
-  v4 = [v3 voiceOverNumberFeedback];
+  voiceOverNumberFeedback = [v3 voiceOverNumberFeedback];
 
-  if (v4 == &dword_0 + 1)
+  if (voiceOverNumberFeedback == &dword_0 + 1)
   {
     v5 = @"NUMBER_FEEDBACK_WORDS";
     goto LABEL_5;
   }
 
-  if (v4 == &dword_0 + 2)
+  if (voiceOverNumberFeedback == &dword_0 + 2)
   {
     v5 = @"NUMBER_FEEDBACK_DIGITS";
 LABEL_5:
@@ -877,7 +877,7 @@ LABEL_7:
   return v6;
 }
 
-- (id)actionsFeedbackString:(id)a3
+- (id)actionsFeedbackString:(id)string
 {
   v3 = +[AXSettings sharedInstance];
   v4 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v3 voiceOverActionsFeedback]);
@@ -886,59 +886,59 @@ LABEL_7:
   return v5;
 }
 
-- (id)deletionFeedbackString:(id)a3
+- (id)deletionFeedbackString:(id)string
 {
   v3 = +[AXSettings sharedInstance];
-  v4 = [v3 voiceOverDeletionFeedback];
+  voiceOverDeletionFeedback = [v3 voiceOverDeletionFeedback];
 
-  if (v4 > 3)
+  if (voiceOverDeletionFeedback > 3)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = settingsLocString(*(&off_257558 + v4), @"VoiceOverSettings");
+    v5 = settingsLocString(*(&off_257558 + voiceOverDeletionFeedback), @"VoiceOverSettings");
   }
 
   return v5;
 }
 
-- (id)punctuationLevel:(id)a3
+- (id)punctuationLevel:(id)level
 {
   v3 = +[AXSettings sharedInstance];
-  v4 = [v3 voiceOverPunctuationGroup];
-  v5 = AXSettingsNameForPunctuationGroupUUID(v4);
+  voiceOverPunctuationGroup = [v3 voiceOverPunctuationGroup];
+  v5 = AXSettingsNameForPunctuationGroupUUID(voiceOverPunctuationGroup);
 
   return v5;
 }
 
-- (id)capitalLetterString:(id)a3
+- (id)capitalLetterString:(id)string
 {
   v3 = +[AXSettings sharedInstance];
-  v4 = [v3 voiceOverCapitalLetterFeedback];
+  voiceOverCapitalLetterFeedback = [v3 voiceOverCapitalLetterFeedback];
 
-  if (v4 > 3)
+  if (voiceOverCapitalLetterFeedback > 3)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = settingsLocString(*(&off_257578 + v4), @"VoiceOverSettings");
+    v5 = settingsLocString(*(&off_257578 + voiceOverCapitalLetterFeedback), @"VoiceOverSettings");
   }
 
   return v5;
 }
 
-- (void)setActionConfirmation:(id)a3 specifier:(id)a4
+- (void)setActionConfirmation:(id)confirmation specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [confirmation BOOLValue];
   v5 = +[AXSettings sharedInstance];
-  [v5 setVoiceOverSpeakActionConfirmation:v4];
+  [v5 setVoiceOverSpeakActionConfirmation:bOOLValue];
 }
 
-- (id)actionConfirmation:(id)a3
+- (id)actionConfirmation:(id)confirmation
 {
   v3 = +[AXSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 voiceOverSpeakActionConfirmation]);
@@ -946,7 +946,7 @@ LABEL_7:
   return v4;
 }
 
-- (id)sceneDescriptionsString:(id)a3
+- (id)sceneDescriptionsString:(id)string
 {
   v3 = +[AXSettings sharedInstance];
   if ([v3 voiceOverSceneDescriptionsEnabled])
@@ -964,7 +964,7 @@ LABEL_7:
   return v5;
 }
 
-- (id)mediaDescriptionsString:(id)a3
+- (id)mediaDescriptionsString:(id)string
 {
   v3 = +[AXSettings sharedInstance];
   [v3 voiceOverDescribedMedia];
@@ -973,14 +973,14 @@ LABEL_7:
   return v4;
 }
 
-- (void)setSpeakNotifications:(id)a3 specifier:(id)a4
+- (void)setSpeakNotifications:(id)notifications specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [notifications BOOLValue];
   v5 = +[AXSettings sharedInstance];
-  [v5 setVoiceOverSpeakNotificationsEnabled:v4];
+  [v5 setVoiceOverSpeakNotificationsEnabled:bOOLValue];
 }
 
-- (id)speakNotifications:(id)a3
+- (id)speakNotifications:(id)notifications
 {
   v3 = +[AXSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 voiceOverSpeakNotificationsEnabled]);
@@ -988,7 +988,7 @@ LABEL_7:
   return v4;
 }
 
-- (id)voiceOverQuickNavAnnouncementFeedbackString:(id)a3
+- (id)voiceOverQuickNavAnnouncementFeedbackString:(id)string
 {
   v3 = +[AXSettings sharedInstance];
   v4 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v3 voiceOverQuickNavAnnouncementFeedback]);
@@ -997,14 +997,14 @@ LABEL_7:
   return v5;
 }
 
-- (void)setHintsEnabled:(id)a3 specifier:(id)a4
+- (void)setHintsEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
   v5 = +[AXSettings sharedInstance];
-  [v5 setVoiceOverHintsEnabled:v4];
+  [v5 setVoiceOverHintsEnabled:bOOLValue];
 }
 
-- (id)hintsEnabled:(id)a3
+- (id)hintsEnabled:(id)enabled
 {
   v3 = +[AXSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 voiceOverHintsEnabled]);
@@ -1012,14 +1012,14 @@ LABEL_7:
   return v4;
 }
 
-- (void)setEmojiSuffixEnabled:(id)a3 specifier:(id)a4
+- (void)setEmojiSuffixEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
   v5 = +[AXSettings sharedInstance];
-  [v5 setVoiceOverVerbosityEmojiSuffixEnabled:v4];
+  [v5 setVoiceOverVerbosityEmojiSuffixEnabled:bOOLValue];
 }
 
-- (id)emojiSuffix:(id)a3
+- (id)emojiSuffix:(id)suffix
 {
   v3 = +[AXSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 voiceOverVerbosityEmojiSuffixEnabled]);
@@ -1027,14 +1027,14 @@ LABEL_7:
   return v4;
 }
 
-- (void)setTableHeaders:(id)a3 specifier:(id)a4
+- (void)setTableHeaders:(id)headers specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [headers BOOLValue];
   v5 = +[AXSettings sharedInstance];
-  [v5 setVoiceOverSpeakTableHeaders:v4];
+  [v5 setVoiceOverSpeakTableHeaders:bOOLValue];
 }
 
-- (id)tableHeaders:(id)a3
+- (id)tableHeaders:(id)headers
 {
   v3 = +[AXSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 voiceOverSpeakTableHeaders]);
@@ -1042,14 +1042,14 @@ LABEL_7:
   return v4;
 }
 
-- (void)setRowColummNumbers:(id)a3 specifier:(id)a4
+- (void)setRowColummNumbers:(id)numbers specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [numbers BOOLValue];
   v5 = +[AXSettings sharedInstance];
-  [v5 setVoiceOverSpeakTableColumnRowInformation:v4];
+  [v5 setVoiceOverSpeakTableColumnRowInformation:bOOLValue];
 }
 
-- (id)rowColumnNumbers:(id)a3
+- (id)rowColumnNumbers:(id)numbers
 {
   v3 = +[AXSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 voiceOverSpeakTableColumnRowInformation]);
@@ -1057,11 +1057,11 @@ LABEL_7:
   return v4;
 }
 
-- (id)customLabelsString:(id)a3
+- (id)customLabelsString:(id)string
 {
   v3 = +[AXSettings sharedInstance];
-  v4 = [v3 voiceOverCustomLabels];
-  v5 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v4 count]);
+  voiceOverCustomLabels = [v3 voiceOverCustomLabels];
+  v5 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [voiceOverCustomLabels count]);
   v6 = AXFormatNumber();
 
   return v6;

@@ -1,10 +1,10 @@
 @interface IMDatabaseCursor
 - (BOOL)close;
 - (BOOL)reset;
-- (IMDatabaseCursor)initWithQuery:(id)a3 databaseHandle:(id)a4;
-- (IMDatabaseCursor)initWithStatement:(sqlite3_stmt *)a3;
+- (IMDatabaseCursor)initWithQuery:(id)query databaseHandle:(id)handle;
+- (IMDatabaseCursor)initWithStatement:(sqlite3_stmt *)statement;
 - (NSMutableArray)results;
-- (id)_undeclaredTypeForColumnIndex:(int)a3;
+- (id)_undeclaredTypeForColumnIndex:(int)index;
 - (id)nextRowAsArray;
 - (id)nextRowAsDictionary;
 - (int64_t)rowCount;
@@ -13,10 +13,10 @@
 
 @implementation IMDatabaseCursor
 
-- (IMDatabaseCursor)initWithQuery:(id)a3 databaseHandle:(id)a4
+- (IMDatabaseCursor)initWithQuery:(id)query databaseHandle:(id)handle
 {
-  v6 = a3;
-  v7 = a4;
+  queryCopy = query;
+  handleCopy = handle;
   v14.receiver = self;
   v14.super_class = IMDatabaseCursor;
   v8 = [(IMDatabaseCursor *)&v14 init];
@@ -24,8 +24,8 @@
   {
     v9 = v8;
     v12 = 0;
-    pzTail = [v6 UTF8String];
-    if (sqlite3_prepare_v2([v7 _databaseHandle], pzTail, -1, &v12, &pzTail))
+    pzTail = [queryCopy UTF8String];
+    if (sqlite3_prepare_v2([handleCopy _databaseHandle], pzTail, -1, &v12, &pzTail))
     {
       v10 = 0;
     }
@@ -45,7 +45,7 @@
   return v10;
 }
 
-- (IMDatabaseCursor)initWithStatement:(sqlite3_stmt *)a3
+- (IMDatabaseCursor)initWithStatement:(sqlite3_stmt *)statement
 {
   v20.receiver = self;
   v20.super_class = IMDatabaseCursor;
@@ -53,8 +53,8 @@
   v5 = v4;
   if (v4)
   {
-    v4->_statement = a3;
-    v6 = sqlite3_column_count(a3);
+    v4->_statement = statement;
+    v6 = sqlite3_column_count(statement);
     v5->_numColumns = v6;
     v7 = [NSMutableArray arrayWithCapacity:v6];
     columnNames = v5->_columnNames;
@@ -153,11 +153,11 @@ LABEL_25:
 
 - (id)nextRowAsDictionary
 {
-  v3 = [(IMDatabaseCursor *)self nextRowAsArray];
-  v4 = v3;
+  nextRowAsArray = [(IMDatabaseCursor *)self nextRowAsArray];
+  v4 = nextRowAsArray;
   if (self->_numColumns)
   {
-    v5 = v3 == 0;
+    v5 = nextRowAsArray == 0;
   }
 
   else
@@ -172,8 +172,8 @@ LABEL_25:
 
   else
   {
-    v6 = [(IMDatabaseCursor *)self columnNames];
-    v7 = [NSDictionary dictionaryWithObjects:v4 forKeys:v6];
+    columnNames = [(IMDatabaseCursor *)self columnNames];
+    v7 = [NSDictionary dictionaryWithObjects:v4 forKeys:columnNames];
   }
 
   return v7;
@@ -204,8 +204,8 @@ LABEL_25:
     v11 = @"float";
     while (sqlite3_column_type(self->_statement, v6) == 5)
     {
-      v12 = [v7[239] null];
-      [v4 addObject:v12];
+      null = [v7[239] null];
+      [v4 addObject:null];
 LABEL_24:
 
       if (++v6 >= self->_numColumns)
@@ -244,9 +244,9 @@ LABEL_24:
     {
       if (v13 != @"blob")
       {
-        v12 = 0;
+        null = 0;
 LABEL_23:
-        [v4 addObject:v12];
+        [v4 addObject:null];
 
         goto LABEL_24;
       }
@@ -268,7 +268,7 @@ LABEL_23:
       v14 = [v24 initWithBytes:v22 length:v21];
     }
 
-    v12 = v14;
+    null = v14;
     goto LABEL_23;
   }
 
@@ -293,19 +293,19 @@ LABEL_25:
     v5 = self->_results;
     self->_results = v4;
 
-    v6 = [(IMDatabaseCursor *)self nextRowAsDictionary];
-    if (v6)
+    nextRowAsDictionary = [(IMDatabaseCursor *)self nextRowAsDictionary];
+    if (nextRowAsDictionary)
     {
-      v7 = v6;
+      v7 = nextRowAsDictionary;
       do
       {
         [(NSMutableArray *)self->_results addObject:v7];
-        v8 = [(IMDatabaseCursor *)self nextRowAsDictionary];
+        nextRowAsDictionary2 = [(IMDatabaseCursor *)self nextRowAsDictionary];
 
-        v7 = v8;
+        v7 = nextRowAsDictionary2;
       }
 
-      while (v8);
+      while (nextRowAsDictionary2);
     }
 
     results = self->_results;
@@ -385,15 +385,15 @@ LABEL_11:
 
 - (int64_t)rowCount
 {
-  v2 = [(IMDatabaseCursor *)self results];
-  v3 = [v2 count];
+  results = [(IMDatabaseCursor *)self results];
+  v3 = [results count];
 
   return v3;
 }
 
-- (id)_undeclaredTypeForColumnIndex:(int)a3
+- (id)_undeclaredTypeForColumnIndex:(int)index
 {
-  v3 = sqlite3_column_type(self->_statement, a3) - 1;
+  v3 = sqlite3_column_type(self->_statement, index) - 1;
   if (v3 > 4)
   {
     return @"text";

@@ -1,28 +1,28 @@
 @interface PPSHostConfigurationManager
-+ (id)bundleNameForRole:(id)a3;
++ (id)bundleNameForRole:(id)role;
 + (id)sharedHostConfigurationManager;
-- (PPSHostConfigurationManager)initWithUserDefaults:(id)a3;
-- (id)_connectionToBundleServiceForRole:(id)a3 outProxy:(id *)a4 errorHandler:(id)a5;
-- (id)_lock_bundleURLForRole:(id)a3 error:(id *)a4;
-- (id)_lock_cachedHostConfigurationForRole:(id)a3;
-- (id)_lock_findBundleURLForRole:(id)a3 error:(id *)a4;
-- (id)_lock_hostConfigurationForRole:(id)a3 outCacheHit:(BOOL *)a4;
-- (id)_lock_loadBundledHostConfigurationForRole:(id)a3 currentSwitcherConfiguration:(id)a4;
-- (id)_lock_loadSwitcherConfigurationForRole:(id)a3 currentSwitcherConfiguration:(id)a4;
+- (PPSHostConfigurationManager)initWithUserDefaults:(id)defaults;
+- (id)_connectionToBundleServiceForRole:(id)role outProxy:(id *)proxy errorHandler:(id)handler;
+- (id)_lock_bundleURLForRole:(id)role error:(id *)error;
+- (id)_lock_cachedHostConfigurationForRole:(id)role;
+- (id)_lock_findBundleURLForRole:(id)role error:(id *)error;
+- (id)_lock_hostConfigurationForRole:(id)role outCacheHit:(BOOL *)hit;
+- (id)_lock_loadBundledHostConfigurationForRole:(id)role currentSwitcherConfiguration:(id)configuration;
+- (id)_lock_loadSwitcherConfigurationForRole:(id)role currentSwitcherConfiguration:(id)configuration;
 - (id)galleryPrewarmPolicy;
-- (id)hostConfigurationForRole:(id)a3;
-- (id)updatedSwitcherConfigurationForRole:(id)a3 currentSwitcherConfiguration:(id)a4 error:(id *)a5;
-- (void)_lock_deleteHostConfigurationForRole:(id)a3;
-- (void)_lock_setHostConfiguration:(id)a3 forRole:(id)a4;
-- (void)deleteHostConfigurationForRole:(id)a3;
-- (void)setHostConfiguration:(id)a3 forRole:(id)a4;
+- (id)hostConfigurationForRole:(id)role;
+- (id)updatedSwitcherConfigurationForRole:(id)role currentSwitcherConfiguration:(id)configuration error:(id *)error;
+- (void)_lock_deleteHostConfigurationForRole:(id)role;
+- (void)_lock_setHostConfiguration:(id)configuration forRole:(id)role;
+- (void)deleteHostConfigurationForRole:(id)role;
+- (void)setHostConfiguration:(id)configuration forRole:(id)role;
 @end
 
 @implementation PPSHostConfigurationManager
 
-+ (id)bundleNameForRole:(id)a3
++ (id)bundleNameForRole:(id)role
 {
-  if ([a3 isEqualToString:@"PRPosterRoleAmbient"])
+  if ([role isEqualToString:@"PRPosterRoleAmbient"])
   {
     return @"AmbientHostConfigurationProvider.bundle";
   }
@@ -39,7 +39,7 @@
   block[1] = 3221225472;
   block[2] = __61__PPSHostConfigurationManager_sharedHostConfigurationManager__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedHostConfigurationManager_onceToken != -1)
   {
     dispatch_once(&sharedHostConfigurationManager_onceToken, block);
@@ -59,43 +59,43 @@ void __61__PPSHostConfigurationManager_sharedHostConfigurationManager__block_inv
   sharedHostConfigurationManager_instance = v2;
 }
 
-- (PPSHostConfigurationManager)initWithUserDefaults:(id)a3
+- (PPSHostConfigurationManager)initWithUserDefaults:(id)defaults
 {
-  v5 = a3;
+  defaultsCopy = defaults;
   v9.receiver = self;
   v9.super_class = PPSHostConfigurationManager;
   v6 = [(PPSHostConfigurationManager *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_userDefaults, a3);
+    objc_storeStrong(&v6->_userDefaults, defaults);
     v7->_lock._os_unfair_lock_opaque = 0;
   }
 
   return v7;
 }
 
-- (void)setHostConfiguration:(id)a3 forRole:(id)a4
+- (void)setHostConfiguration:(id)configuration forRole:(id)role
 {
-  v6 = a4;
-  v7 = a3;
+  roleCopy = role;
+  configurationCopy = configuration;
   os_unfair_lock_lock(&self->_lock);
-  [(PPSHostConfigurationManager *)self _lock_setHostConfiguration:v7 forRole:v6];
+  [(PPSHostConfigurationManager *)self _lock_setHostConfiguration:configurationCopy forRole:roleCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)_lock_setHostConfiguration:(id)a3 forRole:(id)a4
+- (void)_lock_setHostConfiguration:(id)configuration forRole:(id)role
 {
-  v6 = a4;
+  roleCopy = role;
   v10 = 0;
-  v7 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:a3 requiringSecureCoding:1 error:&v10];
+  v7 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:configuration requiringSecureCoding:1 error:&v10];
   v8 = v10;
   if (v7)
   {
-    v9 = [(PPSHostConfigurationManager *)self defaultsKeyForRole:v6];
+    v9 = [(PPSHostConfigurationManager *)self defaultsKeyForRole:roleCopy];
     [(NSUserDefaults *)self->_userDefaults setObject:v7 forKey:v9];
-    [(NSMutableSet *)self->_lock_rolesWithoutHostConfigurations removeObject:v6];
+    [(NSMutableSet *)self->_lock_rolesWithoutHostConfigurations removeObject:roleCopy];
   }
 
   else
@@ -108,10 +108,10 @@ void __61__PPSHostConfigurationManager_sharedHostConfigurationManager__block_inv
   }
 }
 
-- (id)hostConfigurationForRole:(id)a3
+- (id)hostConfigurationForRole:(id)role
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  roleCopy = role;
   v5 = PPSLogHostConfiguration();
   v6 = os_signpost_id_generate(v5);
 
@@ -125,7 +125,7 @@ void __61__PPSHostConfigurationManager_sharedHostConfigurationManager__block_inv
 
   os_unfair_lock_lock(&self->_lock);
   v14 = 0;
-  v9 = [(PPSHostConfigurationManager *)self _lock_hostConfigurationForRole:v4 outCacheHit:&v14];
+  v9 = [(PPSHostConfigurationManager *)self _lock_hostConfigurationForRole:roleCopy outCacheHit:&v14];
 
   os_unfair_lock_unlock(&self->_lock);
   v10 = PPSLogHostConfiguration();
@@ -144,32 +144,32 @@ void __61__PPSHostConfigurationManager_sharedHostConfigurationManager__block_inv
   return v9;
 }
 
-- (id)_lock_hostConfigurationForRole:(id)a3 outCacheHit:(BOOL *)a4
+- (id)_lock_hostConfigurationForRole:(id)role outCacheHit:(BOOL *)hit
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(PPSHostConfigurationManager *)self _lock_cachedHostConfigurationForRole:v6];
+  roleCopy = role;
+  v7 = [(PPSHostConfigurationManager *)self _lock_cachedHostConfigurationForRole:roleCopy];
   if (v7)
   {
     v8 = v7;
     v9 = PPSLogHostConfiguration();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
-      [PPSHostConfigurationManager _lock_hostConfigurationForRole:v6 outCacheHit:v9];
+      [PPSHostConfigurationManager _lock_hostConfigurationForRole:roleCopy outCacheHit:v9];
     }
 
 LABEL_9:
-    *a4 = 1;
+    *hit = 1;
     goto LABEL_10;
   }
 
-  if ([(NSMutableSet *)self->_lock_rolesWithoutHostConfigurations containsObject:v6])
+  if ([(NSMutableSet *)self->_lock_rolesWithoutHostConfigurations containsObject:roleCopy])
   {
     v10 = PPSLogHostConfiguration();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v18 = 138543362;
-      v19 = v6;
+      v19 = roleCopy;
       _os_log_impl(&dword_25EDC0000, v10, OS_LOG_TYPE_DEFAULT, "Already know there's no bundle for role: %{public}@", &v18, 0xCu);
     }
 
@@ -177,7 +177,7 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v8 = [(PPSHostConfigurationManager *)self _lock_loadBundledHostConfigurationForRole:v6 currentSwitcherConfiguration:0];
+  v8 = [(PPSHostConfigurationManager *)self _lock_loadBundledHostConfigurationForRole:roleCopy currentSwitcherConfiguration:0];
   v13 = PPSLogHostConfiguration();
   v14 = os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT);
   if (v8)
@@ -185,13 +185,13 @@ LABEL_9:
     if (v14)
     {
       v18 = 138543618;
-      v19 = v6;
+      v19 = roleCopy;
       v20 = 2114;
       v21 = v8;
       _os_log_impl(&dword_25EDC0000, v13, OS_LOG_TYPE_DEFAULT, "Loaded bundled host configuration for %{public}@: %{public}@", &v18, 0x16u);
     }
 
-    [(PPSHostConfigurationManager *)self _lock_setHostConfiguration:v8 forRole:v6];
+    [(PPSHostConfigurationManager *)self _lock_setHostConfiguration:v8 forRole:roleCopy];
   }
 
   else
@@ -199,7 +199,7 @@ LABEL_9:
     if (v14)
     {
       v18 = 138543362;
-      v19 = v6;
+      v19 = roleCopy;
       _os_log_impl(&dword_25EDC0000, v13, OS_LOG_TYPE_DEFAULT, "Did not find any host configuration for %{public}@", &v18, 0xCu);
     }
 
@@ -213,7 +213,7 @@ LABEL_9:
       lock_rolesWithoutHostConfigurations = self->_lock_rolesWithoutHostConfigurations;
     }
 
-    [(NSMutableSet *)lock_rolesWithoutHostConfigurations addObject:v6];
+    [(NSMutableSet *)lock_rolesWithoutHostConfigurations addObject:roleCopy];
     v8 = 0;
   }
 
@@ -224,12 +224,12 @@ LABEL_10:
   return v8;
 }
 
-- (id)_lock_loadBundledHostConfigurationForRole:(id)a3 currentSwitcherConfiguration:(id)a4
+- (id)_lock_loadBundledHostConfigurationForRole:(id)role currentSwitcherConfiguration:(id)configuration
 {
-  v6 = a3;
-  v7 = a4;
+  roleCopy = role;
+  configurationCopy = configuration;
   v32 = 0;
-  v8 = [(PPSHostConfigurationManager *)self _lock_bundleURLForRole:v6 error:&v32];
+  v8 = [(PPSHostConfigurationManager *)self _lock_bundleURLForRole:roleCopy error:&v32];
   v9 = v32;
   if (v8)
   {
@@ -244,7 +244,7 @@ LABEL_10:
     v22[1] = 3221225472;
     v22[2] = __102__PPSHostConfigurationManager__lock_loadBundledHostConfigurationForRole_currentSwitcherConfiguration___block_invoke;
     v22[3] = &unk_279A55030;
-    v10 = v6;
+    v10 = roleCopy;
     v23 = v10;
     v24 = &v26;
     v11 = [(PPSHostConfigurationManager *)self _connectionToBundleServiceForRole:v10 outProxy:&v25 errorHandler:v22];
@@ -255,7 +255,7 @@ LABEL_10:
     v19 = &unk_279A55058;
     v21 = &v26;
     v20 = v10;
-    [v12 hostConfigurationForBundleAtURL:v8 currentSwitcherConfiguration:v7 forRole:v20 completion:&v16];
+    [v12 hostConfigurationForBundleAtURL:v8 currentSwitcherConfiguration:configurationCopy forRole:v20 completion:&v16];
     [v11 invalidate];
     v13 = v27[5];
 
@@ -305,35 +305,35 @@ void __102__PPSHostConfigurationManager__lock_loadBundledHostConfigurationForRol
   }
 }
 
-- (void)deleteHostConfigurationForRole:(id)a3
+- (void)deleteHostConfigurationForRole:(id)role
 {
-  v4 = a3;
+  roleCopy = role;
   os_unfair_lock_lock(&self->_lock);
-  [(PPSHostConfigurationManager *)self _lock_deleteHostConfigurationForRole:v4];
+  [(PPSHostConfigurationManager *)self _lock_deleteHostConfigurationForRole:roleCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)_lock_deleteHostConfigurationForRole:(id)a3
+- (void)_lock_deleteHostConfigurationForRole:(id)role
 {
-  v4 = a3;
+  roleCopy = role;
   userDefaults = self->_userDefaults;
-  v6 = [(PPSHostConfigurationManager *)self defaultsKeyForRole:v4];
+  v6 = [(PPSHostConfigurationManager *)self defaultsKeyForRole:roleCopy];
   [(NSUserDefaults *)userDefaults removeObjectForKey:v6];
 
-  [(NSMutableSet *)self->_lock_rolesWithoutHostConfigurations removeObject:v4];
+  [(NSMutableSet *)self->_lock_rolesWithoutHostConfigurations removeObject:roleCopy];
   v7 = PPSLogHostConfiguration();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    [(PPSHostConfigurationManager *)v4 _lock_deleteHostConfigurationForRole:v7];
+    [(PPSHostConfigurationManager *)roleCopy _lock_deleteHostConfigurationForRole:v7];
   }
 }
 
-- (id)updatedSwitcherConfigurationForRole:(id)a3 currentSwitcherConfiguration:(id)a4 error:(id *)a5
+- (id)updatedSwitcherConfigurationForRole:(id)role currentSwitcherConfiguration:(id)configuration error:(id *)error
 {
   v24 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  roleCopy = role;
+  configurationCopy = configuration;
   v9 = PPSLogHostConfiguration();
   v10 = os_signpost_id_generate(v9);
 
@@ -346,18 +346,18 @@ void __102__PPSHostConfigurationManager__lock_loadBundledHostConfigurationForRol
   }
 
   os_unfair_lock_lock(&self->_lock);
-  v13 = [(PPSHostConfigurationManager *)self _lock_loadBundledHostConfigurationForRole:v7 currentSwitcherConfiguration:v8];
+  v13 = [(PPSHostConfigurationManager *)self _lock_loadBundledHostConfigurationForRole:roleCopy currentSwitcherConfiguration:configurationCopy];
   v14 = v13;
   if (v13)
   {
-    v15 = [v13 entries];
-    v16 = [v15 bs_compactMap:&__block_literal_global];
+    entries = [v13 entries];
+    v16 = [entries bs_compactMap:&__block_literal_global];
 
     v17 = [MEMORY[0x277D3E950] hostConfigurationWithConfigurationEntries:v16];
-    [(PPSHostConfigurationManager *)self _lock_setHostConfiguration:v17 forRole:v7];
+    [(PPSHostConfigurationManager *)self _lock_setHostConfiguration:v17 forRole:roleCopy];
   }
 
-  v18 = [(PPSHostConfigurationManager *)self _lock_loadSwitcherConfigurationForRole:v7 currentSwitcherConfiguration:v8];
+  v18 = [(PPSHostConfigurationManager *)self _lock_loadSwitcherConfigurationForRole:roleCopy currentSwitcherConfiguration:configurationCopy];
   os_unfair_lock_unlock(&self->_lock);
   v19 = PPSLogHostConfiguration();
   v20 = v19;
@@ -385,12 +385,12 @@ id __102__PPSHostConfigurationManager_updatedSwitcherConfigurationForRole_curren
   return v6;
 }
 
-- (id)_lock_loadSwitcherConfigurationForRole:(id)a3 currentSwitcherConfiguration:(id)a4
+- (id)_lock_loadSwitcherConfigurationForRole:(id)role currentSwitcherConfiguration:(id)configuration
 {
-  v6 = a3;
-  v7 = a4;
+  roleCopy = role;
+  configurationCopy = configuration;
   v32 = 0;
-  v8 = [(PPSHostConfigurationManager *)self _lock_bundleURLForRole:v6 error:&v32];
+  v8 = [(PPSHostConfigurationManager *)self _lock_bundleURLForRole:roleCopy error:&v32];
   v9 = v32;
   if (v8)
   {
@@ -405,7 +405,7 @@ id __102__PPSHostConfigurationManager_updatedSwitcherConfigurationForRole_curren
     v22[1] = 3221225472;
     v22[2] = __99__PPSHostConfigurationManager__lock_loadSwitcherConfigurationForRole_currentSwitcherConfiguration___block_invoke;
     v22[3] = &unk_279A55030;
-    v10 = v6;
+    v10 = roleCopy;
     v23 = v10;
     v24 = &v26;
     v11 = [(PPSHostConfigurationManager *)self _connectionToBundleServiceForRole:v10 outProxy:&v25 errorHandler:v22];
@@ -416,7 +416,7 @@ id __102__PPSHostConfigurationManager_updatedSwitcherConfigurationForRole_curren
     v19 = &unk_279A55058;
     v21 = &v26;
     v20 = v10;
-    [v12 switcherConfigurationForBundleAtURL:v8 currentSwitcherConfiguration:v7 forRole:v20 completion:&v16];
+    [v12 switcherConfigurationForBundleAtURL:v8 currentSwitcherConfiguration:configurationCopy forRole:v20 completion:&v16];
     [v11 invalidate];
     v13 = v27[5];
 
@@ -501,21 +501,21 @@ void __99__PPSHostConfigurationManager__lock_loadSwitcherConfigurationForRole_cu
   return v2;
 }
 
-- (id)_lock_bundleURLForRole:(id)a3 error:(id *)a4
+- (id)_lock_bundleURLForRole:(id)role error:(id *)error
 {
-  v6 = a3;
-  v7 = [(NSMutableDictionary *)self->_lock_bundleURLByRoleIdentifier objectForKey:v6];
+  roleCopy = role;
+  v7 = [(NSMutableDictionary *)self->_lock_bundleURLByRoleIdentifier objectForKey:roleCopy];
   if (v7)
   {
     v8 = v7;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      if (a4)
+      if (error)
       {
         v9 = v8;
         v10 = 0;
-        *a4 = v8;
+        *error = v8;
       }
 
       else
@@ -534,13 +534,13 @@ void __99__PPSHostConfigurationManager__lock_loadSwitcherConfigurationForRole_cu
   else
   {
     v16 = 0;
-    v11 = [(PPSHostConfigurationManager *)self _lock_findBundleURLForRole:v6 error:&v16];
+    v11 = [(PPSHostConfigurationManager *)self _lock_findBundleURLForRole:roleCopy error:&v16];
     v12 = v16;
     v13 = v12;
     v14 = v11;
     if (v11 || (v14 = v12) != 0)
     {
-      [(NSMutableDictionary *)self->_lock_bundleURLByRoleIdentifier setObject:v14 forKey:v6];
+      [(NSMutableDictionary *)self->_lock_bundleURLByRoleIdentifier setObject:v14 forKey:roleCopy];
     }
 
     v10 = v11;
@@ -551,19 +551,19 @@ void __99__PPSHostConfigurationManager__lock_loadSwitcherConfigurationForRole_cu
   return v10;
 }
 
-- (id)_lock_findBundleURLForRole:(id)a3 error:(id *)a4
+- (id)_lock_findBundleURLForRole:(id)role error:(id *)error
 {
   v36[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [objc_opt_class() bundleNameForRole:v5];
+  roleCopy = role;
+  v6 = [objc_opt_class() bundleNameForRole:roleCopy];
   if (v6)
   {
-    v7 = [MEMORY[0x277CCAA00] defaultManager];
-    v8 = [v7 URLsForDirectory:5 inDomains:8];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    v8 = [defaultManager URLsForDirectory:5 inDomains:8];
     if ([v8 count])
     {
-      v9 = [v8 firstObject];
-      v10 = [v9 URLByAppendingPathComponent:@"Posters"];
+      firstObject = [v8 firstObject];
+      v10 = [firstObject URLByAppendingPathComponent:@"Posters"];
       v11 = [v10 URLByAppendingPathComponent:@"HostConfigurationProviders"];
       v12 = [v11 URLByAppendingPathComponent:v6];
 
@@ -573,12 +573,12 @@ void __99__PPSHostConfigurationManager__lock_loadSwitcherConfigurationForRole_cu
         *buf = 138543618;
         v30 = v12;
         v31 = 2114;
-        v32 = v5;
+        v32 = roleCopy;
         _os_log_impl(&dword_25EDC0000, v13, OS_LOG_TYPE_DEFAULT, "Checking for host configuration bundle %{public}@ for role %{public}@", buf, 0x16u);
       }
 
-      v14 = [v12 path];
-      v15 = [v7 fileExistsAtPath:v14];
+      path = [v12 path];
+      v15 = [defaultManager fileExistsAtPath:path];
 
       if (v15)
       {
@@ -593,14 +593,14 @@ void __99__PPSHostConfigurationManager__lock_loadSwitcherConfigurationForRole_cu
           [PPSHostConfigurationManager _lock_findBundleURLForRole:error:];
         }
 
-        if (a4)
+        if (error)
         {
-          v22 = [MEMORY[0x277CCACA8] stringWithFormat:@"No bundle at %@ for role %@", v12, v5];
+          roleCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"No bundle at %@ for role %@", v12, roleCopy];
           v23 = MEMORY[0x277CCA9B8];
           v27 = *MEMORY[0x277CCA470];
-          v28 = v22;
+          v28 = roleCopy;
           v24 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v28 forKeys:&v27 count:1];
-          *a4 = [v23 errorWithDomain:@"com.apple.PosterBoard.PPSHostConfigurationManager" code:-3 userInfo:v24];
+          *error = [v23 errorWithDomain:@"com.apple.PosterBoard.PPSHostConfigurationManager" code:-3 userInfo:v24];
         }
 
         v16 = 0;
@@ -612,10 +612,10 @@ void __99__PPSHostConfigurationManager__lock_loadSwitcherConfigurationForRole_cu
       v19 = PPSLogHostConfiguration();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
       {
-        [PPSHostConfigurationManager _lock_findBundleURLForRole:v5 error:v19];
+        [PPSHostConfigurationManager _lock_findBundleURLForRole:roleCopy error:v19];
       }
 
-      if (!a4)
+      if (!error)
       {
         v16 = 0;
         goto LABEL_22;
@@ -624,9 +624,9 @@ void __99__PPSHostConfigurationManager__lock_loadSwitcherConfigurationForRole_cu
       v20 = MEMORY[0x277CCA9B8];
       v33 = *MEMORY[0x277CCA470];
       v34 = @"There is no /System/Library directory";
-      v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v34 forKeys:&v33 count:1];
-      [v20 errorWithDomain:@"com.apple.PosterBoard.PPSHostConfigurationManager" code:-2 userInfo:v9];
-      *a4 = v16 = 0;
+      firstObject = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v34 forKeys:&v33 count:1];
+      [v20 errorWithDomain:@"com.apple.PosterBoard.PPSHostConfigurationManager" code:-2 userInfo:firstObject];
+      *error = v16 = 0;
     }
 
 LABEL_22:
@@ -637,18 +637,18 @@ LABEL_22:
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v30 = v5;
+    v30 = roleCopy;
     _os_log_impl(&dword_25EDC0000, v17, OS_LOG_TYPE_DEFAULT, "Role %{public}@ not compatible with bundle-based host configuration", buf, 0xCu);
   }
 
-  if (a4)
+  if (error)
   {
     v18 = MEMORY[0x277CCA9B8];
     v35 = *MEMORY[0x277CCA470];
     v36[0] = @"Role not compatible with bundle-based host configuration";
-    v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v36 forKeys:&v35 count:1];
-    [v18 errorWithDomain:@"com.apple.PosterBoard.PPSHostConfigurationManager" code:-1 userInfo:v7];
-    *a4 = v16 = 0;
+    defaultManager = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v36 forKeys:&v35 count:1];
+    [v18 errorWithDomain:@"com.apple.PosterBoard.PPSHostConfigurationManager" code:-1 userInfo:defaultManager];
+    *error = v16 = 0;
 LABEL_23:
 
     goto LABEL_24;
@@ -662,10 +662,10 @@ LABEL_24:
   return v16;
 }
 
-- (id)_lock_cachedHostConfigurationForRole:(id)a3
+- (id)_lock_cachedHostConfigurationForRole:(id)role
 {
-  v4 = a3;
-  v5 = [(PPSHostConfigurationManager *)self defaultsKeyForRole:v4];
+  roleCopy = role;
+  v5 = [(PPSHostConfigurationManager *)self defaultsKeyForRole:roleCopy];
   v6 = [(NSUserDefaults *)self->_userDefaults objectForKey:v5];
   if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
@@ -693,10 +693,10 @@ LABEL_24:
   return v7;
 }
 
-- (id)_connectionToBundleServiceForRole:(id)a3 outProxy:(id *)a4 errorHandler:(id)a5
+- (id)_connectionToBundleServiceForRole:(id)role outProxy:(id *)proxy errorHandler:(id)handler
 {
   v6 = _connectionToBundleServiceForRole_outProxy_errorHandler__onceToken;
-  v7 = a5;
+  handlerCopy = handler;
   if (v6 != -1)
   {
     [PPSHostConfigurationManager _connectionToBundleServiceForRole:outProxy:errorHandler:];
@@ -705,10 +705,10 @@ LABEL_24:
   v8 = [objc_alloc(MEMORY[0x277CCAE80]) initWithServiceName:@"com.apple.PosterPlatformSupportBundleService"];
   [v8 setRemoteObjectInterface:_connectionToBundleServiceForRole_outProxy_errorHandler__remoteInterface];
   [v8 resume];
-  v9 = [v8 synchronousRemoteObjectProxyWithErrorHandler:v7];
+  v9 = [v8 synchronousRemoteObjectProxyWithErrorHandler:handlerCopy];
 
   v10 = v9;
-  *a4 = v9;
+  *proxy = v9;
 
   return v8;
 }

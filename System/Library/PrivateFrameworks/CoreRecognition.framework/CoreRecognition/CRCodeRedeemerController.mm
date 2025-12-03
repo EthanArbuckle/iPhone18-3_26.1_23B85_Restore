@@ -1,14 +1,14 @@
 @interface CRCodeRedeemerController
-+ (id)findCodeInImage:(vImage_Buffer *)a3 maxStage:(unint64_t)a4;
-+ (id)findCodeInImage:(vImage_Buffer *)a3 maxStage:(unint64_t)a4 roi:(CGRect)a5;
++ (id)findCodeInImage:(vImage_Buffer *)image maxStage:(unint64_t)stage;
++ (id)findCodeInImage:(vImage_Buffer *)image maxStage:(unint64_t)stage roi:(CGRect)roi;
 - (CRCodeRedeemerController)init;
 - (CRCodeRedeemerControllerDelegate)delegate;
-- (void)cameraReader:(id)a3 didFailWithError:(id)a4;
-- (void)cameraReader:(id)a3 didRecognizeObjects:(id)a4;
-- (void)cameraReaderDidCancel:(id)a3;
-- (void)cameraReaderDidDisplayMessage:(id)a3;
-- (void)cameraReaderDidFindTarget:(id)a3;
-- (void)showMessage:(id)a3 color:(id)a4 style:(unint64_t)a5 duration:(double)a6;
+- (void)cameraReader:(id)reader didFailWithError:(id)error;
+- (void)cameraReader:(id)reader didRecognizeObjects:(id)objects;
+- (void)cameraReaderDidCancel:(id)cancel;
+- (void)cameraReaderDidDisplayMessage:(id)message;
+- (void)cameraReaderDidFindTarget:(id)target;
+- (void)showMessage:(id)message color:(id)color style:(unint64_t)style duration:(double)duration;
 @end
 
 @implementation CRCodeRedeemerController
@@ -37,52 +37,52 @@
   return v3;
 }
 
-+ (id)findCodeInImage:(vImage_Buffer *)a3 maxStage:(unint64_t)a4
++ (id)findCodeInImage:(vImage_Buffer *)image maxStage:(unint64_t)stage
 {
-  width = a3->width;
-  height = a3->height;
-  v6 = *&a3->width;
-  v9[0] = *&a3->data;
+  width = image->width;
+  height = image->height;
+  v6 = *&image->width;
+  v9[0] = *&image->data;
   v9[1] = v6;
-  v7 = [CRCodeRedeemerController findCodeInImage:v9 maxStage:a4 roi:0.0, 0.0, width, height];
+  height = [CRCodeRedeemerController findCodeInImage:v9 maxStage:stage roi:0.0, 0.0, width, height];
 
-  return v7;
+  return height;
 }
 
-+ (id)findCodeInImage:(vImage_Buffer *)a3 maxStage:(unint64_t)a4 roi:(CGRect)a5
++ (id)findCodeInImage:(vImage_Buffer *)image maxStage:(unint64_t)stage roi:(CGRect)roi
 {
-  v5 = *&a3->width;
-  v8[0] = *&a3->data;
+  v5 = *&image->width;
+  v8[0] = *&image->data;
   v8[1] = v5;
-  v6 = [CRCameraReader findCodeInImage:v8 maxStage:a4 roi:a5.origin.x, a5.origin.y, a5.size.width, a5.size.height];
+  v6 = [CRCameraReader findCodeInImage:v8 maxStage:stage roi:roi.origin.x, roi.origin.y, roi.size.width, roi.size.height];
 
   return v6;
 }
 
-- (void)showMessage:(id)a3 color:(id)a4 style:(unint64_t)a5 duration:(double)a6
+- (void)showMessage:(id)message color:(id)color style:(unint64_t)style duration:(double)duration
 {
   v6.receiver = self;
   v6.super_class = CRCodeRedeemerController;
-  [(CRCameraReader *)&v6 showMessage:a3 color:a4 style:a5 duration:a6];
+  [(CRCameraReader *)&v6 showMessage:message color:color style:style duration:duration];
 }
 
-- (void)cameraReader:(id)a3 didFailWithError:(id)a4
+- (void)cameraReader:(id)reader didFailWithError:(id)error
 {
-  v6 = [MEMORY[0x277CBEAC0] dictionaryWithObject:a4 forKey:@"Error"];
-  v5 = [(CRCodeRedeemerController *)self delegate];
-  [v5 codeRedeemerController:self didEndWithInfo:v6];
+  v6 = [MEMORY[0x277CBEAC0] dictionaryWithObject:error forKey:@"Error"];
+  delegate = [(CRCodeRedeemerController *)self delegate];
+  [delegate codeRedeemerController:self didEndWithInfo:v6];
 }
 
-- (void)cameraReader:(id)a3 didRecognizeObjects:(id)a4
+- (void)cameraReader:(id)reader didRecognizeObjects:(id)objects
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a4;
-  v5 = [MEMORY[0x277CBEB38] dictionary];
+  objectsCopy = objects;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = v4;
+  v6 = objectsCopy;
   v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
@@ -97,13 +97,13 @@
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
-        v11 = [v10 type];
-        v12 = [v11 isEqualToString:@"CROutputTypeiTunesCode"];
+        type = [v10 type];
+        v12 = [type isEqualToString:@"CROutputTypeiTunesCode"];
 
         if (v12)
         {
-          v13 = [v10 stringValue];
-          [v5 setObject:v13 forKey:@"Code"];
+          stringValue = [v10 stringValue];
+          [dictionary setObject:stringValue forKey:@"Code"];
         }
       }
 
@@ -113,37 +113,37 @@
     while (v7);
   }
 
-  v14 = [(CRCodeRedeemerController *)self delegate];
-  [v14 codeRedeemerController:self didEndWithInfo:v5];
+  delegate = [(CRCodeRedeemerController *)self delegate];
+  [delegate codeRedeemerController:self didEndWithInfo:dictionary];
 }
 
-- (void)cameraReaderDidCancel:(id)a3
+- (void)cameraReaderDidCancel:(id)cancel
 {
-  v4 = [(CRCodeRedeemerController *)self delegate];
-  [v4 codeRedeemerControllerDidCancel:self];
+  delegate = [(CRCodeRedeemerController *)self delegate];
+  [delegate codeRedeemerControllerDidCancel:self];
 }
 
-- (void)cameraReaderDidDisplayMessage:(id)a3
+- (void)cameraReaderDidDisplayMessage:(id)message
 {
-  v5 = [(CRCodeRedeemerController *)self delegate];
+  delegate = [(CRCodeRedeemerController *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v6 = [(CRCodeRedeemerController *)self delegate];
-    [v6 codeRedeemerControllerDidDisplayMessage:self];
+    delegate2 = [(CRCodeRedeemerController *)self delegate];
+    [delegate2 codeRedeemerControllerDidDisplayMessage:self];
   }
 }
 
-- (void)cameraReaderDidFindTarget:(id)a3
+- (void)cameraReaderDidFindTarget:(id)target
 {
-  v5 = [(CRCodeRedeemerController *)self delegate];
+  delegate = [(CRCodeRedeemerController *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v6 = [(CRCodeRedeemerController *)self delegate];
-    [v6 codeRedeemerControllerDidFindBox:self];
+    delegate2 = [(CRCodeRedeemerController *)self delegate];
+    [delegate2 codeRedeemerControllerDidFindBox:self];
   }
 }
 

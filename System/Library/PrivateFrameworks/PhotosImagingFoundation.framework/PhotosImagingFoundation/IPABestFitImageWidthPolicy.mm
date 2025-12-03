@@ -1,39 +1,39 @@
 @interface IPABestFitImageWidthPolicy
 - (CGSize)transformSize:(CGSize)result;
-- (IPABestFitImageWidthPolicy)initWithCoder:(id)a3;
-- (IPABestFitImageWidthPolicy)initWithWidth:(double)a3;
-- (double)transformScaleForSize:(CGSize)a3;
-- (void)encodeWithCoder:(id)a3;
+- (IPABestFitImageWidthPolicy)initWithCoder:(id)coder;
+- (IPABestFitImageWidthPolicy)initWithWidth:(double)width;
+- (double)transformScaleForSize:(CGSize)size;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IPABestFitImageWidthPolicy
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = IPABestFitImageWidthPolicy;
-  v4 = a3;
-  [(IPAImageSizePolicy *)&v5 encodeWithCoder:v4];
-  [v4 encodeDouble:@"fit width" forKey:{self->_fitWidth, v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(IPAImageSizePolicy *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeDouble:@"fit width" forKey:{self->_fitWidth, v5.receiver, v5.super_class}];
 }
 
-- (IPABestFitImageWidthPolicy)initWithCoder:(id)a3
+- (IPABestFitImageWidthPolicy)initWithCoder:(id)coder
 {
   v8.receiver = self;
   v8.super_class = IPABestFitImageWidthPolicy;
-  v3 = a3;
-  v4 = [(IPAImageSizePolicy *)&v8 initWithCoder:v3];
-  [v3 decodeDoubleForKey:{@"fit width", v8.receiver, v8.super_class}];
+  coderCopy = coder;
+  v4 = [(IPAImageSizePolicy *)&v8 initWithCoder:coderCopy];
+  [coderCopy decodeDoubleForKey:{@"fit width", v8.receiver, v8.super_class}];
   v6 = v5;
 
   v4->_fitWidth = v6;
   return v4;
 }
 
-- (double)transformScaleForSize:(CGSize)a3
+- (double)transformScaleForSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(IPABestFitImageWidthPolicy *)self transformSize:?];
   v7 = v6;
   result = v6 / width;
@@ -88,9 +88,9 @@
   return result;
 }
 
-- (IPABestFitImageWidthPolicy)initWithWidth:(double)a3
+- (IPABestFitImageWidthPolicy)initWithWidth:(double)width
 {
-  if (a3 <= 0.0)
+  if (width <= 0.0)
   {
     v5 = _PFAssertFailHandler();
     return [(IPAImageSizePolicy *)v5 bestFitPolicyShortestEdge:v6, v7];
@@ -103,7 +103,7 @@
     result = [(IPABestFitImageWidthPolicy *)&v8 init];
     if (result)
     {
-      result->_fitWidth = a3;
+      result->_fitWidth = width;
     }
   }
 

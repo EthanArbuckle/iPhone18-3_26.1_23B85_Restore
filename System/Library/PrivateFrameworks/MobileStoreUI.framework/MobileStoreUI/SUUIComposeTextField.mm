@@ -1,40 +1,40 @@
 @interface SUUIComposeTextField
-- (BOOL)textField:(id)a3 shouldInsertText:(id)a4 replacingRange:(_NSRange)a5;
-- (SUUIComposeTextField)initWithConfiguration:(id)a3 style:(int64_t)a4;
+- (BOOL)textField:(id)field shouldInsertText:(id)text replacingRange:(_NSRange)range;
+- (SUUIComposeTextField)initWithConfiguration:(id)configuration style:(int64_t)style;
 - (id)delegate;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (void)_textChanged:(id)a3;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (void)_textChanged:(id)changed;
 - (void)dealloc;
-- (void)drawRect:(CGRect)a3;
+- (void)drawRect:(CGRect)rect;
 - (void)layoutSubviews;
-- (void)setText:(id)a3;
+- (void)setText:(id)text;
 @end
 
 @implementation SUUIComposeTextField
 
-- (SUUIComposeTextField)initWithConfiguration:(id)a3 style:(int64_t)a4
+- (SUUIComposeTextField)initWithConfiguration:(id)configuration style:(int64_t)style
 {
-  v7 = a3;
+  configurationCopy = configuration;
   v25.receiver = self;
   v25.super_class = SUUIComposeTextField;
   v8 = [(SUUIComposeTextField *)&v25 initWithFrame:0.0, 0.0, 0.0, 44.0];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_configuration, a3);
-    v9->_style = a4;
-    v10 = [objc_opt_class() labelFontForStyle:a4];
-    v11 = [(SUUIComposeTextFieldConfiguration *)v9->_configuration label];
-    if (v11)
+    objc_storeStrong(&v8->_configuration, configuration);
+    v9->_style = style;
+    v10 = [objc_opt_class() labelFontForStyle:style];
+    label = [(SUUIComposeTextFieldConfiguration *)v9->_configuration label];
+    if (label)
     {
       v12 = objc_alloc_init(MEMORY[0x277D756B8]);
       label = v9->_label;
       v9->_label = v12;
 
       [(UILabel *)v9->_label setFont:v10];
-      [(UILabel *)v9->_label setText:v11];
+      [(UILabel *)v9->_label setText:label];
       v14 = v9->_label;
-      v15 = [objc_opt_class() labelColorForStyle:a4];
+      v15 = [objc_opt_class() labelColorForStyle:style];
       [(UILabel *)v14 setTextColor:v15];
 
       [(UILabel *)v9->_label sizeToFit];
@@ -55,17 +55,17 @@
 
     [(UITextField *)v9->_textField setKeyboardType:0];
     v20 = v9->_textField;
-    v21 = [v7 placeholder];
-    [(UITextField *)v20 setPlaceholder:v21];
+    placeholder = [configurationCopy placeholder];
+    [(UITextField *)v20 setPlaceholder:placeholder];
 
     [(UITextField *)v9->_textField setClipsToBounds:0];
-    v22 = [(SUUIComposeTextFieldConfiguration *)v9->_configuration value];
-    [(SUUIComposeTextField *)v9 setText:v22];
+    value = [(SUUIComposeTextFieldConfiguration *)v9->_configuration value];
+    [(SUUIComposeTextField *)v9 setText:value];
 
     [(SUUIComposeTextField *)v9 addSubview:v9->_textField];
     [(UITextField *)v9->_textField sizeToFit];
-    v23 = [MEMORY[0x277D75348] systemBackgroundColor];
-    [(SUUIComposeTextField *)v9 setBackgroundColor:v23];
+    systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+    [(SUUIComposeTextField *)v9 setBackgroundColor:systemBackgroundColor];
   }
 
   return v9;
@@ -79,18 +79,18 @@
   [(SUUIComposeTextField *)&v3 dealloc];
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
-  v7 = a3;
-  v4 = [v7 length];
+  textCopy = text;
+  v4 = [textCopy length];
   if (v4 <= [(SUUIComposeTextFieldConfiguration *)self->_configuration maxLength])
   {
-    v6 = v7;
+    v6 = textCopy;
   }
 
   else
   {
-    v5 = [v7 substringToIndex:{-[SUUIComposeTextFieldConfiguration maxLength](self->_configuration, "maxLength")}];
+    v5 = [textCopy substringToIndex:{-[SUUIComposeTextFieldConfiguration maxLength](self->_configuration, "maxLength")}];
 
     v6 = v5;
   }
@@ -100,10 +100,10 @@
   self->_currentTextLength = [v8 length];
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
   v4 = 0;
-  if ([(SUUIComposeTextFieldConfiguration *)self->_configuration columnIndex:a3.origin.x])
+  if ([(SUUIComposeTextFieldConfiguration *)self->_configuration columnIndex:rect.origin.x])
   {
     v5 = 0.0;
   }
@@ -123,16 +123,16 @@
   v47 = v14;
   v17 = v16;
   v19 = v18;
-  v20 = [MEMORY[0x277D75348] labelColor];
-  v21 = [v20 colorWithAlphaComponent:0.2];
+  labelColor = [MEMORY[0x277D75348] labelColor];
+  v21 = [labelColor colorWithAlphaComponent:0.2];
   [v21 set];
 
-  v22 = [(SUUIComposeTextField *)self effectiveUserInterfaceLayoutDirection];
-  v23 = v22;
+  effectiveUserInterfaceLayoutDirection = [(SUUIComposeTextField *)self effectiveUserInterfaceLayoutDirection];
+  v23 = effectiveUserInterfaceLayoutDirection;
   if (v7 > 0.0)
   {
     v24 = v17 - v5;
-    if (v22 == 1)
+    if (effectiveUserInterfaceLayoutDirection == 1)
     {
       v25 = CGRectWithFlippedOriginRelativeToBoundingRect(v5, 0.0, v24, v7, v47, v46, v17, v19);
       v4 = v26;
@@ -201,11 +201,11 @@
   }
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
   v8.receiver = self;
   v8.super_class = SUUIComposeTextField;
-  v5 = [(SUUIComposeTextField *)&v8 hitTest:a4 withEvent:a3.x, a3.y];
+  v5 = [(SUUIComposeTextField *)&v8 hitTest:event withEvent:test.x, test.y];
   if (v5 == self)
   {
     v6 = self->_textField;
@@ -223,7 +223,7 @@
   v5 = v4;
   v7 = v6;
   v9 = v8;
-  v10 = [(SUUIComposeTextField *)self effectiveUserInterfaceLayoutDirection];
+  effectiveUserInterfaceLayoutDirection = [(SUUIComposeTextField *)self effectiveUserInterfaceLayoutDirection];
   label = self->_label;
   if (label)
   {
@@ -237,7 +237,7 @@
     v30.origin.y = v15;
     MaxX = CGRectGetMaxX(v30);
     v18 = 4.0;
-    if (v10 == 1)
+    if (effectiveUserInterfaceLayoutDirection == 1)
     {
       v16 = CGRectWithFlippedOriginRelativeToBoundingRect(15.0, v15, width, height, v28, v5, v7, v9);
       v18 = 4.0;
@@ -259,7 +259,7 @@
   v24 = (v9 - v23) * 0.5;
   v25 = floorf(v24);
   v26 = v7 + -15.0 - v22;
-  if (v10 == 1)
+  if (effectiveUserInterfaceLayoutDirection == 1)
   {
     v22 = CGRectWithFlippedOriginRelativeToBoundingRect(v22, v25, v26, v23, v28, v5, v7, v9);
   }
@@ -269,11 +269,11 @@
   [(UITextField *)textField setFrame:v22, v25, v26];
 }
 
-- (BOOL)textField:(id)a3 shouldInsertText:(id)a4 replacingRange:(_NSRange)a5
+- (BOOL)textField:(id)field shouldInsertText:(id)text replacingRange:(_NSRange)range
 {
-  length = a5.length;
-  location = a5.location;
-  v8 = a4;
+  length = range.length;
+  location = range.location;
+  textCopy = text;
   if (self->_currentTextLength <= location + length)
   {
     currentTextLength = location + length;
@@ -286,26 +286,26 @@
 
   if ([(SUUIComposeTextFieldConfiguration *)self->_configuration maxLength])
   {
-    v10 = [(SUUIComposeTextFieldConfiguration *)self->_configuration maxLength];
+    maxLength = [(SUUIComposeTextFieldConfiguration *)self->_configuration maxLength];
   }
 
   else
   {
-    v10 = 0x7FFFFFFFFFFFFFFFLL;
+    maxLength = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v11 = [v8 length] - length + currentTextLength;
-  if (v11 <= v10)
+  v11 = [textCopy length] - length + currentTextLength;
+  if (v11 <= maxLength)
   {
     self->_currentTextLength = v11 & ~(v11 >> 63);
   }
 
-  v12 = v11 <= v10;
+  v12 = v11 <= maxLength;
 
   return v12;
 }
 
-- (void)_textChanged:(id)a3
+- (void)_textChanged:(id)changed
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained composeTextFieldValidityChanged:self];

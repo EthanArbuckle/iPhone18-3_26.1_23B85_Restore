@@ -1,11 +1,11 @@
 @interface BadgeView
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (void)_dynamicUserInterfaceTraitDidChange;
 - (void)dealloc;
-- (void)didTapBadgeView:(id)a3;
+- (void)didTapBadgeView:(id)view;
 - (void)layoutSubviews;
 - (void)tintColorDidChange;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation BadgeView
@@ -13,18 +13,18 @@
 - (void)dealloc
 {
   v3 = objc_opt_self();
-  v4 = self;
-  v5 = [v3 defaultCenter];
-  [v5 removeObserver:v4];
+  selfCopy = self;
+  defaultCenter = [v3 defaultCenter];
+  [defaultCenter removeObserver:selfCopy];
 
-  v6.receiver = v4;
+  v6.receiver = selfCopy;
   v6.super_class = type metadata accessor for BadgeView(0);
   [(BadgeView *)&v6 dealloc];
 }
 
 - (void)tintColorDidChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_10038DE08();
 }
 
@@ -39,13 +39,13 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_10038E874();
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  v3 = self;
+  selfCopy = self;
   v4 = sub_10038EBD4();
   v6 = v5;
 
@@ -56,17 +56,17 @@
   return result;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_10038EEC8(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_10038EEC8(change);
 }
 
-- (void)didTapBadgeView:(id)a3
+- (void)didTapBadgeView:(id)view
 {
-  v4 = a3;
-  v5 = self;
+  viewCopy = view;
+  selfCopy = self;
   sub_1003903F4();
 }
 

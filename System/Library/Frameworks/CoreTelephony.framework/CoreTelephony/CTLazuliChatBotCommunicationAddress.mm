@@ -1,11 +1,11 @@
 @interface CTLazuliChatBotCommunicationAddress
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToCTLazuliChatBotCommunicationAddress:(id)a3;
-- (CTLazuliChatBotCommunicationAddress)initWithCoder:(id)a3;
-- (CTLazuliChatBotCommunicationAddress)initWithReflection:(const void *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToCTLazuliChatBotCommunicationAddress:(id)address;
+- (CTLazuliChatBotCommunicationAddress)initWithCoder:(id)coder;
+- (CTLazuliChatBotCommunicationAddress)initWithReflection:(const void *)reflection;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CTLazuliChatBotCommunicationAddress
@@ -13,27 +13,27 @@
 - (id)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@", objc_opt_class()];
-  v4 = [(CTLazuliChatBotCommunicationAddress *)self telInformation];
-  [v3 appendFormat:@", telInformation = %@", v4];
+  telInformation = [(CTLazuliChatBotCommunicationAddress *)self telInformation];
+  [v3 appendFormat:@", telInformation = %@", telInformation];
 
-  v5 = [(CTLazuliChatBotCommunicationAddress *)self uriList];
-  [v3 appendFormat:@", uriList = %@", v5];
+  uriList = [(CTLazuliChatBotCommunicationAddress *)self uriList];
+  [v3 appendFormat:@", uriList = %@", uriList];
 
   [v3 appendString:@">"];
 
   return v3;
 }
 
-- (BOOL)isEqualToCTLazuliChatBotCommunicationAddress:(id)a3
+- (BOOL)isEqualToCTLazuliChatBotCommunicationAddress:(id)address
 {
-  v6 = a3;
-  v7 = [(CTLazuliChatBotCommunicationAddress *)self telInformation];
-  v8 = [v6 telInformation];
-  if (v7 != v8)
+  addressCopy = address;
+  telInformation = [(CTLazuliChatBotCommunicationAddress *)self telInformation];
+  telInformation2 = [addressCopy telInformation];
+  if (telInformation != telInformation2)
   {
-    v3 = [(CTLazuliChatBotCommunicationAddress *)self telInformation];
-    v4 = [v6 telInformation];
-    if (![v3 isEqualToCTLazuliChatBotTelephoneInformation:v4])
+    telInformation3 = [(CTLazuliChatBotCommunicationAddress *)self telInformation];
+    telInformation4 = [addressCopy telInformation];
+    if (![telInformation3 isEqualToCTLazuliChatBotTelephoneInformation:telInformation4])
     {
       v9 = 0;
 LABEL_8:
@@ -42,10 +42,10 @@ LABEL_8:
     }
   }
 
-  v10 = [(CTLazuliChatBotCommunicationAddress *)self uriList];
-  v11 = [v6 uriList];
-  v12 = v11;
-  if (v10 == v11)
+  uriList = [(CTLazuliChatBotCommunicationAddress *)self uriList];
+  uriList2 = [addressCopy uriList];
+  v12 = uriList2;
+  if (uriList == uriList2)
   {
 
     v9 = 1;
@@ -53,12 +53,12 @@ LABEL_8:
 
   else
   {
-    v13 = [(CTLazuliChatBotCommunicationAddress *)self uriList];
-    v14 = [v6 uriList];
-    v9 = [v13 isEqualToCTLazuliChatBotURIEntryList:v14];
+    uriList3 = [(CTLazuliChatBotCommunicationAddress *)self uriList];
+    uriList4 = [addressCopy uriList];
+    v9 = [uriList3 isEqualToCTLazuliChatBotURIEntryList:uriList4];
   }
 
-  if (v7 != v8)
+  if (telInformation != telInformation2)
   {
     goto LABEL_8;
   }
@@ -68,55 +68,55 @@ LABEL_9:
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CTLazuliChatBotCommunicationAddress *)self isEqualToCTLazuliChatBotCommunicationAddress:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CTLazuliChatBotCommunicationAddress *)self isEqualToCTLazuliChatBotCommunicationAddress:v5];
   }
 
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [CTLazuliChatBotCommunicationAddress allocWithZone:?];
-  v6 = [(CTLazuliChatBotTelephoneInformation *)self->_telInformation copyWithZone:a3];
+  v6 = [(CTLazuliChatBotTelephoneInformation *)self->_telInformation copyWithZone:zone];
   [(CTLazuliChatBotCommunicationAddress *)v5 setTelInformation:v6];
 
-  v7 = [(CTLazuliChatBotURIEntryList *)self->_uriList copyWithZone:a3];
+  v7 = [(CTLazuliChatBotURIEntryList *)self->_uriList copyWithZone:zone];
   [(CTLazuliChatBotCommunicationAddress *)v5 setUriList:v7];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeObject:self->_telInformation forKey:@"kTelInformationKey"];
-  [v4 encodeObject:self->_uriList forKey:@"kUriListKey"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_telInformation forKey:@"kTelInformationKey"];
+  [coderCopy encodeObject:self->_uriList forKey:@"kUriListKey"];
 }
 
-- (CTLazuliChatBotCommunicationAddress)initWithCoder:(id)a3
+- (CTLazuliChatBotCommunicationAddress)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = CTLazuliChatBotCommunicationAddress;
   v5 = [(CTLazuliChatBotCommunicationAddress *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kTelInformationKey"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kTelInformationKey"];
     telInformation = v5->_telInformation;
     v5->_telInformation = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kUriListKey"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kUriListKey"];
     uriList = v5->_uriList;
     v5->_uriList = v8;
   }
@@ -124,18 +124,18 @@ LABEL_9:
   return v5;
 }
 
-- (CTLazuliChatBotCommunicationAddress)initWithReflection:(const void *)a3
+- (CTLazuliChatBotCommunicationAddress)initWithReflection:(const void *)reflection
 {
   v10.receiver = self;
   v10.super_class = CTLazuliChatBotCommunicationAddress;
   v4 = [(CTLazuliChatBotCommunicationAddress *)&v10 init];
   if (v4)
   {
-    v5 = [[CTLazuliChatBotTelephoneInformation alloc] initWithReflection:a3];
+    v5 = [[CTLazuliChatBotTelephoneInformation alloc] initWithReflection:reflection];
     telInformation = v4->_telInformation;
     v4->_telInformation = v5;
 
-    v7 = [[CTLazuliChatBotURIEntryList alloc] initWithReflection:a3 + 72];
+    v7 = [[CTLazuliChatBotURIEntryList alloc] initWithReflection:reflection + 72];
     uriList = v4->_uriList;
     v4->_uriList = v7;
   }

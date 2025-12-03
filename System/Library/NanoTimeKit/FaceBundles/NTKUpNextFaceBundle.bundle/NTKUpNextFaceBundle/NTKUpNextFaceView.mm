@@ -1,61 +1,61 @@
 @interface NTKUpNextFaceView
-+ (id)_reuseIdentifierForContent:(id)a3;
++ (id)_reuseIdentifierForContent:(id)content;
 - (BOOL)_applyShowIdealizedContent;
 - (BOOL)_shouldDeferUpdate;
 - (BOOL)_shouldUseCanonicalContent;
-- (BOOL)_snapshotHasChangesToVisibleItems:(id)a3;
-- (BOOL)collectionView:(id)a3 shouldHighlightItemAtIndexPath:(id)a4;
-- (BOOL)engineController:(id)a3 isElementAtIndexPathVisible:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
+- (BOOL)_snapshotHasChangesToVisibleItems:(id)items;
+- (BOOL)collectionView:(id)view shouldHighlightItemAtIndexPath:(id)path;
+- (BOOL)engineController:(id)controller isElementAtIndexPathVisible:(id)visible;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
 - (CGPoint)_defaultPointForDefaultMode;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 referenceSizeForHeaderInSection:(int64_t)a5;
-- (NTKUpNextFaceView)initWithFaceStyle:(int64_t)a3 forDevice:(id)a4 clientIdentifier:(id)a5;
-- (UIEdgeInsets)collectionView:(id)a3 layout:(id)a4 insetForSectionAtIndex:(int64_t)a5;
-- (id)_configureCellForItemWithElement:(id)a3 atIndexPath:(id)a4 inCollectionView:(id)a5;
-- (id)_configureSupplementaryViewForSupplementaryElementOfKind:(id)a3 atIndexPath:(id)a4 inCollectionView:(id)a5;
-- (id)_contentAtIndexPath:(id)a3;
+- (CGSize)collectionView:(id)view layout:(id)layout referenceSizeForHeaderInSection:(int64_t)section;
+- (NTKUpNextFaceView)initWithFaceStyle:(int64_t)style forDevice:(id)device clientIdentifier:(id)identifier;
+- (UIEdgeInsets)collectionView:(id)view layout:(id)layout insetForSectionAtIndex:(int64_t)index;
+- (id)_configureCellForItemWithElement:(id)element atIndexPath:(id)path inCollectionView:(id)view;
+- (id)_configureSupplementaryViewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path inCollectionView:(id)view;
+- (id)_contentAtIndexPath:(id)path;
 - (id)_detachedComplicationDisplays;
-- (id)_digitalTimeLabelStyleFromViewMode:(int64_t)a3 faceBounds:(CGRect)a4;
-- (id)_newLegacyViewForComplication:(id)a3 family:(int64_t)a4 slot:(id)a5;
+- (id)_digitalTimeLabelStyleFromViewMode:(int64_t)mode faceBounds:(CGRect)bounds;
+- (id)_newLegacyViewForComplication:(id)complication family:(int64_t)family slot:(id)slot;
 - (id)_sectionEnumerationOrder;
-- (id)_swatchImageForColorOption:(id)a3 size:(CGSize)a4;
-- (unint64_t)_distanceForIndexPathFromNow:(id)a3;
-- (void)_applyBreathingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
+- (id)_swatchImageForColorOption:(id)option size:(CGSize)size;
+- (unint64_t)_distanceForIndexPathFromNow:(id)now;
+- (void)_applyBreathingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot;
 - (void)_applyDataMode;
-- (void)_applyOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (void)_applyRubberBandingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
+- (void)_applyOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_applyRubberBandingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot;
 - (void)_applyShowContentForUnadornedSnapshot;
 - (void)_applyShowsLockedUI;
-- (void)_applyTransitionFraction:(double)a3 fromOption:(id)a4 toOption:(id)a5 forCustomEditMode:(int64_t)a6 slot:(id)a7;
-- (void)_applyTransitionWithFraction:(double)a3 interpolatedPalette:(id)a4 onCell:(id)a5;
+- (void)_applyTransitionFraction:(double)fraction fromOption:(id)option toOption:(id)toOption forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_applyTransitionWithFraction:(double)fraction interpolatedPalette:(id)palette onCell:(id)cell;
 - (void)_availableDataSourcesDidChange;
 - (void)_becameActiveFace;
 - (void)_becameInactiveFace;
 - (void)_cleanupAfterEditing;
-- (void)_cleanupAfterSettingViewMode:(int64_t)a3 scroll:(BOOL)a4 targetOffset:(CGPoint)a5 needsLayout:(BOOL)a6;
+- (void)_cleanupAfterSettingViewMode:(int64_t)mode scroll:(BOOL)scroll targetOffset:(CGPoint)offset needsLayout:(BOOL)layout;
 - (void)_configureCollectionViewDataSource;
-- (void)_configureComplicationView:(id)a3 forSlot:(id)a4;
-- (void)_configureForTransitionFraction:(double)a3 fromEditMode:(int64_t)a4 toEditMode:(int64_t)a5;
-- (void)_configureVisibleCell:(id)a3;
-- (void)_finalizeForSnapshotting:(id)a3;
+- (void)_configureComplicationView:(id)view forSlot:(id)slot;
+- (void)_configureForTransitionFraction:(double)fraction fromEditMode:(int64_t)mode toEditMode:(int64_t)editMode;
+- (void)_configureVisibleCell:(id)cell;
+- (void)_finalizeForSnapshotting:(id)snapshotting;
 - (void)_handleOrdinaryScreenWake;
-- (void)_handleViewModeTapGesture:(id)a3;
-- (void)_layoutTimeLabelForViewMode:(int64_t)a3;
-- (void)_layoutTimeLabelPlatterViewMode:(int64_t)a3;
+- (void)_handleViewModeTapGesture:(id)gesture;
+- (void)_layoutTimeLabelForViewMode:(int64_t)mode;
+- (void)_layoutTimeLabelPlatterViewMode:(int64_t)mode;
 - (void)_loadContentViews;
 - (void)_loadLayoutRules;
-- (void)_loadSnapshotContent:(id)a3;
+- (void)_loadSnapshotContent:(id)content;
 - (void)_loadSnapshotContentViews;
-- (void)_logContent:(id)a3 withIdentifier:(id)a4;
-- (void)_logDataSourceSnapshot:(id)a3 withName:(id)a4;
+- (void)_logContent:(id)content withIdentifier:(id)identifier;
+- (void)_logDataSourceSnapshot:(id)snapshot withName:(id)name;
 - (void)_performWristRaiseAnimation;
 - (void)_prepareForEditing;
 - (void)_prepareWristRaiseAnimation;
 - (void)_reloadContentIfNeeded;
-- (void)_replaceDataSourceElement:(id)a3 withReloadedREElement:(id)a4;
+- (void)_replaceDataSourceElement:(id)element withReloadedREElement:(id)eElement;
 - (void)_setSiriBlurColor;
-- (void)_setupCell:(id)a3 withContent:(id)a4 representedIdentifier:(id)a5;
-- (void)_showSiriUnavailableAlert:(id)a3;
+- (void)_setupCell:(id)cell withContent:(id)content representedIdentifier:(id)identifier;
+- (void)_showSiriUnavailableAlert:(id)alert;
 - (void)_startPositiveDwellForTopElementsTimerIfNeeded;
 - (void)_startViewResetTimer;
 - (void)_stopPositiveDwellForTopElementsTimer;
@@ -65,38 +65,38 @@
 - (void)_unloadSnapshotContentViews;
 - (void)_updateApplicationIdentifiersAndLocationAuthorization;
 - (void)_updateDisabledDataSources;
-- (void)collectionView:(id)a3 didHighlightItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 didUnhighlightItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5;
+- (void)collectionView:(id)view didHighlightItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view didUnhighlightItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path;
 - (void)collectionViewDeferralStateChanged;
 - (void)dealloc;
-- (void)elementAction:(id)a3 didFinishTask:(BOOL)a4;
-- (void)elementAction:(id)a3 wantsToPerformTapActionForComplicationSlot:(id)a4;
-- (void)elementAction:(id)a3 wantsViewControllerDisplayed:(id)a4;
-- (void)engineController:(id)a3 didReloadContent:(id)a4 withIdentifier:(id)a5;
-- (void)engineController:(id)a3 didReloadElement:(id)a4;
-- (void)engineController:(id)a3 didRemoveContent:(id)a4 atIndexPath:(id)a5;
-- (void)engineController:(id)a3 performBatchUpdateBlock:(id)a4 completion:(id)a5;
-- (void)engineControllerDidFinishUpdatingRelevance:(id)a3;
+- (void)elementAction:(id)action didFinishTask:(BOOL)task;
+- (void)elementAction:(id)action wantsToPerformTapActionForComplicationSlot:(id)slot;
+- (void)elementAction:(id)action wantsViewControllerDisplayed:(id)displayed;
+- (void)engineController:(id)controller didReloadContent:(id)content withIdentifier:(id)identifier;
+- (void)engineController:(id)controller didReloadElement:(id)element;
+- (void)engineController:(id)controller didRemoveContent:(id)content atIndexPath:(id)path;
+- (void)engineController:(id)controller performBatchUpdateBlock:(id)block completion:(id)completion;
+- (void)engineControllerDidFinishUpdatingRelevance:(id)relevance;
 - (void)layoutSubviews;
-- (void)performScrollTestNamed:(id)a3 completion:(id)a4;
-- (void)screenDidTurnOffAnimated:(BOOL)a3;
-- (void)screenWillTurnOnAnimated:(BOOL)a3;
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)performScrollTestNamed:(id)named completion:(id)completion;
+- (void)screenDidTurnOffAnimated:(BOOL)animated;
+- (void)screenWillTurnOnAnimated:(BOOL)animated;
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateTimeLabelBackground;
 @end
 
 @implementation NTKUpNextFaceView
 
-- (NTKUpNextFaceView)initWithFaceStyle:(int64_t)a3 forDevice:(id)a4 clientIdentifier:(id)a5
+- (NTKUpNextFaceView)initWithFaceStyle:(int64_t)style forDevice:(id)device clientIdentifier:(id)identifier
 {
-  v8 = a4;
-  v9 = a5;
+  deviceCopy = device;
+  identifierCopy = identifier;
   v41.receiver = self;
   v41.super_class = NTKUpNextFaceView;
-  v10 = [(NTKUpNextFaceView *)&v41 initWithFaceStyle:a3 forDevice:v8 clientIdentifier:v9];
+  v10 = [(NTKUpNextFaceView *)&v41 initWithFaceStyle:style forDevice:deviceCopy clientIdentifier:identifierCopy];
   v11 = v10;
   if (v10)
   {
@@ -109,7 +109,7 @@
     reloadedElements = v11->_reloadedElements;
     v11->_reloadedElements = v14;
 
-    v16 = [[NTKUtilityComplicationFactory alloc] initForDevice:v8];
+    v16 = [[NTKUtilityComplicationFactory alloc] initForDevice:deviceCopy];
     utilityComplicationFactory = v11->_utilityComplicationFactory;
     v11->_utilityComplicationFactory = v16;
 
@@ -137,8 +137,8 @@
     v11->_scalableView = v23;
 
     [(UIView *)v11->_scalableView setAutoresizingMask:18];
-    v25 = [(NTKUpNextFaceView *)v11 contentView];
-    [v25 addSubview:v11->_scalableView];
+    contentView = [(NTKUpNextFaceView *)v11 contentView];
+    [contentView addSubview:v11->_scalableView];
 
     [(UIView *)v11->_scalableView setOpaque:0];
     v26 = +[UIColor clearColor];
@@ -148,10 +148,10 @@
     v27 = +[CLKSensitiveUIMonitor sharedMonitor];
     [v27 addSensitiveUIObserver:v11];
 
-    v28 = [(NTKUpNextFaceView *)v11 device];
-    v29 = [v28 deviceCategory];
+    device = [(NTKUpNextFaceView *)v11 device];
+    deviceCategory = [device deviceCategory];
 
-    if (v29 != &dword_0 + 1)
+    if (deviceCategory != &dword_0 + 1)
     {
       v30 = +[NSNotificationCenter defaultCenter];
       [v30 addObserver:v11 selector:"updateTimeLabelBackground" name:UIAccessibilityReduceTransparencyStatusDidChangeNotification object:0];
@@ -171,22 +171,22 @@
   return v11;
 }
 
-- (void)_showSiriUnavailableAlert:(id)a3
+- (void)_showSiriUnavailableAlert:(id)alert
 {
-  v8 = a3;
+  alertCopy = alert;
   v4 = [(NTKUpNextFaceView *)self dataMode]== &dword_0 + 1;
-  v5 = v8;
+  v5 = alertCopy;
   if (v4)
   {
-    v6 = [v8 object];
+    object = [alertCopy object];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [(NTKUpNextFaceView *)self delegate];
-      [v7 faceViewWantsToPresentViewController:v6];
+      delegate = [(NTKUpNextFaceView *)self delegate];
+      [delegate faceViewWantsToPresentViewController:object];
     }
 
-    v5 = v8;
+    v5 = alertCopy;
   }
 }
 
@@ -195,10 +195,10 @@
   v3 = +[CLKSensitiveUIMonitor sharedMonitor];
   [v3 removeSensitiveUIObserver:self];
 
-  v4 = [(NTKUpNextFaceView *)self device];
-  v5 = [v4 deviceCategory];
+  device = [(NTKUpNextFaceView *)self device];
+  deviceCategory = [device deviceCategory];
 
-  if (v5 != &dword_0 + 1)
+  if (deviceCategory != &dword_0 + 1)
   {
     v6 = +[NSNotificationCenter defaultCenter];
     [v6 removeObserver:self name:UIAccessibilityReduceTransparencyStatusDidChangeNotification object:0];
@@ -214,7 +214,7 @@
   [(NTKUpNextFaceView *)&v9 dealloc];
 }
 
-- (void)screenWillTurnOnAnimated:(BOOL)a3
+- (void)screenWillTurnOnAnimated:(BOOL)animated
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -224,7 +224,7 @@
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)screenDidTurnOffAnimated:(BOOL)a3
+- (void)screenDidTurnOffAnimated:(BOOL)animated
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -232,7 +232,7 @@
   block[3] = &unk_18638;
   block[4] = self;
   dispatch_async(&_dispatch_main_q, block);
-  if (!a3)
+  if (!animated)
   {
     v5[0] = _NSConcreteStackBlock;
     v5[1] = 3221225472;
@@ -257,8 +257,8 @@
     y = v5;
     width = v7;
     height = v9;
-    v11 = [(NTKUpNextFaceView *)self device];
-    sub_B3F4(v11, v18);
+    device = [(NTKUpNextFaceView *)self device];
+    sub_B3F4(device, v18);
     v12 = v19;
 
     if (v12 > 0.0)
@@ -276,8 +276,8 @@
       height = v23.size.height;
     }
 
-    v14 = [(NTKUpNextFaceView *)self device];
-    sub_B3F4(v14, &v17);
+    device2 = [(NTKUpNextFaceView *)self device];
+    sub_B3F4(device2, &v17);
     [(NTKUpNextFaceView *)self bounds];
     CGRectGetWidth(v24);
     CLKRoundForDevice();
@@ -291,70 +291,70 @@
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   timeLabelDefaultStyle = self->_timeLabelDefaultStyle;
   self->_timeLabelDefaultStyle = 0;
-  v5 = a3;
+  changeCopy = change;
 
   timeLabelSmallInUpperRightCornerStyle = self->_timeLabelSmallInUpperRightCornerStyle;
   self->_timeLabelSmallInUpperRightCornerStyle = 0;
 
   v7.receiver = self;
   v7.super_class = NTKUpNextFaceView;
-  [(NTKUpNextFaceView *)&v7 traitCollectionDidChange:v5];
+  [(NTKUpNextFaceView *)&v7 traitCollectionDidChange:changeCopy];
 }
 
 - (id)_detachedComplicationDisplays
 {
   v3 = +[NSMutableArray array];
-  v4 = [(REUIRelevanceEngineController *)self->_engineController engine];
-  v5 = [v4 dataSourceCatalog];
+  engine = [(REUIRelevanceEngineController *)self->_engineController engine];
+  dataSourceCatalog = [engine dataSourceCatalog];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_37B4;
   v8[3] = &unk_186A0;
   v6 = v3;
   v9 = v6;
-  [v5 enumerateDataSources:v8];
+  [dataSourceCatalog enumerateDataSources:v8];
 
   return v6;
 }
 
-- (id)_newLegacyViewForComplication:(id)a3 family:(int64_t)a4 slot:(id)a5
+- (id)_newLegacyViewForComplication:(id)complication family:(int64_t)family slot:(id)slot
 {
-  v8 = a5;
+  slotCopy = slot;
   v9 = NTKComplicationSlotTopRight;
-  v10 = a3;
-  if ([v8 isEqualToString:v9])
+  complicationCopy = complication;
+  if ([slotCopy isEqualToString:v9])
   {
-    v11 = [(NTKUtilityComplicationFactory *)self->_utilityComplicationFactory newViewForComplication:v10 family:a4 forSlot:13];
+    v11 = [(NTKUtilityComplicationFactory *)self->_utilityComplicationFactory newViewForComplication:complicationCopy family:family forSlot:13];
 
-    [(NTKUpNextFaceView *)self _configureComplicationView:v11 forSlot:v8];
+    [(NTKUpNextFaceView *)self _configureComplicationView:v11 forSlot:slotCopy];
   }
 
   else
   {
     v13.receiver = self;
     v13.super_class = NTKUpNextFaceView;
-    v11 = [(NTKUpNextFaceView *)&v13 _newLegacyViewForComplication:v10 family:a4 slot:v8];
+    v11 = [(NTKUpNextFaceView *)&v13 _newLegacyViewForComplication:complicationCopy family:family slot:slotCopy];
   }
 
   return v11;
 }
 
-- (void)_configureComplicationView:(id)a3 forSlot:(id)a4
+- (void)_configureComplicationView:(id)view forSlot:(id)slot
 {
-  v16 = a3;
-  v6 = a4;
-  v7 = [(NTKUpNextFaceView *)self faceColorPalette];
+  viewCopy = view;
+  slotCopy = slot;
+  faceColorPalette = [(NTKUpNextFaceView *)self faceColorPalette];
   v8 = [NTKPigmentEditOption pigmentNamed:ntk_special_multicolor];
-  v9 = [v7 copyWithOption:v8];
+  v9 = [faceColorPalette copyWithOption:v8];
 
-  LODWORD(v7) = [v6 isEqualToString:NTKComplicationSlotTopRight];
-  if (v7)
+  LODWORD(faceColorPalette) = [slotCopy isEqualToString:NTKComplicationSlotTopRight];
+  if (faceColorPalette)
   {
-    v10 = v16;
+    v10 = viewCopy;
     [v10 setFontWeight:UIFontWeightBold];
     v11 = +[UIColor whiteColor];
     [v10 setForegroundColor:v11];
@@ -378,19 +378,19 @@
       goto LABEL_6;
     }
 
-    v13 = v16;
+    v13 = viewCopy;
     v14 = +[UIColor clearColor];
     [v13 setBackgroundColor:v14];
 
-    v15 = [(NTKUpNextFaceView *)self device];
-    sub_B3F4(v15, v17);
+    device = [(NTKUpNextFaceView *)self device];
+    sub_B3F4(device, v17);
     [v13 setContentHeight:v18];
 
     v12 = +[UIColor whiteColor];
     [v13 setForegroundColor:v12];
   }
 
-  [v16 applyFaceColorPalette:v9 units:1095];
+  [viewCopy applyFaceColorPalette:v9 units:1095];
 LABEL_6:
 }
 
@@ -471,8 +471,8 @@ LABEL_6:
     v42 = 0u;
     v43 = 0u;
     memset(v41, 0, sizeof(v41));
-    v3 = [(NTKUpNextFaceView *)self device];
-    sub_B3F4(v3, v41);
+    device = [(NTKUpNextFaceView *)self device];
+    sub_B3F4(device, v41);
 
     v4 = objc_alloc_init(NTKUpNextCollectionViewFlowLayout);
     layout = self->_layout;
@@ -518,8 +518,8 @@ LABEL_6:
     [(NTKUpNextCollectionView *)v21 setBackgroundColor:v22];
 
     [(NTKUpNextCollectionView *)self->_collectionView _setAutomaticContentOffsetAdjustmentEnabled:0];
-    v23 = [(NTKUpNextCollectionView *)self->_collectionView layer];
-    [v23 setAllowsGroupOpacity:1];
+    layer = [(NTKUpNextCollectionView *)self->_collectionView layer];
+    [layer setAllowsGroupOpacity:1];
 
     [(NTKUpNextCollectionView *)self->_collectionView setDelegate:self];
     [(NTKUpNextCollectionView *)self->_collectionView setPrefetchingEnabled:0];
@@ -534,11 +534,11 @@ LABEL_6:
     [(NTKUpNextCollectionView *)self->_collectionView registerClass:objc_opt_class() forCellWithReuseIdentifier:@"NTKUpNextLargeWithDetailTextCellReuseIdentifier"];
     [(NTKUpNextCollectionView *)self->_collectionView registerClass:objc_opt_class() forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"NTKUpNextHeaderReuseIdentifier"];
     [(NTKUpNextCollectionView *)self->_collectionView registerClass:objc_opt_class() forCellWithReuseIdentifier:@"NTKUpNextGaugeCellReuseIdentifier"];
-    v24 = [(NTKUpNextFaceView *)self device];
-    v25 = [v24 deviceCategory];
+    device2 = [(NTKUpNextFaceView *)self device];
+    deviceCategory = [device2 deviceCategory];
 
     v26 = &off_18330;
-    if (v25 != &dword_0 + 1)
+    if (deviceCategory != &dword_0 + 1)
     {
       v26 = off_18328;
     }
@@ -557,23 +557,23 @@ LABEL_6:
     timeLabelPlatter = self->_timeLabelPlatter;
     self->_timeLabelPlatter = v29;
 
-    v31 = [(UIView *)self->_timeLabelPlatter layer];
-    [v31 setCornerRadius:*v41];
+    layer2 = [(UIView *)self->_timeLabelPlatter layer];
+    [layer2 setCornerRadius:*v41];
 
-    v32 = [(UIView *)self->_timeLabelPlatter layer];
-    [v32 setCornerCurve:kCACornerCurveContinuous];
+    layer3 = [(UIView *)self->_timeLabelPlatter layer];
+    [layer3 setCornerCurve:kCACornerCurveContinuous];
 
-    v33 = [(UIView *)self->_timeLabelPlatter layer];
-    [v33 setMasksToBounds:1];
+    layer4 = [(UIView *)self->_timeLabelPlatter layer];
+    [layer4 setMasksToBounds:1];
 
-    v34 = [(NTKUpNextFaceView *)self device];
-    v35 = [v34 deviceCategory];
+    device3 = [(NTKUpNextFaceView *)self device];
+    deviceCategory2 = [device3 deviceCategory];
 
-    if (v35 == &dword_0 + 1)
+    if (deviceCategory2 == &dword_0 + 1)
     {
-      v36 = [(UIView *)self->_timeLabelPlatter layer];
+      layer5 = [(UIView *)self->_timeLabelPlatter layer];
       v37 = +[UIColor _externalSystemDarkGrayColor];
-      [v36 setBackgroundColor:{objc_msgSend(v37, "CGColor")}];
+      [layer5 setBackgroundColor:{objc_msgSend(v37, "CGColor")}];
     }
 
     else
@@ -582,8 +582,8 @@ LABEL_6:
     }
 
     [(UIView *)self->_scalableView addSubview:self->_timeLabelPlatter];
-    v38 = [(NTKUpNextFaceView *)self timeView];
-    [(NTKUpNextFaceView *)self addSubview:v38];
+    timeView = [(NTKUpNextFaceView *)self timeView];
+    [(NTKUpNextFaceView *)self addSubview:timeView];
 
     v39 = [[UITapGestureRecognizer alloc] initWithTarget:self action:"_handleViewModeTapGesture:"];
     viewModeTapGesture = self->_viewModeTapGesture;
@@ -631,7 +631,7 @@ LABEL_6:
   }
 }
 
-- (void)_configureForTransitionFraction:(double)a3 fromEditMode:(int64_t)a4 toEditMode:(int64_t)a5
+- (void)_configureForTransitionFraction:(double)fraction fromEditMode:(int64_t)mode toEditMode:(int64_t)editMode
 {
   v9.receiver = self;
   v9.super_class = NTKUpNextFaceView;
@@ -639,8 +639,8 @@ LABEL_6:
   CLKInterpolateBetweenFloatsClipped();
   v7 = v6;
   [(NTKUpNextCollectionView *)self->_collectionView setAlpha:?];
-  v8 = [(NTKUpNextFaceView *)self timeView];
-  [v8 setAlpha:v7];
+  timeView = [(NTKUpNextFaceView *)self timeView];
+  [timeView setAlpha:v7];
 }
 
 - (void)_switchViewModeToDefault
@@ -651,10 +651,10 @@ LABEL_6:
   [NTKUpNextFaceView _setViewMode:"_setViewMode:scroll:scrollToPoint:secondaryPoint:force:velocity:animated:" scroll:0 scrollToPoint:1 secondaryPoint:0 force:0 velocity:? animated:?];
 }
 
-- (void)performScrollTestNamed:(id)a3 completion:(id)a4
+- (void)performScrollTestNamed:(id)named completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  namedCopy = named;
+  completionCopy = completion;
   [(NTKUpNextFaceView *)self _setViewMode:2 scroll:0 scrollToPoint:1 secondaryPoint:0 force:CGPointZero.x velocity:CGPointZero.y animated:CGPointZero.x, CGPointZero.y, 0.0];
   [(NTKUpNextFaceView *)self setNeedsLayout];
   [(NTKUpNextFaceView *)self layoutIfNeeded];
@@ -665,10 +665,10 @@ LABEL_6:
   v11[2] = sub_4870;
   v11[3] = &unk_186F0;
   objc_copyWeak(&v14, &location);
-  v12 = v6;
-  v13 = v7;
-  v9 = v6;
-  v10 = v7;
+  v12 = namedCopy;
+  v13 = completionCopy;
+  v9 = namedCopy;
+  v10 = completionCopy;
   dispatch_after(v8, &_dispatch_main_q, v11);
 
   objc_destroyWeak(&v14);
@@ -699,10 +699,10 @@ LABEL_6:
   }
 }
 
-- (BOOL)_snapshotHasChangesToVisibleItems:(id)a3
+- (BOOL)_snapshotHasChangesToVisibleItems:(id)items
 {
-  v4 = a3;
-  v5 = [(UICollectionViewDiffableDataSource *)self->_collectionViewDataSource snapshot];
+  itemsCopy = items;
+  snapshot = [(UICollectionViewDiffableDataSource *)self->_collectionViewDataSource snapshot];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -723,8 +723,8 @@ LABEL_6:
         }
 
         v10 = [(UICollectionViewDiffableDataSource *)self->_collectionViewDataSource itemIdentifierForIndexPath:*(*(&v16 + 1) + 8 * i)];
-        v11 = [v5 indexOfItemIdentifier:v10];
-        v12 = [v4 indexOfItemIdentifier:v10];
+        v11 = [snapshot indexOfItemIdentifier:v10];
+        v12 = [itemsCopy indexOfItemIdentifier:v10];
 
         if (v11 != v12)
         {
@@ -749,25 +749,25 @@ LABEL_11:
   return v13;
 }
 
-- (void)_replaceDataSourceElement:(id)a3 withReloadedREElement:(id)a4
+- (void)_replaceDataSourceElement:(id)element withReloadedREElement:(id)eElement
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(UICollectionViewDiffableDataSource *)self->_collectionViewDataSource indexPathForItemIdentifier:v6];
+  elementCopy = element;
+  eElementCopy = eElement;
+  v8 = [(UICollectionViewDiffableDataSource *)self->_collectionViewDataSource indexPathForItemIdentifier:elementCopy];
   v9 = [(UICollectionViewDiffableDataSource *)self->_collectionViewDataSource itemIdentifierForIndexPath:v8];
   v10 = _NTKLoggingObjectForDomain();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412802;
-    v12 = v6;
+    v12 = elementCopy;
     v13 = 2112;
-    v14 = v7;
+    v14 = eElementCopy;
     v15 = 2112;
     v16 = v8;
     _os_log_impl(&dword_0, v10, OS_LOG_TYPE_DEFAULT, "Replacing element %@ with element %@ for index path %@", &v11, 0x20u);
   }
 
-  [v9 setElement:v7];
+  [v9 setElement:eElementCopy];
 }
 
 - (void)_availableDataSourcesDidChange
@@ -782,12 +782,12 @@ LABEL_11:
 
 - (id)_sectionEnumerationOrder
 {
-  v2 = [(REUIRelevanceEngineController *)self->_engineController sectionOrder];
-  v3 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v2 count]);
+  sectionOrder = [(REUIRelevanceEngineController *)self->_engineController sectionOrder];
+  v3 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [sectionOrder count]);
   v4 = REDefaultSectionIdentifier;
-  if ([v2 containsObject:REDefaultSectionIdentifier])
+  if ([sectionOrder containsObject:REDefaultSectionIdentifier])
   {
-    v5 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v2 indexOfObject:v4]);
+    v5 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [sectionOrder indexOfObject:v4]);
     [v3 addObject:v5];
   }
 
@@ -797,7 +797,7 @@ LABEL_11:
   v9[3] = &unk_18768;
   v10 = v3;
   v6 = v3;
-  [v2 enumerateObjectsUsingBlock:v9];
+  [sectionOrder enumerateObjectsUsingBlock:v9];
   v7 = [v6 copy];
 
   return v7;
@@ -805,10 +805,10 @@ LABEL_11:
 
 - (void)_updateApplicationIdentifiersAndLocationAuthorization
 {
-  v3 = [(REUIRelevanceEngineController *)self->_engineController numberOfSections];
-  if (v3)
+  numberOfSections = [(REUIRelevanceEngineController *)self->_engineController numberOfSections];
+  if (numberOfSections)
   {
-    v4 = v3;
+    v4 = numberOfSections;
     v5 = 0;
     for (i = 0; i != v4; ++i)
     {
@@ -845,7 +845,7 @@ LABEL_11:
         }
 
         v57 = v8;
-        v62 = [*(*(&v67 + 1) + 8 * v8) unsignedIntegerValue];
+        unsignedIntegerValue = [*(*(&v67 + 1) + 8 * v8) unsignedIntegerValue];
         v9 = [(REUIRelevanceEngineController *)self->_engineController numberOfItemsInSectionAtIndex:?];
         v59 = +[NSMutableDictionary dictionary];
         v61 = v9;
@@ -854,18 +854,18 @@ LABEL_11:
           v10 = 0;
           do
           {
-            v11 = [NSIndexPath indexPathWithElement:v10 inUpNextSection:v62];
+            v11 = [NSIndexPath indexPathWithElement:v10 inUpNextSection:unsignedIntegerValue];
             v12 = [(REUIRelevanceEngineController *)self->_engineController identifierForElementAtIndexPath:v11];
             v13 = [(REUIRelevanceEngineController *)self->_engineController metadataForElementWithIdentifier:v12];
             v14 = [v13 objectForKeyedSubscript:v60];
 
-            v15 = [(REUIRelevanceEngineController *)self->_engineController engine];
-            v16 = [v15 dataSourceCatalog];
-            v17 = [v16 applicationIdentifierForDataSourceWithIdentifier:v14];
+            engine = [(REUIRelevanceEngineController *)self->_engineController engine];
+            dataSourceCatalog = [engine dataSourceCatalog];
+            v17 = [dataSourceCatalog applicationIdentifierForDataSourceWithIdentifier:v14];
 
-            v18 = [(REUIRelevanceEngineController *)self->_engineController engine];
-            v19 = [v18 dataSourceCatalog];
-            v20 = [v19 wantsApplicationPrewarmForDataSourceWithIdentifier:v14];
+            engine2 = [(REUIRelevanceEngineController *)self->_engineController engine];
+            dataSourceCatalog2 = [engine2 dataSourceCatalog];
+            v20 = [dataSourceCatalog2 wantsApplicationPrewarmForDataSourceWithIdentifier:v14];
 
             if (v17)
             {
@@ -913,11 +913,11 @@ LABEL_11:
   v66 = 0u;
   v63 = 0u;
   v64 = 0u;
-  v30 = [(REUIRelevanceEngineController *)self->_engineController engine];
-  v31 = [v30 dataSourceCatalog];
-  v32 = [v31 dataSourceIdentifiers];
+  engine3 = [(REUIRelevanceEngineController *)self->_engineController engine];
+  dataSourceCatalog3 = [engine3 dataSourceCatalog];
+  dataSourceIdentifiers = [dataSourceCatalog3 dataSourceIdentifiers];
 
-  v33 = [v32 countByEnumeratingWithState:&v63 objects:v71 count:16];
+  v33 = [dataSourceIdentifiers countByEnumeratingWithState:&v63 objects:v71 count:16];
   if (v33)
   {
     v34 = v33;
@@ -928,31 +928,31 @@ LABEL_11:
       {
         if (*v64 != v35)
         {
-          objc_enumerationMutation(v32);
+          objc_enumerationMutation(dataSourceIdentifiers);
         }
 
         v37 = *(*(&v63 + 1) + 8 * j);
-        v38 = [(REUIRelevanceEngineController *)self->_engineController disabledDataSources];
-        v39 = [v38 containsObject:v37];
+        disabledDataSources = [(REUIRelevanceEngineController *)self->_engineController disabledDataSources];
+        v39 = [disabledDataSources containsObject:v37];
 
         if ((v39 & 1) == 0)
         {
-          v40 = [(REUIRelevanceEngineController *)self->_engineController engine];
-          v41 = [v40 dataSourceCatalog];
-          v42 = [v41 requiresLocationInUseAssertonForDataSourceWithIdentifier:v37];
+          engine4 = [(REUIRelevanceEngineController *)self->_engineController engine];
+          dataSourceCatalog4 = [engine4 dataSourceCatalog];
+          v42 = [dataSourceCatalog4 requiresLocationInUseAssertonForDataSourceWithIdentifier:v37];
 
           if (v42)
           {
-            v43 = [(REUIRelevanceEngineController *)self->_engineController engine];
-            v44 = [v43 dataSourceCatalog];
-            v45 = [v44 applicationIdentifierForDataSourceWithIdentifier:v37];
+            engine5 = [(REUIRelevanceEngineController *)self->_engineController engine];
+            dataSourceCatalog5 = [engine5 dataSourceCatalog];
+            v45 = [dataSourceCatalog5 applicationIdentifierForDataSourceWithIdentifier:v37];
 
             [v56 addObject:v45];
           }
         }
       }
 
-      v34 = [v32 countByEnumeratingWithState:&v63 objects:v71 count:16];
+      v34 = [dataSourceIdentifiers countByEnumeratingWithState:&v63 objects:v71 count:16];
     }
 
     while (v34);
@@ -974,50 +974,50 @@ LABEL_11:
   }
 }
 
-- (unint64_t)_distanceForIndexPathFromNow:(id)a3
+- (unint64_t)_distanceForIndexPathFromNow:(id)now
 {
-  v4 = a3;
-  v5 = [v4 upNextSection];
-  v6 = 0;
-  if (v5 <= 1)
+  nowCopy = now;
+  upNextSection = [nowCopy upNextSection];
+  element = 0;
+  if (upNextSection <= 1)
   {
-    if (v5)
+    if (upNextSection)
     {
-      if (v5 == (&dword_0 + 1))
+      if (upNextSection == (&dword_0 + 1))
       {
         v10 = [(REUIRelevanceEngineController *)self->_engineController numberOfItemsInSectionAtIndex:1];
-        v6 = (v10 - [v4 element]);
+        element = (v10 - [nowCopy element]);
       }
     }
 
     else
     {
       v12 = [(REUIRelevanceEngineController *)self->_engineController numberOfItemsInSectionAtIndex:0];
-      v13 = v12 - [v4 element];
-      v6 = [(REUIRelevanceEngineController *)self->_engineController numberOfItemsInSectionAtIndex:1]+ v13;
+      v13 = v12 - [nowCopy element];
+      element = [(REUIRelevanceEngineController *)self->_engineController numberOfItemsInSectionAtIndex:1]+ v13;
     }
   }
 
-  else if (v5 == (&dword_0 + 2))
+  else if (upNextSection == (&dword_0 + 2))
   {
-    v6 = [v4 element];
+    element = [nowCopy element];
   }
 
-  else if (v5 == (&dword_0 + 3))
+  else if (upNextSection == (&dword_0 + 3))
   {
-    v11 = [v4 element];
-    v6 = &v11[[(REUIRelevanceEngineController *)self->_engineController numberOfItemsInSectionAtIndex:2]];
+    element2 = [nowCopy element];
+    element = &element2[[(REUIRelevanceEngineController *)self->_engineController numberOfItemsInSectionAtIndex:2]];
   }
 
-  else if (v5 == &dword_4)
+  else if (upNextSection == &dword_4)
   {
     v7 = [(REUIRelevanceEngineController *)self->_engineController numberOfItemsInSectionAtIndex:4];
-    v8 = v7 - [v4 element];
+    v8 = v7 - [nowCopy element];
     v9 = [(REUIRelevanceEngineController *)self->_engineController numberOfItemsInSectionAtIndex:2];
-    v6 = [(REUIRelevanceEngineController *)self->_engineController numberOfItemsInSectionAtIndex:3]+ v9 + v8;
+    element = [(REUIRelevanceEngineController *)self->_engineController numberOfItemsInSectionAtIndex:3]+ v9 + v8;
   }
 
-  return v6;
+  return element;
 }
 
 - (void)_startViewResetTimer
@@ -1074,32 +1074,32 @@ LABEL_11:
   objc_destroyWeak(&location);
 }
 
-- (void)_logDataSourceSnapshot:(id)a3 withName:(id)a4
+- (void)_logDataSourceSnapshot:(id)snapshot withName:(id)name
 {
-  v5 = a3;
-  v6 = a4;
+  snapshotCopy = snapshot;
+  nameCopy = name;
   v7 = _NTKLoggingObjectForDomain();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v34 = v6;
+    v34 = nameCopy;
     v35 = 2112;
-    v36 = v5;
+    v36 = snapshotCopy;
     _os_log_impl(&dword_0, v7, OS_LOG_TYPE_DEFAULT, "[datasource] (%@):(%@)", buf, 0x16u);
   }
 
-  v17 = v6;
+  v17 = nameCopy;
 
   v29 = 0u;
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  obj = [v5 sectionIdentifiers];
+  obj = [snapshotCopy sectionIdentifiers];
   v21 = [obj countByEnumeratingWithState:&v27 objects:v32 count:16];
   if (v21)
   {
     v19 = *v28;
-    v20 = v5;
+    v20 = snapshotCopy;
     do
     {
       v8 = 0;
@@ -1116,7 +1116,7 @@ LABEL_11:
         v24 = 0u;
         v25 = 0u;
         v26 = 0u;
-        v10 = [v5 itemIdentifiersInSectionWithIdentifier:{v9, v17}];
+        v10 = [snapshotCopy itemIdentifiersInSectionWithIdentifier:{v9, v17}];
         v11 = [v10 countByEnumeratingWithState:&v23 objects:v31 count:16];
         if (v11)
         {
@@ -1150,7 +1150,7 @@ LABEL_11:
         }
 
         v8 = v22 + 1;
-        v5 = v20;
+        snapshotCopy = v20;
       }
 
       while ((v22 + 1) != v21);
@@ -1161,90 +1161,90 @@ LABEL_11:
   }
 }
 
-- (void)_logContent:(id)a3 withIdentifier:(id)a4
+- (void)_logContent:(id)content withIdentifier:(id)identifier
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 headerTextProvider];
-  v8 = [v7 attributedString];
-  v9 = [v8 string];
+  contentCopy = content;
+  identifierCopy = identifier;
+  headerTextProvider = [contentCopy headerTextProvider];
+  attributedString = [headerTextProvider attributedString];
+  string = [attributedString string];
 
-  v10 = [v5 description1TextProvider];
-  v11 = [v10 attributedString];
-  v12 = [v11 string];
+  description1TextProvider = [contentCopy description1TextProvider];
+  attributedString2 = [description1TextProvider attributedString];
+  string2 = [attributedString2 string];
 
-  v13 = [v5 description2TextProvider];
-  v14 = [v13 attributedString];
-  v15 = [v14 string];
+  description2TextProvider = [contentCopy description2TextProvider];
+  attributedString3 = [description2TextProvider attributedString];
+  string3 = [attributedString3 string];
 
-  v16 = [v5 description3TextProvider];
-  v17 = [v16 attributedString];
-  v18 = [v17 string];
+  description3TextProvider = [contentCopy description3TextProvider];
+  attributedString4 = [description3TextProvider attributedString];
+  string4 = [attributedString4 string];
 
   v19 = _NTKLoggingObjectForDomain();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
   {
     v20 = 138413570;
-    v21 = v6;
+    v21 = identifierCopy;
     v22 = 1024;
-    v23 = [v5 style];
+    style = [contentCopy style];
     v24 = 2112;
-    v25 = v9;
+    v25 = string;
     v26 = 2112;
-    v27 = v12;
+    v27 = string2;
     v28 = 2112;
-    v29 = v15;
+    v29 = string3;
     v30 = 2112;
-    v31 = v18;
+    v31 = string4;
     _os_log_impl(&dword_0, v19, OS_LOG_TYPE_DEFAULT, "[datasource] %@ content=(style=%d, headerText=%@, description1=%@, description2=%@, description3=%@)", &v20, 0x3Au);
   }
 }
 
-- (id)_configureCellForItemWithElement:(id)a3 atIndexPath:(id)a4 inCollectionView:(id)a5
+- (id)_configureCellForItemWithElement:(id)element atIndexPath:(id)path inCollectionView:(id)view
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(NTKUpNextFaceView *)self _contentAtIndexPath:v9];
+  elementCopy = element;
+  pathCopy = path;
+  viewCopy = view;
+  v11 = [(NTKUpNextFaceView *)self _contentAtIndexPath:pathCopy];
   v12 = _NTKLoggingObjectForDomain();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = [v8 identifier];
+    identifier = [elementCopy identifier];
     v19 = 138412546;
-    v20 = v13;
+    v20 = identifier;
     v21 = 2112;
-    v22 = v9;
+    v22 = pathCopy;
     _os_log_impl(&dword_0, v12, OS_LOG_TYPE_DEFAULT, "[datasource] loaded identifier (%@) into cell at index path: (%@)", &v19, 0x16u);
   }
 
-  v14 = [v8 identifier];
-  [(NTKUpNextFaceView *)self _logContent:v11 withIdentifier:v14];
+  identifier2 = [elementCopy identifier];
+  [(NTKUpNextFaceView *)self _logContent:v11 withIdentifier:identifier2];
 
   v15 = [NTKUpNextFaceView _reuseIdentifierForContent:v11];
-  v16 = [v10 dequeueReusableCellWithReuseIdentifier:v15 forIndexPath:v9];
+  v16 = [viewCopy dequeueReusableCellWithReuseIdentifier:v15 forIndexPath:pathCopy];
 
-  v17 = [v8 identifier];
-  [(NTKUpNextFaceView *)self _setupCell:v16 withContent:v11 representedIdentifier:v17];
+  identifier3 = [elementCopy identifier];
+  [(NTKUpNextFaceView *)self _setupCell:v16 withContent:v11 representedIdentifier:identifier3];
 
   return v16;
 }
 
-- (id)_configureSupplementaryViewForSupplementaryElementOfKind:(id)a3 atIndexPath:(id)a4 inCollectionView:(id)a5
+- (id)_configureSupplementaryViewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path inCollectionView:(id)view
 {
-  v6 = a4;
-  v7 = [a5 dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"NTKUpNextHeaderReuseIdentifier" forIndexPath:v6];
-  v8 = [v6 upNextSection];
+  pathCopy = path;
+  v7 = [view dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"NTKUpNextHeaderReuseIdentifier" forIndexPath:pathCopy];
+  upNextSection = [pathCopy upNextSection];
 
   v9 = 0;
-  if (v8 > 1)
+  if (upNextSection > 1)
   {
-    if (v8 == (&dword_0 + 2))
+    if (upNextSection == (&dword_0 + 2))
     {
       v10 = @"UP_NEXT_HEADER";
       v11 = @"Up Next";
     }
 
-    else if (v8 == (&dword_0 + 3))
+    else if (upNextSection == (&dword_0 + 3))
     {
       v10 = @"UP_NEXT_TOMORROW_HEADER";
       v11 = @"Tomorrow";
@@ -1252,7 +1252,7 @@ LABEL_11:
 
     else
     {
-      if (v8 != &dword_4)
+      if (upNextSection != &dword_4)
       {
         goto LABEL_15;
       }
@@ -1264,15 +1264,15 @@ LABEL_11:
 
   else
   {
-    if (v8 == -1)
+    if (upNextSection == -1)
     {
       v9 = &stru_189F0;
       goto LABEL_15;
     }
 
-    if (v8)
+    if (upNextSection)
     {
-      if (v8 != (&dword_0 + 1))
+      if (upNextSection != (&dword_0 + 1))
       {
         goto LABEL_15;
       }
@@ -1297,23 +1297,23 @@ LABEL_15:
   return v7;
 }
 
-- (void)_configureVisibleCell:(id)a3
+- (void)_configureVisibleCell:(id)cell
 {
   cellContentBackground = self->_cellContentBackground;
-  v5 = a3;
-  [v5 setContentImage:cellContentBackground animated:0];
-  [v5 setFilterProvider:self];
+  cellCopy = cell;
+  [cellCopy setContentImage:cellContentBackground animated:0];
+  [cellCopy setFilterProvider:self];
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 referenceSizeForHeaderInSection:(int64_t)a5
+- (CGSize)collectionView:(id)view layout:(id)layout referenceSizeForHeaderInSection:(int64_t)section
 {
-  v7 = a3;
-  if ([v7 numberOfItemsInSection:a5])
+  viewCopy = view;
+  if ([viewCopy numberOfItemsInSection:section])
   {
-    [v7 bounds];
+    [viewCopy bounds];
     Width = CGRectGetWidth(v16);
-    v9 = [(NTKUpNextFaceView *)self device];
-    sub_B3F4(v9, v13);
+    device = [(NTKUpNextFaceView *)self device];
+    sub_B3F4(device, v13);
     height = v14;
   }
 
@@ -1330,39 +1330,39 @@ LABEL_15:
   return result;
 }
 
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path
 {
-  v6 = a4;
+  cellCopy = cell;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(NTKUpNextFaceView *)self _configureVisibleCell:v6];
+    [(NTKUpNextFaceView *)self _configureVisibleCell:cellCopy];
   }
 }
 
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate
 {
-  if (!a4)
+  if (!decelerate)
   {
     [(NTKUpNextFaceView *)self _updateVisibilityForCells];
   }
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v13 = a3;
+  scrollCopy = scroll;
   [(NTKUpNextFaceView *)self _updateVisibilityForCells];
   if (self->_isInflightScroll && !self->_isProgramaticScrollEvent && self->_modeTransitionApplier && self->_modeTransitionCompletion)
   {
     self->_cancelInflightScroll = 1;
     y = self->_startOffsetForModeTransition.y;
     v5 = self->_targetOffsetForModeTransition.y;
-    [v13 contentOffset];
+    [scrollCopy contentOffset];
     CLKReverseInterpolateFromFloats();
     v7 = v6;
     v8 = self->_startOffsetForModeTransition.y;
     v9 = self->_secondaryOffsetForModeTransition.y;
-    [v13 contentOffset];
+    [scrollCopy contentOffset];
     CLKReverseInterpolateFromFloats();
     if (v7 < v10)
     {
@@ -1393,73 +1393,73 @@ LABEL_15:
   self->_positiveDwellForTopElementsTimer = 0;
 }
 
-+ (id)_reuseIdentifierForContent:(id)a3
++ (id)_reuseIdentifierForContent:(id)content
 {
-  v3 = [a3 style];
-  if (v3 > 6)
+  style = [content style];
+  if (style > 6)
   {
     return @"NTKUpNextMultilineCellReuseIdentifier";
   }
 
   else
   {
-    return *(&off_189B8 + v3);
+    return *(&off_189B8 + style);
   }
 }
 
-- (id)_contentAtIndexPath:(id)a3
+- (id)_contentAtIndexPath:(id)path
 {
-  v4 = [(UICollectionViewDiffableDataSource *)self->_collectionViewDataSource itemIdentifierForIndexPath:a3];
-  v5 = [v4 element];
+  v4 = [(UICollectionViewDiffableDataSource *)self->_collectionViewDataSource itemIdentifierForIndexPath:path];
+  element = [v4 element];
   if ([(REUIRelevanceEngineController *)self->_engineController wantsIdealizedContent])
   {
-    v6 = [v5 idealizedContent];
-    v7 = v6;
-    if (v6)
+    idealizedContent = [element idealizedContent];
+    v7 = idealizedContent;
+    if (idealizedContent)
     {
-      v8 = v6;
+      content = idealizedContent;
     }
 
     else
     {
-      v8 = [v5 content];
+      content = [element content];
     }
 
-    v9 = v8;
+    content2 = content;
   }
 
   else
   {
-    v9 = [v5 content];
+    content2 = [element content];
   }
 
-  return v9;
+  return content2;
 }
 
-- (void)_setupCell:(id)a3 withContent:(id)a4 representedIdentifier:(id)a5
+- (void)_setupCell:(id)cell withContent:(id)content representedIdentifier:(id)identifier
 {
-  v8 = a5;
-  v9 = a3;
-  [v9 configureWithContent:a4];
-  [v9 setRepresentedElementIdentifier:v8];
+  identifierCopy = identifier;
+  cellCopy = cell;
+  [cellCopy configureWithContent:content];
+  [cellCopy setRepresentedElementIdentifier:identifierCopy];
 
-  [v9 setContentImage:self->_cellContentBackground animated:0];
+  [cellCopy setContentImage:self->_cellContentBackground animated:0];
 }
 
-- (BOOL)collectionView:(id)a3 shouldHighlightItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view shouldHighlightItemAtIndexPath:(id)path
 {
-  v4 = [(REUIRelevanceEngineController *)self->_engineController actionAtIndexPath:a4];
+  v4 = [(REUIRelevanceEngineController *)self->_engineController actionAtIndexPath:path];
   v5 = v4 != 0;
 
   return v5;
 }
 
-- (void)collectionView:(id)a3 didHighlightItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didHighlightItemAtIndexPath:(id)path
 {
   collectionView = self->_collectionView;
-  v6 = a4;
-  v7 = [(NTKUpNextCollectionView *)collectionView cellForItemAtIndexPath:v6];
-  v8 = [(NTKUpNextCollectionViewFlowLayout *)self->_layout layoutAttributesForItemAtIndexPath:v6];
+  pathCopy = path;
+  v7 = [(NTKUpNextCollectionView *)collectionView cellForItemAtIndexPath:pathCopy];
+  v8 = [(NTKUpNextCollectionViewFlowLayout *)self->_layout layoutAttributesForItemAtIndexPath:pathCopy];
 
   memset(&v15, 0, sizeof(v15));
   if (v8)
@@ -1480,12 +1480,12 @@ LABEL_15:
   [UIView animateWithDuration:v10 animations:0.1];
 }
 
-- (void)collectionView:(id)a3 didUnhighlightItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didUnhighlightItemAtIndexPath:(id)path
 {
   collectionView = self->_collectionView;
-  v6 = a4;
-  v7 = [(NTKUpNextCollectionView *)collectionView cellForItemAtIndexPath:v6];
-  v8 = [(NTKUpNextCollectionViewFlowLayout *)self->_layout layoutAttributesForItemAtIndexPath:v6];
+  pathCopy = path;
+  v7 = [(NTKUpNextCollectionView *)collectionView cellForItemAtIndexPath:pathCopy];
+  v8 = [(NTKUpNextCollectionViewFlowLayout *)self->_layout layoutAttributesForItemAtIndexPath:pathCopy];
 
   v26 = 0u;
   v27 = 0u;
@@ -1517,17 +1517,17 @@ LABEL_15:
   [UIView animateWithDuration:v10 animations:0.2];
 }
 
-- (UIEdgeInsets)collectionView:(id)a3 layout:(id)a4 insetForSectionAtIndex:(int64_t)a5
+- (UIEdgeInsets)collectionView:(id)view layout:(id)layout insetForSectionAtIndex:(int64_t)index
 {
-  v7 = a3;
+  viewCopy = view;
   v8 = 0.0;
-  if ([v7 numberOfItemsInSection:a5] >= 1 && objc_msgSend(v7, "numberOfSections") - 1 != a5)
+  if ([viewCopy numberOfItemsInSection:index] >= 1 && objc_msgSend(viewCopy, "numberOfSections") - 1 != index)
   {
-    v9 = [(NTKUpNextFaceView *)self device];
-    sub_B3F4(v9, v17);
+    device = [(NTKUpNextFaceView *)self device];
+    sub_B3F4(device, v17);
     v10 = v18;
-    v11 = [(NTKUpNextFaceView *)self device];
-    sub_B3F4(v11, v16);
+    device2 = [(NTKUpNextFaceView *)self device];
+    sub_B3F4(device2, v16);
     v8 = v10 + v16[5];
   }
 
@@ -1559,8 +1559,8 @@ LABEL_15:
   v16 = 0u;
   v14 = 0u;
   memset(v13, 0, sizeof(v13));
-  v3 = [(NTKUpNextFaceView *)self device];
-  sub_B3F4(v3, v13);
+  device = [(NTKUpNextFaceView *)self device];
+  sub_B3F4(device, v13);
 
   v4 = [(NTKUpNextFaceView *)self complicationLayoutforSlot:NTKComplicationSlotTopRight];
   utilityComplicationFactory = self->_utilityComplicationFactory;
@@ -1572,25 +1572,25 @@ LABEL_15:
   v8 = *(&v14 + 1);
   v7 = *&v15;
   v9 = *&v14;
-  v10 = [(NTKUpNextFaceView *)self device];
-  v11 = [NTKComplicationLayoutRule layoutRuleForDevice:v10 withReferenceFrame:3 horizontalLayout:3 verticalLayout:v6 keylinePadding:v7, v8, v9, UIEdgeInsetsZero.top, UIEdgeInsetsZero.left, UIEdgeInsetsZero.bottom, UIEdgeInsetsZero.right];
+  device2 = [(NTKUpNextFaceView *)self device];
+  v11 = [NTKComplicationLayoutRule layoutRuleForDevice:device2 withReferenceFrame:3 horizontalLayout:3 verticalLayout:v6 keylinePadding:v7, v8, v9, UIEdgeInsetsZero.top, UIEdgeInsetsZero.left, UIEdgeInsetsZero.bottom, UIEdgeInsetsZero.right];
 
   [v12 setDefaultLayoutRule:v11 forState:0];
 }
 
 - (void)_applyDataMode
 {
-  v3 = [(NTKUpNextFaceView *)self dataMode];
-  if (v3 == self->_previousDataMode)
+  dataMode = [(NTKUpNextFaceView *)self dataMode];
+  if (dataMode == self->_previousDataMode)
   {
     return;
   }
 
-  v4 = v3;
+  v4 = dataMode;
   v5 = 1;
-  if (v3 <= 2)
+  if (dataMode <= 2)
   {
-    if (v3 == (&dword_0 + 1))
+    if (dataMode == (&dword_0 + 1))
     {
       [(REUIRelevanceEngineController *)self->_engineController setWantsLiveDataSources:1];
       [(UITapGestureRecognizer *)self->_viewModeTapGesture setEnabled:1];
@@ -1611,7 +1611,7 @@ LABEL_15:
       goto LABEL_17;
     }
 
-    if (v3 != (&dword_0 + 2))
+    if (dataMode != (&dword_0 + 2))
     {
       goto LABEL_18;
     }
@@ -1625,7 +1625,7 @@ LABEL_15:
 
   else
   {
-    if (v3 == (&dword_0 + 3))
+    if (dataMode == (&dword_0 + 3))
     {
       [(UITapGestureRecognizer *)self->_viewModeTapGesture setEnabled:0];
       [(NTKUpNextCollectionView *)self->_collectionView setUserInteractionEnabled:0];
@@ -1636,7 +1636,7 @@ LABEL_15:
       goto LABEL_18;
     }
 
-    if (v3 == (&dword_4 + 1))
+    if (dataMode == (&dword_4 + 1))
     {
       [(REUIRelevanceEngineController *)self->_engineController setWantsLiveDataSources:1];
       [(UITapGestureRecognizer *)self->_viewModeTapGesture setEnabled:0];
@@ -1646,7 +1646,7 @@ LABEL_15:
       goto LABEL_18;
     }
 
-    if (v3 != &dword_4)
+    if (dataMode != &dword_4)
     {
       goto LABEL_18;
     }
@@ -1664,9 +1664,9 @@ LABEL_17:
   v5 = 0;
 LABEL_18:
   [(NTKUpNextFaceView *)self _updateVisibilityForCells];
-  v6 = [(NTKUpNextFaceView *)self _applyShouldUseCanonicalContent];
-  v7 = [(NTKUpNextFaceView *)self _applyShowIdealizedContent];
-  if (v5 & 1) != 0 || (v6 & 1) != 0 || (v7)
+  _applyShouldUseCanonicalContent = [(NTKUpNextFaceView *)self _applyShouldUseCanonicalContent];
+  _applyShowIdealizedContent = [(NTKUpNextFaceView *)self _applyShowIdealizedContent];
+  if (v5 & 1) != 0 || (_applyShouldUseCanonicalContent & 1) != 0 || (_applyShowIdealizedContent)
   {
     [(NTKUpNextFaceView *)self collectionViewDeferralStateChanged];
   }
@@ -1688,12 +1688,12 @@ LABEL_18:
 
 - (void)_prepareWristRaiseAnimation
 {
-  v2 = [(NTKUpNextCollectionView *)self->_collectionView visibleCells];
+  visibleCells = [(NTKUpNextCollectionView *)self->_collectionView visibleCells];
   v7 = 0u;
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  v3 = [visibleCells countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = v3;
@@ -1705,7 +1705,7 @@ LABEL_18:
       {
         if (*v8 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(visibleCells);
         }
 
         [*(*(&v7 + 1) + 8 * v6) setContentBrightness:0 animated:0.25];
@@ -1713,7 +1713,7 @@ LABEL_18:
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v4 = [visibleCells countByEnumeratingWithState:&v7 objects:v11 count:16];
     }
 
     while (v4);
@@ -1722,12 +1722,12 @@ LABEL_18:
 
 - (void)_performWristRaiseAnimation
 {
-  v2 = [(NTKUpNextCollectionView *)self->_collectionView visibleCells];
+  visibleCells = [(NTKUpNextCollectionView *)self->_collectionView visibleCells];
   v7 = 0u;
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  v3 = [visibleCells countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = v3;
@@ -1739,7 +1739,7 @@ LABEL_18:
       {
         if (*v8 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(visibleCells);
         }
 
         [*(*(&v7 + 1) + 8 * v6) setContentBrightness:1 animated:1.0];
@@ -1747,16 +1747,16 @@ LABEL_18:
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v4 = [visibleCells countByEnumeratingWithState:&v7 objects:v11 count:16];
     }
 
     while (v4);
   }
 }
 
-- (void)_loadSnapshotContent:(id)a3
+- (void)_loadSnapshotContent:(id)content
 {
-  v4 = a3;
+  contentCopy = content;
   if (self->_snapshotSnapshot)
   {
     v5 = _NTKLoggingObjectForDomain();
@@ -1772,16 +1772,16 @@ LABEL_18:
     [(NTKUpNextFaceView *)self layoutIfNeeded];
     [(NTKUpNextCollectionView *)self->_collectionView setNeedsLayout];
     [(NTKUpNextCollectionView *)self->_collectionView layoutIfNeeded];
-    if (v4)
+    if (contentCopy)
     {
-      v4[2](v4);
+      contentCopy[2](contentCopy);
     }
   }
 
   else
   {
     v6 = +[NTKRelevanceEngineCache sharedCache];
-    v7 = [v6 canonicalRelevanceEngineIgnoringAppInstallations];
+    canonicalRelevanceEngineIgnoringAppInstallations = [v6 canonicalRelevanceEngineIgnoringAppInstallations];
 
     *buf = 0;
     v25 = buf;
@@ -1796,8 +1796,8 @@ LABEL_18:
     v22[4] = sub_80E0;
     v23 = 0;
     v8 = dispatch_group_create();
-    v9 = [v7 configuration];
-    v10 = [v9 dataSourceLoader];
+    configuration = [canonicalRelevanceEngineIgnoringAppInstallations configuration];
+    dataSourceLoader = [configuration dataSourceLoader];
 
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
@@ -1809,7 +1809,7 @@ LABEL_18:
     v19 = @"com.apple.NanoCalendar";
     v20 = v22;
     v21 = buf;
-    [v10 enumerateDataSourceClassesWithBlock:v16];
+    [dataSourceLoader enumerateDataSourceClassesWithBlock:v16];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_846C;
@@ -1817,7 +1817,7 @@ LABEL_18:
     v14 = v22;
     v15 = buf;
     block[4] = self;
-    v13 = v4;
+    v13 = contentCopy;
     dispatch_group_notify(v11, &_dispatch_main_q, block);
 
     _Block_object_dispose(v22, 8);
@@ -1825,9 +1825,9 @@ LABEL_18:
   }
 }
 
-- (void)_finalizeForSnapshotting:(id)a3
+- (void)_finalizeForSnapshotting:(id)snapshotting
 {
-  v4 = a3;
+  snapshottingCopy = snapshotting;
   v5 = _NTKLoggingObjectForDomain();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1839,22 +1839,22 @@ LABEL_18:
   v7[1] = 3221225472;
   v7[2] = sub_883C;
   v7[3] = &unk_188C0;
-  v8 = v4;
-  v6 = v4;
+  v8 = snapshottingCopy;
+  v6 = snapshottingCopy;
   [(NTKUpNextFaceView *)self _loadSnapshotContent:v7];
 }
 
-- (void)_applyOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_applyOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  if (a4 == 10)
+  if (mode == 10)
   {
-    [(NTKUpNextFaceView *)self _setSiriBlurColor:a3];
+    [(NTKUpNextFaceView *)self _setSiriBlurColor:option];
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v6 = [(NTKUpNextCollectionView *)self->_collectionView visibleCells];
-    v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    visibleCells = [(NTKUpNextCollectionView *)self->_collectionView visibleCells];
+    v7 = [visibleCells countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v7)
     {
       v8 = v7;
@@ -1866,7 +1866,7 @@ LABEL_18:
         {
           if (*v13 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(visibleCells);
           }
 
           v11 = *(*(&v12 + 1) + 8 * v10);
@@ -1880,7 +1880,7 @@ LABEL_18:
         }
 
         while (v8 != v10);
-        v8 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v8 = [visibleCells countByEnumeratingWithState:&v12 objects:v16 count:16];
       }
 
       while (v8);
@@ -1891,13 +1891,13 @@ LABEL_18:
 - (void)_updateDisabledDataSources
 {
   v3 = +[NTKSiriDefaults sharedInstance];
-  v4 = [v3 disabledDataSources];
-  v5 = [NSMutableSet setWithSet:v4];
+  disabledDataSources = [v3 disabledDataSources];
+  v5 = [NSMutableSet setWithSet:disabledDataSources];
 
-  v6 = [(REUIRelevanceEngineController *)self->_engineController disabledDataSources];
+  disabledDataSources2 = [(REUIRelevanceEngineController *)self->_engineController disabledDataSources];
   v7 = [v5 mutableCopy];
-  [v7 minusSet:v6];
-  v8 = [v6 mutableCopy];
+  [v7 minusSet:disabledDataSources2];
+  v8 = [disabledDataSources2 mutableCopy];
   [v8 minusSet:v5];
   v25 = 0u;
   v26 = 0u;
@@ -1969,28 +1969,28 @@ LABEL_18:
 {
   if (self->_collectionView)
   {
-    v3 = [(NTKUpNextFaceView *)self showsCanonicalContent];
-    if (v3)
+    showsCanonicalContent = [(NTKUpNextFaceView *)self showsCanonicalContent];
+    if (showsCanonicalContent)
     {
-      LOBYTE(v3) = [(NTKUpNextFaceView *)self dataMode]== &dword_0 + 3;
+      LOBYTE(showsCanonicalContent) = [(NTKUpNextFaceView *)self dataMode]== &dword_0 + 3;
     }
   }
 
   else
   {
-    LOBYTE(v3) = 1;
+    LOBYTE(showsCanonicalContent) = 1;
   }
 
-  return v3;
+  return showsCanonicalContent;
 }
 
 - (BOOL)_applyShowIdealizedContent
 {
-  v3 = [(NTKUpNextFaceView *)self dataMode];
-  v4 = (v3 == &dword_0 + 3) ^ [(REUIRelevanceEngineController *)self->_engineController wantsIdealizedContent];
+  dataMode = [(NTKUpNextFaceView *)self dataMode];
+  v4 = (dataMode == &dword_0 + 3) ^ [(REUIRelevanceEngineController *)self->_engineController wantsIdealizedContent];
   if (v4 == 1)
   {
-    [(REUIRelevanceEngineController *)self->_engineController setWantsIdealizedContent:v3 == &dword_0 + 3];
+    [(REUIRelevanceEngineController *)self->_engineController setWantsIdealizedContent:dataMode == &dword_0 + 3];
     self->_needsReloadedContent = 1;
     [(NTKUpNextFaceView *)self _reloadContentIfNeeded];
   }
@@ -2024,20 +2024,20 @@ LABEL_18:
   [(REUIRelevanceEngineController *)engineController resignCurrent];
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v5 = a4;
+  touchCopy = touch;
   if ([(NTKUpNextFaceView *)self viewMode]== &dword_0 + 2)
   {
-    v6 = [(NTKUpNextFaceView *)self timeView];
-    [v6 bounds];
+    timeView = [(NTKUpNextFaceView *)self timeView];
+    [timeView bounds];
     v18 = CGRectInset(v17, -6.0, -6.0);
     x = v18.origin.x;
     y = v18.origin.y;
     width = v18.size.width;
     height = v18.size.height;
-    v11 = [(NTKUpNextFaceView *)self timeView];
-    [v5 locationInView:v11];
+    timeView2 = [(NTKUpNextFaceView *)self timeView];
+    [touchCopy locationInView:timeView2];
     v16.x = v12;
     v16.y = v13;
     v19.origin.x = x;
@@ -2057,14 +2057,14 @@ LABEL_18:
 
 - (void)_applyShowContentForUnadornedSnapshot
 {
-  v2 = [(NTKUpNextFaceView *)self timeView];
-  [v2 setHidden:0];
+  timeView = [(NTKUpNextFaceView *)self timeView];
+  [timeView setHidden:0];
 }
 
 - (BOOL)_shouldDeferUpdate
 {
-  v3 = [(NTKUpNextFaceView *)self dataMode];
-  if (v3 <= 4 && ((1 << v3) & 0x16) != 0)
+  dataMode = [(NTKUpNextFaceView *)self dataMode];
+  if (dataMode <= 4 && ((1 << dataMode) & 0x16) != 0)
   {
     [(NTKUpNextFaceView *)self isFrozen];
   }
@@ -2082,10 +2082,10 @@ LABEL_18:
   return self->_isApplyingSnapshot;
 }
 
-- (void)engineController:(id)a3 performBatchUpdateBlock:(id)a4 completion:(id)a5
+- (void)engineController:(id)controller performBatchUpdateBlock:(id)block completion:(id)completion
 {
-  v7 = a4;
-  v8 = a5;
+  blockCopy = block;
+  completionCopy = completion;
   v9 = _NTKLoggingObjectForDomain();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -2093,23 +2093,23 @@ LABEL_18:
     _os_log_impl(&dword_0, v9, OS_LOG_TYPE_DEFAULT, "[datasource] engine requested batch update", v10, 2u);
   }
 
-  if (v7)
+  if (blockCopy)
   {
     self->_isApplyingBatchUpdate = 1;
-    v7[2](v7);
+    blockCopy[2](blockCopy);
     self->_isApplyingBatchUpdate = 0;
   }
 
-  if (v8)
+  if (completionCopy)
   {
-    v8[2](v8);
+    completionCopy[2](completionCopy);
   }
 
   self->_hasDeferredUpdate = 1;
   [(NTKUpNextFaceView *)self collectionViewDeferralStateChanged];
 }
 
-- (BOOL)engineController:(id)a3 isElementAtIndexPathVisible:(id)a4
+- (BOOL)engineController:(id)controller isElementAtIndexPathVisible:(id)visible
 {
   if (self->_needsReloadedContent)
   {
@@ -2117,21 +2117,21 @@ LABEL_18:
   }
 
   collectionView = self->_collectionView;
-  v6 = a4;
-  v7 = [(NTKUpNextCollectionView *)collectionView indexPathsForVisibleItems];
-  v8 = [NSSet setWithArray:v7];
+  visibleCopy = visible;
+  indexPathsForVisibleItems = [(NTKUpNextCollectionView *)collectionView indexPathsForVisibleItems];
+  v8 = [NSSet setWithArray:indexPathsForVisibleItems];
 
-  LOBYTE(v7) = [v8 containsObject:v6];
-  return v7;
+  LOBYTE(indexPathsForVisibleItems) = [v8 containsObject:visibleCopy];
+  return indexPathsForVisibleItems;
 }
 
-- (void)engineController:(id)a3 didReloadContent:(id)a4 withIdentifier:(id)a5
+- (void)engineController:(id)controller didReloadContent:(id)content withIdentifier:(id)identifier
 {
-  v17 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v17 indexPathForElementWithIdentifier:v9];
-  v11 = [v17 _elementAtIndexPath:v10];
+  controllerCopy = controller;
+  contentCopy = content;
+  identifierCopy = identifier;
+  v10 = [controllerCopy indexPathForElementWithIdentifier:identifierCopy];
+  v11 = [controllerCopy _elementAtIndexPath:v10];
   if (v11)
   {
     v12 = [NTKUpNextElement elementWithREElement:v11];
@@ -2144,23 +2144,23 @@ LABEL_18:
     {
       v13 = [(UICollectionViewDiffableDataSource *)self->_collectionViewDataSource indexPathForItemIdentifier:v12];
       v14 = [(NTKUpNextCollectionView *)self->_collectionView cellForItemAtIndexPath:v13];
-      [v14 configureWithContent:v8];
-      v15 = [v17 indexPathForElementWithIdentifier:v9];
-      v16 = [v17 elementAtIndexPath:v15];
+      [v14 configureWithContent:contentCopy];
+      v15 = [controllerCopy indexPathForElementWithIdentifier:identifierCopy];
+      v16 = [controllerCopy elementAtIndexPath:v15];
       [(NTKUpNextFaceView *)self _replaceDataSourceElement:v12 withReloadedREElement:v16];
     }
   }
 }
 
-- (void)engineController:(id)a3 didReloadElement:(id)a4
+- (void)engineController:(id)controller didReloadElement:(id)element
 {
-  v8 = a3;
-  v6 = a4;
-  if (v6)
+  controllerCopy = controller;
+  elementCopy = element;
+  if (elementCopy)
   {
     if (self->_isApplyingBatchUpdate)
     {
-      v7 = [NTKUpNextElement elementWithREElement:v6];
+      v7 = [NTKUpNextElement elementWithREElement:elementCopy];
       [(NSMutableSet *)self->_reloadedElements addObject:v7];
     }
 
@@ -2172,9 +2172,9 @@ LABEL_18:
   }
 }
 
-- (void)engineController:(id)a3 didRemoveContent:(id)a4 atIndexPath:(id)a5
+- (void)engineController:(id)controller didRemoveContent:(id)content atIndexPath:(id)path
 {
-  v6 = [a3 _elementAtIndexPath:{a5, a4}];
+  v6 = [controller _elementAtIndexPath:{path, content}];
   if (v6)
   {
     v7 = [NTKUpNextElement elementWithREElement:v6];
@@ -2184,7 +2184,7 @@ LABEL_18:
   _objc_release_x1();
 }
 
-- (void)engineControllerDidFinishUpdatingRelevance:(id)a3
+- (void)engineControllerDidFinishUpdatingRelevance:(id)relevance
 {
   if (!self->_engineInitiallyLoaded)
   {
@@ -2205,8 +2205,8 @@ LABEL_18:
 {
   if (self->_engineInitiallyLoaded && (!NTKIsDaemonOrFaceSnapshotService() || self->_engineInitiallyLoaded) && [(NTKUpNextCollectionView *)self->_collectionView numberOfItemsInSection:2])
   {
-    v3 = [(NTKUpNextFaceView *)self device];
-    sub_B3F4(v3, v14);
+    device = [(NTKUpNextFaceView *)self device];
+    sub_B3F4(device, v14);
     v4 = v15;
 
     layout = self->_layout;
@@ -2231,12 +2231,12 @@ LABEL_18:
   return result;
 }
 
-- (void)_cleanupAfterSettingViewMode:(int64_t)a3 scroll:(BOOL)a4 targetOffset:(CGPoint)a5 needsLayout:(BOOL)a6
+- (void)_cleanupAfterSettingViewMode:(int64_t)mode scroll:(BOOL)scroll targetOffset:(CGPoint)offset needsLayout:(BOOL)layout
 {
-  v6 = a6;
-  v7 = a4;
-  y = a5.y;
-  x = a5.x;
+  layoutCopy = layout;
+  scrollCopy = scroll;
+  y = offset.y;
+  x = offset.x;
   self->_cancelInflightScroll = 0;
   isInflightScroll = self->_isInflightScroll;
   self->_isInflightScroll = 0;
@@ -2247,7 +2247,7 @@ LABEL_18:
   modeTransitionApplier = self->_modeTransitionApplier;
   self->_modeTransitionApplier = 0;
 
-  [(NTKUpNextFaceView *)self _allowContentViewInteractive:a3 == 2];
+  [(NTKUpNextFaceView *)self _allowContentViewInteractive:mode == 2];
   v39 = 0;
   memset(v38, 0, sizeof(v38));
   v36 = 0u;
@@ -2259,14 +2259,14 @@ LABEL_18:
   v30 = 0u;
   memset(v31, 0, sizeof(v31));
   memset(v29, 0, sizeof(v29));
-  v15 = [(NTKUpNextFaceView *)self device];
-  sub_B3F4(v15, v29);
+  device = [(NTKUpNextFaceView *)self device];
+  sub_B3F4(device, v29);
 
   [(NTKUpNextCollectionViewFlowLayout *)self->_layout setUseFixedLowTransitionLayout:0];
-  if (v6)
+  if (layoutCopy)
   {
     v16 = &v34 + 1;
-    if (a3)
+    if (mode)
     {
       v16 = &v35;
       v17 = &v36;
@@ -2277,7 +2277,7 @@ LABEL_18:
       v17 = &v35 + 1;
     }
 
-    if (a3)
+    if (mode)
     {
       v18 = &v37;
     }
@@ -2287,7 +2287,7 @@ LABEL_18:
       v18 = &v36 + 1;
     }
 
-    if (a3)
+    if (mode)
     {
       v19 = v38;
     }
@@ -2298,7 +2298,7 @@ LABEL_18:
     }
 
     v20 = 1.0;
-    if (a3)
+    if (mode)
     {
       v21 = 1.0;
     }
@@ -2315,10 +2315,10 @@ LABEL_18:
     [(NTKUpNextCollectionViewFlowLayout *)self->_layout setTopItemsAlpha:v21];
     [(NTKUpNextCollectionViewFlowLayout *)self->_layout setHeaderAlpha:v21];
     layout = self->_layout;
-    if (a3)
+    if (mode)
     {
-      v23 = [(NTKUpNextFaceView *)self device];
-      [(NTKUpNextCollectionViewFlowLayout *)layout setTopItemsShift:sub_BE5C(v23, v23)];
+      device2 = [(NTKUpNextFaceView *)self device];
+      [(NTKUpNextCollectionViewFlowLayout *)layout setTopItemsShift:sub_BE5C(device2, device2)];
 
       v20 = 0.0;
     }
@@ -2328,26 +2328,26 @@ LABEL_18:
       [(NTKUpNextCollectionViewFlowLayout *)self->_layout setTopItemsShift:*(&v32 + 1)];
     }
 
-    v24 = [(NTKUpNextFaceView *)self complicationContainerView];
+    complicationContainerView = [(NTKUpNextFaceView *)self complicationContainerView];
     v25 = *&CGAffineTransformIdentity.c;
     v28[0] = *&CGAffineTransformIdentity.a;
     v28[1] = v25;
     v28[2] = *&CGAffineTransformIdentity.tx;
-    [v24 setTransform:v28];
+    [complicationContainerView setTransform:v28];
 
-    [(NTKUpNextFaceView *)self _layoutTimeLabelForViewMode:a3];
-    [(NTKUpNextFaceView *)self _layoutTimeLabelPlatterViewMode:a3];
+    [(NTKUpNextFaceView *)self _layoutTimeLabelForViewMode:mode];
+    [(NTKUpNextFaceView *)self _layoutTimeLabelPlatterViewMode:mode];
     v26 = v31;
-    if (!a3)
+    if (!mode)
     {
       v26 = &v30 + 1;
     }
 
     [(NTKUpNextCollectionViewFlowLayout *)self->_layout setTopOffsetForScrolling:*v26];
-    v27 = [(NTKUpNextFaceView *)self complicationContainerView];
-    [v27 setAlpha:v20];
+    complicationContainerView2 = [(NTKUpNextFaceView *)self complicationContainerView];
+    [complicationContainerView2 setAlpha:v20];
 
-    if (v7)
+    if (scrollCopy)
     {
       [(NTKUpNextCollectionView *)self->_collectionView setContentOffset:0 animated:x, y];
     }
@@ -2360,30 +2360,30 @@ LABEL_18:
   }
 }
 
-- (void)_layoutTimeLabelPlatterViewMode:(int64_t)a3
+- (void)_layoutTimeLabelPlatterViewMode:(int64_t)mode
 {
   [(NTKUpNextFaceView *)self bounds];
-  v23 = [(NTKUpNextFaceView *)self _digitalTimeLabelStyleFromViewMode:a3 faceBounds:?];
-  v5 = [(NTKUpNextFaceView *)self timeView];
-  [v5 frame];
+  v23 = [(NTKUpNextFaceView *)self _digitalTimeLabelStyleFromViewMode:mode faceBounds:?];
+  timeView = [(NTKUpNextFaceView *)self timeView];
+  [timeView frame];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
 
-  v14 = [(NTKUpNextFaceView *)self device];
-  sub_B3F4(v14, v24);
+  device = [(NTKUpNextFaceView *)self device];
+  sub_B3F4(device, v24);
   v15 = v7 + v26;
   v16 = v9 + v25;
   v17 = v11 - (v26 + v28);
   v18 = v13 - (v25 + v27);
 
   [(UIView *)self->_timeLabelPlatter setFrame:v15, v16, v17, v18];
-  v19 = [(UIView *)self->_timeLabelPlatter layer];
+  layer = [(UIView *)self->_timeLabelPlatter layer];
   [(UIView *)self->_timeLabelPlatter frame];
   [(NTKUpNextFaceView *)self bounds];
   NTKUpNextUnitRectForFrameInBounds();
-  [v19 setContentsRect:?];
+  [layer setContentsRect:?];
 
   v20 = [v23 isEqual:self->_timeLabelSmallInUpperRightCornerStyle];
   timeLabelPlatter = self->_timeLabelPlatter;
@@ -2396,26 +2396,26 @@ LABEL_18:
   [(UIView *)self->_timeLabelPlatter setAlpha:v22];
 }
 
-- (void)_layoutTimeLabelForViewMode:(int64_t)a3
+- (void)_layoutTimeLabelForViewMode:(int64_t)mode
 {
   [(NTKUpNextFaceView *)self bounds];
-  v11 = [(NTKUpNextFaceView *)self _digitalTimeLabelStyleFromViewMode:a3 faceBounds:?];
-  v5 = [(NTKUpNextFaceView *)self timeView];
-  [v5 setStyle:v11];
+  v11 = [(NTKUpNextFaceView *)self _digitalTimeLabelStyleFromViewMode:mode faceBounds:?];
+  timeView = [(NTKUpNextFaceView *)self timeView];
+  [timeView setStyle:v11];
 
-  v6 = [(NTKUpNextFaceView *)self timeView];
-  v7 = [v11 layoutRule];
-  v8 = [(NTKUpNextFaceView *)self timeView];
-  [v8 bounds];
-  [v7 calculateLayoutFrameForBoundsSize:{v9, v10}];
-  [v6 ntk_setBoundsAndPositionFromFrame:?];
+  timeView2 = [(NTKUpNextFaceView *)self timeView];
+  layoutRule = [v11 layoutRule];
+  timeView3 = [(NTKUpNextFaceView *)self timeView];
+  [timeView3 bounds];
+  [layoutRule calculateLayoutFrameForBoundsSize:{v9, v10}];
+  [timeView2 ntk_setBoundsAndPositionFromFrame:?];
 }
 
 - (void)updateTimeLabelBackground
 {
   v2 = self->_timeLabelPlatter;
   IsReduceTransparencyEnabled = UIAccessibilityIsReduceTransparencyEnabled();
-  v5 = [(UIView *)v2 layer];
+  layer = [(UIView *)v2 layer];
 
   if (IsReduceTransparencyEnabled)
   {
@@ -2427,23 +2427,23 @@ LABEL_18:
     [UIColor colorWithWhite:0.333 alpha:0.75];
   }
   v4 = ;
-  [v5 setBackgroundColor:{objc_msgSend(v4, "CGColor")}];
+  [layer setBackgroundColor:{objc_msgSend(v4, "CGColor")}];
 }
 
-- (void)_handleViewModeTapGesture:(id)a3
+- (void)_handleViewModeTapGesture:(id)gesture
 {
-  if ([a3 state] == &dword_0 + 3 && !self->_isAnimating)
+  if ([gesture state] == &dword_0 + 3 && !self->_isAnimating)
   {
-    v4 = [(NTKUpNextFaceView *)self viewMode];
+    viewMode = [(NTKUpNextFaceView *)self viewMode];
 
-    [(NTKUpNextFaceView *)self _switchViewModeForCurrentMode:v4 animated:1];
+    [(NTKUpNextFaceView *)self _switchViewModeForCurrentMode:viewMode animated:1];
   }
 }
 
-- (void)elementAction:(id)a3 didFinishTask:(BOOL)a4
+- (void)elementAction:(id)action didFinishTask:(BOOL)task
 {
-  v4 = a3;
-  [v4 setDelegate:0];
+  actionCopy = action;
+  [actionCopy setDelegate:0];
   if (NTKInternalBuild())
   {
     if (CFPreferencesGetAppBooleanValue(@"EnableDemoMode", NTKFacePreferencesDomain, 0))
@@ -2462,7 +2462,7 @@ LABEL_18:
 
         v9 = v8;
 
-        v10 = [v4 bundleIdentifier];
+        bundleIdentifier = [actionCopy bundleIdentifier];
         v18 = 0u;
         v19 = 0u;
         v20 = 0u;
@@ -2485,7 +2485,7 @@ LABEL_18:
 
               v16 = *(*(&v18 + 1) + 8 * v15);
               objc_opt_class();
-              if (objc_opt_isKindOfClass() & 1) != 0 && ([v16 isEqualToString:{v10, v18}])
+              if (objc_opt_isKindOfClass() & 1) != 0 && ([v16 isEqualToString:{bundleIdentifier, v18}])
               {
                 v17 = v11;
                 goto LABEL_17;
@@ -2505,7 +2505,7 @@ LABEL_18:
           }
         }
 
-        v17 = [v11 arrayByAddingObject:v10];
+        v17 = [v11 arrayByAddingObject:bundleIdentifier];
         [v5 willChangeValueForKey:@"IntentsPerformed"];
         [v5 setObject:v17 forKey:@"IntentsPerformed"];
         [v5 didChangeValueForKey:@"IntentsPerformed"];
@@ -2515,32 +2515,32 @@ LABEL_17:
   }
 }
 
-- (void)elementAction:(id)a3 wantsViewControllerDisplayed:(id)a4
+- (void)elementAction:(id)action wantsViewControllerDisplayed:(id)displayed
 {
-  v5 = a4;
-  v6 = [(NTKUpNextFaceView *)self delegate];
-  [v6 faceViewWantsToPresentViewController:v5];
+  displayedCopy = displayed;
+  delegate = [(NTKUpNextFaceView *)self delegate];
+  [delegate faceViewWantsToPresentViewController:displayedCopy];
 }
 
-- (void)elementAction:(id)a3 wantsToPerformTapActionForComplicationSlot:(id)a4
+- (void)elementAction:(id)action wantsToPerformTapActionForComplicationSlot:(id)slot
 {
-  v4 = [(NTKUpNextFaceView *)self detachedComplicationDisplayWrapperForSlot:a4];
+  v4 = [(NTKUpNextFaceView *)self detachedComplicationDisplayWrapperForSlot:slot];
   [v4 performTap];
 }
 
-- (void)_applyBreathingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_applyBreathingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot
 {
   v12.receiver = self;
   v12.super_class = NTKUpNextFaceView;
-  [(NTKUpNextFaceView *)&v12 _applyBreathingFraction:a4 forCustomEditMode:a5 slot:?];
-  if (a4 != 10)
+  [(NTKUpNextFaceView *)&v12 _applyBreathingFraction:mode forCustomEditMode:slot slot:?];
+  if (mode != 10)
   {
     NTKLargeElementScaleForBreathingFraction();
     memset(&v11, 0, sizeof(v11));
     CGAffineTransformMakeScale(&v11, v7, v7);
-    v8 = [(NTKUpNextFaceView *)self foregroundContainerView];
+    foregroundContainerView = [(NTKUpNextFaceView *)self foregroundContainerView];
     v10 = v11;
-    [v8 setTransform:&v10];
+    [foregroundContainerView setTransform:&v10];
 
     scalableView = self->_scalableView;
     v10 = v11;
@@ -2548,27 +2548,27 @@ LABEL_17:
   }
 }
 
-- (void)_applyRubberBandingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_applyRubberBandingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot
 {
   v15.receiver = self;
   v15.super_class = NTKUpNextFaceView;
-  [(NTKUpNextFaceView *)&v15 _applyRubberBandingFraction:a4 forCustomEditMode:a5 slot:?];
-  if (a4)
+  [(NTKUpNextFaceView *)&v15 _applyRubberBandingFraction:mode forCustomEditMode:slot slot:?];
+  if (mode)
   {
     NTKScaleForRubberBandingFraction();
     memset(&v14, 0, sizeof(v14));
     CGAffineTransformMakeScale(&v14, v7, v7);
-    v8 = [(NTKUpNextFaceView *)self foregroundContainerView];
+    foregroundContainerView = [(NTKUpNextFaceView *)self foregroundContainerView];
     v13 = v14;
-    [v8 setTransform:&v13];
+    [foregroundContainerView setTransform:&v13];
 
     scalableView = self->_scalableView;
     v13 = v14;
     [(UIView *)scalableView setTransform:&v13];
     NTKAlphaForRubberBandingFraction();
     v11 = v10;
-    v12 = [(NTKUpNextFaceView *)self foregroundContainerView];
-    [v12 setAlpha:v11];
+    foregroundContainerView2 = [(NTKUpNextFaceView *)self foregroundContainerView];
+    [foregroundContainerView2 setAlpha:v11];
 
     [(UIView *)self->_scalableView setAlpha:v11];
   }
@@ -2576,24 +2576,24 @@ LABEL_17:
 
 - (void)_setSiriBlurColor
 {
-  v3 = [(NTKUpNextFaceView *)self faceColorPalette];
-  v4 = SiriBlurImageForColor(v3);
+  faceColorPalette = [(NTKUpNextFaceView *)self faceColorPalette];
+  v4 = SiriBlurImageForColor(faceColorPalette);
   cellContentBackground = self->_cellContentBackground;
   self->_cellContentBackground = v4;
 
   layout = self->_layout;
-  v7 = [(NTKUpNextFaceView *)self faceColorPalette];
-  v8 = [v7 isSiriColor];
+  faceColorPalette2 = [(NTKUpNextFaceView *)self faceColorPalette];
+  isSiriColor = [faceColorPalette2 isSiriColor];
   v9 = 0.25;
-  if (v8)
+  if (isSiriColor)
   {
     v9 = 0.5;
   }
 
   [(NTKUpNextCollectionViewFlowLayout *)layout setMaximumDarkeningAmount:v9];
 
-  v10 = [(NTKUpNextFaceView *)self faceColorPalette];
-  [v10 isSiriColor];
+  faceColorPalette3 = [(NTKUpNextFaceView *)self faceColorPalette];
+  [faceColorPalette3 isSiriColor];
 
   v11 = +[UIColor whiteColor];
   [(NTKUpNextFaceView *)self setInterpolatedComplicationColor:v11];
@@ -2602,9 +2602,9 @@ LABEL_17:
   [(NTKUpNextFaceView *)self setComplicationColor:v12];
 }
 
-- (void)_applyTransitionFraction:(double)a3 fromOption:(id)a4 toOption:(id)a5 forCustomEditMode:(int64_t)a6 slot:(id)a7
+- (void)_applyTransitionFraction:(double)fraction fromOption:(id)option toOption:(id)toOption forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  if (a6 == 10)
+  if (mode == 10)
   {
     CLKCompressFraction();
     v9 = v8;
@@ -2612,8 +2612,8 @@ LABEL_17:
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v10 = [(NTKUpNextCollectionView *)self->_collectionView visibleCells];
-    v11 = [v10 countByEnumeratingWithState:&v18 objects:v22 count:16];
+    visibleCells = [(NTKUpNextCollectionView *)self->_collectionView visibleCells];
+    v11 = [visibleCells countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v11)
     {
       v12 = v11;
@@ -2625,7 +2625,7 @@ LABEL_17:
         {
           if (*v19 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(visibleCells);
           }
 
           v15 = *(*(&v18 + 1) + 8 * v14);
@@ -2633,15 +2633,15 @@ LABEL_17:
           if (objc_opt_isKindOfClass())
           {
             v16 = v15;
-            v17 = [(NTKUpNextFaceView *)self interpolatedColorPalette];
-            [(NTKUpNextFaceView *)self _applyTransitionWithFraction:v17 interpolatedPalette:v16 onCell:v9];
+            interpolatedColorPalette = [(NTKUpNextFaceView *)self interpolatedColorPalette];
+            [(NTKUpNextFaceView *)self _applyTransitionWithFraction:interpolatedColorPalette interpolatedPalette:v16 onCell:v9];
           }
 
           v14 = v14 + 1;
         }
 
         while (v12 != v14);
-        v12 = [v10 countByEnumeratingWithState:&v18 objects:v22 count:16];
+        v12 = [visibleCells countByEnumeratingWithState:&v18 objects:v22 count:16];
       }
 
       while (v12);
@@ -2655,8 +2655,8 @@ LABEL_17:
   v5.super_class = NTKUpNextFaceView;
   [(NTKUpNextFaceView *)&v5 _prepareForEditing];
   scalableView = self->_scalableView;
-  v4 = [(NTKUpNextFaceView *)self timeView];
-  [(UIView *)scalableView addSubview:v4];
+  timeView = [(NTKUpNextFaceView *)self timeView];
+  [(UIView *)scalableView addSubview:timeView];
 }
 
 - (void)_cleanupAfterEditing
@@ -2664,15 +2664,15 @@ LABEL_17:
   v14.receiver = self;
   v14.super_class = NTKUpNextFaceView;
   [(NTKUpNextFaceView *)&v14 _cleanupAfterEditing];
-  v3 = [(NTKUpNextFaceView *)self timeView];
-  [(NTKUpNextFaceView *)self addSubview:v3];
+  timeView = [(NTKUpNextFaceView *)self timeView];
+  [(NTKUpNextFaceView *)self addSubview:timeView];
 
   v12 = 0u;
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v4 = [(NTKUpNextCollectionView *)self->_collectionView visibleCells];
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v15 count:16];
+  visibleCells = [(NTKUpNextCollectionView *)self->_collectionView visibleCells];
+  v5 = [visibleCells countByEnumeratingWithState:&v10 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -2684,7 +2684,7 @@ LABEL_17:
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(visibleCells);
         }
 
         v9 = *(*(&v10 + 1) + 8 * v8);
@@ -2698,28 +2698,28 @@ LABEL_17:
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v15 count:16];
+      v6 = [visibleCells countByEnumeratingWithState:&v10 objects:v15 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)_applyTransitionWithFraction:(double)a3 interpolatedPalette:(id)a4 onCell:(id)a5
+- (void)_applyTransitionWithFraction:(double)fraction interpolatedPalette:(id)palette onCell:(id)cell
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [v8 fromPalette];
-  v10 = SiriBlurImageForColor(v9);
+  cellCopy = cell;
+  paletteCopy = palette;
+  fromPalette = [paletteCopy fromPalette];
+  v10 = SiriBlurImageForColor(fromPalette);
 
-  v11 = [v8 toPalette];
+  toPalette = [paletteCopy toPalette];
 
-  v12 = SiriBlurImageForColor(v11);
+  v12 = SiriBlurImageForColor(toPalette);
 
-  [v7 enumerateContentsLayersWithBlock:&stru_18948];
-  if (a3 > 1.0 || fabs(a3 + -1.0) < 2.22044605e-16)
+  [cellCopy enumerateContentsLayersWithBlock:&stru_18948];
+  if (fraction > 1.0 || fabs(fraction + -1.0) < 2.22044605e-16)
   {
-    [v7 setContentImage:v12 animated:0];
+    [cellCopy setContentImage:v12 animated:0];
   }
 
   else
@@ -2733,23 +2733,23 @@ LABEL_17:
     [v13 setTimingFunction:v14];
 
     [v13 setBeginTime:CACurrentMediaTime()];
-    [v13 setTimeOffset:a3];
+    [v13 setTimeOffset:fraction];
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
     v16[2] = sub_AB50;
     v16[3] = &unk_18970;
     v17 = v13;
     v15 = v13;
-    [v7 enumerateContentsLayersWithBlock:v16];
+    [cellCopy enumerateContentsLayersWithBlock:v16];
   }
 }
 
-- (id)_digitalTimeLabelStyleFromViewMode:(int64_t)a3 faceBounds:(CGRect)a4
+- (id)_digitalTimeLabelStyleFromViewMode:(int64_t)mode faceBounds:(CGRect)bounds
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v37 = 0;
   v35 = 0u;
   v36 = 0u;
@@ -2765,7 +2765,7 @@ LABEL_17:
   v10 = [(NTKUpNextFaceView *)self device:0];
   sub_B3F4(v10, &v25);
 
-  if ((a3 - 2) < 2)
+  if ((mode - 2) < 2)
   {
     p_timeLabelSmallInUpperRightCornerStyle = &self->_timeLabelSmallInUpperRightCornerStyle;
     timeLabelSmallInUpperRightCornerStyle = self->_timeLabelSmallInUpperRightCornerStyle;
@@ -2786,9 +2786,9 @@ LABEL_17:
       }
 
       v22 = *&v29;
-      v15 = [(NTKUpNextFaceView *)self device];
-      v23 = [NTKDigitalTimeLabelStyle smallInUpperRightCornerStyleForBounds:v14 withBaselineY:v15 withFont:x forDevice:y, width, height, v22];
-      v19 = *p_timeLabelSmallInUpperRightCornerStyle;
+      device = [(NTKUpNextFaceView *)self device];
+      v23 = [NTKDigitalTimeLabelStyle smallInUpperRightCornerStyleForBounds:v14 withBaselineY:device withFont:x forDevice:y, width, height, v22];
+      device2 = *p_timeLabelSmallInUpperRightCornerStyle;
       *p_timeLabelSmallInUpperRightCornerStyle = v23;
       goto LABEL_9;
     }
@@ -2798,19 +2798,19 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  if (a3 <= 1)
+  if (mode <= 1)
   {
     p_timeLabelSmallInUpperRightCornerStyle = &self->_timeLabelDefaultStyle;
     timeLabelSmallInUpperRightCornerStyle = self->_timeLabelDefaultStyle;
     if (!timeLabelSmallInUpperRightCornerStyle)
     {
       v14 = [CLKFont compactSoftFontOfSize:*(&v26 + 1) weight:UIFontWeightMedium];
-      v15 = [(NTKUpNextFaceView *)self device];
+      device = [(NTKUpNextFaceView *)self device];
       NTKDigitalTimeLabelStyleWideRightSideMargin();
       v17 = v16;
       v18 = *(&v28 + 1);
-      v19 = [(NTKUpNextFaceView *)self device];
-      v20 = [NTKDigitalTimeLabelStyle defaultStyleForBounds:1 withRightSideMargin:v14 applyAdvanceFudge:v19 withBaselineY:x withFont:y forDevice:width, height, v17, v18];
+      device2 = [(NTKUpNextFaceView *)self device];
+      v20 = [NTKDigitalTimeLabelStyle defaultStyleForBounds:1 withRightSideMargin:v14 applyAdvanceFudge:device2 withBaselineY:x withFont:y forDevice:width, height, v17, v18];
       v21 = *p_timeLabelSmallInUpperRightCornerStyle;
       *p_timeLabelSmallInUpperRightCornerStyle = v20;
 
@@ -2827,34 +2827,34 @@ LABEL_11:
   return v11;
 }
 
-- (id)_swatchImageForColorOption:(id)a3 size:(CGSize)a4
+- (id)_swatchImageForColorOption:(id)option size:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = a3;
-  v8 = [v7 pigmentEditOption];
+  height = size.height;
+  width = size.width;
+  optionCopy = option;
+  pigmentEditOption = [optionCopy pigmentEditOption];
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
   v20 = sub_80D0;
   v21 = sub_80E0;
   v22 = 0;
-  v9 = [(NTKUpNextFaceView *)self faceColorPalette];
+  faceColorPalette = [(NTKUpNextFaceView *)self faceColorPalette];
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_AF64;
   v16[3] = &unk_18998;
   v16[4] = &v17;
-  [v9 executeWithOption:v8 block:v16];
+  [faceColorPalette executeWithOption:pigmentEditOption block:v16];
 
   v10 = v18[5];
   if (!v10)
   {
     v15.receiver = self;
     v15.super_class = NTKUpNextFaceView;
-    v11 = [(NTKUpNextFaceView *)&v15 _swatchImageForColorOption:v8 size:width, height];
+    height = [(NTKUpNextFaceView *)&v15 _swatchImageForColorOption:pigmentEditOption size:width, height];
     v12 = v18[5];
-    v18[5] = v11;
+    v18[5] = height;
 
     v10 = v18[5];
   }

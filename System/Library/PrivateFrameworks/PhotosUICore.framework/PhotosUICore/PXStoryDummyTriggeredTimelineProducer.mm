@@ -1,7 +1,7 @@
 @interface PXStoryDummyTriggeredTimelineProducer
-- (PXStoryDummyTriggeredTimelineProducer)initWithNumberOfIterations:(int64_t)a3;
-- (id)requestTimelineWithConfiguration:(id)a3 options:(unint64_t)a4 resultHandler:(id)a5;
-- (void)setResultHandler:(id)a3;
+- (PXStoryDummyTriggeredTimelineProducer)initWithNumberOfIterations:(int64_t)iterations;
+- (id)requestTimelineWithConfiguration:(id)configuration options:(unint64_t)options resultHandler:(id)handler;
+- (void)setResultHandler:(id)handler;
 - (void)trigger;
 @end
 
@@ -9,52 +9,52 @@
 
 - (void)trigger
 {
-  v3 = [(PXStoryDummyTriggeredTimelineProducer *)self currentIteration];
-  v4 = v3 / [(PXStoryDummyTriggeredTimelineProducer *)self numberOfIterations];
-  v5 = [(PXStoryDummyTriggeredTimelineProducer *)self timelineProducer];
-  v6 = [(PXStoryDummyTriggeredTimelineProducer *)self configuration];
-  v10 = [v5 createTimelineWithConfiguration:v6 detailsFraction:v4];
+  currentIteration = [(PXStoryDummyTriggeredTimelineProducer *)self currentIteration];
+  v4 = currentIteration / [(PXStoryDummyTriggeredTimelineProducer *)self numberOfIterations];
+  timelineProducer = [(PXStoryDummyTriggeredTimelineProducer *)self timelineProducer];
+  configuration = [(PXStoryDummyTriggeredTimelineProducer *)self configuration];
+  v10 = [timelineProducer createTimelineWithConfiguration:configuration detailsFraction:v4];
 
-  v7 = [(PXStoryDummyTriggeredTimelineProducer *)self resultHandler];
+  resultHandler = [(PXStoryDummyTriggeredTimelineProducer *)self resultHandler];
   v8 = [[PXStoryProducerResult alloc] initWithObject:v10];
   v9 = [(PXStoryProducerResult *)v8 flags:v4 < 1.0];
-  (v7)[2](v7, v9);
+  (resultHandler)[2](resultHandler, v9);
 
-  [(PXStoryDummyTriggeredTimelineProducer *)self setCurrentIteration:v3 + 1];
+  [(PXStoryDummyTriggeredTimelineProducer *)self setCurrentIteration:currentIteration + 1];
 }
 
-- (id)requestTimelineWithConfiguration:(id)a3 options:(unint64_t)a4 resultHandler:(id)a5
+- (id)requestTimelineWithConfiguration:(id)configuration options:(unint64_t)options resultHandler:(id)handler
 {
-  v7 = a5;
-  [(PXStoryDummyTriggeredTimelineProducer *)self setConfiguration:a3];
-  [(PXStoryDummyTriggeredTimelineProducer *)self setResultHandler:v7];
+  handlerCopy = handler;
+  [(PXStoryDummyTriggeredTimelineProducer *)self setConfiguration:configuration];
+  [(PXStoryDummyTriggeredTimelineProducer *)self setResultHandler:handlerCopy];
 
   [(PXStoryDummyTriggeredTimelineProducer *)self trigger];
   return 0;
 }
 
-- (void)setResultHandler:(id)a3
+- (void)setResultHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   resultHandler = self->_resultHandler;
-  if (resultHandler != v5)
+  if (resultHandler != handlerCopy)
   {
-    v10 = v5;
+    v10 = handlerCopy;
     if (resultHandler)
     {
-      v9 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v9 handleFailureInMethod:a2 object:self file:@"PXStoryDummyTriggeredTimelineProducer.m" lineNumber:39 description:@"not supporting multiple concurrent requests"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryDummyTriggeredTimelineProducer.m" lineNumber:39 description:@"not supporting multiple concurrent requests"];
     }
 
     v7 = [v10 copy];
     v8 = self->_resultHandler;
     self->_resultHandler = v7;
 
-    v5 = v10;
+    handlerCopy = v10;
   }
 }
 
-- (PXStoryDummyTriggeredTimelineProducer)initWithNumberOfIterations:(int64_t)a3
+- (PXStoryDummyTriggeredTimelineProducer)initWithNumberOfIterations:(int64_t)iterations
 {
   v8.receiver = self;
   v8.super_class = PXStoryDummyTriggeredTimelineProducer;
@@ -65,7 +65,7 @@
     timelineProducer = v4->_timelineProducer;
     v4->_timelineProducer = v5;
 
-    v4->_numberOfIterations = a3;
+    v4->_numberOfIterations = iterations;
   }
 
   return v4;

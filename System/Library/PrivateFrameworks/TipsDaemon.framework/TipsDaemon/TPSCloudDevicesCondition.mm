@@ -1,8 +1,8 @@
 @interface TPSCloudDevicesCondition
 - (TPSCloudDevicesCondition)init;
-- (id)_valuesFromValuesArray:(id)a3;
+- (id)_valuesFromValuesArray:(id)array;
 - (id)targetingValidations;
-- (void)validateWithCompletion:(id)a3;
+- (void)validateWithCompletion:(id)completion;
 @end
 
 @implementation TPSCloudDevicesCondition
@@ -24,10 +24,10 @@
 - (id)targetingValidations
 {
   v3 = MEMORY[0x277CBEB18];
-  v4 = [(TPSCondition *)self values];
-  v5 = [v3 arrayWithCapacity:{objc_msgSend(v4, "count")}];
+  values = [(TPSCondition *)self values];
+  v5 = [v3 arrayWithCapacity:{objc_msgSend(values, "count")}];
 
-  v6 = [(TPSCondition *)self values];
+  values2 = [(TPSCondition *)self values];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __48__TPSCloudDevicesCondition_targetingValidations__block_invoke;
@@ -35,7 +35,7 @@
   v11[4] = self;
   v7 = v5;
   v12 = v7;
-  [v6 enumerateObjectsUsingBlock:v11];
+  [values2 enumerateObjectsUsingBlock:v11];
 
   v8 = v12;
   v9 = v7;
@@ -52,18 +52,18 @@ void __48__TPSCloudDevicesCondition_targetingValidations__block_invoke(uint64_t 
   [*(a1 + 40) addObject:v4];
 }
 
-- (id)_valuesFromValuesArray:(id)a3
+- (id)_valuesFromValuesArray:(id)array
 {
   v3 = MEMORY[0x277CBEB18];
-  v4 = a3;
-  v5 = [v3 arrayWithCapacity:{objc_msgSend(v4, "count")}];
+  arrayCopy = array;
+  v5 = [v3 arrayWithCapacity:{objc_msgSend(arrayCopy, "count")}];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __51__TPSCloudDevicesCondition__valuesFromValuesArray___block_invoke;
   v9[3] = &unk_2789B0078;
   v10 = v5;
   v6 = v5;
-  [v4 enumerateObjectsUsingBlock:v9];
+  [arrayCopy enumerateObjectsUsingBlock:v9];
 
   v7 = [v6 copy];
 
@@ -90,23 +90,23 @@ void __51__TPSCloudDevicesCondition__valuesFromValuesArray___block_invoke(uint64
   }
 }
 
-- (void)validateWithCompletion:(id)a3
+- (void)validateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = objc_alloc(MEMORY[0x277D18778]);
   v6 = [v5 initWithService:*MEMORY[0x277D71880]];
-  v7 = [v6 devices];
-  [(TPSCloudDevicesCondition *)self setRegisteredDevices:v7];
+  devices = [v6 devices];
+  [(TPSCloudDevicesCondition *)self setRegisteredDevices:devices];
 
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __51__TPSCloudDevicesCondition_validateWithCompletion___block_invoke;
   v10[3] = &unk_2789B0A68;
   v10[4] = self;
-  v11 = v4;
+  v11 = completionCopy;
   v9.receiver = self;
   v9.super_class = TPSCloudDevicesCondition;
-  v8 = v4;
+  v8 = completionCopy;
   [(TPSCondition *)&v9 validateWithCompletion:v10];
 }
 

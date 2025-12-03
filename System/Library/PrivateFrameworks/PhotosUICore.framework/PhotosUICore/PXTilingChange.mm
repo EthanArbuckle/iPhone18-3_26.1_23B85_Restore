@@ -9,11 +9,11 @@
 - (PXTilingLayout)toLayout;
 - (UIEdgeInsets)initialContentInset;
 - (UIEdgeInsets)toContentInset;
-- (id)defaultAnimationOptionsForTilingController:(id)a3;
+- (id)defaultAnimationOptionsForTilingController:(id)controller;
 - (id)description;
-- (void)addEvent:(id)a3;
-- (void)recordCompositionInvalidationContexts:(id)a3;
-- (void)recordLayout:(id)a3;
+- (void)addEvent:(id)event;
+- (void)recordCompositionInvalidationContexts:(id)contexts;
+- (void)recordLayout:(id)layout;
 @end
 
 @implementation PXTilingChange
@@ -43,13 +43,13 @@
 - (NSArray)invalidationContexts
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(PXTilingChange *)self events];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  events = [(PXTilingChange *)self events];
+  v5 = [events countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -60,31 +60,31 @@
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(events);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
         if ([v9 type] == 5)
         {
-          v10 = [v9 context];
-          [v3 addObject:v10];
+          context = [v9 context];
+          [array addObject:context];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [events countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
   }
 
-  return v3;
+  return array;
 }
 
-- (id)defaultAnimationOptionsForTilingController:(id)a3
+- (id)defaultAnimationOptionsForTilingController:(id)controller
 {
-  v4 = a3;
-  v5 = [(PXTilingChange *)self compositionInvalidationContexts];
-  v6 = [PXTilingControllerCompositionInvalidationContext defaultAnimationOptionsForTilingController:v4 withInvalidationContexts:v5];
+  controllerCopy = controller;
+  compositionInvalidationContexts = [(PXTilingChange *)self compositionInvalidationContexts];
+  v6 = [PXTilingControllerCompositionInvalidationContext defaultAnimationOptionsForTilingController:controllerCopy withInvalidationContexts:compositionInvalidationContexts];
 
   return v6;
 }
@@ -96,10 +96,10 @@
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(PXTilingChange *)self events];
-  v3 = [v2 reverseObjectEnumerator];
+  events = [(PXTilingChange *)self events];
+  reverseObjectEnumerator = [events reverseObjectEnumerator];
 
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  v4 = [reverseObjectEnumerator countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = *v9;
@@ -109,7 +109,7 @@
       {
         if (*v9 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
         if ([*(*(&v8 + 1) + 8 * i) type] == 4)
@@ -119,7 +119,7 @@
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v4 = [reverseObjectEnumerator countByEnumeratingWithState:&v8 objects:v12 count:16];
       if (v4)
       {
         continue;
@@ -146,10 +146,10 @@ LABEL_11:
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v11 = [(PXTilingChange *)self events];
-  v12 = [v11 reverseObjectEnumerator];
+  events = [(PXTilingChange *)self events];
+  reverseObjectEnumerator = [events reverseObjectEnumerator];
 
-  v13 = [v12 countByEnumeratingWithState:&v26 objects:v30 count:16];
+  v13 = [reverseObjectEnumerator countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v13)
   {
     v14 = v13;
@@ -160,7 +160,7 @@ LABEL_11:
       {
         if (*v27 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
         v17 = *(*(&v26 + 1) + 8 * i);
@@ -175,7 +175,7 @@ LABEL_11:
         }
       }
 
-      v14 = [v12 countByEnumeratingWithState:&v26 objects:v30 count:16];
+      v14 = [reverseObjectEnumerator countByEnumeratingWithState:&v26 objects:v30 count:16];
       if (v14)
       {
         continue;
@@ -208,10 +208,10 @@ LABEL_11:
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v7 = [(PXTilingChange *)self events];
-  v8 = [v7 reverseObjectEnumerator];
+  events = [(PXTilingChange *)self events];
+  reverseObjectEnumerator = [events reverseObjectEnumerator];
 
-  v9 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  v9 = [reverseObjectEnumerator countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v9)
   {
     v10 = v9;
@@ -222,7 +222,7 @@ LABEL_11:
       {
         if (*v19 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
         v13 = *(*(&v18 + 1) + 8 * i);
@@ -235,7 +235,7 @@ LABEL_11:
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v10 = [reverseObjectEnumerator countByEnumeratingWithState:&v18 objects:v22 count:16];
       if (v10)
       {
         continue;
@@ -257,15 +257,15 @@ LABEL_11:
 - (PXTilingLayout)toLayout
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [(PXTilingChange *)self initialLayout];
+  initialLayout = [(PXTilingChange *)self initialLayout];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [(PXTilingChange *)self events];
-  v5 = [v4 reverseObjectEnumerator];
+  events = [(PXTilingChange *)self events];
+  reverseObjectEnumerator = [events reverseObjectEnumerator];
 
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v6 = [reverseObjectEnumerator countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -276,20 +276,20 @@ LABEL_11:
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
         if ([v10 type] == 1)
         {
-          v11 = [v10 layout];
+          layout = [v10 layout];
 
-          v3 = v11;
+          initialLayout = layout;
           goto LABEL_11;
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [reverseObjectEnumerator countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v7)
       {
         continue;
@@ -301,7 +301,7 @@ LABEL_11:
 
 LABEL_11:
 
-  return v3;
+  return initialLayout;
 }
 
 - (id)description
@@ -329,32 +329,32 @@ LABEL_11:
   return v2;
 }
 
-- (void)addEvent:(id)a3
+- (void)addEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   events = self->_events;
-  v8 = v4;
+  v8 = eventCopy;
   if (!events)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_events;
-    self->_events = v6;
+    self->_events = array;
 
-    v4 = v8;
+    eventCopy = v8;
     events = self->_events;
   }
 
-  [(NSMutableArray *)events addObject:v4];
+  [(NSMutableArray *)events addObject:eventCopy];
 }
 
-- (void)recordCompositionInvalidationContexts:(id)a3
+- (void)recordCompositionInvalidationContexts:(id)contexts
 {
-  v6 = a3;
-  if ([v6 count])
+  contextsCopy = contexts;
+  if ([contextsCopy count])
   {
     if (self->_compositionInvalidationContexts)
     {
-      if ([v6 isEqualToArray:?])
+      if ([contextsCopy isEqualToArray:?])
       {
         goto LABEL_7;
       }
@@ -364,7 +364,7 @@ LABEL_11:
 
     else
     {
-      v4 = [v6 copy];
+      v4 = [contextsCopy copy];
     }
 
     compositionInvalidationContexts = self->_compositionInvalidationContexts;
@@ -374,23 +374,23 @@ LABEL_11:
 LABEL_7:
 }
 
-- (void)recordLayout:(id)a3
+- (void)recordLayout:(id)layout
 {
-  v5 = a3;
+  layoutCopy = layout;
   initialLayout = self->_initialLayout;
   p_initialLayout = &self->_initialLayout;
   if (!initialLayout)
   {
-    v8 = v5;
-    objc_storeStrong(p_initialLayout, a3);
-    v5 = v8;
+    v8 = layoutCopy;
+    objc_storeStrong(p_initialLayout, layout);
+    layoutCopy = v8;
   }
 }
 
 - (BOOL)isIdentity
 {
-  v2 = [(PXTilingChange *)self events];
-  v3 = [v2 count] == 0;
+  events = [(PXTilingChange *)self events];
+  v3 = [events count] == 0;
 
   return v3;
 }

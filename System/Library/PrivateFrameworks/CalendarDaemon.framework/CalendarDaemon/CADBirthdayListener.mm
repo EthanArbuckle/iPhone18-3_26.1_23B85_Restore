@@ -5,7 +5,7 @@
 + (void)start;
 - (CADBirthdayListener)init;
 - (void)reset;
-- (void)setBirthdayCalendarEnabled:(BOOL)a3;
+- (void)setBirthdayCalendarEnabled:(BOOL)enabled;
 - (void)start;
 @end
 
@@ -22,9 +22,9 @@
     listenerClass = v2->_listenerClass;
     v2->_listenerClass = v3;
 
-    v5 = [(objc_class *)v2->_listenerClass sharedListener];
+    sharedListener = [(objc_class *)v2->_listenerClass sharedListener];
     ekBirthdayListener = v2->_ekBirthdayListener;
-    v2->_ekBirthdayListener = v5;
+    v2->_ekBirthdayListener = sharedListener;
   }
 
   return v2;
@@ -71,38 +71,38 @@ uint64_t __37__CADBirthdayListener_sharedListener__block_invoke()
 
 - (void)start
 {
-  v2 = [(CADBirthdayListener *)self ekBirthdayListener];
-  [v2 start];
+  ekBirthdayListener = [(CADBirthdayListener *)self ekBirthdayListener];
+  [ekBirthdayListener start];
 }
 
 - (void)reset
 {
-  v2 = [(CADBirthdayListener *)self ekBirthdayListener];
-  [v2 reset];
+  ekBirthdayListener = [(CADBirthdayListener *)self ekBirthdayListener];
+  [ekBirthdayListener reset];
 }
 
-- (void)setBirthdayCalendarEnabled:(BOOL)a3
+- (void)setBirthdayCalendarEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v4 = [(CADBirthdayListener *)self ekBirthdayListener];
-  v5 = v4;
-  if (v3)
+  enabledCopy = enabled;
+  ekBirthdayListener = [(CADBirthdayListener *)self ekBirthdayListener];
+  v5 = ekBirthdayListener;
+  if (enabledCopy)
   {
-    [v4 addBirthdayCalendars];
+    [ekBirthdayListener addBirthdayCalendars];
   }
 
   else
   {
-    [v4 disableBirthdayCalendars];
+    [ekBirthdayListener disableBirthdayCalendars];
   }
 }
 
 + (BOOL)birthdayCalendarEnabled
 {
   v2 = +[CADBirthdayListener sharedListener];
-  v3 = [v2 birthdayCalendarEnabled];
+  birthdayCalendarEnabled = [v2 birthdayCalendarEnabled];
 
-  return v3;
+  return birthdayCalendarEnabled;
 }
 
 @end

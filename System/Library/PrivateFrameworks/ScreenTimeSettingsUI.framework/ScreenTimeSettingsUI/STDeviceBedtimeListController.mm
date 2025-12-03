@@ -1,32 +1,32 @@
 @interface STDeviceBedtimeListController
 - (STDeviceBedtimeListController)init;
-- (id)_createDefaultCustomScheduleFromSimpleSchedule:(id)a3;
-- (id)_customScheduleTime:(id)a3;
-- (id)_deviceBedtimeSpecifierWithBedtime:(id)a3 downtimeGroupSpecifier:(id)a4;
-- (id)_simpleScheduleTime:(id)a3;
-- (id)askForMoreTime:(id)a3;
+- (id)_createDefaultCustomScheduleFromSimpleSchedule:(id)schedule;
+- (id)_customScheduleTime:(id)time;
+- (id)_deviceBedtimeSpecifierWithBedtime:(id)bedtime downtimeGroupSpecifier:(id)specifier;
+- (id)_simpleScheduleTime:(id)time;
+- (id)askForMoreTime:(id)time;
 - (id)atDowntimeFooterText;
-- (id)deviceBedtimeEnabled:(id)a3;
+- (id)deviceBedtimeEnabled:(id)enabled;
 - (id)specifiers;
 - (id)timeFooterText;
 - (void)_actuallyToggleDowntimeEnabled;
-- (void)_saveDowntimeAndReloadSpecifiers:(BOOL)a3;
-- (void)_showCustomizeDailyScheduleListController:(id)a3;
-- (void)_showEditSimpleScheduleListController:(id)a3;
+- (void)_saveDowntimeAndReloadSpecifiers:(BOOL)specifiers;
+- (void)_showCustomizeDailyScheduleListController:(id)controller;
+- (void)_showEditSimpleScheduleListController:(id)controller;
 - (void)_toggleDowntimeEnabled;
-- (void)customizeDailyScheduleListController:(id)a3 didSaveDailySchedule:(id)a4 forWeekdayIndex:(unint64_t)a5;
+- (void)customizeDailyScheduleListController:(id)controller didSaveDailySchedule:(id)schedule forWeekdayIndex:(unint64_t)index;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)scheduleDowntimeRefreshAndReloadSpecifiers;
 - (void)scheduleDowntimeRefreshIfNeeded;
-- (void)setAskForMoreTime:(id)a3 specifier:(id)a4;
-- (void)setCoordinator:(id)a3;
-- (void)setDeviceBedtimeEnabled:(id)a3 specifier:(id)a4;
-- (void)simpleScheduleListController:(id)a3 didSaveSimpleSchedule:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)setAskForMoreTime:(id)time specifier:(id)specifier;
+- (void)setCoordinator:(id)coordinator;
+- (void)setDeviceBedtimeEnabled:(id)enabled specifier:(id)specifier;
+- (void)simpleScheduleListController:(id)controller didSaveSimpleSchedule:(id)schedule;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation STDeviceBedtimeListController
@@ -42,12 +42,12 @@
     v4 = [v3 localizedStringForKey:@"DeviceDowntimeSpecifierName" value:&stru_28766E5A8 table:0];
     [(STDeviceBedtimeListController *)v2 setTitle:v4];
 
-    v5 = [MEMORY[0x277CBEA80] currentCalendar];
-    v6 = [v5 standaloneWeekdaySymbols];
-    v7 = [v6 count];
+    currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+    standaloneWeekdaySymbols = [currentCalendar standaloneWeekdaySymbols];
+    v7 = [standaloneWeekdaySymbols count];
     v8 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:v7];
     v9 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:v7];
-    v10 = [v5 firstWeekday] - 1;
+    v10 = [currentCalendar firstWeekday] - 1;
     v11 = [objc_alloc(MEMORY[0x277CCAA78]) initWithIndexesInRange:{0, v7}];
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
@@ -59,8 +59,8 @@
     v21 = v12;
     v13 = v9;
     v22 = v13;
-    v23 = v6;
-    v14 = v6;
+    v23 = standaloneWeekdaySymbols;
+    v14 = standaloneWeekdaySymbols;
     [v11 enumerateIndexesUsingBlock:v20];
     orderedLocalizedWeekdayNames = v2->_orderedLocalizedWeekdayNames;
     v2->_orderedLocalizedWeekdayNames = v13;
@@ -97,19 +97,19 @@ void __37__STDeviceBedtimeListController_init__block_invoke(uint64_t a1, uint64_
 
 - (void)scheduleDowntimeRefreshIfNeeded
 {
-  v3 = [(STDeviceBedtimeListController *)self downtimeScheduleRefreshTimer];
+  downtimeScheduleRefreshTimer = [(STDeviceBedtimeListController *)self downtimeScheduleRefreshTimer];
 
-  if (v3)
+  if (downtimeScheduleRefreshTimer)
   {
-    v4 = [(STDeviceBedtimeListController *)self downtimeScheduleRefreshTimer];
-    [v4 invalidate];
+    downtimeScheduleRefreshTimer2 = [(STDeviceBedtimeListController *)self downtimeScheduleRefreshTimer];
+    [downtimeScheduleRefreshTimer2 invalidate];
 
     [(STDeviceBedtimeListController *)self setDowntimeScheduleRefreshTimer:0];
   }
 
-  v5 = [(STDeviceBedtimeListController *)self coordinator];
-  v6 = [v5 timeAllowancesCoordinator];
-  [v6 timeToNextExpectedStateChange];
+  coordinator = [(STDeviceBedtimeListController *)self coordinator];
+  timeAllowancesCoordinator = [coordinator timeAllowancesCoordinator];
+  [timeAllowancesCoordinator timeToNextExpectedStateChange];
   v8 = v7;
 
   if (v8 >= 0.0)
@@ -135,9 +135,9 @@ void __64__STDeviceBedtimeListController_scheduleDowntimeRefreshIfNeeded__block_
   [WeakRetained scheduleDowntimeRefreshAndReloadSpecifiers];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   if (*(&self->super.super.super.super.super.isa + *MEMORY[0x277D3FC48]))
   {
     [(STDeviceBedtimeListController *)self reloadSpecifiers];
@@ -151,27 +151,27 @@ void __64__STDeviceBedtimeListController_scheduleDowntimeRefreshIfNeeded__block_
 
   v5.receiver = self;
   v5.super_class = STDeviceBedtimeListController;
-  [(STDeviceBedtimeListController *)&v5 viewWillAppear:v3];
+  [(STDeviceBedtimeListController *)&v5 viewWillAppear:appearCopy];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v17[1] = *MEMORY[0x277D85DE8];
   v16.receiver = self;
   v16.super_class = STDeviceBedtimeListController;
-  [(STDeviceBedtimeListController *)&v16 viewDidAppear:a3];
+  [(STDeviceBedtimeListController *)&v16 viewDidAppear:appear];
   v4 = [MEMORY[0x277CBEBC0] URLWithString:@"settings-navigation://com.apple.Settings.ScreenTime/DOWNTIME"];
   v5 = objc_alloc(MEMORY[0x277CCAEB8]);
-  v6 = [MEMORY[0x277CBEAF8] currentLocale];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
   v7 = +[STScreenTimeSettingsUIBundle bundle];
-  v8 = [v7 bundleURL];
-  v9 = [v5 initWithKey:@"DeviceDowntimeSpecifierName" table:@"Localizable" locale:v6 bundleURL:v8];
+  bundleURL = [v7 bundleURL];
+  v9 = [v5 initWithKey:@"DeviceDowntimeSpecifierName" table:@"Localizable" locale:currentLocale bundleURL:bundleURL];
 
   v10 = objc_alloc(MEMORY[0x277CCAEB8]);
-  v11 = [MEMORY[0x277CBEAF8] currentLocale];
+  currentLocale2 = [MEMORY[0x277CBEAF8] currentLocale];
   v12 = +[STScreenTimeSettingsUIBundle bundle];
-  v13 = [v12 bundleURL];
-  v14 = [v10 initWithKey:@"ScreenTimeControllerTitle" table:@"Localizable" locale:v11 bundleURL:v13];
+  bundleURL2 = [v12 bundleURL];
+  v14 = [v10 initWithKey:@"ScreenTimeControllerTitle" table:@"Localizable" locale:currentLocale2 bundleURL:bundleURL2];
 
   v17[0] = v14;
   v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:1];
@@ -185,48 +185,48 @@ void __64__STDeviceBedtimeListController_scheduleDowntimeRefreshIfNeeded__block_
   v4 = *(&self->super.super.super.super.super.isa + v3);
   if (!v4)
   {
-    v5 = [(STDeviceBedtimeListController *)self bedtime];
-    v6 = [MEMORY[0x277D3FAD8] st_emptyGroupSpecifier];
+    bedtime = [(STDeviceBedtimeListController *)self bedtime];
+    st_emptyGroupSpecifier = [MEMORY[0x277D3FAD8] st_emptyGroupSpecifier];
     v7 = +[STScreenTimeSettingsUIBundle bundle];
     v8 = [v7 localizedStringForKey:@"DeviceDowntimeTitleFooterText" value:&stru_28766E5A8 table:0];
     v9 = *MEMORY[0x277D3FF88];
-    [v6 setObject:v8 forKeyedSubscript:*MEMORY[0x277D3FF88]];
+    [st_emptyGroupSpecifier setObject:v8 forKeyedSubscript:*MEMORY[0x277D3FF88]];
 
-    v90 = v6;
-    [(STDeviceBedtimeListController *)self setInformativeTextGroupSpecifier:v6];
-    v89 = [MEMORY[0x277D3FAD8] st_emptyGroupSpecifier];
+    v90 = st_emptyGroupSpecifier;
+    [(STDeviceBedtimeListController *)self setInformativeTextGroupSpecifier:st_emptyGroupSpecifier];
+    st_emptyGroupSpecifier2 = [MEMORY[0x277D3FAD8] st_emptyGroupSpecifier];
     [(STDeviceBedtimeListController *)self setDownTimeGroupSpecifier:?];
-    v10 = [(STDeviceBedtimeListController *)self bedtime];
-    v11 = [(STDeviceBedtimeListController *)self downTimeGroupSpecifier];
-    v12 = [(STDeviceBedtimeListController *)self _deviceBedtimeSpecifierWithBedtime:v10 downtimeGroupSpecifier:v11];
+    bedtime2 = [(STDeviceBedtimeListController *)self bedtime];
+    downTimeGroupSpecifier = [(STDeviceBedtimeListController *)self downTimeGroupSpecifier];
+    v12 = [(STDeviceBedtimeListController *)self _deviceBedtimeSpecifierWithBedtime:bedtime2 downtimeGroupSpecifier:downTimeGroupSpecifier];
 
     v91 = v12;
     [(STDeviceBedtimeListController *)self setDeviceBedtimeSpecifier:v12];
-    v13 = [MEMORY[0x277D3FAD8] st_emptyGroupSpecifier];
+    st_emptyGroupSpecifier3 = [MEMORY[0x277D3FAD8] st_emptyGroupSpecifier];
     v14 = [v7 localizedStringForKey:@"DeviceDowntimeScheduledFooterText" value:&stru_28766E5A8 table:0];
-    [v13 setObject:v14 forKeyedSubscript:v9];
+    [st_emptyGroupSpecifier3 setObject:v14 forKeyedSubscript:v9];
 
-    v88 = v13;
-    [(STDeviceBedtimeListController *)self setScheduleSwitchGroupSpecifier:v13];
+    v88 = st_emptyGroupSpecifier3;
+    [(STDeviceBedtimeListController *)self setScheduleSwitchGroupSpecifier:st_emptyGroupSpecifier3];
     v87 = [v7 localizedStringForKey:@"DeviceDowntimeScheduledSpecifierName" value:&stru_28766E5A8 table:0];
     v86 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:0 target:? set:? get:? detail:? cell:? edit:?];
     [(STDeviceBedtimeListController *)self setScheduledSwitchSpecifier:?];
-    v15 = [MEMORY[0x277D3FAD8] st_emptyGroupSpecifier];
-    v16 = [(STDeviceBedtimeListController *)self atDowntimeFooterText];
-    [v15 setObject:v16 forKeyedSubscript:v9];
+    st_emptyGroupSpecifier4 = [MEMORY[0x277D3FAD8] st_emptyGroupSpecifier];
+    atDowntimeFooterText = [(STDeviceBedtimeListController *)self atDowntimeFooterText];
+    [st_emptyGroupSpecifier4 setObject:atDowntimeFooterText forKeyedSubscript:v9];
 
-    v85 = v15;
-    [(STDeviceBedtimeListController *)self setAtBedtimeGroupSpecifier:v15];
+    v85 = st_emptyGroupSpecifier4;
+    [(STDeviceBedtimeListController *)self setAtBedtimeGroupSpecifier:st_emptyGroupSpecifier4];
     v84 = [v7 localizedStringForKey:@"BlockAtDowntime" value:&stru_28766E5A8 table:0];
     v17 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:0 target:? set:? get:? detail:? cell:? edit:?];
     [v17 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277D3FD80]];
     v83 = v17;
     [(STDeviceBedtimeListController *)self setAtBedtimeSpecifier:v17];
-    if ([v5 deviceBedtimeEnabled])
+    if ([bedtime deviceBedtimeEnabled])
     {
-      v80 = v5;
+      v80 = bedtime;
       v78 = v3;
-      v77 = [MEMORY[0x277D3FAD8] st_emptyGroupSpecifier];
+      st_emptyGroupSpecifier5 = [MEMORY[0x277D3FAD8] st_emptyGroupSpecifier];
       [(STDeviceBedtimeListController *)self setScheduleTypeGroupSpecifier:?];
       v76 = [v7 localizedStringForKey:@"DeviceDowntimeEveryDaySpecifierName" value:&stru_28766E5A8 table:0];
       v18 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:0 target:? set:? get:? detail:? cell:? edit:?];
@@ -241,25 +241,25 @@ void __64__STDeviceBedtimeListController_scheduleDowntimeRefreshIfNeeded__block_
       [v21 setObject:v20 forKeyedSubscript:v19];
       v73 = v21;
       [(STDeviceBedtimeListController *)self setCustomizeDaysSpecifier:v21];
-      v22 = [MEMORY[0x277D3FAD8] st_emptyGroupSpecifier];
-      v23 = [(STDeviceBedtimeListController *)self timeFooterText];
-      [v22 setObject:v23 forKeyedSubscript:v9];
+      st_emptyGroupSpecifier6 = [MEMORY[0x277D3FAD8] st_emptyGroupSpecifier];
+      timeFooterText = [(STDeviceBedtimeListController *)self timeFooterText];
+      [st_emptyGroupSpecifier6 setObject:timeFooterText forKeyedSubscript:v9];
 
-      v72 = v22;
-      [(STDeviceBedtimeListController *)self setTimeGroupSpecifier:v22];
+      v72 = st_emptyGroupSpecifier6;
+      [(STDeviceBedtimeListController *)self setTimeGroupSpecifier:st_emptyGroupSpecifier6];
       v79 = v7;
       v71 = [v7 localizedStringForKey:@"DeviceDowntimeDailyScheduleSpecifierName" value:&stru_28766E5A8 table:0];
       v24 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:0 target:? set:? get:? detail:? cell:? edit:?];
       [v24 setControllerLoadAction:sel__showEditSimpleScheduleListController_];
       v70 = v24;
       [(STDeviceBedtimeListController *)self setDailyScheduleSpecifier:v24];
-      v25 = [(STDeviceBedtimeListController *)self orderedLocalizedWeekdayNames];
-      v26 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v25, "count")}];
+      orderedLocalizedWeekdayNames = [(STDeviceBedtimeListController *)self orderedLocalizedWeekdayNames];
+      v26 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(orderedLocalizedWeekdayNames, "count")}];
       v97 = 0u;
       v98 = 0u;
       v99 = 0u;
       v100 = 0u;
-      v27 = v25;
+      v27 = orderedLocalizedWeekdayNames;
       v28 = [v27 countByEnumeratingWithState:&v97 objects:v102 count:16];
       if (v28)
       {
@@ -287,32 +287,32 @@ void __64__STDeviceBedtimeListController_scheduleDowntimeRefreshIfNeeded__block_
 
       [(STDeviceBedtimeListController *)self setWeekdaySpecifiers:v26];
       v68 = objc_alloc(MEMORY[0x277CBEB18]);
-      v82 = [(STDeviceBedtimeListController *)self informativeTextGroupSpecifier];
-      v81 = [(STDeviceBedtimeListController *)self downTimeGroupSpecifier];
-      v33 = [(STDeviceBedtimeListController *)self deviceBedtimeSpecifier];
-      v34 = [(STDeviceBedtimeListController *)self scheduleSwitchGroupSpecifier];
-      v35 = [(STDeviceBedtimeListController *)self scheduledSwitchSpecifier];
-      v36 = [(STDeviceBedtimeListController *)self scheduleTypeGroupSpecifier];
-      v37 = [(STDeviceBedtimeListController *)self everyDaySpecifier];
-      v38 = [(STDeviceBedtimeListController *)self customizeDaysSpecifier];
-      v39 = [(STDeviceBedtimeListController *)self timeGroupSpecifier];
-      v69 = [v68 initWithObjects:{v82, v81, v33, v34, v35, v36, v37, v38, v39, 0}];
+      informativeTextGroupSpecifier = [(STDeviceBedtimeListController *)self informativeTextGroupSpecifier];
+      downTimeGroupSpecifier2 = [(STDeviceBedtimeListController *)self downTimeGroupSpecifier];
+      deviceBedtimeSpecifier = [(STDeviceBedtimeListController *)self deviceBedtimeSpecifier];
+      scheduleSwitchGroupSpecifier = [(STDeviceBedtimeListController *)self scheduleSwitchGroupSpecifier];
+      scheduledSwitchSpecifier = [(STDeviceBedtimeListController *)self scheduledSwitchSpecifier];
+      scheduleTypeGroupSpecifier = [(STDeviceBedtimeListController *)self scheduleTypeGroupSpecifier];
+      everyDaySpecifier = [(STDeviceBedtimeListController *)self everyDaySpecifier];
+      customizeDaysSpecifier = [(STDeviceBedtimeListController *)self customizeDaysSpecifier];
+      timeGroupSpecifier = [(STDeviceBedtimeListController *)self timeGroupSpecifier];
+      v69 = [v68 initWithObjects:{informativeTextGroupSpecifier, downTimeGroupSpecifier2, deviceBedtimeSpecifier, scheduleSwitchGroupSpecifier, scheduledSwitchSpecifier, scheduleTypeGroupSpecifier, everyDaySpecifier, customizeDaysSpecifier, timeGroupSpecifier, 0}];
 
-      v5 = v80;
-      v40 = [v80 scheduleByWeekdayIndex];
+      bedtime = v80;
+      scheduleByWeekdayIndex = [v80 scheduleByWeekdayIndex];
 
-      if (v40)
+      if (scheduleByWeekdayIndex)
       {
-        v41 = [(STDeviceBedtimeListController *)self weekdaySpecifiers];
+        weekdaySpecifiers = [(STDeviceBedtimeListController *)self weekdaySpecifiers];
         v42 = v69;
-        [v69 addObjectsFromArray:v41];
+        [v69 addObjectsFromArray:weekdaySpecifiers];
       }
 
       else
       {
-        v41 = [(STDeviceBedtimeListController *)self dailyScheduleSpecifier];
+        weekdaySpecifiers = [(STDeviceBedtimeListController *)self dailyScheduleSpecifier];
         v42 = v69;
-        [v69 addObject:v41];
+        [v69 addObject:weekdaySpecifiers];
       }
 
       v3 = v78;
@@ -321,11 +321,11 @@ void __64__STDeviceBedtimeListController_scheduleDowntimeRefreshIfNeeded__block_
       v56 = v79;
       if ([(STDeviceBedtimeListController *)self canAskForMoreTime])
       {
-        v58 = [(STDeviceBedtimeListController *)self atBedtimeGroupSpecifier];
-        [v42 addObject:v58];
+        atBedtimeGroupSpecifier = [(STDeviceBedtimeListController *)self atBedtimeGroupSpecifier];
+        [v42 addObject:atBedtimeGroupSpecifier];
 
-        v59 = [(STDeviceBedtimeListController *)self atBedtimeSpecifier];
-        [v42 addObject:v59];
+        atBedtimeSpecifier = [(STDeviceBedtimeListController *)self atBedtimeSpecifier];
+        [v42 addObject:atBedtimeSpecifier];
       }
 
       if (([v80 shouldAllowEditing] & 1) == 0)
@@ -360,14 +360,14 @@ void __64__STDeviceBedtimeListController_scheduleDowntimeRefreshIfNeeded__block_
         }
 
         v56 = v79;
-        v5 = v80;
+        bedtime = v80;
         v57 = v91;
       }
 
       v66 = *(&self->super.super.super.super.super.isa + v78);
       *(&self->super.super.super.super.super.isa + v78) = v42;
 
-      v55 = v89;
+      v55 = st_emptyGroupSpecifier2;
       v54 = v90;
     }
 
@@ -375,26 +375,26 @@ void __64__STDeviceBedtimeListController_scheduleDowntimeRefreshIfNeeded__block_
     {
       v43 = v7;
       v44 = objc_alloc(MEMORY[0x277CBEB18]);
-      v45 = [(STDeviceBedtimeListController *)self informativeTextGroupSpecifier];
-      v46 = [(STDeviceBedtimeListController *)self downTimeGroupSpecifier];
-      v47 = [(STDeviceBedtimeListController *)self deviceBedtimeSpecifier];
-      v48 = [(STDeviceBedtimeListController *)self scheduleSwitchGroupSpecifier];
-      v49 = [(STDeviceBedtimeListController *)self scheduledSwitchSpecifier];
-      v50 = [v44 initWithObjects:{v45, v46, v47, v48, v49, 0}];
+      informativeTextGroupSpecifier2 = [(STDeviceBedtimeListController *)self informativeTextGroupSpecifier];
+      downTimeGroupSpecifier3 = [(STDeviceBedtimeListController *)self downTimeGroupSpecifier];
+      deviceBedtimeSpecifier2 = [(STDeviceBedtimeListController *)self deviceBedtimeSpecifier];
+      scheduleSwitchGroupSpecifier2 = [(STDeviceBedtimeListController *)self scheduleSwitchGroupSpecifier];
+      scheduledSwitchSpecifier2 = [(STDeviceBedtimeListController *)self scheduledSwitchSpecifier];
+      v50 = [v44 initWithObjects:{informativeTextGroupSpecifier2, downTimeGroupSpecifier3, deviceBedtimeSpecifier2, scheduleSwitchGroupSpecifier2, scheduledSwitchSpecifier2, 0}];
 
       if ([(STDeviceBedtimeListController *)self canAskForMoreTime])
       {
-        v51 = [(STDeviceBedtimeListController *)self atBedtimeGroupSpecifier];
-        [v50 addObject:v51];
+        atBedtimeGroupSpecifier2 = [(STDeviceBedtimeListController *)self atBedtimeGroupSpecifier];
+        [v50 addObject:atBedtimeGroupSpecifier2];
 
-        v52 = [(STDeviceBedtimeListController *)self atBedtimeSpecifier];
-        [v50 addObject:v52];
+        atBedtimeSpecifier2 = [(STDeviceBedtimeListController *)self atBedtimeSpecifier];
+        [v50 addObject:atBedtimeSpecifier2];
       }
 
       v53 = *(&self->super.super.super.super.super.isa + v3);
       *(&self->super.super.super.super.super.isa + v3) = v50;
 
-      v55 = v89;
+      v55 = st_emptyGroupSpecifier2;
       v54 = v90;
       v56 = v43;
       v57 = v91;
@@ -406,24 +406,24 @@ void __64__STDeviceBedtimeListController_scheduleDowntimeRefreshIfNeeded__block_
   return v4;
 }
 
-- (id)_deviceBedtimeSpecifierWithBedtime:(id)a3 downtimeGroupSpecifier:(id)a4
+- (id)_deviceBedtimeSpecifierWithBedtime:(id)bedtime downtimeGroupSpecifier:(id)specifier
 {
-  v6 = a4;
-  v7 = a3;
+  specifierCopy = specifier;
+  bedtimeCopy = bedtime;
   v8 = +[STScreenTimeSettingsUIBundle bundle];
-  v9 = [v7 deviceBedtimeEnabled];
-  v10 = [(STDeviceBedtimeListController *)self affectedUser];
-  v11 = [v10 isRemoteUser];
-  v12 = [v7 askForMoreTime];
+  deviceBedtimeEnabled = [bedtimeCopy deviceBedtimeEnabled];
+  affectedUser = [(STDeviceBedtimeListController *)self affectedUser];
+  isRemoteUser = [affectedUser isRemoteUser];
+  askForMoreTime = [bedtimeCopy askForMoreTime];
 
-  v13 = [(STDeviceBedtimeListController *)self coordinator];
-  v14 = [v13 timeAllowancesCoordinator];
-  v15 = [v14 isDowntimeActive];
+  coordinator = [(STDeviceBedtimeListController *)self coordinator];
+  timeAllowancesCoordinator = [coordinator timeAllowancesCoordinator];
+  isDowntimeActive = [timeAllowancesCoordinator isDowntimeActive];
 
   v16 = MEMORY[0x277D3FAD8];
-  if (v15)
+  if (isDowntimeActive)
   {
-    if (v9)
+    if (deviceBedtimeEnabled)
     {
       v17 = @"DeviceDowntimeDisableButtonWithScheduleName";
     }
@@ -433,7 +433,7 @@ void __64__STDeviceBedtimeListController_scheduleDowntimeRefreshIfNeeded__block_
       v17 = @"DeviceDowntimeDisableButtonWithoutScheduleName";
     }
 
-    if (v9)
+    if (deviceBedtimeEnabled)
     {
       v18 = @"WithSchedule";
     }
@@ -448,7 +448,7 @@ void __64__STDeviceBedtimeListController_scheduleDowntimeRefreshIfNeeded__block_
 
     [v20 setObject:&unk_28769D250 forKeyedSubscript:*MEMORY[0x277D3FD78]];
     v21 = @"RemoteUser";
-    if (!v11)
+    if (!isRemoteUser)
     {
       v21 = @"LocalUser";
     }
@@ -456,14 +456,14 @@ void __64__STDeviceBedtimeListController_scheduleDowntimeRefreshIfNeeded__block_
     v22 = [MEMORY[0x277CCACA8] localizedStringWithFormat:@"DeviceDowntimeDisableButton%@%@Footer", v21, v18];
     v23 = MEMORY[0x277CCACA8];
     v24 = [v8 localizedStringForKey:v22 value:&stru_28766E5A8 table:0];
-    v25 = [v10 givenName];
-    v26 = [v23 localizedStringWithFormat:v24, v25];
-    [v6 setObject:v26 forKeyedSubscript:*MEMORY[0x277D3FF88]];
+    givenName = [affectedUser givenName];
+    v26 = [v23 localizedStringWithFormat:v24, givenName];
+    [specifierCopy setObject:v26 forKeyedSubscript:*MEMORY[0x277D3FF88]];
   }
 
   else
   {
-    if (v9)
+    if (deviceBedtimeEnabled)
     {
       v27 = @"DeviceDowntimeEnableButtonWithScheduleName";
     }
@@ -473,7 +473,7 @@ void __64__STDeviceBedtimeListController_scheduleDowntimeRefreshIfNeeded__block_
       v27 = @"DeviceDowntimeEnableButtonWithoutScheduleName";
     }
 
-    if (v9)
+    if (deviceBedtimeEnabled)
     {
       v28 = @"WithSchedule";
     }
@@ -487,14 +487,14 @@ void __64__STDeviceBedtimeListController_scheduleDowntimeRefreshIfNeeded__block_
     v20 = [v16 preferenceSpecifierNamed:v29 target:self set:0 get:0 detail:0 cell:13 edit:0];
 
     v30 = @"BlockedUser";
-    if (!v12)
+    if (!askForMoreTime)
     {
       v30 = @"UnblockedUser";
     }
 
     v22 = [MEMORY[0x277CCACA8] localizedStringWithFormat:@"DeviceDowntimeEnableButton%@%@Footer", v30, v28];
     v31 = [v8 localizedStringForKey:v22 value:&stru_28766E5A8 table:0];
-    [v6 setObject:v31 forKeyedSubscript:*MEMORY[0x277D3FF88]];
+    [specifierCopy setObject:v31 forKeyedSubscript:*MEMORY[0x277D3FF88]];
 
     [v20 setButtonAction:sel__toggleDowntimeEnabled];
   }
@@ -504,28 +504,28 @@ void __64__STDeviceBedtimeListController_scheduleDowntimeRefreshIfNeeded__block_
   return v20;
 }
 
-- (void)_saveDowntimeAndReloadSpecifiers:(BOOL)a3
+- (void)_saveDowntimeAndReloadSpecifiers:(BOOL)specifiers
 {
-  v3 = a3;
-  v5 = [(STDeviceBedtimeListController *)self coordinator];
-  v6 = [v5 timeAllowancesCoordinator];
+  specifiersCopy = specifiers;
+  coordinator = [(STDeviceBedtimeListController *)self coordinator];
+  timeAllowancesCoordinator = [coordinator timeAllowancesCoordinator];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(STDeviceBedtimeListController *)self coordinator];
-    v9 = [v8 timeAllowancesCoordinator];
-    v10 = [(STDeviceBedtimeListController *)self bedtime];
+    coordinator2 = [(STDeviceBedtimeListController *)self coordinator];
+    timeAllowancesCoordinator2 = [coordinator2 timeAllowancesCoordinator];
+    bedtime = [(STDeviceBedtimeListController *)self bedtime];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __66__STDeviceBedtimeListController__saveDowntimeAndReloadSpecifiers___block_invoke;
     v11[3] = &unk_279B7D090;
-    v12 = v3;
+    v12 = specifiersCopy;
     v11[4] = self;
-    [v9 saveDeviceBedtime:v10 completionHandler:v11];
+    [timeAllowancesCoordinator2 saveDeviceBedtime:bedtime completionHandler:v11];
   }
 
-  else if (v3)
+  else if (specifiersCopy)
   {
 
     [(STDeviceBedtimeListController *)self reloadSpecifiers];
@@ -546,39 +546,39 @@ void __66__STDeviceBedtimeListController__saveDowntimeAndReloadSpecifiers___bloc
   }
 }
 
-- (void)simpleScheduleListController:(id)a3 didSaveSimpleSchedule:(id)a4
+- (void)simpleScheduleListController:(id)controller didSaveSimpleSchedule:(id)schedule
 {
-  v5 = a4;
-  v6 = [(STDeviceBedtimeListController *)self bedtime];
-  [v6 setSimpleSchedule:v5];
+  scheduleCopy = schedule;
+  bedtime = [(STDeviceBedtimeListController *)self bedtime];
+  [bedtime setSimpleSchedule:scheduleCopy];
 
   [(STDeviceBedtimeListController *)self _saveDowntimeAndReloadSpecifiers:1];
 
   [(STDeviceBedtimeListController *)self dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)customizeDailyScheduleListController:(id)a3 didSaveDailySchedule:(id)a4 forWeekdayIndex:(unint64_t)a5
+- (void)customizeDailyScheduleListController:(id)controller didSaveDailySchedule:(id)schedule forWeekdayIndex:(unint64_t)index
 {
-  v7 = a4;
-  v8 = [(STDeviceBedtimeListController *)self bedtime];
-  v9 = [v8 scheduleByWeekdayIndex];
-  v29 = [v9 mutableCopy];
+  scheduleCopy = schedule;
+  bedtime = [(STDeviceBedtimeListController *)self bedtime];
+  scheduleByWeekdayIndex = [bedtime scheduleByWeekdayIndex];
+  v29 = [scheduleByWeekdayIndex mutableCopy];
 
   if (!v29)
   {
-    v10 = [(STDeviceBedtimeListController *)self bedtime];
-    v11 = [v10 simpleSchedule];
-    v29 = [(STDeviceBedtimeListController *)self _createDefaultCustomScheduleFromSimpleSchedule:v11];
+    bedtime2 = [(STDeviceBedtimeListController *)self bedtime];
+    simpleSchedule = [bedtime2 simpleSchedule];
+    v29 = [(STDeviceBedtimeListController *)self _createDefaultCustomScheduleFromSimpleSchedule:simpleSchedule];
   }
 
-  v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a5];
-  [v29 setObject:v7 forKeyedSubscript:v12];
+  v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:index];
+  [v29 setObject:scheduleCopy forKeyedSubscript:v12];
 
-  v13 = [(STDeviceBedtimeListController *)self orderedWeekdayIndexes];
-  v14 = [v13 count];
-  v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:(a5 + 1) % v14];
-  v16 = [v7 endTime];
-  v17 = [v7 startTime];
+  orderedWeekdayIndexes = [(STDeviceBedtimeListController *)self orderedWeekdayIndexes];
+  v14 = [orderedWeekdayIndexes count];
+  v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:(index + 1) % v14];
+  endTime = [scheduleCopy endTime];
+  startTime = [scheduleCopy startTime];
 
   v18 = STCompareHourMinuteTimeComponents();
   if (v18 == 1)
@@ -587,7 +587,7 @@ void __66__STDeviceBedtimeListController__saveDowntimeAndReloadSpecifiers___bloc
     v20 = v19;
     if (v19 && ([v19 startTime], v21 = objc_claimAutoreleasedReturnValue(), v22 = STCompareHourMinuteTimeComponents(), v21, v22 == 1))
     {
-      [v20 setStartTime:v16];
+      [v20 setStartTime:endTime];
       [v29 setObject:v20 forKeyedSubscript:v15];
     }
 
@@ -602,19 +602,19 @@ void __66__STDeviceBedtimeListController__saveDowntimeAndReloadSpecifiers___bloc
     LODWORD(v22) = 0;
   }
 
-  v23 = [(STDeviceBedtimeListController *)self bedtime];
-  [v23 setScheduleByWeekdayIndex:v29];
+  bedtime3 = [(STDeviceBedtimeListController *)self bedtime];
+  [bedtime3 setScheduleByWeekdayIndex:v29];
 
-  v24 = [(STDeviceBedtimeListController *)self weekdaySpecifiers];
-  v25 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a5];
-  v26 = [v13 indexOfObject:v25];
+  weekdaySpecifiers = [(STDeviceBedtimeListController *)self weekdaySpecifiers];
+  v25 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:index];
+  v26 = [orderedWeekdayIndexes indexOfObject:v25];
 
-  v27 = [v24 objectAtIndexedSubscript:v26];
+  v27 = [weekdaySpecifiers objectAtIndexedSubscript:v26];
   [(STDeviceBedtimeListController *)self reloadSpecifier:v27];
 
   if (v22)
   {
-    v28 = [v24 objectAtIndexedSubscript:{objc_msgSend(v13, "indexOfObject:", v15)}];
+    v28 = [weekdaySpecifiers objectAtIndexedSubscript:{objc_msgSend(orderedWeekdayIndexes, "indexOfObject:", v15)}];
     [(STDeviceBedtimeListController *)self reloadSpecifier:v28];
   }
 
@@ -625,12 +625,12 @@ void __66__STDeviceBedtimeListController__saveDowntimeAndReloadSpecifiers___bloc
 - (void)dealloc
 {
   [(STRootViewModelCoordinator *)self->_coordinator removeObserver:self forKeyPath:@"timeAllowancesCoordinator.viewModel.bedtime" context:@"TimeAllowanceViewModelBlueprintContext"];
-  v3 = [(STDeviceBedtimeListController *)self downtimeScheduleRefreshTimer];
+  downtimeScheduleRefreshTimer = [(STDeviceBedtimeListController *)self downtimeScheduleRefreshTimer];
 
-  if (v3)
+  if (downtimeScheduleRefreshTimer)
   {
-    v4 = [(STDeviceBedtimeListController *)self downtimeScheduleRefreshTimer];
-    [v4 invalidate];
+    downtimeScheduleRefreshTimer2 = [(STDeviceBedtimeListController *)self downtimeScheduleRefreshTimer];
+    [downtimeScheduleRefreshTimer2 invalidate];
   }
 
   v5.receiver = self;
@@ -638,45 +638,45 @@ void __66__STDeviceBedtimeListController__saveDowntimeAndReloadSpecifiers___bloc
   [(STDeviceBedtimeListController *)&v5 dealloc];
 }
 
-- (void)setCoordinator:(id)a3
+- (void)setCoordinator:(id)coordinator
 {
-  v5 = a3;
+  coordinatorCopy = coordinator;
   coordinator = self->_coordinator;
-  if (coordinator != v5)
+  if (coordinator != coordinatorCopy)
   {
-    v7 = v5;
+    v7 = coordinatorCopy;
     [(STRootViewModelCoordinator *)coordinator removeObserver:self forKeyPath:@"timeAllowancesCoordinator.viewModel.bedtime" context:@"TimeAllowanceViewModelBlueprintContext"];
-    objc_storeStrong(&self->_coordinator, a3);
+    objc_storeStrong(&self->_coordinator, coordinator);
     coordinator = [(STRootViewModelCoordinator *)self->_coordinator addObserver:self forKeyPath:@"timeAllowancesCoordinator.viewModel.bedtime" options:0 context:@"TimeAllowanceViewModelBlueprintContext"];
-    v5 = v7;
+    coordinatorCopy = v7;
   }
 
-  MEMORY[0x2821F96F8](coordinator, v5);
+  MEMORY[0x2821F96F8](coordinator, coordinatorCopy);
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (a6 == @"TimeAllowanceViewModelBlueprintContext")
+  if (context == @"TimeAllowanceViewModelBlueprintContext")
   {
-    if ([(STDeviceBedtimeListController *)self isViewLoaded:a3])
+    if ([(STDeviceBedtimeListController *)self isViewLoaded:path])
     {
-      v7 = [(STDeviceBedtimeListController *)self view];
-      v8 = [v7 window];
+      view = [(STDeviceBedtimeListController *)self view];
+      window = [view window];
 
-      if (v8)
+      if (window)
       {
-        v9 = [(STDeviceBedtimeListController *)self coordinator];
-        v10 = [v9 timeAllowancesCoordinator];
-        v11 = [v10 viewModel];
-        v13 = [v11 bedtime];
+        coordinator = [(STDeviceBedtimeListController *)self coordinator];
+        timeAllowancesCoordinator = [coordinator timeAllowancesCoordinator];
+        viewModel = [timeAllowancesCoordinator viewModel];
+        bedtime = [viewModel bedtime];
 
-        v12 = v13;
-        if (v13)
+        v12 = bedtime;
+        if (bedtime)
         {
-          [(STDeviceBedtimeListController *)self setBedtime:v13];
+          [(STDeviceBedtimeListController *)self setBedtime:bedtime];
           [(STDeviceBedtimeListController *)self reloadSpecifiers];
           [(STDeviceBedtimeListController *)self scheduleDowntimeRefreshIfNeeded];
-          v12 = v13;
+          v12 = bedtime;
         }
       }
     }
@@ -686,52 +686,52 @@ void __66__STDeviceBedtimeListController__saveDowntimeAndReloadSpecifiers___bloc
   {
     v14.receiver = self;
     v14.super_class = STDeviceBedtimeListController;
-    [(STDeviceBedtimeListController *)&v14 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:?];
+    [(STDeviceBedtimeListController *)&v14 observeValueForKeyPath:path ofObject:object change:change context:?];
   }
 }
 
-- (void)setDeviceBedtimeEnabled:(id)a3 specifier:(id)a4
+- (void)setDeviceBedtimeEnabled:(id)enabled specifier:(id)specifier
 {
-  v9 = a3;
-  v5 = [(STDeviceBedtimeListController *)self bedtime];
+  enabledCopy = enabled;
+  bedtime = [(STDeviceBedtimeListController *)self bedtime];
 
-  if (!v5)
+  if (!bedtime)
   {
     v6 = objc_opt_new();
     [v6 setAskForMoreTime:{-[STDeviceBedtimeListController canAskForMoreTime](self, "canAskForMoreTime")}];
     [(STDeviceBedtimeListController *)self setBedtime:v6];
   }
 
-  v7 = [v9 BOOLValue];
-  v8 = [(STDeviceBedtimeListController *)self bedtime];
-  [v8 setDeviceBedtimeEnabled:v7];
+  bOOLValue = [enabledCopy BOOLValue];
+  bedtime2 = [(STDeviceBedtimeListController *)self bedtime];
+  [bedtime2 setDeviceBedtimeEnabled:bOOLValue];
 
   [(STDeviceBedtimeListController *)self _saveDowntimeAndReloadSpecifiers:1];
 }
 
-- (id)deviceBedtimeEnabled:(id)a3
+- (id)deviceBedtimeEnabled:(id)enabled
 {
   v3 = MEMORY[0x277CCABB0];
-  v4 = [(STDeviceBedtimeListController *)self bedtime];
-  v5 = [v3 numberWithBool:{objc_msgSend(v4, "deviceBedtimeEnabled")}];
+  bedtime = [(STDeviceBedtimeListController *)self bedtime];
+  v5 = [v3 numberWithBool:{objc_msgSend(bedtime, "deviceBedtimeEnabled")}];
 
   return v5;
 }
 
-- (id)_createDefaultCustomScheduleFromSimpleSchedule:(id)a3
+- (id)_createDefaultCustomScheduleFromSimpleSchedule:(id)schedule
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(STDeviceBedtimeListController *)self orderedWeekdayIndexes];
-  v6 = [v4 startTime];
-  v17 = v4;
-  v7 = [v4 endTime];
-  v8 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(v5, "count")}];
+  scheduleCopy = schedule;
+  orderedWeekdayIndexes = [(STDeviceBedtimeListController *)self orderedWeekdayIndexes];
+  startTime = [scheduleCopy startTime];
+  v17 = scheduleCopy;
+  endTime = [scheduleCopy endTime];
+  v8 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(orderedWeekdayIndexes, "count")}];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v9 = v5;
+  v9 = orderedWeekdayIndexes;
   v10 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v10)
   {
@@ -748,8 +748,8 @@ void __66__STDeviceBedtimeListController__saveDowntimeAndReloadSpecifiers___bloc
 
         v14 = *(*(&v18 + 1) + 8 * i);
         v15 = objc_opt_new();
-        [v15 setStartTime:v6];
-        [v15 setEndTime:v7];
+        [v15 setStartTime:startTime];
+        [v15 setEndTime:endTime];
         [v15 setDay:{objc_msgSend(v14, "unsignedIntegerValue")}];
         [v8 setObject:v15 forKeyedSubscript:v14];
       }
@@ -765,22 +765,22 @@ void __66__STDeviceBedtimeListController__saveDowntimeAndReloadSpecifiers___bloc
 
 - (void)_toggleDowntimeEnabled
 {
-  v3 = [MEMORY[0x277D4B898] sharedController];
-  v4 = [v3 viewContext];
+  mEMORY[0x277D4B898] = [MEMORY[0x277D4B898] sharedController];
+  viewContext = [mEMORY[0x277D4B898] viewContext];
 
   v5 = objc_alloc(MEMORY[0x277D4BAE0]);
-  v6 = [(STDeviceBedtimeListController *)self affectedUser];
-  v7 = [v6 dsid];
-  v8 = [v5 initWithDSID:v7];
+  affectedUser = [(STDeviceBedtimeListController *)self affectedUser];
+  dsid = [affectedUser dsid];
+  v8 = [v5 initWithDSID:dsid];
 
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __55__STDeviceBedtimeListController__toggleDowntimeEnabled__block_invoke;
   v11[3] = &unk_279B7D708;
   v12 = v8;
-  v13 = v4;
-  v14 = self;
-  v9 = v4;
+  v13 = viewContext;
+  selfCopy = self;
+  v9 = viewContext;
   v10 = v8;
   [v9 performBlockAndWait:v11];
 }
@@ -813,20 +813,20 @@ void __55__STDeviceBedtimeListController__toggleDowntimeEnabled__block_invoke(ui
 
 - (void)_actuallyToggleDowntimeEnabled
 {
-  v3 = [(STDeviceBedtimeListController *)self coordinator];
-  v4 = [v3 timeAllowancesCoordinator];
+  coordinator = [(STDeviceBedtimeListController *)self coordinator];
+  timeAllowancesCoordinator = [coordinator timeAllowancesCoordinator];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(STDeviceBedtimeListController *)self coordinator];
-    v7 = [v6 timeAllowancesCoordinator];
+    coordinator2 = [(STDeviceBedtimeListController *)self coordinator];
+    timeAllowancesCoordinator2 = [coordinator2 timeAllowancesCoordinator];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __63__STDeviceBedtimeListController__actuallyToggleDowntimeEnabled__block_invoke;
     v8[3] = &unk_279B7CC18;
     v8[4] = self;
-    [v7 toggleDowntimeWithCompletionHandler:v8];
+    [timeAllowancesCoordinator2 toggleDowntimeWithCompletionHandler:v8];
   }
 
   else
@@ -836,49 +836,49 @@ void __55__STDeviceBedtimeListController__toggleDowntimeEnabled__block_invoke(ui
   }
 }
 
-- (id)_simpleScheduleTime:(id)a3
+- (id)_simpleScheduleTime:(id)time
 {
   v4 = MEMORY[0x277D4B928];
-  v5 = [(STDeviceBedtimeListController *)self bedtime];
-  v6 = [v5 simpleSchedule];
-  v7 = [v6 startTime];
-  v8 = [(STDeviceBedtimeListController *)self bedtime];
-  v9 = [v8 simpleSchedule];
-  v10 = [v9 endTime];
-  v11 = [v4 simpleScheduleTimeRangeWithStartTimeComponents:v7 endTimeComponents:v10];
+  bedtime = [(STDeviceBedtimeListController *)self bedtime];
+  simpleSchedule = [bedtime simpleSchedule];
+  startTime = [simpleSchedule startTime];
+  bedtime2 = [(STDeviceBedtimeListController *)self bedtime];
+  simpleSchedule2 = [bedtime2 simpleSchedule];
+  endTime = [simpleSchedule2 endTime];
+  v11 = [v4 simpleScheduleTimeRangeWithStartTimeComponents:startTime endTimeComponents:endTime];
 
   return v11;
 }
 
-- (void)_showEditSimpleScheduleListController:(id)a3
+- (void)_showEditSimpleScheduleListController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v11 = objc_opt_new();
   [v11 setParentController:self];
-  v5 = [(STDeviceBedtimeListController *)self rootController];
-  [v11 setRootController:v5];
+  rootController = [(STDeviceBedtimeListController *)self rootController];
+  [v11 setRootController:rootController];
 
-  [v11 setSpecifier:v4];
+  [v11 setSpecifier:controllerCopy];
   v6 = [STSimpleScheduleListController alloc];
-  v7 = [(STDeviceBedtimeListController *)self bedtime];
-  v8 = [v7 simpleSchedule];
-  v9 = [(STSimpleScheduleListController *)v6 initWithSimpleSchedule:v8];
+  bedtime = [(STDeviceBedtimeListController *)self bedtime];
+  simpleSchedule = [bedtime simpleSchedule];
+  v9 = [(STSimpleScheduleListController *)v6 initWithSimpleSchedule:simpleSchedule];
 
   [(STSimpleScheduleListController *)v9 setDelegate:self];
   [(STSimpleScheduleListController *)v9 setParentController:v11];
-  v10 = [v11 rootController];
-  [(STSimpleScheduleListController *)v9 setRootController:v10];
+  rootController2 = [v11 rootController];
+  [(STSimpleScheduleListController *)v9 setRootController:rootController2];
 
-  [(STSimpleScheduleListController *)v9 setSpecifier:v4];
+  [(STSimpleScheduleListController *)v9 setSpecifier:controllerCopy];
   [v11 showController:v9];
   [(STDeviceBedtimeListController *)self showController:v11];
 }
 
-- (id)_customScheduleTime:(id)a3
+- (id)_customScheduleTime:(id)time
 {
-  v4 = a3;
-  v5 = [(STDeviceBedtimeListController *)self weekdaySpecifiers];
-  v6 = [v5 indexOfObject:v4];
+  timeCopy = time;
+  weekdaySpecifiers = [(STDeviceBedtimeListController *)self weekdaySpecifiers];
+  v6 = [weekdaySpecifiers indexOfObject:timeCopy];
 
   if (v6 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -888,21 +888,21 @@ void __55__STDeviceBedtimeListController__toggleDowntimeEnabled__block_invoke(ui
   else
   {
     v8 = +[STScreenTimeSettingsUIBundle bundle];
-    v9 = [(STDeviceBedtimeListController *)self orderedWeekdayIndexes];
-    v10 = [v9 objectAtIndexedSubscript:v6];
-    v11 = [v10 unsignedIntegerValue];
+    orderedWeekdayIndexes = [(STDeviceBedtimeListController *)self orderedWeekdayIndexes];
+    v10 = [orderedWeekdayIndexes objectAtIndexedSubscript:v6];
+    unsignedIntegerValue = [v10 unsignedIntegerValue];
 
-    v12 = [(STDeviceBedtimeListController *)self bedtime];
-    v13 = [v12 scheduleByWeekdayIndex];
-    v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v11];
-    v15 = [v13 objectForKeyedSubscript:v14];
+    bedtime = [(STDeviceBedtimeListController *)self bedtime];
+    scheduleByWeekdayIndex = [bedtime scheduleByWeekdayIndex];
+    v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:unsignedIntegerValue];
+    v15 = [scheduleByWeekdayIndex objectForKeyedSubscript:v14];
 
     if (v15)
     {
       v16 = MEMORY[0x277D4B928];
-      v17 = [v15 startTime];
-      v18 = [v15 endTime];
-      v7 = [v16 simpleScheduleTimeRangeWithStartTimeComponents:v17 endTimeComponents:v18];
+      startTime = [v15 startTime];
+      endTime = [v15 endTime];
+      v7 = [v16 simpleScheduleTimeRangeWithStartTimeComponents:startTime endTimeComponents:endTime];
     }
 
     else
@@ -914,33 +914,33 @@ void __55__STDeviceBedtimeListController__toggleDowntimeEnabled__block_invoke(ui
   return v7;
 }
 
-- (void)_showCustomizeDailyScheduleListController:(id)a3
+- (void)_showCustomizeDailyScheduleListController:(id)controller
 {
-  v26 = a3;
-  v4 = [(STDeviceBedtimeListController *)self weekdaySpecifiers];
-  v5 = [v4 indexOfObject:v26];
+  controllerCopy = controller;
+  weekdaySpecifiers = [(STDeviceBedtimeListController *)self weekdaySpecifiers];
+  v5 = [weekdaySpecifiers indexOfObject:controllerCopy];
 
-  v6 = [(STDeviceBedtimeListController *)self orderedWeekdayIndexes];
-  v7 = [v6 objectAtIndexedSubscript:v5];
-  v8 = [(STDeviceBedtimeListController *)self bedtime];
-  v9 = [v8 scheduleByWeekdayIndex];
+  orderedWeekdayIndexes = [(STDeviceBedtimeListController *)self orderedWeekdayIndexes];
+  v7 = [orderedWeekdayIndexes objectAtIndexedSubscript:v5];
+  bedtime = [(STDeviceBedtimeListController *)self bedtime];
+  scheduleByWeekdayIndex = [bedtime scheduleByWeekdayIndex];
 
-  v24 = [v9 objectForKeyedSubscript:v7];
-  v10 = [v7 unsignedIntegerValue];
-  v11 = v10;
-  if (!v10)
+  v24 = [scheduleByWeekdayIndex objectForKeyedSubscript:v7];
+  unsignedIntegerValue = [v7 unsignedIntegerValue];
+  v11 = unsignedIntegerValue;
+  if (!unsignedIntegerValue)
   {
-    v10 = [v6 count];
+    unsignedIntegerValue = [orderedWeekdayIndexes count];
   }
 
-  v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v10 - 1];
-  v13 = [v9 objectForKeyedSubscript:v12];
+  v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:unsignedIntegerValue - 1];
+  v13 = [scheduleByWeekdayIndex objectForKeyedSubscript:v12];
 
-  v14 = [v13 endTime];
-  v25 = v6;
+  endTime = [v13 endTime];
+  v25 = orderedWeekdayIndexes;
   if (v13 && ([v13 startTime], v15 = objc_claimAutoreleasedReturnValue(), v16 = STCompareHourMinuteTimeComponents(), v15, v16 == 1))
   {
-    v17 = v14;
+    v17 = endTime;
   }
 
   else
@@ -950,33 +950,33 @@ void __55__STDeviceBedtimeListController__toggleDowntimeEnabled__block_invoke(ui
 
   v18 = objc_opt_new();
   [v18 setParentController:self];
-  v19 = [(STDeviceBedtimeListController *)self rootController];
-  [v18 setRootController:v19];
+  rootController = [(STDeviceBedtimeListController *)self rootController];
+  [v18 setRootController:rootController];
 
-  [v18 setSpecifier:v26];
+  [v18 setSpecifier:controllerCopy];
   v20 = [STCustomizeDailyScheduleListController alloc];
-  v21 = [v26 name];
-  v22 = [(STCustomizeDailyScheduleListController *)v20 initWithDailySchedule:v24 weekdayIndex:v11 weekdayName:v21 minimumStartTime:v17];
+  name = [controllerCopy name];
+  v22 = [(STCustomizeDailyScheduleListController *)v20 initWithDailySchedule:v24 weekdayIndex:v11 weekdayName:name minimumStartTime:v17];
 
   [(STCustomizeDailyScheduleListController *)v22 setDelegate:self];
   [(STCustomizeDailyScheduleListController *)v22 setParentController:v18];
-  v23 = [v18 rootController];
-  [(STCustomizeDailyScheduleListController *)v22 setRootController:v23];
+  rootController2 = [v18 rootController];
+  [(STCustomizeDailyScheduleListController *)v22 setRootController:rootController2];
 
-  [(STCustomizeDailyScheduleListController *)v22 setSpecifier:v26];
+  [(STCustomizeDailyScheduleListController *)v22 setSpecifier:controllerCopy];
   [v18 showController:v22];
   [(STDeviceBedtimeListController *)self showController:v18];
 }
 
 - (id)timeFooterText
 {
-  v3 = [(STDeviceBedtimeListController *)self affectedUser];
-  if ([v3 isRemoteUser])
+  affectedUser = [(STDeviceBedtimeListController *)self affectedUser];
+  if ([affectedUser isRemoteUser])
   {
-    v4 = [v3 givenName];
-    if (v4)
+    givenName = [affectedUser givenName];
+    if (givenName)
     {
-      v5 = v4;
+      v5 = givenName;
       v6 = MEMORY[0x277CCACA8];
       v7 = +[STScreenTimeSettingsUIBundle bundle];
       v8 = [v7 localizedStringForKey:@"DeviceDowntimeScheduleFooterTextRemote" value:&stru_28766E5A8 table:0];
@@ -988,11 +988,11 @@ void __55__STDeviceBedtimeListController__toggleDowntimeEnabled__block_invoke(ui
 
   else
   {
-    v10 = [(STDeviceBedtimeListController *)self coordinator];
-    v11 = [v10 viewModel];
-    v12 = [v11 isCloudSyncEnabled];
+    coordinator = [(STDeviceBedtimeListController *)self coordinator];
+    viewModel = [coordinator viewModel];
+    isCloudSyncEnabled = [viewModel isCloudSyncEnabled];
 
-    if (!v12)
+    if (!isCloudSyncEnabled)
     {
       v13 = +[STScreenTimeSettingsUIBundle bundle];
       v5 = v13;
@@ -1011,45 +1011,45 @@ LABEL_8:
   return v9;
 }
 
-- (void)setAskForMoreTime:(id)a3 specifier:(id)a4
+- (void)setAskForMoreTime:(id)time specifier:(id)specifier
 {
-  v5 = [a3 BOOLValue];
-  v6 = [(STDeviceBedtimeListController *)self bedtime];
-  [v6 setAskForMoreTime:v5];
+  bOOLValue = [time BOOLValue];
+  bedtime = [(STDeviceBedtimeListController *)self bedtime];
+  [bedtime setAskForMoreTime:bOOLValue];
 
   [(STDeviceBedtimeListController *)self _saveDowntimeAndReloadSpecifiers:1];
 }
 
-- (id)askForMoreTime:(id)a3
+- (id)askForMoreTime:(id)time
 {
   v3 = MEMORY[0x277CCABB0];
-  v4 = [(STDeviceBedtimeListController *)self bedtime];
-  v5 = [v3 numberWithBool:{objc_msgSend(v4, "askForMoreTime")}];
+  bedtime = [(STDeviceBedtimeListController *)self bedtime];
+  v5 = [v3 numberWithBool:{objc_msgSend(bedtime, "askForMoreTime")}];
 
   return v5;
 }
 
 - (id)atDowntimeFooterText
 {
-  v2 = [(STDeviceBedtimeListController *)self affectedUser];
-  if ([v2 isRemoteUser])
+  affectedUser = [(STDeviceBedtimeListController *)self affectedUser];
+  if ([affectedUser isRemoteUser])
   {
-    v3 = [v2 name];
+    name = [affectedUser name];
 
-    if (v3)
+    if (name)
     {
       v4 = objc_opt_new();
-      v5 = [v2 name];
-      v6 = [v4 personNameComponentsFromString:v5];
+      name2 = [affectedUser name];
+      v6 = [v4 personNameComponentsFromString:name2];
 
-      v7 = [v6 givenName];
-      if ([v7 length])
+      givenName = [v6 givenName];
+      if ([givenName length])
       {
         v8 = MEMORY[0x277CCACA8];
         v9 = +[STScreenTimeSettingsUIBundle bundle];
         v10 = [v9 localizedStringForKey:@"AtDowntimeRemoteFooterText" value:&stru_28766E5A8 table:0];
-        v11 = [v6 givenName];
-        v12 = [v8 localizedStringWithFormat:v10, v11];
+        givenName2 = [v6 givenName];
+        v12 = [v8 localizedStringWithFormat:v10, givenName2];
 
         goto LABEL_9;
       }
@@ -1073,12 +1073,12 @@ LABEL_9:
   return v12;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v33[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(STDeviceBedtimeListController *)self indexForIndexPath:v7];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [(STDeviceBedtimeListController *)self indexForIndexPath:pathCopy];
   if (v8 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v9 = 0;
@@ -1089,11 +1089,11 @@ LABEL_9:
     v9 = [*(&self->super.super.super.super.super.isa + *MEMORY[0x277D3FC48]) objectAtIndexedSubscript:v8];
   }
 
-  v10 = [(STDeviceBedtimeListController *)self dailyScheduleSpecifier];
-  v11 = [(STDeviceBedtimeListController *)self everyDaySpecifier];
-  v12 = [(STDeviceBedtimeListController *)self customizeDaysSpecifier];
-  v13 = v12;
-  if (v9 == v11)
+  dailyScheduleSpecifier = [(STDeviceBedtimeListController *)self dailyScheduleSpecifier];
+  everyDaySpecifier = [(STDeviceBedtimeListController *)self everyDaySpecifier];
+  customizeDaysSpecifier = [(STDeviceBedtimeListController *)self customizeDaysSpecifier];
+  v13 = customizeDaysSpecifier;
+  if (v9 == everyDaySpecifier)
   {
     v21 = *MEMORY[0x277D40148];
     v15 = [v9 objectForKeyedSubscript:*MEMORY[0x277D40148]];
@@ -1102,21 +1102,21 @@ LABEL_9:
       [v15 setAccessoryType:3];
       v20 = [v13 objectForKeyedSubscript:v21];
       [v20 setAccessoryType:0];
-      v22 = [(STDeviceBedtimeListController *)self weekdaySpecifiers];
-      v23 = v10;
-      v24 = v22;
+      weekdaySpecifiers = [(STDeviceBedtimeListController *)self weekdaySpecifiers];
+      v23 = dailyScheduleSpecifier;
+      v24 = weekdaySpecifiers;
       v30 = v23;
       v33[0] = v23;
       v25 = [MEMORY[0x277CBEA60] arrayWithObjects:v33 count:1];
       [(STDeviceBedtimeListController *)self replaceContiguousSpecifiers:v24 withSpecifiers:v25 animated:1];
 
-      v26 = [(STDeviceBedtimeListController *)self bedtime];
-      [v26 setScheduleByWeekdayIndex:0];
+      bedtime = [(STDeviceBedtimeListController *)self bedtime];
+      [bedtime setScheduleByWeekdayIndex:0];
 
       [(STDeviceBedtimeListController *)self _saveDowntimeAndReloadSpecifiers:0];
 LABEL_12:
 
-      v10 = v30;
+      dailyScheduleSpecifier = v30;
     }
 
 LABEL_13:
@@ -1124,30 +1124,30 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if (v9 == v12)
+  if (v9 == customizeDaysSpecifier)
   {
     v14 = *MEMORY[0x277D40148];
     v15 = [v9 objectForKeyedSubscript:*MEMORY[0x277D40148]];
     if ([v15 accessoryType] != 3)
     {
       [v15 setAccessoryType:3];
-      v27 = [v11 objectForKeyedSubscript:v14];
+      v27 = [everyDaySpecifier objectForKeyedSubscript:v14];
       [v27 setAccessoryType:0];
-      v28 = [(STDeviceBedtimeListController *)self bedtime];
-      v16 = [v28 scheduleByWeekdayIndex];
+      bedtime2 = [(STDeviceBedtimeListController *)self bedtime];
+      scheduleByWeekdayIndex = [bedtime2 scheduleByWeekdayIndex];
 
-      if (!v16)
+      if (!scheduleByWeekdayIndex)
       {
-        v29 = [v28 simpleSchedule];
-        v17 = [(STDeviceBedtimeListController *)self _createDefaultCustomScheduleFromSimpleSchedule:v29];
-        [v28 setScheduleByWeekdayIndex:v17];
+        simpleSchedule = [bedtime2 simpleSchedule];
+        v17 = [(STDeviceBedtimeListController *)self _createDefaultCustomScheduleFromSimpleSchedule:simpleSchedule];
+        [bedtime2 setScheduleByWeekdayIndex:v17];
       }
 
-      v30 = v10;
-      v32 = v10;
+      v30 = dailyScheduleSpecifier;
+      v32 = dailyScheduleSpecifier;
       v18 = [MEMORY[0x277CBEA60] arrayWithObjects:&v32 count:1];
-      v19 = [(STDeviceBedtimeListController *)self weekdaySpecifiers];
-      [(STDeviceBedtimeListController *)self replaceContiguousSpecifiers:v18 withSpecifiers:v19 animated:1];
+      weekdaySpecifiers2 = [(STDeviceBedtimeListController *)self weekdaySpecifiers];
+      [(STDeviceBedtimeListController *)self replaceContiguousSpecifiers:v18 withSpecifiers:weekdaySpecifiers2 animated:1];
 
       v20 = v27;
       goto LABEL_12;
@@ -1159,23 +1159,23 @@ LABEL_13:
 LABEL_14:
   v31.receiver = self;
   v31.super_class = STDeviceBedtimeListController;
-  [(STDeviceBedtimeListController *)&v31 tableView:v6 didSelectRowAtIndexPath:v7];
+  [(STDeviceBedtimeListController *)&v31 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v19 = a4;
-  v7 = a5;
-  v8 = [(STDeviceBedtimeListController *)self everyDaySpecifier];
-  v9 = [(STDeviceBedtimeListController *)self indexPathForSpecifier:v8];
-  v10 = [v7 isEqual:v9];
+  cellCopy = cell;
+  pathCopy = path;
+  everyDaySpecifier = [(STDeviceBedtimeListController *)self everyDaySpecifier];
+  v9 = [(STDeviceBedtimeListController *)self indexPathForSpecifier:everyDaySpecifier];
+  v10 = [pathCopy isEqual:v9];
 
   if (v10)
   {
-    v11 = [(STDeviceBedtimeListController *)self bedtime];
-    v12 = [v11 scheduleByWeekdayIndex];
+    bedtime = [(STDeviceBedtimeListController *)self bedtime];
+    scheduleByWeekdayIndex = [bedtime scheduleByWeekdayIndex];
 
-    if (v12)
+    if (scheduleByWeekdayIndex)
     {
       v13 = 0;
     }
@@ -1188,19 +1188,19 @@ LABEL_14:
 
   else
   {
-    v14 = [(STDeviceBedtimeListController *)self customizeDaysSpecifier];
-    v15 = [(STDeviceBedtimeListController *)self indexPathForSpecifier:v14];
-    v16 = [v7 isEqual:v15];
+    customizeDaysSpecifier = [(STDeviceBedtimeListController *)self customizeDaysSpecifier];
+    v15 = [(STDeviceBedtimeListController *)self indexPathForSpecifier:customizeDaysSpecifier];
+    v16 = [pathCopy isEqual:v15];
 
     if (!v16)
     {
       goto LABEL_10;
     }
 
-    v17 = [(STDeviceBedtimeListController *)self bedtime];
-    v18 = [v17 scheduleByWeekdayIndex];
+    bedtime2 = [(STDeviceBedtimeListController *)self bedtime];
+    scheduleByWeekdayIndex2 = [bedtime2 scheduleByWeekdayIndex];
 
-    if (v18)
+    if (scheduleByWeekdayIndex2)
     {
       v13 = 3;
     }
@@ -1211,7 +1211,7 @@ LABEL_14:
     }
   }
 
-  [v19 setAccessoryType:v13];
+  [cellCopy setAccessoryType:v13];
 LABEL_10:
 }
 

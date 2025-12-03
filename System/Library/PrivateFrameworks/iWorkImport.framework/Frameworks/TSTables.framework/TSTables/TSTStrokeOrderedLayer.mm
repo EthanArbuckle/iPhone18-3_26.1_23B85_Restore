@@ -1,30 +1,30 @@
 @interface TSTStrokeOrderedLayer
-- ($DE50B600744B7521845B4CEF3C5064D2)findWidthAndRangeAtIndex:(SEL)a3;
-- ($DE50B600744B7521845B4CEF3C5064D2)nextWidthAndRange:(SEL)a3;
-- (TSTStrokeOrderedLayer)initWithContext:(id)a3 majorStrokeLayer:(id)a4 minorStrokeLayer:(id)a5;
-- (id)findStrokeAndRangeAtIndex:(int64_t)a3;
-- (id)nextStrokeAndRange:(id)a3;
-- (id)p_findStrokeAndRangeAtIndex:(int64_t)a3 highOrderToken:(id)a4 updatingLowOrderToken:(id *)a5 lowOrderLayer:(id)a6;
+- ($DE50B600744B7521845B4CEF3C5064D2)findWidthAndRangeAtIndex:(SEL)index;
+- ($DE50B600744B7521845B4CEF3C5064D2)nextWidthAndRange:(SEL)range;
+- (TSTStrokeOrderedLayer)initWithContext:(id)context majorStrokeLayer:(id)layer minorStrokeLayer:(id)strokeLayer;
+- (id)findStrokeAndRangeAtIndex:(int64_t)index;
+- (id)nextStrokeAndRange:(id)range;
+- (id)p_findStrokeAndRangeAtIndex:(int64_t)index highOrderToken:(id)token updatingLowOrderToken:(id *)orderToken lowOrderLayer:(id)layer;
 - (int64_t)startingIndex;
-- (void)appendStroke:(id)a3 inRange:(TSTSimpleRange)a4 order:(int)a5;
-- (void)enumerateRawStrokesSegmentsUsingBlock:(id)a3;
-- (void)enumerateStrokesUsingBlock:(id)a3;
-- (void)insertStroke:(id)a3 inRange:(TSTSimpleRange)a4 order:(int)a5;
+- (void)appendStroke:(id)stroke inRange:(TSTSimpleRange)range order:(int)order;
+- (void)enumerateRawStrokesSegmentsUsingBlock:(id)block;
+- (void)enumerateStrokesUsingBlock:(id)block;
+- (void)insertStroke:(id)stroke inRange:(TSTSimpleRange)range order:(int)order;
 - (void)invalidate;
-- (void)invalidateRange:(TSTSimpleRange)a3;
+- (void)invalidateRange:(TSTSimpleRange)range;
 @end
 
 @implementation TSTStrokeOrderedLayer
 
-- (TSTStrokeOrderedLayer)initWithContext:(id)a3 majorStrokeLayer:(id)a4 minorStrokeLayer:(id)a5
+- (TSTStrokeOrderedLayer)initWithContext:(id)context majorStrokeLayer:(id)layer minorStrokeLayer:(id)strokeLayer
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v15 = v10;
-  if (v9)
+  contextCopy = context;
+  layerCopy = layer;
+  strokeLayerCopy = strokeLayer;
+  v15 = strokeLayerCopy;
+  if (layerCopy)
   {
-    if (v10)
+    if (strokeLayerCopy)
     {
       goto LABEL_3;
     }
@@ -51,15 +51,15 @@
 
   objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v38, v39, v40, v41);
 LABEL_3:
-  v16 = objc_msgSend_columnOrRowIndex(v9, v11, v12, v13, v14);
+  v16 = objc_msgSend_columnOrRowIndex(layerCopy, v11, v12, v13, v14);
   v42.receiver = self;
   v42.super_class = TSTStrokeOrderedLayer;
-  v17 = [(TSTStrokeLayer *)&v42 initWithContext:v8 columnOrRowIndex:v16];
+  v17 = [(TSTStrokeLayer *)&v42 initWithContext:contextCopy columnOrRowIndex:v16];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_majorStrokeLayer, a4);
-    objc_storeStrong(&v18->_minorStrokeLayer, a5);
+    objc_storeStrong(&v17->_majorStrokeLayer, layer);
+    objc_storeStrong(&v18->_minorStrokeLayer, strokeLayer);
   }
 
   return v18;
@@ -84,13 +84,13 @@ LABEL_3:
   }
 }
 
-- (id)p_findStrokeAndRangeAtIndex:(int64_t)a3 highOrderToken:(id)a4 updatingLowOrderToken:(id *)a5 lowOrderLayer:(id)a6
+- (id)p_findStrokeAndRangeAtIndex:(int64_t)index highOrderToken:(id)token updatingLowOrderToken:(id *)orderToken lowOrderLayer:(id)layer
 {
-  v9 = a4;
-  v10 = a6;
-  if (a5)
+  tokenCopy = token;
+  layerCopy = layer;
+  if (orderToken)
   {
-    v11 = *a5;
+    v11 = *orderToken;
   }
 
   else
@@ -99,45 +99,45 @@ LABEL_3:
   }
 
   v12 = v11;
-  if (objc_msgSend_range(v9, v13, v14, v15, v16) <= a3 || (v21 = objc_msgSend_range(v9, v17, v18, v19, v20), v21 <= objc_msgSend_range(v12, v22, v23, v24, v25)))
+  if (objc_msgSend_range(tokenCopy, v13, v14, v15, v16) <= index || (v21 = objc_msgSend_range(tokenCopy, v17, v18, v19, v20), v21 <= objc_msgSend_range(v12, v22, v23, v24, v25)))
   {
     v50 = objc_msgSend_range(v12, v17, v18, v19, v20);
-    if (v50 <= a3)
+    if (v50 <= index)
     {
       v55 = 0;
-      v56 = 0x7FFFFFFFFFFFFFFFLL;
-      if (a3 != 0x7FFFFFFFFFFFFFFFLL)
+      indexCopy = 0x7FFFFFFFFFFFFFFFLL;
+      if (index != 0x7FFFFFFFFFFFFFFFLL)
       {
         v87 = &v51[v50];
         if (&v51[v50] != 0x7FFFFFFFFFFFFFFFLL)
         {
-          v55 = (v87 - a3);
-          if (v87 <= a3)
+          v55 = (v87 - index);
+          if (v87 <= index)
           {
-            if (a3 <= v87)
+            if (index <= v87)
             {
-              v56 = 0x7FFFFFFFFFFFFFFFLL;
+              indexCopy = 0x7FFFFFFFFFFFFFFFLL;
             }
 
             else
             {
-              v56 = &v51[v50];
+              indexCopy = &v51[v50];
             }
 
-            if (a3 <= v87)
+            if (index <= v87)
             {
               v55 = 0;
             }
 
             else
             {
-              v55 = (a3 - v87);
+              v55 = (index - v87);
             }
           }
 
           else
           {
-            v56 = a3;
+            indexCopy = index;
           }
         }
       }
@@ -146,33 +146,33 @@ LABEL_3:
     else
     {
       v55 = v51;
-      v56 = v50;
+      indexCopy = v50;
     }
 
     if (v12)
     {
       while (1)
       {
-        v57 = objc_msgSend_range(v9, v51, v52, v53, v54);
-        if (v57 > v56)
+        v57 = objc_msgSend_range(tokenCopy, v51, v52, v53, v54);
+        if (v57 > indexCopy)
         {
           break;
         }
 
-        if (&v58[v57 - 1] < &v55[v56 - 1])
+        if (&v58[v57 - 1] < &v55[indexCopy - 1])
         {
           break;
         }
 
-        v62 = objc_msgSend_order(v9, v58, v59, v60, v61);
+        v62 = objc_msgSend_order(tokenCopy, v58, v59, v60, v61);
         if (v62 < objc_msgSend_order(v12, v63, v64, v65, v66))
         {
           break;
         }
 
-        v67 = objc_msgSend_nextStrokeAndRange_(v10, v58, v12, v60, v61);
+        v67 = objc_msgSend_nextStrokeAndRange_(layerCopy, v58, v12, v60, v61);
 
-        v56 = objc_msgSend_range(v67, v68, v69, v70, v71);
+        indexCopy = objc_msgSend_range(v67, v68, v69, v70, v71);
         v55 = v51;
         v12 = v67;
         if (!v67)
@@ -181,9 +181,9 @@ LABEL_3:
         }
       }
 
-      v76 = objc_msgSend_range(v9, v58, v59, v60, v61);
+      v76 = objc_msgSend_range(tokenCopy, v58, v59, v60, v61);
       v77 = v88;
-      v92 = objc_msgSend_range(v9, v88, v89, v90, v91);
+      v92 = objc_msgSend_range(tokenCopy, v88, v89, v90, v91);
       v94 = v93;
       v98 = objc_msgSend_range(v12, v93, v95, v96, v97);
       if (v98 != 0x7FFFFFFFFFFFFFFFLL)
@@ -192,11 +192,11 @@ LABEL_3:
         {
           if (v92 <= v98 && &v94[v92 - 1] >= v98)
           {
-            v99 = objc_msgSend_order(v9, v72, v73, v74, v75);
+            v99 = objc_msgSend_order(tokenCopy, v72, v73, v74, v75);
             if (v99 < objc_msgSend_order(v12, v100, v101, v102, v103))
             {
               v104 = objc_msgSend_range(v12, v72, v73, v74, v75);
-              v77 = v104 - objc_msgSend_range(v9, v105, v106, v107, v108);
+              v77 = v104 - objc_msgSend_range(tokenCopy, v105, v106, v107, v108);
             }
           }
         }
@@ -206,20 +206,20 @@ LABEL_3:
     else
     {
 LABEL_18:
-      v76 = objc_msgSend_range(v9, v51, v52, v53, v54);
+      v76 = objc_msgSend_range(tokenCopy, v51, v52, v53, v54);
       v77 = v72;
       v12 = 0;
     }
 
-    v37 = objc_msgSend_stroke(v9, v72, v73, v74, v75);
-    v82 = objc_msgSend_order(v9, v78, v79, v80, v81);
+    v37 = objc_msgSend_stroke(tokenCopy, v72, v73, v74, v75);
+    v82 = objc_msgSend_order(tokenCopy, v78, v79, v80, v81);
   }
 
   else
   {
     v26 = objc_msgSend_range(v12, v17, v18, v19, v20);
     v28 = v27;
-    v32 = objc_msgSend_range(v9, v27, v29, v30, v31);
+    v32 = objc_msgSend_range(tokenCopy, v27, v29, v30, v31);
     if (v32 == 0x7FFFFFFFFFFFFFFFLL || !v28 || v26 > v32 || &v28[v26 - 1] < v32)
     {
       v37 = objc_msgSend_stroke(v12, v33, v34, v35, v36);
@@ -231,7 +231,7 @@ LABEL_18:
     }
 
     v76 = objc_msgSend_range(v12, v33, v34, v35, v36);
-    v113 = objc_msgSend_range(v9, v109, v110, v111, v112);
+    v113 = objc_msgSend_range(tokenCopy, v109, v110, v111, v112);
     v77 = v113 - objc_msgSend_range(v12, v114, v115, v116, v117);
     v37 = objc_msgSend_stroke(v12, v118, v119, v120, v121);
     v82 = objc_msgSend_order(v12, v122, v123, v124, v125);
@@ -240,22 +240,22 @@ LABEL_18:
   objc_msgSend_tokenWithStroke_range_order_majorStrokeLayerToken_minorStrokeLayerToken_(TSTStrokeOrderedLayerToken, v83, v37, v76, v77, v82, 0, 0);
   v84 = LABEL_21:;
 
-  if (a5)
+  if (orderToken)
   {
     v85 = v12;
-    *a5 = v12;
+    *orderToken = v12;
   }
 
   return v84;
 }
 
-- (id)findStrokeAndRangeAtIndex:(int64_t)a3
+- (id)findStrokeAndRangeAtIndex:(int64_t)index
 {
-  v7 = objc_msgSend_majorStrokeLayer(self, a2, a3, v3, v4);
-  v11 = objc_msgSend_findStrokeAndRangeAtIndex_(v7, v8, a3, v9, v10);
+  v7 = objc_msgSend_majorStrokeLayer(self, a2, index, v3, v4);
+  v11 = objc_msgSend_findStrokeAndRangeAtIndex_(v7, v8, index, v9, v10);
 
   v16 = objc_msgSend_minorStrokeLayer(self, v12, v13, v14, v15);
-  v20 = objc_msgSend_findStrokeAndRangeAtIndex_(v16, v17, a3, v18, v19);
+  v20 = objc_msgSend_findStrokeAndRangeAtIndex_(v16, v17, index, v18, v19);
 
   if (v11 && v20)
   {
@@ -264,7 +264,7 @@ LABEL_18:
     {
       v76 = v20;
       v34 = objc_msgSend_minorStrokeLayer(self, v30, v31, v32, v33);
-      v36 = objc_msgSend_p_findStrokeAndRangeAtIndex_highOrderToken_updatingLowOrderToken_lowOrderLayer_(self, v52, a3, v11, &v76, v34);
+      v36 = objc_msgSend_p_findStrokeAndRangeAtIndex_highOrderToken_updatingLowOrderToken_lowOrderLayer_(self, v52, index, v11, &v76, v34);
       v37 = v76;
       v38 = v20;
       v20 = v76;
@@ -274,7 +274,7 @@ LABEL_18:
     {
       v75 = v11;
       v34 = objc_msgSend_majorStrokeLayer(self, v30, v31, v32, v33);
-      v36 = objc_msgSend_p_findStrokeAndRangeAtIndex_highOrderToken_updatingLowOrderToken_lowOrderLayer_(self, v35, a3, v20, &v75, v34);
+      v36 = objc_msgSend_p_findStrokeAndRangeAtIndex_highOrderToken_updatingLowOrderToken_lowOrderLayer_(self, v35, index, v20, &v75, v34);
       v37 = v75;
       v38 = v11;
       v11 = v75;
@@ -317,9 +317,9 @@ LABEL_18:
   return v36;
 }
 
-- ($DE50B600744B7521845B4CEF3C5064D2)findWidthAndRangeAtIndex:(SEL)a3
+- ($DE50B600744B7521845B4CEF3C5064D2)findWidthAndRangeAtIndex:(SEL)index
 {
-  v33 = objc_msgSend_findStrokeAndRangeAtIndex_(self, a3, a4, v4, v5);
+  v33 = objc_msgSend_findStrokeAndRangeAtIndex_(self, index, a4, v4, v5);
   objc_opt_class();
   v7 = TSUCheckedDynamicCast();
   v12 = v7;
@@ -346,9 +346,9 @@ LABEL_18:
   return result;
 }
 
-- (id)nextStrokeAndRange:(id)a3
+- (id)nextStrokeAndRange:(id)range
 {
-  v4 = a3;
+  rangeCopy = range;
   objc_opt_class();
   v5 = TSUCheckedDynamicCast();
 
@@ -498,24 +498,24 @@ LABEL_27:
   return v34;
 }
 
-- ($DE50B600744B7521845B4CEF3C5064D2)nextWidthAndRange:(SEL)a3
+- ($DE50B600744B7521845B4CEF3C5064D2)nextWidthAndRange:(SEL)range
 {
   origin = a4->var1.origin;
   v7 = a4->var1.length + origin;
   if (v7 >= origin)
   {
-    return objc_msgSend_findWidthAndRangeAtIndex_(self, a3, v7, v4, v5);
+    return objc_msgSend_findWidthAndRangeAtIndex_(self, range, v7, v4, v5);
   }
 
   else
   {
-    return objc_msgSend_findWidthAndRangeAtIndex_(self, a3, 0x7FFFFFFFFFFFFFFFLL, v4, v5);
+    return objc_msgSend_findWidthAndRangeAtIndex_(self, range, 0x7FFFFFFFFFFFFFFFLL, v4, v5);
   }
 }
 
-- (void)enumerateStrokesUsingBlock:(id)a3
+- (void)enumerateStrokesUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v34 = 0;
   v9 = objc_msgSend_startingIndex(self, v5, v6, v7, v8);
   v17 = objc_msgSend_findStrokeAndRangeAtIndex_(self, v10, v9, v11, v12);
@@ -525,7 +525,7 @@ LABEL_27:
     v23 = objc_msgSend_range(v17, v19, v20, v21, v22);
     v25 = v24;
     v29 = objc_msgSend_order(v17, v24, v26, v27, v28);
-    v4[2](v4, v18, v23, v25, v29, &v34);
+    blockCopy[2](blockCopy, v18, v23, v25, v29, &v34);
 
     if (v34)
     {
@@ -545,9 +545,9 @@ LABEL_27:
 LABEL_6:
 }
 
-- (void)appendStroke:(id)a3 inRange:(TSTSimpleRange)a4 order:(int)a5
+- (void)appendStroke:(id)stroke inRange:(TSTSimpleRange)range order:(int)order
 {
-  v5 = a3;
+  strokeCopy = stroke;
   v6 = MEMORY[0x277D81150];
   v10 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v7, "[TSTStrokeOrderedLayer appendStroke:inRange:order:]", v8, v9);
   v14 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v11, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/tables/TSTStrokeOrderedLayer.m", v12, v13);
@@ -563,9 +563,9 @@ LABEL_6:
   objc_exception_throw(v27);
 }
 
-- (void)insertStroke:(id)a3 inRange:(TSTSimpleRange)a4 order:(int)a5
+- (void)insertStroke:(id)stroke inRange:(TSTSimpleRange)range order:(int)order
 {
-  v5 = a3;
+  strokeCopy = stroke;
   v6 = MEMORY[0x277D81150];
   v10 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v7, "[TSTStrokeOrderedLayer insertStroke:inRange:order:]", v8, v9);
   v14 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v11, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/tables/TSTStrokeOrderedLayer.m", v12, v13);
@@ -598,10 +598,10 @@ LABEL_6:
   objc_exception_throw(v22);
 }
 
-- (void)invalidateRange:(TSTSimpleRange)a3
+- (void)invalidateRange:(TSTSimpleRange)range
 {
   v4 = MEMORY[0x277D81150];
-  v5 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSTStrokeOrderedLayer invalidateRange:]", a3.length, v3);
+  v5 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSTStrokeOrderedLayer invalidateRange:]", range.length, v3);
   v9 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v6, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/tables/TSTStrokeOrderedLayer.m", v7, v8);
   objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v4, v10, v5, v9, 282, 0, "Do not call method");
 
@@ -615,9 +615,9 @@ LABEL_6:
   objc_exception_throw(v22);
 }
 
-- (void)enumerateRawStrokesSegmentsUsingBlock:(id)a3
+- (void)enumerateRawStrokesSegmentsUsingBlock:(id)block
 {
-  v98 = a3;
+  blockCopy = block;
   v8 = objc_msgSend_startingIndex(self, v4, v5, v6, v7);
   v13 = objc_msgSend_majorStrokeLayer(self, v9, v10, v11, v12);
   v17 = objc_msgSend_findStrokeAndRangeAtIndex_(v13, v14, v8, v15, v16);
@@ -755,7 +755,7 @@ LABEL_34:
         v68 = v65;
       }
 
-      v98[2](v98, v67, v68, v47, v46, v55, v54, &v99);
+      blockCopy[2](blockCopy, v67, v68, v47, v46, v55, v54, &v99);
       if (v31)
       {
         v73 = objc_msgSend_range(v17, v69, v70, v71, v72);

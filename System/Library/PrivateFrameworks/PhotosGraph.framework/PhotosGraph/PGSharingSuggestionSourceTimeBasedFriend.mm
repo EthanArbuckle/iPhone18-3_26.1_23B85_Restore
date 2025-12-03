@@ -1,27 +1,27 @@
 @interface PGSharingSuggestionSourceTimeBasedFriend
-- (id)suggestedResultsForInput:(id)a3 withOptions:(id)a4;
+- (id)suggestedResultsForInput:(id)input withOptions:(id)options;
 @end
 
 @implementation PGSharingSuggestionSourceTimeBasedFriend
 
-- (id)suggestedResultsForInput:(id)a3 withOptions:(id)a4
+- (id)suggestedResultsForInput:(id)input withOptions:(id)options
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 graph];
+  inputCopy = input;
+  graph = [inputCopy graph];
   v6 = [PGGraphMomentNodeCollection alloc];
-  v7 = [v4 momentNodes];
-  v8 = [(MAElementCollection *)v6 initWithArray:v7 graph:v5];
+  momentNodes = [inputCopy momentNodes];
+  v8 = [(MAElementCollection *)v6 initWithArray:momentNodes graph:graph];
 
   v26 = v8;
-  v9 = [(PGGraphMomentNodeCollection *)v8 dateNodes];
-  v10 = [v9 yearNodes];
+  dateNodes = [(PGGraphMomentNodeCollection *)v8 dateNodes];
+  yearNodes = [dateNodes yearNodes];
 
-  v25 = v10;
-  v11 = [v10 dateNodes];
-  v12 = [v11 momentNodes];
+  v25 = yearNodes;
+  dateNodes2 = [yearNodes dateNodes];
+  momentNodes2 = [dateNodes2 momentNodes];
 
-  v13 = [v5 sortedSocialGroupNodesWithMomentNodes:v12];
+  v13 = [graph sortedSocialGroupNodesWithMomentNodes:momentNodes2];
   v14 = objc_opt_new();
   v28 = 0u;
   v29 = 0u;
@@ -43,8 +43,8 @@ LABEL_3:
         objc_enumerationMutation(v15);
       }
 
-      v21 = [*(*(&v28 + 1) + 8 * v20) personNodes];
-      [v14 unionSet:v21];
+      personNodes = [*(*(&v28 + 1) + 8 * v20) personNodes];
+      [v14 unionSet:personNodes];
 
       if (v18)
       {

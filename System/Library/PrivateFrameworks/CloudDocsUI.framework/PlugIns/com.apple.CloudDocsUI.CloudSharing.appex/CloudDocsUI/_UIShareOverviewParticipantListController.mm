@@ -1,49 +1,49 @@
 @interface _UIShareOverviewParticipantListController
 - (_UIShareOverviewActionController)addPeopleViewController;
-- (_UIShareOverviewParticipantListController)initWithDelegate:(id)a3;
+- (_UIShareOverviewParticipantListController)initWithDelegate:(id)delegate;
 - (id)_sections;
-- (id)settingsSectionWithText:(id)a3;
-- (id)viewControllerItemURL:(id)a3;
-- (id)viewControllerShare:(id)a3;
-- (unint64_t)participantInfoViewControllerAllowedPermissions:(id)a3;
-- (void)_dismissAddPeople:(id)a3;
+- (id)settingsSectionWithText:(id)text;
+- (id)viewControllerItemURL:(id)l;
+- (id)viewControllerShare:(id)share;
+- (unint64_t)participantInfoViewControllerAllowedPermissions:(id)permissions;
+- (void)_dismissAddPeople:(id)people;
 - (void)_updateOverrideTraitsForModallyPresentedAddPeopleController;
-- (void)addPeople:(id)a3;
-- (void)arrayController:(id)a3 modelChanged:(id)a4 differences:(id)a5;
-- (void)copyLink:(id)a3;
+- (void)addPeople:(id)people;
+- (void)arrayController:(id)controller modelChanged:(id)changed differences:(id)differences;
+- (void)copyLink:(id)link;
 - (void)dealloc;
-- (void)leaveShare:(id)a3;
-- (void)participantInfoViewControllerDidChangeParticipant:(id)a3;
-- (void)participantInfoViewControllerLeaveShare:(id)a3;
-- (void)participantInfoViewControllerRemoveParticipant:(id)a3;
-- (void)removeParticipant:(id)a3;
-- (void)settingsControllerDidChange:(id)a3 changedAllowInviters:(BOOL)a4;
+- (void)leaveShare:(id)share;
+- (void)participantInfoViewControllerDidChangeParticipant:(id)participant;
+- (void)participantInfoViewControllerLeaveShare:(id)share;
+- (void)participantInfoViewControllerRemoveParticipant:(id)participant;
+- (void)removeParticipant:(id)participant;
+- (void)settingsControllerDidChange:(id)change changedAllowInviters:(BOOL)inviters;
 - (void)shareDidChange;
-- (void)showParticipantInfo:(id)a3;
-- (void)showSettings:(id)a3;
-- (void)showSettingsAlertWithTitle:(id)a3 message:(id)a4 completion:(id)a5;
-- (void)showSharedFolder:(id)a3;
-- (void)stopSharing:(id)a3;
-- (void)togglePrimarySwitch:(id)a3;
-- (void)toggleSecondarySwitch:(id)a3;
+- (void)showParticipantInfo:(id)info;
+- (void)showSettings:(id)settings;
+- (void)showSettingsAlertWithTitle:(id)title message:(id)message completion:(id)completion;
+- (void)showSharedFolder:(id)folder;
+- (void)stopSharing:(id)sharing;
+- (void)togglePrimarySwitch:(id)switch;
+- (void)toggleSecondarySwitch:(id)switch;
 - (void)updateSections;
 - (void)updateThumbnail;
-- (void)willNavigateFromViewController:(id)a3;
+- (void)willNavigateFromViewController:(id)controller;
 @end
 
 @implementation _UIShareOverviewParticipantListController
 
-- (_UIShareOverviewParticipantListController)initWithDelegate:(id)a3
+- (_UIShareOverviewParticipantListController)initWithDelegate:(id)delegate
 {
   v41.receiver = self;
   v41.super_class = _UIShareOverviewParticipantListController;
-  v3 = [(_UIShareOverviewController *)&v41 initWithDelegate:a3];
+  v3 = [(_UIShareOverviewController *)&v41 initWithDelegate:delegate];
   if (v3)
   {
     v4 = [NSBundle bundleWithIdentifier:@"com.apple.CloudDocsUI"];
     v5 = [v4 localizedStringForKey:@"POST_SHARE_LIST_TITLE_BACK_BUTTON_TEXT" value:@"People" table:@"Localizable"];
-    v6 = [(_UIShareOverviewParticipantListController *)v3 navigationItem];
-    [v6 setBackButtonTitle:v5];
+    navigationItem = [(_UIShareOverviewParticipantListController *)v3 navigationItem];
+    [navigationItem setBackButtonTitle:v5];
 
     if ((_UIBarsApplyChromelessEverywhere() & 1) == 0)
     {
@@ -53,49 +53,49 @@
     v7 = [[UITableView alloc] initWithFrame:1 style:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
     [(_UIShareOverviewParticipantListController *)v3 setStaticTableView:v7];
 
-    v8 = [(_UIShareOverviewParticipantListController *)v3 staticTableView];
-    [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
+    staticTableView = [(_UIShareOverviewParticipantListController *)v3 staticTableView];
+    [staticTableView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v9 = [(_UIShareOverviewParticipantListController *)v3 staticTableView];
-    [v9 setRowHeight:UITableViewAutomaticDimension];
+    staticTableView2 = [(_UIShareOverviewParticipantListController *)v3 staticTableView];
+    [staticTableView2 setRowHeight:UITableViewAutomaticDimension];
 
-    v10 = [(_UIShareOverviewParticipantListController *)v3 staticTableView];
-    [v10 setEstimatedRowHeight:56.0];
+    staticTableView3 = [(_UIShareOverviewParticipantListController *)v3 staticTableView];
+    [staticTableView3 setEstimatedRowHeight:56.0];
 
-    v11 = [(_UIShareOverviewParticipantListController *)v3 staticTableView];
-    [v11 setSectionFooterHeight:UITableViewAutomaticDimension];
+    staticTableView4 = [(_UIShareOverviewParticipantListController *)v3 staticTableView];
+    [staticTableView4 setSectionFooterHeight:UITableViewAutomaticDimension];
 
-    v12 = [(_UIShareOverviewParticipantListController *)v3 staticTableView];
-    [v12 setEstimatedSectionFooterHeight:25.0];
+    staticTableView5 = [(_UIShareOverviewParticipantListController *)v3 staticTableView];
+    [staticTableView5 setEstimatedSectionFooterHeight:25.0];
 
-    v13 = [(_UIShareOverviewParticipantListController *)v3 view];
-    [v13 addSubview:v3->_staticTableView];
+    view = [(_UIShareOverviewParticipantListController *)v3 view];
+    [view addSubview:v3->_staticTableView];
 
-    v14 = [(_UIShareOverviewParticipantListController *)v3 staticTableView];
-    [v14 registerClass:objc_opt_class() forCellReuseIdentifier:off_100060088];
+    staticTableView6 = [(_UIShareOverviewParticipantListController *)v3 staticTableView];
+    [staticTableView6 registerClass:objc_opt_class() forCellReuseIdentifier:off_100060088];
 
-    v15 = [(_UIShareOverviewParticipantListController *)v3 staticTableView];
-    [v15 registerClass:objc_opt_class() forCellReuseIdentifier:off_10005F840];
+    staticTableView7 = [(_UIShareOverviewParticipantListController *)v3 staticTableView];
+    [staticTableView7 registerClass:objc_opt_class() forCellReuseIdentifier:off_10005F840];
 
-    v40 = [(_UIShareOverviewParticipantListController *)v3 view];
-    v39 = [v40 bottomAnchor];
-    v38 = [(UITableView *)v3->_staticTableView bottomAnchor];
-    v37 = [v39 constraintEqualToAnchor:v38];
+    view2 = [(_UIShareOverviewParticipantListController *)v3 view];
+    bottomAnchor = [view2 bottomAnchor];
+    bottomAnchor2 = [(UITableView *)v3->_staticTableView bottomAnchor];
+    v37 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v42[0] = v37;
-    v36 = [(_UIShareOverviewParticipantListController *)v3 view];
-    v35 = [v36 rightAnchor];
-    v34 = [(UITableView *)v3->_staticTableView rightAnchor];
-    v33 = [v35 constraintEqualToAnchor:v34];
+    view3 = [(_UIShareOverviewParticipantListController *)v3 view];
+    rightAnchor = [view3 rightAnchor];
+    rightAnchor2 = [(UITableView *)v3->_staticTableView rightAnchor];
+    v33 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
     v42[1] = v33;
-    v32 = [(_UIShareOverviewParticipantListController *)v3 view];
-    v16 = [v32 leftAnchor];
-    v17 = [(UITableView *)v3->_staticTableView leftAnchor];
-    v18 = [v16 constraintEqualToAnchor:v17];
+    view4 = [(_UIShareOverviewParticipantListController *)v3 view];
+    leftAnchor = [view4 leftAnchor];
+    leftAnchor2 = [(UITableView *)v3->_staticTableView leftAnchor];
+    v18 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
     v42[2] = v18;
-    v19 = [(_UIShareOverviewParticipantListController *)v3 view];
-    v20 = [v19 topAnchor];
-    v21 = [(UITableView *)v3->_staticTableView topAnchor];
-    v22 = [v20 constraintEqualToAnchor:v21];
+    view5 = [(_UIShareOverviewParticipantListController *)v3 view];
+    topAnchor = [view5 topAnchor];
+    topAnchor2 = [(UITableView *)v3->_staticTableView topAnchor];
+    v22 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v42[3] = v22;
     v23 = [NSArray arrayWithObjects:v42 count:4];
     [NSLayoutConstraint activateConstraints:v23];
@@ -103,12 +103,12 @@
     v24 = [[_UIShareTableStaticDataSource alloc] initWithTableView:v3->_staticTableView];
     [(_UIShareOverviewParticipantListController *)v3 setStaticTableDataSource:v24];
 
-    v25 = [(_UIShareOverviewParticipantListController *)v3 staticTableDataSource];
-    [v25 setDefaultTarget:v3];
+    staticTableDataSource = [(_UIShareOverviewParticipantListController *)v3 staticTableDataSource];
+    [staticTableDataSource setDefaultTarget:v3];
 
     v26 = [CKShareParticipantArrayController alloc];
-    v27 = [(_UIShareOverviewController *)v3 share];
-    v28 = [(CKShareParticipantArrayController *)v26 initWithDelegate:v3 share:v27];
+    share = [(_UIShareOverviewController *)v3 share];
+    v28 = [(CKShareParticipantArrayController *)v26 initWithDelegate:v3 share:share];
     [(_UIShareOverviewParticipantListController *)v3 setParticipantArrayController:v28];
 
     v29 = [NSBundle bundleWithIdentifier:@"com.apple.CloudDocsUI"];
@@ -123,18 +123,18 @@
 
 - (void)shareDidChange
 {
-  v3 = [(_UIShareOverviewController *)self share];
-  v4 = [(_UIShareOverviewParticipantListController *)self participantArrayController];
-  [v4 setShare:v3];
+  share = [(_UIShareOverviewController *)self share];
+  participantArrayController = [(_UIShareOverviewParticipantListController *)self participantArrayController];
+  [participantArrayController setShare:share];
 
-  v5 = [(_UIShareOverviewParticipantListController *)self participantArrayController];
-  [v5 forceParticipantUpdate];
+  participantArrayController2 = [(_UIShareOverviewParticipantListController *)self participantArrayController];
+  [participantArrayController2 forceParticipantUpdate];
 
-  v6 = [(_UIShareOverviewParticipantListController *)self addPeopleViewController];
-  v7 = v6;
-  if (v6)
+  addPeopleViewController = [(_UIShareOverviewParticipantListController *)self addPeopleViewController];
+  v7 = addPeopleViewController;
+  if (addPeopleViewController)
   {
-    [v6 shareDidChange];
+    [addPeopleViewController shareDidChange];
   }
 
   else
@@ -146,15 +146,15 @@
 - (void)updateSections
 {
   v3 = [BRShareSettings alloc];
-  v4 = [(_UIShareOverviewController *)self share];
-  v5 = [(_UIShareOverviewController *)self delegate];
-  v6 = -[BRShareSettings initWithShare:permissions:](v3, "initWithShare:permissions:", v4, [v5 shareViewControllerAllowedPermissions:self]);
+  share = [(_UIShareOverviewController *)self share];
+  delegate = [(_UIShareOverviewController *)self delegate];
+  v6 = -[BRShareSettings initWithShare:permissions:](v3, "initWithShare:permissions:", share, [delegate shareViewControllerAllowedPermissions:self]);
   settings = self->_settings;
   self->_settings = v6;
 
-  v8 = [(_UIShareOverviewParticipantListController *)self _sections];
-  v9 = [(_UIShareOverviewParticipantListController *)self staticTableDataSource];
-  [v9 setSections:v8];
+  _sections = [(_UIShareOverviewParticipantListController *)self _sections];
+  staticTableDataSource = [(_UIShareOverviewParticipantListController *)self staticTableDataSource];
+  [staticTableDataSource setSections:_sections];
 
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
@@ -166,8 +166,8 @@
 
 - (void)updateThumbnail
 {
-  v2 = [(_UIShareOverviewParticipantListController *)self addPeopleViewController];
-  [v2 updateThumbnail];
+  addPeopleViewController = [(_UIShareOverviewParticipantListController *)self addPeopleViewController];
+  [addPeopleViewController updateThumbnail];
 }
 
 - (void)dealloc
@@ -178,63 +178,63 @@
   [(_UIShareOverviewParticipantListController *)&v3 dealloc];
 }
 
-- (void)arrayController:(id)a3 modelChanged:(id)a4 differences:(id)a5
+- (void)arrayController:(id)controller modelChanged:(id)changed differences:(id)differences
 {
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100004140;
   v6[3] = &unk_10004CA08;
   v6[4] = self;
-  v7 = a4;
-  v5 = v7;
+  changedCopy = changed;
+  v5 = changedCopy;
   dispatch_async(&_dispatch_main_q, v6);
 }
 
-- (void)showParticipantInfo:(id)a3
+- (void)showParticipantInfo:(id)info
 {
-  v4 = a3;
-  v9 = [[BRParticipantInfoViewController alloc] initWithParticipantContact:v4];
+  infoCopy = info;
+  v9 = [[BRParticipantInfoViewController alloc] initWithParticipantContact:infoCopy];
 
   [(BRParticipantInfoViewController *)v9 setDelegate:self];
-  v5 = [(_UIShareOverviewParticipantListController *)self navigationController];
-  [v5 pushViewController:v9 animated:1];
+  navigationController = [(_UIShareOverviewParticipantListController *)self navigationController];
+  [navigationController pushViewController:v9 animated:1];
 
-  v6 = [(_UIShareOverviewParticipantListController *)self staticTableView];
-  v7 = [(_UIShareOverviewParticipantListController *)self staticTableView];
-  v8 = [v7 indexPathForSelectedRow];
-  [v6 deselectRowAtIndexPath:v8 animated:1];
+  staticTableView = [(_UIShareOverviewParticipantListController *)self staticTableView];
+  staticTableView2 = [(_UIShareOverviewParticipantListController *)self staticTableView];
+  indexPathForSelectedRow = [staticTableView2 indexPathForSelectedRow];
+  [staticTableView deselectRowAtIndexPath:indexPathForSelectedRow animated:1];
 }
 
-- (void)removeParticipant:(id)a3
+- (void)removeParticipant:(id)participant
 {
-  v4 = a3;
-  v5 = [(_UIShareOverviewController *)self share];
-  v6 = [v5 participants];
-  v7 = [v6 count];
+  participantCopy = participant;
+  share = [(_UIShareOverviewController *)self share];
+  participants = [share participants];
+  v7 = [participants count];
 
   if (v7 > 2)
   {
     [(_UIShareOverviewController *)self setNavigationItemSpinner:1];
-    v14 = [(_UIShareOverviewController *)self delegate];
+    delegate = [(_UIShareOverviewController *)self delegate];
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
     v16[2] = sub_1000046E0;
     v16[3] = &unk_10004CA58;
     v16[4] = self;
-    v17 = v4;
+    v17 = participantCopy;
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
     v15[2] = sub_10000474C;
     v15[3] = &unk_10004CA80;
     v15[4] = self;
-    [v14 shareViewController:self modifyShare:v16 completion:v15];
+    [delegate shareViewController:self modifyShare:v16 completion:v15];
   }
 
   else
   {
     v8 = [NSBundle bundleWithIdentifier:@"com.apple.CloudDocsUI"];
     v9 = [v8 localizedStringForKey:@"Remove “%@”?" value:@"Remove “%@”?" table:@"Localizable"];
-    v10 = sub_1000044D4(v4);
+    v10 = sub_1000044D4(participantCopy);
     v11 = [NSString localizedStringWithFormat:v9, v10];
 
     v12 = [NSBundle bundleWithIdentifier:@"com.apple.CloudDocsUI"];
@@ -248,36 +248,36 @@
   }
 }
 
-- (void)addPeople:(id)a3
+- (void)addPeople:(id)people
 {
-  v4 = a3;
-  v5 = [(_UIShareOverviewController *)self delegate];
-  [v5 turnShowAddPeopleOn:1];
-  if ([v5 shareViewControllerIsFolderShare:self] && (objc_opt_respondsToSelector() & 1) != 0)
+  peopleCopy = people;
+  delegate = [(_UIShareOverviewController *)self delegate];
+  [delegate turnShowAddPeopleOn:1];
+  if ([delegate shareViewControllerIsFolderShare:self] && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v5 shareViewController:self setFolderShareIsPrepared:1];
+    [delegate shareViewController:self setFolderShareIsPrepared:1];
   }
 
   v6 = [_UIShareOverviewActionController alloc];
-  v7 = [(_UIShareOverviewController *)self delegate];
-  v8 = [(_UIShareOverviewActionController *)v6 initWithDelegate:v7];
+  delegate2 = [(_UIShareOverviewController *)self delegate];
+  v8 = [(_UIShareOverviewActionController *)v6 initWithDelegate:delegate2];
 
   [(_UIShareOverviewActionController *)v8 updatePermissionOptions];
-  v9 = [(_UIShareOverviewController *)self itemName];
-  [(_UIShareOverviewActionController *)v8 setItemName:v9];
+  itemName = [(_UIShareOverviewController *)self itemName];
+  [(_UIShareOverviewActionController *)v8 setItemName:itemName];
 
   v10 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:24 target:self action:"_dismissAddPeople:"];
   [(_UIShareOverviewController *)v8 setCloseButton:v10];
 
   [(_UIShareOverviewParticipantListController *)self setAddPeopleViewController:v8];
   v11 = [[_UIPreferredContentSizeRelayingNavigationController alloc] initWithRootViewController:v8];
-  v12 = [(_UIShareOverviewParticipantListController *)self navigationController];
-  v13 = [v12 delegate];
-  [v11 setDelegate:v13];
+  navigationController = [(_UIShareOverviewParticipantListController *)self navigationController];
+  delegate3 = [navigationController delegate];
+  [v11 setDelegate:delegate3];
 
   [v11 setModalPresentationStyle:6];
-  v14 = [(_UIShareOverviewParticipantListController *)self navigationController];
-  [v14 presentViewController:v11 animated:1 completion:0];
+  navigationController2 = [(_UIShareOverviewParticipantListController *)self navigationController];
+  [navigationController2 presentViewController:v11 animated:1 completion:0];
 
   [(_UIShareOverviewParticipantListController *)self _updateOverrideTraitsForModallyPresentedAddPeopleController];
   objc_initWeak(&location, self);
@@ -291,91 +291,91 @@
   objc_destroyWeak(&location);
 }
 
-- (void)showSharedFolder:(id)a3
+- (void)showSharedFolder:(id)folder
 {
-  v3 = [(_UIShareOverviewController *)self delegate];
-  [v3 changeToTopLevelSharedFolderURL];
+  delegate = [(_UIShareOverviewController *)self delegate];
+  [delegate changeToTopLevelSharedFolderURL];
 }
 
-- (void)togglePrimarySwitch:(id)a3
+- (void)togglePrimarySwitch:(id)switch
 {
-  v4 = a3;
-  v6 = [(_UIShareOverviewController *)self delegate];
-  v5 = [v4 isOn];
+  switchCopy = switch;
+  delegate = [(_UIShareOverviewController *)self delegate];
+  isOn = [switchCopy isOn];
 
-  [v6 shareViewControllerDidTogglePrimarySwitch:v5];
+  [delegate shareViewControllerDidTogglePrimarySwitch:isOn];
 }
 
-- (void)toggleSecondarySwitch:(id)a3
+- (void)toggleSecondarySwitch:(id)switch
 {
-  v4 = a3;
-  v6 = [(_UIShareOverviewController *)self delegate];
-  v5 = [v4 isOn];
+  switchCopy = switch;
+  delegate = [(_UIShareOverviewController *)self delegate];
+  isOn = [switchCopy isOn];
 
-  [v6 shareViewControllerDidToggleSecondarySwitch:v5];
+  [delegate shareViewControllerDidToggleSecondarySwitch:isOn];
 }
 
 - (void)_updateOverrideTraitsForModallyPresentedAddPeopleController
 {
   v5 = [UITraitCollection _traitCollectionWithValue:&__kCFBooleanTrue forTraitNamed:@"_BRNeedsCancelNavigationButtonTrait"];
-  v3 = [(_UIShareOverviewParticipantListController *)self presentedViewController];
-  v4 = [(_UIShareOverviewParticipantListController *)self addPeopleViewController];
-  [v3 setOverrideTraitCollection:v5 forChildViewController:v4];
+  presentedViewController = [(_UIShareOverviewParticipantListController *)self presentedViewController];
+  addPeopleViewController = [(_UIShareOverviewParticipantListController *)self addPeopleViewController];
+  [presentedViewController setOverrideTraitCollection:v5 forChildViewController:addPeopleViewController];
 }
 
-- (void)_dismissAddPeople:(id)a3
+- (void)_dismissAddPeople:(id)people
 {
-  v4 = [(_UIShareOverviewController *)self delegate];
-  [v4 turnShowAddPeopleOn:0];
-  v5 = [(_UIShareOverviewParticipantListController *)self navigationController];
+  delegate = [(_UIShareOverviewController *)self delegate];
+  [delegate turnShowAddPeopleOn:0];
+  navigationController = [(_UIShareOverviewParticipantListController *)self navigationController];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100004CF4;
   v6[3] = &unk_10004C920;
   v6[4] = self;
-  [v5 dismissViewControllerAnimated:1 completion:v6];
+  [navigationController dismissViewControllerAnimated:1 completion:v6];
 }
 
-- (void)stopSharing:(id)a3
+- (void)stopSharing:(id)sharing
 {
   [(_UIShareOverviewController *)self setNavigationItemSpinner:1];
-  v4 = [(_UIShareOverviewController *)self delegate];
-  [v4 shareViewControllerStopSharing:self overrideAlert:0];
+  delegate = [(_UIShareOverviewController *)self delegate];
+  [delegate shareViewControllerStopSharing:self overrideAlert:0];
 
-  v7 = [(_UIShareOverviewParticipantListController *)self staticTableView];
-  v5 = [(_UIShareOverviewParticipantListController *)self staticTableView];
-  v6 = [v5 indexPathForSelectedRow];
-  [v7 deselectRowAtIndexPath:v6 animated:1];
+  staticTableView = [(_UIShareOverviewParticipantListController *)self staticTableView];
+  staticTableView2 = [(_UIShareOverviewParticipantListController *)self staticTableView];
+  indexPathForSelectedRow = [staticTableView2 indexPathForSelectedRow];
+  [staticTableView deselectRowAtIndexPath:indexPathForSelectedRow animated:1];
 }
 
-- (void)leaveShare:(id)a3
+- (void)leaveShare:(id)share
 {
   [(_UIShareOverviewController *)self setNavigationItemSpinner:1];
-  v4 = [(_UIShareOverviewController *)self delegate];
-  [v4 shareViewControllerLeaveShare:self];
+  delegate = [(_UIShareOverviewController *)self delegate];
+  [delegate shareViewControllerLeaveShare:self];
 
-  v7 = [(_UIShareOverviewParticipantListController *)self staticTableView];
-  v5 = [(_UIShareOverviewParticipantListController *)self staticTableView];
-  v6 = [v5 indexPathForSelectedRow];
-  [v7 deselectRowAtIndexPath:v6 animated:1];
+  staticTableView = [(_UIShareOverviewParticipantListController *)self staticTableView];
+  staticTableView2 = [(_UIShareOverviewParticipantListController *)self staticTableView];
+  indexPathForSelectedRow = [staticTableView2 indexPathForSelectedRow];
+  [staticTableView deselectRowAtIndexPath:indexPathForSelectedRow animated:1];
 }
 
-- (void)copyLink:(id)a3
+- (void)copyLink:(id)link
 {
   [(_UIShareOverviewController *)self setNavigationItemSpinner:1];
-  v4 = [(_UIShareOverviewController *)self delegate];
+  delegate = [(_UIShareOverviewController *)self delegate];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100004F58;
   v5[3] = &unk_10004CAD0;
   v5[4] = self;
-  [v4 shareViewControllerCopyShareURL:self completion:v5];
+  [delegate shareViewControllerCopyShareURL:self completion:v5];
 }
 
 - (id)_sections
 {
-  v3 = [(_UIShareOverviewController *)self delegate];
-  v4 = [v3 viewControllerShare:self];
+  delegate = [(_UIShareOverviewController *)self delegate];
+  v4 = [delegate viewControllerShare:self];
   v5 = +[NSMutableArray array];
   v6 = v5;
   if (!v4)
@@ -385,31 +385,31 @@
   }
 
   v186 = v5;
-  v7 = [v4 currentUserParticipant];
-  v8 = [v4 owner];
-  v9 = [v8 isEqual:v7];
+  currentUserParticipant = [v4 currentUserParticipant];
+  owner = [v4 owner];
+  v9 = [owner isEqual:currentUserParticipant];
 
   v184 = v9;
-  v10 = (v9 & 1) != 0 || [v7 role] == 2;
+  v10 = (v9 & 1) != 0 || [currentUserParticipant role] == 2;
   v197 = v10;
-  v191 = v7;
-  v190 = [v7 permission];
-  [v3 shareViewControllerAllowOthersToInvite];
-  v188 = [(_UIShareOverviewController *)self itemIsShareRoot];
-  v12 = [v3 itemIsInsideFolderShare];
-  v13 = [v3 shareViewControllerIsFolderShare:self];
+  v191 = currentUserParticipant;
+  permission = [currentUserParticipant permission];
+  [delegate shareViewControllerAllowOthersToInvite];
+  itemIsShareRoot = [(_UIShareOverviewController *)self itemIsShareRoot];
+  itemIsInsideFolderShare = [delegate itemIsInsideFolderShare];
+  v13 = [delegate shareViewControllerIsFolderShare:self];
   v14 = v13;
   v15 = &BRFormatPhoneNumber_ptr;
-  v185 = v3;
+  v185 = delegate;
   v200 = v4;
-  v203 = self;
-  v187 = v12;
-  if (v12)
+  selfCopy = self;
+  v187 = itemIsInsideFolderShare;
+  if (itemIsInsideFolderShare)
   {
     v16 = [NSBundle bundleWithIdentifier:@"com.apple.CloudDocsUI"];
     v17 = [v16 localizedStringForKey:@"SHARED_WITHIN_TEXT" value:@"Shared Folder: %@" table:@"Localizable"];
-    v18 = [(_UIShareOverviewController *)self rootItemName];
-    v183 = [NSString localizedStringWithFormat:v17, v18];
+    rootItemName = [(_UIShareOverviewController *)self rootItemName];
+    v183 = [NSString localizedStringWithFormat:v17, rootItemName];
   }
 
   else
@@ -422,20 +422,20 @@
   }
 
   v19 = &stru_10004DE38;
-  if (((v188 | v14) & 1) == 0)
+  if (((itemIsShareRoot | v14) & 1) == 0)
   {
     v19 = @"Folder140pt";
   }
 
   v20 = v19;
-  v21 = [v3 shareViewControllerThumbnail:v203];
+  v21 = [delegate shareViewControllerThumbnail:selfCopy];
   v22 = v21;
   if (v14)
   {
-    v23 = [v3 shareViewControllerHeaderPrimaryImage];
+    shareViewControllerHeaderPrimaryImage = [delegate shareViewControllerHeaderPrimaryImage];
 
-    v22 = v23;
-    if (!v23)
+    v22 = shareViewControllerHeaderPrimaryImage;
+    if (!shareViewControllerHeaderPrimaryImage)
     {
       v24 = @"Folder140pt";
 LABEL_16:
@@ -449,17 +449,17 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  v25 = [v3 shareViewControllerHeaderSecondaryImage];
-  if (!v25)
+  shareViewControllerHeaderSecondaryImage = [delegate shareViewControllerHeaderSecondaryImage];
+  if (!shareViewControllerHeaderSecondaryImage)
   {
     if ([(__CFString *)v20 length])
     {
-      v25 = [UIImage imageNamed:v20];
+      shareViewControllerHeaderSecondaryImage = [UIImage imageNamed:v20];
     }
 
     else
     {
-      v25 = 0;
+      shareViewControllerHeaderSecondaryImage = 0;
     }
   }
 
@@ -469,20 +469,20 @@ LABEL_16:
   v272[1] = &off_100050DD8;
   v271[2] = @"items";
   v268[0] = @"title";
-  v26 = [v3 itemName];
-  v269[0] = v26;
+  itemName = [delegate itemName];
+  v269[0] = itemName;
   v269[1] = v183;
   v268[1] = @"detail";
   v268[2] = @"sharedByModifiedBy";
-  v27 = [v3 sharedByModifiedByText];
-  v269[2] = v27;
+  sharedByModifiedByText = [delegate sharedByModifiedByText];
+  v269[2] = sharedByModifiedByText;
   v269[3] = @"header";
   v268[3] = @"celltype";
   v268[4] = @"shareElementImage";
   v269[4] = v22;
   v268[5] = @"shareElementBadge";
-  v28 = v25;
-  if (!v25)
+  v28 = shareViewControllerHeaderSecondaryImage;
+  if (!shareViewControllerHeaderSecondaryImage)
   {
     v28 = +[NSNull null];
   }
@@ -494,21 +494,21 @@ LABEL_16:
   v272[2] = v30;
   v31 = [NSDictionary dictionaryWithObjects:v272 forKeys:v271 count:3];
 
-  if (!v25)
+  if (!shareViewControllerHeaderSecondaryImage)
   {
   }
 
   [v186 addObject:v31];
-  v3 = v185;
+  delegate = v185;
   v4 = v200;
   v15 = &BRFormatPhoneNumber_ptr;
 LABEL_26:
   v202 = +[NSMutableArray array];
-  v32 = [v4 publicPermission];
-  v33 = [(BRShareSettings *)v203->_settings defaultPermission];
-  v34 = [v3 shareViewControllerIsNotesOrRemindersOrDocSharing:v203];
-  v209 = v32;
-  if (v32 == 1)
+  publicPermission = [v4 publicPermission];
+  defaultPermission = [(BRShareSettings *)selfCopy->_settings defaultPermission];
+  v34 = [delegate shareViewControllerIsNotesOrRemindersOrDocSharing:selfCopy];
+  v209 = publicPermission;
+  if (publicPermission == 1)
   {
     v35 = v184;
   }
@@ -519,22 +519,22 @@ LABEL_26:
   }
 
   v189 = v35;
-  if (v34 && v33 == 3 && (v35 & 1) != 0 || [(BRShareSettings *)v203->_settings shouldShowMode])
+  if (v34 && defaultPermission == 3 && (v35 & 1) != 0 || [(BRShareSettings *)selfCopy->_settings shouldShowMode])
   {
-    v182 = 1;
+    shouldShowPermissions = 1;
   }
 
   else
   {
-    v182 = [(BRShareSettings *)v203->_settings shouldShowPermissions];
+    shouldShowPermissions = [(BRShareSettings *)selfCopy->_settings shouldShowPermissions];
   }
 
-  v201 = [v3 shareViewControllerParticipantDetails];
+  shareViewControllerParticipantDetails = [delegate shareViewControllerParticipantDetails];
   v215 = 0u;
   v216 = 0u;
   v217 = 0u;
   v218 = 0u;
-  obj = [(_UIShareOverviewParticipantListController *)v203 modelSnapshot];
+  obj = [(_UIShareOverviewParticipantListController *)selfCopy modelSnapshot];
   v206 = [obj countByEnumeratingWithState:&v215 objects:v267 count:16];
   if (v206)
   {
@@ -550,9 +550,9 @@ LABEL_26:
         }
 
         v37 = *(*(&v215 + 1) + 8 * i);
-        v38 = [v37 participant];
-        v39 = [v38 role] != 3 && objc_msgSend(v38, "role") != 2;
-        if (v209 == 1 || v39 || [v38 acceptanceStatus] == 2)
+        participant = [v37 participant];
+        v39 = [participant role] != 3 && objc_msgSend(participant, "role") != 2;
+        if (v209 == 1 || v39 || [participant acceptanceStatus] == 2)
         {
           v40 = sub_1000044D4(v37);
           if ([v40 length])
@@ -570,7 +570,7 @@ LABEL_26:
           }
 
           v208 = v41;
-          if ([v38 acceptanceStatus] == 1)
+          if ([participant acceptanceStatus] == 1)
           {
             v44 = [v15[240] bundleWithIdentifier:@"com.apple.CloudDocsUI"];
             v213 = [v44 localizedStringForKey:@"PARTICIPANT_STATUS_TEXT_WAITING" value:@"Invited" table:@"Localizable"];
@@ -581,7 +581,7 @@ LABEL_26:
             v213 = 0;
           }
 
-          if ([v38 permission] == 2 || objc_msgSend(v4, "publicPermission") == 2 && (objc_msgSend(v4, "owner"), v46 = objc_claimAutoreleasedReturnValue(), v47 = objc_msgSend(v38, "isEqual:", v46), v46, (v47 & 1) == 0))
+          if ([participant permission] == 2 || objc_msgSend(v4, "publicPermission") == 2 && (objc_msgSend(v4, "owner"), v46 = objc_claimAutoreleasedReturnValue(), v47 = objc_msgSend(participant, "isEqual:", v46), v46, (v47 & 1) == 0))
           {
             v45 = [v15[240] bundleWithIdentifier:@"com.apple.CloudDocsUI"];
             v212 = [v45 localizedStringForKey:@"PARTICIPANT_STATUS_TEXT_VIEW_ONLY" value:@"View only" table:@"Localizable"];
@@ -592,16 +592,16 @@ LABEL_26:
             v212 = 0;
           }
 
-          v48 = [v38 acceptanceStatus];
+          acceptanceStatus = [participant acceptanceStatus];
           v49 = &off_100050E08;
-          if (v48 == 2)
+          if (acceptanceStatus == 2)
           {
             v49 = &off_100050DF0;
           }
 
           v50 = v49;
-          v51 = [v4 owner];
-          v52 = [v38 isEqual:v51];
+          owner2 = [v4 owner];
+          v52 = [participant isEqual:owner2];
 
           if (v52)
           {
@@ -615,7 +615,7 @@ LABEL_26:
             v199 = v53;
           }
 
-          else if ([v38 isEqual:v191])
+          else if ([participant isEqual:v191])
           {
             v57 = [v15[240] bundleWithIdentifier:@"com.apple.CloudDocsUI"];
             v58 = [v57 localizedStringForKey:@"PARTICIPANT_ME_TEXT" value:@"%@ (Me)" table:@"Localizable"];
@@ -632,8 +632,8 @@ LABEL_26:
           v211 = v40;
           if (v197)
           {
-            v59 = (v209 == 1) & ~[v38 isCurrentUser] & (v187 ^ 1);
-            if (v190 != 3)
+            v59 = (v209 == 1) & ~[participant isCurrentUser] & (v187 ^ 1);
+            if (permission != 3)
             {
               v59 = 0;
             }
@@ -647,13 +647,13 @@ LABEL_26:
           }
 
           v60 = objc_opt_new();
-          v61 = [v38 userIdentity];
-          v62 = [v61 userRecordID];
-          v63 = [v62 recordName];
-          v64 = [v201 objectForKeyedSubscript:v63];
+          userIdentity = [participant userIdentity];
+          userRecordID = [userIdentity userRecordID];
+          recordName = [userRecordID recordName];
+          v64 = [shareViewControllerParticipantDetails objectForKeyedSubscript:recordName];
 
-          v65 = [v37 contact];
-          [v60 setContact:v65];
+          contact = [v37 contact];
+          [v60 setContact:contact];
 
           [v60 setTitle:v56];
           if (v213)
@@ -667,17 +667,17 @@ LABEL_26:
           }
 
           [v60 setSubtitle:v66];
-          [v60 setGrayedOut:{objc_msgSend(v38, "acceptanceStatus") != 2}];
-          v67 = [v64 participantColor];
-          [v60 setParticipantColor:v67];
+          [v60 setGrayedOut:{objc_msgSend(participant, "acceptanceStatus") != 2}];
+          participantColor = [v64 participantColor];
+          [v60 setParticipantColor:participantColor];
 
-          if ([(_UIShareOverviewParticipantListController *)v203 _isOrgAdminParticipant:v38])
+          if ([(_UIShareOverviewParticipantListController *)selfCopy _isOrgAdminParticipant:participant])
           {
             [v60 setIsOrgAdmin:1];
             v68 = [NSBundle bundleWithIdentifier:@"com.apple.CloudDocsUI"];
             v69 = [v68 localizedStringForKey:@"PARTICIPANT_ORG_ADMIN_TEXT" value:@"Your Organization" table:@"Localizable"];
-            v70 = [NSString localizedStringWithFormat:v69, v211];
-            [v60 setSubtitle:v70];
+            v211 = [NSString localizedStringWithFormat:v69, v211];
+            [v60 setSubtitle:v211];
 
             v50 = &off_100050DD8;
             goto LABEL_76;
@@ -757,7 +757,7 @@ LABEL_84:
   v78 = [NSArray arrayWithObjects:v260 count:2];
   [v202 sortUsingDescriptors:v78];
 
-  if (((v209 == 1) & v197 & v188) == 1 && v190 == 3)
+  if (((v209 == 1) & v197 & itemIsShareRoot) == 1 && permission == 3)
   {
     v259[0] = @"action";
     v258[0] = @"type";
@@ -774,17 +774,17 @@ LABEL_84:
     [v202 addObject:v82];
   }
 
-  if ([(BRShareSettings *)v203->_settings hasACL])
+  if ([(BRShareSettings *)selfCopy->_settings hasACL])
   {
-    if ((v184 & v182 & v188) == 1)
+    if ((v184 & shouldShowPermissions & itemIsShareRoot) == 1)
     {
-      v83 = [v185 shareViewControllerItemUTI:v203];
+      v83 = [v185 shareViewControllerItemUTI:selfCopy];
       v84 = [v83 isEqualToString:@"com.apple.reminders.list"];
-      v85 = [v185 shareViewControllerCurrentParticipantsState];
-      if ([(BRShareSettings *)v203->_settings defaultPermission]== 2)
+      shareViewControllerCurrentParticipantsState = [v185 shareViewControllerCurrentParticipantsState];
+      if ([(BRShareSettings *)selfCopy->_settings defaultPermission]== 2)
       {
         v86 = [v15[240] bundleWithIdentifier:@"com.apple.CloudDocsUI"];
-        v196 = [v86 localizedStringForKey:@"SETTINGS_DETAIL_ACL_RO_SUMMARY_TEXT" value:@"Only people you invite can view." table:@"Localizable"];
+        v199 = [v86 localizedStringForKey:@"SETTINGS_DETAIL_ACL_RO_SUMMARY_TEXT" value:@"Only people you invite can view." table:@"Localizable"];
 
         v87 = [v15[240] bundleWithIdentifier:@"com.apple.CloudDocsUI"];
         v88 = [v87 localizedStringForKey:@"SETTINGS_DETAIL_ACL_RO_POST_SHARE_TEXT" value:@"Invited people can view only." table:@"Localizable"];
@@ -794,12 +794,12 @@ LABEL_115:
         goto LABEL_116;
       }
 
-      v96 = [(BRShareSettings *)v203->_settings defaultPermission];
+      defaultPermission2 = [(BRShareSettings *)selfCopy->_settings defaultPermission];
       v97 = [v15[240] bundleWithIdentifier:@"com.apple.CloudDocsUI"];
       v98 = v97;
-      if (v96 != 3)
+      if (defaultPermission2 != 3)
       {
-        v196 = [v97 localizedStringForKey:@"SETTINGS_DETAIL_ACL_MIXED_SUMMARY_TEXT" value:@"Only people you invite can open." table:@"Localizable"];
+        v199 = [v97 localizedStringForKey:@"SETTINGS_DETAIL_ACL_MIXED_SUMMARY_TEXT" value:@"Only people you invite can open." table:@"Localizable"];
 
         v102 = [v15[240] bundleWithIdentifier:@"com.apple.CloudDocsUI"];
         v101 = [v102 localizedStringForKey:@"SETTINGS_DETAIL_ACL_RW_MIXED_EDIT_N_ADD_POST_SHARE_TEXT" value:@"Some invited people can make changes and add others." table:@"Localizable"];
@@ -808,7 +808,7 @@ LABEL_115:
         {
           v103 = [v15[240] bundleWithIdentifier:@"com.apple.CloudDocsUI"];
           v87 = v103;
-          if (v85 == 2)
+          if (shareViewControllerCurrentParticipantsState == 2)
           {
             v104 = @"SETTINGS_DETAIL_REMINDERS_POST_SHARE_TEXT";
             v105 = @"Only people you invited have access.";
@@ -826,11 +826,11 @@ LABEL_115:
         goto LABEL_112;
       }
 
-      v196 = [v97 localizedStringForKey:@"SETTINGS_DETAIL_ACL_RW_SUMMARY_TEXT" value:@"Only people you invite can make changes." table:@"Localizable"];
+      v199 = [v97 localizedStringForKey:@"SETTINGS_DETAIL_ACL_RW_SUMMARY_TEXT" value:@"Only people you invite can make changes." table:@"Localizable"];
 
       v99 = [v15[240] bundleWithIdentifier:@"com.apple.CloudDocsUI"];
       v100 = v99;
-      if (v85 == 1)
+      if (shareViewControllerCurrentParticipantsState == 1)
       {
         v101 = [v99 localizedStringForKey:@"SETTINGS_DETAIL_ACL_RW_ADD_OTHERS_POST_SHARE_TEXT" value:@"Invited people can make changes and add others." table:@"Localizable"];
       }
@@ -839,7 +839,7 @@ LABEL_115:
       {
         v101 = [v99 localizedStringForKey:@"SETTINGS_DETAIL_ACL_RW_MIXED_ADD_POST_SHARE_TEXT" value:@"Some invited people can add others." table:@"Localizable"];
 
-        if (v85 != 2)
+        if (shareViewControllerCurrentParticipantsState != 2)
         {
           goto LABEL_110;
         }
@@ -871,19 +871,19 @@ LABEL_112:
 
     v83 = [v15[240] bundleWithIdentifier:@"com.apple.CloudDocsUI"];
     v93 = [v83 localizedStringForKey:@"SETTINGS_ONLY_OWNER_CAN_CHANGE" value:@"Error: don't expect this ONLY_OWNER_CAN_CHANGE to show." table:@"Localizable"];
-    v196 = [NSString localizedStringWithFormat:v93, v199];
+    v199 = [NSString localizedStringWithFormat:v93, v199];
 
     v205 = 0;
   }
 
   else
   {
-    v89 = [(BRShareSettings *)v203->_settings publicPermission];
+    publicPermission2 = [(BRShareSettings *)selfCopy->_settings publicPermission];
     v90 = [v15[240] bundleWithIdentifier:@"com.apple.CloudDocsUI"];
     v83 = v90;
     if (v184)
     {
-      if (v89 == 2)
+      if (publicPermission2 == 2)
       {
         v91 = @"SETTINGS_DETAIL_PUBLIC_RO_TEXT";
         v92 = @"Anyone with the link can view.";
@@ -896,12 +896,12 @@ LABEL_112:
       }
 
       v205 = [v90 localizedStringForKey:v91 value:v92 table:@"Localizable"];
-      v196 = 0;
+      v199 = 0;
     }
 
     else
     {
-      if (v89 == 2)
+      if (publicPermission2 == 2)
       {
         v94 = @"SETTINGS_DETAIL_PUBLIC_RO_TEXT";
         v95 = @"Anyone with the link can view.";
@@ -913,7 +913,7 @@ LABEL_112:
         v95 = @"Anyone with the link can make changes.";
       }
 
-      v196 = [v90 localizedStringForKey:v94 value:v95 table:@"Localizable"];
+      v199 = [v90 localizedStringForKey:v94 value:v95 table:@"Localizable"];
       v205 = 0;
     }
   }
@@ -977,16 +977,16 @@ LABEL_116:
   v195 = [NSDictionary dictionaryWithObjects:v251 forKeys:v250 count:5];
 
   [v186 addObject:v214];
-  v3 = v185;
+  delegate = v185;
   v4 = v200;
-  p_isa = &v203->super.super.super.super.isa;
+  p_isa = &selfCopy->super.super.super.super.isa;
   if (v187)
   {
-    v122 = [(_UIShareOverviewParticipantListController *)v203 _documentsApplicationProxy];
-    v123 = [v122 appState];
-    v124 = [v123 isInstalled];
+    _documentsApplicationProxy = [(_UIShareOverviewParticipantListController *)selfCopy _documentsApplicationProxy];
+    appState = [_documentsApplicationProxy appState];
+    isInstalled = [appState isInstalled];
 
-    if (v124)
+    if (isInstalled)
     {
       v248[0] = @"title";
       v125 = [NSBundle bundleWithIdentifier:@"com.apple.CloudDocsUI"];
@@ -1006,13 +1006,13 @@ LABEL_116:
         v129 = [NSBundle bundleWithIdentifier:@"com.apple.CloudDocsUI"];
         v130 = [v129 localizedStringForKey:@"NON_ROOT_ITEM_FOLDER_INFORMATION_TEXT" value:@"Go to the folder’s share options to add people or change editing permissions." table:@"Localizable"];
 
-        v131 = [v185 shareViewControllerItemUTI:v203];
+        v131 = [v185 shareViewControllerItemUTI:selfCopy];
         v132 = [NSBundle bundleWithIdentifier:@"com.apple.CloudDocsUI"];
         v133 = [v132 localizedStringForKey:@"NON_ROOT_ITEM_INFORMATION_TEXT" value:@"This item is in a shared folder. %@" table:@"Localizable"];
         v134 = _CDAdaptLocalizedStringForItemType();
-        v135 = [NSString localizedStringWithFormat:v134, v130];
+        v130 = [NSString localizedStringWithFormat:v134, v130];
 
-        v3 = v185;
+        delegate = v185;
         v247[0] = &off_100050E50;
         v246[0] = @"hheight";
         v246[1] = @"items";
@@ -1020,7 +1020,7 @@ LABEL_116:
         v136 = [NSArray arrayWithObjects:&v245 count:1];
         v246[2] = @"footer";
         v247[1] = v136;
-        v247[2] = v135;
+        v247[2] = v130;
         v137 = [NSDictionary dictionaryWithObjects:v247 forKeys:v246 count:3];
         [v186 addObject:v137];
       }
@@ -1039,20 +1039,20 @@ LABEL_116:
         [v186 addObject:v131];
       }
 
-      p_isa = &v203->super.super.super.super.isa;
+      p_isa = &selfCopy->super.super.super.super.isa;
     }
   }
 
   v6 = v186;
-  if (v201)
+  if (shareViewControllerParticipantDetails)
   {
-    v194 = [v3 shareViewControllerPrimaryAuxilarySwitchTitle];
-    obja = [v3 shareViewControllerSecondaryAuxilarySwitchTitle];
-    [p_isa setShowParticipantEdits:{objc_msgSend(v3, "shareViewControllerPrimaryAuxiliarySwitchState")}];
-    [p_isa setDoNotDisturb:{objc_msgSend(v3, "shareViewControllerSecondaryAuxiliarySwitchState")}];
+    shareViewControllerPrimaryAuxilarySwitchTitle = [delegate shareViewControllerPrimaryAuxilarySwitchTitle];
+    obja = [delegate shareViewControllerSecondaryAuxilarySwitchTitle];
+    [p_isa setShowParticipantEdits:{objc_msgSend(delegate, "shareViewControllerPrimaryAuxiliarySwitchState")}];
+    [p_isa setDoNotDisturb:{objc_msgSend(delegate, "shareViewControllerSecondaryAuxiliarySwitchState")}];
     v240[0] = @"title";
     v240[1] = @"type";
-    v241[0] = v194;
+    v241[0] = shareViewControllerPrimaryAuxilarySwitchTitle;
     v241[1] = @"toggle";
     v241[2] = @"showParticipantEdits";
     v240[2] = @"key";
@@ -1084,21 +1084,21 @@ LABEL_116:
     v143 = [NSDictionary dictionaryWithObjects:v237 forKeys:v236 count:3];
 
     [v186 addObject:v143];
-    p_isa = &v203->super.super.super.super.isa;
+    p_isa = &selfCopy->super.super.super.super.isa;
   }
 
   v144 = v191;
-  if (((v188 | v187) & 1) == 0)
+  if (((itemIsShareRoot | v187) & 1) == 0)
   {
     goto LABEL_155;
   }
 
   if (v184)
   {
-    if ((v182 & v188) == 1)
+    if ((shouldShowPermissions & itemIsShareRoot) == 1)
     {
-      v145 = [p_isa settingsSectionWithText:v205];
-      [v186 addObject:v145];
+      v177 = [p_isa settingsSectionWithText:v205];
+      [v186 addObject:v177];
       if (v187)
       {
         v230[0] = &off_100050E50;
@@ -1108,7 +1108,7 @@ LABEL_116:
         v146 = [NSArray arrayWithObjects:&v228 count:1];
         v229[2] = @"footer";
         v230[1] = v146;
-        v230[2] = v196;
+        v230[2] = v199;
         v147 = v230;
         v148 = v229;
       }
@@ -1147,14 +1147,14 @@ LABEL_116:
       goto LABEL_154;
     }
 
-    v149 = [v3 shareViewControllerItemUTI:p_isa];
+    v149 = [delegate shareViewControllerItemUTI:p_isa];
     if (v187)
     {
       v154 = p_isa;
-      v155 = [p_isa[7] hasACL];
+      hasACL = [p_isa[7] hasACL];
       v156 = [NSBundle bundleWithIdentifier:@"com.apple.CloudDocsUI"];
       v157 = v156;
-      if (v155)
+      if (hasACL)
       {
         v158 = @"SETTINGS_COPY_LINK_SUBFOLDERTITLE_PRIVATE";
         v159 = @"Only people added to the shared folder “%@” can use the link to access this item.";
@@ -1168,15 +1168,15 @@ LABEL_116:
 
       v170 = [v156 localizedStringForKey:v158 value:v159 table:@"Localizable"];
       v176 = _CDAdaptLocalizedStringForItemType();
-      v177 = [v154 rootItemName];
-      v145 = [NSString localizedStringWithFormat:v176, v177];
+      rootItemName2 = [v154 rootItemName];
+      v177 = [NSString localizedStringWithFormat:v176, rootItemName2];
     }
 
     else
     {
       v157 = [NSBundle bundleWithIdentifier:@"com.apple.CloudDocsUI"];
       v170 = [v157 localizedStringForKey:@"SETTINGS_COPY_LINK_SUBTITLE" value:@"Only added people will have access." table:@"Localizable"];
-      v145 = _CDAdaptLocalizedStringForItemType();
+      v177 = _CDAdaptLocalizedStringForItemType();
     }
 
     v227[0] = &off_100050E50;
@@ -1186,7 +1186,7 @@ LABEL_116:
     v178 = [NSArray arrayWithObjects:&v225 count:1];
     v226[2] = @"footer";
     v227[1] = v178;
-    v227[2] = v145;
+    v227[2] = v177;
     v179 = [NSDictionary dictionaryWithObjects:v227 forKeys:v226 count:3];
     [v186 addObject:v179];
 
@@ -1209,7 +1209,7 @@ LABEL_116:
 
   else
   {
-    v149 = [v3 shareViewControllerItemUTI:p_isa];
+    v149 = [delegate shareViewControllerItemUTI:p_isa];
     if (v187)
     {
       v150 = [NSBundle bundleWithIdentifier:@"com.apple.CloudDocsUI"];
@@ -1228,8 +1228,8 @@ LABEL_116:
 
       v167 = [v150 localizedStringForKey:v152 value:v153 table:@"Localizable"];
       v168 = _CDAdaptLocalizedStringForItemType();
-      v169 = [(_UIShareOverviewController *)v203 rootItemName];
-      v145 = [NSString localizedStringWithFormat:v168, v169];
+      rootItemName3 = [(_UIShareOverviewController *)selfCopy rootItemName];
+      v177 = [NSString localizedStringWithFormat:v168, rootItemName3];
 
       v164 = v207;
     }
@@ -1238,22 +1238,22 @@ LABEL_116:
     {
       v160 = [NSBundle bundleWithIdentifier:@"com.apple.CloudDocsUI"];
       v161 = [v160 localizedStringForKey:@"SETTINGS_ONLY_PEOPLE_INVITED_CAN_ACCESS" value:@"Only people added to this item will have access." table:@"Localizable"];
-      v162 = [v3 shareViewControllerItemUTI:p_isa];
+      v162 = [delegate shareViewControllerItemUTI:p_isa];
       v163 = _CDAdaptLocalizedStringForItemType();
-      v145 = [NSString localizedStringWithFormat:v163];
+      v177 = [NSString localizedStringWithFormat:v163];
 
       v164 = v207;
     }
 
     else
     {
-      v171 = v196;
-      if (!v196)
+      v171 = v199;
+      if (!v199)
       {
         v171 = v205;
       }
 
-      v145 = v171;
+      v177 = v171;
       v164 = v198;
     }
 
@@ -1264,7 +1264,7 @@ LABEL_116:
     v172 = [NSArray arrayWithObjects:&v219 count:1];
     v220[2] = @"footer";
     v221[1] = v172;
-    v221[2] = v145;
+    v221[2] = v177;
     v173 = v221;
     v174 = v220;
   }
@@ -1283,16 +1283,16 @@ LABEL_156:
   return v6;
 }
 
-- (id)settingsSectionWithText:(id)a3
+- (id)settingsSectionWithText:(id)text
 {
   v15[0] = &off_100050E50;
   v14[0] = @"hheight";
   v14[1] = @"items";
-  v3 = a3;
+  textCopy = text;
   v4 = [NSBundle bundleWithIdentifier:@"com.apple.CloudDocsUI", @"title"];
   v5 = [v4 localizedStringForKey:@"SETTINGS_ACTION_TEXT" value:@"Share Options" table:@"Localizable"];
   v12[0] = v5;
-  v12[1] = v3;
+  v12[1] = textCopy;
   v11[1] = @"detail";
   v11[2] = @"type";
   v12[2] = @"action";
@@ -1312,9 +1312,9 @@ LABEL_156:
   return v9;
 }
 
-- (void)willNavigateFromViewController:(id)a3
+- (void)willNavigateFromViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -1323,36 +1323,36 @@ LABEL_156:
     [(_UIShareOverviewParticipantListController *)self updateSections];
   }
 
-  v8 = [(_UIShareOverviewParticipantListController *)self staticTableView];
-  v6 = [(_UIShareOverviewParticipantListController *)self staticTableView];
-  v7 = [v6 indexPathForSelectedRow];
-  [v8 deselectRowAtIndexPath:v7 animated:1];
+  staticTableView = [(_UIShareOverviewParticipantListController *)self staticTableView];
+  staticTableView2 = [(_UIShareOverviewParticipantListController *)self staticTableView];
+  indexPathForSelectedRow = [staticTableView2 indexPathForSelectedRow];
+  [staticTableView deselectRowAtIndexPath:indexPathForSelectedRow animated:1];
 }
 
-- (void)showSettings:(id)a3
+- (void)showSettings:(id)settings
 {
   v7 = objc_alloc_init(_UIShareInvitationSettingsController);
   [(_UIShareInvitationSettingsController *)v7 setDelegate:self];
-  v4 = [(_UIShareOverviewParticipantListController *)self settings];
-  [(_UIShareInvitationSettingsController *)v7 setSettings:v4];
+  settings = [(_UIShareOverviewParticipantListController *)self settings];
+  [(_UIShareInvitationSettingsController *)v7 setSettings:settings];
 
-  v5 = [(_UIShareOverviewController *)self delegate];
-  [(_UIShareInvitationSettingsController *)v7 setOverviewControllerDelegate:v5];
+  delegate = [(_UIShareOverviewController *)self delegate];
+  [(_UIShareInvitationSettingsController *)v7 setOverviewControllerDelegate:delegate];
 
   [(_UIShareInvitationSettingsController *)v7 setProxiedOverviewController:self];
-  v6 = [(_UIShareOverviewParticipantListController *)self navigationController];
-  [v6 pushViewController:v7 animated:1];
+  navigationController = [(_UIShareOverviewParticipantListController *)self navigationController];
+  [navigationController pushViewController:v7 animated:1];
 }
 
-- (void)showSettingsAlertWithTitle:(id)a3 message:(id)a4 completion:(id)a5
+- (void)showSettingsAlertWithTitle:(id)title message:(id)message completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(_UIShareOverviewParticipantListController *)self traitCollection];
-  v12 = [v11 userInterfaceIdiom] != 1;
+  completionCopy = completion;
+  messageCopy = message;
+  titleCopy = title;
+  traitCollection = [(_UIShareOverviewParticipantListController *)self traitCollection];
+  v12 = [traitCollection userInterfaceIdiom] != 1;
 
-  v13 = [UIAlertController alertControllerWithTitle:v10 message:v9 preferredStyle:v12];
+  v13 = [UIAlertController alertControllerWithTitle:titleCopy message:messageCopy preferredStyle:v12];
 
   v14 = [NSBundle bundleWithIdentifier:@"com.apple.CloudDocsUI"];
   v15 = [v14 localizedStringForKey:@"Cancel" value:@"Cancel" table:@"Localizable"];
@@ -1360,7 +1360,7 @@ LABEL_156:
   v26[1] = 3221225472;
   v26[2] = sub_100007B84;
   v26[3] = &unk_10004CB20;
-  v16 = v8;
+  v16 = completionCopy;
   v27 = v16;
   v17 = [UIAlertAction actionWithTitle:v15 style:1 handler:v26];
   [v13 addAction:v17];
@@ -1376,33 +1376,33 @@ LABEL_156:
   v21 = [UIAlertAction actionWithTitle:v19 style:0 handler:v24];
   [v13 addAction:v21];
 
-  v22 = [(_UIShareOverviewParticipantListController *)self navigationController];
-  [v22 presentViewController:v13 animated:1 completion:0];
+  navigationController = [(_UIShareOverviewParticipantListController *)self navigationController];
+  [navigationController presentViewController:v13 animated:1 completion:0];
 }
 
-- (void)settingsControllerDidChange:(id)a3 changedAllowInviters:(BOOL)a4
+- (void)settingsControllerDidChange:(id)change changedAllowInviters:(BOOL)inviters
 {
   v73[0] = _NSConcreteStackBlock;
   v73[1] = 3221225472;
   v73[2] = sub_10000835C;
   v73[3] = &unk_10004CA08;
   v73[4] = self;
-  v6 = a3;
-  v74 = v6;
+  changeCopy = change;
+  v74 = changeCopy;
   v7 = objc_retainBlock(v73);
-  v8 = [(_UIShareOverviewParticipantListController *)self settings];
-  v9 = [v8 hasACL];
-  v10 = [v6 settings];
-  v11 = [v10 hasACL];
+  settings = [(_UIShareOverviewParticipantListController *)self settings];
+  hasACL = [settings hasACL];
+  settings2 = [changeCopy settings];
+  hasACL2 = [settings2 hasACL];
 
-  if (v9 == v11)
+  if (hasACL == hasACL2)
   {
-    v34 = [(_UIShareOverviewParticipantListController *)self settings];
-    v35 = [v34 hasACL];
+    settings3 = [(_UIShareOverviewParticipantListController *)self settings];
+    hasACL3 = [settings3 hasACL];
 
     v36 = cdui_default_log();
     v37 = os_log_type_enabled(v36, OS_LOG_TYPE_INFO);
-    if (!v35)
+    if (!hasACL3)
     {
       if (v37)
       {
@@ -1419,7 +1419,7 @@ LABEL_156:
       _os_log_impl(&_mh_execute_header, v36, OS_LOG_TYPE_INFO, "[INFO] default permissions or allowInviters changed, applying to all participants", buf, 2u);
     }
 
-    if (a4)
+    if (inviters)
     {
 LABEL_36:
       (v7[2])(v7);
@@ -1430,10 +1430,10 @@ LABEL_36:
     v63 = 0u;
     v60 = 0u;
     v61 = 0u;
-    v38 = [(_UIShareOverviewController *)self share];
-    v39 = [v38 participants];
+    share = [(_UIShareOverviewController *)self share];
+    participants = [share participants];
 
-    v40 = [v39 countByEnumeratingWithState:&v60 objects:v75 count:16];
+    v40 = [participants countByEnumeratingWithState:&v60 objects:v75 count:16];
     if (v40)
     {
       v41 = v40;
@@ -1444,26 +1444,26 @@ LABEL_36:
         {
           if (*v61 != v42)
           {
-            objc_enumerationMutation(v39);
+            objc_enumerationMutation(participants);
           }
 
           v44 = *(*(&v60 + 1) + 8 * i);
           if (([v44 isCurrentUser] & 1) == 0)
           {
-            v45 = [v6 settings];
-            [v44 setPermission:{objc_msgSend(v45, "defaultPermission")}];
+            settings4 = [changeCopy settings];
+            [v44 setPermission:{objc_msgSend(settings4, "defaultPermission")}];
 
-            v46 = [v6 settings];
-            v47 = [v46 defaultPermission];
+            settings5 = [changeCopy settings];
+            defaultPermission = [settings5 defaultPermission];
 
-            if (v47 == 2)
+            if (defaultPermission == 2)
             {
               [v44 setRole:3];
             }
           }
         }
 
-        v41 = [v39 countByEnumeratingWithState:&v60 objects:v75 count:16];
+        v41 = [participants countByEnumeratingWithState:&v60 objects:v75 count:16];
       }
 
       while (v41);
@@ -1481,19 +1481,19 @@ LABEL_32:
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "[INFO] ACL setting changed", buf, 2u);
   }
 
-  v13 = [v6 settings];
-  v14 = [v13 hasACL];
+  settings6 = [changeCopy settings];
+  hasACL4 = [settings6 hasACL];
 
   v15 = cdui_default_log();
   v16 = os_log_type_enabled(v15, OS_LOG_TYPE_INFO);
-  if (!v14)
+  if (!hasACL4)
   {
     if (v16)
     {
-      v48 = [(_UIShareOverviewParticipantListController *)self settings];
-      v49 = [v48 publicPermission];
+      settings7 = [(_UIShareOverviewParticipantListController *)self settings];
+      publicPermission = [settings7 publicPermission];
       *buf = 134217984;
-      v78 = v49;
+      v78 = publicPermission;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "[INFO] to off, copying permissions from public (%lu)", buf, 0xCu);
     }
 
@@ -1501,10 +1501,10 @@ LABEL_32:
     v67 = 0u;
     v64 = 0u;
     v65 = 0u;
-    v50 = [(_UIShareOverviewController *)self share];
-    v39 = [v50 participants];
+    share2 = [(_UIShareOverviewController *)self share];
+    participants = [share2 participants];
 
-    v51 = [v39 countByEnumeratingWithState:&v64 objects:v76 count:16];
+    v51 = [participants countByEnumeratingWithState:&v64 objects:v76 count:16];
     if (v51)
     {
       v52 = v51;
@@ -1515,15 +1515,15 @@ LABEL_32:
         {
           if (*v65 != v53)
           {
-            objc_enumerationMutation(v39);
+            objc_enumerationMutation(participants);
           }
 
           v55 = *(*(&v64 + 1) + 8 * j);
-          v56 = [v6 settings];
-          [v55 setPermission:{objc_msgSend(v56, "publicPermission")}];
+          settings8 = [changeCopy settings];
+          [v55 setPermission:{objc_msgSend(settings8, "publicPermission")}];
         }
 
-        v52 = [v39 countByEnumeratingWithState:&v64 objects:v76 count:16];
+        v52 = [participants countByEnumeratingWithState:&v64 objects:v76 count:16];
       }
 
       while (v52);
@@ -1539,19 +1539,19 @@ LABEL_32:
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "[INFO] ...to on, asking permission", buf, 2u);
   }
 
-  v17 = [(_UIShareOverviewParticipantListController *)self traitCollection];
-  v18 = [v17 userInterfaceIdiom] != 1;
+  traitCollection = [(_UIShareOverviewParticipantListController *)self traitCollection];
+  v18 = [traitCollection userInterfaceIdiom] != 1;
 
   v19 = [NSBundle bundleWithIdentifier:@"com.apple.CloudDocsUI"];
   v59 = [v19 localizedStringForKey:@"SETTINGS_SWITCH_TO_ACL_TITLE" value:@"Change to Invite Only?" table:@"Localizable"];
 
   v20 = [NSBundle bundleWithIdentifier:@"com.apple.CloudDocsUI"];
   v21 = [v20 localizedStringForKey:@"SETTINGS_SWITCH_TO_ACL_MESSAGE" value:@"Only you will have access to “%@” until you invite people." table:@"Localizable"];
-  v22 = [(_UIShareOverviewController *)self delegate];
-  v23 = [v22 shareViewControllerItemUTI:self];
+  delegate = [(_UIShareOverviewController *)self delegate];
+  v23 = [delegate shareViewControllerItemUTI:self];
   v24 = _CDAdaptLocalizedStringForItemType();
-  v25 = [(_UIShareOverviewController *)self itemName];
-  v57 = [NSString localizedStringWithFormat:v24, v25];
+  itemName = [(_UIShareOverviewController *)self itemName];
+  v57 = [NSString localizedStringWithFormat:v24, itemName];
 
   v26 = [UIAlertController alertControllerWithTitle:v59 message:v57 preferredStyle:v18];
   v27 = [NSBundle bundleWithIdentifier:@"com.apple.CloudDocsUI"];
@@ -1560,8 +1560,8 @@ LABEL_32:
   v70[1] = 3221225472;
   v70[2] = sub_1000084CC;
   v70[3] = &unk_10004CB70;
-  v71 = v6;
-  v72 = self;
+  v71 = changeCopy;
+  selfCopy = self;
   v29 = [UIAlertAction actionWithTitle:v28 style:1 handler:v70];
   [v26 addAction:v29];
 
@@ -1576,72 +1576,72 @@ LABEL_32:
   v32 = [UIAlertAction actionWithTitle:v31 style:0 handler:v68];
   [v26 addAction:v32];
 
-  v33 = [(_UIShareOverviewParticipantListController *)self navigationController];
-  [v33 presentViewController:v26 animated:1 completion:0];
+  navigationController = [(_UIShareOverviewParticipantListController *)self navigationController];
+  [navigationController presentViewController:v26 animated:1 completion:0];
 
 LABEL_37:
 }
 
-- (id)viewControllerShare:(id)a3
+- (id)viewControllerShare:(id)share
 {
-  v4 = [(_UIShareOverviewController *)self delegate];
-  v5 = [v4 viewControllerShare:self];
+  delegate = [(_UIShareOverviewController *)self delegate];
+  v5 = [delegate viewControllerShare:self];
 
   return v5;
 }
 
-- (id)viewControllerItemURL:(id)a3
+- (id)viewControllerItemURL:(id)l
 {
-  v4 = [(_UIShareOverviewController *)self delegate];
-  v5 = [v4 viewControllerItemURL:self];
+  delegate = [(_UIShareOverviewController *)self delegate];
+  v5 = [delegate viewControllerItemURL:self];
 
   return v5;
 }
 
-- (void)participantInfoViewControllerDidChangeParticipant:(id)a3
+- (void)participantInfoViewControllerDidChangeParticipant:(id)participant
 {
-  v4 = a3;
+  participantCopy = participant;
   v5 = cdui_default_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [v4 contact];
+    contact = [participantCopy contact];
     *buf = 138412290;
-    v12 = v6;
+    v12 = contact;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[INFO] Saving share for modified participant %@", buf, 0xCu);
   }
 
   [(_UIShareOverviewController *)self setNavigationItemSpinner:1];
-  v7 = [(_UIShareOverviewController *)self delegate];
+  delegate = [(_UIShareOverviewController *)self delegate];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1000087DC;
   v9[3] = &unk_10004CC00;
   v9[4] = self;
-  v10 = v4;
-  v8 = v4;
-  [v7 shareViewController:self modifyShare:&stru_10004CBB0 completion:v9];
+  v10 = participantCopy;
+  v8 = participantCopy;
+  [delegate shareViewController:self modifyShare:&stru_10004CBB0 completion:v9];
 }
 
-- (void)participantInfoViewControllerLeaveShare:(id)a3
+- (void)participantInfoViewControllerLeaveShare:(id)share
 {
   [(_UIShareOverviewParticipantListController *)self leaveShare:0];
-  v5 = [(_UIShareOverviewParticipantListController *)self navigationController];
-  v4 = [v5 popToViewController:self animated:1];
+  navigationController = [(_UIShareOverviewParticipantListController *)self navigationController];
+  v4 = [navigationController popToViewController:self animated:1];
 }
 
-- (void)participantInfoViewControllerRemoveParticipant:(id)a3
+- (void)participantInfoViewControllerRemoveParticipant:(id)participant
 {
-  v4 = [a3 contact];
-  [(_UIShareOverviewParticipantListController *)self removeParticipant:v4];
+  contact = [participant contact];
+  [(_UIShareOverviewParticipantListController *)self removeParticipant:contact];
 
-  v6 = [(_UIShareOverviewParticipantListController *)self navigationController];
-  v5 = [v6 popToViewController:self animated:1];
+  navigationController = [(_UIShareOverviewParticipantListController *)self navigationController];
+  v5 = [navigationController popToViewController:self animated:1];
 }
 
-- (unint64_t)participantInfoViewControllerAllowedPermissions:(id)a3
+- (unint64_t)participantInfoViewControllerAllowedPermissions:(id)permissions
 {
-  v4 = [(_UIShareOverviewController *)self delegate];
-  v5 = [v4 shareViewControllerAllowedPermissions:self];
+  delegate = [(_UIShareOverviewController *)self delegate];
+  v5 = [delegate shareViewControllerAllowedPermissions:self];
 
   return v5;
 }

@@ -1,17 +1,17 @@
 @interface CalendarSettingsController
 - (BOOL)_showSendReceive;
 - (id)_calendarCardViewSpecifier;
-- (id)_isSharedCalendarUpdateEnabled:(id)a3;
+- (id)_isSharedCalendarUpdateEnabled:(id)enabled;
 - (id)_loadCalendarSettingInfoSpecifier;
 - (id)_loadSendReceiveSpecifier;
 - (id)_loadSharedCalenderUpdateSpecifier;
-- (id)getSendReceiveState:(id)a3;
+- (id)getSendReceiveState:(id)state;
 - (id)specifiers;
-- (void)_calendarSettingRefreshNotification:(id)a3;
-- (void)_enableSharedCalendarUpdate:(id)a3 forSpecifier:(id)a4;
-- (void)_sendReceiveSpecifierWasTapped:(id)a3;
-- (void)handleURL:(id)a3 withCompletion:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
+- (void)_calendarSettingRefreshNotification:(id)notification;
+- (void)_enableSharedCalendarUpdate:(id)update forSpecifier:(id)specifier;
+- (void)_sendReceiveSpecifierWasTapped:(id)tapped;
+- (void)handleURL:(id)l withCompletion:(id)completion;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -22,10 +22,10 @@
   v21.receiver = self;
   v21.super_class = CalendarSettingsController;
   [(CalendarSettingsController *)&v21 viewDidLoad];
-  v3 = [(CalendarSettingsController *)self table];
+  table = [(CalendarSettingsController *)self table];
   v4 = objc_opt_class();
   v5 = +[_TtC22icloudCalendarSettings19CalendarPlacardCell cellReuseIdentifier];
-  [v3 registerClass:v4 forCellReuseIdentifier:v5];
+  [table registerClass:v4 forCellReuseIdentifier:v5];
 
   if ([(CalendarSettingsController *)self _showSendReceive])
   {
@@ -34,8 +34,8 @@
     v8 = [*&self->ACUIDataclassConfigurationViewController_opaque[v6] specifierForID:@"SHARED_CALENDAR_SPECIFIER_ID"];
     v9 = [CalendarReadSettingsRequest alloc];
     appleAccount = self->_appleAccount;
-    v11 = [(ACAccount *)appleAccount accountStore];
-    v12 = [(CalendarReadSettingsRequest *)v9 initWithAccount:appleAccount accountStore:v11];
+    accountStore = [(ACAccount *)appleAccount accountStore];
+    v12 = [(CalendarReadSettingsRequest *)v9 initWithAccount:appleAccount accountStore:accountStore];
 
     objc_initWeak(&location, self);
     v15[0] = _NSConcreteStackBlock;
@@ -47,7 +47,7 @@
     v16 = v13;
     v14 = v8;
     v17 = v14;
-    v18 = self;
+    selfCopy = self;
     [(CalendarReadSettingsRequest *)v12 performRequestWithCallback:v15];
 
     objc_destroyWeak(&v19);
@@ -62,9 +62,9 @@
   if (!v4)
   {
     v5 = objc_alloc_init(NSMutableArray);
-    v6 = [*&self->ACUIDataclassConfigurationViewController_opaque[OBJC_IVAR___PSViewController__specifier] userInfo];
+    userInfo = [*&self->ACUIDataclassConfigurationViewController_opaque[OBJC_IVAR___PSViewController__specifier] userInfo];
     userInfoDictionary = self->_userInfoDictionary;
-    self->_userInfoDictionary = v6;
+    self->_userInfoDictionary = userInfo;
 
     v8 = [(NSMutableDictionary *)self->_userInfoDictionary objectForKey:ACUIAccountKey];
     appleAccount = self->_appleAccount;
@@ -72,19 +72,19 @@
 
     if (self->_appleAccount)
     {
-      v10 = [(CalendarSettingsController *)self _calendarCardViewSpecifier];
-      [v5 addObjectsFromArray:v10];
+      _calendarCardViewSpecifier = [(CalendarSettingsController *)self _calendarCardViewSpecifier];
+      [v5 addObjectsFromArray:_calendarCardViewSpecifier];
 
       if ([(CalendarSettingsController *)self _showSendReceive])
       {
-        v11 = [(CalendarSettingsController *)self _loadSendReceiveSpecifier];
-        [v5 addObjectsFromArray:v11];
+        _loadSendReceiveSpecifier = [(CalendarSettingsController *)self _loadSendReceiveSpecifier];
+        [v5 addObjectsFromArray:_loadSendReceiveSpecifier];
 
-        v12 = [(CalendarSettingsController *)self _loadSharedCalenderUpdateSpecifier];
-        [v5 addObjectsFromArray:v12];
+        _loadSharedCalenderUpdateSpecifier = [(CalendarSettingsController *)self _loadSharedCalenderUpdateSpecifier];
+        [v5 addObjectsFromArray:_loadSharedCalenderUpdateSpecifier];
 
-        v13 = [(CalendarSettingsController *)self _loadCalendarSettingInfoSpecifier];
-        [v5 addObjectsFromArray:v13];
+        _loadCalendarSettingInfoSpecifier = [(CalendarSettingsController *)self _loadCalendarSettingInfoSpecifier];
+        [v5 addObjectsFromArray:_loadCalendarSettingInfoSpecifier];
       }
 
       v14 = _CalLogSystem();
@@ -129,8 +129,8 @@
   v6 = [v5 localizedStringForKey:@"CALENDAR_LABEL" value:&stru_14AB8 table:@"calendarSettings"];
   v7 = [PSSpecifier preferenceSpecifierNamed:v6 target:self set:0 get:0 detail:0 cell:-1 edit:0];
 
-  v8 = [(CalendarSettingsController *)self traitCollection];
-  LODWORD(v6) = [v8 pe_isSettingsFeatureDescriptionCellSupported];
+  traitCollection = [(CalendarSettingsController *)self traitCollection];
+  LODWORD(v6) = [traitCollection pe_isSettingsFeatureDescriptionCellSupported];
 
   [v7 setProperty:objc_opt_class() forKey:PSCellClassKey];
   if (v6)
@@ -152,25 +152,25 @@
 
   [v3 addObject:v7];
   v16 = objc_alloc_init(AADeviceInfo);
-  v17 = [v16 deviceClass];
-  v18 = [v17 uppercaseString];
+  deviceClass = [v16 deviceClass];
+  uppercaseString = [deviceClass uppercaseString];
 
-  if ([v18 isEqualToString:@"IPHONE"])
+  if ([uppercaseString isEqualToString:@"IPHONE"])
   {
     v19 = @"CALENDAR_DATACLASS_SWITCH_TEXT_IPHONE";
   }
 
-  else if ([v18 isEqualToString:@"IPAD"])
+  else if ([uppercaseString isEqualToString:@"IPAD"])
   {
     v19 = @"CALENDAR_DATACLASS_SWITCH_TEXT_IPAD";
   }
 
-  else if ([v18 isEqualToString:@"IPOD"])
+  else if ([uppercaseString isEqualToString:@"IPOD"])
   {
     v19 = @"CALENDAR_DATACLASS_SWITCH_TEXT_IPOD";
   }
 
-  else if ([v18 isEqualToString:@"IPHONE SIMULATOR"])
+  else if ([uppercaseString isEqualToString:@"IPHONE SIMULATOR"])
   {
     v19 = @"CALENDAR_DATACLASS_SWITCH_TEXT_IPHONE SIMULATOR";
   }
@@ -253,9 +253,9 @@
   return v16;
 }
 
-- (id)getSendReceiveState:(id)a3
+- (id)getSendReceiveState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   getSettingsResponse = self->_getSettingsResponse;
   if (getSettingsResponse)
   {
@@ -263,30 +263,30 @@
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v6 = [(CalGetSettingsResponse *)getSettingsResponse emails];
-    v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
-    if (v7)
+    emails = [(CalGetSettingsResponse *)getSettingsResponse emails];
+    address = [emails countByEnumeratingWithState:&v12 objects:v16 count:16];
+    if (address)
     {
       v8 = *v13;
       while (2)
       {
-        for (i = 0; i != v7; i = i + 1)
+        for (i = 0; i != address; i = i + 1)
         {
           if (*v13 != v8)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(emails);
           }
 
           v10 = *(*(&v12 + 1) + 8 * i);
           if ([v10 send])
           {
-            v7 = [v10 address];
+            address = [v10 address];
             goto LABEL_12;
           }
         }
 
-        v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
-        if (v7)
+        address = [emails countByEnumeratingWithState:&v12 objects:v16 count:16];
+        if (address)
         {
           continue;
         }
@@ -300,19 +300,19 @@ LABEL_12:
 
   else
   {
-    v7 = 0;
+    address = 0;
   }
 
-  return v7;
+  return address;
 }
 
-- (void)_sendReceiveSpecifierWasTapped:(id)a3
+- (void)_sendReceiveSpecifierWasTapped:(id)tapped
 {
   if (self->_getSettingsResponse)
   {
     v4 = [CalendarSendReceiveController alloc];
-    v5 = [(CalGetSettingsResponse *)self->_getSettingsResponse emails];
-    v7 = [(CalendarSendReceiveController *)v4 initWithEmailData:v5 userAccount:self->_appleAccount];
+    emails = [(CalGetSettingsResponse *)self->_getSettingsResponse emails];
+    v7 = [(CalendarSendReceiveController *)v4 initWithEmailData:emails userAccount:self->_appleAccount];
 
     [(CalendarSettingsController *)self showController:v7];
   }
@@ -359,15 +359,15 @@ LABEL_12:
   return v3;
 }
 
-- (void)_enableSharedCalendarUpdate:(id)a3 forSpecifier:(id)a4
+- (void)_enableSharedCalendarUpdate:(id)update forSpecifier:(id)specifier
 {
-  v6 = a3;
-  v7 = a4;
+  updateCopy = update;
+  specifierCopy = specifier;
   v8 = _CalLogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v19 = v6;
+    v19 = updateCopy;
     _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "setting %@ for shared calendar update", buf, 0xCu);
   }
 
@@ -375,19 +375,19 @@ LABEL_12:
   {
     v9 = [SharedCalendarEmailUpdateRequest alloc];
     appleAccount = self->_appleAccount;
-    v11 = [(ACAccount *)appleAccount accountStore];
-    v12 = -[SharedCalendarEmailUpdateRequest initWithAccount:accountStore:sharedCalendarEmail:](v9, "initWithAccount:accountStore:sharedCalendarEmail:", appleAccount, v11, [v6 BOOLValue]);
+    accountStore = [(ACAccount *)appleAccount accountStore];
+    v12 = -[SharedCalendarEmailUpdateRequest initWithAccount:accountStore:sharedCalendarEmail:](v9, "initWithAccount:accountStore:sharedCalendarEmail:", appleAccount, accountStore, [updateCopy BOOLValue]);
 
-    [v7 setProperty:&__kCFBooleanTrue forKey:PSControlIsLoadingKey];
+    [specifierCopy setProperty:&__kCFBooleanTrue forKey:PSControlIsLoadingKey];
     objc_initWeak(buf, self);
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = sub_342C;
     v13[3] = &unk_146C8;
     objc_copyWeak(&v17, buf);
-    v14 = v7;
-    v15 = self;
-    v16 = v6;
+    v14 = specifierCopy;
+    selfCopy = self;
+    v16 = updateCopy;
     [v12 performRequestWithCallback:v13];
 
     objc_destroyWeak(&v17);
@@ -404,14 +404,14 @@ LABEL_12:
   }
 }
 
-- (id)_isSharedCalendarUpdateEnabled:(id)a3
+- (id)_isSharedCalendarUpdateEnabled:(id)enabled
 {
-  v4 = [(CalendarSettingsController *)self getSettingsResponse];
+  getSettingsResponse = [(CalendarSettingsController *)self getSettingsResponse];
 
-  if (v4)
+  if (getSettingsResponse)
   {
-    v5 = [(CalendarSettingsController *)self getSettingsResponse];
-    v6 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v5 sharedCalendarEmail]);
+    getSettingsResponse2 = [(CalendarSettingsController *)self getSettingsResponse];
+    v6 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [getSettingsResponse2 sharedCalendarEmail]);
   }
 
   else
@@ -439,11 +439,11 @@ LABEL_12:
   return v3;
 }
 
-- (void)handleURL:(id)a3 withCompletion:(id)a4
+- (void)handleURL:(id)l withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 objectForKey:@"path"];
+  lCopy = l;
+  completionCopy = completion;
+  v8 = [lCopy objectForKey:@"path"];
   v9 = _CalLogSystem();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
@@ -461,8 +461,8 @@ LABEL_12:
     if (self->_getSettingsResponse)
     {
       v11 = [CalendarSendReceiveController alloc];
-      v12 = [(CalGetSettingsResponse *)self->_getSettingsResponse emails];
-      v13 = [(CalendarSendReceiveController *)v11 initWithEmailData:v12 userAccount:self->_appleAccount];
+      emails = [(CalGetSettingsResponse *)self->_getSettingsResponse emails];
+      v13 = [(CalendarSendReceiveController *)v11 initWithEmailData:emails userAccount:self->_appleAccount];
 
       [(CalendarSettingsController *)self showController:v13];
     }
@@ -478,19 +478,19 @@ LABEL_12:
     }
   }
 
-  if (v7)
+  if (completionCopy)
   {
-    v7[2](v7);
+    completionCopy[2](completionCopy);
   }
 }
 
-- (void)_calendarSettingRefreshNotification:(id)a3
+- (void)_calendarSettingRefreshNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = [CalendarReadSettingsRequest alloc];
   appleAccount = self->_appleAccount;
-  v7 = [(ACAccount *)appleAccount accountStore];
-  v8 = [(CalendarReadSettingsRequest *)v5 initWithAccount:appleAccount accountStore:v7];
+  accountStore = [(ACAccount *)appleAccount accountStore];
+  v8 = [(CalendarReadSettingsRequest *)v5 initWithAccount:appleAccount accountStore:accountStore];
 
   objc_initWeak(&location, self);
   v9[0] = _NSConcreteStackBlock;
@@ -504,36 +504,36 @@ LABEL_12:
   objc_destroyWeak(&location);
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [(CalendarSettingsController *)self specifierAtIndexPath:v8];
+  cellCopy = cell;
+  pathCopy = path;
+  v9 = [(CalendarSettingsController *)self specifierAtIndexPath:pathCopy];
   v10 = v9;
   if (v9)
   {
-    v11 = [v9 identifier];
-    if ([v11 isEqualToString:@"Send_AND_RECEIVE_SPECIFIER_ID"])
+    identifier = [v9 identifier];
+    if ([identifier isEqualToString:@"Send_AND_RECEIVE_SPECIFIER_ID"])
     {
       getSettingsResponse = self->_getSettingsResponse;
 
       if (getSettingsResponse)
       {
 LABEL_11:
-        [v7 reloadWithSpecifier:v10 animated:1];
+        [cellCopy reloadWithSpecifier:v10 animated:1];
         goto LABEL_12;
       }
 
-      v11 = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:100];
-      [v11 startAnimating];
-      if ([v7 isEditing])
+      identifier = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:100];
+      [identifier startAnimating];
+      if ([cellCopy isEditing])
       {
-        [v7 setEditingAccessoryView:v11];
+        [cellCopy setEditingAccessoryView:identifier];
       }
 
       else
       {
-        [v7 setAccessoryView:v11];
+        [cellCopy setAccessoryView:identifier];
       }
     }
 
@@ -543,7 +543,7 @@ LABEL_11:
   v13 = _CalLogSystem();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
-    sub_B268(v8);
+    sub_B268(pathCopy);
   }
 
 LABEL_12:

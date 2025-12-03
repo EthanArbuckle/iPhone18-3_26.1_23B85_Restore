@@ -1,20 +1,20 @@
 @interface SFUOffsetOutputStream
-- (SFUOffsetOutputStream)initWithOutputStream:(id)a3;
+- (SFUOffsetOutputStream)initWithOutputStream:(id)stream;
 - (id)inputStream;
 - (int64_t)offset;
 - (void)dealloc;
-- (void)seekToOffset:(int64_t)a3 whence:(int)a4;
+- (void)seekToOffset:(int64_t)offset whence:(int)whence;
 @end
 
 @implementation SFUOffsetOutputStream
 
-- (SFUOffsetOutputStream)initWithOutputStream:(id)a3
+- (SFUOffsetOutputStream)initWithOutputStream:(id)stream
 {
   v4 = [(SFUOffsetOutputStream *)self init];
   if (v4)
   {
-    v4->mOutputStream = a3;
-    v4->mInitialOffset = [a3 offset];
+    v4->mOutputStream = stream;
+    v4->mInitialOffset = [stream offset];
   }
 
   return v4;
@@ -27,21 +27,21 @@
   [(SFUOffsetOutputStream *)&v3 dealloc];
 }
 
-- (void)seekToOffset:(int64_t)a3 whence:(int)a4
+- (void)seekToOffset:(int64_t)offset whence:(int)whence
 {
-  if (!a4)
+  if (!whence)
   {
-    a3 += self->mInitialOffset;
+    offset += self->mInitialOffset;
   }
 
-  [(SFUOutputStream *)self->mOutputStream seekToOffset:a3 whence:?];
+  [(SFUOutputStream *)self->mOutputStream seekToOffset:offset whence:?];
 }
 
 - (int64_t)offset
 {
-  v3 = [(SFUOutputStream *)self->mOutputStream offset];
+  offset = [(SFUOutputStream *)self->mOutputStream offset];
   mInitialOffset = self->mInitialOffset;
-  if (v3 < mInitialOffset)
+  if (offset < mInitialOffset)
   {
     v5 = +[TSUAssertionHandler currentHandler];
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[SFUOffsetOutputStream offset]"];
@@ -49,7 +49,7 @@
     mInitialOffset = self->mInitialOffset;
   }
 
-  return v3 - mInitialOffset;
+  return offset - mInitialOffset;
 }
 
 - (id)inputStream

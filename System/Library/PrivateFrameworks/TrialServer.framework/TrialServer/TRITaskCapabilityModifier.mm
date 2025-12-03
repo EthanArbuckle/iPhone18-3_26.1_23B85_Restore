@@ -1,36 +1,36 @@
 @interface TRITaskCapabilityModifier
-+ (id)parseFromData:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToModifier:(id)a3;
-- (TRITaskCapabilityModifier)initWithAdd:(unint64_t)a3 remove:(unint64_t)a4;
-- (TRITaskCapabilityModifier)initWithCoder:(id)a3;
++ (id)parseFromData:(id)data;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToModifier:(id)modifier;
+- (TRITaskCapabilityModifier)initWithAdd:(unint64_t)add remove:(unint64_t)remove;
+- (TRITaskCapabilityModifier)initWithCoder:(id)coder;
 - (id)asPersistedModifier;
 - (id)description;
 - (id)serialize;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TRITaskCapabilityModifier
 
-- (TRITaskCapabilityModifier)initWithAdd:(unint64_t)a3 remove:(unint64_t)a4
+- (TRITaskCapabilityModifier)initWithAdd:(unint64_t)add remove:(unint64_t)remove
 {
   v7.receiver = self;
   v7.super_class = TRITaskCapabilityModifier;
   result = [(TRITaskCapabilityModifier *)&v7 init];
   if (result)
   {
-    result->_add = a3;
-    result->_remove = a4;
+    result->_add = add;
+    result->_remove = remove;
   }
 
   return result;
 }
 
-- (BOOL)isEqualToModifier:(id)a3
+- (BOOL)isEqualToModifier:(id)modifier
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && (add = self->_add, add == [v4 add]))
+  modifierCopy = modifier;
+  v5 = modifierCopy;
+  if (modifierCopy && (add = self->_add, add == [modifierCopy add]))
   {
     remove = self->_remove;
     v8 = remove == [v5 remove];
@@ -44,18 +44,18 @@
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(TRITaskCapabilityModifier *)self isEqualToModifier:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(TRITaskCapabilityModifier *)self isEqualToModifier:v5];
   }
 
   return v6;
@@ -72,25 +72,25 @@
 
 - (id)serialize
 {
-  v4 = [(TRITaskCapabilityModifier *)self asPersistedModifier];
-  v5 = [v4 data];
+  asPersistedModifier = [(TRITaskCapabilityModifier *)self asPersistedModifier];
+  data = [asPersistedModifier data];
 
-  if (!v5)
+  if (!data)
   {
-    v7 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v8 = objc_opt_class();
     v9 = NSStringFromClass(v8);
-    [v7 handleFailureInMethod:a2 object:self file:@"TRITaskCapabilityUtilities.m" lineNumber:82 description:{@"Unexpected failure to serialize %@", v9}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRITaskCapabilityUtilities.m" lineNumber:82 description:{@"Unexpected failure to serialize %@", v9}];
   }
 
-  return v5;
+  return data;
 }
 
-+ (id)parseFromData:(id)a3
++ (id)parseFromData:(id)data
 {
   v16 = *MEMORY[0x277D85DE8];
   v13 = 0;
-  v3 = [(TRIPBMessage *)TRIPersistedTaskCapabilityModifier parseFromData:a3 error:&v13];
+  v3 = [(TRIPBMessage *)TRIPersistedTaskCapabilityModifier parseFromData:data error:&v13];
   v4 = v13;
   if (!v3)
   {
@@ -151,11 +151,11 @@ LABEL_11:
   return v5;
 }
 
-- (TRITaskCapabilityModifier)initWithCoder:(id)a3
+- (TRITaskCapabilityModifier)initWithCoder:(id)coder
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"pb"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pb"];
 
   if (v5)
   {
@@ -180,7 +180,7 @@ LABEL_11:
       if ([v6 hasRemove])
       {
         self = -[TRITaskCapabilityModifier initWithAdd:remove:](self, "initWithAdd:remove:", [v6 add], objc_msgSend(v6, "remove"));
-        v8 = self;
+        selfCopy = self;
 LABEL_13:
 
         goto LABEL_14;
@@ -191,7 +191,7 @@ LABEL_13:
       {
 LABEL_12:
 
-        v8 = 0;
+        selfCopy = 0;
         goto LABEL_13;
       }
 
@@ -222,18 +222,18 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  v8 = 0;
+  selfCopy = 0;
 LABEL_14:
 
   v13 = *MEMORY[0x277D85DE8];
-  return v8;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(TRITaskCapabilityModifier *)self serialize];
-  [v4 encodeObject:v5 forKey:@"pb"];
+  coderCopy = coder;
+  serialize = [(TRITaskCapabilityModifier *)self serialize];
+  [coderCopy encodeObject:serialize forKey:@"pb"];
 }
 
 - (id)description

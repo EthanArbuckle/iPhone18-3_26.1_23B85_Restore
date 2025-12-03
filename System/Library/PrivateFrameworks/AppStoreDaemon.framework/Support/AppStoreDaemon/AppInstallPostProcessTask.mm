@@ -151,12 +151,12 @@ LABEL_17:
       *&buf[8] = 3221225472;
       *&buf[16] = sub_10036C628;
       v47 = &unk_10051D6C8;
-      v48 = self;
+      selfCopy = self;
       [v29 modifyUsingTransaction:buf];
 
-      v30 = [(SQLiteMemoryEntity *)self->_install databaseID];
+      databaseID = [(SQLiteMemoryEntity *)self->_install databaseID];
       objc_opt_self();
-      v31 = sub_10036C75C([AppInstallPostProcessResponse alloc], v30, 0, 0);
+      v31 = sub_10036C75C([AppInstallPostProcessResponse alloc], databaseID, 0, 0);
       taskResponse = self->_taskResponse;
       self->_taskResponse = v31;
 LABEL_26:
@@ -176,10 +176,10 @@ LABEL_23:
       _os_log_error_impl(&_mh_execute_header, v41, OS_LOG_TYPE_ERROR, "[%@] Failed to tell Background Assets that an install/update/restore was ready for processing: %{public}@", buf, 0x16u);
     }
 
-    v42 = [(SQLiteMemoryEntity *)self->_install databaseID];
+    databaseID2 = [(SQLiteMemoryEntity *)self->_install databaseID];
     v25 = v25;
     objc_opt_self();
-    v43 = sub_10036C75C([AppInstallPostProcessResponse alloc], v42, 1, v25);
+    v43 = sub_10036C75C([AppInstallPostProcessResponse alloc], databaseID2, 1, v25);
 
     taskResponse = self->_taskResponse;
     self->_taskResponse = v43;

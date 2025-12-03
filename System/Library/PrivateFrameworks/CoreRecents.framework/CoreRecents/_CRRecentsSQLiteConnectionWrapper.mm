@@ -1,5 +1,5 @@
 @interface _CRRecentsSQLiteConnectionWrapper
-- (_CRRecentsSQLiteConnectionWrapper)initWithConnection:(id)a3 forWriting:(BOOL)a4;
+- (_CRRecentsSQLiteConnectionWrapper)initWithConnection:(id)connection forWriting:(BOOL)writing;
 - (unint64_t)decrementRefcount;
 - (unint64_t)incrementRefcount;
 - (void)dealloc;
@@ -34,15 +34,15 @@
   [(_CRRecentsSQLiteConnectionWrapper *)&v3 dealloc];
 }
 
-- (_CRRecentsSQLiteConnectionWrapper)initWithConnection:(id)a3 forWriting:(BOOL)a4
+- (_CRRecentsSQLiteConnectionWrapper)initWithConnection:(id)connection forWriting:(BOOL)writing
 {
   v8.receiver = self;
   v8.super_class = _CRRecentsSQLiteConnectionWrapper;
   v6 = [(_CRRecentsSQLiteConnectionWrapper *)&v8 init];
   if (v6)
   {
-    v6->_connection = a3;
-    v6->_writer = a4;
+    v6->_connection = connection;
+    v6->_writer = writing;
   }
 
   return v6;

@@ -13,10 +13,10 @@
   sub_10000BE18(v9, v10);
   v5 = *(&self->super.isa + OBJC_IVAR____TtC14softposreaderd12RemotePrimer_isPOS);
   v6 = *(v4 + 32);
-  v7 = self;
+  selfCopy = self;
   v6(v5, v3, v4);
   sub_10000959C(v9);
-  v8.receiver = v7;
+  v8.receiver = selfCopy;
   v8.super_class = type metadata accessor for RemotePrimer();
   [(RemotePrimer *)&v8 dealloc];
 }

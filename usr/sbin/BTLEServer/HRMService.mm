@@ -1,15 +1,15 @@
 @interface HRMService
-- (BOOL)supportsHKQuantityType:(id)a3;
-- (HRMService)initWithManager:(id)a3 peripheral:(id)a4 service:(id)a5;
+- (BOOL)supportsHKQuantityType:(id)type;
+- (HRMService)initWithManager:(id)manager peripheral:(id)peripheral service:(id)service;
 - (id)hidDeviceProperties;
-- (void)deviceInformation:(id)a3 readCompleteForDeviceUUID:(id)a4;
-- (void)didUpdateBodySensorLocation:(id)a3;
-- (void)didUpdateHeartRateMeasurement:(id)a3;
+- (void)deviceInformation:(id)information readCompleteForDeviceUUID:(id)d;
+- (void)didUpdateBodySensorLocation:(id)location;
+- (void)didUpdateHeartRateMeasurement:(id)measurement;
 - (void)hidDeviceDidStart;
 - (void)hidDeviceDidStop;
-- (void)peripheral:(id)a3 didDiscoverCharacteristicsForService:(id)a4 error:(id)a5;
-- (void)peripheral:(id)a3 didUpdateNotificationStateForCharacteristic:(id)a4 error:(id)a5;
-- (void)peripheral:(id)a3 didUpdateValueForCharacteristic:(id)a4 error:(id)a5;
+- (void)peripheral:(id)peripheral didDiscoverCharacteristicsForService:(id)service error:(id)error;
+- (void)peripheral:(id)peripheral didUpdateNotificationStateForCharacteristic:(id)characteristic error:(id)error;
+- (void)peripheral:(id)peripheral didUpdateValueForCharacteristic:(id)characteristic error:(id)error;
 - (void)refreshUpdateHealthEnabledStatus;
 - (void)setupHIDBluetoothDevice;
 - (void)start;
@@ -18,20 +18,20 @@
 
 @implementation HRMService
 
-- (HRMService)initWithManager:(id)a3 peripheral:(id)a4 service:(id)a5
+- (HRMService)initWithManager:(id)manager peripheral:(id)peripheral service:(id)service
 {
   v19.receiver = self;
   v19.super_class = HRMService;
-  v5 = [(FitnessService *)&v19 initWithManager:a3 peripheral:a4 service:a5];
-  v6 = [(ClientService *)v5 peripheral];
-  -[HRMService set_isFitnessClassicDevice:](v5, "set_isFitnessClassicDevice:", [v6 hasTag:@"FitnessClassic"]);
+  v5 = [(FitnessService *)&v19 initWithManager:manager peripheral:peripheral service:service];
+  peripheral = [(ClientService *)v5 peripheral];
+  -[HRMService set_isFitnessClassicDevice:](v5, "set_isFitnessClassicDevice:", [peripheral hasTag:@"FitnessClassic"]);
 
-  v7 = [(ClientService *)v5 peripheral];
-  v8 = [v7 customProperty:@"UpdateHealth"];
+  peripheral2 = [(ClientService *)v5 peripheral];
+  v8 = [peripheral2 customProperty:@"UpdateHealth"];
   -[HRMService set_updateHealthEnabled:](v5, "set_updateHealthEnabled:", [v8 isEqualToString:@"1"]);
 
-  v9 = [(ClientService *)v5 peripheral];
-  -[HRMService setShouldBlockCATTHRM:](v5, "setShouldBlockCATTHRM:", [v9 hasTag:@"BlockCATTHRM"]);
+  peripheral3 = [(ClientService *)v5 peripheral];
+  -[HRMService setShouldBlockCATTHRM:](v5, "setShouldBlockCATTHRM:", [peripheral3 hasTag:@"BlockCATTHRM"]);
 
   v10 = +[FitnessDeviceManager instance];
   if (([v10 workoutInSession]& 1) != 0)
@@ -39,9 +39,9 @@
     goto LABEL_2;
   }
 
-  v11 = [(HRMService *)v5 _isFitnessClassicDevice];
+  _isFitnessClassicDevice = [(HRMService *)v5 _isFitnessClassicDevice];
 
-  if ((v11 & 1) == 0)
+  if ((_isFitnessClassicDevice & 1) == 0)
   {
     v12 = [HKQuantityType quantityTypeForIdentifier:HKQuantityTypeIdentifierHeartRate];
     v24 = v12;
@@ -52,13 +52,13 @@
     if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
     {
       v10 = v14;
-      v15 = [(HRMService *)v5 _alwaysCollectQuantityTypes];
-      v16 = [(ClientService *)v5 peripheral];
-      v17 = [v16 name];
+      _alwaysCollectQuantityTypes = [(HRMService *)v5 _alwaysCollectQuantityTypes];
+      peripheral4 = [(ClientService *)v5 peripheral];
+      name = [peripheral4 name];
       *buf = 138412546;
-      v21 = v15;
+      v21 = _alwaysCollectQuantityTypes;
       v22 = 2112;
-      v23 = v17;
+      v23 = name;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Always collect quantity types: %@ for peripheral %@", buf, 0x16u);
 
 LABEL_2:
@@ -70,14 +70,14 @@ LABEL_2:
 
 - (void)refreshUpdateHealthEnabledStatus
 {
-  v3 = [(ClientService *)self peripheral];
-  v4 = [v3 customProperty:@"UpdateHealth"];
+  peripheral = [(ClientService *)self peripheral];
+  v4 = [peripheral customProperty:@"UpdateHealth"];
   -[HRMService set_updateHealthEnabled:](self, "set_updateHealthEnabled:", [v4 isEqualToString:@"1"]);
 
   if (![(HRMService *)self _isFitnessClassicDevice])
   {
-    v5 = [(HRMService *)self _alwaysCollectQuantityTypes];
-    v6 = [v5 count];
+    _alwaysCollectQuantityTypes = [(HRMService *)self _alwaysCollectQuantityTypes];
+    v6 = [_alwaysCollectQuantityTypes count];
 
     if (v6)
     {
@@ -112,9 +112,9 @@ LABEL_2:
   v3 = objc_opt_new();
   if (_os_feature_enabled_impl())
   {
-    v4 = [(ClientService *)self manager];
+    manager = [(ClientService *)self manager];
     v5 = [CBUUID UUIDWithString:CBUUIDDeviceInformationServiceString];
-    v6 = [v4 clientServiceForUUID:v5];
+    v6 = [manager clientServiceForUUID:v5];
 
     if (v6)
     {
@@ -133,48 +133,48 @@ LABEL_2:
         [v3 setObject:v10 forKeyedSubscript:@"VersionNumber"];
       }
 
-      v11 = [v6 firmwareRevision];
+      firmwareRevision = [v6 firmwareRevision];
 
-      if (v11)
+      if (firmwareRevision)
       {
-        v12 = [v6 firmwareRevision];
-        v13 = [v12 stringByReplacingOccurrencesOfString:&stru_1000C15C0 withString:&stru_1000BEA00];
+        firmwareRevision2 = [v6 firmwareRevision];
+        v13 = [firmwareRevision2 stringByReplacingOccurrencesOfString:&stru_1000C15C0 withString:&stru_1000BEA00];
         [v3 setObject:v13 forKeyedSubscript:@"kBTFirmwareRevisionKey"];
       }
 
-      v14 = [v6 hardwareRevision];
+      hardwareRevision = [v6 hardwareRevision];
 
-      if (v14)
+      if (hardwareRevision)
       {
-        v15 = [v6 hardwareRevision];
-        v16 = [v15 stringByReplacingOccurrencesOfString:&stru_1000C15C0 withString:&stru_1000BEA00];
+        hardwareRevision2 = [v6 hardwareRevision];
+        v16 = [hardwareRevision2 stringByReplacingOccurrencesOfString:&stru_1000C15C0 withString:&stru_1000BEA00];
         [v3 setObject:v16 forKeyedSubscript:@"kBTHardwareRevisionKey"];
       }
 
-      v17 = [v6 serialNumber];
+      serialNumber = [v6 serialNumber];
 
-      if (v17)
+      if (serialNumber)
       {
-        v18 = [v6 serialNumber];
-        v19 = [v18 stringByReplacingOccurrencesOfString:&stru_1000C15C0 withString:&stru_1000BEA00];
+        serialNumber2 = [v6 serialNumber];
+        v19 = [serialNumber2 stringByReplacingOccurrencesOfString:&stru_1000C15C0 withString:&stru_1000BEA00];
         [v3 setObject:v19 forKeyedSubscript:@"SerialNumber"];
       }
 
-      v20 = [v6 modelNumber];
+      modelNumber = [v6 modelNumber];
 
-      if (v20)
+      if (modelNumber)
       {
-        v21 = [v6 modelNumber];
-        v22 = [v21 stringByReplacingOccurrencesOfString:&stru_1000C15C0 withString:&stru_1000BEA00];
+        modelNumber2 = [v6 modelNumber];
+        v22 = [modelNumber2 stringByReplacingOccurrencesOfString:&stru_1000C15C0 withString:&stru_1000BEA00];
         [v3 setObject:v22 forKeyedSubscript:@"ModelNumber"];
       }
 
-      v23 = [v6 manufacturerName];
+      manufacturerName = [v6 manufacturerName];
 
-      if (v23)
+      if (manufacturerName)
       {
-        v24 = [v6 manufacturerName];
-        v25 = [v24 stringByReplacingOccurrencesOfString:&stru_1000C15C0 withString:&stru_1000BEA00];
+        manufacturerName2 = [v6 manufacturerName];
+        v25 = [manufacturerName2 stringByReplacingOccurrencesOfString:&stru_1000C15C0 withString:&stru_1000BEA00];
         [v3 setObject:v25 forKeyedSubscript:@"Manufacturer"];
       }
     }
@@ -209,9 +209,9 @@ LABEL_2:
       goto LABEL_10;
     }
 
-    v4 = [(HRMService *)self hidBluetoothDevice];
+    hidBluetoothDevice = [(HRMService *)self hidBluetoothDevice];
 
-    if (v4)
+    if (hidBluetoothDevice)
     {
       v5 = qword_1000DDBC8;
       if (!os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
@@ -236,33 +236,33 @@ LABEL_10:
     v31[2] = @"com.apple.hid.heartrate-access";
     v31[3] = @"com.apple.hid.heartrate-access";
     v30[4] = @"PhysicalDeviceUniqueID";
-    v8 = [(ClientService *)self peripheral];
-    v9 = [v8 identifier];
-    v10 = [v9 UUIDString];
-    v31[4] = v10;
+    peripheral = [(ClientService *)self peripheral];
+    identifier = [peripheral identifier];
+    uUIDString = [identifier UUIDString];
+    v31[4] = uUIDString;
     v11 = [NSDictionary dictionaryWithObjects:v31 forKeys:v30 count:5];
     v12 = [v11 mutableCopy];
 
-    v13 = [(HRMService *)self alwaysCollectQuantityTypes];
-    v14 = [v13 firstObject];
+    alwaysCollectQuantityTypes = [(HRMService *)self alwaysCollectQuantityTypes];
+    firstObject = [alwaysCollectQuantityTypes firstObject];
 
-    if (v14)
+    if (firstObject)
     {
       [v12 setObject:&__kCFBooleanTrue forKeyedSubscript:@"kBTHRMManualConnectionKey"];
     }
 
-    v15 = [(ClientService *)self peripheral];
-    v16 = [v15 name];
+    peripheral2 = [(ClientService *)self peripheral];
+    name = [peripheral2 name];
 
-    if (v16)
+    if (name)
     {
-      v17 = [(ClientService *)self peripheral];
-      v18 = [v17 name];
-      [v12 setObject:v18 forKeyedSubscript:@"Product"];
+      peripheral3 = [(ClientService *)self peripheral];
+      name2 = [peripheral3 name];
+      [v12 setObject:name2 forKeyedSubscript:@"Product"];
     }
 
-    v19 = [(HRMService *)self hidDeviceProperties];
-    [v12 addEntriesFromDictionary:v19];
+    hidDeviceProperties = [(HRMService *)self hidDeviceProperties];
+    [v12 addEntriesFromDictionary:hidDeviceProperties];
 
     v20 = qword_1000DDBC8;
     if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
@@ -275,20 +275,20 @@ LABEL_10:
     v21 = [(HIDBluetoothDevice *)HIDSingleReportDevice hidDeviceWithProperties:v12 reports:&__NSArray0__struct];
     [(HRMService *)self setHidBluetoothDevice:v21];
 
-    v22 = [(HRMService *)self hidBluetoothDevice];
-    [v22 setService:self];
+    hidBluetoothDevice2 = [(HRMService *)self hidBluetoothDevice];
+    [hidBluetoothDevice2 setService:self];
 
-    v23 = [(HRMService *)self hidBluetoothDevice];
-    if (v23)
+    hidBluetoothDevice3 = [(HRMService *)self hidBluetoothDevice];
+    if (hidBluetoothDevice3)
     {
-      v24 = v23;
-      v25 = [(HRMService *)self hidBluetoothDevice];
-      v26 = [v25 state];
+      v24 = hidBluetoothDevice3;
+      hidBluetoothDevice4 = [(HRMService *)self hidBluetoothDevice];
+      state = [hidBluetoothDevice4 state];
 
-      if (!v26)
+      if (!state)
       {
-        v27 = [(HRMService *)self hidBluetoothDevice];
-        [v27 start];
+        hidBluetoothDevice5 = [(HRMService *)self hidBluetoothDevice];
+        [hidBluetoothDevice5 start];
       }
     }
   }
@@ -310,29 +310,29 @@ LABEL_10:
     v19[1] = v5;
     v6 = [NSArray arrayWithObjects:v19 count:2];
 
-    v7 = [(ClientService *)self peripheral];
-    v8 = [(ClientService *)self service];
-    [v7 discoverCharacteristics:v6 forService:v8];
+    peripheral = [(ClientService *)self peripheral];
+    service = [(ClientService *)self service];
+    [peripheral discoverCharacteristics:v6 forService:service];
 
-    v9 = [(ClientService *)self peripheral];
-    v10 = [v9 customProperty:@"UpdateHealth"];
+    peripheral2 = [(ClientService *)self peripheral];
+    v10 = [peripheral2 customProperty:@"UpdateHealth"];
     -[HRMService set_updateHealthEnabled:](self, "set_updateHealthEnabled:", [v10 isEqualToString:@"1"]);
 
     if (-[HRMService _isFitnessClassicDevice](self, "_isFitnessClassicDevice") || (-[HRMService _alwaysCollectQuantityTypes](self, "_alwaysCollectQuantityTypes"), v11 = objc_claimAutoreleasedReturnValue(), v12 = [v11 count], v11, !v12))
     {
       if (_os_feature_enabled_impl())
       {
-        v13 = [(HRMService *)self hidBluetoothDevice];
-        if (v13)
+        hidBluetoothDevice = [(HRMService *)self hidBluetoothDevice];
+        if (hidBluetoothDevice)
         {
-          v14 = v13;
-          v15 = [(HRMService *)self hidBluetoothDevice];
-          v16 = [v15 state];
+          v14 = hidBluetoothDevice;
+          hidBluetoothDevice2 = [(HRMService *)self hidBluetoothDevice];
+          state = [hidBluetoothDevice2 state];
 
-          if (!v16)
+          if (!state)
           {
-            v17 = [(HRMService *)self hidBluetoothDevice];
-            [v17 start];
+            hidBluetoothDevice3 = [(HRMService *)self hidBluetoothDevice];
+            [hidBluetoothDevice3 start];
           }
         }
       }
@@ -360,17 +360,17 @@ LABEL_10:
       _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "HRMService stopping HID", buf, 2u);
     }
 
-    v4 = [(HRMService *)self hidBluetoothDevice];
-    if (v4)
+    hidBluetoothDevice = [(HRMService *)self hidBluetoothDevice];
+    if (hidBluetoothDevice)
     {
-      v5 = v4;
-      v6 = [(HRMService *)self hidBluetoothDevice];
-      if ([v6 state])
+      v5 = hidBluetoothDevice;
+      hidBluetoothDevice2 = [(HRMService *)self hidBluetoothDevice];
+      if ([hidBluetoothDevice2 state])
       {
-        v7 = [(HRMService *)self hidBluetoothDevice];
-        v8 = [v7 state];
+        hidBluetoothDevice3 = [(HRMService *)self hidBluetoothDevice];
+        state = [hidBluetoothDevice3 state];
 
-        if (v8 <= 2)
+        if (state <= 2)
         {
           block[0] = _NSConcreteStackBlock;
           block[1] = 3221225472;
@@ -390,20 +390,20 @@ LABEL_10:
   }
 }
 
-- (BOOL)supportsHKQuantityType:(id)a3
+- (BOOL)supportsHKQuantityType:(id)type
 {
-  v4 = [a3 identifier];
-  v5 = [(HRMService *)self hkQuantityType];
-  v6 = [v5 identifier];
-  v7 = [v4 isEqualToString:v6];
+  identifier = [type identifier];
+  hkQuantityType = [(HRMService *)self hkQuantityType];
+  identifier2 = [hkQuantityType identifier];
+  v7 = [identifier isEqualToString:identifier2];
 
   return v7;
 }
 
-- (void)deviceInformation:(id)a3 readCompleteForDeviceUUID:(id)a4
+- (void)deviceInformation:(id)information readCompleteForDeviceUUID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  informationCopy = information;
+  dCopy = d;
   if (!_os_feature_enabled_impl())
   {
     goto LABEL_25;
@@ -411,21 +411,21 @@ LABEL_10:
 
   v27.receiver = self;
   v27.super_class = HRMService;
-  [(FitnessService *)&v27 deviceInformation:v6 readCompleteForDeviceUUID:v7];
+  [(FitnessService *)&v27 deviceInformation:informationCopy readCompleteForDeviceUUID:dCopy];
   v8 = qword_1000DDBC8;
   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
   {
     v9 = v8;
-    v10 = [(HRMService *)self hidDeviceProperties];
+    hidDeviceProperties = [(HRMService *)self hidDeviceProperties];
     *buf = 138412290;
-    v29 = v10;
+    v29 = hidDeviceProperties;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "DeviceInfo received: %@", buf, 0xCu);
   }
 
-  v11 = [(ClientService *)self peripheral];
-  v12 = [v11 identifier];
-  v13 = [v12 UUIDString];
-  v14 = [v7 isEqualToString:v13];
+  peripheral = [(ClientService *)self peripheral];
+  identifier = [peripheral identifier];
+  uUIDString = [identifier UUIDString];
+  v14 = [dCopy isEqualToString:uUIDString];
 
   if (!v14)
   {
@@ -448,9 +448,9 @@ LABEL_10:
     if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
     {
       v16 = v15;
-      v17 = [(ClientService *)self peripheral];
+      peripheral2 = [(ClientService *)self peripheral];
       *buf = 138412290;
-      v29 = v17;
+      v29 = peripheral2;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Blocking GATT HR path for %@", buf, 0xCu);
     }
 
@@ -458,13 +458,13 @@ LABEL_10:
     goto LABEL_25;
   }
 
-  v18 = [v6 firmwareRevision];
-  v19 = [v18 componentsSeparatedByString:@"."];
-  v20 = [v19 firstObject];
+  firmwareRevision = [informationCopy firmwareRevision];
+  v19 = [firmwareRevision componentsSeparatedByString:@"."];
+  firstObject = [v19 firstObject];
   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEBUG))
   {
     sub_100076CA8();
-    if (v20)
+    if (firstObject)
     {
       goto LABEL_14;
     }
@@ -478,15 +478,15 @@ LABEL_21:
     goto LABEL_23;
   }
 
-  if (!v20)
+  if (!firstObject)
   {
     goto LABEL_21;
   }
 
 LABEL_14:
-  v21 = [v20 integerValue];
+  integerValue = [firstObject integerValue];
   v22 = os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEBUG);
-  if (v21 < 80)
+  if (integerValue < 80)
   {
     if (v22)
     {
@@ -505,17 +505,17 @@ LABEL_24:
     sub_100076D2C();
   }
 
-  v23 = [(ClientService *)self peripheral];
-  [v23 setCustomProperty:@"Fitness" value:0];
+  peripheral3 = [(ClientService *)self peripheral];
+  [peripheral3 setCustomProperty:@"Fitness" value:0];
 
-  v24 = [(ClientService *)self peripheral];
-  [v24 setCustomProperty:@"UpdateHealth" value:0];
+  peripheral4 = [(ClientService *)self peripheral];
+  [peripheral4 setCustomProperty:@"UpdateHealth" value:0];
 
-  v25 = [(ClientService *)self peripheral];
-  [v25 untag:HKQuantityTypeIdentifierHeartRate];
+  peripheral5 = [(ClientService *)self peripheral];
+  [peripheral5 untag:HKQuantityTypeIdentifierHeartRate];
 
-  v26 = [(ClientService *)self peripheral];
-  [v26 tag:@"BlockCATTHRM"];
+  peripheral6 = [(ClientService *)self peripheral];
+  [peripheral6 tag:@"BlockCATTHRM"];
 
   [(HRMService *)self setShouldBlockCATTHRM:1];
   [(HRMService *)self stop];
@@ -523,29 +523,29 @@ LABEL_24:
 LABEL_25:
 }
 
-- (void)peripheral:(id)a3 didDiscoverCharacteristicsForService:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didDiscoverCharacteristicsForService:(id)service error:(id)error
 {
-  v30 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v9)
+  peripheralCopy = peripheral;
+  serviceCopy = service;
+  errorCopy = error;
+  if (errorCopy)
   {
     v10 = qword_1000DDBC8;
     if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_ERROR))
     {
-      sub_100076E40(v10, v8, v9);
+      sub_100076E40(v10, serviceCopy, errorCopy);
     }
 
     goto LABEL_27;
   }
 
-  v29 = v8;
+  v29 = serviceCopy;
   v34 = 0u;
   v35 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v11 = [v8 characteristics];
-  v12 = [v11 countByEnumeratingWithState:&v32 objects:v36 count:16];
+  characteristics = [serviceCopy characteristics];
+  v12 = [characteristics countByEnumeratingWithState:&v32 objects:v36 count:16];
   if (v12)
   {
     v13 = v12;
@@ -558,20 +558,20 @@ LABEL_25:
       {
         if (*v33 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(characteristics);
         }
 
         v17 = *(*(&v32 + 1) + 8 * i);
-        v18 = [(HRMService *)self heartRateMeasurementCharacteristic];
-        if (v18)
+        heartRateMeasurementCharacteristic = [(HRMService *)self heartRateMeasurementCharacteristic];
+        if (heartRateMeasurementCharacteristic)
         {
         }
 
         else
         {
-          v19 = [v17 UUID];
+          uUID = [v17 UUID];
           v20 = [CBUUID UUIDWithString:v15];
-          v21 = [v19 isEqual:v20];
+          v21 = [uUID isEqual:v20];
 
           if (v21)
           {
@@ -580,44 +580,44 @@ LABEL_25:
           }
         }
 
-        v22 = [(HRMService *)self bodySensorLocationCharacteristic];
-        if (v22)
+        bodySensorLocationCharacteristic = [(HRMService *)self bodySensorLocationCharacteristic];
+        if (bodySensorLocationCharacteristic)
         {
         }
 
         else
         {
-          v23 = [v17 UUID];
+          uUID2 = [v17 UUID];
           v24 = [CBUUID UUIDWithString:v31];
-          v25 = [v23 isEqual:v24];
+          v25 = [uUID2 isEqual:v24];
 
           if (v25)
           {
             [(HRMService *)self setBodySensorLocationCharacteristic:v17];
             if (([v17 properties] & 2) != 0)
             {
-              [v30 readValueForCharacteristic:v17];
+              [peripheralCopy readValueForCharacteristic:v17];
             }
           }
         }
       }
 
-      v13 = [v11 countByEnumeratingWithState:&v32 objects:v36 count:16];
+      v13 = [characteristics countByEnumeratingWithState:&v32 objects:v36 count:16];
     }
 
     while (v13);
   }
 
-  v26 = [(HRMService *)self heartRateMeasurementCharacteristic];
+  heartRateMeasurementCharacteristic2 = [(HRMService *)self heartRateMeasurementCharacteristic];
 
-  if (!v26 && os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_ERROR))
+  if (!heartRateMeasurementCharacteristic2 && os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_ERROR))
   {
     sub_100076F04();
   }
 
-  v27 = [(HRMService *)self bodySensorLocationCharacteristic];
+  bodySensorLocationCharacteristic2 = [(HRMService *)self bodySensorLocationCharacteristic];
 
-  if (!v27 && os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_ERROR))
+  if (!bodySensorLocationCharacteristic2 && os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_ERROR))
   {
     sub_100076F38();
   }
@@ -626,30 +626,30 @@ LABEL_25:
   v28 = +[FitnessDeviceManager instance];
   [v28 registerFitnessService:self];
 
-  v9 = 0;
-  v8 = v29;
+  errorCopy = 0;
+  serviceCopy = v29;
 LABEL_27:
 }
 
-- (void)peripheral:(id)a3 didUpdateValueForCharacteristic:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didUpdateValueForCharacteristic:(id)characteristic error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v10)
+  peripheralCopy = peripheral;
+  characteristicCopy = characteristic;
+  errorCopy = error;
+  if (!errorCopy)
   {
-    v12 = [(HRMService *)self heartRateMeasurementCharacteristic];
-    v13 = v12;
-    if (v12 == v9)
+    heartRateMeasurementCharacteristic = [(HRMService *)self heartRateMeasurementCharacteristic];
+    v13 = heartRateMeasurementCharacteristic;
+    if (heartRateMeasurementCharacteristic == characteristicCopy)
     {
-      v18 = [(HRMService *)self heartRateMeasurementCharacteristic];
-      v19 = [v18 value];
+      heartRateMeasurementCharacteristic2 = [(HRMService *)self heartRateMeasurementCharacteristic];
+      value = [heartRateMeasurementCharacteristic2 value];
 
-      if (v19)
+      if (value)
       {
-        v14 = [(HRMService *)self heartRateMeasurementCharacteristic];
-        v17 = [v14 value];
-        [(HRMService *)self didUpdateHeartRateMeasurement:v17];
+        heartRateMeasurementCharacteristic3 = [(HRMService *)self heartRateMeasurementCharacteristic];
+        value2 = [heartRateMeasurementCharacteristic3 value];
+        [(HRMService *)self didUpdateHeartRateMeasurement:value2];
         goto LABEL_11;
       }
     }
@@ -658,25 +658,25 @@ LABEL_27:
     {
     }
 
-    v14 = [(HRMService *)self bodySensorLocationCharacteristic];
-    if (v14 != v9)
+    heartRateMeasurementCharacteristic3 = [(HRMService *)self bodySensorLocationCharacteristic];
+    if (heartRateMeasurementCharacteristic3 != characteristicCopy)
     {
 LABEL_12:
 
       goto LABEL_13;
     }
 
-    v15 = [(HRMService *)self bodySensorLocationCharacteristic];
-    v16 = [v15 value];
+    bodySensorLocationCharacteristic = [(HRMService *)self bodySensorLocationCharacteristic];
+    value3 = [bodySensorLocationCharacteristic value];
 
-    if (!v16)
+    if (!value3)
     {
       goto LABEL_13;
     }
 
-    v14 = [(HRMService *)self bodySensorLocationCharacteristic];
-    v17 = [v14 value];
-    [(HRMService *)self didUpdateBodySensorLocation:v17];
+    heartRateMeasurementCharacteristic3 = [(HRMService *)self bodySensorLocationCharacteristic];
+    value2 = [heartRateMeasurementCharacteristic3 value];
+    [(HRMService *)self didUpdateBodySensorLocation:value2];
 LABEL_11:
 
     goto LABEL_12;
@@ -685,44 +685,44 @@ LABEL_11:
   v11 = qword_1000DDBC8;
   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_ERROR))
   {
-    sub_100076F6C(v11, v9, v10);
+    sub_100076F6C(v11, characteristicCopy, errorCopy);
   }
 
 LABEL_13:
 }
 
-- (void)peripheral:(id)a3 didUpdateNotificationStateForCharacteristic:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didUpdateNotificationStateForCharacteristic:(id)characteristic error:(id)error
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v9)
+  peripheralCopy = peripheral;
+  characteristicCopy = characteristic;
+  errorCopy = error;
+  if (errorCopy)
   {
     v10 = qword_1000DDBC8;
     if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_ERROR))
     {
-      sub_100077030(v10, v8, v9);
+      sub_100077030(v10, characteristicCopy, errorCopy);
     }
   }
 }
 
-- (void)didUpdateHeartRateMeasurement:(id)a3
+- (void)didUpdateHeartRateMeasurement:(id)measurement
 {
-  v4 = a3;
-  if ([v4 length] > 1)
+  measurementCopy = measurement;
+  if ([measurementCopy length] > 1)
   {
     v6 = +[NSDate now];
     v16 = 0;
-    [v4 getBytes:&v16 length:1];
+    [measurementCopy getBytes:&v16 length:1];
     v15 = 0;
     if (v16)
     {
-      [v4 getBytes:&v15 range:{1, 2}];
+      [measurementCopy getBytes:&v15 range:{1, 2}];
     }
 
     else
     {
-      v15 = *([v4 bytes] + 1);
+      v15 = *([measurementCopy bytes] + 1);
     }
 
     if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEBUG))
@@ -737,20 +737,20 @@ LABEL_13:
         if (_os_feature_enabled_impl())
         {
           v13 = v15;
-          v8 = [NSData dataWithBytes:&v13 length:1];
-          v9 = [(HRMService *)self hidBluetoothDevice];
-          [v9 handleInputReportData:v8 reportID:1 timestamp:mach_absolute_time()];
+          hkQuantityType2 = [NSData dataWithBytes:&v13 length:1];
+          hidBluetoothDevice = [(HRMService *)self hidBluetoothDevice];
+          [hidBluetoothDevice handleInputReportData:hkQuantityType2 reportID:1 timestamp:mach_absolute_time()];
         }
 
         else
         {
           LOWORD(v7) = v15;
           v11 = v7;
-          v12 = [(HRMService *)self hkQuantityType];
-          [(FitnessService *)self recordDatum:v6 start:v6 end:v12 quantityType:v11];
+          hkQuantityType = [(HRMService *)self hkQuantityType];
+          [(FitnessService *)self recordDatum:v6 start:v6 end:hkQuantityType quantityType:v11];
 
-          v8 = [(HRMService *)self hkQuantityType];
-          [(FitnessService *)self storeDatumsForQuantityType:v8];
+          hkQuantityType2 = [(HRMService *)self hkQuantityType];
+          [(FitnessService *)self storeDatumsForQuantityType:hkQuantityType2];
         }
       }
     }
@@ -771,18 +771,18 @@ LABEL_13:
     v5 = qword_1000DDBC8;
     if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_ERROR))
     {
-      sub_10007716C(v5, v4);
+      sub_10007716C(v5, measurementCopy);
     }
   }
 }
 
-- (void)didUpdateBodySensorLocation:(id)a3
+- (void)didUpdateBodySensorLocation:(id)location
 {
   v4 = qword_1000DDBC8;
   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
   {
     v5 = v4;
-    v6 = [a3 debugDescription];
+    v6 = [location debugDescription];
     v7 = 138412290;
     v8 = v6;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "HRM Service: Updated body sensor location: %@", &v7, 0xCu);

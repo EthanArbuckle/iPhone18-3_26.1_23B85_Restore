@@ -17,7 +17,7 @@
 - (id)serialNumber;
 - (id)simStatus;
 - (id)simTrayStatus;
-- (void)populateAttributes:(id)a3;
+- (void)populateAttributes:(id)attributes;
 @end
 
 @implementation ComponentBaseband
@@ -32,13 +32,13 @@
   [(ComponentBaseband *)self setTelephonyClientQueue:v3];
 
   v4 = [CoreTelephonyClient alloc];
-  v5 = [(ComponentBaseband *)self telephonyClientQueue];
-  v6 = [v4 initWithQueue:v5];
+  telephonyClientQueue = [(ComponentBaseband *)self telephonyClientQueue];
+  v6 = [v4 initWithQueue:telephonyClientQueue];
   [(ComponentBaseband *)self setTelephonyClient:v6];
 
   v7 = dispatch_semaphore_create(0);
   objc_initWeak(&location, self);
-  v8 = [(ComponentBaseband *)self telephonyClient];
+  telephonyClient = [(ComponentBaseband *)self telephonyClient];
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = sub_10003181C;
@@ -48,13 +48,13 @@
   objc_copyWeak(&v22, &location);
   v9 = v7;
   v20 = v9;
-  [v8 checkRadioBootHealthDetails:v19];
+  [telephonyClient checkRadioBootHealthDetails:v19];
 
   v10 = dispatch_time(0, 30000000000);
   dispatch_semaphore_wait(v9, v10);
   v11 = dispatch_semaphore_create(0);
 
-  v12 = [(ComponentBaseband *)self telephonyClient];
+  telephonyClient2 = [(ComponentBaseband *)self telephonyClient];
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_10003197C;
@@ -62,106 +62,106 @@
   objc_copyWeak(&v18, &location);
   v13 = v11;
   v17 = v13;
-  [v12 getEuiccData:v16];
+  [telephonyClient2 getEuiccData:v16];
 
   v14 = dispatch_time(0, 5000000000);
   dispatch_semaphore_wait(v13, v14);
-  LOBYTE(v12) = *(v25 + 24);
+  LOBYTE(telephonyClient2) = *(v25 + 24);
 
   objc_destroyWeak(&v18);
   objc_destroyWeak(&v22);
   objc_destroyWeak(&location);
 
   _Block_object_dispose(&v24, 8);
-  return v12;
+  return telephonyClient2;
 }
 
-- (void)populateAttributes:(id)a3
+- (void)populateAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = [(ComponentBaseband *)self basebandFirmwareVersion];
-  [v4 setObject:v5 forKeyedSubscript:@"basebandVersion"];
+  attributesCopy = attributes;
+  basebandFirmwareVersion = [(ComponentBaseband *)self basebandFirmwareVersion];
+  [attributesCopy setObject:basebandFirmwareVersion forKeyedSubscript:@"basebandVersion"];
 
-  v6 = [(ComponentBaseband *)self IMEI];
-  [v4 setObject:v6 forKeyedSubscript:@"imei"];
+  iMEI = [(ComponentBaseband *)self IMEI];
+  [attributesCopy setObject:iMEI forKeyedSubscript:@"imei"];
 
-  v7 = [(ComponentBaseband *)self MEID];
-  [v4 setObject:v7 forKeyedSubscript:@"meid"];
+  mEID = [(ComponentBaseband *)self MEID];
+  [attributesCopy setObject:mEID forKeyedSubscript:@"meid"];
 
-  v8 = [(ComponentBaseband *)self ICCID];
-  [v4 setObject:v8 forKeyedSubscript:@"iccid"];
+  iCCID = [(ComponentBaseband *)self ICCID];
+  [attributesCopy setObject:iCCID forKeyedSubscript:@"iccid"];
 
-  v9 = [(ComponentBaseband *)self eUICCPreflightData];
-  if (v9 && (v10 = v9, [(ComponentBaseband *)self eUICCPreflightData], v11 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v11, v10, (isKindOfClass & 1) == 0))
+  eUICCPreflightData = [(ComponentBaseband *)self eUICCPreflightData];
+  if (eUICCPreflightData && (v10 = eUICCPreflightData, [(ComponentBaseband *)self eUICCPreflightData], v11 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v11, v10, (isKindOfClass & 1) == 0))
   {
-    v13 = [(ComponentBaseband *)self eUICCChipID];
+    eUICCChipID = [(ComponentBaseband *)self eUICCChipID];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      [v4 setObject:v13 forKeyedSubscript:@"eUICCChipID"];
-      v25 = [(ComponentBaseband *)self eUICC];
-      [v4 setObject:v25 forKeyedSubscript:@"eUICC"];
+      [attributesCopy setObject:eUICCChipID forKeyedSubscript:@"eUICCChipID"];
+      eUICC = [(ComponentBaseband *)self eUICC];
+      [attributesCopy setObject:eUICC forKeyedSubscript:@"eUICC"];
 
-      v26 = [(ComponentBaseband *)self eUICCFwUpdateCurrentVersion];
-      [v4 setObject:v26 forKeyedSubscript:@"eUICCFwUpdateCurrentVersion"];
+      eUICCFwUpdateCurrentVersion = [(ComponentBaseband *)self eUICCFwUpdateCurrentVersion];
+      [attributesCopy setObject:eUICCFwUpdateCurrentVersion forKeyedSubscript:@"eUICCFwUpdateCurrentVersion"];
 
-      v27 = [(ComponentBaseband *)self eUICCFwUpdateGoldFwMac];
-      [v4 setObject:v27 forKeyedSubscript:@"eUICCFwUpdateGoldFwMac"];
+      eUICCFwUpdateGoldFwMac = [(ComponentBaseband *)self eUICCFwUpdateGoldFwMac];
+      [attributesCopy setObject:eUICCFwUpdateGoldFwMac forKeyedSubscript:@"eUICCFwUpdateGoldFwMac"];
 
-      v28 = [(ComponentBaseband *)self eUICCFwUpdateLoaderVersion];
-      [v4 setObject:v28 forKeyedSubscript:@"eUICCFwUpdateLoaderVersion"];
+      eUICCFwUpdateLoaderVersion = [(ComponentBaseband *)self eUICCFwUpdateLoaderVersion];
+      [attributesCopy setObject:eUICCFwUpdateLoaderVersion forKeyedSubscript:@"eUICCFwUpdateLoaderVersion"];
 
-      v29 = [(ComponentBaseband *)self eUICCFwUpdateOperationMode];
-      [v4 setObject:v29 forKeyedSubscript:@"eUICCFwUpdateOperationMode"];
+      eUICCFwUpdateOperationMode = [(ComponentBaseband *)self eUICCFwUpdateOperationMode];
+      [attributesCopy setObject:eUICCFwUpdateOperationMode forKeyedSubscript:@"eUICCFwUpdateOperationMode"];
     }
   }
 
   else
   {
-    v13 = DiagnosticLogHandleForCategory();
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+    eUICCChipID = DiagnosticLogHandleForCategory();
+    if (os_log_type_enabled(eUICCChipID, OS_LOG_TYPE_ERROR))
     {
       *v30 = 0;
-      _os_log_error_impl(&_mh_execute_header, v13, OS_LOG_TYPE_ERROR, "eUICCPreflightData is null. Skipping.", v30, 2u);
+      _os_log_error_impl(&_mh_execute_header, eUICCChipID, OS_LOG_TYPE_ERROR, "eUICCPreflightData is null. Skipping.", v30, 2u);
     }
   }
 
-  v14 = [(ComponentBaseband *)self simStatus];
-  [v4 setObject:v14 forKeyedSubscript:@"simStatus"];
+  simStatus = [(ComponentBaseband *)self simStatus];
+  [attributesCopy setObject:simStatus forKeyedSubscript:@"simStatus"];
 
-  v15 = [(ComponentBaseband *)self simTrayStatus];
-  [v4 setObject:v15 forKeyedSubscript:@"simTrayStatus"];
+  simTrayStatus = [(ComponentBaseband *)self simTrayStatus];
+  [attributesCopy setObject:simTrayStatus forKeyedSubscript:@"simTrayStatus"];
 
-  v16 = [(ComponentBaseband *)self secondSimStatus];
-  [v4 setObject:v16 forKeyedSubscript:@"secondSimStatus"];
+  secondSimStatus = [(ComponentBaseband *)self secondSimStatus];
+  [attributesCopy setObject:secondSimStatus forKeyedSubscript:@"secondSimStatus"];
 
-  v17 = [(ComponentBaseband *)self secondSimTrayStatus];
-  [v4 setObject:v17 forKeyedSubscript:@"secondSimTrayStatus"];
+  secondSimTrayStatus = [(ComponentBaseband *)self secondSimTrayStatus];
+  [attributesCopy setObject:secondSimTrayStatus forKeyedSubscript:@"secondSimTrayStatus"];
 
-  [v4 setObject:&__kCFBooleanTrue forKeyedSubscript:@"hasBaseband"];
-  v18 = [(ComponentBaseband *)self serialNumber];
-  [v4 setObject:v18 forKeyedSubscript:@"serialNumber"];
+  [attributesCopy setObject:&__kCFBooleanTrue forKeyedSubscript:@"hasBaseband"];
+  serialNumber = [(ComponentBaseband *)self serialNumber];
+  [attributesCopy setObject:serialNumber forKeyedSubscript:@"serialNumber"];
 
   v19 = +[NSNull null];
-  [v4 setObject:v19 forKeyedSubscript:@"callStatistics"];
+  [attributesCopy setObject:v19 forKeyedSubscript:@"callStatistics"];
 
   v20 = [NSNumber numberWithBool:[(ComponentBaseband *)self isRadioHealthy]];
-  [v4 setObject:v20 forKeyedSubscript:@"isHealthy"];
+  [attributesCopy setObject:v20 forKeyedSubscript:@"isHealthy"];
 
   v21 = [NSNumber numberWithInteger:[(ComponentBaseband *)self radioHealthCause]];
-  [v4 setObject:v21 forKeyedSubscript:@"healthCause"];
+  [attributesCopy setObject:v21 forKeyedSubscript:@"healthCause"];
 
   if ((+[CBSUtilities isCheckerBoardActive]& 1) == 0)
   {
-    v22 = [(ComponentBaseband *)self cellularCallStatistics];
-    [v4 setObject:v22 forKeyedSubscript:@"callStatistics"];
+    cellularCallStatistics = [(ComponentBaseband *)self cellularCallStatistics];
+    [attributesCopy setObject:cellularCallStatistics forKeyedSubscript:@"callStatistics"];
   }
 
-  v23 = [(ComponentBaseband *)self rffeScanData];
-  if (v23)
+  rffeScanData = [(ComponentBaseband *)self rffeScanData];
+  if (rffeScanData)
   {
-    v24 = [(ComponentBaseband *)self rffeScanData];
-    [v4 setObject:v24 forKeyedSubscript:@"rffeScanData"];
+    rffeScanData2 = [(ComponentBaseband *)self rffeScanData];
+    [attributesCopy setObject:rffeScanData2 forKeyedSubscript:@"rffeScanData"];
   }
 }
 
@@ -177,8 +177,8 @@
 
   v3 = objc_opt_new();
   [v3 beginAggregation];
-  v4 = [v3 getSynchronousResult];
-  v5 = dictionaryOrNull(v4);
+  getSynchronousResult = [v3 getSynchronousResult];
+  v5 = dictionaryOrNull(getSynchronousResult);
 
   return v5;
 }
@@ -241,8 +241,8 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%s", &v9, 0xCu);
   }
 
-  v4 = [(ComponentBaseband *)self eUICCPreflightData];
-  v5 = [v4 objectForKeyedSubscript:@"kVinylFwUpdateCsn"];
+  eUICCPreflightData = [(ComponentBaseband *)self eUICCPreflightData];
+  v5 = [eUICCPreflightData objectForKeyedSubscript:@"kVinylFwUpdateCsn"];
 
   if (v5)
   {
@@ -269,8 +269,8 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%s", &v8, 0xCu);
   }
 
-  v4 = [(ComponentBaseband *)self eUICCPreflightData];
-  v5 = [v4 objectForKeyedSubscript:@"kVinylFwUpdateEuiccChipId"];
+  eUICCPreflightData = [(ComponentBaseband *)self eUICCPreflightData];
+  v5 = [eUICCPreflightData objectForKeyedSubscript:@"kVinylFwUpdateEuiccChipId"];
   v6 = stringOrNull(v5);
 
   return v6;
@@ -286,8 +286,8 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%s", &v9, 0xCu);
   }
 
-  v4 = [(ComponentBaseband *)self eUICCPreflightData];
-  v5 = [v4 objectForKeyedSubscript:@"kVinylFwUpdateCurrentVersion"];
+  eUICCPreflightData = [(ComponentBaseband *)self eUICCPreflightData];
+  v5 = [eUICCPreflightData objectForKeyedSubscript:@"kVinylFwUpdateCurrentVersion"];
 
   if (v5)
   {
@@ -314,8 +314,8 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%s", &v9, 0xCu);
   }
 
-  v4 = [(ComponentBaseband *)self eUICCPreflightData];
-  v5 = [v4 objectForKeyedSubscript:@"kVinylFwUpdateGoldFwMac"];
+  eUICCPreflightData = [(ComponentBaseband *)self eUICCPreflightData];
+  v5 = [eUICCPreflightData objectForKeyedSubscript:@"kVinylFwUpdateGoldFwMac"];
 
   if (v5)
   {
@@ -342,8 +342,8 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%s", &v9, 0xCu);
   }
 
-  v4 = [(ComponentBaseband *)self eUICCPreflightData];
-  v5 = [v4 objectForKeyedSubscript:@"kVinylFwUpdateLoaderVersion"];
+  eUICCPreflightData = [(ComponentBaseband *)self eUICCPreflightData];
+  v5 = [eUICCPreflightData objectForKeyedSubscript:@"kVinylFwUpdateLoaderVersion"];
 
   if (v5)
   {
@@ -370,8 +370,8 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%s", &v8, 0xCu);
   }
 
-  v4 = [(ComponentBaseband *)self eUICCPreflightData];
-  v5 = [v4 objectForKeyedSubscript:@"kVinylFwUpdateOperationMode"];
+  eUICCPreflightData = [(ComponentBaseband *)self eUICCPreflightData];
+  v5 = [eUICCPreflightData objectForKeyedSubscript:@"kVinylFwUpdateOperationMode"];
   v6 = stringOrNull(v5);
 
   return v6;
@@ -475,9 +475,9 @@
 - (id)rffeScanData
 {
   v3 = objc_alloc_init(NSMutableDictionary);
-  v4 = [(ComponentBaseband *)self telephonyClient];
+  telephonyClient = [(ComponentBaseband *)self telephonyClient];
   v33 = 0;
-  v5 = [v4 getBasebandRadioFrequencyFrontEndScanData:&v33];
+  v5 = [telephonyClient getBasebandRadioFrequencyFrontEndScanData:&v33];
   v6 = v33;
 
   if (v5 || !v6)
@@ -540,33 +540,33 @@
     v21 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v6 numMissingDevices]);
     [v3 setObject:v21 forKeyedSubscript:@"numMissingDevices"];
 
-    v22 = [v6 rffeScanInfo];
-    v23 = v22;
-    if (v22 && [v22 count])
+    rffeScanInfo = [v6 rffeScanInfo];
+    v23 = rffeScanInfo;
+    if (rffeScanInfo && [rffeScanInfo count])
     {
       [v3 setObject:v23 forKeyedSubscript:@"rffeScanInfo"];
     }
 
-    v24 = [v6 missingRffeDevices];
-    v25 = v24;
-    if (v24 && [v24 count])
+    missingRffeDevices = [v6 missingRffeDevices];
+    v25 = missingRffeDevices;
+    if (missingRffeDevices && [missingRffeDevices count])
     {
       [v3 setObject:v25 forKeyedSubscript:@"missingRffeDevices"];
     }
 
-    v26 = [v6 missingAtDevices];
-    v27 = v26;
-    if (v26 && [v26 count])
+    missingAtDevices = [v6 missingAtDevices];
+    v27 = missingAtDevices;
+    if (missingAtDevices && [missingAtDevices count])
     {
       [v3 setObject:v27 forKeyedSubscript:@"missingAtDevices"];
     }
 
-    v28 = [v6 missingMmwDevices];
-    v29 = v28;
-    if (v28 && [v28 count])
+    missingMmwDevices = [v6 missingMmwDevices];
+    v29 = missingMmwDevices;
+    if (missingMmwDevices && [missingMmwDevices count])
     {
-      v30 = [v6 missingMmwDevices];
-      [v3 setObject:v30 forKeyedSubscript:@"missingMmwDevices"];
+      missingMmwDevices2 = [v6 missingMmwDevices];
+      [v3 setObject:missingMmwDevices2 forKeyedSubscript:@"missingMmwDevices"];
     }
 
     v31 = v3;

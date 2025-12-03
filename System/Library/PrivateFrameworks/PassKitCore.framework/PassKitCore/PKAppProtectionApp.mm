@@ -1,10 +1,10 @@
 @interface PKAppProtectionApp
-- (PKAppProtectionApp)initWithAppType:(unint64_t)a3;
+- (PKAppProtectionApp)initWithAppType:(unint64_t)type;
 @end
 
 @implementation PKAppProtectionApp
 
-- (PKAppProtectionApp)initWithAppType:(unint64_t)a3
+- (PKAppProtectionApp)initWithAppType:(unint64_t)type
 {
   v14.receiver = self;
   v14.super_class = PKAppProtectionApp;
@@ -12,9 +12,9 @@
   v5 = v4;
   if (v4)
   {
-    if (a3)
+    if (type)
     {
-      if (a3 == 1)
+      if (type == 1)
       {
         v6 = @"com.apple.mobilemail";
         bundleIdentifier = v5->_bundleIdentifier;
@@ -28,9 +28,9 @@
       }
 
       v10 = [objc_alloc(MEMORY[0x1E69635F8]) initWithBundleIdentifier:v5->_bundleIdentifier allowPlaceholder:0 error:0];
-      v11 = [v10 localizedName];
+      localizedName = [v10 localizedName];
       localizedName = v5->_localizedName;
-      v5->_localizedName = v11;
+      v5->_localizedName = localizedName;
 
       v5->_isAppAvailable = v10 != 0;
     }

@@ -6,40 +6,40 @@
 + (id)pushCurrentPlaceholder;
 + (unint64_t)saveObjectStack;
 + (void)createContextForCurrentThread;
-+ (void)createContextForCurrentThreadWithDelegate:(id)a3;
++ (void)createContextForCurrentThreadWithDelegate:(id)delegate;
 + (void)initialize;
 + (void)popCurrentObject;
-+ (void)popCurrentPlaceholder:(id)a3;
-+ (void)pushCurrentObject:(id)a3;
++ (void)popCurrentPlaceholder:(id)placeholder;
++ (void)pushCurrentObject:(id)object;
 + (void)removeContextForCurrentThread;
 + (void)replacePlaceholdersWithObjects;
-+ (void)reportError:(TCTaggedMessageStructure *)a3;
-+ (void)reportErrorException:(id)a3;
-+ (void)reportObject:(id)a3 withWarning:(TCTaggedMessageStructure *)a4;
-+ (void)reportObjectOrPlaceholder:(id)a3 withWarning:(TCTaggedMessageStructure *)a4 parameters:(char *)a5;
-+ (void)reportWarning:(TCTaggedMessageStructure *)a3;
-+ (void)reportWarningException:(id)a3;
-+ (void)restoreObjectStack:(unsigned int)a3;
++ (void)reportError:(TCTaggedMessageStructure *)error;
++ (void)reportErrorException:(id)exception;
++ (void)reportObject:(id)object withWarning:(TCTaggedMessageStructure *)warning;
++ (void)reportObjectOrPlaceholder:(id)placeholder withWarning:(TCTaggedMessageStructure *)warning parameters:(char *)parameters;
++ (void)reportWarning:(TCTaggedMessageStructure *)warning;
++ (void)reportWarningException:(id)exception;
++ (void)restoreObjectStack:(unsigned int)stack;
 - (TCMessageContext)init;
 - (id)currentObject;
 - (id)pushPlaceholder;
-- (void)addErrorMessageEntry:(id)a3;
-- (void)addWarningMessageEntry:(id)a3;
+- (void)addErrorMessageEntry:(id)entry;
+- (void)addWarningMessageEntry:(id)entry;
 - (void)dealloc;
 - (void)popObject;
-- (void)popPlaceholder:(id)a3;
-- (void)pushObject:(id)a3;
+- (void)popPlaceholder:(id)placeholder;
+- (void)pushObject:(id)object;
 - (void)replacePlaceholdersWithObjects;
-- (void)reportIncompatibleMovieInfo:(id)a3 withCompatibilityLevel:(int64_t)a4;
-- (void)reportWarningForObject:(id)a3 affectedObject:(id)a4 warning:(TCTaggedMessageStructure *)a5 parameterList:(char *)a6;
-- (void)setObject:(id)a3 forPlaceholderKey:(id)a4;
+- (void)reportIncompatibleMovieInfo:(id)info withCompatibilityLevel:(int64_t)level;
+- (void)reportWarningForObject:(id)object affectedObject:(id)affectedObject warning:(TCTaggedMessageStructure *)warning parameterList:(char *)list;
+- (void)setObject:(id)object forPlaceholderKey:(id)key;
 @end
 
 @implementation TCMessageContext
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1 && (byte_567974 & 1) == 0)
+  if (objc_opt_class() == self && (byte_567974 & 1) == 0)
   {
     byte_567974 = 1;
 
@@ -87,15 +87,15 @@
   [(TCMessageContext *)&v4 dealloc];
 }
 
-+ (void)reportObjectOrPlaceholder:(id)a3 withWarning:(TCTaggedMessageStructure *)a4 parameters:(char *)a5
++ (void)reportObjectOrPlaceholder:(id)placeholder withWarning:(TCTaggedMessageStructure *)warning parameters:(char *)parameters
 {
-  if (a4)
+  if (warning)
   {
     v8 = -[NSMutableDictionary objectForKey:]([+[NSThread currentThread](NSThread threadDictionary], "objectForKey:", @"TCMessageContext Instance");
     if (v8)
     {
 
-      [v8 reportWarningForObject:a3 affectedObject:0 warning:a4 parameterList:a5];
+      [v8 reportWarningForObject:placeholder affectedObject:0 warning:warning parameterList:parameters];
     }
   }
 }
@@ -107,61 +107,61 @@
   return [v2 currentObject];
 }
 
-+ (void)reportObject:(id)a3 withWarning:(TCTaggedMessageStructure *)a4
++ (void)reportObject:(id)object withWarning:(TCTaggedMessageStructure *)warning
 {
-  if (a4 && (![a1 conformsToProtocol:&OBJC_PROTOCOL___TCEnhancedWarningReporting] || (objc_msgSend(a1, "enhancedReportObject:withWarning:parameters:", a3, a4, &v7) & 1) == 0))
+  if (warning && (![self conformsToProtocol:&OBJC_PROTOCOL___TCEnhancedWarningReporting] || (objc_msgSend(self, "enhancedReportObject:withWarning:parameters:", object, warning, &v7) & 1) == 0))
   {
-    [a1 reportObjectOrPlaceholder:a3 withWarning:a4 parameters:&v7];
+    [self reportObjectOrPlaceholder:object withWarning:warning parameters:&v7];
   }
 }
 
-+ (void)reportWarning:(TCTaggedMessageStructure *)a3
++ (void)reportWarning:(TCTaggedMessageStructure *)warning
 {
-  if (a3 && (![a1 conformsToProtocol:&OBJC_PROTOCOL___TCEnhancedWarningReporting] || (objc_msgSend(a1, "enhancedReportObject:withWarning:parameters:", 0, a3, &v5) & 1) == 0))
+  if (warning && (![self conformsToProtocol:&OBJC_PROTOCOL___TCEnhancedWarningReporting] || (objc_msgSend(self, "enhancedReportObject:withWarning:parameters:", 0, warning, &v5) & 1) == 0))
   {
-    [a1 reportObjectOrPlaceholder:objc_msgSend(a1 withWarning:"currentObjectOrPlaceholder") parameters:{a3, &v5}];
+    [self reportObjectOrPlaceholder:objc_msgSend(self withWarning:"currentObjectOrPlaceholder") parameters:{warning, &v5}];
   }
 }
 
-+ (void)reportError:(TCTaggedMessageStructure *)a3
++ (void)reportError:(TCTaggedMessageStructure *)error
 {
-  if (a3)
+  if (error)
   {
     v4 = -[NSMutableDictionary objectForKey:]([+[NSThread currentThread](NSThread threadDictionary], "objectForKey:", @"TCMessageContext Instance");
     if (v4)
     {
       v5 = v4;
-      v6 = [[TCMessageEntry alloc] initWithTag:a3->var0 affectedObject:0 text:a3->var1 parameters:&v7];
+      v6 = [[TCMessageEntry alloc] initWithTag:error->var0 affectedObject:0 text:error->var1 parameters:&v7];
       [v5 addErrorMessageEntry:v6];
     }
   }
 }
 
-+ (void)reportWarningException:(id)a3
++ (void)reportWarningException:(id)exception
 {
   v5 = -[NSMutableDictionary objectForKey:]([+[NSThread currentThread](NSThread threadDictionary], "objectForKey:", @"TCMessageContext Instance");
   if (v5)
   {
     v13 = v5;
-    v16 = sub_1E8B54(a3, v6, v7, v8, v9, v10, v11, v12, v15);
-    v14 = [a1 currentObjectOrPlaceholder];
+    v16 = sub_1E8B54(exception, v6, v7, v8, v9, v10, v11, v12, v15);
+    currentObjectOrPlaceholder = [self currentObjectOrPlaceholder];
     if (objc_opt_respondsToSelector())
     {
-      v14 = [v14 performSelector:"identifier"];
+      currentObjectOrPlaceholder = [currentObjectOrPlaceholder performSelector:"identifier"];
     }
 
-    [(TCMessageEntry *)v16 addAffectedObject:v14];
+    [(TCMessageEntry *)v16 addAffectedObject:currentObjectOrPlaceholder];
     [v13 addWarningMessageEntry:v16];
   }
 }
 
-+ (void)reportErrorException:(id)a3
++ (void)reportErrorException:(id)exception
 {
   v4 = -[NSMutableDictionary objectForKey:]([+[NSThread currentThread](NSThread threadDictionary], "objectForKey:", @"TCMessageContext Instance");
   if (v4)
   {
     v12 = v4;
-    v14 = sub_1E8B54(a3, v5, v6, v7, v8, v9, v10, v11, v13);
+    v14 = sub_1E8B54(exception, v5, v6, v7, v8, v9, v10, v11, v13);
     [v12 addErrorMessageEntry:v14];
   }
 }
@@ -172,13 +172,13 @@
   -[NSMutableDictionary setObject:forKey:]([+[NSThread currentThread](NSThread threadDictionary], "setObject:forKey:", v2, @"TCMessageContext Instance");
 }
 
-+ (void)createContextForCurrentThreadWithDelegate:(id)a3
++ (void)createContextForCurrentThreadWithDelegate:(id)delegate
 {
-  [a1 createContextForCurrentThread];
+  [self createContextForCurrentThread];
   v4 = -[NSMutableDictionary objectForKey:]([+[NSThread currentThread](NSThread threadDictionary], "objectForKey:", @"TCMessageContext Instance");
   if (v4)
   {
-    v4[5] = a3;
+    v4[5] = delegate;
   }
 }
 
@@ -195,9 +195,9 @@
 
 + (void)removeContextForCurrentThread
 {
-  v2 = [+[NSThread currentThread](NSThread threadDictionary];
+  threadDictionary = [+[NSThread currentThread](NSThread threadDictionary];
 
-  [(NSMutableDictionary *)v2 removeObjectForKey:@"TCMessageContext Instance"];
+  [(NSMutableDictionary *)threadDictionary removeObjectForKey:@"TCMessageContext Instance"];
 }
 
 + (id)getWarningArray
@@ -205,9 +205,9 @@
   result = -[NSMutableDictionary objectForKey:]([+[NSThread currentThread](NSThread threadDictionary], "objectForKey:", @"TCMessageContext Instance");
   if (result)
   {
-    v3 = [*(result + 1) allObjects];
+    allObjects = [*(result + 1) allObjects];
 
-    return [v3 sortedArrayUsingSelector:"timeStampCompare:"];
+    return [allObjects sortedArrayUsingSelector:"timeStampCompare:"];
   }
 
   return result;
@@ -218,19 +218,19 @@
   result = -[NSMutableDictionary objectForKey:]([+[NSThread currentThread](NSThread threadDictionary], "objectForKey:", @"TCMessageContext Instance");
   if (result)
   {
-    v3 = [*(result + 2) allObjects];
+    allObjects = [*(result + 2) allObjects];
 
-    return [v3 sortedArrayUsingSelector:"timeStampCompare:"];
+    return [allObjects sortedArrayUsingSelector:"timeStampCompare:"];
   }
 
   return result;
 }
 
-+ (void)pushCurrentObject:(id)a3
++ (void)pushCurrentObject:(id)object
 {
   v4 = -[NSMutableDictionary objectForKey:]([+[NSThread currentThread](NSThread threadDictionary], "objectForKey:", @"TCMessageContext Instance");
 
-  [v4 pushObject:a3];
+  [v4 pushObject:object];
 }
 
 + (void)popCurrentObject
@@ -247,11 +247,11 @@
   return [v2 pushPlaceholder];
 }
 
-+ (void)popCurrentPlaceholder:(id)a3
++ (void)popCurrentPlaceholder:(id)placeholder
 {
   v4 = -[NSMutableDictionary objectForKey:]([+[NSThread currentThread](NSThread threadDictionary], "objectForKey:", @"TCMessageContext Instance");
 
-  [v4 popPlaceholder:a3];
+  [v4 popPlaceholder:placeholder];
 }
 
 + (void)replacePlaceholdersWithObjects
@@ -274,32 +274,32 @@
   return result;
 }
 
-+ (void)restoreObjectStack:(unsigned int)a3
++ (void)restoreObjectStack:(unsigned int)stack
 {
   v5 = -[NSMutableDictionary objectForKey:]([+[NSThread currentThread](NSThread threadDictionary], "objectForKey:", @"TCMessageContext Instance");
   if (v5)
   {
     v6 = v5;
-    while ([v6[3] count] > a3)
+    while ([v6[3] count] > stack)
     {
       [v6[3] lastObject];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [a1 popCurrentPlaceholder:0];
+        [self popCurrentPlaceholder:0];
       }
 
       else
       {
-        [a1 popCurrentObject];
+        [self popCurrentObject];
       }
     }
   }
 }
 
-- (void)reportWarningForObject:(id)a3 affectedObject:(id)a4 warning:(TCTaggedMessageStructure *)a5 parameterList:(char *)a6
+- (void)reportWarningForObject:(id)object affectedObject:(id)affectedObject warning:(TCTaggedMessageStructure *)warning parameterList:(char *)list
 {
-  if (a5)
+  if (warning)
   {
     mMessageSyncQueue = self->mMessageSyncQueue;
     v7[0] = _NSConcreteStackBlock;
@@ -307,14 +307,14 @@
     v7[2] = sub_1E91E0;
     v7[3] = &unk_45FF48;
     v7[4] = self;
-    v7[5] = a4;
-    v7[6] = a5;
-    v7[7] = a6;
+    v7[5] = affectedObject;
+    v7[6] = warning;
+    v7[7] = list;
     dispatch_sync(mMessageSyncQueue, v7);
   }
 }
 
-- (void)reportIncompatibleMovieInfo:(id)a3 withCompatibilityLevel:(int64_t)a4
+- (void)reportIncompatibleMovieInfo:(id)info withCompatibilityLevel:(int64_t)level
 {
   mMessageSyncQueue = self->mMessageSyncQueue;
   block[0] = _NSConcreteStackBlock;
@@ -322,8 +322,8 @@
   block[2] = sub_1E92F4;
   block[3] = &unk_45FF70;
   block[4] = self;
-  block[5] = a3;
-  block[6] = a4;
+  block[5] = info;
+  block[6] = level;
   dispatch_sync(mMessageSyncQueue, block);
 }
 
@@ -348,7 +348,7 @@
   return v3;
 }
 
-- (void)addErrorMessageEntry:(id)a3
+- (void)addErrorMessageEntry:(id)entry
 {
   mMessageSyncQueue = self->mMessageSyncQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -356,11 +356,11 @@
   v4[2] = sub_1EA120;
   v4[3] = &unk_45AE58;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = entry;
   dispatch_sync(mMessageSyncQueue, v4);
 }
 
-- (void)addWarningMessageEntry:(id)a3
+- (void)addWarningMessageEntry:(id)entry
 {
   mMessageSyncQueue = self->mMessageSyncQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -368,18 +368,18 @@
   v4[2] = sub_1EA1A0;
   v4[3] = &unk_45AE58;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = entry;
   dispatch_sync(mMessageSyncQueue, v4);
 }
 
-- (void)pushObject:(id)a3
+- (void)pushObject:(id)object
 {
   mMessageSyncQueue = self->mMessageSyncQueue;
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_1EA220;
   v4[3] = &unk_45AE58;
-  v4[4] = a3;
+  v4[4] = object;
   v4[5] = self;
   dispatch_sync(mMessageSyncQueue, v4);
 }
@@ -416,7 +416,7 @@
   return v3;
 }
 
-- (void)popPlaceholder:(id)a3
+- (void)popPlaceholder:(id)placeholder
 {
   mMessageSyncQueue = self->mMessageSyncQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -424,20 +424,20 @@
   v4[2] = sub_1EA4FC;
   v4[3] = &unk_45AE58;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = placeholder;
   dispatch_sync(mMessageSyncQueue, v4);
 }
 
-- (void)setObject:(id)a3 forPlaceholderKey:(id)a4
+- (void)setObject:(id)object forPlaceholderKey:(id)key
 {
   mMessageSyncQueue = self->mMessageSyncQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1EA608;
   block[3] = &unk_45AF70;
-  block[4] = a3;
+  block[4] = object;
   block[5] = self;
-  block[6] = a4;
+  block[6] = key;
   dispatch_sync(mMessageSyncQueue, block);
 }
 

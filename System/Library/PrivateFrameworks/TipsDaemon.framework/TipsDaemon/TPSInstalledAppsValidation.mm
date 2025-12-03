@@ -1,51 +1,51 @@
 @interface TPSInstalledAppsValidation
-- (TPSInstalledAppsValidation)initWithInstalledAppInfo:(id)a3;
+- (TPSInstalledAppsValidation)initWithInstalledAppInfo:(id)info;
 - (id)description;
-- (void)validateWithCompletion:(id)a3;
+- (void)validateWithCompletion:(id)completion;
 @end
 
 @implementation TPSInstalledAppsValidation
 
-- (TPSInstalledAppsValidation)initWithInstalledAppInfo:(id)a3
+- (TPSInstalledAppsValidation)initWithInstalledAppInfo:(id)info
 {
-  v5 = a3;
+  infoCopy = info;
   v9.receiver = self;
   v9.super_class = TPSInstalledAppsValidation;
   v6 = [(TPSInstalledAppsValidation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_appInfo, a3);
+    objc_storeStrong(&v6->_appInfo, info);
   }
 
   return v7;
 }
 
-- (void)validateWithCompletion:(id)a3
+- (void)validateWithCompletion:(id)completion
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(TPSInstalledAppsValidation *)self appInfo];
-  v6 = [v5 bundleID];
-  v7 = [v6 length];
+  completionCopy = completion;
+  appInfo = [(TPSInstalledAppsValidation *)self appInfo];
+  bundleID = [appInfo bundleID];
+  v7 = [bundleID length];
 
   if (v7)
   {
     v8 = objc_alloc(MEMORY[0x277CC1E70]);
-    v9 = [(TPSInstalledAppsValidation *)self appInfo];
-    v10 = [v9 bundleID];
-    v11 = [v8 initWithBundleIdentifier:v10 allowPlaceholder:1 error:0];
+    appInfo2 = [(TPSInstalledAppsValidation *)self appInfo];
+    bundleID2 = [appInfo2 bundleID];
+    targeting2 = [v8 initWithBundleIdentifier:bundleID2 allowPlaceholder:1 error:0];
 
-    if ([MEMORY[0x277D716E8] isRecordValid:v11])
+    if ([MEMORY[0x277D716E8] isRecordValid:targeting2])
     {
-      v12 = [v11 shortVersionString];
-      v13 = [(TPSInstalledAppsValidation *)self appInfo];
-      v14 = [v13 minVersion];
-      v15 = [(TPSInstalledAppsValidation *)self appInfo];
-      v16 = [v15 maxVersion];
-      v17 = v12;
-      v18 = v14;
-      v19 = v16;
+      shortVersionString = [targeting2 shortVersionString];
+      appInfo3 = [(TPSInstalledAppsValidation *)self appInfo];
+      minVersion = [appInfo3 minVersion];
+      appInfo4 = [(TPSInstalledAppsValidation *)self appInfo];
+      maxVersion = [appInfo4 maxVersion];
+      v17 = shortVersionString;
+      v18 = minVersion;
+      v19 = maxVersion;
       if (![v17 length] || objc_msgSend(v18, "length") && objc_msgSend(v17, "compare:options:", v18, 64) == -1)
       {
         v20 = 0;
@@ -67,34 +67,34 @@
       v20 = 0;
     }
 
-    v25 = [MEMORY[0x277D71778] targeting];
-    if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
+    targeting = [MEMORY[0x277D71778] targeting];
+    if (os_log_type_enabled(targeting, OS_LOG_TYPE_DEBUG))
     {
-      [(TPSInstalledAppsValidation *)self validateWithCompletion:v20, v25];
+      [(TPSInstalledAppsValidation *)self validateWithCompletion:v20, targeting];
     }
   }
 
   else
   {
-    v11 = [MEMORY[0x277D71778] targeting];
+    targeting2 = [MEMORY[0x277D71778] targeting];
     v20 = 1;
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
+    if (os_log_type_enabled(targeting2, OS_LOG_TYPE_INFO))
     {
       v21 = objc_opt_class();
       v22 = v21;
-      v23 = [(TPSInstalledAppsValidation *)self appInfo];
-      v24 = [v23 debugDescription];
+      appInfo5 = [(TPSInstalledAppsValidation *)self appInfo];
+      v24 = [appInfo5 debugDescription];
       v27 = 138412802;
       v28 = v21;
       v29 = 2112;
       v30 = v24;
       v31 = 1024;
       v32 = 1;
-      _os_log_impl(&dword_232D6F000, v11, OS_LOG_TYPE_INFO, "%@ - no bundleID specified in appInfo: %@, Valid: %d", &v27, 0x1Cu);
+      _os_log_impl(&dword_232D6F000, targeting2, OS_LOG_TYPE_INFO, "%@ - no bundleID specified in appInfo: %@, Valid: %d", &v27, 0x1Cu);
     }
   }
 
-  v4[2](v4, v20, 0);
+  completionCopy[2](completionCopy, v20, 0);
   v26 = *MEMORY[0x277D85DE8];
 }
 
@@ -103,8 +103,8 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(TPSInstalledAppsValidation *)self appInfo];
-  v7 = [v6 debugDescription];
+  appInfo = [(TPSInstalledAppsValidation *)self appInfo];
+  v7 = [appInfo debugDescription];
   v8 = [v3 stringWithFormat:@"<%@: %p appInfo = %@>", v5, self, v7];;
 
   return v8;

@@ -1,47 +1,47 @@
 @interface EKEventDetailCell
-+ (double)_scaledDistanceCalculatedFromBottomToBaseline:(double)a3;
-+ (double)_scaledDistanceCalculatedFromTopFromBaseline:(double)a3;
++ (double)_scaledDistanceCalculatedFromBottomToBaseline:(double)baseline;
++ (double)_scaledDistanceCalculatedFromTopFromBaseline:(double)baseline;
 + (double)detailsCellDefaultHeight;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (EKEventDetailCell)initWithEvent:(id)a3 editable:(BOOL)a4 style:(int64_t)a5;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (EKEventDetailCell)initWithEvent:(id)event editable:(BOOL)editable style:(int64_t)style;
 - (double)detailsLeftInset;
 - (double)detailsRightInset;
-- (void)layoutForWidth:(double)a3 position:(int)a4;
+- (void)layoutForWidth:(double)width position:(int)position;
 - (void)layoutMarginsDidChange;
-- (void)setEvent:(id)a3;
+- (void)setEvent:(id)event;
 @end
 
 @implementation EKEventDetailCell
 
-- (EKEventDetailCell)initWithEvent:(id)a3 editable:(BOOL)a4 style:(int64_t)a5
+- (EKEventDetailCell)initWithEvent:(id)event editable:(BOOL)editable style:(int64_t)style
 {
-  v8 = a3;
-  v9 = [(EKUITableViewCell *)self initWithStyle:a5 reuseIdentifier:0];
+  eventCopy = event;
+  v9 = [(EKUITableViewCell *)self initWithStyle:style reuseIdentifier:0];
   v10 = v9;
   if (v9)
   {
-    v9->_editable = a4;
-    [(EKEventDetailCell *)v9 setEvent:v8];
+    v9->_editable = editable;
+    [(EKEventDetailCell *)v9 setEvent:eventCopy];
   }
 
   return v10;
 }
 
-- (void)setEvent:(id)a3
+- (void)setEvent:(id)event
 {
-  v5 = a3;
-  if (self->_event != v5)
+  eventCopy = event;
+  if (self->_event != eventCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_event, a3);
-    v5 = v6;
+    v6 = eventCopy;
+    objc_storeStrong(&self->_event, event);
+    eventCopy = v6;
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   [objc_opt_class() detailsCellDefaultHeight];
   if (height < v5)
   {
@@ -56,45 +56,45 @@
   return result;
 }
 
-- (void)layoutForWidth:(double)a3 position:(int)a4
+- (void)layoutForWidth:(double)width position:(int)position
 {
   [(EKEventDetailCell *)self setSelectionStyle:[(EKEventDetailCell *)self accessoryType]== 1];
-  self->_lastLaidOutWidth = a3;
-  self->_lastLaidOutPosition = a4;
+  self->_lastLaidOutWidth = width;
+  self->_lastLaidOutPosition = position;
 }
 
-+ (double)_scaledDistanceCalculatedFromTopFromBaseline:(double)a3
++ (double)_scaledDistanceCalculatedFromTopFromBaseline:(double)baseline
 {
   v5 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDCF8]];
-  v6 = [a1 _bodyFontAtDefaultSize];
-  [v6 ascender];
-  [v5 _scaledValueForValue:v7 + a3];
+  _bodyFontAtDefaultSize = [self _bodyFontAtDefaultSize];
+  [_bodyFontAtDefaultSize ascender];
+  [v5 _scaledValueForValue:v7 + baseline];
   v9 = v8;
   [v5 ascender];
   CalRoundToScreenScale(v9 - v10);
-  if (v11 >= a3)
+  if (v11 >= baseline)
   {
-    a3 = v11;
+    baseline = v11;
   }
 
-  return a3;
+  return baseline;
 }
 
-+ (double)_scaledDistanceCalculatedFromBottomToBaseline:(double)a3
++ (double)_scaledDistanceCalculatedFromBottomToBaseline:(double)baseline
 {
   v5 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDCF8]];
-  v6 = [a1 _bodyFontAtDefaultSize];
-  [v6 descender];
-  [v5 _scaledValueForValue:a3 - v7];
+  _bodyFontAtDefaultSize = [self _bodyFontAtDefaultSize];
+  [_bodyFontAtDefaultSize descender];
+  [v5 _scaledValueForValue:baseline - v7];
   v9 = v8;
   [v5 descender];
   CalRoundToScreenScale(v9 + v10);
-  if (v11 >= a3)
+  if (v11 >= baseline)
   {
-    a3 = v11;
+    baseline = v11;
   }
 
-  return a3;
+  return baseline;
 }
 
 - (void)layoutMarginsDidChange

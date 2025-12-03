@@ -1,29 +1,29 @@
 @interface ICDPrivacyPromptOperation
-- (ICDPrivacyPromptOperation)initWithPrivacyIdentifier:(id)a3;
-- (ICDPrivacyPromptOperation)initWithPrivacyIdentifier:(id)a3 identity:(id)a4;
+- (ICDPrivacyPromptOperation)initWithPrivacyIdentifier:(id)identifier;
+- (ICDPrivacyPromptOperation)initWithPrivacyIdentifier:(id)identifier identity:(id)identity;
 - (id)completionHandler;
-- (void)_didCompleteWithPrivacyPromptStatus:(int64_t)a3 error:(id)a4;
-- (void)_handleRemoteAlertActionWithResult:(BOOL)a3;
+- (void)_didCompleteWithPrivacyPromptStatus:(int64_t)status error:(id)error;
+- (void)_handleRemoteAlertActionWithResult:(BOOL)result;
 - (void)cancel;
 - (void)execute;
-- (void)remoteAlertHandle:(id)a3 didInvalidateWithError:(id)a4;
-- (void)remoteAlertHandleDidDeactivate:(id)a3;
-- (void)setCompletionHandler:(id)a3;
+- (void)remoteAlertHandle:(id)handle didInvalidateWithError:(id)error;
+- (void)remoteAlertHandleDidDeactivate:(id)deactivate;
+- (void)setCompletionHandler:(id)handler;
 @end
 
 @implementation ICDPrivacyPromptOperation
 
-- (void)_handleRemoteAlertActionWithResult:(BOOL)a3
+- (void)_handleRemoteAlertActionWithResult:(BOOL)result
 {
-  v3 = a3;
+  resultCopy = result;
   os_unfair_lock_assert_not_owner(&self->_lock);
   v5 = os_log_create("com.apple.amp.itunescloudd", "Default");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v14 = self;
+    selfCopy2 = self;
     v15 = 1024;
-    v16 = v3;
+    v16 = resultCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}@: Remote alert action handler was called with didContinue = %{BOOL}u.", buf, 0x12u);
   }
 
@@ -42,7 +42,7 @@
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v14 = self;
+      selfCopy2 = self;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%{public}@: Operation was already cancelled. Aborting.", buf, 0xCu);
     }
 
@@ -52,7 +52,7 @@
 
   else
   {
-    if (!v3)
+    if (!resultCopy)
     {
       [(ICDPrivacyPromptOperation *)self _didCompleteWithPrivacyPromptStatus:1 error:0];
       goto LABEL_11;
@@ -70,9 +70,9 @@
 LABEL_11:
 }
 
-- (void)_didCompleteWithPrivacyPromptStatus:(int64_t)a3 error:(id)a4
+- (void)_didCompleteWithPrivacyPromptStatus:(int64_t)status error:(id)error
 {
-  v6 = a4;
+  errorCopy = error;
   os_unfair_lock_assert_not_owner(&self->_lock);
   os_unfair_lock_lock(&self->_lock);
   v7 = self->_remoteAlertHandle;
@@ -105,10 +105,10 @@ LABEL_11:
     goto LABEL_24;
   }
 
-  if (a3 <= 3)
+  if (status <= 3)
   {
-    v12 = off_1001DE7D8[a3];
-    if (v6)
+    v12 = off_1001DE7D8[status];
+    if (errorCopy)
     {
       goto LABEL_11;
     }
@@ -128,13 +128,13 @@ LABEL_15:
   }
 
   v12 = 0;
-  if (!v6)
+  if (!errorCopy)
   {
     goto LABEL_15;
   }
 
 LABEL_11:
-  v13 = [v6 debugDescription];
+  v13 = [errorCopy debugDescription];
   v14 = os_log_create("com.apple.amp.itunescloudd", "Default");
   v15 = os_log_type_enabled(v14, OS_LOG_TYPE_ERROR);
   if (v13)
@@ -156,7 +156,7 @@ LABEL_19:
     *v17 = 138543618;
     *&v17[4] = self;
     *&v17[12] = 2114;
-    *&v17[14] = v6;
+    *&v17[14] = errorCopy;
     v16 = "%{public}@: Encountered error: %{public}@.";
     goto LABEL_19;
   }
@@ -164,38 +164,38 @@ LABEL_19:
 LABEL_21:
   if (v9)
   {
-    v9[2](v9, a3, v6);
+    v9[2](v9, status, errorCopy);
   }
 
-  [(ICDPrivacyPromptOperation *)self finishWithError:v6, *v17, *&v17[16]];
+  [(ICDPrivacyPromptOperation *)self finishWithError:errorCopy, *v17, *&v17[16]];
 LABEL_24:
 }
 
-- (void)remoteAlertHandle:(id)a3 didInvalidateWithError:(id)a4
+- (void)remoteAlertHandle:(id)handle didInvalidateWithError:(id)error
 {
-  v5 = a4;
+  errorCopy = error;
   os_unfair_lock_assert_not_owner(&self->_lock);
   v6 = os_log_create("com.apple.amp.itunescloudd", "Default");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138543618;
-    v8 = self;
+    selfCopy = self;
     v9 = 2114;
-    v10 = v5;
+    v10 = errorCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%{public}@: Remote alert handle did invalidate with error: %{public}@.", &v7, 0x16u);
   }
 
   [(ICDPrivacyPromptOperation *)self _didCompleteWithPrivacyPromptStatus:1 error:0];
 }
 
-- (void)remoteAlertHandleDidDeactivate:(id)a3
+- (void)remoteAlertHandleDidDeactivate:(id)deactivate
 {
   os_unfair_lock_assert_not_owner(&self->_lock);
   v4 = os_log_create("com.apple.amp.itunescloudd", "Default");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 138543362;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%{public}@: Remote alert handle did deactivate.", &v5, 0xCu);
   }
 
@@ -430,7 +430,7 @@ LABEL_24:
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v8 = self;
+      selfCopy = self;
       v9 = 2114;
       v10 = v3;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}@: Deactivating remote alert handle for privacy prompt: %{public}@.", buf, 0x16u);
@@ -441,12 +441,12 @@ LABEL_24:
   }
 }
 
-- (void)setCompletionHandler:(id)a3
+- (void)setCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   os_unfair_lock_assert_not_owner(&self->_lock);
   os_unfair_lock_lock(&self->_lock);
-  v5 = [v4 copy];
+  v5 = [handlerCopy copy];
 
   completionHandler = self->_completionHandler;
   self->_completionHandler = v5;
@@ -465,10 +465,10 @@ LABEL_24:
   return v4;
 }
 
-- (ICDPrivacyPromptOperation)initWithPrivacyIdentifier:(id)a3 identity:(id)a4
+- (ICDPrivacyPromptOperation)initWithPrivacyIdentifier:(id)identifier identity:(id)identity
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  identityCopy = identity;
   v12.receiver = self;
   v12.super_class = ICDPrivacyPromptOperation;
   v9 = [(ICDPrivacyPromptOperation *)&v12 init];
@@ -476,18 +476,18 @@ LABEL_24:
   if (v9)
   {
     v9->_lock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v9->_privacyIdentifier, a3);
-    objc_storeStrong(&v10->_userIdentity, a4);
+    objc_storeStrong(&v9->_privacyIdentifier, identifier);
+    objc_storeStrong(&v10->_userIdentity, identity);
   }
 
   return v10;
 }
 
-- (ICDPrivacyPromptOperation)initWithPrivacyIdentifier:(id)a3
+- (ICDPrivacyPromptOperation)initWithPrivacyIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = +[ICUserIdentity activeAccount];
-  v6 = [(ICDPrivacyPromptOperation *)self initWithPrivacyIdentifier:v4 identity:v5];
+  v6 = [(ICDPrivacyPromptOperation *)self initWithPrivacyIdentifier:identifierCopy identity:v5];
 
   return v6;
 }

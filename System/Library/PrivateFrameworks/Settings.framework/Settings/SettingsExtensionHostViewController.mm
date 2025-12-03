@@ -1,8 +1,8 @@
 @interface SettingsExtensionHostViewController
 - (_TtC8Settings35SettingsExtensionHostViewController)init;
-- (void)hostViewController:(id)a3 didBeginHosting:(id)a4;
-- (void)hostViewController:(id)a3 didEndHosting:(id)a4 error:(id)a5;
-- (void)hostViewControllerDidActivate:(id)a3;
+- (void)hostViewController:(id)controller didBeginHosting:(id)hosting;
+- (void)hostViewController:(id)controller didEndHosting:(id)hosting error:(id)error;
+- (void)hostViewControllerDidActivate:(id)activate;
 @end
 
 @implementation SettingsExtensionHostViewController
@@ -19,27 +19,27 @@
   return v4;
 }
 
-- (void)hostViewControllerDidActivate:(id)a3
+- (void)hostViewControllerDidActivate:(id)activate
 {
-  v4 = a3;
-  v5 = self;
-  sub_21CE1B920(v4);
+  activateCopy = activate;
+  selfCopy = self;
+  sub_21CE1B920(activateCopy);
 }
 
-- (void)hostViewController:(id)a3 didEndHosting:(id)a4 error:(id)a5
+- (void)hostViewController:(id)controller didEndHosting:(id)hosting error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = self;
-  v11 = a5;
-  sub_21CE1BFE0(v8, v9, a5);
+  controllerCopy = controller;
+  hostingCopy = hosting;
+  selfCopy = self;
+  errorCopy = error;
+  sub_21CE1BFE0(controllerCopy, hostingCopy, error);
 }
 
-- (void)hostViewController:(id)a3 didBeginHosting:(id)a4
+- (void)hostViewController:(id)controller didBeginHosting:(id)hosting
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  controllerCopy = controller;
+  hostingCopy = hosting;
+  selfCopy = self;
   sub_21CE1FF38();
 }
 

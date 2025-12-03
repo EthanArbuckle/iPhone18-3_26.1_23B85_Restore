@@ -1,13 +1,13 @@
 @interface ImageAnalyzerMultiDetectorRecipient
 - (_TtC6Vision35ImageAnalyzerMultiDetectorRecipient)init;
-- (void)receiveObservations:(id)a3;
+- (void)receiveObservations:(id)observations;
 @end
 
 @implementation ImageAnalyzerMultiDetectorRecipient
 
-- (void)receiveObservations:(id)a3
+- (void)receiveObservations:(id)observations
 {
-  if (a3)
+  if (observations)
   {
     sub_1A5CA02B4();
     v4 = sub_1A5FD3F4C();
@@ -18,7 +18,7 @@
     v4 = 0;
   }
 
-  v5 = self;
+  selfCopy = self;
   sub_1A5CA7BC8(v4);
 }
 

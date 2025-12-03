@@ -1,7 +1,7 @@
 @interface DDScannerHelper
 - (DDScannerHelper)init;
-- (id)runDataDetectorsOnBody:(id)a3 locale:(id)a4;
-- (int64_t)getExtractionResultType:(__DDResult *)a3;
+- (id)runDataDetectorsOnBody:(id)body locale:(id)locale;
+- (int64_t)getExtractionResultType:(__DDResult *)type;
 - (void)dealloc;
 @end
 
@@ -28,8 +28,8 @@
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [(NSMutableDictionary *)self->_scanners allValues];
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  allValues = [(NSMutableDictionary *)self->_scanners allValues];
+  v4 = [allValues countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = *v9;
@@ -40,7 +40,7 @@
       {
         if (*v9 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allValues);
         }
 
         CFRelease([*(*(&v8 + 1) + 8 * v6) pointerValue]);
@@ -48,7 +48,7 @@
       }
 
       while (v4 != v6);
-      v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v4 = [allValues countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v4);
@@ -59,7 +59,7 @@
   [(DDScannerHelper *)&v7 dealloc];
 }
 
-- (int64_t)getExtractionResultType:(__DDResult *)a3
+- (int64_t)getExtractionResultType:(__DDResult *)type
 {
   v3 = [DDResultGetType() copy];
   if ([v3 isEqualToString:@"Date"])
@@ -110,31 +110,31 @@
   return v4;
 }
 
-- (id)runDataDetectorsOnBody:(id)a3 locale:(id)a4
+- (id)runDataDetectorsOnBody:(id)body locale:(id)locale
 {
-  v6 = a3;
-  v7 = a4;
+  bodyCopy = body;
+  localeCopy = locale;
   v8 = +[NSDate date];
   v9 = objc_opt_new();
-  if (v6 && v7)
+  if (bodyCopy && localeCopy)
   {
     v10 = objc_opt_new();
     [v9 setObject:v10 forKeyedSubscript:@"extractions"];
-    v11 = [(NSMutableDictionary *)self->_scanners objectForKeyedSubscript:v7];
-    v12 = [v11 pointerValue];
+    v11 = [(NSMutableDictionary *)self->_scanners objectForKeyedSubscript:localeCopy];
+    pointerValue = [v11 pointerValue];
 
-    if (v12 || (v21 = 0, v12 = DDScannerCreateWithLocale(), [NSValue valueWithPointer:v12], v13 = objc_claimAutoreleasedReturnValue(), [(NSMutableDictionary *)self->_scanners setObject:v13 forKeyedSubscript:v7], v13, v12))
+    if (pointerValue || (v21 = 0, pointerValue = DDScannerCreateWithLocale(), [NSValue valueWithPointer:pointerValue], v13 = objc_claimAutoreleasedReturnValue(), [(NSMutableDictionary *)self->_scanners setObject:v13 forKeyedSubscript:localeCopy], v13, pointerValue))
     {
       v15[0] = _NSConcreteStackBlock;
       v15[1] = 3221225472;
       v15[2] = sub_100001DC8;
       v15[3] = &unk_1000AC948;
-      v16 = v6;
+      v16 = bodyCopy;
       v17 = v8;
-      v18 = v7;
-      v19 = self;
+      v18 = localeCopy;
+      selfCopy = self;
       v20 = v10;
-      DataDetectorsScan(v12, v16, 0, v15);
+      DataDetectorsScan(pointerValue, v16, 0, v15);
     }
   }
 

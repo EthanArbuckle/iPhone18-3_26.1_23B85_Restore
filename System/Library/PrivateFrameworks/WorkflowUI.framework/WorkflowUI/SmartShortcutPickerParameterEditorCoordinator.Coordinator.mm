@@ -1,25 +1,25 @@
 @interface SmartShortcutPickerParameterEditorCoordinator.Coordinator
-- (void)moduleSummaryPresenter:(id)a3 didCommitParameterState:(id)a4;
-- (void)moduleSummaryPresenterDidFinish:(id)a3;
+- (void)moduleSummaryPresenter:(id)presenter didCommitParameterState:(id)state;
+- (void)moduleSummaryPresenterDidFinish:(id)finish;
 @end
 
 @implementation SmartShortcutPickerParameterEditorCoordinator.Coordinator
 
-- (void)moduleSummaryPresenter:(id)a3 didCommitParameterState:(id)a4
+- (void)moduleSummaryPresenter:(id)presenter didCommitParameterState:(id)state
 {
-  v5 = a3;
+  presenterCopy = presenter;
   swift_unknownObjectRetain();
-  v6 = self;
+  selfCopy = self;
   sub_27486D7AC();
 
   swift_unknownObjectRelease();
 }
 
-- (void)moduleSummaryPresenterDidFinish:(id)a3
+- (void)moduleSummaryPresenterDidFinish:(id)finish
 {
-  v4 = a3;
-  v5 = self;
-  sub_27486D9D8(v4);
+  finishCopy = finish;
+  selfCopy = self;
+  sub_27486D9D8(finishCopy);
 }
 
 @end

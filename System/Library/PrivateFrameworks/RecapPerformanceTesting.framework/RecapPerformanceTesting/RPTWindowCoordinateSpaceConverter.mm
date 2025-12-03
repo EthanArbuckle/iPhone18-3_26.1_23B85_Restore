@@ -1,62 +1,62 @@
 @interface RPTWindowCoordinateSpaceConverter
-- (CGPoint)convertPoint:(CGPoint)a3;
-- (CGRect)convertRect:(CGRect)a3;
-- (CGSize)convertSize:(CGSize)a3;
-- (CGVector)convertVector:(CGVector)a3;
-- (id)initFromWindow:(id)a3 toScreen:(id)a4;
+- (CGPoint)convertPoint:(CGPoint)point;
+- (CGRect)convertRect:(CGRect)rect;
+- (CGSize)convertSize:(CGSize)size;
+- (CGVector)convertVector:(CGVector)vector;
+- (id)initFromWindow:(id)window toScreen:(id)screen;
 @end
 
 @implementation RPTWindowCoordinateSpaceConverter
 
-- (id)initFromWindow:(id)a3 toScreen:(id)a4
+- (id)initFromWindow:(id)window toScreen:(id)screen
 {
-  v7 = a3;
-  v8 = a4;
+  windowCopy = window;
+  screenCopy = screen;
   v12.receiver = self;
   v12.super_class = RPTWindowCoordinateSpaceConverter;
   v9 = [(RPTWindowCoordinateSpaceConverter *)&v12 init];
   p_isa = &v9->super.super.isa;
   if (v9)
   {
-    objc_storeStrong(&v9->_window, a3);
-    objc_storeStrong(p_isa + 2, a4);
+    objc_storeStrong(&v9->_window, window);
+    objc_storeStrong(p_isa + 2, screen);
   }
 
   return p_isa;
 }
 
-- (CGPoint)convertPoint:(CGPoint)a3
+- (CGPoint)convertPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [MEMORY[0x277CCAC38] processInfo];
-  v7 = [v6 isiOSAppOnMac];
+  y = point.y;
+  x = point.x;
+  processInfo = [MEMORY[0x277CCAC38] processInfo];
+  isiOSAppOnMac = [processInfo isiOSAppOnMac];
 
-  if (v7)
+  if (isiOSAppOnMac)
   {
-    v8 = [(RPTWindowCoordinateSpaceConverter *)self window];
-    v9 = [v8 nsWindowProxy];
-    [v9 convertPointFromUIWindow:{x, y}];
+    window = [(RPTWindowCoordinateSpaceConverter *)self window];
+    nsWindowProxy = [window nsWindowProxy];
+    [nsWindowProxy convertPointFromUIWindow:{x, y}];
     v11 = v10;
     v13 = v12;
 
-    v14 = [(RPTWindowCoordinateSpaceConverter *)self window];
-    v15 = [v14 nsWindowProxy];
-    [v15 convertPointToScreen:{v11, v13}];
+    window2 = [(RPTWindowCoordinateSpaceConverter *)self window];
+    nsWindowProxy2 = [window2 nsWindowProxy];
+    [nsWindowProxy2 convertPointToScreen:{v11, v13}];
     v17 = v16;
     v19 = v18;
 
-    v20 = [(RPTWindowCoordinateSpaceConverter *)self window];
-    v21 = [v20 nsScreen];
-    [v21 frame];
+    window3 = [(RPTWindowCoordinateSpaceConverter *)self window];
+    nsScreen = [window3 nsScreen];
+    [nsScreen frame];
     v22 = CGRectGetHeight(v29) - v19;
   }
 
   else
   {
     window = self->_window;
-    v20 = [(UIScreen *)self->_screen fixedCoordinateSpace];
-    [(UIWindow *)window convertPoint:v20 toCoordinateSpace:x, y];
+    window3 = [(UIScreen *)self->_screen fixedCoordinateSpace];
+    [(UIWindow *)window convertPoint:window3 toCoordinateSpace:x, y];
     v17 = v24;
     v22 = v25;
   }
@@ -68,13 +68,13 @@
   return result;
 }
 
-- (CGSize)convertSize:(CGSize)a3
+- (CGSize)convertSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   window = self->_window;
-  v6 = [(UIScreen *)self->_screen fixedCoordinateSpace];
-  [(UIWindow *)window convertRect:v6 toCoordinateSpace:0.0, 0.0, width, height];
+  fixedCoordinateSpace = [(UIScreen *)self->_screen fixedCoordinateSpace];
+  [(UIWindow *)window convertRect:fixedCoordinateSpace toCoordinateSpace:0.0, 0.0, width, height];
   v8 = v7;
   v10 = v9;
 
@@ -85,15 +85,15 @@
   return result;
 }
 
-- (CGRect)convertRect:(CGRect)a3
+- (CGRect)convertRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   window = self->_window;
-  v8 = [(UIScreen *)self->_screen fixedCoordinateSpace];
-  [(UIWindow *)window convertRect:v8 toCoordinateSpace:x, y, width, height];
+  fixedCoordinateSpace = [(UIScreen *)self->_screen fixedCoordinateSpace];
+  [(UIWindow *)window convertRect:fixedCoordinateSpace toCoordinateSpace:x, y, width, height];
   v10 = v9;
   v12 = v11;
   v14 = v13;
@@ -110,10 +110,10 @@
   return result;
 }
 
-- (CGVector)convertVector:(CGVector)a3
+- (CGVector)convertVector:(CGVector)vector
 {
-  dy = a3.dy;
-  dx = a3.dx;
+  dy = vector.dy;
+  dx = vector.dx;
   [(RPTWindowCoordinateSpaceConverter *)self convertPoint:*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8)];
   v7 = v6;
   v9 = v8;

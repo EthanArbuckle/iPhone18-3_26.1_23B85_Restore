@@ -1,24 +1,24 @@
 @interface TKTokenKeychainItem
-- (void)setName:(id)a3;
+- (void)setName:(id)name;
 @end
 
 @implementation TKTokenKeychainItem
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
-  v7 = a3;
-  v4 = [(TKTokenKeychainItem *)self label];
+  nameCopy = name;
+  label = [(TKTokenKeychainItem *)self label];
 
-  if (v4)
+  if (label)
   {
-    v5 = [(TKTokenKeychainItem *)self label];
-    v6 = [NSString stringWithFormat:@"%@ (%@)", v7, v5];
+    label2 = [(TKTokenKeychainItem *)self label];
+    v6 = [NSString stringWithFormat:@"%@ (%@)", nameCopy, label2];
     [(TKTokenKeychainItem *)self setLabel:v6];
   }
 
   else
   {
-    [(TKTokenKeychainItem *)self setLabel:v7];
+    [(TKTokenKeychainItem *)self setLabel:nameCopy];
   }
 }
 

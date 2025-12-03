@@ -1,15 +1,15 @@
 @interface CRSUISystemWallpaper
 + (id)_wallpaperInfo;
 + (id)defaultWallpaper;
-+ (id)wallpaperWithIdentifier:(id)a3;
++ (id)wallpaperWithIdentifier:(id)identifier;
 + (id)wallpapers;
-- (BOOL)isEqual:(id)a3;
-- (CRSUISystemWallpaper)initWithIdentifier:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (CRSUISystemWallpaper)initWithIdentifier:(id)identifier;
 - (NSString)cacheID;
 - (NSString)description;
 - (UIColor)color;
-- (id)_imageURLWithCompatibleTraitCollection:(id)a3;
-- (id)_thumbnailImageURLWithCompatibleTraitCollection:(id)a3;
+- (id)_imageURLWithCompatibleTraitCollection:(id)collection;
+- (id)_thumbnailImageURLWithCompatibleTraitCollection:(id)collection;
 - (id)data;
 - (id)resolveWallpaper;
 @end
@@ -19,9 +19,9 @@
 + (id)defaultWallpaper
 {
   v2 = +[CRSUISystemWallpaper wallpapers];
-  v3 = [v2 firstObject];
+  firstObject = [v2 firstObject];
 
-  return v3;
+  return firstObject;
 }
 
 + (id)wallpapers
@@ -36,10 +36,10 @@
   return v3;
 }
 
-+ (id)wallpaperWithIdentifier:(id)a3
++ (id)wallpaperWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithIdentifier:v4];
+  identifierCopy = identifier;
+  v5 = [[self alloc] initWithIdentifier:identifierCopy];
 
   return v5;
 }
@@ -73,18 +73,18 @@ void __34__CRSUISystemWallpaper_wallpapers__block_invoke()
 
 - (id)resolveWallpaper
 {
-  v3 = [(CRSUISystemWallpaper *)self wallpaperAssetCatalogName];
-  v4 = [(CRSUISystemWallpaper *)self thumbnailAssetCatalogName];
+  wallpaperAssetCatalogName = [(CRSUISystemWallpaper *)self wallpaperAssetCatalogName];
+  thumbnailAssetCatalogName = [(CRSUISystemWallpaper *)self thumbnailAssetCatalogName];
   v5 = [CRSUIResolvedWallpaper alloc];
-  v12 = v4;
+  v12 = thumbnailAssetCatalogName;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __40__CRSUISystemWallpaper_resolveWallpaper__block_invoke;
   v13[3] = &unk_278DA0F80;
-  v14 = v3;
+  v14 = wallpaperAssetCatalogName;
   v11 = MEMORY[0x277D85DD0];
-  v6 = v4;
-  v7 = v3;
+  v6 = thumbnailAssetCatalogName;
+  v7 = wallpaperAssetCatalogName;
   v8 = [(CRSUISystemWallpaper *)self color:v11];
   v9 = [(CRSUIResolvedWallpaper *)v5 initWithWallpaperInformation:self imageResolver:v13 thumbnailResolver:&v11 statefulPackage:0 color:v8];
 
@@ -125,8 +125,8 @@ id __40__CRSUISystemWallpaper_resolveWallpaper__block_invoke_2(uint64_t a1, uint
 
 - (UIColor)color
 {
-  v3 = [(CRSUISystemWallpaper *)self systemIdentifier];
-  v4 = [v3 isEqualToString:@"CARWallpaperSolidBlack"];
+  systemIdentifier = [(CRSUISystemWallpaper *)self systemIdentifier];
+  v4 = [systemIdentifier isEqualToString:@"CARWallpaperSolidBlack"];
 
   if (v4)
   {
@@ -136,8 +136,8 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v6 = [(CRSUISystemWallpaper *)self systemIdentifier];
-  v7 = [v6 isEqualToString:@"CARWallpaperSolidBlue"];
+  systemIdentifier2 = [(CRSUISystemWallpaper *)self systemIdentifier];
+  v7 = [systemIdentifier2 isEqualToString:@"CARWallpaperSolidBlue"];
 
   if (v7)
   {
@@ -145,8 +145,8 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v8 = [(CRSUISystemWallpaper *)self systemIdentifier];
-  v9 = [v8 isEqualToString:@"CARWallpaperSolidGray"];
+  systemIdentifier3 = [(CRSUISystemWallpaper *)self systemIdentifier];
+  v9 = [systemIdentifier3 isEqualToString:@"CARWallpaperSolidGray"];
 
   if (v9)
   {
@@ -228,16 +228,16 @@ id __29__CRSUISystemWallpaper_color__block_invoke_3(uint64_t a1, void *a2)
 - (id)data
 {
   v3 = objc_alloc(MEMORY[0x277CF8A70]);
-  v4 = [(CRSUISystemWallpaper *)self identifier];
-  v5 = [v3 initWithIdentifier:v4];
+  identifier = [(CRSUISystemWallpaper *)self identifier];
+  v5 = [v3 initWithIdentifier:identifier];
 
   return v5;
 }
 
 - (NSString)cacheID
 {
-  v3 = [(CRSUISystemWallpaper *)self color];
-  if (v3)
+  color = [(CRSUISystemWallpaper *)self color];
+  if (color)
   {
     systemIdentifier = 0;
   }
@@ -255,22 +255,22 @@ id __29__CRSUISystemWallpaper_color__block_invoke_3(uint64_t a1, void *a2)
 - (NSString)description
 {
   v3 = [MEMORY[0x277CF0C00] builderWithObject:self];
-  v4 = [(CRSUISystemWallpaper *)self identifier];
-  [v3 appendString:v4 withName:@"identifier"];
+  identifier = [(CRSUISystemWallpaper *)self identifier];
+  [v3 appendString:identifier withName:@"identifier"];
 
-  v5 = [(CRSUISystemWallpaper *)self traits];
-  v6 = [v3 appendObject:v5 withName:@"traits"];
+  traits = [(CRSUISystemWallpaper *)self traits];
+  v6 = [v3 appendObject:traits withName:@"traits"];
 
-  v7 = [v3 build];
+  build = [v3 build];
 
-  return v7;
+  return build;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  v6 = v4;
+  v6 = equalCopy;
   if (v5)
   {
     if (objc_opt_isKindOfClass())
@@ -293,9 +293,9 @@ id __29__CRSUISystemWallpaper_color__block_invoke_3(uint64_t a1, void *a2)
 
   if (v8)
   {
-    v9 = [(CRSUISystemWallpaper *)self data];
-    v10 = [v8 data];
-    v11 = [v9 isEqual:v10];
+    data = [(CRSUISystemWallpaper *)self data];
+    data2 = [v8 data];
+    v11 = [data isEqual:data2];
   }
 
   else
@@ -306,12 +306,12 @@ id __29__CRSUISystemWallpaper_color__block_invoke_3(uint64_t a1, void *a2)
   return v11;
 }
 
-- (CRSUISystemWallpaper)initWithIdentifier:(id)a3
+- (CRSUISystemWallpaper)initWithIdentifier:(id)identifier
 {
   v31 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  identifierCopy = identifier;
   v6 = +[CRSUISystemWallpaper _wallpaperInfo];
-  v7 = [v6 objectForKey:v5];
+  v7 = [v6 objectForKey:identifierCopy];
 
   if (v7)
   {
@@ -321,16 +321,16 @@ id __29__CRSUISystemWallpaper_color__block_invoke_3(uint64_t a1, void *a2)
     v9 = v8;
     if (v8)
     {
-      objc_storeStrong(&v8->_systemIdentifier, a3);
+      objc_storeStrong(&v8->_systemIdentifier, identifier);
       v27 = [CRSUIWallpaperTraits alloc];
       v10 = [v7 objectForKeyedSubscript:@"dynamicAppearance"];
-      v26 = [v10 BOOLValue];
+      bOOLValue = [v10 BOOLValue];
       v11 = [v7 objectForKeyedSubscript:@"dashboardPlatterMaterials"];
-      v12 = [v11 BOOLValue];
+      bOOLValue2 = [v11 BOOLValue];
       v13 = [v7 objectForKeyedSubscript:@"iconLabelsBackground"];
-      v14 = [v13 BOOLValue];
+      bOOLValue3 = [v13 BOOLValue];
       v15 = [v7 objectForKeyedSubscript:@"hideRoundedCorners"];
-      v16 = -[CRSUIWallpaperTraits initWithSupportsDynamicAppearance:supportsDashboardPlatterMaterials:iconLabelsRequireBackground:hideRoundedCorners:black:](v27, "initWithSupportsDynamicAppearance:supportsDashboardPlatterMaterials:iconLabelsRequireBackground:hideRoundedCorners:black:", v26, v12, v14, [v15 BOOLValue], -[NSString isEqualToString:](v9->_systemIdentifier, "isEqualToString:", @"CARWallpaperSolidBlack"));
+      v16 = -[CRSUIWallpaperTraits initWithSupportsDynamicAppearance:supportsDashboardPlatterMaterials:iconLabelsRequireBackground:hideRoundedCorners:black:](v27, "initWithSupportsDynamicAppearance:supportsDashboardPlatterMaterials:iconLabelsRequireBackground:hideRoundedCorners:black:", bOOLValue, bOOLValue2, bOOLValue3, [v15 BOOLValue], -[NSString isEqualToString:](v9->_systemIdentifier, "isEqualToString:", @"CARWallpaperSolidBlack"));
       traits = v9->_traits;
       v9->_traits = v16;
 
@@ -344,7 +344,7 @@ id __29__CRSUISystemWallpaper_color__block_invoke_3(uint64_t a1, void *a2)
     }
 
     self = v9;
-    v22 = self;
+    selfCopy = self;
   }
 
   else
@@ -353,34 +353,34 @@ id __29__CRSUISystemWallpaper_color__block_invoke_3(uint64_t a1, void *a2)
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v30 = v5;
+      v30 = identifierCopy;
       _os_log_impl(&dword_243218000, v23, OS_LOG_TYPE_DEFAULT, "[CRSUIWallpaperPreferences] Unknown wallpaper: %{public}@", buf, 0xCu);
     }
 
-    v22 = 0;
+    selfCopy = 0;
   }
 
   v24 = *MEMORY[0x277D85DE8];
-  return v22;
+  return selfCopy;
 }
 
-- (id)_imageURLWithCompatibleTraitCollection:(id)a3
+- (id)_imageURLWithCompatibleTraitCollection:(id)collection
 {
-  v4 = a3;
-  v5 = [(CRSUISystemWallpaper *)self wallpaperAssetCatalogName];
+  collectionCopy = collection;
+  wallpaperAssetCatalogName = [(CRSUISystemWallpaper *)self wallpaperAssetCatalogName];
 
-  if (v5)
+  if (wallpaperAssetCatalogName)
   {
-    v6 = [v4 userInterfaceStyle];
+    userInterfaceStyle = [collectionCopy userInterfaceStyle];
     v7 = @"-Dark";
-    if (v6 == 1)
+    if (userInterfaceStyle == 1)
     {
       v7 = @"-Light";
     }
 
     v8 = v7;
-    v9 = [(CRSUISystemWallpaper *)self wallpaperAssetCatalogName];
-    v10 = [v9 stringByAppendingString:v8];
+    wallpaperAssetCatalogName2 = [(CRSUISystemWallpaper *)self wallpaperAssetCatalogName];
+    v10 = [wallpaperAssetCatalogName2 stringByAppendingString:v8];
 
     v11 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.CarPlayUIServices"];
     v12 = [v11 URLForResource:v10 withExtension:@"heic"];
@@ -394,15 +394,15 @@ id __29__CRSUISystemWallpaper_color__block_invoke_3(uint64_t a1, void *a2)
   return v12;
 }
 
-- (id)_thumbnailImageURLWithCompatibleTraitCollection:(id)a3
+- (id)_thumbnailImageURLWithCompatibleTraitCollection:(id)collection
 {
-  v4 = [(CRSUISystemWallpaper *)self thumbnailAssetCatalogName];
+  thumbnailAssetCatalogName = [(CRSUISystemWallpaper *)self thumbnailAssetCatalogName];
 
-  if (v4)
+  if (thumbnailAssetCatalogName)
   {
     v5 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.CarPlayUIServices"];
-    v6 = [(CRSUISystemWallpaper *)self thumbnailAssetCatalogName];
-    v7 = [v5 URLForResource:v6 withExtension:@"heic"];
+    thumbnailAssetCatalogName2 = [(CRSUISystemWallpaper *)self thumbnailAssetCatalogName];
+    v7 = [v5 URLForResource:thumbnailAssetCatalogName2 withExtension:@"heic"];
   }
 
   else

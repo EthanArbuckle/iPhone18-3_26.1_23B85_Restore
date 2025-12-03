@@ -2,47 +2,47 @@
 - (NSString)previewItemTitle;
 - (NSURL)previewItemURL;
 - (_TtC8Freeform10CRLURLItem)item;
-- (_TtC8Freeform9CRLURLRep)initWithLayout:(id)a3 canvas:(id)a4;
-- (void)cancelReload:(id)a3;
+- (_TtC8Freeform9CRLURLRep)initWithLayout:(id)layout canvas:(id)canvas;
+- (void)cancelReload:(id)reload;
 - (void)enterPreviewMode;
-- (void)processChangedProperty:(unint64_t)a3;
+- (void)processChangedProperty:(unint64_t)property;
 - (void)willBeRemoved;
 @end
 
 @implementation CRLURLRep
 
-- (_TtC8Freeform9CRLURLRep)initWithLayout:(id)a3 canvas:(id)a4
+- (_TtC8Freeform9CRLURLRep)initWithLayout:(id)layout canvas:(id)canvas
 {
-  v5 = a3;
-  v6 = a4;
-  return sub_10070C314(v5, a4);
+  layoutCopy = layout;
+  canvasCopy = canvas;
+  return sub_10070C314(layoutCopy, canvas);
 }
 
 - (void)willBeRemoved
 {
-  v2 = self;
+  selfCopy = self;
   sub_10070C578();
 }
 
-- (void)processChangedProperty:(unint64_t)a3
+- (void)processChangedProperty:(unint64_t)property
 {
-  v4 = self;
-  sub_10070C9E8(a3);
+  selfCopy = self;
+  sub_10070C9E8(property);
 }
 
 - (_TtC8Freeform10CRLURLItem)item
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10070CFB4();
 
   return v3;
 }
 
-- (void)cancelReload:(id)a3
+- (void)cancelReload:(id)reload
 {
-  if (a3)
+  if (reload)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -51,7 +51,7 @@
   else
   {
     memset(v6, 0, sizeof(v6));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   sub_10070D3AC();
@@ -61,8 +61,8 @@
 
 - (void)enterPreviewMode
 {
-  v5 = self;
-  v2 = [(CRLCanvasRep *)v5 info];
+  selfCopy = self;
+  info = [(CRLCanvasRep *)selfCopy info];
   type metadata accessor for CRLBoardItem(0);
   v3 = swift_isaMask & *swift_dynamicCastClassUnconditional();
   v4 = (*(v3 + 624))();
@@ -83,7 +83,7 @@
   v3 = sub_1005B981C(&unk_1019F33C0);
   __chkstk_darwin(v3 - 8);
   v5 = &v17 - v4;
-  v6 = self;
+  selfCopy = self;
   CRLLinkViewHostingRep.item.getter();
   v8 = v7;
   ObjectType = swift_getObjectType();
@@ -107,7 +107,7 @@
 
 - (NSString)previewItemTitle
 {
-  v2 = self;
+  selfCopy = self;
   CRLLinkViewHostingRep.item.getter();
   v4 = v3;
   ObjectType = swift_getObjectType();

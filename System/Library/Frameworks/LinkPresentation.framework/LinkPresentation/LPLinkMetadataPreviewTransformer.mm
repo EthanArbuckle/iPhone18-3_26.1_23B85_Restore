@@ -1,23 +1,23 @@
 @interface LPLinkMetadataPreviewTransformer
 - (LPImage)previewImage;
-- (LPLinkMetadataPreviewTransformer)initWithMetadata:(id)a3 URL:(id)a4;
+- (LPLinkMetadataPreviewTransformer)initWithMetadata:(id)metadata URL:(id)l;
 - (NSString)previewSummary;
 @end
 
 @implementation LPLinkMetadataPreviewTransformer
 
-- (LPLinkMetadataPreviewTransformer)initWithMetadata:(id)a3 URL:(id)a4
+- (LPLinkMetadataPreviewTransformer)initWithMetadata:(id)metadata URL:(id)l
 {
-  v7 = a3;
-  v8 = a4;
+  metadataCopy = metadata;
+  lCopy = l;
   v13.receiver = self;
   v13.super_class = LPLinkMetadataPreviewTransformer;
   v9 = [(LPLinkMetadataPreviewTransformer *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_metadata, a3);
-    objc_storeStrong(&v10->_URL, a4);
+    objc_storeStrong(&v9->_metadata, metadata);
+    objc_storeStrong(&v10->_URL, l);
     v11 = v10;
   }
 
@@ -26,20 +26,20 @@
 
 - (NSString)previewSummary
 {
-  v3 = [(LPLinkMetadata *)self->_metadata specialization];
-  if (v3)
+  specialization = [(LPLinkMetadata *)self->_metadata specialization];
+  if (specialization)
   {
-    v4 = v3;
-    v5 = [(LPLinkMetadata *)self->_metadata specialization];
-    if ([v5 conformsToProtocol:&unk_1F24957B8])
+    v4 = specialization;
+    specialization2 = [(LPLinkMetadata *)self->_metadata specialization];
+    if ([specialization2 conformsToProtocol:&unk_1F24957B8])
     {
-      v6 = [(LPLinkMetadata *)self->_metadata specialization];
+      specialization3 = [(LPLinkMetadata *)self->_metadata specialization];
       v7 = objc_opt_respondsToSelector();
 
       if (v7)
       {
-        v8 = [(LPLinkMetadata *)self->_metadata specialization];
-        v9 = [v8 previewSummaryForTransformer:self];
+        specialization4 = [(LPLinkMetadata *)self->_metadata specialization];
+        v9 = [specialization4 previewSummaryForTransformer:self];
         goto LABEL_18;
       }
     }
@@ -49,22 +49,22 @@
     }
   }
 
-  v10 = [(LPLinkMetadata *)self->_metadata title];
-  v8 = truncatedStringAtMaximumMetadataLength(v10);
+  title = [(LPLinkMetadata *)self->_metadata title];
+  specialization4 = truncatedStringAtMaximumMetadataLength(title);
 
   URL = self->_URL;
-  v12 = URL;
+  originalURL = URL;
   if (!URL)
   {
-    v12 = [(LPLinkMetadata *)self->_metadata originalURL];
+    originalURL = [(LPLinkMetadata *)self->_metadata originalURL];
   }
 
-  v13 = [v12 _lp_simplifiedDisplayString];
-  v14 = truncatedStringAtMaximumMetadataLength(v13);
+  _lp_simplifiedDisplayString = [originalURL _lp_simplifiedDisplayString];
+  v14 = truncatedStringAtMaximumMetadataLength(_lp_simplifiedDisplayString);
 
   if (URL)
   {
-    if (!v8)
+    if (!specialization4)
     {
       goto LABEL_14;
     }
@@ -73,7 +73,7 @@
   else
   {
 
-    if (!v8)
+    if (!specialization4)
     {
       goto LABEL_14;
     }
@@ -83,7 +83,7 @@
   {
     v15 = MEMORY[0x1E696AEC0];
     v16 = LPLocalizedString(@"Website: %@ (%@)");
-    v17 = [v15 localizedStringWithFormat:v16, v8, v14];
+    v17 = [v15 localizedStringWithFormat:v16, specialization4, v14];
     goto LABEL_16;
   }
 
@@ -108,22 +108,22 @@ LABEL_18:
 
 - (LPImage)previewImage
 {
-  v3 = [(LPLinkMetadata *)self->_metadata specialization];
-  if (!v3)
+  specialization = [(LPLinkMetadata *)self->_metadata specialization];
+  if (!specialization)
   {
     goto LABEL_5;
   }
 
-  v4 = v3;
-  v5 = [(LPLinkMetadata *)self->_metadata specialization];
-  if (([v5 conformsToProtocol:&unk_1F24957B8] & 1) == 0)
+  specialization4 = specialization;
+  specialization2 = [(LPLinkMetadata *)self->_metadata specialization];
+  if (([specialization2 conformsToProtocol:&unk_1F24957B8] & 1) == 0)
   {
 
     v8 = 0;
     goto LABEL_7;
   }
 
-  v6 = [(LPLinkMetadata *)self->_metadata specialization];
+  specialization3 = [(LPLinkMetadata *)self->_metadata specialization];
   v7 = objc_opt_respondsToSelector();
 
   if ((v7 & 1) == 0)
@@ -133,8 +133,8 @@ LABEL_5:
     goto LABEL_8;
   }
 
-  v4 = [(LPLinkMetadata *)self->_metadata specialization];
-  v8 = [v4 previewImageForTransformer:self];
+  specialization4 = [(LPLinkMetadata *)self->_metadata specialization];
+  v8 = [specialization4 previewImageForTransformer:self];
 LABEL_7:
 
 LABEL_8:

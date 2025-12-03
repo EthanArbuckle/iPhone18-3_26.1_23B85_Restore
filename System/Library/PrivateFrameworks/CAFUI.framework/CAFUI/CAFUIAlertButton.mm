@@ -1,8 +1,8 @@
 @interface CAFUIAlertButton
 - (_TtC5CAFUI16CAFUIAlertButton)init;
-- (_TtC5CAFUI16CAFUIAlertButton)initWithCoder:(id)a3;
-- (_TtC5CAFUI16CAFUIAlertButton)initWithFrame:(CGRect)a3;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
+- (_TtC5CAFUI16CAFUIAlertButton)initWithCoder:(id)coder;
+- (_TtC5CAFUI16CAFUIAlertButton)initWithFrame:(CGRect)frame;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
 @end
 
 @implementation CAFUIAlertButton
@@ -14,31 +14,31 @@
   v2 = [(CAFUIAlertButton *)&v8 initWithFrame:0.0, 0.0, 0.0, 0.0];
   v3 = objc_opt_self();
   v4 = v2;
-  v5 = [v3 tintColor];
-  [(CAFUIAlertButton *)v4 setTitleColor:v5 forState:0];
+  tintColor = [v3 tintColor];
+  [(CAFUIAlertButton *)v4 setTitleColor:tintColor forState:0];
 
-  v6 = [v3 _carSystemQuaternaryColor];
-  [(CAFUIAlertButton *)v4 setBackgroundColor:v6];
+  _carSystemQuaternaryColor = [v3 _carSystemQuaternaryColor];
+  [(CAFUIAlertButton *)v4 setBackgroundColor:_carSystemQuaternaryColor];
 
   return v4;
 }
 
-- (_TtC5CAFUI16CAFUIAlertButton)initWithCoder:(id)a3
+- (_TtC5CAFUI16CAFUIAlertButton)initWithCoder:(id)coder
 {
   result = _assertionFailure(_:_:file:line:flags:)();
   __break(1u);
   return result;
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  CAFUIAlertButton.didUpdateFocus(in:with:)(v6, v7);
+  contextCopy = context;
+  coordinatorCopy = coordinator;
+  selfCopy = self;
+  CAFUIAlertButton.didUpdateFocus(in:with:)(contextCopy, coordinatorCopy);
 }
 
-- (_TtC5CAFUI16CAFUIAlertButton)initWithFrame:(CGRect)a3
+- (_TtC5CAFUI16CAFUIAlertButton)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

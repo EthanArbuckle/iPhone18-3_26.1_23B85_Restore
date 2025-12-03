@@ -1,43 +1,43 @@
 @interface PUMailActivity
 + (BOOL)allowedToModifyEmailAccounts;
-+ (BOOL)canPerformActivityAsIndividualItemsInSourceController:(id)a3;
-+ (BOOL)canPerformActivityWithTotalCount:(unint64_t)a3 assetMediaTypeCount:(PXAssetMediaTypeCount *)a4;
++ (BOOL)canPerformActivityAsIndividualItemsInSourceController:(id)controller;
++ (BOOL)canPerformActivityWithTotalCount:(unint64_t)count assetMediaTypeCount:(PXAssetMediaTypeCount *)typeCount;
 + (BOOL)isMailDropEnabled;
-+ (id)_expirationStringForMomentShare:(id)a3;
-+ (id)_momentShareLinkActivityItemsForURL:(id)a3 momentShare:(id)a4;
-+ (id)_momentShareLinkSubjectForMomentShare:(id)a3;
-+ (id)_momentShareLinkTitleForMomentShare:(id)a3;
++ (id)_expirationStringForMomentShare:(id)share;
++ (id)_momentShareLinkActivityItemsForURL:(id)l momentShare:(id)share;
++ (id)_momentShareLinkSubjectForMomentShare:(id)share;
++ (id)_momentShareLinkTitleForMomentShare:(id)share;
 + (void)openEmailAccountPrefs;
-- (BOOL)_canPerformForIndividualAssetsWithActivityItems:(id)a3;
+- (BOOL)_canPerformForIndividualAssetsWithActivityItems:(id)items;
 - (BOOL)_canPerformWithLink;
-- (BOOL)_dismissActivityFromViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5;
+- (BOOL)_dismissActivityFromViewController:(id)controller animated:(BOOL)animated completion:(id)completion;
 - (BOOL)_isMailDropEnabled;
 - (BOOL)_momentShareLinkDidFail;
-- (BOOL)_presentActivityOnViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (BOOL)_showTrimViewControllerIfNeededForVideoAsset:(id)a3;
-- (BOOL)canPerformWithActivityItems:(id)a3;
+- (BOOL)_presentActivityOnViewController:(id)controller animated:(BOOL)animated completion:(id)completion;
+- (BOOL)_showTrimViewControllerIfNeededForVideoAsset:(id)asset;
+- (BOOL)canPerformWithActivityItems:(id)items;
 - (PUMailActivity)init;
 - (PXActivityItemSourceController)itemSourceController;
 - (id)activityViewController;
 - (id)mailComposeViewController;
 - (void)_cleanupRemaker;
-- (void)_composeMailForVideo:(id)a3 trimmedFilePath:(id)a4;
-- (void)_prepareWithMomentShareLink:(id)a3;
+- (void)_composeMailForVideo:(id)video trimmedFilePath:(id)path;
+- (void)_prepareWithMomentShareLink:(id)link;
 - (void)_pu_cleanup;
-- (void)_remakeAndSendVideoAsset:(id)a3 withTrimStartTime:(double)a4 endTime:(double)a5;
+- (void)_remakeAndSendVideoAsset:(id)asset withTrimStartTime:(double)time endTime:(double)endTime;
 - (void)_removeTempVideoRemakerFile;
-- (void)_showTrimViewControllerForVideo:(id)a3 maximumTrimDuration:(double)a4 trimButtonTitle:(id)a5;
-- (void)_transcodeAndSendVideo:(id)a3;
-- (void)activityDidFinish:(BOOL)a3;
+- (void)_showTrimViewControllerForVideo:(id)video maximumTrimDuration:(double)duration trimButtonTitle:(id)title;
+- (void)_transcodeAndSendVideo:(id)video;
+- (void)activityDidFinish:(BOOL)finish;
 - (void)cancelRemaking;
 - (void)dealloc;
-- (void)editVideoViewController:(id)a3 didTrimVideoWithOptions:(id)a4;
-- (void)editVideoViewControllerDidCancel:(id)a3;
+- (void)editVideoViewController:(id)controller didTrimVideoWithOptions:(id)options;
+- (void)editVideoViewControllerDidCancel:(id)cancel;
 - (void)performActivity;
-- (void)prepareWithActivityItems:(id)a3;
-- (void)remakeVideoAsset:(id)a3 withTrimStartTime:(double)a4 endTime:(double)a5 progressHandler:(id)a6 completionHandler:(id)a7;
-- (void)videoRemakerDidBeginRemaking:(id)a3;
-- (void)videoRemakerDidEndRemaking:(id)a3 temporaryPath:(id)a4;
+- (void)prepareWithActivityItems:(id)items;
+- (void)remakeVideoAsset:(id)asset withTrimStartTime:(double)time endTime:(double)endTime progressHandler:(id)handler completionHandler:(id)completionHandler;
+- (void)videoRemakerDidBeginRemaking:(id)remaking;
+- (void)videoRemakerDidEndRemaking:(id)remaking temporaryPath:(id)path;
 @end
 
 @implementation PUMailActivity
@@ -49,7 +49,7 @@
   return WeakRetained;
 }
 
-- (void)editVideoViewControllerDidCancel:(id)a3
+- (void)editVideoViewControllerDidCancel:(id)cancel
 {
   mailComposeViewController = self->super._mailComposeViewController;
   v4[0] = MEMORY[0x1E69E9820];
@@ -72,7 +72,7 @@ uint64_t __51__PUMailActivity_editVideoViewControllerDidCancel___block_invoke(ui
   return [v4 activityDidFinish:0];
 }
 
-- (void)editVideoViewController:(id)a3 didTrimVideoWithOptions:(id)a4
+- (void)editVideoViewController:(id)controller didTrimVideoWithOptions:(id)options
 {
   mailComposeViewController = self->super._mailComposeViewController;
   v13[0] = MEMORY[0x1E69E9820];
@@ -80,13 +80,13 @@ uint64_t __51__PUMailActivity_editVideoViewControllerDidCancel___block_invoke(ui
   v13[2] = __66__PUMailActivity_editVideoViewController_didTrimVideoWithOptions___block_invoke;
   v13[3] = &unk_1E7B80DD0;
   v13[4] = self;
-  v6 = a4;
+  optionsCopy = options;
   [(MFMailComposeViewController *)mailComposeViewController dismissViewControllerAnimated:1 completion:v13];
-  v7 = [v6 objectForKey:*MEMORY[0x1E69DE9C0]];
+  v7 = [optionsCopy objectForKey:*MEMORY[0x1E69DE9C0]];
   [v7 doubleValue];
   v9 = v8;
 
-  v10 = [v6 objectForKey:*MEMORY[0x1E69DE9B8]];
+  v10 = [optionsCopy objectForKey:*MEMORY[0x1E69DE9B8]];
 
   [v10 doubleValue];
   v12 = v11;
@@ -102,11 +102,11 @@ void __66__PUMailActivity_editVideoViewController_didTrimVideoWithOptions___bloc
   *(v2 + 216) = 0;
 }
 
-- (void)activityDidFinish:(BOOL)a3
+- (void)activityDidFinish:(BOOL)finish
 {
   v4.receiver = self;
   v4.super_class = PUMailActivity;
-  [(UIActivity *)&v4 activityDidFinish:a3];
+  [(UIActivity *)&v4 activityDidFinish:finish];
   [(PUMailActivity *)self _pu_cleanup];
 }
 
@@ -132,12 +132,12 @@ void __66__PUMailActivity_editVideoViewController_didTrimVideoWithOptions___bloc
   }
 }
 
-- (BOOL)_dismissActivityFromViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (BOOL)_dismissActivityFromViewController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
   if (BYTE4(self->_strongSelf) == 1)
   {
     v6 = 1;
-    [(PHAsset *)self->_videoAssetBeingTrimmed dismissViewControllerAnimated:1 completion:a5];
+    [(PHAsset *)self->_videoAssetBeingTrimmed dismissViewControllerAnimated:1 completion:completion];
     BYTE4(self->_strongSelf) = 0;
   }
 
@@ -145,21 +145,21 @@ void __66__PUMailActivity_editVideoViewController_didTrimVideoWithOptions___bloc
   {
     v8.receiver = self;
     v8.super_class = PUMailActivity;
-    return [(UIMailActivity *)&v8 _dismissActivityFromViewController:a3 animated:a4 completion:a5];
+    return [(UIMailActivity *)&v8 _dismissActivityFromViewController:controller animated:animated completion:completion];
   }
 
   return v6;
 }
 
-- (BOOL)_presentActivityOnViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (BOOL)_presentActivityOnViewController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
-  v6 = a4;
-  v10 = a3;
+  animatedCopy = animated;
+  controllerCopy = controller;
   if (self->_strongSelf)
   {
     if ([getMFMailComposeViewControllerClass() canSendMail])
     {
-      objc_storeStrong(&self->super._mailComposeViewController, a3);
+      objc_storeStrong(&self->super._mailComposeViewController, controller);
       v11 = PLSharingGetLog();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
@@ -167,35 +167,35 @@ void __66__PUMailActivity_editVideoViewController_didTrimVideoWithOptions___bloc
         _os_log_impl(&dword_1B36F3000, v11, OS_LOG_TYPE_DEFAULT, "Share Sheet: Mail Activity: Trimming and/or re-transcode single video to an acceptable attachment size...", v20, 2u);
       }
 
-      v12 = [(PUMailActivity *)self itemSourceController];
-      v13 = [v12 assets];
-      if ([v13 count] == 1)
+      itemSourceController = [(PUMailActivity *)self itemSourceController];
+      assets = [itemSourceController assets];
+      if ([assets count] == 1)
       {
-        v14 = [v13 lastObject];
-        if ([v14 isVideo])
+        lastObject = [assets lastObject];
+        if ([lastObject isVideo])
         {
-          v15 = [v13 lastObject];
+          lastObject2 = [assets lastObject];
         }
 
         else
         {
-          v15 = 0;
+          lastObject2 = 0;
         }
       }
 
       else
       {
-        v15 = 0;
+        lastObject2 = 0;
       }
 
-      v17 = [v15 pl_managedAsset];
-      if (!v17)
+      pl_managedAsset = [lastObject2 pl_managedAsset];
+      if (!pl_managedAsset)
       {
-        v19 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v19 handleFailureInMethod:a2 object:self file:@"PUMailActivity.m" lineNumber:685 description:@"expect single video"];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"PUMailActivity.m" lineNumber:685 description:@"expect single video"];
       }
 
-      [(PUMailActivity *)self _transcodeAndSendVideo:v15];
+      [(PUMailActivity *)self _transcodeAndSendVideo:lastObject2];
 
       v16 = 1;
     }
@@ -211,7 +211,7 @@ void __66__PUMailActivity_editVideoViewController_didTrimVideoWithOptions___bloc
   {
     v21.receiver = self;
     v21.super_class = PUMailActivity;
-    v16 = [(UIMailActivity *)&v21 _presentActivityOnViewController:v10 animated:v6 completion:a5];
+    v16 = [(UIMailActivity *)&v21 _presentActivityOnViewController:controllerCopy animated:animatedCopy completion:completion];
   }
 
   return v16;
@@ -221,63 +221,63 @@ void __66__PUMailActivity_editVideoViewController_didTrimVideoWithOptions___bloc
 {
   if ([(PUMailActivity *)self _momentShareLinkDidFail]|| (self->_strongSelf & 1) != 0)
   {
-    v3 = 0;
+    mailComposeViewController = 0;
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = PUMailActivity;
-    v3 = [(UIMailActivity *)&v5 mailComposeViewController];
+    mailComposeViewController = [(UIMailActivity *)&v5 mailComposeViewController];
   }
 
-  return v3;
+  return mailComposeViewController;
 }
 
 - (id)activityViewController
 {
   if ([(PUMailActivity *)self _momentShareLinkDidFail])
   {
-    v3 = 0;
+    activityViewController = 0;
   }
 
   else if (self->_strongSelf)
   {
-    v3 = self->_videoAssetBeingTrimmed;
+    activityViewController = self->_videoAssetBeingTrimmed;
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = PUMailActivity;
-    v3 = [(UIMailActivity *)&v5 activityViewController];
+    activityViewController = [(UIMailActivity *)&v5 activityViewController];
   }
 
-  return v3;
+  return activityViewController;
 }
 
-- (void)prepareWithActivityItems:(id)a3
+- (void)prepareWithActivityItems:(id)items
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PUMailActivity *)self itemSourceController];
-  v6 = [v5 publishedURL];
+  itemsCopy = items;
+  itemSourceController = [(PUMailActivity *)self itemSourceController];
+  publishedURL = [itemSourceController publishedURL];
 
-  if (v6)
+  if (publishedURL)
   {
-    v7 = [v5 publishedURL];
-    [(PUMailActivity *)self _prepareWithMomentShareLink:v7];
+    publishedURL2 = [itemSourceController publishedURL];
+    [(PUMailActivity *)self _prepareWithMomentShareLink:publishedURL2];
 
 LABEL_8:
-    v11 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v12 = [(PUMailActivity *)self itemSourceController];
-    v13 = [v12 assetItemSources];
+    itemSourceController2 = [(PUMailActivity *)self itemSourceController];
+    assetItemSources = [itemSourceController2 assetItemSources];
 
-    v14 = [v13 countByEnumeratingWithState:&v21 objects:v26 count:16];
+    v14 = [assetItemSources countByEnumeratingWithState:&v21 objects:v26 count:16];
     if (v14)
     {
       v15 = v14;
@@ -289,25 +289,25 @@ LABEL_8:
         {
           if (*v22 != v16)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(assetItemSources);
           }
 
-          v18 = [*(*(&v21 + 1) + 8 * v17) asset];
-          v19 = [v18 uuid];
-          [v11 addObject:v19];
+          asset = [*(*(&v21 + 1) + 8 * v17) asset];
+          uuid = [asset uuid];
+          [array addObject:uuid];
 
           ++v17;
         }
 
         while (v15 != v17);
-        v15 = [v13 countByEnumeratingWithState:&v21 objects:v26 count:16];
+        v15 = [assetItemSources countByEnumeratingWithState:&v21 objects:v26 count:16];
       }
 
       while (v15);
     }
 
-    v20 = [(PUMailActivity *)self mailComposeViewController];
-    [v20 setPhotoIDs:v11];
+    mailComposeViewController = [(PUMailActivity *)self mailComposeViewController];
+    [mailComposeViewController setPhotoIDs:array];
 
     goto LABEL_16;
   }
@@ -316,7 +316,7 @@ LABEL_8:
   {
     v25.receiver = self;
     v25.super_class = PUMailActivity;
-    [(UIMailActivity *)&v25 prepareWithActivityItems:v4];
+    [(UIMailActivity *)&v25 prepareWithActivityItems:itemsCopy];
     goto LABEL_8;
   }
 
@@ -341,39 +341,39 @@ LABEL_8:
 LABEL_16:
 }
 
-- (void)_prepareWithMomentShareLink:(id)a3
+- (void)_prepareWithMomentShareLink:(id)link
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  linkCopy = link;
+  if (linkCopy)
   {
-    v5 = [MEMORY[0x1E69789A8] sharedMomentSharePhotoLibrary];
-    v6 = [v5 librarySpecificFetchOptions];
+    mEMORY[0x1E69789A8] = [MEMORY[0x1E69789A8] sharedMomentSharePhotoLibrary];
+    librarySpecificFetchOptions = [mEMORY[0x1E69789A8] librarySpecificFetchOptions];
 
     v17 = 0;
-    v7 = [MEMORY[0x1E6978930] fetchLocalMomentShareFromShareURL:v4 error:&v17 options:v6];
+    v7 = [MEMORY[0x1E6978930] fetchLocalMomentShareFromShareURL:linkCopy error:&v17 options:librarySpecificFetchOptions];
     v8 = v17;
     if (!v7)
     {
       v9 = PLSharingGetLog();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
-        v10 = [v4 pl_redactedShareURL];
+        pl_redactedShareURL = [linkCopy pl_redactedShareURL];
         *buf = 138543618;
-        v19 = v10;
+        v19 = pl_redactedShareURL;
         v20 = 2112;
         v21 = v8;
         _os_log_impl(&dword_1B36F3000, v9, OS_LOG_TYPE_ERROR, "Share Sheet: Mail activity failed to fetch moment share for URL: %{public}@ with error: %@", buf, 0x16u);
       }
     }
 
-    v11 = [objc_opt_class() _momentShareLinkActivityItemsForURL:v4 momentShare:v7];
+    v11 = [objc_opt_class() _momentShareLinkActivityItemsForURL:linkCopy momentShare:v7];
     v16.receiver = self;
     v16.super_class = PUMailActivity;
     [(UIMailActivity *)&v16 prepareWithActivityItems:v11];
     v12 = [objc_opt_class() _momentShareLinkSubjectForMomentShare:v7];
-    v13 = [(PUMailActivity *)self mailComposeViewController];
-    [v13 setSubject:v12];
+    mailComposeViewController = [(PUMailActivity *)self mailComposeViewController];
+    [mailComposeViewController setSubject:v12];
   }
 
   else
@@ -391,16 +391,16 @@ LABEL_16:
   }
 }
 
-- (BOOL)_canPerformForIndividualAssetsWithActivityItems:(id)a3
+- (BOOL)_canPerformForIndividualAssetsWithActivityItems:(id)items
 {
   v22.receiver = self;
   v22.super_class = PUMailActivity;
-  v4 = [(UIMailActivity *)&v22 canPerformWithActivityItems:a3];
+  v4 = [(UIMailActivity *)&v22 canPerformWithActivityItems:items];
   if (v4)
   {
-    v5 = [(PUMailActivity *)self _isMailDropEnabled];
-    v6 = [(PUMailActivity *)self itemSourceController];
-    if (v5)
+    _isMailDropEnabled = [(PUMailActivity *)self _isMailDropEnabled];
+    itemSourceController = [(PUMailActivity *)self itemSourceController];
+    if (_isMailDropEnabled)
     {
       v7 = 0;
       LOBYTE(v8) = 1;
@@ -410,11 +410,11 @@ LABEL_16:
 
   else
   {
-    v6 = [(PUMailActivity *)self itemSourceController];
+    itemSourceController = [(PUMailActivity *)self itemSourceController];
   }
 
-  v9 = [v6 assets];
-  v10 = [v9 count];
+  assets = [itemSourceController assets];
+  v10 = [assets count];
 
   if (v10)
   {
@@ -423,9 +423,9 @@ LABEL_16:
     v20 = 0u;
     *buf = 0u;
     v18 = 0u;
-    if (v6)
+    if (itemSourceController)
     {
-      [v6 requestAssetsMediaTypeCount];
+      [itemSourceController requestAssetsMediaTypeCount];
     }
 
     v11 = objc_opt_class();
@@ -449,14 +449,14 @@ LABEL_16:
   }
 
 LABEL_12:
-  if ([v6 shouldShareAsUnmodifiedOriginals])
+  if ([itemSourceController shouldShareAsUnmodifiedOriginals])
   {
     LOBYTE(self->_strongSelf) = 0;
   }
 
   else
   {
-    v12 = [v6 preferredExportFormat] != 1 && v7;
+    v12 = [itemSourceController preferredExportFormat] != 1 && v7;
     LOBYTE(self->_strongSelf) = v12;
     if (v12)
     {
@@ -475,8 +475,8 @@ LABEL_12:
 - (BOOL)_canPerformWithLink
 {
   v7[1] = *MEMORY[0x1E69E9840];
-  v3 = [objc_opt_class() _momentShareLinkPrompt];
-  v7[0] = v3;
+  _momentShareLinkPrompt = [objc_opt_class() _momentShareLinkPrompt];
+  v7[0] = _momentShareLinkPrompt;
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v7 count:1];
   v6.receiver = self;
   v6.super_class = PUMailActivity;
@@ -485,35 +485,35 @@ LABEL_12:
   return self;
 }
 
-- (BOOL)canPerformWithActivityItems:(id)a3
+- (BOOL)canPerformWithActivityItems:(id)items
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PUMailActivity *)self itemSourceController];
-  if ([v5 preferredPreparationType] == 1)
+  itemsCopy = items;
+  itemSourceController = [(PUMailActivity *)self itemSourceController];
+  if ([itemSourceController preferredPreparationType] == 1)
   {
-    v6 = [(PUMailActivity *)self _canPerformWithLink];
+    _canPerformWithLink = [(PUMailActivity *)self _canPerformWithLink];
   }
 
   else
   {
-    v6 = [(PUMailActivity *)self _canPerformForIndividualAssetsWithActivityItems:v4];
-    v7 = [v5 assets];
-    v8 = [v7 count];
+    _canPerformWithLink = [(PUMailActivity *)self _canPerformForIndividualAssetsWithActivityItems:itemsCopy];
+    assets = [itemSourceController assets];
+    v8 = [assets count];
 
     if (v8)
     {
-      v9 = [MEMORY[0x1E69C33D8] sharedInstance];
-      v10 = [v9 cmmShareSheetBehavior];
+      mEMORY[0x1E69C33D8] = [MEMORY[0x1E69C33D8] sharedInstance];
+      cmmShareSheetBehavior = [mEMORY[0x1E69C33D8] cmmShareSheetBehavior];
 
-      v11 = [v5 assets];
-      v12 = [v11 firstObject];
-      v13 = [v12 photoLibrary];
+      assets2 = [itemSourceController assets];
+      firstObject = [assets2 firstObject];
+      photoLibrary = [firstObject photoLibrary];
 
-      if (v13)
+      if (photoLibrary)
       {
         v14 = PXCMMHasSendAndReceiveCapabilities();
-        if (v10 == 3)
+        if (cmmShareSheetBehavior == 3)
         {
           v15 = v14;
         }
@@ -523,7 +523,7 @@ LABEL_12:
           v15 = 0;
         }
 
-        v6 |= v15;
+        _canPerformWithLink |= v15;
       }
 
       else
@@ -532,23 +532,23 @@ LABEL_12:
         if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
         {
           v18 = 138412290;
-          v19 = v5;
+          v19 = itemSourceController;
           _os_log_impl(&dword_1B36F3000, v16, OS_LOG_TYPE_ERROR, "Mail Activity: Photo library was nil, so returning unable to determine if CMM is enabled. Item source controller: %@", &v18, 0xCu);
         }
       }
     }
   }
 
-  return v6 & 1;
+  return _canPerformWithLink & 1;
 }
 
 - (BOOL)_momentShareLinkDidFail
 {
-  v2 = [(PUMailActivity *)self itemSourceController];
-  if ([v2 momentSharePublishAttempted])
+  itemSourceController = [(PUMailActivity *)self itemSourceController];
+  if ([itemSourceController momentSharePublishAttempted])
   {
-    v3 = [v2 publishedURL];
-    v4 = v3 == 0;
+    publishedURL = [itemSourceController publishedURL];
+    v4 = publishedURL == 0;
   }
 
   else
@@ -559,34 +559,34 @@ LABEL_12:
   return v4;
 }
 
-- (void)_composeMailForVideo:(id)a3 trimmedFilePath:(id)a4
+- (void)_composeMailForVideo:(id)video trimmedFilePath:(id)path
 {
-  v6 = a4;
+  pathCopy = path;
   v7 = self->_videoAssetBeingTrimmed;
-  v8 = a3;
+  videoCopy = video;
   [(PHAsset *)v7 setMailComposeDelegate:self];
-  v9 = [v8 pl_managedAsset];
+  pl_managedAsset = [videoCopy pl_managedAsset];
 
-  v10 = [v9 pathForVideoFile];
-  v11 = [v10 lastPathComponent];
-  v12 = v11;
-  if (v6)
+  pathForVideoFile = [pl_managedAsset pathForVideoFile];
+  lastPathComponent = [pathForVideoFile lastPathComponent];
+  v12 = lastPathComponent;
+  if (pathCopy)
   {
-    v13 = [v11 stringByDeletingPathExtension];
+    stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
 
-    v14 = [v6 pathExtension];
-    v12 = [v13 stringByAppendingPathExtension:v14];
+    pathExtension = [pathCopy pathExtension];
+    v12 = [stringByDeletingPathExtension stringByAppendingPathExtension:pathExtension];
 
-    v10 = v6;
+    pathForVideoFile = pathCopy;
   }
 
-  v15 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithContentsOfFile:v10 options:1 error:0];
+  v15 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithContentsOfFile:pathForVideoFile options:1 error:0];
   v16 = MEMORY[0x1E6982C40];
-  v17 = [v10 pathExtension];
-  v18 = [v16 typeWithFilenameExtension:v17];
+  pathExtension2 = [pathForVideoFile pathExtension];
+  v18 = [v16 typeWithFilenameExtension:pathExtension2];
 
-  v19 = [v18 preferredMIMEType];
-  [(PHAsset *)v7 addAttachmentData:v15 mimeType:v19 fileName:v12];
+  preferredMIMEType = [v18 preferredMIMEType];
+  [(PHAsset *)v7 addAttachmentData:v15 mimeType:preferredMIMEType fileName:v12];
 
   if (BYTE3(self->_strongSelf) == 1)
   {
@@ -624,13 +624,13 @@ uint64_t __55__PUMailActivity__composeMailForVideo_trimmedFilePath___block_invok
   return result;
 }
 
-- (void)videoRemakerDidEndRemaking:(id)a3 temporaryPath:(id)a4
+- (void)videoRemakerDidEndRemaking:(id)remaking temporaryPath:(id)path
 {
-  v5 = a4;
-  if (-[PUMailActivity _remakerWasCancelled](self, "_remakerWasCancelled") || ![v5 length])
+  pathCopy = path;
+  if (-[PUMailActivity _remakerWasCancelled](self, "_remakerWasCancelled") || ![pathCopy length])
   {
 
-    v5 = 0;
+    pathCopy = 0;
   }
 
   v7[0] = MEMORY[0x1E69E9820];
@@ -638,8 +638,8 @@ uint64_t __55__PUMailActivity__composeMailForVideo_trimmedFilePath___block_invok
   v7[2] = __59__PUMailActivity_videoRemakerDidEndRemaking_temporaryPath___block_invoke;
   v7[3] = &unk_1E7B80C38;
   v7[4] = self;
-  v8 = v5;
-  v6 = v5;
+  v8 = pathCopy;
+  v6 = pathCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v7);
 }
 
@@ -663,7 +663,7 @@ void __59__PUMailActivity_videoRemakerDidEndRemaking_temporaryPath___block_invok
   *(v5 + 248) = 0;
 }
 
-- (void)videoRemakerDidBeginRemaking:(id)a3
+- (void)videoRemakerDidBeginRemaking:(id)remaking
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -683,14 +683,14 @@ void __47__PUMailActivity_videoRemakerDidBeginRemaking___block_invoke(uint64_t a
 - (void)_removeTempVideoRemakerFile
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [(PUMailActivity *)self transcodedVideoFilePath];
-  v4 = [v3 length];
+  transcodedVideoFilePath = [(PUMailActivity *)self transcodedVideoFilePath];
+  v4 = [transcodedVideoFilePath length];
 
   if (v4)
   {
     v5 = MEMORY[0x1E695DFF8];
-    v6 = [(PUMailActivity *)self transcodedVideoFilePath];
-    v7 = [v5 fileURLWithPath:v6];
+    transcodedVideoFilePath2 = [(PUMailActivity *)self transcodedVideoFilePath];
+    v7 = [v5 fileURLWithPath:transcodedVideoFilePath2];
 
     if (v7)
     {
@@ -703,9 +703,9 @@ void __47__PUMailActivity_videoRemakerDidBeginRemaking___block_invoke(uint64_t a
       }
 
       [(PUMailActivity *)self setTranscodedVideoFilePath:0];
-      v9 = [MEMORY[0x1E696AC08] defaultManager];
+      defaultManager = [MEMORY[0x1E696AC08] defaultManager];
       v13 = 0;
-      v10 = [v9 removeItemAtURL:v7 error:&v13];
+      v10 = [defaultManager removeItemAtURL:v7 error:&v13];
       v11 = v13;
 
       if ((v10 & 1) == 0)
@@ -733,24 +733,24 @@ void __47__PUMailActivity_videoRemakerDidBeginRemaking___block_invoke(uint64_t a
   self->_remakerProgressView = 0;
 }
 
-- (void)remakeVideoAsset:(id)a3 withTrimStartTime:(double)a4 endTime:(double)a5 progressHandler:(id)a6 completionHandler:(id)a7
+- (void)remakeVideoAsset:(id)asset withTrimStartTime:(double)time endTime:(double)endTime progressHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v12 = a3;
-  v13 = a6;
-  v14 = a7;
+  assetCopy = asset;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __95__PUMailActivity_remakeVideoAsset_withTrimStartTime_endTime_progressHandler_completionHandler___block_invoke;
   v18[3] = &unk_1E7B79408;
   v18[4] = self;
-  v19 = v12;
-  v22 = a4;
-  v23 = a5;
-  v20 = v14;
-  v21 = v13;
-  v15 = v13;
-  v16 = v12;
-  v17 = v14;
+  v19 = assetCopy;
+  timeCopy = time;
+  endTimeCopy = endTime;
+  v20 = completionHandlerCopy;
+  v21 = handlerCopy;
+  v15 = handlerCopy;
+  v16 = assetCopy;
+  v17 = completionHandlerCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v18);
 }
 
@@ -787,12 +787,12 @@ void __95__PUMailActivity_remakeVideoAsset_withTrimStartTime_endTime_progressHan
   [*(*(a1 + 32) + 232) remake];
 }
 
-- (void)_transcodeAndSendVideo:(id)a3
+- (void)_transcodeAndSendVideo:(id)video
 {
-  v4 = a3;
+  videoCopy = video;
   if (![(PUMailActivity *)self _showTrimViewControllerIfNeededForVideoAsset:?])
   {
-    [(PUMailActivity *)self _remakeAndSendVideoAsset:v4 withTrimStartTime:0.0 endTime:0.0];
+    [(PUMailActivity *)self _remakeAndSendVideoAsset:videoCopy withTrimStartTime:0.0 endTime:0.0];
   }
 }
 
@@ -807,21 +807,21 @@ void __95__PUMailActivity_remakeVideoAsset_withTrimStartTime_endTime_progressHan
   }
 }
 
-- (void)_remakeAndSendVideoAsset:(id)a3 withTrimStartTime:(double)a4 endTime:(double)a5
+- (void)_remakeAndSendVideoAsset:(id)asset withTrimStartTime:(double)time endTime:(double)endTime
 {
-  v8 = a3;
+  assetCopy = asset;
   [(PLUIEditVideoViewController *)self->_editVideoViewController removeFromSuperview];
   v9 = [objc_alloc(MEMORY[0x1E69BE1C0]) initWithFrame:{0.0, 0.0, 0.0, 45.0}];
   editVideoViewController = self->_editVideoViewController;
   self->_editVideoViewController = v9;
 
-  v11 = [(PUMailActivity *)self itemSourceController];
-  v12 = [v11 activityViewController];
+  itemSourceController = [(PUMailActivity *)self itemSourceController];
+  activityViewController = [itemSourceController activityViewController];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v12 mailActivity:self displayVideoRemakerProgressView:self->_editVideoViewController];
+    [activityViewController mailActivity:self displayVideoRemakerProgressView:self->_editVideoViewController];
   }
 
   v16[0] = MEMORY[0x1E69E9820];
@@ -834,9 +834,9 @@ void __95__PUMailActivity_remakeVideoAsset_withTrimStartTime_endTime_progressHan
   v14[2] = __69__PUMailActivity__remakeAndSendVideoAsset_withTrimStartTime_endTime___block_invoke_2;
   v14[3] = &unk_1E7B7C540;
   v14[4] = self;
-  v15 = v8;
-  v13 = v8;
-  [(PUMailActivity *)self remakeVideoAsset:v13 withTrimStartTime:v16 endTime:v14 progressHandler:a4 completionHandler:a5];
+  v15 = assetCopy;
+  v13 = assetCopy;
+  [(PUMailActivity *)self remakeVideoAsset:v13 withTrimStartTime:v16 endTime:v14 progressHandler:time completionHandler:endTime];
 }
 
 void __69__PUMailActivity__remakeAndSendVideoAsset_withTrimStartTime_endTime___block_invoke_2(uint64_t a1, void *a2)
@@ -859,39 +859,39 @@ void __69__PUMailActivity__remakeAndSendVideoAsset_withTrimStartTime_endTime___b
   }
 }
 
-- (BOOL)_showTrimViewControllerIfNeededForVideoAsset:(id)a3
+- (BOOL)_showTrimViewControllerIfNeededForVideoAsset:(id)asset
 {
-  v4 = a3;
-  v5 = [v4 pl_managedAsset];
-  [MEMORY[0x1E69BE7F0] durationForManagedAsset:v5 applyVideoAdjustments:1];
+  assetCopy = asset;
+  pl_managedAsset = [assetCopy pl_managedAsset];
+  [MEMORY[0x1E69BE7F0] durationForManagedAsset:pl_managedAsset applyVideoAdjustments:1];
   v7 = v6;
   [MEMORY[0x1E69BE1E0] maximumDurationForTrimMode:2];
   v9 = v8;
   if (v7 > v8)
   {
     v10 = PLLocalizedFrameworkString();
-    [(PUMailActivity *)self _showTrimViewControllerForVideo:v4 maximumTrimDuration:v10 trimButtonTitle:v9];
+    [(PUMailActivity *)self _showTrimViewControllerForVideo:assetCopy maximumTrimDuration:v10 trimButtonTitle:v9];
   }
 
   return v7 > v9;
 }
 
-- (void)_showTrimViewControllerForVideo:(id)a3 maximumTrimDuration:(double)a4 trimButtonTitle:(id)a5
+- (void)_showTrimViewControllerForVideo:(id)video maximumTrimDuration:(double)duration trimButtonTitle:(id)title
 {
-  v8 = a3;
+  videoCopy = video;
   mailComposeController = self->_mailComposeController;
-  v10 = a5;
+  titleCopy = title;
   [(MFMailComposeViewController *)mailComposeController setDelegate:0];
   referenceViewController = self->_referenceViewController;
-  self->_referenceViewController = v8;
-  v12 = v8;
+  self->_referenceViewController = videoCopy;
+  v12 = videoCopy;
 
-  v20 = [(UIViewController *)v12 pl_managedAsset];
-  v13 = [objc_alloc(MEMORY[0x1E69BE1D8]) initWithPhoto:v20 trimTitle:v10];
+  pl_managedAsset = [(UIViewController *)v12 pl_managedAsset];
+  v13 = [objc_alloc(MEMORY[0x1E69BE1D8]) initWithPhoto:pl_managedAsset trimTitle:titleCopy];
 
   [(MFMailComposeViewController *)v13 setDelegate:self];
   v14 = MEMORY[0x1E695DF20];
-  v15 = [MEMORY[0x1E696AD98] numberWithDouble:a4];
+  v15 = [MEMORY[0x1E696AD98] numberWithDouble:duration];
   v16 = [v14 dictionaryWithObjectsAndKeys:{v15, *MEMORY[0x1E69DDE28], *MEMORY[0x1E695E4D0], *MEMORY[0x1E69DE9B0], *MEMORY[0x1E695E4D0], *MEMORY[0x1E69DE8D8], 0}];
   [(MFMailComposeViewController *)v13 setImagePickerOptions:v16];
 
@@ -906,10 +906,10 @@ void __69__PUMailActivity__remakeAndSendVideoAsset_withTrimStartTime_endTime___b
 
 - (BOOL)_isMailDropEnabled
 {
-  v3 = [MEMORY[0x1E69C3A18] sharedInstance];
-  v4 = [v3 disableMailDrop];
+  mEMORY[0x1E69C3A18] = [MEMORY[0x1E69C3A18] sharedInstance];
+  disableMailDrop = [mEMORY[0x1E69C3A18] disableMailDrop];
 
-  if (v4)
+  if (disableMailDrop)
   {
     v5 = 0;
   }
@@ -972,7 +972,7 @@ void __69__PUMailActivity__remakeAndSendVideoAsset_withTrimStartTime_endTime___b
 
 + (void)openEmailAccountPrefs
 {
-  if (![a1 allowedToModifyEmailAccounts])
+  if (![self allowedToModifyEmailAccounts])
   {
     v3 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:@"Attempted to access restricted account settings" userInfo:0];
     objc_exception_throw(v3);
@@ -1003,7 +1003,7 @@ void __69__PUMailActivity__remakeAndSendVideoAsset_withTrimStartTime_endTime___b
 
   v3 = v2;
   _Block_object_dispose(&v17, 8);
-  v4 = [v2 sharedConnection];
+  sharedConnection = [v2 sharedConnection];
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
@@ -1026,16 +1026,16 @@ void __69__PUMailActivity__remakeAndSendVideoAsset_withTrimStartTime_endTime___b
   _Block_object_dispose(&v17, 8);
   if (v5)
   {
-    v8 = [v4 effectiveBoolValueForSetting:*v5] != 2;
+    v8 = [sharedConnection effectiveBoolValueForSetting:*v5] != 2;
 
     return v8;
   }
 
   else
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v11 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getMCFeatureAccountModificationAllowed(void)"];
-    [v10 handleFailureInFunction:v11 file:@"PUMailActivity.m" lineNumber:63 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v11 file:@"PUMailActivity.m" lineNumber:63 description:{@"%s", dlerror()}];
 
     __break(1u);
   }
@@ -1043,18 +1043,18 @@ void __69__PUMailActivity__remakeAndSendVideoAsset_withTrimStartTime_endTime___b
   return result;
 }
 
-+ (BOOL)canPerformActivityAsIndividualItemsInSourceController:(id)a3
++ (BOOL)canPerformActivityAsIndividualItemsInSourceController:(id)controller
 {
-  v4 = a3;
-  if ([a1 isMailDropEnabled])
+  controllerCopy = controller;
+  if ([self isMailDropEnabled])
   {
     v5 = 1;
   }
 
   else
   {
-    v6 = [v4 assets];
-    v7 = [v6 count];
+    assets = [controllerCopy assets];
+    v7 = [assets count];
 
     if (v7)
     {
@@ -1063,9 +1063,9 @@ void __69__PUMailActivity__remakeAndSendVideoAsset_withTrimStartTime_endTime___b
       v15 = 0u;
       v12 = 0u;
       v13 = 0u;
-      if (v4)
+      if (controllerCopy)
       {
-        [v4 requestAssetsMediaTypeCount];
+        [controllerCopy requestAssetsMediaTypeCount];
       }
 
       v8 = objc_opt_class();
@@ -1086,16 +1086,16 @@ void __69__PUMailActivity__remakeAndSendVideoAsset_withTrimStartTime_endTime___b
   return v5;
 }
 
-+ (BOOL)canPerformActivityWithTotalCount:(unint64_t)a3 assetMediaTypeCount:(PXAssetMediaTypeCount *)a4
++ (BOOL)canPerformActivityWithTotalCount:(unint64_t)count assetMediaTypeCount:(PXAssetMediaTypeCount *)typeCount
 {
-  var0 = a4->var0;
-  var1 = a4->var1;
-  v7 = [MEMORY[0x1E69C3A18] sharedInstance];
-  v8 = [v7 maxMailPhotoLimit];
+  var0 = typeCount->var0;
+  var1 = typeCount->var1;
+  mEMORY[0x1E69C3A18] = [MEMORY[0x1E69C3A18] sharedInstance];
+  maxMailPhotoLimit = [mEMORY[0x1E69C3A18] maxMailPhotoLimit];
 
-  if (v8)
+  if (maxMailPhotoLimit)
   {
-    v9 = var0 > v8;
+    v9 = var0 > maxMailPhotoLimit;
   }
 
   else
@@ -1114,25 +1114,25 @@ void __69__PUMailActivity__remakeAndSendVideoAsset_withTrimStartTime_endTime___b
     v12 = 1;
   }
 
-  return v12 && var1 + var0 >= a3 && v11;
+  return v12 && var1 + var0 >= count && v11;
 }
 
 + (BOOL)isMailDropEnabled
 {
-  v2 = [MEMORY[0x1E69C3A18] sharedInstance];
-  v3 = [v2 disableMailDrop];
+  mEMORY[0x1E69C3A18] = [MEMORY[0x1E69C3A18] sharedInstance];
+  disableMailDrop = [mEMORY[0x1E69C3A18] disableMailDrop];
 
-  if (v3)
+  if (disableMailDrop)
   {
     return 0;
   }
 
-  v5 = [MEMORY[0x1E69BE248] pl_sharedAccountStore];
-  v6 = [v5 cachedPrimaryAppleAccount];
-  v7 = v6;
-  if (v6)
+  pl_sharedAccountStore = [MEMORY[0x1E69BE248] pl_sharedAccountStore];
+  cachedPrimaryAppleAccount = [pl_sharedAccountStore cachedPrimaryAppleAccount];
+  v7 = cachedPrimaryAppleAccount;
+  if (cachedPrimaryAppleAccount)
   {
-    v4 = [v6 isEnabledForDataclass:*MEMORY[0x1E6959B58]];
+    v4 = [cachedPrimaryAppleAccount isEnabledForDataclass:*MEMORY[0x1E6959B58]];
   }
 
   else
@@ -1143,20 +1143,20 @@ void __69__PUMailActivity__remakeAndSendVideoAsset_withTrimStartTime_endTime___b
   return v4;
 }
 
-+ (id)_momentShareLinkActivityItemsForURL:(id)a3 momentShare:(id)a4
++ (id)_momentShareLinkActivityItemsForURL:(id)l momentShare:(id)share
 {
   v30[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  lCopy = l;
+  shareCopy = share;
+  if (!lCopy)
   {
-    v24 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v24 handleFailureInMethod:a2 object:a1 file:@"PUMailActivity.m" lineNumber:157 description:{@"Invalid parameter not satisfying: %@", @"url"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUMailActivity.m" lineNumber:157 description:{@"Invalid parameter not satisfying: %@", @"url"}];
   }
 
-  v9 = [MEMORY[0x1E695DF70] array];
-  v10 = [objc_opt_class() _momentShareLinkPrompt];
-  v11 = [v10 stringByAppendingString:@"\n"];
+  array = [MEMORY[0x1E695DF70] array];
+  _momentShareLinkPrompt = [objc_opt_class() _momentShareLinkPrompt];
+  v11 = [_momentShareLinkPrompt stringByAppendingString:@"\n"];
 
   PXScaledValueForTextStyleWithSymbolicTraits();
   v12 = [MEMORY[0x1E69DB878] systemFontOfSize:?];
@@ -1166,41 +1166,41 @@ void __69__PUMailActivity__remakeAndSendVideoAsset_withTrimStartTime_endTime___b
   v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v30 forKeys:&v29 count:1];
   v26 = v11;
   v14 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v11 attributes:v13];
-  [v9 addObject:v14];
-  v15 = v8;
-  v16 = [objc_opt_class() _momentShareLinkTitleForMomentShare:v8];
+  [array addObject:v14];
+  v15 = shareCopy;
+  v16 = [objc_opt_class() _momentShareLinkTitleForMomentShare:shareCopy];
   if (v16)
   {
-    [v9 addObject:v16];
+    [array addObject:v16];
   }
 
   v27 = *MEMORY[0x1E69DB670];
-  v28 = v7;
+  v28 = lCopy;
   v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v28 forKeys:&v27 count:1];
   v18 = objc_alloc(MEMORY[0x1E696AAB0]);
-  v19 = [v7 absoluteString];
-  v20 = [v18 initWithString:v19 attributes:v17];
+  absoluteString = [lCopy absoluteString];
+  v20 = [v18 initWithString:absoluteString attributes:v17];
 
-  [v9 addObject:v20];
+  [array addObject:v20];
   v21 = [objc_opt_class() _expirationStringForMomentShare:v15];
   if (v21)
   {
     v22 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:&stru_1F2AC6818];
-    [v9 addObject:v22];
-    [v9 addObject:v21];
+    [array addObject:v22];
+    [array addObject:v21];
   }
 
-  return v9;
+  return array;
 }
 
-+ (id)_expirationStringForMomentShare:(id)a3
++ (id)_expirationStringForMomentShare:(id)share
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = v3;
-  if (v3 && ([v3 expiryDate], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
+  shareCopy = share;
+  v4 = shareCopy;
+  if (shareCopy && ([shareCopy expiryDate], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
   {
-    v6 = [v4 expiryDate];
+    expiryDate = [v4 expiryDate];
     v7 = PXCMMStringForExpiryDate();
 
     PXScaledValueForTextStyleWithSymbolicTraits();
@@ -1219,10 +1219,10 @@ void __69__PUMailActivity__remakeAndSendVideoAsset_withTrimStartTime_endTime___b
   return v10;
 }
 
-+ (id)_momentShareLinkTitleForMomentShare:(id)a3
++ (id)_momentShareLinkTitleForMomentShare:(id)share
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (share)
   {
     PXCMMTitleAndSubtitleForAssetCollection();
     v3 = 0;
@@ -1262,10 +1262,10 @@ void __69__PUMailActivity__remakeAndSendVideoAsset_withTrimStartTime_endTime___b
   return v7;
 }
 
-+ (id)_momentShareLinkSubjectForMomentShare:(id)a3
++ (id)_momentShareLinkSubjectForMomentShare:(id)share
 {
-  v3 = a3;
-  if (!v3 || (PXCMMTitleAndSubtitleForAssetCollection(), v4 = 0, 0, !v4))
+  shareCopy = share;
+  if (!shareCopy || (PXCMMTitleAndSubtitleForAssetCollection(), v4 = 0, 0, !v4))
   {
     v4 = PXLocalizedString();
   }

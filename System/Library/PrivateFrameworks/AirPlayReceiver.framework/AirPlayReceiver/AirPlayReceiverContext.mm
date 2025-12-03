@@ -1,15 +1,15 @@
 @interface AirPlayReceiverContext
-- (void)handleMRCommand:(unsigned int)a3 translatedAPCommand:(unsigned int)a4 withOptions:(__CFDictionary *)a5;
+- (void)handleMRCommand:(unsigned int)command translatedAPCommand:(unsigned int)pCommand withOptions:(__CFDictionary *)options;
 @end
 
 @implementation AirPlayReceiverContext
 
-- (void)handleMRCommand:(unsigned int)a3 translatedAPCommand:(unsigned int)a4 withOptions:(__CFDictionary *)a5
+- (void)handleMRCommand:(unsigned int)command translatedAPCommand:(unsigned int)pCommand withOptions:(__CFDictionary *)options
 {
-  v9 = self;
-  if (a5)
+  selfCopy = self;
+  if (options)
   {
-    CFRetain(a5);
+    CFRetain(options);
   }
 
   queue = self->_queue;
@@ -17,10 +17,10 @@
   block[1] = 3221225472;
   block[2] = __74__AirPlayReceiverContext_handleMRCommand_translatedAPCommand_withOptions___block_invoke;
   block[3] = &unk_278C5FAD8;
-  v12 = a3;
-  v13 = a4;
+  commandCopy = command;
+  pCommandCopy = pCommand;
   block[4] = self;
-  block[5] = a5;
+  block[5] = options;
   dispatch_async(queue, block);
 }
 

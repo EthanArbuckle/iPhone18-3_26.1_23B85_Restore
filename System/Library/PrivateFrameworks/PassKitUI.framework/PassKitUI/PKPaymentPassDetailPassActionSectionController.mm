@@ -1,38 +1,38 @@
 @interface PKPaymentPassDetailPassActionSectionController
-+ (BOOL)validForPaymentPass:(id)a3;
-- (PKPaymentPassDetailPassActionSectionController)initWithPass:(id)a3 viewStyle:(int64_t)a4 paymentDataProvider:(id)a5 webService:(id)a6 transitBalanceModel:(id)a7 delegate:(id)a8;
++ (BOOL)validForPaymentPass:(id)pass;
+- (PKPaymentPassDetailPassActionSectionController)initWithPass:(id)pass viewStyle:(int64_t)style paymentDataProvider:(id)provider webService:(id)service transitBalanceModel:(id)model delegate:(id)delegate;
 - (PKPaymentPassDetailPassActionSectionControllerDelegate)delegate;
 - (id)_externalActionTitle;
 - (id)allSectionIdentifiers;
 - (id)sectionIdentifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4 sectionIdentifier:(id)a5;
-- (id)titleForFooterInSectionIdentifier:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path sectionIdentifier:(id)identifier;
+- (id)titleForFooterInSectionIdentifier:(id)identifier;
 - (void)_computeActionBundle;
-- (void)setPass:(id)a3;
-- (void)setTransitBalanceModel:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4 sectionIdentifier:(id)a5;
+- (void)setPass:(id)pass;
+- (void)setTransitBalanceModel:(id)model;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path sectionIdentifier:(id)identifier;
 @end
 
 @implementation PKPaymentPassDetailPassActionSectionController
 
-- (PKPaymentPassDetailPassActionSectionController)initWithPass:(id)a3 viewStyle:(int64_t)a4 paymentDataProvider:(id)a5 webService:(id)a6 transitBalanceModel:(id)a7 delegate:(id)a8
+- (PKPaymentPassDetailPassActionSectionController)initWithPass:(id)pass viewStyle:(int64_t)style paymentDataProvider:(id)provider webService:(id)service transitBalanceModel:(id)model delegate:(id)delegate
 {
-  v15 = a3;
-  v16 = a5;
-  v26 = a6;
-  v25 = a7;
-  v17 = a8;
+  passCopy = pass;
+  providerCopy = provider;
+  serviceCopy = service;
+  modelCopy = model;
+  delegateCopy = delegate;
   v27.receiver = self;
   v27.super_class = PKPaymentPassDetailPassActionSectionController;
   v18 = [(PKPaymentPassDetailSectionController *)&v27 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_pass, a3);
-    v19->_viewStyle = a4;
-    objc_storeWeak(&v19->_delegate, v17);
-    objc_storeStrong(&v19->_transitBalanceModel, a7);
-    objc_storeStrong(&v19->_webService, a6);
+    objc_storeStrong(&v18->_pass, pass);
+    v19->_viewStyle = style;
+    objc_storeWeak(&v19->_delegate, delegateCopy);
+    objc_storeStrong(&v19->_transitBalanceModel, model);
+    objc_storeStrong(&v19->_webService, service);
     v20 = [PKPaymentPassDetailAutoReloadSectionController enteredValueActionForPass:v19->_pass];
     action = v19->_action;
     v19->_action = v20;
@@ -41,7 +41,7 @@
     externalActionContent = v19->_externalActionContent;
     v19->_externalActionContent = v22;
 
-    objc_storeStrong(&v19->_paymentDataProvider, a5);
+    objc_storeStrong(&v19->_paymentDataProvider, provider);
     [(PKPaymentPassDetailPassActionSectionController *)v19 _computeActionBundle];
   }
 
@@ -59,26 +59,26 @@
   return v2;
 }
 
-- (void)setTransitBalanceModel:(id)a3
+- (void)setTransitBalanceModel:(id)model
 {
-  v5 = a3;
-  if (v5 && self->_transitBalanceModel != v5)
+  modelCopy = model;
+  if (modelCopy && self->_transitBalanceModel != modelCopy)
   {
-    v8 = v5;
-    objc_storeStrong(&self->_transitBalanceModel, a3);
+    v8 = modelCopy;
+    objc_storeStrong(&self->_transitBalanceModel, model);
     [(PKPaymentPassDetailPassActionSectionController *)self _computeActionBundle];
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v7 = [(PKPaymentPassDetailPassActionSectionController *)self sectionIdentifiers];
-    [WeakRetained reloadSections:v7];
+    sectionIdentifiers = [(PKPaymentPassDetailPassActionSectionController *)self sectionIdentifiers];
+    [WeakRetained reloadSections:sectionIdentifiers];
 
-    v5 = v8;
+    modelCopy = v8;
   }
 }
 
-- (void)setPass:(id)a3
+- (void)setPass:(id)pass
 {
-  objc_storeStrong(&self->_pass, a3);
-  v9 = a3;
+  objc_storeStrong(&self->_pass, pass);
+  passCopy = pass;
   v5 = [PKPaymentPassDetailAutoReloadSectionController enteredValueActionForPass:self->_pass];
   action = self->_action;
   self->_action = v5;
@@ -106,8 +106,8 @@ LABEL_9:
       [v3 addObject:@"AddMoneySection"];
     }
 
-    v5 = [(PKPaymentPass *)self->_pass actionGroups];
-    v6 = [v5 count];
+    actionGroups = [(PKPaymentPass *)self->_pass actionGroups];
+    v6 = [actionGroups count];
 
     if (v6)
     {
@@ -122,67 +122,67 @@ LABEL_10:
   return v7;
 }
 
-+ (BOOL)validForPaymentPass:(id)a3
++ (BOOL)validForPaymentPass:(id)pass
 {
-  v3 = a3;
-  v4 = [v3 devicePrimaryPaymentApplication];
-  [v4 state];
+  passCopy = pass;
+  devicePrimaryPaymentApplication = [passCopy devicePrimaryPaymentApplication];
+  [devicePrimaryPaymentApplication state];
   IsPersonalized = PKPaymentApplicationStateIsPersonalized();
 
   if (IsPersonalized)
   {
-    v6 = [PKPaymentPassDetailAutoReloadSectionController enteredValueActionForPass:v3];
+    v6 = [PKPaymentPassDetailAutoReloadSectionController enteredValueActionForPass:passCopy];
 
-    v7 = [PKPaymentPassDetailAutoReloadSectionController externalActionContentForPass:v3];
+    v7 = [PKPaymentPassDetailAutoReloadSectionController externalActionContentForPass:passCopy];
     v8 = v6 | v7;
 
     if (v8)
     {
-      v10 = 1;
+      isAutoTopEnabled = 1;
     }
 
     else
     {
-      v9 = [v3 actionGroups];
-      if ([v9 count])
+      actionGroups = [passCopy actionGroups];
+      if ([actionGroups count])
       {
-        v10 = 1;
+        isAutoTopEnabled = 1;
       }
 
       else
       {
-        v10 = [v3 isAutoTopEnabled];
+        isAutoTopEnabled = [passCopy isAutoTopEnabled];
       }
     }
   }
 
   else
   {
-    v10 = 0;
+    isAutoTopEnabled = 0;
   }
 
-  return v10;
+  return isAutoTopEnabled;
 }
 
-- (id)titleForFooterInSectionIdentifier:(id)a3
+- (id)titleForFooterInSectionIdentifier:(id)identifier
 {
   if (PKEqualObjects())
   {
     [(PKTransitBalanceModel *)self->_transitBalanceModel hasBalanceContent];
     [(PKTransitBalanceModel *)self->_transitBalanceModel hasCommutePlanContent];
-    v4 = [(PKPaymentPassActionExternalActionContent *)self->_externalActionContent displayName];
-    v5 = v4;
-    if (v4)
+    displayName = [(PKPaymentPassActionExternalActionContent *)self->_externalActionContent displayName];
+    v5 = displayName;
+    if (displayName)
     {
-      v6 = v4;
+      organizationName = displayName;
     }
 
     else
     {
-      v6 = [(PKPaymentPass *)self->_pass organizationName];
+      organizationName = [(PKPaymentPass *)self->_pass organizationName];
     }
 
-    v8 = v6;
+    v8 = organizationName;
 
     v7 = PKPassLocalizedStringWithFormat();
   }
@@ -195,14 +195,14 @@ LABEL_10:
   return v7;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4 sectionIdentifier:(id)a5
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path sectionIdentifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a5;
+  viewCopy = view;
+  identifierCopy = identifier;
   if (PKEqualObjects())
   {
     v9 = PKPassLocalizedStringWithFormat();
-    v10 = [(PKPaymentPassDetailSectionController *)self linkCellWithText:v9 forTableView:v7, 0];
+    v10 = [(PKPaymentPassDetailSectionController *)self linkCellWithText:v9 forTableView:viewCopy, 0];
 
     v11 = MEMORY[0x1E69B93F0];
 LABEL_3:
@@ -212,16 +212,16 @@ LABEL_3:
 
   if (PKEqualObjects())
   {
-    v12 = [(PKPaymentPass *)self->_pass actionGroups];
-    v13 = [v12 firstObject];
-    v14 = [v13 title];
+    actionGroups = [(PKPaymentPass *)self->_pass actionGroups];
+    firstObject = [actionGroups firstObject];
+    title = [firstObject title];
 
-    v15 = [(PKPaymentPass *)self->_pass paymentPass];
-    v16 = [v15 actionLocalizations];
+    paymentPass = [(PKPaymentPass *)self->_pass paymentPass];
+    actionLocalizations = [paymentPass actionLocalizations];
 
-    if (v14)
+    if (title)
     {
-      v17 = v16 == 0;
+      v17 = actionLocalizations == 0;
     }
 
     else
@@ -231,18 +231,18 @@ LABEL_3:
 
     if (!v17)
     {
-      v18 = [v16 objectForKeyedSubscript:v14];
+      v18 = [actionLocalizations objectForKeyedSubscript:title];
 
-      v14 = v18;
+      title = v18;
     }
 
-    if (!v14)
+    if (!title)
     {
       v22 = 0;
       v19 = PKPassLocalizedStringWithFormat();
     }
 
-    v10 = [(PKPaymentPassDetailSectionController *)self linkCellWithText:v14 forTableView:v7, v22];
+    v10 = [(PKPaymentPassDetailSectionController *)self linkCellWithText:title forTableView:viewCopy, v22];
     PKAccessibilityIDCellSet(v10, *MEMORY[0x1E69B9580]);
   }
 
@@ -250,8 +250,8 @@ LABEL_3:
   {
     if (PKEqualObjects())
     {
-      v20 = [(PKPaymentPassDetailPassActionSectionController *)self _externalActionTitle];
-      v10 = [(PKPaymentPassDetailSectionController *)self linkCellWithText:v20 forTableView:v7];
+      _externalActionTitle = [(PKPaymentPassDetailPassActionSectionController *)self _externalActionTitle];
+      v10 = [(PKPaymentPassDetailSectionController *)self linkCellWithText:_externalActionTitle forTableView:viewCopy];
 
       v11 = MEMORY[0x1E69B9580];
       goto LABEL_3;
@@ -265,10 +265,10 @@ LABEL_16:
   return v10;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4 sectionIdentifier:(id)a5
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path sectionIdentifier:(id)identifier
 {
-  v8 = a5;
-  [a3 deselectRowAtIndexPath:a4 animated:1];
+  identifierCopy = identifier;
+  [view deselectRowAtIndexPath:path animated:1];
   if (PKEqualObjects())
   {
     v21 = 0;
@@ -292,14 +292,14 @@ LABEL_12:
     }
 
     pass = self->_pass;
-    v13 = [(PKPaymentPassAction *)self->_action externalActionContent];
-    v14 = [(PKPaymentPassAction *)self->_action title];
+    externalActionContent = [(PKPaymentPassAction *)self->_action externalActionContent];
+    title = [(PKPaymentPassAction *)self->_action title];
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __102__PKPaymentPassDetailPassActionSectionController_tableView_didSelectRowAtIndexPath_sectionIdentifier___block_invoke;
     v20[3] = &unk_1E8014560;
     v20[4] = self;
-    PKPaymentPassActionPerformExternalActionContent(pass, v13, v14, v20);
+    PKPaymentPassActionPerformExternalActionContent(pass, externalActionContent, title, v20);
 
 LABEL_13:
     goto LABEL_14;
@@ -316,13 +316,13 @@ LABEL_13:
   {
     v15 = self->_pass;
     externalActionContent = self->_externalActionContent;
-    v17 = [(PKPaymentPassDetailPassActionSectionController *)self _externalActionTitle];
+    _externalActionTitle = [(PKPaymentPassDetailPassActionSectionController *)self _externalActionTitle];
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __102__PKPaymentPassDetailPassActionSectionController_tableView_didSelectRowAtIndexPath_sectionIdentifier___block_invoke_2;
     v19[3] = &unk_1E8014560;
     v19[4] = self;
-    PKPaymentPassActionPerformExternalActionContent(v15, externalActionContent, v17, v19);
+    PKPaymentPassActionPerformExternalActionContent(v15, externalActionContent, _externalActionTitle, v19);
   }
 
 LABEL_14:
@@ -354,15 +354,15 @@ void __102__PKPaymentPassDetailPassActionSectionController_tableView_didSelectRo
 {
   [(PKTransitBalanceModel *)self->_transitBalanceModel hasBalanceContent];
   [(PKTransitBalanceModel *)self->_transitBalanceModel hasCommutePlanContent];
-  v3 = [(PKPaymentPassActionExternalActionContent *)self->_externalActionContent displayName];
-  if (v3)
+  displayName = [(PKPaymentPassActionExternalActionContent *)self->_externalActionContent displayName];
+  if (displayName)
   {
     v4 = PKPassLocalizedStringWithFormat();
   }
 
   else
   {
-    v6 = [(PKPaymentPass *)self->_pass organizationName];
+    organizationName = [(PKPaymentPass *)self->_pass organizationName];
     v4 = PKPassLocalizedStringWithFormat();
   }
 
@@ -372,16 +372,16 @@ void __102__PKPaymentPassDetailPassActionSectionController_tableView_didSelectRo
 - (void)_computeActionBundle
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [(PKPaymentPass *)self->_pass actionGroups];
+  actionGroups = [(PKPaymentPass *)self->_pass actionGroups];
   v4 = objc_alloc_init(MEMORY[0x1E69B8D18]);
-  [v4 setActionGroups:v3];
-  v5 = [(PKTransitBalanceModel *)self->_transitBalanceModel filteredActionsForDisplayableEntities];
+  [v4 setActionGroups:actionGroups];
+  filteredActionsForDisplayableEntities = [(PKTransitBalanceModel *)self->_transitBalanceModel filteredActionsForDisplayableEntities];
   v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v7 = v5;
+  v7 = filteredActionsForDisplayableEntities;
   v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v8)
   {

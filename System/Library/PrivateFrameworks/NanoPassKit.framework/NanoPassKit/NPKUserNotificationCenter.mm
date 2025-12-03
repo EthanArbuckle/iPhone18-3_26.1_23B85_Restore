@@ -1,21 +1,21 @@
 @interface NPKUserNotificationCenter
 + (id)sharedInstance;
-- (NPKUserNotificationCenter)initWithNotificationBundleIdentifier:(id)a3;
-- (void)_requestNotificationAuthorizationWithOptions:(unint64_t)a3 completion:(id)a4;
-- (void)_requestNotificationAuthorizationWithPreconditionCheck:(id)a3 completion:(id)a4;
-- (void)addNotification:(id)a3 completion:(id)a4;
-- (void)fetchAuthorizationStatusWithCompletion:(id)a3;
-- (void)requestAuthorizationIfNecessaryForPassesManager:(id)a3 withCompletion:(id)a4;
-- (void)setNotificationCategoryWithIdentifier:(id)a3 intentIdentifier:(id)a4 actions:(id)a5 options:(unint64_t)a6;
-- (void)userNotificationCenter:(id)a3 didChangeSettings:(id)a4;
+- (NPKUserNotificationCenter)initWithNotificationBundleIdentifier:(id)identifier;
+- (void)_requestNotificationAuthorizationWithOptions:(unint64_t)options completion:(id)completion;
+- (void)_requestNotificationAuthorizationWithPreconditionCheck:(id)check completion:(id)completion;
+- (void)addNotification:(id)notification completion:(id)completion;
+- (void)fetchAuthorizationStatusWithCompletion:(id)completion;
+- (void)requestAuthorizationIfNecessaryForPassesManager:(id)manager withCompletion:(id)completion;
+- (void)setNotificationCategoryWithIdentifier:(id)identifier intentIdentifier:(id)intentIdentifier actions:(id)actions options:(unint64_t)options;
+- (void)userNotificationCenter:(id)center didChangeSettings:(id)settings;
 @end
 
 @implementation NPKUserNotificationCenter
 
-- (NPKUserNotificationCenter)initWithNotificationBundleIdentifier:(id)a3
+- (NPKUserNotificationCenter)initWithNotificationBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (![v4 length])
+  identifierCopy = identifier;
+  if (![identifierCopy length])
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE658] format:@"bundle identifier is missing"];
   }
@@ -25,7 +25,7 @@
   v5 = [(NPKUserNotificationCenter *)&v11 init];
   if (v5)
   {
-    v6 = [objc_alloc(MEMORY[0x277CE2028]) initWithBundleIdentifier:v4];
+    v6 = [objc_alloc(MEMORY[0x277CE2028]) initWithBundleIdentifier:identifierCopy];
     notificationCenter = v5->_notificationCenter;
     v5->_notificationCenter = v6;
 
@@ -60,16 +60,16 @@ void __43__NPKUserNotificationCenter_sharedInstance__block_invoke()
   sharedInstance_notificationCenter = v0;
 }
 
-- (void)requestAuthorizationIfNecessaryForPassesManager:(id)a3 withCompletion:(id)a4
+- (void)requestAuthorizationIfNecessaryForPassesManager:(id)manager withCompletion:(id)completion
 {
-  v6 = a3;
+  managerCopy = manager;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __92__NPKUserNotificationCenter_requestAuthorizationIfNecessaryForPassesManager_withCompletion___block_invoke;
   v8[3] = &unk_27994A988;
-  v9 = v6;
-  v7 = v6;
-  [(NPKUserNotificationCenter *)self _requestNotificationAuthorizationWithPreconditionCheck:v8 completion:a4];
+  v9 = managerCopy;
+  v7 = managerCopy;
+  [(NPKUserNotificationCenter *)self _requestNotificationAuthorizationWithPreconditionCheck:v8 completion:completion];
 }
 
 uint64_t __92__NPKUserNotificationCenter_requestAuthorizationIfNecessaryForPassesManager_withCompletion___block_invoke(uint64_t a1)
@@ -101,16 +101,16 @@ uint64_t __92__NPKUserNotificationCenter_requestAuthorizationIfNecessaryForPasse
   return v6;
 }
 
-- (void)fetchAuthorizationStatusWithCompletion:(id)a3
+- (void)fetchAuthorizationStatusWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   notificationCenter = self->_notificationCenter;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __68__NPKUserNotificationCenter_fetchAuthorizationStatusWithCompletion___block_invoke;
   v7[3] = &unk_27994A9D0;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   [(UNUserNotificationCenter *)notificationCenter getNotificationSettingsWithCompletionHandler:v7];
 }
 
@@ -143,16 +143,16 @@ uint64_t __68__NPKUserNotificationCenter_fetchAuthorizationStatusWithCompletion_
   return result;
 }
 
-- (void)setNotificationCategoryWithIdentifier:(id)a3 intentIdentifier:(id)a4 actions:(id)a5 options:(unint64_t)a6
+- (void)setNotificationCategoryWithIdentifier:(id)identifier intentIdentifier:(id)intentIdentifier actions:(id)actions options:(unint64_t)options
 {
-  v18 = a3;
-  v10 = a4;
-  v11 = a5;
+  identifierCopy = identifier;
+  intentIdentifierCopy = intentIdentifier;
+  actionsCopy = actions;
   v12 = MEMORY[0x277CE1F98];
-  v13 = v11;
-  if (v11)
+  array = actionsCopy;
+  if (actionsCopy)
   {
-    if (v10)
+    if (intentIdentifierCopy)
     {
       goto LABEL_3;
     }
@@ -160,12 +160,12 @@ uint64_t __68__NPKUserNotificationCenter_fetchAuthorizationStatusWithCompletion_
 
   else
   {
-    v13 = [MEMORY[0x277CBEA60] array];
-    if (v10)
+    array = [MEMORY[0x277CBEA60] array];
+    if (intentIdentifierCopy)
     {
 LABEL_3:
-      v14 = [v12 categoryWithIdentifier:v18 actions:v13 intentIdentifiers:v10 options:a6];
-      if (v11)
+      v14 = [v12 categoryWithIdentifier:identifierCopy actions:array intentIdentifiers:intentIdentifierCopy options:options];
+      if (actionsCopy)
       {
         goto LABEL_5;
       }
@@ -174,10 +174,10 @@ LABEL_3:
     }
   }
 
-  v17 = [MEMORY[0x277CBEA60] array];
-  v14 = [v12 categoryWithIdentifier:v18 actions:v13 intentIdentifiers:v17 options:a6];
+  array2 = [MEMORY[0x277CBEA60] array];
+  v14 = [v12 categoryWithIdentifier:identifierCopy actions:array intentIdentifiers:array2 options:options];
 
-  if (!v11)
+  if (!actionsCopy)
   {
 LABEL_4:
   }
@@ -188,36 +188,36 @@ LABEL_5:
   [(UNUserNotificationCenter *)notificationCenter setNotificationCategories:v16];
 }
 
-- (void)addNotification:(id)a3 completion:(id)a4
+- (void)addNotification:(id)notification completion:(id)completion
 {
   v20[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  notificationCopy = notification;
+  completionCopy = completion;
+  v8 = completionCopy;
+  if (notificationCopy)
   {
-    v9 = [v6 identifier];
-    v10 = [v6 title];
-    v11 = [v6 body];
-    v12 = [v6 notificationCategoryIdentifier];
-    v13 = [v6 userInfo];
-    v14 = [v6 wantsBadgedIcon];
-    LOBYTE(v18) = [v6 isSuppressed];
-    [(NPKUserNotificationCenter *)self _addNotificationWithNotificationIdentifier:v9 title:v10 body:v11 categoryIdentifier:v12 userInfo:v13 wantsBadgedIcon:v14 suppressed:v18 completion:v8];
+    identifier = [notificationCopy identifier];
+    title = [notificationCopy title];
+    body = [notificationCopy body];
+    notificationCategoryIdentifier = [notificationCopy notificationCategoryIdentifier];
+    userInfo = [notificationCopy userInfo];
+    wantsBadgedIcon = [notificationCopy wantsBadgedIcon];
+    LOBYTE(v18) = [notificationCopy isSuppressed];
+    [(NPKUserNotificationCenter *)self _addNotificationWithNotificationIdentifier:identifier title:title body:body categoryIdentifier:notificationCategoryIdentifier userInfo:userInfo wantsBadgedIcon:wantsBadgedIcon suppressed:v18 completion:v8];
 
 LABEL_5:
     goto LABEL_6;
   }
 
-  if (v7)
+  if (completionCopy)
   {
     v15 = MEMORY[0x277CCA9B8];
     v19 = *MEMORY[0x277CCA450];
     v20[0] = @"Notification type not supported";
     v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v20 forKeys:&v19 count:1];
-    v9 = [v15 errorWithDomain:@"NPKUserNotificationsErrorDomain" code:-2001 userInfo:v16];
+    identifier = [v15 errorWithDomain:@"NPKUserNotificationsErrorDomain" code:-2001 userInfo:v16];
 
-    (v8)[2](v8, v9);
+    (v8)[2](v8, identifier);
     goto LABEL_5;
   }
 
@@ -226,10 +226,10 @@ LABEL_6:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)userNotificationCenter:(id)a3 didChangeSettings:(id)a4
+- (void)userNotificationCenter:(id)center didChangeSettings:(id)settings
 {
   v13 = *MEMORY[0x277D85DE8];
-  self->_authorizationStatus = [a4 authorizationStatus];
+  self->_authorizationStatus = [settings authorizationStatus];
   v5 = pk_General_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -290,11 +290,11 @@ void __149__NPKUserNotificationCenter__addNotificationWithNotificationIdentifier
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_requestNotificationAuthorizationWithPreconditionCheck:(id)a3 completion:(id)a4
+- (void)_requestNotificationAuthorizationWithPreconditionCheck:(id)check completion:(id)completion
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  checkCopy = check;
+  completionCopy = completion;
   authorizationStatus = self->_authorizationStatus;
   if (authorizationStatus > 2)
   {
@@ -323,9 +323,9 @@ void __149__NPKUserNotificationCenter__addNotificationWithNotificationIdentifier
           }
         }
 
-        if (v7)
+        if (completionCopy)
         {
-          v7[2](v7, 1, 0);
+          completionCopy[2](completionCopy, 1, 0);
         }
       }
 
@@ -351,7 +351,7 @@ void __149__NPKUserNotificationCenter__addNotificationWithNotificationIdentifier
     goto LABEL_24;
   }
 
-  v12 = v6[2](v6);
+  v12 = checkCopy[2](checkCopy);
   v13 = pk_General_log();
   v14 = os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT);
 
@@ -368,9 +368,9 @@ void __149__NPKUserNotificationCenter__addNotificationWithNotificationIdentifier
 LABEL_25:
 
 LABEL_26:
-      if (v7)
+      if (completionCopy)
       {
-        v7[2](v7, 0, 0);
+        completionCopy[2](completionCopy, 0, 0);
       }
 
       goto LABEL_28;
@@ -396,24 +396,24 @@ LABEL_24:
     }
   }
 
-  [(NPKUserNotificationCenter *)self _requestNotificationAuthorizationWithOptions:7 completion:v7];
+  [(NPKUserNotificationCenter *)self _requestNotificationAuthorizationWithOptions:7 completion:completionCopy];
 LABEL_28:
 
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_requestNotificationAuthorizationWithOptions:(unint64_t)a3 completion:(id)a4
+- (void)_requestNotificationAuthorizationWithOptions:(unint64_t)options completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   notificationCenter = self->_notificationCenter;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __85__NPKUserNotificationCenter__requestNotificationAuthorizationWithOptions_completion___block_invoke;
   v9[3] = &unk_27994AA20;
   v9[4] = self;
-  v10 = v6;
-  v8 = v6;
-  [(UNUserNotificationCenter *)notificationCenter requestAuthorizationWithOptions:a3 completionHandler:v9];
+  v10 = completionCopy;
+  v8 = completionCopy;
+  [(UNUserNotificationCenter *)notificationCenter requestAuthorizationWithOptions:options completionHandler:v9];
 }
 
 void __85__NPKUserNotificationCenter__requestNotificationAuthorizationWithOptions_completion___block_invoke(uint64_t a1, uint64_t a2, void *a3)

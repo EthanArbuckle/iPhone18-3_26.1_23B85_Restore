@@ -1,5 +1,5 @@
 @interface HAP2ControllerReadRequest
-- (HAP2ControllerReadRequest)initWithCharacteristics:(id)a3;
+- (HAP2ControllerReadRequest)initWithCharacteristics:(id)characteristics;
 - (NSArray)characteristics;
 - (id)serialize;
 @end
@@ -9,17 +9,17 @@
 - (NSArray)characteristics
 {
   v3 = MEMORY[0x277CBEB18];
-  v4 = [(HAP2ControllerReadRequest *)self originalCharacteristics];
-  v5 = [v3 arrayWithCapacity:{objc_msgSend(v4, "count")}];
+  originalCharacteristics = [(HAP2ControllerReadRequest *)self originalCharacteristics];
+  v5 = [v3 arrayWithCapacity:{objc_msgSend(originalCharacteristics, "count")}];
 
-  v6 = [(HAP2ControllerReadRequest *)self originalCharacteristics];
+  originalCharacteristics2 = [(HAP2ControllerReadRequest *)self originalCharacteristics];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __44__HAP2ControllerReadRequest_characteristics__block_invoke;
   v10[3] = &unk_2786D60B0;
   v11 = v5;
   v7 = v5;
-  [v6 hmf_enumerateWithAutoreleasePoolUsingBlock:v10];
+  [originalCharacteristics2 hmf_enumerateWithAutoreleasePoolUsingBlock:v10];
 
   v8 = [v7 copy];
 
@@ -48,16 +48,16 @@ void __44__HAP2ControllerReadRequest_characteristics__block_invoke(uint64_t a1, 
   objc_exception_throw(v7);
 }
 
-- (HAP2ControllerReadRequest)initWithCharacteristics:(id)a3
+- (HAP2ControllerReadRequest)initWithCharacteristics:(id)characteristics
 {
-  v5 = a3;
+  characteristicsCopy = characteristics;
   v9.receiver = self;
   v9.super_class = HAP2ControllerReadRequest;
   v6 = [(HAP2ControllerReadRequest *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_originalCharacteristics, a3);
+    objc_storeStrong(&v6->_originalCharacteristics, characteristics);
   }
 
   return v7;

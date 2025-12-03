@@ -1,17 +1,17 @@
 @interface UIKeyboardSliceTransitionView
 - (BOOL)canDisplayTransition;
-- (CGImage)getKeyboardImageAsSplit:(BOOL)a3;
-- (UIKeyboardSliceTransitionView)initWithFrame:(CGRect)a3;
+- (CGImage)getKeyboardImageAsSplit:(BOOL)split;
+- (UIKeyboardSliceTransitionView)initWithFrame:(CGRect)frame;
 - (double)adjustedLeftWidthAtMergePoint;
 - (double)adjustedRightWidthAtMergePoint;
 - (id)crossfadeOpacityAnimation;
-- (id)meshTransformForProgress:(double)a3;
+- (id)meshTransformForProgress:(double)progress;
 - (void)_delayedUpdateTransition;
 - (void)dealloc;
 - (void)initializeLayers;
 - (void)rebuildBackgroundAndShadowTransitions;
 - (void)rebuildBackgroundGradientTransitions;
-- (void)rebuildFromKeyplane:(id)a3 toKeyplane:(id)a4 startToken:(id)a5 endToken:(id)a6 keyboardType:(int64_t)a7 orientation:(int64_t)a8;
+- (void)rebuildFromKeyplane:(id)keyplane toKeyplane:(id)toKeyplane startToken:(id)token endToken:(id)endToken keyboardType:(int64_t)type orientation:(int64_t)orientation;
 - (void)rebuildMoreIntlKeys;
 - (void)rebuildReturnSlices;
 - (void)rebuildShadows;
@@ -19,21 +19,21 @@
 - (void)rebuildSliceTransitions;
 - (void)rebuildTopEdgeHighlightTransition;
 - (void)refreshKeyplaneImages;
-- (void)setFrame:(CGRect)a3;
-- (void)setHidden:(BOOL)a3;
-- (void)transformForProgress:(double)a3;
+- (void)setFrame:(CGRect)frame;
+- (void)setHidden:(BOOL)hidden;
+- (void)transformForProgress:(double)progress;
 - (void)updateTransition;
-- (void)updateTransitionForSlice:(id)a3 withStart:(id)a4 startContents:(id)a5 end:(id)a6 endContents:(id)a7 updateContents:(BOOL)a8;
-- (void)updateWithProgress:(double)a3;
+- (void)updateTransitionForSlice:(id)slice withStart:(id)start startContents:(id)contents end:(id)end endContents:(id)endContents updateContents:(BOOL)updateContents;
+- (void)updateWithProgress:(double)progress;
 @end
 
 @implementation UIKeyboardSliceTransitionView
 
-- (UIKeyboardSliceTransitionView)initWithFrame:(CGRect)a3
+- (UIKeyboardSliceTransitionView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = UIKeyboardSliceTransitionView;
-  v3 = [(UIView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -51,43 +51,43 @@
   v16.receiver = self;
   v16.super_class = UIKeyboardSliceTransitionView;
   [(UIKeyboardSplitTransitionView *)&v16 initializeLayers];
-  v3 = [MEMORY[0x1E6979398] layer];
+  layer = [MEMORY[0x1E6979398] layer];
   leftKeys = self->_leftKeys;
-  self->_leftKeys = v3;
+  self->_leftKeys = layer;
 
-  v5 = [MEMORY[0x1E6979398] layer];
+  layer2 = [MEMORY[0x1E6979398] layer];
   rightKeys = self->_rightKeys;
-  self->_rightKeys = v5;
+  self->_rightKeys = layer2;
 
   [(CALayer *)self->_leftKeys setName:@"Keys (left)"];
   [(CALayer *)self->_rightKeys setName:@"Keys (right)"];
   [(CALayer *)self->_leftKeys setAnchorPoint:0.0, 0.0];
   [(CALayer *)self->_rightKeys setAnchorPoint:1.0, 0.0];
-  v7 = [(UIView *)self layer];
-  [v7 addSublayer:self->_leftKeys];
+  layer3 = [(UIView *)self layer];
+  [layer3 addSublayer:self->_leftKeys];
 
-  v8 = [(UIView *)self layer];
-  [v8 addSublayer:self->_rightKeys];
+  layer4 = [(UIView *)self layer];
+  [layer4 addSublayer:self->_rightKeys];
 
-  v9 = [MEMORY[0x1E6979398] layer];
+  layer5 = [MEMORY[0x1E6979398] layer];
   spaceFill = self->_spaceFill;
-  self->_spaceFill = v9;
+  self->_spaceFill = layer5;
 
   [(CALayer *)self->_spaceFill setAnchorPoint:0.0, 0.0];
-  v11 = [(UIView *)self layer];
-  [v11 addSublayer:self->_spaceFill];
+  layer6 = [(UIView *)self layer];
+  [layer6 addSublayer:self->_spaceFill];
 
   v12 = objc_alloc_init(MEMORY[0x1E695DF90]);
   controlKeys = self->_controlKeys;
   self->_controlKeys = v12;
 
-  v14 = [(UIKeyboardSplitTransitionView *)self shadowLayers];
+  shadowLayers = [(UIKeyboardSplitTransitionView *)self shadowLayers];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __49__UIKeyboardSliceTransitionView_initializeLayers__block_invoke;
   v15[3] = &unk_1E70F5BE0;
   v15[4] = self;
-  [v14 enumerateObjectsUsingBlock:v15];
+  [shadowLayers enumerateObjectsUsingBlock:v15];
 }
 
 void __49__UIKeyboardSliceTransitionView_initializeLayers__block_invoke(uint64_t a1, void *a2)
@@ -117,11 +117,11 @@ void __49__UIKeyboardSliceTransitionView_initializeLayers__block_invoke(uint64_t
   [(UIKeyboardSplitTransitionView *)&v5 dealloc];
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
   v5.receiver = self;
   v5.super_class = UIKeyboardSliceTransitionView;
-  [(UIKeyboardSplitTransitionView *)&v5 setFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(UIKeyboardSplitTransitionView *)&v5 setFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(UIView *)self bounds];
   [(CALayer *)self->_leftKeys setBounds:?];
   [(UIView *)self bounds];
@@ -130,11 +130,11 @@ void __49__UIKeyboardSliceTransitionView_initializeLayers__block_invoke(uint64_t
   [(CALayer *)self->_rightKeys setPosition:v4, 0.0];
 }
 
-- (CGImage)getKeyboardImageAsSplit:(BOOL)a3
+- (CGImage)getKeyboardImageAsSplit:(BOOL)split
 {
-  v3 = a3;
+  splitCopy = split;
   WeakRetained = objc_loadWeakRetained(&self->super._transitionDataSource);
-  v6 = [WeakRetained renderedKeyplaneWithToken:self->_keyplaneToken split:v3];
+  v6 = [WeakRetained renderedKeyplaneWithToken:self->_keyplaneToken split:splitCopy];
 
   return v6;
 }
@@ -196,51 +196,51 @@ void __49__UIKeyboardSliceTransitionView_initializeLayers__block_invoke(uint64_t
 - (void)rebuildTopEdgeHighlightTransition
 {
   [(CALayer *)self->_topEdgeHighlight removeAllAnimations];
-  v3 = [(CALayer *)self->_topEdgeHighlight sublayers];
+  sublayers = [(CALayer *)self->_topEdgeHighlight sublayers];
 
-  if (v3)
+  if (sublayers)
   {
-    v4 = [(CALayer *)self->_topEdgeHighlight sublayers];
-    v18 = [v4 objectAtIndex:0];
+    sublayers2 = [(CALayer *)self->_topEdgeHighlight sublayers];
+    layer = [sublayers2 objectAtIndex:0];
 
-    v5 = [(CALayer *)self->_topEdgeHighlight sublayers];
-    v6 = [v5 objectAtIndex:1];
+    sublayers3 = [(CALayer *)self->_topEdgeHighlight sublayers];
+    layer2 = [sublayers3 objectAtIndex:1];
   }
 
   else
   {
-    v18 = [MEMORY[0x1E6979398] layer];
-    [v18 setAnchorPoint:{0.0, 0.0}];
+    layer = [MEMORY[0x1E6979398] layer];
+    [layer setAnchorPoint:{0.0, 0.0}];
     v7 = [UIColor colorWithRed:0.2 green:0.2 blue:0.2 alpha:1.0];
-    [v18 setBackgroundColor:{objc_msgSend(v7, "CGColor")}];
+    [layer setBackgroundColor:{objc_msgSend(v7, "CGColor")}];
 
-    [(CALayer *)self->_topEdgeHighlight addSublayer:v18];
-    v6 = [MEMORY[0x1E6979398] layer];
-    [v6 setAnchorPoint:{0.0, 0.0}];
+    [(CALayer *)self->_topEdgeHighlight addSublayer:layer];
+    layer2 = [MEMORY[0x1E6979398] layer];
+    [layer2 setAnchorPoint:{0.0, 0.0}];
     v8 = [UIColor colorWithRed:0.75 green:0.75 blue:0.75 alpha:1.0];
-    [v6 setBackgroundColor:{objc_msgSend(v8, "CGColor")}];
+    [layer2 setBackgroundColor:{objc_msgSend(v8, "CGColor")}];
 
-    [(CALayer *)self->_topEdgeHighlight addSublayer:v6];
+    [(CALayer *)self->_topEdgeHighlight addSublayer:layer2];
   }
 
   [(UIKeyboardSliceSet *)self->super._sliceSet startRect];
   v10 = v9;
-  [v18 setBounds:{0.0, 0.0}];
-  [v6 setBounds:{0.0, 0.0, v10, 1.0}];
-  [v6 setPosition:{0.0, 1.0}];
+  [layer setBounds:{0.0, 0.0}];
+  [layer2 setBounds:{0.0, 0.0, v10, 1.0}];
+  [layer2 setPosition:{0.0, 1.0}];
   [(CALayer *)self->_topEdgeHighlight setBounds:0.0, 0.0, v10, 2.0];
   if (!self->super._centerFilled)
   {
-    v11 = [(UIKeyboardSliceTransitionView *)self crossfadeOpacityAnimation];
+    crossfadeOpacityAnimation = [(UIKeyboardSliceTransitionView *)self crossfadeOpacityAnimation];
     v12 = MEMORY[0x1E695DEC8];
     LODWORD(v13) = 1.0;
     v14 = [MEMORY[0x1E696AD98] numberWithFloat:v13];
     v15 = [MEMORY[0x1E696AD98] numberWithFloat:0.0];
     v16 = [MEMORY[0x1E696AD98] numberWithFloat:0.0];
     v17 = [v12 arrayWithObjects:{v14, v15, v16, 0}];
-    [v11 setValues:v17];
+    [crossfadeOpacityAnimation setValues:v17];
 
-    [(CALayer *)self->_topEdgeHighlight addAnimation:v11 forKey:@"top edge opacity animation"];
+    [(CALayer *)self->_topEdgeHighlight addAnimation:crossfadeOpacityAnimation forKey:@"top edge opacity animation"];
   }
 
   *&self->_rebuildFlags &= ~0x10u;
@@ -285,15 +285,15 @@ void __49__UIKeyboardSliceTransitionView_initializeLayers__block_invoke(uint64_t
   v123 = v22;
   v144.size.height = v22;
   v26 = v7 + v4 + CGRectGetHeight(v144) + -2.0 + -2.0;
-  v141 = [(UIKeyboardSplitTransitionView *)self shadowLayers];
-  [v141 enumerateObjectsUsingBlock:&__block_literal_global_421];
+  shadowLayers = [(UIKeyboardSplitTransitionView *)self shadowLayers];
+  [shadowLayers enumerateObjectsUsingBlock:&__block_literal_global_421];
   [(UIKeyboardSliceSet *)self->super._sliceSet startRect];
   v28 = v27;
   [(UIKeyboardSliceSet *)self->super._sliceSet startRect];
   v30 = v29;
   [(UIKeyboardSliceSet *)self->super._sliceSet endRect];
   v32 = v31 - v30 + -2.0;
-  v33 = [v141 objectAtIndex:0];
+  v33 = [shadowLayers objectAtIndex:0];
   [(UIKeyboardSliceSet *)self->super._sliceSet startRect];
   [v33 setFrame:{0.0, v28, v34 + -16.0, v7}];
   [v33 setPosition:{8.0, 0.0}];
@@ -304,8 +304,8 @@ void __49__UIKeyboardSliceTransitionView_initializeLayers__block_invoke(uint64_t
   v38 = [v35 normalizedAnimationWithKeyPath:@"position.y" fromValue:v36 toValue:v37];
 
   [v33 addAnimation:v38 forKey:@"position animation"];
-  v39 = [v141 objectAtIndex:7];
-  v40 = [v141 objectAtIndex:8];
+  v39 = [shadowLayers objectAtIndex:7];
+  v40 = [shadowLayers objectAtIndex:8];
   [v39 setAnchorPoint:{0.0, 0.0}];
   [v40 setAnchorPoint:{0.0, 0.0}];
   [v39 setPosition:{8.0, 2.0 - v4}];
@@ -367,8 +367,8 @@ void __49__UIKeyboardSliceTransitionView_initializeLayers__block_invoke(uint64_t
     [(UIKeyboardSliceTransitionView *)self adjustedRightWidthAtMergePoint];
     v67 = v66;
     v116 = v66;
-    v68 = [v141 objectAtIndex:1];
-    v69 = [v141 objectAtIndex:4];
+    v68 = [shadowLayers objectAtIndex:1];
+    v69 = [shadowLayers objectAtIndex:4];
     [v68 setAnchorPoint:{0.0, 1.0}];
     [v69 setAnchorPoint:{1.0, 1.0}];
     v70 = v68;
@@ -416,8 +416,8 @@ void __49__UIKeyboardSliceTransitionView_initializeLayers__block_invoke(uint64_t
     [v69 addAnimation:v75 forKey:@"top right bounds"];
     [v70 setHidden:0];
     [v69 setHidden:0];
-    v80 = [v141 objectAtIndex:2];
-    v81 = [v141 objectAtIndex:5];
+    v80 = [shadowLayers objectAtIndex:2];
+    v81 = [shadowLayers objectAtIndex:5];
     [v80 setAnchorPoint:{0.0, 0.0}];
     [v81 setAnchorPoint:{1.0, 0.0}];
     [v80 setPosition:{0.0, 2.0 - v4}];
@@ -484,8 +484,8 @@ void __49__UIKeyboardSliceTransitionView_initializeLayers__block_invoke(uint64_t
     [v80 setHidden:0];
     v101 = v81;
     [v81 setHidden:0];
-    v102 = [v141 objectAtIndex:3];
-    v103 = [v141 objectAtIndex:6];
+    v102 = [shadowLayers objectAtIndex:3];
+    v103 = [shadowLayers objectAtIndex:6];
     [v102 setAnchorPoint:{0.0, 0.0}];
     [v103 setAnchorPoint:{1.0, 0.0}];
     [v102 setPosition:{8.0, -1.0}];
@@ -531,13 +531,13 @@ void __49__UIKeyboardSliceTransitionView_initializeLayers__block_invoke(uint64_t
     [v103 addAnimation:v138 forKey:@"position animation"];
     [v102 setHidden:0];
     [v103 setHidden:0];
-    v115 = [(UIKeyboardSliceTransitionView *)self crossfadeOpacityAnimation];
-    [v117 addAnimation:v115 forKey:@"top left opacity"];
-    [v118 addAnimation:v115 forKey:@"top right opacity"];
-    [v85 addAnimation:v115 forKey:@"center left opacity"];
-    [v101 addAnimation:v115 forKey:@"center right opacity"];
-    [v102 addAnimation:v115 forKey:@"bottom left opacity"];
-    [v103 addAnimation:v115 forKey:@"bottom right opacity"];
+    crossfadeOpacityAnimation = [(UIKeyboardSliceTransitionView *)self crossfadeOpacityAnimation];
+    [v117 addAnimation:crossfadeOpacityAnimation forKey:@"top left opacity"];
+    [v118 addAnimation:crossfadeOpacityAnimation forKey:@"top right opacity"];
+    [v85 addAnimation:crossfadeOpacityAnimation forKey:@"center left opacity"];
+    [v101 addAnimation:crossfadeOpacityAnimation forKey:@"center right opacity"];
+    [v102 addAnimation:crossfadeOpacityAnimation forKey:@"bottom left opacity"];
+    [v103 addAnimation:crossfadeOpacityAnimation forKey:@"bottom right opacity"];
     [(UIKeyboardSliceTransitionView *)self rebuildTopEdgeHighlightTransition];
 
     v38 = v138;
@@ -564,13 +564,13 @@ void __47__UIKeyboardSliceTransitionView_rebuildShadows__block_invoke(uint64_t a
 
 - (void)rebuildBackgroundAndShadowTransitions
 {
-  v3 = [(UIKeyboardSplitTransitionView *)self backgroundLayers];
+  backgroundLayers = [(UIKeyboardSplitTransitionView *)self backgroundLayers];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __70__UIKeyboardSliceTransitionView_rebuildBackgroundAndShadowTransitions__block_invoke;
   v4[3] = &unk_1E70F5BE0;
   v4[4] = self;
-  [v3 enumerateObjectsUsingBlock:v4];
+  [backgroundLayers enumerateObjectsUsingBlock:v4];
 
   [(UIKeyboardSliceTransitionView *)self rebuildShadows];
   *&self->_rebuildFlags &= ~4u;
@@ -699,14 +699,14 @@ LABEL_9:
     [v6 setTimingFunction:v7];
   }
 
-  v8 = [(UIKeyboardSplitTransitionView *)self backgroundLayers];
+  backgroundLayers = [(UIKeyboardSplitTransitionView *)self backgroundLayers];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __69__UIKeyboardSliceTransitionView_rebuildBackgroundGradientTransitions__block_invoke;
   v10[3] = &unk_1E70F5BE0;
   v11 = v6;
   v9 = v6;
-  [v8 enumerateObjectsUsingBlock:v10];
+  [backgroundLayers enumerateObjectsUsingBlock:v10];
 
   *&self->_rebuildFlags &= ~8u;
 }
@@ -727,20 +727,20 @@ void __69__UIKeyboardSliceTransitionView_rebuildBackgroundGradientTransitions__b
   }
 }
 
-- (void)updateTransitionForSlice:(id)a3 withStart:(id)a4 startContents:(id)a5 end:(id)a6 endContents:(id)a7 updateContents:(BOOL)a8
+- (void)updateTransitionForSlice:(id)slice withStart:(id)start startContents:(id)contents end:(id)end endContents:(id)endContents updateContents:(BOOL)updateContents
 {
-  v8 = a8;
-  v25 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = v16;
-  if (v14 | v16)
+  updateContentsCopy = updateContents;
+  sliceCopy = slice;
+  startCopy = start;
+  contentsCopy = contents;
+  endCopy = end;
+  endContentsCopy = endContents;
+  v17 = endContentsCopy;
+  if (contentsCopy | endContentsCopy)
   {
-    if (v14)
+    if (contentsCopy)
     {
-      v18 = v16 == 0;
+      v18 = endContentsCopy == 0;
     }
 
     else
@@ -749,32 +749,32 @@ void __69__UIKeyboardSliceTransitionView_rebuildBackgroundGradientTransitions__b
     }
 
     v19 = !v18;
-    if (v8)
+    if (updateContentsCopy)
     {
-      [v13 setContents:v14];
-      [v15 setContents:v17];
-      v20 = [objc_opt_self() mainScreen];
-      [v20 scale];
-      [v13 setContentsScale:?];
+      [startCopy setContents:contentsCopy];
+      [endCopy setContents:v17];
+      mainScreen = [objc_opt_self() mainScreen];
+      [mainScreen scale];
+      [startCopy setContentsScale:?];
 
-      [v13 contentsScale];
-      [v15 setContentsScale:?];
+      [startCopy contentsScale];
+      [endCopy setContentsScale:?];
     }
 
-    [v13 removeAnimationForKey:@"start opacity interpolation"];
-    [v15 removeAnimationForKey:@"end opacity interpolation"];
+    [startCopy removeAnimationForKey:@"start opacity interpolation"];
+    [endCopy removeAnimationForKey:@"end opacity interpolation"];
     if (v19)
     {
       v21 = [MEMORY[0x1E6979318] normalizedAnimationWithKeyPath:@"opacity" fromValue:&unk_1EFE32080 toValue:&unk_1EFE32098];
-      v22 = [MEMORY[0x1E69793D0] _kbTimingFunction];
-      [v21 setTimingFunction:v22];
+      _kbTimingFunction = [MEMORY[0x1E69793D0] _kbTimingFunction];
+      [v21 setTimingFunction:_kbTimingFunction];
 
-      [v13 addAnimation:v21 forKey:@"start opacity interpolation"];
+      [startCopy addAnimation:v21 forKey:@"start opacity interpolation"];
       v23 = [MEMORY[0x1E6979318] normalizedAnimationWithKeyPath:@"opacity" fromValue:&unk_1EFE32098 toValue:&unk_1EFE32080];
-      v24 = [MEMORY[0x1E69793D0] _kbTimingFunction];
-      [v23 setTimingFunction:v24];
+      _kbTimingFunction2 = [MEMORY[0x1E69793D0] _kbTimingFunction];
+      [v23 setTimingFunction:_kbTimingFunction2];
 
-      [v15 addAnimation:v23 forKey:@"end opacity interpolation"];
+      [endCopy addAnimation:v23 forKey:@"end opacity interpolation"];
     }
   }
 }
@@ -813,40 +813,40 @@ void __69__UIKeyboardSliceTransitionView_rebuildBackgroundGradientTransitions__b
 
 - (void)rebuildSliceTransitions
 {
-  v2 = self;
+  selfCopy = self;
   v121 = *MEMORY[0x1E69E9840];
   p_leftKeys = &self->_leftKeys;
-  v4 = [(CALayer *)self->_leftKeys sublayers];
-  [v4 makeObjectsPerformSelector:sel_removeFromSuperlayer];
+  sublayers = [(CALayer *)self->_leftKeys sublayers];
+  [sublayers makeObjectsPerformSelector:sel_removeFromSuperlayer];
 
-  v5 = [(CALayer *)v2->_rightKeys sublayers];
-  [v5 makeObjectsPerformSelector:sel_removeFromSuperlayer];
+  sublayers2 = [(CALayer *)selfCopy->_rightKeys sublayers];
+  [sublayers2 makeObjectsPerformSelector:sel_removeFromSuperlayer];
 
   v101 = p_leftKeys;
   [(CALayer *)*p_leftKeys removeAllAnimations];
-  p_rightKeys = &v2->_rightKeys;
-  [(CALayer *)v2->_rightKeys removeAllAnimations];
+  p_rightKeys = &selfCopy->_rightKeys;
+  [(CALayer *)selfCopy->_rightKeys removeAllAnimations];
   v6 = *(MEMORY[0x1E695F058] + 8);
   v114 = *MEMORY[0x1E695F058];
   v8 = *(MEMORY[0x1E695F058] + 16);
   v7 = *(MEMORY[0x1E695F058] + 24);
-  [(UIKeyboardSliceSet *)v2->super._sliceSet startRect];
+  [(UIKeyboardSliceSet *)selfCopy->super._sliceSet startRect];
   v10 = v9;
-  [(UIKeyboardSliceSet *)v2->super._sliceSet leftWidth];
+  [(UIKeyboardSliceSet *)selfCopy->super._sliceSet leftWidth];
   v12 = v11;
-  [(UIKeyboardSliceSet *)v2->super._sliceSet rightWidth];
+  [(UIKeyboardSliceSet *)selfCopy->super._sliceSet rightWidth];
   v14 = v13;
-  [(UIKeyboardSliceSet *)v2->super._sliceSet leftWidth];
+  [(UIKeyboardSliceSet *)selfCopy->super._sliceSet leftWidth];
   v16 = v15;
-  [(UIKeyboardSliceSet *)v2->super._sliceSet rightWidth];
+  [(UIKeyboardSliceSet *)selfCopy->super._sliceSet rightWidth];
   v18 = v17;
-  [(UIKeyboardSliceSet *)v2->super._sliceSet endRect];
+  [(UIKeyboardSliceSet *)selfCopy->super._sliceSet endRect];
   v94 = v19;
   v116 = 0u;
   v117 = 0u;
   v118 = 0u;
   v119 = 0u;
-  obj = [(UIKeyboardSliceSet *)v2->super._sliceSet slices];
+  obj = [(UIKeyboardSliceSet *)selfCopy->super._sliceSet slices];
   v102 = [obj countByEnumeratingWithState:&v116 objects:v120 count:16];
   if (v102)
   {
@@ -883,7 +883,7 @@ void __69__UIKeyboardSliceTransitionView_rebuildBackgroundGradientTransitions__b
         v113 = v36;
         v115 = v35;
         v112 = v37;
-        [(UIKeyboardSliceSet *)v2->super._sliceSet endRect];
+        [(UIKeyboardSliceSet *)selfCopy->super._sliceSet endRect];
         if (v34 <= v38 * 0.5)
         {
           v39 = v34;
@@ -895,49 +895,49 @@ void __69__UIKeyboardSliceTransitionView_rebuildBackgroundGradientTransitions__b
         }
 
         v108 = v39;
-        v40 = [MEMORY[0x1E6979398] layer];
-        v41 = [MEMORY[0x1E6979398] layer];
-        v42 = [v25 startToken];
-        if (v42)
+        layer = [MEMORY[0x1E6979398] layer];
+        layer2 = [MEMORY[0x1E6979398] layer];
+        startToken = [v25 startToken];
+        if (startToken)
         {
-          v43 = [v25 startToken];
-          v44 = [(UIKeyboardSplitTransitionView *)v2 keyImageWithToken:v43];
+          startToken2 = [v25 startToken];
+          v44 = [(UIKeyboardSplitTransitionView *)selfCopy keyImageWithToken:startToken2];
         }
 
         else
         {
-          v44 = v2->_defaultKeyplaneImage;
+          v44 = selfCopy->_defaultKeyplaneImage;
         }
 
-        v45 = [v25 endToken];
-        if (v45)
+        endToken = [v25 endToken];
+        if (endToken)
         {
-          v46 = [v25 endToken];
-          v47 = [(UIKeyboardSplitTransitionView *)v2 keyImageWithToken:v46];
+          endToken2 = [v25 endToken];
+          v47 = [(UIKeyboardSplitTransitionView *)selfCopy keyImageWithToken:endToken2];
         }
 
         else
         {
-          v47 = v2->_splitKeyplaneImage;
+          v47 = selfCopy->_splitKeyplaneImage;
         }
 
-        [(UIKeyboardSliceTransitionView *)v2 updateTransitionForSlice:v25 withStart:v40 startContents:v44 end:v41 endContents:v47 updateContents:1];
-        v48 = [v25 startToken];
+        [(UIKeyboardSliceTransitionView *)selfCopy updateTransitionForSlice:v25 withStart:layer startContents:v44 end:layer2 endContents:v47 updateContents:1];
+        startToken3 = [v25 startToken];
 
-        if (v48)
+        if (startToken3)
         {
           if ([v25 normalization] == 1)
           {
-            [v40 setContentsRect:{0.0, 0.0, 0.5, 1.0}];
-            v49 = v40;
+            [layer setContentsRect:{0.0, 0.0, 0.5, 1.0}];
+            v49 = layer;
 
             v97 = v49;
           }
 
           if ([v25 normalization] == 2)
           {
-            [v40 setContentsRect:{0.5, 0.0, 0.5, 1.0}];
-            v50 = v40;
+            [layer setContentsRect:{0.5, 0.0, 0.5, 1.0}];
+            v50 = layer;
 
             v96 = v50;
           }
@@ -947,18 +947,18 @@ void __69__UIKeyboardSliceTransitionView_rebuildBackgroundGradientTransitions__b
 
         else
         {
-          [(UIKeyboardSliceSet *)v2->super._sliceSet startRect];
+          [(UIKeyboardSliceSet *)selfCopy->super._sliceSet startRect];
           height = r2;
-          [v40 setContentsRect:{v27 / v52, v29 / v53, v31 / v52, r2 / v53}];
+          [layer setContentsRect:{v27 / v52, v29 / v53, v31 / v52, r2 / v53}];
         }
 
-        [v40 setAnchorPoint:{0.0, 0.0}];
-        [v40 setFrame:{v27, v29, v31, height}];
+        [layer setAnchorPoint:{0.0, 0.0}];
+        [layer setFrame:{v27, v29, v31, height}];
         v110 = v44;
         if ([v25 normalization])
         {
-          [v40 setContentsRect:{0.0, 0.0, 1.0, 1.0}];
-          [v40 setContentsCenter:{0.1, 0.0, 0.8, 1.0}];
+          [layer setContentsRect:{0.0, 0.0, 1.0, 1.0}];
+          [layer setContentsCenter:{0.1, 0.0, 0.8, 1.0}];
           v122.origin.x = x;
           v122.origin.y = y;
           v122.size.width = width;
@@ -992,35 +992,35 @@ void __69__UIKeyboardSliceTransitionView_rebuildBackgroundGradientTransitions__b
           v103 = height;
         }
 
-        v61 = [v25 endToken];
+        endToken3 = [v25 endToken];
 
-        if (!v61)
+        if (!endToken3)
         {
-          [v41 setContentsRect:{v108 / v93, v115 / v94, v113 / v93, v112 / v94}];
+          [layer2 setContentsRect:{v108 / v93, v115 / v94, v113 / v93, v112 / v94}];
         }
 
         v109 = v47;
-        [v41 setAnchorPoint:{0.0, 0.0}];
-        [v41 setFrame:{v34, v115, v113, v112}];
-        v62 = [v25 endToken];
-        if (v62)
+        [layer2 setAnchorPoint:{0.0, 0.0}];
+        [layer2 setFrame:{v34, v115, v113, v112}];
+        endToken4 = [v25 endToken];
+        if (endToken4)
         {
-          v63 = v62;
-          v64 = [v25 normalization];
+          v63 = endToken4;
+          normalization = [v25 normalization];
 
-          if (v64 != 2)
+          if (normalization != 2)
           {
-            controlKeys = v2->_controlKeys;
+            controlKeys = selfCopy->_controlKeys;
             v66 = MEMORY[0x1E695DF90];
-            v67 = [v25 startToken];
-            v68 = [v25 endToken];
-            v69 = [v66 dictionaryWithObjectsAndKeys:{v40, v67, v41, v68, 0}];
-            v70 = [v25 endToken];
-            [v70 name];
-            v72 = v71 = v2;
+            startToken4 = [v25 startToken];
+            endToken5 = [v25 endToken];
+            v69 = [v66 dictionaryWithObjectsAndKeys:{layer, startToken4, layer2, endToken5, 0}];
+            endToken6 = [v25 endToken];
+            [endToken6 name];
+            v72 = v71 = selfCopy;
             [(NSMutableDictionary *)controlKeys setObject:v69 forKey:v72];
 
-            v2 = v71;
+            selfCopy = v71;
           }
         }
 
@@ -1031,8 +1031,8 @@ void __69__UIKeyboardSliceTransitionView_rebuildBackgroundGradientTransitions__b
         v75 = [MEMORY[0x1E696B098] valueWithCGRect:{v34, v115, v113, v112}];
         [v73 setToValue:v75];
 
-        [v40 addAnimation:v73 forKey:@"start bounds interpolation"];
-        [v41 addAnimation:v73 forKey:@"end bounds interpolation"];
+        [layer addAnimation:v73 forKey:@"start bounds interpolation"];
+        [layer2 addAnimation:v73 forKey:@"end bounds interpolation"];
         v76 = [MEMORY[0x1E6979318] normalizedAnimationWithKeyPath:@"position" fromValue:0 toValue:0];
         v77 = [MEMORY[0x1E696B098] valueWithCGPoint:{v27, v29}];
         [v76 setFromValue:v77];
@@ -1040,19 +1040,19 @@ void __69__UIKeyboardSliceTransitionView_rebuildBackgroundGradientTransitions__b
         v78 = [MEMORY[0x1E696B098] valueWithCGPoint:{v34, v115}];
         [v76 setToValue:v78];
 
-        [v40 addAnimation:v76 forKey:@"start position interpolation"];
-        [v41 addAnimation:v76 forKey:@"end position interpolation"];
-        if (v2->_defaultKeyplaneImage)
+        [layer addAnimation:v76 forKey:@"start position interpolation"];
+        [layer2 addAnimation:v76 forKey:@"end position interpolation"];
+        if (selfCopy->_defaultKeyplaneImage)
         {
           v20 = 1;
           v79 = v109;
-          if (v2->_splitKeyplaneImage && v109)
+          if (selfCopy->_splitKeyplaneImage && v109)
           {
             v80 = [MEMORY[0x1E6979318] normalizedAnimationWithKeyPath:@"opacity" fromValue:&unk_1EFE32080 toValue:&unk_1EFE32098];
-            v81 = [MEMORY[0x1E69793D0] _kbTimingFunction];
-            [v80 setTimingFunction:v81];
+            _kbTimingFunction = [MEMORY[0x1E69793D0] _kbTimingFunction];
+            [v80 setTimingFunction:_kbTimingFunction];
 
-            [v40 addAnimation:v80 forKey:@"start opacity interpolation"];
+            [layer addAnimation:v80 forKey:@"start opacity interpolation"];
             v20 = v107;
           }
         }
@@ -1063,7 +1063,7 @@ void __69__UIKeyboardSliceTransitionView_rebuildBackgroundGradientTransitions__b
           v79 = v109;
         }
 
-        [(UIView *)v2 bounds];
+        [(UIView *)selfCopy bounds];
         v83 = v101;
         if (v34 >= v82 * 0.5)
         {
@@ -1071,8 +1071,8 @@ void __69__UIKeyboardSliceTransitionView_rebuildBackgroundGradientTransitions__b
         }
 
         v84 = *v83;
-        [v84 addSublayer:v41];
-        [v84 addSublayer:v40];
+        [v84 addSublayer:layer2];
+        [v84 addSublayer:layer];
       }
 
       v102 = [obj countByEnumeratingWithState:&v116 objects:v120 count:16];
@@ -1108,8 +1108,8 @@ void __69__UIKeyboardSliceTransitionView_rebuildBackgroundGradientTransitions__b
     x = v114;
   }
 
-  [(CALayer *)v2->_spaceFill setContents:v88];
-  [(CALayer *)v2->_spaceFill removeAllAnimations];
+  [(CALayer *)selfCopy->_spaceFill setContents:v88];
+  [(CALayer *)selfCopy->_spaceFill removeAllAnimations];
   v124.origin.x = x;
   v124.origin.y = y;
   v124.size.width = width;
@@ -1117,11 +1117,11 @@ void __69__UIKeyboardSliceTransitionView_rebuildBackgroundGradientTransitions__b
   if (!CGRectIsEmpty(v124))
   {
     v106 = v88;
-    [(CALayer *)v2->_spaceFill setFrame:x, y, width, v7];
+    [(CALayer *)selfCopy->_spaceFill setFrame:x, y, width, v7];
     v90 = [MEMORY[0x1E6979390] normalizedKeyframeAnimationWithKeyPath:@"opacity"];
     [v90 setKeyTimes:&unk_1EFE2CEB0];
     [v90 setValues:&unk_1EFE2CEC8];
-    [(CALayer *)v2->_spaceFill addAnimation:v90 forKey:@"space fill opacity interpolation"];
+    [(CALayer *)selfCopy->_spaceFill addAnimation:v90 forKey:@"space fill opacity interpolation"];
     if (v86 && v87 && v89)
     {
       [v86 removeAnimationForKey:@"start opacity interpolation"];
@@ -1140,7 +1140,7 @@ void __69__UIKeyboardSliceTransitionView_rebuildBackgroundGradientTransitions__b
     v88 = v106;
   }
 
-  *&v2->_rebuildFlags = *&v2->_rebuildFlags & 0xFD | v85;
+  *&selfCopy->_rebuildFlags = *&selfCopy->_rebuildFlags & 0xFD | v85;
 }
 
 - (void)rebuildShiftSlices
@@ -1170,21 +1170,21 @@ LABEL_3:
       v7 = *(*(&v24 + 1) + 8 * v6);
       if ([v7 hasSuffix:@"Shift-Key"])
       {
-        v8 = [(UIKeyboardSliceSet *)self->super._sliceSet controlKeys];
-        v9 = [v8 objectForKey:v7];
+        controlKeys = [(UIKeyboardSliceSet *)self->super._sliceSet controlKeys];
+        v9 = [controlKeys objectForKey:v7];
 
         v10 = [(NSMutableDictionary *)self->_controlKeys objectForKey:v7];
-        v11 = [v9 startToken];
-        v12 = [v10 objectForKey:v11];
+        startToken = [v9 startToken];
+        v12 = [v10 objectForKey:startToken];
 
-        v13 = [v9 endToken];
-        v14 = [v10 objectForKey:v13];
+        endToken = [v9 endToken];
+        v14 = [v10 objectForKey:endToken];
 
-        v15 = [v9 startToken];
-        v16 = [(UIKeyboardSplitTransitionView *)self keyImageWithToken:v15];
+        startToken2 = [v9 startToken];
+        v16 = [(UIKeyboardSplitTransitionView *)self keyImageWithToken:startToken2];
 
-        v17 = [v9 endToken];
-        [(UIKeyboardSplitTransitionView *)self keyImageWithToken:v17];
+        endToken2 = [v9 endToken];
+        [(UIKeyboardSplitTransitionView *)self keyImageWithToken:endToken2];
         v23 = v5;
         v19 = v18 = v4;
 
@@ -1222,8 +1222,8 @@ LABEL_3:
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v3 = [(UIKeyboardSliceSet *)self->super._sliceSet controlKeys];
-  v4 = [v3 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  controlKeys = [(UIKeyboardSliceSet *)self->super._sliceSet controlKeys];
+  v4 = [controlKeys countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1234,34 +1234,34 @@ LABEL_3:
       {
         if (*v21 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(controlKeys);
         }
 
         v8 = *(*(&v20 + 1) + 8 * i);
         if ([v8 hasSuffix:@"Return-Key"])
         {
-          v9 = [(UIKeyboardSliceSet *)self->super._sliceSet controlKeys];
-          v10 = [v9 objectForKey:v8];
+          controlKeys2 = [(UIKeyboardSliceSet *)self->super._sliceSet controlKeys];
+          v10 = [controlKeys2 objectForKey:v8];
 
           v11 = [(NSMutableDictionary *)self->_controlKeys objectForKey:v8];
-          v12 = [v10 startToken];
-          v13 = [v11 objectForKey:v12];
+          startToken = [v10 startToken];
+          v13 = [v11 objectForKey:startToken];
 
-          v14 = [v10 endToken];
-          v15 = [v11 objectForKey:v14];
+          endToken = [v10 endToken];
+          v15 = [v11 objectForKey:endToken];
 
-          v16 = [v10 startToken];
-          v17 = [(UIKeyboardSplitTransitionView *)self keyImageWithToken:v16];
+          startToken2 = [v10 startToken];
+          v17 = [(UIKeyboardSplitTransitionView *)self keyImageWithToken:startToken2];
 
-          v18 = [v10 endToken];
-          v19 = [(UIKeyboardSplitTransitionView *)self keyImageWithToken:v18];
+          endToken2 = [v10 endToken];
+          v19 = [(UIKeyboardSplitTransitionView *)self keyImageWithToken:endToken2];
 
           [(UIKeyboardSliceTransitionView *)self updateTransitionForSlice:v10 withStart:v13 startContents:v17 end:v15 endContents:v19 updateContents:1];
           goto LABEL_11;
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v5 = [controlKeys countByEnumeratingWithState:&v20 objects:v24 count:16];
       if (v5)
       {
         continue;
@@ -1282,22 +1282,22 @@ LABEL_11:
   sliceSet = self->super._sliceSet;
   if (sliceSet)
   {
-    v4 = [(UIKeyboardSliceSet *)sliceSet controlKeys];
-    if (v4)
+    controlKeys = [(UIKeyboardSliceSet *)sliceSet controlKeys];
+    if (controlKeys)
     {
-      v5 = v4;
+      v5 = controlKeys;
       v6 = [(NSMutableDictionary *)self->_controlKeys count];
 
       if (v6)
       {
-        v7 = [(UIKeyboardSliceSet *)self->super._sliceSet controlKeys];
-        v8 = [v7 objectForKey:@"MoreIntlNames"];
+        controlKeys2 = [(UIKeyboardSliceSet *)self->super._sliceSet controlKeys];
+        v8 = [controlKeys2 objectForKey:@"MoreIntlNames"];
 
         if ([v8 count])
         {
-          v65 = [(UIKeyboardSplitTransitionView *)self showIntlKey];
-          v64 = [(UIKeyboardSplitTransitionView *)self showDictationKey];
-          v9 = [(UIKeyboardSplitTransitionView *)self showIntlKey];
+          showIntlKey = [(UIKeyboardSplitTransitionView *)self showIntlKey];
+          showDictationKey = [(UIKeyboardSplitTransitionView *)self showDictationKey];
+          showIntlKey2 = [(UIKeyboardSplitTransitionView *)self showIntlKey];
           if ([(UIKeyboardSplitTransitionView *)self showDictationKey])
           {
             v10 = 2;
@@ -1308,16 +1308,16 @@ LABEL_11:
             v10 = 0;
           }
 
-          v69 = self;
-          v11 = v10 | v9;
-          v12 = [(UIKeyboardSliceSet *)v69->super._sliceSet controlKeys];
-          v13 = [v12 objectForKey:@"MoreIntlStarts"];
+          selfCopy = self;
+          v11 = v10 | showIntlKey2;
+          controlKeys3 = [(UIKeyboardSliceSet *)selfCopy->super._sliceSet controlKeys];
+          v13 = [controlKeys3 objectForKey:@"MoreIntlStarts"];
           v66 = [UIKBTree shapesForControlKeyShapes:v13 options:v11 | 4u];
 
-          v14 = [(UIKeyboardSliceSet *)v69->super._sliceSet controlKeys];
-          v15 = [v14 objectForKey:@"MoreIntlEnds"];
+          controlKeys4 = [(UIKeyboardSliceSet *)selfCopy->super._sliceSet controlKeys];
+          v15 = [controlKeys4 objectForKey:@"MoreIntlEnds"];
           v16 = v11 | 0xCu;
-          v17 = v69;
+          v17 = selfCopy;
           v68 = [UIKBTree shapesForControlKeyShapes:v15 options:v16];
 
           v75 = 0u;
@@ -1342,16 +1342,16 @@ LABEL_11:
                 v19 = *(*(&v73 + 1) + 8 * i);
                 v20 = [obj objectForKey:{v19, v63}];
                 v21 = [v20 hasSuffix:@"Space-Key"];
-                v22 = [(UIKeyboardSliceSet *)v17->super._sliceSet controlKeys];
-                v23 = [v22 objectForKey:v20];
+                controlKeys5 = [(UIKeyboardSliceSet *)v17->super._sliceSet controlKeys];
+                v23 = [controlKeys5 objectForKey:v20];
 
                 v24 = [(NSMutableDictionary *)v17->_controlKeys objectForKey:v20];
-                v25 = [v23 startToken];
-                v26 = [v24 objectForKey:v25];
+                startToken = [v23 startToken];
+                v26 = [v24 objectForKey:startToken];
 
-                v27 = [v23 endToken];
+                endToken = [v23 endToken];
                 v72 = v24;
-                v28 = [v24 objectForKey:v27];
+                v28 = [v24 objectForKey:endToken];
 
                 if (v21)
                 {
@@ -1381,22 +1381,22 @@ LABEL_11:
 
                 if ((v21 & 1) == 0)
                 {
-                  v51 = [v23 startToken];
-                  [v51 setSize:{v34, v36}];
+                  startToken2 = [v23 startToken];
+                  [startToken2 setSize:{v34, v36}];
                 }
 
-                v52 = [v23 endToken];
-                [v52 setSize:{v48, v50}];
+                endToken2 = [v23 endToken];
+                [endToken2 setSize:{v48, v50}];
 
                 [v26 setFrame:{v30, v32, v34, v36}];
                 [v28 setFrame:{v44, v46, v48, v50}];
                 [v23 setStartRect:{v30, v32, v34, v36}];
                 [v23 setEndRect:{v44, v46, v48, v50}];
-                v53 = [v23 startToken];
-                v54 = [(UIKeyboardSplitTransitionView *)v17 keyImageWithToken:v53];
+                startToken3 = [v23 startToken];
+                v54 = [(UIKeyboardSplitTransitionView *)v17 keyImageWithToken:startToken3];
 
-                v55 = [v23 endToken];
-                v56 = [(UIKeyboardSplitTransitionView *)v17 keyImageWithToken:v55];
+                endToken3 = [v23 endToken];
+                v56 = [(UIKeyboardSplitTransitionView *)v17 keyImageWithToken:endToken3];
 
                 if (v56)
                 {
@@ -1433,17 +1433,17 @@ LABEL_11:
                 [v28 addAnimation:v60 forKey:@"end position interpolation"];
                 if ([v20 hasSuffix:@"International-Key"])
                 {
-                  [v26 setHidden:!v65];
-                  [v28 setHidden:!v65];
+                  [v26 setHidden:!showIntlKey];
+                  [v28 setHidden:!showIntlKey];
                 }
 
                 if ([v20 hasSuffix:@"Dictation-Key"])
                 {
-                  [v26 setHidden:!v64];
-                  [v28 setHidden:!v64];
+                  [v26 setHidden:!showDictationKey];
+                  [v28 setHidden:!showDictationKey];
                 }
 
-                v17 = v69;
+                v17 = selfCopy;
               }
 
               v70 = [obj countByEnumeratingWithState:&v73 objects:v77 count:16];
@@ -1460,26 +1460,26 @@ LABEL_11:
   }
 }
 
-- (id)meshTransformForProgress:(double)a3
+- (id)meshTransformForProgress:(double)progress
 {
-  v4 = [(UIKeyboardSplitTransitionView *)self shouldAllowRubberiness];
-  if (v4)
+  shouldAllowRubberiness = [(UIKeyboardSplitTransitionView *)self shouldAllowRubberiness];
+  if (shouldAllowRubberiness)
   {
-    MEMORY[0x1EEE9AC00](v4);
+    MEMORY[0x1EEE9AC00](shouldAllowRubberiness);
     MEMORY[0x1EEE9AC00](v5);
     v8.i64[0] = 0x80000000800000;
     v8.i64[1] = 0x80000000800000;
     v21 = vnegq_f32(v8);
-    v9 = (a3 + -1.0) * 0.025;
+    v9 = (progress + -1.0) * 0.025;
     v10 = 0.0;
-    if (a3 <= 1.0)
+    if (progress <= 1.0)
     {
       v9 = 0.0;
     }
 
-    if (a3 < 0.0)
+    if (progress < 0.0)
     {
-      v10 = a3 * -0.025;
+      v10 = progress * -0.025;
     }
 
     *v6 = xmmword_18A680630;
@@ -1538,24 +1538,24 @@ LABEL_11:
   return v19;
 }
 
-- (void)transformForProgress:(double)a3
+- (void)transformForProgress:(double)progress
 {
-  v5 = [(UIKeyboardSliceTransitionView *)self meshTransformForProgress:a3];
-  v4 = [(UIView *)self layer];
-  [v4 setMeshTransform:v5];
+  v5 = [(UIKeyboardSliceTransitionView *)self meshTransformForProgress:progress];
+  layer = [(UIView *)self layer];
+  [layer setMeshTransform:v5];
 }
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
-  v3 = a3;
+  hiddenCopy = hidden;
   v6.receiver = self;
   v6.super_class = UIKeyboardSliceTransitionView;
   [(UIView *)&v6 setHidden:?];
-  if (v3)
+  if (hiddenCopy)
   {
-    v5 = [(UIView *)self window];
+    window = [(UIView *)self window];
 
-    if (v5)
+    if (window)
     {
       [(UIKeyboardSliceTransitionView *)self updateTransition];
     }
@@ -1566,8 +1566,8 @@ LABEL_11:
 {
   if ([(UIView *)self isHidden])
   {
-    v3 = [(UIView *)self window];
-    if (v3)
+    window = [(UIView *)self window];
+    if (window)
     {
       sliceSet = self->super._sliceSet;
 
@@ -1661,24 +1661,24 @@ LABEL_17:
   [(UIKeyboardSliceTransitionView *)self performSelector:sel__delayedUpdateTransition withObject:0 afterDelay:0.25];
 }
 
-- (void)rebuildFromKeyplane:(id)a3 toKeyplane:(id)a4 startToken:(id)a5 endToken:(id)a6 keyboardType:(int64_t)a7 orientation:(int64_t)a8
+- (void)rebuildFromKeyplane:(id)keyplane toKeyplane:(id)toKeyplane startToken:(id)token endToken:(id)endToken keyboardType:(int64_t)type orientation:(int64_t)orientation
 {
-  v28 = a5;
-  if (a7 == 1)
+  tokenCopy = token;
+  if (type == 1)
   {
-    a7 = 0;
+    type = 0;
   }
 
-  v13 = [a3 name];
-  v14 = [UIKeyboardSliceStore sliceSetIDForKeyplaneName:v13 type:a7 orientation:a8];
+  name = [keyplane name];
+  v14 = [UIKeyboardSliceStore sliceSetIDForKeyplaneName:name type:type orientation:orientation];
 
   if (self->super._isRebuilding)
   {
     goto LABEL_4;
   }
 
-  v15 = [(UIKeyboardSliceSet *)self->super._sliceSet sliceSetID];
-  if ([v14 isEqualToString:v15] && self->_defaultKeyplaneImage)
+  sliceSetID = [(UIKeyboardSliceSet *)self->super._sliceSet sliceSetID];
+  if ([v14 isEqualToString:sliceSetID] && self->_defaultKeyplaneImage)
   {
     splitKeyplaneImage = self->_splitKeyplaneImage;
 
@@ -1697,8 +1697,8 @@ LABEL_14:
   }
 
   self->super._isRebuilding = 1;
-  objc_storeStrong(&self->_keyplaneToken, a5);
-  self->_orientation = a8;
+  objc_storeStrong(&self->_keyplaneToken, token);
+  self->_orientation = orientation;
   sliceSet = self->super._sliceSet;
   if (sliceSet)
   {
@@ -1728,17 +1728,17 @@ LABEL_14:
 LABEL_15:
 }
 
-- (void)updateWithProgress:(double)a3
+- (void)updateWithProgress:(double)progress
 {
-  v5 = [(UIView *)self layer];
-  [v5 setMeshTransform:0];
+  layer = [(UIView *)self layer];
+  [layer setMeshTransform:0];
 
-  v6 = [(UIView *)self layer];
-  [v6 setSpeed:0.0];
+  layer2 = [(UIView *)self layer];
+  [layer2 setSpeed:0.0];
 
   v7.receiver = self;
   v7.super_class = UIKeyboardSliceTransitionView;
-  [(UIKeyboardSplitTransitionView *)&v7 updateWithProgress:a3];
+  [(UIKeyboardSplitTransitionView *)&v7 updateWithProgress:progress];
 }
 
 - (BOOL)canDisplayTransition

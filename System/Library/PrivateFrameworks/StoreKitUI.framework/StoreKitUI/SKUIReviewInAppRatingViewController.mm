@@ -1,30 +1,30 @@
 @interface SKUIReviewInAppRatingViewController
-- (SKUIReviewInAppRatingViewController)initWithTitle:(id)a3 message:(id)a4 icon:(id)a5;
+- (SKUIReviewInAppRatingViewController)initWithTitle:(id)title message:(id)message icon:(id)icon;
 - (id)_actions;
 - (id)_actionsLayoutAxesForCurrentState;
-- (id)_buttonActionWithTitle:(id)a3 style:(unint64_t)a4;
-- (id)animationControllerForDismissedController:(id)a3;
-- (id)animationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5;
-- (id)presentationControllerForPresentedViewController:(id)a3 presentingViewController:(id)a4 sourceViewController:(id)a5;
-- (void)interfaceAction:(id)a3 invokeActionHandler:(id)a4 completion:(id)a5;
+- (id)_buttonActionWithTitle:(id)title style:(unint64_t)style;
+- (id)animationControllerForDismissedController:(id)controller;
+- (id)animationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController;
+- (id)presentationControllerForPresentedViewController:(id)controller presentingViewController:(id)viewController sourceViewController:(id)sourceViewController;
+- (void)interfaceAction:(id)action invokeActionHandler:(id)handler completion:(id)completion;
 - (void)reloadViewsConfiguration;
-- (void)setState:(unint64_t)a3;
+- (void)setState:(unint64_t)state;
 - (void)viewDidLoad;
 @end
 
 @implementation SKUIReviewInAppRatingViewController
 
-- (SKUIReviewInAppRatingViewController)initWithTitle:(id)a3 message:(id)a4 icon:(id)a5
+- (SKUIReviewInAppRatingViewController)initWithTitle:(id)title message:(id)message icon:(id)icon
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  titleCopy = title;
+  messageCopy = message;
+  iconCopy = icon;
   v15.receiver = self;
   v15.super_class = SKUIReviewInAppRatingViewController;
   v11 = [(SKUIReviewInAppRatingViewController *)&v15 initWithNibName:0 bundle:0];
   if (v11)
   {
-    v12 = [[SKUIReviewInAppRatingHeaderView alloc] initWithTitle:v8 message:v9 icon:v10];
+    v12 = [[SKUIReviewInAppRatingHeaderView alloc] initWithTitle:titleCopy message:messageCopy icon:iconCopy];
     headerView = v11->_headerView;
     v11->_headerView = v12;
 
@@ -46,65 +46,65 @@
   v5 = [v3 initWithEffect:v4];
   [(SKUIReviewInAppRatingViewController *)self setBackgroundView:v5];
 
-  v6 = [(SKUIReviewInAppRatingViewController *)self backgroundView];
-  [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
+  backgroundView = [(SKUIReviewInAppRatingViewController *)self backgroundView];
+  [backgroundView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v7 = [(SKUIReviewInAppRatingViewController *)self backgroundView];
-  [v7 _setContinuousCornerRadius:16.0];
+  backgroundView2 = [(SKUIReviewInAppRatingViewController *)self backgroundView];
+  [backgroundView2 _setContinuousCornerRadius:16.0];
 
-  v8 = [(SKUIReviewInAppRatingViewController *)self backgroundView];
-  [v8 setClipsToBounds:1];
+  backgroundView3 = [(SKUIReviewInAppRatingViewController *)self backgroundView];
+  [backgroundView3 setClipsToBounds:1];
 
-  v9 = [(SKUIReviewInAppRatingViewController *)self backgroundView];
-  [v9 setHidden:1];
+  backgroundView4 = [(SKUIReviewInAppRatingViewController *)self backgroundView];
+  [backgroundView4 setHidden:1];
 
-  v10 = [(SKUIReviewInAppRatingViewController *)self view];
-  v11 = [(SKUIReviewInAppRatingViewController *)self backgroundView];
-  [v10 addSubview:v11];
+  view = [(SKUIReviewInAppRatingViewController *)self view];
+  backgroundView5 = [(SKUIReviewInAppRatingViewController *)self backgroundView];
+  [view addSubview:backgroundView5];
 
   v12 = objc_alloc(MEMORY[0x277D75A68]);
   v13 = [v12 initWithArrangedSubviews:MEMORY[0x277CBEBF8]];
   [(SKUIReviewInAppRatingViewController *)self setStackView:v13];
 
-  v14 = [(SKUIReviewInAppRatingViewController *)self stackView];
-  [v14 setAxis:1];
+  stackView = [(SKUIReviewInAppRatingViewController *)self stackView];
+  [stackView setAxis:1];
 
-  v15 = [(SKUIReviewInAppRatingViewController *)self stackView];
-  [v15 setTranslatesAutoresizingMaskIntoConstraints:0];
+  stackView2 = [(SKUIReviewInAppRatingViewController *)self stackView];
+  [stackView2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v16 = [(SKUIReviewInAppRatingViewController *)self view];
-  v17 = [(SKUIReviewInAppRatingViewController *)self stackView];
-  [v16 addSubview:v17];
+  view2 = [(SKUIReviewInAppRatingViewController *)self view];
+  stackView3 = [(SKUIReviewInAppRatingViewController *)self stackView];
+  [view2 addSubview:stackView3];
 
   v18 = objc_alloc_init(SKUIReviewInAppRatingControlViewController);
-  v19 = [(SKUIReviewInAppRatingControlViewController *)v18 ratingControl];
-  [(SKUIReviewInAppRatingViewController *)self setRatingControl:v19];
+  ratingControl = [(SKUIReviewInAppRatingControlViewController *)v18 ratingControl];
+  [(SKUIReviewInAppRatingViewController *)self setRatingControl:ratingControl];
 
-  v20 = [(SKUIReviewInAppRatingViewController *)self ratingControl];
-  [v20 addTarget:self action:sel__ratingControlChanged_ forControlEvents:4096];
+  ratingControl2 = [(SKUIReviewInAppRatingViewController *)self ratingControl];
+  [ratingControl2 addTarget:self action:sel__ratingControlChanged_ forControlEvents:4096];
 
   v21 = [MEMORY[0x277D75618] actionWithCustomContentViewController:v18];
   [(SKUIReviewInAppRatingViewController *)self setRatingControlAction:v21];
 
-  v22 = [(SKUIReviewInAppRatingViewController *)self ratingControlAction];
-  [v22 setEnabled:0];
+  ratingControlAction = [(SKUIReviewInAppRatingViewController *)self ratingControlAction];
+  [ratingControlAction setEnabled:0];
 }
 
 - (void)reloadViewsConfiguration
 {
   v148 = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CCAAD0];
-  v4 = [(SKUIReviewInAppRatingViewController *)self constraints];
-  [v3 deactivateConstraints:v4];
+  constraints = [(SKUIReviewInAppRatingViewController *)self constraints];
+  [v3 deactivateConstraints:constraints];
 
   v140 = 0u;
   v141 = 0u;
   v138 = 0u;
   v139 = 0u;
-  v5 = [(SKUIReviewInAppRatingViewController *)self stackView];
-  v6 = [v5 arrangedSubviews];
+  stackView = [(SKUIReviewInAppRatingViewController *)self stackView];
+  arrangedSubviews = [stackView arrangedSubviews];
 
-  v7 = [v6 countByEnumeratingWithState:&v138 objects:v147 count:16];
+  v7 = [arrangedSubviews countByEnumeratingWithState:&v138 objects:v147 count:16];
   if (v7)
   {
     v8 = v7;
@@ -115,20 +115,20 @@
       {
         if (*v139 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(arrangedSubviews);
         }
 
         v11 = *(*(&v138 + 1) + 8 * i);
-        v12 = [(SKUIReviewInAppRatingViewController *)self stackView];
-        [v12 setSpacing:0.0];
+        stackView2 = [(SKUIReviewInAppRatingViewController *)self stackView];
+        [stackView2 setSpacing:0.0];
 
-        v13 = [(SKUIReviewInAppRatingViewController *)self stackView];
-        [v13 removeArrangedSubview:v11];
+        stackView3 = [(SKUIReviewInAppRatingViewController *)self stackView];
+        [stackView3 removeArrangedSubview:v11];
 
         [v11 removeFromSuperview];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v138 objects:v147 count:16];
+      v8 = [arrangedSubviews countByEnumeratingWithState:&v138 objects:v147 count:16];
     }
 
     while (v8);
@@ -145,22 +145,22 @@
 
   else
   {
-    v17 = [(SKUIReviewInAppRatingViewController *)self ratingControlAction];
-    v146 = v17;
+    ratingControlAction = [(SKUIReviewInAppRatingViewController *)self ratingControlAction];
+    v146 = ratingControlAction;
     v16 = [MEMORY[0x277CBEA60] arrayWithObjects:&v146 count:1];
   }
 
   v130 = v16;
   v129 = [MEMORY[0x277D75620] actionGroupWithActions:v16];
   v18 = [objc_alloc(MEMORY[0x277D75628]) initWithActionGroup:v129 actionHandlerInvocationDelegate:self];
-  v19 = [(SKUIReviewInAppRatingViewController *)self headerView];
-  [v18 insertArrangedHeaderView:v19 atIndex:0 scrollable:0];
+  headerView = [(SKUIReviewInAppRatingViewController *)self headerView];
+  [v18 insertArrangedHeaderView:headerView atIndex:0 scrollable:0];
 
-  v128 = [(SKUIReviewInAppRatingViewController *)self _actions];
-  v127 = [MEMORY[0x277D75620] actionGroupWithActions:v128];
+  _actions = [(SKUIReviewInAppRatingViewController *)self _actions];
+  v127 = [MEMORY[0x277D75620] actionGroupWithActions:_actions];
   v20 = [objc_alloc(MEMORY[0x277D75628]) initWithActionGroup:v127 actionHandlerInvocationDelegate:self];
-  v21 = [(SKUIReviewInAppRatingViewController *)self _actionsLayoutAxesForCurrentState];
-  [v20 setAllowedActionLayoutAxisByPriority:v21];
+  _actionsLayoutAxesForCurrentState = [(SKUIReviewInAppRatingViewController *)self _actionsLayoutAxesForCurrentState];
+  [v20 setAllowedActionLayoutAxisByPriority:_actionsLayoutAxesForCurrentState];
 
   v22 = objc_alloc(MEMORY[0x277D75D18]);
   v23 = *MEMORY[0x277CBF3A0];
@@ -168,22 +168,22 @@
   v25 = *(MEMORY[0x277CBF3A0] + 16);
   v26 = *(MEMORY[0x277CBF3A0] + 24);
   v27 = [v22 initWithFrame:{*MEMORY[0x277CBF3A0], v24, v25, v26}];
-  v28 = [(SKUIReviewInAppRatingViewController *)self constraints];
+  constraints2 = [(SKUIReviewInAppRatingViewController *)self constraints];
   v126 = v27;
-  v29 = [v27 heightAnchor];
-  v30 = [v29 constraintEqualToConstant:10.0];
-  [v28 addObject:v30];
+  heightAnchor = [v27 heightAnchor];
+  v30 = [heightAnchor constraintEqualToConstant:10.0];
+  [constraints2 addObject:v30];
 
   [v20 insertArrangedHeaderView:v27 atIndex:0 scrollable:0];
   v31 = [objc_alloc(MEMORY[0x277D75D18]) initWithFrame:{v23, v24, v25, v26}];
   [v31 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v32 = [(SKUIReviewInAppRatingViewController *)self stackView];
-  [v32 addArrangedSubview:v31];
+  stackView4 = [(SKUIReviewInAppRatingViewController *)self stackView];
+  [stackView4 addArrangedSubview:v31];
 
   [v18 _setContinuousCornerRadius:16.0];
   [v18 setClipsToBounds:1];
-  v33 = [v18 layer];
-  [v33 setMaskedCorners:3];
+  layer = [v18 layer];
+  [layer setMaskedCorners:3];
 
   [v18 _setDrawsBackground:0];
   [v18 setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -194,8 +194,8 @@
   [v31 addSubview:v18];
   [v20 _setContinuousCornerRadius:16.0];
   [v20 setClipsToBounds:1];
-  v35 = [v20 layer];
-  [v35 setMaskedCorners:12];
+  layer2 = [v20 layer];
+  [layer2 setMaskedCorners:12];
 
   [v20 _setDrawsBackground:0];
   [v20 setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -204,168 +204,168 @@
   [v20 setSimultaneouslyPresentedGroupViews:v36];
 
   [v31 addSubview:v20];
-  v135 = [(SKUIReviewInAppRatingViewController *)self constraints];
-  v133 = [v18 topAnchor];
-  v131 = [v31 topAnchor];
-  v122 = [v133 constraintEqualToAnchor:v131];
+  constraints3 = [(SKUIReviewInAppRatingViewController *)self constraints];
+  topAnchor = [v18 topAnchor];
+  topAnchor2 = [v31 topAnchor];
+  v122 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v143[0] = v122;
-  v120 = [v18 leftAnchor];
-  v118 = [v31 leftAnchor];
-  v116 = [v120 constraintEqualToAnchor:v118];
+  leftAnchor = [v18 leftAnchor];
+  leftAnchor2 = [v31 leftAnchor];
+  v116 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
   v143[1] = v116;
   v125 = v18;
-  v114 = [v18 rightAnchor];
-  v112 = [v31 rightAnchor];
-  v110 = [v114 constraintEqualToAnchor:v112];
+  rightAnchor = [v18 rightAnchor];
+  rightAnchor2 = [v31 rightAnchor];
+  v110 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
   v143[2] = v110;
-  v108 = [v20 topAnchor];
-  v106 = [v18 bottomAnchor];
-  v104 = [v108 constraintEqualToAnchor:v106 constant:-10.0];
+  topAnchor3 = [v20 topAnchor];
+  bottomAnchor = [v18 bottomAnchor];
+  v104 = [topAnchor3 constraintEqualToAnchor:bottomAnchor constant:-10.0];
   v143[3] = v104;
-  v102 = [v20 rightAnchor];
-  v37 = [v31 rightAnchor];
-  v38 = [v102 constraintEqualToAnchor:v37];
+  rightAnchor3 = [v20 rightAnchor];
+  rightAnchor4 = [v31 rightAnchor];
+  v38 = [rightAnchor3 constraintEqualToAnchor:rightAnchor4];
   v143[4] = v38;
   v124 = v20;
-  v39 = [v20 leftAnchor];
+  leftAnchor3 = [v20 leftAnchor];
   v137 = v31;
-  v40 = [v31 leftAnchor];
-  v41 = [v39 constraintEqualToAnchor:v40];
+  leftAnchor4 = [v31 leftAnchor];
+  v41 = [leftAnchor3 constraintEqualToAnchor:leftAnchor4];
   v143[5] = v41;
-  v42 = [v20 bottomAnchor];
-  v43 = [v31 bottomAnchor];
-  v44 = [v42 constraintEqualToAnchor:v43];
+  bottomAnchor2 = [v20 bottomAnchor];
+  bottomAnchor3 = [v31 bottomAnchor];
+  v44 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
   v143[6] = v44;
   v45 = [MEMORY[0x277CBEA60] arrayWithObjects:v143 count:7];
-  [v135 addObjectsFromArray:v45];
+  [constraints3 addObjectsFromArray:v45];
 
-  v46 = [(SKUIReviewInAppRatingViewController *)self stackView];
-  v47 = [v46 centerYAnchor];
-  v48 = [(SKUIReviewInAppRatingViewController *)self view];
-  v49 = [v48 centerYAnchor];
-  v136 = [v47 constraintEqualToAnchor:v49 constant:-10.0];
+  stackView5 = [(SKUIReviewInAppRatingViewController *)self stackView];
+  centerYAnchor = [stackView5 centerYAnchor];
+  view = [(SKUIReviewInAppRatingViewController *)self view];
+  centerYAnchor2 = [view centerYAnchor];
+  v136 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2 constant:-10.0];
 
   LODWORD(v50) = 1140457472;
   [v136 setPriority:v50];
-  v51 = [(SKUIReviewInAppRatingViewController *)self stackView];
-  v52 = [v51 centerYAnchor];
-  v53 = [(SKUIReviewInAppRatingViewController *)self view];
-  v54 = [v53 centerYAnchor];
-  v134 = [v52 constraintGreaterThanOrEqualToAnchor:v54 constant:-10.0];
+  stackView6 = [(SKUIReviewInAppRatingViewController *)self stackView];
+  centerYAnchor3 = [stackView6 centerYAnchor];
+  view2 = [(SKUIReviewInAppRatingViewController *)self view];
+  centerYAnchor4 = [view2 centerYAnchor];
+  v134 = [centerYAnchor3 constraintGreaterThanOrEqualToAnchor:centerYAnchor4 constant:-10.0];
 
-  v55 = [(SKUIReviewInAppRatingViewController *)self stackView];
-  v56 = [v55 centerYAnchor];
-  v57 = [(SKUIReviewInAppRatingViewController *)self view];
-  v58 = [v57 centerYAnchor];
-  v121 = [v56 constraintLessThanOrEqualToAnchor:v58 constant:0.0];
+  stackView7 = [(SKUIReviewInAppRatingViewController *)self stackView];
+  centerYAnchor5 = [stackView7 centerYAnchor];
+  view3 = [(SKUIReviewInAppRatingViewController *)self view];
+  centerYAnchor6 = [view3 centerYAnchor];
+  v121 = [centerYAnchor5 constraintLessThanOrEqualToAnchor:centerYAnchor6 constant:0.0];
 
-  v59 = [(SKUIReviewInAppRatingViewController *)self stackView];
-  v60 = [v59 centerXAnchor];
-  v61 = [(SKUIReviewInAppRatingViewController *)self view];
-  v62 = [v61 centerXAnchor];
-  v119 = [v60 constraintEqualToAnchor:v62];
+  stackView8 = [(SKUIReviewInAppRatingViewController *)self stackView];
+  centerXAnchor = [stackView8 centerXAnchor];
+  view4 = [(SKUIReviewInAppRatingViewController *)self view];
+  centerXAnchor2 = [view4 centerXAnchor];
+  v119 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
 
-  v63 = [(SKUIReviewInAppRatingViewController *)self view];
-  v64 = [v63 layoutMarginsGuide];
-  v117 = [v64 leadingAnchor];
+  view5 = [(SKUIReviewInAppRatingViewController *)self view];
+  layoutMarginsGuide = [view5 layoutMarginsGuide];
+  leadingAnchor = [layoutMarginsGuide leadingAnchor];
 
-  v65 = [(SKUIReviewInAppRatingViewController *)self view];
-  v66 = [v65 layoutMarginsGuide];
-  v111 = [v66 trailingAnchor];
+  view6 = [(SKUIReviewInAppRatingViewController *)self view];
+  layoutMarginsGuide2 = [view6 layoutMarginsGuide];
+  trailingAnchor = [layoutMarginsGuide2 trailingAnchor];
 
-  v67 = [(SKUIReviewInAppRatingViewController *)self stackView];
-  v68 = [v67 topAnchor];
-  v69 = [(SKUIReviewInAppRatingViewController *)self view];
-  v70 = [v69 topAnchor];
-  v71 = [v68 constraintGreaterThanOrEqualToAnchor:v70 constant:10.0];
+  stackView9 = [(SKUIReviewInAppRatingViewController *)self stackView];
+  topAnchor4 = [stackView9 topAnchor];
+  view7 = [(SKUIReviewInAppRatingViewController *)self view];
+  topAnchor5 = [view7 topAnchor];
+  v71 = [topAnchor4 constraintGreaterThanOrEqualToAnchor:topAnchor5 constant:10.0];
 
   LODWORD(v72) = 1148829696;
   v123 = v71;
   [v71 setPriority:v72];
-  v73 = [(SKUIReviewInAppRatingViewController *)self constraints];
-  [v73 addObject:v71];
+  constraints4 = [(SKUIReviewInAppRatingViewController *)self constraints];
+  [constraints4 addObject:v71];
 
-  v74 = [(SKUIReviewInAppRatingViewController *)self backgroundView];
-  [v74 setHidden:0];
+  backgroundView = [(SKUIReviewInAppRatingViewController *)self backgroundView];
+  [backgroundView setHidden:0];
 
-  v132 = [(SKUIReviewInAppRatingViewController *)self constraints];
+  constraints5 = [(SKUIReviewInAppRatingViewController *)self constraints];
   v142[0] = v136;
   v142[1] = v134;
   v142[2] = v121;
   v142[3] = v119;
-  v115 = [(SKUIReviewInAppRatingViewController *)self stackView];
-  v113 = [v115 widthAnchor];
-  v109 = [v113 constraintEqualToConstant:270.0];
+  stackView10 = [(SKUIReviewInAppRatingViewController *)self stackView];
+  widthAnchor = [stackView10 widthAnchor];
+  v109 = [widthAnchor constraintEqualToConstant:270.0];
   v142[4] = v109;
-  v107 = [(SKUIReviewInAppRatingViewController *)self stackView];
-  v105 = [v107 leadingAnchor];
-  v103 = [v105 constraintGreaterThanOrEqualToAnchor:v117];
+  stackView11 = [(SKUIReviewInAppRatingViewController *)self stackView];
+  leadingAnchor2 = [stackView11 leadingAnchor];
+  v103 = [leadingAnchor2 constraintGreaterThanOrEqualToAnchor:leadingAnchor];
   v142[5] = v103;
-  v101 = [(SKUIReviewInAppRatingViewController *)self stackView];
-  v100 = [v101 trailingAnchor];
-  v99 = [v100 constraintLessThanOrEqualToAnchor:v111];
+  stackView12 = [(SKUIReviewInAppRatingViewController *)self stackView];
+  trailingAnchor2 = [stackView12 trailingAnchor];
+  v99 = [trailingAnchor2 constraintLessThanOrEqualToAnchor:trailingAnchor];
   v142[6] = v99;
-  v98 = [(SKUIReviewInAppRatingViewController *)self stackView];
-  v96 = [v98 bottomAnchor];
-  v97 = [(SKUIReviewInAppRatingViewController *)self view];
-  v95 = [v97 bottomAnchor];
-  v94 = [v96 constraintLessThanOrEqualToAnchor:v95];
+  stackView13 = [(SKUIReviewInAppRatingViewController *)self stackView];
+  bottomAnchor4 = [stackView13 bottomAnchor];
+  view8 = [(SKUIReviewInAppRatingViewController *)self view];
+  bottomAnchor5 = [view8 bottomAnchor];
+  v94 = [bottomAnchor4 constraintLessThanOrEqualToAnchor:bottomAnchor5];
   v142[7] = v94;
-  v93 = [(SKUIReviewInAppRatingViewController *)self backgroundView];
-  v92 = [v93 centerYAnchor];
-  v91 = [v137 centerYAnchor];
-  v90 = [v92 constraintEqualToAnchor:v91];
+  backgroundView2 = [(SKUIReviewInAppRatingViewController *)self backgroundView];
+  centerYAnchor7 = [backgroundView2 centerYAnchor];
+  centerYAnchor8 = [v137 centerYAnchor];
+  v90 = [centerYAnchor7 constraintEqualToAnchor:centerYAnchor8];
   v142[8] = v90;
-  v89 = [(SKUIReviewInAppRatingViewController *)self backgroundView];
-  v88 = [v89 centerXAnchor];
-  v87 = [v137 centerXAnchor];
-  v86 = [v88 constraintEqualToAnchor:v87];
+  backgroundView3 = [(SKUIReviewInAppRatingViewController *)self backgroundView];
+  centerXAnchor3 = [backgroundView3 centerXAnchor];
+  centerXAnchor4 = [v137 centerXAnchor];
+  v86 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
   v142[9] = v86;
-  v75 = [(SKUIReviewInAppRatingViewController *)self backgroundView];
-  v76 = [v75 widthAnchor];
-  v77 = [v137 widthAnchor];
-  v78 = [v76 constraintEqualToAnchor:v77];
+  backgroundView4 = [(SKUIReviewInAppRatingViewController *)self backgroundView];
+  widthAnchor2 = [backgroundView4 widthAnchor];
+  widthAnchor3 = [v137 widthAnchor];
+  v78 = [widthAnchor2 constraintEqualToAnchor:widthAnchor3];
   v142[10] = v78;
-  v79 = [(SKUIReviewInAppRatingViewController *)self backgroundView];
-  v80 = [v79 heightAnchor];
-  v81 = [v137 heightAnchor];
-  v82 = [v80 constraintEqualToAnchor:v81];
+  backgroundView5 = [(SKUIReviewInAppRatingViewController *)self backgroundView];
+  heightAnchor2 = [backgroundView5 heightAnchor];
+  heightAnchor3 = [v137 heightAnchor];
+  v82 = [heightAnchor2 constraintEqualToAnchor:heightAnchor3];
   v142[11] = v82;
   v83 = [MEMORY[0x277CBEA60] arrayWithObjects:v142 count:12];
-  [v132 addObjectsFromArray:v83];
+  [constraints5 addObjectsFromArray:v83];
 
   v84 = MEMORY[0x277CCAAD0];
-  v85 = [(SKUIReviewInAppRatingViewController *)self constraints];
-  [v84 activateConstraints:v85];
+  constraints6 = [(SKUIReviewInAppRatingViewController *)self constraints];
+  [v84 activateConstraints:constraints6];
 }
 
-- (void)setState:(unint64_t)a3
+- (void)setState:(unint64_t)state
 {
-  if (self->_state == a3)
+  if (self->_state == state)
   {
     return;
   }
 
-  if (a3 < 2)
+  if (state < 2)
   {
-    v5 = [(SKUIReviewInAppRatingViewController *)self headerView];
-    [v5 setCompleted:0];
+    headerView = [(SKUIReviewInAppRatingViewController *)self headerView];
+    [headerView setCompleted:0];
 LABEL_6:
 
     goto LABEL_7;
   }
 
-  if (a3 == 2)
+  if (state == 2)
   {
-    v5 = [(SKUIReviewInAppRatingViewController *)self headerView];
-    v6 = [(SKUIReviewInAppRatingViewController *)self ratingControl];
-    [v5 setCompletedWithRating:{objc_msgSend(v6, "userRating")}];
+    headerView = [(SKUIReviewInAppRatingViewController *)self headerView];
+    ratingControl = [(SKUIReviewInAppRatingViewController *)self ratingControl];
+    [headerView setCompletedWithRating:{objc_msgSend(ratingControl, "userRating")}];
 
     goto LABEL_6;
   }
 
 LABEL_7:
-  self->_state = a3;
+  self->_state = state;
 
   [(SKUIReviewInAppRatingViewController *)self reloadViewsConfiguration];
 }
@@ -373,7 +373,7 @@ LABEL_7:
 - (id)_actions
 {
   v45[2] = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   objc_initWeak(&location, self);
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
@@ -408,7 +408,7 @@ LABEL_7:
     v43[0] = v8;
     v43[1] = v15;
     v23 = [MEMORY[0x277CBEA60] arrayWithObjects:v43 count:{2, v26, v27, v28, v29}];
-    [v3 addObjectsFromArray:v23];
+    [array addObjectsFromArray:v23];
 
     v9 = &v32;
 LABEL_10:
@@ -441,8 +441,8 @@ LABEL_10:
     objc_copyWeak(&v35, &location);
     v34 = v12;
     [v15 setBeforeDismissHandler:v33];
-    v16 = [(SKUIReviewInAppRatingViewController *)self view];
-    LODWORD(v12) = [v16 effectiveUserInterfaceLayoutDirection] == 1;
+    view = [(SKUIReviewInAppRatingViewController *)self view];
+    LODWORD(v12) = [view effectiveUserInterfaceLayoutDirection] == 1;
 
     if (v12)
     {
@@ -458,7 +458,7 @@ LABEL_10:
       [MEMORY[0x277CBEA60] arrayWithObjects:v44 count:2];
     }
     v17 = ;
-    [v3 addObjectsFromArray:v17];
+    [array addObjectsFromArray:v17];
 
     objc_destroyWeak(&v35);
     v9 = &v37;
@@ -480,12 +480,12 @@ LABEL_10:
   v38[3] = &unk_2781F9990;
   v39 = v4;
   [v8 setAfterDismissHandler:v38];
-  [v3 addObject:v8];
+  [array addObject:v8];
   v9 = &v39;
 LABEL_11:
 
 LABEL_12:
-  v24 = [v3 copy];
+  v24 = [array copy];
 
   objc_destroyWeak(&v41);
   objc_destroyWeak(&location);
@@ -555,10 +555,10 @@ uint64_t __47__SKUIReviewInAppRatingViewController__actions__block_invoke_5(uint
   }
 }
 
-- (id)_buttonActionWithTitle:(id)a3 style:(unint64_t)a4
+- (id)_buttonActionWithTitle:(id)title style:(unint64_t)style
 {
-  v5 = a3;
-  v6 = [[SKUIReviewInAppRatingButtonViewController alloc] initWithTitle:v5 style:a4];
+  titleCopy = title;
+  v6 = [[SKUIReviewInAppRatingButtonViewController alloc] initWithTitle:titleCopy style:style];
 
   v7 = [SKUIReviewInAppRatingAction actionWithCustomContentViewController:v6];
 
@@ -567,12 +567,12 @@ uint64_t __47__SKUIReviewInAppRatingViewController__actions__block_invoke_5(uint
 
 - (id)_actionsLayoutAxesForCurrentState
 {
-  v3 = [MEMORY[0x277CBEB18] array];
-  v4 = v3;
+  array = [MEMORY[0x277CBEB18] array];
+  v4 = array;
   state = self->_state;
   if (state <= 2)
   {
-    [v3 addObject:qword_2781FE990[state]];
+    [array addObject:qword_2781FE990[state]];
   }
 
   v6 = [v4 copy];
@@ -580,16 +580,16 @@ uint64_t __47__SKUIReviewInAppRatingViewController__actions__block_invoke_5(uint
   return v6;
 }
 
-- (id)presentationControllerForPresentedViewController:(id)a3 presentingViewController:(id)a4 sourceViewController:(id)a5
+- (id)presentationControllerForPresentedViewController:(id)controller presentingViewController:(id)viewController sourceViewController:(id)sourceViewController
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[SKUIReviewInAppRatingPresentationController alloc] initWithPresentedViewController:v7 presentingViewController:v6];
+  viewControllerCopy = viewController;
+  controllerCopy = controller;
+  v8 = [[SKUIReviewInAppRatingPresentationController alloc] initWithPresentedViewController:controllerCopy presentingViewController:viewControllerCopy];
 
   return v8;
 }
 
-- (id)animationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5
+- (id)animationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController
 {
   v6 = objc_alloc_init(SKUIReviewInAppRatingAnimatedTransitioning);
   [(SKUIReviewInAppRatingAnimatedTransitioning *)v6 setViewController:self];
@@ -598,7 +598,7 @@ uint64_t __47__SKUIReviewInAppRatingViewController__actions__block_invoke_5(uint
   return v6;
 }
 
-- (id)animationControllerForDismissedController:(id)a3
+- (id)animationControllerForDismissedController:(id)controller
 {
   v4 = objc_alloc_init(SKUIReviewInAppRatingAnimatedTransitioning);
   [(SKUIReviewInAppRatingAnimatedTransitioning *)v4 setViewController:self];
@@ -607,24 +607,24 @@ uint64_t __47__SKUIReviewInAppRatingViewController__actions__block_invoke_5(uint
   return v4;
 }
 
-- (void)interfaceAction:(id)a3 invokeActionHandler:(id)a4 completion:(id)a5
+- (void)interfaceAction:(id)action invokeActionHandler:(id)handler completion:(id)completion
 {
-  v7 = a3;
-  v8 = a5;
+  actionCopy = action;
+  completionCopy = completion;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = v7;
+    v9 = actionCopy;
     v14 = 1;
-    v10 = [v9 beforeDismissHandler];
+    beforeDismissHandler = [v9 beforeDismissHandler];
 
-    if (!v10 || ([v9 beforeDismissHandler], v11 = objc_claimAutoreleasedReturnValue(), (v11)[2](v11, v9, &v14), v11, (v14 & 1) != 0))
+    if (!beforeDismissHandler || ([v9 beforeDismissHandler], v11 = objc_claimAutoreleasedReturnValue(), (v11)[2](v11, v9, &v14), v11, (v14 & 1) != 0))
     {
-      v12 = [v9 afterDismissHandler];
-      if (v12)
+      afterDismissHandler = [v9 afterDismissHandler];
+      if (afterDismissHandler)
       {
-        v13 = [v9 afterDismissHandler];
-        [(SKUIReviewInAppRatingViewController *)self dismissViewControllerAnimated:1 completion:v13];
+        afterDismissHandler2 = [v9 afterDismissHandler];
+        [(SKUIReviewInAppRatingViewController *)self dismissViewControllerAnimated:1 completion:afterDismissHandler2];
       }
 
       else
@@ -636,7 +636,7 @@ uint64_t __47__SKUIReviewInAppRatingViewController__actions__block_invoke_5(uint
 
   else
   {
-    v8[2](v8);
+    completionCopy[2](completionCopy);
   }
 }
 

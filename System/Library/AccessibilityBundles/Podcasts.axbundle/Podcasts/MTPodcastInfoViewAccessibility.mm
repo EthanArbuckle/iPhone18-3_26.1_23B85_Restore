@@ -1,17 +1,17 @@
 @interface MTPodcastInfoViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 @end
 
 @implementation MTPodcastInfoViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MTPodcastInfoView" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MTPodcastInfoView" hasInstanceMethod:@"authorLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MTPodcastInfoView" hasInstanceMethod:@"descriptionView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"IMExpandingLabel" hasInstanceMethod:@"text" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MTPodcastInfoView" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MTPodcastInfoView" hasInstanceMethod:@"authorLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MTPodcastInfoView" hasInstanceMethod:@"descriptionView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"IMExpandingLabel" hasInstanceMethod:@"text" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel

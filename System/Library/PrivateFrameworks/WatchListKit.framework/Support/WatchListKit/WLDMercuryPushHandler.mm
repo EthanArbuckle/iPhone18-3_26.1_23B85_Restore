@@ -1,16 +1,16 @@
 @interface WLDMercuryPushHandler
-+ (id)_addMercurySilentNotifOfferSource:(id)a3 badgeId:(id)a4;
-+ (id)_getBadgeID:(id)a3;
-- (BOOL)shouldHandleNotification:(id)a3;
-- (int64_t)_getBadgeAlertType:(id)a3;
-- (void)handleNotification:(id)a3 shouldBadge:(BOOL)a4;
++ (id)_addMercurySilentNotifOfferSource:(id)source badgeId:(id)id;
++ (id)_getBadgeID:(id)d;
+- (BOOL)shouldHandleNotification:(id)notification;
+- (int64_t)_getBadgeAlertType:(id)type;
+- (void)handleNotification:(id)notification shouldBadge:(BOOL)badge;
 @end
 
 @implementation WLDMercuryPushHandler
 
-- (BOOL)shouldHandleNotification:(id)a3
+- (BOOL)shouldHandleNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   if (_os_feature_enabled_impl())
   {
     v5 = WLKPushNotificationsLogObject();
@@ -25,18 +25,18 @@
 
   else
   {
-    v6 = [(WLDMercuryPushHandler *)self _getBadgeAlertType:v4]!= 0;
+    v6 = [(WLDMercuryPushHandler *)self _getBadgeAlertType:notificationCopy]!= 0;
   }
 
   return v6;
 }
 
-- (void)handleNotification:(id)a3 shouldBadge:(BOOL)a4
+- (void)handleNotification:(id)notification shouldBadge:(BOOL)badge
 {
-  v4 = a4;
-  v18 = a3;
-  v6 = [(WLDMercuryPushHandler *)self _getBadgeAlertType:v18];
-  v7 = [objc_opt_class() _getBadgeID:v18];
+  badgeCopy = badge;
+  notificationCopy = notification;
+  v6 = [(WLDMercuryPushHandler *)self _getBadgeAlertType:notificationCopy];
+  v7 = [objc_opt_class() _getBadgeID:notificationCopy];
   v8 = v7;
   v9 = WLKNotificationsBadgingIdentifierDefaultValue;
   if (v7)
@@ -49,7 +49,7 @@
   if (v6 == 3)
   {
 LABEL_9:
-    v13 = [v18 wlk_dictionaryForKey:@"aps"];
+    v13 = [notificationCopy wlk_dictionaryForKey:@"aps"];
     v14 = [v13 wlk_dictionaryForKey:@"payload"];
     v15 = [objc_opt_class() _addMercurySilentNotifOfferSource:v14 badgeId:v10];
     v16 = +[WLKOfferManager defaultOfferManager];
@@ -66,7 +66,7 @@ LABEL_10:
       goto LABEL_11;
     }
 
-    if (v4 && [WLKBadgingUtilities addBadgeIdentifier:v10])
+    if (badgeCopy && [WLKBadgingUtilities addBadgeIdentifier:v10])
     {
       v11 = +[WLKBadgingUtilities currentBadgeNumber];
       v12 = +[WLKNotificationCenter defaultCenter];
@@ -90,9 +90,9 @@ LABEL_10:
 LABEL_11:
 }
 
-- (int64_t)_getBadgeAlertType:(id)a3
+- (int64_t)_getBadgeAlertType:(id)type
 {
-  v3 = [a3 wlk_dictionaryForKey:@"aps"];
+  v3 = [type wlk_dictionaryForKey:@"aps"];
   v4 = [v3 wlk_stringForKey:@"payloadType"];
   if ([v4 isEqualToString:@"mercury:tvapp:BadgeAlertAdd"])
   {
@@ -117,26 +117,26 @@ LABEL_11:
   return v5;
 }
 
-+ (id)_getBadgeID:(id)a3
++ (id)_getBadgeID:(id)d
 {
-  v3 = [a3 wlk_dictionaryForKey:@"aps"];
+  v3 = [d wlk_dictionaryForKey:@"aps"];
   v4 = [v3 wlk_stringForKey:WLKOfferManagerKeyBadgeId];
 
   return v4;
 }
 
-+ (id)_addMercurySilentNotifOfferSource:(id)a3 badgeId:(id)a4
++ (id)_addMercurySilentNotifOfferSource:(id)source badgeId:(id)id
 {
-  v5 = a3;
-  v6 = a4;
+  sourceCopy = source;
+  idCopy = id;
   v7 = objc_alloc_init(NSMutableDictionary);
-  if (v5 && [v5 count])
+  if (sourceCopy && [sourceCopy count])
   {
-    [v7 addEntriesFromDictionary:v5];
+    [v7 addEntriesFromDictionary:sourceCopy];
   }
 
   [v7 setObject:@"MercurySilentNotification" forKey:@"offerSource"];
-  [v7 setObject:v6 forKey:WLKOfferManagerKeyBadgeId];
+  [v7 setObject:idCopy forKey:WLKOfferManagerKeyBadgeId];
 
   v8 = [v7 copy];
 

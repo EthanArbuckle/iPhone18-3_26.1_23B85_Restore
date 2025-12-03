@@ -1,16 +1,16 @@
 @interface HMMTRThreadSoftwareUpdateController
 + (id)logCategory;
-- (BOOL)isFirmwareUpdateInProgressForFabricUUID:(id)a3;
+- (BOOL)isFirmwareUpdateInProgressForFabricUUID:(id)d;
 - (HMMTRAccessoryServer)targetThreadAccessoryServerForFWUpdate;
 - (HMMTRAccessoryServerBrowser)browser;
-- (HMMTRThreadSoftwareUpdateController)initWithQueue:(id)a3 browser:(id)a4;
-- (void)_attemptConnectionForFirmwareUpdateForAccessoryServer:(id)a3 completion:(id)a4;
-- (void)_cleanupFirmwareUpdateStateWithError:(id)a3;
-- (void)handleFirmwareUpdateStatusChangeForAccessoryServer:(id)a3 state:(int64_t)a4;
-- (void)handleUpdateRequestedForAccessoryServer:(id)a3 completion:(id)a4;
+- (HMMTRThreadSoftwareUpdateController)initWithQueue:(id)queue browser:(id)browser;
+- (void)_attemptConnectionForFirmwareUpdateForAccessoryServer:(id)server completion:(id)completion;
+- (void)_cleanupFirmwareUpdateStateWithError:(id)error;
+- (void)handleFirmwareUpdateStatusChangeForAccessoryServer:(id)server state:(int64_t)state;
+- (void)handleUpdateRequestedForAccessoryServer:(id)server completion:(id)completion;
 - (void)suspendOperations;
-- (void)suspendOperationsForFabricUUID:(id)a3;
-- (void)timerDidFire:(id)a3;
+- (void)suspendOperationsForFabricUUID:(id)d;
+- (void)timerDidFire:(id)fire;
 @end
 
 @implementation HMMTRThreadSoftwareUpdateController
@@ -29,12 +29,12 @@
   return WeakRetained;
 }
 
-- (void)timerDidFire:(id)a3
+- (void)timerDidFire:(id)fire
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fireCopy = fire;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -42,18 +42,18 @@
     *buf = 138543618;
     v26 = v8;
     v27 = 2112;
-    v28 = v6;
+    v28 = selfCopy;
     _os_log_impl(&dword_22AEAE000, v7, OS_LOG_TYPE_DEBUG, "%{public}@%@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
-  WeakRetained = objc_loadWeakRetained(&v6->_browser);
+  WeakRetained = objc_loadWeakRetained(&selfCopy->_browser);
   if (WeakRetained)
   {
-    v10 = [(HMMTRThreadSoftwareUpdateController *)v6 targetThreadAccessoryServerForFWUpdate];
-    v11 = [v10 nodeID];
+    targetThreadAccessoryServerForFWUpdate = [(HMMTRThreadSoftwareUpdateController *)selfCopy targetThreadAccessoryServerForFWUpdate];
+    nodeID = [targetThreadAccessoryServerForFWUpdate nodeID];
     v12 = objc_autoreleasePoolPush();
-    v13 = v6;
+    v13 = selfCopy;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
@@ -61,26 +61,26 @@
       *buf = 138543618;
       v26 = v15;
       v27 = 2112;
-      v28 = v11;
+      v28 = nodeID;
       _os_log_impl(&dword_22AEAE000, v14, OS_LOG_TYPE_ERROR, "%{public}@Timed up doing firmware update for nodeID %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v12);
-    v16 = [WeakRetained threadRadioManager];
+    threadRadioManager = [WeakRetained threadRadioManager];
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = __52__HMMTRThreadSoftwareUpdateController_timerDidFire___block_invoke;
     v23[3] = &unk_2786EF9E0;
     v23[4] = v13;
-    v24 = v11;
-    v17 = v11;
-    [v16 stopAccessoryFirmwareUpdateWithCompletion:v23];
+    v24 = nodeID;
+    v17 = nodeID;
+    [threadRadioManager stopAccessoryFirmwareUpdateWithCompletion:v23];
   }
 
   else
   {
     v18 = objc_autoreleasePoolPush();
-    v19 = v6;
+    v19 = selfCopy;
     v20 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
@@ -122,49 +122,49 @@ void __52__HMMTRThreadSoftwareUpdateController_timerDidFire___block_invoke(uint6
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleFirmwareUpdateStatusChangeForAccessoryServer:(id)a3 state:(int64_t)a4
+- (void)handleFirmwareUpdateStatusChangeForAccessoryServer:(id)server state:(int64_t)state
 {
   v48 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  serverCopy = server;
   v7 = objc_autoreleasePoolPush();
-  v8 = self;
+  selfCopy = self;
   v9 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
     v10 = HMFGetLogIdentifier();
-    v11 = [v6 nodeID];
+    nodeID = [serverCopy nodeID];
     *buf = 138543874;
     v43 = v10;
     v44 = 2112;
-    v45 = v11;
+    stateCopy2 = nodeID;
     v46 = 2048;
-    v47 = a4;
+    stateCopy = state;
     _os_log_impl(&dword_22AEAE000, v9, OS_LOG_TYPE_INFO, "%{public}@Received firmware update status change for accessory server with nodeID:%@, state: %lu", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v7);
   if (isFeatureMatteriPhoneOnlyPairingControlForThreadEnabled())
   {
-    v12 = [(HMMTRThreadSoftwareUpdateController *)v8 targetThreadAccessoryServerForFWUpdate];
-    if (v12)
+    targetThreadAccessoryServerForFWUpdate = [(HMMTRThreadSoftwareUpdateController *)selfCopy targetThreadAccessoryServerForFWUpdate];
+    if (targetThreadAccessoryServerForFWUpdate)
     {
       if (HMFEqualObjects())
       {
-        if (a4 == 6)
+        if (state == 6)
         {
           v30 = objc_autoreleasePoolPush();
-          v31 = v8;
+          v31 = selfCopy;
           v32 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v32, OS_LOG_TYPE_INFO))
           {
             v33 = HMFGetLogIdentifier();
-            v34 = [v6 nodeID];
+            nodeID2 = [serverCopy nodeID];
             *buf = 138543874;
             v43 = v33;
             v44 = 2048;
-            v45 = 6;
+            stateCopy2 = 6;
             v46 = 2112;
-            v47 = v34;
+            stateCopy = nodeID2;
             _os_log_impl(&dword_22AEAE000, v32, OS_LOG_TYPE_INFO, "%{public}@Firmware update moved to installed state (%lu) for accessory with nodeID %@", buf, 0x20u);
           }
 
@@ -172,40 +172,40 @@ void __52__HMMTRThreadSoftwareUpdateController_timerDidFire___block_invoke(uint6
           goto LABEL_28;
         }
 
-        if (a4 == 3)
+        if (state == 3)
         {
-          v13 = [(HMMTRThreadSoftwareUpdateController *)v8 browser];
-          v14 = [v13 threadRadioManager];
-          v15 = [v6 eMACAddress];
-          v16 = [v15 dataUsingEncoding:4];
-          v17 = [v6 isWEDDevice];
+          browser = [(HMMTRThreadSoftwareUpdateController *)selfCopy browser];
+          threadRadioManager = [browser threadRadioManager];
+          eMACAddress = [serverCopy eMACAddress];
+          v16 = [eMACAddress dataUsingEncoding:4];
+          isWEDDevice = [serverCopy isWEDDevice];
           v40[0] = MEMORY[0x277D85DD0];
           v40[1] = 3221225472;
           v40[2] = __96__HMMTRThreadSoftwareUpdateController_handleFirmwareUpdateStatusChangeForAccessoryServer_state___block_invoke;
           v40[3] = &unk_2786EF9E0;
-          v40[4] = v8;
-          v41 = v6;
-          [v14 startAccessoryFirmwareUpdateWithExtendedMACAddress:v16 isWedDevice:v17 completion:v40];
+          v40[4] = selfCopy;
+          v41 = serverCopy;
+          [threadRadioManager startAccessoryFirmwareUpdateWithExtendedMACAddress:v16 isWedDevice:isWEDDevice completion:v40];
 
 LABEL_19:
           goto LABEL_20;
         }
 
-        if (a4 <= 1)
+        if (state <= 1)
         {
           v36 = objc_autoreleasePoolPush();
-          v31 = v8;
+          v31 = selfCopy;
           v37 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v37, OS_LOG_TYPE_INFO))
           {
             v38 = HMFGetLogIdentifier();
-            v39 = [v6 nodeID];
+            nodeID3 = [serverCopy nodeID];
             *buf = 138543874;
             v43 = v38;
             v44 = 2048;
-            v45 = a4;
+            stateCopy2 = state;
             v46 = 2112;
-            v47 = v39;
+            stateCopy = nodeID3;
             _os_log_impl(&dword_22AEAE000, v37, OS_LOG_TYPE_INFO, "%{public}@Firmware update moved to idle or unknown state (%lu) for accessory with nodeID %@", buf, 0x20u);
           }
 
@@ -216,11 +216,11 @@ LABEL_28:
           goto LABEL_19;
         }
 
-        switch(a4)
+        switch(state)
         {
           case 5:
             v22 = objc_autoreleasePoolPush();
-            v23 = v8;
+            v23 = selfCopy;
             v24 = HMFGetOSLogHandle();
             if (!os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
             {
@@ -228,16 +228,16 @@ LABEL_28:
             }
 
             v25 = HMFGetLogIdentifier();
-            v26 = [v6 nodeID];
+            nodeID4 = [serverCopy nodeID];
             *buf = 138543618;
             v43 = v25;
             v44 = 2112;
-            v45 = v26;
+            stateCopy2 = nodeID4;
             v27 = "%{public}@Firmware update moved to installing state for accessory with nodeID %@";
             break;
           case 4:
             v22 = objc_autoreleasePoolPush();
-            v23 = v8;
+            v23 = selfCopy;
             v24 = HMFGetOSLogHandle();
             if (!os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
             {
@@ -245,16 +245,16 @@ LABEL_28:
             }
 
             v25 = HMFGetLogIdentifier();
-            v26 = [v6 nodeID];
+            nodeID4 = [serverCopy nodeID];
             *buf = 138543618;
             v43 = v25;
             v44 = 2112;
-            v45 = v26;
+            stateCopy2 = nodeID4;
             v27 = "%{public}@Firmware update moved to downloading state for accessory with nodeID %@";
             break;
           case 2:
             v22 = objc_autoreleasePoolPush();
-            v23 = v8;
+            v23 = selfCopy;
             v24 = HMFGetOSLogHandle();
             if (!os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
             {
@@ -262,11 +262,11 @@ LABEL_28:
             }
 
             v25 = HMFGetLogIdentifier();
-            v26 = [v6 nodeID];
+            nodeID4 = [serverCopy nodeID];
             *buf = 138543618;
             v43 = v25;
             v44 = 2112;
-            v45 = v26;
+            stateCopy2 = nodeID4;
             v27 = "%{public}@Firmware update moved to downloaded state for accessory with nodeID %@";
             break;
           default:
@@ -277,19 +277,19 @@ LABEL_28:
       }
 
       v22 = objc_autoreleasePoolPush();
-      v23 = v8;
+      v23 = selfCopy;
       v24 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
       {
         v25 = HMFGetLogIdentifier();
-        v26 = [v12 nodeID];
-        v28 = [v6 nodeID];
+        nodeID4 = [targetThreadAccessoryServerForFWUpdate nodeID];
+        nodeID5 = [serverCopy nodeID];
         *buf = 138543874;
         v43 = v25;
         v44 = 2112;
-        v45 = v26;
+        stateCopy2 = nodeID4;
         v46 = 2112;
-        v47 = v28;
+        stateCopy = nodeID5;
         _os_log_impl(&dword_22AEAE000, v24, OS_LOG_TYPE_ERROR, "%{public}@Expecting notification for accessory server with nodeID %@ but received notification for accessory server with nodeID %@ accessory server, ignoring", buf, 0x20u);
 
         goto LABEL_17;
@@ -299,16 +299,16 @@ LABEL_28:
     else
     {
       v22 = objc_autoreleasePoolPush();
-      v23 = v8;
+      v23 = selfCopy;
       v24 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
       {
         v25 = HMFGetLogIdentifier();
-        v26 = [v6 nodeID];
+        nodeID4 = [serverCopy nodeID];
         *buf = 138543618;
         v43 = v25;
         v44 = 2112;
-        v45 = v26;
+        stateCopy2 = nodeID4;
         v27 = "%{public}@Received notification for accessory server with nodeID %@ accessory server, but not currently tracking any firmware updates, ignoring";
 LABEL_14:
         _os_log_impl(&dword_22AEAE000, v24, OS_LOG_TYPE_INFO, v27, buf, 0x16u);
@@ -323,7 +323,7 @@ LABEL_18:
   }
 
   v18 = objc_autoreleasePoolPush();
-  v19 = v8;
+  v19 = selfCopy;
   v20 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
   {
@@ -385,83 +385,83 @@ void __96__HMMTRThreadSoftwareUpdateController_handleFirmwareUpdateStatusChangeF
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_attemptConnectionForFirmwareUpdateForAccessoryServer:(id)a3 completion:(id)a4
+- (void)_attemptConnectionForFirmwareUpdateForAccessoryServer:(id)server completion:(id)completion
 {
   v123 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  serverCopy = server;
+  completionCopy = completion;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     v11 = HMFGetLogIdentifier();
-    v12 = [v6 nodeID];
+    nodeID = [serverCopy nodeID];
     *buf = 138543618;
     *&buf[4] = v11;
     *&buf[12] = 2112;
-    *&buf[14] = v12;
+    *&buf[14] = nodeID;
     _os_log_impl(&dword_22AEAE000, v10, OS_LOG_TYPE_INFO, "%{public}@Attempting connection to accessory server with nodeID %@ for firmware update", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v8);
   if (isFeatureMatteriPhoneOnlyPairingControlForThreadEnabled())
   {
-    WeakRetained = objc_loadWeakRetained(&v9->_browser);
+    WeakRetained = objc_loadWeakRetained(&selfCopy->_browser);
     v14 = WeakRetained;
     if (!WeakRetained)
     {
       v27 = objc_autoreleasePoolPush();
-      v28 = v9;
+      v28 = selfCopy;
       v29 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
       {
         v30 = HMFGetLogIdentifier();
-        v31 = [v6 nodeID];
+        nodeID2 = [serverCopy nodeID];
         *buf = 138543618;
         *&buf[4] = v30;
         *&buf[12] = 2112;
-        *&buf[14] = v31;
+        *&buf[14] = nodeID2;
         _os_log_impl(&dword_22AEAE000, v29, OS_LOG_TYPE_ERROR, "%{public}@Unable to get browser ref for attemptConnectionForFirmwareUpdateForAccessoryServer with nodeID:%@", buf, 0x16u);
       }
 
       objc_autoreleasePoolPop(v27);
-      v22 = [MEMORY[0x277CCA9B8] hmfErrorWithCode:11];
-      v7[2](v7, v22);
+      targetThreadAccessoryServerForFWUpdate = [MEMORY[0x277CCA9B8] hmfErrorWithCode:11];
+      completionCopy[2](completionCopy, targetThreadAccessoryServerForFWUpdate);
       goto LABEL_40;
     }
 
-    v15 = [WeakRetained threadRadioManager];
-    v16 = [v15 isPairingActive];
+    threadRadioManager = [WeakRetained threadRadioManager];
+    isPairingActive = [threadRadioManager isPairingActive];
 
-    if (v16)
+    if (isPairingActive)
     {
       v17 = objc_autoreleasePoolPush();
-      v18 = v9;
+      v18 = selfCopy;
       v19 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
       {
         v20 = HMFGetLogIdentifier();
-        v21 = [v6 nodeID];
+        nodeID3 = [serverCopy nodeID];
         *buf = 138543618;
         *&buf[4] = v20;
         *&buf[12] = 2112;
-        *&buf[14] = v21;
+        *&buf[14] = nodeID3;
         _os_log_impl(&dword_22AEAE000, v19, OS_LOG_TYPE_ERROR, "%{public}@Cannot start firmware update for nodeID %@ while pairing is active", buf, 0x16u);
       }
 
       objc_autoreleasePoolPop(v17);
-      v22 = [MEMORY[0x277CCA9B8] hmfErrorWithCode:9];
-      v7[2](v7, v22);
+      targetThreadAccessoryServerForFWUpdate = [MEMORY[0x277CCA9B8] hmfErrorWithCode:9];
+      completionCopy[2](completionCopy, targetThreadAccessoryServerForFWUpdate);
       goto LABEL_40;
     }
 
-    v22 = [(HMMTRThreadSoftwareUpdateController *)v9 targetThreadAccessoryServerForFWUpdate];
-    if (v22)
+    targetThreadAccessoryServerForFWUpdate = [(HMMTRThreadSoftwareUpdateController *)selfCopy targetThreadAccessoryServerForFWUpdate];
+    if (targetThreadAccessoryServerForFWUpdate)
     {
       v32 = HMFEqualObjects();
       v33 = objc_autoreleasePoolPush();
-      v34 = v9;
+      v34 = selfCopy;
       v35 = HMFGetOSLogHandle();
       v36 = v35;
       if (v32)
@@ -469,16 +469,16 @@ void __96__HMMTRThreadSoftwareUpdateController_handleFirmwareUpdateStatusChangeF
         if (os_log_type_enabled(v35, OS_LOG_TYPE_INFO))
         {
           v37 = HMFGetLogIdentifier();
-          v38 = [v6 nodeID];
+          nodeID4 = [serverCopy nodeID];
           *buf = 138543618;
           *&buf[4] = v37;
           *&buf[12] = 2112;
-          *&buf[14] = v38;
+          *&buf[14] = nodeID4;
           _os_log_impl(&dword_22AEAE000, v36, OS_LOG_TYPE_INFO, "%{public}@Start firmware update attempted for the accessory with nodeID %@, but it's already targeted for fw update, just send out announcement immediately", buf, 0x16u);
         }
 
         objc_autoreleasePoolPop(v33);
-        v7[2](v7, 0);
+        completionCopy[2](completionCopy, 0);
       }
 
       else
@@ -486,140 +486,140 @@ void __96__HMMTRThreadSoftwareUpdateController_handleFirmwareUpdateStatusChangeF
         if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
         {
           v47 = HMFGetLogIdentifier();
-          v48 = [v6 nodeID];
-          v49 = [v22 nodeID];
+          nodeID5 = [serverCopy nodeID];
+          nodeID6 = [targetThreadAccessoryServerForFWUpdate nodeID];
           *buf = 138543874;
           *&buf[4] = v47;
           *&buf[12] = 2112;
-          *&buf[14] = v48;
+          *&buf[14] = nodeID5;
           *&buf[22] = 2112;
-          v122 = v49;
+          v122 = nodeID6;
           _os_log_impl(&dword_22AEAE000, v36, OS_LOG_TYPE_ERROR, "%{public}@Start firmware update attempted for the accessory with nodeID %@, but we're already targeting accessory with nodeID %@", buf, 0x20u);
         }
 
         objc_autoreleasePoolPop(v33);
         v50 = [MEMORY[0x277CCA9B8] hmfErrorWithCode:6];
-        v7[2](v7, v50);
+        completionCopy[2](completionCopy, v50);
       }
 
       goto LABEL_40;
     }
 
-    v39 = [v14 threadRadioManager];
-    v40 = [v39 isFirmwareUpdateActive];
+    threadRadioManager2 = [v14 threadRadioManager];
+    isFirmwareUpdateActive = [threadRadioManager2 isFirmwareUpdateActive];
 
-    if (v40)
+    if (isFirmwareUpdateActive)
     {
       v41 = objc_autoreleasePoolPush();
-      v42 = v9;
+      v42 = selfCopy;
       v43 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
       {
         v44 = HMFGetLogIdentifier();
-        v45 = [v6 nodeID];
+        nodeID7 = [serverCopy nodeID];
         *buf = 138543618;
         *&buf[4] = v44;
         *&buf[12] = 2112;
-        *&buf[14] = v45;
+        *&buf[14] = nodeID7;
         _os_log_impl(&dword_22AEAE000, v43, OS_LOG_TYPE_ERROR, "%{public}@Cannot start firmware update for nodeID %@ while another firmware update is active", buf, 0x16u);
       }
 
       objc_autoreleasePoolPop(v41);
       v46 = [MEMORY[0x277CCA9B8] hmfErrorWithCode:9];
-      v7[2](v7, v46);
+      completionCopy[2](completionCopy, v46);
 
       goto LABEL_39;
     }
 
-    v51 = [v6 matterDevice];
-    v52 = [v51 state] == 1;
+    matterDevice = [serverCopy matterDevice];
+    v52 = [matterDevice state] == 1;
 
     if (v52)
     {
       v53 = objc_autoreleasePoolPush();
-      v54 = v9;
+      v54 = selfCopy;
       v55 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v55, OS_LOG_TYPE_INFO))
       {
         v56 = HMFGetLogIdentifier();
-        v57 = [v6 nodeID];
+        nodeID8 = [serverCopy nodeID];
         *buf = 138543618;
         *&buf[4] = v56;
         *&buf[12] = 2112;
-        *&buf[14] = v57;
+        *&buf[14] = nodeID8;
         _os_log_impl(&dword_22AEAE000, v55, OS_LOG_TYPE_INFO, "%{public}@Accessory server with nodeID %@ was reachable", buf, 0x16u);
       }
 
       objc_autoreleasePoolPop(v53);
-      [(HMMTRThreadSoftwareUpdateController *)v54 setTargetThreadAccessoryServerForFWUpdate:v6];
-      v58 = [(HMMTRThreadSoftwareUpdateController *)v54 firmwareUpdateActiveTimer];
-      [v58 resume];
+      [(HMMTRThreadSoftwareUpdateController *)v54 setTargetThreadAccessoryServerForFWUpdate:serverCopy];
+      firmwareUpdateActiveTimer = [(HMMTRThreadSoftwareUpdateController *)v54 firmwareUpdateActiveTimer];
+      [firmwareUpdateActiveTimer resume];
 
-      v7[2](v7, 0);
+      completionCopy[2](completionCopy, 0);
       goto LABEL_39;
     }
 
-    v59 = [(HMMTRThreadSoftwareUpdateController *)v9 browser];
-    v60 = [v59 isOperationAllowedForAccessoryServer:v6];
+    browser = [(HMMTRThreadSoftwareUpdateController *)selfCopy browser];
+    v60 = [browser isOperationAllowedForAccessoryServer:serverCopy];
 
     if (v60)
     {
-      if ([v6 isWEDDevice])
+      if ([serverCopy isWEDDevice])
       {
         v61 = objc_autoreleasePoolPush();
-        v62 = v9;
+        v62 = selfCopy;
         v63 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v63, OS_LOG_TYPE_INFO))
         {
           v64 = HMFGetLogIdentifier();
-          v65 = [v6 nodeID];
+          nodeID9 = [serverCopy nodeID];
           *buf = 138543618;
           *&buf[4] = v64;
           *&buf[12] = 2112;
-          *&buf[14] = v65;
+          *&buf[14] = nodeID9;
           _os_log_impl(&dword_22AEAE000, v63, OS_LOG_TYPE_INFO, "%{public}@Accessory server with nodeID %@ is WED device", buf, 0x16u);
         }
 
         objc_autoreleasePoolPop(v61);
-        [(HMMTRThreadSoftwareUpdateController *)v62 setTargetThreadAccessoryServerForFWUpdate:v6];
-        v7[2](v7, 0);
+        [(HMMTRThreadSoftwareUpdateController *)v62 setTargetThreadAccessoryServerForFWUpdate:serverCopy];
+        completionCopy[2](completionCopy, 0);
         goto LABEL_39;
       }
 
-      v73 = [(HMMTRThreadSoftwareUpdateController *)v9 browser];
-      v74 = [v6 nodeID];
-      v75 = [v73 canEstablishConnectionForNodeID:v74];
+      browser2 = [(HMMTRThreadSoftwareUpdateController *)selfCopy browser];
+      nodeID10 = [serverCopy nodeID];
+      v75 = [browser2 canEstablishConnectionForNodeID:nodeID10];
 
       if (v75)
       {
-        v76 = [v14 threadRadioManager];
-        if ([v76 isThreadNetworkConnected])
+        threadRadioManager3 = [v14 threadRadioManager];
+        if ([threadRadioManager3 isThreadNetworkConnected])
         {
-          v77 = [v14 threadRadioManager];
-          if (![v77 isFirmwareUpdateActive])
+          threadRadioManager4 = [v14 threadRadioManager];
+          if (![threadRadioManager4 isFirmwareUpdateActive])
           {
-            v99 = [v6 matterDevice];
-            v100 = [v99 state] == 1;
+            matterDevice2 = [serverCopy matterDevice];
+            v100 = [matterDevice2 state] == 1;
 
             if (!v100)
             {
               v101 = objc_autoreleasePoolPush();
-              v102 = v9;
+              v102 = selfCopy;
               v103 = HMFGetOSLogHandle();
               if (os_log_type_enabled(v103, OS_LOG_TYPE_ERROR))
               {
                 v104 = HMFGetLogIdentifier();
-                v105 = [v6 nodeID];
+                nodeID11 = [serverCopy nodeID];
                 *buf = 138543618;
                 *&buf[4] = v104;
                 *&buf[12] = 2112;
-                *&buf[14] = v105;
+                *&buf[14] = nodeID11;
                 _os_log_impl(&dword_22AEAE000, v103, OS_LOG_TYPE_ERROR, "%{public}@Device is already connected to thread network, no need to transition to full router for firmware update for accessory with nodeID %@", buf, 0x16u);
               }
 
               objc_autoreleasePoolPop(v101);
               v106 = [MEMORY[0x277CCA9B8] hmfErrorWithCode:2];
-              v7[2](v7, v106);
+              completionCopy[2](completionCopy, v106);
 
               goto LABEL_39;
             }
@@ -629,66 +629,66 @@ void __96__HMMTRThreadSoftwareUpdateController_handleFirmwareUpdateStatusChangeF
         }
 
 LABEL_47:
-        v78 = [v14 threadRadioManager];
-        v79 = [v78 isReadyToTransitionToFullRouterModeForFirmwareUpdate];
+        threadRadioManager5 = [v14 threadRadioManager];
+        isReadyToTransitionToFullRouterModeForFirmwareUpdate = [threadRadioManager5 isReadyToTransitionToFullRouterModeForFirmwareUpdate];
 
-        if (v79)
+        if (isReadyToTransitionToFullRouterModeForFirmwareUpdate)
         {
-          [(HMMTRThreadSoftwareUpdateController *)v9 setTargetThreadAccessoryServerForFWUpdate:v6];
+          [(HMMTRThreadSoftwareUpdateController *)selfCopy setTargetThreadAccessoryServerForFWUpdate:serverCopy];
           *buf = 0;
           *&buf[8] = buf;
           *&buf[16] = 0x2020000000;
           LOBYTE(v122) = 0;
-          objc_initWeak(&location, v9);
+          objc_initWeak(&location, selfCopy);
           v112[0] = MEMORY[0x277D85DD0];
           v112[1] = 3221225472;
           v112[2] = __104__HMMTRThreadSoftwareUpdateController__attemptConnectionForFirmwareUpdateForAccessoryServer_completion___block_invoke;
           v112[3] = &unk_2786EE320;
           objc_copyWeak(&v115, &location);
           v114 = buf;
-          v113 = v7;
+          v113 = completionCopy;
           v80 = MEMORY[0x2318887D0](v112);
           v81 = dispatch_time(0, 1200000000000);
-          v82 = [(HMMTRThreadSoftwareUpdateController *)v9 clientQueue];
+          clientQueue = [(HMMTRThreadSoftwareUpdateController *)selfCopy clientQueue];
           block[0] = MEMORY[0x277D85DD0];
           block[1] = 3221225472;
           block[2] = __104__HMMTRThreadSoftwareUpdateController__attemptConnectionForFirmwareUpdateForAccessoryServer_completion___block_invoke_2;
           block[3] = &unk_2786EF878;
           v83 = v80;
           v111 = v83;
-          dispatch_after(v81, v82, block);
+          dispatch_after(v81, clientQueue, block);
 
-          v84 = [(HMMTRThreadSoftwareUpdateController *)v9 firmwareUpdateActiveTimer];
-          [v84 resume];
+          firmwareUpdateActiveTimer2 = [(HMMTRThreadSoftwareUpdateController *)selfCopy firmwareUpdateActiveTimer];
+          [firmwareUpdateActiveTimer2 resume];
 
           v85 = objc_autoreleasePoolPush();
-          v86 = v9;
+          v86 = selfCopy;
           v87 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v87, OS_LOG_TYPE_INFO))
           {
             v88 = HMFGetLogIdentifier();
-            v89 = [v6 nodeID];
+            nodeID12 = [serverCopy nodeID];
             *v117 = 138543618;
             v118 = v88;
             v119 = 2112;
-            v120 = v89;
+            v120 = nodeID12;
             _os_log_impl(&dword_22AEAE000, v87, OS_LOG_TYPE_INFO, "%{public}@Entering full-router mode to attempt to reach accessory with nodeID %@", v117, 0x16u);
           }
 
           objc_autoreleasePoolPop(v85);
-          v90 = [v14 threadRadioManager];
-          v91 = [v6 eMACAddress];
-          v92 = [v91 dataUsingEncoding:4];
-          v93 = [v6 isWEDDevice];
+          threadRadioManager6 = [v14 threadRadioManager];
+          eMACAddress = [serverCopy eMACAddress];
+          v92 = [eMACAddress dataUsingEncoding:4];
+          isWEDDevice = [serverCopy isWEDDevice];
           v107[0] = MEMORY[0x277D85DD0];
           v107[1] = 3221225472;
           v107[2] = __104__HMMTRThreadSoftwareUpdateController__attemptConnectionForFirmwareUpdateForAccessoryServer_completion___block_invoke_116;
           v107[3] = &unk_2786F0C10;
           v107[4] = v86;
-          v108 = v6;
+          v108 = serverCopy;
           v94 = v83;
           v109 = v94;
-          [v90 startAccessoryFirmwareUpdateWithExtendedMACAddress:v92 isWedDevice:v93 completion:v107];
+          [threadRadioManager6 startAccessoryFirmwareUpdateWithExtendedMACAddress:v92 isWedDevice:isWEDDevice completion:v107];
 
           objc_destroyWeak(&v115);
           objc_destroyWeak(&location);
@@ -697,16 +697,16 @@ LABEL_47:
         }
 
         v66 = objc_autoreleasePoolPush();
-        v67 = v9;
+        v67 = selfCopy;
         v68 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v68, OS_LOG_TYPE_ERROR))
         {
           v97 = HMFGetLogIdentifier();
-          v98 = [v6 nodeID];
+          nodeID13 = [serverCopy nodeID];
           *buf = 138543618;
           *&buf[4] = v97;
           *&buf[12] = 2112;
-          *&buf[14] = v98;
+          *&buf[14] = nodeID13;
           _os_log_impl(&dword_22AEAE000, v68, OS_LOG_TYPE_ERROR, "%{public}@Cannot start firmware update for nodeID %@ due to invalid thread state", buf, 0x16u);
         }
 
@@ -714,16 +714,16 @@ LABEL_47:
       }
 
       v66 = objc_autoreleasePoolPush();
-      v67 = v9;
+      v67 = selfCopy;
       v68 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v68, OS_LOG_TYPE_ERROR))
       {
         v95 = HMFGetLogIdentifier();
-        v96 = [v6 nodeID];
+        nodeID14 = [serverCopy nodeID];
         *buf = 138543618;
         *&buf[4] = v95;
         *&buf[12] = 2112;
-        *&buf[14] = v96;
+        *&buf[14] = nodeID14;
         _os_log_impl(&dword_22AEAE000, v68, OS_LOG_TYPE_ERROR, "%{public}@Cannot start firmware update for nodeID %@ accessory cannot be made reachable", buf, 0x16u);
       }
     }
@@ -731,16 +731,16 @@ LABEL_47:
     else
     {
       v66 = objc_autoreleasePoolPush();
-      v67 = v9;
+      v67 = selfCopy;
       v68 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v68, OS_LOG_TYPE_ERROR))
       {
         v69 = HMFGetLogIdentifier();
-        v70 = [v6 nodeID];
+        nodeID15 = [serverCopy nodeID];
         *buf = 138543618;
         *&buf[4] = v69;
         *&buf[12] = 2112;
-        *&buf[14] = v70;
+        *&buf[14] = nodeID15;
         _os_log_impl(&dword_22AEAE000, v68, OS_LOG_TYPE_ERROR, "%{public}@Cannot start firmware update for nodeID %@ accessory at this point in time", buf, 0x16u);
       }
     }
@@ -749,17 +749,17 @@ LABEL_38:
 
     objc_autoreleasePoolPop(v66);
     v71 = [MEMORY[0x277CCA9B8] hmfErrorWithCode:6];
-    v7[2](v7, v71);
+    completionCopy[2](completionCopy, v71);
 
 LABEL_39:
-    v22 = 0;
+    targetThreadAccessoryServerForFWUpdate = 0;
 LABEL_40:
 
     goto LABEL_41;
   }
 
   v23 = objc_autoreleasePoolPush();
-  v24 = v9;
+  v24 = selfCopy;
   v25 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
   {
@@ -770,7 +770,7 @@ LABEL_40:
   }
 
   objc_autoreleasePoolPop(v23);
-  v7[2](v7, 0);
+  completionCopy[2](completionCopy, 0);
 LABEL_41:
 
   v72 = *MEMORY[0x277D85DE8];
@@ -949,41 +949,41 @@ uint64_t __104__HMMTRThreadSoftwareUpdateController__attemptConnectionForFirmwar
   return v6();
 }
 
-- (void)handleUpdateRequestedForAccessoryServer:(id)a3 completion:(id)a4
+- (void)handleUpdateRequestedForAccessoryServer:(id)server completion:(id)completion
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  serverCopy = server;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_browser);
   if (WeakRetained)
   {
     if (isFeatureMatteriPhoneOnlyPairingControlForThreadEnabled())
     {
-      if (![v6 accessoryLinkLayerTypeIsWifiOrEthernet])
+      if (![serverCopy accessoryLinkLayerTypeIsWifiOrEthernet])
       {
         v18[0] = MEMORY[0x277D85DD0];
         v18[1] = 3221225472;
         v18[2] = __90__HMMTRThreadSoftwareUpdateController_handleUpdateRequestedForAccessoryServer_completion___block_invoke;
         v18[3] = &unk_2786F0C10;
         v18[4] = self;
-        v19 = v6;
-        v20 = v7;
+        v19 = serverCopy;
+        v20 = completionCopy;
         [(HMMTRThreadSoftwareUpdateController *)self _attemptConnectionForFirmwareUpdateForAccessoryServer:v19 completion:v18];
 
         goto LABEL_13;
       }
 
       v9 = objc_autoreleasePoolPush();
-      v10 = self;
+      selfCopy3 = self;
       v11 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
       {
         v12 = HMFGetLogIdentifier();
-        v13 = [v6 nodeID];
+        nodeID = [serverCopy nodeID];
         *buf = 138543618;
         v22 = v12;
         v23 = 2112;
-        v24 = v13;
+        v24 = nodeID;
         v14 = "%{public}@Accessory server with nodeID %@ is an IP accessory, no tracking needed.";
         v15 = v11;
         v16 = OS_LOG_TYPE_INFO;
@@ -997,7 +997,7 @@ LABEL_11:
     else
     {
       v9 = objc_autoreleasePoolPush();
-      v10 = self;
+      selfCopy3 = self;
       v11 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
@@ -1013,16 +1013,16 @@ LABEL_11:
   else
   {
     v9 = objc_autoreleasePoolPush();
-    v10 = self;
+    selfCopy3 = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       v12 = HMFGetLogIdentifier();
-      v13 = [v6 nodeID];
+      nodeID = [serverCopy nodeID];
       *buf = 138543618;
       v22 = v12;
       v23 = 2112;
-      v24 = v13;
+      v24 = nodeID;
       v14 = "%{public}@Unable to get browser ref for handleUpdateRequestedForAccessoryServer:%@";
       v15 = v11;
       v16 = OS_LOG_TYPE_ERROR;
@@ -1031,7 +1031,7 @@ LABEL_11:
   }
 
   objc_autoreleasePoolPop(v9);
-  (*(v7 + 2))(v7, 0);
+  (*(completionCopy + 2))(completionCopy, 0);
 LABEL_13:
 
   v17 = *MEMORY[0x277D85DE8];
@@ -1099,13 +1099,13 @@ void __90__HMMTRThreadSoftwareUpdateController_handleUpdateRequestedForAccessory
 - (void)suspendOperations
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = [(HMMTRThreadSoftwareUpdateController *)self targetThreadAccessoryServerForFWUpdate];
+  targetThreadAccessoryServerForFWUpdate = [(HMMTRThreadSoftwareUpdateController *)self targetThreadAccessoryServerForFWUpdate];
 
   v4 = objc_autoreleasePoolPush();
-  v5 = self;
+  selfCopy = self;
   v6 = HMFGetOSLogHandle();
   v7 = v6;
-  if (v3)
+  if (targetThreadAccessoryServerForFWUpdate)
   {
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
@@ -1117,7 +1117,7 @@ void __90__HMMTRThreadSoftwareUpdateController_handleUpdateRequestedForAccessory
 
     objc_autoreleasePoolPop(v4);
     v9 = [MEMORY[0x277CCA9B8] hmfErrorWithCode:12];
-    [(HMMTRThreadSoftwareUpdateController *)v5 _cleanupFirmwareUpdateStateWithError:v9];
+    [(HMMTRThreadSoftwareUpdateController *)selfCopy _cleanupFirmwareUpdateStateWithError:v9];
   }
 
   else
@@ -1136,13 +1136,13 @@ void __90__HMMTRThreadSoftwareUpdateController_handleUpdateRequestedForAccessory
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)suspendOperationsForFabricUUID:(id)a3
+- (void)suspendOperationsForFabricUUID:(id)d
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMMTRThreadSoftwareUpdateController *)self isFirmwareUpdateInProgressForFabricUUID:v4];
+  dCopy = d;
+  v5 = [(HMMTRThreadSoftwareUpdateController *)self isFirmwareUpdateInProgressForFabricUUID:dCopy];
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   v9 = v8;
   if (v5)
@@ -1157,7 +1157,7 @@ void __90__HMMTRThreadSoftwareUpdateController_handleUpdateRequestedForAccessory
 
     objc_autoreleasePoolPop(v6);
     v11 = [MEMORY[0x277CCA9B8] hmfErrorWithCode:12];
-    [(HMMTRThreadSoftwareUpdateController *)v7 _cleanupFirmwareUpdateStateWithError:v11];
+    [(HMMTRThreadSoftwareUpdateController *)selfCopy _cleanupFirmwareUpdateStateWithError:v11];
   }
 
   else
@@ -1168,7 +1168,7 @@ void __90__HMMTRThreadSoftwareUpdateController_handleUpdateRequestedForAccessory
       v14 = 138543618;
       v15 = v12;
       v16 = 2112;
-      v17 = v4;
+      v17 = dCopy;
       _os_log_impl(&dword_22AEAE000, v9, OS_LOG_TYPE_DEBUG, "%{public}@Received suspendOperations, but no active fw updates in progress for fabric %@", &v14, 0x16u);
     }
 
@@ -1178,24 +1178,24 @@ void __90__HMMTRThreadSoftwareUpdateController_handleUpdateRequestedForAccessory
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)isFirmwareUpdateInProgressForFabricUUID:(id)a3
+- (BOOL)isFirmwareUpdateInProgressForFabricUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(HMMTRThreadSoftwareUpdateController *)self targetThreadAccessoryServerForFWUpdate];
-  v6 = v5;
-  if (!v5)
+  dCopy = d;
+  targetThreadAccessoryServerForFWUpdate = [(HMMTRThreadSoftwareUpdateController *)self targetThreadAccessoryServerForFWUpdate];
+  v6 = targetThreadAccessoryServerForFWUpdate;
+  if (!targetThreadAccessoryServerForFWUpdate)
   {
     goto LABEL_5;
   }
 
-  v7 = [v5 fabricUUID];
-  if (!v7)
+  fabricUUID = [targetThreadAccessoryServerForFWUpdate fabricUUID];
+  if (!fabricUUID)
   {
     goto LABEL_5;
   }
 
-  v8 = v7;
-  v9 = [v6 fabricUUID];
+  v8 = fabricUUID;
+  fabricUUID2 = [v6 fabricUUID];
   v10 = HMFEqualObjects();
 
   if (v10)
@@ -1212,65 +1212,65 @@ LABEL_5:
   return v11;
 }
 
-- (void)_cleanupFirmwareUpdateStateWithError:(id)a3
+- (void)_cleanupFirmwareUpdateStateWithError:(id)error
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMMTRThreadSoftwareUpdateController *)self targetThreadAccessoryServerForFWUpdate];
+  errorCopy = error;
+  targetThreadAccessoryServerForFWUpdate = [(HMMTRThreadSoftwareUpdateController *)self targetThreadAccessoryServerForFWUpdate];
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v9 = HMFGetLogIdentifier();
-    v10 = [v5 nodeID];
+    nodeID = [targetThreadAccessoryServerForFWUpdate nodeID];
     *buf = 138543874;
     v24 = v9;
     v25 = 2112;
-    v26 = v10;
+    v26 = nodeID;
     v27 = 2112;
-    v28 = v4;
+    v28 = errorCopy;
     _os_log_impl(&dword_22AEAE000, v8, OS_LOG_TYPE_INFO, "%{public}@Cleaning up firmware update state - current target accessory nodeID = %@, error = %@", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v6);
-  v11 = [(HMMTRThreadSoftwareUpdateController *)v7 firmwareUpdateActiveTimer];
-  [v11 suspend];
+  firmwareUpdateActiveTimer = [(HMMTRThreadSoftwareUpdateController *)selfCopy firmwareUpdateActiveTimer];
+  [firmwareUpdateActiveTimer suspend];
 
-  [(HMMTRThreadSoftwareUpdateController *)v7 setTargetThreadAccessoryServerForFWUpdate:0];
-  v12 = [(HMMTRThreadSoftwareUpdateController *)v7 reachabilityObserver];
-  [v12 stopObservingReachabilityWithError:v4];
+  [(HMMTRThreadSoftwareUpdateController *)selfCopy setTargetThreadAccessoryServerForFWUpdate:0];
+  reachabilityObserver = [(HMMTRThreadSoftwareUpdateController *)selfCopy reachabilityObserver];
+  [reachabilityObserver stopObservingReachabilityWithError:errorCopy];
 
-  v13 = [(HMMTRThreadSoftwareUpdateController *)v7 browser];
-  v14 = [v13 threadRadioManager];
+  browser = [(HMMTRThreadSoftwareUpdateController *)selfCopy browser];
+  threadRadioManager = [browser threadRadioManager];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __76__HMMTRThreadSoftwareUpdateController__cleanupFirmwareUpdateStateWithError___block_invoke;
   v22[3] = &unk_2786EF290;
-  v22[4] = v7;
-  [v14 stopAccessoryFirmwareUpdateWithCompletion:v22];
+  v22[4] = selfCopy;
+  [threadRadioManager stopAccessoryFirmwareUpdateWithCompletion:v22];
 
-  if (v4 && v5)
+  if (errorCopy && targetThreadAccessoryServerForFWUpdate)
   {
     v15 = objc_autoreleasePoolPush();
-    v16 = v7;
+    v16 = selfCopy;
     v17 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
     {
       v18 = HMFGetLogIdentifier();
-      v19 = [v5 nodeID];
+      nodeID2 = [targetThreadAccessoryServerForFWUpdate nodeID];
       *buf = 138543874;
       v24 = v18;
       v25 = 2112;
-      v26 = v19;
+      v26 = nodeID2;
       v27 = 2112;
-      v28 = v4;
+      v28 = errorCopy;
       _os_log_impl(&dword_22AEAE000, v17, OS_LOG_TYPE_INFO, "%{public}@Resetting firmware update to unknown for current target accessory nodeID = %@, error = %@", buf, 0x20u);
     }
 
     objc_autoreleasePoolPop(v15);
-    v20 = [v5 matterFirmwareUpdateStatus];
-    [v20 updateFirmwareUpdateStatus:0];
+    matterFirmwareUpdateStatus = [targetThreadAccessoryServerForFWUpdate matterFirmwareUpdateStatus];
+    [matterFirmwareUpdateStatus updateFirmwareUpdateStatus:0];
   }
 
   v21 = *MEMORY[0x277D85DE8];
@@ -1301,25 +1301,25 @@ void __76__HMMTRThreadSoftwareUpdateController__cleanupFirmwareUpdateStateWithEr
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (HMMTRThreadSoftwareUpdateController)initWithQueue:(id)a3 browser:(id)a4
+- (HMMTRThreadSoftwareUpdateController)initWithQueue:(id)queue browser:(id)browser
 {
-  v7 = a3;
-  v8 = a4;
+  queueCopy = queue;
+  browserCopy = browser;
   v16.receiver = self;
   v16.super_class = HMMTRThreadSoftwareUpdateController;
   v9 = [(HMMTRThreadSoftwareUpdateController *)&v16 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_clientQueue, a3);
-    objc_storeWeak(&v10->_browser, v8);
+    objc_storeStrong(&v9->_clientQueue, queue);
+    objc_storeWeak(&v10->_browser, browserCopy);
     v11 = [objc_alloc(MEMORY[0x277D0F920]) initWithTimeInterval:0 options:1800.0];
     firmwareUpdateActiveTimer = v10->_firmwareUpdateActiveTimer;
     v10->_firmwareUpdateActiveTimer = v11;
 
-    [(HMFTimer *)v10->_firmwareUpdateActiveTimer setDelegateQueue:v7];
+    [(HMFTimer *)v10->_firmwareUpdateActiveTimer setDelegateQueue:queueCopy];
     [(HMFTimer *)v10->_firmwareUpdateActiveTimer setDelegate:v10];
-    v13 = [[HMMTRAccessoryReachabilityObserver alloc] initWithQueue:v7];
+    v13 = [[HMMTRAccessoryReachabilityObserver alloc] initWithQueue:queueCopy];
     reachabilityObserver = v10->_reachabilityObserver;
     v10->_reachabilityObserver = v13;
   }

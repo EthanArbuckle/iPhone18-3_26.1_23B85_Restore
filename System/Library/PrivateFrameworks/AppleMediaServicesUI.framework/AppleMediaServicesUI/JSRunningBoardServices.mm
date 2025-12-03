@@ -1,14 +1,14 @@
 @interface JSRunningBoardServices
-- (id)fetchProcessHandle:(id)a3;
+- (id)fetchProcessHandle:(id)handle;
 @end
 
 @implementation JSRunningBoardServices
 
-- (id)fetchProcessHandle:(id)a3
+- (id)fetchProcessHandle:(id)handle
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_1001361D4(v4);
+  handleCopy = handle;
+  selfCopy = self;
+  v6 = sub_1001361D4(handleCopy);
 
   return v6;
 }

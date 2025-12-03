@@ -1,16 +1,16 @@
 @interface CalGetSettingsResponse
-- (CalGetSettingsResponse)initWithDictionary:(id)a3;
-- (CalGetSettingsResponse)initWithHTTPResponse:(id)a3 data:(id)a4;
+- (CalGetSettingsResponse)initWithDictionary:(id)dictionary;
+- (CalGetSettingsResponse)initWithHTTPResponse:(id)response data:(id)data;
 - (id)description;
 @end
 
 @implementation CalGetSettingsResponse
 
-- (CalGetSettingsResponse)initWithHTTPResponse:(id)a3 data:(id)a4
+- (CalGetSettingsResponse)initWithHTTPResponse:(id)response data:(id)data
 {
   v7.receiver = self;
   v7.super_class = CalGetSettingsResponse;
-  v4 = [(CalGetSettingsResponse *)&v7 initWithHTTPResponse:a3 data:a4 bodyIsPlist:0];
+  v4 = [(CalGetSettingsResponse *)&v7 initWithHTTPResponse:response data:data bodyIsPlist:0];
   v5 = v4;
   if (v4 && [*&v4->super.AAResponse_opaque[OBJC_IVAR___AAResponse__httpResponse] statusCode] == stru_B8.segname)
   {
@@ -20,22 +20,22 @@
   return v5;
 }
 
-- (CalGetSettingsResponse)initWithDictionary:(id)a3
+- (CalGetSettingsResponse)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v25.receiver = self;
   v25.super_class = CalGetSettingsResponse;
-  v5 = [(CalBaseResponse *)&v25 initWithDictionary:v4];
+  v5 = [(CalBaseResponse *)&v25 initWithDictionary:dictionaryCopy];
   v6 = v5;
-  if (v4 && v5)
+  if (dictionaryCopy && v5)
   {
-    v7 = [v4 objectForKeyedSubscript:@"makoAccount"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"makoAccount"];
     v6->_makoAccount = [v7 BOOLValue];
 
-    v8 = [v4 objectForKeyedSubscript:@"sharedCalendarEmail"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"sharedCalendarEmail"];
     v6->_sharedCalendarEmail = [v8 BOOLValue];
 
-    v9 = [v4 objectForKeyedSubscript:@"email"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"email"];
     v10 = objc_alloc_init(NSMutableArray);
     v21 = 0u;
     v22 = 0u;
@@ -83,8 +83,8 @@
 {
   v3 = [NSNumber numberWithBool:[(CalGetSettingsResponse *)self makoAccount]];
   v4 = [NSNumber numberWithBool:[(CalGetSettingsResponse *)self sharedCalendarEmail]];
-  v5 = [(CalGetSettingsResponse *)self emails];
-  v6 = [NSString stringWithFormat:@"makoAccount => %@, sharedCalendarUpdates => %@ inviteEmailList => %@", v3, v4, v5];
+  emails = [(CalGetSettingsResponse *)self emails];
+  v6 = [NSString stringWithFormat:@"makoAccount => %@, sharedCalendarUpdates => %@ inviteEmailList => %@", v3, v4, emails];
 
   return v6;
 }

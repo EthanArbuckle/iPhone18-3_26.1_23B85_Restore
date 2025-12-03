@@ -1,22 +1,22 @@
 @interface ICGalleryAttachmentUtilities
-+ (CGSize)sizeOfSubAttachment:(id)a3 forHeight:(double)a4;
-+ (CGSize)sizeOfViewForAttachment:(id)a3 textViewContentWidth:(double)a4;
-+ (double)requiredWidthForAttachment:(id)a3 viewHeight:(double)a4 maxWidth:(double)a5;
-+ (id)createAndAddSubAttachmentsToGalleryAttachment:(id)a3 fromDocuments:(id)a4 imageCache:(id)a5 context:(id)a6;
-+ (id)createSubAttachmentFromDocument:(id)a3 imageCache:(id)a4 galleryAttachment:(id)a5;
-+ (id)imageForSubAttachment:(id)a3 rotateForMacImageGallery:(BOOL)a4 allowCached:(BOOL)a5;
++ (CGSize)sizeOfSubAttachment:(id)attachment forHeight:(double)height;
++ (CGSize)sizeOfViewForAttachment:(id)attachment textViewContentWidth:(double)width;
++ (double)requiredWidthForAttachment:(id)attachment viewHeight:(double)height maxWidth:(double)width;
++ (id)createAndAddSubAttachmentsToGalleryAttachment:(id)attachment fromDocuments:(id)documents imageCache:(id)cache context:(id)context;
++ (id)createSubAttachmentFromDocument:(id)document imageCache:(id)cache galleryAttachment:(id)attachment;
++ (id)imageForSubAttachment:(id)attachment rotateForMacImageGallery:(BOOL)gallery allowCached:(BOOL)cached;
 @end
 
 @implementation ICGalleryAttachmentUtilities
 
-+ (id)createSubAttachmentFromDocument:(id)a3 imageCache:(id)a4 galleryAttachment:(id)a5
++ (id)createSubAttachmentFromDocument:(id)document imageCache:(id)cache galleryAttachment:(id)attachment
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = a4;
-  v10 = [v9 dataCryptorDelegate];
-  v11 = [v7 fullImageUUID];
-  v12 = [v9 getImageURL:v11 async:0];
+  documentCopy = document;
+  attachmentCopy = attachment;
+  cacheCopy = cache;
+  dataCryptorDelegate = [cacheCopy dataCryptorDelegate];
+  fullImageUUID = [documentCopy fullImageUUID];
+  v12 = [cacheCopy getImageURL:fullImageUUID async:0];
 
   if (!v12)
   {
@@ -24,7 +24,7 @@
     goto LABEL_16;
   }
 
-  if ([v8 isPasswordProtected] && v10)
+  if ([attachmentCopy isPasswordProtected] && dataCryptorDelegate)
   {
     v13 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:v12];
     if (!v13)
@@ -32,53 +32,53 @@
       goto LABEL_10;
     }
 
-    v14 = [v7 fullImageUUID];
-    v15 = [v10 decryptEncryptedData:v13 identifier:v14];
+    fullImageUUID2 = [documentCopy fullImageUUID];
+    note2 = [dataCryptorDelegate decryptEncryptedData:v13 identifier:fullImageUUID2];
 
-    if (!v15)
+    if (!note2)
     {
       v13 = 0;
       goto LABEL_16;
     }
 
-    v16 = [v8 note];
-    v17 = [*MEMORY[0x1E6982E30] identifier];
-    v18 = [v12 lastPathComponent];
-    v13 = [v16 addAttachmentWithUTI:v17 data:v15 filename:v18 updateFileBasedAttributes:0 analytics:0 regulatoryLogging:0];
+    note = [attachmentCopy note];
+    identifier = [*MEMORY[0x1E6982E30] identifier];
+    lastPathComponent = [v12 lastPathComponent];
+    v13 = [note addAttachmentWithUTI:identifier data:note2 filename:lastPathComponent updateFileBasedAttributes:0 analytics:0 regulatoryLogging:0];
   }
 
   else
   {
-    v15 = [v8 note];
-    v13 = [v15 addAttachmentWithFileURL:v12 updateFileBasedAttributes:0 analytics:0];
+    note2 = [attachmentCopy note];
+    v13 = [note2 addAttachmentWithFileURL:v12 updateFileBasedAttributes:0 analytics:0];
   }
 
 LABEL_10:
   if (v13)
   {
-    [v13 setParentAttachment:v8];
-    [v13 setOrientation:{objc_msgSend(v7, "currentOrientation")}];
-    if ([v7 hasFilter])
+    [v13 setParentAttachment:attachmentCopy];
+    [v13 setOrientation:{objc_msgSend(documentCopy, "currentOrientation")}];
+    if ([documentCopy hasFilter])
     {
-      [v13 setImageFilterType:{objc_msgSend(v7, "currentFilter")}];
+      [v13 setImageFilterType:{objc_msgSend(documentCopy, "currentFilter")}];
     }
 
-    v19 = [v7 imageQuad];
+    imageQuad = [documentCopy imageQuad];
 
-    if (v19)
+    if (imageQuad)
     {
-      v20 = [v7 imageQuad];
-      [v13 setCroppingQuad:v20];
+      imageQuad2 = [documentCopy imageQuad];
+      [v13 setCroppingQuad:imageQuad2];
     }
 
-    v21 = [v7 markupModelData];
-    [v13 setMarkupModelData:v21];
+    markupModelData = [documentCopy markupModelData];
+    [v13 setMarkupModelData:markupModelData];
 
-    v22 = [v13 attachmentModel];
-    [v22 updateFileBasedAttributes];
+    attachmentModel = [v13 attachmentModel];
+    [attachmentModel updateFileBasedAttributes];
 
-    v23 = [v13 identifier];
-    [v7 setScanDataDelegateIdentifier:v23];
+    identifier2 = [v13 identifier];
+    [documentCopy setScanDataDelegateIdentifier:identifier2];
   }
 
 LABEL_16:
@@ -86,35 +86,35 @@ LABEL_16:
   return v13;
 }
 
-+ (id)createAndAddSubAttachmentsToGalleryAttachment:(id)a3 fromDocuments:(id)a4 imageCache:(id)a5 context:(id)a6
++ (id)createAndAddSubAttachmentsToGalleryAttachment:(id)attachment fromDocuments:(id)documents imageCache:(id)cache context:(id)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!v13)
+  attachmentCopy = attachment;
+  documentsCopy = documents;
+  cacheCopy = cache;
+  contextCopy = context;
+  if (!contextCopy)
   {
-    v14 = [MEMORY[0x1E69B7800] sharedContext];
-    v13 = [v14 snapshotManagedObjectContext];
+    mEMORY[0x1E69B7800] = [MEMORY[0x1E69B7800] sharedContext];
+    contextCopy = [mEMORY[0x1E69B7800] snapshotManagedObjectContext];
   }
 
-  v15 = [v10 objectID];
-  v16 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v11, "count")}];
+  objectID = [attachmentCopy objectID];
+  v16 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(documentsCopy, "count")}];
   v27 = MEMORY[0x1E69E9820];
   v28 = 3221225472;
   v29 = __111__ICGalleryAttachmentUtilities_createAndAddSubAttachmentsToGalleryAttachment_fromDocuments_imageCache_context___block_invoke;
   v30 = &unk_1E846BEA0;
-  v31 = v13;
-  v32 = v15;
-  v17 = v11;
-  v36 = a1;
+  v31 = contextCopy;
+  v32 = objectID;
+  v17 = documentsCopy;
+  selfCopy = self;
   v33 = v17;
-  v34 = v12;
+  v34 = cacheCopy;
   v18 = v16;
   v35 = v18;
-  v19 = v12;
-  v20 = v15;
-  v21 = v13;
+  v19 = cacheCopy;
+  v20 = objectID;
+  v21 = contextCopy;
   [v21 performBlockAndWait:&v27];
   v22 = [v18 count];
   if (v22 != [v17 count])
@@ -234,30 +234,30 @@ void __111__ICGalleryAttachmentUtilities_createAndAddSubAttachmentsToGalleryAtta
   }
 }
 
-+ (id)imageForSubAttachment:(id)a3 rotateForMacImageGallery:(BOOL)a4 allowCached:(BOOL)a5
++ (id)imageForSubAttachment:(id)attachment rotateForMacImageGallery:(BOOL)gallery allowCached:(BOOL)cached
 {
-  v5 = a5;
-  v6 = a4;
-  v7 = a3;
-  [v7 sizeWidth];
+  cachedCopy = cached;
+  galleryCopy = gallery;
+  attachmentCopy = attachment;
+  [attachmentCopy sizeWidth];
   v9 = v8;
-  [v7 sizeHeight];
+  [attachmentCopy sizeHeight];
   if (v9 <= 0.0 || (v11 = v10, v10 <= 0.0))
   {
     v19 = os_log_create("com.apple.notes", "UI");
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
     {
-      [ICGalleryAttachmentUtilities imageForSubAttachment:v7 rotateForMacImageGallery:v19 allowCached:?];
+      [ICGalleryAttachmentUtilities imageForSubAttachment:attachmentCopy rotateForMacImageGallery:v19 allowCached:?];
     }
 
-    v18 = 0;
+    orientedImage = 0;
   }
 
   else
   {
-    v12 = [v7 attachmentPreviewImageWithMinSize:v9 scale:{v10, 1.0}];
+    v12 = [attachmentCopy attachmentPreviewImageWithMinSize:v9 scale:{v10, 1.0}];
     v13 = v12;
-    if (!v5)
+    if (!cachedCopy)
     {
       goto LABEL_14;
     }
@@ -273,116 +273,116 @@ void __111__ICGalleryAttachmentUtilities_createAndAddSubAttachmentsToGalleryAtta
     v17 = v9 >= v11 ? v9 : v11;
     if (vabdd_f64(v16, v17) < 0.00999999978)
     {
-      v18 = [v13 orientedImage];
+      orientedImage = [v13 orientedImage];
     }
 
     else
     {
 LABEL_14:
-      v20 = [v7 media];
-      v21 = [v7 imageFilterType];
-      v22 = [v7 orientation];
-      v23 = [v7 markupModelData];
-      v24 = [v7 croppingQuad];
-      if ([v7 isPasswordProtected])
+      media = [attachmentCopy media];
+      imageFilterType = [attachmentCopy imageFilterType];
+      orientation = [attachmentCopy orientation];
+      markupModelData = [attachmentCopy markupModelData];
+      croppingQuad = [attachmentCopy croppingQuad];
+      if ([attachmentCopy isPasswordProtected])
       {
-        v25 = [v20 decryptedData];
-        v26 = [objc_alloc(MEMORY[0x1E69DCAB8]) initWithData:v25];
+        decryptedData = [media decryptedData];
+        v26 = [objc_alloc(MEMORY[0x1E69DCAB8]) initWithData:decryptedData];
       }
 
       else
       {
         v27 = MEMORY[0x1E69DCAB8];
-        v25 = [v20 mediaURL];
-        v26 = [v27 ic_imageWithContentsOfURL:v25];
+        decryptedData = [media mediaURL];
+        v26 = [v27 ic_imageWithContentsOfURL:decryptedData];
       }
 
-      v18 = v26;
+      orientedImage = v26;
 
-      if (v18 && v24)
+      if (orientedImage && croppingQuad)
       {
-        v28 = [MEMORY[0x1E699A320] perspectiveCorrectedImageFromImage:v18 normalizedImageQuad:v24];
+        v28 = [MEMORY[0x1E699A320] perspectiveCorrectedImageFromImage:orientedImage normalizedImageQuad:croppingQuad];
 
-        v18 = v28;
+        orientedImage = v28;
       }
 
-      if (v18)
+      if (orientedImage)
       {
-        if (!(v22 | v21))
+        if (!(orientation | imageFilterType))
         {
           goto LABEL_39;
         }
 
         v29 = 2;
         v30 = 3;
-        if (v22 != 2)
+        if (orientation != 2)
         {
-          v30 = v22;
+          v30 = orientation;
         }
 
-        if (v22 != 3)
+        if (orientation != 3)
         {
           v29 = v30;
         }
 
-        v31 = v6 ? v29 : v22;
-        v32 = [MEMORY[0x1E699A320] filteredImage:v18 orientation:v31 imageFilterType:v21];
+        v31 = galleryCopy ? v29 : orientation;
+        v32 = [MEMORY[0x1E699A320] filteredImage:orientedImage orientation:v31 imageFilterType:imageFilterType];
 
-        v18 = v32;
+        orientedImage = v32;
         if (v32)
         {
 LABEL_39:
-          if ([v23 length])
+          if ([markupModelData length])
           {
-            v33 = [MEMORY[0x1E699A320] imageWithRGBColorspaceFromImage:v18];
+            v33 = [MEMORY[0x1E699A320] imageWithRGBColorspaceFromImage:orientedImage];
 
-            v34 = [v33 ic_JPEGData];
+            ic_JPEGData = [v33 ic_JPEGData];
             v35 = MEMORY[0x1E69DCAB8];
-            v36 = [MEMORY[0x1E69B77D8] imageDataWithMarkupModelData:v23 sourceImageData:v34];
-            v18 = [v35 ic_imageWithData:v36];
+            v36 = [MEMORY[0x1E69B77D8] imageDataWithMarkupModelData:markupModelData sourceImageData:ic_JPEGData];
+            orientedImage = [v35 ic_imageWithData:v36];
           }
         }
       }
     }
   }
 
-  return v18;
+  return orientedImage;
 }
 
-+ (CGSize)sizeOfViewForAttachment:(id)a3 textViewContentWidth:(double)a4
++ (CGSize)sizeOfViewForAttachment:(id)attachment textViewContentWidth:(double)width
 {
-  [a1 requiredWidthForAttachment:a3 viewHeight:372.0 maxWidth:a4];
-  if (v5 > a4)
+  [self requiredWidthForAttachment:attachment viewHeight:372.0 maxWidth:width];
+  if (widthCopy > width)
   {
-    v5 = a4;
+    widthCopy = width;
   }
 
   v6 = 372.0;
   result.height = v6;
-  result.width = v5;
+  result.width = widthCopy;
   return result;
 }
 
-+ (double)requiredWidthForAttachment:(id)a3 viewHeight:(double)a4 maxWidth:(double)a5
++ (double)requiredWidthForAttachment:(id)attachment viewHeight:(double)height maxWidth:(double)width
 {
-  v8 = a3;
+  attachmentCopy = attachment;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
   v18 = 0x4028000000000000;
   objc_opt_class();
-  v9 = [v8 attachmentModel];
+  attachmentModel = [attachmentCopy attachmentModel];
   v10 = ICDynamicCast();
-  v11 = a4 + -28.0 + -24.0;
+  v11 = height + -28.0 + -24.0;
 
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __79__ICGalleryAttachmentUtilities_requiredWidthForAttachment_viewHeight_maxWidth___block_invoke;
   v14[3] = &unk_1E846BEC8;
   v14[4] = &v15;
-  v14[5] = a1;
+  v14[5] = self;
   *&v14[6] = v11;
-  *&v14[7] = a5;
+  *&v14[7] = width;
   [v10 enumerateSubAttachmentsWithBlock:v14];
   v12 = v16[3];
   if (v12 < 50.0)
@@ -411,25 +411,25 @@ uint64_t __79__ICGalleryAttachmentUtilities_requiredWidthForAttachment_viewHeigh
   return result;
 }
 
-+ (CGSize)sizeOfSubAttachment:(id)a3 forHeight:(double)a4
++ (CGSize)sizeOfSubAttachment:(id)attachment forHeight:(double)height
 {
-  v5 = a3;
-  [v5 sizeWidth];
-  [v5 sizeHeight];
+  attachmentCopy = attachment;
+  [attachmentCopy sizeWidth];
+  [attachmentCopy sizeHeight];
 
   TSDMultiplySizeScalar();
-  if (v6 >= a4 * 1.8)
+  if (v6 >= height * 1.8)
   {
-    v6 = a4 * 1.8;
+    v6 = height * 1.8;
   }
 
-  if (v6 < a4 * 0.5)
+  if (v6 < height * 0.5)
   {
-    v6 = a4 * 0.5;
+    v6 = height * 0.5;
   }
 
-  v7 = a4;
-  result.height = v7;
+  heightCopy = height;
+  result.height = heightCopy;
   result.width = v6;
   return result;
 }

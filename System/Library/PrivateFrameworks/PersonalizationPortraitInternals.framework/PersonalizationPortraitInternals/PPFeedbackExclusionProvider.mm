@@ -1,16 +1,16 @@
 @interface PPFeedbackExclusionProvider
-+ (id)excludedBundleIdsForClientBundleId:(int)a3 domain:;
++ (id)excludedBundleIdsForClientBundleId:(int)id domain:;
 @end
 
 @implementation PPFeedbackExclusionProvider
 
-+ (id)excludedBundleIdsForClientBundleId:(int)a3 domain:
++ (id)excludedBundleIdsForClientBundleId:(int)id domain:
 {
   v4 = a2;
   objc_opt_self();
   if (v4)
   {
-    if (a3)
+    if (id)
     {
       v5 = *MEMORY[0x277D3A650];
       if ([v4 isEqualToString:*MEMORY[0x277D3A650]])

@@ -1,5 +1,5 @@
 @interface PXYearAssetsSectionHeaderLayoutSpec
-- (PXYearAssetsSectionHeaderLayoutSpec)initWithExtendedTraitCollection:(id)a3 options:(unint64_t)a4 padding:(UIEdgeInsets)a5 variant:(int64_t)a6;
+- (PXYearAssetsSectionHeaderLayoutSpec)initWithExtendedTraitCollection:(id)collection options:(unint64_t)options padding:(UIEdgeInsets)padding variant:(int64_t)variant;
 - (UIEdgeInsets)padding;
 @end
 
@@ -18,21 +18,21 @@
   return result;
 }
 
-- (PXYearAssetsSectionHeaderLayoutSpec)initWithExtendedTraitCollection:(id)a3 options:(unint64_t)a4 padding:(UIEdgeInsets)a5 variant:(int64_t)a6
+- (PXYearAssetsSectionHeaderLayoutSpec)initWithExtendedTraitCollection:(id)collection options:(unint64_t)options padding:(UIEdgeInsets)padding variant:(int64_t)variant
 {
-  right = a5.right;
-  bottom = a5.bottom;
-  left = a5.left;
-  top = a5.top;
-  v13 = a3;
+  right = padding.right;
+  bottom = padding.bottom;
+  left = padding.left;
+  top = padding.top;
+  collectionCopy = collection;
   v32.receiver = self;
   v32.super_class = PXYearAssetsSectionHeaderLayoutSpec;
-  v14 = [(PXCuratedLibrarySectionHeaderLayoutSpec *)&v32 initWithExtendedTraitCollection:v13 options:a4 variant:a6];
+  v14 = [(PXCuratedLibrarySectionHeaderLayoutSpec *)&v32 initWithExtendedTraitCollection:collectionCopy options:options variant:variant];
   if (v14)
   {
     v15 = +[PXCuratedLibrarySettings sharedInstance];
-    [v13 curatedLibraryLayoutStyle];
-    [(PXCuratedLibrarySectionHeaderLayoutSpec *)v14 setEllipsisButtonSpecialTreatment:a6 != 0];
+    [collectionCopy curatedLibraryLayoutStyle];
+    [(PXCuratedLibrarySectionHeaderLayoutSpec *)v14 setEllipsisButtonSpecialTreatment:variant != 0];
     [(PXYearAssetsSectionHeaderLayoutSpec *)v14 setPadding:top, left, bottom, right];
     [v15 cornerRadiusForYears];
     *&v16 = v16;
@@ -42,26 +42,26 @@
     v19 = objc_alloc_init(off_1E7721910);
     [(PXCuratedLibrarySectionHeaderLayoutSpec *)v14 setTitleSubtitleLabelSpec:v19];
 
-    v20 = [(PXCuratedLibrarySectionHeaderLayoutSpec *)v14 titleSubtitleLabelSpec];
-    [v20 setTitleLabelSpec:v18];
+    titleSubtitleLabelSpec = [(PXCuratedLibrarySectionHeaderLayoutSpec *)v14 titleSubtitleLabelSpec];
+    [titleSubtitleLabelSpec setTitleLabelSpec:v18];
 
-    v21 = [(PXCuratedLibrarySectionHeaderLayoutSpec *)v14 titleSubtitleLabelSpec];
-    v22 = [v21 copy];
+    titleSubtitleLabelSpec2 = [(PXCuratedLibrarySectionHeaderLayoutSpec *)v14 titleSubtitleLabelSpec];
+    v22 = [titleSubtitleLabelSpec2 copy];
     [(PXCuratedLibrarySectionHeaderLayoutSpec *)v14 setDebugInterestingTitleSubtitleLabelSpec:v22];
 
-    v23 = [MEMORY[0x1E69DC888] greenColor];
-    v24 = [(PXCuratedLibrarySectionHeaderLayoutSpec *)v14 debugInterestingTitleSubtitleLabelSpec];
-    v25 = [v24 subtitleLabelSpec];
-    [v25 setTextColor:v23];
+    greenColor = [MEMORY[0x1E69DC888] greenColor];
+    debugInterestingTitleSubtitleLabelSpec = [(PXCuratedLibrarySectionHeaderLayoutSpec *)v14 debugInterestingTitleSubtitleLabelSpec];
+    subtitleLabelSpec = [debugInterestingTitleSubtitleLabelSpec subtitleLabelSpec];
+    [subtitleLabelSpec setTextColor:greenColor];
 
-    v26 = [(PXCuratedLibrarySectionHeaderLayoutSpec *)v14 titleSubtitleLabelSpec];
-    v27 = [v26 copy];
+    titleSubtitleLabelSpec3 = [(PXCuratedLibrarySectionHeaderLayoutSpec *)v14 titleSubtitleLabelSpec];
+    v27 = [titleSubtitleLabelSpec3 copy];
     [(PXCuratedLibrarySectionHeaderLayoutSpec *)v14 setDebugNonInterestingTitleSubtitleLabelSpec:v27];
 
-    v28 = [MEMORY[0x1E69DC888] redColor];
-    v29 = [(PXCuratedLibrarySectionHeaderLayoutSpec *)v14 debugNonInterestingTitleSubtitleLabelSpec];
-    v30 = [v29 subtitleLabelSpec];
-    [v30 setTextColor:v28];
+    redColor = [MEMORY[0x1E69DC888] redColor];
+    debugNonInterestingTitleSubtitleLabelSpec = [(PXCuratedLibrarySectionHeaderLayoutSpec *)v14 debugNonInterestingTitleSubtitleLabelSpec];
+    subtitleLabelSpec2 = [debugNonInterestingTitleSubtitleLabelSpec subtitleLabelSpec];
+    [subtitleLabelSpec2 setTextColor:redColor];
 
     [(PXCuratedLibrarySectionHeaderLayoutSpec *)v14 setWantsTitle:1];
     [(PXCuratedLibrarySectionHeaderLayoutSpec *)v14 setWantsSubtitle:0];

@@ -24,8 +24,8 @@
   v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v5, "placeCountTotal")}];
   [v6 setPlaceCountTotal:{objc_msgSend(v12, "unsignedIntValue")}];
 
-  v13 = [v5 awdPlaces];
-  [v6 setPlaces:v13];
+  awdPlaces = [v5 awdPlaces];
+  [v6 setPlaces:awdPlaces];
 
   v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v5, "visitCountDevice")}];
   [v6 setVisitCountDevice:{objc_msgSend(v14, "unsignedIntValue")}];
@@ -33,11 +33,11 @@
   v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v5, "visitCountTotal")}];
   [v6 setVisitCountTotal:{objc_msgSend(v15, "unsignedIntValue")}];
 
-  v16 = [v5 awdVisits];
-  [v6 setVisits:v16];
+  awdVisits = [v5 awdVisits];
+  [v6 setVisits:awdVisits];
 
-  v17 = [v5 trainedVisits];
-  [v6 setTrainedVisits:v17];
+  trainedVisits = [v5 trainedVisits];
+  [v6 setTrainedVisits:trainedVisits];
 
   return v6;
 }

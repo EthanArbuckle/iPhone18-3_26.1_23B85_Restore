@@ -1,20 +1,20 @@
 @interface SBUpdateLayoutSwitcherEventResponse
 + (id)setNeedsLayout;
-- (SBUpdateLayoutSwitcherEventResponse)initWithOptions:(unint64_t)a3 updateMode:(int64_t)a4;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
+- (SBUpdateLayoutSwitcherEventResponse)initWithOptions:(unint64_t)options updateMode:(int64_t)mode;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
 @end
 
 @implementation SBUpdateLayoutSwitcherEventResponse
 
-- (SBUpdateLayoutSwitcherEventResponse)initWithOptions:(unint64_t)a3 updateMode:(int64_t)a4
+- (SBUpdateLayoutSwitcherEventResponse)initWithOptions:(unint64_t)options updateMode:(int64_t)mode
 {
   v7.receiver = self;
   v7.super_class = SBUpdateLayoutSwitcherEventResponse;
   result = [(SBChainableModifierEventResponse *)&v7 init];
   if (result)
   {
-    result->_options = a3;
-    result->_updateMode = a4;
+    result->_options = options;
+    result->_updateMode = mode;
   }
 
   return result;
@@ -22,16 +22,16 @@
 
 + (id)setNeedsLayout
 {
-  v2 = [[a1 alloc] initWithOptions:64 updateMode:0];
+  v2 = [[self alloc] initWithOptions:64 updateMode:0];
 
   return v2;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v9.receiver = self;
   v9.super_class = SBUpdateLayoutSwitcherEventResponse;
-  v4 = [(SBChainableModifierEventResponse *)&v9 descriptionBuilderWithMultilinePrefix:a3];
+  v4 = [(SBChainableModifierEventResponse *)&v9 descriptionBuilderWithMultilinePrefix:prefix];
   v5 = v4;
   options = self->_options;
   if ((options & 2) != 0)

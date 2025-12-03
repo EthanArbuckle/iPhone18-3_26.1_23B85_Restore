@@ -1,67 +1,67 @@
 @interface REElementRelevanceEngine
-- (BOOL)_elementIsFullyLoaded:(id)a3;
-- (BOOL)modelManager:(id)a3 loadDataStoreFromURL:(id)a4 error:(id *)a5;
-- (BOOL)modelManager:(id)a3 saveDataStoreToURL:(id)a4 error:(id *)a5;
-- (REElementRelevanceEngine)initWithRelevanceEngine:(id)a3;
+- (BOOL)_elementIsFullyLoaded:(id)loaded;
+- (BOOL)modelManager:(id)manager loadDataStoreFromURL:(id)l error:(id *)error;
+- (BOOL)modelManager:(id)manager saveDataStoreToURL:(id)l error:(id *)error;
+- (REElementRelevanceEngine)initWithRelevanceEngine:(id)engine;
 - (REElementRelevanceEngineDelegate)delegate;
-- (float)rankingScoreForElement:(id)a3 createdAt:(id)a4;
+- (float)rankingScoreForElement:(id)element createdAt:(id)at;
 - (id)_allCurrentElements;
-- (id)_generateFeatureMapForElement:(id)a3;
-- (id)_queue_featureMapForElement:(id)a3 trainingContext:(id)a4;
-- (id)_queue_featureMapForElementWithId:(id)a3 trainingContext:(id)a4;
-- (id)elementAtPath:(id)a3;
-- (id)elementEvaluatorForConditionEvaluator:(id)a3;
-- (id)elementRankerForComparator:(id)a3;
-- (id)elementRankerForSection:(id)a3;
-- (id)featureMapForElement:(id)a3 trainingContext:(id)a4;
-- (id)featureMapForPredictedElement:(id)a3 trainingContext:(id)a4;
-- (id)featureProviderForElement:(id)a3;
-- (id)pathForElement:(id)a3;
-- (id)predictionForElement:(id)a3;
-- (id)rankingStartDateForElement:(id)a3;
-- (id)rankingTierForElement:(id)a3;
-- (id)section:(id)a3 groupForIdentifier:(id)a4;
-- (id)sectionForElement:(id)a3;
-- (id)updatedRankingDateForElement:(id)a3;
-- (unint64_t)numberOfElementsInSection:(id)a3;
+- (id)_generateFeatureMapForElement:(id)element;
+- (id)_queue_featureMapForElement:(id)element trainingContext:(id)context;
+- (id)_queue_featureMapForElementWithId:(id)id trainingContext:(id)context;
+- (id)elementAtPath:(id)path;
+- (id)elementEvaluatorForConditionEvaluator:(id)evaluator;
+- (id)elementRankerForComparator:(id)comparator;
+- (id)elementRankerForSection:(id)section;
+- (id)featureMapForElement:(id)element trainingContext:(id)context;
+- (id)featureMapForPredictedElement:(id)element trainingContext:(id)context;
+- (id)featureProviderForElement:(id)element;
+- (id)pathForElement:(id)element;
+- (id)predictionForElement:(id)element;
+- (id)rankingStartDateForElement:(id)element;
+- (id)rankingTierForElement:(id)element;
+- (id)section:(id)section groupForIdentifier:(id)identifier;
+- (id)sectionForElement:(id)element;
+- (id)updatedRankingDateForElement:(id)element;
+- (unint64_t)numberOfElementsInSection:(id)section;
 - (void)_checkPreferences;
-- (void)_enumerateAndGenerateSectionComparators:(id)a3;
-- (void)_performUpdatesToDelegate:(id)a3;
-- (void)_queue_scheduleRelevanceUpdateForElement:(id)a3;
-- (void)_queue_unregisterProvidersForElement:(id)a3;
+- (void)_enumerateAndGenerateSectionComparators:(id)comparators;
+- (void)_performUpdatesToDelegate:(id)delegate;
+- (void)_queue_scheduleRelevanceUpdateForElement:(id)element;
+- (void)_queue_unregisterProvidersForElement:(id)element;
 - (void)_queue_updateElementRelevance;
 - (void)_updateStateBasedOnPredictor;
-- (void)addElement:(id)a3 section:(id)a4;
+- (void)addElement:(id)element section:(id)section;
 - (void)dealloc;
-- (void)modelManagerDidUpdateModel:(id)a3;
-- (void)predictor:(id)a3 didFinishActivity:(id)a4;
-- (void)predictorDidUpdate:(id)a3;
-- (void)relevanceEnvironment:(id)a3 didUpdateRelevanceProvider:(id)a4;
-- (void)reloadElement:(id)a3 withElement:(id)a4;
-- (void)removeElement:(id)a3;
-- (void)sectionDidUpdateContentOrder:(id)a3;
+- (void)modelManagerDidUpdateModel:(id)model;
+- (void)predictor:(id)predictor didFinishActivity:(id)activity;
+- (void)predictorDidUpdate:(id)update;
+- (void)relevanceEnvironment:(id)environment didUpdateRelevanceProvider:(id)provider;
+- (void)reloadElement:(id)element withElement:(id)withElement;
+- (void)removeElement:(id)element;
+- (void)sectionDidUpdateContentOrder:(id)order;
 @end
 
 @implementation REElementRelevanceEngine
 
-- (REElementRelevanceEngine)initWithRelevanceEngine:(id)a3
+- (REElementRelevanceEngine)initWithRelevanceEngine:(id)engine
 {
   v106 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  engineCopy = engine;
   v103.receiver = self;
   v103.super_class = REElementRelevanceEngine;
-  v5 = [(RERelevanceEngineSubsystem *)&v103 initWithRelevanceEngine:v4];
+  v5 = [(RERelevanceEngineSubsystem *)&v103 initWithRelevanceEngine:engineCopy];
   v6 = v5;
   if (v5)
   {
-    v7 = [(RERelevanceEngineSubsystem *)v5 queue];
+    queue = [(RERelevanceEngineSubsystem *)v5 queue];
     queue = v6->_queue;
-    v6->_queue = v7;
+    v6->_queue = queue;
 
-    v9 = [v4 configuration];
-    v10 = [v9 wantsImmutableContent];
+    configuration = [engineCopy configuration];
+    wantsImmutableContent = [configuration wantsImmutableContent];
 
-    if (v10)
+    if (wantsImmutableContent)
     {
       v11 = 0.0;
     }
@@ -79,7 +79,7 @@
     v100[3] = &unk_2785F9A90;
     objc_copyWeak(&v101, &location);
     v13 = [REUpNextScheduler schedulerWithTransaction:@"com.apple.relevanceengine.relevance-update" queue:v12 delay:v100 updateBlock:v11];
-    if (v10)
+    if (wantsImmutableContent)
     {
       v14 = 0.0;
     }
@@ -102,20 +102,20 @@
     predictorUpdatedScheduler = v6->_predictorUpdatedScheduler;
     v6->_predictorUpdatedScheduler = v17;
 
-    v19 = [v4 configuration];
-    v6->_ignoreDeviceLockState = [v19 ignoreDeviceLockState];
+    configuration2 = [engineCopy configuration];
+    v6->_ignoreDeviceLockState = [configuration2 ignoreDeviceLockState];
 
     v20 = [MEMORY[0x277CBEB58] set];
     elementsNeedingRelevanceUpdate = v6->_elementsNeedingRelevanceUpdate;
     v6->_elementsNeedingRelevanceUpdate = v20;
 
-    v22 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     sections = v6->_sections;
-    v6->_sections = v22;
+    v6->_sections = dictionary;
 
-    v24 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     predictedElements = v6->_predictedElements;
-    v6->_predictedElements = v24;
+    v6->_predictedElements = dictionary2;
 
     v26 = [MEMORY[0x277CCAB00] mapTableWithKeyOptions:512 valueOptions:0];
     relevanceProviderElementMap = v6->_relevanceProviderElementMap;
@@ -129,7 +129,7 @@
     identifierToCachedFeatureMapMap = v6->_identifierToCachedFeatureMapMap;
     v6->_identifierToCachedFeatureMapMap = v30;
 
-    v32 = [[RERelevanceProviderEnvironment alloc] initWithRelevanceEngine:v4];
+    v32 = [[RERelevanceProviderEnvironment alloc] initWithRelevanceEngine:engineCopy];
     providerEnvironment = v6->_providerEnvironment;
     v6->_providerEnvironment = v32;
 
@@ -141,17 +141,17 @@
     v34 = v6;
     v97 = v34;
     [(REElementRelevanceEngine *)v34 _enumerateAndGenerateSectionComparators:v96];
-    v35 = [v4 configuration];
-    v36 = [v35 predictorManager];
+    configuration3 = [engineCopy configuration];
+    predictorManager = [configuration3 predictorManager];
     predictorManager = v34->_predictorManager;
     v75 = v34;
-    v34->_predictorManager = v36;
+    v34->_predictorManager = predictorManager;
 
     v38 = v34->_predictorManager;
     if (!v38)
     {
-      v39 = [v4 rootFeatures];
-      v40 = [REPredictor systemPredictorsSupportingFeatureSet:v39 relevanceEngine:v4];
+      rootFeatures = [engineCopy rootFeatures];
+      v40 = [REPredictor systemPredictorsSupportingFeatureSet:rootFeatures relevanceEngine:engineCopy];
       v41 = v34->_predictorManager;
       v34->_predictorManager = v40;
 
@@ -165,9 +165,9 @@
     v42 = v34;
     v95 = v42;
     [(REPredictorManager *)v38 enumeratePredictors:v94];
-    v43 = [v4 featureTransmuter];
+    featureTransmuter = [engineCopy featureTransmuter];
     featureTransmuter = v42->_featureTransmuter;
-    v42->_featureTransmuter = v43;
+    v42->_featureTransmuter = featureTransmuter;
 
     if (!v42->_featureTransmuter)
     {
@@ -193,13 +193,13 @@
     v87 = &v88;
     v54 = MEMORY[0x22AABC5E0](v84);
     objc_storeWeak(v89 + 5, v54);
-    v55 = v4;
+    v55 = engineCopy;
     v82 = 0u;
     v83 = 0u;
     v80 = 0u;
     v81 = 0u;
-    v56 = [(REFeatureTransmuter *)v42->_featureTransmuter outputFeatures];
-    v57 = [v56 countByEnumeratingWithState:&v80 objects:v105 count:16];
+    outputFeatures = [(REFeatureTransmuter *)v42->_featureTransmuter outputFeatures];
+    v57 = [outputFeatures countByEnumeratingWithState:&v80 objects:v105 count:16];
     if (v57)
     {
       v58 = *v81;
@@ -209,19 +209,19 @@
         {
           if (*v81 != v58)
           {
-            objc_enumerationMutation(v56);
+            objc_enumerationMutation(outputFeatures);
           }
 
           v54[2](v54, *(*(&v80 + 1) + 8 * i));
         }
 
-        v57 = [v56 countByEnumeratingWithState:&v80 objects:v105 count:16];
+        v57 = [outputFeatures countByEnumeratingWithState:&v80 objects:v105 count:16];
       }
 
       while (v57);
     }
 
-    v4 = v55;
+    engineCopy = v55;
     v78 = 0u;
     v79 = 0u;
     v76 = 0u;
@@ -240,8 +240,8 @@
             objc_enumerationMutation(v60);
           }
 
-          v64 = [*(*(&v76 + 1) + 8 * j) transformer];
-          [v64 setInvalidationDelegate:v42];
+          transformer = [*(*(&v76 + 1) + 8 * j) transformer];
+          [transformer setInvalidationDelegate:v42];
         }
 
         v61 = [v60 countByEnumeratingWithState:&v76 objects:v104 count:16];
@@ -256,16 +256,16 @@
 
     v42->_deviceIsLocked = 0;
     [(REElementRelevanceEngine *)v42 _checkPreferences];
-    v67 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v67 addObserver:v42 selector:sel__checkPreferences name:@"RERelevanceEnginePreferencesDidUpdate" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v42 selector:sel__checkPreferences name:@"RERelevanceEnginePreferencesDidUpdate" object:0];
 
-    v68 = [(RERelevanceEngineSubsystem *)v42 relevanceEngine];
-    v69 = [v68 modelManager];
-    [v69 addObserver:v42];
+    relevanceEngine = [(RERelevanceEngineSubsystem *)v42 relevanceEngine];
+    modelManager = [relevanceEngine modelManager];
+    [modelManager addObserver:v42];
 
     [(REPredictorManager *)v75->_predictorManager addObserver:v42];
-    v70 = [v55 modelManager];
-    [v70 addDataStore:v42];
+    modelManager2 = [v55 modelManager];
+    [modelManager2 addDataStore:v42];
 
     _Block_object_dispose(&v88, 8);
     objc_destroyWeak(&v93);
@@ -416,48 +416,48 @@ void __52__REElementRelevanceEngine_initWithRelevanceEngine___block_invoke_17(ui
 {
   [(REElementRelevanceEngine *)self pause];
   [(REPredictorManager *)self->_predictorManager removeObserver:self];
-  v3 = [(RERelevanceEngineSubsystem *)self relevanceEngine];
-  v4 = [v3 modelManager];
-  [v4 removeObserver:self];
+  relevanceEngine = [(RERelevanceEngineSubsystem *)self relevanceEngine];
+  modelManager = [relevanceEngine modelManager];
+  [modelManager removeObserver:self];
 
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 removeObserver:self name:@"RERelevanceEnginePreferencesDidUpdate" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:@"RERelevanceEnginePreferencesDidUpdate" object:0];
 
-  v6 = [(RERelevanceEngineSubsystem *)self relevanceEngine];
-  v7 = [v6 modelManager];
-  [v7 addDataStore:self];
+  relevanceEngine2 = [(RERelevanceEngineSubsystem *)self relevanceEngine];
+  modelManager2 = [relevanceEngine2 modelManager];
+  [modelManager2 addDataStore:self];
 
   v8.receiver = self;
   v8.super_class = REElementRelevanceEngine;
   [(RERelevanceEngineSubsystem *)&v8 dealloc];
 }
 
-- (unint64_t)numberOfElementsInSection:(id)a3
+- (unint64_t)numberOfElementsInSection:(id)section
 {
-  v3 = [(NSMutableDictionary *)self->_sections objectForKeyedSubscript:a3];
-  v4 = [v3 visibleCount];
+  v3 = [(NSMutableDictionary *)self->_sections objectForKeyedSubscript:section];
+  visibleCount = [v3 visibleCount];
 
-  return v4;
+  return visibleCount;
 }
 
-- (id)elementAtPath:(id)a3
+- (id)elementAtPath:(id)path
 {
   sections = self->_sections;
-  v4 = a3;
-  v5 = [v4 sectionName];
-  v6 = [(NSMutableDictionary *)sections objectForKeyedSubscript:v5];
+  pathCopy = path;
+  sectionName = [pathCopy sectionName];
+  v6 = [(NSMutableDictionary *)sections objectForKeyedSubscript:sectionName];
 
-  v7 = [v4 element];
-  v8 = [v6 elementIdAtIndex:v7];
+  element = [pathCopy element];
+  v8 = [v6 elementIdAtIndex:element];
 
   return v8;
 }
 
-- (BOOL)modelManager:(id)a3 loadDataStoreFromURL:(id)a4 error:(id *)a5
+- (BOOL)modelManager:(id)manager loadDataStoreFromURL:(id)l error:(id *)error
 {
-  v20 = a5;
+  errorCopy = error;
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  lCopy = l;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
@@ -478,17 +478,17 @@ void __52__REElementRelevanceEngine_initWithRelevanceEngine___block_invoke_17(ui
         }
 
         v11 = *(*(&v22 + 1) + 8 * i);
-        v12 = [v11 name];
-        v13 = [v6 URLByAppendingPathComponent:v12];
+        name = [v11 name];
+        v13 = [lCopy URLByAppendingPathComponent:name];
 
-        v14 = [MEMORY[0x277CCAA00] defaultManager];
-        v15 = [v13 path];
-        v16 = [v14 fileExistsAtPath:v15];
+        defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+        path = [v13 path];
+        v16 = [defaultManager fileExistsAtPath:path];
 
         if (v16)
         {
-          v17 = [v11 transformer];
-          [v17 readFromURL:v13 error:v20];
+          transformer = [v11 transformer];
+          [transformer readFromURL:v13 error:errorCopy];
         }
       }
 
@@ -502,10 +502,10 @@ void __52__REElementRelevanceEngine_initWithRelevanceEngine___block_invoke_17(ui
   return 1;
 }
 
-- (BOOL)modelManager:(id)a3 saveDataStoreToURL:(id)a4 error:(id *)a5
+- (BOOL)modelManager:(id)manager saveDataStoreToURL:(id)l error:(id *)error
 {
   v26 = *MEMORY[0x277D85DE8];
-  v7 = a4;
+  lCopy = l;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
@@ -526,15 +526,15 @@ void __52__REElementRelevanceEngine_initWithRelevanceEngine___block_invoke_17(ui
         }
 
         v12 = *(*(&v21 + 1) + 8 * i);
-        v13 = [v12 name];
-        v14 = [v7 URLByAppendingPathComponent:v13];
+        name = [v12 name];
+        v14 = [lCopy URLByAppendingPathComponent:name];
 
-        v15 = [MEMORY[0x277CCAA00] defaultManager];
-        v16 = [v14 path];
-        [v15 createDirectoryAtPath:v16 withIntermediateDirectories:1 attributes:0 error:a5];
+        defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+        path = [v14 path];
+        [defaultManager createDirectoryAtPath:path withIntermediateDirectories:1 attributes:0 error:error];
 
-        v17 = [v12 transformer];
-        [v17 writeToURL:v14 error:a5];
+        transformer = [v12 transformer];
+        [transformer writeToURL:v14 error:error];
       }
 
       v9 = [(REFeatureSet *)obj countByEnumeratingWithState:&v21 objects:v25 count:16];
@@ -547,22 +547,22 @@ void __52__REElementRelevanceEngine_initWithRelevanceEngine___block_invoke_17(ui
   return 1;
 }
 
-- (void)_enumerateAndGenerateSectionComparators:(id)a3
+- (void)_enumerateAndGenerateSectionComparators:(id)comparators
 {
-  v4 = a3;
-  v5 = [(RERelevanceEngineSubsystem *)self relevanceEngine];
-  v6 = [v5 modelManager];
+  comparatorsCopy = comparators;
+  relevanceEngine = [(RERelevanceEngineSubsystem *)self relevanceEngine];
+  modelManager = [relevanceEngine modelManager];
 
-  if (v6)
+  if (modelManager)
   {
-    v7 = [(RERelevanceEngineSubsystem *)self relevanceEngine];
+    relevanceEngine2 = [(RERelevanceEngineSubsystem *)self relevanceEngine];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __68__REElementRelevanceEngine__enumerateAndGenerateSectionComparators___block_invoke;
     v8[3] = &unk_2785FB598;
-    v9 = v6;
-    v10 = v4;
-    [v7 enumerateSectionDescriptorsWithOptions:0 includeHistoric:1 usingBlock:v8];
+    v9 = modelManager;
+    v10 = comparatorsCopy;
+    [relevanceEngine2 enumerateSectionDescriptorsWithOptions:0 includeHistoric:1 usingBlock:v8];
   }
 }
 
@@ -576,7 +576,7 @@ void __68__REElementRelevanceEngine__enumerateAndGenerateSectionComparators___bl
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)modelManagerDidUpdateModel:(id)a3
+- (void)modelManagerDidUpdateModel:(id)model
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
@@ -607,32 +607,32 @@ void __55__REElementRelevanceEngine_modelManagerDidUpdateModel___block_invoke_2(
   [v7 setComparator:v5];
 }
 
-- (void)addElement:(id)a3 section:(id)a4
+- (void)addElement:(id)element section:(id)section
 {
   v46 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v23 = a4;
+  elementCopy = element;
+  sectionCopy = section;
   dispatch_assert_queue_V2(self->_queue);
-  v25 = v6;
-  v31 = [REPredictionElement predictionElementFromElement:v6];
-  [v31 setSection:v23];
+  v25 = elementCopy;
+  v31 = [REPredictionElement predictionElementFromElement:elementCopy];
+  [v31 setSection:sectionCopy];
   predictedElements = self->_predictedElements;
-  v8 = [v25 identifier];
-  [(NSMutableDictionary *)predictedElements setObject:v31 forKeyedSubscript:v8];
+  identifier = [v25 identifier];
+  [(NSMutableDictionary *)predictedElements setObject:v31 forKeyedSubscript:identifier];
 
-  v27 = [v25 identifier];
+  identifier2 = [v25 identifier];
   v26 = ElementIdentifierByRemovingNamespacedIdentifier(v31);
-  if (([(NSMutableSet *)self->_reloadingElementIdentifiers containsObject:v27]& 1) == 0 && v26)
+  if (([(NSMutableSet *)self->_reloadingElementIdentifiers containsObject:identifier2]& 1) == 0 && v26)
   {
     v9 = RELogForDomain(3);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
       *buf = 138543362;
-      v42 = v27;
+      v42 = identifier2;
       _os_log_impl(&dword_22859F000, v9, OS_LOG_TYPE_INFO, "addElement creating feature map for element %{public}@", buf, 0xCu);
     }
 
-    v10 = [(REElementRelevanceEngine *)self _queue_featureMapForElementWithId:v27 trainingContext:0];
+    v10 = [(REElementRelevanceEngine *)self _queue_featureMapForElementWithId:identifier2 trainingContext:0];
     [(NSMutableDictionary *)self->_identifierToCachedFeatureMapMap setObject:v10 forKeyedSubscript:v26];
   }
 
@@ -644,13 +644,13 @@ void __55__REElementRelevanceEngine_modelManagerDidUpdateModel___block_invoke_2(
   v11 = [obj countByEnumeratingWithState:&v35 objects:v45 count:16];
   if (v11)
   {
-    v12 = 0;
+    identifier3 = 0;
     v30 = *v36;
     v28 = *MEMORY[0x277CBE660];
     do
     {
       v13 = 0;
-      v14 = v12;
+      v14 = identifier3;
       do
       {
         if (*v36 != v30)
@@ -679,7 +679,7 @@ void __55__REElementRelevanceEngine_modelManagerDidUpdateModel___block_invoke_2(
             if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
             {
               *buf = 138412546;
-              v42 = v27;
+              v42 = identifier2;
               v43 = 2112;
               v44 = v26;
               _os_log_error_impl(&dword_22859F000, v19, OS_LOG_TYPE_ERROR, "Encountered rdar://150813772 - Item already in disjoint set. Element: %@, predictedElement: %@", buf, 0x16u);
@@ -706,12 +706,12 @@ void __55__REElementRelevanceEngine_modelManagerDidUpdateModel___block_invoke_2(
           [(RERelevanceProviderEnvironment *)self->_providerEnvironment relateRelevanceProvider:v14 toRelevanceProvider:v15];
         }
 
-        v12 = v15;
+        identifier3 = v15;
 
         objc_destroyWeak(&v33);
         objc_destroyWeak(&location);
         ++v13;
-        v14 = v12;
+        v14 = identifier3;
       }
 
       while (v11 != v13);
@@ -724,8 +724,8 @@ void __55__REElementRelevanceEngine_modelManagerDidUpdateModel___block_invoke_2(
   else
   {
 
-    v12 = [v25 identifier];
-    [(REElementRelevanceEngine *)self _queue_scheduleRelevanceUpdateForElement:v12];
+    identifier3 = [v25 identifier];
+    [(REElementRelevanceEngine *)self _queue_scheduleRelevanceUpdateForElement:identifier3];
   }
 
   v22 = *MEMORY[0x277D85DE8];
@@ -742,35 +742,35 @@ void __47__REElementRelevanceEngine_addElement_section___block_invoke(uint64_t a
   }
 }
 
-- (void)reloadElement:(id)a3 withElement:(id)a4
+- (void)reloadElement:(id)element withElement:(id)withElement
 {
   queue = self->_queue;
-  v7 = a4;
-  v8 = a3;
+  withElementCopy = withElement;
+  elementCopy = element;
   dispatch_assert_queue_V2(queue);
   reloadingElementIdentifiers = self->_reloadingElementIdentifiers;
-  v10 = [v8 identifier];
-  [(NSMutableSet *)reloadingElementIdentifiers addObject:v10];
+  identifier = [elementCopy identifier];
+  [(NSMutableSet *)reloadingElementIdentifiers addObject:identifier];
 
-  v11 = [v8 identifier];
-  v13 = [(REElementRelevanceEngine *)self sectionForElement:v11];
+  identifier2 = [elementCopy identifier];
+  v13 = [(REElementRelevanceEngine *)self sectionForElement:identifier2];
 
-  v12 = [v8 identifier];
+  identifier3 = [elementCopy identifier];
 
-  [(REElementRelevanceEngine *)self _queue_unregisterProvidersForElement:v12];
-  [(REElementRelevanceEngine *)self addElement:v7 section:v13];
+  [(REElementRelevanceEngine *)self _queue_unregisterProvidersForElement:identifier3];
+  [(REElementRelevanceEngine *)self addElement:withElementCopy section:v13];
 }
 
-- (void)_queue_unregisterProvidersForElement:(id)a3
+- (void)_queue_unregisterProvidersForElement:(id)element
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = [(NSMutableDictionary *)self->_predictedElements objectForKeyedSubscript:a3];
+  v4 = [(NSMutableDictionary *)self->_predictedElements objectForKeyedSubscript:element];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [v4 relevanceProviders];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  relevanceProviders = [v4 relevanceProviders];
+  v6 = [relevanceProviders countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -781,7 +781,7 @@ void __47__REElementRelevanceEngine_addElement_section___block_invoke(uint64_t a
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(relevanceProviders);
         }
 
         v10 = *(*(&v12 + 1) + 8 * i);
@@ -789,7 +789,7 @@ void __47__REElementRelevanceEngine_addElement_section___block_invoke(uint64_t a
         [(NSMapTable *)self->_relevanceProviderElementMap removeObjectForKey:v10];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [relevanceProviders countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
@@ -798,26 +798,26 @@ void __47__REElementRelevanceEngine_addElement_section___block_invoke(uint64_t a
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeElement:(id)a3
+- (void)removeElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   dispatch_assert_queue_V2(self->_queue);
-  v5 = [(NSMutableDictionary *)self->_predictedElements objectForKeyedSubscript:v4];
-  [(REElementRelevanceEngine *)self _queue_unregisterProvidersForElement:v4];
-  v6 = [v5 section];
-  v7 = [(NSMutableDictionary *)self->_sections objectForKeyedSubscript:v6];
+  v5 = [(NSMutableDictionary *)self->_predictedElements objectForKeyedSubscript:elementCopy];
+  [(REElementRelevanceEngine *)self _queue_unregisterProvidersForElement:elementCopy];
+  section = [v5 section];
+  v7 = [(NSMutableDictionary *)self->_sections objectForKeyedSubscript:section];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __42__REElementRelevanceEngine_removeElement___block_invoke;
   v12[3] = &unk_2785FC840;
   v13 = v7;
-  v14 = v4;
-  v15 = v6;
+  v14 = elementCopy;
+  v15 = section;
   v16 = v5;
-  v17 = self;
+  selfCopy = self;
   v8 = v5;
-  v9 = v6;
-  v10 = v4;
+  v9 = section;
+  v10 = elementCopy;
   v11 = v7;
   [(REElementRelevanceEngine *)self _performUpdatesToDelegate:v12];
 }
@@ -850,15 +850,15 @@ void __42__REElementRelevanceEngine_removeElement___block_invoke(uint64_t a1)
   [*(*(a1 + 64) + 40) removeObject:*(a1 + 40)];
 }
 
-- (id)pathForElement:(id)a3
+- (id)pathForElement:(id)element
 {
   queue = self->_queue;
-  v5 = a3;
+  elementCopy = element;
   dispatch_assert_queue_V2(queue);
-  v6 = [(NSMutableDictionary *)self->_predictedElements objectForKeyedSubscript:v5];
-  v7 = [v6 section];
-  v8 = [(NSMutableDictionary *)self->_sections objectForKeyedSubscript:v7];
-  v9 = [v8 indexOfElementWithId:v5];
+  v6 = [(NSMutableDictionary *)self->_predictedElements objectForKeyedSubscript:elementCopy];
+  section = [v6 section];
+  v8 = [(NSMutableDictionary *)self->_sections objectForKeyedSubscript:section];
+  v9 = [v8 indexOfElementWithId:elementCopy];
 
   if (v9 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -867,30 +867,30 @@ void __42__REElementRelevanceEngine_removeElement___block_invoke(uint64_t a1)
 
   else
   {
-    v10 = [RESectionPath sectionPathWithSectionName:v7 element:v9];
+    v10 = [RESectionPath sectionPathWithSectionName:section element:v9];
   }
 
   return v10;
 }
 
-- (id)sectionForElement:(id)a3
+- (id)sectionForElement:(id)element
 {
   queue = self->_queue;
-  v5 = a3;
+  elementCopy = element;
   dispatch_assert_queue_V2(queue);
-  v6 = [(NSMutableDictionary *)self->_predictedElements objectForKeyedSubscript:v5];
+  v6 = [(NSMutableDictionary *)self->_predictedElements objectForKeyedSubscript:elementCopy];
 
-  v7 = [v6 section];
+  section = [v6 section];
 
-  return v7;
+  return section;
 }
 
 - (void)_checkPreferences
 {
-  v3 = [(RERelevanceEngineSubsystem *)self relevanceEngine];
-  v4 = [v3 effectivePreferences];
+  relevanceEngine = [(RERelevanceEngineSubsystem *)self relevanceEngine];
+  effectivePreferences = [relevanceEngine effectivePreferences];
 
-  -[RERelevanceProviderEnvironment setAllowsLocationUse:](self->_providerEnvironment, "setAllowsLocationUse:", [v4 mode] & 1);
+  -[RERelevanceProviderEnvironment setAllowsLocationUse:](self->_providerEnvironment, "setAllowsLocationUse:", [effectivePreferences mode] & 1);
 }
 
 - (void)_updateStateBasedOnPredictor
@@ -947,32 +947,32 @@ void __56__REElementRelevanceEngine__updateStateBasedOnPredictor__block_invoke(u
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)predictor:(id)a3 didFinishActivity:(id)a4
+- (void)predictor:(id)predictor didFinishActivity:(id)activity
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RERelevanceEngineSubsystem *)self queue];
+  predictorCopy = predictor;
+  activityCopy = activity;
+  queue = [(RERelevanceEngineSubsystem *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __56__REElementRelevanceEngine_predictor_didFinishActivity___block_invoke;
   block[3] = &unk_2785FB070;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
-  dispatch_async(v8, block);
+  v12 = activityCopy;
+  v13 = predictorCopy;
+  v9 = predictorCopy;
+  v10 = activityCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)predictorDidUpdate:(id)a3
+- (void)predictorDidUpdate:(id)update
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  updateCopy = update;
   v5 = RELogForDomain(8);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v4;
+    v8 = updateCopy;
     _os_log_impl(&dword_22859F000, v5, OS_LOG_TYPE_DEFAULT, "Predictor did update: %@", &v7, 0xCu);
   }
 
@@ -980,31 +980,31 @@ void __56__REElementRelevanceEngine__updateStateBasedOnPredictor__block_invoke(u
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)relevanceEnvironment:(id)a3 didUpdateRelevanceProvider:(id)a4
+- (void)relevanceEnvironment:(id)environment didUpdateRelevanceProvider:(id)provider
 {
   queue = self->_queue;
-  v6 = a4;
+  providerCopy = provider;
   dispatch_assert_queue_V2(queue);
-  v8 = [(NSMapTable *)self->_relevanceProviderElementMap objectForKey:v6];
+  v8 = [(NSMapTable *)self->_relevanceProviderElementMap objectForKey:providerCopy];
 
-  v7 = [v8 identifier];
-  if (v7 && [(REElementRelevanceEngine *)self _elementIsFullyLoaded:v8])
+  identifier = [v8 identifier];
+  if (identifier && [(REElementRelevanceEngine *)self _elementIsFullyLoaded:v8])
   {
-    [(REElementRelevanceEngine *)self _queue_scheduleRelevanceUpdateForElement:v7];
+    [(REElementRelevanceEngine *)self _queue_scheduleRelevanceUpdateForElement:identifier];
   }
 }
 
-- (BOOL)_elementIsFullyLoaded:(id)a3
+- (BOOL)_elementIsFullyLoaded:(id)loaded
 {
   v17 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (loaded)
   {
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v4 = [a3 relevanceProviders];
-    v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    relevanceProviders = [loaded relevanceProviders];
+    v5 = [relevanceProviders countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v5)
     {
       v6 = v5;
@@ -1015,7 +1015,7 @@ void __56__REElementRelevanceEngine__updateStateBasedOnPredictor__block_invoke(u
         {
           if (*v13 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(relevanceProviders);
           }
 
           if (![(RERelevanceProviderEnvironment *)self->_providerEnvironment isRelevanceProviderLoaded:*(*(&v12 + 1) + 8 * i)])
@@ -1025,7 +1025,7 @@ void __56__REElementRelevanceEngine__updateStateBasedOnPredictor__block_invoke(u
           }
         }
 
-        v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v6 = [relevanceProviders countByEnumeratingWithState:&v12 objects:v16 count:16];
         if (v6)
         {
           continue;
@@ -1048,12 +1048,12 @@ LABEL_12:
   return v9;
 }
 
-- (void)_queue_scheduleRelevanceUpdateForElement:(id)a3
+- (void)_queue_scheduleRelevanceUpdateForElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   if (([(NSMutableSet *)self->_elementsNeedingRelevanceUpdate containsObject:?]& 1) == 0)
   {
-    [(NSMutableSet *)self->_elementsNeedingRelevanceUpdate addObject:v4];
+    [(NSMutableSet *)self->_elementsNeedingRelevanceUpdate addObject:elementCopy];
     [(RERelevanceEngineSubsystem *)self beginActivity:@"RERelevanceEngineSubsystemLoadingActivity" forObject:self];
     [(REUpNextScheduler *)self->_scheduler schedule];
   }
@@ -1077,8 +1077,8 @@ LABEL_12:
   }
 
   v70 = [MEMORY[0x277CBEB58] set];
-  v69 = [MEMORY[0x277CBEB38] dictionary];
-  v68 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  dictionary2 = [MEMORY[0x277CBEB38] dictionary];
   v106 = 0u;
   v107 = 0u;
   v104 = 0u;
@@ -1100,13 +1100,13 @@ LABEL_12:
         v76 = *(*(&v104 + 1) + 8 * i);
         v77 = [(NSMutableDictionary *)self->_predictedElements objectForKeyedSubscript:?];
         deviceIsLocked = self->_deviceIsLocked;
-        v6 = [v77 privacyBehavior];
-        v7 = [v77 privacyBehavior];
+        privacyBehavior = [v77 privacyBehavior];
+        privacyBehavior2 = [v77 privacyBehavior];
         v8 = [v77 privacyBehavior] != 0;
-        v9 = v7 == 1;
+        v9 = privacyBehavior2 == 1;
         if (!deviceIsLocked)
         {
-          v9 = v6 == 2;
+          v9 = privacyBehavior == 2;
         }
 
         v74 = v9;
@@ -1122,22 +1122,22 @@ LABEL_12:
             v13 = RELogForDomain(3);
             if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
             {
-              v14 = [v77 relevanceProviders];
+              relevanceProviders = [v77 relevanceProviders];
               *buf = 138543618;
               v114 = v76;
               v115 = 2114;
-              v116 = v14;
+              v116 = relevanceProviders;
               _os_log_impl(&dword_22859F000, v13, OS_LOG_TYPE_DEFAULT, "updateElementRelevance: finished reloading %{public}@ %{public}@", buf, 0x16u);
             }
           }
 
-          v15 = [MEMORY[0x277CBEB18] array];
+          array = [MEMORY[0x277CBEB18] array];
           v102 = 0u;
           v103 = 0u;
           v100 = 0u;
           v101 = 0u;
-          v16 = [v77 relevanceProviders];
-          v17 = [v16 countByEnumeratingWithState:&v100 objects:v112 count:16];
+          relevanceProviders2 = [v77 relevanceProviders];
+          v17 = [relevanceProviders2 countByEnumeratingWithState:&v100 objects:v112 count:16];
           if (v17)
           {
             v18 = *v101;
@@ -1147,31 +1147,31 @@ LABEL_12:
               {
                 if (*v101 != v18)
                 {
-                  objc_enumerationMutation(v16);
+                  objc_enumerationMutation(relevanceProviders2);
                 }
 
                 v20 = *(*(&v100 + 1) + 8 * j);
                 if ([(RERelevanceProviderEnvironment *)self->_providerEnvironment isRelevanceProviderHistoric:v20])
                 {
-                  [v15 addObject:v20];
+                  [array addObject:v20];
                 }
               }
 
-              v17 = [v16 countByEnumeratingWithState:&v100 objects:v112 count:16];
+              v17 = [relevanceProviders2 countByEnumeratingWithState:&v100 objects:v112 count:16];
             }
 
             while (v17);
           }
 
-          if ([v15 count])
+          if ([array count])
           {
             v21 = [MEMORY[0x277CCA940] set];
             v98 = 0u;
             v99 = 0u;
             v96 = 0u;
             v97 = 0u;
-            v22 = [v77 relevanceProviders];
-            v23 = [v22 countByEnumeratingWithState:&v96 objects:v111 count:16];
+            relevanceProviders3 = [v77 relevanceProviders];
+            v23 = [relevanceProviders3 countByEnumeratingWithState:&v96 objects:v111 count:16];
             if (v23)
             {
               v24 = *v97;
@@ -1181,14 +1181,14 @@ LABEL_12:
                 {
                   if (*v97 != v24)
                   {
-                    objc_enumerationMutation(v22);
+                    objc_enumerationMutation(relevanceProviders3);
                   }
 
                   v26 = *(*(&v96 + 1) + 8 * k);
                   [v21 addObject:objc_opt_class()];
                 }
 
-                v23 = [v22 countByEnumeratingWithState:&v96 objects:v111 count:16];
+                v23 = [relevanceProviders3 countByEnumeratingWithState:&v96 objects:v111 count:16];
               }
 
               while (v23);
@@ -1199,7 +1199,7 @@ LABEL_12:
             v95 = 0u;
             v92 = 0u;
             v93 = 0u;
-            v28 = v15;
+            v28 = array;
             v29 = [v28 countByEnumeratingWithState:&v92 objects:v110 count:16];
             if (v29)
             {
@@ -1259,33 +1259,33 @@ LABEL_12:
             v34 = 0;
           }
 
-          v44 = [v77 section];
-          v45 = [(NSMutableDictionary *)self->_sections objectForKeyedSubscript:v44];
-          v46 = [(RERelevanceEngineSubsystem *)self relevanceEngine];
-          v47 = [v45 name];
-          v48 = [v46 isSectionWithNameHistoric:v47];
+          section = [v77 section];
+          v45 = [(NSMutableDictionary *)self->_sections objectForKeyedSubscript:section];
+          relevanceEngine = [(RERelevanceEngineSubsystem *)self relevanceEngine];
+          name = [v45 name];
+          v48 = [relevanceEngine isSectionWithNameHistoric:name];
 
           if (v34 & 1 | ((v48 & 1) == 0))
           {
             if (!(v48 & 1 | ((v34 & 1) == 0)))
             {
-              v49 = [(RERelevanceEngineSubsystem *)self relevanceEngine];
-              v50 = [v49 historicSectionForSection:v44];
+              relevanceEngine2 = [(RERelevanceEngineSubsystem *)self relevanceEngine];
+              v50 = [relevanceEngine2 historicSectionForSection:section];
               goto LABEL_60;
             }
 
             goto LABEL_61;
           }
 
-          v49 = [(RERelevanceEngineSubsystem *)self relevanceEngine];
-          v50 = [v49 sectionForHistoricSection:v44];
+          relevanceEngine2 = [(RERelevanceEngineSubsystem *)self relevanceEngine];
+          v50 = [relevanceEngine2 sectionForHistoricSection:section];
 LABEL_60:
           v51 = v50;
 
           if (!v51)
           {
 LABEL_61:
-            v51 = v44;
+            v51 = section;
           }
 
           v52 = [(NSMutableDictionary *)self->_sections objectForKeyedSubscript:v51];
@@ -1293,9 +1293,9 @@ LABEL_61:
 
           if (v53)
           {
-            v54 = [v45 name];
+            name2 = [v45 name];
 
-            v51 = v54;
+            v51 = name2;
           }
 
           [v77 setSection:v51];
@@ -1303,17 +1303,17 @@ LABEL_61:
           v56 = [(REElementRelevanceEngine *)self _queue_featureMapForElementWithId:v76 trainingContext:0];
           [(NSMutableDictionary *)self->_identifierToCachedFeatureMapMap setObject:v56 forKeyedSubscript:v55];
           [v70 addObject:v76];
-          [v69 setObject:v51 forKeyedSubscript:v76];
+          [dictionary setObject:v51 forKeyedSubscript:v76];
           v57 = [MEMORY[0x277CCABB0] numberWithBool:v71 & v74];
-          [v68 setObject:v57 forKeyedSubscript:v76];
+          [dictionary2 setObject:v57 forKeyedSubscript:v76];
 
           goto LABEL_65;
         }
 
         if (v11)
         {
-          v15 = ElementIdentifierByRemovingNamespacedIdentifier(v77);
-          v40 = [(NSMutableDictionary *)self->_identifierToCachedFeatureMapMap objectForKey:v15];
+          array = ElementIdentifierByRemovingNamespacedIdentifier(v77);
+          v40 = [(NSMutableDictionary *)self->_identifierToCachedFeatureMapMap objectForKey:array];
           if (!v40)
           {
             v41 = RELogForDomain(3);
@@ -1326,21 +1326,21 @@ LABEL_61:
           }
 
           [v70 addObject:v76];
-          v42 = [v77 section];
-          [v69 setObject:v42 forKeyedSubscript:v76];
+          section2 = [v77 section];
+          [dictionary setObject:section2 forKeyedSubscript:v76];
 
           v43 = [MEMORY[0x277CCABB0] numberWithBool:v12 & v74];
-          [v68 setObject:v43 forKeyedSubscript:v76];
+          [dictionary2 setObject:v43 forKeyedSubscript:v76];
         }
 
         else
         {
-          v15 = RELogForDomain(3);
-          if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+          array = RELogForDomain(3);
+          if (os_log_type_enabled(array, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138543362;
             v114 = v76;
-            _os_log_impl(&dword_22859F000, v15, OS_LOG_TYPE_DEFAULT, "updateElementRelevance: not loaded %{public}@", buf, 0xCu);
+            _os_log_impl(&dword_22859F000, array, OS_LOG_TYPE_DEFAULT, "updateElementRelevance: not loaded %{public}@", buf, 0xCu);
           }
         }
 
@@ -1360,9 +1360,9 @@ LABEL_65:
   v83[3] = &unk_2785FC890;
   v83[4] = self;
   objc_copyWeak(&v87, buf);
-  v78 = v69;
+  v78 = dictionary;
   v84 = v78;
-  v58 = v68;
+  v58 = dictionary2;
   v85 = v58;
   v59 = v70;
   v86 = v59;
@@ -1386,8 +1386,8 @@ LABEL_65:
         }
 
         v64 = *(*(&v79 + 1) + 8 * ii);
-        v65 = [(REElementRelevanceEngine *)self delegate];
-        [v65 relevanceEngine:self didUpdateRelevanceOfElement:v64];
+        delegate = [(REElementRelevanceEngine *)self delegate];
+        [delegate relevanceEngine:self didUpdateRelevanceOfElement:v64];
 
         [(RERelevanceEngineSubsystem *)self endActivity:@"RERelevanceEngineSubsystemLoadingActivity" forObject:self];
       }
@@ -1552,26 +1552,26 @@ void __57__REElementRelevanceEngine__queue_updateElementRelevance__block_invoke_
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_performUpdatesToDelegate:(id)a3
+- (void)_performUpdatesToDelegate:(id)delegate
 {
-  if (a3)
+  if (delegate)
   {
-    v4 = a3;
-    v5 = [(REElementRelevanceEngine *)self _allCurrentElements];
-    v4[2](v4);
+    delegateCopy = delegate;
+    _allCurrentElements = [(REElementRelevanceEngine *)self _allCurrentElements];
+    delegateCopy[2](delegateCopy);
 
-    v6 = [(REElementRelevanceEngine *)self _allCurrentElements];
-    v7 = [(REElementRelevanceEngine *)self delegate];
+    _allCurrentElements2 = [(REElementRelevanceEngine *)self _allCurrentElements];
+    delegate = [(REElementRelevanceEngine *)self delegate];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __54__REElementRelevanceEngine__performUpdatesToDelegate___block_invoke;
     v10[3] = &unk_2785FB070;
     v10[4] = self;
-    v11 = v5;
-    v12 = v6;
-    v8 = v6;
-    v9 = v5;
-    [v7 relevanceEngine:self performedBatchUpdates:v10];
+    v11 = _allCurrentElements;
+    v12 = _allCurrentElements2;
+    v8 = _allCurrentElements2;
+    v9 = _allCurrentElements;
+    [delegate relevanceEngine:self performedBatchUpdates:v10];
   }
 }
 
@@ -1686,21 +1686,21 @@ void __47__REElementRelevanceEngine__allCurrentElements__block_invoke(uint64_t a
   [*(a1 + 32) setObject:v9 forKeyedSubscript:v10];
 }
 
-- (void)sectionDidUpdateContentOrder:(id)a3
+- (void)sectionDidUpdateContentOrder:(id)order
 {
-  v3 = a3;
+  orderCopy = order;
   v4 = RELogForDomain(6);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
-    [REElementRelevanceEngine sectionDidUpdateContentOrder:v3];
+    [REElementRelevanceEngine sectionDidUpdateContentOrder:orderCopy];
   }
 }
 
-- (id)section:(id)a3 groupForIdentifier:(id)a4
+- (id)section:(id)section groupForIdentifier:(id)identifier
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  sectionCopy = section;
+  identifierCopy = identifier;
   if (_fetchedInternalBuildOnceToken_3 != -1)
   {
     [REElementRelevanceEngine section:groupForIdentifier:];
@@ -1727,15 +1727,15 @@ void __47__REElementRelevanceEngine__allCurrentElements__block_invoke(uint64_t a
     v21 = 0;
     if (RelevanceEngineLibraryCore_0())
     {
-      v8 = [soft__REEngineDefaults() globalDefaults];
+      globalDefaults = [soft__REEngineDefaults() globalDefaults];
     }
 
     else
     {
-      v8 = 0;
+      globalDefaults = 0;
     }
 
-    v9 = [v8 _BOOLValueForKey:@"ShowAllElements" set:&v21];
+    v9 = [globalDefaults _BOOLValueForKey:@"ShowAllElements" set:&v21];
     v10 = v21 & v9;
     v11 = RELogForDomain(0);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -1764,15 +1764,15 @@ LABEL_15:
     dataSourceManager = self->_dataSourceManager;
     if (!dataSourceManager)
     {
-      v16 = [(RERelevanceEngineSubsystem *)self relevanceEngine];
-      v17 = [v16 dataSourceManager];
+      relevanceEngine = [(RERelevanceEngineSubsystem *)self relevanceEngine];
+      dataSourceManager = [relevanceEngine dataSourceManager];
       v18 = self->_dataSourceManager;
-      self->_dataSourceManager = v17;
+      self->_dataSourceManager = dataSourceManager;
 
       dataSourceManager = self->_dataSourceManager;
     }
 
-    v14 = [(REDataSourceManager *)dataSourceManager elementGroupForIdentifier:v7];
+    v14 = [(REDataSourceManager *)dataSourceManager elementGroupForIdentifier:identifierCopy];
   }
 
   v19 = *MEMORY[0x277D85DE8];
@@ -1780,44 +1780,44 @@ LABEL_15:
   return v14;
 }
 
-- (id)_queue_featureMapForElementWithId:(id)a3 trainingContext:(id)a4
+- (id)_queue_featureMapForElementWithId:(id)id trainingContext:(id)context
 {
   predictedElements = self->_predictedElements;
-  v7 = a4;
-  v8 = [(NSMutableDictionary *)predictedElements objectForKeyedSubscript:a3];
-  v9 = [(REElementRelevanceEngine *)self _queue_featureMapForElement:v8 trainingContext:v7];
+  contextCopy = context;
+  v8 = [(NSMutableDictionary *)predictedElements objectForKeyedSubscript:id];
+  v9 = [(REElementRelevanceEngine *)self _queue_featureMapForElement:v8 trainingContext:contextCopy];
 
   return v9;
 }
 
-- (id)_queue_featureMapForElement:(id)a3 trainingContext:(id)a4
+- (id)_queue_featureMapForElement:(id)element trainingContext:(id)context
 {
   v42 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  elementCopy = element;
+  contextCopy = context;
   dispatch_assert_queue_V2(self->_queue);
   v8 = RELogForDomain(0);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    [REElementRelevanceEngine _queue_featureMapForElement:v6 trainingContext:?];
+    [REElementRelevanceEngine _queue_featureMapForElement:elementCopy trainingContext:?];
   }
 
   context = objc_autoreleasePoolPush();
-  v30 = v6;
-  v9 = [v6 relevanceProviders];
-  v10 = [(RERelevanceEngineSubsystem *)self relevanceEngine];
-  v11 = [v10 newInputFeatureMap];
+  v30 = elementCopy;
+  relevanceProviders = [elementCopy relevanceProviders];
+  relevanceEngine = [(RERelevanceEngineSubsystem *)self relevanceEngine];
+  newInputFeatureMap = [relevanceEngine newInputFeatureMap];
 
   v39 = 0u;
   v40 = 0u;
   v37 = 0u;
   v38 = 0u;
-  obj = v9;
+  obj = relevanceProviders;
   v34 = [obj countByEnumeratingWithState:&v37 objects:v41 count:16];
   if (v34)
   {
     v32 = *v38;
-    v33 = v7;
+    v33 = contextCopy;
     do
     {
       for (i = 0; i != v34; ++i)
@@ -1830,9 +1830,9 @@ LABEL_15:
         v13 = *(*(&v37 + 1) + 8 * i);
         v14 = [(RERelevanceProviderEnvironment *)self->_providerEnvironment featuresForRelevanceProvider:v13];
         providerEnvironment = self->_providerEnvironment;
-        if (v7)
+        if (contextCopy)
         {
-          [(RERelevanceProviderEnvironment *)providerEnvironment relevancesForRelevanceProvider:v13 usingContext:v7];
+          [(RERelevanceProviderEnvironment *)providerEnvironment relevancesForRelevanceProvider:v13 usingContext:contextCopy];
         }
 
         else
@@ -1858,20 +1858,20 @@ LABEL_15:
           {
             v21 = [v14 objectAtIndexedSubscript:j];
             v22 = [v16 featureValueAtIndex:j];
-            if ([v11 hasValueForFeature:v21])
+            if ([newInputFeatureMap hasValueForFeature:v21])
             {
-              v23 = [v11 valueForFeature:v21];
+              v23 = [newInputFeatureMap valueForFeature:v21];
               if (RECompareFeatureValues(v22, v23) != 1)
               {
                 v22 = v23;
               }
             }
 
-            [v11 setValue:v22 forFeature:v21];
+            [newInputFeatureMap setValue:v22 forFeature:v21];
           }
         }
 
-        v7 = v33;
+        contextCopy = v33;
       }
 
       v34 = [obj countByEnumeratingWithState:&v37 objects:v41 count:16];
@@ -1885,9 +1885,9 @@ LABEL_15:
   v35[1] = 3221225472;
   v35[2] = __72__REElementRelevanceEngine__queue_featureMapForElement_trainingContext___block_invoke;
   v35[3] = &unk_2785F9CF8;
-  v36 = v11;
-  v25 = v11;
-  [(REPredictorManager *)predictorManager enumerateValuesForElement:v30 trainingContext:v7 usingBlock:v35];
+  v36 = newInputFeatureMap;
+  v25 = newInputFeatureMap;
+  [(REPredictorManager *)predictorManager enumerateValuesForElement:v30 trainingContext:contextCopy usingBlock:v35];
   v26 = [(REFeatureTransmuter *)self->_featureTransmuter transformFeatureMaps:v25];
 
   objc_autoreleasePoolPop(context);
@@ -1905,28 +1905,28 @@ void __72__REElementRelevanceEngine__queue_featureMapForElement_trainingContext_
   REReleaseFeatureValueTaggedPointer(v6);
 }
 
-- (id)featureMapForElement:(id)a3 trainingContext:(id)a4
+- (id)featureMapForElement:(id)element trainingContext:(id)context
 {
   queue = self->_queue;
-  v7 = a4;
-  v8 = a3;
+  contextCopy = context;
+  elementCopy = element;
   dispatch_assert_queue_V2(queue);
-  v9 = [(REElementRelevanceEngine *)self _queue_featureMapForElementWithId:v8 trainingContext:v7];
+  v9 = [(REElementRelevanceEngine *)self _queue_featureMapForElementWithId:elementCopy trainingContext:contextCopy];
 
   return v9;
 }
 
-- (id)_generateFeatureMapForElement:(id)a3
+- (id)_generateFeatureMapForElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   dispatch_assert_queue_V2(self->_queue);
   predictedElements = self->_predictedElements;
-  v6 = [v4 identifier];
-  v7 = [(NSMutableDictionary *)predictedElements objectForKeyedSubscript:v6];
+  identifier = [elementCopy identifier];
+  v7 = [(NSMutableDictionary *)predictedElements objectForKeyedSubscript:identifier];
 
   if (!v7)
   {
-    v7 = [REPredictionElement predictionElementFromElement:v4];
+    v7 = [REPredictionElement predictionElementFromElement:elementCopy];
     [v7 setSection:@"defaultSectionIdentifier"];
   }
 
@@ -1935,78 +1935,78 @@ void __72__REElementRelevanceEngine__queue_featureMapForElement_trainingContext_
   return v8;
 }
 
-- (id)featureProviderForElement:(id)a3
+- (id)featureProviderForElement:(id)element
 {
-  v3 = [(REElementRelevanceEngine *)self _generateFeatureMapForElement:a3];
+  v3 = [(REElementRelevanceEngine *)self _generateFeatureMapForElement:element];
   v4 = [[_REFeatureMapWrapper alloc] initWithFeatureMap:v3];
 
   return v4;
 }
 
-- (id)predictionForElement:(id)a3
+- (id)predictionForElement:(id)element
 {
-  v4 = a3;
-  v5 = [(REElementRelevanceEngine *)self _generateFeatureMapForElement:v4];
+  elementCopy = element;
+  v5 = [(REElementRelevanceEngine *)self _generateFeatureMapForElement:elementCopy];
   v6 = [REMLElement alloc];
-  v7 = [v4 identifier];
+  identifier = [elementCopy identifier];
 
-  v8 = [(REMLElement *)v6 initWithIdentifier:v7 featureMap:v5];
-  v9 = [(RERelevanceEngineSubsystem *)self relevanceEngine];
-  v10 = [v9 modelManager];
-  v11 = [v10 predictionForLogicalElement:v8];
+  v8 = [(REMLElement *)v6 initWithIdentifier:identifier featureMap:v5];
+  relevanceEngine = [(RERelevanceEngineSubsystem *)self relevanceEngine];
+  modelManager = [relevanceEngine modelManager];
+  v11 = [modelManager predictionForLogicalElement:v8];
 
   return v11;
 }
 
-- (id)rankingStartDateForElement:(id)a3
+- (id)rankingStartDateForElement:(id)element
 {
-  v4 = a3;
-  v5 = [(RERelevanceEngineSubsystem *)self relevanceEngine];
-  v6 = [v5 rankingManager];
-  v7 = [v6 rankingStartDateForElement:v4];
+  elementCopy = element;
+  relevanceEngine = [(RERelevanceEngineSubsystem *)self relevanceEngine];
+  rankingManager = [relevanceEngine rankingManager];
+  v7 = [rankingManager rankingStartDateForElement:elementCopy];
 
   return v7;
 }
 
-- (id)updatedRankingDateForElement:(id)a3
+- (id)updatedRankingDateForElement:(id)element
 {
-  v4 = a3;
-  v5 = [(RERelevanceEngineSubsystem *)self relevanceEngine];
-  v6 = [v5 rankingManager];
-  v7 = [v6 updatedRankingDateForElement:v4];
+  elementCopy = element;
+  relevanceEngine = [(RERelevanceEngineSubsystem *)self relevanceEngine];
+  rankingManager = [relevanceEngine rankingManager];
+  v7 = [rankingManager updatedRankingDateForElement:elementCopy];
 
   return v7;
 }
 
-- (float)rankingScoreForElement:(id)a3 createdAt:(id)a4
+- (float)rankingScoreForElement:(id)element createdAt:(id)at
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(RERelevanceEngineSubsystem *)self relevanceEngine];
-  v9 = [v8 rankingManager];
-  [v9 rankingScoreForElement:v7 createdAt:v6];
+  atCopy = at;
+  elementCopy = element;
+  relevanceEngine = [(RERelevanceEngineSubsystem *)self relevanceEngine];
+  rankingManager = [relevanceEngine rankingManager];
+  [rankingManager rankingScoreForElement:elementCopy createdAt:atCopy];
   v11 = v10;
 
   return v11;
 }
 
-- (id)rankingTierForElement:(id)a3
+- (id)rankingTierForElement:(id)element
 {
-  v4 = a3;
-  v5 = [(RERelevanceEngineSubsystem *)self relevanceEngine];
-  v6 = [v5 rankingManager];
-  v7 = [v6 rankingTierForElement:v4];
+  elementCopy = element;
+  relevanceEngine = [(RERelevanceEngineSubsystem *)self relevanceEngine];
+  rankingManager = [relevanceEngine rankingManager];
+  v7 = [rankingManager rankingTierForElement:elementCopy];
 
   return v7;
 }
 
-- (id)elementRankerForSection:(id)a3
+- (id)elementRankerForSection:(id)section
 {
-  v4 = a3;
+  sectionCopy = section;
   v5 = objc_alloc_init(_REElementRankerWrapper);
-  v6 = [(NSMutableDictionary *)self->_sections objectForKeyedSubscript:v4];
-  v7 = [v6 comparator];
-  [(_REElementRankerWrapper *)v5 setComparator:v7];
+  v6 = [(NSMutableDictionary *)self->_sections objectForKeyedSubscript:sectionCopy];
+  comparator = [v6 comparator];
+  [(_REElementRankerWrapper *)v5 setComparator:comparator];
 
   objc_initWeak(&location, self);
   v9[0] = MEMORY[0x277D85DD0];
@@ -2056,11 +2056,11 @@ id __52__REElementRelevanceEngine_elementRankerForSection___block_invoke(uint64_
   return v8;
 }
 
-- (id)elementRankerForComparator:(id)a3
+- (id)elementRankerForComparator:(id)comparator
 {
-  v4 = a3;
+  comparatorCopy = comparator;
   v5 = objc_alloc_init(_REElementRankerWrapper);
-  [(_REElementRankerWrapper *)v5 setComparator:v4];
+  [(_REElementRankerWrapper *)v5 setComparator:comparatorCopy];
   objc_initWeak(&location, self);
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
@@ -2109,11 +2109,11 @@ id __55__REElementRelevanceEngine_elementRankerForComparator___block_invoke(uint
   return v8;
 }
 
-- (id)elementEvaluatorForConditionEvaluator:(id)a3
+- (id)elementEvaluatorForConditionEvaluator:(id)evaluator
 {
-  v4 = a3;
+  evaluatorCopy = evaluator;
   v5 = objc_alloc_init(_REConditionEvaluatorWrapper);
-  [(_REConditionEvaluatorWrapper *)v5 setEvaluator:v4];
+  [(_REConditionEvaluatorWrapper *)v5 setEvaluator:evaluatorCopy];
   objc_initWeak(&location, self);
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
@@ -2169,13 +2169,13 @@ id __66__REElementRelevanceEngine_elementEvaluatorForConditionEvaluator___block_
   return WeakRetained;
 }
 
-- (id)featureMapForPredictedElement:(id)a3 trainingContext:(id)a4
+- (id)featureMapForPredictedElement:(id)element trainingContext:(id)context
 {
   queue = self->_queue;
-  v7 = a4;
-  v8 = a3;
+  contextCopy = context;
+  elementCopy = element;
   dispatch_assert_queue_V2(queue);
-  v9 = [(REElementRelevanceEngine *)self _queue_featureMapForElement:v8 trainingContext:v7];
+  v9 = [(REElementRelevanceEngine *)self _queue_featureMapForElement:elementCopy trainingContext:contextCopy];
 
   return v9;
 }

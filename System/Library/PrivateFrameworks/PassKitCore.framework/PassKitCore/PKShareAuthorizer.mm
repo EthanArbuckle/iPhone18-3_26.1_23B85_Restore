@@ -1,13 +1,13 @@
 @interface PKShareAuthorizer
-+ (id)authorizeForRequest:(id)a3 presentationSceneIdentifier:(id)a4 authHandler:(id)a5 completion:(id)a6;
-+ (void)_authorizeDeviceOwnerWithAuthHandler:(id)a3 completion:(id)a4 context:(id)a5 invalidateContext:(BOOL)a6;
-+ (void)authorizeDeviceOwnerWithAuthHandler:(id)a3 completion:(id)a4;
-- (void)_authorizeForRequest:(id)a3 presentationSceneIdentifier:(id)a4 authHandler:(id)a5 completion:(id)a6;
++ (id)authorizeForRequest:(id)request presentationSceneIdentifier:(id)identifier authHandler:(id)handler completion:(id)completion;
++ (void)_authorizeDeviceOwnerWithAuthHandler:(id)handler completion:(id)completion context:(id)context invalidateContext:(BOOL)invalidateContext;
++ (void)authorizeDeviceOwnerWithAuthHandler:(id)handler completion:(id)completion;
+- (void)_authorizeForRequest:(id)request presentationSceneIdentifier:(id)identifier authHandler:(id)handler completion:(id)completion;
 - (void)_handleDidFinishIfNeeded;
 - (void)dealloc;
 - (void)invalidate;
-- (void)paymentAuthorizationCoordinator:(id)a3 didAuthorizeContextWithHandler:(id)a4;
-- (void)paymentAuthorizationCoordinatorDidFinish:(id)a3;
+- (void)paymentAuthorizationCoordinator:(id)coordinator didAuthorizeContextWithHandler:(id)handler;
+- (void)paymentAuthorizationCoordinatorDidFinish:(id)finish;
 @end
 
 @implementation PKShareAuthorizer
@@ -20,23 +20,23 @@
   [(PKShareAuthorizer *)&v3 dealloc];
 }
 
-+ (id)authorizeForRequest:(id)a3 presentationSceneIdentifier:(id)a4 authHandler:(id)a5 completion:(id)a6
++ (id)authorizeForRequest:(id)request presentationSceneIdentifier:(id)identifier authHandler:(id)handler completion:(id)completion
 {
-  v9 = a6;
-  if (v9)
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v10 = a5;
-    v11 = a4;
-    v12 = a3;
+    handlerCopy = handler;
+    identifierCopy = identifier;
+    requestCopy = request;
     v13 = objc_alloc_init(PKShareAuthorizer);
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __92__PKShareAuthorizer_authorizeForRequest_presentationSceneIdentifier_authHandler_completion___block_invoke;
     v18[3] = &unk_1E79C4888;
-    v20 = v9;
+    v20 = completionCopy;
     v14 = v13;
     v19 = v14;
-    [(PKShareAuthorizer *)v14 _authorizeForRequest:v12 presentationSceneIdentifier:v11 authHandler:v10 completion:v18];
+    [(PKShareAuthorizer *)v14 _authorizeForRequest:requestCopy presentationSceneIdentifier:identifierCopy authHandler:handlerCopy completion:v18];
 
     v15 = v19;
     v16 = v14;
@@ -58,28 +58,28 @@ uint64_t __92__PKShareAuthorizer_authorizeForRequest_presentationSceneIdentifier
   return [v2 invalidate];
 }
 
-- (void)_authorizeForRequest:(id)a3 presentationSceneIdentifier:(id)a4 authHandler:(id)a5 completion:(id)a6
+- (void)_authorizeForRequest:(id)request presentationSceneIdentifier:(id)identifier authHandler:(id)handler completion:(id)completion
 {
-  v11 = a4;
-  v12 = a6;
-  v13 = a3;
-  v14 = _Block_copy(a5);
+  identifierCopy = identifier;
+  completionCopy = completion;
+  requestCopy = request;
+  v14 = _Block_copy(handler);
   authorizeHandler = self->_authorizeHandler;
   self->_authorizeHandler = v14;
 
-  v16 = _Block_copy(v12);
+  v16 = _Block_copy(completionCopy);
   completion = self->_completion;
   self->_completion = v16;
 
-  objc_storeStrong(&self->_presentationSceneIdentifier, a4);
+  objc_storeStrong(&self->_presentationSceneIdentifier, identifier);
   v18 = objc_alloc_init(MEMORY[0x1E696EE50]);
   context = self->_context;
   self->_context = v18;
 
-  v20 = [(LAContext *)self->_context externalizedContext];
-  [v13 setExternalizedContext:v20];
+  externalizedContext = [(LAContext *)self->_context externalizedContext];
+  [requestCopy setExternalizedContext:externalizedContext];
 
-  v21 = [[PKPaymentAuthorizationCoordinator alloc] initWithPaymentRequest:v13];
+  v21 = [[PKPaymentAuthorizationCoordinator alloc] initWithPaymentRequest:requestCopy];
   authorizationCoordinator = self->_authorizationCoordinator;
   self->_authorizationCoordinator = v21;
 
@@ -99,7 +99,7 @@ uint64_t __92__PKShareAuthorizer_authorizeForRequest_presentationSceneIdentifier
 
   else
   {
-    (*(v12 + 2))(v12, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
@@ -129,10 +129,10 @@ void __93__PKShareAuthorizer__authorizeForRequest_presentationSceneIdentifier_au
   [(LAContext *)context invalidate];
 }
 
-- (void)paymentAuthorizationCoordinatorDidFinish:(id)a3
+- (void)paymentAuthorizationCoordinatorDidFinish:(id)finish
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  finishCopy = finish;
   v5 = PKLogFacilityTypeGetObject(0x22uLL);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -151,7 +151,7 @@ void __93__PKShareAuthorizer__authorizeForRequest_presentationSceneIdentifier_au
     _os_log_impl(&dword_1AD337000, v5, OS_LOG_TYPE_DEFAULT, "PKShareAuthorizer: Authorization did finish with success: %@", buf, 0xCu);
   }
 
-  [v4 dismissWithCompletion:0];
+  [finishCopy dismissWithCompletion:0];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __62__PKShareAuthorizer_paymentAuthorizationCoordinatorDidFinish___block_invoke;
@@ -160,10 +160,10 @@ void __93__PKShareAuthorizer__authorizeForRequest_presentationSceneIdentifier_au
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
-- (void)paymentAuthorizationCoordinator:(id)a3 didAuthorizeContextWithHandler:(id)a4
+- (void)paymentAuthorizationCoordinator:(id)coordinator didAuthorizeContextWithHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  coordinatorCopy = coordinator;
+  handlerCopy = handler;
   v8 = PKLogFacilityTypeGetObject(0x22uLL);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -177,13 +177,13 @@ void __93__PKShareAuthorizer__authorizeForRequest_presentationSceneIdentifier_au
   aBlock[2] = __84__PKShareAuthorizer_paymentAuthorizationCoordinator_didAuthorizeContextWithHandler___block_invoke;
   aBlock[3] = &unk_1E79C4770;
   aBlock[4] = self;
-  v9 = v7;
+  v9 = handlerCopy;
   v16 = v9;
   v10 = _Block_copy(aBlock);
   if (self->_authorizeHandler)
   {
-    v11 = [(LAContext *)self->_context externalizedContext];
-    if (v11)
+    externalizedContext = [(LAContext *)self->_context externalizedContext];
+    if (externalizedContext)
     {
       authorizeHandler = self->_authorizeHandler;
       v13[0] = MEMORY[0x1E69E9820];
@@ -192,7 +192,7 @@ void __93__PKShareAuthorizer__authorizeForRequest_presentationSceneIdentifier_au
       v13[3] = &unk_1E79C4770;
       v13[4] = self;
       v14 = v10;
-      authorizeHandler[2](authorizeHandler, v11, v13);
+      authorizeHandler[2](authorizeHandler, externalizedContext, v13);
     }
 
     else
@@ -277,21 +277,21 @@ uint64_t __84__PKShareAuthorizer_paymentAuthorizationCoordinator_didAuthorizeCon
   }
 }
 
-+ (void)authorizeDeviceOwnerWithAuthHandler:(id)a3 completion:(id)a4
++ (void)authorizeDeviceOwnerWithAuthHandler:(id)handler completion:(id)completion
 {
   v6 = MEMORY[0x1E696EE50];
-  v7 = a4;
-  v8 = a3;
+  completionCopy = completion;
+  handlerCopy = handler;
   v9 = objc_alloc_init(v6);
-  [a1 _authorizeDeviceOwnerWithAuthHandler:v8 completion:v7 context:v9 invalidateContext:1];
+  [self _authorizeDeviceOwnerWithAuthHandler:handlerCopy completion:completionCopy context:v9 invalidateContext:1];
 }
 
-+ (void)_authorizeDeviceOwnerWithAuthHandler:(id)a3 completion:(id)a4 context:(id)a5 invalidateContext:(BOOL)a6
++ (void)_authorizeDeviceOwnerWithAuthHandler:(id)handler completion:(id)completion context:(id)context invalidateContext:(BOOL)invalidateContext
 {
   v30[3] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  handlerCopy = handler;
+  completionCopy = completion;
+  contextCopy = context;
   v29[0] = &unk_1F23B5510;
   v12 = PKLocalizedShareableCredentialString(&cfstr_LocalAuthentic.isa, 0);
   v30[0] = v12;
@@ -306,10 +306,10 @@ uint64_t __84__PKShareAuthorizer_paymentAuthorizationCoordinator_didAuthorizeCon
   aBlock[1] = 3221225472;
   aBlock[2] = __95__PKShareAuthorizer__authorizeDeviceOwnerWithAuthHandler_completion_context_invalidateContext___block_invoke;
   aBlock[3] = &unk_1E79C4888;
-  v28 = v10;
-  v15 = v11;
+  v28 = completionCopy;
+  v15 = contextCopy;
   v27 = v15;
-  v16 = v10;
+  v16 = completionCopy;
   v17 = _Block_copy(aBlock);
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
@@ -317,9 +317,9 @@ uint64_t __84__PKShareAuthorizer_paymentAuthorizationCoordinator_didAuthorizeCon
   v21[3] = &unk_1E79DF588;
   v22 = v15;
   v23 = v17;
-  v25 = a6;
-  v24 = v9;
-  v18 = v9;
+  invalidateContextCopy = invalidateContext;
+  v24 = handlerCopy;
+  v18 = handlerCopy;
   v19 = v17;
   v20 = v15;
   [v20 evaluatePolicy:2 options:v14 reply:v21];

@@ -1,15 +1,15 @@
 @interface PKSecureElementProvisioningState
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (PKSecureElementProvisioningState)init;
-- (PKSecureElementProvisioningState)initWithCoder:(id)a3;
+- (PKSecureElementProvisioningState)initWithCoder:(id)coder;
 - (id)_init;
-- (id)createDivergentStateClaimNonce:(BOOL)a3;
+- (id)createDivergentStateClaimNonce:(BOOL)nonce;
 - (id)description;
 - (id)useNonce;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setNonce:(id)a3;
-- (void)setRequirementsResponse:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setNonce:(id)nonce;
+- (void)setRequirementsResponse:(id)response;
 @end
 
 @implementation PKSecureElementProvisioningState
@@ -24,8 +24,8 @@
 - (PKSecureElementProvisioningState)init
 {
   v9[2] = *MEMORY[0x1E69E9840];
-  v2 = [(PKSecureElementProvisioningState *)self _init];
-  if (v2)
+  _init = [(PKSecureElementProvisioningState *)self _init];
+  if (_init)
   {
     v9[0] = 0;
     v9[1] = 0;
@@ -36,21 +36,21 @@
     v5 = [v4 base64EncodedStringWithOptions:0];
 
     v6 = [v5 substringToIndex:22];
-    sid = v2->_sid;
-    v2->_sid = v6;
+    sid = _init->_sid;
+    _init->_sid = v6;
   }
 
-  return v2;
+  return _init;
 }
 
-- (void)setNonce:(id)a3
+- (void)setNonce:(id)nonce
 {
-  v5 = a3;
-  if (v5)
+  nonceCopy = nonce;
+  if (nonceCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_nonce, a3);
-    v5 = v6;
+    v6 = nonceCopy;
+    objc_storeStrong(&self->_nonce, nonce);
+    nonceCopy = v6;
   }
 }
 
@@ -64,62 +64,62 @@
   return nonce;
 }
 
-- (void)setRequirementsResponse:(id)a3
+- (void)setRequirementsResponse:(id)response
 {
-  v6 = a3;
-  objc_storeStrong(&self->_requirementsResponse, a3);
-  v5 = [v6 productIdentifier];
-  if (v5)
+  responseCopy = response;
+  objc_storeStrong(&self->_requirementsResponse, response);
+  productIdentifier = [responseCopy productIdentifier];
+  if (productIdentifier)
   {
-    objc_storeStrong(&self->_productIdentifier, v5);
+    objc_storeStrong(&self->_productIdentifier, productIdentifier);
   }
 }
 
-- (PKSecureElementProvisioningState)initWithCoder:(id)a3
+- (PKSecureElementProvisioningState)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v27.receiver = self;
   v27.super_class = PKSecureElementProvisioningState;
   v5 = [(PKSecureElementProvisioningState *)&v27 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sid"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sid"];
     sid = v5->_sid;
     v5->_sid = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"externalizedAuth"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"externalizedAuth"];
     externalizedAuth = v5->_externalizedAuth;
     v5->_externalizedAuth = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"requirementsResponse"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"requirementsResponse"];
     requirementsResponse = v5->_requirementsResponse;
     v5->_requirementsResponse = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"eligibilityResponse"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"eligibilityResponse"];
     eligibilityResponse = v5->_eligibilityResponse;
     v5->_eligibilityResponse = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"provisioningResponse"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"provisioningResponse"];
     provisioningResponse = v5->_provisioningResponse;
     v5->_provisioningResponse = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"secureElementReservationGroupIdentifier"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"secureElementReservationGroupIdentifier"];
     secureElementReservationGroupIdentifier = v5->_secureElementReservationGroupIdentifier;
     v5->_secureElementReservationGroupIdentifier = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"productIdentifier"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"productIdentifier"];
     productIdentifier = v5->_productIdentifier;
     v5->_productIdentifier = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"nonce"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"nonce"];
     nonce = v5->_nonce;
     v5->_nonce = v20;
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"referrerIdentifier"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"referrerIdentifier"];
     referrerIdentifier = v5->_referrerIdentifier;
     v5->_referrerIdentifier = v22;
 
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"provisioningStepState"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"provisioningStepState"];
     provisioningStepState = v5->_provisioningStepState;
     v5->_provisioningStepState = v24;
   }
@@ -127,20 +127,20 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   sid = self->_sid;
-  v5 = a3;
-  [v5 encodeObject:sid forKey:@"sid"];
-  [v5 encodeObject:self->_externalizedAuth forKey:@"externalizedAuth"];
-  [v5 encodeObject:self->_requirementsResponse forKey:@"requirementsResponse"];
-  [v5 encodeObject:self->_eligibilityResponse forKey:@"eligibilityResponse"];
-  [v5 encodeObject:self->_provisioningResponse forKey:@"provisioningResponse"];
-  [v5 encodeObject:self->_secureElementReservationGroupIdentifier forKey:@"secureElementReservationGroupIdentifier"];
-  [v5 encodeObject:self->_productIdentifier forKey:@"productIdentifier"];
-  [v5 encodeObject:self->_nonce forKey:@"nonce"];
-  [v5 encodeObject:self->_referrerIdentifier forKey:@"referrerIdentifier"];
-  [v5 encodeObject:self->_provisioningStepState forKey:@"provisioningStepState"];
+  coderCopy = coder;
+  [coderCopy encodeObject:sid forKey:@"sid"];
+  [coderCopy encodeObject:self->_externalizedAuth forKey:@"externalizedAuth"];
+  [coderCopy encodeObject:self->_requirementsResponse forKey:@"requirementsResponse"];
+  [coderCopy encodeObject:self->_eligibilityResponse forKey:@"eligibilityResponse"];
+  [coderCopy encodeObject:self->_provisioningResponse forKey:@"provisioningResponse"];
+  [coderCopy encodeObject:self->_secureElementReservationGroupIdentifier forKey:@"secureElementReservationGroupIdentifier"];
+  [coderCopy encodeObject:self->_productIdentifier forKey:@"productIdentifier"];
+  [coderCopy encodeObject:self->_nonce forKey:@"nonce"];
+  [coderCopy encodeObject:self->_referrerIdentifier forKey:@"referrerIdentifier"];
+  [coderCopy encodeObject:self->_provisioningStepState forKey:@"provisioningStepState"];
 }
 
 - (id)description
@@ -182,34 +182,34 @@
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  [v3 safelyAddObject:self->_sid];
-  [v3 safelyAddObject:self->_externalizedAuth];
-  [v3 safelyAddObject:self->_requirementsResponse];
-  [v3 safelyAddObject:self->_eligibilityResponse];
-  [v3 safelyAddObject:self->_provisioningResponse];
-  [v3 safelyAddObject:self->_secureElementReservationGroupIdentifier];
-  [v3 safelyAddObject:self->_productIdentifier];
-  [v3 safelyAddObject:self->_nonce];
-  [v3 safelyAddObject:self->_referrerIdentifier];
-  [v3 safelyAddObject:self->_provisioningStepState];
-  v4 = PKCombinedHash(17, v3);
+  array = [MEMORY[0x1E695DF70] array];
+  [array safelyAddObject:self->_sid];
+  [array safelyAddObject:self->_externalizedAuth];
+  [array safelyAddObject:self->_requirementsResponse];
+  [array safelyAddObject:self->_eligibilityResponse];
+  [array safelyAddObject:self->_provisioningResponse];
+  [array safelyAddObject:self->_secureElementReservationGroupIdentifier];
+  [array safelyAddObject:self->_productIdentifier];
+  [array safelyAddObject:self->_nonce];
+  [array safelyAddObject:self->_referrerIdentifier];
+  [array safelyAddObject:self->_provisioningStepState];
+  v4 = PKCombinedHash(17, array);
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v9 = 1;
   }
 
   else
   {
-    if (v4)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -379,45 +379,45 @@ LABEL_55:
   return v9;
 }
 
-- (id)createDivergentStateClaimNonce:(BOOL)a3
+- (id)createDivergentStateClaimNonce:(BOOL)nonce
 {
-  v3 = a3;
-  v5 = [[PKSecureElementProvisioningState alloc] _init];
+  nonceCopy = nonce;
+  _init = [[PKSecureElementProvisioningState alloc] _init];
   v6 = [(NSString *)self->_sid copy];
-  v7 = *(v5 + 2);
-  *(v5 + 2) = v6;
+  v7 = *(_init + 2);
+  *(_init + 2) = v6;
 
   v8 = [(NSData *)self->_externalizedAuth copy];
-  v9 = *(v5 + 3);
-  *(v5 + 3) = v8;
+  v9 = *(_init + 3);
+  *(_init + 3) = v8;
 
-  objc_storeStrong(v5 + 8, self->_requirementsResponse);
-  objc_storeStrong(v5 + 9, self->_eligibilityResponse);
-  objc_storeStrong(v5 + 10, self->_provisioningResponse);
+  objc_storeStrong(_init + 8, self->_requirementsResponse);
+  objc_storeStrong(_init + 9, self->_eligibilityResponse);
+  objc_storeStrong(_init + 10, self->_provisioningResponse);
   v10 = [(NSString *)self->_secureElementReservationGroupIdentifier copy];
-  v11 = *(v5 + 4);
-  *(v5 + 4) = v10;
+  v11 = *(_init + 4);
+  *(_init + 4) = v10;
 
   v12 = [(NSString *)self->_productIdentifier copy];
-  v13 = *(v5 + 6);
-  *(v5 + 6) = v12;
+  v13 = *(_init + 6);
+  *(_init + 6) = v12;
 
-  if (v3)
+  if (nonceCopy)
   {
-    v14 = [(PKSecureElementProvisioningState *)self useNonce];
-    v15 = *(v5 + 1);
-    *(v5 + 1) = v14;
+    useNonce = [(PKSecureElementProvisioningState *)self useNonce];
+    v15 = *(_init + 1);
+    *(_init + 1) = useNonce;
   }
 
   v16 = [(NSString *)self->_referrerIdentifier copy];
-  v17 = *(v5 + 5);
-  *(v5 + 5) = v16;
+  v17 = *(_init + 5);
+  *(_init + 5) = v16;
 
   v18 = [(NSData *)self->_provisioningStepState copy];
-  v19 = *(v5 + 7);
-  *(v5 + 7) = v18;
+  v19 = *(_init + 7);
+  *(_init + 7) = v18;
 
-  return v5;
+  return _init;
 }
 
 @end

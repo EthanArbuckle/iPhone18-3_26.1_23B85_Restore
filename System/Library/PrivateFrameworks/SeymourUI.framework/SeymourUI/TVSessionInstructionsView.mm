@@ -1,6 +1,6 @@
 @interface TVSessionInstructionsView
 - (NSArray)preferredFocusEnvironments;
-- (_TtC9SeymourUI25TVSessionInstructionsView)initWithFrame:(CGRect)a3;
+- (_TtC9SeymourUI25TVSessionInstructionsView)initWithFrame:(CGRect)frame;
 - (void)startButtonTapped;
 @end
 
@@ -8,7 +8,7 @@
 
 - (void)startButtonTapped
 {
-  v2 = self;
+  selfCopy = self;
   sub_20BA81960();
 }
 
@@ -26,7 +26,7 @@
   return v6;
 }
 
-- (_TtC9SeymourUI25TVSessionInstructionsView)initWithFrame:(CGRect)a3
+- (_TtC9SeymourUI25TVSessionInstructionsView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

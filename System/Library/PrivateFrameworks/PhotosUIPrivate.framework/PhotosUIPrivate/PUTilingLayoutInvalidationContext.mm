@@ -1,23 +1,23 @@
 @interface PUTilingLayoutInvalidationContext
 - (PUTilingLayoutInvalidationContext)init;
-- (void)enumerateInvalidatedTilesUsingBlock:(id)a3;
+- (void)enumerateInvalidatedTilesUsingBlock:(id)block;
 - (void)invalidateAllTiles;
-- (void)invalidateAllTilesWithKind:(id)a3;
-- (void)invalidateTileWithIndexPath:(id)a3 kind:(id)a4;
+- (void)invalidateAllTilesWithKind:(id)kind;
+- (void)invalidateTileWithIndexPath:(id)path kind:(id)kind;
 @end
 
 @implementation PUTilingLayoutInvalidationContext
 
-- (void)enumerateInvalidatedTilesUsingBlock:(id)a3
+- (void)enumerateInvalidatedTilesUsingBlock:(id)block
 {
-  v5 = a3;
-  if (!v5)
+  blockCopy = block;
+  if (!blockCopy)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"PUTilingLayoutInvalidationContext.m" lineNumber:60 description:{@"Invalid parameter not satisfying: %@", @"enumerationBlock != NULL"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUTilingLayoutInvalidationContext.m" lineNumber:60 description:{@"Invalid parameter not satisfying: %@", @"enumerationBlock != NULL"}];
   }
 
-  v6 = [(PUTilingLayoutInvalidationContext *)self _invalidatedIndexPathsByTileKind];
+  _invalidatedIndexPathsByTileKind = [(PUTilingLayoutInvalidationContext *)self _invalidatedIndexPathsByTileKind];
   v12[0] = 0;
   v12[1] = v12;
   v12[2] = 0x2020000000;
@@ -26,10 +26,10 @@
   v9[1] = 3221225472;
   v9[2] = __73__PUTilingLayoutInvalidationContext_enumerateInvalidatedTilesUsingBlock___block_invoke;
   v9[3] = &unk_1E7B7E9A8;
-  v7 = v5;
+  v7 = blockCopy;
   v10 = v7;
   v11 = v12;
-  [v6 enumerateKeysAndObjectsUsingBlock:v9];
+  [_invalidatedIndexPathsByTileKind enumerateKeysAndObjectsUsingBlock:v9];
 
   _Block_object_dispose(v12, 8);
 }
@@ -71,20 +71,20 @@ uint64_t __73__PUTilingLayoutInvalidationContext_enumerateInvalidatedTilesUsingB
   [(PUTilingLayoutInvalidationContext *)self setInvalidatedAnyTile:1];
 }
 
-- (void)invalidateAllTilesWithKind:(id)a3
+- (void)invalidateAllTilesWithKind:(id)kind
 {
-  [(NSMutableSet *)self->_invalidatedTileKinds addObject:a3];
+  [(NSMutableSet *)self->_invalidatedTileKinds addObject:kind];
 
   [(PUTilingLayoutInvalidationContext *)self setInvalidatedAnyTile:1];
 }
 
-- (void)invalidateTileWithIndexPath:(id)a3 kind:(id)a4
+- (void)invalidateTileWithIndexPath:(id)path kind:(id)kind
 {
-  v12 = a3;
-  v7 = a4;
-  if (v12)
+  pathCopy = path;
+  kindCopy = kind;
+  if (pathCopy)
   {
-    if (v7)
+    if (kindCopy)
     {
       goto LABEL_3;
     }
@@ -92,28 +92,28 @@ uint64_t __73__PUTilingLayoutInvalidationContext_enumerateInvalidatedTilesUsingB
 
   else
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PUTilingLayoutInvalidationContext.m" lineNumber:31 description:{@"Invalid parameter not satisfying: %@", @"indexPath != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUTilingLayoutInvalidationContext.m" lineNumber:31 description:{@"Invalid parameter not satisfying: %@", @"indexPath != nil"}];
 
-    if (v7)
+    if (kindCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v11 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v11 handleFailureInMethod:a2 object:self file:@"PUTilingLayoutInvalidationContext.m" lineNumber:32 description:{@"Invalid parameter not satisfying: %@", @"tileKind != nil"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PUTilingLayoutInvalidationContext.m" lineNumber:32 description:{@"Invalid parameter not satisfying: %@", @"tileKind != nil"}];
 
 LABEL_3:
-  v8 = [(PUTilingLayoutInvalidationContext *)self _invalidatedIndexPathsByTileKind];
-  v9 = [v8 objectForKeyedSubscript:v7];
+  _invalidatedIndexPathsByTileKind = [(PUTilingLayoutInvalidationContext *)self _invalidatedIndexPathsByTileKind];
+  v9 = [_invalidatedIndexPathsByTileKind objectForKeyedSubscript:kindCopy];
   if (!v9)
   {
     v9 = [MEMORY[0x1E695DFA8] set];
-    [v8 setObject:v9 forKeyedSubscript:v7];
+    [_invalidatedIndexPathsByTileKind setObject:v9 forKeyedSubscript:kindCopy];
   }
 
-  [v9 addObject:v12];
+  [v9 addObject:pathCopy];
   [(PUTilingLayoutInvalidationContext *)self setInvalidatedAnyTile:1];
 }
 
@@ -124,9 +124,9 @@ LABEL_3:
   v2 = [(PUTilingLayoutInvalidationContext *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     invalidatedIndexPathsByTileKind = v2->__invalidatedIndexPathsByTileKind;
-    v2->__invalidatedIndexPathsByTileKind = v3;
+    v2->__invalidatedIndexPathsByTileKind = dictionary;
 
     v5 = [MEMORY[0x1E695DFA8] set];
     invalidatedTileKinds = v2->_invalidatedTileKinds;

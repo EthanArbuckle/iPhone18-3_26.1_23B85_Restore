@@ -1,16 +1,16 @@
 @interface NCAssertion
-- (NCAssertion)initWithInstantiationReason:(id)a3;
+- (NCAssertion)initWithInstantiationReason:(id)reason;
 - (NSString)description;
-- (void)addInvalidationBlock:(id)a3;
+- (void)addInvalidationBlock:(id)block;
 - (void)dealloc;
-- (void)invalidateWithReason:(id)a3;
+- (void)invalidateWithReason:(id)reason;
 @end
 
 @implementation NCAssertion
 
-- (NCAssertion)initWithInstantiationReason:(id)a3
+- (NCAssertion)initWithInstantiationReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   v10.receiver = self;
   v10.super_class = NCAssertion;
   v5 = [(NCAssertion *)&v10 init];
@@ -18,7 +18,7 @@
   if (v5)
   {
     v5->_valid = 1;
-    v7 = [v4 copy];
+    v7 = [reasonCopy copy];
     instantiationReason = v6->_instantiationReason;
     v6->_instantiationReason = v7;
   }
@@ -42,11 +42,11 @@
 {
   v3 = [objc_alloc(MEMORY[0x277CCAB68]) initWithFormat:@"<%@: %p", objc_opt_class(), self];
   [v3 appendFormat:@"; instantiationReason: %@", self->_instantiationReason];
-  v4 = [(NCAssertion *)self isValid];
+  isValid = [(NCAssertion *)self isValid];
   v5 = NSStringFromBOOL();
   [v3 appendFormat:@"; isValid: %@", v5];
 
-  if (!v4 && self->_invalidationReason)
+  if (!isValid && self->_invalidationReason)
   {
     [v3 appendFormat:@"; invalidationReason: %@", self->_invalidationReason];
   }
@@ -56,50 +56,50 @@
   return v3;
 }
 
-- (void)addInvalidationBlock:(id)a3
+- (void)addInvalidationBlock:(id)block
 {
-  v4 = a3;
-  if (v4)
+  blockCopy = block;
+  if (blockCopy)
   {
-    aBlock = v4;
-    v5 = self;
-    objc_sync_enter(v5);
-    invalidationBlocks = v5->_invalidationBlocks;
+    aBlock = blockCopy;
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    invalidationBlocks = selfCopy->_invalidationBlocks;
     if (!invalidationBlocks)
     {
       v7 = objc_alloc_init(MEMORY[0x277CBEB40]);
-      v8 = v5->_invalidationBlocks;
-      v5->_invalidationBlocks = v7;
+      v8 = selfCopy->_invalidationBlocks;
+      selfCopy->_invalidationBlocks = v7;
 
-      invalidationBlocks = v5->_invalidationBlocks;
+      invalidationBlocks = selfCopy->_invalidationBlocks;
     }
 
     v9 = _Block_copy(aBlock);
     [(NSMutableOrderedSet *)invalidationBlocks addObject:v9];
 
-    objc_sync_exit(v5);
-    v4 = aBlock;
+    objc_sync_exit(selfCopy);
+    blockCopy = aBlock;
   }
 }
 
-- (void)invalidateWithReason:(id)a3
+- (void)invalidateWithReason:(id)reason
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  reasonCopy = reason;
   if ([(NCAssertion *)self isValid])
   {
-    v5 = self;
-    objc_sync_enter(v5);
-    v5->_valid = 0;
-    v6 = [v4 copy];
-    invalidationReason = v5->_invalidationReason;
-    v5->_invalidationReason = v6;
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    selfCopy->_valid = 0;
+    v6 = [reasonCopy copy];
+    invalidationReason = selfCopy->_invalidationReason;
+    selfCopy->_invalidationReason = v6;
 
     v8 = *MEMORY[0x277D77DF0];
     if (os_log_type_enabled(*MEMORY[0x277D77DF0], OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v21 = v5;
+      v21 = selfCopy;
       _os_log_impl(&dword_21E77E000, v8, OS_LOG_TYPE_DEFAULT, "Assertion did invalidate: %{public}@", buf, 0xCu);
     }
 
@@ -107,7 +107,7 @@
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v9 = v5->_invalidationBlocks;
+    v9 = selfCopy->_invalidationBlocks;
     v10 = [(NSMutableOrderedSet *)v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v10)
     {
@@ -133,10 +133,10 @@
       while (v10);
     }
 
-    invalidationBlocks = v5->_invalidationBlocks;
-    v5->_invalidationBlocks = 0;
+    invalidationBlocks = selfCopy->_invalidationBlocks;
+    selfCopy->_invalidationBlocks = 0;
 
-    objc_sync_exit(v5);
+    objc_sync_exit(selfCopy);
   }
 
   else

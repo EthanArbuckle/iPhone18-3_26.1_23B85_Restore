@@ -1,20 +1,20 @@
 @interface TSUDownloadSession
-- (BOOL)hasActiveTaskWithDescription:(id)a3;
+- (BOOL)hasActiveTaskWithDescription:(id)description;
 - (BOOL)isActive;
 - (TSUDownloadSession)init;
-- (TSUDownloadSession)initWithManager:(id)a3 downloadItems:(id)a4 description:(id)a5 willRequestDownload:(BOOL)a6 delegate:(id)a7;
+- (TSUDownloadSession)initWithManager:(id)manager downloadItems:(id)items description:(id)description willRequestDownload:(BOOL)download delegate:(id)delegate;
 - (id)description;
-- (id)waitUntilTimeout:(unint64_t)a3;
+- (id)waitUntilTimeout:(unint64_t)timeout;
 - (void)cancel;
-- (void)cancelRemainingTasksNotifyingDelegate:(BOOL)a3;
+- (void)cancelRemainingTasksNotifyingDelegate:(BOOL)delegate;
 - (void)dealloc;
 - (void)didFinishInitialization;
-- (void)headRequestForDownloadItem:(id)a3 taskProgress:(id)a4;
-- (void)notifyCompletionWithQueue:(id)a3 completionHandler:(id)a4;
-- (void)taskWithDescription:(id)a3 didCompleteWithError:(id)a4 totalBytesWritten:(int64_t)a5 totalBytesExpectedToWrite:(int64_t)a6;
-- (void)taskWithDescription:(id)a3 didWriteData:(int64_t)a4 totalBytesWritten:(int64_t)a5 totalBytesExpectedToWrite:(int64_t)a6;
+- (void)headRequestForDownloadItem:(id)item taskProgress:(id)progress;
+- (void)notifyCompletionWithQueue:(id)queue completionHandler:(id)handler;
+- (void)taskWithDescription:(id)description didCompleteWithError:(id)error totalBytesWritten:(int64_t)written totalBytesExpectedToWrite:(int64_t)write;
+- (void)taskWithDescription:(id)description didWriteData:(int64_t)data totalBytesWritten:(int64_t)written totalBytesExpectedToWrite:(int64_t)write;
 - (void)updateProgressAndNotifyDelegate;
-- (void)updateTaskProgress:(id)a3 withTotalBytesWritten:(int64_t)a4 totalBytesExpectedToWrite:(int64_t)a5;
+- (void)updateTaskProgress:(id)progress withTotalBytesWritten:(int64_t)written totalBytesExpectedToWrite:(int64_t)write;
 @end
 
 @implementation TSUDownloadSession
@@ -86,19 +86,19 @@ uint64_t __30__TSUDownloadSession_isActive__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)notifyCompletionWithQueue:(id)a3 completionHandler:(id)a4
+- (void)notifyCompletionWithQueue:(id)queue completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  queueCopy = queue;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
     aBlock[2] = __66__TSUDownloadSession_notifyCompletionWithQueue_completionHandler___block_invoke;
     aBlock[3] = &unk_279D66518;
     aBlock[4] = self;
-    v14 = v6;
-    v15 = v7;
+    v14 = queueCopy;
+    v15 = handlerCopy;
     v8 = _Block_copy(aBlock);
     if (dispatch_group_wait(self->_initializationGroup, 0))
     {
@@ -155,9 +155,9 @@ void __66__TSUDownloadSession_notifyCompletionWithQueue_completionHandler___bloc
   }
 }
 
-- (id)waitUntilTimeout:(unint64_t)a3
+- (id)waitUntilTimeout:(unint64_t)timeout
 {
-  if (dispatch_group_wait(self->_initializationGroup, a3) || dispatch_group_wait(self->_completionGroup, a3))
+  if (dispatch_group_wait(self->_initializationGroup, timeout) || dispatch_group_wait(self->_completionGroup, timeout))
   {
     v5 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA738] code:-1001 userInfo:0];
   }
@@ -221,23 +221,23 @@ void __28__TSUDownloadSession_cancel__block_invoke_2(uint64_t a1)
   return v5;
 }
 
-- (TSUDownloadSession)initWithManager:(id)a3 downloadItems:(id)a4 description:(id)a5 willRequestDownload:(BOOL)a6 delegate:(id)a7
+- (TSUDownloadSession)initWithManager:(id)manager downloadItems:(id)items description:(id)description willRequestDownload:(BOOL)download delegate:(id)delegate
 {
-  v8 = a6;
+  downloadCopy = download;
   v63 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  managerCopy = manager;
+  itemsCopy = items;
+  descriptionCopy = description;
+  delegateCopy = delegate;
   v61.receiver = self;
   v61.super_class = TSUDownloadSession;
   v16 = [(TSUDownloadSession *)&v61 init];
   v17 = v16;
   if (v16)
   {
-    objc_storeWeak(&v16->_manager, v12);
-    objc_storeWeak(&v17->_delegate, v15);
-    v18 = [v14 copy];
+    objc_storeWeak(&v16->_manager, managerCopy);
+    objc_storeWeak(&v17->_delegate, delegateCopy);
+    v18 = [descriptionCopy copy];
     sessionDescription = v17->_sessionDescription;
     v17->_sessionDescription = v18;
 
@@ -254,7 +254,7 @@ void __28__TSUDownloadSession_cancel__block_invoke_2(uint64_t a1)
     v25 = 0;
     if (v24)
     {
-      v25 = [v15 delegateQueueForDownloadSession:v17];
+      v25 = [delegateCopy delegateQueueForDownloadSession:v17];
     }
 
     delegateQueue = v17->_delegateQueue;
@@ -281,19 +281,19 @@ void __28__TSUDownloadSession_cancel__block_invoke_2(uint64_t a1)
     progress = v17->_progress;
     v17->_progress = v33;
 
-    v54 = v12;
-    v51 = v15;
-    v52 = v14;
-    if (v8)
+    v54 = managerCopy;
+    v51 = delegateCopy;
+    v52 = descriptionCopy;
+    if (downloadCopy)
     {
       if (objc_opt_respondsToSelector())
       {
-        v8 = [v15 downloadSessionShouldSendHeadRequestForEstimatedTotalBytes:v17];
+        downloadCopy = [delegateCopy downloadSessionShouldSendHeadRequestForEstimatedTotalBytes:v17];
       }
 
       else
       {
-        v8 = 0;
+        downloadCopy = 0;
       }
     }
 
@@ -301,8 +301,8 @@ void __28__TSUDownloadSession_cancel__block_invoke_2(uint64_t a1)
     v60 = 0u;
     v57 = 0u;
     v58 = 0u;
-    v53 = v13;
-    obj = v13;
+    v53 = itemsCopy;
+    obj = itemsCopy;
     v35 = [obj countByEnumeratingWithState:&v57 objects:v62 count:16];
     if (v35)
     {
@@ -323,33 +323,33 @@ void __28__TSUDownloadSession_cancel__block_invoke_2(uint64_t a1)
           v41 = objc_alloc_init(*(v37 + 1648));
           [v41 setIsActive:1];
           [v41 setTotalBytesExpectedToBeDownloaded:{objc_msgSend(v40, "totalBytesExpectedToBeDownloaded")}];
-          if (v8 && ![v41 totalBytesExpectedToBeDownloaded])
+          if (downloadCopy && ![v41 totalBytesExpectedToBeDownloaded])
           {
             [(TSUDownloadSession *)v17 headRequestForDownloadItem:v40 taskProgress:v41];
           }
 
           v17->_totalBytesExpectedToBeDownloaded += [v41 totalBytesExpectedToBeDownloaded];
-          v42 = [v40 downloadTaskDescription];
-          if (!v42)
+          downloadTaskDescription = [v40 downloadTaskDescription];
+          if (!downloadTaskDescription)
           {
             +[TSUAssertionHandler currentHandler];
             v43 = v36;
             v44 = v38;
-            v45 = v8;
+            v45 = downloadCopy;
             v47 = v46 = v37;
             v48 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSUDownloadSession initWithManager:downloadItems:description:willRequestDownload:delegate:]"];
             v49 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/utility/TSUDownloadSession.m"];
             [v47 handleFailureInFunction:v48 file:v49 lineNumber:208 description:{@"invalid nil value for '%s'", "taskDescription"}];
 
             v37 = v46;
-            v8 = v45;
+            downloadCopy = v45;
             v38 = v44;
             v36 = v43;
             v17 = v55;
           }
 
-          [(NSMutableSet *)v17->_remainingTasks addObject:v42];
-          [(NSMutableDictionary *)v17->_taskProgress setObject:v41 forKeyedSubscript:v42];
+          [(NSMutableSet *)v17->_remainingTasks addObject:downloadTaskDescription];
+          [(NSMutableDictionary *)v17->_taskProgress setObject:v41 forKeyedSubscript:downloadTaskDescription];
           dispatch_group_enter(v17->_completionGroup);
         }
 
@@ -359,32 +359,32 @@ void __28__TSUDownloadSession_cancel__block_invoke_2(uint64_t a1)
       while (v36);
     }
 
-    v13 = v53;
-    v12 = v54;
-    v15 = v51;
-    v14 = v52;
+    itemsCopy = v53;
+    managerCopy = v54;
+    delegateCopy = v51;
+    descriptionCopy = v52;
   }
 
   return v17;
 }
 
-- (void)headRequestForDownloadItem:(id)a3 taskProgress:(id)a4
+- (void)headRequestForDownloadItem:(id)item taskProgress:(id)progress
 {
-  v5 = a4;
-  v6 = [a3 downloadURL];
-  v7 = v6;
-  if (v6 && ([v6 isFileURL] & 1) == 0)
+  progressCopy = progress;
+  downloadURL = [item downloadURL];
+  v7 = downloadURL;
+  if (downloadURL && ([downloadURL isFileURL] & 1) == 0)
   {
     v8 = [objc_alloc(MEMORY[0x277CCAB70]) initWithURL:v7];
     [v8 setHTTPMethod:@"HEAD"];
     [v8 setValue:@"close" forHTTPHeaderField:@"Connection"];
-    v9 = [MEMORY[0x277CCAD30] sharedSession];
+    mEMORY[0x277CCAD30] = [MEMORY[0x277CCAD30] sharedSession];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __62__TSUDownloadSession_headRequestForDownloadItem_taskProgress___block_invoke;
     v11[3] = &unk_279D665B0;
-    v12 = v5;
-    v10 = [v9 dataTaskWithRequest:v8 completionHandler:v11];
+    v12 = progressCopy;
+    v10 = [mEMORY[0x277CCAD30] dataTaskWithRequest:v8 completionHandler:v11];
   }
 }
 
@@ -424,24 +424,24 @@ uint64_t __62__TSUDownloadSession_headRequestForDownloadItem_taskProgress___bloc
   dispatch_group_leave(initializationGroup);
 }
 
-- (BOOL)hasActiveTaskWithDescription:(id)a3
+- (BOOL)hasActiveTaskWithDescription:(id)description
 {
-  v3 = [(NSMutableDictionary *)self->_taskProgress objectForKeyedSubscript:a3];
-  v4 = [v3 isActive];
+  v3 = [(NSMutableDictionary *)self->_taskProgress objectForKeyedSubscript:description];
+  isActive = [v3 isActive];
 
-  return v4;
+  return isActive;
 }
 
-- (void)taskWithDescription:(id)a3 didCompleteWithError:(id)a4 totalBytesWritten:(int64_t)a5 totalBytesExpectedToWrite:(int64_t)a6
+- (void)taskWithDescription:(id)description didCompleteWithError:(id)error totalBytesWritten:(int64_t)written totalBytesExpectedToWrite:(int64_t)write
 {
-  v10 = a3;
-  v11 = a4;
-  if (v10)
+  descriptionCopy = description;
+  errorCopy = error;
+  if (descriptionCopy)
   {
-    v12 = [(NSMutableDictionary *)self->_taskProgress objectForKeyedSubscript:v10];
+    v12 = [(NSMutableDictionary *)self->_taskProgress objectForKeyedSubscript:descriptionCopy];
     if (v12)
     {
-      [(TSUDownloadSession *)self updateTaskProgress:v12 withTotalBytesWritten:a5 totalBytesExpectedToWrite:a6];
+      [(TSUDownloadSession *)self updateTaskProgress:v12 withTotalBytesWritten:written totalBytesExpectedToWrite:write];
       [v12 setIsActive:0];
       accessQueue = self->_accessQueue;
       block[0] = MEMORY[0x277D85DD0];
@@ -449,8 +449,8 @@ uint64_t __62__TSUDownloadSession_headRequestForDownloadItem_taskProgress___bloc
       block[2] = __107__TSUDownloadSession_taskWithDescription_didCompleteWithError_totalBytesWritten_totalBytesExpectedToWrite___block_invoke;
       block[3] = &unk_279D66600;
       block[4] = self;
-      v15 = v10;
-      v16 = v11;
+      v15 = descriptionCopy;
+      v16 = errorCopy;
       dispatch_async(accessQueue, block);
     }
   }
@@ -500,44 +500,44 @@ void __107__TSUDownloadSession_taskWithDescription_didCompleteWithError_totalByt
   [WeakRetained downloadSession:*(a1 + 32) didCompleteWithError:*(a1 + 40)];
 }
 
-- (void)taskWithDescription:(id)a3 didWriteData:(int64_t)a4 totalBytesWritten:(int64_t)a5 totalBytesExpectedToWrite:(int64_t)a6
+- (void)taskWithDescription:(id)description didWriteData:(int64_t)data totalBytesWritten:(int64_t)written totalBytesExpectedToWrite:(int64_t)write
 {
-  if (a3)
+  if (description)
   {
-    v9 = [(NSMutableDictionary *)self->_taskProgress objectForKeyedSubscript:a3, a4];
-    [(TSUDownloadSession *)self updateTaskProgress:v9 withTotalBytesWritten:a5 totalBytesExpectedToWrite:a6];
+    data = [(NSMutableDictionary *)self->_taskProgress objectForKeyedSubscript:description, data];
+    [(TSUDownloadSession *)self updateTaskProgress:data withTotalBytesWritten:written totalBytesExpectedToWrite:write];
   }
 }
 
-- (void)updateTaskProgress:(id)a3 withTotalBytesWritten:(int64_t)a4 totalBytesExpectedToWrite:(int64_t)a5
+- (void)updateTaskProgress:(id)progress withTotalBytesWritten:(int64_t)written totalBytesExpectedToWrite:(int64_t)write
 {
-  v9 = a3;
-  if ([v9 isActive])
+  progressCopy = progress;
+  if ([progressCopy isActive])
   {
-    if (a4 == a5)
+    if (written == write)
     {
-      a5 = a4;
-      if ([v9 totalBytesExpectedToBeDownloaded] >= a4)
+      write = written;
+      if ([progressCopy totalBytesExpectedToBeDownloaded] >= written)
       {
-        a4 = [v9 totalBytesExpectedToBeDownloaded];
-        a5 = a4;
+        written = [progressCopy totalBytesExpectedToBeDownloaded];
+        write = written;
       }
     }
 
     else
     {
-      v8 = v9;
-      if (!a4)
+      v8 = progressCopy;
+      if (!written)
       {
 LABEL_7:
-        [v8 setTotalBytesExpectedToBeDownloaded:a5];
+        [v8 setTotalBytesExpectedToBeDownloaded:write];
         [(TSUDownloadSession *)self updateProgressAndNotifyDelegate];
         goto LABEL_8;
       }
     }
 
-    [v9 setTotalBytesDownloaded:a4];
-    v8 = v9;
+    [progressCopy setTotalBytesDownloaded:written];
+    v8 = progressCopy;
     goto LABEL_7;
   }
 
@@ -617,16 +617,16 @@ void __53__TSUDownloadSession_updateProgressAndNotifyDelegate__block_invoke_2(vo
   [WeakRetained downloadSession:a1[4] didDownloadData:*(*(a1[5] + 8) + 24) totalBytesExpectedToBeDownloaded:*(*(a1[6] + 8) + 24)];
 }
 
-- (void)cancelRemainingTasksNotifyingDelegate:(BOOL)a3
+- (void)cancelRemainingTasksNotifyingDelegate:(BOOL)delegate
 {
-  v3 = a3;
+  delegateCopy = delegate;
   v5 = [(NSMutableSet *)self->_remainingTasks count];
   if (v5)
   {
     v6 = v5;
     if (self->_error)
     {
-      if (v3)
+      if (delegateCopy)
       {
 LABEL_6:
         WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -657,7 +657,7 @@ LABEL_6:
       error = self->_error;
       self->_error = v7;
 
-      if (v3)
+      if (delegateCopy)
       {
         goto LABEL_6;
       }

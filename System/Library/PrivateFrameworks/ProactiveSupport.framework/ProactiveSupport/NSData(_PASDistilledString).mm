@@ -7,7 +7,7 @@
 - (id)_pas_revivedString
 {
   v2 = objc_autoreleasePoolPush();
-  v3 = [a1 base64EncodedStringWithOptions:0];
+  v3 = [self base64EncodedStringWithOptions:0];
   objc_autoreleasePoolPop(v2);
 
   return v3;

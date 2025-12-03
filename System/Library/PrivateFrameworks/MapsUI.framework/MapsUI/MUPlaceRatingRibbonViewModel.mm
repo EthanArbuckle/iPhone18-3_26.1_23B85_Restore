@@ -1,21 +1,21 @@
 @interface MUPlaceRatingRibbonViewModel
-- (BOOL)isEqual:(id)a3;
-- (MUPlaceRatingRibbonViewModel)initWithMapItem:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (MUPlaceRatingRibbonViewModel)initWithMapItem:(id)item;
 - (void)_updateStringProviders;
 @end
 
 @implementation MUPlaceRatingRibbonViewModel
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v9 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = v5;
     v11.receiver = self;
@@ -23,15 +23,15 @@
     if ([(MUPlaceRibbonItemViewModel *)&v11 isEqual:v6])
     {
       mapItem = self->_mapItem;
-      v8 = [(MUPlaceRatingRibbonViewModel *)v6 mapItem];
-      if (mapItem == v8)
+      mapItem = [(MUPlaceRatingRibbonViewModel *)v6 mapItem];
+      if (mapItem == mapItem)
       {
         v9 = 1;
       }
 
       else
       {
-        v9 = [(MKMapItem *)mapItem isEqual:v8];
+        v9 = [(MKMapItem *)mapItem isEqual:mapItem];
       }
     }
 
@@ -52,29 +52,29 @@
 - (void)_updateStringProviders
 {
   v3 = self->_mapItem;
-  v4 = [(MKMapItem *)v3 _geoMapItem];
-  v5 = [v4 _sampleSizeForUserRatingScore];
+  _geoMapItem = [(MKMapItem *)v3 _geoMapItem];
+  _sampleSizeForUserRatingScore = [_geoMapItem _sampleSizeForUserRatingScore];
 
   if (v3)
   {
-    v6 = [(MKMapItem *)v3 _geoMapItem];
-    v7 = [v6 _hasAppleRatings];
+    _geoMapItem2 = [(MKMapItem *)v3 _geoMapItem];
+    _hasAppleRatings = [_geoMapItem2 _hasAppleRatings];
 
-    if (v7)
+    if (_hasAppleRatings)
     {
-      v8 = [MEMORY[0x1E696F1F0] stringFromCount:v5];
-      v9 = _MULocalizedStringFromThisBundle(@"<num> Ratings");
-      v10 = [MEMORY[0x1E696AEC0] localizedStringWithValidatedFormat:v9 validFormatSpecifiers:@"%d %@" error:0, v5, v8];
+      v8 = [MEMORY[0x1E696F1F0] stringFromCount:_sampleSizeForUserRatingScore];
+      providerName = _MULocalizedStringFromThisBundle(@"<num> Ratings");
+      v10 = [MEMORY[0x1E696AEC0] localizedStringWithValidatedFormat:providerName validFormatSpecifiers:@"%d %@" error:0, _sampleSizeForUserRatingScore, v8];
     }
 
     else
     {
-      v11 = [(MKMapItem *)v3 _reviewsAttribution];
-      v9 = [v11 providerName];
+      _reviewsAttribution = [(MKMapItem *)v3 _reviewsAttribution];
+      providerName = [_reviewsAttribution providerName];
 
       v12 = MEMORY[0x1E696AEC0];
-      v13 = [MEMORY[0x1E696F1F0] stringFromCount:v5];
-      v10 = [v12 stringWithFormat:@"%@ (%@)", v9, v13];
+      v13 = [MEMORY[0x1E696F1F0] stringFromCount:_sampleSizeForUserRatingScore];
+      v10 = [v12 stringWithFormat:@"%@ (%@)", providerName, v13];
     }
   }
 
@@ -102,8 +102,8 @@
   v17 = v3;
   v20 = v17;
   [(MUPlaceRibbonItemViewModel *)self setValueStringProvider:v19];
-  v18 = [(MUPlaceRibbonItemViewModel *)self updateDelegate];
-  [v18 ribbonItemViewModelDidUpdate:self];
+  updateDelegate = [(MUPlaceRibbonItemViewModel *)self updateDelegate];
+  [updateDelegate ribbonItemViewModelDidUpdate:self];
 
   objc_destroyWeak(&v21);
   objc_destroyWeak(&location);
@@ -249,13 +249,13 @@ id __54__MUPlaceRatingRibbonViewModel__updateStringProviders__block_invoke(uint6
   return v6;
 }
 
-- (MUPlaceRatingRibbonViewModel)initWithMapItem:(id)a3
+- (MUPlaceRatingRibbonViewModel)initWithMapItem:(id)item
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5 && ![v5 _hasUserRatingScore])
+  itemCopy = item;
+  v6 = itemCopy;
+  if (itemCopy && ![itemCopy _hasUserRatingScore])
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -266,16 +266,16 @@ id __54__MUPlaceRatingRibbonViewModel__updateStringProviders__block_invoke(uint6
     v8 = v7;
     if (v7)
     {
-      objc_storeStrong(&v7->_mapItem, a3);
+      objc_storeStrong(&v7->_mapItem, item);
       [(MUPlaceRibbonItemViewModel *)v8 setType:1];
       [(MUPlaceRatingRibbonViewModel *)v8 _updateStringProviders];
     }
 
     self = v8;
-    v9 = self;
+    selfCopy = self;
   }
 
-  return v9;
+  return selfCopy;
 }
 
 @end

@@ -1,11 +1,11 @@
 @interface HDFitnessMachineService
 + (id)implementedProperties;
-+ (unint64_t)typeFromAdvertisementData:(id)a3;
-- (BOOL)processAdvertisementData:(id)a3;
++ (unint64_t)typeFromAdvertisementData:(id)data;
+- (BOOL)processAdvertisementData:(id)data;
 - (id)servicesInProfile;
-- (void)peripheral:(id)a3 didDiscoverCharacteristic:(id)a4;
-- (void)peripheral:(id)a3 didUpdateValueForCharacteristic:(id)a4 updateTime:(id)a5 error:(id)a6;
-- (void)readProperty:(id)a3;
+- (void)peripheral:(id)peripheral didDiscoverCharacteristic:(id)characteristic;
+- (void)peripheral:(id)peripheral didUpdateValueForCharacteristic:(id)characteristic updateTime:(id)time error:(id)error;
+- (void)readProperty:(id)property;
 @end
 
 @implementation HDFitnessMachineService
@@ -18,14 +18,14 @@
   return v2;
 }
 
-- (void)readProperty:(id)a3
+- (void)readProperty:(id)property
 {
-  v6 = a3;
-  if ([v6 isEqual:@"fitnessMachineType"])
+  propertyCopy = property;
+  if ([propertyCopy isEqual:@"fitnessMachineType"])
   {
-    v4 = [(HDHealthService *)self healthPeripheral];
+    healthPeripheral = [(HDHealthService *)self healthPeripheral];
     v5 = [NSNumber numberWithUnsignedInteger:self->_machineType];
-    [v4 service:self didReadProperty:v6 value:v5 error:0];
+    [healthPeripheral service:self didReadProperty:propertyCopy value:v5 error:0];
   }
 }
 
@@ -40,38 +40,38 @@
   return v4;
 }
 
-- (void)peripheral:(id)a3 didDiscoverCharacteristic:(id)a4
+- (void)peripheral:(id)peripheral didDiscoverCharacteristic:(id)characteristic
 {
-  v9 = a3;
-  v5 = a4;
+  peripheralCopy = peripheral;
+  characteristicCopy = characteristic;
   v6 = sub_9A04();
-  v7 = [v5 UUID];
-  v8 = [v6 objectForKeyedSubscript:v7];
+  uUID = [characteristicCopy UUID];
+  v8 = [v6 objectForKeyedSubscript:uUID];
 
-  if (v8 && ([v5 properties] & 0x10) != 0)
+  if (v8 && ([characteristicCopy properties] & 0x10) != 0)
   {
-    [v9 setNotifyValue:1 forCharacteristic:v5];
+    [peripheralCopy setNotifyValue:1 forCharacteristic:characteristicCopy];
   }
 }
 
-- (void)peripheral:(id)a3 didUpdateValueForCharacteristic:(id)a4 updateTime:(id)a5 error:(id)a6
+- (void)peripheral:(id)peripheral didUpdateValueForCharacteristic:(id)characteristic updateTime:(id)time error:(id)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (v13)
+  peripheralCopy = peripheral;
+  characteristicCopy = characteristic;
+  timeCopy = time;
+  errorCopy = error;
+  if (errorCopy)
   {
     _HKInitializeLogging();
     v14 = HKLogServices;
     if (os_log_type_enabled(HKLogServices, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412802;
-      v25 = v10;
+      v25 = peripheralCopy;
       v26 = 2112;
-      v27 = v11;
+      v27 = characteristicCopy;
       v28 = 2114;
-      v29 = v13;
+      v29 = errorCopy;
       _os_log_error_impl(&dword_0, v14, OS_LOG_TYPE_ERROR, "Error on characteristic update for peripheral: %@ characteristic: %@; %{public}@", buf, 0x20u);
     }
   }
@@ -79,14 +79,14 @@
   else
   {
     v15 = sub_9A04();
-    v16 = [v11 UUID];
-    v17 = [v15 objectForKeyedSubscript:v16];
+    uUID = [characteristicCopy UUID];
+    v17 = [v15 objectForKeyedSubscript:uUID];
 
     if (v17)
     {
-      v18 = [v11 value];
+      value = [characteristicCopy value];
       v23 = 0;
-      v19 = [v17 buildWithBinaryValue:v18 updateTime:v12 error:&v23];
+      v19 = [v17 buildWithBinaryValue:value updateTime:timeCopy error:&v23];
       v20 = v23;
 
       if (v19)
@@ -101,9 +101,9 @@
         if (os_log_type_enabled(HKLogServices, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412802;
-          v25 = v10;
+          v25 = peripheralCopy;
           v26 = 2112;
-          v27 = v11;
+          v27 = characteristicCopy;
           v28 = 2114;
           v29 = v20;
           _os_log_error_impl(&dword_0, v22, OS_LOG_TYPE_ERROR, "Error handling characteristic update for peripheral: %@ characteristic: %@; %{public}@", buf, 0x20u);
@@ -117,20 +117,20 @@
       v21 = HKLogServices;
       if (os_log_type_enabled(HKLogServices, OS_LOG_TYPE_DEBUG))
       {
-        sub_2BCE0(v21, v11);
+        sub_2BCE0(v21, characteristicCopy);
       }
     }
   }
 }
 
-+ (unint64_t)typeFromAdvertisementData:(id)a3
++ (unint64_t)typeFromAdvertisementData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v10 = 0;
-  if ([v3 length] >= 3)
+  if ([dataCopy length] >= 3)
   {
     v4 = 1;
-    [v3 getBytes:&v10 range:{1, 2}];
+    [dataCopy getBytes:&v10 range:{1, 2}];
     if ((v10 & 1) == 0)
     {
       v5 = 3;
@@ -177,10 +177,10 @@
   return v4;
 }
 
-- (BOOL)processAdvertisementData:(id)a3
+- (BOOL)processAdvertisementData:(id)data
 {
-  v4 = a3;
-  v5 = [objc_opt_class() typeFromAdvertisementData:v4];
+  dataCopy = data;
+  v5 = [objc_opt_class() typeFromAdvertisementData:dataCopy];
   v6 = v5;
   if (v5)
   {
@@ -193,7 +193,7 @@
     v7 = HKLogServices;
     if (os_log_type_enabled(HKLogServices, OS_LOG_TYPE_ERROR))
     {
-      sub_2BD88(v4, v7);
+      sub_2BD88(dataCopy, v7);
     }
   }
 

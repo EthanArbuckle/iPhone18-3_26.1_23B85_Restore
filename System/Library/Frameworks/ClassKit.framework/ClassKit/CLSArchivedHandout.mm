@@ -1,70 +1,70 @@
 @interface CLSArchivedHandout
-+ (BOOL)migrateFromVersion:(unint64_t)a3 finalVersion:(unint64_t *)a4 inDatabase:(id)a5;
-- (id)initWithDatabaseRow:(id)a3;
-- (void)bindTo:(id)a3;
-- (void)willBeDeletedFromDatabase:(id)a3;
++ (BOOL)migrateFromVersion:(unint64_t)version finalVersion:(unint64_t *)finalVersion inDatabase:(id)database;
+- (id)initWithDatabaseRow:(id)row;
+- (void)bindTo:(id)to;
+- (void)willBeDeletedFromDatabase:(id)database;
 @end
 
 @implementation CLSArchivedHandout
 
-- (id)initWithDatabaseRow:(id)a3
+- (id)initWithDatabaseRow:(id)row
 {
-  v4 = a3;
+  rowCopy = row;
   v5 = [(CLSArchivedHandout *)self init];
   v6 = v5;
   if (v5)
   {
-    [(CLSArchivedHandout *)v5 _initCommonPropsWithDatabaseRow:v4];
-    v7 = sub_10016D778(v4, @"title");
+    [(CLSArchivedHandout *)v5 _initCommonPropsWithDatabaseRow:rowCopy];
+    v7 = sub_10016D778(rowCopy, @"title");
     [(CLSArchivedHandout *)v6 setTitle:v7];
 
-    v8 = sub_10016D778(v4, @"instructions");
+    v8 = sub_10016D778(rowCopy, @"instructions");
     [(CLSArchivedHandout *)v6 setInstructions:v8];
 
-    v9 = sub_10016D6F0(v4, @"dueDate");
+    v9 = sub_10016D6F0(rowCopy, @"dueDate");
     [(CLSArchivedHandout *)v6 setDueDate:v9];
 
-    v10 = sub_10016D6F0(v4, @"dateOfPublication");
+    v10 = sub_10016D6F0(rowCopy, @"dateOfPublication");
     [(CLSArchivedHandout *)v6 setDateOfPublication:v10];
 
-    v11 = sub_10016D778(v4, @"version");
+    v11 = sub_10016D778(rowCopy, @"version");
     -[CLSArchivedHandout setVersion:](v6, "setVersion:", [v11 integerValue]);
   }
 
   return v6;
 }
 
-- (void)bindTo:(id)a3
+- (void)bindTo:(id)to
 {
   v11.receiver = self;
   v11.super_class = CLSArchivedHandout;
-  v4 = a3;
-  [(CLSArchivedHandout *)&v11 bindTo:v4];
+  toCopy = to;
+  [(CLSArchivedHandout *)&v11 bindTo:toCopy];
   v12 = @"appIdentifier";
   v5 = [NSArray arrayWithObjects:&v12 count:1, v11.receiver, v11.super_class];
-  sub_1000983A8(v4, v5);
+  sub_1000983A8(toCopy, v5);
 
-  v6 = [(CLSArchivedHandout *)self dueDate];
-  sub_1000982FC(v4, v6, @"dueDate");
+  dueDate = [(CLSArchivedHandout *)self dueDate];
+  sub_1000982FC(toCopy, dueDate, @"dueDate");
 
-  v7 = [(CLSArchivedHandout *)self instructions];
-  sub_1000982FC(v4, v7, @"instructions");
+  instructions = [(CLSArchivedHandout *)self instructions];
+  sub_1000982FC(toCopy, instructions, @"instructions");
 
-  v8 = [(CLSArchivedHandout *)self title];
-  sub_1000982FC(v4, v8, @"title");
+  title = [(CLSArchivedHandout *)self title];
+  sub_1000982FC(toCopy, title, @"title");
 
-  v9 = [(CLSArchivedHandout *)self dateOfPublication];
-  sub_1000982FC(v4, v9, @"dateOfPublication");
+  dateOfPublication = [(CLSArchivedHandout *)self dateOfPublication];
+  sub_1000982FC(toCopy, dateOfPublication, @"dateOfPublication");
 
   v10 = [NSNumber numberWithInteger:[(CLSArchivedHandout *)self version]];
-  sub_1000982FC(v4, v10, @"version");
+  sub_1000982FC(toCopy, v10, @"version");
 }
 
-+ (BOOL)migrateFromVersion:(unint64_t)a3 finalVersion:(unint64_t *)a4 inDatabase:(id)a5
++ (BOOL)migrateFromVersion:(unint64_t)version finalVersion:(unint64_t *)finalVersion inDatabase:(id)database
 {
-  v7 = a5;
-  v8 = v7;
-  switch(a3)
+  databaseCopy = database;
+  v8 = databaseCopy;
+  switch(version)
   {
     case 2uLL:
       goto LABEL_7;
@@ -86,7 +86,7 @@ LABEL_7:
             {
               if (sub_1000B9298(v8, @"create unique index if not exists CLSArchivedHandout_objectID on CLSArchivedHandout (objectID)", 0, 0, 0))
               {
-                a3 = 3;
+                version = 3;
                 break;
               }
 
@@ -165,7 +165,7 @@ LABEL_24:
       _os_log_error_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, v11, v12, 2u);
       goto LABEL_25;
     case 0uLL:
-      if (!sub_1000B9298(v7, @"create table CLSArchivedHandout(   objectID            text not null,    appIdentifier       text not null,    dateCreated         real not null,    dateLastModified    real not null,    dateOfPublication   real,    dueDate             real,    instructions        text,    title               text,    parentObjectID      text)", 0, 0, 0) || !sub_1000B9298(v8, @"create unique index if not exists CLSArchivedHandout_objectID on CLSArchivedHandout (objectID)", 0, 0, 0))
+      if (!sub_1000B9298(databaseCopy, @"create table CLSArchivedHandout(   objectID            text not null,    appIdentifier       text not null,    dateCreated         real not null,    dateLastModified    real not null,    dateOfPublication   real,    dueDate             real,    instructions        text,    title               text,    parentObjectID      text)", 0, 0, 0) || !sub_1000B9298(v8, @"create unique index if not exists CLSArchivedHandout_objectID on CLSArchivedHandout (objectID)", 0, 0, 0))
       {
         goto LABEL_25;
       }
@@ -173,21 +173,21 @@ LABEL_24:
       goto LABEL_6;
   }
 
-  *a4 = a3;
+  *finalVersion = version;
   v9 = 1;
 LABEL_26:
 
   return v9;
 }
 
-- (void)willBeDeletedFromDatabase:(id)a3
+- (void)willBeDeletedFromDatabase:(id)database
 {
-  v4 = a3;
-  v5 = [(CLSArchivedHandout *)self objectID];
-  v7 = v5;
+  databaseCopy = database;
+  objectID = [(CLSArchivedHandout *)self objectID];
+  v7 = objectID;
   v6 = [NSArray arrayWithObjects:&v7 count:1];
-  [v4 deleteAll:objc_opt_class() where:@"parentObjectID = ?" bindings:v6];
-  [v4 deleteAll:objc_opt_class() where:@"parentObjectID = ?" bindings:v6];
+  [databaseCopy deleteAll:objc_opt_class() where:@"parentObjectID = ?" bindings:v6];
+  [databaseCopy deleteAll:objc_opt_class() where:@"parentObjectID = ?" bindings:v6];
 }
 
 @end

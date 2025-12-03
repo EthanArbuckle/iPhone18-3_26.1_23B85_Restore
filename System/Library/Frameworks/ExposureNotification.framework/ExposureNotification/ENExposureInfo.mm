@@ -1,8 +1,8 @@
 @interface ENExposureInfo
 - (ENExposureInfo)init;
-- (ENExposureInfo)initWithXPCObject:(id)a3 error:(id *)a4;
+- (ENExposureInfo)initWithXPCObject:(id)object error:(id *)error;
 - (id)description;
-- (void)encodeWithXPCObject:(id)a3;
+- (void)encodeWithXPCObject:(id)object;
 @end
 
 @implementation ENExposureInfo
@@ -25,11 +25,11 @@
   return v3;
 }
 
-- (void)encodeWithXPCObject:(id)a3
+- (void)encodeWithXPCObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   attenuationDurations = self->_attenuationDurations;
-  xdict = v4;
+  xdict = objectCopy;
   CUXPCEncodeNSArrayOfNSNumber();
   if (self->_attenuationValue)
   {
@@ -172,27 +172,27 @@
   return v15;
 }
 
-- (ENExposureInfo)initWithXPCObject:(id)a3 error:(id *)a4
+- (ENExposureInfo)initWithXPCObject:(id)object error:(id *)error
 {
   v21[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  objectCopy = object;
   v7 = [(ENExposureInfo *)self init];
   if (!v7)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_30;
     }
 
 LABEL_29:
     ENErrorF(2);
-    *a4 = v17 = 0;
+    *error = v17 = 0;
     goto LABEL_25;
   }
 
-  if (MEMORY[0x2383EE9C0](v6) != MEMORY[0x277D86468])
+  if (MEMORY[0x2383EE9C0](objectCopy) != MEMORY[0x277D86468])
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_30;
     }

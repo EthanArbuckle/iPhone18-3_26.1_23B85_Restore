@@ -1,20 +1,20 @@
 @interface SIBaseScaler
-- (BOOL)_imageConformsToOutput:(__CVBuffer *)a3;
-- (BOOL)scaleImage:(__CVBuffer *)a3 outputBuffer:(__CVBuffer *)a4;
-- (BOOL)surfaceConformsToOutput:(id)a3;
+- (BOOL)_imageConformsToOutput:(__CVBuffer *)output;
+- (BOOL)scaleImage:(__CVBuffer *)image outputBuffer:(__CVBuffer *)buffer;
+- (BOOL)surfaceConformsToOutput:(id)output;
 - (CGSize)outputResolution;
-- (__CVBuffer)createScaledImage:(__CVBuffer *)a3;
-- (id)initForOutputResolution:(CGSize)a3 outputPixelFormat:(unsigned int)a4 mode:(unint64_t)a5 bytePerRowAlignment:(unint64_t)a6 algorithmKey:(id)a7;
+- (__CVBuffer)createScaledImage:(__CVBuffer *)image;
+- (id)initForOutputResolution:(CGSize)resolution outputPixelFormat:(unsigned int)format mode:(unint64_t)mode bytePerRowAlignment:(unint64_t)alignment algorithmKey:(id)key;
 @end
 
 @implementation SIBaseScaler
 
-- (id)initForOutputResolution:(CGSize)a3 outputPixelFormat:(unsigned int)a4 mode:(unint64_t)a5 bytePerRowAlignment:(unint64_t)a6 algorithmKey:(id)a7
+- (id)initForOutputResolution:(CGSize)resolution outputPixelFormat:(unsigned int)format mode:(unint64_t)mode bytePerRowAlignment:(unint64_t)alignment algorithmKey:(id)key
 {
-  height = a3.height;
-  width = a3.width;
+  height = resolution.height;
+  width = resolution.width;
   v30 = *MEMORY[0x277D85DE8];
-  v12 = a7;
+  keyCopy = key;
   v22.receiver = self;
   v22.super_class = SIBaseScaler;
   v13 = [(SIBaseScaler *)&v22 init];
@@ -47,10 +47,10 @@ LABEL_10:
 
   v13->_outputResolution.width = width;
   v13->_outputResolution.height = height;
-  v13->_outputPixelFormat = a4;
-  v13->_outputBufferBytePerRowAlignment = a6;
+  v13->_outputPixelFormat = format;
+  v13->_outputBufferBytePerRowAlignment = alignment;
   *buf = 0;
-  v15 = v12;
+  v15 = keyCopy;
   v16 = [v15 getBytes:buf maxLength:8 usedLength:0 encoding:1 options:0 range:0 remainingRange:{objc_msgSend(v15, "length"), 0}];
 
   v17 = *buf;
@@ -67,7 +67,7 @@ LABEL_11:
   return v18;
 }
 
-- (BOOL)scaleImage:(__CVBuffer *)a3 outputBuffer:(__CVBuffer *)a4
+- (BOOL)scaleImage:(__CVBuffer *)image outputBuffer:(__CVBuffer *)buffer
 {
   v11 = *MEMORY[0x277D85DE8];
   v4 = __SceneIntelligenceLogSharedInstance();
@@ -84,7 +84,7 @@ LABEL_11:
   return 0;
 }
 
-- (__CVBuffer)createScaledImage:(__CVBuffer *)a3
+- (__CVBuffer)createScaledImage:(__CVBuffer *)image
 {
   v10 = *MEMORY[0x277D85DE8];
   v3 = __SceneIntelligenceLogSharedInstance();
@@ -101,18 +101,18 @@ LABEL_11:
   return 0;
 }
 
-- (BOOL)_imageConformsToOutput:(__CVBuffer *)a3
+- (BOOL)_imageConformsToOutput:(__CVBuffer *)output
 {
-  IOSurface = CVPixelBufferGetIOSurface(a3);
+  IOSurface = CVPixelBufferGetIOSurface(output);
   if (IOSurface)
   {
     width = self->_outputResolution.width;
-    if (width == CVPixelBufferGetWidth(a3) && (height = self->_outputResolution.height, height == CVPixelBufferGetHeight(a3)) && (outputPixelFormat = self->_outputPixelFormat, outputPixelFormat == CVPixelBufferGetPixelFormatType(a3)))
+    if (width == CVPixelBufferGetWidth(output) && (height = self->_outputResolution.height, height == CVPixelBufferGetHeight(output)) && (outputPixelFormat = self->_outputPixelFormat, outputPixelFormat == CVPixelBufferGetPixelFormatType(output)))
     {
       outputBufferBytePerRowAlignment = self->_outputBufferBytePerRowAlignment;
       if (outputBufferBytePerRowAlignment)
       {
-        LOBYTE(IOSurface) = outputBufferBytePerRowAlignment == CVPixelBufferGetBytesPerRowOfPlane(a3, 0);
+        LOBYTE(IOSurface) = outputBufferBytePerRowAlignment == CVPixelBufferGetBytesPerRowOfPlane(output, 0);
       }
 
       else
@@ -130,16 +130,16 @@ LABEL_11:
   return IOSurface;
 }
 
-- (BOOL)surfaceConformsToOutput:(id)a3
+- (BOOL)surfaceConformsToOutput:(id)output
 {
-  v4 = a3;
+  outputCopy = output;
   width = self->_outputResolution.width;
-  if (width == [v4 width] && (height = self->_outputResolution.height, height == objc_msgSend(v4, "height")) && (outputPixelFormat = self->_outputPixelFormat, outputPixelFormat == objc_msgSend(v4, "pixelFormat")))
+  if (width == [outputCopy width] && (height = self->_outputResolution.height, height == objc_msgSend(outputCopy, "height")) && (outputPixelFormat = self->_outputPixelFormat, outputPixelFormat == objc_msgSend(outputCopy, "pixelFormat")))
   {
     outputBufferBytePerRowAlignment = self->_outputBufferBytePerRowAlignment;
     if (outputBufferBytePerRowAlignment)
     {
-      v9 = outputBufferBytePerRowAlignment == [v4 bytesPerRow];
+      v9 = outputBufferBytePerRowAlignment == [outputCopy bytesPerRow];
     }
 
     else

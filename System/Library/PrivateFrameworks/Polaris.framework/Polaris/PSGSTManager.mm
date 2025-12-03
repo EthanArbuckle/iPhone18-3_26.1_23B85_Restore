@@ -1,52 +1,52 @@
 @interface PSGSTManager
-- (id)handleMessage:(id)a3;
-- (id)removeGST:(id)a3;
-- (id)reserveGST:(id)a3;
-- (unint64_t)changeCadenceAtOrAfterFrameId:(id)a3 frameID:(unint64_t)a4 stride:(unint64_t)a5 offset:(unint64_t)a6;
-- (unint64_t)changeCadenceOnNextValidFrameId:(id)a3 stride:(unint64_t)a4 offset:(unint64_t)a5;
-- (void)removeGraphs:(id)a3;
-- (void)removeThreadPool:(id)a3;
-- (void)removeWaiter:(id)a3;
-- (void)reserveCadenceGST:(id)a3 pid:(int)a4 graphID:(id)a5 gstPtr:(ps_gsm_gst_s *)a6 sharedTriggerPtr:(ps_gsm_shared_trigger_s *)a7;
-- (void)reserveLegacyGST:(id)a3 pid:(int)a4 graphID:(id)a5 gstPtr:(ps_gsm_gst_s *)a6 sharedTriggerPtr:(ps_gsm_shared_trigger_s *)a7;
-- (void)sourceClearGST:(id)a3;
+- (id)handleMessage:(id)message;
+- (id)removeGST:(id)t;
+- (id)reserveGST:(id)t;
+- (unint64_t)changeCadenceAtOrAfterFrameId:(id)id frameID:(unint64_t)d stride:(unint64_t)stride offset:(unint64_t)offset;
+- (unint64_t)changeCadenceOnNextValidFrameId:(id)id stride:(unint64_t)stride offset:(unint64_t)offset;
+- (void)removeGraphs:(id)graphs;
+- (void)removeThreadPool:(id)pool;
+- (void)removeWaiter:(id)waiter;
+- (void)reserveCadenceGST:(id)t pid:(int)pid graphID:(id)d gstPtr:(ps_gsm_gst_s *)ptr sharedTriggerPtr:(ps_gsm_shared_trigger_s *)triggerPtr;
+- (void)reserveLegacyGST:(id)t pid:(int)pid graphID:(id)d gstPtr:(ps_gsm_gst_s *)ptr sharedTriggerPtr:(ps_gsm_shared_trigger_s *)triggerPtr;
+- (void)sourceClearGST:(id)t;
 @end
 
 @implementation PSGSTManager
 
-- (void)reserveLegacyGST:(id)a3 pid:(int)a4 graphID:(id)a5 gstPtr:(ps_gsm_gst_s *)a6 sharedTriggerPtr:(ps_gsm_shared_trigger_s *)a7
+- (void)reserveLegacyGST:(id)t pid:(int)pid graphID:(id)d gstPtr:(ps_gsm_gst_s *)ptr sharedTriggerPtr:(ps_gsm_shared_trigger_s *)triggerPtr
 {
   v40 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  string = xpc_dictionary_get_string(v9, "graph_name");
+  tCopy = t;
+  string = xpc_dictionary_get_string(tCopy, "graph_name");
   v11 = __PSSGLogSharedInstance();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
     *buf = 136315394;
     v37 = string;
     v38 = 1024;
-    v39 = a4;
+    pidCopy = pid;
     _os_log_impl(&dword_25EA3A000, v11, OS_LOG_TYPE_DEBUG, "Received a graph addition message for graph %s for client pid = %d", buf, 0x12u);
   }
 
-  v34 = a4;
+  pidCopy2 = pid;
 
-  uint64 = xpc_dictionary_get_uint64(v9, "num_sources");
-  v32 = xpc_dictionary_get_BOOL(v9, "synced_buffers");
-  v31 = xpc_dictionary_get_uint64(v9, "graph_exec_type");
-  v29 = xpc_dictionary_get_uint64(v9, "graph_threadpool_id");
-  v28 = xpc_dictionary_get_string(v9, "graph_threadpool_name");
-  v30 = xpc_dictionary_get_uint64(v9, "graph_subgraph_idx");
-  v13 = xpc_dictionary_get_value(v9, "source_names_array");
-  v14 = xpc_dictionary_get_value(v9, "storage_modes_array");
-  v15 = xpc_dictionary_get_value(v9, "down_sample_factor_array");
-  v16 = xpc_dictionary_get_value(v9, "stride_factor_array");
+  uint64 = xpc_dictionary_get_uint64(tCopy, "num_sources");
+  v32 = xpc_dictionary_get_BOOL(tCopy, "synced_buffers");
+  v31 = xpc_dictionary_get_uint64(tCopy, "graph_exec_type");
+  v29 = xpc_dictionary_get_uint64(tCopy, "graph_threadpool_id");
+  v28 = xpc_dictionary_get_string(tCopy, "graph_threadpool_name");
+  v30 = xpc_dictionary_get_uint64(tCopy, "graph_subgraph_idx");
+  v13 = xpc_dictionary_get_value(tCopy, "source_names_array");
+  v14 = xpc_dictionary_get_value(tCopy, "storage_modes_array");
+  v15 = xpc_dictionary_get_value(tCopy, "down_sample_factor_array");
+  v16 = xpc_dictionary_get_value(tCopy, "stride_factor_array");
   v17 = malloc_type_calloc(uint64, 0x88uLL, 0x1000040B5CA6940uLL);
   v18 = malloc_type_calloc(uint64, 1uLL, 0x100004077774924uLL);
   if (v13 && v14 && v15 && v16)
   {
     v26 = string;
-    v27 = a7;
+    triggerPtrCopy = triggerPtr;
     if (uint64)
     {
       v19 = 0;
@@ -68,18 +68,18 @@
     if (v31 == 1)
     {
       v21 = [MEMORY[0x277CCACA8] stringWithUTF8String:v28];
-      v22 = [(PSGSTManager *)self initSharedTrigger:v21 threadPoolID:v29 pid:v34];
+      v22 = [(PSGSTManager *)self initSharedTrigger:v21 threadPoolID:v29 pid:pidCopy2];
 
-      muxed_gst = ps_gsm_create_muxed_gst([(PSGSTManager *)self gsm], v26, uint64, v17, v18, v32, v22, v30, v34);
+      muxed_gst = ps_gsm_create_muxed_gst([(PSGSTManager *)self gsm], v26, uint64, v17, v18, v32, v22, v30, pidCopy2);
     }
 
     else
     {
-      muxed_gst = ps_gsm_create_gst([(PSGSTManager *)self gsm], v26, uint64, v17, v18, v32, v34);
+      muxed_gst = ps_gsm_create_gst([(PSGSTManager *)self gsm], v26, uint64, v17, v18, v32, pidCopy2);
       v22 = 0;
     }
 
-    a7 = v27;
+    triggerPtr = triggerPtrCopy;
   }
 
   else
@@ -98,48 +98,48 @@
 
   free(v17);
   free(v18);
-  *a6 = muxed_gst;
-  *a7 = v22;
+  *ptr = muxed_gst;
+  *triggerPtr = v22;
 
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)reserveCadenceGST:(id)a3 pid:(int)a4 graphID:(id)a5 gstPtr:(ps_gsm_gst_s *)a6 sharedTriggerPtr:(ps_gsm_shared_trigger_s *)a7
+- (void)reserveCadenceGST:(id)t pid:(int)pid graphID:(id)d gstPtr:(ps_gsm_gst_s *)ptr sharedTriggerPtr:(ps_gsm_shared_trigger_s *)triggerPtr
 {
   v57 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v53 = a5;
-  string = xpc_dictionary_get_string(v10, "graph_name");
+  tCopy = t;
+  dCopy = d;
+  string = xpc_dictionary_get_string(tCopy, "graph_name");
   v12 = __PSSGLogSharedInstance();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
     *buf = 136315394;
     *v55 = string;
     *&v55[8] = 1024;
-    *v56 = a4;
+    *v56 = pid;
     _os_log_impl(&dword_25EA3A000, v12, OS_LOG_TYPE_DEBUG, "Received a graph addition message for graph %s for client pid = %d", buf, 0x12u);
   }
 
   v51 = string;
 
-  uint64 = xpc_dictionary_get_uint64(v10, "num_sources");
-  v49 = xpc_dictionary_get_uint64(v10, "graph_exec_type");
-  v47 = xpc_dictionary_get_uint64(v10, "graph_threadpool_id");
-  v46 = xpc_dictionary_get_string(v10, "graph_threadpool_name");
-  v14 = xpc_dictionary_get_uint64(v10, "graph_subgraph_idx");
-  v44 = xpc_dictionary_get_uint64(v10, "stride");
-  v43 = xpc_dictionary_get_uint64(v10, "desired_offset");
-  v15 = xpc_dictionary_get_value(v10, "source_names_array");
-  v16 = xpc_dictionary_get_value(v10, "storage_modes_array");
-  v17 = xpc_dictionary_get_BOOL(v10, "force_cadenced_GST");
+  uint64 = xpc_dictionary_get_uint64(tCopy, "num_sources");
+  v49 = xpc_dictionary_get_uint64(tCopy, "graph_exec_type");
+  v47 = xpc_dictionary_get_uint64(tCopy, "graph_threadpool_id");
+  v46 = xpc_dictionary_get_string(tCopy, "graph_threadpool_name");
+  v14 = xpc_dictionary_get_uint64(tCopy, "graph_subgraph_idx");
+  v44 = xpc_dictionary_get_uint64(tCopy, "stride");
+  v43 = xpc_dictionary_get_uint64(tCopy, "desired_offset");
+  v15 = xpc_dictionary_get_value(tCopy, "source_names_array");
+  v16 = xpc_dictionary_get_value(tCopy, "storage_modes_array");
+  v17 = xpc_dictionary_get_BOOL(tCopy, "force_cadenced_GST");
   v18 = malloc_type_calloc(uint64, 0x80uLL, 0x1000040AE2C30F4uLL);
   v19 = malloc_type_calloc(uint64, 1uLL, 0x100004077774924uLL);
   if (v15 && v16)
   {
     v39 = v14;
     v48 = v18;
-    v41 = a4;
-    v42 = a7;
+    pidCopy = pid;
+    triggerPtrCopy = triggerPtr;
     if (uint64)
     {
       v20 = 0;
@@ -157,64 +157,64 @@
     }
 
     v40 = v17;
-    v23 = [(PSGSTManager *)self graphToStrideMap];
-    v24 = [v23 objectForKey:v53];
+    graphToStrideMap = [(PSGSTManager *)self graphToStrideMap];
+    v24 = [graphToStrideMap objectForKey:dCopy];
 
     if (v24)
     {
-      v25 = [(PSGSTManager *)self graphToStrideMap];
-      v26 = [v25 objectForKey:v53];
-      v27 = [v26 unsignedLongLongValue];
+      graphToStrideMap2 = [(PSGSTManager *)self graphToStrideMap];
+      v26 = [graphToStrideMap2 objectForKey:dCopy];
+      unsignedLongLongValue = [v26 unsignedLongLongValue];
 
-      v28 = [(PSGSTManager *)self graphToOffsetMap];
-      v29 = [v28 objectForKey:v53];
-      v30 = [v29 unsignedLongLongValue];
+      graphToOffsetMap = [(PSGSTManager *)self graphToOffsetMap];
+      v29 = [graphToOffsetMap objectForKey:dCopy];
+      unsignedLongLongValue2 = [v29 unsignedLongLongValue];
     }
 
     else
     {
-      v30 = v43;
-      v27 = v44;
+      unsignedLongLongValue2 = v43;
+      unsignedLongLongValue = v44;
     }
 
     if (!self->_shouldUseOrchestratorV2 && v40)
     {
-      v30 = 2 * (v27 > 2);
+      unsignedLongLongValue2 = 2 * (unsignedLongLongValue > 2);
     }
 
-    v45 = v27 | (v30 << 32);
+    v45 = unsignedLongLongValue | (unsignedLongLongValue2 << 32);
     v35 = [(PSGSTManager *)self log];
     if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
     {
       v36 = [MEMORY[0x277CCACA8] stringWithUTF8String:v51];
       *buf = 67109634;
-      *v55 = v27;
+      *v55 = unsignedLongLongValue;
       *&v55[4] = 1024;
-      *&v55[6] = v30;
+      *&v55[6] = unsignedLongLongValue2;
       *v56 = 2112;
       *&v56[2] = v36;
       _os_log_impl(&dword_25EA3A000, v35, OS_LOG_TYPE_DEFAULT, "Creating GST (stride: %u offset: %u) for %@", buf, 0x18u);
     }
 
-    v34 = v53;
+    v34 = dCopy;
     if (v49 == 1)
     {
       v37 = [MEMORY[0x277CCACA8] stringWithUTF8String:v46];
-      v32 = [(PSGSTManager *)self initSharedTrigger:v37 threadPoolID:v47 pid:v41];
+      v32 = [(PSGSTManager *)self initSharedTrigger:v37 threadPoolID:v47 pid:pidCopy];
 
-      v34 = v53;
+      v34 = dCopy;
       v18 = v48;
-      muxed_gst_with_cadence = ps_gsm_create_muxed_gst_with_cadence([(PSGSTManager *)self gsm], v51, uint64, v48, v19, v45, v32, v39, v41);
+      muxed_gst_with_cadence = ps_gsm_create_muxed_gst_with_cadence([(PSGSTManager *)self gsm], v51, uint64, v48, v19, v45, v32, v39, pidCopy);
     }
 
     else
     {
       v18 = v48;
-      muxed_gst_with_cadence = ps_gsm_create_gst_with_cadence([(PSGSTManager *)self gsm], v51, uint64, v48, v19, v45, v41);
+      muxed_gst_with_cadence = ps_gsm_create_gst_with_cadence([(PSGSTManager *)self gsm], v51, uint64, v48, v19, v45, pidCopy);
       v32 = 0;
     }
 
-    a7 = v42;
+    triggerPtr = triggerPtrCopy;
   }
 
   else
@@ -229,20 +229,20 @@
 
     v32 = 0;
     muxed_gst_with_cadence = 0;
-    v34 = v53;
+    v34 = dCopy;
   }
 
   free(v18);
   free(v19);
-  *a6 = muxed_gst_with_cadence;
-  *a7 = v32;
+  *ptr = muxed_gst_with_cadence;
+  *triggerPtr = v32;
 
   v38 = *MEMORY[0x277D85DE8];
 }
 
-- (id)reserveGST:(id)a3
+- (id)reserveGST:(id)t
 {
-  v4 = a3;
+  tCopy = t;
   v21[0] = 0;
   v21[1] = v21;
   v21[2] = 0x2020000000;
@@ -251,15 +251,15 @@
   v19[1] = v19;
   v19[2] = 0x2020000000;
   v20 = -1;
-  reply = xpc_dictionary_create_reply(v4);
+  reply = xpc_dictionary_create_reply(tCopy);
   if (!reply)
   {
     reply = xpc_dictionary_create(0, 0, 0);
   }
 
-  v6 = xpc_dictionary_get_value(v4, "graphs_array");
-  uint64 = xpc_dictionary_get_uint64(v4, "client_pid");
-  string = xpc_dictionary_get_string(v4, "exec_session_name");
+  v6 = xpc_dictionary_get_value(tCopy, "graphs_array");
+  uint64 = xpc_dictionary_get_uint64(tCopy, "client_pid");
+  string = xpc_dictionary_get_string(tCopy, "exec_session_name");
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __27__PSGSTManager_reserveGST___block_invoke;
@@ -358,17 +358,17 @@ BOOL __27__PSGSTManager_reserveGST___block_invoke(uint64_t a1, uint64_t a2, void
   return v18 != -1;
 }
 
-- (id)removeGST:(id)a3
+- (id)removeGST:(id)t
 {
-  v4 = a3;
-  reply = xpc_dictionary_create_reply(v4);
+  tCopy = t;
+  reply = xpc_dictionary_create_reply(tCopy);
   if (!reply)
   {
     reply = xpc_dictionary_create(0, 0, 0);
   }
 
-  v6 = xpc_dictionary_get_value(v4, "graphs_array");
-  string = xpc_dictionary_get_string(v4, "exec_session_name");
+  v6 = xpc_dictionary_get_value(tCopy, "graphs_array");
+  string = xpc_dictionary_get_string(tCopy, "exec_session_name");
 
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
@@ -428,13 +428,13 @@ uint64_t __26__PSGSTManager_removeGST___block_invoke(uint64_t a1, uint64_t a2, v
   return 1;
 }
 
-- (void)sourceClearGST:(id)a3
+- (void)sourceClearGST:(id)t
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  uint64 = xpc_dictionary_get_uint64(v4, "source_idx");
-  v6 = xpc_dictionary_get_uint64(v4, "gst_idx_in_source_array");
-  v7 = xpc_dictionary_get_uint64(v4, "source_storage_mode");
+  tCopy = t;
+  uint64 = xpc_dictionary_get_uint64(tCopy, "source_idx");
+  v6 = xpc_dictionary_get_uint64(tCopy, "gst_idx_in_source_array");
+  v7 = xpc_dictionary_get_uint64(tCopy, "source_storage_mode");
   source = ps_gsm_get_source([(PSGSTManager *)self gsm], uint64, v7);
   v9 = __PSSGLogSharedInstance();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -456,10 +456,10 @@ uint64_t __26__PSGSTManager_removeGST___block_invoke(uint64_t a1, uint64_t a2, v
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeWaiter:(id)a3
+- (void)removeWaiter:(id)waiter
 {
   v10 = *MEMORY[0x277D85DE8];
-  uint64 = xpc_dictionary_get_uint64(a3, "gst_idx");
+  uint64 = xpc_dictionary_get_uint64(waiter, "gst_idx");
   gst = ps_gsm_get_gst([(PSGSTManager *)self gsm], uint64);
   v6 = __PSSGLogSharedInstance();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
@@ -473,10 +473,10 @@ uint64_t __26__PSGSTManager_removeGST___block_invoke(uint64_t a1, uint64_t a2, v
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeThreadPool:(id)a3
+- (void)removeThreadPool:(id)pool
 {
   v12 = *MEMORY[0x277D85DE8];
-  uint64 = xpc_dictionary_get_uint64(a3, "graph_threadpool_id");
+  uint64 = xpc_dictionary_get_uint64(pool, "graph_threadpool_id");
   v5 = __PSSGLogSharedInstance();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -485,24 +485,24 @@ uint64_t __26__PSGSTManager_removeGST___block_invoke(uint64_t a1, uint64_t a2, v
     _os_log_impl(&dword_25EA3A000, v5, OS_LOG_TYPE_DEBUG, "Remove threadPool for threadPoolId %llu", &v10, 0xCu);
   }
 
-  v6 = [(PSGSTManager *)self threadPoolToSharedTriggerMap];
+  threadPoolToSharedTriggerMap = [(PSGSTManager *)self threadPoolToSharedTriggerMap];
   v7 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:uint64];
-  v8 = [v7 stringValue];
-  [v6 removeObjectForKey:v8];
+  stringValue = [v7 stringValue];
+  [threadPoolToSharedTriggerMap removeObjectForKey:stringValue];
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (id)handleMessage:(id)a3
+- (id)handleMessage:(id)message
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  uint64 = xpc_dictionary_get_uint64(v4, "message_type");
+  messageCopy = message;
+  uint64 = xpc_dictionary_get_uint64(messageCopy, "message_type");
   if (uint64 <= 2)
   {
     if (uint64 == 1)
     {
-      v6 = [(PSGSTManager *)self reserveGST:v4];
+      v6 = [(PSGSTManager *)self reserveGST:messageCopy];
     }
 
     else
@@ -512,7 +512,7 @@ uint64_t __26__PSGSTManager_removeGST___block_invoke(uint64_t a1, uint64_t a2, v
         goto LABEL_13;
       }
 
-      v6 = [(PSGSTManager *)self removeGST:v4];
+      v6 = [(PSGSTManager *)self removeGST:messageCopy];
     }
 
     v7 = v6;
@@ -521,13 +521,13 @@ uint64_t __26__PSGSTManager_removeGST___block_invoke(uint64_t a1, uint64_t a2, v
 
   if (uint64 == 3)
   {
-    [(PSGSTManager *)self sourceClearGST:v4];
+    [(PSGSTManager *)self sourceClearGST:messageCopy];
     goto LABEL_16;
   }
 
   if (uint64 == 4)
   {
-    [(PSGSTManager *)self removeWaiter:v4];
+    [(PSGSTManager *)self removeWaiter:messageCopy];
     goto LABEL_16;
   }
 
@@ -543,7 +543,7 @@ LABEL_13:
     goto LABEL_16;
   }
 
-  [(PSGSTManager *)self removeThreadPool:v4];
+  [(PSGSTManager *)self removeThreadPool:messageCopy];
 LABEL_16:
   v7 = 0;
 LABEL_17:
@@ -553,38 +553,38 @@ LABEL_17:
   return v7;
 }
 
-- (unint64_t)changeCadenceAtOrAfterFrameId:(id)a3 frameID:(unint64_t)a4 stride:(unint64_t)a5 offset:(unint64_t)a6
+- (unint64_t)changeCadenceAtOrAfterFrameId:(id)id frameID:(unint64_t)d stride:(unint64_t)stride offset:(unint64_t)offset
 {
   v38 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = [(PSGSTManager *)self graphToStrideMap];
-  v12 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a5];
-  [v11 setObject:v12 forKey:v10];
+  idCopy = id;
+  graphToStrideMap = [(PSGSTManager *)self graphToStrideMap];
+  v12 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:stride];
+  [graphToStrideMap setObject:v12 forKey:idCopy];
 
-  v13 = [(PSGSTManager *)self graphToOffsetMap];
-  v14 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a6];
-  [v13 setObject:v14 forKey:v10];
+  graphToOffsetMap = [(PSGSTManager *)self graphToOffsetMap];
+  v14 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:offset];
+  [graphToOffsetMap setObject:v14 forKey:idCopy];
 
-  v15 = [(PSGSTManager *)self graphToGSTMap];
-  v16 = [v15 objectForKey:v10];
+  graphToGSTMap = [(PSGSTManager *)self graphToGSTMap];
+  v16 = [graphToGSTMap objectForKey:idCopy];
 
   if (!v16)
   {
     v29 = [(PSGSTManager *)self log];
     if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
     {
-      v36 = [v10 name];
+      name = [idCopy name];
       _os_log_unreliable_impl();
     }
 
     goto LABEL_11;
   }
 
-  v17 = [(PSGSTManager *)self graphToGSTMap];
-  v18 = [v17 objectForKey:v10];
-  v19 = [v18 intValue];
+  graphToGSTMap2 = [(PSGSTManager *)self graphToGSTMap];
+  v18 = [graphToGSTMap2 objectForKey:idCopy];
+  intValue = [v18 intValue];
 
-  gst = ps_gsm_get_gst([(PSGSTManager *)self gsm], v19);
+  gst = ps_gsm_get_gst([(PSGSTManager *)self gsm], intValue);
   v21 = atomic_load((gst + 8));
   if ((v21 & 0x200000000000000) != 0)
   {
@@ -603,8 +603,8 @@ LABEL_12:
 
   v22 = gst;
   v23 = (gst + 16);
-  v24 = [v10 name];
-  v25 = strncmp(v23, [v24 UTF8String], 0x80uLL);
+  name2 = [idCopy name];
+  v25 = strncmp(v23, [name2 UTF8String], 0x80uLL);
 
   v26 = [(PSGSTManager *)self log];
   v27 = os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT);
@@ -612,18 +612,18 @@ LABEL_12:
   {
     if (v27)
     {
-      v28 = [v10 name];
-      [v28 UTF8String];
+      name3 = [idCopy name];
+      [name3 UTF8String];
       _os_log_unreliable_impl();
     }
 
     goto LABEL_12;
   }
 
-  v33 = a5 | (a6 << 32);
+  v33 = stride | (offset << 32);
   if (v27)
   {
-    v37 = [v10 name];
+    name4 = [idCopy name];
     _os_log_unreliable_impl();
   }
 
@@ -632,50 +632,50 @@ LABEL_12:
   {
     atomic_load((v22 + 8));
     atomic_load((v22 + 8));
-    v35 = [v10 name];
-    [v35 UTF8String];
+    name5 = [idCopy name];
+    [name5 UTF8String];
     _os_log_unreliable_impl();
   }
 
-  v30 = ps_gsm_gst_change_cadence_at_or_after_frame_id(v22, a4, v33);
+  v30 = ps_gsm_gst_change_cadence_at_or_after_frame_id(v22, d, v33);
 LABEL_13:
 
   v31 = *MEMORY[0x277D85DE8];
   return v30;
 }
 
-- (unint64_t)changeCadenceOnNextValidFrameId:(id)a3 stride:(unint64_t)a4 offset:(unint64_t)a5
+- (unint64_t)changeCadenceOnNextValidFrameId:(id)id stride:(unint64_t)stride offset:(unint64_t)offset
 {
   v36 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = [(PSGSTManager *)self graphToStrideMap];
-  v10 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a4];
-  [v9 setObject:v10 forKey:v8];
+  idCopy = id;
+  graphToStrideMap = [(PSGSTManager *)self graphToStrideMap];
+  v10 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:stride];
+  [graphToStrideMap setObject:v10 forKey:idCopy];
 
-  v11 = [(PSGSTManager *)self graphToOffsetMap];
-  v12 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a5];
-  [v11 setObject:v12 forKey:v8];
+  graphToOffsetMap = [(PSGSTManager *)self graphToOffsetMap];
+  v12 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:offset];
+  [graphToOffsetMap setObject:v12 forKey:idCopy];
 
-  v13 = [(PSGSTManager *)self graphToGSTMap];
-  v14 = [v13 objectForKey:v8];
+  graphToGSTMap = [(PSGSTManager *)self graphToGSTMap];
+  v14 = [graphToGSTMap objectForKey:idCopy];
 
   if (!v14)
   {
     v27 = [(PSGSTManager *)self log];
     if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
     {
-      v34 = [v8 name];
+      name = [idCopy name];
       _os_log_unreliable_impl();
     }
 
     goto LABEL_11;
   }
 
-  v15 = [(PSGSTManager *)self graphToGSTMap];
-  v16 = [v15 objectForKey:v8];
-  v17 = [v16 intValue];
+  graphToGSTMap2 = [(PSGSTManager *)self graphToGSTMap];
+  v16 = [graphToGSTMap2 objectForKey:idCopy];
+  intValue = [v16 intValue];
 
-  gst = ps_gsm_get_gst([(PSGSTManager *)self gsm], v17);
+  gst = ps_gsm_get_gst([(PSGSTManager *)self gsm], intValue);
   v19 = atomic_load((gst + 8));
   if ((v19 & 0x200000000000000) != 0)
   {
@@ -694,8 +694,8 @@ LABEL_12:
 
   v20 = gst;
   v21 = (gst + 16);
-  v22 = [v8 name];
-  v23 = strcmp(v21, [v22 UTF8String]);
+  name2 = [idCopy name];
+  v23 = strcmp(v21, [name2 UTF8String]);
 
   v24 = [(PSGSTManager *)self log];
   v25 = os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT);
@@ -703,18 +703,18 @@ LABEL_12:
   {
     if (v25)
     {
-      v26 = [v8 name];
-      [v26 UTF8String];
+      name3 = [idCopy name];
+      [name3 UTF8String];
       _os_log_unreliable_impl();
     }
 
     goto LABEL_12;
   }
 
-  v31 = a4 | (a5 << 32);
+  v31 = stride | (offset << 32);
   if (v25)
   {
-    v35 = [v8 name];
+    name4 = [idCopy name];
     _os_log_unreliable_impl();
   }
 
@@ -723,8 +723,8 @@ LABEL_12:
   {
     atomic_load((v20 + 8));
     atomic_load((v20 + 8));
-    v33 = [v8 name];
-    [v33 UTF8String];
+    name5 = [idCopy name];
+    [name5 UTF8String];
     _os_log_unreliable_impl();
   }
 
@@ -735,15 +735,15 @@ LABEL_13:
   return v28;
 }
 
-- (void)removeGraphs:(id)a3
+- (void)removeGraphs:(id)graphs
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  graphsCopy = graphs;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v5 = [graphsCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -755,24 +755,24 @@ LABEL_13:
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(graphsCopy);
         }
 
         v9 = *(*(&v14 + 1) + 8 * v8);
-        v10 = [(PSGSTManager *)self graphToGSTMap];
-        [v10 removeObjectForKey:v9];
+        graphToGSTMap = [(PSGSTManager *)self graphToGSTMap];
+        [graphToGSTMap removeObjectForKey:v9];
 
-        v11 = [(PSGSTManager *)self graphToStrideMap];
-        [v11 removeObjectForKey:v9];
+        graphToStrideMap = [(PSGSTManager *)self graphToStrideMap];
+        [graphToStrideMap removeObjectForKey:v9];
 
-        v12 = [(PSGSTManager *)self graphToOffsetMap];
-        [v12 removeObjectForKey:v9];
+        graphToOffsetMap = [(PSGSTManager *)self graphToOffsetMap];
+        [graphToOffsetMap removeObjectForKey:v9];
 
         ++v8;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [graphsCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v6);

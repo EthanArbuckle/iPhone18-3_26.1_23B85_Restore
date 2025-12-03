@@ -1,5 +1,5 @@
 @interface AVAssetResourceLoadingContentInformationRequest
-- (AVAssetResourceLoadingContentInformationRequest)initWithLoadingRequest:(id)a3 allowedContentTypes:(id)a4;
+- (AVAssetResourceLoadingContentInformationRequest)initWithLoadingRequest:(id)request allowedContentTypes:(id)types;
 - (BOOL)isByteRangeAccessSupported;
 - (BOOL)isEntireLengthAvailableOnDemand;
 - (NSArray)allowedContentTypes;
@@ -17,18 +17,18 @@
 
 @implementation AVAssetResourceLoadingContentInformationRequest
 
-- (AVAssetResourceLoadingContentInformationRequest)initWithLoadingRequest:(id)a3 allowedContentTypes:(id)a4
+- (AVAssetResourceLoadingContentInformationRequest)initWithLoadingRequest:(id)request allowedContentTypes:(id)types
 {
   v9.receiver = self;
   v9.super_class = AVAssetResourceLoadingContentInformationRequest;
   v6 = [(AVAssetResourceLoadingContentInformationRequest *)&v9 init];
   if (v6)
   {
-    if (a3 && (v7 = objc_alloc_init(AVAssetResourceLoadingContentInformationRequestInternal), (v6->_contentInformationRequest = v7) != 0))
+    if (request && (v7 = objc_alloc_init(AVAssetResourceLoadingContentInformationRequestInternal), (v6->_contentInformationRequest = v7) != 0))
     {
       v6->_contentInformationRequest->ivarAccessQueue = av_readwrite_dispatch_queue_create("com.apple.avfoundation.avassetresourceloadingcontentinformationrequest.ivars");
       v6->_contentInformationRequest->diskCachingPermitted = 1;
-      v6->_contentInformationRequest->allowedContentTypes = [a4 copy];
+      v6->_contentInformationRequest->allowedContentTypes = [types copy];
       CFRetain(v6->_contentInformationRequest);
     }
 
@@ -69,8 +69,8 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(AVAssetResourceLoadingContentInformationRequest *)self contentType];
-  v7 = [(AVAssetResourceLoadingContentInformationRequest *)self contentLength];
+  contentType = [(AVAssetResourceLoadingContentInformationRequest *)self contentType];
+  contentLength = [(AVAssetResourceLoadingContentInformationRequest *)self contentLength];
   v8 = @"NO";
   if ([(AVAssetResourceLoadingContentInformationRequest *)self isByteRangeAccessSupported])
   {
@@ -87,7 +87,7 @@
     v8 = @"YES";
   }
 
-  return [v3 stringWithFormat:@"<%@: %p, content type = %@, content length = %lld, byte range access supported = %@, disk caching permitted = %@, renewal date = %@>", v5, self, v6, v7, v9, v8, -[AVAssetResourceLoadingContentInformationRequest renewalDate](self, "renewalDate")];
+  return [v3 stringWithFormat:@"<%@: %p, content type = %@, content length = %lld, byte range access supported = %@, disk caching permitted = %@, renewal date = %@>", v5, self, contentType, contentLength, v9, v8, -[AVAssetResourceLoadingContentInformationRequest renewalDate](self, "renewalDate")];
 }
 
 - (id)propertyList

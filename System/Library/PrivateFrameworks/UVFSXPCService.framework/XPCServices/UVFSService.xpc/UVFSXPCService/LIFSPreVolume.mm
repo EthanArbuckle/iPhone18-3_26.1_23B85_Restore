@@ -1,28 +1,28 @@
 @interface LIFSPreVolume
-+ (id)errorForCheckOrMountReturnValue:(int)a3;
-+ (id)newWithDevice:(id)a3 forID:(unint64_t)a4 opsTable:(_UVFSFSOps *)a5;
-- (int)checkVolumeWithCreds:(_UVFSVolumeCredential *)a3;
-- (int)mountVolumeWithCreds:(_UVFSVolumeCredential *)a3 resultRootNode:(void *)a4;
++ (id)errorForCheckOrMountReturnValue:(int)value;
++ (id)newWithDevice:(id)device forID:(unint64_t)d opsTable:(_UVFSFSOps *)table;
+- (int)checkVolumeWithCreds:(_UVFSVolumeCredential *)creds;
+- (int)mountVolumeWithCreds:(_UVFSVolumeCredential *)creds resultRootNode:(void *)node;
 @end
 
 @implementation LIFSPreVolume
 
-+ (id)newWithDevice:(id)a3 forID:(unint64_t)a4 opsTable:(_UVFSFSOps *)a5
++ (id)newWithDevice:(id)device forID:(unint64_t)d opsTable:(_UVFSFSOps *)table
 {
-  v8 = a3;
+  deviceCopy = device;
   v9 = objc_opt_new();
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong((v9 + 8), a3);
-    v10[2] = a4;
-    v10[3] = a5;
+    objc_storeStrong((v9 + 8), device);
+    v10[2] = d;
+    v10[3] = table;
   }
 
   return v10;
 }
 
-- (int)checkVolumeWithCreds:(_UVFSVolumeCredential *)a3
+- (int)checkVolumeWithCreds:(_UVFSVolumeCredential *)creds
 {
   v5 = userfs_log_default;
   if (os_log_type_enabled(userfs_log_default, OS_LOG_TYPE_DEBUG))
@@ -31,8 +31,8 @@
   }
 
   p_volumeRawDevice = &self->_volumeRawDevice;
-  v7 = [(LiveFSRawDevice *)self->_volumeRawDevice deviceFD];
-  v8 = (self->_ops->var26)(v7, self->_volID, a3, 1);
+  deviceFD = [(LiveFSRawDevice *)self->_volumeRawDevice deviceFD];
+  v8 = (self->_ops->var26)(deviceFD, self->_volID, creds, 1);
   v9 = userfs_log_default;
   result = os_log_type_enabled(userfs_log_default, OS_LOG_TYPE_INFO);
   if (v8 == 45)
@@ -41,11 +41,11 @@
     {
       v15 = *p_volumeRawDevice;
       v16 = v9;
-      v17 = [(LiveFSRawDevice *)v15 deviceName];
+      deviceName = [(LiveFSRawDevice *)v15 deviceName];
       v25 = 136315394;
       v26 = "[LIFSPreVolume checkVolumeWithCreds:]";
       v27 = 2112;
-      v28 = v17;
+      v28 = deviceName;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_INFO, "%s:QUICK_CHECK:ENOTSUP:%@", &v25, 0x16u);
     }
 
@@ -63,11 +63,11 @@
 
       v11 = *p_volumeRawDevice;
       v12 = v9;
-      v13 = [(LiveFSRawDevice *)v11 deviceName];
+      deviceName2 = [(LiveFSRawDevice *)v11 deviceName];
       v25 = 136315394;
       v26 = "[LIFSPreVolume checkVolumeWithCreds:]";
       v27 = 2112;
-      v28 = v13;
+      v28 = deviceName2;
       v14 = "%s:QUICK_CHECK:pass:%@";
 LABEL_20:
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, v14, &v25, 0x16u);
@@ -79,11 +79,11 @@ LABEL_20:
     {
       v18 = *p_volumeRawDevice;
       v19 = v9;
-      v20 = [(LiveFSRawDevice *)v18 deviceName];
+      deviceName3 = [(LiveFSRawDevice *)v18 deviceName];
       v25 = 136315394;
       v26 = "[LIFSPreVolume checkVolumeWithCreds:]";
       v27 = 2112;
-      v28 = v20;
+      v28 = deviceName3;
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_INFO, "%s:QUICK_CHECK:failed:%@", &v25, 0x16u);
     }
 
@@ -93,7 +93,7 @@ LABEL_20:
       sub_10002323C(&self->_volumeRawDevice, v21);
     }
 
-    v22 = (self->_ops->var26)(v7, self->_volID, a3, 3);
+    v22 = (self->_ops->var26)(deviceFD, self->_volID, creds, 3);
     v23 = userfs_log_default;
     if (!v22)
     {
@@ -105,11 +105,11 @@ LABEL_20:
 
       v24 = *p_volumeRawDevice;
       v12 = v23;
-      v13 = [(LiveFSRawDevice *)v24 deviceName];
+      deviceName2 = [(LiveFSRawDevice *)v24 deviceName];
       v25 = 136315394;
       v26 = "[LIFSPreVolume checkVolumeWithCreds:]";
       v27 = 2112;
-      v28 = v13;
+      v28 = deviceName2;
       v14 = "%s:CHECK_AND_REPAIR:pass:%@";
       goto LABEL_20;
     }
@@ -123,12 +123,12 @@ LABEL_20:
   }
 }
 
-- (int)mountVolumeWithCreds:(_UVFSVolumeCredential *)a3 resultRootNode:(void *)a4
+- (int)mountVolumeWithCreds:(_UVFSVolumeCredential *)creds resultRootNode:(void *)node
 {
-  v7 = [(LiveFSRawDevice *)self->_volumeRawDevice deviceFD];
-  v8 = [(LiveFSRawDevice *)self->_volumeRawDevice deviceIsReadOnly];
+  deviceFD = [(LiveFSRawDevice *)self->_volumeRawDevice deviceFD];
+  deviceIsReadOnly = [(LiveFSRawDevice *)self->_volumeRawDevice deviceIsReadOnly];
   v11 = 0;
-  v9 = (self->_ops->var4)(v7, self->_volID, v8, a3, &v11);
+  v9 = (self->_ops->var4)(deviceFD, self->_volID, deviceIsReadOnly, creds, &v11);
   if (v9)
   {
     if (os_log_type_enabled(userfs_log_default, OS_LOG_TYPE_ERROR))
@@ -139,24 +139,24 @@ LABEL_20:
 
   else
   {
-    *a4 = v11;
+    *node = v11;
   }
 
   return v9;
 }
 
-+ (id)errorForCheckOrMountReturnValue:(int)a3
++ (id)errorForCheckOrMountReturnValue:(int)value
 {
-  if (a3 > 0)
+  if (value > 0)
   {
-    if (a3 == 1 || a3 == 80)
+    if (value == 1 || value == 80)
     {
       v3 = +[LIFSPreVolume errorForAuthError];
       goto LABEL_8;
     }
   }
 
-  else if (!a3)
+  else if (!value)
   {
     v3 = 0;
     goto LABEL_8;

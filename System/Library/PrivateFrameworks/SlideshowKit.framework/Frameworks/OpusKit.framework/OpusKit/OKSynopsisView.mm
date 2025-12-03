@@ -1,36 +1,36 @@
 @interface OKSynopsisView
 - (OFUIView)navigatorView;
-- (OKSynopsisView)initWithPresentationViewController:(id)a3;
-- (id)collectionItemAtIndexPath:(id)a3;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (id)pageViewForWidgetView:(id)a3;
+- (OKSynopsisView)initWithPresentationViewController:(id)controller;
+- (id)collectionItemAtIndexPath:(id)path;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (id)pageViewForWidgetView:(id)view;
 - (void)_scrollViewDidCompleteScrolling;
-- (void)animateSynopsisViewBlurForDisplay:(BOOL)a3 withProgress:(double)a4;
-- (void)animateView:(id)a3 forKeyPath:(id)a4 fromValue:(id)a5 toValue:(id)a6 delay:(double)a7 duration:(double)a8 setDelegate:(id)a9;
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4;
+- (void)animateSynopsisViewBlurForDisplay:(BOOL)display withProgress:(double)progress;
+- (void)animateView:(id)view forKeyPath:(id)path fromValue:(id)value toValue:(id)toValue delay:(double)delay duration:(double)duration setDelegate:(id)delegate;
+- (void)animationDidStop:(id)stop finished:(BOOL)finished;
 - (void)dealloc;
 - (void)endedGesture;
-- (void)evaluateScript:(id)a3 withInfoDictionary:(id)a4 andCompletionBlock:(id)a5 forWidgetView:(id)a6;
-- (void)handleMagnification:(id)a3;
-- (void)handleTapCell:(id)a3;
+- (void)evaluateScript:(id)script withInfoDictionary:(id)dictionary andCompletionBlock:(id)block forWidgetView:(id)view;
+- (void)handleMagnification:(id)magnification;
+- (void)handleTapCell:(id)cell;
 - (void)hide;
 - (void)initCollectionView;
-- (void)prepareAdjacentItemWidgetViews:(unint64_t)a3;
+- (void)prepareAdjacentItemWidgetViews:(unint64_t)views;
 - (void)prepareForDisplaySynopsisView;
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewWillBeginDragging:(id)a3;
-- (void)setSynopsisInterpreter:(id)a3;
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewWillBeginDragging:(id)dragging;
+- (void)setSynopsisInterpreter:(id)interpreter;
 - (void)show;
-- (void)updateLayout:(CGRect)a3;
+- (void)updateLayout:(CGRect)layout;
 - (void)updateSynopsisViewOffsetForVisibleWidgets;
-- (void)updateWithProgress:(double)a3;
-- (void)widgetView:(id)a3 addHighSpeedOperations:(id)a4 andConsumingOperations:(id)a5;
+- (void)updateWithProgress:(double)progress;
+- (void)widgetView:(id)view addHighSpeedOperations:(id)operations andConsumingOperations:(id)consumingOperations;
 @end
 
 @implementation OKSynopsisView
 
-- (OKSynopsisView)initWithPresentationViewController:(id)a3
+- (OKSynopsisView)initWithPresentationViewController:(id)controller
 {
   v12.receiver = self;
   v12.super_class = OKSynopsisView;
@@ -38,7 +38,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_presentationViewController = a3;
+    v4->_presentationViewController = controller;
     v4->_isDisplay = 0;
     v4->_pinchStartedRight = 0;
     [(OFUIView *)[(OKSynopsisView *)v4 navigatorView] frame];
@@ -116,12 +116,12 @@
   }
 }
 
-- (void)updateLayout:(CGRect)a3
+- (void)updateLayout:(CGRect)layout
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = layout.size.height;
+  width = layout.size.width;
+  y = layout.origin.y;
+  x = layout.origin.x;
   [(OKSynopsisView *)self frame];
   v14.origin.x = x;
   v14.origin.y = y;
@@ -139,7 +139,7 @@
   }
 }
 
-- (void)setSynopsisInterpreter:(id)a3
+- (void)setSynopsisInterpreter:(id)interpreter
 {
   synopsisInterpreter = self->_synopsisInterpreter;
   if (synopsisInterpreter)
@@ -155,11 +155,11 @@
     self->_widgetMediaItems = 0;
   }
 
-  if (a3)
+  if (interpreter)
   {
-    v7 = a3;
-    self->_synopsisInterpreter = v7;
-    self->_widgetMediaItems = [(OKSynopsisInterpreter *)v7 allObjectsFromGuidelineSynopsisItems];
+    interpreterCopy = interpreter;
+    self->_synopsisInterpreter = interpreterCopy;
+    self->_widgetMediaItems = [(OKSynopsisInterpreter *)interpreterCopy allObjectsFromGuidelineSynopsisItems];
   }
 }
 
@@ -212,35 +212,35 @@
   [(OFUIView *)&v9 dealloc];
 }
 
-- (void)animateView:(id)a3 forKeyPath:(id)a4 fromValue:(id)a5 toValue:(id)a6 delay:(double)a7 duration:(double)a8 setDelegate:(id)a9
+- (void)animateView:(id)view forKeyPath:(id)path fromValue:(id)value toValue:(id)toValue delay:(double)delay duration:(double)duration setDelegate:(id)delegate
 {
-  v16 = [MEMORY[0x277CD9E10] animation];
-  [v16 setKeyPath:a4];
-  [v16 setFromValue:a5];
-  [v16 setToValue:a6];
-  [v16 setDuration:a8];
-  [v16 setRemovedOnCompletion:1];
-  if (a7 == 0.0)
+  animation = [MEMORY[0x277CD9E10] animation];
+  [animation setKeyPath:path];
+  [animation setFromValue:value];
+  [animation setToValue:toValue];
+  [animation setDuration:duration];
+  [animation setRemovedOnCompletion:1];
+  if (delay == 0.0)
   {
-    [v16 setDelegate:a9];
-    [objc_msgSend(a3 "layer")];
-    v17 = [a3 layer];
+    [animation setDelegate:delegate];
+    [objc_msgSend(view "layer")];
+    layer = [view layer];
 
-    [v17 setValue:a6 forKeyPath:a4];
+    [layer setValue:toValue forKeyPath:path];
   }
 
   else
   {
-    v18 = dispatch_time(0, (a7 * 1000000000.0));
+    v18 = dispatch_time(0, (delay * 1000000000.0));
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __86__OKSynopsisView_animateView_forKeyPath_fromValue_toValue_delay_duration_setDelegate___block_invoke;
     block[3] = &unk_279C8ED20;
-    block[4] = v16;
-    block[5] = a9;
-    block[6] = a3;
-    block[7] = a4;
-    block[8] = a6;
+    block[4] = animation;
+    block[5] = delegate;
+    block[6] = view;
+    block[7] = path;
+    block[8] = toValue;
     dispatch_after(v18, MEMORY[0x277D85CD0], block);
   }
 }
@@ -256,14 +256,14 @@ uint64_t __86__OKSynopsisView_animateView_forKeyPath_fromValue_toValue_delay_dur
   return [v2 setValue:v3 forKeyPath:v4];
 }
 
-- (void)animateSynopsisViewBlurForDisplay:(BOOL)a3 withProgress:(double)a4
+- (void)animateSynopsisViewBlurForDisplay:(BOOL)display withProgress:(double)progress
 {
-  v4 = a4;
-  self->_isDisplay = a3;
+  progressCopy = progress;
+  self->_isDisplay = display;
   self->_isAnimating = 1;
   if (self->_isDisplay)
   {
-    v4 = 1.0 - a4;
+    progressCopy = 1.0 - progress;
   }
 
   else
@@ -271,8 +271,8 @@ uint64_t __86__OKSynopsisView_animateView_forKeyPath_fromValue_toValue_delay_dur
     [(OKPresentationViewControllerProxy *)self->_presentationViewController setInteractivityEnabled:1];
   }
 
-  v6 = v4 * 0.400000006 - v4 * 0.400000006 * 0.699999988;
-  v7 = v4 * 0.400000006 * 0.699999988;
+  v6 = progressCopy * 0.400000006 - progressCopy * 0.400000006 * 0.699999988;
+  v7 = progressCopy * 0.400000006 * 0.699999988;
   v8 = [-[OFUIView layer](-[OKSynopsisView navigatorView](self "navigatorView")];
   if (self->_isDisplay)
   {
@@ -284,7 +284,7 @@ uint64_t __86__OKSynopsisView_animateView_forKeyPath_fromValue_toValue_delay_dur
     v9 = &unk_287AF00E0;
   }
 
-  v10 = [(OKSynopsisView *)self navigatorView];
+  navigatorView = [(OKSynopsisView *)self navigatorView];
   v11 = 0.0;
   if (self->_isDisplay)
   {
@@ -298,15 +298,15 @@ uint64_t __86__OKSynopsisView_animateView_forKeyPath_fromValue_toValue_delay_dur
 
   if (self->_isDisplay)
   {
-    v13 = 0;
+    selfCopy = 0;
   }
 
   else
   {
-    v13 = self;
+    selfCopy = self;
   }
 
-  [(OKSynopsisView *)self animateView:v10 forKeyPath:@"filters.blur.inputRadius" fromValue:v8 toValue:v9 delay:v13 duration:v12 setDelegate:v7];
+  [(OKSynopsisView *)self animateView:navigatorView forKeyPath:@"filters.blur.inputRadius" fromValue:v8 toValue:v9 delay:selfCopy duration:v12 setDelegate:v7];
   v14 = MEMORY[0x277CCABB0];
   [-[OKDimmerView layer](self->_backgroundView "layer")];
   v15 = [v14 numberWithFloat:?];
@@ -362,10 +362,10 @@ uint64_t __86__OKSynopsisView_animateView_forKeyPath_fromValue_toValue_delay_dur
   [(OKSynopsisView *)self animateView:collectionView forKeyPath:@"opacity" fromValue:v19 toValue:v20 delay:0 duration:v11 setDelegate:v7];
   v23 = !self->_isDisplay * 0.699999988 + 1.0;
   v24 = MEMORY[0x277CCAE60];
-  v25 = [(UICollectionView *)self->_collectionView layer];
-  if (v25)
+  layer = [(UICollectionView *)self->_collectionView layer];
+  if (layer)
   {
-    [v25 transform];
+    [layer transform];
   }
 
   else
@@ -393,31 +393,31 @@ uint64_t __86__OKSynopsisView_animateView_forKeyPath_fromValue_toValue_delay_dur
 
   if (self->_isDisplay)
   {
-    v32 = self;
+    selfCopy2 = self;
   }
 
   else
   {
-    v32 = 0;
+    selfCopy2 = 0;
   }
 
-  [(OKSynopsisView *)self animateView:v29 forKeyPath:@"transform" fromValue:v26 toValue:v28 delay:v32 duration:v30 setDelegate:v7];
+  [(OKSynopsisView *)self animateView:v29 forKeyPath:@"transform" fromValue:v26 toValue:v28 delay:selfCopy2 duration:v30 setDelegate:v7];
 }
 
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4
+- (void)animationDidStop:(id)stop finished:(BOOL)finished
 {
-  if (a4 && !self->_isDisplay && [objc_msgSend(a3 "keyPath")])
+  if (finished && !self->_isDisplay && [objc_msgSend(stop "keyPath")])
   {
     [(OKSynopsisView *)self removeFromSuperview];
-    v6 = [[(OKPresentationViewControllerProxy *)self->_presentationViewController presentationView] layer];
-    [v6 setFilters:MEMORY[0x277CBEBF8]];
+    layer = [[(OKPresentationViewControllerProxy *)self->_presentationViewController presentationView] layer];
+    [layer setFilters:MEMORY[0x277CBEBF8]];
     [(OKSynopsisViewDelegate *)[(OKSynopsisView *)self delegate] synopsisViewDidEnd:self];
 LABEL_8:
     self->_isAnimating = 0;
     return;
   }
 
-  if ([objc_msgSend(a3 "keyPath")] && self->_isDisplay)
+  if ([objc_msgSend(stop "keyPath")] && self->_isDisplay)
   {
     [(OKSynopsisViewDelegate *)[(OKSynopsisView *)self delegate] synopsisViewDidBegin:self];
     goto LABEL_8;
@@ -427,15 +427,15 @@ LABEL_8:
 - (void)updateSynopsisViewOffsetForVisibleWidgets
 {
   v3 = [(OKSynopsisInterpreter *)self->_synopsisInterpreter guidelineSynopsisItemsFromObjectViews:[(OKSynopsisViewDelegate *)self->_delegate visibleWidgets]];
-  v4 = [v3 firstObject];
+  firstObject = [v3 firstObject];
   if ([v3 count] >= 2)
   {
-    v4 = [v3 objectAtIndexedSubscript:1];
+    firstObject = [v3 objectAtIndexedSubscript:1];
   }
 
-  if (v4)
+  if (firstObject)
   {
-    v5 = [MEMORY[0x277CCAA70] indexPathForRow:objc_msgSend(-[OKSynopsisInterpreter allGuidelineSynopsisItems](self->_synopsisInterpreter inSection:{"allGuidelineSynopsisItems"), "indexOfObject:", v4), 0}];
+    v5 = [MEMORY[0x277CCAA70] indexPathForRow:objc_msgSend(-[OKSynopsisInterpreter allGuidelineSynopsisItems](self->_synopsisInterpreter inSection:{"allGuidelineSynopsisItems"), "indexOfObject:", firstObject), 0}];
     collectionView = self->_collectionView;
 
     [(UICollectionView *)collectionView scrollToItemAtIndexPath:v5 atScrollPosition:16 animated:0];
@@ -449,12 +449,12 @@ LABEL_8:
   }
 }
 
-- (void)updateWithProgress:(double)a3
+- (void)updateWithProgress:(double)progress
 {
-  v4 = a3 / 0.699999988;
-  if (a3 / 0.699999988 <= 1.0)
+  v4 = progress / 0.699999988;
+  if (progress / 0.699999988 <= 1.0)
   {
-    v5 = a3 / 0.699999988;
+    v5 = progress / 0.699999988;
   }
 
   else
@@ -462,9 +462,9 @@ LABEL_8:
     v5 = 1.0;
   }
 
-  [(OKSynopsisViewDelegate *)[(OKSynopsisView *)self delegate] synopsisViewUpdated:self withProgress:a3];
-  v6 = [(OFUIView *)[(OKSynopsisView *)self navigatorView] layer];
-  [v6 setValue:objc_msgSend(MEMORY[0x277CCABB0] forKeyPath:{"numberWithDouble:", v5 * 20.0), @"filters.blur.inputRadius"}];
+  [(OKSynopsisViewDelegate *)[(OKSynopsisView *)self delegate] synopsisViewUpdated:self withProgress:progress];
+  layer = [(OFUIView *)[(OKSynopsisView *)self navigatorView] layer];
+  [layer setValue:objc_msgSend(MEMORY[0x277CCABB0] forKeyPath:{"numberWithDouble:", v5 * 20.0), @"filters.blur.inputRadius"}];
   v7 = 0.25;
   if (v5 * 0.25 < 0.25)
   {
@@ -472,9 +472,9 @@ LABEL_8:
   }
 
   v8 = v7;
-  v9 = [(OKDimmerView *)self->_backgroundView layer];
+  layer2 = [(OKDimmerView *)self->_backgroundView layer];
   *&v10 = v8;
-  [v9 setOpacity:v10];
+  [layer2 setOpacity:v10];
   v11 = v4 + -0.300000012;
   if (v4 + -0.300000012 < 0.0)
   {
@@ -491,15 +491,15 @@ LABEL_8:
     v12 = 1.0;
   }
 
-  v14 = [(UICollectionView *)self->_collectionView layer];
+  layer3 = [(UICollectionView *)self->_collectionView layer];
   v13 = v12;
   *&v15 = v13;
-  [v14 setOpacity:v15];
+  [layer3 setOpacity:v15];
   memset(&v24, 0, sizeof(v24));
   CGAffineTransformMakeScale(&v24, (1.0 - v12) * 0.699999988 + 1.0, (1.0 - v12) * 0.699999988 + 1.0);
   v17 = v24;
   CATransform3DMakeAffineTransform(&v23, &v17);
-  v16 = [(UICollectionView *)self->_collectionView layer];
+  layer4 = [(UICollectionView *)self->_collectionView layer];
   v19 = *&v23.m31;
   v20 = *&v23.m33;
   v21 = *&v23.m41;
@@ -508,7 +508,7 @@ LABEL_8:
   *&v17.c = *&v23.m13;
   *&v17.tx = *&v23.m21;
   v18 = *&v23.m23;
-  [v16 setTransform:&v17];
+  [layer4 setTransform:&v17];
 }
 
 - (void)endedGesture
@@ -530,7 +530,7 @@ LABEL_12:
   }
 }
 
-- (void)handleMagnification:(id)a3
+- (void)handleMagnification:(id)magnification
 {
   if (self->_isAnimating)
   {
@@ -539,17 +539,17 @@ LABEL_2:
     return;
   }
 
-  v4 = [a3 state];
-  if (v4 > 2)
+  state = [magnification state];
+  if (state > 2)
   {
-    if ((v4 == 3 || v4 == 4) && self->_pinchStartedRight)
+    if ((state == 3 || state == 4) && self->_pinchStartedRight)
     {
 
       [(OKSynopsisView *)self endedGesture];
     }
   }
 
-  else if (v4 == 1)
+  else if (state == 1)
   {
     if (([(OKSynopsisGestureRecognizer *)self->_synopsisGestureRecognizer gestureType]!= 2 || self->_isDisplay) && ([(OKSynopsisGestureRecognizer *)self->_synopsisGestureRecognizer gestureType]!= 1 || !self->_isDisplay))
     {
@@ -574,7 +574,7 @@ LABEL_2:
     }
   }
 
-  else if (v4 == 2 && self->_pinchStartedRight)
+  else if (state == 2 && self->_pinchStartedRight)
   {
     [(OKSynopsisGestureRecognizer *)self->_synopsisGestureRecognizer progress];
 
@@ -582,17 +582,17 @@ LABEL_2:
   }
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v7 = -[NSArray objectAtIndex:](self->_widgetMediaItems, "objectAtIndex:", [a4 row]);
-  v8 = [a3 dequeueReusableCellWithReuseIdentifier:@"OKWidgetGridViewCellIdentifier" forIndexPath:a4];
+  v7 = -[NSArray objectAtIndex:](self->_widgetMediaItems, "objectAtIndex:", [path row]);
+  v8 = [view dequeueReusableCellWithReuseIdentifier:@"OKWidgetGridViewCellIdentifier" forIndexPath:path];
   [v7 setClipsToBounds:1];
   [v8 setWidgetView:v7];
   [v7 prepareForDisplay:0];
   [objc_msgSend(v8 "layer")];
-  v9 = [v8 layer];
+  layer = [v8 layer];
   LODWORD(v10) = 0.5;
-  [v9 setShadowOpacity:v10];
+  [layer setShadowOpacity:v10];
   [objc_msgSend(v8 "layer")];
   [v8 frame];
   v12 = v11;
@@ -615,7 +615,7 @@ LABEL_2:
   return v8;
 }
 
-- (void)handleTapCell:(id)a3
+- (void)handleTapCell:(id)cell
 {
   v4 = [-[OKSynopsisInterpreter allGuidelineSynopsisItems](self->_synopsisInterpreter "allGuidelineSynopsisItems")];
   delegate = self->_delegate;
@@ -623,48 +623,48 @@ LABEL_2:
   [(OKSynopsisViewDelegate *)delegate synopsisView:self didSelectItem:v4];
 }
 
-- (id)collectionItemAtIndexPath:(id)a3
+- (id)collectionItemAtIndexPath:(id)path
 {
-  if ([a3 section])
+  if ([path section])
   {
     return 0;
   }
 
   widgetMediaItems = self->_widgetMediaItems;
-  v7 = [a3 row];
+  v7 = [path row];
 
   return [(NSArray *)widgetMediaItems objectAtIndex:v7];
 }
 
-- (id)pageViewForWidgetView:(id)a3
+- (id)pageViewForWidgetView:(id)view
 {
-  v3 = [(OKNavigatorViewControllerProxy *)[(OKPresentationViewControllerProxy *)self->_presentationViewController mainNavigatorViewController] currentPageViewController];
+  currentPageViewController = [(OKNavigatorViewControllerProxy *)[(OKPresentationViewControllerProxy *)self->_presentationViewController mainNavigatorViewController] currentPageViewController];
 
-  return [(OKPageViewController *)v3 view];
+  return [(OKPageViewController *)currentPageViewController view];
 }
 
-- (void)widgetView:(id)a3 addHighSpeedOperations:(id)a4 andConsumingOperations:(id)a5
+- (void)widgetView:(id)view addHighSpeedOperations:(id)operations andConsumingOperations:(id)consumingOperations
 {
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __75__OKSynopsisView_widgetView_addHighSpeedOperations_andConsumingOperations___block_invoke;
   v10[3] = &unk_279C8F868;
-  v10[4] = a3;
-  [a4 enumerateObjectsUsingBlock:v10];
+  v10[4] = view;
+  [operations enumerateObjectsUsingBlock:v10];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __75__OKSynopsisView_widgetView_addHighSpeedOperations_andConsumingOperations___block_invoke_2;
   v9[3] = &unk_279C8F868;
-  v9[4] = a3;
-  [a5 enumerateObjectsUsingBlock:v9];
-  if ([a4 count])
+  v9[4] = view;
+  [consumingOperations enumerateObjectsUsingBlock:v9];
+  if ([operations count])
   {
-    [(OFNSOperationQueue *)self->_highSpeedOperationQueue addOperations:a4 waitUntilFinished:0];
+    [(OFNSOperationQueue *)self->_highSpeedOperationQueue addOperations:operations waitUntilFinished:0];
   }
 
-  if ([a5 count])
+  if ([consumingOperations count])
   {
-    [(OFNSOperationQueue *)self->_highSpeedOperationQueue addOperations:a5 waitUntilFinished:0];
+    [(OFNSOperationQueue *)self->_highSpeedOperationQueue addOperations:consumingOperations waitUntilFinished:0];
   }
 }
 
@@ -682,22 +682,22 @@ uint64_t __75__OKSynopsisView_widgetView_addHighSpeedOperations_andConsumingOper
   return [a2 setQueuePriority:0];
 }
 
-- (void)evaluateScript:(id)a3 withInfoDictionary:(id)a4 andCompletionBlock:(id)a5 forWidgetView:(id)a6
+- (void)evaluateScript:(id)script withInfoDictionary:(id)dictionary andCompletionBlock:(id)block forWidgetView:(id)view
 {
   presentationViewController = self->_presentationViewController;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __85__OKSynopsisView_evaluateScript_withInfoDictionary_andCompletionBlock_forWidgetView___block_invoke;
   v7[3] = &unk_279C8F890;
-  v7[4] = a5;
-  [(OKPresentationViewControllerProxy *)presentationViewController evaluateScript:a3 withInfoDictionary:a4 andCompletionBlock:v7 forNavigatorViewController:0 pageViewController:0 andWidgetView:0];
+  v7[4] = block;
+  [(OKPresentationViewControllerProxy *)presentationViewController evaluateScript:script withInfoDictionary:dictionary andCompletionBlock:v7 forNavigatorViewController:0 pageViewController:0 andWidgetView:0];
 }
 
 - (OFUIView)navigatorView
 {
-  v2 = [(OKPresentationViewControllerProxy *)self->_presentationViewController mainNavigatorViewController];
+  mainNavigatorViewController = [(OKPresentationViewControllerProxy *)self->_presentationViewController mainNavigatorViewController];
 
-  return [(OKNavigatorViewControllerProxy *)v2 navigatorView];
+  return [(OKNavigatorViewControllerProxy *)mainNavigatorViewController navigatorView];
 }
 
 - (void)prepareForDisplaySynopsisView
@@ -710,9 +710,9 @@ uint64_t __75__OKSynopsisView_widgetView_addHighSpeedOperations_andConsumingOper
     v3 = [MEMORY[0x277CD9EA0] filterWithName:*MEMORY[0x277CDA328]];
     [v3 setName:@"blur"];
     [v3 setValue:&unk_287AF00E0 forKeyPath:@"inputRadius"];
-    v4 = [(OFUIView *)[(OKSynopsisView *)self navigatorView] layer];
+    layer = [(OFUIView *)[(OKSynopsisView *)self navigatorView] layer];
     v5[0] = v3;
-    [v4 setFilters:{objc_msgSend(MEMORY[0x277CBEA60], "arrayWithObjects:count:", v5, 1)}];
+    [layer setFilters:{objc_msgSend(MEMORY[0x277CBEA60], "arrayWithObjects:count:", v5, 1)}];
   }
 
   [(OKSynopsisView *)self updateSynopsisViewOffsetForVisibleWidgets];
@@ -732,7 +732,7 @@ uint64_t __75__OKSynopsisView_widgetView_addHighSpeedOperations_andConsumingOper
     CGAffineTransformMakeScale(&v11, 1.69999999, 1.69999999);
     v4 = v11;
     CATransform3DMakeAffineTransform(&v10, &v4);
-    v3 = [(UICollectionView *)self->_collectionView layer];
+    layer = [(UICollectionView *)self->_collectionView layer];
     v6 = *&v10.m31;
     v7 = *&v10.m33;
     v8 = *&v10.m41;
@@ -741,7 +741,7 @@ uint64_t __75__OKSynopsisView_widgetView_addHighSpeedOperations_andConsumingOper
     *&v4.c = *&v10.m13;
     *&v4.tx = *&v10.m21;
     v5 = *&v10.m23;
-    [v3 setTransform:&v4];
+    [layer setTransform:&v4];
     [(OKSynopsisView *)self animateSynopsisViewBlurForDisplay:1 withProgress:0.0];
   }
 }
@@ -754,9 +754,9 @@ uint64_t __75__OKSynopsisView_widgetView_addHighSpeedOperations_andConsumingOper
   }
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
-  if (([a3 isDecelerating] & 1) == 0)
+  if (([dragging isDecelerating] & 1) == 0)
   {
     self->_scrollViewDidEndDragging = 0;
     [(UICollectionView *)self->_collectionView contentOffset];
@@ -765,16 +765,16 @@ uint64_t __75__OKSynopsisView_widgetView_addHighSpeedOperations_andConsumingOper
   }
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
   [MEMORY[0x277D82BB8] cancelPreviousPerformRequestsWithTarget:self selector:sel_prepareAdjacentItemWidgetViewsForScrolling object:0];
 
   [(OKSynopsisView *)self performSelectorOnMainThread:sel_prepareAdjacentItemWidgetViewsForScrolling withObject:0 waitUntilDone:0];
 }
 
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate
 {
-  if (!a4)
+  if (!decelerate)
   {
     [(OKSynopsisView *)self _scrollViewDidCompleteScrolling];
   }
@@ -789,37 +789,37 @@ uint64_t __75__OKSynopsisView_widgetView_addHighSpeedOperations_andConsumingOper
   }
 }
 
-- (void)prepareAdjacentItemWidgetViews:(unint64_t)a3
+- (void)prepareAdjacentItemWidgetViews:(unint64_t)views
 {
   v47 = *MEMORY[0x277D85DE8];
   v5 = objc_autoreleasePoolPush();
-  v6 = [(UICollectionView *)self->_collectionView indexPathsForVisibleItems];
-  v7 = [MEMORY[0x277CCAB58] indexSet];
-  if (!v6 || ![(NSArray *)v6 count])
+  indexPathsForVisibleItems = [(UICollectionView *)self->_collectionView indexPathsForVisibleItems];
+  indexSet = [MEMORY[0x277CCAB58] indexSet];
+  if (!indexPathsForVisibleItems || ![(NSArray *)indexPathsForVisibleItems count])
   {
     if (![(NSArray *)self->_widgetMediaItems count])
     {
       goto LABEL_28;
     }
 
-    if ([(NSArray *)self->_widgetMediaItems count]<= a3)
+    if ([(NSArray *)self->_widgetMediaItems count]<= views)
     {
-      a3 = [(NSArray *)self->_widgetMediaItems count];
+      views = [(NSArray *)self->_widgetMediaItems count];
     }
 
-    v17 = v7;
+    v17 = indexSet;
     v18 = 0;
     goto LABEL_27;
   }
 
   v31 = v5;
-  v8 = [-[NSArray firstObject](v6 "firstObject")];
-  v9 = [-[NSArray firstObject](v6 "firstObject")];
+  v8 = [-[NSArray firstObject](indexPathsForVisibleItems "firstObject")];
+  v9 = [-[NSArray firstObject](indexPathsForVisibleItems "firstObject")];
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v10 = [(NSArray *)v6 countByEnumeratingWithState:&v40 objects:v46 count:16];
+  v10 = [(NSArray *)indexPathsForVisibleItems countByEnumeratingWithState:&v40 objects:v46 count:16];
   if (v10)
   {
     v11 = v10;
@@ -830,7 +830,7 @@ uint64_t __75__OKSynopsisView_widgetView_addHighSpeedOperations_andConsumingOper
       {
         if (*v41 != v12)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(indexPathsForVisibleItems);
         }
 
         v14 = *(*(&v40 + 1) + 8 * i);
@@ -845,7 +845,7 @@ uint64_t __75__OKSynopsisView_widgetView_addHighSpeedOperations_andConsumingOper
         }
       }
 
-      v11 = [(NSArray *)v6 countByEnumeratingWithState:&v40 objects:v46 count:16];
+      v11 = [(NSArray *)indexPathsForVisibleItems countByEnumeratingWithState:&v40 objects:v46 count:16];
     }
 
     while (v11);
@@ -853,41 +853,41 @@ uint64_t __75__OKSynopsisView_widgetView_addHighSpeedOperations_andConsumingOper
 
   if (v8 >= 1)
   {
-    if (v8 >= a3)
+    if (v8 >= views)
     {
-      v15 = a3;
+      viewsCopy = views;
     }
 
     else
     {
-      v15 = v8;
+      viewsCopy = v8;
     }
 
-    [v7 addIndexesInRange:{(v8 - a3) & ~((v8 - a3) >> 63), v15}];
+    [indexSet addIndexesInRange:{(v8 - views) & ~((v8 - views) >> 63), viewsCopy}];
   }
 
   v5 = v31;
   if (v9 < [(NSArray *)self->_widgetMediaItems count]- 1)
   {
     v16 = v9 + 1;
-    if ([(NSArray *)self->_widgetMediaItems count]- v16 <= a3)
+    if ([(NSArray *)self->_widgetMediaItems count]- v16 <= views)
     {
-      a3 = [(NSArray *)self->_widgetMediaItems count]- v16;
+      views = [(NSArray *)self->_widgetMediaItems count]- v16;
     }
 
-    v17 = v7;
+    v17 = indexSet;
     v18 = v16;
 LABEL_27:
-    [v17 addIndexesInRange:{v18, a3}];
+    [v17 addIndexesInRange:{v18, views}];
   }
 
 LABEL_28:
   v19 = [MEMORY[0x277CBEB58] setWithArray:self->_widgetMediaItems];
   [v19 minusSet:{objc_msgSend(MEMORY[0x277CBEB98], "setWithArray:", -[NSArray valueForKeyPath:](-[UICollectionView visibleCells](self->_collectionView, "visibleCells"), "valueForKeyPath:", @"widgetView"}];
-  v20 = [v7 firstIndex];
-  if (v20 != 0x7FFFFFFFFFFFFFFFLL)
+  firstIndex = [indexSet firstIndex];
+  if (firstIndex != 0x7FFFFFFFFFFFFFFFLL)
   {
-    for (j = v20; j != 0x7FFFFFFFFFFFFFFFLL; j = [v7 indexGreaterThanIndex:j])
+    for (j = firstIndex; j != 0x7FFFFFFFFFFFFFFFLL; j = [indexSet indexGreaterThanIndex:j])
     {
       v22 = [(NSArray *)self->_widgetMediaItems objectAtIndex:j];
       [v19 removeObject:v22];
@@ -926,7 +926,7 @@ LABEL_28:
   v35 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v27 = [(NSArray *)v6 countByEnumeratingWithState:&v32 objects:v44 count:16];
+  v27 = [(NSArray *)indexPathsForVisibleItems countByEnumeratingWithState:&v32 objects:v44 count:16];
   if (v27)
   {
     v28 = v27;
@@ -937,13 +937,13 @@ LABEL_28:
       {
         if (*v33 != v29)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(indexPathsForVisibleItems);
         }
 
         [-[NSArray objectAtIndex:](self->_widgetMediaItems objectAtIndex:{objc_msgSend(*(*(&v32 + 1) + 8 * m), "row")), "prepareForDisplay:", 0}];
       }
 
-      v28 = [(NSArray *)v6 countByEnumeratingWithState:&v32 objects:v44 count:16];
+      v28 = [(NSArray *)indexPathsForVisibleItems countByEnumeratingWithState:&v32 objects:v44 count:16];
     }
 
     while (v28);

@@ -1,5 +1,5 @@
 @interface CKEncryptedStringArray
-- (CKEncryptedStringArray)initWithStringArray:(id)a3;
+- (CKEncryptedStringArray)initWithStringArray:(id)array;
 - (NSArray)stringArray;
 @end
 
@@ -23,10 +23,10 @@
   return v9;
 }
 
-- (CKEncryptedStringArray)initWithStringArray:(id)a3
+- (CKEncryptedStringArray)initWithStringArray:(id)array
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  arrayCopy = array;
   v5 = objc_opt_new();
   v6 = objc_opt_new();
   objc_msgSend_setStringListValues_(v5, v7, v6);
@@ -35,7 +35,7 @@
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v8 = v4;
+  v8 = arrayCopy;
   v10 = objc_msgSend_countByEnumeratingWithState_objects_count_(v8, v9, &v25, v29, 16);
   if (v10)
   {

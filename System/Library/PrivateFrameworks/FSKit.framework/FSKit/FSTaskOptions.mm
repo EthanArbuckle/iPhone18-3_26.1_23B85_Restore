@@ -1,21 +1,21 @@
 @interface FSTaskOptions
-- (FSTaskOptions)initWithCoder:(id)a3;
-- (FSTaskOptions)initWithOptions:(id)a3;
-- (FSTaskOptions)initWithOptions:(id)a3 extras:(id)a4;
-- (id)urlForOption:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setSecureURL:(id)a3 forKey:(id)a4;
-- (void)setURL:(id)a3 forKey:(id)a4;
+- (FSTaskOptions)initWithCoder:(id)coder;
+- (FSTaskOptions)initWithOptions:(id)options;
+- (FSTaskOptions)initWithOptions:(id)options extras:(id)extras;
+- (id)urlForOption:(id)option;
+- (void)encodeWithCoder:(id)coder;
+- (void)setSecureURL:(id)l forKey:(id)key;
+- (void)setURL:(id)l forKey:(id)key;
 @end
 
 @implementation FSTaskOptions
 
-- (id)urlForOption:(id)a3
+- (id)urlForOption:(id)option
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(NSMutableDictionary *)v5->_extras objectForKeyedSubscript:v4];
+  optionCopy = option;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [(NSMutableDictionary *)selfCopy->_extras objectForKeyedSubscript:optionCopy];
   v7 = v6;
   if (v6)
   {
@@ -27,24 +27,24 @@
     v8 = 0;
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeObject:self->_taskOptions forKey:@"FSTO.o"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_taskOptions forKey:@"FSTO.o"];
   if ([(NSMutableDictionary *)self->_extras count])
   {
-    [v4 encodeObject:self->_extras forKey:@"FSTO.x"];
+    [coderCopy encodeObject:self->_extras forKey:@"FSTO.x"];
   }
 }
 
-- (FSTaskOptions)initWithCoder:(id)a3
+- (FSTaskOptions)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = FSTaskOptions;
   v5 = [(FSTaskOptions *)&v16 init];
@@ -55,13 +55,13 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v6 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"FSTO.o"];
+  v6 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"FSTO.o"];
   v7 = [v6 mutableCopy];
   taskOptions = v5->_taskOptions;
   v5->_taskOptions = v7;
 
   v9 = objc_opt_class();
-  v10 = [v4 decodeDictionaryWithKeysOfClass:v9 objectsOfClass:objc_opt_class() forKey:@"FSTO.x"];
+  v10 = [coderCopy decodeDictionaryWithKeysOfClass:v9 objectsOfClass:objc_opt_class() forKey:@"FSTO.x"];
   v11 = v10;
   if (v5->_taskOptions)
   {
@@ -87,15 +87,15 @@ LABEL_9:
   return v13;
 }
 
-- (FSTaskOptions)initWithOptions:(id)a3
+- (FSTaskOptions)initWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v11.receiver = self;
   v11.super_class = FSTaskOptions;
   v5 = [(FSTaskOptions *)&v11 init];
   if (v5)
   {
-    v6 = [v4 mutableCopy];
+    v6 = [optionsCopy mutableCopy];
     taskOptions = v5->_taskOptions;
     v5->_taskOptions = v6;
 
@@ -107,20 +107,20 @@ LABEL_9:
   return v5;
 }
 
-- (FSTaskOptions)initWithOptions:(id)a3 extras:(id)a4
+- (FSTaskOptions)initWithOptions:(id)options extras:(id)extras
 {
-  v6 = a3;
-  v7 = a4;
+  optionsCopy = options;
+  extrasCopy = extras;
   v14.receiver = self;
   v14.super_class = FSTaskOptions;
   v8 = [(FSTaskOptions *)&v14 init];
   if (v8)
   {
-    v9 = [v6 mutableCopy];
+    v9 = [optionsCopy mutableCopy];
     taskOptions = v8->_taskOptions;
     v8->_taskOptions = v9;
 
-    v11 = [v7 mutableCopy];
+    v11 = [extrasCopy mutableCopy];
     extras = v8->_extras;
     v8->_extras = v11;
   }
@@ -128,48 +128,48 @@ LABEL_9:
   return v8;
 }
 
-- (void)setURL:(id)a3 forKey:(id)a4
+- (void)setURL:(id)l forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [[FSPathURLResource alloc] initWithURL:v6 readOnly:0];
+  lCopy = l;
+  keyCopy = key;
+  v8 = [[FSPathURLResource alloc] initWithURL:lCopy readOnly:0];
   if (v8)
   {
-    v9 = self;
-    objc_sync_enter(v9);
-    [(NSMutableDictionary *)v9->_extras setObject:v8 forKey:v7];
-    objc_sync_exit(v9);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    [(NSMutableDictionary *)selfCopy->_extras setObject:v8 forKey:keyCopy];
+    objc_sync_exit(selfCopy);
   }
 
   else
   {
-    v9 = fskit_std_log();
-    if (os_log_type_enabled(&v9->super, OS_LOG_TYPE_ERROR))
+    selfCopy = fskit_std_log();
+    if (os_log_type_enabled(&selfCopy->super, OS_LOG_TYPE_ERROR))
     {
-      [FSTaskOptions(Project) setURL:v6 forKey:&v9->super];
+      [FSTaskOptions(Project) setURL:lCopy forKey:&selfCopy->super];
     }
   }
 }
 
-- (void)setSecureURL:(id)a3 forKey:(id)a4
+- (void)setSecureURL:(id)l forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [[FSPathURLResource alloc] initAsSecureURL:v6 readOnly:0];
+  lCopy = l;
+  keyCopy = key;
+  v8 = [[FSPathURLResource alloc] initAsSecureURL:lCopy readOnly:0];
   if (v8)
   {
-    v9 = self;
-    objc_sync_enter(v9);
-    [(NSMutableDictionary *)v9->_extras setObject:v8 forKey:v7];
-    objc_sync_exit(v9);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    [(NSMutableDictionary *)selfCopy->_extras setObject:v8 forKey:keyCopy];
+    objc_sync_exit(selfCopy);
   }
 
   else
   {
-    v9 = fskit_std_log();
-    if (os_log_type_enabled(&v9->super, OS_LOG_TYPE_ERROR))
+    selfCopy = fskit_std_log();
+    if (os_log_type_enabled(&selfCopy->super, OS_LOG_TYPE_ERROR))
     {
-      [FSTaskOptions(Project) setURL:v6 forKey:&v9->super];
+      [FSTaskOptions(Project) setURL:lCopy forKey:&selfCopy->super];
     }
   }
 }

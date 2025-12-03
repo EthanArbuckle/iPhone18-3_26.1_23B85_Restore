@@ -1,7 +1,7 @@
 @interface HUDashboardLaunchCoordinator
 + (HUDashboardLaunchCoordinator)shared;
 - (HUDashboardLaunchCoordinator)init;
-- (void)prefetchStateForHome:(id)a3;
+- (void)prefetchStateForHome:(id)home;
 @end
 
 @implementation HUDashboardLaunchCoordinator
@@ -27,11 +27,11 @@
   return [(HUDashboardLaunchCoordinator *)&v4 init];
 }
 
-- (void)prefetchStateForHome:(id)a3
+- (void)prefetchStateForHome:(id)home
 {
-  v4 = a3;
-  v5 = self;
-  sub_20CF79884(v4);
+  homeCopy = home;
+  selfCopy = self;
+  sub_20CF79884(homeCopy);
 }
 
 @end

@@ -1,19 +1,19 @@
 @interface SKDelegateResponseQueue
-- (SKDelegateResponseQueue)initWithQueue:(id)a3;
+- (SKDelegateResponseQueue)initWithQueue:(id)queue;
 @end
 
 @implementation SKDelegateResponseQueue
 
-- (SKDelegateResponseQueue)initWithQueue:(id)a3
+- (SKDelegateResponseQueue)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v9.receiver = self;
   v9.super_class = SKDelegateResponseQueue;
   v6 = [(SKDelegateResponseQueue *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_dispatchQueue, a3);
+    objc_storeStrong(&v6->_dispatchQueue, queue);
   }
 
   return v7;

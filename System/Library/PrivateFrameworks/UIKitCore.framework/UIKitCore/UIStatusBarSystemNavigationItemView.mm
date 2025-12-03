@@ -2,11 +2,11 @@
 - (CGSize)_buttonSize;
 - (NSString)title;
 - (UIButton)button;
-- (double)addContentOverlap:(double)a3;
+- (double)addContentOverlap:(double)overlap;
 - (double)resetContentOverlap;
 - (double)updateContentsAndWidth;
 - (id)accessibilityHUDRepresentation;
-- (void)setTitle:(id)a3;
+- (void)setTitle:(id)title;
 @end
 
 @implementation UIStatusBarSystemNavigationItemView
@@ -33,20 +33,20 @@
     }
 
     v7 = [(UIStatusBarItemView *)self imageWithShadowNamed:v6];
-    v8 = [v7 image];
+    image = [v7 image];
 
-    v9 = [v8 _imageThatSuppressesAccessibilityHairlineThickening];
+    _imageThatSuppressesAccessibilityHairlineThickening = [image _imageThatSuppressesAccessibilityHairlineThickening];
 
-    [(UIButton *)self->_button setImage:v9 forState:0];
-    v10 = [(UIButton *)self->_button imageView];
-    [v10 setClipsToBounds:0];
+    [(UIButton *)self->_button setImage:_imageThatSuppressesAccessibilityHairlineThickening forState:0];
+    imageView = [(UIButton *)self->_button imageView];
+    [imageView setClipsToBounds:0];
 
     [(UIButton *)self->_button setContentHorizontalAlignment:1];
     [(UIView *)self->_button setAutoresizingMask:36];
-    v11 = [(UIStatusBarItemView *)self foregroundStyle];
-    v12 = [v11 textFontForStyle:2];
-    v13 = [(UIButton *)self->_button titleLabel];
-    [v13 setFont:v12];
+    foregroundStyle = [(UIStatusBarItemView *)self foregroundStyle];
+    v12 = [foregroundStyle textFontForStyle:2];
+    titleLabel = [(UIButton *)self->_button titleLabel];
+    [titleLabel setFont:v12];
 
     if ([(UIStatusBarSystemNavigationItemView *)self _shouldLayoutImageOnRight])
     {
@@ -58,17 +58,17 @@
       v14 = 0;
     }
 
-    v15 = [(UIButton *)self->_button titleLabel];
-    [v15 setTextAlignment:v14];
+    titleLabel2 = [(UIButton *)self->_button titleLabel];
+    [titleLabel2 setTextAlignment:v14];
 
-    v16 = [(UIStatusBarSystemNavigationItemView *)self labelLineBreakMode];
-    v17 = [(UIButton *)self->_button titleLabel];
-    [v17 setLineBreakMode:v16];
+    labelLineBreakMode = [(UIStatusBarSystemNavigationItemView *)self labelLineBreakMode];
+    titleLabel3 = [(UIButton *)self->_button titleLabel];
+    [titleLabel3 setLineBreakMode:labelLineBreakMode];
 
     [(UIView *)self->_button _setTouchInsets:-12.5, -12.5, -12.5, -12.5];
-    v18 = [(UIStatusBarItemView *)self foregroundStyle];
-    v19 = [v18 tintColor];
-    [(UIButton *)self->_button setTintColor:v19];
+    foregroundStyle2 = [(UIStatusBarItemView *)self foregroundStyle];
+    tintColor = [foregroundStyle2 tintColor];
+    [(UIButton *)self->_button setTintColor:tintColor];
 
     [(UIView *)self addSubview:self->_button];
     [(UIView *)self _setTouchInsets:0.0, -12.5, 0.0, -12.5];
@@ -81,9 +81,9 @@
 
 - (CGSize)_buttonSize
 {
-  v2 = [(UIStatusBarSystemNavigationItemView *)self button];
-  [v2 bounds];
-  [v2 sizeThatFits:{v3 + -4.0, v4}];
+  button = [(UIStatusBarSystemNavigationItemView *)self button];
+  [button bounds];
+  [button sizeThatFits:{v3 + -4.0, v4}];
   v6 = v5;
   v8 = v7 + 4.0;
 
@@ -96,7 +96,7 @@
 
 - (double)updateContentsAndWidth
 {
-  v3 = [(UIStatusBarSystemNavigationItemView *)self button];
+  button = [(UIStatusBarSystemNavigationItemView *)self button];
   [(UIView *)self bounds];
   [(UIStatusBarSystemNavigationItemView *)self _buttonSize];
   v5 = v4;
@@ -113,9 +113,9 @@
     }
   }
 
-  [v3 setFrame:{0.0, v9, v5, v7}];
-  v12 = [(UIStatusBarItemView *)self foregroundStyle];
-  if ([v12 usesVerticalLayout])
+  [button setFrame:{0.0, v9, v5, v7}];
+  foregroundStyle = [(UIStatusBarItemView *)self foregroundStyle];
+  if ([foregroundStyle usesVerticalLayout])
   {
     v5 = v7;
   }
@@ -126,17 +126,17 @@
   return v14;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = a3;
-  v5 = [(UIStatusBarSystemNavigationItemView *)self button];
-  [v5 setTitle:v4 forState:0];
+  titleCopy = title;
+  button = [(UIStatusBarSystemNavigationItemView *)self button];
+  [button setTitle:titleCopy forState:0];
 }
 
 - (NSString)title
 {
-  v2 = [(UIStatusBarSystemNavigationItemView *)self button];
-  v3 = [v2 titleForState:0];
+  button = [(UIStatusBarSystemNavigationItemView *)self button];
+  v3 = [button titleForState:0];
 
   return v3;
 }
@@ -149,10 +149,10 @@
   return result;
 }
 
-- (double)addContentOverlap:(double)a3
+- (double)addContentOverlap:(double)overlap
 {
   [(UIView *)self bounds];
-  [(UIStatusBarSystemNavigationItemView *)self setMaxWidth:v5 - a3];
+  [(UIStatusBarSystemNavigationItemView *)self setMaxWidth:v5 - overlap];
   [(UIView *)self bounds];
   v7 = v6;
   do
@@ -170,7 +170,7 @@
     [(UIStatusBarSystemNavigationItemView *)self setCurrentLabelCompressionLevel:[(UIStatusBarSystemNavigationItemView *)self currentLabelCompressionLevel]+ 1];
   }
 
-  while (v7 - v11 < a3);
+  while (v7 - v11 < overlap);
 
   [(UIStatusBarSystemNavigationItemView *)self updateContentsAndWidth];
   return result;
@@ -191,8 +191,8 @@
 
   BarButtonItemResolveSystemImage(v3, &v8, 0, 0);
   v4 = [UIAccessibilityHUDItem alloc];
-  v5 = [(UIStatusBarSystemNavigationItemView *)self title];
-  v6 = [(UIAccessibilityHUDItem *)v4 initWithTitle:v5 image:v8 imageInsets:0.0, 0.0, 0.0, 0.0];
+  title = [(UIStatusBarSystemNavigationItemView *)self title];
+  v6 = [(UIAccessibilityHUDItem *)v4 initWithTitle:title image:v8 imageInsets:0.0, 0.0, 0.0, 0.0];
 
   return v6;
 }

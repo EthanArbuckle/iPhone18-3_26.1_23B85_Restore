@@ -1,8 +1,8 @@
 @interface SBSUILoginUISceneClientSettings
 - (NSString)statusBarUserNameOverride;
-- (id)keyDescriptionForSetting:(unint64_t)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (id)valueDescriptionForFlag:(int64_t)a3 object:(id)a4 ofSetting:(unint64_t)a5;
+- (id)keyDescriptionForSetting:(unint64_t)setting;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (id)valueDescriptionForFlag:(int64_t)flag object:(id)object ofSetting:(unint64_t)setting;
 - (int64_t)idleTimerMode;
 - (int64_t)rotationMode;
 - (unint64_t)wallpaperMode;
@@ -12,49 +12,49 @@
 
 - (int64_t)idleTimerMode
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:736840726];
-  v4 = [v3 integerValue];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:736840726];
+  integerValue = [v3 integerValue];
 
-  return v4;
+  return integerValue;
 }
 
 - (NSString)statusBarUserNameOverride
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:736840727];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:736840727];
 
   return v3;
 }
 
 - (int64_t)rotationMode
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:736840728];
-  v4 = [v3 integerValue];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:736840728];
+  integerValue = [v3 integerValue];
 
-  return v4;
+  return integerValue;
 }
 
 - (unint64_t)wallpaperMode
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:736840729];
-  v4 = [v3 unsignedIntegerValue];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:736840729];
+  unsignedIntegerValue = [v3 unsignedIntegerValue];
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [SBSUIMutableLoginUISceneClientSettings alloc];
 
   return [(FBSSettings *)v4 initWithSettings:self];
 }
 
-- (id)keyDescriptionForSetting:(unint64_t)a3
+- (id)keyDescriptionForSetting:(unint64_t)setting
 {
-  if (a3 - 736840726 > 3)
+  if (setting - 736840726 > 3)
   {
     v8 = v3;
     v9 = v4;
@@ -65,16 +65,16 @@
 
   else
   {
-    v5 = off_1E789F250[a3 - 736840726];
+    v5 = off_1E789F250[setting - 736840726];
   }
 
   return v5;
 }
 
-- (id)valueDescriptionForFlag:(int64_t)a3 object:(id)a4 ofSetting:(unint64_t)a5
+- (id)valueDescriptionForFlag:(int64_t)flag object:(id)object ofSetting:(unint64_t)setting
 {
-  v8 = a4;
-  v9 = SBSUILoginUISceneClientSettingValueDescription(a5, v8);
+  objectCopy = object;
+  v9 = SBSUILoginUISceneClientSettingValueDescription(setting, objectCopy);
   v10 = v9;
   if (v9)
   {
@@ -85,7 +85,7 @@
   {
     v14.receiver = self;
     v14.super_class = SBSUILoginUISceneClientSettings;
-    v11 = [(FBSSettings *)&v14 valueDescriptionForFlag:a3 object:v8 ofSetting:a5];
+    v11 = [(FBSSettings *)&v14 valueDescriptionForFlag:flag object:objectCopy ofSetting:setting];
   }
 
   v12 = v11;

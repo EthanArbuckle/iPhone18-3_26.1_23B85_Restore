@@ -1,31 +1,31 @@
 @interface SUScriptDialogNativeObject
-- (id)_makeAlertControllerForDialog:(id)a3 style:(int64_t)a4;
-- (void)_showSheetInView:(id)a3 fromViewController:(id)a4;
-- (void)_tearDownForDismissWithButtonIndex:(int64_t)a3;
+- (id)_makeAlertControllerForDialog:(id)dialog style:(int64_t)style;
+- (void)_showSheetInView:(id)view fromViewController:(id)controller;
+- (void)_tearDownForDismissWithButtonIndex:(int64_t)index;
 - (void)dismiss;
 - (void)show;
-- (void)showFromRect:(CGRect)a3 inView:(id)a4;
+- (void)showFromRect:(CGRect)rect inView:(id)view;
 - (void)showSheet;
-- (void)showSheetInViewController:(id)a3;
+- (void)showSheetInViewController:(id)controller;
 @end
 
 @implementation SUScriptDialogNativeObject
 
 - (void)dismiss
 {
-  v2 = [(SUScriptNativeObject *)self object];
+  object = [(SUScriptNativeObject *)self object];
 
-  [v2 dismissViewControllerAnimated:1 completion:0];
+  [object dismissViewControllerAnimated:1 completion:0];
 }
 
 - (void)show
 {
-  v3 = [(SUScriptNativeObject *)self scriptObject];
-  if (![(SUScriptNativeObject *)self object]&& v3)
+  scriptObject = [(SUScriptNativeObject *)self scriptObject];
+  if (![(SUScriptNativeObject *)self object]&& scriptObject)
   {
-    v4 = [(SUScriptDialogNativeObject *)self _makeAlertControllerForDialog:v3 style:1];
+    v4 = [(SUScriptDialogNativeObject *)self _makeAlertControllerForDialog:scriptObject style:1];
     [(SUScriptNativeObject *)self setObject:v4];
-    for (i = -[SUScriptObject parentViewController](v3, "parentViewController"); ; i = [v6 presentedViewController])
+    for (i = -[SUScriptObject parentViewController](scriptObject, "parentViewController"); ; i = [v6 presentedViewController])
     {
       v6 = i;
       if (![i presentedViewController])
@@ -38,26 +38,26 @@
   }
 }
 
-- (void)showFromRect:(CGRect)a3 inView:(id)a4
+- (void)showFromRect:(CGRect)rect inView:(id)view
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = [(SUScriptNativeObject *)self scriptObject];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  scriptObject = [(SUScriptNativeObject *)self scriptObject];
   if (![(SUScriptNativeObject *)self object])
   {
-    if (v10)
+    if (scriptObject)
     {
-      v11 = [(SUScriptDialogNativeObject *)self _makeAlertControllerForDialog:v10 style:0];
+      v11 = [(SUScriptDialogNativeObject *)self _makeAlertControllerForDialog:scriptObject style:0];
       [(SUScriptNativeObject *)self setObject:v11];
-      [-[SUScriptObject parentViewController](v10 "parentViewController")];
-      v12 = [v11 popoverPresentationController];
-      if (v12)
+      [-[SUScriptObject parentViewController](scriptObject "parentViewController")];
+      popoverPresentationController = [v11 popoverPresentationController];
+      if (popoverPresentationController)
       {
-        v13 = v12;
-        [v12 setSourceRect:{x, y, width, height}];
-        [v13 setSourceView:a4];
+        v13 = popoverPresentationController;
+        [popoverPresentationController setSourceRect:{x, y, width, height}];
+        [v13 setSourceView:view];
 
         [v13 setPermittedArrowDirections:15];
       }
@@ -67,24 +67,24 @@
 
 - (void)showSheet
 {
-  v3 = [(SUScriptNativeObject *)self scriptObject];
-  v4 = [(SUScriptNativeObject *)self object];
-  v5 = [(SUScriptObject *)v3 parentViewController];
-  v6 = [objc_msgSend(v5 "view")];
-  if (!v4)
+  scriptObject = [(SUScriptNativeObject *)self scriptObject];
+  object = [(SUScriptNativeObject *)self object];
+  parentViewController = [(SUScriptObject *)scriptObject parentViewController];
+  v6 = [objc_msgSend(parentViewController "view")];
+  if (!object)
   {
-    if (v3)
+    if (scriptObject)
     {
       v7 = v6;
       if (v6)
       {
         do
         {
-          v8 = v5;
-          v5 = [v5 parentViewController];
+          v8 = parentViewController;
+          parentViewController = [parentViewController parentViewController];
         }
 
-        while (v5);
+        while (parentViewController);
 
         [(SUScriptDialogNativeObject *)self _showSheetInView:v7 fromViewController:v8];
       }
@@ -92,42 +92,42 @@
   }
 }
 
-- (void)showSheetInViewController:(id)a3
+- (void)showSheetInViewController:(id)controller
 {
-  v5 = [(SUScriptNativeObject *)self scriptObject];
-  if (![(SUScriptNativeObject *)self object]&& v5)
+  scriptObject = [(SUScriptNativeObject *)self scriptObject];
+  if (![(SUScriptNativeObject *)self object]&& scriptObject)
   {
-    v6 = [a3 view];
+    view = [controller view];
 
-    [(SUScriptDialogNativeObject *)self _showSheetInView:v6 fromViewController:a3];
+    [(SUScriptDialogNativeObject *)self _showSheetInView:view fromViewController:controller];
   }
 }
 
-- (id)_makeAlertControllerForDialog:(id)a3 style:(int64_t)a4
+- (id)_makeAlertControllerForDialog:(id)dialog style:(int64_t)style
 {
   v44 = *MEMORY[0x1E69E9840];
-  v7 = [a3 title];
-  if (a4)
+  title = [dialog title];
+  if (style)
   {
-    v8 = [a3 body];
+    body = [dialog body];
   }
 
   else
   {
-    v8 = 0;
+    body = 0;
   }
 
-  v9 = [SUScriptDialogAlertController alertControllerWithTitle:v7 message:v8 preferredStyle:a4];
-  v10 = [a3 buttons];
-  v11 = [a3 cancelButtonIndex];
-  v30 = a3;
-  v12 = [a3 destructiveButtonIndex];
+  v9 = [SUScriptDialogAlertController alertControllerWithTitle:title message:body preferredStyle:style];
+  buttons = [dialog buttons];
+  cancelButtonIndex = [dialog cancelButtonIndex];
+  dialogCopy = dialog;
+  destructiveButtonIndex = [dialog destructiveButtonIndex];
   v31 = [MEMORY[0x1E69D4A30] weakReferenceWithObject:self];
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v13 = [v10 countByEnumeratingWithState:&v38 objects:v43 count:16];
+  v13 = [buttons countByEnumeratingWithState:&v38 objects:v43 count:16];
   if (v13)
   {
     v14 = v13;
@@ -139,7 +139,7 @@
       {
         if (*v39 != v16)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(buttons);
         }
 
         v18 = *(*(&v38 + 1) + 8 * i);
@@ -147,8 +147,8 @@
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v19 = 0;
-          if (v11)
+          title2 = 0;
+          if (cancelButtonIndex)
           {
             goto LABEL_11;
           }
@@ -156,33 +156,33 @@
 
         else
         {
-          v19 = [v18 title];
-          if (v11)
+          title2 = [v18 title];
+          if (cancelButtonIndex)
           {
 LABEL_11:
-            v20 = [v11 integerValue];
-            v21 = v15 == v20;
-            if (v15 == v20 || !v12)
+            integerValue = [cancelButtonIndex integerValue];
+            v21 = v15 == integerValue;
+            if (v15 == integerValue || !destructiveButtonIndex)
             {
               goto LABEL_18;
             }
 
 LABEL_16:
-            v21 = 2 * (v15 == [v12 integerValue]);
+            v21 = 2 * (v15 == [destructiveButtonIndex integerValue]);
             goto LABEL_18;
           }
         }
 
-        if (v12)
+        if (destructiveButtonIndex)
         {
           goto LABEL_16;
         }
 
         v21 = 0;
 LABEL_18:
-        if (v19)
+        if (title2)
         {
-          v22 = v19;
+          v22 = title2;
         }
 
         else
@@ -201,18 +201,18 @@ LABEL_18:
         ++v15;
       }
 
-      v14 = [v10 countByEnumeratingWithState:&v38 objects:v43 count:16];
+      v14 = [buttons countByEnumeratingWithState:&v38 objects:v43 count:16];
     }
 
     while (v14);
   }
 
-  v23 = [v30 textFields];
+  textFields = [dialogCopy textFields];
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v24 = [v23 countByEnumeratingWithState:&v33 objects:v42 count:16];
+  v24 = [textFields countByEnumeratingWithState:&v33 objects:v42 count:16];
   if (v24)
   {
     v25 = v24;
@@ -223,7 +223,7 @@ LABEL_18:
       {
         if (*v34 != v26)
         {
-          objc_enumerationMutation(v23);
+          objc_enumerationMutation(textFields);
         }
 
         v28 = *(*(&v33 + 1) + 8 * j);
@@ -235,7 +235,7 @@ LABEL_18:
         [(SUScriptDialogAlertController *)v9 addTextFieldWithConfigurationHandler:v32];
       }
 
-      v25 = [v23 countByEnumeratingWithState:&v33 objects:v42 count:16];
+      v25 = [textFields countByEnumeratingWithState:&v33 objects:v42 count:16];
     }
 
     while (v25);
@@ -260,21 +260,21 @@ uint64_t __66__SUScriptDialogNativeObject__makeAlertControllerForDialog_style___
   return [v4 setNativeObjectWithTextField:a2];
 }
 
-- (void)_showSheetInView:(id)a3 fromViewController:(id)a4
+- (void)_showSheetInView:(id)view fromViewController:(id)controller
 {
-  v7 = [(SUScriptNativeObject *)self scriptObject];
+  scriptObject = [(SUScriptNativeObject *)self scriptObject];
   if (![(SUScriptNativeObject *)self object])
   {
-    if (v7)
+    if (scriptObject)
     {
-      v8 = [(SUScriptDialogNativeObject *)self _makeAlertControllerForDialog:v7 style:0];
+      v8 = [(SUScriptDialogNativeObject *)self _makeAlertControllerForDialog:scriptObject style:0];
       [(SUScriptNativeObject *)self setObject:v8];
-      [a4 presentViewController:v8 animated:1 completion:0];
-      v9 = [v8 popoverPresentationController];
-      if (v9)
+      [controller presentViewController:v8 animated:1 completion:0];
+      popoverPresentationController = [v8 popoverPresentationController];
+      if (popoverPresentationController)
       {
-        v10 = v9;
-        [a3 bounds];
+        v10 = popoverPresentationController;
+        [view bounds];
         x = v19.origin.x;
         y = v19.origin.y;
         width = v19.size.width;
@@ -295,7 +295,7 @@ uint64_t __66__SUScriptDialogNativeObject__makeAlertControllerForDialog_style___
         v22.size.width = width;
         v22.size.height = height;
         [v10 setSourceRect:{v16, MinY + floor(CGRectGetHeight(v22) * 0.5), 1.0, 1.0}];
-        [v10 setSourceView:a3];
+        [v10 setSourceView:view];
 
         [v10 setPermittedArrowDirections:0];
       }
@@ -303,17 +303,17 @@ uint64_t __66__SUScriptDialogNativeObject__makeAlertControllerForDialog_style___
   }
 }
 
-- (void)_tearDownForDismissWithButtonIndex:(int64_t)a3
+- (void)_tearDownForDismissWithButtonIndex:(int64_t)index
 {
-  v5 = [(SUScriptNativeObject *)self scriptObject];
-  v6 = [(SUScriptObject *)v5 buttons];
-  if ((a3 & 0x8000000000000000) == 0)
+  scriptObject = [(SUScriptNativeObject *)self scriptObject];
+  buttons = [(SUScriptObject *)scriptObject buttons];
+  if ((index & 0x8000000000000000) == 0)
   {
-    v7 = v6;
-    if ([v6 count] > a3)
+    v7 = buttons;
+    if ([buttons count] > index)
     {
-      v8 = [v7 objectAtIndex:a3];
-      v9 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithObjects:{v8, v5, 0}];
+      v8 = [v7 objectAtIndex:index];
+      v9 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithObjects:{v8, scriptObject, 0}];
       [v8 performActionWithArguments:v9];
     }
   }

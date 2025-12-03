@@ -4,7 +4,7 @@
 - (id)audioDuckingModeDescription;
 - (id)audioDuckingVolumeDescription;
 - (id)specifiers;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -37,10 +37,10 @@
   v5 = +[NSNotificationCenter defaultCenter];
   [v5 addObserver:self selector:"updateMediaDuckingSpecifiers:" name:kAXSVoiceOverTouchVolumeChangedNotification object:0];
 
-  v6 = [(VoiceOverDuckingController *)self table];
+  table = [(VoiceOverDuckingController *)self table];
   v7 = objc_opt_class();
   v8 = +[VoiceOverDuckingSliderCell cellReuseIdentifier];
-  [v6 registerClass:v7 forCellReuseIdentifier:v8];
+  [table registerClass:v7 forCellReuseIdentifier:v8];
 
   objc_destroyWeak(&location);
 }
@@ -64,11 +64,11 @@ void __41__VoiceOverDuckingController_viewDidLoad__block_invoke_2(uint64_t a1)
   if (!v4)
   {
     v5 = +[NSMutableArray array];
-    v6 = [(VoiceOverDuckingController *)self _specsForAudioDuckingMode];
-    [v5 addObjectsFromArray:v6];
+    _specsForAudioDuckingMode = [(VoiceOverDuckingController *)self _specsForAudioDuckingMode];
+    [v5 addObjectsFromArray:_specsForAudioDuckingMode];
 
-    v7 = [(VoiceOverDuckingController *)self _specsForVolume];
-    [v5 addObjectsFromArray:v7];
+    _specsForVolume = [(VoiceOverDuckingController *)self _specsForVolume];
+    [v5 addObjectsFromArray:_specsForVolume];
 
     v8 = [v5 copy];
     v9 = *&self->AXUISettingsBaseListController_opaque[v3];
@@ -89,8 +89,8 @@ void __41__VoiceOverDuckingController_viewDidLoad__block_invoke_2(uint64_t a1)
   [v5 setProperty:&__kCFBooleanTrue forKey:PSIsRadioGroupKey];
   v6 = PSIDKey;
   [v5 setProperty:@"DuckingModeGroup" forKey:PSIDKey];
-  v7 = [(VoiceOverDuckingController *)self audioDuckingModeDescription];
-  [v5 setProperty:v7 forKey:PSFooterTextGroupKey];
+  audioDuckingModeDescription = [(VoiceOverDuckingController *)self audioDuckingModeDescription];
+  [v5 setProperty:audioDuckingModeDescription forKey:PSFooterTextGroupKey];
 
   [v3 addObject:v5];
   v8 = settingsLocString(@"AUDIO_DUCKING_OFF", @"VoiceOverSettings");
@@ -109,15 +109,15 @@ void __41__VoiceOverDuckingController_viewDidLoad__block_invoke_2(uint64_t a1)
   [v13 setProperty:&off_27A818 forKey:@"DuckingModeValue"];
   [v13 setProperty:@"DuckingModeAlwaysSpeakingIdentifier" forKey:v6];
   v14 = +[AXSettings sharedInstance];
-  v15 = [v14 voiceOverMediaDuckingMode];
+  voiceOverMediaDuckingMode = [v14 voiceOverMediaDuckingMode];
 
   v16 = v9;
-  if (v15)
+  if (voiceOverMediaDuckingMode)
   {
     v17 = +[AXSettings sharedInstance];
-    v18 = [v17 voiceOverMediaDuckingMode];
+    voiceOverMediaDuckingMode2 = [v17 voiceOverMediaDuckingMode];
 
-    if (v18 == &dword_0 + 1)
+    if (voiceOverMediaDuckingMode2 == &dword_0 + 1)
     {
       v16 = v11;
     }
@@ -141,16 +141,16 @@ void __41__VoiceOverDuckingController_viewDidLoad__block_invoke_2(uint64_t a1)
 {
   v3 = +[NSMutableArray array];
   v4 = +[AXSettings sharedInstance];
-  v5 = [v4 voiceOverMediaDuckingMode];
+  voiceOverMediaDuckingMode = [v4 voiceOverMediaDuckingMode];
 
-  if (v5)
+  if (voiceOverMediaDuckingMode)
   {
     v6 = settingsLocString(@"DUCKING_AMOUNT", @"VoiceOverSettings");
     v7 = [PSSpecifier groupSpecifierWithName:v6];
 
     [v7 setProperty:&__kCFBooleanTrue forKey:PSIsRadioGroupKey];
-    v8 = [(VoiceOverDuckingController *)self audioDuckingVolumeDescription];
-    [v7 setProperty:v8 forKey:PSFooterTextGroupKey];
+    audioDuckingVolumeDescription = [(VoiceOverDuckingController *)self audioDuckingVolumeDescription];
+    [v7 setProperty:audioDuckingVolumeDescription forKey:PSFooterTextGroupKey];
 
     [v3 addObject:v7];
     v9 = [PSSpecifier preferenceSpecifierNamed:&stru_25D420 target:self set:0 get:0 detail:0 cell:-1 edit:0];
@@ -161,31 +161,31 @@ void __41__VoiceOverDuckingController_viewDidLoad__block_invoke_2(uint64_t a1)
   return v3;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v16.receiver = self;
   v16.super_class = VoiceOverDuckingController;
-  v6 = a4;
-  [(VoiceOverDuckingController *)&v16 tableView:a3 didSelectRowAtIndexPath:v6];
-  v7 = [v6 section];
+  pathCopy = path;
+  [(VoiceOverDuckingController *)&v16 tableView:view didSelectRowAtIndexPath:pathCopy];
+  section = [pathCopy section];
 
-  v8 = [(VoiceOverDuckingController *)self specifierAtIndex:[(VoiceOverDuckingController *)self indexOfGroup:v7]];
+  v8 = [(VoiceOverDuckingController *)self specifierAtIndex:[(VoiceOverDuckingController *)self indexOfGroup:section]];
   v9 = [v8 propertyForKey:PSIDKey];
-  LODWORD(v6) = [v9 isEqualToString:@"DuckingModeGroup"];
+  LODWORD(pathCopy) = [v9 isEqualToString:@"DuckingModeGroup"];
 
-  if (v6)
+  if (pathCopy)
   {
     v10 = [v8 propertyForKey:PSRadioGroupCheckedSpecifierKey];
     v11 = [v10 propertyForKey:@"DuckingModeValue"];
-    v12 = [v11 intValue];
+    intValue = [v11 intValue];
 
     v13 = +[AXSettings sharedInstance];
-    [v13 setVoiceOverMediaDuckingMode:v12];
+    [v13 setVoiceOverMediaDuckingMode:intValue];
   }
 
   v14 = [(VoiceOverDuckingController *)self specifierForID:@"DuckingModeGroup"];
-  v15 = [(VoiceOverDuckingController *)self audioDuckingModeDescription];
-  [v14 setProperty:v15 forKey:PSFooterTextGroupKey];
+  audioDuckingModeDescription = [(VoiceOverDuckingController *)self audioDuckingModeDescription];
+  [v14 setProperty:audioDuckingModeDescription forKey:PSFooterTextGroupKey];
 
   [(VoiceOverDuckingController *)self reloadSpecifier:v14 animated:1];
 }
@@ -194,14 +194,14 @@ void __41__VoiceOverDuckingController_viewDidLoad__block_invoke_2(uint64_t a1)
 {
   v2 = settingsLocString(@"AUDIO_DUCKING_ALWAYS_FOOTER", @"VoiceOverSettings");
   v3 = +[AXSettings sharedInstance];
-  v4 = [v3 voiceOverMediaDuckingMode];
+  voiceOverMediaDuckingMode = [v3 voiceOverMediaDuckingMode];
 
-  if (v4)
+  if (voiceOverMediaDuckingMode)
   {
     v5 = +[AXSettings sharedInstance];
-    v6 = [v5 voiceOverMediaDuckingMode];
+    voiceOverMediaDuckingMode2 = [v5 voiceOverMediaDuckingMode];
 
-    if (v6 != &dword_0 + 1)
+    if (voiceOverMediaDuckingMode2 != &dword_0 + 1)
     {
       goto LABEL_6;
     }

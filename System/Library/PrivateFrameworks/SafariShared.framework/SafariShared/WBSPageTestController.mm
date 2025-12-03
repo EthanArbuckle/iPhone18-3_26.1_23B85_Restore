@@ -1,24 +1,24 @@
 @interface WBSPageTestController
 - (WBSPageTestDelegate)delegate;
-- (id)bundleFromNSBundle:(id)a3;
+- (id)bundleFromNSBundle:(id)bundle;
 @end
 
 @implementation WBSPageTestController
 
-- (id)bundleFromNSBundle:(id)a3
+- (id)bundleFromNSBundle:(id)bundle
 {
-  v40 = self;
+  selfCopy = self;
   v67 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  bundleCopy = bundle;
   v51 = objc_alloc_init(WBSPageTestEvaluator);
   v47 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v48 = v3;
+  v48 = bundleCopy;
   v57 = 0u;
   v58 = 0u;
   v59 = 0u;
   v60 = 0u;
-  v4 = [v3 infoDictionary];
-  obj = [v4 safari_arrayContainingObjectsOfClass:objc_opt_class() forKey:@"TestPages"];
+  infoDictionary = [bundleCopy infoDictionary];
+  obj = [infoDictionary safari_arrayContainingObjectsOfClass:objc_opt_class() forKey:@"TestPages"];
 
   v43 = [obj countByEnumeratingWithState:&v57 objects:v66 count:16];
   if (v43)
@@ -34,10 +34,10 @@
         }
 
         v49 = *(*(&v57 + 1) + 8 * i);
-        v46 = [v49 safari_stringForKey:{@"WebArchiveFileName", v40}];
+        v46 = [v49 safari_stringForKey:{@"WebArchiveFileName", selfCopy}];
         v5 = MEMORY[0x1E695DFF8];
-        v6 = [v48 bundleURL];
-        v50 = [v5 URLWithString:v46 relativeToURL:v6];
+        bundleURL = [v48 bundleURL];
+        v50 = [v5 URLWithString:v46 relativeToURL:bundleURL];
 
         v7 = [v49 safari_arrayContainingObjectsOfClass:objc_opt_class() forKey:@"Expectations"];
         v44 = v7;
@@ -74,8 +74,8 @@
                     {
                       v16 = [WBSPageTest alloc];
                       v17 = MEMORY[0x1E695DFF8];
-                      v18 = [v48 bundleURL];
-                      v19 = [v17 URLWithString:v12 relativeToURL:v18];
+                      bundleURL2 = [v48 bundleURL];
+                      v19 = [v17 URLWithString:v12 relativeToURL:bundleURL2];
                       v20 = [(WBSPageTest *)v16 initWithIdentifier:v13 pageURL:v50 expectedResultsURL:v19 dictionary:v49];
                       [v47 addObject:v20];
                     }
@@ -125,17 +125,17 @@
         else
         {
           v24 = MEMORY[0x1E695DFF8];
-          v25 = [v50 URLByDeletingPathExtension];
-          v26 = [v25 absoluteString];
-          v27 = [v26 stringByAppendingString:@"-expected"];
+          uRLByDeletingPathExtension = [v50 URLByDeletingPathExtension];
+          absoluteString = [uRLByDeletingPathExtension absoluteString];
+          v27 = [absoluteString stringByAppendingString:@"-expected"];
           v28 = [v24 URLWithString:v27];
-          v29 = [(WBSPageTestController *)v40 expectedResultsPathExtension];
-          v52 = [v28 URLByAppendingPathExtension:v29];
+          expectedResultsPathExtension = [(WBSPageTestController *)selfCopy expectedResultsPathExtension];
+          v52 = [v28 URLByAppendingPathExtension:expectedResultsPathExtension];
 
           v30 = [WBSPageTest alloc];
-          v31 = [v50 URLByDeletingPathExtension];
-          v32 = [v31 lastPathComponent];
-          v33 = [(WBSPageTest *)v30 initWithIdentifier:v32 pageURL:v50 expectedResultsURL:v52 dictionary:v49];
+          uRLByDeletingPathExtension2 = [v50 URLByDeletingPathExtension];
+          lastPathComponent = [uRLByDeletingPathExtension2 lastPathComponent];
+          v33 = [(WBSPageTest *)v30 initWithIdentifier:lastPathComponent pageURL:v50 expectedResultsURL:v52 dictionary:v49];
           [v47 addObject:v33];
         }
       }
@@ -146,17 +146,17 @@
     while (v43);
   }
 
-  v34 = [v48 bundleIdentifier];
-  if (!v34)
+  bundleIdentifier = [v48 bundleIdentifier];
+  if (!bundleIdentifier)
   {
-    v35 = [v48 bundleURL];
-    v36 = [v35 URLByDeletingPathExtension];
-    v34 = [v36 lastPathComponent];
+    bundleURL3 = [v48 bundleURL];
+    uRLByDeletingPathExtension3 = [bundleURL3 URLByDeletingPathExtension];
+    bundleIdentifier = [uRLByDeletingPathExtension3 lastPathComponent];
   }
 
   if ([v47 count])
   {
-    v37 = [[WBSPageTestBundle alloc] initWithIdentifier:v34 tests:v47];
+    v37 = [[WBSPageTestBundle alloc] initWithIdentifier:bundleIdentifier tests:v47];
   }
 
   else
@@ -165,7 +165,7 @@
     if (os_log_type_enabled(v38, OS_LOG_TYPE_INFO))
     {
       *buf = 138543362;
-      v62 = v34;
+      v62 = bundleIdentifier;
       _os_log_impl(&dword_1BB6F3000, v38, OS_LOG_TYPE_INFO, "Skipping bundle '%{public}@' because they contained no runnable tests for current device", buf, 0xCu);
     }
 

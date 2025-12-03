@@ -1,32 +1,32 @@
 @interface SBWindowDragInteraction
-- (CGPoint)_locationInView:(id)a3;
+- (CGPoint)_locationInView:(id)view;
 - (SBAppPlatterDragSourceViewProviding)sourceViewProvider;
-- (SBWindowDragInteraction)initWithDelegate:(id)a3 gestureRecognizer:(id)a4;
+- (SBWindowDragInteraction)initWithDelegate:(id)delegate gestureRecognizer:(id)recognizer;
 - (UIGestureRecognizer)gestureRecognizer;
 @end
 
 @implementation SBWindowDragInteraction
 
-- (SBWindowDragInteraction)initWithDelegate:(id)a3 gestureRecognizer:(id)a4
+- (SBWindowDragInteraction)initWithDelegate:(id)delegate gestureRecognizer:(id)recognizer
 {
-  v6 = a4;
+  recognizerCopy = recognizer;
   v10.receiver = self;
   v10.super_class = SBWindowDragInteraction;
-  v7 = [(UIDragInteraction *)&v10 initWithDelegate:a3];
+  v7 = [(UIDragInteraction *)&v10 initWithDelegate:delegate];
   v8 = v7;
   if (v7)
   {
-    objc_storeWeak(&v7->_gestureRecognizer, v6);
+    objc_storeWeak(&v7->_gestureRecognizer, recognizerCopy);
   }
 
   return v8;
 }
 
-- (CGPoint)_locationInView:(id)a3
+- (CGPoint)_locationInView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   WeakRetained = objc_loadWeakRetained(&self->_gestureRecognizer);
-  [WeakRetained locationInView:v4];
+  [WeakRetained locationInView:viewCopy];
   v7 = v6;
   v9 = v8;
 

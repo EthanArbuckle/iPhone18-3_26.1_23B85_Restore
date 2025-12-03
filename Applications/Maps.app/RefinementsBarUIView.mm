@@ -1,18 +1,18 @@
 @interface RefinementsBarUIView
-- (_TtC4Maps20RefinementsBarUIView)initWithCoder:(id)a3;
+- (_TtC4Maps20RefinementsBarUIView)initWithCoder:(id)coder;
 - (_TtC4Maps23RefinementsBarViewModel)viewModel;
 - (_TtP4Maps26RefinementsBarViewDelegate_)delegate;
-- (void)setHostingView:(id)a3;
-- (void)setViewModel:(id)a3;
+- (void)setHostingView:(id)view;
+- (void)setViewModel:(id)model;
 @end
 
 @implementation RefinementsBarUIView
 
-- (void)setHostingView:(id)a3
+- (void)setHostingView:(id)view
 {
   v4 = *(self + OBJC_IVAR____TtC4Maps20RefinementsBarUIView_hostingView);
-  *(self + OBJC_IVAR____TtC4Maps20RefinementsBarUIView_hostingView) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC4Maps20RefinementsBarUIView_hostingView) = view;
+  viewCopy = view;
 }
 
 - (_TtP4Maps26RefinementsBarViewDelegate_)delegate
@@ -22,7 +22,7 @@
   return Strong;
 }
 
-- (_TtC4Maps20RefinementsBarUIView)initWithCoder:(id)a3
+- (_TtC4Maps20RefinementsBarUIView)initWithCoder:(id)coder
 {
   v3 = (self + OBJC_IVAR____TtC4Maps20RefinementsBarUIView_refinementBar);
   *v3 = 0u;
@@ -50,11 +50,11 @@
   return v4;
 }
 
-- (void)setViewModel:(id)a3
+- (void)setViewModel:(id)model
 {
-  v5 = a3;
-  v6 = self;
-  sub_10033DDE4(a3);
+  modelCopy = model;
+  selfCopy = self;
+  sub_10033DDE4(model);
 }
 
 @end

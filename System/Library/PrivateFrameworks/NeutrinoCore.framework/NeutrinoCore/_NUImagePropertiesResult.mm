@@ -8,8 +8,8 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(_NUImagePropertiesResult *)self properties];
-  v6 = [v5 description];
+  properties = [(_NUImagePropertiesResult *)self properties];
+  v6 = [properties description];
   v7 = v6;
   v8 = @"NONE";
   if (v6)

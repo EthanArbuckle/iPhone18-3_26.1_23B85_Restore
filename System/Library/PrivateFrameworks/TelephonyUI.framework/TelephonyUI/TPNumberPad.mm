@@ -1,13 +1,13 @@
 @interface TPNumberPad
 - (CGSize)intrinsicContentSize;
-- (TPNumberPad)initWithButtons:(id)a3;
-- (void)_addButton:(id)a3;
+- (TPNumberPad)initWithButtons:(id)buttons;
+- (void)_addButton:(id)button;
 - (void)_layoutGrid;
-- (void)buttonLongPressedViaGesture:(id)a3;
+- (void)buttonLongPressedViaGesture:(id)gesture;
 - (void)dealloc;
 - (void)reloadButtonImages;
-- (void)replaceButton:(id)a3 atIndex:(unint64_t)a4;
-- (void)setButtons:(id)a3;
+- (void)replaceButton:(id)button atIndex:(unint64_t)index;
+- (void)setButtons:(id)buttons;
 @end
 
 @implementation TPNumberPad
@@ -52,25 +52,25 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = TPNumberPad;
   [(TPNumberPad *)&v4 dealloc];
 }
 
-- (TPNumberPad)initWithButtons:(id)a3
+- (TPNumberPad)initWithButtons:(id)buttons
 {
   v27 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  buttonsCopy = buttons;
   self->_numberButtonsEnabled = 1;
-  if ([v5 count] <= 0xB)
+  if ([buttonsCopy count] <= 0xB)
   {
     [(TPNumberPad *)a2 initWithButtons:?];
   }
 
-  v6 = [v5 objectAtIndex:0];
+  v6 = [buttonsCopy objectAtIndex:0];
   [v6 frame];
   v8 = v7 * 3.0;
   [v6 frame];
@@ -80,16 +80,16 @@
   v11 = v10;
   if (v10)
   {
-    [(TPNumberPad *)v10 setButtons:v5];
-    v12 = [MEMORY[0x1E69DC888] clearColor];
-    [(TPNumberPad *)v11 setBackgroundColor:v12];
+    [(TPNumberPad *)v10 setButtons:buttonsCopy];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(TPNumberPad *)v11 setBackgroundColor:clearColor];
 
     [(TPNumberPad *)v11 setOpaque:0];
     v23 = 0u;
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v13 = v5;
+    v13 = buttonsCopy;
     v14 = [v13 countByEnumeratingWithState:&v21 objects:v26 count:16];
     if (v14)
     {
@@ -116,8 +116,8 @@
     }
 
     [(TPNumberPad *)v11 _layoutGrid];
-    v18 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v18 addObserver:v11 selector:sel_handleCurrentLocaleDidChangeNotification_ name:*MEMORY[0x1E695D8F0] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v11 selector:sel_handleCurrentLocaleDidChangeNotification_ name:*MEMORY[0x1E695D8F0] object:0];
   }
 
   v19 = *MEMORY[0x1E69E9840];
@@ -131,8 +131,8 @@
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = [(TPNumberPad *)self buttons];
-  v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  buttons = [(TPNumberPad *)self buttons];
+  v3 = [buttons countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v3)
   {
     v4 = v3;
@@ -144,7 +144,7 @@
       {
         if (*v10 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(buttons);
         }
 
         v7 = *(*(&v9 + 1) + 8 * v6);
@@ -157,7 +157,7 @@
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v4 = [buttons countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v4);
@@ -168,8 +168,8 @@
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = [(TPNumberPad *)self buttons];
-  v3 = [v2 objectAtIndex:0];
+  buttons = [(TPNumberPad *)self buttons];
+  v3 = [buttons objectAtIndex:0];
 
   [v3 frame];
   v5 = v4 * 3.0;
@@ -183,9 +183,9 @@
   return result;
 }
 
-- (void)setButtons:(id)a3
+- (void)setButtons:(id)buttons
 {
-  v8 = a3;
+  buttonsCopy = buttons;
   buttons = self->_buttons;
   if (!buttons)
   {
@@ -197,35 +197,35 @@
   }
 
   [(NSMutableArray *)buttons removeAllObjects];
-  v7 = v8;
-  if (v8)
+  v7 = buttonsCopy;
+  if (buttonsCopy)
   {
-    [(NSMutableArray *)self->_buttons addObjectsFromArray:v8];
-    v7 = v8;
+    [(NSMutableArray *)self->_buttons addObjectsFromArray:buttonsCopy];
+    v7 = buttonsCopy;
   }
 }
 
-- (void)replaceButton:(id)a3 atIndex:(unint64_t)a4
+- (void)replaceButton:(id)button atIndex:(unint64_t)index
 {
-  v8 = a3;
-  if (a4 >= 0xC)
+  buttonCopy = button;
+  if (index >= 0xC)
   {
-    [(TPNumberPad *)a4 replaceButton:a2 atIndex:self];
+    [(TPNumberPad *)index replaceButton:a2 atIndex:self];
   }
 
-  v7 = [(NSMutableArray *)self->_buttons objectAtIndex:a4];
+  v7 = [(NSMutableArray *)self->_buttons objectAtIndex:index];
   [v7 removeFromSuperview];
-  [(NSMutableArray *)self->_buttons replaceObjectAtIndex:a4 withObject:v8];
-  [(TPNumberPad *)self _addButton:v8];
+  [(NSMutableArray *)self->_buttons replaceObjectAtIndex:index withObject:buttonCopy];
+  [(TPNumberPad *)self _addButton:buttonCopy];
   [(TPNumberPad *)self _layoutGrid];
 }
 
-- (void)_addButton:(id)a3
+- (void)_addButton:(id)button
 {
-  v6 = a3;
-  if ([v6 conformsToProtocol:&unk_1F2CCAA30])
+  buttonCopy = button;
+  if ([buttonCopy conformsToProtocol:&unk_1F2CCAA30])
   {
-    v4 = [v6 character] == 13;
+    v4 = [buttonCopy character] == 13;
   }
 
   else
@@ -236,28 +236,28 @@
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && !v4)
   {
-    [v6 setExclusiveTouch:1];
-    [v6 addTarget:self action:sel_buttonTapped_ forControlEvents:64];
-    [v6 addTarget:self action:sel_buttonDown_ forControlEvents:1];
-    [v6 addTarget:self action:sel_buttonUp_ forControlEvents:64];
-    [v6 addTarget:self action:sel_buttonUpOutside_ forControlEvents:128];
-    [v6 addTarget:self action:sel_buttonCancelled_ forControlEvents:256];
+    [buttonCopy setExclusiveTouch:1];
+    [buttonCopy addTarget:self action:sel_buttonTapped_ forControlEvents:64];
+    [buttonCopy addTarget:self action:sel_buttonDown_ forControlEvents:1];
+    [buttonCopy addTarget:self action:sel_buttonUp_ forControlEvents:64];
+    [buttonCopy addTarget:self action:sel_buttonUpOutside_ forControlEvents:128];
+    [buttonCopy addTarget:self action:sel_buttonCancelled_ forControlEvents:256];
   }
 
   v5 = [objc_alloc(MEMORY[0x1E69DCC48]) initWithTarget:self action:sel_buttonLongPressedViaGesture_];
   [v5 setAllowableMovement:100.0];
   [v5 setMinimumPressDuration:1.0];
-  [v6 addGestureRecognizer:v5];
-  [(TPNumberPad *)self addSubview:v6];
+  [buttonCopy addGestureRecognizer:v5];
+  [(TPNumberPad *)self addSubview:buttonCopy];
 }
 
-- (void)buttonLongPressedViaGesture:(id)a3
+- (void)buttonLongPressedViaGesture:(id)gesture
 {
-  v5 = a3;
-  if ([v5 state] == 1)
+  gestureCopy = gesture;
+  if ([gestureCopy state] == 1)
   {
-    v4 = [v5 view];
-    [(TPNumberPad *)self buttonLongPressed:v4];
+    view = [gestureCopy view];
+    [(TPNumberPad *)self buttonLongPressed:view];
   }
 }
 

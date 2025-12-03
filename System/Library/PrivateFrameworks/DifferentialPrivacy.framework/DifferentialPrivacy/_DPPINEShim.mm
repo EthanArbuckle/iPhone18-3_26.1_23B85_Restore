@@ -1,6 +1,6 @@
 @interface _DPPINEShim
-+ (BOOL)isValidPINEType:(unint64_t)a3;
-+ (id)shard:(id)a3 parameter:(id)a4 error:(id *)a5;
++ (BOOL)isValidPINEType:(unint64_t)type;
++ (id)shard:(id)shard parameter:(id)parameter error:(id *)error;
 - (_DPPINEShim)init;
 @end
 
@@ -13,29 +13,29 @@
   return [(_DPPINEShim *)&v3 init];
 }
 
-+ (id)shard:(id)a3 parameter:(id)a4 error:(id *)a5
++ (id)shard:(id)shard parameter:(id)parameter error:(id *)error
 {
-  v6 = *(a4 + OBJC_IVAR____DPPINEParameter_pineType);
+  v6 = *(parameter + OBJC_IVAR____DPPINEParameter_pineType);
   switch(v6)
   {
     case -61434:
-      v7 = a3;
-      v8 = a4;
-      v9 = sub_226281E8C(v7, v8);
+      shardCopy3 = shard;
+      parameterCopy3 = parameter;
+      v9 = sub_226281E8C(shardCopy3, parameterCopy3);
       break;
     case -61435:
-      v7 = a3;
-      v8 = a4;
-      v9 = sub_226281AAC(v7, v8);
+      shardCopy3 = shard;
+      parameterCopy3 = parameter;
+      v9 = sub_226281AAC(shardCopy3, parameterCopy3);
       break;
     case -61436:
-      v7 = a3;
-      v8 = a4;
-      v9 = sub_2262816CC(v7, v8);
+      shardCopy3 = shard;
+      parameterCopy3 = parameter;
+      v9 = sub_2262816CC(shardCopy3, parameterCopy3);
       break;
     default:
-      v12 = a3;
-      v13 = a4;
+      shardCopy4 = shard;
+      parameterCopy4 = parameter;
       result = sub_22628EC0C();
       __break(1u);
       return result;
@@ -46,19 +46,19 @@
   return v10;
 }
 
-+ (BOOL)isValidPINEType:(unint64_t)a3
++ (BOOL)isValidPINEType:(unint64_t)type
 {
-  if (HIDWORD(a3))
+  if (HIDWORD(type))
   {
     __break(1u);
   }
 
   else
   {
-    LOBYTE(a1) = (a3 + 61436) < 3;
+    LOBYTE(self) = (type + 61436) < 3;
   }
 
-  return a1;
+  return self;
 }
 
 @end

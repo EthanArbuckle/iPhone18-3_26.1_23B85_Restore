@@ -1,15 +1,15 @@
 @interface CKTypingView
-- (CKTypingView)initWithFrame:(CGRect)a3;
-- (void)setIndicatorLayer:(id)a3;
+- (CKTypingView)initWithFrame:(CGRect)frame;
+- (void)setIndicatorLayer:(id)layer;
 @end
 
 @implementation CKTypingView
 
-- (CKTypingView)initWithFrame:(CGRect)a3
+- (CKTypingView)initWithFrame:(CGRect)frame
 {
   v10.receiver = self;
   v10.super_class = CKTypingView;
-  v3 = [(CKTypingView *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CKTypingView *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(CKBaseLayer);
@@ -17,35 +17,35 @@
     v3->_baseLayer = v4;
 
     v6 = v3->_baseLayer;
-    v7 = [(CKTypingView *)v3 layer];
-    [v7 bounds];
+    layer = [(CKTypingView *)v3 layer];
+    [layer bounds];
     [(CKBaseLayer *)v6 setFrame:?];
 
-    v8 = [(CKTypingView *)v3 layer];
-    [v8 addSublayer:v3->_baseLayer];
+    layer2 = [(CKTypingView *)v3 layer];
+    [layer2 addSublayer:v3->_baseLayer];
   }
 
   return v3;
 }
 
-- (void)setIndicatorLayer:(id)a3
+- (void)setIndicatorLayer:(id)layer
 {
-  v5 = a3;
+  layerCopy = layer;
   indicatorLayer = self->_indicatorLayer;
-  if (indicatorLayer != v5)
+  if (indicatorLayer != layerCopy)
   {
-    v10 = v5;
+    v10 = layerCopy;
     [(CKTypingIndicatorLayerProtocol *)indicatorLayer removeFromSuperlayer];
-    objc_storeStrong(&self->_indicatorLayer, a3);
+    objc_storeStrong(&self->_indicatorLayer, layer);
     v7 = self->_indicatorLayer;
-    v8 = [(CKTypingView *)self layer];
-    [v8 bounds];
+    layer = [(CKTypingView *)self layer];
+    [layer bounds];
     [(CKTypingIndicatorLayerProtocol *)v7 setFrame:?];
 
-    v9 = [(CKTypingView *)self baseLayer];
-    [v9 addSublayer:v10];
+    baseLayer = [(CKTypingView *)self baseLayer];
+    [baseLayer addSublayer:v10];
 
-    v5 = v10;
+    layerCopy = v10;
   }
 }
 

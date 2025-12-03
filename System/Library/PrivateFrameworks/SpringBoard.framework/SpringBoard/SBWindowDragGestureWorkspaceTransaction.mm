@@ -1,48 +1,48 @@
 @interface SBWindowDragGestureWorkspaceTransaction
-- (BOOL)shouldInterceptTransitionRequest:(id)a3;
+- (BOOL)shouldInterceptTransitionRequest:(id)request;
 - (CGPoint)locationInSelectedDisplayItem;
 - (CGSize)sizeOfSelectedDisplayItem;
-- (void)_beginWithGesture:(id)a3;
-- (void)_finishWithGesture:(id)a3;
-- (void)interceptTransitionRequest:(id)a3;
+- (void)_beginWithGesture:(id)gesture;
+- (void)_finishWithGesture:(id)gesture;
+- (void)interceptTransitionRequest:(id)request;
 @end
 
 @implementation SBWindowDragGestureWorkspaceTransaction
 
-- (void)_beginWithGesture:(id)a3
+- (void)_beginWithGesture:(id)gesture
 {
-  v4 = a3;
-  v5 = [(SBFluidSwitcherGestureWorkspaceTransaction *)self switcherController];
-  v6 = [(SBFluidSwitcherGestureWorkspaceTransaction *)self switcherViewController];
-  v7 = [v6 layoutContext];
-  v8 = [v7 layoutState];
+  gestureCopy = gesture;
+  switcherController = [(SBFluidSwitcherGestureWorkspaceTransaction *)self switcherController];
+  switcherViewController = [(SBFluidSwitcherGestureWorkspaceTransaction *)self switcherViewController];
+  layoutContext = [switcherViewController layoutContext];
+  layoutState = [layoutContext layoutState];
 
-  v9 = [v8 floatingConfiguration];
-  v82 = [v8 centerConfiguration];
-  v85 = [v8 interfaceOrientation];
-  v10 = [v6 contentView];
-  v11 = [v6 view];
-  v89 = v10;
-  [v4 locationInView:v10];
+  floatingConfiguration = [layoutState floatingConfiguration];
+  centerConfiguration = [layoutState centerConfiguration];
+  interfaceOrientation = [layoutState interfaceOrientation];
+  contentView = [switcherViewController contentView];
+  view = [switcherViewController view];
+  v89 = contentView;
+  [gestureCopy locationInView:contentView];
   v13 = v12;
   v15 = v14;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v4 initialTouchLocation];
+    [gestureCopy initialTouchLocation];
     v13 = v16;
     v15 = v17;
   }
 
-  v88 = v11;
-  [v11 bounds];
+  v88 = view;
+  [view bounds];
   if (v15 > v18 + -1.0)
   {
     v15 = v18 + -1.0;
   }
 
   v19 = objc_opt_class();
-  v20 = v4;
+  v20 = gestureCopy;
   if (v19)
   {
     if (objc_opt_isKindOfClass())
@@ -66,7 +66,7 @@
   v86 = v22;
   if (v22)
   {
-    v23 = [v22 initialTouchLeafAppLayout];
+    initialTouchLeafAppLayout = [v22 initialTouchLeafAppLayout];
   }
 
   else
@@ -95,36 +95,36 @@
 
     if (v27)
     {
-      v23 = [v27 leafAppLayout];
+      initialTouchLeafAppLayout = [v27 leafAppLayout];
     }
 
     else
     {
-      v23 = 0;
+      initialTouchLeafAppLayout = 0;
     }
   }
 
   v87 = v20;
-  v83 = v9;
-  if (v23)
+  v83 = floatingConfiguration;
+  if (initialTouchLeafAppLayout)
   {
-    v28 = [v6 adjustedAppLayoutForLeafAppLayout:v23];
+    v28 = [switcherViewController adjustedAppLayoutForLeafAppLayout:initialTouchLeafAppLayout];
     if (v28)
     {
-      v29 = v6;
-      v30 = [v5 windowManagementContext];
-      v31 = [v30 isChamoisOrFlexibleWindowing];
+      v29 = switcherViewController;
+      windowManagementContext = [switcherController windowManagementContext];
+      isChamoisOrFlexibleWindowing = [windowManagementContext isChamoisOrFlexibleWindowing];
 
-      if ((v31 & 1) != 0 || ([v28 itemForLayoutRole:4], v32 = objc_claimAutoreleasedReturnValue(), v32, objc_msgSend(v23, "itemForLayoutRole:", 1), v33 = objc_claimAutoreleasedReturnValue(), v34 = objc_msgSend(v28, "layoutRoleForItem:", v33), v33, !v32))
+      if ((isChamoisOrFlexibleWindowing & 1) != 0 || ([v28 itemForLayoutRole:4], v32 = objc_claimAutoreleasedReturnValue(), v32, objc_msgSend(initialTouchLeafAppLayout, "itemForLayoutRole:", 1), v33 = objc_claimAutoreleasedReturnValue(), v34 = objc_msgSend(v28, "layoutRoleForItem:", v33), v33, !v32))
       {
-        v6 = v29;
+        switcherViewController = v29;
       }
 
       else
       {
         v35 = v34 == 4;
-        v9 = v83;
-        v6 = v29;
+        floatingConfiguration = v83;
+        switcherViewController = v29;
         if (!v35)
         {
           goto LABEL_27;
@@ -139,15 +139,15 @@ LABEL_35:
 LABEL_27:
   }
 
-  if ([v8 layoutContainsRole:3])
+  if ([layoutState layoutContainsRole:3])
   {
-    if (!SBFloatingConfigurationIsStashed(v9))
+    if (!SBFloatingConfigurationIsStashed(floatingConfiguration))
     {
       v36 = +[SBMedusaDomain rootSettings];
       [v36 narrowEdgeSwipeHitTestWidth];
       v38 = v37;
 
-      [v5 frameForFloatingAppLayoutInInterfaceOrientation:v85 floatingConfiguration:v9];
+      [switcherController frameForFloatingAppLayoutInInterfaceOrientation:interfaceOrientation floatingConfiguration:floatingConfiguration];
       v99.origin.x = v40 + (v39 - v38) * 0.5;
       v99.origin.y = 0.0;
       v99.size.width = v38;
@@ -155,63 +155,63 @@ LABEL_27:
       v98.y = v15;
       if (CGRectContainsPoint(v99, v98))
       {
-        v41 = [v8 floatingAppLayout];
-        if (v41)
+        floatingAppLayout = [layoutState floatingAppLayout];
+        if (floatingAppLayout)
         {
-          v23 = v41;
+          initialTouchLeafAppLayout = floatingAppLayout;
           goto LABEL_36;
         }
       }
     }
   }
 
-  v28 = [v6 _adjustedAppLayoutForItemContainerAtLocation:0 environment:{v13, v15}];
+  v28 = [switcherViewController _adjustedAppLayoutForItemContainerAtLocation:0 environment:{v13, v15}];
   v42 = [v28 leafAppLayoutForRole:4];
   if (v42)
   {
-    v23 = v42;
+    initialTouchLeafAppLayout = v42;
     goto LABEL_35;
   }
 
-  v23 = [v6 _leafAppLayoutForItemContainerAtLocation:0 environment:{v13, v15}];
+  initialTouchLeafAppLayout = [switcherViewController _leafAppLayoutForItemContainerAtLocation:0 environment:{v13, v15}];
 
-  if (v23)
+  if (initialTouchLeafAppLayout)
   {
 LABEL_36:
-    [(SBFluidSwitcherGestureWorkspaceTransaction *)self setSelectedAppLayout:v23];
-    v43 = [v6 visibleItemContainers];
-    v44 = [v43 allValues];
+    [(SBFluidSwitcherGestureWorkspaceTransaction *)self setSelectedAppLayout:initialTouchLeafAppLayout];
+    visibleItemContainers = [switcherViewController visibleItemContainers];
+    allValues = [visibleItemContainers allValues];
     v96[0] = MEMORY[0x277D85DD0];
     v96[1] = 3221225472;
     v96[2] = __61__SBWindowDragGestureWorkspaceTransaction__beginWithGesture___block_invoke;
     v96[3] = &unk_2783A8FD0;
-    v45 = v23;
+    v45 = initialTouchLeafAppLayout;
     v97 = v45;
-    v46 = [v44 bs_firstObjectPassingTest:v96];
+    v46 = [allValues bs_firstObjectPassingTest:v96];
 
-    v84 = v6;
-    v47 = [v6 adjustedAppLayoutForLeafAppLayout:v45];
+    v84 = switcherViewController;
+    v47 = [switcherViewController adjustedAppLayoutForLeafAppLayout:v45];
     v48 = [v45 itemForLayoutRole:1];
     v49 = [v47 layoutRoleForItem:v48];
-    v50 = [v5 windowManagementContext];
-    v51 = [v50 isFlexibleWindowingEnabled];
+    windowManagementContext2 = [switcherController windowManagementContext];
+    isFlexibleWindowingEnabled = [windowManagementContext2 isFlexibleWindowingEnabled];
 
-    if (v51)
+    if (isFlexibleWindowingEnabled)
     {
-      v52 = [v8 appLayout];
-      self->_draggingFromContinuousExposeStrips = [v52 containsItem:v48] ^ 1;
+      appLayout = [layoutState appLayout];
+      self->_draggingFromContinuousExposeStrips = [appLayout containsItem:v48] ^ 1;
 
       p_locationInSelectedDisplayItem = &self->_locationInSelectedDisplayItem;
       [v46 convertPoint:v89 fromView:{v13, v15}];
       self->_locationInSelectedDisplayItem.x = v54;
       self->_locationInSelectedDisplayItem.y = v55;
-      [v5 frameForItemWithRole:v49 inMainAppLayout:v47 interfaceOrientation:v85];
+      [switcherController frameForItemWithRole:v49 inMainAppLayout:v47 interfaceOrientation:interfaceOrientation];
       v57 = v56;
       v59 = v58;
       self->_sizeOfSelectedDisplayItem.width = v58;
       self->_sizeOfSelectedDisplayItem.height = v60;
       self->_selectedEdge = 1;
-      v61 = [v5 _slideOverDisplayItem];
+      _slideOverDisplayItem = [switcherController _slideOverDisplayItem];
       v62 = BSEqualObjects();
 
       if (v62)
@@ -219,15 +219,15 @@ LABEL_36:
         v95 = 0;
         v93 = 0u;
         v94 = 0u;
-        v63 = [v5 displayItemLayoutAttributesProvider];
-        v64 = [v8 displayOrdinal];
-        v65 = [v8 interfaceOrientation];
-        v66 = (v65 - 1) < 2 ? 1 : 2 * ((v65 - 3) < 2);
-        v67 = [v63 layoutAttributesForDisplayItem:v48 inAppLayout:v47 displayOrdinal:v64 orientation:v66];
+        displayItemLayoutAttributesProvider = [switcherController displayItemLayoutAttributesProvider];
+        displayOrdinal = [layoutState displayOrdinal];
+        interfaceOrientation2 = [layoutState interfaceOrientation];
+        v66 = (interfaceOrientation2 - 1) < 2 ? 1 : 2 * ((interfaceOrientation2 - 3) < 2);
+        v67 = [displayItemLayoutAttributesProvider layoutAttributesForDisplayItem:v48 inAppLayout:v47 displayOrdinal:displayOrdinal orientation:v66];
         [(SBDisplayItemLayoutAttributes *)v67 slideOverConfiguration];
 
         self->_draggingFromContinuousExposeStrips = 0;
-        self->_unstashingFromHome = [v8 unlockedEnvironmentMode] == 1;
+        self->_unstashingFromHome = [layoutState unlockedEnvironmentMode] == 1;
         if (v46)
         {
           y = self->_locationInSelectedDisplayItem.y;
@@ -268,10 +268,10 @@ LABEL_36:
       goto LABEL_64;
     }
 
-    v69 = [v5 windowManagementContext];
-    v70 = [v69 isMedusaEnabled];
+    windowManagementContext3 = [switcherController windowManagementContext];
+    isMedusaEnabled = [windowManagementContext3 isMedusaEnabled];
 
-    if (!v70)
+    if (!isMedusaEnabled)
     {
 LABEL_64:
       v90.receiver = self;
@@ -280,18 +280,18 @@ LABEL_64:
       [(SBFluidSwitcherGestureWorkspaceTransaction *)&v90 _beginWithGesture:v87];
 
       v74 = v88;
-      v6 = v84;
+      switcherViewController = v84;
       goto LABEL_65;
     }
 
     if ([v47 environment] == 1)
     {
-      [v5 frameForItemWithRole:v49 inMainAppLayout:v47 interfaceOrientation:v85];
+      [switcherController frameForItemWithRole:v49 inMainAppLayout:v47 interfaceOrientation:interfaceOrientation];
     }
 
     else if ([v47 environment] == 2)
     {
-      [v5 frameForFloatingAppLayoutInInterfaceOrientation:v85 floatingConfiguration:v83];
+      [switcherController frameForFloatingAppLayoutInInterfaceOrientation:interfaceOrientation floatingConfiguration:v83];
     }
 
     else
@@ -303,7 +303,7 @@ LABEL_64:
         goto LABEL_57;
       }
 
-      [v5 frameForCenterItemWithConfiguration:v82 interfaceOrientation:v85];
+      [switcherController frameForCenterItemWithConfiguration:centerConfiguration interfaceOrientation:interfaceOrientation];
     }
 
     v77 = v71;
@@ -340,30 +340,30 @@ uint64_t __61__SBWindowDragGestureWorkspaceTransaction__beginWithGesture___block
   return v4;
 }
 
-- (void)_finishWithGesture:(id)a3
+- (void)_finishWithGesture:(id)gesture
 {
-  v4 = a3;
-  v5 = [(SBFluidSwitcherGestureWorkspaceTransaction *)self selectedAppLayout];
+  gestureCopy = gesture;
+  selectedAppLayout = [(SBFluidSwitcherGestureWorkspaceTransaction *)self selectedAppLayout];
 
-  if (v5)
+  if (selectedAppLayout)
   {
     v6.receiver = self;
     v6.super_class = SBWindowDragGestureWorkspaceTransaction;
-    [(SBFluidSwitcherGestureWorkspaceTransaction *)&v6 _finishWithGesture:v4];
+    [(SBFluidSwitcherGestureWorkspaceTransaction *)&v6 _finishWithGesture:gestureCopy];
   }
 }
 
-- (BOOL)shouldInterceptTransitionRequest:(id)a3
+- (BOOL)shouldInterceptTransitionRequest:(id)request
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SBFluidSwitcherGestureWorkspaceTransaction *)self switcherController];
-  v6 = [v4 source];
-  v7 = [(SBFluidSwitcherGestureWorkspaceTransaction *)self selectedAppLayout];
-  if (v7 && ([(SBWindowDragGestureWorkspaceTransaction *)self isInterrupted]& 1) == 0)
+  requestCopy = request;
+  switcherController = [(SBFluidSwitcherGestureWorkspaceTransaction *)self switcherController];
+  source = [requestCopy source];
+  selectedAppLayout = [(SBFluidSwitcherGestureWorkspaceTransaction *)self selectedAppLayout];
+  if (selectedAppLayout && ([(SBWindowDragGestureWorkspaceTransaction *)self isInterrupted]& 1) == 0)
   {
-    v9 = [(SBSystemGestureWorkspaceTransaction *)self gestureRecognizer];
-    v8 = [v9 state] == 2;
+    gestureRecognizer = [(SBSystemGestureWorkspaceTransaction *)self gestureRecognizer];
+    v8 = [gestureRecognizer state] == 2;
   }
 
   else
@@ -371,25 +371,25 @@ uint64_t __61__SBWindowDragGestureWorkspaceTransaction__beginWithGesture___block
     v8 = 0;
   }
 
-  if (((v6 - 24) > 0x35 || ((1 << (v6 - 24)) & 0x20100000000003) == 0) && v6 != 6)
+  if (((source - 24) > 0x35 || ((1 << (source - 24)) & 0x20100000000003) == 0) && source != 6)
   {
     v8 = 0;
   }
 
-  v10 = [v5 windowManagementContext];
-  v11 = [v10 isChamoisOrFlexibleWindowing];
+  windowManagementContext = [switcherController windowManagementContext];
+  isChamoisOrFlexibleWindowing = [windowManagementContext isChamoisOrFlexibleWindowing];
 
   v12 = 0;
-  if (v11 && v8)
+  if (isChamoisOrFlexibleWindowing && v8)
   {
     v25 = 0u;
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v13 = [v4 applicationContext];
-    v14 = [v13 entities];
+    applicationContext = [requestCopy applicationContext];
+    entities = [applicationContext entities];
 
-    v15 = [v14 countByEnumeratingWithState:&v23 objects:v27 count:16];
+    v15 = [entities countByEnumeratingWithState:&v23 objects:v27 count:16];
     if (v15)
     {
       v16 = v15;
@@ -400,21 +400,21 @@ uint64_t __61__SBWindowDragGestureWorkspaceTransaction__beginWithGesture___block
         {
           if (*v24 != v17)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(entities);
           }
 
-          v19 = [*(*(&v23 + 1) + 8 * i) applicationSceneEntity];
-          v20 = [v19 application];
-          v21 = [v20 alwaysMaximizedInChamois];
+          applicationSceneEntity = [*(*(&v23 + 1) + 8 * i) applicationSceneEntity];
+          application = [applicationSceneEntity application];
+          alwaysMaximizedInChamois = [application alwaysMaximizedInChamois];
 
-          if (v21)
+          if (alwaysMaximizedInChamois)
           {
             v12 = 0;
             goto LABEL_21;
           }
         }
 
-        v16 = [v14 countByEnumeratingWithState:&v23 objects:v27 count:16];
+        v16 = [entities countByEnumeratingWithState:&v23 objects:v27 count:16];
         if (v16)
         {
           continue;
@@ -431,11 +431,11 @@ LABEL_21:
   return v12;
 }
 
-- (void)interceptTransitionRequest:(id)a3
+- (void)interceptTransitionRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(SBFluidSwitcherGestureWorkspaceTransaction *)self _copiedTransitionRequestFromTransitionRequest:v4];
-  if ([v4 source] == 77)
+  requestCopy = request;
+  v5 = [(SBFluidSwitcherGestureWorkspaceTransaction *)self _copiedTransitionRequestFromTransitionRequest:requestCopy];
+  if ([requestCopy source] == 77)
   {
     v6 = 77;
   }
@@ -446,39 +446,39 @@ LABEL_21:
   }
 
   [v5 setSource:v6];
-  if ([v4 source] != 24 && objc_msgSend(v4, "source") != 25)
+  if ([requestCopy source] != 24 && objc_msgSend(requestCopy, "source") != 25)
   {
     goto LABEL_9;
   }
 
-  v7 = [(SBFluidSwitcherGestureWorkspaceTransaction *)self switcherController];
-  v8 = [(SBFluidSwitcherGestureWorkspaceTransaction *)self selectedAppLayout];
-  v9 = [v5 applicationContext];
-  v10 = [v9 layoutState];
+  switcherController = [(SBFluidSwitcherGestureWorkspaceTransaction *)self switcherController];
+  selectedAppLayout = [(SBFluidSwitcherGestureWorkspaceTransaction *)self selectedAppLayout];
+  applicationContext = [v5 applicationContext];
+  layoutState = [applicationContext layoutState];
 
-  v11 = [v7 layoutState];
-  v12 = [v10 appLayout];
-  v13 = [v11 appLayout];
-  v14 = [v12 isEqual:v13];
+  layoutState2 = [switcherController layoutState];
+  appLayout = [layoutState appLayout];
+  appLayout2 = [layoutState2 appLayout];
+  v14 = [appLayout isEqual:appLayout2];
 
   if ((v14 & 1) == 0)
   {
-    v23 = [v7 switcherCoordinator];
-    v22 = [v8 itemForLayoutRole:1];
-    v15 = [v23 _entityForDisplayItem:v22 switcherController:v7];
+    switcherCoordinator = [switcherController switcherCoordinator];
+    v22 = [selectedAppLayout itemForLayoutRole:1];
+    v15 = [switcherCoordinator _entityForDisplayItem:v22 switcherController:switcherController];
     v16 = objc_alloc_init(MEMORY[0x277CBEB18]);
     [v16 addObject:v15];
-    v17 = [v10 appLayout];
+    appLayout3 = [layoutState appLayout];
     v25[0] = MEMORY[0x277D85DD0];
     v25[1] = 3221225472;
     v25[2] = __70__SBWindowDragGestureWorkspaceTransaction_interceptTransitionRequest___block_invoke;
     v25[3] = &unk_2783A8FF8;
-    v21 = v8;
+    v21 = selectedAppLayout;
     v18 = v5;
     v26 = v18;
     v27 = v16;
     v19 = v16;
-    [v17 enumerate:v25];
+    [appLayout3 enumerate:v25];
 
     v20 = objc_alloc_init(SBWorkspaceApplicationSceneTransitionContext);
     [(SBWorkspaceApplicationSceneTransitionContext *)v20 setEntities:v19 withPolicy:0 centerEntity:0 floatingEntity:0];

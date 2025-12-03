@@ -1,40 +1,40 @@
 @interface PUPhotoStyleToolController
 - (UIView)centerToolbarView;
-- (_TtC15PhotosUIPrivate26PUPhotoStyleToolController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC15PhotosUIPrivate26PUPhotoStyleToolController)initWithNibName:(id)name bundle:(id)bundle;
 - (id)disabledToolAlertTitle;
-- (int64_t)wheelScrubberView:(id)a3 numberOfItemsInSection:(int64_t)a4;
-- (int64_t)wheelScrubberViewNumberOfSections:(id)a3;
+- (int64_t)wheelScrubberView:(id)view numberOfItemsInSection:(int64_t)section;
+- (int64_t)wheelScrubberViewNumberOfSections:(id)sections;
 - (void)castIntensityInteractionDidBegin;
 - (void)castIntensityInteractionDidEnd;
-- (void)compositionControllerDidChangeForAdjustments:(id)a3;
-- (void)decreaseScrubberValue:(BOOL)a3;
+- (void)compositionControllerDidChangeForAdjustments:(id)adjustments;
+- (void)decreaseScrubberValue:(BOOL)value;
 - (void)didBecomeActiveTool;
 - (void)didResignActiveTool;
-- (void)handleCastIntensitySliderValueChangedTo:(double)a3;
-- (void)handlePadDismissalWithGestureRecognizer:(id)a3;
-- (void)handlePadValueChangedWithSlider:(id)a3;
-- (void)handleToggleOriginalWithGestureRecognizer:(id)a3;
-- (void)increaseScrubberValue:(BOOL)a3;
-- (void)mediaView:(id)a3 didZoom:(double)a4;
-- (void)mediaViewDidScroll:(id)a3;
+- (void)handleCastIntensitySliderValueChangedTo:(double)to;
+- (void)handlePadDismissalWithGestureRecognizer:(id)recognizer;
+- (void)handlePadValueChangedWithSlider:(id)slider;
+- (void)handleToggleOriginalWithGestureRecognizer:(id)recognizer;
+- (void)increaseScrubberValue:(BOOL)value;
+- (void)mediaView:(id)view didZoom:(double)zoom;
+- (void)mediaViewDidScroll:(id)scroll;
 - (void)mediaViewIsReady;
-- (void)ppt_selectWithStyle:(id)a3;
+- (void)ppt_selectWithStyle:(id)style;
 - (void)previewingOriginalDidStart;
 - (void)previewingOriginalDidStop;
 - (void)reactivate;
-- (void)setLayoutOrientation:(int64_t)a3 withTransitionCoordinator:(id)a4;
-- (void)setupWithAsset:(id)a3 compositionController:(id)a4 editSource:(id)a5 valuesCalculator:(id)a6;
+- (void)setLayoutOrientation:(int64_t)orientation withTransitionCoordinator:(id)coordinator;
+- (void)setupWithAsset:(id)asset compositionController:(id)controller editSource:(id)source valuesCalculator:(id)calculator;
 - (void)updateViewConstraints;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
-- (void)wheelScrubberView:(id)a3 didTapOnSelectedCellWithFrame:(CGRect)a4;
-- (void)wheelScrubberView:(id)a3 updateCell:(id)a4 forItemAtIndex:(int64_t)a5;
-- (void)wheelScrubberViewDidChangeSelectedIndex:(id)a3;
-- (void)wheelScrubberViewDidEndDragging:(id)a3;
-- (void)wheelScrubberViewDidEndScrolling:(id)a3;
-- (void)wheelScrubberViewWillBeginDragging:(id)a3;
-- (void)wheelScrubberViewWillBeginScrolling:(id)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
+- (void)wheelScrubberView:(id)view didTapOnSelectedCellWithFrame:(CGRect)frame;
+- (void)wheelScrubberView:(id)view updateCell:(id)cell forItemAtIndex:(int64_t)index;
+- (void)wheelScrubberViewDidChangeSelectedIndex:(id)index;
+- (void)wheelScrubberViewDidEndDragging:(id)dragging;
+- (void)wheelScrubberViewDidEndScrolling:(id)scrolling;
+- (void)wheelScrubberViewWillBeginDragging:(id)dragging;
+- (void)wheelScrubberViewWillBeginScrolling:(id)scrolling;
 - (void)willBecomeActiveTool;
 - (void)willBecomeEnabled;
 - (void)willResignActiveTool;
@@ -44,98 +44,98 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B382DD30();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_1B38309F4(a3);
+  selfCopy = self;
+  sub_1B38309F4(appear);
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   swift_unknownObjectRetain();
-  v8 = self;
-  sub_1B3830BF0(a4, width, height);
+  selfCopy = self;
+  sub_1B3830BF0(coordinator, width, height);
   swift_unknownObjectRelease();
 }
 
-- (void)setLayoutOrientation:(int64_t)a3 withTransitionCoordinator:(id)a4
+- (void)setLayoutOrientation:(int64_t)orientation withTransitionCoordinator:(id)coordinator
 {
   swift_unknownObjectRetain();
-  v7 = self;
-  sub_1B3830E24(a3, a4);
+  selfCopy = self;
+  sub_1B3830E24(orientation, coordinator);
   swift_unknownObjectRelease();
 }
 
 - (void)updateViewConstraints
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B3830F74();
 }
 
-- (void)handlePadValueChangedWithSlider:(id)a3
+- (void)handlePadValueChangedWithSlider:(id)slider
 {
-  v4 = a3;
-  v5 = self;
-  sub_1B382E400(v4);
+  sliderCopy = slider;
+  selfCopy = self;
+  sub_1B382E400(sliderCopy);
 }
 
-- (void)handleCastIntensitySliderValueChangedTo:(double)a3
+- (void)handleCastIntensitySliderValueChangedTo:(double)to
 {
-  v4 = self;
-  sub_1B382EA58(a3);
+  selfCopy = self;
+  sub_1B382EA58(to);
 }
 
 - (void)castIntensityInteractionDidBegin
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B382EEC8();
 }
 
 - (void)castIntensityInteractionDidEnd
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B382EF0C();
 }
 
-- (void)handlePadDismissalWithGestureRecognizer:(id)a3
+- (void)handlePadDismissalWithGestureRecognizer:(id)recognizer
 {
-  v4 = a3;
-  v5 = self;
-  sub_1B38382C4(v4);
+  recognizerCopy = recognizer;
+  selfCopy = self;
+  sub_1B38382C4(recognizerCopy);
 }
 
-- (void)handleToggleOriginalWithGestureRecognizer:(id)a3
+- (void)handleToggleOriginalWithGestureRecognizer:(id)recognizer
 {
-  v4 = a3;
-  v5 = self;
-  sub_1B38383A0(v4);
+  recognizerCopy = recognizer;
+  selfCopy = self;
+  sub_1B38383A0(recognizerCopy);
 }
 
-- (_TtC15PhotosUIPrivate26PUPhotoStyleToolController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC15PhotosUIPrivate26PUPhotoStyleToolController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_1B3C9C5E8();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   sub_1B3838664();
 }
 
-- (void)setupWithAsset:(id)a3 compositionController:(id)a4 editSource:(id)a5 valuesCalculator:(id)a6
+- (void)setupWithAsset:(id)asset compositionController:(id)controller editSource:(id)source valuesCalculator:(id)calculator
 {
   swift_unknownObjectRetain();
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = self;
-  sub_1B383890C(a3, a4, a5, a6);
+  controllerCopy = controller;
+  sourceCopy = source;
+  calculatorCopy = calculator;
+  selfCopy = self;
+  sub_1B383890C(asset, controller, source, calculator);
   swift_unknownObjectRelease();
 }
 
@@ -146,62 +146,62 @@
   return v2;
 }
 
-- (void)increaseScrubberValue:(BOOL)a3
+- (void)increaseScrubberValue:(BOOL)value
 {
-  v3 = self;
+  selfCopy = self;
   sub_1B3838DB8();
 }
 
-- (void)decreaseScrubberValue:(BOOL)a3
+- (void)decreaseScrubberValue:(BOOL)value
 {
-  v3 = self;
+  selfCopy = self;
   sub_1B3839358();
 }
 
 - (void)willBecomeActiveTool
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B383943C();
 }
 
 - (void)didBecomeActiveTool
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B3839594();
 }
 
 - (void)willResignActiveTool
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B3839674();
 }
 
 - (void)didResignActiveTool
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B3839784();
 }
 
 - (void)willBecomeEnabled
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B3839820();
 }
 
-- (void)compositionControllerDidChangeForAdjustments:(id)a3
+- (void)compositionControllerDidChangeForAdjustments:(id)adjustments
 {
-  if (a3)
+  if (adjustments)
   {
     sub_1B3C9C988();
   }
 
-  v4 = self;
+  selfCopy = self;
   sub_1B3839970();
 }
 
 - (id)disabledToolAlertTitle
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B3839F08();
 
   v3 = sub_1B3C9C5A8();
@@ -211,118 +211,118 @@
 
 - (void)mediaViewIsReady
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B3839FD4();
 }
 
-- (void)mediaView:(id)a3 didZoom:(double)a4
+- (void)mediaView:(id)view didZoom:(double)zoom
 {
-  v5 = a3;
-  v6 = self;
+  viewCopy = view;
+  selfCopy = self;
   sub_1B383A020();
 }
 
-- (void)mediaViewDidScroll:(id)a3
+- (void)mediaViewDidScroll:(id)scroll
 {
-  v4 = a3;
-  v5 = self;
+  scrollCopy = scroll;
+  selfCopy = self;
   sub_1B383A0BC();
 }
 
 - (void)previewingOriginalDidStart
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B383A1B0();
 }
 
 - (void)previewingOriginalDidStop
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B383A254();
 }
 
-- (void)wheelScrubberView:(id)a3 updateCell:(id)a4 forItemAtIndex:(int64_t)a5
+- (void)wheelScrubberView:(id)view updateCell:(id)cell forItemAtIndex:(int64_t)index
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = self;
-  sub_1B383A2E8(a3, a4, a5);
+  viewCopy = view;
+  cellCopy = cell;
+  selfCopy = self;
+  sub_1B383A2E8(view, cell, index);
 }
 
-- (void)wheelScrubberViewDidChangeSelectedIndex:(id)a3
+- (void)wheelScrubberViewDidChangeSelectedIndex:(id)index
 {
-  v5 = a3;
-  v6 = self;
-  sub_1B3838E74(a3);
+  indexCopy = index;
+  selfCopy = self;
+  sub_1B3838E74(index);
 }
 
-- (void)wheelScrubberView:(id)a3 didTapOnSelectedCellWithFrame:(CGRect)a4
+- (void)wheelScrubberView:(id)view didTapOnSelectedCellWithFrame:(CGRect)frame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v10 = a3;
-  v11 = self;
-  sub_1B383AE00(a3, x, y, width, height);
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  viewCopy = view;
+  selfCopy = self;
+  sub_1B383AE00(view, x, y, width, height);
 }
 
-- (void)wheelScrubberViewWillBeginScrolling:(id)a3
+- (void)wheelScrubberViewWillBeginScrolling:(id)scrolling
 {
-  v4 = a3;
-  v5 = self;
+  scrollingCopy = scrolling;
+  selfCopy = self;
   sub_1B383AF48();
 }
 
-- (void)wheelScrubberViewWillBeginDragging:(id)a3
+- (void)wheelScrubberViewWillBeginDragging:(id)dragging
 {
-  v4 = a3;
-  v5 = self;
+  draggingCopy = dragging;
+  selfCopy = self;
   sub_1B383B060();
 }
 
-- (void)wheelScrubberViewDidEndScrolling:(id)a3
+- (void)wheelScrubberViewDidEndScrolling:(id)scrolling
 {
-  v4 = a3;
-  v5 = self;
+  scrollingCopy = scrolling;
+  selfCopy = self;
   sub_1B383B0E4();
 }
 
-- (void)wheelScrubberViewDidEndDragging:(id)a3
+- (void)wheelScrubberViewDidEndDragging:(id)dragging
 {
-  v4 = a3;
-  v5 = self;
+  draggingCopy = dragging;
+  selfCopy = self;
   sub_1B383B220();
 }
 
-- (int64_t)wheelScrubberViewNumberOfSections:(id)a3
+- (int64_t)wheelScrubberViewNumberOfSections:(id)sections
 {
-  v4 = a3;
-  v5 = self;
+  sectionsCopy = sections;
+  selfCopy = self;
   v6 = sub_1B383B2A0();
 
   return v6;
 }
 
-- (int64_t)wheelScrubberView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)wheelScrubberView:(id)view numberOfItemsInSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = self;
-  v8 = sub_1B383B318(v7, a4);
+  viewCopy = view;
+  selfCopy = self;
+  v8 = sub_1B383B318(selfCopy, section);
 
   return v8;
 }
 
 - (void)reactivate
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B383B490();
 }
 
-- (void)ppt_selectWithStyle:(id)a3
+- (void)ppt_selectWithStyle:(id)style
 {
   sub_1B3C9C5E8();
-  v4 = self;
+  selfCopy = self;
   sub_1B383B560();
 }
 

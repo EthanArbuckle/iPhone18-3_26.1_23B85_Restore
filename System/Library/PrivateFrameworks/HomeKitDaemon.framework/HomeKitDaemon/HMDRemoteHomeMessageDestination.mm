@@ -1,21 +1,21 @@
 @interface HMDRemoteHomeMessageDestination
 + (id)shortDescription;
-- (BOOL)isEqual:(id)a3;
-- (HMDRemoteHomeMessageDestination)initWithTarget:(id)a3;
-- (HMDRemoteHomeMessageDestination)initWithTarget:(id)a3 homeUUID:(id)a4 queueTimeout:(id)a5;
-- (id)descriptionWithPointer:(BOOL)a3;
+- (BOOL)isEqual:(id)equal;
+- (HMDRemoteHomeMessageDestination)initWithTarget:(id)target;
+- (HMDRemoteHomeMessageDestination)initWithTarget:(id)target homeUUID:(id)d queueTimeout:(id)timeout;
+- (id)descriptionWithPointer:(BOOL)pointer;
 - (id)shortDescription;
 - (unint64_t)hash;
 @end
 
 @implementation HMDRemoteHomeMessageDestination
 
-- (id)descriptionWithPointer:(BOOL)a3
+- (id)descriptionWithPointer:(BOOL)pointer
 {
-  v3 = a3;
+  pointerCopy = pointer;
   v5 = MEMORY[0x277CCACA8];
-  v6 = [objc_opt_class() shortDescription];
-  if (v3)
+  shortDescription = [objc_opt_class() shortDescription];
+  if (pointerCopy)
   {
     v7 = [MEMORY[0x277CCACA8] stringWithFormat:@" %p", self];
   }
@@ -25,14 +25,14 @@
     v7 = &stru_283CF9D50;
   }
 
-  v8 = [(HMFMessageDestination *)self target];
-  v9 = [v8 UUIDString];
-  v10 = [(HMDRemoteHomeMessageDestination *)self homeUUID];
-  v11 = [v10 UUIDString];
-  v12 = [(HMDRemoteHomeMessageDestination *)self queueTimeout];
-  v13 = [v5 stringWithFormat:@"<%@%@, Target = %@, Home UUID = %@, Queue Timeout = %@>", v6, v7, v9, v11, v12];
+  target = [(HMFMessageDestination *)self target];
+  uUIDString = [target UUIDString];
+  homeUUID = [(HMDRemoteHomeMessageDestination *)self homeUUID];
+  uUIDString2 = [homeUUID UUIDString];
+  queueTimeout = [(HMDRemoteHomeMessageDestination *)self queueTimeout];
+  v13 = [v5 stringWithFormat:@"<%@%@, Target = %@, Home UUID = %@, Queue Timeout = %@>", shortDescription, v7, uUIDString, uUIDString2, queueTimeout];
 
-  if (v3)
+  if (pointerCopy)
   {
   }
 
@@ -42,18 +42,18 @@
 - (id)shortDescription
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [objc_opt_class() shortDescription];
-  v5 = [(HMFMessageDestination *)self target];
-  v6 = [v5 UUIDString];
-  v7 = [v3 stringWithFormat:@"%@ %@", v4, v6];
+  shortDescription = [objc_opt_class() shortDescription];
+  target = [(HMFMessageDestination *)self target];
+  uUIDString = [target UUIDString];
+  v7 = [v3 stringWithFormat:@"%@ %@", shortDescription, uUIDString];
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v14 = 1;
   }
@@ -63,15 +63,15 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(HMFMessageDestination *)self target];
-      v7 = [(HMFMessageDestination *)v5 target];
-      v8 = [v6 isEqual:v7];
+      v5 = equalCopy;
+      target = [(HMFMessageDestination *)self target];
+      target2 = [(HMFMessageDestination *)v5 target];
+      v8 = [target isEqual:target2];
 
       if (v8 && (-[HMDRemoteHomeMessageDestination homeUUID](self, "homeUUID"), v9 = objc_claimAutoreleasedReturnValue(), -[HMDRemoteHomeMessageDestination homeUUID](v5, "homeUUID"), v10 = objc_claimAutoreleasedReturnValue(), v11 = [v9 isEqual:v10], v10, v9, v11))
       {
-        v12 = [(HMDRemoteHomeMessageDestination *)self queueTimeout];
-        v13 = [(HMDRemoteHomeMessageDestination *)v5 queueTimeout];
+        queueTimeout = [(HMDRemoteHomeMessageDestination *)self queueTimeout];
+        queueTimeout2 = [(HMDRemoteHomeMessageDestination *)v5 queueTimeout];
         v14 = HMFEqualObjects();
       }
 
@@ -92,36 +92,36 @@
 
 - (unint64_t)hash
 {
-  v3 = [(HMFMessageDestination *)self target];
-  v4 = [v3 hash];
-  v5 = [(HMDRemoteHomeMessageDestination *)self homeUUID];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(HMDRemoteHomeMessageDestination *)self queueTimeout];
-  v8 = [v7 hash];
+  target = [(HMFMessageDestination *)self target];
+  v4 = [target hash];
+  homeUUID = [(HMDRemoteHomeMessageDestination *)self homeUUID];
+  v6 = [homeUUID hash] ^ v4;
+  queueTimeout = [(HMDRemoteHomeMessageDestination *)self queueTimeout];
+  v8 = [queueTimeout hash];
 
   return v6 ^ v8;
 }
 
-- (HMDRemoteHomeMessageDestination)initWithTarget:(id)a3 homeUUID:(id)a4 queueTimeout:(id)a5
+- (HMDRemoteHomeMessageDestination)initWithTarget:(id)target homeUUID:(id)d queueTimeout:(id)timeout
 {
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  timeoutCopy = timeout;
   v14.receiver = self;
   v14.super_class = HMDRemoteHomeMessageDestination;
-  v11 = [(HMFMessageDestination *)&v14 initWithTarget:a3];
+  v11 = [(HMFMessageDestination *)&v14 initWithTarget:target];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_homeUUID, a4);
-    objc_storeStrong(&v12->_queueTimeout, a5);
+    objc_storeStrong(&v11->_homeUUID, d);
+    objc_storeStrong(&v12->_queueTimeout, timeout);
   }
 
   return v12;
 }
 
-- (HMDRemoteHomeMessageDestination)initWithTarget:(id)a3
+- (HMDRemoteHomeMessageDestination)initWithTarget:(id)target
 {
-  v4 = a3;
+  targetCopy = target;
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE658];
   v7 = MEMORY[0x277CCACA8];

@@ -1,40 +1,40 @@
 @interface UNCSectionMuteAssertion
-+ (id)sectionMuteAssertionUntilDate:(id)a3;
-- (BOOL)isActiveForThreadIdentifier:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (UNCSectionMuteAssertion)initWithCoder:(id)a3;
-- (id)_initWithExpirationDate:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)getNextExpirationDate:(id *)a3 wasPurged:(BOOL *)a4;
++ (id)sectionMuteAssertionUntilDate:(id)date;
+- (BOOL)isActiveForThreadIdentifier:(id)identifier;
+- (BOOL)isEqual:(id)equal;
+- (UNCSectionMuteAssertion)initWithCoder:(id)coder;
+- (id)_initWithExpirationDate:(id)date;
+- (void)encodeWithCoder:(id)coder;
+- (void)getNextExpirationDate:(id *)date wasPurged:(BOOL *)purged;
 @end
 
 @implementation UNCSectionMuteAssertion
 
-+ (id)sectionMuteAssertionUntilDate:(id)a3
++ (id)sectionMuteAssertionUntilDate:(id)date
 {
-  v3 = a3;
-  v4 = [[UNCSectionMuteAssertion alloc] _initWithExpirationDate:v3];
+  dateCopy = date;
+  v4 = [[UNCSectionMuteAssertion alloc] _initWithExpirationDate:dateCopy];
 
   return v4;
 }
 
-- (id)_initWithExpirationDate:(id)a3
+- (id)_initWithExpirationDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v9.receiver = self;
   v9.super_class = UNCSectionMuteAssertion;
-  v5 = [(UNCMuteAssertion *)&v9 _init];
-  if (v5)
+  _init = [(UNCMuteAssertion *)&v9 _init];
+  if (_init)
   {
-    v6 = [v4 copy];
-    v7 = v5[1];
-    v5[1] = v6;
+    v6 = [dateCopy copy];
+    v7 = _init[1];
+    _init[1] = v6;
   }
 
-  return v5;
+  return _init;
 }
 
-- (BOOL)isActiveForThreadIdentifier:(id)a3
+- (BOOL)isActiveForThreadIdentifier:(id)identifier
 {
   v4 = [MEMORY[0x1E695DF00] now];
   LOBYTE(self) = [(NSDate *)self->_expirationDate compare:v4]== NSOrderedDescending;
@@ -42,7 +42,7 @@
   return self;
 }
 
-- (void)getNextExpirationDate:(id *)a3 wasPurged:(BOOL *)a4
+- (void)getNextExpirationDate:(id *)date wasPurged:(BOOL *)purged
 {
   v7 = [(UNCSectionMuteAssertion *)self isActiveForThreadIdentifier:0];
   expirationDate = 0;
@@ -51,15 +51,15 @@
     expirationDate = self->_expirationDate;
   }
 
-  *a3 = expirationDate;
-  *a4 = 0;
+  *date = expirationDate;
+  *purged = 0;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass())) && (v5 = v4) != 0)
+  if ((objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass())) && (v5 = equalCopy) != 0)
   {
     v6 = v5;
     expirationDate = self->_expirationDate;
@@ -75,24 +75,24 @@
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = UNCSectionMuteAssertion;
-  v4 = a3;
-  [(UNCMuteAssertion *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_expirationDate forKey:{@"expirationDate", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(UNCMuteAssertion *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_expirationDate forKey:{@"expirationDate", v5.receiver, v5.super_class}];
 }
 
-- (UNCSectionMuteAssertion)initWithCoder:(id)a3
+- (UNCSectionMuteAssertion)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = UNCSectionMuteAssertion;
-  v5 = [(UNCMuteAssertion *)&v9 initWithCoder:v4];
+  v5 = [(UNCMuteAssertion *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"expirationDate"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"expirationDate"];
     expirationDate = v5->_expirationDate;
     v5->_expirationDate = v6;
   }

@@ -1,18 +1,18 @@
 @interface AWDCoreRoutineMagicalMomentsRecommendedAppsHistogramSet
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addInstance:(id)a3;
-- (void)copyTo:(id)a3;
+- (void)addInstance:(id)instance;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasConfidenceOfMostConfidentModel:(BOOL)a3;
-- (void)setHasDurationSinceLastSuccessfulTraining:(BOOL)a3;
-- (void)setHasFallbackModelConfidence:(BOOL)a3;
-- (void)setHasModelType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasConfidenceOfMostConfidentModel:(BOOL)model;
+- (void)setHasDurationSinceLastSuccessfulTraining:(BOOL)training;
+- (void)setHasFallbackModelConfidence:(BOOL)confidence;
+- (void)setHasModelType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDCoreRoutineMagicalMomentsRecommendedAppsHistogramSet
@@ -25,7 +25,7 @@
   [(AWDCoreRoutineMagicalMomentsRecommendedAppsHistogramSet *)&v3 dealloc];
 }
 
-- (void)addInstance:(id)a3
+- (void)addInstance:(id)instance
 {
   instances = self->_instances;
   if (!instances)
@@ -34,12 +34,12 @@
     self->_instances = instances;
   }
 
-  [(NSMutableArray *)instances addObject:a3];
+  [(NSMutableArray *)instances addObject:instance];
 }
 
-- (void)setHasModelType:(BOOL)a3
+- (void)setHasModelType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 16;
   }
@@ -52,9 +52,9 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasFallbackModelConfidence:(BOOL)a3
+- (void)setHasFallbackModelConfidence:(BOOL)confidence
 {
-  if (a3)
+  if (confidence)
   {
     v3 = 8;
   }
@@ -67,9 +67,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasConfidenceOfMostConfidentModel:(BOOL)a3
+- (void)setHasConfidenceOfMostConfidentModel:(BOOL)model
 {
-  if (a3)
+  if (model)
   {
     v3 = 2;
   }
@@ -82,9 +82,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasDurationSinceLastSuccessfulTraining:(BOOL)a3
+- (void)setHasDurationSinceLastSuccessfulTraining:(BOOL)training
 {
-  if (a3)
+  if (training)
   {
     v3 = 4;
   }
@@ -107,10 +107,10 @@
 - (id)dictionaryRepresentation
 {
   v18 = *MEMORY[0x29EDCA608];
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   if (*&self->_has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
   }
 
   if ([(NSMutableArray *)self->_instances count])
@@ -144,13 +144,13 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKey:@"instance"];
+    [dictionary setObject:v4 forKey:@"instance"];
   }
 
   has = self->_has;
   if ((has & 0x10) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_modelType), @"modelType"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_modelType), @"modelType"}];
     has = self->_has;
     if ((has & 8) == 0)
     {
@@ -161,7 +161,7 @@ LABEL_14:
       }
 
 LABEL_20:
-      [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_confidenceOfMostConfidentModel), @"confidenceOfMostConfidentModel"}];
+      [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_confidenceOfMostConfidentModel), @"confidenceOfMostConfidentModel"}];
       if ((*&self->_has & 4) == 0)
       {
         goto LABEL_17;
@@ -176,7 +176,7 @@ LABEL_20:
     goto LABEL_14;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_fallbackModelConfidence), @"fallbackModelConfidence"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_fallbackModelConfidence), @"fallbackModelConfidence"}];
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -187,15 +187,15 @@ LABEL_15:
   if ((has & 4) != 0)
   {
 LABEL_16:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_durationSinceLastSuccessfulTraining), @"durationSinceLastSuccessfulTraining"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_durationSinceLastSuccessfulTraining), @"durationSinceLastSuccessfulTraining"}];
   }
 
 LABEL_17:
   v11 = *MEMORY[0x29EDCA608];
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v22 = *MEMORY[0x29EDCA608];
   if (*&self->_has)
@@ -284,24 +284,24 @@ LABEL_15:
   v13 = *MEMORY[0x29EDCA608];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if (*&self->_has)
   {
-    *(a3 + 1) = self->_timestamp;
-    *(a3 + 44) |= 1u;
+    *(to + 1) = self->_timestamp;
+    *(to + 44) |= 1u;
   }
 
   if ([(AWDCoreRoutineMagicalMomentsRecommendedAppsHistogramSet *)self instancesCount])
   {
-    [a3 clearInstances];
-    v5 = [(AWDCoreRoutineMagicalMomentsRecommendedAppsHistogramSet *)self instancesCount];
-    if (v5)
+    [to clearInstances];
+    instancesCount = [(AWDCoreRoutineMagicalMomentsRecommendedAppsHistogramSet *)self instancesCount];
+    if (instancesCount)
     {
-      v6 = v5;
+      v6 = instancesCount;
       for (i = 0; i != v6; ++i)
       {
-        [a3 addInstance:{-[AWDCoreRoutineMagicalMomentsRecommendedAppsHistogramSet instanceAtIndex:](self, "instanceAtIndex:", i)}];
+        [to addInstance:{-[AWDCoreRoutineMagicalMomentsRecommendedAppsHistogramSet instanceAtIndex:](self, "instanceAtIndex:", i)}];
       }
     }
   }
@@ -309,8 +309,8 @@ LABEL_15:
   has = self->_has;
   if ((has & 0x10) != 0)
   {
-    *(a3 + 10) = self->_modelType;
-    *(a3 + 44) |= 0x10u;
+    *(to + 10) = self->_modelType;
+    *(to + 44) |= 0x10u;
     has = self->_has;
     if ((has & 8) == 0)
     {
@@ -329,8 +329,8 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  *(a3 + 6) = self->_fallbackModelConfidence;
-  *(a3 + 44) |= 8u;
+  *(to + 6) = self->_fallbackModelConfidence;
+  *(to + 44) |= 8u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -344,22 +344,22 @@ LABEL_10:
   }
 
 LABEL_15:
-  *(a3 + 4) = self->_confidenceOfMostConfidentModel;
-  *(a3 + 44) |= 2u;
+  *(to + 4) = self->_confidenceOfMostConfidentModel;
+  *(to + 44) |= 2u;
   if ((*&self->_has & 4) == 0)
   {
     return;
   }
 
 LABEL_11:
-  *(a3 + 5) = self->_durationSinceLastSuccessfulTraining;
-  *(a3 + 44) |= 4u;
+  *(to + 5) = self->_durationSinceLastSuccessfulTraining;
+  *(to + 44) |= 4u;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v21 = *MEMORY[0x29EDCA608];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -386,7 +386,7 @@ LABEL_11:
           objc_enumerationMutation(instances);
         }
 
-        v12 = [*(*(&v16 + 1) + 8 * i) copyWithZone:a3];
+        v12 = [*(*(&v16 + 1) + 8 * i) copyWithZone:zone];
         [v6 addInstance:v12];
       }
 
@@ -448,22 +448,22 @@ LABEL_15:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     has = self->_has;
-    v7 = *(a3 + 44);
+    v7 = *(equal + 44);
     if (has)
     {
-      if ((*(a3 + 44) & 1) == 0 || self->_timestamp != *(a3 + 1))
+      if ((*(equal + 44) & 1) == 0 || self->_timestamp != *(equal + 1))
       {
         goto LABEL_29;
       }
     }
 
-    else if (*(a3 + 44))
+    else if (*(equal + 44))
     {
 LABEL_29:
       LOBYTE(v5) = 0;
@@ -471,7 +471,7 @@ LABEL_29:
     }
 
     instances = self->_instances;
-    if (instances | *(a3 + 4))
+    if (instances | *(equal + 4))
     {
       v5 = [(NSMutableArray *)instances isEqual:?];
       if (!v5)
@@ -484,47 +484,47 @@ LABEL_29:
 
     if ((has & 0x10) != 0)
     {
-      if ((*(a3 + 44) & 0x10) == 0 || self->_modelType != *(a3 + 10))
+      if ((*(equal + 44) & 0x10) == 0 || self->_modelType != *(equal + 10))
       {
         goto LABEL_29;
       }
     }
 
-    else if ((*(a3 + 44) & 0x10) != 0)
+    else if ((*(equal + 44) & 0x10) != 0)
     {
       goto LABEL_29;
     }
 
     if ((has & 8) != 0)
     {
-      if ((*(a3 + 44) & 8) == 0 || self->_fallbackModelConfidence != *(a3 + 6))
+      if ((*(equal + 44) & 8) == 0 || self->_fallbackModelConfidence != *(equal + 6))
       {
         goto LABEL_29;
       }
     }
 
-    else if ((*(a3 + 44) & 8) != 0)
+    else if ((*(equal + 44) & 8) != 0)
     {
       goto LABEL_29;
     }
 
     if ((has & 2) != 0)
     {
-      if ((*(a3 + 44) & 2) == 0 || self->_confidenceOfMostConfidentModel != *(a3 + 4))
+      if ((*(equal + 44) & 2) == 0 || self->_confidenceOfMostConfidentModel != *(equal + 4))
       {
         goto LABEL_29;
       }
     }
 
-    else if ((*(a3 + 44) & 2) != 0)
+    else if ((*(equal + 44) & 2) != 0)
     {
       goto LABEL_29;
     }
 
-    LOBYTE(v5) = (*(a3 + 44) & 4) == 0;
+    LOBYTE(v5) = (*(equal + 44) & 4) == 0;
     if ((has & 4) != 0)
     {
-      if ((*(a3 + 44) & 4) == 0 || self->_durationSinceLastSuccessfulTraining != *(a3 + 5))
+      if ((*(equal + 44) & 4) == 0 || self->_durationSinceLastSuccessfulTraining != *(equal + 5))
       {
         goto LABEL_29;
       }
@@ -601,12 +601,12 @@ LABEL_8:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v17 = *MEMORY[0x29EDCA608];
-  if (*(a3 + 44))
+  if (*(from + 44))
   {
-    self->_timestamp = *(a3 + 1);
+    self->_timestamp = *(from + 1);
     *&self->_has |= 1u;
   }
 
@@ -614,7 +614,7 @@ LABEL_8:
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = *(a3 + 4);
+  v5 = *(from + 4);
   v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
@@ -638,12 +638,12 @@ LABEL_8:
     while (v7);
   }
 
-  v10 = *(a3 + 44);
+  v10 = *(from + 44);
   if ((v10 & 0x10) != 0)
   {
-    self->_modelType = *(a3 + 10);
+    self->_modelType = *(from + 10);
     *&self->_has |= 0x10u;
-    v10 = *(a3 + 44);
+    v10 = *(from + 44);
     if ((v10 & 8) == 0)
     {
 LABEL_12:
@@ -653,9 +653,9 @@ LABEL_12:
       }
 
 LABEL_18:
-      self->_confidenceOfMostConfidentModel = *(a3 + 4);
+      self->_confidenceOfMostConfidentModel = *(from + 4);
       *&self->_has |= 2u;
-      if ((*(a3 + 44) & 4) == 0)
+      if ((*(from + 44) & 4) == 0)
       {
         goto LABEL_15;
       }
@@ -664,14 +664,14 @@ LABEL_18:
     }
   }
 
-  else if ((*(a3 + 44) & 8) == 0)
+  else if ((*(from + 44) & 8) == 0)
   {
     goto LABEL_12;
   }
 
-  self->_fallbackModelConfidence = *(a3 + 6);
+  self->_fallbackModelConfidence = *(from + 6);
   *&self->_has |= 8u;
-  v10 = *(a3 + 44);
+  v10 = *(from + 44);
   if ((v10 & 2) != 0)
   {
     goto LABEL_18;
@@ -681,7 +681,7 @@ LABEL_13:
   if ((v10 & 4) != 0)
   {
 LABEL_14:
-    self->_durationSinceLastSuccessfulTraining = *(a3 + 5);
+    self->_durationSinceLastSuccessfulTraining = *(from + 5);
     *&self->_has |= 4u;
   }
 

@@ -1,21 +1,21 @@
 @interface HFUserPhotosLibraryItemProvider
-- (HFUserPhotosLibraryItemProvider)initWithHome:(id)a3;
+- (HFUserPhotosLibraryItemProvider)initWithHome:(id)home;
 - (id)invalidationReasons;
 - (id)reloadItems;
 @end
 
 @implementation HFUserPhotosLibraryItemProvider
 
-- (HFUserPhotosLibraryItemProvider)initWithHome:(id)a3
+- (HFUserPhotosLibraryItemProvider)initWithHome:(id)home
 {
-  v5 = a3;
+  homeCopy = home;
   v11.receiver = self;
   v11.super_class = HFUserPhotosLibraryItemProvider;
   v6 = [(HFItemProvider *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_home, a3);
+    objc_storeStrong(&v6->_home, home);
     v8 = [MEMORY[0x277CBEB58] set];
     userPhotosLibraryItems = v7->_userPhotosLibraryItems;
     v7->_userPhotosLibraryItems = v8;
@@ -32,9 +32,9 @@
   aBlock[3] = &unk_277DFDD80;
   aBlock[4] = self;
   v3 = _Block_copy(aBlock);
-  v4 = [(HFUserPhotosLibraryItemProvider *)self home];
-  v5 = [v4 hf_allUsersIncludingCurrentUser];
-  v6 = [(HFItemProvider *)self reloadItemsWithHomeKitObjects:v5 filter:0 itemMap:v3];
+  home = [(HFUserPhotosLibraryItemProvider *)self home];
+  hf_allUsersIncludingCurrentUser = [home hf_allUsersIncludingCurrentUser];
+  v6 = [(HFItemProvider *)self reloadItemsWithHomeKitObjects:hf_allUsersIncludingCurrentUser filter:0 itemMap:v3];
 
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
@@ -119,8 +119,8 @@ id __46__HFUserPhotosLibraryItemProvider_reloadItems__block_invoke_3(uint64_t a1
 {
   v5.receiver = self;
   v5.super_class = HFUserPhotosLibraryItemProvider;
-  v2 = [(HFItemProvider *)&v5 invalidationReasons];
-  v3 = [v2 setByAddingObject:@"user"];
+  invalidationReasons = [(HFItemProvider *)&v5 invalidationReasons];
+  v3 = [invalidationReasons setByAddingObject:@"user"];
 
   return v3;
 }

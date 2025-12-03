@@ -2,9 +2,9 @@
 + (BLBackgroundTaskProviding)backgroundTaskDelegate;
 + (id)iTunesSyncLockFile;
 + (id)iTunesSyncLockFilePath;
-- (BLLockFile)initWithPath:(id)a3;
-- (BOOL)_lock:(BOOL)a3 blocking:(BOOL)a4;
-- (BOOL)lockWithBlock:(id)a3 error:(id *)a4;
+- (BLLockFile)initWithPath:(id)path;
+- (BOOL)_lock:(BOOL)_lock blocking:(BOOL)blocking;
+- (BOOL)lockWithBlock:(id)block error:(id *)error;
 - (void)_registerBackgroundTask;
 - (void)_unregisterBackgroundTask;
 - (void)dealloc;
@@ -15,21 +15,21 @@
 
 + (id)iTunesSyncLockFilePath
 {
-  v2 = [MEMORY[0x277CBEBC0] bu_booksRepositoryURL];
-  v3 = [v2 path];
-  v4 = [v3 stringByAppendingPathComponent:@"Sync/.bookSync.lock"];
+  bu_booksRepositoryURL = [MEMORY[0x277CBEBC0] bu_booksRepositoryURL];
+  path = [bu_booksRepositoryURL path];
+  v4 = [path stringByAppendingPathComponent:@"Sync/.bookSync.lock"];
 
   return v4;
 }
 
-- (BLLockFile)initWithPath:(id)a3
+- (BLLockFile)initWithPath:(id)path
 {
-  v5 = a3;
+  pathCopy = path;
   v6 = [(BLLockFile *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_path, a3);
+    objc_storeStrong(&v6->_path, path);
     v7->_fd = -1;
     v7->_locked = 0;
     v7->_hasBackgroundTask = 0;
@@ -62,17 +62,17 @@
   return WeakRetained;
 }
 
-- (BOOL)_lock:(BOOL)a3 blocking:(BOOL)a4
+- (BOOL)_lock:(BOOL)_lock blocking:(BOOL)blocking
 {
-  v4 = a4;
-  v5 = a3;
+  blockingCopy = blocking;
+  _lockCopy = _lock;
   if ([(BLLockFile *)self locked])
   {
     return [(BLLockFile *)self locked];
   }
 
-  v7 = [(BLLockFile *)self path];
-  v8 = [v7 length];
+  path = [(BLLockFile *)self path];
+  v8 = [path length];
 
   if (!v8)
   {
@@ -80,8 +80,8 @@
   }
 
   [(BLLockFile *)self _registerBackgroundTask];
-  v9 = [(BLLockFile *)self path];
-  self->_fd = open([v9 fileSystemRepresentation], 512, 438);
+  path2 = [(BLLockFile *)self path];
+  self->_fd = open([path2 fileSystemRepresentation], 512, 438);
 
   fd = self->_fd;
   if (fd == -1)
@@ -92,7 +92,7 @@ LABEL_15:
   }
 
   fcntl(fd, 2, 1);
-  if (v5)
+  if (_lockCopy)
   {
     v11 = 2;
   }
@@ -102,7 +102,7 @@ LABEL_15:
     v11 = 1;
   }
 
-  if (v4)
+  if (blockingCopy)
   {
     v12 = 0;
   }
@@ -170,14 +170,14 @@ LABEL_15:
   }
 }
 
-- (BOOL)lockWithBlock:(id)a3 error:(id *)a4
+- (BOOL)lockWithBlock:(id)block error:(id *)error
 {
-  v6 = a3;
+  blockCopy = block;
   v7 = 1;
   if ([(BLLockFile *)self tryLock:1])
   {
 LABEL_8:
-    v10 = MEMORY[0x245CFF560](v6);
+    v10 = MEMORY[0x245CFF560](blockCopy);
     v11 = v10;
     if (v10)
     {
@@ -213,9 +213,9 @@ LABEL_8:
       }
     }
 
-    if (a4)
+    if (error)
     {
-      *a4 = [MEMORY[0x277CCA9B8] errorWithDomain:@"BLLockFileErrorDomain" code:-1001 userInfo:0];
+      *error = [MEMORY[0x277CCA9B8] errorWithDomain:@"BLLockFileErrorDomain" code:-1001 userInfo:0];
       v12 = BLDefaultLog();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {

@@ -1,7 +1,7 @@
 @interface IPACropOperator
-+ (id)operatorWithIdentifier:(id)a3 cropRect:(CGRect)a4;
++ (id)operatorWithIdentifier:(id)identifier cropRect:(CGRect)rect;
 - (id)description;
-- (id)transformForGeometry:(id)a3;
+- (id)transformForGeometry:(id)geometry;
 @end
 
 @implementation IPACropOperator
@@ -17,10 +17,10 @@
   return v7;
 }
 
-- (id)transformForGeometry:(id)a3
+- (id)transformForGeometry:(id)geometry
 {
-  v4 = a3;
-  [v4 domain];
+  geometryCopy = geometry;
+  [geometryCopy domain];
   p_cropRect = &self->_cropRect;
   if (v5 + p_cropRect->origin.x >= v5)
   {
@@ -86,7 +86,7 @@
     v30 = -v11;
     v31 = xmmword_25E5E03C0;
     v19 = [[IPAImageGeometry alloc] initWithIdentifier:@"cropped" extent:0.0, 0.0, width, p_cropRect->size.width];
-    v20 = [[IPAAffineImageTransform alloc] initWithInputGeometry:v4 intrinsicGeometry:v19 matrix:&v22 canAlignToPixelsExactly:1];
+    v20 = [[IPAAffineImageTransform alloc] initWithInputGeometry:geometryCopy intrinsicGeometry:v19 matrix:&v22 canAlignToPixelsExactly:1];
 
     return v20;
   }
@@ -94,13 +94,13 @@
   return result;
 }
 
-+ (id)operatorWithIdentifier:(id)a3 cropRect:(CGRect)a4
++ (id)operatorWithIdentifier:(id)identifier cropRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = a3;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  identifierCopy = identifier;
   v12.origin.x = x;
   v12.origin.y = y;
   v12.size.width = width;
@@ -119,7 +119,7 @@
 
   else
   {
-    v9 = [(IPAGeometryOperator *)[IPACropOperator alloc] initWithIdentifier:v8];
+    v9 = [(IPAGeometryOperator *)[IPACropOperator alloc] initWithIdentifier:identifierCopy];
     v9->_cropRect.origin.x = x;
     v9->_cropRect.origin.y = y;
     v9->_cropRect.size.width = width;

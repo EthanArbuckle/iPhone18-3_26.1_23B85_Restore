@@ -3,7 +3,7 @@
 + (BOOL)canRunWhenLocked;
 + (BOOL)supportsMultiUser;
 - (Keybag)init;
-- (Keybag)initWithDelegate:(id)a3;
+- (Keybag)initWithDelegate:(id)delegate;
 - (KeybagDelegate)delegate;
 - (void)dealloc;
 - (void)onQueueUpdateDelegate;
@@ -108,16 +108,16 @@ LABEL_12:
   return 0;
 }
 
-- (Keybag)initWithDelegate:(id)a3
+- (Keybag)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v22.receiver = self;
   v22.super_class = Keybag;
   v5 = [(Keybag *)&v22 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
     v7 = MKBDeviceFormattedForContentProtection();
     v8 = v7;
     if (v7)
@@ -153,7 +153,7 @@ LABEL_12:
 
     objc_initWeak(&location, v6);
     objc_copyWeak(&v20, &location);
-    v13 = [kMobileKeyBagLockStatusNotification UTF8String];
+    uTF8String = [kMobileKeyBagLockStatusNotification UTF8String];
     v14 = v6->_q;
     *buf = _NSConcreteStackBlock;
     v24 = 3321888768;
@@ -162,7 +162,7 @@ LABEL_12:
     objc_copyWeak(&v27, &v20);
     v15 = objc_retainBlock(buf);
     objc_destroyWeak(&v27);
-    v16 = notify_register_dispatch(v13, &v6->_keybagToken, v14, v15);
+    v16 = notify_register_dispatch(uTF8String, &v6->_keybagToken, v14, v15);
 
     if (v16)
     {

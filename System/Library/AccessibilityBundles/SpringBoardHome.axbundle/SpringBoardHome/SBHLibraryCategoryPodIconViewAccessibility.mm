@@ -6,14 +6,14 @@
 
 - (CGRect)accessibilityFrameForScrolling
 {
-  v3 = [(SBHLibraryCategoryPodIconViewAccessibility *)self _accessibilityFindAncestor:&__block_literal_global_1 startWithSelf:0];
-  v4 = v3;
-  if (!v3)
+  selfCopy = [(SBHLibraryCategoryPodIconViewAccessibility *)self _accessibilityFindAncestor:&__block_literal_global_1 startWithSelf:0];
+  v4 = selfCopy;
+  if (!selfCopy)
   {
-    v3 = self;
+    selfCopy = self;
   }
 
-  [v3 accessibilityFrameForScrolling];
+  [selfCopy accessibilityFrameForScrolling];
   v6 = v5;
   v8 = v7;
   v10 = v9;

@@ -1,7 +1,7 @@
 @interface UARPMetaDataInformationFriendlyName
 - (UARPMetaDataInformationFriendlyName)init;
-- (UARPMetaDataInformationFriendlyName)initWithLength:(unint64_t)a3 value:(void *)a4;
-- (UARPMetaDataInformationFriendlyName)initWithPropertyListValue:(id)a3 relativeURL:(id)a4;
+- (UARPMetaDataInformationFriendlyName)initWithLength:(unint64_t)length value:(void *)value;
+- (UARPMetaDataInformationFriendlyName)initWithPropertyListValue:(id)value relativeURL:(id)l;
 - (id)description;
 - (id)tlvValue;
 @end
@@ -24,16 +24,16 @@
   return v3;
 }
 
-- (UARPMetaDataInformationFriendlyName)initWithPropertyListValue:(id)a3 relativeURL:(id)a4
+- (UARPMetaDataInformationFriendlyName)initWithPropertyListValue:(id)value relativeURL:(id)l
 {
-  v5 = a3;
+  valueCopy = value;
   v6 = [(UARPMetaDataInformationFriendlyName *)self init];
   v7 = v6;
   if (v6)
   {
     v12.receiver = v6;
     v12.super_class = UARPMetaDataInformationFriendlyName;
-    v8 = [(UARPMetaData *)&v12 stringFromPlistValue:v5];
+    v8 = [(UARPMetaData *)&v12 stringFromPlistValue:valueCopy];
     friendlyName = v7->_friendlyName;
     v7->_friendlyName = v8;
 
@@ -53,12 +53,12 @@
   return v10;
 }
 
-- (UARPMetaDataInformationFriendlyName)initWithLength:(unint64_t)a3 value:(void *)a4
+- (UARPMetaDataInformationFriendlyName)initWithLength:(unint64_t)length value:(void *)value
 {
   v6 = [(UARPMetaDataInformationFriendlyName *)self init];
   if (v6)
   {
-    v7 = [[NSString alloc] initWithBytes:a4 length:a3 encoding:4];
+    v7 = [[NSString alloc] initWithBytes:value length:length encoding:4];
     friendlyName = v6->_friendlyName;
     v6->_friendlyName = v7;
 
@@ -70,19 +70,19 @@
 
 - (id)tlvValue
 {
-  v3 = [(UARPMetaDataInformationFriendlyName *)self friendlyName];
+  friendlyName = [(UARPMetaDataInformationFriendlyName *)self friendlyName];
   v6.receiver = self;
   v6.super_class = UARPMetaDataInformationFriendlyName;
-  v4 = [(UARPMetaData *)&v6 tlvValueWithString:v3];
+  v4 = [(UARPMetaData *)&v6 tlvValueWithString:friendlyName];
 
   return v4;
 }
 
 - (id)description
 {
-  v3 = [(UARPMetaData *)self tlvName];
-  v4 = [(UARPMetaDataInformationFriendlyName *)self friendlyName];
-  v5 = [NSString stringWithFormat:@"<%@: %@>", v3, v4];
+  tlvName = [(UARPMetaData *)self tlvName];
+  friendlyName = [(UARPMetaDataInformationFriendlyName *)self friendlyName];
+  v5 = [NSString stringWithFormat:@"<%@: %@>", tlvName, friendlyName];
 
   return v5;
 }

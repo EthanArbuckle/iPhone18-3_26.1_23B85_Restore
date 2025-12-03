@@ -1,16 +1,16 @@
 @interface BTAlert
 - (BOOL)isiPhone;
-- (BTAlert)initWithDevice:(id)a3;
+- (BTAlert)initWithDevice:(id)device;
 - (void)dealloc;
-- (void)showAlertWithResult:(id)a3;
-- (void)userActionResponseWithUnpairStatus:(BOOL)a3;
+- (void)showAlertWithResult:(id)result;
+- (void)userActionResponseWithUnpairStatus:(BOOL)status;
 @end
 
 @implementation BTAlert
 
-- (BTAlert)initWithDevice:(id)a3
+- (BTAlert)initWithDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v10.receiver = self;
   v10.super_class = BTAlert;
   v6 = [(BTAlert *)&v10 init];
@@ -20,7 +20,7 @@
     alert = v6->_alert;
     v6->_alert = v7;
 
-    objc_storeStrong(&v6->_device, a3);
+    objc_storeStrong(&v6->_device, device);
   }
 
   return v6;
@@ -54,14 +54,14 @@
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)showAlertWithResult:(id)a3
+- (void)showAlertWithResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   objc_initWeak(location, self);
-  v5 = [v4 unsignedIntValue];
-  if ((v5 - 151) <= 0x1E)
+  unsignedIntValue = [resultCopy unsignedIntValue];
+  if ((unsignedIntValue - 151) <= 0x1E)
   {
-    if (((1 << (v5 + 105)) & 0x40008081) != 0)
+    if (((1 << (unsignedIntValue + 105)) & 0x40008081) != 0)
     {
       v6 = sharedBluetoothSettingsLogComponent();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -73,8 +73,8 @@
       v7 = MEMORY[0x277CCACA8];
       v8 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v9 = [v8 localizedStringForKey:@"ERROR_MISSING_LINK_KEY" value:&stru_284EE3458 table:@"Devices"];
-      v10 = [(BTSDevice *)self->_device name];
-      v11 = [v7 stringWithFormat:v9, v10];
+      name = [(BTSDevice *)self->_device name];
+      v11 = [v7 stringWithFormat:v9, name];
 
       v12 = MEMORY[0x277D750F8];
       v13 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -91,13 +91,13 @@
       goto LABEL_25;
     }
 
-    if (v5 == 156)
+    if (unsignedIntValue == 156)
     {
       v17 = MEMORY[0x277CCACA8];
       v18 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v19 = [v18 localizedStringForKey:@"ERROR_INCORRECT_PIN" value:&stru_284EE3458 table:@"Devices"];
-      v20 = [(BTSDevice *)self->_device name];
-      v11 = [v17 stringWithFormat:v19, v20];
+      name2 = [(BTSDevice *)self->_device name];
+      v11 = [v17 stringWithFormat:v19, name2];
 
       v21 = MEMORY[0x277D750F8];
       v22 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -117,7 +117,7 @@ LABEL_25:
     }
   }
 
-  if (v5 == 1)
+  if (unsignedIntValue == 1)
   {
     if (![(BTSDevice *)self->_device paired])
     {
@@ -127,8 +127,8 @@ LABEL_25:
       v50 = MEMORY[0x277CCACA8];
       v51 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v52 = [v51 localizedStringForKey:@"ERROR_GEN_PAIRING_FAILURE" value:&stru_284EE3458 table:@"Devices"];
-      v53 = [(BTSDevice *)self->_device name];
-      v54 = [v50 stringWithFormat:v52, v53];
+      name3 = [(BTSDevice *)self->_device name];
+      v54 = [v50 stringWithFormat:v52, name3];
       v11 = [v47 stringWithFormat:@"%@ %@", v49, v54];
 
       v55 = MEMORY[0x277D750F8];
@@ -147,17 +147,17 @@ LABEL_25:
     }
   }
 
-  else if (v5 == 109)
+  else if (unsignedIntValue == 109)
   {
     v24 = MEMORY[0x277CCACA8];
     v25 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v26 = [v25 localizedStringForKey:@"ERROR_UNSUPPORTED_DEVICE" value:&stru_284EE3458 table:@"Devices"];
-    v27 = [(BTSDevice *)self->_device name];
-    v11 = [v24 stringWithFormat:v26, v27];
+    name4 = [(BTSDevice *)self->_device name];
+    v11 = [v24 stringWithFormat:v26, name4];
 
-    v28 = [(BTSDevice *)self->_device paired];
+    paired = [(BTSDevice *)self->_device paired];
     v29 = MEMORY[0x277D750F8];
-    if (v28)
+    if (paired)
     {
       v30 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v31 = [v30 localizedStringForKey:@"FORGET_DEVICE" value:&stru_284EE3458 table:@"Devices"];
@@ -217,8 +217,8 @@ LABEL_25:
 
   v40 = MEMORY[0x277CCACA8];
   v63 = 0;
-  v41 = [(BTSDevice *)self->_device name];
-  v11 = [v40 stringWithValidatedFormat:v39 validFormatSpecifiers:@"%@" error:&v63, v41];
+  name5 = [(BTSDevice *)self->_device name];
+  v11 = [v40 stringWithValidatedFormat:v39 validFormatSpecifiers:@"%@" error:&v63, name5];
   v42 = v63;
 
   if (v11)
@@ -305,9 +305,9 @@ void __31__BTAlert_showAlertWithResult___block_invoke_47(uint64_t a1)
   [WeakRetained userActionResponseWithUnpairStatus:0];
 }
 
-- (void)userActionResponseWithUnpairStatus:(BOOL)a3
+- (void)userActionResponseWithUnpairStatus:(BOOL)status
 {
-  if (a3)
+  if (status)
   {
     [(BTSDevice *)self->_device unpair];
   }

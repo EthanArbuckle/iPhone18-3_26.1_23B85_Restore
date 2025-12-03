@@ -1,9 +1,9 @@
 @interface INManagedDefaults
 + (id)sharedInstance;
 - (id)_readManagedDefaults;
-- (id)valueForManagedDefault:(id)a3;
-- (void)_writeManagedDefaults:(id)a3;
-- (void)setValue:(id)a3 forManagedDefault:(id)a4;
+- (id)valueForManagedDefault:(id)default;
+- (void)_writeManagedDefaults:(id)defaults;
+- (void)setValue:(id)value forManagedDefault:(id)default;
 @end
 
 @implementation INManagedDefaults
@@ -38,16 +38,16 @@ uint64_t __35__INManagedDefaults_sharedInstance__block_invoke()
   return v2;
 }
 
-- (void)_writeManagedDefaults:(id)a3
+- (void)_writeManagedDefaults:(id)defaults
 {
-  v3 = a3;
+  defaultsCopy = defaults;
   v4 = _INLogSystem();
   v5 = v4;
-  if (v3)
+  if (defaultsCopy)
   {
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
     {
-      [(INManagedDefaults *)v3 _writeManagedDefaults:v5];
+      [(INManagedDefaults *)defaultsCopy _writeManagedDefaults:v5];
     }
 
     _CFPreferencesWriteManagedDomainForUser();
@@ -64,11 +64,11 @@ uint64_t __35__INManagedDefaults_sharedInstance__block_invoke()
   }
 }
 
-- (id)valueForManagedDefault:(id)a3
+- (id)valueForManagedDefault:(id)default
 {
-  v4 = a3;
-  v5 = [(INManagedDefaults *)self _readManagedDefaults];
-  v6 = [v5 objectForKey:v4];
+  defaultCopy = default;
+  _readManagedDefaults = [(INManagedDefaults *)self _readManagedDefaults];
+  v6 = [_readManagedDefaults objectForKey:defaultCopy];
 
   if (v6)
   {
@@ -93,14 +93,14 @@ LABEL_8:
   return v8;
 }
 
-- (void)setValue:(id)a3 forManagedDefault:(id)a4
+- (void)setValue:(id)value forManagedDefault:(id)default
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(INManagedDefaults *)self _readManagedDefaults];
-  v9 = [v8 mutableCopy];
+  defaultCopy = default;
+  valueCopy = value;
+  _readManagedDefaults = [(INManagedDefaults *)self _readManagedDefaults];
+  v9 = [_readManagedDefaults mutableCopy];
 
-  [v9 setValue:v7 forKey:v6];
+  [v9 setValue:valueCopy forKey:defaultCopy];
   [(INManagedDefaults *)self _writeManagedDefaults:v9];
 }
 

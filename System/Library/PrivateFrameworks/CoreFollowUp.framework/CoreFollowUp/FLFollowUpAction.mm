@@ -1,78 +1,78 @@
 @interface FLFollowUpAction
-+ (id)actionWithLabel:(id)a3 url:(id)a4;
++ (id)actionWithLabel:(id)label url:(id)url;
 - (BOOL)_loadActionURL;
 - (BOOL)destructive;
-- (FLFollowUpAction)initWithCoder:(id)a3;
-- (FLFollowUpAction)initWithLabel:(id)a3 url:(id)a4;
+- (FLFollowUpAction)initWithCoder:(id)coder;
+- (FLFollowUpAction)initWithLabel:(id)label url:(id)url;
 - (NSData)_userInfoData;
 - (id)description;
 - (void)_userInfoData;
-- (void)encodeWithCoder:(id)a3;
-- (void)setDestructive:(BOOL)a3;
-- (void)set_userInfoData:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setDestructive:(BOOL)destructive;
+- (void)set_userInfoData:(id)data;
 @end
 
 @implementation FLFollowUpAction
 
-+ (id)actionWithLabel:(id)a3 url:(id)a4
++ (id)actionWithLabel:(id)label url:(id)url
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithLabel:v7 url:v6];
+  urlCopy = url;
+  labelCopy = label;
+  v8 = [[self alloc] initWithLabel:labelCopy url:urlCopy];
 
   return v8;
 }
 
-- (FLFollowUpAction)initWithLabel:(id)a3 url:(id)a4
+- (FLFollowUpAction)initWithLabel:(id)label url:(id)url
 {
-  v7 = a3;
-  v8 = a4;
+  labelCopy = label;
+  urlCopy = url;
   v9 = [(FLFollowUpAction *)self init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_label, a3);
-    objc_storeStrong(&v10->_url, a4);
-    v11 = [MEMORY[0x277CCAD78] UUID];
-    v12 = [v11 UUIDString];
+    objc_storeStrong(&v9->_label, label);
+    objc_storeStrong(&v10->_url, url);
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
     identifier = v10->_identifier;
-    v10->_identifier = v12;
+    v10->_identifier = uUIDString;
   }
 
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   label = self->_label;
-  v5 = a3;
-  [v5 encodeObject:label forKey:@"_label"];
-  [v5 encodeObject:self->_url forKey:@"_url"];
-  [v5 encodeObject:self->_launchActionURL forKey:@"_launchActionURL"];
-  [v5 encodeObject:self->_identifier forKey:@"_identifier"];
-  [v5 encodeObject:self->_userInfo forKey:@"_userInfo"];
-  [v5 encodeInteger:self->_eventSource forKey:@"_eventSource"];
+  coderCopy = coder;
+  [coderCopy encodeObject:label forKey:@"_label"];
+  [coderCopy encodeObject:self->_url forKey:@"_url"];
+  [coderCopy encodeObject:self->_launchActionURL forKey:@"_launchActionURL"];
+  [coderCopy encodeObject:self->_identifier forKey:@"_identifier"];
+  [coderCopy encodeObject:self->_userInfo forKey:@"_userInfo"];
+  [coderCopy encodeInteger:self->_eventSource forKey:@"_eventSource"];
 }
 
-- (FLFollowUpAction)initWithCoder:(id)a3
+- (FLFollowUpAction)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(FLFollowUpAction *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_label"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_label"];
     label = v5->_label;
     v5->_label = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_url"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_url"];
     url = v5->_url;
     v5->_url = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_launchActionURL"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_launchActionURL"];
     launchActionURL = v5->_launchActionURL;
     v5->_launchActionURL = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_identifier"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v12;
 
@@ -82,21 +82,21 @@
     v17 = objc_opt_class();
     v18 = objc_opt_class();
     v19 = [v14 setWithObjects:{v15, v16, v17, v18, objc_opt_class(), 0}];
-    v20 = [v4 decodeObjectOfClasses:v19 forKey:@"_userInfo"];
+    v20 = [coderCopy decodeObjectOfClasses:v19 forKey:@"_userInfo"];
     userInfo = v5->_userInfo;
     v5->_userInfo = v20;
 
-    v5->_eventSource = [v4 decodeIntegerForKey:@"_eventSource"];
+    v5->_eventSource = [coderCopy decodeIntegerForKey:@"_eventSource"];
   }
 
   return v5;
 }
 
-- (void)setDestructive:(BOOL)a3
+- (void)setDestructive:(BOOL)destructive
 {
-  v3 = a3;
-  v5 = [(FLFollowUpAction *)self userInfo];
-  v9 = [v5 mutableCopy];
+  destructiveCopy = destructive;
+  userInfo = [(FLFollowUpAction *)self userInfo];
+  v9 = [userInfo mutableCopy];
 
   v6 = v9;
   if (!v9)
@@ -104,7 +104,7 @@
     v6 = [MEMORY[0x277CBEC10] mutableCopy];
   }
 
-  if (v3)
+  if (destructiveCopy)
   {
     v7 = MEMORY[0x277CBEC38];
   }
@@ -122,36 +122,36 @@
 
 - (BOOL)destructive
 {
-  v2 = [(FLFollowUpAction *)self userInfo];
-  v3 = [v2 objectForKeyedSubscript:@"FLFollowUpActionIsDestructiveKey"];
+  userInfo = [(FLFollowUpAction *)self userInfo];
+  v3 = [userInfo objectForKeyedSubscript:@"FLFollowUpActionIsDestructiveKey"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 - (NSData)_userInfoData
 {
-  v3 = [(FLFollowUpAction *)self userInfo];
+  userInfo = [(FLFollowUpAction *)self userInfo];
 
-  if (v3)
+  if (userInfo)
   {
     v4 = MEMORY[0x277CCAC58];
-    v5 = [(FLFollowUpAction *)self userInfo];
+    userInfo2 = [(FLFollowUpAction *)self userInfo];
     v9 = 0;
-    v3 = [v4 dataWithPropertyList:v5 format:200 options:0 error:&v9];
+    userInfo = [v4 dataWithPropertyList:userInfo2 format:200 options:0 error:&v9];
     v6 = v9;
 
-    if (!v3)
+    if (!userInfo)
     {
       v7 = _FLLogSystem();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -161,21 +161,21 @@
     }
   }
 
-  return v3;
+  return userInfo;
 }
 
-- (void)set_userInfoData:(id)a3
+- (void)set_userInfoData:(id)data
 {
-  if (a3)
+  if (data)
   {
     v8 = 0;
-    v4 = [MEMORY[0x277CCAC58] propertyListWithData:a3 options:0 format:0 error:&v8];
+    v4 = [MEMORY[0x277CCAC58] propertyListWithData:data options:0 format:0 error:&v8];
     v5 = v8;
     [(FLFollowUpAction *)self setUserInfo:v4];
 
-    v6 = [(FLFollowUpAction *)self userInfo];
+    userInfo = [(FLFollowUpAction *)self userInfo];
 
-    if (!v6)
+    if (!userInfo)
     {
       v7 = _FLLogSystem();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -202,27 +202,27 @@
       _os_log_impl(&dword_22E696000, v4, OS_LOG_TYPE_DEFAULT, "Attempting to handle URL: %@", &v11, 0xCu);
     }
 
-    v6 = [MEMORY[0x277CC1E80] defaultWorkspace];
-    v7 = [(FLFollowUpAction *)self url];
-    [v6 openSensitiveURL:v7 withOptions:0];
+    defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
+    launchActionURL2 = [(FLFollowUpAction *)self url];
+    [defaultWorkspace openSensitiveURL:launchActionURL2 withOptions:0];
     goto LABEL_5;
   }
 
-  v10 = [(FLFollowUpAction *)self launchActionURL];
+  launchActionURL = [(FLFollowUpAction *)self launchActionURL];
 
-  if (!v10)
+  if (!launchActionURL)
   {
     result = 0;
     goto LABEL_7;
   }
 
-  v6 = _FLLogSystem();
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  defaultWorkspace = _FLLogSystem();
+  if (os_log_type_enabled(defaultWorkspace, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [(FLFollowUpAction *)self launchActionURL];
+    launchActionURL2 = [(FLFollowUpAction *)self launchActionURL];
     v11 = 138412290;
-    v12 = v7;
-    _os_log_impl(&dword_22E696000, v6, OS_LOG_TYPE_DEFAULT, "Attempting to handle launch URL: %@", &v11, 0xCu);
+    v12 = launchActionURL2;
+    _os_log_impl(&dword_22E696000, defaultWorkspace, OS_LOG_TYPE_DEFAULT, "Attempting to handle launch URL: %@", &v11, 0xCu);
 LABEL_5:
   }
 

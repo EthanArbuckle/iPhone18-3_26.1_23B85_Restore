@@ -1,8 +1,8 @@
 @interface ADAMSRSensorWriter
-- (ADAMSRSensorWriter)initWithSensorType:(int)a3 bundleIdentifier:(id)a4;
+- (ADAMSRSensorWriter)initWithSensorType:(int)type bundleIdentifier:(id)identifier;
 - (BOOL)isMonitoring;
-- (BOOL)provideSample:(id)a3 continuousTimestamp:(unint64_t)a4 error:(id *)a5;
-- (BOOL)provideSample:(id)a3 error:(id *)a4;
+- (BOOL)provideSample:(id)sample continuousTimestamp:(unint64_t)timestamp error:(id *)error;
+- (BOOL)provideSample:(id)sample error:(id *)error;
 @end
 
 @implementation ADAMSRSensorWriter
@@ -18,13 +18,13 @@
   return writer;
 }
 
-- (BOOL)provideSample:(id)a3 continuousTimestamp:(unint64_t)a4 error:(id *)a5
+- (BOOL)provideSample:(id)sample continuousTimestamp:(unint64_t)timestamp error:(id *)error
 {
-  v8 = a3;
+  sampleCopy = sample;
   writer = self->_writer;
   if (writer)
   {
-    v10 = [(SRSensorWriter *)writer provideSample:v8 continuousTimestamp:a4 error:a5];
+    v10 = [(SRSensorWriter *)writer provideSample:sampleCopy continuousTimestamp:timestamp error:error];
   }
 
   else
@@ -35,13 +35,13 @@
   return v10;
 }
 
-- (BOOL)provideSample:(id)a3 error:(id *)a4
+- (BOOL)provideSample:(id)sample error:(id *)error
 {
-  v6 = a3;
+  sampleCopy = sample;
   writer = self->_writer;
   if (writer)
   {
-    v8 = [(SRSensorWriter *)writer provideSample:v6 error:a4];
+    v8 = [(SRSensorWriter *)writer provideSample:sampleCopy error:error];
   }
 
   else
@@ -52,10 +52,10 @@
   return v8;
 }
 
-- (ADAMSRSensorWriter)initWithSensorType:(int)a3 bundleIdentifier:(id)a4
+- (ADAMSRSensorWriter)initWithSensorType:(int)type bundleIdentifier:(id)identifier
 {
   v31 = *MEMORY[0x29EDCA608];
-  v7 = a4;
+  identifierCopy = identifier;
   v22.receiver = self;
   v22.super_class = ADAMSRSensorWriter;
   v8 = [(ADAMSRSensorWriter *)&v22 init];
@@ -64,9 +64,9 @@
     goto LABEL_21;
   }
 
-  if (a3 <= 5)
+  if (type <= 5)
   {
-    v4 = **(&unk_29EE526D0 + a3);
+    v4 = **(&unk_29EE526D0 + type);
   }
 
   v9 = [ADAMSensorKitWriterFactory GetSensorKitWriterWithIdentifier:v4];
@@ -111,7 +111,7 @@
 
 LABEL_14:
 
-  if (a3 > 2)
+  if (type > 2)
   {
     v16 = v8->_writer;
     if (v16)
@@ -121,7 +121,7 @@ LABEL_14:
       v19[2] = __58__ADAMSRSensorWriter_initWithSensorType_bundleIdentifier___block_invoke;
       v19[3] = &unk_29EE526B0;
       v20 = v8;
-      v21 = v7;
+      v21 = identifierCopy;
       [(SRSensorWriter *)v16 bundleEligibility:v21 completion:v19];
     }
   }

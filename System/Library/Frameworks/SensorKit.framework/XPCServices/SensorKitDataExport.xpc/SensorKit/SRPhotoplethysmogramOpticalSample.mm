@@ -29,10 +29,10 @@
   v31[2] = @"signalIdentifier";
   v32[2] = [NSNumber numberWithInteger:[(SRPhotoplethysmogramOpticalSample *)self signalIdentifier]];
   v31[3] = @"nominalWavelength";
-  v4 = [(SRPhotoplethysmogramOpticalSample *)self nominalWavelength];
-  if (v4)
+  nominalWavelength = [(SRPhotoplethysmogramOpticalSample *)self nominalWavelength];
+  if (nominalWavelength)
   {
-    [v4 doubleValue];
+    [nominalWavelength doubleValue];
     if (fabs(v5) == INFINITY)
     {
       v6 = @"INF";
@@ -51,10 +51,10 @@
 
   v32[3] = v6;
   v31[4] = @"effectiveWavelength";
-  v7 = [(SRPhotoplethysmogramOpticalSample *)self effectiveWavelength];
-  if (v7)
+  effectiveWavelength = [(SRPhotoplethysmogramOpticalSample *)self effectiveWavelength];
+  if (effectiveWavelength)
   {
-    [v7 doubleValue];
+    [effectiveWavelength doubleValue];
     if (fabs(v8) == INFINITY)
     {
       v9 = @"INF";
@@ -73,10 +73,10 @@
 
   v32[4] = v9;
   v31[5] = @"frequency";
-  v10 = [(SRPhotoplethysmogramOpticalSample *)self samplingFrequency];
-  if (v10)
+  samplingFrequency = [(SRPhotoplethysmogramOpticalSample *)self samplingFrequency];
+  if (samplingFrequency)
   {
-    [v10 doubleValue];
+    [samplingFrequency doubleValue];
     if (fabs(v11) == INFINITY)
     {
       v12 = @"INF";
@@ -97,10 +97,10 @@
   v31[6] = @"nanosecondsSinceStart";
   v32[6] = [NSNumber numberWithLongLong:[(SRPhotoplethysmogramOpticalSample *)self nanosecondsSinceStart]];
   v31[7] = @"normalizedReflectance";
-  v13 = [(SRPhotoplethysmogramOpticalSample *)self normalizedReflectance];
-  if (v13)
+  normalizedReflectance = [(SRPhotoplethysmogramOpticalSample *)self normalizedReflectance];
+  if (normalizedReflectance)
   {
-    [v13 doubleValue];
+    [normalizedReflectance doubleValue];
     if (fabs(v14) == INFINITY)
     {
       v15 = @"INF";
@@ -119,10 +119,10 @@
 
   v32[7] = v15;
   v31[8] = @"whiteNoise";
-  v16 = [(SRPhotoplethysmogramOpticalSample *)self whiteNoise];
-  if (v16)
+  whiteNoise = [(SRPhotoplethysmogramOpticalSample *)self whiteNoise];
+  if (whiteNoise)
   {
-    [v16 doubleValue];
+    [whiteNoise doubleValue];
     if (fabs(v17) == INFINITY)
     {
       v18 = @"INF";
@@ -141,10 +141,10 @@
 
   v32[8] = v18;
   v31[9] = @"pinkNoise";
-  v19 = [(SRPhotoplethysmogramOpticalSample *)self pinkNoise];
-  if (v19)
+  pinkNoise = [(SRPhotoplethysmogramOpticalSample *)self pinkNoise];
+  if (pinkNoise)
   {
-    [v19 doubleValue];
+    [pinkNoise doubleValue];
     if (fabs(v20) == INFINITY)
     {
       v21 = @"INF";
@@ -163,10 +163,10 @@
 
   v32[9] = v21;
   v31[10] = @"backgroundNoise";
-  v22 = [(SRPhotoplethysmogramOpticalSample *)self backgroundNoise];
-  if (v22)
+  backgroundNoise = [(SRPhotoplethysmogramOpticalSample *)self backgroundNoise];
+  if (backgroundNoise)
   {
-    [v22 doubleValue];
+    [backgroundNoise doubleValue];
     if (fabs(v23) == INFINITY)
     {
       v24 = @"INF";
@@ -185,10 +185,10 @@
 
   v32[10] = v24;
   v31[11] = @"backgroundNoiseOffset";
-  v25 = [(SRPhotoplethysmogramOpticalSample *)self backgroundNoiseOffset];
-  if (v25)
+  backgroundNoiseOffset = [(SRPhotoplethysmogramOpticalSample *)self backgroundNoiseOffset];
+  if (backgroundNoiseOffset)
   {
-    [v25 doubleValue];
+    [backgroundNoiseOffset doubleValue];
     if (fabs(v26) == INFINITY)
     {
       v27 = @"INF";

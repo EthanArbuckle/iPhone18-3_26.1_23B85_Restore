@@ -1,38 +1,38 @@
 @interface TVApplicationAccessibility__TVMLKit__TVKit
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_atvaccessibilitySemanticContextCustomActions;
 - (id)_atvaccessibilityTabBarViewController;
 @end
 
 @implementation TVApplicationAccessibility__TVMLKit__TVKit
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
   v3 = MEMORY[0x29EDBD618];
   v4 = *MEMORY[0x29EDBD618];
-  v5 = a3;
-  [v5 client:v4 validateClass:@"TVAppDelegate"];
-  [v5 client:*v3 validateClass:@"TVApplication"];
-  [v5 client:*v3 validateClass:@"_TVAppDocumentController"];
-  [v5 client:*v3 validateClass:@"TVAppDelegate" hasInstanceMethod:@"window" withFullSignature:{"@", 0}];
-  [v5 client:*v3 validateClass:@"TVApplication" isKindOfClass:@"UIApplication"];
-  [v5 client:*v3 validateClass:@"_TVAppDocumentController" hasInstanceMethod:@"templateViewController" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy client:v4 validateClass:@"TVAppDelegate"];
+  [validationsCopy client:*v3 validateClass:@"TVApplication"];
+  [validationsCopy client:*v3 validateClass:@"_TVAppDocumentController"];
+  [validationsCopy client:*v3 validateClass:@"TVAppDelegate" hasInstanceMethod:@"window" withFullSignature:{"@", 0}];
+  [validationsCopy client:*v3 validateClass:@"TVApplication" isKindOfClass:@"UIApplication"];
+  [validationsCopy client:*v3 validateClass:@"_TVAppDocumentController" hasInstanceMethod:@"templateViewController" withFullSignature:{"@", 0}];
 }
 
 - (id)_atvaccessibilitySemanticContextCustomActions
 {
-  v2 = [(TVApplicationAccessibility__TVMLKit__TVKit *)self _atvaccessibilityTabBarViewController];
-  if (v2 && (objc_opt_respondsToSelector() & 1) != 0)
+  _atvaccessibilityTabBarViewController = [(TVApplicationAccessibility__TVMLKit__TVKit *)self _atvaccessibilityTabBarViewController];
+  if (_atvaccessibilityTabBarViewController && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v3 = [v2 _atvaccessibilityTabBarCustomActions];
+    _atvaccessibilityTabBarCustomActions = [_atvaccessibilityTabBarViewController _atvaccessibilityTabBarCustomActions];
   }
 
   else
   {
-    v3 = 0;
+    _atvaccessibilityTabBarCustomActions = 0;
   }
 
-  return v3;
+  return _atvaccessibilityTabBarCustomActions;
 }
 
 - (id)_atvaccessibilityTabBarViewController
@@ -42,14 +42,14 @@
   v4 = [v3 safeValueForKey:@"window"];
   v5 = __UIAccessibilityCastAsClass();
 
-  v6 = [v5 rootViewController];
-  v7 = [v6 childViewControllers];
-  v8 = [v7 firstObject];
+  rootViewController = [v5 rootViewController];
+  childViewControllers = [rootViewController childViewControllers];
+  firstObject = [childViewControllers firstObject];
 
   NSClassFromString(&cfstr_Tvappdocumentc.isa);
   if (objc_opt_isKindOfClass())
   {
-    v9 = [v8 safeValueForKey:@"templateViewController"];
+    v9 = [firstObject safeValueForKey:@"templateViewController"];
     NSClassFromString(&cfstr_Tvloadingviewc.isa);
     if (objc_opt_isKindOfClass())
     {

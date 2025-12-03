@@ -18,8 +18,8 @@
   }
 
   v5 = [(NSData *)encData length];
-  v6 = [(ISOSessionData *)self status];
-  v7 = [v3 initWithFormat:@"{data len=%lu, statusCode=%@}", v5, v6];
+  status = [(ISOSessionData *)self status];
+  v7 = [v3 initWithFormat:@"{data len=%lu, statusCode=%@}", v5, status];
 
   return v7;
 }

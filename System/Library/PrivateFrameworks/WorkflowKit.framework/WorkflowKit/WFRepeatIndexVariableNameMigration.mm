@@ -1,22 +1,22 @@
 @interface WFRepeatIndexVariableNameMigration
-+ (BOOL)workflowNeedsMigration:(id)a3 fromClientVersion:(id)a4;
-- (void)calculateVariableNamesAtActionIndex:(unint64_t)a3 oldRepeatScopeVariables:(id *)a4;
++ (BOOL)workflowNeedsMigration:(id)migration fromClientVersion:(id)version;
+- (void)calculateVariableNamesAtActionIndex:(unint64_t)index oldRepeatScopeVariables:(id *)variables;
 - (void)migrateWorkflow;
 @end
 
 @implementation WFRepeatIndexVariableNameMigration
 
-+ (BOOL)workflowNeedsMigration:(id)a3 fromClientVersion:(id)a4
++ (BOOL)workflowNeedsMigration:(id)migration fromClientVersion:(id)version
 {
-  v5 = a3;
-  v6 = (WFCompareBundleVersions(a4, @"154") - 1) >= 2 && WFWorkflowHasActionsWithIdentifier(@"is.workflow.actions.getvariable", v5) && ((WFWorkflowHasActionsWithIdentifier(@"is.workflow.actions.repeat.each", v5) & 1) != 0 || WFWorkflowHasActionsWithIdentifier(@"is.workflow.actions.repeat.count", v5));
+  migrationCopy = migration;
+  v6 = (WFCompareBundleVersions(version, @"154") - 1) >= 2 && WFWorkflowHasActionsWithIdentifier(@"is.workflow.actions.getvariable", migrationCopy) && ((WFWorkflowHasActionsWithIdentifier(@"is.workflow.actions.repeat.each", migrationCopy) & 1) != 0 || WFWorkflowHasActionsWithIdentifier(@"is.workflow.actions.repeat.count", migrationCopy));
 
   return v6;
 }
 
-- (void)calculateVariableNamesAtActionIndex:(unint64_t)a3 oldRepeatScopeVariables:(id *)a4
+- (void)calculateVariableNamesAtActionIndex:(unint64_t)index oldRepeatScopeVariables:(id *)variables
 {
-  v7 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+  strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
   v17[0] = 0;
   v17[1] = v17;
   v17[2] = 0x2020000000;
@@ -25,7 +25,7 @@
   v16[1] = v16;
   v16[2] = 0x2020000000;
   v16[3] = 0;
-  v8 = [(WFWorkflowMigration *)self actions];
+  actions = [(WFWorkflowMigration *)self actions];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __98__WFRepeatIndexVariableNameMigration_calculateVariableNamesAtActionIndex_oldRepeatScopeVariables___block_invoke;
@@ -33,15 +33,15 @@
   v13 = v17;
   v14 = v16;
   v11[4] = self;
-  v15 = a3;
-  v9 = v7;
+  indexCopy = index;
+  v9 = strongToStrongObjectsMapTable;
   v12 = v9;
-  [v8 enumerateObjectsUsingBlock:v11];
+  [actions enumerateObjectsUsingBlock:v11];
 
-  if (a4)
+  if (variables)
   {
     v10 = v9;
-    *a4 = v9;
+    *variables = v9;
   }
 
   _Block_object_dispose(v16, 8);
@@ -115,13 +115,13 @@ LABEL_20:
 
 - (void)migrateWorkflow
 {
-  v3 = [(WFWorkflowMigration *)self actions];
+  actions = [(WFWorkflowMigration *)self actions];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __53__WFRepeatIndexVariableNameMigration_migrateWorkflow__block_invoke;
   v4[3] = &unk_1E837F7F8;
   v4[4] = self;
-  [v3 enumerateObjectsUsingBlock:v4];
+  [actions enumerateObjectsUsingBlock:v4];
 
   [(WFWorkflowMigration *)self finish];
 }

@@ -1,24 +1,24 @@
 @interface WDTimeInDaylightAddDataViewController
-- (WDTimeInDaylightAddDataViewController)initWithDisplayType:(id)a3 healthStore:(id)a4 unitController:(id)a5 initialStartDate:(id)a6 dateCache:(id)a7;
+- (WDTimeInDaylightAddDataViewController)initWithDisplayType:(id)type healthStore:(id)store unitController:(id)controller initialStartDate:(id)date dateCache:(id)cache;
 - (id)generateHKObjects;
-- (id)manualEntryItemsForSection:(int64_t)a3;
-- (void)manualEntryItemDidUpdate:(id)a3;
-- (void)validateDataWithCompletion:(id)a3;
+- (id)manualEntryItemsForSection:(int64_t)section;
+- (void)manualEntryItemDidUpdate:(id)update;
+- (void)validateDataWithCompletion:(id)completion;
 - (void)viewDidLoad;
 @end
 
 @implementation WDTimeInDaylightAddDataViewController
 
-- (WDTimeInDaylightAddDataViewController)initWithDisplayType:(id)a3 healthStore:(id)a4 unitController:(id)a5 initialStartDate:(id)a6 dateCache:(id)a7
+- (WDTimeInDaylightAddDataViewController)initWithDisplayType:(id)type healthStore:(id)store unitController:(id)controller initialStartDate:(id)date dateCache:(id)cache
 {
   v14.receiver = self;
   v14.super_class = WDTimeInDaylightAddDataViewController;
-  v7 = [(WDAddDataViewController *)&v14 initWithDisplayType:a3 healthStore:a4 unitController:a5 initialStartDate:a6 dateCache:a7];
+  v7 = [(WDAddDataViewController *)&v14 initWithDisplayType:type healthStore:store unitController:controller initialStartDate:date dateCache:cache];
   v8 = v7;
   if (v7)
   {
-    v9 = [(HKDateCache *)v7->super._dateCache oneMinuteBeforeEndOfDayMidnight];
-    v10 = [WDAddDataManualEntryItem twoPartDateRangeItemWithMaximumEndDate:v9];
+    oneMinuteBeforeEndOfDayMidnight = [(HKDateCache *)v7->super._dateCache oneMinuteBeforeEndOfDayMidnight];
+    v10 = [WDAddDataManualEntryItem twoPartDateRangeItemWithMaximumEndDate:oneMinuteBeforeEndOfDayMidnight];
     dateRangeEntryItem = v8->_dateRangeEntryItem;
     v8->_dateRangeEntryItem = v10;
 
@@ -41,20 +41,20 @@
 {
   v19[1] = *MEMORY[0x1E69E9840];
   v3 = [MEMORY[0x1E696C2E0] quantityTypeForIdentifier:*MEMORY[0x1E696BDD8]];
-  v4 = [(WDAddDataManualEntryItem *)self->_dateRangeEntryItem generateValue];
-  v5 = [v4 endDate];
-  v6 = [v4 startDate];
-  [v5 timeIntervalSinceDate:v6];
+  generateValue = [(WDAddDataManualEntryItem *)self->_dateRangeEntryItem generateValue];
+  endDate = [generateValue endDate];
+  startDate = [generateValue startDate];
+  [endDate timeIntervalSinceDate:startDate];
   v8 = v7;
 
   v9 = MEMORY[0x1E696C358];
   v10 = MEMORY[0x1E696C348];
-  v11 = [MEMORY[0x1E696C510] secondUnit];
-  v12 = [v10 quantityWithUnit:v11 doubleValue:v8];
-  v13 = [v4 startDate];
-  v14 = [v4 endDate];
-  v15 = [(WDAddDataViewController *)self defaultMetadata];
-  v16 = [v9 quantitySampleWithType:v3 quantity:v12 startDate:v13 endDate:v14 metadata:v15];
+  secondUnit = [MEMORY[0x1E696C510] secondUnit];
+  v12 = [v10 quantityWithUnit:secondUnit doubleValue:v8];
+  startDate2 = [generateValue startDate];
+  endDate2 = [generateValue endDate];
+  defaultMetadata = [(WDAddDataViewController *)self defaultMetadata];
+  v16 = [v9 quantitySampleWithType:v3 quantity:v12 startDate:startDate2 endDate:endDate2 metadata:defaultMetadata];
 
   v19[0] = v16;
   v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:1];
@@ -62,10 +62,10 @@
   return v17;
 }
 
-- (id)manualEntryItemsForSection:(int64_t)a3
+- (id)manualEntryItemsForSection:(int64_t)section
 {
   v5[1] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (section)
   {
     v3 = MEMORY[0x1E695E0F0];
   }
@@ -79,27 +79,27 @@
   return v3;
 }
 
-- (void)validateDataWithCompletion:(id)a3
+- (void)validateDataWithCompletion:(id)completion
 {
   dateRangeEntryItem = self->_dateRangeEntryItem;
-  v5 = a3;
-  v8 = [(WDAddDataManualEntryItem *)dateRangeEntryItem generateValue];
-  v6 = [v8 startDate];
-  v7 = [v8 endDate];
-  [(WDAddDataViewController *)self validateMaximumAllowedDurationFor:v6 endDate:v7 competion:v5];
+  completionCopy = completion;
+  generateValue = [(WDAddDataManualEntryItem *)dateRangeEntryItem generateValue];
+  startDate = [generateValue startDate];
+  endDate = [generateValue endDate];
+  [(WDAddDataViewController *)self validateMaximumAllowedDurationFor:startDate endDate:endDate competion:completionCopy];
 }
 
-- (void)manualEntryItemDidUpdate:(id)a3
+- (void)manualEntryItemDidUpdate:(id)update
 {
-  v11 = [(WDAddDataManualEntryItem *)self->_dateRangeEntryItem generateValue];
-  v4 = [v11 endDate];
-  v5 = [v11 startDate];
-  [v4 timeIntervalSinceDate:v5];
+  generateValue = [(WDAddDataManualEntryItem *)self->_dateRangeEntryItem generateValue];
+  endDate = [generateValue endDate];
+  startDate = [generateValue startDate];
+  [endDate timeIntervalSinceDate:startDate];
   v7 = v6;
 
   validationController = self->super._validationController;
-  v9 = [(HKDisplayType *)self->super._displayType sampleType];
-  v10 = [(HKManualEntryValidationController *)validationController validateMinimumAllowedDuration:v9 ofType:v7]!= 2;
+  sampleType = [(HKDisplayType *)self->super._displayType sampleType];
+  v10 = [(HKManualEntryValidationController *)validationController validateMinimumAllowedDuration:sampleType ofType:v7]!= 2;
 
   [(WDAddDataViewController *)self setSavingEnabled:v10];
 }

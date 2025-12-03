@@ -1,7 +1,7 @@
 @interface VNCreateFaceRegionMapRequest
 + (const)dependentRequestCompatibility;
-- (BOOL)internalPerformRevision:(unint64_t)a3 inContext:(id)a4 error:(id *)a5;
-- (id)supportedComputeStageDevicesAndReturnError:(id *)a3;
+- (BOOL)internalPerformRevision:(unint64_t)revision inContext:(id)context error:(id *)error;
+- (id)supportedComputeStageDevicesAndReturnError:(id *)error;
 @end
 
 @implementation VNCreateFaceRegionMapRequest
@@ -24,12 +24,12 @@
   return &+[VNCreateFaceRegionMapRequest dependentRequestCompatibility]::ourDependentRequestCompatibilityTable;
 }
 
-- (BOOL)internalPerformRevision:(unint64_t)a3 inContext:(id)a4 error:(id *)a5
+- (BOOL)internalPerformRevision:(unint64_t)revision inContext:(id)context error:(id *)error
 {
-  v8 = a4;
+  contextCopy = context;
   VNValidatedLog(1, @"Processing Create FaceRegionMap request\n", v9, v10, v11, v12, v13, v14, v25);
   v26 = 0;
-  v15 = [(VNImageBasedRequest *)self getOptionalValidatedInputFaceObservations:&v26 clippedToRegionOfInterest:1 error:a5];
+  v15 = [(VNImageBasedRequest *)self getOptionalValidatedInputFaceObservations:&v26 clippedToRegionOfInterest:1 error:error];
   v16 = v26;
   if (v15)
   {
@@ -48,7 +48,7 @@
         v20 = 0;
       }
 
-      v21 = [(VNRequest *)self detectFaceLandmarksInContext:v8 faces:v20 error:a5];
+      v21 = [(VNRequest *)self detectFaceLandmarksInContext:contextCopy faces:v20 error:error];
       if (!v21)
       {
         v23 = 0;
@@ -61,7 +61,7 @@ LABEL_14:
     }
 
     [(VNImageBasedRequest *)self regionOfInterest];
-    v22 = [(VNRequest *)self processFaceObservations:v19 revision:a3 regionOfInterest:@"VNFaceRegionMapGeneratorType" detectorType:0 detectorOptions:&__block_literal_global_28132 shouldAlignFaceBBox:&__block_literal_global_32 shouldRunDetectorBlock:v8 context:a5 error:?];
+    v22 = [(VNRequest *)self processFaceObservations:v19 revision:revision regionOfInterest:@"VNFaceRegionMapGeneratorType" detectorType:0 detectorOptions:&__block_literal_global_28132 shouldAlignFaceBBox:&__block_literal_global_32 shouldRunDetectorBlock:contextCopy context:error error:?];
     v23 = v22 != 0;
     if (v22)
     {
@@ -86,11 +86,11 @@ BOOL __72__VNCreateFaceRegionMapRequest_internalPerformRevision_inContext_error_
   return v3;
 }
 
-- (id)supportedComputeStageDevicesAndReturnError:(id *)a3
+- (id)supportedComputeStageDevicesAndReturnError:(id *)error
 {
   v5 = objc_alloc_init(VNDetectFaceLandmarksRequest);
   [(VNDetectFaceLandmarksRequest *)v5 applyConfigurationOfRequest:self];
-  v6 = [(VNRequest *)v5 supportedComputeStageDevicesAndReturnError:a3];
+  v6 = [(VNRequest *)v5 supportedComputeStageDevicesAndReturnError:error];
 
   return v6;
 }

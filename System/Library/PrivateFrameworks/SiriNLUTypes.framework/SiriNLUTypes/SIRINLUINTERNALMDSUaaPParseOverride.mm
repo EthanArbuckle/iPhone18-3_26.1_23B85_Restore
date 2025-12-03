@@ -1,20 +1,20 @@
 @interface SIRINLUINTERNALMDSUaaPParseOverride
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SIRINLUINTERNALMDSUaaPParseOverride
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   parseOverride = self->_parseOverride;
-  v6 = v4[1];
+  v6 = fromCopy[1];
   if (parseOverride)
   {
     if (v6)
@@ -31,13 +31,13 @@
   MEMORY[0x1EEE66BB8]();
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
     parseOverride = self->_parseOverride;
-    if (parseOverride | v4[1])
+    if (parseOverride | equalCopy[1])
     {
       v6 = [(SIRINLUINTERNALParseOverride *)parseOverride isEqual:?];
     }
@@ -56,26 +56,26 @@
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(SIRINLUINTERNALParseOverride *)self->_parseOverride copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(SIRINLUINTERNALParseOverride *)self->_parseOverride copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   parseOverride = self->_parseOverride;
   if (parseOverride)
   {
-    [a3 setParseOverride:parseOverride];
+    [to setParseOverride:parseOverride];
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (self->_parseOverride)
   {
@@ -85,15 +85,15 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   parseOverride = self->_parseOverride;
   if (parseOverride)
   {
-    v5 = [(SIRINLUINTERNALParseOverride *)parseOverride dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"parse_override"];
+    dictionaryRepresentation = [(SIRINLUINTERNALParseOverride *)parseOverride dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"parse_override"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -102,8 +102,8 @@
   v8.receiver = self;
   v8.super_class = SIRINLUINTERNALMDSUaaPParseOverride;
   v4 = [(SIRINLUINTERNALMDSUaaPParseOverride *)&v8 description];
-  v5 = [(SIRINLUINTERNALMDSUaaPParseOverride *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SIRINLUINTERNALMDSUaaPParseOverride *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }

@@ -3,20 +3,20 @@
 - (id)accessibilityHint;
 - (id)accessibilityValue;
 - (unint64_t)accessibilityTraits;
-- (void)_accessibilitySetSelectedTextRange:(_NSRange)a3;
+- (void)_accessibilitySetSelectedTextRange:(_NSRange)range;
 @end
 
 @implementation UIAccessibilityTextLineElement
 
 - (id)accessibilityValue
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
-  v6 = [(UIAccessibilityTextLineElement *)self accessibilityContainer];
-  location[0] = [v6 _accessibilityAXAttributedValue];
-  *&v2 = MEMORY[0x29EDC9740](v6).n128_u64[0];
-  length = v8->_range.length;
-  v10 = v8->_range.location;
+  accessibilityContainer = [(UIAccessibilityTextLineElement *)self accessibilityContainer];
+  location[0] = [accessibilityContainer _accessibilityAXAttributedValue];
+  *&v2 = MEMORY[0x29EDC9740](accessibilityContainer).n128_u64[0];
+  length = selfCopy->_range.length;
+  v10 = selfCopy->_range.location;
   v11 = length;
   if (v10 + length > [location[0] length])
   {
@@ -25,7 +25,7 @@
 
   else
   {
-    v9 = [location[0] substringWithRange:{v8->_range.location, v8->_range.length}];
+    v9 = [location[0] substringWithRange:{selfCopy->_range.location, selfCopy->_range.length}];
   }
 
   objc_storeStrong(location, 0);
@@ -36,45 +36,45 @@
 
 - (unint64_t)accessibilityTraits
 {
-  v3 = [(UIAccessibilityTextLineElement *)self accessibilityContainer];
-  v4 = [v3 accessibilityTraits];
-  MEMORY[0x29EDC9740](v3);
-  return v4;
+  accessibilityContainer = [(UIAccessibilityTextLineElement *)self accessibilityContainer];
+  accessibilityTraits = [accessibilityContainer accessibilityTraits];
+  MEMORY[0x29EDC9740](accessibilityContainer);
+  return accessibilityTraits;
 }
 
 - (id)accessibilityHint
 {
-  v3 = [(UIAccessibilityTextLineElement *)self accessibilityContainer];
-  v4 = [v3 _accessibilityAXAttributedHint];
-  MEMORY[0x29EDC9740](v3);
+  accessibilityContainer = [(UIAccessibilityTextLineElement *)self accessibilityContainer];
+  _accessibilityAXAttributedHint = [accessibilityContainer _accessibilityAXAttributedHint];
+  MEMORY[0x29EDC9740](accessibilityContainer);
 
-  return v4;
+  return _accessibilityAXAttributedHint;
 }
 
 - (_NSRange)_accessibilitySelectedTextRange
 {
-  v5 = [(UIAccessibilityTextLineElement *)self accessibilityContainer];
-  v6 = [v5 _accessibilitySelectedTextRange];
+  accessibilityContainer = [(UIAccessibilityTextLineElement *)self accessibilityContainer];
+  _accessibilitySelectedTextRange = [accessibilityContainer _accessibilitySelectedTextRange];
   v7 = v2;
-  MEMORY[0x29EDC9740](v5);
-  v3 = v6;
+  MEMORY[0x29EDC9740](accessibilityContainer);
+  v3 = _accessibilitySelectedTextRange;
   v4 = v7;
   result.length = v4;
   result.location = v3;
   return result;
 }
 
-- (void)_accessibilitySetSelectedTextRange:(_NSRange)a3
+- (void)_accessibilitySetSelectedTextRange:(_NSRange)range
 {
   range = self->_range;
-  if (a3.location <= range.length)
+  if (range.location <= range.length)
   {
-    range.location += a3.location;
+    range.location += range.location;
   }
 
-  v3 = [(UIAccessibilityTextLineElement *)self accessibilityContainer];
-  [v3 _accessibilitySetSelectedTextRange:range];
-  MEMORY[0x29EDC9740](v3);
+  accessibilityContainer = [(UIAccessibilityTextLineElement *)self accessibilityContainer];
+  [accessibilityContainer _accessibilitySetSelectedTextRange:range];
+  MEMORY[0x29EDC9740](accessibilityContainer);
 }
 
 @end

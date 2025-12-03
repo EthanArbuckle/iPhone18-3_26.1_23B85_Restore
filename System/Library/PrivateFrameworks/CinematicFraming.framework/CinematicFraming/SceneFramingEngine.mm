@@ -1,47 +1,47 @@
 @interface SceneFramingEngine
-- ($680651117FADF5CC13A199869A236271)determineSceneSummaryForTracks:(SEL)a3 currentViewport:(id)a4 atTime:(CGRect)a5;
-- (BOOL)isCurrentFramingIdeal:(CGRect)a3 withTolerance:(float)a4;
-- (BOOL)isSubjectRectStationary:(CGRect)a3;
-- (CGRect)applyNewsroomViewportAdjustments:(CGRect)a3;
-- (CGRect)calculateBaselineViewportForTracks:(id)a3 atTime:(id *)a4;
-- (CGRect)calculateSubjectEnclosingRectangleForTracks:(id)a3 withBaselineWidth:(float)a4 currentViewport:(CGRect)a5 atTime:(id *)a6;
-- (CGRect)calculateViewportCenteredAround:(CGRect)a3 withWidth:(float)a4;
-- (CGRect)computeCroppedSubjectEnclosingRectForViewportWidth:(float)a3 subjectEnclosingRect:(CGRect)a4;
-- (CGRect)computeDeadbandFromViewport:(CGRect)a3;
-- (CGRect)computeViewportFromDeadband:(CGRect)a3;
+- ($680651117FADF5CC13A199869A236271)determineSceneSummaryForTracks:(SEL)tracks currentViewport:(id)viewport atTime:(CGRect)time;
+- (BOOL)isCurrentFramingIdeal:(CGRect)ideal withTolerance:(float)tolerance;
+- (BOOL)isSubjectRectStationary:(CGRect)stationary;
+- (CGRect)applyNewsroomViewportAdjustments:(CGRect)adjustments;
+- (CGRect)calculateBaselineViewportForTracks:(id)tracks atTime:(id *)time;
+- (CGRect)calculateSubjectEnclosingRectangleForTracks:(id)tracks withBaselineWidth:(float)width currentViewport:(CGRect)viewport atTime:(id *)time;
+- (CGRect)calculateViewportCenteredAround:(CGRect)around withWidth:(float)width;
+- (CGRect)computeCroppedSubjectEnclosingRectForViewportWidth:(float)width subjectEnclosingRect:(CGRect)rect;
+- (CGRect)computeDeadbandFromViewport:(CGRect)viewport;
+- (CGRect)computeViewportFromDeadband:(CGRect)deadband;
 - (CGRect)deadband;
 - (CGRect)defaultViewport;
-- (CGRect)determineDeadbandForSubjectEnclosingRect:(CGRect)a3 oldDeadband:(CGRect)a4 newDeadbandWidth:(float)a5;
+- (CGRect)determineDeadbandForSubjectEnclosingRect:(CGRect)rect oldDeadband:(CGRect)deadband newDeadbandWidth:(float)width;
 - (CGRect)idealViewport;
 - (CGRect)slackViewport;
 - (CGRect)targetViewport;
-- (CGRect)undoNewsroomViewportAdjustments:(CGRect)a3;
-- (SceneFramingEngine)initWithFramingSpaceManager:(id)a3;
-- (float)calculateViewportWidthToFitSubjectsInDeadband:(CGRect)a3;
-- (float)computeDeadbandHeightForWidth:(float)a3;
-- (float)computeDeadbandWidthForHeight:(float)a3;
+- (CGRect)undoNewsroomViewportAdjustments:(CGRect)adjustments;
+- (SceneFramingEngine)initWithFramingSpaceManager:(id)manager;
+- (float)calculateViewportWidthToFitSubjectsInDeadband:(CGRect)deadband;
+- (float)computeDeadbandHeightForWidth:(float)width;
+- (float)computeDeadbandWidthForHeight:(float)height;
 - (float)defaultScreenWidth;
 - (float)minAllowedDeadbandWidth;
 - (float)minAllowedScreenWidth;
 - (void)clearSubjectHistory;
-- (void)determineTemporallyStableTargetViewportForTracks:(id)a3 currentViewport:(CGRect)a4 atTime:(id *)a5;
+- (void)determineTemporallyStableTargetViewportForTracks:(id)tracks currentViewport:(CGRect)viewport atTime:(id *)time;
 - (void)reset;
-- (void)restoreDefaultViewportFromCurrentViewport:(CGRect)a3 atTime:(id *)a4;
-- (void)setActiveFramingParameters:(id)a3;
-- (void)setFramingStyle:(int)a3;
-- (void)transitionToFramingState:(unsigned __int16)a3 atTime:(id *)a4;
-- (void)updateDeadbandToFitScene:(id *)a3 tracks:(id)a4 currentViewport:(CGRect)a5 atTime:(id *)a6;
-- (void)updateDeadbandWithSubjectRect:(CGRect)a3 atTime:(id *)a4;
-- (void)updateSubjectMovement:(CGRect)a3 atTime:(id *)a4;
-- (void)updateTargetViewportForFloatingWithTracks:(id)a3 atTime:(id *)a4;
-- (void)updateTargetViewportWithTracks:(id)a3 currentViewport:(CGRect)a4 atTime:(id *)a5;
+- (void)restoreDefaultViewportFromCurrentViewport:(CGRect)viewport atTime:(id *)time;
+- (void)setActiveFramingParameters:(id)parameters;
+- (void)setFramingStyle:(int)style;
+- (void)transitionToFramingState:(unsigned __int16)state atTime:(id *)time;
+- (void)updateDeadbandToFitScene:(id *)scene tracks:(id)tracks currentViewport:(CGRect)viewport atTime:(id *)time;
+- (void)updateDeadbandWithSubjectRect:(CGRect)rect atTime:(id *)time;
+- (void)updateSubjectMovement:(CGRect)movement atTime:(id *)time;
+- (void)updateTargetViewportForFloatingWithTracks:(id)tracks atTime:(id *)time;
+- (void)updateTargetViewportWithTracks:(id)tracks currentViewport:(CGRect)viewport atTime:(id *)time;
 @end
 
 @implementation SceneFramingEngine
 
-- (void)setActiveFramingParameters:(id)a3
+- (void)setActiveFramingParameters:(id)parameters
 {
-  objc_storeStrong(&self->_activeFramingParameters, a3);
+  objc_storeStrong(&self->_activeFramingParameters, parameters);
   [(SceneFramingEngine *)self targetViewport];
   x = v12.origin.x;
   y = v12.origin.y;
@@ -57,16 +57,16 @@
   }
 }
 
-- (SceneFramingEngine)initWithFramingSpaceManager:(id)a3
+- (SceneFramingEngine)initWithFramingSpaceManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v10.receiver = self;
   v10.super_class = SceneFramingEngine;
   v6 = [(SceneFramingEngine *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_framingSpaceManager, a3);
+    objc_storeStrong(&v6->_framingSpaceManager, manager);
     LODWORD(v7->_targetViewportForFloating.size.height) = 0;
     [(SceneFramingEngine *)v7 reset];
     v8 = v7;
@@ -75,31 +75,31 @@
   return v7;
 }
 
-- (void)updateTargetViewportWithTracks:(id)a3 currentViewport:(CGRect)a4 atTime:(id *)a5
+- (void)updateTargetViewportWithTracks:(id)tracks currentViewport:(CGRect)viewport atTime:(id *)time
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v11 = a3;
-  if ([v11 count])
+  height = viewport.size.height;
+  width = viewport.size.width;
+  y = viewport.origin.y;
+  x = viewport.origin.x;
+  tracksCopy = tracks;
+  if ([tracksCopy count])
   {
-    v15 = *&a5->var0;
-    var3 = a5->var3;
-    [(SceneFramingEngine *)self determineTemporallyStableTargetViewportForTracks:v11 currentViewport:&v15 atTime:x, y, width, height];
+    v15 = *&time->var0;
+    var3 = time->var3;
+    [(SceneFramingEngine *)self determineTemporallyStableTargetViewportForTracks:tracksCopy currentViewport:&v15 atTime:x, y, width, height];
     v12 = MEMORY[0x277CC0898];
     *&self->_recenterEndTime.epoch = *MEMORY[0x277CC0898];
     *&self->_returningHomeStartTime.timescale = *(v12 + 16);
-    v13 = a5->var3;
-    *&self->_lastFrameWithDetectionsTimestamp.value = *&a5->var0;
+    v13 = time->var3;
+    *&self->_lastFrameWithDetectionsTimestamp.value = *&time->var0;
     self->_lastFrameWithDetectionsTimestamp.epoch = v13;
     v14 = 1;
   }
 
   else
   {
-    v15 = *&a5->var0;
-    var3 = a5->var3;
+    v15 = *&time->var0;
+    var3 = time->var3;
     [(SceneFramingEngine *)self restoreDefaultViewportFromCurrentViewport:&v15 atTime:x, y, width, height];
     v14 = 0;
   }
@@ -145,17 +145,17 @@
   *&self->_targetViewportForFloating.origin.y = v8;
 }
 
-- (void)setFramingStyle:(int)a3
+- (void)setFramingStyle:(int)style
 {
-  if (a3 == 1)
+  if (style == 1)
   {
     *&self->_newsroomFramingParameters.viewportOffsetY = xmmword_2434F7A70;
   }
 
-  else if ((a3 & 0xFFFFFFFE) == 2)
+  else if ((style & 0xFFFFFFFE) == 2)
   {
     *&self->_returningHomeTargetRect[12] = 0x3F800000BE4CCCCDLL;
-    if (a3 == 2)
+    if (style == 2)
     {
       v3 = -1;
     }
@@ -168,12 +168,12 @@
     *&self->_returningHomeTargetRect[8] = v3 * 0.2;
   }
 
-  if (LODWORD(self->_targetViewportForFloating.size.height) != a3)
+  if (LODWORD(self->_targetViewportForFloating.size.height) != style)
   {
     LOBYTE(self->_driftEndTime.epoch) = 1;
   }
 
-  LODWORD(self->_targetViewportForFloating.size.height) = a3;
+  LODWORD(self->_targetViewportForFloating.size.height) = style;
 }
 
 - (CGRect)defaultViewport
@@ -303,12 +303,12 @@ LABEL_7:
   return result;
 }
 
-- (void)restoreDefaultViewportFromCurrentViewport:(CGRect)a3 atTime:(id *)a4
+- (void)restoreDefaultViewportFromCurrentViewport:(CGRect)viewport atTime:(id *)time
 {
-  y = a3.origin.y;
-  width = a3.size.width;
-  height = a3.size.height;
-  x = a3.origin.x;
+  y = viewport.origin.y;
+  width = viewport.size.width;
+  height = viewport.size.height;
+  x = viewport.origin.x;
   v6 = MEMORY[0x277CC0898];
   if (LODWORD(self->_targetViewportForFloating.size.height) == 1)
   {
@@ -326,7 +326,7 @@ LABEL_7:
     v10 = self->_deadband.size.height;
   }
 
-  if (CGRectIsNull(*&v7) || ((time1 = self->_lastFrameWithDetectionsTimestamp, time2 = *v6, !CMTimeCompare(&time1, &time2)) ? (v11 = 0.0) : (time2 = *a4, rhs = self->_lastFrameWithDetectionsTimestamp, CMTimeSubtract(&time1, &time2, &rhs), v11 = CMTimeGetSeconds(&time1)), [(CinematicFramingSessionOptions *)self->_options noPeopleDelayBeforeReturningHomeSec], v11 > v12))
+  if (CGRectIsNull(*&v7) || ((time1 = self->_lastFrameWithDetectionsTimestamp, time2 = *v6, !CMTimeCompare(&time1, &time2)) ? (v11 = 0.0) : (time2 = *time, rhs = self->_lastFrameWithDetectionsTimestamp, CMTimeSubtract(&time1, &time2, &rhs), v11 = CMTimeGetSeconds(&time1)), [(CinematicFramingSessionOptions *)self->_options noPeopleDelayBeforeReturningHomeSec], v11 > v12))
   {
     [(SceneFramingEngine *)self defaultViewport];
     v43 = v14;
@@ -338,8 +338,8 @@ LABEL_7:
     time2 = *v6;
     if (!CMTimeCompare(&time1, &time2))
     {
-      v18 = *&a4->var0;
-      *&self->_returningHomeStartTime.timescale = a4->var3;
+      v18 = *&time->var0;
+      *&self->_returningHomeStartTime.timescale = time->var3;
       *p_epoch = v18;
       v19.f64[0] = width;
       v20.f64[0] = x;
@@ -354,15 +354,15 @@ LABEL_7:
       *&self->_returningHomeStartRect[8] = vcvt_hight_f32_f64(vcvt_f32_f64(v19), v20);
     }
 
-    time2 = *a4;
+    time2 = *time;
     *&rhs.value = *p_epoch;
     rhs.epoch = *&self->_returningHomeStartTime.timescale;
     CMTimeSubtract(&time1, &time2, &rhs);
     Seconds = CMTimeGetSeconds(&time1);
     [(CinematicFramingSessionOptions *)self->_options noPeopleReturningHomeDurationSec];
-    if (Seconds / v23 > 1.0 || (time2 = *a4, *&rhs.value = *p_epoch, rhs.epoch = *&self->_returningHomeStartTime.timescale, CMTimeSubtract(&time1, &time2, &rhs), v24 = CMTimeGetSeconds(&time1), [(CinematicFramingSessionOptions *)self->_options noPeopleReturningHomeDurationSec], v26 = v24 / v25, v27 = 0.0, v26 >= 0.0))
+    if (Seconds / v23 > 1.0 || (time2 = *time, *&rhs.value = *p_epoch, rhs.epoch = *&self->_returningHomeStartTime.timescale, CMTimeSubtract(&time1, &time2, &rhs), v24 = CMTimeGetSeconds(&time1), [(CinematicFramingSessionOptions *)self->_options noPeopleReturningHomeDurationSec], v26 = v24 / v25, v27 = 0.0, v26 >= 0.0))
     {
-      time2 = *a4;
+      time2 = *time;
       *&rhs.value = *p_epoch;
       rhs.epoch = *&self->_returningHomeStartTime.timescale;
       CMTimeSubtract(&time1, &time2, &rhs);
@@ -372,7 +372,7 @@ LABEL_7:
       v27 = 1.0;
       if (v30 <= 1.0)
       {
-        time2 = *a4;
+        time2 = *time;
         *&rhs.value = *p_epoch;
         rhs.epoch = *&self->_returningHomeStartTime.timescale;
         CMTimeSubtract(&time1, &time2, &rhs);
@@ -406,47 +406,47 @@ LABEL_7:
   }
 }
 
-- (void)determineTemporallyStableTargetViewportForTracks:(id)a3 currentViewport:(CGRect)a4 atTime:(id *)a5
+- (void)determineTemporallyStableTargetViewportForTracks:(id)tracks currentViewport:(CGRect)viewport atTime:(id *)time
 {
   if (LODWORD(self->_targetViewportForFloating.size.height) == 1)
   {
-    v20 = *&a5->var0;
-    *&v21 = a5->var3;
-    v7 = a3;
-    [(SceneFramingEngine *)self updateTargetViewportForFloatingWithTracks:v7 atTime:&v20];
+    v20 = *&time->var0;
+    *&v21 = time->var3;
+    tracksCopy = tracks;
+    [(SceneFramingEngine *)self updateTargetViewportForFloatingWithTracks:tracksCopy atTime:&v20];
   }
 
   else
   {
-    height = a4.size.height;
-    width = a4.size.width;
-    y = a4.origin.y;
-    x = a4.origin.x;
+    height = viewport.size.height;
+    width = viewport.size.width;
+    y = viewport.origin.y;
+    x = viewport.origin.x;
     v24 = 0;
     v22 = 0u;
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v15 = *&a5->var0;
-    *&v16 = a5->var3;
-    v12 = a3;
-    [(SceneFramingEngine *)self determineSceneSummaryForTracks:v12 currentViewport:&v15 atTime:x, y, width, height];
+    v15 = *&time->var0;
+    *&v16 = time->var3;
+    tracksCopy2 = tracks;
+    [(SceneFramingEngine *)self determineSceneSummaryForTracks:tracksCopy2 currentViewport:&v15 atTime:x, y, width, height];
     v17 = v22;
     v18 = v23;
     v19 = v24;
     v15 = v20;
     v16 = v21;
-    v13 = *&a5->var0;
-    var3 = a5->var3;
-    [(SceneFramingEngine *)self updateDeadbandToFitScene:&v15 tracks:v12 currentViewport:&v13 atTime:x, y, width, height];
+    v13 = *&time->var0;
+    var3 = time->var3;
+    [(SceneFramingEngine *)self updateDeadbandToFitScene:&v15 tracks:tracksCopy2 currentViewport:&v13 atTime:x, y, width, height];
   }
 }
 
-- (void)updateTargetViewportForFloatingWithTracks:(id)a3 atTime:(id *)a4
+- (void)updateTargetViewportForFloatingWithTracks:(id)tracks atTime:(id *)time
 {
-  v6 = a3;
-  v7 = v6;
-  if (!*&self->_floatingFramingParameters.circleSize || ([v6 containsObject:?] & 1) == 0)
+  tracksCopy = tracks;
+  v7 = tracksCopy;
+  if (!*&self->_floatingFramingParameters.circleSize || ([tracksCopy containsObject:?] & 1) == 0)
   {
     [v7 count];
     v53 = 0u;
@@ -471,8 +471,8 @@ LABEL_7:
           }
 
           v14 = *(*(&v53 + 1) + 8 * v13);
-          v50 = *&a4->var0;
-          var3 = a4->var3;
+          v50 = *&time->var0;
+          var3 = time->var3;
           [v14 faceBoundingBoxForFramingAtTime:&v50];
           if (v15 <= v16)
           {
@@ -502,8 +502,8 @@ LABEL_7:
   }
 
   v18 = *&self->_floatingFramingParameters.circleSize;
-  v50 = *&a4->var0;
-  var3 = a4->var3;
+  v50 = *&time->var0;
+  var3 = time->var3;
   [v18 faceBoundingBoxForFramingAtTime:&v50];
   x = v57.origin.x;
   y = v57.origin.y;
@@ -598,15 +598,15 @@ LABEL_7:
   self->_targetViewportForFloating.size.width = v42;
 }
 
-- ($680651117FADF5CC13A199869A236271)determineSceneSummaryForTracks:(SEL)a3 currentViewport:(id)a4 atTime:(CGRect)a5
+- ($680651117FADF5CC13A199869A236271)determineSceneSummaryForTracks:(SEL)tracks currentViewport:(id)viewport atTime:(CGRect)time
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
+  height = time.size.height;
+  width = time.size.width;
+  y = time.origin.y;
+  x = time.origin.x;
   v60 = *a6;
-  v13 = a4;
-  [(SceneFramingEngine *)self calculateBaselineViewportForTracks:v13 atTime:&v60];
+  viewportCopy = viewport;
+  [(SceneFramingEngine *)self calculateBaselineViewportForTracks:viewportCopy atTime:&v60];
   v51 = v61.size.height;
   v14 = v61.origin.x;
   v54 = v61.origin.y;
@@ -617,7 +617,7 @@ LABEL_7:
   v17 = CGRectGetWidth(v61);
   *&v17 = v17;
   v60 = *a6;
-  [(SceneFramingEngine *)self calculateSubjectEnclosingRectangleForTracks:v13 withBaselineWidth:&v60 currentViewport:v17 atTime:x, y, width, height];
+  [(SceneFramingEngine *)self calculateSubjectEnclosingRectangleForTracks:viewportCopy withBaselineWidth:&v60 currentViewport:v17 atTime:x, y, width, height];
   v19 = v18;
   v21 = v20;
   v23 = v22;
@@ -696,19 +696,19 @@ LABEL_7:
   return result;
 }
 
-- (void)updateDeadbandToFitScene:(id *)a3 tracks:(id)a4 currentViewport:(CGRect)a5 atTime:(id *)a6
+- (void)updateDeadbandToFitScene:(id *)scene tracks:(id)tracks currentViewport:(CGRect)viewport atTime:(id *)time
 {
-  v9 = a4;
+  tracksCopy = tracks;
   if (CGRectEqualToRect(self->_deadband, *MEMORY[0x277CBF398]) || !self->_lastFrameHadSubjects)
   {
-    origin = a3->var0.origin;
-    size = a3->var0.size;
+    origin = scene->var0.origin;
+    size = scene->var0.size;
     goto LABEL_6;
   }
 
   [(FramingSpaceManager *)self->_framingSpaceManager maxAllowedViewportWidth];
   v11 = v10;
-  [(SceneFramingEngine *)self calculateViewportWidthToFitSubjectsInDeadband:a3->var1.origin.x, a3->var1.origin.y, a3->var1.size.width, a3->var1.size.height];
+  [(SceneFramingEngine *)self calculateViewportWidthToFitSubjectsInDeadband:scene->var1.origin.x, scene->var1.origin.y, scene->var1.size.width, scene->var1.size.height];
   v13 = v12;
   [(SceneFramingEngine *)self minAllowedDeadbandWidth];
   *&v15 = fminf(fmaxf(v14, v13), v11);
@@ -722,7 +722,7 @@ LABEL_7:
   [(CinematicFramingSessionFramingParameters *)self->_activeFramingParameters deadbandWidthMaxFraction];
   v24 = v23;
   Width = CGRectGetWidth(self->_deadband);
-  v26 = CGRectGetWidth(a3->var0);
+  v26 = CGRectGetWidth(scene->var0);
   v27 = CGRectGetWidth(self->_deadband);
   if (v22 + -0.001 <= v26)
   {
@@ -743,7 +743,7 @@ LABEL_7:
 
   v32 = v26 / v28;
 LABEL_12:
-  if ([v9 count] >= 2)
+  if ([tracksCopy count] >= 2)
   {
     v33 = v32;
   }
@@ -761,7 +761,7 @@ LABEL_12:
     v34 = v26;
   }
 
-  [(SceneFramingEngine *)self computeViewportFromDeadband:a3->var0.origin.x, a3->var0.origin.y, a3->var0.size.width, a3->var0.size.height];
+  [(SceneFramingEngine *)self computeViewportFromDeadband:scene->var0.origin.x, scene->var0.origin.y, scene->var0.size.width, scene->var0.size.height];
   v38 = v37;
   v40 = v39;
   v42 = v41;
@@ -776,19 +776,19 @@ LABEL_12:
   self->_idealDeadband.size.width = v49;
   self->_idealDeadband.size.height = v50;
   *&v59 = v34;
-  [(SceneFramingEngine *)self determineDeadbandForSubjectEnclosingRect:a3->var1.origin.x oldDeadband:a3->var1.origin.y newDeadbandWidth:a3->var1.size.width, a3->var1.size.height, self->_deadband.origin.x, self->_deadband.origin.y, self->_deadband.size.width, self->_deadband.size.height, v59];
+  [(SceneFramingEngine *)self determineDeadbandForSubjectEnclosingRect:scene->var1.origin.x oldDeadband:scene->var1.origin.y newDeadbandWidth:scene->var1.size.width, scene->var1.size.height, self->_deadband.origin.x, self->_deadband.origin.y, self->_deadband.size.width, self->_deadband.size.height, v59];
   self->_slackDeadband.origin.x = v51;
   self->_slackDeadband.origin.y = v52;
   self->_slackDeadband.size.width = v53;
   self->_slackDeadband.size.height = v54;
   if (v36 <= 0.100000001)
   {
-    x = a3->var1.origin.x;
-    y = a3->var1.origin.y;
-    v57 = a3->var1.size.width;
-    height = a3->var1.size.height;
-    v60 = *&a6->var0;
-    var3 = a6->var3;
+    x = scene->var1.origin.x;
+    y = scene->var1.origin.y;
+    v57 = scene->var1.size.width;
+    height = scene->var1.size.height;
+    v60 = *&time->var0;
+    var3 = time->var3;
     [(SceneFramingEngine *)self updateDeadbandWithSubjectRect:&v60 atTime:x, y, v57, height];
     goto LABEL_7;
   }
@@ -801,7 +801,7 @@ LABEL_6:
 LABEL_7:
 }
 
-- (void)updateDeadbandWithSubjectRect:(CGRect)a3 atTime:(id *)a4
+- (void)updateDeadbandWithSubjectRect:(CGRect)rect atTime:(id *)time
 {
   if (LOBYTE(self->_driftEndTime.epoch) == 1)
   {
@@ -943,8 +943,8 @@ LABEL_7:
       size = self->_slackDeadband.size;
       p_deadband->origin = p_slackDeadband->origin;
       self->_deadband.size = size;
-      CMTimeMakeWithSeconds(&rhs, 0.100000001, a4->var1);
-      lhs = *a4;
+      CMTimeMakeWithSeconds(&rhs, 0.100000001, time->var1);
+      lhs = *time;
       CMTimeAdd(&time1, &lhs, &rhs);
       *&self->_driftStartTime.epoch = time1;
     }
@@ -956,7 +956,7 @@ LABEL_7:
   {
     if (v33 == 2)
     {
-      if ([(SceneFramingEngine *)self isSubjectRectStationary:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height])
+      if ([(SceneFramingEngine *)self isSubjectRectStationary:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height])
       {
         *&v60 = 0.01;
       }
@@ -967,7 +967,7 @@ LABEL_7:
       }
 
       v61 = [(SceneFramingEngine *)self isCurrentFramingIdeal:self->_idealDeadband.origin.x withTolerance:self->_idealDeadband.origin.y, self->_idealDeadband.size.width, self->_idealDeadband.size.height, v60];
-      time1 = *a4;
+      time1 = *time;
       rhs = *&self->_recenterStartTime.epoch;
       v62 = CMTimeCompare(&time1, &rhs);
       v6 = 0;
@@ -980,7 +980,7 @@ LABEL_7:
       Seconds = CMTimeGetSeconds(&time1);
       time1 = *&self->_recenterStartTime.epoch;
       v64 = CMTimeGetSeconds(&time1);
-      time1 = *a4;
+      time1 = *time;
       v65 = fmin(fmax((CMTimeGetSeconds(&time1) - Seconds) / (v64 - Seconds), 0.0), 1.0);
       *&v65 = v65 * v65 * (v65 * -2.0 + 3.0);
       v96 = *&v65;
@@ -1028,8 +1028,8 @@ LABEL_7:
     {
       if (!self->_framingState)
       {
-        time1 = *a4;
-        [(SceneFramingEngine *)self updateSubjectMovement:&time1 atTime:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+        time1 = *time;
+        [(SceneFramingEngine *)self updateSubjectMovement:&time1 atTime:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
         LODWORD(v34) = 1045220557;
         v35 = [(SceneFramingEngine *)self isCurrentFramingIdeal:self->_idealDeadband.origin.x withTolerance:self->_idealDeadband.origin.y, self->_idealDeadband.size.width, self->_idealDeadband.size.height, v34];
         if (BYTE4(self->_subjectRectHistoryUpdateTime.epoch) == 1)
@@ -1039,7 +1039,7 @@ LABEL_7:
           {
             if ((self->_subjectRectStationaryTime.value & 0x100000000) != 0)
             {
-              rhs = *a4;
+              rhs = *time;
               lhs = *&self->_subjectRectStationary;
               CMTimeSubtract(&time1, &rhs, &lhs);
               v84 = CMTimeGetSeconds(&time1);
@@ -1054,7 +1054,7 @@ LABEL_7:
 
             if ((self->_recenterEndTime.value & 0x100000000) != 0)
             {
-              rhs = *a4;
+              rhs = *time;
               lhs = *&self->_recenterStartTime.epoch;
               CMTimeSubtract(&time1, &rhs, &lhs);
               v86 = CMTimeGetSeconds(&time1);
@@ -1085,13 +1085,13 @@ LABEL_48:
       goto LABEL_56;
     }
 
-    time1 = *a4;
+    time1 = *time;
     rhs = *&self->_driftStartTime.epoch;
     v38 = CMTimeCompare(&time1, &rhs);
     v6 = framingState;
     if (v38 >= 1)
     {
-      rhs = *a4;
+      rhs = *time;
       lhs = *&self->_driftStartDeadband.size.height;
       CMTimeSubtract(&time1, &rhs, &lhs);
       v39 = CMTimeGetSeconds(&time1);
@@ -1153,29 +1153,29 @@ LABEL_48:
 LABEL_56:
   if (self->_framingState != v6)
   {
-    time1 = *a4;
+    time1 = *time;
     [SceneFramingEngine transitionToFramingState:"transitionToFramingState:atTime:" atTime:?];
   }
 }
 
-- (void)transitionToFramingState:(unsigned __int16)a3 atTime:(id *)a4
+- (void)transitionToFramingState:(unsigned __int16)state atTime:(id *)time
 {
-  if (self->_framingState != a3)
+  if (self->_framingState != state)
   {
     v17 = v4;
     v18 = v5;
-    switch(a3)
+    switch(state)
     {
       case 2u:
         size = self->_deadband.size;
         *&self->_recenterOnNextFrame = self->_deadband.origin;
         *&self->_recenterStartDeadband.origin.y = size;
-        var3 = a4->var3;
-        *&self->_recenterStartDeadband.size.height = *&a4->var0;
+        var3 = time->var3;
+        *&self->_recenterStartDeadband.size.height = *&time->var0;
         *&self->_recenterStartTime.timescale = var3;
         [(CinematicFramingSessionOptions *)self->_options deadbandRecenteringDurationSec];
-        CMTimeMakeWithSeconds(&rhs, v13, a4->var1);
-        v14 = *a4;
+        CMTimeMakeWithSeconds(&rhs, v13, time->var1);
+        v14 = *time;
         CMTimeAdd(&v16, &v14, &rhs);
         *&self->_recenterStartTime.epoch = v16;
         break;
@@ -1183,11 +1183,11 @@ LABEL_56:
         v9 = self->_deadband.size;
         *&self->_subjectRectStationaryTime.epoch = self->_deadband.origin;
         *&self->_driftStartDeadband.origin.y = v9;
-        v10 = a4->var3;
-        *&self->_driftStartDeadband.size.height = *&a4->var0;
+        v10 = time->var3;
+        *&self->_driftStartDeadband.size.height = *&time->var0;
         *&self->_driftStartTime.timescale = v10;
-        CMTimeMakeWithSeconds(&rhs, 0.100000001, a4->var1);
-        v14 = *a4;
+        CMTimeMakeWithSeconds(&rhs, 0.100000001, time->var1);
+        v14 = *time;
         CMTimeAdd(&v16, &v14, &rhs);
         *&self->_driftStartTime.epoch = v16;
         break;
@@ -1196,7 +1196,7 @@ LABEL_56:
         break;
     }
 
-    self->_framingState = a3;
+    self->_framingState = state;
   }
 }
 
@@ -1234,25 +1234,25 @@ LABEL_56:
   subjectRectHistoryBuffer[11].size.width = v5;
 }
 
-- (void)updateSubjectMovement:(CGRect)a3 atTime:(id *)a4
+- (void)updateSubjectMovement:(CGRect)movement atTime:(id *)time
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = movement.size.height;
+  width = movement.size.width;
+  y = movement.origin.y;
+  x = movement.origin.x;
   if (!self->_subjectRectHistoryCount)
   {
-    self->_subjectRectHistoryBuffer[0] = a3;
+    self->_subjectRectHistoryBuffer[0] = movement;
     *&self->_subjectRectHistoryCount = 65537;
     p_subjectRectStationary = (&self->_subjectRectHistoryHeadIdx + 1);
 LABEL_10:
-    v18 = *&a4->var0;
-    *(p_subjectRectStationary + 2) = a4->var3;
+    v18 = *&time->var0;
+    *(p_subjectRectStationary + 2) = time->var3;
     *p_subjectRectStationary = v18;
     return;
   }
 
-  lhs = *a4;
+  lhs = *time;
   *&v20.value = *(&self->_subjectRectHistoryHeadIdx + 1);
   v20.epoch = *&self->_subjectRectHistoryUpdateTime.flags;
   CMTimeSubtract(&time, &lhs, &v20);
@@ -1269,14 +1269,14 @@ LABEL_10:
     v14 = subjectRectHistoryCount < 9 ? subjectRectHistoryCount + 1 : 10;
     self->_subjectRectHistoryCount = v14;
     self->_subjectRectHistoryHeadIdx = subjectRectHistoryHeadIdx + 1 - 10 * ((429496730 * (subjectRectHistoryHeadIdx + 1)) >> 32);
-    v15 = *&a4->var0;
-    *&self->_subjectRectHistoryUpdateTime.flags = a4->var3;
+    v15 = *&time->var0;
+    *&self->_subjectRectHistoryUpdateTime.flags = time->var3;
     *(&self->_subjectRectHistoryHeadIdx + 1) = v15;
-    v16 = [(SceneFramingEngine *)self isSubjectRectStationary:x, y, width, height];
-    if (BYTE4(self->_subjectRectHistoryUpdateTime.epoch) != v16)
+    height = [(SceneFramingEngine *)self isSubjectRectStationary:x, y, width, height];
+    if (BYTE4(self->_subjectRectHistoryUpdateTime.epoch) != height)
     {
       p_subjectRectStationary = &self->_subjectRectStationary;
-      if (!v16)
+      if (!height)
       {
         BYTE4(self->_subjectRectHistoryUpdateTime.epoch) = 0;
         v19 = MEMORY[0x277CC0898];
@@ -1291,17 +1291,17 @@ LABEL_10:
   }
 }
 
-- (BOOL)isSubjectRectStationary:(CGRect)a3
+- (BOOL)isSubjectRectStationary:(CGRect)stationary
 {
   if (self->_subjectRectHistoryCount != 10)
   {
     return 0;
   }
 
-  y = a3.origin.y;
-  x = a3.origin.x;
-  width = a3.size.width;
-  height = a3.size.height;
+  y = stationary.origin.y;
+  x = stationary.origin.x;
+  width = stationary.size.width;
+  height = stationary.size.height;
   p_height = &self->_subjectRectHistoryBuffer[0].size.height;
   v8 = 0;
   v9 = 10;
@@ -1353,12 +1353,12 @@ LABEL_10:
   return CGRectContainsRect(*&v26, *&v30);
 }
 
-- (BOOL)isCurrentFramingIdeal:(CGRect)a3 withTolerance:(float)a4
+- (BOOL)isCurrentFramingIdeal:(CGRect)ideal withTolerance:(float)tolerance
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = ideal.size.height;
+  width = ideal.size.width;
+  y = ideal.origin.y;
+  x = ideal.origin.x;
   MidX = CGRectGetMidX(self->_deadband);
   v19.origin.x = x;
   v19.origin.y = y;
@@ -1377,7 +1377,7 @@ LABEL_10:
   v20.size.width = width;
   v20.size.height = height;
   v14 = CGRectGetMidY(v20);
-  if (v12 / self->_deadband.size.width >= a4)
+  if (v12 / self->_deadband.size.width >= tolerance)
   {
     return 0;
   }
@@ -1395,12 +1395,12 @@ LABEL_10:
     v17 = 1.0;
   }
 
-  return v15 / (self->_deadband.size.height * v17) < a4;
+  return v15 / (self->_deadband.size.height * v17) < tolerance;
 }
 
-- (CGRect)calculateBaselineViewportForTracks:(id)a3 atTime:(id *)a4
+- (CGRect)calculateBaselineViewportForTracks:(id)tracks atTime:(id *)time
 {
-  v6 = a3;
+  tracksCopy = tracks;
   v8 = *MEMORY[0x277CBF398];
   v7 = *(MEMORY[0x277CBF398] + 8);
   v10 = *(MEMORY[0x277CBF398] + 16);
@@ -1418,7 +1418,7 @@ LABEL_10:
   v88 = 0u;
   v89 = 0u;
   v90 = 0u;
-  v19 = v6;
+  v19 = tracksCopy;
   v20 = [v19 countByEnumeratingWithState:&v87 objects:v86 count:16];
   if (v20)
   {
@@ -1443,8 +1443,8 @@ LABEL_10:
         r2_16 = v31;
         r2_24 = v30;
         rect = v32;
-        v84 = *&a4->var0;
-        var3 = a4->var3;
+        v84 = *&time->var0;
+        var3 = time->var3;
         [v24 faceBoundingBoxForFramingAtTime:&v84];
         v91.origin.x = CGRectSafeIntersection(v33, v34, v35, v36, v70, v71, v69, v68);
         x = v91.origin.x;
@@ -1558,14 +1558,14 @@ LABEL_10:
   return result;
 }
 
-- (CGRect)calculateSubjectEnclosingRectangleForTracks:(id)a3 withBaselineWidth:(float)a4 currentViewport:(CGRect)a5 atTime:(id *)a6
+- (CGRect)calculateSubjectEnclosingRectangleForTracks:(id)tracks withBaselineWidth:(float)width currentViewport:(CGRect)viewport atTime:(id *)time
 {
-  v9 = a3;
+  tracksCopy = tracks;
   v11 = *MEMORY[0x277CBF398];
   v10 = *(MEMORY[0x277CBF398] + 8);
   v13 = *(MEMORY[0x277CBF398] + 16);
   v12 = *(MEMORY[0x277CBF398] + 24);
-  *&v14 = a4;
+  *&v14 = width;
   [(FramingSpaceManager *)self->_framingSpaceManager getHeightForWidth:v14];
   v16 = v15;
   [(SceneFramingEngine *)self computeDeadbandHeightFromViewportHeight:?];
@@ -1576,7 +1576,7 @@ LABEL_10:
   v87 = 0u;
   v88 = 0u;
   v89 = 0u;
-  v21 = v9;
+  v21 = tracksCopy;
   v22 = [v21 countByEnumeratingWithState:&v86 objects:v85 count:16];
   if (v22)
   {
@@ -1603,8 +1603,8 @@ LABEL_10:
         }
 
         v31 = *(*(&v86 + 1) + 8 * i);
-        v83 = *&a6->var0;
-        var3 = a6->var3;
+        v83 = *&time->var0;
+        var3 = time->var3;
         [v31 faceBoundingBoxForFramingAtTime:{&v83, *&v73}];
         x = v90.origin.x;
         y = v90.origin.y;
@@ -1739,12 +1739,12 @@ LABEL_10:
   return result;
 }
 
-- (float)calculateViewportWidthToFitSubjectsInDeadband:(CGRect)a3
+- (float)calculateViewportWidthToFitSubjectsInDeadband:(CGRect)deadband
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = deadband.size.height;
+  width = deadband.size.width;
+  y = deadband.origin.y;
+  x = deadband.origin.x;
   [(FramingSpaceManager *)self->_framingSpaceManager framingSpaceBounds];
   v9 = v8;
   v55 = v8;
@@ -1826,24 +1826,24 @@ LABEL_10:
   return fminf(*&v37, fmaxf(*&v57, v48));
 }
 
-- (CGRect)calculateViewportCenteredAround:(CGRect)a3 withWidth:(float)a4
+- (CGRect)calculateViewportCenteredAround:(CGRect)around withWidth:(float)width
 {
-  rect = a3.size.height;
-  y = a3.origin.y;
-  width = a3.size.width;
-  v5 = a3.origin.y;
-  x = a3.origin.x;
-  v24 = a3.origin.x;
-  *&a3.origin.x = a4;
-  [(FramingSpaceManager *)self->_framingSpaceManager getHeightForWidth:a3.origin.x];
+  rect = around.size.height;
+  y = around.origin.y;
+  width = around.size.width;
+  v5 = around.origin.y;
+  x = around.origin.x;
+  v24 = around.origin.x;
+  *&around.origin.x = width;
+  [(FramingSpaceManager *)self->_framingSpaceManager getHeightForWidth:around.origin.x];
   v27 = v8;
   [(FramingSpaceManager *)self->_framingSpaceManager framingSpaceBounds];
   v9 = v29.origin.x;
   v10 = v29.origin.y;
   v11 = v29.size.width;
   height = v29.size.height;
-  v13 = a4;
-  v23 = CGRectGetMaxX(v29) - v13;
+  widthCopy = width;
+  v23 = CGRectGetMaxX(v29) - widthCopy;
   v30.origin.x = v9;
   v30.origin.y = v10;
   v30.size.width = v11;
@@ -1853,7 +1853,7 @@ LABEL_10:
   v31.origin.y = v5;
   v31.size.width = width;
   v31.size.height = rect;
-  v15 = fmin(v23, fmax(MinX, CGRectGetMidX(v31) + v13 * -0.5));
+  v15 = fmin(v23, fmax(MinX, CGRectGetMidX(v31) + widthCopy * -0.5));
   *&v23 = v15;
   v32.origin.x = v9;
   v32.origin.y = v10;
@@ -1872,7 +1872,7 @@ LABEL_10:
   v18 = fmin(v16, fmax(MinY, CGRectGetMinY(v34)));
   v19 = *&v23;
   v20 = v18;
-  v21 = v13;
+  v21 = widthCopy;
   v22 = v27;
   result.size.height = v22;
   result.size.width = v21;
@@ -1881,14 +1881,14 @@ LABEL_10:
   return result;
 }
 
-- (CGRect)computeCroppedSubjectEnclosingRectForViewportWidth:(float)a3 subjectEnclosingRect:(CGRect)a4
+- (CGRect)computeCroppedSubjectEnclosingRectForViewportWidth:(float)width subjectEnclosingRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  v51 = a4.size.height;
-  v5 = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  v51 = rect.size.height;
+  v5 = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   [(FramingSpaceManager *)self->_framingSpaceManager framingSpaceBounds];
   v54 = v9;
   v11 = v10;
@@ -1919,9 +1919,9 @@ LABEL_10:
   v58.size.width = v13;
   v58.size.height = v15;
   v20 = CGRectGetMaxX(v58);
-  *v21.i32 = *&v5 + (a3 * v52);
+  *v21.i32 = *&v5 + (width * v52);
   *&v20 = v20;
-  *&v20 = *&v20 - (a3 * v52);
+  *&v20 = *&v20 - (width * v52);
   v22 = *&v20 < MinX;
   *&v23 = fmaxf(MinX, *v21.i32);
   HIDWORD(v23) = fminf(MaxX, *&v20);
@@ -1942,7 +1942,7 @@ LABEL_10:
   v46 = v26;
   [(CinematicFramingSessionFramingParameters *)self->_activeFramingParameters deadbandHeightFractionOfScreenHeight];
   v45 = v27;
-  *&v28 = a3;
+  *&v28 = width;
   [(FramingSpaceManager *)self->_framingSpaceManager getHeightForWidth:v28];
   v30 = v29;
   v59.origin.x = v49;
@@ -2000,12 +2000,12 @@ LABEL_10:
   return result;
 }
 
-- (CGRect)determineDeadbandForSubjectEnclosingRect:(CGRect)a3 oldDeadband:(CGRect)a4 newDeadbandWidth:(float)a5
+- (CGRect)determineDeadbandForSubjectEnclosingRect:(CGRect)rect oldDeadband:(CGRect)deadband newDeadbandWidth:(float)width
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = deadband.size.height;
+  width = deadband.size.width;
+  y = deadband.origin.y;
+  x = deadband.origin.x;
   [(SceneFramingEngine *)self computeViewportWidthFromDeadbandWidth:?];
   [SceneFramingEngine computeCroppedSubjectEnclosingRectForViewportWidth:"computeCroppedSubjectEnclosingRectForViewportWidth:subjectEnclosingRect:" subjectEnclosingRect:?];
   v10 = v9;
@@ -2039,8 +2039,8 @@ LABEL_10:
   v69 = y;
   v28 = x;
   v26.f64[0] = y;
-  v70 = width;
-  v29 = width;
+  widthCopy = width;
+  widthCopy2 = width;
   v30 = height;
   v72 = CGRectGetMinX(*(&v26 - 8));
   v82.origin.x = x;
@@ -2064,7 +2064,7 @@ LABEL_10:
   v38 = CGRectGetMaxX(v83);
   v39.f64[0] = v79;
   v39.f64[1] = v38;
-  LODWORD(v72) = DetermineNewDeadbandMinComponent(v27, v33, v34, vcvt_f32_f64(v39).f32[0], a5);
+  LODWORD(v72) = DetermineNewDeadbandMinComponent(v27, v33, v34, vcvt_f32_f64(v39).f32[0], width);
   [(CinematicFramingSessionFramingParameters *)self->_activeFramingParameters deadbandTopOffsetFractionOfScreenHeight];
   LODWORD(v27) = v40;
   [(CinematicFramingSessionFramingParameters *)self->_activeFramingParameters deadbandHeightFractionOfScreenHeight];
@@ -2075,7 +2075,7 @@ LABEL_10:
   v45 = v43 / v44 - *&v79;
   *&v45 = v45;
   v66 = LODWORD(v45);
-  *&v45 = a5;
+  *&v45 = width;
   [(SceneFramingEngine *)self computeDeadbandHeightForWidth:v45];
   LODWORD(v43) = v46;
   v84.origin.x = v10;
@@ -2093,12 +2093,12 @@ LABEL_10:
   v49 = COERCE_DOUBLE(vcvt_f32_f64(v48));
   v50 = x;
   v48.f64[0] = v69;
-  v51 = v70;
+  v51 = widthCopy;
   v52 = height;
   v68 = CGRectGetMinY(*(&v48 - 8));
   v86.origin.x = x;
   v86.origin.y = v69;
-  v86.size.width = v70;
+  v86.size.width = widthCopy;
   v86.size.height = height;
   v53 = CGRectGetMaxY(v86);
   v54.f64[0] = v68;
@@ -2117,11 +2117,11 @@ LABEL_10:
   v60.f64[0] = v74;
   v60.f64[1] = v59;
   v61 = DetermineNewDeadbandMinComponent(v49, v55, COERCE_DOUBLE(__PAIR64__(v66, LODWORD(v79))), vcvt_f32_f64(v60).f32[0], *&v43);
-  v62 = a5;
+  widthCopy3 = width;
   v63 = *&v43;
   v64 = *&v72;
   result.size.height = v63;
-  result.size.width = v62;
+  result.size.width = widthCopy3;
   result.origin.y = v61;
   result.origin.x = v64;
   return result;
@@ -2185,13 +2185,13 @@ LABEL_10:
   return v4 * v5;
 }
 
-- (CGRect)computeViewportFromDeadband:(CGRect)a3
+- (CGRect)computeViewportFromDeadband:(CGRect)deadband
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if (CGRectIsNull(a3))
+  height = deadband.size.height;
+  width = deadband.size.width;
+  y = deadband.origin.y;
+  x = deadband.origin.x;
+  if (CGRectIsNull(deadband))
   {
     v8 = *MEMORY[0x277CBF398];
     v9 = *(MEMORY[0x277CBF398] + 8);
@@ -2274,13 +2274,13 @@ LABEL_10:
   return result;
 }
 
-- (CGRect)computeDeadbandFromViewport:(CGRect)a3
+- (CGRect)computeDeadbandFromViewport:(CGRect)viewport
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if (CGRectIsNull(a3))
+  height = viewport.size.height;
+  width = viewport.size.width;
+  y = viewport.origin.y;
+  x = viewport.origin.x;
+  if (CGRectIsNull(viewport))
   {
     v8 = *MEMORY[0x277CBF398];
     v9 = *(MEMORY[0x277CBF398] + 8);
@@ -2345,44 +2345,44 @@ LABEL_10:
   return result;
 }
 
-- (float)computeDeadbandHeightForWidth:(float)a3
+- (float)computeDeadbandHeightForWidth:(float)width
 {
   [(CinematicFramingSessionFramingParameters *)self->_activeFramingParameters deadbandWidthFractionOfScreenWidth];
-  *&v6 = a3 / v5;
+  *&v6 = width / v5;
   [(FramingSpaceManager *)self->_framingSpaceManager getHeightForWidth:v6];
   v8 = v7;
   [(CinematicFramingSessionFramingParameters *)self->_activeFramingParameters deadbandHeightFractionOfScreenHeight];
   return v8 * v9;
 }
 
-- (float)computeDeadbandWidthForHeight:(float)a3
+- (float)computeDeadbandWidthForHeight:(float)height
 {
   [(CinematicFramingSessionFramingParameters *)self->_activeFramingParameters deadbandHeightFractionOfScreenHeight];
-  *&v6 = a3 / v5;
+  *&v6 = height / v5;
   [(FramingSpaceManager *)self->_framingSpaceManager getWidthForHeight:v6];
   v8 = v7;
   [(CinematicFramingSessionFramingParameters *)self->_activeFramingParameters deadbandWidthFractionOfScreenWidth];
   return v8 * v9;
 }
 
-- (CGRect)applyNewsroomViewportAdjustments:(CGRect)a3
+- (CGRect)applyNewsroomViewportAdjustments:(CGRect)adjustments
 {
-  y = a3.origin.y;
-  x = a3.origin.x;
+  y = adjustments.origin.y;
+  x = adjustments.origin.x;
   viewportOffsetX = self->_newsroomFramingParameters.viewportOffsetX;
   framingSpaceManager = self->_framingSpaceManager;
-  if (a3.size.width >= a3.size.height)
+  if (adjustments.size.width >= adjustments.size.height)
   {
-    v10 = a3.size.height * viewportOffsetX;
-    *&viewportOffsetX = a3.size.height * viewportOffsetX;
+    v10 = adjustments.size.height * viewportOffsetX;
+    *&viewportOffsetX = adjustments.size.height * viewportOffsetX;
     [(FramingSpaceManager *)framingSpaceManager getWidthForHeight:viewportOffsetX];
     v8 = v11;
   }
 
   else
   {
-    v8 = a3.size.width * viewportOffsetX;
-    *&viewportOffsetX = a3.size.width * viewportOffsetX;
+    v8 = adjustments.size.width * viewportOffsetX;
+    *&viewportOffsetX = adjustments.size.width * viewportOffsetX;
     [(FramingSpaceManager *)framingSpaceManager getHeightForWidth:viewportOffsetX];
     v10 = v9;
   }
@@ -2398,28 +2398,28 @@ LABEL_10:
   return result;
 }
 
-- (CGRect)undoNewsroomViewportAdjustments:(CGRect)a3
+- (CGRect)undoNewsroomViewportAdjustments:(CGRect)adjustments
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = adjustments.size.height;
+  width = adjustments.size.width;
+  y = adjustments.origin.y;
+  x = adjustments.origin.x;
   v7 = *&self->_returningHomeTargetRect[8];
   v8 = *&self->_returningHomeTargetRect[12];
   viewportOffsetX = self->_newsroomFramingParameters.viewportOffsetX;
   framingSpaceManager = self->_framingSpaceManager;
-  if (a3.size.width >= a3.size.height)
+  if (adjustments.size.width >= adjustments.size.height)
   {
-    v13 = a3.size.height / viewportOffsetX;
-    *&viewportOffsetX = a3.size.height / viewportOffsetX;
+    v13 = adjustments.size.height / viewportOffsetX;
+    *&viewportOffsetX = adjustments.size.height / viewportOffsetX;
     [(FramingSpaceManager *)framingSpaceManager getWidthForHeight:viewportOffsetX];
     v11 = v14;
   }
 
   else
   {
-    v11 = a3.size.width / viewportOffsetX;
-    *&viewportOffsetX = a3.size.width / viewportOffsetX;
+    v11 = adjustments.size.width / viewportOffsetX;
+    *&viewportOffsetX = adjustments.size.width / viewportOffsetX;
     [(FramingSpaceManager *)framingSpaceManager getHeightForWidth:viewportOffsetX];
     v13 = v12;
   }

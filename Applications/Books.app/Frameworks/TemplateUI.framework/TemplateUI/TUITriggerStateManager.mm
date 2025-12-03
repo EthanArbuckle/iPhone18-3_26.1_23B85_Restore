@@ -1,10 +1,10 @@
 @interface TUITriggerStateManager
 - (TUITriggerStateManager)init;
-- (unint64_t)stateForTriggerWithName:(id)a3;
-- (void)_updateTriggerStatesWithNewStates:(id)a3 updateEvent:(unint64_t)a4;
-- (void)addObserver:(id)a3 forTrigger:(id)a4;
-- (void)removeObserver:(id)a3 forTrigger:(id)a4;
-- (void)updateTriggerStatesWithNewStates:(id)a3 updateEvent:(unint64_t)a4;
+- (unint64_t)stateForTriggerWithName:(id)name;
+- (void)_updateTriggerStatesWithNewStates:(id)states updateEvent:(unint64_t)event;
+- (void)addObserver:(id)observer forTrigger:(id)trigger;
+- (void)removeObserver:(id)observer forTrigger:(id)trigger;
+- (void)updateTriggerStatesWithNewStates:(id)states updateEvent:(unint64_t)event;
 @end
 
 @implementation TUITriggerStateManager
@@ -40,77 +40,77 @@
   return v2;
 }
 
-- (void)addObserver:(id)a3 forTrigger:(id)a4
+- (void)addObserver:(id)observer forTrigger:(id)trigger
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [(TUITriggerStateManager *)self observers];
-  v8 = [v7 objectForKey:v6];
+  observerCopy = observer;
+  triggerCopy = trigger;
+  observers = [(TUITriggerStateManager *)self observers];
+  v8 = [observers objectForKey:triggerCopy];
 
   if (!v8)
   {
     v8 = +[NSHashTable weakObjectsHashTable];
   }
 
-  [v8 addObject:v10];
-  v9 = [(TUITriggerStateManager *)self observers];
-  [v9 setObject:v8 forKey:v6];
+  [v8 addObject:observerCopy];
+  observers2 = [(TUITriggerStateManager *)self observers];
+  [observers2 setObject:v8 forKey:triggerCopy];
 }
 
-- (void)removeObserver:(id)a3 forTrigger:(id)a4
+- (void)removeObserver:(id)observer forTrigger:(id)trigger
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [(TUITriggerStateManager *)self observers];
-  v8 = [v7 objectForKey:v6];
+  observerCopy = observer;
+  triggerCopy = trigger;
+  observers = [(TUITriggerStateManager *)self observers];
+  v8 = [observers objectForKey:triggerCopy];
 
   if (v8)
   {
-    [v8 removeObject:v10];
-    v9 = [(TUITriggerStateManager *)self observers];
-    [v9 setObject:v8 forKey:v6];
+    [v8 removeObject:observerCopy];
+    observers2 = [(TUITriggerStateManager *)self observers];
+    [observers2 setObject:v8 forKey:triggerCopy];
   }
 }
 
-- (void)updateTriggerStatesWithNewStates:(id)a3 updateEvent:(unint64_t)a4
+- (void)updateTriggerStatesWithNewStates:(id)states updateEvent:(unint64_t)event
 {
-  [(TUITriggerStateManager *)self _updateTriggerStatesWithNewStates:a3 updateEvent:?];
+  [(TUITriggerStateManager *)self _updateTriggerStatesWithNewStates:states updateEvent:?];
   embeddedCollectionDelegates = self->_embeddedCollectionDelegates;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1355B4;
   v7[3] = &unk_262608;
-  v7[4] = a4;
+  v7[4] = event;
   [(NSMutableSet *)embeddedCollectionDelegates enumerateObjectsUsingBlock:v7];
 }
 
-- (unint64_t)stateForTriggerWithName:(id)a3
+- (unint64_t)stateForTriggerWithName:(id)name
 {
-  v3 = [(NSMutableDictionary *)self->_triggerStates objectForKey:a3];
-  v4 = [v3 intValue];
+  v3 = [(NSMutableDictionary *)self->_triggerStates objectForKey:name];
+  intValue = [v3 intValue];
 
-  return v4;
+  return intValue;
 }
 
-- (void)_updateTriggerStatesWithNewStates:(id)a3 updateEvent:(unint64_t)a4
+- (void)_updateTriggerStatesWithNewStates:(id)states updateEvent:(unint64_t)event
 {
-  v6 = a3;
-  v7 = [v6 namesForTriggersInUpdate];
-  v50 = self;
+  statesCopy = states;
+  namesForTriggersInUpdate = [statesCopy namesForTriggersInUpdate];
+  selfCopy = self;
   v49 = [NSMutableDictionary dictionaryWithCapacity:[(NSMutableDictionary *)self->_triggerValues count]];
   v44 = +[NSMutableSet set];
   v59 = 0u;
   v60 = 0u;
   v61 = 0u;
   v62 = 0u;
-  obj = v7;
+  obj = namesForTriggersInUpdate;
   v8 = [obj countByEnumeratingWithState:&v59 objects:v65 count:16];
   if (v8)
   {
     v9 = v8;
     v10 = *v60;
     v45 = *v60;
-    v46 = v6;
+    v46 = statesCopy;
     do
     {
       v11 = 0;
@@ -123,9 +123,9 @@
         }
 
         v12 = *(*(&v59 + 1) + 8 * v11);
-        v13 = [v6 observationModeForTriggerWithName:v12];
+        v13 = [statesCopy observationModeForTriggerWithName:v12];
         v14 = v13;
-        if (a4 < 2)
+        if (event < 2)
         {
           if ((v13 & 0xFFFFFFFFFFFFFFFDLL) != 0)
           {
@@ -133,9 +133,9 @@
           }
         }
 
-        else if (a4 != 2)
+        else if (event != 2)
         {
-          if (a4 != 3)
+          if (event != 3)
           {
             goto LABEL_34;
           }
@@ -146,32 +146,32 @@
           }
         }
 
-        v16 = [(NSMutableDictionary *)v50->_triggerStates objectForKey:v12];
-        v17 = [v16 intValue];
+        v16 = [(NSMutableDictionary *)selfCopy->_triggerStates objectForKey:v12];
+        intValue = [v16 intValue];
 
-        v18 = [v6 stateForTriggerWithName:v12];
-        v19 = [(NSMutableDictionary *)v50->_lastUpdateEventForTrigger objectForKey:v12];
-        v20 = [v19 intValue];
+        v18 = [statesCopy stateForTriggerWithName:v12];
+        v19 = [(NSMutableDictionary *)selfCopy->_lastUpdateEventForTrigger objectForKey:v12];
+        intValue2 = [v19 intValue];
 
-        if (v18 != v17 || v20 != a4)
+        if (v18 != intValue || intValue2 != event)
         {
-          triggerStates = v50->_triggerStates;
+          triggerStates = selfCopy->_triggerStates;
           v23 = [NSNumber numberWithUnsignedInteger:v18];
           [(NSMutableDictionary *)triggerStates setObject:v23 forKey:v12];
 
-          lastUpdateEventForTrigger = v50->_lastUpdateEventForTrigger;
-          v25 = [NSNumber numberWithUnsignedInteger:a4];
+          lastUpdateEventForTrigger = selfCopy->_lastUpdateEventForTrigger;
+          v25 = [NSNumber numberWithUnsignedInteger:event];
           [(NSMutableDictionary *)lastUpdateEventForTrigger setObject:v25 forKey:v12];
 
-          v26 = [(TUITriggerStateManager *)v50 observers];
-          v27 = [v26 objectForKey:v12];
+          observers = [(TUITriggerStateManager *)selfCopy observers];
+          v27 = [observers objectForKey:v12];
 
           v57 = 0u;
           v58 = 0u;
           v55 = 0u;
           v56 = 0u;
-          v28 = [v27 allObjects];
-          v29 = [v28 countByEnumeratingWithState:&v55 objects:v64 count:16];
+          allObjects = [v27 allObjects];
+          v29 = [allObjects countByEnumeratingWithState:&v55 objects:v64 count:16];
           if (v29)
           {
             v30 = v29;
@@ -182,40 +182,40 @@
               {
                 if (*v56 != v31)
                 {
-                  objc_enumerationMutation(v28);
+                  objc_enumerationMutation(allObjects);
                 }
 
-                [*(*(&v55 + 1) + 8 * i) handleTrigger:v12 didChangeState:v18 updateEvent:a4];
+                [*(*(&v55 + 1) + 8 * i) handleTrigger:v12 didChangeState:v18 updateEvent:event];
               }
 
-              v30 = [v28 countByEnumeratingWithState:&v55 objects:v64 count:16];
+              v30 = [allObjects countByEnumeratingWithState:&v55 objects:v64 count:16];
             }
 
             while (v30);
           }
 
           v10 = v45;
-          v6 = v46;
+          statesCopy = v46;
         }
 
         if (v14 == 3)
         {
-          v33 = [v6 valueForTriggerWithName:v12];
-          [(NSMutableDictionary *)v50->_triggerValues setObject:v33 forKeyedSubscript:v12];
+          v33 = [statesCopy valueForTriggerWithName:v12];
+          [(NSMutableDictionary *)selfCopy->_triggerValues setObject:v33 forKeyedSubscript:v12];
           [v49 setObject:v33 forKeyedSubscript:v12];
-          v34 = [(TUITriggerStateManager *)v50 observers];
-          v35 = [v34 objectForKey:v12];
+          observers2 = [(TUITriggerStateManager *)selfCopy observers];
+          v35 = [observers2 objectForKey:v12];
 
           if ([v35 count])
           {
-            v36 = [v35 allObjects];
-            [v44 addObjectsFromArray:v36];
+            allObjects2 = [v35 allObjects];
+            [v44 addObjectsFromArray:allObjects2];
           }
         }
 
         else
         {
-          [(NSMutableDictionary *)v50->_triggerValues removeObjectForKey:v12];
+          [(NSMutableDictionary *)selfCopy->_triggerValues removeObjectForKey:v12];
         }
 
         v9 = v47;
@@ -255,7 +255,7 @@ LABEL_34:
           if (objc_opt_respondsToSelector())
           {
             v43 = [v49 copy];
-            [v42 triggerStateManager:v50 triggersDidChangeValues:v43];
+            [v42 triggerStateManager:selfCopy triggersDidChangeValues:v43];
           }
         }
 

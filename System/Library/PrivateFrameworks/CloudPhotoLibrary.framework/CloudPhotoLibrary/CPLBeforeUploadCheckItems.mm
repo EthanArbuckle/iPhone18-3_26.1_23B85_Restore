@@ -1,26 +1,26 @@
 @interface CPLBeforeUploadCheckItems
-- (BOOL)checkBatchWithFoundRecords:(id)a3 error:(id *)a4;
-- (BOOL)prepareBatchBeforeUploadWithError:(id *)a3;
-- (BOOL)requestFetchOfRecordWithScopedIdentifier:(id)a3 forItem:(id)a4 rule:(id)a5 error:(id *)a6;
+- (BOOL)checkBatchWithFoundRecords:(id)records error:(id *)error;
+- (BOOL)prepareBatchBeforeUploadWithError:(id *)error;
+- (BOOL)requestFetchOfRecordWithScopedIdentifier:(id)identifier forItem:(id)item rule:(id)rule error:(id *)error;
 - (BOOL)shouldResetExceedingQuotaOnSuccessfulUpload;
-- (BOOL)transportHasRecordWithScopedIdentifier:(id)a3;
-- (CPLBeforeUploadCheckItems)initWithBatch:(id)a3 targetMapping:(id)a4 ruleGroups:(int64_t)a5 pushRepositoryPriority:(unint64_t)a6 fingerprintContext:(id)a7 provider:(id)a8;
+- (BOOL)transportHasRecordWithScopedIdentifier:(id)identifier;
+- (CPLBeforeUploadCheckItems)initWithBatch:(id)batch targetMapping:(id)mapping ruleGroups:(int64_t)groups pushRepositoryPriority:(unint64_t)priority fingerprintContext:(id)context provider:(id)provider;
 - (CPLChangeBatch)batchToUpload;
 - (NSArray)recordsNeedingGeneratedDerivatives;
 - (NSDictionary)itemsToReinject;
-- (id)recordFromTransportWithScopedIdentifier:(id)a3;
-- (id)willUploadCloudResource:(id)a3 localResource:(id)a4 forItem:(id)a5 error:(id *)a6;
+- (id)recordFromTransportWithScopedIdentifier:(id)identifier;
+- (id)willUploadCloudResource:(id)resource localResource:(id)localResource forItem:(id)item error:(id *)error;
 - (unint64_t)estimatedUploadResourceSize;
-- (void)addAdditionalRecordWithScopedIdentifierToUploadBatch:(id)a3;
-- (void)itemShouldBeReinjectedInPushRepository:(id)a3;
-- (void)itemWillDropResourceChange:(id)a3;
+- (void)addAdditionalRecordWithScopedIdentifierToUploadBatch:(id)batch;
+- (void)itemShouldBeReinjectedInPushRepository:(id)repository;
+- (void)itemWillDropResourceChange:(id)change;
 @end
 
 @implementation CPLBeforeUploadCheckItems
 
-- (void)addAdditionalRecordWithScopedIdentifierToUploadBatch:(id)a3
+- (void)addAdditionalRecordWithScopedIdentifierToUploadBatch:(id)batch
 {
-  v9 = a3;
+  batchCopy = batch;
   v4 = [(NSMutableDictionary *)self->_additionalRecords objectForKeyedSubscript:?];
   if (!v4)
   {
@@ -31,27 +31,27 @@
       self->_additionalRecords = v5;
     }
 
-    v7 = [(CPLBeforeUploadCheckItemsProvider *)self->_provider knownCloudRecordWithScopedIdentifier:v9];
+    v7 = [(CPLBeforeUploadCheckItemsProvider *)self->_provider knownCloudRecordWithScopedIdentifier:batchCopy];
     if (v7)
     {
       v4 = v7;
-      [(NSMutableDictionary *)self->_additionalRecords setObject:v7 forKeyedSubscript:v9];
+      [(NSMutableDictionary *)self->_additionalRecords setObject:v7 forKeyedSubscript:batchCopy];
     }
 
     else
     {
-      v8 = [MEMORY[0x1E695DFB0] null];
-      [(NSMutableDictionary *)self->_additionalRecords setObject:v8 forKeyedSubscript:v9];
+      null = [MEMORY[0x1E695DFB0] null];
+      [(NSMutableDictionary *)self->_additionalRecords setObject:null forKeyedSubscript:batchCopy];
 
       v4 = 0;
     }
   }
 }
 
-- (id)recordFromTransportWithScopedIdentifier:(id)a3
+- (id)recordFromTransportWithScopedIdentifier:(id)identifier
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  identifierCopy = identifier;
   foundRecords = self->_foundRecords;
   if (!foundRecords)
   {
@@ -67,25 +67,25 @@
       }
     }
 
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v13 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Engine/CPLBeforeUploadCheckItems.m"];
     v14 = NSStringFromSelector(a2);
-    [v12 handleFailureInMethod:a2 object:self file:v13 lineNumber:305 description:{@"%@ should only be called within -checkBatchWithFoundRecords:error:", v14}];
+    [currentHandler handleFailureInMethod:a2 object:self file:v13 lineNumber:305 description:{@"%@ should only be called within -checkBatchWithFoundRecords:error:", v14}];
 
     abort();
   }
 
-  v7 = [(NSDictionary *)foundRecords objectForKeyedSubscript:v5];
+  v7 = [(NSDictionary *)foundRecords objectForKeyedSubscript:identifierCopy];
 
   v8 = *MEMORY[0x1E69E9840];
 
   return v7;
 }
 
-- (BOOL)transportHasRecordWithScopedIdentifier:(id)a3
+- (BOOL)transportHasRecordWithScopedIdentifier:(id)identifier
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  identifierCopy = identifier;
   foundRecords = self->_foundRecords;
   if (!foundRecords)
   {
@@ -101,50 +101,50 @@
       }
     }
 
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v14 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Engine/CPLBeforeUploadCheckItems.m"];
     v15 = NSStringFromSelector(a2);
-    [v13 handleFailureInMethod:a2 object:self file:v14 lineNumber:300 description:{@"%@ should only be called within -checkBatchWithFoundRecords:error:", v15}];
+    [currentHandler handleFailureInMethod:a2 object:self file:v14 lineNumber:300 description:{@"%@ should only be called within -checkBatchWithFoundRecords:error:", v15}];
 
     abort();
   }
 
-  v7 = [(NSDictionary *)foundRecords objectForKeyedSubscript:v5];
+  v7 = [(NSDictionary *)foundRecords objectForKeyedSubscript:identifierCopy];
   v8 = v7 != 0;
 
   v9 = *MEMORY[0x1E69E9840];
   return v8;
 }
 
-- (void)itemShouldBeReinjectedInPushRepository:(id)a3
+- (void)itemShouldBeReinjectedInPushRepository:(id)repository
 {
-  v4 = a3;
+  repositoryCopy = repository;
   itemsToReinject = self->_itemsToReinject;
-  v9 = v4;
+  v9 = repositoryCopy;
   if (!itemsToReinject)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF90]);
     v7 = self->_itemsToReinject;
     self->_itemsToReinject = v6;
 
-    v4 = v9;
+    repositoryCopy = v9;
     itemsToReinject = self->_itemsToReinject;
   }
 
-  v8 = [v4 scopedIdentifier];
-  [(NSMutableDictionary *)itemsToReinject setObject:v9 forKeyedSubscript:v8];
+  scopedIdentifier = [repositoryCopy scopedIdentifier];
+  [(NSMutableDictionary *)itemsToReinject setObject:v9 forKeyedSubscript:scopedIdentifier];
 }
 
-- (void)itemWillDropResourceChange:(id)a3
+- (void)itemWillDropResourceChange:(id)change
 {
-  v4 = a3;
-  if ([v4 isAsset])
+  changeCopy = change;
+  if ([changeCopy isAsset])
   {
     v5 = [(NSMutableDictionary *)self->_assetsWithResourcesToUpload count];
     assetsWithResourcesToUpload = self->_assetsWithResourcesToUpload;
-    v7 = [v4 scopedIdentifier];
+    scopedIdentifier = [changeCopy scopedIdentifier];
 
-    [(NSMutableDictionary *)assetsWithResourcesToUpload removeObjectForKey:v7];
+    [(NSMutableDictionary *)assetsWithResourcesToUpload removeObjectForKey:scopedIdentifier];
     v8 = self->_assetsWithResourcesToUpload;
   }
 
@@ -152,9 +152,9 @@
   {
     v5 = [(NSMutableDictionary *)self->_nonAssetsWithResourcesToUpload count];
     nonAssetsWithResourcesToUpload = self->_nonAssetsWithResourcesToUpload;
-    v10 = [v4 scopedIdentifier];
+    scopedIdentifier2 = [changeCopy scopedIdentifier];
 
-    [(NSMutableDictionary *)nonAssetsWithResourcesToUpload removeObjectForKey:v10];
+    [(NSMutableDictionary *)nonAssetsWithResourcesToUpload removeObjectForKey:scopedIdentifier2];
     v8 = self->_nonAssetsWithResourcesToUpload;
   }
 
@@ -164,34 +164,34 @@
   }
 }
 
-- (id)willUploadCloudResource:(id)a3 localResource:(id)a4 forItem:(id)a5 error:(id *)a6
+- (id)willUploadCloudResource:(id)resource localResource:(id)localResource forItem:(id)item error:(id *)error
 {
-  v10 = a5;
-  v11 = [(CPLBeforeUploadCheckItemsProvider *)self->_provider willUploadCloudResource:a3 localResource:a4 error:a6];
+  itemCopy = item;
+  v11 = [(CPLBeforeUploadCheckItemsProvider *)self->_provider willUploadCloudResource:resource localResource:localResource error:error];
   if (v11)
   {
-    v12 = [v10 isAsset];
+    isAsset = [itemCopy isAsset];
     v13 = 32;
-    if (v12)
+    if (isAsset)
     {
       v13 = 40;
     }
 
     v14 = *(&self->super.isa + v13);
-    v15 = [v10 scopedIdentifier];
-    [v14 setObject:v10 forKeyedSubscript:v15];
+    scopedIdentifier = [itemCopy scopedIdentifier];
+    [v14 setObject:itemCopy forKeyedSubscript:scopedIdentifier];
   }
 
   return v11;
 }
 
-- (BOOL)requestFetchOfRecordWithScopedIdentifier:(id)a3 forItem:(id)a4 rule:(id)a5 error:(id *)a6
+- (BOOL)requestFetchOfRecordWithScopedIdentifier:(id)identifier forItem:(id)item rule:(id)rule error:(id *)error
 {
-  v9 = a3;
-  v10 = a5;
-  if (([(NSMutableSet *)self->_recordsToFetch containsObject:v9]& 1) == 0)
+  identifierCopy = identifier;
+  ruleCopy = rule;
+  if (([(NSMutableSet *)self->_recordsToFetch containsObject:identifierCopy]& 1) == 0)
   {
-    if (![(CPLBeforeUploadCheckItemsProvider *)self->_provider willNeedToAccessRecordWithScopedIdentifier:v9 error:a6])
+    if (![(CPLBeforeUploadCheckItemsProvider *)self->_provider willNeedToAccessRecordWithScopedIdentifier:identifierCopy error:error])
     {
       v17 = 0;
       goto LABEL_10;
@@ -207,7 +207,7 @@
       recordsToFetch = self->_recordsToFetch;
     }
 
-    [(NSMutableSet *)recordsToFetch addObject:v9];
+    [(NSMutableSet *)recordsToFetch addObject:identifierCopy];
   }
 
   fetchRules = self->_fetchRules;
@@ -220,18 +220,18 @@
     fetchRules = self->_fetchRules;
   }
 
-  [(NSMutableSet *)fetchRules addObject:v10];
+  [(NSMutableSet *)fetchRules addObject:ruleCopy];
   v17 = 1;
 LABEL_10:
 
   return v17;
 }
 
-- (BOOL)checkBatchWithFoundRecords:(id)a3 error:(id *)a4
+- (BOOL)checkBatchWithFoundRecords:(id)records error:(id *)error
 {
   v70 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  objc_storeStrong(&self->_foundRecords, a3);
+  recordsCopy = records;
+  objc_storeStrong(&self->_foundRecords, records);
   v59 = 0u;
   v60 = 0u;
   v57 = 0u;
@@ -244,13 +244,13 @@ LABEL_10:
     v53 = 0;
     obj = v9;
     v47 = a2;
-    v48 = a4;
-    v49 = v8;
+    errorCopy = error;
+    v49 = recordsCopy;
     v52 = 0;
     v55 = 0;
     v12 = *v58;
     v51 = 1;
-    v50 = self;
+    selfCopy = self;
 LABEL_3:
     v13 = 0;
     while (1)
@@ -262,8 +262,8 @@ LABEL_3:
 
       v14 = *(*(&v57 + 1) + 8 * v13);
       v15 = objc_autoreleasePoolPush();
-      v16 = [v14 scopedIdentifier];
-      v17 = [(NSDictionary *)self->_items objectForKeyedSubscript:v16];
+      scopedIdentifier = [v14 scopedIdentifier];
+      v17 = [(NSDictionary *)self->_items objectForKeyedSubscript:scopedIdentifier];
       if (!v17)
       {
         if ((_CPLSilentLogging & 1) == 0)
@@ -272,14 +272,14 @@ LABEL_3:
           if (os_log_type_enabled(v44, OS_LOG_TYPE_ERROR))
           {
             *buf = 138412290;
-            v66 = v16;
+            selfCopy2 = scopedIdentifier;
             _os_log_impl(&dword_1DC05A000, v44, OS_LOG_TYPE_ERROR, "Failed to find %@ in items to check", buf, 0xCu);
           }
         }
 
-        v45 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
         v46 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Engine/CPLBeforeUploadCheckItems.m"];
-        [v45 handleFailureInMethod:v47 object:self file:v46 lineNumber:203 description:{@"Failed to find %@ in items to check", v16}];
+        [currentHandler handleFailureInMethod:v47 object:self file:v46 lineNumber:203 description:{@"Failed to find %@ in items to check", scopedIdentifier}];
 
         abort();
       }
@@ -301,7 +301,7 @@ LABEL_3:
           if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
           {
             *buf = 138412546;
-            v66 = v18;
+            selfCopy2 = v18;
             v67 = 2112;
             v68 = v20;
             _os_log_impl(&dword_1DC05A000, v22, OS_LOG_TYPE_ERROR, "Failed to check %@: %@", buf, 0x16u);
@@ -310,8 +310,8 @@ LABEL_3:
 
         if ([v20 isCPLErrorWithCode:18])
         {
-          v23 = [v20 userInfo];
-          v24 = [v23 objectForKeyedSubscript:@"CPLErrorRejectedReasonKey"];
+          userInfo = [v20 userInfo];
+          v24 = [userInfo objectForKeyedSubscript:@"CPLErrorRejectedReasonKey"];
           v25 = v24;
           v26 = @"change was rejected before being sent to transport";
           if (v24)
@@ -338,9 +338,9 @@ LABEL_3:
           v53 = v29;
           [v29 addObject:v27];
           v55 = v28;
-          [v28 setObject:v27 forKeyedSubscript:v16];
+          [v28 setObject:v27 forKeyedSubscript:scopedIdentifier];
           v21 = 1;
-          self = v50;
+          self = selfCopy;
         }
 
         else
@@ -373,18 +373,18 @@ LABEL_3:
     if ((v51 & (v55 != 0)) == 1)
     {
       v31 = v52;
-      v32 = v48;
+      v32 = errorCopy;
       if ([v55 count] == 1)
       {
         v63 = @"CPLErrorRejectedRecordIdentifiersAndReasons";
         v64 = v55;
         v33 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v64 forKeys:&v63 count:1];
-        v34 = [v55 allValues];
-        v35 = [(__CFString *)v34 firstObject];
-        v36 = [CPLErrors cplErrorWithCode:18 underlyingError:0 userInfo:v33 description:@"%@", v35];
+        allValues = [v55 allValues];
+        firstObject = [(__CFString *)allValues firstObject];
+        v36 = [CPLErrors cplErrorWithCode:18 underlyingError:0 userInfo:v33 description:@"%@", firstObject];
 
-        self = v50;
-        v31 = v34;
+        self = selfCopy;
+        v31 = allValues;
       }
 
       else
@@ -395,14 +395,14 @@ LABEL_3:
         v36 = +[CPLErrors cplErrorWithCode:underlyingError:userInfo:description:](CPLErrors, "cplErrorWithCode:underlyingError:userInfo:description:", 18, 0, v33, @"%lu changes were rejected before sending them to the transport", [v55 count]);
       }
 
-      v8 = v49;
+      recordsCopy = v49;
 
       v37 = v53;
       goto LABEL_37;
     }
 
-    v32 = v48;
-    v8 = v49;
+    v32 = errorCopy;
+    recordsCopy = v49;
     v36 = v52;
     v37 = v53;
     if ((v51 & 1) == 0)
@@ -438,7 +438,7 @@ LABEL_37:
     if (os_log_type_enabled(v38, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412290;
-      v66 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_1DC05A000, v38, OS_LOG_TYPE_DEBUG, "Checked %@", buf, 0xCu);
     }
   }
@@ -452,27 +452,27 @@ LABEL_40:
   return v39;
 }
 
-- (BOOL)prepareBatchBeforeUploadWithError:(id *)a3
+- (BOOL)prepareBatchBeforeUploadWithError:(id *)error
 {
-  v4 = self;
+  selfCopy = self;
   v65 = *MEMORY[0x1E69E9840];
   v5 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{-[CPLChangeBatch count](self->_originalBatch, "count")}];
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
   v55 = 0u;
-  v6 = v4->_originalBatch;
+  v6 = selfCopy->_originalBatch;
   v50 = [(CPLChangeBatch *)v6 countByEnumeratingWithState:&v52 objects:v64 count:16];
   if (v50)
   {
     v47 = 0;
     obj = v6;
-    v43 = a3;
+    errorCopy = error;
     v7 = 0;
     v46 = 0;
     v49 = *v53;
     v45 = 1;
-    v44 = v4;
+    v44 = selfCopy;
 LABEL_3:
     v8 = 0;
     while (1)
@@ -484,14 +484,14 @@ LABEL_3:
 
       v9 = *(*(&v52 + 1) + 8 * v8);
       v10 = objc_autoreleasePoolPush();
-      v11 = [v9 scopedIdentifier];
-      v12 = [[CPLBeforeUploadCheckItem alloc] initWithChange:v9 checkItems:v4];
+      scopedIdentifier = [v9 scopedIdentifier];
+      v12 = [[CPLBeforeUploadCheckItem alloc] initWithChange:v9 checkItems:selfCopy];
       v51 = 0;
       LOBYTE(v9) = [(CPLBeforeUploadCheckItem *)v12 prepareWithError:&v51];
       v13 = v51;
       if (v9)
       {
-        [v5 setObject:v12 forKeyedSubscript:v11];
+        [v5 setObject:v12 forKeyedSubscript:scopedIdentifier];
         v14 = 1;
       }
 
@@ -514,8 +514,8 @@ LABEL_3:
         {
           v16 = v7;
           v17 = v5;
-          v18 = [v13 userInfo];
-          v19 = [v18 objectForKeyedSubscript:@"CPLErrorRejectedReasonKey"];
+          userInfo = [v13 userInfo];
+          v19 = [userInfo objectForKeyedSubscript:@"CPLErrorRejectedReasonKey"];
           v20 = v19;
           v21 = @"change was rejected before being sent to transport";
           if (v19)
@@ -545,11 +545,11 @@ LABEL_3:
           v46 = v24;
           [v24 addObject:v22];
           v47 = v23;
-          [v23 setObject:v22 forKeyedSubscript:v11];
+          [v23 setObject:v22 forKeyedSubscript:scopedIdentifier];
 
           v14 = 1;
           v7 = v16;
-          v4 = v44;
+          selfCopy = v44;
         }
 
         else
@@ -588,13 +588,13 @@ LABEL_3:
         v58 = @"CPLErrorRejectedRecordIdentifiersAndReasons";
         v59 = v47;
         v29 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v59 forKeys:&v58 count:1];
-        v30 = [v47 allValues];
-        [v30 firstObject];
+        allValues = [v47 allValues];
+        [allValues firstObject];
         v32 = v31 = v5;
         v33 = [CPLErrors cplErrorWithCode:18 underlyingError:0 userInfo:v29 description:@"%@", v32];
 
         v5 = v31;
-        v7 = v30;
+        v7 = allValues;
         v28 = v47;
       }
 
@@ -606,7 +606,7 @@ LABEL_3:
         v33 = +[CPLErrors cplErrorWithCode:underlyingError:userInfo:description:](CPLErrors, "cplErrorWithCode:underlyingError:userInfo:description:", 18, 0, v29, @"%lu changes were rejected before sending them to the transport", [v47 count]);
       }
 
-      v35 = v43;
+      v35 = errorCopy;
 
       v7 = v33;
       v34 = v46;
@@ -614,7 +614,7 @@ LABEL_3:
     }
 
     v34 = v46;
-    v35 = v43;
+    v35 = errorCopy;
     if ((v45 & 1) == 0)
     {
 LABEL_35:
@@ -648,14 +648,14 @@ LABEL_35:
     if (os_log_type_enabled(v36, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412290;
-      v61 = v4;
+      v61 = selfCopy;
       _os_log_impl(&dword_1DC05A000, v36, OS_LOG_TYPE_DEBUG, "Prepared %@", buf, 0xCu);
     }
   }
 
   v37 = [v5 copy];
-  items = v4->_items;
-  v4->_items = v37;
+  items = selfCopy->_items;
+  selfCopy->_items = v37;
 
   v39 = 1;
 LABEL_38:
@@ -862,13 +862,13 @@ void __63__CPLBeforeUploadCheckItems_recordsNeedingGeneratedDerivatives__block_i
         }
 
         items = self->_items;
-        v10 = [*(*(&v18 + 1) + 8 * i) scopedIdentifier];
-        v11 = [(NSDictionary *)items objectForKeyedSubscript:v10];
+        scopedIdentifier = [*(*(&v18 + 1) + 8 * i) scopedIdentifier];
+        v11 = [(NSDictionary *)items objectForKeyedSubscript:scopedIdentifier];
 
-        v12 = [v11 change];
-        if (v12)
+        change = [v11 change];
+        if (change)
         {
-          [(CPLChangeBatch *)v3 addRecord:v12];
+          [(CPLChangeBatch *)v3 addRecord:change];
         }
       }
 
@@ -907,22 +907,22 @@ void __42__CPLBeforeUploadCheckItems_batchToUpload__block_invoke(uint64_t a1, ui
   }
 }
 
-- (CPLBeforeUploadCheckItems)initWithBatch:(id)a3 targetMapping:(id)a4 ruleGroups:(int64_t)a5 pushRepositoryPriority:(unint64_t)a6 fingerprintContext:(id)a7 provider:(id)a8
+- (CPLBeforeUploadCheckItems)initWithBatch:(id)batch targetMapping:(id)mapping ruleGroups:(int64_t)groups pushRepositoryPriority:(unint64_t)priority fingerprintContext:(id)context provider:(id)provider
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a7;
-  v17 = a8;
+  batchCopy = batch;
+  mappingCopy = mapping;
+  contextCopy = context;
+  providerCopy = provider;
   v26.receiver = self;
   v26.super_class = CPLBeforeUploadCheckItems;
   v18 = [(CPLBeforeUploadCheckItems *)&v26 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_originalBatch, a3);
-    objc_storeStrong(&v19->_targetMapping, a4);
-    objc_storeStrong(&v19->_fingerprintContext, a7);
-    objc_storeStrong(&v19->_provider, a8);
+    objc_storeStrong(&v18->_originalBatch, batch);
+    objc_storeStrong(&v19->_targetMapping, mapping);
+    objc_storeStrong(&v19->_fingerprintContext, context);
+    objc_storeStrong(&v19->_provider, provider);
     v20 = objc_alloc_init(MEMORY[0x1E695DF90]);
     nonAssetsWithResourcesToUpload = v19->_nonAssetsWithResourcesToUpload;
     v19->_nonAssetsWithResourcesToUpload = v20;
@@ -931,8 +931,8 @@ void __42__CPLBeforeUploadCheckItems_batchToUpload__block_invoke(uint64_t a1, ui
     assetsWithResourcesToUpload = v19->_assetsWithResourcesToUpload;
     v19->_assetsWithResourcesToUpload = v22;
 
-    v19->_ruleGroups = a5;
-    v19->_pushRepositoryPriority = a6;
+    v19->_ruleGroups = groups;
+    v19->_pushRepositoryPriority = priority;
   }
 
   return v19;

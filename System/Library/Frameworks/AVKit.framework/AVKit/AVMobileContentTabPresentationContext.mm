@@ -1,60 +1,60 @@
 @interface AVMobileContentTabPresentationContext
-- (void)setCustomInfoViewController:(id)a3;
-- (void)setPresentationHeight:(double)a3;
-- (void)setPresentationLayout:(unint64_t)a3;
-- (void)setState:(unint64_t)a3;
-- (void)setTransitionContext:(id)a3;
+- (void)setCustomInfoViewController:(id)controller;
+- (void)setPresentationHeight:(double)height;
+- (void)setPresentationLayout:(unint64_t)layout;
+- (void)setState:(unint64_t)state;
+- (void)setTransitionContext:(id)context;
 @end
 
 @implementation AVMobileContentTabPresentationContext
 
-- (void)setTransitionContext:(id)a3
+- (void)setTransitionContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   transitionContext = self->_transitionContext;
   p_transitionContext = &self->_transitionContext;
-  if (transitionContext != v5)
+  if (transitionContext != contextCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_transitionContext, a3);
-    v5 = v8;
+    v8 = contextCopy;
+    objc_storeStrong(p_transitionContext, context);
+    contextCopy = v8;
   }
 }
 
-- (void)setPresentationLayout:(unint64_t)a3
+- (void)setPresentationLayout:(unint64_t)layout
 {
-  if (self->_presentationLayout != a3)
+  if (self->_presentationLayout != layout)
   {
-    self->_presentationLayout = a3;
+    self->_presentationLayout = layout;
   }
 }
 
-- (void)setPresentationHeight:(double)a3
+- (void)setPresentationHeight:(double)height
 {
-  if (self->_presentationHeight != a3)
+  if (self->_presentationHeight != height)
   {
-    self->_presentationHeight = a3;
+    self->_presentationHeight = height;
   }
 }
 
-- (void)setCustomInfoViewController:(id)a3
+- (void)setCustomInfoViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   customInfoViewController = self->_customInfoViewController;
   p_customInfoViewController = &self->_customInfoViewController;
-  if (customInfoViewController != v5)
+  if (customInfoViewController != controllerCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_customInfoViewController, a3);
-    v5 = v8;
+    v8 = controllerCopy;
+    objc_storeStrong(p_customInfoViewController, controller);
+    controllerCopy = v8;
   }
 }
 
-- (void)setState:(unint64_t)a3
+- (void)setState:(unint64_t)state
 {
-  if (self->_state != a3)
+  if (self->_state != state)
   {
-    self->_state = a3;
+    self->_state = state;
   }
 }
 

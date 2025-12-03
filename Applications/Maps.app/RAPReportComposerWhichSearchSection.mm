@@ -1,14 +1,14 @@
 @interface RAPReportComposerWhichSearchSection
-- (id)dequeueCellForValue:(id)a3;
+- (id)dequeueCellForValue:(id)value;
 @end
 
 @implementation RAPReportComposerWhichSearchSection
 
-- (id)dequeueCellForValue:(id)a3
+- (id)dequeueCellForValue:(id)value
 {
-  v3 = a3;
+  valueCopy = value;
   v4 = [(RAPTwoLinesMenuTableViewCell *)[RAPSearchHistoryItemTableViewCell alloc] initWithStyle:3 reuseIdentifier:0];
-  [(RAPSearchHistoryItemTableViewCell *)v4 setHistoryItem:v3];
+  [(RAPSearchHistoryItemTableViewCell *)v4 setHistoryItem:valueCopy];
 
   return v4;
 }

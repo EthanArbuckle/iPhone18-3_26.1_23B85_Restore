@@ -1,6 +1,6 @@
 @interface LoadMicroPaymentQueueOperation
-- (BOOL)_getQueueCount:(int64_t *)a3 error:(id *)a4;
-- (BOOL)_loadPaymentsWithExpectedCount:(int64_t)a3 error:(id *)a4;
+- (BOOL)_getQueueCount:(int64_t *)count error:(id *)error;
+- (BOOL)_loadPaymentsWithExpectedCount:(int64_t)count error:(id *)error;
 - (void)dealloc;
 - (void)run;
 @end
@@ -45,7 +45,7 @@
   [(LoadMicroPaymentQueueOperation *)self setSuccess:v5];
 }
 
-- (BOOL)_getQueueCount:(int64_t *)a3 error:(id *)a4
+- (BOOL)_getQueueCount:(int64_t *)count error:(id *)error
 {
   v11 = 0;
   v7 = objc_alloc_init(LoadMicroPaymentQueueCountOperation);
@@ -53,26 +53,26 @@
   [(LoadMicroPaymentQueueCountOperation *)v7 setRequest:[(LoadMicroPaymentQueueOperation *)self request]];
   [(LoadMicroPaymentQueueCountOperation *)v7 setURLBagKey:[(LoadMicroPaymentQueueOperation *)self queueCountURLBagKey]];
   v8 = [(LoadMicroPaymentQueueOperation *)self runSubOperation:v7 returningError:&v11];
-  v9 = 0;
+  queueItemCount = 0;
   if (v8)
   {
-    v9 = [(LoadMicroPaymentQueueCountOperation *)v7 queueItemCount];
+    queueItemCount = [(LoadMicroPaymentQueueCountOperation *)v7 queueItemCount];
   }
 
-  if (a3)
+  if (count)
   {
-    *a3 = v9;
+    *count = queueItemCount;
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = v11;
+    *error = v11;
   }
 
   return v8;
 }
 
-- (BOOL)_loadPaymentsWithExpectedCount:(int64_t)a3 error:(id *)a4
+- (BOOL)_loadPaymentsWithExpectedCount:(int64_t)count error:(id *)error
 {
   v11 = 0;
   v7 = objc_alloc_init(LoadMicroPaymentQueuePaymentsOperation);
@@ -81,14 +81,14 @@
   v8 = [(LoadMicroPaymentQueueOperation *)self runSubOperation:v7 returningError:&v11];
   if (v8)
   {
-    v9 = [(LoadMicroPaymentQueuePaymentsOperation *)v7 response];
-    [(MicroPaymentQueueResponse *)v9 setServerPaymentCount:a3];
-    [(LoadMicroPaymentQueueOperation *)self setResponse:v9];
+    response = [(LoadMicroPaymentQueuePaymentsOperation *)v7 response];
+    [(MicroPaymentQueueResponse *)response setServerPaymentCount:count];
+    [(LoadMicroPaymentQueueOperation *)self setResponse:response];
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = v11;
+    *error = v11;
   }
 
   return v8;

@@ -1,20 +1,20 @@
 @interface AWDDEDExtensionScheduled
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasTimestamp:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasTimestamp:(BOOL)timestamp;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDDEDExtensionScheduled
 
-- (void)setHasTimestamp:(BOOL)a3
+- (void)setHasTimestamp:(BOOL)timestamp
 {
-  if (a3)
+  if (timestamp)
   {
     v3 = 2;
   }
@@ -33,87 +33,87 @@
   v8.receiver = self;
   v8.super_class = AWDDEDExtensionScheduled;
   v4 = [(AWDDEDExtensionScheduled *)&v8 description];
-  v5 = [(AWDDEDExtensionScheduled *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(AWDDEDExtensionScheduled *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if ((*&self->_has & 2) != 0)
   {
     v4 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_timestamp];
-    [v3 setObject:v4 forKey:@"timestamp"];
+    [dictionary setObject:v4 forKey:@"timestamp"];
   }
 
   extension = self->_extension;
   if (extension)
   {
-    [v3 setObject:extension forKey:@"extension"];
+    [dictionary setObject:extension forKey:@"extension"];
   }
 
   if (*&self->_has)
   {
     v6 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_delay];
-    [v3 setObject:v6 forKey:@"delay"];
+    [dictionary setObject:v6 forKey:@"delay"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v7 = v4;
+  toCopy = to;
+  v7 = toCopy;
   if ((*&self->_has & 2) != 0)
   {
     timestamp = self->_timestamp;
     PBDataWriterWriteUint64Field();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_extension)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (*&self->_has)
   {
     delay = self->_delay;
     PBDataWriterWriteUint64Field();
-    v4 = v7;
+    toCopy = v7;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if ((*&self->_has & 2) != 0)
   {
-    v4[2] = self->_timestamp;
-    *(v4 + 32) |= 2u;
+    toCopy[2] = self->_timestamp;
+    *(toCopy + 32) |= 2u;
   }
 
   if (self->_extension)
   {
-    v5 = v4;
-    [v4 setExtension:?];
-    v4 = v5;
+    v5 = toCopy;
+    [toCopy setExtension:?];
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    v4[1] = self->_delay;
-    *(v4 + 32) |= 1u;
+    toCopy[1] = self->_delay;
+    *(toCopy + 32) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if ((*&self->_has & 2) != 0)
   {
@@ -121,7 +121,7 @@
     *(v5 + 32) |= 2u;
   }
 
-  v7 = [(NSString *)self->_extension copyWithZone:a3];
+  v7 = [(NSString *)self->_extension copyWithZone:zone];
   v8 = *(v6 + 24);
   *(v6 + 24) = v7;
 
@@ -134,31 +134,31 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_14;
   }
 
   has = self->_has;
-  v6 = *(v4 + 32);
+  v6 = *(equalCopy + 32);
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 32) & 2) == 0 || self->_timestamp != *(v4 + 2))
+    if ((*(equalCopy + 32) & 2) == 0 || self->_timestamp != *(equalCopy + 2))
     {
       goto LABEL_14;
     }
   }
 
-  else if ((*(v4 + 32) & 2) != 0)
+  else if ((*(equalCopy + 32) & 2) != 0)
   {
     goto LABEL_14;
   }
 
   extension = self->_extension;
-  if (extension | *(v4 + 3))
+  if (extension | *(equalCopy + 3))
   {
     if (![(NSString *)extension isEqual:?])
     {
@@ -170,10 +170,10 @@ LABEL_14:
     has = self->_has;
   }
 
-  v8 = (*(v4 + 32) & 1) == 0;
+  v8 = (*(equalCopy + 32) & 1) == 0;
   if (has)
   {
-    if ((*(v4 + 32) & 1) == 0 || self->_delay != *(v4 + 1))
+    if ((*(equalCopy + 32) & 1) == 0 || self->_delay != *(equalCopy + 1))
     {
       goto LABEL_14;
     }
@@ -212,25 +212,25 @@ LABEL_15:
   return v4 ^ v3 ^ v5;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if ((v4[4] & 2) != 0)
+  fromCopy = from;
+  if ((fromCopy[4] & 2) != 0)
   {
-    self->_timestamp = v4[2];
+    self->_timestamp = fromCopy[2];
     *&self->_has |= 2u;
   }
 
-  if (v4[3])
+  if (fromCopy[3])
   {
-    v5 = v4;
+    v5 = fromCopy;
     [(AWDDEDExtensionScheduled *)self setExtension:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[4])
+  if (fromCopy[4])
   {
-    self->_delay = v4[1];
+    self->_delay = fromCopy[1];
     *&self->_has |= 1u;
   }
 }

@@ -1,17 +1,17 @@
 @interface HUTemperatureControlPanelConfiguration
 + (id)_temperatureFormatter;
 - (HUControlPanelRule)rule;
-- (void)setupControlsForCell:(id)a3 item:(id)a4;
+- (void)setupControlsForCell:(id)cell item:(id)item;
 @end
 
 @implementation HUTemperatureControlPanelConfiguration
 
 + (id)_temperatureFormatter
 {
-  v2 = [MEMORY[0x277D146A0] sharedInstance];
-  v3 = [v2 temperatureFormatter];
+  mEMORY[0x277D146A0] = [MEMORY[0x277D146A0] sharedInstance];
+  temperatureFormatter = [mEMORY[0x277D146A0] temperatureFormatter];
 
-  return v3;
+  return temperatureFormatter;
 }
 
 - (HUControlPanelRule)rule
@@ -54,12 +54,12 @@ uint64_t __46__HUTemperatureControlPanelConfiguration_rule__block_invoke(uint64_
   return v8;
 }
 
-- (void)setupControlsForCell:(id)a3 item:(id)a4
+- (void)setupControlsForCell:(id)cell item:(id)item
 {
-  v5 = a3;
-  v6 = a4;
+  cellCopy = cell;
+  itemCopy = item;
   v7 = objc_opt_class();
-  v8 = v5;
+  v8 = cellCopy;
   v29 = v8;
   if (!v8)
   {
@@ -81,9 +81,9 @@ uint64_t __46__HUTemperatureControlPanelConfiguration_rule__block_invoke(uint64_
   v11 = v29;
   if (!v10)
   {
-    v12 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"id  _Nullable NAAssertCast(Class  _Nonnull __unsafe_unretained, id  _Nonnull __strong)"}];
-    [v12 handleFailureInFunction:v13 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v7, objc_opt_class()}];
+    [currentHandler handleFailureInFunction:v13 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v7, objc_opt_class()}];
 
     v8 = v29;
 LABEL_7:
@@ -91,13 +91,13 @@ LABEL_7:
   }
 
   v14 = objc_opt_class();
-  v15 = [v6 controlItems];
-  v16 = [v15 anyObject];
-  if (v16)
+  controlItems = [itemCopy controlItems];
+  anyObject = [controlItems anyObject];
+  if (anyObject)
   {
     if (objc_opt_isKindOfClass())
     {
-      v17 = v16;
+      v17 = anyObject;
     }
 
     else
@@ -105,42 +105,42 @@ LABEL_7:
       v17 = 0;
     }
 
-    v18 = v16;
+    v18 = anyObject;
     if (v17)
     {
       goto LABEL_15;
     }
 
-    v19 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
     v20 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"id  _Nullable NAAssertCast(Class  _Nonnull __unsafe_unretained, id  _Nonnull __strong)"}];
-    [v19 handleFailureInFunction:v20 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v14, objc_opt_class()}];
+    [currentHandler2 handleFailureInFunction:v20 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v14, objc_opt_class()}];
   }
 
   v18 = 0;
 LABEL_15:
 
   v21 = objc_alloc_init(HUStepperControlView);
-  v22 = [v6 identifierForControlItem:v18];
+  v22 = [itemCopy identifierForControlItem:v18];
   [(HUStepperControlView *)v21 setIdentifier:v22];
 
-  v23 = [v18 minValue];
-  [v23 doubleValue];
+  minValue = [v18 minValue];
+  [minValue doubleValue];
   [(HUStepperControlView *)v21 setMinValue:?];
 
-  v24 = [v18 maxValue];
-  [v24 doubleValue];
+  maxValue = [v18 maxValue];
+  [maxValue doubleValue];
   [(HUStepperControlView *)v21 setMaxValue:?];
 
-  v25 = [v18 stepValue];
-  [v25 doubleValue];
+  stepValue = [v18 stepValue];
+  [stepValue doubleValue];
   [(HUStepperControlView *)v21 setStepValue:?];
 
-  v26 = [objc_opt_class() _temperatureFormatter];
-  [(HUStepperControlView *)v21 setValueFormatter:v26];
+  _temperatureFormatter = [objc_opt_class() _temperatureFormatter];
+  [(HUStepperControlView *)v21 setValueFormatter:_temperatureFormatter];
 
   [v11 setControlView:v21];
-  v27 = [v6 latestResults];
-  v28 = [v27 objectForKeyedSubscript:*MEMORY[0x277D13F60]];
+  latestResults = [itemCopy latestResults];
+  v28 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13F60]];
   [v11 setControlTitle:v28];
 }
 

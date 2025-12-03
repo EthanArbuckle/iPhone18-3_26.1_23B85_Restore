@@ -1,13 +1,13 @@
 @interface ITIdleTimerServiceProvider
-+ (id)makeRequestHandlerWithDelegate:(id)a3;
++ (id)makeRequestHandlerWithDelegate:(id)delegate;
 @end
 
 @implementation ITIdleTimerServiceProvider
 
-+ (id)makeRequestHandlerWithDelegate:(id)a3
++ (id)makeRequestHandlerWithDelegate:(id)delegate
 {
-  v3 = a3;
-  v4 = [[ITIdleTimerStateClient alloc] initWithDelegate:v3];
+  delegateCopy = delegate;
+  v4 = [[ITIdleTimerStateClient alloc] initWithDelegate:delegateCopy];
 
   return v4;
 }

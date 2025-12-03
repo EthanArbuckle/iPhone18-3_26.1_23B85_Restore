@@ -1,10 +1,10 @@
 @interface RMModelNetworkWiFiDeclaration_Proxy
 + (NSSet)allowedPayloadKeys;
 + (id)buildRequiredOnly;
-+ (id)buildWithType:(id)a3 server:(id)a4 serverPort:(id)a5 proxyAuthenticationCredentialsAssetReference:(id)a6 PACURL:(id)a7 pacFallbackAllowed:(id)a8;
-- (BOOL)loadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializeWithType:(signed __int16)a3;
++ (id)buildWithType:(id)type server:(id)server serverPort:(id)port proxyAuthenticationCredentialsAssetReference:(id)reference PACURL:(id)l pacFallbackAllowed:(id)allowed;
+- (BOOL)loadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializeWithType:(signed __int16)type;
 @end
 
 @implementation RMModelNetworkWiFiDeclaration_Proxy
@@ -27,19 +27,19 @@
   return v4;
 }
 
-+ (id)buildWithType:(id)a3 server:(id)a4 serverPort:(id)a5 proxyAuthenticationCredentialsAssetReference:(id)a6 PACURL:(id)a7 pacFallbackAllowed:(id)a8
++ (id)buildWithType:(id)type server:(id)server serverPort:(id)port proxyAuthenticationCredentialsAssetReference:(id)reference PACURL:(id)l pacFallbackAllowed:(id)allowed
 {
-  v13 = a8;
-  v14 = a7;
-  v15 = a6;
-  v16 = a5;
-  v17 = a4;
-  v18 = a3;
+  allowedCopy = allowed;
+  lCopy = l;
+  referenceCopy = reference;
+  portCopy = port;
+  serverCopy = server;
+  typeCopy = type;
   v19 = objc_opt_new();
   v20 = v19;
-  if (v18)
+  if (typeCopy)
   {
-    v21 = v18;
+    v21 = typeCopy;
   }
 
   else
@@ -49,15 +49,15 @@
 
   [v19 setPayloadType:v21];
 
-  [v20 setPayloadServer:v17];
-  [v20 setPayloadServerPort:v16];
+  [v20 setPayloadServer:serverCopy];
+  [v20 setPayloadServerPort:portCopy];
 
-  [v20 setPayloadProxyAuthenticationCredentialsAssetReference:v15];
-  [v20 setPayloadPACURL:v14];
+  [v20 setPayloadProxyAuthenticationCredentialsAssetReference:referenceCopy];
+  [v20 setPayloadPACURL:lCopy];
 
-  if (v13)
+  if (allowedCopy)
   {
-    v22 = v13;
+    v22 = allowedCopy;
   }
 
   else
@@ -77,12 +77,12 @@
   return v2;
 }
 
-- (BOOL)loadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5
+- (BOOL)loadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error
 {
-  v7 = a3;
+  dictionaryCopy = dictionary;
   v8 = MEMORY[0x277CBEB58];
-  v9 = [v7 allKeys];
-  v10 = [v8 setWithArray:v9];
+  allKeys = [dictionaryCopy allKeys];
+  v10 = [v8 setWithArray:allKeys];
 
   v11 = +[RMModelNetworkWiFiDeclaration_Proxy allowedPayloadKeys];
   [v10 minusSet:v11];
@@ -90,41 +90,41 @@
   v12 = [v10 copy];
   [(RMModelPayloadBase *)self setUnknownPayloadKeys:v12];
 
-  v13 = [(RMModelPayloadBase *)self loadStringFromDictionary:v7 usingKey:@"Type" forKeyPath:@"payloadType" isRequired:0 defaultValue:@"None" error:a5]&& [(RMModelPayloadBase *)self loadStringFromDictionary:v7 usingKey:@"Server" forKeyPath:@"payloadServer" isRequired:0 defaultValue:0 error:a5]&& [(RMModelPayloadBase *)self loadIntegerFromDictionary:v7 usingKey:@"ServerPort" forKeyPath:@"payloadServerPort" isRequired:0 defaultValue:0 error:a5]&& [(RMModelPayloadBase *)self loadStringFromDictionary:v7 usingKey:@"ProxyAuthenticationCredentialsAssetReference" forKeyPath:@"payloadProxyAuthenticationCredentialsAssetReference" isRequired:0 defaultValue:0 error:a5]&& [(RMModelPayloadBase *)self loadStringFromDictionary:v7 usingKey:@"PACURL" forKeyPath:@"payloadPACURL" isRequired:0 defaultValue:0 error:a5]&& [(RMModelPayloadBase *)self loadBooleanFromDictionary:v7 usingKey:@"PACFallbackAllowed" forKeyPath:@"payloadPACFallbackAllowed" isRequired:0 defaultValue:MEMORY[0x277CBEC28] error:a5];
+  v13 = [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"Type" forKeyPath:@"payloadType" isRequired:0 defaultValue:@"None" error:error]&& [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"Server" forKeyPath:@"payloadServer" isRequired:0 defaultValue:0 error:error]&& [(RMModelPayloadBase *)self loadIntegerFromDictionary:dictionaryCopy usingKey:@"ServerPort" forKeyPath:@"payloadServerPort" isRequired:0 defaultValue:0 error:error]&& [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"ProxyAuthenticationCredentialsAssetReference" forKeyPath:@"payloadProxyAuthenticationCredentialsAssetReference" isRequired:0 defaultValue:0 error:error]&& [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"PACURL" forKeyPath:@"payloadPACURL" isRequired:0 defaultValue:0 error:error]&& [(RMModelPayloadBase *)self loadBooleanFromDictionary:dictionaryCopy usingKey:@"PACFallbackAllowed" forKeyPath:@"payloadPACFallbackAllowed" isRequired:0 defaultValue:MEMORY[0x277CBEC28] error:error];
   return v13;
 }
 
-- (id)serializeWithType:(signed __int16)a3
+- (id)serializeWithType:(signed __int16)type
 {
   v4 = objc_opt_new();
-  v5 = [(RMModelNetworkWiFiDeclaration_Proxy *)self payloadType];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"Type" value:v5 isRequired:0 defaultValue:@"None"];
+  payloadType = [(RMModelNetworkWiFiDeclaration_Proxy *)self payloadType];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"Type" value:payloadType isRequired:0 defaultValue:@"None"];
 
-  v6 = [(RMModelNetworkWiFiDeclaration_Proxy *)self payloadServer];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"Server" value:v6 isRequired:0 defaultValue:0];
+  payloadServer = [(RMModelNetworkWiFiDeclaration_Proxy *)self payloadServer];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"Server" value:payloadServer isRequired:0 defaultValue:0];
 
-  v7 = [(RMModelNetworkWiFiDeclaration_Proxy *)self payloadServerPort];
-  [(RMModelPayloadBase *)self serializeIntegerIntoDictionary:v4 usingKey:@"ServerPort" value:v7 isRequired:0 defaultValue:0];
+  payloadServerPort = [(RMModelNetworkWiFiDeclaration_Proxy *)self payloadServerPort];
+  [(RMModelPayloadBase *)self serializeIntegerIntoDictionary:v4 usingKey:@"ServerPort" value:payloadServerPort isRequired:0 defaultValue:0];
 
-  v8 = [(RMModelNetworkWiFiDeclaration_Proxy *)self payloadProxyAuthenticationCredentialsAssetReference];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"ProxyAuthenticationCredentialsAssetReference" value:v8 isRequired:0 defaultValue:0];
+  payloadProxyAuthenticationCredentialsAssetReference = [(RMModelNetworkWiFiDeclaration_Proxy *)self payloadProxyAuthenticationCredentialsAssetReference];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"ProxyAuthenticationCredentialsAssetReference" value:payloadProxyAuthenticationCredentialsAssetReference isRequired:0 defaultValue:0];
 
-  v9 = [(RMModelNetworkWiFiDeclaration_Proxy *)self payloadPACURL];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"PACURL" value:v9 isRequired:0 defaultValue:0];
+  payloadPACURL = [(RMModelNetworkWiFiDeclaration_Proxy *)self payloadPACURL];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"PACURL" value:payloadPACURL isRequired:0 defaultValue:0];
 
-  v10 = [(RMModelNetworkWiFiDeclaration_Proxy *)self payloadPACFallbackAllowed];
-  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v4 usingKey:@"PACFallbackAllowed" value:v10 isRequired:0 defaultValue:MEMORY[0x277CBEC28]];
+  payloadPACFallbackAllowed = [(RMModelNetworkWiFiDeclaration_Proxy *)self payloadPACFallbackAllowed];
+  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v4 usingKey:@"PACFallbackAllowed" value:payloadPACFallbackAllowed isRequired:0 defaultValue:MEMORY[0x277CBEC28]];
 
   v11 = [v4 copy];
 
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v18.receiver = self;
   v18.super_class = RMModelNetworkWiFiDeclaration_Proxy;
-  v4 = [(RMModelPayloadBase *)&v18 copyWithZone:a3];
+  v4 = [(RMModelPayloadBase *)&v18 copyWithZone:zone];
   v5 = [(NSString *)self->_payloadType copy];
   v6 = v4[2];
   v4[2] = v5;

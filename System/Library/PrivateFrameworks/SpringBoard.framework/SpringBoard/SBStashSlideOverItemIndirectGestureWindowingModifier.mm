@@ -1,15 +1,15 @@
 @interface SBStashSlideOverItemIndirectGestureWindowingModifier
-- (BOOL)isLayoutRoleMatchMovedToScene:(int64_t)a3 inAppLayout:(id)a4;
-- (BOOL)shouldUseAnchorPointToPinLayoutRolesToSpace:(unint64_t)a3;
+- (BOOL)isLayoutRoleMatchMovedToScene:(int64_t)scene inAppLayout:(id)layout;
+- (BOOL)shouldUseAnchorPointToPinLayoutRolesToSpace:(unint64_t)space;
 - (BOOL)wantsSlideOverTongue;
-- (CGRect)frameForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 withBounds:(CGRect)a5;
-- (SBWindowingItemCorners)cornersForItem:(SEL)a3;
-- (SBWindowingItemFrame)frameForItem:(SEL)a3;
-- (double)opacityForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 atIndex:(unint64_t)a5;
-- (id)_responseForGestureEnd:(id)a3;
+- (CGRect)frameForLayoutRole:(int64_t)role inAppLayout:(id)layout withBounds:(CGRect)bounds;
+- (SBWindowingItemCorners)cornersForItem:(SEL)item;
+- (SBWindowingItemFrame)frameForItem:(SEL)item;
+- (double)opacityForLayoutRole:(int64_t)role inAppLayout:(id)layout atIndex:(unint64_t)index;
+- (id)_responseForGestureEnd:(id)end;
 - (id)_slideOverAppLayout;
-- (id)adjustedAppLayoutsForAppLayouts:(id)a3;
-- (id)animationAttributesForItem:(id)a3;
+- (id)adjustedAppLayoutsForAppLayouts:(id)layouts;
+- (id)animationAttributesForItem:(id)item;
 - (id)appLayoutsToCacheFullsizeSnapshots;
 - (id)appLayoutsToCacheSnapshots;
 - (id)topMostItems;
@@ -17,10 +17,10 @@
 - (unint64_t)slideOverTongueDirection;
 - (unint64_t)slideOverTongueState;
 - (void)didComplete;
-- (void)gestureDidComplete:(id)a3;
-- (void)gestureDidUpdate:(id)a3;
-- (void)gestureWillBegin:(id)a3;
-- (void)transitionWillBegin:(id)a3;
+- (void)gestureDidComplete:(id)complete;
+- (void)gestureDidUpdate:(id)update;
+- (void)gestureWillBegin:(id)begin;
+- (void)transitionWillBegin:(id)begin;
 - (void)willBegin;
 @end
 
@@ -39,15 +39,15 @@
   self->_slideOverTongueDirection = [(SBStashSlideOverItemIndirectGestureWindowingModifier *)&v3 slideOverTongueDirection];
 }
 
-- (void)gestureWillBegin:(id)a3
+- (void)gestureWillBegin:(id)begin
 {
-  v4 = a3;
+  beginCopy = begin;
   gestureID = self->_gestureID;
-  v6 = [v4 gestureID];
-  v7 = v6;
+  gestureID = [beginCopy gestureID];
+  v7 = gestureID;
   if (gestureID)
   {
-    v8 = [(NSUUID *)gestureID isEqual:v6];
+    v8 = [(NSUUID *)gestureID isEqual:gestureID];
 
     if ((v8 & 1) == 0)
     {
@@ -58,24 +58,24 @@
   else
   {
     v9 = self->_gestureID;
-    self->_gestureID = v6;
+    self->_gestureID = gestureID;
 
-    v10 = [(SBStashSlideOverItemIndirectGestureWindowingModifier *)self displayItemInSlideOver];
+    displayItemInSlideOver = [(SBStashSlideOverItemIndirectGestureWindowingModifier *)self displayItemInSlideOver];
     slideOverDisplayItem = self->_slideOverDisplayItem;
-    self->_slideOverDisplayItem = v10;
+    self->_slideOverDisplayItem = displayItemInSlideOver;
 
     if (self->_slideOverDisplayItem)
     {
-      v12 = [(SBStashSlideOverItemIndirectGestureWindowingModifier *)self _slideOverAppLayout];
-      v13 = [(SBStashSlideOverItemIndirectGestureWindowingModifier *)self layoutAttributesForDisplayItem:self->_slideOverDisplayItem inAppLayout:v12];
+      _slideOverAppLayout = [(SBStashSlideOverItemIndirectGestureWindowingModifier *)self _slideOverAppLayout];
+      v13 = [(SBStashSlideOverItemIndirectGestureWindowingModifier *)self layoutAttributesForDisplayItem:self->_slideOverDisplayItem inAppLayout:_slideOverAppLayout];
       [(SBDisplayItemLayoutAttributes *)v13 slideOverConfiguration];
       v14 = v29[1];
       *&self->_initialSlideOverConfiguration.corner = v29[0];
       self->_initialSlideOverConfiguration.size = v14;
       *&self->_initialSlideOverConfiguration.isActive = v30;
 
-      v15 = [(SBWindowingModifier *)self windowingConfiguration];
-      [v15 slideOverBorderWidth];
+      windowingConfiguration = [(SBWindowingModifier *)self windowingConfiguration];
+      [windowingConfiguration slideOverBorderWidth];
       v17 = v16;
 
       p_initialFrame = &self->_initialFrame;
@@ -91,7 +91,7 @@
 
       else
       {
-        v19 = [(SBWindowingModifier *)self flexibleAutoLayoutSpaceForAppLayout:v12];
+        v19 = [(SBWindowingModifier *)self flexibleAutoLayoutSpaceForAppLayout:_slideOverAppLayout];
         v20 = [v19 flexibleAutoLayoutItemForDisplayItem:self->_slideOverDisplayItem];
         [v20 frame];
         p_initialFrame->origin.x = v21;
@@ -100,9 +100,9 @@
         self->_initialFrame.size.height = v24;
       }
 
-      v25 = [(SBStashSlideOverItemIndirectGestureWindowingModifier *)self appLayout];
+      appLayout = [(SBStashSlideOverItemIndirectGestureWindowingModifier *)self appLayout];
       initialAppLayout = self->_initialAppLayout;
-      self->_initialAppLayout = v25;
+      self->_initialAppLayout = appLayout;
     }
 
     v27 = +[SBUpdateLayoutSwitcherEventResponse setNeedsLayout];
@@ -113,20 +113,20 @@
   }
 }
 
-- (void)gestureDidUpdate:(id)a3
+- (void)gestureDidUpdate:(id)update
 {
-  v4 = a3;
-  v5 = [(SBStashSlideOverItemIndirectGestureWindowingModifier *)self appLayouts];
+  updateCopy = update;
+  appLayouts = [(SBStashSlideOverItemIndirectGestureWindowingModifier *)self appLayouts];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __73__SBStashSlideOverItemIndirectGestureWindowingModifier_gestureDidUpdate___block_invoke;
   v10[3] = &unk_2783A8CB8;
   v10[4] = self;
-  v6 = [v5 bs_firstObjectPassingTest:v10];
+  v6 = [appLayouts bs_firstObjectPassingTest:v10];
 
   if (v6)
   {
-    [v4 translationInContainerView];
+    [updateCopy translationInContainerView];
     self->_translation.x = v7;
     self->_translation.y = v8;
     v9 = +[SBUpdateLayoutSwitcherEventResponse setNeedsLayout];
@@ -134,19 +134,19 @@
   }
 }
 
-- (void)gestureDidComplete:(id)a3
+- (void)gestureDidComplete:(id)complete
 {
-  v4 = [(SBStashSlideOverItemIndirectGestureWindowingModifier *)self _responseForGestureEnd:a3];
+  v4 = [(SBStashSlideOverItemIndirectGestureWindowingModifier *)self _responseForGestureEnd:complete];
   [(SBWindowingModifier *)self appendResponse:v4];
 }
 
-- (void)transitionWillBegin:(id)a3
+- (void)transitionWillBegin:(id)begin
 {
-  v10 = a3;
-  if ([v10 isGestureInitiated])
+  beginCopy = begin;
+  if ([beginCopy isGestureInitiated])
   {
-    v4 = [v10 toAppLayout];
-    v5 = [v4 containsItem:self->_slideOverDisplayItem];
+    toAppLayout = [beginCopy toAppLayout];
+    v5 = [toAppLayout containsItem:self->_slideOverDisplayItem];
 
     v6 = [SBAddModifierSwitcherEventResponse alloc];
     if (v5)
@@ -163,7 +163,7 @@
     v9 = [(SBAddModifierSwitcherEventResponse *)v6 initWithModifier:v7 level:3];
     [(SBWindowingModifier *)self appendResponse:v9];
 
-    [v10 handleWithReason:@"Stash Slide Over Indirect Gesture Modifier"];
+    [beginCopy handleWithReason:@"Stash Slide Over Indirect Gesture Modifier"];
   }
 
   else
@@ -178,11 +178,11 @@
   [(SBWindowingModifier *)self appendResponse:v3];
 }
 
-- (id)adjustedAppLayoutsForAppLayouts:(id)a3
+- (id)adjustedAppLayoutsForAppLayouts:(id)layouts
 {
   v15.receiver = self;
   v15.super_class = SBStashSlideOverItemIndirectGestureWindowingModifier;
-  v4 = [(SBStashSlideOverItemIndirectGestureWindowingModifier *)&v15 adjustedAppLayoutsForAppLayouts:a3];
+  v4 = [(SBStashSlideOverItemIndirectGestureWindowingModifier *)&v15 adjustedAppLayoutsForAppLayouts:layouts];
   v5 = objc_opt_new();
   v6 = self->_slideOverDisplayItem;
   v12[0] = MEMORY[0x277D85DD0];
@@ -229,14 +229,14 @@ void __88__SBStashSlideOverItemIndirectGestureWindowingModifier_adjustedAppLayou
 {
   v7.receiver = self;
   v7.super_class = SBStashSlideOverItemIndirectGestureWindowingModifier;
-  v3 = [(SBWindowingModifier *)&v7 topMostItems];
-  v4 = [(SBStashSlideOverItemIndirectGestureWindowingModifier *)self _slideOverAppLayout];
-  v5 = [v3 sb_arrayByInsertingOrMovingObject:v4 toIndex:0];
+  topMostItems = [(SBWindowingModifier *)&v7 topMostItems];
+  _slideOverAppLayout = [(SBStashSlideOverItemIndirectGestureWindowingModifier *)self _slideOverAppLayout];
+  v5 = [topMostItems sb_arrayByInsertingOrMovingObject:_slideOverAppLayout toIndex:0];
 
   return v5;
 }
 
-- (SBWindowingItemFrame)frameForItem:(SEL)a3
+- (SBWindowingItemFrame)frameForItem:(SEL)item
 {
   v6 = a4;
   if ([v6 isAppLayout] && (objc_msgSend(v6, "appLayout"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "containsItem:", self->_slideOverDisplayItem), v7, v8))
@@ -255,14 +255,14 @@ void __88__SBStashSlideOverItemIndirectGestureWindowingModifier_adjustedAppLayou
   return result;
 }
 
-- (CGRect)frameForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 withBounds:(CGRect)a5
+- (CGRect)frameForLayoutRole:(int64_t)role inAppLayout:(id)layout withBounds:(CGRect)bounds
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v11 = a4;
-  v12 = [v11 itemForLayoutRole:a3];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  layoutCopy = layout;
+  v12 = [layoutCopy itemForLayoutRole:role];
   if (BSEqualObjects())
   {
     v13 = self->_initialFrame.origin.y;
@@ -275,7 +275,7 @@ void __88__SBStashSlideOverItemIndirectGestureWindowingModifier_adjustedAppLayou
   {
     v25.receiver = self;
     v25.super_class = SBStashSlideOverItemIndirectGestureWindowingModifier;
-    [(SBStashSlideOverItemIndirectGestureWindowingModifier *)&v25 frameForLayoutRole:a3 inAppLayout:v11 withBounds:x, y, width, height];
+    [(SBStashSlideOverItemIndirectGestureWindowingModifier *)&v25 frameForLayoutRole:role inAppLayout:layoutCopy withBounds:x, y, width, height];
     v16 = v17;
     v13 = v18;
     v14 = v19;
@@ -293,10 +293,10 @@ void __88__SBStashSlideOverItemIndirectGestureWindowingModifier_adjustedAppLayou
   return result;
 }
 
-- (BOOL)shouldUseAnchorPointToPinLayoutRolesToSpace:(unint64_t)a3
+- (BOOL)shouldUseAnchorPointToPinLayoutRolesToSpace:(unint64_t)space
 {
-  v5 = [(SBStashSlideOverItemIndirectGestureWindowingModifier *)self appLayouts];
-  v6 = [v5 objectAtIndex:a3];
+  appLayouts = [(SBStashSlideOverItemIndirectGestureWindowingModifier *)self appLayouts];
+  v6 = [appLayouts objectAtIndex:space];
 
   if ([v6 containsItem:self->_slideOverDisplayItem])
   {
@@ -307,7 +307,7 @@ void __88__SBStashSlideOverItemIndirectGestureWindowingModifier_adjustedAppLayou
   {
     v9.receiver = self;
     v9.super_class = SBStashSlideOverItemIndirectGestureWindowingModifier;
-    v7 = [(SBStashSlideOverItemIndirectGestureWindowingModifier *)&v9 shouldUseAnchorPointToPinLayoutRolesToSpace:a3];
+    v7 = [(SBStashSlideOverItemIndirectGestureWindowingModifier *)&v9 shouldUseAnchorPointToPinLayoutRolesToSpace:space];
   }
 
   return v7;
@@ -315,61 +315,61 @@ void __88__SBStashSlideOverItemIndirectGestureWindowingModifier_adjustedAppLayou
 
 - (id)visibleItems
 {
-  v3 = [(SBStashSlideOverItemIndirectGestureWindowingModifier *)self appLayouts];
+  appLayouts = [(SBStashSlideOverItemIndirectGestureWindowingModifier *)self appLayouts];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __68__SBStashSlideOverItemIndirectGestureWindowingModifier_visibleItems__block_invoke;
   v10[3] = &unk_2783A8CB8;
   v10[4] = self;
-  v4 = [v3 bs_firstObjectPassingTest:v10];
+  v4 = [appLayouts bs_firstObjectPassingTest:v10];
 
   if (v4)
   {
     v9.receiver = self;
     v9.super_class = SBStashSlideOverItemIndirectGestureWindowingModifier;
-    v5 = [(SBWindowingModifier *)&v9 visibleItems];
-    v6 = [v5 setByAddingObject:v4];
+    visibleItems = [(SBWindowingModifier *)&v9 visibleItems];
+    visibleItems2 = [visibleItems setByAddingObject:v4];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = SBStashSlideOverItemIndirectGestureWindowingModifier;
-    v6 = [(SBWindowingModifier *)&v8 visibleItems];
+    visibleItems2 = [(SBWindowingModifier *)&v8 visibleItems];
   }
 
-  return v6;
+  return visibleItems2;
 }
 
-- (id)animationAttributesForItem:(id)a3
+- (id)animationAttributesForItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v12.receiver = self;
   v12.super_class = SBStashSlideOverItemIndirectGestureWindowingModifier;
-  v5 = [(SBWindowingModifier *)&v12 animationAttributesForItem:v4];
+  v5 = [(SBWindowingModifier *)&v12 animationAttributesForItem:itemCopy];
   v6 = [v5 mutableCopy];
 
   [v6 setUpdateMode:3];
-  if ([v4 isAppLayout])
+  if ([itemCopy isAppLayout])
   {
-    v7 = [v4 appLayout];
-    v8 = [v7 containsItem:self->_slideOverDisplayItem];
+    appLayout = [itemCopy appLayout];
+    v8 = [appLayout containsItem:self->_slideOverDisplayItem];
 
     if (v8)
     {
-      v9 = [(SBStashSlideOverItemIndirectGestureWindowingModifier *)self medusaSettings];
-      v10 = [v9 medusaAnimationSettings];
-      [v6 setLayoutSettings:v10];
+      medusaSettings = [(SBStashSlideOverItemIndirectGestureWindowingModifier *)self medusaSettings];
+      medusaAnimationSettings = [medusaSettings medusaAnimationSettings];
+      [v6 setLayoutSettings:medusaAnimationSettings];
     }
   }
 
   return v6;
 }
 
-- (double)opacityForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 atIndex:(unint64_t)a5
+- (double)opacityForLayoutRole:(int64_t)role inAppLayout:(id)layout atIndex:(unint64_t)index
 {
-  v8 = a4;
-  v9 = [v8 itemForLayoutRole:a3];
+  layoutCopy = layout;
+  v9 = [layoutCopy itemForLayoutRole:role];
   v10 = BSEqualObjects();
 
   v11 = 1.0;
@@ -377,17 +377,17 @@ void __88__SBStashSlideOverItemIndirectGestureWindowingModifier_adjustedAppLayou
   {
     v14.receiver = self;
     v14.super_class = SBStashSlideOverItemIndirectGestureWindowingModifier;
-    [(SBWindowingModifier *)&v14 opacityForLayoutRole:a3 inAppLayout:v8 atIndex:a5];
+    [(SBWindowingModifier *)&v14 opacityForLayoutRole:role inAppLayout:layoutCopy atIndex:index];
     v11 = v12;
   }
 
   return v11;
 }
 
-- (BOOL)isLayoutRoleMatchMovedToScene:(int64_t)a3 inAppLayout:(id)a4
+- (BOOL)isLayoutRoleMatchMovedToScene:(int64_t)scene inAppLayout:(id)layout
 {
-  v6 = a4;
-  v7 = [v6 itemForLayoutRole:a3];
+  layoutCopy = layout;
+  v7 = [layoutCopy itemForLayoutRole:scene];
   v8 = BSEqualObjects();
 
   if (v8)
@@ -399,13 +399,13 @@ void __88__SBStashSlideOverItemIndirectGestureWindowingModifier_adjustedAppLayou
   {
     v11.receiver = self;
     v11.super_class = SBStashSlideOverItemIndirectGestureWindowingModifier;
-    v9 = [(SBStashSlideOverItemIndirectGestureWindowingModifier *)&v11 isLayoutRoleMatchMovedToScene:a3 inAppLayout:v6];
+    v9 = [(SBStashSlideOverItemIndirectGestureWindowingModifier *)&v11 isLayoutRoleMatchMovedToScene:scene inAppLayout:layoutCopy];
   }
 
   return v9;
 }
 
-- (SBWindowingItemCorners)cornersForItem:(SEL)a3
+- (SBWindowingItemCorners)cornersForItem:(SEL)item
 {
   v6 = a4;
   *&retstr->cornerRadii.topLeft = 0u;
@@ -416,8 +416,8 @@ void __88__SBStashSlideOverItemIndirectGestureWindowingModifier_adjustedAppLayou
   [(SBWindowingItemCorners *)&v14 cornersForItem:v6];
   if ([v6 isAppLayout])
   {
-    v7 = [v6 appLayout];
-    v8 = [v7 containsItem:self->_slideOverDisplayItem];
+    appLayout = [v6 appLayout];
+    v8 = [appLayout containsItem:self->_slideOverDisplayItem];
 
     if (v8)
     {
@@ -438,62 +438,62 @@ void __88__SBStashSlideOverItemIndirectGestureWindowingModifier_adjustedAppLayou
 {
   v12.receiver = self;
   v12.super_class = SBStashSlideOverItemIndirectGestureWindowingModifier;
-  v3 = [(SBStashSlideOverItemIndirectGestureWindowingModifier *)&v12 appLayoutsToCacheFullsizeSnapshots];
-  v4 = [(SBStashSlideOverItemIndirectGestureWindowingModifier *)self displayItemInSlideOver];
-  v5 = [(SBStashSlideOverItemIndirectGestureWindowingModifier *)self appLayouts];
+  appLayoutsToCacheFullsizeSnapshots = [(SBStashSlideOverItemIndirectGestureWindowingModifier *)&v12 appLayoutsToCacheFullsizeSnapshots];
+  displayItemInSlideOver = [(SBStashSlideOverItemIndirectGestureWindowingModifier *)self displayItemInSlideOver];
+  appLayouts = [(SBStashSlideOverItemIndirectGestureWindowingModifier *)self appLayouts];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __90__SBStashSlideOverItemIndirectGestureWindowingModifier_appLayoutsToCacheFullsizeSnapshots__block_invoke;
   v10[3] = &unk_2783A8CB8;
-  v11 = v4;
-  v6 = v4;
-  v7 = [v5 bs_firstObjectPassingTest:v10];
+  v11 = displayItemInSlideOver;
+  v6 = displayItemInSlideOver;
+  v7 = [appLayouts bs_firstObjectPassingTest:v10];
 
   if (v7)
   {
-    v8 = [v3 arrayByAddingObject:v7];
+    v8 = [appLayoutsToCacheFullsizeSnapshots arrayByAddingObject:v7];
 
-    v3 = v8;
+    appLayoutsToCacheFullsizeSnapshots = v8;
   }
 
-  return v3;
+  return appLayoutsToCacheFullsizeSnapshots;
 }
 
 - (id)appLayoutsToCacheSnapshots
 {
   v12.receiver = self;
   v12.super_class = SBStashSlideOverItemIndirectGestureWindowingModifier;
-  v3 = [(SBStashSlideOverItemIndirectGestureWindowingModifier *)&v12 appLayoutsToCacheSnapshots];
-  v4 = [(SBStashSlideOverItemIndirectGestureWindowingModifier *)self displayItemInSlideOver];
-  v5 = [(SBStashSlideOverItemIndirectGestureWindowingModifier *)self appLayouts];
+  appLayoutsToCacheSnapshots = [(SBStashSlideOverItemIndirectGestureWindowingModifier *)&v12 appLayoutsToCacheSnapshots];
+  displayItemInSlideOver = [(SBStashSlideOverItemIndirectGestureWindowingModifier *)self displayItemInSlideOver];
+  appLayouts = [(SBStashSlideOverItemIndirectGestureWindowingModifier *)self appLayouts];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __82__SBStashSlideOverItemIndirectGestureWindowingModifier_appLayoutsToCacheSnapshots__block_invoke;
   v10[3] = &unk_2783A8CB8;
-  v11 = v4;
-  v6 = v4;
-  v7 = [v5 bs_firstObjectPassingTest:v10];
+  v11 = displayItemInSlideOver;
+  v6 = displayItemInSlideOver;
+  v7 = [appLayouts bs_firstObjectPassingTest:v10];
 
   if (v7)
   {
-    v8 = [v3 arrayByAddingObject:v7];
+    v8 = [appLayoutsToCacheSnapshots arrayByAddingObject:v7];
 
-    v3 = v8;
+    appLayoutsToCacheSnapshots = v8;
   }
 
-  return v3;
+  return appLayoutsToCacheSnapshots;
 }
 
 - (id)_slideOverAppLayout
 {
   v10[1] = *MEMORY[0x277D85DE8];
-  v3 = [(SBStashSlideOverItemIndirectGestureWindowingModifier *)self appLayouts];
+  appLayouts = [(SBStashSlideOverItemIndirectGestureWindowingModifier *)self appLayouts];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __75__SBStashSlideOverItemIndirectGestureWindowingModifier__slideOverAppLayout__block_invoke;
   v9[3] = &unk_2783A8CB8;
   v9[4] = self;
-  v4 = [v3 bs_firstObjectPassingTest:v9];
+  v4 = [appLayouts bs_firstObjectPassingTest:v9];
 
   if (!v4)
   {
@@ -574,10 +574,10 @@ void __88__SBStashSlideOverItemIndirectGestureWindowingModifier_adjustedAppLayou
   return [(SBStashSlideOverItemIndirectGestureWindowingModifier *)&v5 slideOverTongueDirection];
 }
 
-- (id)_responseForGestureEnd:(id)a3
+- (id)_responseForGestureEnd:(id)end
 {
   v28 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  endCopy = end;
   size = self->_initialSlideOverConfiguration.size;
   v25 = *&self->_initialSlideOverConfiguration.corner;
   v26 = size;
@@ -586,7 +586,7 @@ void __88__SBStashSlideOverItemIndirectGestureWindowingModifier_adjustedAppLayou
   v21 = *&self->_initialSlideOverConfiguration.dodgesDock;
   v22 = *(&self->_initialSlideOverConfiguration.dodgesDock + 2);
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && ([v5 indirectPanEndReason] - 3) <= 1)
+  if ((objc_opt_isKindOfClass() & 1) != 0 && ([endCopy indirectPanEndReason] - 3) <= 1)
   {
     isStashed = !self->_initialSlideOverConfiguration.isStashed;
   }

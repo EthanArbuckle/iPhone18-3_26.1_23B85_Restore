@@ -1,15 +1,15 @@
 @interface _NTKCDetailHeaderView
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 @end
 
 @implementation _NTKCDetailHeaderView
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   v21 = *MEMORY[0x277D85DE8];
-  v7 = a4;
+  eventCopy = event;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -31,7 +31,7 @@
 
         v13 = *(*(&v16 + 1) + 8 * i);
         [(_NTKCDetailHeaderView *)self convertPoint:v13 toView:x, y, v16];
-        if ([v13 pointInside:v7 withEvent:?])
+        if ([v13 pointInside:eventCopy withEvent:?])
         {
           v14 = 1;
           goto LABEL_11;

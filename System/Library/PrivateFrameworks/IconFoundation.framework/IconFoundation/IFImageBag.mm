@@ -1,14 +1,14 @@
 @interface IFImageBag
-+ (id)imageBagWithResourcesNamed:(id)a3 directory:(id)a4;
-+ (id)imageBagWithResourcesNamed:(id)a3 fromBundle:(id)a4 subdirectory:(id)a5;
-+ (id)imageBagWithResourcesNames:(id)a3 fromBundle:(id)a4;
++ (id)imageBagWithResourcesNamed:(id)named directory:(id)directory;
++ (id)imageBagWithResourcesNamed:(id)named fromBundle:(id)bundle subdirectory:(id)subdirectory;
++ (id)imageBagWithResourcesNames:(id)names fromBundle:(id)bundle;
 - (IFImageBag)init;
-- (IFImageBag)initWithImages:(id)a3;
+- (IFImageBag)initWithImages:(id)images;
 - (NSArray)images;
 - (id)debugDescription;
-- (id)imageForSize:(CGSize)a3 scale:(double)a4;
-- (id)imagesForScale:(double)a3;
-- (void)insertImage:(id)a3;
+- (id)imageForSize:(CGSize)size scale:(double)scale;
+- (id)imagesForScale:(double)scale;
+- (void)insertImage:(id)image;
 @end
 
 @implementation IFImageBag
@@ -30,10 +30,10 @@
   return v3;
 }
 
-- (IFImageBag)initWithImages:(id)a3
+- (IFImageBag)initWithImages:(id)images
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  imagesCopy = images;
   v5 = [(IFImageBag *)self init];
   if (v5)
   {
@@ -41,7 +41,7 @@
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v6 = v4;
+    v6 = imagesCopy;
     v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v7)
     {
@@ -71,7 +71,7 @@
   return v5;
 }
 
-- (id)imagesForScale:(double)a3
+- (id)imagesForScale:(double)scale
 {
   imagesByScale = self->_imagesByScale;
   v6 = [MEMORY[0x1E696AD98] numberWithDouble:?];
@@ -94,7 +94,7 @@
     {
       v7 = objc_opt_new();
       v12 = self->_imagesByScale;
-      v13 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+      v13 = [MEMORY[0x1E696AD98] numberWithDouble:scale];
       [(NSMutableDictionary *)v12 setObject:v7 forKeyedSubscript:v13];
     }
   }
@@ -102,12 +102,12 @@
   return v7;
 }
 
-- (id)imageForSize:(CGSize)a3 scale:(double)a4
+- (id)imageForSize:(CGSize)size scale:(double)scale
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   os_unfair_lock_lock(&self->_lock);
-  v8 = [(IFImageBag *)self imagesForScale:a4];
+  v8 = [(IFImageBag *)self imagesForScale:scale];
   v9 = __33__IFImageBag_imageForSize_scale___block_invoke(width, height, v8, v8);
   v10 = v9;
   if (width >= height)
@@ -120,7 +120,7 @@
     v11 = height;
   }
 
-  v12 = v11 * a4;
+  v12 = v11 * scale;
   [v9 dimension];
   v14 = v13;
   [v10 scale];
@@ -130,7 +130,7 @@
     v17 = 1.0;
     do
     {
-      if (v17 != a4)
+      if (v17 != scale)
       {
         v18 = [(IFImageBag *)self imagesForScale:v17];
 
@@ -245,13 +245,13 @@ LABEL_22:
   return v6;
 }
 
-- (void)insertImage:(id)a3
+- (void)insertImage:(id)image
 {
-  v21 = a3;
+  imageCopy = image;
   os_unfair_lock_lock(&self->_lock);
   imagesByScale = self->_imagesByScale;
   v5 = MEMORY[0x1E696AD98];
-  [v21 scale];
+  [imageCopy scale];
   v6 = [v5 numberWithDouble:?];
   v7 = [(NSMutableDictionary *)imagesByScale objectForKeyedSubscript:v6];
 
@@ -260,14 +260,14 @@ LABEL_22:
     v7 = objc_opt_new();
     v8 = self->_imagesByScale;
     v9 = MEMORY[0x1E696AD98];
-    [v21 scale];
+    [imageCopy scale];
     v10 = [v9 numberWithDouble:?];
     [(NSMutableDictionary *)v8 setObject:v7 forKeyedSubscript:v10];
   }
 
-  [v21 size];
+  [imageCopy size];
   v12 = v11;
-  [v21 size];
+  [imageCopy size];
   if (v12 >= v13)
   {
     v14 = v12;
@@ -299,7 +299,7 @@ LABEL_22:
 
       if (v14 < v20)
       {
-        [v7 insertObject:v21 atIndex:v15];
+        [v7 insertObject:imageCopy atIndex:v15];
         goto LABEL_17;
       }
 
@@ -314,14 +314,14 @@ LABEL_22:
       }
     }
 
-    [v7 replaceObjectAtIndex:v15 withObject:v21];
+    [v7 replaceObjectAtIndex:v15 withObject:imageCopy];
 LABEL_17:
   }
 
   else
   {
 LABEL_14:
-    [v7 addObject:v21];
+    [v7 addObject:imageCopy];
   }
 
   os_unfair_lock_unlock(&self->_lock);
@@ -336,8 +336,8 @@ LABEL_14:
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [(NSMutableDictionary *)self->_imagesByScale allValues];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  allValues = [(NSMutableDictionary *)self->_imagesByScale allValues];
+  v5 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -348,13 +348,13 @@ LABEL_14:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allValues);
         }
 
         [v3 addObjectsFromArray:*(*(&v11 + 1) + 8 * i)];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -381,8 +381,8 @@ LABEL_14:
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = [(NSMutableDictionary *)self->_imagesByScale allKeys];
-  v7 = [v6 countByEnumeratingWithState:&v16 objects:v21 count:16];
+  allKeys = [(NSMutableDictionary *)self->_imagesByScale allKeys];
+  v7 = [allKeys countByEnumeratingWithState:&v16 objects:v21 count:16];
   if (v7)
   {
     v8 = v7;
@@ -393,7 +393,7 @@ LABEL_14:
       {
         if (*v17 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allKeys);
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
@@ -402,7 +402,7 @@ LABEL_14:
         [v5 appendFormat:@"Scale: %@ -> %@", v11, v13];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v16 objects:v21 count:16];
+      v8 = [allKeys countByEnumeratingWithState:&v16 objects:v21 count:16];
     }
 
     while (v8);
@@ -414,18 +414,18 @@ LABEL_14:
   return v14;
 }
 
-+ (id)imageBagWithResourcesNames:(id)a3 fromBundle:(id)a4
++ (id)imageBagWithResourcesNames:(id)names fromBundle:(id)bundle
 {
   v51 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v40 = a4;
-  v39 = [MEMORY[0x1E695DF70] array];
+  namesCopy = names;
+  bundleCopy = bundle;
+  array = [MEMORY[0x1E695DF70] array];
   v38 = objc_opt_new();
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
-  v6 = v5;
+  v6 = namesCopy;
   v7 = [v6 countByEnumeratingWithState:&v45 objects:v50 count:16];
   v37 = v6;
   if (v7)
@@ -445,22 +445,22 @@ LABEL_14:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v12 = [v11 pathExtension];
-          if ([(__CFString *)v12 length])
+          pathExtension = [v11 pathExtension];
+          if ([(__CFString *)pathExtension length])
           {
-            v13 = [v11 stringByDeletingPathExtension];
+            stringByDeletingPathExtension = [v11 stringByDeletingPathExtension];
           }
 
           else
           {
 
-            v13 = v11;
-            v12 = @"png";
+            stringByDeletingPathExtension = v11;
+            pathExtension = @"png";
           }
 
-          if (v12)
+          if (pathExtension)
           {
-            v14 = v13 == 0;
+            v14 = stringByDeletingPathExtension == 0;
           }
 
           else
@@ -470,24 +470,24 @@ LABEL_14:
 
           if (!v14)
           {
-            v15 = [v13 stringByAppendingPathExtension:v12];
+            v15 = [stringByDeletingPathExtension stringByAppendingPathExtension:pathExtension];
             if (v15)
             {
               [v38 addObject:v15];
             }
 
-            if (([v13 hasSuffix:{@"2x", v37}] & 1) == 0 && (objc_msgSend(v13, "hasSuffix:", @"3x") & 1) == 0)
+            if (([stringByDeletingPathExtension hasSuffix:{@"2x", v37}] & 1) == 0 && (objc_msgSend(stringByDeletingPathExtension, "hasSuffix:", @"3x") & 1) == 0)
             {
-              v16 = [v13 stringByAppendingString:@"@2x"];
-              v17 = [v16 stringByAppendingPathExtension:v12];
+              v16 = [stringByDeletingPathExtension stringByAppendingString:@"@2x"];
+              v17 = [v16 stringByAppendingPathExtension:pathExtension];
 
               if (v17)
               {
                 [v38 addObject:v17];
               }
 
-              v18 = [v13 stringByAppendingString:@"@3x"];
-              v19 = [v18 stringByAppendingPathExtension:v12];
+              v18 = [stringByDeletingPathExtension stringByAppendingString:@"@3x"];
+              v19 = [v18 stringByAppendingPathExtension:pathExtension];
 
               if (v19)
               {
@@ -526,17 +526,17 @@ LABEL_14:
         }
 
         v25 = *(*(&v41 + 1) + 8 * j);
-        v26 = [v25 stringByDeletingPathExtension];
-        v27 = [v25 pathExtension];
-        v28 = [v40 URLForResource:v26 withExtension:v27];
+        stringByDeletingPathExtension2 = [v25 stringByDeletingPathExtension];
+        pathExtension2 = [v25 pathExtension];
+        v28 = [bundleCopy URLForResource:stringByDeletingPathExtension2 withExtension:pathExtension2];
         if (v28)
         {
-          v29 = [IFResourceMetadata metadataWithFileName:v26];
-          v30 = [v29 scale];
-          if (v30)
+          v29 = [IFResourceMetadata metadataWithFileName:stringByDeletingPathExtension2];
+          scale = [v29 scale];
+          if (scale)
           {
-            v31 = [v29 scale];
-            [v31 doubleValue];
+            scale2 = [v29 scale];
+            [scale2 doubleValue];
             v33 = v32;
           }
 
@@ -548,7 +548,7 @@ LABEL_14:
           v34 = [[IFImage alloc] initWithContentsOfURL:v28 scale:v33];
           if (v34)
           {
-            [v39 addObject:v34];
+            [array addObject:v34];
           }
         }
       }
@@ -559,9 +559,9 @@ LABEL_14:
     while (v22);
   }
 
-  if ([v39 count])
+  if ([array count])
   {
-    v35 = [[IFImageBag alloc] initWithImages:v39];
+    v35 = [[IFImageBag alloc] initWithImages:array];
   }
 
   else
@@ -572,16 +572,16 @@ LABEL_14:
   return v35;
 }
 
-+ (id)imageBagWithResourcesNamed:(id)a3 fromBundle:(id)a4 subdirectory:(id)a5
++ (id)imageBagWithResourcesNamed:(id)named fromBundle:(id)bundle subdirectory:(id)subdirectory
 {
   v38 = *MEMORY[0x1E69E9840];
-  v32 = a3;
-  v7 = a4;
-  v8 = a5;
+  namedCopy = named;
+  bundleCopy = bundle;
+  subdirectoryCopy = subdirectory;
   [MEMORY[0x1E695DF70] array];
-  v28 = v27 = v7;
-  v26 = v8;
-  [v7 URLsForResourcesWithExtension:@"png" subdirectory:v8];
+  v28 = v27 = bundleCopy;
+  v26 = subdirectoryCopy;
+  [bundleCopy URLsForResourcesWithExtension:@"png" subdirectory:subdirectoryCopy];
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
@@ -600,23 +600,23 @@ LABEL_14:
         }
 
         v10 = *(*(&v33 + 1) + 8 * i);
-        v11 = [v10 lastPathComponent];
-        v12 = [v11 stringByDeletingPathExtension];
+        lastPathComponent = [v10 lastPathComponent];
+        stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
 
-        v13 = [IFResourceMetadata metadataWithFileName:v12];
-        v14 = [v13 name];
-        v15 = [v13 scale];
+        v13 = [IFResourceMetadata metadataWithFileName:stringByDeletingPathExtension];
+        name = [v13 name];
+        scale = [v13 scale];
         v16 = MEMORY[0x1E696AEC0];
-        v17 = [v13 dimension];
-        v18 = [v17 intValue];
-        v19 = [v13 dimension];
-        v20 = [v16 stringWithFormat:@"%@%dx%d", v14, v18, objc_msgSend(v19, "intValue")];
+        dimension = [v13 dimension];
+        intValue = [dimension intValue];
+        dimension2 = [v13 dimension];
+        v20 = [v16 stringWithFormat:@"%@%dx%d", name, intValue, objc_msgSend(dimension2, "intValue")];
 
-        if (([v14 isEqualToString:v32] & 1) != 0 || objc_msgSend(v20, "isEqualToString:", v32))
+        if (([name isEqualToString:namedCopy] & 1) != 0 || objc_msgSend(v20, "isEqualToString:", namedCopy))
         {
-          if (v15)
+          if (scale)
           {
-            [v15 doubleValue];
+            [scale doubleValue];
             v22 = v21;
           }
 
@@ -652,15 +652,15 @@ LABEL_14:
   return v24;
 }
 
-+ (id)imageBagWithResourcesNamed:(id)a3 directory:(id)a4
++ (id)imageBagWithResourcesNamed:(id)named directory:(id)directory
 {
   v33 = *MEMORY[0x1E69E9840];
-  v27 = a3;
-  v5 = a4;
-  v26 = [MEMORY[0x1E695DF70] array];
-  v6 = [MEMORY[0x1E696AC08] defaultManager];
-  v25 = v5;
-  v7 = [v6 enumeratorAtURL:v5 includingPropertiesForKeys:MEMORY[0x1E695E0F0] options:7 errorHandler:0];
+  namedCopy = named;
+  directoryCopy = directory;
+  array = [MEMORY[0x1E695DF70] array];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v25 = directoryCopy;
+  v7 = [defaultManager enumeratorAtURL:directoryCopy includingPropertiesForKeys:MEMORY[0x1E695E0F0] options:7 errorHandler:0];
 
   v30 = 0u;
   v31 = 0u;
@@ -685,17 +685,17 @@ LABEL_14:
         v14 = *(*(&v28 + 1) + 8 * i);
         if ([v14 _IF_conformsToUTI:v12])
         {
-          v15 = [v14 lastPathComponent];
-          v16 = [v15 stringByDeletingPathExtension];
+          lastPathComponent = [v14 lastPathComponent];
+          stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
 
-          v17 = [IFResourceMetadata metadataWithFileName:v16];
-          v18 = [v17 name];
-          v19 = [v17 scale];
-          if ([v18 isEqualToString:v27])
+          v17 = [IFResourceMetadata metadataWithFileName:stringByDeletingPathExtension];
+          name = [v17 name];
+          scale = [v17 scale];
+          if ([name isEqualToString:namedCopy])
           {
-            if (v19)
+            if (scale)
             {
-              [v19 doubleValue];
+              [scale doubleValue];
               v21 = v20;
             }
 
@@ -705,7 +705,7 @@ LABEL_14:
             }
 
             v22 = [[IFImage alloc] initWithContentsOfURL:v14 scale:v21];
-            [v26 addObject:v22];
+            [array addObject:v22];
           }
         }
       }
@@ -716,9 +716,9 @@ LABEL_14:
     while (v10);
   }
 
-  if ([v26 count])
+  if ([array count])
   {
-    v23 = [[IFImageBag alloc] initWithImages:v26];
+    v23 = [[IFImageBag alloc] initWithImages:array];
   }
 
   else

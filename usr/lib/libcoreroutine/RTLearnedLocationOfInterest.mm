@@ -1,31 +1,31 @@
 @interface RTLearnedLocationOfInterest
-+ (id)createWithLearnedLocationOfInterestMO:(id)a3 includeVisits:(BOOL)a4 includeTransitions:(BOOL)a5;
-+ (id)createWithLearnedLocationOfInterestVisitMO:(id)a3;
-+ (id)createWithManagedObject:(id)a3;
-+ (id)createWithManagedObject:(id)a3 includeVisits:(BOOL)a4 includeTransitions:(BOOL)a5;
-- (BOOL)isEqual:(id)a3;
++ (id)createWithLearnedLocationOfInterestMO:(id)o includeVisits:(BOOL)visits includeTransitions:(BOOL)transitions;
++ (id)createWithLearnedLocationOfInterestVisitMO:(id)o;
++ (id)createWithManagedObject:(id)object;
++ (id)createWithManagedObject:(id)object includeVisits:(BOOL)visits includeTransitions:(BOOL)transitions;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (RTLearnedLocationOfInterest)initWithIdentifier:(id)a3 location:(id)a4 place:(id)a5 visits:(id)a6 transitions:(id)a7;
-- (RTLearnedLocationOfInterest)initWithLocationOfInterest:(id)a3 creationDate:(id)a4;
+- (RTLearnedLocationOfInterest)initWithIdentifier:(id)identifier location:(id)location place:(id)place visits:(id)visits transitions:(id)transitions;
+- (RTLearnedLocationOfInterest)initWithLocationOfInterest:(id)interest creationDate:(id)date;
 - (double)dwellTime;
-- (id)filterWithDateInterval:(id)a3;
-- (id)managedObjectWithContext:(id)a3;
+- (id)filterWithDateInterval:(id)interval;
+- (id)managedObjectWithContext:(id)context;
 - (unint64_t)hash;
-- (void)updateManagedObject:(id)a3;
+- (void)updateManagedObject:(id)object;
 @end
 
 @implementation RTLearnedLocationOfInterest
 
-+ (id)createWithManagedObject:(id)a3
++ (id)createWithManagedObject:(id)object
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (v3)
+  objectCopy = object;
+  if (objectCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v4 = v3;
+      v4 = objectCopy;
       v5 = [objc_opt_class() createWithLearnedLocationOfInterestMO:v4 includeVisits:1 includeTransitions:1];
 LABEL_6:
       v6 = v5;
@@ -36,7 +36,7 @@ LABEL_6:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v4 = v3;
+      v4 = objectCopy;
       v5 = [objc_opt_class() createWithLearnedLocationOfInterestVisitMO:v4];
       goto LABEL_6;
     }
@@ -45,7 +45,7 @@ LABEL_6:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
       v9 = 138412802;
-      v10 = v3;
+      v10 = objectCopy;
       v11 = 2080;
       v12 = "+[RTLearnedLocationOfInterest(RTCoreDataTransformable) createWithManagedObject:]";
       v13 = 1024;
@@ -60,19 +60,19 @@ LABEL_11:
   return v6;
 }
 
-+ (id)createWithManagedObject:(id)a3 includeVisits:(BOOL)a4 includeTransitions:(BOOL)a5
++ (id)createWithManagedObject:(id)object includeVisits:(BOOL)visits includeTransitions:(BOOL)transitions
 {
-  v5 = a5;
-  v6 = a4;
+  transitionsCopy = transitions;
+  visitsCopy = visits;
   v19 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  if (v7)
+  objectCopy = object;
+  if (objectCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = v7;
-      v9 = [objc_opt_class() createWithLearnedLocationOfInterestMO:v8 includeVisits:v6 includeTransitions:v5];
+      v8 = objectCopy;
+      v9 = [objc_opt_class() createWithLearnedLocationOfInterestMO:v8 includeVisits:visitsCopy includeTransitions:transitionsCopy];
 
       goto LABEL_10;
     }
@@ -80,7 +80,7 @@ LABEL_11:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v10 = v7;
+      v10 = objectCopy;
       v9 = [objc_opt_class() createWithLearnedLocationOfInterestVisitMO:v10];
 
       goto LABEL_10;
@@ -90,7 +90,7 @@ LABEL_11:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       v13 = 138412802;
-      v14 = v7;
+      v14 = objectCopy;
       v15 = 2080;
       v16 = "+[RTLearnedLocationOfInterest(RTCoreDataTransformable) createWithManagedObject:includeVisits:includeTransitions:]";
       v17 = 1024;
@@ -105,15 +105,15 @@ LABEL_10:
   return v9;
 }
 
-+ (id)createWithLearnedLocationOfInterestMO:(id)a3 includeVisits:(BOOL)a4 includeTransitions:(BOOL)a5
++ (id)createWithLearnedLocationOfInterestMO:(id)o includeVisits:(BOOL)visits includeTransitions:(BOOL)transitions
 {
-  v5 = a5;
-  v6 = a4;
+  transitionsCopy = transitions;
+  visitsCopy = visits;
   v126 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = [v7 identifier];
+  oCopy = o;
+  identifier = [oCopy identifier];
 
-  if (!v8)
+  if (!identifier)
   {
     v85 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v85, OS_LOG_TYPE_ERROR))
@@ -130,9 +130,9 @@ LABEL_53:
     goto LABEL_43;
   }
 
-  v9 = [v7 placeIdentifier];
+  placeIdentifier = [oCopy placeIdentifier];
 
-  if (!v9)
+  if (!placeIdentifier)
   {
     v85 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v85, OS_LOG_TYPE_ERROR))
@@ -145,8 +145,8 @@ LABEL_53:
     goto LABEL_53;
   }
 
-  v100 = v6;
-  v99 = v5;
+  v100 = visitsCopy;
+  v99 = transitionsCopy;
   v10 = _rt_log_facility_get_os_log(RTLogFacilityLearnedLocationStore);
   v11 = os_signpost_id_generate(v10);
 
@@ -163,48 +163,48 @@ LABEL_53:
 
   v95 = [RTLearnedLocation alloc];
   v14 = objc_alloc(MEMORY[0x277D01160]);
-  v102 = [v7 locationLatitude];
-  [v102 doubleValue];
+  locationLatitude = [oCopy locationLatitude];
+  [locationLatitude doubleValue];
   v16 = v15;
-  [v7 locationLongitude];
-  v17 = v98 = v7;
+  [oCopy locationLongitude];
+  v17 = v98 = oCopy;
   [v17 doubleValue];
   v19 = v18;
-  v20 = [v98 locationHorizontalUncertainty];
-  [v20 doubleValue];
+  locationHorizontalUncertainty = [v98 locationHorizontalUncertainty];
+  [locationHorizontalUncertainty doubleValue];
   v22 = v21;
-  v23 = [v98 locationAltitude];
-  [v23 doubleValue];
+  locationAltitude = [v98 locationAltitude];
+  [locationAltitude doubleValue];
   v25 = v24;
-  v26 = [v98 locationVerticalUncertainty];
-  [v26 doubleValue];
+  locationVerticalUncertainty = [v98 locationVerticalUncertainty];
+  [locationVerticalUncertainty doubleValue];
   v28 = v27;
-  v29 = [v98 locationReferenceFrame];
-  v30 = [v29 intValue];
-  v31 = [v98 locationSourceAccuracy];
-  v32 = [v14 initWithLatitude:0 longitude:v30 horizontalUncertainty:objc_msgSend(v31 altitude:"intValue") verticalUncertainty:v16 date:v19 referenceFrame:v22 speed:v25 sourceAccuracy:{v28, 0.0}];
-  v33 = [v98 dataPointCount];
-  v34 = [v33 unsignedIntegerValue];
-  v35 = [v98 confidence];
-  [v35 doubleValue];
-  v96 = [(RTLearnedLocation *)v95 initWithLocation:v32 dataPointCount:v34 confidence:?];
+  locationReferenceFrame = [v98 locationReferenceFrame];
+  intValue = [locationReferenceFrame intValue];
+  locationSourceAccuracy = [v98 locationSourceAccuracy];
+  v32 = [v14 initWithLatitude:0 longitude:intValue horizontalUncertainty:objc_msgSend(locationSourceAccuracy altitude:"intValue") verticalUncertainty:v16 date:v19 referenceFrame:v22 speed:v25 sourceAccuracy:{v28, 0.0}];
+  dataPointCount = [v98 dataPointCount];
+  unsignedIntegerValue = [dataPointCount unsignedIntegerValue];
+  confidence = [v98 confidence];
+  [confidence doubleValue];
+  v96 = [(RTLearnedLocation *)v95 initWithLocation:v32 dataPointCount:unsignedIntegerValue confidence:?];
 
-  v7 = v98;
+  oCopy = v98;
   v36 = [RTLearnedPlace createWithManagedObject:v98];
   v103 = 0;
   v94 = v36;
   if (v100)
   {
     v37 = MEMORY[0x277CBEB18];
-    v38 = [v98 visits];
-    v103 = [v37 arrayWithCapacity:{objc_msgSend(v38, "count")}];
+    visits = [v98 visits];
+    v103 = [v37 arrayWithCapacity:{objc_msgSend(visits, "count")}];
 
     v110 = 0u;
     v111 = 0u;
     v108 = 0u;
     v109 = 0u;
-    v39 = [v98 visits];
-    v40 = [v39 countByEnumeratingWithState:&v108 objects:v125 count:16];
+    visits2 = [v98 visits];
+    v40 = [visits2 countByEnumeratingWithState:&v108 objects:v125 count:16];
     if (!v40)
     {
       goto LABEL_22;
@@ -218,21 +218,21 @@ LABEL_53:
       {
         if (*v109 != v42)
         {
-          objc_enumerationMutation(v39);
+          objc_enumerationMutation(visits2);
         }
 
         v44 = *(*(&v108 + 1) + 8 * i);
-        v45 = [v44 entryDate];
-        if (v45)
+        entryDate = [v44 entryDate];
+        if (entryDate)
         {
-          v46 = v45;
-          v47 = [v44 exitDate];
-          if (v47)
+          v46 = entryDate;
+          exitDate = [v44 exitDate];
+          if (exitDate)
           {
-            v48 = v47;
-            v49 = [v44 entryDate];
-            v50 = [v44 exitDate];
-            v51 = [v49 compare:v50];
+            v48 = exitDate;
+            entryDate2 = [v44 entryDate];
+            exitDate2 = [v44 exitDate];
+            v51 = [entryDate2 compare:exitDate2];
 
             if (v51 != 1)
             {
@@ -254,17 +254,17 @@ LABEL_53:
         v52 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
         if (os_log_type_enabled(v52, OS_LOG_TYPE_ERROR))
         {
-          v53 = [v44 identifier];
-          v54 = [v44 entryDate];
-          v55 = [v54 stringFromDate];
-          v56 = [v44 exitDate];
-          v57 = [v56 stringFromDate];
+          identifier2 = [v44 identifier];
+          entryDate3 = [v44 entryDate];
+          stringFromDate = [entryDate3 stringFromDate];
+          exitDate3 = [v44 exitDate];
+          stringFromDate2 = [exitDate3 stringFromDate];
           *buf = 138740995;
-          v116 = v53;
+          v116 = identifier2;
           v117 = 2112;
-          v118 = v55;
+          v118 = stringFromDate;
           v119 = 2112;
-          v120 = v57;
+          v120 = stringFromDate2;
           v121 = 2080;
           v122 = "+[RTLearnedLocationOfInterest(RTCoreDataTransformable) createWithLearnedLocationOfInterestMO:includeVisits:includeTransitions:]";
           v123 = 1024;
@@ -275,7 +275,7 @@ LABEL_53:
 LABEL_20:
       }
 
-      v41 = [v39 countByEnumeratingWithState:&v108 objects:v125 count:16];
+      v41 = [visits2 countByEnumeratingWithState:&v108 objects:v125 count:16];
       if (!v41)
       {
 LABEL_22:
@@ -285,7 +285,7 @@ LABEL_22:
         v59 = [MEMORY[0x277CBEA60] arrayWithObjects:&v114 count:1];
         [v103 sortUsingDescriptors:v59];
 
-        v7 = v98;
+        oCopy = v98;
         v36 = v94;
         break;
       }
@@ -301,15 +301,15 @@ LABEL_22:
   }
 
   v60 = MEMORY[0x277CBEB18];
-  v61 = [v7 transitions];
-  v101 = [v60 arrayWithCapacity:{objc_msgSend(v61, "count")}];
+  transitions = [oCopy transitions];
+  v101 = [v60 arrayWithCapacity:{objc_msgSend(transitions, "count")}];
 
   v106 = 0u;
   v107 = 0u;
   v104 = 0u;
   v105 = 0u;
-  v62 = [v7 transitions];
-  v63 = [v62 countByEnumeratingWithState:&v104 objects:v113 count:16];
+  transitions2 = [oCopy transitions];
+  v63 = [transitions2 countByEnumeratingWithState:&v104 objects:v113 count:16];
   if (!v63)
   {
     goto LABEL_39;
@@ -323,21 +323,21 @@ LABEL_22:
     {
       if (*v105 != v65)
       {
-        objc_enumerationMutation(v62);
+        objc_enumerationMutation(transitions2);
       }
 
       v67 = *(*(&v104 + 1) + 8 * j);
-      v68 = [v67 startDate];
-      if (v68)
+      startDate = [v67 startDate];
+      if (startDate)
       {
-        v69 = v68;
-        v70 = [v67 stopDate];
-        if (v70)
+        v69 = startDate;
+        stopDate = [v67 stopDate];
+        if (stopDate)
         {
-          v71 = v70;
-          v72 = [v67 startDate];
-          v73 = [v67 stopDate];
-          v74 = [v72 compare:v73];
+          v71 = stopDate;
+          startDate2 = [v67 startDate];
+          stopDate2 = [v67 stopDate];
+          v74 = [startDate2 compare:stopDate2];
 
           if (v74 != 1)
           {
@@ -359,17 +359,17 @@ LABEL_22:
       v75 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
       if (os_log_type_enabled(v75, OS_LOG_TYPE_ERROR))
       {
-        v76 = [v67 identifier];
-        v77 = [v67 startDate];
-        v78 = [v77 stringFromDate];
-        v79 = [v67 stopDate];
-        v80 = [v79 stringFromDate];
+        identifier3 = [v67 identifier];
+        startDate3 = [v67 startDate];
+        stringFromDate3 = [startDate3 stringFromDate];
+        stopDate3 = [v67 stopDate];
+        stringFromDate4 = [stopDate3 stringFromDate];
         *buf = 138413314;
-        v116 = v76;
+        v116 = identifier3;
         v117 = 2112;
-        v118 = v78;
+        v118 = stringFromDate3;
         v119 = 2112;
-        v120 = v80;
+        v120 = stringFromDate4;
         v121 = 2080;
         v122 = "+[RTLearnedLocationOfInterest(RTCoreDataTransformable) createWithLearnedLocationOfInterestMO:includeVisits:includeTransitions:]";
         v123 = 1024;
@@ -380,7 +380,7 @@ LABEL_22:
 LABEL_37:
     }
 
-    v64 = [v62 countByEnumeratingWithState:&v104 objects:v113 count:16];
+    v64 = [transitions2 countByEnumeratingWithState:&v104 objects:v113 count:16];
   }
 
   while (v64);
@@ -393,13 +393,13 @@ LABEL_39:
   [v101 sortUsingDescriptors:v82];
 
   v84 = v97;
-  v7 = v98;
+  oCopy = v98;
   v36 = v94;
   v85 = v96;
 LABEL_45:
   v88 = [RTLearnedLocationOfInterest alloc];
-  v89 = [v7 identifier];
-  v87 = [(RTLearnedLocationOfInterest *)v88 initWithIdentifier:v89 location:v85 place:v36 visits:v103 transitions:v83];
+  identifier4 = [oCopy identifier];
+  v87 = [(RTLearnedLocationOfInterest *)v88 initWithIdentifier:identifier4 location:v85 place:v36 visits:v103 transitions:v83];
 
   v90 = _rt_log_facility_get_os_log(RTLogFacilityLearnedLocationStore);
   v91 = v90;
@@ -414,15 +414,15 @@ LABEL_49:
   return v87;
 }
 
-+ (id)createWithLearnedLocationOfInterestVisitMO:(id)a3
++ (id)createWithLearnedLocationOfInterestVisitMO:(id)o
 {
   v44[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  oCopy = o;
+  v4 = oCopy;
+  if (!oCopy)
   {
-    v6 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-    if (!os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    locationOfInterest = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
+    if (!os_log_type_enabled(locationOfInterest, OS_LOG_TYPE_ERROR))
     {
 LABEL_10:
       v35 = 0;
@@ -432,16 +432,16 @@ LABEL_10:
     *buf = 0;
     v36 = "Invalid parameter not satisfying: visitMO";
 LABEL_27:
-    _os_log_error_impl(&dword_2304B3000, v6, OS_LOG_TYPE_ERROR, v36, buf, 2u);
+    _os_log_error_impl(&dword_2304B3000, locationOfInterest, OS_LOG_TYPE_ERROR, v36, buf, 2u);
     goto LABEL_10;
   }
 
-  v5 = [v3 identifier];
+  identifier = [oCopy identifier];
 
-  if (!v5)
+  if (!identifier)
   {
-    v6 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-    if (!os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    locationOfInterest = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
+    if (!os_log_type_enabled(locationOfInterest, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_10;
     }
@@ -451,60 +451,60 @@ LABEL_27:
     goto LABEL_27;
   }
 
-  v6 = [v4 locationOfInterest];
-  v7 = [v6 identifier];
+  locationOfInterest = [v4 locationOfInterest];
+  identifier2 = [locationOfInterest identifier];
 
-  if (v7)
+  if (identifier2)
   {
     v38 = [RTLearnedLocation alloc];
     v8 = objc_alloc(MEMORY[0x277D01160]);
-    v42 = [v6 locationLatitude];
-    [v42 doubleValue];
+    locationLatitude = [locationOfInterest locationLatitude];
+    [locationLatitude doubleValue];
     v10 = v9;
-    v41 = [v6 locationLongitude];
-    [v41 doubleValue];
+    locationLongitude = [locationOfInterest locationLongitude];
+    [locationLongitude doubleValue];
     v12 = v11;
-    v40 = [v6 locationHorizontalUncertainty];
-    [v40 doubleValue];
+    locationHorizontalUncertainty = [locationOfInterest locationHorizontalUncertainty];
+    [locationHorizontalUncertainty doubleValue];
     v14 = v13;
-    v15 = [v6 locationAltitude];
-    [v15 doubleValue];
+    locationAltitude = [locationOfInterest locationAltitude];
+    [locationAltitude doubleValue];
     v17 = v16;
-    v18 = [v6 locationVerticalUncertainty];
-    [v18 doubleValue];
+    locationVerticalUncertainty = [locationOfInterest locationVerticalUncertainty];
+    [locationVerticalUncertainty doubleValue];
     v20 = v19;
-    v21 = [v6 locationReferenceFrame];
-    v22 = [v21 intValue];
-    v23 = [v6 locationSourceAccuracy];
-    v24 = [v8 initWithLatitude:0 longitude:v22 horizontalUncertainty:objc_msgSend(v23 altitude:"intValue") verticalUncertainty:v10 date:v12 referenceFrame:v14 speed:v17 sourceAccuracy:{v20, 0.0}];
-    v25 = [v6 dataPointCount];
-    v26 = [v25 unsignedIntegerValue];
-    v27 = [v6 confidence];
-    [v27 doubleValue];
-    v39 = [(RTLearnedLocation *)v38 initWithLocation:v24 dataPointCount:v26 confidence:?];
+    locationReferenceFrame = [locationOfInterest locationReferenceFrame];
+    intValue = [locationReferenceFrame intValue];
+    locationSourceAccuracy = [locationOfInterest locationSourceAccuracy];
+    v24 = [v8 initWithLatitude:0 longitude:intValue horizontalUncertainty:objc_msgSend(locationSourceAccuracy altitude:"intValue") verticalUncertainty:v10 date:v12 referenceFrame:v14 speed:v17 sourceAccuracy:{v20, 0.0}];
+    dataPointCount = [locationOfInterest dataPointCount];
+    unsignedIntegerValue = [dataPointCount unsignedIntegerValue];
+    confidence = [locationOfInterest confidence];
+    [confidence doubleValue];
+    v39 = [(RTLearnedLocation *)v38 initWithLocation:v24 dataPointCount:unsignedIntegerValue confidence:?];
 
-    v28 = [RTLearnedPlace createWithManagedObject:v6];
+    v28 = [RTLearnedPlace createWithManagedObject:locationOfInterest];
     if (v28)
     {
       v29 = [RTLearnedVisit createWithManagedObject:v4];
       if (v29)
       {
         v30 = [RTLearnedLocationOfInterest alloc];
-        v31 = [v6 identifier];
+        identifier3 = [locationOfInterest identifier];
         v44[0] = v29;
         v32 = [MEMORY[0x277CBEA60] arrayWithObjects:v44 count:1];
         v33 = v30;
         v34 = v39;
-        v35 = [(RTLearnedLocationOfInterest *)v33 initWithIdentifier:v31 location:v39 place:v28 visits:v32 transitions:0];
+        v35 = [(RTLearnedLocationOfInterest *)v33 initWithIdentifier:identifier3 location:v39 place:v28 visits:v32 transitions:0];
       }
 
       else
       {
-        v31 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-        if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
+        identifier3 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
+        if (os_log_type_enabled(identifier3, OS_LOG_TYPE_ERROR))
         {
           *buf = 0;
-          _os_log_error_impl(&dword_2304B3000, v31, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: visit", buf, 2u);
+          _os_log_error_impl(&dword_2304B3000, identifier3, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: visit", buf, 2u);
         }
 
         v35 = 0;
@@ -543,11 +543,11 @@ LABEL_23:
   return v35;
 }
 
-- (id)managedObjectWithContext:(id)a3
+- (id)managedObjectWithContext:(id)context
 {
-  if (a3)
+  if (context)
   {
-    v3 = [RTLearnedLocationOfInterestMO managedObjectWithLocationOfInterest:self inManagedObjectContext:a3];
+    v3 = [RTLearnedLocationOfInterestMO managedObjectWithLocationOfInterest:self inManagedObjectContext:context];
   }
 
   else
@@ -565,29 +565,29 @@ LABEL_23:
   return v3;
 }
 
-- (void)updateManagedObject:(id)a3
+- (void)updateManagedObject:(id)object
 {
-  v6 = a3;
-  v4 = [v6 managedObjectContext];
-  v5 = [RTLearnedLocationOfInterestMO managedObjectWithLocationOfInterest:self managedObject:v6 inManagedObjectContext:v4];
+  objectCopy = object;
+  managedObjectContext = [objectCopy managedObjectContext];
+  v5 = [RTLearnedLocationOfInterestMO managedObjectWithLocationOfInterest:self managedObject:objectCopy inManagedObjectContext:managedObjectContext];
 }
 
-- (RTLearnedLocationOfInterest)initWithLocationOfInterest:(id)a3 creationDate:(id)a4
+- (RTLearnedLocationOfInterest)initWithLocationOfInterest:(id)interest creationDate:(id)date
 {
   v41 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v33 = [[RTLearnedLocation alloc] initWithLocationOfInterest:v5];
-  v32 = [v5 mapItem];
+  interestCopy = interest;
+  dateCopy = date;
+  v33 = [[RTLearnedLocation alloc] initWithLocationOfInterest:interestCopy];
+  mapItem = [interestCopy mapItem];
   v7 = MEMORY[0x277CBEB18];
-  v8 = [v5 visits];
-  v35 = [v7 arrayWithCapacity:{objc_msgSend(v8, "count")}];
+  visits = [interestCopy visits];
+  v35 = [v7 arrayWithCapacity:{objc_msgSend(visits, "count")}];
 
   v38 = 0u;
   v39 = 0u;
   v36 = 0u;
   v37 = 0u;
-  obj = [v5 visits];
+  obj = [interestCopy visits];
   v9 = [obj countByEnumeratingWithState:&v36 objects:v40 count:16];
   if (v9)
   {
@@ -604,11 +604,11 @@ LABEL_23:
         }
 
         v14 = *(*(&v36 + 1) + 8 * i);
-        v15 = [v5 visits];
-        v16 = [v15 count] > 1;
+        visits2 = [interestCopy visits];
+        v16 = [visits2 count] > 1;
 
-        v17 = [v14 exitDate];
-        v18 = [v17 dateByAddingTimeInterval:dbl_230AFE560[v16]];
+        exitDate = [v14 exitDate];
+        v18 = [exitDate dateByAddingTimeInterval:dbl_230AFE560[v16]];
 
         if (!v11 || [v11 compare:v18] == -1)
         {
@@ -617,7 +617,7 @@ LABEL_23:
           v11 = v19;
         }
 
-        v20 = [[RTLearnedVisit alloc] initWithVisit:v14 locationOfInterest:v5 creationDate:v6 expirationDate:v18];
+        v20 = [[RTLearnedVisit alloc] initWithVisit:v14 locationOfInterest:interestCopy creationDate:dateCopy expirationDate:v18];
         if (v20)
         {
           [v35 addObject:v20];
@@ -635,31 +635,31 @@ LABEL_23:
     v11 = 0;
   }
 
-  v21 = [v6 dateByAddingTimeInterval:4838400.0];
+  v21 = [dateCopy dateByAddingTimeInterval:4838400.0];
   v22 = [RTLearnedPlace alloc];
-  v23 = [v5 identifier];
-  v24 = +[RTLearnedPlace placeTypeFromType:](RTLearnedPlace, "placeTypeFromType:", [v5 type]);
-  v25 = +[RTLearnedPlace placeTypeSourceFromTypeSource:](RTLearnedPlace, "placeTypeSourceFromTypeSource:", [v5 typeSource]);
-  v26 = [v5 customLabel];
-  v27 = [(RTLearnedPlace *)v22 initWithIdentifier:v23 type:v24 typeSource:v25 mapItem:v32 customLabel:v26 creationDate:v6 expirationDate:v21];
+  identifier = [interestCopy identifier];
+  v24 = +[RTLearnedPlace placeTypeFromType:](RTLearnedPlace, "placeTypeFromType:", [interestCopy type]);
+  v25 = +[RTLearnedPlace placeTypeSourceFromTypeSource:](RTLearnedPlace, "placeTypeSourceFromTypeSource:", [interestCopy typeSource]);
+  customLabel = [interestCopy customLabel];
+  v27 = [(RTLearnedPlace *)v22 initWithIdentifier:identifier type:v24 typeSource:v25 mapItem:mapItem customLabel:customLabel creationDate:dateCopy expirationDate:v21];
 
-  v28 = [v5 identifier];
-  v29 = [(RTLearnedLocationOfInterest *)self initWithIdentifier:v28 location:v33 place:v27 visits:v35 transitions:MEMORY[0x277CBEBF8]];
+  identifier2 = [interestCopy identifier];
+  v29 = [(RTLearnedLocationOfInterest *)self initWithIdentifier:identifier2 location:v33 place:v27 visits:v35 transitions:MEMORY[0x277CBEBF8]];
 
   return v29;
 }
 
-- (RTLearnedLocationOfInterest)initWithIdentifier:(id)a3 location:(id)a4 place:(id)a5 visits:(id)a6 transitions:(id)a7
+- (RTLearnedLocationOfInterest)initWithIdentifier:(id)identifier location:(id)location place:(id)place visits:(id)visits transitions:(id)transitions
 {
   v30 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v24 = a6;
-  v15 = a7;
-  if (v12)
+  identifierCopy = identifier;
+  locationCopy = location;
+  placeCopy = place;
+  visitsCopy = visits;
+  transitionsCopy = transitions;
+  if (identifierCopy)
   {
-    if (v13)
+    if (locationCopy)
     {
       goto LABEL_3;
     }
@@ -675,7 +675,7 @@ LABEL_12:
       _os_log_error_impl(&dword_2304B3000, v21, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: location (in %s:%d)", buf, 0x12u);
     }
 
-    if (v14)
+    if (placeCopy)
     {
       goto LABEL_4;
     }
@@ -693,35 +693,35 @@ LABEL_12:
     _os_log_error_impl(&dword_2304B3000, v20, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: identifier (in %s:%d)", buf, 0x12u);
   }
 
-  if (!v13)
+  if (!locationCopy)
   {
     goto LABEL_12;
   }
 
 LABEL_3:
-  if (v14)
+  if (placeCopy)
   {
 LABEL_4:
-    v16 = 0;
-    if (v12 && v13)
+    selfCopy = 0;
+    if (identifierCopy && locationCopy)
     {
       v25.receiver = self;
       v25.super_class = RTLearnedLocationOfInterest;
       v17 = [(RTLearnedLocationOfInterest *)&v25 init];
       if (v17)
       {
-        v18 = [v12 copy];
+        v18 = [identifierCopy copy];
         identifier = v17->_identifier;
         v17->_identifier = v18;
 
-        objc_storeStrong(&v17->_location, a4);
-        objc_storeStrong(&v17->_place, a5);
-        objc_storeStrong(&v17->_visits, a6);
-        objc_storeStrong(&v17->_transitions, a7);
+        objc_storeStrong(&v17->_location, location);
+        objc_storeStrong(&v17->_place, place);
+        objc_storeStrong(&v17->_visits, visits);
+        objc_storeStrong(&v17->_transitions, transitions);
       }
 
       self = v17;
-      v16 = self;
+      selfCopy = self;
     }
 
     goto LABEL_18;
@@ -738,26 +738,26 @@ LABEL_15:
     _os_log_error_impl(&dword_2304B3000, v22, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: place (in %s:%d)", buf, 0x12u);
   }
 
-  v16 = 0;
+  selfCopy = 0;
 LABEL_18:
 
-  return v16;
+  return selfCopy;
 }
 
-- (id)filterWithDateInterval:(id)a3
+- (id)filterWithDateInterval:(id)interval
 {
   v78 = *MEMORY[0x277D85DE8];
-  v57 = a3;
-  if (v57)
+  intervalCopy = interval;
+  if (intervalCopy)
   {
-    v56 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v62 = 0u;
     v63 = 0u;
     v64 = 0u;
     v65 = 0u;
-    v54 = self;
-    v4 = [(RTLearnedLocationOfInterest *)self visits];
-    v5 = [v4 countByEnumeratingWithState:&v62 objects:v77 count:16];
+    selfCopy = self;
+    visits = [(RTLearnedLocationOfInterest *)self visits];
+    v5 = [visits countByEnumeratingWithState:&v62 objects:v77 count:16];
     if (!v5)
     {
       goto LABEL_17;
@@ -771,32 +771,32 @@ LABEL_18:
       {
         if (*v63 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(visits);
         }
 
         v9 = *(*(&v62 + 1) + 8 * i);
-        v10 = [v9 entryDate];
-        if (v10)
+        entryDate = [v9 entryDate];
+        if (entryDate)
         {
-          v11 = v10;
-          v12 = [v9 exitDate];
-          if (v12)
+          v11 = entryDate;
+          exitDate = [v9 exitDate];
+          if (exitDate)
           {
-            v13 = v12;
-            v14 = [v9 exitDate];
-            v15 = [v9 entryDate];
-            v16 = [v14 isOnOrBefore:v15];
+            v13 = exitDate;
+            exitDate2 = [v9 exitDate];
+            entryDate2 = [v9 entryDate];
+            v16 = [exitDate2 isOnOrBefore:entryDate2];
 
             if (!v16)
             {
               v17 = objc_alloc(MEMORY[0x277CCA970]);
-              v18 = [v9 entryDate];
-              v19 = [v9 exitDate];
-              v20 = [v17 initWithStartDate:v18 endDate:v19];
+              entryDate3 = [v9 entryDate];
+              exitDate3 = [v9 exitDate];
+              v20 = [v17 initWithStartDate:entryDate3 endDate:exitDate3];
 
-              if ([v20 intersectsDateInterval:v57])
+              if ([v20 intersectsDateInterval:intervalCopy])
               {
-                [v56 addObject:v9];
+                [array addObject:v9];
               }
 
               goto LABEL_15;
@@ -811,17 +811,17 @@ LABEL_18:
         v20 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
         if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
         {
-          v21 = [v9 identifier];
-          v22 = [v9 entryDate];
-          v23 = [v22 stringFromDate];
-          v24 = [v9 exitDate];
-          v25 = [v24 stringFromDate];
+          identifier = [v9 identifier];
+          entryDate4 = [v9 entryDate];
+          stringFromDate = [entryDate4 stringFromDate];
+          exitDate4 = [v9 exitDate];
+          stringFromDate2 = [exitDate4 stringFromDate];
           *buf = 138740995;
-          v68 = v21;
+          v68 = identifier;
           v69 = 2112;
-          v70 = v23;
+          v70 = stringFromDate;
           v71 = 2112;
-          v72 = v25;
+          v72 = stringFromDate2;
           v73 = 2080;
           v74 = "[RTLearnedLocationOfInterest filterWithDateInterval:]";
           v75 = 1024;
@@ -832,18 +832,18 @@ LABEL_18:
 LABEL_15:
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v62 objects:v77 count:16];
+      v6 = [visits countByEnumeratingWithState:&v62 objects:v77 count:16];
       if (!v6)
       {
 LABEL_17:
 
-        v55 = [MEMORY[0x277CBEB18] array];
+        array2 = [MEMORY[0x277CBEB18] array];
         v58 = 0u;
         v59 = 0u;
         v60 = 0u;
         v61 = 0u;
-        v26 = [(RTLearnedLocationOfInterest *)v54 transitions];
-        v27 = [v26 countByEnumeratingWithState:&v58 objects:v66 count:16];
+        transitions = [(RTLearnedLocationOfInterest *)selfCopy transitions];
+        v27 = [transitions countByEnumeratingWithState:&v58 objects:v66 count:16];
         if (!v27)
         {
           goto LABEL_32;
@@ -857,32 +857,32 @@ LABEL_17:
           {
             if (*v59 != v29)
             {
-              objc_enumerationMutation(v26);
+              objc_enumerationMutation(transitions);
             }
 
             v31 = *(*(&v58 + 1) + 8 * j);
-            v32 = [v31 startDate];
-            if (v32)
+            startDate = [v31 startDate];
+            if (startDate)
             {
-              v33 = v32;
-              v34 = [v31 stopDate];
-              if (v34)
+              v33 = startDate;
+              stopDate = [v31 stopDate];
+              if (stopDate)
               {
-                v35 = v34;
-                v36 = [v31 stopDate];
-                v37 = [v31 startDate];
-                v38 = [v36 isOnOrBefore:v37];
+                v35 = stopDate;
+                stopDate2 = [v31 stopDate];
+                startDate2 = [v31 startDate];
+                v38 = [stopDate2 isOnOrBefore:startDate2];
 
                 if (!v38)
                 {
                   v39 = objc_alloc(MEMORY[0x277CCA970]);
-                  v40 = [v31 startDate];
-                  v41 = [v31 stopDate];
-                  v42 = [v39 initWithStartDate:v40 endDate:v41];
+                  startDate3 = [v31 startDate];
+                  stopDate3 = [v31 stopDate];
+                  v42 = [v39 initWithStartDate:startDate3 endDate:stopDate3];
 
-                  if ([v42 intersectsDateInterval:v57])
+                  if ([v42 intersectsDateInterval:intervalCopy])
                   {
-                    [v55 addObject:v31];
+                    [array2 addObject:v31];
                   }
 
                   goto LABEL_30;
@@ -897,17 +897,17 @@ LABEL_17:
             v42 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
             if (os_log_type_enabled(v42, OS_LOG_TYPE_ERROR))
             {
-              v43 = [v31 identifier];
-              v44 = [v31 startDate];
-              v45 = [v44 stringFromDate];
-              v46 = [v31 stopDate];
-              v47 = [v46 stringFromDate];
+              identifier2 = [v31 identifier];
+              startDate4 = [v31 startDate];
+              stringFromDate3 = [startDate4 stringFromDate];
+              stopDate4 = [v31 stopDate];
+              stringFromDate4 = [stopDate4 stringFromDate];
               *buf = 138413314;
-              v68 = v43;
+              v68 = identifier2;
               v69 = 2112;
-              v70 = v45;
+              v70 = stringFromDate3;
               v71 = 2112;
-              v72 = v47;
+              v72 = stringFromDate4;
               v73 = 2080;
               v74 = "[RTLearnedLocationOfInterest filterWithDateInterval:]";
               v75 = 1024;
@@ -918,16 +918,16 @@ LABEL_17:
 LABEL_30:
           }
 
-          v28 = [v26 countByEnumeratingWithState:&v58 objects:v66 count:16];
+          v28 = [transitions countByEnumeratingWithState:&v58 objects:v66 count:16];
           if (!v28)
           {
 LABEL_32:
 
             v48 = [RTLearnedLocationOfInterest alloc];
-            v49 = [(RTLearnedLocationOfInterest *)v54 identifier];
-            v50 = [(RTLearnedLocationOfInterest *)v54 location];
-            v51 = [(RTLearnedLocationOfInterest *)v54 place];
-            v52 = [(RTLearnedLocationOfInterest *)v48 initWithIdentifier:v49 location:v50 place:v51 visits:v56 transitions:v55];
+            identifier3 = [(RTLearnedLocationOfInterest *)selfCopy identifier];
+            location = [(RTLearnedLocationOfInterest *)selfCopy location];
+            place = [(RTLearnedLocationOfInterest *)selfCopy place];
+            selfCopy2 = [(RTLearnedLocationOfInterest *)v48 initWithIdentifier:identifier3 location:location place:place visits:array transitions:array2];
 
             goto LABEL_34;
           }
@@ -936,10 +936,10 @@ LABEL_32:
     }
   }
 
-  v52 = self;
+  selfCopy2 = self;
 LABEL_34:
 
-  return v52;
+  return selfCopy2;
 }
 
 - (double)dwellTime
@@ -949,8 +949,8 @@ LABEL_34:
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v2 = [(RTLearnedLocationOfInterest *)self visits];
-  v3 = [v2 countByEnumeratingWithState:&v26 objects:v40 count:16];
+  visits = [(RTLearnedLocationOfInterest *)self visits];
+  v3 = [visits countByEnumeratingWithState:&v26 objects:v40 count:16];
   if (v3)
   {
     v5 = v3;
@@ -964,21 +964,21 @@ LABEL_34:
       {
         if (*v27 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(visits);
         }
 
         v9 = *(*(&v26 + 1) + 8 * i);
-        v10 = [v9 entryDate];
-        if (v10)
+        entryDate = [v9 entryDate];
+        if (entryDate)
         {
-          v11 = v10;
-          v12 = [v9 exitDate];
-          if (v12)
+          v11 = entryDate;
+          exitDate = [v9 exitDate];
+          if (exitDate)
           {
-            v13 = v12;
-            v14 = [v9 exitDate];
-            v15 = [v9 entryDate];
-            v16 = [v14 isOnOrBefore:v15];
+            v13 = exitDate;
+            exitDate2 = [v9 exitDate];
+            entryDate2 = [v9 entryDate];
+            v16 = [exitDate2 isOnOrBefore:entryDate2];
 
             if (!v16)
             {
@@ -996,17 +996,17 @@ LABEL_34:
         v18 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
         if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
         {
-          v19 = [v9 identifier];
-          v20 = [v9 entryDate];
-          v21 = [v20 stringFromDate];
-          v22 = [v9 exitDate];
-          v23 = [v22 stringFromDate];
+          identifier = [v9 identifier];
+          entryDate3 = [v9 entryDate];
+          stringFromDate = [entryDate3 stringFromDate];
+          exitDate3 = [v9 exitDate];
+          stringFromDate2 = [exitDate3 stringFromDate];
           *buf = v25;
-          v31 = v19;
+          v31 = identifier;
           v32 = 2112;
-          v33 = v21;
+          v33 = stringFromDate;
           v34 = 2112;
-          v35 = v23;
+          v35 = stringFromDate2;
           v36 = 2080;
           v37 = "[RTLearnedLocationOfInterest dwellTime]";
           v38 = 1024;
@@ -1015,7 +1015,7 @@ LABEL_34:
         }
       }
 
-      v5 = [v2 countByEnumeratingWithState:&v26 objects:v40 count:16];
+      v5 = [visits countByEnumeratingWithState:&v26 objects:v40 count:16];
       if (!v5)
       {
         goto LABEL_18;
@@ -1032,43 +1032,43 @@ LABEL_18:
 - (NSString)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(RTLearnedLocationOfInterest *)self identifier];
-  v5 = [v4 UUIDString];
-  v6 = [(RTLearnedLocationOfInterest *)self location];
-  v7 = [(RTLearnedLocationOfInterest *)self place];
-  v8 = [(RTLearnedLocationOfInterest *)self visits];
-  v9 = [v8 count];
-  v10 = [(RTLearnedLocationOfInterest *)self transitions];
-  v11 = [v3 stringWithFormat:@"identifier, %@, location, %@, place, %@, visits, %lu, transitions, %lu", v5, v6, v7, v9, objc_msgSend(v10, "count")];
+  identifier = [(RTLearnedLocationOfInterest *)self identifier];
+  uUIDString = [identifier UUIDString];
+  location = [(RTLearnedLocationOfInterest *)self location];
+  place = [(RTLearnedLocationOfInterest *)self place];
+  visits = [(RTLearnedLocationOfInterest *)self visits];
+  v9 = [visits count];
+  transitions = [(RTLearnedLocationOfInterest *)self transitions];
+  v11 = [v3 stringWithFormat:@"identifier, %@, location, %@, place, %@, visits, %lu, transitions, %lu", uUIDString, location, place, v9, objc_msgSend(transitions, "count")];
 
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5 == self)
+  equalCopy = equal;
+  v6 = equalCopy;
+  if (equalCopy == self)
   {
     v11 = 1;
   }
 
   else
   {
-    if (v5)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
         v7 = v6;
-        v8 = [(RTLearnedLocationOfInterest *)self identifier];
-        if (v8 || ([(RTLearnedLocationOfInterest *)v7 identifier], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+        identifier = [(RTLearnedLocationOfInterest *)self identifier];
+        if (identifier || ([(RTLearnedLocationOfInterest *)v7 identifier], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
         {
-          v9 = [(RTLearnedLocationOfInterest *)self identifier];
-          v10 = [(RTLearnedLocationOfInterest *)v7 identifier];
-          v11 = [v9 isEqual:v10];
+          identifier2 = [(RTLearnedLocationOfInterest *)self identifier];
+          identifier3 = [(RTLearnedLocationOfInterest *)v7 identifier];
+          v11 = [identifier2 isEqual:identifier3];
 
-          if (v8)
+          if (identifier)
           {
 LABEL_12:
 
@@ -1095,8 +1095,8 @@ LABEL_13:
 
 - (unint64_t)hash
 {
-  v2 = [(RTLearnedLocationOfInterest *)self identifier];
-  v3 = [v2 hash];
+  identifier = [(RTLearnedLocationOfInterest *)self identifier];
+  v3 = [identifier hash];
 
   return v3;
 }

@@ -1,23 +1,23 @@
 @interface UISDFBackdropView
 + (Class)layerClass;
-- (_TtC5UIKitP33_ACD4A08F4BE9D00246F2A9C24A80CA8817UISDFBackdropView)initWithCoder:(id)a3;
-- (_TtC5UIKitP33_ACD4A08F4BE9D00246F2A9C24A80CA8817UISDFBackdropView)initWithFrame:(CGRect)a3;
+- (_TtC5UIKitP33_ACD4A08F4BE9D00246F2A9C24A80CA8817UISDFBackdropView)initWithCoder:(id)coder;
+- (_TtC5UIKitP33_ACD4A08F4BE9D00246F2A9C24A80CA8817UISDFBackdropView)initWithFrame:(CGRect)frame;
 - (void)didMoveToWindow;
 @end
 
 @implementation UISDFBackdropView
 
-- (_TtC5UIKitP33_ACD4A08F4BE9D00246F2A9C24A80CA8817UISDFBackdropView)initWithFrame:(CGRect)a3
+- (_TtC5UIKitP33_ACD4A08F4BE9D00246F2A9C24A80CA8817UISDFBackdropView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v11.receiver = self;
   v11.super_class = type metadata accessor for UISDFBackdropView();
-  v7 = [(_UIMaterialDefinitionView *)&v11 initWithFrame:x, y, width, height];
+  height = [(_UIMaterialDefinitionView *)&v11 initWithFrame:x, y, width, height];
   v8 = qword_1ED48CFD0;
-  v9 = v7;
+  v9 = height;
   if (v8 != -1)
   {
     swift_once();
@@ -35,7 +35,7 @@
   return swift_getObjCClassFromMetadata();
 }
 
-- (_TtC5UIKitP33_ACD4A08F4BE9D00246F2A9C24A80CA8817UISDFBackdropView)initWithCoder:(id)a3
+- (_TtC5UIKitP33_ACD4A08F4BE9D00246F2A9C24A80CA8817UISDFBackdropView)initWithCoder:(id)coder
 {
   result = sub_18A4A8398();
   __break(1u);

@@ -1,23 +1,23 @@
 @interface DeprecatedText.StackView
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (void)layoutSubviews;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation DeprecatedText.StackView
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_51C3C();
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = self;
-  v6 = [(DeprecatedText.StackView *)v5 traitCollection];
+  height = fits.height;
+  width = fits.width;
+  selfCopy = self;
+  traitCollection = [(DeprecatedText.StackView *)selfCopy traitCollection];
   sub_144DCC();
   v8 = v7;
 
@@ -41,16 +41,16 @@
   return result;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v7.receiver = self;
   v7.super_class = _s9StackViewCMa();
-  v4 = a3;
+  changeCopy = change;
   v5 = v7.receiver;
-  [(DeprecatedText.StackView *)&v7 traitCollectionDidChange:v4];
+  [(DeprecatedText.StackView *)&v7 traitCollectionDidChange:changeCopy];
   __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1C3168);
   sub_14509C();
-  v6 = [v5 traitCollection];
+  traitCollection = [v5 traitCollection];
   sub_144DCC();
 
   if ((sub_141AFC() & 1) == 0)

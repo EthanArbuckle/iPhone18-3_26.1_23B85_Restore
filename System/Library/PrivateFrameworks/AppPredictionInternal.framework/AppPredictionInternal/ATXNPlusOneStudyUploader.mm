@@ -1,32 +1,32 @@
 @interface ATXNPlusOneStudyUploader
-- (BOOL)_processClientModelUpdateStreamFromStartTime:(double)a3 shortcutSuggestionHandler:(id)a4 infoSuggestionHandler:(id)a5 activity:(id)a6;
-- (id)_applyPrivacyFilterToEvents:(id)a3;
-- (id)_emptyEventsForAllWidgetDescriptorsOnDeviceWithActivity:(id)a3;
-- (id)_preparedEventsFromEmptyEvents:(id)a3 activity:(id)a4;
-- (id)_preparedEvents_appLaunchPopularity:(id)a3 activity:(id)a4;
-- (id)_preparedEvents_appPushNotificationEnabled:(id)a3 activity:(id)a4;
-- (id)_preparedEvents_appScreenTimeCategory:(id)a3 activity:(id)a4;
-- (id)_preparedEvents_numAppLaunches:(id)a3 activity:(id)a4;
-- (id)_preparedEvents_suggestionCounts:(id)a3 activity:(id)a4;
-- (id)_preparedEvents_widgetExistsOnScreen:(id)a3 activity:(id)a4;
-- (void)_sendEventsToCoreAnalytics:(id)a3;
-- (void)dryRunResultFilterByExtensionBundleId:(id)a3 completionHandler:(id)a4;
-- (void)uploadStudyDataToCoreAnalyticsWithActivity:(id)a3;
+- (BOOL)_processClientModelUpdateStreamFromStartTime:(double)time shortcutSuggestionHandler:(id)handler infoSuggestionHandler:(id)suggestionHandler activity:(id)activity;
+- (id)_applyPrivacyFilterToEvents:(id)events;
+- (id)_emptyEventsForAllWidgetDescriptorsOnDeviceWithActivity:(id)activity;
+- (id)_preparedEventsFromEmptyEvents:(id)events activity:(id)activity;
+- (id)_preparedEvents_appLaunchPopularity:(id)popularity activity:(id)activity;
+- (id)_preparedEvents_appPushNotificationEnabled:(id)enabled activity:(id)activity;
+- (id)_preparedEvents_appScreenTimeCategory:(id)category activity:(id)activity;
+- (id)_preparedEvents_numAppLaunches:(id)launches activity:(id)activity;
+- (id)_preparedEvents_suggestionCounts:(id)counts activity:(id)activity;
+- (id)_preparedEvents_widgetExistsOnScreen:(id)screen activity:(id)activity;
+- (void)_sendEventsToCoreAnalytics:(id)analytics;
+- (void)dryRunResultFilterByExtensionBundleId:(id)id completionHandler:(id)handler;
+- (void)uploadStudyDataToCoreAnalyticsWithActivity:(id)activity;
 @end
 
 @implementation ATXNPlusOneStudyUploader
 
-- (void)uploadStudyDataToCoreAnalyticsWithActivity:(id)a3
+- (void)uploadStudyDataToCoreAnalyticsWithActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy = activity;
   v5 = dispatch_get_global_queue(9, 0);
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __71__ATXNPlusOneStudyUploader_uploadStudyDataToCoreAnalyticsWithActivity___block_invoke;
   v7[3] = &unk_278596C10;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = activityCopy;
+  selfCopy = self;
+  v6 = activityCopy;
   dispatch_async(v5, v7);
 }
 
@@ -75,20 +75,20 @@ void __71__ATXNPlusOneStudyUploader_uploadStudyDataToCoreAnalyticsWithActivity__
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)dryRunResultFilterByExtensionBundleId:(id)a3 completionHandler:(id)a4
+- (void)dryRunResultFilterByExtensionBundleId:(id)id completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  idCopy = id;
+  handlerCopy = handler;
   v8 = dispatch_get_global_queue(9, 0);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __84__ATXNPlusOneStudyUploader_dryRunResultFilterByExtensionBundleId_completionHandler___block_invoke;
   block[3] = &unk_27859A950;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = idCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = idCopy;
   dispatch_async(v8, block);
 }
 
@@ -202,12 +202,12 @@ void __84__ATXNPlusOneStudyUploader_dryRunResultFilterByExtensionBundleId_comple
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_emptyEventsForAllWidgetDescriptorsOnDeviceWithActivity:(id)a3
+- (id)_emptyEventsForAllWidgetDescriptorsOnDeviceWithActivity:(id)activity
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CEB998] sharedInstance];
+  activityCopy = activity;
+  mEMORY[0x277CEB998] = [MEMORY[0x277CEB998] sharedInstance];
   v17 = 0;
-  v5 = [v4 fetchHomeScreenWidgetDescriptorMetadataWithError:&v17];
+  v5 = [mEMORY[0x277CEB998] fetchHomeScreenWidgetDescriptorMetadataWithError:&v17];
   v6 = v17;
 
   if (v6)
@@ -228,7 +228,7 @@ void __84__ATXNPlusOneStudyUploader_dryRunResultFilterByExtensionBundleId_comple
     v14[1] = 3221225472;
     v14[2] = __84__ATXNPlusOneStudyUploader__emptyEventsForAllWidgetDescriptorsOnDeviceWithActivity___block_invoke;
     v14[3] = &unk_27859D858;
-    v15 = v3;
+    v15 = activityCopy;
     v10 = v9;
     v16 = v10;
     [v5 enumerateKeysAndObjectsUsingBlock:v14];
@@ -287,10 +287,10 @@ void __84__ATXNPlusOneStudyUploader__emptyEventsForAllWidgetDescriptorsOnDeviceW
   }
 }
 
-- (void)_sendEventsToCoreAnalytics:(id)a3
+- (void)_sendEventsToCoreAnalytics:(id)analytics
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  analyticsCopy = analytics;
   v4 = __atxlog_handle_home_screen();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
@@ -301,7 +301,7 @@ void __84__ATXNPlusOneStudyUploader__emptyEventsForAllWidgetDescriptorsOnDeviceW
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = v3;
+  v5 = analyticsCopy;
   v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
@@ -317,7 +317,7 @@ void __84__ATXNPlusOneStudyUploader__emptyEventsForAllWidgetDescriptorsOnDeviceW
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v12 + 1) + 8 * v9) coreAnalyticsEvent];
+        coreAnalyticsEvent = [*(*(&v12 + 1) + 8 * v9) coreAnalyticsEvent];
         AnalyticsSendEvent();
 
         ++v9;
@@ -333,32 +333,32 @@ void __84__ATXNPlusOneStudyUploader__emptyEventsForAllWidgetDescriptorsOnDeviceW
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_preparedEventsFromEmptyEvents:(id)a3 activity:(id)a4
+- (id)_preparedEventsFromEmptyEvents:(id)events activity:(id)activity
 {
-  v6 = a4;
-  v7 = [(ATXNPlusOneStudyUploader *)self _preparedEvents_widgetExistsOnScreen:a3 activity:v6];
-  if (![v7 count] || (objc_msgSend(v6, "didDefer") & 1) != 0)
+  activityCopy = activity;
+  v7 = [(ATXNPlusOneStudyUploader *)self _preparedEvents_widgetExistsOnScreen:events activity:activityCopy];
+  if (![v7 count] || (objc_msgSend(activityCopy, "didDefer") & 1) != 0)
   {
     goto LABEL_3;
   }
 
-  v9 = [(ATXNPlusOneStudyUploader *)self _preparedEvents_appPushNotificationEnabled:v7 activity:v6];
+  v9 = [(ATXNPlusOneStudyUploader *)self _preparedEvents_appPushNotificationEnabled:v7 activity:activityCopy];
 
-  if (![v9 count] || (objc_msgSend(v6, "didDefer") & 1) != 0)
+  if (![v9 count] || (objc_msgSend(activityCopy, "didDefer") & 1) != 0)
   {
     goto LABEL_6;
   }
 
-  v7 = [(ATXNPlusOneStudyUploader *)self _preparedEvents_appLaunchPopularity:v9 activity:v6];
+  v7 = [(ATXNPlusOneStudyUploader *)self _preparedEvents_appLaunchPopularity:v9 activity:activityCopy];
 
-  if (![v7 count] || (objc_msgSend(v6, "didDefer") & 1) != 0)
+  if (![v7 count] || (objc_msgSend(activityCopy, "didDefer") & 1) != 0)
   {
     goto LABEL_3;
   }
 
-  v9 = [(ATXNPlusOneStudyUploader *)self _preparedEvents_appScreenTimeCategory:v7 activity:v6];
+  v9 = [(ATXNPlusOneStudyUploader *)self _preparedEvents_appScreenTimeCategory:v7 activity:activityCopy];
 
-  if (![v9 count] || (objc_msgSend(v6, "didDefer") & 1) != 0)
+  if (![v9 count] || (objc_msgSend(activityCopy, "didDefer") & 1) != 0)
   {
 LABEL_6:
     v8 = 0;
@@ -366,16 +366,16 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v7 = [(ATXNPlusOneStudyUploader *)self _preparedEvents_numAppLaunches:v9 activity:v6];
+  v7 = [(ATXNPlusOneStudyUploader *)self _preparedEvents_numAppLaunches:v9 activity:activityCopy];
 
-  if (![v7 count] || (objc_msgSend(v6, "didDefer") & 1) != 0)
+  if (![v7 count] || (objc_msgSend(activityCopy, "didDefer") & 1) != 0)
   {
 LABEL_3:
     v8 = 0;
     goto LABEL_7;
   }
 
-  v11 = [(ATXNPlusOneStudyUploader *)self _preparedEvents_suggestionCounts:v7 activity:v6];
+  v11 = [(ATXNPlusOneStudyUploader *)self _preparedEvents_suggestionCounts:v7 activity:activityCopy];
 
   v12 = __atxlog_handle_home_screen();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
@@ -390,11 +390,11 @@ LABEL_7:
   return v8;
 }
 
-- (id)_preparedEvents_widgetExistsOnScreen:(id)a3 activity:(id)a4
+- (id)_preparedEvents_widgetExistsOnScreen:(id)screen activity:(id)activity
 {
   v73 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v47 = a4;
+  screenCopy = screen;
+  activityCopy = activity;
   v6 = __atxlog_handle_home_screen();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
@@ -419,7 +419,7 @@ LABEL_7:
   v41 = v7;
   if (v9)
   {
-    v40 = v5;
+    v40 = screenCopy;
     v10 = objc_opt_new();
     v64 = 0u;
     v65 = 0u;
@@ -441,9 +441,9 @@ LABEL_7:
           }
 
           v13 = *(*(&v64 + 1) + 8 * v12);
-          if ([v47 didDefer])
+          if ([activityCopy didDefer])
           {
-            v5 = v40;
+            screenCopy = v40;
             v11 = v40;
 
             goto LABEL_43;
@@ -454,8 +454,8 @@ LABEL_7:
           v63 = 0u;
           v60 = 0u;
           v61 = 0u;
-          v49 = [v13 stacks];
-          v51 = [v49 countByEnumeratingWithState:&v60 objects:v71 count:16];
+          stacks = [v13 stacks];
+          v51 = [stacks countByEnumeratingWithState:&v60 objects:v71 count:16];
           if (v51)
           {
             v50 = *v61;
@@ -465,7 +465,7 @@ LABEL_7:
               {
                 if (*v61 != v50)
                 {
-                  objc_enumerationMutation(v49);
+                  objc_enumerationMutation(stacks);
                 }
 
                 v15 = *(*(&v60 + 1) + 8 * i);
@@ -473,8 +473,8 @@ LABEL_7:
                 v57 = 0u;
                 v58 = 0u;
                 v59 = 0u;
-                v16 = [v15 widgets];
-                v17 = [v16 countByEnumeratingWithState:&v56 objects:v70 count:16];
+                widgets = [v15 widgets];
+                v17 = [widgets countByEnumeratingWithState:&v56 objects:v70 count:16];
                 if (v17)
                 {
                   v18 = v17;
@@ -485,34 +485,34 @@ LABEL_7:
                     {
                       if (*v57 != v19)
                       {
-                        objc_enumerationMutation(v16);
+                        objc_enumerationMutation(widgets);
                       }
 
                       v21 = *(*(&v56 + 1) + 8 * j);
-                      v22 = [v21 extensionBundleId];
-                      v23 = [v10 objectForKeyedSubscript:v22];
+                      extensionBundleId = [v21 extensionBundleId];
+                      v23 = [v10 objectForKeyedSubscript:extensionBundleId];
 
                       if (!v23)
                       {
                         v24 = objc_opt_new();
-                        v25 = [v21 extensionBundleId];
-                        [v10 setObject:v24 forKeyedSubscript:v25];
+                        extensionBundleId2 = [v21 extensionBundleId];
+                        [v10 setObject:v24 forKeyedSubscript:extensionBundleId2];
                       }
 
-                      v26 = [v21 extensionBundleId];
-                      v27 = [v10 objectForKeyedSubscript:v26];
-                      v28 = [v21 widgetKind];
-                      [v27 addObject:v28];
+                      extensionBundleId3 = [v21 extensionBundleId];
+                      v27 = [v10 objectForKeyedSubscript:extensionBundleId3];
+                      widgetKind = [v21 widgetKind];
+                      [v27 addObject:widgetKind];
                     }
 
-                    v18 = [v16 countByEnumeratingWithState:&v56 objects:v70 count:16];
+                    v18 = [widgets countByEnumeratingWithState:&v56 objects:v70 count:16];
                   }
 
                   while (v18);
                 }
               }
 
-              v51 = [v49 countByEnumeratingWithState:&v60 objects:v71 count:16];
+              v51 = [stacks countByEnumeratingWithState:&v60 objects:v71 count:16];
             }
 
             while (v51);
@@ -552,10 +552,10 @@ LABEL_7:
           }
 
           v34 = *(*(&v52 + 1) + 8 * k);
-          v35 = [v34 extensionBundleId];
-          v36 = [v10 objectForKeyedSubscript:v35];
-          v37 = [v34 widgetKind];
-          [v34 setWidgetExistsOnScreen:{objc_msgSend(v36, "containsObject:", v37)}];
+          extensionBundleId4 = [v34 extensionBundleId];
+          v36 = [v10 objectForKeyedSubscript:extensionBundleId4];
+          widgetKind2 = [v34 widgetKind];
+          [v34 setWidgetExistsOnScreen:{objc_msgSend(v36, "containsObject:", widgetKind2)}];
         }
 
         v31 = [v29 countByEnumeratingWithState:&v52 objects:v69 count:16];
@@ -565,7 +565,7 @@ LABEL_7:
     }
 
     v11 = v29;
-    v5 = v40;
+    screenCopy = v40;
   }
 
   else
@@ -586,23 +586,23 @@ LABEL_43:
   return v11;
 }
 
-- (id)_preparedEvents_appPushNotificationEnabled:(id)a3 activity:(id)a4
+- (id)_preparedEvents_appPushNotificationEnabled:(id)enabled activity:(id)activity
 {
   v34 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  enabledCopy = enabled;
+  activityCopy = activity;
   v7 = __atxlog_handle_home_screen();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     [ATXNPlusOneStudyUploader _preparedEvents_appPushNotificationEnabled:activity:];
   }
 
-  v8 = [MEMORY[0x277D77F68] currentNotificationSettingsCenter];
+  currentNotificationSettingsCenter = [MEMORY[0x277D77F68] currentNotificationSettingsCenter];
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v9 = v5;
+  v9 = enabledCopy;
   v10 = [v9 countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (v10)
   {
@@ -619,34 +619,34 @@ LABEL_5:
       }
 
       v14 = *(*(&v29 + 1) + 8 * v13);
-      if ([v6 didDefer])
+      if ([activityCopy didDefer])
       {
         break;
       }
 
-      v15 = [v14 appBundleId];
+      appBundleId = [v14 appBundleId];
 
-      if (v15)
+      if (appBundleId)
       {
-        v16 = [v14 appBundleId];
-        v17 = [v8 notificationSourceWithIdentifier:v16];
+        appBundleId2 = [v14 appBundleId];
+        v17 = [currentNotificationSettingsCenter notificationSourceWithIdentifier:appBundleId2];
 
         if ([v17 isHiddenFromSettings])
         {
           goto LABEL_12;
         }
 
-        v18 = [v17 sourceSettings];
-        [v18 notificationSettings];
+        sourceSettings = [v17 sourceSettings];
+        [sourceSettings notificationSettings];
         v19 = v9;
-        v21 = v20 = v8;
+        v21 = v20 = currentNotificationSettingsCenter;
         v22 = v12;
-        v23 = [v21 authorizationStatus];
+        authorizationStatus = [v21 authorizationStatus];
 
-        v8 = v20;
+        currentNotificationSettingsCenter = v20;
         v9 = v19;
 
-        v24 = v23 == 1;
+        v24 = authorizationStatus == 1;
         v12 = v22;
         v11 = v28;
         if (!v24)
@@ -686,11 +686,11 @@ LABEL_17:
   return v9;
 }
 
-- (id)_preparedEvents_appLaunchPopularity:(id)a3 activity:(id)a4
+- (id)_preparedEvents_appLaunchPopularity:(id)popularity activity:(id)activity
 {
   v26 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  popularityCopy = popularity;
+  activityCopy = activity;
   v7 = __atxlog_handle_home_screen();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -704,7 +704,7 @@ LABEL_17:
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v10 = v5;
+  v10 = popularityCopy;
   v11 = [v10 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v11)
   {
@@ -720,17 +720,17 @@ LABEL_5:
       }
 
       v15 = *(*(&v21 + 1) + 8 * v14);
-      if ([v6 didDefer])
+      if ([activityCopy didDefer])
       {
         break;
       }
 
-      v16 = [v15 appBundleId];
+      appBundleId = [v15 appBundleId];
 
-      if (v16)
+      if (appBundleId)
       {
-        v17 = [v15 appBundleId];
-        [v9 overallLaunchPopularityForBundleId:v17];
+        appBundleId2 = [v15 appBundleId];
+        [v9 overallLaunchPopularityForBundleId:appBundleId2];
         [v15 setAppLaunchPopularity:?];
       }
 
@@ -764,10 +764,10 @@ LABEL_14:
   return v10;
 }
 
-- (id)_preparedEvents_appScreenTimeCategory:(id)a3 activity:(id)a4
+- (id)_preparedEvents_appScreenTimeCategory:(id)category activity:(id)activity
 {
-  v5 = a3;
-  v6 = a4;
+  categoryCopy = category;
+  activityCopy = activity;
   v7 = __atxlog_handle_home_screen();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -779,14 +779,14 @@ LABEL_14:
   v13 = 3221225472;
   v14 = __75__ATXNPlusOneStudyUploader__preparedEvents_appScreenTimeCategory_activity___block_invoke;
   v15 = &unk_27859D8A8;
-  v16 = v6;
+  v16 = activityCopy;
   v17 = v8;
   v9 = v8;
-  v10 = v6;
-  [v5 enumerateObjectsUsingBlock:&v12];
-  [v5 removeObjectsAtIndexes:{v9, v12, v13, v14, v15}];
+  v10 = activityCopy;
+  [categoryCopy enumerateObjectsUsingBlock:&v12];
+  [categoryCopy removeObjectsAtIndexes:{v9, v12, v13, v14, v15}];
 
-  return v5;
+  return categoryCopy;
 }
 
 void __75__ATXNPlusOneStudyUploader__preparedEvents_appScreenTimeCategory_activity___block_invoke(uint64_t a1, void *a2, uint64_t a3, _BYTE *a4)
@@ -954,11 +954,11 @@ uint64_t __75__ATXNPlusOneStudyUploader__preparedEvents_appScreenTimeCategory_ac
   return [*(a1 + 40) addIndex:*(a1 + 48)];
 }
 
-- (id)_preparedEvents_numAppLaunches:(id)a3 activity:(id)a4
+- (id)_preparedEvents_numAppLaunches:(id)launches activity:(id)activity
 {
   v61 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  launchesCopy = launches;
+  activityCopy = activity;
   v7 = __atxlog_handle_home_screen();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -970,7 +970,7 @@ uint64_t __75__ATXNPlusOneStudyUploader__preparedEvents_appScreenTimeCategory_ac
   v59 = 0u;
   v56 = 0u;
   v57 = 0u;
-  v9 = v5;
+  v9 = launchesCopy;
   v10 = [v9 countByEnumeratingWithState:&v56 objects:v60 count:16];
   if (v10)
   {
@@ -985,30 +985,30 @@ uint64_t __75__ATXNPlusOneStudyUploader__preparedEvents_appScreenTimeCategory_ac
         }
 
         v13 = *(*(&v56 + 1) + 8 * i);
-        v14 = [v13 appBundleId];
-        v15 = v14 == 0;
+        appBundleId = [v13 appBundleId];
+        v15 = appBundleId == 0;
 
         if (v15)
         {
-          v21 = objc_opt_new();
-          [v13 setAppLaunchCounts:v21];
+          appBundleId4 = objc_opt_new();
+          [v13 setAppLaunchCounts:appBundleId4];
         }
 
         else
         {
-          v16 = [v13 appBundleId];
-          v17 = [v8 objectForKeyedSubscript:v16];
+          appBundleId2 = [v13 appBundleId];
+          v17 = [v8 objectForKeyedSubscript:appBundleId2];
           v18 = v17 == 0;
 
           if (v18)
           {
             v19 = objc_opt_new();
-            v20 = [v13 appBundleId];
-            [v8 setObject:v19 forKeyedSubscript:v20];
+            appBundleId3 = [v13 appBundleId];
+            [v8 setObject:v19 forKeyedSubscript:appBundleId3];
           }
 
-          v21 = [v13 appBundleId];
-          v22 = [v8 objectForKeyedSubscript:v21];
+          appBundleId4 = [v13 appBundleId];
+          v22 = [v8 objectForKeyedSubscript:appBundleId4];
           [v13 setAppLaunchCounts:v22];
         }
       }
@@ -1029,7 +1029,7 @@ uint64_t __75__ATXNPlusOneStudyUploader__preparedEvents_appScreenTimeCategory_ac
   v30 = v29;
   [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
   v32 = v31;
-  if ([v6 didDefer])
+  if ([activityCopy didDefer])
   {
     v33 = v9;
   }
@@ -1044,9 +1044,9 @@ uint64_t __75__ATXNPlusOneStudyUploader__preparedEvents_appScreenTimeCategory_ac
     v55 = v9;
     v34 = BiomeLibrary();
     v35 = [v34 App];
-    v36 = [v35 InFocus];
+    inFocus = [v35 InFocus];
     v37 = [MEMORY[0x277CCABB0] numberWithDouble:v32 + -2419200.0];
-    v38 = [v36 atx_publisherFromStartTime:v37];
+    v38 = [inFocus atx_publisherFromStartTime:v37];
     v49[0] = MEMORY[0x277D85DD0];
     v49[1] = 3221225472;
     v49[2] = __68__ATXNPlusOneStudyUploader__preparedEvents_numAppLaunches_activity___block_invoke;
@@ -1056,7 +1056,7 @@ uint64_t __75__ATXNPlusOneStudyUploader__preparedEvents_appScreenTimeCategory_ac
     v42[1] = 3221225472;
     v42[2] = __68__ATXNPlusOneStudyUploader__preparedEvents_numAppLaunches_activity___block_invoke_218;
     v42[3] = &unk_27859D8D0;
-    v43 = v6;
+    v43 = activityCopy;
     v44 = v8;
     v45 = v30 + -1209600.0;
     v46 = v28 + -604800.0;
@@ -1167,11 +1167,11 @@ void __68__ATXNPlusOneStudyUploader__preparedEvents_numAppLaunches_activity___bl
   }
 }
 
-- (id)_preparedEvents_suggestionCounts:(id)a3 activity:(id)a4
+- (id)_preparedEvents_suggestionCounts:(id)counts activity:(id)activity
 {
   v99 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v37 = a4;
+  countsCopy = counts;
+  activityCopy = activity;
   v6 = __atxlog_handle_home_screen();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
@@ -1183,7 +1183,7 @@ void __68__ATXNPlusOneStudyUploader__preparedEvents_numAppLaunches_activity___bl
   v85 = 0u;
   v82 = 0u;
   v83 = 0u;
-  v8 = v5;
+  v8 = countsCopy;
   v9 = [v8 countByEnumeratingWithState:&v82 objects:v98 count:16];
   if (v9)
   {
@@ -1198,9 +1198,9 @@ void __68__ATXNPlusOneStudyUploader__preparedEvents_numAppLaunches_activity___bl
         }
 
         v12 = *(*(&v82 + 1) + 8 * i);
-        v13 = [v12 extensionBundleId];
-        v14 = [v12 widgetKind];
-        v15 = [v13 stringByAppendingString:v14];
+        extensionBundleId = [v12 extensionBundleId];
+        widgetKind = [v12 widgetKind];
+        v15 = [extensionBundleId stringByAppendingString:widgetKind];
 
         [v7 setObject:v12 forKeyedSubscript:v15];
       }
@@ -1270,13 +1270,13 @@ void __68__ATXNPlusOneStudyUploader__preparedEvents_numAppLaunches_activity___bl
   v43 = &v62;
   v44 = &v66;
   v23 = _Block_copy(v38);
-  if ([v37 didDefer])
+  if ([activityCopy didDefer])
   {
     goto LABEL_15;
   }
 
   [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
-  if ([(ATXNPlusOneStudyUploader *)self _processClientModelUpdateStreamFromStartTime:v20 shortcutSuggestionHandler:v23 infoSuggestionHandler:v37 activity:v24 + -86400.0])
+  if ([(ATXNPlusOneStudyUploader *)self _processClientModelUpdateStreamFromStartTime:v20 shortcutSuggestionHandler:v23 infoSuggestionHandler:activityCopy activity:v24 + -86400.0])
   {
     v25 = __atxlog_handle_home_screen();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
@@ -1474,11 +1474,11 @@ void __70__ATXNPlusOneStudyUploader__preparedEvents_suggestionCounts_activity___
   }
 }
 
-- (BOOL)_processClientModelUpdateStreamFromStartTime:(double)a3 shortcutSuggestionHandler:(id)a4 infoSuggestionHandler:(id)a5 activity:(id)a6
+- (BOOL)_processClientModelUpdateStreamFromStartTime:(double)time shortcutSuggestionHandler:(id)handler infoSuggestionHandler:(id)suggestionHandler activity:(id)activity
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
+  handlerCopy = handler;
+  suggestionHandlerCopy = suggestionHandler;
+  activityCopy = activity;
   v29 = 0;
   v30 = &v29;
   v31 = 0x2020000000;
@@ -1488,7 +1488,7 @@ void __70__ATXNPlusOneStudyUploader__preparedEvents_suggestionCounts_activity___
   v28[1] = 0x2020000000;
   v28[2] = 0;
   v12 = objc_opt_new();
-  v13 = [v12 publisherFromStartTime:a3];
+  v13 = [v12 publisherFromStartTime:time];
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __130__ATXNPlusOneStudyUploader__processClientModelUpdateStreamFromStartTime_shortcutSuggestionHandler_infoSuggestionHandler_activity___block_invoke;
@@ -1498,12 +1498,12 @@ void __70__ATXNPlusOneStudyUploader__preparedEvents_suggestionCounts_activity___
   v21[1] = 3221225472;
   v21[2] = __130__ATXNPlusOneStudyUploader__processClientModelUpdateStreamFromStartTime_shortcutSuggestionHandler_infoSuggestionHandler_activity___block_invoke_225;
   v21[3] = &unk_27859D920;
-  v14 = v11;
+  v14 = activityCopy;
   v22 = v14;
-  v15 = v9;
+  v15 = handlerCopy;
   v23 = v15;
   v25 = &v27;
-  v16 = v10;
+  v16 = suggestionHandlerCopy;
   v24 = v16;
   v17 = [v13 sinkWithCompletion:v26 receiveInput:v21];
 
@@ -1643,13 +1643,13 @@ LABEL_15:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_applyPrivacyFilterToEvents:(id)a3
+- (id)_applyPrivacyFilterToEvents:(id)events
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  eventsCopy = events;
   if ([MEMORY[0x277D42590] isInternalBuild])
   {
-    v4 = v3;
+    v4 = eventsCopy;
   }
 
   else
@@ -1659,7 +1659,7 @@ LABEL_15:
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v5 = v3;
+    v5 = eventsCopy;
     v6 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v6)
     {
@@ -1675,14 +1675,14 @@ LABEL_15:
           }
 
           v10 = *(*(&v17 + 1) + 8 * i);
-          v11 = [v10 appBundleId];
-          if (v11)
+          appBundleId = [v10 appBundleId];
+          if (appBundleId)
           {
-            v12 = v11;
-            v13 = [v10 appLaunchCounts];
-            v14 = [v13 numAppLaunchPast28Day];
+            v12 = appBundleId;
+            appLaunchCounts = [v10 appLaunchCounts];
+            numAppLaunchPast28Day = [appLaunchCounts numAppLaunchPast28Day];
 
-            if (v14 < 5)
+            if (numAppLaunchPast28Day < 5)
             {
               continue;
             }

@@ -1,15 +1,15 @@
 @interface LBAudioCapture
-- (LBAudioCapture)initWithQueue:(id)a3;
-- (id)_stopStreamOptionWithReason:(unint64_t)a3 forRequestId:(id)a4;
-- (void)CSXPCClient:(id)a3 didDisconnect:(BOOL)a4;
-- (void)_startRequestWithAudioContext:(id)a3 streamOption:(id)a4 streamProvider:(id)a5 completion:(id)a6;
-- (void)startAudioCaptureWithRecordContext:(id)a3 startHostTime:(unint64_t)a4 siriSessionUUID:(id)a5 completion:(id)a6;
-- (void)stopAudioCaptureWithReason:(unint64_t)a3 requestId:(id)a4 completion:(id)a5;
+- (LBAudioCapture)initWithQueue:(id)queue;
+- (id)_stopStreamOptionWithReason:(unint64_t)reason forRequestId:(id)id;
+- (void)CSXPCClient:(id)client didDisconnect:(BOOL)disconnect;
+- (void)_startRequestWithAudioContext:(id)context streamOption:(id)option streamProvider:(id)provider completion:(id)completion;
+- (void)startAudioCaptureWithRecordContext:(id)context startHostTime:(unint64_t)time siriSessionUUID:(id)d completion:(id)completion;
+- (void)stopAudioCaptureWithReason:(unint64_t)reason requestId:(id)id completion:(id)completion;
 @end
 
 @implementation LBAudioCapture
 
-- (void)CSXPCClient:(id)a3 didDisconnect:(BOOL)a4
+- (void)CSXPCClient:(id)client didDisconnect:(BOOL)disconnect
 {
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -43,9 +43,9 @@ void __44__LBAudioCapture_CSXPCClient_didDisconnect___block_invoke(uint64_t a1)
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_stopStreamOptionWithReason:(unint64_t)a3 forRequestId:(id)a4
+- (id)_stopStreamOptionWithReason:(unint64_t)reason forRequestId:(id)id
 {
-  if (a3 == 1)
+  if (reason == 1)
   {
     v4 = 3;
   }
@@ -56,18 +56,18 @@ void __44__LBAudioCapture_CSXPCClient_didDisconnect___block_invoke(uint64_t a1)
   }
 
   v5 = MEMORY[0x277D01698];
-  v6 = a4;
+  idCopy = id;
   v7 = [[v5 alloc] initWithTimeout:8 clientIdentity:0 requireRecordModeLock:1 requireListeningMicIndicatorLock:1.0];
-  v8 = [objc_alloc(MEMORY[0x277D01680]) initWithStopRecordingReason:v4 expectedStopHostTime:0 trailingSilenceDurationAtEndpoint:v7 holdRequest:1 supportsMagus:v6 requestId:0.0];
+  v8 = [objc_alloc(MEMORY[0x277D01680]) initWithStopRecordingReason:v4 expectedStopHostTime:0 trailingSilenceDurationAtEndpoint:v7 holdRequest:1 supportsMagus:idCopy requestId:0.0];
 
   return v8;
 }
 
-- (void)stopAudioCaptureWithReason:(unint64_t)a3 requestId:(id)a4 completion:(id)a5
+- (void)stopAudioCaptureWithReason:(unint64_t)reason requestId:(id)id completion:(id)completion
 {
   v23 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
+  idCopy = id;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_queue);
   v10 = LBLogContextFacilityLocalSRBridge;
   if (os_log_type_enabled(LBLogContextFacilityLocalSRBridge, OS_LOG_TYPE_DEFAULT))
@@ -81,22 +81,22 @@ void __44__LBAudioCapture_CSXPCClient_didDisconnect___block_invoke(uint64_t a1)
   v19[1] = 3221225472;
   v19[2] = __66__LBAudioCapture_stopAudioCaptureWithReason_requestId_completion___block_invoke;
   v19[3] = &unk_279823940;
-  v11 = v9;
+  v11 = completionCopy;
   v20 = v11;
   v12 = MEMORY[0x259C5B300](v19);
-  v13 = [(LBAudioCapture *)self audioStream];
+  audioStream = [(LBAudioCapture *)self audioStream];
 
-  if (v13)
+  if (audioStream)
   {
-    v14 = [(LBAudioCapture *)self _stopStreamOptionWithReason:a3 forRequestId:v8];
-    v15 = [(LBAudioCapture *)self audioStream];
+    v14 = [(LBAudioCapture *)self _stopStreamOptionWithReason:reason forRequestId:idCopy];
+    audioStream2 = [(LBAudioCapture *)self audioStream];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __66__LBAudioCapture_stopAudioCaptureWithReason_requestId_completion___block_invoke_5;
     v17[3] = &unk_279823990;
     v17[4] = self;
     v18 = v12;
-    [v15 stopAudioStreamWithOption:v14 completion:v17];
+    [audioStream2 stopAudioStreamWithOption:v14 completion:v17];
   }
 
   else
@@ -151,30 +151,30 @@ void __66__LBAudioCapture_stopAudioCaptureWithReason_requestId_completion___bloc
   dispatch_async(v6, block);
 }
 
-- (void)_startRequestWithAudioContext:(id)a3 streamOption:(id)a4 streamProvider:(id)a5 completion:(id)a6
+- (void)_startRequestWithAudioContext:(id)context streamOption:(id)option streamProvider:(id)provider completion:(id)completion
 {
   v35 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  contextCopy = context;
+  optionCopy = option;
+  providerCopy = provider;
+  completionCopy = completion;
   v29[0] = MEMORY[0x277D85DD0];
   v29[1] = 3221225472;
   v29[2] = __87__LBAudioCapture__startRequestWithAudioContext_streamOption_streamProvider_completion___block_invoke;
   v29[3] = &unk_279823940;
-  v14 = v13;
+  v14 = completionCopy;
   v30 = v14;
   v15 = MEMORY[0x259C5B300](v29);
-  if (v12)
+  if (providerCopy)
   {
-    v25 = v11;
-    v16 = [MEMORY[0x277D016A0] defaultRequestWithContext:v10];
+    v25 = optionCopy;
+    v16 = [MEMORY[0x277D016A0] defaultRequestWithContext:contextCopy];
     [v16 setClientIdentity:4];
     [v16 setRequestListeningMicIndicatorLock:1];
     v17 = objc_opt_class();
     v18 = NSStringFromClass(v17);
     v28 = 0;
-    v19 = [v12 audioStreamWithRequest:v16 streamName:v18 error:&v28];
+    v19 = [providerCopy audioStreamWithRequest:v16 streamName:v18 error:&v28];
     v20 = v28;
 
     if (v19)
@@ -186,25 +186,25 @@ void __66__LBAudioCapture_stopAudioCaptureWithReason_requestId_completion___bloc
       v26[2] = __87__LBAudioCapture__startRequestWithAudioContext_streamOption_streamProvider_completion___block_invoke_4;
       v26[3] = &unk_279823940;
       v27 = v15;
-      v11 = v25;
+      optionCopy = v25;
       [v19 startAudioStreamWithOption:v25 completion:v26];
     }
 
     else
     {
       v21 = LBLogContextFacilityLocalSRBridge;
-      v11 = v25;
+      optionCopy = v25;
       if (os_log_type_enabled(LBLogContextFacilityLocalSRBridge, OS_LOG_TYPE_ERROR))
       {
         v23 = v21;
-        v24 = [v20 localizedDescription];
+        localizedDescription = [v20 localizedDescription];
         *buf = 136315394;
         v32 = "[LBAudioCapture _startRequestWithAudioContext:streamOption:streamProvider:completion:]";
         v33 = 2114;
-        v34 = v24;
+        v34 = localizedDescription;
         _os_log_error_impl(&dword_256130000, v23, OS_LOG_TYPE_ERROR, "%s AudioStreamRequest has failed : %{public}@", buf, 0x16u);
 
-        v11 = v25;
+        optionCopy = v25;
       }
 
       (v15)[2](v15, 0, v20);
@@ -247,26 +247,26 @@ void __87__LBAudioCapture__startRequestWithAudioContext_streamOption_streamProvi
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)startAudioCaptureWithRecordContext:(id)a3 startHostTime:(unint64_t)a4 siriSessionUUID:(id)a5 completion:(id)a6
+- (void)startAudioCaptureWithRecordContext:(id)context startHostTime:(unint64_t)time siriSessionUUID:(id)d completion:(id)completion
 {
   v40[2] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  contextCopy = context;
+  dCopy = d;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_queue);
   v13 = LBLogContextFacilityLocalSRBridge;
   if (os_log_type_enabled(LBLogContextFacilityLocalSRBridge, OS_LOG_TYPE_DEFAULT))
   {
     v14 = v13;
-    v15 = [v10 description];
+    v15 = [contextCopy description];
     *buf = 136315906;
     *&buf[4] = "[LBAudioCapture startAudioCaptureWithRecordContext:startHostTime:siriSessionUUID:completion:]";
     *&buf[12] = 2114;
     *&buf[14] = v15;
     *&buf[22] = 2048;
-    v39 = a4;
+    timeCopy = time;
     LOWORD(v40[0]) = 2112;
-    *(v40 + 2) = v11;
+    *(v40 + 2) = dCopy;
     _os_log_impl(&dword_256130000, v14, OS_LOG_TYPE_DEFAULT, "%s start audio capture with recordContext : %{public}@, hostTime : %llu siriSessionUUID:%@", buf, 0x2Au);
   }
 
@@ -274,7 +274,7 @@ void __87__LBAudioCapture__startRequestWithAudioContext_streamOption_streamProvi
   v32[1] = 3221225472;
   v32[2] = __94__LBAudioCapture_startAudioCaptureWithRecordContext_startHostTime_siriSessionUUID_completion___block_invoke;
   v32[3] = &unk_279823940;
-  v16 = v12;
+  v16 = completionCopy;
   v33 = v16;
   v17 = MEMORY[0x259C5B300](v32);
   xpcClient = self->_xpcClient;
@@ -290,7 +290,7 @@ void __87__LBAudioCapture__startRequestWithAudioContext_streamOption_streamProvi
       *buf = MEMORY[0x277D85DD0];
       *&buf[8] = 3221225472;
       *&buf[16] = __getCSXPCClientClass_block_invoke;
-      v39 = &unk_279823A60;
+      timeCopy = &unk_279823A60;
       v40[0] = &v34;
       __getCSXPCClientClass_block_invoke(buf);
       v19 = v35[3];
@@ -308,41 +308,41 @@ void __87__LBAudioCapture__startRequestWithAudioContext_streamOption_streamProvi
   }
 
   v31 = 0;
-  v23 = [(CSXPCClient *)xpcClient prepareAudioProviderWithContext:v10 clientType:4 error:&v31];
+  v23 = [(CSXPCClient *)xpcClient prepareAudioProviderWithContext:contextCopy clientType:4 error:&v31];
   v24 = v31;
   if (v23)
   {
     v25 = self->_xpcClient;
     if (v25)
     {
-      v26 = [MEMORY[0x277D01678] noAlertOption];
-      [v26 setRequestHistoricalAudioDataWithHostTime:1];
-      [v26 setStartRecordingHostTime:a4];
-      [v26 setSiriSessionUUID:v11];
-      [v26 setDisableRCSelection:1];
-      v27 = [MEMORY[0x277CCAD78] UUID];
-      v28 = [v27 UUIDString];
+      noAlertOption = [MEMORY[0x277D01678] noAlertOption];
+      [noAlertOption setRequestHistoricalAudioDataWithHostTime:1];
+      [noAlertOption setStartRecordingHostTime:time];
+      [noAlertOption setSiriSessionUUID:dCopy];
+      [noAlertOption setDisableRCSelection:1];
+      uUID = [MEMORY[0x277CCAD78] UUID];
+      uUIDString = [uUID UUIDString];
 
-      [v26 setRequestMHUUID:v28];
+      [noAlertOption setRequestMHUUID:uUIDString];
       v29 = LBLogContextFacilityLocalSRBridge;
       if (os_log_type_enabled(LBLogContextFacilityLocalSRBridge, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 136315650;
         *&buf[4] = "[LBAudioCapture startAudioCaptureWithRecordContext:startHostTime:siriSessionUUID:completion:]";
         *&buf[12] = 2112;
-        *&buf[14] = v28;
+        *&buf[14] = uUIDString;
         *&buf[22] = 2112;
-        v39 = v11;
+        timeCopy = dCopy;
         _os_log_impl(&dword_256130000, v29, OS_LOG_TYPE_DEFAULT, "%s Minting MHId %@ for requestId %@", buf, 0x20u);
       }
 
-      [(LBAudioCapture *)self _startRequestWithAudioContext:v10 streamOption:v26 streamProvider:v25 completion:v17];
+      [(LBAudioCapture *)self _startRequestWithAudioContext:contextCopy streamOption:noAlertOption streamProvider:v25 completion:v17];
     }
 
     else
     {
-      v26 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.localsrbridge" code:202 userInfo:0];
-      (v17)[2](v17, 0, v26);
+      noAlertOption = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.localsrbridge" code:202 userInfo:0];
+      (v17)[2](v17, 0, noAlertOption);
     }
   }
 
@@ -381,16 +381,16 @@ void __94__LBAudioCapture_startAudioCaptureWithRecordContext_startHostTime_siriS
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (LBAudioCapture)initWithQueue:(id)a3
+- (LBAudioCapture)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v9.receiver = self;
   v9.super_class = LBAudioCapture;
   v6 = [(LBAudioCapture *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_queue, a3);
+    objc_storeStrong(&v6->_queue, queue);
   }
 
   return v7;

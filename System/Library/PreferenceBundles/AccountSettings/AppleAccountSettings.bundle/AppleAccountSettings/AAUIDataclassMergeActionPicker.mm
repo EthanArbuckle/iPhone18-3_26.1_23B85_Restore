@@ -1,5 +1,5 @@
 @interface AAUIDataclassMergeActionPicker
-- (id)descriptionForDataclassAction:(id)a3;
+- (id)descriptionForDataclassAction:(id)action;
 - (id)message;
 - (id)title;
 @end
@@ -17,9 +17,9 @@
 
   else
   {
-    v5 = [(AAUIDataclassMergeActionPicker *)self affectedDataclasses];
-    v6 = [v5 lastObject];
-    v2 = [ACUILocalization localizedTitleForDataclass:v6];
+    affectedDataclasses = [(AAUIDataclassMergeActionPicker *)self affectedDataclasses];
+    lastObject = [affectedDataclasses lastObject];
+    v2 = [ACUILocalization localizedTitleForDataclass:lastObject];
 
     v3 = [NSBundle bundleForClass:objc_opt_class()];
     v7 = [v3 localizedStringForKey:@"MERGE_DATA_TO_SERVER_TITLE" value:&stru_5A5F0 table:@"Localizable"];
@@ -31,8 +31,8 @@
 
 - (id)message
 {
-  v3 = [(AAUIDataclassMergeActionPicker *)self affectedDataclasses];
-  v4 = [ACUILocalization localizedTextForDataclasses:v3 usedAtBeginningOfSentence:0];
+  affectedDataclasses = [(AAUIDataclassMergeActionPicker *)self affectedDataclasses];
+  v4 = [ACUILocalization localizedTextForDataclasses:affectedDataclasses usedAtBeginningOfSentence:0];
 
   if (self->_isPerformingBatchMerge)
   {
@@ -44,9 +44,9 @@
     goto LABEL_18;
   }
 
-  v9 = [(AAUIDataclassMergeActionPicker *)self affectedDataclasses];
-  v10 = [v9 lastObject];
-  v7 = [ACUILocalization localizedReferenceToLocalSourceOfDataclass:v10];
+  affectedDataclasses2 = [(AAUIDataclassMergeActionPicker *)self affectedDataclasses];
+  lastObject = [affectedDataclasses2 lastObject];
+  v7 = [ACUILocalization localizedReferenceToLocalSourceOfDataclass:lastObject];
 
   v11 = [NSBundle bundleForClass:objc_opt_class()];
   v12 = [v11 localizedStringForKey:@"MERGE_DATA_TO_SERVER" value:&stru_5A5F0 table:@"Localizable"];
@@ -117,13 +117,13 @@ LABEL_18:
   return v8;
 }
 
-- (id)descriptionForDataclassAction:(id)a3
+- (id)descriptionForDataclassAction:(id)action
 {
-  v4 = a3;
-  v5 = v4;
+  actionCopy = action;
+  v5 = actionCopy;
   if (self->_isPerformingBatchMerge)
   {
-    if ([v4 type] == &dword_4 + 1)
+    if ([actionCopy type] == &dword_4 + 1)
     {
       v6 = @"BATCH_MERGE_OK_BUTTON";
       goto LABEL_6;

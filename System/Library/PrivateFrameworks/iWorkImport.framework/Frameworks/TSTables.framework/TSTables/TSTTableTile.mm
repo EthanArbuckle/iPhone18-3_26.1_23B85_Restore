@@ -1,40 +1,40 @@
 @interface TSTTableTile
 - (BOOL)isEmpty;
 - (BOOL)lastSavedInBNC;
-- (BOOL)validatedLoadFromUnarchiver:(id)a3;
+- (BOOL)validatedLoadFromUnarchiver:(id)unarchiver;
 - (NSIndexSet)populatedRows;
-- (TSTCellStorage)cellStorageRefAtColumnIndex:(unsigned __int16)a3 tileRowIndex:(unsigned int)a4;
-- (TSTTableTile)initWithRows:(id)a3 shouldUseWideRows:(BOOL)a4 context:(id)a5;
+- (TSTCellStorage)cellStorageRefAtColumnIndex:(unsigned __int16)index tileRowIndex:(unsigned int)rowIndex;
+- (TSTTableTile)initWithRows:(id)rows shouldUseWideRows:(BOOL)wideRows context:(id)context;
 - (id)description;
-- (id)findOrAddRowInfoAtTileRowIndex:(unsigned int)a3;
-- (id)removeColumnsAtColumnIndex:(unsigned __int16)a3 numberOfColumns:(unsigned int)a4;
-- (id)rowInfoAtOrAfterTileRowIndex:(unsigned int)a3 outTileRowIndex:(unsigned int *)a4;
-- (id)rowInfoForTileRowIndex:(unsigned int)a3;
-- (id)shiftUpAndYankBy:(unsigned int)a3;
-- (id)yankRowInfoAtTileRowIndex:(unsigned int)a3;
-- (id)yankRowsAtTileRowIndex:(unsigned int)a3;
-- (id)yankRowsAtTileRowIndex:(unsigned int)a3 count:(unsigned int)a4;
-- (int)insertColumnsAtColumnIndex:(unsigned __int16)a3 numberOfColumns:(unsigned int)a4;
-- (int64_t)setCell:(id)a3 atColumnIndex:(unsigned __int16)a4 tileRowIndex:(unsigned int)a5;
+- (id)findOrAddRowInfoAtTileRowIndex:(unsigned int)index;
+- (id)removeColumnsAtColumnIndex:(unsigned __int16)index numberOfColumns:(unsigned int)columns;
+- (id)rowInfoAtOrAfterTileRowIndex:(unsigned int)index outTileRowIndex:(unsigned int *)rowIndex;
+- (id)rowInfoForTileRowIndex:(unsigned int)index;
+- (id)shiftUpAndYankBy:(unsigned int)by;
+- (id)yankRowInfoAtTileRowIndex:(unsigned int)index;
+- (id)yankRowsAtTileRowIndex:(unsigned int)index;
+- (id)yankRowsAtTileRowIndex:(unsigned int)index count:(unsigned int)count;
+- (int)insertColumnsAtColumnIndex:(unsigned __int16)index numberOfColumns:(unsigned int)columns;
+- (int64_t)setCell:(id)cell atColumnIndex:(unsigned __int16)index tileRowIndex:(unsigned int)rowIndex;
 - (unint64_t)archivingCompatibilityVersion;
 - (unsigned)maxColumn;
 - (unsigned)maxRow;
 - (unsigned)numRows;
-- (void)_removeRowsAtTileRowIndex:(unsigned int)a3 numberOfRows:(unsigned int)a4 shiftingContent:(BOOL)a5;
-- (void)_setRowInfo:(id)a3 atTileRowIndex:(unsigned int)a4;
-- (void)didApplyConcurrentCellMap:(id)a3;
-- (void)enumerateRowsAndIndexesWithBlock:(id)a3;
-- (void)enumerateRowsWithBlock:(id)a3;
-- (void)insertRowsAtTileRowIndex:(unsigned int)a3 numberOfRows:(unsigned int)a4;
-- (void)moveColumnsAtColumnIndex:(unsigned __int16)a3 numberOfColumns:(unsigned int)a4 toDestColumnIndex:(unsigned __int16)a5;
+- (void)_removeRowsAtTileRowIndex:(unsigned int)index numberOfRows:(unsigned int)rows shiftingContent:(BOOL)content;
+- (void)_setRowInfo:(id)info atTileRowIndex:(unsigned int)index;
+- (void)didApplyConcurrentCellMap:(id)map;
+- (void)enumerateRowsAndIndexesWithBlock:(id)block;
+- (void)enumerateRowsWithBlock:(id)block;
+- (void)insertRowsAtTileRowIndex:(unsigned int)index numberOfRows:(unsigned int)rows;
+- (void)moveColumnsAtColumnIndex:(unsigned __int16)index numberOfColumns:(unsigned int)columns toDestColumnIndex:(unsigned __int16)columnIndex;
 - (void)p_pruneRowCount;
 - (void)pruneEmptyRows;
-- (void)saveToArchiver:(id)a3;
-- (void)setShouldUseWideRows:(BOOL)a3;
-- (void)shiftUpAtTileRowIndex:(unsigned int)a3 count:(unsigned int)a4;
-- (void)spliceRowInfo:(id)a3 atTileRowIndex:(unsigned int)a4 overwrite:(BOOL)a5;
-- (void)spliceRows:(id)a3 atTileRowIndex:(unsigned int)a4;
-- (void)swapRowAtTileRowIndex:(unsigned int)a3 withRowAtTileRowIndex:(unsigned int)a4;
+- (void)saveToArchiver:(id)archiver;
+- (void)setShouldUseWideRows:(BOOL)rows;
+- (void)shiftUpAtTileRowIndex:(unsigned int)index count:(unsigned int)count;
+- (void)spliceRowInfo:(id)info atTileRowIndex:(unsigned int)index overwrite:(BOOL)overwrite;
+- (void)spliceRows:(id)rows atTileRowIndex:(unsigned int)index;
+- (void)swapRowAtTileRowIndex:(unsigned int)index withRowAtTileRowIndex:(unsigned int)rowIndex;
 - (void)widenAllRowsForUpgrade;
 - (void)willModify;
 @end
@@ -114,18 +114,18 @@
   return v4;
 }
 
-- (TSTTableTile)initWithRows:(id)a3 shouldUseWideRows:(BOOL)a4 context:(id)a5
+- (TSTTableTile)initWithRows:(id)rows shouldUseWideRows:(BOOL)wideRows context:(id)context
 {
-  v8 = a3;
-  v9 = a5;
+  rowsCopy = rows;
+  contextCopy = context;
   v18.receiver = self;
   v18.super_class = TSTTableTile;
-  v14 = [(TSTTableTile *)&v18 initWithContext:v9];
+  v14 = [(TSTTableTile *)&v18 initWithContext:contextCopy];
   if (v14)
   {
-    if (v8)
+    if (rowsCopy)
     {
-      v15 = objc_msgSend_copy(v8, v10, v11, v12, v13);
+      v15 = objc_msgSend_copy(rowsCopy, v10, v11, v12, v13);
     }
 
     else
@@ -138,7 +138,7 @@
 
     v14->_lastSavedInBNC = 1;
     v14->_storageVersion = 5;
-    v14->_shouldUseWideRows = a4;
+    v14->_shouldUseWideRows = wideRows;
   }
 
   return v14;
@@ -197,16 +197,16 @@
   objc_msgSend_setCount_(rowInfos, v12, v15, v13, v14);
 }
 
-- (void)_setRowInfo:(id)a3 atTileRowIndex:(unsigned int)a4
+- (void)_setRowInfo:(id)info atTileRowIndex:(unsigned int)index
 {
-  v4 = *&a4;
-  v31 = a3;
+  v4 = *&index;
+  infoCopy = info;
   if (objc_msgSend_count(self->_rowInfos, v6, v7, v8, v9) <= v4)
   {
     objc_msgSend_setCount_(self->_rowInfos, v10, (v4 + 127), v11, v12);
   }
 
-  if (v31 && objc_msgSend_pointerAtIndex_(self->_rowInfos, v10, v4, v11, v12))
+  if (infoCopy && objc_msgSend_pointerAtIndex_(self->_rowInfos, v10, v4, v11, v12))
   {
     v13 = MEMORY[0x277D81150];
     v14 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v10, "[TSTTableTile _setRowInfo:atTileRowIndex:]", v11, v12);
@@ -216,38 +216,38 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v20, v21, v22, v23);
   }
 
-  objc_msgSend_setTileRowIndex_(v31, v10, v4, v11, v12);
-  objc_msgSend_replacePointerAtIndex_withPointer_(self->_rowInfos, v24, v4, v31, v25);
+  objc_msgSend_setTileRowIndex_(infoCopy, v10, v4, v11, v12);
+  objc_msgSend_replacePointerAtIndex_withPointer_(self->_rowInfos, v24, v4, infoCopy, v25);
   v30 = self->_pruningCount + 1;
   self->_pruningCount = v30;
-  if (v30 > 0x80 || !v31 && objc_msgSend_count(self->_rowInfos, v26, v27, v28, v29) - 1 == v4)
+  if (v30 > 0x80 || !infoCopy && objc_msgSend_count(self->_rowInfos, v26, v27, v28, v29) - 1 == v4)
   {
     objc_msgSend_p_pruneRowCount(self, v26, v27, v28, v29);
     self->_pruningCount = 0;
   }
 }
 
-- (id)rowInfoForTileRowIndex:(unsigned int)a3
+- (id)rowInfoForTileRowIndex:(unsigned int)index
 {
-  if (objc_msgSend_count(self->_rowInfos, a2, *&a3, v3, v4) <= a3)
+  if (objc_msgSend_count(self->_rowInfos, a2, *&index, v3, v4) <= index)
   {
     v10 = 0;
   }
 
   else
   {
-    v10 = objc_msgSend_pointerAtIndex_(self->_rowInfos, v7, a3, v8, v9);
+    v10 = objc_msgSend_pointerAtIndex_(self->_rowInfos, v7, index, v8, v9);
   }
 
   return v10;
 }
 
-- (BOOL)validatedLoadFromUnarchiver:(id)a3
+- (BOOL)validatedLoadFromUnarchiver:(id)unarchiver
 {
   v77 = *MEMORY[0x277D85DE8];
-  v70 = a3;
+  unarchiverCopy = unarchiver;
   google::protobuf::internal::AssignDescriptors();
-  v7 = objc_msgSend_messageWithDescriptor_(v70, v4, off_2812E4498[18], v5, v6);
+  v7 = objc_msgSend_messageWithDescriptor_(unarchiverCopy, v4, off_2812E4498[18], v5, v6);
 
   v12 = *(v7 + 16);
   if ((v12 & 0x20) != 0)
@@ -282,13 +282,13 @@
   rowInfos = self->_rowInfos;
   self->_rowInfos = v16;
 
-  v22 = objc_msgSend_fileFormatVersion(v70, v18, v19, v20, v21);
+  v22 = objc_msgSend_fileFormatVersion(unarchiverCopy, v18, v19, v20, v21);
   if (v15 <= 0)
   {
 LABEL_35:
     shouldUseWideRows = self->_shouldUseWideRows;
 LABEL_36:
-    if (!shouldUseWideRows && objc_msgSend_fileFormatVersion(v70, v23, v24, v25, v26) <= 0xD000000000000)
+    if (!shouldUseWideRows && objc_msgSend_fileFormatVersion(unarchiverCopy, v23, v24, v25, v26) <= 0xD000000000000)
     {
       objc_msgSend_willModifyForUpgrade(self, v23, v24, v25, v26);
     }
@@ -407,11 +407,11 @@ LABEL_36:
   [(TSTTableTile *)&v2 willModify];
 }
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
-  v4 = a3;
+  archiverCopy = archiver;
   google::protobuf::internal::AssignDescriptors();
-  v7 = objc_msgSend_messageWithNewFunction_descriptor_(v4, v5, sub_2210C1B78, off_2812E4498[18], v6);
+  v7 = objc_msgSend_messageWithNewFunction_descriptor_(archiverCopy, v5, sub_2210C1B78, off_2812E4498[18], v6);
 
   v8 = *(v7 + 16);
   *(v7 + 48) = 0;
@@ -427,7 +427,7 @@ LABEL_36:
   v25 = sub_2210BF9C0;
   v26 = &unk_27845E908;
   v28 = v7;
-  v15 = v4;
+  v15 = archiverCopy;
   v27 = v15;
   objc_msgSend_enumerateRowsAndIndexesWithBlock_(self, v16, &v23, v17, v18);
   lastSavedInBNC = self->_lastSavedInBNC;
@@ -471,9 +471,9 @@ LABEL_36:
   return v4;
 }
 
-- (void)setShouldUseWideRows:(BOOL)a3
+- (void)setShouldUseWideRows:(BOOL)rows
 {
-  if (self->_shouldUseWideRows != a3)
+  if (self->_shouldUseWideRows != rows)
   {
     if (self->_shouldUseWideRows)
     {
@@ -487,8 +487,8 @@ LABEL_36:
       abort();
     }
 
-    objc_msgSend_willModify(self, a2, a3, v3, v4);
-    self->_shouldUseWideRows = a3;
+    objc_msgSend_willModify(self, a2, rows, v3, v4);
+    self->_shouldUseWideRows = rows;
   }
 }
 
@@ -559,10 +559,10 @@ LABEL_36:
   objc_msgSend_enumerateIndexesUsingBlock_(v7, v15, v19, v17, v18);
 }
 
-- (id)findOrAddRowInfoAtTileRowIndex:(unsigned int)a3
+- (id)findOrAddRowInfoAtTileRowIndex:(unsigned int)index
 {
-  v5 = *&a3;
-  v11 = objc_msgSend_rowInfoForTileRowIndex_(self, a2, *&a3, v3, v4);
+  v5 = *&index;
+  v11 = objc_msgSend_rowInfoForTileRowIndex_(self, a2, *&index, v3, v4);
   if (!v11)
   {
     objc_msgSend_willModify(self, v7, v8, v9, v10);
@@ -573,10 +573,10 @@ LABEL_36:
   return v11;
 }
 
-- (void)enumerateRowsAndIndexesWithBlock:(id)a3
+- (void)enumerateRowsAndIndexesWithBlock:(id)block
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  blockCopy = block;
   v16 = 0;
   v12 = 0u;
   v13 = 0u;
@@ -600,7 +600,7 @@ LABEL_3:
       v11 = *(*(&v12 + 1) + 8 * v10);
       if (v11)
       {
-        v4[2](v4, v11, v8, &v16);
+        blockCopy[2](blockCopy, v11, v8, &v16);
         if (v16)
         {
           break;
@@ -622,10 +622,10 @@ LABEL_3:
   }
 }
 
-- (void)enumerateRowsWithBlock:(id)a3
+- (void)enumerateRowsWithBlock:(id)block
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  blockCopy = block;
   v15 = 0;
   v11 = 0u;
   v12 = 0u;
@@ -648,7 +648,7 @@ LABEL_3:
       v10 = *(*(&v11 + 1) + 8 * v9);
       if (v10)
       {
-        v4[2](v4, v10, &v15);
+        blockCopy[2](blockCopy, v10, &v15);
         if (v15)
         {
           break;
@@ -669,14 +669,14 @@ LABEL_3:
   }
 }
 
-- (id)rowInfoAtOrAfterTileRowIndex:(unsigned int)a3 outTileRowIndex:(unsigned int *)a4
+- (id)rowInfoAtOrAfterTileRowIndex:(unsigned int)index outTileRowIndex:(unsigned int *)rowIndex
 {
-  LODWORD(v6) = a3;
-  v8 = objc_msgSend_rowInfoForTileRowIndex_(self, a2, *&a3, a4, v4);
+  LODWORD(v6) = index;
+  v8 = objc_msgSend_rowInfoForTileRowIndex_(self, a2, *&index, rowIndex, v4);
   if (v8)
   {
 LABEL_4:
-    if (!a4)
+    if (!rowIndex)
     {
       goto LABEL_6;
     }
@@ -704,10 +704,10 @@ LABEL_4:
     LODWORD(v6) = 0x7FFFFFFF;
   }
 
-  if (a4)
+  if (rowIndex)
   {
 LABEL_5:
-    *a4 = v6;
+    *rowIndex = v6;
   }
 
 LABEL_6:
@@ -715,11 +715,11 @@ LABEL_6:
   return v8;
 }
 
-- (TSTCellStorage)cellStorageRefAtColumnIndex:(unsigned __int16)a3 tileRowIndex:(unsigned int)a4
+- (TSTCellStorage)cellStorageRefAtColumnIndex:(unsigned __int16)index tileRowIndex:(unsigned int)rowIndex
 {
-  v5 = *&a4;
-  v6 = a3;
-  if (objc_msgSend_isEmpty(self, a2, a3, *&a4, v4))
+  v5 = *&rowIndex;
+  indexCopy = index;
+  if (objc_msgSend_isEmpty(self, a2, index, *&rowIndex, v4))
   {
     return 0;
   }
@@ -728,7 +728,7 @@ LABEL_6:
   v16 = v12;
   if (v12)
   {
-    v11 = objc_msgSend_cellStorageRefAtIndex_(v12, v13, v6, v14, v15);
+    v11 = objc_msgSend_cellStorageRefAtIndex_(v12, v13, indexCopy, v14, v15);
   }
 
   else
@@ -739,11 +739,11 @@ LABEL_6:
   return v11;
 }
 
-- (int64_t)setCell:(id)a3 atColumnIndex:(unsigned __int16)a4 tileRowIndex:(unsigned int)a5
+- (int64_t)setCell:(id)cell atColumnIndex:(unsigned __int16)index tileRowIndex:(unsigned int)rowIndex
 {
-  v5 = *&a5;
-  v6 = a4;
-  v8 = a3;
+  v5 = *&rowIndex;
+  indexCopy = index;
+  cellCopy = cell;
   objc_msgSend_willModify(self, v9, v10, v11, v12);
   v20 = objc_msgSend_findOrAddRowInfoAtTileRowIndex_(self, v13, v5, v14, v15);
   if (!v20)
@@ -769,7 +769,7 @@ LABEL_6:
     objc_msgSend_convertToWideOffsets(v20, v32, v33, v34, v35);
   }
 
-  v40 = objc_msgSend_setCell_atIndex_(v20, v32, v8, v6, v35);
+  v40 = objc_msgSend_setCell_atIndex_(v20, v32, cellCopy, indexCopy, v35);
   if (!self->_shouldUseWideRows && objc_msgSend_usesWideOffsets(v20, v36, v37, v38, v39))
   {
     self->_shouldUseWideRows = 1;
@@ -783,17 +783,17 @@ LABEL_6:
   return v40;
 }
 
-- (int)insertColumnsAtColumnIndex:(unsigned __int16)a3 numberOfColumns:(unsigned int)a4
+- (int)insertColumnsAtColumnIndex:(unsigned __int16)index numberOfColumns:(unsigned int)columns
 {
-  if ((objc_msgSend_isEmpty(self, a2, a3, *&a4, v4) & 1) == 0)
+  if ((objc_msgSend_isEmpty(self, a2, index, *&columns, v4) & 1) == 0)
   {
     objc_msgSend_willModify(self, v8, v9, v10, v11);
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = sub_2210C0A8C;
     v16[3] = &unk_27845E980;
-    v18 = a3;
-    v17 = a4;
+    indexCopy = index;
+    columnsCopy = columns;
     v16[4] = self;
     objc_msgSend_enumerateRowsWithBlock_(self, v12, v16, v13, v14);
   }
@@ -801,9 +801,9 @@ LABEL_6:
   return 0;
 }
 
-- (id)removeColumnsAtColumnIndex:(unsigned __int16)a3 numberOfColumns:(unsigned int)a4
+- (id)removeColumnsAtColumnIndex:(unsigned __int16)index numberOfColumns:(unsigned int)columns
 {
-  if (objc_msgSend_isEmpty(self, a2, a3, *&a4, v4))
+  if (objc_msgSend_isEmpty(self, a2, index, *&columns, v4))
   {
     v12 = 0;
   }
@@ -816,8 +816,8 @@ LABEL_6:
     v23 = 3221225472;
     v24 = sub_2210C0C2C;
     v25 = &unk_27845E9A8;
-    v28 = a3;
-    v27 = a4;
+    indexCopy = index;
+    columnsCopy = columns;
     v12 = v13;
     v26 = v12;
     objc_msgSend_enumerateRowsAndIndexesWithBlock_(self, v14, &v22, v15, v16);
@@ -827,70 +827,70 @@ LABEL_6:
   return v12;
 }
 
-- (void)moveColumnsAtColumnIndex:(unsigned __int16)a3 numberOfColumns:(unsigned int)a4 toDestColumnIndex:(unsigned __int16)a5
+- (void)moveColumnsAtColumnIndex:(unsigned __int16)index numberOfColumns:(unsigned int)columns toDestColumnIndex:(unsigned __int16)columnIndex
 {
-  if ((objc_msgSend_isEmpty(self, a2, a3, *&a4, a5) & 1) == 0)
+  if ((objc_msgSend_isEmpty(self, a2, index, *&columns, columnIndex) & 1) == 0)
   {
     objc_msgSend_willModify(self, v9, v10, v11, v12);
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = sub_2210C0D58;
     v20[3] = &unk_27845E9C8;
-    v22 = a3;
-    v23 = a5;
-    v21 = a4;
+    indexCopy = index;
+    columnIndexCopy = columnIndex;
+    columnsCopy = columns;
     objc_msgSend_enumerateRowsWithBlock_(self, v13, v20, v14, v15);
     objc_msgSend_pruneEmptyRows(self, v16, v17, v18, v19);
   }
 }
 
-- (void)insertRowsAtTileRowIndex:(unsigned int)a3 numberOfRows:(unsigned int)a4
+- (void)insertRowsAtTileRowIndex:(unsigned int)index numberOfRows:(unsigned int)rows
 {
-  LODWORD(v8) = objc_msgSend_maxRow(self, a2, *&a3, *&a4, v4);
+  LODWORD(v8) = objc_msgSend_maxRow(self, a2, *&index, *&rows, v4);
   isEmpty = objc_msgSend_isEmpty(self, v9, v10, v11, v12);
-  if (a4 && (isEmpty & 1) == 0 && v8 >= a3)
+  if (rows && (isEmpty & 1) == 0 && v8 >= index)
   {
     objc_msgSend_willModify(self, v14, v15, v16, v17);
-    objc_msgSend_setCount_(self->_rowInfos, v18, v8 + a4, v19, v20);
+    objc_msgSend_setCount_(self->_rowInfos, v18, v8 + rows, v19, v20);
     v8 = v8;
-    v24 = a4;
+    rowsCopy = rows;
     do
     {
       v27 = objc_msgSend_rowInfoForTileRowIndex_(self, v21, v8, v22, v23);
       if (v27)
       {
         objc_msgSend__setRowInfo_atTileRowIndex_(self, v25, 0, v8, v26);
-        objc_msgSend__setRowInfo_atTileRowIndex_(self, v28, v27, v24 + v8, v29);
+        objc_msgSend__setRowInfo_atTileRowIndex_(self, v28, v27, rowsCopy + v8, v29);
       }
     }
 
-    while (v8-- > a3);
+    while (v8-- > index);
   }
 }
 
-- (void)_removeRowsAtTileRowIndex:(unsigned int)a3 numberOfRows:(unsigned int)a4 shiftingContent:(BOOL)a5
+- (void)_removeRowsAtTileRowIndex:(unsigned int)index numberOfRows:(unsigned int)rows shiftingContent:(BOOL)content
 {
-  v5 = a5;
-  v7 = *&a3;
-  objc_msgSend_willModify(self, a2, *&a3, *&a4, a5);
+  contentCopy = content;
+  v7 = *&index;
+  objc_msgSend_willModify(self, a2, *&index, *&rows, content);
   if ((objc_msgSend_isEmpty(self, v9, v10, v11, v12) & 1) == 0)
   {
     v17 = objc_msgSend_maxRow(self, v13, v14, v15, v16);
     v18 = v17;
-    if (v7 || v17 >= a4)
+    if (v7 || v17 >= rows)
     {
       if (v17 >= v7)
       {
-        v19 = a4 + v7;
+        v19 = rows + v7;
         do
         {
           v22 = objc_msgSend_rowInfoForTileRowIndex_(self, v13, v7, v15, v16);
           if (v7 >= v19)
           {
-            if (v5)
+            if (contentCopy)
             {
               objc_msgSend__setRowInfo_atTileRowIndex_(self, v20, 0, v7, v21);
-              objc_msgSend__setRowInfo_atTileRowIndex_(self, v23, v22, v7 - a4, v24);
+              objc_msgSend__setRowInfo_atTileRowIndex_(self, v23, v22, v7 - rows, v24);
             }
           }
 
@@ -915,11 +915,11 @@ LABEL_6:
   objc_msgSend_p_pruneRowCount(self, v13, v14, v15, v16);
 }
 
-- (void)shiftUpAtTileRowIndex:(unsigned int)a3 count:(unsigned int)a4
+- (void)shiftUpAtTileRowIndex:(unsigned int)index count:(unsigned int)count
 {
-  v5 = *&a4;
-  v6 = *&a3;
-  isEmpty = objc_msgSend_isEmpty(self, a2, *&a3, *&a4, v4);
+  v5 = *&count;
+  v6 = *&index;
+  isEmpty = objc_msgSend_isEmpty(self, a2, *&index, *&count, v4);
   if (v5 && (isEmpty & 1) == 0 && objc_msgSend_maxRow(self, v9, v10, v11, v12) >= v6)
   {
     objc_msgSend_willModify(self, v13, v14, v15, v16);
@@ -928,10 +928,10 @@ LABEL_6:
   }
 }
 
-- (id)shiftUpAndYankBy:(unsigned int)a3
+- (id)shiftUpAndYankBy:(unsigned int)by
 {
-  v5 = *&a3;
-  isEmpty = objc_msgSend_isEmpty(self, a2, *&a3, v3, v4);
+  v5 = *&by;
+  isEmpty = objc_msgSend_isEmpty(self, a2, *&by, v3, v4);
   if (!v5 || isEmpty)
   {
     v12 = objc_msgSend_strongObjectsPointerArray(MEMORY[0x277CCAC18], v8, v9, v10, v11);
@@ -946,10 +946,10 @@ LABEL_6:
   return v12;
 }
 
-- (id)yankRowInfoAtTileRowIndex:(unsigned int)a3
+- (id)yankRowInfoAtTileRowIndex:(unsigned int)index
 {
-  v5 = *&a3;
-  if (objc_msgSend_isEmpty(self, a2, *&a3, v3, v4))
+  v5 = *&index;
+  if (objc_msgSend_isEmpty(self, a2, *&index, v3, v4))
   {
     v10 = 0;
   }
@@ -967,12 +967,12 @@ LABEL_6:
   return v10;
 }
 
-- (id)yankRowsAtTileRowIndex:(unsigned int)a3 count:(unsigned int)a4
+- (id)yankRowsAtTileRowIndex:(unsigned int)index count:(unsigned int)count
 {
-  v8 = objc_msgSend_strongObjectsPointerArray(MEMORY[0x277CCAC18], a2, *&a3, *&a4, v4);
-  objc_msgSend_setCount_(v8, v9, a4, v10, v11);
+  v8 = objc_msgSend_strongObjectsPointerArray(MEMORY[0x277CCAC18], a2, *&index, *&count, v4);
+  objc_msgSend_setCount_(v8, v9, count, v10, v11);
   isEmpty = objc_msgSend_isEmpty(self, v12, v13, v14, v15);
-  if (a4)
+  if (count)
   {
     v21 = isEmpty;
   }
@@ -982,7 +982,7 @@ LABEL_6:
     v21 = 1;
   }
 
-  if ((v21 & 1) == 0 && objc_msgSend_maxRow(self, v17, v18, v19, v20) >= a3)
+  if ((v21 & 1) == 0 && objc_msgSend_maxRow(self, v17, v18, v19, v20) >= index)
   {
     objc_msgSend_willModify(self, v22, v23, v24, v25);
     v50 = 0;
@@ -995,8 +995,8 @@ LABEL_6:
     v45[1] = 3221225472;
     v45[2] = sub_2210C1338;
     v45[3] = &unk_27845E9F0;
-    v48 = a3;
-    v49 = a3 + a4 - 1;
+    indexCopy = index;
+    v49 = index + count - 1;
     v30 = v8;
     v46 = v30;
     v47 = &v50;
@@ -1017,10 +1017,10 @@ LABEL_6:
   return v8;
 }
 
-- (id)yankRowsAtTileRowIndex:(unsigned int)a3
+- (id)yankRowsAtTileRowIndex:(unsigned int)index
 {
-  v5 = *&a3;
-  v7 = objc_msgSend_maxRow(self, a2, *&a3, v3, v4);
+  v5 = *&index;
+  v7 = objc_msgSend_maxRow(self, a2, *&index, v3, v4);
   if ((objc_msgSend_isEmpty(self, v8, v9, v10, v11) & 1) != 0 || v7 < v5)
   {
     v16 = objc_msgSend_strongObjectsPointerArray(MEMORY[0x277CCAC18], v12, v13, v14, v15);
@@ -1034,13 +1034,13 @@ LABEL_6:
   return v16;
 }
 
-- (void)spliceRowInfo:(id)a3 atTileRowIndex:(unsigned int)a4 overwrite:(BOOL)a5
+- (void)spliceRowInfo:(id)info atTileRowIndex:(unsigned int)index overwrite:(BOOL)overwrite
 {
-  v5 = a5;
-  v6 = *&a4;
-  v18 = a3;
+  overwriteCopy = overwrite;
+  v6 = *&index;
+  infoCopy = info;
   objc_msgSend_willModify(self, v8, v9, v10, v11);
-  if (v5)
+  if (overwriteCopy)
   {
     v17 = objc_msgSend_rowInfoForTileRowIndex_(self, v12, v6, v13, v14);
     if (v17)
@@ -1049,29 +1049,29 @@ LABEL_6:
     }
   }
 
-  objc_msgSend__setRowInfo_atTileRowIndex_(self, v12, v18, v6, v14);
+  objc_msgSend__setRowInfo_atTileRowIndex_(self, v12, infoCopy, v6, v14);
 }
 
-- (void)spliceRows:(id)a3 atTileRowIndex:(unsigned int)a4
+- (void)spliceRows:(id)rows atTileRowIndex:(unsigned int)index
 {
-  v6 = a3;
+  rowsCopy = rows;
   objc_msgSend_willModify(self, v7, v8, v9, v10);
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = sub_2210C15E8;
   v14[3] = &unk_27845EA18;
   v14[4] = self;
-  v15 = a4;
-  objc_msgSend_tsu_enumerateNonNullObjectUsingBlock_(v6, v11, v14, v12, v13);
+  indexCopy = index;
+  objc_msgSend_tsu_enumerateNonNullObjectUsingBlock_(rowsCopy, v11, v14, v12, v13);
 }
 
-- (void)swapRowAtTileRowIndex:(unsigned int)a3 withRowAtTileRowIndex:(unsigned int)a4
+- (void)swapRowAtTileRowIndex:(unsigned int)index withRowAtTileRowIndex:(unsigned int)rowIndex
 {
-  if (a3 != a4)
+  if (index != rowIndex)
   {
-    v5 = *&a4;
-    v6 = *&a3;
-    v18 = objc_msgSend_rowInfoForTileRowIndex_(self, a2, *&a3, *&a4, v4);
+    v5 = *&rowIndex;
+    v6 = *&index;
+    v18 = objc_msgSend_rowInfoForTileRowIndex_(self, a2, *&index, *&rowIndex, v4);
     v15 = objc_msgSend_rowInfoForTileRowIndex_(self, v8, v5, v9, v10);
     if (v18 | v15)
     {
@@ -1099,10 +1099,10 @@ LABEL_6:
   }
 }
 
-- (void)didApplyConcurrentCellMap:(id)a3
+- (void)didApplyConcurrentCellMap:(id)map
 {
-  v4 = a3;
-  if (objc_msgSend_count(v4, v5, v6, v7, v8))
+  mapCopy = map;
+  if (objc_msgSend_count(mapCopy, v5, v6, v7, v8))
   {
     objc_msgSend_willModify(self, v9, v10, v11, v12);
   }
@@ -1112,7 +1112,7 @@ LABEL_6:
   v17[2] = sub_2210C17D0;
   v17[3] = &unk_27845E958;
   v17[4] = self;
-  objc_msgSend_enumerateIndexesUsingBlock_(v4, v9, v17, v11, v12);
+  objc_msgSend_enumerateIndexesUsingBlock_(mapCopy, v9, v17, v11, v12);
   objc_msgSend_p_pruneRowCount(self, v13, v14, v15, v16);
 }
 

@@ -1,20 +1,20 @@
 @interface NoiseSampler
-- (NoiseSampler)initWithUnigram:(float *)a3 ofSize:(unint64_t)a4;
-- (NoiseSampler)initWithZipfOfSize:(unint64_t)a3;
+- (NoiseSampler)initWithUnigram:(float *)unigram ofSize:(unint64_t)size;
+- (NoiseSampler)initWithZipfOfSize:(unint64_t)size;
 - (id).cxx_construct;
 - (unint64_t)drawNoise;
 @end
 
 @implementation NoiseSampler
 
-- (NoiseSampler)initWithZipfOfSize:(unint64_t)a3
+- (NoiseSampler)initWithZipfOfSize:(unint64_t)size
 {
-  v3 = a3;
-  std::vector<float>::vector[abi:ne200100](&__p, a3);
+  sizeCopy = size;
+  std::vector<float>::vector[abi:ne200100](&__p, size);
   v5 = __p;
-  if (v3)
+  if (sizeCopy)
   {
-    v6 = log((v3 + 1));
+    v6 = log((sizeCopy + 1));
     v7 = 0;
     v8 = 0.0;
     do
@@ -25,16 +25,16 @@
       v5[v7++] = v10;
     }
 
-    while (v3 != v7);
+    while (sizeCopy != v7);
     v11 = v5;
     do
     {
       *v11 = *v11 / v8;
       ++v11;
-      --v3;
+      --sizeCopy;
     }
 
-    while (v3);
+    while (sizeCopy);
   }
 
   v12 = [(NoiseSampler *)self initWithUnigram:v5 ofSize:(v15 - v5) >> 2];
@@ -47,7 +47,7 @@
   return v12;
 }
 
-- (NoiseSampler)initWithUnigram:(float *)a3 ofSize:(unint64_t)a4
+- (NoiseSampler)initWithUnigram:(float *)unigram ofSize:(unint64_t)size
 {
   v35.receiver = self;
   v35.super_class = NoiseSampler;
@@ -70,20 +70,20 @@
   memcpy(&v6->_generator, __src, sizeof(v6->_generator));
   std::random_device::~random_device(v31);
   LODWORD(__src[0]) = 0;
-  std::vector<float>::resize(&v6->_unigram.__begin_, a4, __src, v9);
+  std::vector<float>::resize(&v6->_unigram.__begin_, size, __src, v9);
   __src[0] = 0;
-  std::vector<unsigned long>::resize(&v6->_alias.__begin_, a4, __src);
+  std::vector<unsigned long>::resize(&v6->_alias.__begin_, size, __src);
   memset(__src, 0, 24);
   *&v31[0].__padding_ = 0;
   v32 = 0;
   v33 = 0;
   v30 = 0;
-  if (a4)
+  if (size)
   {
     v10 = 0;
     do
     {
-      v11 = a3[v10] * a4;
+      v11 = unigram[v10] * size;
       v6->_unigram.__begin_[v10] = v11;
       if (v11 >= 1.0)
       {
@@ -100,7 +100,7 @@
       v30 = v10;
     }
 
-    while (v10 < a4);
+    while (v10 < size);
     v13 = __src[0];
     v14 = __src[1];
     if (__src[1] != __src[0])

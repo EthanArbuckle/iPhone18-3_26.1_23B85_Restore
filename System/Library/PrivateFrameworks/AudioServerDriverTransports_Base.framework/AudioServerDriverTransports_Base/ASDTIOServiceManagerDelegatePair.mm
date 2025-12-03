@@ -1,17 +1,17 @@
 @interface ASDTIOServiceManagerDelegatePair
-+ (id)forDelegate:(id)a3 andIOService:(id)a4;
++ (id)forDelegate:(id)delegate andIOService:(id)service;
 @end
 
 @implementation ASDTIOServiceManagerDelegatePair
 
-+ (id)forDelegate:(id)a3 andIOService:(id)a4
++ (id)forDelegate:(id)delegate andIOService:(id)service
 {
-  v5 = a4;
-  v6 = a3;
+  serviceCopy = service;
+  delegateCopy = delegate;
   v7 = objc_alloc_init(ASDTIOServiceManagerDelegatePair);
-  [(ASDTIOServiceManagerDelegatePair *)v7 setDelegate:v6];
+  [(ASDTIOServiceManagerDelegatePair *)v7 setDelegate:delegateCopy];
 
-  [(ASDTIOServiceManagerDelegatePair *)v7 setIoService:v5];
+  [(ASDTIOServiceManagerDelegatePair *)v7 setIoService:serviceCopy];
 
   return v7;
 }

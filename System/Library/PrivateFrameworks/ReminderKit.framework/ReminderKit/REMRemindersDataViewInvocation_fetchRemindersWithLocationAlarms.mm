@@ -1,46 +1,46 @@
 @interface REMRemindersDataViewInvocation_fetchRemindersWithLocationAlarms
-- (BOOL)isEqual:(id)a3;
-- (REMRemindersDataViewInvocation_fetchRemindersWithLocationAlarms)initWithCoder:(id)a3;
-- (REMRemindersDataViewInvocation_fetchRemindersWithLocationAlarms)initWithIncludingCompleted:(BOOL)a3;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (REMRemindersDataViewInvocation_fetchRemindersWithLocationAlarms)initWithCoder:(id)coder;
+- (REMRemindersDataViewInvocation_fetchRemindersWithLocationAlarms)initWithIncludingCompleted:(BOOL)completed;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation REMRemindersDataViewInvocation_fetchRemindersWithLocationAlarms
 
-- (REMRemindersDataViewInvocation_fetchRemindersWithLocationAlarms)initWithIncludingCompleted:(BOOL)a3
+- (REMRemindersDataViewInvocation_fetchRemindersWithLocationAlarms)initWithIncludingCompleted:(BOOL)completed
 {
   v5.receiver = self;
   v5.super_class = REMRemindersDataViewInvocation_fetchRemindersWithLocationAlarms;
   result = [(REMStoreInvocationValueStorage *)&v5 init];
   if (result)
   {
-    result->_includingCompleted = a3;
+    result->_includingCompleted = completed;
   }
 
   return result;
 }
 
-- (REMRemindersDataViewInvocation_fetchRemindersWithLocationAlarms)initWithCoder:(id)a3
+- (REMRemindersDataViewInvocation_fetchRemindersWithLocationAlarms)initWithCoder:(id)coder
 {
-  v4 = [a3 decodeBoolForKey:@"includingCompleted"];
+  v4 = [coder decodeBoolForKey:@"includingCompleted"];
 
   return [(REMRemindersDataViewInvocation_fetchRemindersWithLocationAlarms *)self initWithIncludingCompleted:v4];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeBool:-[REMRemindersDataViewInvocation_fetchRemindersWithLocationAlarms includingCompleted](self forKey:{"includingCompleted"), @"includingCompleted"}];
+  coderCopy = coder;
+  [coderCopy encodeBool:-[REMRemindersDataViewInvocation_fetchRemindersWithLocationAlarms includingCompleted](self forKey:{"includingCompleted"), @"includingCompleted"}];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(REMRemindersDataViewInvocation_fetchRemindersWithLocationAlarms *)self includingCompleted];
-    v6 = v5 ^ [v4 includingCompleted] ^ 1;
+    includingCompleted = [(REMRemindersDataViewInvocation_fetchRemindersWithLocationAlarms *)self includingCompleted];
+    v6 = includingCompleted ^ [equalCopy includingCompleted] ^ 1;
   }
 
   else

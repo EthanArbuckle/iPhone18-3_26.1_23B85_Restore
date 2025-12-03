@@ -25,14 +25,14 @@
 
 - (void)_forceDatabaseUpdateWithCompletionHandler:()SSBPrivate
 {
-  v1 = *&a1.__val_;
-  *&a1.__val_ = a1.__cat_->__vftable;
+  v1 = *&self.__val_;
+  *&self.__val_ = self.__cat_->__vftable;
   v2 = *(v1 + 8);
-  v3 = a1.__cat_->__vftable;
-  if (a1.__cat_->__vftable)
+  v3 = self.__cat_->__vftable;
+  if (self.__cat_->__vftable)
   {
-    a1.__cat_ = a1.__cat_[1].__vftable;
-    v4 = nsErrorFromReplyErrorCode(a1);
+    self.__cat_ = self.__cat_[1].__vftable;
+    v4 = nsErrorFromReplyErrorCode(self);
   }
 
   else
@@ -50,7 +50,7 @@
 - (uint64_t)_forceDatabaseUpdateWithCompletionHandler:()SSBPrivate
 {
   *a2 = &unk_2838CF4A0;
-  result = MEMORY[0x22AA67A70](*(a1 + 8));
+  result = MEMORY[0x22AA67A70](*(self + 8));
   a2[1] = result;
   return result;
 }
@@ -69,13 +69,13 @@
   }
 
   v6 = v5;
-  (*(*(a1 + 8) + 16))();
+  (*(*(self + 8) + 16))();
 }
 
 - (uint64_t)_forceDeviceIdentificationTokenUpdateWithCompletionHandler:()SSBPrivate
 {
   *a2 = &unk_2838CF4E8;
-  result = MEMORY[0x22AA67A70](*(a1 + 8));
+  result = MEMORY[0x22AA67A70](*(self + 8));
   a2[1] = result;
   return result;
 }
@@ -89,7 +89,7 @@
   *a2 = 0;
   if (*&a3->__val_)
   {
-    v4 = *(a1 + 8);
+    v4 = *(self + 8);
     v5 = nsErrorFromReplyErrorCode(*a3);
     (*(v4 + 16))(v4, 0, v5);
   }
@@ -101,7 +101,7 @@
     v5 = [[_SSBDatabaseStatus alloc] initWithDatabaseStatus:&v8, 0, 0, 0];
     v10 = &v8;
     std::vector<SafeBrowsing::DatabaseStatus::Database>::__destroy_vector::operator()[abi:sn200100](&v10);
-    (*(*(a1 + 8) + 16))();
+    (*(*(self + 8) + 16))();
   }
 
   *&v8 = &v6;
@@ -111,7 +111,7 @@
 - (uint64_t)_getDatabaseStatusWithCompletionHandler:()SSBPrivate
 {
   *a2 = &unk_2838CF530;
-  result = MEMORY[0x22AA67A70](*(a1 + 8));
+  result = MEMORY[0x22AA67A70](*(self + 8));
   a2[1] = result;
   return result;
 }
@@ -141,7 +141,7 @@
   *(a2 + 96) = 0;
   if (*&a3->__val_)
   {
-    v4 = *(a1 + 8);
+    v4 = *(self + 8);
     v5 = nsErrorFromReplyErrorCode(*a3);
     (*(v4 + 16))(v4, 0, v5);
   }
@@ -182,7 +182,7 @@
       operator delete(v15[0]);
     }
 
-    (*(*(a1 + 8) + 16))();
+    (*(*(self + 8) + 16))();
   }
 
   if (v13[0])
@@ -204,7 +204,7 @@
 - (uint64_t)_getServiceStatusWithCompletionHandler:()SSBPrivate
 {
   *a2 = &unk_2838CF578;
-  result = MEMORY[0x22AA67A70](*(a1 + 8));
+  result = MEMORY[0x22AA67A70](*(self + 8));
   a2[1] = result;
   return result;
 }
@@ -223,13 +223,13 @@
   }
 
   v6 = v5;
-  (*(*(a1 + 8) + 16))();
+  (*(*(self + 8) + 16))();
 }
 
 - (uint64_t)_forceLoadRemoteConfigurationFromDiskWithCompletionHandler:()SSBPrivate
 {
   *a2 = &unk_2838CF5C0;
-  result = MEMORY[0x22AA67A70](*(a1 + 8));
+  result = MEMORY[0x22AA67A70](*(self + 8));
   a2[1] = result;
   return result;
 }
@@ -248,13 +248,13 @@
   }
 
   v6 = v5;
-  (*(*(a1 + 8) + 16))();
+  (*(*(self + 8) + 16))();
 }
 
 - (uint64_t)_forceUpdateRemoteConfigurationFromServerWithCompletionHandler:()SSBPrivate
 {
   *a2 = &unk_2838CF608;
-  result = MEMORY[0x22AA67A70](*(a1 + 8));
+  result = MEMORY[0x22AA67A70](*(self + 8));
   a2[1] = result;
   return result;
 }
@@ -273,13 +273,13 @@
   }
 
   v6 = v5;
-  (*(*(a1 + 8) + 16))();
+  (*(*(self + 8) + 16))();
 }
 
 - (uint64_t)_deleteAllDatabasesWithCompletionHandler:()SSBPrivate
 {
   *a2 = &unk_2838CF650;
-  result = MEMORY[0x22AA67A70](*(a1 + 8));
+  result = MEMORY[0x22AA67A70](*(self + 8));
   a2[1] = result;
   return result;
 }
@@ -303,13 +303,13 @@
     v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:v4];
   }
 
-  (*(*(a1 + 8) + 16))();
+  (*(*(self + 8) + 16))();
 }
 
 - (uint64_t)_fetchCellularDataPlanWithCompletionHandler:()SSBPrivate
 {
   *a2 = &unk_2838CF698;
-  result = MEMORY[0x22AA67A70](*(a1 + 8));
+  result = MEMORY[0x22AA67A70](*(self + 8));
   a2[1] = result;
   return result;
 }
@@ -333,13 +333,13 @@
     v4 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:(v4 / 1000000)];
   }
 
-  (*(*(a1 + 8) + 16))();
+  (*(*(self + 8) + 16))();
 }
 
 - (uint64_t)_getLastDatabaseUpdateTimeWithCompletionHandler:()SSBPrivate
 {
   *a2 = &unk_2838CF6E0;
-  result = MEMORY[0x22AA67A70](*(a1 + 8));
+  result = MEMORY[0x22AA67A70](*(self + 8));
   a2[1] = result;
   return result;
 }
@@ -358,13 +358,13 @@
   }
 
   v6 = v5;
-  (*(*(a1 + 8) + 16))();
+  (*(*(self + 8) + 16))();
 }
 
 - (uint64_t)_getSafeBrowsingEnabledState:()SSBPrivate
 {
   *a2 = &unk_2838CF728;
-  result = MEMORY[0x22AA67A70](*(a1 + 8));
+  result = MEMORY[0x22AA67A70](*(self + 8));
   a2[1] = result;
   return result;
 }

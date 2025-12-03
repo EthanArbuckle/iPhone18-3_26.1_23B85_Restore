@@ -1,28 +1,28 @@
 @interface SBLockScreenPluginAction
-+ (id)actionWithCompletion:(id)a3;
-- (SBLockScreenPluginAction)initWithCompletion:(id)a3;
++ (id)actionWithCompletion:(id)completion;
+- (SBLockScreenPluginAction)initWithCompletion:(id)completion;
 @end
 
 @implementation SBLockScreenPluginAction
 
-+ (id)actionWithCompletion:(id)a3
++ (id)actionWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithCompletion:v4];
+  completionCopy = completion;
+  v5 = [[self alloc] initWithCompletion:completionCopy];
 
   return v5;
 }
 
-- (SBLockScreenPluginAction)initWithCompletion:(id)a3
+- (SBLockScreenPluginAction)initWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v17.receiver = self;
   v17.super_class = SBLockScreenPluginAction;
   v5 = [(SBLockScreenPluginAction *)&v17 init];
   v6 = v5;
-  if (v4 && v5)
+  if (completionCopy && v5)
   {
-    v7 = [v4 copy];
+    v7 = [completionCopy copy];
     v8 = MEMORY[0x223D63700]();
     completion = v6->_completion;
     v6->_completion = v8;

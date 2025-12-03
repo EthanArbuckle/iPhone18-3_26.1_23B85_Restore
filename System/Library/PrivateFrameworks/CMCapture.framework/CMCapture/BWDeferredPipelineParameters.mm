@@ -1,13 +1,13 @@
 @interface BWDeferredPipelineParameters
-- (BOOL)areCompatibleWith:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BWDeferredPipelineParameters)initWithCoder:(id)a3;
+- (BOOL)areCompatibleWith:(id)with;
+- (BOOL)isEqual:(id)equal;
+- (BWDeferredPipelineParameters)initWithCoder:(id)coder;
 - (CGPoint)sensorCenterOffset;
-- (char)_initWithLegacyCaptureSettings:(void *)a1;
-- (id)copyWithZone:(_NSZone *)a3;
+- (char)_initWithLegacyCaptureSettings:(void *)settings;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BWDeferredPipelineParameters
@@ -19,101 +19,101 @@
   [(BWDeferredPipelineParameters *)&v3 dealloc];
 }
 
-- (BWDeferredPipelineParameters)initWithCoder:(id)a3
+- (BWDeferredPipelineParameters)initWithCoder:(id)coder
 {
   v12.receiver = self;
   v12.super_class = BWDeferredPipelineParameters;
   v4 = [(BWDeferredPipelineParameters *)&v12 init];
   if (v4)
   {
-    v4->_rawSensorDimensions.width = [a3 decodeInt32ForKey:@"rawSensorDimensionsWidth"];
-    v4->_rawSensorDimensions.height = [a3 decodeInt32ForKey:@"rawSensorDimensionsHeight"];
+    v4->_rawSensorDimensions.width = [coder decodeInt32ForKey:@"rawSensorDimensionsWidth"];
+    v4->_rawSensorDimensions.height = [coder decodeInt32ForKey:@"rawSensorDimensionsHeight"];
     v5 = MEMORY[0x1E695DFD8];
     v11[0] = objc_opt_class();
     v11[1] = objc_opt_class();
     v11[2] = objc_opt_class();
-    v4->_dimensionsByResolutionFlavorByPortType = [a3 decodeObjectOfClasses:objc_msgSend(v5 forKey:{"setWithArray:", objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v11, 3)), @"dimensionsByResolutionFlavorByPortType"}];
-    v4->_nrfVersion = [a3 decodeInt32ForKey:@"nrfVersion"];
-    v4->_noiseReductionAndFusionScheme = [a3 decodeInt32ForKey:@"noiseReductionAndFusionScheme"];
-    v4->_distortionCorrectionVersion = [a3 decodeInt32ForKey:@"distortionCorrectionVersion"];
-    v4->_intelligentDistortionCorrectionEnabled = [a3 decodeBoolForKey:@"intelligentDistortionCorrectionEnabled"];
-    v4->_geometricDistortionCorrectionEnabled = [a3 decodeBoolForKey:@"geometricDistortionCorrectionEnabled"];
-    v4->_dcProcessingWithDepthSupported = [a3 decodeBoolForKey:@"dcProcessingWithDepthSupported"];
-    v4->_stillImageGDCSourceMode = [a3 decodeInt32ForKey:@"stillImageGDCSourceMode"];
-    v4->_deepZoomVersion = [a3 decodeInt32ForKey:@"deepZoomVersion"];
-    v4->_deepZoomMode = [a3 decodeInt32ForKey:@"deepZoomMode"];
-    v4->_semanticRenderingVersion = [a3 decodeInt32ForKey:@"semanticRenderingVersion"];
-    v4->_smartStyleRenderingVersion = [a3 decodeInt32ForKey:@"SmartStyleRenderingVersion"];
-    v4->_smartStyleRenderingEnabled = [a3 decodeBoolForKey:@"SmartStyleRenderingEnabled"];
-    v4->_smartStyleReversibilityEnabled = [a3 decodeBoolForKey:@"SmartStyleReversibilityEnabled"];
-    v4->_generateInferencesForSemanticProcessingIfNeeded = [a3 decodeBoolForKey:@"generateInferencesForSemanticProcessingIfNeeded"];
-    v4->_quadraProcessingSupportEnabled = [a3 decodeBoolForKey:@"quadraProcessingSupportEnabled"];
-    v4->_canProcessEnhancedResolution = [a3 decodeBoolForKey:@"canProcessEnhancedResolution"];
-    v4->_continuousZoomWithDepthSupported = [a3 decodeBoolForKey:@"continuousZoomWithDepthSupported"];
-    v4->_depthDataType = [a3 decodeInt32ForKey:@"depthDataType"];
-    v4->_depthDataDimensions.width = [a3 decodeInt32ForKey:@"depthDataDimensionsWidth"];
-    v4->_depthDataDimensions.height = [a3 decodeInt32ForKey:@"depthDataDimensionsHeight"];
-    v4->_pearlModuleType = [a3 decodeInt32ForKey:@"PearlModuleType"];
-    v4->_sfhrMode = [a3 decodeInt32ForKey:@"sfhrMode"];
+    v4->_dimensionsByResolutionFlavorByPortType = [coder decodeObjectOfClasses:objc_msgSend(v5 forKey:{"setWithArray:", objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v11, 3)), @"dimensionsByResolutionFlavorByPortType"}];
+    v4->_nrfVersion = [coder decodeInt32ForKey:@"nrfVersion"];
+    v4->_noiseReductionAndFusionScheme = [coder decodeInt32ForKey:@"noiseReductionAndFusionScheme"];
+    v4->_distortionCorrectionVersion = [coder decodeInt32ForKey:@"distortionCorrectionVersion"];
+    v4->_intelligentDistortionCorrectionEnabled = [coder decodeBoolForKey:@"intelligentDistortionCorrectionEnabled"];
+    v4->_geometricDistortionCorrectionEnabled = [coder decodeBoolForKey:@"geometricDistortionCorrectionEnabled"];
+    v4->_dcProcessingWithDepthSupported = [coder decodeBoolForKey:@"dcProcessingWithDepthSupported"];
+    v4->_stillImageGDCSourceMode = [coder decodeInt32ForKey:@"stillImageGDCSourceMode"];
+    v4->_deepZoomVersion = [coder decodeInt32ForKey:@"deepZoomVersion"];
+    v4->_deepZoomMode = [coder decodeInt32ForKey:@"deepZoomMode"];
+    v4->_semanticRenderingVersion = [coder decodeInt32ForKey:@"semanticRenderingVersion"];
+    v4->_smartStyleRenderingVersion = [coder decodeInt32ForKey:@"SmartStyleRenderingVersion"];
+    v4->_smartStyleRenderingEnabled = [coder decodeBoolForKey:@"SmartStyleRenderingEnabled"];
+    v4->_smartStyleReversibilityEnabled = [coder decodeBoolForKey:@"SmartStyleReversibilityEnabled"];
+    v4->_generateInferencesForSemanticProcessingIfNeeded = [coder decodeBoolForKey:@"generateInferencesForSemanticProcessingIfNeeded"];
+    v4->_quadraProcessingSupportEnabled = [coder decodeBoolForKey:@"quadraProcessingSupportEnabled"];
+    v4->_canProcessEnhancedResolution = [coder decodeBoolForKey:@"canProcessEnhancedResolution"];
+    v4->_continuousZoomWithDepthSupported = [coder decodeBoolForKey:@"continuousZoomWithDepthSupported"];
+    v4->_depthDataType = [coder decodeInt32ForKey:@"depthDataType"];
+    v4->_depthDataDimensions.width = [coder decodeInt32ForKey:@"depthDataDimensionsWidth"];
+    v4->_depthDataDimensions.height = [coder decodeInt32ForKey:@"depthDataDimensionsHeight"];
+    v4->_pearlModuleType = [coder decodeInt32ForKey:@"PearlModuleType"];
+    v4->_sfhrMode = [coder decodeInt32ForKey:@"sfhrMode"];
     v6 = MEMORY[0x1E695DFD8];
     v10[0] = objc_opt_class();
     v10[1] = objc_opt_class();
     v10[2] = objc_opt_class();
-    if (!CGPointMakeWithDictionaryRepresentation([a3 decodeObjectOfClasses:objc_msgSend(v6 forKey:{"setWithArray:", objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v10, 3)), @"sensorCenterOffset"}], &v4->_sensorCenterOffset))
+    if (!CGPointMakeWithDictionaryRepresentation([coder decodeObjectOfClasses:objc_msgSend(v6 forKey:{"setWithArray:", objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v10, 3)), @"sensorCenterOffset"}], &v4->_sensorCenterOffset))
     {
       v4->_sensorCenterOffset = *MEMORY[0x1E695EFF8];
     }
 
-    v4->_cameraSensorOrientationCompensationDegreesCW = [a3 decodeInt32ForKey:@"cameraSensorOrientationCompensationDegreesCW"];
-    if (!v4->_dimensionsByResolutionFlavorByPortType && [a3 containsValueForKey:@"dimensionsByQSubResolutionFlavorByPortType"])
+    v4->_cameraSensorOrientationCompensationDegreesCW = [coder decodeInt32ForKey:@"cameraSensorOrientationCompensationDegreesCW"];
+    if (!v4->_dimensionsByResolutionFlavorByPortType && [coder containsValueForKey:@"dimensionsByQSubResolutionFlavorByPortType"])
     {
       v7 = MEMORY[0x1E695DFD8];
       v9[0] = objc_opt_class();
       v9[1] = objc_opt_class();
       v9[2] = objc_opt_class();
-      v4->_dimensionsByResolutionFlavorByPortType = [a3 decodeObjectOfClasses:objc_msgSend(v7 forKey:{"setWithArray:", objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v9, 3)), @"dimensionsByQSubResolutionFlavorByPortType"}];
+      v4->_dimensionsByResolutionFlavorByPortType = [coder decodeObjectOfClasses:objc_msgSend(v7 forKey:{"setWithArray:", objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v9, 3)), @"dimensionsByQSubResolutionFlavorByPortType"}];
     }
   }
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeInt32:self->_rawSensorDimensions.width forKey:@"rawSensorDimensionsWidth"];
-  [a3 encodeInt32:self->_rawSensorDimensions.height forKey:@"rawSensorDimensionsHeight"];
-  [a3 encodeObject:self->_dimensionsByResolutionFlavorByPortType forKey:@"dimensionsByResolutionFlavorByPortType"];
-  [a3 encodeInt32:self->_nrfVersion forKey:@"nrfVersion"];
-  [a3 encodeInt32:self->_noiseReductionAndFusionScheme forKey:@"noiseReductionAndFusionScheme"];
-  [a3 encodeInt32:self->_distortionCorrectionVersion forKey:@"distortionCorrectionVersion"];
-  [a3 encodeBool:self->_intelligentDistortionCorrectionEnabled forKey:@"intelligentDistortionCorrectionEnabled"];
-  [a3 encodeBool:self->_geometricDistortionCorrectionEnabled forKey:@"geometricDistortionCorrectionEnabled"];
-  [a3 encodeBool:self->_dcProcessingWithDepthSupported forKey:@"dcProcessingWithDepthSupported"];
-  [a3 encodeInt32:self->_stillImageGDCSourceMode forKey:@"stillImageGDCSourceMode"];
-  [a3 encodeInt32:self->_deepZoomVersion forKey:@"deepZoomVersion"];
-  [a3 encodeInt32:self->_deepZoomMode forKey:@"deepZoomMode"];
-  [a3 encodeInt32:self->_semanticRenderingVersion forKey:@"semanticRenderingVersion"];
-  [a3 encodeInt32:self->_smartStyleRenderingVersion forKey:@"SmartStyleRenderingVersion"];
-  [a3 encodeBool:self->_smartStyleRenderingEnabled forKey:@"SmartStyleRenderingEnabled"];
-  [a3 encodeBool:self->_smartStyleReversibilityEnabled forKey:@"SmartStyleReversibilityEnabled"];
-  [a3 encodeBool:self->_generateInferencesForSemanticProcessingIfNeeded forKey:@"generateInferencesForSemanticProcessingIfNeeded"];
-  [a3 encodeBool:self->_quadraProcessingSupportEnabled forKey:@"quadraProcessingSupportEnabled"];
-  [a3 encodeBool:self->_canProcessEnhancedResolution forKey:@"canProcessEnhancedResolution"];
-  [a3 encodeBool:self->_continuousZoomWithDepthSupported forKey:@"continuousZoomWithDepthSupported"];
-  [a3 encodeInt32:self->_depthDataType forKey:@"depthDataType"];
-  [a3 encodeInt32:self->_depthDataDimensions.width forKey:@"depthDataDimensionsWidth"];
-  [a3 encodeInt32:self->_depthDataDimensions.height forKey:@"depthDataDimensionsHeight"];
-  [a3 encodeInt32:self->_pearlModuleType forKey:@"PearlModuleType"];
-  [a3 encodeInt32:self->_sfhrMode forKey:@"sfhrMode"];
-  [a3 encodeObject:CGPointCreateDictionaryRepresentation(self->_sensorCenterOffset) forKey:@"sensorCenterOffset"];
+  [coder encodeInt32:self->_rawSensorDimensions.width forKey:@"rawSensorDimensionsWidth"];
+  [coder encodeInt32:self->_rawSensorDimensions.height forKey:@"rawSensorDimensionsHeight"];
+  [coder encodeObject:self->_dimensionsByResolutionFlavorByPortType forKey:@"dimensionsByResolutionFlavorByPortType"];
+  [coder encodeInt32:self->_nrfVersion forKey:@"nrfVersion"];
+  [coder encodeInt32:self->_noiseReductionAndFusionScheme forKey:@"noiseReductionAndFusionScheme"];
+  [coder encodeInt32:self->_distortionCorrectionVersion forKey:@"distortionCorrectionVersion"];
+  [coder encodeBool:self->_intelligentDistortionCorrectionEnabled forKey:@"intelligentDistortionCorrectionEnabled"];
+  [coder encodeBool:self->_geometricDistortionCorrectionEnabled forKey:@"geometricDistortionCorrectionEnabled"];
+  [coder encodeBool:self->_dcProcessingWithDepthSupported forKey:@"dcProcessingWithDepthSupported"];
+  [coder encodeInt32:self->_stillImageGDCSourceMode forKey:@"stillImageGDCSourceMode"];
+  [coder encodeInt32:self->_deepZoomVersion forKey:@"deepZoomVersion"];
+  [coder encodeInt32:self->_deepZoomMode forKey:@"deepZoomMode"];
+  [coder encodeInt32:self->_semanticRenderingVersion forKey:@"semanticRenderingVersion"];
+  [coder encodeInt32:self->_smartStyleRenderingVersion forKey:@"SmartStyleRenderingVersion"];
+  [coder encodeBool:self->_smartStyleRenderingEnabled forKey:@"SmartStyleRenderingEnabled"];
+  [coder encodeBool:self->_smartStyleReversibilityEnabled forKey:@"SmartStyleReversibilityEnabled"];
+  [coder encodeBool:self->_generateInferencesForSemanticProcessingIfNeeded forKey:@"generateInferencesForSemanticProcessingIfNeeded"];
+  [coder encodeBool:self->_quadraProcessingSupportEnabled forKey:@"quadraProcessingSupportEnabled"];
+  [coder encodeBool:self->_canProcessEnhancedResolution forKey:@"canProcessEnhancedResolution"];
+  [coder encodeBool:self->_continuousZoomWithDepthSupported forKey:@"continuousZoomWithDepthSupported"];
+  [coder encodeInt32:self->_depthDataType forKey:@"depthDataType"];
+  [coder encodeInt32:self->_depthDataDimensions.width forKey:@"depthDataDimensionsWidth"];
+  [coder encodeInt32:self->_depthDataDimensions.height forKey:@"depthDataDimensionsHeight"];
+  [coder encodeInt32:self->_pearlModuleType forKey:@"PearlModuleType"];
+  [coder encodeInt32:self->_sfhrMode forKey:@"sfhrMode"];
+  [coder encodeObject:CGPointCreateDictionaryRepresentation(self->_sensorCenterOffset) forKey:@"sensorCenterOffset"];
   cameraSensorOrientationCompensationDegreesCW = self->_cameraSensorOrientationCompensationDegreesCW;
 
-  [a3 encodeInt32:cameraSensorOrientationCompensationDegreesCW forKey:@"cameraSensorOrientationCompensationDegreesCW"];
+  [coder encodeInt32:cameraSensorOrientationCompensationDegreesCW forKey:@"cameraSensorOrientationCompensationDegreesCW"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setRawSensorDimensions:*&self->_rawSensorDimensions];
   [v4 setDimensionsByResolutionFlavorByPortType:self->_dimensionsByResolutionFlavorByPortType];
   [v4 setNrfVersion:self->_nrfVersion];
@@ -141,9 +141,9 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     LOBYTE(v13) = 1;
     return v13;
@@ -158,80 +158,80 @@
     goto LABEL_28;
   }
 
-  v11 = [(BWDeferredPipelineParameters *)self rawSensorDimensions];
-  if (v11 != [a3 rawSensorDimensions])
+  rawSensorDimensions = [(BWDeferredPipelineParameters *)self rawSensorDimensions];
+  if (rawSensorDimensions != [equal rawSensorDimensions])
   {
     goto LABEL_28;
   }
 
-  v12 = [(BWDeferredPipelineParameters *)self dimensionsByResolutionFlavorByPortType];
-  if (v12 == [a3 dimensionsByResolutionFlavorByPortType] || (v13 = -[NSDictionary isEqual:](-[BWDeferredPipelineParameters dimensionsByResolutionFlavorByPortType](self, "dimensionsByResolutionFlavorByPortType"), "isEqual:", objc_msgSend(a3, "dimensionsByResolutionFlavorByPortType"))) != 0)
+  dimensionsByResolutionFlavorByPortType = [(BWDeferredPipelineParameters *)self dimensionsByResolutionFlavorByPortType];
+  if (dimensionsByResolutionFlavorByPortType == [equal dimensionsByResolutionFlavorByPortType] || (v13 = -[NSDictionary isEqual:](-[BWDeferredPipelineParameters dimensionsByResolutionFlavorByPortType](self, "dimensionsByResolutionFlavorByPortType"), "isEqual:", objc_msgSend(equal, "dimensionsByResolutionFlavorByPortType"))) != 0)
   {
     v14 = [(BWDeferredPipelineParameters *)self nrfVersion:v6];
-    if (v14 == [a3 nrfVersion])
+    if (v14 == [equal nrfVersion])
     {
-      v15 = [(BWDeferredPipelineParameters *)self noiseReductionAndFusionScheme];
-      if (v15 == [a3 noiseReductionAndFusionScheme])
+      noiseReductionAndFusionScheme = [(BWDeferredPipelineParameters *)self noiseReductionAndFusionScheme];
+      if (noiseReductionAndFusionScheme == [equal noiseReductionAndFusionScheme])
       {
-        v16 = [(BWDeferredPipelineParameters *)self distortionCorrectionVersion];
-        if (v16 == [a3 distortionCorrectionVersion])
+        distortionCorrectionVersion = [(BWDeferredPipelineParameters *)self distortionCorrectionVersion];
+        if (distortionCorrectionVersion == [equal distortionCorrectionVersion])
         {
-          v17 = [(BWDeferredPipelineParameters *)self intelligentDistortionCorrectionEnabled];
-          if (v17 == [a3 intelligentDistortionCorrectionEnabled])
+          intelligentDistortionCorrectionEnabled = [(BWDeferredPipelineParameters *)self intelligentDistortionCorrectionEnabled];
+          if (intelligentDistortionCorrectionEnabled == [equal intelligentDistortionCorrectionEnabled])
           {
-            v18 = [(BWDeferredPipelineParameters *)self geometricDistortionCorrectionEnabled];
-            if (v18 == [a3 geometricDistortionCorrectionEnabled])
+            geometricDistortionCorrectionEnabled = [(BWDeferredPipelineParameters *)self geometricDistortionCorrectionEnabled];
+            if (geometricDistortionCorrectionEnabled == [equal geometricDistortionCorrectionEnabled])
             {
-              v19 = [(BWDeferredPipelineParameters *)self dcProcessingWithDepthSupported];
-              if (v19 == [a3 dcProcessingWithDepthSupported])
+              dcProcessingWithDepthSupported = [(BWDeferredPipelineParameters *)self dcProcessingWithDepthSupported];
+              if (dcProcessingWithDepthSupported == [equal dcProcessingWithDepthSupported])
               {
-                v20 = [(BWDeferredPipelineParameters *)self stillImageGDCSourceMode];
-                if (v20 == [a3 stillImageGDCSourceMode])
+                stillImageGDCSourceMode = [(BWDeferredPipelineParameters *)self stillImageGDCSourceMode];
+                if (stillImageGDCSourceMode == [equal stillImageGDCSourceMode])
                 {
-                  v21 = [(BWDeferredPipelineParameters *)self deepZoomVersion];
-                  if (v21 == [a3 deepZoomVersion])
+                  deepZoomVersion = [(BWDeferredPipelineParameters *)self deepZoomVersion];
+                  if (deepZoomVersion == [equal deepZoomVersion])
                   {
-                    v22 = [(BWDeferredPipelineParameters *)self deepZoomMode];
-                    if (v22 == [a3 deepZoomMode])
+                    deepZoomMode = [(BWDeferredPipelineParameters *)self deepZoomMode];
+                    if (deepZoomMode == [equal deepZoomMode])
                     {
-                      v23 = [(BWDeferredPipelineParameters *)self semanticRenderingVersion];
-                      if (v23 == [a3 semanticRenderingVersion])
+                      semanticRenderingVersion = [(BWDeferredPipelineParameters *)self semanticRenderingVersion];
+                      if (semanticRenderingVersion == [equal semanticRenderingVersion])
                       {
-                        v24 = [(BWDeferredPipelineParameters *)self smartStyleRenderingVersion];
-                        if (v24 == [a3 smartStyleRenderingVersion])
+                        smartStyleRenderingVersion = [(BWDeferredPipelineParameters *)self smartStyleRenderingVersion];
+                        if (smartStyleRenderingVersion == [equal smartStyleRenderingVersion])
                         {
-                          v25 = [(BWDeferredPipelineParameters *)self smartStyleRenderingEnabled];
-                          if (v25 == [a3 smartStyleRenderingEnabled])
+                          smartStyleRenderingEnabled = [(BWDeferredPipelineParameters *)self smartStyleRenderingEnabled];
+                          if (smartStyleRenderingEnabled == [equal smartStyleRenderingEnabled])
                           {
-                            v26 = [(BWDeferredPipelineParameters *)self smartStyleReversibilityEnabled];
-                            if (v26 == [a3 smartStyleReversibilityEnabled])
+                            smartStyleReversibilityEnabled = [(BWDeferredPipelineParameters *)self smartStyleReversibilityEnabled];
+                            if (smartStyleReversibilityEnabled == [equal smartStyleReversibilityEnabled])
                             {
-                              v27 = [(BWDeferredPipelineParameters *)self generateInferencesForSemanticProcessingIfNeeded];
-                              if (v27 == [a3 generateInferencesForSemanticProcessingIfNeeded])
+                              generateInferencesForSemanticProcessingIfNeeded = [(BWDeferredPipelineParameters *)self generateInferencesForSemanticProcessingIfNeeded];
+                              if (generateInferencesForSemanticProcessingIfNeeded == [equal generateInferencesForSemanticProcessingIfNeeded])
                               {
-                                v28 = [(BWDeferredPipelineParameters *)self quadraProcessingSupportEnabled];
-                                if (v28 == [a3 quadraProcessingSupportEnabled])
+                                quadraProcessingSupportEnabled = [(BWDeferredPipelineParameters *)self quadraProcessingSupportEnabled];
+                                if (quadraProcessingSupportEnabled == [equal quadraProcessingSupportEnabled])
                                 {
-                                  v29 = [(BWDeferredPipelineParameters *)self canProcessEnhancedResolution];
-                                  if (v29 == [a3 canProcessEnhancedResolution])
+                                  canProcessEnhancedResolution = [(BWDeferredPipelineParameters *)self canProcessEnhancedResolution];
+                                  if (canProcessEnhancedResolution == [equal canProcessEnhancedResolution])
                                   {
-                                    v30 = [(BWDeferredPipelineParameters *)self continuousZoomWithDepthSupported];
-                                    if (v30 == [a3 continuousZoomWithDepthSupported])
+                                    continuousZoomWithDepthSupported = [(BWDeferredPipelineParameters *)self continuousZoomWithDepthSupported];
+                                    if (continuousZoomWithDepthSupported == [equal continuousZoomWithDepthSupported])
                                     {
-                                      v31 = [(BWDeferredPipelineParameters *)self depthDataType];
-                                      if (v31 == [a3 depthDataType])
+                                      depthDataType = [(BWDeferredPipelineParameters *)self depthDataType];
+                                      if (depthDataType == [equal depthDataType])
                                       {
-                                        v32 = [(BWDeferredPipelineParameters *)self depthDataDimensions];
-                                        if (v32 == [a3 depthDataDimensions])
+                                        depthDataDimensions = [(BWDeferredPipelineParameters *)self depthDataDimensions];
+                                        if (depthDataDimensions == [equal depthDataDimensions])
                                         {
-                                          v33 = [(BWDeferredPipelineParameters *)self pearlModuleType];
-                                          if (v33 == [a3 pearlModuleType])
+                                          pearlModuleType = [(BWDeferredPipelineParameters *)self pearlModuleType];
+                                          if (pearlModuleType == [equal pearlModuleType])
                                           {
-                                            v34 = [(BWDeferredPipelineParameters *)self sfhrMode];
-                                            if (v34 == [a3 sfhrMode])
+                                            sfhrMode = [(BWDeferredPipelineParameters *)self sfhrMode];
+                                            if (sfhrMode == [equal sfhrMode])
                                             {
-                                              v35 = [(BWDeferredPipelineParameters *)self cameraSensorOrientationCompensationDegreesCW];
-                                              LOBYTE(v13) = v35 == [a3 cameraSensorOrientationCompensationDegreesCW];
+                                              cameraSensorOrientationCompensationDegreesCW = [(BWDeferredPipelineParameters *)self cameraSensorOrientationCompensationDegreesCW];
+                                              LOBYTE(v13) = cameraSensorOrientationCompensationDegreesCW == [equal cameraSensorOrientationCompensationDegreesCW];
                                               return v13;
                                             }
                                           }
@@ -262,107 +262,107 @@ LABEL_28:
   return v13;
 }
 
-- (BOOL)areCompatibleWith:(id)a3
+- (BOOL)areCompatibleWith:(id)with
 {
-  if (a3 == self)
+  if (with == self)
   {
     LOBYTE(v7) = 1;
     return v7;
   }
 
-  v5 = [(BWDeferredPipelineParameters *)self rawSensorDimensions];
-  if (v5 != [a3 rawSensorDimensions])
+  rawSensorDimensions = [(BWDeferredPipelineParameters *)self rawSensorDimensions];
+  if (rawSensorDimensions != [with rawSensorDimensions])
   {
     goto LABEL_39;
   }
 
-  v6 = [(BWDeferredPipelineParameters *)self dimensionsByResolutionFlavorByPortType];
-  if (v6 == [a3 dimensionsByResolutionFlavorByPortType] || (v7 = -[NSDictionary isEqual:](-[BWDeferredPipelineParameters dimensionsByResolutionFlavorByPortType](self, "dimensionsByResolutionFlavorByPortType"), "isEqual:", objc_msgSend(a3, "dimensionsByResolutionFlavorByPortType"))) != 0)
+  dimensionsByResolutionFlavorByPortType = [(BWDeferredPipelineParameters *)self dimensionsByResolutionFlavorByPortType];
+  if (dimensionsByResolutionFlavorByPortType == [with dimensionsByResolutionFlavorByPortType] || (v7 = -[NSDictionary isEqual:](-[BWDeferredPipelineParameters dimensionsByResolutionFlavorByPortType](self, "dimensionsByResolutionFlavorByPortType"), "isEqual:", objc_msgSend(with, "dimensionsByResolutionFlavorByPortType"))) != 0)
   {
-    v8 = [(BWDeferredPipelineParameters *)self nrfVersion];
-    if (v8 != [a3 nrfVersion])
+    nrfVersion = [(BWDeferredPipelineParameters *)self nrfVersion];
+    if (nrfVersion != [with nrfVersion])
     {
       goto LABEL_39;
     }
 
-    v9 = [(BWDeferredPipelineParameters *)self noiseReductionAndFusionScheme];
-    if (v9 != [a3 noiseReductionAndFusionScheme])
+    noiseReductionAndFusionScheme = [(BWDeferredPipelineParameters *)self noiseReductionAndFusionScheme];
+    if (noiseReductionAndFusionScheme != [with noiseReductionAndFusionScheme])
     {
       goto LABEL_39;
     }
 
-    v10 = [(BWDeferredPipelineParameters *)self distortionCorrectionVersion];
-    if (v10 != [a3 distortionCorrectionVersion])
+    distortionCorrectionVersion = [(BWDeferredPipelineParameters *)self distortionCorrectionVersion];
+    if (distortionCorrectionVersion != [with distortionCorrectionVersion])
     {
       goto LABEL_39;
     }
 
-    v11 = [(BWDeferredPipelineParameters *)self stillImageGDCSourceMode];
-    if (v11 != [a3 stillImageGDCSourceMode])
+    stillImageGDCSourceMode = [(BWDeferredPipelineParameters *)self stillImageGDCSourceMode];
+    if (stillImageGDCSourceMode != [with stillImageGDCSourceMode])
     {
       goto LABEL_39;
     }
 
-    v12 = [(BWDeferredPipelineParameters *)self semanticRenderingVersion];
-    if (v12 != [a3 semanticRenderingVersion])
+    semanticRenderingVersion = [(BWDeferredPipelineParameters *)self semanticRenderingVersion];
+    if (semanticRenderingVersion != [with semanticRenderingVersion])
     {
       goto LABEL_39;
     }
 
-    if ((![a3 intelligentDistortionCorrectionEnabled] || (v7 = -[BWDeferredPipelineParameters intelligentDistortionCorrectionEnabled](self, "intelligentDistortionCorrectionEnabled")) != 0) && (!objc_msgSend(a3, "geometricDistortionCorrectionEnabled") || (v7 = -[BWDeferredPipelineParameters geometricDistortionCorrectionEnabled](self, "geometricDistortionCorrectionEnabled")) != 0) && (!objc_msgSend(a3, "dcProcessingWithDepthSupported") || (v7 = -[BWDeferredPipelineParameters dcProcessingWithDepthSupported](self, "dcProcessingWithDepthSupported")) != 0) && (!objc_msgSend(a3, "continuousZoomWithDepthSupported") || (v7 = -[BWDeferredPipelineParameters continuousZoomWithDepthSupported](self, "continuousZoomWithDepthSupported")) != 0))
+    if ((![with intelligentDistortionCorrectionEnabled] || (v7 = -[BWDeferredPipelineParameters intelligentDistortionCorrectionEnabled](self, "intelligentDistortionCorrectionEnabled")) != 0) && (!objc_msgSend(with, "geometricDistortionCorrectionEnabled") || (v7 = -[BWDeferredPipelineParameters geometricDistortionCorrectionEnabled](self, "geometricDistortionCorrectionEnabled")) != 0) && (!objc_msgSend(with, "dcProcessingWithDepthSupported") || (v7 = -[BWDeferredPipelineParameters dcProcessingWithDepthSupported](self, "dcProcessingWithDepthSupported")) != 0) && (!objc_msgSend(with, "continuousZoomWithDepthSupported") || (v7 = -[BWDeferredPipelineParameters continuousZoomWithDepthSupported](self, "continuousZoomWithDepthSupported")) != 0))
     {
-      v13 = [(BWDeferredPipelineParameters *)self depthDataType];
-      if (v13 != [a3 depthDataType])
+      depthDataType = [(BWDeferredPipelineParameters *)self depthDataType];
+      if (depthDataType != [with depthDataType])
       {
         goto LABEL_39;
       }
 
-      v14 = [(BWDeferredPipelineParameters *)self depthDataDimensions];
-      if (v14 != [a3 depthDataDimensions])
+      depthDataDimensions = [(BWDeferredPipelineParameters *)self depthDataDimensions];
+      if (depthDataDimensions != [with depthDataDimensions])
       {
         goto LABEL_39;
       }
 
-      if (![a3 pearlModuleType] || (v7 = -[BWDeferredPipelineParameters pearlModuleType](self, "pearlModuleType")) != 0)
+      if (![with pearlModuleType] || (v7 = -[BWDeferredPipelineParameters pearlModuleType](self, "pearlModuleType")) != 0)
       {
-        if ([a3 deepZoomMode])
+        if ([with deepZoomMode])
         {
-          v15 = [(BWDeferredPipelineParameters *)self deepZoomVersion];
-          if (v15 != [a3 deepZoomVersion])
+          deepZoomVersion = [(BWDeferredPipelineParameters *)self deepZoomVersion];
+          if (deepZoomVersion != [with deepZoomVersion])
           {
             goto LABEL_39;
           }
 
-          v16 = [(BWDeferredPipelineParameters *)self deepZoomMode];
-          if (v16 != [a3 deepZoomMode])
+          deepZoomMode = [(BWDeferredPipelineParameters *)self deepZoomMode];
+          if (deepZoomMode != [with deepZoomMode])
           {
             goto LABEL_39;
           }
         }
 
-        if (![a3 smartStyleRenderingVersion])
+        if (![with smartStyleRenderingVersion])
         {
           goto LABEL_45;
         }
 
-        v17 = [(BWDeferredPipelineParameters *)self smartStyleRenderingVersion];
-        if (v17 != [a3 smartStyleRenderingVersion])
+        smartStyleRenderingVersion = [(BWDeferredPipelineParameters *)self smartStyleRenderingVersion];
+        if (smartStyleRenderingVersion != [with smartStyleRenderingVersion])
         {
           goto LABEL_39;
         }
 
-        v18 = [(BWDeferredPipelineParameters *)self smartStyleRenderingEnabled];
-        if (v18 != [a3 smartStyleRenderingEnabled])
+        smartStyleRenderingEnabled = [(BWDeferredPipelineParameters *)self smartStyleRenderingEnabled];
+        if (smartStyleRenderingEnabled != [with smartStyleRenderingEnabled])
         {
           goto LABEL_39;
         }
 
-        if (![a3 smartStyleReversibilityEnabled] || (v7 = -[BWDeferredPipelineParameters smartStyleReversibilityEnabled](self, "smartStyleReversibilityEnabled")) != 0)
+        if (![with smartStyleReversibilityEnabled] || (v7 = -[BWDeferredPipelineParameters smartStyleReversibilityEnabled](self, "smartStyleReversibilityEnabled")) != 0)
         {
 LABEL_45:
-          if ((![a3 generateInferencesForSemanticProcessingIfNeeded] || (v7 = -[BWDeferredPipelineParameters generateInferencesForSemanticProcessingIfNeeded](self, "generateInferencesForSemanticProcessingIfNeeded")) != 0) && (!objc_msgSend(a3, "quadraProcessingSupportEnabled") || (v7 = -[BWDeferredPipelineParameters quadraProcessingSupportEnabled](self, "quadraProcessingSupportEnabled")) != 0) && (!objc_msgSend(a3, "canProcessEnhancedResolution") || (v7 = -[BWDeferredPipelineParameters canProcessEnhancedResolution](self, "canProcessEnhancedResolution")) != 0))
+          if ((![with generateInferencesForSemanticProcessingIfNeeded] || (v7 = -[BWDeferredPipelineParameters generateInferencesForSemanticProcessingIfNeeded](self, "generateInferencesForSemanticProcessingIfNeeded")) != 0) && (!objc_msgSend(with, "quadraProcessingSupportEnabled") || (v7 = -[BWDeferredPipelineParameters quadraProcessingSupportEnabled](self, "quadraProcessingSupportEnabled")) != 0) && (!objc_msgSend(with, "canProcessEnhancedResolution") || (v7 = -[BWDeferredPipelineParameters canProcessEnhancedResolution](self, "canProcessEnhancedResolution")) != 0))
           {
-            if (![a3 sfhrMode] || (v19 = -[BWDeferredPipelineParameters sfhrMode](self, "sfhrMode"), v19 == objc_msgSend(a3, "sfhrMode")))
+            if (![with sfhrMode] || (v19 = -[BWDeferredPipelineParameters sfhrMode](self, "sfhrMode"), v19 == objc_msgSend(with, "sfhrMode")))
             {
               LOBYTE(v7) = 1;
               return v7;
@@ -585,22 +585,22 @@ LABEL_39:
   return result;
 }
 
-- (char)_initWithLegacyCaptureSettings:(void *)a1
+- (char)_initWithLegacyCaptureSettings:(void *)settings
 {
-  if (!a1)
+  if (!settings)
   {
     return 0;
   }
 
-  v6.receiver = a1;
+  v6.receiver = settings;
   v6.super_class = BWDeferredPipelineParameters;
   v3 = objc_msgSendSuper2(&v6, sel_init);
   if (v3)
   {
-    v4 = [+[FigCaptureCameraParameters sharedInstance](FigCaptureCameraParameters nrfVersion];
-    if (([a2 captureFlags] & 4) != 0 || v4 <= 2)
+    nrfVersion = [+[FigCaptureCameraParameters sharedInstance](FigCaptureCameraParameters nrfVersion];
+    if (([a2 captureFlags] & 4) != 0 || nrfVersion <= 2)
     {
-      *(v3 + 6) = v4;
+      *(v3 + 6) = nrfVersion;
     }
 
     *(v3 + 7) = 4;

@@ -1,29 +1,29 @@
 @interface WBSBrowsingAssistantAvailabilityLabels
-+ (id)possibleLabelsForContentOptions:(unint64_t)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)representsSupersetOfContentOptions:(unint64_t)a3;
-- (WBSBrowsingAssistantAvailabilityLabels)initWithContentOptions:(unint64_t)a3 template:(int64_t)a4;
-- (WBSBrowsingAssistantAvailabilityLabels)initWithRepresentedOptions:(id)a3 groups:(id)a4;
++ (id)possibleLabelsForContentOptions:(unint64_t)options;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)representsSupersetOfContentOptions:(unint64_t)options;
+- (WBSBrowsingAssistantAvailabilityLabels)initWithContentOptions:(unint64_t)options template:(int64_t)template;
+- (WBSBrowsingAssistantAvailabilityLabels)initWithRepresentedOptions:(id)options groups:(id)groups;
 - (id)debugDescription;
 - (id)description;
-- (id)possibleLabelsByIncorporatingContentOptions:(unint64_t)a3 intoLabelsAfterIndex:(unint64_t)a4;
-- (id)textForOptionsAtIndex:(unint64_t)a3;
-- (unint64_t)representedOptionsAtIndex:(unint64_t)a3;
+- (id)possibleLabelsByIncorporatingContentOptions:(unint64_t)options intoLabelsAfterIndex:(unint64_t)index;
+- (id)textForOptionsAtIndex:(unint64_t)index;
+- (unint64_t)representedOptionsAtIndex:(unint64_t)index;
 @end
 
 @implementation WBSBrowsingAssistantAvailabilityLabels
 
-+ (id)possibleLabelsForContentOptions:(unint64_t)a3
++ (id)possibleLabelsForContentOptions:(unint64_t)options
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (options)
   {
-    v4 = [[WBSBrowsingAssistantAvailabilityLabels alloc] initWithContentOptions:a3 template:0];
+    v4 = [[WBSBrowsingAssistantAvailabilityLabels alloc] initWithContentOptions:options template:0];
     v5 = [(WBSBrowsingAssistantAvailabilityLabels *)v4 representedOptionsAtIndex:0];
     if ((v5 ^ (v5 - 1)) <= v5 - 1)
     {
       v7 = v5;
-      v8 = [[WBSBrowsingAssistantAvailabilityLabels alloc] initWithContentOptions:a3 template:2];
+      v8 = [[WBSBrowsingAssistantAvailabilityLabels alloc] initWithContentOptions:options template:2];
       v9 = v8;
       if ((~v7 & 0x21) != 0 || (v7 & 0xFFFFFFFFFFFFFFDELL) == 0)
       {
@@ -34,7 +34,7 @@
 
       else
       {
-        v11 = [[WBSBrowsingAssistantAvailabilityLabels alloc] initWithContentOptions:a3 template:1];
+        v11 = [[WBSBrowsingAssistantAvailabilityLabels alloc] initWithContentOptions:options template:1];
         v14[0] = v4;
         v14[1] = v11;
         v14[2] = v9;
@@ -57,36 +57,36 @@
   return v6;
 }
 
-- (WBSBrowsingAssistantAvailabilityLabels)initWithContentOptions:(unint64_t)a3 template:(int64_t)a4
+- (WBSBrowsingAssistantAvailabilityLabels)initWithContentOptions:(unint64_t)options template:(int64_t)template
 {
-  v5 = a3;
-  v7 = [MEMORY[0x1E695DF70] array];
-  v8 = [MEMORY[0x1E695DF70] array];
-  if ((v5 & 0x61) == 0)
+  optionsCopy = options;
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
+  if ((optionsCopy & 0x61) == 0)
   {
     goto LABEL_9;
   }
 
-  switch(a4)
+  switch(template)
   {
     case 2:
       v16 = MEMORY[0x1E69E9820];
       v17 = 3221225472;
       v18 = __74__WBSBrowsingAssistantAvailabilityLabels_initWithContentOptions_template___block_invoke_2;
       v19 = &unk_1E82898B0;
-      v20 = v7;
-      v21 = v8;
+      v20 = array;
+      v21 = array2;
       WBSBrowsingAssistantContentOptionsEnumerateOptionsUsingBlock();
 
       v11 = v20;
       goto LABEL_8;
     case 1:
-      v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v5 & 0x21];
-      [v7 addObject:v10];
+      0x21 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:optionsCopy & 0x21];
+      [array addObject:0x21];
 
-      [v8 addObject:&unk_1F466CF48];
-      v22 = v7;
-      v23 = v8;
+      [array2 addObject:&unk_1F466CF48];
+      v22 = array;
+      v23 = array2;
       WBSBrowsingAssistantContentOptionsEnumerateOptionsUsingBlock();
 
       v11 = v22;
@@ -94,10 +94,10 @@ LABEL_8:
 
       break;
     case 0:
-      v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v5 & 0x61];
-      [v7 addObject:v9];
+      0x61 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:optionsCopy & 0x61];
+      [array addObject:0x61];
 
-      [v8 addObject:&unk_1F466CF48];
+      [array2 addObject:&unk_1F466CF48];
       break;
   }
 
@@ -106,12 +106,12 @@ LABEL_9:
   if (v12)
   {
     v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v12];
-    [v7 addObject:v13];
+    [array addObject:v13];
 
-    [v8 addObject:&unk_1F466CF60];
+    [array2 addObject:&unk_1F466CF60];
   }
 
-  v14 = [(WBSBrowsingAssistantAvailabilityLabels *)self initWithRepresentedOptions:v7 groups:v8, v16, v17, v18, v19];
+  v14 = [(WBSBrowsingAssistantAvailabilityLabels *)self initWithRepresentedOptions:array groups:array2, v16, v17, v18, v19];
 
   return v14;
 }
@@ -138,19 +138,19 @@ uint64_t __74__WBSBrowsingAssistantAvailabilityLabels_initWithContentOptions_tem
   return [v5 addObject:&unk_1F466CF48];
 }
 
-- (WBSBrowsingAssistantAvailabilityLabels)initWithRepresentedOptions:(id)a3 groups:(id)a4
+- (WBSBrowsingAssistantAvailabilityLabels)initWithRepresentedOptions:(id)options groups:(id)groups
 {
   v13.receiver = self;
   v13.super_class = WBSBrowsingAssistantAvailabilityLabels;
-  v5 = a4;
-  v6 = a3;
+  groupsCopy = groups;
+  optionsCopy = options;
   v7 = [(WBSBrowsingAssistantAvailabilityLabels *)&v13 init];
-  v8 = [v6 copy];
+  v8 = [optionsCopy copy];
 
   representedOptions = v7->_representedOptions;
   v7->_representedOptions = v8;
 
-  v10 = [v5 copy];
+  v10 = [groupsCopy copy];
   representedOptionsGroups = v7->_representedOptionsGroups;
   v7->_representedOptionsGroups = v10;
 
@@ -222,12 +222,12 @@ uint64_t __74__WBSBrowsingAssistantAvailabilityLabels_initWithContentOptions_tem
   return v4;
 }
 
-- (id)textForOptionsAtIndex:(unint64_t)a3
+- (id)textForOptionsAtIndex:(unint64_t)index
 {
   labels = self->_labels;
   if (!labels)
   {
-    v7 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v8 = [(NSArray *)self->_representedOptions count];
     if (v8)
     {
@@ -236,32 +236,32 @@ uint64_t __74__WBSBrowsingAssistantAvailabilityLabels_initWithContentOptions_tem
       while (1)
       {
         v11 = [(NSArray *)self->_representedOptions objectAtIndexedSubscript:v10];
-        v12 = [v11 unsignedIntegerValue];
+        unsignedIntegerValue = [v11 unsignedIntegerValue];
         v13 = [(NSArray *)self->_representedOptionsGroups objectAtIndexedSubscript:v10];
-        v14 = [v13 integerValue];
-        if ((v12 ^ (v12 - 1)) > v12 - 1 || v14 == 1)
+        integerValue = [v13 integerValue];
+        if ((unsignedIntegerValue ^ (unsignedIntegerValue - 1)) > unsignedIntegerValue - 1 || integerValue == 1)
         {
           break;
         }
 
-        if (!v14)
+        if (!integerValue)
         {
-          if (v12 > 95)
+          if (unsignedIntegerValue > 95)
           {
-            if (v12 != 96)
+            if (unsignedIntegerValue != 96)
             {
               v3 = &stru_1F4646D10;
-              if (v12 != 97)
+              if (unsignedIntegerValue != 97)
               {
                 goto LABEL_13;
               }
             }
           }
 
-          else if (v12 != 33)
+          else if (unsignedIntegerValue != 33)
           {
             v3 = &stru_1F4646D10;
-            if (v12 != 65)
+            if (unsignedIntegerValue != 65)
             {
               goto LABEL_13;
             }
@@ -272,7 +272,7 @@ uint64_t __74__WBSBrowsingAssistantAvailabilityLabels_initWithContentOptions_tem
         }
 
 LABEL_13:
-        [(NSArray *)v7 addObject:v3];
+        [(NSArray *)array addObject:v3];
 
         if (v9 == ++v10)
         {
@@ -288,23 +288,23 @@ LABEL_12:
 
 LABEL_18:
     v16 = self->_labels;
-    self->_labels = v7;
+    self->_labels = array;
 
     labels = self->_labels;
   }
 
-  return [(NSArray *)labels objectAtIndexedSubscript:a3];
+  return [(NSArray *)labels objectAtIndexedSubscript:index];
 }
 
-- (unint64_t)representedOptionsAtIndex:(unint64_t)a3
+- (unint64_t)representedOptionsAtIndex:(unint64_t)index
 {
-  v3 = [(NSArray *)self->_representedOptions objectAtIndexedSubscript:a3];
-  v4 = [v3 unsignedIntegerValue];
+  v3 = [(NSArray *)self->_representedOptions objectAtIndexedSubscript:index];
+  unsignedIntegerValue = [v3 unsignedIntegerValue];
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
-- (BOOL)representsSupersetOfContentOptions:(unint64_t)a3
+- (BOOL)representsSupersetOfContentOptions:(unint64_t)options
 {
   v16 = *MEMORY[0x1E69E9840];
   v11 = 0u;
@@ -338,10 +338,10 @@ LABEL_18:
     while (v7);
   }
 
-  return (a3 & ~previouslyConsumedOptions) == 0;
+  return (options & ~previouslyConsumedOptions) == 0;
 }
 
-- (id)possibleLabelsByIncorporatingContentOptions:(unint64_t)a3 intoLabelsAfterIndex:(unint64_t)a4
+- (id)possibleLabelsByIncorporatingContentOptions:(unint64_t)options intoLabelsAfterIndex:(unint64_t)index
 {
   v25 = *MEMORY[0x1E69E9840];
   v20 = 0;
@@ -353,13 +353,13 @@ LABEL_18:
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
-  v19 = a3;
+  optionsCopy = options;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __107__WBSBrowsingAssistantAvailabilityLabels_possibleLabelsByIncorporatingContentOptions_intoLabelsAfterIndex___block_invoke;
   v15[3] = &unk_1E82898D8;
   v15[5] = &v16;
-  v15[6] = a4;
+  v15[6] = index;
   v15[4] = &v20;
   [(NSArray *)representedOptions enumerateObjectsUsingBlock:v15];
   v17[3] &= ~v21[3];
@@ -410,10 +410,10 @@ uint64_t __107__WBSBrowsingAssistantAvailabilityLabels_possibleLabelsByIncorpora
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
@@ -423,7 +423,7 @@ uint64_t __107__WBSBrowsingAssistantAvailabilityLabels_possibleLabelsByIncorpora
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       if ([(NSArray *)self->_representedOptions isEqualToArray:v5->_representedOptions])
       {
         v6 = self->_previouslyConsumedOptions == v5->_previouslyConsumedOptions;

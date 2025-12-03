@@ -1,12 +1,12 @@
 @interface _INPBAddCallParticipantIntent
-- (BOOL)isEqual:(id)a3;
-- (_INPBAddCallParticipantIntent)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBAddCallParticipantIntent)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (void)addParticipants:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setParticipants:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addParticipants:(id)participants;
+- (void)encodeWithCoder:(id)coder;
+- (void)setParticipants:(id)participants;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBAddCallParticipantIntent
@@ -14,14 +14,14 @@
 - (id)dictionaryRepresentation
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(_INPBAddCallParticipantIntent *)self intentMetadata];
-  v5 = [v4 dictionaryRepresentation];
-  [v3 setObject:v5 forKeyedSubscript:@"intentMetadata"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  intentMetadata = [(_INPBAddCallParticipantIntent *)self intentMetadata];
+  dictionaryRepresentation = [intentMetadata dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"intentMetadata"];
 
   if ([(NSArray *)self->_participants count])
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
@@ -41,8 +41,8 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v15 + 1) + 8 * i) dictionaryRepresentation];
-          [v6 addObject:v12];
+          dictionaryRepresentation2 = [*(*(&v15 + 1) + 8 * i) dictionaryRepresentation];
+          [array addObject:dictionaryRepresentation2];
         }
 
         v9 = [(NSArray *)v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -51,36 +51,36 @@
       while (v9);
     }
 
-    [v3 setObject:v6 forKeyedSubscript:@"participants"];
+    [dictionary setObject:array forKeyedSubscript:@"participants"];
   }
 
   v13 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(_INPBAddCallParticipantIntent *)self intentMetadata];
-  v6 = [v4 intentMetadata];
-  if ((v5 != 0) == (v6 == 0))
+  intentMetadata = [(_INPBAddCallParticipantIntent *)self intentMetadata];
+  intentMetadata2 = [equalCopy intentMetadata];
+  if ((intentMetadata != 0) == (intentMetadata2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(_INPBAddCallParticipantIntent *)self intentMetadata];
-  if (v7)
+  intentMetadata3 = [(_INPBAddCallParticipantIntent *)self intentMetadata];
+  if (intentMetadata3)
   {
-    v8 = v7;
-    v9 = [(_INPBAddCallParticipantIntent *)self intentMetadata];
-    v10 = [v4 intentMetadata];
-    v11 = [v9 isEqual:v10];
+    v8 = intentMetadata3;
+    intentMetadata4 = [(_INPBAddCallParticipantIntent *)self intentMetadata];
+    intentMetadata5 = [equalCopy intentMetadata];
+    v11 = [intentMetadata4 isEqual:intentMetadata5];
 
     if (!v11)
     {
@@ -92,12 +92,12 @@
   {
   }
 
-  v5 = [(_INPBAddCallParticipantIntent *)self participants];
-  v6 = [v4 participants];
-  if ((v5 != 0) != (v6 == 0))
+  intentMetadata = [(_INPBAddCallParticipantIntent *)self participants];
+  intentMetadata2 = [equalCopy participants];
+  if ((intentMetadata != 0) != (intentMetadata2 == 0))
   {
-    v12 = [(_INPBAddCallParticipantIntent *)self participants];
-    if (!v12)
+    participants = [(_INPBAddCallParticipantIntent *)self participants];
+    if (!participants)
     {
 
 LABEL_15:
@@ -105,10 +105,10 @@ LABEL_15:
       goto LABEL_13;
     }
 
-    v13 = v12;
-    v14 = [(_INPBAddCallParticipantIntent *)self participants];
-    v15 = [v4 participants];
-    v16 = [v14 isEqual:v15];
+    v13 = participants;
+    participants2 = [(_INPBAddCallParticipantIntent *)self participants];
+    participants3 = [equalCopy participants];
+    v16 = [participants2 isEqual:participants3];
 
     if (v16)
     {
@@ -128,51 +128,51 @@ LABEL_13:
   return v17;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBAddCallParticipantIntent allocWithZone:](_INPBAddCallParticipantIntent init];
-  v6 = [(_INPBIntentMetadata *)self->_intentMetadata copyWithZone:a3];
+  v6 = [(_INPBIntentMetadata *)self->_intentMetadata copyWithZone:zone];
   [(_INPBAddCallParticipantIntent *)v5 setIntentMetadata:v6];
 
-  v7 = [(NSArray *)self->_participants copyWithZone:a3];
+  v7 = [(NSArray *)self->_participants copyWithZone:zone];
   [(_INPBAddCallParticipantIntent *)v5 setParticipants:v7];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBAddCallParticipantIntent *)self data];
+  coderCopy = coder;
+  data = [(_INPBAddCallParticipantIntent *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBAddCallParticipantIntent)initWithCoder:(id)a3
+- (_INPBAddCallParticipantIntent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBAddCallParticipantIntent *)self initWithData:v6];
+    self = [(_INPBAddCallParticipantIntent *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(_INPBAddCallParticipantIntent *)self intentMetadata];
+  toCopy = to;
+  intentMetadata = [(_INPBAddCallParticipantIntent *)self intentMetadata];
 
-  if (v5)
+  if (intentMetadata)
   {
-    v6 = [(_INPBAddCallParticipantIntent *)self intentMetadata];
+    intentMetadata2 = [(_INPBAddCallParticipantIntent *)self intentMetadata];
     PBDataWriterWriteSubmessage();
   }
 
@@ -211,27 +211,27 @@ LABEL_13:
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addParticipants:(id)a3
+- (void)addParticipants:(id)participants
 {
-  v4 = a3;
+  participantsCopy = participants;
   participants = self->_participants;
-  v8 = v4;
+  v8 = participantsCopy;
   if (!participants)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_participants;
-    self->_participants = v6;
+    self->_participants = array;
 
-    v4 = v8;
+    participantsCopy = v8;
     participants = self->_participants;
   }
 
-  [(NSArray *)participants addObject:v4];
+  [(NSArray *)participants addObject:participantsCopy];
 }
 
-- (void)setParticipants:(id)a3
+- (void)setParticipants:(id)participants
 {
-  v4 = [a3 mutableCopy];
+  v4 = [participants mutableCopy];
   participants = self->_participants;
   self->_participants = v4;
 

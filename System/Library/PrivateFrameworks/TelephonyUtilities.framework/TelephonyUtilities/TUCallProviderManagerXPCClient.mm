@@ -14,18 +14,18 @@
 - (TUCallProviderManagerDataSourceDelegate)delegate;
 - (TUCallProviderManagerXPCClient)init;
 - (id)server;
-- (id)serverWithErrorHandler:(id)a3;
-- (id)synchronousServerWithErrorHandler:(id)a3;
+- (id)serverWithErrorHandler:(id)handler;
+- (id)synchronousServerWithErrorHandler:(id)handler;
 - (void)_requestInitialState;
-- (void)_updateProvidersByIdentifier:(id)a3 localProvidersByIdentifier:(id)a4 pairedHostDeviceProvidersByIdentifier:(id)a5;
+- (void)_updateProvidersByIdentifier:(id)identifier localProvidersByIdentifier:(id)byIdentifier pairedHostDeviceProvidersByIdentifier:(id)providersByIdentifier;
 - (void)blockUntilInitialStateReceived;
 - (void)dealloc;
-- (void)donateBackgroundCallIntentForProviderWithIdentifier:(id)a3;
-- (void)donateUserIntentForProviderWithIdentifier:(id)a3;
+- (void)donateBackgroundCallIntentForProviderWithIdentifier:(id)identifier;
+- (void)donateUserIntentForProviderWithIdentifier:(id)identifier;
 - (void)invalidate;
-- (void)launchAppForDialRequest:(id)a3 completion:(id)a4;
-- (void)setDelegate:(id)a3;
-- (void)updateProvidersByIdentifier:(id)a3 localProvidersByIdentifier:(id)a4 pairedHostDeviceProvidersByIdentifier:(id)a5;
+- (void)launchAppForDialRequest:(id)request completion:(id)completion;
+- (void)setDelegate:(id)delegate;
+- (void)updateProvidersByIdentifier:(id)identifier localProvidersByIdentifier:(id)byIdentifier pairedHostDeviceProvidersByIdentifier:(id)providersByIdentifier;
 @end
 
 @implementation TUCallProviderManagerXPCClient
@@ -147,8 +147,8 @@ uint64_t __69__TUCallProviderManagerXPCClient_currentProcessCanAccessInitialStat
 
 - (void)_requestInitialState
 {
-  v3 = [(TUCallProviderManagerXPCClient *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(TUCallProviderManagerXPCClient *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   [(TUCallProviderManagerXPCClient *)self setRequestedInitialState:1];
   v4 = [(TUCallProviderManagerXPCClient *)self synchronousServerWithErrorHandler:&__block_literal_global_28_2];
@@ -169,11 +169,11 @@ uint64_t __69__TUCallProviderManagerXPCClient_currentProcessCanAccessInitialStat
     v5 = self->_xpcConnection;
     self->_xpcConnection = v4;
 
-    v6 = [objc_opt_class() callProviderManagerServerXPCInterface];
-    [(NSXPCConnection *)self->_xpcConnection setRemoteObjectInterface:v6];
+    callProviderManagerServerXPCInterface = [objc_opt_class() callProviderManagerServerXPCInterface];
+    [(NSXPCConnection *)self->_xpcConnection setRemoteObjectInterface:callProviderManagerServerXPCInterface];
 
-    v7 = [objc_opt_class() callProviderManagerClientXPCInterface];
-    [(NSXPCConnection *)self->_xpcConnection setExportedInterface:v7];
+    callProviderManagerClientXPCInterface = [objc_opt_class() callProviderManagerClientXPCInterface];
+    [(NSXPCConnection *)self->_xpcConnection setExportedInterface:callProviderManagerClientXPCInterface];
 
     [(NSXPCConnection *)self->_xpcConnection setExportedObject:self];
     objc_initWeak(&location, self);
@@ -228,13 +228,13 @@ void __71__TUCallProviderManagerXPCClient_callProviderManagerServerXPCInterface_
 
 - (void)blockUntilInitialStateReceived
 {
-  v3 = [(TUCallProviderManagerXPCClient *)self queue];
+  queue = [(TUCallProviderManagerXPCClient *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __64__TUCallProviderManagerXPCClient_blockUntilInitialStateReceived__block_invoke;
   block[3] = &unk_1E7424950;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(queue, block);
 }
 
 uint64_t __64__TUCallProviderManagerXPCClient_blockUntilInitialStateReceived__block_invoke(uint64_t a1)
@@ -256,7 +256,7 @@ uint64_t __64__TUCallProviderManagerXPCClient_blockUntilInitialStateReceived__bl
   block[1] = 3221225472;
   block[2] = __71__TUCallProviderManagerXPCClient_callProviderManagerServerXPCInterface__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (callProviderManagerServerXPCInterface_onceToken != -1)
   {
     dispatch_once(&callProviderManagerServerXPCInterface_onceToken, block);
@@ -282,7 +282,7 @@ uint64_t __64__TUCallProviderManagerXPCClient_blockUntilInitialStateReceived__bl
   block[1] = 3221225472;
   block[2] = __71__TUCallProviderManagerXPCClient_callProviderManagerClientXPCInterface__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (callProviderManagerClientXPCInterface_onceToken != -1)
   {
     dispatch_once(&callProviderManagerClientXPCInterface_onceToken, block);
@@ -320,14 +320,14 @@ void __71__TUCallProviderManagerXPCClient_callProviderManagerClientXPCInterface_
   v10 = __Block_byref_object_copy__5;
   v11 = __Block_byref_object_dispose__5;
   v12 = 0;
-  v3 = [(TUCallProviderManagerXPCClient *)self queue];
+  queue = [(TUCallProviderManagerXPCClient *)self queue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __55__TUCallProviderManagerXPCClient_providersByIdentifier__block_invoke;
   v6[3] = &unk_1E7425318;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(queue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -337,13 +337,13 @@ void __71__TUCallProviderManagerXPCClient_callProviderManagerClientXPCInterface_
 
 - (void)invalidate
 {
-  v3 = [(TUCallProviderManagerXPCClient *)self queue];
+  queue = [(TUCallProviderManagerXPCClient *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __44__TUCallProviderManagerXPCClient_invalidate__block_invoke;
   block[3] = &unk_1E7424950;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 void __44__TUCallProviderManagerXPCClient_invalidate__block_invoke(uint64_t a1)
@@ -435,14 +435,14 @@ void __38__TUCallProviderManagerXPCClient_init__block_invoke_2(uint64_t a1)
   v10 = __Block_byref_object_copy__5;
   v11 = __Block_byref_object_dispose__5;
   v12 = 0;
-  v3 = [(TUCallProviderManagerXPCClient *)self queue];
+  queue = [(TUCallProviderManagerXPCClient *)self queue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __42__TUCallProviderManagerXPCClient_delegate__block_invoke;
   v6[3] = &unk_1E7425318;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(queue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -460,18 +460,18 @@ uint64_t __42__TUCallProviderManagerXPCClient_delegate__block_invoke(uint64_t a1
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(TUCallProviderManagerXPCClient *)self queue];
+  delegateCopy = delegate;
+  queue = [(TUCallProviderManagerXPCClient *)self queue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __46__TUCallProviderManagerXPCClient_setDelegate___block_invoke;
   v7[3] = &unk_1E7424898;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = delegateCopy;
+  v6 = delegateCopy;
+  dispatch_async(queue, v7);
 }
 
 - (NSDictionary)localProvidersByIdentifier
@@ -482,14 +482,14 @@ uint64_t __42__TUCallProviderManagerXPCClient_delegate__block_invoke(uint64_t a1
   v10 = __Block_byref_object_copy__5;
   v11 = __Block_byref_object_dispose__5;
   v12 = 0;
-  v3 = [(TUCallProviderManagerXPCClient *)self queue];
+  queue = [(TUCallProviderManagerXPCClient *)self queue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __60__TUCallProviderManagerXPCClient_localProvidersByIdentifier__block_invoke;
   v6[3] = &unk_1E7425318;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(queue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -505,14 +505,14 @@ uint64_t __42__TUCallProviderManagerXPCClient_delegate__block_invoke(uint64_t a1
   v10 = __Block_byref_object_copy__5;
   v11 = __Block_byref_object_dispose__5;
   v12 = 0;
-  v3 = [(TUCallProviderManagerXPCClient *)self queue];
+  queue = [(TUCallProviderManagerXPCClient *)self queue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __71__TUCallProviderManagerXPCClient_pairedHostDeviceProvidersByIdentifier__block_invoke;
   v6[3] = &unk_1E7425318;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(queue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -520,18 +520,18 @@ uint64_t __42__TUCallProviderManagerXPCClient_delegate__block_invoke(uint64_t a1
   return v4;
 }
 
-- (void)donateUserIntentForProviderWithIdentifier:(id)a3
+- (void)donateUserIntentForProviderWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(TUCallProviderManagerXPCClient *)self queue];
+  identifierCopy = identifier;
+  queue = [(TUCallProviderManagerXPCClient *)self queue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __76__TUCallProviderManagerXPCClient_donateUserIntentForProviderWithIdentifier___block_invoke;
   v7[3] = &unk_1E7424898;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = identifierCopy;
+  v6 = identifierCopy;
+  dispatch_sync(queue, v7);
 }
 
 void __76__TUCallProviderManagerXPCClient_donateUserIntentForProviderWithIdentifier___block_invoke(uint64_t a1)
@@ -555,18 +555,18 @@ void __76__TUCallProviderManagerXPCClient_donateUserIntentForProviderWithIdentif
   }
 }
 
-- (void)donateBackgroundCallIntentForProviderWithIdentifier:(id)a3
+- (void)donateBackgroundCallIntentForProviderWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(TUCallProviderManagerXPCClient *)self queue];
+  identifierCopy = identifier;
+  queue = [(TUCallProviderManagerXPCClient *)self queue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __86__TUCallProviderManagerXPCClient_donateBackgroundCallIntentForProviderWithIdentifier___block_invoke;
   v7[3] = &unk_1E7424898;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = identifierCopy;
+  v6 = identifierCopy;
+  dispatch_sync(queue, v7);
 }
 
 void __86__TUCallProviderManagerXPCClient_donateBackgroundCallIntentForProviderWithIdentifier___block_invoke(uint64_t a1)
@@ -590,21 +590,21 @@ void __86__TUCallProviderManagerXPCClient_donateBackgroundCallIntentForProviderW
   }
 }
 
-- (void)launchAppForDialRequest:(id)a3 completion:(id)a4
+- (void)launchAppForDialRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(TUCallProviderManagerXPCClient *)self queue];
+  requestCopy = request;
+  completionCopy = completion;
+  queue = [(TUCallProviderManagerXPCClient *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __69__TUCallProviderManagerXPCClient_launchAppForDialRequest_completion___block_invoke;
   block[3] = &unk_1E7425F68;
-  v12 = v6;
-  v13 = v7;
+  v12 = requestCopy;
+  v13 = completionCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
-  dispatch_async(v8, block);
+  v9 = requestCopy;
+  v10 = completionCopy;
+  dispatch_async(queue, block);
 }
 
 void __69__TUCallProviderManagerXPCClient_launchAppForDialRequest_completion___block_invoke(uint64_t a1)
@@ -650,14 +650,14 @@ void __69__TUCallProviderManagerXPCClient_launchAppForDialRequest_completion___b
   v10 = __Block_byref_object_copy__5;
   v11 = __Block_byref_object_dispose__5;
   v12 = 0;
-  v3 = [(TUCallProviderManagerXPCClient *)self queue];
+  queue = [(TUCallProviderManagerXPCClient *)self queue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __52__TUCallProviderManagerXPCClient_defaultAppProvider__block_invoke;
   v6[3] = &unk_1E7425C58;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(queue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -694,14 +694,14 @@ void __52__TUCallProviderManagerXPCClient_defaultAppProvider__block_invoke_2(uin
   v10 = __Block_byref_object_copy__5;
   v11 = __Block_byref_object_dispose__5;
   v12 = MEMORY[0x1E695E0F0];
-  v3 = [(TUCallProviderManagerXPCClient *)self queue];
+  queue = [(TUCallProviderManagerXPCClient *)self queue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __49__TUCallProviderManagerXPCClient_sortedProviders__block_invoke;
   v6[3] = &unk_1E7425C58;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(queue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -759,21 +759,21 @@ void __47__TUCallProviderManagerXPCClient_xpcConnection__block_invoke_2_24()
   v4 = WeakRetained;
   if (WeakRetained)
   {
-    v5 = WeakRetained;
+    remoteObjectProxy = WeakRetained;
   }
 
   else
   {
-    v6 = [(TUCallProviderManagerXPCClient *)self xpcConnection];
-    v5 = [v6 remoteObjectProxy];
+    xpcConnection = [(TUCallProviderManagerXPCClient *)self xpcConnection];
+    remoteObjectProxy = [xpcConnection remoteObjectProxy];
   }
 
-  return v5;
+  return remoteObjectProxy;
 }
 
-- (id)serverWithErrorHandler:(id)a3
+- (id)serverWithErrorHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&sAsynchronousServer_2);
   v6 = WeakRetained;
   if (WeakRetained)
@@ -783,16 +783,16 @@ void __47__TUCallProviderManagerXPCClient_xpcConnection__block_invoke_2_24()
 
   else
   {
-    v8 = [(TUCallProviderManagerXPCClient *)self xpcConnection];
-    v7 = [v8 remoteObjectProxyWithErrorHandler:v4];
+    xpcConnection = [(TUCallProviderManagerXPCClient *)self xpcConnection];
+    v7 = [xpcConnection remoteObjectProxyWithErrorHandler:handlerCopy];
   }
 
   return v7;
 }
 
-- (id)synchronousServerWithErrorHandler:(id)a3
+- (id)synchronousServerWithErrorHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&sSynchronousServer_2);
   v6 = WeakRetained;
   if (WeakRetained)
@@ -802,8 +802,8 @@ void __47__TUCallProviderManagerXPCClient_xpcConnection__block_invoke_2_24()
 
   else
   {
-    v8 = [(TUCallProviderManagerXPCClient *)self xpcConnection];
-    v7 = [v8 synchronousRemoteObjectProxyWithErrorHandler:v4];
+    xpcConnection = [(TUCallProviderManagerXPCClient *)self xpcConnection];
+    v7 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:handlerCopy];
   }
 
   return v7;
@@ -819,20 +819,20 @@ void __54__TUCallProviderManagerXPCClient__requestInitialState__block_invoke(uin
   }
 }
 
-- (void)_updateProvidersByIdentifier:(id)a3 localProvidersByIdentifier:(id)a4 pairedHostDeviceProvidersByIdentifier:(id)a5
+- (void)_updateProvidersByIdentifier:(id)identifier localProvidersByIdentifier:(id)byIdentifier pairedHostDeviceProvidersByIdentifier:(id)providersByIdentifier
 {
   v19 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(TUCallProviderManagerXPCClient *)self queue];
-  dispatch_assert_queue_V2(v11);
+  identifierCopy = identifier;
+  byIdentifierCopy = byIdentifier;
+  providersByIdentifierCopy = providersByIdentifier;
+  queue = [(TUCallProviderManagerXPCClient *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v12 = TUDefaultLog();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     v17 = 138412290;
-    v18 = v8;
+    v18 = identifierCopy;
     _os_log_impl(&dword_1956FD000, v12, OS_LOG_TYPE_DEFAULT, "_updateProvidersByIdentifier providersByIdentifier,: %@", &v17, 0xCu);
   }
 
@@ -840,7 +840,7 @@ void __54__TUCallProviderManagerXPCClient__requestInitialState__block_invoke(uin
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     v17 = 138412290;
-    v18 = v9;
+    v18 = byIdentifierCopy;
     _os_log_impl(&dword_1956FD000, v13, OS_LOG_TYPE_DEFAULT, "_updateProvidersByIdentifier localProvidersByIdentifier: %@", &v17, 0xCu);
   }
 
@@ -848,37 +848,37 @@ void __54__TUCallProviderManagerXPCClient__requestInitialState__block_invoke(uin
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     v17 = 138412290;
-    v18 = v10;
+    v18 = providersByIdentifierCopy;
     _os_log_impl(&dword_1956FD000, v14, OS_LOG_TYPE_DEFAULT, "_updateProvidersByIdentifier pairedHostDeviceProvidersByIdentifier: %@", &v17, 0xCu);
   }
 
-  [(TUCallProviderManagerXPCClient *)self setProvidersByIdentifier:v8];
-  [(TUCallProviderManagerXPCClient *)self setLocalProvidersByIdentifier:v9];
-  [(TUCallProviderManagerXPCClient *)self setPairedHostDeviceProvidersByIdentifier:v10];
+  [(TUCallProviderManagerXPCClient *)self setProvidersByIdentifier:identifierCopy];
+  [(TUCallProviderManagerXPCClient *)self setLocalProvidersByIdentifier:byIdentifierCopy];
+  [(TUCallProviderManagerXPCClient *)self setPairedHostDeviceProvidersByIdentifier:providersByIdentifierCopy];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained providersChangedForDataSource:self];
 
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)updateProvidersByIdentifier:(id)a3 localProvidersByIdentifier:(id)a4 pairedHostDeviceProvidersByIdentifier:(id)a5
+- (void)updateProvidersByIdentifier:(id)identifier localProvidersByIdentifier:(id)byIdentifier pairedHostDeviceProvidersByIdentifier:(id)providersByIdentifier
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(TUCallProviderManagerXPCClient *)self queue];
+  identifierCopy = identifier;
+  byIdentifierCopy = byIdentifier;
+  providersByIdentifierCopy = providersByIdentifier;
+  queue = [(TUCallProviderManagerXPCClient *)self queue];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __127__TUCallProviderManagerXPCClient_updateProvidersByIdentifier_localProvidersByIdentifier_pairedHostDeviceProvidersByIdentifier___block_invoke;
   v15[3] = &unk_1E7425188;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  dispatch_async(v11, v15);
+  v16 = identifierCopy;
+  v17 = byIdentifierCopy;
+  v18 = providersByIdentifierCopy;
+  v12 = providersByIdentifierCopy;
+  v13 = byIdentifierCopy;
+  v14 = identifierCopy;
+  dispatch_async(queue, v15);
 }
 
 void __76__TUCallProviderManagerXPCClient_donateUserIntentForProviderWithIdentifier___block_invoke_2_cold_1(uint64_t a1, NSObject *a2, uint64_t a3, uint64_t a4, uint64_t a5, uint64_t a6, uint64_t a7, uint64_t a8)

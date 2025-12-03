@@ -1,25 +1,25 @@
 @interface NTKModularSmallRingTemplateView
-+ (BOOL)handlesComplicationTemplate:(id)a3;
++ (BOOL)handlesComplicationTemplate:(id)template;
 + (id)supportedTemplateClasses;
-- (NTKModularSmallRingTemplateView)initWithFrame:(CGRect)a3;
+- (NTKModularSmallRingTemplateView)initWithFrame:(CGRect)frame;
 - (void)_configureContentSubviews;
-- (void)_enumerateForegroundColoringViewsWithBlock:(id)a3;
+- (void)_enumerateForegroundColoringViewsWithBlock:(id)block;
 - (void)_layoutContentView;
 - (void)_refreshRingImage;
-- (void)_refreshRingImageWithRing:(id)a3;
+- (void)_refreshRingImageWithRing:(id)ring;
 - (void)_update;
-- (void)_updateRingWithRingDescription:(id)a3;
-- (void)setIsXL:(BOOL)a3;
-- (void)updateRingWithProgressProvider:(id)a3;
+- (void)_updateRingWithRingDescription:(id)description;
+- (void)setIsXL:(BOOL)l;
+- (void)updateRingWithProgressProvider:(id)provider;
 @end
 
 @implementation NTKModularSmallRingTemplateView
 
-- (NTKModularSmallRingTemplateView)initWithFrame:(CGRect)a3
+- (NTKModularSmallRingTemplateView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = NTKModularSmallRingTemplateView;
-  v3 = [(NTKModuleView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(NTKModuleView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -32,22 +32,22 @@
 
 - (void)_configureContentSubviews
 {
-  v3 = [(CLKUIColoringLabel *)self->_label textProvider];
+  textProvider = [(CLKUIColoringLabel *)self->_label textProvider];
   [(CLKUIColoringImageView *)self->_stateRing removeFromSuperview];
   [(CLKUIColoringLabel *)self->_label removeFromSuperview];
   v24 = 0.0;
   v22 = 0u;
   v23 = 0u;
-  v4 = [(NTKModuleView *)self device];
-  _LayoutConstants_0(v4, [(NTKComplicationModuleView *)self isXL], &v22);
+  device = [(NTKModuleView *)self device];
+  _LayoutConstants_0(device, [(NTKComplicationModuleView *)self isXL], &v22);
 
   v5 = [off_27877BEF0 alloc];
   v6 = [v5 initWithFrame:{*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8), *(&v22 + 1), *&v23}];
   stateRing = self->_stateRing;
   self->_stateRing = v6;
 
-  v8 = [(NTKModuleView *)self contentView];
-  [v8 addSubview:self->_stateRing];
+  contentView = [(NTKModuleView *)self contentView];
+  [contentView addSubview:self->_stateRing];
 
   v9 = [MEMORY[0x277CBBB08] systemFontOfSize:*&v22];
   v10 = objc_alloc_init(off_27877BEF8);
@@ -55,11 +55,11 @@
   self->_label = v10;
 
   [(CLKUIColoringLabel *)self->_label setFont:v9];
-  [(CLKUIColoringLabel *)self->_label setTextProvider:v3];
+  [(CLKUIColoringLabel *)self->_label setTextProvider:textProvider];
   [(CLKUIColoringLabel *)self->_label setMaxWidth:v24];
   v12 = self->_label;
-  v13 = [(NTKModularTemplateView *)self timeTravelDate];
-  [(CLKUIColoringLabel *)v12 setInTimeTravel:v13 != 0];
+  timeTravelDate = [(NTKModularTemplateView *)self timeTravelDate];
+  [(CLKUIColoringLabel *)v12 setInTimeTravel:timeTravelDate != 0];
 
   objc_initWeak(&location, self);
   v14 = self->_label;
@@ -76,8 +76,8 @@
   v17[3] = &unk_27877DC58;
   objc_copyWeak(&v18, &location);
   [(CLKUIColoringLabel *)v15 setNeedsResizeHandler:v17];
-  v16 = [(NTKModuleView *)self contentView];
-  [v16 addSubview:self->_label];
+  contentView2 = [(NTKModuleView *)self contentView];
+  [contentView2 addSubview:self->_label];
 
   objc_destroyWeak(&v18);
   objc_destroyWeak(&v20);
@@ -111,11 +111,11 @@ void __60__NTKModularSmallRingTemplateView__configureContentSubviews__block_invo
   [v1 setNeedsLayout];
 }
 
-- (void)setIsXL:(BOOL)a3
+- (void)setIsXL:(BOOL)l
 {
   v4.receiver = self;
   v4.super_class = NTKModularSmallRingTemplateView;
-  [(NTKComplicationModuleView *)&v4 setIsXL:a3];
+  [(NTKComplicationModuleView *)&v4 setIsXL:l];
   [(NTKModularSmallRingTemplateView *)self _configureContentSubviews];
   [(NTKModuleView *)self _updateColors];
   [(NTKModularSmallRingTemplateView *)self _refreshRingImage];
@@ -124,15 +124,15 @@ void __60__NTKModularSmallRingTemplateView__configureContentSubviews__block_invo
 
 - (void)_update
 {
-  v3 = [(NTKModularTemplateView *)self complicationTemplate];
+  complicationTemplate = [(NTKModularTemplateView *)self complicationTemplate];
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
     [(CDComplicationImageView *)self->_imageView setHidden:1];
     [(CLKUIColoringLabel *)self->_label setHidden:0];
     label = self->_label;
-    v5 = [v3 textProvider];
-    [(CLKUIColoringLabel *)label setTextProvider:v5];
+    textProvider = [complicationTemplate textProvider];
+    [(CLKUIColoringLabel *)label setTextProvider:textProvider];
 LABEL_13:
 
     goto LABEL_14;
@@ -142,24 +142,24 @@ LABEL_13:
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
     [(CLKUIColoringLabel *)self->_label setHidden:1];
-    v5 = [v3 imageProvider];
-    v6 = [off_27877BE78 existingImageView:self->_imageView supportsImageProvider:v5];
+    textProvider = [complicationTemplate imageProvider];
+    v6 = [off_27877BE78 existingImageView:self->_imageView supportsImageProvider:textProvider];
     imageView = self->_imageView;
     if ((v6 & 1) == 0)
     {
       [(CDComplicationImageView *)imageView removeFromSuperview];
-      v8 = [off_27877BE78 viewForImageProvider:v5];
+      v8 = [off_27877BE78 viewForImageProvider:textProvider];
       v9 = self->_imageView;
       self->_imageView = v8;
 
       v10 = self->_imageView;
       if (v10)
       {
-        v11 = [(NTKModuleView *)self foregroundColor];
-        [(CDComplicationImageView *)v10 setColor:v11];
+        foregroundColor = [(NTKModuleView *)self foregroundColor];
+        [(CDComplicationImageView *)v10 setColor:foregroundColor];
 
-        v12 = [(NTKModuleView *)self contentView];
-        [v12 addSubview:self->_imageView];
+        contentView = [(NTKModuleView *)self contentView];
+        [contentView addSubview:self->_imageView];
 
         imageView = self->_imageView;
       }
@@ -171,7 +171,7 @@ LABEL_13:
     }
 
     [(CDComplicationImageView *)imageView setHidden:0];
-    [(CDComplicationImageView *)self->_imageView setImageProvider:v5];
+    [(CDComplicationImageView *)self->_imageView setImageProvider:textProvider];
     goto LABEL_13;
   }
 
@@ -179,22 +179,22 @@ LABEL_14:
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    v13 = [v3 progressProvider];
+    progressProvider = [complicationTemplate progressProvider];
     progressProvider = self->_progressProvider;
-    if (v13 != progressProvider)
+    if (progressProvider != progressProvider)
     {
       [(CLKProgressProvider *)progressProvider stopUpdatesForToken:self->_progressUpdateToken];
-      objc_storeStrong(&self->_progressProvider, v13);
-      v15 = [(NTKRing *)v13 tintColor];
+      objc_storeStrong(&self->_progressProvider, progressProvider);
+      tintColor = [(NTKRing *)progressProvider tintColor];
 
-      if (v15)
+      if (tintColor)
       {
-        v16 = [(NTKRing *)v13 tintColor];
-        [(CLKUIColoringImageView *)self->_stateRing setOverrideColor:v16];
+        tintColor2 = [(NTKRing *)progressProvider tintColor];
+        [(CLKUIColoringImageView *)self->_stateRing setOverrideColor:tintColor2];
       }
 
       objc_initWeak(&location, self);
-      objc_initWeak(&from, v13);
+      objc_initWeak(&from, progressProvider);
       v17 = self->_progressProvider;
       v23 = MEMORY[0x277D85DD0];
       v24 = 3221225472;
@@ -206,7 +206,7 @@ LABEL_14:
       progressUpdateToken = self->_progressUpdateToken;
       self->_progressUpdateToken = v18;
 
-      [(NTKModularSmallRingTemplateView *)self updateRingWithProgressProvider:v13, v23, v24, v25, v26];
+      [(NTKModularSmallRingTemplateView *)self updateRingWithProgressProvider:progressProvider, v23, v24, v25, v26];
       objc_destroyWeak(&v28);
       objc_destroyWeak(&v27);
       objc_destroyWeak(&from);
@@ -217,13 +217,13 @@ LABEL_14:
   else
   {
     v20 = [NTKRing alloc];
-    [v3 fillFraction];
-    v13 = -[NTKRing initWithFillFraction:style:](v20, "initWithFillFraction:style:", [v3 ringStyle], v21);
-    [(NTKModularSmallRingTemplateView *)self _updateRingWithRingDescription:v13];
+    [complicationTemplate fillFraction];
+    progressProvider = -[NTKRing initWithFillFraction:style:](v20, "initWithFillFraction:style:", [complicationTemplate ringStyle], v21);
+    [(NTKModularSmallRingTemplateView *)self _updateRingWithRingDescription:progressProvider];
   }
 
-  v22 = [(NTKModuleView *)self contentView];
-  [v22 setNeedsLayout];
+  contentView2 = [(NTKModuleView *)self contentView];
+  [contentView2 setNeedsLayout];
 }
 
 void __42__NTKModularSmallRingTemplateView__update__block_invoke(uint64_t a1)
@@ -233,72 +233,72 @@ void __42__NTKModularSmallRingTemplateView__update__block_invoke(uint64_t a1)
   [WeakRetained updateRingWithProgressProvider:v2];
 }
 
-- (void)updateRingWithProgressProvider:(id)a3
+- (void)updateRingWithProgressProvider:(id)provider
 {
-  v14 = a3;
-  v4 = [(NTKModularTemplateView *)self timeTravelDate];
-  v5 = v4;
-  if (v4)
+  providerCopy = provider;
+  timeTravelDate = [(NTKModularTemplateView *)self timeTravelDate];
+  v5 = timeTravelDate;
+  if (timeTravelDate)
   {
-    v6 = v4;
+    complicationDate = timeTravelDate;
   }
 
   else
   {
-    v6 = [MEMORY[0x277CBBAD8] complicationDate];
+    complicationDate = [MEMORY[0x277CBBAD8] complicationDate];
   }
 
-  v7 = v6;
+  v7 = complicationDate;
 
   v8 = [NTKRing alloc];
-  [v14 progressFractionForNow:v7];
+  [providerCopy progressFractionForNow:v7];
   v10 = v9;
-  v11 = [(NTKModularTemplateView *)self complicationTemplate];
-  v12 = -[NTKRing initWithFillFraction:style:](v8, "initWithFillFraction:style:", [v11 ringStyle], v10);
+  complicationTemplate = [(NTKModularTemplateView *)self complicationTemplate];
+  v12 = -[NTKRing initWithFillFraction:style:](v8, "initWithFillFraction:style:", [complicationTemplate ringStyle], v10);
 
-  [v14 backgroundRingAlpha];
+  [providerCopy backgroundRingAlpha];
   if (v13 >= 0.0)
   {
-    [v14 backgroundRingAlpha];
+    [providerCopy backgroundRingAlpha];
     [(NTKRing *)v12 setBackgroundRingAlpha:?];
   }
 
   [(NTKModularSmallRingTemplateView *)self _updateRingWithRingDescription:v12];
 }
 
-- (void)_updateRingWithRingDescription:(id)a3
+- (void)_updateRingWithRingDescription:(id)description
 {
-  v8 = a3;
-  [v8 fillFraction];
+  descriptionCopy = description;
+  [descriptionCopy fillFraction];
   if ((CLKFloatEqualsFloat() & 1) == 0)
   {
-    [v8 fillFraction];
+    [descriptionCopy fillFraction];
     *&v4 = v4;
     self->_level = *&v4;
-    v5 = [(NTKModuleView *)self device];
-    _LayoutConstants_0(v5, [(NTKComplicationModuleView *)self isXL], v11);
-    [v8 setRadius:v12 * 0.5];
+    device = [(NTKModuleView *)self device];
+    _LayoutConstants_0(device, [(NTKComplicationModuleView *)self isXL], v11);
+    [descriptionCopy setRadius:v12 * 0.5];
 
-    v6 = [(NTKModuleView *)self device];
-    _LayoutConstants_0(v6, [(NTKComplicationModuleView *)self isXL], v9);
-    [v8 setStrokeWidth:v10];
+    device2 = [(NTKModuleView *)self device];
+    _LayoutConstants_0(device2, [(NTKComplicationModuleView *)self isXL], v9);
+    [descriptionCopy setStrokeWidth:v10];
 
-    v7 = [v8 ringImage];
-    [(CLKUIColoringImageView *)self->_stateRing setImage:v7];
+    ringImage = [descriptionCopy ringImage];
+    [(CLKUIColoringImageView *)self->_stateRing setImage:ringImage];
   }
 }
 
 - (void)_layoutContentView
 {
-  v3 = [(NTKModuleView *)self contentView];
-  [v3 bounds];
+  contentView = [(NTKModuleView *)self contentView];
+  [contentView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
 
   [(CLKUIColoringImageView *)self->_stateRing sizeThatFits:*MEMORY[0x277CBF3A8], *(MEMORY[0x277CBF3A8] + 8)];
-  v12 = [(NTKModuleView *)self device];
+  device = [(NTKModuleView *)self device];
   CLKRectCenteredIntegralRectForDevice();
   v14 = v13;
   v16 = v15;
@@ -310,60 +310,60 @@ void __42__NTKModularSmallRingTemplateView__update__block_invoke(uint64_t a1)
   {
     [(CLKUIColoringLabel *)self->_label sizeToFit];
     [(CLKUIColoringLabel *)self->_label frame];
-    v21 = [(NTKModuleView *)self device];
-    _LayoutConstants_0(v21, [(NTKComplicationModuleView *)self isXL], v26);
+    device2 = [(NTKModuleView *)self device];
+    _LayoutConstants_0(device2, [(NTKComplicationModuleView *)self isXL], v26);
 
     label = self->_label;
-    v23 = [(NTKModuleView *)self device];
+    device3 = [(NTKModuleView *)self device];
     CLKRectCenteredIntegralRectForDevice();
     [(CLKUIColoringLabel *)label setFrame:?];
   }
 
   if (([(CDComplicationImageView *)self->_imageView isHidden]& 1) == 0)
   {
-    v24 = [(CDComplicationImageView *)self->_imageView sizeToFit];
+    sizeToFit = [(CDComplicationImageView *)self->_imageView sizeToFit];
     imageView = self->_imageView;
-    MEMORY[0x2318D8E70](v24, v5, v7, v9, v11);
+    MEMORY[0x2318D8E70](sizeToFit, v5, v7, v9, v11);
 
     [(CDComplicationImageView *)imageView setCenter:?];
   }
 }
 
-- (void)_enumerateForegroundColoringViewsWithBlock:(id)a3
+- (void)_enumerateForegroundColoringViewsWithBlock:(id)block
 {
-  v4 = (a3 + 16);
-  v5 = *(a3 + 2);
-  v6 = a3;
+  v4 = (block + 16);
+  v5 = *(block + 2);
+  blockCopy = block;
   v5();
-  (*v4)(v6, self->_stateRing);
-  (*v4)(v6, self->_imageView);
+  (*v4)(blockCopy, self->_stateRing);
+  (*v4)(blockCopy, self->_imageView);
 }
 
 - (void)_refreshRingImage
 {
-  v14 = [(NTKModularTemplateView *)self complicationTemplate];
+  complicationTemplate = [(NTKModularTemplateView *)self complicationTemplate];
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    v3 = [(NTKModularTemplateView *)self timeTravelDate];
-    v4 = v3;
-    if (v3)
+    timeTravelDate = [(NTKModularTemplateView *)self timeTravelDate];
+    v4 = timeTravelDate;
+    if (timeTravelDate)
     {
-      v5 = v3;
+      complicationDate = timeTravelDate;
     }
 
     else
     {
-      v5 = [MEMORY[0x277CBBAD8] complicationDate];
+      complicationDate = [MEMORY[0x277CBBAD8] complicationDate];
     }
 
-    v6 = v5;
+    v6 = complicationDate;
 
     v7 = [NTKRing alloc];
     [(CLKProgressProvider *)self->_progressProvider progressFractionForNow:v6];
     v9 = v8;
-    v10 = [(NTKModularTemplateView *)self complicationTemplate];
-    v11 = -[NTKRing initWithFillFraction:style:](v7, "initWithFillFraction:style:", [v10 ringStyle], v9);
+    complicationTemplate2 = [(NTKModularTemplateView *)self complicationTemplate];
+    v11 = -[NTKRing initWithFillFraction:style:](v7, "initWithFillFraction:style:", [complicationTemplate2 ringStyle], v9);
   }
 
   else
@@ -372,8 +372,8 @@ void __42__NTKModularSmallRingTemplateView__update__block_invoke(uint64_t a1)
     if (objc_opt_isKindOfClass())
     {
       v12 = [NTKRing alloc];
-      [v14 fillFraction];
-      v11 = -[NTKRing initWithFillFraction:style:](v12, "initWithFillFraction:style:", [v14 ringStyle], v13);
+      [complicationTemplate fillFraction];
+      v11 = -[NTKRing initWithFillFraction:style:](v12, "initWithFillFraction:style:", [complicationTemplate ringStyle], v13);
     }
 
     else
@@ -385,30 +385,30 @@ void __42__NTKModularSmallRingTemplateView__update__block_invoke(uint64_t a1)
   [(NTKModularSmallRingTemplateView *)self _refreshRingImageWithRing:v11];
 }
 
-- (void)_refreshRingImageWithRing:(id)a3
+- (void)_refreshRingImageWithRing:(id)ring
 {
-  v4 = a3;
-  [v4 fillFraction];
+  ringCopy = ring;
+  [ringCopy fillFraction];
   *&v5 = v5;
   self->_level = *&v5;
-  v6 = [(NTKModuleView *)self device];
-  _LayoutConstants_0(v6, [(NTKComplicationModuleView *)self isXL], v11);
-  [v4 setRadius:v12 * 0.5];
+  device = [(NTKModuleView *)self device];
+  _LayoutConstants_0(device, [(NTKComplicationModuleView *)self isXL], v11);
+  [ringCopy setRadius:v12 * 0.5];
 
-  v7 = [(NTKModuleView *)self device];
-  _LayoutConstants_0(v7, [(NTKComplicationModuleView *)self isXL], v9);
-  [v4 setStrokeWidth:v10];
+  device2 = [(NTKModuleView *)self device];
+  _LayoutConstants_0(device2, [(NTKComplicationModuleView *)self isXL], v9);
+  [ringCopy setStrokeWidth:v10];
 
-  v8 = [v4 ringImage];
+  ringImage = [ringCopy ringImage];
 
-  [(CLKUIColoringImageView *)self->_stateRing setImage:v8];
+  [(CLKUIColoringImageView *)self->_stateRing setImage:ringImage];
 }
 
-+ (BOOL)handlesComplicationTemplate:(id)a3
++ (BOOL)handlesComplicationTemplate:(id)template
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  [a1 supportedTemplateClasses];
+  templateCopy = template;
+  [self supportedTemplateClasses];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;

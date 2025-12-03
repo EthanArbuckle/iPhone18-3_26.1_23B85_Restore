@@ -9,16 +9,16 @@
   v3 = objc_alloc_init(CarSmallWidgetBrowsingModeController);
   v4 = [NSMutableArray arrayWithObject:v3];
   v5 = +[CarDisplayController sharedInstance];
-  v6 = [v5 platformController];
-  v7 = [v6 currentSession];
+  platformController = [v5 platformController];
+  currentSession = [platformController currentSession];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && [(CarWidgetController *)self sceneType]<= 3)
   {
     v14 = [CarSmallWidgetRouteGeniusModeController alloc];
     v15 = +[CarRouteGeniusService sharedService];
-    v16 = [v15 suggestion];
-    v13 = [(CarSmallWidgetRouteGeniusModeController *)v14 initWithSuggestion:v16];
+    suggestion = [v15 suggestion];
+    v13 = [(CarSmallWidgetRouteGeniusModeController *)v14 initWithSuggestion:suggestion];
   }
 
   else
@@ -29,7 +29,7 @@
       goto LABEL_12;
     }
 
-    v8 = v7;
+    v8 = currentSession;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -43,9 +43,9 @@
 
     v10 = v9;
 
-    v11 = [v10 isCarNavigationCompatible];
+    isCarNavigationCompatible = [v10 isCarNavigationCompatible];
     v12 = off_1015F6178;
-    if (!v11)
+    if (!isCarNavigationCompatible)
     {
       v12 = off_1015F6170;
     }
@@ -66,8 +66,8 @@ LABEL_12:
       if ([v18 count])
       {
         v38 = v17;
-        v39 = self;
-        v40 = v7;
+        selfCopy = self;
+        v40 = currentSession;
         v41 = v4;
         v42 = v3;
         v20 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v19 count]);
@@ -141,8 +141,8 @@ LABEL_32:
 
             v4 = v41;
             v3 = v42;
-            self = v39;
-            v7 = v40;
+            self = selfCopy;
+            currentSession = v40;
             v19 = v37;
             v17 = v38;
             goto LABEL_35;
@@ -161,7 +161,7 @@ LABEL_32:
 LABEL_35:
 
     *buf = 134349314;
-    v48 = self;
+    selfCopy2 = self;
     v49 = 2112;
     v50 = v34;
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_INFO, "[%{public}p] Recreating current app state with modes: %@", buf, 0x16u);

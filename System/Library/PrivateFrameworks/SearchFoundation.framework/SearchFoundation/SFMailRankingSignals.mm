@@ -1,57 +1,57 @@
 @interface SFMailRankingSignals
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (SFMailRankingSignals)initWithCoder:(id)a3;
-- (SFMailRankingSignals)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SFMailRankingSignals)initWithCoder:(id)coder;
+- (SFMailRankingSignals)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFMailRankingSignals
 
 - (unint64_t)hash
 {
-  v3 = [(SFMailRankingSignals *)self wasReorderedByRecency];
-  v4 = [(SFMailRankingSignals *)self numEngagements];
-  v5 = v4 ^ [(SFMailRankingSignals *)self numDaysEngagedLast30Days];
-  v81 = [(SFMailRankingSignals *)self averageEngagementAgeLast7Days];
-  v6 = v5 ^ [v81 hash] ^ v3;
-  v7 = [(SFMailRankingSignals *)self averageEngagementAgeLast14Days];
-  v8 = [v7 hash];
-  v9 = [(SFMailRankingSignals *)self averageEngagementAgeLast21Days];
-  v10 = v8 ^ [v9 hash];
-  v11 = [(SFMailRankingSignals *)self averageEngagementAgeLast30Days];
-  v12 = v6 ^ v10 ^ [v11 hash];
-  v13 = [(SFMailRankingSignals *)self daysSinceReceipt];
-  v14 = [(SFMailRankingSignals *)self l1Score];
-  v15 = v13 ^ [v14 hash];
-  v16 = [(SFMailRankingSignals *)self l2Score];
-  v17 = v15 ^ [v16 hash];
+  wasReorderedByRecency = [(SFMailRankingSignals *)self wasReorderedByRecency];
+  numEngagements = [(SFMailRankingSignals *)self numEngagements];
+  v5 = numEngagements ^ [(SFMailRankingSignals *)self numDaysEngagedLast30Days];
+  averageEngagementAgeLast7Days = [(SFMailRankingSignals *)self averageEngagementAgeLast7Days];
+  v6 = v5 ^ [averageEngagementAgeLast7Days hash] ^ wasReorderedByRecency;
+  averageEngagementAgeLast14Days = [(SFMailRankingSignals *)self averageEngagementAgeLast14Days];
+  v8 = [averageEngagementAgeLast14Days hash];
+  averageEngagementAgeLast21Days = [(SFMailRankingSignals *)self averageEngagementAgeLast21Days];
+  v10 = v8 ^ [averageEngagementAgeLast21Days hash];
+  averageEngagementAgeLast30Days = [(SFMailRankingSignals *)self averageEngagementAgeLast30Days];
+  v12 = v6 ^ v10 ^ [averageEngagementAgeLast30Days hash];
+  daysSinceReceipt = [(SFMailRankingSignals *)self daysSinceReceipt];
+  l1Score = [(SFMailRankingSignals *)self l1Score];
+  v15 = daysSinceReceipt ^ [l1Score hash];
+  l2Score = [(SFMailRankingSignals *)self l2Score];
+  v17 = v15 ^ [l2Score hash];
   v18 = v12 ^ v17 ^ [(SFMailRankingSignals *)self isFlagged];
-  v19 = [(SFMailRankingSignals *)self isRepliedTo];
-  v20 = v19 ^ [(SFMailRankingSignals *)self isSemanticMatch];
+  isRepliedTo = [(SFMailRankingSignals *)self isRepliedTo];
+  v20 = isRepliedTo ^ [(SFMailRankingSignals *)self isSemanticMatch];
   v21 = v20 ^ [(SFMailRankingSignals *)self isSyntacticMatch];
-  v22 = [(SFMailRankingSignals *)self semanticScore];
-  v23 = v18 ^ v21 ^ [v22 hash];
-  v24 = [(SFMailRankingSignals *)self syntacticScore];
-  v25 = [v24 hash];
+  semanticScore = [(SFMailRankingSignals *)self semanticScore];
+  v23 = v18 ^ v21 ^ [semanticScore hash];
+  syntacticScore = [(SFMailRankingSignals *)self syntacticScore];
+  v25 = [syntacticScore hash];
   v26 = v25 ^ [(SFMailRankingSignals *)self countUnigramMatchInAuthors];
   v27 = v26 ^ [(SFMailRankingSignals *)self countBigramMatchInAuthors];
   v28 = v27 ^ [(SFMailRankingSignals *)self countNgramMatchInAuthors];
   v29 = v28 ^ [(SFMailRankingSignals *)self countUnigramPrefixMatchInAuthors];
   v30 = v23 ^ v29 ^ [(SFMailRankingSignals *)self countBigramPrefixMatchInAuthors];
-  v31 = [(SFMailRankingSignals *)self countNgramPrefixMatchInAuthors];
-  v32 = v31 ^ [(SFMailRankingSignals *)self countUnigramMatchInAuthorEmailAddresses];
+  countNgramPrefixMatchInAuthors = [(SFMailRankingSignals *)self countNgramPrefixMatchInAuthors];
+  v32 = countNgramPrefixMatchInAuthors ^ [(SFMailRankingSignals *)self countUnigramMatchInAuthorEmailAddresses];
   v33 = v32 ^ [(SFMailRankingSignals *)self countBigramMatchInAuthorEmailAddresses];
   v34 = v33 ^ [(SFMailRankingSignals *)self countNgramMatchInAuthorEmailAddresses];
   v35 = v34 ^ [(SFMailRankingSignals *)self countUnigramPrefixMatchInAuthorEmailAddresses];
   v36 = v35 ^ [(SFMailRankingSignals *)self countBigramPrefixMatchInAuthorEmailAddresses];
   v37 = v36 ^ [(SFMailRankingSignals *)self countNgramPrefixMatchInAuthorEmailAddresses];
   v38 = v30 ^ v37 ^ [(SFMailRankingSignals *)self countUnigramMatchInSubject];
-  v39 = [(SFMailRankingSignals *)self countBigramMatchInSubject];
-  v40 = v39 ^ [(SFMailRankingSignals *)self countNgramMatchInSubject];
+  countBigramMatchInSubject = [(SFMailRankingSignals *)self countBigramMatchInSubject];
+  v40 = countBigramMatchInSubject ^ [(SFMailRankingSignals *)self countNgramMatchInSubject];
   v41 = v40 ^ [(SFMailRankingSignals *)self countUnigramPrefixMatchInSubject];
   v42 = v41 ^ [(SFMailRankingSignals *)self countBigramPrefixMatchInSubject];
   v43 = v42 ^ [(SFMailRankingSignals *)self countNgramPrefixMatchInSubject];
@@ -59,8 +59,8 @@
   v45 = v44 ^ [(SFMailRankingSignals *)self countBigramMatchInTextContent];
   v46 = v45 ^ [(SFMailRankingSignals *)self countNgramMatchInTextContent];
   v47 = v38 ^ v46 ^ [(SFMailRankingSignals *)self countUnigramPrefixMatchInTextContent];
-  v48 = [(SFMailRankingSignals *)self countBigramPrefixMatchInTextContent];
-  v49 = v48 ^ [(SFMailRankingSignals *)self countNgramPrefixMatchInTextContent];
+  countBigramPrefixMatchInTextContent = [(SFMailRankingSignals *)self countBigramPrefixMatchInTextContent];
+  v49 = countBigramPrefixMatchInTextContent ^ [(SFMailRankingSignals *)self countNgramPrefixMatchInTextContent];
   v50 = v49 ^ [(SFMailRankingSignals *)self countUnigramMatchInRecipients];
   v51 = v50 ^ [(SFMailRankingSignals *)self countBigramMatchInRecipients];
   v52 = v51 ^ [(SFMailRankingSignals *)self countNgramMatchInRecipients];
@@ -69,8 +69,8 @@
   v55 = v54 ^ [(SFMailRankingSignals *)self countNgramPrefixMatchInRecipients];
   v56 = v55 ^ [(SFMailRankingSignals *)self countUnigramMatchInRecipientEmailAddresses];
   v57 = v47 ^ v56 ^ [(SFMailRankingSignals *)self countBigramMatchInRecipientEmailAddresses];
-  v58 = [(SFMailRankingSignals *)self countNgramMatchInRecipientEmailAddresses];
-  v59 = v58 ^ [(SFMailRankingSignals *)self countUnigramPrefixMatchInRecipientEmailAddresses];
+  countNgramMatchInRecipientEmailAddresses = [(SFMailRankingSignals *)self countNgramMatchInRecipientEmailAddresses];
+  v59 = countNgramMatchInRecipientEmailAddresses ^ [(SFMailRankingSignals *)self countUnigramPrefixMatchInRecipientEmailAddresses];
   v60 = v59 ^ [(SFMailRankingSignals *)self countBigramPrefixMatchInRecipientEmailAddresses];
   v61 = v60 ^ [(SFMailRankingSignals *)self countNgramPrefixMatchInRecipientEmailAddresses];
   v62 = v61 ^ [(SFMailRankingSignals *)self countUnigramMatchInEmailAddresses];
@@ -80,8 +80,8 @@
   v66 = v65 ^ [(SFMailRankingSignals *)self countBigramPrefixMatchInEmailAddresses];
   v67 = v66 ^ [(SFMailRankingSignals *)self countNgramPrefixMatchInEmailAddresses];
   v68 = v57 ^ v67 ^ [(SFMailRankingSignals *)self countUnigramMatchInAttachmentTypes];
-  v69 = [(SFMailRankingSignals *)self countBigramMatchInAttachmentTypes];
-  v70 = v69 ^ [(SFMailRankingSignals *)self countNgramMatchInAttachmentTypes];
+  countBigramMatchInAttachmentTypes = [(SFMailRankingSignals *)self countBigramMatchInAttachmentTypes];
+  v70 = countBigramMatchInAttachmentTypes ^ [(SFMailRankingSignals *)self countNgramMatchInAttachmentTypes];
   v71 = v70 ^ [(SFMailRankingSignals *)self countUnigramPrefixMatchInAttachmentTypes];
   v72 = v71 ^ [(SFMailRankingSignals *)self countBigramPrefixMatchInAttachmentTypes];
   v73 = v72 ^ [(SFMailRankingSignals *)self countNgramPrefixMatchInAttachmentTypes];
@@ -95,21 +95,21 @@
   return v68 ^ v79;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v14 = 1;
   }
 
   else
   {
-    if ([(SFMailRankingSignals *)v5 isMemberOfClass:objc_opt_class()])
+    if ([(SFMailRankingSignals *)equalCopy isMemberOfClass:objc_opt_class()])
     {
-      v6 = v5;
-      v7 = [(SFMailRankingSignals *)self wasReorderedByRecency];
-      if (v7 != [(SFMailRankingSignals *)v6 wasReorderedByRecency]|| (v8 = [(SFMailRankingSignals *)self numEngagements], v8 != [(SFMailRankingSignals *)v6 numEngagements]) || (v9 = [(SFMailRankingSignals *)self numDaysEngagedLast30Days], v9 != [(SFMailRankingSignals *)v6 numDaysEngagedLast30Days]))
+      v6 = equalCopy;
+      wasReorderedByRecency = [(SFMailRankingSignals *)self wasReorderedByRecency];
+      if (wasReorderedByRecency != [(SFMailRankingSignals *)v6 wasReorderedByRecency]|| (v8 = [(SFMailRankingSignals *)self numEngagements], v8 != [(SFMailRankingSignals *)v6 numEngagements]) || (v9 = [(SFMailRankingSignals *)self numDaysEngagedLast30Days], v9 != [(SFMailRankingSignals *)v6 numDaysEngagedLast30Days]))
       {
         v14 = 0;
 LABEL_13:
@@ -117,9 +117,9 @@ LABEL_13:
         goto LABEL_14;
       }
 
-      v10 = [(SFMailRankingSignals *)self averageEngagementAgeLast7Days];
-      v11 = [(SFMailRankingSignals *)v6 averageEngagementAgeLast7Days];
-      if ((v10 != 0) == (v11 == 0))
+      averageEngagementAgeLast7Days = [(SFMailRankingSignals *)self averageEngagementAgeLast7Days];
+      averageEngagementAgeLast7Days2 = [(SFMailRankingSignals *)v6 averageEngagementAgeLast7Days];
+      if ((averageEngagementAgeLast7Days != 0) == (averageEngagementAgeLast7Days2 == 0))
       {
         v14 = 0;
 LABEL_57:
@@ -127,110 +127,110 @@ LABEL_57:
         goto LABEL_13;
       }
 
-      v12 = [(SFMailRankingSignals *)self averageEngagementAgeLast7Days];
-      if (v12)
+      averageEngagementAgeLast7Days3 = [(SFMailRankingSignals *)self averageEngagementAgeLast7Days];
+      if (averageEngagementAgeLast7Days3)
       {
-        v13 = [(SFMailRankingSignals *)self averageEngagementAgeLast7Days];
-        v3 = [(SFMailRankingSignals *)v6 averageEngagementAgeLast7Days];
-        if (![v13 isEqual:v3])
+        averageEngagementAgeLast7Days4 = [(SFMailRankingSignals *)self averageEngagementAgeLast7Days];
+        averageEngagementAgeLast7Days5 = [(SFMailRankingSignals *)v6 averageEngagementAgeLast7Days];
+        if (![averageEngagementAgeLast7Days4 isEqual:averageEngagementAgeLast7Days5])
         {
           v14 = 0;
           goto LABEL_55;
         }
 
-        v133 = v3;
-        v134 = v13;
+        v133 = averageEngagementAgeLast7Days5;
+        v134 = averageEngagementAgeLast7Days4;
       }
 
-      v16 = [(SFMailRankingSignals *)self averageEngagementAgeLast14Days];
-      v17 = [(SFMailRankingSignals *)v6 averageEngagementAgeLast14Days];
-      if ((v16 != 0) == (v17 == 0))
+      averageEngagementAgeLast14Days = [(SFMailRankingSignals *)self averageEngagementAgeLast14Days];
+      averageEngagementAgeLast14Days2 = [(SFMailRankingSignals *)v6 averageEngagementAgeLast14Days];
+      if ((averageEngagementAgeLast14Days != 0) == (averageEngagementAgeLast14Days2 == 0))
       {
         goto LABEL_53;
       }
 
-      v18 = [(SFMailRankingSignals *)self averageEngagementAgeLast14Days];
-      if (v18)
+      averageEngagementAgeLast14Days3 = [(SFMailRankingSignals *)self averageEngagementAgeLast14Days];
+      if (averageEngagementAgeLast14Days3)
       {
-        v19 = [(SFMailRankingSignals *)self averageEngagementAgeLast14Days];
-        v20 = [(SFMailRankingSignals *)v6 averageEngagementAgeLast14Days];
-        v130 = v19;
-        v21 = v19;
-        v3 = v20;
-        if (![v21 isEqual:v20])
+        averageEngagementAgeLast14Days4 = [(SFMailRankingSignals *)self averageEngagementAgeLast14Days];
+        averageEngagementAgeLast14Days5 = [(SFMailRankingSignals *)v6 averageEngagementAgeLast14Days];
+        v130 = averageEngagementAgeLast14Days4;
+        v21 = averageEngagementAgeLast14Days4;
+        averageEngagementAgeLast7Days5 = averageEngagementAgeLast14Days5;
+        if (![v21 isEqual:averageEngagementAgeLast14Days5])
         {
           goto LABEL_52;
         }
       }
 
-      v131 = v16;
-      v132 = v18;
-      v22 = [(SFMailRankingSignals *)self averageEngagementAgeLast21Days];
-      v23 = [(SFMailRankingSignals *)v6 averageEngagementAgeLast21Days];
-      if ((v22 != 0) == (v23 == 0))
+      v131 = averageEngagementAgeLast14Days;
+      v132 = averageEngagementAgeLast14Days3;
+      averageEngagementAgeLast21Days = [(SFMailRankingSignals *)self averageEngagementAgeLast21Days];
+      averageEngagementAgeLast21Days2 = [(SFMailRankingSignals *)v6 averageEngagementAgeLast21Days];
+      if ((averageEngagementAgeLast21Days != 0) == (averageEngagementAgeLast21Days2 == 0))
       {
 
         goto LABEL_51;
       }
 
-      v127 = v22;
-      v128 = v23;
-      v129 = [(SFMailRankingSignals *)self averageEngagementAgeLast21Days];
-      if (v129)
+      v127 = averageEngagementAgeLast21Days;
+      v128 = averageEngagementAgeLast21Days2;
+      averageEngagementAgeLast21Days3 = [(SFMailRankingSignals *)self averageEngagementAgeLast21Days];
+      if (averageEngagementAgeLast21Days3)
       {
-        v24 = [(SFMailRankingSignals *)self averageEngagementAgeLast21Days];
-        v125 = [(SFMailRankingSignals *)v6 averageEngagementAgeLast21Days];
-        v126 = v24;
-        if (![v24 isEqual:v125])
+        averageEngagementAgeLast21Days4 = [(SFMailRankingSignals *)self averageEngagementAgeLast21Days];
+        averageEngagementAgeLast21Days5 = [(SFMailRankingSignals *)v6 averageEngagementAgeLast21Days];
+        v126 = averageEngagementAgeLast21Days4;
+        if (![averageEngagementAgeLast21Days4 isEqual:averageEngagementAgeLast21Days5])
         {
           goto LABEL_49;
         }
       }
 
-      v25 = [(SFMailRankingSignals *)self averageEngagementAgeLast30Days];
-      v26 = [(SFMailRankingSignals *)v6 averageEngagementAgeLast30Days];
-      if ((v25 != 0) == (v26 == 0))
+      averageEngagementAgeLast30Days = [(SFMailRankingSignals *)self averageEngagementAgeLast30Days];
+      averageEngagementAgeLast30Days2 = [(SFMailRankingSignals *)v6 averageEngagementAgeLast30Days];
+      if ((averageEngagementAgeLast30Days != 0) == (averageEngagementAgeLast30Days2 == 0))
       {
 
         goto LABEL_48;
       }
 
-      v124 = v26;
-      v123 = v25;
-      v27 = [(SFMailRankingSignals *)self averageEngagementAgeLast30Days];
-      if (v27)
+      v124 = averageEngagementAgeLast30Days2;
+      v123 = averageEngagementAgeLast30Days;
+      averageEngagementAgeLast30Days3 = [(SFMailRankingSignals *)self averageEngagementAgeLast30Days];
+      if (averageEngagementAgeLast30Days3)
       {
         [(SFMailRankingSignals *)self averageEngagementAgeLast30Days];
-        v29 = v28 = v17;
-        v30 = [(SFMailRankingSignals *)v6 averageEngagementAgeLast30Days];
+        v29 = v28 = averageEngagementAgeLast14Days2;
+        averageEngagementAgeLast30Days4 = [(SFMailRankingSignals *)v6 averageEngagementAgeLast30Days];
         v121 = v29;
         v31 = v29;
-        v17 = v28;
-        v25 = v30;
-        if (![v31 isEqual:v30])
+        averageEngagementAgeLast14Days2 = v28;
+        averageEngagementAgeLast30Days = averageEngagementAgeLast30Days4;
+        if (![v31 isEqual:averageEngagementAgeLast30Days4])
         {
           goto LABEL_37;
         }
       }
 
-      v122 = v27;
-      v32 = [(SFMailRankingSignals *)self daysSinceReceipt];
-      if (v32 != [(SFMailRankingSignals *)v6 daysSinceReceipt])
+      v122 = averageEngagementAgeLast30Days3;
+      daysSinceReceipt = [(SFMailRankingSignals *)self daysSinceReceipt];
+      if (daysSinceReceipt != [(SFMailRankingSignals *)v6 daysSinceReceipt])
       {
-        v27 = v122;
+        averageEngagementAgeLast30Days3 = v122;
         if (!v122)
         {
 LABEL_47:
 
 LABEL_48:
-          v18 = v132;
-          if (!v129)
+          averageEngagementAgeLast14Days3 = v132;
+          if (!averageEngagementAgeLast21Days3)
           {
 LABEL_50:
 
 LABEL_51:
-            v16 = v131;
-            if (v18)
+            averageEngagementAgeLast14Days = v131;
+            if (averageEngagementAgeLast14Days3)
             {
 LABEL_52:
             }
@@ -238,15 +238,15 @@ LABEL_52:
 LABEL_53:
 
             v14 = 0;
-            if (!v12)
+            if (!averageEngagementAgeLast7Days3)
             {
 LABEL_56:
 
               goto LABEL_57;
             }
 
-            v3 = v133;
-            v13 = v134;
+            averageEngagementAgeLast7Days5 = v133;
+            averageEngagementAgeLast7Days4 = v134;
 LABEL_55:
 
             goto LABEL_56;
@@ -262,31 +262,31 @@ LABEL_37:
         goto LABEL_47;
       }
 
-      v120 = v25;
-      v33 = [(SFMailRankingSignals *)self l1Score];
-      v34 = [(SFMailRankingSignals *)v6 l1Score];
-      if ((v33 != 0) == (v34 == 0))
+      v120 = averageEngagementAgeLast30Days;
+      l1Score = [(SFMailRankingSignals *)self l1Score];
+      l1Score2 = [(SFMailRankingSignals *)v6 l1Score];
+      if ((l1Score != 0) == (l1Score2 == 0))
       {
 
         goto LABEL_46;
       }
 
-      v118 = v33;
-      v119 = v34;
-      v35 = [(SFMailRankingSignals *)self l1Score];
-      if (v35)
+      v118 = l1Score;
+      v119 = l1Score2;
+      l1Score3 = [(SFMailRankingSignals *)self l1Score];
+      if (l1Score3)
       {
-        v36 = [(SFMailRankingSignals *)self l1Score];
-        v114 = [(SFMailRankingSignals *)v6 l1Score];
-        v115 = v36;
-        if (![v36 isEqual:?])
+        l1Score4 = [(SFMailRankingSignals *)self l1Score];
+        l1Score5 = [(SFMailRankingSignals *)v6 l1Score];
+        v115 = l1Score4;
+        if (![l1Score4 isEqual:?])
         {
 LABEL_44:
 
 LABEL_45:
 LABEL_46:
-          v27 = v122;
-          v25 = v120;
+          averageEngagementAgeLast30Days3 = v122;
+          averageEngagementAgeLast30Days = v120;
           if (!v122)
           {
             goto LABEL_47;
@@ -296,13 +296,13 @@ LABEL_46:
         }
       }
 
-      v117 = v35;
-      v37 = [(SFMailRankingSignals *)self l2Score];
-      v116 = [(SFMailRankingSignals *)v6 l2Score];
-      if ((v37 != 0) == (v116 == 0))
+      v117 = l1Score3;
+      l2Score = [(SFMailRankingSignals *)self l2Score];
+      l2Score2 = [(SFMailRankingSignals *)v6 l2Score];
+      if ((l2Score != 0) == (l2Score2 == 0))
       {
 
-        v35 = v117;
+        l1Score3 = v117;
         if (!v117)
         {
           goto LABEL_45;
@@ -311,341 +311,341 @@ LABEL_46:
         goto LABEL_44;
       }
 
-      v113 = v3;
-      v38 = [(SFMailRankingSignals *)self l2Score];
-      if (v38)
+      v113 = averageEngagementAgeLast7Days5;
+      l2Score3 = [(SFMailRankingSignals *)self l2Score];
+      if (l2Score3)
       {
-        v39 = [(SFMailRankingSignals *)self l2Score];
-        v111 = [(SFMailRankingSignals *)v6 l2Score];
-        v112 = v39;
-        if (![v39 isEqual:?])
+        l2Score4 = [(SFMailRankingSignals *)self l2Score];
+        l2Score5 = [(SFMailRankingSignals *)v6 l2Score];
+        v112 = l2Score4;
+        if (![l2Score4 isEqual:?])
         {
           goto LABEL_69;
         }
       }
 
-      v40 = [(SFMailRankingSignals *)self isFlagged];
-      if (v40 == [(SFMailRankingSignals *)v6 isFlagged])
+      isFlagged = [(SFMailRankingSignals *)self isFlagged];
+      if (isFlagged == [(SFMailRankingSignals *)v6 isFlagged])
       {
-        v41 = [(SFMailRankingSignals *)self isRepliedTo];
-        if (v41 == [(SFMailRankingSignals *)v6 isRepliedTo])
+        isRepliedTo = [(SFMailRankingSignals *)self isRepliedTo];
+        if (isRepliedTo == [(SFMailRankingSignals *)v6 isRepliedTo])
         {
-          v42 = [(SFMailRankingSignals *)self isSemanticMatch];
-          if (v42 == [(SFMailRankingSignals *)v6 isSemanticMatch])
+          isSemanticMatch = [(SFMailRankingSignals *)self isSemanticMatch];
+          if (isSemanticMatch == [(SFMailRankingSignals *)v6 isSemanticMatch])
           {
-            v43 = [(SFMailRankingSignals *)self isSyntacticMatch];
-            if (v43 == [(SFMailRankingSignals *)v6 isSyntacticMatch])
+            isSyntacticMatch = [(SFMailRankingSignals *)self isSyntacticMatch];
+            if (isSyntacticMatch == [(SFMailRankingSignals *)v6 isSyntacticMatch])
             {
-              v110 = [(SFMailRankingSignals *)self semanticScore];
-              v109 = [(SFMailRankingSignals *)v6 semanticScore];
-              if ((v110 != 0) != (v109 == 0))
+              semanticScore = [(SFMailRankingSignals *)self semanticScore];
+              semanticScore2 = [(SFMailRankingSignals *)v6 semanticScore];
+              if ((semanticScore != 0) != (semanticScore2 == 0))
               {
-                v108 = [(SFMailRankingSignals *)self semanticScore];
-                if (v108)
+                semanticScore3 = [(SFMailRankingSignals *)self semanticScore];
+                if (semanticScore3)
                 {
-                  v44 = [(SFMailRankingSignals *)self semanticScore];
-                  v104 = [(SFMailRankingSignals *)v6 semanticScore];
-                  v105 = v44;
-                  if (![v44 isEqual:?])
+                  semanticScore4 = [(SFMailRankingSignals *)self semanticScore];
+                  semanticScore5 = [(SFMailRankingSignals *)v6 semanticScore];
+                  v105 = semanticScore4;
+                  if (![semanticScore4 isEqual:?])
                   {
                     v14 = 0;
                     goto LABEL_145;
                   }
                 }
 
-                v107 = [(SFMailRankingSignals *)self syntacticScore];
-                v106 = [(SFMailRankingSignals *)v6 syntacticScore];
-                if ((v107 != 0) == (v106 == 0))
+                syntacticScore = [(SFMailRankingSignals *)self syntacticScore];
+                syntacticScore2 = [(SFMailRankingSignals *)v6 syntacticScore];
+                if ((syntacticScore != 0) == (syntacticScore2 == 0))
                 {
 
                   v14 = 0;
                   goto LABEL_144;
                 }
 
-                v103 = [(SFMailRankingSignals *)self syntacticScore];
-                if (!v103 || (-[SFMailRankingSignals syntacticScore](self, "syntacticScore"), v45 = objc_claimAutoreleasedReturnValue(), -[SFMailRankingSignals syntacticScore](v6, "syntacticScore"), v101 = objc_claimAutoreleasedReturnValue(), v102 = v45, [v45 isEqual:?]))
+                syntacticScore3 = [(SFMailRankingSignals *)self syntacticScore];
+                if (!syntacticScore3 || (-[SFMailRankingSignals syntacticScore](self, "syntacticScore"), v45 = objc_claimAutoreleasedReturnValue(), -[SFMailRankingSignals syntacticScore](v6, "syntacticScore"), v101 = objc_claimAutoreleasedReturnValue(), v102 = v45, [v45 isEqual:?]))
                 {
-                  v46 = [(SFMailRankingSignals *)self countUnigramMatchInAuthors];
-                  if (v46 != [(SFMailRankingSignals *)v6 countUnigramMatchInAuthors])
+                  countUnigramMatchInAuthors = [(SFMailRankingSignals *)self countUnigramMatchInAuthors];
+                  if (countUnigramMatchInAuthors != [(SFMailRankingSignals *)v6 countUnigramMatchInAuthors])
                   {
                     goto LABEL_140;
                   }
 
-                  v47 = [(SFMailRankingSignals *)self countBigramMatchInAuthors];
-                  if (v47 != [(SFMailRankingSignals *)v6 countBigramMatchInAuthors])
+                  countBigramMatchInAuthors = [(SFMailRankingSignals *)self countBigramMatchInAuthors];
+                  if (countBigramMatchInAuthors != [(SFMailRankingSignals *)v6 countBigramMatchInAuthors])
                   {
                     goto LABEL_140;
                   }
 
-                  v48 = [(SFMailRankingSignals *)self countNgramMatchInAuthors];
-                  if (v48 != [(SFMailRankingSignals *)v6 countNgramMatchInAuthors])
+                  countNgramMatchInAuthors = [(SFMailRankingSignals *)self countNgramMatchInAuthors];
+                  if (countNgramMatchInAuthors != [(SFMailRankingSignals *)v6 countNgramMatchInAuthors])
                   {
                     goto LABEL_140;
                   }
 
-                  v49 = [(SFMailRankingSignals *)self countUnigramPrefixMatchInAuthors];
-                  if (v49 != [(SFMailRankingSignals *)v6 countUnigramPrefixMatchInAuthors])
+                  countUnigramPrefixMatchInAuthors = [(SFMailRankingSignals *)self countUnigramPrefixMatchInAuthors];
+                  if (countUnigramPrefixMatchInAuthors != [(SFMailRankingSignals *)v6 countUnigramPrefixMatchInAuthors])
                   {
                     goto LABEL_140;
                   }
 
-                  v50 = [(SFMailRankingSignals *)self countBigramPrefixMatchInAuthors];
-                  if (v50 != [(SFMailRankingSignals *)v6 countBigramPrefixMatchInAuthors])
+                  countBigramPrefixMatchInAuthors = [(SFMailRankingSignals *)self countBigramPrefixMatchInAuthors];
+                  if (countBigramPrefixMatchInAuthors != [(SFMailRankingSignals *)v6 countBigramPrefixMatchInAuthors])
                   {
                     goto LABEL_140;
                   }
 
-                  v51 = [(SFMailRankingSignals *)self countNgramPrefixMatchInAuthors];
-                  if (v51 != [(SFMailRankingSignals *)v6 countNgramPrefixMatchInAuthors])
+                  countNgramPrefixMatchInAuthors = [(SFMailRankingSignals *)self countNgramPrefixMatchInAuthors];
+                  if (countNgramPrefixMatchInAuthors != [(SFMailRankingSignals *)v6 countNgramPrefixMatchInAuthors])
                   {
                     goto LABEL_140;
                   }
 
-                  v52 = [(SFMailRankingSignals *)self countUnigramMatchInAuthorEmailAddresses];
-                  if (v52 != [(SFMailRankingSignals *)v6 countUnigramMatchInAuthorEmailAddresses])
+                  countUnigramMatchInAuthorEmailAddresses = [(SFMailRankingSignals *)self countUnigramMatchInAuthorEmailAddresses];
+                  if (countUnigramMatchInAuthorEmailAddresses != [(SFMailRankingSignals *)v6 countUnigramMatchInAuthorEmailAddresses])
                   {
                     goto LABEL_140;
                   }
 
-                  v53 = [(SFMailRankingSignals *)self countBigramMatchInAuthorEmailAddresses];
-                  if (v53 != [(SFMailRankingSignals *)v6 countBigramMatchInAuthorEmailAddresses])
+                  countBigramMatchInAuthorEmailAddresses = [(SFMailRankingSignals *)self countBigramMatchInAuthorEmailAddresses];
+                  if (countBigramMatchInAuthorEmailAddresses != [(SFMailRankingSignals *)v6 countBigramMatchInAuthorEmailAddresses])
                   {
                     goto LABEL_140;
                   }
 
-                  v54 = [(SFMailRankingSignals *)self countNgramMatchInAuthorEmailAddresses];
-                  if (v54 != [(SFMailRankingSignals *)v6 countNgramMatchInAuthorEmailAddresses])
+                  countNgramMatchInAuthorEmailAddresses = [(SFMailRankingSignals *)self countNgramMatchInAuthorEmailAddresses];
+                  if (countNgramMatchInAuthorEmailAddresses != [(SFMailRankingSignals *)v6 countNgramMatchInAuthorEmailAddresses])
                   {
                     goto LABEL_140;
                   }
 
-                  v55 = [(SFMailRankingSignals *)self countUnigramPrefixMatchInAuthorEmailAddresses];
-                  if (v55 != [(SFMailRankingSignals *)v6 countUnigramPrefixMatchInAuthorEmailAddresses])
+                  countUnigramPrefixMatchInAuthorEmailAddresses = [(SFMailRankingSignals *)self countUnigramPrefixMatchInAuthorEmailAddresses];
+                  if (countUnigramPrefixMatchInAuthorEmailAddresses != [(SFMailRankingSignals *)v6 countUnigramPrefixMatchInAuthorEmailAddresses])
                   {
                     goto LABEL_140;
                   }
 
-                  v56 = [(SFMailRankingSignals *)self countBigramPrefixMatchInAuthorEmailAddresses];
-                  if (v56 != [(SFMailRankingSignals *)v6 countBigramPrefixMatchInAuthorEmailAddresses])
+                  countBigramPrefixMatchInAuthorEmailAddresses = [(SFMailRankingSignals *)self countBigramPrefixMatchInAuthorEmailAddresses];
+                  if (countBigramPrefixMatchInAuthorEmailAddresses != [(SFMailRankingSignals *)v6 countBigramPrefixMatchInAuthorEmailAddresses])
                   {
                     goto LABEL_140;
                   }
 
-                  v57 = [(SFMailRankingSignals *)self countNgramPrefixMatchInAuthorEmailAddresses];
-                  if (v57 != [(SFMailRankingSignals *)v6 countNgramPrefixMatchInAuthorEmailAddresses])
+                  countNgramPrefixMatchInAuthorEmailAddresses = [(SFMailRankingSignals *)self countNgramPrefixMatchInAuthorEmailAddresses];
+                  if (countNgramPrefixMatchInAuthorEmailAddresses != [(SFMailRankingSignals *)v6 countNgramPrefixMatchInAuthorEmailAddresses])
                   {
                     goto LABEL_140;
                   }
 
-                  v58 = [(SFMailRankingSignals *)self countUnigramMatchInSubject];
-                  if (v58 != [(SFMailRankingSignals *)v6 countUnigramMatchInSubject])
+                  countUnigramMatchInSubject = [(SFMailRankingSignals *)self countUnigramMatchInSubject];
+                  if (countUnigramMatchInSubject != [(SFMailRankingSignals *)v6 countUnigramMatchInSubject])
                   {
                     goto LABEL_140;
                   }
 
-                  v59 = [(SFMailRankingSignals *)self countBigramMatchInSubject];
-                  if (v59 != [(SFMailRankingSignals *)v6 countBigramMatchInSubject])
+                  countBigramMatchInSubject = [(SFMailRankingSignals *)self countBigramMatchInSubject];
+                  if (countBigramMatchInSubject != [(SFMailRankingSignals *)v6 countBigramMatchInSubject])
                   {
                     goto LABEL_140;
                   }
 
-                  v60 = [(SFMailRankingSignals *)self countNgramMatchInSubject];
-                  if (v60 != [(SFMailRankingSignals *)v6 countNgramMatchInSubject])
+                  countNgramMatchInSubject = [(SFMailRankingSignals *)self countNgramMatchInSubject];
+                  if (countNgramMatchInSubject != [(SFMailRankingSignals *)v6 countNgramMatchInSubject])
                   {
                     goto LABEL_140;
                   }
 
-                  v61 = [(SFMailRankingSignals *)self countUnigramPrefixMatchInSubject];
-                  if (v61 != [(SFMailRankingSignals *)v6 countUnigramPrefixMatchInSubject])
+                  countUnigramPrefixMatchInSubject = [(SFMailRankingSignals *)self countUnigramPrefixMatchInSubject];
+                  if (countUnigramPrefixMatchInSubject != [(SFMailRankingSignals *)v6 countUnigramPrefixMatchInSubject])
                   {
                     goto LABEL_140;
                   }
 
-                  v62 = [(SFMailRankingSignals *)self countBigramPrefixMatchInSubject];
-                  if (v62 != [(SFMailRankingSignals *)v6 countBigramPrefixMatchInSubject])
+                  countBigramPrefixMatchInSubject = [(SFMailRankingSignals *)self countBigramPrefixMatchInSubject];
+                  if (countBigramPrefixMatchInSubject != [(SFMailRankingSignals *)v6 countBigramPrefixMatchInSubject])
                   {
                     goto LABEL_140;
                   }
 
-                  v63 = [(SFMailRankingSignals *)self countNgramPrefixMatchInSubject];
-                  if (v63 != [(SFMailRankingSignals *)v6 countNgramPrefixMatchInSubject])
+                  countNgramPrefixMatchInSubject = [(SFMailRankingSignals *)self countNgramPrefixMatchInSubject];
+                  if (countNgramPrefixMatchInSubject != [(SFMailRankingSignals *)v6 countNgramPrefixMatchInSubject])
                   {
                     goto LABEL_140;
                   }
 
-                  v64 = [(SFMailRankingSignals *)self countUnigramMatchInTextContent];
-                  if (v64 != [(SFMailRankingSignals *)v6 countUnigramMatchInTextContent])
+                  countUnigramMatchInTextContent = [(SFMailRankingSignals *)self countUnigramMatchInTextContent];
+                  if (countUnigramMatchInTextContent != [(SFMailRankingSignals *)v6 countUnigramMatchInTextContent])
                   {
                     goto LABEL_140;
                   }
 
-                  v65 = [(SFMailRankingSignals *)self countBigramMatchInTextContent];
-                  if (v65 != [(SFMailRankingSignals *)v6 countBigramMatchInTextContent])
+                  countBigramMatchInTextContent = [(SFMailRankingSignals *)self countBigramMatchInTextContent];
+                  if (countBigramMatchInTextContent != [(SFMailRankingSignals *)v6 countBigramMatchInTextContent])
                   {
                     goto LABEL_140;
                   }
 
-                  v66 = [(SFMailRankingSignals *)self countNgramMatchInTextContent];
-                  if (v66 != [(SFMailRankingSignals *)v6 countNgramMatchInTextContent])
+                  countNgramMatchInTextContent = [(SFMailRankingSignals *)self countNgramMatchInTextContent];
+                  if (countNgramMatchInTextContent != [(SFMailRankingSignals *)v6 countNgramMatchInTextContent])
                   {
                     goto LABEL_140;
                   }
 
-                  v67 = [(SFMailRankingSignals *)self countUnigramPrefixMatchInTextContent];
-                  if (v67 != [(SFMailRankingSignals *)v6 countUnigramPrefixMatchInTextContent])
+                  countUnigramPrefixMatchInTextContent = [(SFMailRankingSignals *)self countUnigramPrefixMatchInTextContent];
+                  if (countUnigramPrefixMatchInTextContent != [(SFMailRankingSignals *)v6 countUnigramPrefixMatchInTextContent])
                   {
                     goto LABEL_140;
                   }
 
-                  v68 = [(SFMailRankingSignals *)self countBigramPrefixMatchInTextContent];
-                  if (v68 != [(SFMailRankingSignals *)v6 countBigramPrefixMatchInTextContent])
+                  countBigramPrefixMatchInTextContent = [(SFMailRankingSignals *)self countBigramPrefixMatchInTextContent];
+                  if (countBigramPrefixMatchInTextContent != [(SFMailRankingSignals *)v6 countBigramPrefixMatchInTextContent])
                   {
                     goto LABEL_140;
                   }
 
-                  v69 = [(SFMailRankingSignals *)self countNgramPrefixMatchInTextContent];
-                  if (v69 != [(SFMailRankingSignals *)v6 countNgramPrefixMatchInTextContent])
+                  countNgramPrefixMatchInTextContent = [(SFMailRankingSignals *)self countNgramPrefixMatchInTextContent];
+                  if (countNgramPrefixMatchInTextContent != [(SFMailRankingSignals *)v6 countNgramPrefixMatchInTextContent])
                   {
                     goto LABEL_140;
                   }
 
-                  v70 = [(SFMailRankingSignals *)self countUnigramMatchInRecipients];
-                  if (v70 != [(SFMailRankingSignals *)v6 countUnigramMatchInRecipients])
+                  countUnigramMatchInRecipients = [(SFMailRankingSignals *)self countUnigramMatchInRecipients];
+                  if (countUnigramMatchInRecipients != [(SFMailRankingSignals *)v6 countUnigramMatchInRecipients])
                   {
                     goto LABEL_140;
                   }
 
-                  v71 = [(SFMailRankingSignals *)self countBigramMatchInRecipients];
-                  if (v71 != [(SFMailRankingSignals *)v6 countBigramMatchInRecipients])
+                  countBigramMatchInRecipients = [(SFMailRankingSignals *)self countBigramMatchInRecipients];
+                  if (countBigramMatchInRecipients != [(SFMailRankingSignals *)v6 countBigramMatchInRecipients])
                   {
                     goto LABEL_140;
                   }
 
-                  v72 = [(SFMailRankingSignals *)self countNgramMatchInRecipients];
-                  if (v72 != [(SFMailRankingSignals *)v6 countNgramMatchInRecipients])
+                  countNgramMatchInRecipients = [(SFMailRankingSignals *)self countNgramMatchInRecipients];
+                  if (countNgramMatchInRecipients != [(SFMailRankingSignals *)v6 countNgramMatchInRecipients])
                   {
                     goto LABEL_140;
                   }
 
-                  v73 = [(SFMailRankingSignals *)self countUnigramPrefixMatchInRecipients];
-                  if (v73 != [(SFMailRankingSignals *)v6 countUnigramPrefixMatchInRecipients])
+                  countUnigramPrefixMatchInRecipients = [(SFMailRankingSignals *)self countUnigramPrefixMatchInRecipients];
+                  if (countUnigramPrefixMatchInRecipients != [(SFMailRankingSignals *)v6 countUnigramPrefixMatchInRecipients])
                   {
                     goto LABEL_140;
                   }
 
-                  v74 = [(SFMailRankingSignals *)self countBigramPrefixMatchInRecipients];
-                  if (v74 != [(SFMailRankingSignals *)v6 countBigramPrefixMatchInRecipients])
+                  countBigramPrefixMatchInRecipients = [(SFMailRankingSignals *)self countBigramPrefixMatchInRecipients];
+                  if (countBigramPrefixMatchInRecipients != [(SFMailRankingSignals *)v6 countBigramPrefixMatchInRecipients])
                   {
                     goto LABEL_140;
                   }
 
-                  v75 = [(SFMailRankingSignals *)self countNgramPrefixMatchInRecipients];
-                  if (v75 != [(SFMailRankingSignals *)v6 countNgramPrefixMatchInRecipients])
+                  countNgramPrefixMatchInRecipients = [(SFMailRankingSignals *)self countNgramPrefixMatchInRecipients];
+                  if (countNgramPrefixMatchInRecipients != [(SFMailRankingSignals *)v6 countNgramPrefixMatchInRecipients])
                   {
                     goto LABEL_140;
                   }
 
-                  v76 = [(SFMailRankingSignals *)self countUnigramMatchInRecipientEmailAddresses];
-                  if (v76 != [(SFMailRankingSignals *)v6 countUnigramMatchInRecipientEmailAddresses])
+                  countUnigramMatchInRecipientEmailAddresses = [(SFMailRankingSignals *)self countUnigramMatchInRecipientEmailAddresses];
+                  if (countUnigramMatchInRecipientEmailAddresses != [(SFMailRankingSignals *)v6 countUnigramMatchInRecipientEmailAddresses])
                   {
                     goto LABEL_140;
                   }
 
-                  v77 = [(SFMailRankingSignals *)self countBigramMatchInRecipientEmailAddresses];
-                  if (v77 != [(SFMailRankingSignals *)v6 countBigramMatchInRecipientEmailAddresses])
+                  countBigramMatchInRecipientEmailAddresses = [(SFMailRankingSignals *)self countBigramMatchInRecipientEmailAddresses];
+                  if (countBigramMatchInRecipientEmailAddresses != [(SFMailRankingSignals *)v6 countBigramMatchInRecipientEmailAddresses])
                   {
                     goto LABEL_140;
                   }
 
-                  v78 = [(SFMailRankingSignals *)self countNgramMatchInRecipientEmailAddresses];
-                  if (v78 != [(SFMailRankingSignals *)v6 countNgramMatchInRecipientEmailAddresses])
+                  countNgramMatchInRecipientEmailAddresses = [(SFMailRankingSignals *)self countNgramMatchInRecipientEmailAddresses];
+                  if (countNgramMatchInRecipientEmailAddresses != [(SFMailRankingSignals *)v6 countNgramMatchInRecipientEmailAddresses])
                   {
                     goto LABEL_140;
                   }
 
-                  v79 = [(SFMailRankingSignals *)self countUnigramPrefixMatchInRecipientEmailAddresses];
-                  if (v79 != [(SFMailRankingSignals *)v6 countUnigramPrefixMatchInRecipientEmailAddresses])
+                  countUnigramPrefixMatchInRecipientEmailAddresses = [(SFMailRankingSignals *)self countUnigramPrefixMatchInRecipientEmailAddresses];
+                  if (countUnigramPrefixMatchInRecipientEmailAddresses != [(SFMailRankingSignals *)v6 countUnigramPrefixMatchInRecipientEmailAddresses])
                   {
                     goto LABEL_140;
                   }
 
-                  v80 = [(SFMailRankingSignals *)self countBigramPrefixMatchInRecipientEmailAddresses];
-                  if (v80 != [(SFMailRankingSignals *)v6 countBigramPrefixMatchInRecipientEmailAddresses])
+                  countBigramPrefixMatchInRecipientEmailAddresses = [(SFMailRankingSignals *)self countBigramPrefixMatchInRecipientEmailAddresses];
+                  if (countBigramPrefixMatchInRecipientEmailAddresses != [(SFMailRankingSignals *)v6 countBigramPrefixMatchInRecipientEmailAddresses])
                   {
                     goto LABEL_140;
                   }
 
-                  v81 = [(SFMailRankingSignals *)self countNgramPrefixMatchInRecipientEmailAddresses];
-                  if (v81 != [(SFMailRankingSignals *)v6 countNgramPrefixMatchInRecipientEmailAddresses])
+                  countNgramPrefixMatchInRecipientEmailAddresses = [(SFMailRankingSignals *)self countNgramPrefixMatchInRecipientEmailAddresses];
+                  if (countNgramPrefixMatchInRecipientEmailAddresses != [(SFMailRankingSignals *)v6 countNgramPrefixMatchInRecipientEmailAddresses])
                   {
                     goto LABEL_140;
                   }
 
-                  v82 = [(SFMailRankingSignals *)self countUnigramMatchInEmailAddresses];
-                  if (v82 != [(SFMailRankingSignals *)v6 countUnigramMatchInEmailAddresses])
+                  countUnigramMatchInEmailAddresses = [(SFMailRankingSignals *)self countUnigramMatchInEmailAddresses];
+                  if (countUnigramMatchInEmailAddresses != [(SFMailRankingSignals *)v6 countUnigramMatchInEmailAddresses])
                   {
                     goto LABEL_140;
                   }
 
-                  v83 = [(SFMailRankingSignals *)self countBigramMatchInEmailAddresses];
-                  if (v83 != [(SFMailRankingSignals *)v6 countBigramMatchInEmailAddresses])
+                  countBigramMatchInEmailAddresses = [(SFMailRankingSignals *)self countBigramMatchInEmailAddresses];
+                  if (countBigramMatchInEmailAddresses != [(SFMailRankingSignals *)v6 countBigramMatchInEmailAddresses])
                   {
                     goto LABEL_140;
                   }
 
-                  v84 = [(SFMailRankingSignals *)self countNgramMatchInEmailAddresses];
-                  if (v84 != [(SFMailRankingSignals *)v6 countNgramMatchInEmailAddresses])
+                  countNgramMatchInEmailAddresses = [(SFMailRankingSignals *)self countNgramMatchInEmailAddresses];
+                  if (countNgramMatchInEmailAddresses != [(SFMailRankingSignals *)v6 countNgramMatchInEmailAddresses])
                   {
                     goto LABEL_140;
                   }
 
-                  v85 = [(SFMailRankingSignals *)self countUnigramPrefixMatchInEmailAddresses];
-                  if (v85 != [(SFMailRankingSignals *)v6 countUnigramPrefixMatchInEmailAddresses])
+                  countUnigramPrefixMatchInEmailAddresses = [(SFMailRankingSignals *)self countUnigramPrefixMatchInEmailAddresses];
+                  if (countUnigramPrefixMatchInEmailAddresses != [(SFMailRankingSignals *)v6 countUnigramPrefixMatchInEmailAddresses])
                   {
                     goto LABEL_140;
                   }
 
-                  v86 = [(SFMailRankingSignals *)self countBigramPrefixMatchInEmailAddresses];
-                  if (v86 != [(SFMailRankingSignals *)v6 countBigramPrefixMatchInEmailAddresses])
+                  countBigramPrefixMatchInEmailAddresses = [(SFMailRankingSignals *)self countBigramPrefixMatchInEmailAddresses];
+                  if (countBigramPrefixMatchInEmailAddresses != [(SFMailRankingSignals *)v6 countBigramPrefixMatchInEmailAddresses])
                   {
                     goto LABEL_140;
                   }
 
-                  v87 = [(SFMailRankingSignals *)self countNgramPrefixMatchInEmailAddresses];
-                  if (v87 != [(SFMailRankingSignals *)v6 countNgramPrefixMatchInEmailAddresses])
+                  countNgramPrefixMatchInEmailAddresses = [(SFMailRankingSignals *)self countNgramPrefixMatchInEmailAddresses];
+                  if (countNgramPrefixMatchInEmailAddresses != [(SFMailRankingSignals *)v6 countNgramPrefixMatchInEmailAddresses])
                   {
                     goto LABEL_140;
                   }
 
-                  v88 = [(SFMailRankingSignals *)self countUnigramMatchInAttachmentTypes];
-                  if (v88 != [(SFMailRankingSignals *)v6 countUnigramMatchInAttachmentTypes])
+                  countUnigramMatchInAttachmentTypes = [(SFMailRankingSignals *)self countUnigramMatchInAttachmentTypes];
+                  if (countUnigramMatchInAttachmentTypes != [(SFMailRankingSignals *)v6 countUnigramMatchInAttachmentTypes])
                   {
                     goto LABEL_140;
                   }
 
-                  v89 = [(SFMailRankingSignals *)self countBigramMatchInAttachmentTypes];
-                  if (v89 != [(SFMailRankingSignals *)v6 countBigramMatchInAttachmentTypes])
+                  countBigramMatchInAttachmentTypes = [(SFMailRankingSignals *)self countBigramMatchInAttachmentTypes];
+                  if (countBigramMatchInAttachmentTypes != [(SFMailRankingSignals *)v6 countBigramMatchInAttachmentTypes])
                   {
                     goto LABEL_140;
                   }
 
-                  v90 = [(SFMailRankingSignals *)self countNgramMatchInAttachmentTypes];
-                  if (v90 != [(SFMailRankingSignals *)v6 countNgramMatchInAttachmentTypes])
+                  countNgramMatchInAttachmentTypes = [(SFMailRankingSignals *)self countNgramMatchInAttachmentTypes];
+                  if (countNgramMatchInAttachmentTypes != [(SFMailRankingSignals *)v6 countNgramMatchInAttachmentTypes])
                   {
                     goto LABEL_140;
                   }
 
-                  v91 = [(SFMailRankingSignals *)self countUnigramPrefixMatchInAttachmentTypes];
-                  if (v91 != [(SFMailRankingSignals *)v6 countUnigramPrefixMatchInAttachmentTypes])
+                  countUnigramPrefixMatchInAttachmentTypes = [(SFMailRankingSignals *)self countUnigramPrefixMatchInAttachmentTypes];
+                  if (countUnigramPrefixMatchInAttachmentTypes != [(SFMailRankingSignals *)v6 countUnigramPrefixMatchInAttachmentTypes])
                   {
                     goto LABEL_140;
                   }
 
-                  v92 = [(SFMailRankingSignals *)self countBigramPrefixMatchInAttachmentTypes];
-                  if (v92 == [(SFMailRankingSignals *)v6 countBigramPrefixMatchInAttachmentTypes]&& (v93 = [(SFMailRankingSignals *)self countNgramPrefixMatchInAttachmentTypes], v93 == [(SFMailRankingSignals *)v6 countNgramPrefixMatchInAttachmentTypes]) && (v94 = [(SFMailRankingSignals *)self countUnigramMatchInAttachmentNames], v94 == [(SFMailRankingSignals *)v6 countUnigramMatchInAttachmentNames]) && (v95 = [(SFMailRankingSignals *)self countBigramMatchInAttachmentNames], v95 == [(SFMailRankingSignals *)v6 countBigramMatchInAttachmentNames]) && (v96 = [(SFMailRankingSignals *)self countNgramMatchInAttachmentNames], v96 == [(SFMailRankingSignals *)v6 countNgramMatchInAttachmentNames]) && (v97 = [(SFMailRankingSignals *)self countUnigramPrefixMatchInAttachmentNames], v97 == [(SFMailRankingSignals *)v6 countUnigramPrefixMatchInAttachmentNames]) && (v98 = [(SFMailRankingSignals *)self countBigramPrefixMatchInAttachmentNames], v98 == [(SFMailRankingSignals *)v6 countBigramPrefixMatchInAttachmentNames]))
+                  countBigramPrefixMatchInAttachmentTypes = [(SFMailRankingSignals *)self countBigramPrefixMatchInAttachmentTypes];
+                  if (countBigramPrefixMatchInAttachmentTypes == [(SFMailRankingSignals *)v6 countBigramPrefixMatchInAttachmentTypes]&& (v93 = [(SFMailRankingSignals *)self countNgramPrefixMatchInAttachmentTypes], v93 == [(SFMailRankingSignals *)v6 countNgramPrefixMatchInAttachmentTypes]) && (v94 = [(SFMailRankingSignals *)self countUnigramMatchInAttachmentNames], v94 == [(SFMailRankingSignals *)v6 countUnigramMatchInAttachmentNames]) && (v95 = [(SFMailRankingSignals *)self countBigramMatchInAttachmentNames], v95 == [(SFMailRankingSignals *)v6 countBigramMatchInAttachmentNames]) && (v96 = [(SFMailRankingSignals *)self countNgramMatchInAttachmentNames], v96 == [(SFMailRankingSignals *)v6 countNgramMatchInAttachmentNames]) && (v97 = [(SFMailRankingSignals *)self countUnigramPrefixMatchInAttachmentNames], v97 == [(SFMailRankingSignals *)v6 countUnigramPrefixMatchInAttachmentNames]) && (v98 = [(SFMailRankingSignals *)self countBigramPrefixMatchInAttachmentNames], v98 == [(SFMailRankingSignals *)v6 countBigramPrefixMatchInAttachmentNames]))
                   {
-                    v99 = [(SFMailRankingSignals *)self countNgramPrefixMatchInAttachmentNames];
-                    v14 = v99 == [(SFMailRankingSignals *)v6 countNgramPrefixMatchInAttachmentNames];
+                    countNgramPrefixMatchInAttachmentNames = [(SFMailRankingSignals *)self countNgramPrefixMatchInAttachmentNames];
+                    v14 = countNgramPrefixMatchInAttachmentNames == [(SFMailRankingSignals *)v6 countNgramPrefixMatchInAttachmentNames];
                     v100 = v14;
                   }
 
@@ -656,16 +656,16 @@ LABEL_140:
                     v100 = 0;
                   }
 
-                  if (!v103)
+                  if (!syntacticScore3)
                   {
 
                     v14 = v100;
 LABEL_144:
-                    if (!v108)
+                    if (!semanticScore3)
                     {
 LABEL_146:
 
-                      if (v38)
+                      if (l2Score3)
                       {
                       }
 
@@ -677,7 +677,7 @@ LABEL_146:
                       {
                       }
 
-                      if (v129)
+                      if (averageEngagementAgeLast21Days3)
                       {
                       }
 
@@ -686,9 +686,9 @@ LABEL_146:
                       }
 
 LABEL_79:
-                      v3 = v133;
-                      v13 = v134;
-                      if (!v12)
+                      averageEngagementAgeLast7Days5 = v133;
+                      averageEngagementAgeLast7Days4 = v134;
+                      if (!averageEngagementAgeLast7Days3)
                       {
                         goto LABEL_56;
                       }
@@ -714,7 +714,7 @@ LABEL_145:
         }
       }
 
-      if (!v38)
+      if (!l2Score3)
       {
 LABEL_70:
 
@@ -726,7 +726,7 @@ LABEL_70:
         {
         }
 
-        if (v129)
+        if (averageEngagementAgeLast21Days3)
         {
         }
 
@@ -751,47 +751,47 @@ LABEL_14:
   return v14;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setWasReorderedByRecency:{-[SFMailRankingSignals wasReorderedByRecency](self, "wasReorderedByRecency")}];
   [v4 setNumEngagements:{-[SFMailRankingSignals numEngagements](self, "numEngagements")}];
   [v4 setNumDaysEngagedLast30Days:{-[SFMailRankingSignals numDaysEngagedLast30Days](self, "numDaysEngagedLast30Days")}];
-  v5 = [(SFMailRankingSignals *)self averageEngagementAgeLast7Days];
-  v6 = [v5 copy];
+  averageEngagementAgeLast7Days = [(SFMailRankingSignals *)self averageEngagementAgeLast7Days];
+  v6 = [averageEngagementAgeLast7Days copy];
   [v4 setAverageEngagementAgeLast7Days:v6];
 
-  v7 = [(SFMailRankingSignals *)self averageEngagementAgeLast14Days];
-  v8 = [v7 copy];
+  averageEngagementAgeLast14Days = [(SFMailRankingSignals *)self averageEngagementAgeLast14Days];
+  v8 = [averageEngagementAgeLast14Days copy];
   [v4 setAverageEngagementAgeLast14Days:v8];
 
-  v9 = [(SFMailRankingSignals *)self averageEngagementAgeLast21Days];
-  v10 = [v9 copy];
+  averageEngagementAgeLast21Days = [(SFMailRankingSignals *)self averageEngagementAgeLast21Days];
+  v10 = [averageEngagementAgeLast21Days copy];
   [v4 setAverageEngagementAgeLast21Days:v10];
 
-  v11 = [(SFMailRankingSignals *)self averageEngagementAgeLast30Days];
-  v12 = [v11 copy];
+  averageEngagementAgeLast30Days = [(SFMailRankingSignals *)self averageEngagementAgeLast30Days];
+  v12 = [averageEngagementAgeLast30Days copy];
   [v4 setAverageEngagementAgeLast30Days:v12];
 
   [v4 setDaysSinceReceipt:{-[SFMailRankingSignals daysSinceReceipt](self, "daysSinceReceipt")}];
-  v13 = [(SFMailRankingSignals *)self l1Score];
-  v14 = [v13 copy];
+  l1Score = [(SFMailRankingSignals *)self l1Score];
+  v14 = [l1Score copy];
   [v4 setL1Score:v14];
 
-  v15 = [(SFMailRankingSignals *)self l2Score];
-  v16 = [v15 copy];
+  l2Score = [(SFMailRankingSignals *)self l2Score];
+  v16 = [l2Score copy];
   [v4 setL2Score:v16];
 
   [v4 setIsFlagged:{-[SFMailRankingSignals isFlagged](self, "isFlagged")}];
   [v4 setIsRepliedTo:{-[SFMailRankingSignals isRepliedTo](self, "isRepliedTo")}];
   [v4 setIsSemanticMatch:{-[SFMailRankingSignals isSemanticMatch](self, "isSemanticMatch")}];
   [v4 setIsSyntacticMatch:{-[SFMailRankingSignals isSyntacticMatch](self, "isSyntacticMatch")}];
-  v17 = [(SFMailRankingSignals *)self semanticScore];
-  v18 = [v17 copy];
+  semanticScore = [(SFMailRankingSignals *)self semanticScore];
+  v18 = [semanticScore copy];
   [v4 setSemanticScore:v18];
 
-  v19 = [(SFMailRankingSignals *)self syntacticScore];
-  v20 = [v19 copy];
+  syntacticScore = [(SFMailRankingSignals *)self syntacticScore];
+  v20 = [syntacticScore copy];
   [v4 setSyntacticScore:v20];
 
   [v4 setCountUnigramMatchInAuthors:{-[SFMailRankingSignals countUnigramMatchInAuthors](self, "countUnigramMatchInAuthors")}];
@@ -854,31 +854,31 @@ LABEL_14:
 - (NSData)jsonData
 {
   v2 = [[_SFPBMailRankingSignals alloc] initWithFacade:self];
-  v3 = [(_SFPBMailRankingSignals *)v2 jsonData];
+  jsonData = [(_SFPBMailRankingSignals *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBMailRankingSignals alloc] initWithFacade:self];
-  v3 = [(_SFPBMailRankingSignals *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBMailRankingSignals *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6 = [[_SFPBMailRankingSignals alloc] initWithFacade:self];
-  v5 = [(_SFPBMailRankingSignals *)v6 data];
-  [v4 encodeObject:v5 forKey:@"_backingStore"];
+  data = [(_SFPBMailRankingSignals *)v6 data];
+  [coderCopy encodeObject:data forKey:@"_backingStore"];
 }
 
-- (SFMailRankingSignals)initWithCoder:(id)a3
+- (SFMailRankingSignals)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v6 = [[_SFPBMailRankingSignals alloc] initWithData:v5];
   v7 = [(SFMailRankingSignals *)self initWithProtobuf:v6];
@@ -886,383 +886,383 @@ LABEL_14:
   return v7;
 }
 
-- (SFMailRankingSignals)initWithProtobuf:(id)a3
+- (SFMailRankingSignals)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
+  protobufCopy = protobuf;
   v24.receiver = self;
   v24.super_class = SFMailRankingSignals;
   v5 = [(SFMailRankingSignals *)&v24 init];
 
   if (v5)
   {
-    if ([v4 wasReorderedByRecency])
+    if ([protobufCopy wasReorderedByRecency])
     {
-      -[SFMailRankingSignals setWasReorderedByRecency:](v5, "setWasReorderedByRecency:", [v4 wasReorderedByRecency]);
+      -[SFMailRankingSignals setWasReorderedByRecency:](v5, "setWasReorderedByRecency:", [protobufCopy wasReorderedByRecency]);
     }
 
-    if ([v4 numEngagements])
+    if ([protobufCopy numEngagements])
     {
-      -[SFMailRankingSignals setNumEngagements:](v5, "setNumEngagements:", [v4 numEngagements]);
+      -[SFMailRankingSignals setNumEngagements:](v5, "setNumEngagements:", [protobufCopy numEngagements]);
     }
 
-    if ([v4 numDaysEngagedLast30Days])
+    if ([protobufCopy numDaysEngagedLast30Days])
     {
-      -[SFMailRankingSignals setNumDaysEngagedLast30Days:](v5, "setNumDaysEngagedLast30Days:", [v4 numDaysEngagedLast30Days]);
+      -[SFMailRankingSignals setNumDaysEngagedLast30Days:](v5, "setNumDaysEngagedLast30Days:", [protobufCopy numDaysEngagedLast30Days]);
     }
 
-    if ([v4 averageEngagementAgeLast7Days])
+    if ([protobufCopy averageEngagementAgeLast7Days])
     {
-      v6 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v4, "averageEngagementAgeLast7Days")}];
+      v6 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(protobufCopy, "averageEngagementAgeLast7Days")}];
       [(SFMailRankingSignals *)v5 setAverageEngagementAgeLast7Days:v6];
     }
 
-    if ([v4 averageEngagementAgeLast14Days])
+    if ([protobufCopy averageEngagementAgeLast14Days])
     {
-      v7 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v4, "averageEngagementAgeLast14Days")}];
+      v7 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(protobufCopy, "averageEngagementAgeLast14Days")}];
       [(SFMailRankingSignals *)v5 setAverageEngagementAgeLast14Days:v7];
     }
 
-    if ([v4 averageEngagementAgeLast21Days])
+    if ([protobufCopy averageEngagementAgeLast21Days])
     {
-      v8 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v4, "averageEngagementAgeLast21Days")}];
+      v8 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(protobufCopy, "averageEngagementAgeLast21Days")}];
       [(SFMailRankingSignals *)v5 setAverageEngagementAgeLast21Days:v8];
     }
 
-    if ([v4 averageEngagementAgeLast30Days])
+    if ([protobufCopy averageEngagementAgeLast30Days])
     {
-      v9 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v4, "averageEngagementAgeLast30Days")}];
+      v9 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(protobufCopy, "averageEngagementAgeLast30Days")}];
       [(SFMailRankingSignals *)v5 setAverageEngagementAgeLast30Days:v9];
     }
 
-    if ([v4 daysSinceReceipt])
+    if ([protobufCopy daysSinceReceipt])
     {
-      -[SFMailRankingSignals setDaysSinceReceipt:](v5, "setDaysSinceReceipt:", [v4 daysSinceReceipt]);
+      -[SFMailRankingSignals setDaysSinceReceipt:](v5, "setDaysSinceReceipt:", [protobufCopy daysSinceReceipt]);
     }
 
-    [v4 l1Score];
+    [protobufCopy l1Score];
     if (v10 != 0.0)
     {
       v11 = MEMORY[0x1E696AD98];
-      [v4 l1Score];
+      [protobufCopy l1Score];
       v12 = [v11 numberWithFloat:?];
       [(SFMailRankingSignals *)v5 setL1Score:v12];
     }
 
-    [v4 l2Score];
+    [protobufCopy l2Score];
     if (v13 != 0.0)
     {
       v14 = MEMORY[0x1E696AD98];
-      [v4 l2Score];
+      [protobufCopy l2Score];
       v15 = [v14 numberWithFloat:?];
       [(SFMailRankingSignals *)v5 setL2Score:v15];
     }
 
-    if ([v4 isFlagged])
+    if ([protobufCopy isFlagged])
     {
-      -[SFMailRankingSignals setIsFlagged:](v5, "setIsFlagged:", [v4 isFlagged]);
+      -[SFMailRankingSignals setIsFlagged:](v5, "setIsFlagged:", [protobufCopy isFlagged]);
     }
 
-    if ([v4 isRepliedTo])
+    if ([protobufCopy isRepliedTo])
     {
-      -[SFMailRankingSignals setIsRepliedTo:](v5, "setIsRepliedTo:", [v4 isRepliedTo]);
+      -[SFMailRankingSignals setIsRepliedTo:](v5, "setIsRepliedTo:", [protobufCopy isRepliedTo]);
     }
 
-    if ([v4 isSemanticMatch])
+    if ([protobufCopy isSemanticMatch])
     {
-      -[SFMailRankingSignals setIsSemanticMatch:](v5, "setIsSemanticMatch:", [v4 isSemanticMatch]);
+      -[SFMailRankingSignals setIsSemanticMatch:](v5, "setIsSemanticMatch:", [protobufCopy isSemanticMatch]);
     }
 
-    if ([v4 isSyntacticMatch])
+    if ([protobufCopy isSyntacticMatch])
     {
-      -[SFMailRankingSignals setIsSyntacticMatch:](v5, "setIsSyntacticMatch:", [v4 isSyntacticMatch]);
+      -[SFMailRankingSignals setIsSyntacticMatch:](v5, "setIsSyntacticMatch:", [protobufCopy isSyntacticMatch]);
     }
 
-    [v4 semanticScore];
+    [protobufCopy semanticScore];
     if (v16 != 0.0)
     {
       v17 = MEMORY[0x1E696AD98];
-      [v4 semanticScore];
+      [protobufCopy semanticScore];
       v18 = [v17 numberWithFloat:?];
       [(SFMailRankingSignals *)v5 setSemanticScore:v18];
     }
 
-    [v4 syntacticScore];
+    [protobufCopy syntacticScore];
     if (v19 != 0.0)
     {
       v20 = MEMORY[0x1E696AD98];
-      [v4 syntacticScore];
+      [protobufCopy syntacticScore];
       v21 = [v20 numberWithFloat:?];
       [(SFMailRankingSignals *)v5 setSyntacticScore:v21];
     }
 
-    if ([v4 countUnigramMatchInAuthors])
+    if ([protobufCopy countUnigramMatchInAuthors])
     {
-      -[SFMailRankingSignals setCountUnigramMatchInAuthors:](v5, "setCountUnigramMatchInAuthors:", [v4 countUnigramMatchInAuthors]);
+      -[SFMailRankingSignals setCountUnigramMatchInAuthors:](v5, "setCountUnigramMatchInAuthors:", [protobufCopy countUnigramMatchInAuthors]);
     }
 
-    if ([v4 countBigramMatchInAuthors])
+    if ([protobufCopy countBigramMatchInAuthors])
     {
-      -[SFMailRankingSignals setCountBigramMatchInAuthors:](v5, "setCountBigramMatchInAuthors:", [v4 countBigramMatchInAuthors]);
+      -[SFMailRankingSignals setCountBigramMatchInAuthors:](v5, "setCountBigramMatchInAuthors:", [protobufCopy countBigramMatchInAuthors]);
     }
 
-    if ([v4 countNgramMatchInAuthors])
+    if ([protobufCopy countNgramMatchInAuthors])
     {
-      -[SFMailRankingSignals setCountNgramMatchInAuthors:](v5, "setCountNgramMatchInAuthors:", [v4 countNgramMatchInAuthors]);
+      -[SFMailRankingSignals setCountNgramMatchInAuthors:](v5, "setCountNgramMatchInAuthors:", [protobufCopy countNgramMatchInAuthors]);
     }
 
-    if ([v4 countUnigramPrefixMatchInAuthors])
+    if ([protobufCopy countUnigramPrefixMatchInAuthors])
     {
-      -[SFMailRankingSignals setCountUnigramPrefixMatchInAuthors:](v5, "setCountUnigramPrefixMatchInAuthors:", [v4 countUnigramPrefixMatchInAuthors]);
+      -[SFMailRankingSignals setCountUnigramPrefixMatchInAuthors:](v5, "setCountUnigramPrefixMatchInAuthors:", [protobufCopy countUnigramPrefixMatchInAuthors]);
     }
 
-    if ([v4 countBigramPrefixMatchInAuthors])
+    if ([protobufCopy countBigramPrefixMatchInAuthors])
     {
-      -[SFMailRankingSignals setCountBigramPrefixMatchInAuthors:](v5, "setCountBigramPrefixMatchInAuthors:", [v4 countBigramPrefixMatchInAuthors]);
+      -[SFMailRankingSignals setCountBigramPrefixMatchInAuthors:](v5, "setCountBigramPrefixMatchInAuthors:", [protobufCopy countBigramPrefixMatchInAuthors]);
     }
 
-    if ([v4 countNgramPrefixMatchInAuthors])
+    if ([protobufCopy countNgramPrefixMatchInAuthors])
     {
-      -[SFMailRankingSignals setCountNgramPrefixMatchInAuthors:](v5, "setCountNgramPrefixMatchInAuthors:", [v4 countNgramPrefixMatchInAuthors]);
+      -[SFMailRankingSignals setCountNgramPrefixMatchInAuthors:](v5, "setCountNgramPrefixMatchInAuthors:", [protobufCopy countNgramPrefixMatchInAuthors]);
     }
 
-    if ([v4 countUnigramMatchInAuthorEmailAddresses])
+    if ([protobufCopy countUnigramMatchInAuthorEmailAddresses])
     {
-      -[SFMailRankingSignals setCountUnigramMatchInAuthorEmailAddresses:](v5, "setCountUnigramMatchInAuthorEmailAddresses:", [v4 countUnigramMatchInAuthorEmailAddresses]);
+      -[SFMailRankingSignals setCountUnigramMatchInAuthorEmailAddresses:](v5, "setCountUnigramMatchInAuthorEmailAddresses:", [protobufCopy countUnigramMatchInAuthorEmailAddresses]);
     }
 
-    if ([v4 countBigramMatchInAuthorEmailAddresses])
+    if ([protobufCopy countBigramMatchInAuthorEmailAddresses])
     {
-      -[SFMailRankingSignals setCountBigramMatchInAuthorEmailAddresses:](v5, "setCountBigramMatchInAuthorEmailAddresses:", [v4 countBigramMatchInAuthorEmailAddresses]);
+      -[SFMailRankingSignals setCountBigramMatchInAuthorEmailAddresses:](v5, "setCountBigramMatchInAuthorEmailAddresses:", [protobufCopy countBigramMatchInAuthorEmailAddresses]);
     }
 
-    if ([v4 countNgramMatchInAuthorEmailAddresses])
+    if ([protobufCopy countNgramMatchInAuthorEmailAddresses])
     {
-      -[SFMailRankingSignals setCountNgramMatchInAuthorEmailAddresses:](v5, "setCountNgramMatchInAuthorEmailAddresses:", [v4 countNgramMatchInAuthorEmailAddresses]);
+      -[SFMailRankingSignals setCountNgramMatchInAuthorEmailAddresses:](v5, "setCountNgramMatchInAuthorEmailAddresses:", [protobufCopy countNgramMatchInAuthorEmailAddresses]);
     }
 
-    if ([v4 countUnigramPrefixMatchInAuthorEmailAddresses])
+    if ([protobufCopy countUnigramPrefixMatchInAuthorEmailAddresses])
     {
-      -[SFMailRankingSignals setCountUnigramPrefixMatchInAuthorEmailAddresses:](v5, "setCountUnigramPrefixMatchInAuthorEmailAddresses:", [v4 countUnigramPrefixMatchInAuthorEmailAddresses]);
+      -[SFMailRankingSignals setCountUnigramPrefixMatchInAuthorEmailAddresses:](v5, "setCountUnigramPrefixMatchInAuthorEmailAddresses:", [protobufCopy countUnigramPrefixMatchInAuthorEmailAddresses]);
     }
 
-    if ([v4 countBigramPrefixMatchInAuthorEmailAddresses])
+    if ([protobufCopy countBigramPrefixMatchInAuthorEmailAddresses])
     {
-      -[SFMailRankingSignals setCountBigramPrefixMatchInAuthorEmailAddresses:](v5, "setCountBigramPrefixMatchInAuthorEmailAddresses:", [v4 countBigramPrefixMatchInAuthorEmailAddresses]);
+      -[SFMailRankingSignals setCountBigramPrefixMatchInAuthorEmailAddresses:](v5, "setCountBigramPrefixMatchInAuthorEmailAddresses:", [protobufCopy countBigramPrefixMatchInAuthorEmailAddresses]);
     }
 
-    if ([v4 countNgramPrefixMatchInAuthorEmailAddresses])
+    if ([protobufCopy countNgramPrefixMatchInAuthorEmailAddresses])
     {
-      -[SFMailRankingSignals setCountNgramPrefixMatchInAuthorEmailAddresses:](v5, "setCountNgramPrefixMatchInAuthorEmailAddresses:", [v4 countNgramPrefixMatchInAuthorEmailAddresses]);
+      -[SFMailRankingSignals setCountNgramPrefixMatchInAuthorEmailAddresses:](v5, "setCountNgramPrefixMatchInAuthorEmailAddresses:", [protobufCopy countNgramPrefixMatchInAuthorEmailAddresses]);
     }
 
-    if ([v4 countUnigramMatchInSubject])
+    if ([protobufCopy countUnigramMatchInSubject])
     {
-      -[SFMailRankingSignals setCountUnigramMatchInSubject:](v5, "setCountUnigramMatchInSubject:", [v4 countUnigramMatchInSubject]);
+      -[SFMailRankingSignals setCountUnigramMatchInSubject:](v5, "setCountUnigramMatchInSubject:", [protobufCopy countUnigramMatchInSubject]);
     }
 
-    if ([v4 countBigramMatchInSubject])
+    if ([protobufCopy countBigramMatchInSubject])
     {
-      -[SFMailRankingSignals setCountBigramMatchInSubject:](v5, "setCountBigramMatchInSubject:", [v4 countBigramMatchInSubject]);
+      -[SFMailRankingSignals setCountBigramMatchInSubject:](v5, "setCountBigramMatchInSubject:", [protobufCopy countBigramMatchInSubject]);
     }
 
-    if ([v4 countNgramMatchInSubject])
+    if ([protobufCopy countNgramMatchInSubject])
     {
-      -[SFMailRankingSignals setCountNgramMatchInSubject:](v5, "setCountNgramMatchInSubject:", [v4 countNgramMatchInSubject]);
+      -[SFMailRankingSignals setCountNgramMatchInSubject:](v5, "setCountNgramMatchInSubject:", [protobufCopy countNgramMatchInSubject]);
     }
 
-    if ([v4 countUnigramPrefixMatchInSubject])
+    if ([protobufCopy countUnigramPrefixMatchInSubject])
     {
-      -[SFMailRankingSignals setCountUnigramPrefixMatchInSubject:](v5, "setCountUnigramPrefixMatchInSubject:", [v4 countUnigramPrefixMatchInSubject]);
+      -[SFMailRankingSignals setCountUnigramPrefixMatchInSubject:](v5, "setCountUnigramPrefixMatchInSubject:", [protobufCopy countUnigramPrefixMatchInSubject]);
     }
 
-    if ([v4 countBigramPrefixMatchInSubject])
+    if ([protobufCopy countBigramPrefixMatchInSubject])
     {
-      -[SFMailRankingSignals setCountBigramPrefixMatchInSubject:](v5, "setCountBigramPrefixMatchInSubject:", [v4 countBigramPrefixMatchInSubject]);
+      -[SFMailRankingSignals setCountBigramPrefixMatchInSubject:](v5, "setCountBigramPrefixMatchInSubject:", [protobufCopy countBigramPrefixMatchInSubject]);
     }
 
-    if ([v4 countNgramPrefixMatchInSubject])
+    if ([protobufCopy countNgramPrefixMatchInSubject])
     {
-      -[SFMailRankingSignals setCountNgramPrefixMatchInSubject:](v5, "setCountNgramPrefixMatchInSubject:", [v4 countNgramPrefixMatchInSubject]);
+      -[SFMailRankingSignals setCountNgramPrefixMatchInSubject:](v5, "setCountNgramPrefixMatchInSubject:", [protobufCopy countNgramPrefixMatchInSubject]);
     }
 
-    if ([v4 countUnigramMatchInTextContent])
+    if ([protobufCopy countUnigramMatchInTextContent])
     {
-      -[SFMailRankingSignals setCountUnigramMatchInTextContent:](v5, "setCountUnigramMatchInTextContent:", [v4 countUnigramMatchInTextContent]);
+      -[SFMailRankingSignals setCountUnigramMatchInTextContent:](v5, "setCountUnigramMatchInTextContent:", [protobufCopy countUnigramMatchInTextContent]);
     }
 
-    if ([v4 countBigramMatchInTextContent])
+    if ([protobufCopy countBigramMatchInTextContent])
     {
-      -[SFMailRankingSignals setCountBigramMatchInTextContent:](v5, "setCountBigramMatchInTextContent:", [v4 countBigramMatchInTextContent]);
+      -[SFMailRankingSignals setCountBigramMatchInTextContent:](v5, "setCountBigramMatchInTextContent:", [protobufCopy countBigramMatchInTextContent]);
     }
 
-    if ([v4 countNgramMatchInTextContent])
+    if ([protobufCopy countNgramMatchInTextContent])
     {
-      -[SFMailRankingSignals setCountNgramMatchInTextContent:](v5, "setCountNgramMatchInTextContent:", [v4 countNgramMatchInTextContent]);
+      -[SFMailRankingSignals setCountNgramMatchInTextContent:](v5, "setCountNgramMatchInTextContent:", [protobufCopy countNgramMatchInTextContent]);
     }
 
-    if ([v4 countUnigramPrefixMatchInTextContent])
+    if ([protobufCopy countUnigramPrefixMatchInTextContent])
     {
-      -[SFMailRankingSignals setCountUnigramPrefixMatchInTextContent:](v5, "setCountUnigramPrefixMatchInTextContent:", [v4 countUnigramPrefixMatchInTextContent]);
+      -[SFMailRankingSignals setCountUnigramPrefixMatchInTextContent:](v5, "setCountUnigramPrefixMatchInTextContent:", [protobufCopy countUnigramPrefixMatchInTextContent]);
     }
 
-    if ([v4 countBigramPrefixMatchInTextContent])
+    if ([protobufCopy countBigramPrefixMatchInTextContent])
     {
-      -[SFMailRankingSignals setCountBigramPrefixMatchInTextContent:](v5, "setCountBigramPrefixMatchInTextContent:", [v4 countBigramPrefixMatchInTextContent]);
+      -[SFMailRankingSignals setCountBigramPrefixMatchInTextContent:](v5, "setCountBigramPrefixMatchInTextContent:", [protobufCopy countBigramPrefixMatchInTextContent]);
     }
 
-    if ([v4 countNgramPrefixMatchInTextContent])
+    if ([protobufCopy countNgramPrefixMatchInTextContent])
     {
-      -[SFMailRankingSignals setCountNgramPrefixMatchInTextContent:](v5, "setCountNgramPrefixMatchInTextContent:", [v4 countNgramPrefixMatchInTextContent]);
+      -[SFMailRankingSignals setCountNgramPrefixMatchInTextContent:](v5, "setCountNgramPrefixMatchInTextContent:", [protobufCopy countNgramPrefixMatchInTextContent]);
     }
 
-    if ([v4 countUnigramMatchInRecipients])
+    if ([protobufCopy countUnigramMatchInRecipients])
     {
-      -[SFMailRankingSignals setCountUnigramMatchInRecipients:](v5, "setCountUnigramMatchInRecipients:", [v4 countUnigramMatchInRecipients]);
+      -[SFMailRankingSignals setCountUnigramMatchInRecipients:](v5, "setCountUnigramMatchInRecipients:", [protobufCopy countUnigramMatchInRecipients]);
     }
 
-    if ([v4 countBigramMatchInRecipients])
+    if ([protobufCopy countBigramMatchInRecipients])
     {
-      -[SFMailRankingSignals setCountBigramMatchInRecipients:](v5, "setCountBigramMatchInRecipients:", [v4 countBigramMatchInRecipients]);
+      -[SFMailRankingSignals setCountBigramMatchInRecipients:](v5, "setCountBigramMatchInRecipients:", [protobufCopy countBigramMatchInRecipients]);
     }
 
-    if ([v4 countNgramMatchInRecipients])
+    if ([protobufCopy countNgramMatchInRecipients])
     {
-      -[SFMailRankingSignals setCountNgramMatchInRecipients:](v5, "setCountNgramMatchInRecipients:", [v4 countNgramMatchInRecipients]);
+      -[SFMailRankingSignals setCountNgramMatchInRecipients:](v5, "setCountNgramMatchInRecipients:", [protobufCopy countNgramMatchInRecipients]);
     }
 
-    if ([v4 countUnigramPrefixMatchInRecipients])
+    if ([protobufCopy countUnigramPrefixMatchInRecipients])
     {
-      -[SFMailRankingSignals setCountUnigramPrefixMatchInRecipients:](v5, "setCountUnigramPrefixMatchInRecipients:", [v4 countUnigramPrefixMatchInRecipients]);
+      -[SFMailRankingSignals setCountUnigramPrefixMatchInRecipients:](v5, "setCountUnigramPrefixMatchInRecipients:", [protobufCopy countUnigramPrefixMatchInRecipients]);
     }
 
-    if ([v4 countBigramPrefixMatchInRecipients])
+    if ([protobufCopy countBigramPrefixMatchInRecipients])
     {
-      -[SFMailRankingSignals setCountBigramPrefixMatchInRecipients:](v5, "setCountBigramPrefixMatchInRecipients:", [v4 countBigramPrefixMatchInRecipients]);
+      -[SFMailRankingSignals setCountBigramPrefixMatchInRecipients:](v5, "setCountBigramPrefixMatchInRecipients:", [protobufCopy countBigramPrefixMatchInRecipients]);
     }
 
-    if ([v4 countNgramPrefixMatchInRecipients])
+    if ([protobufCopy countNgramPrefixMatchInRecipients])
     {
-      -[SFMailRankingSignals setCountNgramPrefixMatchInRecipients:](v5, "setCountNgramPrefixMatchInRecipients:", [v4 countNgramPrefixMatchInRecipients]);
+      -[SFMailRankingSignals setCountNgramPrefixMatchInRecipients:](v5, "setCountNgramPrefixMatchInRecipients:", [protobufCopy countNgramPrefixMatchInRecipients]);
     }
 
-    if ([v4 countUnigramMatchInRecipientEmailAddresses])
+    if ([protobufCopy countUnigramMatchInRecipientEmailAddresses])
     {
-      -[SFMailRankingSignals setCountUnigramMatchInRecipientEmailAddresses:](v5, "setCountUnigramMatchInRecipientEmailAddresses:", [v4 countUnigramMatchInRecipientEmailAddresses]);
+      -[SFMailRankingSignals setCountUnigramMatchInRecipientEmailAddresses:](v5, "setCountUnigramMatchInRecipientEmailAddresses:", [protobufCopy countUnigramMatchInRecipientEmailAddresses]);
     }
 
-    if ([v4 countBigramMatchInRecipientEmailAddresses])
+    if ([protobufCopy countBigramMatchInRecipientEmailAddresses])
     {
-      -[SFMailRankingSignals setCountBigramMatchInRecipientEmailAddresses:](v5, "setCountBigramMatchInRecipientEmailAddresses:", [v4 countBigramMatchInRecipientEmailAddresses]);
+      -[SFMailRankingSignals setCountBigramMatchInRecipientEmailAddresses:](v5, "setCountBigramMatchInRecipientEmailAddresses:", [protobufCopy countBigramMatchInRecipientEmailAddresses]);
     }
 
-    if ([v4 countNgramMatchInRecipientEmailAddresses])
+    if ([protobufCopy countNgramMatchInRecipientEmailAddresses])
     {
-      -[SFMailRankingSignals setCountNgramMatchInRecipientEmailAddresses:](v5, "setCountNgramMatchInRecipientEmailAddresses:", [v4 countNgramMatchInRecipientEmailAddresses]);
+      -[SFMailRankingSignals setCountNgramMatchInRecipientEmailAddresses:](v5, "setCountNgramMatchInRecipientEmailAddresses:", [protobufCopy countNgramMatchInRecipientEmailAddresses]);
     }
 
-    if ([v4 countUnigramPrefixMatchInRecipientEmailAddresses])
+    if ([protobufCopy countUnigramPrefixMatchInRecipientEmailAddresses])
     {
-      -[SFMailRankingSignals setCountUnigramPrefixMatchInRecipientEmailAddresses:](v5, "setCountUnigramPrefixMatchInRecipientEmailAddresses:", [v4 countUnigramPrefixMatchInRecipientEmailAddresses]);
+      -[SFMailRankingSignals setCountUnigramPrefixMatchInRecipientEmailAddresses:](v5, "setCountUnigramPrefixMatchInRecipientEmailAddresses:", [protobufCopy countUnigramPrefixMatchInRecipientEmailAddresses]);
     }
 
-    if ([v4 countBigramPrefixMatchInRecipientEmailAddresses])
+    if ([protobufCopy countBigramPrefixMatchInRecipientEmailAddresses])
     {
-      -[SFMailRankingSignals setCountBigramPrefixMatchInRecipientEmailAddresses:](v5, "setCountBigramPrefixMatchInRecipientEmailAddresses:", [v4 countBigramPrefixMatchInRecipientEmailAddresses]);
+      -[SFMailRankingSignals setCountBigramPrefixMatchInRecipientEmailAddresses:](v5, "setCountBigramPrefixMatchInRecipientEmailAddresses:", [protobufCopy countBigramPrefixMatchInRecipientEmailAddresses]);
     }
 
-    if ([v4 countNgramPrefixMatchInRecipientEmailAddresses])
+    if ([protobufCopy countNgramPrefixMatchInRecipientEmailAddresses])
     {
-      -[SFMailRankingSignals setCountNgramPrefixMatchInRecipientEmailAddresses:](v5, "setCountNgramPrefixMatchInRecipientEmailAddresses:", [v4 countNgramPrefixMatchInRecipientEmailAddresses]);
+      -[SFMailRankingSignals setCountNgramPrefixMatchInRecipientEmailAddresses:](v5, "setCountNgramPrefixMatchInRecipientEmailAddresses:", [protobufCopy countNgramPrefixMatchInRecipientEmailAddresses]);
     }
 
-    if ([v4 countUnigramMatchInEmailAddresses])
+    if ([protobufCopy countUnigramMatchInEmailAddresses])
     {
-      -[SFMailRankingSignals setCountUnigramMatchInEmailAddresses:](v5, "setCountUnigramMatchInEmailAddresses:", [v4 countUnigramMatchInEmailAddresses]);
+      -[SFMailRankingSignals setCountUnigramMatchInEmailAddresses:](v5, "setCountUnigramMatchInEmailAddresses:", [protobufCopy countUnigramMatchInEmailAddresses]);
     }
 
-    if ([v4 countBigramMatchInEmailAddresses])
+    if ([protobufCopy countBigramMatchInEmailAddresses])
     {
-      -[SFMailRankingSignals setCountBigramMatchInEmailAddresses:](v5, "setCountBigramMatchInEmailAddresses:", [v4 countBigramMatchInEmailAddresses]);
+      -[SFMailRankingSignals setCountBigramMatchInEmailAddresses:](v5, "setCountBigramMatchInEmailAddresses:", [protobufCopy countBigramMatchInEmailAddresses]);
     }
 
-    if ([v4 countNgramMatchInEmailAddresses])
+    if ([protobufCopy countNgramMatchInEmailAddresses])
     {
-      -[SFMailRankingSignals setCountNgramMatchInEmailAddresses:](v5, "setCountNgramMatchInEmailAddresses:", [v4 countNgramMatchInEmailAddresses]);
+      -[SFMailRankingSignals setCountNgramMatchInEmailAddresses:](v5, "setCountNgramMatchInEmailAddresses:", [protobufCopy countNgramMatchInEmailAddresses]);
     }
 
-    if ([v4 countUnigramPrefixMatchInEmailAddresses])
+    if ([protobufCopy countUnigramPrefixMatchInEmailAddresses])
     {
-      -[SFMailRankingSignals setCountUnigramPrefixMatchInEmailAddresses:](v5, "setCountUnigramPrefixMatchInEmailAddresses:", [v4 countUnigramPrefixMatchInEmailAddresses]);
+      -[SFMailRankingSignals setCountUnigramPrefixMatchInEmailAddresses:](v5, "setCountUnigramPrefixMatchInEmailAddresses:", [protobufCopy countUnigramPrefixMatchInEmailAddresses]);
     }
 
-    if ([v4 countBigramPrefixMatchInEmailAddresses])
+    if ([protobufCopy countBigramPrefixMatchInEmailAddresses])
     {
-      -[SFMailRankingSignals setCountBigramPrefixMatchInEmailAddresses:](v5, "setCountBigramPrefixMatchInEmailAddresses:", [v4 countBigramPrefixMatchInEmailAddresses]);
+      -[SFMailRankingSignals setCountBigramPrefixMatchInEmailAddresses:](v5, "setCountBigramPrefixMatchInEmailAddresses:", [protobufCopy countBigramPrefixMatchInEmailAddresses]);
     }
 
-    if ([v4 countNgramPrefixMatchInEmailAddresses])
+    if ([protobufCopy countNgramPrefixMatchInEmailAddresses])
     {
-      -[SFMailRankingSignals setCountNgramPrefixMatchInEmailAddresses:](v5, "setCountNgramPrefixMatchInEmailAddresses:", [v4 countNgramPrefixMatchInEmailAddresses]);
+      -[SFMailRankingSignals setCountNgramPrefixMatchInEmailAddresses:](v5, "setCountNgramPrefixMatchInEmailAddresses:", [protobufCopy countNgramPrefixMatchInEmailAddresses]);
     }
 
-    if ([v4 countUnigramMatchInAttachmentTypes])
+    if ([protobufCopy countUnigramMatchInAttachmentTypes])
     {
-      -[SFMailRankingSignals setCountUnigramMatchInAttachmentTypes:](v5, "setCountUnigramMatchInAttachmentTypes:", [v4 countUnigramMatchInAttachmentTypes]);
+      -[SFMailRankingSignals setCountUnigramMatchInAttachmentTypes:](v5, "setCountUnigramMatchInAttachmentTypes:", [protobufCopy countUnigramMatchInAttachmentTypes]);
     }
 
-    if ([v4 countBigramMatchInAttachmentTypes])
+    if ([protobufCopy countBigramMatchInAttachmentTypes])
     {
-      -[SFMailRankingSignals setCountBigramMatchInAttachmentTypes:](v5, "setCountBigramMatchInAttachmentTypes:", [v4 countBigramMatchInAttachmentTypes]);
+      -[SFMailRankingSignals setCountBigramMatchInAttachmentTypes:](v5, "setCountBigramMatchInAttachmentTypes:", [protobufCopy countBigramMatchInAttachmentTypes]);
     }
 
-    if ([v4 countNgramMatchInAttachmentTypes])
+    if ([protobufCopy countNgramMatchInAttachmentTypes])
     {
-      -[SFMailRankingSignals setCountNgramMatchInAttachmentTypes:](v5, "setCountNgramMatchInAttachmentTypes:", [v4 countNgramMatchInAttachmentTypes]);
+      -[SFMailRankingSignals setCountNgramMatchInAttachmentTypes:](v5, "setCountNgramMatchInAttachmentTypes:", [protobufCopy countNgramMatchInAttachmentTypes]);
     }
 
-    if ([v4 countUnigramPrefixMatchInAttachmentTypes])
+    if ([protobufCopy countUnigramPrefixMatchInAttachmentTypes])
     {
-      -[SFMailRankingSignals setCountUnigramPrefixMatchInAttachmentTypes:](v5, "setCountUnigramPrefixMatchInAttachmentTypes:", [v4 countUnigramPrefixMatchInAttachmentTypes]);
+      -[SFMailRankingSignals setCountUnigramPrefixMatchInAttachmentTypes:](v5, "setCountUnigramPrefixMatchInAttachmentTypes:", [protobufCopy countUnigramPrefixMatchInAttachmentTypes]);
     }
 
-    if ([v4 countBigramPrefixMatchInAttachmentTypes])
+    if ([protobufCopy countBigramPrefixMatchInAttachmentTypes])
     {
-      -[SFMailRankingSignals setCountBigramPrefixMatchInAttachmentTypes:](v5, "setCountBigramPrefixMatchInAttachmentTypes:", [v4 countBigramPrefixMatchInAttachmentTypes]);
+      -[SFMailRankingSignals setCountBigramPrefixMatchInAttachmentTypes:](v5, "setCountBigramPrefixMatchInAttachmentTypes:", [protobufCopy countBigramPrefixMatchInAttachmentTypes]);
     }
 
-    if ([v4 countNgramPrefixMatchInAttachmentTypes])
+    if ([protobufCopy countNgramPrefixMatchInAttachmentTypes])
     {
-      -[SFMailRankingSignals setCountNgramPrefixMatchInAttachmentTypes:](v5, "setCountNgramPrefixMatchInAttachmentTypes:", [v4 countNgramPrefixMatchInAttachmentTypes]);
+      -[SFMailRankingSignals setCountNgramPrefixMatchInAttachmentTypes:](v5, "setCountNgramPrefixMatchInAttachmentTypes:", [protobufCopy countNgramPrefixMatchInAttachmentTypes]);
     }
 
-    if ([v4 countUnigramMatchInAttachmentNames])
+    if ([protobufCopy countUnigramMatchInAttachmentNames])
     {
-      -[SFMailRankingSignals setCountUnigramMatchInAttachmentNames:](v5, "setCountUnigramMatchInAttachmentNames:", [v4 countUnigramMatchInAttachmentNames]);
+      -[SFMailRankingSignals setCountUnigramMatchInAttachmentNames:](v5, "setCountUnigramMatchInAttachmentNames:", [protobufCopy countUnigramMatchInAttachmentNames]);
     }
 
-    if ([v4 countBigramMatchInAttachmentNames])
+    if ([protobufCopy countBigramMatchInAttachmentNames])
     {
-      -[SFMailRankingSignals setCountBigramMatchInAttachmentNames:](v5, "setCountBigramMatchInAttachmentNames:", [v4 countBigramMatchInAttachmentNames]);
+      -[SFMailRankingSignals setCountBigramMatchInAttachmentNames:](v5, "setCountBigramMatchInAttachmentNames:", [protobufCopy countBigramMatchInAttachmentNames]);
     }
 
-    if ([v4 countNgramMatchInAttachmentNames])
+    if ([protobufCopy countNgramMatchInAttachmentNames])
     {
-      -[SFMailRankingSignals setCountNgramMatchInAttachmentNames:](v5, "setCountNgramMatchInAttachmentNames:", [v4 countNgramMatchInAttachmentNames]);
+      -[SFMailRankingSignals setCountNgramMatchInAttachmentNames:](v5, "setCountNgramMatchInAttachmentNames:", [protobufCopy countNgramMatchInAttachmentNames]);
     }
 
-    if ([v4 countUnigramPrefixMatchInAttachmentNames])
+    if ([protobufCopy countUnigramPrefixMatchInAttachmentNames])
     {
-      -[SFMailRankingSignals setCountUnigramPrefixMatchInAttachmentNames:](v5, "setCountUnigramPrefixMatchInAttachmentNames:", [v4 countUnigramPrefixMatchInAttachmentNames]);
+      -[SFMailRankingSignals setCountUnigramPrefixMatchInAttachmentNames:](v5, "setCountUnigramPrefixMatchInAttachmentNames:", [protobufCopy countUnigramPrefixMatchInAttachmentNames]);
     }
 
-    if ([v4 countBigramPrefixMatchInAttachmentNames])
+    if ([protobufCopy countBigramPrefixMatchInAttachmentNames])
     {
-      -[SFMailRankingSignals setCountBigramPrefixMatchInAttachmentNames:](v5, "setCountBigramPrefixMatchInAttachmentNames:", [v4 countBigramPrefixMatchInAttachmentNames]);
+      -[SFMailRankingSignals setCountBigramPrefixMatchInAttachmentNames:](v5, "setCountBigramPrefixMatchInAttachmentNames:", [protobufCopy countBigramPrefixMatchInAttachmentNames]);
     }
 
-    if ([v4 countNgramPrefixMatchInAttachmentNames])
+    if ([protobufCopy countNgramPrefixMatchInAttachmentNames])
     {
-      -[SFMailRankingSignals setCountNgramPrefixMatchInAttachmentNames:](v5, "setCountNgramPrefixMatchInAttachmentNames:", [v4 countNgramPrefixMatchInAttachmentNames]);
+      -[SFMailRankingSignals setCountNgramPrefixMatchInAttachmentNames:](v5, "setCountNgramPrefixMatchInAttachmentNames:", [protobufCopy countNgramPrefixMatchInAttachmentNames]);
     }
 
     v22 = v5;

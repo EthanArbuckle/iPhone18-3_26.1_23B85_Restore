@@ -1,9 +1,9 @@
 @interface HeightPickerItem
 - (_TtC18HealthExperienceUI16HeightPickerItem)init;
-- (id)pickerView:(id)a3 titleForRow:(int64_t)a4 forComponent:(int64_t)a5;
-- (int64_t)numberOfComponentsInPickerView:(id)a3;
-- (int64_t)pickerView:(id)a3 numberOfRowsInComponent:(int64_t)a4;
-- (void)pickerView:(id)a3 didSelectRow:(int64_t)a4 inComponent:(int64_t)a5;
+- (id)pickerView:(id)view titleForRow:(int64_t)row forComponent:(int64_t)component;
+- (int64_t)numberOfComponentsInPickerView:(id)view;
+- (int64_t)pickerView:(id)view numberOfRowsInComponent:(int64_t)component;
+- (void)pickerView:(id)view didSelectRow:(int64_t)row inComponent:(int64_t)component;
 @end
 
 @implementation HeightPickerItem
@@ -15,9 +15,9 @@
   return result;
 }
 
-- (int64_t)numberOfComponentsInPickerView:(id)a3
+- (int64_t)numberOfComponentsInPickerView:(id)view
 {
-  v3 = self;
+  selfCopy = self;
   v4 = sub_1BA3761BC();
 
   if (v4)
@@ -31,24 +31,24 @@
   }
 }
 
-- (int64_t)pickerView:(id)a3 numberOfRowsInComponent:(int64_t)a4
+- (int64_t)pickerView:(id)view numberOfRowsInComponent:(int64_t)component
 {
-  v5 = self;
+  selfCopy = self;
   v6 = sub_1BA3761BC();
 
   v7 = 246;
-  if (a4)
+  if (component)
   {
     v7 = 0;
   }
 
   v8 = 12;
-  if (a4 != 1)
+  if (component != 1)
   {
     v8 = 0;
   }
 
-  if (!a4)
+  if (!component)
   {
     v8 = 9;
   }
@@ -64,11 +64,11 @@
   }
 }
 
-- (id)pickerView:(id)a3 titleForRow:(int64_t)a4 forComponent:(int64_t)a5
+- (id)pickerView:(id)view titleForRow:(int64_t)row forComponent:(int64_t)component
 {
-  v8 = a3;
-  v9 = self;
-  sub_1BA376AF8(a4, a5);
+  viewCopy = view;
+  selfCopy = self;
+  sub_1BA376AF8(row, component);
   v11 = v10;
 
   if (v11)
@@ -84,11 +84,11 @@
   return v12;
 }
 
-- (void)pickerView:(id)a3 didSelectRow:(int64_t)a4 inComponent:(int64_t)a5
+- (void)pickerView:(id)view didSelectRow:(int64_t)row inComponent:(int64_t)component
 {
-  v7 = a3;
-  v8 = self;
-  _s18HealthExperienceUI16HeightPickerItemC10pickerView_12didSelectRow11inComponentySo08UIPickerH0C_S2itF_0(v7, a4);
+  viewCopy = view;
+  selfCopy = self;
+  _s18HealthExperienceUI16HeightPickerItemC10pickerView_12didSelectRow11inComponentySo08UIPickerH0C_S2itF_0(viewCopy, row);
 }
 
 @end

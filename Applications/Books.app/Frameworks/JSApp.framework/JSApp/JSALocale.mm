@@ -1,14 +1,14 @@
 @interface JSALocale
-+ (id)getLanguage:(id)a3;
++ (id)getLanguage:(id)language;
 @end
 
 @implementation JSALocale
 
-+ (id)getLanguage:(id)a3
++ (id)getLanguage:(id)language
 {
-  v3 = a3;
+  languageCopy = language;
   v4 = +[NSLocale currentLocale];
-  v5 = [v4 displayNameForKey:NSLocaleLanguageCode value:v3];
+  v5 = [v4 displayNameForKey:NSLocaleLanguageCode value:languageCopy];
 
   return v5;
 }

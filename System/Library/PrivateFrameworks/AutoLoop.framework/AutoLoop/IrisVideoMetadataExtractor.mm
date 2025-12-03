@@ -1,10 +1,10 @@
 @interface IrisVideoMetadataExtractor
 - (IrisVideoMetadataExtractor)init;
-- (int)AddInfoFromMetadata:(id)a3 withTimeStamp:(id *)a4 toArray:(id)a5;
+- (int)AddInfoFromMetadata:(id)metadata withTimeStamp:(id *)stamp toArray:(id)array;
 - (int)processFile;
-- (int)processStillFrameTimeForAsset:(id)a3 toDictionary:(id)a4;
-- (int)processVideoTrack:(id)a3;
-- (void)AddFrameDictionary:(id)a3 withCMTime:(id *)a4 toArray:(id)a5;
+- (int)processStillFrameTimeForAsset:(id)asset toDictionary:(id)dictionary;
+- (int)processVideoTrack:(id)track;
+- (void)AddFrameDictionary:(id)dictionary withCMTime:(id *)time toArray:(id)array;
 @end
 
 @implementation IrisVideoMetadataExtractor
@@ -49,31 +49,31 @@
   return v2;
 }
 
-- (void)AddFrameDictionary:(id)a3 withCMTime:(id *)a4 toArray:(id)a5
+- (void)AddFrameDictionary:(id)dictionary withCMTime:(id *)time toArray:(id)array
 {
-  v7 = a5;
-  v8 = [a3 mutableCopy];
-  v13 = *a4;
+  arrayCopy = array;
+  v8 = [dictionary mutableCopy];
+  v13 = *time;
   v9 = CMTimeCopyAsDictionary(&v13, 0);
   [v8 setObject:v9 forKeyedSubscript:@"PresentationTime"];
 
   v10 = MEMORY[0x277CCABB0];
-  v13 = *a4;
+  v13 = *time;
   Seconds = CMTimeGetSeconds(&v13);
   *&Seconds = Seconds;
   v12 = [v10 numberWithFloat:Seconds];
   [v8 setObject:v12 forKeyedSubscript:@"PresentationTimeSeconds"];
 
-  [v7 addObject:v8];
+  [arrayCopy addObject:v8];
 }
 
-- (int)AddInfoFromMetadata:(id)a3 withTimeStamp:(id *)a4 toArray:(id)a5
+- (int)AddInfoFromMetadata:(id)metadata withTimeStamp:(id *)stamp toArray:(id)array
 {
   v26 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  metadataCopy = metadata;
+  arrayCopy = array;
   v10 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:0];
-  time = *a4;
+  time = *stamp;
   v11 = CMTimeCopyAsDictionary(&time, 0);
   [v10 setObject:v11 forKeyedSubscript:@"PresentationTime"];
 
@@ -97,7 +97,7 @@
         }
 
         v17 = *(*(&v20 + 1) + 8 * i);
-        v18 = [v8 objectForKeyedSubscript:{v17, v20}];
+        v18 = [metadataCopy objectForKeyedSubscript:{v17, v20}];
         if (v18)
         {
           [v10 setObject:v18 forKeyedSubscript:v17];
@@ -110,17 +110,17 @@
     while (v14);
   }
 
-  [v9 addObject:v10];
+  [arrayCopy addObject:v10];
   return 0;
 }
 
-- (int)processVideoTrack:(id)a3
+- (int)processVideoTrack:(id)track
 {
-  v4 = a3;
+  trackCopy = track;
   v5 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:0];
-  if (v4)
+  if (trackCopy)
   {
-    [v4 timeRange];
+    [trackCopy timeRange];
   }
 
   else
@@ -130,8 +130,8 @@
   }
 
   v39 = *(v38 + 8);
-  v6 = [v4 formatDescriptions];
-  if ([v6 count] && (v7 = objc_msgSend(v6, "objectAtIndex:", 0)) != 0)
+  formatDescriptions = [trackCopy formatDescriptions];
+  if ([formatDescriptions count] && (v7 = objc_msgSend(formatDescriptions, "objectAtIndex:", 0)) != 0)
   {
     v8 = v7;
     PresentationDimensions = CMVideoFormatDescriptionGetPresentationDimensions(v7, 0, 0);
@@ -141,7 +141,7 @@
 
   else
   {
-    [v4 naturalSize];
+    [trackCopy naturalSize];
     width = v12;
     height = v13;
     v8 = 0;
@@ -212,12 +212,12 @@
   return 0;
 }
 
-- (int)processStillFrameTimeForAsset:(id)a3 toDictionary:(id)a4
+- (int)processStillFrameTimeForAsset:(id)asset toDictionary:(id)dictionary
 {
   v40 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = v5;
+  assetCopy = asset;
+  dictionaryCopy = dictionary;
+  v7 = assetCopy;
   v33 = **&MEMORY[0x277CC0898];
   v35 = 0u;
   v36 = 0u;
@@ -232,7 +232,7 @@
   }
 
   v10 = v9;
-  v32 = v6;
+  v32 = dictionaryCopy;
   v11 = *v36;
   v12 = *MEMORY[0x277CC1A70];
 LABEL_3:
@@ -245,15 +245,15 @@ LABEL_3:
     }
 
     v14 = *(*(&v35 + 1) + 8 * v13);
-    v15 = [v14 formatDescriptions];
-    v16 = [v15 firstObject];
+    formatDescriptions = [v14 formatDescriptions];
+    firstObject = [formatDescriptions firstObject];
 
-    if (!v16)
+    if (!firstObject)
     {
       goto LABEL_9;
     }
 
-    v17 = CMMetadataFormatDescriptionGetIdentifiers(v16);
+    v17 = CMMetadataFormatDescriptionGetIdentifiers(firstObject);
     if ([v17 containsObject:v12])
     {
       break;
@@ -269,14 +269,14 @@ LABEL_9:
       }
 
       v18 = v8;
-      v6 = v32;
+      dictionaryCopy = v32;
       goto LABEL_24;
     }
   }
 
   v18 = v14;
 
-  v6 = v32;
+  dictionaryCopy = v32;
   if (!v18)
   {
     goto LABEL_25;
@@ -292,22 +292,22 @@ LABEL_9:
     [v21 startReading];
     do
     {
-      v22 = [v19 copyNextSampleBuffer];
-      if (!v22)
+      copyNextSampleBuffer = [v19 copyNextSampleBuffer];
+      if (!copyNextSampleBuffer)
       {
         break;
       }
 
-      v23 = v22;
-      if (CMSampleBufferGetNumSamples(v22))
+      v23 = copyNextSampleBuffer;
+      if (CMSampleBufferGetNumSamples(copyNextSampleBuffer))
       {
         v24 = [objc_alloc(MEMORY[0x277CE6648]) initWithSampleBuffer:v23];
         v25 = MEMORY[0x277CE6520];
-        v26 = [v24 items];
-        v27 = [v25 metadataItemsFromArray:v26 filteredByIdentifier:v12];
-        v28 = [v27 firstObject];
+        items = [v24 items];
+        v27 = [v25 metadataItemsFromArray:items filteredByIdentifier:v12];
+        firstObject2 = [v27 firstObject];
 
-        if (v28)
+        if (firstObject2)
         {
           CMSampleBufferGetOutputPresentationTimeStamp(&v33, v23);
         }
@@ -318,7 +318,7 @@ LABEL_9:
 
     while ((v33.flags & 1) == 0);
     [v21 cancelReading];
-    v6 = v32;
+    dictionaryCopy = v32;
   }
 
 LABEL_24:
@@ -329,7 +329,7 @@ LABEL_25:
     v29 = *MEMORY[0x277CBECE8];
     time = v33;
     v30 = CMTimeCopyAsDictionary(&time, v29);
-    [v6 setObject:v30 forKeyedSubscript:@"vidTrackStillFrameTime"];
+    [dictionaryCopy setObject:v30 forKeyedSubscript:@"vidTrackStillFrameTime"];
   }
 
   return 0;
@@ -387,7 +387,7 @@ LABEL_25:
       v78 = 0u;
       v75 = 0u;
       v76 = 0u;
-      v64 = self;
+      selfCopy = self;
       v62 = *MEMORY[0x277CE5E70];
       v15 = [(AVAsset *)self->inMovieAsset tracksWithMediaType:?];
       v16 = [v15 countByEnumeratingWithState:&v75 objects:v80 count:16];
@@ -408,15 +408,15 @@ LABEL_22:
         }
 
         v20 = *(*(&v75 + 1) + 8 * v19);
-        v21 = [v20 formatDescriptions];
-        v22 = [v21 firstObject];
+        formatDescriptions = [v20 formatDescriptions];
+        firstObject = [formatDescriptions firstObject];
 
-        if (!v22)
+        if (!firstObject)
         {
           goto LABEL_28;
         }
 
-        v23 = CMMetadataFormatDescriptionGetIdentifiers(v22);
+        v23 = CMMetadataFormatDescriptionGetIdentifiers(firstObject);
         if ([v23 containsObject:qword_281504A68])
         {
           break;
@@ -443,8 +443,8 @@ LABEL_30:
       {
 LABEL_60:
         NSLog(&cfstr_AssetHasNoLive.isa);
-        self = v64;
-        v48 = [(AVAsset *)v64->inMovieAsset tracksWithMediaType:v62];
+        self = selfCopy;
+        v48 = [(AVAsset *)selfCopy->inMovieAsset tracksWithMediaType:v62];
         v49 = [v48 count];
 
         if (v49)
@@ -463,8 +463,8 @@ LABEL_60:
         goto LABEL_12;
       }
 
-      self = v64;
-      v25 = [objc_alloc(MEMORY[0x277CE6410]) initWithAsset:v64->inMovieAsset error:0];
+      self = selfCopy;
+      v25 = [objc_alloc(MEMORY[0x277CE6410]) initWithAsset:selfCopy->inMovieAsset error:0];
       v26 = [MEMORY[0x277CE6430] assetReaderTrackOutputWithTrack:v24 outputSettings:0];
       [v26 setAlwaysCopiesSampleData:0];
       v5 = v59;
@@ -479,9 +479,9 @@ LABEL_60:
           v51 = v25;
           v52 = v24;
           v28 = objc_autoreleasePoolPush();
-          v29 = [v27 nextTimedMetadataGroup];
+          nextTimedMetadataGroup = [v27 nextTimedMetadataGroup];
           Code = 0;
-          if (!v29)
+          if (!nextTimedMetadataGroup)
           {
             goto LABEL_59;
           }
@@ -491,14 +491,14 @@ LABEL_60:
           v53 = v27;
           while (1)
           {
-            v56 = v29;
+            v56 = nextTimedMetadataGroup;
             context = v28;
             v73 = 0u;
             v74 = 0u;
             v71 = 0u;
             v72 = 0u;
-            v30 = [v29 items];
-            v31 = [v30 countByEnumeratingWithState:&v71 objects:v79 count:16];
+            items = [nextTimedMetadataGroup items];
+            v31 = [items countByEnumeratingWithState:&v71 objects:v79 count:16];
             if (!v31)
             {
               goto LABEL_58;
@@ -512,7 +512,7 @@ LABEL_60:
               {
                 if (*v72 != v33)
                 {
-                  objc_enumerationMutation(v30);
+                  objc_enumerationMutation(items);
                 }
 
                 v35 = *(*(&v71 + 1) + 8 * i);
@@ -524,19 +524,19 @@ LABEL_60:
                   [v35 time];
                 }
 
-                v36 = [v35 identifier];
-                v37 = [v36 isEqualToString:v3];
+                identifier = [v35 identifier];
+                v37 = [identifier isEqualToString:v3];
 
                 if (v37)
                 {
                   v67 = 0;
-                  v38 = [v35 dataType];
-                  v39 = [v38 isEqualToString:v4];
+                  dataType = [v35 dataType];
+                  v39 = [dataType isEqualToString:v4];
 
                   if (v39)
                   {
-                    v40 = [v35 value];
-                    Code = sub_2418EA9F4(v40, &v67);
+                    value = [v35 value];
+                    Code = sub_2418EA9F4(value, &v67);
 
                     v41 = v67;
                     if (v67)
@@ -545,12 +545,12 @@ LABEL_60:
                       {
                         v65 = v68;
                         v66 = v69;
-                        [(IrisVideoMetadataExtractor *)v64 AddFrameDictionary:v67 withCMTime:&v65 toArray:?];
+                        [(IrisVideoMetadataExtractor *)selfCopy AddFrameDictionary:v67 withCMTime:&v65 toArray:?];
                       }
 
                       v65 = v68;
                       v66 = v69;
-                      [(IrisVideoMetadataExtractor *)v64 AddInfoFromMetadata:v41 withTimeStamp:&v65 toArray:obj];
+                      [(IrisVideoMetadataExtractor *)selfCopy AddInfoFromMetadata:v41 withTimeStamp:&v65 toArray:obj];
                       goto LABEL_53;
                     }
                   }
@@ -558,24 +558,24 @@ LABEL_60:
 
                 else
                 {
-                  v42 = [v35 identifier];
-                  v43 = [v42 isEqualToString:@"mdta/com.apple.quicktime.camera-debug-info"];
+                  identifier2 = [v35 identifier];
+                  v43 = [identifier2 isEqualToString:@"mdta/com.apple.quicktime.camera-debug-info"];
 
                   if (v43)
                   {
-                    v44 = [v35 dataType];
-                    v45 = [v44 isEqualToString:v63];
+                    dataType2 = [v35 dataType];
+                    v45 = [dataType2 isEqualToString:v63];
 
                     if (v45)
                     {
                       if (v59)
                       {
-                        v46 = [v35 value];
-                        v41 = CFPropertyListCreateWithData(allocator, v46, 0, 0, &error);
+                        value2 = [v35 value];
+                        v41 = CFPropertyListCreateWithData(allocator, value2, 0, 0, &error);
 
                         v65 = v68;
                         v66 = v69;
-                        [(IrisVideoMetadataExtractor *)v64 AddFrameDictionary:v41 withCMTime:&v65 toArray:v59];
+                        [(IrisVideoMetadataExtractor *)selfCopy AddFrameDictionary:v41 withCMTime:&v65 toArray:v59];
 LABEL_53:
                         CFRelease(v41);
                       }
@@ -590,7 +590,7 @@ LABEL_53:
                 }
               }
 
-              v32 = [v30 countByEnumeratingWithState:&v71 objects:v79 count:16];
+              v32 = [items countByEnumeratingWithState:&v71 objects:v79 count:16];
             }
 
             while (v32);
@@ -599,16 +599,16 @@ LABEL_58:
             objc_autoreleasePoolPop(context);
             v28 = objc_autoreleasePoolPush();
             v27 = v53;
-            v47 = [v53 nextTimedMetadataGroup];
+            nextTimedMetadataGroup2 = [v53 nextTimedMetadataGroup];
 
-            v29 = v47;
-            if (!v47)
+            nextTimedMetadataGroup = nextTimedMetadataGroup2;
+            if (!nextTimedMetadataGroup2)
             {
 LABEL_59:
               objc_autoreleasePoolPop(v28);
               v25 = v51;
               [v51 cancelReading];
-              self = v64;
+              self = selfCopy;
               v5 = v59;
               v9 = v55;
               v24 = v52;

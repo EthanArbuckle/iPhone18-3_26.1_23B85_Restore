@@ -10,7 +10,7 @@
 
 - (id)shareViaICloudManageActionTitle
 {
-  if (([a1 canBeSharedViaICloud] & 1) == 0 && !objc_msgSend(a1, "isSharedViaICloud"))
+  if (([self canBeSharedViaICloud] & 1) == 0 && !objc_msgSend(self, "isSharedViaICloud"))
   {
     goto LABEL_9;
   }
@@ -21,7 +21,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      if ([a1 isSharedViaICloud])
+      if ([self isSharedViaICloud])
       {
         v2 = @"Manage Shared Folder";
       }
@@ -39,7 +39,7 @@ LABEL_9:
     goto LABEL_13;
   }
 
-  if ([a1 isSharedViaICloud])
+  if ([self isSharedViaICloud])
   {
     v2 = @"Manage Shared Note";
   }
@@ -58,7 +58,7 @@ LABEL_13:
 
 - (id)shareViaICloudAddPeopleActionTitle
 {
-  if (![a1 canBeSharedViaICloud])
+  if (![self canBeSharedViaICloud])
   {
     goto LABEL_8;
   }
@@ -100,11 +100,11 @@ LABEL_11:
 
 - (__CFString)shareViaICloudSystemImageName
 {
-  if (([a1 canBeSharedViaICloud] & 1) != 0 || objc_msgSend(a1, "isSharedViaICloud"))
+  if (([self canBeSharedViaICloud] & 1) != 0 || objc_msgSend(self, "isSharedViaICloud"))
   {
-    v2 = [a1 isSharedViaICloud];
+    isSharedViaICloud = [self isSharedViaICloud];
     v3 = @"person.crop.circle.badge.plus";
-    if (v2)
+    if (isSharedViaICloud)
     {
       v3 = @"person.crop.circle.badge.checkmark";
     }
@@ -122,15 +122,15 @@ LABEL_11:
 
 - (id)participantsInfoDescription
 {
-  v1 = [a1 serverShareCheckingParent];
-  v2 = [v1 ic_nonCurrentUserAcceptedParticipants];
+  serverShareCheckingParent = [self serverShareCheckingParent];
+  ic_nonCurrentUserAcceptedParticipants = [serverShareCheckingParent ic_nonCurrentUserAcceptedParticipants];
 
-  v3 = [v2 ic_compactMap:&__block_literal_global_44];
+  v3 = [ic_nonCurrentUserAcceptedParticipants ic_compactMap:&__block_literal_global_44];
   if ([v3 count])
   {
     if ([v3 count] == 1)
     {
-      v4 = [v2 count];
+      v4 = [ic_nonCurrentUserAcceptedParticipants count];
       v5 = MEMORY[0x1E696AEC0];
       if (v4 == 1)
       {
@@ -160,15 +160,15 @@ LABEL_11:
 
     v6 = __ICLocalizedFrameworkString_impl(@"With %@ and %lu others", @"With %@ and %lu others", 0, 1);
     v7 = [v3 objectAtIndexedSubscript:0];
-    [v5 localizedStringWithFormat:v6, v7, objc_msgSend(v2, "count") - 1];
+    [v5 localizedStringWithFormat:v6, v7, objc_msgSend(ic_nonCurrentUserAcceptedParticipants, "count") - 1];
     goto LABEL_10;
   }
 
-  if ([v2 count])
+  if ([ic_nonCurrentUserAcceptedParticipants count])
   {
     v8 = MEMORY[0x1E696AEC0];
     v6 = __ICLocalizedFrameworkString_impl(@"With %lu people", @"With %lu people", 0, 1);
-    v9 = [v8 localizedStringWithFormat:v6, objc_msgSend(v2, "count")];
+    v9 = [v8 localizedStringWithFormat:v6, objc_msgSend(ic_nonCurrentUserAcceptedParticipants, "count")];
 LABEL_12:
 
     goto LABEL_13;
@@ -186,8 +186,8 @@ LABEL_13:
   if ([v3 conformsToProtocol:&unk_1F4FC5D80])
   {
     v4 = MEMORY[0x1E69B7888];
-    v5 = [v3 attachmentUTI];
-    v6 = [v4 typeUTIIsInlineAttachment:v5];
+    attachmentUTI = [v3 attachmentUTI];
+    v6 = [v4 typeUTIIsInlineAttachment:attachmentUTI];
   }
 
   else

@@ -1,23 +1,23 @@
 @interface _DNDSSyncMessageGroup
-- (BOOL)isEqual:(id)a3;
-- (_DNDSSyncMessageGroup)initWithServiceType:(unint64_t)a3 protocolVersion:(unint64_t)a4 store:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (_DNDSSyncMessageGroup)initWithServiceType:(unint64_t)type protocolVersion:(unint64_t)version store:(id)store;
 - (unint64_t)hash;
 @end
 
 @implementation _DNDSSyncMessageGroup
 
-- (_DNDSSyncMessageGroup)initWithServiceType:(unint64_t)a3 protocolVersion:(unint64_t)a4 store:(id)a5
+- (_DNDSSyncMessageGroup)initWithServiceType:(unint64_t)type protocolVersion:(unint64_t)version store:(id)store
 {
-  v8 = a5;
+  storeCopy = store;
   v14.receiver = self;
   v14.super_class = _DNDSSyncMessageGroup;
   v9 = [(_DNDSSyncMessageGroup *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    v9->_protocolVersion = a4;
-    v9->_serviceType = a3;
-    v11 = [v8 copy];
+    v9->_protocolVersion = version;
+    v9->_serviceType = type;
+    v11 = [storeCopy copy];
     store = v10->_store;
     v10->_store = v11;
   }
@@ -25,10 +25,10 @@
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v8 = a3;
-  if (self == v8)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v14 = 1;
   }
@@ -38,16 +38,16 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v9 = v8;
-      v10 = [(_DNDSSyncMessageGroup *)self store];
-      v11 = [(_DNDSSyncMessageGroup *)v9 store];
-      if (v10 == v11)
+      v9 = equalCopy;
+      store = [(_DNDSSyncMessageGroup *)self store];
+      store2 = [(_DNDSSyncMessageGroup *)v9 store];
+      if (store == store2)
       {
         goto LABEL_10;
       }
 
-      v12 = [(_DNDSSyncMessageGroup *)self store];
-      if (!v12)
+      store3 = [(_DNDSSyncMessageGroup *)self store];
+      if (!store3)
       {
         v14 = 0;
 LABEL_18:
@@ -55,25 +55,25 @@ LABEL_18:
         goto LABEL_19;
       }
 
-      v3 = v12;
-      v13 = [(_DNDSSyncMessageGroup *)v9 store];
-      if (!v13)
+      v3 = store3;
+      store4 = [(_DNDSSyncMessageGroup *)v9 store];
+      if (!store4)
       {
         v14 = 0;
         goto LABEL_17;
       }
 
-      v4 = v13;
-      v5 = [(_DNDSSyncMessageGroup *)self store];
-      v6 = [(_DNDSSyncMessageGroup *)v9 store];
-      if ([v5 isEqual:v6])
+      v4 = store4;
+      store5 = [(_DNDSSyncMessageGroup *)self store];
+      store6 = [(_DNDSSyncMessageGroup *)v9 store];
+      if ([store5 isEqual:store6])
       {
 LABEL_10:
-        v15 = [(_DNDSSyncMessageGroup *)self protocolVersion];
-        if (v15 == [(_DNDSSyncMessageGroup *)v9 protocolVersion])
+        protocolVersion = [(_DNDSSyncMessageGroup *)self protocolVersion];
+        if (protocolVersion == [(_DNDSSyncMessageGroup *)v9 protocolVersion])
         {
-          v16 = [(_DNDSSyncMessageGroup *)self serviceType];
-          v14 = v16 == [(_DNDSSyncMessageGroup *)v9 serviceType];
+          serviceType = [(_DNDSSyncMessageGroup *)self serviceType];
+          v14 = serviceType == [(_DNDSSyncMessageGroup *)v9 serviceType];
         }
 
         else
@@ -81,7 +81,7 @@ LABEL_10:
           v14 = 0;
         }
 
-        if (v10 == v11)
+        if (store == store2)
         {
           goto LABEL_18;
         }
@@ -106,10 +106,10 @@ LABEL_19:
 
 - (unint64_t)hash
 {
-  v3 = [(_DNDSSyncMessageGroup *)self store];
-  v4 = [v3 hash];
-  v5 = [(_DNDSSyncMessageGroup *)self protocolVersion];
-  v6 = v5 ^ [(_DNDSSyncMessageGroup *)self serviceType];
+  store = [(_DNDSSyncMessageGroup *)self store];
+  v4 = [store hash];
+  protocolVersion = [(_DNDSSyncMessageGroup *)self protocolVersion];
+  v6 = protocolVersion ^ [(_DNDSSyncMessageGroup *)self serviceType];
 
   return v6 ^ v4;
 }

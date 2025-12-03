@@ -1,25 +1,25 @@
 @interface PXAnimatedCounter
 - (CGSize)maxDigitSize;
 - (CGSize)previousSize;
-- (CGSize)requiredSizeForNumber:(unint64_t)a3;
-- (PXAnimatedCounter)initWithCoder:(id)a3;
-- (PXAnimatedCounter)initWithFrame:(CGRect)a3;
-- (PXAnimatedCounter)initWithNumber:(unint64_t)a3;
-- (double)_xOffsetForBackingLabel:(id)a3;
-- (id)_labelForDigit:(unint64_t)a3;
-- (id)_numberStringForNumber:(int64_t)a3;
-- (int64_t)preferredAnimationStyleForNumber:(unint64_t)a3;
-- (unint64_t)_numDigitsForNumber:(int64_t)a3;
+- (CGSize)requiredSizeForNumber:(unint64_t)number;
+- (PXAnimatedCounter)initWithCoder:(id)coder;
+- (PXAnimatedCounter)initWithFrame:(CGRect)frame;
+- (PXAnimatedCounter)initWithNumber:(unint64_t)number;
+- (double)_xOffsetForBackingLabel:(id)label;
+- (id)_labelForDigit:(unint64_t)digit;
+- (id)_numberStringForNumber:(int64_t)number;
+- (int64_t)preferredAnimationStyleForNumber:(unint64_t)number;
+- (unint64_t)_numDigitsForNumber:(int64_t)number;
 - (void)_calculateLargestDigitSize;
-- (void)_setCounterToNumber:(unint64_t)a3;
+- (void)_setCounterToNumber:(unint64_t)number;
 - (void)_updateFramesForShownDigits;
 - (void)_updateSizeIfNeeded;
 - (void)commonInit;
 - (void)layoutSubviews;
-- (void)setFont:(id)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setNumber:(unint64_t)a3 animated:(BOOL)a4 completionBlock:(id)a5;
-- (void)setNumber:(unint64_t)a3 withAnimationStyle:(int64_t)a4 completionBlock:(id)a5;
+- (void)setFont:(id)font;
+- (void)setFrame:(CGRect)frame;
+- (void)setNumber:(unint64_t)number animated:(BOOL)animated completionBlock:(id)block;
+- (void)setNumber:(unint64_t)number withAnimationStyle:(int64_t)style completionBlock:(id)block;
 @end
 
 @implementation PXAnimatedCounter
@@ -44,20 +44,20 @@
   return result;
 }
 
-- (id)_labelForDigit:(unint64_t)a3
+- (id)_labelForDigit:(unint64_t)digit
 {
-  v4 = [(PXAnimatedCounter *)self _numberStringForNumber:a3];
+  v4 = [(PXAnimatedCounter *)self _numberStringForNumber:digit];
   v5 = objc_alloc_init(MEMORY[0x1E69DCC10]);
   [v5 setText:v4];
-  v6 = [(PXAnimatedCounter *)self font];
-  if (v6)
+  font = [(PXAnimatedCounter *)self font];
+  if (font)
   {
-    [v5 setFont:v6];
+    [v5 setFont:font];
   }
 
   [v5 sizeToFit];
-  v7 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  [v5 setTextColor:v7];
+  secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  [v5 setTextColor:secondaryLabelColor];
 
   [(PXAnimatedCounter *)self addSubview:v5];
 
@@ -74,8 +74,8 @@
   [(PXAnimatedCounter *)self previousSize];
   if (v8 != v12 || v10 != v11)
   {
-    v14 = [(PXAnimatedCounter *)self backingLabel];
-    [v14 setFrame:{v4, v6, v8, v10}];
+    backingLabel = [(PXAnimatedCounter *)self backingLabel];
+    [backingLabel setFrame:{v4, v6, v8, v10}];
 
     [(PXAnimatedCounter *)self _updateFramesForShownDigits];
 
@@ -85,16 +85,16 @@
 
 - (void)_updateFramesForShownDigits
 {
-  v35 = [(PXAnimatedCounter *)self digitLabels];
+  digitLabels = [(PXAnimatedCounter *)self digitLabels];
   [(PXAnimatedCounter *)self bounds];
   v4 = v3;
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(PXAnimatedCounter *)self backingLabel];
-  [(PXAnimatedCounter *)self _xOffsetForBackingLabel:v11];
+  backingLabel = [(PXAnimatedCounter *)self backingLabel];
+  [(PXAnimatedCounter *)self _xOffsetForBackingLabel:backingLabel];
   v13 = v12;
-  v14 = [v35 count];
+  v14 = [digitLabels count];
   if (v14)
   {
     v15 = v14;
@@ -103,8 +103,8 @@
     v34 = v10;
     do
     {
-      v17 = [v35 objectAtIndex:v16];
-      [v11 boundingRectForCharacterRange:{v16, 1}];
+      v17 = [digitLabels objectAtIndex:v16];
+      [backingLabel boundingRectForCharacterRange:{v16, 1}];
       v19 = v18;
       v21 = v20;
       v22 = v8;
@@ -148,8 +148,8 @@
   {
     v7 = [(PXAnimatedCounter *)self _numberStringForNumber:v3];
     v14 = v4;
-    v8 = [(PXAnimatedCounter *)self font];
-    v15[0] = v8;
+    font = [(PXAnimatedCounter *)self font];
+    v15[0] = font;
     v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:&v14 count:1];
     [v7 sizeWithAttributes:v9];
     v11 = v10;
@@ -168,13 +168,13 @@
   [(PXAnimatedCounter *)self setMaxDigitSize:v5, v6];
 }
 
-- (void)_setCounterToNumber:(unint64_t)a3
+- (void)_setCounterToNumber:(unint64_t)number
 {
-  self->_number = a3;
+  self->_number = number;
   v11 = [(PXAnimatedCounter *)self _numberStringForNumber:?];
   v4 = [v11 length];
-  v5 = [(PXAnimatedCounter *)self digitLabels];
-  if ([v5 count] >= v4)
+  digitLabels = [(PXAnimatedCounter *)self digitLabels];
+  if ([digitLabels count] >= v4)
   {
     if (!v4)
     {
@@ -187,17 +187,17 @@
     do
     {
       v6 = [(PXAnimatedCounter *)self _labelForDigit:0];
-      [v5 addObject:v6];
+      [digitLabels addObject:v6];
     }
 
-    while ([v5 count] < v4);
+    while ([digitLabels count] < v4);
   }
 
   v7 = 0;
   do
   {
     v8 = [v11 substringWithRange:{v7, 1}];
-    v9 = [v5 objectAtIndex:v7];
+    v9 = [digitLabels objectAtIndex:v7];
     [v9 setText:v8];
 
     ++v7;
@@ -205,33 +205,33 @@
 
   while (v4 != v7);
 LABEL_7:
-  v10 = [(PXAnimatedCounter *)self backingLabel];
-  [v10 setText:v11];
+  backingLabel = [(PXAnimatedCounter *)self backingLabel];
+  [backingLabel setText:v11];
 
   [(PXAnimatedCounter *)self _updateFramesForShownDigits];
 }
 
-- (id)_numberStringForNumber:(int64_t)a3
+- (id)_numberStringForNumber:(int64_t)number
 {
   v3 = MEMORY[0x1E696ADA0];
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:number];
   v5 = [v3 localizedStringFromNumber:v4 numberStyle:0];
 
   return v5;
 }
 
-- (unint64_t)_numDigitsForNumber:(int64_t)a3
+- (unint64_t)_numDigitsForNumber:(int64_t)number
 {
-  v3 = [(PXAnimatedCounter *)self _numberStringForNumber:a3];
+  v3 = [(PXAnimatedCounter *)self _numberStringForNumber:number];
   v4 = [v3 length];
 
   return v4;
 }
 
-- (double)_xOffsetForBackingLabel:(id)a3
+- (double)_xOffsetForBackingLabel:(id)label
 {
-  v4 = a3;
-  [v4 bounds];
+  labelCopy = label;
+  [labelCopy bounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -241,23 +241,23 @@ LABEL_7:
   if (v10 > v13)
   {
     v14 = v13 - v10;
-    [v4 setFrame:{v6, v8, v10 + v13 - v10, v12}];
+    [labelCopy setFrame:{v6, v8, v10 + v13 - v10, v12}];
   }
 
   return v14;
 }
 
-- (void)setFont:(id)a3
+- (void)setFont:(id)font
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  objc_storeStrong(&self->_font, a3);
+  fontCopy = font;
+  objc_storeStrong(&self->_font, font);
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = [(PXAnimatedCounter *)self digitLabels];
-  v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  digitLabels = [(PXAnimatedCounter *)self digitLabels];
+  v7 = [digitLabels countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
     v8 = v7;
@@ -269,30 +269,30 @@ LABEL_7:
       {
         if (*v13 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(digitLabels);
         }
 
-        [*(*(&v12 + 1) + 8 * v10++) setFont:v5];
+        [*(*(&v12 + 1) + 8 * v10++) setFont:fontCopy];
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v8 = [digitLabels countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v8);
   }
 
-  v11 = [(PXAnimatedCounter *)self backingLabel];
-  [v11 setFont:v5];
+  backingLabel = [(PXAnimatedCounter *)self backingLabel];
+  [backingLabel setFont:fontCopy];
 
   [(PXAnimatedCounter *)self _calculateLargestDigitSize];
 }
 
-- (CGSize)requiredSizeForNumber:(unint64_t)a3
+- (CGSize)requiredSizeForNumber:(unint64_t)number
 {
   [(PXAnimatedCounter *)self maxDigitSize];
   v6 = v5;
-  v8 = v7 * [(PXAnimatedCounter *)self _numDigitsForNumber:a3];
+  v8 = v7 * [(PXAnimatedCounter *)self _numDigitsForNumber:number];
   v9 = ceilf(v8);
   v10 = v6;
   v11 = ceilf(v10);
@@ -301,11 +301,11 @@ LABEL_7:
   return result;
 }
 
-- (int64_t)preferredAnimationStyleForNumber:(unint64_t)a3
+- (int64_t)preferredAnimationStyleForNumber:(unint64_t)number
 {
   number = self->_number;
-  v4 = number >= a3;
-  v5 = 2 * (number > a3);
+  v4 = number >= number;
+  v5 = 2 * (number > number);
   if (v4)
   {
     return v5;
@@ -317,19 +317,19 @@ LABEL_7:
   }
 }
 
-- (void)setNumber:(unint64_t)a3 withAnimationStyle:(int64_t)a4 completionBlock:(id)a5
+- (void)setNumber:(unint64_t)number withAnimationStyle:(int64_t)style completionBlock:(id)block
 {
-  v8 = a5;
-  v9 = v8;
-  v113 = a4;
-  if (a4)
+  blockCopy = block;
+  v9 = blockCopy;
+  styleCopy = style;
+  if (style)
   {
-    v100 = v8;
+    v100 = blockCopy;
     number = self->_number;
     v11 = [(PXAnimatedCounter *)self _numberStringForNumber:number];
-    self->_number = a3;
-    v108 = a3;
-    v12 = [(PXAnimatedCounter *)self _numberStringForNumber:a3];
+    self->_number = number;
+    numberCopy = number;
+    v12 = [(PXAnimatedCounter *)self _numberStringForNumber:number];
     v13 = [v11 length];
     v14 = [v12 length];
     if (v14 >= v13)
@@ -364,7 +364,7 @@ LABEL_7:
       while (v19 < [v12 length]);
     }
 
-    v107 = number;
+    numberCopy2 = number;
     v98 = v12;
     v20 = [MEMORY[0x1E696AD60] stringWithString:v12];
     v21 = [v20 length];
@@ -381,9 +381,9 @@ LABEL_7:
 
     v23 = v15;
     v24 = [v20 length];
-    v25 = [(PXAnimatedCounter *)self backingLabel];
-    [v25 setText:v20];
-    v99 = [(PXAnimatedCounter *)self digitLabels];
+    backingLabel = [(PXAnimatedCounter *)self backingLabel];
+    [backingLabel setText:v20];
+    digitLabels = [(PXAnimatedCounter *)self digitLabels];
     [(PXAnimatedCounter *)self bounds];
     v105 = v27;
     v106 = v26;
@@ -392,16 +392,16 @@ LABEL_7:
     v30 = [objc_alloc(MEMORY[0x1E69DCC10]) initWithFrame:{v26, v27, v28, v29}];
     [v30 setText:v11];
     [v30 setTextAlignment:2];
-    v31 = [(PXAnimatedCounter *)self font];
-    [v30 setFont:v31];
+    font = [(PXAnimatedCounter *)self font];
+    [v30 setFont:font];
 
-    v32 = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
     v110 = v30;
-    [v30 setTextColor:v32];
+    [v30 setTextColor:secondaryLabelColor];
 
-    v116 = self;
-    v114 = v25;
-    [(PXAnimatedCounter *)self _xOffsetForBackingLabel:v25];
+    selfCopy = self;
+    v114 = backingLabel;
+    [(PXAnimatedCounter *)self _xOffsetForBackingLabel:backingLabel];
     v124 = v33;
     v34 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v24];
     v111 = v20;
@@ -411,14 +411,14 @@ LABEL_7:
     if (v24)
     {
       v35 = 0;
-      v36 = v113;
-      if (v113 != 1)
+      v36 = styleCopy;
+      if (styleCopy != 1)
       {
         v36 = -1;
       }
 
       v37 = -1;
-      if (v113 != 1)
+      if (styleCopy != 1)
       {
         v37 = 1;
       }
@@ -432,9 +432,9 @@ LABEL_7:
       {
         v39 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:11];
         v119 = [v20 substringWithRange:{v35, 1}];
-        v40 = [v119 integerValue];
+        integerValue = [v119 integerValue];
         v118 = [v11 substringWithRange:{v35, 1}];
-        v41 = [v118 integerValue];
+        integerValue2 = [v118 integerValue];
         if (v35 < v17)
         {
           v42 = -1;
@@ -442,13 +442,13 @@ LABEL_7:
 
         else
         {
-          v42 = v41;
+          v42 = integerValue2;
         }
 
-        v43 = v40 - v42;
-        if (v113 != 1)
+        v43 = integerValue - v42;
+        if (styleCopy != 1)
         {
-          v43 = v42 - v40;
+          v43 = v42 - integerValue;
         }
 
         if (v43 >= 0)
@@ -501,7 +501,7 @@ LABEL_7:
         v129 = v44;
         if (v35 >= v17)
         {
-          v63 = [v99 objectAtIndex:v35 - v17];
+          v63 = [digitLabels objectAtIndex:v35 - v17];
           [v63 frame];
           v125 = v67;
           v127 = v66;
@@ -530,8 +530,8 @@ LABEL_7:
             v68 = v64;
           }
 
-          v72 = [[PXLabelAnimationContext alloc] initWithLabel:v63 andDestinationRect:v68, v65 + v62 * v38, v127, v125];
-          [v39 addObject:v72];
+          v125 = [[PXLabelAnimationContext alloc] initWithLabel:v63 andDestinationRect:v68, v65 + v62 * v38, v127, v125];
+          [v39 addObject:v125];
         }
 
         v121 = v35;
@@ -546,7 +546,7 @@ LABEL_7:
           v77 = 1;
           do
           {
-            if (v107 >= v108)
+            if (numberCopy2 >= numberCopy)
             {
               v78 = v76;
             }
@@ -556,7 +556,7 @@ LABEL_7:
               v78 = v77;
             }
 
-            v79 = [(PXAnimatedCounter *)v116 _labelForDigit:(v126 + v78) % 10];
+            v79 = [(PXAnimatedCounter *)selfCopy _labelForDigit:(v126 + v78) % 10];
             [v79 sizeToFit];
             [v79 bounds];
             v80 = CGRectGetWidth(v145);
@@ -615,10 +615,10 @@ LABEL_7:
         if (v91 >= v23)
         {
           v92 = [v34 objectAtIndex:v91];
-          v93 = [v92 lastObject];
-          v94 = [v93 label];
+          lastObject = [v92 lastObject];
+          label = [lastObject label];
 
-          [v90 addObject:v94];
+          [v90 addObject:label];
         }
 
         ++v91;
@@ -627,8 +627,8 @@ LABEL_7:
       while (v91 < [v34 count]);
     }
 
-    [v99 removeAllObjects];
-    [v99 addObjectsFromArray:v90];
+    [digitLabels removeAllObjects];
+    [digitLabels addObjectsFromArray:v90];
     [MEMORY[0x1E6979518] flush];
     if ([v34 count])
     {
@@ -638,7 +638,7 @@ LABEL_7:
         v96 = [v34 objectAtIndex:v95];
         if ([v96 count])
         {
-          [(PXAnimatedCounter *)v116 setAnimationsInProgress:[(PXAnimatedCounter *)v116 animationsInProgress]+ 1];
+          [(PXAnimatedCounter *)selfCopy setAnimationsInProgress:[(PXAnimatedCounter *)selfCopy animationsInProgress]+ 1];
           v97 = MEMORY[0x1E69DD250];
           v137[0] = MEMORY[0x1E69E9820];
           v137[1] = 3221225472;
@@ -649,7 +649,7 @@ LABEL_7:
           v133[1] = 3221225472;
           v133[2] = __66__PXAnimatedCounter_setNumber_withAnimationStyle_completionBlock___block_invoke_2;
           v133[3] = &unk_1E7745590;
-          v133[4] = v116;
+          v133[4] = selfCopy;
           v34 = v115;
           v134 = v138;
           v135 = v90;
@@ -668,7 +668,7 @@ LABEL_7:
 
   else
   {
-    [(PXAnimatedCounter *)self _setCounterToNumber:a3];
+    [(PXAnimatedCounter *)self _setCounterToNumber:number];
     if (v9)
     {
       v9[2](v9, 1);
@@ -730,13 +730,13 @@ void __66__PXAnimatedCounter_setNumber_withAnimationStyle_completionBlock___bloc
   }
 }
 
-- (void)setNumber:(unint64_t)a3 animated:(BOOL)a4 completionBlock:(id)a5
+- (void)setNumber:(unint64_t)number animated:(BOOL)animated completionBlock:(id)block
 {
-  v5 = a4;
-  v9 = a5;
-  if (v5)
+  animatedCopy = animated;
+  blockCopy = block;
+  if (animatedCopy)
   {
-    v8 = [(PXAnimatedCounter *)self preferredAnimationStyleForNumber:a3];
+    v8 = [(PXAnimatedCounter *)self preferredAnimationStyleForNumber:number];
   }
 
   else
@@ -744,14 +744,14 @@ void __66__PXAnimatedCounter_setNumber_withAnimationStyle_completionBlock___bloc
     v8 = 0;
   }
 
-  [(PXAnimatedCounter *)self setNumber:a3 withAnimationStyle:v8 completionBlock:v9];
+  [(PXAnimatedCounter *)self setNumber:number withAnimationStyle:v8 completionBlock:blockCopy];
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = PXAnimatedCounter;
-  [(PXAnimatedCounter *)&v4 setFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(PXAnimatedCounter *)&v4 setFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(PXAnimatedCounter *)self _updateSizeIfNeeded];
 }
 
@@ -763,11 +763,11 @@ void __66__PXAnimatedCounter_setNumber_withAnimationStyle_completionBlock___bloc
   [(PXAnimatedCounter *)self _updateSizeIfNeeded];
 }
 
-- (PXAnimatedCounter)initWithCoder:(id)a3
+- (PXAnimatedCounter)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = PXAnimatedCounter;
-  v3 = [(PXAnimatedCounter *)&v6 initWithCoder:a3];
+  v3 = [(PXAnimatedCounter *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -777,11 +777,11 @@ void __66__PXAnimatedCounter_setNumber_withAnimationStyle_completionBlock___bloc
   return v4;
 }
 
-- (PXAnimatedCounter)initWithFrame:(CGRect)a3
+- (PXAnimatedCounter)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = PXAnimatedCounter;
-  v3 = [(PXAnimatedCounter *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PXAnimatedCounter *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -791,7 +791,7 @@ void __66__PXAnimatedCounter_setNumber_withAnimationStyle_completionBlock___bloc
   return v4;
 }
 
-- (PXAnimatedCounter)initWithNumber:(unint64_t)a3
+- (PXAnimatedCounter)initWithNumber:(unint64_t)number
 {
   v7.receiver = self;
   v7.super_class = PXAnimatedCounter;
@@ -799,7 +799,7 @@ void __66__PXAnimatedCounter_setNumber_withAnimationStyle_completionBlock___bloc
   v5 = v4;
   if (v4)
   {
-    [(PXAnimatedCounter *)v4 _setCounterToNumber:a3];
+    [(PXAnimatedCounter *)v4 _setCounterToNumber:number];
   }
 
   return v5;
@@ -824,8 +824,8 @@ void __66__PXAnimatedCounter_setNumber_withAnimationStyle_completionBlock___bloc
   [(UILabel *)self->_backingLabel setTextAlignment:2];
   [(UILabel *)self->_backingLabel setFont:self->_font];
   v9 = self->_backingLabel;
-  v10 = [MEMORY[0x1E69DC888] magentaColor];
-  [(UILabel *)v9 setTextColor:v10];
+  magentaColor = [MEMORY[0x1E69DC888] magentaColor];
+  [(UILabel *)v9 setTextColor:magentaColor];
 
   v11 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:5];
   digitLabels = self->_digitLabels;

@@ -28,11 +28,11 @@
   [v4 platterWaveformSliceWidth];
   v6 = v5;
   [v9 setFrame:{0.0, 0.0, v6, v6}];
-  v7 = [v9 layer];
-  [v7 setCornerRadius:v6 * 0.5];
+  layer = [v9 layer];
+  [layer setCornerRadius:v6 * 0.5];
 
-  v8 = [v9 layer];
-  [v8 setAllowsEdgeAntialiasing:1];
+  layer2 = [v9 layer];
+  [layer2 setAllowsEdgeAntialiasing:1];
 }
 
 @end

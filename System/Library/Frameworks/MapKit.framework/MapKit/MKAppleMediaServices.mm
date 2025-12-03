@@ -1,26 +1,26 @@
 @interface MKAppleMediaServices
 + (id)sharedInstance;
-+ (id)sourceStringWithSource:(int64_t)a3;
++ (id)sourceStringWithSource:(int64_t)source;
 - (BOOL)isVisualIntelligenceProcess;
-- (id)additionalParameterWithType:(int64_t)a3;
-- (id)externalRequestCounterRequestSubtypeWithType:(int64_t)a3;
-- (int64_t)AMSMediaTaskTypeFromGEOAppleMediaServicesMediaType:(int64_t)a3;
-- (void)appleMediaServicesResultsWithIdentifiers:(id)a3 bundleIdentifiers:(id)a4 artworkSize:(CGSize)a5 screenScale:(double)a6 type:(int64_t)a7 source:(int64_t)a8 completion:(id)a9;
-- (void)mediaResultWithIdentifiers:(id)a3 bundleIdentifiers:(id)a4 artworkSize:(CGSize)a5 screenScale:(double)a6 type:(int64_t)a7 source:(int64_t)a8 completion:(id)a9;
+- (id)additionalParameterWithType:(int64_t)type;
+- (id)externalRequestCounterRequestSubtypeWithType:(int64_t)type;
+- (int64_t)AMSMediaTaskTypeFromGEOAppleMediaServicesMediaType:(int64_t)type;
+- (void)appleMediaServicesResultsWithIdentifiers:(id)identifiers bundleIdentifiers:(id)bundleIdentifiers artworkSize:(CGSize)size screenScale:(double)scale type:(int64_t)type source:(int64_t)source completion:(id)completion;
+- (void)mediaResultWithIdentifiers:(id)identifiers bundleIdentifiers:(id)bundleIdentifiers artworkSize:(CGSize)size screenScale:(double)scale type:(int64_t)type source:(int64_t)source completion:(id)completion;
 @end
 
 @implementation MKAppleMediaServices
 
-+ (id)sourceStringWithSource:(int64_t)a3
++ (id)sourceStringWithSource:(int64_t)source
 {
-  if ((a3 - 2) > 0xB)
+  if ((source - 2) > 0xB)
   {
     return @"Open App";
   }
 
   else
   {
-    return *(&off_1E76C62C8 + a3 - 2);
+    return *(&off_1E76C62C8 + source - 2);
   }
 }
 
@@ -30,7 +30,7 @@
   block[1] = 3221225472;
   block[2] = __38__MKAppleMediaServices_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_once != -1)
   {
     dispatch_once(&sharedInstance_once, block);
@@ -48,29 +48,29 @@ void __38__MKAppleMediaServices_sharedInstance__block_invoke(uint64_t a1)
   sharedInstance_sharedInstance = v1;
 }
 
-- (id)externalRequestCounterRequestSubtypeWithType:(int64_t)a3
+- (id)externalRequestCounterRequestSubtypeWithType:(int64_t)type
 {
-  if ((a3 - 1) > 0x13)
+  if ((type - 1) > 0x13)
   {
     return @"Unknown Subtype";
   }
 
   else
   {
-    return *(&off_1E76C6328 + a3 - 1);
+    return *(&off_1E76C6328 + type - 1);
   }
 }
 
-- (id)additionalParameterWithType:(int64_t)a3
+- (id)additionalParameterWithType:(int64_t)type
 {
-  if (a3 <= 2)
+  if (type <= 2)
   {
-    if (a3 == 1)
+    if (type == 1)
     {
       return &unk_1F1611DF0;
     }
 
-    if (a3 == 2)
+    if (type == 2)
     {
       return &unk_1F1611E68;
     }
@@ -83,7 +83,7 @@ void __38__MKAppleMediaServices_sharedInstance__block_invoke(uint64_t a1)
 
   else
   {
-    switch(a3)
+    switch(type)
     {
       case 19:
         return &unk_1F1611E40;
@@ -97,11 +97,11 @@ void __38__MKAppleMediaServices_sharedInstance__block_invoke(uint64_t a1)
   }
 }
 
-- (int64_t)AMSMediaTaskTypeFromGEOAppleMediaServicesMediaType:(int64_t)a3
+- (int64_t)AMSMediaTaskTypeFromGEOAppleMediaServicesMediaType:(int64_t)type
 {
   result = 0;
   v8 = *MEMORY[0x1E69E9840];
-  switch(a3)
+  switch(type)
   {
     case 0:
       v4 = MKGetAppleMediaServicesServerLog();
@@ -178,22 +178,22 @@ LABEL_5:
 
 - (BOOL)isVisualIntelligenceProcess
 {
-  v2 = [MEMORY[0x1E696AAE8] mainBundle];
-  v3 = [v2 bundleIdentifier];
-  v4 = [v3 isEqualToString:@"com.apple.VisualIntelligenceCamera"];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v4 = [bundleIdentifier isEqualToString:@"com.apple.VisualIntelligenceCamera"];
 
   return v4;
 }
 
-- (void)mediaResultWithIdentifiers:(id)a3 bundleIdentifiers:(id)a4 artworkSize:(CGSize)a5 screenScale:(double)a6 type:(int64_t)a7 source:(int64_t)a8 completion:(id)a9
+- (void)mediaResultWithIdentifiers:(id)identifiers bundleIdentifiers:(id)bundleIdentifiers artworkSize:(CGSize)size screenScale:(double)scale type:(int64_t)type source:(int64_t)source completion:(id)completion
 {
-  height = a5.height;
-  width = a5.width;
-  v17 = a3;
-  v18 = a4;
-  v19 = a9;
-  v20 = [getAMSMediaTaskClass() bagSubProfile];
-  v21 = [getAMSMediaTaskClass() bagSubProfileVersion];
+  height = size.height;
+  width = size.width;
+  identifiersCopy = identifiers;
+  bundleIdentifiersCopy = bundleIdentifiers;
+  completionCopy = completion;
+  bagSubProfile = [getAMSMediaTaskClass() bagSubProfile];
+  bagSubProfileVersion = [getAMSMediaTaskClass() bagSubProfileVersion];
   v55 = 0;
   v56 = &v55;
   v57 = 0x2050000000;
@@ -210,15 +210,15 @@ LABEL_5:
     v22 = v56[3];
   }
 
-  v43 = v19;
+  v43 = completionCopy;
   v23 = v22;
   _Block_object_dispose(&v55, 8);
-  v44 = v21;
-  v24 = [v22 bagForProfile:v20 profileVersion:v21];
-  v25 = [(MKAppleMediaServices *)self AMSMediaTaskTypeFromGEOAppleMediaServicesMediaType:a7];
-  v26 = [(MKAppleMediaServices *)self isVisualIntelligenceProcess];
+  v44 = bagSubProfileVersion;
+  v24 = [v22 bagForProfile:bagSubProfile profileVersion:bagSubProfileVersion];
+  v25 = [(MKAppleMediaServices *)self AMSMediaTaskTypeFromGEOAppleMediaServicesMediaType:type];
+  isVisualIntelligenceProcess = [(MKAppleMediaServices *)self isVisualIntelligenceProcess];
   v27 = @"com.apple.Maps";
-  if (v26)
+  if (isVisualIntelligenceProcess)
   {
     v27 = @"com.apple.VisualIntelligenceCamera";
   }
@@ -226,17 +226,17 @@ LABEL_5:
   v28 = v27;
   v29 = [objc_alloc(getAMSMediaTaskClass()) initWithType:v25 clientIdentifier:v28 clientVersion:@"1" bag:v24];
 
-  if ([v17 count])
+  if ([identifiersCopy count])
   {
-    v40 = v20;
-    v41 = v18;
-    v42 = v17;
-    [v29 setItemIdentifiers:v17];
+    v40 = bagSubProfile;
+    v41 = bundleIdentifiersCopy;
+    v42 = identifiersCopy;
+    [v29 setItemIdentifiers:identifiersCopy];
   }
 
   else
   {
-    if (![v18 count])
+    if (![bundleIdentifiersCopy count])
     {
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
@@ -249,40 +249,40 @@ LABEL_5:
       goto LABEL_10;
     }
 
-    v40 = v20;
-    v41 = v18;
-    v42 = v17;
-    [v29 setBundleIdentifiers:v18];
+    v40 = bagSubProfile;
+    v41 = bundleIdentifiersCopy;
+    v42 = identifiersCopy;
+    [v29 setBundleIdentifiers:bundleIdentifiersCopy];
   }
 
-  v30 = [(MKAppleMediaServices *)self additionalParameterWithType:a7];
+  v30 = [(MKAppleMediaServices *)self additionalParameterWithType:type];
   [v29 setAdditionalQueryParams:v30];
 
-  v31 = [MEMORY[0x1E69A2458] sharedCounter];
-  v32 = [(MKAppleMediaServices *)self externalRequestCounterRequestType];
-  v33 = [(MKAppleMediaServices *)self externalRequestCounterRequestSubtypeWithType:a7];
-  v34 = [objc_opt_class() sourceStringWithSource:a8];
+  mEMORY[0x1E69A2458] = [MEMORY[0x1E69A2458] sharedCounter];
+  externalRequestCounterRequestType = [(MKAppleMediaServices *)self externalRequestCounterRequestType];
+  v33 = [(MKAppleMediaServices *)self externalRequestCounterRequestSubtypeWithType:type];
+  v34 = [objc_opt_class() sourceStringWithSource:source];
   v35 = GEOApplicationIdentifierOrProcessName();
-  v36 = [v31 externalRequestCounterTicketForType:v32 subtype:v33 source:v34 appId:v35];
+  v36 = [mEMORY[0x1E69A2458] externalRequestCounterTicketForType:externalRequestCounterRequestType subtype:v33 source:v34 appId:v35];
 
-  v37 = [v29 perform];
+  perform = [v29 perform];
   v45[0] = MEMORY[0x1E69E9820];
   v45[1] = 3221225472;
   v45[2] = __116__MKAppleMediaServices_mediaResultWithIdentifiers_bundleIdentifiers_artworkSize_screenScale_type_source_completion___block_invoke_2;
   v45[3] = &unk_1E76C6290;
   v49 = width;
   v50 = height;
-  v51 = a6;
+  scaleCopy = scale;
   v46 = v36;
   v47 = v43;
-  v48 = a7;
+  typeCopy = type;
   v38 = v43;
   v39 = v36;
-  [v37 addFinishBlock:v45];
+  [perform addFinishBlock:v45];
 
-  v18 = v41;
-  v17 = v42;
-  v20 = v40;
+  bundleIdentifiersCopy = v41;
+  identifiersCopy = v42;
+  bagSubProfile = v40;
 LABEL_10:
 }
 
@@ -373,18 +373,18 @@ uint64_t __116__MKAppleMediaServices_mediaResultWithIdentifiers_bundleIdentifier
   return v5(v2, v3, v4);
 }
 
-- (void)appleMediaServicesResultsWithIdentifiers:(id)a3 bundleIdentifiers:(id)a4 artworkSize:(CGSize)a5 screenScale:(double)a6 type:(int64_t)a7 source:(int64_t)a8 completion:(id)a9
+- (void)appleMediaServicesResultsWithIdentifiers:(id)identifiers bundleIdentifiers:(id)bundleIdentifiers artworkSize:(CGSize)size screenScale:(double)scale type:(int64_t)type source:(int64_t)source completion:(id)completion
 {
-  height = a5.height;
-  width = a5.width;
-  v17 = a9;
+  height = size.height;
+  width = size.width;
+  completionCopy = completion;
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __130__MKAppleMediaServices_appleMediaServicesResultsWithIdentifiers_bundleIdentifiers_artworkSize_screenScale_type_source_completion___block_invoke;
   v19[3] = &unk_1E76C8490;
-  v20 = v17;
-  v18 = v17;
-  [(MKAppleMediaServices *)self mediaResultWithIdentifiers:a3 bundleIdentifiers:a4 artworkSize:a7 screenScale:a8 type:v19 source:width completion:height, a6];
+  v20 = completionCopy;
+  v18 = completionCopy;
+  [(MKAppleMediaServices *)self mediaResultWithIdentifiers:identifiers bundleIdentifiers:bundleIdentifiers artworkSize:type screenScale:source type:v19 source:width completion:height, scale];
 }
 
 void __130__MKAppleMediaServices_appleMediaServicesResultsWithIdentifiers_bundleIdentifiers_artworkSize_screenScale_type_source_completion___block_invoke(uint64_t a1, void *a2, void *a3)

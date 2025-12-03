@@ -1,33 +1,33 @@
 @interface NTKCDetailTableViewCell
-- (BOOL)_visibleAtPoint:(CGPoint)a3;
-- (NTKCDetailTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)_visibleAtPoint:(CGPoint)point;
+- (NTKCDetailTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (void)_fontSizeDidChange;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setHighlighted:(BOOL)a3 animated:(BOOL)a4;
-- (void)setShowsSeparator:(BOOL)a3;
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated;
+- (void)setShowsSeparator:(BOOL)separator;
 @end
 
 @implementation NTKCDetailTableViewCell
 
-- (NTKCDetailTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (NTKCDetailTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v13.receiver = self;
   v13.super_class = NTKCDetailTableViewCell;
-  v4 = [(NTKCDetailTableViewCell *)&v13 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(NTKCDetailTableViewCell *)&v13 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = BPSBackgroundColor();
     [(NTKCDetailTableViewCell *)v4 setBackgroundColor:v5];
 
-    v6 = [MEMORY[0x277D75348] tertiarySystemBackgroundColor];
-    [(NTKCDetailTableViewCell *)v4 setSelectionTintColor:v6];
+    tertiarySystemBackgroundColor = [MEMORY[0x277D75348] tertiarySystemBackgroundColor];
+    [(NTKCDetailTableViewCell *)v4 setSelectionTintColor:tertiarySystemBackgroundColor];
 
     [(NTKCDetailTableViewCell *)v4 setSelectionStyle:0];
-    v7 = [objc_opt_class() defaultTextColor];
-    v8 = [(NTKCDetailTableViewCell *)v4 textLabel];
-    [v8 setTextColor:v7];
+    defaultTextColor = [objc_opt_class() defaultTextColor];
+    textLabel = [(NTKCDetailTableViewCell *)v4 textLabel];
+    [textLabel setTextColor:defaultTextColor];
 
     if (CLKLayoutIsRTL())
     {
@@ -39,11 +39,11 @@
       v9 = 2;
     }
 
-    v10 = [(NTKCDetailTableViewCell *)v4 detailTextLabel];
-    [v10 setTextAlignment:v9];
+    detailTextLabel = [(NTKCDetailTableViewCell *)v4 detailTextLabel];
+    [detailTextLabel setTextAlignment:v9];
 
-    v11 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v11 addObserver:v4 selector:sel__fontSizeDidChange name:*MEMORY[0x277D76810] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v4 selector:sel__fontSizeDidChange name:*MEMORY[0x277D76810] object:0];
 
     [(NTKCDetailTableViewCell *)v4 _fontSizeDidChange];
   }
@@ -53,21 +53,21 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277D76810] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D76810] object:0];
 
   v4.receiver = self;
   v4.super_class = NTKCDetailTableViewCell;
   [(NTKCDetailTableViewCell *)&v4 dealloc];
 }
 
-- (void)setShowsSeparator:(BOOL)a3
+- (void)setShowsSeparator:(BOOL)separator
 {
-  if (self->_showsSeparator != a3)
+  if (self->_showsSeparator != separator)
   {
-    self->_showsSeparator = a3;
+    self->_showsSeparator = separator;
     separatorView = self->_separatorView;
-    if (a3)
+    if (separator)
     {
       if (!separatorView)
       {
@@ -95,23 +95,23 @@
   v85.receiver = self;
   v85.super_class = NTKCDetailTableViewCell;
   [(NTKCDetailTableViewCell *)&v85 layoutSubviews];
-  v3 = [(NTKCDetailTableViewCell *)self contentView];
-  [v3 bounds];
+  contentView = [(NTKCDetailTableViewCell *)self contentView];
+  [contentView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
 
   v12 = NTKCScreenEdgeMargin();
-  v13 = [(NTKCDetailTableViewCell *)self textLabel];
-  v14 = [v13 font];
-  [v14 _scaledValueForValue:28.0];
+  textLabel = [(NTKCDetailTableViewCell *)self textLabel];
+  font = [textLabel font];
+  [font _scaledValueForValue:28.0];
   v16 = v15;
 
   IsRTL = CLKLayoutIsRTL();
-  v18 = [(NTKCDetailTableViewCell *)self textLabel];
-  v19 = [v18 text];
-  if (![v19 length])
+  textLabel2 = [(NTKCDetailTableViewCell *)self textLabel];
+  text = [textLabel2 text];
+  if (![text length])
   {
 
 LABEL_17:
@@ -125,8 +125,8 @@ LABEL_17:
   if (!ignoresRTLCorrection)
   {
     v82 = v7;
-    v21 = [(NTKCDetailTableViewCell *)self textLabel];
-    [v21 frame];
+    textLabel3 = [(NTKCDetailTableViewCell *)self textLabel];
+    [textLabel3 frame];
     v23 = v22;
     v25 = v24;
     v27 = v26;
@@ -147,8 +147,8 @@ LABEL_17:
       v30 = Width - CGRectGetWidth(v87) - v12;
     }
 
-    v32 = [(NTKCDetailTableViewCell *)self textLabel];
-    [v32 _lastLineBaseline];
+    textLabel4 = [(NTKCDetailTableViewCell *)self textLabel];
+    [textLabel4 _lastLineBaseline];
     v34 = v16 - v33;
 
     v88.origin.x = v30;
@@ -160,12 +160,12 @@ LABEL_17:
       v34 = 0.0;
     }
 
-    v35 = [(NTKCDetailTableViewCell *)self textLabel];
-    [v35 setFrame:{v30, v34, v27, v29}];
+    textLabel5 = [(NTKCDetailTableViewCell *)self textLabel];
+    [textLabel5 setFrame:{v30, v34, v27, v29}];
 
-    v36 = [(NTKCDetailTableViewCell *)self detailTextLabel];
-    v37 = [v36 text];
-    v38 = [v37 length];
+    detailTextLabel = [(NTKCDetailTableViewCell *)self detailTextLabel];
+    text2 = [detailTextLabel text];
+    v38 = [text2 length];
 
     if (v38)
     {
@@ -179,14 +179,14 @@ LABEL_17:
       v90.size.width = v27;
       v90.size.height = v29;
       v40 = v39 - CGRectGetWidth(v90) + -16.0;
-      v41 = [(NTKCDetailTableViewCell *)self detailTextLabel];
-      [v41 frame];
+      detailTextLabel2 = [(NTKCDetailTableViewCell *)self detailTextLabel];
+      [detailTextLabel2 frame];
       v43 = v42;
       v45 = v44;
       v47 = v46;
 
-      v48 = [(NTKCDetailTableViewCell *)self detailTextLabel];
-      [v48 _lastLineBaseline];
+      detailTextLabel3 = [(NTKCDetailTableViewCell *)self detailTextLabel];
+      [detailTextLabel3 _lastLineBaseline];
       v50 = v16 - v49;
 
       v91.origin.x = v43;
@@ -224,8 +224,8 @@ LABEL_17:
         v12 = v54 - CGRectGetWidth(v93);
       }
 
-      v18 = [(NTKCDetailTableViewCell *)self detailTextLabel];
-      [v18 setFrame:{v12, v50, v53, v47}];
+      textLabel2 = [(NTKCDetailTableViewCell *)self detailTextLabel];
+      [textLabel2 setFrame:{v12, v50, v53, v47}];
       goto LABEL_17;
     }
   }
@@ -277,20 +277,20 @@ LABEL_18:
   [(UIView *)self->_separatorView setFrame:v79, Height - CGRectGetHeight(v98), v75, v60];
 }
 
-- (void)setHighlighted:(BOOL)a3 animated:(BOOL)a4
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated
 {
   v18 = *MEMORY[0x277D85DE8];
   v16.receiver = self;
   v16.super_class = NTKCDetailTableViewCell;
-  [(NTKCDetailTableViewCell *)&v16 setHighlighted:a3 animated:a4];
+  [(NTKCDetailTableViewCell *)&v16 setHighlighted:highlighted animated:animated];
   if ([(NTKCDetailTableViewCell *)self selectionStyle])
   {
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v5 = [(NTKCDetailTableViewCell *)self subviews];
-    v6 = [v5 countByEnumeratingWithState:&v12 objects:v17 count:16];
+    subviews = [(NTKCDetailTableViewCell *)self subviews];
+    v6 = [subviews countByEnumeratingWithState:&v12 objects:v17 count:16];
     if (v6)
     {
       v7 = v6;
@@ -302,7 +302,7 @@ LABEL_18:
         {
           if (*v13 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(subviews);
           }
 
           v10 = *(*(&v12 + 1) + 8 * v9);
@@ -317,7 +317,7 @@ LABEL_18:
         }
 
         while (v7 != v9);
-        v7 = [v5 countByEnumeratingWithState:&v12 objects:v17 count:16];
+        v7 = [subviews countByEnumeratingWithState:&v12 objects:v17 count:16];
       }
 
       while (v7);
@@ -325,13 +325,13 @@ LABEL_18:
   }
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = test.y;
+  x = test.x;
   v10.receiver = self;
   v10.super_class = NTKCDetailTableViewCell;
-  v7 = [(NTKCDetailTableViewCell *)&v10 hitTest:a4 withEvent:?];
+  v7 = [(NTKCDetailTableViewCell *)&v10 hitTest:event withEvent:?];
   if (v7 && [(NTKCDetailTableViewCell *)self _visibleAtPoint:x, y])
   {
     v8 = v7;
@@ -345,21 +345,21 @@ LABEL_18:
   return v8;
 }
 
-- (BOOL)_visibleAtPoint:(CGPoint)a3
+- (BOOL)_visibleAtPoint:(CGPoint)point
 {
-  v4 = [(NTKCDetailTableViewCell *)self _tableView];
-  v5 = [v4 indexPathForCell:self];
-  [v4 bounds];
+  _tableView = [(NTKCDetailTableViewCell *)self _tableView];
+  v5 = [_tableView indexPathForCell:self];
+  [_tableView bounds];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  [v4 contentInset];
+  [_tableView contentInset];
   v15 = v7 + v14;
   v17 = v9 + v16;
   v19 = v11 - (v14 + v18);
   v21 = v13 - (v16 + v20);
-  v22 = [v4 headerViewForSection:{objc_msgSend(v5, "section")}];
+  v22 = [_tableView headerViewForSection:{objc_msgSend(v5, "section")}];
   [v22 frame];
   v42.origin.x = v23;
   v42.origin.y = v24;
@@ -385,7 +385,7 @@ LABEL_18:
     v21 = v21 - v31;
   }
 
-  [(NTKCDetailTableViewCell *)self convertPoint:v4 toView:a3.x, a3.y];
+  [(NTKCDetailTableViewCell *)self convertPoint:_tableView toView:point.x, point.y];
   v37.x = v32;
   v37.y = v33;
   v41.origin.x = v15;
@@ -399,13 +399,13 @@ LABEL_18:
 
 - (void)_fontSizeDidChange
 {
-  v3 = [(NTKCDetailTableViewCell *)self _fontForTextLabel];
-  v4 = [(NTKCDetailTableViewCell *)self textLabel];
-  [v4 setFont:v3];
+  _fontForTextLabel = [(NTKCDetailTableViewCell *)self _fontForTextLabel];
+  textLabel = [(NTKCDetailTableViewCell *)self textLabel];
+  [textLabel setFont:_fontForTextLabel];
 
-  v5 = [(NTKCDetailTableViewCell *)self _fontForDetailTextLabel];
-  v6 = [(NTKCDetailTableViewCell *)self detailTextLabel];
-  [v6 setFont:v5];
+  _fontForDetailTextLabel = [(NTKCDetailTableViewCell *)self _fontForDetailTextLabel];
+  detailTextLabel = [(NTKCDetailTableViewCell *)self detailTextLabel];
+  [detailTextLabel setFont:_fontForDetailTextLabel];
 
   [(NTKCDetailTableViewCell *)self setNeedsLayout];
 }

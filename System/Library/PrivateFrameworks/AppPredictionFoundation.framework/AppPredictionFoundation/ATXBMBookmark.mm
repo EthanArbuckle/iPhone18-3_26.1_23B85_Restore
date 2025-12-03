@@ -1,19 +1,19 @@
 @interface ATXBMBookmark
-+ (BOOL)_fileExistsAtPath:(id)a3;
-+ (BOOL)_fileSizeWithinLimitsForPath:(id)a3 maxFileSize:(unint64_t)a4;
-+ (BOOL)_saveData:(id)a3 toFileURL:(id)a4 outError:(id *)a5;
-+ (id)_dataFromPath:(id)a3;
-+ (id)bookmarkFromData:(id)a3 bookmarkLocation:(id)a4 versionNumber:(id)a5;
-+ (id)bookmarkFromURLPath:(id)a3 maxFileSize:(unint64_t)a4 versionNumber:(id)a5;
-- (ATXBMBookmark)initWithCoder:(id)a3;
-- (ATXBMBookmark)initWithURLPath:(id)a3 versionNumber:(id)a4 bookmark:(id)a5 metadata:(id)a6;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToATXBMBookmark:(id)a3;
-- (BOOL)saveBookmarkWithError:(id *)a3;
++ (BOOL)_fileExistsAtPath:(id)path;
++ (BOOL)_fileSizeWithinLimitsForPath:(id)path maxFileSize:(unint64_t)size;
++ (BOOL)_saveData:(id)data toFileURL:(id)l outError:(id *)error;
++ (id)_dataFromPath:(id)path;
++ (id)bookmarkFromData:(id)data bookmarkLocation:(id)location versionNumber:(id)number;
++ (id)bookmarkFromURLPath:(id)path maxFileSize:(unint64_t)size versionNumber:(id)number;
+- (ATXBMBookmark)initWithCoder:(id)coder;
+- (ATXBMBookmark)initWithURLPath:(id)path versionNumber:(id)number bookmark:(id)bookmark metadata:(id)metadata;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToATXBMBookmark:(id)bookmark;
+- (BOOL)saveBookmarkWithError:(id *)error;
 - (id)allowedClassesForBookmarkSecureCoding;
-- (id)serializeBookmark:(id *)a3;
+- (id)serializeBookmark:(id *)bookmark;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ATXBMBookmark
@@ -21,8 +21,8 @@
 - (id)allowedClassesForBookmarkSecureCoding
 {
   v2 = objc_alloc(MEMORY[0x277CBEB58]);
-  v3 = [MEMORY[0x277CCA910] bm_allowedClassesForSecureCodingBMBookmark];
-  v4 = [v2 initWithSet:v3];
+  bm_allowedClassesForSecureCodingBMBookmark = [MEMORY[0x277CCA910] bm_allowedClassesForSecureCodingBMBookmark];
+  v4 = [v2 initWithSet:bm_allowedClassesForSecureCodingBMBookmark];
 
   __54__ATXBMBookmark_allowedClassesForBookmarkSecureCoding__block_invoke(v5, v4, &cfstr_Atxfakebookmar.isa);
   __54__ATXBMBookmark_allowedClassesForBookmarkSecureCoding__block_invoke(v6, v4, &cfstr_Bmstorebookmar.isa);
@@ -32,8 +32,8 @@
   __54__ATXBMBookmark_allowedClassesForBookmarkSecureCoding__block_invoke(v10, v4, &cfstr_Atxproactivesu_0.isa);
   __54__ATXBMBookmark_allowedClassesForBookmarkSecureCoding__block_invoke(v11, v4, &cfstr_Atxproactivesu.isa);
   v12 = MEMORY[0x277CCA910];
-  v13 = [v4 allObjects];
-  [v12 bm_allowClassesForSecureCodingBMBookmark:v13];
+  allObjects = [v4 allObjects];
+  [v12 bm_allowClassesForSecureCodingBMBookmark:allObjects];
 
   v14 = [v4 copy];
 
@@ -50,22 +50,22 @@ void __54__ATXBMBookmark_allowedClassesForBookmarkSecureCoding__block_invoke(uin
   }
 }
 
-+ (id)bookmarkFromData:(id)a3 bookmarkLocation:(id)a4 versionNumber:(id)a5
++ (id)bookmarkFromData:(id)data bookmarkLocation:(id)location versionNumber:(id)number
 {
   v33 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dataCopy = data;
+  locationCopy = location;
+  numberCopy = number;
   v11 = objc_autoreleasePoolPush();
   v26 = 0;
-  v12 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:objc_opt_class() fromData:v8 error:&v26];
+  v12 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:objc_opt_class() fromData:dataCopy error:&v26];
   v13 = v26;
   objc_autoreleasePoolPop(v11);
   if (v13 || !v12)
   {
     v17 = __atxlog_handle_default();
     v18 = os_log_type_enabled(v17, OS_LOG_TYPE_ERROR);
-    if (!v9)
+    if (!locationCopy)
     {
       if (v18)
       {
@@ -77,11 +77,11 @@ void __54__ATXBMBookmark_allowedClassesForBookmarkSecureCoding__block_invoke(uin
 
     if (v18)
     {
-      v19 = NSStringFromClass(a1);
+      v19 = NSStringFromClass(self);
       *buf = 138412802;
       v28 = v19;
       v29 = 2112;
-      v30 = v9;
+      v30 = locationCopy;
       v31 = 2112;
       v32 = v13;
       _os_log_error_impl(&dword_226368000, v17, OS_LOG_TYPE_ERROR, "%@ - failed to unarchive bookmark at %@ with error: %@", buf, 0x20u);
@@ -91,8 +91,8 @@ LABEL_16:
 
   else
   {
-    v14 = [v12 versionNumber];
-    v15 = [v14 isEqualToNumber:v10];
+    versionNumber = [v12 versionNumber];
+    v15 = [versionNumber isEqualToNumber:numberCopy];
 
     if (v15)
     {
@@ -102,15 +102,15 @@ LABEL_16:
 
     v17 = __atxlog_handle_default();
     v20 = os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT);
-    if (v9)
+    if (locationCopy)
     {
       if (v20)
       {
-        v19 = NSStringFromClass(a1);
+        v19 = NSStringFromClass(self);
         *buf = 138412546;
         v28 = v19;
         v29 = 2112;
-        v30 = v9;
+        v30 = locationCopy;
         v21 = "%@ - version number changed for bookmark at %@";
         v22 = v17;
         v23 = 22;
@@ -122,7 +122,7 @@ LABEL_15:
 
     else if (v20)
     {
-      v19 = NSStringFromClass(a1);
+      v19 = NSStringFromClass(self);
       *buf = 138412290;
       v28 = v19;
       v21 = "%@ - version number changed for bookmark";
@@ -142,21 +142,21 @@ LABEL_18:
   return v16;
 }
 
-+ (id)bookmarkFromURLPath:(id)a3 maxFileSize:(unint64_t)a4 versionNumber:(id)a5
++ (id)bookmarkFromURLPath:(id)path maxFileSize:(unint64_t)size versionNumber:(id)number
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [v8 path];
-  if ([a1 _fileExistsAtPath:v10])
+  pathCopy = path;
+  numberCopy = number;
+  path = [pathCopy path];
+  if ([self _fileExistsAtPath:path])
   {
-    if ([a1 _fileSizeWithinLimitsForPath:v10 maxFileSize:a4])
+    if ([self _fileSizeWithinLimitsForPath:path maxFileSize:size])
     {
       v11 = objc_autoreleasePoolPush();
-      v12 = [a1 _dataFromPath:v10];
+      v12 = [self _dataFromPath:path];
       objc_autoreleasePoolPop(v11);
       if (v12)
       {
-        v13 = [a1 bookmarkFromData:v12 bookmarkLocation:v10 versionNumber:v9];
+        v13 = [self bookmarkFromData:v12 bookmarkLocation:path versionNumber:numberCopy];
         goto LABEL_13;
       }
 
@@ -192,24 +192,24 @@ LABEL_13:
   return v13;
 }
 
-- (ATXBMBookmark)initWithURLPath:(id)a3 versionNumber:(id)a4 bookmark:(id)a5 metadata:(id)a6
+- (ATXBMBookmark)initWithURLPath:(id)path versionNumber:(id)number bookmark:(id)bookmark metadata:(id)metadata
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  pathCopy = path;
+  numberCopy = number;
+  bookmarkCopy = bookmark;
+  metadataCopy = metadata;
   v20.receiver = self;
   v20.super_class = ATXBMBookmark;
   v14 = [(ATXBMBookmark *)&v20 init];
   if (v14)
   {
-    v15 = [v10 copy];
+    v15 = [pathCopy copy];
     urlPath = v14->_urlPath;
     v14->_urlPath = v15;
 
-    objc_storeStrong(&v14->_versionNumber, a4);
-    objc_storeStrong(&v14->_bookmark, a5);
-    v17 = [v13 copy];
+    objc_storeStrong(&v14->_versionNumber, number);
+    objc_storeStrong(&v14->_bookmark, bookmark);
+    v17 = [metadataCopy copy];
     metadata = v14->_metadata;
     v14->_metadata = v17;
   }
@@ -217,7 +217,7 @@ LABEL_13:
   return v14;
 }
 
-- (id)serializeBookmark:(id *)a3
+- (id)serializeBookmark:(id *)bookmark
 {
   v5 = objc_autoreleasePoolPush();
   v13 = 0;
@@ -247,11 +247,11 @@ LABEL_13:
       [ATXBMBookmark serializeBookmark:];
     }
 
-    if (a3)
+    if (bookmark)
     {
       v10 = v7;
       v11 = 0;
-      *a3 = v7;
+      *bookmark = v7;
     }
 
     else
@@ -263,14 +263,14 @@ LABEL_13:
   return v11;
 }
 
-- (BOOL)saveBookmarkWithError:(id *)a3
+- (BOOL)saveBookmarkWithError:(id *)error
 {
   if (self->_urlPath)
   {
     v5 = [(ATXBMBookmark *)self serializeBookmark:?];
     if (v5)
     {
-      v6 = [ATXBMBookmark _saveData:v5 toFileURL:self->_urlPath outError:a3];
+      v6 = [ATXBMBookmark _saveData:v5 toFileURL:self->_urlPath outError:error];
     }
 
     else
@@ -293,23 +293,23 @@ LABEL_13:
   return v6;
 }
 
-+ (BOOL)_fileExistsAtPath:(id)a3
++ (BOOL)_fileExistsAtPath:(id)path
 {
   v3 = MEMORY[0x277CCAA00];
-  v4 = a3;
-  v5 = [v3 defaultManager];
-  v6 = [v5 fileExistsAtPath:v4];
+  pathCopy = path;
+  defaultManager = [v3 defaultManager];
+  v6 = [defaultManager fileExistsAtPath:pathCopy];
 
   return v6;
 }
 
-+ (BOOL)_fileSizeWithinLimitsForPath:(id)a3 maxFileSize:(unint64_t)a4
++ (BOOL)_fileSizeWithinLimitsForPath:(id)path maxFileSize:(unint64_t)size
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [MEMORY[0x277CCAA00] defaultManager];
+  pathCopy = path;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v18 = 0;
-  v8 = [v7 attributesOfItemAtPath:v6 error:&v18];
+  v8 = [defaultManager attributesOfItemAtPath:pathCopy error:&v18];
   v9 = v18;
 
   if (!v8)
@@ -328,11 +328,11 @@ LABEL_13:
     v10 = __atxlog_handle_default();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      v11 = NSStringFromClass(a1);
+      v11 = NSStringFromClass(self);
       *buf = 138412802;
       v20 = v11;
       v21 = 2112;
-      v22 = v6;
+      v22 = pathCopy;
       v23 = 2112;
       v24 = v9;
       _os_log_error_impl(&dword_226368000, v10, OS_LOG_TYPE_ERROR, "%@ - file manager error for path %@, err: %@", buf, 0x20u);
@@ -344,30 +344,30 @@ LABEL_7:
     goto LABEL_11;
   }
 
-  v13 = [v8 fileSize];
+  fileSize = [v8 fileSize];
   v14 = __atxlog_handle_default();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
-    v15 = NSStringFromClass(a1);
+    v15 = NSStringFromClass(self);
     *buf = 138412802;
     v20 = v15;
     v21 = 2112;
-    v22 = v6;
+    v22 = pathCopy;
     v23 = 2048;
-    v24 = v13;
+    v24 = fileSize;
     _os_log_impl(&dword_226368000, v14, OS_LOG_TYPE_DEFAULT, "%@ - file size on disk for path %@ is %llu", buf, 0x20u);
   }
 
-  v12 = v13 <= a4;
+  v12 = fileSize <= size;
 LABEL_11:
 
   v16 = *MEMORY[0x277D85DE8];
   return v12;
 }
 
-+ (id)_dataFromPath:(id)a3
++ (id)_dataFromPath:(id)path
 {
-  v3 = [MEMORY[0x277CCA9F8] fileHandleForReadingAtPath:a3];
+  v3 = [MEMORY[0x277CCA9F8] fileHandleForReadingAtPath:path];
   v4 = v3;
   if (v3)
   {
@@ -417,17 +417,17 @@ LABEL_11:
   return v10;
 }
 
-+ (BOOL)_saveData:(id)a3 toFileURL:(id)a4 outError:(id *)a5
++ (BOOL)_saveData:(id)data toFileURL:(id)l outError:(id *)error
 {
   v47[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v8)
+  dataCopy = data;
+  lCopy = l;
+  v9 = lCopy;
+  if (lCopy)
   {
-    if (v7)
+    if (dataCopy)
     {
-      v10 = [v8 URLByDeletingLastPathComponent];
+      uRLByDeletingLastPathComponent = [lCopy URLByDeletingLastPathComponent];
       v11 = __atxlog_handle_default();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
@@ -436,7 +436,7 @@ LABEL_11:
         *buf = 138412546;
         v39 = v13;
         v40 = 2112;
-        v41 = v10;
+        v41 = uRLByDeletingLastPathComponent;
         _os_log_impl(&dword_226368000, v11, OS_LOG_TYPE_DEFAULT, "%@ - attempting to save data with directoryURL: %@", buf, 0x16u);
       }
 
@@ -452,9 +452,9 @@ LABEL_11:
         _os_log_impl(&dword_226368000, v14, OS_LOG_TYPE_DEFAULT, "%@ - attempting to save data with fileURL: %@", buf, 0x16u);
       }
 
-      v17 = [MEMORY[0x277CCAA00] defaultManager];
+      defaultManager = [MEMORY[0x277CCAA00] defaultManager];
       v37 = 0;
-      v18 = [v17 createDirectoryAtURL:v10 withIntermediateDirectories:1 attributes:0 error:&v37];
+      v18 = [defaultManager createDirectoryAtURL:uRLByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:&v37];
       v19 = v37;
 
       if (!v18 || v19)
@@ -467,17 +467,17 @@ LABEL_11:
           *buf = 138412802;
           v39 = v35;
           v40 = 2112;
-          v41 = v10;
+          v41 = uRLByDeletingLastPathComponent;
           v42 = 2112;
           v43 = v19;
           _os_log_error_impl(&dword_226368000, v30, OS_LOG_TYPE_ERROR, "%@ - could not create directory at path: %@ with err: %@", buf, 0x20u);
         }
 
-        if (a5)
+        if (error)
         {
           v31 = v19;
           v20 = 0;
-          *a5 = v19;
+          *error = v19;
         }
 
         else
@@ -489,7 +489,7 @@ LABEL_11:
       else
       {
         v36 = 0;
-        v20 = [v7 writeToURL:v9 options:1073741825 error:&v36];
+        v20 = [dataCopy writeToURL:v9 options:1073741825 error:&v36];
         v21 = v36;
         if ((v20 & 1) == 0)
         {
@@ -499,10 +499,10 @@ LABEL_11:
             +[ATXBMBookmark _saveData:toFileURL:outError:];
           }
 
-          if (a5)
+          if (error)
           {
             v23 = v21;
-            *a5 = v21;
+            *error = v21;
           }
         }
       }
@@ -516,7 +516,7 @@ LABEL_11:
       +[ATXBMBookmark _saveData:toFileURL:outError:];
     }
 
-    if (a5)
+    if (error)
     {
       v25 = objc_alloc(MEMORY[0x277CCA9B8]);
       v44 = *MEMORY[0x277CCA450];
@@ -536,7 +536,7 @@ LABEL_11:
       +[ATXBMBookmark _saveData:toFileURL:outError:];
     }
 
-    if (a5)
+    if (error)
     {
       v25 = objc_alloc(MEMORY[0x277CCA9B8]);
       v46 = *MEMORY[0x277CCA450];
@@ -545,9 +545,9 @@ LABEL_11:
       v27 = v47;
       v28 = &v46;
 LABEL_23:
-      v10 = [v26 dictionaryWithObjects:v27 forKeys:v28 count:1];
+      uRLByDeletingLastPathComponent = [v26 dictionaryWithObjects:v27 forKeys:v28 count:1];
       v20 = 0;
-      *a5 = [v25 initWithDomain:@"ATXBMBookmark" code:-1 userInfo:v10];
+      *error = [v25 initWithDomain:@"ATXBMBookmark" code:-1 userInfo:uRLByDeletingLastPathComponent];
 LABEL_31:
 
       goto LABEL_32;
@@ -561,29 +561,29 @@ LABEL_32:
   return v20;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXBMBookmark *)self isEqualToATXBMBookmark:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXBMBookmark *)self isEqualToATXBMBookmark:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToATXBMBookmark:(id)a3
+- (BOOL)isEqualToATXBMBookmark:(id)bookmark
 {
-  v4 = a3;
+  bookmarkCopy = bookmark;
   v5 = self->_urlPath;
   v6 = v5;
-  if (v5 == v4[1])
+  if (v5 == bookmarkCopy[1])
   {
   }
 
@@ -599,7 +599,7 @@ LABEL_32:
 
   v8 = self->_versionNumber;
   v9 = v8;
-  if (v8 == v4[2])
+  if (v8 == bookmarkCopy[2])
   {
   }
 
@@ -617,7 +617,7 @@ LABEL_7:
 
   v12 = self->_metadata;
   v13 = v12;
-  if (v12 == v4[4])
+  if (v12 == bookmarkCopy[4])
   {
     v11 = 1;
   }
@@ -638,29 +638,29 @@ LABEL_13:
   return [(NSDictionary *)self->_metadata hash]- v4 + 32 * v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   urlPath = self->_urlPath;
-  v5 = a3;
-  [v5 encodeObject:urlPath forKey:@"urlPath"];
-  [v5 encodeObject:self->_versionNumber forKey:@"versionNumber"];
-  [v5 encodeObject:self->_bookmark forKey:@"bookmark"];
-  [v5 encodeObject:self->_metadata forKey:@"metadata"];
+  coderCopy = coder;
+  [coderCopy encodeObject:urlPath forKey:@"urlPath"];
+  [coderCopy encodeObject:self->_versionNumber forKey:@"versionNumber"];
+  [coderCopy encodeObject:self->_bookmark forKey:@"bookmark"];
+  [coderCopy encodeObject:self->_metadata forKey:@"metadata"];
 }
 
-- (ATXBMBookmark)initWithCoder:(id)a3
+- (ATXBMBookmark)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = MEMORY[0x277D42620];
   v6 = objc_opt_class();
   v7 = __atxlog_handle_default();
-  v8 = [v5 robustDecodeObjectOfClass:v6 forKey:@"urlPath" withCoder:v4 expectNonNull:0 errorDomain:@"com.apple.duetexpertd.ATXBMBookmark" errorCode:-1 logHandle:v7];
+  v8 = [v5 robustDecodeObjectOfClass:v6 forKey:@"urlPath" withCoder:coderCopy expectNonNull:0 errorDomain:@"com.apple.duetexpertd.ATXBMBookmark" errorCode:-1 logHandle:v7];
 
-  v9 = [v4 error];
+  error = [coderCopy error];
 
-  if (v9)
+  if (error)
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -668,21 +668,21 @@ LABEL_13:
     v11 = MEMORY[0x277D42620];
     v12 = objc_opt_class();
     v13 = __atxlog_handle_default();
-    v14 = [v11 robustDecodeObjectOfClass:v12 forKey:@"versionNumber" withCoder:v4 expectNonNull:0 errorDomain:@"com.apple.duetexpertd.ATXBMBookmark" errorCode:-1 logHandle:v13];
+    v14 = [v11 robustDecodeObjectOfClass:v12 forKey:@"versionNumber" withCoder:coderCopy expectNonNull:0 errorDomain:@"com.apple.duetexpertd.ATXBMBookmark" errorCode:-1 logHandle:v13];
 
-    v15 = [v4 error];
+    error2 = [coderCopy error];
 
-    v10 = 0;
-    if (!v15 && v14)
+    selfCopy = 0;
+    if (!error2 && v14)
     {
       v16 = MEMORY[0x277D42620];
-      v17 = [(ATXBMBookmark *)self allowedClassesForBookmarkSecureCoding];
+      allowedClassesForBookmarkSecureCoding = [(ATXBMBookmark *)self allowedClassesForBookmarkSecureCoding];
       v18 = __atxlog_handle_default();
-      v19 = [v16 robustDecodeObjectOfClasses:v17 forKey:@"bookmark" withCoder:v4 expectNonNull:0 errorDomain:@"com.apple.duetexpertd.ATXBMBookmark" errorCode:-1 logHandle:v18];
+      v19 = [v16 robustDecodeObjectOfClasses:allowedClassesForBookmarkSecureCoding forKey:@"bookmark" withCoder:coderCopy expectNonNull:0 errorDomain:@"com.apple.duetexpertd.ATXBMBookmark" errorCode:-1 logHandle:v18];
 
-      v20 = [v4 error];
+      error3 = [coderCopy error];
 
-      if (v20)
+      if (error3)
       {
         v21 = __atxlog_handle_default();
         if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -690,7 +690,7 @@ LABEL_13:
           [ATXBMBookmark initWithCoder:];
         }
 
-        v10 = 0;
+        selfCopy = 0;
       }
 
       else
@@ -707,13 +707,13 @@ LABEL_13:
         objc_autoreleasePoolPop(context);
         v28 = MEMORY[0x277D42620];
         v29 = __atxlog_handle_default();
-        v30 = [v28 robustDecodeObjectOfClasses:v27 forKey:@"metadata" withCoder:v4 expectNonNull:0 errorDomain:@"com.apple.duetexpertd.ATXBMBookmark" errorCode:-1 logHandle:v29];
+        v30 = [v28 robustDecodeObjectOfClasses:v27 forKey:@"metadata" withCoder:coderCopy expectNonNull:0 errorDomain:@"com.apple.duetexpertd.ATXBMBookmark" errorCode:-1 logHandle:v29];
 
-        v31 = [v4 error];
+        error4 = [coderCopy error];
 
-        if (v31)
+        if (error4)
         {
-          v10 = 0;
+          selfCopy = 0;
           v19 = v35;
         }
 
@@ -721,13 +721,13 @@ LABEL_13:
         {
           v19 = v35;
           self = [(ATXBMBookmark *)self initWithURLPath:v8 versionNumber:v14 bookmark:v35 metadata:v30];
-          v10 = self;
+          selfCopy = self;
         }
       }
     }
   }
 
-  return v10;
+  return selfCopy;
 }
 
 + (void)bookmarkFromData:bookmarkLocation:versionNumber:.cold.1()

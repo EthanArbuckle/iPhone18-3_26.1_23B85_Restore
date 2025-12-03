@@ -1,20 +1,20 @@
 @interface PLAccountingDistributionOwner
-- (PLAccountingDistributionOwner)initWithEnergyEstimate:(id)a3;
+- (PLAccountingDistributionOwner)initWithEnergyEstimate:(id)estimate;
 - (id)ID;
 - (id)activationDate;
 - (id)range;
 - (void)distribute;
-- (void)setRunDate:(id)a3;
+- (void)setRunDate:(id)date;
 @end
 
 @implementation PLAccountingDistributionOwner
 
 - (id)range
 {
-  v2 = [(PLAccountingDistributionOwner *)self energyEstimate];
-  v3 = [v2 range];
+  energyEstimate = [(PLAccountingDistributionOwner *)self energyEstimate];
+  range = [energyEstimate range];
 
-  return v3;
+  return range;
 }
 
 - (void)distribute
@@ -41,14 +41,14 @@
     if (v5 == 1)
     {
       v6 = MEMORY[0x277CCACA8];
-      v7 = [(PLAccountingDistributionOwner *)self energyEstimate];
-      v8 = [v6 stringWithFormat:@"self.energyEstimate=%@", v7];
+      energyEstimate = [(PLAccountingDistributionOwner *)self energyEstimate];
+      v8 = [v6 stringWithFormat:@"self.energyEstimate=%@", energyEstimate];
 
       v9 = MEMORY[0x277D3F178];
       v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/Distribution/PLAccountingDistributionOwner.m"];
-      v11 = [v10 lastPathComponent];
+      lastPathComponent = [v10 lastPathComponent];
       v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAccountingDistributionOwner distribute]"];
-      [v9 logMessage:v8 fromFile:v11 fromFunction:v12 fromLineNumber:52];
+      [v9 logMessage:v8 fromFile:lastPathComponent fromFunction:v12 fromLineNumber:52];
 
       v13 = PLLogCommon();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
@@ -58,9 +58,9 @@
     }
   }
 
-  v14 = [(PLAccountingOwner *)self dependencyIDToDependenciesInRange];
-  v15 = [v14 allValues];
-  v16 = [v15 firstObject];
+  dependencyIDToDependenciesInRange = [(PLAccountingOwner *)self dependencyIDToDependenciesInRange];
+  allValues = [dependencyIDToDependenciesInRange allValues];
+  firstObject = [allValues firstObject];
 
   v17 = 0x277D3F000uLL;
   if ([MEMORY[0x277D3F180] debugEnabled])
@@ -81,12 +81,12 @@
 
     if (v19 == 1)
     {
-      v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"distributionDependenciesInRange=%@", v16];
+      v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"distributionDependenciesInRange=%@", firstObject];
       v21 = MEMORY[0x277D3F178];
       v22 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/Distribution/PLAccountingDistributionOwner.m"];
-      v23 = [v22 lastPathComponent];
+      lastPathComponent2 = [v22 lastPathComponent];
       v24 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAccountingDistributionOwner distribute]"];
-      [v21 logMessage:v20 fromFile:v23 fromFunction:v24 fromLineNumber:56];
+      [v21 logMessage:v20 fromFile:lastPathComponent2 fromFunction:v24 fromLineNumber:56];
 
       v25 = PLLogCommon();
       if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
@@ -103,7 +103,7 @@
   v259 = 0u;
   v256 = 0u;
   v257 = 0u;
-  obj = v16;
+  obj = firstObject;
   v203 = [obj countByEnumeratingWithState:&v256 objects:v274 count:16];
   if (v203)
   {
@@ -127,9 +127,9 @@
         }
 
         v205 = v27;
-        v29 = [*(*(&v256 + 1) + 8 * v27) distributionEvent];
-        [v29 setUsed:1];
-        v208 = v29;
+        distributionEvent = [*(*(&v256 + 1) + 8 * v27) distributionEvent];
+        [distributionEvent setUsed:1];
+        v208 = distributionEvent;
         if ([*(v17 + 384) debugEnabled])
         {
           v30 = objc_opt_class();
@@ -147,31 +147,31 @@
           v31 = distribute_classDebugEnabled_24;
 
           v32 = v31 == 1;
-          v29 = v208;
+          distributionEvent = v208;
           if (v32)
           {
-            v33 = [MEMORY[0x277CCACA8] stringWithFormat:@"distributionEvent=%@", v208];
+            v208 = [MEMORY[0x277CCACA8] stringWithFormat:@"distributionEvent=%@", v208];
             v34 = MEMORY[0x277D3F178];
             v35 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/Distribution/PLAccountingDistributionOwner.m"];
-            v36 = [v35 lastPathComponent];
+            lastPathComponent3 = [v35 lastPathComponent];
             v37 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAccountingDistributionOwner distribute]"];
-            [v34 logMessage:v33 fromFile:v36 fromFunction:v37 fromLineNumber:62];
+            [v34 logMessage:v208 fromFile:lastPathComponent3 fromFunction:v37 fromLineNumber:62];
 
             v38 = PLLogCommon();
             if (os_log_type_enabled(v38, OS_LOG_TYPE_DEBUG))
             {
               *buf = 138412290;
-              v267 = *&v33;
+              v267 = *&v208;
               _os_log_debug_impl(&dword_25EDCD000, v38, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
             }
 
             v3 = @"distribute";
             v17 = 0x277D3F000uLL;
-            v29 = v208;
+            distributionEvent = v208;
           }
         }
 
-        if ([v29 instanceDirectionality] == 4)
+        if ([distributionEvent instanceDirectionality] == 4)
         {
           if ([*(v17 + 384) debugEnabled])
           {
@@ -190,15 +190,15 @@
             v40 = distribute_classDebugEnabled_30;
 
             v32 = v40 == 1;
-            v29 = v208;
+            distributionEvent = v208;
             if (v32)
             {
               v41 = [MEMORY[0x277CCACA8] stringWithFormat:@"EventPoint"];
               v42 = MEMORY[0x277D3F178];
               v43 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/Distribution/PLAccountingDistributionOwner.m"];
-              v44 = [v43 lastPathComponent];
+              lastPathComponent4 = [v43 lastPathComponent];
               v45 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAccountingDistributionOwner distribute]"];
-              [v42 logMessage:v41 fromFile:v44 fromFunction:v45 fromLineNumber:69];
+              [v42 logMessage:v41 fromFile:lastPathComponent4 fromFunction:v45 fromLineNumber:69];
 
               v46 = PLLogCommon();
               if (os_log_type_enabled(v46, OS_LOG_TYPE_DEBUG))
@@ -209,12 +209,12 @@
               }
 
               v3 = @"distribute";
-              v29 = v208;
+              distributionEvent = v208;
             }
           }
 
-          v47 = [(PLAccountingDistributionOwner *)self energyEstimate];
-          v206 = [v47 range];
+          energyEstimate2 = [(PLAccountingDistributionOwner *)self energyEstimate];
+          range = [energyEstimate2 range];
 
           v17 = 0x277D3F000;
           v48 = 1.0 / [obj count];
@@ -222,11 +222,11 @@
 
         else
         {
-          v49 = [v29 distributeRangeWeightedTotal];
-          v50 = [*(v17 + 384) debugEnabled];
-          if (!v49)
+          distributeRangeWeightedTotal = [distributionEvent distributeRangeWeightedTotal];
+          debugEnabled = [*(v17 + 384) debugEnabled];
+          if (!distributeRangeWeightedTotal)
           {
-            if (v50)
+            if (debugEnabled)
             {
               v74 = objc_opt_class();
               v236[0] = MEMORY[0x277D85DD0];
@@ -243,15 +243,15 @@
               v75 = distribute_classDebugEnabled_42;
 
               v32 = v75 == 1;
-              v29 = v208;
+              distributionEvent = v208;
               if (v32)
               {
                 v76 = [MEMORY[0x277CCACA8] stringWithFormat:@"EventInterval"];
                 v77 = MEMORY[0x277D3F178];
                 v78 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/Distribution/PLAccountingDistributionOwner.m"];
-                v79 = [v78 lastPathComponent];
+                lastPathComponent5 = [v78 lastPathComponent];
                 v80 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAccountingDistributionOwner distribute]"];
-                [v77 logMessage:v76 fromFile:v79 fromFunction:v80 fromLineNumber:86];
+                [v77 logMessage:v76 fromFile:lastPathComponent5 fromFunction:v80 fromLineNumber:86];
 
                 v81 = PLLogCommon();
                 if (os_log_type_enabled(v81, OS_LOG_TYPE_DEBUG))
@@ -262,27 +262,27 @@
                 }
 
                 v3 = @"distribute";
-                v29 = v208;
+                distributionEvent = v208;
               }
             }
 
-            v82 = [v29 range];
-            v83 = [(PLAccountingDistributionOwner *)self energyEstimate];
-            v84 = [v83 range];
-            v85 = [v82 intersect:v84];
+            range2 = [distributionEvent range];
+            energyEstimate3 = [(PLAccountingDistributionOwner *)self energyEstimate];
+            range3 = [energyEstimate3 range];
+            v85 = [range2 intersect:range3];
 
-            v206 = v85;
+            range = v85;
             [v85 length];
             v87 = v86;
-            v88 = [(PLAccountingDistributionOwner *)self energyEstimate];
-            v89 = [v88 range];
-            [v89 length];
+            energyEstimate4 = [(PLAccountingDistributionOwner *)self energyEstimate];
+            range4 = [energyEstimate4 range];
+            [range4 length];
             v48 = v87 / v90;
 
             goto LABEL_67;
           }
 
-          if (v50)
+          if (debugEnabled)
           {
             v51 = objc_opt_class();
             v244[0] = MEMORY[0x277D85DD0];
@@ -299,15 +299,15 @@
             v52 = distribute_classDebugEnabled_36;
 
             v32 = v52 == 1;
-            v29 = v208;
+            distributionEvent = v208;
             if (v32)
             {
               v53 = [MEMORY[0x277CCACA8] stringWithFormat:@"RangeWeightedTotal"];
               v54 = MEMORY[0x277D3F178];
               v55 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/Distribution/PLAccountingDistributionOwner.m"];
-              v56 = [v55 lastPathComponent];
+              lastPathComponent6 = [v55 lastPathComponent];
               v57 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAccountingDistributionOwner distribute]"];
-              [v54 logMessage:v53 fromFile:v56 fromFunction:v57 fromLineNumber:75];
+              [v54 logMessage:v53 fromFile:lastPathComponent6 fromFunction:v57 fromLineNumber:75];
 
               v58 = PLLogCommon();
               if (os_log_type_enabled(v58, OS_LOG_TYPE_DEBUG))
@@ -318,14 +318,14 @@
               }
 
               v3 = @"distribute";
-              v29 = v208;
+              distributionEvent = v208;
             }
           }
 
-          v59 = [v29 range];
-          v60 = [(PLAccountingDistributionOwner *)self energyEstimate];
-          v61 = [v60 range];
-          v206 = [v59 intersect:v61];
+          range5 = [distributionEvent range];
+          energyEstimate5 = [(PLAccountingDistributionOwner *)self energyEstimate];
+          range6 = [energyEstimate5 range];
+          range = [range5 intersect:range6];
 
           v242 = 0u;
           v243 = 0u;
@@ -354,10 +354,10 @@ LABEL_67:
                 objc_enumerationMutation(v62);
               }
 
-              v68 = [*(*(&v240 + 1) + 8 * i) range];
-              v69 = [(PLAccountingDistributionOwner *)self energyEstimate];
-              v70 = [v69 range];
-              v71 = [v68 intersect:v70];
+              range7 = [*(*(&v240 + 1) + 8 * i) range];
+              energyEstimate6 = [(PLAccountingDistributionOwner *)self energyEstimate];
+              range8 = [energyEstimate6 range];
+              v71 = [range7 intersect:range8];
 
               [v71 length];
               v66 = v66 + v72;
@@ -371,14 +371,14 @@ LABEL_67:
           v48 = 1.0;
           if (v66 > 0.0)
           {
-            [v206 length];
+            [range length];
             v48 = v73 / v66;
           }
 
           v3 = @"distribute";
           v2 = &unk_279A55D70;
           v17 = 0x277D3F000;
-          v29 = v208;
+          distributionEvent = v208;
         }
 
 LABEL_68:
@@ -399,15 +399,15 @@ LABEL_68:
           v92 = distribute_classDebugEnabled_48;
 
           v32 = v92 == 1;
-          v29 = v208;
+          distributionEvent = v208;
           if (v32)
           {
-            v93 = [MEMORY[0x277CCACA8] stringWithFormat:@"childRange=%@, childRangeWeight=%f", v206, *&v48];
+            v93 = [MEMORY[0x277CCACA8] stringWithFormat:@"childRange=%@, childRangeWeight=%f", range, *&v48];
             v94 = MEMORY[0x277D3F178];
             v95 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/Distribution/PLAccountingDistributionOwner.m"];
-            v96 = [v95 lastPathComponent];
+            lastPathComponent7 = [v95 lastPathComponent];
             v97 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAccountingDistributionOwner distribute]"];
-            [v94 logMessage:v93 fromFile:v96 fromFunction:v97 fromLineNumber:90];
+            [v94 logMessage:v93 fromFile:lastPathComponent7 fromFunction:v97 fromLineNumber:90];
 
             v98 = PLLogCommon();
             if (os_log_type_enabled(v98, OS_LOG_TYPE_DEBUG))
@@ -419,7 +419,7 @@ LABEL_68:
 
             v3 = @"distribute";
             v17 = 0x277D3F000uLL;
-            v29 = v208;
+            distributionEvent = v208;
           }
         }
 
@@ -427,8 +427,8 @@ LABEL_68:
         v231 = 0u;
         v228 = 0u;
         v229 = 0u;
-        v209 = [v29 childNodeIDToWeight];
-        v211 = [v209 countByEnumeratingWithState:&v228 objects:v272 count:16];
+        childNodeIDToWeight = [distributionEvent childNodeIDToWeight];
+        v211 = [childNodeIDToWeight countByEnumeratingWithState:&v228 objects:v272 count:16];
         if (v211)
         {
           v210 = *v229;
@@ -439,7 +439,7 @@ LABEL_68:
             {
               if (*v229 != v210)
               {
-                objc_enumerationMutation(v209);
+                objc_enumerationMutation(childNodeIDToWeight);
               }
 
               v100 = *(*(&v228 + 1) + 8 * v99);
@@ -464,18 +464,18 @@ LABEL_68:
                   v103 = v3;
                   v104 = v2;
                   v105 = v100;
-                  v106 = [MEMORY[0x277CCACA8] stringWithFormat:@"childNodeID=%@", v100];
+                  v100 = [MEMORY[0x277CCACA8] stringWithFormat:@"childNodeID=%@", v100];
                   v107 = MEMORY[0x277D3F178];
                   v108 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/Distribution/PLAccountingDistributionOwner.m"];
-                  v109 = [v108 lastPathComponent];
+                  lastPathComponent8 = [v108 lastPathComponent];
                   v110 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAccountingDistributionOwner distribute]"];
-                  [v107 logMessage:v106 fromFile:v109 fromFunction:v110 fromLineNumber:94];
+                  [v107 logMessage:v100 fromFile:lastPathComponent8 fromFunction:v110 fromLineNumber:94];
 
                   v111 = PLLogCommon();
                   if (os_log_type_enabled(v111, OS_LOG_TYPE_DEBUG))
                   {
                     *buf = 138412290;
-                    v267 = *&v106;
+                    v267 = *&v100;
                     _os_log_debug_impl(&dword_25EDCD000, v111, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
                   }
 
@@ -485,19 +485,19 @@ LABEL_68:
                 }
               }
 
-              v112 = [(PLAccountingDistributionOwner *)self energyEstimate];
-              v113 = [v112 nodeID];
-              v114 = [v100 isEqual:v113];
+              energyEstimate7 = [(PLAccountingDistributionOwner *)self energyEstimate];
+              nodeID = [energyEstimate7 nodeID];
+              v114 = [v100 isEqual:nodeID];
 
               if (!v114)
               {
-                v123 = [v208 childNodeIDToWeight];
-                v124 = [v123 objectForKeyedSubscript:v100];
+                childNodeIDToWeight2 = [v208 childNodeIDToWeight];
+                v124 = [childNodeIDToWeight2 objectForKeyedSubscript:v100];
                 [v124 doubleValue];
                 v126 = v125;
 
-                v127 = [(PLAccountingDistributionOwner *)self energyEstimate];
-                [v127 energy];
+                energyEstimate8 = [(PLAccountingDistributionOwner *)self energyEstimate];
+                [energyEstimate8 energy];
                 v129 = v48 * v126 * v128;
 
                 +[PLAccountingEngine minDistributionEnergy];
@@ -523,34 +523,34 @@ LABEL_68:
 
                     if (v134 == 1)
                     {
-                      v135 = [MEMORY[0x277CCACA8] stringWithFormat:@"childElementWeight=%f, childEnergy=%f, energyDistributed=%f", *&v126, *&v129, *&v26, v197, v198, v199, v200, v201];
+                      v201 = [MEMORY[0x277CCACA8] stringWithFormat:@"childElementWeight=%f, childEnergy=%f, energyDistributed=%f", *&v126, *&v129, *&v26, v197, v198, v199, v200, v201];
                       v136 = MEMORY[0x277D3F178];
                       v137 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/Distribution/PLAccountingDistributionOwner.m"];
-                      v138 = [v137 lastPathComponent];
+                      lastPathComponent9 = [v137 lastPathComponent];
                       v139 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAccountingDistributionOwner distribute]"];
-                      [v136 logMessage:v135 fromFile:v138 fromFunction:v139 fromLineNumber:112];
+                      [v136 logMessage:v201 fromFile:lastPathComponent9 fromFunction:v139 fromLineNumber:112];
 
                       v140 = PLLogCommon();
                       if (os_log_type_enabled(v140, OS_LOG_TYPE_DEBUG))
                       {
                         *buf = 138412290;
-                        v267 = *&v135;
+                        v267 = *&v201;
                         _os_log_debug_impl(&dword_25EDCD000, v140, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
                       }
                     }
                   }
 
                   v141 = [PLAccountingEnergyEstimateEventEntry alloc];
-                  v142 = [(PLAccountingDistributionOwner *)self energyEstimate];
-                  v143 = [v142 rootNodeID];
-                  v144 = [(PLAccountingDistributionOwner *)self energyEstimate];
-                  v145 = [v144 entryID];
-                  v146 = [(PLAccountingDistributionOwner *)self energyEstimate];
-                  v147 = [v146 numAncestors];
-                  v148 = [(PLAccountingOwner *)self runDate];
-                  v149 = (v147 + 1);
+                  energyEstimate9 = [(PLAccountingDistributionOwner *)self energyEstimate];
+                  rootNodeID = [energyEstimate9 rootNodeID];
+                  energyEstimate10 = [(PLAccountingDistributionOwner *)self energyEstimate];
+                  entryID = [energyEstimate10 entryID];
+                  energyEstimate11 = [(PLAccountingDistributionOwner *)self energyEstimate];
+                  numAncestors = [energyEstimate11 numAncestors];
+                  runDate = [(PLAccountingOwner *)self runDate];
+                  v149 = (numAncestors + 1);
                   v3 = @"distribute";
-                  v117 = [(PLAccountingEnergyEstimateEventEntry *)v141 initWithNodeID:v207 withRootNodeID:v143 withParentEntryID:v145 withNumAncestors:v149 withEnergy:v206 withRange:v148 withEntryDate:v129];
+                  v117 = [(PLAccountingEnergyEstimateEventEntry *)v141 initWithNodeID:v207 withRootNodeID:rootNodeID withParentEntryID:entryID withNumAncestors:v149 withEnergy:range withRange:runDate withEntryDate:v129];
 
                   v2 = &unk_279A55D70;
                   if ([MEMORY[0x277D3F180] debugEnabled])
@@ -571,18 +571,18 @@ LABEL_68:
 
                     if (v151 == 1)
                     {
-                      v152 = [MEMORY[0x277CCACA8] stringWithFormat:@"childEnergyEstimate=%@", v117];
+                      v117 = [MEMORY[0x277CCACA8] stringWithFormat:@"childEnergyEstimate=%@", v117];
                       v153 = MEMORY[0x277D3F178];
                       v154 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/Distribution/PLAccountingDistributionOwner.m"];
-                      v155 = [v154 lastPathComponent];
+                      lastPathComponent10 = [v154 lastPathComponent];
                       v156 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAccountingDistributionOwner distribute]"];
-                      [v153 logMessage:v152 fromFile:v155 fromFunction:v156 fromLineNumber:121];
+                      [v153 logMessage:v117 fromFile:lastPathComponent10 fromFunction:v156 fromLineNumber:121];
 
                       v157 = PLLogCommon();
                       if (os_log_type_enabled(v157, OS_LOG_TYPE_DEBUG))
                       {
                         *buf = 138412290;
-                        v267 = *&v152;
+                        v267 = *&v117;
                         _os_log_debug_impl(&dword_25EDCD000, v157, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
                       }
 
@@ -590,9 +590,9 @@ LABEL_68:
                     }
                   }
 
-                  v131 = [(PLAccountingOwner *)self manager];
-                  v158 = [(PLAccountingDistributionOwner *)self energyEstimate];
-                  [v131 didDistributeToChildEnergyEstimate:v117 fromParentEnergyEstimate:v158];
+                  manager = [(PLAccountingOwner *)self manager];
+                  energyEstimate12 = [(PLAccountingDistributionOwner *)self energyEstimate];
+                  [manager didDistributeToChildEnergyEstimate:v117 fromParentEnergyEstimate:energyEstimate12];
 
                   v17 = 0x277D3F000;
 LABEL_114:
@@ -603,14 +603,14 @@ LABEL_114:
                   v117 = PLLogCommon();
                   if (os_log_type_enabled(v117, OS_LOG_TYPE_DEBUG))
                   {
-                    v131 = [(PLAccountingDistributionOwner *)self energyEstimate];
-                    v132 = [v131 rootNodeID];
+                    manager = [(PLAccountingDistributionOwner *)self energyEstimate];
+                    rootNodeID2 = [manager rootNodeID];
                     *buf = 134218498;
                     v267 = v129;
                     v268 = 2112;
                     v269 = v100;
                     v270 = 2112;
-                    v271 = v132;
+                    v271 = rootNodeID2;
                     _os_log_debug_impl(&dword_25EDCD000, v117, OS_LOG_TYPE_DEBUG, "Skipping distribution of childEnergy=%f, childNodeID=%@, rootNodeID=%@", buf, 0x20u);
 
                     goto LABEL_114;
@@ -643,9 +643,9 @@ LABEL_115:
                   v117 = [MEMORY[0x277CCACA8] stringWithFormat:@"skipping distribution to self"];
                   v118 = MEMORY[0x277D3F178];
                   v119 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/Distribution/PLAccountingDistributionOwner.m"];
-                  v120 = [v119 lastPathComponent];
+                  lastPathComponent11 = [v119 lastPathComponent];
                   v121 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAccountingDistributionOwner distribute]"];
-                  [v118 logMessage:v117 fromFile:v120 fromFunction:v121 fromLineNumber:98];
+                  [v118 logMessage:v117 fromFile:lastPathComponent11 fromFunction:v121 fromLineNumber:98];
 
                   v122 = PLLogCommon();
                   if (os_log_type_enabled(v122, OS_LOG_TYPE_DEBUG))
@@ -664,7 +664,7 @@ LABEL_116:
             }
 
             while (v211 != v99);
-            v211 = [v209 countByEnumeratingWithState:&v228 objects:v272 count:16];
+            v211 = [childNodeIDToWeight countByEnumeratingWithState:&v228 objects:v272 count:16];
           }
 
           while (v211);
@@ -685,14 +685,14 @@ LABEL_116:
   v26 = 0.0;
 LABEL_122:
 
-  v159 = [(PLAccountingDistributionOwner *)self energyEstimate];
-  [v159 energy];
+  energyEstimate13 = [(PLAccountingDistributionOwner *)self energyEstimate];
+  [energyEstimate13 energy];
   v161 = v160;
 
   if (v161 > 0.0)
   {
-    v162 = [(PLAccountingDistributionOwner *)self energyEstimate];
-    [v162 energy];
+    energyEstimate14 = [(PLAccountingDistributionOwner *)self energyEstimate];
+    [energyEstimate14 energy];
     v164 = 1.0 - v26 / v163;
     [(PLAccountingDistributionOwner *)self energyEstimate];
     v166 = v165 = v17;
@@ -717,15 +717,15 @@ LABEL_122:
       if (v168 == 1)
       {
         v169 = MEMORY[0x277CCACA8];
-        v170 = [(PLAccountingDistributionOwner *)self energyEstimate];
-        [v170 terminationRatio];
-        v172 = [v169 stringWithFormat:@"terminationRatio=%f", v171];
+        energyEstimate15 = [(PLAccountingDistributionOwner *)self energyEstimate];
+        [energyEstimate15 terminationRatio];
+        v171 = [v169 stringWithFormat:@"terminationRatio=%f", v171];
 
         v173 = MEMORY[0x277D3F178];
         v174 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/Distribution/PLAccountingDistributionOwner.m"];
-        v175 = [v174 lastPathComponent];
+        lastPathComponent12 = [v174 lastPathComponent];
         v176 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAccountingDistributionOwner distribute]"];
-        [v173 logMessage:v172 fromFile:v175 fromFunction:v176 fromLineNumber:132];
+        [v173 logMessage:v171 fromFile:lastPathComponent12 fromFunction:v176 fromLineNumber:132];
 
         v177 = PLLogCommon();
         if (os_log_type_enabled(v177, OS_LOG_TYPE_DEBUG))
@@ -735,8 +735,8 @@ LABEL_122:
       }
     }
 
-    v178 = [(PLAccountingDistributionOwner *)self energyEstimate];
-    [v178 energy];
+    energyEstimate16 = [(PLAccountingDistributionOwner *)self energyEstimate];
+    [energyEstimate16 energy];
     v180 = v26 - v179;
     +[PLAccountingEngine minEnergy];
     v182 = v181;
@@ -744,17 +744,17 @@ LABEL_122:
     if (v180 > v182)
     {
       v183 = MEMORY[0x277CCACA8];
-      v184 = [(PLAccountingDistributionOwner *)self energyEstimate];
-      [v184 energy];
+      energyEstimate17 = [(PLAccountingDistributionOwner *)self energyEstimate];
+      [energyEstimate17 energy];
       v186 = v185;
-      v187 = [(PLAccountingDistributionOwner *)self energyEstimate];
-      v188 = [v183 stringWithFormat:@"ERROR: energyDistributed=%f greater than energy=%f for energyEstimate=%@", *&v26, v186, v187];
+      energyEstimate18 = [(PLAccountingDistributionOwner *)self energyEstimate];
+      v187 = [v183 stringWithFormat:@"ERROR: energyDistributed=%f greater than energy=%f for energyEstimate=%@", *&v26, v186, energyEstimate18];
 
       v189 = MEMORY[0x277D3F178];
       v190 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/Distribution/PLAccountingDistributionOwner.m"];
-      v191 = [v190 lastPathComponent];
+      lastPathComponent13 = [v190 lastPathComponent];
       v192 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAccountingDistributionOwner distribute]"];
-      [v189 logMessage:v188 fromFile:v191 fromFunction:v192 fromLineNumber:136];
+      [v189 logMessage:v187 fromFile:lastPathComponent13 fromFunction:v192 fromLineNumber:136];
 
       v193 = PLLogCommon();
       if (os_log_type_enabled(v193, OS_LOG_TYPE_DEBUG))
@@ -764,25 +764,25 @@ LABEL_122:
     }
   }
 
-  v194 = [(PLAccountingOwner *)self manager];
-  v195 = [(PLAccountingDistributionOwner *)self energyEstimate];
-  [v194 didDistributeEnergyEstimate:v195];
+  manager2 = [(PLAccountingOwner *)self manager];
+  energyEstimate19 = [(PLAccountingDistributionOwner *)self energyEstimate];
+  [manager2 didDistributeEnergyEstimate:energyEstimate19];
 
   v196 = *MEMORY[0x277D85DE8];
 }
 
 - (id)ID
 {
-  v2 = [(PLAccountingDistributionOwner *)self energyEstimate];
-  v3 = [v2 distributionRuleID];
+  energyEstimate = [(PLAccountingDistributionOwner *)self energyEstimate];
+  distributionRuleID = [energyEstimate distributionRuleID];
 
-  return v3;
+  return distributionRuleID;
 }
 
-- (PLAccountingDistributionOwner)initWithEnergyEstimate:(id)a3
+- (PLAccountingDistributionOwner)initWithEnergyEstimate:(id)estimate
 {
-  v5 = a3;
-  if (v5)
+  estimateCopy = estimate;
+  if (estimateCopy)
   {
     v10.receiver = self;
     v10.super_class = PLAccountingDistributionOwner;
@@ -790,34 +790,34 @@ LABEL_122:
     v7 = v6;
     if (v6)
     {
-      objc_storeStrong(&v6->_energyEstimate, a3);
+      objc_storeStrong(&v6->_energyEstimate, estimate);
     }
 
     self = v7;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
 - (id)activationDate
 {
-  v2 = [(PLAccountingDistributionOwner *)self energyEstimate];
-  v3 = [v2 entryDate];
+  energyEstimate = [(PLAccountingDistributionOwner *)self energyEstimate];
+  entryDate = [energyEstimate entryDate];
 
-  return v3;
+  return entryDate;
 }
 
-- (void)setRunDate:(id)a3
+- (void)setRunDate:(id)date
 {
-  v4 = a3;
-  v5 = [(PLAccountingDistributionOwner *)self energyEstimate];
-  [v5 setDistributionDate:v4];
+  dateCopy = date;
+  energyEstimate = [(PLAccountingDistributionOwner *)self energyEstimate];
+  [energyEstimate setDistributionDate:dateCopy];
 }
 
 uint64_t __43__PLAccountingDistributionOwner_distribute__block_invoke(uint64_t a1)

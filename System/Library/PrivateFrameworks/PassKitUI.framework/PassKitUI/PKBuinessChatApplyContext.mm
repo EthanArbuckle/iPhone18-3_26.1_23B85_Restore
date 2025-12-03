@@ -1,5 +1,5 @@
 @interface PKBuinessChatApplyContext
-- (PKBuinessChatApplyContext)initWithIdentifier:(id)a3 intent:(int64_t)a4;
+- (PKBuinessChatApplyContext)initWithIdentifier:(id)identifier intent:(int64_t)intent;
 - (id)bodyText;
 - (id)groupParameters;
 - (id)intentParameters;
@@ -7,17 +7,17 @@
 
 @implementation PKBuinessChatApplyContext
 
-- (PKBuinessChatApplyContext)initWithIdentifier:(id)a3 intent:(int64_t)a4
+- (PKBuinessChatApplyContext)initWithIdentifier:(id)identifier intent:(int64_t)intent
 {
-  v7 = a3;
+  identifierCopy = identifier;
   v11.receiver = self;
   v11.super_class = PKBuinessChatApplyContext;
   v8 = [(PKBuinessChatApplyContext *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_identifier, a3);
-    v9->_intent = a4;
+    objc_storeStrong(&v8->_identifier, identifier);
+    v9->_intent = intent;
   }
 
   return v9;

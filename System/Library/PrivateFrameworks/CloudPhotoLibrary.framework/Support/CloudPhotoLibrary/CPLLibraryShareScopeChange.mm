@@ -1,16 +1,16 @@
 @interface CPLLibraryShareScopeChange
-- (id)ckRecordForLibraryShareSettingsWithZoneID:(id)a3 userID:(id)a4;
-- (void)updateExitConfigFromPreviousScopeChange:(id)a3;
-- (void)updateLibraryShareSettingsWithCKRecord:(id)a3;
-- (void)updateWithExitConfigRecord:(id)a3;
-- (void)updateWithExitStatesRecord:(id)a3;
+- (id)ckRecordForLibraryShareSettingsWithZoneID:(id)d userID:(id)iD;
+- (void)updateExitConfigFromPreviousScopeChange:(id)change;
+- (void)updateLibraryShareSettingsWithCKRecord:(id)record;
+- (void)updateWithExitConfigRecord:(id)record;
+- (void)updateWithExitStatesRecord:(id)record;
 @end
 
 @implementation CPLLibraryShareScopeChange
 
-- (void)updateWithExitStatesRecord:(id)a3
+- (void)updateWithExitStatesRecord:(id)record
 {
-  v5 = [a3 objectForKey:@"exitingParticipantUserIds"];
+  v5 = [record objectForKey:@"exitingParticipantUserIds"];
   if ([v5 count])
   {
     v4 = v5;
@@ -24,22 +24,22 @@
   [(CPLLibraryShareScopeChange *)self setExitingUserIdentifiers:v4];
 }
 
-- (void)updateWithExitConfigRecord:(id)a3
+- (void)updateWithExitConfigRecord:(id)record
 {
-  v16 = a3;
-  v4 = [v16 objectForKey:@"retentionPolicy"];
+  recordCopy = record;
+  v4 = [recordCopy objectForKey:@"retentionPolicy"];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 integerValue];
-    if (v6 == 2)
+    integerValue = [v4 integerValue];
+    if (integerValue == 2)
     {
       v7 = 2;
     }
 
     else
     {
-      v7 = v6 == 1;
+      v7 = integerValue == 1;
     }
   }
 
@@ -49,14 +49,14 @@
   }
 
   [(CPLLibraryShareScopeChange *)self setExitRetentionPolicy:v7];
-  v8 = [v16 objectForKey:@"exitType"];
+  v8 = [recordCopy objectForKey:@"exitType"];
   v9 = v8;
   if (v8)
   {
-    v10 = [v8 integerValue];
-    if (v10 < 3)
+    integerValue2 = [v8 integerValue];
+    if (integerValue2 < 3)
     {
-      v11 = v10 + 1;
+      v11 = integerValue2 + 1;
     }
 
     else
@@ -71,7 +71,7 @@
   }
 
   [(CPLLibraryShareScopeChange *)self setExitType:v11];
-  v12 = [v16 objectForKey:@"exitSource"];
+  v12 = [recordCopy objectForKey:@"exitSource"];
   v13 = v12;
   if (v12 && (v14 = [v12 integerValue], v14 <= 4))
   {
@@ -86,62 +86,62 @@
   [(CPLLibraryShareScopeChange *)self setExitSource:v15];
 }
 
-- (void)updateExitConfigFromPreviousScopeChange:(id)a3
+- (void)updateExitConfigFromPreviousScopeChange:(id)change
 {
-  v6 = a3;
-  if (v6)
+  changeCopy = change;
+  if (changeCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v4 = v6;
+      v4 = changeCopy;
       -[CPLLibraryShareScopeChange setExitRetentionPolicy:](self, "setExitRetentionPolicy:", [v4 exitRetentionPolicy]);
       -[CPLLibraryShareScopeChange setExitType:](self, "setExitType:", [v4 exitType]);
-      v5 = [v4 exitSource];
+      exitSource = [v4 exitSource];
 
-      [(CPLLibraryShareScopeChange *)self setExitSource:v5];
+      [(CPLLibraryShareScopeChange *)self setExitSource:exitSource];
     }
   }
 }
 
-- (void)updateLibraryShareSettingsWithCKRecord:(id)a3
+- (void)updateLibraryShareSettingsWithCKRecord:(id)record
 {
-  v6 = a3;
+  recordCopy = record;
   if (+[CPLLibraryShareScopeChange serverSupportsLibraryShareSettingsRecordSyncing])
   {
-    v4 = [v6 cpl_legacyDecryptedObjectForKey:@"userScopeDefinedRulesEnc" validateClass:objc_opt_class()];
+    v4 = [recordCopy cpl_legacyDecryptedObjectForKey:@"userScopeDefinedRulesEnc" validateClass:objc_opt_class()];
     [(CPLLibraryShareScopeChange *)self setUserDefinedRules:v4];
   }
 
   if (+[CPLLibraryShareScopeChange serverSupportsLibraryShareSettingsUserViewedParticipantTrashNotificationDateSyncing])
   {
-    v5 = [v6 cpl_legacyDecryptedObjectForKey:@"userViewedTrashNotificationDateEnc" validateClass:objc_opt_class()];
+    v5 = [recordCopy cpl_legacyDecryptedObjectForKey:@"userViewedTrashNotificationDateEnc" validateClass:objc_opt_class()];
     [(CPLLibraryShareScopeChange *)self setUserViewedParticipantTrashNotificationDate:v5];
   }
 }
 
-- (id)ckRecordForLibraryShareSettingsWithZoneID:(id)a3 userID:(id)a4
+- (id)ckRecordForLibraryShareSettingsWithZoneID:(id)d userID:(id)iD
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  iDCopy = iD;
   if (+[CPLLibraryShareScopeChange serverSupportsLibraryShareSettingsRecordSyncing])
   {
-    v8 = CPLLibraryShareSettingsRecordID(v6, v7);
+    v8 = CPLLibraryShareSettingsRecordID(dCopy, iDCopy);
     if (v8)
     {
       v9 = [[CKRecord alloc] initWithRecordType:@"CPLScopeUserSettings" recordID:v8];
-      v10 = [(CPLLibraryShareScopeChange *)self userDefinedRules];
+      userDefinedRules = [(CPLLibraryShareScopeChange *)self userDefinedRules];
 
-      if (v10)
+      if (userDefinedRules)
       {
-        v11 = [(CPLLibraryShareScopeChange *)self userDefinedRules];
-        [v9 cpl_setLegacyEncryptedObject:v11 forKey:@"userScopeDefinedRulesEnc"];
+        userDefinedRules2 = [(CPLLibraryShareScopeChange *)self userDefinedRules];
+        [v9 cpl_setLegacyEncryptedObject:userDefinedRules2 forKey:@"userScopeDefinedRulesEnc"];
       }
 
       if (+[CPLLibraryShareScopeChange serverSupportsLibraryShareSettingsUserViewedParticipantTrashNotificationDateSyncing])
       {
-        v12 = [(CPLLibraryShareScopeChange *)self userViewedParticipantTrashNotificationDate];
-        [v9 cpl_setLegacyEncryptedObject:v12 forKey:@"userViewedTrashNotificationDateEnc"];
+        userViewedParticipantTrashNotificationDate = [(CPLLibraryShareScopeChange *)self userViewedParticipantTrashNotificationDate];
+        [v9 cpl_setLegacyEncryptedObject:userViewedParticipantTrashNotificationDate forKey:@"userViewedTrashNotificationDateEnc"];
       }
     }
 

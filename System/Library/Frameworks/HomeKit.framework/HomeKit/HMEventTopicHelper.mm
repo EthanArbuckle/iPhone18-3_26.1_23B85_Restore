@@ -1,16 +1,16 @@
 @interface HMEventTopicHelper
-+ (id)decodeTopic:(id)a3;
++ (id)decodeTopic:(id)topic;
 @end
 
 @implementation HMEventTopicHelper
 
-+ (id)decodeTopic:(id)a3
++ (id)decodeTopic:(id)topic
 {
-  v3 = a3;
+  topicCopy = topic;
   v4 = objc_autoreleasePoolPush();
-  v5 = [[HMParsedEventTopic alloc] initWithTopic:v3];
-  v6 = [objc_alloc(MEMORY[0x1E696AE88]) initWithString:v3];
-  v7 = [v6 scanLocation];
+  v5 = [[HMParsedEventTopic alloc] initWithTopic:topicCopy];
+  v6 = [objc_alloc(MEMORY[0x1E696AE88]) initWithString:topicCopy];
+  scanLocation = [v6 scanLocation];
   v52 = 0;
   v8 = [v6 scanUpToString:@"." intoString:&v52];
   v9 = v52;
@@ -79,7 +79,7 @@
     }
 
     [v6 setScanLocation:{objc_msgSend(v6, "scanLocation") + 1}];
-    v7 = [v6 scanLocation];
+    scanLocation = [v6 scanLocation];
 
     v49 = 0;
     v15 = [v6 scanUpToString:@"." intoString:&v49];
@@ -99,7 +99,7 @@
         {
           v12 = 0;
 LABEL_41:
-          [v6 setScanLocation:v7];
+          [v6 setScanLocation:scanLocation];
           goto LABEL_42;
         }
 
@@ -152,7 +152,7 @@ LABEL_41:
                   [(HMParsedEventTopic *)v5 setMediaSystemUUID:v23];
                 }
 
-                v7 = [v6 scanLocation];
+                scanLocation = [v6 scanLocation];
                 [v6 setScanLocation:{objc_msgSend(v6, "scanLocation") + 1}];
 
                 v43 = 0;
@@ -180,16 +180,16 @@ LABEL_41:
                   goto LABEL_41;
                 }
 
-                v34 = [(NSString *)v10 stringByTrimmingDots];
-                v35 = [v34 stringByDeletingPathExtension];
+                stringByTrimmingDots = [(NSString *)v10 stringByTrimmingDots];
+                stringByDeletingPathExtension = [stringByTrimmingDots stringByDeletingPathExtension];
                 if (v40)
                 {
-                  [(HMParsedEventTopic *)v5 setMediaGroupSettingKeyPath:v35];
+                  [(HMParsedEventTopic *)v5 setMediaGroupSettingKeyPath:stringByDeletingPathExtension];
                 }
 
                 else
                 {
-                  [(HMParsedEventTopic *)v5 setMediaSystemSettingKeyPath:v35];
+                  [(HMParsedEventTopic *)v5 setMediaSystemSettingKeyPath:stringByDeletingPathExtension];
                 }
 
                 goto LABEL_57;
@@ -235,7 +235,7 @@ LABEL_39:
 
     if (([v6 isAtEnd] & 1) == 0)
     {
-      v7 = [v6 scanLocation];
+      scanLocation = [v6 scanLocation];
       [v6 setScanLocation:{objc_msgSend(v6, "scanLocation") + 1}];
 
       if (![(HMParsedEventTopic *)v5 isIndexTopic])
@@ -270,9 +270,9 @@ LABEL_39:
           goto LABEL_41;
         }
 
-        v34 = [(NSString *)v10 stringByTrimmingDots];
-        v35 = [v34 stringByDeletingPathExtension];
-        [(HMParsedEventTopic *)v5 setAccessorySettingKeyPath:v35];
+        stringByTrimmingDots = [(NSString *)v10 stringByTrimmingDots];
+        stringByDeletingPathExtension = [stringByTrimmingDots stringByDeletingPathExtension];
+        [(HMParsedEventTopic *)v5 setAccessorySettingKeyPath:stringByDeletingPathExtension];
 LABEL_57:
 
         goto LABEL_41;
@@ -298,8 +298,8 @@ LABEL_43:
     v25 = v27;
     if (v26)
     {
-      v28 = [(NSString *)v27 stringByTrimmingDots];
-      [(HMParsedEventTopic *)v5 setTopicSuffix:v28];
+      stringByTrimmingDots2 = [(NSString *)v27 stringByTrimmingDots];
+      [(HMParsedEventTopic *)v5 setTopicSuffix:stringByTrimmingDots2];
     }
   }
 

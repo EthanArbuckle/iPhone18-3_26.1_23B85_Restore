@@ -2,7 +2,7 @@
 - (RCAccountStatusDelegate)delegate;
 - (RCAccountStatusObserver)init;
 - (void)_checkAccountStatus;
-- (void)_handleCKAccountChangedNotification:(id)a3;
+- (void)_handleCKAccountChangedNotification:(id)notification;
 - (void)_notifyDelegate;
 - (void)startMonitoringAccountStatus;
 @end
@@ -42,16 +42,16 @@
   }
 }
 
-- (void)_handleCKAccountChangedNotification:(id)a3
+- (void)_handleCKAccountChangedNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = OSLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 136315394;
     v7 = "[RCAccountStatusObserver _handleCKAccountChangedNotification:]";
     v8 = 2112;
-    v9 = v4;
+    v9 = notificationCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s -- notification received %@", &v6, 0x16u);
   }
 
@@ -71,12 +71,12 @@
 
 - (void)_notifyDelegate
 {
-  v3 = [(RCAccountStatusObserver *)self delegate];
-  if (v3)
+  delegate = [(RCAccountStatusObserver *)self delegate];
+  if (delegate)
   {
-    v4 = v3;
-    [v3 accountStatusUpdated:self];
-    v3 = v4;
+    v4 = delegate;
+    [delegate accountStatusUpdated:self];
+    delegate = v4;
   }
 }
 

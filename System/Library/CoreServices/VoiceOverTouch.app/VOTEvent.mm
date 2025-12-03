@@ -1,23 +1,23 @@
 @interface VOTEvent
-+ (id)appleTVRemoteEventWithCommand:(id)a3 info:(id)a4;
-+ (id)brailleEventWithCommand:(id)a3 info:(id)a4;
-+ (id)externalDeviceEventWithCommand:(id)a3 info:(id)a4;
-+ (id)internalEventWithCommand:(id)a3 info:(id)a4;
-+ (id)keyEventWithCommand:(id)a3 keyInfo:(id)a4 otherInfo:(id)a5;
-+ (id)systemServerEventWithCommand:(id)a3 info:(id)a4;
-+ (id)touchEventWithCommand:(id)a3 info:(id)a4;
++ (id)appleTVRemoteEventWithCommand:(id)command info:(id)info;
++ (id)brailleEventWithCommand:(id)command info:(id)info;
++ (id)externalDeviceEventWithCommand:(id)command info:(id)info;
++ (id)internalEventWithCommand:(id)command info:(id)info;
++ (id)keyEventWithCommand:(id)command keyInfo:(id)info otherInfo:(id)otherInfo;
++ (id)systemServerEventWithCommand:(id)command info:(id)info;
++ (id)touchEventWithCommand:(id)command info:(id)info;
 - (CGPoint)touchPoint;
 - (CGPoint)touchRawLocation;
-- (VOTEvent)initWithType:(int64_t)a3;
+- (VOTEvent)initWithType:(int64_t)type;
 - (id)description;
 - (int64_t)tvTouchPadRegion;
-- (void)setInfo:(id)a3;
-- (void)setObject:(id)a3 forIndex:(unint64_t)a4;
+- (void)setInfo:(id)info;
+- (void)setObject:(id)object forIndex:(unint64_t)index;
 @end
 
 @implementation VOTEvent
 
-- (VOTEvent)initWithType:(int64_t)a3
+- (VOTEvent)initWithType:(int64_t)type
 {
   v6.receiver = self;
   v6.super_class = VOTEvent;
@@ -25,142 +25,142 @@
   if (v4)
   {
     v4->_time = CFAbsoluteTimeGetCurrent();
-    v4->_origin = a3;
+    v4->_origin = type;
   }
 
   return v4;
 }
 
-+ (id)externalDeviceEventWithCommand:(id)a3 info:(id)a4
++ (id)externalDeviceEventWithCommand:(id)command info:(id)info
 {
-  v5 = a4;
-  v6 = a3;
+  infoCopy = info;
+  commandCopy = command;
   v7 = [[VOTEvent alloc] initWithType:3];
-  [(VOTEvent *)v7 setCommand:v6];
+  [(VOTEvent *)v7 setCommand:commandCopy];
 
-  [(VOTEvent *)v7 setInfo:v5];
+  [(VOTEvent *)v7 setInfo:infoCopy];
 
   return v7;
 }
 
-+ (id)keyEventWithCommand:(id)a3 keyInfo:(id)a4 otherInfo:(id)a5
++ (id)keyEventWithCommand:(id)command keyInfo:(id)info otherInfo:(id)otherInfo
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  otherInfoCopy = otherInfo;
+  infoCopy = info;
+  commandCopy = command;
   v10 = [objc_allocWithZone(VOTEvent) initWithType:4];
-  [v10 setCommand:v9];
+  [v10 setCommand:commandCopy];
 
-  [v10 setKeyInfo:v8];
-  if (v7)
+  [v10 setKeyInfo:infoCopy];
+  if (otherInfoCopy)
   {
-    [v10 setInfo:v7];
+    [v10 setInfo:otherInfoCopy];
   }
 
   return v10;
 }
 
-+ (id)touchEventWithCommand:(id)a3 info:(id)a4
++ (id)touchEventWithCommand:(id)command info:(id)info
 {
-  v5 = a4;
-  v6 = a3;
+  infoCopy = info;
+  commandCopy = command;
   v7 = [objc_allocWithZone(VOTEvent) initWithType:2];
-  [v7 setCommand:v6];
+  [v7 setCommand:commandCopy];
 
-  [v7 setInfo:v5];
+  [v7 setInfo:infoCopy];
 
   return v7;
 }
 
-+ (id)internalEventWithCommand:(id)a3 info:(id)a4
++ (id)internalEventWithCommand:(id)command info:(id)info
 {
-  v5 = a4;
-  v6 = a3;
+  infoCopy = info;
+  commandCopy = command;
   v7 = [objc_allocWithZone(VOTEvent) initWithType:1];
-  [v7 setCommand:v6];
+  [v7 setCommand:commandCopy];
 
-  [v7 setInfo:v5];
+  [v7 setInfo:infoCopy];
 
   return v7;
 }
 
-+ (id)systemServerEventWithCommand:(id)a3 info:(id)a4
++ (id)systemServerEventWithCommand:(id)command info:(id)info
 {
-  v5 = a4;
-  v6 = a3;
+  infoCopy = info;
+  commandCopy = command;
   v7 = [objc_allocWithZone(VOTEvent) initWithType:6];
-  [v7 setCommand:v6];
+  [v7 setCommand:commandCopy];
 
-  [v7 setInfo:v5];
+  [v7 setInfo:infoCopy];
 
   return v7;
 }
 
-+ (id)appleTVRemoteEventWithCommand:(id)a3 info:(id)a4
++ (id)appleTVRemoteEventWithCommand:(id)command info:(id)info
 {
-  v5 = a4;
-  v6 = a3;
+  infoCopy = info;
+  commandCopy = command;
   v7 = [objc_allocWithZone(VOTEvent) initWithType:7];
-  [v7 setCommand:v6];
+  [v7 setCommand:commandCopy];
 
-  [v7 setInfo:v5];
+  [v7 setInfo:infoCopy];
 
   return v7;
 }
 
-+ (id)brailleEventWithCommand:(id)a3 info:(id)a4
++ (id)brailleEventWithCommand:(id)command info:(id)info
 {
-  v5 = a4;
-  v6 = a3;
+  infoCopy = info;
+  commandCopy = command;
   v7 = [objc_allocWithZone(VOTEvent) initWithType:5];
-  [v7 setCommand:v6];
+  [v7 setCommand:commandCopy];
 
-  [v7 setInfo:v5];
+  [v7 setInfo:infoCopy];
 
   return v7;
 }
 
-- (void)setInfo:(id)a3
+- (void)setInfo:(id)info
 {
   info = self->_info;
   if (info)
   {
 
-    [(AXIndexMap *)info addObjectsFromIndexMap:a3];
+    [(AXIndexMap *)info addObjectsFromIndexMap:info];
   }
 
   else
   {
-    self->_info = [a3 copyWithZone:0];
+    self->_info = [info copyWithZone:0];
 
     _objc_release_x1();
   }
 }
 
-- (void)setObject:(id)a3 forIndex:(unint64_t)a4
+- (void)setObject:(id)object forIndex:(unint64_t)index
 {
-  v6 = a3;
+  objectCopy = object;
   info = self->_info;
-  v10 = v6;
+  v10 = objectCopy;
   if (!info)
   {
     v8 = [objc_allocWithZone(AXIndexMap) init];
     v9 = self->_info;
     self->_info = v8;
 
-    v6 = v10;
+    objectCopy = v10;
     info = self->_info;
   }
 
-  [(AXIndexMap *)info setObject:v6 forIndex:a4];
+  [(AXIndexMap *)info setObject:objectCopy forIndex:index];
 }
 
 - (id)description
 {
   origin = self->_origin;
   info = self->_info;
-  v5 = [(VOTEvent *)self command];
-  v6 = [NSString stringWithFormat:@"VOTEvent:[%p] Type: %d. Info: %@ Command:%@", self, origin, info, v5];
+  command = [(VOTEvent *)self command];
+  v6 = [NSString stringWithFormat:@"VOTEvent:[%p] Type: %d. Info: %@ Command:%@", self, origin, info, command];
 
   return v6;
 }

@@ -1,6 +1,6 @@
 @interface TLSystemApplication
 + (TLSystemApplication)defaultSystemApplication;
-- (TLSystemApplication)initWithBundleIdentifier:(id)a3 name:(id)a4;
+- (TLSystemApplication)initWithBundleIdentifier:(id)identifier name:(id)name;
 @end
 
 @implementation TLSystemApplication
@@ -24,20 +24,20 @@ uint64_t __47__TLSystemApplication_defaultSystemApplication__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (TLSystemApplication)initWithBundleIdentifier:(id)a3 name:(id)a4
+- (TLSystemApplication)initWithBundleIdentifier:(id)identifier name:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  nameCopy = name;
   v14.receiver = self;
   v14.super_class = TLSystemApplication;
   v8 = [(TLSystemApplication *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [identifierCopy copy];
     bundleIdentifier = v8->_bundleIdentifier;
     v8->_bundleIdentifier = v9;
 
-    v11 = [v7 copy];
+    v11 = [nameCopy copy];
     name = v8->_name;
     v8->_name = v11;
   }

@@ -1,16 +1,16 @@
 @interface XRCapabilityRequirements
-+ (id)requirementsFromContext:(id)a3;
-+ (id)requirementsFromPlist:(id)a3 error:(id *)a4;
-- (BOOL)checkRequirementsAgainstRegistery:(id)a3 error:(id *)a4;
++ (id)requirementsFromContext:(id)context;
++ (id)requirementsFromPlist:(id)plist error:(id *)error;
+- (BOOL)checkRequirementsAgainstRegistery:(id)registery error:(id *)error;
 - (XRCapabilityRequirements)init;
 - (id)plistRepresentation;
 @end
 
 @implementation XRCapabilityRequirements
 
-+ (id)requirementsFromContext:(id)a3
++ (id)requirementsFromContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = objc_opt_new();
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
@@ -18,17 +18,17 @@
   v10[3] = &unk_278EFC148;
   v5 = v4;
   v11 = v5;
-  objc_msgSend_enumerateRequiredCapabilities_(v3, v6, v10, v7, v8);
+  objc_msgSend_enumerateRequiredCapabilities_(contextCopy, v6, v10, v7, v8);
 
   return v5;
 }
 
-+ (id)requirementsFromPlist:(id)a3 error:(id *)a4
++ (id)requirementsFromPlist:(id)plist error:(id *)error
 {
   v49[3] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  plistCopy = plist;
   v45 = 100;
-  v7 = objc_msgSend_propertyListWithData_options_format_error_(MEMORY[0x277CCAC58], v6, v5, 0, &v45, a4);
+  v7 = objc_msgSend_propertyListWithData_options_format_error_(MEMORY[0x277CCAC58], v6, plistCopy, 0, &v45, error);
   v8 = v7;
   v9 = v45;
   if (!v7 || v45 != 100)
@@ -60,9 +60,9 @@ LABEL_13:
     v46[2] = v46[0];
     v47[2] = @"The bundle may be corrupt or empty.  Check that the requirements file is not corrupt.";
     v25 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v23, v47, v46, 3);
-    if (a4)
+    if (error)
     {
-      *a4 = objc_msgSend_errorWithDomain_code_userInfo_(MEMORY[0x277CCA9B8], v24, @"Supported Capability Problem", 1, v25);
+      *error = objc_msgSend_errorWithDomain_code_userInfo_(MEMORY[0x277CCA9B8], v24, @"Supported Capability Problem", 1, v25);
     }
 
     goto LABEL_19;
@@ -116,10 +116,10 @@ LABEL_13:
     v48[2] = v48[0];
     v49[2] = @"The bundle may be corrupt or empty.  Check that the requirements file is not corrupt.";
     v18 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v16, v49, v48, 3);
-    if (a4)
+    if (error)
     {
       objc_msgSend_errorWithDomain_code_userInfo_(MEMORY[0x277CCA9B8], v17, @"Supported Capability Problem", 1, v18);
-      *a4 = v19 = 0;
+      *error = v19 = 0;
     }
 
     else
@@ -194,10 +194,10 @@ LABEL_23:
   return v11;
 }
 
-- (BOOL)checkRequirementsAgainstRegistery:(id)a3 error:(id *)a4
+- (BOOL)checkRequirementsAgainstRegistery:(id)registery error:(id *)error
 {
   v84[5] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  registeryCopy = registery;
   v79 = 0;
   v80 = &v79;
   v81 = 0x2020000000;
@@ -219,7 +219,7 @@ LABEL_23:
   v61[1] = 3221225472;
   v61[2] = sub_24809DC4C;
   v61[3] = &unk_278EFC210;
-  v12 = v6;
+  v12 = registeryCopy;
   v62 = v12;
   v68 = &v79;
   v69 = &v75;
@@ -230,7 +230,7 @@ LABEL_23:
   v15 = v10;
   v70 = &v71;
   v65 = v15;
-  v66 = self;
+  selfCopy = self;
   v16 = v8;
   v67 = v16;
   objc_msgSend_enumerateKeysAndObjectsUsingBlock_(capabilities, v17, v61, v18, v19);
@@ -309,9 +309,9 @@ LABEL_12:
   v83[4] = @"XRRequiredVersionsKey";
   v84[4] = v15;
   v51 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v25, v84, v83, 5, v54, v55, v56, v57);
-  if (a4)
+  if (error)
   {
-    *a4 = objc_msgSend_errorWithDomain_code_userInfo_(MEMORY[0x277CCA9B8], v50, @"Supported Capability Problem", 0, v51);
+    *error = objc_msgSend_errorWithDomain_code_userInfo_(MEMORY[0x277CCA9B8], v50, @"Supported Capability Problem", 0, v51);
   }
 
   v24 = *(v80 + 24);

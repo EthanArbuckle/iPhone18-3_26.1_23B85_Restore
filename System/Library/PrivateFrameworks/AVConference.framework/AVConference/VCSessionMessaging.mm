@@ -1,55 +1,55 @@
 @interface VCSessionMessaging
-- (BOOL)sendReliableMessage:(id)a3 withTopic:(id)a4 participantID:(unint64_t)a5 withOptions:(id)a6 completion:(id)a7;
-- (VCSessionMessaging)initWithControlChannel:(id)a3 remoteVersion:(id)a4;
-- (id)allocMessageFromPayload:(id)a3 forTopic:(id)a4 participantID:(id)a5;
-- (id)newDictionaryFromUnpackedMessage:(id)a3;
-- (id)newDictionaryFromUnpackedMessage:(id)a3 forTopic:(id)a4 controlChannelVersion:(int)a5;
-- (id)newDictionaryFromUnpackedMessageV2:(id)a3;
-- (id)newDictionaryFromUnpackedMomentsMessage:(id)a3;
-- (id)newPackedMessageFromDictionary:(id)a3;
-- (id)newPackedMessageFromDictionary:(id)a3 forTopic:(id)a4 controlChannelVersion:(int)a5;
-- (id)newPackedMessageFromDictionaryV2:(id)a3;
-- (id)newPackedMessageFromMomentsDictionary:(id)a3;
-- (void)addParticipant:(id)a3 controlChannelProtocolVersion:(int)a4;
-- (void)addTopic:(id)a3 associatedStrings:(id)a4 allowConcurrent:(BOOL)a5 requireReliable:(BOOL)a6 sendMessageDictionaryCompletionHandler:(id)a7 receiveMessageDictionaryHandler:(id)a8;
-- (void)addTopic:(id)a3 associatedStrings:(id)a4 allowConcurrent:(BOOL)a5 sendCompletionHandler:(id)a6 receiveHandler:(id)a7;
-- (void)controlChannel:(id)a3 clearTransactionCacheForParticipant:(id)a4;
-- (void)controlChannel:(id)a3 sendReliableMessage:(id)a4 didSucceed:(BOOL)a5 toParticipant:(id)a6;
-- (void)controlChannel:(id)a3 topic:(id)a4 payload:(id)a5 transactionID:(unsigned int)a6 fromParticipant:(id)a7;
+- (BOOL)sendReliableMessage:(id)message withTopic:(id)topic participantID:(unint64_t)d withOptions:(id)options completion:(id)completion;
+- (VCSessionMessaging)initWithControlChannel:(id)channel remoteVersion:(id)version;
+- (id)allocMessageFromPayload:(id)payload forTopic:(id)topic participantID:(id)d;
+- (id)newDictionaryFromUnpackedMessage:(id)message;
+- (id)newDictionaryFromUnpackedMessage:(id)message forTopic:(id)topic controlChannelVersion:(int)version;
+- (id)newDictionaryFromUnpackedMessageV2:(id)v2;
+- (id)newDictionaryFromUnpackedMomentsMessage:(id)message;
+- (id)newPackedMessageFromDictionary:(id)dictionary;
+- (id)newPackedMessageFromDictionary:(id)dictionary forTopic:(id)topic controlChannelVersion:(int)version;
+- (id)newPackedMessageFromDictionaryV2:(id)v2;
+- (id)newPackedMessageFromMomentsDictionary:(id)dictionary;
+- (void)addParticipant:(id)participant controlChannelProtocolVersion:(int)version;
+- (void)addTopic:(id)topic associatedStrings:(id)strings allowConcurrent:(BOOL)concurrent requireReliable:(BOOL)reliable sendMessageDictionaryCompletionHandler:(id)handler receiveMessageDictionaryHandler:(id)dictionaryHandler;
+- (void)addTopic:(id)topic associatedStrings:(id)strings allowConcurrent:(BOOL)concurrent sendCompletionHandler:(id)handler receiveHandler:(id)receiveHandler;
+- (void)controlChannel:(id)channel clearTransactionCacheForParticipant:(id)participant;
+- (void)controlChannel:(id)channel sendReliableMessage:(id)message didSucceed:(BOOL)succeed toParticipant:(id)participant;
+- (void)controlChannel:(id)channel topic:(id)topic payload:(id)payload transactionID:(unsigned int)d fromParticipant:(id)participant;
 - (void)dealloc;
-- (void)searchMatchingTopic:(id)a3 payload:(id)a4 transactionID:(unsigned int)a5 fromParticipant:(id)a6;
-- (void)sendMessage:(id)a3 withTopic:(id)a4;
-- (void)sendMessage:(id)a3 withTopic:(id)a4 participantID:(unint64_t)a5;
-- (void)sendMessageDictionary:(id)a3 withTopic:(id)a4 participantID:(unint64_t)a5;
+- (void)searchMatchingTopic:(id)topic payload:(id)payload transactionID:(unsigned int)d fromParticipant:(id)participant;
+- (void)sendMessage:(id)message withTopic:(id)topic;
+- (void)sendMessage:(id)message withTopic:(id)topic participantID:(unint64_t)d;
+- (void)sendMessageDictionary:(id)dictionary withTopic:(id)topic participantID:(unint64_t)d;
 - (void)startMessaging;
 - (void)stopMessaging;
 @end
 
 @implementation VCSessionMessaging
 
-- (VCSessionMessaging)initWithControlChannel:(id)a3 remoteVersion:(id)a4
+- (VCSessionMessaging)initWithControlChannel:(id)channel remoteVersion:(id)version
 {
   v8 = *MEMORY[0x1E69E9840];
   v7.receiver = self;
   v7.super_class = VCSessionMessaging;
-  v5 = [(VCSessionMessaging *)&v7 init:a3];
+  v5 = [(VCSessionMessaging *)&v7 init:channel];
   if (v5)
   {
     v5->topics = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:0];
     v5->participants = objc_alloc_init(MEMORY[0x1E695DF90]);
-    objc_storeWeak(&v5->controlChannelWeak, a3);
-    [a3 setMessageReceivedDelegate:v5];
+    objc_storeWeak(&v5->controlChannelWeak, channel);
+    [channel setMessageReceivedDelegate:v5];
   }
 
   return v5;
 }
 
-- (void)addParticipant:(id)a3 controlChannelProtocolVersion:(int)a4
+- (void)addParticipant:(id)participant controlChannelProtocolVersion:(int)version
 {
-  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*&a4];
+  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*&version];
   participants = self->participants;
 
-  [(NSMutableDictionary *)participants setObject:v6 forKeyedSubscript:a3];
+  [(NSMutableDictionary *)participants setObject:v6 forKeyedSubscript:participant];
 }
 
 - (void)startMessaging
@@ -92,16 +92,16 @@ void __36__VCSessionMessaging_startMessaging__block_invoke(uint64_t a1)
   v3 = objc_autoreleasePoolPush();
   [objc_loadWeak(&self->controlChannelWeak) setMessageReceivedDelegate:0];
   objc_sync_enter(self);
-  v4 = [(NSMutableDictionary *)self->topics objectEnumerator];
+  objectEnumerator = [(NSMutableDictionary *)self->topics objectEnumerator];
   while (1)
   {
-    v5 = [v4 nextObject];
-    if (!v5)
+    nextObject = [objectEnumerator nextObject];
+    if (!nextObject)
     {
       break;
     }
 
-    [v5 setIsSendingEnabled:0];
+    [nextObject setIsSendingEnabled:0];
   }
 
   self->topics = 0;
@@ -135,10 +135,10 @@ void __36__VCSessionMessaging_startMessaging__block_invoke(uint64_t a1)
   [(VCSessionMessaging *)&v5 dealloc];
 }
 
-- (void)addTopic:(id)a3 associatedStrings:(id)a4 allowConcurrent:(BOOL)a5 requireReliable:(BOOL)a6 sendMessageDictionaryCompletionHandler:(id)a7 receiveMessageDictionaryHandler:(id)a8
+- (void)addTopic:(id)topic associatedStrings:(id)strings allowConcurrent:(BOOL)concurrent requireReliable:(BOOL)reliable sendMessageDictionaryCompletionHandler:(id)handler receiveMessageDictionaryHandler:(id)dictionaryHandler
 {
   v11[7] = *MEMORY[0x1E69E9840];
-  if (a7)
+  if (handler)
   {
     v9 = v11;
     v11[0] = MEMORY[0x1E69E9820];
@@ -146,8 +146,8 @@ void __36__VCSessionMessaging_startMessaging__block_invoke(uint64_t a1)
     v11[2] = __152__VCSessionMessaging_addTopic_associatedStrings_allowConcurrent_requireReliable_sendMessageDictionaryCompletionHandler_receiveMessageDictionaryHandler___block_invoke;
     v11[3] = &unk_1E85F96E8;
     v11[4] = self;
-    v11[5] = a3;
-    v11[6] = a7;
+    v11[5] = topic;
+    v11[6] = handler;
   }
 
   else
@@ -155,7 +155,7 @@ void __36__VCSessionMessaging_startMessaging__block_invoke(uint64_t a1)
     v9 = 0;
   }
 
-  v10 = [[VCSessionMessageTopic alloc] initWithTopicKey:a3 strings:a4 allowConcurrent:a5 requireReliable:a6 controlChannel:objc_loadWeak(&self->controlChannelWeak) sendMessageDataCompletionHandler:v9 receiveMessageDictionaryHandler:a8];
+  v10 = [[VCSessionMessageTopic alloc] initWithTopicKey:topic strings:strings allowConcurrent:concurrent requireReliable:reliable controlChannel:objc_loadWeak(&self->controlChannelWeak) sendMessageDataCompletionHandler:v9 receiveMessageDictionaryHandler:dictionaryHandler];
   objc_sync_enter(self);
   [(NSMutableDictionary *)self->topics setObject:v10 forKeyedSubscript:[(VCSessionMessageTopic *)v10 topicKey]];
   objc_sync_exit(self);
@@ -177,19 +177,19 @@ void __152__VCSessionMessaging_addTopic_associatedStrings_allowConcurrent_requir
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)addTopic:(id)a3 associatedStrings:(id)a4 allowConcurrent:(BOOL)a5 sendCompletionHandler:(id)a6 receiveHandler:(id)a7
+- (void)addTopic:(id)topic associatedStrings:(id)strings allowConcurrent:(BOOL)concurrent sendCompletionHandler:(id)handler receiveHandler:(id)receiveHandler
 {
-  v8 = [[VCSessionMessageTopic alloc] initWithTopicKey:a3 strings:a4 allowConcurrent:a5 controlChannel:objc_loadWeak(&self->controlChannelWeak) sendCompletionHandler:a6 receiveHandler:a7];
+  v8 = [[VCSessionMessageTopic alloc] initWithTopicKey:topic strings:strings allowConcurrent:concurrent controlChannel:objc_loadWeak(&self->controlChannelWeak) sendCompletionHandler:handler receiveHandler:receiveHandler];
   objc_sync_enter(self);
   [(NSMutableDictionary *)self->topics setObject:v8 forKeyedSubscript:[(VCSessionMessageTopic *)v8 topicKey]];
   objc_sync_exit(self);
 }
 
-- (void)sendMessage:(id)a3 withTopic:(id)a4
+- (void)sendMessage:(id)message withTopic:(id)topic
 {
   v22 = *MEMORY[0x1E69E9840];
   objc_sync_enter(self);
-  v7 = [(NSMutableDictionary *)self->topics objectForKeyedSubscript:a4];
+  v7 = [(NSMutableDictionary *)self->topics objectForKeyedSubscript:topic];
   if (VRTraceGetErrorLogLevelForModule() >= 7)
   {
     v8 = VRTraceErrorLogLevelToCSTR();
@@ -203,24 +203,24 @@ void __152__VCSessionMessaging_addTopic_associatedStrings_allowConcurrent_requir
       v14 = 1024;
       v15 = 166;
       v16 = 2112;
-      v17 = a3;
+      messageCopy = message;
       v18 = 2112;
-      v19 = a4;
+      topicCopy = topic;
       v20 = 2112;
       v21 = v7;
       _os_log_impl(&dword_1DB56E000, v9, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d VCSessionMessaging: sendMessage:%@, %@, %@", &v10, 0x3Au);
     }
   }
 
-  [v7 sendMessage:a3];
+  [v7 sendMessage:message];
   objc_sync_exit(self);
 }
 
-- (void)sendMessage:(id)a3 withTopic:(id)a4 participantID:(unint64_t)a5
+- (void)sendMessage:(id)message withTopic:(id)topic participantID:(unint64_t)d
 {
   v26 = *MEMORY[0x1E69E9840];
   objc_sync_enter(self);
-  v9 = [(NSMutableDictionary *)self->topics objectForKeyedSubscript:a4];
+  v9 = [(NSMutableDictionary *)self->topics objectForKeyedSubscript:topic];
   if (VRTraceGetErrorLogLevelForModule() >= 7)
   {
     v10 = VRTraceErrorLogLevelToCSTR();
@@ -234,26 +234,26 @@ void __152__VCSessionMessaging_addTopic_associatedStrings_allowConcurrent_requir
       v16 = 1024;
       v17 = 176;
       v18 = 2112;
-      v19 = a3;
+      messageCopy = message;
       v20 = 2048;
-      v21 = a5;
+      dCopy = d;
       v22 = 2112;
-      v23 = a4;
+      topicCopy = topic;
       v24 = 2112;
       v25 = v9;
       _os_log_impl(&dword_1DB56E000, v11, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d VCSessionMessaging: sendMessage:%@ for participantID:%llu, %@, %@", &v12, 0x44u);
     }
   }
 
-  [v9 sendMessage:a3 participantID:a5];
+  [v9 sendMessage:message participantID:d];
   objc_sync_exit(self);
 }
 
-- (void)sendMessageDictionary:(id)a3 withTopic:(id)a4 participantID:(unint64_t)a5
+- (void)sendMessageDictionary:(id)dictionary withTopic:(id)topic participantID:(unint64_t)d
 {
   v28 = *MEMORY[0x1E69E9840];
   objc_sync_enter(self);
-  v9 = [(NSMutableDictionary *)self->topics objectForKeyedSubscript:a4];
+  v9 = [(NSMutableDictionary *)self->topics objectForKeyedSubscript:topic];
   if (VRTraceGetErrorLogLevelForModule() >= 7)
   {
     v10 = VRTraceErrorLogLevelToCSTR();
@@ -267,20 +267,20 @@ void __152__VCSessionMessaging_addTopic_associatedStrings_allowConcurrent_requir
       v18 = 1024;
       v19 = 186;
       v20 = 2112;
-      v21 = a3;
+      dictionaryCopy = dictionary;
       v22 = 2048;
-      v23 = a5;
+      dCopy = d;
       v24 = 2112;
-      v25 = a4;
+      topicCopy = topic;
       v26 = 2112;
       v27 = v9;
       _os_log_impl(&dword_1DB56E000, v11, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d VCSessionMessaging: sendMessageDictionary=%@ for participantID=%llu, topicKey=%@, topic=%@", &v14, 0x44u);
     }
   }
 
-  if (-[NSMutableDictionary objectForKeyedSubscript:](self->participants, "objectForKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:a5]))
+  if (-[NSMutableDictionary objectForKeyedSubscript:](self->participants, "objectForKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:d]))
   {
-    v12 = [-[NSMutableDictionary objectForKeyedSubscript:](self->participants objectForKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedLongLong:", a5)), "intValue"}];
+    v12 = [-[NSMutableDictionary objectForKeyedSubscript:](self->participants objectForKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedLongLong:", d)), "intValue"}];
   }
 
   else
@@ -288,17 +288,17 @@ void __152__VCSessionMessaging_addTopic_associatedStrings_allowConcurrent_requir
     v12 = 1;
   }
 
-  v13 = [(VCSessionMessaging *)self newPackedMessageFromDictionary:a3 forTopic:a4 controlChannelVersion:v12];
-  [v9 sendMessage:v13 participantID:a5];
+  v13 = [(VCSessionMessaging *)self newPackedMessageFromDictionary:dictionary forTopic:topic controlChannelVersion:v12];
+  [v9 sendMessage:v13 participantID:d];
 
   objc_sync_exit(self);
 }
 
-- (BOOL)sendReliableMessage:(id)a3 withTopic:(id)a4 participantID:(unint64_t)a5 withOptions:(id)a6 completion:(id)a7
+- (BOOL)sendReliableMessage:(id)message withTopic:(id)topic participantID:(unint64_t)d withOptions:(id)options completion:(id)completion
 {
   v33 = *MEMORY[0x1E69E9840];
   objc_sync_enter(self);
-  v13 = [(NSMutableDictionary *)self->topics objectForKeyedSubscript:a4];
+  v13 = [(NSMutableDictionary *)self->topics objectForKeyedSubscript:topic];
   if (VRTraceGetErrorLogLevelForModule() >= 7)
   {
     v14 = VRTraceErrorLogLevelToCSTR();
@@ -312,11 +312,11 @@ void __152__VCSessionMessaging_addTopic_associatedStrings_allowConcurrent_requir
       v23 = 1024;
       v24 = 204;
       v25 = 2112;
-      v26 = a3;
+      messageCopy = message;
       v27 = 2048;
-      v28 = a5;
+      dCopy = d;
       v29 = 2112;
-      v30 = a4;
+      topicCopy = topic;
       v31 = 2112;
       v32 = v13;
       _os_log_impl(&dword_1DB56E000, v15, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d VCSessionMessaging: sendMessage=%@ for participantID=%llu, topicKey=%@, topic=%@", buf, 0x44u);
@@ -327,22 +327,22 @@ void __152__VCSessionMessaging_addTopic_associatedStrings_allowConcurrent_requir
   v18[1] = 3221225472;
   v18[2] = __89__VCSessionMessaging_sendReliableMessage_withTopic_participantID_withOptions_completion___block_invoke;
   v18[3] = &unk_1E85F9710;
-  v18[4] = a7;
-  v16 = [v13 sendReliableMessage:a3 participantID:a5 withOptions:a6 completion:v18];
+  v18[4] = completion;
+  v16 = [v13 sendReliableMessage:message participantID:d withOptions:options completion:v18];
   objc_sync_exit(self);
   return v16;
 }
 
-- (id)newPackedMessageFromDictionary:(id)a3
+- (id)newPackedMessageFromDictionary:(id)dictionary
 {
   v21 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!dictionary)
   {
     return 0;
   }
 
-  v4 = [a3 allKeys];
-  if ([v4 count] && (v19 = 0u, v20 = 0u, v17 = 0u, v18 = 0u, (v5 = objc_msgSend(v4, "countByEnumeratingWithState:objects:count:", &v17, v16, 16)) != 0))
+  allKeys = [dictionary allKeys];
+  if ([allKeys count] && (v19 = 0u, v20 = 0u, v17 = 0u, v18 = 0u, (v5 = objc_msgSend(allKeys, "countByEnumeratingWithState:objects:count:", &v17, v16, 16)) != 0))
   {
     v6 = v5;
     v7 = 0;
@@ -353,11 +353,11 @@ void __152__VCSessionMessaging_addTopic_associatedStrings_allowConcurrent_requir
       {
         if (*v18 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allKeys);
         }
 
         v10 = *(*(&v17 + 1) + 8 * i);
-        v11 = [a3 objectForKeyedSubscript:v10];
+        v11 = [dictionary objectForKeyedSubscript:v10];
         if (v10)
         {
           v12 = v11 == 0;
@@ -384,7 +384,7 @@ void __152__VCSessionMessaging_addTopic_associatedStrings_allowConcurrent_requir
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v17 objects:v16 count:16];
+      v6 = [allKeys countByEnumeratingWithState:&v17 objects:v16 count:16];
     }
 
     while (v6);
@@ -398,15 +398,15 @@ void __152__VCSessionMessaging_addTopic_associatedStrings_allowConcurrent_requir
   return v7;
 }
 
-- (id)newDictionaryFromUnpackedMessage:(id)a3
+- (id)newDictionaryFromUnpackedMessage:(id)message
 {
   v22 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!message)
   {
     return 0;
   }
 
-  v3 = [a3 componentsSeparatedByString:@":"];
+  v3 = [message componentsSeparatedByString:@":"];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
@@ -460,20 +460,20 @@ void __152__VCSessionMessaging_addTopic_associatedStrings_allowConcurrent_requir
   return v6;
 }
 
-- (id)newPackedMessageFromMomentsDictionary:(id)a3
+- (id)newPackedMessageFromMomentsDictionary:(id)dictionary
 {
   v20 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!dictionary)
   {
     return 0;
   }
 
-  v4 = [a3 allKeys];
+  allKeys = [dictionary allKeys];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v16 objects:v15 count:16];
+  v5 = [allKeys countByEnumeratingWithState:&v16 objects:v15 count:16];
   if (!v5)
   {
     return 0;
@@ -488,11 +488,11 @@ void __152__VCSessionMessaging_addTopic_associatedStrings_allowConcurrent_requir
     {
       if (*v17 != v8)
       {
-        objc_enumerationMutation(v4);
+        objc_enumerationMutation(allKeys);
       }
 
       v10 = *(*(&v16 + 1) + 8 * i);
-      v11 = [a3 objectForKeyedSubscript:v10];
+      v11 = [dictionary objectForKeyedSubscript:v10];
       if (v10)
       {
         v12 = v11 == 0;
@@ -515,22 +515,22 @@ void __152__VCSessionMessaging_addTopic_associatedStrings_allowConcurrent_requir
       }
     }
 
-    v6 = [v4 countByEnumeratingWithState:&v16 objects:v15 count:16];
+    v6 = [allKeys countByEnumeratingWithState:&v16 objects:v15 count:16];
   }
 
   while (v6);
   return v7;
 }
 
-- (id)newDictionaryFromUnpackedMomentsMessage:(id)a3
+- (id)newDictionaryFromUnpackedMomentsMessage:(id)message
 {
   v18 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!message)
   {
     return 0;
   }
 
-  v3 = [a3 componentsSeparatedByString:@"?"];
+  v3 = [message componentsSeparatedByString:@"?"];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -574,10 +574,10 @@ void __152__VCSessionMessaging_addTopic_associatedStrings_allowConcurrent_requir
   return v6;
 }
 
-- (id)newPackedMessageFromDictionaryV2:(id)a3
+- (id)newPackedMessageFromDictionaryV2:(id)v2
 {
   v7[1] = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!v2)
   {
     [VCSessionMessaging newPackedMessageFromDictionaryV2:v7];
 LABEL_8:
@@ -585,28 +585,28 @@ LABEL_8:
     return v4;
   }
 
-  if (([MEMORY[0x1E696AE40] propertyList:a3 isValidForFormat:200] & 1) == 0)
+  if (([MEMORY[0x1E696AE40] propertyList:v2 isValidForFormat:200] & 1) == 0)
   {
-    [(VCSessionMessaging *)a3 newPackedMessageFromDictionaryV2:v7];
+    [(VCSessionMessaging *)v2 newPackedMessageFromDictionaryV2:v7];
     goto LABEL_8;
   }
 
   v6 = 0;
-  v4 = [MEMORY[0x1E696AE40] dataWithPropertyList:a3 format:200 options:0 error:&v6];
+  v4 = [MEMORY[0x1E696AE40] dataWithPropertyList:v2 format:200 options:0 error:&v6];
   if (!v4)
   {
-    [(VCSessionMessaging *)a3 newPackedMessageFromDictionaryV2:v7];
+    [(VCSessionMessaging *)v2 newPackedMessageFromDictionaryV2:v7];
     goto LABEL_8;
   }
 
   return v4;
 }
 
-- (id)newDictionaryFromUnpackedMessageV2:(id)a3
+- (id)newDictionaryFromUnpackedMessageV2:(id)v2
 {
   v9[1] = *MEMORY[0x1E69E9840];
   v8 = 0;
-  if (!a3)
+  if (!v2)
   {
     [VCSessionMessaging newDictionaryFromUnpackedMessageV2:v9];
 LABEL_8:
@@ -615,43 +615,43 @@ LABEL_8:
   }
 
   v7 = 0;
-  v4 = [MEMORY[0x1E696AE40] propertyListWithData:a3 options:0 format:&v8 error:&v7];
+  v4 = [MEMORY[0x1E696AE40] propertyListWithData:v2 options:0 format:&v8 error:&v7];
   if (!v4)
   {
-    [(VCSessionMessaging *)a3 newDictionaryFromUnpackedMessageV2:v9];
+    [(VCSessionMessaging *)v2 newDictionaryFromUnpackedMessageV2:v9];
     goto LABEL_8;
   }
 
   v5 = v4;
   if (v8 != 200)
   {
-    [(VCSessionMessaging *)&v8 newDictionaryFromUnpackedMessageV2:a3, v4, v9];
+    [(VCSessionMessaging *)&v8 newDictionaryFromUnpackedMessageV2:v2, v4, v9];
     goto LABEL_8;
   }
 
   return v5;
 }
 
-- (id)newPackedMessageFromDictionary:(id)a3 forTopic:(id)a4 controlChannelVersion:(int)a5
+- (id)newPackedMessageFromDictionary:(id)dictionary forTopic:(id)topic controlChannelVersion:(int)version
 {
-  if (a5 == 2)
+  if (version == 2)
   {
 
-    return [(VCSessionMessaging *)self newPackedMessageFromDictionaryV2:a3, a4];
+    return [(VCSessionMessaging *)self newPackedMessageFromDictionaryV2:dictionary, topic];
   }
 
-  else if (a5 == 1)
+  else if (version == 1)
   {
-    if ([a4 isEqualToString:@"VCSessionMomentsStateMessageTopic"])
+    if ([topic isEqualToString:@"VCSessionMomentsStateMessageTopic"])
     {
 
-      return [(VCSessionMessaging *)self newPackedMessageFromMomentsDictionary:a3];
+      return [(VCSessionMessaging *)self newPackedMessageFromMomentsDictionary:dictionary];
     }
 
     else
     {
 
-      return [(VCSessionMessaging *)self newPackedMessageFromDictionary:a3];
+      return [(VCSessionMessaging *)self newPackedMessageFromDictionary:dictionary];
     }
   }
 
@@ -661,26 +661,26 @@ LABEL_8:
   }
 }
 
-- (id)newDictionaryFromUnpackedMessage:(id)a3 forTopic:(id)a4 controlChannelVersion:(int)a5
+- (id)newDictionaryFromUnpackedMessage:(id)message forTopic:(id)topic controlChannelVersion:(int)version
 {
-  if (a5 == 2)
+  if (version == 2)
   {
 
-    return [(VCSessionMessaging *)self newDictionaryFromUnpackedMessageV2:a3, a4];
+    return [(VCSessionMessaging *)self newDictionaryFromUnpackedMessageV2:message, topic];
   }
 
-  else if (a5 == 1)
+  else if (version == 1)
   {
-    if ([a4 isEqualToString:@"VCSessionMomentsStateMessageTopic"])
+    if ([topic isEqualToString:@"VCSessionMomentsStateMessageTopic"])
     {
 
-      return [(VCSessionMessaging *)self newDictionaryFromUnpackedMomentsMessage:a3];
+      return [(VCSessionMessaging *)self newDictionaryFromUnpackedMomentsMessage:message];
     }
 
     else
     {
 
-      return [(VCSessionMessaging *)self newDictionaryFromUnpackedMessage:a3];
+      return [(VCSessionMessaging *)self newDictionaryFromUnpackedMessage:message];
     }
   }
 
@@ -690,19 +690,19 @@ LABEL_8:
   }
 }
 
-- (void)searchMatchingTopic:(id)a3 payload:(id)a4 transactionID:(unsigned int)a5 fromParticipant:(id)a6
+- (void)searchMatchingTopic:(id)topic payload:(id)payload transactionID:(unsigned int)d fromParticipant:(id)participant
 {
-  v7 = *&a5;
+  v7 = *&d;
   v34 = *MEMORY[0x1E69E9840];
   objc_sync_enter(self);
-  if (a3)
+  if (topic)
   {
-    v21 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@:", a3];
+    topic = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@:", topic];
   }
 
   else
   {
-    v21 = &stru_1F570E008;
+    topic = &stru_1F570E008;
   }
 
   if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -718,20 +718,20 @@ LABEL_8:
       v26 = 1024;
       v27 = 388;
       v28 = 2112;
-      v29 = v21;
+      v29 = topic;
       v30 = 2112;
-      v31 = a4;
+      payloadCopy = payload;
       _os_log_impl(&dword_1DB56E000, v11, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d VCControlChannelDelegate receivedMessage callback with message '%@%@'", buf, 0x30u);
     }
   }
 
-  v12 = [(NSMutableDictionary *)self->topics objectEnumerator];
+  objectEnumerator = [(NSMutableDictionary *)self->topics objectEnumerator];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   while (1)
   {
-    v14 = [v12 nextObject];
-    if (!v14)
+    nextObject = [objectEnumerator nextObject];
+    if (!nextObject)
     {
       break;
     }
@@ -745,7 +745,7 @@ LABEL_8:
       {
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
         {
-          v18 = [v14 topicKey];
+          topicKey = [nextObject topicKey];
           *buf = 136316418;
           v23 = v15;
           v24 = 2080;
@@ -753,18 +753,18 @@ LABEL_8:
           v26 = 1024;
           v27 = 393;
           v28 = 2112;
-          v29 = v18;
+          v29 = topicKey;
           v30 = 2112;
-          v31 = v21;
+          payloadCopy = topic;
           v32 = 2112;
-          v33 = a4;
+          payloadCopy3 = payload;
           _os_log_impl(&dword_1DB56E000, v16, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Is topic '%@' assisiated with incoming message '%@%@' block...", buf, 0x3Au);
         }
       }
 
       else if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
       {
-        v19 = [v14 topicKey];
+        topicKey2 = [nextObject topicKey];
         *buf = 136316418;
         v23 = v15;
         v24 = 2080;
@@ -772,29 +772,29 @@ LABEL_8:
         v26 = 1024;
         v27 = 393;
         v28 = 2112;
-        v29 = v19;
+        v29 = topicKey2;
         v30 = 2112;
-        v31 = v21;
+        payloadCopy = topic;
         v32 = 2112;
-        v33 = a4;
+        payloadCopy3 = payload;
         _os_log_debug_impl(&dword_1DB56E000, v16, OS_LOG_TYPE_DEBUG, " [%s] %s:%d Is topic '%@' assisiated with incoming message '%@%@' block...", buf, 0x3Au);
       }
     }
 
-    if (([objc_msgSend(v14 "topicKey")] & 1) != 0 || (isKindOfClass & 1) != 0 && objc_msgSend(v14, "isPayloadAssociated:", a4))
+    if (([objc_msgSend(nextObject "topicKey")] & 1) != 0 || (isKindOfClass & 1) != 0 && objc_msgSend(nextObject, "isPayloadAssociated:", payload))
     {
-      [v14 passMessage:a4 sequence:v7 fromParticipant:a6];
+      [nextObject passMessage:payload sequence:v7 fromParticipant:participant];
     }
   }
 
   objc_sync_exit(self);
 }
 
-- (id)allocMessageFromPayload:(id)a3 forTopic:(id)a4 participantID:(id)a5
+- (id)allocMessageFromPayload:(id)payload forTopic:(id)topic participantID:(id)d
 {
-  if ([(NSMutableDictionary *)self->participants objectForKeyedSubscript:a5])
+  if ([(NSMutableDictionary *)self->participants objectForKeyedSubscript:d])
   {
-    v9 = [-[NSMutableDictionary objectForKeyedSubscript:](self->participants objectForKeyedSubscript:{a5), "intValue"}];
+    v9 = [-[NSMutableDictionary objectForKeyedSubscript:](self->participants objectForKeyedSubscript:{d), "intValue"}];
   }
 
   else
@@ -802,33 +802,33 @@ LABEL_8:
     v9 = 1;
   }
 
-  if ([-[NSMutableDictionary objectForKeyedSubscript:](self->topics objectForKeyedSubscript:{a4), "expectedMessageType"}] == 1)
+  if ([-[NSMutableDictionary objectForKeyedSubscript:](self->topics objectForKeyedSubscript:{topic), "expectedMessageType"}] == 1)
   {
     if (v9 == 1)
     {
-      if (!a3)
+      if (!payload)
       {
 LABEL_12:
-        v11 = [(VCSessionMessaging *)self newDictionaryFromUnpackedMessage:a3 forTopic:a4 controlChannelVersion:v9];
+        v11 = [(VCSessionMessaging *)self newDictionaryFromUnpackedMessage:payload forTopic:topic controlChannelVersion:v9];
         goto LABEL_14;
       }
 
-      v10 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:a3 encoding:4];
+      payloadCopy = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:payload encoding:4];
     }
 
     else
     {
-      v10 = a3;
+      payloadCopy = payload;
     }
 
-    a3 = v10;
+    payload = payloadCopy;
     goto LABEL_12;
   }
 
-  if (a3)
+  if (payload)
   {
-    v11 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:a3 encoding:4];
-    a3 = 0;
+    v11 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:payload encoding:4];
+    payload = 0;
   }
 
   else
@@ -841,13 +841,13 @@ LABEL_14:
   return v11;
 }
 
-- (void)controlChannel:(id)a3 topic:(id)a4 payload:(id)a5 transactionID:(unsigned int)a6 fromParticipant:(id)a7
+- (void)controlChannel:(id)channel topic:(id)topic payload:(id)payload transactionID:(unsigned int)d fromParticipant:(id)participant
 {
-  v8 = *&a6;
-  v11 = [(VCSessionMessaging *)self allocMessageFromPayload:a5 forTopic:a4 participantID:a7];
-  if (a4 | v11)
+  v8 = *&d;
+  v11 = [(VCSessionMessaging *)self allocMessageFromPayload:payload forTopic:topic participantID:participant];
+  if (topic | v11)
   {
-    [(VCSessionMessaging *)self searchMatchingTopic:a4 payload:v11 transactionID:v8 fromParticipant:a7];
+    [(VCSessionMessaging *)self searchMatchingTopic:topic payload:v11 transactionID:v8 fromParticipant:participant];
   }
 
   else
@@ -856,7 +856,7 @@ LABEL_14:
   }
 }
 
-- (void)controlChannel:(id)a3 sendReliableMessage:(id)a4 didSucceed:(BOOL)a5 toParticipant:(id)a6
+- (void)controlChannel:(id)channel sendReliableMessage:(id)message didSucceed:(BOOL)succeed toParticipant:(id)participant
 {
   v14 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -876,7 +876,7 @@ LABEL_14:
   }
 }
 
-- (void)controlChannel:(id)a3 clearTransactionCacheForParticipant:(id)a4
+- (void)controlChannel:(id)channel clearTransactionCacheForParticipant:(id)participant
 {
   v16 = *MEMORY[0x1E69E9840];
   objc_sync_enter(self);
@@ -896,16 +896,16 @@ LABEL_14:
     }
   }
 
-  v8 = [(NSMutableDictionary *)self->topics objectEnumerator];
+  objectEnumerator = [(NSMutableDictionary *)self->topics objectEnumerator];
   while (1)
   {
-    v9 = [v8 nextObject];
-    if (!v9)
+    nextObject = [objectEnumerator nextObject];
+    if (!nextObject)
     {
       break;
     }
 
-    [v9 clearTransactionCacheForParticipant:a4];
+    [nextObject clearTransactionCacheForParticipant:participant];
   }
 
   objc_sync_exit(self);

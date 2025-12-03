@@ -1,66 +1,66 @@
 @interface _SCRCThreadTask
-+ (id)newThreadTaskWithTarget:(id)a3 selector:(SEL)a4 cancelMask:(unsigned int)a5 count:(unsigned int)a6 firstObject:(id)a7 moreObjects:(char *)a8;
-- (_SCRCThreadTask)initWithTarget:(id)a3 selector:(SEL)a4 cancelMask:(unsigned int)a5 count:(unsigned int)a6 firstObject:(id)a7 moreObjects:(char *)a8;
++ (id)newThreadTaskWithTarget:(id)target selector:(SEL)selector cancelMask:(unsigned int)mask count:(unsigned int)count firstObject:(id)object moreObjects:(char *)objects;
+- (_SCRCThreadTask)initWithTarget:(id)target selector:(SEL)selector cancelMask:(unsigned int)mask count:(unsigned int)count firstObject:(id)object moreObjects:(char *)objects;
 - (void)dealloc;
 - (void)fire;
-- (void)setWaitLock:(id)a3;
+- (void)setWaitLock:(id)lock;
 @end
 
 @implementation _SCRCThreadTask
 
-+ (id)newThreadTaskWithTarget:(id)a3 selector:(SEL)a4 cancelMask:(unsigned int)a5 count:(unsigned int)a6 firstObject:(id)a7 moreObjects:(char *)a8
++ (id)newThreadTaskWithTarget:(id)target selector:(SEL)selector cancelMask:(unsigned int)mask count:(unsigned int)count firstObject:(id)object moreObjects:(char *)objects
 {
-  v9 = *&a6;
-  v10 = *&a5;
-  v13 = a7;
-  v14 = a3;
-  v15 = [[_SCRCThreadTask alloc] initWithTarget:v14 selector:a4 cancelMask:v10 count:v9 firstObject:v13 moreObjects:a8];
+  v9 = *&count;
+  v10 = *&mask;
+  objectCopy = object;
+  targetCopy = target;
+  v15 = [[_SCRCThreadTask alloc] initWithTarget:targetCopy selector:selector cancelMask:v10 count:v9 firstObject:objectCopy moreObjects:objects];
 
   return v15;
 }
 
-- (_SCRCThreadTask)initWithTarget:(id)a3 selector:(SEL)a4 cancelMask:(unsigned int)a5 count:(unsigned int)a6 firstObject:(id)a7 moreObjects:(char *)a8
+- (_SCRCThreadTask)initWithTarget:(id)target selector:(SEL)selector cancelMask:(unsigned int)mask count:(unsigned int)count firstObject:(id)object moreObjects:(char *)objects
 {
-  v15 = a3;
-  v16 = a7;
+  targetCopy = target;
+  objectCopy = object;
   v32.receiver = self;
   v32.super_class = _SCRCThreadTask;
-  v33 = a8;
+  objectsCopy = objects;
   v17 = [(_SCRCThreadTask *)&v32 init];
   v18 = v17;
-  if (a6 < 9)
+  if (count < 9)
   {
     if (v17)
     {
-      objc_storeStrong(&v17->_target, a3);
-      v19 = a4 ? a4 : 0;
+      objc_storeStrong(&v17->_target, target);
+      v19 = selector ? selector : 0;
       v18->_selector = v19;
-      v18->_mask = a5;
-      v20 = [MEMORY[0x277CBEB18] arrayWithCapacity:a6];
+      v18->_mask = mask;
+      v20 = [MEMORY[0x277CBEB18] arrayWithCapacity:count];
       objectArray = v18->_objectArray;
       v18->_objectArray = v20;
 
-      if (a6)
+      if (count)
       {
         v22 = v18->_objectArray;
-        if (v16)
+        if (objectCopy)
         {
-          [(NSMutableArray *)v18->_objectArray addObject:v16];
+          [(NSMutableArray *)v18->_objectArray addObject:objectCopy];
         }
 
         else
         {
-          v23 = [MEMORY[0x277CBEB68] null];
-          [(NSMutableArray *)v22 addObject:v23];
+          null = [MEMORY[0x277CBEB68] null];
+          [(NSMutableArray *)v22 addObject:null];
         }
 
-        v24 = a6 - 1;
-        if (a6 != 1)
+        v24 = count - 1;
+        if (count != 1)
         {
           do
           {
-            v25 = v33;
-            v33 += 8;
+            v25 = objectsCopy;
+            objectsCopy += 8;
             v26 = *v25;
             v27 = v18->_objectArray;
             if (*v25)
@@ -72,8 +72,8 @@
             {
               v28 = MEMORY[0x277CBEB68];
               v29 = 0;
-              v30 = [v28 null];
-              [(NSMutableArray *)v27 addObject:v30];
+              null2 = [v28 null];
+              [(NSMutableArray *)v27 addObject:null2];
             }
 
             --v24;
@@ -107,20 +107,20 @@
   [(_SCRCThreadTask *)&v4 dealloc];
 }
 
-- (void)setWaitLock:(id)a3
+- (void)setWaitLock:(id)lock
 {
-  v5 = a3;
+  lockCopy = lock;
   waitLock = self->_waitLock;
   p_waitLock = &self->_waitLock;
   v6 = waitLock;
-  if (waitLock != v5)
+  if (waitLock != lockCopy)
   {
     if (v6)
     {
       [(NSConditionLock *)v6 unlockWithCondition:1];
     }
 
-    objc_storeStrong(p_waitLock, a3);
+    objc_storeStrong(p_waitLock, lock);
   }
 
   MEMORY[0x2821F96F8]();
@@ -153,8 +153,8 @@
         }
 
         v11 = [(NSMutableArray *)self->_objectArray objectAtIndexedSubscript:0];
-        v14 = [MEMORY[0x277CBEB68] null];
-        if (v11 == v14)
+        null = [MEMORY[0x277CBEB68] null];
+        if (v11 == null)
         {
           v17 = 0;
         }
@@ -165,8 +165,8 @@
         }
 
         v24 = [(NSMutableArray *)self->_objectArray objectAtIndexedSubscript:1];
-        v25 = [MEMORY[0x277CBEB68] null];
-        if (v24 == v25)
+        null2 = [MEMORY[0x277CBEB68] null];
+        if (v24 == null2)
         {
           v26 = 0;
         }
@@ -176,12 +176,12 @@
           v26 = [(NSMutableArray *)self->_objectArray objectAtIndexedSubscript:1];
         }
 
-        v34 = [target selector];
-        if (v24 != v25)
+        selector = [target selector];
+        if (v24 != null2)
         {
         }
 
-        if (v11 != v14)
+        if (v11 != null)
         {
         }
       }
@@ -200,8 +200,8 @@
         }
 
         v11 = [(NSMutableArray *)self->_objectArray objectAtIndexedSubscript:0];
-        v14 = [MEMORY[0x277CBEB68] null];
-        if (v11 == v14)
+        null = [MEMORY[0x277CBEB68] null];
+        if (v11 == null)
         {
           v15 = 0;
         }
@@ -212,8 +212,8 @@
         }
 
         v20 = [(NSMutableArray *)self->_objectArray objectAtIndexedSubscript:1];
-        v21 = [MEMORY[0x277CBEB68] null];
-        if (v20 == v21)
+        null3 = [MEMORY[0x277CBEB68] null];
+        if (v20 == null3)
         {
           v22 = 0;
         }
@@ -224,8 +224,8 @@
         }
 
         v29 = [(NSMutableArray *)self->_objectArray objectAtIndexedSubscript:2];
-        v30 = [MEMORY[0x277CBEB68] null];
-        if (v29 == v30)
+        null4 = [MEMORY[0x277CBEB68] null];
+        if (v29 == null4)
         {
           v31 = 0;
         }
@@ -235,16 +235,16 @@
           v31 = [(NSMutableArray *)self->_objectArray objectAtIndexedSubscript:2];
         }
 
-        v39 = [v131 v128];
-        if (v29 != v30)
+        v128 = [v131 v128];
+        if (v29 != null4)
         {
         }
 
-        if (v20 != v21)
+        if (v20 != null3)
         {
         }
 
-        if (v11 != v14)
+        if (v11 != null)
         {
         }
       }
@@ -287,8 +287,8 @@
       }
 
       v11 = [(NSMutableArray *)self->_objectArray objectAtIndexedSubscript:0];
-      v12 = [MEMORY[0x277CBEB68] null];
-      if (v11 == v12)
+      null5 = [MEMORY[0x277CBEB68] null];
+      if (v11 == null5)
       {
         v13 = 0;
       }
@@ -299,7 +299,7 @@
       }
 
       v19 = [v4 v5];
-      if (v11 != v12)
+      if (v11 != null5)
       {
       }
     }
@@ -323,8 +323,8 @@
       }
 
       v132 = [(NSMutableArray *)self->_objectArray objectAtIndexedSubscript:0];
-      v18 = [MEMORY[0x277CBEB68] null];
-      if (v132 == v18)
+      null6 = [MEMORY[0x277CBEB68] null];
+      if (v132 == null6)
       {
         v130 = 0;
       }
@@ -335,8 +335,8 @@
       }
 
       v27 = [(NSMutableArray *)self->_objectArray objectAtIndexedSubscript:1];
-      v28 = [MEMORY[0x277CBEB68] null];
-      if (v27 == v28)
+      null7 = [MEMORY[0x277CBEB68] null];
+      if (v27 == null7)
       {
         v125 = 0;
       }
@@ -347,8 +347,8 @@
       }
 
       v36 = [(NSMutableArray *)self->_objectArray objectAtIndexedSubscript:2];
-      v37 = [MEMORY[0x277CBEB68] null];
-      if (v36 == v37)
+      null8 = [MEMORY[0x277CBEB68] null];
+      if (v36 == null8)
       {
         v38 = 0;
       }
@@ -359,8 +359,8 @@
       }
 
       v45 = [(NSMutableArray *)self->_objectArray objectAtIndexedSubscript:3];
-      v46 = [MEMORY[0x277CBEB68] null];
-      if (v45 == v46)
+      null9 = [MEMORY[0x277CBEB68] null];
+      if (v45 == null9)
       {
         v47 = 0;
       }
@@ -370,20 +370,20 @@
         v47 = [(NSMutableArray *)self->_objectArray objectAtIndexedSubscript:3];
       }
 
-      v55 = [v118 v113];
-      if (v45 != v46)
+      v113 = [v118 v113];
+      if (v45 != null9)
       {
       }
 
-      if (v36 != v37)
+      if (v36 != null8)
       {
       }
 
-      if (v27 != v28)
+      if (v27 != null7)
       {
       }
 
-      if (v132 != v18)
+      if (v132 != null6)
       {
       }
 
@@ -402,8 +402,8 @@
     }
 
     v132 = [(NSMutableArray *)self->_objectArray objectAtIndexedSubscript:0];
-    v129 = [MEMORY[0x277CBEB68] null];
-    if (v132 == v129)
+    null10 = [MEMORY[0x277CBEB68] null];
+    if (v132 == null10)
     {
       v119 = 0;
     }
@@ -414,8 +414,8 @@
     }
 
     v123 = [(NSMutableArray *)self->_objectArray objectAtIndexedSubscript:1];
-    v23 = [MEMORY[0x277CBEB68] null];
-    if (v123 == v23)
+    null11 = [MEMORY[0x277CBEB68] null];
+    if (v123 == null11)
     {
       v114 = 0;
     }
@@ -426,8 +426,8 @@
     }
 
     v32 = [(NSMutableArray *)self->_objectArray objectAtIndexedSubscript:2];
-    v33 = [MEMORY[0x277CBEB68] null];
-    if (v32 == v33)
+    null12 = [MEMORY[0x277CBEB68] null];
+    if (v32 == null12)
     {
       v110 = 0;
     }
@@ -438,8 +438,8 @@
     }
 
     v40 = [(NSMutableArray *)self->_objectArray objectAtIndexedSubscript:3];
-    v41 = [MEMORY[0x277CBEB68] null];
-    if (v40 == v41)
+    null13 = [MEMORY[0x277CBEB68] null];
+    if (v40 == null13)
     {
       v42 = 0;
     }
@@ -450,8 +450,8 @@
     }
 
     v49 = [(NSMutableArray *)self->_objectArray objectAtIndexedSubscript:4];
-    v50 = [MEMORY[0x277CBEB68] null];
-    if (v49 == v50)
+    null14 = [MEMORY[0x277CBEB68] null];
+    if (v49 == null14)
     {
       v51 = 0;
     }
@@ -461,24 +461,24 @@
       v51 = [(NSMutableArray *)self->_objectArray objectAtIndexedSubscript:4];
     }
 
-    v59 = [v105 v101];
-    if (v49 != v50)
+    v101 = [v105 v101];
+    if (v49 != null14)
     {
     }
 
-    if (v40 != v41)
+    if (v40 != null13)
     {
     }
 
-    if (v32 != v33)
+    if (v32 != null12)
     {
     }
 
-    if (v123 != v23)
+    if (v123 != null11)
     {
     }
 
-    if (v132 == v129)
+    if (v132 == null10)
     {
 LABEL_227:
 
@@ -507,8 +507,8 @@ LABEL_226:
       }
 
       v132 = [(NSMutableArray *)self->_objectArray objectAtIndexedSubscript:0];
-      v129 = [MEMORY[0x277CBEB68] null];
-      if (v132 == v129)
+      null10 = [MEMORY[0x277CBEB68] null];
+      if (v132 == null10)
       {
         v109 = 0;
       }
@@ -519,8 +519,8 @@ LABEL_226:
       }
 
       v124 = [(NSMutableArray *)self->_objectArray objectAtIndexedSubscript:1];
-      v120 = [MEMORY[0x277CBEB68] null];
-      if (v124 == v120)
+      null15 = [MEMORY[0x277CBEB68] null];
+      if (v124 == null15)
       {
         v106 = 0;
       }
@@ -531,8 +531,8 @@ LABEL_226:
       }
 
       v115 = [(NSMutableArray *)self->_objectArray objectAtIndexedSubscript:2];
-      v35 = [MEMORY[0x277CBEB68] null];
-      if (v115 == v35)
+      null16 = [MEMORY[0x277CBEB68] null];
+      if (v115 == null16)
       {
         v103 = 0;
       }
@@ -543,8 +543,8 @@ LABEL_226:
       }
 
       v43 = [(NSMutableArray *)self->_objectArray objectAtIndexedSubscript:3];
-      v44 = [MEMORY[0x277CBEB68] null];
-      if (v43 == v44)
+      null17 = [MEMORY[0x277CBEB68] null];
+      if (v43 == null17)
       {
         v99 = 0;
       }
@@ -555,8 +555,8 @@ LABEL_226:
       }
 
       v52 = [(NSMutableArray *)self->_objectArray objectAtIndexedSubscript:4];
-      v53 = [MEMORY[0x277CBEB68] null];
-      if (v52 == v53)
+      null18 = [MEMORY[0x277CBEB68] null];
+      if (v52 == null18)
       {
         v54 = 0;
       }
@@ -567,8 +567,8 @@ LABEL_226:
       }
 
       v61 = [(NSMutableArray *)self->_objectArray objectAtIndexedSubscript:5];
-      v62 = [MEMORY[0x277CBEB68] null];
-      if (v61 == v62)
+      null19 = [MEMORY[0x277CBEB68] null];
+      if (v61 == null19)
       {
         v63 = 0;
       }
@@ -579,27 +579,27 @@ LABEL_226:
       }
 
       v69 = [v95 v92];
-      if (v61 != v62)
+      if (v61 != null19)
       {
       }
 
-      if (v52 != v53)
+      if (v52 != null18)
       {
       }
 
-      if (v43 != v44)
+      if (v43 != null17)
       {
       }
 
-      if (v115 != v35)
+      if (v115 != null16)
       {
       }
 
-      if (v124 != v120)
+      if (v124 != null15)
       {
       }
 
-      if (v132 == v129)
+      if (v132 == null10)
       {
         goto LABEL_227;
       }
@@ -619,8 +619,8 @@ LABEL_226:
       }
 
       v132 = [(NSMutableArray *)self->_objectArray objectAtIndexedSubscript:0];
-      v129 = [MEMORY[0x277CBEB68] null];
-      if (v132 == v129)
+      null10 = [MEMORY[0x277CBEB68] null];
+      if (v132 == null10)
       {
         v102 = 0;
       }
@@ -631,8 +631,8 @@ LABEL_226:
       }
 
       v127 = [(NSMutableArray *)self->_objectArray objectAtIndexedSubscript:1];
-      v122 = [MEMORY[0x277CBEB68] null];
-      if (v127 == v122)
+      null20 = [MEMORY[0x277CBEB68] null];
+      if (v127 == null20)
       {
         v98 = 0;
       }
@@ -643,8 +643,8 @@ LABEL_226:
       }
 
       v117 = [(NSMutableArray *)self->_objectArray objectAtIndexedSubscript:2];
-      v112 = [MEMORY[0x277CBEB68] null];
-      if (v117 == v112)
+      null21 = [MEMORY[0x277CBEB68] null];
+      if (v117 == null21)
       {
         v97 = 0;
       }
@@ -655,8 +655,8 @@ LABEL_226:
       }
 
       v108 = [(NSMutableArray *)self->_objectArray objectAtIndexedSubscript:3];
-      v48 = [MEMORY[0x277CBEB68] null];
-      if (v108 == v48)
+      null22 = [MEMORY[0x277CBEB68] null];
+      if (v108 == null22)
       {
         v94 = 0;
       }
@@ -667,8 +667,8 @@ LABEL_226:
       }
 
       v57 = [(NSMutableArray *)self->_objectArray objectAtIndexedSubscript:4];
-      v58 = [MEMORY[0x277CBEB68] null];
-      if (v57 == v58)
+      null23 = [MEMORY[0x277CBEB68] null];
+      if (v57 == null23)
       {
         v91 = 0;
       }
@@ -679,8 +679,8 @@ LABEL_226:
       }
 
       v66 = [(NSMutableArray *)self->_objectArray objectAtIndexedSubscript:5];
-      v67 = [MEMORY[0x277CBEB68] null];
-      if (v66 == v67)
+      null24 = [MEMORY[0x277CBEB68] null];
+      if (v66 == null24)
       {
         v68 = 0;
       }
@@ -691,8 +691,8 @@ LABEL_226:
       }
 
       v73 = [(NSMutableArray *)self->_objectArray objectAtIndexedSubscript:6];
-      v74 = [MEMORY[0x277CBEB68] null];
-      if (v73 == v74)
+      null25 = [MEMORY[0x277CBEB68] null];
+      if (v73 == null25)
       {
         v75 = 0;
       }
@@ -703,31 +703,31 @@ LABEL_226:
       }
 
       v79 = [v86 v88];
-      if (v73 != v74)
+      if (v73 != null25)
       {
       }
 
-      if (v66 != v67)
+      if (v66 != null24)
       {
       }
 
-      if (v57 != v58)
+      if (v57 != null23)
       {
       }
 
-      if (v108 != v48)
+      if (v108 != null22)
       {
       }
 
-      if (v117 != v112)
+      if (v117 != null21)
       {
       }
 
-      if (v127 != v122)
+      if (v127 != null20)
       {
       }
 
-      if (v132 == v129)
+      if (v132 == null10)
       {
         goto LABEL_227;
       }
@@ -747,8 +747,8 @@ LABEL_226:
       }
 
       v132 = [(NSMutableArray *)self->_objectArray objectAtIndexedSubscript:0];
-      v129 = [MEMORY[0x277CBEB68] null];
-      if (v132 == v129)
+      null10 = [MEMORY[0x277CBEB68] null];
+      if (v132 == null10)
       {
         v96 = 0;
       }
@@ -759,8 +759,8 @@ LABEL_226:
       }
 
       v126 = [(NSMutableArray *)self->_objectArray objectAtIndexedSubscript:1];
-      v121 = [MEMORY[0x277CBEB68] null];
-      if (v126 == v121)
+      null26 = [MEMORY[0x277CBEB68] null];
+      if (v126 == null26)
       {
         v93 = 0;
       }
@@ -771,8 +771,8 @@ LABEL_226:
       }
 
       v116 = [(NSMutableArray *)self->_objectArray objectAtIndexedSubscript:2];
-      v111 = [MEMORY[0x277CBEB68] null];
-      if (v116 == v111)
+      null27 = [MEMORY[0x277CBEB68] null];
+      if (v116 == null27)
       {
         v90 = 0;
       }
@@ -783,8 +783,8 @@ LABEL_226:
       }
 
       v107 = [(NSMutableArray *)self->_objectArray objectAtIndexedSubscript:3];
-      v104 = [MEMORY[0x277CBEB68] null];
-      if (v107 == v104)
+      null28 = [MEMORY[0x277CBEB68] null];
+      if (v107 == null28)
       {
         v89 = 0;
       }
@@ -795,8 +795,8 @@ LABEL_226:
       }
 
       v100 = [(NSMutableArray *)self->_objectArray objectAtIndexedSubscript:4];
-      v56 = [MEMORY[0x277CBEB68] null];
-      if (v100 == v56)
+      null29 = [MEMORY[0x277CBEB68] null];
+      if (v100 == null29)
       {
         v87 = 0;
       }
@@ -807,8 +807,8 @@ LABEL_226:
       }
 
       v64 = [(NSMutableArray *)self->_objectArray objectAtIndexedSubscript:5];
-      v65 = [MEMORY[0x277CBEB68] null];
-      if (v64 == v65)
+      null30 = [MEMORY[0x277CBEB68] null];
+      if (v64 == null30)
       {
         v85 = 0;
       }
@@ -819,8 +819,8 @@ LABEL_226:
       }
 
       v70 = [(NSMutableArray *)self->_objectArray objectAtIndexedSubscript:6];
-      v71 = [MEMORY[0x277CBEB68] null];
-      if (v70 == v71)
+      null31 = [MEMORY[0x277CBEB68] null];
+      if (v70 == null31)
       {
         v72 = 0;
       }
@@ -831,8 +831,8 @@ LABEL_226:
       }
 
       v76 = [(NSMutableArray *)self->_objectArray objectAtIndexedSubscript:7];
-      v77 = [MEMORY[0x277CBEB68] null];
-      if (v76 == v77)
+      null32 = [MEMORY[0x277CBEB68] null];
+      if (v76 == null32)
       {
         v78 = 0;
       }
@@ -843,35 +843,35 @@ LABEL_226:
       }
 
       v80 = [v84 v83];
-      if (v76 != v77)
+      if (v76 != null32)
       {
       }
 
-      if (v70 != v71)
+      if (v70 != null31)
       {
       }
 
-      if (v64 != v65)
+      if (v64 != null30)
       {
       }
 
-      if (v100 != v56)
+      if (v100 != null29)
       {
       }
 
-      if (v107 != v104)
+      if (v107 != null28)
       {
       }
 
-      if (v116 != v111)
+      if (v116 != null27)
       {
       }
 
-      if (v126 != v121)
+      if (v126 != null26)
       {
       }
 
-      if (v132 == v129)
+      if (v132 == null10)
       {
         goto LABEL_227;
       }

@@ -19,30 +19,30 @@
   *(a2 + 16) = 0u;
   *(a2 + 32) = 0u;
   *a2 = 0u;
-  [a1 timestamp];
+  [self timestamp];
   *(a2 + 76) = v4;
-  v5 = [a1 latLng];
-  [v5 lat];
+  latLng = [self latLng];
+  [latLng lat];
   *(a2 + 4) = v6;
 
-  v7 = [a1 latLng];
-  [v7 lng];
+  latLng2 = [self latLng];
+  [latLng2 lng];
   *(a2 + 12) = v8;
 
-  [a1 horizontalAccuracy];
+  [self horizontalAccuracy];
   *(a2 + 20) = v9;
-  *(a2 + 28) = [a1 altitude];
-  [a1 verticalAccuracy];
+  *(a2 + 28) = [self altitude];
+  [self verticalAccuracy];
   *(a2 + 36) = v10;
-  [a1 speed];
+  [self speed];
   *(a2 + 44) = v11;
-  [a1 speedAccuracy];
+  [self speedAccuracy];
   *(a2 + 52) = v12;
-  [a1 course];
+  [self course];
   *(a2 + 60) = v13;
-  [a1 courseAccuracy];
+  [self courseAccuracy];
   *(a2 + 68) = v14;
-  v15 = [a1 type] - 1;
+  v15 = [self type] - 1;
   if (v15 > 2)
   {
     v16 = 0;
@@ -54,20 +54,20 @@
   }
 
   *(a2 + 96) = v16;
-  v17 = [a1 rawCoordinate];
-  [v17 lat];
+  rawCoordinate = [self rawCoordinate];
+  [rawCoordinate lat];
   *(a2 + 100) = v18;
 
-  v19 = [a1 rawCoordinate];
-  [v19 lng];
+  rawCoordinate2 = [self rawCoordinate];
+  [rawCoordinate2 lng];
   *(a2 + 108) = v20;
 
-  [a1 rawCourse];
+  [self rawCourse];
   *(a2 + 116) = v21;
   *(a2 + 84) = 0;
   *(a2 + 88) = 0xBFF0000000000000;
   *a2 = 0xFFFF;
-  result = [a1 referenceFrame];
+  result = [self referenceFrame];
   v23 = 2 * (result == 2);
   if (result == 1)
   {
@@ -82,7 +82,7 @@
 {
   v55 = *MEMORY[0x1E69E9840];
   v6 = a3;
-  v52.receiver = a1;
+  v52.receiver = self;
   v52.super_class = &off_1F4F09D58;
   v7 = objc_msgSendSuper2(&v52, sel_init);
   if (v7)
@@ -121,9 +121,9 @@
         v20 = [objc_alloc(MEMORY[0x1E69A1E50]) initWithCoordinate:{v17, v16}];
         [v7 setLatLng:v20];
 
-        v21 = [v6 _navigation_gtLog];
-        v22 = [v7 latLng];
-        [v22 setGtLog:v21];
+        _navigation_gtLog = [v6 _navigation_gtLog];
+        latLng = [v7 latLng];
+        [latLng setGtLog:_navigation_gtLog];
       }
 
       if (fabs(v11) <= 180.0 && v9 >= -90.0 && v9 <= 90.0)
@@ -131,13 +131,13 @@
         v23 = [objc_alloc(MEMORY[0x1E69A1E50]) initWithCoordinate:{v9, v11}];
         [v7 setRawCoordinate:v23];
 
-        v24 = [v6 _navigation_gtLog];
-        v25 = [v7 rawCoordinate];
-        [v25 setGtLog:v24];
+        _navigation_gtLog2 = [v6 _navigation_gtLog];
+        rawCoordinate = [v7 rawCoordinate];
+        [rawCoordinate setGtLog:_navigation_gtLog2];
       }
 
-      v26 = [v6 timestamp];
-      [v26 timeIntervalSinceReferenceDate];
+      timestamp = [v6 timestamp];
+      [timestamp timeIntervalSinceReferenceDate];
       [v7 setTimestamp:?];
 
       [v6 altitude];
@@ -184,20 +184,20 @@
 
       if (a4)
       {
-        v32 = [v6 _navigation_hasMatch];
+        _navigation_hasMatch = [v6 _navigation_hasMatch];
       }
 
       else
       {
-        v32 = 0;
+        _navigation_hasMatch = 0;
       }
 
-      [v7 setIsMatchedLocation:v32];
-      v33 = [v6 matchInfo];
-      if (v33)
+      [v7 setIsMatchedLocation:_navigation_hasMatch];
+      matchInfo = [v6 matchInfo];
+      if (matchInfo)
       {
-        v34 = [v6 matchInfo];
-        [v7 setIsShifted:{objc_msgSend(v34, "isMatchShifted")}];
+        matchInfo2 = [v6 matchInfo];
+        [v7 setIsShifted:{objc_msgSend(matchInfo2, "isMatchShifted")}];
       }
 
       else
@@ -205,46 +205,46 @@
         [v7 setIsShifted:0];
       }
 
-      v35 = [v6 referenceFrame];
-      if (v35 == 1)
+      referenceFrame = [v6 referenceFrame];
+      if (referenceFrame == 1)
       {
         v36 = 1;
       }
 
       else
       {
-        v36 = 2 * (v35 == 2);
+        v36 = 2 * (referenceFrame == 2);
       }
 
       [v7 setReferenceFrame:v36];
-      v37 = [v6 matchInfo];
+      matchInfo3 = [v6 matchInfo];
 
-      if (v37)
+      if (matchInfo3)
       {
-        v38 = [v6 matchInfo];
-        [v7 setFormOfWay:{objc_msgSend(v38, "matchFormOfWay")}];
+        matchInfo4 = [v6 matchInfo];
+        [v7 setFormOfWay:{objc_msgSend(matchInfo4, "matchFormOfWay")}];
 
-        v39 = [v6 matchInfo];
-        [v7 setRoadClass:{objc_msgSend(v39, "matchRoadClass")}];
+        matchInfo5 = [v6 matchInfo];
+        [v7 setRoadClass:{objc_msgSend(matchInfo5, "matchRoadClass")}];
 
-        v40 = [v6 matchInfo];
-        v41 = [v40 matchQuality];
+        matchInfo6 = [v6 matchInfo];
+        matchQuality = [matchInfo6 matchQuality];
 
-        if ((v41 - 1) <= 2)
+        if ((matchQuality - 1) <= 2)
         {
           [v7 setMatchQuality:?];
         }
       }
 
-      v42 = [v6 coarseMetaData];
+      coarseMetaData = [v6 coarseMetaData];
 
-      if (v42)
+      if (coarseMetaData)
       {
         v43 = MEMORY[0x1E696ACD0];
         v44 = objc_opt_class();
-        v45 = [v6 coarseMetaData];
+        coarseMetaData2 = [v6 coarseMetaData];
         v51[0] = 0;
-        v46 = [v43 unarchivedObjectOfClass:v44 fromData:v45 error:v51];
+        v46 = [v43 unarchivedObjectOfClass:v44 fromData:coarseMetaData2 error:v51];
         v47 = v51[0];
 
         if (v46)
@@ -270,7 +270,7 @@
 
 - (void)initWithCLLocation:()MNExtras course:
 {
-  v3 = [a1 initWithCLLocation:?];
+  v3 = [self initWithCLLocation:?];
   v4 = v3;
   if (v3)
   {
@@ -294,7 +294,7 @@
 {
   v5 = MEMORY[0x1E69A1E70];
   v6 = a4;
-  v7 = [[v5 alloc] initWithCLLocation:v6 course:a1];
+  v7 = [[v5 alloc] initWithCLLocation:v6 course:self];
 
   return v7;
 }

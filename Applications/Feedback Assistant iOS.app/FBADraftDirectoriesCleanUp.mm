@@ -1,11 +1,11 @@
 @interface FBADraftDirectoriesCleanUp
-+ (void)cleanDraftDirectoryWithStalenessDate:(id)a3 filerFormType:(int64_t)a4 url:(id)a5;
++ (void)cleanDraftDirectoryWithStalenessDate:(id)date filerFormType:(int64_t)type url:(id)url;
 - (_TtC18Feedback_Assistant26FBADraftDirectoriesCleanUp)init;
 @end
 
 @implementation FBADraftDirectoriesCleanUp
 
-+ (void)cleanDraftDirectoryWithStalenessDate:(id)a3 filerFormType:(int64_t)a4 url:(id)a5
++ (void)cleanDraftDirectoryWithStalenessDate:(id)date filerFormType:(int64_t)type url:(id)url
 {
   v6 = type metadata accessor for URL();
   v7 = *(v6 - 8);
@@ -19,7 +19,7 @@
   v15 = &v16 - ((v14 + 15) & 0xFFFFFFFFFFFFFFF0);
   static Date._unconditionallyBridgeFromObjectiveC(_:)();
   static URL._unconditionallyBridgeFromObjectiveC(_:)();
-  sub_10006E400(v15, a4, v10);
+  sub_10006E400(v15, type, v10);
   (*(v7 + 8))(v10, v6);
   (*(v12 + 8))(v15, v11);
 }

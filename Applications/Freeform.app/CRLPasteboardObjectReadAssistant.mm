@@ -1,25 +1,25 @@
 @interface CRLPasteboardObjectReadAssistant
-+ (id)contentDescriptionFrom:(id)a3;
++ (id)contentDescriptionFrom:(id)from;
 - (_TtC8Freeform32CRLPasteboardObjectReadAssistant)init;
-- (_TtC8Freeform32CRLPasteboardObjectReadAssistant)initWithPasteboardNativeDataProvider:(id)a3 store:(id)a4 context:(id)a5;
-- (void)readPasteboardObjectWithCompletionHandler:(id)a3;
-- (void)setPasteboardObject:(id)a3;
+- (_TtC8Freeform32CRLPasteboardObjectReadAssistant)initWithPasteboardNativeDataProvider:(id)provider store:(id)store context:(id)context;
+- (void)readPasteboardObjectWithCompletionHandler:(id)handler;
+- (void)setPasteboardObject:(id)object;
 @end
 
 @implementation CRLPasteboardObjectReadAssistant
 
-- (void)setPasteboardObject:(id)a3
+- (void)setPasteboardObject:(id)object
 {
   v4 = *(&self->super.isa + OBJC_IVAR____TtC8Freeform32CRLPasteboardObjectReadAssistant_pasteboardObject);
-  *(&self->super.isa + OBJC_IVAR____TtC8Freeform32CRLPasteboardObjectReadAssistant_pasteboardObject) = a3;
-  v3 = a3;
+  *(&self->super.isa + OBJC_IVAR____TtC8Freeform32CRLPasteboardObjectReadAssistant_pasteboardObject) = object;
+  objectCopy = object;
 }
 
-+ (id)contentDescriptionFrom:(id)a3
++ (id)contentDescriptionFrom:(id)from
 {
   v4 = objc_opt_self();
-  v5 = a3;
-  v6 = [v4 contentDescriptionFromPasteboard:v5];
+  fromCopy = from;
+  v6 = [v4 contentDescriptionFromPasteboard:fromCopy];
   if (v6)
   {
     v7 = v6;
@@ -37,20 +37,20 @@
   return v8.super.isa;
 }
 
-- (_TtC8Freeform32CRLPasteboardObjectReadAssistant)initWithPasteboardNativeDataProvider:(id)a3 store:(id)a4 context:(id)a5
+- (_TtC8Freeform32CRLPasteboardObjectReadAssistant)initWithPasteboardNativeDataProvider:(id)provider store:(id)store context:(id)context
 {
-  v5 = sub_1008DE350(a3, a4, a5, 0);
+  v5 = sub_1008DE350(provider, store, context, 0);
   swift_getObjectType();
   swift_deallocPartialClassInstance();
   return v5;
 }
 
-- (void)readPasteboardObjectWithCompletionHandler:(id)a3
+- (void)readPasteboardObjectWithCompletionHandler:(id)handler
 {
   v5 = sub_1005B981C(&qword_1019FB750);
   __chkstk_darwin(v5 - 8);
   v7 = &v14 - v6;
-  v8 = _Block_copy(a3);
+  v8 = _Block_copy(handler);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
   *(v9 + 24) = self;
@@ -66,7 +66,7 @@
   v12[3] = 0;
   v12[4] = &unk_1014938A0;
   v12[5] = v11;
-  v13 = self;
+  selfCopy = self;
   sub_10119D67C(0, 0, v7, &unk_101470870, v12);
 }
 

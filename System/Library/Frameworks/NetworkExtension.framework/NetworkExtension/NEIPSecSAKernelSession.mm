@@ -1,17 +1,17 @@
 @interface NEIPSecSAKernelSession
-- (BOOL)addLarvalSA:(id)a3;
-- (BOOL)addSA:(id)a3;
-- (BOOL)migrateSA:(id)a3;
-- (BOOL)removeSA:(id)a3;
-- (BOOL)updateSA:(id)a3;
-- (NEIPSecSAKernelSession)initWithName:(id)a3 delegate:(id)a4 pfkeySocket:(int)a5;
+- (BOOL)addLarvalSA:(id)a;
+- (BOOL)addSA:(id)a;
+- (BOOL)migrateSA:(id)a;
+- (BOOL)removeSA:(id)a;
+- (BOOL)updateSA:(id)a;
+- (NEIPSecSAKernelSession)initWithName:(id)name delegate:(id)delegate pfkeySocket:(int)socket;
 - (id)description;
 - (void)dealloc;
 - (void)invalidate;
 - (void)removeAllSAs;
-- (void)setDelegateQueue:(id)a3;
-- (void)startBlackholeDetection:(unsigned int)a3 incomingSA:(id)a4 outgoingSA:(id)a5;
-- (void)startIdleTimeout:(unsigned int)a3 incomingSA:(id)a4 outgoingSA:(id)a5;
+- (void)setDelegateQueue:(id)queue;
+- (void)startBlackholeDetection:(unsigned int)detection incomingSA:(id)a outgoingSA:(id)sA;
+- (void)startIdleTimeout:(unsigned int)timeout incomingSA:(id)a outgoingSA:(id)sA;
 @end
 
 @implementation NEIPSecSAKernelSession
@@ -24,12 +24,12 @@
   [(NEIPSecSASession *)&v3 dealloc];
 }
 
-- (void)startBlackholeDetection:(unsigned int)a3 incomingSA:(id)a4 outgoingSA:(id)a5
+- (void)startBlackholeDetection:(unsigned int)detection incomingSA:(id)a outgoingSA:(id)sA
 {
-  v8 = a5;
-  if (a4)
+  sACopy = sA;
+  if (a)
   {
-    v9 = *(a4 + 12);
+    v9 = *(a + 12);
   }
 
   else
@@ -37,10 +37,10 @@
     v9 = 0;
   }
 
-  v11 = v8;
-  if (v8)
+  v11 = sACopy;
+  if (sACopy)
   {
-    v10 = v8[12];
+    v10 = sACopy[12];
   }
 
   else
@@ -48,15 +48,15 @@
     v10 = 0;
   }
 
-  NEIPSecDBCreateStatsTimer(self->_internalSession, 1, a3, v9, v10);
+  NEIPSecDBCreateStatsTimer(self->_internalSession, 1, detection, v9, v10);
 }
 
-- (void)startIdleTimeout:(unsigned int)a3 incomingSA:(id)a4 outgoingSA:(id)a5
+- (void)startIdleTimeout:(unsigned int)timeout incomingSA:(id)a outgoingSA:(id)sA
 {
-  v8 = a5;
-  if (a4)
+  sACopy = sA;
+  if (a)
   {
-    v9 = *(a4 + 12);
+    v9 = *(a + 12);
   }
 
   else
@@ -64,10 +64,10 @@
     v9 = 0;
   }
 
-  v11 = v8;
-  if (v8)
+  v11 = sACopy;
+  if (sACopy)
   {
-    v10 = v8[12];
+    v10 = sACopy[12];
   }
 
   else
@@ -75,24 +75,24 @@
     v10 = 0;
   }
 
-  NEIPSecDBCreateStatsTimer(self->_internalSession, 0, a3, v9, v10);
+  NEIPSecDBCreateStatsTimer(self->_internalSession, 0, timeout, v9, v10);
 }
 
-- (BOOL)migrateSA:(id)a3
+- (BOOL)migrateSA:(id)a
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  aCopy = a;
   v15.receiver = self;
   v15.super_class = NEIPSecSAKernelSession;
-  if (![(NEIPSecSASession *)&v15 migrateSA:v4])
+  if (![(NEIPSecSASession *)&v15 migrateSA:aCopy])
   {
     v12 = ne_log_large_obj();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v17 = self;
+      selfCopy3 = self;
       v18 = 2112;
-      v19 = v4;
+      v19 = aCopy;
       _os_log_error_impl(&dword_1BA83C000, v12, OS_LOG_TYPE_ERROR, "%@ Super failed to migrate SA %@", buf, 0x16u);
     }
 
@@ -107,19 +107,19 @@
   }
 
   internalSession = self->_internalSession;
-  if (v4)
+  if (aCopy)
   {
-    v6 = v4[12];
-    v7 = [(NEIPSecSA *)v4 createDictionary];
+    v6 = aCopy[12];
+    createDictionary = [(NEIPSecSA *)aCopy createDictionary];
   }
 
   else
   {
-    v7 = 0;
+    createDictionary = 0;
     v6 = 0;
   }
 
-  v8 = NEIPSecDBMigrateSA(internalSession, v6, v7);
+  v8 = NEIPSecDBMigrateSA(internalSession, v6, createDictionary);
 
   v9 = ne_log_large_obj();
   v10 = v9;
@@ -128,9 +128,9 @@
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v17 = self;
+      selfCopy3 = self;
       v18 = 2112;
-      v19 = v4;
+      v19 = aCopy;
       _os_log_error_impl(&dword_1BA83C000, v10, OS_LOG_TYPE_ERROR, "%@ Failed to migrate SA %@", buf, 0x16u);
     }
 
@@ -143,9 +143,9 @@ LABEL_13:
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    v17 = self;
+    selfCopy3 = self;
     v18 = 2112;
-    v19 = v4;
+    v19 = aCopy;
     _os_log_impl(&dword_1BA83C000, v10, OS_LOG_TYPE_INFO, "%@ Migrated SA %@", buf, 0x16u);
   }
 
@@ -155,13 +155,13 @@ LABEL_14:
   return v11;
 }
 
-- (BOOL)removeSA:(id)a3
+- (BOOL)removeSA:(id)a
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  aCopy = a;
   v13.receiver = self;
   v13.super_class = NEIPSecSAKernelSession;
-  if (![(NEIPSecSASession *)&v13 removeSA:v4])
+  if (![(NEIPSecSASession *)&v13 removeSA:aCopy])
   {
     v8 = ne_log_large_obj();
     if (!os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -172,18 +172,18 @@ LABEL_10:
     }
 
     *buf = 138412546;
-    v15 = self;
+    selfCopy3 = self;
     v16 = 2112;
-    v17 = v4;
+    v17 = aCopy;
     v10 = "%@ Super failed to remove SA %@";
 LABEL_13:
     _os_log_error_impl(&dword_1BA83C000, v8, OS_LOG_TYPE_ERROR, v10, buf, 0x16u);
     goto LABEL_10;
   }
 
-  if (v4)
+  if (aCopy)
   {
-    v5 = v4[12];
+    v5 = aCopy[12];
   }
 
   else
@@ -202,9 +202,9 @@ LABEL_13:
     }
 
     *buf = 138412546;
-    v15 = self;
+    selfCopy3 = self;
     v16 = 2112;
-    v17 = v4;
+    v17 = aCopy;
     v10 = "%@ Failed to remove SA %@";
     goto LABEL_13;
   }
@@ -213,9 +213,9 @@ LABEL_13:
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    v15 = self;
+    selfCopy3 = self;
     v16 = 2112;
-    v17 = v4;
+    v17 = aCopy;
     _os_log_impl(&dword_1BA83C000, v8, OS_LOG_TYPE_INFO, "%@ Removed SA %@", buf, 0x16u);
   }
 
@@ -225,13 +225,13 @@ LABEL_11:
   return v9;
 }
 
-- (BOOL)addSA:(id)a3
+- (BOOL)addSA:(id)a
 {
   v40 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 direction] != 1)
+  aCopy = a;
+  if ([aCopy direction] != 1)
   {
-    if ([v4 direction] != 2)
+    if ([aCopy direction] != 2)
     {
       v22 = ne_log_large_obj();
       if (!os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -242,9 +242,9 @@ LABEL_32:
       }
 
       *buf = 138412546;
-      v35 = self;
+      selfCopy8 = self;
       v36 = 2112;
-      *v37 = v4;
+      *v37 = aCopy;
       v23 = "%@ Invalid SA direction for %@";
 LABEL_36:
       _os_log_error_impl(&dword_1BA83C000, v22, OS_LOG_TYPE_ERROR, v23, buf, 0x16u);
@@ -253,15 +253,15 @@ LABEL_36:
 
     v32.receiver = self;
     v32.super_class = NEIPSecSAKernelSession;
-    if (![(NEIPSecSASession *)&v32 addSA:v4])
+    if (![(NEIPSecSASession *)&v32 addSA:aCopy])
     {
       v24 = ne_log_large_obj();
       if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412546;
-        v35 = self;
+        selfCopy8 = self;
         v36 = 2112;
-        *v37 = v4;
+        *v37 = aCopy;
         _os_log_error_impl(&dword_1BA83C000, v24, OS_LOG_TYPE_ERROR, "%@ Super failed to add SA %@", buf, 0x16u);
       }
 
@@ -277,21 +277,21 @@ LABEL_36:
 
     v31 = 0;
     internalSession = self->_internalSession;
-    v11 = [(NEIPSecSA *)v4 createDictionary];
-    v12 = NEIPSecDBAddLarvalSA(internalSession, v11, &v31);
-    if (v4)
+    createDictionary = [(NEIPSecSA *)aCopy createDictionary];
+    v12 = NEIPSecDBAddLarvalSA(internalSession, createDictionary, &v31);
+    if (aCopy)
     {
-      v4[12] = v12;
+      aCopy[12] = v12;
 
-      if (v4[12])
+      if (aCopy[12])
       {
-        v13 = [v4 spi];
+        v13 = [aCopy spi];
         if (v13 == bswap32(v31))
         {
           v14 = self->_internalSession;
-          v15 = v4[12];
-          v16 = [(NEIPSecSA *)v4 createDictionary];
-          v17 = NEIPSecDBUpdateSA(v14, v15, v16);
+          v15 = aCopy[12];
+          createDictionary2 = [(NEIPSecSA *)aCopy createDictionary];
+          v17 = NEIPSecDBUpdateSA(v14, v15, createDictionary2);
 
           v18 = ne_log_large_obj();
           v19 = v18;
@@ -301,9 +301,9 @@ LABEL_36:
             if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
             {
               *buf = 138412546;
-              v35 = self;
+              selfCopy8 = self;
               v36 = 2112;
-              *v37 = v4;
+              *v37 = aCopy;
               _os_log_impl(&dword_1BA83C000, v19, OS_LOG_TYPE_INFO, "%@ Updated SA %@", buf, 0x16u);
             }
 
@@ -313,9 +313,9 @@ LABEL_36:
           if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
           {
             *buf = 138412546;
-            v35 = self;
+            selfCopy8 = self;
             v36 = 2112;
-            *v37 = v4;
+            *v37 = aCopy;
             v25 = "%@ Failed to update SA %@";
             v26 = v19;
             v27 = 22;
@@ -336,15 +336,15 @@ LABEL_42:
     v19 = ne_log_large_obj();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
-      v30 = [v4 spi];
+      v30 = [aCopy spi];
       *buf = 138413058;
-      v35 = self;
+      selfCopy8 = self;
       v36 = 1024;
       *v37 = v30;
       *&v37[4] = 1024;
       *&v37[6] = bswap32(v31);
       v38 = 2112;
-      v39 = v4;
+      v39 = aCopy;
       v25 = "%@ Failed to allocate requested SPI %u (got %u) fo SA %@";
       v26 = v19;
       v27 = 34;
@@ -360,15 +360,15 @@ LABEL_40:
 
   v33.receiver = self;
   v33.super_class = NEIPSecSAKernelSession;
-  if (![(NEIPSecSASession *)&v33 addSA:v4])
+  if (![(NEIPSecSASession *)&v33 addSA:aCopy])
   {
     v20 = ne_log_large_obj();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v35 = self;
+      selfCopy8 = self;
       v36 = 2112;
-      *v37 = v4;
+      *v37 = aCopy;
       _os_log_error_impl(&dword_1BA83C000, v20, OS_LOG_TYPE_ERROR, "%@ Super failed to add SA %@", buf, 0x16u);
     }
 
@@ -389,17 +389,17 @@ LABEL_33:
   }
 
   v5 = self->_internalSession;
-  v6 = [(NEIPSecSA *)v4 createDictionary];
-  v7 = NEIPSecDBAddSA(v5, v6);
-  if (!v4)
+  createDictionary3 = [(NEIPSecSA *)aCopy createDictionary];
+  v7 = NEIPSecDBAddSA(v5, createDictionary3);
+  if (!aCopy)
   {
 
     goto LABEL_31;
   }
 
-  v4[12] = v7;
+  aCopy[12] = v7;
 
-  if (!v4[12])
+  if (!aCopy[12])
   {
 LABEL_31:
     v22 = ne_log_large_obj();
@@ -409,9 +409,9 @@ LABEL_31:
     }
 
     *buf = 138412546;
-    v35 = self;
+    selfCopy8 = self;
     v36 = 2112;
-    *v37 = v4;
+    *v37 = aCopy;
     v23 = "%@ Failed to add SA %@";
     goto LABEL_36;
   }
@@ -420,9 +420,9 @@ LABEL_31:
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    v35 = self;
+    selfCopy8 = self;
     v36 = 2112;
-    *v37 = v4;
+    *v37 = aCopy;
     _os_log_impl(&dword_1BA83C000, v8, OS_LOG_TYPE_INFO, "%@ Added SA %@", buf, 0x16u);
   }
 
@@ -433,17 +433,17 @@ LABEL_34:
   return v9;
 }
 
-- (BOOL)updateSA:(id)a3
+- (BOOL)updateSA:(id)a
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 direction] != 2)
+  aCopy = a;
+  if ([aCopy direction] != 2)
   {
     v10 = ne_log_obj();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
     {
       *buf = 136315138;
-      v17 = "[NEIPSecSAKernelSession updateSA:]";
+      selfCopy3 = "[NEIPSecSAKernelSession updateSA:]";
       _os_log_fault_impl(&dword_1BA83C000, v10, OS_LOG_TYPE_FAULT, "%s called with null (securityAssociation.direction == NEIPSecSADirectionInbound)", buf, 0xCu);
     }
 
@@ -452,7 +452,7 @@ LABEL_34:
 
   v15.receiver = self;
   v15.super_class = NEIPSecSAKernelSession;
-  if (![(NEIPSecSASession *)&v15 updateSA:v4])
+  if (![(NEIPSecSASession *)&v15 updateSA:aCopy])
   {
     v10 = ne_log_large_obj();
     if (!os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -463,9 +463,9 @@ LABEL_11:
     }
 
     *buf = 138412546;
-    v17 = self;
+    selfCopy3 = self;
     v18 = 2112;
-    v19 = v4;
+    v19 = aCopy;
     v12 = "%@ Super failed to update SA %@";
 LABEL_14:
     _os_log_error_impl(&dword_1BA83C000, v10, OS_LOG_TYPE_ERROR, v12, buf, 0x16u);
@@ -473,19 +473,19 @@ LABEL_14:
   }
 
   internalSession = self->_internalSession;
-  if (v4)
+  if (aCopy)
   {
-    v6 = v4[12];
-    v7 = [(NEIPSecSA *)v4 createDictionary];
+    v6 = aCopy[12];
+    createDictionary = [(NEIPSecSA *)aCopy createDictionary];
   }
 
   else
   {
-    v7 = 0;
+    createDictionary = 0;
     v6 = 0;
   }
 
-  v8 = NEIPSecDBUpdateSA(internalSession, v6, v7);
+  v8 = NEIPSecDBUpdateSA(internalSession, v6, createDictionary);
 
   v9 = ne_log_large_obj();
   v10 = v9;
@@ -497,9 +497,9 @@ LABEL_14:
     }
 
     *buf = 138412546;
-    v17 = self;
+    selfCopy3 = self;
     v18 = 2112;
-    v19 = v4;
+    v19 = aCopy;
     v12 = "%@ Failed to update SA %@";
     goto LABEL_14;
   }
@@ -508,9 +508,9 @@ LABEL_14:
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    v17 = self;
+    selfCopy3 = self;
     v18 = 2112;
-    v19 = v4;
+    v19 = aCopy;
     _os_log_impl(&dword_1BA83C000, v10, OS_LOG_TYPE_INFO, "%@ Updated SA %@", buf, 0x16u);
   }
 
@@ -520,17 +520,17 @@ LABEL_12:
   return v11;
 }
 
-- (BOOL)addLarvalSA:(id)a3
+- (BOOL)addLarvalSA:(id)a
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 direction] != 2)
+  aCopy = a;
+  if ([aCopy direction] != 2)
   {
     v11 = ne_log_obj();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_FAULT))
     {
       *buf = 136315138;
-      v17 = "[NEIPSecSAKernelSession addLarvalSA:]";
+      selfCopy2 = "[NEIPSecSAKernelSession addLarvalSA:]";
       _os_log_fault_impl(&dword_1BA83C000, v11, OS_LOG_TYPE_FAULT, "%s called with null (securityAssociation.direction == NEIPSecSADirectionInbound)", buf, 0xCu);
     }
 
@@ -539,27 +539,27 @@ LABEL_12:
 
   v15 = 0;
   internalSession = self->_internalSession;
-  v6 = [(NEIPSecSA *)v4 createDictionary];
-  v7 = NEIPSecDBAddLarvalSA(internalSession, v6, &v15);
-  if (!v4)
+  createDictionary = [(NEIPSecSA *)aCopy createDictionary];
+  v7 = NEIPSecDBAddLarvalSA(internalSession, createDictionary, &v15);
+  if (!aCopy)
   {
 
     goto LABEL_11;
   }
 
-  v4[12] = v7;
+  aCopy[12] = v7;
 
-  v4[5] = bswap32(v15);
-  if (!v4[12])
+  aCopy[5] = bswap32(v15);
+  if (!aCopy[12])
   {
 LABEL_11:
     v12 = ne_log_large_obj();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v17 = self;
+      selfCopy2 = self;
       v18 = 2112;
-      v19 = v4;
+      v19 = aCopy;
       _os_log_error_impl(&dword_1BA83C000, v12, OS_LOG_TYPE_ERROR, "%@ Failed to add larval SA %@", buf, 0x16u);
     }
 
@@ -572,9 +572,9 @@ LABEL_14:
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    v17 = self;
+    selfCopy2 = self;
     v18 = 2112;
-    v19 = v4;
+    v19 = aCopy;
     _os_log_impl(&dword_1BA83C000, v8, OS_LOG_TYPE_INFO, "%@ Added larval SA %@", buf, 0x16u);
   }
 
@@ -616,13 +616,13 @@ LABEL_15:
   }
 }
 
-- (void)setDelegateQueue:(id)a3
+- (void)setDelegateQueue:(id)queue
 {
   v5.receiver = self;
   v5.super_class = NEIPSecSAKernelSession;
-  v4 = a3;
-  [(NEIPSecSASession *)&v5 setDelegateQueue:v4];
-  NEIPSecDBSetDispatchQueue(self->_internalSession, v4);
+  queueCopy = queue;
+  [(NEIPSecSASession *)&v5 setDelegateQueue:queueCopy];
+  NEIPSecDBSetDispatchQueue(self->_internalSession, queueCopy);
 }
 
 - (id)description
@@ -638,19 +638,19 @@ LABEL_15:
     uniqueIndex = 0;
   }
 
-  v5 = [(NEIPSecSASession *)self name];
-  v6 = [v3 initWithFormat:@"KernelSASession[%llu, %@]", uniqueIndex, v5];
+  name = [(NEIPSecSASession *)self name];
+  v6 = [v3 initWithFormat:@"KernelSASession[%llu, %@]", uniqueIndex, name];
 
   return v6;
 }
 
-- (NEIPSecSAKernelSession)initWithName:(id)a3 delegate:(id)a4 pfkeySocket:(int)a5
+- (NEIPSecSAKernelSession)initWithName:(id)name delegate:(id)delegate pfkeySocket:(int)socket
 {
   v21 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  nameCopy = name;
   v16.receiver = self;
   v16.super_class = NEIPSecSAKernelSession;
-  v9 = [(NEIPSecSASession *)&v16 initWithName:v8 delegate:a4];
+  v9 = [(NEIPSecSASession *)&v16 initWithName:nameCopy delegate:delegate];
   if (!v9)
   {
     v15 = ne_log_obj();
@@ -663,7 +663,7 @@ LABEL_15:
     goto LABEL_7;
   }
 
-  v10 = NEIPSecDBCreateSessionWithSocket(*MEMORY[0x1E695E480], v8, NEIPSecSAKernelSessionReceiveMessage, v9, a5);
+  v10 = NEIPSecDBCreateSessionWithSocket(*MEMORY[0x1E695E480], nameCopy, NEIPSecSAKernelSessionReceiveMessage, v9, socket);
   v9->_internalSession = v10;
   if (!v10)
   {
@@ -671,9 +671,9 @@ LABEL_15:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_FAULT))
     {
       *buf = 138412546;
-      v18 = v8;
+      v18 = nameCopy;
       v19 = 1024;
-      v20 = a5;
+      socketCopy = socket;
       _os_log_fault_impl(&dword_1BA83C000, v12, OS_LOG_TYPE_FAULT, "NEIPSecDBCreateSessionWithSocket(%@, %d) failed", buf, 0x12u);
     }
 

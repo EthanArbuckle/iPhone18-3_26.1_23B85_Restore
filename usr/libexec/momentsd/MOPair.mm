@@ -1,71 +1,71 @@
 @interface MOPair
-- (MOPair)initWithCoder:(id)a3;
-- (MOPair)initWithFirstObject:(id)a3 secondObject:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (MOPair)initWithCoder:(id)coder;
+- (MOPair)initWithFirstObject:(id)object secondObject:(id)secondObject;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MOPair
 
-- (MOPair)initWithFirstObject:(id)a3 secondObject:(id)a4
+- (MOPair)initWithFirstObject:(id)object secondObject:(id)secondObject
 {
-  v7 = a3;
-  v8 = a4;
+  objectCopy = object;
+  secondObjectCopy = secondObject;
   v12.receiver = self;
   v12.super_class = MOPair;
   v9 = [(MOPair *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_firstObject, a3);
-    objc_storeStrong(&v10->_secondObject, a4);
+    objc_storeStrong(&v9->_firstObject, object);
+    objc_storeStrong(&v10->_secondObject, secondObject);
   }
 
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(MOPair *)self firstObject];
-  v6 = [(MOPair *)self secondObject];
-  v7 = [v4 initWithFirstObject:v5 secondObject:v6];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  firstObject = [(MOPair *)self firstObject];
+  secondObject = [(MOPair *)self secondObject];
+  v7 = [v4 initWithFirstObject:firstObject secondObject:secondObject];
 
   return v7;
 }
 
-- (MOPair)initWithCoder:(id)a3
+- (MOPair)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(MOPair *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectForKey:@"firstObject"];
+    v6 = [coderCopy decodeObjectForKey:@"firstObject"];
     [(MOPair *)v5 setFirstObject:v6];
 
-    v7 = [v4 decodeObjectForKey:@"secondObject"];
+    v7 = [coderCopy decodeObjectForKey:@"secondObject"];
     [(MOPair *)v5 setSecondObject:v7];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(MOPair *)self firstObject];
-  [v4 encodeObject:v5 forKey:@"firstObject"];
+  coderCopy = coder;
+  firstObject = [(MOPair *)self firstObject];
+  [coderCopy encodeObject:firstObject forKey:@"firstObject"];
 
-  v6 = [(MOPair *)self secondObject];
-  [v4 encodeObject:v6 forKey:@"secondObject"];
+  secondObject = [(MOPair *)self secondObject];
+  [coderCopy encodeObject:secondObject forKey:@"secondObject"];
 }
 
 - (id)description
 {
-  v3 = [(MOPair *)self firstObject];
-  v4 = [(MOPair *)self secondObject];
-  v5 = [NSString stringWithFormat:@"Pair: firstObject, %@, secondObject, %@", v3, v4];
+  firstObject = [(MOPair *)self firstObject];
+  secondObject = [(MOPair *)self secondObject];
+  v5 = [NSString stringWithFormat:@"Pair: firstObject, %@, secondObject, %@", firstObject, secondObject];
 
   return v5;
 }

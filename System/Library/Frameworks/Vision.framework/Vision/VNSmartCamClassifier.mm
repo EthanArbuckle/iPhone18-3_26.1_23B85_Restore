@@ -1,27 +1,27 @@
 @interface VNSmartCamClassifier
-+ (id)classifierResourceTypesToNamesForOriginatingRequestSpecifier:(id)a3;
-+ (id)createObservationWithDescriptors:(id)a3 forOriginatingRequestSpecifier:(id)a4;
-+ (id)supportedComputeStageDevicesForOptions:(id)a3 error:(id *)a4;
-+ (shared_ptr<vision::mod::ImageClassifierAbstract>)createClassifierWithDescriptor:(shared_ptr<vision:(const char *)a4 :(int)a5 mod:(int)a6 :(const char *)a7 ImageDescriptorProcessorAbstract>)a3 classifierAbsolutePath:(Options *)a8 computePlatform:computePath:labelsFilename:options:;
-+ (shared_ptr<vision::mod::ImageDescriptorProcessorAbstract>)createDescriprorProcessorWithModelPath:(const char *)a3 nBatch:(int)a4 computePlatform:(int)a5 computePath:(int)a6 options:(Options *)a7;
-+ (void)initDumpDebugIntermediates:(id *)a3 debugInfo:(id *)a4;
-- (BOOL)completeInitializationForSession:(id)a3 error:(id *)a4;
++ (id)classifierResourceTypesToNamesForOriginatingRequestSpecifier:(id)specifier;
++ (id)createObservationWithDescriptors:(id)descriptors forOriginatingRequestSpecifier:(id)specifier;
++ (id)supportedComputeStageDevicesForOptions:(id)options error:(id *)error;
++ (shared_ptr<vision::mod::ImageClassifierAbstract>)createClassifierWithDescriptor:(shared_ptr<vision:(const char *)descriptor :(int)a5 mod:(int)mod :(const char *)a7 ImageDescriptorProcessorAbstract>)a3 classifierAbsolutePath:(Options *)path computePlatform:computePath:labelsFilename:options:;
++ (shared_ptr<vision::mod::ImageDescriptorProcessorAbstract>)createDescriprorProcessorWithModelPath:(const char *)path nBatch:(int)batch computePlatform:(int)platform computePath:(int)computePath options:(Options *)options;
++ (void)initDumpDebugIntermediates:(id *)intermediates debugInfo:(id *)info;
+- (BOOL)completeInitializationForSession:(id)session error:(id *)error;
 @end
 
 @implementation VNSmartCamClassifier
 
-- (BOOL)completeInitializationForSession:(id)a3 error:(id *)a4
+- (BOOL)completeInitializationForSession:(id)session error:(id *)error
 {
   v5.receiver = self;
   v5.super_class = VNSmartCamClassifier;
-  return [(VNEspressoModelClassifier *)&v5 completeInitializationForSession:a3 error:a4];
+  return [(VNEspressoModelClassifier *)&v5 completeInitializationForSession:session error:error];
 }
 
-+ (void)initDumpDebugIntermediates:(id *)a3 debugInfo:(id *)a4
++ (void)initDumpDebugIntermediates:(id *)intermediates debugInfo:(id *)info
 {
-  v12 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v6 = [v12 BOOLForKey:@"VN_DEBUG_DUMP_SMARTCAM_INTERMEDIATES"];
-  if (a3)
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v6 = [standardUserDefaults BOOLForKey:@"VN_DEBUG_DUMP_SMARTCAM_INTERMEDIATES"];
+  if (intermediates)
   {
     v7 = v6;
   }
@@ -31,53 +31,53 @@
     v7 = 0;
   }
 
-  if (a4 && (v7 & 1) != 0)
+  if (info && (v7 & 1) != 0)
   {
     v8 = NSTemporaryDirectory();
     v13 = [v8 stringByAppendingString:@"VN_smartcam_classifier_debug_intermediates/"];
 
-    v9 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
     v10 = [MEMORY[0x1E695DFF8] fileURLWithPath:v13];
-    v11 = [v9 createDirectoryAtURL:v10 withIntermediateDirectories:1 attributes:0 error:0];
+    v11 = [defaultManager createDirectoryAtURL:v10 withIntermediateDirectories:1 attributes:0 error:0];
 
     if (v11)
     {
-      *a3 = v13;
+      *intermediates = v13;
     }
 
-    *a4 = objc_alloc_init(MEMORY[0x1E695DF90]);
+    *info = objc_alloc_init(MEMORY[0x1E695DF90]);
   }
 }
 
-+ (id)supportedComputeStageDevicesForOptions:(id)a3 error:(id *)a4
++ (id)supportedComputeStageDevicesForOptions:(id)options error:(id *)error
 {
   v8[1] = *MEMORY[0x1E69E9840];
   v7 = @"VNComputeStageMain";
-  v4 = [VNComputeDeviceUtilities allGPUComputeDevices:a3];
+  v4 = [VNComputeDeviceUtilities allGPUComputeDevices:options];
   v8[0] = v4;
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v8 forKeys:&v7 count:1];
 
   return v5;
 }
 
-+ (id)createObservationWithDescriptors:(id)a3 forOriginatingRequestSpecifier:(id)a4
++ (id)createObservationWithDescriptors:(id)descriptors forOriginatingRequestSpecifier:(id)specifier
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [[VNSmartCamObservation alloc] initWithOriginatingRequestSpecifier:v6 smartCamprints:v5];
+  descriptorsCopy = descriptors;
+  specifierCopy = specifier;
+  v7 = [[VNSmartCamObservation alloc] initWithOriginatingRequestSpecifier:specifierCopy smartCamprints:descriptorsCopy];
 
   return v7;
 }
 
-+ (id)classifierResourceTypesToNamesForOriginatingRequestSpecifier:(id)a3
++ (id)classifierResourceTypesToNamesForOriginatingRequestSpecifier:(id)specifier
 {
-  v3 = a3;
+  specifierCopy = specifier;
   if (+[VNSmartCamClassifier classifierResourceTypesToNamesForOriginatingRequestSpecifier:]::onceToken != -1)
   {
     dispatch_once(&+[VNSmartCamClassifier classifierResourceTypesToNamesForOriginatingRequestSpecifier:]::onceToken, &__block_literal_global_8267);
   }
 
-  v4 = [+[VNSmartCamClassifier classifierResourceTypesToNamesForOriginatingRequestSpecifier:]::classifierResourceTypesToNames objectForKeyedSubscript:v3];
+  v4 = [+[VNSmartCamClassifier classifierResourceTypesToNamesForOriginatingRequestSpecifier:]::classifierResourceTypesToNames objectForKeyedSubscript:specifierCopy];
 
   return v4;
 }
@@ -102,14 +102,14 @@ void __85__VNSmartCamClassifier_classifierResourceTypesToNamesForOriginatingRequ
   +[VNSmartCamClassifier classifierResourceTypesToNamesForOriginatingRequestSpecifier:]::classifierResourceTypesToNames = v2;
 }
 
-+ (shared_ptr<vision::mod::ImageDescriptorProcessorAbstract>)createDescriprorProcessorWithModelPath:(const char *)a3 nBatch:(int)a4 computePlatform:(int)a5 computePath:(int)a6 options:(Options *)a7
++ (shared_ptr<vision::mod::ImageDescriptorProcessorAbstract>)createDescriprorProcessorWithModelPath:(const char *)path nBatch:(int)batch computePlatform:(int)platform computePath:(int)computePath options:(Options *)options
 {
-  a7->var2;
-  a7->var3;
+  options->var2;
+  options->var3;
   operator new();
 }
 
-+ (shared_ptr<vision::mod::ImageClassifierAbstract>)createClassifierWithDescriptor:(shared_ptr<vision:(const char *)a4 :(int)a5 mod:(int)a6 :(const char *)a7 ImageDescriptorProcessorAbstract>)a3 classifierAbsolutePath:(Options *)a8 computePlatform:computePath:labelsFilename:options:
++ (shared_ptr<vision::mod::ImageClassifierAbstract>)createClassifierWithDescriptor:(shared_ptr<vision:(const char *)descriptor :(int)a5 mod:(int)mod :(const char *)a7 ImageDescriptorProcessorAbstract>)a3 classifierAbsolutePath:(Options *)path computePlatform:computePath:labelsFilename:options:
 {
   var0 = a3.__ptr_[1].var0;
   if (var0)

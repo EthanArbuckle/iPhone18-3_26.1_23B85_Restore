@@ -1,68 +1,68 @@
 @interface RTLearnedRouteLocation
-- (BOOL)isEqual:(id)a3;
-- (RTLearnedRouteLocation)initWithCoder:(id)a3;
-- (RTLearnedRouteLocation)initWithLatitude:(double)a3 longitude:(double)a4 course:(double)a5 followedByUTurn:(BOOL)a6 locationReferenceFrame:(int)a7;
+- (BOOL)isEqual:(id)equal;
+- (RTLearnedRouteLocation)initWithCoder:(id)coder;
+- (RTLearnedRouteLocation)initWithLatitude:(double)latitude longitude:(double)longitude course:(double)course followedByUTurn:(BOOL)turn locationReferenceFrame:(int)frame;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RTLearnedRouteLocation
 
-- (RTLearnedRouteLocation)initWithLatitude:(double)a3 longitude:(double)a4 course:(double)a5 followedByUTurn:(BOOL)a6 locationReferenceFrame:(int)a7
+- (RTLearnedRouteLocation)initWithLatitude:(double)latitude longitude:(double)longitude course:(double)course followedByUTurn:(BOOL)turn locationReferenceFrame:(int)frame
 {
   v13.receiver = self;
   v13.super_class = RTLearnedRouteLocation;
   result = [(RTLearnedRouteLocation *)&v13 init];
   if (result)
   {
-    result->_latitude = a3;
-    result->_longitude = a4;
-    result->_course = a5;
-    result->_followedByUTurn = a6;
-    result->_locationReferenceFrame = a7;
+    result->_latitude = latitude;
+    result->_longitude = longitude;
+    result->_course = course;
+    result->_followedByUTurn = turn;
+    result->_locationReferenceFrame = frame;
   }
 
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   [(RTLearnedRouteLocation *)self latitude];
-  [v4 encodeDouble:@"latitude" forKey:?];
+  [coderCopy encodeDouble:@"latitude" forKey:?];
   [(RTLearnedRouteLocation *)self longitude];
-  [v4 encodeDouble:@"longitude" forKey:?];
+  [coderCopy encodeDouble:@"longitude" forKey:?];
   [(RTLearnedRouteLocation *)self course];
-  [v4 encodeDouble:@"course" forKey:?];
-  [v4 encodeInt32:-[RTLearnedRouteLocation locationReferenceFrame](self forKey:{"locationReferenceFrame"), @"locationReference"}];
-  [v4 encodeBool:-[RTLearnedRouteLocation followedByUTurn](self forKey:{"followedByUTurn"), @"followedByUTurn"}];
+  [coderCopy encodeDouble:@"course" forKey:?];
+  [coderCopy encodeInt32:-[RTLearnedRouteLocation locationReferenceFrame](self forKey:{"locationReferenceFrame"), @"locationReference"}];
+  [coderCopy encodeBool:-[RTLearnedRouteLocation followedByUTurn](self forKey:{"followedByUTurn"), @"followedByUTurn"}];
 }
 
-- (RTLearnedRouteLocation)initWithCoder:(id)a3
+- (RTLearnedRouteLocation)initWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 decodeDoubleForKey:@"latitude"];
+  coderCopy = coder;
+  [coderCopy decodeDoubleForKey:@"latitude"];
   v6 = v5;
-  [v4 decodeDoubleForKey:@"longitude"];
+  [coderCopy decodeDoubleForKey:@"longitude"];
   v8 = v7;
-  [v4 decodeDoubleForKey:@"course"];
+  [coderCopy decodeDoubleForKey:@"course"];
   v10 = v9;
-  v11 = [v4 decodeInt32ForKey:@"locationReference"];
-  v12 = [v4 decodeBoolForKey:@"followedByUTurn"];
+  v11 = [coderCopy decodeInt32ForKey:@"locationReference"];
+  v12 = [coderCopy decodeBoolForKey:@"followedByUTurn"];
 
   return [(RTLearnedRouteLocation *)self initWithLatitude:v12 longitude:v11 course:v6 followedByUTurn:v8 locationReferenceFrame:v10];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self | v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self | equalCopy)
   {
     v6 = 0;
-    if (self && v4)
+    if (self && equalCopy)
     {
-      v8 = [v4 isMemberOfClass:objc_opt_class()];
+      v8 = [equalCopy isMemberOfClass:objc_opt_class()];
       [(RTLearnedRouteLocation *)self latitude];
       v10 = v9;
       [v5 latitude];
@@ -75,10 +75,10 @@
       v18 = v17;
       [v5 course];
       v20 = v19;
-      v21 = [(RTLearnedRouteLocation *)self locationReferenceFrame];
-      v22 = [v5 locationReferenceFrame];
-      v23 = [(RTLearnedRouteLocation *)self followedByUTurn];
-      v24 = [v5 followedByUTurn];
+      locationReferenceFrame = [(RTLearnedRouteLocation *)self locationReferenceFrame];
+      locationReferenceFrame2 = [v5 locationReferenceFrame];
+      followedByUTurn = [(RTLearnedRouteLocation *)self followedByUTurn];
+      followedByUTurn2 = [v5 followedByUTurn];
       if (v8)
       {
         v25 = vabdd_f64(v18, v20);
@@ -93,12 +93,12 @@
           v26 = 0;
         }
 
-        if (v21 != v22)
+        if (locationReferenceFrame != locationReferenceFrame2)
         {
           v26 = 0;
         }
 
-        v6 = v26 & (v23 ^ v24 ^ 1);
+        v6 = v26 & (followedByUTurn ^ followedByUTurn2 ^ 1);
       }
 
       else

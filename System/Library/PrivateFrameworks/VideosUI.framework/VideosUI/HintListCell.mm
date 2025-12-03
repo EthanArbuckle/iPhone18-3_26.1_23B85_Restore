@@ -1,15 +1,15 @@
 @interface HintListCell
-- (CGSize)vui_layoutSubviews:(CGSize)a3 computationOnly:(BOOL)a4;
-- (CGSize)vui_sizeThatFits:(CGSize)a3;
+- (CGSize)vui_layoutSubviews:(CGSize)subviews computationOnly:(BOOL)only;
+- (CGSize)vui_sizeThatFits:(CGSize)fits;
 - (void)prepareForReuse;
-- (void)vui_setHighlighted:(BOOL)a3;
+- (void)vui_setHighlighted:(BOOL)highlighted;
 @end
 
 @implementation HintListCell
 
-- (CGSize)vui_sizeThatFits:(CGSize)a3
+- (CGSize)vui_sizeThatFits:(CGSize)fits
 {
-  v3 = self;
+  selfCopy = self;
   v4 = OUTLINED_FUNCTION_6_12();
   v6 = sub_1E3F8572C(v4, v5);
   v8 = v7;
@@ -21,11 +21,11 @@
   return result;
 }
 
-- (CGSize)vui_layoutSubviews:(CGSize)a3 computationOnly:(BOOL)a4
+- (CGSize)vui_layoutSubviews:(CGSize)subviews computationOnly:(BOOL)only
 {
-  v5 = self;
+  selfCopy = self;
   OUTLINED_FUNCTION_6_12();
-  sub_1E3F85F10(a4);
+  sub_1E3F85F10(only);
   v7 = v6;
   v9 = v8;
 
@@ -38,14 +38,14 @@
 
 - (void)prepareForReuse
 {
-  v2 = self;
+  selfCopy = self;
   sub_1E3F85FCC();
 }
 
-- (void)vui_setHighlighted:(BOOL)a3
+- (void)vui_setHighlighted:(BOOL)highlighted
 {
-  v4 = self;
-  sub_1E3F8609C(a3);
+  selfCopy = self;
+  sub_1E3F8609C(highlighted);
 }
 
 @end

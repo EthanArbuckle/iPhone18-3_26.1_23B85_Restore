@@ -1,33 +1,33 @@
 @interface ASRSchemaASRFullPayloadCorrectionEnded
-- (ASRSchemaASRFullPayloadCorrectionEnded)initWithDictionary:(id)a3;
-- (ASRSchemaASRFullPayloadCorrectionEnded)initWithJSON:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (ASRSchemaASRFullPayloadCorrectionEnded)initWithDictionary:(id)dictionary;
+- (ASRSchemaASRFullPayloadCorrectionEnded)initWithJSON:(id)n;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ASRSchemaASRFullPayloadCorrectionEnded
 
-- (ASRSchemaASRFullPayloadCorrectionEnded)initWithDictionary:(id)a3
+- (ASRSchemaASRFullPayloadCorrectionEnded)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v11.receiver = self;
   v11.super_class = ASRSchemaASRFullPayloadCorrectionEnded;
   v5 = [(ASRSchemaASRFullPayloadCorrectionEnded *)&v11 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"responseTimeInNs"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"responseTimeInNs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ASRSchemaASRFullPayloadCorrectionEnded setResponseTimeInNs:](v5, "setResponseTimeInNs:", [v6 unsignedLongLongValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"linkId"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"linkId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -41,30 +41,30 @@
   return v5;
 }
 
-- (ASRSchemaASRFullPayloadCorrectionEnded)initWithJSON:(id)a3
+- (ASRSchemaASRFullPayloadCorrectionEnded)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(ASRSchemaASRFullPayloadCorrectionEnded *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(ASRSchemaASRFullPayloadCorrectionEnded *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(ASRSchemaASRFullPayloadCorrectionEnded *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -77,32 +77,32 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_linkId)
   {
-    v4 = [(ASRSchemaASRFullPayloadCorrectionEnded *)self linkId];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    linkId = [(ASRSchemaASRFullPayloadCorrectionEnded *)self linkId];
+    dictionaryRepresentation = [linkId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"linkId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"linkId"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"linkId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"linkId"];
     }
   }
 
   if (*&self->_has)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[ASRSchemaASRFullPayloadCorrectionEnded responseTimeInNs](self, "responseTimeInNs")}];
-    [v3 setObject:v7 forKeyedSubscript:@"responseTimeInNs"];
+    [dictionary setObject:v7 forKeyedSubscript:@"responseTimeInNs"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -120,22 +120,22 @@
   return [(SISchemaUUID *)self->_linkId hash]^ v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    if ((*&self->_has & 1) == (v4[24] & 1))
+    if ((*&self->_has & 1) == (equalCopy[24] & 1))
     {
-      if ((*&self->_has & 1) == 0 || (responseTimeInNs = self->_responseTimeInNs, responseTimeInNs == [v4 responseTimeInNs]))
+      if ((*&self->_has & 1) == 0 || (responseTimeInNs = self->_responseTimeInNs, responseTimeInNs == [equalCopy responseTimeInNs]))
       {
-        v6 = [(ASRSchemaASRFullPayloadCorrectionEnded *)self linkId];
-        v7 = [v4 linkId];
-        v8 = v7;
-        if ((v6 != 0) != (v7 == 0))
+        linkId = [(ASRSchemaASRFullPayloadCorrectionEnded *)self linkId];
+        linkId2 = [equalCopy linkId];
+        v8 = linkId2;
+        if ((linkId != 0) != (linkId2 == 0))
         {
-          v9 = [(ASRSchemaASRFullPayloadCorrectionEnded *)self linkId];
-          if (!v9)
+          linkId3 = [(ASRSchemaASRFullPayloadCorrectionEnded *)self linkId];
+          if (!linkId3)
           {
 
 LABEL_13:
@@ -143,10 +143,10 @@ LABEL_13:
             goto LABEL_11;
           }
 
-          v10 = v9;
-          v11 = [(ASRSchemaASRFullPayloadCorrectionEnded *)self linkId];
-          v12 = [v4 linkId];
-          v13 = [v11 isEqual:v12];
+          v10 = linkId3;
+          linkId4 = [(ASRSchemaASRFullPayloadCorrectionEnded *)self linkId];
+          linkId5 = [equalCopy linkId];
+          v13 = [linkId4 isEqual:linkId5];
 
           if (v13)
           {
@@ -167,37 +167,37 @@ LABEL_11:
   return v14;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v7 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     PBDataWriterWriteUint64Field();
   }
 
-  v4 = [(ASRSchemaASRFullPayloadCorrectionEnded *)self linkId];
+  linkId = [(ASRSchemaASRFullPayloadCorrectionEnded *)self linkId];
 
-  v5 = v7;
-  if (v4)
+  v5 = toCopy;
+  if (linkId)
   {
-    v6 = [(ASRSchemaASRFullPayloadCorrectionEnded *)self linkId];
+    linkId2 = [(ASRSchemaASRFullPayloadCorrectionEnded *)self linkId];
     PBDataWriterWriteSubmessage();
 
-    v5 = v7;
+    v5 = toCopy;
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = ASRSchemaASRFullPayloadCorrectionEnded;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(ASRSchemaASRFullPayloadCorrectionEnded *)self linkId:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(ASRSchemaASRFullPayloadCorrectionEnded *)self deleteLinkId];
   }

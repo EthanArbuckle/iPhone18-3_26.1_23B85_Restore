@@ -1,14 +1,14 @@
 @interface RTVehicleLocationProvider
 - (BOOL)_deleteLastVehicleEvent;
 - (BOOL)_persistLastVehicleEvent;
-- (BOOL)_persistVehicleEvent:(id)a3;
-- (BOOL)_sameVehicleWithDeviceId:(id)a3 otherDeviceId:(id)a4;
+- (BOOL)_persistVehicleEvent:(id)event;
+- (BOOL)_sameVehicleWithDeviceId:(id)id otherDeviceId:(id)deviceId;
 - (BOOL)isFeatureSupported;
 - (BOOL)pairedWithEligibleDevices;
-- (RTVehicleLocationProvider)initWithLocationManager:(id)a3 motionActivityManager:(id)a4 mapsSupportManager:(id)a5 metricManager:(id)a6 managedObjectContext:(id)a7 persistenceManager:(id)a8 vehicleLocationHistoryController:(id)a9 learnedLocationManager:(id)a10 managedConfiguration:(id)a11 defaultsManager:(id)a12 keychainManager:(id)a13;
-- (RTVehicleLocationProvider)initWithLocationManager:(id)a3 motionActivityManager:(id)a4 mapsSupportManager:(id)a5 metricManager:(id)a6 managedObjectContext:(id)a7 persistenceManager:(id)a8 vehicleLocationHistoryController:(id)a9 learnedLocationManager:(id)a10 managedConfiguration:(id)a11 defaultsManager:(id)a12 keychainManager:(id)a13 companionLink:(id)a14;
-- (id)_createMetricFromParkingEvent:(id)a3;
-- (id)_createMetricFromScoreBoard:(id)a3;
+- (RTVehicleLocationProvider)initWithLocationManager:(id)manager motionActivityManager:(id)activityManager mapsSupportManager:(id)supportManager metricManager:(id)metricManager managedObjectContext:(id)context persistenceManager:(id)persistenceManager vehicleLocationHistoryController:(id)controller learnedLocationManager:(id)self0 managedConfiguration:(id)self1 defaultsManager:(id)self2 keychainManager:(id)self3;
+- (RTVehicleLocationProvider)initWithLocationManager:(id)manager motionActivityManager:(id)activityManager mapsSupportManager:(id)supportManager metricManager:(id)metricManager managedObjectContext:(id)context persistenceManager:(id)persistenceManager vehicleLocationHistoryController:(id)controller learnedLocationManager:(id)self0 managedConfiguration:(id)self1 defaultsManager:(id)self2 keychainManager:(id)self3 companionLink:(id)self4;
+- (id)_createMetricFromParkingEvent:(id)event;
+- (id)_createMetricFromScoreBoard:(id)board;
 - (id)_getLastVehicleEvents;
 - (id)createCompanionLink;
 - (void)_clearAllVehicleEvents;
@@ -16,71 +16,71 @@
 - (void)_finalizeLastVehicleEventIfAppropriate;
 - (void)_finalizeLocationEstimate;
 - (void)_notifyClients;
-- (void)_onDailyMetricNotification:(id)a3;
-- (void)_onExternalVehicleEventReceived:(id)a3;
+- (void)_onDailyMetricNotification:(id)notification;
+- (void)_onExternalVehicleEventReceived:(id)received;
 - (void)_onFinalizeLocationEstimateTimerExpiry;
-- (void)_onLocation:(id)a3;
-- (void)_onManagedObjectContextCreated:(id)a3;
-- (void)_onVehicleConnectedNotification:(id)a3;
+- (void)_onLocation:(id)location;
+- (void)_onManagedObjectContextCreated:(id)created;
+- (void)_onVehicleConnectedNotification:(id)notification;
 - (void)_onVehicleExit;
-- (void)_onVehicleExitNotification:(id)a3;
-- (void)_onVehicleParkedWithDeviceId:(id)a3;
-- (void)_onVehicleStartedWithDeviceId:(id)a3;
+- (void)_onVehicleExitNotification:(id)notification;
+- (void)_onVehicleParkedWithDeviceId:(id)id;
+- (void)_onVehicleStartedWithDeviceId:(id)id;
 - (void)_postBulletinNotificationIfAppropriate;
-- (void)_postVehicleReplacementBulletinNotificationWithVehicleEvent:(id)a3 replacingEvent:(id)a4;
+- (void)_postVehicleReplacementBulletinNotificationWithVehicleEvent:(id)event replacingEvent:(id)replacingEvent;
 - (void)_processPendingVehicleEventAfterLocationFinalization;
-- (void)_recordMetricAssistanceEvent:(id)a3;
-- (void)_recordMetricEngagementEvent:(id)a3;
-- (void)_recordMetricParkingEvent:(id)a3;
+- (void)_recordMetricAssistanceEvent:(id)event;
+- (void)_recordMetricEngagementEvent:(id)event;
+- (void)_recordMetricParkingEvent:(id)event;
 - (void)_recordMetricSuppressedEvent;
 - (void)_registerScoreBoardSubmission;
 - (void)_resendVehicleEventIfNecessary;
 - (void)_restoreLastVehicleEvent;
-- (void)_sendVehicleEventToCompanionDevice:(id)a3;
+- (void)_sendVehicleEventToCompanionDevice:(id)device;
 - (void)_setup;
-- (void)_shutdownWithHandler:(id)a3;
-- (void)_submitFMCAssistanceInstanceWithIdentifier:(id)a3 uiPlacement:(int)a4 assistanceType:(int)a5 assistanceValue:(int)a6;
-- (void)_submitFMCCarParkedInstanceWithParkedEvents:(id)a3;
-- (void)_submitFMCDailyAssessmentsWithSubmissionHandler:(id)a3;
-- (void)_submitFMCParkingEventMetric:(id)a3;
-- (void)_submitFMCReturnToCarInstanceWithIdentifier:(id)a3 horizontalAccuracy:(int)a4 horizontalDistance:(int)a5;
-- (void)_submitFMCVehicleConnectionEventInstanceWithConnectionStatus:(int)a3;
-- (void)_submitFMCVehicleConnectionEventInstanceWithConnectionStatus:(int)a3 value:(double)a4;
-- (void)_submitFMCViewedInstanceWithIdentifier:(id)a3 uiPlacement:(int)a4;
+- (void)_shutdownWithHandler:(id)handler;
+- (void)_submitFMCAssistanceInstanceWithIdentifier:(id)identifier uiPlacement:(int)placement assistanceType:(int)type assistanceValue:(int)value;
+- (void)_submitFMCCarParkedInstanceWithParkedEvents:(id)events;
+- (void)_submitFMCDailyAssessmentsWithSubmissionHandler:(id)handler;
+- (void)_submitFMCParkingEventMetric:(id)metric;
+- (void)_submitFMCReturnToCarInstanceWithIdentifier:(id)identifier horizontalAccuracy:(int)accuracy horizontalDistance:(int)distance;
+- (void)_submitFMCVehicleConnectionEventInstanceWithConnectionStatus:(int)status;
+- (void)_submitFMCVehicleConnectionEventInstanceWithConnectionStatus:(int)status value:(double)value;
+- (void)_submitFMCViewedInstanceWithIdentifier:(id)identifier uiPlacement:(int)placement;
 - (void)_updateAuxiliaryDataIfAppropriate;
 - (void)_updateFeatureEnablement;
-- (void)_updateLastVehicleEventAndNotify:(id)a3;
-- (void)_updateNearbyLocationOfInterestOfVehicleEvent:(id)a3 handler:(id)a4;
-- (void)_updateUsualLocationOfVehicleEvent:(id)a3;
-- (void)_vehicleEventAtLocation:(id)a3 notes:(id)a4 handler:(id)a5;
+- (void)_updateLastVehicleEventAndNotify:(id)notify;
+- (void)_updateNearbyLocationOfInterestOfVehicleEvent:(id)event handler:(id)handler;
+- (void)_updateUsualLocationOfVehicleEvent:(id)event;
+- (void)_vehicleEventAtLocation:(id)location notes:(id)notes handler:(id)handler;
 - (void)clearAllVehicleEvents;
 - (void)didReceiveEffectiveSettingsChangedNotification;
-- (void)engageInVehicleEventWithIdentifier:(id)a3;
-- (void)fetchAutomaticVehicleEventDetectionSupportedWithHandler:(id)a3;
-- (void)fetchFMCEnabledWithHandler:(id)a3;
-- (void)fetchLastVehicleEventsWithHandler:(id)a3;
-- (void)internalAddObserver:(id)a3 name:(id)a4;
-- (void)internalRemoveObserver:(id)a3 name:(id)a4;
-- (void)onDailyMetricNotification:(id)a3;
-- (void)onLearnedLocationManagerNotification:(id)a3;
-- (void)onLeechedLocation:(id)a3;
-- (void)onLocationNotification:(id)a3;
-- (void)onNanoRegistryNotification:(id)a3;
-- (void)onVehicleConnectedNotification:(id)a3;
-- (void)onVehicleExitNotification:(id)a3;
-- (void)performPurgeOfType:(int64_t)a3 referenceDate:(id)a4 completion:(id)a5;
+- (void)engageInVehicleEventWithIdentifier:(id)identifier;
+- (void)fetchAutomaticVehicleEventDetectionSupportedWithHandler:(id)handler;
+- (void)fetchFMCEnabledWithHandler:(id)handler;
+- (void)fetchLastVehicleEventsWithHandler:(id)handler;
+- (void)internalAddObserver:(id)observer name:(id)name;
+- (void)internalRemoveObserver:(id)observer name:(id)name;
+- (void)onDailyMetricNotification:(id)notification;
+- (void)onLearnedLocationManagerNotification:(id)notification;
+- (void)onLeechedLocation:(id)location;
+- (void)onLocationNotification:(id)notification;
+- (void)onNanoRegistryNotification:(id)notification;
+- (void)onVehicleConnectedNotification:(id)notification;
+- (void)onVehicleExitNotification:(id)notification;
+- (void)performPurgeOfType:(int64_t)type referenceDate:(id)date completion:(id)completion;
 - (void)persistLastVehicleEvent;
 - (void)requestLocations;
 - (void)restoreLastVehicleEvent;
-- (void)setMonitorLocation:(BOOL)a3;
-- (void)setMonitorVehicleConnection:(BOOL)a3;
-- (void)setMonitorVehicleExit:(BOOL)a3;
-- (void)setMonitorVehicleLocation:(BOOL)a3;
-- (void)updateVehicleEventWithIdentifier:(id)a3 location:(id)a4;
-- (void)updateVehicleEventWithIdentifier:(id)a3 mapItem:(id)a4;
-- (void)updateVehicleEventWithIdentifier:(id)a3 notes:(id)a4;
-- (void)updateVehicleEventWithIdentifier:(id)a3 photo:(id)a4;
-- (void)vehicleEventAtLocation:(id)a3 notes:(id)a4 handler:(id)a5;
+- (void)setMonitorLocation:(BOOL)location;
+- (void)setMonitorVehicleConnection:(BOOL)connection;
+- (void)setMonitorVehicleExit:(BOOL)exit;
+- (void)setMonitorVehicleLocation:(BOOL)location;
+- (void)updateVehicleEventWithIdentifier:(id)identifier location:(id)location;
+- (void)updateVehicleEventWithIdentifier:(id)identifier mapItem:(id)item;
+- (void)updateVehicleEventWithIdentifier:(id)identifier notes:(id)notes;
+- (void)updateVehicleEventWithIdentifier:(id)identifier photo:(id)photo;
+- (void)vehicleEventAtLocation:(id)location notes:(id)notes handler:(id)handler;
 @end
 
 @implementation RTVehicleLocationProvider
@@ -88,18 +88,18 @@
 - (id)_getLastVehicleEvents
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v3 = [(RTVehicleLocationProvider *)self lastVehicleParkedEvent];
-  v4 = [v3 location];
-  if (v4)
+  lastVehicleParkedEvent = [(RTVehicleLocationProvider *)self lastVehicleParkedEvent];
+  location = [lastVehicleParkedEvent location];
+  if (location)
   {
-    v5 = v4;
-    v6 = [(RTVehicleLocationProvider *)self lastVehicleParkedEvent];
-    v7 = [v6 confirmed];
+    v5 = location;
+    lastVehicleParkedEvent2 = [(RTVehicleLocationProvider *)self lastVehicleParkedEvent];
+    confirmed = [lastVehicleParkedEvent2 confirmed];
 
-    if (v7)
+    if (confirmed)
     {
-      v8 = [(RTVehicleLocationProvider *)self lastVehicleParkedEvent];
-      v9 = [v8 copy];
+      lastVehicleParkedEvent3 = [(RTVehicleLocationProvider *)self lastVehicleParkedEvent];
+      v9 = [lastVehicleParkedEvent3 copy];
       v12[0] = v9;
       v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:1];
 
@@ -117,22 +117,22 @@ LABEL_6:
   return v10;
 }
 
-- (RTVehicleLocationProvider)initWithLocationManager:(id)a3 motionActivityManager:(id)a4 mapsSupportManager:(id)a5 metricManager:(id)a6 managedObjectContext:(id)a7 persistenceManager:(id)a8 vehicleLocationHistoryController:(id)a9 learnedLocationManager:(id)a10 managedConfiguration:(id)a11 defaultsManager:(id)a12 keychainManager:(id)a13
+- (RTVehicleLocationProvider)initWithLocationManager:(id)manager motionActivityManager:(id)activityManager mapsSupportManager:(id)supportManager metricManager:(id)metricManager managedObjectContext:(id)context persistenceManager:(id)persistenceManager vehicleLocationHistoryController:(id)controller learnedLocationManager:(id)self0 managedConfiguration:(id)self1 defaultsManager:(id)self2 keychainManager:(id)self3
 {
   v38 = *MEMORY[0x277D85DE8];
-  v33 = a3;
-  v32 = a4;
-  v31 = a5;
-  v30 = a6;
-  v18 = a7;
-  v19 = a8;
-  v20 = a9;
-  v21 = a10;
-  v22 = a11;
-  v23 = a12;
-  v24 = a13;
-  v27 = v18;
-  if (!(v18 | v19))
+  managerCopy = manager;
+  activityManagerCopy = activityManager;
+  supportManagerCopy = supportManager;
+  metricManagerCopy = metricManager;
+  contextCopy = context;
+  persistenceManagerCopy = persistenceManager;
+  controllerCopy = controller;
+  locationManagerCopy = locationManager;
+  configurationCopy = configuration;
+  defaultsManagerCopy = defaultsManager;
+  keychainManagerCopy = keychainManager;
+  v27 = contextCopy;
+  if (!(contextCopy | persistenceManagerCopy))
   {
     v25 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -145,32 +145,32 @@ LABEL_6:
     }
   }
 
-  v29 = [(RTVehicleLocationProvider *)self initWithLocationManager:v33 motionActivityManager:v32 mapsSupportManager:v31 metricManager:v30 managedObjectContext:v27 persistenceManager:v19 vehicleLocationHistoryController:v20 learnedLocationManager:v21 managedConfiguration:v22 defaultsManager:v23 keychainManager:v24 companionLink:0];
+  v29 = [(RTVehicleLocationProvider *)self initWithLocationManager:managerCopy motionActivityManager:activityManagerCopy mapsSupportManager:supportManagerCopy metricManager:metricManagerCopy managedObjectContext:v27 persistenceManager:persistenceManagerCopy vehicleLocationHistoryController:controllerCopy learnedLocationManager:locationManagerCopy managedConfiguration:configurationCopy defaultsManager:defaultsManagerCopy keychainManager:keychainManagerCopy companionLink:0];
 
   return v29;
 }
 
-- (RTVehicleLocationProvider)initWithLocationManager:(id)a3 motionActivityManager:(id)a4 mapsSupportManager:(id)a5 metricManager:(id)a6 managedObjectContext:(id)a7 persistenceManager:(id)a8 vehicleLocationHistoryController:(id)a9 learnedLocationManager:(id)a10 managedConfiguration:(id)a11 defaultsManager:(id)a12 keychainManager:(id)a13 companionLink:(id)a14
+- (RTVehicleLocationProvider)initWithLocationManager:(id)manager motionActivityManager:(id)activityManager mapsSupportManager:(id)supportManager metricManager:(id)metricManager managedObjectContext:(id)context persistenceManager:(id)persistenceManager vehicleLocationHistoryController:(id)controller learnedLocationManager:(id)self0 managedConfiguration:(id)self1 defaultsManager:(id)self2 keychainManager:(id)self3 companionLink:(id)self4
 {
   v69 = *MEMORY[0x277D85DE8];
-  v60 = a3;
-  v59 = a4;
-  v58 = a5;
-  v51 = a6;
-  v57 = a6;
-  v19 = a7;
-  v52 = a8;
-  v20 = a8;
-  v21 = a9;
-  v56 = a10;
-  v55 = a11;
-  v54 = a12;
-  v22 = a13;
-  v23 = a14;
-  v61 = v19;
-  if (!(v19 | v20))
+  managerCopy = manager;
+  activityManagerCopy = activityManager;
+  supportManagerCopy = supportManager;
+  metricManagerCopy = metricManager;
+  metricManagerCopy2 = metricManager;
+  contextCopy = context;
+  persistenceManagerCopy = persistenceManager;
+  persistenceManagerCopy2 = persistenceManager;
+  controllerCopy = controller;
+  locationManagerCopy = locationManager;
+  configurationCopy = configuration;
+  defaultsManagerCopy = defaultsManager;
+  keychainManagerCopy = keychainManager;
+  linkCopy = link;
+  v61 = contextCopy;
+  if (!(contextCopy | persistenceManagerCopy2))
   {
-    v39 = v23;
+    v39 = linkCopy;
     v40 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
     {
@@ -182,44 +182,44 @@ LABEL_6:
     }
 
     v41 = 0;
-    v24 = v22;
-    v23 = v39;
+    v24 = keychainManagerCopy;
+    linkCopy = v39;
     goto LABEL_10;
   }
 
-  v24 = v22;
-  if (!v22)
+  v24 = keychainManagerCopy;
+  if (!keychainManagerCopy)
   {
     v41 = 0;
 LABEL_10:
-    v42 = self;
+    selfCopy = self;
     goto LABEL_16;
   }
 
-  v49 = v23;
+  v49 = linkCopy;
   v64.receiver = self;
   v64.super_class = RTVehicleLocationProvider;
   v25 = [(RTNotifier *)&v64 init];
   v26 = v25;
   if (v25)
   {
-    objc_storeStrong(&v25->_locationManager, a3);
-    objc_storeStrong(&v26->_motionActivityManager, a4);
-    objc_storeStrong(&v26->_mapsSupportManager, a5);
-    objc_storeStrong(&v26->_metricManager, v51);
-    objc_storeStrong(&v26->_persistenceManager, v52);
-    objc_storeStrong(&v26->_learnedLocationManager, a10);
-    objc_storeStrong(&v26->_managedConfiguration, a11);
-    objc_storeStrong(&v26->_defaultsManager, a12);
-    objc_storeStrong(&v26->_keychainManager, a13);
-    objc_storeStrong(&v26->_companionLink, a14);
-    v27 = [MEMORY[0x277CBEAA8] distantPast];
+    objc_storeStrong(&v25->_locationManager, manager);
+    objc_storeStrong(&v26->_motionActivityManager, activityManager);
+    objc_storeStrong(&v26->_mapsSupportManager, supportManager);
+    objc_storeStrong(&v26->_metricManager, metricManagerCopy);
+    objc_storeStrong(&v26->_persistenceManager, persistenceManagerCopy);
+    objc_storeStrong(&v26->_learnedLocationManager, locationManager);
+    objc_storeStrong(&v26->_managedConfiguration, configuration);
+    objc_storeStrong(&v26->_defaultsManager, defaultsManager);
+    objc_storeStrong(&v26->_keychainManager, keychainManager);
+    objc_storeStrong(&v26->_companionLink, link);
+    distantPast = [MEMORY[0x277CBEAA8] distantPast];
     lastCompanionSyncDate = v26->_lastCompanionSyncDate;
-    v26->_lastCompanionSyncDate = v27;
+    v26->_lastCompanionSyncDate = distantPast;
 
-    v29 = [MEMORY[0x277CBEAA8] distantPast];
+    distantPast2 = [MEMORY[0x277CBEAA8] distantPast];
     lastCompanionSyncRequestDate = v26->_lastCompanionSyncRequestDate;
-    v26->_lastCompanionSyncRequestDate = v29;
+    v26->_lastCompanionSyncRequestDate = distantPast2;
 
     v31 = [[RTFMCScoreBoard alloc] initWithLocationType:0xFFFFFFFFLL];
     scoreBoard = v26->_scoreBoard;
@@ -252,9 +252,9 @@ LABEL_10:
       managedObjectContext = v63;
     }
 
-    if (v21)
+    if (controllerCopy)
     {
-      objc_storeStrong(&v26->_vehicleLocationHistoryController, a9);
+      objc_storeStrong(&v26->_vehicleLocationHistoryController, controller);
     }
 
     v44 = objc_opt_new();
@@ -269,9 +269,9 @@ LABEL_10:
     [(RTManagedConfiguration *)v26->_managedConfiguration setDelegate:v26];
   }
 
-  v42 = v26;
-  v41 = v42;
-  v23 = v49;
+  selfCopy = v26;
+  v41 = selfCopy;
+  linkCopy = v49;
 LABEL_16:
 
   return v41;
@@ -296,23 +296,23 @@ void __271__RTVehicleLocationProvider_initWithLocationManager_motionActivityMana
   [(RTVehicleLocationProvider *)self _updateFeatureEnablement];
   if (!self->_companionLink)
   {
-    v3 = [(RTVehicleLocationProvider *)self createCompanionLink];
+    createCompanionLink = [(RTVehicleLocationProvider *)self createCompanionLink];
     companionLink = self->_companionLink;
-    self->_companionLink = v3;
+    self->_companionLink = createCompanionLink;
   }
 
-  v5 = [(RTVehicleLocationProvider *)self learnedLocationManager];
+  learnedLocationManager = [(RTVehicleLocationProvider *)self learnedLocationManager];
   v6 = +[(RTNotification *)RTLearnedLocationManagerNotificationAvailabilityDidChange];
-  [v5 addObserver:self selector:sel_onLearnedLocationManagerNotification_ name:v6];
+  [learnedLocationManager addObserver:self selector:sel_onLearnedLocationManagerNotification_ name:v6];
 
-  v7 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v7 addObserver:self selector:sel_onDailyMetricNotification_ name:@"RTMetricManagerDailyMetricNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_onDailyMetricNotification_ name:@"RTMetricManagerDailyMetricNotification" object:0];
 
-  v8 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v8 addObserver:self selector:sel_onNanoRegistryNotification_ name:*MEMORY[0x277D2BC68] object:0];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 addObserver:self selector:sel_onNanoRegistryNotification_ name:*MEMORY[0x277D2BC68] object:0];
 
-  v9 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v9 addObserver:self selector:sel_onNanoRegistryNotification_ name:*MEMORY[0x277D2BC78] object:0];
+  defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter3 addObserver:self selector:sel_onNanoRegistryNotification_ name:*MEMORY[0x277D2BC78] object:0];
 }
 
 - (void)_updateFeatureEnablement
@@ -397,8 +397,8 @@ void __271__RTVehicleLocationProvider_initWithLocationManager_motionActivityMana
 
   if (v3 && (-[RTDefaultsManager objectForKey:](self->_defaultsManager, "objectForKey:", @"RTDefaultsVehicleEventSupportDynamicEnablementPolicy"), v4 = objc_claimAutoreleasedReturnValue(), v5 = [v4 BOOLValue], v4, !v5))
   {
-    v13 = [(RTVehicleLocationProvider *)self managedConfiguration];
-    v7 = [v13 isFindMyCarAllowed];
+    managedConfiguration = [(RTVehicleLocationProvider *)self managedConfiguration];
+    isFindMyCarAllowed = [managedConfiguration isFindMyCarAllowed];
 
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
     {
@@ -406,7 +406,7 @@ void __271__RTVehicleLocationProvider_initWithLocationManager_motionActivityMana
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
       {
         v15 = @"no";
-        if (v7)
+        if (isFindMyCarAllowed)
         {
           v15 = @"yes";
         }
@@ -420,17 +420,17 @@ void __271__RTVehicleLocationProvider_initWithLocationManager_motionActivityMana
 
   else
   {
-    v6 = [(RTVehicleLocationProvider *)self managedConfiguration];
-    v7 = [v6 isFindMyCarAllowed];
+    managedConfiguration2 = [(RTVehicleLocationProvider *)self managedConfiguration];
+    isFindMyCarAllowed = [managedConfiguration2 isFindMyCarAllowed];
 
-    v8 = [(RTVehicleLocationProvider *)self pairedWithEligibleDevices];
+    pairedWithEligibleDevices = [(RTVehicleLocationProvider *)self pairedWithEligibleDevices];
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
       v9 = _rt_log_facility_get_os_log(RTLogFacilityVehicleLocation);
       if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
       {
         v10 = @"no";
-        if (v7)
+        if (isFindMyCarAllowed)
         {
           v11 = @"yes";
         }
@@ -440,7 +440,7 @@ void __271__RTVehicleLocationProvider_initWithLocationManager_motionActivityMana
           v11 = @"no";
         }
 
-        if (v8)
+        if (pairedWithEligibleDevices)
         {
           v10 = @"yes";
         }
@@ -453,10 +453,10 @@ void __271__RTVehicleLocationProvider_initWithLocationManager_motionActivityMana
       }
     }
 
-    LOBYTE(v7) = v7 | v8;
+    LOBYTE(isFindMyCarAllowed) = isFindMyCarAllowed | pairedWithEligibleDevices;
   }
 
-  return v7 & 1;
+  return isFindMyCarAllowed & 1;
 }
 
 - (BOOL)pairedWithEligibleDevices
@@ -484,10 +484,10 @@ void __271__RTVehicleLocationProvider_initWithLocationManager_motionActivityMana
 
   v3 = v2;
   _Block_object_dispose(&v18, 8);
-  v4 = [v2 sharedInstance];
-  v5 = [v4 getPairedDevices];
+  sharedInstance = [v2 sharedInstance];
+  getPairedDevices = [sharedInstance getPairedDevices];
 
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v22 count:16];
+  v6 = [getPairedDevices countByEnumeratingWithState:&v13 objects:v22 count:16];
   if (v6)
   {
     v7 = *v14;
@@ -497,7 +497,7 @@ void __271__RTVehicleLocationProvider_initWithLocationManager_motionActivityMana
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(getPairedDevices);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
@@ -511,7 +511,7 @@ void __271__RTVehicleLocationProvider_initWithLocationManager_motionActivityMana
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v13 objects:v22 count:16];
+      v6 = [getPairedDevices countByEnumeratingWithState:&v13 objects:v22 count:16];
       if (v6)
       {
         continue;
@@ -540,13 +540,13 @@ LABEL_13:
   }
 
   v4 = [RTVehicleLocationCompanionLink alloc];
-  v5 = [(RTNotifier *)self queue];
+  queue = [(RTNotifier *)self queue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __48__RTVehicleLocationProvider_createCompanionLink__block_invoke;
   v8[3] = &unk_2788C9890;
   v8[4] = self;
-  v6 = [(RTVehicleLocationCompanionLink *)v4 initWithQueue:v5 deviceConnectionUpdateHandler:v8];
+  v6 = [(RTVehicleLocationCompanionLink *)v4 initWithQueue:queue deviceConnectionUpdateHandler:v8];
 
   return v6;
 }
@@ -561,22 +561,22 @@ uint64_t __48__RTVehicleLocationProvider_createCompanionLink__block_invoke(uint6
   return result;
 }
 
-- (void)performPurgeOfType:(int64_t)a3 referenceDate:(id)a4 completion:(id)a5
+- (void)performPurgeOfType:(int64_t)type referenceDate:(id)date completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [(RTNotifier *)self queue];
+  dateCopy = date;
+  completionCopy = completion;
+  queue = [(RTNotifier *)self queue];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __73__RTVehicleLocationProvider_performPurgeOfType_referenceDate_completion___block_invoke;
   v13[3] = &unk_2788C4C20;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v16 = a3;
-  v11 = v9;
-  v12 = v8;
-  dispatch_async(v10, v13);
+  v14 = dateCopy;
+  v15 = completionCopy;
+  typeCopy = type;
+  v11 = completionCopy;
+  v12 = dateCopy;
+  dispatch_async(queue, v13);
 }
 
 void __73__RTVehicleLocationProvider_performPurgeOfType_referenceDate_completion___block_invoke(uint64_t a1)
@@ -602,19 +602,19 @@ void __73__RTVehicleLocationProvider_performPurgeOfType_referenceDate_completion
   }
 }
 
-- (void)_shutdownWithHandler:(id)a3
+- (void)_shutdownWithHandler:(id)handler
 {
-  v10 = a3;
+  handlerCopy = handler;
   [(RTVehicleLocationProvider *)self setMonitorVehicleConnection:0];
   [(RTVehicleLocationProvider *)self setMonitorVehicleExit:0];
-  v4 = [(RTVehicleLocationProvider *)self locationManager];
-  [v4 removeObserver:self];
+  locationManager = [(RTVehicleLocationProvider *)self locationManager];
+  [locationManager removeObserver:self];
 
-  v5 = [(RTVehicleLocationProvider *)self learnedLocationManager];
-  [v5 removeObserver:self];
+  learnedLocationManager = [(RTVehicleLocationProvider *)self learnedLocationManager];
+  [learnedLocationManager removeObserver:self];
 
-  v6 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v6 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   finalizeLocationEstimateTimer = self->_finalizeLocationEstimateTimer;
   if (finalizeLocationEstimateTimer)
@@ -624,83 +624,83 @@ void __73__RTVehicleLocationProvider_performPurgeOfType_referenceDate_completion
     self->_finalizeLocationEstimateTimer = 0;
   }
 
-  v9 = v10;
-  if (v10)
+  v9 = handlerCopy;
+  if (handlerCopy)
   {
-    (*(v10 + 2))(v10, 0);
-    v9 = v10;
+    (*(handlerCopy + 2))(handlerCopy, 0);
+    v9 = handlerCopy;
   }
 }
 
-- (void)setMonitorVehicleLocation:(BOOL)a3
+- (void)setMonitorVehicleLocation:(BOOL)location
 {
   v10 = *MEMORY[0x277D85DE8];
-  if (self->_monitorVehicleLocation != a3)
+  if (self->_monitorVehicleLocation != location)
   {
-    v3 = a3;
+    locationCopy = location;
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
       v5 = _rt_log_facility_get_os_log(RTLogFacilityVehicleLocation);
       if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
       {
         v9[0] = 67109120;
-        v9[1] = v3;
+        v9[1] = locationCopy;
         _os_log_impl(&dword_2304B3000, v5, OS_LOG_TYPE_INFO, "monitorVehicleLocation changed to, %d", v9, 8u);
       }
     }
 
-    self->_monitorVehicleLocation = v3;
-    if (v3)
+    self->_monitorVehicleLocation = locationCopy;
+    if (locationCopy)
     {
       [(RTVehicleLocationProvider *)self setMonitorVehicleConnection:1];
       [(RTVehicleLocationProvider *)self setMonitorVehicleExit:1];
-      v6 = [(RTVehicleLocationProvider *)self locationManager];
+      locationManager = [(RTVehicleLocationProvider *)self locationManager];
       v7 = +[(RTNotification *)RTLocationManagerNotificationLocationsLeeched];
-      [v6 addObserver:self selector:sel_onLeechedLocation_ name:v7];
+      [locationManager addObserver:self selector:sel_onLeechedLocation_ name:v7];
     }
 
     else
     {
       [(RTVehicleLocationProvider *)self setMonitorVehicleConnection:0];
       [(RTVehicleLocationProvider *)self setMonitorVehicleExit:0];
-      v8 = [(RTVehicleLocationProvider *)self locationManager];
-      [v8 removeObserver:self];
+      locationManager2 = [(RTVehicleLocationProvider *)self locationManager];
+      [locationManager2 removeObserver:self];
 
       [(RTVehicleLocationProvider *)self _clearAllVehicleEvents];
     }
   }
 }
 
-- (void)setMonitorVehicleConnection:(BOOL)a3
+- (void)setMonitorVehicleConnection:(BOOL)connection
 {
-  if (self->_monitorVehicleConnection != a3)
+  if (self->_monitorVehicleConnection != connection)
   {
-    v4 = a3;
-    self->_monitorVehicleConnection = a3;
-    v7 = [(RTVehicleLocationProvider *)self motionActivityManager];
+    connectionCopy = connection;
+    self->_monitorVehicleConnection = connection;
+    motionActivityManager = [(RTVehicleLocationProvider *)self motionActivityManager];
     +[(RTNotification *)RTMotionActivityManagerNotificationVehicleConnected];
-    if (v4)
+    if (connectionCopy)
       v6 = {;
-      [v7 addObserver:self selector:sel_onVehicleConnectedNotification_ name:v6];
+      [motionActivityManager addObserver:self selector:sel_onVehicleConnectedNotification_ name:v6];
     }
 
     else
       v6 = {;
-      [v7 removeObserver:self fromNotification:v6];
+      [motionActivityManager removeObserver:self fromNotification:v6];
     }
   }
 }
 
-- (void)setMonitorVehicleExit:(BOOL)a3
+- (void)setMonitorVehicleExit:(BOOL)exit
 {
-  if (self->_monitorVehicleExit != a3)
+  if (self->_monitorVehicleExit != exit)
   {
     v14 = v3;
     v15 = v4;
-    v5 = a3;
-    self->_monitorVehicleExit = a3;
+    exitCopy = exit;
+    self->_monitorVehicleExit = exit;
     v7 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO);
-    if (v5)
+    if (exitCopy)
     {
       if (v7)
       {
@@ -712,9 +712,9 @@ void __73__RTVehicleLocationProvider_performPurgeOfType_referenceDate_completion
         }
       }
 
-      v9 = [(RTVehicleLocationProvider *)self motionActivityManager];
+      motionActivityManager = [(RTVehicleLocationProvider *)self motionActivityManager];
       v10 = +[(RTNotification *)RTMotionActivityManagerNotificationVehicleExit];
-      [v9 addObserver:self selector:sel_onVehicleExitNotification_ name:v10];
+      [motionActivityManager addObserver:self selector:sel_onVehicleExitNotification_ name:v10];
     }
 
     else
@@ -729,23 +729,23 @@ void __73__RTVehicleLocationProvider_performPurgeOfType_referenceDate_completion
         }
       }
 
-      v9 = [(RTVehicleLocationProvider *)self motionActivityManager];
+      motionActivityManager = [(RTVehicleLocationProvider *)self motionActivityManager];
       v10 = +[(RTNotification *)RTMotionActivityManagerNotificationVehicleExit];
-      [v9 removeObserver:self fromNotification:v10];
+      [motionActivityManager removeObserver:self fromNotification:v10];
     }
   }
 }
 
-- (void)setMonitorLocation:(BOOL)a3
+- (void)setMonitorLocation:(BOOL)location
 {
-  if (self->_monitorLocation != a3)
+  if (self->_monitorLocation != location)
   {
     v14 = v3;
     v15 = v4;
-    v5 = a3;
-    self->_monitorLocation = a3;
+    locationCopy = location;
+    self->_monitorLocation = location;
     v7 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO);
-    if (v5)
+    if (locationCopy)
     {
       if (v7)
       {
@@ -757,9 +757,9 @@ void __73__RTVehicleLocationProvider_performPurgeOfType_referenceDate_completion
         }
       }
 
-      v9 = [(RTVehicleLocationProvider *)self locationManager];
+      locationManager = [(RTVehicleLocationProvider *)self locationManager];
       v10 = +[(RTNotification *)RTLocationManagerNotificationLocationsAccuracyBest];
-      [v9 addObserver:self selector:sel_onLocationNotification_ name:v10];
+      [locationManager addObserver:self selector:sel_onLocationNotification_ name:v10];
     }
 
     else
@@ -774,25 +774,25 @@ void __73__RTVehicleLocationProvider_performPurgeOfType_referenceDate_completion
         }
       }
 
-      v9 = [(RTVehicleLocationProvider *)self locationManager];
+      locationManager = [(RTVehicleLocationProvider *)self locationManager];
       v10 = +[(RTNotification *)RTLocationManagerNotificationLocationsAccuracyBest];
-      [v9 removeObserver:self fromNotification:v10];
+      [locationManager removeObserver:self fromNotification:v10];
     }
   }
 }
 
-- (void)onLocationNotification:(id)a3
+- (void)onLocationNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(RTNotifier *)self queue];
+  notificationCopy = notification;
+  queue = [(RTNotifier *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __52__RTVehicleLocationProvider_onLocationNotification___block_invoke;
   v7[3] = &unk_2788C4A70;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = notificationCopy;
+  selfCopy = self;
+  v6 = notificationCopy;
+  dispatch_async(queue, v7);
 }
 
 void __52__RTVehicleLocationProvider_onLocationNotification___block_invoke(uint64_t a1)
@@ -832,18 +832,18 @@ LABEL_3:
   }
 }
 
-- (void)onLeechedLocation:(id)a3
+- (void)onLeechedLocation:(id)location
 {
-  v4 = a3;
-  v5 = [(RTNotifier *)self queue];
+  locationCopy = location;
+  queue = [(RTNotifier *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __47__RTVehicleLocationProvider_onLeechedLocation___block_invoke;
   v7[3] = &unk_2788C4A70;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = locationCopy;
+  selfCopy = self;
+  v6 = locationCopy;
+  dispatch_async(queue, v7);
 }
 
 void __47__RTVehicleLocationProvider_onLeechedLocation___block_invoke(uint64_t a1)
@@ -883,30 +883,30 @@ void __47__RTVehicleLocationProvider_onLeechedLocation___block_invoke_2(uint64_t
   }
 }
 
-- (void)_onLocation:(id)a3
+- (void)_onLocation:(id)location
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  locationCopy = location;
+  if (locationCopy)
   {
-    v5 = [(RTVehicleLocationProvider *)self pendingVehicleParkedEvent];
+    pendingVehicleParkedEvent = [(RTVehicleLocationProvider *)self pendingVehicleParkedEvent];
 
-    if (v5)
+    if (pendingVehicleParkedEvent)
     {
-      v6 = [(RTVehicleLocationProvider *)self locationsCache];
-      [v6 addObject:v4];
+      locationsCache = [(RTVehicleLocationProvider *)self locationsCache];
+      [locationsCache addObject:locationCopy];
 
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {
         v7 = _rt_log_facility_get_os_log(RTLogFacilityVehicleLocation);
         if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
         {
-          v8 = [v4 toString];
-          v9 = [(RTVehicleLocationProvider *)self locationsCache];
+          toString = [locationCopy toString];
+          locationsCache2 = [(RTVehicleLocationProvider *)self locationsCache];
           v10 = 138740227;
-          v11 = v8;
+          v11 = toString;
           v12 = 2048;
-          v13 = [v9 count];
+          v13 = [locationsCache2 count];
           _os_log_impl(&dword_2304B3000, v7, OS_LOG_TYPE_INFO, "Adding new location, %{sensitive}@, total locations in cache, %lu", &v10, 0x16u);
         }
       }
@@ -924,11 +924,11 @@ void __47__RTVehicleLocationProvider_onLeechedLocation___block_invoke_2(uint64_t
   v36 = *MEMORY[0x277D85DE8];
   [(RTVehicleLocationProvider *)self setMonitorLocation:0];
   v3 = objc_opt_new();
-  v4 = [(RTVehicleLocationProvider *)self locationsCache];
-  v5 = [(RTVehicleLocationProvider *)self pendingVehicleParkedEvent];
-  v6 = [v5 date];
-  [v6 timeIntervalSinceReferenceDate];
-  v7 = [v3 estimateVehicleLocationWithLocations:v4 parkingTimestamp:?];
+  locationsCache = [(RTVehicleLocationProvider *)self locationsCache];
+  pendingVehicleParkedEvent = [(RTVehicleLocationProvider *)self pendingVehicleParkedEvent];
+  date = [pendingVehicleParkedEvent date];
+  [date timeIntervalSinceReferenceDate];
+  v7 = [v3 estimateVehicleLocationWithLocations:locationsCache parkingTimestamp:?];
 
   if (v7)
   {
@@ -936,8 +936,8 @@ void __47__RTVehicleLocationProvider_onLeechedLocation___block_invoke_2(uint64_t
     if (v8 > 0.0)
     {
       v9 = [objc_alloc(MEMORY[0x277D01160]) initWithCLLocation:v7];
-      v10 = [(RTVehicleLocationProvider *)self pendingVehicleParkedEvent];
-      [v10 setLocation:v9];
+      pendingVehicleParkedEvent2 = [(RTVehicleLocationProvider *)self pendingVehicleParkedEvent];
+      [pendingVehicleParkedEvent2 setLocation:v9];
     }
   }
 
@@ -946,39 +946,39 @@ void __47__RTVehicleLocationProvider_onLeechedLocation___block_invoke_2(uint64_t
     v11 = _rt_log_facility_get_os_log(RTLogFacilityVehicleLocation);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
-      v12 = [(RTVehicleLocationProvider *)self pendingVehicleParkedEvent];
-      v13 = [v12 date];
-      v14 = [(RTVehicleLocationProvider *)self pendingVehicleParkedEvent];
-      v15 = [v14 location];
+      pendingVehicleParkedEvent3 = [(RTVehicleLocationProvider *)self pendingVehicleParkedEvent];
+      date2 = [pendingVehicleParkedEvent3 date];
+      pendingVehicleParkedEvent4 = [(RTVehicleLocationProvider *)self pendingVehicleParkedEvent];
+      location = [pendingVehicleParkedEvent4 location];
       v30 = 138412547;
-      v31 = v13;
+      v31 = date2;
       v32 = 2117;
-      v33 = v15;
+      v33 = location;
       _os_log_impl(&dword_2304B3000, v11, OS_LOG_TYPE_INFO, "Parking, timestamp, %@, final location, %{sensitive}@", &v30, 0x16u);
     }
   }
 
   v16 = objc_opt_new();
-  v17 = [(RTVehicleLocationProvider *)self locationsCache];
-  v18 = [(RTVehicleLocationProvider *)self pendingVehicleParkedEvent];
-  v19 = [v18 date];
-  [v19 timeIntervalSinceReferenceDate];
-  v20 = [v16 calculateParkingQualityWithLocations:v17 parkingTimestamp:?];
+  locationsCache2 = [(RTVehicleLocationProvider *)self locationsCache];
+  pendingVehicleParkedEvent5 = [(RTVehicleLocationProvider *)self pendingVehicleParkedEvent];
+  date3 = [pendingVehicleParkedEvent5 date];
+  [date3 timeIntervalSinceReferenceDate];
+  v20 = [v16 calculateParkingQualityWithLocations:locationsCache2 parkingTimestamp:?];
 
-  v21 = [(RTVehicleLocationProvider *)self pendingVehicleParkedEvent];
-  [v21 setLocationQuality:v20];
+  pendingVehicleParkedEvent6 = [(RTVehicleLocationProvider *)self pendingVehicleParkedEvent];
+  [pendingVehicleParkedEvent6 setLocationQuality:v20];
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v22 = _rt_log_facility_get_os_log(RTLogFacilityVehicleLocation);
     if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
     {
-      v23 = [(RTVehicleLocationProvider *)self pendingVehicleParkedEvent];
-      v24 = [v23 date];
-      v25 = [(RTVehicleLocationProvider *)self locationsCache];
-      v26 = [v25 count];
+      pendingVehicleParkedEvent7 = [(RTVehicleLocationProvider *)self pendingVehicleParkedEvent];
+      date4 = [pendingVehicleParkedEvent7 date];
+      locationsCache3 = [(RTVehicleLocationProvider *)self locationsCache];
+      v26 = [locationsCache3 count];
       v30 = 138412802;
-      v31 = v24;
+      v31 = date4;
       v32 = 2048;
       v33 = v26;
       v34 = 2048;
@@ -987,13 +987,13 @@ void __47__RTVehicleLocationProvider_onLeechedLocation___block_invoke_2(uint64_t
     }
   }
 
-  v27 = [(RTVehicleLocationProvider *)self locationsCache];
-  [v27 removeAllObjects];
+  locationsCache4 = [(RTVehicleLocationProvider *)self locationsCache];
+  [locationsCache4 removeAllObjects];
 
-  v28 = [(RTVehicleLocationProvider *)self pendingVehicleParkedEvent];
-  v29 = [v28 location];
+  pendingVehicleParkedEvent8 = [(RTVehicleLocationProvider *)self pendingVehicleParkedEvent];
+  location2 = [pendingVehicleParkedEvent8 location];
 
-  if (v29)
+  if (location2)
   {
     [(RTVehicleLocationProvider *)self _processPendingVehicleEventAfterLocationFinalization];
   }
@@ -1007,14 +1007,14 @@ void __47__RTVehicleLocationProvider_onLeechedLocation___block_invoke_2(uint64_t
 
 - (void)_processPendingVehicleEventAfterLocationFinalization
 {
-  v4 = [(RTVehicleLocationProvider *)self pendingVehicleParkedEvent];
+  pendingVehicleParkedEvent = [(RTVehicleLocationProvider *)self pendingVehicleParkedEvent];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __81__RTVehicleLocationProvider__processPendingVehicleEventAfterLocationFinalization__block_invoke;
   v5[3] = &unk_2788C4D10;
   v5[4] = self;
   v5[5] = a2;
-  [(RTVehicleLocationProvider *)self _updateNearbyLocationOfInterestOfVehicleEvent:v4 handler:v5];
+  [(RTVehicleLocationProvider *)self _updateNearbyLocationOfInterestOfVehicleEvent:pendingVehicleParkedEvent handler:v5];
 }
 
 void __81__RTVehicleLocationProvider__processPendingVehicleEventAfterLocationFinalization__block_invoke(uint64_t a1, void *a2)
@@ -1085,37 +1085,37 @@ void __81__RTVehicleLocationProvider__processPendingVehicleEventAfterLocationFin
     }
   }
 
-  v4 = [(RTVehicleLocationProvider *)self pendingVehicleParkedEvent];
-  v5 = [v4 location];
-  if (!v5)
+  pendingVehicleParkedEvent = [(RTVehicleLocationProvider *)self pendingVehicleParkedEvent];
+  location = [pendingVehicleParkedEvent location];
+  if (!location)
   {
     goto LABEL_11;
   }
 
-  v6 = v5;
-  v7 = [(RTVehicleLocationProvider *)self pendingVehicleParkedEvent];
-  if (([v7 locationFinalized] & 1) == 0)
+  v6 = location;
+  pendingVehicleParkedEvent2 = [(RTVehicleLocationProvider *)self pendingVehicleParkedEvent];
+  if (([pendingVehicleParkedEvent2 locationFinalized] & 1) == 0)
   {
 
 LABEL_11:
     return;
   }
 
-  v8 = [(RTVehicleLocationProvider *)self pendingVehicleParkedEvent];
-  v9 = [v8 confirmed];
+  pendingVehicleParkedEvent3 = [(RTVehicleLocationProvider *)self pendingVehicleParkedEvent];
+  confirmed = [pendingVehicleParkedEvent3 confirmed];
 
-  if (!v9)
+  if (!confirmed)
   {
     return;
   }
 
-  v10 = [(RTVehicleLocationProvider *)self pendingVehicleParkedEvent];
-  v11 = [v10 nearbyLocationOfInterest];
-  if (v11)
+  pendingVehicleParkedEvent4 = [(RTVehicleLocationProvider *)self pendingVehicleParkedEvent];
+  nearbyLocationOfInterest = [pendingVehicleParkedEvent4 nearbyLocationOfInterest];
+  if (nearbyLocationOfInterest)
   {
-    v12 = [(RTVehicleLocationProvider *)self pendingVehicleParkedEvent];
-    v13 = [v12 nearbyLocationOfInterest];
-    v14 = [v13 type] == 0;
+    pendingVehicleParkedEvent5 = [(RTVehicleLocationProvider *)self pendingVehicleParkedEvent];
+    nearbyLocationOfInterest2 = [pendingVehicleParkedEvent5 nearbyLocationOfInterest];
+    v14 = [nearbyLocationOfInterest2 type] == 0;
   }
 
   else
@@ -1123,48 +1123,48 @@ LABEL_11:
     v14 = 0;
   }
 
-  v15 = [(RTVehicleLocationProvider *)self lastVehicleParkedEvent];
-  if (!v15)
+  lastVehicleParkedEvent = [(RTVehicleLocationProvider *)self lastVehicleParkedEvent];
+  if (!lastVehicleParkedEvent)
   {
     goto LABEL_20;
   }
 
-  v16 = v15;
-  v17 = [(RTVehicleLocationProvider *)self pendingVehicleParkedEvent];
-  v18 = [v17 vehicleIdentifier];
-  v19 = [(RTVehicleLocationProvider *)self lastVehicleParkedEvent];
-  v20 = [v19 vehicleIdentifier];
-  if ([(RTVehicleLocationProvider *)self _sameVehicleWithDeviceId:v18 otherDeviceId:v20])
+  pendingVehicleParkedEvent8 = lastVehicleParkedEvent;
+  pendingVehicleParkedEvent6 = [(RTVehicleLocationProvider *)self pendingVehicleParkedEvent];
+  vehicleIdentifier = [pendingVehicleParkedEvent6 vehicleIdentifier];
+  lastVehicleParkedEvent2 = [(RTVehicleLocationProvider *)self lastVehicleParkedEvent];
+  vehicleIdentifier2 = [lastVehicleParkedEvent2 vehicleIdentifier];
+  if ([(RTVehicleLocationProvider *)self _sameVehicleWithDeviceId:vehicleIdentifier otherDeviceId:vehicleIdentifier2])
   {
 
 LABEL_19:
     goto LABEL_20;
   }
 
-  v21 = [(RTVehicleLocationProvider *)self pendingVehicleParkedEvent];
-  v22 = [v21 userSetLocation] | v14;
+  pendingVehicleParkedEvent7 = [(RTVehicleLocationProvider *)self pendingVehicleParkedEvent];
+  v22 = [pendingVehicleParkedEvent7 userSetLocation] | v14;
 
   if ((v22 & 1) == 0)
   {
-    v16 = [(RTVehicleLocationProvider *)self pendingVehicleParkedEvent];
-    v17 = [(RTVehicleLocationProvider *)self lastVehicleParkedEvent];
-    [(RTVehicleLocationProvider *)self _postVehicleReplacementBulletinNotificationWithVehicleEvent:v16 replacingEvent:v17];
+    pendingVehicleParkedEvent8 = [(RTVehicleLocationProvider *)self pendingVehicleParkedEvent];
+    pendingVehicleParkedEvent6 = [(RTVehicleLocationProvider *)self lastVehicleParkedEvent];
+    [(RTVehicleLocationProvider *)self _postVehicleReplacementBulletinNotificationWithVehicleEvent:pendingVehicleParkedEvent8 replacingEvent:pendingVehicleParkedEvent6];
     v14 = 1;
     goto LABEL_19;
   }
 
 LABEL_20:
-  v23 = [(RTVehicleLocationProvider *)self pendingVehicleParkedEvent];
-  [(RTVehicleLocationProvider *)self setLastVehicleParkedEvent:v23];
+  pendingVehicleParkedEvent9 = [(RTVehicleLocationProvider *)self pendingVehicleParkedEvent];
+  [(RTVehicleLocationProvider *)self setLastVehicleParkedEvent:pendingVehicleParkedEvent9];
 
   [(RTVehicleLocationProvider *)self setPendingVehicleParkedEvent:0];
-  v24 = [(RTVehicleLocationProvider *)self lastVehicleParkedEvent];
-  v28[0] = v24;
+  lastVehicleParkedEvent3 = [(RTVehicleLocationProvider *)self lastVehicleParkedEvent];
+  v28[0] = lastVehicleParkedEvent3;
   v25 = [MEMORY[0x277CBEA60] arrayWithObjects:v28 count:1];
   [(RTVehicleLocationProvider *)self _submitFMCCarParkedInstanceWithParkedEvents:v25];
 
-  v26 = [(RTVehicleLocationProvider *)self lastVehicleParkedEvent];
-  [(RTVehicleLocationProvider *)self _submitFMCParkingEventMetric:v26];
+  lastVehicleParkedEvent4 = [(RTVehicleLocationProvider *)self lastVehicleParkedEvent];
+  [(RTVehicleLocationProvider *)self _submitFMCParkingEventMetric:lastVehicleParkedEvent4];
 
   if (!v14)
   {
@@ -1175,24 +1175,24 @@ LABEL_20:
   [(RTVehicleLocationProvider *)self _notifyClients];
 }
 
-- (void)_onVehicleParkedWithDeviceId:(id)a3
+- (void)_onVehicleParkedWithDeviceId:(id)id
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  idCopy = id;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilityVehicleLocation);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v18 = v4;
+      v18 = idCopy;
       _os_log_impl(&dword_2304B3000, v5, OS_LOG_TYPE_INFO, "onVehicleParked, deviceId, %@", buf, 0xCu);
     }
   }
 
-  v6 = [MEMORY[0x277CBEAA8] date];
-  v7 = [(RTVehicleLocationProvider *)self pendingVehicleParkedEvent];
-  if (v7)
+  date = [MEMORY[0x277CBEAA8] date];
+  pendingVehicleParkedEvent = [(RTVehicleLocationProvider *)self pendingVehicleParkedEvent];
+  if (pendingVehicleParkedEvent)
   {
     [(RTVehicleLocationProvider *)self pendingVehicleParkedEvent];
   }
@@ -1202,16 +1202,16 @@ LABEL_20:
     [(RTVehicleLocationProvider *)self lastVehicleParkedEvent];
   }
   v8 = ;
-  v9 = [v8 date];
+  date2 = [v8 date];
 
-  if (v9 && ([v6 timeIntervalSinceDate:v9], v10 < 10.0))
+  if (date2 && ([date timeIntervalSinceDate:date2], v10 < 10.0))
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
       v11 = _rt_log_facility_get_os_log(RTLogFacilityVehicleLocation);
       if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
       {
-        [v6 timeIntervalSinceDate:v9];
+        [date timeIntervalSinceDate:date2];
         *buf = 134217984;
         v18 = v12;
         _os_log_impl(&dword_2304B3000, v11, OS_LOG_TYPE_INFO, "Got onVehicleParked too soon. Last event was %f seconds ago. Not updating.", buf, 0xCu);
@@ -1222,9 +1222,9 @@ LABEL_20:
   else
   {
     v13 = objc_alloc(MEMORY[0x277D01420]);
-    v14 = [MEMORY[0x277CCAD78] UUID];
+    uUID = [MEMORY[0x277CCAD78] UUID];
     LOBYTE(v16) = 0;
-    v15 = [v13 initWithDate:v6 location:0 vehicleIdentifier:v4 userSetLocation:0 notes:0 identifier:v14 photo:0 mapItem:0 confirmed:v16];
+    v15 = [v13 initWithDate:date location:0 vehicleIdentifier:idCopy userSetLocation:0 notes:0 identifier:uUID photo:0 mapItem:0 confirmed:v16];
     [(RTVehicleLocationProvider *)self setPendingVehicleParkedEvent:v15];
 
     [(RTVehicleLocationProvider *)self requestLocations];
@@ -1234,24 +1234,24 @@ LABEL_20:
 - (void)requestLocations
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = [(RTVehicleLocationProvider *)self locationsCache];
-  v4 = [(RTVehicleLocationProvider *)self locationsCacheLeeched];
-  [v3 addObjectsFromArray:v4];
+  locationsCache = [(RTVehicleLocationProvider *)self locationsCache];
+  locationsCacheLeeched = [(RTVehicleLocationProvider *)self locationsCacheLeeched];
+  [locationsCache addObjectsFromArray:locationsCacheLeeched];
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilityVehicleLocation);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
-      v6 = [(RTVehicleLocationProvider *)self locationsCacheLeeched];
+      locationsCacheLeeched2 = [(RTVehicleLocationProvider *)self locationsCacheLeeched];
       *buf = 134217984;
-      v20 = [v6 count];
+      v20 = [locationsCacheLeeched2 count];
       _os_log_impl(&dword_2304B3000, v5, OS_LOG_TYPE_INFO, "Added %lu leeched locations to the locations array.", buf, 0xCu);
     }
   }
 
-  v7 = [(RTVehicleLocationProvider *)self locationsCacheLeeched];
-  [v7 removeAllObjects];
+  locationsCacheLeeched3 = [(RTVehicleLocationProvider *)self locationsCacheLeeched];
+  [locationsCacheLeeched3 removeAllObjects];
 
   [(RTVehicleLocationProvider *)self setMonitorLocation:1];
   finalizeLocationEstimateTimer = self->_finalizeLocationEstimateTimer;
@@ -1263,8 +1263,8 @@ LABEL_20:
 
   else
   {
-    v10 = [(RTNotifier *)self queue];
-    v11 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, v10);
+    queue = [(RTNotifier *)self queue];
+    v11 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, queue);
     v12 = self->_finalizeLocationEstimateTimer;
     self->_finalizeLocationEstimateTimer = v11;
 
@@ -1302,48 +1302,48 @@ void __45__RTVehicleLocationProvider_requestLocations__block_invoke(uint64_t a1)
   [WeakRetained _onFinalizeLocationEstimateTimerExpiry];
 }
 
-- (void)_onVehicleStartedWithDeviceId:(id)a3
+- (void)_onVehicleStartedWithDeviceId:(id)id
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  idCopy = id;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilityVehicleLocation);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v26 = v4;
+      v26 = idCopy;
       _os_log_impl(&dword_2304B3000, v5, OS_LOG_TYPE_INFO, "onVehicleStarted, deviceId, %@", buf, 0xCu);
     }
   }
 
   [(RTVehicleLocationProvider *)self setPendingVehicleParkedEvent:0];
-  v6 = [(RTVehicleLocationProvider *)self lastVehicleParkedEvent];
+  lastVehicleParkedEvent = [(RTVehicleLocationProvider *)self lastVehicleParkedEvent];
 
-  if (v6)
+  if (lastVehicleParkedEvent)
   {
-    v7 = [(RTVehicleLocationProvider *)self lastVehicleParkedEvent];
-    v8 = [v7 location];
+    lastVehicleParkedEvent2 = [(RTVehicleLocationProvider *)self lastVehicleParkedEvent];
+    location = [lastVehicleParkedEvent2 location];
 
-    v9 = [(RTVehicleLocationProvider *)self lastVehicleParkedEvent];
-    v10 = [v9 identifier];
-    v11 = [v10 UUIDString];
+    lastVehicleParkedEvent3 = [(RTVehicleLocationProvider *)self lastVehicleParkedEvent];
+    identifier = [lastVehicleParkedEvent3 identifier];
+    uUIDString = [identifier UUIDString];
 
-    v12 = [(RTVehicleLocationProvider *)self locationManager];
+    locationManager = [(RTVehicleLocationProvider *)self locationManager];
     v22[0] = MEMORY[0x277D85DD0];
     v22[1] = 3221225472;
     v22[2] = __59__RTVehicleLocationProvider__onVehicleStartedWithDeviceId___block_invoke;
     v22[3] = &unk_2788CAD70;
     v22[4] = self;
-    v23 = v8;
-    v24 = v11;
-    v13 = v11;
-    v14 = v8;
-    [v12 fetchCachedLocationWithHandler:v22];
+    v23 = location;
+    v24 = uUIDString;
+    v13 = uUIDString;
+    v14 = location;
+    [locationManager fetchCachedLocationWithHandler:v22];
 
-    v15 = [(RTVehicleLocationProvider *)self lastVehicleParkedEvent];
-    v16 = [v15 vehicleIdentifier];
-    v17 = [(RTVehicleLocationProvider *)self _sameVehicleWithDeviceId:v4 otherDeviceId:v16];
+    lastVehicleParkedEvent4 = [(RTVehicleLocationProvider *)self lastVehicleParkedEvent];
+    vehicleIdentifier = [lastVehicleParkedEvent4 vehicleIdentifier];
+    v17 = [(RTVehicleLocationProvider *)self _sameVehicleWithDeviceId:idCopy otherDeviceId:vehicleIdentifier];
 
     if (v17)
     {
@@ -1358,12 +1358,12 @@ void __45__RTVehicleLocationProvider_requestLocations__block_invoke(uint64_t a1)
       v19 = _rt_log_facility_get_os_log(RTLogFacilityVehicleLocation);
       if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
       {
-        v20 = [(RTVehicleLocationProvider *)self lastVehicleParkedEvent];
-        v21 = [v20 vehicleIdentifier];
+        lastVehicleParkedEvent5 = [(RTVehicleLocationProvider *)self lastVehicleParkedEvent];
+        vehicleIdentifier2 = [lastVehicleParkedEvent5 vehicleIdentifier];
         *buf = 138412546;
-        v26 = v4;
+        v26 = idCopy;
         v27 = 2112;
-        v28 = v21;
+        v28 = vehicleIdentifier2;
         _os_log_impl(&dword_2304B3000, v19, OS_LOG_TYPE_INFO, "onVehicleStarted, different vehicle, deviceId, %@, old deviceId, %@", buf, 0x16u);
       }
     }
@@ -1372,9 +1372,9 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  v18 = [(RTVehicleLocationProvider *)self managedObjectContext];
+  managedObjectContext = [(RTVehicleLocationProvider *)self managedObjectContext];
 
-  if (!v18)
+  if (!managedObjectContext)
   {
     [(RTVehicleLocationProvider *)self _deleteLastVehicleEvent];
   }
@@ -1500,21 +1500,21 @@ LABEL_17:
 LABEL_18:
 }
 
-- (void)_onVehicleConnectedNotification:(id)a3
+- (void)_onVehicleConnectedNotification:(id)notification
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 name];
+  notificationCopy = notification;
+  name = [notificationCopy name];
   v6 = +[(RTNotification *)RTMotionActivityManagerNotificationVehicleConnected];
-  v7 = [v5 isEqualToString:v6];
+  v7 = [name isEqualToString:v6];
 
   if (v7)
   {
-    v8 = v4;
+    v8 = notificationCopy;
     if ([v8 vehicleConnectedState] == 1)
     {
-      v9 = [v8 deviceId];
-      [(RTVehicleLocationProvider *)self _onVehicleParkedWithDeviceId:v9];
+      deviceId = [v8 deviceId];
+      [(RTVehicleLocationProvider *)self _onVehicleParkedWithDeviceId:deviceId];
       v10 = 2;
     }
 
@@ -1527,8 +1527,8 @@ LABEL_11:
         goto LABEL_12;
       }
 
-      v9 = [v8 deviceId];
-      [(RTVehicleLocationProvider *)self _onVehicleStartedWithDeviceId:v9];
+      deviceId = [v8 deviceId];
+      [(RTVehicleLocationProvider *)self _onVehicleStartedWithDeviceId:deviceId];
       v10 = 1;
     }
 
@@ -1541,9 +1541,9 @@ LABEL_11:
     v11 = _rt_log_facility_get_os_log(RTLogFacilityVehicleLocation);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
-      v12 = [v4 name];
+      name2 = [notificationCopy name];
       v13 = 138412290;
-      v14 = v12;
+      v14 = name2;
       _os_log_impl(&dword_2304B3000, v11, OS_LOG_TYPE_INFO, "unsupported notification, %@", &v13, 0xCu);
     }
   }
@@ -1551,29 +1551,29 @@ LABEL_11:
 LABEL_12:
 }
 
-- (void)onVehicleConnectedNotification:(id)a3
+- (void)onVehicleConnectedNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(RTNotifier *)self queue];
+  notificationCopy = notification;
+  queue = [(RTNotifier *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __60__RTVehicleLocationProvider_onVehicleConnectedNotification___block_invoke;
   v7[3] = &unk_2788C4A70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = notificationCopy;
+  v6 = notificationCopy;
+  dispatch_async(queue, v7);
 }
 
 - (void)_onVehicleExit
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = [(RTVehicleLocationProvider *)self pendingVehicleParkedEvent];
-  if (v4 && (-[RTVehicleLocationProvider pendingVehicleParkedEvent](self, "pendingVehicleParkedEvent"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 confirmed], v5, v4, !v6))
+  pendingVehicleParkedEvent = [(RTVehicleLocationProvider *)self pendingVehicleParkedEvent];
+  if (pendingVehicleParkedEvent && (-[RTVehicleLocationProvider pendingVehicleParkedEvent](self, "pendingVehicleParkedEvent"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 confirmed], v5, pendingVehicleParkedEvent, !v6))
   {
-    v8 = [(RTVehicleLocationProvider *)self pendingVehicleParkedEvent];
-    v9 = [v8 date];
-    [v9 timeIntervalSinceNow];
+    pendingVehicleParkedEvent2 = [(RTVehicleLocationProvider *)self pendingVehicleParkedEvent];
+    date = [pendingVehicleParkedEvent2 date];
+    [date timeIntervalSinceNow];
     v11 = v10;
 
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -1600,14 +1600,14 @@ LABEL_12:
     v15 = v14;
     if (v11 <= -300.0)
     {
-      v16 = [(RTVehicleLocationProvider *)self locationManager];
+      locationManager = [(RTVehicleLocationProvider *)self locationManager];
       v17[0] = MEMORY[0x277D85DD0];
       v17[1] = 3221225472;
       v17[2] = __43__RTVehicleLocationProvider__onVehicleExit__block_invoke_144;
       v17[3] = &unk_2788C8318;
       v17[4] = self;
       v18 = v15;
-      [v16 fetchCurrentLocationWithHandler:v17];
+      [locationManager fetchCurrentLocationWithHandler:v17];
     }
 
     else
@@ -1761,13 +1761,13 @@ LABEL_14:
   }
 }
 
-- (void)_onVehicleExitNotification:(id)a3
+- (void)_onVehicleExitNotification:(id)notification
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 name];
+  notificationCopy = notification;
+  name = [notificationCopy name];
   v6 = +[(RTNotification *)RTMotionActivityManagerNotificationVehicleExit];
-  v7 = [v5 isEqualToString:v6];
+  v7 = [name isEqualToString:v6];
 
   v8 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO);
   if (v7)
@@ -1791,55 +1791,55 @@ LABEL_14:
     v10 = _rt_log_facility_get_os_log(RTLogFacilityVehicleLocation);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
-      v11 = [v4 name];
+      name2 = [notificationCopy name];
       v12 = 138412290;
-      v13 = v11;
+      v13 = name2;
       _os_log_impl(&dword_2304B3000, v10, OS_LOG_TYPE_INFO, "unsupported notification, %@", &v12, 0xCu);
     }
   }
 }
 
-- (void)onVehicleExitNotification:(id)a3
+- (void)onVehicleExitNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(RTNotifier *)self queue];
+  notificationCopy = notification;
+  queue = [(RTNotifier *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __55__RTVehicleLocationProvider_onVehicleExitNotification___block_invoke;
   v7[3] = &unk_2788C4A70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = notificationCopy;
+  v6 = notificationCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)internalAddObserver:(id)a3 name:(id)a4
+- (void)internalAddObserver:(id)observer name:(id)name
 {
-  v4 = a4;
+  nameCopy = name;
   v5 = +[(RTNotification *)RTVehicleEventNotification];
-  [v4 isEqualToString:v5];
+  [nameCopy isEqualToString:v5];
 }
 
-- (void)internalRemoveObserver:(id)a3 name:(id)a4
+- (void)internalRemoveObserver:(id)observer name:(id)name
 {
-  v4 = a4;
+  nameCopy = name;
   v5 = +[(RTNotification *)RTVehicleEventNotification];
-  [v4 isEqualToString:v5];
+  [nameCopy isEqualToString:v5];
 }
 
-- (void)fetchLastVehicleEventsWithHandler:(id)a3
+- (void)fetchLastVehicleEventsWithHandler:(id)handler
 {
-  v4 = a3;
-  if (v4)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v5 = [(RTNotifier *)self queue];
+    queue = [(RTNotifier *)self queue];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __63__RTVehicleLocationProvider_fetchLastVehicleEventsWithHandler___block_invoke;
     v6[3] = &unk_2788C4938;
     v6[4] = self;
-    v7 = v4;
-    dispatch_async(v5, v6);
+    v7 = handlerCopy;
+    dispatch_async(queue, v6);
   }
 }
 
@@ -1860,50 +1860,50 @@ void __63__RTVehicleLocationProvider_fetchLastVehicleEventsWithHandler___block_i
   }
 }
 
-- (void)vehicleEventAtLocation:(id)a3 notes:(id)a4 handler:(id)a5
+- (void)vehicleEventAtLocation:(id)location notes:(id)notes handler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(RTNotifier *)self queue];
+  locationCopy = location;
+  notesCopy = notes;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __66__RTVehicleLocationProvider_vehicleEventAtLocation_notes_handler___block_invoke;
   v15[3] = &unk_2788C5530;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  dispatch_async(v11, v15);
+  v16 = locationCopy;
+  v17 = notesCopy;
+  v18 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = notesCopy;
+  v14 = locationCopy;
+  dispatch_async(queue, v15);
 }
 
-- (void)_vehicleEventAtLocation:(id)a3 notes:(id)a4 handler:(id)a5
+- (void)_vehicleEventAtLocation:(id)location notes:(id)notes handler:(id)handler
 {
   v37 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  locationCopy = location;
+  notesCopy = notes;
+  handlerCopy = handler;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v11 = _rt_log_facility_get_os_log(RTLogFacilityVehicleLocation);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
       *buf = 138740227;
-      v34 = v8;
+      v34 = locationCopy;
       v35 = 2112;
-      v36 = v9;
+      v36 = notesCopy;
       _os_log_impl(&dword_2304B3000, v11, OS_LOG_TYPE_INFO, "_vehicleEventAtLocation, %{sensitive}@, notes, %@", buf, 0x16u);
     }
   }
 
   if ([(RTVehicleLocationProvider *)self monitorVehicleLocation])
   {
-    v12 = [MEMORY[0x277CBEAA8] date];
-    v13 = [(RTVehicleLocationProvider *)self pendingVehicleParkedEvent];
-    if (v13 && (v14 = v13, -[RTVehicleLocationProvider pendingVehicleParkedEvent](self, "pendingVehicleParkedEvent"), v15 = objc_claimAutoreleasedReturnValue(), [v15 date], v16 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v12, "timeIntervalSinceDate:", v16), v18 = v17, v16, v15, v14, v18 < 10.0))
+    date = [MEMORY[0x277CBEAA8] date];
+    pendingVehicleParkedEvent = [(RTVehicleLocationProvider *)self pendingVehicleParkedEvent];
+    if (pendingVehicleParkedEvent && (v14 = pendingVehicleParkedEvent, -[RTVehicleLocationProvider pendingVehicleParkedEvent](self, "pendingVehicleParkedEvent"), v15 = objc_claimAutoreleasedReturnValue(), [v15 date], v16 = objc_claimAutoreleasedReturnValue(), objc_msgSend(date, "timeIntervalSinceDate:", v16), v18 = v17, v16, v15, v14, v18 < 10.0))
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {
@@ -1915,43 +1915,43 @@ void __63__RTVehicleLocationProvider_fetchLastVehicleEventsWithHandler___block_i
         }
       }
 
-      if (v8)
+      if (locationCopy)
       {
-        v20 = [objc_alloc(MEMORY[0x277D01160]) initWithCLLocation:v8];
-        v21 = [(RTVehicleLocationProvider *)self pendingVehicleParkedEvent];
-        [v21 setLocation:v20];
+        v20 = [objc_alloc(MEMORY[0x277D01160]) initWithCLLocation:locationCopy];
+        pendingVehicleParkedEvent2 = [(RTVehicleLocationProvider *)self pendingVehicleParkedEvent];
+        [pendingVehicleParkedEvent2 setLocation:v20];
 
-        v22 = [(RTVehicleLocationProvider *)self pendingVehicleParkedEvent];
-        [v22 setUserSetLocation:1];
+        pendingVehicleParkedEvent3 = [(RTVehicleLocationProvider *)self pendingVehicleParkedEvent];
+        [pendingVehicleParkedEvent3 setUserSetLocation:1];
       }
 
-      if (v9)
+      if (notesCopy)
       {
-        v23 = [(RTVehicleLocationProvider *)self pendingVehicleParkedEvent];
-        [v23 setNotes:v9];
+        pendingVehicleParkedEvent4 = [(RTVehicleLocationProvider *)self pendingVehicleParkedEvent];
+        [pendingVehicleParkedEvent4 setNotes:notesCopy];
       }
 
-      v24 = [(RTVehicleLocationProvider *)self pendingVehicleParkedEvent];
-      [v24 setConfirmed:1];
+      pendingVehicleParkedEvent5 = [(RTVehicleLocationProvider *)self pendingVehicleParkedEvent];
+      [pendingVehicleParkedEvent5 setConfirmed:1];
     }
 
     else
     {
       v27 = objc_alloc(MEMORY[0x277D01420]);
-      v24 = [objc_alloc(MEMORY[0x277D01160]) initWithCLLocation:v8];
-      v28 = [MEMORY[0x277CCAD78] UUID];
+      pendingVehicleParkedEvent5 = [objc_alloc(MEMORY[0x277D01160]) initWithCLLocation:locationCopy];
+      uUID = [MEMORY[0x277CCAD78] UUID];
       LOBYTE(v32) = 1;
-      v29 = [v27 initWithDate:v12 location:v24 vehicleIdentifier:0 userSetLocation:v8 != 0 notes:v9 identifier:v28 photo:0 mapItem:0 confirmed:v32];
+      v29 = [v27 initWithDate:date location:pendingVehicleParkedEvent5 vehicleIdentifier:0 userSetLocation:locationCopy != 0 notes:notesCopy identifier:uUID photo:0 mapItem:0 confirmed:v32];
       [(RTVehicleLocationProvider *)self setPendingVehicleParkedEvent:v29];
     }
 
-    v30 = [(RTVehicleLocationProvider *)self pendingVehicleParkedEvent];
-    v31 = [v30 location];
+    pendingVehicleParkedEvent6 = [(RTVehicleLocationProvider *)self pendingVehicleParkedEvent];
+    location = [pendingVehicleParkedEvent6 location];
 
-    if (v31)
+    if (location)
     {
       [(RTVehicleLocationProvider *)self _processPendingVehicleEventAfterLocationFinalization];
-      if (!v10)
+      if (!handlerCopy)
       {
         goto LABEL_30;
       }
@@ -1960,7 +1960,7 @@ void __63__RTVehicleLocationProvider_fetchLastVehicleEventsWithHandler___block_i
     else
     {
       [(RTVehicleLocationProvider *)self requestLocations];
-      if (!v10)
+      if (!handlerCopy)
       {
 LABEL_30:
 
@@ -1970,7 +1970,7 @@ LABEL_30:
 
     v26 = 0;
 LABEL_29:
-    v10[2](v10, v26);
+    handlerCopy[2](handlerCopy, v26);
     goto LABEL_30;
   }
 
@@ -1984,10 +1984,10 @@ LABEL_29:
     }
   }
 
-  if (v10)
+  if (handlerCopy)
   {
     v26 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D01448] code:2 userInfo:0];
-    v12 = v26;
+    date = v26;
     goto LABEL_29;
   }
 
@@ -1996,16 +1996,16 @@ LABEL_31:
 
 - (void)_clearAllVehicleEvents
 {
-  v3 = [(RTVehicleLocationProvider *)self lastVehicleParkedEvent];
-  if (v3)
+  lastVehicleParkedEvent = [(RTVehicleLocationProvider *)self lastVehicleParkedEvent];
+  if (lastVehicleParkedEvent)
   {
   }
 
   else
   {
-    v4 = [(RTVehicleLocationProvider *)self pendingVehicleParkedEvent];
+    pendingVehicleParkedEvent = [(RTVehicleLocationProvider *)self pendingVehicleParkedEvent];
 
-    if (!v4)
+    if (!pendingVehicleParkedEvent)
     {
       return;
     }
@@ -2021,30 +2021,30 @@ LABEL_31:
 
 - (void)clearAllVehicleEvents
 {
-  v3 = [(RTNotifier *)self queue];
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __50__RTVehicleLocationProvider_clearAllVehicleEvents__block_invoke;
   block[3] = &unk_2788C4EA0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
-- (void)updateVehicleEventWithIdentifier:(id)a3 notes:(id)a4
+- (void)updateVehicleEventWithIdentifier:(id)identifier notes:(id)notes
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  identifierCopy = identifier;
+  notesCopy = notes;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __68__RTVehicleLocationProvider_updateVehicleEventWithIdentifier_notes___block_invoke;
   block[3] = &unk_2788C76F8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = identifierCopy;
+  v13 = notesCopy;
+  v9 = notesCopy;
+  v10 = identifierCopy;
+  dispatch_async(queue, block);
 }
 
 void __68__RTVehicleLocationProvider_updateVehicleEventWithIdentifier_notes___block_invoke(uint64_t a1)
@@ -2070,21 +2070,21 @@ void __68__RTVehicleLocationProvider_updateVehicleEventWithIdentifier_notes___bl
   }
 }
 
-- (void)updateVehicleEventWithIdentifier:(id)a3 photo:(id)a4
+- (void)updateVehicleEventWithIdentifier:(id)identifier photo:(id)photo
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  identifierCopy = identifier;
+  photoCopy = photo;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __68__RTVehicleLocationProvider_updateVehicleEventWithIdentifier_photo___block_invoke;
   block[3] = &unk_2788C76F8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = identifierCopy;
+  v13 = photoCopy;
+  v9 = photoCopy;
+  v10 = identifierCopy;
+  dispatch_async(queue, block);
 }
 
 void __68__RTVehicleLocationProvider_updateVehicleEventWithIdentifier_photo___block_invoke(uint64_t a1)
@@ -2110,21 +2110,21 @@ void __68__RTVehicleLocationProvider_updateVehicleEventWithIdentifier_photo___bl
   }
 }
 
-- (void)updateVehicleEventWithIdentifier:(id)a3 mapItem:(id)a4
+- (void)updateVehicleEventWithIdentifier:(id)identifier mapItem:(id)item
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  identifierCopy = identifier;
+  itemCopy = item;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __70__RTVehicleLocationProvider_updateVehicleEventWithIdentifier_mapItem___block_invoke;
   block[3] = &unk_2788C76F8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = identifierCopy;
+  v13 = itemCopy;
+  v9 = itemCopy;
+  v10 = identifierCopy;
+  dispatch_async(queue, block);
 }
 
 void __70__RTVehicleLocationProvider_updateVehicleEventWithIdentifier_mapItem___block_invoke(id *a1)
@@ -2168,21 +2168,21 @@ void __70__RTVehicleLocationProvider_updateVehicleEventWithIdentifier_mapItem___
   }
 }
 
-- (void)updateVehicleEventWithIdentifier:(id)a3 location:(id)a4
+- (void)updateVehicleEventWithIdentifier:(id)identifier location:(id)location
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  identifierCopy = identifier;
+  locationCopy = location;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __71__RTVehicleLocationProvider_updateVehicleEventWithIdentifier_location___block_invoke;
   block[3] = &unk_2788C76F8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = identifierCopy;
+  v13 = locationCopy;
+  v9 = locationCopy;
+  v10 = identifierCopy;
+  dispatch_async(queue, block);
 }
 
 void __71__RTVehicleLocationProvider_updateVehicleEventWithIdentifier_location___block_invoke(uint64_t a1)
@@ -2224,19 +2224,19 @@ void __71__RTVehicleLocationProvider_updateVehicleEventWithIdentifier_location__
   }
 }
 
-- (void)engageInVehicleEventWithIdentifier:(id)a3
+- (void)engageInVehicleEventWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   objc_initWeak(&location, self);
-  v5 = [(RTNotifier *)self queue];
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __64__RTVehicleLocationProvider_engageInVehicleEventWithIdentifier___block_invoke;
   block[3] = &unk_2788C57F8;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, block);
+  v8 = identifierCopy;
+  v6 = identifierCopy;
+  dispatch_async(queue, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -2269,24 +2269,24 @@ void __64__RTVehicleLocationProvider_engageInVehicleEventWithIdentifier___block_
     }
   }
 
-  v4 = [(RTVehicleLocationProvider *)self lastVehicleParkedEvent];
-  if ([v4 userSetLocation])
+  lastVehicleParkedEvent = [(RTVehicleLocationProvider *)self lastVehicleParkedEvent];
+  if ([lastVehicleParkedEvent userSetLocation])
   {
     goto LABEL_8;
   }
 
-  v5 = [(RTVehicleLocationProvider *)self lastVehicleParkedEvent];
-  if ([v5 usualLocation])
+  lastVehicleParkedEvent2 = [(RTVehicleLocationProvider *)self lastVehicleParkedEvent];
+  if ([lastVehicleParkedEvent2 usualLocation])
   {
 
 LABEL_8:
     goto LABEL_9;
   }
 
-  v13 = [(RTVehicleLocationProvider *)self lastVehicleParkedEvent];
-  v14 = [v13 locationQuality];
+  lastVehicleParkedEvent3 = [(RTVehicleLocationProvider *)self lastVehicleParkedEvent];
+  locationQuality = [lastVehicleParkedEvent3 locationQuality];
 
-  if (v14 == 1)
+  if (locationQuality == 1)
   {
     v6 = [(RTDefaultsManager *)self->_defaultsManager objectForKey:@"RTDefaultsVehicleEventBulletinNotificationPosted"];
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -2307,13 +2307,13 @@ LABEL_8:
       goto LABEL_19;
     }
 
-    v16 = [(RTVehicleLocationProvider *)self mapsSupportManager];
-    v17 = [(RTVehicleLocationProvider *)self lastVehicleParkedEvent];
-    [v16 showParkedCarBulletinForEvent:v17];
+    mapsSupportManager = [(RTVehicleLocationProvider *)self mapsSupportManager];
+    lastVehicleParkedEvent4 = [(RTVehicleLocationProvider *)self lastVehicleParkedEvent];
+    [mapsSupportManager showParkedCarBulletinForEvent:lastVehicleParkedEvent4];
 
     defaultsManager = self->_defaultsManager;
-    v7 = [MEMORY[0x277CCABB0] numberWithInteger:{-[NSObject integerValue](v6, "integerValue") + 1}];
-    [(RTDefaultsManager *)defaultsManager setObject:v7 forKey:@"RTDefaultsVehicleEventBulletinNotificationPosted"];
+    lastVehicleParkedEvent5 = [MEMORY[0x277CCABB0] numberWithInteger:{-[NSObject integerValue](v6, "integerValue") + 1}];
+    [(RTDefaultsManager *)defaultsManager setObject:lastVehicleParkedEvent5 forKey:@"RTDefaultsVehicleEventBulletinNotificationPosted"];
     goto LABEL_12;
   }
 
@@ -2326,18 +2326,18 @@ LABEL_9:
   v6 = _rt_log_facility_get_os_log(RTLogFacilityVehicleLocation);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
-    v7 = [(RTVehicleLocationProvider *)self lastVehicleParkedEvent];
-    v8 = [v7 userSetLocation];
-    v9 = [(RTVehicleLocationProvider *)self lastVehicleParkedEvent];
-    v10 = [v9 usualLocation];
-    v11 = [(RTVehicleLocationProvider *)self lastVehicleParkedEvent];
-    v12 = [v11 locationQuality];
+    lastVehicleParkedEvent5 = [(RTVehicleLocationProvider *)self lastVehicleParkedEvent];
+    userSetLocation = [lastVehicleParkedEvent5 userSetLocation];
+    lastVehicleParkedEvent6 = [(RTVehicleLocationProvider *)self lastVehicleParkedEvent];
+    usualLocation = [lastVehicleParkedEvent6 usualLocation];
+    lastVehicleParkedEvent7 = [(RTVehicleLocationProvider *)self lastVehicleParkedEvent];
+    locationQuality2 = [lastVehicleParkedEvent7 locationQuality];
     v19 = 67109632;
-    *v20 = v8;
+    *v20 = userSetLocation;
     *&v20[4] = 1024;
-    *&v20[6] = v10;
+    *&v20[6] = usualLocation;
     v21[0] = 2048;
-    *&v21[1] = v12;
+    *&v21[1] = locationQuality2;
     _os_log_impl(&dword_2304B3000, v6, OS_LOG_TYPE_INFO, "Not posting bulletin board notification, userSetLocation, %d, usualLocation, %d, locationQuality, %lu", &v19, 0x18u);
 
 LABEL_12:
@@ -2346,12 +2346,12 @@ LABEL_12:
 LABEL_19:
 }
 
-- (void)_postVehicleReplacementBulletinNotificationWithVehicleEvent:(id)a3 replacingEvent:(id)a4
+- (void)_postVehicleReplacementBulletinNotificationWithVehicleEvent:(id)event replacingEvent:(id)replacingEvent
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(RTVehicleLocationProvider *)self mapsSupportManager];
-  [v8 showParkedCarReplacementBulletinForEvent:v7 replacingEvent:v6];
+  replacingEventCopy = replacingEvent;
+  eventCopy = event;
+  mapsSupportManager = [(RTVehicleLocationProvider *)self mapsSupportManager];
+  [mapsSupportManager showParkedCarReplacementBulletinForEvent:eventCopy replacingEvent:replacingEventCopy];
 }
 
 - (void)_clearBulletinNotifications
@@ -2366,31 +2366,31 @@ LABEL_19:
     }
   }
 
-  v4 = [(RTVehicleLocationProvider *)self mapsSupportManager];
-  [v4 clearParkedCarBulletin];
+  mapsSupportManager = [(RTVehicleLocationProvider *)self mapsSupportManager];
+  [mapsSupportManager clearParkedCarBulletin];
 }
 
-- (void)_onExternalVehicleEventReceived:(id)a3
+- (void)_onExternalVehicleEventReceived:(id)received
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  receivedCopy = received;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v6 = _rt_log_facility_get_os_log(RTLogFacilityVehicleLocation);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v5;
+      *(&buf + 4) = receivedCopy;
       _os_log_impl(&dword_2304B3000, v6, OS_LOG_TYPE_INFO, "Notifying clients about an external vehicle event. %@", &buf, 0xCu);
     }
   }
 
-  if (v5)
+  if (receivedCopy)
   {
-    v7 = [v5 mapItem];
-    if (!v7 || ([(RTVehicleLocationProvider *)self learnedLocationManager], v8 = objc_claimAutoreleasedReturnValue(), v9 = v8 == 0, v8, v7, v9))
+    mapItem = [receivedCopy mapItem];
+    if (!mapItem || ([(RTVehicleLocationProvider *)self learnedLocationManager], v8 = objc_claimAutoreleasedReturnValue(), v9 = v8 == 0, v8, mapItem, v9))
     {
-      [(RTVehicleLocationProvider *)self _updateLastVehicleEventAndNotify:v5];
+      [(RTVehicleLocationProvider *)self _updateLastVehicleEventAndNotify:receivedCopy];
     }
 
     else
@@ -2400,11 +2400,11 @@ LABEL_19:
       v19 = 0x3032000000;
       v20 = __Block_byref_object_copy__76;
       v21 = __Block_byref_object_dispose__76;
-      v10 = v5;
+      v10 = receivedCopy;
       v22 = v10;
-      v11 = [(RTVehicleLocationProvider *)self learnedLocationManager];
-      v12 = [v11 learnedLocationStore];
-      v13 = [v10 mapItem];
+      learnedLocationManager = [(RTVehicleLocationProvider *)self learnedLocationManager];
+      learnedLocationStore = [learnedLocationManager learnedLocationStore];
+      mapItem2 = [v10 mapItem];
       v14[0] = MEMORY[0x277D85DD0];
       v14[1] = 3221225472;
       v14[2] = __61__RTVehicleLocationProvider__onExternalVehicleEventReceived___block_invoke;
@@ -2413,7 +2413,7 @@ LABEL_19:
       p_buf = &buf;
       v17 = a2;
       v15 = v10;
-      [v12 processExternalMapItem:v13 handler:v14];
+      [learnedLocationStore processExternalMapItem:mapItem2 handler:v14];
 
       _Block_object_dispose(&buf, 8);
     }
@@ -2491,14 +2491,14 @@ uint64_t __61__RTVehicleLocationProvider__onExternalVehicleEventReceived___block
   return [*(a1 + 56) _updateLastVehicleEventAndNotify:*(*(*(a1 + 64) + 8) + 40)];
 }
 
-- (void)_updateLastVehicleEventAndNotify:(id)a3
+- (void)_updateLastVehicleEventAndNotify:(id)notify
 {
   v8[1] = *MEMORY[0x277D85DE8];
-  [(RTVehicleLocationProvider *)self setLastVehicleParkedEvent:a3];
+  [(RTVehicleLocationProvider *)self setLastVehicleParkedEvent:notify];
   [(RTVehicleLocationProvider *)self _persistLastVehicleEvent];
   v4 = [RTVehicleEventNotification alloc];
-  v5 = [(RTVehicleLocationProvider *)self lastVehicleParkedEvent];
-  v8[0] = v5;
+  lastVehicleParkedEvent = [(RTVehicleLocationProvider *)self lastVehicleParkedEvent];
+  v8[0] = lastVehicleParkedEvent;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:1];
   v7 = [(RTVehicleEventNotification *)v4 initWithVehicleEvents:v6];
 
@@ -2508,12 +2508,12 @@ uint64_t __61__RTVehicleLocationProvider__onExternalVehicleEventReceived___block
 - (void)_notifyClients
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = [(RTVehicleLocationProvider *)self _getLastVehicleEvents];
+  _getLastVehicleEvents = [(RTVehicleLocationProvider *)self _getLastVehicleEvents];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v18 count:16];
+  v4 = [_getLastVehicleEvents countByEnumeratingWithState:&v12 objects:v18 count:16];
   if (v4)
   {
     v5 = v4;
@@ -2525,26 +2525,26 @@ uint64_t __61__RTVehicleLocationProvider__onExternalVehicleEventReceived___block
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(_getLastVehicleEvents);
         }
 
         [*(*(&v12 + 1) + 8 * v7++) setPhoto:0];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v12 objects:v18 count:16];
+      v5 = [_getLastVehicleEvents countByEnumeratingWithState:&v12 objects:v18 count:16];
     }
 
     while (v5);
   }
 
-  v8 = [[RTVehicleEventNotification alloc] initWithVehicleEvents:v3];
+  v8 = [[RTVehicleEventNotification alloc] initWithVehicleEvents:_getLastVehicleEvents];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v9 = _rt_log_facility_get_os_log(RTLogFacilityVehicleLocation);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
-      v10 = [v3 count];
+      v10 = [_getLastVehicleEvents count];
       *buf = 134217984;
       v17 = v10;
       _os_log_impl(&dword_2304B3000, v9, OS_LOG_TYPE_INFO, "Notifying clients about %lu vehicle events.", buf, 0xCu);
@@ -2552,21 +2552,21 @@ uint64_t __61__RTVehicleLocationProvider__onExternalVehicleEventReceived___block
   }
 
   [(RTNotifier *)self postNotification:v8];
-  v11 = [v3 lastObject];
-  [(RTVehicleLocationProvider *)self _sendVehicleEventToCompanionDevice:v11];
+  lastObject = [_getLastVehicleEvents lastObject];
+  [(RTVehicleLocationProvider *)self _sendVehicleEventToCompanionDevice:lastObject];
 }
 
-- (void)_sendVehicleEventToCompanionDevice:(id)a3
+- (void)_sendVehicleEventToCompanionDevice:(id)device
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(RTVehicleLocationProvider *)self companionLink];
-  if (v5)
+  deviceCopy = device;
+  companionLink = [(RTVehicleLocationProvider *)self companionLink];
+  if (companionLink)
   {
-    v6 = v5;
-    v7 = [(RTVehicleLocationProvider *)self monitorExternalVehicleLocation];
+    v6 = companionLink;
+    monitorExternalVehicleLocation = [(RTVehicleLocationProvider *)self monitorExternalVehicleLocation];
 
-    if (!v7)
+    if (!monitorExternalVehicleLocation)
     {
       v8 = [MEMORY[0x277CBEAA8] now];
       [(RTVehicleLocationProvider *)self setLastCompanionSyncRequestDate:v8];
@@ -2576,27 +2576,27 @@ uint64_t __61__RTVehicleLocationProvider__onExternalVehicleEventReceived___block
         v9 = _rt_log_facility_get_os_log(RTLogFacilityVehicleLocation);
         if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
         {
-          v10 = [v4 date];
-          v11 = [(RTVehicleLocationProvider *)self lastCompanionSyncDate];
-          v12 = [(RTVehicleLocationProvider *)self lastCompanionSyncRequestDate];
+          date = [deviceCopy date];
+          lastCompanionSyncDate = [(RTVehicleLocationProvider *)self lastCompanionSyncDate];
+          lastCompanionSyncRequestDate = [(RTVehicleLocationProvider *)self lastCompanionSyncRequestDate];
           *buf = 138412802;
-          v18 = v10;
+          v18 = date;
           v19 = 2112;
-          v20 = v11;
+          v20 = lastCompanionSyncDate;
           v21 = 2112;
-          v22 = v12;
+          v22 = lastCompanionSyncRequestDate;
           _os_log_impl(&dword_2304B3000, v9, OS_LOG_TYPE_INFO, "CompanionSync, vehicle.date, %@, last.sync.date, %@, request.date, %@", buf, 0x20u);
         }
       }
 
-      v13 = [(RTVehicleLocationProvider *)self companionLink];
+      companionLink2 = [(RTVehicleLocationProvider *)self companionLink];
       v14[0] = MEMORY[0x277D85DD0];
       v14[1] = 3221225472;
       v14[2] = __64__RTVehicleLocationProvider__sendVehicleEventToCompanionDevice___block_invoke;
       v14[3] = &unk_2788C53F0;
-      v15 = v4;
-      v16 = self;
-      [v13 sendVehicleEvent:v15 handler:v14];
+      v15 = deviceCopy;
+      selfCopy = self;
+      [companionLink2 sendVehicleEvent:v15 handler:v14];
     }
   }
 }
@@ -2640,24 +2640,24 @@ void __64__RTVehicleLocationProvider__sendVehicleEventToCompanionDevice___block_
 
 - (void)_resendVehicleEventIfNecessary
 {
-  v3 = [(RTVehicleLocationProvider *)self lastCompanionSyncDate];
-  v4 = [(RTVehicleLocationProvider *)self lastCompanionSyncRequestDate];
-  v5 = [v3 isBeforeDate:v4];
+  lastCompanionSyncDate = [(RTVehicleLocationProvider *)self lastCompanionSyncDate];
+  lastCompanionSyncRequestDate = [(RTVehicleLocationProvider *)self lastCompanionSyncRequestDate];
+  v5 = [lastCompanionSyncDate isBeforeDate:lastCompanionSyncRequestDate];
 
   if (v5)
   {
-    v7 = [(RTVehicleLocationProvider *)self _getLastVehicleEvents];
-    v6 = [v7 lastObject];
-    [(RTVehicleLocationProvider *)self _sendVehicleEventToCompanionDevice:v6];
+    _getLastVehicleEvents = [(RTVehicleLocationProvider *)self _getLastVehicleEvents];
+    lastObject = [_getLastVehicleEvents lastObject];
+    [(RTVehicleLocationProvider *)self _sendVehicleEventToCompanionDevice:lastObject];
   }
 }
 
 - (BOOL)_deleteLastVehicleEvent
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = [(RTVehicleLocationProvider *)self managedObjectContext];
+  managedObjectContext = [(RTVehicleLocationProvider *)self managedObjectContext];
 
-  if (v3)
+  if (managedObjectContext)
   {
     *v12 = 0;
     v13 = v12;
@@ -2665,14 +2665,14 @@ void __64__RTVehicleLocationProvider__sendVehicleEventToCompanionDevice___block_
     v15 = __Block_byref_object_copy__76;
     v16 = __Block_byref_object_dispose__76;
     v17 = 0;
-    v4 = [(RTVehicleLocationProvider *)self managedObjectContext];
+    managedObjectContext2 = [(RTVehicleLocationProvider *)self managedObjectContext];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __52__RTVehicleLocationProvider__deleteLastVehicleEvent__block_invoke;
     v11[3] = &unk_2788C4FD8;
     v11[4] = self;
     v11[5] = v12;
-    [v4 performBlockAndWait:v11];
+    [managedObjectContext2 performBlockAndWait:v11];
 
     v5 = *(v13 + 5);
     v6 = v5 == 0;
@@ -2732,30 +2732,30 @@ void __52__RTVehicleLocationProvider__deleteLastVehicleEvent__block_invoke(uint6
 
 - (BOOL)_persistLastVehicleEvent
 {
-  v2 = self;
-  v3 = [(RTVehicleLocationProvider *)self lastVehicleParkedEvent];
-  LOBYTE(v2) = [(RTVehicleLocationProvider *)v2 _persistVehicleEvent:v3];
+  selfCopy = self;
+  lastVehicleParkedEvent = [(RTVehicleLocationProvider *)self lastVehicleParkedEvent];
+  LOBYTE(selfCopy) = [(RTVehicleLocationProvider *)selfCopy _persistVehicleEvent:lastVehicleParkedEvent];
 
-  return v2;
+  return selfCopy;
 }
 
-- (BOOL)_persistVehicleEvent:(id)a3
+- (BOOL)_persistVehicleEvent:(id)event
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 date];
-  if (v5)
+  eventCopy = event;
+  date = [eventCopy date];
+  if (date)
   {
-    v6 = [v4 location];
-    if (v6)
+    location = [eventCopy location];
+    if (location)
     {
-      v7 = [v4 identifier];
+      identifier = [eventCopy identifier];
 
-      if (v7)
+      if (identifier)
       {
-        v8 = [(RTVehicleLocationProvider *)self managedObjectContext];
+        managedObjectContext = [(RTVehicleLocationProvider *)self managedObjectContext];
 
-        if (!v8)
+        if (!managedObjectContext)
         {
           if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
           {
@@ -2767,8 +2767,8 @@ void __52__RTVehicleLocationProvider__deleteLastVehicleEvent__block_invoke(uint6
             }
           }
 
-          v19 = [(RTVehicleLocationProvider *)self lastVehicleParkedEvent];
-          [(RTVehicleLocationProvider *)self setVehicleEventPendingPersist:v19];
+          lastVehicleParkedEvent = [(RTVehicleLocationProvider *)self lastVehicleParkedEvent];
+          [(RTVehicleLocationProvider *)self setVehicleEventPendingPersist:lastVehicleParkedEvent];
 
           goto LABEL_15;
         }
@@ -2781,16 +2781,16 @@ void __52__RTVehicleLocationProvider__deleteLastVehicleEvent__block_invoke(uint6
           v27 = __Block_byref_object_copy__76;
           v28 = __Block_byref_object_dispose__76;
           v29 = 0;
-          v9 = [(RTVehicleLocationProvider *)self managedObjectContext];
+          managedObjectContext2 = [(RTVehicleLocationProvider *)self managedObjectContext];
           v20[0] = MEMORY[0x277D85DD0];
           v20[1] = 3221225472;
           v20[2] = __50__RTVehicleLocationProvider__persistVehicleEvent___block_invoke;
           v20[3] = &unk_2788C51F0;
-          v10 = v4;
+          v10 = eventCopy;
           v21 = v10;
-          v22 = self;
+          selfCopy = self;
           v23 = v24;
-          [v9 performBlockAndWait:v20];
+          [managedObjectContext2 performBlockAndWait:v20];
 
           v11 = *(v25 + 5);
           v12 = v11 == 0;
@@ -2902,42 +2902,42 @@ void __50__RTVehicleLocationProvider__persistVehicleEvent___block_invoke(uint64_
 
 - (void)persistLastVehicleEvent
 {
-  v3 = [(RTNotifier *)self queue];
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __52__RTVehicleLocationProvider_persistLastVehicleEvent__block_invoke;
   block[3] = &unk_2788C4EA0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
-- (void)_onManagedObjectContextCreated:(id)a3
+- (void)_onManagedObjectContextCreated:(id)created
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  createdCopy = created;
+  if (createdCopy)
   {
-    [(RTVehicleLocationProvider *)self setManagedObjectContext:v4];
+    [(RTVehicleLocationProvider *)self setManagedObjectContext:createdCopy];
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
       v5 = _rt_log_facility_get_os_log(RTLogFacilityVehicleLocation);
       if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
       {
-        v6 = [(RTVehicleLocationProvider *)self vehicleEventPendingPersist];
+        vehicleEventPendingPersist = [(RTVehicleLocationProvider *)self vehicleEventPendingPersist];
         v14[0] = 67109376;
-        v14[1] = v6 != 0;
+        v14[1] = vehicleEventPendingPersist != 0;
         v15 = 1024;
-        v16 = [(RTVehicleLocationProvider *)self vehicleEventPendingDeletion];
+        vehicleEventPendingDeletion = [(RTVehicleLocationProvider *)self vehicleEventPendingDeletion];
         _os_log_impl(&dword_2304B3000, v5, OS_LOG_TYPE_INFO, "_onManagedObjectContextCreated, vehicleEventPendingPersist, %d, vehicleEventPendingDeletion, %d.", v14, 0xEu);
       }
     }
 
-    v7 = [(RTVehicleLocationProvider *)self vehicleEventPendingPersist];
+    vehicleEventPendingPersist2 = [(RTVehicleLocationProvider *)self vehicleEventPendingPersist];
 
-    if (v7)
+    if (vehicleEventPendingPersist2)
     {
-      v8 = [(RTVehicleLocationProvider *)self vehicleEventPendingPersist];
-      [(RTVehicleLocationProvider *)self _persistVehicleEvent:v8];
+      vehicleEventPendingPersist3 = [(RTVehicleLocationProvider *)self vehicleEventPendingPersist];
+      [(RTVehicleLocationProvider *)self _persistVehicleEvent:vehicleEventPendingPersist3];
     }
 
     else if ([(RTVehicleLocationProvider *)self vehicleEventPendingDeletion])
@@ -2951,9 +2951,9 @@ void __50__RTVehicleLocationProvider__persistVehicleEvent___block_invoke(uint64_
     }
 
     v10 = [RTVehicleLocationHistoryController alloc];
-    v11 = [(RTNotifier *)self queue];
-    v12 = [(RTVehicleLocationProvider *)self managedObjectContext];
-    v13 = [(RTVehicleLocationHistoryController *)v10 initWithQueue:v11 managedObjectContext:v12];
+    queue = [(RTNotifier *)self queue];
+    managedObjectContext = [(RTVehicleLocationProvider *)self managedObjectContext];
+    v13 = [(RTVehicleLocationHistoryController *)v10 initWithQueue:queue managedObjectContext:managedObjectContext];
     [(RTVehicleLocationProvider *)self setVehicleLocationHistoryController:v13];
 
     [(RTVehicleLocationProvider *)self _updateAuxiliaryDataIfAppropriate];
@@ -2973,12 +2973,12 @@ void __50__RTVehicleLocationProvider__persistVehicleEvent___block_invoke(uint64_
 - (void)_restoreLastVehicleEvent
 {
   v13 = *MEMORY[0x277D85DE8];
-  v3 = [(RTVehicleLocationProvider *)self managedObjectContext];
-  if (v3)
+  managedObjectContext = [(RTVehicleLocationProvider *)self managedObjectContext];
+  if (managedObjectContext)
   {
-    v4 = [(RTVehicleLocationProvider *)self lastVehicleParkedEvent];
+    lastVehicleParkedEvent = [(RTVehicleLocationProvider *)self lastVehicleParkedEvent];
 
-    if (!v4)
+    if (!lastVehicleParkedEvent)
     {
       v9[0] = 0;
       v9[1] = v9;
@@ -2986,23 +2986,23 @@ void __50__RTVehicleLocationProvider__persistVehicleEvent___block_invoke(uint64_
       v9[3] = __Block_byref_object_copy__76;
       v9[4] = __Block_byref_object_dispose__76;
       v10 = 0;
-      v5 = [(RTVehicleLocationProvider *)self managedObjectContext];
+      managedObjectContext2 = [(RTVehicleLocationProvider *)self managedObjectContext];
       v8[0] = MEMORY[0x277D85DD0];
       v8[1] = 3221225472;
       v8[2] = __53__RTVehicleLocationProvider__restoreLastVehicleEvent__block_invoke;
       v8[3] = &unk_2788C4FD8;
       v8[4] = self;
       v8[5] = v9;
-      [v5 performBlockAndWait:v8];
+      [managedObjectContext2 performBlockAndWait:v8];
 
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {
         v6 = _rt_log_facility_get_os_log(RTLogFacilityVehicleLocation);
         if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
         {
-          v7 = [(RTVehicleLocationProvider *)self lastVehicleParkedEvent];
+          lastVehicleParkedEvent2 = [(RTVehicleLocationProvider *)self lastVehicleParkedEvent];
           *buf = 138739971;
-          v12 = v7;
+          v12 = lastVehicleParkedEvent2;
           _os_log_impl(&dword_2304B3000, v6, OS_LOG_TYPE_INFO, "Restored last vehicle event, %{sensitive}@.", buf, 0xCu);
         }
       }
@@ -3097,38 +3097,38 @@ void __53__RTVehicleLocationProvider__restoreLastVehicleEvent__block_invoke(uint
 
 - (void)restoreLastVehicleEvent
 {
-  v3 = [(RTNotifier *)self queue];
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __52__RTVehicleLocationProvider_restoreLastVehicleEvent__block_invoke;
   block[3] = &unk_2788C4EA0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
-- (void)_updateNearbyLocationOfInterestOfVehicleEvent:(id)a3 handler:(id)a4
+- (void)_updateNearbyLocationOfInterestOfVehicleEvent:(id)event handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 location];
+  eventCopy = event;
+  handlerCopy = handler;
+  location = [eventCopy location];
 
-  if (v8)
+  if (location)
   {
-    v9 = [(RTVehicleLocationProvider *)self learnedLocationManager];
-    v10 = [v6 location];
+    learnedLocationManager = [(RTVehicleLocationProvider *)self learnedLocationManager];
+    location2 = [eventCopy location];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __83__RTVehicleLocationProvider__updateNearbyLocationOfInterestOfVehicleEvent_handler___block_invoke;
     v11[3] = &unk_2788CADE8;
     v11[4] = self;
-    v12 = v6;
-    v13 = v7;
-    [v9 fetchLocationOfInterestAtLocation:v10 handler:v11];
+    v12 = eventCopy;
+    v13 = handlerCopy;
+    [learnedLocationManager fetchLocationOfInterestAtLocation:location2 handler:v11];
   }
 
-  else if (v7)
+  else if (handlerCopy)
   {
-    (*(v7 + 2))(v7, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 }
 
@@ -3167,15 +3167,15 @@ uint64_t __83__RTVehicleLocationProvider__updateNearbyLocationOfInterestOfVehicl
   return result;
 }
 
-- (void)_updateUsualLocationOfVehicleEvent:(id)a3
+- (void)_updateUsualLocationOfVehicleEvent:(id)event
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [(RTVehicleLocationProvider *)self vehicleLocationHistoryController];
-  [v5 setUsualLocation:{objc_msgSend(v6, "_evaluateUsualLocationWithVehicleEvent:", v5)}];
+  eventCopy = event;
+  vehicleLocationHistoryController = [(RTVehicleLocationProvider *)self vehicleLocationHistoryController];
+  [eventCopy setUsualLocation:{objc_msgSend(vehicleLocationHistoryController, "_evaluateUsualLocationWithVehicleEvent:", eventCopy)}];
 
-  v7 = [(RTVehicleLocationProvider *)self vehicleLocationHistoryController];
-  [v7 _persistVehicleEventToHistory:v5];
+  vehicleLocationHistoryController2 = [(RTVehicleLocationProvider *)self vehicleLocationHistoryController];
+  [vehicleLocationHistoryController2 _persistVehicleEventToHistory:eventCopy];
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
@@ -3183,13 +3183,13 @@ uint64_t __83__RTVehicleLocationProvider__updateNearbyLocationOfInterestOfVehicl
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       v9 = NSStringFromSelector(a2);
-      v10 = [(RTVehicleLocationProvider *)self vehicleLocationHistoryController];
+      vehicleLocationHistoryController3 = [(RTVehicleLocationProvider *)self vehicleLocationHistoryController];
       v11 = 138412802;
       v12 = v9;
       v13 = 1024;
-      v14 = v10 != 0;
+      v14 = vehicleLocationHistoryController3 != 0;
       v15 = 1024;
-      v16 = [v5 usualLocation];
+      usualLocation = [eventCopy usualLocation];
       _os_log_impl(&dword_2304B3000, v8, OS_LOG_TYPE_INFO, "%@, vehicleLocationHistoryController created, %d, usualLocation, %d", &v11, 0x18u);
     }
   }
@@ -3198,26 +3198,26 @@ uint64_t __83__RTVehicleLocationProvider__updateNearbyLocationOfInterestOfVehicl
 - (void)_updateAuxiliaryDataIfAppropriate
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = [(RTVehicleLocationProvider *)self lastVehicleParkedEvent];
-  if (v4)
+  lastVehicleParkedEvent = [(RTVehicleLocationProvider *)self lastVehicleParkedEvent];
+  if (lastVehicleParkedEvent)
   {
-    v5 = v4;
-    v6 = [(RTVehicleLocationProvider *)self managedObjectContext];
-    if (v6)
+    v5 = lastVehicleParkedEvent;
+    managedObjectContext = [(RTVehicleLocationProvider *)self managedObjectContext];
+    if (managedObjectContext)
     {
-      v7 = v6;
-      v8 = [(RTVehicleLocationProvider *)self locationsOfInterestAvailable];
+      v7 = managedObjectContext;
+      locationsOfInterestAvailable = [(RTVehicleLocationProvider *)self locationsOfInterestAvailable];
 
-      if (v8)
+      if (locationsOfInterestAvailable)
       {
-        v9 = [(RTVehicleLocationProvider *)self lastVehicleParkedEvent];
+        lastVehicleParkedEvent2 = [(RTVehicleLocationProvider *)self lastVehicleParkedEvent];
         v13[0] = MEMORY[0x277D85DD0];
         v13[1] = 3221225472;
         v13[2] = __62__RTVehicleLocationProvider__updateAuxiliaryDataIfAppropriate__block_invoke;
         v13[3] = &unk_2788C4D10;
         v13[4] = self;
         v13[5] = a2;
-        [(RTVehicleLocationProvider *)self _updateNearbyLocationOfInterestOfVehicleEvent:v9 handler:v13];
+        [(RTVehicleLocationProvider *)self _updateNearbyLocationOfInterestOfVehicleEvent:lastVehicleParkedEvent2 handler:v13];
         goto LABEL_9;
       }
     }
@@ -3232,21 +3232,21 @@ uint64_t __83__RTVehicleLocationProvider__updateNearbyLocationOfInterestOfVehicl
     return;
   }
 
-  v9 = _rt_log_facility_get_os_log(RTLogFacilityVehicleLocation);
-  if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
+  lastVehicleParkedEvent2 = _rt_log_facility_get_os_log(RTLogFacilityVehicleLocation);
+  if (os_log_type_enabled(lastVehicleParkedEvent2, OS_LOG_TYPE_INFO))
   {
     v10 = NSStringFromSelector(a2);
-    v11 = [(RTVehicleLocationProvider *)self lastVehicleParkedEvent];
-    v12 = [(RTVehicleLocationProvider *)self managedObjectContext];
+    lastVehicleParkedEvent3 = [(RTVehicleLocationProvider *)self lastVehicleParkedEvent];
+    managedObjectContext2 = [(RTVehicleLocationProvider *)self managedObjectContext];
     *buf = 138413058;
     v15 = v10;
     v16 = 1024;
-    v17 = v11 != 0;
+    v17 = lastVehicleParkedEvent3 != 0;
     v18 = 1024;
-    v19 = v12 != 0;
+    v19 = managedObjectContext2 != 0;
     v20 = 1024;
-    v21 = [(RTVehicleLocationProvider *)self locationsOfInterestAvailable];
-    _os_log_impl(&dword_2304B3000, v9, OS_LOG_TYPE_INFO, "%@, lastVehicleParkedEvent, %d, managedObjectContext, %d, locationsOfInterestAvailable, %d", buf, 0x1Eu);
+    locationsOfInterestAvailable2 = [(RTVehicleLocationProvider *)self locationsOfInterestAvailable];
+    _os_log_impl(&dword_2304B3000, lastVehicleParkedEvent2, OS_LOG_TYPE_INFO, "%@, lastVehicleParkedEvent, %d, managedObjectContext, %d, locationsOfInterestAvailable, %d", buf, 0x1Eu);
   }
 
 LABEL_9:
@@ -3301,11 +3301,11 @@ LABEL_8:
 LABEL_9:
 }
 
-- (BOOL)_sameVehicleWithDeviceId:(id)a3 otherDeviceId:(id)a4
+- (BOOL)_sameVehicleWithDeviceId:(id)id otherDeviceId:(id)deviceId
 {
-  if (a3 && a4)
+  if (id && deviceId)
   {
-    return [a3 isEqualToString:a4];
+    return [id isEqualToString:deviceId];
   }
 
   else
@@ -3316,38 +3316,38 @@ LABEL_9:
 
 - (void)didReceiveEffectiveSettingsChangedNotification
 {
-  v3 = [(RTNotifier *)self queue];
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __75__RTVehicleLocationProvider_didReceiveEffectiveSettingsChangedNotification__block_invoke;
   block[3] = &unk_2788C4EA0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
-- (void)onNanoRegistryNotification:(id)a3
+- (void)onNanoRegistryNotification:(id)notification
 {
-  v4 = [(RTNotifier *)self queue];
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __56__RTVehicleLocationProvider_onNanoRegistryNotification___block_invoke;
   block[3] = &unk_2788C4EA0;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(queue, block);
 }
 
-- (void)onLearnedLocationManagerNotification:(id)a3
+- (void)onLearnedLocationManagerNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(RTNotifier *)self queue];
+  notificationCopy = notification;
+  queue = [(RTNotifier *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __66__RTVehicleLocationProvider_onLearnedLocationManagerNotification___block_invoke;
   v7[3] = &unk_2788C4A70;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = notificationCopy;
+  selfCopy = self;
+  v6 = notificationCopy;
+  dispatch_async(queue, v7);
 }
 
 void __66__RTVehicleLocationProvider_onLearnedLocationManagerNotification___block_invoke(uint64_t a1)
@@ -3398,19 +3398,19 @@ void __66__RTVehicleLocationProvider_onLearnedLocationManagerNotification___bloc
   }
 }
 
-- (void)fetchAutomaticVehicleEventDetectionSupportedWithHandler:(id)a3
+- (void)fetchAutomaticVehicleEventDetectionSupportedWithHandler:(id)handler
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v5 = [(RTNotifier *)self queue];
+    queue = [(RTNotifier *)self queue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __85__RTVehicleLocationProvider_fetchAutomaticVehicleEventDetectionSupportedWithHandler___block_invoke;
     block[3] = &unk_2788C4758;
-    v8 = v4;
-    dispatch_async(v5, block);
+    v8 = handlerCopy;
+    dispatch_async(queue, block);
 
     v6 = v8;
   }
@@ -3437,20 +3437,20 @@ uint64_t __85__RTVehicleLocationProvider_fetchAutomaticVehicleEventDetectionSupp
   return v2();
 }
 
-- (void)fetchFMCEnabledWithHandler:(id)a3
+- (void)fetchFMCEnabledWithHandler:(id)handler
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v5 = [(RTNotifier *)self queue];
+    queue = [(RTNotifier *)self queue];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __56__RTVehicleLocationProvider_fetchFMCEnabledWithHandler___block_invoke;
     v7[3] = &unk_2788C4D38;
     v7[4] = self;
-    v8 = v4;
-    dispatch_async(v5, v7);
+    v8 = handlerCopy;
+    dispatch_async(queue, v7);
 
     v6 = v8;
   }
@@ -3478,9 +3478,9 @@ uint64_t __56__RTVehicleLocationProvider_fetchFMCEnabledWithHandler___block_invo
   return v3(v1, v2, 0);
 }
 
-- (void)_submitFMCParkingEventMetric:(id)a3
+- (void)_submitFMCParkingEventMetric:(id)metric
 {
-  v6 = [(RTVehicleLocationProvider *)self _createMetricFromParkingEvent:a3];
+  v6 = [(RTVehicleLocationProvider *)self _createMetricFromParkingEvent:metric];
   v3 = objc_alloc(MEMORY[0x277CCACA8]);
   v4 = [v3 initWithCString:RTAnalyticsEventFindMyCarParkingEvent encoding:1];
   log_analytics_submission(v4, v6);
@@ -3488,23 +3488,23 @@ uint64_t __56__RTVehicleLocationProvider_fetchFMCEnabledWithHandler___block_invo
   AnalyticsSendEvent();
 }
 
-- (id)_createMetricFromParkingEvent:(id)a3
+- (id)_createMetricFromParkingEvent:(id)event
 {
-  v3 = a3;
+  eventCopy = event;
   v4 = objc_opt_new();
   v5 = MEMORY[0x277CCABB0];
-  v6 = [v3 location];
-  [v6 horizontalUncertainty];
+  location = [eventCopy location];
+  [location horizontalUncertainty];
   v7 = [v5 numberWithDouble:?];
   [v4 setObject:v7 forKeyedSubscript:@"horizontalAccuracy"];
 
-  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v3, "locationQuality")}];
+  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(eventCopy, "locationQuality")}];
   [v4 setObject:v8 forKeyedSubscript:@"qualityIndicator"];
 
   v9 = MEMORY[0x277CCABB0];
-  LODWORD(v6) = [v3 userSetLocation];
+  LODWORD(location) = [eventCopy userSetLocation];
 
-  if (v6)
+  if (location)
   {
     v10 = 2;
   }
@@ -3522,21 +3522,21 @@ uint64_t __56__RTVehicleLocationProvider_fetchFMCEnabledWithHandler___block_invo
   return v4;
 }
 
-- (void)_onDailyMetricNotification:(id)a3
+- (void)_onDailyMetricNotification:(id)notification
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 name];
-  v6 = [v5 isEqualToString:@"RTMetricManagerDailyMetricNotification"];
+  notificationCopy = notification;
+  name = [notificationCopy name];
+  v6 = [name isEqualToString:@"RTMetricManagerDailyMetricNotification"];
 
   if ((v6 & 1) == 0)
   {
     v7 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      v18 = [v4 name];
+      name2 = [notificationCopy name];
       *buf = 138412802;
-      v20 = v18;
+      v20 = name2;
       v21 = 2080;
       v22 = "[RTVehicleLocationProvider _onDailyMetricNotification:]";
       v23 = 1024;
@@ -3545,27 +3545,27 @@ uint64_t __56__RTVehicleLocationProvider_fetchFMCEnabledWithHandler___block_invo
     }
   }
 
-  v8 = [v4 name];
-  v9 = [v8 isEqualToString:@"RTMetricManagerDailyMetricNotification"];
+  name3 = [notificationCopy name];
+  v9 = [name3 isEqualToString:@"RTMetricManagerDailyMetricNotification"];
 
   if (v9)
   {
-    v10 = [(RTVehicleLocationProvider *)self scoreBoard];
-    v11 = [(RTVehicleLocationProvider *)self _createMetricFromScoreBoard:v10];
+    scoreBoard = [(RTVehicleLocationProvider *)self scoreBoard];
+    v11 = [(RTVehicleLocationProvider *)self _createMetricFromScoreBoard:scoreBoard];
 
-    v12 = [(RTVehicleLocationProvider *)self scoreBoardForUnusualLocation];
-    [v12 clearScoreBoard];
+    scoreBoardForUnusualLocation = [(RTVehicleLocationProvider *)self scoreBoardForUnusualLocation];
+    [scoreBoardForUnusualLocation clearScoreBoard];
 
-    v13 = [(RTVehicleLocationProvider *)self scoreBoardForUsualLocation];
-    [v13 clearScoreBoard];
+    scoreBoardForUsualLocation = [(RTVehicleLocationProvider *)self scoreBoardForUsualLocation];
+    [scoreBoardForUsualLocation clearScoreBoard];
 
-    v14 = [(RTVehicleLocationProvider *)self scoreBoard];
-    [v14 clearScoreBoard];
+    scoreBoard2 = [(RTVehicleLocationProvider *)self scoreBoard];
+    [scoreBoard2 clearScoreBoard];
 
     v15 = objc_alloc(MEMORY[0x277CCACA8]);
-    v16 = [v15 initWithCString:RTAnalyticsEventFindMyCarReports encoding:1];
-    log_analytics_submission(v16, v11);
-    v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.%@", v16];
+    name4 = [v15 initWithCString:RTAnalyticsEventFindMyCarReports encoding:1];
+    log_analytics_submission(name4, v11);
+    v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.%@", name4];
     AnalyticsSendEvent();
   }
 
@@ -3577,32 +3577,32 @@ uint64_t __56__RTVehicleLocationProvider_fetchFMCEnabledWithHandler___block_invo
       goto LABEL_9;
     }
 
-    v16 = [v4 name];
+    name4 = [notificationCopy name];
     *buf = 138412290;
-    v20 = v16;
+    v20 = name4;
     _os_log_error_impl(&dword_2304B3000, v11, OS_LOG_TYPE_ERROR, "unknown notification name, %@", buf, 0xCu);
   }
 
 LABEL_9:
 }
 
-- (void)onDailyMetricNotification:(id)a3
+- (void)onDailyMetricNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(RTNotifier *)self queue];
+  notificationCopy = notification;
+  queue = [(RTNotifier *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __55__RTVehicleLocationProvider_onDailyMetricNotification___block_invoke;
   v7[3] = &unk_2788C4A70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = notificationCopy;
+  v6 = notificationCopy;
+  dispatch_async(queue, v7);
 }
 
-- (id)_createMetricFromScoreBoard:(id)a3
+- (id)_createMetricFromScoreBoard:(id)board
 {
-  v3 = a3;
+  boardCopy = board;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v4 = _rt_log_facility_get_os_log(RTLogFacilityVehicleLocation);
@@ -3615,41 +3615,41 @@ LABEL_9:
 
   v5 = objc_opt_new();
   v6 = MEMORY[0x277CCABB0];
-  v7 = [MEMORY[0x277CBEAA8] date];
-  v8 = [v3 creationDate];
-  [v7 timeIntervalSinceDate:v8];
+  date = [MEMORY[0x277CBEAA8] date];
+  creationDate = [boardCopy creationDate];
+  [date timeIntervalSinceDate:creationDate];
   v10 = [v6 numberWithInt:v9];
   [v5 setObject:v10 forKeyedSubscript:@"duration"];
 
-  v11 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v3, "parkingEvents")}];
+  v11 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(boardCopy, "parkingEvents")}];
   [v5 setObject:v11 forKeyedSubscript:@"parkingEvents"];
 
-  v12 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v3, "engagedParkingEvents")}];
+  v12 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(boardCopy, "engagedParkingEvents")}];
   [v5 setObject:v12 forKeyedSubscript:@"engagedParkingEvents"];
 
-  v13 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v3, "assistedParkingEvents")}];
+  v13 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(boardCopy, "assistedParkingEvents")}];
   [v5 setObject:v13 forKeyedSubscript:@"assistedParkingEvents"];
 
-  v14 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v3, "engagements")}];
+  v14 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(boardCopy, "engagements")}];
   [v5 setObject:v14 forKeyedSubscript:@"engagements"];
 
-  v15 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v3, "assistances")}];
+  v15 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(boardCopy, "assistances")}];
   [v5 setObject:v15 forKeyedSubscript:@"assistances"];
 
-  v16 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v3, "suppressedEvents")}];
+  v16 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(boardCopy, "suppressedEvents")}];
   [v5 setObject:v16 forKeyedSubscript:@"suppressedParkingEvents"];
 
   return v5;
 }
 
-- (void)_recordMetricParkingEvent:(id)a3
+- (void)_recordMetricParkingEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(RTVehicleLocationProvider *)self scoreBoard];
-  [v5 parkingEvent];
+  eventCopy = event;
+  scoreBoard = [(RTVehicleLocationProvider *)self scoreBoard];
+  [scoreBoard parkingEvent];
 
-  LODWORD(v5) = [v4 usualLocation];
-  if (v5)
+  LODWORD(scoreBoard) = [eventCopy usualLocation];
+  if (scoreBoard)
   {
     [(RTVehicleLocationProvider *)self scoreBoardForUsualLocation];
   }
@@ -3662,14 +3662,14 @@ LABEL_9:
   [v6 parkingEvent];
 }
 
-- (void)_recordMetricAssistanceEvent:(id)a3
+- (void)_recordMetricAssistanceEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(RTVehicleLocationProvider *)self scoreBoard];
-  [v5 assistanceEvent];
+  eventCopy = event;
+  scoreBoard = [(RTVehicleLocationProvider *)self scoreBoard];
+  [scoreBoard assistanceEvent];
 
-  LODWORD(v5) = [v4 usualLocation];
-  if (v5)
+  LODWORD(scoreBoard) = [eventCopy usualLocation];
+  if (scoreBoard)
   {
     [(RTVehicleLocationProvider *)self scoreBoardForUsualLocation];
   }
@@ -3682,14 +3682,14 @@ LABEL_9:
   [v6 assistanceEvent];
 }
 
-- (void)_recordMetricEngagementEvent:(id)a3
+- (void)_recordMetricEngagementEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(RTVehicleLocationProvider *)self scoreBoard];
-  [v5 engagementEvent];
+  eventCopy = event;
+  scoreBoard = [(RTVehicleLocationProvider *)self scoreBoard];
+  [scoreBoard engagementEvent];
 
-  LODWORD(v5) = [v4 usualLocation];
-  if (v5)
+  LODWORD(scoreBoard) = [eventCopy usualLocation];
+  if (scoreBoard)
   {
     [(RTVehicleLocationProvider *)self scoreBoardForUsualLocation];
   }
@@ -3704,23 +3704,23 @@ LABEL_9:
 
 - (void)_recordMetricSuppressedEvent
 {
-  v2 = [(RTVehicleLocationProvider *)self scoreBoard];
-  [v2 suppressedEvent];
+  scoreBoard = [(RTVehicleLocationProvider *)self scoreBoard];
+  [scoreBoard suppressedEvent];
 }
 
-- (void)_submitFMCDailyAssessmentsWithSubmissionHandler:(id)a3
+- (void)_submitFMCDailyAssessmentsWithSubmissionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(RTVehicleLocationProvider *)self metricManager];
+  handlerCopy = handler;
+  metricManager = [(RTVehicleLocationProvider *)self metricManager];
   objc_initWeak(&location, self);
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __94__RTVehicleLocationProvider_RTMetricManager___submitFMCDailyAssessmentsWithSubmissionHandler___block_invoke;
   v8[3] = &unk_2788CAE10;
   objc_copyWeak(&v11, &location);
-  v6 = v4;
+  v6 = handlerCopy;
   v10 = v6;
-  v7 = v5;
+  v7 = metricManager;
   v9 = v7;
   [v7 fetchDiagnosticsEnabled:v8];
 
@@ -3807,13 +3807,13 @@ void __94__RTVehicleLocationProvider_RTMetricManager___submitFMCDailyAssessments
 - (void)_registerScoreBoardSubmission
 {
   objc_initWeak(&location, self);
-  v3 = [(RTVehicleLocationProvider *)self metricManager];
+  metricManager = [(RTVehicleLocationProvider *)self metricManager];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __75__RTVehicleLocationProvider_RTMetricManager___registerScoreBoardSubmission__block_invoke;
   v4[3] = &unk_2788CAE60;
   objc_copyWeak(&v5, &location);
-  [v3 registerQueriableMetric:3 withHandler:v4];
+  [metricManager registerQueriableMetric:3 withHandler:v4];
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -3844,19 +3844,19 @@ void __75__RTVehicleLocationProvider_RTMetricManager___registerScoreBoardSubmiss
   [WeakRetained _submitFMCDailyAssessmentsWithSubmissionHandler:*(a1 + 32)];
 }
 
-- (void)_submitFMCCarParkedInstanceWithParkedEvents:(id)a3
+- (void)_submitFMCCarParkedInstanceWithParkedEvents:(id)events
 {
-  v4 = a3;
-  v5 = [(RTVehicleLocationProvider *)self metricManager];
+  eventsCopy = events;
+  metricManager = [(RTVehicleLocationProvider *)self metricManager];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __90__RTVehicleLocationProvider_RTMetricManager___submitFMCCarParkedInstanceWithParkedEvents___block_invoke;
   v8[3] = &unk_2788CAEB0;
   v8[4] = self;
-  v9 = v4;
-  v10 = v5;
-  v6 = v5;
-  v7 = v4;
+  v9 = eventsCopy;
+  v10 = metricManager;
+  v6 = metricManager;
+  v7 = eventsCopy;
   [v6 fetchDiagnosticsEnabled:v8];
 }
 
@@ -3933,17 +3933,17 @@ void __90__RTVehicleLocationProvider_RTMetricManager___submitFMCCarParkedInstanc
   [*(a1 + 40) _recordMetricParkingEvent:v3];
 }
 
-- (void)_submitFMCViewedInstanceWithIdentifier:(id)a3 uiPlacement:(int)a4
+- (void)_submitFMCViewedInstanceWithIdentifier:(id)identifier uiPlacement:(int)placement
 {
-  v6 = [(RTVehicleLocationProvider *)self metricManager];
+  metricManager = [(RTVehicleLocationProvider *)self metricManager];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __97__RTVehicleLocationProvider_RTMetricManager___submitFMCViewedInstanceWithIdentifier_uiPlacement___block_invoke;
   v8[3] = &unk_2788CAF00;
-  v10 = a4;
+  placementCopy = placement;
   v8[4] = self;
-  v9 = v6;
-  v7 = v6;
+  v9 = metricManager;
+  v7 = metricManager;
   [v7 fetchDiagnosticsEnabled:v8];
 }
 
@@ -3969,19 +3969,19 @@ void __97__RTVehicleLocationProvider_RTMetricManager___submitFMCViewedInstanceWi
   [*(a1 + 32) submitMetric:v2];
 }
 
-- (void)_submitFMCAssistanceInstanceWithIdentifier:(id)a3 uiPlacement:(int)a4 assistanceType:(int)a5 assistanceValue:(int)a6
+- (void)_submitFMCAssistanceInstanceWithIdentifier:(id)identifier uiPlacement:(int)placement assistanceType:(int)type assistanceValue:(int)value
 {
-  v10 = [(RTVehicleLocationProvider *)self metricManager];
+  metricManager = [(RTVehicleLocationProvider *)self metricManager];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __132__RTVehicleLocationProvider_RTMetricManager___submitFMCAssistanceInstanceWithIdentifier_uiPlacement_assistanceType_assistanceValue___block_invoke;
   v12[3] = &unk_2788CAF50;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
+  placementCopy = placement;
+  typeCopy = type;
+  valueCopy = value;
   v12[4] = self;
-  v13 = v10;
-  v11 = v10;
+  v13 = metricManager;
+  v11 = metricManager;
   [v11 fetchDiagnosticsEnabled:v12];
 }
 
@@ -4025,18 +4025,18 @@ void __132__RTVehicleLocationProvider_RTMetricManager___submitFMCAssistanceInsta
   }
 }
 
-- (void)_submitFMCReturnToCarInstanceWithIdentifier:(id)a3 horizontalAccuracy:(int)a4 horizontalDistance:(int)a5
+- (void)_submitFMCReturnToCarInstanceWithIdentifier:(id)identifier horizontalAccuracy:(int)accuracy horizontalDistance:(int)distance
 {
-  v8 = [(RTVehicleLocationProvider *)self metricManager];
+  metricManager = [(RTVehicleLocationProvider *)self metricManager];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __128__RTVehicleLocationProvider_RTMetricManager___submitFMCReturnToCarInstanceWithIdentifier_horizontalAccuracy_horizontalDistance___block_invoke;
   v10[3] = &unk_2788CAF78;
-  v12 = a4;
-  v13 = a5;
+  accuracyCopy = accuracy;
+  distanceCopy = distance;
   v10[4] = self;
-  v11 = v8;
-  v9 = v8;
+  v11 = metricManager;
+  v9 = metricManager;
   [v9 fetchDiagnosticsEnabled:v10];
 }
 
@@ -4063,63 +4063,63 @@ void __128__RTVehicleLocationProvider_RTMetricManager___submitFMCReturnToCarInst
   [*(a1 + 32) submitMetric:v2];
 }
 
-- (void)_submitFMCVehicleConnectionEventInstanceWithConnectionStatus:(int)a3
+- (void)_submitFMCVehicleConnectionEventInstanceWithConnectionStatus:(int)status
 {
-  v3 = self;
-  if (a3 != 3)
+  selfCopy = self;
+  if (status != 3)
   {
     v7 = 0.0;
     goto LABEL_9;
   }
 
-  v4 = [(RTVehicleLocationProvider *)self lastVehicleParkedEvent];
+  lastVehicleParkedEvent = [(RTVehicleLocationProvider *)self lastVehicleParkedEvent];
 
-  if (v4)
+  if (lastVehicleParkedEvent)
   {
-    v5 = [MEMORY[0x277CBEAA8] date];
-    v6 = [(RTVehicleLocationProvider *)v3 lastVehicleParkedEvent];
+    date = [MEMORY[0x277CBEAA8] date];
+    lastVehicleParkedEvent2 = [(RTVehicleLocationProvider *)selfCopy lastVehicleParkedEvent];
   }
 
   else
   {
-    v8 = [(RTVehicleLocationProvider *)v3 pendingVehicleParkedEvent];
+    pendingVehicleParkedEvent = [(RTVehicleLocationProvider *)selfCopy pendingVehicleParkedEvent];
 
-    if (!v8)
+    if (!pendingVehicleParkedEvent)
     {
       v12 = -1.0;
       goto LABEL_8;
     }
 
-    v5 = [MEMORY[0x277CBEAA8] date];
-    v6 = [(RTVehicleLocationProvider *)v3 pendingVehicleParkedEvent];
+    date = [MEMORY[0x277CBEAA8] date];
+    lastVehicleParkedEvent2 = [(RTVehicleLocationProvider *)selfCopy pendingVehicleParkedEvent];
   }
 
-  v9 = v6;
-  v10 = [v6 date];
-  [v5 timeIntervalSinceDate:v10];
+  v9 = lastVehicleParkedEvent2;
+  date2 = [lastVehicleParkedEvent2 date];
+  [date timeIntervalSinceDate:date2];
   v12 = v11;
 
 LABEL_8:
-  self = v3;
-  *&a3 = 3;
+  self = selfCopy;
+  *&status = 3;
   v7 = v12;
 LABEL_9:
 
-  [(RTVehicleLocationProvider *)self _submitFMCVehicleConnectionEventInstanceWithConnectionStatus:*&a3 value:v7];
+  [(RTVehicleLocationProvider *)self _submitFMCVehicleConnectionEventInstanceWithConnectionStatus:*&status value:v7];
 }
 
-- (void)_submitFMCVehicleConnectionEventInstanceWithConnectionStatus:(int)a3 value:(double)a4
+- (void)_submitFMCVehicleConnectionEventInstanceWithConnectionStatus:(int)status value:(double)value
 {
-  v7 = [(RTVehicleLocationProvider *)self metricManager];
+  metricManager = [(RTVehicleLocationProvider *)self metricManager];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __113__RTVehicleLocationProvider_RTMetricManager___submitFMCVehicleConnectionEventInstanceWithConnectionStatus_value___block_invoke;
   v9[3] = &unk_2788CAF50;
-  v12 = a3;
-  v11 = a4;
+  statusCopy = status;
+  valueCopy = value;
   v9[4] = self;
-  v10 = v7;
-  v8 = v7;
+  v10 = metricManager;
+  v8 = metricManager;
   [v8 fetchDiagnosticsEnabled:v9];
 }
 

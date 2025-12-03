@@ -1,41 +1,41 @@
 @interface POExtensionAgentProcess
 - (BOOL)isCallerCurrentSSOExtension;
-- (BOOL)isURL:(id)a3 validForProfile:(id)a4;
+- (BOOL)isURL:(id)l validForProfile:(id)profile;
 - (POExtensionAgentProcess)init;
-- (POExtensionAgentProcess)initWithXPCConnection:(id)a3 authenticationProcess:(id)a4;
-- (__SecKey)_keyForKeyType:(int64_t)a3 error:(id *)a4;
-- (id)bundleIdentifierForXPCConnection:(id)a3;
-- (id)identityForKeyType:(int64_t)a3;
-- (id)keyProxyEndpointForKeyType:(int64_t)a3;
-- (void)addEvent:(id)a3;
-- (void)addEvent:(id)a3 forKeyType:(int64_t)a4;
-- (void)attestKey:(int64_t)a3 pending:(BOOL)a4 clientDataHash:(id)a5 completion:(id)a6;
-- (void)authenticationMethodWithCompletion:(id)a3;
-- (void)completeRotationKeyForKeyType:(int64_t)a3 completion:(id)a4;
+- (POExtensionAgentProcess)initWithXPCConnection:(id)connection authenticationProcess:(id)process;
+- (__SecKey)_keyForKeyType:(int64_t)type error:(id *)error;
+- (id)bundleIdentifierForXPCConnection:(id)connection;
+- (id)identityForKeyType:(int64_t)type;
+- (id)keyProxyEndpointForKeyType:(int64_t)type;
+- (void)addEvent:(id)event;
+- (void)addEvent:(id)event forKeyType:(int64_t)type;
+- (void)attestKey:(int64_t)key pending:(BOOL)pending clientDataHash:(id)hash completion:(id)completion;
+- (void)authenticationMethodWithCompletion:(id)completion;
+- (void)completeRotationKeyForKeyType:(int64_t)type completion:(id)completion;
 - (void)connectionInvalidated;
-- (void)deviceRegistrationsNeedsRepairWithCompletion:(id)a3;
+- (void)deviceRegistrationsNeedsRepairWithCompletion:(id)completion;
 - (void)invalidateAllKeyProxies;
 - (void)isCallerCurrentSSOExtension;
-- (void)isDeviceRegisteredWithCompletion:(id)a3;
-- (void)isUserRegisteredWithCompletion:(id)a3;
-- (void)loginConfigurationWithCompletion:(id)a3;
-- (void)loginUserNameWithCompletion:(id)a3;
-- (void)registrationTokenWithCompletion:(id)a3;
-- (void)resetDeviceKeysWithCompletion:(id)a3;
-- (void)resetUserSecureEnclaveKeyWithCompletion:(id)a3;
-- (void)rotateKeyForKeyType:(int64_t)a3 completion:(id)a4;
-- (void)secIdentityProxyEndpointForKeyType:(int64_t)a3 completion:(id)a4;
-- (void)secKeyProxyEndpointForKeyType:(int64_t)a3 completion:(id)a4;
-- (void)setCertificateData:(id)a3 keyType:(int64_t)a4 completion:(id)a5;
-- (void)setLoginConfiguration:(id)a3 completion:(id)a4;
-- (void)setLoginUserName:(id)a3 completion:(id)a4;
-- (void)setRegistrationToken:(id)a3 completion:(id)a4;
-- (void)setSsoTokens:(id)a3 completion:(id)a4;
-- (void)setUserLoginConfiguration:(id)a3 completion:(id)a4;
-- (void)ssoTokensWithCompletion:(id)a3;
-- (void)userLoginConfigurationWithCompletion:(id)a3;
-- (void)userNeedsReauthenticationWithCompletion:(id)a3;
-- (void)userRegistrationsNeedsRepairWithCompletion:(id)a3;
+- (void)isDeviceRegisteredWithCompletion:(id)completion;
+- (void)isUserRegisteredWithCompletion:(id)completion;
+- (void)loginConfigurationWithCompletion:(id)completion;
+- (void)loginUserNameWithCompletion:(id)completion;
+- (void)registrationTokenWithCompletion:(id)completion;
+- (void)resetDeviceKeysWithCompletion:(id)completion;
+- (void)resetUserSecureEnclaveKeyWithCompletion:(id)completion;
+- (void)rotateKeyForKeyType:(int64_t)type completion:(id)completion;
+- (void)secIdentityProxyEndpointForKeyType:(int64_t)type completion:(id)completion;
+- (void)secKeyProxyEndpointForKeyType:(int64_t)type completion:(id)completion;
+- (void)setCertificateData:(id)data keyType:(int64_t)type completion:(id)completion;
+- (void)setLoginConfiguration:(id)configuration completion:(id)completion;
+- (void)setLoginUserName:(id)name completion:(id)completion;
+- (void)setRegistrationToken:(id)token completion:(id)completion;
+- (void)setSsoTokens:(id)tokens completion:(id)completion;
+- (void)setUserLoginConfiguration:(id)configuration completion:(id)completion;
+- (void)ssoTokensWithCompletion:(id)completion;
+- (void)userLoginConfigurationWithCompletion:(id)completion;
+- (void)userNeedsReauthenticationWithCompletion:(id)completion;
+- (void)userRegistrationsNeedsRepairWithCompletion:(id)completion;
 @end
 
 @implementation POExtensionAgentProcess
@@ -51,13 +51,13 @@
     configurationManager = v2->_configurationManager;
     v2->_configurationManager = v3;
 
-    v5 = [MEMORY[0x277CEBEE0] defaultManager];
+    defaultManager = [MEMORY[0x277CEBEE0] defaultManager];
     configurationHost = v2->_configurationHost;
-    v2->_configurationHost = v5;
+    v2->_configurationHost = defaultManager;
 
-    v7 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     keyProxies = v2->_keyProxies;
-    v2->_keyProxies = v7;
+    v2->_keyProxies = array;
 
     v9 = objc_alloc_init(MEMORY[0x277D3D218]);
     keychainHelper = v2->_keychainHelper;
@@ -71,15 +71,15 @@
   return v2;
 }
 
-- (POExtensionAgentProcess)initWithXPCConnection:(id)a3 authenticationProcess:(id)a4
+- (POExtensionAgentProcess)initWithXPCConnection:(id)connection authenticationProcess:(id)process
 {
-  v6 = a3;
-  v7 = a4;
+  connectionCopy = connection;
+  processCopy = process;
   v8 = [(POExtensionAgentProcess *)self init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_xpcConnection, v6);
+    objc_storeWeak(&v8->_xpcConnection, connectionCopy);
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __71__POExtensionAgentProcess_initWithXPCConnection_authenticationProcess___block_invoke;
@@ -89,7 +89,7 @@
     WeakRetained = objc_loadWeakRetained(&v9->_xpcConnection);
     [WeakRetained setInterruptionHandler:v13];
 
-    objc_storeStrong(v10 + 4, a4);
+    objc_storeStrong(v10 + 4, process);
   }
 
   return v9;
@@ -117,28 +117,28 @@ void __71__POExtensionAgentProcess_initWithXPCConnection_authenticationProcess__
     v10 = 136315394;
     v11 = "[POExtensionAgentProcess connectionInvalidated]";
     v12 = 2112;
-    v13 = self;
+    selfCopy = self;
     _os_log_impl(&dword_25E831000, v3, OS_LOG_TYPE_DEFAULT, "%s  on %@", &v10, 0x16u);
   }
 
   v4 = MEMORY[0x277D3D1B8];
-  v5 = [(POExtensionAgentProcess *)self _analytics];
-  [v4 analyticsForLoginManager:v5];
+  _analytics = [(POExtensionAgentProcess *)self _analytics];
+  [v4 analyticsForLoginManager:_analytics];
 
   [(POExtensionAgentProcess *)self invalidateAllKeyProxies];
-  v6 = [(POExtensionAgentProcess *)self authenticationObserver];
+  authenticationObserver = [(POExtensionAgentProcess *)self authenticationObserver];
 
-  if (v6)
+  if (authenticationObserver)
   {
-    v7 = [MEMORY[0x277CCAB98] defaultCenter];
-    v8 = [(POExtensionAgentProcess *)self authenticationObserver];
-    [v7 removeObserver:v8];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    authenticationObserver2 = [(POExtensionAgentProcess *)self authenticationObserver];
+    [defaultCenter removeObserver:authenticationObserver2];
   }
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (__SecKey)_keyForKeyType:(int64_t)a3 error:(id *)a4
+- (__SecKey)_keyForKeyType:(int64_t)type error:(id *)error
 {
   v7 = PO_LOG_POExtensionAgentProcess();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
@@ -146,9 +146,9 @@ void __71__POExtensionAgentProcess_initWithXPCConnection_authenticationProcess__
     [POExtensionAgentProcess _keyForKeyType:error:];
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_xpcConnection);
@@ -156,10 +156,10 @@ void __71__POExtensionAgentProcess_initWithXPCConnection_authenticationProcess__
 
   if (v9)
   {
-    v10 = [(POExtensionAgentProcess *)self configurationManager];
-    v11 = [v10 currentDeviceConfiguration];
+    configurationManager = [(POExtensionAgentProcess *)self configurationManager];
+    currentDeviceConfiguration = [configurationManager currentDeviceConfiguration];
 
-    if (!v11 || ![(POExtensionAgentProcess *)self isCallerCurrentSSOExtension])
+    if (!currentDeviceConfiguration || ![(POExtensionAgentProcess *)self isCallerCurrentSSOExtension])
     {
       v48[0] = MEMORY[0x277D85DD0];
       v48[1] = 3221225472;
@@ -174,15 +174,15 @@ void __71__POExtensionAgentProcess_initWithXPCConnection_authenticationProcess__
 
     v12 = objc_alloc_init(MEMORY[0x277CD4790]);
     v47 = 0;
-    if (a3 <= 4)
+    if (type <= 4)
     {
-      if (a3 > 2)
+      if (type > 2)
       {
-        if (a3 == 3)
+        if (type == 3)
         {
-          v15 = [(POExtensionAgentProcess *)self configurationManager];
-          v16 = [v15 currentUserConfiguration];
-          v17 = [v16 sepKeyWithContext:v12];
+          configurationManager2 = [(POExtensionAgentProcess *)self configurationManager];
+          currentUserConfiguration = [configurationManager2 currentUserConfiguration];
+          v17 = [currentUserConfiguration sepKeyWithContext:v12];
 LABEL_33:
           v19 = v17;
           v47 = v17;
@@ -200,41 +200,41 @@ LABEL_44:
 
       else
       {
-        if (a3 != 1)
+        if (type != 1)
         {
-          if (a3 != 2)
+          if (type != 2)
           {
             goto LABEL_41;
           }
 
-          v13 = [(POExtensionAgentProcess *)self configurationManager];
-          v14 = [v13 userDeviceConfiguration];
+          configurationManager3 = [(POExtensionAgentProcess *)self configurationManager];
+          userDeviceConfiguration = [configurationManager3 userDeviceConfiguration];
 
-          if (v14)
+          if (userDeviceConfiguration)
           {
-            v15 = [(POExtensionAgentProcess *)self configurationManager];
-            v16 = [v15 userDeviceConfiguration];
-            v17 = [v16 deviceEncryptionKeyWithContext:v12];
+            configurationManager2 = [(POExtensionAgentProcess *)self configurationManager];
+            currentUserConfiguration = [configurationManager2 userDeviceConfiguration];
+            v17 = [currentUserConfiguration deviceEncryptionKeyWithContext:v12];
             goto LABEL_33;
           }
 
           goto LABEL_26;
         }
 
-        v24 = [(POExtensionAgentProcess *)self configurationManager];
-        v25 = [v24 userDeviceConfiguration];
+        configurationManager4 = [(POExtensionAgentProcess *)self configurationManager];
+        userDeviceConfiguration2 = [configurationManager4 userDeviceConfiguration];
 
-        if (v25)
+        if (userDeviceConfiguration2)
         {
-          v15 = [(POExtensionAgentProcess *)self configurationManager];
-          v16 = [v15 userDeviceConfiguration];
-          v17 = [v16 deviceSigningKeyWithContext:v12];
+          configurationManager2 = [(POExtensionAgentProcess *)self configurationManager];
+          currentUserConfiguration = [configurationManager2 userDeviceConfiguration];
+          v17 = [currentUserConfiguration deviceSigningKeyWithContext:v12];
           goto LABEL_33;
         }
       }
 
 LABEL_29:
-      v23 = [v11 deviceSigningKeyWithContext:v12];
+      v23 = [currentDeviceConfiguration deviceSigningKeyWithContext:v12];
 LABEL_30:
       v19 = v23;
       v47 = v23;
@@ -245,7 +245,7 @@ LABEL_30:
 
 LABEL_41:
       v33 = MEMORY[0x277CCACA8];
-      v34 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+      v34 = [MEMORY[0x277CCABB0] numberWithInteger:type];
       v35 = [v33 stringWithFormat:@"%@, %@", v9, v34];
 
       v42[0] = MEMORY[0x277D85DD0];
@@ -255,21 +255,21 @@ LABEL_41:
       v43 = v35;
       v36 = v35;
       v37 = __48__POExtensionAgentProcess__keyForKeyType_error___block_invoke_27(v42);
-      if (a4)
+      if (error)
       {
         v37 = v37;
-        *a4 = v37;
+        *error = v37;
       }
 
       v19 = 0;
       goto LABEL_44;
     }
 
-    if (a3 > 10)
+    if (type > 10)
     {
-      if (a3 != 11)
+      if (type != 11)
       {
-        if (a3 == 20)
+        if (type == 20)
         {
           cf = 0;
           v44 = 0u;
@@ -290,14 +290,14 @@ LABEL_41:
           v26 = [MEMORY[0x277CBEA90] dataWithBytes:&v44 length:32];
           [v12 setOptionCallerAuditToken:v26];
 
-          v39 = [(POExtensionAgentProcess *)self keychainHelper];
-          v41 = [(POExtensionAgentProcess *)self configurationManager];
-          v40 = [v41 currentUserConfiguration];
-          v27 = [v40 smartCardTokenId];
-          v28 = [(POExtensionAgentProcess *)self configurationManager];
-          v29 = [v28 currentUserConfiguration];
-          v30 = [v29 smartCardHash];
-          v31 = [v39 retrieveCertAndKeyForTokenId:v27 context:v12 forSigning:1 hash:v30 certificate:&cf privateKey:&v47];
+          keychainHelper = [(POExtensionAgentProcess *)self keychainHelper];
+          configurationManager5 = [(POExtensionAgentProcess *)self configurationManager];
+          currentUserConfiguration2 = [configurationManager5 currentUserConfiguration];
+          smartCardTokenId = [currentUserConfiguration2 smartCardTokenId];
+          configurationManager6 = [(POExtensionAgentProcess *)self configurationManager];
+          currentUserConfiguration3 = [configurationManager6 currentUserConfiguration];
+          smartCardHash = [currentUserConfiguration3 smartCardHash];
+          v31 = [keychainHelper retrieveCertAndKeyForTokenId:smartCardTokenId context:v12 forSigning:1 hash:smartCardHash certificate:&cf privateKey:&v47];
 
           if ((v31 & 1) == 0)
           {
@@ -320,9 +320,9 @@ LABEL_41:
       }
     }
 
-    else if (a3 != 5)
+    else if (type != 5)
     {
-      if (a3 != 10)
+      if (type != 10)
       {
         goto LABEL_41;
       }
@@ -331,7 +331,7 @@ LABEL_41:
     }
 
 LABEL_26:
-    v23 = [v11 deviceEncryptionKeyWithContext:v12];
+    v23 = [currentDeviceConfiguration deviceEncryptionKeyWithContext:v12];
     goto LABEL_30;
   }
 
@@ -390,7 +390,7 @@ id __48__POExtensionAgentProcess__keyForKeyType_error___block_invoke_27(uint64_t
   return v2;
 }
 
-- (id)keyProxyEndpointForKeyType:(int64_t)a3
+- (id)keyProxyEndpointForKeyType:(int64_t)type
 {
   v5 = PO_LOG_POExtensionAgentProcess();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -398,28 +398,28 @@ id __48__POExtensionAgentProcess__keyForKeyType_error___block_invoke_27(uint64_t
     [POExtensionAgentProcess keyProxyEndpointForKeyType:];
   }
 
-  v6 = [(POExtensionAgentProcess *)self _keyForKeyType:a3 error:0];
+  v6 = [(POExtensionAgentProcess *)self _keyForKeyType:type error:0];
   if (v6)
   {
     v7 = [objc_alloc(MEMORY[0x277CDBD80]) initWithKey:v6];
-    v8 = self;
-    objc_sync_enter(v8);
-    v9 = [(POExtensionAgentProcess *)v8 keyProxies];
-    [v9 addObject:v7];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    keyProxies = [(POExtensionAgentProcess *)selfCopy keyProxies];
+    [keyProxies addObject:v7];
 
-    objc_sync_exit(v8);
-    v10 = [v7 endpoint];
+    objc_sync_exit(selfCopy);
+    endpoint = [v7 endpoint];
   }
 
   else
   {
-    v10 = 0;
+    endpoint = 0;
   }
 
-  return v10;
+  return endpoint;
 }
 
-- (id)identityForKeyType:(int64_t)a3
+- (id)identityForKeyType:(int64_t)type
 {
   v5 = PO_LOG_POExtensionAgentProcess();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -427,49 +427,49 @@ id __48__POExtensionAgentProcess__keyForKeyType_error___block_invoke_27(uint64_t
     [POExtensionAgentProcess identityForKeyType:];
   }
 
-  v6 = [(POExtensionAgentProcess *)self configurationManager];
-  v7 = [v6 currentDeviceConfiguration];
+  configurationManager = [(POExtensionAgentProcess *)self configurationManager];
+  currentDeviceConfiguration = [configurationManager currentDeviceConfiguration];
 
-  if (!v7)
+  if (!currentDeviceConfiguration)
   {
     v8 = __46__POExtensionAgentProcess_identityForKeyType___block_invoke();
 LABEL_25:
-    v21 = 0;
+    endpoint = 0;
     goto LABEL_29;
   }
 
   v40 = 0;
-  if (a3 <= 4)
+  if (type <= 4)
   {
-    switch(a3)
+    switch(type)
     {
       case 1:
-        v11 = [(POExtensionAgentProcess *)self configurationManager];
-        v12 = [v11 userDeviceConfiguration];
+        configurationManager2 = [(POExtensionAgentProcess *)self configurationManager];
+        userDeviceConfiguration = [configurationManager2 userDeviceConfiguration];
 
-        if (!v12)
+        if (!userDeviceConfiguration)
         {
 LABEL_20:
-          v16 = [v7 deviceSigningIdentity];
+          deviceSigningIdentity = [currentDeviceConfiguration deviceSigningIdentity];
           goto LABEL_27;
         }
 
-        v13 = [(POExtensionAgentProcess *)self configurationManager];
-        v14 = [v13 userDeviceConfiguration];
-        v15 = [v14 deviceSigningIdentity];
+        configurationManager3 = [(POExtensionAgentProcess *)self configurationManager];
+        userDeviceConfiguration2 = [configurationManager3 userDeviceConfiguration];
+        deviceSigningIdentity2 = [userDeviceConfiguration2 deviceSigningIdentity];
         break;
       case 2:
-        v17 = [(POExtensionAgentProcess *)self configurationManager];
-        v18 = [v17 userDeviceConfiguration];
+        configurationManager4 = [(POExtensionAgentProcess *)self configurationManager];
+        userDeviceConfiguration3 = [configurationManager4 userDeviceConfiguration];
 
-        if (!v18)
+        if (!userDeviceConfiguration3)
         {
           goto LABEL_26;
         }
 
-        v13 = [(POExtensionAgentProcess *)self configurationManager];
-        v14 = [v13 userDeviceConfiguration];
-        v15 = [v14 deviceEncryptionIdentity];
+        configurationManager3 = [(POExtensionAgentProcess *)self configurationManager];
+        userDeviceConfiguration2 = [configurationManager3 userDeviceConfiguration];
+        deviceSigningIdentity2 = [userDeviceConfiguration2 deviceEncryptionIdentity];
         break;
       case 4:
         goto LABEL_20;
@@ -477,8 +477,8 @@ LABEL_20:
         goto LABEL_24;
     }
 
-    v19 = v15;
-    v40 = v15;
+    v19 = deviceSigningIdentity2;
+    v40 = deviceSigningIdentity2;
 
     if (!v19)
     {
@@ -488,11 +488,11 @@ LABEL_20:
     goto LABEL_28;
   }
 
-  if (a3 <= 10)
+  if (type <= 10)
   {
-    if (a3 != 5)
+    if (type != 5)
     {
-      if (a3 != 10)
+      if (type != 10)
       {
         goto LABEL_24;
       }
@@ -501,10 +501,10 @@ LABEL_20:
     }
 
 LABEL_26:
-    v16 = [v7 deviceEncryptionIdentity];
+    deviceSigningIdentity = [currentDeviceConfiguration deviceEncryptionIdentity];
 LABEL_27:
-    v40 = v16;
-    if (v16)
+    v40 = deviceSigningIdentity;
+    if (deviceSigningIdentity)
     {
       goto LABEL_28;
     }
@@ -514,17 +514,17 @@ LABEL_24:
     v37[1] = 3221225472;
     v37[2] = __46__POExtensionAgentProcess_identityForKeyType___block_invoke_43;
     v37[3] = &__block_descriptor_40_e14___NSError_8__0l;
-    v37[4] = a3;
+    v37[4] = type;
     v20 = __46__POExtensionAgentProcess_identityForKeyType___block_invoke_43(v37);
     goto LABEL_25;
   }
 
-  if (a3 == 11)
+  if (type == 11)
   {
     goto LABEL_26;
   }
 
-  if (a3 != 20)
+  if (type != 20)
   {
     goto LABEL_24;
   }
@@ -548,14 +548,14 @@ LABEL_24:
   v27 = [MEMORY[0x277CBEA90] dataWithBytes:&v38 length:32];
   [v36 setOptionCallerAuditToken:v27];
 
-  v34 = [(POExtensionAgentProcess *)self keychainHelper];
-  v35 = [(POExtensionAgentProcess *)self configurationManager];
-  v28 = [v35 currentUserConfiguration];
-  v29 = [v28 smartCardTokenId];
-  v30 = [(POExtensionAgentProcess *)self configurationManager];
-  v31 = [v30 currentUserConfiguration];
-  v32 = [v31 smartCardHash];
-  LOBYTE(v27) = [v34 retrieveIdentityForTokenId:v29 context:v36 forSigning:1 hash:v32 identity:&v40];
+  keychainHelper = [(POExtensionAgentProcess *)self keychainHelper];
+  configurationManager5 = [(POExtensionAgentProcess *)self configurationManager];
+  currentUserConfiguration = [configurationManager5 currentUserConfiguration];
+  smartCardTokenId = [currentUserConfiguration smartCardTokenId];
+  configurationManager6 = [(POExtensionAgentProcess *)self configurationManager];
+  currentUserConfiguration2 = [configurationManager6 currentUserConfiguration];
+  smartCardHash = [currentUserConfiguration2 smartCardHash];
+  LOBYTE(v27) = [keychainHelper retrieveIdentityForTokenId:smartCardTokenId context:v36 forSigning:1 hash:smartCardHash identity:&v40];
 
   if ((v27 & 1) == 0)
   {
@@ -570,17 +570,17 @@ LABEL_24:
 LABEL_28:
   v22 = objc_alloc(MEMORY[0x277CDBD80]);
   v23 = [v22 initWithIdentity:v40];
-  v24 = self;
-  objc_sync_enter(v24);
-  v25 = [(POExtensionAgentProcess *)v24 keyProxies];
-  [v25 addObject:v23];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  keyProxies = [(POExtensionAgentProcess *)selfCopy keyProxies];
+  [keyProxies addObject:v23];
 
-  objc_sync_exit(v24);
-  v21 = [v23 endpoint];
+  objc_sync_exit(selfCopy);
+  endpoint = [v23 endpoint];
 
 LABEL_29:
 
-  return v21;
+  return endpoint;
 }
 
 id __46__POExtensionAgentProcess_identityForKeyType___block_invoke()
@@ -627,15 +627,15 @@ id __46__POExtensionAgentProcess_identityForKeyType___block_invoke_43(uint64_t a
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (id)bundleIdentifierForXPCConnection:(id)a3
+- (id)bundleIdentifierForXPCConnection:(id)connection
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = v3;
+  connectionCopy = connection;
+  v4 = connectionCopy;
   memset(&error[1], 0, 32);
-  if (v3)
+  if (connectionCopy)
   {
-    [v3 auditToken];
+    [connectionCopy auditToken];
   }
 
   token = *&error[1];
@@ -790,22 +790,22 @@ id __60__POExtensionAgentProcess_bundleIdentifierForXPCConnection___block_invoke
 
   WeakRetained = objc_loadWeakRetained(&self->_xpcConnection);
   v5 = [WeakRetained valueForEntitlement:@"com.apple.private.platformsso.loginmanager"];
-  v6 = [v5 BOOLValue];
+  bOOLValue = [v5 BOOLValue];
 
-  if ((v6 & 1) == 0)
+  if ((bOOLValue & 1) == 0)
   {
     v8 = objc_loadWeakRetained(&self->_xpcConnection);
     v9 = [(POExtensionAgentProcess *)self bundleIdentifierForXPCConnection:v8];
 
-    v10 = [(POExtensionAgentProcess *)self configurationManager];
-    v11 = [v10 currentDeviceConfiguration];
+    configurationManager = [(POExtensionAgentProcess *)self configurationManager];
+    currentDeviceConfiguration = [configurationManager currentDeviceConfiguration];
 
-    if (v11)
+    if (currentDeviceConfiguration)
     {
-      v12 = [(POExtensionAgentProcess *)self configurationManager];
-      v13 = [v12 currentDeviceConfiguration];
-      v14 = [v13 extensionIdentifier];
-      v15 = [v14 isEqualToString:v9];
+      configurationManager2 = [(POExtensionAgentProcess *)self configurationManager];
+      currentDeviceConfiguration2 = [configurationManager2 currentDeviceConfiguration];
+      extensionIdentifier = [currentDeviceConfiguration2 extensionIdentifier];
+      v15 = [extensionIdentifier isEqualToString:v9];
 
       if (v15)
       {
@@ -866,9 +866,9 @@ id __54__POExtensionAgentProcess_isCallerCurrentSSOExtension__block_invoke_53(ui
   return v2;
 }
 
-- (void)isDeviceRegisteredWithCompletion:(id)a3
+- (void)isDeviceRegisteredWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = PO_LOG_POExtensionAgentProcess();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -881,42 +881,42 @@ id __54__POExtensionAgentProcess_isCallerCurrentSSOExtension__block_invoke_53(ui
 
   if (!v7)
   {
-    v15 = __48__POExtensionAgentProcess__keyForKeyType_error___block_invoke();
-    if (v4)
+    currentLoginConfiguration = __48__POExtensionAgentProcess__keyForKeyType_error___block_invoke();
+    if (completionCopy)
     {
-      v4[2](v4, 0, v15);
+      completionCopy[2](completionCopy, 0, currentLoginConfiguration);
     }
 
     goto LABEL_11;
   }
 
-  v8 = [(POExtensionAgentProcess *)self configurationManager];
-  v9 = [v8 currentDeviceConfiguration];
-  if (!v9)
+  configurationManager = [(POExtensionAgentProcess *)self configurationManager];
+  currentDeviceConfiguration = [configurationManager currentDeviceConfiguration];
+  if (!currentDeviceConfiguration)
   {
     goto LABEL_13;
   }
 
-  v10 = v9;
-  v11 = [(POExtensionAgentProcess *)self configurationManager];
-  v12 = [v11 currentDeviceConfiguration];
-  if (![v12 registrationCompleted])
+  v10 = currentDeviceConfiguration;
+  configurationManager2 = [(POExtensionAgentProcess *)self configurationManager];
+  currentDeviceConfiguration2 = [configurationManager2 currentDeviceConfiguration];
+  if (![currentDeviceConfiguration2 registrationCompleted])
   {
 
 LABEL_13:
     goto LABEL_14;
   }
 
-  v13 = [(POExtensionAgentProcess *)self isCallerCurrentSSOExtension];
+  isCallerCurrentSSOExtension = [(POExtensionAgentProcess *)self isCallerCurrentSSOExtension];
 
-  if (v13)
+  if (isCallerCurrentSSOExtension)
   {
-    v14 = [(POExtensionAgentProcess *)self configurationManager];
-    v15 = [v14 currentLoginConfiguration];
+    configurationManager3 = [(POExtensionAgentProcess *)self configurationManager];
+    currentLoginConfiguration = [configurationManager3 currentLoginConfiguration];
 
-    if (v4)
+    if (completionCopy)
     {
-      (v4)[2](v4, v15 != 0, 0);
+      (completionCopy)[2](completionCopy, currentLoginConfiguration != 0, 0);
     }
 
 LABEL_11:
@@ -925,17 +925,17 @@ LABEL_11:
   }
 
 LABEL_14:
-  if (v4)
+  if (completionCopy)
   {
-    v4[2](v4, 0, 0);
+    completionCopy[2](completionCopy, 0, 0);
   }
 
 LABEL_16:
 }
 
-- (void)isUserRegisteredWithCompletion:(id)a3
+- (void)isUserRegisteredWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = PO_LOG_POExtensionAgentProcess();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -948,10 +948,10 @@ LABEL_16:
 
   if (!v7)
   {
-    v9 = __48__POExtensionAgentProcess__keyForKeyType_error___block_invoke();
-    if (v4)
+    currentUserConfiguration = __48__POExtensionAgentProcess__keyForKeyType_error___block_invoke();
+    if (completionCopy)
     {
-      v4[2](v4, 0, v9);
+      completionCopy[2](completionCopy, 0, currentUserConfiguration);
     }
 
     goto LABEL_9;
@@ -959,12 +959,12 @@ LABEL_16:
 
   if ([(POExtensionAgentProcess *)self isCallerCurrentSSOExtension])
   {
-    v8 = [(POExtensionAgentProcess *)self configurationManager];
-    v9 = [v8 currentUserConfiguration];
+    configurationManager = [(POExtensionAgentProcess *)self configurationManager];
+    currentUserConfiguration = [configurationManager currentUserConfiguration];
 
-    if (v4)
+    if (completionCopy)
     {
-      (v4)[2](v4, v9 != 0, 0);
+      (completionCopy)[2](completionCopy, currentUserConfiguration != 0, 0);
     }
 
 LABEL_9:
@@ -972,17 +972,17 @@ LABEL_9:
     goto LABEL_12;
   }
 
-  if (v4)
+  if (completionCopy)
   {
-    v4[2](v4, 0, 0);
+    completionCopy[2](completionCopy, 0, 0);
   }
 
 LABEL_12:
 }
 
-- (void)registrationTokenWithCompletion:(id)a3
+- (void)registrationTokenWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = PO_LOG_POExtensionAgentProcess();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -996,35 +996,35 @@ LABEL_12:
   if (v7)
   {
     v8 = [POProfile alloc];
-    v9 = [(POExtensionAgentProcess *)self configurationHost];
-    v10 = [v9 validatedProfileForPlatformSSO];
-    v11 = [(POProfile *)v8 initWithProfile:v10];
+    configurationHost = [(POExtensionAgentProcess *)self configurationHost];
+    validatedProfileForPlatformSSO = [configurationHost validatedProfileForPlatformSSO];
+    v11 = [(POProfile *)v8 initWithProfile:validatedProfileForPlatformSSO];
 
     if (v11)
     {
       if (![(POExtensionAgentProcess *)self isCallerCurrentSSOExtension])
       {
-        (*(v4 + 2))(v4, 0, 0);
+        (*(completionCopy + 2))(completionCopy, 0, 0);
         goto LABEL_12;
       }
 
-      v12 = [(POProfile *)v11 registrationToken];
-      (*(v4 + 2))(v4, v12, 0);
+      registrationToken = [(POProfile *)v11 registrationToken];
+      (*(completionCopy + 2))(completionCopy, registrationToken, 0);
     }
 
     else
     {
-      v12 = __59__POExtensionAgentProcess_registrationTokenWithCompletion___block_invoke_73();
-      (*(v4 + 2))(v4, 0, v12);
+      registrationToken = __59__POExtensionAgentProcess_registrationTokenWithCompletion___block_invoke_73();
+      (*(completionCopy + 2))(completionCopy, 0, registrationToken);
     }
   }
 
   else
   {
     v11 = __48__POExtensionAgentProcess__keyForKeyType_error___block_invoke();
-    if (v4)
+    if (completionCopy)
     {
-      (*(v4 + 2))(v4, 0, v11);
+      (*(completionCopy + 2))(completionCopy, 0, v11);
     }
   }
 
@@ -1043,25 +1043,25 @@ id __59__POExtensionAgentProcess_registrationTokenWithCompletion___block_invoke_
   return v0;
 }
 
-- (void)setRegistrationToken:(id)a3 completion:(id)a4
+- (void)setRegistrationToken:(id)token completion:(id)completion
 {
-  v4 = a4;
+  completionCopy = completion;
   v5 = PO_LOG_POExtensionAgentProcess();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [POExtensionAgentProcess setRegistrationToken:completion:];
   }
 
-  if (v4)
+  if (completionCopy)
   {
     v6 = [MEMORY[0x277D3D1F0] internalErrorWithMessage:@"not impl"];
-    v4[2](v4, 0, v6);
+    completionCopy[2](completionCopy, 0, v6);
   }
 }
 
-- (void)authenticationMethodWithCompletion:(id)a3
+- (void)authenticationMethodWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = PO_LOG_POExtensionAgentProcess();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -1073,26 +1073,26 @@ id __59__POExtensionAgentProcess_registrationTokenWithCompletion___block_invoke_
 
   if (v7)
   {
-    v8 = [(POExtensionAgentProcess *)self configurationManager];
-    v9 = [v8 currentDeviceConfiguration];
-    v10 = [v9 loginType];
+    configurationManager = [(POExtensionAgentProcess *)self configurationManager];
+    currentDeviceConfiguration = [configurationManager currentDeviceConfiguration];
+    loginType = [currentDeviceConfiguration loginType];
 
-    v4[2](v4, v10, 0);
+    completionCopy[2](completionCopy, loginType, 0);
   }
 
   else
   {
     v11 = __48__POExtensionAgentProcess__keyForKeyType_error___block_invoke();
-    if (v4)
+    if (completionCopy)
     {
-      (v4)[2](v4, 1000, v11);
+      (completionCopy)[2](completionCopy, 1000, v11);
     }
   }
 }
 
-- (void)ssoTokensWithCompletion:(id)a3
+- (void)ssoTokensWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = PO_LOG_POExtensionAgentProcess();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -1105,18 +1105,18 @@ id __59__POExtensionAgentProcess_registrationTokenWithCompletion___block_invoke_
 
   if (v7)
   {
-    v8 = [(POExtensionAgentProcess *)self configurationManager];
-    v9 = [v8 currentDeviceConfiguration];
+    configurationManager = [(POExtensionAgentProcess *)self configurationManager];
+    currentDeviceConfiguration = [configurationManager currentDeviceConfiguration];
 
-    if (v9 && [(POExtensionAgentProcess *)self isCallerCurrentSSOExtension])
+    if (currentDeviceConfiguration && [(POExtensionAgentProcess *)self isCallerCurrentSSOExtension])
     {
       v10 = getuid();
-      v11 = [(POExtensionAgentProcess *)self configurationManager];
-      v12 = [v9 extensionIdentifier];
+      configurationManager2 = [(POExtensionAgentProcess *)self configurationManager];
+      extensionIdentifier = [currentDeviceConfiguration extensionIdentifier];
       if (v10 == 248)
       {
         v13 = NSUserName();
-        v14 = [v11 tokensForExtensionIdentifier:v12 user:v13];
+        v14 = [configurationManager2 tokensForExtensionIdentifier:extensionIdentifier user:v13];
 
 LABEL_21:
         v20 = PO_LOG_POExtensionAgentProcess();
@@ -1125,24 +1125,24 @@ LABEL_21:
           [POExtensionAgentProcess ssoTokensWithCompletion:v20];
         }
 
-        if (v4)
+        if (completionCopy)
         {
-          (*(v4 + 2))(v4, 0, 0);
+          (*(completionCopy + 2))(completionCopy, 0, 0);
         }
 
         goto LABEL_25;
       }
 
-      v16 = [v11 tokensForExtensionIdentifier:v12];
+      v16 = [configurationManager2 tokensForExtensionIdentifier:extensionIdentifier];
 
       if (!v16)
       {
         goto LABEL_21;
       }
 
-      if ([v9 deviceEncryptionKey])
+      if ([currentDeviceConfiguration deviceEncryptionKey])
       {
-        v17 = SecKeyCopyPublicKey([v9 deviceEncryptionKey]);
+        v17 = SecKeyCopyPublicKey([currentDeviceConfiguration deviceEncryptionKey]);
         if (v17)
         {
           v18 = v17;
@@ -1159,15 +1159,15 @@ LABEL_21:
               v23[3] = &__block_descriptor_40_e14___NSError_8__0l;
               v23[4] = error;
               v22 = __51__POExtensionAgentProcess_ssoTokensWithCompletion___block_invoke_108(v23);
-              if (v4)
+              if (completionCopy)
               {
-                (*(v4 + 2))(v4, 0, v22);
+                (*(completionCopy + 2))(completionCopy, 0, v22);
               }
             }
 
-            else if (v4)
+            else if (completionCopy)
             {
-              (*(v4 + 2))(v4, v19, 0);
+              (*(completionCopy + 2))(completionCopy, v19, 0);
             }
 
 LABEL_31:
@@ -1191,9 +1191,9 @@ LABEL_31:
       }
 
       v19 = v21;
-      if (v4)
+      if (completionCopy)
       {
-        (*(v4 + 2))(v4, 0, v21);
+        (*(completionCopy + 2))(completionCopy, 0, v21);
       }
 
       goto LABEL_31;
@@ -1205,18 +1205,18 @@ LABEL_31:
     v25[3] = &unk_279A3A088;
     v26 = v7;
     v15 = __51__POExtensionAgentProcess_ssoTokensWithCompletion___block_invoke_89(v25);
-    if (v4)
+    if (completionCopy)
     {
-      (*(v4 + 2))(v4, 0, v15);
+      (*(completionCopy + 2))(completionCopy, 0, v15);
     }
   }
 
   else
   {
-    v9 = __48__POExtensionAgentProcess__keyForKeyType_error___block_invoke();
-    if (v4)
+    currentDeviceConfiguration = __48__POExtensionAgentProcess__keyForKeyType_error___block_invoke();
+    if (completionCopy)
     {
-      (*(v4 + 2))(v4, 0, v9);
+      (*(completionCopy + 2))(completionCopy, 0, currentDeviceConfiguration);
     }
   }
 
@@ -1285,10 +1285,10 @@ id __51__POExtensionAgentProcess_ssoTokensWithCompletion___block_invoke_108(uint
   return v2;
 }
 
-- (void)setSsoTokens:(id)a3 completion:(id)a4
+- (void)setSsoTokens:(id)tokens completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  tokensCopy = tokens;
+  completionCopy = completion;
   v8 = PO_LOG_POExtensionAgentProcess();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -1301,19 +1301,19 @@ id __51__POExtensionAgentProcess_ssoTokensWithCompletion___block_invoke_108(uint
 
   if (v10)
   {
-    v11 = [(POExtensionAgentProcess *)self configurationManager];
-    v12 = [v11 currentDeviceConfiguration];
+    configurationManager = [(POExtensionAgentProcess *)self configurationManager];
+    currentDeviceConfiguration = [configurationManager currentDeviceConfiguration];
 
-    if (v12 && [(POExtensionAgentProcess *)self isCallerCurrentSSOExtension])
+    if (currentDeviceConfiguration && [(POExtensionAgentProcess *)self isCallerCurrentSSOExtension])
     {
-      if (v6)
+      if (tokensCopy)
       {
-        v13 = [v12 deviceEncryptionKey];
-        if (SecKeyIsAlgorithmSupported(v13, kSecKeyOperationTypeDecrypt, *MEMORY[0x277CDC328]))
+        deviceEncryptionKey = [currentDeviceConfiguration deviceEncryptionKey];
+        if (SecKeyIsAlgorithmSupported(deviceEncryptionKey, kSecKeyOperationTypeDecrypt, *MEMORY[0x277CDC328]))
         {
           error = 0;
-          v14 = [v12 deviceEncryptionKey];
-          v15 = SecKeyCreateDecryptedData(v14, *MEMORY[0x277CDC338], v6, &error);
+          deviceEncryptionKey2 = [currentDeviceConfiguration deviceEncryptionKey];
+          v15 = SecKeyCreateDecryptedData(deviceEncryptionKey2, *MEMORY[0x277CDC338], tokensCopy, &error);
           v16 = v15;
           if (error || !v15)
           {
@@ -1323,25 +1323,25 @@ id __51__POExtensionAgentProcess_ssoTokensWithCompletion___block_invoke_108(uint
             v49[3] = &__block_descriptor_40_e14___NSError_8__0l;
             v49[4] = error;
             v20 = __51__POExtensionAgentProcess_setSsoTokens_completion___block_invoke_125(v49);
-            if (v7)
+            if (completionCopy)
             {
-              v7[2](v7, 0, v20);
+              completionCopy[2](completionCopy, 0, v20);
             }
           }
 
           else
           {
-            v17 = [(POExtensionAgentProcess *)self configurationManager];
-            v18 = [v12 extensionIdentifier];
+            configurationManager2 = [(POExtensionAgentProcess *)self configurationManager];
+            extensionIdentifier = [currentDeviceConfiguration extensionIdentifier];
             v48 = 0;
-            v19 = [v17 setTokens:v16 extensionIdentifier:v18 returningError:&v48];
+            v19 = [configurationManager2 setTokens:v16 extensionIdentifier:extensionIdentifier returningError:&v48];
             v20 = v48;
 
             if (v19)
             {
-              v21 = [(POExtensionAgentProcess *)self configurationManager];
+              configurationManager3 = [(POExtensionAgentProcess *)self configurationManager];
               v22 = NSUserName();
-              v23 = [v21 saveStashedSSOTokens:v16 forUserName:v22];
+              v23 = [configurationManager3 saveStashedSSOTokens:v16 forUserName:v22];
 
               if (v23)
               {
@@ -1355,9 +1355,9 @@ id __51__POExtensionAgentProcess_ssoTokensWithCompletion___block_invoke_108(uint
                 v43 = v10;
                 dispatch_async(v24, block);
 
-                if (v7)
+                if (completionCopy)
                 {
-                  v7[2](v7, 1, 0);
+                  completionCopy[2](completionCopy, 1, 0);
                 }
 
                 v25 = v42;
@@ -1372,7 +1372,7 @@ id __51__POExtensionAgentProcess_ssoTokensWithCompletion___block_invoke_108(uint
                 v20 = v20;
                 v45 = v20;
                 v38 = __51__POExtensionAgentProcess_setSsoTokens_completion___block_invoke_133(v44);
-                v7[2](v7, 0, v38);
+                completionCopy[2](completionCopy, 0, v38);
 
                 v25 = v45;
               }
@@ -1387,7 +1387,7 @@ id __51__POExtensionAgentProcess_ssoTokensWithCompletion___block_invoke_108(uint
               v20 = v20;
               v47 = v20;
               v36 = __51__POExtensionAgentProcess_setSsoTokens_completion___block_invoke_129(v46);
-              v7[2](v7, 0, v36);
+              completionCopy[2](completionCopy, 0, v36);
 
               v25 = v47;
             }
@@ -1397,38 +1397,38 @@ id __51__POExtensionAgentProcess_ssoTokensWithCompletion___block_invoke_108(uint
         else
         {
           v16 = __51__POExtensionAgentProcess_ssoTokensWithCompletion___block_invoke_102();
-          if (v7)
+          if (completionCopy)
           {
-            v7[2](v7, 0, v16);
+            completionCopy[2](completionCopy, 0, v16);
           }
         }
 
         goto LABEL_38;
       }
 
-      v27 = [(POExtensionAgentProcess *)self configurationManager];
-      v28 = [v12 extensionIdentifier];
+      configurationManager4 = [(POExtensionAgentProcess *)self configurationManager];
+      extensionIdentifier2 = [currentDeviceConfiguration extensionIdentifier];
       v53 = 0;
-      v29 = [v27 setTokens:0 extensionIdentifier:v28 returningError:&v53];
+      v29 = [configurationManager4 setTokens:0 extensionIdentifier:extensionIdentifier2 returningError:&v53];
       v30 = v53;
       v31 = v30;
       if (v29)
       {
         v40 = v30;
-        v32 = [(POExtensionAgentProcess *)self configurationManager];
+        configurationManager5 = [(POExtensionAgentProcess *)self configurationManager];
         v33 = NSUserName();
-        if ([v32 savePendingSSOTokens:0 forUserName:v33])
+        if ([configurationManager5 savePendingSSOTokens:0 forUserName:v33])
         {
-          v34 = [(POExtensionAgentProcess *)self configurationManager];
+          configurationManager6 = [(POExtensionAgentProcess *)self configurationManager];
           v35 = NSUserName();
-          v39 = [v34 saveStashedSSOTokens:0 forUserName:v35];
+          v39 = [configurationManager6 saveStashedSSOTokens:0 forUserName:v35];
 
           v31 = v40;
           if (v39)
           {
-            if (v7)
+            if (completionCopy)
             {
-              v7[2](v7, 1, 0);
+              completionCopy[2](completionCopy, 1, 0);
             }
 
             goto LABEL_33;
@@ -1441,7 +1441,7 @@ LABEL_32:
           v51[3] = &unk_279A3A088;
           v52 = v31;
           v37 = __51__POExtensionAgentProcess_setSsoTokens_completion___block_invoke_118(v51);
-          v7[2](v7, 0, v37);
+          completionCopy[2](completionCopy, 0, v37);
 
 LABEL_33:
           goto LABEL_38;
@@ -1459,18 +1459,18 @@ LABEL_33:
     v54[3] = &unk_279A3A088;
     v55 = v10;
     v26 = __51__POExtensionAgentProcess_setSsoTokens_completion___block_invoke_117(v54);
-    if (v7)
+    if (completionCopy)
     {
-      v7[2](v7, 0, v26);
+      completionCopy[2](completionCopy, 0, v26);
     }
   }
 
   else
   {
-    v12 = __48__POExtensionAgentProcess__keyForKeyType_error___block_invoke();
-    if (v7)
+    currentDeviceConfiguration = __48__POExtensionAgentProcess__keyForKeyType_error___block_invoke();
+    if (completionCopy)
     {
-      v7[2](v7, 0, v12);
+      completionCopy[2](completionCopy, 0, currentDeviceConfiguration);
     }
   }
 
@@ -1569,9 +1569,9 @@ id __51__POExtensionAgentProcess_setSsoTokens_completion___block_invoke_2()
   return v0;
 }
 
-- (void)loginConfigurationWithCompletion:(id)a3
+- (void)loginConfigurationWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = PO_LOG_POExtensionAgentProcess();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -1584,29 +1584,29 @@ id __51__POExtensionAgentProcess_setSsoTokens_completion___block_invoke_2()
 
   if (v7)
   {
-    v8 = [(POExtensionAgentProcess *)self configurationManager];
-    v9 = [v8 currentLoginConfiguration];
+    configurationManager = [(POExtensionAgentProcess *)self configurationManager];
+    currentLoginConfiguration = [configurationManager currentLoginConfiguration];
 
-    if (v4)
+    if (completionCopy)
     {
-      v4[2](v4, v9, 0);
+      completionCopy[2](completionCopy, currentLoginConfiguration, 0);
     }
   }
 
   else
   {
-    v9 = __48__POExtensionAgentProcess__keyForKeyType_error___block_invoke();
-    if (v4)
+    currentLoginConfiguration = __48__POExtensionAgentProcess__keyForKeyType_error___block_invoke();
+    if (completionCopy)
     {
-      (v4)[2](v4, 0, v9);
+      (completionCopy)[2](completionCopy, 0, currentLoginConfiguration);
     }
   }
 }
 
-- (void)setLoginConfiguration:(id)a3 completion:(id)a4
+- (void)setLoginConfiguration:(id)configuration completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  completionCopy = completion;
   v8 = PO_LOG_POExtensionAgentProcess();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -1629,25 +1629,25 @@ id __51__POExtensionAgentProcess_setSsoTokens_completion___block_invoke_2()
   }
 
   v11 = [POProfile alloc];
-  v12 = [(POExtensionAgentProcess *)self configurationHost];
-  v13 = [v12 validatedProfileForPlatformSSO];
-  v14 = [(POProfile *)v11 initWithProfile:v13];
+  configurationHost = [(POExtensionAgentProcess *)self configurationHost];
+  validatedProfileForPlatformSSO = [configurationHost validatedProfileForPlatformSSO];
+  encryptionAlgorithm = [(POProfile *)v11 initWithProfile:validatedProfileForPlatformSSO];
 
-  if (!v14)
+  if (!encryptionAlgorithm)
   {
     v39 = __60__POExtensionAgentProcess_setLoginConfiguration_completion___block_invoke_154();
 LABEL_47:
     v50 = v39;
-    if (v7)
+    if (completionCopy)
     {
-      v7[2](v7, 0, v39);
+      completionCopy[2](completionCopy, 0, v39);
     }
 
     goto LABEL_66;
   }
 
-  v15 = [v6 tokenEndpointURL];
-  v16 = [(POExtensionAgentProcess *)self isURL:v15 validForProfile:v14];
+  tokenEndpointURL = [configurationCopy tokenEndpointURL];
+  v16 = [(POExtensionAgentProcess *)self isURL:tokenEndpointURL validForProfile:encryptionAlgorithm];
 
   if (!v16)
   {
@@ -1655,8 +1655,8 @@ LABEL_47:
     goto LABEL_47;
   }
 
-  v17 = [v6 nonceEndpointURL];
-  v18 = [(POExtensionAgentProcess *)self isURL:v17 validForProfile:v14];
+  nonceEndpointURL = [configurationCopy nonceEndpointURL];
+  v18 = [(POExtensionAgentProcess *)self isURL:nonceEndpointURL validForProfile:encryptionAlgorithm];
 
   if (!v18)
   {
@@ -1664,12 +1664,12 @@ LABEL_47:
     goto LABEL_47;
   }
 
-  v19 = [v6 refreshEndpointURL];
-  if (v19)
+  refreshEndpointURL = [configurationCopy refreshEndpointURL];
+  if (refreshEndpointURL)
   {
-    v20 = v19;
-    v21 = [v6 refreshEndpointURL];
-    v22 = [(POExtensionAgentProcess *)self isURL:v21 validForProfile:v14];
+    v20 = refreshEndpointURL;
+    refreshEndpointURL2 = [configurationCopy refreshEndpointURL];
+    v22 = [(POExtensionAgentProcess *)self isURL:refreshEndpointURL2 validForProfile:encryptionAlgorithm];
 
     if (!v22)
     {
@@ -1679,87 +1679,87 @@ LABEL_47:
   }
 
 LABEL_11:
-  v23 = [v6 invalidCredentialPredicate];
-  v24 = [v23 length];
+  invalidCredentialPredicate = [configurationCopy invalidCredentialPredicate];
+  v24 = [invalidCredentialPredicate length];
 
   if (v24)
   {
     v25 = MEMORY[0x277CCAC30];
-    v26 = [v6 invalidCredentialPredicate];
-    v27 = [v25 predicateWithFormat:v26];
+    invalidCredentialPredicate2 = [configurationCopy invalidCredentialPredicate];
+    v27 = [v25 predicateWithFormat:invalidCredentialPredicate2];
 
     [v27 evaluateWithObject:MEMORY[0x277CBEC10]];
   }
 
-  if ([v6 federationType] == 1 || objc_msgSend(v6, "federationType") == 2)
+  if ([configurationCopy federationType] == 1 || objc_msgSend(configurationCopy, "federationType") == 2)
   {
-    v28 = [v6 federationRequestURN];
+    federationRequestURN = [configurationCopy federationRequestURN];
 
-    if (!v28)
+    if (!federationRequestURN)
     {
       v38 = __60__POExtensionAgentProcess_setLoginConfiguration_completion___block_invoke_185();
       goto LABEL_63;
     }
   }
 
-  if ([v6 federationType] == 2)
+  if ([configurationCopy federationType] == 2)
   {
-    v29 = [v6 federationUserPreauthenticationURL];
+    federationUserPreauthenticationURL = [configurationCopy federationUserPreauthenticationURL];
 
-    if (!v29)
+    if (!federationUserPreauthenticationURL)
     {
       v38 = __60__POExtensionAgentProcess_setLoginConfiguration_completion___block_invoke_191();
       goto LABEL_63;
     }
 
-    v30 = [v6 federationMexURLKeypath];
+    federationMexURLKeypath = [configurationCopy federationMexURLKeypath];
 
-    if (!v30)
+    if (!federationMexURLKeypath)
     {
       v38 = __60__POExtensionAgentProcess_setLoginConfiguration_completion___block_invoke_197();
       goto LABEL_63;
     }
 
     v31 = MEMORY[0x277CCAC30];
-    v32 = [v6 federationPredicate];
-    v33 = [v31 predicateWithFormat:v32];
+    federationPredicate = [configurationCopy federationPredicate];
+    v33 = [v31 predicateWithFormat:federationPredicate];
 
     [v33 evaluateWithObject:MEMORY[0x277CBEC10]];
   }
 
-  if ([v6 federationType] == 1)
+  if ([configurationCopy federationType] == 1)
   {
-    v34 = [v6 federationMexURL];
+    federationMexURL = [configurationCopy federationMexURL];
 
-    if (!v34)
+    if (!federationMexURL)
     {
       v38 = __60__POExtensionAgentProcess_setLoginConfiguration_completion___block_invoke_209();
       goto LABEL_63;
     }
   }
 
-  v35 = [v6 hpkePsk];
+  hpkePsk = [configurationCopy hpkePsk];
 
-  if (v35)
+  if (hpkePsk)
   {
-    v36 = [v6 hpkePsk];
-    v37 = [v36 length];
+    hpkePsk2 = [configurationCopy hpkePsk];
+    v37 = [hpkePsk2 length];
 
     if (v37 <= 0x1F)
     {
       v38 = __60__POExtensionAgentProcess_setLoginConfiguration_completion___block_invoke_215();
 LABEL_63:
       v59 = v38;
-      if (v7)
+      if (completionCopy)
       {
-        v7[2](v7, 0, v38);
+        completionCopy[2](completionCopy, 0, v38);
       }
 
       goto LABEL_66;
     }
 
-    v40 = [v6 hpkePsk_id];
-    v41 = [v40 length];
+    hpkePsk_id = [configurationCopy hpkePsk_id];
+    v41 = [hpkePsk_id length];
 
     if (!v41)
     {
@@ -1768,11 +1768,11 @@ LABEL_63:
     }
   }
 
-  v42 = [v6 hpkePsk_id];
-  if ([v42 length])
+  hpkePsk_id2 = [configurationCopy hpkePsk_id];
+  if ([hpkePsk_id2 length])
   {
-    v43 = [v6 hpkePsk];
-    v44 = [v43 length];
+    hpkePsk3 = [configurationCopy hpkePsk];
+    v44 = [hpkePsk3 length];
 
     if (!v44)
     {
@@ -1785,28 +1785,28 @@ LABEL_63:
   {
   }
 
-  if (![v6 hpkeAuthPublicKey])
+  if (![configurationCopy hpkeAuthPublicKey])
   {
     goto LABEL_40;
   }
 
-  v45 = [(POExtensionAgentProcess *)self configurationManager];
-  v46 = [v45 currentDeviceConfiguration];
-  v14 = [v46 encryptionAlgorithm];
+  configurationManager = [(POExtensionAgentProcess *)self configurationManager];
+  currentDeviceConfiguration = [configurationManager currentDeviceConfiguration];
+  encryptionAlgorithm = [currentDeviceConfiguration encryptionAlgorithm];
 
-  if (([MEMORY[0x277D3D230] isEncryptionAlgorithm:v14 validForKey:{objc_msgSend(v6, "hpkeAuthPublicKey")}] & 1) == 0)
+  if (([MEMORY[0x277D3D230] isEncryptionAlgorithm:encryptionAlgorithm validForKey:{objc_msgSend(configurationCopy, "hpkeAuthPublicKey")}] & 1) == 0)
   {
     v39 = __60__POExtensionAgentProcess_setLoginConfiguration_completion___block_invoke_234();
     goto LABEL_47;
   }
 
 LABEL_40:
-  v47 = [v6 loginRequestHpkePsk];
+  loginRequestHpkePsk = [configurationCopy loginRequestHpkePsk];
 
-  if (v47)
+  if (loginRequestHpkePsk)
   {
-    v48 = [v6 loginRequestHpkePsk];
-    v49 = [v48 length];
+    loginRequestHpkePsk2 = [configurationCopy loginRequestHpkePsk];
+    v49 = [loginRequestHpkePsk2 length];
 
     if (v49 <= 0x1F)
     {
@@ -1814,8 +1814,8 @@ LABEL_40:
       goto LABEL_63;
     }
 
-    v51 = [v6 loginRequestHpkePsk_id];
-    v52 = [v51 length];
+    loginRequestHpkePsk_id = [configurationCopy loginRequestHpkePsk_id];
+    v52 = [loginRequestHpkePsk_id length];
 
     if (!v52)
     {
@@ -1824,11 +1824,11 @@ LABEL_40:
     }
   }
 
-  v53 = [v6 loginRequestHpkePsk_id];
-  if ([v53 length])
+  loginRequestHpkePsk_id2 = [configurationCopy loginRequestHpkePsk_id];
+  if ([loginRequestHpkePsk_id2 length])
   {
-    v54 = [v6 loginRequestHpkePsk];
-    v55 = [v54 length];
+    loginRequestHpkePsk3 = [configurationCopy loginRequestHpkePsk];
+    v55 = [loginRequestHpkePsk3 length];
 
     if (!v55)
     {
@@ -1841,18 +1841,18 @@ LABEL_40:
   {
   }
 
-  if ([v6 userSEPKeyBiometricPolicy])
+  if ([configurationCopy userSEPKeyBiometricPolicy])
   {
-    v56 = [v6 userSEPKeyBiometricPolicy] & 2;
-    if (!(v56 & 0xFFFFFFFFFFFFFFFELL | [v6 userSEPKeyBiometricPolicy] & 1))
+    v56 = [configurationCopy userSEPKeyBiometricPolicy] & 2;
+    if (!(v56 & 0xFFFFFFFFFFFFFFFELL | [configurationCopy userSEPKeyBiometricPolicy] & 1))
     {
       v38 = __60__POExtensionAgentProcess_setLoginConfiguration_completion___block_invoke_258();
       goto LABEL_63;
     }
   }
 
-  v57 = [(POExtensionAgentProcess *)self configurationManager];
-  v58 = [v57 saveLoginConfiguration:v6];
+  configurationManager2 = [(POExtensionAgentProcess *)self configurationManager];
+  v58 = [configurationManager2 saveLoginConfiguration:configurationCopy];
 
   if ((v58 & 1) == 0)
   {
@@ -1860,10 +1860,10 @@ LABEL_40:
     goto LABEL_63;
   }
 
-  [MEMORY[0x277D3D1B8] analyticsForLoginConfiguration:v6];
-  if (v7)
+  [MEMORY[0x277D3D1B8] analyticsForLoginConfiguration:configurationCopy];
+  if (completionCopy)
   {
-    v7[2](v7, 1, 0);
+    completionCopy[2](completionCopy, 1, 0);
   }
 
 LABEL_66:
@@ -2097,21 +2097,21 @@ id __60__POExtensionAgentProcess_setLoginConfiguration_completion___block_invoke
   return v0;
 }
 
-- (BOOL)isURL:(id)a3 validForProfile:(id)a4
+- (BOOL)isURL:(id)l validForProfile:(id)profile
 {
   v24 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [a3 absoluteString];
+  profileCopy = profile;
+  absoluteString = [l absoluteString];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v7 = [v5 URLPrefix];
-  v8 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  uRLPrefix = [profileCopy URLPrefix];
+  v8 = [uRLPrefix countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v8)
   {
     v9 = v8;
-    v18 = v5;
+    v18 = profileCopy;
     v10 = *v20;
     while (2)
     {
@@ -2119,14 +2119,14 @@ id __60__POExtensionAgentProcess_setLoginConfiguration_completion___block_invoke
       {
         if (*v20 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(uRLPrefix);
         }
 
         v12 = MEMORY[0x277CCAC30];
         v13 = [*(*(&v19 + 1) + 8 * i) stringByAppendingString:@"*"];
         v14 = [v12 predicateWithFormat:@"SELF LIKE[c] %@", v13];
 
-        LOBYTE(v13) = [v14 evaluateWithObject:v6];
+        LOBYTE(v13) = [v14 evaluateWithObject:absoluteString];
         if (v13)
         {
           v15 = 1;
@@ -2134,7 +2134,7 @@ id __60__POExtensionAgentProcess_setLoginConfiguration_completion___block_invoke
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v9 = [uRLPrefix countByEnumeratingWithState:&v19 objects:v23 count:16];
       if (v9)
       {
         continue;
@@ -2145,7 +2145,7 @@ id __60__POExtensionAgentProcess_setLoginConfiguration_completion___block_invoke
 
     v15 = 0;
 LABEL_11:
-    v5 = v18;
+    profileCopy = v18;
   }
 
   else
@@ -2157,64 +2157,64 @@ LABEL_11:
   return v15;
 }
 
-- (void)setCertificateData:(id)a3 keyType:(int64_t)a4 completion:(id)a5
+- (void)setCertificateData:(id)data keyType:(int64_t)type completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  dataCopy = data;
+  completionCopy = completion;
   v10 = PO_LOG_POExtensionAgentProcess();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
     [POExtensionAgentProcess setCertificateData:keyType:completion:];
   }
 
-  [(POExtensionAgentProcess *)self addEvent:@"setCertificateData" forKeyType:a4];
+  [(POExtensionAgentProcess *)self addEvent:@"setCertificateData" forKeyType:type];
   WeakRetained = objc_loadWeakRetained(&self->_xpcConnection);
   v12 = [(POExtensionAgentProcess *)self bundleIdentifierForXPCConnection:WeakRetained];
 
   if (v12)
   {
-    v13 = [(POExtensionAgentProcess *)self configurationManager];
-    v14 = [v13 currentDeviceConfiguration];
+    configurationManager = [(POExtensionAgentProcess *)self configurationManager];
+    currentDeviceConfiguration = [configurationManager currentDeviceConfiguration];
 
-    if (v14 && [(POExtensionAgentProcess *)self isCallerCurrentSSOExtension])
+    if (currentDeviceConfiguration && [(POExtensionAgentProcess *)self isCallerCurrentSSOExtension])
     {
-      if (a4 <= 0xB)
+      if (type <= 0xB)
       {
-        if (((1 << a4) & 0x412) != 0)
+        if (((1 << type) & 0x412) != 0)
         {
-          [v14 setDeviceSigningCertificate:{objc_msgSend(MEMORY[0x277D3D230], "certificateForData:", v8)}];
+          [currentDeviceConfiguration setDeviceSigningCertificate:{objc_msgSend(MEMORY[0x277D3D230], "certificateForData:", dataCopy)}];
           goto LABEL_16;
         }
 
-        if (((1 << a4) & 0x824) != 0)
+        if (((1 << type) & 0x824) != 0)
         {
-          [v14 setDeviceEncryptionCertificate:{objc_msgSend(MEMORY[0x277D3D230], "certificateForData:", v8)}];
+          [currentDeviceConfiguration setDeviceEncryptionCertificate:{objc_msgSend(MEMORY[0x277D3D230], "certificateForData:", dataCopy)}];
           goto LABEL_16;
         }
       }
 
-      if (v9)
+      if (completionCopy)
       {
         v18 = __65__POExtensionAgentProcess_setCertificateData_keyType_completion___block_invoke_282();
         goto LABEL_23;
       }
 
 LABEL_16:
-      v16 = [(POExtensionAgentProcess *)self configurationManager];
-      v17 = [v16 saveDeviceConfiguration:v14];
+      configurationManager2 = [(POExtensionAgentProcess *)self configurationManager];
+      v17 = [configurationManager2 saveDeviceConfiguration:currentDeviceConfiguration];
 
       if (v17)
       {
-        if (v9)
+        if (completionCopy)
         {
-          v9[2](v9, 1, 0);
+          completionCopy[2](completionCopy, 1, 0);
         }
 
         goto LABEL_25;
       }
 
       v18 = __65__POExtensionAgentProcess_setCertificateData_keyType_completion___block_invoke_288();
-      if (!v9)
+      if (!completionCopy)
       {
 LABEL_24:
 
@@ -2222,7 +2222,7 @@ LABEL_24:
       }
 
 LABEL_23:
-      (v9)[2](v9, 0, v18);
+      (completionCopy)[2](completionCopy, 0, v18);
       goto LABEL_24;
     }
 
@@ -2232,18 +2232,18 @@ LABEL_23:
     v19[3] = &unk_279A3A088;
     v20 = v12;
     v15 = __65__POExtensionAgentProcess_setCertificateData_keyType_completion___block_invoke_281(v19);
-    if (v9)
+    if (completionCopy)
     {
-      (v9)[2](v9, 0, v15);
+      (completionCopy)[2](completionCopy, 0, v15);
     }
   }
 
   else
   {
-    v14 = __48__POExtensionAgentProcess__keyForKeyType_error___block_invoke();
-    if (v9)
+    currentDeviceConfiguration = __48__POExtensionAgentProcess__keyForKeyType_error___block_invoke();
+    if (completionCopy)
     {
-      (v9)[2](v9, 0, v14);
+      (completionCopy)[2](completionCopy, 0, currentDeviceConfiguration);
     }
   }
 
@@ -2286,30 +2286,30 @@ id __65__POExtensionAgentProcess_setCertificateData_keyType_completion___block_i
   return v0;
 }
 
-- (void)secKeyProxyEndpointForKeyType:(int64_t)a3 completion:(id)a4
+- (void)secKeyProxyEndpointForKeyType:(int64_t)type completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v7 = PO_LOG_POExtensionAgentProcess();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     [POExtensionAgentProcess secKeyProxyEndpointForKeyType:completion:];
   }
 
-  v8 = [(POExtensionAgentProcess *)self keyProxyEndpointForKeyType:a3];
+  v8 = [(POExtensionAgentProcess *)self keyProxyEndpointForKeyType:type];
   if (v8)
   {
-    if (v6)
+    if (completionCopy)
     {
-      v6[2](v6, v8, 0);
+      completionCopy[2](completionCopy, v8, 0);
     }
   }
 
   else
   {
     v9 = __68__POExtensionAgentProcess_secKeyProxyEndpointForKeyType_completion___block_invoke();
-    if (v6)
+    if (completionCopy)
     {
-      (v6)[2](v6, 0, v9);
+      (completionCopy)[2](completionCopy, 0, v9);
     }
   }
 }
@@ -2326,30 +2326,30 @@ id __68__POExtensionAgentProcess_secKeyProxyEndpointForKeyType_completion___bloc
   return v0;
 }
 
-- (void)secIdentityProxyEndpointForKeyType:(int64_t)a3 completion:(id)a4
+- (void)secIdentityProxyEndpointForKeyType:(int64_t)type completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v7 = PO_LOG_POExtensionAgentProcess();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     [POExtensionAgentProcess secIdentityProxyEndpointForKeyType:completion:];
   }
 
-  v8 = [(POExtensionAgentProcess *)self identityForKeyType:a3];
+  v8 = [(POExtensionAgentProcess *)self identityForKeyType:type];
   if (v8)
   {
-    if (v6)
+    if (completionCopy)
     {
-      v6[2](v6, v8, 0);
+      completionCopy[2](completionCopy, v8, 0);
     }
   }
 
   else
   {
     v9 = __73__POExtensionAgentProcess_secIdentityProxyEndpointForKeyType_completion___block_invoke();
-    if (v6)
+    if (completionCopy)
     {
-      (v6)[2](v6, 0, v9);
+      (completionCopy)[2](completionCopy, 0, v9);
     }
   }
 }
@@ -2366,9 +2366,9 @@ id __73__POExtensionAgentProcess_secIdentityProxyEndpointForKeyType_completion__
   return v0;
 }
 
-- (void)attestKey:(int64_t)a3 pending:(BOOL)a4 clientDataHash:(id)a5 completion:(id)a6
+- (void)attestKey:(int64_t)key pending:(BOOL)pending clientDataHash:(id)hash completion:(id)completion
 {
-  v6 = a6;
+  completionCopy = completion;
   v7 = PO_LOG_POExtensionAgentProcess();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -2376,12 +2376,12 @@ id __73__POExtensionAgentProcess_secIdentityProxyEndpointForKeyType_completion__
   }
 
   v8 = [MEMORY[0x277D3D1F0] internalErrorWithMessage:@"not impl"];
-  v6[2](v6, 0, v8);
+  completionCopy[2](completionCopy, 0, v8);
 }
 
-- (void)userNeedsReauthenticationWithCompletion:(id)a3
+- (void)userNeedsReauthenticationWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = PO_LOG_POExtensionAgentProcess();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -2391,27 +2391,27 @@ id __73__POExtensionAgentProcess_secIdentityProxyEndpointForKeyType_completion__
   [(POExtensionAgentProcess *)self addEvent:@"userNeedsReauthentication"];
   if ([(POExtensionAgentProcess *)self isCallerCurrentSSOExtension])
   {
-    v6 = [(POExtensionAgentProcess *)self authenticationCompletion];
+    authenticationCompletion = [(POExtensionAgentProcess *)self authenticationCompletion];
 
-    if (v6)
+    if (authenticationCompletion)
     {
-      v7 = [(POExtensionAgentProcess *)self authenticationCompletion];
+      authenticationCompletion2 = [(POExtensionAgentProcess *)self authenticationCompletion];
       v8 = MEMORY[0x277CCA9B8];
       v9 = getASAuthorizationErrorDomain_0();
       v10 = [v8 errorWithDomain:v9 code:1001 userInfo:0];
-      (v7)[2](v7, 0, v10);
+      (authenticationCompletion2)[2](authenticationCompletion2, 0, v10);
 
       [(POExtensionAgentProcess *)self setAuthenticationCompletion:0];
     }
 
-    [(POExtensionAgentProcess *)self setAuthenticationCompletion:v4];
-    v11 = [MEMORY[0x277CCAB98] defaultCenter];
+    [(POExtensionAgentProcess *)self setAuthenticationCompletion:completionCopy];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __67__POExtensionAgentProcess_userNeedsReauthenticationWithCompletion___block_invoke_313;
     v16[3] = &unk_279A3ADB8;
     v16[4] = self;
-    v12 = [v11 addObserverForName:@"com.apple.PlatformSSO.authenticationCompleted" object:0 queue:0 usingBlock:v16];
+    v12 = [defaultCenter addObserverForName:@"com.apple.PlatformSSO.authenticationCompleted" object:0 queue:0 usingBlock:v16];
     [(POExtensionAgentProcess *)self setAuthenticationObserver:v12];
 
     v13 = dispatch_get_global_queue(0, 0);
@@ -2426,7 +2426,7 @@ id __73__POExtensionAgentProcess_secIdentityProxyEndpointForKeyType_completion__
   else
   {
     v14 = __67__POExtensionAgentProcess_userNeedsReauthenticationWithCompletion___block_invoke();
-    v4[2](v4, 0, v14);
+    completionCopy[2](completionCopy, 0, v14);
   }
 }
 
@@ -2555,9 +2555,9 @@ void __67__POExtensionAgentProcess_userNeedsReauthenticationWithCompletion___blo
   }
 }
 
-- (void)deviceRegistrationsNeedsRepairWithCompletion:(id)a3
+- (void)deviceRegistrationsNeedsRepairWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = PO_LOG_POExtensionAgentProcess();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -2575,16 +2575,16 @@ void __67__POExtensionAgentProcess_userNeedsReauthenticationWithCompletion___blo
     block[4] = self;
     dispatch_async(v6, block);
 
-    if (v4)
+    if (completionCopy)
     {
-      v4[2](v4, 1, 0);
+      completionCopy[2](completionCopy, 1, 0);
     }
   }
 
   else
   {
     v7 = __67__POExtensionAgentProcess_userNeedsReauthenticationWithCompletion___block_invoke();
-    (v4)[2](v4, 0, v7);
+    (completionCopy)[2](completionCopy, 0, v7);
   }
 }
 
@@ -2595,9 +2595,9 @@ void __72__POExtensionAgentProcess_deviceRegistrationsNeedsRepairWithCompletion_
   [v1 handleDeviceAndUserRegistrationForRepair:1];
 }
 
-- (void)userRegistrationsNeedsRepairWithCompletion:(id)a3
+- (void)userRegistrationsNeedsRepairWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = PO_LOG_POExtensionAgentProcess();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -2607,12 +2607,12 @@ void __72__POExtensionAgentProcess_deviceRegistrationsNeedsRepairWithCompletion_
   [(POExtensionAgentProcess *)self addEvent:@"userRegistrationNeedsRepair"];
   if ([(POExtensionAgentProcess *)self isCallerCurrentSSOExtension])
   {
-    v6 = [(POExtensionAgentProcess *)self configurationManager];
+    configurationManager = [(POExtensionAgentProcess *)self configurationManager];
     v7 = NSUserName();
-    v8 = [v6 userConfigurationForUserName:v7];
+    v8 = [configurationManager userConfigurationForUserName:v7];
 
-    v9 = [v8 userLoginConfiguration];
-    v10 = [v9 loginUserName];
+    userLoginConfiguration = [v8 userLoginConfiguration];
+    loginUserName = [userLoginConfiguration loginUserName];
 
     v11 = dispatch_get_global_queue(0, 0);
     v13[0] = MEMORY[0x277D85DD0];
@@ -2620,20 +2620,20 @@ void __72__POExtensionAgentProcess_deviceRegistrationsNeedsRepairWithCompletion_
     v13[2] = __70__POExtensionAgentProcess_userRegistrationsNeedsRepairWithCompletion___block_invoke_326;
     v13[3] = &unk_279A3A7D8;
     v13[4] = self;
-    v14 = v10;
-    v12 = v10;
+    v14 = loginUserName;
+    v12 = loginUserName;
     dispatch_async(v11, v13);
 
-    if (v4)
+    if (completionCopy)
     {
-      v4[2](v4, 1, 0);
+      completionCopy[2](completionCopy, 1, 0);
     }
   }
 
   else
   {
     v8 = __67__POExtensionAgentProcess_userNeedsReauthenticationWithCompletion___block_invoke();
-    (v4)[2](v4, 0, v8);
+    (completionCopy)[2](completionCopy, 0, v8);
   }
 }
 
@@ -2644,9 +2644,9 @@ void __70__POExtensionAgentProcess_userRegistrationsNeedsRepairWithCompletion___
   [v2 handleUserRegistrationForUser:*(a1 + 40) repair:1];
 }
 
-- (void)resetDeviceKeysWithCompletion:(id)a3
+- (void)resetDeviceKeysWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = PO_LOG_POExtensionAgentProcess();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -2661,45 +2661,45 @@ void __70__POExtensionAgentProcess_userRegistrationsNeedsRepairWithCompletion___
 
     if (v7)
     {
-      v8 = [(POExtensionAgentProcess *)self configurationManager];
-      v9 = [v8 currentDeviceConfiguration];
+      configurationManager = [(POExtensionAgentProcess *)self configurationManager];
+      currentDeviceConfiguration = [configurationManager currentDeviceConfiguration];
 
-      if (v9 && [(POExtensionAgentProcess *)self isCallerCurrentSSOExtension])
+      if (currentDeviceConfiguration && [(POExtensionAgentProcess *)self isCallerCurrentSSOExtension])
       {
         [(POExtensionAgentProcess *)self invalidateAllKeyProxies];
-        v10 = [(POExtensionAgentProcess *)self keychainHelper];
-        v11 = [v9 extensionIdentifier];
-        [v10 _deleteCachedAttestationForExtensionIdentifier:v11 key:{objc_msgSend(v9, "deviceSigningKey")}];
+        keychainHelper = [(POExtensionAgentProcess *)self keychainHelper];
+        extensionIdentifier = [currentDeviceConfiguration extensionIdentifier];
+        [keychainHelper _deleteCachedAttestationForExtensionIdentifier:extensionIdentifier key:{objc_msgSend(currentDeviceConfiguration, "deviceSigningKey")}];
 
         v12 = MEMORY[0x277D3D230];
-        v13 = [v9 signingAlgorithm];
-        [v9 setDeviceSigningKey:{objc_msgSend(v12, "createSEPSigningKeyForAlgorithm:shared:", v13, objc_msgSend(v9, "sharedDeviceKeys"))}];
+        signingAlgorithm = [currentDeviceConfiguration signingAlgorithm];
+        [currentDeviceConfiguration setDeviceSigningKey:{objc_msgSend(v12, "createSEPSigningKeyForAlgorithm:shared:", signingAlgorithm, objc_msgSend(currentDeviceConfiguration, "sharedDeviceKeys"))}];
 
-        v14 = [(POExtensionAgentProcess *)self keychainHelper];
-        v15 = [v9 extensionIdentifier];
-        [v14 _deleteCachedAttestationForExtensionIdentifier:v15 key:{objc_msgSend(v9, "deviceEncryptionKey")}];
+        keychainHelper2 = [(POExtensionAgentProcess *)self keychainHelper];
+        extensionIdentifier2 = [currentDeviceConfiguration extensionIdentifier];
+        [keychainHelper2 _deleteCachedAttestationForExtensionIdentifier:extensionIdentifier2 key:{objc_msgSend(currentDeviceConfiguration, "deviceEncryptionKey")}];
 
         v16 = MEMORY[0x277D3D230];
-        v17 = [v9 encryptionAlgorithm];
-        [v9 setDeviceEncryptionKey:{objc_msgSend(v16, "createSEPEncryptionKeyForAlgorithm:shared:", v17, objc_msgSend(v9, "sharedDeviceKeys"))}];
+        encryptionAlgorithm = [currentDeviceConfiguration encryptionAlgorithm];
+        [currentDeviceConfiguration setDeviceEncryptionKey:{objc_msgSend(v16, "createSEPEncryptionKeyForAlgorithm:shared:", encryptionAlgorithm, objc_msgSend(currentDeviceConfiguration, "sharedDeviceKeys"))}];
 
-        v18 = [(POExtensionAgentProcess *)self configurationManager];
-        LOBYTE(v16) = [v18 saveDeviceConfiguration:v9];
+        configurationManager2 = [(POExtensionAgentProcess *)self configurationManager];
+        LOBYTE(v16) = [configurationManager2 saveDeviceConfiguration:currentDeviceConfiguration];
 
         if (v16)
         {
-          if (v4)
+          if (completionCopy)
           {
-            v4[2](v4, 1, 0);
+            completionCopy[2](completionCopy, 1, 0);
           }
         }
 
         else
         {
           v20 = __57__POExtensionAgentProcess_resetDeviceKeysWithCompletion___block_invoke_336();
-          if (v4)
+          if (completionCopy)
           {
-            (v4)[2](v4, 0, v20);
+            (completionCopy)[2](completionCopy, 0, v20);
           }
         }
       }
@@ -2712,19 +2712,19 @@ void __70__POExtensionAgentProcess_userRegistrationsNeedsRepairWithCompletion___
         v21[3] = &unk_279A3A088;
         v22 = v7;
         v19 = __57__POExtensionAgentProcess_resetDeviceKeysWithCompletion___block_invoke_335(v21);
-        if (v4)
+        if (completionCopy)
         {
-          (v4)[2](v4, 0, v19);
+          (completionCopy)[2](completionCopy, 0, v19);
         }
       }
     }
 
     else
     {
-      v9 = __48__POExtensionAgentProcess__keyForKeyType_error___block_invoke();
-      if (v4)
+      currentDeviceConfiguration = __48__POExtensionAgentProcess__keyForKeyType_error___block_invoke();
+      if (completionCopy)
       {
-        (v4)[2](v4, 0, v9);
+        (completionCopy)[2](completionCopy, 0, currentDeviceConfiguration);
       }
     }
   }
@@ -2732,7 +2732,7 @@ void __70__POExtensionAgentProcess_userRegistrationsNeedsRepairWithCompletion___
   else
   {
     v7 = __67__POExtensionAgentProcess_userNeedsReauthenticationWithCompletion___block_invoke();
-    (v4)[2](v4, 0, v7);
+    (completionCopy)[2](completionCopy, 0, v7);
   }
 }
 
@@ -2760,9 +2760,9 @@ id __57__POExtensionAgentProcess_resetDeviceKeysWithCompletion___block_invoke_33
   return v0;
 }
 
-- (void)resetUserSecureEnclaveKeyWithCompletion:(id)a3
+- (void)resetUserSecureEnclaveKeyWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = PO_LOG_POExtensionAgentProcess();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -2777,19 +2777,19 @@ id __57__POExtensionAgentProcess_resetDeviceKeysWithCompletion___block_invoke_33
 
     if (!v7)
     {
-      v9 = __48__POExtensionAgentProcess__keyForKeyType_error___block_invoke();
-      if (v4)
+      currentDeviceConfiguration = __48__POExtensionAgentProcess__keyForKeyType_error___block_invoke();
+      if (completionCopy)
       {
-        v4[2](v4, 0, v9);
+        completionCopy[2](completionCopy, 0, currentDeviceConfiguration);
       }
 
       goto LABEL_38;
     }
 
-    v8 = [(POExtensionAgentProcess *)self configurationManager];
-    v9 = [v8 currentDeviceConfiguration];
+    configurationManager = [(POExtensionAgentProcess *)self configurationManager];
+    currentDeviceConfiguration = [configurationManager currentDeviceConfiguration];
 
-    if (!v9 || ![(POExtensionAgentProcess *)self isCallerCurrentSSOExtension])
+    if (!currentDeviceConfiguration || ![(POExtensionAgentProcess *)self isCallerCurrentSSOExtension])
     {
       v35[0] = MEMORY[0x277D85DD0];
       v35[1] = 3221225472;
@@ -2797,18 +2797,18 @@ id __57__POExtensionAgentProcess_resetDeviceKeysWithCompletion___block_invoke_33
       v35[3] = &unk_279A3A088;
       v36 = v7;
       v24 = __67__POExtensionAgentProcess_resetUserSecureEnclaveKeyWithCompletion___block_invoke_350(v35);
-      if (v4)
+      if (completionCopy)
       {
-        v4[2](v4, 0, v24);
+        completionCopy[2](completionCopy, 0, v24);
       }
 
       v12 = v36;
       goto LABEL_37;
     }
 
-    v10 = [(POExtensionAgentProcess *)self configurationManager];
+    configurationManager2 = [(POExtensionAgentProcess *)self configurationManager];
     v11 = NSUserName();
-    v12 = [v10 userConfigurationForUserName:v11];
+    v12 = [configurationManager2 userConfigurationForUserName:v11];
 
     if (!v12)
     {
@@ -2817,23 +2817,23 @@ id __57__POExtensionAgentProcess_resetDeviceKeysWithCompletion___block_invoke_33
     }
 
     [(POExtensionAgentProcess *)self invalidateAllKeyProxies];
-    v13 = [(POExtensionAgentProcess *)self keychainHelper];
-    v14 = [v9 extensionIdentifier];
-    [v13 _deleteCachedAttestationForExtensionIdentifier:v14 key:{objc_msgSend(v12, "sepKey")}];
+    keychainHelper = [(POExtensionAgentProcess *)self keychainHelper];
+    extensionIdentifier = [currentDeviceConfiguration extensionIdentifier];
+    [keychainHelper _deleteCachedAttestationForExtensionIdentifier:extensionIdentifier key:{objc_msgSend(v12, "sepKey")}];
 
     if (![v12 sepKey] || objc_msgSend(v12, "loginType") != 2)
     {
       [v12 setSepKey:0];
 LABEL_30:
-      v31 = [(POExtensionAgentProcess *)self configurationManager];
+      configurationManager3 = [(POExtensionAgentProcess *)self configurationManager];
       v32 = NSUserName();
-      v33 = [v31 saveUserConfiguration:v12 forUserName:v32 syncToPreboot:1];
+      v33 = [configurationManager3 saveUserConfiguration:v12 forUserName:v32 syncToPreboot:1];
 
       if (v33)
       {
-        if (v4)
+        if (completionCopy)
         {
-          v4[2](v4, 1, 0);
+          completionCopy[2](completionCopy, 1, 0);
         }
 
 LABEL_37:
@@ -2845,25 +2845,25 @@ LABEL_38:
       v25 = __67__POExtensionAgentProcess_resetUserSecureEnclaveKeyWithCompletion___block_invoke_363();
 LABEL_34:
       v34 = v25;
-      if (v4)
+      if (completionCopy)
       {
-        v4[2](v4, 0, v25);
+        completionCopy[2](completionCopy, 0, v25);
       }
 
       goto LABEL_37;
     }
 
-    v15 = [(POExtensionAgentProcess *)self configurationManager];
-    v16 = [v15 currentLoginConfiguration];
-    v17 = [v16 userSEPKeyBiometricPolicy];
+    configurationManager4 = [(POExtensionAgentProcess *)self configurationManager];
+    currentLoginConfiguration = [configurationManager4 currentLoginConfiguration];
+    userSEPKeyBiometricPolicy = [currentLoginConfiguration userSEPKeyBiometricPolicy];
 
     v18 = PO_LOG_POExtensionAgentProcess();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
     {
-      [POExtensionAgentProcess resetUserSecureEnclaveKeyWithCompletion:v17];
+      [POExtensionAgentProcess resetUserSecureEnclaveKeyWithCompletion:userSEPKeyBiometricPolicy];
     }
 
-    if (!v17)
+    if (!userSEPKeyBiometricPolicy)
     {
       goto LABEL_16;
     }
@@ -2877,23 +2877,23 @@ LABEL_34:
       goto LABEL_34;
     }
 
-    if (v17)
+    if (userSEPKeyBiometricPolicy)
     {
       v26 = MEMORY[0x277D3D230];
-      v22 = [v12 signingAlgorithm];
+      signingAlgorithm = [v12 signingAlgorithm];
       v27 = v26;
-      v28 = v22;
+      v28 = signingAlgorithm;
       v29 = 1;
     }
 
     else
     {
-      if ((v17 & 2) == 0)
+      if ((userSEPKeyBiometricPolicy & 2) == 0)
       {
 LABEL_16:
         v21 = MEMORY[0x277D3D230];
-        v22 = [v12 signingAlgorithm];
-        v23 = [v21 createUserSEPSigningKeyForAlgorithm:v22];
+        signingAlgorithm = [v12 signingAlgorithm];
+        v23 = [v21 createUserSEPSigningKeyForAlgorithm:signingAlgorithm];
 LABEL_29:
         [v12 setSepKey:v23];
 
@@ -2901,9 +2901,9 @@ LABEL_29:
       }
 
       v30 = MEMORY[0x277D3D230];
-      v22 = [v12 signingAlgorithm];
+      signingAlgorithm = [v12 signingAlgorithm];
       v27 = v30;
-      v28 = v22;
+      v28 = signingAlgorithm;
       v29 = 0;
     }
 
@@ -2912,7 +2912,7 @@ LABEL_29:
   }
 
   v7 = __67__POExtensionAgentProcess_userNeedsReauthenticationWithCompletion___block_invoke();
-  v4[2](v4, 0, v7);
+  completionCopy[2](completionCopy, 0, v7);
 LABEL_39:
 }
 
@@ -2964,9 +2964,9 @@ id __67__POExtensionAgentProcess_resetUserSecureEnclaveKeyWithCompletion___block
   return v0;
 }
 
-- (void)loginUserNameWithCompletion:(id)a3
+- (void)loginUserNameWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = PO_LOG_POExtensionAgentProcess();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -2976,26 +2976,26 @@ id __67__POExtensionAgentProcess_resetUserSecureEnclaveKeyWithCompletion___block
   [(POExtensionAgentProcess *)self addEvent:@"loginUserName"];
   if ([(POExtensionAgentProcess *)self isCallerCurrentSSOExtension])
   {
-    v6 = [(POExtensionAgentProcess *)self configurationManager];
+    configurationManager = [(POExtensionAgentProcess *)self configurationManager];
     v7 = NSUserName();
-    v8 = [v6 userConfigurationForUserName:v7];
+    v8 = [configurationManager userConfigurationForUserName:v7];
 
     if (!v8)
     {
-      v9 = __55__POExtensionAgentProcess_loginUserNameWithCompletion___block_invoke_374();
-      if (v4)
+      userLoginConfiguration = __55__POExtensionAgentProcess_loginUserNameWithCompletion___block_invoke_374();
+      if (completionCopy)
       {
-        v4[2](v4, 0, v9);
+        completionCopy[2](completionCopy, 0, userLoginConfiguration);
       }
 
       goto LABEL_10;
     }
 
-    if (v4)
+    if (completionCopy)
     {
-      v9 = [v8 userLoginConfiguration];
-      v10 = [v9 loginUserName];
-      (v4)[2](v4, v10, 0);
+      userLoginConfiguration = [v8 userLoginConfiguration];
+      loginUserName = [userLoginConfiguration loginUserName];
+      (completionCopy)[2](completionCopy, loginUserName, 0);
 
 LABEL_10:
     }
@@ -3004,7 +3004,7 @@ LABEL_10:
   else
   {
     v8 = __67__POExtensionAgentProcess_userNeedsReauthenticationWithCompletion___block_invoke();
-    v4[2](v4, 0, v8);
+    completionCopy[2](completionCopy, 0, v8);
   }
 }
 
@@ -3020,10 +3020,10 @@ id __55__POExtensionAgentProcess_loginUserNameWithCompletion___block_invoke_374(
   return v0;
 }
 
-- (void)setLoginUserName:(id)a3 completion:(id)a4
+- (void)setLoginUserName:(id)name completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  completionCopy = completion;
   v8 = PO_LOG_POExtensionAgentProcess();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -3034,39 +3034,39 @@ id __55__POExtensionAgentProcess_loginUserNameWithCompletion___block_invoke_374(
   if (![(POExtensionAgentProcess *)self isCallerCurrentSSOExtension])
   {
     v11 = __67__POExtensionAgentProcess_userNeedsReauthenticationWithCompletion___block_invoke();
-    v7[2](v7, 0, v11);
+    completionCopy[2](completionCopy, 0, v11);
     goto LABEL_17;
   }
 
-  v9 = [(POExtensionAgentProcess *)self configurationManager];
+  configurationManager = [(POExtensionAgentProcess *)self configurationManager];
   v10 = NSUserName();
-  v11 = [v9 userConfigurationForUserName:v10];
+  v11 = [configurationManager userConfigurationForUserName:v10];
 
   if (v11)
   {
-    v12 = [v11 userLoginConfiguration];
+    userLoginConfiguration = [v11 userLoginConfiguration];
 
-    if (v12)
+    if (userLoginConfiguration)
     {
-      v13 = [v11 userLoginConfiguration];
-      [v13 setLoginUserName:v6];
+      userLoginConfiguration2 = [v11 userLoginConfiguration];
+      [userLoginConfiguration2 setLoginUserName:nameCopy];
     }
 
     else
     {
-      v13 = [objc_alloc(MEMORY[0x277D3D248]) initWithLoginUserName:v6];
-      [v11 setUserLoginConfiguration:v13];
+      userLoginConfiguration2 = [objc_alloc(MEMORY[0x277D3D248]) initWithLoginUserName:nameCopy];
+      [v11 setUserLoginConfiguration:userLoginConfiguration2];
     }
 
-    v15 = [(POExtensionAgentProcess *)self configurationManager];
+    configurationManager2 = [(POExtensionAgentProcess *)self configurationManager];
     v16 = NSUserName();
-    v17 = [v15 saveUserConfiguration:v11 forUserName:v16 syncToPreboot:1];
+    v17 = [configurationManager2 saveUserConfiguration:v11 forUserName:v16 syncToPreboot:1];
 
     if (v17)
     {
-      if (v7)
+      if (completionCopy)
       {
-        v7[2](v7, 1, 0);
+        completionCopy[2](completionCopy, 1, 0);
       }
 
       goto LABEL_17;
@@ -3081,17 +3081,17 @@ id __55__POExtensionAgentProcess_loginUserNameWithCompletion___block_invoke_374(
   }
 
   v18 = v14;
-  if (v7)
+  if (completionCopy)
   {
-    v7[2](v7, 0, v14);
+    completionCopy[2](completionCopy, 0, v14);
   }
 
 LABEL_17:
 }
 
-- (void)userLoginConfigurationWithCompletion:(id)a3
+- (void)userLoginConfigurationWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = PO_LOG_POExtensionAgentProcess();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -3099,30 +3099,30 @@ LABEL_17:
   }
 
   [(POExtensionAgentProcess *)self addEvent:@"userLoginConfiguration"];
-  v6 = [(POExtensionAgentProcess *)self configurationManager];
-  v7 = [v6 currentUserConfiguration];
-  if (!v7)
+  configurationManager = [(POExtensionAgentProcess *)self configurationManager];
+  currentUserConfiguration = [configurationManager currentUserConfiguration];
+  if (!currentUserConfiguration)
   {
 
     goto LABEL_7;
   }
 
-  v8 = v7;
-  v9 = [(POExtensionAgentProcess *)self isCallerCurrentSSOExtension];
+  v8 = currentUserConfiguration;
+  isCallerCurrentSSOExtension = [(POExtensionAgentProcess *)self isCallerCurrentSSOExtension];
 
-  if (!v9)
+  if (!isCallerCurrentSSOExtension)
   {
 LABEL_7:
-    v12 = __64__POExtensionAgentProcess_userLoginConfigurationWithCompletion___block_invoke();
-    v4[2](v4, 0, v12);
+    userLoginConfiguration = __64__POExtensionAgentProcess_userLoginConfigurationWithCompletion___block_invoke();
+    completionCopy[2](completionCopy, 0, userLoginConfiguration);
     goto LABEL_8;
   }
 
-  v10 = [(POExtensionAgentProcess *)self configurationManager];
-  v11 = [v10 currentUserConfiguration];
-  v12 = [v11 userLoginConfiguration];
+  configurationManager2 = [(POExtensionAgentProcess *)self configurationManager];
+  currentUserConfiguration2 = [configurationManager2 currentUserConfiguration];
+  userLoginConfiguration = [currentUserConfiguration2 userLoginConfiguration];
 
-  (v4)[2](v4, v12, 0);
+  (completionCopy)[2](completionCopy, userLoginConfiguration, 0);
 LABEL_8:
 }
 
@@ -3138,10 +3138,10 @@ id __64__POExtensionAgentProcess_userLoginConfigurationWithCompletion___block_in
   return v0;
 }
 
-- (void)setUserLoginConfiguration:(id)a3 completion:(id)a4
+- (void)setUserLoginConfiguration:(id)configuration completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  completionCopy = completion;
   v8 = PO_LOG_POExtensionAgentProcess();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -3149,53 +3149,53 @@ id __64__POExtensionAgentProcess_userLoginConfigurationWithCompletion___block_in
   }
 
   [(POExtensionAgentProcess *)self addEvent:@"setUserLoginConfiguration"];
-  v9 = [(POExtensionAgentProcess *)self configurationManager];
-  v10 = [v9 currentUserConfiguration];
-  if (!v10)
+  configurationManager = [(POExtensionAgentProcess *)self configurationManager];
+  currentUserConfiguration = [configurationManager currentUserConfiguration];
+  if (!currentUserConfiguration)
   {
 
     goto LABEL_8;
   }
 
-  v11 = v10;
-  v12 = [(POExtensionAgentProcess *)self isCallerCurrentSSOExtension];
+  v11 = currentUserConfiguration;
+  isCallerCurrentSSOExtension = [(POExtensionAgentProcess *)self isCallerCurrentSSOExtension];
 
-  if (!v12)
+  if (!isCallerCurrentSSOExtension)
   {
 LABEL_8:
     v16 = __67__POExtensionAgentProcess_resetUserSecureEnclaveKeyWithCompletion___block_invoke_351();
 LABEL_9:
     v17 = v16;
-    v7[2](v7, 0, v16);
+    completionCopy[2](completionCopy, 0, v16);
 
     goto LABEL_10;
   }
 
-  v13 = [(POExtensionAgentProcess *)self configurationManager];
-  v14 = [v13 currentUserConfiguration];
-  [v14 setUserLoginConfiguration:v6];
+  configurationManager2 = [(POExtensionAgentProcess *)self configurationManager];
+  currentUserConfiguration2 = [configurationManager2 currentUserConfiguration];
+  [currentUserConfiguration2 setUserLoginConfiguration:configurationCopy];
 
-  v15 = [(POExtensionAgentProcess *)self configurationManager];
-  LOBYTE(v13) = [v15 saveCurrentUserConfigurationAndSyncToPreboot:1];
+  configurationManager3 = [(POExtensionAgentProcess *)self configurationManager];
+  LOBYTE(configurationManager2) = [configurationManager3 saveCurrentUserConfigurationAndSyncToPreboot:1];
 
-  if ((v13 & 1) == 0)
+  if ((configurationManager2 & 1) == 0)
   {
     v16 = __67__POExtensionAgentProcess_resetUserSecureEnclaveKeyWithCompletion___block_invoke_363();
     goto LABEL_9;
   }
 
-  v7[2](v7, 1, 0);
+  completionCopy[2](completionCopy, 1, 0);
 LABEL_10:
 }
 
-- (void)rotateKeyForKeyType:(int64_t)a3 completion:(id)a4
+- (void)rotateKeyForKeyType:(int64_t)type completion:(id)completion
 {
   v50 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  completionCopy = completion;
   v7 = PO_LOG_POExtensionAgentProcess();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    [POExtensionAgentProcess rotateKeyForKeyType:a3 completion:?];
+    [POExtensionAgentProcess rotateKeyForKeyType:type completion:?];
   }
 
   [(POExtensionAgentProcess *)self addEvent:@"rotateKeyForKeyType"];
@@ -3206,19 +3206,19 @@ LABEL_10:
 
     if (!v9)
     {
-      v11 = __48__POExtensionAgentProcess__keyForKeyType_error___block_invoke();
-      if (v6)
+      currentDeviceConfiguration = __48__POExtensionAgentProcess__keyForKeyType_error___block_invoke();
+      if (completionCopy)
       {
-        v6[2](v6, 0, v11);
+        completionCopy[2](completionCopy, 0, currentDeviceConfiguration);
       }
 
       goto LABEL_30;
     }
 
-    v10 = [(POExtensionAgentProcess *)self configurationManager];
-    v11 = [v10 currentDeviceConfiguration];
+    configurationManager = [(POExtensionAgentProcess *)self configurationManager];
+    currentDeviceConfiguration = [configurationManager currentDeviceConfiguration];
 
-    if (!v11 || ![(POExtensionAgentProcess *)self isCallerCurrentSSOExtension])
+    if (!currentDeviceConfiguration || ![(POExtensionAgentProcess *)self isCallerCurrentSSOExtension])
     {
       v47[0] = MEMORY[0x277D85DD0];
       v47[1] = 3221225472;
@@ -3226,109 +3226,109 @@ LABEL_10:
       v47[3] = &unk_279A3A088;
       v48 = v9;
       v27 = __58__POExtensionAgentProcess_rotateKeyForKeyType_completion___block_invoke_413(v47);
-      if (v6)
+      if (completionCopy)
       {
-        v6[2](v6, 0, v27);
+        completionCopy[2](completionCopy, 0, v27);
       }
 
-      v12 = v48;
+      selfCopy = v48;
       goto LABEL_27;
     }
 
-    v12 = self;
-    objc_sync_enter(v12);
-    if (a3 == 11)
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    if (type == 11)
     {
-      v34 = [v11 pendingEncryptionAlgorithm];
-      v35 = v34;
-      if (!v34)
+      pendingEncryptionAlgorithm = [currentDeviceConfiguration pendingEncryptionAlgorithm];
+      encryptionAlgorithm = pendingEncryptionAlgorithm;
+      if (!pendingEncryptionAlgorithm)
       {
-        v35 = [v11 encryptionAlgorithm];
+        encryptionAlgorithm = [currentDeviceConfiguration encryptionAlgorithm];
       }
 
-      [(POExtensionAgentProcess *)v12 setPendingEncryptionAlgorithm:v35];
-      if (!v34)
+      [(POExtensionAgentProcess *)selfCopy setPendingEncryptionAlgorithm:encryptionAlgorithm];
+      if (!pendingEncryptionAlgorithm)
       {
       }
 
       v36 = MEMORY[0x277D3D230];
-      v37 = [(POExtensionAgentProcess *)v12 pendingEncryptionAlgorithm];
-      v38 = [v36 createSEPEncryptionKeyForAlgorithm:v37 shared:{objc_msgSend(v11, "sharedDeviceKeys")}];
-      [v11 setDeviceEncryptionKey:v38];
-      [(POExtensionAgentProcess *)v12 setPendingEncryptionKey:v38];
+      pendingEncryptionAlgorithm2 = [(POExtensionAgentProcess *)selfCopy pendingEncryptionAlgorithm];
+      v38 = [v36 createSEPEncryptionKeyForAlgorithm:pendingEncryptionAlgorithm2 shared:{objc_msgSend(currentDeviceConfiguration, "sharedDeviceKeys")}];
+      [currentDeviceConfiguration setDeviceEncryptionKey:v38];
+      [(POExtensionAgentProcess *)selfCopy setPendingEncryptionKey:v38];
 
-      v33 = [(POExtensionAgentProcess *)v12 pendingEncryptionKey];
+      pendingEncryptionKey = [(POExtensionAgentProcess *)selfCopy pendingEncryptionKey];
     }
 
     else
     {
-      if (a3 != 10)
+      if (type != 10)
       {
-        if (a3 == 3)
+        if (type == 3)
         {
-          v13 = [(POExtensionAgentProcess *)v12 configurationManager];
+          configurationManager2 = [(POExtensionAgentProcess *)selfCopy configurationManager];
           v14 = NSUserName();
-          v15 = [v13 userConfigurationForUserName:v14];
+          v15 = [configurationManager2 userConfigurationForUserName:v14];
 
           if (v15)
           {
             if ([v15 loginType] != 2)
             {
-              [(POExtensionAgentProcess *)v12 setPendingUserSEPKey:0];
-              v39 = 0;
+              [(POExtensionAgentProcess *)selfCopy setPendingUserSEPKey:0];
+              pendingUserSEPKey = 0;
 LABEL_54:
 
 LABEL_55:
-              objc_sync_exit(v12);
+              objc_sync_exit(selfCopy);
 
-              if (v39)
+              if (pendingUserSEPKey)
               {
-                v43 = [objc_alloc(MEMORY[0x277CDBD80]) initWithKey:v39];
-                v44 = v12;
+                v43 = [objc_alloc(MEMORY[0x277CDBD80]) initWithKey:pendingUserSEPKey];
+                v44 = selfCopy;
                 objc_sync_enter(v44);
-                v45 = [(POExtensionAgentProcess *)v44 keyProxies];
-                [v45 addObject:v43];
+                keyProxies = [(POExtensionAgentProcess *)v44 keyProxies];
+                [keyProxies addObject:v43];
 
                 objc_sync_exit(v44);
-                v46 = [(POExtensionAgentProcess *)v43 endpoint];
-                (v6)[2](v6, v46, 0);
+                endpoint = [(POExtensionAgentProcess *)v43 endpoint];
+                (completionCopy)[2](completionCopy, endpoint, 0);
 
-                v12 = v43;
+                selfCopy = v43;
               }
 
               else
               {
-                v12 = __58__POExtensionAgentProcess_rotateKeyForKeyType_completion___block_invoke_426();
-                v6[2](v6, 0, v12);
+                selfCopy = __58__POExtensionAgentProcess_rotateKeyForKeyType_completion___block_invoke_426();
+                completionCopy[2](completionCopy, 0, selfCopy);
               }
 
               goto LABEL_27;
             }
 
-            v16 = [v15 pendingSigningAlgorithm];
-            v17 = v16;
-            if (!v16)
+            pendingSigningAlgorithm = [v15 pendingSigningAlgorithm];
+            signingAlgorithm = pendingSigningAlgorithm;
+            if (!pendingSigningAlgorithm)
             {
-              v17 = [v15 signingAlgorithm];
+              signingAlgorithm = [v15 signingAlgorithm];
             }
 
-            [(POExtensionAgentProcess *)v12 setPendingUserSEPSigningAlgorithm:v17];
-            if (!v16)
+            [(POExtensionAgentProcess *)selfCopy setPendingUserSEPSigningAlgorithm:signingAlgorithm];
+            if (!pendingSigningAlgorithm)
             {
             }
 
-            v18 = [(POExtensionAgentProcess *)v12 configurationManager];
-            v19 = [v18 currentLoginConfiguration];
-            v20 = [v19 userSEPKeyBiometricPolicy];
+            configurationManager3 = [(POExtensionAgentProcess *)selfCopy configurationManager];
+            currentLoginConfiguration = [configurationManager3 currentLoginConfiguration];
+            userSEPKeyBiometricPolicy = [currentLoginConfiguration userSEPKeyBiometricPolicy];
 
             v21 = PO_LOG_POExtensionAgentProcess();
             if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
             {
-              v22 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v20];
+              v22 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:userSEPKeyBiometricPolicy];
               [(POExtensionAgentProcess *)v22 rotateKeyForKeyType:buf completion:v21];
             }
 
-            if (!v20)
+            if (!userSEPKeyBiometricPolicy)
             {
               goto LABEL_22;
             }
@@ -3338,45 +3338,45 @@ LABEL_55:
 
             if (v24)
             {
-              if (v20)
+              if (userSEPKeyBiometricPolicy)
               {
                 v41 = MEMORY[0x277D3D230];
-                v26 = [(POExtensionAgentProcess *)v12 pendingUserSEPSigningAlgorithm];
-                -[POExtensionAgentProcess setPendingUserSEPKey:](v12, "setPendingUserSEPKey:", [v41 createUserSEPSigningKeyForAlgorithm:v26 userPresence:1 currentSet:1]);
+                pendingUserSEPSigningAlgorithm = [(POExtensionAgentProcess *)selfCopy pendingUserSEPSigningAlgorithm];
+                -[POExtensionAgentProcess setPendingUserSEPKey:](selfCopy, "setPendingUserSEPKey:", [v41 createUserSEPSigningKeyForAlgorithm:pendingUserSEPSigningAlgorithm userPresence:1 currentSet:1]);
                 goto LABEL_53;
               }
 
-              if ((v20 & 2) != 0)
+              if ((userSEPKeyBiometricPolicy & 2) != 0)
               {
                 v42 = MEMORY[0x277D3D230];
-                v26 = [(POExtensionAgentProcess *)v12 pendingUserSEPSigningAlgorithm];
-                -[POExtensionAgentProcess setPendingUserSEPKey:](v12, "setPendingUserSEPKey:", [v42 createUserSEPSigningKeyForAlgorithm:v26 userPresence:1 currentSet:0]);
+                pendingUserSEPSigningAlgorithm = [(POExtensionAgentProcess *)selfCopy pendingUserSEPSigningAlgorithm];
+                -[POExtensionAgentProcess setPendingUserSEPKey:](selfCopy, "setPendingUserSEPKey:", [v42 createUserSEPSigningKeyForAlgorithm:pendingUserSEPSigningAlgorithm userPresence:1 currentSet:0]);
                 goto LABEL_53;
               }
 
 LABEL_22:
               v25 = MEMORY[0x277D3D230];
-              v26 = [(POExtensionAgentProcess *)v12 pendingUserSEPSigningAlgorithm];
-              -[POExtensionAgentProcess setPendingUserSEPKey:](v12, "setPendingUserSEPKey:", [v25 createUserSEPSigningKeyForAlgorithm:v26]);
+              pendingUserSEPSigningAlgorithm = [(POExtensionAgentProcess *)selfCopy pendingUserSEPSigningAlgorithm];
+              -[POExtensionAgentProcess setPendingUserSEPKey:](selfCopy, "setPendingUserSEPKey:", [v25 createUserSEPSigningKeyForAlgorithm:pendingUserSEPSigningAlgorithm]);
 LABEL_53:
 
-              v39 = [(POExtensionAgentProcess *)v12 pendingUserSEPKey];
+              pendingUserSEPKey = [(POExtensionAgentProcess *)selfCopy pendingUserSEPKey];
               goto LABEL_54;
             }
 
             v40 = __67__POExtensionAgentProcess_resetUserSecureEnclaveKeyWithCompletion___block_invoke_357();
-            if (v6)
+            if (completionCopy)
             {
-              v6[2](v6, 0, v40);
+              completionCopy[2](completionCopy, 0, v40);
             }
           }
 
           else
           {
             v40 = __67__POExtensionAgentProcess_resetUserSecureEnclaveKeyWithCompletion___block_invoke_351();
-            if (v6)
+            if (completionCopy)
             {
-              v6[2](v6, 0, v40);
+              completionCopy[2](completionCopy, 0, v40);
             }
           }
         }
@@ -3384,41 +3384,41 @@ LABEL_53:
         else
         {
           v15 = __58__POExtensionAgentProcess_rotateKeyForKeyType_completion___block_invoke_420();
-          v6[2](v6, 0, v15);
+          completionCopy[2](completionCopy, 0, v15);
         }
 
-        objc_sync_exit(v12);
+        objc_sync_exit(selfCopy);
 LABEL_27:
 
 LABEL_30:
         goto LABEL_31;
       }
 
-      v29 = [v11 pendingSigningAlgorithm];
-      v30 = v29;
-      if (!v29)
+      pendingSigningAlgorithm2 = [currentDeviceConfiguration pendingSigningAlgorithm];
+      signingAlgorithm2 = pendingSigningAlgorithm2;
+      if (!pendingSigningAlgorithm2)
       {
-        v30 = [v11 signingAlgorithm];
+        signingAlgorithm2 = [currentDeviceConfiguration signingAlgorithm];
       }
 
-      [(POExtensionAgentProcess *)v12 setPendingSigningAlgorithm:v30];
-      if (!v29)
+      [(POExtensionAgentProcess *)selfCopy setPendingSigningAlgorithm:signingAlgorithm2];
+      if (!pendingSigningAlgorithm2)
       {
       }
 
       v31 = MEMORY[0x277D3D230];
-      v32 = [(POExtensionAgentProcess *)v12 pendingSigningAlgorithm];
-      -[POExtensionAgentProcess setPendingSigningKey:](v12, "setPendingSigningKey:", [v31 createSEPSigningKeyForAlgorithm:v32 shared:{objc_msgSend(v11, "sharedDeviceKeys")}]);
+      pendingSigningAlgorithm3 = [(POExtensionAgentProcess *)selfCopy pendingSigningAlgorithm];
+      -[POExtensionAgentProcess setPendingSigningKey:](selfCopy, "setPendingSigningKey:", [v31 createSEPSigningKeyForAlgorithm:pendingSigningAlgorithm3 shared:{objc_msgSend(currentDeviceConfiguration, "sharedDeviceKeys")}]);
 
-      v33 = [(POExtensionAgentProcess *)v12 pendingSigningKey];
+      pendingEncryptionKey = [(POExtensionAgentProcess *)selfCopy pendingSigningKey];
     }
 
-    v39 = v33;
+    pendingUserSEPKey = pendingEncryptionKey;
     goto LABEL_55;
   }
 
   v9 = __67__POExtensionAgentProcess_userNeedsReauthenticationWithCompletion___block_invoke();
-  v6[2](v6, 0, v9);
+  completionCopy[2](completionCopy, 0, v9);
 LABEL_31:
 
   v28 = *MEMORY[0x277D85DE8];
@@ -3460,13 +3460,13 @@ id __58__POExtensionAgentProcess_rotateKeyForKeyType_completion___block_invoke_4
   return v0;
 }
 
-- (void)completeRotationKeyForKeyType:(int64_t)a3 completion:(id)a4
+- (void)completeRotationKeyForKeyType:(int64_t)type completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v7 = PO_LOG_POExtensionAgentProcess();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    [POExtensionAgentProcess completeRotationKeyForKeyType:a3 completion:?];
+    [POExtensionAgentProcess completeRotationKeyForKeyType:type completion:?];
   }
 
   [(POExtensionAgentProcess *)self addEvent:@"completeRotationKeyForKeyType"];
@@ -3477,19 +3477,19 @@ id __58__POExtensionAgentProcess_rotateKeyForKeyType_completion___block_invoke_4
 
     if (!v9)
     {
-      v11 = __48__POExtensionAgentProcess__keyForKeyType_error___block_invoke();
-      if (v6)
+      currentDeviceConfiguration = __48__POExtensionAgentProcess__keyForKeyType_error___block_invoke();
+      if (completionCopy)
       {
-        v6[2](v6, 0, v11);
+        completionCopy[2](completionCopy, 0, currentDeviceConfiguration);
       }
 
       goto LABEL_34;
     }
 
-    v10 = [(POExtensionAgentProcess *)self configurationManager];
-    v11 = [v10 currentDeviceConfiguration];
+    configurationManager = [(POExtensionAgentProcess *)self configurationManager];
+    currentDeviceConfiguration = [configurationManager currentDeviceConfiguration];
 
-    if (!v11 || ![(POExtensionAgentProcess *)self isCallerCurrentSSOExtension])
+    if (!currentDeviceConfiguration || ![(POExtensionAgentProcess *)self isCallerCurrentSSOExtension])
     {
       v36[0] = MEMORY[0x277D85DD0];
       v36[1] = 3221225472;
@@ -3497,55 +3497,55 @@ id __58__POExtensionAgentProcess_rotateKeyForKeyType_completion___block_invoke_4
       v36[3] = &unk_279A3A088;
       v37 = v9;
       v23 = __68__POExtensionAgentProcess_completeRotationKeyForKeyType_completion___block_invoke_440(v36);
-      if (v6)
+      if (completionCopy)
       {
-        v6[2](v6, 0, v23);
+        completionCopy[2](completionCopy, 0, v23);
       }
 
-      v12 = v37;
+      selfCopy = v37;
       goto LABEL_33;
     }
 
-    v12 = self;
-    objc_sync_enter(v12);
-    if (a3 == 11)
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    if (type == 11)
     {
-      if (![(POExtensionAgentProcess *)v12 pendingEncryptionKey])
+      if (![(POExtensionAgentProcess *)selfCopy pendingEncryptionKey])
       {
         goto LABEL_30;
       }
 
-      v29 = [(POExtensionAgentProcess *)v12 pendingEncryptionAlgorithm];
+      pendingEncryptionAlgorithm = [(POExtensionAgentProcess *)selfCopy pendingEncryptionAlgorithm];
 
-      if (!v29)
+      if (!pendingEncryptionAlgorithm)
       {
         goto LABEL_30;
       }
 
-      v30 = [(POExtensionAgentProcess *)v12 keychainHelper];
-      v31 = [v11 extensionIdentifier];
-      [v30 _deleteCachedAttestationForExtensionIdentifier:v31 key:{objc_msgSend(v11, "deviceEncryptionKey")}];
+      keychainHelper = [(POExtensionAgentProcess *)selfCopy keychainHelper];
+      extensionIdentifier = [currentDeviceConfiguration extensionIdentifier];
+      [keychainHelper _deleteCachedAttestationForExtensionIdentifier:extensionIdentifier key:{objc_msgSend(currentDeviceConfiguration, "deviceEncryptionKey")}];
 
-      [v11 setDeviceEncryptionKey:{-[POExtensionAgentProcess pendingEncryptionKey](v12, "pendingEncryptionKey")}];
-      v32 = [(POExtensionAgentProcess *)v12 pendingEncryptionAlgorithm];
-      [v11 setEncryptionAlgorithm:v32];
+      [currentDeviceConfiguration setDeviceEncryptionKey:{-[POExtensionAgentProcess pendingEncryptionKey](selfCopy, "pendingEncryptionKey")}];
+      pendingEncryptionAlgorithm2 = [(POExtensionAgentProcess *)selfCopy pendingEncryptionAlgorithm];
+      [currentDeviceConfiguration setEncryptionAlgorithm:pendingEncryptionAlgorithm2];
 
-      v33 = [MEMORY[0x277CBEAA8] date];
-      [v11 setLastEncryptionKeyChange:v33];
+      date = [MEMORY[0x277CBEAA8] date];
+      [currentDeviceConfiguration setLastEncryptionKeyChange:date];
 
-      [v11 setPendingEncryptionAlgorithm:0];
-      v34 = [(POExtensionAgentProcess *)v12 configurationManager];
-      LOBYTE(v31) = [v34 saveDeviceConfiguration:v11];
+      [currentDeviceConfiguration setPendingEncryptionAlgorithm:0];
+      configurationManager2 = [(POExtensionAgentProcess *)selfCopy configurationManager];
+      LOBYTE(extensionIdentifier) = [configurationManager2 saveDeviceConfiguration:currentDeviceConfiguration];
 
-      if (v31)
+      if (extensionIdentifier)
       {
-        [(POExtensionAgentProcess *)v12 setPendingEncryptionKey:0];
-        [(POExtensionAgentProcess *)v12 setPendingEncryptionAlgorithm:0];
+        [(POExtensionAgentProcess *)selfCopy setPendingEncryptionKey:0];
+        [(POExtensionAgentProcess *)selfCopy setPendingEncryptionAlgorithm:0];
         goto LABEL_29;
       }
 
       v16 = __57__POExtensionAgentProcess_resetDeviceKeysWithCompletion___block_invoke_336();
-      if (!v6)
+      if (!completionCopy)
       {
         goto LABEL_31;
       }
@@ -3553,53 +3553,53 @@ id __58__POExtensionAgentProcess_rotateKeyForKeyType_completion___block_invoke_4
 
     else
     {
-      if (a3 != 10)
+      if (type != 10)
       {
-        if (a3 == 3)
+        if (type == 3)
         {
-          if ([(POExtensionAgentProcess *)v12 pendingUserSEPKey])
+          if ([(POExtensionAgentProcess *)selfCopy pendingUserSEPKey])
           {
-            v13 = [(POExtensionAgentProcess *)v12 pendingUserSEPSigningAlgorithm];
+            pendingUserSEPSigningAlgorithm = [(POExtensionAgentProcess *)selfCopy pendingUserSEPSigningAlgorithm];
 
-            if (v13)
+            if (pendingUserSEPSigningAlgorithm)
             {
-              v14 = [(POExtensionAgentProcess *)v12 configurationManager];
+              configurationManager3 = [(POExtensionAgentProcess *)selfCopy configurationManager];
               v15 = NSUserName();
-              v16 = [v14 userConfigurationForUserName:v15];
+              v16 = [configurationManager3 userConfigurationForUserName:v15];
 
               if (v16)
               {
-                v17 = [(POExtensionAgentProcess *)v12 keychainHelper];
-                v18 = [v11 extensionIdentifier];
-                [v17 _deleteCachedAttestationForExtensionIdentifier:v18 key:{objc_msgSend(v16, "sepKey")}];
+                keychainHelper2 = [(POExtensionAgentProcess *)selfCopy keychainHelper];
+                extensionIdentifier2 = [currentDeviceConfiguration extensionIdentifier];
+                [keychainHelper2 _deleteCachedAttestationForExtensionIdentifier:extensionIdentifier2 key:{objc_msgSend(v16, "sepKey")}];
 
-                [v16 setSepKey:{-[POExtensionAgentProcess pendingUserSEPKey](v12, "pendingUserSEPKey")}];
-                v19 = [(POExtensionAgentProcess *)v12 pendingUserSEPSigningAlgorithm];
-                [v16 setSigningAlgorithm:v19];
+                [v16 setSepKey:{-[POExtensionAgentProcess pendingUserSEPKey](selfCopy, "pendingUserSEPKey")}];
+                pendingUserSEPSigningAlgorithm2 = [(POExtensionAgentProcess *)selfCopy pendingUserSEPSigningAlgorithm];
+                [v16 setSigningAlgorithm:pendingUserSEPSigningAlgorithm2];
 
                 [v16 setPendingSigningAlgorithm:0];
-                v20 = [(POExtensionAgentProcess *)v12 configurationManager];
+                configurationManager4 = [(POExtensionAgentProcess *)selfCopy configurationManager];
                 v21 = NSUserName();
-                v22 = [v20 saveUserConfiguration:v16 forUserName:v21 syncToPreboot:1];
+                v22 = [configurationManager4 saveUserConfiguration:v16 forUserName:v21 syncToPreboot:1];
 
                 if (v22)
                 {
-                  [(POExtensionAgentProcess *)v12 setPendingUserSEPKey:0];
-                  [(POExtensionAgentProcess *)v12 setPendingUserSEPSigningAlgorithm:0];
-                  v6[2](v6, 1, 0);
+                  [(POExtensionAgentProcess *)selfCopy setPendingUserSEPKey:0];
+                  [(POExtensionAgentProcess *)selfCopy setPendingUserSEPSigningAlgorithm:0];
+                  completionCopy[2](completionCopy, 1, 0);
 LABEL_31:
 
                   goto LABEL_32;
                 }
 
                 v35 = __67__POExtensionAgentProcess_resetUserSecureEnclaveKeyWithCompletion___block_invoke_363();
-                v6[2](v6, 0, v35);
+                completionCopy[2](completionCopy, 0, v35);
               }
 
               else
               {
                 v35 = __67__POExtensionAgentProcess_resetUserSecureEnclaveKeyWithCompletion___block_invoke_351();
-                v6[2](v6, 0, v35);
+                completionCopy[2](completionCopy, 0, v35);
               }
 
               goto LABEL_31;
@@ -3609,42 +3609,42 @@ LABEL_31:
 
 LABEL_30:
         v16 = __68__POExtensionAgentProcess_completeRotationKeyForKeyType_completion___block_invoke_454();
-        v6[2](v6, 0, v16);
+        completionCopy[2](completionCopy, 0, v16);
         goto LABEL_31;
       }
 
-      if (![(POExtensionAgentProcess *)v12 pendingSigningKey])
+      if (![(POExtensionAgentProcess *)selfCopy pendingSigningKey])
       {
         goto LABEL_30;
       }
 
-      v24 = [(POExtensionAgentProcess *)v12 pendingSigningAlgorithm];
+      pendingSigningAlgorithm = [(POExtensionAgentProcess *)selfCopy pendingSigningAlgorithm];
 
-      if (!v24)
+      if (!pendingSigningAlgorithm)
       {
         goto LABEL_30;
       }
 
-      v25 = [(POExtensionAgentProcess *)v12 keychainHelper];
-      v26 = [v11 extensionIdentifier];
-      [v25 _deleteCachedAttestationForExtensionIdentifier:v26 key:{objc_msgSend(v11, "deviceSigningKey")}];
+      keychainHelper3 = [(POExtensionAgentProcess *)selfCopy keychainHelper];
+      extensionIdentifier3 = [currentDeviceConfiguration extensionIdentifier];
+      [keychainHelper3 _deleteCachedAttestationForExtensionIdentifier:extensionIdentifier3 key:{objc_msgSend(currentDeviceConfiguration, "deviceSigningKey")}];
 
-      [v11 setDeviceSigningKey:{-[POExtensionAgentProcess pendingSigningKey](v12, "pendingSigningKey")}];
-      v27 = [(POExtensionAgentProcess *)v12 pendingSigningAlgorithm];
-      [v11 setSigningAlgorithm:v27];
+      [currentDeviceConfiguration setDeviceSigningKey:{-[POExtensionAgentProcess pendingSigningKey](selfCopy, "pendingSigningKey")}];
+      pendingSigningAlgorithm2 = [(POExtensionAgentProcess *)selfCopy pendingSigningAlgorithm];
+      [currentDeviceConfiguration setSigningAlgorithm:pendingSigningAlgorithm2];
 
-      [v11 setPendingSigningAlgorithm:0];
-      v28 = [(POExtensionAgentProcess *)v12 configurationManager];
-      LOBYTE(v26) = [v28 saveDeviceConfiguration:v11];
+      [currentDeviceConfiguration setPendingSigningAlgorithm:0];
+      configurationManager5 = [(POExtensionAgentProcess *)selfCopy configurationManager];
+      LOBYTE(extensionIdentifier3) = [configurationManager5 saveDeviceConfiguration:currentDeviceConfiguration];
 
-      if (v26)
+      if (extensionIdentifier3)
       {
-        [(POExtensionAgentProcess *)v12 setPendingSigningKey:0];
-        [(POExtensionAgentProcess *)v12 setPendingSigningAlgorithm:0];
+        [(POExtensionAgentProcess *)selfCopy setPendingSigningKey:0];
+        [(POExtensionAgentProcess *)selfCopy setPendingSigningAlgorithm:0];
 LABEL_29:
-        v6[2](v6, 1, 0);
+        completionCopy[2](completionCopy, 1, 0);
 LABEL_32:
-        objc_sync_exit(v12);
+        objc_sync_exit(selfCopy);
 LABEL_33:
 
 LABEL_34:
@@ -3652,18 +3652,18 @@ LABEL_34:
       }
 
       v16 = __57__POExtensionAgentProcess_resetDeviceKeysWithCompletion___block_invoke_336();
-      if (!v6)
+      if (!completionCopy)
       {
         goto LABEL_31;
       }
     }
 
-    v6[2](v6, 0, v16);
+    completionCopy[2](completionCopy, 0, v16);
     goto LABEL_31;
   }
 
   v9 = __67__POExtensionAgentProcess_userNeedsReauthenticationWithCompletion___block_invoke();
-  v6[2](v6, 0, v9);
+  completionCopy[2](completionCopy, 0, v9);
 LABEL_35:
 }
 
@@ -3691,47 +3691,47 @@ id __68__POExtensionAgentProcess_completeRotationKeyForKeyType_completion___bloc
   return v0;
 }
 
-- (void)addEvent:(id)a3
+- (void)addEvent:(id)event
 {
-  v8 = a3;
-  v4 = [(POExtensionAgentProcess *)self _analytics];
-  v5 = [v4 objectForKeyedSubscript:v8];
+  eventCopy = event;
+  _analytics = [(POExtensionAgentProcess *)self _analytics];
+  v5 = [_analytics objectForKeyedSubscript:eventCopy];
 
   if (v5)
   {
-    v6 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v5, "intValue") + 1}];
-    v7 = [(POExtensionAgentProcess *)self _analytics];
-    [v7 setObject:v6 forKeyedSubscript:v8];
+    _analytics3 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v5, "intValue") + 1}];
+    _analytics2 = [(POExtensionAgentProcess *)self _analytics];
+    [_analytics2 setObject:_analytics3 forKeyedSubscript:eventCopy];
   }
 
   else
   {
-    v6 = [(POExtensionAgentProcess *)self _analytics];
-    [v6 setObject:&unk_28708C408 forKeyedSubscript:v8];
+    _analytics3 = [(POExtensionAgentProcess *)self _analytics];
+    [_analytics3 setObject:&unk_28708C408 forKeyedSubscript:eventCopy];
   }
 }
 
-- (void)addEvent:(id)a3 forKeyType:(int64_t)a4
+- (void)addEvent:(id)event forKeyType:(int64_t)type
 {
   v6 = MEMORY[0x277D3D1D0];
-  v7 = a3;
-  v13 = [v6 stringForKeyType:a4];
-  v8 = [v7 stringByAppendingString:?];
+  eventCopy = event;
+  v13 = [v6 stringForKeyType:type];
+  v8 = [eventCopy stringByAppendingString:?];
 
-  v9 = [(POExtensionAgentProcess *)self _analytics];
-  v10 = [v9 objectForKeyedSubscript:v8];
+  _analytics = [(POExtensionAgentProcess *)self _analytics];
+  v10 = [_analytics objectForKeyedSubscript:v8];
 
   if (v10)
   {
-    v11 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v10, "intValue") + 1}];
-    v12 = [(POExtensionAgentProcess *)self _analytics];
-    [v12 setObject:v11 forKeyedSubscript:v8];
+    _analytics3 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v10, "intValue") + 1}];
+    _analytics2 = [(POExtensionAgentProcess *)self _analytics];
+    [_analytics2 setObject:_analytics3 forKeyedSubscript:v8];
   }
 
   else
   {
-    v11 = [(POExtensionAgentProcess *)self _analytics];
-    [v11 setObject:&unk_28708C408 forKeyedSubscript:v8];
+    _analytics3 = [(POExtensionAgentProcess *)self _analytics];
+    [_analytics3 setObject:&unk_28708C408 forKeyedSubscript:v8];
   }
 }
 

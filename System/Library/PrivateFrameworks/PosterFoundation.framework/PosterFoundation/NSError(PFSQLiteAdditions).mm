@@ -14,25 +14,25 @@
   v13 = v12;
   if (v12)
   {
-    v14 = v12;
+    dictionary = v12;
   }
 
   else
   {
-    v14 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
   }
 
-  v15 = v14;
+  v15 = dictionary;
 
   v16 = *MEMORY[0x1E696A588];
   v17 = [v15 objectForKeyedSubscript:*MEMORY[0x1E696A588]];
 
   if (!v17)
   {
-    v18 = [v9 lastErrorMessage];
-    if (v18)
+    lastErrorMessage = [v9 lastErrorMessage];
+    if (lastErrorMessage)
     {
-      [v15 setObject:v18 forKeyedSubscript:v16];
+      [v15 setObject:lastErrorMessage forKeyedSubscript:v16];
     }
   }
 
@@ -48,15 +48,15 @@
   v9 = v8;
   if (v8)
   {
-    v10 = v8;
+    dictionary = v8;
   }
 
   else
   {
-    v10 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
   }
 
-  v11 = v10;
+  v11 = dictionary;
 
   v12 = [MEMORY[0x1E696AEC0] stringWithUTF8String:sqlite3_errstr(a3)];
   [v11 setObject:v12 forKeyedSubscript:*MEMORY[0x1E696A578]];

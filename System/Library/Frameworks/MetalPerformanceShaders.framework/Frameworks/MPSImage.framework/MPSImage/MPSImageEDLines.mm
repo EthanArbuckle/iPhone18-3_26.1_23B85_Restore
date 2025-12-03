@@ -2,11 +2,11 @@
 - (MPSImageEDLines)initWithCoder:(NSCoder *)aDecoder device:(id)device;
 - (MPSImageEDLines)initWithDevice:(id)device gaussianSigma:(const float)gaussianSigma minLineLength:(const unsigned __int16)minLineLength maxLines:(const NSUInteger)maxLines detailRatio:(const unsigned __int16)detailRatio gradientThreshold:(const float)gradientThreshold lineErrorThreshold:(const float)lineErrorThreshold mergeLocalityThreshold:(const float)mergeLocalityThreshold;
 - (MTLRegion)clipRectSource;
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4;
+- (id)copyWithZone:(_NSZone *)zone device:(id)device;
 - (void)dealloc;
-- (void)encodeInternalToCommandEncoder:(id)a3 commandBuffer:(id)a4 sourceTexture:(id)a5 destinationTexture:(id)a6 endpointBuffer:(id)a7 endpointOffset:(unint64_t)a8 inputExtent:(id *)a9;
-- (void)encodeToCommandEncoder:(id)a3 commandBuffer:(id)a4 sourceTexture:(id)a5 destinationTexture:(id)a6 endpointBuffer:(id)a7 endpointOffset:(unint64_t)a8;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeInternalToCommandEncoder:(id)encoder commandBuffer:(id)buffer sourceTexture:(id)texture destinationTexture:(id)destinationTexture endpointBuffer:(id)endpointBuffer endpointOffset:(unint64_t)offset inputExtent:(id *)extent;
+- (void)encodeToCommandEncoder:(id)encoder commandBuffer:(id)buffer sourceTexture:(id)texture destinationTexture:(id)destinationTexture endpointBuffer:(id)endpointBuffer endpointOffset:(unint64_t)offset;
+- (void)encodeWithCoder:(id)coder;
 - (void)setClipRectSource:(MTLRegion *)clipRectSource;
 @end
 
@@ -144,33 +144,33 @@
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   *(&self->super.super.isa + *MEMORY[0x277CD7358] + 2) = 1;
   v46.receiver = self;
   v46.super_class = MPSImageEDLines;
   [(MPSKernel *)&v46 encodeWithCoder:?];
-  objc_msgSend_encodeInt32_forKey_(a3, v5, self->_minLineLength, @"MPSImageEDLines.maxLines", v6, v7);
-  objc_msgSend_encodeInt64_forKey_(a3, v8, self->_maxLines, @"MPSImageEDLines.maxLines", v9, v10);
-  objc_msgSend_encodeInt32_forKey_(a3, v11, self->_detailRatio, @"MPSImageEDLines.maxLines", v12, v13);
+  objc_msgSend_encodeInt32_forKey_(coder, v5, self->_minLineLength, @"MPSImageEDLines.maxLines", v6, v7);
+  objc_msgSend_encodeInt64_forKey_(coder, v8, self->_maxLines, @"MPSImageEDLines.maxLines", v9, v10);
+  objc_msgSend_encodeInt32_forKey_(coder, v11, self->_detailRatio, @"MPSImageEDLines.maxLines", v12, v13);
   *&v14 = self->_gradientThreshold;
-  objc_msgSend_encodeFloat_forKey_(a3, v15, @"MPSImageEDLines.gradientThreshold", v16, v17, v18, v14);
+  objc_msgSend_encodeFloat_forKey_(coder, v15, @"MPSImageEDLines.gradientThreshold", v16, v17, v18, v14);
   *&v19 = self->_lineErrorThreshold;
-  objc_msgSend_encodeFloat_forKey_(a3, v20, @"MPSImageEDLines.lineErrorThreshold", v21, v22, v23, v19);
-  objc_msgSend_encodeInt64_forKey_(a3, v24, self->_clipRectSource.origin.x, @"MPSImageEDLines.clipRectSource.origin.x", v25, v26);
-  objc_msgSend_encodeInt64_forKey_(a3, v27, self->_clipRectSource.origin.y, @"MPSImageEDLines.clipRectSource.origin.y", v28, v29);
-  objc_msgSend_encodeInt64_forKey_(a3, v30, self->_clipRectSource.origin.z, @"MPSImageEDLines.clipRectSource.origin.z", v31, v32);
-  objc_msgSend_encodeInt64_forKey_(a3, v33, self->_clipRectSource.size.width, @"MPSImageEDLines.clipRectSource.size.width", v34, v35);
-  objc_msgSend_encodeInt64_forKey_(a3, v36, self->_clipRectSource.size.height, @"MPSImageEDLines.clipRectSource.size.height", v37, v38);
-  objc_msgSend_encodeInt64_forKey_(a3, v39, self->_clipRectSource.size.depth, @"MPSImageEDLines.clipRectSource.size.depth", v40, v41);
-  objc_msgSend_encodeWithCoder_(self->gaussianBlurKernel, v42, a3, v43, v44, v45);
+  objc_msgSend_encodeFloat_forKey_(coder, v20, @"MPSImageEDLines.lineErrorThreshold", v21, v22, v23, v19);
+  objc_msgSend_encodeInt64_forKey_(coder, v24, self->_clipRectSource.origin.x, @"MPSImageEDLines.clipRectSource.origin.x", v25, v26);
+  objc_msgSend_encodeInt64_forKey_(coder, v27, self->_clipRectSource.origin.y, @"MPSImageEDLines.clipRectSource.origin.y", v28, v29);
+  objc_msgSend_encodeInt64_forKey_(coder, v30, self->_clipRectSource.origin.z, @"MPSImageEDLines.clipRectSource.origin.z", v31, v32);
+  objc_msgSend_encodeInt64_forKey_(coder, v33, self->_clipRectSource.size.width, @"MPSImageEDLines.clipRectSource.size.width", v34, v35);
+  objc_msgSend_encodeInt64_forKey_(coder, v36, self->_clipRectSource.size.height, @"MPSImageEDLines.clipRectSource.size.height", v37, v38);
+  objc_msgSend_encodeInt64_forKey_(coder, v39, self->_clipRectSource.size.depth, @"MPSImageEDLines.clipRectSource.size.depth", v40, v41);
+  objc_msgSend_encodeWithCoder_(self->gaussianBlurKernel, v42, coder, v43, v44, v45);
 }
 
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4
+- (id)copyWithZone:(_NSZone *)zone device:(id)device
 {
   v10.receiver = self;
   v10.super_class = MPSImageEDLines;
-  result = [(MPSKernel *)&v10 copyWithZone:a3 device:a4];
+  result = [(MPSKernel *)&v10 copyWithZone:zone device:device];
   if (result)
   {
     *(result + 22) = LODWORD(self->_gaussianSigma);
@@ -206,11 +206,11 @@
   [(MPSKernel *)&v3 dealloc];
 }
 
-- (void)encodeInternalToCommandEncoder:(id)a3 commandBuffer:(id)a4 sourceTexture:(id)a5 destinationTexture:(id)a6 endpointBuffer:(id)a7 endpointOffset:(unint64_t)a8 inputExtent:(id *)a9
+- (void)encodeInternalToCommandEncoder:(id)encoder commandBuffer:(id)buffer sourceTexture:(id)texture destinationTexture:(id)destinationTexture endpointBuffer:(id)endpointBuffer endpointOffset:(unint64_t)offset inputExtent:(id *)extent
 {
-  var0 = a9->var1.var0;
-  var1 = a9->var1.var1;
-  MEMORY[0x23EE7BAC0](v225, a4, 0);
+  var0 = extent->var1.var0;
+  var1 = extent->var1.var1;
+  MEMORY[0x23EE7BAC0](v225, buffer, 0);
   v15 = *MEMORY[0x277CD7350];
   PixelInfo = MPSDevice::GetPixelInfo(*(&self->super.super.isa + v15), MTLPixelFormatBGRA8Unorm, MPSImageFeatureChannelFormatNone);
   v223[1] = var0;
@@ -227,9 +227,9 @@
   v224 = MPSDevice::GetPixelInfo(*(&self->super.super.isa + v15), MTLPixelFormatR16Float, MPSImageFeatureChannelFormatNone);
   v18 = MPSAutoCache::GetTempTexture();
   v194 = MPSAutoCache::GetTempTexture();
-  if (!a6)
+  if (!destinationTexture)
   {
-    a6 = MPSAutoCache::GetCompressedTempTexture();
+    destinationTexture = MPSAutoCache::GetCompressedTempTexture();
   }
 
   detailRatio = self->_detailRatio;
@@ -241,7 +241,7 @@
   v189 = MPSAutoCache::GetTempBuffer(v225, v184, 0);
   v223[0] = 0;
   v20 = *(&self->super.super.isa + v15);
-  v26 = objc_msgSend_pixelFormat(a5, v21, v22, v23, v24, v25);
+  v26 = objc_msgSend_pixelFormat(texture, v21, v22, v23, v24, v25);
   v222 = 0;
   v223[0] = MPSDevice::GetPixelInfo(v20, v26, MPSImageFeatureChannelFormatNone);
   v222 = MPSDevice::GetPixelInfo(*(&self->super.super.isa + v15), MTLPixelFormatBGRA8Unorm, MPSImageFeatureChannelFormatNone);
@@ -273,15 +273,15 @@
   v211[7] = 1;
   v212 = 0u;
   v213 = 0u;
-  sub_23993B970(self->gaussianBlurKernel, a3, a4, a5, TempTexture, v219);
-  sub_23993B970(self->sobel3XHKernel, a3, a4, TempTexture, v17, v215);
-  sub_23993B970(self->sobel3XVKernel, a3, a4, v17, CompressedTempTexture, v215);
-  sub_23993B970(self->sobel3YVKernel, a3, a4, TempTexture, v17, v215);
-  sub_23993B970(self->sobel3YHKernel, a3, a4, v17, v196, v215);
-  v27 = vmovn_s64(*&a9->var0.var0);
+  sub_23993B970(self->gaussianBlurKernel, encoder, buffer, texture, TempTexture, v219);
+  sub_23993B970(self->sobel3XHKernel, encoder, buffer, TempTexture, v17, v215);
+  sub_23993B970(self->sobel3XVKernel, encoder, buffer, v17, CompressedTempTexture, v215);
+  sub_23993B970(self->sobel3YVKernel, encoder, buffer, TempTexture, v17, v215);
+  sub_23993B970(self->sobel3YHKernel, encoder, buffer, v17, v196, v215);
+  v27 = vmovn_s64(*&extent->var0.var0);
   v201[1] = v27.i16[2];
-  v28 = vmovn_s64(*&a9->var1.var0);
-  v29 = sqrt((a9->var1.var0 * a9->var1.var0 + a9->var1.var1 * a9->var1.var1));
+  v28 = vmovn_s64(*&extent->var1.var0);
+  v29 = sqrt((extent->var1.var0 * extent->var1.var0 + extent->var1.var1 * extent->var1.var1));
   v201[0] = v27.i16[0];
   v27.i16[0] = v28.i16[0];
   v27.i16[1] = v28.i16[2];
@@ -302,15 +302,15 @@
   ComputeState = MPSLibrary::GetComputeState();
   if (ComputeState)
   {
-    objc_msgSend_setComputePipelineState_(a3, v32, ComputeState, v33, v34, v35);
+    objc_msgSend_setComputePipelineState_(encoder, v32, ComputeState, v33, v34, v35);
     v37 = *(&self->super.super.isa + v30);
     MPSLibrary::ReleaseComputeState();
-    objc_msgSend_setBytes_length_atIndex_(a3, v38, v201, 48, 0, v39);
-    objc_msgSend_setTexture_atIndex_(a3, v40, CompressedTempTexture, 0, v41, v42);
-    objc_msgSend_setTexture_atIndex_(a3, v43, v196, 1, v44, v45);
-    objc_msgSend_setTexture_atIndex_(a3, v46, v192, 2, v47, v48);
-    objc_msgSend_setTexture_atIndex_(a3, v49, v18, 3, v50, v51);
-    objc_msgSend_setBuffer_offset_atIndex_(a3, v52, TempBuffer, 0, 1, v53);
+    objc_msgSend_setBytes_length_atIndex_(encoder, v38, v201, 48, 0, v39);
+    objc_msgSend_setTexture_atIndex_(encoder, v40, CompressedTempTexture, 0, v41, v42);
+    objc_msgSend_setTexture_atIndex_(encoder, v43, v196, 1, v44, v45);
+    objc_msgSend_setTexture_atIndex_(encoder, v46, v192, 2, v47, v48);
+    objc_msgSend_setTexture_atIndex_(encoder, v49, v18, 3, v50, v51);
+    objc_msgSend_setBuffer_offset_atIndex_(encoder, v52, TempBuffer, 0, 1, v53);
     v54.i64[0] = 0x700000007;
     v55 = vshr_n_u32(*&vaddw_u16(v54, v202), 3uLL);
     *&v56 = v55.u32[0];
@@ -319,20 +319,20 @@
     *&v200[16] = 1;
     *v199 = vdupq_n_s64(8uLL);
     *&v199[16] = 1;
-    objc_msgSend_dispatchThreadgroups_threadsPerThreadgroup_(a3, v57, v200, v199, v58, v59);
-    sub_23993B970(self->gradientNormalizeAreaMaxKernel, a3, a4, v18, v194, v211);
+    objc_msgSend_dispatchThreadgroups_threadsPerThreadgroup_(encoder, v57, v200, v199, v58, v59);
+    sub_23993B970(self->gradientNormalizeAreaMaxKernel, encoder, buffer, v18, v194, v211);
     v60 = *(&self->super.super.isa + v30);
     v65 = MPSLibrary::GetComputeState();
     if (v65)
     {
-      objc_msgSend_setComputePipelineState_(a3, v61, v65, v62, v63, v64);
+      objc_msgSend_setComputePipelineState_(encoder, v61, v65, v62, v63, v64);
       v66 = *(&self->super.super.isa + v30);
       MPSLibrary::ReleaseComputeState();
-      objc_msgSend_setTexture_atIndex_(a3, v67, v18, 0, v68, v69);
-      objc_msgSend_setTexture_atIndex_(a3, v70, v194, 1, v71, v72);
-      objc_msgSend_setBytes_length_atIndex_(a3, v73, v201, 48, 0, v74);
-      objc_msgSend_setBuffer_offset_atIndex_(a3, v75, TempBuffer, 0, 1, v76);
-      objc_msgSend_setBuffer_offset_atIndex_(a3, v77, v191, 0, 2, v78);
+      objc_msgSend_setTexture_atIndex_(encoder, v67, v18, 0, v68, v69);
+      objc_msgSend_setTexture_atIndex_(encoder, v70, v194, 1, v71, v72);
+      objc_msgSend_setBytes_length_atIndex_(encoder, v73, v201, 48, 0, v74);
+      objc_msgSend_setBuffer_offset_atIndex_(encoder, v75, TempBuffer, 0, 1, v76);
+      objc_msgSend_setBuffer_offset_atIndex_(encoder, v77, v191, 0, 2, v78);
       v79.i64[0] = 0x700000007;
       v80 = vshr_n_u32(*&vaddw_u16(v79, v202), 3uLL);
       *&v81 = v80.u32[0];
@@ -341,27 +341,27 @@
       *&v200[16] = 1;
       *v199 = vdupq_n_s64(8uLL);
       *&v199[16] = 1;
-      objc_msgSend_dispatchThreadgroups_threadsPerThreadgroup_(a3, v82, v200, v199, v83, v84);
+      objc_msgSend_dispatchThreadgroups_threadsPerThreadgroup_(encoder, v82, v200, v199, v83, v84);
       v85 = *(&self->super.super.isa + v30);
       v90 = MPSLibrary::GetComputeState();
       if (v90)
       {
-        objc_msgSend_setComputePipelineState_(a3, v86, v90, v87, v88, v89);
-        objc_msgSend_setTexture_atIndex_(a3, v91, v18, 0, v92, v93);
-        objc_msgSend_setTexture_atIndex_(a3, v94, v192, 1, v95, v96);
-        objc_msgSend_setTexture_atIndex_(a3, v97, a6, 2, v98, v99);
-        objc_msgSend_setBytes_length_atIndex_(a3, v100, v201, 48, 0, v101);
-        objc_msgSend_setBuffer_offset_atIndex_(a3, v102, TempBuffer, 0, 1, v103);
-        objc_msgSend_setBuffer_offset_atIndex_(a3, v104, v191, 0, 3, v105);
-        objc_msgSend_setBuffer_offset_atIndex_(a3, v106, v190, 0, 4, v107);
-        objc_msgSend_setBuffer_offset_atIndex_(a3, v108, v189, 0, 6, v109);
+        objc_msgSend_setComputePipelineState_(encoder, v86, v90, v87, v88, v89);
+        objc_msgSend_setTexture_atIndex_(encoder, v91, v18, 0, v92, v93);
+        objc_msgSend_setTexture_atIndex_(encoder, v94, v192, 1, v95, v96);
+        objc_msgSend_setTexture_atIndex_(encoder, v97, destinationTexture, 2, v98, v99);
+        objc_msgSend_setBytes_length_atIndex_(encoder, v100, v201, 48, 0, v101);
+        objc_msgSend_setBuffer_offset_atIndex_(encoder, v102, TempBuffer, 0, 1, v103);
+        objc_msgSend_setBuffer_offset_atIndex_(encoder, v104, v191, 0, 3, v105);
+        objc_msgSend_setBuffer_offset_atIndex_(encoder, v106, v190, 0, 4, v107);
+        objc_msgSend_setBuffer_offset_atIndex_(encoder, v108, v189, 0, 6, v109);
         v110 = (2 * self->_detailRatio + 31) & 0x3FFE0;
         *v200 = 1;
         *&v200[8] = v188;
         *&v200[16] = 1;
         *v199 = v110;
         *&v199[8] = vdupq_n_s64(1uLL);
-        objc_msgSend_dispatchThreadgroups_threadsPerThreadgroup_(a3, v111, v200, v199, v112, v113);
+        objc_msgSend_dispatchThreadgroups_threadsPerThreadgroup_(encoder, v111, v200, v199, v112, v113);
         v114 = *(&self->super.super.isa + v30);
         MPSLibrary::ReleaseComputeState();
         if (self->_maxLines)
@@ -372,17 +372,17 @@
             v120 = MPSLibrary::GetComputeState();
             if (v120)
             {
-              objc_msgSend_setComputePipelineState_(a3, v116, v120, v117, v118, v119);
+              objc_msgSend_setComputePipelineState_(encoder, v116, v120, v117, v118, v119);
               v121 = *(&self->super.super.isa + v30);
               MPSLibrary::ReleaseComputeState();
               maxLines = self->_maxLines;
-              objc_msgSend_setBytes_length_atIndex_(a3, v122, v201, 48, 0, v123);
-              objc_msgSend_setBuffer_offset_atIndex_(a3, v124, v190, 0, 1, v125);
-              objc_msgSend_setBuffer_offset_atIndex_(a3, v126, v191, 0, 2, v127);
-              objc_msgSend_setBuffer_offset_atIndex_(a3, v128, a7, a8, 5, v129);
-              objc_msgSend_setBuffer_offset_atIndex_(a3, v130, v189, 0, 4, v131);
-              objc_msgSend_setThreadgroupMemoryLength_atIndex_(a3, v132, 4 * self->_maxLines, 0, v133, v134);
-              objc_msgSend_setThreadgroupMemoryLength_atIndex_(a3, v135, 16, 1, v136, v137);
+              objc_msgSend_setBytes_length_atIndex_(encoder, v122, v201, 48, 0, v123);
+              objc_msgSend_setBuffer_offset_atIndex_(encoder, v124, v190, 0, 1, v125);
+              objc_msgSend_setBuffer_offset_atIndex_(encoder, v126, v191, 0, 2, v127);
+              objc_msgSend_setBuffer_offset_atIndex_(encoder, v128, endpointBuffer, offset, 5, v129);
+              objc_msgSend_setBuffer_offset_atIndex_(encoder, v130, v189, 0, 4, v131);
+              objc_msgSend_setThreadgroupMemoryLength_atIndex_(encoder, v132, 4 * self->_maxLines, 0, v133, v134);
+              objc_msgSend_setThreadgroupMemoryLength_atIndex_(encoder, v135, 16, 1, v136, v137);
               v143 = objc_msgSend_threadExecutionWidth(v120, v138, v139, v140, v141, v142);
               v147 = (3.14159265 / (v208 + v208));
               *v200 = v147;
@@ -391,28 +391,28 @@
               v149 = v143 <= 1 ? 1 : v143;
               *v199 = v149;
               *&v199[8] = v148;
-              objc_msgSend_dispatchThreadgroups_threadsPerThreadgroup_(a3, v144, v200, v199, v145, v146, v184);
+              objc_msgSend_dispatchThreadgroups_threadsPerThreadgroup_(encoder, v144, v200, v199, v145, v146, v184);
               lineErrorThreshold = self->_lineErrorThreshold;
-              objc_msgSend_setBytes_length_atIndex_(a3, v150, v201, 48, 0, v151);
+              objc_msgSend_setBytes_length_atIndex_(encoder, v150, v201, 48, 0, v151);
               *v200 = v147;
               *&v200[8] = vdupq_n_s64(1uLL);
               *v199 = v149;
               *&v199[8] = *&v200[8];
-              objc_msgSend_dispatchThreadgroups_threadsPerThreadgroup_(a3, v152, v200, v199, v153, v154);
+              objc_msgSend_dispatchThreadgroups_threadsPerThreadgroup_(encoder, v152, v200, v199, v153, v154);
               v155 = *(&self->super.super.isa + v30);
               v160 = MPSLibrary::GetComputeState();
               if (v160)
               {
-                objc_msgSend_setComputePipelineState_(a3, v156, v160, v157, v158, v159);
+                objc_msgSend_setComputePipelineState_(encoder, v156, v160, v157, v158, v159);
                 v161 = *(&self->super.super.isa + v30);
                 MPSLibrary::ReleaseComputeState();
                 maxLines = self->_maxLines;
-                objc_msgSend_setBytes_length_atIndex_(a3, v162, v201, 48, 0, v163);
-                objc_msgSend_setBuffer_offset_atIndex_(a3, v164, v190, 0, 1, v165);
-                objc_msgSend_setBuffer_offset_atIndex_(a3, v166, a7, a8, 2, v167);
-                objc_msgSend_setBuffer_offset_atIndex_(a3, v168, v189, 0, 3, v169);
-                objc_msgSend_setBuffer_offset_atIndex_(a3, v170, v191, 0, 4, v171);
-                objc_msgSend_setBuffer_offset_atIndex_(a3, v172, a7, a8, 5, v173);
+                objc_msgSend_setBytes_length_atIndex_(encoder, v162, v201, 48, 0, v163);
+                objc_msgSend_setBuffer_offset_atIndex_(encoder, v164, v190, 0, 1, v165);
+                objc_msgSend_setBuffer_offset_atIndex_(encoder, v166, endpointBuffer, offset, 2, v167);
+                objc_msgSend_setBuffer_offset_atIndex_(encoder, v168, v189, 0, 3, v169);
+                objc_msgSend_setBuffer_offset_atIndex_(encoder, v170, v191, 0, 4, v171);
+                objc_msgSend_setBuffer_offset_atIndex_(encoder, v172, endpointBuffer, offset, 5, v173);
                 v179 = objc_msgSend_threadExecutionWidth(v160, v174, v175, v176, v177, v178);
                 if (v179 <= 1)
                 {
@@ -428,7 +428,7 @@
                 *&v200[8] = vdupq_n_s64(1uLL);
                 *v199 = v183;
                 *&v199[8] = *&v200[8];
-                objc_msgSend_dispatchThreadgroups_threadsPerThreadgroup_(a3, v180, v200, v199, v181, v182);
+                objc_msgSend_dispatchThreadgroups_threadsPerThreadgroup_(encoder, v180, v200, v199, v181, v182);
               }
             }
           }
@@ -440,26 +440,26 @@
   MPSAutoCache::~MPSAutoCache(v225);
 }
 
-- (void)encodeToCommandEncoder:(id)a3 commandBuffer:(id)a4 sourceTexture:(id)a5 destinationTexture:(id)a6 endpointBuffer:(id)a7 endpointOffset:(unint64_t)a8
+- (void)encodeToCommandEncoder:(id)encoder commandBuffer:(id)buffer sourceTexture:(id)texture destinationTexture:(id)destinationTexture endpointBuffer:(id)endpointBuffer endpointOffset:(unint64_t)offset
 {
-  v8 = a8;
-  v9 = a7;
-  v12 = a4;
+  offsetCopy2 = offset;
+  endpointBufferCopy2 = endpointBuffer;
+  bufferCopy2 = buffer;
   v14 = MEMORY[0x277CD7378];
   v15 = *MEMORY[0x277CD7378];
   v16 = *(&self->super.super.isa + v15);
   if ((v16 & 1) == 0)
   {
     v19 = *(&self->super.super.isa + *MEMORY[0x277CD7350]);
-    v20 = objc_msgSend_pixelFormat(a6, a2, a3, a4, a5, a6);
-    v26 = objc_msgSend_pixelFormat(a5, v21, v22, v23, v24, v25);
+    v20 = objc_msgSend_pixelFormat(destinationTexture, a2, encoder, buffer, texture, destinationTexture);
+    v26 = objc_msgSend_pixelFormat(texture, v21, v22, v23, v24, v25);
     v140 = v20;
     PixelInfo = MPSDevice::GetPixelInfo(v19, v20, MPSImageFeatureChannelFormatNone);
     v32 = MPSDevice::GetPixelInfo(v19, v26, MPSImageFeatureChannelFormatNone);
-    if (!a5 && MTLReportFailureTypeEnabled())
+    if (!texture && MTLReportFailureTypeEnabled())
     {
       v128 = objc_opt_class();
-      v136 = NSStringFromClass(v128);
+      destinationTextureCopy3 = NSStringFromClass(v128);
       MTLReportFailure();
     }
 
@@ -467,35 +467,35 @@
     if (v33 && MTLReportFailureTypeEnabled())
     {
       v129 = objc_opt_class();
-      v136 = NSStringFromClass(v129);
+      destinationTextureCopy3 = NSStringFromClass(v129);
       v138 = v33;
       MTLReportFailure();
     }
 
-    objc_msgSend_textureType(a5, v27, v28, v29, v30, v31, v136, v138);
-    if (objc_msgSend_textureType(a5, v34, v35, v36, v37, v38) != 2 && MTLReportFailureTypeEnabled())
+    objc_msgSend_textureType(texture, v27, v28, v29, v30, v31, destinationTextureCopy3, v138);
+    if (objc_msgSend_textureType(texture, v34, v35, v36, v37, v38) != 2 && MTLReportFailureTypeEnabled())
     {
-      v136 = a5;
+      destinationTextureCopy3 = texture;
       MTLReportFailure();
     }
 
     if ((~v32 & 0xF000000) == 0 && MTLReportFailureTypeEnabled())
     {
-      v136 = a5;
+      destinationTextureCopy3 = texture;
       v138 = v26;
       MTLReportFailure();
     }
 
-    v12 = a4;
-    v9 = a7;
-    v8 = a8;
+    bufferCopy2 = buffer;
+    endpointBufferCopy2 = endpointBuffer;
+    offsetCopy2 = offset;
     v14 = MEMORY[0x277CD7378];
-    if (a6)
+    if (destinationTexture)
     {
-      objc_msgSend_textureType(a6, a2, v39, a4, a5, a6);
-      if (objc_msgSend_textureType(a6, v40, v41, v42, v43, v44) != 2 && MTLReportFailureTypeEnabled())
+      objc_msgSend_textureType(destinationTexture, a2, v39, buffer, texture, destinationTexture);
+      if (objc_msgSend_textureType(destinationTexture, v40, v41, v42, v43, v44) != 2 && MTLReportFailureTypeEnabled())
       {
-        v136 = a6;
+        destinationTextureCopy3 = destinationTexture;
         MTLReportFailure();
       }
 
@@ -506,7 +506,7 @@
         v45 = PixelInfo;
         if (v130)
         {
-          v136 = a6;
+          destinationTextureCopy3 = destinationTexture;
           v138 = v140;
           MTLReportFailure();
           v45 = PixelInfo;
@@ -515,36 +515,36 @@
 
       if ((v45 & 0x200000000000) == 0 && MTLReportFailureTypeEnabled())
       {
-        v136 = a6;
+        destinationTextureCopy3 = destinationTexture;
         v138 = v140;
         MTLReportFailure();
       }
     }
   }
 
-  if (a5 != a6 && (objc_msgSend_isEqual_(a5, a2, a6, a4, a5, a6) & 1) == 0)
+  if (texture != destinationTexture && (objc_msgSend_isEqual_(texture, a2, destinationTexture, buffer, texture, destinationTexture) & 1) == 0)
   {
     if ((*(&self->super.super.isa + v15) & 1) == 0)
     {
-      if (!v9 && MTLReportFailureTypeEnabled())
+      if (!endpointBufferCopy2 && MTLReportFailureTypeEnabled())
       {
         v131 = objc_opt_class();
-        v136 = NSStringFromClass(v131);
+        destinationTextureCopy3 = NSStringFromClass(v131);
         MTLReportFailure();
       }
 
-      objc_msgSend_length(v9, v46, v47, v48, v49, v50, v136, v138);
-      if (objc_msgSend_length(v9, v51, v52, v53, v54, v55) < v8 + 4 + 8 * self->_maxLines && MTLReportFailureTypeEnabled())
+      objc_msgSend_length(endpointBufferCopy2, v46, v47, v48, v49, v50, destinationTextureCopy3, v138);
+      if (objc_msgSend_length(endpointBufferCopy2, v51, v52, v53, v54, v55) < offsetCopy2 + 4 + 8 * self->_maxLines && MTLReportFailureTypeEnabled())
       {
-        v136 = (v8 + 4 + 8 * self->_maxLines);
-        v138 = objc_msgSend_length(v9, v46, v47, v48, v49, v50);
+        destinationTextureCopy3 = (offsetCopy2 + 4 + 8 * self->_maxLines);
+        v138 = objc_msgSend_length(endpointBufferCopy2, v46, v47, v48, v49, v50);
         MTLReportFailure();
       }
     }
 
     memset(&v146, 0, sizeof(v146));
-    v145.width = objc_msgSend_width(a5, v46, v47, v48, v49, v50, v136, v138);
-    v145.height = objc_msgSend_height(a5, v56, v57, v58, v59, v60);
+    v145.width = objc_msgSend_width(texture, v46, v47, v48, v49, v50, destinationTextureCopy3, v138);
+    v145.height = objc_msgSend_height(texture, v56, v57, v58, v59, v60);
     v145.depth = 1;
     v61 = *&self->_clipRectSource.origin.z;
     *&v144.origin.x = *&self->_clipRectSource.origin.x;
@@ -553,37 +553,37 @@
     MPSGetEffectiveClipRegion(&v146, &v145, &v144);
     if ((*(&self->super.super.isa + v15) & 1) == 0)
     {
-      objc_msgSend_width(a5, v62, v63, v64, v65, v66);
+      objc_msgSend_width(texture, v62, v63, v64, v65, v66);
       v67 = v146.size.width + v146.origin.x;
-      if (v67 > objc_msgSend_width(a5, v68, v69, v70, v71, v72) && MTLReportFailureTypeEnabled())
+      if (v67 > objc_msgSend_width(texture, v68, v69, v70, v71, v72) && MTLReportFailureTypeEnabled())
       {
         v137 = v146.size.width + v146.origin.x;
-        v139 = objc_msgSend_width(a5, v73, v74, v75, v76, v77);
+        v139 = objc_msgSend_width(texture, v73, v74, v75, v76, v77);
         MTLReportFailure();
       }
 
-      objc_msgSend_height(a5, v73, v74, v75, v76, v77, v137, v139);
+      objc_msgSend_height(texture, v73, v74, v75, v76, v77, v137, v139);
       v78 = v146.size.height + v146.origin.y;
-      if (v78 > objc_msgSend_height(a5, v79, v80, v81, v82, v83) && MTLReportFailureTypeEnabled())
+      if (v78 > objc_msgSend_height(texture, v79, v80, v81, v82, v83) && MTLReportFailureTypeEnabled())
       {
         v137 = v146.size.height + v146.origin.y;
-        v139 = objc_msgSend_height(a5, v62, v132, v133, v134, v135);
+        v139 = objc_msgSend_height(texture, v62, v132, v133, v134, v135);
         MTLReportFailure();
       }
     }
 
     if (v146.size.height && v146.size.width)
     {
-      if (a3)
+      if (encoder)
       {
         v144 = v146;
-        objc_msgSend_encodeInternalToCommandEncoder_commandBuffer_sourceTexture_destinationTexture_endpointBuffer_endpointOffset_inputExtent_(self, v62, a3, v12, a5, a6, v9, v8, &v144);
+        objc_msgSend_encodeInternalToCommandEncoder_commandBuffer_sourceTexture_destinationTexture_endpointBuffer_endpointOffset_inputExtent_(self, v62, encoder, bufferCopy2, texture, destinationTexture, endpointBufferCopy2, offsetCopy2, &v144);
       }
 
       else
       {
         v89 = objc_alloc(MEMORY[0x277CD7210]);
-        v97 = objc_msgSend_initWithCommandBuffer_withDispatchType_(v89, v90, v12, 0, v91, v92);
+        v97 = objc_msgSend_initWithCommandBuffer_withDispatchType_(v89, v90, bufferCopy2, 0, v91, v92);
         v145.width = v97;
         v145.height = self;
         if ((*(&self->super.super.isa + *v14) & 0x18) != 0)
@@ -596,13 +596,13 @@
         }
 
         v144 = v146;
-        objc_msgSend_encodeInternalToCommandEncoder_commandBuffer_sourceTexture_destinationTexture_endpointBuffer_endpointOffset_inputExtent_(self, v93, v97, v12, a5, a6, v9, v8, &v144);
+        objc_msgSend_encodeInternalToCommandEncoder_commandBuffer_sourceTexture_destinationTexture_endpointBuffer_endpointOffset_inputExtent_(self, v93, v97, bufferCopy2, texture, destinationTexture, endpointBufferCopy2, offsetCopy2, &v144);
         objc_msgSend_endEncoding(v97, v105, v106, v107, v108, v109);
       }
 
-      if (v9)
+      if (endpointBufferCopy2)
       {
-        v110 = objc_msgSend_userDictionary(v12, v84, v85, v86, v87, v88);
+        v110 = objc_msgSend_userDictionary(bufferCopy2, v84, v85, v86, v87, v88);
         v115 = objc_msgSend_objectForKey_(v110, v111, @"_MPSCommandBufferRetainListKey", v112, v113, v114);
         if (!v115)
         {
@@ -614,11 +614,11 @@
           v144.origin.z = sub_23993D93C;
           v144.size.width = &unk_278AC37A8;
           v144.size.height = @"_MPSCommandBufferRetainListKey";
-          objc_msgSend_addCompletedHandler_(v12, v124, &v144, v125, v126, v127);
+          objc_msgSend_addCompletedHandler_(bufferCopy2, v124, &v144, v125, v126, v127);
           v115 = v120;
         }
 
-        objc_msgSend_addObject_(v115, v116, v9, v117, v118, v119);
+        objc_msgSend_addObject_(v115, v116, endpointBufferCopy2, v117, v118, v119);
       }
     }
   }

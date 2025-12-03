@@ -1,6 +1,6 @@
 @interface SASPerceptionEntityWrapper
 - (SASPerceptionEntityWrapper)init;
-- (void)userEngagementStatusWith:(id)a3;
+- (void)userEngagementStatusWith:(id)with;
 @end
 
 @implementation SASPerceptionEntityWrapper
@@ -20,9 +20,9 @@
   return v5;
 }
 
-- (void)userEngagementStatusWith:(id)a3
+- (void)userEngagementStatusWith:(id)with
 {
-  v3 = _Block_copy(a3);
+  v3 = _Block_copy(with);
   v3[2](v3, 0);
 
   _Block_release(v3);

@@ -1,40 +1,40 @@
 @interface TSCH3DRenderbufferAllocatorInfo
-+ (id)infoWithFramebufferAttributes:(FramebufferAttributes *)a3 size:(tvec2<int>)a4 session:(id)a5;
++ (id)infoWithFramebufferAttributes:(FramebufferAttributes *)attributes size:(tvec2<int>)size session:(id)session;
 - (FramebufferAttributes)framebufferAttributes;
-- (TSCH3DRenderbufferAllocatorInfo)initWithFramebufferAttributes:(FramebufferAttributes *)a3 size:(tvec2<int>)a4 session:(id)a5;
+- (TSCH3DRenderbufferAllocatorInfo)initWithFramebufferAttributes:(FramebufferAttributes *)attributes size:(tvec2<int>)size session:(id)session;
 - (id).cxx_construct;
 @end
 
 @implementation TSCH3DRenderbufferAllocatorInfo
 
-+ (id)infoWithFramebufferAttributes:(FramebufferAttributes *)a3 size:(tvec2<int>)a4 session:(id)a5
++ (id)infoWithFramebufferAttributes:(FramebufferAttributes *)attributes size:(tvec2<int>)size session:(id)session
 {
-  v8 = a5;
-  v9 = [a1 alloc];
-  v10 = *&a3->colorDataType;
-  v16[0] = *&a3->type;
+  sessionCopy = session;
+  v9 = [self alloc];
+  v10 = *&attributes->colorDataType;
+  v16[0] = *&attributes->type;
   v16[1] = v10;
-  v15 = **&a4;
-  v13 = objc_msgSend_initWithFramebufferAttributes_size_session_(v9, v11, v15, *&v10, v12, v16, &v15, v8);
+  v15 = **&size;
+  v13 = objc_msgSend_initWithFramebufferAttributes_size_session_(v9, v11, v15, *&v10, v12, v16, &v15, sessionCopy);
 
   return v13;
 }
 
-- (TSCH3DRenderbufferAllocatorInfo)initWithFramebufferAttributes:(FramebufferAttributes *)a3 size:(tvec2<int>)a4 session:(id)a5
+- (TSCH3DRenderbufferAllocatorInfo)initWithFramebufferAttributes:(FramebufferAttributes *)attributes size:(tvec2<int>)size session:(id)session
 {
-  v9 = a5;
+  sessionCopy = session;
   v14.receiver = self;
   v14.super_class = TSCH3DRenderbufferAllocatorInfo;
   v10 = [(TSCH3DRenderbufferAllocatorInfo *)&v14 init];
   v11 = v10;
   if (v10)
   {
-    v12 = *&a3->type;
-    *(v10 + 39) = *(&a3->samples + 7);
+    v12 = *&attributes->type;
+    *(v10 + 39) = *(&attributes->samples + 7);
     *(v10 + 24) = v12;
-    *(v10 + 2) = *a4.var0.var0;
-    *(v10 + 3) = *(*&a4 + 4);
-    objc_storeStrong(v10 + 2, a5);
+    *(v10 + 2) = *size.var0.var0;
+    *(v10 + 3) = *(*&size + 4);
+    objc_storeStrong(v10 + 2, session);
   }
 
   return v11;

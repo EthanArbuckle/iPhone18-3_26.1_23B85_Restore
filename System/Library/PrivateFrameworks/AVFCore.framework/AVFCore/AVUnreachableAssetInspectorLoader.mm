@@ -1,14 +1,14 @@
 @interface AVUnreachableAssetInspectorLoader
-- (AVUnreachableAssetInspectorLoader)initWithFigError:(int)a3 userInfo:(id)a4;
+- (AVUnreachableAssetInspectorLoader)initWithFigError:(int)error userInfo:(id)info;
 - (id)initForUnitTests;
-- (int64_t)statusOfValueForKey:(id)a3 error:(id *)a4;
+- (int64_t)statusOfValueForKey:(id)key error:(id *)error;
 - (void)dealloc;
-- (void)loadValuesAsynchronouslyForKeys:(id)a3 completionHandler:(id)a4;
+- (void)loadValuesAsynchronouslyForKeys:(id)keys completionHandler:(id)handler;
 @end
 
 @implementation AVUnreachableAssetInspectorLoader
 
-- (AVUnreachableAssetInspectorLoader)initWithFigError:(int)a3 userInfo:(id)a4
+- (AVUnreachableAssetInspectorLoader)initWithFigError:(int)error userInfo:(id)info
 {
   v9.receiver = self;
   v9.super_class = AVUnreachableAssetInspectorLoader;
@@ -16,8 +16,8 @@
   v7 = v6;
   if (v6)
   {
-    v6->_figError = a3;
-    v6->_figErrorUserInfo = a4;
+    v6->_figError = error;
+    v6->_figErrorUserInfo = info;
     v7->_statusOfValueForKeyReturnsLoaded = 0;
   }
 
@@ -46,26 +46,26 @@
   [(AVAssetInspectorLoader *)&v3 dealloc];
 }
 
-- (int64_t)statusOfValueForKey:(id)a3 error:(id *)a4
+- (int64_t)statusOfValueForKey:(id)key error:(id *)error
 {
   if (self->_statusOfValueForKeyReturnsLoaded)
   {
     return 2;
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = AVLocalizedErrorWithUnderlyingOSStatus(self->_figError, self->_figErrorUserInfo);
+    *error = AVLocalizedErrorWithUnderlyingOSStatus(self->_figError, self->_figErrorUserInfo);
   }
 
   return 3;
 }
 
-- (void)loadValuesAsynchronouslyForKeys:(id)a3 completionHandler:(id)a4
+- (void)loadValuesAsynchronouslyForKeys:(id)keys completionHandler:(id)handler
 {
-  if (a4)
+  if (handler)
   {
-    (*(a4 + 2))(a4);
+    (*(handler + 2))(handler);
   }
 }
 

@@ -1,34 +1,34 @@
 @interface MTATimerPresetViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
-- (void)setPresetItem:(id)a3;
+- (void)setPresetItem:(id)item;
 @end
 
 @implementation MTATimerPresetViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MTATimerPresetView" hasInstanceMethod:@"setPresetItem:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"MTATimerPresetItem" hasInstanceMethod:@"duration" withFullSignature:{"d", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MTATimerPresetView" hasInstanceMethod:@"setPresetItem:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"MTATimerPresetItem" hasInstanceMethod:@"duration" withFullSignature:{"d", 0}];
 }
 
 - (id)accessibilityLabel
 {
-  v2 = [(MTATimerPresetViewAccessibility *)self _axTimerPreset];
-  [v2 safeTimeIntervalForKey:@"duration"];
+  _axTimerPreset = [(MTATimerPresetViewAccessibility *)self _axTimerPreset];
+  [_axTimerPreset safeTimeIntervalForKey:@"duration"];
   v3 = AXDurationStringForDuration();
 
   return v3;
 }
 
-- (void)setPresetItem:(id)a3
+- (void)setPresetItem:(id)item
 {
   v5.receiver = self;
   v5.super_class = MTATimerPresetViewAccessibility;
-  v4 = a3;
-  [(MTATimerPresetViewAccessibility *)&v5 setPresetItem:v4];
-  [(MTATimerPresetViewAccessibility *)self _axSetTimerPreset:v4, v5.receiver, v5.super_class];
+  itemCopy = item;
+  [(MTATimerPresetViewAccessibility *)&v5 setPresetItem:itemCopy];
+  [(MTATimerPresetViewAccessibility *)self _axSetTimerPreset:itemCopy, v5.receiver, v5.super_class];
 }
 
 @end

@@ -1,6 +1,6 @@
 @interface MTRJointFabricDatastoreClusterDatastoreAccessControlEntryStruct
 - (MTRJointFabricDatastoreClusterDatastoreAccessControlEntryStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -30,20 +30,20 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRJointFabricDatastoreClusterDatastoreAccessControlEntryStruct);
-  v5 = [(MTRJointFabricDatastoreClusterDatastoreAccessControlEntryStruct *)self privilege];
-  [(MTRJointFabricDatastoreClusterDatastoreAccessControlEntryStruct *)v4 setPrivilege:v5];
+  privilege = [(MTRJointFabricDatastoreClusterDatastoreAccessControlEntryStruct *)self privilege];
+  [(MTRJointFabricDatastoreClusterDatastoreAccessControlEntryStruct *)v4 setPrivilege:privilege];
 
-  v6 = [(MTRJointFabricDatastoreClusterDatastoreAccessControlEntryStruct *)self authMode];
-  [(MTRJointFabricDatastoreClusterDatastoreAccessControlEntryStruct *)v4 setAuthMode:v6];
+  authMode = [(MTRJointFabricDatastoreClusterDatastoreAccessControlEntryStruct *)self authMode];
+  [(MTRJointFabricDatastoreClusterDatastoreAccessControlEntryStruct *)v4 setAuthMode:authMode];
 
-  v7 = [(MTRJointFabricDatastoreClusterDatastoreAccessControlEntryStruct *)self subjects];
-  [(MTRJointFabricDatastoreClusterDatastoreAccessControlEntryStruct *)v4 setSubjects:v7];
+  subjects = [(MTRJointFabricDatastoreClusterDatastoreAccessControlEntryStruct *)self subjects];
+  [(MTRJointFabricDatastoreClusterDatastoreAccessControlEntryStruct *)v4 setSubjects:subjects];
 
-  v8 = [(MTRJointFabricDatastoreClusterDatastoreAccessControlEntryStruct *)self targets];
-  [(MTRJointFabricDatastoreClusterDatastoreAccessControlEntryStruct *)v4 setTargets:v8];
+  targets = [(MTRJointFabricDatastoreClusterDatastoreAccessControlEntryStruct *)self targets];
+  [(MTRJointFabricDatastoreClusterDatastoreAccessControlEntryStruct *)v4 setTargets:targets];
 
   return v4;
 }

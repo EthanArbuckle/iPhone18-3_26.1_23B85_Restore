@@ -1,15 +1,15 @@
 @interface ECEmailAddressComponents
-+ (ECEmailAddressComponents)componentsWithEmailAddress:(id)a3;
-+ (ECEmailAddressComponents)componentsWithString:(id)a3;
-- (BOOL)_nts_getValidatedDomain:(id *)a3 idnaDomain:(id *)a4 avoidReparse:(BOOL)a5;
-- (BOOL)_nts_getValidatedLocalPart:(id *)a3 domain:(id *)a4 idnaDomain:(id *)a5 displayName:(id *)a6;
++ (ECEmailAddressComponents)componentsWithEmailAddress:(id)address;
++ (ECEmailAddressComponents)componentsWithString:(id)string;
+- (BOOL)_nts_getValidatedDomain:(id *)domain idnaDomain:(id *)idnaDomain avoidReparse:(BOOL)reparse;
+- (BOOL)_nts_getValidatedLocalPart:(id *)part domain:(id *)domain idnaDomain:(id *)idnaDomain displayName:(id *)name;
 - (BOOL)_nts_isValid;
 - (BOOL)_nts_isValidDomain;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (ECEmailAddress)emailAddressValue;
 - (ECEmailAddressComponents)init;
-- (ECEmailAddressComponents)initWithEmailAddress:(id)a3;
-- (ECEmailAddressComponents)initWithString:(id)a3;
+- (ECEmailAddressComponents)initWithEmailAddress:(id)address;
+- (ECEmailAddressComponents)initWithString:(id)string;
 - (NSArray)groupList;
 - (NSString)debugDescription;
 - (NSString)domain;
@@ -19,25 +19,25 @@
 - (NSString)localPart;
 - (NSString)simpleAddress;
 - (NSString)stringValue;
-- (id)_initWithString:(id)a3 displayName:(id)a4 localPart:(id)a5 domain:(id)a6 groupList:(id)a7;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_initWithString:(id)string displayName:(id)name localPart:(id)part domain:(id)domain groupList:(id)list;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)setDomain:(id)a3;
-- (void)setGroupList:(id)a3;
-- (void)setIDNADomain:(id)a3;
-- (void)setLocalPart:(id)a3;
+- (void)setDomain:(id)domain;
+- (void)setGroupList:(id)list;
+- (void)setIDNADomain:(id)domain;
+- (void)setLocalPart:(id)part;
 @end
 
 @implementation ECEmailAddressComponents
 
 - (NSString)simpleAddress
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  simpleAddress = v2->_simpleAddress;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  simpleAddress = selfCopy->_simpleAddress;
   if (!simpleAddress)
   {
-    if (v2->_groupList)
+    if (selfCopy->_groupList)
     {
       simpleAddress = 0;
     }
@@ -46,75 +46,75 @@
     {
       v14 = 0;
       v15 = 0;
-      v4 = [(ECEmailAddressComponents *)v2 _nts_getValidatedLocalPart:&v15 domain:&v14 idnaDomain:0 displayName:0];
+      v4 = [(ECEmailAddressComponents *)selfCopy _nts_getValidatedLocalPart:&v15 domain:&v14 idnaDomain:0 displayName:0];
       v5 = v15;
       v6 = v14;
       v7 = v6;
       if (v4)
       {
         v8 = MEMORY[0x277CCACA8];
-        v9 = [v6 _lp_userVisibleHost];
-        v10 = [v8 stringWithFormat:@"%@@%@", v5, v9];
-        v11 = v2->_simpleAddress;
-        v2->_simpleAddress = v10;
+        _lp_userVisibleHost = [v6 _lp_userVisibleHost];
+        v10 = [v8 stringWithFormat:@"%@@%@", v5, _lp_userVisibleHost];
+        v11 = selfCopy->_simpleAddress;
+        selfCopy->_simpleAddress = v10;
       }
 
-      simpleAddress = v2->_simpleAddress;
+      simpleAddress = selfCopy->_simpleAddress;
     }
   }
 
   v12 = simpleAddress;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v12;
 }
 
 - (NSArray)groupList
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NSArray *)v2->_groupList objectEnumerator];
-  v4 = [v3 allObjects];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  objectEnumerator = [(NSArray *)selfCopy->_groupList objectEnumerator];
+  allObjects = [objectEnumerator allObjects];
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  return v4;
+  return allObjects;
 }
 
 - (NSString)localPart
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_localPart;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_localPart;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (NSString)domain
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (v2->_idnaDomain && !v2->_domain)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_idnaDomain && !selfCopy->_domain)
   {
     v3 = [ECIDNADecoder stringByDecodingDomainName:?];
-    domain = v2->_domain;
-    v2->_domain = v3;
+    domain = selfCopy->_domain;
+    selfCopy->_domain = v3;
   }
 
-  v5 = v2->_domain;
-  objc_sync_exit(v2);
+  v5 = selfCopy->_domain;
+  objc_sync_exit(selfCopy);
 
   return v5;
 }
 
 - (ECEmailAddress)emailAddressValue
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if ([(ECEmailAddressComponents *)v2 _nts_isValid])
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ([(ECEmailAddressComponents *)selfCopy _nts_isValid])
   {
-    v3 = [[ECEmailAddress alloc] _initWithComponents:v2];
+    v3 = [[ECEmailAddress alloc] _initWithComponents:selfCopy];
   }
 
   else
@@ -122,7 +122,7 @@
     v3 = 0;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
@@ -132,8 +132,8 @@
   v3 = [(ECEmailAddressComponents *)self _nts_getValidatedLocalPart:0 domain:0 idnaDomain:0 displayName:0];
   if (self->_groupList)
   {
-    v4 = [(NSString *)self->_displayName ecemailaddress_trimmedAndQuotedDisplayName];
-    if ([v4 length])
+    ecemailaddress_trimmedAndQuotedDisplayName = [(NSString *)self->_displayName ecemailaddress_trimmedAndQuotedDisplayName];
+    if ([ecemailaddress_trimmedAndQuotedDisplayName length])
     {
       v5 = [(NSArray *)self->_groupList ef_all:&__block_literal_global_181];
     }
@@ -164,8 +164,8 @@
   v3 = [(ECEmailAddressComponents *)self _nts_getValidatedDomain:0 idnaDomain:0 avoidReparse:1];
   if (self->_groupList)
   {
-    v4 = [(NSString *)self->_displayName ecemailaddress_trimmedAndQuotedDisplayName];
-    if ([v4 length])
+    ecemailaddress_trimmedAndQuotedDisplayName = [(NSString *)self->_displayName ecemailaddress_trimmedAndQuotedDisplayName];
+    if ([ecemailaddress_trimmedAndQuotedDisplayName length])
     {
       v5 = [(NSArray *)self->_groupList ef_all:&__block_literal_global_179];
     }
@@ -186,13 +186,13 @@
 
 - (NSString)stringValue
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if ([(ECEmailAddressComponents *)v2 _nts_isValid])
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ([(ECEmailAddressComponents *)selfCopy _nts_isValid])
   {
     v3 = objc_alloc_init(ECEmailAddressFormatter);
     [(ECEmailAddressFormatter *)v3 setShouldIncludeDisplayName:1];
-    v4 = [[ECEmailAddress alloc] _initWithComponents:v2];
+    v4 = [[ECEmailAddress alloc] _initWithComponents:selfCopy];
     v5 = [(ECEmailAddressFormatter *)v3 stringFromEmailAddress:v4];
   }
 
@@ -201,92 +201,92 @@
     v5 = 0;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v5;
 }
 
-+ (ECEmailAddressComponents)componentsWithString:(id)a3
++ (ECEmailAddressComponents)componentsWithString:(id)string
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithString:v4];
+  stringCopy = string;
+  v5 = [[self alloc] initWithString:stringCopy];
 
   return v5;
 }
 
-+ (ECEmailAddressComponents)componentsWithEmailAddress:(id)a3
++ (ECEmailAddressComponents)componentsWithEmailAddress:(id)address
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithEmailAddress:v4];
+  addressCopy = address;
+  v5 = [[self alloc] initWithEmailAddress:addressCopy];
 
   return v5;
 }
 
-- (id)_initWithString:(id)a3 displayName:(id)a4 localPart:(id)a5 domain:(id)a6 groupList:(id)a7
+- (id)_initWithString:(id)string displayName:(id)name localPart:(id)part domain:(id)domain groupList:(id)list
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  nameCopy = name;
+  partCopy = part;
+  domainCopy = domain;
+  listCopy = list;
   v22.receiver = self;
   v22.super_class = ECEmailAddressComponents;
   v16 = [(ECEmailAddressComponents *)&v22 init];
   p_isa = &v16->super.isa;
   if (v16)
   {
-    objc_storeStrong(&v16->_displayName, a4);
-    objc_storeStrong(p_isa + 2, a5);
-    objc_storeStrong(p_isa + 5, a7);
-    if ([ECIDNAEncoder encodingRequiredForDomainName:v14])
+    objc_storeStrong(&v16->_displayName, name);
+    objc_storeStrong(p_isa + 2, part);
+    objc_storeStrong(p_isa + 5, list);
+    if ([ECIDNAEncoder encodingRequiredForDomainName:domainCopy])
     {
-      v18 = [v14 ecemailaddress_uniquedDomain];
+      ecemailaddress_uniquedDomain = [domainCopy ecemailaddress_uniquedDomain];
       v19 = 3;
     }
 
     else
     {
-      v18 = [v14 ecemailaddress_uniquedDomain];
+      ecemailaddress_uniquedDomain = [domainCopy ecemailaddress_uniquedDomain];
       v19 = 4;
     }
 
     v20 = p_isa[v19];
-    p_isa[v19] = v18;
+    p_isa[v19] = ecemailaddress_uniquedDomain;
   }
 
   return p_isa;
 }
 
-- (ECEmailAddressComponents)initWithString:(id)a3
+- (ECEmailAddressComponents)initWithString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v14 = 0;
   v15 = 0;
   v12 = 0;
   v13 = 0;
-  v5 = [ECEmailAddressParser parseEmailAddressString:v4 displayName:&v15 localPart:&v14 domain:&v13 groupList:&v12];
+  v5 = [ECEmailAddressParser parseEmailAddressString:stringCopy displayName:&v15 localPart:&v14 domain:&v13 groupList:&v12];
   v6 = v15;
   v7 = v14;
   v8 = v13;
   v9 = v12;
   if (v5)
   {
-    self = [(ECEmailAddressComponents *)self _initWithString:v4 displayName:v6 localPart:v7 domain:v8 groupList:v9];
-    v10 = self;
+    self = [(ECEmailAddressComponents *)self _initWithString:stringCopy displayName:v6 localPart:v7 domain:v8 groupList:v9];
+    selfCopy = self;
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (ECEmailAddressComponents)initWithEmailAddress:(id)a3
+- (ECEmailAddressComponents)initWithEmailAddress:(id)address
 {
-  v4 = a3;
-  v5 = [v4 components];
-  v6 = [v5 copy];
+  addressCopy = address;
+  components = [addressCopy components];
+  v6 = [components copy];
 
   if (!v6)
   {
@@ -296,7 +296,7 @@
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   objc_storeStrong(v4 + 2, self->_localPart);
@@ -322,24 +322,24 @@
 
 - (NSString)debugDescription
 {
-  v3 = [(ECEmailAddressComponents *)self domain];
-  v4 = [(ECEmailAddressComponents *)self idnaDomain];
+  domain = [(ECEmailAddressComponents *)self domain];
+  idnaDomain = [(ECEmailAddressComponents *)self idnaDomain];
   v5 = MEMORY[0x277CCAB68];
   v6 = objc_opt_class();
-  v7 = [(ECEmailAddressComponents *)self displayName];
-  v8 = [(ECEmailAddressComponents *)self localPart];
-  v9 = [v5 stringWithFormat:@"<%@: %p> displayName=%@ localPart=%@ domain=%@", v6, self, v7, v8, v3];
+  displayName = [(ECEmailAddressComponents *)self displayName];
+  localPart = [(ECEmailAddressComponents *)self localPart];
+  v9 = [v5 stringWithFormat:@"<%@: %p> displayName=%@ localPart=%@ domain=%@", v6, self, displayName, localPart, domain];
 
-  if (([v3 isEqualToString:v4] & 1) == 0)
+  if (([domain isEqualToString:idnaDomain] & 1) == 0)
   {
-    [v9 appendFormat:@" idnaDomain=%@", v4];
+    [v9 appendFormat:@" idnaDomain=%@", idnaDomain];
   }
 
-  v10 = [(ECEmailAddressComponents *)self groupList];
-  v11 = v10;
-  if (v10)
+  groupList = [(ECEmailAddressComponents *)self groupList];
+  v11 = groupList;
+  if (groupList)
   {
-    v12 = [v10 ef_map:&__block_literal_global_165];
+    v12 = [groupList ef_map:&__block_literal_global_165];
     v13 = [v12 componentsJoinedByString:{@", "}];
     [v9 appendFormat:@" groupList={%@}", v13];
   }
@@ -356,21 +356,21 @@ id __44__ECEmailAddressComponents_debugDescription__block_invoke(uint64_t a1, vo
 
 - (NSString)ef_publicDescription
 {
-  v3 = [MEMORY[0x277D07148] currentDevice];
-  v4 = [v3 isInternal];
+  currentDevice = [MEMORY[0x277D07148] currentDevice];
+  isInternal = [currentDevice isInternal];
   v5 = MEMORY[0x277D07198];
-  if (v4)
+  if (isInternal)
   {
-    v6 = [(ECEmailAddressComponents *)self simpleAddress];
-    v7 = [(ECEmailAddressComponents *)self localPart];
-    v8 = [(ECEmailAddressComponents *)self domain];
-    v9 = [v5 ec_partiallyRedactedStringForAddress:v6 localPart:v7 domain:v8];
+    simpleAddress = [(ECEmailAddressComponents *)self simpleAddress];
+    localPart = [(ECEmailAddressComponents *)self localPart];
+    domain = [(ECEmailAddressComponents *)self domain];
+    v9 = [v5 ec_partiallyRedactedStringForAddress:simpleAddress localPart:localPart domain:domain];
   }
 
   else
   {
-    v6 = [(ECEmailAddressComponents *)self simpleAddress];
-    v9 = [v5 fullyRedactedStringForString:v6];
+    simpleAddress = [(ECEmailAddressComponents *)self simpleAddress];
+    v9 = [v5 fullyRedactedStringForString:simpleAddress];
   }
 
   v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"<%@: %p> %@", objc_opt_class(), self, v9];
@@ -380,33 +380,33 @@ id __44__ECEmailAddressComponents_debugDescription__block_invoke(uint64_t a1, vo
 
 - (unint64_t)hash
 {
-  v3 = [(ECEmailAddressComponents *)self localPart];
-  v4 = [v3 lowercaseString];
-  v5 = [v4 hash];
+  localPart = [(ECEmailAddressComponents *)self localPart];
+  lowercaseString = [localPart lowercaseString];
+  v5 = [lowercaseString hash];
 
-  v6 = [(ECEmailAddressComponents *)self domain];
-  v7 = [v6 lowercaseString];
-  v8 = [v7 hash];
+  domain = [(ECEmailAddressComponents *)self domain];
+  lowercaseString2 = [domain lowercaseString];
+  v8 = [lowercaseString2 hash];
 
-  v9 = [(ECEmailAddressComponents *)self groupList];
+  groupList = [(ECEmailAddressComponents *)self groupList];
   v10 = 33 * (33 * v5 + v8);
-  v11 = [v9 hash] + 193376997;
+  v11 = [groupList hash] + 193376997;
 
   return v10 + v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v15 = 1;
   }
 
   else
   {
-    if (v4)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -424,25 +424,25 @@ id __44__ECEmailAddressComponents_debugDescription__block_invoke(uint64_t a1, vo
         v19 = &__block_literal_global_171;
         v7 = MEMORY[0x2318C92C0](v18);
         v8 = v5;
-        v9 = [(ECEmailAddressComponents *)self localPart];
-        v10 = [(ECEmailAddressComponents *)self domain];
-        v11 = [(ECEmailAddressComponents *)v8 localPart];
-        v12 = [(ECEmailAddressComponents *)v8 domain];
-        v13 = v12;
-        if (v9 || v11 || v10 || v12)
+        localPart = [(ECEmailAddressComponents *)self localPart];
+        domain = [(ECEmailAddressComponents *)self domain];
+        localPart2 = [(ECEmailAddressComponents *)v8 localPart];
+        domain2 = [(ECEmailAddressComponents *)v8 domain];
+        v13 = domain2;
+        if (localPart || localPart2 || domain || domain2)
         {
-          if ((v6)[2](v6, v9, v11))
+          if ((v6)[2](v6, localPart, localPart2))
           {
-            v15 = (v6)[2](v6, v10, v13);
+            v15 = (v6)[2](v6, domain, v13);
             goto LABEL_15;
           }
         }
 
         else if ((v7)[2](v7, self->_groupList, v8->_groupList))
         {
-          v17 = [(ECEmailAddressComponents *)self displayName];
-          v14 = [(ECEmailAddressComponents *)v8 displayName];
-          v15 = (v6)[2](v6, v17, v14);
+          displayName = [(ECEmailAddressComponents *)self displayName];
+          displayName2 = [(ECEmailAddressComponents *)v8 displayName];
+          v15 = (v6)[2](v6, displayName, displayName2);
 
 LABEL_15:
           goto LABEL_16;
@@ -525,107 +525,107 @@ uint64_t __36__ECEmailAddressComponents_isEqual___block_invoke_5(uint64_t a1)
   return v4;
 }
 
-- (void)setLocalPart:(id)a3
+- (void)setLocalPart:(id)part
 {
-  v8 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  if (v4->_localPart != v8)
+  partCopy = part;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_localPart != partCopy)
   {
-    v5 = [(NSString *)v8 copy];
-    localPart = v4->_localPart;
-    v4->_localPart = v5;
+    v5 = [(NSString *)partCopy copy];
+    localPart = selfCopy->_localPart;
+    selfCopy->_localPart = v5;
 
-    simpleAddress = v4->_simpleAddress;
-    v4->_simpleAddress = 0;
+    simpleAddress = selfCopy->_simpleAddress;
+    selfCopy->_simpleAddress = 0;
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)setDomain:(id)a3
+- (void)setDomain:(id)domain
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v10 = [v4 ecemailaddress_uniquedDomain];
+  domainCopy = domain;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  ecemailaddress_uniquedDomain = [domainCopy ecemailaddress_uniquedDomain];
 
-  if (v5->_domain != v10)
+  if (selfCopy->_domain != ecemailaddress_uniquedDomain)
   {
     v6 = [ECIDNADecoder stringByDecodingDomainName:?];
-    domain = v5->_domain;
-    v5->_domain = v6;
+    domain = selfCopy->_domain;
+    selfCopy->_domain = v6;
 
-    idnaDomain = v5->_idnaDomain;
-    v5->_idnaDomain = 0;
+    idnaDomain = selfCopy->_idnaDomain;
+    selfCopy->_idnaDomain = 0;
 
-    simpleAddress = v5->_simpleAddress;
-    v5->_simpleAddress = 0;
+    simpleAddress = selfCopy->_simpleAddress;
+    selfCopy->_simpleAddress = 0;
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 - (NSString)idnaDomain
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (v2->_domain && !v2->_idnaDomain)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_domain && !selfCopy->_idnaDomain)
   {
     v3 = [ECIDNAEncoder stringByEncodingDomainName:?];
-    idnaDomain = v2->_idnaDomain;
-    v2->_idnaDomain = v3;
+    idnaDomain = selfCopy->_idnaDomain;
+    selfCopy->_idnaDomain = v3;
   }
 
-  v5 = v2->_idnaDomain;
-  objc_sync_exit(v2);
+  v5 = selfCopy->_idnaDomain;
+  objc_sync_exit(selfCopy);
 
   return v5;
 }
 
-- (void)setIDNADomain:(id)a3
+- (void)setIDNADomain:(id)domain
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  obj = [v4 ecemailaddress_uniquedDomain];
+  domainCopy = domain;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  obj = [domainCopy ecemailaddress_uniquedDomain];
 
-  if (v5->_idnaDomain != obj)
+  if (selfCopy->_idnaDomain != obj)
   {
-    objc_storeStrong(&v5->_idnaDomain, obj);
-    domain = v5->_domain;
-    v5->_domain = 0;
+    objc_storeStrong(&selfCopy->_idnaDomain, obj);
+    domain = selfCopy->_domain;
+    selfCopy->_domain = 0;
 
-    simpleAddress = v5->_simpleAddress;
-    v5->_simpleAddress = 0;
+    simpleAddress = selfCopy->_simpleAddress;
+    selfCopy->_simpleAddress = 0;
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)setGroupList:(id)a3
+- (void)setGroupList:(id)list
 {
-  v8 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [v8 copy];
-  groupList = v4->_groupList;
-  v4->_groupList = v5;
+  listCopy = list;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = [listCopy copy];
+  groupList = selfCopy->_groupList;
+  selfCopy->_groupList = v5;
 
-  simpleAddress = v4->_simpleAddress;
-  v4->_simpleAddress = 0;
+  simpleAddress = selfCopy->_simpleAddress;
+  selfCopy->_simpleAddress = 0;
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (BOOL)_nts_getValidatedDomain:(id *)a3 idnaDomain:(id *)a4 avoidReparse:(BOOL)a5
+- (BOOL)_nts_getValidatedDomain:(id *)domain idnaDomain:(id *)idnaDomain avoidReparse:(BOOL)reparse
 {
   if (self->_idnaDomain && !self->_domain)
   {
     v9 = [ECIDNADecoder stringByDecodingDomainName:?];
-    v10 = [v9 ecemailaddress_uniquedDomain];
+    ecemailaddress_uniquedDomain = [v9 ecemailaddress_uniquedDomain];
     domain = self->_domain;
-    self->_domain = v10;
+    self->_domain = ecemailaddress_uniquedDomain;
   }
 
   if (!self->_domain)
@@ -638,7 +638,7 @@ LABEL_15:
 
   v12 = [ECIDNAEncoder stringByEncodingDomainName:?];
   v13 = v12 != 0;
-  if (v12 && !a5)
+  if (v12 && !reparse)
   {
     v13 = [ECEmailAddressParser validateDomain:self->_domain];
   }
@@ -648,15 +648,15 @@ LABEL_15:
     goto LABEL_15;
   }
 
-  if (a3)
+  if (domain)
   {
-    *a3 = self->_domain;
+    *domain = self->_domain;
   }
 
-  if (a4)
+  if (idnaDomain)
   {
     v14 = v12;
-    *a4 = v12;
+    *idnaDomain = v12;
   }
 
   v15 = 1;
@@ -665,12 +665,12 @@ LABEL_16:
   return v15;
 }
 
-- (BOOL)_nts_getValidatedLocalPart:(id *)a3 domain:(id *)a4 idnaDomain:(id *)a5 displayName:(id *)a6
+- (BOOL)_nts_getValidatedLocalPart:(id *)part domain:(id *)domain idnaDomain:(id *)idnaDomain displayName:(id *)name
 {
-  v11 = [(NSString *)self->_displayName ecemailaddress_trimmedAndQuotedDisplayName];
-  if ([v11 length])
+  ecemailaddress_trimmedAndQuotedDisplayName = [(NSString *)self->_displayName ecemailaddress_trimmedAndQuotedDisplayName];
+  if ([ecemailaddress_trimmedAndQuotedDisplayName length])
   {
-    v12 = [ECEmailAddressParser validateDisplayName:v11];
+    v12 = [ECEmailAddressParser validateDisplayName:ecemailaddress_trimmedAndQuotedDisplayName];
   }
 
   else
@@ -678,19 +678,19 @@ LABEL_16:
     v12 = 1;
   }
 
-  v13 = [(NSString *)self->_localPart ecemailaddress_trimmedAndQuotedLocalPart];
-  if ([v13 length] && (v12 & +[ECEmailAddressParser validateLocalPart:](ECEmailAddressParser, "validateLocalPart:", v13)) == 1 && -[ECEmailAddressComponents _nts_getValidatedDomain:idnaDomain:avoidReparse:](self, "_nts_getValidatedDomain:idnaDomain:avoidReparse:", a4, a5, 0))
+  ecemailaddress_trimmedAndQuotedLocalPart = [(NSString *)self->_localPart ecemailaddress_trimmedAndQuotedLocalPart];
+  if ([ecemailaddress_trimmedAndQuotedLocalPart length] && (v12 & +[ECEmailAddressParser validateLocalPart:](ECEmailAddressParser, "validateLocalPart:", ecemailaddress_trimmedAndQuotedLocalPart)) == 1 && -[ECEmailAddressComponents _nts_getValidatedDomain:idnaDomain:avoidReparse:](self, "_nts_getValidatedDomain:idnaDomain:avoidReparse:", domain, idnaDomain, 0))
   {
-    if (a3)
+    if (part)
     {
-      v14 = v13;
-      *a3 = v13;
+      v14 = ecemailaddress_trimmedAndQuotedLocalPart;
+      *part = ecemailaddress_trimmedAndQuotedLocalPart;
     }
 
-    if (a6)
+    if (name)
     {
-      v15 = v11;
-      *a6 = v11;
+      v15 = ecemailaddress_trimmedAndQuotedDisplayName;
+      *name = ecemailaddress_trimmedAndQuotedDisplayName;
     }
 
     v16 = 1;
@@ -740,9 +740,9 @@ uint64_t __40__ECEmailAddressComponents__nts_isValid__block_invoke(uint64_t a1, 
 
 - (NSString)idnaAddress
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (v2->_groupList)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_groupList)
   {
     v3 = 0;
     v4 = 0;
@@ -752,7 +752,7 @@ uint64_t __40__ECEmailAddressComponents__nts_isValid__block_invoke(uint64_t a1, 
   {
     v8 = 0;
     v9 = 0;
-    v5 = [(ECEmailAddressComponents *)v2 _nts_getValidatedLocalPart:&v9 domain:0 idnaDomain:&v8 displayName:0];
+    v5 = [(ECEmailAddressComponents *)selfCopy _nts_getValidatedLocalPart:&v9 domain:0 idnaDomain:&v8 displayName:0];
     v4 = v9;
     v3 = v8;
     if (v5)
@@ -765,7 +765,7 @@ uint64_t __40__ECEmailAddressComponents__nts_isValid__block_invoke(uint64_t a1, 
   v6 = 0;
 LABEL_6:
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }

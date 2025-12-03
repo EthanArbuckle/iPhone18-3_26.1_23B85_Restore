@@ -1,11 +1,11 @@
 @interface ASCredentialIdentityStoreState
-- (ASCredentialIdentityStoreState)initWithEnabledState:(BOOL)a3 supportsIncrementalUpdates:(BOOL)a4;
+- (ASCredentialIdentityStoreState)initWithEnabledState:(BOOL)state supportsIncrementalUpdates:(BOOL)updates;
 - (id)description;
 @end
 
 @implementation ASCredentialIdentityStoreState
 
-- (ASCredentialIdentityStoreState)initWithEnabledState:(BOOL)a3 supportsIncrementalUpdates:(BOOL)a4
+- (ASCredentialIdentityStoreState)initWithEnabledState:(BOOL)state supportsIncrementalUpdates:(BOOL)updates
 {
   v10.receiver = self;
   v10.super_class = ASCredentialIdentityStoreState;
@@ -13,8 +13,8 @@
   v7 = v6;
   if (v6)
   {
-    v6->_enabled = a3;
-    v6->_supportsIncrementalUpdates = a4;
+    v6->_enabled = state;
+    v6->_supportsIncrementalUpdates = updates;
     v8 = v6;
   }
 

@@ -50,19 +50,19 @@
 
   if ([(NSString *)self isEmailAddress])
   {
-    v4 = [v3 absoluteString];
-    v5 = v4;
+    absoluteString = [v3 absoluteString];
+    v5 = absoluteString;
     v6 = @"mailto:";
 LABEL_6:
-    v7 = [v4 stringByReplacingOccurrencesOfString:v6 withString:&stru_100069830];
+    v7 = [absoluteString stringByReplacingOccurrencesOfString:v6 withString:&stru_100069830];
 
     goto LABEL_9;
   }
 
   if ([(NSString *)self isPhoneNumber])
   {
-    v4 = [v3 absoluteString];
-    v5 = v4;
+    absoluteString = [v3 absoluteString];
+    v5 = absoluteString;
     v6 = @"tel:";
     goto LABEL_6;
   }

@@ -2,11 +2,11 @@
 - (UIView)presentationAnchorView;
 - (VKCImageTranslationView)init;
 - (id)recognizedLines;
-- (void)checkForTranslationResultsWithCompletion:(id)a3;
+- (void)checkForTranslationResultsWithCompletion:(id)completion;
 - (void)hideTranslationOverlay;
-- (void)setContentsRect:(CGRect)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setRecognitionResult:(id)a3;
+- (void)setContentsRect:(CGRect)rect;
+- (void)setFrame:(CGRect)frame;
+- (void)setRecognitionResult:(id)result;
 - (void)showTranslationOverlay;
 @end
 
@@ -34,52 +34,52 @@
   return v3;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
   v13.receiver = self;
   v13.super_class = VKCImageTranslationView;
-  [(VKCImageTranslationView *)&v13 setFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(VKCImageTranslationView *)&v13 setFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(VKCImageBaseOverlayView *)self viewRectFromNormalizedRect:0.0, 0.0, 1.0, 1.0];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(VKCImageTranslationView *)self translationContainerView];
-  [v12 setFrame:{v5, v7, v9, v11}];
+  translationContainerView = [(VKCImageTranslationView *)self translationContainerView];
+  [translationContainerView setFrame:{v5, v7, v9, v11}];
 }
 
-- (void)setContentsRect:(CGRect)a3
+- (void)setContentsRect:(CGRect)rect
 {
   v13.receiver = self;
   v13.super_class = VKCImageTranslationView;
-  [(VKCImageBaseOverlayView *)&v13 setContentsRect:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(VKCImageBaseOverlayView *)&v13 setContentsRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   [(VKCImageBaseOverlayView *)self viewRectFromNormalizedRect:0.0, 0.0, 1.0, 1.0];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(VKCImageTranslationView *)self translationContainerView];
-  [v12 setFrame:{v5, v7, v9, v11}];
+  translationContainerView = [(VKCImageTranslationView *)self translationContainerView];
+  [translationContainerView setFrame:{v5, v7, v9, v11}];
 }
 
-- (void)checkForTranslationResultsWithCompletion:(id)a3
+- (void)checkForTranslationResultsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if (vk_isSeedBuild() && ([MEMORY[0x1E695E000] standardUserDefaults], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "BOOLForKey:", @"DebugVisionKitCatalystTranslation"), v5, !v6))
   {
-    (*(v4 + 2))(v4, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 
   else
   {
     LTUIVisualTranslationViewClass = getLTUIVisualTranslationViewClass();
-    v8 = [(VKCImageTranslationView *)self recognizedLines];
+    recognizedLines = [(VKCImageTranslationView *)self recognizedLines];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __68__VKCImageTranslationView_checkForTranslationResultsWithCompletion___block_invoke;
     v9[3] = &unk_1E7BE4988;
-    v10 = v4;
-    [LTUIVisualTranslationViewClass isTranslatable:v8 completion:v9];
+    v10 = completionCopy;
+    [LTUIVisualTranslationViewClass isTranslatable:recognizedLines completion:v9];
   }
 }
 
@@ -92,7 +92,7 @@
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v27 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_1B4335000, v3, OS_LOG_TYPE_DEFAULT, "Creating Translation overlay View: %@", buf, 0xCu);
     }
 
@@ -101,41 +101,41 @@
     visualTranslationView = self->_visualTranslationView;
     self->_visualTranslationView = v4;
 
-    v6 = [(VKCImageTranslationView *)self presentationAnchorView];
-    v7 = [(VKCImageTranslationView *)self visualTranslationView];
-    [v7 setPresentationAnchorView:v6];
+    presentationAnchorView = [(VKCImageTranslationView *)self presentationAnchorView];
+    visualTranslationView = [(VKCImageTranslationView *)self visualTranslationView];
+    [visualTranslationView setPresentationAnchorView:presentationAnchorView];
 
-    v8 = [(VKCImageTranslationView *)self visualTranslationView];
-    v9 = [v8 superview];
-    [v9 bounds];
+    visualTranslationView2 = [(VKCImageTranslationView *)self visualTranslationView];
+    superview = [visualTranslationView2 superview];
+    [superview bounds];
     v11 = v10;
     v13 = v12;
     v15 = v14;
     v17 = v16;
-    v18 = [(VKCImageTranslationView *)self visualTranslationView];
-    [v18 setFrame:{v11, v13, v15, v17}];
+    visualTranslationView3 = [(VKCImageTranslationView *)self visualTranslationView];
+    [visualTranslationView3 setFrame:{v11, v13, v15, v17}];
   }
 
   v19 = os_log_create("com.apple.VisionKit", "com.apple.VisionKit.interaction");
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v27 = self;
+    selfCopy2 = self;
     _os_log_impl(&dword_1B4335000, v19, OS_LOG_TYPE_DEFAULT, "Activating Translation overlay: %@", buf, 0xCu);
   }
 
   if (self->_translationNeedsUpdate)
   {
     objc_initWeak(buf, self);
-    v20 = [(VKCImageTranslationView *)self visualTranslationView];
-    v21 = [(VKCImageTranslationView *)self recognizedLines];
+    visualTranslationView4 = [(VKCImageTranslationView *)self visualTranslationView];
+    recognizedLines = [(VKCImageTranslationView *)self recognizedLines];
     v24[0] = MEMORY[0x1E69E9820];
     v24[1] = 3221225472;
     v24[2] = __49__VKCImageTranslationView_showTranslationOverlay__block_invoke;
     v24[3] = &unk_1E7BE49B0;
     objc_copyWeak(&v25, buf);
     v24[4] = self;
-    [v20 translate:v21 completion:v24];
+    [visualTranslationView4 translate:recognizedLines completion:v24];
 
     objc_destroyWeak(&v25);
     objc_destroyWeak(buf);
@@ -143,9 +143,9 @@
 
   else
   {
-    v22 = [(VKCImageTranslationView *)self translationContainerView];
-    v23 = [(VKCImageTranslationView *)self visualTranslationView];
-    [v22 addSubview:v23];
+    translationContainerView = [(VKCImageTranslationView *)self translationContainerView];
+    visualTranslationView5 = [(VKCImageTranslationView *)self visualTranslationView];
+    [translationContainerView addSubview:visualTranslationView5];
   }
 }
 
@@ -174,10 +174,10 @@ void __49__VKCImageTranslationView_showTranslationOverlay__block_invoke(uint64_t
 
 - (id)recognizedLines
 {
-  v2 = [(VKCImageBaseOverlayView *)self recognitionResult];
-  v3 = [v2 sourceVNDocument];
+  recognitionResult = [(VKCImageBaseOverlayView *)self recognitionResult];
+  sourceVNDocument = [recognitionResult sourceVNDocument];
 
-  v4 = [v3 blocksWithTypes:2 inRegion:{0.0, 0.0, 1.0, 1.0}];
+  v4 = [sourceVNDocument blocksWithTypes:2 inRegion:{0.0, 0.0, 1.0, 1.0}];
 
   return v4;
 }
@@ -189,19 +189,19 @@ void __49__VKCImageTranslationView_showTranslationOverlay__block_invoke(uint64_t
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 138412290;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B4335000, v3, OS_LOG_TYPE_DEFAULT, "Hiding Translation overlay %@", &v5, 0xCu);
   }
 
-  v4 = [(VKCImageTranslationView *)self visualTranslationView];
-  [v4 dismiss];
+  visualTranslationView = [(VKCImageTranslationView *)self visualTranslationView];
+  [visualTranslationView dismiss];
 }
 
-- (void)setRecognitionResult:(id)a3
+- (void)setRecognitionResult:(id)result
 {
   v4.receiver = self;
   v4.super_class = VKCImageTranslationView;
-  [(VKCImageBaseOverlayView *)&v4 setRecognitionResult:a3];
+  [(VKCImageBaseOverlayView *)&v4 setRecognitionResult:result];
   [(VKCImageTranslationView *)self setTranslationNeedsUpdate:1];
 }
 

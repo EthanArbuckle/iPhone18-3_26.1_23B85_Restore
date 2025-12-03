@@ -1,7 +1,7 @@
 @interface NUChannelNameMatching
-- (BOOL)match:(id)a3;
+- (BOOL)match:(id)match;
 - (NUChannelNameMatching)init;
-- (NUChannelNameMatching)initWithName:(id)a3;
+- (NUChannelNameMatching)initWithName:(id)name;
 - (id)description;
 @end
 
@@ -10,26 +10,26 @@
 - (id)description
 {
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [(NUChannelNameMatching *)self name];
-  v4 = [v2 stringWithFormat:@"NAME[%@]", v3];
+  name = [(NUChannelNameMatching *)self name];
+  v4 = [v2 stringWithFormat:@"NAME[%@]", name];
 
   return v4;
 }
 
-- (BOOL)match:(id)a3
+- (BOOL)match:(id)match
 {
-  v4 = [a3 name];
-  v5 = [(NUChannelNameMatching *)self name];
-  v6 = [v4 isEqualToString:v5];
+  name = [match name];
+  name2 = [(NUChannelNameMatching *)self name];
+  v6 = [name isEqualToString:name2];
 
   return v6;
 }
 
-- (NUChannelNameMatching)initWithName:(id)a3
+- (NUChannelNameMatching)initWithName:(id)name
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  nameCopy = name;
+  if (!nameCopy)
   {
     v9 = NUAssertLogger_4187();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -50,8 +50,8 @@
         v16 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v17 = MEMORY[0x1E696AF00];
         v18 = v16;
-        v19 = [v17 callStackSymbols];
-        v20 = [v19 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v17 callStackSymbols];
+        v20 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v27 = v16;
         v28 = 2114;
@@ -62,8 +62,8 @@
 
     else if (v13)
     {
-      v14 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v15 = [v14 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v15 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v27 = v15;
       _os_log_error_impl(&dword_1C0184000, v12, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -72,7 +72,7 @@
     _NUAssertFailHandler("[NUChannelNameMatching initWithName:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/API/NUChannel.m", 2650, @"Invalid parameter not satisfying: %s", v21, v22, v23, v24, "name != nil");
   }
 
-  v5 = v4;
+  v5 = nameCopy;
   v25.receiver = self;
   v25.super_class = NUChannelNameMatching;
   v6 = [(NUChannelNameMatching *)&v25 init];
@@ -128,8 +128,8 @@ LABEL_8:
     {
       v12 = MEMORY[0x1E696AF00];
       v13 = v11;
-      v14 = [v12 callStackSymbols];
-      v15 = [v14 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v12 callStackSymbols];
+      v15 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v30 = v15;
       _os_log_error_impl(&dword_1C0184000, v13, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -145,8 +145,8 @@ LABEL_8:
     v18 = MEMORY[0x1E696AF00];
     v19 = specific;
     v20 = v16;
-    v21 = [v18 callStackSymbols];
-    v22 = [v21 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v18 callStackSymbols];
+    v22 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v30 = specific;
     v31 = 2114;

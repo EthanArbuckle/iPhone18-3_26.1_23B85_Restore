@@ -1,5 +1,5 @@
 @interface VariantHelpView
-- (_TtC10StickerKit15VariantHelpView)initWithFrame:(CGRect)a3;
+- (_TtC10StickerKit15VariantHelpView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
@@ -7,16 +7,16 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_19A7577C0();
 }
 
-- (_TtC10StickerKit15VariantHelpView)initWithFrame:(CGRect)a3
+- (_TtC10StickerKit15VariantHelpView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   ObjectType = swift_getObjectType();
   *(&self->super.super._responderFlags + OBJC_IVAR____TtC10StickerKit15VariantHelpView_delegate) = 0;
   swift_unknownObjectWeakInit();

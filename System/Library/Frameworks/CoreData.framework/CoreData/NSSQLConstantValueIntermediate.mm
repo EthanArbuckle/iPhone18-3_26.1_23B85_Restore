@@ -1,8 +1,8 @@
 @interface NSSQLConstantValueIntermediate
-- (BOOL)_addBindVarForConstId:(uint64_t)a3 ofType:(void *)a4 inContext:;
-- (NSSQLConstantValueIntermediate)initWithConstantValue:(id)a3 inScope:(id)a4 context:(id)a5;
-- (NSSQLConstantValueIntermediate)initWithConstantValue:(id)a3 ofType:(unsigned __int8)a4 inScope:(id)a5 context:(id)a6;
-- (id)generateSQLStringInContext:(id)a3;
+- (BOOL)_addBindVarForConstId:(uint64_t)id ofType:(void *)type inContext:;
+- (NSSQLConstantValueIntermediate)initWithConstantValue:(id)value inScope:(id)scope context:(id)context;
+- (NSSQLConstantValueIntermediate)initWithConstantValue:(id)value ofType:(unsigned __int8)type inScope:(id)scope context:(id)context;
+- (id)generateSQLStringInContext:(id)context;
 - (void)dealloc;
 @end
 
@@ -16,21 +16,21 @@
   [(NSSQLConstantValueIntermediate *)&v3 dealloc];
 }
 
-- (NSSQLConstantValueIntermediate)initWithConstantValue:(id)a3 ofType:(unsigned __int8)a4 inScope:(id)a5 context:(id)a6
+- (NSSQLConstantValueIntermediate)initWithConstantValue:(id)value ofType:(unsigned __int8)type inScope:(id)scope context:(id)context
 {
-  v10 = [(NSSQLConstantValueIntermediate *)self initWithConstantValue:a3 inScope:a5 context:a6];
+  v10 = [(NSSQLConstantValueIntermediate *)self initWithConstantValue:value inScope:scope context:context];
   v11 = v10;
   if (v10)
   {
-    v10->_type = a4;
+    v10->_type = type;
     objc_opt_self();
     if (objc_opt_isKindOfClass())
     {
-      v12 = _sqlCoreLookupSQLEntityForEntityDescription([a6 objectForKey:@"persistentStore"], a3);
-      v13 = [a6 objectForKey:@"entitySpecificationKeypath"];
+      v12 = _sqlCoreLookupSQLEntityForEntityDescription([context objectForKey:@"persistentStore"], value);
+      v13 = [context objectForKey:@"entitySpecificationKeypath"];
       if (v13)
       {
-        [a5 setDisambiguatingEntity:v12 withKeypath:v13 hasToMany:{objc_msgSend(objc_msgSend(a6, "objectForKey:", @"entitySpecificationKeypathContainsToMany", "BOOLValue")}];
+        [scope setDisambiguatingEntity:v12 withKeypath:v13 hasToMany:{objc_msgSend(objc_msgSend(context, "objectForKey:", @"entitySpecificationKeypathContainsToMany", "BOOLValue")}];
       }
     }
   }
@@ -38,23 +38,23 @@
   return v11;
 }
 
-- (NSSQLConstantValueIntermediate)initWithConstantValue:(id)a3 inScope:(id)a4 context:(id)a5
+- (NSSQLConstantValueIntermediate)initWithConstantValue:(id)value inScope:(id)scope context:(id)context
 {
   v12.receiver = self;
   v12.super_class = NSSQLConstantValueIntermediate;
-  v8 = [(NSSQLIntermediate *)&v12 initWithScope:a4];
+  v8 = [(NSSQLIntermediate *)&v12 initWithScope:scope];
   if (v8)
   {
-    v8->_constantValue = a3;
+    v8->_constantValue = value;
     v8->_type = 0;
     objc_opt_self();
     if (objc_opt_isKindOfClass())
     {
-      v9 = _sqlCoreLookupSQLEntityForEntityDescription([a5 objectForKey:@"persistentStore"], a3);
-      v10 = [a5 objectForKey:@"entitySpecificationKeypath"];
+      v9 = _sqlCoreLookupSQLEntityForEntityDescription([context objectForKey:@"persistentStore"], value);
+      v10 = [context objectForKey:@"entitySpecificationKeypath"];
       if (v10)
       {
-        [a4 setDisambiguatingEntity:v9 withKeypath:v10 hasToMany:{objc_msgSend(objc_msgSend(a5, "objectForKey:", @"entitySpecificationKeypathContainsToMany", "BOOLValue")}];
+        [scope setDisambiguatingEntity:v9 withKeypath:v10 hasToMany:{objc_msgSend(objc_msgSend(context, "objectForKey:", @"entitySpecificationKeypathContainsToMany", "BOOLValue")}];
       }
     }
   }
@@ -62,11 +62,11 @@
   return v8;
 }
 
-- (BOOL)_addBindVarForConstId:(uint64_t)a3 ofType:(void *)a4 inContext:
+- (BOOL)_addBindVarForConstId:(uint64_t)id ofType:(void *)type inContext:
 {
-  if (a1)
+  if (self)
   {
-    if ([a1 isTargetColumnsScoped])
+    if ([self isTargetColumnsScoped])
     {
       v8 = @"selectBindVars";
     }
@@ -76,11 +76,11 @@
       v8 = @"bindVars";
     }
 
-    v9 = [a4 objectForKey:v8];
+    v9 = [type objectForKey:v8];
     objc_opt_self();
     if (objc_opt_isKindOfClass())
     {
-      v10 = _sqlCoreLookupSQLEntityForEntityDescription([a4 objectForKey:@"persistentStore"], a2);
+      v10 = _sqlCoreLookupSQLEntityForEntityDescription([type objectForKey:@"persistentStore"], a2);
       if (v10)
       {
         v11 = *(v10 + 184);
@@ -94,16 +94,16 @@
       a2 = [MEMORY[0x1E696AD98] numberWithInteger:v11];
     }
 
-    v12 = a1[1];
+    v12 = self[1];
     objc_opt_class();
-    v13 = [[NSSQLBindVariable alloc] initWithValue:a2 sqlType:a3 propertyDescription:0 allowCoercion:(objc_opt_isKindOfClass() & 1) == 0];
+    v13 = [[NSSQLBindVariable alloc] initWithValue:a2 sqlType:id propertyDescription:0 allowCoercion:(objc_opt_isKindOfClass() & 1) == 0];
     [v9 addObject:v13];
   }
 
-  return a1 != 0;
+  return self != 0;
 }
 
-- (id)generateSQLStringInContext:(id)a3
+- (id)generateSQLStringInContext:(id)context
 {
   v85[1] = *MEMORY[0x1E69E9840];
   v5 = objc_autoreleasePoolPush();
@@ -116,9 +116,9 @@
 
     else
     {
-      v8 = [v7 isNSNumber];
+      isNSNumber = [v7 isNSNumber];
       constantValue = self->_constantValue;
-      if (v8)
+      if (isNSNumber)
       {
         v10 = [constantValue description];
       }
@@ -141,7 +141,7 @@
         v41 = self->_constantValue;
         v81 = @"valueSpecified";
         v82 = v41;
-        [a3 setObject:objc_msgSend(MEMORY[0x1E695DF30] forKey:{"exceptionWithName:reason:userInfo:", v40, @"Can't specify non string/number/date value as part of index", objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v82, &v81, 1)), @"NSUnderlyingException"}];
+        [context setObject:objc_msgSend(MEMORY[0x1E695DF30] forKey:{"exceptionWithName:reason:userInfo:", v40, @"Can't specify non string/number/date value as part of index", objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v82, &v81, 1)), @"NSUnderlyingException"}];
         v10 = 0;
       }
     }
@@ -150,22 +150,22 @@
   }
 
   type = self->_type;
-  v12 = self->_constantValue;
+  entityDescription = self->_constantValue;
   if (!self->_type)
   {
-    if (v12)
+    if (entityDescription)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v15 = [v12 objectID];
-        if (!v15)
+        objectID = [entityDescription objectID];
+        if (!objectID)
         {
           goto LABEL_24;
         }
 
 LABEL_17:
-        if (([v15 isTemporaryID] & 1) == 0 && (v16 = objc_msgSend(v15, "persistentStore"), v16 == objc_msgSend(a3, "objectForKey:", @"persistentStore")))
+        if (([objectID isTemporaryID] & 1) == 0 && (v16 = objc_msgSend(objectID, "persistentStore"), v16 == objc_msgSend(context, "objectForKey:", @"persistentStore")))
         {
           if ([(NSSQLIntermediate *)self isTargetColumnsScoped])
           {
@@ -177,10 +177,10 @@ LABEL_17:
             v42 = @"bindVars";
           }
 
-          v18 = [a3 objectForKey:v42];
-          if ([objc_msgSend(a3 objectForKey:{@"generatePairs", "BOOLValue"}])
+          v18 = [context objectForKey:v42];
+          if ([objc_msgSend(context objectForKey:{@"generatePairs", "BOOLValue"}])
           {
-            v43 = [objc_msgSend(a3 objectForKey:{@"persistentStore", "model"}];
+            v43 = [objc_msgSend(context objectForKey:{@"persistentStore", "model"}];
             if (v43)
             {
               v44 = *(v43 + 24);
@@ -191,7 +191,7 @@ LABEL_17:
               v44 = 0;
             }
 
-            v45 = [v44 objectForKey:{objc_msgSend(v15, "entityName")}];
+            v45 = [v44 objectForKey:{objc_msgSend(objectID, "entityName")}];
             v46 = [NSSQLBindVariable alloc];
             if (v45)
             {
@@ -207,7 +207,7 @@ LABEL_17:
             [v18 addObject:v48];
           }
 
-          v20 = -[NSSQLBindVariable initWithInt64:sqlType:]([NSSQLBindVariable alloc], "initWithInt64:sqlType:", [v15 _referenceData64], 2);
+          v20 = -[NSSQLBindVariable initWithInt64:sqlType:]([NSSQLBindVariable alloc], "initWithInt64:sqlType:", [objectID _referenceData64], 2);
         }
 
         else
@@ -222,7 +222,7 @@ LABEL_17:
             v17 = @"bindVars";
           }
 
-          v18 = [a3 objectForKey:v17];
+          v18 = [context objectForKey:v17];
           v19 = [NSSQLBindVariable alloc];
           v20 = -[NSSQLBindVariable initWithValue:sqlType:propertyDescription:](v19, "initWithValue:sqlType:propertyDescription:", [MEMORY[0x1E696AD98] numberWithLongLong:0], 2, 0);
         }
@@ -237,20 +237,20 @@ LABEL_17:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v15 = v12;
+        objectID = entityDescription;
         goto LABEL_17;
       }
     }
 
 LABEL_24:
-    v23 = -[NSSQLiteAdapter sqlTypeForExpressionConstantValue:]([objc_msgSend(a3 objectForKey:{@"persistentStore", "adapter"}], v12);
-    v24 = [(NSSQLIntermediate *)self->super._scope _lastScopedItem];
-    if (!v24)
+    v23 = -[NSSQLiteAdapter sqlTypeForExpressionConstantValue:]([objc_msgSend(context objectForKey:{@"persistentStore", "adapter"}], entityDescription);
+    _lastScopedItem = [(NSSQLIntermediate *)self->super._scope _lastScopedItem];
+    if (!_lastScopedItem)
     {
       goto LABEL_73;
     }
 
-    v25 = v24;
+    v25 = _lastScopedItem;
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0 || ([objc_opt_class() isSimpleKeypath:v25] & 1) == 0 && !-[NSSQLIntermediate isVariableBasedKeypathScopedBySubquery:](self, v25))
     {
@@ -258,7 +258,7 @@ LABEL_24:
     }
 
     v26 = [objc_msgSend(objc_msgSend(v25 "arguments")];
-    v27 = [(NSSQLIntermediate *)self governingEntityForKeypathExpression:v25];
+    destinationEntity = [(NSSQLIntermediate *)self governingEntityForKeypathExpression:v25];
     v28 = [v26 componentsSeparatedByString:@"."];
     v29 = [v28 count];
     v80 = v5;
@@ -267,12 +267,12 @@ LABEL_24:
     {
       v30 = v29;
       v31 = [v28 objectAtIndex:0];
-      if (v27)
+      if (destinationEntity)
       {
         v32 = 1;
         while (1)
         {
-          v33 = [v27[5] objectForKey:v31];
+          v33 = [destinationEntity[5] objectForKey:v31];
           if (!v33)
           {
             break;
@@ -283,7 +283,7 @@ LABEL_24:
           v37 = v30 != v32 && v35 == 7;
           if (v35 == 9 || v37 || [v33 isToMany])
           {
-            v27 = [v34 destinationEntity];
+            destinationEntity = [v34 destinationEntity];
           }
 
           if (v30 == v32)
@@ -292,7 +292,7 @@ LABEL_24:
           }
 
           v31 = [v28 objectAtIndex:v32++];
-          if (!v27)
+          if (!destinationEntity)
           {
             goto LABEL_44;
           }
@@ -300,7 +300,7 @@ LABEL_24:
 
         if ([@"entity" isEqual:v31])
         {
-          v34 = v27[17];
+          v34 = destinationEntity[17];
           goto LABEL_61;
         }
       }
@@ -314,20 +314,20 @@ LABEL_44:
 
     v34 = 0;
 LABEL_61:
-    v49 = [v34 propertyType];
+    propertyType = [v34 propertyType];
     v5 = v80;
-    if (v49 > 9)
+    if (propertyType > 9)
     {
       goto LABEL_112;
     }
 
-    if (((1 << v49) & 0x38C) != 0)
+    if (((1 << propertyType) & 0x38C) != 0)
     {
       v23 = 2;
 LABEL_64:
-      if ([MEMORY[0x1E695DFB0] null] == v12)
+      if ([MEMORY[0x1E695DFB0] null] == entityDescription)
       {
-        v12 = 0;
+        entityDescription = 0;
       }
 
       if (v23)
@@ -338,8 +338,8 @@ LABEL_64:
           if (objc_opt_isKindOfClass())
           {
             v50 = MEMORY[0x1E696AD98];
-            [v12 timeIntervalSinceReferenceDate];
-            v12 = [v50 numberWithDouble:?];
+            [entityDescription timeIntervalSinceReferenceDate];
+            entityDescription = [v50 numberWithDouble:?];
           }
 
           v23 = 7;
@@ -352,15 +352,15 @@ LABEL_64:
       }
 
 LABEL_73:
-      v51 = [objc_msgSend(a3 valueForKey:{@"explicitRestrictingEntityQualifier", "lastObject"}];
+      v51 = [objc_msgSend(context valueForKey:{@"explicitRestrictingEntityQualifier", "lastObject"}];
       if ([v51 isEqual:MEMORY[0x1E695E118]])
       {
-        v52 = [a3 valueForKey:@"persistentStore"];
-        v53 = [v52 model];
+        v52 = [context valueForKey:@"persistentStore"];
+        model = [v52 model];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v54 = _sqlEntityForEntityDescription(v53, v12);
+          v54 = _sqlEntityForEntityDescription(model, entityDescription);
           if (!v54)
           {
             goto LABEL_81;
@@ -369,14 +369,14 @@ LABEL_73:
           goto LABEL_80;
         }
 
-        if ([v12 isNSString])
+        if ([entityDescription isNSString])
         {
-          v55 = [v53 entityNamed:v12];
+          v55 = [model entityNamed:entityDescription];
           if (!v55)
           {
-            if (v53)
+            if (model)
             {
-              v63 = v53[3];
+              v63 = model[3];
             }
 
             else
@@ -384,11 +384,11 @@ LABEL_73:
               v63 = 0;
             }
 
-            v64 = [v63 allKeys];
+            allKeys = [v63 allKeys];
             v65 = MEMORY[0x1E695E0F0];
-            if (v64)
+            if (allKeys)
             {
-              v66 = v64;
+              v66 = allKeys;
             }
 
             else
@@ -396,10 +396,10 @@ LABEL_73:
               v66 = MEMORY[0x1E695E0F0];
             }
 
-            v67 = [v52 identifier];
-            if (v67)
+            identifier = [v52 identifier];
+            if (identifier)
             {
-              v68 = v67;
+              v68 = identifier;
             }
 
             else
@@ -407,10 +407,10 @@ LABEL_73:
               v68 = @"no store ID";
             }
 
-            v69 = [v52 configurationName];
-            if (v69)
+            configurationName = [v52 configurationName];
+            if (configurationName)
             {
-              v70 = v69;
+              v70 = configurationName;
             }
 
             else
@@ -418,7 +418,7 @@ LABEL_73:
               v70 = @"no config";
             }
 
-            v71 = [objc_msgSend(v53 "managedObjectModel")];
+            v71 = [objc_msgSend(model "managedObjectModel")];
             if (v71)
             {
               v65 = [v71 valueForKey:@"name"];
@@ -433,34 +433,34 @@ LABEL_73:
             v84[2] = v70;
             v84[3] = v65;
             v72 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v84 forKeys:v83 count:4];
-            if (![objc_msgSend(objc_msgSend(v53 "managedObjectModel")] || (objc_msgSend(v65, "containsObject:", v12) & 1) != 0 || (v73 = objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"%@ is not in current configuration - %@.", v12, v70)) == 0)
+            if (![objc_msgSend(objc_msgSend(model "managedObjectModel")] || (objc_msgSend(v65, "containsObject:", entityDescription) & 1) != 0 || (v73 = objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"%@ is not in current configuration - %@.", entityDescription, v70)) == 0)
             {
-              v73 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ is not a valid entity name.", v73, v12];
+              v73 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ is not a valid entity name.", v73, entityDescription];
             }
 
-            [a3 setObject:objc_msgSend(MEMORY[0x1E695DF30] forKey:{"exceptionWithName:reason:userInfo:", *MEMORY[0x1E695D930], v73, v72), @"NSUnderlyingException"}];
+            [context setObject:objc_msgSend(MEMORY[0x1E695DF30] forKey:{"exceptionWithName:reason:userInfo:", *MEMORY[0x1E695D930], v73, v72), @"NSUnderlyingException"}];
             v22 = 0;
             goto LABEL_83;
           }
 
           v54 = v55;
-          v12 = [v55 entityDescription];
+          entityDescription = [v55 entityDescription];
 LABEL_80:
-          v56 = [a3 valueForKey:@"explicitRestrictingEntityQualifier"];
+          v56 = [context valueForKey:@"explicitRestrictingEntityQualifier"];
           [v56 replaceObjectAtIndex:objc_msgSend(v56 withObject:{"indexOfObject:", v51), v54}];
         }
       }
 
 LABEL_81:
-      v13 = self;
-      v14 = v12;
+      selfCopy2 = self;
+      v14 = entityDescription;
       type = v23;
       goto LABEL_82;
     }
 
-    if (v49 != 1)
+    if (propertyType != 1)
     {
-      if (v49 == 5)
+      if (propertyType == 5)
       {
         v23 = 1;
         goto LABEL_64;
@@ -471,13 +471,13 @@ LABEL_112:
       goto LABEL_64;
     }
 
-    v74 = [v34 sqlType];
-    if (v74 != 18)
+    sqlType = [v34 sqlType];
+    if (sqlType != 18)
     {
-      v23 = v74;
-      if (v74 == 15)
+      v23 = sqlType;
+      if (sqlType == 15)
       {
-        v12 = +[_PFRoutines retainedEncodeObjectValue:forTransformableAttribute:](_PFRoutines, v12, [v34 propertyDescription]);
+        entityDescription = +[_PFRoutines retainedEncodeObjectValue:forTransformableAttribute:](_PFRoutines, entityDescription, [v34 propertyDescription]);
         v23 = 10;
         goto LABEL_73;
       }
@@ -485,15 +485,15 @@ LABEL_112:
       goto LABEL_64;
     }
 
-    v75 = [v34 propertyDescription];
+    propertyDescription = [v34 propertyDescription];
     v84[0] = 0;
-    if (v12)
+    if (entityDescription)
     {
-      v76 = [v75 encode:v12 withRegistry:objc_msgSend(objc_msgSend(objc_msgSend(a3 error:{"valueForKey:", @"persistentStore", "persistentStoreCoordinator"), "codableAdapterRegistry"), v84}];
+      v76 = [propertyDescription encode:entityDescription withRegistry:objc_msgSend(objc_msgSend(objc_msgSend(context error:{"valueForKey:", @"persistentStore", "persistentStoreCoordinator"), "codableAdapterRegistry"), v84}];
       if (v76)
       {
         v23 = 10;
-        v12 = v76;
+        entityDescription = v76;
         goto LABEL_73;
       }
 
@@ -505,7 +505,7 @@ LABEL_112:
         v78 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v83 forKeys:v85 count:1];
         v77 = v84[0];
 LABEL_126:
-        objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:objc_msgSend(MEMORY[0x1E696AEC0] userInfo:{"stringWithFormat:", @"Failed to encode %@: %@", v12, v77), v78}]);
+        objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:objc_msgSend(MEMORY[0x1E696AEC0] userInfo:{"stringWithFormat:", @"Failed to encode %@: %@", entityDescription, v77), v78}]);
       }
     }
 
@@ -518,12 +518,12 @@ LABEL_126:
     goto LABEL_126;
   }
 
-  v13 = self;
+  selfCopy2 = self;
   v14 = self->_constantValue;
 LABEL_82:
-  v22 = [(NSSQLConstantValueIntermediate *)v13 _addBindVarForConstId:v14 ofType:type inContext:a3];
+  v22 = [(NSSQLConstantValueIntermediate *)selfCopy2 _addBindVarForConstId:v14 ofType:type inContext:context];
 LABEL_83:
-  v57 = [objc_msgSend(a3 objectForKey:{@"generatePairs", "BOOLValue"}];
+  v57 = [objc_msgSend(context objectForKey:{@"generatePairs", "BOOLValue"}];
   v58 = @"(?, ?)";
   if (!v22)
   {

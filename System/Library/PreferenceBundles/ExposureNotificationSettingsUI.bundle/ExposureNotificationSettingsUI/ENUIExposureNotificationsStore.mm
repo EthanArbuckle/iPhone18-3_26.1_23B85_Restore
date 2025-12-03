@@ -1,14 +1,14 @@
 @interface ENUIExposureNotificationsStore
 - (ENUIExposureNotificationsStore)init;
 - (void)dealloc;
-- (void)fetchExposureCheckSessionsWithCompletion:(id)a3;
-- (void)fetchExposureChecksWithCompletion:(id)a3;
-- (void)fetchExposureLogsExistWithCompletion:(id)a3;
-- (void)fetchExtraLoggingEnabledWithCompletion:(id)a3;
-- (void)fetchSupportedWithCompletion:(id)a3;
-- (void)fetchWeeklySummaryEnabledWithCompletion:(id)a3;
-- (void)resetAllDataWithCompletion:(id)a3;
-- (void)resetDataWithFlags:(unsigned int)a3 completion:(id)a4;
+- (void)fetchExposureCheckSessionsWithCompletion:(id)completion;
+- (void)fetchExposureChecksWithCompletion:(id)completion;
+- (void)fetchExposureLogsExistWithCompletion:(id)completion;
+- (void)fetchExtraLoggingEnabledWithCompletion:(id)completion;
+- (void)fetchSupportedWithCompletion:(id)completion;
+- (void)fetchWeeklySummaryEnabledWithCompletion:(id)completion;
+- (void)resetAllDataWithCompletion:(id)completion;
+- (void)resetDataWithFlags:(unsigned int)flags completion:(id)completion;
 @end
 
 @implementation ENUIExposureNotificationsStore
@@ -50,101 +50,101 @@
   [(ENUIExposureNotificationsStore *)&v3 dealloc];
 }
 
-- (void)fetchExposureChecksWithCompletion:(id)a3
+- (void)fetchExposureChecksWithCompletion:(id)completion
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_FA30;
   v4[3] = &unk_2CA60;
-  v5 = self;
-  v6 = a3;
-  v3 = v6;
-  [(ENUIExposureNotificationsStore *)v5 performAfterActivation:v4];
+  selfCopy = self;
+  completionCopy = completion;
+  v3 = completionCopy;
+  [(ENUIExposureNotificationsStore *)selfCopy performAfterActivation:v4];
 }
 
-- (void)fetchExposureCheckSessionsWithCompletion:(id)a3
+- (void)fetchExposureCheckSessionsWithCompletion:(id)completion
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_FC8C;
   v4[3] = &unk_2CA60;
-  v5 = self;
-  v6 = a3;
-  v3 = v6;
-  [(ENUIExposureNotificationsStore *)v5 performAfterActivation:v4];
+  selfCopy = self;
+  completionCopy = completion;
+  v3 = completionCopy;
+  [(ENUIExposureNotificationsStore *)selfCopy performAfterActivation:v4];
 }
 
-- (void)resetDataWithFlags:(unsigned int)a3 completion:(id)a4
+- (void)resetDataWithFlags:(unsigned int)flags completion:(id)completion
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_FEF0;
   v5[3] = &unk_2CFB8;
-  v8 = a3;
-  v6 = self;
-  v7 = a4;
-  v4 = v7;
-  [(ENUIExposureNotificationsStore *)v6 performAfterActivation:v5];
+  flagsCopy = flags;
+  selfCopy = self;
+  completionCopy = completion;
+  v4 = completionCopy;
+  [(ENUIExposureNotificationsStore *)selfCopy performAfterActivation:v5];
 }
 
-- (void)fetchExtraLoggingEnabledWithCompletion:(id)a3
+- (void)fetchExtraLoggingEnabledWithCompletion:(id)completion
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10170;
   v4[3] = &unk_2CA60;
-  v5 = self;
-  v6 = a3;
-  v3 = v6;
-  [(ENUIExposureNotificationsStore *)v5 performAfterActivation:v4];
+  selfCopy = self;
+  completionCopy = completion;
+  v3 = completionCopy;
+  [(ENUIExposureNotificationsStore *)selfCopy performAfterActivation:v4];
 }
 
-- (void)fetchWeeklySummaryEnabledWithCompletion:(id)a3
+- (void)fetchWeeklySummaryEnabledWithCompletion:(id)completion
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10370;
   v4[3] = &unk_2CA60;
-  v5 = self;
-  v6 = a3;
-  v3 = v6;
-  [(ENUIExposureNotificationsStore *)v5 performAfterActivation:v4];
+  selfCopy = self;
+  completionCopy = completion;
+  v3 = completionCopy;
+  [(ENUIExposureNotificationsStore *)selfCopy performAfterActivation:v4];
 }
 
-- (void)fetchSupportedWithCompletion:(id)a3
+- (void)fetchSupportedWithCompletion:(id)completion
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10570;
   v4[3] = &unk_2CA60;
-  v5 = self;
-  v6 = a3;
-  v3 = v6;
-  [(ENUIExposureNotificationsStore *)v5 performAfterActivation:v4];
+  selfCopy = self;
+  completionCopy = completion;
+  v3 = completionCopy;
+  [(ENUIExposureNotificationsStore *)selfCopy performAfterActivation:v4];
 }
 
-- (void)fetchExposureLogsExistWithCompletion:(id)a3
+- (void)fetchExposureLogsExistWithCompletion:(id)completion
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10770;
   v4[3] = &unk_2CA60;
-  v5 = self;
-  v6 = a3;
-  v3 = v6;
-  [(ENUIExposureNotificationsStore *)v5 performAfterActivation:v4];
+  selfCopy = self;
+  completionCopy = completion;
+  v3 = completionCopy;
+  [(ENUIExposureNotificationsStore *)selfCopy performAfterActivation:v4];
 }
 
-- (void)resetAllDataWithCompletion:(id)a3
+- (void)resetAllDataWithCompletion:(id)completion
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10980;
   v4[3] = &unk_2CA60;
-  v5 = self;
-  v6 = a3;
-  v3 = v6;
-  [(ENUIExposureNotificationsStore *)v5 performAfterActivation:v4];
+  selfCopy = self;
+  completionCopy = completion;
+  v3 = completionCopy;
+  [(ENUIExposureNotificationsStore *)selfCopy performAfterActivation:v4];
 }
 
 @end

@@ -1,27 +1,27 @@
 @interface BWJasperColorStillsExecutorInput
 - (BOOL)needMorePointClouds;
-- (BWJasperColorStillsExecutorInput)initWithSettings:(id)a3 portType:(id)a4 timeOfFlightCameraType:(int)a5;
+- (BWJasperColorStillsExecutorInput)initWithSettings:(id)settings portType:(id)type timeOfFlightCameraType:(int)cameraType;
 - (id)description;
-- (void)addPointCloud:(opaqueCMSampleBuffer *)a3;
+- (void)addPointCloud:(opaqueCMSampleBuffer *)cloud;
 - (void)dealloc;
 - (void)jasperPointCloudsForColorBuffer;
-- (void)setColorBuffer:(opaqueCMSampleBuffer *)a3 type:(unint64_t)a4;
-- (void)setColorBufferPTS:(id *)a3 exposureTime:(double)a4;
+- (void)setColorBuffer:(opaqueCMSampleBuffer *)buffer type:(unint64_t)type;
+- (void)setColorBufferPTS:(id *)s exposureTime:(double)time;
 @end
 
 @implementation BWJasperColorStillsExecutorInput
 
-- (BWJasperColorStillsExecutorInput)initWithSettings:(id)a3 portType:(id)a4 timeOfFlightCameraType:(int)a5
+- (BWJasperColorStillsExecutorInput)initWithSettings:(id)settings portType:(id)type timeOfFlightCameraType:(int)cameraType
 {
   v10.receiver = self;
   v10.super_class = BWJasperColorStillsExecutorInput;
-  v6 = [(BWStillImageProcessorControllerInput *)&v10 initWithSettings:a3 portType:a4];
+  v6 = [(BWStillImageProcessorControllerInput *)&v10 initWithSettings:settings portType:type];
   if (v6)
   {
     v6->_pointClouds = objc_alloc_init(MEMORY[0x1E695DF70]);
-    if (a5)
+    if (cameraType)
     {
-      if (a5 == 1)
+      if (cameraType == 1)
       {
         v7 = 4;
       }
@@ -31,7 +31,7 @@
         v7 = 0;
       }
 
-      if (a5 == 2)
+      if (cameraType == 2)
       {
         v8 = 2;
       }
@@ -68,9 +68,9 @@
   [(BWStillImageProcessorControllerInput *)&v4 dealloc];
 }
 
-- (void)addPointCloud:(opaqueCMSampleBuffer *)a3
+- (void)addPointCloud:(opaqueCMSampleBuffer *)cloud
 {
-  if (!a3)
+  if (!cloud)
   {
     [BWJasperColorStillsExecutorInput addPointCloud:];
     return;
@@ -105,15 +105,15 @@ LABEL_10:
   }
 }
 
-- (void)setColorBufferPTS:(id *)a3 exposureTime:(double)a4
+- (void)setColorBufferPTS:(id *)s exposureTime:(double)time
 {
-  var3 = a3->var3;
-  *&self->_colorBufferPTS.value = *&a3->var0;
+  var3 = s->var3;
+  *&self->_colorBufferPTS.value = *&s->var0;
   self->_colorBufferPTS.epoch = var3;
-  self->_colorBufferExposureTime = a4;
+  self->_colorBufferExposureTime = time;
 }
 
-- (void)setColorBuffer:(opaqueCMSampleBuffer *)a3 type:(unint64_t)a4
+- (void)setColorBuffer:(opaqueCMSampleBuffer *)buffer type:(unint64_t)type
 {
   if (dword_1EB58DEA0)
   {
@@ -130,9 +130,9 @@ LABEL_10:
     CFRelease(colorBuffer);
   }
 
-  if (a3)
+  if (buffer)
   {
-    v9 = CFRetain(a3);
+    v9 = CFRetain(buffer);
   }
 
   else
@@ -141,7 +141,7 @@ LABEL_10:
   }
 
   self->_colorBuffer = v9;
-  self->_colorBufferType = a4;
+  self->_colorBufferType = type;
   if ([(BWJasperColorStillsExecutorInput *)self isReadyToExecute:v10])
   {
     [(BWJasperColorStillsExecutorInputDelegate *)self->_delegate inputReadyToExecute:self];
@@ -197,10 +197,10 @@ LABEL_11:
   result = 1;
   if (Seconds > 0.0 && colorBufferExposureTime > 0.0)
   {
-    v12 = [(NSMutableArray *)self->_pointClouds lastObject];
-    if (v12)
+    lastObject = [(NSMutableArray *)self->_pointClouds lastObject];
+    if (lastObject)
     {
-      v13 = [CMGetAttachment(v12 *off_1E798A3C8];
+      v13 = [CMGetAttachment(lastObject *off_1E798A3C8];
       CMTimeMakeFromDictionary(&time, v13);
       v14 = CMTimeGetSeconds(&time);
     }
@@ -247,13 +247,13 @@ LABEL_11:
 
 - (void)jasperPointCloudsForColorBuffer
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v3 = [MEMORY[0x1E695DF70] array];
-  if (!*(a1 + 88))
+  array = [MEMORY[0x1E695DF70] array];
+  if (!*(self + 88))
   {
     OUTLINED_FUNCTION_10_19();
     OUTLINED_FUNCTION_9_20();
@@ -278,7 +278,7 @@ LABEL_11:
   }
 
   v4 = [OUTLINED_FUNCTION_3_36() count];
-  v5 = *(a1 + 104);
+  v5 = *(self + 104);
   if (v4 < v5)
   {
     OUTLINED_FUNCTION_10_19();
@@ -304,7 +304,7 @@ LABEL_11:
 LABEL_55:
     OUTLINED_FUNCTION_7_26();
     fig_log_call_emit_and_clean_up_after_send_and_compose();
-    return v3;
+    return array;
   }
 
   if (dword_1EB58DEA0)
@@ -325,18 +325,18 @@ LABEL_55:
     if (v7)
     {
       [OUTLINED_FUNCTION_3_36() count];
-      v8 = [OUTLINED_FUNCTION_3_36() firstObject];
-      if (v8)
+      firstObject = [OUTLINED_FUNCTION_3_36() firstObject];
+      if (firstObject)
       {
-        v9 = [CMGetAttachment(v8 *off_1E798A3C8];
+        v9 = [CMGetAttachment(firstObject *off_1E798A3C8];
         CMTimeMakeFromDictionary(&time, v9);
         CMTimeGetSeconds(&time);
       }
 
-      v10 = [OUTLINED_FUNCTION_3_36() lastObject];
-      if (v10)
+      lastObject = [OUTLINED_FUNCTION_3_36() lastObject];
+      if (lastObject)
       {
-        v11 = [CMGetAttachment(v10 *off_1E798A3C8];
+        v11 = [CMGetAttachment(lastObject *off_1E798A3C8];
         CMTimeMakeFromDictionary(&time, v11);
         CMTimeGetSeconds(&time);
       }
@@ -347,12 +347,12 @@ LABEL_55:
 
     OUTLINED_FUNCTION_2_4();
     fig_log_call_emit_and_clean_up_after_send_and_compose();
-    v5 = *(a1 + 104);
+    v5 = *(self + 104);
   }
 
-  [objc_msgSend(OUTLINED_FUNCTION_8_23(*(a1 + 88)) objectForKeyedSubscript:{*off_1E798B2A8), "doubleValue"}];
+  [objc_msgSend(OUTLINED_FUNCTION_8_23(*(self + 88)) objectForKeyedSubscript:{*off_1E798B2A8), "doubleValue"}];
   v13 = v12;
-  v14 = *(a1 + 88);
+  v14 = *(self + 88);
   if (v14)
   {
     v15 = [OUTLINED_FUNCTION_8_23(v14) objectForKeyedSubscript:*off_1E798A420];
@@ -366,7 +366,7 @@ LABEL_55:
   }
 
   memset(v42, 0, sizeof(v42));
-  v17 = *(a1 + 104);
+  v17 = *(self + 104);
   if ([OUTLINED_FUNCTION_3_36() count] <= v17)
   {
     v18 = 0;
@@ -378,7 +378,7 @@ LABEL_55:
     v19 = *off_1E798A420;
     do
     {
-      v20 = v18 % *(a1 + 104);
+      v20 = v18 % *(self + 104);
       v21 = *(v42 + v20);
       if (v21 == 0.0)
       {
@@ -473,7 +473,7 @@ LABEL_55:
       v34 = [OUTLINED_FUNCTION_3_36() objectAtIndexedSubscript:v18];
       CVDataBuffer = BWSampleBufferGetCVDataBuffer(v34);
       v36 = [objc_alloc(getADJasperPointCloudClass()) initWithDataBuffer:CVDataBuffer];
-      [v3 addObject:v36];
+      [array addObject:v36];
 
       ++v18;
       --v5;
@@ -482,7 +482,7 @@ LABEL_55:
     while (v5);
   }
 
-  return v3;
+  return array;
 }
 
 @end

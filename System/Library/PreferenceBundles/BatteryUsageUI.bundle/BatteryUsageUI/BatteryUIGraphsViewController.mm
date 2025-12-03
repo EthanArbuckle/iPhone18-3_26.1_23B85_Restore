@@ -1,10 +1,10 @@
 @interface BatteryUIGraphsViewController
-- (BOOL)validateDictionary:(id)a3;
-- (BatteryUIGraphsViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (BOOL)validateDictionary:(id)dictionary;
+- (BatteryUIGraphsViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (UIActivityIndicatorView)activityIndicator;
 - (void)didReceiveMemoryWarning;
 - (void)reportIssue;
-- (void)setUpModelingView:(id)a3;
+- (void)setUpModelingView:(id)view;
 - (void)viewDidLoad;
 @end
 
@@ -20,8 +20,8 @@
     self->_activityIndicator = v4;
 
     [(UIActivityIndicatorView *)self->_activityIndicator setSize:50.0, 50.0];
-    v6 = [(BatteryUIGraphsViewController *)self view];
-    [v6 center];
+    view = [(BatteryUIGraphsViewController *)self view];
+    [view center];
     [(UIActivityIndicatorView *)self->_activityIndicator setCenter:?];
 
     activityIndicator = self->_activityIndicator;
@@ -30,11 +30,11 @@
   return activityIndicator;
 }
 
-- (BatteryUIGraphsViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (BatteryUIGraphsViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v7.receiver = self;
   v7.super_class = BatteryUIGraphsViewController;
-  v4 = [(BatteryUIGraphsViewController *)&v7 initWithNibName:a3 bundle:a4];
+  v4 = [(BatteryUIGraphsViewController *)&v7 initWithNibName:name bundle:bundle];
   v5 = v4;
   if (v4)
   {
@@ -44,47 +44,47 @@
   return v5;
 }
 
-- (BOOL)validateDictionary:(id)a3
+- (BOOL)validateDictionary:(id)dictionary
 {
-  v3 = [a3 objectForKeyedSubscript:@"ModelData"];
+  v3 = [dictionary objectForKeyedSubscript:@"ModelData"];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   return isKindOfClass & 1;
 }
 
-- (void)setUpModelingView:(id)a3
+- (void)setUpModelingView:(id)view
 {
-  v5 = a3;
-  if ([(BatteryUIGraphsViewController *)self validateDictionary:v5])
+  viewCopy = view;
+  if ([(BatteryUIGraphsViewController *)self validateDictionary:viewCopy])
   {
-    objc_storeStrong(&self->_currentDictionary, a3);
-    v59 = v5;
-    v6 = [v5 objectForKeyedSubscript:@"ModelData"];
+    objc_storeStrong(&self->_currentDictionary, view);
+    v59 = viewCopy;
+    v6 = [viewCopy objectForKeyedSubscript:@"ModelData"];
     v7 = [UIScrollView alloc];
-    v8 = [(BatteryUIGraphsViewController *)self navigationController];
-    [v8 navigationBar];
+    navigationController = [(BatteryUIGraphsViewController *)self navigationController];
+    [navigationController navigationBar];
     v9 = v60 = self;
     [v9 frame];
     v10 = 20.0;
     v12 = v11 + 20.0;
-    v13 = [(BatteryUIGraphsViewController *)self view];
-    [v13 frame];
+    view = [(BatteryUIGraphsViewController *)self view];
+    [view frame];
     v15 = v14;
-    v16 = [(BatteryUIGraphsViewController *)self view];
-    [v16 frame];
+    view2 = [(BatteryUIGraphsViewController *)self view];
+    [view2 frame];
     v18 = v17;
-    v19 = [(BatteryUIGraphsViewController *)self navigationController];
-    v20 = [v19 navigationBar];
-    [v20 frame];
+    navigationController2 = [(BatteryUIGraphsViewController *)self navigationController];
+    navigationBar = [navigationController2 navigationBar];
+    [navigationBar frame];
     v22 = [v7 initWithFrame:{0.0, v12, v15, v18 - v21}];
     [(BatteryUIGraphsViewController *)self setRootScrollView:v22];
 
-    v23 = [(BatteryUIGraphsViewController *)self view];
-    v24 = [(BatteryUIGraphsViewController *)self rootScrollView];
-    [v23 addSubview:v24];
+    view3 = [(BatteryUIGraphsViewController *)self view];
+    rootScrollView = [(BatteryUIGraphsViewController *)self rootScrollView];
+    [view3 addSubview:rootScrollView];
 
-    v25 = self;
+    selfCopy = self;
     v64 = 0u;
     v65 = 0u;
     v62 = 0u;
@@ -112,8 +112,8 @@
           if (objc_opt_isKindOfClass())
           {
             v34 = [UILabel alloc];
-            v35 = [(BatteryUIGraphsViewController *)v25 rootScrollView];
-            [v35 frame];
+            rootScrollView2 = [(BatteryUIGraphsViewController *)selfCopy rootScrollView];
+            [rootScrollView2 frame];
             v37 = [v34 initWithFrame:{10.0, v28, v36 + -20.0, 20.0}];
 
             v38 = [v32 objectForKeyedSubscript:@"ModelGraphName"];
@@ -121,25 +121,25 @@
 
             [v37 frame];
             [v37 sizeThatFits:{v39, v40}];
-            v41 = [(BatteryUIGraphsViewController *)v25 rootScrollView];
-            [v41 addSubview:v37];
+            rootScrollView3 = [(BatteryUIGraphsViewController *)selfCopy rootScrollView];
+            [rootScrollView3 addSubview:v37];
 
             v42 = v30;
             v43 = v29;
             v44 = [PLBatteryUIGraphViewInternal alloc];
-            v45 = [(BatteryUIGraphsViewController *)v25 rootScrollView];
-            [v45 frame];
+            rootScrollView4 = [(BatteryUIGraphsViewController *)selfCopy rootScrollView];
+            [rootScrollView4 frame];
             v47 = v46 + -20.0;
             v48 = +[PLBatteryUIGraphViewInternal graphHeight];
             v49 = [v32 objectForKeyedSubscript:@"ModelGraphArray"];
             v50 = [(PLBatteryUIGraphViewInternal *)v44 initWithFrame:v49 andData:10.0, (v28 + 20), v47, v48];
 
-            v25 = v60;
+            selfCopy = v60;
             v51 = [v32 objectForKeyedSubscript:@"ModelGraphType"];
             -[PLBatteryUIGraphViewInternal setGraphType:](v50, "setGraphType:", [v51 intValue]);
 
-            v52 = [(BatteryUIGraphsViewController *)v60 rootScrollView];
-            [v52 addSubview:v50];
+            rootScrollView5 = [(BatteryUIGraphsViewController *)v60 rootScrollView];
+            [rootScrollView5 addSubview:v50];
 
             v29 = v43;
             v30 = v42;
@@ -154,19 +154,19 @@
       v10 = v28;
     }
 
-    v53 = [(BatteryUIGraphsViewController *)v25 rootScrollView];
-    [v53 frame];
+    rootScrollView6 = [(BatteryUIGraphsViewController *)selfCopy rootScrollView];
+    [rootScrollView6 frame];
     v55 = v54;
-    v56 = [(BatteryUIGraphsViewController *)v25 rootScrollView];
-    [v56 setContentSize:{v55, v10}];
+    rootScrollView7 = [(BatteryUIGraphsViewController *)selfCopy rootScrollView];
+    [rootScrollView7 setContentSize:{v55, v10}];
 
-    v57 = [(BatteryUIGraphsViewController *)v25 rootScrollView];
-    [v57 setScrollEnabled:1];
+    rootScrollView8 = [(BatteryUIGraphsViewController *)selfCopy rootScrollView];
+    [rootScrollView8 setScrollEnabled:1];
 
-    v58 = [(BatteryUIGraphsViewController *)v25 view];
-    [v58 setUserInteractionEnabled:1];
+    view4 = [(BatteryUIGraphsViewController *)selfCopy view];
+    [view4 setUserInteractionEnabled:1];
 
-    v5 = v59;
+    viewCopy = v59;
   }
 }
 
@@ -175,23 +175,23 @@
   v15.receiver = self;
   v15.super_class = BatteryUIGraphsViewController;
   [(BatteryUIGraphsViewController *)&v15 viewDidLoad];
-  v3 = [(BatteryUIGraphsViewController *)self view];
-  v4 = [(BatteryUIGraphsViewController *)self activityIndicator];
-  [v3 addSubview:v4];
+  view = [(BatteryUIGraphsViewController *)self view];
+  activityIndicator = [(BatteryUIGraphsViewController *)self activityIndicator];
+  [view addSubview:activityIndicator];
 
   v5 = [UIBarButtonItem alloc];
   v6 = [NSBundle bundleForClass:objc_opt_class()];
   v7 = [UIImage imageNamed:@"radar.png" inBundle:v6];
   v8 = [v5 initWithImage:v7 style:0 target:self action:"reportIssue"];
-  v9 = [(BatteryUIGraphsViewController *)self navigationItem];
-  [v9 setRightBarButtonItem:v8];
+  navigationItem = [(BatteryUIGraphsViewController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:v8];
 
-  v10 = [(BatteryUIGraphsViewController *)self view];
+  view2 = [(BatteryUIGraphsViewController *)self view];
   v11 = +[UIColor whiteColor];
-  [v10 setBackgroundColor:v11];
+  [view2 setBackgroundColor:v11];
 
-  v12 = [(BatteryUIGraphsViewController *)self activityIndicator];
-  [v12 startAnimating];
+  activityIndicator2 = [(BatteryUIGraphsViewController *)self activityIndicator];
+  [activityIndicator2 startAnimating];
 
   v13 = +[BatteryUsageQueryModule sharedModule];
   v14[0] = _NSConcreteStackBlock;
@@ -207,8 +207,8 @@
   v3 = [[BatteryUsageRadarComposeViewController alloc] initWithParentView:self andDictionary:self->_currentDictionary];
   [(BatteryUIGraphsViewController *)self setRadarController:v3];
 
-  v4 = [(BatteryUIGraphsViewController *)self radarController];
-  [v4 showRadarComposeAlert];
+  radarController = [(BatteryUIGraphsViewController *)self radarController];
+  [radarController showRadarComposeAlert];
 }
 
 - (void)didReceiveMemoryWarning

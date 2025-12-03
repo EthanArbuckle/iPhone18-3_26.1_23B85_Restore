@@ -4,11 +4,11 @@
 + (double)displayMultiplier;
 + (id)titleLabelFont;
 - (CGSize)size;
-- (CGSize)sizeWithSizes:(id)a3 mediaSizeType:(unint64_t)a4;
+- (CGSize)sizeWithSizes:(id)sizes mediaSizeType:(unint64_t)type;
 - (double)displayScale;
-- (double)heightToWidthRatioFromSizes:(id)a3 mediaSizeType:(unint64_t)a4 defaultValue:(double)a5;
-- (id)initAppearanceWithTraits:(id)a3 size:(CGSize)a4;
-- (void)setTraitCollection:(id)a3;
+- (double)heightToWidthRatioFromSizes:(id)sizes mediaSizeType:(unint64_t)type defaultValue:(double)value;
+- (id)initAppearanceWithTraits:(id)traits size:(CGSize)size;
+- (void)setTraitCollection:(id)collection;
 - (void)updateMediaSizeType;
 @end
 
@@ -16,8 +16,8 @@
 
 + (BOOL)isPhoneUI
 {
-  v2 = [MEMORY[0x277D75418] currentDevice];
-  v3 = [v2 userInterfaceIdiom] == 0;
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  v3 = [currentDevice userInterfaceIdiom] == 0;
 
   return v3;
 }
@@ -75,17 +75,17 @@ void __34__TPSAppearance_displayMultiplier__block_invoke()
 {
   v3 = objc_alloc(MEMORY[0x277D75520]);
   v4 = [v3 initForTextStyle:*MEMORY[0x277D76A20]];
-  v5 = [a1 systemFontOfSize:22.0 weight:*MEMORY[0x277D74420]];
+  v5 = [self systemFontOfSize:22.0 weight:*MEMORY[0x277D74420]];
   v6 = [v4 scaledFontForFont:v5];
 
   return v6;
 }
 
-- (id)initAppearanceWithTraits:(id)a3 size:(CGSize)a4
+- (id)initAppearanceWithTraits:(id)traits size:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = a3;
+  height = size.height;
+  width = size.width;
+  traitsCopy = traits;
   v11.receiver = self;
   v11.super_class = TPSAppearance;
   v8 = [(TPSAppearance *)&v11 init];
@@ -93,37 +93,37 @@ void __34__TPSAppearance_displayMultiplier__block_invoke()
   if (v8)
   {
     [(TPSAppearance *)v8 setSize:width, height];
-    [(TPSAppearance *)v9 setTraitCollection:v7];
+    [(TPSAppearance *)v9 setTraitCollection:traitsCopy];
     [(TPSAppearance *)v9 updateAppearanceWithSize:width, height];
   }
 
   return v9;
 }
 
-- (void)setTraitCollection:(id)a3
+- (void)setTraitCollection:(id)collection
 {
-  v5 = a3;
+  collectionCopy = collection;
   p_traitCollection = &self->_traitCollection;
-  if (self->_traitCollection != v5)
+  if (self->_traitCollection != collectionCopy)
   {
-    v7 = v5;
-    objc_storeStrong(p_traitCollection, a3);
+    v7 = collectionCopy;
+    objc_storeStrong(p_traitCollection, collection);
     p_traitCollection = [(TPSAppearance *)self updateMediaSizeType];
-    v5 = v7;
+    collectionCopy = v7;
   }
 
-  MEMORY[0x2821F96F8](p_traitCollection, v5);
+  MEMORY[0x2821F96F8](p_traitCollection, collectionCopy);
 }
 
 - (void)updateMediaSizeType
 {
-  v3 = [(TPSAppearance *)self traitCollection];
-  v4 = [v3 verticalSizeClass];
+  traitCollection = [(TPSAppearance *)self traitCollection];
+  verticalSizeClass = [traitCollection verticalSizeClass];
 
-  v5 = [(TPSAppearance *)self traitCollection];
-  v6 = [v5 horizontalSizeClass];
+  traitCollection2 = [(TPSAppearance *)self traitCollection];
+  horizontalSizeClass = [traitCollection2 horizontalSizeClass];
 
-  v8 = v6 == 1 || v4 == 1;
+  v8 = horizontalSizeClass == 1 || verticalSizeClass == 1;
 
   [(TPSAppearance *)self setMediaSizeType:v8];
 }
@@ -140,8 +140,8 @@ void __34__TPSAppearance_displayMultiplier__block_invoke()
 
   else
   {
-    v4 = [MEMORY[0x277D759A0] mainScreen];
-    [v4 scale];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
     v6 = v5;
 
     return v6;
@@ -150,41 +150,41 @@ void __34__TPSAppearance_displayMultiplier__block_invoke()
   return result;
 }
 
-- (double)heightToWidthRatioFromSizes:(id)a3 mediaSizeType:(unint64_t)a4 defaultValue:(double)a5
+- (double)heightToWidthRatioFromSizes:(id)sizes mediaSizeType:(unint64_t)type defaultValue:(double)value
 {
-  [a3 heightToWidthRatioForViewMode:a4 == 0];
+  [sizes heightToWidthRatioForViewMode:type == 0];
   if (result <= 0.0)
   {
-    return a5;
+    return value;
   }
 
   return result;
 }
 
-- (CGSize)sizeWithSizes:(id)a3 mediaSizeType:(unint64_t)a4
+- (CGSize)sizeWithSizes:(id)sizes mediaSizeType:(unint64_t)type
 {
-  v6 = a3;
-  v7 = v6;
-  if (a4)
+  sizesCopy = sizes;
+  v7 = sizesCopy;
+  if (type)
   {
-    [v6 compact];
+    [sizesCopy compact];
   }
 
   else
   {
-    [v6 regular];
+    [sizesCopy regular];
   }
   v8 = ;
   v9 = v8;
   if (v8)
   {
-    v10 = [v8 width];
-    [v10 floatValue];
+    width = [v8 width];
+    [width floatValue];
     [(TPSAppearance *)self nativeSizeForValue:v11];
     v13 = v12;
 
-    v14 = [v9 height];
-    [v14 floatValue];
+    height = [v9 height];
+    [height floatValue];
     [(TPSAppearance *)self nativeSizeForValue:v15];
     v17 = v16;
   }

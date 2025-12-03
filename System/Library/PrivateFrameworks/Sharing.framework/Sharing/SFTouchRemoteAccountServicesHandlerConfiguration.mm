@@ -1,6 +1,6 @@
 @interface SFTouchRemoteAccountServicesHandlerConfiguration
 - (SFTouchRemoteAccountServicesHandlerConfiguration)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation SFTouchRemoteAccountServicesHandlerConfiguration
@@ -28,7 +28,7 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(SFTouchRemoteAccountServicesHandlerConfiguration);
   objc_storeStrong(&v4->_dispatchQueue, self->_dispatchQueue);

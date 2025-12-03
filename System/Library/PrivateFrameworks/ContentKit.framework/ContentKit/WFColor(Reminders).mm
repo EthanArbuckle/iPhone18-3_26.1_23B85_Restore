@@ -7,7 +7,7 @@
 + (id)colorWithRemindersColor:()Reminders
 {
   v4 = a3;
-  v5 = [v4 colorRGBSpace];
+  colorRGBSpace = [v4 colorRGBSpace];
   [v4 red];
   v7 = v6;
   [v4 green];
@@ -17,14 +17,14 @@
   [v4 alpha];
   v13 = v12;
 
-  if (v5 == 1)
+  if (colorRGBSpace == 1)
   {
-    [a1 colorWithDisplayP3Red:v7 green:v9 blue:v11 alpha:v13];
+    [self colorWithDisplayP3Red:v7 green:v9 blue:v11 alpha:v13];
   }
 
   else
   {
-    [a1 colorWithRed:v7 green:v9 blue:v11 alpha:v13];
+    [self colorWithRed:v7 green:v9 blue:v11 alpha:v13];
   }
   v14 = ;
 

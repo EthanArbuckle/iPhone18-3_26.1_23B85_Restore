@@ -1,22 +1,22 @@
 @interface _DKEventQuery
 + (id)allDevices;
-+ (id)constructFetchRequestPredicateForEventStreams:(id)a3 predicate:(id)a4 deviceIDs:(id)a5;
-+ (id)eventQueryWithPredicate:(id)a3 eventStreams:(id)a4 offset:(unint64_t)a5 limit:(unint64_t)a6 sortDescriptors:(id)a7;
-+ (id)eventQueryWithPredicate:(id)a3 eventStreams:(id)a4 offset:(unint64_t)a5 limit:(unint64_t)a6 sortDescriptors:(id)a7 resultHandler:(id)a8;
++ (id)constructFetchRequestPredicateForEventStreams:(id)streams predicate:(id)predicate deviceIDs:(id)ds;
++ (id)eventQueryWithPredicate:(id)predicate eventStreams:(id)streams offset:(unint64_t)offset limit:(unint64_t)limit sortDescriptors:(id)descriptors;
++ (id)eventQueryWithPredicate:(id)predicate eventStreams:(id)streams offset:(unint64_t)offset limit:(unint64_t)limit sortDescriptors:(id)descriptors resultHandler:(id)handler;
 + (id)expressionForEventDuration;
 + (id)onlyLocalDevice;
 + (id)onlyRemoteDevice;
-+ (id)predicateForEventsOfMaximumDuration:(double)a3;
-+ (id)predicateForEventsOfMinimumDuration:(double)a3;
-- (_DKEventQuery)initWithCoder:(id)a3;
-- (_DKEventQuery)initWithPredicate:(id)a3 eventStreams:(id)a4 offset:(unint64_t)a5 limit:(unint64_t)a6 sortDescriptors:(id)a7 resultHandler:(id)a8;
++ (id)predicateForEventsOfMaximumDuration:(double)duration;
++ (id)predicateForEventsOfMinimumDuration:(double)duration;
+- (_DKEventQuery)initWithCoder:(id)coder;
+- (_DKEventQuery)initWithPredicate:(id)predicate eventStreams:(id)streams offset:(unint64_t)offset limit:(unint64_t)limit sortDescriptors:(id)descriptors resultHandler:(id)handler;
 - (id)constructFetchRequestPredicate;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)executeUsingCoreDataStorage:(id)a3 error:(id *)a4;
+- (id)executeUsingCoreDataStorage:(id)storage error:(id *)error;
 - (id)explicitEventStreamsOrEventStreamsInPredicate;
-- (id)handleResults:(id)a3 error:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (id)handleResults:(id)results error:(id)error;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _DKEventQuery
@@ -47,21 +47,21 @@
 
 - (id)explicitEventStreamsOrEventStreamsInPredicate
 {
-  v3 = [(_DKEventQuery *)self eventStreams];
-  v4 = [v3 count];
+  eventStreams = [(_DKEventQuery *)self eventStreams];
+  v4 = [eventStreams count];
 
   if (v4)
   {
-    v5 = [(_DKEventQuery *)self eventStreams];
+    eventStreams2 = [(_DKEventQuery *)self eventStreams];
   }
 
   else
   {
-    v6 = [(_DKEventQuery *)self predicate];
-    v5 = [_DKBiomeQuery eventStreamsFromPredicate:v6];
+    predicate = [(_DKEventQuery *)self predicate];
+    eventStreams2 = [_DKBiomeQuery eventStreamsFromPredicate:predicate];
   }
 
-  return v5;
+  return eventStreams2;
 }
 
 + (id)onlyRemoteDevice
@@ -126,45 +126,45 @@
   return v15;
 }
 
-+ (id)eventQueryWithPredicate:(id)a3 eventStreams:(id)a4 offset:(unint64_t)a5 limit:(unint64_t)a6 sortDescriptors:(id)a7 resultHandler:(id)a8
++ (id)eventQueryWithPredicate:(id)predicate eventStreams:(id)streams offset:(unint64_t)offset limit:(unint64_t)limit sortDescriptors:(id)descriptors resultHandler:(id)handler
 {
-  v14 = a8;
-  v15 = a7;
-  v16 = a4;
-  v17 = a3;
-  v18 = [[a1 alloc] initWithPredicate:v17 eventStreams:v16 offset:a5 limit:a6 sortDescriptors:v15 resultHandler:v14];
+  handlerCopy = handler;
+  descriptorsCopy = descriptors;
+  streamsCopy = streams;
+  predicateCopy = predicate;
+  v18 = [[self alloc] initWithPredicate:predicateCopy eventStreams:streamsCopy offset:offset limit:limit sortDescriptors:descriptorsCopy resultHandler:handlerCopy];
 
   return v18;
 }
 
-+ (id)eventQueryWithPredicate:(id)a3 eventStreams:(id)a4 offset:(unint64_t)a5 limit:(unint64_t)a6 sortDescriptors:(id)a7
++ (id)eventQueryWithPredicate:(id)predicate eventStreams:(id)streams offset:(unint64_t)offset limit:(unint64_t)limit sortDescriptors:(id)descriptors
 {
-  v12 = a7;
-  v13 = a4;
-  v14 = a3;
-  v15 = [[a1 alloc] initWithPredicate:v14 eventStreams:v13 offset:a5 limit:a6 sortDescriptors:v12 resultHandler:0];
+  descriptorsCopy = descriptors;
+  streamsCopy = streams;
+  predicateCopy = predicate;
+  v15 = [[self alloc] initWithPredicate:predicateCopy eventStreams:streamsCopy offset:offset limit:limit sortDescriptors:descriptorsCopy resultHandler:0];
 
   return v15;
 }
 
-- (_DKEventQuery)initWithPredicate:(id)a3 eventStreams:(id)a4 offset:(unint64_t)a5 limit:(unint64_t)a6 sortDescriptors:(id)a7 resultHandler:(id)a8
+- (_DKEventQuery)initWithPredicate:(id)predicate eventStreams:(id)streams offset:(unint64_t)offset limit:(unint64_t)limit sortDescriptors:(id)descriptors resultHandler:(id)handler
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a7;
-  v18 = a8;
+  predicateCopy = predicate;
+  streamsCopy = streams;
+  descriptorsCopy = descriptors;
+  handlerCopy = handler;
   v29.receiver = self;
   v29.super_class = _DKEventQuery;
   v19 = [(_DKEventQuery *)&v29 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_predicate, a3);
-    v20->_offset = a5;
-    v20->_limit = a6;
-    objc_storeStrong(&v20->_sortDescriptors, a7);
-    objc_storeStrong(&v20->_eventStreams, a4);
-    v21 = MEMORY[0x193B00C50](v18);
+    objc_storeStrong(&v19->_predicate, predicate);
+    v20->_offset = offset;
+    v20->_limit = limit;
+    objc_storeStrong(&v20->_sortDescriptors, descriptors);
+    objc_storeStrong(&v20->_eventStreams, streams);
+    v21 = MEMORY[0x193B00C50](handlerCopy);
     resultsHandler = v20->_resultsHandler;
     v20->_resultsHandler = v21;
 
@@ -184,18 +184,18 @@
   return v20;
 }
 
-+ (id)constructFetchRequestPredicateForEventStreams:(id)a3 predicate:(id)a4 deviceIDs:(id)a5
++ (id)constructFetchRequestPredicateForEventStreams:(id)streams predicate:(id)predicate deviceIDs:(id)ds
 {
   v43 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v7, "count")}];
+  streamsCopy = streams;
+  predicateCopy = predicate;
+  dsCopy = ds;
+  v10 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(streamsCopy, "count")}];
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v11 = v7;
+  v11 = streamsCopy;
   v12 = [v11 countByEnumeratingWithState:&v36 objects:v42 count:16];
   if (v12)
   {
@@ -210,8 +210,8 @@
           objc_enumerationMutation(v11);
         }
 
-        v16 = [*(*(&v36 + 1) + 8 * i) name];
-        [v10 addObject:v16];
+        name = [*(*(&v36 + 1) + 8 * i) name];
+        [v10 addObject:name];
       }
 
       v13 = [v11 countByEnumeratingWithState:&v36 objects:v42 count:16];
@@ -221,12 +221,12 @@
   }
 
   v17 = +[_DKEventQuery allDevices];
-  v18 = [v9 isEqualToSet:v17];
+  v18 = [dsCopy isEqualToSet:v17];
 
   if ((v18 & 1) == 0)
   {
     v19 = +[_DKEventQuery onlyLocalDevice];
-    v20 = [v9 isEqualToSet:v19];
+    v20 = [dsCopy isEqualToSet:v19];
 
     if (v20)
     {
@@ -236,7 +236,7 @@
     else
     {
       v22 = +[_DKEventQuery onlyRemoteDevice];
-      v23 = [v9 isEqualToSet:v22];
+      v23 = [dsCopy isEqualToSet:v22];
 
       if (v23)
       {
@@ -252,36 +252,36 @@
         goto LABEL_19;
       }
 
-      v21 = [_DKQuery predicateForEventsWithSourceDeviceIDs:v9];
+      v21 = [_DKQuery predicateForEventsWithSourceDeviceIDs:dsCopy];
     }
 
     v26 = v21;
     if (v21)
     {
 LABEL_16:
-      if (v8)
+      if (predicateCopy)
       {
         v27 = MEMORY[0x1E696AB28];
-        v41[0] = v8;
+        v41[0] = predicateCopy;
         v41[1] = v26;
         v28 = [MEMORY[0x1E695DEC8] arrayWithObjects:v41 count:2];
         v29 = [v27 andPredicateWithSubpredicates:v28];
 
-        v8 = v29;
+        predicateCopy = v29;
       }
 
       else
       {
-        v8 = v26;
+        predicateCopy = v26;
       }
     }
 
 LABEL_19:
   }
 
-  if (!v8)
+  if (!predicateCopy)
   {
-    v8 = [MEMORY[0x1E696AE18] predicateWithValue:1];
+    predicateCopy = [MEMORY[0x1E696AE18] predicateWithValue:1];
   }
 
   if ([v10 count])
@@ -289,41 +289,41 @@ LABEL_19:
     v30 = MEMORY[0x1E696AB28];
     v31 = [_DKQuery predicateForEventsWithStreamNames:v10];
     v40[0] = v31;
-    v40[1] = v8;
+    v40[1] = predicateCopy;
     v32 = [MEMORY[0x1E695DEC8] arrayWithObjects:v40 count:2];
     v33 = [v30 andPredicateWithSubpredicates:v32];
 
-    v8 = v33;
+    predicateCopy = v33;
   }
 
   v34 = *MEMORY[0x1E69E9840];
 
-  return v8;
+  return predicateCopy;
 }
 
 - (id)constructFetchRequestPredicate
 {
-  v3 = [(_DKEventQuery *)self eventStreams];
-  v4 = [(_DKEventQuery *)self predicate];
-  v5 = [(_DKEventQuery *)self deviceIDs];
-  v6 = [_DKEventQuery constructFetchRequestPredicateForEventStreams:v3 predicate:v4 deviceIDs:v5];
+  eventStreams = [(_DKEventQuery *)self eventStreams];
+  predicate = [(_DKEventQuery *)self predicate];
+  deviceIDs = [(_DKEventQuery *)self deviceIDs];
+  v6 = [_DKEventQuery constructFetchRequestPredicateForEventStreams:eventStreams predicate:predicate deviceIDs:deviceIDs];
 
   return v6;
 }
 
-- (id)executeUsingCoreDataStorage:(id)a3 error:(id *)a4
+- (id)executeUsingCoreDataStorage:(id)storage error:(id *)error
 {
-  v5 = a3;
+  storageCopy = storage;
   [(_DKEventQuery *)self readMetadata];
   [(_DKEventQuery *)self deduplicateValues];
   kdebug_trace();
-  v6 = [(_DKEventQuery *)self explicitEventStreamsOrEventStreamsInPredicate];
-  v7 = _streamNameFromStreams(v6);
+  explicitEventStreamsOrEventStreamsInPredicate = [(_DKEventQuery *)self explicitEventStreamsOrEventStreamsInPredicate];
+  v7 = _streamNameFromStreams(explicitEventStreamsOrEventStreamsInPredicate);
   _cdknowledge_signpost_query_begin(v7);
 
   if (self->_disableBiomeShim)
   {
-    v8 = v6;
+    v8 = explicitEventStreamsOrEventStreamsInPredicate;
     v9 = 0;
     v10 = MEMORY[0x1E695E0F0];
     v11 = 1;
@@ -331,8 +331,8 @@ LABEL_19:
 
   else
   {
-    v10 = [_DKBiomeQuery biomeExclusiveStreamsFromEventStreams:v6];
-    v8 = [_DKBiomeQuery duetExclusiveStreamsFromEventStreams:v6];
+    v10 = [_DKBiomeQuery biomeExclusiveStreamsFromEventStreams:explicitEventStreamsOrEventStreamsInPredicate];
+    v8 = [_DKBiomeQuery duetExclusiveStreamsFromEventStreams:explicitEventStreamsOrEventStreamsInPredicate];
     v9 = [v10 count] != 0;
     v11 = [v8 count] != 0;
   }
@@ -358,15 +358,15 @@ LABEL_19:
     v12 = 0;
   }
 
-  v15 = v5;
+  v15 = storageCopy;
   v48 = [_DKEventQuery constructFetchRequestPredicateForEventStreams:v8 predicate:self->_predicate deviceIDs:self->_deviceIDs];
-  v16 = [(_DKEventQuery *)self resultType];
+  resultType = [(_DKEventQuery *)self resultType];
   if ([(_DKEventQuery *)self resultType]== 1)
   {
-    v17 = [(_DKEventQuery *)self groupByProperties];
-    v18 = v17 == 0;
+    groupByProperties = [(_DKEventQuery *)self groupByProperties];
+    v18 = groupByProperties == 0;
 
-    if (!v16)
+    if (!resultType)
     {
       goto LABEL_22;
     }
@@ -375,7 +375,7 @@ LABEL_19:
   else
   {
     v18 = 0;
-    if (!v16)
+    if (!resultType)
     {
       goto LABEL_22;
     }
@@ -386,7 +386,7 @@ LABEL_19:
     v19 = _CDCurrentOrXPCProcessName();
     v20 = +[_CDLogging knowledgeChannel];
     v21 = v15;
-    v22 = a4;
+    errorCopy2 = error;
     if (os_log_type_enabled(v20, OS_LOG_TYPE_FAULT))
     {
       [_DKEventQuery executeUsingCoreDataStorage:? error:?];
@@ -477,7 +477,7 @@ LABEL_22:
     v24 = v47;
   }
 
-  v22 = a4;
+  errorCopy2 = error;
 LABEL_39:
   v62 = 0;
   v63 = &v62;
@@ -491,9 +491,9 @@ LABEL_39:
   v59 = __Block_byref_object_copy__23;
   v60 = __Block_byref_object_dispose__23;
   v61 = 0;
-  v32 = [(_DKQuery *)self executeConcurrently];
+  executeConcurrently = [(_DKQuery *)self executeConcurrently];
   v33 = *MEMORY[0x1E696A388];
-  if (v32)
+  if (executeConcurrently)
   {
     [v21 privateManagedObjectContextFor:v33];
   }
@@ -512,18 +512,18 @@ LABEL_39:
   v37 = v34;
   v50 = v37;
   v51 = v48;
-  v52 = self;
+  selfCopy = self;
   v54 = &v56;
   v55 = &v62;
   v38 = v23;
   v53 = v38;
   [v37 performWithOptions:4 andBlock:v49];
-  if (v22)
+  if (errorCopy2)
   {
     v39 = v57[5];
     if (v39)
     {
-      *v22 = v39;
+      *errorCopy2 = v39;
     }
   }
 
@@ -542,16 +542,16 @@ LABEL_46:
   return v41;
 }
 
-- (id)handleResults:(id)a3 error:(id)a4
+- (id)handleResults:(id)results error:(id)error
 {
-  v6 = a3;
+  resultsCopy = results;
   resultsHandler = self->_resultsHandler;
   if (resultsHandler)
   {
-    resultsHandler[2](resultsHandler, self, v6, a4);
+    resultsHandler[2](resultsHandler, self, resultsCopy, error);
   }
 
-  return v6;
+  return resultsCopy;
 }
 
 + (id)expressionForEventDuration
@@ -570,59 +570,59 @@ LABEL_46:
   return v6;
 }
 
-+ (id)predicateForEventsOfMinimumDuration:(double)a3
++ (id)predicateForEventsOfMinimumDuration:(double)duration
 {
-  v4 = [objc_opt_class() expressionForEventDuration];
+  expressionForEventDuration = [objc_opt_class() expressionForEventDuration];
   v5 = MEMORY[0x1E696ABC8];
-  v6 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+  v6 = [MEMORY[0x1E696AD98] numberWithDouble:duration];
   v7 = [v5 expressionForConstantValue:v6];
 
-  v8 = [MEMORY[0x1E696AB18] predicateWithLeftExpression:v4 rightExpression:v7 modifier:0 type:3 options:4];
+  v8 = [MEMORY[0x1E696AB18] predicateWithLeftExpression:expressionForEventDuration rightExpression:v7 modifier:0 type:3 options:4];
 
   return v8;
 }
 
-+ (id)predicateForEventsOfMaximumDuration:(double)a3
++ (id)predicateForEventsOfMaximumDuration:(double)duration
 {
-  v4 = [objc_opt_class() expressionForEventDuration];
+  expressionForEventDuration = [objc_opt_class() expressionForEventDuration];
   v5 = MEMORY[0x1E696ABC8];
-  v6 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+  v6 = [MEMORY[0x1E696AD98] numberWithDouble:duration];
   v7 = [v5 expressionForConstantValue:v6];
 
-  v8 = [MEMORY[0x1E696AB18] predicateWithLeftExpression:v4 rightExpression:v7 modifier:0 type:1 options:4];
+  v8 = [MEMORY[0x1E696AB18] predicateWithLeftExpression:expressionForEventDuration rightExpression:v7 modifier:0 type:1 options:4];
 
   return v8;
 }
 
-- (_DKEventQuery)initWithCoder:(id)a3
+- (_DKEventQuery)initWithCoder:(id)coder
 {
   v33[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v31.receiver = self;
   v31.super_class = _DKEventQuery;
-  v5 = [(_DKQuery *)&v31 initWithCoder:v4];
+  v5 = [(_DKQuery *)&v31 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"eventStreams"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"eventStreams"];
     eventStreams = v5->_eventStreams;
     v5->_eventStreams = v9;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"predicate"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"predicate"];
     predicate = v5->_predicate;
     v5->_predicate = v11;
 
-    v5->_offset = [v4 decodeInt64ForKey:@"offset"];
-    v5->_limit = [v4 decodeInt64ForKey:@"limit"];
+    v5->_offset = [coderCopy decodeInt64ForKey:@"offset"];
+    v5->_limit = [coderCopy decodeInt64ForKey:@"limit"];
     v13 = MEMORY[0x1E695DFD8];
     v33[0] = objc_opt_class();
     v33[1] = objc_opt_class();
     v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v33 count:2];
     v15 = [v13 setWithArray:v14];
 
-    v16 = [v4 decodeObjectOfClasses:v15 forKey:@"sortDescriptors"];
+    v16 = [coderCopy decodeObjectOfClasses:v15 forKey:@"sortDescriptors"];
     sortDescriptors = v5->_sortDescriptors;
     v5->_sortDescriptors = v16;
 
@@ -632,21 +632,21 @@ LABEL_46:
     v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v32 count:2];
     v20 = [v18 setWithArray:v19];
 
-    v21 = [v4 decodeObjectOfClasses:v20 forKey:@"groupByProperties"];
+    v21 = [coderCopy decodeObjectOfClasses:v20 forKey:@"groupByProperties"];
     groupByProperties = v5->_groupByProperties;
     v5->_groupByProperties = v21;
 
-    v5->_readMetadata = [v4 decodeBoolForKey:@"readMetadata"];
-    v5->_deduplicateValues = [v4 decodeBoolForKey:@"_deduplicateValues"];
-    v5->_resultType = [v4 decodeIntegerForKey:@"resultType"];
+    v5->_readMetadata = [coderCopy decodeBoolForKey:@"readMetadata"];
+    v5->_deduplicateValues = [coderCopy decodeBoolForKey:@"_deduplicateValues"];
+    v5->_resultType = [coderCopy decodeIntegerForKey:@"resultType"];
     v23 = MEMORY[0x1E695DFD8];
     v24 = objc_opt_class();
     v25 = [v23 setWithObjects:{v24, objc_opt_class(), 0}];
-    v26 = [v4 decodeObjectOfClasses:v25 forKey:@"deviceIDs"];
+    v26 = [coderCopy decodeObjectOfClasses:v25 forKey:@"deviceIDs"];
     deviceIDs = v5->_deviceIDs;
     v5->_deviceIDs = v26;
 
-    v5->_returnsDistinctResults = [v4 decodeBoolForKey:@"returnsDistinctResults"];
+    v5->_returnsDistinctResults = [coderCopy decodeBoolForKey:@"returnsDistinctResults"];
     v28 = v5;
   }
 
@@ -654,26 +654,26 @@ LABEL_46:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = _DKEventQuery;
-  v4 = a3;
-  [(_DKQuery *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_eventStreams forKey:{@"eventStreams", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_predicate forKey:@"predicate"];
-  [v4 encodeInt64:self->_offset forKey:@"offset"];
-  [v4 encodeInt64:self->_limit forKey:@"limit"];
-  [v4 encodeObject:self->_sortDescriptors forKey:@"sortDescriptors"];
-  [v4 encodeObject:self->_groupByProperties forKey:@"groupByProperties"];
-  [v4 encodeBool:self->_readMetadata forKey:@"readMetadata"];
-  [v4 encodeBool:self->_deduplicateValues forKey:@"deduplicateValues"];
-  [v4 encodeInteger:self->_resultType forKey:@"resultType"];
-  [v4 encodeObject:self->_deviceIDs forKey:@"deviceIDs"];
-  [v4 encodeBool:self->_returnsDistinctResults forKey:@"returnsDistinctResults"];
+  coderCopy = coder;
+  [(_DKQuery *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_eventStreams forKey:{@"eventStreams", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_predicate forKey:@"predicate"];
+  [coderCopy encodeInt64:self->_offset forKey:@"offset"];
+  [coderCopy encodeInt64:self->_limit forKey:@"limit"];
+  [coderCopy encodeObject:self->_sortDescriptors forKey:@"sortDescriptors"];
+  [coderCopy encodeObject:self->_groupByProperties forKey:@"groupByProperties"];
+  [coderCopy encodeBool:self->_readMetadata forKey:@"readMetadata"];
+  [coderCopy encodeBool:self->_deduplicateValues forKey:@"deduplicateValues"];
+  [coderCopy encodeInteger:self->_resultType forKey:@"resultType"];
+  [coderCopy encodeObject:self->_deviceIDs forKey:@"deviceIDs"];
+  [coderCopy encodeBool:self->_returnsDistinctResults forKey:@"returnsDistinctResults"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   [v4 setEventStreams:self->_eventStreams];

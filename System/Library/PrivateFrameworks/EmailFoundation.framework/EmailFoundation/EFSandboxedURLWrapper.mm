@@ -1,10 +1,10 @@
 @interface EFSandboxedURLWrapper
 + (OS_os_log)log;
-- (EFSandboxedURLWrapper)initWithCoder:(id)a3;
-- (EFSandboxedURLWrapper)initWithFileURL:(id)a3 readOnly:(BOOL)a4;
+- (EFSandboxedURLWrapper)initWithCoder:(id)coder;
+- (EFSandboxedURLWrapper)initWithFileURL:(id)l readOnly:(BOOL)only;
 - (NSString)debugDescription;
 - (NSString)ef_publicDescription;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation EFSandboxedURLWrapper
@@ -15,7 +15,7 @@
   block[1] = 3221225472;
   block[2] = __28__EFSandboxedURLWrapper_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_4 != -1)
   {
     dispatch_once(&log_onceToken_4, block);
@@ -34,10 +34,10 @@ void __28__EFSandboxedURLWrapper_log__block_invoke(uint64_t a1)
   log_log_4 = v1;
 }
 
-- (EFSandboxedURLWrapper)initWithFileURL:(id)a3 readOnly:(BOOL)a4
+- (EFSandboxedURLWrapper)initWithFileURL:(id)l readOnly:(BOOL)only
 {
-  v6 = a3;
-  if ([v6 isFileURL])
+  lCopy = l;
+  if ([lCopy isFileURL])
   {
     v14.receiver = self;
     v14.super_class = EFSandboxedURLWrapper;
@@ -48,24 +48,24 @@ void __28__EFSandboxedURLWrapper_log__block_invoke(uint64_t a1)
       invocable = v7->_invocable;
       v7->_invocable = v8;
 
-      v10 = [v6 copy];
+      v10 = [lCopy copy];
       url = v7->_url;
       v7->_url = v10;
 
-      v7->_readOnly = a4;
+      v7->_readOnly = only;
       objc_setAssociatedObject(v7->_url, v7, v7->_invocable, 0x301);
     }
 
     self = v7;
-    v12 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v12 = 0;
+    selfCopy = 0;
   }
 
-  return v12;
+  return selfCopy;
 }
 
 - (NSString)debugDescription
@@ -73,9 +73,9 @@ void __28__EFSandboxedURLWrapper_log__block_invoke(uint64_t a1)
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = [(EFSandboxedURLWrapper *)self url];
-  v6 = [(EFSandboxedURLWrapper *)self isReadOnly];
-  v7 = [(EFSandboxedURLWrapper *)self sandboxToken];
-  v8 = [v3 stringWithFormat:@"<%@: %p> url=%@, readOnly=%d, token=%@, invocable=%@", v4, self, v5, v6, v7, self->_invocable];
+  isReadOnly = [(EFSandboxedURLWrapper *)self isReadOnly];
+  sandboxToken = [(EFSandboxedURLWrapper *)self sandboxToken];
+  v8 = [v3 stringWithFormat:@"<%@: %p> url=%@, readOnly=%d, token=%@, invocable=%@", v4, self, v5, isReadOnly, sandboxToken, self->_invocable];
 
   return v8;
 }
@@ -83,9 +83,9 @@ void __28__EFSandboxedURLWrapper_log__block_invoke(uint64_t a1)
 - (NSString)ef_publicDescription
 {
   v3 = +[EFDevice currentDevice];
-  v4 = [v3 isInternal];
+  isInternal = [v3 isInternal];
 
-  if (v4)
+  if (isInternal)
   {
     v5 = [(EFSandboxedURLWrapper *)self debugDescription];
   }
@@ -95,9 +95,9 @@ void __28__EFSandboxedURLWrapper_log__block_invoke(uint64_t a1)
     v10.receiver = self;
     v10.super_class = EFSandboxedURLWrapper;
     v6 = [(EFSandboxedURLWrapper *)&v10 description];
-    v7 = [(EFSandboxedURLWrapper *)self sandboxToken];
+    sandboxToken = [(EFSandboxedURLWrapper *)self sandboxToken];
     v8 = @"YES";
-    if (!v7)
+    if (!sandboxToken)
     {
       v8 = @"NO";
     }
@@ -108,14 +108,14 @@ void __28__EFSandboxedURLWrapper_log__block_invoke(uint64_t a1)
   return v5;
 }
 
-- (EFSandboxedURLWrapper)initWithCoder:(id)a3
+- (EFSandboxedURLWrapper)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_url"];
-  v6 = -[EFSandboxedURLWrapper initWithFileURL:readOnly:](self, "initWithFileURL:readOnly:", v5, [v4 decodeBoolForKey:@"EFPropertyKey_readOnly"]);
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_url"];
+  v6 = -[EFSandboxedURLWrapper initWithFileURL:readOnly:](self, "initWithFileURL:readOnly:", v5, [coderCopy decodeBoolForKey:@"EFPropertyKey_readOnly"]);
   if (v6)
   {
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kEFSandboxExtensionToken"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kEFSandboxExtensionToken"];
     sandboxToken = v6->_sandboxToken;
     v6->_sandboxToken = v7;
 
@@ -129,24 +129,24 @@ void __28__EFSandboxedURLWrapper_log__block_invoke(uint64_t a1)
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v36 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(EFSandboxedURLWrapper *)self url];
-  [v4 encodeObject:v5 forKey:@"EFPropertyKey_url"];
+  [coderCopy encodeObject:v5 forKey:@"EFPropertyKey_url"];
 
-  [v4 encodeBool:-[EFSandboxedURLWrapper isReadOnly](self forKey:{"isReadOnly"), @"EFPropertyKey_readOnly"}];
+  [coderCopy encodeBool:-[EFSandboxedURLWrapper isReadOnly](self forKey:{"isReadOnly"), @"EFPropertyKey_readOnly"}];
   v33 = 0u;
   v34 = 0u;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v4 connection];
-    v7 = v6;
-    if (v6)
+    connection = [coderCopy connection];
+    v7 = connection;
+    if (connection)
     {
-      [v6 auditToken];
+      [connection auditToken];
     }
 
     else
@@ -159,13 +159,13 @@ void __28__EFSandboxedURLWrapper_log__block_invoke(uint64_t a1)
   }
 
   v8 = [(EFSandboxedURLWrapper *)self url];
-  v9 = [v8 startAccessingSecurityScopedResource];
-  v10 = [(EFSandboxedURLWrapper *)self isReadOnly];
+  startAccessingSecurityScopedResource = [v8 startAccessingSecurityScopedResource];
+  isReadOnly = [(EFSandboxedURLWrapper *)self isReadOnly];
   v11 = v8;
   if (v11 && (getpid(), v12 = v11, v13 = [v11 fileSystemRepresentation], v14 = *MEMORY[0x1E69E9BD0], v29 = v13, !sandbox_check()))
   {
     v16 = MEMORY[0x1E69E9BA8];
-    if (!v10)
+    if (!isReadOnly)
     {
       v16 = MEMORY[0x1E69E9BB0];
     }
@@ -186,7 +186,7 @@ void __28__EFSandboxedURLWrapper_log__block_invoke(uint64_t a1)
 LABEL_24:
 
     v23 = 0;
-    if (!v9)
+    if (!startAccessingSecurityScopedResource)
     {
       goto LABEL_26;
     }
@@ -241,10 +241,10 @@ LABEL_25:
 
   if (v23)
   {
-    [v4 encodeObject:v23 forKey:@"kEFSandboxExtensionToken"];
+    [coderCopy encodeObject:v23 forKey:@"kEFSandboxExtensionToken"];
   }
 
-  if (v9)
+  if (startAccessingSecurityScopedResource)
   {
     goto LABEL_25;
   }

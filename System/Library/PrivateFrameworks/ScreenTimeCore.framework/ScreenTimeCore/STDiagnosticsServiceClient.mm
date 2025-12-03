@@ -1,26 +1,26 @@
 @interface STDiagnosticsServiceClient
-- (BOOL)postNotificationWithContext:(id)a3 error:(id *)a4;
-- (BOOL)postWeeklyReportNotification:(id *)a3;
-- (BOOL)removeNotificationWithContext:(id)a3 error:(id *)a4;
-- (BOOL)repairBlueprintsWithError:(id *)a3;
-- (BOOL)sendBlueprintChangesWithError:(id *)a3;
-- (BOOL)sendBlueprintsWithError:(id *)a3;
-- (BOOL)sendCheckInRequestOnV2WithError:(id *)a3;
-- (BOOL)sendCheckInRequestWithError:(id *)a3;
-- (BOOL)sendSettingsChangesWithError:(id *)a3;
-- (BOOL)sendSettingsWithError:(id *)a3;
-- (BOOL)sendUserDeviceStateWithError:(id *)a3;
-- (BOOL)setLocalConfigurationVersion:(id)a3 error:(id *)a4;
+- (BOOL)postNotificationWithContext:(id)context error:(id *)error;
+- (BOOL)postWeeklyReportNotification:(id *)notification;
+- (BOOL)removeNotificationWithContext:(id)context error:(id *)error;
+- (BOOL)repairBlueprintsWithError:(id *)error;
+- (BOOL)sendBlueprintChangesWithError:(id *)error;
+- (BOOL)sendBlueprintsWithError:(id *)error;
+- (BOOL)sendCheckInRequestOnV2WithError:(id *)error;
+- (BOOL)sendCheckInRequestWithError:(id *)error;
+- (BOOL)sendSettingsChangesWithError:(id *)error;
+- (BOOL)sendSettingsWithError:(id *)error;
+- (BOOL)sendUserDeviceStateWithError:(id *)error;
+- (BOOL)setLocalConfigurationVersion:(id)version error:(id *)error;
 - (STDiagnosticsServiceClient)init;
-- (id)configurationVersionWithError:(id *)a3;
-- (id)localConfigurationVersionWithError:(id *)a3;
-- (void)didReceiveCloudKitMessage:(id)a3;
-- (void)didReceiveGenericMessage:(id)a3;
-- (void)didReceiveIDSMessage:(id)a3;
-- (void)killScreenTimeAgent:(id)a3 completionHandler:(id)a4;
-- (void)registerCallbackForCloudKitMessages:(id)a3;
-- (void)registerCallbackForGenericMessages:(id)a3;
-- (void)registerCallbackForIDSMessages:(id)a3;
+- (id)configurationVersionWithError:(id *)error;
+- (id)localConfigurationVersionWithError:(id *)error;
+- (void)didReceiveCloudKitMessage:(id)message;
+- (void)didReceiveGenericMessage:(id)message;
+- (void)didReceiveIDSMessage:(id)message;
+- (void)killScreenTimeAgent:(id)agent completionHandler:(id)handler;
+- (void)registerCallbackForCloudKitMessages:(id)messages;
+- (void)registerCallbackForGenericMessages:(id)messages;
+- (void)registerCallbackForIDSMessages:(id)messages;
 @end
 
 @implementation STDiagnosticsServiceClient
@@ -115,73 +115,73 @@ void __34__STDiagnosticsServiceClient_init__block_invoke_43()
   }
 }
 
-- (void)registerCallbackForIDSMessages:(id)a3
+- (void)registerCallbackForIDSMessages:(id)messages
 {
-  if (a3)
+  if (messages)
   {
     [(STDiagnosticsServiceClient *)self setIdsMessageCallback:?];
-    v4 = [(STDiagnosticsServiceClient *)self remoteObject];
-    [v4 registerForIDSMessages];
+    remoteObject = [(STDiagnosticsServiceClient *)self remoteObject];
+    [remoteObject registerForIDSMessages];
   }
 }
 
-- (void)registerCallbackForCloudKitMessages:(id)a3
+- (void)registerCallbackForCloudKitMessages:(id)messages
 {
-  if (a3)
+  if (messages)
   {
     [(STDiagnosticsServiceClient *)self setCloudKitMessageCallback:?];
-    v4 = [(STDiagnosticsServiceClient *)self remoteObject];
-    [v4 registerForCloudKitMessages];
+    remoteObject = [(STDiagnosticsServiceClient *)self remoteObject];
+    [remoteObject registerForCloudKitMessages];
   }
 }
 
-- (void)registerCallbackForGenericMessages:(id)a3
+- (void)registerCallbackForGenericMessages:(id)messages
 {
-  if (a3)
+  if (messages)
   {
     [(STDiagnosticsServiceClient *)self setGenericMessageCallback:?];
-    v4 = [(STDiagnosticsServiceClient *)self remoteObject];
-    [v4 registerForGenericMessages];
+    remoteObject = [(STDiagnosticsServiceClient *)self remoteObject];
+    [remoteObject registerForGenericMessages];
   }
 }
 
-- (void)didReceiveIDSMessage:(id)a3
+- (void)didReceiveIDSMessage:(id)message
 {
-  v6 = a3;
-  v4 = [(STDiagnosticsServiceClient *)self idsMessageCallback];
+  messageCopy = message;
+  idsMessageCallback = [(STDiagnosticsServiceClient *)self idsMessageCallback];
 
-  if (v4)
+  if (idsMessageCallback)
   {
-    v5 = [(STDiagnosticsServiceClient *)self idsMessageCallback];
-    (v5)[2](v5, v6);
+    idsMessageCallback2 = [(STDiagnosticsServiceClient *)self idsMessageCallback];
+    (idsMessageCallback2)[2](idsMessageCallback2, messageCopy);
   }
 }
 
-- (void)didReceiveCloudKitMessage:(id)a3
+- (void)didReceiveCloudKitMessage:(id)message
 {
-  v6 = a3;
-  v4 = [(STDiagnosticsServiceClient *)self cloudKitMessageCallback];
+  messageCopy = message;
+  cloudKitMessageCallback = [(STDiagnosticsServiceClient *)self cloudKitMessageCallback];
 
-  if (v4)
+  if (cloudKitMessageCallback)
   {
-    v5 = [(STDiagnosticsServiceClient *)self cloudKitMessageCallback];
-    (v5)[2](v5, v6);
+    cloudKitMessageCallback2 = [(STDiagnosticsServiceClient *)self cloudKitMessageCallback];
+    (cloudKitMessageCallback2)[2](cloudKitMessageCallback2, messageCopy);
   }
 }
 
-- (void)didReceiveGenericMessage:(id)a3
+- (void)didReceiveGenericMessage:(id)message
 {
-  v6 = a3;
-  v4 = [(STDiagnosticsServiceClient *)self genericMessageCallback];
+  messageCopy = message;
+  genericMessageCallback = [(STDiagnosticsServiceClient *)self genericMessageCallback];
 
-  if (v4)
+  if (genericMessageCallback)
   {
-    v5 = [(STDiagnosticsServiceClient *)self genericMessageCallback];
-    (v5)[2](v5, v6);
+    genericMessageCallback2 = [(STDiagnosticsServiceClient *)self genericMessageCallback];
+    (genericMessageCallback2)[2](genericMessageCallback2, messageCopy);
   }
 }
 
-- (id)localConfigurationVersionWithError:(id *)a3
+- (id)localConfigurationVersionWithError:(id *)error
 {
   v16 = 0;
   v17 = &v16;
@@ -195,13 +195,13 @@ void __34__STDiagnosticsServiceClient_init__block_invoke_43()
   v13 = __Block_byref_object_copy__3;
   v14 = __Block_byref_object_dispose__3;
   v15 = 0;
-  v4 = [(STDiagnosticsServiceClient *)self connection];
+  connection = [(STDiagnosticsServiceClient *)self connection];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __65__STDiagnosticsServiceClient_localConfigurationVersionWithError___block_invoke;
   v9[3] = &unk_1E7CE6BA8;
   v9[4] = &v10;
-  v5 = [v4 synchronousRemoteObjectProxyWithErrorHandler:v9];
+  v5 = [connection synchronousRemoteObjectProxyWithErrorHandler:v9];
 
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
@@ -210,9 +210,9 @@ void __34__STDiagnosticsServiceClient_init__block_invoke_43()
   v8[4] = &v16;
   v8[5] = &v10;
   [v5 localConfigurationVersionWithCompletionHandler:v8];
-  if (a3)
+  if (error)
   {
-    *a3 = v11[5];
+    *error = v11[5];
   }
 
   v6 = v17[5];
@@ -234,9 +234,9 @@ void __65__STDiagnosticsServiceClient_localConfigurationVersionWithError___block
   }
 }
 
-- (BOOL)setLocalConfigurationVersion:(id)a3 error:(id *)a4
+- (BOOL)setLocalConfigurationVersion:(id)version error:(id *)error
 {
-  v6 = a3;
+  versionCopy = version;
   v19 = 0;
   v20 = &v19;
   v21 = 0x2020000000;
@@ -247,14 +247,14 @@ void __65__STDiagnosticsServiceClient_localConfigurationVersionWithError___block
   v16 = __Block_byref_object_copy__3;
   v17 = __Block_byref_object_dispose__3;
   v18 = 0;
-  v7 = [(STDiagnosticsServiceClient *)self connection];
+  connection = [(STDiagnosticsServiceClient *)self connection];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __65__STDiagnosticsServiceClient_setLocalConfigurationVersion_error___block_invoke;
   v12[3] = &unk_1E7CE71C8;
   v12[4] = &v13;
   v12[5] = &v19;
-  v8 = [v7 synchronousRemoteObjectProxyWithErrorHandler:v12];
+  v8 = [connection synchronousRemoteObjectProxyWithErrorHandler:v12];
 
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
@@ -262,10 +262,10 @@ void __65__STDiagnosticsServiceClient_localConfigurationVersionWithError___block
   v11[3] = &unk_1E7CE71C8;
   v11[4] = &v13;
   v11[5] = &v19;
-  [v8 setLocalConfigurationVersion:v6 completionHandler:v11];
-  if (a4)
+  [v8 setLocalConfigurationVersion:versionCopy completionHandler:v11];
+  if (error)
   {
-    *a4 = v14[5];
+    *error = v14[5];
   }
 
   v9 = *(v20 + 24);
@@ -295,7 +295,7 @@ void __65__STDiagnosticsServiceClient_setLocalConfigurationVersion_error___block
   }
 }
 
-- (id)configurationVersionWithError:(id *)a3
+- (id)configurationVersionWithError:(id *)error
 {
   v16 = 0;
   v17 = &v16;
@@ -309,13 +309,13 @@ void __65__STDiagnosticsServiceClient_setLocalConfigurationVersion_error___block
   v13 = __Block_byref_object_copy__3;
   v14 = __Block_byref_object_dispose__3;
   v15 = 0;
-  v4 = [(STDiagnosticsServiceClient *)self connection];
+  connection = [(STDiagnosticsServiceClient *)self connection];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __60__STDiagnosticsServiceClient_configurationVersionWithError___block_invoke;
   v9[3] = &unk_1E7CE6BA8;
   v9[4] = &v10;
-  v5 = [v4 synchronousRemoteObjectProxyWithErrorHandler:v9];
+  v5 = [connection synchronousRemoteObjectProxyWithErrorHandler:v9];
 
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
@@ -324,9 +324,9 @@ void __65__STDiagnosticsServiceClient_setLocalConfigurationVersion_error___block
   v8[4] = &v16;
   v8[5] = &v10;
   [v5 configurationVersionWithCompletionHandler:v8];
-  if (a3)
+  if (error)
   {
-    *a3 = v11[5];
+    *error = v11[5];
   }
 
   v6 = v17[5];
@@ -348,7 +348,7 @@ void __60__STDiagnosticsServiceClient_configurationVersionWithError___block_invo
   }
 }
 
-- (BOOL)repairBlueprintsWithError:(id *)a3
+- (BOOL)repairBlueprintsWithError:(id *)error
 {
   v16 = 0;
   v17 = &v16;
@@ -360,13 +360,13 @@ void __60__STDiagnosticsServiceClient_configurationVersionWithError___block_invo
   v13 = __Block_byref_object_copy__3;
   v14 = __Block_byref_object_dispose__3;
   v15 = 0;
-  v4 = [(STDiagnosticsServiceClient *)self connection];
+  connection = [(STDiagnosticsServiceClient *)self connection];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __56__STDiagnosticsServiceClient_repairBlueprintsWithError___block_invoke;
   v9[3] = &unk_1E7CE6BA8;
   v9[4] = &v10;
-  v5 = [v4 synchronousRemoteObjectProxyWithErrorHandler:v9];
+  v5 = [connection synchronousRemoteObjectProxyWithErrorHandler:v9];
 
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
@@ -375,9 +375,9 @@ void __60__STDiagnosticsServiceClient_configurationVersionWithError___block_invo
   v8[4] = &v16;
   v8[5] = &v10;
   [v5 repairBlueprintsWithCompletionHandler:v8];
-  if (a3)
+  if (error)
   {
-    *a3 = v11[5];
+    *error = v11[5];
   }
 
   v6 = *(v17 + 24);
@@ -387,7 +387,7 @@ void __60__STDiagnosticsServiceClient_configurationVersionWithError___block_invo
   return v6;
 }
 
-- (BOOL)sendCheckInRequestWithError:(id *)a3
+- (BOOL)sendCheckInRequestWithError:(id *)error
 {
   v16 = 0;
   v17 = &v16;
@@ -399,13 +399,13 @@ void __60__STDiagnosticsServiceClient_configurationVersionWithError___block_invo
   v13 = __Block_byref_object_copy__3;
   v14 = __Block_byref_object_dispose__3;
   v15 = 0;
-  v4 = [(STDiagnosticsServiceClient *)self connection];
+  connection = [(STDiagnosticsServiceClient *)self connection];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __58__STDiagnosticsServiceClient_sendCheckInRequestWithError___block_invoke;
   v9[3] = &unk_1E7CE6BA8;
   v9[4] = &v10;
-  v5 = [v4 synchronousRemoteObjectProxyWithErrorHandler:v9];
+  v5 = [connection synchronousRemoteObjectProxyWithErrorHandler:v9];
 
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
@@ -414,9 +414,9 @@ void __60__STDiagnosticsServiceClient_configurationVersionWithError___block_invo
   v8[4] = &v16;
   v8[5] = &v10;
   [v5 sendCheckInRequestWithCompletionHandler:v8];
-  if (a3)
+  if (error)
   {
-    *a3 = v11[5];
+    *error = v11[5];
   }
 
   v6 = *(v17 + 24);
@@ -426,7 +426,7 @@ void __60__STDiagnosticsServiceClient_configurationVersionWithError___block_invo
   return v6;
 }
 
-- (BOOL)sendCheckInRequestOnV2WithError:(id *)a3
+- (BOOL)sendCheckInRequestOnV2WithError:(id *)error
 {
   v16 = 0;
   v17 = &v16;
@@ -438,13 +438,13 @@ void __60__STDiagnosticsServiceClient_configurationVersionWithError___block_invo
   v13 = __Block_byref_object_copy__3;
   v14 = __Block_byref_object_dispose__3;
   v15 = 0;
-  v4 = [(STDiagnosticsServiceClient *)self connection];
+  connection = [(STDiagnosticsServiceClient *)self connection];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __62__STDiagnosticsServiceClient_sendCheckInRequestOnV2WithError___block_invoke;
   v9[3] = &unk_1E7CE6BA8;
   v9[4] = &v10;
-  v5 = [v4 synchronousRemoteObjectProxyWithErrorHandler:v9];
+  v5 = [connection synchronousRemoteObjectProxyWithErrorHandler:v9];
 
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
@@ -453,9 +453,9 @@ void __60__STDiagnosticsServiceClient_configurationVersionWithError___block_invo
   v8[4] = &v16;
   v8[5] = &v10;
   [v5 sendCheckInRequestOnV2WithCompletionHandler:v8];
-  if (a3)
+  if (error)
   {
-    *a3 = v11[5];
+    *error = v11[5];
   }
 
   v6 = *(v17 + 24);
@@ -465,7 +465,7 @@ void __60__STDiagnosticsServiceClient_configurationVersionWithError___block_invo
   return v6;
 }
 
-- (BOOL)sendBlueprintsWithError:(id *)a3
+- (BOOL)sendBlueprintsWithError:(id *)error
 {
   v16 = 0;
   v17 = &v16;
@@ -477,13 +477,13 @@ void __60__STDiagnosticsServiceClient_configurationVersionWithError___block_invo
   v13 = __Block_byref_object_copy__3;
   v14 = __Block_byref_object_dispose__3;
   v15 = 0;
-  v4 = [(STDiagnosticsServiceClient *)self connection];
+  connection = [(STDiagnosticsServiceClient *)self connection];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __54__STDiagnosticsServiceClient_sendBlueprintsWithError___block_invoke;
   v9[3] = &unk_1E7CE6BA8;
   v9[4] = &v10;
-  v5 = [v4 synchronousRemoteObjectProxyWithErrorHandler:v9];
+  v5 = [connection synchronousRemoteObjectProxyWithErrorHandler:v9];
 
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
@@ -492,9 +492,9 @@ void __60__STDiagnosticsServiceClient_configurationVersionWithError___block_invo
   v8[4] = &v16;
   v8[5] = &v10;
   [v5 sendBlueprintsWithCompletionHandler:v8];
-  if (a3)
+  if (error)
   {
-    *a3 = v11[5];
+    *error = v11[5];
   }
 
   v6 = *(v17 + 24);
@@ -504,7 +504,7 @@ void __60__STDiagnosticsServiceClient_configurationVersionWithError___block_invo
   return v6;
 }
 
-- (BOOL)sendBlueprintChangesWithError:(id *)a3
+- (BOOL)sendBlueprintChangesWithError:(id *)error
 {
   v16 = 0;
   v17 = &v16;
@@ -516,13 +516,13 @@ void __60__STDiagnosticsServiceClient_configurationVersionWithError___block_invo
   v13 = __Block_byref_object_copy__3;
   v14 = __Block_byref_object_dispose__3;
   v15 = 0;
-  v4 = [(STDiagnosticsServiceClient *)self connection];
+  connection = [(STDiagnosticsServiceClient *)self connection];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __60__STDiagnosticsServiceClient_sendBlueprintChangesWithError___block_invoke;
   v9[3] = &unk_1E7CE6BA8;
   v9[4] = &v10;
-  v5 = [v4 synchronousRemoteObjectProxyWithErrorHandler:v9];
+  v5 = [connection synchronousRemoteObjectProxyWithErrorHandler:v9];
 
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
@@ -531,9 +531,9 @@ void __60__STDiagnosticsServiceClient_configurationVersionWithError___block_invo
   v8[4] = &v16;
   v8[5] = &v10;
   [v5 sendBlueprintChangesWithCompletionHandler:v8];
-  if (a3)
+  if (error)
   {
-    *a3 = v11[5];
+    *error = v11[5];
   }
 
   v6 = *(v17 + 24);
@@ -543,7 +543,7 @@ void __60__STDiagnosticsServiceClient_configurationVersionWithError___block_invo
   return v6;
 }
 
-- (BOOL)sendSettingsWithError:(id *)a3
+- (BOOL)sendSettingsWithError:(id *)error
 {
   v16 = 0;
   v17 = &v16;
@@ -555,13 +555,13 @@ void __60__STDiagnosticsServiceClient_configurationVersionWithError___block_invo
   v13 = __Block_byref_object_copy__3;
   v14 = __Block_byref_object_dispose__3;
   v15 = 0;
-  v4 = [(STDiagnosticsServiceClient *)self connection];
+  connection = [(STDiagnosticsServiceClient *)self connection];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __52__STDiagnosticsServiceClient_sendSettingsWithError___block_invoke;
   v9[3] = &unk_1E7CE6BA8;
   v9[4] = &v10;
-  v5 = [v4 synchronousRemoteObjectProxyWithErrorHandler:v9];
+  v5 = [connection synchronousRemoteObjectProxyWithErrorHandler:v9];
 
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
@@ -570,9 +570,9 @@ void __60__STDiagnosticsServiceClient_configurationVersionWithError___block_invo
   v8[4] = &v16;
   v8[5] = &v10;
   [v5 sendSettingsWithCompletionHandler:v8];
-  if (a3)
+  if (error)
   {
-    *a3 = v11[5];
+    *error = v11[5];
   }
 
   v6 = *(v17 + 24);
@@ -582,7 +582,7 @@ void __60__STDiagnosticsServiceClient_configurationVersionWithError___block_invo
   return v6;
 }
 
-- (BOOL)sendSettingsChangesWithError:(id *)a3
+- (BOOL)sendSettingsChangesWithError:(id *)error
 {
   v16 = 0;
   v17 = &v16;
@@ -594,13 +594,13 @@ void __60__STDiagnosticsServiceClient_configurationVersionWithError___block_invo
   v13 = __Block_byref_object_copy__3;
   v14 = __Block_byref_object_dispose__3;
   v15 = 0;
-  v4 = [(STDiagnosticsServiceClient *)self connection];
+  connection = [(STDiagnosticsServiceClient *)self connection];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __59__STDiagnosticsServiceClient_sendSettingsChangesWithError___block_invoke;
   v9[3] = &unk_1E7CE6BA8;
   v9[4] = &v10;
-  v5 = [v4 synchronousRemoteObjectProxyWithErrorHandler:v9];
+  v5 = [connection synchronousRemoteObjectProxyWithErrorHandler:v9];
 
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
@@ -609,9 +609,9 @@ void __60__STDiagnosticsServiceClient_configurationVersionWithError___block_invo
   v8[4] = &v16;
   v8[5] = &v10;
   [v5 sendSettingsChangesWithCompletionHandler:v8];
-  if (a3)
+  if (error)
   {
-    *a3 = v11[5];
+    *error = v11[5];
   }
 
   v6 = *(v17 + 24);
@@ -621,7 +621,7 @@ void __60__STDiagnosticsServiceClient_configurationVersionWithError___block_invo
   return v6;
 }
 
-- (BOOL)sendUserDeviceStateWithError:(id *)a3
+- (BOOL)sendUserDeviceStateWithError:(id *)error
 {
   v16 = 0;
   v17 = &v16;
@@ -633,13 +633,13 @@ void __60__STDiagnosticsServiceClient_configurationVersionWithError___block_invo
   v13 = __Block_byref_object_copy__3;
   v14 = __Block_byref_object_dispose__3;
   v15 = 0;
-  v4 = [(STDiagnosticsServiceClient *)self connection];
+  connection = [(STDiagnosticsServiceClient *)self connection];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __59__STDiagnosticsServiceClient_sendUserDeviceStateWithError___block_invoke;
   v9[3] = &unk_1E7CE6BA8;
   v9[4] = &v10;
-  v5 = [v4 synchronousRemoteObjectProxyWithErrorHandler:v9];
+  v5 = [connection synchronousRemoteObjectProxyWithErrorHandler:v9];
 
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
@@ -648,9 +648,9 @@ void __60__STDiagnosticsServiceClient_configurationVersionWithError___block_invo
   v8[4] = &v16;
   v8[5] = &v10;
   [v5 sendUserDeviceStateWithCompletionHandler:v8];
-  if (a3)
+  if (error)
   {
-    *a3 = v11[5];
+    *error = v11[5];
   }
 
   v6 = *(v17 + 24);
@@ -660,7 +660,7 @@ void __60__STDiagnosticsServiceClient_configurationVersionWithError___block_invo
   return v6;
 }
 
-- (BOOL)postWeeklyReportNotification:(id *)a3
+- (BOOL)postWeeklyReportNotification:(id *)notification
 {
   v16 = 0;
   v17 = &v16;
@@ -672,14 +672,14 @@ void __60__STDiagnosticsServiceClient_configurationVersionWithError___block_invo
   v13 = __Block_byref_object_copy__3;
   v14 = __Block_byref_object_dispose__3;
   v15 = 0;
-  v4 = [(STDiagnosticsServiceClient *)self connection];
+  connection = [(STDiagnosticsServiceClient *)self connection];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __59__STDiagnosticsServiceClient_postWeeklyReportNotification___block_invoke;
   v9[3] = &unk_1E7CE71C8;
   v9[4] = &v10;
   v9[5] = &v16;
-  v5 = [v4 synchronousRemoteObjectProxyWithErrorHandler:v9];
+  v5 = [connection synchronousRemoteObjectProxyWithErrorHandler:v9];
 
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
@@ -688,9 +688,9 @@ void __60__STDiagnosticsServiceClient_configurationVersionWithError___block_invo
   v8[4] = &v10;
   v8[5] = &v16;
   [v5 postWeeklyReportNotificationWithCompletionHandler:v8];
-  if (a3)
+  if (notification)
   {
-    *a3 = v11[5];
+    *notification = v11[5];
   }
 
   v6 = *(v17 + 24);
@@ -719,9 +719,9 @@ void __59__STDiagnosticsServiceClient_postWeeklyReportNotification___block_invok
   }
 }
 
-- (BOOL)postNotificationWithContext:(id)a3 error:(id *)a4
+- (BOOL)postNotificationWithContext:(id)context error:(id *)error
 {
-  v6 = a3;
+  contextCopy = context;
   v19 = 0;
   v20 = &v19;
   v21 = 0x2020000000;
@@ -732,14 +732,14 @@ void __59__STDiagnosticsServiceClient_postWeeklyReportNotification___block_invok
   v16 = __Block_byref_object_copy__3;
   v17 = __Block_byref_object_dispose__3;
   v18 = 0;
-  v7 = [(STDiagnosticsServiceClient *)self connection];
+  connection = [(STDiagnosticsServiceClient *)self connection];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __64__STDiagnosticsServiceClient_postNotificationWithContext_error___block_invoke;
   v12[3] = &unk_1E7CE71C8;
   v12[4] = &v13;
   v12[5] = &v19;
-  v8 = [v7 synchronousRemoteObjectProxyWithErrorHandler:v12];
+  v8 = [connection synchronousRemoteObjectProxyWithErrorHandler:v12];
 
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
@@ -747,10 +747,10 @@ void __59__STDiagnosticsServiceClient_postWeeklyReportNotification___block_invok
   v11[3] = &unk_1E7CE6BD0;
   v11[4] = &v13;
   v11[5] = &v19;
-  [v8 postNotificationWithContext:v6 completionHandler:v11];
-  if (a4)
+  [v8 postNotificationWithContext:contextCopy completionHandler:v11];
+  if (error)
   {
-    *a4 = v14[5];
+    *error = v14[5];
   }
 
   v9 = *(v20 + 24);
@@ -780,9 +780,9 @@ void __64__STDiagnosticsServiceClient_postNotificationWithContext_error___block_
   }
 }
 
-- (BOOL)removeNotificationWithContext:(id)a3 error:(id *)a4
+- (BOOL)removeNotificationWithContext:(id)context error:(id *)error
 {
-  v6 = a3;
+  contextCopy = context;
   v19 = 0;
   v20 = &v19;
   v21 = 0x2020000000;
@@ -793,14 +793,14 @@ void __64__STDiagnosticsServiceClient_postNotificationWithContext_error___block_
   v16 = __Block_byref_object_copy__3;
   v17 = __Block_byref_object_dispose__3;
   v18 = 0;
-  v7 = [(STDiagnosticsServiceClient *)self connection];
+  connection = [(STDiagnosticsServiceClient *)self connection];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __66__STDiagnosticsServiceClient_removeNotificationWithContext_error___block_invoke;
   v12[3] = &unk_1E7CE71C8;
   v12[4] = &v13;
   v12[5] = &v19;
-  v8 = [v7 synchronousRemoteObjectProxyWithErrorHandler:v12];
+  v8 = [connection synchronousRemoteObjectProxyWithErrorHandler:v12];
 
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
@@ -808,10 +808,10 @@ void __64__STDiagnosticsServiceClient_postNotificationWithContext_error___block_
   v11[3] = &unk_1E7CE6BD0;
   v11[4] = &v13;
   v11[5] = &v19;
-  [v8 removeNotificationWithContext:v6 completionHandler:v11];
-  if (a4)
+  [v8 removeNotificationWithContext:contextCopy completionHandler:v11];
+  if (error)
   {
-    *a4 = v14[5];
+    *error = v14[5];
   }
 
   v9 = *(v20 + 24);
@@ -841,20 +841,20 @@ void __66__STDiagnosticsServiceClient_removeNotificationWithContext_error___bloc
   }
 }
 
-- (void)killScreenTimeAgent:(id)a3 completionHandler:(id)a4
+- (void)killScreenTimeAgent:(id)agent completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(STDiagnosticsServiceClient *)self connection];
+  handlerCopy = handler;
+  agentCopy = agent;
+  connection = [(STDiagnosticsServiceClient *)self connection];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __68__STDiagnosticsServiceClient_killScreenTimeAgent_completionHandler___block_invoke;
   v11[3] = &unk_1E7CE6CE8;
-  v12 = v6;
-  v9 = v6;
-  v10 = [v8 remoteObjectProxyWithErrorHandler:v11];
+  v12 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = [connection remoteObjectProxyWithErrorHandler:v11];
 
-  [v10 killScreenTimeAgent:v7 completionHandler:v9];
+  [v10 killScreenTimeAgent:agentCopy completionHandler:v9];
 }
 
 void __68__STDiagnosticsServiceClient_killScreenTimeAgent_completionHandler___block_invoke(uint64_t a1, void *a2)

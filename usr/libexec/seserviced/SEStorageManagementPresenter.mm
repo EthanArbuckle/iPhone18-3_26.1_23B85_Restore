@@ -1,12 +1,12 @@
 @interface SEStorageManagementPresenter
 - (_TtC10seservicedP33_6BF624923E613E1EC57F47F80535A8D428SEStorageManagementPresenter)init;
-- (void)deletePassEntry:(NSData *)a3 completionHandler:(id)a4;
-- (void)deleteSecureElementCredentials:(NSData *)a3 completionHandler:(id)a4;
-- (void)dismiss:(NSData *)a3 completionHandler:(id)a4;
-- (void)offloadMuirfieldWithCompletionHandler:(id)a3;
-- (void)remoteAlertHandle:(id)a3 didInvalidateWithError:(id)a4;
-- (void)remoteAlertHandleDidActivate:(id)a3;
-- (void)remoteAlertHandleDidDeactivate:(id)a3;
+- (void)deletePassEntry:(NSData *)entry completionHandler:(id)handler;
+- (void)deleteSecureElementCredentials:(NSData *)credentials completionHandler:(id)handler;
+- (void)dismiss:(NSData *)dismiss completionHandler:(id)handler;
+- (void)offloadMuirfieldWithCompletionHandler:(id)handler;
+- (void)remoteAlertHandle:(id)handle didInvalidateWithError:(id)error;
+- (void)remoteAlertHandleDidActivate:(id)activate;
+- (void)remoteAlertHandleDidDeactivate:(id)deactivate;
 @end
 
 @implementation SEStorageManagementPresenter
@@ -18,15 +18,15 @@
   return result;
 }
 
-- (void)deletePassEntry:(NSData *)a3 completionHandler:(id)a4
+- (void)deletePassEntry:(NSData *)entry completionHandler:(id)handler
 {
   v7 = sub_100068FC4(&qword_100504250, &qword_10040D610);
   v8 = *(*(v7 - 8) + 64);
   __chkstk_darwin(v7 - 8);
   v10 = &v18 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(handler);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = entry;
   v12[3] = v11;
   v12[4] = self;
   v13 = type metadata accessor for TaskPriority();
@@ -41,20 +41,20 @@
   v15[3] = 0;
   v15[4] = &unk_10040F400;
   v15[5] = v14;
-  v16 = a3;
-  v17 = self;
+  entryCopy = entry;
+  selfCopy = self;
   sub_1001F0028(0, 0, v10, &unk_10040F408, v15);
 }
 
-- (void)deleteSecureElementCredentials:(NSData *)a3 completionHandler:(id)a4
+- (void)deleteSecureElementCredentials:(NSData *)credentials completionHandler:(id)handler
 {
   v7 = sub_100068FC4(&qword_100504250, &qword_10040D610);
   v8 = *(*(v7 - 8) + 64);
   __chkstk_darwin(v7 - 8);
   v10 = &v18 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(handler);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = credentials;
   v12[3] = v11;
   v12[4] = self;
   v13 = type metadata accessor for TaskPriority();
@@ -69,18 +69,18 @@
   v15[3] = 0;
   v15[4] = &unk_10040F3D8;
   v15[5] = v14;
-  v16 = a3;
-  v17 = self;
+  credentialsCopy = credentials;
+  selfCopy = self;
   sub_1001F0028(0, 0, v10, &unk_10040F3E0, v15);
 }
 
-- (void)offloadMuirfieldWithCompletionHandler:(id)a3
+- (void)offloadMuirfieldWithCompletionHandler:(id)handler
 {
   v5 = sub_100068FC4(&qword_100504250, &qword_10040D610);
   v6 = *(*(v5 - 8) + 64);
   __chkstk_darwin(v5 - 8);
   v8 = &v15 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -96,19 +96,19 @@
   v13[3] = 0;
   v13[4] = &unk_10040F3B0;
   v13[5] = v12;
-  v14 = self;
+  selfCopy = self;
   sub_1001F0028(0, 0, v8, &unk_10040F3B8, v13);
 }
 
-- (void)dismiss:(NSData *)a3 completionHandler:(id)a4
+- (void)dismiss:(NSData *)dismiss completionHandler:(id)handler
 {
   v7 = sub_100068FC4(&qword_100504250, &qword_10040D610);
   v8 = *(*(v7 - 8) + 64);
   __chkstk_darwin(v7 - 8);
   v10 = &v18 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(handler);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = dismiss;
   v12[3] = v11;
   v12[4] = self;
   v13 = type metadata accessor for TaskPriority();
@@ -123,31 +123,31 @@
   v15[3] = 0;
   v15[4] = &unk_10040F368;
   v15[5] = v14;
-  v16 = a3;
-  v17 = self;
+  dismissCopy = dismiss;
+  selfCopy = self;
   sub_1001F0028(0, 0, v10, &unk_10040F378, v15);
 }
 
-- (void)remoteAlertHandleDidActivate:(id)a3
+- (void)remoteAlertHandleDidActivate:(id)activate
 {
-  v4 = a3;
-  v5 = self;
+  activateCopy = activate;
+  selfCopy = self;
   sub_1001F1DD4();
 }
 
-- (void)remoteAlertHandleDidDeactivate:(id)a3
+- (void)remoteAlertHandleDidDeactivate:(id)deactivate
 {
-  v4 = a3;
-  v5 = self;
+  deactivateCopy = deactivate;
+  selfCopy = self;
   sub_1001F2390();
 }
 
-- (void)remoteAlertHandle:(id)a3 didInvalidateWithError:(id)a4
+- (void)remoteAlertHandle:(id)handle didInvalidateWithError:(id)error
 {
-  v6 = a3;
-  v7 = self;
-  v8 = a4;
-  sub_1001F2564(a4);
+  handleCopy = handle;
+  selfCopy = self;
+  errorCopy = error;
+  sub_1001F2564(error);
 }
 
 @end

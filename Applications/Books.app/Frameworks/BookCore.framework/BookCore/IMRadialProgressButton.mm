@@ -1,44 +1,44 @@
 @interface IMRadialProgressButton
 + (CGSize)minimumBoundingBox;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (CGSize)innerRectSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (IMRadialProgressButton)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (IMRadialProgressButton)initWithFrame:(CGRect)frame;
 - (UIColor)progressColor;
 - (UIEdgeInsets)touchInsets;
-- (void)_traitCollectionDidChange:(id)a3 previousTraitCollection:(id)a4;
+- (void)_traitCollectionDidChange:(id)change previousTraitCollection:(id)collection;
 - (void)_updateCenterImage;
 - (void)dealloc;
-- (void)drawCenteredImaged:(id)a3 screenScale:(double)a4;
-- (void)drawRect:(CGRect)a3;
-- (void)setCenterImageNormal:(id)a3;
-- (void)setCenterImageSelected:(id)a3;
-- (void)setProgress:(float)a3;
-- (void)setProgressColor:(id)a3;
-- (void)setShowImages:(BOOL)a3;
-- (void)setTintColor:(id)a3;
-- (void)useInnerRect:(CGSize)a3;
+- (void)drawCenteredImaged:(id)imaged screenScale:(double)scale;
+- (void)drawRect:(CGRect)rect;
+- (void)setCenterImageNormal:(id)normal;
+- (void)setCenterImageSelected:(id)selected;
+- (void)setProgress:(float)progress;
+- (void)setProgressColor:(id)color;
+- (void)setShowImages:(BOOL)images;
+- (void)setTintColor:(id)color;
+- (void)useInnerRect:(CGSize)rect;
 @end
 
 @implementation IMRadialProgressButton
 
-- (IMRadialProgressButton)initWithFrame:(CGRect)a3
+- (IMRadialProgressButton)initWithFrame:(CGRect)frame
 {
   v19.receiver = self;
   v19.super_class = IMRadialProgressButton;
-  v3 = [(IMRadialProgressButton *)&v19 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(IMRadialProgressButton *)&v19 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(IMRadialProgressButton *)v3 traitCollection];
-    v6 = [UIImage systemImageNamed:@"square.fill" compatibleWithTraitCollection:v5];
+    traitCollection = [(IMRadialProgressButton *)v3 traitCollection];
+    v6 = [UIImage systemImageNamed:@"square.fill" compatibleWithTraitCollection:traitCollection];
     v7 = [UIImageSymbolConfiguration configurationWithTextStyle:UIFontTextStyleCaption2 scale:1];
     v8 = [v6 imageWithConfiguration:v7];
     centerImageNormal = v4->_centerImageNormal;
     v4->_centerImageNormal = v8;
 
-    v10 = [(IMRadialProgressButton *)v4 traitCollection];
-    v11 = [UIImage systemImageNamed:@"pause.fill" compatibleWithTraitCollection:v10];
+    traitCollection2 = [(IMRadialProgressButton *)v4 traitCollection];
+    v11 = [UIImage systemImageNamed:@"pause.fill" compatibleWithTraitCollection:traitCollection2];
     v12 = [UIImageSymbolConfiguration configurationWithTextStyle:UIFontTextStyleCaption1 scale:1];
     v13 = [v11 imageWithConfiguration:v12];
     centerImageSelected = v4->_centerImageSelected;
@@ -72,22 +72,22 @@
   [(IMRadialProgressButton *)&v4 dealloc];
 }
 
-- (void)useInnerRect:(CGSize)a3
+- (void)useInnerRect:(CGSize)rect
 {
-  height = a3.height;
-  width = a3.width;
+  height = rect.height;
+  width = rect.width;
   [(IMRadialProgressButton *)self setUseInnerRect:1];
 
   [(IMRadialProgressButton *)self setInnerRectSize:width, height];
 }
 
-- (void)_traitCollectionDidChange:(id)a3 previousTraitCollection:(id)a4
+- (void)_traitCollectionDidChange:(id)change previousTraitCollection:(id)collection
 {
-  v5 = [a4 userInterfaceStyle];
-  v6 = [(IMRadialProgressButton *)self traitCollection];
-  v7 = [v6 userInterfaceStyle];
+  userInterfaceStyle = [collection userInterfaceStyle];
+  traitCollection = [(IMRadialProgressButton *)self traitCollection];
+  userInterfaceStyle2 = [traitCollection userInterfaceStyle];
 
-  if (v5 != v7)
+  if (userInterfaceStyle != userInterfaceStyle2)
   {
 
     [(IMRadialProgressButton *)self _updateCenterImage];
@@ -103,35 +103,35 @@
   return result;
 }
 
-- (void)setShowImages:(BOOL)a3
+- (void)setShowImages:(BOOL)images
 {
-  if (self->_showImages != a3)
+  if (self->_showImages != images)
   {
-    self->_showImages = a3;
+    self->_showImages = images;
     [(IMRadialProgressButton *)self setShowsTouchWhenHighlighted:?];
 
     [(IMRadialProgressButton *)self setNeedsDisplay];
   }
 }
 
-- (void)drawCenteredImaged:(id)a3 screenScale:(double)a4
+- (void)drawCenteredImaged:(id)imaged screenScale:(double)scale
 {
-  v5 = a3;
+  imagedCopy = imaged;
   if ([(IMRadialProgressButton *)self showImages])
   {
-    [v5 size];
+    [imagedCopy size];
     [(IMRadialProgressButton *)self bounds];
     CGRectCenterRectInRect();
     CGRectRoundedForScale();
-    [v5 drawInRect:?];
+    [imagedCopy drawInRect:?];
   }
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
   *&recta.size.width = self;
   *&recta.size.height = IMRadialProgressButton;
-  [(CGSize *)&recta.size drawRect:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(CGSize *)&recta.size drawRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   v4 = +[UIScreen mainScreen];
   [v4 scale];
   v6 = v5;
@@ -175,19 +175,19 @@
     v29 = 4.70767659;
   }
 
-  v31 = [(IMRadialProgressButton *)self trackColor];
-  v32 = v31;
-  if (v31)
+  trackColor = [(IMRadialProgressButton *)self trackColor];
+  v32 = trackColor;
+  if (trackColor)
   {
-    v33 = v31;
+    progressColor = trackColor;
   }
 
   else
   {
-    v33 = [(IMRadialProgressButton *)self progressColor];
+    progressColor = [(IMRadialProgressButton *)self progressColor];
   }
 
-  v34 = v33;
+  v34 = progressColor;
 
   [v34 setStroke];
   CurrentContext = UIGraphicsGetCurrentContext();
@@ -198,16 +198,16 @@
   v47.size.width = v21;
   v47.size.height = v23;
   CGContextStrokeEllipseInRect(CurrentContext, v47);
-  v37 = [(IMRadialProgressButton *)self progressColor];
-  [v37 setStroke];
+  progressColor2 = [(IMRadialProgressButton *)self progressColor];
+  [progressColor2 setStroke];
 
   v38 = +[UIBezierPath bezierPath];
   [v38 moveToPoint:{MidX, MidY - v24}];
   [v38 addArcWithCenter:1 radius:MidX startAngle:MidY endAngle:v24 clockwise:{-1.57079633, v29}];
   [v38 setLineCapStyle:{-[IMRadialProgressButton progressLineCap](self, "progressLineCap")}];
-  v39 = [(IMRadialProgressButton *)self inscribeProgress];
+  inscribeProgress = [(IMRadialProgressButton *)self inscribeProgress];
   v40 = 2.5;
-  if ((v39 & 1) == 0)
+  if ((inscribeProgress & 1) == 0)
   {
     [(IMRadialProgressButton *)self progressThickness];
   }
@@ -228,9 +228,9 @@
 
   else
   {
-    v42 = [(IMRadialProgressButton *)self isSelected];
+    isSelected = [(IMRadialProgressButton *)self isSelected];
     v43 = &OBJC_IVAR___IMRadialProgressButton__centerImageNormalTinted;
-    if (v42)
+    if (isSelected)
     {
       v43 = &OBJC_IVAR___IMRadialProgressButton__centerImageSelectedTinted;
     }
@@ -239,53 +239,53 @@
   }
 }
 
-- (void)setProgressColor:(id)a3
+- (void)setProgressColor:(id)color
 {
-  v6 = a3;
-  v5 = [(UIColor *)v6 isEqual:self->_progressColor];
-  if ((v5 & 1) == 0 && self->_progressColor != v6)
+  colorCopy = color;
+  _updateCenterImage = [(UIColor *)colorCopy isEqual:self->_progressColor];
+  if ((_updateCenterImage & 1) == 0 && self->_progressColor != colorCopy)
   {
-    objc_storeStrong(&self->_progressColor, a3);
-    v5 = [(IMRadialProgressButton *)self _updateCenterImage];
+    objc_storeStrong(&self->_progressColor, color);
+    _updateCenterImage = [(IMRadialProgressButton *)self _updateCenterImage];
   }
 
-  _objc_release_x1(v5);
+  _objc_release_x1(_updateCenterImage);
 }
 
-- (void)setTintColor:(id)a3
+- (void)setTintColor:(id)color
 {
-  v4 = a3;
-  v5 = [(IMRadialProgressButton *)self tintColor];
-  v6 = v5;
-  if (v5 == v4)
+  colorCopy = color;
+  tintColor = [(IMRadialProgressButton *)self tintColor];
+  v6 = tintColor;
+  if (tintColor == colorCopy)
   {
   }
 
   else
   {
-    v7 = [(IMRadialProgressButton *)self tintColor];
-    v8 = [v4 isEqual:v7];
+    tintColor2 = [(IMRadialProgressButton *)self tintColor];
+    v8 = [colorCopy isEqual:tintColor2];
 
     if ((v8 & 1) == 0)
     {
       v9.receiver = self;
       v9.super_class = IMRadialProgressButton;
-      [(IMRadialProgressButton *)&v9 setTintColor:v4];
+      [(IMRadialProgressButton *)&v9 setTintColor:colorCopy];
       [(IMRadialProgressButton *)self _updateCenterImage];
     }
   }
 }
 
-- (void)setCenterImageNormal:(id)a3
+- (void)setCenterImageNormal:(id)normal
 {
-  v5 = a3;
+  normalCopy = normal;
   centerImageNormal = self->_centerImageNormal;
-  if (centerImageNormal != v5)
+  if (centerImageNormal != normalCopy)
   {
-    centerImageNormal = [(UIImage *)centerImageNormal isEqual:v5];
+    centerImageNormal = [(UIImage *)centerImageNormal isEqual:normalCopy];
     if ((centerImageNormal & 1) == 0)
     {
-      objc_storeStrong(&self->_centerImageNormal, a3);
+      objc_storeStrong(&self->_centerImageNormal, normal);
       centerImageNormal = [(IMRadialProgressButton *)self _updateCenterImage];
     }
   }
@@ -293,16 +293,16 @@
   _objc_release_x1(centerImageNormal);
 }
 
-- (void)setCenterImageSelected:(id)a3
+- (void)setCenterImageSelected:(id)selected
 {
-  v5 = a3;
+  selectedCopy = selected;
   centerImageSelected = self->_centerImageSelected;
-  if (centerImageSelected != v5)
+  if (centerImageSelected != selectedCopy)
   {
-    centerImageSelected = [(UIImage *)centerImageSelected isEqual:v5];
+    centerImageSelected = [(UIImage *)centerImageSelected isEqual:selectedCopy];
     if ((centerImageSelected & 1) == 0)
     {
-      objc_storeStrong(&self->_centerImageSelected, a3);
+      objc_storeStrong(&self->_centerImageSelected, selected);
       centerImageSelected = [(IMRadialProgressButton *)self _updateCenterImage];
     }
   }
@@ -312,22 +312,22 @@
 
 - (void)_updateCenterImage
 {
-  v8 = [(IMRadialProgressButton *)self progressColor];
-  v3 = [(IMRadialProgressButton *)self centerImageSelected];
-  v4 = [v3 imageWithTintColor:v8];
+  progressColor = [(IMRadialProgressButton *)self progressColor];
+  centerImageSelected = [(IMRadialProgressButton *)self centerImageSelected];
+  v4 = [centerImageSelected imageWithTintColor:progressColor];
   centerImageSelectedTinted = self->_centerImageSelectedTinted;
   self->_centerImageSelectedTinted = v4;
 
-  v6 = [(UIImage *)self->_centerImageNormal imageWithTintColor:v8];
+  v6 = [(UIImage *)self->_centerImageNormal imageWithTintColor:progressColor];
   centerImageNormalTinted = self->_centerImageNormalTinted;
   self->_centerImageNormalTinted = v6;
 
   [(IMRadialProgressButton *)self setNeedsDisplay];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  v3 = [(IMRadialProgressButton *)self backgroundImageForState:0, a3.width, a3.height];
+  v3 = [(IMRadialProgressButton *)self backgroundImageForState:0, fits.width, fits.height];
   [v3 size];
   v5 = v4;
   v7 = v6;
@@ -339,10 +339,10 @@
   return result;
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   [(IMRadialProgressButton *)self bounds];
   top = self->_touchInsets.top;
   left = self->_touchInsets.left;
@@ -356,11 +356,11 @@
   return CGRectContainsPoint(*&v10, *&v17);
 }
 
-- (void)setProgress:(float)a3
+- (void)setProgress:(float)progress
 {
-  if (self->_progress != a3)
+  if (self->_progress != progress)
   {
-    self->_progress = a3;
+    self->_progress = progress;
     [(IMRadialProgressButton *)self setNeedsDisplay];
   }
 }
@@ -370,9 +370,9 @@
   v3 = self->_progressColor;
   if (!self->_progressColor)
   {
-    v4 = [(IMRadialProgressButton *)self tintColor];
+    tintColor = [(IMRadialProgressButton *)self tintColor];
 
-    v3 = v4;
+    v3 = tintColor;
   }
 
   return v3;

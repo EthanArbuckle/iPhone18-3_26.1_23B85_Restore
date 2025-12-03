@@ -1,19 +1,19 @@
 @interface _UISearchTokenLayoutViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)isAccessibilityElement;
 - (unint64_t)accessibilityTraits;
 @end
 
 @implementation _UISearchTokenLayoutViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v4 = location;
   obj = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   [location[0] validateClass:@"_UISearchTokenLayoutView" hasInstanceMethod:@"delegateView" withFullSignature:{"@", 0}];
   objc_storeStrong(v4, obj);
 }
@@ -21,17 +21,17 @@
 - (unint64_t)accessibilityTraits
 {
   v3 = [(_UISearchTokenLayoutViewAccessibility *)self safeValueForKey:@"delegateView"];
-  v4 = [v3 accessibilityTraits];
+  accessibilityTraits = [v3 accessibilityTraits];
   MEMORY[0x29EDC9740](v3);
-  return v4;
+  return accessibilityTraits;
 }
 
 - (BOOL)isAccessibilityElement
 {
   v3 = [(_UISearchTokenLayoutViewAccessibility *)self safeValueForKey:@"delegateView"];
-  v4 = [v3 isAccessibilityElement];
+  isAccessibilityElement = [v3 isAccessibilityElement];
   MEMORY[0x29EDC9740](v3);
-  return v4;
+  return isAccessibilityElement;
 }
 
 @end

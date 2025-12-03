@@ -7,8 +7,8 @@
 - (NSError)error;
 - (void)cancel;
 - (void)execute;
-- (void)finishWithError:(id)a3;
-- (void)setUserIdentity:(id)a3;
+- (void)finishWithError:(id)error;
+- (void)setUserIdentity:(id)identity;
 - (void)start;
 @end
 
@@ -78,26 +78,26 @@
   userIdentity = self->_userIdentity;
   if (userIdentity)
   {
-    v3 = userIdentity;
+    activeAccount = userIdentity;
   }
 
   else
   {
-    v3 = [MEMORY[0x1E69E4680] activeAccount];
+    activeAccount = [MEMORY[0x1E69E4680] activeAccount];
   }
 
-  return v3;
+  return activeAccount;
 }
 
-- (void)setUserIdentity:(id)a3
+- (void)setUserIdentity:(id)identity
 {
-  v4 = a3;
+  identityCopy = identity;
   userIdentity = self->_userIdentity;
-  v10 = v4;
-  if (userIdentity != v4)
+  v10 = identityCopy;
+  if (userIdentity != identityCopy)
   {
-    v6 = [MEMORY[0x1E69E4688] defaultIdentityStore];
-    v7 = [(ICUserIdentity *)userIdentity isEqualToIdentity:v10 inStore:v6];
+    defaultIdentityStore = [MEMORY[0x1E69E4688] defaultIdentityStore];
+    v7 = [(ICUserIdentity *)userIdentity isEqualToIdentity:v10 inStore:defaultIdentityStore];
 
     if ((v7 & 1) == 0)
     {
@@ -108,15 +108,15 @@
   }
 }
 
-- (void)finishWithError:(id)a3
+- (void)finishWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   [(MPAsyncOperation *)self willChangeValueForKey:@"error"];
   [(MPAsyncOperation *)self willChangeValueForKey:@"isFinished"];
   [(MPAsyncOperation *)self willChangeValueForKey:@"isExecuting"];
   os_unfair_lock_lock(&self->_lock);
   error = self->_error;
-  self->_error = v4;
+  self->_error = errorCopy;
 
   self->_executing = 0;
   self->_finished = 1;
@@ -132,11 +132,11 @@
   v4 = [objc_opt_class() instanceMethodForSelector:a2];
   if (v4 == [objc_opt_class() instanceMethodForSelector:a2])
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v5 = objc_opt_class();
     v6 = NSStringFromClass(v5);
     v7 = NSStringFromSelector(a2);
-    [v8 handleFailureInMethod:a2 object:self file:@"MPAsyncOperation.m" lineNumber:84 description:{@"Subclass %@ must implement -%@ defined in %@.", v6, v7, @"[MPAsyncOperation class]"}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPAsyncOperation.m" lineNumber:84 description:{@"Subclass %@ must implement -%@ defined in %@.", v6, v7, @"[MPAsyncOperation class]"}];
   }
 }
 

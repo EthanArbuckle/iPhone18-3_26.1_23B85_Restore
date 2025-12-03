@@ -1,14 +1,14 @@
 @interface BaseLockupView
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation BaseLockupView
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_3E4CA4(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_3E4CA4(change);
 }
 
 @end

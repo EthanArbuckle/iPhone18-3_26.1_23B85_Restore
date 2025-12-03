@@ -1,81 +1,81 @@
 @interface RMPose
-- (RMPose)initWithCoder:(id)a3;
-- (id)_initWithAttitude:(id)a3 consumedAuxTimestamp:(double)a4 receivedAuxTimestamp:(double)a5 machAbsTimestamp:(double)a6 presentationTimestamp:(double)a7;
-- (id)copyWithZone:(_NSZone *)a3;
+- (RMPose)initWithCoder:(id)coder;
+- (id)_initWithAttitude:(id)attitude consumedAuxTimestamp:(double)timestamp receivedAuxTimestamp:(double)auxTimestamp machAbsTimestamp:(double)absTimestamp presentationTimestamp:(double)presentationTimestamp;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RMPose
 
-- (id)_initWithAttitude:(id)a3 consumedAuxTimestamp:(double)a4 receivedAuxTimestamp:(double)a5 machAbsTimestamp:(double)a6 presentationTimestamp:(double)a7
+- (id)_initWithAttitude:(id)attitude consumedAuxTimestamp:(double)timestamp receivedAuxTimestamp:(double)auxTimestamp machAbsTimestamp:(double)absTimestamp presentationTimestamp:(double)presentationTimestamp
 {
-  v13 = a3;
-  [v13 timestamp];
+  attitudeCopy = attitude;
+  [attitudeCopy timestamp];
   v17.receiver = self;
   v17.super_class = RMPose;
   v14 = [(RMLogItem *)&v17 _initWithTimestamp:?];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(v14 + 2, a3);
-    v15[3] = a4;
-    v15[4] = a5;
-    v15[5] = a6;
-    v15[6] = a7;
+    objc_storeStrong(v14 + 2, attitude);
+    v15[3] = timestamp;
+    v15[4] = auxTimestamp;
+    v15[5] = absTimestamp;
+    v15[6] = presentationTimestamp;
   }
 
   return v15;
 }
 
-- (RMPose)initWithCoder:(id)a3
+- (RMPose)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = RMPose;
-  v5 = [(RMLogItem *)&v13 initWithCoder:v4];
+  v5 = [(RMLogItem *)&v13 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"RMPoseEncodingKeyAttitude"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"RMPoseEncodingKeyAttitude"];
     attitude = v5->_attitude;
     v5->_attitude = v6;
 
-    [v4 decodeDoubleForKey:@"RMPoseEncodingKeyConsumedAuxTimestamp"];
+    [coderCopy decodeDoubleForKey:@"RMPoseEncodingKeyConsumedAuxTimestamp"];
     v5->_consumedAuxTimestamp = v8;
-    [v4 decodeDoubleForKey:@"RMPoseEncodingKeyReceivedAuxTimestamp"];
+    [coderCopy decodeDoubleForKey:@"RMPoseEncodingKeyReceivedAuxTimestamp"];
     v5->_receivedAuxTimestamp = v9;
-    [v4 decodeDoubleForKey:@"RMPoseEncodingKeyMachAbsTimestamp"];
+    [coderCopy decodeDoubleForKey:@"RMPoseEncodingKeyMachAbsTimestamp"];
     v5->_machAbsTimestamp = v10;
-    [v4 decodeDoubleForKey:@"RMPoseEncodingKeyPresentationTimestamp"];
+    [coderCopy decodeDoubleForKey:@"RMPoseEncodingKeyPresentationTimestamp"];
     v5->_presentationTimestamp = v11;
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = RMPose;
-  v4 = a3;
-  [(RMLogItem *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_attitude forKey:{@"RMPoseEncodingKeyAttitude", v5.receiver, v5.super_class}];
-  [v4 encodeDouble:@"RMPoseEncodingKeyConsumedAuxTimestamp" forKey:self->_consumedAuxTimestamp];
-  [v4 encodeDouble:@"RMPoseEncodingKeyReceivedAuxTimestamp" forKey:self->_receivedAuxTimestamp];
-  [v4 encodeDouble:@"RMPoseEncodingKeyMachAbsTimestamp" forKey:self->_machAbsTimestamp];
-  [v4 encodeDouble:@"RMPoseEncodingKeyPresentationTimestamp" forKey:self->_presentationTimestamp];
+  coderCopy = coder;
+  [(RMLogItem *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_attitude forKey:{@"RMPoseEncodingKeyAttitude", v5.receiver, v5.super_class}];
+  [coderCopy encodeDouble:@"RMPoseEncodingKeyConsumedAuxTimestamp" forKey:self->_consumedAuxTimestamp];
+  [coderCopy encodeDouble:@"RMPoseEncodingKeyReceivedAuxTimestamp" forKey:self->_receivedAuxTimestamp];
+  [coderCopy encodeDouble:@"RMPoseEncodingKeyMachAbsTimestamp" forKey:self->_machAbsTimestamp];
+  [coderCopy encodeDouble:@"RMPoseEncodingKeyPresentationTimestamp" forKey:self->_presentationTimestamp];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   [(RMLogItem *)self timestamp];
   v5 = [v4 _initWithTimestamp:?];
   if (v5)
   {
-    v6 = [(RMPose *)self attitude];
+    attitude = [(RMPose *)self attitude];
     v7 = v5[2];
-    v5[2] = v6;
+    v5[2] = attitude;
 
     [(RMPose *)self consumedAuxTimestamp];
     v5[3] = v8;

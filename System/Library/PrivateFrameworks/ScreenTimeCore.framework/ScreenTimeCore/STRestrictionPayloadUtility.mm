@@ -1,8 +1,8 @@
 @interface STRestrictionPayloadUtility
 + (id)create;
 - (STRestrictionPayloadUtility)init;
-- (id)buildUpdatedDeclarationsWithImageGenerationAllowed:(BOOL)a3 originalDeclarations:(id)a4;
-- (id)getAppsRatingFromPayloadPlist:(id)a3 error:(id *)a4;
+- (id)buildUpdatedDeclarationsWithImageGenerationAllowed:(BOOL)allowed originalDeclarations:(id)declarations;
+- (id)getAppsRatingFromPayloadPlist:(id)plist error:(id *)error;
 @end
 
 @implementation STRestrictionPayloadUtility
@@ -14,22 +14,22 @@
   return v2;
 }
 
-- (id)buildUpdatedDeclarationsWithImageGenerationAllowed:(BOOL)a3 originalDeclarations:(id)a4
+- (id)buildUpdatedDeclarationsWithImageGenerationAllowed:(BOOL)allowed originalDeclarations:(id)declarations
 {
   __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EBA84D28, &qword_1B83E89F0);
   v6 = sub_1B83DDDDC();
-  v7 = self;
-  _sSo27STRestrictionPayloadUtilityC14ScreenTimeCoreE24buildUpdatedDeclarations26withImageGenerationAllowed08originalI0SaySDys11AnyHashableVypGGSb_AJtF_0(a3, v6);
+  selfCopy = self;
+  _sSo27STRestrictionPayloadUtilityC14ScreenTimeCoreE24buildUpdatedDeclarations26withImageGenerationAllowed08originalI0SaySDys11AnyHashableVypGGSb_AJtF_0(allowed, v6);
 
   v8 = sub_1B83DDDCC();
 
   return v8;
 }
 
-- (id)getAppsRatingFromPayloadPlist:(id)a3 error:(id *)a4
+- (id)getAppsRatingFromPayloadPlist:(id)plist error:(id *)error
 {
-  v5 = a3;
-  v6 = self;
+  plistCopy = plist;
+  selfCopy = self;
   v7 = sub_1B83DD90C();
   v9 = v8;
 

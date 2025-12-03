@@ -1,27 +1,27 @@
 @interface HFHomeKitAccessorySettingsItemProvider
-- (BOOL)shouldUpdateForKeyPaths:(id)a3;
-- (BOOL)updateSettings:(id)a3;
-- (HFHomeKitAccessorySettingsItemProvider)initWithSettingsController:(id)a3 sourceItem:(id)a4 settingGroupKeyPath:(id)a5 moduleSettings:(id)a6 usageOptions:(id)a7;
+- (BOOL)shouldUpdateForKeyPaths:(id)paths;
+- (BOOL)updateSettings:(id)settings;
+- (HFHomeKitAccessorySettingsItemProvider)initWithSettingsController:(id)controller sourceItem:(id)item settingGroupKeyPath:(id)path moduleSettings:(id)settings usageOptions:(id)options;
 - (id)_fetchSettingsAndReloadItems;
-- (id)_generateAccessorySettingItemForSettings:(id)a3 homeKitSettings:(id)a4 keyPaths:(id)a5;
-- (id)_generateAccessorySettingItemForSettings:(id)a3 keyPaths:(id)a4;
-- (id)_reloadItemsFromSettings:(id)a3 performInitialUpdateOnItems:(BOOL)a4;
+- (id)_generateAccessorySettingItemForSettings:(id)settings homeKitSettings:(id)kitSettings keyPaths:(id)paths;
+- (id)_generateAccessorySettingItemForSettings:(id)settings keyPaths:(id)paths;
+- (id)_reloadItemsFromSettings:(id)settings performInitialUpdateOnItems:(BOOL)items;
 - (id)items;
 - (id)reloadItems;
 - (id)sourceItemAccessory;
-- (void)_subscribeToAccessorySettings:(id)a3;
-- (void)updateSettingValue:(id)a3 forKeyPath:(id)a4;
+- (void)_subscribeToAccessorySettings:(id)settings;
+- (void)updateSettingValue:(id)value forKeyPath:(id)path;
 @end
 
 @implementation HFHomeKitAccessorySettingsItemProvider
 
-- (HFHomeKitAccessorySettingsItemProvider)initWithSettingsController:(id)a3 sourceItem:(id)a4 settingGroupKeyPath:(id)a5 moduleSettings:(id)a6 usageOptions:(id)a7
+- (HFHomeKitAccessorySettingsItemProvider)initWithSettingsController:(id)controller sourceItem:(id)item settingGroupKeyPath:(id)path moduleSettings:(id)settings usageOptions:(id)options
 {
-  v13 = a3;
-  v14 = a4;
-  v25 = a5;
-  v15 = a6;
-  v16 = a7;
+  controllerCopy = controller;
+  itemCopy = item;
+  pathCopy = path;
+  settingsCopy = settings;
+  optionsCopy = options;
   v26.receiver = self;
   v26.super_class = HFHomeKitAccessorySettingsItemProvider;
   v17 = [(HFItemProvider *)&v26 init];
@@ -31,17 +31,17 @@
     settingItems = v17->_settingItems;
     v17->_settingItems = v18;
 
-    objc_storeStrong(&v17->_settingsController, a3);
-    objc_storeStrong(&v17->_sourceItem, a4);
-    objc_storeStrong(&v17->_groupKeyPath, a5);
-    objc_storeStrong(&v17->_moduleSettings, a6);
-    objc_storeStrong(&v17->_usageOptions, a7);
-    v20 = [(HFServiceLikeItem *)v17->_sourceItem accessories];
-    v21 = [v20 anyObject];
+    objc_storeStrong(&v17->_settingsController, controller);
+    objc_storeStrong(&v17->_sourceItem, item);
+    objc_storeStrong(&v17->_groupKeyPath, path);
+    objc_storeStrong(&v17->_moduleSettings, settings);
+    objc_storeStrong(&v17->_usageOptions, options);
+    accessories = [(HFServiceLikeItem *)v17->_sourceItem accessories];
+    anyObject = [accessories anyObject];
 
-    v22 = [v21 uniqueIdentifier];
+    uniqueIdentifier = [anyObject uniqueIdentifier];
     accessoryIdentifier = v17->_accessoryIdentifier;
-    v17->_accessoryIdentifier = v22;
+    v17->_accessoryIdentifier = uniqueIdentifier;
   }
 
   return v17;
@@ -49,18 +49,18 @@
 
 - (id)items
 {
-  v2 = [(HFHomeKitAccessorySettingsItemProvider *)self settingItems];
-  v3 = [v2 copy];
+  settingItems = [(HFHomeKitAccessorySettingsItemProvider *)self settingItems];
+  v3 = [settingItems copy];
 
   return v3;
 }
 
 - (id)reloadItems
 {
-  v3 = [(HFHomeKitAccessorySettingsItemProvider *)self settingsAlreadyFetched];
+  settingsAlreadyFetched = [(HFHomeKitAccessorySettingsItemProvider *)self settingsAlreadyFetched];
   v4 = HFLogForCategory(0x28uLL);
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
-  if (v3)
+  if (settingsAlreadyFetched)
   {
     if (v5)
     {
@@ -68,9 +68,9 @@
       _os_log_impl(&dword_20D9BF000, v4, OS_LOG_TYPE_DEFAULT, "We have already fetched settings, so we will just reload the existing setting items to refresh the UI", v10, 2u);
     }
 
-    v6 = [(HFHomeKitAccessorySettingsItemProvider *)self settingItems];
-    v7 = [v6 allObjects];
-    v8 = [(HFHomeKitAccessorySettingsItemProvider *)self _reloadItemsFromSettings:v7 performInitialUpdateOnItems:0];
+    settingItems = [(HFHomeKitAccessorySettingsItemProvider *)self settingItems];
+    allObjects = [settingItems allObjects];
+    _fetchSettingsAndReloadItems = [(HFHomeKitAccessorySettingsItemProvider *)self _reloadItemsFromSettings:allObjects performInitialUpdateOnItems:0];
   }
 
   else
@@ -81,23 +81,23 @@
       _os_log_impl(&dword_20D9BF000, v4, OS_LOG_TYPE_DEFAULT, "Now fetching the settings", buf, 2u);
     }
 
-    v8 = [(HFHomeKitAccessorySettingsItemProvider *)self _fetchSettingsAndReloadItems];
+    _fetchSettingsAndReloadItems = [(HFHomeKitAccessorySettingsItemProvider *)self _fetchSettingsAndReloadItems];
   }
 
-  return v8;
+  return _fetchSettingsAndReloadItems;
 }
 
-- (void)updateSettingValue:(id)a3 forKeyPath:(id)a4
+- (void)updateSettingValue:(id)value forKeyPath:(id)path
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  valueCopy = value;
+  pathCopy = path;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v8 = [(HFHomeKitAccessorySettingsItemProvider *)self settingItems];
-  v9 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  settingItems = [(HFHomeKitAccessorySettingsItemProvider *)self settingItems];
+  v9 = [settingItems countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v9)
   {
     v10 = v9;
@@ -108,19 +108,19 @@
       {
         if (*v19 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(settingItems);
         }
 
         v13 = *(*(&v18 + 1) + 8 * i);
-        v14 = [v13 settingKeyPath];
-        if ([v14 isEqualToString:v7])
+        settingKeyPath = [v13 settingKeyPath];
+        if ([settingKeyPath isEqualToString:pathCopy])
         {
         }
 
         else
         {
-          v15 = [v13 targetSettingKeyPath];
-          v16 = [v15 isEqualToString:v7];
+          targetSettingKeyPath = [v13 targetSettingKeyPath];
+          v16 = [targetSettingKeyPath isEqualToString:pathCopy];
 
           if (!v16)
           {
@@ -128,10 +128,10 @@
           }
         }
 
-        [v13 updateSettingValue:v6];
+        [v13 updateSettingValue:valueCopy];
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v10 = [settingItems countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v10);
@@ -140,10 +140,10 @@
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)updateSettings:(id)a3
+- (BOOL)updateSettings:(id)settings
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  settingsCopy = settings;
   v5 = objc_opt_new();
   v26 = 0;
   v27 = &v26;
@@ -157,18 +157,18 @@
   v25 = &v26;
   v6 = v5;
   v24 = v6;
-  [v4 na_each:v23];
+  [settingsCopy na_each:v23];
   if ([v6 count])
   {
     v7 = MEMORY[0x277CBEB18];
-    v8 = [(HFHomeKitAccessorySettingsItemProvider *)self settingItems];
-    v9 = [v8 allObjects];
-    v10 = [v7 arrayWithArray:v9];
+    settingItems = [(HFHomeKitAccessorySettingsItemProvider *)self settingItems];
+    allObjects = [settingItems allObjects];
+    v10 = [v7 arrayWithArray:allObjects];
 
     [v10 addObjectsFromArray:v6];
-    v11 = [(HFHomeKitAccessorySettingsItemProvider *)self splitSettingsDictionary];
-    v12 = [(HFHomeKitAccessorySettingsItemProvider *)self allKeyPaths];
-    v13 = [(HFHomeKitAccessorySettingsItemProvider *)self _generateAccessorySettingItemForSettings:v11 homeKitSettings:v6 keyPaths:v12];
+    splitSettingsDictionary = [(HFHomeKitAccessorySettingsItemProvider *)self splitSettingsDictionary];
+    allKeyPaths = [(HFHomeKitAccessorySettingsItemProvider *)self allKeyPaths];
+    v13 = [(HFHomeKitAccessorySettingsItemProvider *)self _generateAccessorySettingItemForSettings:splitSettingsDictionary homeKitSettings:v6 keyPaths:allKeyPaths];
 
     [v10 addObjectsFromArray:v13];
     v14 = HFLogForCategory(0x28uLL);
@@ -182,18 +182,18 @@
     v15 = [(HFHomeKitAccessorySettingsItemProvider *)self _reloadItemsFromSettings:v10 performInitialUpdateOnItems:1];
   }
 
-  v16 = [(HFHomeKitAccessorySettingsItemProvider *)self nonHomeKitSettingsDictionary];
-  v17 = [v16 count] == 0;
+  nonHomeKitSettingsDictionary = [(HFHomeKitAccessorySettingsItemProvider *)self nonHomeKitSettingsDictionary];
+  v17 = [nonHomeKitSettingsDictionary count] == 0;
 
   if (!v17)
   {
-    v18 = [(HFHomeKitAccessorySettingsItemProvider *)self settingItems];
+    settingItems2 = [(HFHomeKitAccessorySettingsItemProvider *)self settingItems];
     v22[0] = MEMORY[0x277D85DD0];
     v22[1] = 3221225472;
     v22[2] = __57__HFHomeKitAccessorySettingsItemProvider_updateSettings___block_invoke_2;
     v22[3] = &unk_277DF3108;
     v22[4] = self;
-    [v18 na_each:v22];
+    [settingItems2 na_each:v22];
   }
 
   v19 = *(v27 + 24);
@@ -314,12 +314,12 @@ void __57__HFHomeKitAccessorySettingsItemProvider_updateSettings___block_invoke_
   }
 }
 
-- (BOOL)shouldUpdateForKeyPaths:(id)a3
+- (BOOL)shouldUpdateForKeyPaths:(id)paths
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HFHomeKitAccessorySettingsItemProvider *)self homeKitKeyPaths];
-  v6 = [v5 count];
+  pathsCopy = paths;
+  homeKitKeyPaths = [(HFHomeKitAccessorySettingsItemProvider *)self homeKitKeyPaths];
+  v6 = [homeKitKeyPaths count];
 
   v7 = HFLogForCategory(0x28uLL);
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
@@ -327,11 +327,11 @@ void __57__HFHomeKitAccessorySettingsItemProvider_updateSettings___block_invoke_
   {
     if (v8)
     {
-      v9 = [(HFHomeKitAccessorySettingsItemProvider *)self homeKitKeyPaths];
+      homeKitKeyPaths2 = [(HFHomeKitAccessorySettingsItemProvider *)self homeKitKeyPaths];
       *buf = 138412546;
-      v15 = v4;
+      v15 = pathsCopy;
       v16 = 2112;
-      v17 = v9;
+      v17 = homeKitKeyPaths2;
       _os_log_impl(&dword_20D9BF000, v7, OS_LOG_TYPE_DEFAULT, "Deciding whether we should update [%@], current homeKitKeyPaths [%@]", buf, 0x16u);
     }
 
@@ -340,7 +340,7 @@ void __57__HFHomeKitAccessorySettingsItemProvider_updateSettings___block_invoke_
     v13[2] = __66__HFHomeKitAccessorySettingsItemProvider_shouldUpdateForKeyPaths___block_invoke;
     v13[3] = &unk_277DF3130;
     v13[4] = self;
-    v10 = [v4 na_any:v13];
+    v10 = [pathsCopy na_any:v13];
   }
 
   else
@@ -348,7 +348,7 @@ void __57__HFHomeKitAccessorySettingsItemProvider_updateSettings___block_invoke_
     if (v8)
     {
       *buf = 138412290;
-      v15 = v4;
+      v15 = pathsCopy;
       _os_log_impl(&dword_20D9BF000, v7, OS_LOG_TYPE_DEFAULT, "Should always update for the first callback for [%@]", buf, 0xCu);
     }
 
@@ -371,21 +371,21 @@ uint64_t __66__HFHomeKitAccessorySettingsItemProvider_shouldUpdateForKeyPaths___
 
 - (id)sourceItemAccessory
 {
-  v2 = [(HFHomeKitAccessorySettingsItemProvider *)self sourceItem];
-  v3 = [v2 accessories];
-  v4 = [v3 anyObject];
+  sourceItem = [(HFHomeKitAccessorySettingsItemProvider *)self sourceItem];
+  accessories = [sourceItem accessories];
+  anyObject = [accessories anyObject];
 
-  return v4;
+  return anyObject;
 }
 
 - (id)_fetchSettingsAndReloadItems
 {
   v53 = *MEMORY[0x277D85DE8];
   v39 = objc_alloc_init(MEMORY[0x277D2C900]);
-  v3 = [(HFHomeKitAccessorySettingsItemProvider *)self moduleSettings];
+  moduleSettings = [(HFHomeKitAccessorySettingsItemProvider *)self moduleSettings];
   v4 = objc_opt_new();
-  v5 = [(HFHomeKitAccessorySettingsItemProvider *)self sourceItemAccessory];
-  v41 = [v5 home];
+  sourceItemAccessory = [(HFHomeKitAccessorySettingsItemProvider *)self sourceItemAccessory];
+  home = [sourceItemAccessory home];
 
   v6 = objc_opt_new();
   v7 = objc_opt_new();
@@ -402,8 +402,8 @@ uint64_t __66__HFHomeKitAccessorySettingsItemProvider_shouldUpdateForKeyPaths___
   v11 = v8;
   v50 = v11;
   v12 = v4;
-  v42 = v3;
-  [v3 na_each:v46];
+  v42 = moduleSettings;
+  [moduleSettings na_each:v46];
   if ([v9 count])
   {
     v13 = [v9 copy];
@@ -434,17 +434,17 @@ uint64_t __66__HFHomeKitAccessorySettingsItemProvider_shouldUpdateForKeyPaths___
   v18 = MEMORY[0x277CBEB18];
   [(HFHomeKitAccessorySettingsItemProvider *)self settingItems];
   v20 = v19 = v12;
-  v21 = [v20 allObjects];
-  v22 = [v18 arrayWithArray:v21];
+  allObjects = [v20 allObjects];
+  v22 = [v18 arrayWithArray:allObjects];
 
   v23 = v19;
   v38 = [(HFHomeKitAccessorySettingsItemProvider *)self _generateAccessorySettingItemForSettings:v10 keyPaths:v19];
   [v22 addObjectsFromArray:v38];
   v24 = +[HFHomeKitDispatcher sharedDispatcher];
-  v25 = [v24 accessorySettingsDataSource];
-  v26 = [v41 uniqueIdentifier];
-  v27 = [(HFHomeKitAccessorySettingsItemProvider *)self accessoryIdentifier];
-  v28 = [v25 hf_defaultSettingsWithHomeIdentifier:v26 accessoryIdentifier:v27 keyPaths:v11];
+  accessorySettingsDataSource = [v24 accessorySettingsDataSource];
+  uniqueIdentifier = [home uniqueIdentifier];
+  accessoryIdentifier = [(HFHomeKitAccessorySettingsItemProvider *)self accessoryIdentifier];
+  v28 = [accessorySettingsDataSource hf_defaultSettingsWithHomeIdentifier:uniqueIdentifier accessoryIdentifier:accessoryIdentifier keyPaths:v11];
 
   v29 = [(HFHomeKitAccessorySettingsItemProvider *)self _generateAccessorySettingItemForSettings:v40 homeKitSettings:v28 keyPaths:v23];
   [v22 na_safeAddObjectsFromArray:v28];
@@ -511,17 +511,17 @@ void __70__HFHomeKitAccessorySettingsItemProvider__fetchSettingsAndReloadItems__
   [*(a1 + 48) finishWithResult:v7 error:v6];
 }
 
-- (id)_reloadItemsFromSettings:(id)a3 performInitialUpdateOnItems:(BOOL)a4
+- (id)_reloadItemsFromSettings:(id)settings performInitialUpdateOnItems:(BOOL)items
 {
-  v6 = a3;
+  settingsCopy = settings;
   objc_initWeak(&location, self);
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __95__HFHomeKitAccessorySettingsItemProvider__reloadItemsFromSettings_performInitialUpdateOnItems___block_invoke_3;
   v12[3] = &unk_277DF3210;
   objc_copyWeak(&v13, &location);
-  v14 = a4;
-  v7 = [(HFItemProvider *)self reloadItemsWithObjects:v6 keyAdaptor:&__block_literal_global_4 itemAdaptor:&__block_literal_global_16_0 filter:0 itemMap:v12];
+  itemsCopy = items;
+  v7 = [(HFItemProvider *)self reloadItemsWithObjects:settingsCopy keyAdaptor:&__block_literal_global_4 itemAdaptor:&__block_literal_global_16_0 filter:0 itemMap:v12];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __95__HFHomeKitAccessorySettingsItemProvider__reloadItemsFromSettings_performInitialUpdateOnItems___block_invoke_19;
@@ -769,34 +769,34 @@ id __95__HFHomeKitAccessorySettingsItemProvider__reloadItemsFromSettings_perform
   return v11;
 }
 
-- (void)_subscribeToAccessorySettings:(id)a3
+- (void)_subscribeToAccessorySettings:(id)settings
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  settingsCopy = settings;
   v5 = HFLogForCategory(0x28uLL);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(HFHomeKitAccessorySettingsItemProvider *)self accessoryIdentifier];
+    accessoryIdentifier = [(HFHomeKitAccessorySettingsItemProvider *)self accessoryIdentifier];
     *buf = 138412546;
-    v18 = v6;
+    v18 = accessoryIdentifier;
     v19 = 2112;
-    v20 = v4;
+    v20 = settingsCopy;
     _os_log_impl(&dword_20D9BF000, v5, OS_LOG_TYPE_DEFAULT, "Now subscribing to setting accessoryUUID [%@] - keyPaths [%@]", buf, 0x16u);
   }
 
   v7 = +[HFHomeKitDispatcher sharedDispatcher];
-  v8 = [v7 accessorySettingsDataSource];
-  v9 = [(HFHomeKitAccessorySettingsItemProvider *)self sourceItemAccessory];
-  v10 = [v9 home];
-  v11 = [v10 uniqueIdentifier];
-  v12 = [(HFHomeKitAccessorySettingsItemProvider *)self accessoryIdentifier];
+  accessorySettingsDataSource = [v7 accessorySettingsDataSource];
+  sourceItemAccessory = [(HFHomeKitAccessorySettingsItemProvider *)self sourceItemAccessory];
+  home = [sourceItemAccessory home];
+  uniqueIdentifier = [home uniqueIdentifier];
+  accessoryIdentifier2 = [(HFHomeKitAccessorySettingsItemProvider *)self accessoryIdentifier];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __72__HFHomeKitAccessorySettingsItemProvider__subscribeToAccessorySettings___block_invoke;
   v15[3] = &unk_277DF2D08;
-  v16 = v4;
-  v13 = v4;
-  [v8 hf_subscribeToAccessorySettingsWithHomeIdentifier:v11 accessoryIdentifier:v12 keyPaths:v13 options:0 completionHandler:v15];
+  v16 = settingsCopy;
+  v13 = settingsCopy;
+  [accessorySettingsDataSource hf_subscribeToAccessorySettingsWithHomeIdentifier:uniqueIdentifier accessoryIdentifier:accessoryIdentifier2 keyPaths:v13 options:0 completionHandler:v15];
 
   v14 = *MEMORY[0x277D85DE8];
 }
@@ -822,18 +822,18 @@ void __72__HFHomeKitAccessorySettingsItemProvider__subscribeToAccessorySettings_
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_generateAccessorySettingItemForSettings:(id)a3 homeKitSettings:(id)a4 keyPaths:(id)a5
+- (id)_generateAccessorySettingItemForSettings:(id)settings homeKitSettings:(id)kitSettings keyPaths:(id)paths
 {
   v74 = *MEMORY[0x277D85DE8];
-  v40 = a3;
-  v7 = a4;
-  v45 = a5;
+  settingsCopy = settings;
+  kitSettingsCopy = kitSettings;
+  pathsCopy = paths;
   v44 = objc_opt_new();
   v60 = 0u;
   v61 = 0u;
   v62 = 0u;
   v63 = 0u;
-  obj = v7;
+  obj = kitSettingsCopy;
   v41 = [obj countByEnumeratingWithState:&v60 objects:v73 count:16];
   if (v41)
   {
@@ -854,7 +854,7 @@ void __72__HFHomeKitAccessorySettingsItemProvider__subscribeToAccessorySettings_
         v57 = 0u;
         v58 = 0u;
         v59 = 0u;
-        v9 = v40;
+        v9 = settingsCopy;
         v10 = [v9 countByEnumeratingWithState:&v56 objects:v72 count:16];
         if (v10)
         {
@@ -876,8 +876,8 @@ void __72__HFHomeKitAccessorySettingsItemProvider__subscribeToAccessorySettings_
               v14 = *(*(&v56 + 1) + 8 * v13);
               v15 = [v9 objectForKeyedSubscript:v14];
               v16 = [v15 objectForKeyedSubscript:HFHomeKitSettingTargetKeyPathKey];
-              v17 = [v55 keyPath];
-              v18 = [v16 isEqualToString:v17];
+              keyPath = [v55 keyPath];
+              v18 = [v16 isEqualToString:keyPath];
 
               if (v18)
               {
@@ -901,19 +901,19 @@ void __72__HFHomeKitAccessorySettingsItemProvider__subscribeToAccessorySettings_
 
                 v23 = _HFLocalizedStringWithDefaultValue(v22, 0, 0);
                 v51 = [HFHomeKitAccessorySettingItem alloc];
-                v24 = [(HFHomeKitAccessorySettingsItemProvider *)self sourceItem];
-                v25 = [(HFHomeKitAccessorySettingsItemProvider *)self settingsController];
-                v26 = [(HFHomeKitAccessorySettingsItemProvider *)self sourceItemAccessory];
-                v27 = [v26 home];
-                v28 = [v27 uniqueIdentifier];
-                v29 = [(HFHomeKitAccessorySettingsItemProvider *)self accessoryIdentifier];
+                sourceItem = [(HFHomeKitAccessorySettingsItemProvider *)self sourceItem];
+                settingsController = [(HFHomeKitAccessorySettingsItemProvider *)self settingsController];
+                sourceItemAccessory = [(HFHomeKitAccessorySettingsItemProvider *)self sourceItemAccessory];
+                home = [sourceItemAccessory home];
+                uniqueIdentifier = [home uniqueIdentifier];
+                accessoryIdentifier = [(HFHomeKitAccessorySettingsItemProvider *)self accessoryIdentifier];
                 v70 = v14;
                 v71 = v54;
                 v30 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v71 forKeys:&v70 count:1];
-                v31 = [(HFHomeKitAccessorySettingsItemProvider *)self usageOptions];
+                usageOptions = [(HFHomeKitAccessorySettingsItemProvider *)self usageOptions];
                 v32 = v51;
                 v52 = v23;
-                v33 = [(HFHomeKitAccessorySettingItem *)v32 initWithSetting:v55 sourceItem:v24 localizedTitle:v23 settingsController:v25 homeIdentifier:v28 accessoryIdentifier:v29 settingDict:v30 usageOptions:v31];
+                v33 = [(HFHomeKitAccessorySettingItem *)v32 initWithSetting:v55 sourceItem:sourceItem localizedTitle:v23 settingsController:settingsController homeIdentifier:uniqueIdentifier accessoryIdentifier:accessoryIdentifier settingDict:v30 usageOptions:usageOptions];
 
                 v34 = HFLogForCategory(0x28uLL);
                 v16 = v53;
@@ -928,7 +928,7 @@ void __72__HFHomeKitAccessorySettingsItemProvider__subscribeToAccessorySettings_
                   _os_log_debug_impl(&dword_20D9BF000, v34, OS_LOG_TYPE_DEBUG, "SplitSetting: Generated HFHomeKitAccessorySettingItem [%@] for unique keypath %@ having targetKeyPath %@", buf, 0x20u);
                 }
 
-                -[HFHomeKitAccessorySettingItem setDisplayIndex:](v33, "setDisplayIndex:", [v45 indexOfObject:v49]);
+                -[HFHomeKitAccessorySettingItem setDisplayIndex:](v33, "setDisplayIndex:", [pathsCopy indexOfObject:v49]);
                 [v44 addObject:v33];
 
                 v12 = v46;
@@ -963,17 +963,17 @@ void __72__HFHomeKitAccessorySettingsItemProvider__subscribeToAccessorySettings_
   return v35;
 }
 
-- (id)_generateAccessorySettingItemForSettings:(id)a3 keyPaths:(id)a4
+- (id)_generateAccessorySettingItemForSettings:(id)settings keyPaths:(id)paths
 {
   v51 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v31 = a4;
+  settingsCopy = settings;
+  pathsCopy = paths;
   v30 = objc_opt_new();
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
-  obj = v5;
+  obj = settingsCopy;
   v32 = [obj countByEnumeratingWithState:&v40 objects:v50 count:16];
   if (v32)
   {
@@ -1009,20 +1009,20 @@ void __72__HFHomeKitAccessorySettingsItemProvider__subscribeToAccessorySettings_
 
         v13 = _HFLocalizedStringWithDefaultValue(v12, 0, 0);
         v38 = [HFHomeKitAccessorySettingItem alloc];
-        v14 = [(HFHomeKitAccessorySettingsItemProvider *)self sourceItem];
-        v15 = [(HFHomeKitAccessorySettingsItemProvider *)self settingsController];
-        v16 = [(HFHomeKitAccessorySettingsItemProvider *)self sourceItemAccessory];
-        v17 = [v16 home];
-        v18 = [v17 uniqueIdentifier];
-        v19 = [(HFHomeKitAccessorySettingsItemProvider *)self accessoryIdentifier];
+        sourceItem = [(HFHomeKitAccessorySettingsItemProvider *)self sourceItem];
+        settingsController = [(HFHomeKitAccessorySettingsItemProvider *)self settingsController];
+        sourceItemAccessory = [(HFHomeKitAccessorySettingsItemProvider *)self sourceItemAccessory];
+        home = [sourceItemAccessory home];
+        uniqueIdentifier = [home uniqueIdentifier];
+        accessoryIdentifier = [(HFHomeKitAccessorySettingsItemProvider *)self accessoryIdentifier];
         v48 = v36;
         v49 = v8;
         [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v49 forKeys:&v48 count:1];
         v20 = v35 = v8;
-        v21 = [(HFHomeKitAccessorySettingsItemProvider *)self usageOptions];
+        usageOptions = [(HFHomeKitAccessorySettingsItemProvider *)self usageOptions];
         v22 = v38;
         v39 = v13;
-        v23 = [(HFHomeKitAccessorySettingItem *)v22 initWithSourceItem:v14 localizedTitle:v13 settingsController:v15 homeIdentifier:v18 accessoryIdentifier:v19 settingDict:v20 usageOptions:v21];
+        v23 = [(HFHomeKitAccessorySettingItem *)v22 initWithSourceItem:sourceItem localizedTitle:v13 settingsController:settingsController homeIdentifier:uniqueIdentifier accessoryIdentifier:accessoryIdentifier settingDict:v20 usageOptions:usageOptions];
 
         v24 = HFLogForCategory(0x28uLL);
         if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
@@ -1034,7 +1034,7 @@ void __72__HFHomeKitAccessorySettingsItemProvider__subscribeToAccessorySettings_
           _os_log_debug_impl(&dword_20D9BF000, v24, OS_LOG_TYPE_DEBUG, "Non-HomeKit Setting: Generated HFHomeKitAccessorySettingItem [%@] for unique keypath %@", buf, 0x16u);
         }
 
-        -[HFHomeKitAccessorySettingItem setDisplayIndex:](v23, "setDisplayIndex:", [v31 indexOfObject:v36]);
+        -[HFHomeKitAccessorySettingItem setDisplayIndex:](v23, "setDisplayIndex:", [pathsCopy indexOfObject:v36]);
         [v30 addObject:v23];
 
         v6 = v34 + 1;

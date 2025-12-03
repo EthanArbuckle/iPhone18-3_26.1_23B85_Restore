@@ -1,6 +1,6 @@
 @interface NSPortNameServer
 + (NSPortNameServer)systemDefaultPortNameServer;
-- (id)_replyPort:(id)a3;
+- (id)_replyPort:(id)port;
 @end
 
 @implementation NSPortNameServer
@@ -17,9 +17,9 @@
   return result;
 }
 
-- (id)_replyPort:(id)a3
+- (id)_replyPort:(id)port
 {
-  if (!a3)
+  if (!port)
   {
     return 0;
   }

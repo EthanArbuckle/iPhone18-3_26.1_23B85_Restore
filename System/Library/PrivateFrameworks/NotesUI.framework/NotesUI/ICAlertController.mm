@@ -1,17 +1,17 @@
 @interface ICAlertController
-- (ICAlertController)initWithCoder:(id)a3;
-- (ICAlertController)initWithNibName:(id)a3 bundle:(id)a4;
+- (ICAlertController)initWithCoder:(id)coder;
+- (ICAlertController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)dealloc;
 - (void)dismissWhenPossible;
 @end
 
 @implementation ICAlertController
 
-- (ICAlertController)initWithNibName:(id)a3 bundle:(id)a4
+- (ICAlertController)initWithNibName:(id)name bundle:(id)bundle
 {
   v7.receiver = self;
   v7.super_class = ICAlertController;
-  v4 = [(ICAlertController *)&v7 initWithNibName:a3 bundle:a4];
+  v4 = [(ICAlertController *)&v7 initWithNibName:name bundle:bundle];
   v5 = v4;
   if (v4)
   {
@@ -21,11 +21,11 @@
   return v5;
 }
 
-- (ICAlertController)initWithCoder:(id)a3
+- (ICAlertController)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = ICAlertController;
-  v3 = [(ICAlertController *)&v6 initWithCoder:a3];
+  v3 = [(ICAlertController *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {

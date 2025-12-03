@@ -1,53 +1,53 @@
 @interface CKDCodeFunctionInvokeURLRequest
 - (BOOL)requestGETPreAuth;
-- (CKDCodeFunctionInvokeURLRequest)initWithOperation:(id)a3 serviceName:(id)a4 functionName:(id)a5 serializedParameters:(id)a6 attestationEntropy:(id)a7 pccWrappedInvocationKeys:(id)a8 trustedTargetWrappedInvocationKey:(id)a9;
+- (CKDCodeFunctionInvokeURLRequest)initWithOperation:(id)operation serviceName:(id)name functionName:(id)functionName serializedParameters:(id)parameters attestationEntropy:(id)entropy pccWrappedInvocationKeys:(id)keys trustedTargetWrappedInvocationKey:(id)key;
 - (id)additionalHeaderValues;
 - (id)generateRequestOperations;
-- (id)requestDidParseProtobufObject:(id)a3;
+- (id)requestDidParseProtobufObject:(id)object;
 - (id)requestOperationClasses;
 - (int64_t)databaseScope;
-- (void)fillOutEquivalencyPropertiesBuilder:(id)a3;
-- (void)requestDidParseNodeFailure:(id)a3;
+- (void)fillOutEquivalencyPropertiesBuilder:(id)builder;
+- (void)requestDidParseNodeFailure:(id)failure;
 @end
 
 @implementation CKDCodeFunctionInvokeURLRequest
 
-- (CKDCodeFunctionInvokeURLRequest)initWithOperation:(id)a3 serviceName:(id)a4 functionName:(id)a5 serializedParameters:(id)a6 attestationEntropy:(id)a7 pccWrappedInvocationKeys:(id)a8 trustedTargetWrappedInvocationKey:(id)a9
+- (CKDCodeFunctionInvokeURLRequest)initWithOperation:(id)operation serviceName:(id)name functionName:(id)functionName serializedParameters:(id)parameters attestationEntropy:(id)entropy pccWrappedInvocationKeys:(id)keys trustedTargetWrappedInvocationKey:(id)key
 {
-  v24 = a4;
-  v23 = a5;
-  v22 = a6;
-  v21 = a7;
-  v16 = a8;
-  v17 = a9;
+  nameCopy = name;
+  functionNameCopy = functionName;
+  parametersCopy = parameters;
+  entropyCopy = entropy;
+  keysCopy = keys;
+  keyCopy = key;
   v25.receiver = self;
   v25.super_class = CKDCodeFunctionInvokeURLRequest;
-  v18 = [(CKDURLRequest *)&v25 initWithOperation:a3];
+  v18 = [(CKDURLRequest *)&v25 initWithOperation:operation];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_serviceName, a4);
-    objc_storeStrong(&v19->_functionName, a5);
-    objc_storeStrong(&v19->_serializedParameters, a6);
-    objc_storeStrong(&v19->_pccWrappedInvocationKeys, a8);
-    objc_storeStrong(&v19->_trustedTargetWrappedInvocationKey, a9);
-    objc_storeStrong(&v19->_attestationEntropy, a7);
+    objc_storeStrong(&v18->_serviceName, name);
+    objc_storeStrong(&v19->_functionName, functionName);
+    objc_storeStrong(&v19->_serializedParameters, parameters);
+    objc_storeStrong(&v19->_pccWrappedInvocationKeys, keys);
+    objc_storeStrong(&v19->_trustedTargetWrappedInvocationKey, key);
+    objc_storeStrong(&v19->_attestationEntropy, entropy);
   }
 
   return v19;
 }
 
-- (void)fillOutEquivalencyPropertiesBuilder:(id)a3
+- (void)fillOutEquivalencyPropertiesBuilder:(id)builder
 {
   v13.receiver = self;
   v13.super_class = CKDCodeFunctionInvokeURLRequest;
-  v4 = a3;
-  [(CKDURLRequest *)&v13 fillOutEquivalencyPropertiesBuilder:v4];
+  builderCopy = builder;
+  [(CKDURLRequest *)&v13 fillOutEquivalencyPropertiesBuilder:builderCopy];
   v7 = objc_msgSend_serviceName(self, v5, v6, v13.receiver, v13.super_class);
-  objc_msgSend_setObject_forKeyedSubscript_(v4, v8, v7, @"serviceName");
+  objc_msgSend_setObject_forKeyedSubscript_(builderCopy, v8, v7, @"serviceName");
 
   v11 = objc_msgSend_functionName(self, v9, v10);
-  objc_msgSend_setObject_forKeyedSubscript_(v4, v12, v11, @"functionName");
+  objc_msgSend_setObject_forKeyedSubscript_(builderCopy, v12, v11, @"functionName");
 }
 
 - (id)additionalHeaderValues
@@ -74,17 +74,17 @@
 
   if (objc_msgSend_enqueuedOnContainerService(v7, v8, v9))
   {
-    v10 = 1;
+    databaseScope = 1;
   }
 
   else
   {
     v12.receiver = self;
     v12.super_class = CKDCodeFunctionInvokeURLRequest;
-    v10 = [(CKDURLRequest *)&v12 databaseScope];
+    databaseScope = [(CKDURLRequest *)&v12 databaseScope];
   }
 
-  return v10;
+  return databaseScope;
 }
 
 - (id)requestOperationClasses
@@ -177,10 +177,10 @@
   return v77;
 }
 
-- (id)requestDidParseProtobufObject:(id)a3
+- (id)requestDidParseProtobufObject:(id)object
 {
   v53 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  objectCopy = object;
   v7 = objc_msgSend_fakeResponseOperationResultByItemID(self, v5, v6);
 
   if (v7)
@@ -209,13 +209,13 @@
         _os_log_error_impl(&dword_22506F000, v42, OS_LOG_TYPE_ERROR, "req: %{public}@, Inlining fake response operation result for function %{public}@", &v49, 0x16u);
       }
 
-      objc_msgSend_setResult_(v4, v17, v15);
+      objc_msgSend_setResult_(objectCopy, v17, v15);
     }
   }
 
-  if (objc_msgSend_hasFunctionInvokeResponse(v4, v8, v9))
+  if (objc_msgSend_hasFunctionInvokeResponse(objectCopy, v8, v9))
   {
-    v20 = objc_msgSend_functionInvokeResponse(v4, v18, v19);
+    v20 = objc_msgSend_functionInvokeResponse(objectCopy, v18, v19);
     if (objc_msgSend_hasAttestationResponse(v20, v21, v22))
     {
       v25 = objc_alloc_init(MEMORY[0x277D43178]);
@@ -241,7 +241,7 @@
   if (v33)
   {
     v36 = objc_msgSend_serializedResultsCallback(self, v34, v35);
-    v39 = objc_msgSend_result(v4, v37, v38);
+    v39 = objc_msgSend_result(objectCopy, v37, v38);
     (v36)[2](v36, v32, v39);
   }
 
@@ -249,15 +249,15 @@
   return 0;
 }
 
-- (void)requestDidParseNodeFailure:(id)a3
+- (void)requestDidParseNodeFailure:(id)failure
 {
-  v13 = a3;
+  failureCopy = failure;
   v6 = objc_msgSend_serializedResultsCallback(self, v4, v5);
 
   if (v6)
   {
     v9 = objc_msgSend_serializedResultsCallback(self, v7, v8);
-    v12 = objc_msgSend_result(v13, v10, v11);
+    v12 = objc_msgSend_result(failureCopy, v10, v11);
     (v9)[2](v9, 0, v12);
   }
 }

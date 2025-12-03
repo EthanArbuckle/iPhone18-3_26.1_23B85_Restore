@@ -20,31 +20,31 @@
 
 - (BOOL)hasSubscriptionAssetSource
 {
-  v1 = [a1 modelGenericObject];
-  v2 = [v1 flattenedGenericObject];
+  modelGenericObject = [self modelGenericObject];
+  flattenedGenericObject = [modelGenericObject flattenedGenericObject];
 
-  v3 = [v2 type];
-  switch(v3)
+  type = [flattenedGenericObject type];
+  switch(type)
   {
     case 9:
-      v4 = [v2 movie];
+      movie = [flattenedGenericObject movie];
       break;
     case 6:
-      v4 = [v2 tvEpisode];
+      movie = [flattenedGenericObject tvEpisode];
       break;
     case 1:
-      v4 = [v2 song];
+      movie = [flattenedGenericObject song];
       break;
     default:
-      v6 = 0;
+      storeAsset = 0;
       goto LABEL_9;
   }
 
-  v5 = v4;
-  v6 = [v4 storeAsset];
+  v5 = movie;
+  storeAsset = [movie storeAsset];
 
 LABEL_9:
-  v7 = [v6 endpointType] == 3;
+  v7 = [storeAsset endpointType] == 3;
 
   return v7;
 }
@@ -54,7 +54,7 @@ LABEL_9:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [a1 playbackRequestUserIdentity];
+    [self playbackRequestUserIdentity];
   }
 
   else
@@ -70,65 +70,65 @@ LABEL_9:
 {
   v55 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  v5 = a1;
+  selfCopy = self;
   v6 = v4;
-  v7 = [v5 modelGenericObject];
-  v8 = [v7 flattenedGenericObject];
+  modelGenericObject = [selfCopy modelGenericObject];
+  flattenedGenericObject = [modelGenericObject flattenedGenericObject];
 
-  v9 = [v6 modelGenericObject];
-  v10 = [v9 flattenedGenericObject];
+  modelGenericObject2 = [v6 modelGenericObject];
+  flattenedGenericObject2 = [modelGenericObject2 flattenedGenericObject];
 
-  if ([v8 type] == 1 && objc_msgSend(v10, "type") == 1)
+  if ([flattenedGenericObject type] == 1 && objc_msgSend(flattenedGenericObject2, "type") == 1)
   {
-    v11 = [v8 song];
-    v38 = v10;
-    v12 = [v10 song];
+    song = [flattenedGenericObject song];
+    v38 = flattenedGenericObject2;
+    song2 = [flattenedGenericObject2 song];
     v13 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [v5 contentItemID];
-      v35 = [v11 discNumber];
-      v34 = [v11 trackNumber];
-      v37 = [v11 album];
-      v15 = [v37 identifiers];
-      v16 = [v6 contentItemID];
-      v33 = [v12 discNumber];
-      v32 = [v12 trackNumber];
-      [v12 album];
-      v17 = v36 = v12;
-      v18 = [v17 identifiers];
+      contentItemID = [selfCopy contentItemID];
+      discNumber = [song discNumber];
+      trackNumber = [song trackNumber];
+      album = [song album];
+      identifiers = [album identifiers];
+      contentItemID2 = [v6 contentItemID];
+      discNumber2 = [song2 discNumber];
+      trackNumber2 = [song2 trackNumber];
+      [song2 album];
+      v17 = v36 = song2;
+      identifiers2 = [v17 identifiers];
       *buf = 138545154;
-      v40 = v14;
+      v40 = contentItemID;
       v41 = 2048;
-      v42 = v35;
+      v42 = discNumber;
       v43 = 2048;
-      v44 = v34;
+      v44 = trackNumber;
       v45 = 2114;
-      v46 = v15;
+      type2 = identifiers;
       v47 = 2114;
-      v48 = v16;
+      v48 = contentItemID2;
       v49 = 2048;
-      v50 = v33;
+      v50 = discNumber2;
       v51 = 2048;
-      v52 = v32;
+      v52 = trackNumber2;
       v53 = 2114;
-      v54 = v18;
+      v54 = identifiers2;
       _os_log_impl(&dword_1C5C61000, v13, OS_LOG_TYPE_DEFAULT, "[MPAVItem isInContiguousAlbum] Current song: contentIdentifier=%{public}@ discNumber=%ld trackNumber=%ld album.identifiers=%{public}@ | Next song: contentIdentifier=%{public}@, discNumber=%ld, trackNumber=%ld, album.identifiers=%{public}@", buf, 0x52u);
 
-      v12 = v36;
+      song2 = v36;
     }
 
-    v19 = [v12 album];
-    [v19 identifiers];
-    v21 = v20 = v12;
-    v22 = [v11 album];
-    v23 = [v22 identifiers];
-    v24 = [v21 intersectsSet:v23];
+    album2 = [song2 album];
+    [album2 identifiers];
+    v21 = v20 = song2;
+    album3 = [song album];
+    identifiers3 = [album3 identifiers];
+    v24 = [v21 intersectsSet:identifiers3];
 
-    if (v24 && (v25 = [v20 discNumber], v25 == -[NSObject discNumber](v11, "discNumber")))
+    if (v24 && (v25 = [v20 discNumber], v25 == -[NSObject discNumber](song, "discNumber")))
     {
-      v26 = [v20 trackNumber];
-      v27 = v26 == [v11 trackNumber]+ 1;
+      trackNumber3 = [v20 trackNumber];
+      v27 = trackNumber3 == [song trackNumber]+ 1;
     }
 
     else
@@ -136,26 +136,26 @@ LABEL_9:
       v27 = 0;
     }
 
-    v10 = v38;
+    flattenedGenericObject2 = v38;
   }
 
   else
   {
-    v11 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+    song = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
+    if (os_log_type_enabled(song, OS_LOG_TYPE_DEFAULT))
     {
-      v28 = [v5 contentItemID];
-      v29 = [v8 type];
-      v30 = [v6 contentItemID];
+      contentItemID3 = [selfCopy contentItemID];
+      type = [flattenedGenericObject type];
+      contentItemID4 = [v6 contentItemID];
       *buf = 138544130;
-      v40 = v28;
+      v40 = contentItemID3;
       v41 = 2048;
-      v42 = v29;
+      v42 = type;
       v43 = 2114;
-      v44 = v30;
+      v44 = contentItemID4;
       v45 = 2048;
-      v46 = [v10 type];
-      _os_log_impl(&dword_1C5C61000, v11, OS_LOG_TYPE_DEFAULT, "[MPAVItem isInContiguousAlbum] Both items are not songs: currentID=%{public}@ - currentType=%ld, nextID=%{public}@ - nextType=%ld", buf, 0x2Au);
+      type2 = [flattenedGenericObject2 type];
+      _os_log_impl(&dword_1C5C61000, song, OS_LOG_TYPE_DEFAULT, "[MPAVItem isInContiguousAlbum] Both items are not songs: currentID=%{public}@ - currentType=%ld, nextID=%{public}@ - nextType=%ld", buf, 0x2Au);
     }
 
     v27 = 0;
@@ -169,31 +169,31 @@ LABEL_9:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v2 = [a1 activeFormat];
+    activeFormat = [self activeFormat];
   }
 
   else
   {
     v3 = [MPCPlayerAudioFormat alloc];
-    v4 = [a1 contentItem];
-    v5 = [v4 activeFormat];
-    v2 = [(MPCPlayerAudioFormat *)v3 initWithNowPlayingInfoAudioFormat:v5];
+    contentItem = [self contentItem];
+    activeFormat2 = [contentItem activeFormat];
+    activeFormat = [(MPCPlayerAudioFormat *)v3 initWithNowPlayingInfoAudioFormat:activeFormat2];
   }
 
-  return v2;
+  return activeFormat;
 }
 
 - (uint64_t)shouldPerformOverlappingTransitionWith:()MFQueuePlayerItem
 {
   v4 = a3;
-  if (!_os_feature_enabled_impl() || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || ([a1 isConfiguredForVocalAttenuation] & 1) != 0 || (objc_msgSend(v4, "isConfiguredForVocalAttenuation") & 1) != 0 || (objc_msgSend(a1, "isVideoContent") & 1) != 0 || (objc_msgSend(v4, "isVideoContent") & 1) != 0)
+  if (!_os_feature_enabled_impl() || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || ([self isConfiguredForVocalAttenuation] & 1) != 0 || (objc_msgSend(v4, "isConfiguredForVocalAttenuation") & 1) != 0 || (objc_msgSend(self, "isVideoContent") & 1) != 0 || (objc_msgSend(v4, "isVideoContent") & 1) != 0)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = [a1 _isInContiguousAlbumWith:v4] ^ 1;
+    v5 = [self _isInContiguousAlbumWith:v4] ^ 1;
   }
 
   return v5;
@@ -201,39 +201,39 @@ LABEL_9:
 
 - (BOOL)shouldPerformGaplessTransitionWith:()MFQueuePlayerItem
 {
-  if (![a1 _isInContiguousAlbumWith:?])
+  if (![self _isInContiguousAlbumWith:?])
   {
     return 0;
   }
 
-  v2 = [a1 gaplessParameters];
-  v3 = v2 != 0;
+  gaplessParameters = [self gaplessParameters];
+  v3 = gaplessParameters != 0;
 
   return v3;
 }
 
 - (id)gaplessParameters
 {
-  if ([a1 conformsToProtocol:&unk_1F459C5F0])
+  if ([self conformsToProtocol:&unk_1F459C5F0])
   {
-    v2 = [a1 gaplessInfo];
+    gaplessInfo = [self gaplessInfo];
   }
 
   else
   {
-    v2 = 0;
+    gaplessInfo = 0;
   }
 
-  return v2;
+  return gaplessInfo;
 }
 
 - (uint64_t)reset
 {
-  result = [a1 isPreloadedAsset];
+  result = [self isPreloadedAsset];
   if ((result & 1) == 0)
   {
 
-    return [a1 _clearAssetNow];
+    return [self _clearAssetNow];
   }
 
   return result;
@@ -251,13 +251,13 @@ LABEL_9:
     v3 = qword_1C6045400[a3 + 1];
   }
 
-  return [a1 setLastChangeDirection:v3];
+  return [self setLastChangeDirection:v3];
 }
 
 - (double)effectivePlaybackStartTime
 {
-  v1 = [a1 initialPlaybackStartTime];
-  [v1 doubleValue];
+  initialPlaybackStartTime = [self initialPlaybackStartTime];
+  [initialPlaybackStartTime doubleValue];
   v3 = v2;
 
   return v3;
@@ -265,8 +265,8 @@ LABEL_9:
 
 - (double)playbackStartTime
 {
-  v1 = [a1 playbackInfoStartTime];
-  [v1 doubleValue];
+  playbackInfoStartTime = [self playbackInfoStartTime];
+  [playbackInfoStartTime doubleValue];
   v3 = v2;
 
   return v3;
@@ -275,13 +275,13 @@ LABEL_9:
 - (void)setPlaybackStartTimeOverride:()MFQueuePlayerItem
 {
   v2 = [MEMORY[0x1E696AD98] numberWithDouble:?];
-  [a1 setInitialPlaybackStartTimeOverride:v2];
+  [self setInitialPlaybackStartTimeOverride:v2];
 }
 
 - (double)playbackStartTimeOverride
 {
-  v1 = [a1 initialPlaybackStartTimeOverride];
-  [v1 doubleValue];
+  initialPlaybackStartTimeOverride = [self initialPlaybackStartTimeOverride];
+  [initialPlaybackStartTimeOverride doubleValue];
   v3 = v2;
 
   return v3;
@@ -289,48 +289,48 @@ LABEL_9:
 
 - (uint64_t)isFullyDownloaded
 {
-  if (![a1 isAssetLoaded])
+  if (![self isAssetLoaded])
   {
     return 0;
   }
 
-  v2 = [a1 asset];
+  asset = [self asset];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = [a1 asset];
-    v4 = [v3 URL];
-    v5 = [v4 isFileURL];
+    asset2 = [self asset];
+    v4 = [asset2 URL];
+    isFileURL = [v4 isFileURL];
   }
 
   else
   {
-    v5 = 0;
+    isFileURL = 0;
   }
 
-  return v5;
+  return isFileURL;
 }
 
 - (double)time
 {
-  if (![a1 isAssetLoaded] || !objc_msgSend(a1, "canUseLoadedAsset"))
+  if (![self isAssetLoaded] || !objc_msgSend(self, "canUseLoadedAsset"))
   {
     goto LABEL_11;
   }
 
   v2 = *MEMORY[0x1E6970A60];
-  v3 = *&a1[v2];
-  v4 = [v3 contentItemID];
-  v5 = [a1 contentItemID];
-  if (![v4 isEqualToString:v5])
+  v3 = *&self[v2];
+  contentItemID = [v3 contentItemID];
+  contentItemID2 = [self contentItemID];
+  if (![contentItemID isEqualToString:contentItemID2])
   {
 
     goto LABEL_10;
   }
 
-  v6 = [a1 canReusePlayerItem];
+  canReusePlayerItem = [self canReusePlayerItem];
 
-  if (v6)
+  if (canReusePlayerItem)
   {
     goto LABEL_10;
   }
@@ -349,11 +349,11 @@ LABEL_9:
 LABEL_10:
 
 LABEL_11:
-    [a1 effectivePlaybackStartTime];
+    [self effectivePlaybackStartTime];
     return v8;
   }
 
-  v7 = *&a1[v2];
+  v7 = *&self[v2];
   if (v7)
   {
     [v7 currentTime];

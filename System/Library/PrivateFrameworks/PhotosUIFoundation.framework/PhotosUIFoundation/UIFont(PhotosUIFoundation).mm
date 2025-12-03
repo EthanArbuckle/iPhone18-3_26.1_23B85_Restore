@@ -45,9 +45,9 @@
   v8 = MEMORY[0x1E69DC668];
   v9 = a4;
   v10 = a3;
-  v11 = [v8 sharedApplication];
-  v12 = [v11 preferredContentSizeCategory];
-  v13 = [a1 px_preferredFontForTextStyle:v10 preferredContentSizeCategory:v12 maxContentSizeCategory:v9 withSymbolicTraits:a5];
+  sharedApplication = [v8 sharedApplication];
+  preferredContentSizeCategory = [sharedApplication preferredContentSizeCategory];
+  v13 = [self px_preferredFontForTextStyle:v10 preferredContentSizeCategory:preferredContentSizeCategory maxContentSizeCategory:v9 withSymbolicTraits:a5];
 
   return v13;
 }
@@ -58,8 +58,8 @@
   v10 = a4;
   if (*MEMORY[0x1E69DDC90] == v10)
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:a1 file:@"UIFont+PhotosUIFoundation.m" lineNumber:25 description:{@"Invalid parameter not satisfying: %@", @"contentSizeCategory != UIContentSizeCategoryUnspecified"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIFont+PhotosUIFoundation.m" lineNumber:25 description:{@"Invalid parameter not satisfying: %@", @"contentSizeCategory != UIContentSizeCategoryUnspecified"}];
   }
 
   v11 = MEMORY[0x1E69DB880];

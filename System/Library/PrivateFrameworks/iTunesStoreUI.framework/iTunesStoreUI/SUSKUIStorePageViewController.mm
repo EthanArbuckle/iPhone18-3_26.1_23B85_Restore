@@ -1,27 +1,27 @@
 @interface SUSKUIStorePageViewController
-- (BOOL)iPhoneProductPage:(id)a3 shouldOpenItem:(id)a4;
-- (BOOL)iPhoneProductPage:(id)a3 shouldOpenURL:(id)a4;
-- (SUSKUIStorePageViewController)initWithSection:(id)a3;
-- (void)_loadClientContextWithCompletionBlock:(id)a3;
-- (void)_setActiveChildViewController:(id)a3;
-- (void)_showIPhoneProductPageWithPage:(id)a3 clientContext:(id)a4;
-- (void)_showProductPageWithPageDictionary:(id)a3;
-- (void)_showRemoteViewControllerWithPageDictionary:(id)a3;
-- (void)_showStorePageWithPageDictionary:(id)a3;
+- (BOOL)iPhoneProductPage:(id)page shouldOpenItem:(id)item;
+- (BOOL)iPhoneProductPage:(id)page shouldOpenURL:(id)l;
+- (SUSKUIStorePageViewController)initWithSection:(id)section;
+- (void)_loadClientContextWithCompletionBlock:(id)block;
+- (void)_setActiveChildViewController:(id)controller;
+- (void)_showIPhoneProductPageWithPage:(id)page clientContext:(id)context;
+- (void)_showProductPageWithPageDictionary:(id)dictionary;
+- (void)_showRemoteViewControllerWithPageDictionary:(id)dictionary;
+- (void)_showStorePageWithPageDictionary:(id)dictionary;
 - (void)dealloc;
-- (void)dismissAnimated:(BOOL)a3;
+- (void)dismissAnimated:(BOOL)animated;
 - (void)loadView;
-- (void)productViewController:(id)a3 presentProductWithRequest:(id)a4 animated:(BOOL)a5;
-- (void)reloadWithStorePage:(id)a3 forURL:(id)a4;
+- (void)productViewController:(id)controller presentProductWithRequest:(id)request animated:(BOOL)animated;
+- (void)reloadWithStorePage:(id)page forURL:(id)l;
 @end
 
 @implementation SUSKUIStorePageViewController
 
-- (SUSKUIStorePageViewController)initWithSection:(id)a3
+- (SUSKUIStorePageViewController)initWithSection:(id)section
 {
   v6.receiver = self;
   v6.super_class = SUSKUIStorePageViewController;
-  v3 = [(SUViewController *)&v6 initWithSection:a3];
+  v3 = [(SUViewController *)&v6 initWithSection:section];
   v4 = v3;
   if (v3)
   {
@@ -41,35 +41,35 @@
   [(SUViewController *)&v3 dealloc];
 }
 
-- (void)reloadWithStorePage:(id)a3 forURL:(id)a4
+- (void)reloadWithStorePage:(id)page forURL:(id)l
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    a3 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:0];
+    page = [MEMORY[0x1E696ACB0] JSONObjectWithData:page options:0 error:0];
   }
 
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && a3)
+  if ((objc_opt_isKindOfClass() & 1) != 0 && page)
   {
     v6 = ISUIMobileStoreUIFramework();
-    if ([objc_msgSend(a3 objectForKey:{ISUIVWeakLinkedStringConstantForString("SUUIProtocolKeyPageType", v6)), "isEqualToString:", @"software"}])
+    if ([objc_msgSend(page objectForKey:{ISUIVWeakLinkedStringConstantForString("SUUIProtocolKeyPageType", v6)), "isEqualToString:", @"software"}])
     {
 
-      [(SUSKUIStorePageViewController *)self _showProductPageWithPageDictionary:a3];
+      [(SUSKUIStorePageViewController *)self _showProductPageWithPageDictionary:page];
     }
 
     else
     {
 
-      [(SUSKUIStorePageViewController *)self _showStorePageWithPageDictionary:a3];
+      [(SUSKUIStorePageViewController *)self _showStorePageWithPageDictionary:page];
     }
   }
 }
 
-- (void)dismissAnimated:(BOOL)a3
+- (void)dismissAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   if ([(SKStoreProductViewController *)self->_remoteProductViewController presentingViewController])
   {
     v5 = self->_remoteProductViewController;
@@ -80,17 +80,17 @@
     v6[1] = 3221225472;
     v6[2] = __49__SUSKUIStorePageViewController_dismissAnimated___block_invoke;
     v6[3] = &unk_1E8165578;
-    v7 = v3;
+    v7 = animatedCopy;
     v6[4] = v5;
     v6[5] = self;
-    [(SKStoreProductViewController *)v5 dismissViewControllerAnimated:v3 completion:v6];
+    [(SKStoreProductViewController *)v5 dismissViewControllerAnimated:animatedCopy completion:v6];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = SUSKUIStorePageViewController;
-    [(UIViewController *)&v8 dismissAnimated:v3];
+    [(UIViewController *)&v8 dismissAnimated:animatedCopy];
   }
 }
 
@@ -109,19 +109,19 @@ id __49__SUSKUIStorePageViewController_dismissAnimated___block_invoke(uint64_t a
   activeChildViewController = self->_activeChildViewController;
   if (activeChildViewController)
   {
-    v4 = [(UIViewController *)activeChildViewController view];
-    [(UIView *)v4 setAutoresizingMask:18];
+    view = [(UIViewController *)activeChildViewController view];
+    [(UIView *)view setAutoresizingMask:18];
     [v5 bounds];
-    [(UIView *)v4 setFrame:?];
-    [v5 addSubview:v4];
+    [(UIView *)view setFrame:?];
+    [v5 addSubview:view];
   }
 
   [(SUSKUIStorePageViewController *)self setView:v5];
 }
 
-- (BOOL)iPhoneProductPage:(id)a3 shouldOpenItem:(id)a4
+- (BOOL)iPhoneProductPage:(id)page shouldOpenItem:(id)item
 {
-  v4 = [objc_alloc(MEMORY[0x1E695DFF8]) initWithString:{objc_msgSend(a4, "productPageURLString")}];
+  v4 = [objc_alloc(MEMORY[0x1E695DFF8]) initWithString:{objc_msgSend(item, "productPageURLString")}];
   v5 = UIITunesStoreResolvedURLForHTTPURL();
   if (v5)
   {
@@ -132,40 +132,40 @@ id __49__SUSKUIStorePageViewController_dismissAnimated___block_invoke(uint64_t a
   return 0;
 }
 
-- (BOOL)iPhoneProductPage:(id)a3 shouldOpenURL:(id)a4
+- (BOOL)iPhoneProductPage:(id)page shouldOpenURL:(id)l
 {
   v5 = UIITunesStoreResolvedURLForHTTPURL();
   if (v5)
   {
-    a4 = v5;
+    l = v5;
   }
 
   [objc_msgSend(MEMORY[0x1E69DC668] "sharedApplication")];
   return 0;
 }
 
-- (void)productViewController:(id)a3 presentProductWithRequest:(id)a4 animated:(BOOL)a5
+- (void)productViewController:(id)controller presentProductWithRequest:(id)request animated:(BOOL)animated
 {
-  if ([a4 productURL])
+  if ([request productURL])
   {
     v6 = [objc_msgSend(MEMORY[0x1E6963608] "defaultWorkspace")];
-    v7 = [MEMORY[0x1E69DC668] sharedApplication];
+    mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
 
-    [v7 openURL:v6];
+    [mEMORY[0x1E69DC668] openURL:v6];
   }
 }
 
-- (void)_loadClientContextWithCompletionBlock:(id)a3
+- (void)_loadClientContextWithCompletionBlock:(id)block
 {
   v21 = *MEMORY[0x1E69E9840];
   v4 = ISUIMobileStoreUIFramework();
   v5 = ISUIWeakLinkedClassForString(&cfstr_Suuiclientcont.isa, v4);
-  v6 = [v5 defaultContext];
-  if (v6)
+  defaultContext = [v5 defaultContext];
+  if (defaultContext)
   {
-    v7 = *(a3 + 2);
+    v7 = *(block + 2);
 
-    v7(a3, v6);
+    v7(block, defaultContext);
   }
 
   else
@@ -177,21 +177,21 @@ id __49__SUSKUIStorePageViewController_dismissAnimated___block_invoke(uint64_t a
     v18[2] = __71__SUSKUIStorePageViewController__loadClientContextWithCompletionBlock___block_invoke;
     v18[3] = &unk_1E8167428;
     v18[4] = v5;
-    v18[5] = a3;
+    v18[5] = block;
     [v9 setOutputBlock:v18];
-    v10 = [MEMORY[0x1E69D4938] sharedConfig];
-    v11 = [v10 shouldLog];
-    if ([v10 shouldLogToDisk])
+    mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+    shouldLog = [mEMORY[0x1E69D4938] shouldLog];
+    if ([mEMORY[0x1E69D4938] shouldLogToDisk])
     {
-      v12 = v11 | 2;
+      v12 = shouldLog | 2;
     }
 
     else
     {
-      v12 = v11;
+      v12 = shouldLog;
     }
 
-    if (!os_log_type_enabled([v10 OSLogObject], OS_LOG_TYPE_DEBUG))
+    if (!os_log_type_enabled([mEMORY[0x1E69D4938] OSLogObject], OS_LOG_TYPE_DEBUG))
     {
       v12 &= 2u;
     }
@@ -236,10 +236,10 @@ void __71__SUSKUIStorePageViewController__loadClientContextWithCompletionBlock__
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)_setActiveChildViewController:(id)a3
+- (void)_setActiveChildViewController:(id)controller
 {
   activeChildViewController = self->_activeChildViewController;
-  if (activeChildViewController != a3)
+  if (activeChildViewController != controller)
   {
     if ([(UIViewController *)activeChildViewController isViewLoaded])
     {
@@ -248,26 +248,26 @@ void __71__SUSKUIStorePageViewController__loadClientContextWithCompletionBlock__
 
     [(UIViewController *)self->_activeChildViewController removeFromParentViewController];
 
-    v6 = a3;
-    self->_activeChildViewController = v6;
-    if (v6)
+    controllerCopy = controller;
+    self->_activeChildViewController = controllerCopy;
+    if (controllerCopy)
     {
-      [(SUSKUIStorePageViewController *)self addChildViewController:v6];
+      [(SUSKUIStorePageViewController *)self addChildViewController:controllerCopy];
       if ([(SUSKUIStorePageViewController *)self isViewLoaded])
       {
-        v7 = [(SUSKUIStorePageViewController *)self view];
-        v8 = [(UIViewController *)self->_activeChildViewController view];
-        [(UIView *)v8 setAutoresizingMask:18];
-        [v7 bounds];
-        [(UIView *)v8 setFrame:?];
+        view = [(SUSKUIStorePageViewController *)self view];
+        view2 = [(UIViewController *)self->_activeChildViewController view];
+        [(UIView *)view2 setAutoresizingMask:18];
+        [view bounds];
+        [(UIView *)view2 setFrame:?];
 
-        [v7 addSubview:v8];
+        [view addSubview:view2];
       }
     }
   }
 }
 
-- (void)_showIPhoneProductPageWithPage:(id)a3 clientContext:(id)a4
+- (void)_showIPhoneProductPageWithPage:(id)page clientContext:(id)context
 {
   [(SUUIIPhoneProductPageViewController *)self->_iphoneProductPageViewController setDelegate:0];
   [(SUUIIPhoneProductPageViewController *)self->_iphoneProductPageViewController _setExistingNavigationItem:0];
@@ -279,18 +279,18 @@ void __71__SUSKUIStorePageViewController__loadClientContextWithCompletionBlock__
   self->_iphoneProductPageViewController = v8;
   [(SUUIIPhoneProductPageViewController *)v8 setDelegate:self];
   [(SUUIIPhoneProductPageViewController *)self->_iphoneProductPageViewController _setExistingNavigationItem:[(SUViewController *)self navigationItem]];
-  [(SUUIIPhoneProductPageViewController *)self->_iphoneProductPageViewController setClientContext:a4];
+  [(SUUIIPhoneProductPageViewController *)self->_iphoneProductPageViewController setClientContext:context];
   iphoneProductPageViewController = self->_iphoneProductPageViewController;
 
   [(SUSKUIStorePageViewController *)self _setActiveChildViewController:iphoneProductPageViewController];
 }
 
-- (void)_showProductPageWithPageDictionary:(id)a3
+- (void)_showProductPageWithPageDictionary:(id)dictionary
 {
   if (_UIApplicationUsesLegacyUI())
   {
 
-    [(SUSKUIStorePageViewController *)self _showRemoteViewControllerWithPageDictionary:a3];
+    [(SUSKUIStorePageViewController *)self _showRemoteViewControllerWithPageDictionary:dictionary];
   }
 
   else
@@ -320,7 +320,7 @@ uint64_t __68__SUSKUIStorePageViewController__showProductPageWithPageDictionary_
   return result;
 }
 
-- (void)_showRemoteViewControllerWithPageDictionary:(id)a3
+- (void)_showRemoteViewControllerWithPageDictionary:(id)dictionary
 {
   [(SKStoreProductViewController *)self->_remoteProductViewController setDelegate:0];
   [(SKStoreProductViewController *)self->_remoteProductViewController dismissViewControllerAnimated:0 completion:0];
@@ -335,7 +335,7 @@ uint64_t __68__SUSKUIStorePageViewController__showProductPageWithPageDictionary_
   v7[2] = __77__SUSKUIStorePageViewController__showRemoteViewControllerWithPageDictionary___block_invoke;
   v7[3] = &unk_1E8167478;
   v7[4] = self;
-  [(SKStoreProductViewController *)remoteProductViewController loadProductWithPageDictionary:a3 completionBlock:v7];
+  [(SKStoreProductViewController *)remoteProductViewController loadProductWithPageDictionary:dictionary completionBlock:v7];
 }
 
 void *__77__SUSKUIStorePageViewController__showRemoteViewControllerWithPageDictionary___block_invoke(uint64_t a1, int a2)
@@ -357,7 +357,7 @@ void *__77__SUSKUIStorePageViewController__showRemoteViewControllerWithPageDicti
   return result;
 }
 
-- (void)_showStorePageWithPageDictionary:(id)a3
+- (void)_showStorePageWithPageDictionary:(id)dictionary
 {
   v5 = ISUIMobileStoreUIFramework();
   v6 = [objc_msgSend(ISUIWeakLinkedClassForString(&cfstr_Suuistorepaged.isa v5)];

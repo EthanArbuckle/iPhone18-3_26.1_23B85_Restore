@@ -1,13 +1,13 @@
 @interface WCM_RadioStateIndicatorWrapper
-- (BOOL)validateStateData:(id)a3 requiredKeys:(id)a4;
+- (BOOL)validateStateData:(id)data requiredKeys:(id)keys;
 - (WCM_RadioStateIndicatorWrapper)init;
 - (id).cxx_construct;
 - (id)getBTState;
 - (id)getThreadState;
 - (id)getWifiState;
-- (void)setBTState:(id)a3;
-- (void)setThreadState:(id)a3;
-- (void)setWifiState:(id)a3;
+- (void)setBTState:(id)state;
+- (void)setThreadState:(id)state;
+- (void)setWifiState:(id)state;
 @end
 
 @implementation WCM_RadioStateIndicatorWrapper
@@ -29,15 +29,15 @@
   return result;
 }
 
-- (BOOL)validateStateData:(id)a3 requiredKeys:(id)a4
+- (BOOL)validateStateData:(id)data requiredKeys:(id)keys
 {
-  if (a3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  if (data && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v19 = 0u;
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v6 = [a4 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    v6 = [keys countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v6)
     {
       v7 = *v18;
@@ -47,17 +47,17 @@
         {
           if (*v18 != v7)
           {
-            objc_enumerationMutation(a4);
+            objc_enumerationMutation(keys);
           }
 
           v9 = *(*(&v17 + 1) + 8 * i);
-          if (![a3 objectForKey:v9])
+          if (![data objectForKey:v9])
           {
             [WCM_Logging logLevel:1 message:@"WRSI: Missing required key: %@", v9];
           }
         }
 
-        v6 = [a4 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v6 = [keys countByEnumeratingWithState:&v17 objects:v21 count:16];
       }
 
       while (v6);
@@ -72,7 +72,7 @@
     v12[2] = sub_100074390;
     v12[3] = &unk_10023F4D8;
     v12[4] = &v13;
-    [a3 enumerateKeysAndObjectsUsingBlock:v12];
+    [data enumerateKeysAndObjectsUsingBlock:v12];
     v10 = *(v14 + 24);
     _Block_object_dispose(&v13, 8);
   }
@@ -86,12 +86,12 @@
   return v10 & 1;
 }
 
-- (void)setWifiState:(id)a3
+- (void)setWifiState:(id)state
 {
-  if ([(WCM_RadioStateIndicatorWrapper *)self validateStateData:a3 requiredKeys:*(self + 2)])
+  if ([(WCM_RadioStateIndicatorWrapper *)self validateStateData:state requiredKeys:*(self + 2)])
   {
-    *(self + 8) = *(self + 8) & 0xFE | [objc_msgSend(a3 objectForKeyedSubscript:{@"powered", "BOOLValue"}];
-    if ([objc_msgSend(a3 objectForKeyedSubscript:{@"associated", "BOOLValue"}])
+    *(self + 8) = *(self + 8) & 0xFE | [objc_msgSend(state objectForKeyedSubscript:{@"powered", "BOOLValue"}];
+    if ([objc_msgSend(state objectForKeyedSubscript:{@"associated", "BOOLValue"}])
     {
       v5 = 2;
     }
@@ -102,7 +102,7 @@
     }
 
     *(self + 8) = *(self + 8) & 0xFD | v5;
-    if ([objc_msgSend(a3 objectForKeyedSubscript:{@"p2p", "BOOLValue"}])
+    if ([objc_msgSend(state objectForKeyedSubscript:{@"p2p", "BOOLValue"}])
     {
       v6 = 4;
     }
@@ -113,7 +113,7 @@
     }
 
     *(self + 8) = *(self + 8) & 0xFB | v6;
-    if ([objc_msgSend(a3 objectForKeyedSubscript:{@"phs", "BOOLValue"}])
+    if ([objc_msgSend(state objectForKeyedSubscript:{@"phs", "BOOLValue"}])
     {
       v7 = 8;
     }
@@ -124,7 +124,7 @@
     }
 
     *(self + 8) = *(self + 8) & 0xF7 | v7;
-    if ([objc_msgSend(a3 objectForKeyedSubscript:{@"two_ghz", "BOOLValue"}])
+    if ([objc_msgSend(state objectForKeyedSubscript:{@"two_ghz", "BOOLValue"}])
     {
       v8 = 16;
     }
@@ -135,7 +135,7 @@
     }
 
     *(self + 8) = *(self + 8) & 0xEF | v8;
-    if ([objc_msgSend(a3 objectForKeyedSubscript:{@"five_ghz", "BOOLValue"}])
+    if ([objc_msgSend(state objectForKeyedSubscript:{@"five_ghz", "BOOLValue"}])
     {
       v9 = 32;
     }
@@ -146,7 +146,7 @@
     }
 
     *(self + 8) = *(self + 8) & 0xDF | v9;
-    if ([objc_msgSend(a3 objectForKeyedSubscript:{@"six_ghz", "BOOLValue"}])
+    if ([objc_msgSend(state objectForKeyedSubscript:{@"six_ghz", "BOOLValue"}])
     {
       v10 = 64;
     }
@@ -157,7 +157,7 @@
     }
 
     *(self + 8) = *(self + 8) & 0xBF | v10;
-    [WCM_Logging logLevel:2 message:@"WRSI: set WiFi state from WRM->ASH: %@", a3];
+    [WCM_Logging logLevel:2 message:@"WRSI: set WiFi state from WRM->ASH: %@", state];
     v11 = pthread_mutex_lock(&stru_1002B7730);
     v12 = xmmword_1002B7770;
     if (!xmmword_1002B7770)
@@ -272,12 +272,12 @@
   return v8;
 }
 
-- (void)setBTState:(id)a3
+- (void)setBTState:(id)state
 {
-  if ([(WCM_RadioStateIndicatorWrapper *)self validateStateData:a3 requiredKeys:*(self + 3)])
+  if ([(WCM_RadioStateIndicatorWrapper *)self validateStateData:state requiredKeys:*(self + 3)])
   {
-    *(self + 9) = *(self + 9) & 0xFE | [objc_msgSend(a3 objectForKeyedSubscript:{@"powered", "BOOLValue"}];
-    if ([objc_msgSend(a3 objectForKeyedSubscript:{@"connected", "BOOLValue"}])
+    *(self + 9) = *(self + 9) & 0xFE | [objc_msgSend(state objectForKeyedSubscript:{@"powered", "BOOLValue"}];
+    if ([objc_msgSend(state objectForKeyedSubscript:{@"connected", "BOOLValue"}])
     {
       v5 = 2;
     }
@@ -288,7 +288,7 @@
     }
 
     *(self + 9) = *(self + 9) & 0xFD | v5;
-    if ([objc_msgSend(a3 objectForKeyedSubscript:{@"le_adv_epa", "BOOLValue"}])
+    if ([objc_msgSend(state objectForKeyedSubscript:{@"le_adv_epa", "BOOLValue"}])
     {
       v6 = 4;
     }
@@ -299,7 +299,7 @@
     }
 
     *(self + 9) = *(self + 9) & 0xFB | v6;
-    [WCM_Logging logLevel:2 message:@"WRSI: set BT state from WRM->ASH: %@", a3];
+    [WCM_Logging logLevel:2 message:@"WRSI: set BT state from WRM->ASH: %@", state];
     v7 = pthread_mutex_lock(&stru_1002B7730);
     v8 = xmmword_1002B7770;
     if (!xmmword_1002B7770)
@@ -406,12 +406,12 @@
   return v8;
 }
 
-- (void)setThreadState:(id)a3
+- (void)setThreadState:(id)state
 {
-  if ([(WCM_RadioStateIndicatorWrapper *)self validateStateData:a3 requiredKeys:*(self + 4)])
+  if ([(WCM_RadioStateIndicatorWrapper *)self validateStateData:state requiredKeys:*(self + 4)])
   {
-    *(self + 10) = *(self + 10) & 0xFE | [objc_msgSend(a3 objectForKeyedSubscript:{@"powered", "BOOLValue"}];
-    [WCM_Logging logLevel:2 message:@"WRSI: set Thread state from WRM->ASH: %@", a3];
+    *(self + 10) = *(self + 10) & 0xFE | [objc_msgSend(state objectForKeyedSubscript:{@"powered", "BOOLValue"}];
+    [WCM_Logging logLevel:2 message:@"WRSI: set Thread state from WRM->ASH: %@", state];
     v5 = pthread_mutex_lock(&stru_1002B7730);
     v6 = xmmword_1002B7770;
     if (!xmmword_1002B7770)

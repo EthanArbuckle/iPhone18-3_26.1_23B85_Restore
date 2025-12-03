@@ -1,22 +1,22 @@
 @interface CAMURLConfigurationRequest
-- (BOOL)_captureModeFromString:(id)a3 outCaptureMode:(int64_t *)a4;
-- (BOOL)_initializeFromQueryDictionary:(id)a3;
-- (CAMURLConfigurationRequest)initWithQueryDictionary:(id)a3;
-- (int64_t)_captureDeviceFromString:(id)a3 outCaptureDevice:(int64_t *)a4;
+- (BOOL)_captureModeFromString:(id)string outCaptureMode:(int64_t *)mode;
+- (BOOL)_initializeFromQueryDictionary:(id)dictionary;
+- (CAMURLConfigurationRequest)initWithQueryDictionary:(id)dictionary;
+- (int64_t)_captureDeviceFromString:(id)string outCaptureDevice:(int64_t *)device;
 @end
 
 @implementation CAMURLConfigurationRequest
 
-- (CAMURLConfigurationRequest)initWithQueryDictionary:(id)a3
+- (CAMURLConfigurationRequest)initWithQueryDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v10.receiver = self;
   v10.super_class = CAMURLConfigurationRequest;
   v5 = [(CAMURLConfigurationRequest *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    if ([(CAMURLConfigurationRequest *)v5 _initializeFromQueryDictionary:v4])
+    if ([(CAMURLConfigurationRequest *)v5 _initializeFromQueryDictionary:dictionaryCopy])
     {
       v7 = v6;
     }
@@ -37,15 +37,15 @@
   return v8;
 }
 
-- (BOOL)_initializeFromQueryDictionary:(id)a3
+- (BOOL)_initializeFromQueryDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"capturemode"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"capturemode"];
   v6 = [(CAMURLConfigurationRequest *)self _captureModeFromString:v5 outCaptureMode:&self->_requestedCaptureMode];
 
   if (v6)
   {
-    v7 = [v4 objectForKeyedSubscript:@"capturedevice"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"capturedevice"];
     v8 = [(CAMURLConfigurationRequest *)self _captureDeviceFromString:v7 outCaptureDevice:&self->_requestedCaptureDevice]!= 0;
   }
 
@@ -54,11 +54,11 @@
     v8 = 0;
   }
 
-  v9 = [v4 objectForKey:@"qrcodes"];
+  v9 = [dictionaryCopy objectForKey:@"qrcodes"];
 
   if (v9)
   {
-    v10 = [v4 objectForKeyedSubscript:@"qrcodes"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"qrcodes"];
     self->_wantsQRCodeForSession = [v10 isEqualToString:@"true"];
   }
 
@@ -70,57 +70,57 @@
   return v8;
 }
 
-- (BOOL)_captureModeFromString:(id)a3 outCaptureMode:(int64_t *)a4
+- (BOOL)_captureModeFromString:(id)string outCaptureMode:(int64_t *)mode
 {
-  v5 = a3;
-  if ([v5 isEqualToString:@"photo"])
+  stringCopy = string;
+  if ([stringCopy isEqualToString:@"photo"])
   {
     v6 = 0;
   }
 
-  else if ([v5 isEqualToString:@"square"])
+  else if ([stringCopy isEqualToString:@"square"])
   {
     v6 = 4;
   }
 
-  else if ([v5 isEqualToString:@"video"])
+  else if ([stringCopy isEqualToString:@"video"])
   {
     v6 = 1;
   }
 
-  else if ([v5 isEqualToString:@"slomo"])
+  else if ([stringCopy isEqualToString:@"slomo"])
   {
     v6 = 2;
   }
 
-  else if ([v5 isEqualToString:@"timelapse"])
+  else if ([stringCopy isEqualToString:@"timelapse"])
   {
     v6 = 5;
   }
 
-  else if ([v5 isEqualToString:@"panorama"])
+  else if ([stringCopy isEqualToString:@"panorama"])
   {
     v6 = 3;
   }
 
-  else if ([v5 isEqualToString:@"portrait"])
+  else if ([stringCopy isEqualToString:@"portrait"])
   {
     v6 = 6;
   }
 
-  else if ([v5 isEqualToString:@"cinematic"])
+  else if ([stringCopy isEqualToString:@"cinematic"])
   {
     v6 = 7;
   }
 
-  else if ([v5 isEqualToString:@"spatialVideo"])
+  else if ([stringCopy isEqualToString:@"spatialVideo"])
   {
     v6 = 8;
   }
 
   else
   {
-    if (![v5 isEqualToString:@"spatialPhoto"])
+    if (![stringCopy isEqualToString:@"spatialPhoto"])
     {
       v7 = 0;
       goto LABEL_22;
@@ -129,26 +129,26 @@
     v6 = 9;
   }
 
-  *a4 = v6;
+  *mode = v6;
   v7 = 1;
 LABEL_22:
 
   return v7;
 }
 
-- (int64_t)_captureDeviceFromString:(id)a3 outCaptureDevice:(int64_t *)a4
+- (int64_t)_captureDeviceFromString:(id)string outCaptureDevice:(int64_t *)device
 {
-  v5 = a3;
-  if ([v5 isEqualToString:@"front"])
+  stringCopy = string;
+  if ([stringCopy isEqualToString:@"front"])
   {
     v6 = 1;
 LABEL_4:
-    *a4 = v6;
+    *device = v6;
     v8 = 1;
     goto LABEL_5;
   }
 
-  v7 = [v5 isEqualToString:@"back"];
+  v7 = [stringCopy isEqualToString:@"back"];
   v6 = 0;
   v8 = 0;
   if (v7)

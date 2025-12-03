@@ -1,12 +1,12 @@
 @interface KVEncodedSpanInfo
-+ (id)spanInfoFromEncodedString:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToSpanInfo:(id)a3;
-- (KVEncodedSpanInfo)initWithBuffer:(id)a3 verify:(BOOL)a4 value:(id)a5 error:(id *)a6;
-- (KVEncodedSpanInfo)initWithValue:(id)a3 location:(unsigned int)a4 length:(unsigned int)a5 matchScore:(float)a6 maxTokenCount:(unsigned int)a7 matchedTokenCount:(unsigned int)a8 maxStopWordCount:(unsigned int)a9 matchedStopWordCount:(unsigned int)a10 maxAliasCount:(unsigned int)a11 matchedAliasCount:(unsigned int)a12 editDistance:(unsigned int)a13 aliasMatchOptions:(unsigned __int16)a14;
++ (id)spanInfoFromEncodedString:(id)string error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToSpanInfo:(id)info;
+- (KVEncodedSpanInfo)initWithBuffer:(id)buffer verify:(BOOL)verify value:(id)value error:(id *)error;
+- (KVEncodedSpanInfo)initWithValue:(id)value location:(unsigned int)location length:(unsigned int)length matchScore:(float)score maxTokenCount:(unsigned int)count matchedTokenCount:(unsigned int)tokenCount maxStopWordCount:(unsigned int)wordCount matchedStopWordCount:(unsigned int)self0 maxAliasCount:(unsigned int)self1 matchedAliasCount:(unsigned int)self2 editDistance:(unsigned int)self3 aliasMatchOptions:(unsigned __int16)self4;
 - (_NSRange)spanRange;
 - (float)matchScore;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)getAliasTypesArray;
 - (unsigned)aliasMatchOptions;
@@ -134,16 +134,16 @@ LABEL_17:
   return v67;
 }
 
-- (BOOL)isEqualToSpanInfo:(id)a3
+- (BOOL)isEqualToSpanInfo:(id)info
 {
-  v5 = a3;
-  v11 = v5;
+  infoCopy = info;
+  v11 = infoCopy;
   v12 = 16;
   value = self->_value;
   v14 = value;
   if (!value)
   {
-    v3 = objc_msgSend_value(v5, v6, v7, v8, v9, v10);
+    v3 = objc_msgSend_value(infoCopy, v6, v7, v8, v9, v10);
     if (!v3)
     {
       v19 = 0;
@@ -178,16 +178,16 @@ LABEL_10:
   return isEqual;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     isEqualToSpanInfo = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     isEqualToSpanInfo = objc_msgSend_isEqualToSpanInfo_(self, v6, v5, v7, v8, v9);
   }
@@ -200,15 +200,15 @@ LABEL_10:
   return isEqualToSpanInfo;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v10 = objc_msgSend_allocWithZone_(v5, v6, a3, v7, v8, v9);
-  v15 = objc_msgSend_copyWithZone_(self->_value, v11, a3, v12, v13, v14);
+  v10 = objc_msgSend_allocWithZone_(v5, v6, zone, v7, v8, v9);
+  v15 = objc_msgSend_copyWithZone_(self->_value, v11, zone, v12, v13, v14);
   v16 = *(v10 + 16);
   *(v10 + 16) = v15;
 
-  v21 = objc_msgSend_copyWithZone_(self->_buffer, v17, a3, v18, v19, v20);
+  v21 = objc_msgSend_copyWithZone_(self->_buffer, v17, zone, v18, v19, v20);
   v22 = *(v10 + 24);
   *(v10 + 24) = v21;
 
@@ -380,25 +380,25 @@ LABEL_10:
   return result;
 }
 
-- (KVEncodedSpanInfo)initWithBuffer:(id)a3 verify:(BOOL)a4 value:(id)a5 error:(id *)a6
+- (KVEncodedSpanInfo)initWithBuffer:(id)buffer verify:(BOOL)verify value:(id)value error:(id *)error
 {
-  v8 = a4;
+  verifyCopy = verify;
   v90[1] = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a5;
+  bufferCopy = buffer;
+  valueCopy = value;
   v86.receiver = self;
   v86.super_class = KVEncodedSpanInfo;
   v13 = [(KVSpanInfo *)&v86 initWithSpanInfo:0];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_buffer, a3);
-    objc_storeStrong(&v14->_value, a5);
+    objc_storeStrong(&v13->_buffer, buffer);
+    objc_storeStrong(&v14->_value, value);
     if (objc_msgSend_length(v14->_buffer, v15, v16, v17, v18, v19))
     {
       v25 = objc_msgSend_bytes(v14->_buffer, v20, v21, v22, v23, v24);
       v14->_encodedSpanInfo = v25 + *v25;
-      if (!v8)
+      if (!verifyCopy)
       {
         goto LABEL_53;
       }
@@ -528,10 +528,10 @@ LABEL_10:
       v88 = v72;
       v75 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v73, &v88, &v87, 1, v74);
       v78 = objc_msgSend_errorWithDomain_code_userInfo_(v64, v76, @"com.apple.koa.KVSpanInfo", -1, v75, v77);
-      if (a6 && v78)
+      if (error && v78)
       {
         v78 = v78;
-        *a6 = v78;
+        *error = v78;
       }
     }
 
@@ -546,10 +546,10 @@ LABEL_10:
       v90[0] = v57;
       v60 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v58, v90, &v89, 1, v59);
       v63 = objc_msgSend_errorWithDomain_code_userInfo_(v49, v61, @"com.apple.koa.KVSpanInfo", -1, v60, v62);
-      if (a6 && v63)
+      if (error && v63)
       {
         v63 = v63;
-        *a6 = v63;
+        *error = v63;
       }
     }
 
@@ -565,21 +565,21 @@ LABEL_63:
   return v48;
 }
 
-- (KVEncodedSpanInfo)initWithValue:(id)a3 location:(unsigned int)a4 length:(unsigned int)a5 matchScore:(float)a6 maxTokenCount:(unsigned int)a7 matchedTokenCount:(unsigned int)a8 maxStopWordCount:(unsigned int)a9 matchedStopWordCount:(unsigned int)a10 maxAliasCount:(unsigned int)a11 matchedAliasCount:(unsigned int)a12 editDistance:(unsigned int)a13 aliasMatchOptions:(unsigned __int16)a14
+- (KVEncodedSpanInfo)initWithValue:(id)value location:(unsigned int)location length:(unsigned int)length matchScore:(float)score maxTokenCount:(unsigned int)count matchedTokenCount:(unsigned int)tokenCount maxStopWordCount:(unsigned int)wordCount matchedStopWordCount:(unsigned int)self0 maxAliasCount:(unsigned int)self1 matchedAliasCount:(unsigned int)self2 editDistance:(unsigned int)self3 aliasMatchOptions:(unsigned __int16)self4
 {
-  v14 = a9;
-  v15 = a8;
-  v16 = a7;
-  v19 = a4;
+  wordCountCopy = wordCount;
+  tokenCountCopy = tokenCount;
+  countCopy = count;
+  locationCopy = location;
   v55 = *MEMORY[0x277D85DE8];
-  v21 = a3;
-  if (!objc_msgSend_length(v21, v22, v23, v24, v25, v26))
+  valueCopy = value;
+  if (!objc_msgSend_length(valueCopy, v22, v23, v24, v25, v26))
   {
     v39 = qword_28106B3C0;
     if (!os_log_type_enabled(qword_28106B3C0, OS_LOG_TYPE_ERROR))
     {
 LABEL_12:
-      v38 = 0;
+      selfCopy = 0;
       goto LABEL_13;
     }
 
@@ -593,7 +593,7 @@ LABEL_15:
     goto LABEL_12;
   }
 
-  if (!a5)
+  if (!length)
   {
     v43 = qword_28106B3C0;
     if (!os_log_type_enabled(qword_28106B3C0, OS_LOG_TYPE_ERROR))
@@ -604,7 +604,7 @@ LABEL_15:
     *v46 = 136315394;
     *&v46[4] = "[KVEncodedSpanInfo initWithValue:location:length:matchScore:maxTokenCount:matchedTokenCount:maxStopWordCount:matchedStopWordCount:maxAliasCount:matchedAliasCount:editDistance:aliasMatchOptions:]";
     v47 = 2112;
-    *v48 = v21;
+    *v48 = valueCopy;
     v40 = "%s Cannot initialize span info with zero length. value: %@";
     v41 = v43;
     v42 = 22;
@@ -622,14 +622,14 @@ LABEL_15:
   v54 = 0;
   sub_2559A7BAC(v46);
   BYTE6(v51) = 1;
-  sub_2559A7C64(v46, 4, v19);
-  sub_2559A7C64(v46, 6, a5);
-  if (a6 != 0.0 || v53 == 1)
+  sub_2559A7C64(v46, 4, locationCopy);
+  sub_2559A7C64(v46, 6, length);
+  if (score != 0.0 || v53 == 1)
   {
     sub_2559A86B4(v46, 4uLL);
     sub_2559A8418(v46, 4uLL);
     v27 = v50;
-    *(v50 - 4) = a6;
+    *(v50 - 4) = score;
     v27 -= 4;
     *&v50 = v27;
     v28 = v49;
@@ -646,36 +646,36 @@ LABEL_15:
     WORD2(v51) = v29;
   }
 
-  sub_2559A7C64(v46, 10, v16);
-  sub_2559A7C64(v46, 12, v15);
-  sub_2559A7C64(v46, 14, v14);
-  sub_2559A7C64(v46, 16, a10);
-  sub_2559A7C64(v46, 18, a11);
-  sub_2559A7C64(v46, 20, a12);
-  sub_2559A7C64(v46, 22, a13);
-  sub_2559A7C64(v46, 24, a14);
+  sub_2559A7C64(v46, 10, countCopy);
+  sub_2559A7C64(v46, 12, tokenCountCopy);
+  sub_2559A7C64(v46, 14, wordCountCopy);
+  sub_2559A7C64(v46, 16, stopWordCount);
+  sub_2559A7C64(v46, 18, aliasCount);
+  sub_2559A7C64(v46, 20, matchedAliasCount);
+  sub_2559A7C64(v46, 22, distance);
+  sub_2559A7C64(v46, 24, options);
   v30 = sub_2559A7D18(v46, 0);
   sub_2559A7FB4(v46, v30, 0, 0);
   v31 = objc_alloc(MEMORY[0x277CBEA90]);
   v32 = sub_2559A80B8(v46);
   v36 = objc_msgSend_initWithBytes_length_(v31, v33, v32, (v49 - v50 + DWORD2(v49)), v34, v35);
-  self = objc_msgSend_initWithBuffer_verify_value_error_(self, v37, v36, 0, v21, 0);
+  self = objc_msgSend_initWithBuffer_verify_value_error_(self, v37, v36, 0, valueCopy, 0);
 
   sub_2559A811C(v46);
-  v38 = self;
+  selfCopy = self;
 LABEL_13:
 
   v44 = *MEMORY[0x277D85DE8];
-  return v38;
+  return selfCopy;
 }
 
-+ (id)spanInfoFromEncodedString:(id)a3 error:(id *)a4
++ (id)spanInfoFromEncodedString:(id)string error:(id *)error
 {
-  v5 = a3;
-  if (v5)
+  stringCopy = string;
+  if (stringCopy)
   {
     v6 = objc_alloc(MEMORY[0x277CBEA90]);
-    v10 = objc_msgSend_initWithBase64EncodedString_options_(v6, v7, v5, 0, v8, v9);
+    v10 = objc_msgSend_initWithBase64EncodedString_options_(v6, v7, stringCopy, 0, v8, v9);
   }
 
   else
@@ -684,7 +684,7 @@ LABEL_13:
   }
 
   v11 = [KVEncodedSpanInfo alloc];
-  v13 = objc_msgSend_initWithBuffer_verify_value_error_(v11, v12, v10, 1, 0, a4);
+  v13 = objc_msgSend_initWithBuffer_verify_value_error_(v11, v12, v10, 1, 0, error);
 
   return v13;
 }

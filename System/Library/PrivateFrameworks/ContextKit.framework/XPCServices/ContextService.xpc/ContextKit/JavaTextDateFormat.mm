@@ -1,16 +1,16 @@
 @interface JavaTextDateFormat
 + (id)getDateInstance;
 + (id)getTimeInstance;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isLenient;
-- (JavaTextDateFormat)formatWithId:(id)a3 withJavaLangStringBuffer:(id)a4 withJavaTextFieldPosition:(id)a5;
-- (JavaTextDateFormat)formatWithJavaUtilDate:(id)a3;
+- (JavaTextDateFormat)formatWithId:(id)id withJavaLangStringBuffer:(id)buffer withJavaTextFieldPosition:(id)position;
+- (JavaTextDateFormat)formatWithJavaUtilDate:(id)date;
 - (id)clone;
 - (id)getTimeZone;
-- (id)parseWithNSString:(id)a3;
+- (id)parseWithNSString:(id)string;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)setTimeZoneWithJavaUtilTimeZone:(id)a3;
+- (void)setTimeZoneWithJavaUtilTimeZone:(id)zone;
 @end
 
 @implementation JavaTextDateFormat
@@ -19,9 +19,9 @@
 {
   v9.receiver = self;
   v9.super_class = JavaTextDateFormat;
-  v3 = [(JavaTextFormat *)&v9 clone];
+  clone = [(JavaTextFormat *)&v9 clone];
   objc_opt_class();
-  if (!v3)
+  if (!clone)
   {
     goto LABEL_11;
   }
@@ -37,15 +37,15 @@
     goto LABEL_11;
   }
 
-  v5 = [(JavaUtilCalendar *)calendar clone];
+  clone2 = [(JavaUtilCalendar *)calendar clone];
   objc_opt_class();
-  if (v5 && (objc_opt_isKindOfClass() & 1) == 0)
+  if (clone2 && (objc_opt_isKindOfClass() & 1) == 0)
   {
 LABEL_10:
     JreThrowClassCastException();
   }
 
-  JreStrongAssign(v3 + 1, v5);
+  JreStrongAssign(clone + 1, clone2);
   numberFormat = self->numberFormat_;
   if (!numberFormat)
   {
@@ -53,20 +53,20 @@ LABEL_11:
     JreThrowNullPointerException();
   }
 
-  v7 = [(JavaTextNumberFormat *)numberFormat clone];
+  clone3 = [(JavaTextNumberFormat *)numberFormat clone];
   objc_opt_class();
-  if (v7 && (objc_opt_isKindOfClass() & 1) == 0)
+  if (clone3 && (objc_opt_isKindOfClass() & 1) == 0)
   {
     goto LABEL_10;
   }
 
-  JreStrongAssign(v3 + 2, v7);
-  return v3;
+  JreStrongAssign(clone + 2, clone3);
+  return clone;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     LOBYTE(v6) = 1;
   }
@@ -80,7 +80,7 @@ LABEL_11:
     }
 
     objc_opt_class();
-    if (!a3)
+    if (!equal)
     {
       numberFormat = self->numberFormat_;
       JreThrowNullPointerException();
@@ -97,7 +97,7 @@ LABEL_11:
       goto LABEL_16;
     }
 
-    v6 = [(JavaTextNumberFormat *)v5 isEqual:*(a3 + 2)];
+    v6 = [(JavaTextNumberFormat *)v5 isEqual:*(equal + 2)];
     if (!v6)
     {
       return v6;
@@ -110,28 +110,28 @@ LABEL_16:
       JreThrowNullPointerException();
     }
 
-    v6 = [v8 isEqual:{objc_msgSend(*(a3 + 1), "getTimeZone")}];
+    v6 = [v8 isEqual:{objc_msgSend(*(equal + 1), "getTimeZone")}];
     if (!v6)
     {
       return v6;
     }
 
-    v9 = [(JavaUtilCalendar *)self->calendar_ getFirstDayOfWeek];
-    if (v9 != [*(a3 + 1) getFirstDayOfWeek] || (v10 = -[JavaUtilCalendar getMinimalDaysInFirstWeek](self->calendar_, "getMinimalDaysInFirstWeek"), v10 != objc_msgSend(*(a3 + 1), "getMinimalDaysInFirstWeek")))
+    getFirstDayOfWeek = [(JavaUtilCalendar *)self->calendar_ getFirstDayOfWeek];
+    if (getFirstDayOfWeek != [*(equal + 1) getFirstDayOfWeek] || (v10 = -[JavaUtilCalendar getMinimalDaysInFirstWeek](self->calendar_, "getMinimalDaysInFirstWeek"), v10 != objc_msgSend(*(equal + 1), "getMinimalDaysInFirstWeek")))
     {
 LABEL_14:
       LOBYTE(v6) = 0;
       return v6;
     }
 
-    v11 = [(JavaUtilCalendar *)self->calendar_ isLenient];
-    LOBYTE(v6) = v11 ^ [*(a3 + 1) isLenient] ^ 1;
+    isLenient = [(JavaUtilCalendar *)self->calendar_ isLenient];
+    LOBYTE(v6) = isLenient ^ [*(equal + 1) isLenient] ^ 1;
   }
 
   return v6;
 }
 
-- (JavaTextDateFormat)formatWithId:(id)a3 withJavaLangStringBuffer:(id)a4 withJavaTextFieldPosition:(id)a5
+- (JavaTextDateFormat)formatWithId:(id)id withJavaLangStringBuffer:(id)buffer withJavaTextFieldPosition:(id)position
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -140,21 +140,21 @@ LABEL_14:
     if (objc_opt_isKindOfClass())
     {
       objc_opt_class();
-      if (a3)
+      if (id)
       {
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
           goto LABEL_12;
         }
 
-        a3 = new_JavaUtilDate_initWithLong_([a3 longLongValue]);
+        id = new_JavaUtilDate_initWithLong_([id longLongValue]);
         goto LABEL_9;
       }
     }
 
-    else if (a3)
+    else if (id)
     {
-      [a3 getClass];
+      [id getClass];
       v17 = JreStrcat("$@", v10, v11, v12, v13, v14, v15, v16, @"Bad class: ");
       v18 = new_JavaLangIllegalArgumentException_initWithNSString_(v17);
       objc_exception_throw(v18);
@@ -164,7 +164,7 @@ LABEL_14:
   }
 
   objc_opt_class();
-  if (a3 && (objc_opt_isKindOfClass() & 1) == 0)
+  if (id && (objc_opt_isKindOfClass() & 1) == 0)
   {
 LABEL_12:
     JreThrowClassCastException();
@@ -172,13 +172,13 @@ LABEL_12:
 
 LABEL_9:
 
-  return [(JavaTextDateFormat *)self formatWithJavaUtilDate:a3 withJavaLangStringBuffer:a4 withJavaTextFieldPosition:a5];
+  return [(JavaTextDateFormat *)self formatWithJavaUtilDate:id withJavaLangStringBuffer:buffer withJavaTextFieldPosition:position];
 }
 
-- (JavaTextDateFormat)formatWithJavaUtilDate:(id)a3
+- (JavaTextDateFormat)formatWithJavaUtilDate:(id)date
 {
   v5 = new_JavaLangStringBuffer_init();
-  v6 = [(JavaTextDateFormat *)self formatWithJavaUtilDate:a3 withJavaLangStringBuffer:v5 withJavaTextFieldPosition:new_JavaTextFieldPosition_initWithInt_(0)];
+  v6 = [(JavaTextDateFormat *)self formatWithJavaUtilDate:date withJavaLangStringBuffer:v5 withJavaTextFieldPosition:new_JavaTextFieldPosition_initWithInt_(0)];
   if (!v6)
   {
     JreThrowNullPointerException();
@@ -244,10 +244,10 @@ LABEL_9:
   return [(JavaUtilCalendar *)calendar isLenient];
 }
 
-- (id)parseWithNSString:(id)a3
+- (id)parseWithNSString:(id)string
 {
   v5 = new_JavaTextParsePosition_initWithInt_(0);
-  v6 = [(JavaTextDateFormat *)self parseWithNSString:a3 withJavaTextParsePosition:v5];
+  v6 = [(JavaTextDateFormat *)self parseWithNSString:string withJavaTextParsePosition:v5];
   if (![(JavaTextParsePosition *)v5 getIndex])
   {
     v15 = JreStrcat("$$C", v7, v8, v9, v10, v11, v12, v13, @"Unparseable date: ");
@@ -258,7 +258,7 @@ LABEL_9:
   return v6;
 }
 
-- (void)setTimeZoneWithJavaUtilTimeZone:(id)a3
+- (void)setTimeZoneWithJavaUtilTimeZone:(id)zone
 {
   calendar = self->calendar_;
   if (!calendar)
@@ -266,7 +266,7 @@ LABEL_9:
     JreThrowNullPointerException();
   }
 
-  [(JavaUtilCalendar *)calendar setTimeZoneWithJavaUtilTimeZone:a3];
+  [(JavaUtilCalendar *)calendar setTimeZoneWithJavaUtilTimeZone:zone];
 }
 
 - (void)dealloc

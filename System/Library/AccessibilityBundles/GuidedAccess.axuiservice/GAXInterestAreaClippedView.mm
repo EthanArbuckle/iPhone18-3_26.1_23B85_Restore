@@ -1,8 +1,8 @@
 @interface GAXInterestAreaClippedView
 - (CGPoint)_centerForBackground;
 - (CGSize)backgroundSize;
-- (GAXInterestAreaClippedView)initWithCoder:(id)a3;
-- (GAXInterestAreaClippedView)initWithFrame:(CGRect)a3;
+- (GAXInterestAreaClippedView)initWithCoder:(id)coder;
+- (GAXInterestAreaClippedView)initWithFrame:(CGRect)frame;
 - (GAXInterestAreaClippedViewDelegate)delegate;
 - (id)backgroundColor;
 - (void)_commonInit;
@@ -11,14 +11,14 @@
 - (void)_updateMaskLayerFrame;
 - (void)dealloc;
 - (void)didMoveToWindow;
-- (void)setBackgroundColor:(id)a3;
-- (void)setBackgroundPatternScaleFactor:(double)a3;
-- (void)setBackgroundSize:(CGSize)a3;
-- (void)setBounds:(CGRect)a3;
-- (void)setCenter:(CGPoint)a3;
-- (void)setClippingPath:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setFrame:(CGRect)a3;
+- (void)setBackgroundColor:(id)color;
+- (void)setBackgroundPatternScaleFactor:(double)factor;
+- (void)setBackgroundSize:(CGSize)size;
+- (void)setBounds:(CGRect)bounds;
+- (void)setCenter:(CGPoint)center;
+- (void)setClippingPath:(id)path;
+- (void)setDelegate:(id)delegate;
+- (void)setFrame:(CGRect)frame;
 @end
 
 @implementation GAXInterestAreaClippedView
@@ -31,15 +31,15 @@
   [(GAXInterestAreaClippedView *)self addSubview:v5];
   [(GAXInterestAreaClippedView *)self setBackgroundView:v5];
   [(GAXInterestAreaClippedView *)self setBackgroundPatternScaleFactor:1.0];
-  v4 = [(GAXInterestAreaClippedView *)self layer];
-  [v4 setMasksToBounds:1];
+  layer = [(GAXInterestAreaClippedView *)self layer];
+  [layer setMasksToBounds:1];
 }
 
-- (GAXInterestAreaClippedView)initWithFrame:(CGRect)a3
+- (GAXInterestAreaClippedView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = GAXInterestAreaClippedView;
-  v3 = [(GAXInterestAreaClippedView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(GAXInterestAreaClippedView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -49,11 +49,11 @@
   return v4;
 }
 
-- (GAXInterestAreaClippedView)initWithCoder:(id)a3
+- (GAXInterestAreaClippedView)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = GAXInterestAreaClippedView;
-  v3 = [(GAXInterestAreaClippedView *)&v6 initWithCoder:a3];
+  v3 = [(GAXInterestAreaClippedView *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -71,9 +71,9 @@
   [(GAXInterestAreaClippedView *)&v3 dealloc];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   v5 = obj;
@@ -85,11 +85,11 @@
   }
 }
 
-- (void)setClippingPath:(id)a3
+- (void)setClippingPath:(id)path
 {
-  if (self->_clippingPath != a3)
+  if (self->_clippingPath != path)
   {
-    v4 = [a3 copy];
+    v4 = [path copy];
     clippingPath = self->_clippingPath;
     self->_clippingPath = v4;
 
@@ -99,8 +99,8 @@
 
 - (CGSize)backgroundSize
 {
-  v2 = [(GAXInterestAreaClippedView *)self backgroundView];
-  [v2 bounds];
+  backgroundView = [(GAXInterestAreaClippedView *)self backgroundView];
+  [backgroundView bounds];
   v4 = v3;
   v6 = v5;
 
@@ -111,70 +111,70 @@
   return result;
 }
 
-- (void)setBackgroundSize:(CGSize)a3
+- (void)setBackgroundSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(GAXInterestAreaClippedView *)self _centerForBackground];
   v7 = v6 - width * 0.5;
   v9 = v8 - height * 0.5;
-  v10 = [(GAXInterestAreaClippedView *)self backgroundView];
-  [v10 setFrame:{v7, v9, width, height}];
+  backgroundView = [(GAXInterestAreaClippedView *)self backgroundView];
+  [backgroundView setFrame:{v7, v9, width, height}];
 }
 
 - (id)backgroundColor
 {
-  v2 = [(GAXInterestAreaClippedView *)self backgroundView];
-  v3 = [v2 backgroundColor];
+  backgroundView = [(GAXInterestAreaClippedView *)self backgroundView];
+  backgroundColor = [backgroundView backgroundColor];
 
-  return v3;
+  return backgroundColor;
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
-  v4 = a3;
-  v5 = [(GAXInterestAreaClippedView *)self backgroundView];
-  [v5 setBackgroundColor:v4];
+  colorCopy = color;
+  backgroundView = [(GAXInterestAreaClippedView *)self backgroundView];
+  [backgroundView setBackgroundColor:colorCopy];
 }
 
-- (void)setBackgroundPatternScaleFactor:(double)a3
+- (void)setBackgroundPatternScaleFactor:(double)factor
 {
-  if (self->_backgroundPatternScaleFactor != a3)
+  if (self->_backgroundPatternScaleFactor != factor)
   {
     v10 = v3;
     v11 = v4;
     memset(&v9, 0, sizeof(v9));
-    CGAffineTransformMakeScale(&v9, a3, a3);
+    CGAffineTransformMakeScale(&v9, factor, factor);
     v8 = v9;
-    v6 = [(GAXInterestAreaClippedView *)self backgroundView];
+    backgroundView = [(GAXInterestAreaClippedView *)self backgroundView];
     v7 = v8;
-    [v6 setTransform:&v7];
+    [backgroundView setTransform:&v7];
   }
 }
 
-- (void)setCenter:(CGPoint)a3
+- (void)setCenter:(CGPoint)center
 {
   v4.receiver = self;
   v4.super_class = GAXInterestAreaClippedView;
-  [(GAXInterestAreaClippedView *)&v4 setCenter:a3.x, a3.y];
+  [(GAXInterestAreaClippedView *)&v4 setCenter:center.x, center.y];
   [(GAXInterestAreaClippedView *)self _updateBackgroundViewCenter];
   [(GAXInterestAreaClippedView *)self _updateMaskLayerFrame];
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
   v4.receiver = self;
   v4.super_class = GAXInterestAreaClippedView;
-  [(GAXInterestAreaClippedView *)&v4 setBounds:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(GAXInterestAreaClippedView *)&v4 setBounds:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
   [(GAXInterestAreaClippedView *)self _updateBackgroundViewCenter];
   [(GAXInterestAreaClippedView *)self _updateMaskLayerFrame];
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = GAXInterestAreaClippedView;
-  [(GAXInterestAreaClippedView *)&v4 setFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(GAXInterestAreaClippedView *)&v4 setFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(GAXInterestAreaClippedView *)self _updateBackgroundViewCenter];
   [(GAXInterestAreaClippedView *)self _updateMaskLayerFrame];
 }
@@ -190,10 +190,10 @@
 
 - (CGPoint)_centerForBackground
 {
-  v3 = [(GAXInterestAreaClippedView *)self delegate];
+  delegate = [(GAXInterestAreaClippedView *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v3 centerForBackgroundOfInterestAreaClippedView:self];
+    [delegate centerForBackgroundOfInterestAreaClippedView:self];
   }
 
   else
@@ -216,25 +216,25 @@
   [(GAXInterestAreaClippedView *)self _centerForBackground];
   v4 = v3;
   v6 = v5;
-  v7 = [(GAXInterestAreaClippedView *)self backgroundView];
-  [v7 setCenter:{v4, v6}];
+  backgroundView = [(GAXInterestAreaClippedView *)self backgroundView];
+  [backgroundView setCenter:{v4, v6}];
 }
 
 - (void)_updateMaskLayer
 {
-  v3 = [(GAXInterestAreaClippedView *)self clippingPath];
-  if (v3)
+  clippingPath = [(GAXInterestAreaClippedView *)self clippingPath];
+  if (clippingPath)
   {
-    v21 = v3;
-    if (([v3 isEmpty] & 1) == 0)
+    v21 = clippingPath;
+    if (([clippingPath isEmpty] & 1) == 0)
     {
-      v4 = [(GAXInterestAreaClippedView *)self window];
-      if (v4)
+      window = [(GAXInterestAreaClippedView *)self window];
+      if (window)
       {
         if ([v21 _gaxIsSimpleRectangle])
         {
-          v5 = [(GAXInterestAreaClippedView *)self layer];
-          [v5 setMask:0];
+          layer = [(GAXInterestAreaClippedView *)self layer];
+          [layer setMask:0];
         }
 
         else
@@ -244,8 +244,8 @@
           v9 = v8;
           v11 = v10;
           v13 = v12;
-          v14 = [v4 screen];
-          [v14 scale];
+          screen = [window screen];
+          [screen scale];
           v16 = v15;
 
           v23.width = v11;
@@ -258,21 +258,21 @@
 
           CGContextAddPath(CurrentContext, [v21 CGPath]);
           CGContextFillPath(CurrentContext);
-          v5 = UIGraphicsGetImageFromCurrentImageContext();
+          layer = UIGraphicsGetImageFromCurrentImageContext();
           CGContextRestoreGState(CurrentContext);
           UIGraphicsEndImageContext();
-          v19 = [(GAXInterestAreaClippedView *)self layer];
-          v20 = [v19 mask];
-          if (!v20)
+          layer2 = [(GAXInterestAreaClippedView *)self layer];
+          mask = [layer2 mask];
+          if (!mask)
           {
-            v20 = objc_opt_new();
-            [v19 setMask:v20];
+            mask = objc_opt_new();
+            [layer2 setMask:mask];
           }
 
-          [v20 setContents:{objc_msgSend(v5, "CGImage")}];
-          [v5 scale];
-          [v20 setContentsScale:?];
-          [v20 setFrame:{v7, v9, v11, v13}];
+          [mask setContents:{objc_msgSend(layer, "CGImage")}];
+          [layer scale];
+          [mask setContentsScale:?];
+          [mask setFrame:{v7, v9, v11, v13}];
         }
       }
     }
@@ -283,15 +283,15 @@
 
 - (void)_updateMaskLayerFrame
 {
-  v3 = [(GAXInterestAreaClippedView *)self layer];
-  v4 = [v3 mask];
+  layer = [(GAXInterestAreaClippedView *)self layer];
+  mask = [layer mask];
 
-  if (v4)
+  if (mask)
   {
     +[CATransaction begin];
     [CATransaction setValue:kCFBooleanTrue forKey:kCATransactionDisableActions];
     [(GAXInterestAreaClippedView *)self bounds];
-    [v4 setFrame:?];
+    [mask setFrame:?];
     +[CATransaction commit];
   }
 }

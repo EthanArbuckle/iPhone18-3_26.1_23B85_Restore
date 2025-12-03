@@ -7,57 +7,57 @@
 - (id)configByResolvingWithTag:()NTAdditions
 {
   v4 = a3;
-  v5 = [a1 copy];
-  v6 = [v5 todayQueueConfigs];
-  v7 = [v6 count];
+  v5 = [self copy];
+  todayQueueConfigs = [v5 todayQueueConfigs];
+  v7 = [todayQueueConfigs count];
 
   if (v7 == 1)
   {
-    v8 = [v5 todayQueueConfigs];
-    v9 = [v8 firstObject];
+    todayQueueConfigs2 = [v5 todayQueueConfigs];
+    firstObject = [todayQueueConfigs2 firstObject];
 
-    v10 = [v9 todaySectionConfigs];
-    v11 = [v10 count];
+    todaySectionConfigs = [firstObject todaySectionConfigs];
+    v11 = [todaySectionConfigs count];
 
     if (v11 == 1)
     {
-      v12 = [v9 todaySectionConfigs];
-      v13 = [v12 firstObject];
+      todaySectionConfigs2 = [firstObject todaySectionConfigs];
+      firstObject2 = [todaySectionConfigs2 firstObject];
 
-      if ([v13 sectionType] == 6)
+      if ([firstObject2 sectionType] == 6)
       {
-        v14 = [v13 tagTodaySectionConfig];
-        v15 = [v4 identifier];
-        [v14 setTagID:v15];
+        tagTodaySectionConfig = [firstObject2 tagTodaySectionConfig];
+        identifier = [v4 identifier];
+        [tagTodaySectionConfig setTagID:identifier];
 
-        v16 = [v4 name];
-        v17 = [v4 nameCompact];
-        [v13 setName:v16];
-        [v13 setCompactName:v17];
-        v18 = [v4 groupTitleColor];
-        v19 = [v18 hex];
-        [v13 setNameColorLight:v19];
+        name = [v4 name];
+        nameCompact = [v4 nameCompact];
+        [firstObject2 setName:name];
+        [firstObject2 setCompactName:nameCompact];
+        groupTitleColor = [v4 groupTitleColor];
+        v19 = [groupTitleColor hex];
+        [firstObject2 setNameColorLight:v19];
 
-        v20 = [v4 groupDarkStyleTitleColor];
-        v21 = [v20 hex];
-        [v13 setNameColorDark:v21];
+        groupDarkStyleTitleColor = [v4 groupDarkStyleTitleColor];
+        v21 = [groupDarkStyleTitleColor hex];
+        [firstObject2 setNameColorDark:v21];
 
-        v22 = [v4 identifier];
-        v23 = [@"f8+" stringByAppendingString:v22];
-        [v13 setPersonalizationFeatureID:v23];
+        identifier2 = [v4 identifier];
+        v23 = [@"f8+" stringByAppendingString:identifier2];
+        [firstObject2 setPersonalizationFeatureID:v23];
 
-        if (v17)
+        if (nameCompact)
         {
-          v24 = v17;
+          v24 = nameCompact;
         }
 
         else
         {
-          v24 = v16;
+          v24 = name;
         }
 
-        [v13 setReferralBarName:v24];
-        [v13 setShownInFavoritesOnlyMode:1];
+        [firstObject2 setReferralBarName:v24];
+        [firstObject2 setShownInFavoritesOnlyMode:1];
         v25 = v5;
       }
 

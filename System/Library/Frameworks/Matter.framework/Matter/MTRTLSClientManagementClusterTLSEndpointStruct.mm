@@ -1,6 +1,6 @@
 @interface MTRTLSClientManagementClusterTLSEndpointStruct
 - (MTRTLSClientManagementClusterTLSEndpointStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -17,9 +17,9 @@
     endpointID = v2->_endpointID;
     v2->_endpointID = &unk_284C3E588;
 
-    v5 = [MEMORY[0x277CBEA90] data];
+    data = [MEMORY[0x277CBEA90] data];
     hostname = v3->_hostname;
-    v3->_hostname = v5;
+    v3->_hostname = data;
 
     port = v3->_port;
     v3->_port = &unk_284C3E588;
@@ -40,29 +40,29 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRTLSClientManagementClusterTLSEndpointStruct);
-  v5 = [(MTRTLSClientManagementClusterTLSEndpointStruct *)self endpointID];
-  [(MTRTLSClientManagementClusterTLSEndpointStruct *)v4 setEndpointID:v5];
+  endpointID = [(MTRTLSClientManagementClusterTLSEndpointStruct *)self endpointID];
+  [(MTRTLSClientManagementClusterTLSEndpointStruct *)v4 setEndpointID:endpointID];
 
-  v6 = [(MTRTLSClientManagementClusterTLSEndpointStruct *)self hostname];
-  [(MTRTLSClientManagementClusterTLSEndpointStruct *)v4 setHostname:v6];
+  hostname = [(MTRTLSClientManagementClusterTLSEndpointStruct *)self hostname];
+  [(MTRTLSClientManagementClusterTLSEndpointStruct *)v4 setHostname:hostname];
 
-  v7 = [(MTRTLSClientManagementClusterTLSEndpointStruct *)self port];
-  [(MTRTLSClientManagementClusterTLSEndpointStruct *)v4 setPort:v7];
+  port = [(MTRTLSClientManagementClusterTLSEndpointStruct *)self port];
+  [(MTRTLSClientManagementClusterTLSEndpointStruct *)v4 setPort:port];
 
-  v8 = [(MTRTLSClientManagementClusterTLSEndpointStruct *)self caid];
-  [(MTRTLSClientManagementClusterTLSEndpointStruct *)v4 setCaid:v8];
+  caid = [(MTRTLSClientManagementClusterTLSEndpointStruct *)self caid];
+  [(MTRTLSClientManagementClusterTLSEndpointStruct *)v4 setCaid:caid];
 
-  v9 = [(MTRTLSClientManagementClusterTLSEndpointStruct *)self ccdid];
-  [(MTRTLSClientManagementClusterTLSEndpointStruct *)v4 setCcdid:v9];
+  ccdid = [(MTRTLSClientManagementClusterTLSEndpointStruct *)self ccdid];
+  [(MTRTLSClientManagementClusterTLSEndpointStruct *)v4 setCcdid:ccdid];
 
-  v10 = [(MTRTLSClientManagementClusterTLSEndpointStruct *)self status];
-  [(MTRTLSClientManagementClusterTLSEndpointStruct *)v4 setStatus:v10];
+  status = [(MTRTLSClientManagementClusterTLSEndpointStruct *)self status];
+  [(MTRTLSClientManagementClusterTLSEndpointStruct *)v4 setStatus:status];
 
-  v11 = [(MTRTLSClientManagementClusterTLSEndpointStruct *)self fabricIndex];
-  [(MTRTLSClientManagementClusterTLSEndpointStruct *)v4 setFabricIndex:v11];
+  fabricIndex = [(MTRTLSClientManagementClusterTLSEndpointStruct *)self fabricIndex];
+  [(MTRTLSClientManagementClusterTLSEndpointStruct *)v4 setFabricIndex:fabricIndex];
 
   return v4;
 }

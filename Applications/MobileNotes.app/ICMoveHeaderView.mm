@@ -2,8 +2,8 @@
 + (double)absoluteHeight;
 - (NSArray)objectIds;
 - (NSString)reuseIdentifier;
-- (void)_bridgedUpdateConfigurationUsingState:(id)a3;
-- (void)setObjectIds:(id)a3;
+- (void)_bridgedUpdateConfigurationUsingState:(id)state;
+- (void)setObjectIds:(id)ids;
 - (void)updateUIForCurrentTraitCollection;
 @end
 
@@ -11,7 +11,7 @@
 
 - (void)updateUIForCurrentTraitCollection
 {
-  v2 = self;
+  selfCopy = self;
   sub_100399928();
 }
 
@@ -35,7 +35,7 @@
   return v2;
 }
 
-- (void)_bridgedUpdateConfigurationUsingState:(id)a3
+- (void)_bridgedUpdateConfigurationUsingState:(id)state
 {
   v4 = sub_10015DA04(&qword_1006C5030);
   __chkstk_darwin(v4 - 8);
@@ -49,10 +49,10 @@
   __chkstk_darwin(v11);
   v14 = &v16 - ((v13 + 15) & 0xFFFFFFFFFFFFFFF0);
   static UICellConfigurationState._unconditionallyBridgeFromObjectiveC(_:)();
-  v15 = self;
+  selfCopy = self;
   static UIBackgroundConfiguration.clear()();
-  [(ICMoveHeaderView *)v15 directionalLayoutMargins];
-  [(ICMoveHeaderView *)v15 directionalLayoutMargins];
+  [(ICMoveHeaderView *)selfCopy directionalLayoutMargins];
+  [(ICMoveHeaderView *)selfCopy directionalLayoutMargins];
   UIBackgroundConfiguration.backgroundInsets.setter();
   (*(v8 + 16))(v6, v10, v7);
   (*(v8 + 56))(v6, 0, 1, v7);
@@ -71,11 +71,11 @@
   return v2.super.isa;
 }
 
-- (void)setObjectIds:(id)a3
+- (void)setObjectIds:(id)ids
 {
   sub_1000054A4(0, &qword_1006BFEC0);
   *(self + OBJC_IVAR___ICMoveHeaderView_objectIds) = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v4 = self;
+  selfCopy = self;
 
   sub_10039A580();
 }

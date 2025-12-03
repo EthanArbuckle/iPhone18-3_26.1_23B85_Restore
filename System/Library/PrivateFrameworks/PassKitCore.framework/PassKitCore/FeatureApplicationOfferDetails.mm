@@ -1,130 +1,130 @@
 @interface FeatureApplicationOfferDetails
-+ (id)_predicateForApplicationPID:(int64_t)a3;
++ (id)_predicateForApplicationPID:(int64_t)d;
 + (id)_propertySettersForFeatureApplicationOfferDetails;
-+ (id)featureApplicationOfferDetailsForApplicationPID:(int64_t)a3 inDatabase:(id)a4;
-+ (id)insertFeatureApplicationOfferDetails:(id)a3 forApplicationPID:(int64_t)a4 inDatabase:(id)a5;
-+ (void)deleteFeatureApplicationOfferDetailsForApplicationPID:(int64_t)a3 inDatabase:(id)a4;
-+ (void)updateFeatureApplicationOfferDetails:(id)a3 forApplicationPID:(int64_t)a4 inDatabase:(id)a5;
-- (FeatureApplicationOfferDetails)initWithFeatureApplicationOfferDetails:(id)a3 forApplicationPID:(int64_t)a4 inDatabase:(id)a5;
++ (id)featureApplicationOfferDetailsForApplicationPID:(int64_t)d inDatabase:(id)database;
++ (id)insertFeatureApplicationOfferDetails:(id)details forApplicationPID:(int64_t)d inDatabase:(id)database;
++ (void)deleteFeatureApplicationOfferDetailsForApplicationPID:(int64_t)d inDatabase:(id)database;
++ (void)updateFeatureApplicationOfferDetails:(id)details forApplicationPID:(int64_t)d inDatabase:(id)database;
+- (FeatureApplicationOfferDetails)initWithFeatureApplicationOfferDetails:(id)details forApplicationPID:(int64_t)d inDatabase:(id)database;
 - (id)featureApplicationOfferDetails;
-- (void)updateWithFeatureApplicationOfferDetails:(id)a3;
+- (void)updateWithFeatureApplicationOfferDetails:(id)details;
 @end
 
 @implementation FeatureApplicationOfferDetails
 
-- (FeatureApplicationOfferDetails)initWithFeatureApplicationOfferDetails:(id)a3 forApplicationPID:(int64_t)a4 inDatabase:(id)a5
+- (FeatureApplicationOfferDetails)initWithFeatureApplicationOfferDetails:(id)details forApplicationPID:(int64_t)d inDatabase:(id)database
 {
-  v8 = a5;
-  v9 = a3;
+  databaseCopy = database;
+  detailsCopy = details;
   v10 = objc_alloc_init(NSMutableDictionary);
-  v11 = [NSNumber numberWithLongLong:a4];
+  v11 = [NSNumber numberWithLongLong:d];
   [v10 setObjectOrNull:v11 forKey:@"a"];
 
-  v12 = [v9 offerTermsIdentifier];
-  [v10 setObjectOrNull:v12 forKey:@"b"];
+  offerTermsIdentifier = [detailsCopy offerTermsIdentifier];
+  [v10 setObjectOrNull:offerTermsIdentifier forKey:@"b"];
 
-  v13 = [v9 expiryDate];
-  [v10 setObjectOrNull:v13 forKey:@"c"];
+  expiryDate = [detailsCopy expiryDate];
+  [v10 setObjectOrNull:expiryDate forKey:@"c"];
 
-  v14 = [v9 creditLimit];
-  v15 = [v14 stringValue];
-  [v10 setObjectOrNull:v15 forKey:@"d"];
+  creditLimit = [detailsCopy creditLimit];
+  stringValue = [creditLimit stringValue];
+  [v10 setObjectOrNull:stringValue forKey:@"d"];
 
-  v16 = [v9 annualFee];
-  v17 = [v16 stringValue];
-  [v10 setObjectOrNull:v17 forKey:@"e"];
+  annualFee = [detailsCopy annualFee];
+  stringValue2 = [annualFee stringValue];
+  [v10 setObjectOrNull:stringValue2 forKey:@"e"];
 
-  v18 = [v9 aprForPurchase];
-  v19 = [v18 stringValue];
-  [v10 setObjectOrNull:v19 forKey:@"f"];
+  aprForPurchase = [detailsCopy aprForPurchase];
+  stringValue3 = [aprForPurchase stringValue];
+  [v10 setObjectOrNull:stringValue3 forKey:@"f"];
 
-  v20 = [v9 currencyCode];
-  [v10 setObjectOrNull:v20 forKey:@"g"];
+  currencyCode = [detailsCopy currencyCode];
+  [v10 setObjectOrNull:currencyCode forKey:@"g"];
 
-  v21 = [v9 balance];
+  balance = [detailsCopy balance];
 
   v22 = PKCurrencyDecimalToStorageNumber();
   [v10 setObjectOrNull:v22 forKey:@"h"];
 
-  v23 = [(SQLiteEntity *)self initWithPropertyValues:v10 inDatabase:v8];
+  v23 = [(SQLiteEntity *)self initWithPropertyValues:v10 inDatabase:databaseCopy];
   v24 = v23;
 
   return v24;
 }
 
-+ (id)insertFeatureApplicationOfferDetails:(id)a3 forApplicationPID:(int64_t)a4 inDatabase:(id)a5
++ (id)insertFeatureApplicationOfferDetails:(id)details forApplicationPID:(int64_t)d inDatabase:(id)database
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [[a1 alloc] initWithFeatureApplicationOfferDetails:v9 forApplicationPID:a4 inDatabase:v8];
+  databaseCopy = database;
+  detailsCopy = details;
+  v10 = [[self alloc] initWithFeatureApplicationOfferDetails:detailsCopy forApplicationPID:d inDatabase:databaseCopy];
 
   return v10;
 }
 
-+ (void)deleteFeatureApplicationOfferDetailsForApplicationPID:(int64_t)a3 inDatabase:(id)a4
++ (void)deleteFeatureApplicationOfferDetailsForApplicationPID:(int64_t)d inDatabase:(id)database
 {
-  v6 = a4;
-  v7 = [a1 _predicateForApplicationPID:a3];
-  v8 = [a1 anyInDatabase:v6 predicate:v7];
+  databaseCopy = database;
+  v7 = [self _predicateForApplicationPID:d];
+  v8 = [self anyInDatabase:databaseCopy predicate:v7];
 
   [v8 deleteFromDatabase];
 }
 
-+ (id)featureApplicationOfferDetailsForApplicationPID:(int64_t)a3 inDatabase:(id)a4
++ (id)featureApplicationOfferDetailsForApplicationPID:(int64_t)d inDatabase:(id)database
 {
-  v6 = a4;
-  v7 = [a1 _predicateForApplicationPID:a3];
-  v8 = [a1 anyInDatabase:v6 predicate:v7];
+  databaseCopy = database;
+  v7 = [self _predicateForApplicationPID:d];
+  v8 = [self anyInDatabase:databaseCopy predicate:v7];
 
-  v9 = [v8 featureApplicationOfferDetails];
+  featureApplicationOfferDetails = [v8 featureApplicationOfferDetails];
 
-  return v9;
+  return featureApplicationOfferDetails;
 }
 
-+ (void)updateFeatureApplicationOfferDetails:(id)a3 forApplicationPID:(int64_t)a4 inDatabase:(id)a5
++ (void)updateFeatureApplicationOfferDetails:(id)details forApplicationPID:(int64_t)d inDatabase:(id)database
 {
-  v12 = a3;
-  v8 = a5;
-  v9 = [a1 _predicateForApplicationPID:a4];
-  v10 = [a1 anyInDatabase:v8 predicate:v9];
+  detailsCopy = details;
+  databaseCopy = database;
+  v9 = [self _predicateForApplicationPID:d];
+  v10 = [self anyInDatabase:databaseCopy predicate:v9];
 
   if (v10)
   {
-    [v10 updateWithFeatureApplicationOfferDetails:v12];
+    [v10 updateWithFeatureApplicationOfferDetails:detailsCopy];
   }
 
   else
   {
-    v11 = [FeatureApplicationOfferDetails insertFeatureApplicationOfferDetails:v12 forApplicationPID:a4 inDatabase:v8];
+    v11 = [FeatureApplicationOfferDetails insertFeatureApplicationOfferDetails:detailsCopy forApplicationPID:d inDatabase:databaseCopy];
   }
 }
 
-- (void)updateWithFeatureApplicationOfferDetails:(id)a3
+- (void)updateWithFeatureApplicationOfferDetails:(id)details
 {
-  v4 = a3;
+  detailsCopy = details;
   v16 = objc_alloc_init(NSMutableDictionary);
-  v5 = [v4 offerTermsIdentifier];
-  [v16 setObjectOrNull:v5 forKey:@"b"];
+  offerTermsIdentifier = [detailsCopy offerTermsIdentifier];
+  [v16 setObjectOrNull:offerTermsIdentifier forKey:@"b"];
 
-  v6 = [v4 expiryDate];
-  [v16 setObjectOrNull:v6 forKey:@"c"];
+  expiryDate = [detailsCopy expiryDate];
+  [v16 setObjectOrNull:expiryDate forKey:@"c"];
 
-  v7 = [v4 creditLimit];
-  v8 = [v7 stringValue];
-  [v16 setObjectOrNull:v8 forKey:@"d"];
+  creditLimit = [detailsCopy creditLimit];
+  stringValue = [creditLimit stringValue];
+  [v16 setObjectOrNull:stringValue forKey:@"d"];
 
-  v9 = [v4 annualFee];
-  v10 = [v9 stringValue];
-  [v16 setObjectOrNull:v10 forKey:@"e"];
+  annualFee = [detailsCopy annualFee];
+  stringValue2 = [annualFee stringValue];
+  [v16 setObjectOrNull:stringValue2 forKey:@"e"];
 
-  v11 = [v4 aprForPurchase];
-  v12 = [v11 stringValue];
-  [v16 setObjectOrNull:v12 forKey:@"f"];
+  aprForPurchase = [detailsCopy aprForPurchase];
+  stringValue3 = [aprForPurchase stringValue];
+  [v16 setObjectOrNull:stringValue3 forKey:@"f"];
 
-  v13 = [v4 currencyCode];
-  [v16 setObjectOrNull:v13 forKey:@"g"];
+  currencyCode = [detailsCopy currencyCode];
+  [v16 setObjectOrNull:currencyCode forKey:@"g"];
 
-  v14 = [v4 balance];
+  balance = [detailsCopy balance];
 
   v15 = PKCurrencyDecimalToStorageNumber();
   [v16 setObjectOrNull:v15 forKey:@"h"];
@@ -132,9 +132,9 @@
   [(SQLiteEntity *)self setValuesWithDictionary:v16];
 }
 
-+ (id)_predicateForApplicationPID:(int64_t)a3
++ (id)_predicateForApplicationPID:(int64_t)d
 {
-  v3 = [NSNumber numberWithLongLong:a3];
+  v3 = [NSNumber numberWithLongLong:d];
   v4 = [SQLiteComparisonPredicate predicateWithProperty:@"a" equalToValue:v3];
 
   return v4;
@@ -164,18 +164,18 @@
 - (id)featureApplicationOfferDetails
 {
   v3 = objc_alloc_init(PKFeatureApplicationOfferDetails);
-  v4 = [objc_opt_class() _propertySettersForFeatureApplicationOfferDetails];
-  v5 = [v4 allKeys];
+  _propertySettersForFeatureApplicationOfferDetails = [objc_opt_class() _propertySettersForFeatureApplicationOfferDetails];
+  allKeys = [_propertySettersForFeatureApplicationOfferDetails allKeys];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100073AEC;
   v11[3] = &unk_10083BEE0;
   v11[4] = self;
-  v12 = v4;
+  v12 = _propertySettersForFeatureApplicationOfferDetails;
   v6 = v3;
   v13 = v6;
-  v7 = v4;
-  [(SQLiteEntity *)self getValuesForProperties:v5 withApplier:v11];
+  v7 = _propertySettersForFeatureApplicationOfferDetails;
+  [(SQLiteEntity *)self getValuesForProperties:allKeys withApplier:v11];
 
   v8 = v13;
   v9 = v6;

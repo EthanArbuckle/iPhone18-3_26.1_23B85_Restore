@@ -6,21 +6,21 @@
 - (BOOL)showsNoteContainer;
 - (CGRect)estimatedSummaryLabelFrame;
 - (CGRect)estimatedTitleLabelFrame;
-- (ICNoteResultsCellConfiguration)initWithInvitation:(id)a3;
-- (ICNoteResultsCellConfiguration)initWithNote:(id)a3;
-- (ICNoteResultsCellConfiguration)initWithSearchResult:(id)a3;
-- (double)maxLengthForAttributes:(id)a3 frame:(CGRect)a4;
+- (ICNoteResultsCellConfiguration)initWithInvitation:(id)invitation;
+- (ICNoteResultsCellConfiguration)initWithNote:(id)note;
+- (ICNoteResultsCellConfiguration)initWithSearchResult:(id)result;
+- (double)maxLengthForAttributes:(id)attributes frame:(CGRect)frame;
 - (id)accessibilityLabel;
 - (id)symbolImageConfiguration;
 - (void)clearData;
 - (void)commonInit;
-- (void)loadDataWithCompletion:(id)a3;
-- (void)loadDataWithContext:(id)a3;
-- (void)loadInvitationDataWithContext:(id)a3;
-- (void)loadNoteDataWithContext:(id)a3;
+- (void)loadDataWithCompletion:(id)completion;
+- (void)loadDataWithContext:(id)context;
+- (void)loadInvitationDataWithContext:(id)context;
+- (void)loadNoteDataWithContext:(id)context;
 - (void)synchronouslyLoadData;
-- (void)updateTitleLabelAttributes:(id)a3 summaryLabelAttributes:(id)a4;
-- (void)updateTitleLabelAttributes:(id)a3 summaryLabelAttributes:(id)a4 folderAndAccountLabelAttributes:(id)a5 estimatedTitleLabelFrame:(CGRect)a6 estimatedSummaryLabelFrame:(CGRect)a7;
+- (void)updateTitleLabelAttributes:(id)attributes summaryLabelAttributes:(id)labelAttributes;
+- (void)updateTitleLabelAttributes:(id)attributes summaryLabelAttributes:(id)labelAttributes folderAndAccountLabelAttributes:(id)accountLabelAttributes estimatedTitleLabelFrame:(CGRect)frame estimatedSummaryLabelFrame:(CGRect)labelFrame;
 @end
 
 @implementation ICNoteResultsCellConfiguration
@@ -61,36 +61,36 @@
   return v3;
 }
 
-- (ICNoteResultsCellConfiguration)initWithNote:(id)a3
+- (ICNoteResultsCellConfiguration)initWithNote:(id)note
 {
-  v5 = a3;
+  noteCopy = note;
   v9.receiver = self;
   v9.super_class = ICNoteResultsCellConfiguration;
   v6 = [(ICNoteResultsCellConfiguration *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_note, a3);
+    objc_storeStrong(&v6->_note, note);
     [(ICNoteResultsCellConfiguration *)v7 commonInit];
   }
 
   return v7;
 }
 
-- (ICNoteResultsCellConfiguration)initWithSearchResult:(id)a3
+- (ICNoteResultsCellConfiguration)initWithSearchResult:(id)result
 {
-  v5 = a3;
+  resultCopy = result;
   v11.receiver = self;
   v11.super_class = ICNoteResultsCellConfiguration;
   v6 = [(ICNoteResultsCellConfiguration *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_searchResult, a3);
+    objc_storeStrong(&v6->_searchResult, result);
     v7->_showFolderName = 1;
-    v8 = [v5 object];
+    object = [resultCopy object];
     note = v7->_note;
-    v7->_note = v8;
+    v7->_note = object;
 
     [(ICNoteResultsCellConfiguration *)v7 commonInit];
   }
@@ -98,16 +98,16 @@
   return v7;
 }
 
-- (ICNoteResultsCellConfiguration)initWithInvitation:(id)a3
+- (ICNoteResultsCellConfiguration)initWithInvitation:(id)invitation
 {
-  v5 = a3;
+  invitationCopy = invitation;
   v9.receiver = self;
   v9.super_class = ICNoteResultsCellConfiguration;
   v6 = [(ICNoteResultsCellConfiguration *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_invitation, a3);
+    objc_storeStrong(&v6->_invitation, invitation);
     v7->_showFolderName = 1;
     [(ICNoteResultsCellConfiguration *)v7 commonInit];
   }
@@ -124,66 +124,66 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v4 = [(ICSearchIndexableNote *)self->_note hasThumbnailImage];
+      hasThumbnailImage = [(ICSearchIndexableNote *)self->_note hasThumbnailImage];
     }
 
     else
     {
-      v4 = 0;
+      hasThumbnailImage = 0;
     }
 
-    self->_hasThumbnailImage = v4;
+    self->_hasThumbnailImage = hasThumbnailImage;
   }
 }
 
-- (void)updateTitleLabelAttributes:(id)a3 summaryLabelAttributes:(id)a4 folderAndAccountLabelAttributes:(id)a5 estimatedTitleLabelFrame:(CGRect)a6 estimatedSummaryLabelFrame:(CGRect)a7
+- (void)updateTitleLabelAttributes:(id)attributes summaryLabelAttributes:(id)labelAttributes folderAndAccountLabelAttributes:(id)accountLabelAttributes estimatedTitleLabelFrame:(CGRect)frame estimatedSummaryLabelFrame:(CGRect)labelFrame
 {
-  height = a7.size.height;
-  width = a7.size.width;
-  y = a7.origin.y;
-  x = a7.origin.x;
-  v11 = a6.size.height;
-  v12 = a6.size.width;
-  v13 = a6.origin.y;
-  v14 = a6.origin.x;
-  v21 = a3;
-  v18 = a4;
-  v19 = a5;
-  v20 = self;
-  objc_sync_enter(v20);
-  [(ICNoteResultsCellConfiguration *)v20 setTitleLabelAttributes:v21];
-  [(ICNoteResultsCellConfiguration *)v20 setSummaryLabelAttributes:v18];
-  [(ICNoteResultsCellConfiguration *)v20 setFolderAndAccountLabelAttributes:v19];
-  [(ICNoteResultsCellConfiguration *)v20 setEstimatedTitleLabelFrame:v14, v13, v12, v11];
-  [(ICNoteResultsCellConfiguration *)v20 setEstimatedSummaryLabelFrame:x, y, width, height];
-  objc_sync_exit(v20);
+  height = labelFrame.size.height;
+  width = labelFrame.size.width;
+  y = labelFrame.origin.y;
+  x = labelFrame.origin.x;
+  v11 = frame.size.height;
+  v12 = frame.size.width;
+  v13 = frame.origin.y;
+  v14 = frame.origin.x;
+  attributesCopy = attributes;
+  labelAttributesCopy = labelAttributes;
+  accountLabelAttributesCopy = accountLabelAttributes;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(ICNoteResultsCellConfiguration *)selfCopy setTitleLabelAttributes:attributesCopy];
+  [(ICNoteResultsCellConfiguration *)selfCopy setSummaryLabelAttributes:labelAttributesCopy];
+  [(ICNoteResultsCellConfiguration *)selfCopy setFolderAndAccountLabelAttributes:accountLabelAttributesCopy];
+  [(ICNoteResultsCellConfiguration *)selfCopy setEstimatedTitleLabelFrame:v14, v13, v12, v11];
+  [(ICNoteResultsCellConfiguration *)selfCopy setEstimatedSummaryLabelFrame:x, y, width, height];
+  objc_sync_exit(selfCopy);
 }
 
-- (void)updateTitleLabelAttributes:(id)a3 summaryLabelAttributes:(id)a4
+- (void)updateTitleLabelAttributes:(id)attributes summaryLabelAttributes:(id)labelAttributes
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = self;
-  objc_sync_enter(v7);
-  [(ICNoteResultsCellConfiguration *)v7 setTitleLabelAttributes:v8];
-  [(ICNoteResultsCellConfiguration *)v7 setSummaryLabelAttributes:v6];
-  objc_sync_exit(v7);
+  attributesCopy = attributes;
+  labelAttributesCopy = labelAttributes;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(ICNoteResultsCellConfiguration *)selfCopy setTitleLabelAttributes:attributesCopy];
+  [(ICNoteResultsCellConfiguration *)selfCopy setSummaryLabelAttributes:labelAttributesCopy];
+  objc_sync_exit(selfCopy);
 }
 
 - (void)synchronouslyLoadData
 {
-  v3 = [(ICNoteResultsCellConfiguration *)self note];
-  v4 = [v3 managedObjectContext];
-  v5 = v4;
-  if (v4)
+  note = [(ICNoteResultsCellConfiguration *)self note];
+  managedObjectContext = [note managedObjectContext];
+  v5 = managedObjectContext;
+  if (managedObjectContext)
   {
-    v6 = v4;
+    managedObjectContext2 = managedObjectContext;
   }
 
   else
   {
-    v7 = [(ICNoteResultsCellConfiguration *)self invitation];
-    v6 = [v7 managedObjectContext];
+    invitation = [(ICNoteResultsCellConfiguration *)self invitation];
+    managedObjectContext2 = [invitation managedObjectContext];
   }
 
   v9[0] = _NSConcreteStackBlock;
@@ -191,97 +191,97 @@
   v9[2] = sub_7168;
   v9[3] = &unk_184C0;
   v9[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = managedObjectContext2;
+  v8 = managedObjectContext2;
   [v8 performBlockAndWait:v9];
 }
 
-- (void)loadDataWithCompletion:(id)a3
+- (void)loadDataWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [objc_opt_class() loadDataQueue];
+  completionCopy = completion;
+  loadDataQueue = [objc_opt_class() loadDataQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_722C;
   v7[3] = &unk_185D8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = completionCopy;
+  v6 = completionCopy;
+  dispatch_async(loadDataQueue, v7);
 }
 
-- (void)loadDataWithContext:(id)a3
+- (void)loadDataWithContext:(id)context
 {
-  v6 = a3;
+  contextCopy = context;
   [(ICNoteResultsCellConfiguration *)self clearData];
-  v4 = [(ICNoteResultsCellConfiguration *)self note];
+  note = [(ICNoteResultsCellConfiguration *)self note];
 
-  if (v4)
+  if (note)
   {
-    [(ICNoteResultsCellConfiguration *)self loadNoteDataWithContext:v6];
+    [(ICNoteResultsCellConfiguration *)self loadNoteDataWithContext:contextCopy];
   }
 
   else
   {
-    v5 = [(ICNoteResultsCellConfiguration *)self invitation];
+    invitation = [(ICNoteResultsCellConfiguration *)self invitation];
 
-    if (v5)
+    if (invitation)
     {
-      [(ICNoteResultsCellConfiguration *)self loadInvitationDataWithContext:v6];
+      [(ICNoteResultsCellConfiguration *)self loadInvitationDataWithContext:contextCopy];
     }
   }
 
   [(ICNoteResultsCellConfiguration *)self setIsDataLoaded:1];
 }
 
-- (void)loadNoteDataWithContext:(id)a3
+- (void)loadNoteDataWithContext:(id)context
 {
-  v120 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(ICNoteResultsCellConfiguration *)v4 titleLabelAttributes];
-  v6 = [v5 copy];
+  contextCopy = context;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  titleLabelAttributes = [(ICNoteResultsCellConfiguration *)selfCopy titleLabelAttributes];
+  v6 = [titleLabelAttributes copy];
 
-  v7 = [(ICNoteResultsCellConfiguration *)v4 summaryLabelAttributes];
-  v8 = [v7 copy];
+  summaryLabelAttributes = [(ICNoteResultsCellConfiguration *)selfCopy summaryLabelAttributes];
+  v8 = [summaryLabelAttributes copy];
 
-  v9 = [(ICNoteResultsCellConfiguration *)v4 folderAndAccountLabelAttributes];
-  v119 = [v9 copy];
+  folderAndAccountLabelAttributes = [(ICNoteResultsCellConfiguration *)selfCopy folderAndAccountLabelAttributes];
+  v119 = [folderAndAccountLabelAttributes copy];
 
-  [(ICNoteResultsCellConfiguration *)v4 estimatedTitleLabelFrame];
+  [(ICNoteResultsCellConfiguration *)selfCopy estimatedTitleLabelFrame];
   v11 = v10;
   v13 = v12;
   v15 = v14;
   v17 = v16;
-  [(ICNoteResultsCellConfiguration *)v4 estimatedSummaryLabelFrame];
+  [(ICNoteResultsCellConfiguration *)selfCopy estimatedSummaryLabelFrame];
   v19 = v18;
   v21 = v20;
   v23 = v22;
   v25 = v24;
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 
-  v26 = [(ICNoteResultsCellConfiguration *)v4 note];
-  v27 = [v26 objectID];
-  v28 = [v120 ic_existingObjectWithID:v27];
+  note = [(ICNoteResultsCellConfiguration *)selfCopy note];
+  objectID = [note objectID];
+  v28 = [contextCopy ic_existingObjectWithID:objectID];
 
-  v29 = [(ICNoteResultsCellConfiguration *)v4 folderNoteSortType];
-  v30 = [ICNoteListSortUtilities dateForCurrentSortTypeForNote:v28 folderNoteSortType:v29];
-  v31 = [v30 ic_briefFormattedDate];
-  [(ICNoteResultsCellConfiguration *)v4 setDateString:v31];
+  folderNoteSortType = [(ICNoteResultsCellConfiguration *)selfCopy folderNoteSortType];
+  v30 = [ICNoteListSortUtilities dateForCurrentSortTypeForNote:v28 folderNoteSortType:folderNoteSortType];
+  ic_briefFormattedDate = [v30 ic_briefFormattedDate];
+  [(ICNoteResultsCellConfiguration *)selfCopy setDateString:ic_briefFormattedDate];
 
   objc_opt_class();
   v32 = ICDynamicCast();
   if (v32 && [v28 isSharedViaICloud] && (objc_msgSend(v32, "isSharedRootObject") & 1) == 0)
   {
-    v33 = ([(ICNoteResultsCellConfiguration *)v4 isDisplayedInFolder]^ 1);
+    isSharedViaICloud = ([(ICNoteResultsCellConfiguration *)selfCopy isDisplayedInFolder]^ 1);
   }
 
   else
   {
-    v33 = [v28 isSharedViaICloud];
+    isSharedViaICloud = [v28 isSharedViaICloud];
   }
 
-  [(ICNoteResultsCellConfiguration *)v4 setShowCollaboratorsBadge:v33];
+  [(ICNoteResultsCellConfiguration *)selfCopy setShowCollaboratorsBadge:isSharedViaICloud];
   if ([v28 isPinned])
   {
     v34 = [v28 isDeletedOrInTrash] ^ 1;
@@ -292,65 +292,65 @@
     v34 = 0;
   }
 
-  [(ICNoteResultsCellConfiguration *)v4 setShowPinnedBadge:v34];
+  [(ICNoteResultsCellConfiguration *)selfCopy setShowPinnedBadge:v34];
   v118 = v32;
   if ([v28 hasUnreadChanges])
   {
-    v35 = [v28 isSharedViaICloud];
+    isSharedViaICloud2 = [v28 isSharedViaICloud];
   }
 
   else
   {
-    v35 = 0;
+    isSharedViaICloud2 = 0;
   }
 
-  [(ICNoteResultsCellConfiguration *)v4 setShowUnreadIndicator:v35];
-  v36 = [v28 currentStatus];
-  if ([(ICNoteResultsCellConfiguration *)v4 showUnreadIndicator]|| v36)
+  [(ICNoteResultsCellConfiguration *)selfCopy setShowUnreadIndicator:isSharedViaICloud2];
+  currentStatus = [v28 currentStatus];
+  if ([(ICNoteResultsCellConfiguration *)selfCopy showUnreadIndicator]|| currentStatus)
   {
-    if ([(ICNoteResultsCellConfiguration *)v4 showUnreadIndicator])
+    if ([(ICNoteResultsCellConfiguration *)selfCopy showUnreadIndicator])
     {
       v37 = objc_alloc_init(ICNoteIndicatorUnreadChanges);
-      v38 = [(ICNoteIndicatorUnreadChanges *)v37 imageName];
-      [(ICNoteResultsCellConfiguration *)v4 symbolImageConfiguration];
+      imageName = [(ICNoteIndicatorUnreadChanges *)v37 imageName];
+      [(ICNoteResultsCellConfiguration *)selfCopy symbolImageConfiguration];
       v39 = v8;
       v41 = v40 = v6;
-      v42 = [UIImage systemImageNamed:v38 withConfiguration:v41];
-      [(ICNoteResultsCellConfiguration *)v4 setPrimaryStatusImage:v42];
+      v42 = [UIImage systemImageNamed:imageName withConfiguration:v41];
+      [(ICNoteResultsCellConfiguration *)selfCopy setPrimaryStatusImage:v42];
 
       v6 = v40;
       v8 = v39;
 
-      v43 = [(ICNoteIndicatorUnreadChanges *)v37 tintColor];
-      [(ICNoteResultsCellConfiguration *)v4 setPrimaryStatusImageTintColor:v43];
+      tintColor = [(ICNoteIndicatorUnreadChanges *)v37 tintColor];
+      [(ICNoteResultsCellConfiguration *)selfCopy setPrimaryStatusImageTintColor:tintColor];
 
-      v44 = [(ICNoteResultsCellConfiguration *)v4 primaryStatusImage];
-      [(ICNoteResultsCellConfiguration *)v4 setUnreadIndicatorImage:v44];
+      primaryStatusImage = [(ICNoteResultsCellConfiguration *)selfCopy primaryStatusImage];
+      [(ICNoteResultsCellConfiguration *)selfCopy setUnreadIndicatorImage:primaryStatusImage];
     }
 
-    if (v36)
+    if (currentStatus)
     {
       v45 = v8;
       v46 = v6;
-      v47 = [[ICNoteIndicatorStatus alloc] initWithStatusType:v36 isDisplayedInFolder:[(ICNoteResultsCellConfiguration *)v4 isDisplayedInFolder]];
-      v48 = [(ICNoteIndicatorStatus *)v47 imageName];
-      v49 = [(ICNoteResultsCellConfiguration *)v4 symbolImageConfiguration];
-      v50 = [UIImage systemImageNamed:v48 withConfiguration:v49];
+      v47 = [[ICNoteIndicatorStatus alloc] initWithStatusType:currentStatus isDisplayedInFolder:[(ICNoteResultsCellConfiguration *)selfCopy isDisplayedInFolder]];
+      imageName2 = [(ICNoteIndicatorStatus *)v47 imageName];
+      symbolImageConfiguration = [(ICNoteResultsCellConfiguration *)selfCopy symbolImageConfiguration];
+      v50 = [UIImage systemImageNamed:imageName2 withConfiguration:symbolImageConfiguration];
 
-      v51 = [(ICNoteResultsCellConfiguration *)v4 primaryStatusImage];
+      primaryStatusImage2 = [(ICNoteResultsCellConfiguration *)selfCopy primaryStatusImage];
 
-      if (v51)
+      if (primaryStatusImage2)
       {
-        [(ICNoteResultsCellConfiguration *)v4 setSecondaryStatusImage:v50];
-        v52 = [(ICNoteIndicatorStatus *)v47 tintColor];
-        [(ICNoteResultsCellConfiguration *)v4 setSecondaryStatusImageTintColor:v52];
+        [(ICNoteResultsCellConfiguration *)selfCopy setSecondaryStatusImage:v50];
+        tintColor2 = [(ICNoteIndicatorStatus *)v47 tintColor];
+        [(ICNoteResultsCellConfiguration *)selfCopy setSecondaryStatusImageTintColor:tintColor2];
       }
 
       else
       {
-        [(ICNoteResultsCellConfiguration *)v4 setPrimaryStatusImage:v50];
-        v52 = [(ICNoteIndicatorStatus *)v47 tintColor];
-        [(ICNoteResultsCellConfiguration *)v4 setPrimaryStatusImageTintColor:v52];
+        [(ICNoteResultsCellConfiguration *)selfCopy setPrimaryStatusImage:v50];
+        tintColor2 = [(ICNoteIndicatorStatus *)v47 tintColor];
+        [(ICNoteResultsCellConfiguration *)selfCopy setPrimaryStatusImageTintColor:tintColor2];
       }
 
       v6 = v46;
@@ -361,208 +361,208 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v53 = [v28 hasThumbnailImage];
+    hasThumbnailImage = [v28 hasThumbnailImage];
   }
 
   else
   {
-    v53 = 0;
+    hasThumbnailImage = 0;
   }
 
-  [(ICNoteResultsCellConfiguration *)v4 setHasThumbnailImage:v53];
-  v54 = [(ICNoteResultsCellConfiguration *)v4 searchResult];
+  [(ICNoteResultsCellConfiguration *)selfCopy setHasThumbnailImage:hasThumbnailImage];
+  searchResult = [(ICNoteResultsCellConfiguration *)selfCopy searchResult];
 
-  if (!v54)
+  if (!searchResult)
   {
-    v65 = [v28 title];
-    v69 = [v28 attributedTitle];
-    [(ICNoteResultsCellConfiguration *)v4 maxLengthForAttributes:v6 frame:v11, v13, v15, v17];
+    title = [v28 title];
+    attributedTitle = [v28 attributedTitle];
+    [(ICNoteResultsCellConfiguration *)selfCopy maxLengthForAttributes:v6 frame:v11, v13, v15, v17];
     if (v70 > 0.0)
     {
       v71 = v70;
-      v72 = [v65 length];
+      v72 = [title length];
       if (v71 <= v72)
       {
         v72 = v71;
       }
 
       v73 = v72;
-      if (!v69)
+      if (!attributedTitle)
       {
-        v75 = [v65 ic_substringWithRange:{0, v73}];
+        v75 = [title ic_substringWithRange:{0, v73}];
 
-        v65 = v75;
+        title = v75;
         goto LABEL_39;
       }
 
-      v74 = [v69 attributedSubstringFromRange:{0, v73}];
+      v74 = [attributedTitle attributedSubstringFromRange:{0, v73}];
 
-      v69 = v74;
+      attributedTitle = v74;
     }
 
-    if (v69)
+    if (attributedTitle)
     {
-      [(ICNoteResultsCellConfiguration *)v4 setTitleAttributedString:v69];
+      [(ICNoteResultsCellConfiguration *)selfCopy setTitleAttributedString:attributedTitle];
 
 LABEL_40:
       if ([v28 isUnsupported])
       {
         v76 = +[NSBundle mainBundle];
         v77 = [v76 localizedStringForKey:@"Content hidden" value:&stru_18718 table:0];
-        v78 = [v77 ic_attributedString];
+        ic_attributedString = [v77 ic_attributedString];
       }
 
       else
       {
-        v78 = [v28 attributedContentInfoText];
+        ic_attributedString = [v28 attributedContentInfoText];
       }
 
-      if (![(ICNoteResultsCellConfiguration *)v4 isLargerThanAXLarge])
+      if (![(ICNoteResultsCellConfiguration *)selfCopy isLargerThanAXLarge])
       {
-        v79 = [(ICNoteResultsCellConfiguration *)v4 dateString];
-        if (v79)
+        dateString = [(ICNoteResultsCellConfiguration *)selfCopy dateString];
+        if (dateString)
         {
-          v80 = v79;
-          v81 = [v78 length];
+          v80 = dateString;
+          v81 = [ic_attributedString length];
 
           if (v81)
           {
-            v82 = [(ICNoteResultsCellConfiguration *)v4 dateString];
-            v83 = [NSString stringWithFormat:@"%@  ", v82];
-            [v78 ic_attributedStringByPrependingString:v83];
+            dateString2 = [(ICNoteResultsCellConfiguration *)selfCopy dateString];
+            v83 = [NSString stringWithFormat:@"%@  ", dateString2];
+            [ic_attributedString ic_attributedStringByPrependingString:v83];
             v84 = v8;
             v86 = v85 = v6;
 
-            v78 = v86;
+            ic_attributedString = v86;
             v6 = v85;
             v8 = v84;
           }
         }
       }
 
-      [(ICNoteResultsCellConfiguration *)v4 maxLengthForAttributes:v8 frame:v19, v21, v23, v25];
+      [(ICNoteResultsCellConfiguration *)selfCopy maxLengthForAttributes:v8 frame:v19, v21, v23, v25];
       if (v87 > 0.0)
       {
         v88 = v87;
-        v89 = [v78 length];
+        v89 = [ic_attributedString length];
         if (v88 <= v89)
         {
           v89 = v88;
         }
 
-        v90 = [v78 ic_attributedSubstringFromRange:{0, v89}];
+        v90 = [ic_attributedString ic_attributedSubstringFromRange:{0, v89}];
 
-        v78 = v90;
+        ic_attributedString = v90;
       }
 
-      [(ICNoteResultsCellConfiguration *)v4 setSummaryAttributedString:v78];
+      [(ICNoteResultsCellConfiguration *)selfCopy setSummaryAttributedString:ic_attributedString];
 
       goto LABEL_52;
     }
 
 LABEL_39:
-    [(ICNoteResultsCellConfiguration *)v4 setTitleString:v65];
+    [(ICNoteResultsCellConfiguration *)selfCopy setTitleString:title];
     goto LABEL_40;
   }
 
-  v55 = [(ICNoteResultsCellConfiguration *)v4 searchResult];
-  v56 = [(ICNoteResultsCellConfiguration *)v4 highlightColor];
-  v57 = [v55 attributedTitleWithBaseAttributes:v6 highlightColor:v56 insideFrame:{v11, v13, v15, v17}];
-  [(ICNoteResultsCellConfiguration *)v4 setTitleAttributedString:v57];
+  searchResult2 = [(ICNoteResultsCellConfiguration *)selfCopy searchResult];
+  highlightColor = [(ICNoteResultsCellConfiguration *)selfCopy highlightColor];
+  v57 = [searchResult2 attributedTitleWithBaseAttributes:v6 highlightColor:highlightColor insideFrame:{v11, v13, v15, v17}];
+  [(ICNoteResultsCellConfiguration *)selfCopy setTitleAttributedString:v57];
 
-  v58 = [(ICNoteResultsCellConfiguration *)v4 searchResult];
-  v59 = [(ICNoteResultsCellConfiguration *)v4 highlightColor];
-  v60 = [v58 attributedSummaryWithBaseAttributes:v8 highlightColor:v59 insideFrame:{v19, v21, v23, v25}];
-  [(ICNoteResultsCellConfiguration *)v4 setSummaryAttributedString:v60];
+  searchResult3 = [(ICNoteResultsCellConfiguration *)selfCopy searchResult];
+  highlightColor2 = [(ICNoteResultsCellConfiguration *)selfCopy highlightColor];
+  v60 = [searchResult3 attributedSummaryWithBaseAttributes:v8 highlightColor:highlightColor2 insideFrame:{v19, v21, v23, v25}];
+  [(ICNoteResultsCellConfiguration *)selfCopy setSummaryAttributedString:v60];
 
-  if ([(ICNoteResultsCellConfiguration *)v4 isLargerThanAXLarge])
+  if ([(ICNoteResultsCellConfiguration *)selfCopy isLargerThanAXLarge])
   {
     goto LABEL_53;
   }
 
-  v61 = [(ICNoteResultsCellConfiguration *)v4 dateString];
-  v62 = v61;
+  dateString3 = [(ICNoteResultsCellConfiguration *)selfCopy dateString];
+  v62 = dateString3;
   v63 = &stru_18718;
-  if (v61)
+  if (dateString3)
   {
-    v63 = v61;
+    v63 = dateString3;
   }
 
   v64 = v63;
 
-  v65 = [[NSMutableAttributedString alloc] initWithString:v64 attributes:v8];
-  v66 = [(ICNoteResultsCellConfiguration *)v4 summaryAttributedString];
+  title = [[NSMutableAttributedString alloc] initWithString:v64 attributes:v8];
+  summaryAttributedString = [(ICNoteResultsCellConfiguration *)selfCopy summaryAttributedString];
 
-  if (v66)
+  if (summaryAttributedString)
   {
-    [v65 ic_appendString:@"  "];
-    v67 = [(ICNoteResultsCellConfiguration *)v4 summaryAttributedString];
-    [v65 appendAttributedString:v67];
+    [title ic_appendString:@"  "];
+    summaryAttributedString2 = [(ICNoteResultsCellConfiguration *)selfCopy summaryAttributedString];
+    [title appendAttributedString:summaryAttributedString2];
 
-    v68 = [v65 copy];
-    [(ICNoteResultsCellConfiguration *)v4 setSummaryAttributedString:v68];
+    v68 = [title copy];
+    [(ICNoteResultsCellConfiguration *)selfCopy setSummaryAttributedString:v68];
   }
 
   else
   {
-    [(ICNoteResultsCellConfiguration *)v4 setSummaryAttributedString:v65];
+    [(ICNoteResultsCellConfiguration *)selfCopy setSummaryAttributedString:title];
   }
 
 LABEL_52:
 
 LABEL_53:
-  if ([(ICNoteResultsCellConfiguration *)v4 showParticipantsInfo])
+  if ([(ICNoteResultsCellConfiguration *)selfCopy showParticipantsInfo])
   {
     objc_opt_class();
     v91 = ICDynamicCast();
-    v92 = [v91 participantsInfoDescription];
-    [(ICNoteResultsCellConfiguration *)v4 setParticipantsInfoString:v92];
+    participantsInfoDescription = [v91 participantsInfoDescription];
+    [(ICNoteResultsCellConfiguration *)selfCopy setParticipantsInfoString:participantsInfoDescription];
   }
 
-  if ([(ICNoteResultsCellConfiguration *)v4 showsNoteContainer])
+  if ([(ICNoteResultsCellConfiguration *)selfCopy showsNoteContainer])
   {
-    if ([(ICNoteResultsCellConfiguration *)v4 showFolderName]&& [(ICNoteResultsCellConfiguration *)v4 showAccountName])
+    if ([(ICNoteResultsCellConfiguration *)selfCopy showFolderName]&& [(ICNoteResultsCellConfiguration *)selfCopy showAccountName])
     {
-      v93 = [v28 folderName];
-      v94 = v93;
+      folderName = [v28 folderName];
+      v94 = folderName;
       v95 = &stru_18718;
-      if (v93)
+      if (folderName)
       {
-        v95 = v93;
+        v95 = folderName;
       }
 
       v96 = v95;
 
-      v97 = [v28 accountName];
-      v98 = [NSString localizedStringWithFormat:@"%@ — %@", v96, v97];
+      accountName = [v28 accountName];
+      v98 = [NSString localizedStringWithFormat:@"%@ — %@", v96, accountName];
     }
 
     else
     {
-      if ([(ICNoteResultsCellConfiguration *)v4 showAccountName])
+      if ([(ICNoteResultsCellConfiguration *)selfCopy showAccountName])
       {
-        v99 = [v28 accountName];
-        v97 = v99;
+        accountName2 = [v28 accountName];
+        accountName = accountName2;
         v100 = &stru_18718;
-        if (v99)
+        if (accountName2)
         {
-          v100 = v99;
+          v100 = accountName2;
         }
       }
 
       else
       {
         v98 = &stru_18718;
-        if (![(ICNoteResultsCellConfiguration *)v4 showFolderName])
+        if (![(ICNoteResultsCellConfiguration *)selfCopy showFolderName])
         {
           goto LABEL_71;
         }
 
-        v101 = [v28 folderName];
-        v97 = v101;
-        if (v101)
+        folderName2 = [v28 folderName];
+        accountName = folderName2;
+        if (folderName2)
         {
-          v100 = v101;
+          v100 = folderName2;
         }
 
         else
@@ -576,19 +576,19 @@ LABEL_53:
 
 LABEL_71:
     v102 = [@" " stringByAppendingString:v98];
-    [(ICNoteResultsCellConfiguration *)v4 setFolderAndAccountInfoString:v102];
+    [(ICNoteResultsCellConfiguration *)selfCopy setFolderAndAccountInfoString:v102];
 
-    if ([(ICNoteResultsCellConfiguration *)v4 showFolderName]|| ([(ICNoteResultsCellConfiguration *)v4 searchResult], v103 = objc_claimAutoreleasedReturnValue(), v103, v103))
+    if ([(ICNoteResultsCellConfiguration *)selfCopy showFolderName]|| ([(ICNoteResultsCellConfiguration *)selfCopy searchResult], v103 = objc_claimAutoreleasedReturnValue(), v103, v103))
     {
       v104 = v8;
       objc_opt_class();
       v105 = ICDynamicCast();
-      v106 = [v105 folderSystemImageName];
-      v107 = v106;
+      folderSystemImageName = [v105 folderSystemImageName];
+      v107 = folderSystemImageName;
       v108 = v6;
-      if (v106)
+      if (folderSystemImageName)
       {
-        v109 = v106;
+        v109 = folderSystemImageName;
       }
 
       else
@@ -611,7 +611,7 @@ LABEL_71:
         v114 = v117;
       }
 
-      [(ICNoteResultsCellConfiguration *)v4 setFolderImage:v114];
+      [(ICNoteResultsCellConfiguration *)selfCopy setFolderImage:v114];
 
       v6 = v108;
       v8 = v104;
@@ -619,58 +619,58 @@ LABEL_71:
   }
 }
 
-- (void)loadInvitationDataWithContext:(id)a3
+- (void)loadInvitationDataWithContext:(id)context
 {
-  v64 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(ICNoteResultsCellConfiguration *)v4 titleLabelAttributes];
-  v6 = [v5 copy];
+  contextCopy = context;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  titleLabelAttributes = [(ICNoteResultsCellConfiguration *)selfCopy titleLabelAttributes];
+  v6 = [titleLabelAttributes copy];
 
-  v7 = [(ICNoteResultsCellConfiguration *)v4 summaryLabelAttributes];
-  v8 = [v7 copy];
+  summaryLabelAttributes = [(ICNoteResultsCellConfiguration *)selfCopy summaryLabelAttributes];
+  v8 = [summaryLabelAttributes copy];
 
-  [(ICNoteResultsCellConfiguration *)v4 estimatedTitleLabelFrame];
+  [(ICNoteResultsCellConfiguration *)selfCopy estimatedTitleLabelFrame];
   v10 = v9;
   v12 = v11;
   v14 = v13;
   v16 = v15;
-  [(ICNoteResultsCellConfiguration *)v4 estimatedSummaryLabelFrame];
+  [(ICNoteResultsCellConfiguration *)selfCopy estimatedSummaryLabelFrame];
   v18 = v17;
   v20 = v19;
   v22 = v21;
   v24 = v23;
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 
-  v25 = [(ICNoteResultsCellConfiguration *)v4 invitation];
-  v26 = [v25 objectID];
-  v27 = [v64 ic_existingObjectWithID:v26];
+  invitation = [(ICNoteResultsCellConfiguration *)selfCopy invitation];
+  objectID = [invitation objectID];
+  v27 = [contextCopy ic_existingObjectWithID:objectID];
 
-  [(ICNoteResultsCellConfiguration *)v4 maxLengthForAttributes:v6 frame:v10, v12, v14, v16];
+  [(ICNoteResultsCellConfiguration *)selfCopy maxLengthForAttributes:v6 frame:v10, v12, v14, v16];
   v29 = v28;
-  v30 = [v27 title];
-  if (v30)
+  title = [v27 title];
+  if (title)
   {
-    [(ICNoteResultsCellConfiguration *)v4 setTitleString:v30];
+    [(ICNoteResultsCellConfiguration *)selfCopy setTitleString:title];
   }
 
   else
   {
     v31 = +[NSBundle mainBundle];
     v32 = [v31 localizedStringForKey:@"Invitation" value:&stru_18718 table:0];
-    [(ICNoteResultsCellConfiguration *)v4 setTitleString:v32];
+    [(ICNoteResultsCellConfiguration *)selfCopy setTitleString:v32];
   }
 
-  v33 = [(ICNoteResultsCellConfiguration *)v4 titleString];
+  titleString = [(ICNoteResultsCellConfiguration *)selfCopy titleString];
   if (v29 == 0.0)
   {
-    [(ICNoteResultsCellConfiguration *)v4 setTitleString:v33];
+    [(ICNoteResultsCellConfiguration *)selfCopy setTitleString:titleString];
   }
 
   else
   {
-    v34 = [(ICNoteResultsCellConfiguration *)v4 titleString];
-    v35 = [v34 length];
+    titleString2 = [(ICNoteResultsCellConfiguration *)selfCopy titleString];
+    v35 = [titleString2 length];
 
     v36 = v35;
     if (v29 <= v35)
@@ -678,50 +678,50 @@ LABEL_71:
       v36 = v29;
     }
 
-    v37 = [v33 ic_substringWithRange:{0, v36}];
-    [(ICNoteResultsCellConfiguration *)v4 setTitleString:v37];
+    v37 = [titleString ic_substringWithRange:{0, v36}];
+    [(ICNoteResultsCellConfiguration *)selfCopy setTitleString:v37];
   }
 
-  v38 = [v27 creationDate];
-  v39 = [v38 ic_briefFormattedDate];
-  [(ICNoteResultsCellConfiguration *)v4 setDateString:v39];
+  creationDate = [v27 creationDate];
+  ic_briefFormattedDate = [creationDate ic_briefFormattedDate];
+  [(ICNoteResultsCellConfiguration *)selfCopy setDateString:ic_briefFormattedDate];
 
-  v40 = [v27 contentDescription];
-  [(ICNoteResultsCellConfiguration *)v4 setSummaryString:v40];
+  contentDescription = [v27 contentDescription];
+  [(ICNoteResultsCellConfiguration *)selfCopy setSummaryString:contentDescription];
 
-  if (![(ICNoteResultsCellConfiguration *)v4 isLargerThanAXLarge])
+  if (![(ICNoteResultsCellConfiguration *)selfCopy isLargerThanAXLarge])
   {
-    v41 = [(ICNoteResultsCellConfiguration *)v4 dateString];
-    if ([v41 length])
+    dateString = [(ICNoteResultsCellConfiguration *)selfCopy dateString];
+    if ([dateString length])
     {
-      v42 = [(ICNoteResultsCellConfiguration *)v4 summaryString];
-      v43 = [v42 length];
+      summaryString = [(ICNoteResultsCellConfiguration *)selfCopy summaryString];
+      v43 = [summaryString length];
 
       if (!v43)
       {
         goto LABEL_14;
       }
 
-      v41 = [(ICNoteResultsCellConfiguration *)v4 dateString];
-      v44 = [(ICNoteResultsCellConfiguration *)v4 summaryString];
-      v45 = [NSString stringWithFormat:@"%@  %@", v41, v44];
-      [(ICNoteResultsCellConfiguration *)v4 setSummaryString:v45];
+      dateString = [(ICNoteResultsCellConfiguration *)selfCopy dateString];
+      summaryString2 = [(ICNoteResultsCellConfiguration *)selfCopy summaryString];
+      v45 = [NSString stringWithFormat:@"%@  %@", dateString, summaryString2];
+      [(ICNoteResultsCellConfiguration *)selfCopy setSummaryString:v45];
     }
   }
 
 LABEL_14:
-  [(ICNoteResultsCellConfiguration *)v4 maxLengthForAttributes:v8 frame:v18, v20, v22, v24];
+  [(ICNoteResultsCellConfiguration *)selfCopy maxLengthForAttributes:v8 frame:v18, v20, v22, v24];
   v47 = v46;
-  v48 = [(ICNoteResultsCellConfiguration *)v4 summaryString];
+  summaryString3 = [(ICNoteResultsCellConfiguration *)selfCopy summaryString];
   if (v47 == 0.0)
   {
-    [(ICNoteResultsCellConfiguration *)v4 setSummaryString:v48];
+    [(ICNoteResultsCellConfiguration *)selfCopy setSummaryString:summaryString3];
   }
 
   else
   {
-    v49 = [(ICNoteResultsCellConfiguration *)v4 summaryString];
-    v50 = [v49 length];
+    summaryString4 = [(ICNoteResultsCellConfiguration *)selfCopy summaryString];
+    v50 = [summaryString4 length];
 
     v51 = v50;
     if (v47 <= v50)
@@ -729,52 +729,52 @@ LABEL_14:
       v51 = v47;
     }
 
-    v52 = [v48 ic_substringWithRange:{0, v51}];
-    [(ICNoteResultsCellConfiguration *)v4 setSummaryString:v52];
+    v52 = [summaryString3 ic_substringWithRange:{0, v51}];
+    [(ICNoteResultsCellConfiguration *)selfCopy setSummaryString:v52];
   }
 
   if ([v27 hasThumbnail])
   {
-    [(ICNoteResultsCellConfiguration *)v4 setHasThumbnailImage:1];
+    [(ICNoteResultsCellConfiguration *)selfCopy setHasThumbnailImage:1];
   }
 
   else
   {
-    v53 = [v27 rootObjectType];
-    -[ICNoteResultsCellConfiguration setHasThumbnailImage:](v4, "setHasThumbnailImage:", [v53 isEqualToString:@"com.apple.notes.folder"]);
+    rootObjectType = [v27 rootObjectType];
+    -[ICNoteResultsCellConfiguration setHasThumbnailImage:](selfCopy, "setHasThumbnailImage:", [rootObjectType isEqualToString:@"com.apple.notes.folder"]);
   }
 
-  v54 = [(ICNoteResultsCellConfiguration *)v4 symbolImageConfiguration];
-  v55 = [UIImage systemImageNamed:@"arrow.down.message" withConfiguration:v54];
-  [(ICNoteResultsCellConfiguration *)v4 setPrimaryStatusImage:v55];
+  symbolImageConfiguration = [(ICNoteResultsCellConfiguration *)selfCopy symbolImageConfiguration];
+  v55 = [UIImage systemImageNamed:@"arrow.down.message" withConfiguration:symbolImageConfiguration];
+  [(ICNoteResultsCellConfiguration *)selfCopy setPrimaryStatusImage:v55];
 
   v56 = +[UIColor secondaryLabelColor];
-  [(ICNoteResultsCellConfiguration *)v4 setPrimaryStatusImageTintColor:v56];
+  [(ICNoteResultsCellConfiguration *)selfCopy setPrimaryStatusImageTintColor:v56];
 
-  v57 = [v27 typeDescription];
-  [(ICNoteResultsCellConfiguration *)v4 setFolderAndAccountInfoString:v57];
+  typeDescription = [v27 typeDescription];
+  [(ICNoteResultsCellConfiguration *)selfCopy setFolderAndAccountInfoString:typeDescription];
 
-  if ([(ICNoteResultsCellConfiguration *)v4 showAccountName])
+  if ([(ICNoteResultsCellConfiguration *)selfCopy showAccountName])
   {
-    v58 = [v27 account];
+    account = [v27 account];
 
-    if (v58)
+    if (account)
     {
-      v59 = [(ICNoteResultsCellConfiguration *)v4 folderAndAccountInfoString];
-      if (v59)
+      folderAndAccountInfoString = [(ICNoteResultsCellConfiguration *)selfCopy folderAndAccountInfoString];
+      if (folderAndAccountInfoString)
       {
-        v60 = [(ICNoteResultsCellConfiguration *)v4 folderAndAccountInfoString];
-        v61 = [v27 account];
-        v62 = [v61 localizedName];
-        v63 = [NSString stringWithFormat:@"%@ — %@", v60, v62];
-        [(ICNoteResultsCellConfiguration *)v4 setFolderAndAccountInfoString:v63];
+        folderAndAccountInfoString2 = [(ICNoteResultsCellConfiguration *)selfCopy folderAndAccountInfoString];
+        account2 = [v27 account];
+        localizedName = [account2 localizedName];
+        v63 = [NSString stringWithFormat:@"%@ — %@", folderAndAccountInfoString2, localizedName];
+        [(ICNoteResultsCellConfiguration *)selfCopy setFolderAndAccountInfoString:v63];
       }
 
       else
       {
-        v60 = [v27 account];
-        v61 = [v60 localizedName];
-        [(ICNoteResultsCellConfiguration *)v4 setFolderAndAccountInfoString:v61];
+        folderAndAccountInfoString2 = [v27 account];
+        account2 = [folderAndAccountInfoString2 localizedName];
+        [(ICNoteResultsCellConfiguration *)selfCopy setFolderAndAccountInfoString:account2];
       }
     }
   }
@@ -802,8 +802,8 @@ LABEL_14:
 - (BOOL)isLargerThanAXLarge
 {
   v2 = +[UITraitCollection currentTraitCollection];
-  v3 = [v2 preferredContentSizeCategory];
-  v4 = UIContentSizeCategoryCompareToCategory(v3, UIContentSizeCategoryAccessibilityLarge) > NSOrderedSame;
+  preferredContentSizeCategory = [v2 preferredContentSizeCategory];
+  v4 = UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, UIContentSizeCategoryAccessibilityLarge) > NSOrderedSame;
 
   return v4;
 }
@@ -812,27 +812,27 @@ LABEL_14:
 {
   if ([(ICNoteResultsCellConfiguration *)self isLargerThanAXLarge])
   {
-    v2 = [UIFont ic_preferredFontForBodyTextWithContentSizeCategory:UIContentSizeCategoryAccessibilityLarge];
+    ic_fontWithSingleLineA = [UIFont ic_preferredFontForBodyTextWithContentSizeCategory:UIContentSizeCategoryAccessibilityLarge];
   }
 
   else
   {
     v3 = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
-    v2 = [v3 ic_fontWithSingleLineA];
+    ic_fontWithSingleLineA = [v3 ic_fontWithSingleLineA];
   }
 
-  v4 = [UIImageSymbolConfiguration configurationWithFont:v2 scale:1];
+  v4 = [UIImageSymbolConfiguration configurationWithFont:ic_fontWithSingleLineA scale:1];
 
   return v4;
 }
 
-- (double)maxLengthForAttributes:(id)a3 frame:(CGRect)a4
+- (double)maxLengthForAttributes:(id)attributes frame:(CGRect)frame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  [@"." sizeWithAttributes:a3];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  [@"." sizeWithAttributes:attributes];
   v10 = v9;
   v15.origin.x = x;
   v15.origin.y = y;
@@ -856,13 +856,13 @@ LABEL_14:
 
 - (id)accessibilityLabel
 {
-  v3 = [(ICNoteResultsCellConfiguration *)self invitation];
+  invitation = [(ICNoteResultsCellConfiguration *)self invitation];
 
-  if (v3)
+  if (invitation)
   {
-    v4 = [(ICNoteResultsCellConfiguration *)self invitation];
-    v5 = [v4 rootObjectType];
-    v6 = [v5 isEqualToString:@"com.apple.notes.folder"];
+    invitation2 = [(ICNoteResultsCellConfiguration *)self invitation];
+    rootObjectType = [invitation2 rootObjectType];
+    v6 = [rootObjectType isEqualToString:@"com.apple.notes.folder"];
     v7 = +[NSBundle mainBundle];
     v8 = v7;
     if (v6)
@@ -877,16 +877,16 @@ LABEL_14:
 
     v10 = [v7 localizedStringForKey:v9 value:&stru_18718 table:0];
 
-    v11 = [(ICNoteResultsCellConfiguration *)self invitation];
-    v12 = [v11 title];
-    v13 = [NSString localizedStringWithFormat:v10, v12];
+    invitation3 = [(ICNoteResultsCellConfiguration *)self invitation];
+    title = [invitation3 title];
+    v13 = [NSString localizedStringWithFormat:v10, title];
 
-    v14 = [(ICNoteResultsCellConfiguration *)self invitation];
-    v15 = [v14 receivedDate];
-    v16 = [v15 ic_briefFormattedDate];
+    invitation4 = [(ICNoteResultsCellConfiguration *)self invitation];
+    receivedDate = [invitation4 receivedDate];
+    ic_briefFormattedDate = [receivedDate ic_briefFormattedDate];
 
-    v17 = [(ICNoteResultsCellConfiguration *)self invitation];
-    v18 = [v17 contentDescription];
+    invitation5 = [(ICNoteResultsCellConfiguration *)self invitation];
+    contentDescription = [invitation5 contentDescription];
 
     v19 = +[NSBundle mainBundle];
     v20 = [v19 localizedStringForKey:@"Shared with me via iCloud" value:&stru_18718 table:0];
@@ -895,18 +895,18 @@ LABEL_14:
     goto LABEL_30;
   }
 
-  v22 = [(ICNoteResultsCellConfiguration *)self note];
-  v61 = [v22 title];
+  note = [(ICNoteResultsCellConfiguration *)self note];
+  title2 = [note title];
 
-  v23 = [(ICNoteResultsCellConfiguration *)self note];
-  v24 = [(ICNoteResultsCellConfiguration *)self folderNoteSortType];
-  v25 = [ICNoteListSortUtilities dateForCurrentSortTypeAccessibilityStringForNote:v23 folderNoteSortType:v24];
+  note2 = [(ICNoteResultsCellConfiguration *)self note];
+  folderNoteSortType = [(ICNoteResultsCellConfiguration *)self folderNoteSortType];
+  v25 = [ICNoteListSortUtilities dateForCurrentSortTypeAccessibilityStringForNote:note2 folderNoteSortType:folderNoteSortType];
 
-  v26 = [(ICNoteResultsCellConfiguration *)self note];
-  v16 = [v26 contentInfoText];
+  note3 = [(ICNoteResultsCellConfiguration *)self note];
+  ic_briefFormattedDate = [note3 contentInfoText];
 
-  v27 = [v16 paragraphRangeForRange:{0, 0}];
-  v18 = [v16 substringWithRange:{v27, v28}];
+  v27 = [ic_briefFormattedDate paragraphRangeForRange:{0, 0}];
+  contentDescription = [ic_briefFormattedDate substringWithRange:{v27, v28}];
   v20 = 0;
   if ([(ICNoteResultsCellConfiguration *)self showPinnedBadge])
   {
@@ -914,32 +914,32 @@ LABEL_14:
     v20 = [v29 localizedStringForKey:@"pinned" value:&stru_18718 table:0];
   }
 
-  v30 = [(ICNoteResultsCellConfiguration *)self note];
-  v31 = [v30 folderName];
+  note4 = [(ICNoteResultsCellConfiguration *)self note];
+  folderName = [note4 folderName];
 
   v32 = +[NSBundle mainBundle];
   v33 = [v32 localizedStringForKey:@"In folder %@" value:&stru_18718 table:0];
 
   v59 = v33;
-  v60 = v31;
-  v62 = [NSString localizedStringWithFormat:v33, v31];
-  v34 = [(ICNoteResultsCellConfiguration *)self note];
-  v35 = [v34 currentStatus];
+  v60 = folderName;
+  v62 = [NSString localizedStringWithFormat:v33, folderName];
+  note5 = [(ICNoteResultsCellConfiguration *)self note];
+  currentStatus = [note5 currentStatus];
 
   v36 = 0;
   v37 = &CGRectGetWidth_ptr;
-  if (v35 > 2)
+  if (currentStatus > 2)
   {
-    if (v35 == (&dword_0 + 3))
+    if (currentStatus == (&dword_0 + 3))
     {
       objc_opt_class();
-      v47 = [(ICNoteResultsCellConfiguration *)self note];
+      note6 = [(ICNoteResultsCellConfiguration *)self note];
       v39 = ICDynamicCast();
 
-      LODWORD(v47) = [v39 isOwnedByCurrentUser];
+      LODWORD(note6) = [v39 isOwnedByCurrentUser];
       v48 = +[NSBundle mainBundle];
       v38 = v48;
-      v49 = v47 == 0;
+      v49 = note6 == 0;
       v37 = &CGRectGetWidth_ptr;
       if (v49)
       {
@@ -957,22 +957,22 @@ LABEL_14:
 
     else
     {
-      if (v35 != &dword_4)
+      if (currentStatus != &dword_4)
       {
         v58 = 0;
-        v10 = v61;
+        v10 = title2;
         goto LABEL_25;
       }
 
       objc_opt_class();
-      v40 = [(ICNoteResultsCellConfiguration *)self note];
+      note7 = [(ICNoteResultsCellConfiguration *)self note];
       v39 = ICDynamicCast();
 
-      v41 = [v39 folder];
-      v42 = [v41 isOwnedByCurrentUser];
+      folder = [v39 folder];
+      isOwnedByCurrentUser = [folder isOwnedByCurrentUser];
       v43 = +[NSBundle mainBundle];
       v44 = v43;
-      if (v42)
+      if (isOwnedByCurrentUser)
       {
         v45 = @"In a folder shared by me called %@";
       }
@@ -993,28 +993,28 @@ LABEL_14:
     }
 
 LABEL_23:
-    v10 = v61;
+    v10 = title2;
     goto LABEL_24;
   }
 
-  if (v35 == (&dword_0 + 1))
+  if (currentStatus == (&dword_0 + 1))
   {
     v38 = +[NSBundle mainBundle];
     v36 = [v38 localizedStringForKey:@"Locked" value:&stru_18718 table:0];
     v58 = 0;
-    v39 = v18;
-    v18 = 0;
+    v39 = contentDescription;
+    contentDescription = 0;
     goto LABEL_23;
   }
 
-  v10 = v61;
-  if (v35 == (&dword_0 + 2))
+  v10 = title2;
+  if (currentStatus == (&dword_0 + 2))
   {
     v38 = +[NSBundle mainBundle];
     v36 = [v38 localizedStringForKey:@"Unlocked" value:&stru_18718 table:0];
     v58 = 0;
-    v39 = v18;
-    v18 = 0;
+    v39 = contentDescription;
+    contentDescription = 0;
 LABEL_24:
 
     goto LABEL_25;
@@ -1024,7 +1024,7 @@ LABEL_24:
 LABEL_25:
   v51 = v37[85];
   objc_opt_class();
-  v52 = [(ICNoteResultsCellConfiguration *)self note];
+  note8 = [(ICNoteResultsCellConfiguration *)self note];
   v53 = ICDynamicCast();
 
   if ([v53 isSharedViaICloud] && objc_msgSend(v53, "hasUnreadChanges"))
@@ -1033,7 +1033,7 @@ LABEL_25:
     v55 = +[NSBundle mainBundle];
     v56 = [v55 localizedStringForKey:@"has unread changes" value:&stru_18718 table:0];
 
-    v10 = v61;
+    v10 = title2;
   }
 
   else

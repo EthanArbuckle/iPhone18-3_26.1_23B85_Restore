@@ -1,79 +1,79 @@
 @interface PKEnterCurrencyAmountView
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5;
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string;
 - (CGSize)defaultKeyboardSize;
 - (CGSize)intrinsicContentSize;
 - (CGSize)lastLayoutBoundsSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (NSDecimalNumber)currentAmount;
-- (PKEnterCurrencyAmountView)initWithCurrency:(id)a3 amount:(id)a4 bottomView:(id)a5;
+- (PKEnterCurrencyAmountView)initWithCurrency:(id)currency amount:(id)amount bottomView:(id)view;
 - (PKEnterCurrencyAmountViewDelegate)delegate;
 - (UIColor)keyboardColor;
-- (id)_decimalNumberFromString:(id)a3;
-- (id)_formatAmount:(id)a3 minimumFractionDigits:(unint64_t)a4;
-- (id)_formatAmountForDisplay:(id)a3 alwaysShowDecimalSeparator:(BOOL)a4 minimumFractionDigits:(unint64_t)a5 useGroupingSeparator:(BOOL)a6;
-- (id)_formattedStringForAmount:(id)a3;
+- (id)_decimalNumberFromString:(id)string;
+- (id)_formatAmount:(id)amount minimumFractionDigits:(unint64_t)digits;
+- (id)_formatAmountForDisplay:(id)display alwaysShowDecimalSeparator:(BOOL)separator minimumFractionDigits:(unint64_t)digits useGroupingSeparator:(BOOL)groupingSeparator;
+- (id)_formattedStringForAmount:(id)amount;
 - (id)pk_childrenForAppearance;
-- (id)textSuggestionsForTextField:(id)a3;
-- (unint64_t)_numberOfDecimalPlacesInString:(id)a3 decimalSeperator:(id)a4;
-- (void)_addSuperscriptToAttributedString:(id)a3 formattedCurrencyAmount:(id)a4 currencyAmountWithoutSymbols:(id)a5;
-- (void)_addSuperscriptToAttributedString:(id)a3 inRange:(_NSRange)a4;
-- (void)_configureLabelGestureRecognizerEnabled:(BOOL)a3;
+- (id)textSuggestionsForTextField:(id)field;
+- (unint64_t)_numberOfDecimalPlacesInString:(id)string decimalSeperator:(id)seperator;
+- (void)_addSuperscriptToAttributedString:(id)string formattedCurrencyAmount:(id)amount currencyAmountWithoutSymbols:(id)symbols;
+- (void)_addSuperscriptToAttributedString:(id)string inRange:(_NSRange)range;
+- (void)_configureLabelGestureRecognizerEnabled:(BOOL)enabled;
 - (void)_createAmountFormatter;
 - (void)_createNumberPad;
 - (void)_createSubviews;
-- (void)_tappedAmountLabel:(id)a3;
+- (void)_tappedAmountLabel:(id)label;
 - (void)_updateContent;
 - (void)_updateSuggestionsIfNecessary;
 - (void)didMoveToWindow;
 - (void)dismissKeyboard;
 - (void)layoutSubviews;
-- (void)numberPadInputView:(id)a3 requestReplaceSelectedTextFieldRangeWithText:(id)a4;
-- (void)numberPadInputViewRequestDeleteText:(id)a3;
-- (void)pk_applyAppearance:(id)a3;
-- (void)setAmountFont:(id)a3;
-- (void)setAmountSuggestions:(id)a3;
-- (void)setAmountTextAlignment:(int64_t)a3;
-- (void)setCurrency:(id)a3;
-- (void)setCurrencySymbolFont:(id)a3;
-- (void)setCurrentAmount:(id)a3 forceFormatForDisplay:(BOOL)a4;
-- (void)setEnableDoneButton:(BOOL)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)setInputAccessoryView:(id)a3;
-- (void)setKeyboardColor:(id)a3;
-- (void)setShowsDecimalPointButton:(BOOL)a3;
-- (void)setTextColor:(id)a3;
+- (void)numberPadInputView:(id)view requestReplaceSelectedTextFieldRangeWithText:(id)text;
+- (void)numberPadInputViewRequestDeleteText:(id)text;
+- (void)pk_applyAppearance:(id)appearance;
+- (void)setAmountFont:(id)font;
+- (void)setAmountSuggestions:(id)suggestions;
+- (void)setAmountTextAlignment:(int64_t)alignment;
+- (void)setCurrency:(id)currency;
+- (void)setCurrencySymbolFont:(id)font;
+- (void)setCurrentAmount:(id)amount forceFormatForDisplay:(BOOL)display;
+- (void)setEnableDoneButton:(BOOL)button;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setInputAccessoryView:(id)view;
+- (void)setKeyboardColor:(id)color;
+- (void)setShowsDecimalPointButton:(BOOL)button;
+- (void)setTextColor:(id)color;
 - (void)showKeyboard;
-- (void)textFieldDidSelectSuggestion:(id)a3;
+- (void)textFieldDidSelectSuggestion:(id)suggestion;
 @end
 
 @implementation PKEnterCurrencyAmountView
 
-- (void)pk_applyAppearance:(id)a3
+- (void)pk_applyAppearance:(id)appearance
 {
   v6.receiver = self;
   v6.super_class = PKEnterCurrencyAmountView;
-  v4 = a3;
-  [(UIView *)&v6 pk_applyAppearance:v4];
-  v5 = [v4 buttonTextColor];
+  appearanceCopy = appearance;
+  [(UIView *)&v6 pk_applyAppearance:appearanceCopy];
+  buttonTextColor = [appearanceCopy buttonTextColor];
 
-  [(PKEnterCurrencyAmountView *)self setTextColor:v5];
+  [(PKEnterCurrencyAmountView *)self setTextColor:buttonTextColor];
 }
 
 - (id)pk_childrenForAppearance
 {
   v5[1] = *MEMORY[0x1E69E9840];
-  v2 = [(PKEnterCurrencyAmountView *)self amountTextField];
-  v5[0] = v2;
+  amountTextField = [(PKEnterCurrencyAmountView *)self amountTextField];
+  v5[0] = amountTextField;
   v3 = [MEMORY[0x1E695DEC8] arrayWithObjects:v5 count:1];
 
   return v3;
 }
 
-- (PKEnterCurrencyAmountView)initWithCurrency:(id)a3 amount:(id)a4 bottomView:(id)a5
+- (PKEnterCurrencyAmountView)initWithCurrency:(id)currency amount:(id)amount bottomView:(id)view
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  currencyCopy = currency;
+  amountCopy = amount;
+  viewCopy = view;
   v21.receiver = self;
   v21.super_class = PKEnterCurrencyAmountView;
   v11 = [(PKEnterCurrencyAmountView *)&v21 init];
@@ -81,9 +81,9 @@
   if (v11)
   {
     v11->_isFirstKeyboardInput = 1;
-    if (v8)
+    if (currencyCopy)
     {
-      v13 = v8;
+      v13 = currencyCopy;
     }
 
     else
@@ -102,14 +102,14 @@
     v12->_amountFont = v16;
 
     v12->_amountTextAlignment = 1;
-    v18 = [objc_opt_class() _defaultTextColor];
+    _defaultTextColor = [objc_opt_class() _defaultTextColor];
     textColor = v12->_textColor;
-    v12->_textColor = v18;
+    v12->_textColor = _defaultTextColor;
 
-    objc_storeStrong(&v12->_bottomView, a5);
+    objc_storeStrong(&v12->_bottomView, view);
     [(PKEnterCurrencyAmountView *)v12 _createAmountFormatter];
     [(PKEnterCurrencyAmountView *)v12 _createSubviews];
-    [(PKEnterCurrencyAmountView *)v12 setCurrentAmount:v9];
+    [(PKEnterCurrencyAmountView *)v12 setCurrentAmount:amountCopy];
     [(PKEnterCurrencyAmountView *)v12 setShowsDecimalPointButton:0];
     [(PKEnterCurrencyAmountView *)v12 setEnabled:1];
     [(PKEnterCurrencyAmountView *)v12 setEnableDoneButton:0];
@@ -119,13 +119,13 @@
   return v12;
 }
 
-- (void)setShowsDecimalPointButton:(BOOL)a3
+- (void)setShowsDecimalPointButton:(BOOL)button
 {
-  v3 = a3;
-  self->_showsDecimalPointButton = a3;
+  buttonCopy = button;
+  self->_showsDecimalPointButton = button;
   if ((PKIsVision() & 1) != 0 || _UISolariumFeatureFlagEnabled())
   {
-    if (v3)
+    if (buttonCopy)
     {
       v5 = 8;
     }
@@ -145,19 +145,19 @@
   {
     numberPad = self->_numberPad;
 
-    [(PKNumberPadInputView *)numberPad setShowsDecimalPointButton:v3];
+    [(PKNumberPadInputView *)numberPad setShowsDecimalPointButton:buttonCopy];
   }
 }
 
-- (void)setCurrentAmount:(id)a3 forceFormatForDisplay:(BOOL)a4
+- (void)setCurrentAmount:(id)amount forceFormatForDisplay:(BOOL)display
 {
-  v6 = a3;
-  v11 = v6;
-  if (a4)
+  amountCopy = amount;
+  v11 = amountCopy;
+  if (display)
   {
-    v7 = v6;
+    v7 = amountCopy;
     v8 = 0;
-    if (!v6)
+    if (!amountCopy)
     {
       goto LABEL_9;
     }
@@ -165,7 +165,7 @@
 
   else
   {
-    v9 = [(PKEnterCurrencyAmountView *)self currentAmount];
+    currentAmount = [(PKEnterCurrencyAmountView *)self currentAmount];
     v8 = PKEqualObjects();
 
     v7 = v11;
@@ -193,38 +193,38 @@ LABEL_9:
 - (NSDecimalNumber)currentAmount
 {
   v2 = [(PKEnterCurrencyAmountView *)self _decimalNumberFromString:self->_amountString];
-  v3 = [MEMORY[0x1E696AB90] notANumber];
-  if ([v2 isEqualToNumber:v3])
+  notANumber = [MEMORY[0x1E696AB90] notANumber];
+  if ([v2 isEqualToNumber:notANumber])
   {
-    v4 = [MEMORY[0x1E696AB90] zero];
+    zero = [MEMORY[0x1E696AB90] zero];
   }
 
   else
   {
-    v4 = v2;
+    zero = v2;
   }
 
-  v5 = v4;
+  v5 = zero;
 
   return v5;
 }
 
-- (void)setCurrency:(id)a3
+- (void)setCurrency:(id)currency
 {
-  v5 = a3;
+  currencyCopy = currency;
   if (![(NSString *)self->_currency isEqualToString:?])
   {
-    objc_storeStrong(&self->_currency, a3);
+    objc_storeStrong(&self->_currency, currency);
     [(PKEnterCurrencyAmountView *)self _createAmountFormatter];
     [(PKEnterCurrencyAmountView *)self setNeedsLayout];
   }
 }
 
-- (void)setEnableDoneButton:(BOOL)a3
+- (void)setEnableDoneButton:(BOOL)button
 {
-  if (self->_enableDoneButton != a3)
+  if (self->_enableDoneButton != button)
   {
-    if (a3)
+    if (button)
     {
       objc_initWeak(&location, self);
       v5 = MEMORY[0x1E69DC628];
@@ -235,9 +235,9 @@ LABEL_9:
       objc_copyWeak(&v13, &location);
       v6 = [v5 actionWithHandler:&v9];
       [(UITextField *)self->_amountTextField pkui_attachDoneToolbarWithAdditionalItems:0 doneAction:v6, v9, v10, v11, v12];
-      v7 = [(UITextField *)self->_amountTextField inputAccessoryView];
+      inputAccessoryView = [(UITextField *)self->_amountTextField inputAccessoryView];
       internalInputAccessoryView = self->_internalInputAccessoryView;
-      self->_internalInputAccessoryView = v7;
+      self->_internalInputAccessoryView = inputAccessoryView;
 
       objc_destroyWeak(&v13);
       objc_destroyWeak(&location);
@@ -248,7 +248,7 @@ LABEL_9:
       [(PKEnterCurrencyAmountView *)self setInputAccessoryView:0];
     }
 
-    self->_enableDoneButton = a3;
+    self->_enableDoneButton = button;
   }
 }
 
@@ -264,12 +264,12 @@ void __49__PKEnterCurrencyAmountView_setEnableDoneButton___block_invoke(uint64_t
   }
 }
 
-- (void)setInputAccessoryView:(id)a3
+- (void)setInputAccessoryView:(id)view
 {
-  v5 = a3;
-  if (self->_internalInputAccessoryView != v5)
+  viewCopy = view;
+  if (self->_internalInputAccessoryView != viewCopy)
   {
-    objc_storeStrong(&self->_internalInputAccessoryView, a3);
+    objc_storeStrong(&self->_internalInputAccessoryView, view);
     if (self->_numberPad || self->_enableDoneButton)
     {
       [(UITextField *)self->_amountTextField setInputAccessoryView:self->_internalInputAccessoryView];
@@ -296,15 +296,15 @@ void __49__PKEnterCurrencyAmountView_setEnableDoneButton___block_invoke(uint64_t
   self->_isFirstKeyboardInput = 1;
 }
 
-- (void)setTextColor:(id)a3
+- (void)setTextColor:(id)color
 {
-  v4 = a3;
-  if (!v4)
+  colorCopy = color;
+  if (!colorCopy)
   {
-    v4 = [objc_opt_class() _defaultTextColor];
+    colorCopy = [objc_opt_class() _defaultTextColor];
   }
 
-  v10 = v4;
+  v10 = colorCopy;
   v5 = PKEqualObjects();
   v6 = v10;
   if ((v5 & 1) == 0)
@@ -328,13 +328,13 @@ void __49__PKEnterCurrencyAmountView_setEnableDoneButton___block_invoke(uint64_t
   }
 }
 
-- (void)setKeyboardColor:(id)a3
+- (void)setKeyboardColor:(id)color
 {
-  v5 = a3;
-  objc_storeStrong(&self->_keyboardColor, a3);
+  colorCopy = color;
+  objc_storeStrong(&self->_keyboardColor, color);
   if ((_UISolariumFeatureFlagEnabled() & 1) == 0)
   {
-    [(PKNumberPadInputView *)self->_numberPad setNumberPadColor:v5];
+    [(PKNumberPadInputView *)self->_numberPad setNumberPadColor:colorCopy];
   }
 }
 
@@ -343,24 +343,24 @@ void __49__PKEnterCurrencyAmountView_setEnableDoneButton___block_invoke(uint64_t
   keyboardColor = self->_keyboardColor;
   if (keyboardColor)
   {
-    v3 = keyboardColor;
+    numberPadColor = keyboardColor;
   }
 
   else
   {
-    v3 = [(PKNumberPadInputView *)self->_numberPad numberPadColor];
+    numberPadColor = [(PKNumberPadInputView *)self->_numberPad numberPadColor];
   }
 
-  return v3;
+  return numberPadColor;
 }
 
-- (void)setCurrencySymbolFont:(id)a3
+- (void)setCurrencySymbolFont:(id)font
 {
-  v5 = a3;
-  if (self->_currencySymbolFont != v5)
+  fontCopy = font;
+  if (self->_currencySymbolFont != fontCopy)
   {
-    v8 = v5;
-    objc_storeStrong(&self->_currencySymbolFont, a3);
+    v8 = fontCopy;
+    objc_storeStrong(&self->_currencySymbolFont, font);
     if (!self->_currencySymbolFont)
     {
       v6 = [MEMORY[0x1E69DB878] _lightSystemFontOfSize:70.0];
@@ -369,17 +369,17 @@ void __49__PKEnterCurrencyAmountView_setEnableDoneButton___block_invoke(uint64_t
     }
 
     [(PKEnterCurrencyAmountView *)self _updateContent];
-    v5 = v8;
+    fontCopy = v8;
   }
 }
 
-- (void)setAmountFont:(id)a3
+- (void)setAmountFont:(id)font
 {
-  v5 = a3;
-  if (self->_amountFont != v5)
+  fontCopy = font;
+  if (self->_amountFont != fontCopy)
   {
-    v9 = v5;
-    objc_storeStrong(&self->_amountFont, a3);
+    v9 = fontCopy;
+    objc_storeStrong(&self->_amountFont, font);
     amountFont = self->_amountFont;
     if (!amountFont)
     {
@@ -393,28 +393,28 @@ void __49__PKEnterCurrencyAmountView_setEnableDoneButton___block_invoke(uint64_t
     [(UILabel *)self->_amountLabel setFont:amountFont];
     [(UILabel *)self->_amountLabel sizeToFit];
     [(PKEnterCurrencyAmountView *)self _updateContent];
-    v5 = v9;
+    fontCopy = v9;
   }
 }
 
-- (void)setAmountTextAlignment:(int64_t)a3
+- (void)setAmountTextAlignment:(int64_t)alignment
 {
-  if (self->_amountTextAlignment != a3)
+  if (self->_amountTextAlignment != alignment)
   {
-    self->_amountTextAlignment = a3;
+    self->_amountTextAlignment = alignment;
     [(UILabel *)self->_amountLabel setTextAlignment:?];
 
     [(PKEnterCurrencyAmountView *)self _updateContent];
   }
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  if (self->_enabled != a3)
+  if (self->_enabled != enabled)
   {
-    self->_enabled = a3;
+    self->_enabled = enabled;
     amountLabel = self->_amountLabel;
-    if (a3)
+    if (enabled)
     {
       textColor = self->_textColor;
       v5 = self->_amountLabel;
@@ -424,18 +424,18 @@ void __49__PKEnterCurrencyAmountView_setEnableDoneButton___block_invoke(uint64_t
 
     else
     {
-      v6 = [MEMORY[0x1E69DC888] tertiaryLabelColor];
-      [(UILabel *)amountLabel setTextColor:v6];
+      tertiaryLabelColor = [MEMORY[0x1E69DC888] tertiaryLabelColor];
+      [(UILabel *)amountLabel setTextColor:tertiaryLabelColor];
     }
   }
 }
 
-- (void)setAmountSuggestions:(id)a3
+- (void)setAmountSuggestions:(id)suggestions
 {
-  v6 = a3;
+  suggestionsCopy = suggestions;
   if ((PKIsVision() & 1) != 0 || _UISolariumFeatureFlagEnabled())
   {
-    v4 = [v6 pk_arrayByApplyingBlock:&__block_literal_global_192];
+    v4 = [suggestionsCopy pk_arrayByApplyingBlock:&__block_literal_global_192];
     textSuggestions = self->_textSuggestions;
     self->_textSuggestions = v4;
 
@@ -499,9 +499,9 @@ void __49__PKEnterCurrencyAmountView_setEnableDoneButton___block_invoke(uint64_t
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(UILabel *)self->_amountLabel sizeThatFits:a3.width, a3.height];
+  [(UILabel *)self->_amountLabel sizeThatFits:fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;
@@ -522,15 +522,15 @@ void __49__PKEnterCurrencyAmountView_setEnableDoneButton___block_invoke(uint64_t
 {
   if (!self->_numberPad && (_UISolariumFeatureFlagEnabled() & 1) == 0)
   {
-    v3 = [(PKEnterCurrencyAmountView *)self window];
-    v4 = v3;
-    if (v3)
+    window = [(PKEnterCurrencyAmountView *)self window];
+    v4 = window;
+    if (window)
     {
-      v5 = [v3 windowScene];
-      v6 = v5;
-      if (v5)
+      windowScene = [window windowScene];
+      v6 = windowScene;
+      if (windowScene)
       {
-        +[PKNumberPadInputView defaultSizeForInterfaceOrientation:](PKNumberPadInputView, "defaultSizeForInterfaceOrientation:", [v5 interfaceOrientation]);
+        +[PKNumberPadInputView defaultSizeForInterfaceOrientation:](PKNumberPadInputView, "defaultSizeForInterfaceOrientation:", [windowScene interfaceOrientation]);
         v8 = v7;
         v10 = v9;
         if ((PKHomeButtonIsAvailable() & 1) == 0)
@@ -576,43 +576,43 @@ void __45__PKEnterCurrencyAmountView__createNumberPad__block_invoke(uint64_t a1,
   [v4 setBottomView:*(*(a1 + 32) + 424)];
 }
 
-- (void)numberPadInputView:(id)a3 requestReplaceSelectedTextFieldRangeWithText:(id)a4
+- (void)numberPadInputView:(id)view requestReplaceSelectedTextFieldRangeWithText:(id)text
 {
-  v9 = a4;
-  v5 = [(UITextField *)self->_amountTextField selectedTextRange];
-  if (v5)
+  textCopy = text;
+  selectedTextRange = [(UITextField *)self->_amountTextField selectedTextRange];
+  if (selectedTextRange)
   {
     amountTextField = self->_amountTextField;
-    v7 = [(UITextField *)amountTextField selectionRange];
-    if ([(PKEnterCurrencyAmountView *)self textField:amountTextField shouldChangeCharactersInRange:v7 replacementString:v8, v9])
+    selectionRange = [(UITextField *)amountTextField selectionRange];
+    if ([(PKEnterCurrencyAmountView *)self textField:amountTextField shouldChangeCharactersInRange:selectionRange replacementString:v8, textCopy])
     {
-      [(UITextField *)self->_amountTextField replaceRange:v5 withText:v9];
+      [(UITextField *)self->_amountTextField replaceRange:selectedTextRange withText:textCopy];
     }
   }
 }
 
-- (void)numberPadInputViewRequestDeleteText:(id)a3
+- (void)numberPadInputViewRequestDeleteText:(id)text
 {
-  v4 = [(UITextField *)self->_amountTextField selectedTextRange];
-  if (!v4)
+  selectedTextRange = [(UITextField *)self->_amountTextField selectedTextRange];
+  if (!selectedTextRange)
   {
     return;
   }
 
-  v19 = v4;
-  if (![v4 isEmpty])
+  v19 = selectedTextRange;
+  if (![selectedTextRange isEmpty])
   {
     v11 = v19;
 LABEL_7:
     v19 = v11;
-    v12 = [(UITextField *)self->_amountTextField beginningOfDocument];
+    beginningOfDocument = [(UITextField *)self->_amountTextField beginningOfDocument];
     amountTextField = self->_amountTextField;
-    v14 = [v19 start];
-    v15 = [(UITextField *)amountTextField offsetFromPosition:v12 toPosition:v14];
+    start = [v19 start];
+    v15 = [(UITextField *)amountTextField offsetFromPosition:beginningOfDocument toPosition:start];
 
     v16 = self->_amountTextField;
     v17 = [v19 end];
-    v18 = [(UITextField *)v16 offsetFromPosition:v12 toPosition:v17];
+    v18 = [(UITextField *)v16 offsetFromPosition:beginningOfDocument toPosition:v17];
 
     if ([(PKEnterCurrencyAmountView *)self textField:self->_amountTextField shouldChangeCharactersInRange:v15 replacementString:v18 - v15, &stru_1F3BD7330])
     {
@@ -623,8 +623,8 @@ LABEL_7:
   }
 
   v5 = self->_amountTextField;
-  v6 = [v19 start];
-  v7 = [(UITextField *)v5 positionFromPosition:v6 offset:-1];
+  start2 = [v19 start];
+  v7 = [(UITextField *)v5 positionFromPosition:start2 offset:-1];
 
   if (v7)
   {
@@ -644,59 +644,59 @@ LABEL_7:
 LABEL_10:
 }
 
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string
 {
-  length = a4.length;
+  length = range.length;
   v60 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  v10 = v9;
+  fieldCopy = field;
+  stringCopy = string;
+  v10 = stringCopy;
   if (self->_enabled)
   {
-    v11 = [v8 text];
-    v12 = [v11 length];
+    text = [fieldCopy text];
+    v12 = [text length];
 
     if (!v12)
     {
-      v13 = [MEMORY[0x1E696AB90] zero];
-      v14 = [(PKEnterCurrencyAmountView *)self _formatAmount:v13 minimumFractionDigits:0];
+      zero = [MEMORY[0x1E696AB90] zero];
+      v14 = [(PKEnterCurrencyAmountView *)self _formatAmount:zero minimumFractionDigits:0];
       amountString = self->_amountString;
       self->_amountString = v14;
     }
 
     if (self->_isFirstKeyboardInput && self->_clearAmountOnFirstKeyboardInput)
     {
-      v16 = [MEMORY[0x1E696AB90] zero];
-      v17 = [(PKEnterCurrencyAmountView *)self _formatAmount:v16 minimumFractionDigits:0];
+      zero2 = [MEMORY[0x1E696AB90] zero];
+      v17 = [(PKEnterCurrencyAmountView *)self _formatAmount:zero2 minimumFractionDigits:0];
       v18 = self->_amountString;
       self->_amountString = v17;
     }
 
     self->_isFirstKeyboardInput = 0;
-    v19 = [(NSNumberFormatter *)self->_amountFormatter maximumFractionDigits];
-    v54 = [MEMORY[0x1E695DF58] currentLocale];
-    v20 = [v54 decimalSeparator];
+    maximumFractionDigits = [(NSNumberFormatter *)self->_amountFormatter maximumFractionDigits];
+    currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+    decimalSeparator = [currentLocale decimalSeparator];
     v21 = self->_amountString;
-    v22 = [(NSString *)v21 rangeOfString:v20];
+    v22 = [(NSString *)v21 rangeOfString:decimalSeparator];
     v57 = v22 != 0x7FFFFFFFFFFFFFFFLL;
-    v23 = [(NSNumberFormatter *)self->_amountFormatter groupingSeparator];
-    v24 = [v10 stringByReplacingOccurrencesOfString:v23 withString:&stru_1F3BD7330];
+    groupingSeparator = [(NSNumberFormatter *)self->_amountFormatter groupingSeparator];
+    v24 = [v10 stringByReplacingOccurrencesOfString:groupingSeparator withString:&stru_1F3BD7330];
 
-    v25 = v20;
+    v25 = decimalSeparator;
     v56 = [(PKEnterCurrencyAmountView *)self _decimalNumberFromString:v24];
-    v55 = v8;
-    if ((([v24 isEqualToString:v20] & 1) != 0 || v56 && (objc_msgSend(MEMORY[0x1E696AB90], "notANumber"), v26 = objc_claimAutoreleasedReturnValue(), v27 = objc_msgSend(v56, "isEqualToNumber:", v26), v26, (v27 & 1) == 0)) && objc_msgSend(v24, "length"))
+    v55 = fieldCopy;
+    if ((([v24 isEqualToString:decimalSeparator] & 1) != 0 || v56 && (objc_msgSend(MEMORY[0x1E696AB90], "notANumber"), v26 = objc_claimAutoreleasedReturnValue(), v27 = objc_msgSend(v56, "isEqualToNumber:", v26), v26, (v27 & 1) == 0)) && objc_msgSend(v24, "length"))
     {
       if ([v24 length])
       {
         v28 = 0;
-        v52 = v19;
+        v52 = maximumFractionDigits;
         while (1)
         {
           v29 = [v24 substringWithRange:{v28, 1}];
           if ([v29 isEqualToString:v25])
           {
-            if (v57 || v19 == 0)
+            if (v57 || maximumFractionDigits == 0)
             {
               v30 = PKLogFacilityTypeGetObject();
               if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
@@ -717,8 +717,8 @@ LABEL_10:
           }
 
           v30 = [(PKEnterCurrencyAmountView *)self _decimalNumberFromString:v29];
-          v31 = [MEMORY[0x1E696AB90] notANumber];
-          v32 = [v30 isEqualToNumber:v31];
+          notANumber = [MEMORY[0x1E696AB90] notANumber];
+          v32 = [v30 isEqualToNumber:notANumber];
 
           if ((v32 & 1) == 0)
           {
@@ -750,8 +750,8 @@ LABEL_32:
         {
           v37 = v25;
           v33 = [(PKEnterCurrencyAmountView *)self _decimalNumberFromString:v21];
-          v38 = [MEMORY[0x1E696AB90] zero];
-          v39 = [v33 isEqualToNumber:v38];
+          zero3 = [MEMORY[0x1E696AB90] zero];
+          v39 = [v33 isEqualToNumber:zero3];
 
           if (v39)
           {
@@ -767,11 +767,11 @@ LABEL_32:
 
           v21 = v41;
           v25 = v37;
-          v19 = v52;
+          maximumFractionDigits = v52;
           goto LABEL_31;
         }
 
-        if ([(PKEnterCurrencyAmountView *)self _numberOfDecimalPlacesInString:v21 decimalSeperator:v25]< v19)
+        if ([(PKEnterCurrencyAmountView *)self _numberOfDecimalPlacesInString:v21 decimalSeperator:v25]< maximumFractionDigits)
         {
           [(NSString *)v21 stringByAppendingString:v29];
           v21 = v33 = v21;
@@ -810,7 +810,7 @@ LABEL_32:
     }
 
 LABEL_42:
-    v44 = [(PKEnterCurrencyAmountView *)self currentAmount];
+    currentAmount = [(PKEnterCurrencyAmountView *)self currentAmount];
     v53 = v25;
     if ([(NSString *)v21 length])
     {
@@ -822,16 +822,16 @@ LABEL_42:
       [MEMORY[0x1E696AB90] zero];
     }
     v45 = ;
-    v8 = v55;
+    fieldCopy = v55;
     if (v45)
     {
-      v46 = [MEMORY[0x1E696AB90] notANumber];
-      v47 = [v45 isEqualToNumber:v46];
+      notANumber2 = [MEMORY[0x1E696AB90] notANumber];
+      v47 = [v45 isEqualToNumber:notANumber2];
 
       if ((v47 & 1) == 0)
       {
         WeakRetained = objc_loadWeakRetained(&self->_delegate);
-        v49 = [WeakRetained enterCurrencyAmountView:self shouldChangeAmountFrom:v44 to:v45];
+        v49 = [WeakRetained enterCurrencyAmountView:self shouldChangeAmountFrom:currentAmount to:v45];
 
         if (v49)
         {
@@ -851,13 +851,13 @@ LABEL_42:
 
   else
   {
-    v24 = v9;
+    v24 = stringCopy;
   }
 
   return 0;
 }
 
-- (id)textSuggestionsForTextField:(id)a3
+- (id)textSuggestionsForTextField:(id)field
 {
   if (PKUIKeyboardIsHardwareKeyboardActive() && (PKIsPhone() & 1) != 0)
   {
@@ -872,9 +872,9 @@ LABEL_42:
   return textSuggestions;
 }
 
-- (void)textFieldDidSelectSuggestion:(id)a3
+- (void)textFieldDidSelectSuggestion:(id)suggestion
 {
-  v9 = a3;
+  suggestionCopy = suggestion;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (WeakRetained)
   {
@@ -885,15 +885,15 @@ LABEL_42:
     if (v7)
     {
       v8 = objc_loadWeakRetained(&self->_delegate);
-      [v8 enterCurrencyAmountView:self didSelectSuggestion:v9];
+      [v8 enterCurrencyAmountView:self didSelectSuggestion:suggestionCopy];
     }
   }
 }
 
-- (unint64_t)_numberOfDecimalPlacesInString:(id)a3 decimalSeperator:(id)a4
+- (unint64_t)_numberOfDecimalPlacesInString:(id)string decimalSeperator:(id)seperator
 {
-  v5 = a3;
-  v6 = [v5 rangeOfString:a4 options:4];
+  stringCopy = string;
+  v6 = [stringCopy rangeOfString:seperator options:4];
   if (v6 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v8 = 0;
@@ -901,7 +901,7 @@ LABEL_42:
 
   else
   {
-    v8 = [v5 length] - (v6 + v7);
+    v8 = [stringCopy length] - (v6 + v7);
   }
 
   return v8;
@@ -925,42 +925,42 @@ LABEL_42:
   self->_currencySymbolAmountFormatter = v5;
 
   [(NSNumberFormatter *)self->_currencySymbolAmountFormatter setGeneratesDecimalNumbers:1];
-  v7 = [(NSNumberFormatter *)self->_amountFormatter maximumFractionDigits];
-  v8 = [MEMORY[0x1E696AB98] decimalNumberHandlerWithRoundingMode:0 scale:v7 raiseOnExactness:0 raiseOnOverflow:0 raiseOnUnderflow:0 raiseOnDivideByZero:0];
+  maximumFractionDigits = [(NSNumberFormatter *)self->_amountFormatter maximumFractionDigits];
+  v8 = [MEMORY[0x1E696AB98] decimalNumberHandlerWithRoundingMode:0 scale:maximumFractionDigits raiseOnExactness:0 raiseOnOverflow:0 raiseOnUnderflow:0 raiseOnDivideByZero:0];
   roundingBehavior = self->_roundingBehavior;
   self->_roundingBehavior = v8;
 }
 
-- (id)_formatAmountForDisplay:(id)a3 alwaysShowDecimalSeparator:(BOOL)a4 minimumFractionDigits:(unint64_t)a5 useGroupingSeparator:(BOOL)a6
+- (id)_formatAmountForDisplay:(id)display alwaysShowDecimalSeparator:(BOOL)separator minimumFractionDigits:(unint64_t)digits useGroupingSeparator:(BOOL)groupingSeparator
 {
-  v6 = a6;
-  v8 = a4;
+  groupingSeparatorCopy = groupingSeparator;
+  separatorCopy = separator;
   currencySymbolAmountFormatter = self->_currencySymbolAmountFormatter;
-  v11 = a3;
-  [(NSNumberFormatter *)currencySymbolAmountFormatter setAlwaysShowsDecimalSeparator:v8];
-  [(NSNumberFormatter *)self->_currencySymbolAmountFormatter setMinimumFractionDigits:a5];
-  [(NSNumberFormatter *)self->_currencySymbolAmountFormatter setUsesGroupingSeparator:v6];
-  v12 = [(NSNumberFormatter *)self->_currencySymbolAmountFormatter stringFromNumber:v11];
+  displayCopy = display;
+  [(NSNumberFormatter *)currencySymbolAmountFormatter setAlwaysShowsDecimalSeparator:separatorCopy];
+  [(NSNumberFormatter *)self->_currencySymbolAmountFormatter setMinimumFractionDigits:digits];
+  [(NSNumberFormatter *)self->_currencySymbolAmountFormatter setUsesGroupingSeparator:groupingSeparatorCopy];
+  v12 = [(NSNumberFormatter *)self->_currencySymbolAmountFormatter stringFromNumber:displayCopy];
 
-  v13 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-  v14 = [v12 stringByTrimmingCharactersInSet:v13];
+  whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+  v14 = [v12 stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
   return v14;
 }
 
-- (void)_addSuperscriptToAttributedString:(id)a3 formattedCurrencyAmount:(id)a4 currencyAmountWithoutSymbols:(id)a5
+- (void)_addSuperscriptToAttributedString:(id)string formattedCurrencyAmount:(id)amount currencyAmountWithoutSymbols:(id)symbols
 {
-  v8 = a3;
-  if (v8 && a4 && a5)
+  stringCopy = string;
+  if (stringCopy && amount && symbols)
   {
-    v18 = v8;
-    v9 = a5;
-    v10 = a4;
-    v11 = [v18 string];
-    v12 = [v11 rangeOfString:v10 options:0];
+    v18 = stringCopy;
+    symbolsCopy = symbols;
+    amountCopy = amount;
+    string = [v18 string];
+    v12 = [string rangeOfString:amountCopy options:0];
     v14 = v13;
 
-    v15 = [v11 rangeOfString:v9 options:0];
+    v15 = [string rangeOfString:symbolsCopy options:0];
     v17 = v16;
 
     if (v12 != 0x7FFFFFFFFFFFFFFFLL && v15 != 0x7FFFFFFFFFFFFFFFLL)
@@ -976,45 +976,45 @@ LABEL_42:
       }
     }
 
-    v8 = v18;
+    stringCopy = v18;
   }
 }
 
-- (void)_addSuperscriptToAttributedString:(id)a3 inRange:(_NSRange)a4
+- (void)_addSuperscriptToAttributedString:(id)string inRange:(_NSRange)range
 {
-  if (a4.location != 0x7FFFFFFFFFFFFFFFLL)
+  if (range.location != 0x7FFFFFFFFFFFFFFFLL)
   {
-    length = a4.length;
-    location = a4.location;
+    length = range.length;
+    location = range.location;
     amountFont = self->_amountFont;
-    v15 = a3;
+    stringCopy = string;
     [(UIFont *)amountFont capHeight];
     v10 = v9;
     [(UIFont *)self->_currencySymbolFont capHeight];
     v12 = ((v10 - v11) * self->_labelScaleFactor);
-    [v15 beginEditing];
-    [v15 addAttribute:*MEMORY[0x1E69DB648] value:self->_currencySymbolFont range:{location, length}];
+    [stringCopy beginEditing];
+    [stringCopy addAttribute:*MEMORY[0x1E69DB648] value:self->_currencySymbolFont range:{location, length}];
     v13 = *MEMORY[0x1E69DB610];
     v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v12];
-    [v15 addAttribute:v13 value:v14 range:{location, length}];
+    [stringCopy addAttribute:v13 value:v14 range:{location, length}];
 
-    [v15 endEditing];
+    [stringCopy endEditing];
   }
 }
 
-- (id)_formatAmount:(id)a3 minimumFractionDigits:(unint64_t)a4
+- (id)_formatAmount:(id)amount minimumFractionDigits:(unint64_t)digits
 {
   amountFormatter = self->_amountFormatter;
-  v7 = a3;
-  [(NSNumberFormatter *)amountFormatter setMinimumFractionDigits:a4];
-  v8 = [(NSNumberFormatter *)self->_amountFormatter stringFromNumber:v7];
+  amountCopy = amount;
+  [(NSNumberFormatter *)amountFormatter setMinimumFractionDigits:digits];
+  v8 = [(NSNumberFormatter *)self->_amountFormatter stringFromNumber:amountCopy];
 
   return v8;
 }
 
-- (id)_decimalNumberFromString:(id)a3
+- (id)_decimalNumberFromString:(id)string
 {
-  v4 = [(NSNumberFormatter *)self->_amountFormatter numberFromString:a3];
+  v4 = [(NSNumberFormatter *)self->_amountFormatter numberFromString:string];
   v5 = [v4 decimalNumberByRoundingAccordingToBehavior:self->_roundingBehavior];
 
   return v5;
@@ -1025,18 +1025,18 @@ LABEL_42:
   v19[1] = *MEMORY[0x1E69E9840];
   if (![(NSString *)self->_amountString length])
   {
-    v3 = [MEMORY[0x1E696AB90] zero];
-    v4 = [(PKEnterCurrencyAmountView *)self _formatAmount:v3 minimumFractionDigits:0];
+    zero = [MEMORY[0x1E696AB90] zero];
+    v4 = [(PKEnterCurrencyAmountView *)self _formatAmount:zero minimumFractionDigits:0];
     amountString = self->_amountString;
     self->_amountString = v4;
   }
 
-  v6 = [MEMORY[0x1E695DF58] currentLocale];
-  v7 = [v6 decimalSeparator];
-  v8 = [(NSString *)self->_amountString rangeOfString:v7]!= 0x7FFFFFFFFFFFFFFFLL;
-  v9 = [(PKEnterCurrencyAmountView *)self _numberOfDecimalPlacesInString:self->_amountString decimalSeperator:v7];
-  v10 = [(PKEnterCurrencyAmountView *)self currentAmount];
-  v11 = [(PKEnterCurrencyAmountView *)self _formatAmountForDisplay:v10 alwaysShowDecimalSeparator:v8 minimumFractionDigits:v9 useGroupingSeparator:1];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  decimalSeparator = [currentLocale decimalSeparator];
+  v8 = [(NSString *)self->_amountString rangeOfString:decimalSeparator]!= 0x7FFFFFFFFFFFFFFFLL;
+  v9 = [(PKEnterCurrencyAmountView *)self _numberOfDecimalPlacesInString:self->_amountString decimalSeperator:decimalSeparator];
+  currentAmount = [(PKEnterCurrencyAmountView *)self currentAmount];
+  v11 = [(PKEnterCurrencyAmountView *)self _formatAmountForDisplay:currentAmount alwaysShowDecimalSeparator:v8 minimumFractionDigits:v9 useGroupingSeparator:1];
   if (v11)
   {
     v12 = objc_alloc(MEMORY[0x1E696AD40]);
@@ -1061,8 +1061,8 @@ LABEL_42:
     v15 = 0;
   }
 
-  v16 = [(NSNumberFormatter *)self->_currencySymbolAmountFormatter currencySymbol];
-  v17 = [v11 stringByReplacingOccurrencesOfString:v16 withString:&stru_1F3BD7330];
+  currencySymbol = [(NSNumberFormatter *)self->_currencySymbolAmountFormatter currencySymbol];
+  v17 = [v11 stringByReplacingOccurrencesOfString:currencySymbol withString:&stru_1F3BD7330];
   [(PKEnterCurrencyAmountView *)self _addSuperscriptToAttributedString:v15 formattedCurrencyAmount:v11 currencyAmountWithoutSymbols:v17];
   [(UILabel *)self->_amountLabel setAttributedText:v15];
   [(UITextField *)self->_amountTextField setText:v11];
@@ -1077,8 +1077,8 @@ LABEL_42:
   self->_amountLabel = v3;
 
   v5 = self->_amountLabel;
-  v6 = [(PKEnterCurrencyAmountView *)self amountFont];
-  [(UILabel *)v5 setFont:v6];
+  amountFont = [(PKEnterCurrencyAmountView *)self amountFont];
+  [(UILabel *)v5 setFont:amountFont];
 
   [(UILabel *)self->_amountLabel setTextAlignment:[(PKEnterCurrencyAmountView *)self amountTextAlignment]];
   [(UILabel *)self->_amountLabel sizeToFit];
@@ -1087,14 +1087,14 @@ LABEL_42:
   v7 = objc_alloc_init(_PKEnterCurrencyWithSuggestionsTextField);
   [(_PKEnterCurrencyWithSuggestionsTextField *)v7 setHidden:1];
   [(_PKEnterCurrencyWithSuggestionsTextField *)v7 setDelegate:self];
-  v12 = [(_PKEnterCurrencyWithSuggestionsTextField *)v7 inputAssistantItem];
+  inputAssistantItem = [(_PKEnterCurrencyWithSuggestionsTextField *)v7 inputAssistantItem];
   v8 = MEMORY[0x1E695E0F0];
-  [v12 setLeadingBarButtonGroups:MEMORY[0x1E695E0F0]];
-  [v12 setTrailingBarButtonGroups:v8];
+  [inputAssistantItem setLeadingBarButtonGroups:MEMORY[0x1E695E0F0]];
+  [inputAssistantItem setTrailingBarButtonGroups:v8];
   [(_PKEnterCurrencyWithSuggestionsTextField *)v7 setSuggestionsDelegate:self];
   [(_PKEnterCurrencyWithSuggestionsTextField *)v7 setSuggestionsDataSource:self];
-  v9 = [(_PKEnterCurrencyWithSuggestionsTextField *)v7 textInputTraits];
-  [v9 setDisablePrediction:1];
+  textInputTraits = [(_PKEnterCurrencyWithSuggestionsTextField *)v7 textInputTraits];
+  [textInputTraits setDisablePrediction:1];
 
   amountTextField = self->_amountTextField;
   self->_amountTextField = &v7->super;
@@ -1103,38 +1103,38 @@ LABEL_42:
   [(PKEnterCurrencyAmountView *)self addSubview:self->_amountTextField];
 }
 
-- (id)_formattedStringForAmount:(id)a3
+- (id)_formattedStringForAmount:(id)amount
 {
-  v4 = a3;
-  if ([v4 pk_isIntegralNumber] && !self->_ignoreIntegralNumber)
+  amountCopy = amount;
+  if ([amountCopy pk_isIntegralNumber] && !self->_ignoreIntegralNumber)
   {
-    v5 = 0;
+    maximumFractionDigits = 0;
   }
 
   else
   {
-    v5 = [(NSNumberFormatter *)self->_amountFormatter maximumFractionDigits];
+    maximumFractionDigits = [(NSNumberFormatter *)self->_amountFormatter maximumFractionDigits];
   }
 
-  v6 = [(PKEnterCurrencyAmountView *)self _formatAmount:v4 minimumFractionDigits:v5];
+  v6 = [(PKEnterCurrencyAmountView *)self _formatAmount:amountCopy minimumFractionDigits:maximumFractionDigits];
 
   return v6;
 }
 
 - (void)_updateSuggestionsIfNecessary
 {
-  v3 = [(UITextField *)self->_amountTextField inputDelegate];
-  [v3 setSuggestions:self->_textSuggestions];
+  inputDelegate = [(UITextField *)self->_amountTextField inputDelegate];
+  [inputDelegate setSuggestions:self->_textSuggestions];
 }
 
-- (void)_configureLabelGestureRecognizerEnabled:(BOOL)a3
+- (void)_configureLabelGestureRecognizerEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  if ([(UILabel *)self->_amountLabel isUserInteractionEnabled]!= a3)
+  enabledCopy = enabled;
+  if ([(UILabel *)self->_amountLabel isUserInteractionEnabled]!= enabled)
   {
-    [(UILabel *)self->_amountLabel setUserInteractionEnabled:v3];
+    [(UILabel *)self->_amountLabel setUserInteractionEnabled:enabledCopy];
     [(UILabel *)self->_amountLabel removeAllGestureRecognizers];
-    if (v3)
+    if (enabledCopy)
     {
       v5 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:self action:sel__tappedAmountLabel_];
       amountLabelTapRecognizer = self->_amountLabelTapRecognizer;
@@ -1154,9 +1154,9 @@ LABEL_42:
   }
 }
 
-- (void)_tappedAmountLabel:(id)a3
+- (void)_tappedAmountLabel:(id)label
 {
-  if ([a3 state] == 3)
+  if ([label state] == 3)
   {
 
     [(PKEnterCurrencyAmountView *)self showKeyboard];

@@ -1,80 +1,80 @@
 @interface GQDColor
-+ (id)cmykColorFromReader:(_xmlTextReader *)a3;
-+ (id)colorWithCalibratedRed:(double)a3 green:(double)a4 blue:(double)a5;
-+ (id)rgbColorFromReader:(_xmlTextReader *)a3 calibrated:(BOOL)a4;
-+ (id)whiteColorFromReader:(_xmlTextReader *)a3 calibrated:(BOOL)a4;
-+ (void)readColorFromProcessor:(id)a3 reader:(_xmlTextReader *)a4;
-- (GQDColor)initWithCalibratedRed:(double)a3 green:(double)a4 blue:(double)a5 alpha:(double)a6;
-- (id)blendedColorWithFraction:(double)a3 ofColor:(id)a4;
-- (void)getRed:(double *)a3 green:(double *)a4 blue:(double *)a5 alpha:(double *)a6;
++ (id)cmykColorFromReader:(_xmlTextReader *)reader;
++ (id)colorWithCalibratedRed:(double)red green:(double)green blue:(double)blue;
++ (id)rgbColorFromReader:(_xmlTextReader *)reader calibrated:(BOOL)calibrated;
++ (id)whiteColorFromReader:(_xmlTextReader *)reader calibrated:(BOOL)calibrated;
++ (void)readColorFromProcessor:(id)processor reader:(_xmlTextReader *)reader;
+- (GQDColor)initWithCalibratedRed:(double)red green:(double)green blue:(double)blue alpha:(double)alpha;
+- (id)blendedColorWithFraction:(double)fraction ofColor:(id)color;
+- (void)getRed:(double *)red green:(double *)green blue:(double *)blue alpha:(double *)alpha;
 @end
 
 @implementation GQDColor
 
-+ (id)colorWithCalibratedRed:(double)a3 green:(double)a4 blue:(double)a5
++ (id)colorWithCalibratedRed:(double)red green:(double)green blue:(double)blue
 {
-  v5 = [objc_alloc(objc_opt_class()) initWithCalibratedRed:a3 green:a4 blue:a5 alpha:1.0];
+  v5 = [objc_alloc(objc_opt_class()) initWithCalibratedRed:red green:green blue:blue alpha:1.0];
 
   return v5;
 }
 
-- (GQDColor)initWithCalibratedRed:(double)a3 green:(double)a4 blue:(double)a5 alpha:(double)a6
+- (GQDColor)initWithCalibratedRed:(double)red green:(double)green blue:(double)blue alpha:(double)alpha
 {
   v11.receiver = self;
   v11.super_class = GQDColor;
   result = [(GQDColor *)&v11 init];
   if (result)
   {
-    result->mRed = a3;
-    result->mGreen = a4;
-    result->mBlue = a5;
-    result->mAlpha = a6;
+    result->mRed = red;
+    result->mGreen = green;
+    result->mBlue = blue;
+    result->mAlpha = alpha;
   }
 
   return result;
 }
 
-- (void)getRed:(double *)a3 green:(double *)a4 blue:(double *)a5 alpha:(double *)a6
+- (void)getRed:(double *)red green:(double *)green blue:(double *)blue alpha:(double *)alpha
 {
-  if (a3)
+  if (red)
   {
-    *a3 = self->mRed;
+    *red = self->mRed;
   }
 
-  if (a4)
+  if (green)
   {
-    *a4 = self->mGreen;
+    *green = self->mGreen;
   }
 
-  if (a5)
+  if (blue)
   {
-    *a5 = self->mBlue;
+    *blue = self->mBlue;
   }
 
-  if (a6)
+  if (alpha)
   {
-    *a6 = self->mAlpha;
+    *alpha = self->mAlpha;
   }
 }
 
-- (id)blendedColorWithFraction:(double)a3 ofColor:(id)a4
+- (id)blendedColorWithFraction:(double)fraction ofColor:(id)color
 {
-  v7 = 1.0 - a3;
-  [a4 redComponent];
-  v9 = v7 * self->mRed + v8 * a3;
-  [a4 greenComponent];
-  v11 = v7 * self->mGreen + v10 * a3;
-  [a4 blueComponent];
-  v13 = v7 * self->mBlue + v12 * a3;
-  [a4 alphaComponent];
-  v15 = [[GQDColor alloc] initWithCalibratedRed:v9 green:v11 blue:v13 alpha:v7 * self->mAlpha + v14 * a3];
+  v7 = 1.0 - fraction;
+  [color redComponent];
+  v9 = v7 * self->mRed + v8 * fraction;
+  [color greenComponent];
+  v11 = v7 * self->mGreen + v10 * fraction;
+  [color blueComponent];
+  v13 = v7 * self->mBlue + v12 * fraction;
+  [color alphaComponent];
+  fraction = [[GQDColor alloc] initWithCalibratedRed:v9 green:v11 blue:v13 alpha:v7 * self->mAlpha + v14 * fraction];
 
-  return v15;
+  return fraction;
 }
 
-+ (void)readColorFromProcessor:(id)a3 reader:(_xmlTextReader *)a4
++ (void)readColorFromProcessor:(id)processor reader:(_xmlTextReader *)reader
 {
-  AttributeNs = xmlTextReaderGetAttributeNs(a4, "type", *(qword_A35F0 + 16));
+  AttributeNs = xmlTextReaderGetAttributeNs(reader, "type", *(qword_A35F0 + 16));
   if (!AttributeNs)
   {
     return;
@@ -83,11 +83,11 @@
   v8 = AttributeNs;
   if (xmlStrEqual(AttributeNs, "sfa:calibrated-rgb-color-type"))
   {
-    v9 = a1;
-    v10 = a4;
+    selfCopy2 = self;
+    readerCopy2 = reader;
     v11 = 1;
 LABEL_6:
-    v12 = [v9 rgbColorFromReader:v10 calibrated:v11];
+    v12 = [selfCopy2 rgbColorFromReader:readerCopy2 calibrated:v11];
 LABEL_7:
     v13 = v12;
     goto LABEL_8;
@@ -95,51 +95,51 @@ LABEL_7:
 
   if (xmlStrEqual(v8, "sfa:device-rgb-color-type"))
   {
-    v9 = a1;
-    v10 = a4;
+    selfCopy2 = self;
+    readerCopy2 = reader;
     v11 = 0;
     goto LABEL_6;
   }
 
   if (xmlStrEqual(v8, "sfa:calibrated-white-color-type"))
   {
-    v15 = a1;
-    v16 = a4;
+    selfCopy4 = self;
+    readerCopy4 = reader;
     v17 = 1;
 LABEL_17:
-    v12 = [v15 whiteColorFromReader:v16 calibrated:v17];
+    v12 = [selfCopy4 whiteColorFromReader:readerCopy4 calibrated:v17];
     goto LABEL_7;
   }
 
   if (xmlStrEqual(v8, "sfa:device-white-color-type"))
   {
-    v15 = a1;
-    v16 = a4;
+    selfCopy4 = self;
+    readerCopy4 = reader;
     v17 = 0;
     goto LABEL_17;
   }
 
   if (xmlStrEqual(v8, "sfa:device-cmyk-color-type"))
   {
-    v12 = [a1 cmykColorFromReader:a4];
+    v12 = [self cmykColorFromReader:reader];
     goto LABEL_7;
   }
 
   if (xmlStrEqual(v8, "sfa:named-color-type"))
   {
-    v18 = [a1 rgbColorFromReader:a4 calibrated:1];
+    v18 = [self rgbColorFromReader:reader calibrated:1];
     if (v18)
     {
       v13 = v18;
       free(v8);
 LABEL_9:
-      v14 = [a3 documentState];
+      documentState = [processor documentState];
 
-      [v14 pushObject:v13];
+      [documentState pushObject:v13];
       return;
     }
 
-    v19 = xmlTextReaderGetAttributeNs(a4, "catalog", *(qword_A35E0 + 16));
+    v19 = xmlTextReaderGetAttributeNs(reader, "catalog", *(qword_A35E0 + 16));
     if (v19)
     {
       v20 = v19;
@@ -158,7 +158,7 @@ LABEL_8:
         goto LABEL_9;
       }
 
-      v21 = xmlTextReaderGetAttributeNs(a4, "name", *(qword_A35E0 + 16));
+      v21 = xmlTextReaderGetAttributeNs(reader, "name", *(qword_A35E0 + 16));
       v22 = v21;
       if (v21)
       {
@@ -195,13 +195,13 @@ LABEL_37:
   free(v8);
 }
 
-+ (id)rgbColorFromReader:(_xmlTextReader *)a3 calibrated:(BOOL)a4
++ (id)rgbColorFromReader:(_xmlTextReader *)reader calibrated:(BOOL)calibrated
 {
   v9 = 0.0;
   v10 = 0.0;
   v7 = 0.0;
   v8 = 0.0;
-  if (!sub_426B0(a3, qword_A35E0, "r", &v10) || !sub_426B0(a3, qword_A35E0, "g", &v9) || !sub_426B0(a3, qword_A35E0, "b", &v8) || !sub_426B0(a3, qword_A35E0, "a", &v7))
+  if (!sub_426B0(reader, qword_A35E0, "r", &v10) || !sub_426B0(reader, qword_A35E0, "g", &v9) || !sub_426B0(reader, qword_A35E0, "b", &v8) || !sub_426B0(reader, qword_A35E0, "a", &v7))
   {
     return 0;
   }
@@ -210,11 +210,11 @@ LABEL_37:
   return [(GQDColor *)v5 initWithCalibratedRed:v10 green:v9 blue:v8 alpha:v7];
 }
 
-+ (id)whiteColorFromReader:(_xmlTextReader *)a3 calibrated:(BOOL)a4
++ (id)whiteColorFromReader:(_xmlTextReader *)reader calibrated:(BOOL)calibrated
 {
   v7 = 0.0;
   v8 = 0.0;
-  if (!sub_426B0(a3, qword_A35E0, "w", &v8) || !sub_426B0(a3, qword_A35E0, "a", &v7))
+  if (!sub_426B0(reader, qword_A35E0, "w", &v8) || !sub_426B0(reader, qword_A35E0, "a", &v7))
   {
     return 0;
   }
@@ -223,34 +223,34 @@ LABEL_37:
   return [(GQDColor *)v5 initWithCalibratedRed:v8 green:v8 blue:v8 alpha:v7];
 }
 
-+ (id)cmykColorFromReader:(_xmlTextReader *)a3
++ (id)cmykColorFromReader:(_xmlTextReader *)reader
 {
   v15 = 0.0;
   v16 = 0.0;
   v13 = 0.0;
   v14 = 0.0;
   v12 = 0.0;
-  if (!sub_426B0(a3, qword_A35E0, "c", &v16))
+  if (!sub_426B0(reader, qword_A35E0, "c", &v16))
   {
     return 0;
   }
 
-  if (!sub_426B0(a3, qword_A35E0, "m", &v15))
+  if (!sub_426B0(reader, qword_A35E0, "m", &v15))
   {
     return 0;
   }
 
-  if (!sub_426B0(a3, qword_A35E0, "y", &v14))
+  if (!sub_426B0(reader, qword_A35E0, "y", &v14))
   {
     return 0;
   }
 
-  if (!sub_426B0(a3, qword_A35E0, "k", &v13))
+  if (!sub_426B0(reader, qword_A35E0, "k", &v13))
   {
     return 0;
   }
 
-  if (!sub_426B0(a3, qword_A35E0, "a", &v12))
+  if (!sub_426B0(reader, qword_A35E0, "a", &v12))
   {
     return 0;
   }

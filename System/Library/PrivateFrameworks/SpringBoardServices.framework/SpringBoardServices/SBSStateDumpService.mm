@@ -1,24 +1,24 @@
 @interface SBSStateDumpService
-- (void)disableRemoteStateDumpWithCompletion:(id)a3;
-- (void)enableRemoteStateDumpWithTimeout:(int64_t)a3 completion:(id)a4;
-- (void)requestStateDump:(unint64_t)a3 withCompletion:(id)a4;
-- (void)writeStateDump:(unint64_t)a3 toTextFileAtPath:(id)a4;
+- (void)disableRemoteStateDumpWithCompletion:(id)completion;
+- (void)enableRemoteStateDumpWithTimeout:(int64_t)timeout completion:(id)completion;
+- (void)requestStateDump:(unint64_t)dump withCompletion:(id)completion;
+- (void)writeStateDump:(unint64_t)dump toTextFileAtPath:(id)path;
 @end
 
 @implementation SBSStateDumpService
 
-- (void)requestStateDump:(unint64_t)a3 withCompletion:(id)a4
+- (void)requestStateDump:(unint64_t)dump withCompletion:(id)completion
 {
-  v6 = a4;
-  v7 = [(SBSAbstractSystemService *)self client];
+  completionCopy = completion;
+  client = [(SBSAbstractSystemService *)self client];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __55__SBSStateDumpService_requestStateDump_withCompletion___block_invoke;
   v9[3] = &unk_1E7360768;
   v9[4] = self;
-  v10 = v6;
-  v8 = v6;
-  [v7 requestStateDump:a3 withCompletion:v9];
+  v10 = completionCopy;
+  v8 = completionCopy;
+  [client requestStateDump:dump withCompletion:v9];
 }
 
 void __55__SBSStateDumpService_requestStateDump_withCompletion___block_invoke(uint64_t a1, char a2, void *a3, void *a4)
@@ -40,25 +40,25 @@ void __55__SBSStateDumpService_requestStateDump_withCompletion___block_invoke(ui
   }
 }
 
-- (void)writeStateDump:(unint64_t)a3 toTextFileAtPath:(id)a4
+- (void)writeStateDump:(unint64_t)dump toTextFileAtPath:(id)path
 {
-  v6 = a4;
-  v7 = [(SBSAbstractSystemService *)self client];
-  [v7 writeStateDump:a3 toTextFileAtPath:v6];
+  pathCopy = path;
+  client = [(SBSAbstractSystemService *)self client];
+  [client writeStateDump:dump toTextFileAtPath:pathCopy];
 }
 
-- (void)enableRemoteStateDumpWithTimeout:(int64_t)a3 completion:(id)a4
+- (void)enableRemoteStateDumpWithTimeout:(int64_t)timeout completion:(id)completion
 {
-  v6 = a4;
-  v7 = [(SBSAbstractSystemService *)self client];
+  completionCopy = completion;
+  client = [(SBSAbstractSystemService *)self client];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __67__SBSStateDumpService_enableRemoteStateDumpWithTimeout_completion___block_invoke;
   v9[3] = &unk_1E73607B8;
   v9[4] = self;
-  v10 = v6;
-  v8 = v6;
-  [v7 enableRemoteStateDumpWithTimeout:a3 completion:v9];
+  v10 = completionCopy;
+  v8 = completionCopy;
+  [client enableRemoteStateDumpWithTimeout:timeout completion:v9];
 }
 
 void __67__SBSStateDumpService_enableRemoteStateDumpWithTimeout_completion___block_invoke(uint64_t a1, char a2, void *a3)
@@ -78,18 +78,18 @@ void __67__SBSStateDumpService_enableRemoteStateDumpWithTimeout_completion___blo
   }
 }
 
-- (void)disableRemoteStateDumpWithCompletion:(id)a3
+- (void)disableRemoteStateDumpWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(SBSAbstractSystemService *)self client];
+  completionCopy = completion;
+  client = [(SBSAbstractSystemService *)self client];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __60__SBSStateDumpService_disableRemoteStateDumpWithCompletion___block_invoke;
   v7[3] = &unk_1E73607B8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 disableRemoteStateDumpWithCompletion:v7];
+  v8 = completionCopy;
+  v6 = completionCopy;
+  [client disableRemoteStateDumpWithCompletion:v7];
 }
 
 void __60__SBSStateDumpService_disableRemoteStateDumpWithCompletion___block_invoke(uint64_t a1, char a2, void *a3)

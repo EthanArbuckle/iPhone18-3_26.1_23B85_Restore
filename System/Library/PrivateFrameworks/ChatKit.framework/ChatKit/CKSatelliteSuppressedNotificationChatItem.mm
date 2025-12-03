@@ -1,27 +1,27 @@
 @interface CKSatelliteSuppressedNotificationChatItem
-- (CGSize)loadSizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4;
+- (CGSize)loadSizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets;
 - (UIEdgeInsets)contentInsets;
-- (id)layoutItemSpacingWithEnvironment:(id)a3 datasourceItemIndex:(int64_t)a4 allDatasourceItems:(id)a5 supplementryItems:(id)a6 sizeOverride:(CGSize)a7;
+- (id)layoutItemSpacingWithEnvironment:(id)environment datasourceItemIndex:(int64_t)index allDatasourceItems:(id)items supplementryItems:(id)supplementryItems sizeOverride:(CGSize)override;
 - (id)loadTranscriptText;
 - (void)unloadTranscriptText;
 @end
 
 @implementation CKSatelliteSuppressedNotificationChatItem
 
-- (id)layoutItemSpacingWithEnvironment:(id)a3 datasourceItemIndex:(int64_t)a4 allDatasourceItems:(id)a5 supplementryItems:(id)a6 sizeOverride:(CGSize)a7
+- (id)layoutItemSpacingWithEnvironment:(id)environment datasourceItemIndex:(int64_t)index allDatasourceItems:(id)items supplementryItems:(id)supplementryItems sizeOverride:(CGSize)override
 {
   v32 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
-  if (a4 < 1)
+  environmentCopy = environment;
+  itemsCopy = items;
+  supplementryItemsCopy = supplementryItems;
+  if (index < 1)
   {
     v14 = 0;
   }
 
   else
   {
-    v14 = [v12 objectAtIndex:a4 - 1];
+    v14 = [itemsCopy objectAtIndex:index - 1];
   }
 
   v15 = +[CKUIBehavior sharedBehaviors];
@@ -41,20 +41,20 @@
     goto LABEL_12;
   }
 
-  v21 = [v14 layoutType];
-  if (v21 > 0x17)
+  layoutType = [v14 layoutType];
+  if (layoutType > 0x17)
   {
     goto LABEL_20;
   }
 
-  if (((1 << v21) & 0xFF4C) == 0)
+  if (((1 << layoutType) & 0xFF4C) == 0)
   {
-    if (((1 << v21) & 0x22) != 0)
+    if (((1 << layoutType) & 0x22) != 0)
     {
       goto LABEL_12;
     }
 
-    if (v21 == 23)
+    if (layoutType == 23)
     {
       v29 = IMLogHandleForCategory();
       if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
@@ -109,24 +109,24 @@ LABEL_12:
 - (id)loadTranscriptText
 {
   v3 = +[CKUIBehavior sharedBehaviors];
-  v4 = [v3 satelliteSuppressedNotificationIndicatorIcon];
+  satelliteSuppressedNotificationIndicatorIcon = [v3 satelliteSuppressedNotificationIndicatorIcon];
 
   v5 = +[CKUIBehavior sharedBehaviors];
-  v6 = [v5 transcriptSatelliteSuppressedNotificationFontAttributes];
+  transcriptSatelliteSuppressedNotificationFontAttributes = [v5 transcriptSatelliteSuppressedNotificationFontAttributes];
 
-  v7 = [(CKSatelliteSuppressedNotificationChatItem *)self imSatelliteSuppressedNotificationChatItem];
-  v8 = [v7 handle];
-  v9 = [v8 _displayNameWithAbbreviation];
+  imSatelliteSuppressedNotificationChatItem = [(CKSatelliteSuppressedNotificationChatItem *)self imSatelliteSuppressedNotificationChatItem];
+  handle = [imSatelliteSuppressedNotificationChatItem handle];
+  _displayNameWithAbbreviation = [handle _displayNameWithAbbreviation];
 
   v10 = MEMORY[0x1E696AEC0];
   v11 = CKFrameworkBundle();
   v12 = [v11 localizedStringForKey:@"MESSAGE_STATUS_CHECK_VIA_SATELLITE" value:&stru_1F04268F8 table:@"ChatKit-CarrierPigeon"];
-  v13 = [v10 localizedStringWithFormat:v12, v9];
+  v13 = [v10 localizedStringWithFormat:v12, _displayNameWithAbbreviation];
 
-  v14 = [MEMORY[0x1E69DC668] sharedApplication];
-  v15 = [v14 userInterfaceLayoutDirection];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  userInterfaceLayoutDirection = [mEMORY[0x1E69DC668] userInterfaceLayoutDirection];
 
-  if (v15 == 1)
+  if (userInterfaceLayoutDirection == 1)
   {
     v16 = @"\u200F";
   }
@@ -141,11 +141,11 @@ LABEL_12:
   v18 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:v17 attributes:0];
   [(NSAttributedString *)v18 replaceCharactersInRange:0 withString:0, @" "];
   v19 = objc_alloc_init(MEMORY[0x1E69DB7F0]);
-  [v19 setImage:v4];
+  [v19 setImage:satelliteSuppressedNotificationIndicatorIcon];
   v20 = [MEMORY[0x1E696AAB0] attributedStringWithAttachment:v19];
   [(NSAttributedString *)v18 insertAttributedString:v20 atIndex:0];
 
-  [(NSAttributedString *)v18 addAttributes:v6 range:0, [(NSAttributedString *)v18 length]];
+  [(NSAttributedString *)v18 addAttributes:transcriptSatelliteSuppressedNotificationFontAttributes range:0, [(NSAttributedString *)v18 length]];
   satelliteNoNotificationTitleLabelAttributedText = self->_satelliteNoNotificationTitleLabelAttributedText;
   self->_satelliteNoNotificationTitleLabelAttributedText = v18;
   v22 = v18;
@@ -175,24 +175,24 @@ LABEL_12:
   return result;
 }
 
-- (CGSize)loadSizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4
+- (CGSize)loadSizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   v8 = +[CKUIBehavior sharedBehaviors];
   v9 = v8;
-  if (a4)
+  if (insets)
   {
     [v8 transcriptBoldTextAlignmentInsets];
-    a4->top = v10;
-    a4->left = v11;
-    a4->bottom = v12;
-    a4->right = v13;
+    insets->top = v10;
+    insets->left = v11;
+    insets->bottom = v12;
+    insets->right = v13;
   }
 
   v14 = +[CKTranscriptSatelliteSuppressedNotificationCell satelliteNoNotificationTitleLabel];
-  v15 = [(CKChatItem *)self transcriptText];
-  [v14 setAttributedText:v15];
+  transcriptText = [(CKChatItem *)self transcriptText];
+  [v14 setAttributedText:transcriptText];
 
   [v14 sizeThatFits:{width, height}];
   v17 = v16;

@@ -1,8 +1,8 @@
 @interface ICPushNotificationsRegisterAPNSTokenRequest
-- (ICPushNotificationsRegisterAPNSTokenRequest)initWithRequestContext:(id)a3 token:(id)a4;
+- (ICPushNotificationsRegisterAPNSTokenRequest)initWithRequestContext:(id)context token:(id)token;
 - (void)_registerAPNSToken;
 - (void)execute;
-- (void)performRequestWithResponseHandler:(id)a3;
+- (void)performRequestWithResponseHandler:(id)handler;
 @end
 
 @implementation ICPushNotificationsRegisterAPNSTokenRequest
@@ -15,7 +15,7 @@
   {
     token = self->_token;
     *buf = 138543618;
-    v9 = self;
+    selfCopy = self;
     v10 = 2114;
     v11 = token;
     _os_log_impl(&dword_1B4491000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ registering APNS token %{public}@", buf, 0x16u);
@@ -206,7 +206,7 @@ void __65__ICPushNotificationsRegisterAPNSTokenRequest__registerAPNSToken__block
     if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
-      v6 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1B4491000, v3, OS_LOG_TYPE_ERROR, "%{public}@ Cannot register nil token.", buf, 0xCu);
     }
 
@@ -216,16 +216,16 @@ void __65__ICPushNotificationsRegisterAPNSTokenRequest__registerAPNSToken__block
   }
 }
 
-- (void)performRequestWithResponseHandler:(id)a3
+- (void)performRequestWithResponseHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __81__ICPushNotificationsRegisterAPNSTokenRequest_performRequestWithResponseHandler___block_invoke;
   v6[3] = &unk_1E7BFA490;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = handlerCopy;
+  v5 = handlerCopy;
   [(ICRequestOperation *)self performRequestWithCompletionHandler:v6];
 }
 
@@ -240,20 +240,20 @@ uint64_t __81__ICPushNotificationsRegisterAPNSTokenRequest_performRequestWithRes
   return result;
 }
 
-- (ICPushNotificationsRegisterAPNSTokenRequest)initWithRequestContext:(id)a3 token:(id)a4
+- (ICPushNotificationsRegisterAPNSTokenRequest)initWithRequestContext:(id)context token:(id)token
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  tokenCopy = token;
   v12.receiver = self;
   v12.super_class = ICPushNotificationsRegisterAPNSTokenRequest;
   v8 = [(ICRequestOperation *)&v12 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [contextCopy copy];
     requestContext = v8->_requestContext;
     v8->_requestContext = v9;
 
-    objc_storeStrong(&v8->_token, a4);
+    objc_storeStrong(&v8->_token, token);
   }
 
   return v8;

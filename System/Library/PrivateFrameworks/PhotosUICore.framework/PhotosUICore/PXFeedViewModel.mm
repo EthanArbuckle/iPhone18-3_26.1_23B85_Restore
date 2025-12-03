@@ -3,52 +3,52 @@
 - (PXAssetCollectionActionPerformerDelegate)assetCollectionActionPerformerDelegate;
 - (PXFeedViewActionPerformer)actionPerformer;
 - (PXFeedViewModel)init;
-- (PXFeedViewModel)initWithDataSourceManager:(id)a3 specManager:(id)a4 itemLayoutFactory:(id)a5 placeholderFactory:(id)a6 wantsEmbeddedScrollView:(BOOL)a7 visibleRectChangeObserver:(id)a8;
-- (PXFeedViewModel)initWithFeedViewConfiguration:(id)a3;
+- (PXFeedViewModel)initWithDataSourceManager:(id)manager specManager:(id)specManager itemLayoutFactory:(id)factory placeholderFactory:(id)placeholderFactory wantsEmbeddedScrollView:(BOOL)view visibleRectChangeObserver:(id)observer;
+- (PXFeedViewModel)initWithFeedViewConfiguration:(id)configuration;
 - (void)_invalidateDataSource;
 - (void)_invalidateSelectionSnapshot;
 - (void)_invalidateSpec;
 - (void)_updateDataSource;
 - (void)_updateSelectionSnapshot;
 - (void)_updateSpec;
-- (void)collectTapToRadarDiagnosticsIntoContainer:(id)a3;
+- (void)collectTapToRadarDiagnosticsIntoContainer:(id)container;
 - (void)didPerformChanges;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)performChanges:(id)a3;
-- (void)registerAccessoryTapToRadarDiagnosticsProvider:(id)a3;
-- (void)setActionPerformer:(id)a3;
-- (void)setAssetCollectionActionPerformerDelegate:(id)a3;
-- (void)setDataSource:(id)a3;
-- (void)setIsActive:(BOOL)a3;
-- (void)setPresentingViewController:(id)a3;
-- (void)setSelectionSnapshot:(id)a3;
-- (void)setSpec:(id)a3;
-- (void)setSubtitle:(id)a3;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)performChanges:(id)changes;
+- (void)registerAccessoryTapToRadarDiagnosticsProvider:(id)provider;
+- (void)setActionPerformer:(id)performer;
+- (void)setAssetCollectionActionPerformerDelegate:(id)delegate;
+- (void)setDataSource:(id)source;
+- (void)setIsActive:(BOOL)active;
+- (void)setPresentingViewController:(id)controller;
+- (void)setSelectionSnapshot:(id)snapshot;
+- (void)setSpec:(id)spec;
+- (void)setSubtitle:(id)subtitle;
 @end
 
 @implementation PXFeedViewModel
 
-- (PXFeedViewModel)initWithFeedViewConfiguration:(id)a3
+- (PXFeedViewModel)initWithFeedViewConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [v4 feedConfiguration];
-  v6 = [v5 dataSourceManager];
-  v7 = [v4 extendedTraitCollection];
+  configurationCopy = configuration;
+  feedConfiguration = [configurationCopy feedConfiguration];
+  dataSourceManager = [feedConfiguration dataSourceManager];
+  extendedTraitCollection = [configurationCopy extendedTraitCollection];
 
-  v8 = [v5 specManagerWithExtendedTraitCollection:v7];
+  v8 = [feedConfiguration specManagerWithExtendedTraitCollection:extendedTraitCollection];
 
-  v9 = [v5 itemLayoutFactory];
-  v10 = [v5 placeholderFactory];
-  v11 = [v5 wantsEmbeddedScrollView];
-  v12 = [v5 visibleRectChangeObserver];
-  v13 = [(PXFeedViewModel *)self initWithDataSourceManager:v6 specManager:v8 itemLayoutFactory:v9 placeholderFactory:v10 wantsEmbeddedScrollView:v11 visibleRectChangeObserver:v12];
+  itemLayoutFactory = [feedConfiguration itemLayoutFactory];
+  placeholderFactory = [feedConfiguration placeholderFactory];
+  wantsEmbeddedScrollView = [feedConfiguration wantsEmbeddedScrollView];
+  visibleRectChangeObserver = [feedConfiguration visibleRectChangeObserver];
+  v13 = [(PXFeedViewModel *)self initWithDataSourceManager:dataSourceManager specManager:v8 itemLayoutFactory:itemLayoutFactory placeholderFactory:placeholderFactory wantsEmbeddedScrollView:wantsEmbeddedScrollView visibleRectChangeObserver:visibleRectChangeObserver];
 
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __74__PXFeedViewModel_PXFeedDataSourceManager__initWithFeedViewConfiguration___block_invoke;
   v16[3] = &unk_1E7741100;
-  v17 = v5;
-  v14 = v5;
+  v17 = feedConfiguration;
+  v14 = feedConfiguration;
   [(PXFeedViewModel *)v13 performChanges:v16];
 
   return v13;
@@ -83,28 +83,28 @@ void __74__PXFeedViewModel_PXFeedDataSourceManager__initWithFeedViewConfiguratio
   return WeakRetained;
 }
 
-- (void)collectTapToRadarDiagnosticsIntoContainer:(id)a3
+- (void)collectTapToRadarDiagnosticsIntoContainer:(id)container
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  containerCopy = container;
   v5 = [MEMORY[0x1E696AD98] numberWithBool:{-[PXFeedViewModel isActive](self, "isActive")}];
-  [v4 setObject:v5 forKeyedSubscript:@"isActive"];
+  [containerCopy setObject:v5 forKeyedSubscript:@"isActive"];
 
-  v6 = [(PXFeedViewModel *)self dataSource];
-  [v4 setObject:v6 forKeyedSubscript:@"dataSource"];
+  dataSource = [(PXFeedViewModel *)self dataSource];
+  [containerCopy setObject:dataSource forKeyedSubscript:@"dataSource"];
 
-  v7 = [(PXFeedViewModel *)self spec];
-  [v4 setObject:v7 forKeyedSubscript:@"spec"];
+  spec = [(PXFeedViewModel *)self spec];
+  [containerCopy setObject:spec forKeyedSubscript:@"spec"];
 
-  v8 = [(PXFeedViewModel *)self itemLayoutFactory];
-  [v4 setObject:v8 forKeyedSubscript:@"itemLayoutFactory"];
+  itemLayoutFactory = [(PXFeedViewModel *)self itemLayoutFactory];
+  [containerCopy setObject:itemLayoutFactory forKeyedSubscript:@"itemLayoutFactory"];
 
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v9 = [(PXFeedViewModel *)self accessoryTapToRadarDiagnosticsProviders];
-  v10 = [v9 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  accessoryTapToRadarDiagnosticsProviders = [(PXFeedViewModel *)self accessoryTapToRadarDiagnosticsProviders];
+  v10 = [accessoryTapToRadarDiagnosticsProviders countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v10)
   {
     v11 = v10;
@@ -116,29 +116,29 @@ void __74__PXFeedViewModel_PXFeedDataSourceManager__initWithFeedViewConfiguratio
       {
         if (*v15 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(accessoryTapToRadarDiagnosticsProviders);
         }
 
-        [v4 addSubprovider:*(*(&v14 + 1) + 8 * v13++)];
+        [containerCopy addSubprovider:*(*(&v14 + 1) + 8 * v13++)];
       }
 
       while (v11 != v13);
-      v11 = [v9 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v11 = [accessoryTapToRadarDiagnosticsProviders countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v11);
   }
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __48__PXFeedViewModel_observable_didChange_context___block_invoke;
   v5[3] = &unk_1E772E9F0;
   v5[4] = self;
-  v5[5] = a5;
-  v5[6] = a4;
+  v5[5] = context;
+  v5[6] = change;
   v5[7] = a2;
   [(PXFeedViewModel *)self performChanges:v5];
 }
@@ -192,52 +192,52 @@ LABEL_11:
 
 - (void)_updateSpec
 {
-  v4 = [(PXFeedViewModel *)self specManager];
-  v3 = [v4 spec];
-  [(PXFeedViewModel *)self setSpec:v3];
+  specManager = [(PXFeedViewModel *)self specManager];
+  spec = [specManager spec];
+  [(PXFeedViewModel *)self setSpec:spec];
 }
 
 - (void)_invalidateSpec
 {
-  v2 = [(PXFeedViewModel *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateSpec];
+  updater = [(PXFeedViewModel *)self updater];
+  [updater setNeedsUpdateOf:sel__updateSpec];
 }
 
 - (void)_updateSelectionSnapshot
 {
-  v4 = [(PXFeedViewModel *)self selectionManager];
-  v3 = [v4 selectionSnapshot];
-  [(PXFeedViewModel *)self setSelectionSnapshot:v3];
+  selectionManager = [(PXFeedViewModel *)self selectionManager];
+  selectionSnapshot = [selectionManager selectionSnapshot];
+  [(PXFeedViewModel *)self setSelectionSnapshot:selectionSnapshot];
 }
 
 - (void)_invalidateSelectionSnapshot
 {
-  v2 = [(PXFeedViewModel *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateSelectionSnapshot];
+  updater = [(PXFeedViewModel *)self updater];
+  [updater setNeedsUpdateOf:sel__updateSelectionSnapshot];
 }
 
 - (void)_updateDataSource
 {
-  v4 = [(PXFeedViewModel *)self dataSourceManager];
-  v3 = [v4 dataSource];
-  [(PXFeedViewModel *)self setDataSource:v3];
+  dataSourceManager = [(PXFeedViewModel *)self dataSourceManager];
+  dataSource = [dataSourceManager dataSource];
+  [(PXFeedViewModel *)self setDataSource:dataSource];
 }
 
 - (void)_invalidateDataSource
 {
-  v2 = [(PXFeedViewModel *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateDataSource];
+  updater = [(PXFeedViewModel *)self updater];
+  [updater setNeedsUpdateOf:sel__updateDataSource];
 }
 
-- (void)setSubtitle:(id)a3
+- (void)setSubtitle:(id)subtitle
 {
-  v4 = a3;
+  subtitleCopy = subtitle;
   subtitle = self->_subtitle;
-  if (subtitle != v4)
+  if (subtitle != subtitleCopy)
   {
-    v9 = v4;
-    v6 = [(NSString *)subtitle isEqual:v4];
-    v4 = v9;
+    v9 = subtitleCopy;
+    v6 = [(NSString *)subtitle isEqual:subtitleCopy];
+    subtitleCopy = v9;
     if ((v6 & 1) == 0)
     {
       v7 = [(NSString *)v9 copy];
@@ -245,72 +245,72 @@ LABEL_11:
       self->_subtitle = v7;
 
       [(PXFeedViewModel *)self signalChange:16];
-      v4 = v9;
+      subtitleCopy = v9;
     }
   }
 }
 
-- (void)setSpec:(id)a3
+- (void)setSpec:(id)spec
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_spec != v5)
+  specCopy = spec;
+  v6 = specCopy;
+  if (self->_spec != specCopy)
   {
-    v8 = v5;
-    v7 = [(PXFeedViewLayoutSpec *)v5 isEqual:?];
+    v8 = specCopy;
+    v7 = [(PXFeedViewLayoutSpec *)specCopy isEqual:?];
     v6 = v8;
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_spec, a3);
+      objc_storeStrong(&self->_spec, spec);
       [(PXFeedViewModel *)self signalChange:8];
       v6 = v8;
     }
   }
 }
 
-- (void)setSelectionSnapshot:(id)a3
+- (void)setSelectionSnapshot:(id)snapshot
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_selectionSnapshot != v5)
+  snapshotCopy = snapshot;
+  v6 = snapshotCopy;
+  if (self->_selectionSnapshot != snapshotCopy)
   {
-    v8 = v5;
-    v7 = [(PXSelectionSnapshot *)v5 isEqual:?];
+    v8 = snapshotCopy;
+    v7 = [(PXSelectionSnapshot *)snapshotCopy isEqual:?];
     v6 = v8;
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_selectionSnapshot, a3);
+      objc_storeStrong(&self->_selectionSnapshot, snapshot);
       [(PXFeedViewModel *)self signalChange:4];
       v6 = v8;
     }
   }
 }
 
-- (void)setDataSource:(id)a3
+- (void)setDataSource:(id)source
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_dataSource != v5)
+  sourceCopy = source;
+  v6 = sourceCopy;
+  if (self->_dataSource != sourceCopy)
   {
-    v8 = v5;
-    v7 = [(PXSectionedDataSource *)v5 isEqual:?];
+    v8 = sourceCopy;
+    v7 = [(PXSectionedDataSource *)sourceCopy isEqual:?];
     v6 = v8;
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_dataSource, a3);
+      objc_storeStrong(&self->_dataSource, source);
       [(PXFeedViewModel *)self signalChange:2];
       v6 = v8;
     }
   }
 }
 
-- (void)setPresentingViewController:(id)a3
+- (void)setPresentingViewController:(id)controller
 {
   v7 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  controllerCopy = controller;
   WeakRetained = objc_loadWeakRetained(&self->_presentingViewController);
 
-  if (WeakRetained != v4)
+  if (WeakRetained != controllerCopy)
   {
     v6 = objc_loadWeakRetained(&self->_presentingViewController);
 
@@ -319,17 +319,17 @@ LABEL_11:
       PXAssertGetLog();
     }
 
-    objc_storeWeak(&self->_presentingViewController, v4);
+    objc_storeWeak(&self->_presentingViewController, controllerCopy);
   }
 }
 
-- (void)setAssetCollectionActionPerformerDelegate:(id)a3
+- (void)setAssetCollectionActionPerformerDelegate:(id)delegate
 {
   v7 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  delegateCopy = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_assetCollectionActionPerformerDelegate);
 
-  if (WeakRetained != v4)
+  if (WeakRetained != delegateCopy)
   {
     v6 = objc_loadWeakRetained(&self->_assetCollectionActionPerformerDelegate);
 
@@ -338,17 +338,17 @@ LABEL_11:
       PXAssertGetLog();
     }
 
-    objc_storeWeak(&self->_assetCollectionActionPerformerDelegate, v4);
+    objc_storeWeak(&self->_assetCollectionActionPerformerDelegate, delegateCopy);
   }
 }
 
-- (void)setActionPerformer:(id)a3
+- (void)setActionPerformer:(id)performer
 {
   v7 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  performerCopy = performer;
   WeakRetained = objc_loadWeakRetained(&self->_actionPerformer);
 
-  if (WeakRetained != v4)
+  if (WeakRetained != performerCopy)
   {
     v6 = objc_loadWeakRetained(&self->_actionPerformer);
 
@@ -357,31 +357,31 @@ LABEL_11:
       PXAssertGetLog();
     }
 
-    objc_storeWeak(&self->_actionPerformer, v4);
+    objc_storeWeak(&self->_actionPerformer, performerCopy);
   }
 }
 
-- (void)setIsActive:(BOOL)a3
+- (void)setIsActive:(BOOL)active
 {
-  if (self->_isActive != a3)
+  if (self->_isActive != active)
   {
-    self->_isActive = a3;
+    self->_isActive = active;
     [(PXFeedViewModel *)self signalChange:1];
   }
 }
 
-- (void)registerAccessoryTapToRadarDiagnosticsProvider:(id)a3
+- (void)registerAccessoryTapToRadarDiagnosticsProvider:(id)provider
 {
-  v7 = a3;
+  providerCopy = provider;
   if (!self->_accessoryTapToRadarDiagnosticsProviders)
   {
-    v4 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     accessoryTapToRadarDiagnosticsProviders = self->_accessoryTapToRadarDiagnosticsProviders;
-    self->_accessoryTapToRadarDiagnosticsProviders = v4;
+    self->_accessoryTapToRadarDiagnosticsProviders = weakObjectsHashTable;
   }
 
-  v6 = [(PXFeedViewModel *)self accessoryTapToRadarDiagnosticsProviders];
-  [v6 addObject:v7];
+  accessoryTapToRadarDiagnosticsProviders = [(PXFeedViewModel *)self accessoryTapToRadarDiagnosticsProviders];
+  [accessoryTapToRadarDiagnosticsProviders addObject:providerCopy];
 }
 
 - (void)didPerformChanges
@@ -389,48 +389,48 @@ LABEL_11:
   v4.receiver = self;
   v4.super_class = PXFeedViewModel;
   [(PXFeedViewModel *)&v4 didPerformChanges];
-  v3 = [(PXFeedViewModel *)self updater];
-  [v3 updateIfNeeded];
+  updater = [(PXFeedViewModel *)self updater];
+  [updater updateIfNeeded];
 }
 
-- (void)performChanges:(id)a3
+- (void)performChanges:(id)changes
 {
   v3.receiver = self;
   v3.super_class = PXFeedViewModel;
-  [(PXFeedViewModel *)&v3 performChanges:a3];
+  [(PXFeedViewModel *)&v3 performChanges:changes];
 }
 
-- (PXFeedViewModel)initWithDataSourceManager:(id)a3 specManager:(id)a4 itemLayoutFactory:(id)a5 placeholderFactory:(id)a6 wantsEmbeddedScrollView:(BOOL)a7 visibleRectChangeObserver:(id)a8
+- (PXFeedViewModel)initWithDataSourceManager:(id)manager specManager:(id)specManager itemLayoutFactory:(id)factory placeholderFactory:(id)placeholderFactory wantsEmbeddedScrollView:(BOOL)view visibleRectChangeObserver:(id)observer
 {
-  v30 = a3;
-  v29 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a8;
+  managerCopy = manager;
+  specManagerCopy = specManager;
+  factoryCopy = factory;
+  placeholderFactoryCopy = placeholderFactory;
+  observerCopy = observer;
   v33.receiver = self;
   v33.super_class = PXFeedViewModel;
   v18 = [(PXFeedViewModel *)&v33 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_dataSourceManager, a3);
+    objc_storeStrong(&v18->_dataSourceManager, manager);
     [(PXSectionedDataSourceManager *)v19->_dataSourceManager registerChangeObserver:v19 context:DataSourceManagerObservationContext];
-    v20 = [(PXSectionedDataSourceManager *)v19->_dataSourceManager changeHistory];
+    changeHistory = [(PXSectionedDataSourceManager *)v19->_dataSourceManager changeHistory];
     dataSourceChangeHistory = v19->_dataSourceChangeHistory;
-    v19->_dataSourceChangeHistory = v20;
+    v19->_dataSourceChangeHistory = changeHistory;
 
     v22 = [[off_1E77218C8 alloc] initWithDataSourceManager:v19->_dataSourceManager];
     selectionManager = v19->_selectionManager;
     v19->_selectionManager = v22;
 
     [(PXSectionedSelectionManager *)v19->_selectionManager registerChangeObserver:v19 context:SelectionManagerObservationContext];
-    objc_storeStrong(&v19->_specManager, a4);
+    objc_storeStrong(&v19->_specManager, specManager);
     [(PXFeedViewLayoutSpecManager *)v19->_specManager registerChangeObserver:v19 context:SpecManagerObservationContext];
-    objc_storeStrong(&v19->_itemLayoutFactory, a5);
-    objc_storeStrong(&v19->_placeholderFactory, a6);
+    objc_storeStrong(&v19->_itemLayoutFactory, factory);
+    objc_storeStrong(&v19->_placeholderFactory, placeholderFactory);
     objc_storeStrong(&v19->_storyQueue, MEMORY[0x1E69E96A0]);
-    v19->_wantsEmbeddedScrollView = a7;
-    v24 = [v17 copy];
+    v19->_wantsEmbeddedScrollView = view;
+    v24 = [observerCopy copy];
     visibleRectChangeObserver = v19->_visibleRectChangeObserver;
     v19->_visibleRectChangeObserver = v24;
 
@@ -463,8 +463,8 @@ uint64_t __144__PXFeedViewModel_initWithDataSourceManager_specManager_itemLayout
 
 - (PXFeedViewModel)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXFeedViewModel.m" lineNumber:31 description:{@"%s is not available as initializer", "-[PXFeedViewModel init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXFeedViewModel.m" lineNumber:31 description:{@"%s is not available as initializer", "-[PXFeedViewModel init]"}];
 
   abort();
 }

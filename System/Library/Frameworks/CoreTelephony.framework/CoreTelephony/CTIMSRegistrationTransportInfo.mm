@@ -1,8 +1,8 @@
 @interface CTIMSRegistrationTransportInfo
-- (CTIMSRegistrationTransportInfo)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CTIMSRegistrationTransportInfo)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CTIMSRegistrationTransportInfo
@@ -18,34 +18,34 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setIsRegistered:{-[CTIMSRegistrationTransportInfo isRegistered](self, "isRegistered")}];
   [v4 setContextType:{-[CTIMSRegistrationTransportInfo contextType](self, "contextType")}];
   [v4 setTransportType:{-[CTIMSRegistrationTransportInfo transportType](self, "transportType")}];
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeBool:-[CTIMSRegistrationTransportInfo isRegistered](self forKey:{"isRegistered"), @"isRegistered"}];
-  [v4 encodeInt:-[CTIMSRegistrationTransportInfo contextType](self forKey:{"contextType"), @"contextType"}];
-  [v4 encodeInt:-[CTIMSRegistrationTransportInfo transportType](self forKey:{"transportType"), @"transportType"}];
+  coderCopy = coder;
+  [coderCopy encodeBool:-[CTIMSRegistrationTransportInfo isRegistered](self forKey:{"isRegistered"), @"isRegistered"}];
+  [coderCopy encodeInt:-[CTIMSRegistrationTransportInfo contextType](self forKey:{"contextType"), @"contextType"}];
+  [coderCopy encodeInt:-[CTIMSRegistrationTransportInfo transportType](self forKey:{"transportType"), @"transportType"}];
 }
 
-- (CTIMSRegistrationTransportInfo)initWithCoder:(id)a3
+- (CTIMSRegistrationTransportInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = CTIMSRegistrationTransportInfo;
   v5 = [(CTIMSRegistrationTransportInfo *)&v7 init];
   if (v5)
   {
-    v5->_isRegistered = [v4 decodeBoolForKey:@"isRegistered"];
-    v5->_contextType = [v4 decodeIntForKey:@"contextType"];
-    v5->_transportType = [v4 decodeIntForKey:@"transportType"];
+    v5->_isRegistered = [coderCopy decodeBoolForKey:@"isRegistered"];
+    v5->_contextType = [coderCopy decodeIntForKey:@"contextType"];
+    v5->_transportType = [coderCopy decodeIntForKey:@"transportType"];
   }
 
   return v5;

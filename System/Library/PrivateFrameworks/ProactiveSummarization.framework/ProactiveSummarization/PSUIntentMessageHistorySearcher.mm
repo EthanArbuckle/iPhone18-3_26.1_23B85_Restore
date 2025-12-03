@@ -1,29 +1,29 @@
 @interface PSUIntentMessageHistorySearcher
-- (void)recentMessagesSinceDate:(id)a3 conversationIdentifier:(id)a4 appBundleId:(id)a5 incomingMessageID:(id)a6 limit:(int64_t)a7 options:(unint64_t)a8 completionHandler:(id)a9;
+- (void)recentMessagesSinceDate:(id)date conversationIdentifier:(id)identifier appBundleId:(id)id incomingMessageID:(id)d limit:(int64_t)limit options:(unint64_t)options completionHandler:(id)handler;
 @end
 
 @implementation PSUIntentMessageHistorySearcher
 
-- (void)recentMessagesSinceDate:(id)a3 conversationIdentifier:(id)a4 appBundleId:(id)a5 incomingMessageID:(id)a6 limit:(int64_t)a7 options:(unint64_t)a8 completionHandler:(id)a9
+- (void)recentMessagesSinceDate:(id)date conversationIdentifier:(id)identifier appBundleId:(id)id incomingMessageID:(id)d limit:(int64_t)limit options:(unint64_t)options completionHandler:(id)handler
 {
-  v9 = a8;
+  optionsCopy = options;
   v38[1] = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a9;
+  dateCopy = date;
+  identifierCopy = identifier;
+  idCopy = id;
+  dCopy = d;
+  handlerCopy = handler;
   v36[0] = 0;
   v36[1] = v36;
   v36[2] = 0x2020000000;
   v37 = 0;
-  v18 = [objc_alloc(MEMORY[0x277CD3B68]) initWithStartDate:v13 endDate:0 onCalendar:0 inTimeZone:0];
+  v18 = [objc_alloc(MEMORY[0x277CD3B68]) initWithStartDate:dateCopy endDate:0 onCalendar:0 inTimeZone:0];
   v19 = objc_alloc(MEMORY[0x277CD4048]);
-  v38[0] = v14;
+  v38[0] = identifierCopy;
   v20 = [MEMORY[0x277CBEA60] arrayWithObjects:v38 count:1];
-  v21 = [v19 initWithRecipients:0 senders:0 searchTerms:0 attributes:v9 & 3 dateTimeRange:v18 identifiers:0 notificationIdentifiers:0 speakableGroupNames:0 conversationIdentifiers:v20];
+  v21 = [v19 initWithRecipients:0 senders:0 searchTerms:0 attributes:optionsCopy & 3 dateTimeRange:v18 identifiers:0 notificationIdentifiers:0 speakableGroupNames:0 conversationIdentifiers:v20];
 
-  [v21 _setLaunchId:v15];
+  [v21 _setLaunchId:idCopy];
   v22 = [objc_alloc(MEMORY[0x277D21520]) initWithIntent:v21];
   [v22 setRequiresTCC:0];
   [v22 setRequestTimeoutInterval:5.0];
@@ -32,7 +32,7 @@
   v33[2] = __144__PSUIntentMessageHistorySearcher_recentMessagesSinceDate_conversationIdentifier_appBundleId_incomingMessageID_limit_options_completionHandler___block_invoke;
   v33[3] = &unk_278947568;
   v35 = v36;
-  v23 = v17;
+  v23 = handlerCopy;
   v34 = v23;
   [v22 setTimeoutHandler:v33];
   [v22 setInterruptionHandler:&__block_literal_global];
@@ -43,7 +43,7 @@
   v32 = v36;
   v24 = v23;
   v31 = v24;
-  v25 = v16;
+  v25 = dCopy;
   v29 = v25;
   v26 = v22;
   v30 = v26;

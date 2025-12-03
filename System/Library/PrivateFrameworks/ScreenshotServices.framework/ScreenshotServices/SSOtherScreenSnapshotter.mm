@@ -7,18 +7,18 @@
 - (id)takeScreenshot
 {
   v29[7] = *MEMORY[0x1E69E9840];
-  v3 = [(SSScreenSnapshotter *)self screen];
-  [v3 potentialEDRHeadroom];
+  screen = [(SSScreenSnapshotter *)self screen];
+  [screen potentialEDRHeadroom];
   v5 = v4;
 
   v28[0] = *MEMORY[0x1E69DEB98];
-  v6 = [(SSScreenSnapshotter *)self screen];
-  v29[0] = v6;
+  screen2 = [(SSScreenSnapshotter *)self screen];
+  v29[0] = screen2;
   v28[1] = *MEMORY[0x1E69DEB68];
   v7 = MEMORY[0x1E696AD98];
-  v8 = [(SSScreenSnapshotter *)self screen];
-  v9 = [v8 traitCollection];
-  v10 = [v7 numberWithInteger:{objc_msgSend(v9, "displayGamut")}];
+  screen3 = [(SSScreenSnapshotter *)self screen];
+  traitCollection = [screen3 traitCollection];
+  v10 = [v7 numberWithInteger:{objc_msgSend(traitCollection, "displayGamut")}];
   v11 = *MEMORY[0x1E69DEB78];
   v12 = MEMORY[0x1E695E118];
   v29[1] = v10;
@@ -27,8 +27,8 @@
   v28[2] = v11;
   v28[3] = v13;
   v14 = MEMORY[0x1E696AD98];
-  v15 = [(SSScreenSnapshotter *)self screen];
-  [v15 scale];
+  screen4 = [(SSScreenSnapshotter *)self screen];
+  [screen4 scale];
   v16 = [v14 numberWithDouble:?];
   v17 = *MEMORY[0x1E69DEB90];
   v29[3] = v16;

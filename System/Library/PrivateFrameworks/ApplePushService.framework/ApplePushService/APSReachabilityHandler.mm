@@ -1,5 +1,5 @@
 @interface APSReachabilityHandler
-- (APSReachabilityHandler)initWithReachabilityHost:(id)a3 reachabilityBlock:(id)a4;
+- (APSReachabilityHandler)initWithReachabilityHost:(id)host reachabilityBlock:(id)block;
 - (unsigned)currentFlags;
 - (void)disable;
 - (void)enable;
@@ -8,18 +8,18 @@
 
 @implementation APSReachabilityHandler
 
-- (APSReachabilityHandler)initWithReachabilityHost:(id)a3 reachabilityBlock:(id)a4
+- (APSReachabilityHandler)initWithReachabilityHost:(id)host reachabilityBlock:(id)block
 {
-  v7 = a3;
-  v8 = a4;
+  hostCopy = host;
+  blockCopy = block;
   v14.receiver = self;
   v14.super_class = APSReachabilityHandler;
   v9 = [(APSReachabilityHandler *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_reachabilityHost, a3);
-    v11 = objc_retainBlock(v8);
+    objc_storeStrong(&v9->_reachabilityHost, host);
+    v11 = objc_retainBlock(blockCopy);
     reachabilityBlock = v10->_reachabilityBlock;
     v10->_reachabilityBlock = v11;
   }

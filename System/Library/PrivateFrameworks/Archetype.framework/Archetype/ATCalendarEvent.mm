@@ -1,14 +1,14 @@
 @interface ATCalendarEvent
 - (NSString)description;
 - (_TtC9Archetype15ATCalendarEvent)init;
-- (_TtC9Archetype15ATCalendarEvent)initWithEventTitle:(id)a3;
-- (id)copyWithZone:(void *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (_TtC9Archetype15ATCalendarEvent)initWithEventTitle:(id)title;
+- (id)copyWithZone:(void *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ATCalendarEvent
 
-- (_TtC9Archetype15ATCalendarEvent)initWithEventTitle:(id)a3
+- (_TtC9Archetype15ATCalendarEvent)initWithEventTitle:(id)title
 {
   v4 = sub_240FAE990();
   v5 = (self + OBJC_IVAR____TtC9Archetype15ATCalendarEvent_eventTitle);
@@ -19,7 +19,7 @@
   return [(ATCalendarEvent *)&v8 init];
 }
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
   v4 = *(&self->super.isa + OBJC_IVAR____TtC9Archetype15ATCalendarEvent_eventTitle);
   v3 = *&self->eventTitle[OBJC_IVAR____TtC9Archetype15ATCalendarEvent_eventTitle];
@@ -34,22 +34,22 @@
   return [(ATCalendarEvent *)&v9 init];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = *(&self->super.isa + OBJC_IVAR____TtC9Archetype15ATCalendarEvent_eventTitle);
   v5 = *&self->eventTitle[OBJC_IVAR____TtC9Archetype15ATCalendarEvent_eventTitle];
-  v6 = a3;
-  v9 = self;
+  coderCopy = coder;
+  selfCopy = self;
   v7 = sub_240FAE970();
   v8 = sub_240FAE970();
-  [v6 encodeObject:v7 forKey:v8];
+  [coderCopy encodeObject:v7 forKey:v8];
 }
 
 - (NSString)description
 {
   v2 = *(&self->super.isa + OBJC_IVAR____TtC9Archetype15ATCalendarEvent_eventTitle);
   v3 = *&self->eventTitle[OBJC_IVAR____TtC9Archetype15ATCalendarEvent_eventTitle];
-  v4 = self;
+  selfCopy = self;
   MEMORY[0x245CD5BD0](v2, v3);
   MEMORY[0x245CD5BD0](34, 0xE100000000000000);
 

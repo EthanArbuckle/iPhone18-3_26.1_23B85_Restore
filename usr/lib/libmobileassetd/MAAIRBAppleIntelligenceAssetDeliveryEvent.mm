@@ -1,21 +1,21 @@
 @interface MAAIRBAppleIntelligenceAssetDeliveryEvent
 - (MAAIRBAppleIntelligenceAssetDeliveryEvent)init;
-- (MAAIRBAppleIntelligenceAssetDeliveryEvent)initWithErrors:(id)a3 type:(id)a4;
+- (MAAIRBAppleIntelligenceAssetDeliveryEvent)initWithErrors:(id)errors type:(id)type;
 @end
 
 @implementation MAAIRBAppleIntelligenceAssetDeliveryEvent
 
-- (MAAIRBAppleIntelligenceAssetDeliveryEvent)initWithErrors:(id)a3 type:(id)a4
+- (MAAIRBAppleIntelligenceAssetDeliveryEvent)initWithErrors:(id)errors type:(id)type
 {
-  v5 = a3;
-  if (a3)
+  errorsCopy = errors;
+  if (errors)
   {
     __swift_instantiateConcreteTypeFromMangledNameV2(&qword_518428);
-    v5 = sub_303AC8();
+    errorsCopy = sub_303AC8();
   }
 
-  v6 = a4;
-  v7 = sub_253D00(v5, v6);
+  typeCopy = type;
+  v7 = sub_253D00(errorsCopy, typeCopy);
 
   return v7;
 }

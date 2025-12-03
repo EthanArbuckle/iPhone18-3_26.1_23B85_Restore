@@ -1,12 +1,12 @@
 @interface CMIOExtensionStreamCustomClockConfiguration
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CMIOExtensionStreamCustomClockConfiguration)initWithClockName:(NSString *)clockName sourceIdentifier:(NSUUID *)sourceIdentifier getTimeCallMinimumInterval:(CMTime *)getTimeCallMinimumInterval numberOfEventsForRateSmoothing:(uint32_t)numberOfEventsForRateSmoothing numberOfAveragesForRateSmoothing:(uint32_t)numberOfAveragesForRateSmoothing;
-- (CMIOExtensionStreamCustomClockConfiguration)initWithCoder:(id)a3;
-- (CMIOExtensionStreamCustomClockConfiguration)initWithXPCDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CMIOExtensionStreamCustomClockConfiguration)initWithCoder:(id)coder;
+- (CMIOExtensionStreamCustomClockConfiguration)initWithXPCDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)copyXPCDictionary;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CMIOExtensionStreamCustomClockConfiguration
@@ -69,9 +69,9 @@
   [(CMIOExtensionStreamCustomClockConfiguration *)&v3 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     LOBYTE(v7) = 1;
   }
@@ -86,15 +86,15 @@
       goto LABEL_12;
     }
 
-    v7 = -[NSString isEqualToString:](self->_clockName, "isEqualToString:", [a3 clockName]);
+    v7 = -[NSString isEqualToString:](self->_clockName, "isEqualToString:", [equal clockName]);
     if (v7)
     {
-      v7 = -[NSUUID isEqual:](self->_sourceIdentifier, "isEqual:", [a3 sourceIdentifier]);
+      v7 = -[NSUUID isEqual:](self->_sourceIdentifier, "isEqual:", [equal sourceIdentifier]);
       if (v7)
       {
-        if (a3)
+        if (equal)
         {
-          [a3 getTimeCallMinimumInterval];
+          [equal getTimeCallMinimumInterval];
         }
 
         else
@@ -106,10 +106,10 @@
         if (!CMTimeCompare(&getTimeCallMinimumInterval, &time2))
         {
           numberOfEventsForRateSmoothing = self->_numberOfEventsForRateSmoothing;
-          if (numberOfEventsForRateSmoothing == [a3 numberOfEventsForRateSmoothing])
+          if (numberOfEventsForRateSmoothing == [equal numberOfEventsForRateSmoothing])
           {
             numberOfAveragesForRateSmoothing = self->_numberOfAveragesForRateSmoothing;
-            LOBYTE(v7) = numberOfAveragesForRateSmoothing == [a3 numberOfAveragesForRateSmoothing];
+            LOBYTE(v7) = numberOfAveragesForRateSmoothing == [equal numberOfAveragesForRateSmoothing];
             return v7;
           }
         }
@@ -123,7 +123,7 @@ LABEL_12:
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -131,11 +131,11 @@ LABEL_12:
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"%@ can only be encoded as part of an xpc message", self}];
   }
 
-  v5 = [(CMIOExtensionStreamCustomClockConfiguration *)self copyXPCDictionary];
-  if (v5)
+  copyXPCDictionary = [(CMIOExtensionStreamCustomClockConfiguration *)self copyXPCDictionary];
+  if (copyXPCDictionary)
   {
-    v6 = v5;
-    [a3 encodeXPCObject:v5 forKey:@"streamCustomClockConfiguration"];
+    v6 = copyXPCDictionary;
+    [coder encodeXPCObject:copyXPCDictionary forKey:@"streamCustomClockConfiguration"];
 
     xpc_release(v6);
   }
@@ -150,7 +150,7 @@ LABEL_12:
   }
 }
 
-- (CMIOExtensionStreamCustomClockConfiguration)initWithCoder:(id)a3
+- (CMIOExtensionStreamCustomClockConfiguration)initWithCoder:(id)coder
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -158,7 +158,7 @@ LABEL_12:
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"%@ can only be encoded as part of an xpc message", self}];
   }
 
-  v5 = [a3 decodeXPCObjectOfType:MEMORY[0x277D86468] forKey:@"streamCustomClockConfiguration"];
+  v5 = [coder decodeXPCObjectOfType:MEMORY[0x277D86468] forKey:@"streamCustomClockConfiguration"];
   if (!v5)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"%@ nil xpc object", self}];
@@ -167,9 +167,9 @@ LABEL_12:
   return [(CMIOExtensionStreamCustomClockConfiguration *)self initWithXPCDictionary:v5];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [CMIOExtensionStreamCustomClockConfiguration allocWithZone:a3];
+  v4 = [CMIOExtensionStreamCustomClockConfiguration allocWithZone:zone];
   clockName = self->_clockName;
   sourceIdentifier = self->_sourceIdentifier;
   numberOfEventsForRateSmoothing = self->_numberOfEventsForRateSmoothing;
@@ -189,13 +189,13 @@ LABEL_12:
   return v3;
 }
 
-- (CMIOExtensionStreamCustomClockConfiguration)initWithXPCDictionary:(id)a3
+- (CMIOExtensionStreamCustomClockConfiguration)initWithXPCDictionary:(id)dictionary
 {
-  if (a3)
+  if (dictionary)
   {
     v18 = *MEMORY[0x277CC0898];
     v19 = *(MEMORY[0x277CC0898] + 16);
-    string = xpc_dictionary_get_string(a3, "clockName");
+    string = xpc_dictionary_get_string(dictionary, "clockName");
     if (string)
     {
       v6 = [MEMORY[0x277CCACA8] stringWithCString:string encoding:4];
@@ -206,29 +206,29 @@ LABEL_12:
       v6 = @"unknown";
     }
 
-    v8 = xpc_dictionary_get_string(a3, "sourceIdentifier");
+    v8 = xpc_dictionary_get_string(dictionary, "sourceIdentifier");
     if (v8)
     {
       v9 = [MEMORY[0x277CCACA8] stringWithCString:v8 encoding:4];
-      v10 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:v9];
+      uUID = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:v9];
     }
 
     else
     {
-      v10 = [MEMORY[0x277CCAD78] UUID];
+      uUID = [MEMORY[0x277CCAD78] UUID];
     }
 
-    v11 = v10;
+    v11 = uUID;
     length = 24;
-    data = xpc_dictionary_get_data(a3, "getTimeCallMinimumInterval", &length);
+    data = xpc_dictionary_get_data(dictionary, "getTimeCallMinimumInterval", &length);
     if (data)
     {
       v18 = *data;
       v19 = data[2];
     }
 
-    uint64 = xpc_dictionary_get_uint64(a3, "numberOfEventsForRateSmoothing");
-    v14 = xpc_dictionary_get_uint64(a3, "numberOfAveragesForRateSmoothing");
+    uint64 = xpc_dictionary_get_uint64(dictionary, "numberOfEventsForRateSmoothing");
+    v14 = xpc_dictionary_get_uint64(dictionary, "numberOfAveragesForRateSmoothing");
     v15 = v18;
     v16 = v19;
     return [(CMIOExtensionStreamCustomClockConfiguration *)self initWithClockName:v6 sourceIdentifier:v11 getTimeCallMinimumInterval:&v15 numberOfEventsForRateSmoothing:uint64 numberOfAveragesForRateSmoothing:v14];

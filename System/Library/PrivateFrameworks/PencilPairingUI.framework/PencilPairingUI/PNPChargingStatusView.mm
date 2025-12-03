@@ -1,16 +1,16 @@
 @interface PNPChargingStatusView
 - (BOOL)_showBatteryStatus;
 - (CGSize)intrinsicContentSize;
-- (PNPChargingStatusView)initWithFrame:(CGRect)a3;
+- (PNPChargingStatusView)initWithFrame:(CGRect)frame;
 - (PNPChargingStatusViewDelegate)delegate;
-- (void)_performAnimations:(id)a3 completion:(id)a4;
+- (void)_performAnimations:(id)animations completion:(id)completion;
 - (void)_setAndAnimateChargingStateToConnecting;
 - (void)beginPairing;
 - (void)layoutSubviews;
-- (void)setDeviceState:(id)a3;
-- (void)setIsTransitioningToBatteryUI:(BOOL)a3;
-- (void)setShowsCharging:(BOOL)a3;
-- (void)updateChargingState:(int64_t)a3;
+- (void)setDeviceState:(id)state;
+- (void)setIsTransitioningToBatteryUI:(BOOL)i;
+- (void)setShowsCharging:(BOOL)charging;
+- (void)updateChargingState:(int64_t)state;
 - (void)updateConstraints;
 @end
 
@@ -21,18 +21,18 @@
   v41.receiver = self;
   v41.super_class = PNPChargingStatusView;
   [(PNPChargingStatusView *)&v41 layoutSubviews];
-  v3 = [(PNPChargingStatusView *)self deviceState];
-  [v3 batteryLevel];
+  deviceState = [(PNPChargingStatusView *)self deviceState];
+  [deviceState batteryLevel];
   v5 = v4;
   v6 = v4 * 100.0;
   v7 = vcvtmd_s64_f64(v6);
   v8 = floor(v6);
-  v9 = [(UILabel *)self->_deviceNameLabel text];
-  if (!v9 || (v10 = v9, v11 = [v3 deviceType], v10, v11))
+  text = [(UILabel *)self->_deviceNameLabel text];
+  if (!text || (v10 = text, v11 = [deviceState deviceType], v10, v11))
   {
     deviceNameLabel = self->_deviceNameLabel;
-    v13 = [v3 displayName];
-    [(UILabel *)deviceNameLabel setText:v13];
+    displayName = [deviceState displayName];
+    [(UILabel *)deviceNameLabel setText:displayName];
   }
 
   v14 = 1;
@@ -47,15 +47,15 @@
   [(UILabel *)percentageLabel setTextColor:v16];
 
   tapToConnectButton = self->_tapToConnectButton;
-  v18 = [MEMORY[0x277D75348] defaultButtonColor];
-  [(PNPConnectButton *)tapToConnectButton setTitleColor:v18 forState:0];
+  defaultButtonColor = [MEMORY[0x277D75348] defaultButtonColor];
+  [(PNPConnectButton *)tapToConnectButton setTitleColor:defaultButtonColor forState:0];
 
-  -[_UIBatteryView setChargingState:](self->_batteryView, "setChargingState:", [v3 isCharging]);
+  -[_UIBatteryView setChargingState:](self->_batteryView, "setChargingState:", [deviceState isCharging]);
   [(_UIBatteryView *)self->_batteryView setChargePercent:v5];
   [(_UIBatteryView *)self->_batteryView setLowBatteryMode:v14];
   batteryView = self->_batteryView;
-  v20 = [MEMORY[0x277D75348] batteryBodyColor];
-  [(_UIBatteryView *)batteryView setBodyColor:v20];
+  batteryBodyColor = [MEMORY[0x277D75348] batteryBodyColor];
+  [(_UIBatteryView *)batteryView setBodyColor:batteryBodyColor];
 
   v21 = MEMORY[0x277CCABB8];
   v22 = [MEMORY[0x277CCABB0] numberWithDouble:v8 / 100.0];
@@ -163,23 +163,23 @@ LABEL_25:
 LABEL_27:
 }
 
-- (void)_performAnimations:(id)a3 completion:(id)a4
+- (void)_performAnimations:(id)animations completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  animationsCopy = animations;
+  completionCopy = completion;
   v7 = MEMORY[0x277D75D18];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __55__PNPChargingStatusView__performAnimations_completion___block_invoke;
   v12[3] = &unk_279A0A128;
-  v13 = v5;
+  v13 = animationsCopy;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __55__PNPChargingStatusView__performAnimations_completion___block_invoke_2;
   v10[3] = &unk_279A0A1C0;
-  v11 = v6;
-  v8 = v6;
-  v9 = v5;
+  v11 = completionCopy;
+  v8 = completionCopy;
+  v9 = animationsCopy;
   [v7 animateWithDuration:4 delay:v12 usingSpringWithDamping:v10 initialSpringVelocity:0.6 options:0.0 animations:0.7 completion:0.0];
 }
 
@@ -196,16 +196,16 @@ uint64_t __55__PNPChargingStatusView__performAnimations_completion___block_invok
 
 - (BOOL)_showBatteryStatus
 {
-  v3 = [(PNPChargingStatusView *)self deviceState];
-  v4 = ([v3 batteryLevelUnknown] & 1) == 0 && -[PNPChargingStatusView showsCharging](self, "showsCharging") && -[PNPChargingStatusView chargingState](self, "chargingState") == 2;
+  deviceState = [(PNPChargingStatusView *)self deviceState];
+  v4 = ([deviceState batteryLevelUnknown] & 1) == 0 && -[PNPChargingStatusView showsCharging](self, "showsCharging") && -[PNPChargingStatusView chargingState](self, "chargingState") == 2;
 
   return v4;
 }
 
-- (void)updateChargingState:(int64_t)a3
+- (void)updateChargingState:(int64_t)state
 {
   chargingState = self->_chargingState;
-  if (!a3 && chargingState == 4)
+  if (!state && chargingState == 4)
   {
     self->_chargingState = 0;
 LABEL_4:
@@ -216,26 +216,26 @@ LABEL_4:
     return;
   }
 
-  if (a3 != 1 || chargingState)
+  if (state != 1 || chargingState)
   {
-    if (a3 == 4)
+    if (state == 4)
     {
       self->_chargingState = 4;
       return;
     }
 
-    if (a3 != 3)
+    if (state != 3)
     {
-      if (a3 != 2)
+      if (state != 2)
       {
         return;
       }
 
-      v5 = [(PNPChargingStatusView *)self layer];
-      [v5 removeAllAnimations];
+      layer = [(PNPChargingStatusView *)self layer];
+      [layer removeAllAnimations];
 
-      v6 = [(UILabel *)self->_deviceNameLabel layer];
-      [v6 removeAllAnimations];
+      layer2 = [(UILabel *)self->_deviceNameLabel layer];
+      [layer2 removeAllAnimations];
 
       self->_chargingState = 2;
       goto LABEL_4;
@@ -248,8 +248,8 @@ LABEL_4:
     v9 = [v8 localizedStringForKey:@"INTERNET_CONNECTION_REQUIRED" value:&stru_286FDFDB8 table:0];
     [(PNPConnectButton *)tapToConnectButton setTitle:v9 forState:0];
 
-    v10 = [(PNPConnectButton *)self->_tapToConnectButton titleLabel];
-    [v10 setAdjustsFontSizeToFitWidth:1];
+    titleLabel = [(PNPConnectButton *)self->_tapToConnectButton titleLabel];
+    [titleLabel setAdjustsFontSizeToFitWidth:1];
   }
 
   else
@@ -315,23 +315,23 @@ uint64_t __64__PNPChargingStatusView__setAndAnimateChargingStateToConnecting__bl
   return result;
 }
 
-- (void)setDeviceState:(id)a3
+- (void)setDeviceState:(id)state
 {
-  objc_storeStrong(&self->_deviceState, a3);
+  objc_storeStrong(&self->_deviceState, state);
   [(PNPChargingStatusView *)self setNeedsLayout];
   [(PNPChargingStatusView *)self layoutIfNeeded];
 
   [(PNPChargingStatusView *)self setNeedsUpdateConstraints];
 }
 
-- (void)setShowsCharging:(BOOL)a3
+- (void)setShowsCharging:(BOOL)charging
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __42__PNPChargingStatusView_setShowsCharging___block_invoke;
   v3[3] = &unk_279A0A100;
   v3[4] = self;
-  v4 = a3;
+  chargingCopy = charging;
   [(PNPChargingStatusView *)self _performAnimations:v3 completion:&__block_literal_global_11];
 }
 
@@ -345,9 +345,9 @@ uint64_t __42__PNPChargingStatusView_setShowsCharging___block_invoke(uint64_t a1
   return [v2 setNeedsUpdateConstraints];
 }
 
-- (void)setIsTransitioningToBatteryUI:(BOOL)a3
+- (void)setIsTransitioningToBatteryUI:(BOOL)i
 {
-  self->_isTransitioningToBatteryUI = a3;
+  self->_isTransitioningToBatteryUI = i;
   [(PNPChargingStatusView *)self setNeedsUpdateConstraints];
   [(PNPChargingStatusView *)self setNeedsLayout];
 
@@ -361,8 +361,8 @@ uint64_t __42__PNPChargingStatusView_setShowsCharging___block_invoke(uint64_t a1
   v4 = &OBJC_IVAR___PNPChargingStatusView__alignDeviceNameToTopConstraint;
   if ([(PNPChargingStatusView *)self chargingState])
   {
-    v5 = [(PNPChargingStatusView *)self chargingState];
-    if (v5 == 1)
+    chargingState = [(PNPChargingStatusView *)self chargingState];
+    if (chargingState == 1)
     {
       v6 = &OBJC_IVAR___PNPChargingStatusView__alignDeviceNameToTopConstraint;
     }
@@ -372,7 +372,7 @@ uint64_t __42__PNPChargingStatusView_setShowsCharging___block_invoke(uint64_t a1
       v6 = &OBJC_IVAR___PNPChargingStatusView__centerDeviceNameConstraint;
     }
 
-    if (v5 != 1)
+    if (chargingState != 1)
     {
       v3 = &OBJC_IVAR___PNPChargingStatusView__alignDeviceNameToTopConstraint;
     }
@@ -388,11 +388,11 @@ uint64_t __42__PNPChargingStatusView_setShowsCharging___block_invoke(uint64_t a1
   [(NSLayoutConstraint *)self->_tapToConnectButtonWidthConstraint setConstant:self->_maxPillWidth * 0.85];
 }
 
-- (PNPChargingStatusView)initWithFrame:(CGRect)a3
+- (PNPChargingStatusView)initWithFrame:(CGRect)frame
 {
   v97.receiver = self;
   v97.super_class = PNPChargingStatusView;
-  v3 = [(PNPChargingStatusView *)&v97 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PNPChargingStatusView *)&v97 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v3->_maxPillWidth = 0.0;
   v3->_alphaOutName = 1;
   v3->_didStartBatteryAnimation = 0;
@@ -431,9 +431,9 @@ uint64_t __42__PNPChargingStatusView_setShowsCharging___block_invoke(uint64_t a1
   [(PNPConnectButton *)v3->_tapToConnectButton addTarget:v3 action:sel_beginPairing forControlEvents:64];
   v18 = *MEMORY[0x277D743F8];
   v19 = [MEMORY[0x277D74300] systemFontOfSize:12.0 weight:*MEMORY[0x277D743F8]];
-  v20 = [(PNPConnectButton *)v3->_tapToConnectButton titleLabel];
+  titleLabel = [(PNPConnectButton *)v3->_tapToConnectButton titleLabel];
   v96 = v19;
-  [v20 setFont:v19];
+  [titleLabel setFont:v19];
 
   v21 = PencilPairingUIBundle();
   v22 = [v21 localizedStringForKey:@"APPLE_PENCIL_NAME" value:&stru_286FDFDB8 table:0];
@@ -469,112 +469,112 @@ uint64_t __42__PNPChargingStatusView_setShowsCharging___block_invoke(uint64_t a1
   [(PNPChargingStatusView *)v3 addSubview:v3->_tapToConnectButton];
   [(UIView *)v3->_batterySectionView addSubview:v3->_batteryView];
   [(UIView *)v3->_batterySectionView addSubview:v3->_percentageLabel];
-  v30 = [MEMORY[0x277CBEB18] array];
-  v31 = [(UIView *)v3->_contentAreaView leadingAnchor];
-  v32 = [(PNPChargingStatusView *)v3 leadingAnchor];
-  v33 = [v31 constraintEqualToAnchor:v32 constant:30.0];
-  [v30 addObject:v33];
+  array = [MEMORY[0x277CBEB18] array];
+  leadingAnchor = [(UIView *)v3->_contentAreaView leadingAnchor];
+  leadingAnchor2 = [(PNPChargingStatusView *)v3 leadingAnchor];
+  v33 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:30.0];
+  [array addObject:v33];
 
-  v34 = [(UIView *)v3->_contentAreaView trailingAnchor];
-  v35 = [(PNPChargingStatusView *)v3 trailingAnchor];
-  v36 = [v34 constraintEqualToAnchor:v35 constant:-30.0];
-  [v30 addObject:v36];
+  trailingAnchor = [(UIView *)v3->_contentAreaView trailingAnchor];
+  trailingAnchor2 = [(PNPChargingStatusView *)v3 trailingAnchor];
+  v36 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-30.0];
+  [array addObject:v36];
 
-  v37 = [(UIView *)v3->_contentAreaView centerYAnchor];
-  v38 = [(PNPChargingStatusView *)v3 centerYAnchor];
-  v39 = [v37 constraintEqualToAnchor:v38];
-  [v30 addObject:v39];
+  centerYAnchor = [(UIView *)v3->_contentAreaView centerYAnchor];
+  centerYAnchor2 = [(PNPChargingStatusView *)v3 centerYAnchor];
+  v39 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
+  [array addObject:v39];
 
-  v40 = [(UIActivityIndicatorView *)v3->_spinnerView leadingAnchor];
-  v41 = [(PNPChargingStatusView *)v3 leadingAnchor];
-  v42 = [v40 constraintEqualToAnchor:v41 constant:15.0];
-  [v30 addObject:v42];
+  leadingAnchor3 = [(UIActivityIndicatorView *)v3->_spinnerView leadingAnchor];
+  leadingAnchor4 = [(PNPChargingStatusView *)v3 leadingAnchor];
+  v42 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:15.0];
+  [array addObject:v42];
 
-  v43 = [(UIActivityIndicatorView *)v3->_spinnerView trailingAnchor];
-  v44 = [(UIView *)v3->_contentAreaView leadingAnchor];
-  v45 = [v43 constraintEqualToAnchor:v44 constant:-5.0];
-  [v30 addObject:v45];
+  trailingAnchor3 = [(UIActivityIndicatorView *)v3->_spinnerView trailingAnchor];
+  leadingAnchor5 = [(UIView *)v3->_contentAreaView leadingAnchor];
+  v45 = [trailingAnchor3 constraintEqualToAnchor:leadingAnchor5 constant:-5.0];
+  [array addObject:v45];
 
-  v46 = [(UIActivityIndicatorView *)v3->_spinnerView centerYAnchor];
-  v47 = [(PNPChargingStatusView *)v3 centerYAnchor];
-  v48 = [v46 constraintEqualToAnchor:v47];
-  [v30 addObject:v48];
+  centerYAnchor3 = [(UIActivityIndicatorView *)v3->_spinnerView centerYAnchor];
+  centerYAnchor4 = [(PNPChargingStatusView *)v3 centerYAnchor];
+  v48 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
+  [array addObject:v48];
 
-  v49 = [(UILabel *)v3->_deviceNameLabel topAnchor];
-  v50 = [(UIView *)v3->_contentAreaView topAnchor];
-  v51 = [v49 constraintEqualToAnchor:v50];
+  topAnchor = [(UILabel *)v3->_deviceNameLabel topAnchor];
+  topAnchor2 = [(UIView *)v3->_contentAreaView topAnchor];
+  v51 = [topAnchor constraintEqualToAnchor:topAnchor2];
   alignDeviceNameToTopConstraint = v3->_alignDeviceNameToTopConstraint;
   v3->_alignDeviceNameToTopConstraint = v51;
 
-  v53 = [(UILabel *)v3->_deviceNameLabel centerYAnchor];
-  v54 = [(UIView *)v3->_contentAreaView centerYAnchor];
-  v55 = [v53 constraintEqualToAnchor:v54];
+  centerYAnchor5 = [(UILabel *)v3->_deviceNameLabel centerYAnchor];
+  centerYAnchor6 = [(UIView *)v3->_contentAreaView centerYAnchor];
+  v55 = [centerYAnchor5 constraintEqualToAnchor:centerYAnchor6];
   centerDeviceNameConstraint = v3->_centerDeviceNameConstraint;
   v3->_centerDeviceNameConstraint = v55;
 
-  [v30 addObject:v3->_alignDeviceNameToTopConstraint];
-  v57 = [(UILabel *)v3->_deviceNameLabel leadingAnchor];
-  v58 = [(PNPChargingStatusView *)v3 leadingAnchor];
-  v59 = [v57 constraintEqualToAnchor:v58 constant:30.0];
-  [v30 addObject:v59];
+  [array addObject:v3->_alignDeviceNameToTopConstraint];
+  leadingAnchor6 = [(UILabel *)v3->_deviceNameLabel leadingAnchor];
+  leadingAnchor7 = [(PNPChargingStatusView *)v3 leadingAnchor];
+  v59 = [leadingAnchor6 constraintEqualToAnchor:leadingAnchor7 constant:30.0];
+  [array addObject:v59];
 
-  v60 = [(UILabel *)v3->_deviceNameLabel trailingAnchor];
-  v61 = [(PNPChargingStatusView *)v3 trailingAnchor];
-  v62 = [v60 constraintEqualToAnchor:v61 constant:-30.0];
-  [v30 addObject:v62];
+  trailingAnchor4 = [(UILabel *)v3->_deviceNameLabel trailingAnchor];
+  trailingAnchor5 = [(PNPChargingStatusView *)v3 trailingAnchor];
+  v62 = [trailingAnchor4 constraintEqualToAnchor:trailingAnchor5 constant:-30.0];
+  [array addObject:v62];
 
-  v63 = [(UIView *)v3->_batterySectionView centerXAnchor];
-  v64 = [(UIView *)v3->_contentAreaView centerXAnchor];
-  v65 = [v63 constraintEqualToAnchor:v64];
-  [v30 addObject:v65];
+  centerXAnchor = [(UIView *)v3->_batterySectionView centerXAnchor];
+  centerXAnchor2 = [(UIView *)v3->_contentAreaView centerXAnchor];
+  v65 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
+  [array addObject:v65];
 
-  v66 = [(UILabel *)v3->_percentageLabel leadingAnchor];
-  v67 = [(UIView *)v3->_batterySectionView leadingAnchor];
-  v68 = [v66 constraintGreaterThanOrEqualToAnchor:v67];
-  [v30 addObject:v68];
+  leadingAnchor8 = [(UILabel *)v3->_percentageLabel leadingAnchor];
+  leadingAnchor9 = [(UIView *)v3->_batterySectionView leadingAnchor];
+  v68 = [leadingAnchor8 constraintGreaterThanOrEqualToAnchor:leadingAnchor9];
+  [array addObject:v68];
 
-  v69 = [(UILabel *)v3->_percentageLabel lastBaselineAnchor];
-  v70 = [(UILabel *)v3->_deviceNameLabel lastBaselineAnchor];
-  v71 = [v69 constraintEqualToAnchor:v70 constant:18.0];
-  [v30 addObject:v71];
+  lastBaselineAnchor = [(UILabel *)v3->_percentageLabel lastBaselineAnchor];
+  lastBaselineAnchor2 = [(UILabel *)v3->_deviceNameLabel lastBaselineAnchor];
+  v71 = [lastBaselineAnchor constraintEqualToAnchor:lastBaselineAnchor2 constant:18.0];
+  [array addObject:v71];
 
-  v72 = [(UILabel *)v3->_percentageLabel bottomAnchor];
-  v73 = [(UIView *)v3->_contentAreaView bottomAnchor];
-  v74 = [v72 constraintLessThanOrEqualToAnchor:v73];
-  [v30 addObject:v74];
+  bottomAnchor = [(UILabel *)v3->_percentageLabel bottomAnchor];
+  bottomAnchor2 = [(UIView *)v3->_contentAreaView bottomAnchor];
+  v74 = [bottomAnchor constraintLessThanOrEqualToAnchor:bottomAnchor2];
+  [array addObject:v74];
 
-  v75 = [(_UIBatteryView *)v3->_batteryView leadingAnchor];
-  v76 = [(UILabel *)v3->_percentageLabel trailingAnchor];
-  v77 = [v75 constraintEqualToAnchor:v76 constant:8.0];
-  [v30 addObject:v77];
+  leadingAnchor10 = [(_UIBatteryView *)v3->_batteryView leadingAnchor];
+  trailingAnchor6 = [(UILabel *)v3->_percentageLabel trailingAnchor];
+  v77 = [leadingAnchor10 constraintEqualToAnchor:trailingAnchor6 constant:8.0];
+  [array addObject:v77];
 
-  v78 = [(_UIBatteryView *)v3->_batteryView trailingAnchor];
-  v79 = [(UIView *)v3->_batterySectionView trailingAnchor];
-  v80 = [v78 constraintLessThanOrEqualToAnchor:v79];
-  [v30 addObject:v80];
+  trailingAnchor7 = [(_UIBatteryView *)v3->_batteryView trailingAnchor];
+  trailingAnchor8 = [(UIView *)v3->_batterySectionView trailingAnchor];
+  v80 = [trailingAnchor7 constraintLessThanOrEqualToAnchor:trailingAnchor8];
+  [array addObject:v80];
 
-  v81 = [(_UIBatteryView *)v3->_batteryView centerYAnchor];
-  v82 = [(UILabel *)v3->_percentageLabel centerYAnchor];
-  v83 = [v81 constraintEqualToAnchor:v82];
-  [v30 addObject:v83];
+  centerYAnchor7 = [(_UIBatteryView *)v3->_batteryView centerYAnchor];
+  centerYAnchor8 = [(UILabel *)v3->_percentageLabel centerYAnchor];
+  v83 = [centerYAnchor7 constraintEqualToAnchor:centerYAnchor8];
+  [array addObject:v83];
 
-  v84 = [(PNPConnectButton *)v3->_tapToConnectButton lastBaselineAnchor];
-  v85 = [(UILabel *)v3->_deviceNameLabel lastBaselineAnchor];
-  v86 = [v84 constraintEqualToAnchor:v85 constant:18.0];
-  [v30 addObject:v86];
+  lastBaselineAnchor3 = [(PNPConnectButton *)v3->_tapToConnectButton lastBaselineAnchor];
+  lastBaselineAnchor4 = [(UILabel *)v3->_deviceNameLabel lastBaselineAnchor];
+  v86 = [lastBaselineAnchor3 constraintEqualToAnchor:lastBaselineAnchor4 constant:18.0];
+  [array addObject:v86];
 
-  v87 = [(PNPConnectButton *)v3->_tapToConnectButton centerXAnchor];
-  v88 = [(PNPChargingStatusView *)v3 centerXAnchor];
-  v89 = [v87 constraintEqualToAnchor:v88];
-  [v30 addObject:v89];
+  centerXAnchor3 = [(PNPConnectButton *)v3->_tapToConnectButton centerXAnchor];
+  centerXAnchor4 = [(PNPChargingStatusView *)v3 centerXAnchor];
+  v89 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
+  [array addObject:v89];
 
-  v90 = [(PNPConnectButton *)v3->_tapToConnectButton widthAnchor];
-  v91 = [v90 constraintEqualToConstant:180.0];
+  widthAnchor = [(PNPConnectButton *)v3->_tapToConnectButton widthAnchor];
+  v91 = [widthAnchor constraintEqualToConstant:180.0];
   tapToConnectButtonWidthConstraint = v3->_tapToConnectButtonWidthConstraint;
   v3->_tapToConnectButtonWidthConstraint = v91;
 
-  [v30 addObject:v3->_tapToConnectButtonWidthConstraint];
-  [MEMORY[0x277CCAAD0] activateConstraints:v30];
+  [array addObject:v3->_tapToConnectButtonWidthConstraint];
+  [MEMORY[0x277CCAAD0] activateConstraints:array];
   if (_UISolariumEnabled())
   {
     [(UIView *)v3 ppuiSetGlassBackground];

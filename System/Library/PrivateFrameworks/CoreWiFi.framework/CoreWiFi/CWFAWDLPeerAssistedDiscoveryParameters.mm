@@ -1,37 +1,37 @@
 @interface CWFAWDLPeerAssistedDiscoveryParameters
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToAWDLParameters:(id)a3;
-- (CWFAWDLPeerAssistedDiscoveryParameters)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToAWDLParameters:(id)parameters;
+- (CWFAWDLPeerAssistedDiscoveryParameters)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CWFAWDLPeerAssistedDiscoveryParameters
 
-- (BOOL)isEqualToAWDLParameters:(id)a3
+- (BOOL)isEqualToAWDLParameters:(id)parameters
 {
-  v6 = a3;
+  parametersCopy = parameters;
   localMasterChannel = self->_localMasterChannel;
-  if (localMasterChannel == [v6 localMasterChannel])
+  if (localMasterChannel == [parametersCopy localMasterChannel])
   {
     localPreferredChannel = self->_localPreferredChannel;
-    if (localPreferredChannel == [v6 localPreferredChannel])
+    if (localPreferredChannel == [parametersCopy localPreferredChannel])
     {
       localSecondaryPreferredChannel = self->_localSecondaryPreferredChannel;
-      if (localSecondaryPreferredChannel == [v6 localSecondaryPreferredChannel])
+      if (localSecondaryPreferredChannel == [parametersCopy localSecondaryPreferredChannel])
       {
         localAssistedDiscoveryMetric = self->_localAssistedDiscoveryMetric;
-        if (localAssistedDiscoveryMetric == [v6 localAssistedDiscoveryMetric])
+        if (localAssistedDiscoveryMetric == [parametersCopy localAssistedDiscoveryMetric])
         {
           peerMACAddress = self->_peerMACAddress;
-          v12 = [v6 peerMACAddress];
-          if (peerMACAddress == v12)
+          peerMACAddress = [parametersCopy peerMACAddress];
+          if (peerMACAddress == peerMACAddress)
           {
             goto LABEL_13;
           }
 
-          if (!self->_peerMACAddress || ([v6 peerMACAddress], (v13 = objc_claimAutoreleasedReturnValue()) == 0))
+          if (!self->_peerMACAddress || ([parametersCopy peerMACAddress], (v13 = objc_claimAutoreleasedReturnValue()) == 0))
           {
             v16 = 0;
 LABEL_23:
@@ -41,15 +41,15 @@ LABEL_23:
 
           v3 = v13;
           v14 = self->_peerMACAddress;
-          v4 = [v6 peerMACAddress];
-          if ([(NSString *)v14 isEqual:v4])
+          peerMACAddress2 = [parametersCopy peerMACAddress];
+          if ([(NSString *)v14 isEqual:peerMACAddress2])
           {
 LABEL_13:
             peerMasterChannel = self->_peerMasterChannel;
-            if (peerMasterChannel == [v6 peerMasterChannel] && (peerPreferredChannel = self->_peerPreferredChannel, peerPreferredChannel == objc_msgSend(v6, "peerPreferredChannel")) && (peerSecondaryPreferredChannel = self->_peerSecondaryPreferredChannel, peerSecondaryPreferredChannel == objc_msgSend(v6, "peerSecondaryPreferredChannel")) && (peerAssistedDiscoveryMetric = self->_peerAssistedDiscoveryMetric, peerAssistedDiscoveryMetric == objc_msgSend(v6, "peerAssistedDiscoveryMetric")) && (peerSupportedChannelFlags = self->_peerSupportedChannelFlags, peerSupportedChannelFlags == objc_msgSend(v6, "peerSupportedChannelFlags")) && (followMode = self->_followMode, followMode == objc_msgSend(v6, "followMode")))
+            if (peerMasterChannel == [parametersCopy peerMasterChannel] && (peerPreferredChannel = self->_peerPreferredChannel, peerPreferredChannel == objc_msgSend(parametersCopy, "peerPreferredChannel")) && (peerSecondaryPreferredChannel = self->_peerSecondaryPreferredChannel, peerSecondaryPreferredChannel == objc_msgSend(parametersCopy, "peerSecondaryPreferredChannel")) && (peerAssistedDiscoveryMetric = self->_peerAssistedDiscoveryMetric, peerAssistedDiscoveryMetric == objc_msgSend(parametersCopy, "peerAssistedDiscoveryMetric")) && (peerSupportedChannelFlags = self->_peerSupportedChannelFlags, peerSupportedChannelFlags == objc_msgSend(parametersCopy, "peerSupportedChannelFlags")) && (followMode = self->_followMode, followMode == objc_msgSend(parametersCopy, "followMode")))
             {
               followModePreferredBand = self->_followModePreferredBand;
-              v15 = followModePreferredBand == [v6 followModePreferredBand];
+              v15 = followModePreferredBand == [parametersCopy followModePreferredBand];
               v16 = v15;
             }
 
@@ -59,7 +59,7 @@ LABEL_13:
               v16 = 0;
             }
 
-            if (peerMACAddress == v12)
+            if (peerMACAddress == peerMACAddress)
             {
               goto LABEL_23;
             }
@@ -83,18 +83,18 @@ LABEL_11:
   return v16;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CWFAWDLPeerAssistedDiscoveryParameters *)self isEqualToAWDLParameters:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CWFAWDLPeerAssistedDiscoveryParameters *)self isEqualToAWDLParameters:v5];
   }
 
   return v6;
@@ -109,7 +109,7 @@ LABEL_11:
   return *&veor_s8(*v4.i8, *&vextq_s8(v4, v4, 8uLL)) ^ self->_followModePreferredBand ^ self->_peerSupportedChannelFlags ^ self->_followMode ^ v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[CWFAWDLPeerAssistedDiscoveryParameters allocWithZone:?]];
   [(CWFAWDLPeerAssistedDiscoveryParameters *)v4 setLocalMasterChannel:self->_localMasterChannel];
@@ -127,81 +127,81 @@ LABEL_11:
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E696AD98];
   localMasterChannel = self->_localMasterChannel;
-  v6 = a3;
+  coderCopy = coder;
   v7 = [v4 numberWithUnsignedInteger:localMasterChannel];
-  [v6 encodeObject:v7 forKey:@"_localMasterChannel"];
+  [coderCopy encodeObject:v7 forKey:@"_localMasterChannel"];
 
   v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_localPreferredChannel];
-  [v6 encodeObject:v8 forKey:@"_localPreferredChannel"];
+  [coderCopy encodeObject:v8 forKey:@"_localPreferredChannel"];
 
   v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_localSecondaryPreferredChannel];
-  [v6 encodeObject:v9 forKey:@"_localSecondaryPreferredChannel"];
+  [coderCopy encodeObject:v9 forKey:@"_localSecondaryPreferredChannel"];
 
   v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_localAssistedDiscoveryMetric];
-  [v6 encodeObject:v10 forKey:@"_localAssistedDiscoveryMetric"];
+  [coderCopy encodeObject:v10 forKey:@"_localAssistedDiscoveryMetric"];
 
-  [v6 encodeObject:self->_peerMACAddress forKey:@"_peerMACAddress"];
+  [coderCopy encodeObject:self->_peerMACAddress forKey:@"_peerMACAddress"];
   v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_peerMasterChannel];
-  [v6 encodeObject:v11 forKey:@"_peerMasterChannel"];
+  [coderCopy encodeObject:v11 forKey:@"_peerMasterChannel"];
 
   v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_peerPreferredChannel];
-  [v6 encodeObject:v12 forKey:@"_peerPreferredChannel"];
+  [coderCopy encodeObject:v12 forKey:@"_peerPreferredChannel"];
 
   v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_peerSecondaryPreferredChannel];
-  [v6 encodeObject:v13 forKey:@"_peerSecondaryPreferredChannel"];
+  [coderCopy encodeObject:v13 forKey:@"_peerSecondaryPreferredChannel"];
 
   v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_peerAssistedDiscoveryMetric];
-  [v6 encodeObject:v14 forKey:@"_peerAssistedDiscoveryMetric"];
+  [coderCopy encodeObject:v14 forKey:@"_peerAssistedDiscoveryMetric"];
 
-  [v6 encodeInteger:self->_peerSupportedChannelFlags forKey:@"_peerSupportedChannelFlags"];
-  [v6 encodeBool:self->_followMode forKey:@"_followMode"];
+  [coderCopy encodeInteger:self->_peerSupportedChannelFlags forKey:@"_peerSupportedChannelFlags"];
+  [coderCopy encodeBool:self->_followMode forKey:@"_followMode"];
   v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_followModePreferredBand];
-  [v6 encodeObject:v15 forKey:@"_followModePreferredBand"];
+  [coderCopy encodeObject:v15 forKey:@"_followModePreferredBand"];
 }
 
-- (CWFAWDLPeerAssistedDiscoveryParameters)initWithCoder:(id)a3
+- (CWFAWDLPeerAssistedDiscoveryParameters)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v18.receiver = self;
   v18.super_class = CWFAWDLPeerAssistedDiscoveryParameters;
   v5 = [(CWFAWDLPeerAssistedDiscoveryParameters *)&v18 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_localMasterChannel"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_localMasterChannel"];
     v5->_localMasterChannel = [v6 unsignedIntegerValue];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_localPreferredChannel"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_localPreferredChannel"];
     v5->_localPreferredChannel = [v7 unsignedIntegerValue];
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_localSecondaryPreferredChannel"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_localSecondaryPreferredChannel"];
     v5->_localSecondaryPreferredChannel = [v8 unsignedIntegerValue];
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_localAssistedDiscoveryMetric"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_localAssistedDiscoveryMetric"];
     v5->_localAssistedDiscoveryMetric = [v9 unsignedIntegerValue];
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_peerMACAddress"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_peerMACAddress"];
     peerMACAddress = v5->_peerMACAddress;
     v5->_peerMACAddress = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_peerMasterChannel"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_peerMasterChannel"];
     v5->_peerMasterChannel = [v12 unsignedIntegerValue];
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_peerPreferredChannel"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_peerPreferredChannel"];
     v5->_peerPreferredChannel = [v13 unsignedIntegerValue];
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_peerSecondaryPreferredChannel"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_peerSecondaryPreferredChannel"];
     v5->_peerSecondaryPreferredChannel = [v14 unsignedIntegerValue];
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_peerAssistedDiscoveryMetric"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_peerAssistedDiscoveryMetric"];
     v5->_peerAssistedDiscoveryMetric = [v15 unsignedIntegerValue];
 
-    v5->_peerSupportedChannelFlags = [v4 decodeIntegerForKey:@"_peerSupportedChannelFlags"];
-    v5->_followMode = [v4 decodeBoolForKey:@"_followMode"];
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_followModePreferredBand"];
+    v5->_peerSupportedChannelFlags = [coderCopy decodeIntegerForKey:@"_peerSupportedChannelFlags"];
+    v5->_followMode = [coderCopy decodeBoolForKey:@"_followMode"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_followModePreferredBand"];
     v5->_followModePreferredBand = [v16 unsignedIntegerValue];
   }
 

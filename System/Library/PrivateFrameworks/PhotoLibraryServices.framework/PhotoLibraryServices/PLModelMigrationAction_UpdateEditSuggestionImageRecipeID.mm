@@ -1,16 +1,16 @@
 @interface PLModelMigrationAction_UpdateEditSuggestionImageRecipeID
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4;
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error;
 @end
 
 @implementation PLModelMigrationAction_UpdateEditSuggestionImageRecipeID
 
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  contextCopy = context;
   v7 = +[PLInternalResource fetchRequest];
-  v8 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %d", @"recipeID", 66136];
-  [v7 setPredicate:v8];
+  66136 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %d", @"recipeID", 66136];
+  [v7 setPredicate:66136];
 
   v19 = 0;
   v20 = &v19;
@@ -22,7 +22,7 @@
   v17[1] = 3221225472;
   v17[2] = __104__PLModelMigrationAction_UpdateEditSuggestionImageRecipeID_performActionWithManagedObjectContext_error___block_invoke;
   v17[3] = &unk_1E756C8A0;
-  v9 = [PLModelMigrationActionUtility processManagedObjectsWithAction:self managedObjectContext:v6 fetchRequest:v7 pendingParentUnitCount:0 error:&v18 processingBlock:v17];
+  v9 = [PLModelMigrationActionUtility processManagedObjectsWithAction:self managedObjectContext:contextCopy fetchRequest:v7 pendingParentUnitCount:0 error:&v18 processingBlock:v17];
   v10 = v18;
   v11 = PLMigrationGetLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -35,10 +35,10 @@
 
   v13 = v10;
   v14 = v13;
-  if (v9 != 1 && a4)
+  if (v9 != 1 && error)
   {
     v15 = v13;
-    *a4 = v14;
+    *error = v14;
   }
 
   [(PLModelMigrationActionCore *)self finalizeProgress];

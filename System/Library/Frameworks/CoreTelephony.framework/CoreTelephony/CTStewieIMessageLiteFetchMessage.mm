@@ -1,20 +1,20 @@
 @interface CTStewieIMessageLiteFetchMessage
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToOther:(id)a3;
-- (CTStewieIMessageLiteFetchMessage)initWithCoder:(id)a3;
-- (CTStewieIMessageLiteFetchMessage)initWithShortHandles:(id)a3 error:(id *)p_isa;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToOther:(id)other;
+- (CTStewieIMessageLiteFetchMessage)initWithCoder:(id)coder;
+- (CTStewieIMessageLiteFetchMessage)initWithShortHandles:(id)handles error:(id *)p_isa;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CTStewieIMessageLiteFetchMessage
 
-- (CTStewieIMessageLiteFetchMessage)initWithShortHandles:(id)a3 error:(id *)p_isa
+- (CTStewieIMessageLiteFetchMessage)initWithShortHandles:(id)handles error:(id *)p_isa
 {
   v35[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = v7;
-  if (v7 && [v7 count])
+  handlesCopy = handles;
+  v8 = handlesCopy;
+  if (handlesCopy && [handlesCopy count])
   {
     if ([v8 count] < 0x18)
     {
@@ -68,7 +68,7 @@
       p_isa = &v19->super.isa;
       if (v19)
       {
-        objc_storeStrong(&v19->_shortHandles, a3);
+        objc_storeStrong(&v19->_shortHandles, handles);
         self = p_isa;
         p_isa = &self->super.isa;
       }
@@ -107,30 +107,30 @@ LABEL_22:
   return p_isa;
 }
 
-- (BOOL)isEqualToOther:(id)a3
+- (BOOL)isEqualToOther:(id)other
 {
-  v4 = a3;
-  v5 = [(CTStewieIMessageLiteFetchMessage *)self shortHandles];
-  v6 = [v4 shortHandles];
-  if (v5 == v6)
+  otherCopy = other;
+  shortHandles = [(CTStewieIMessageLiteFetchMessage *)self shortHandles];
+  shortHandles2 = [otherCopy shortHandles];
+  if (shortHandles == shortHandles2)
   {
     v9 = 1;
   }
 
   else
   {
-    v7 = [(CTStewieIMessageLiteFetchMessage *)self shortHandles];
-    v8 = [v4 shortHandles];
-    v9 = [v7 isEqual:v8];
+    shortHandles3 = [(CTStewieIMessageLiteFetchMessage *)self shortHandles];
+    shortHandles4 = [otherCopy shortHandles];
+    v9 = [shortHandles3 isEqual:shortHandles4];
   }
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -138,36 +138,36 @@ LABEL_22:
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(CTStewieIMessageLiteFetchMessage *)self isEqualToOther:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(CTStewieIMessageLiteFetchMessage *)self isEqualToOther:equalCopy];
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(CTStewieIMessageLiteFetchMessage *)self shortHandles];
-  v7 = [v6 copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  shortHandles = [(CTStewieIMessageLiteFetchMessage *)self shortHandles];
+  v7 = [shortHandles copyWithZone:zone];
   [v5 setShortHandles:v7];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  v4 = [(CTStewieIMessageLiteFetchMessage *)self shortHandles];
-  [v5 encodeObject:v4 forKey:@"shortHandles"];
+  coderCopy = coder;
+  shortHandles = [(CTStewieIMessageLiteFetchMessage *)self shortHandles];
+  [coderCopy encodeObject:shortHandles forKey:@"shortHandles"];
 }
 
-- (CTStewieIMessageLiteFetchMessage)initWithCoder:(id)a3
+- (CTStewieIMessageLiteFetchMessage)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = MEMORY[0x1E695DFD8];
   v6 = objc_opt_class();
   v7 = [v5 setWithObjects:{v6, objc_opt_class(), 0}];
-  v8 = [v4 decodeObjectOfClasses:v7 forKey:@"shortHandles"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"shortHandles"];
   v9 = [(CTStewieIMessageLiteFetchMessage *)self initWithShortHandles:v8 error:0];
 
   return v9;

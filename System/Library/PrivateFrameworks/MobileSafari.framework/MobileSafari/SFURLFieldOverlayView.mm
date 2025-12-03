@@ -1,113 +1,113 @@
 @interface SFURLFieldOverlayView
-- (SFURLFieldOverlayView)initWithFrame:(CGRect)a3 configuration:(id)a4;
+- (SFURLFieldOverlayView)initWithFrame:(CGRect)frame configuration:(id)configuration;
 - (double)_buttonCornerRadius;
-- (id)_configurationForButtonItem:(id)a3 inOverlayConfiguration:(id)a4;
-- (void)_animateWithDelay:(double)a3 isPresenting:(BOOL)a4 group:(id)a5 animations:(id)a6;
+- (id)_configurationForButtonItem:(id)item inOverlayConfiguration:(id)configuration;
+- (void)_animateWithDelay:(double)delay isPresenting:(BOOL)presenting group:(id)group animations:(id)animations;
 - (void)_layOutClippingView;
-- (void)_setContinuousCornerRadius:(double)a3;
-- (void)_setIsShowing:(BOOL)a3 completion:(id)a4;
+- (void)_setContinuousCornerRadius:(double)radius;
+- (void)_setIsShowing:(BOOL)showing completion:(id)completion;
 - (void)_updateText;
 - (void)dismissAndRemove;
 - (void)layoutSubviews;
 - (void)present;
-- (void)setConfiguration:(id)a3;
+- (void)setConfiguration:(id)configuration;
 @end
 
 @implementation SFURLFieldOverlayView
 
-- (SFURLFieldOverlayView)initWithFrame:(CGRect)a3 configuration:(id)a4
+- (SFURLFieldOverlayView)initWithFrame:(CGRect)frame configuration:(id)configuration
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v53[1] = *MEMORY[0x1E69E9840];
-  v9 = a4;
+  configurationCopy = configuration;
   v52.receiver = self;
   v52.super_class = SFURLFieldOverlayView;
-  v10 = [(SFURLFieldOverlayView *)&v52 initWithFrame:x, y, width, height];
-  if (v10)
+  height = [(SFURLFieldOverlayView *)&v52 initWithFrame:x, y, width, height];
+  if (height)
   {
     v11 = *MEMORY[0x1E69DDD80];
     v12 = objc_alloc(MEMORY[0x1E69DD250]);
-    [(SFURLFieldOverlayView *)v10 bounds];
+    [(SFURLFieldOverlayView *)height bounds];
     v13 = [v12 initWithFrame:?];
-    backgroundView = v10->_backgroundView;
-    v10->_backgroundView = v13;
+    backgroundView = height->_backgroundView;
+    height->_backgroundView = v13;
 
-    [(UIView *)v10->_backgroundView setUserInteractionEnabled:0];
-    buttons = v10->_buttons;
-    v10->_buttons = MEMORY[0x1E695E0F0];
+    [(UIView *)height->_backgroundView setUserInteractionEnabled:0];
+    buttons = height->_buttons;
+    height->_buttons = MEMORY[0x1E695E0F0];
 
     v16 = objc_alloc(MEMORY[0x1E69DD250]);
-    [(SFURLFieldOverlayView *)v10 bounds];
+    [(SFURLFieldOverlayView *)height bounds];
     v17 = [v16 initWithFrame:?];
-    clippingView = v10->_clippingView;
-    v10->_clippingView = v17;
+    clippingView = height->_clippingView;
+    height->_clippingView = v17;
 
     v19 = objc_alloc(MEMORY[0x1E69DD250]);
-    [(SFURLFieldOverlayView *)v10 bounds];
+    [(SFURLFieldOverlayView *)height bounds];
     v20 = [v19 initWithFrame:?];
-    eraserView = v10->_eraserView;
-    v10->_eraserView = v20;
+    eraserView = height->_eraserView;
+    height->_eraserView = v20;
 
-    v22 = [MEMORY[0x1E69DC888] blackColor];
-    [(UIView *)v10->_eraserView setBackgroundColor:v22];
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
+    [(UIView *)height->_eraserView setBackgroundColor:blackColor];
 
     v23 = *MEMORY[0x1E69798E8];
-    v24 = [(UIView *)v10->_eraserView layer];
-    [v24 setCompositingFilter:v23];
+    layer = [(UIView *)height->_eraserView layer];
+    [layer setCompositingFilter:v23];
 
     v25 = objc_alloc_init(MEMORY[0x1E69DCAE0]);
-    iconView = v10->_iconView;
-    v10->_iconView = v25;
+    iconView = height->_iconView;
+    height->_iconView = v25;
 
-    [(UIImageView *)v10->_iconView setContentMode:4];
-    [(UIImageView *)v10->_iconView setMaximumContentSizeCategory:*MEMORY[0x1E69DDC70]];
+    [(UIImageView *)height->_iconView setContentMode:4];
+    [(UIImageView *)height->_iconView setMaximumContentSizeCategory:*MEMORY[0x1E69DDC70]];
     v27 = [MEMORY[0x1E69DCAD8] configurationWithTextStyle:v11];
-    [(UIImageView *)v10->_iconView setPreferredSymbolConfiguration:v27];
+    [(UIImageView *)height->_iconView setPreferredSymbolConfiguration:v27];
 
     v28 = objc_alloc_init(MEMORY[0x1E69DCC10]);
-    textLabel = v10->_textLabel;
-    v10->_textLabel = v28;
+    textLabel = height->_textLabel;
+    height->_textLabel = v28;
 
-    [(UILabel *)v10->_textLabel setAdjustsFontForContentSizeCategory:1];
+    [(UILabel *)height->_textLabel setAdjustsFontForContentSizeCategory:1];
     v30 = [MEMORY[0x1E69DB878] _preferredFontForTextStyle:v11 weight:*MEMORY[0x1E69DB970]];
-    [(UILabel *)v10->_textLabel setFont:v30];
+    [(UILabel *)height->_textLabel setFont:v30];
 
-    v31 = [(UILabel *)v10->_textLabel font];
-    [v31 pointSize];
-    [(UILabel *)v10->_textLabel setMinimumScaleFactor:11.0 / v32];
+    font = [(UILabel *)height->_textLabel font];
+    [font pointSize];
+    [(UILabel *)height->_textLabel setMinimumScaleFactor:11.0 / v32];
 
     LODWORD(v33) = 1132068864;
-    [(UILabel *)v10->_textLabel setContentCompressionResistancePriority:0 forAxis:v33];
+    [(UILabel *)height->_textLabel setContentCompressionResistancePriority:0 forAxis:v33];
     LODWORD(v34) = 1132003328;
-    [(UILabel *)v10->_textLabel setContentHuggingPriority:0 forAxis:v34];
+    [(UILabel *)height->_textLabel setContentHuggingPriority:0 forAxis:v34];
     v35 = objc_alloc(MEMORY[0x1E69DCF90]);
-    [(SFURLFieldOverlayView *)v10 bounds];
+    [(SFURLFieldOverlayView *)height bounds];
     v36 = [v35 initWithFrame:?];
-    stackView = v10->_stackView;
-    v10->_stackView = v36;
+    stackView = height->_stackView;
+    height->_stackView = v36;
 
-    [(UIStackView *)v10->_stackView setSpacing:5.0];
-    [(SFURLFieldOverlayView *)v10 addSubview:v10->_clippingView];
-    [(UIView *)v10->_clippingView addSubview:v10->_backgroundView];
-    [(UIView *)v10->_clippingView addSubview:v10->_stackView];
-    [(UIStackView *)v10->_stackView addArrangedSubview:v10->_iconView];
-    [(UIStackView *)v10->_stackView addArrangedSubview:v10->_textLabel];
-    [(UIStackView *)v10->_stackView setCustomSpacing:v10->_textLabel afterView:8.0];
+    [(UIStackView *)height->_stackView setSpacing:5.0];
+    [(SFURLFieldOverlayView *)height addSubview:height->_clippingView];
+    [(UIView *)height->_clippingView addSubview:height->_backgroundView];
+    [(UIView *)height->_clippingView addSubview:height->_stackView];
+    [(UIStackView *)height->_stackView addArrangedSubview:height->_iconView];
+    [(UIStackView *)height->_stackView addArrangedSubview:height->_textLabel];
+    [(UIStackView *)height->_stackView setCustomSpacing:height->_textLabel afterView:8.0];
     v38 = MEMORY[0x1E69DD250];
     v50[0] = MEMORY[0x1E69E9820];
     v50[1] = 3221225472;
     v50[2] = __53__SFURLFieldOverlayView_initWithFrame_configuration___block_invoke;
     v50[3] = &unk_1E721B360;
-    v39 = v10;
+    v39 = height;
     v51 = v39;
     [v38 performWithoutAnimation:v50];
-    [(SFURLFieldOverlayView *)v39 setConfiguration:v9];
+    [(SFURLFieldOverlayView *)v39 setConfiguration:configurationCopy];
     v40 = MEMORY[0x1E696ACD8];
-    v41 = [(UIImageView *)v10->_iconView widthAnchor];
-    v42 = [v41 constraintGreaterThanOrEqualToConstant:26.0];
+    widthAnchor = [(UIImageView *)height->_iconView widthAnchor];
+    v42 = [widthAnchor constraintGreaterThanOrEqualToConstant:26.0];
     v53[0] = v42;
     v43 = [MEMORY[0x1E695DEC8] arrayWithObjects:v53 count:1];
     [v40 activateConstraints:v43];
@@ -123,7 +123,7 @@
     v46 = v45;
   }
 
-  return v10;
+  return height;
 }
 
 uint64_t __53__SFURLFieldOverlayView_initWithFrame_configuration___block_invoke(uint64_t a1)
@@ -184,18 +184,18 @@ uint64_t __53__SFURLFieldOverlayView_initWithFrame_configuration___block_invoke(
   self->_lastLayoutWidth = CGRectGetWidth(v7);
 }
 
-- (void)_setContinuousCornerRadius:(double)a3
+- (void)_setContinuousCornerRadius:(double)radius
 {
   v22 = *MEMORY[0x1E69E9840];
   [(SFURLFieldOverlayView *)self _continuousCornerRadius];
-  if (v5 != a3)
+  if (v5 != radius)
   {
     v20.receiver = self;
     v20.super_class = SFURLFieldOverlayView;
-    [(SFURLFieldOverlayView *)&v20 _setContinuousCornerRadius:a3];
-    [(UIView *)self->_clippingView _setContinuousCornerRadius:a3];
-    [(UIView *)self->_backgroundView _setContinuousCornerRadius:a3];
-    [(UIView *)self->_eraserView _setContinuousCornerRadius:a3];
+    [(SFURLFieldOverlayView *)&v20 _setContinuousCornerRadius:radius];
+    [(UIView *)self->_clippingView _setContinuousCornerRadius:radius];
+    [(UIView *)self->_backgroundView _setContinuousCornerRadius:radius];
+    [(UIView *)self->_eraserView _setContinuousCornerRadius:radius];
     [(SFURLFieldOverlayView *)self _buttonCornerRadius];
     v7 = v6;
     v16 = 0u;
@@ -218,11 +218,11 @@ uint64_t __53__SFURLFieldOverlayView_initWithFrame_configuration___block_invoke(
           }
 
           v13 = *(*(&v16 + 1) + 8 * i);
-          v14 = [v13 configuration];
-          v15 = [v14 background];
-          [v15 setCornerRadius:v7];
+          configuration = [v13 configuration];
+          background = [configuration background];
+          [background setCornerRadius:v7];
 
-          [v13 setConfiguration:v14];
+          [v13 setConfiguration:configuration];
         }
 
         v10 = [(NSArray *)v8 countByEnumeratingWithState:&v16 objects:v21 count:16];
@@ -233,42 +233,42 @@ uint64_t __53__SFURLFieldOverlayView_initWithFrame_configuration___block_invoke(
   }
 }
 
-- (id)_configurationForButtonItem:(id)a3 inOverlayConfiguration:(id)a4
+- (id)_configurationForButtonItem:(id)item inOverlayConfiguration:(id)configuration
 {
   v31[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E69DC740] borderedButtonConfiguration];
+  itemCopy = item;
+  configurationCopy = configuration;
+  borderedButtonConfiguration = [MEMORY[0x1E69DC740] borderedButtonConfiguration];
   [(SFURLFieldOverlayView *)self _buttonCornerRadius];
   v10 = v9;
-  v11 = [v8 background];
-  [v11 setCornerRadius:v10];
+  background = [borderedButtonConfiguration background];
+  [background setCornerRadius:v10];
 
-  [v8 setCornerStyle:-1];
-  [v8 setImagePadding:4.0];
-  v12 = [v6 theme];
-  if ((v12 - 1) >= 2)
+  [borderedButtonConfiguration setCornerStyle:-1];
+  [borderedButtonConfiguration setImagePadding:4.0];
+  theme = [itemCopy theme];
+  if ((theme - 1) >= 2)
   {
     v14 = 0.0;
-    if (v12)
+    if (theme)
     {
       goto LABEL_15;
     }
 
-    v15 = [MEMORY[0x1E69DC888] tertiaryLabelColor];
-    v16 = [v15 colorWithAlphaComponent:0.1];
-    [v8 setBaseBackgroundColor:v16];
+    tertiaryLabelColor = [MEMORY[0x1E69DC888] tertiaryLabelColor];
+    v16 = [tertiaryLabelColor colorWithAlphaComponent:0.1];
+    [borderedButtonConfiguration setBaseBackgroundColor:v16];
 
-    v17 = [v7 primaryTextColor];
-    if (v17)
+    primaryTextColor = [configurationCopy primaryTextColor];
+    if (primaryTextColor)
     {
-      [v8 setBaseForegroundColor:v17];
+      [borderedButtonConfiguration setBaseForegroundColor:primaryTextColor];
     }
 
     else
     {
-      v21 = [MEMORY[0x1E69DC888] labelColor];
-      [v8 setBaseForegroundColor:v21];
+      labelColor = [MEMORY[0x1E69DC888] labelColor];
+      [borderedButtonConfiguration setBaseForegroundColor:labelColor];
     }
 
     v20 = MEMORY[0x1E69DB970];
@@ -276,28 +276,28 @@ uint64_t __53__SFURLFieldOverlayView_initWithFrame_configuration___block_invoke(
 
   else
   {
-    v13 = [v7 prominentButtonBackgroundColor];
-    if (v13)
+    prominentButtonBackgroundColor = [configurationCopy prominentButtonBackgroundColor];
+    if (prominentButtonBackgroundColor)
     {
-      [v8 setBaseBackgroundColor:v13];
+      [borderedButtonConfiguration setBaseBackgroundColor:prominentButtonBackgroundColor];
     }
 
     else
     {
-      v18 = [MEMORY[0x1E69DC888] labelColor];
-      [v8 setBaseBackgroundColor:v18];
+      labelColor2 = [MEMORY[0x1E69DC888] labelColor];
+      [borderedButtonConfiguration setBaseBackgroundColor:labelColor2];
     }
 
-    v17 = [v7 prominentButtonTextColor];
-    if (v17)
+    primaryTextColor = [configurationCopy prominentButtonTextColor];
+    if (primaryTextColor)
     {
-      [v8 setBaseForegroundColor:v17];
+      [borderedButtonConfiguration setBaseForegroundColor:primaryTextColor];
     }
 
     else
     {
-      v19 = [v7 backgroundColor];
-      [v8 setBaseForegroundColor:v19];
+      backgroundColor = [configurationCopy backgroundColor];
+      [borderedButtonConfiguration setBaseForegroundColor:backgroundColor];
     }
 
     v20 = MEMORY[0x1E69DB980];
@@ -306,70 +306,70 @@ uint64_t __53__SFURLFieldOverlayView_initWithFrame_configuration___block_invoke(
   v14 = *v20;
 LABEL_15:
   v22 = objc_alloc(MEMORY[0x1E696AAB0]);
-  v23 = [v6 title];
+  title = [itemCopy title];
   v30 = *MEMORY[0x1E69DB648];
   v24 = [MEMORY[0x1E69DB878] _preferredFontForTextStyle:*MEMORY[0x1E69DDD80] weight:v14];
   v31[0] = v24;
   v25 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v31 forKeys:&v30 count:1];
-  v26 = [v22 initWithString:v23 attributes:v25];
-  [v8 setAttributedTitle:v26];
+  v26 = [v22 initWithString:title attributes:v25];
+  [borderedButtonConfiguration setAttributedTitle:v26];
 
   if ([MEMORY[0x1E69C8880] isSolariumEnabled])
   {
-    v27 = [MEMORY[0x1E69DC888] clearColor];
-    [v8 setBaseBackgroundColor:v27];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [borderedButtonConfiguration setBaseBackgroundColor:clearColor];
 
-    v28 = [v6 icon];
-    [v8 setImage:v28];
+    icon = [itemCopy icon];
+    [borderedButtonConfiguration setImage:icon];
 
-    [v8 setAttributedTitle:0];
+    [borderedButtonConfiguration setAttributedTitle:0];
   }
 
-  return v8;
+  return borderedButtonConfiguration;
 }
 
-- (void)setConfiguration:(id)a3
+- (void)setConfiguration:(id)configuration
 {
   v33 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  objc_storeStrong(&self->_configuration, a3);
-  v6 = [v5 backgroundColor];
-  [(UIView *)self->_backgroundView setBackgroundColor:v6];
+  configurationCopy = configuration;
+  objc_storeStrong(&self->_configuration, configuration);
+  backgroundColor = [configurationCopy backgroundColor];
+  [(UIView *)self->_backgroundView setBackgroundColor:backgroundColor];
 
-  v7 = [v5 icon];
-  [(UIImageView *)self->_iconView setImage:v7];
+  icon = [configurationCopy icon];
+  [(UIImageView *)self->_iconView setImage:icon];
 
-  v8 = [v5 icon];
-  [(UIImageView *)self->_iconView setHidden:v8 == 0];
+  icon2 = [configurationCopy icon];
+  [(UIImageView *)self->_iconView setHidden:icon2 == 0];
 
-  v9 = [v5 primaryTextColor];
-  if (v9)
+  primaryTextColor = [configurationCopy primaryTextColor];
+  if (primaryTextColor)
   {
-    [(UIImageView *)self->_iconView setTintColor:v9];
+    [(UIImageView *)self->_iconView setTintColor:primaryTextColor];
   }
 
   else
   {
-    v10 = [MEMORY[0x1E69DC888] labelColor];
-    [(UIImageView *)self->_iconView setTintColor:v10];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    [(UIImageView *)self->_iconView setTintColor:labelColor];
   }
 
-  -[SFURLFieldOverlayView setOverrideUserInterfaceStyle:](self, "setOverrideUserInterfaceStyle:", [v5 userInterfaceStyle]);
-  v11 = [v5 primaryTextColor];
-  if (v11)
+  -[SFURLFieldOverlayView setOverrideUserInterfaceStyle:](self, "setOverrideUserInterfaceStyle:", [configurationCopy userInterfaceStyle]);
+  primaryTextColor2 = [configurationCopy primaryTextColor];
+  if (primaryTextColor2)
   {
     p_textLabel = &self->_textLabel;
-    [(UILabel *)self->_textLabel setTextColor:v11];
+    [(UILabel *)self->_textLabel setTextColor:primaryTextColor2];
   }
 
   else
   {
-    v13 = [MEMORY[0x1E69DC888] labelColor];
+    labelColor2 = [MEMORY[0x1E69DC888] labelColor];
     p_textLabel = &self->_textLabel;
-    [(UILabel *)self->_textLabel setTextColor:v13];
+    [(UILabel *)self->_textLabel setTextColor:labelColor2];
   }
 
-  -[UILabel setNumberOfLines:](*p_textLabel, "setNumberOfLines:", [v5 numberOfLines]);
+  -[UILabel setNumberOfLines:](*p_textLabel, "setNumberOfLines:", [configurationCopy numberOfLines]);
   [(SFURLFieldOverlayView *)self _updateText];
   v30 = 0u;
   v31 = 0u;
@@ -404,16 +404,16 @@ LABEL_15:
   v26[3] = __Block_byref_object_copy__11;
   v26[4] = __Block_byref_object_dispose__11;
   v27 = 0;
-  v18 = [v5 buttonItems];
+  buttonItems = [configurationCopy buttonItems];
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __42__SFURLFieldOverlayView_setConfiguration___block_invoke;
   v23[3] = &unk_1E721FEC0;
   v23[4] = self;
-  v19 = v5;
+  v19 = configurationCopy;
   v24 = v19;
   v25 = v26;
-  v20 = [v18 safari_mapObjectsUsingBlock:v23];
+  v20 = [buttonItems safari_mapObjectsUsingBlock:v23];
   buttons = self->_buttons;
   self->_buttons = v20;
 
@@ -464,8 +464,8 @@ id __42__SFURLFieldOverlayView_setConfiguration___block_invoke(void *a1, void *a
 
 - (void)_updateText
 {
-  v3 = [(SFURLFieldOverlayConfiguration *)self->_configuration text];
-  [(UILabel *)self->_textLabel setText:v3];
+  text = [(SFURLFieldOverlayConfiguration *)self->_configuration text];
+  [(UILabel *)self->_textLabel setText:text];
 
   [(UILabel *)self->_textLabel setAdjustsFontSizeToFitWidth:[(SFURLFieldOverlayConfiguration *)self->_configuration shouldTextShrinkToFit]];
   if ([(SFURLFieldOverlayConfiguration *)self->_configuration placeFirstButtonInLeadingEdge])
@@ -483,27 +483,27 @@ id __42__SFURLFieldOverlayView_setConfiguration___block_invoke(void *a1, void *a
   [(UILabel *)textLabel setTextAlignment:v4];
 }
 
-- (void)_animateWithDelay:(double)a3 isPresenting:(BOOL)a4 group:(id)a5 animations:(id)a6
+- (void)_animateWithDelay:(double)delay isPresenting:(BOOL)presenting group:(id)group animations:(id)animations
 {
-  v7 = a4;
-  v10 = a5;
+  presentingCopy = presenting;
+  groupCopy = group;
   buttons = self->_buttons;
-  v12 = a6;
+  animationsCopy = animations;
   v13 = [(NSArray *)buttons count];
-  if (!v7)
+  if (!presentingCopy)
   {
-    a3 = (v13 - 1) * 0.1 + 0.25 - a3;
+    delay = (v13 - 1) * 0.1 + 0.25 - delay;
   }
 
-  dispatch_group_enter(v10);
+  dispatch_group_enter(groupCopy);
   v14 = MEMORY[0x1E69DD250];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __73__SFURLFieldOverlayView__animateWithDelay_isPresenting_group_animations___block_invoke;
   v16[3] = &unk_1E721B510;
-  v17 = v10;
-  v15 = v10;
-  [v14 sf_animate:1 usingDefaultMotionWithDelay:2 options:v12 animations:v16 completion:a3];
+  v17 = groupCopy;
+  v15 = groupCopy;
+  [v14 sf_animate:1 usingDefaultMotionWithDelay:2 options:animationsCopy animations:v16 completion:delay];
 }
 
 - (void)dismissAndRemove
@@ -542,11 +542,11 @@ void __41__SFURLFieldOverlayView_dismissAndRemove__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_setIsShowing:(BOOL)a3 completion:(id)a4
+- (void)_setIsShowing:(BOOL)showing completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
-  self->_isShowing = v4;
+  showingCopy = showing;
+  completionCopy = completion;
+  self->_isShowing = showingCopy;
   v7 = dispatch_group_create();
   dispatch_group_enter(v7);
   v8 = MEMORY[0x1E69DD250];
@@ -555,14 +555,14 @@ void __41__SFURLFieldOverlayView_dismissAndRemove__block_invoke(uint64_t a1)
   v32[2] = __50__SFURLFieldOverlayView__setIsShowing_completion___block_invoke;
   v32[3] = &unk_1E721BFA8;
   v32[4] = self;
-  v33 = v4;
+  v33 = showingCopy;
   v30[0] = MEMORY[0x1E69E9820];
   v30[1] = 3221225472;
   v30[2] = __50__SFURLFieldOverlayView__setIsShowing_completion___block_invoke_2;
   v30[3] = &unk_1E721B510;
   v9 = v7;
   v10 = v9;
-  if (v4)
+  if (showingCopy)
   {
     v11 = 0.0;
   }
@@ -573,7 +573,7 @@ void __41__SFURLFieldOverlayView_dismissAndRemove__block_invoke(uint64_t a1)
   }
 
   v31 = v9;
-  if (v4)
+  if (showingCopy)
   {
     v12 = 0.8;
   }
@@ -583,7 +583,7 @@ void __41__SFURLFieldOverlayView_dismissAndRemove__block_invoke(uint64_t a1)
     v12 = 0.4;
   }
 
-  if (v4)
+  if (showingCopy)
   {
     v13 = 0.08;
   }
@@ -601,7 +601,7 @@ void __41__SFURLFieldOverlayView_dismissAndRemove__block_invoke(uint64_t a1)
   v28[2] = __50__SFURLFieldOverlayView__setIsShowing_completion___block_invoke_3;
   v28[3] = &unk_1E721BFA8;
   v28[4] = self;
-  v29 = v4;
+  v29 = showingCopy;
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __50__SFURLFieldOverlayView__setIsShowing_completion___block_invoke_4;
@@ -614,14 +614,14 @@ void __41__SFURLFieldOverlayView_dismissAndRemove__block_invoke(uint64_t a1)
   v24[2] = __50__SFURLFieldOverlayView__setIsShowing_completion___block_invoke_5;
   v24[3] = &unk_1E721BFA8;
   v24[4] = self;
-  v25 = v4;
-  [(SFURLFieldOverlayView *)self _animateWithDelay:v4 isPresenting:v15 group:v24 animations:0.0];
+  v25 = showingCopy;
+  [(SFURLFieldOverlayView *)self _animateWithDelay:showingCopy isPresenting:v15 group:v24 animations:0.0];
   buttons = self->_buttons;
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __50__SFURLFieldOverlayView__setIsShowing_completion___block_invoke_6;
   v21[3] = &unk_1E721FEE8;
-  v23 = v4;
+  v23 = showingCopy;
   v21[4] = self;
   v22 = v15;
   v17 = v15;
@@ -633,8 +633,8 @@ void __41__SFURLFieldOverlayView_dismissAndRemove__block_invoke(uint64_t a1)
   block[2] = __50__SFURLFieldOverlayView__setIsShowing_completion___block_invoke_8;
   block[3] = &unk_1E721BA48;
   block[4] = self;
-  v20 = v6;
-  v18 = v6;
+  v20 = completionCopy;
+  v18 = completionCopy;
   dispatch_group_notify(v17, MEMORY[0x1E69E96A0], block);
 }
 

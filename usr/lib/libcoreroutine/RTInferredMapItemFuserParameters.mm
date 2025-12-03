@@ -1,11 +1,11 @@
 @interface RTInferredMapItemFuserParameters
-- (RTInferredMapItemFuserParameters)initWithAoiConsiderThreshold:(double)a3 aoiUseThreshold:(double)a4 confidenceEqualityEpsilon:(double)a5 distanceThreshold:(double)a6 placeholderMultiplier:(double)a7;
-- (RTInferredMapItemFuserParameters)initWithDefaultsManager:(id)a3;
+- (RTInferredMapItemFuserParameters)initWithAoiConsiderThreshold:(double)threshold aoiUseThreshold:(double)useThreshold confidenceEqualityEpsilon:(double)epsilon distanceThreshold:(double)distanceThreshold placeholderMultiplier:(double)multiplier;
+- (RTInferredMapItemFuserParameters)initWithDefaultsManager:(id)manager;
 @end
 
 @implementation RTInferredMapItemFuserParameters
 
-- (RTInferredMapItemFuserParameters)initWithAoiConsiderThreshold:(double)a3 aoiUseThreshold:(double)a4 confidenceEqualityEpsilon:(double)a5 distanceThreshold:(double)a6 placeholderMultiplier:(double)a7
+- (RTInferredMapItemFuserParameters)initWithAoiConsiderThreshold:(double)threshold aoiUseThreshold:(double)useThreshold confidenceEqualityEpsilon:(double)epsilon distanceThreshold:(double)distanceThreshold placeholderMultiplier:(double)multiplier
 {
   if ((RTCommonValidConfidence() & 1) == 0)
   {
@@ -19,7 +19,7 @@
 
 LABEL_17:
 
-    v15 = 0;
+    selfCopy = 0;
     goto LABEL_18;
   }
 
@@ -49,7 +49,7 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  if (a6 <= 0.0)
+  if (distanceThreshold <= 0.0)
   {
     v13 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -62,7 +62,7 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  if (a7 < 1.0)
+  if (multiplier < 1.0)
   {
     v13 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -82,27 +82,27 @@ LABEL_16:
   v17 = [(RTInferredMapItemFuserParameters *)&v18 init];
   if (v17)
   {
-    v17->_aoiConsiderThreshold = a3;
-    v17->_aoiUseThreshold = a4;
-    v17->_confidenceEqualityEpsilon = a5;
-    v17->_distanceThreshold = a6;
-    v17->_placeholderMultiplier = a7;
+    v17->_aoiConsiderThreshold = threshold;
+    v17->_aoiUseThreshold = useThreshold;
+    v17->_confidenceEqualityEpsilon = epsilon;
+    v17->_distanceThreshold = distanceThreshold;
+    v17->_placeholderMultiplier = multiplier;
   }
 
   self = v17;
-  v15 = self;
+  selfCopy = self;
 LABEL_18:
 
-  return v15;
+  return selfCopy;
 }
 
-- (RTInferredMapItemFuserParameters)initWithDefaultsManager:(id)a3
+- (RTInferredMapItemFuserParameters)initWithDefaultsManager:(id)manager
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  managerCopy = manager;
+  v5 = managerCopy;
+  if (managerCopy)
   {
-    v6 = [v4 objectForKey:@"RTDefaultsInferredMapItemFuserAOIConsiderThreshold"];
+    v6 = [managerCopy objectForKey:@"RTDefaultsInferredMapItemFuserAOIConsiderThreshold"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -166,7 +166,7 @@ LABEL_18:
 
     self = [(RTInferredMapItemFuserParameters *)self initWithAoiConsiderThreshold:v8 aoiUseThreshold:v13 confidenceEqualityEpsilon:v16 distanceThreshold:v19 placeholderMultiplier:v22];
 
-    v10 = self;
+    selfCopy = self;
   }
 
   else
@@ -178,10 +178,10 @@ LABEL_18:
       _os_log_error_impl(&dword_2304B3000, v9, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: defaultsManager", v25, 2u);
     }
 
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
 @end

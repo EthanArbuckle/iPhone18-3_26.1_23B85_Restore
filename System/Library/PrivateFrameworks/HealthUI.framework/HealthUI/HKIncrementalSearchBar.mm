@@ -1,22 +1,22 @@
 @interface HKIncrementalSearchBar
-+ (BOOL)_hasUppercaseCharacters:(id)a3;
-+ (id)_patternFromSearchString:(id)a3 quoteForJavascript:(BOOL)a4;
-+ (id)regularExpressionFromString:(id)a3 quoteForJavascript:(BOOL)a4 caseless:(BOOL *)a5;
++ (BOOL)_hasUppercaseCharacters:(id)characters;
++ (id)_patternFromSearchString:(id)string quoteForJavascript:(BOOL)javascript;
++ (id)regularExpressionFromString:(id)string quoteForJavascript:(BOOL)javascript caseless:(BOOL *)caseless;
 - (BOOL)keyboardIsUp;
 - (BOOL)searchIsActive;
 - (CGSize)intrinsicContentSize;
 - (HKIncrementalSearchBar)init;
 - (NSString)searchText;
 - (void)_lowerKeyboard;
-- (void)activateSearch:(BOOL)a3;
+- (void)activateSearch:(BOOL)search;
 - (void)dealloc;
-- (void)doneAction:(id)a3;
-- (void)searchKeyboardDidHide:(id)a3;
-- (void)setDownEnabled:(BOOL)a3;
-- (void)setMatchDisplayText:(id)a3;
-- (void)setMatchDisplayVisible:(BOOL)a3;
-- (void)setSearchText:(id)a3;
-- (void)setUpEnabled:(BOOL)a3;
+- (void)doneAction:(id)action;
+- (void)searchKeyboardDidHide:(id)hide;
+- (void)setDownEnabled:(BOOL)enabled;
+- (void)setMatchDisplayText:(id)text;
+- (void)setMatchDisplayVisible:(BOOL)visible;
+- (void)setSearchText:(id)text;
+- (void)setUpEnabled:(BOOL)enabled;
 @end
 
 @implementation HKIncrementalSearchBar
@@ -35,11 +35,11 @@
     [(HKIncrementalSearchBar *)v2 setUpEnabled:0];
     [(HKIncrementalSearchBar *)v2 setDownEnabled:0];
     [(HKIncrementalSearchBar *)v2 activateSearch:0];
-    v5 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-    [(HKIncrementalSearchBar *)v2 setBackgroundColor:v5];
+    systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+    [(HKIncrementalSearchBar *)v2 setBackgroundColor:systemBackgroundColor];
 
-    v6 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v6 addObserver:v2 selector:sel_searchKeyboardDidHide_ name:*MEMORY[0x1E69DDF70] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_searchKeyboardDidHide_ name:*MEMORY[0x1E69DDF70] object:0];
   }
 
   return v2;
@@ -47,8 +47,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x1E69DDF70] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69DDF70] object:0];
 
   v4.receiver = self;
   v4.super_class = HKIncrementalSearchBar;
@@ -57,10 +57,10 @@
 
 - (BOOL)keyboardIsUp
 {
-  v2 = [(_SearchBarContent *)self->_searchBarContent searchEntry];
-  v3 = [v2 isFirstResponder];
+  searchEntry = [(_SearchBarContent *)self->_searchBarContent searchEntry];
+  isFirstResponder = [searchEntry isFirstResponder];
 
-  return v3;
+  return isFirstResponder;
 }
 
 - (BOOL)searchIsActive
@@ -73,16 +73,16 @@
   return [(HKIncrementalSearchBar *)self keyboardIsDown];
 }
 
-- (void)searchKeyboardDidHide:(id)a3
+- (void)searchKeyboardDidHide:(id)hide
 {
   if (![(HKIncrementalSearchBar *)self searchIsActive])
   {
-    v4 = [(_SearchBarContent *)self->_searchBarContent searchBarDelegate];
+    searchBarDelegate = [(_SearchBarContent *)self->_searchBarContent searchBarDelegate];
 
-    if (v4)
+    if (searchBarDelegate)
     {
-      v5 = [(_SearchBarContent *)self->_searchBarContent searchBarDelegate];
-      [v5 searchBarDoneAction:self];
+      searchBarDelegate2 = [(_SearchBarContent *)self->_searchBarContent searchBarDelegate];
+      [searchBarDelegate2 searchBarDoneAction:self];
     }
   }
 }
@@ -96,67 +96,67 @@
   return result;
 }
 
-- (void)setUpEnabled:(BOOL)a3
+- (void)setUpEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v4 = [(_SearchBarContent *)self->_searchBarContent upBarButton];
-  [v4 setEnabled:v3];
+  enabledCopy = enabled;
+  upBarButton = [(_SearchBarContent *)self->_searchBarContent upBarButton];
+  [upBarButton setEnabled:enabledCopy];
 }
 
-- (void)setDownEnabled:(BOOL)a3
+- (void)setDownEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v4 = [(_SearchBarContent *)self->_searchBarContent downBarButton];
-  [v4 setEnabled:v3];
+  enabledCopy = enabled;
+  downBarButton = [(_SearchBarContent *)self->_searchBarContent downBarButton];
+  [downBarButton setEnabled:enabledCopy];
 }
 
 - (NSString)searchText
 {
-  v2 = [(_SearchBarContent *)self->_searchBarContent searchEntry];
-  v3 = [v2 text];
+  searchEntry = [(_SearchBarContent *)self->_searchBarContent searchEntry];
+  text = [searchEntry text];
 
-  return v3;
+  return text;
 }
 
-- (void)setSearchText:(id)a3
+- (void)setSearchText:(id)text
 {
   searchBarContent = self->_searchBarContent;
-  v4 = a3;
-  v5 = [(_SearchBarContent *)searchBarContent searchEntry];
-  [v5 setText:v4];
+  textCopy = text;
+  searchEntry = [(_SearchBarContent *)searchBarContent searchEntry];
+  [searchEntry setText:textCopy];
 }
 
-- (void)setMatchDisplayText:(id)a3
+- (void)setMatchDisplayText:(id)text
 {
-  objc_storeStrong(&self->_matchDisplayText, a3);
-  v5 = a3;
-  v6 = [(_SearchBarContent *)self->_searchBarContent searchEntry];
-  [v6 setMatchDisplayString:v5];
+  objc_storeStrong(&self->_matchDisplayText, text);
+  textCopy = text;
+  searchEntry = [(_SearchBarContent *)self->_searchBarContent searchEntry];
+  [searchEntry setMatchDisplayString:textCopy];
 }
 
-- (void)setMatchDisplayVisible:(BOOL)a3
+- (void)setMatchDisplayVisible:(BOOL)visible
 {
-  v3 = a3;
-  v4 = [(_SearchBarContent *)self->_searchBarContent searchEntry];
-  [v4 matchDisplayVisible:v3];
+  visibleCopy = visible;
+  searchEntry = [(_SearchBarContent *)self->_searchBarContent searchEntry];
+  [searchEntry matchDisplayVisible:visibleCopy];
 }
 
-- (void)activateSearch:(BOOL)a3
+- (void)activateSearch:(BOOL)search
 {
-  if (a3)
+  if (search)
   {
     if (![(HKIncrementalSearchBar *)self searchIsActive])
     {
       [(HKIncrementalSearchBar *)self becomeFirstResponder];
-      v5 = [(_SearchBarContent *)self->_searchBarContent searchEntry];
-      [v5 becomeFirstResponder];
+      searchEntry = [(_SearchBarContent *)self->_searchBarContent searchEntry];
+      [searchEntry becomeFirstResponder];
     }
   }
 
   else
   {
-    v4 = [(_SearchBarContent *)self->_searchBarContent searchEntry];
-    [v4 resignFirstResponder];
+    searchEntry2 = [(_SearchBarContent *)self->_searchBarContent searchEntry];
+    [searchEntry2 resignFirstResponder];
 
     [(HKIncrementalSearchBar *)self resignFirstResponder];
     [(HKIncrementalSearchBar *)self setUpEnabled:0];
@@ -177,31 +177,31 @@
   }
 }
 
-- (void)doneAction:(id)a3
+- (void)doneAction:(id)action
 {
-  v4 = [(_SearchBarContent *)self->_searchBarContent searchEntry];
-  [v4 resignFirstResponder];
+  searchEntry = [(_SearchBarContent *)self->_searchBarContent searchEntry];
+  [searchEntry resignFirstResponder];
 
   [(HKIncrementalSearchBar *)self resignFirstResponder];
 }
 
-+ (BOOL)_hasUppercaseCharacters:(id)a3
++ (BOOL)_hasUppercaseCharacters:(id)characters
 {
   v3 = MEMORY[0x1E696AB08];
-  v4 = a3;
-  v5 = [v3 uppercaseLetterCharacterSet];
-  v6 = [v4 rangeOfCharacterFromSet:v5];
+  charactersCopy = characters;
+  uppercaseLetterCharacterSet = [v3 uppercaseLetterCharacterSet];
+  v6 = [charactersCopy rangeOfCharacterFromSet:uppercaseLetterCharacterSet];
 
   return v6 != 0x7FFFFFFFFFFFFFFFLL;
 }
 
-+ (id)_patternFromSearchString:(id)a3 quoteForJavascript:(BOOL)a4
++ (id)_patternFromSearchString:(id)string quoteForJavascript:(BOOL)javascript
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+  javascriptCopy = javascript;
+  stringCopy = string;
+  whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
   v7 = [MEMORY[0x1E696AB08] characterSetWithCharactersInString:@"\\'"];
-  v8 = [MEMORY[0x1E696AE70] escapedPatternForString:v5];
+  v8 = [MEMORY[0x1E696AE70] escapedPatternForString:stringCopy];
   v9 = objc_alloc_init(MEMORY[0x1E696AD60]);
   v23 = 0;
   v24 = &v23;
@@ -213,9 +213,9 @@
   v17[2] = __70__HKIncrementalSearchBar__patternFromSearchString_quoteForJavascript___block_invoke;
   v17[3] = &unk_1E81BB5C8;
   v21 = &v23;
-  v11 = v6;
+  v11 = whitespaceCharacterSet;
   v18 = v11;
-  v22 = v4;
+  v22 = javascriptCopy;
   v12 = v9;
   v19 = v12;
   v13 = v7;
@@ -223,7 +223,7 @@
   [v8 enumerateSubstringsInRange:0 options:v10 usingBlock:{2, v17}];
   if (*(v24 + 24) == 1)
   {
-    if (v4)
+    if (javascriptCopy)
     {
       [v12 appendString:@"\\""];
     }
@@ -284,16 +284,16 @@ void __70__HKIncrementalSearchBar__patternFromSearchString_quoteForJavascript___
   }
 }
 
-+ (id)regularExpressionFromString:(id)a3 quoteForJavascript:(BOOL)a4 caseless:(BOOL *)a5
++ (id)regularExpressionFromString:(id)string quoteForJavascript:(BOOL)javascript caseless:(BOOL *)caseless
 {
-  v6 = a4;
-  v7 = a3;
-  if (a5)
+  javascriptCopy = javascript;
+  stringCopy = string;
+  if (caseless)
   {
-    *a5 = ![HKIncrementalSearchBar _hasUppercaseCharacters:v7];
+    *caseless = ![HKIncrementalSearchBar _hasUppercaseCharacters:stringCopy];
   }
 
-  v8 = [HKIncrementalSearchBar _patternFromSearchString:v7 quoteForJavascript:v6];
+  v8 = [HKIncrementalSearchBar _patternFromSearchString:stringCopy quoteForJavascript:javascriptCopy];
 
   return v8;
 }

@@ -1,54 +1,54 @@
 @interface MTBasePodcastListViewController
-- (BOOL)indexPathIsCurrentlySelectedRow:(id)a3;
+- (BOOL)indexPathIsCurrentlySelectedRow:(id)row;
 - (MTRefreshControlDelegate)refreshDelegate;
 - (MTSourceListDelegate)delegate;
 - (SEL)selectorForRefreshControl;
-- (id)_selectItemWithUuid:(id)a3;
+- (id)_selectItemWithUuid:(id)uuid;
 - (id)firstValidIndexPath;
-- (id)newCellInstanceWithReuseIdentifier:(id)a3;
+- (id)newCellInstanceWithReuseIdentifier:(id)identifier;
 - (id)storedUuid;
 - (id)tableView;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (id)targetForRefreshControl;
-- (int64_t)flattenedCellIndexForIndexPath:(id)a3;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)configureCell:(id)a3 withObject:(id)a4 atIndexPath:(id)a5;
+- (int64_t)flattenedCellIndexForIndexPath:(id)path;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)configureCell:(id)cell withObject:(id)object atIndexPath:(id)path;
 - (void)configureRowHeight;
-- (void)contentSizeCategoryDidChange:(id)a3;
-- (void)controller:(id)a3 didChangeObject:(id)a4 atIndexPath:(id)a5 forChangeType:(unint64_t)a6 newIndexPath:(id)a7;
-- (void)controllerDidChangeContent:(id)a3;
+- (void)contentSizeCategoryDidChange:(id)change;
+- (void)controller:(id)controller didChangeObject:(id)object atIndexPath:(id)path forChangeType:(unint64_t)type newIndexPath:(id)indexPath;
+- (void)controllerDidChangeContent:(id)content;
 - (void)dealloc;
 - (void)didEndDraggingScrollView;
 - (void)didReceiveMemoryWarning;
 - (void)endRefreshingWhenDraggingCompletes;
 - (void)loadView;
 - (void)restoreSelection;
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4;
-- (void)selectItemWithUuid:(id)a3 forceScroll:(BOOL)a4;
-- (void)setAttributedTitleForRefreshControl:(id)a3;
-- (void)setRefreshing:(BOOL)a3;
-- (void)setSelectorForRefreshControl:(SEL)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
-- (void)updatedDefaults:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate;
+- (void)selectItemWithUuid:(id)uuid forceScroll:(BOOL)scroll;
+- (void)setAttributedTitleForRefreshControl:(id)control;
+- (void)setRefreshing:(BOOL)refreshing;
+- (void)setSelectorForRefreshControl:(SEL)control;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
+- (void)updatedDefaults:(id)defaults;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation MTBasePodcastListViewController
 
 - (id)storedUuid
 {
-  v2 = [objc_opt_class() defaultsKey];
+  defaultsKey = [objc_opt_class() defaultsKey];
 
-  if (v2)
+  if (defaultsKey)
   {
     v3 = +[NSUserDefaults standardUserDefaults];
-    v4 = [objc_opt_class() defaultsKey];
-    v5 = [v3 stringForKey:v4];
+    defaultsKey2 = [objc_opt_class() defaultsKey];
+    v5 = [v3 stringForKey:defaultsKey2];
   }
 
   else
@@ -59,60 +59,60 @@
   return v5;
 }
 
-- (id)newCellInstanceWithReuseIdentifier:(id)a3
+- (id)newCellInstanceWithReuseIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = [[MTPodcastCell alloc] initWithStyle:0 reuseIdentifier:v3];
+  identifierCopy = identifier;
+  v4 = [[MTPodcastCell alloc] initWithStyle:0 reuseIdentifier:identifierCopy];
 
   return v4;
 }
 
-- (void)configureCell:(id)a3 withObject:(id)a4 atIndexPath:(id)a5
+- (void)configureCell:(id)cell withObject:(id)object atIndexPath:(id)path
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  cellCopy = cell;
+  objectCopy = object;
+  pathCopy = path;
   v10 = [NSException exceptionWithName:@"MTAbstractMethod" reason:@"Handle this method in the subclass" userInfo:0];
   objc_exception_throw(v10);
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v13 = a4;
+  pathCopy = path;
   v5 = [(MTFetchedTableViewController *)self frc];
-  v6 = [v5 objectAtIndexPath:v13];
+  v6 = [v5 objectAtIndexPath:pathCopy];
 
   if (objc_opt_respondsToSelector())
   {
-    v7 = [v6 uuid];
-    v8 = [(MTBasePodcastListViewController *)self delegate];
-    [v8 sourceList:self didSelectItemUuid:v7 atIndexPath:v13];
+    uuid = [v6 uuid];
+    delegate = [(MTBasePodcastListViewController *)self delegate];
+    [delegate sourceList:self didSelectItemUuid:uuid atIndexPath:pathCopy];
 
-    v9 = [objc_opt_class() defaultsKey];
+    defaultsKey = [objc_opt_class() defaultsKey];
 
-    if (v9)
+    if (defaultsKey)
     {
       v10 = +[NSUserDefaults standardUserDefaults];
-      v11 = [objc_opt_class() defaultsKey];
-      [v10 setObject:v7 forKey:v11];
+      defaultsKey2 = [objc_opt_class() defaultsKey];
+      [v10 setObject:uuid forKey:defaultsKey2];
 
-      v12 = [(MTBasePodcastListViewController *)self _selectItemWithUuid:v7];
+      v12 = [(MTBasePodcastListViewController *)self _selectItemWithUuid:uuid];
     }
   }
 }
 
 - (void)restoreSelection
 {
-  v3 = [(MTBasePodcastListViewController *)self storedUuid];
-  [(MTBasePodcastListViewController *)self setSelectedUuid:v3];
+  storedUuid = [(MTBasePodcastListViewController *)self storedUuid];
+  [(MTBasePodcastListViewController *)self setSelectedUuid:storedUuid];
 
-  v4 = [(MTBasePodcastListViewController *)self selectedUuid];
-  [(MTBasePodcastListViewController *)self selectItemWithUuid:v4 forceScroll:0];
+  selectedUuid = [(MTBasePodcastListViewController *)self selectedUuid];
+  [(MTBasePodcastListViewController *)self selectItemWithUuid:selectedUuid forceScroll:0];
 }
 
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate
 {
-  if (!a4)
+  if (!decelerate)
   {
     [(MTBasePodcastListViewController *)self didEndDraggingScrollView];
   }
@@ -127,75 +127,75 @@
   }
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
   v4.receiver = self;
   v4.super_class = MTBasePodcastListViewController;
-  return [(MTFetchedTableViewController *)&v4 numberOfSectionsInTableView:a3];
+  return [(MTFetchedTableViewController *)&v4 numberOfSectionsInTableView:view];
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
   v5.receiver = self;
   v5.super_class = MTBasePodcastListViewController;
-  return [(MTFetchedTableViewController *)&v5 tableView:a3 numberOfRowsInSection:a4];
+  return [(MTFetchedTableViewController *)&v5 tableView:view numberOfRowsInSection:section];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v6.receiver = self;
   v6.super_class = MTBasePodcastListViewController;
-  v4 = [(MTFetchedTableViewController *)&v6 tableView:a3 cellForRowAtIndexPath:a4];
+  v4 = [(MTFetchedTableViewController *)&v6 tableView:view cellForRowAtIndexPath:path];
 
   return v4;
 }
 
-- (void)controller:(id)a3 didChangeObject:(id)a4 atIndexPath:(id)a5 forChangeType:(unint64_t)a6 newIndexPath:(id)a7
+- (void)controller:(id)controller didChangeObject:(id)object atIndexPath:(id)path forChangeType:(unint64_t)type newIndexPath:(id)indexPath
 {
-  v12 = a4;
+  objectCopy = object;
   v16.receiver = self;
   v16.super_class = MTBasePodcastListViewController;
-  [(MTFetchedTableViewController *)&v16 controller:a3 didChangeObject:v12 atIndexPath:a5 forChangeType:a6 newIndexPath:a7];
+  [(MTFetchedTableViewController *)&v16 controller:controller didChangeObject:objectCopy atIndexPath:path forChangeType:type newIndexPath:indexPath];
   if (objc_opt_respondsToSelector())
   {
-    v13 = [v12 uuid];
+    uuid = [objectCopy uuid];
   }
 
   else
   {
-    v13 = 0;
+    uuid = 0;
   }
 
-  if ([v13 isEqual:self->_selectedUuid])
+  if ([uuid isEqual:self->_selectedUuid])
   {
-    if (a6 == 2)
+    if (type == 2)
     {
-      v14 = [(MTBasePodcastListViewController *)self navigationController];
-      v15 = [v14 popToRootViewControllerAnimated:1];
+      navigationController = [(MTBasePodcastListViewController *)self navigationController];
+      v15 = [navigationController popToRootViewControllerAnimated:1];
     }
 
     else
     {
-      v14 = [(MTBasePodcastListViewController *)self delegate];
-      [v14 sourceList:self didUpdateSelectedItemUuid:v13];
+      navigationController = [(MTBasePodcastListViewController *)self delegate];
+      [navigationController sourceList:self didUpdateSelectedItemUuid:uuid];
     }
   }
 }
 
-- (void)controllerDidChangeContent:(id)a3
+- (void)controllerDidChangeContent:(id)content
 {
   v6.receiver = self;
   v6.super_class = MTBasePodcastListViewController;
-  [(MTFetchedTableViewController *)&v6 controllerDidChangeContent:a3];
-  v4 = [(MTBasePodcastListViewController *)self tableView];
+  [(MTFetchedTableViewController *)&v6 controllerDidChangeContent:content];
+  tableView = [(MTBasePodcastListViewController *)self tableView];
   if (![(MTFetchedTableViewController *)self changeIsUserDriven]&& ([(MTBasePodcastListViewController *)self isHorizontallyCompact]& 1) == 0)
   {
-    v5 = [v4 indexPathForSelectedRow];
-    if (v5)
+    indexPathForSelectedRow = [tableView indexPathForSelectedRow];
+    if (indexPathForSelectedRow)
     {
     }
 
-    else if ([v4 numberOfRowsInSection:0] >= 1)
+    else if ([tableView numberOfRowsInSection:0] >= 1)
     {
       [(MTBasePodcastListViewController *)self restoreSelection];
     }
@@ -206,90 +206,90 @@
 {
   v4.receiver = self;
   v4.super_class = MTBasePodcastListViewController;
-  v2 = [(MTBasePodcastListViewController *)&v4 tableView];
+  tableView = [(MTBasePodcastListViewController *)&v4 tableView];
 
-  return v2;
+  return tableView;
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v8.receiver = self;
   v8.super_class = MTBasePodcastListViewController;
-  [(MTFetchedTableViewController *)&v8 viewWillDisappear:a3];
-  v4 = [(MTBasePodcastListViewController *)self refreshControl];
-  v5 = [v4 isRefreshing];
+  [(MTFetchedTableViewController *)&v8 viewWillDisappear:disappear];
+  refreshControl = [(MTBasePodcastListViewController *)self refreshControl];
+  isRefreshing = [refreshControl isRefreshing];
 
-  if (v5)
+  if (isRefreshing)
   {
-    v6 = [(MTBasePodcastListViewController *)self refreshControl];
-    [v6 endRefreshing];
+    refreshControl2 = [(MTBasePodcastListViewController *)self refreshControl];
+    [refreshControl2 endRefreshing];
   }
 
   v7 = +[NSNotificationCenter defaultCenter];
   [v7 removeObserver:self name:NSUserDefaultsDidChangeNotification object:0];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
-  v5 = [(MTBasePodcastListViewController *)self tableView];
-  v6 = [v5 indexPathForSelectedRow];
+  appearCopy = appear;
+  tableView = [(MTBasePodcastListViewController *)self tableView];
+  indexPathForSelectedRow = [tableView indexPathForSelectedRow];
 
   v32.receiver = self;
   v32.super_class = MTBasePodcastListViewController;
-  [(MTFetchedTableViewController *)&v32 viewWillAppear:v3];
+  [(MTFetchedTableViewController *)&v32 viewWillAppear:appearCopy];
   v7 = +[UIView areAnimationsEnabled];
   [UIView setAnimationsEnabled:0];
-  v8 = [(MTBasePodcastListViewController *)self tableView];
-  [v8 reloadData];
+  tableView2 = [(MTBasePodcastListViewController *)self tableView];
+  [tableView2 reloadData];
 
-  v9 = [(MTBasePodcastListViewController *)self splitViewController];
-  v10 = [v9 isHorizontallyCompact];
+  splitViewController = [(MTBasePodcastListViewController *)self splitViewController];
+  isHorizontallyCompact = [splitViewController isHorizontallyCompact];
 
-  if ((v10 & 1) == 0)
+  if ((isHorizontallyCompact & 1) == 0)
   {
     v11 = +[NSNotificationCenter defaultCenter];
     [v11 addObserver:self selector:"updatedDefaults:" name:NSUserDefaultsDidChangeNotification object:0];
 
-    v12 = [(MTBasePodcastListViewController *)self tableView];
-    [v12 selectRowAtIndexPath:v6 animated:0 scrollPosition:0];
+    tableView3 = [(MTBasePodcastListViewController *)self tableView];
+    [tableView3 selectRowAtIndexPath:indexPathForSelectedRow animated:0 scrollPosition:0];
 
     [(MTBasePodcastListViewController *)self restoreSelection];
   }
 
   [UIView setAnimationsEnabled:v7];
-  v13 = [(MTBasePodcastListViewController *)self refreshControl];
+  refreshControl = [(MTBasePodcastListViewController *)self refreshControl];
 
-  if (v13)
+  if (refreshControl)
   {
-    v14 = [(MTBasePodcastListViewController *)self refreshControl];
-    v15 = [v14 isRefreshing];
+    refreshControl2 = [(MTBasePodcastListViewController *)self refreshControl];
+    isRefreshing = [refreshControl2 isRefreshing];
 
-    if ((v15 & 1) == 0)
+    if ((isRefreshing & 1) == 0)
     {
-      v16 = [(MTBasePodcastListViewController *)self refreshControl];
-      [v16 beginRefreshing];
+      refreshControl3 = [(MTBasePodcastListViewController *)self refreshControl];
+      [refreshControl3 beginRefreshing];
 
-      v17 = [(MTBasePodcastListViewController *)self refreshControl];
-      [v17 endRefreshing];
+      refreshControl4 = [(MTBasePodcastListViewController *)self refreshControl];
+      [refreshControl4 endRefreshing];
     }
 
-    v18 = [(MTBasePodcastListViewController *)self refreshControl];
-    v19 = [(MTBasePodcastListViewController *)self attributedTitleForRefreshControl];
-    [v18 setAttributedTitle:v19];
+    refreshControl5 = [(MTBasePodcastListViewController *)self refreshControl];
+    attributedTitleForRefreshControl = [(MTBasePodcastListViewController *)self attributedTitleForRefreshControl];
+    [refreshControl5 setAttributedTitle:attributedTitleForRefreshControl];
 
     if ([(MTBasePodcastListViewController *)self isRefreshing])
     {
-      v20 = [(MTBasePodcastListViewController *)self refreshControl];
-      v21 = [v20 isRefreshing];
+      refreshControl6 = [(MTBasePodcastListViewController *)self refreshControl];
+      isRefreshing2 = [refreshControl6 isRefreshing];
 
-      if ((v21 & 1) == 0)
+      if ((isRefreshing2 & 1) == 0)
       {
-        v22 = [(MTBasePodcastListViewController *)self tableView];
-        [v22 setAdjustContentOffsetForRefreshControlAsNeeded:1];
+        tableView4 = [(MTBasePodcastListViewController *)self tableView];
+        [tableView4 setAdjustContentOffsetForRefreshControlAsNeeded:1];
 
-        v23 = [(MTBasePodcastListViewController *)self refreshControl];
-        [v23 beginRefreshing];
+        refreshControl7 = [(MTBasePodcastListViewController *)self refreshControl];
+        [refreshControl7 beginRefreshing];
 
         v24 = dispatch_time(0, 100000000);
         block[0] = _NSConcreteStackBlock;
@@ -304,18 +304,18 @@
 
   else
   {
-    v25 = [(MTBasePodcastListViewController *)self targetForRefreshControl];
+    targetForRefreshControl = [(MTBasePodcastListViewController *)self targetForRefreshControl];
     [(MTBasePodcastListViewController *)self selectorForRefreshControl];
     v26 = objc_opt_respondsToSelector();
 
     if (v26)
     {
       v27 = objc_alloc_init(UIRefreshControl);
-      v28 = [(MTBasePodcastListViewController *)self targetForRefreshControl];
-      [v27 addTarget:v28 action:-[MTBasePodcastListViewController selectorForRefreshControl](self forControlEvents:{"selectorForRefreshControl"), 4096}];
+      targetForRefreshControl2 = [(MTBasePodcastListViewController *)self targetForRefreshControl];
+      [v27 addTarget:targetForRefreshControl2 action:-[MTBasePodcastListViewController selectorForRefreshControl](self forControlEvents:{"selectorForRefreshControl"), 4096}];
 
-      v29 = [(MTBasePodcastListViewController *)self attributedTitleForRefreshControl];
-      [v27 setAttributedTitle:v29];
+      attributedTitleForRefreshControl2 = [(MTBasePodcastListViewController *)self attributedTitleForRefreshControl];
+      [v27 setAttributedTitle:attributedTitleForRefreshControl2];
 
       [(MTFetchedTableViewController *)self setRefreshControl:v27];
       v30[0] = _NSConcreteStackBlock;
@@ -328,17 +328,17 @@
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v7.receiver = self;
   v7.super_class = MTBasePodcastListViewController;
-  [(MTBasePodcastListViewController *)&v7 viewDidAppear:a3];
+  [(MTBasePodcastListViewController *)&v7 viewDidAppear:appear];
   if ([(MTBasePodcastListViewController *)self isHorizontallyCompact])
   {
-    v4 = [(MTBasePodcastListViewController *)self tableView];
-    v5 = [(MTBasePodcastListViewController *)self tableView];
-    v6 = [v5 indexPathForSelectedRow];
-    [v4 deselectRowAtIndexPath:v6 animated:1];
+    tableView = [(MTBasePodcastListViewController *)self tableView];
+    tableView2 = [(MTBasePodcastListViewController *)self tableView];
+    indexPathForSelectedRow = [tableView2 indexPathForSelectedRow];
+    [tableView deselectRowAtIndexPath:indexPathForSelectedRow animated:1];
   }
 
   [(MTBasePodcastListViewController *)self simulateMemoryWarning];
@@ -372,11 +372,11 @@
   v7.super_class = MTBasePodcastListViewController;
   [(MTFetchedTableViewController *)&v7 viewDidLoad];
   v3 = [[UIView alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
-  v4 = [(MTBasePodcastListViewController *)self tableView];
-  [v4 setTableFooterView:v3];
+  tableView = [(MTBasePodcastListViewController *)self tableView];
+  [tableView setTableFooterView:v3];
 
-  v5 = [(MTBasePodcastListViewController *)self storedUuid];
-  [(MTBasePodcastListViewController *)self setSelectedUuid:v5];
+  storedUuid = [(MTBasePodcastListViewController *)self storedUuid];
+  [(MTBasePodcastListViewController *)self setSelectedUuid:storedUuid];
 
   [(MTBasePodcastListViewController *)self configureRowHeight];
   v6 = +[NSNotificationCenter defaultCenter];
@@ -385,12 +385,12 @@
 
 - (void)configureRowHeight
 {
-  v3 = [(MTBasePodcastListViewController *)self tableView];
+  tableView = [(MTBasePodcastListViewController *)self tableView];
   [(MTGenericCell *)MTPodcastCell heightForWidth:1.79769313e308];
-  [v3 setEstimatedRowHeight:?];
+  [tableView setEstimatedRowHeight:?];
 
-  v4 = [(MTBasePodcastListViewController *)self tableView];
-  [v4 setRowHeight:UITableViewAutomaticDimension];
+  tableView2 = [(MTBasePodcastListViewController *)self tableView];
+  [tableView2 setRowHeight:UITableViewAutomaticDimension];
 }
 
 - (void)dealloc
@@ -403,51 +403,51 @@
   [(MTFetchedTableViewController *)&v4 dealloc];
 }
 
-- (void)contentSizeCategoryDidChange:(id)a3
+- (void)contentSizeCategoryDidChange:(id)change
 {
-  v4 = [(MTBasePodcastListViewController *)self view];
-  [v4 setNeedsLayout];
+  view = [(MTBasePodcastListViewController *)self view];
+  [view setNeedsLayout];
 
-  v5 = [(MTBasePodcastListViewController *)self tableView];
-  v6 = [v5 tableHeaderView];
+  tableView = [(MTBasePodcastListViewController *)self tableView];
+  tableHeaderView = [tableView tableHeaderView];
 
-  [v6 setNeedsLayout];
+  [tableHeaderView setNeedsLayout];
 }
 
-- (void)setRefreshing:(BOOL)a3
+- (void)setRefreshing:(BOOL)refreshing
 {
-  if (self->_refreshing == a3)
+  if (self->_refreshing == refreshing)
   {
     return;
   }
 
-  v3 = a3;
-  if (a3)
+  refreshingCopy = refreshing;
+  if (refreshing)
   {
-    self->_refreshing = a3;
+    self->_refreshing = refreshing;
     goto LABEL_9;
   }
 
-  v5 = [(MTBasePodcastListViewController *)self tableView];
-  v6 = [v5 isDragging];
+  tableView = [(MTBasePodcastListViewController *)self tableView];
+  isDragging = [tableView isDragging];
 
-  if (!v6)
+  if (!isDragging)
   {
-    self->_refreshing = v3;
-    v7 = [(MTBasePodcastListViewController *)self tableView];
-    [v7 reloadData];
+    self->_refreshing = refreshingCopy;
+    tableView2 = [(MTBasePodcastListViewController *)self tableView];
+    [tableView2 reloadData];
 
 LABEL_9:
-    [(MTFetchedTableViewController *)self setChangeIsUserDriven:v3];
+    [(MTFetchedTableViewController *)self setChangeIsUserDriven:refreshingCopy];
     if (self->_refreshing)
     {
-      v8 = [(MTBasePodcastListViewController *)self refreshControl];
-      v9 = [v8 isRefreshing];
+      refreshControl = [(MTBasePodcastListViewController *)self refreshControl];
+      isRefreshing = [refreshControl isRefreshing];
 
-      if (!v9)
+      if (!isRefreshing)
       {
-        v12 = [(MTBasePodcastListViewController *)self refreshControl];
-        [v12 beginRefreshing];
+        refreshControl2 = [(MTBasePodcastListViewController *)self refreshControl];
+        [refreshControl2 beginRefreshing];
         goto LABEL_15;
       }
 
@@ -457,23 +457,23 @@ LABEL_9:
       }
     }
 
-    v10 = [(MTBasePodcastListViewController *)self refreshControl];
-    v11 = [v10 isRefreshing];
+    refreshControl3 = [(MTBasePodcastListViewController *)self refreshControl];
+    isRefreshing2 = [refreshControl3 isRefreshing];
 
-    if (!v11)
+    if (!isRefreshing2)
     {
       goto LABEL_16;
     }
 
-    v12 = [(MTBasePodcastListViewController *)self refreshControl];
-    [v12 endRefreshing];
+    refreshControl2 = [(MTBasePodcastListViewController *)self refreshControl];
+    [refreshControl2 endRefreshing];
 LABEL_15:
 
 LABEL_16:
     if (!self->_refreshing)
     {
-      v13 = [(MTBasePodcastListViewController *)self refreshDelegate];
-      [v13 didEndRefreshing];
+      refreshDelegate = [(MTBasePodcastListViewController *)self refreshDelegate];
+      [refreshDelegate didEndRefreshing];
     }
 
     return;
@@ -484,10 +484,10 @@ LABEL_16:
 
 - (void)endRefreshingWhenDraggingCompletes
 {
-  v3 = [(MTBasePodcastListViewController *)self tableView];
-  v4 = [v3 isDragging];
+  tableView = [(MTBasePodcastListViewController *)self tableView];
+  isDragging = [tableView isDragging];
 
-  if (v4)
+  if (isDragging)
   {
     self->_endRefreshWhenDraggingEnds = 1;
   }
@@ -499,45 +499,45 @@ LABEL_16:
   }
 }
 
-- (void)setAttributedTitleForRefreshControl:(id)a3
+- (void)setAttributedTitleForRefreshControl:(id)control
 {
-  v6 = a3;
+  controlCopy = control;
   if (![(NSAttributedString *)self->_attributedTitleForRefreshControl isEqualToAttributedString:?])
   {
-    objc_storeStrong(&self->_attributedTitleForRefreshControl, a3);
-    v5 = [(MTBasePodcastListViewController *)self refreshControl];
-    [v5 setAttributedTitle:v6];
+    objc_storeStrong(&self->_attributedTitleForRefreshControl, control);
+    refreshControl = [(MTBasePodcastListViewController *)self refreshControl];
+    [refreshControl setAttributedTitle:controlCopy];
   }
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [v5 textLabel];
+  cellCopy = cell;
+  textLabel = [cellCopy textLabel];
   v7 = +[UIColor clearColor];
-  [v6 setBackgroundColor:v7];
+  [textLabel setBackgroundColor:v7];
 
-  v9 = [v5 backgroundView];
+  backgroundView = [cellCopy backgroundView];
 
   v8 = +[UIColor backgroundColor];
-  [v9 setBackgroundColor:v8];
+  [backgroundView setBackgroundColor:v8];
 }
 
-- (int64_t)flattenedCellIndexForIndexPath:(id)a3
+- (int64_t)flattenedCellIndexForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [v4 section];
-  v6 = [(MTBasePodcastListViewController *)self tableView];
-  v7 = [(MTBasePodcastListViewController *)self numberOfSectionsInTableView:v6];
+  pathCopy = path;
+  section = [pathCopy section];
+  tableView = [(MTBasePodcastListViewController *)self tableView];
+  v7 = [(MTBasePodcastListViewController *)self numberOfSectionsInTableView:tableView];
 
-  if (v5 >= v7)
+  if (section >= v7)
   {
     v8 = v7;
   }
 
   else
   {
-    v8 = v5;
+    v8 = section;
   }
 
   if (v8 < 1)
@@ -551,38 +551,38 @@ LABEL_16:
     v10 = 0;
     do
     {
-      v11 = [(MTBasePodcastListViewController *)self tableView];
-      v10 += [(MTBasePodcastListViewController *)self tableView:v11 numberOfRowsInSection:v9];
+      tableView2 = [(MTBasePodcastListViewController *)self tableView];
+      v10 += [(MTBasePodcastListViewController *)self tableView:tableView2 numberOfRowsInSection:v9];
 
       ++v9;
-      v12 = [v4 section];
-      v13 = [(MTBasePodcastListViewController *)self tableView];
-      v14 = [(MTBasePodcastListViewController *)self numberOfSectionsInTableView:v13];
+      section2 = [pathCopy section];
+      tableView3 = [(MTBasePodcastListViewController *)self tableView];
+      v14 = [(MTBasePodcastListViewController *)self numberOfSectionsInTableView:tableView3];
 
-      if (v12 >= v14)
+      if (section2 >= v14)
       {
         v15 = v14;
       }
 
       else
       {
-        v15 = v12;
+        v15 = section2;
       }
     }
 
     while (v15 > v9);
   }
 
-  v16 = [v4 row];
+  v16 = [pathCopy row];
 
   return v16 + v10;
 }
 
-- (void)updatedDefaults:(id)a3
+- (void)updatedDefaults:(id)defaults
 {
-  v4 = [objc_opt_class() defaultsKey];
+  defaultsKey = [objc_opt_class() defaultsKey];
 
-  if (v4)
+  if (defaultsKey)
   {
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
@@ -595,9 +595,9 @@ LABEL_16:
 
 - (id)firstValidIndexPath
 {
-  v2 = [(MTBasePodcastListViewController *)self tableView];
-  v3 = [v2 dataSource];
-  if ([v3 tableView:v2 numberOfRowsInSection:0])
+  tableView = [(MTBasePodcastListViewController *)self tableView];
+  dataSource = [tableView dataSource];
+  if ([dataSource tableView:tableView numberOfRowsInSection:0])
   {
     v4 = [NSIndexPath indexPathForRow:0 inSection:0];
   }
@@ -610,23 +610,23 @@ LABEL_16:
   return v4;
 }
 
-- (id)_selectItemWithUuid:(id)a3
+- (id)_selectItemWithUuid:(id)uuid
 {
-  v4 = a3;
+  uuidCopy = uuid;
   v5 = [(MTFetchedTableViewController *)self frc];
-  v6 = [v5 fetchedObjects];
-  v7 = [v6 count];
+  fetchedObjects = [v5 fetchedObjects];
+  v7 = [fetchedObjects count];
 
   if (v7)
   {
     v12 = 0;
     v13 = 0;
-    [(MTBasePodcastListViewController *)self getObjectId:&v13 andIndexPath:&v12 forItemWithUuid:v4];
+    [(MTBasePodcastListViewController *)self getObjectId:&v13 andIndexPath:&v12 forItemWithUuid:uuidCopy];
     v8 = v13;
     v9 = v12;
     if (v9)
     {
-      v10 = v4;
+      v10 = uuidCopy;
     }
 
     else
@@ -646,32 +646,32 @@ LABEL_16:
   return v9;
 }
 
-- (void)selectItemWithUuid:(id)a3 forceScroll:(BOOL)a4
+- (void)selectItemWithUuid:(id)uuid forceScroll:(BOOL)scroll
 {
-  v4 = a4;
-  v6 = [(MTBasePodcastListViewController *)self _selectItemWithUuid:a3];
+  scrollCopy = scroll;
+  v6 = [(MTBasePodcastListViewController *)self _selectItemWithUuid:uuid];
   if (v6 || ([(MTBasePodcastListViewController *)self firstValidIndexPath], (v6 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v9 = v6;
-    if (![(MTBasePodcastListViewController *)self indexPathIsCurrentlySelectedRow:v6]|| v4)
+    if (![(MTBasePodcastListViewController *)self indexPathIsCurrentlySelectedRow:v6]|| scrollCopy)
     {
-      v7 = [(MTBasePodcastListViewController *)self tableView];
-      [v7 selectRowAtIndexPath:v9 animated:0 scrollPosition:2];
+      tableView = [(MTBasePodcastListViewController *)self tableView];
+      [tableView selectRowAtIndexPath:v9 animated:0 scrollPosition:2];
 
-      v8 = [(MTBasePodcastListViewController *)self tableView];
-      [(MTBasePodcastListViewController *)self tableView:v8 didSelectRowAtIndexPath:v9];
+      tableView2 = [(MTBasePodcastListViewController *)self tableView];
+      [(MTBasePodcastListViewController *)self tableView:tableView2 didSelectRowAtIndexPath:v9];
     }
 
     v6 = v9;
   }
 }
 
-- (BOOL)indexPathIsCurrentlySelectedRow:(id)a3
+- (BOOL)indexPathIsCurrentlySelectedRow:(id)row
 {
-  v4 = a3;
-  v5 = [(MTBasePodcastListViewController *)self tableView];
-  v6 = [v5 indexPathForSelectedRow];
-  v7 = [v4 isEqual:v6];
+  rowCopy = row;
+  tableView = [(MTBasePodcastListViewController *)self tableView];
+  indexPathForSelectedRow = [tableView indexPathForSelectedRow];
+  v7 = [rowCopy isEqual:indexPathForSelectedRow];
 
   return v7;
 }
@@ -703,19 +703,19 @@ LABEL_16:
   }
 }
 
-- (void)setSelectorForRefreshControl:(SEL)a3
+- (void)setSelectorForRefreshControl:(SEL)control
 {
-  if (a3)
+  if (control)
   {
-    v3 = a3;
+    controlCopy = control;
   }
 
   else
   {
-    v3 = 0;
+    controlCopy = 0;
   }
 
-  self->_selectorForRefreshControl = v3;
+  self->_selectorForRefreshControl = controlCopy;
 }
 
 - (id)targetForRefreshControl

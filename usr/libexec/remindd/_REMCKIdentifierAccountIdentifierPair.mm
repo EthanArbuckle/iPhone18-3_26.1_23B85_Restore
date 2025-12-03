@@ -1,20 +1,20 @@
 @interface _REMCKIdentifierAccountIdentifierPair
-- (BOOL)isEqual:(id)a3;
-- (_REMCKIdentifierAccountIdentifierPair)initWithCkIdentifier:(id)a3 accountIdentifier:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (_REMCKIdentifierAccountIdentifierPair)initWithCkIdentifier:(id)identifier accountIdentifier:(id)accountIdentifier;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation _REMCKIdentifierAccountIdentifierPair
 
-- (_REMCKIdentifierAccountIdentifierPair)initWithCkIdentifier:(id)a3 accountIdentifier:(id)a4
+- (_REMCKIdentifierAccountIdentifierPair)initWithCkIdentifier:(id)identifier accountIdentifier:(id)accountIdentifier
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  identifierCopy = identifier;
+  accountIdentifierCopy = accountIdentifier;
+  v9 = accountIdentifierCopy;
+  if (identifierCopy)
   {
-    if (v8)
+    if (accountIdentifierCopy)
     {
       goto LABEL_3;
     }
@@ -37,35 +37,35 @@ LABEL_3:
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_ckIdentifier, a3);
-    objc_storeStrong(&v11->_accountIdentifier, a4);
+    objc_storeStrong(&v10->_ckIdentifier, identifier);
+    objc_storeStrong(&v11->_accountIdentifier, accountIdentifier);
   }
 
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 != self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy != self)
   {
-    v6 = v4;
+    v6 = equalCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [(_REMCKIdentifierAccountIdentifierPair *)self ckIdentifier];
-      v8 = [(_REMCKIdentifierAccountIdentifierPair *)v6 ckIdentifier];
-      v9 = v8;
-      if (v7 == v8)
+      ckIdentifier = [(_REMCKIdentifierAccountIdentifierPair *)self ckIdentifier];
+      ckIdentifier2 = [(_REMCKIdentifierAccountIdentifierPair *)v6 ckIdentifier];
+      v9 = ckIdentifier2;
+      if (ckIdentifier == ckIdentifier2)
       {
       }
 
       else
       {
-        v10 = [(_REMCKIdentifierAccountIdentifierPair *)self ckIdentifier];
-        v11 = [(_REMCKIdentifierAccountIdentifierPair *)v6 ckIdentifier];
-        v12 = [v10 isEqual:v11];
+        ckIdentifier3 = [(_REMCKIdentifierAccountIdentifierPair *)self ckIdentifier];
+        ckIdentifier4 = [(_REMCKIdentifierAccountIdentifierPair *)v6 ckIdentifier];
+        v12 = [ckIdentifier3 isEqual:ckIdentifier4];
 
         if (!v12)
         {
@@ -73,18 +73,18 @@ LABEL_3:
         }
       }
 
-      v14 = [(_REMCKIdentifierAccountIdentifierPair *)self accountIdentifier];
-      v15 = [(_REMCKIdentifierAccountIdentifierPair *)v6 accountIdentifier];
-      if (v14 == v15)
+      accountIdentifier = [(_REMCKIdentifierAccountIdentifierPair *)self accountIdentifier];
+      accountIdentifier2 = [(_REMCKIdentifierAccountIdentifierPair *)v6 accountIdentifier];
+      if (accountIdentifier == accountIdentifier2)
       {
         v13 = 1;
       }
 
       else
       {
-        v16 = [(_REMCKIdentifierAccountIdentifierPair *)self accountIdentifier];
-        v17 = [(_REMCKIdentifierAccountIdentifierPair *)v6 accountIdentifier];
-        v13 = [v16 isEqual:v17];
+        accountIdentifier3 = [(_REMCKIdentifierAccountIdentifierPair *)self accountIdentifier];
+        accountIdentifier4 = [(_REMCKIdentifierAccountIdentifierPair *)v6 accountIdentifier];
+        v13 = [accountIdentifier3 isEqual:accountIdentifier4];
       }
 
       goto LABEL_12;
@@ -105,19 +105,19 @@ LABEL_13:
 
 - (unint64_t)hash
 {
-  v3 = [(_REMCKIdentifierAccountIdentifierPair *)self ckIdentifier];
-  v4 = [v3 hash];
-  v5 = [(_REMCKIdentifierAccountIdentifierPair *)self accountIdentifier];
-  v6 = [v5 hash];
+  ckIdentifier = [(_REMCKIdentifierAccountIdentifierPair *)self ckIdentifier];
+  v4 = [ckIdentifier hash];
+  accountIdentifier = [(_REMCKIdentifierAccountIdentifierPair *)self accountIdentifier];
+  v6 = [accountIdentifier hash];
 
   return v6 ^ v4;
 }
 
 - (id)description
 {
-  v3 = [(_REMCKIdentifierAccountIdentifierPair *)self ckIdentifier];
-  v4 = [(_REMCKIdentifierAccountIdentifierPair *)self accountIdentifier];
-  v5 = [NSString stringWithFormat:@"(ckIdentifier: %@, accountIdentifier: %@)", v3, v4];
+  ckIdentifier = [(_REMCKIdentifierAccountIdentifierPair *)self ckIdentifier];
+  accountIdentifier = [(_REMCKIdentifierAccountIdentifierPair *)self accountIdentifier];
+  v5 = [NSString stringWithFormat:@"(ckIdentifier: %@, accountIdentifier: %@)", ckIdentifier, accountIdentifier];
 
   return v5;
 }

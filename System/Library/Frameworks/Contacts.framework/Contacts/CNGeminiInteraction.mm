@@ -1,26 +1,26 @@
 @interface CNGeminiInteraction
-- (CNGeminiInteraction)initWithTransport:(int64_t)a3 directionality:(int64_t)a4 destinationHandle:(id)a5 destinationContactIdentifier:(id)a6;
+- (CNGeminiInteraction)initWithTransport:(int64_t)transport directionality:(int64_t)directionality destinationHandle:(id)handle destinationContactIdentifier:(id)identifier;
 @end
 
 @implementation CNGeminiInteraction
 
-- (CNGeminiInteraction)initWithTransport:(int64_t)a3 directionality:(int64_t)a4 destinationHandle:(id)a5 destinationContactIdentifier:(id)a6
+- (CNGeminiInteraction)initWithTransport:(int64_t)transport directionality:(int64_t)directionality destinationHandle:(id)handle destinationContactIdentifier:(id)identifier
 {
-  v10 = a5;
-  v11 = a6;
+  handleCopy = handle;
+  identifierCopy = identifier;
   v20.receiver = self;
   v20.super_class = CNGeminiInteraction;
   v12 = [(CNGeminiInteraction *)&v20 init];
   v13 = v12;
   if (v12)
   {
-    v12->_transport = a3;
-    v12->_directionality = a4;
-    v14 = [v10 copy];
+    v12->_transport = transport;
+    v12->_directionality = directionality;
+    v14 = [handleCopy copy];
     handle = v13->_handle;
     v13->_handle = v14;
 
-    v16 = [v11 copy];
+    v16 = [identifierCopy copy];
     contactIdentifier = v13->_contactIdentifier;
     v13->_contactIdentifier = v16;
 

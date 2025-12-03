@@ -1,16 +1,16 @@
 @interface CMRecoverySession
-+ (HRRecoverySession)inputFromPreparedStatement:(SEL)a3;
-- (BOOL)isEqual:(id)a3;
-- (CMRecoverySession)initWithBinarySampleRepresentation:(id)a3 metadata:(id)a4 timestamp:(double)a5;
-- (CMRecoverySession)initWithCoder:(id)a3;
-- (CMRecoverySession)initWithRecordId:(unint64_t)a3 startDate:(id)a4 activityEndTime:(double)a5 workoutSessionId:(id)a6 workoutType:(int64_t)a7 hrRecovery:(double)a8 lambda:(double)a9 hrMax:(double)a10 hrMinAdjusted:(double)a11 recoveryOnsetTime:(double)a12 steadyStateHR:(double)a13 status:(int64_t)a14 sessionHrRecovery:(double)a15 peakHR:(double)a16 hrRecoveryReference:(double)a17;
-- (CMRecoverySession)initWithSample:(HRRecoverySession *)a3;
++ (HRRecoverySession)inputFromPreparedStatement:(SEL)statement;
+- (BOOL)isEqual:(id)equal;
+- (CMRecoverySession)initWithBinarySampleRepresentation:(id)representation metadata:(id)metadata timestamp:(double)timestamp;
+- (CMRecoverySession)initWithCoder:(id)coder;
+- (CMRecoverySession)initWithRecordId:(unint64_t)id startDate:(id)date activityEndTime:(double)time workoutSessionId:(id)sessionId workoutType:(int64_t)type hrRecovery:(double)recovery lambda:(double)lambda hrMax:(double)self0 hrMinAdjusted:(double)self1 recoveryOnsetTime:(double)self2 steadyStateHR:(double)self3 status:(int64_t)self4 sessionHrRecovery:(double)self5 peakHR:(double)self6 hrRecoveryReference:(double)self7;
+- (CMRecoverySession)initWithSample:(HRRecoverySession *)sample;
 - (NSString)description;
 - (id)binarySampleRepresentation;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)sr_dictionaryRepresentation;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CMRecoverySession
@@ -46,7 +46,7 @@
   return result;
 }
 
-- (CMRecoverySession)initWithRecordId:(unint64_t)a3 startDate:(id)a4 activityEndTime:(double)a5 workoutSessionId:(id)a6 workoutType:(int64_t)a7 hrRecovery:(double)a8 lambda:(double)a9 hrMax:(double)a10 hrMinAdjusted:(double)a11 recoveryOnsetTime:(double)a12 steadyStateHR:(double)a13 status:(int64_t)a14 sessionHrRecovery:(double)a15 peakHR:(double)a16 hrRecoveryReference:(double)a17
+- (CMRecoverySession)initWithRecordId:(unint64_t)id startDate:(id)date activityEndTime:(double)time workoutSessionId:(id)sessionId workoutType:(int64_t)type hrRecovery:(double)recovery lambda:(double)lambda hrMax:(double)self0 hrMinAdjusted:(double)self1 recoveryOnsetTime:(double)self2 steadyStateHR:(double)self3 status:(int64_t)self4 sessionHrRecovery:(double)self5 peakHR:(double)self6 hrRecoveryReference:(double)self7
 {
   v33.receiver = self;
   v33.super_class = CMRecoverySession;
@@ -54,27 +54,27 @@
   v31 = v30;
   if (v30)
   {
-    v30->fRecordId = a3;
-    v30->fStartDate = a4;
-    v31->fActivityEndTime = a5;
-    v31->fWorkoutSessionId = a6;
-    v31->fWorkoutType = a7;
-    v31->fHrRecovery = a8;
-    v31->fLambda = a9;
-    v31->fHrMax = a10;
-    v31->fHrMinAdjusted = a11;
-    v31->fRecoveryOnsetTime = a12;
-    v31->fSteadyStateHR = a13;
-    v31->fStatus = a14;
-    v31->fSessionHrRecovery = a15;
-    v31->fPeakHR = a16;
-    v31->fHrRecoveryReference = a17;
+    v30->fRecordId = id;
+    v30->fStartDate = date;
+    v31->fActivityEndTime = time;
+    v31->fWorkoutSessionId = sessionId;
+    v31->fWorkoutType = type;
+    v31->fHrRecovery = recovery;
+    v31->fLambda = lambda;
+    v31->fHrMax = max;
+    v31->fHrMinAdjusted = adjusted;
+    v31->fRecoveryOnsetTime = onsetTime;
+    v31->fSteadyStateHR = r;
+    v31->fStatus = status;
+    v31->fSessionHrRecovery = hrRecovery;
+    v31->fPeakHR = hR;
+    v31->fHrRecoveryReference = reference;
   }
 
   return v31;
 }
 
-- (CMRecoverySession)initWithSample:(HRRecoverySession *)a3
+- (CMRecoverySession)initWithSample:(HRRecoverySession *)sample
 {
   v12.receiver = self;
   v12.super_class = CMRecoverySession;
@@ -82,23 +82,23 @@
   if (v4)
   {
     v5 = objc_alloc(MEMORY[0x1E696AFB0]);
-    v7 = objc_msgSend_initWithUUIDBytes_(v5, v6, a3->var4);
-    v4->fRecordId = a3->var0;
+    v7 = objc_msgSend_initWithUUIDBytes_(v5, v6, sample->var4);
+    v4->fRecordId = sample->var0;
     v8 = objc_alloc(MEMORY[0x1E695DF00]);
-    v4->fStartDate = objc_msgSend_initWithTimeIntervalSinceReferenceDate_(v8, v9, v10, a3->var1);
-    v4->fActivityEndTime = a3->var2;
+    v4->fStartDate = objc_msgSend_initWithTimeIntervalSinceReferenceDate_(v8, v9, v10, sample->var1);
+    v4->fActivityEndTime = sample->var2;
     v4->fWorkoutSessionId = v7;
-    v4->fWorkoutType = a3->var5;
-    v4->fHrRecovery = a3->var6;
-    v4->fLambda = a3->var7;
-    v4->fHrMax = a3->var8;
-    v4->fHrMinAdjusted = a3->var9;
-    v4->fRecoveryOnsetTime = a3->var10;
-    v4->fSteadyStateHR = a3->var11;
-    v4->fStatus = a3->var12;
-    v4->fSessionHrRecovery = a3->var13;
-    v4->fPeakHR = a3->var14;
-    v4->fHrRecoveryReference = a3->var15;
+    v4->fWorkoutType = sample->var5;
+    v4->fHrRecovery = sample->var6;
+    v4->fLambda = sample->var7;
+    v4->fHrMax = sample->var8;
+    v4->fHrMinAdjusted = sample->var9;
+    v4->fRecoveryOnsetTime = sample->var10;
+    v4->fSteadyStateHR = sample->var11;
+    v4->fStatus = sample->var12;
+    v4->fSessionHrRecovery = sample->var13;
+    v4->fPeakHR = sample->var14;
+    v4->fHrRecoveryReference = sample->var15;
   }
 
   return v4;
@@ -111,53 +111,53 @@
   [(CMRecoverySession *)&v3 dealloc];
 }
 
-- (CMRecoverySession)initWithCoder:(id)a3
+- (CMRecoverySession)initWithCoder:(id)coder
 {
   v36.receiver = self;
   v36.super_class = CMRecoverySession;
   v5 = [(CMRecoverySession *)&v36 init];
   if (v5)
   {
-    v5->fRecordId = objc_msgSend_decodeIntegerForKey_(a3, v4, @"kCMRecoverySessionCodingKeyRecordId");
+    v5->fRecordId = objc_msgSend_decodeIntegerForKey_(coder, v4, @"kCMRecoverySessionCodingKeyRecordId");
     v6 = objc_opt_class();
-    v8 = objc_msgSend_decodeObjectOfClass_forKey_(a3, v7, v6, @"kCMRecoverySessionCodingKeyStartDate");
+    v8 = objc_msgSend_decodeObjectOfClass_forKey_(coder, v7, v6, @"kCMRecoverySessionCodingKeyStartDate");
     v5->fStartDate = objc_msgSend_copy(v8, v9, v10);
-    objc_msgSend_decodeDoubleForKey_(a3, v11, @"kCMRecoverySessionCodingKeyActivityEndTime");
+    objc_msgSend_decodeDoubleForKey_(coder, v11, @"kCMRecoverySessionCodingKeyActivityEndTime");
     v5->fActivityEndTime = v12;
     v13 = objc_opt_class();
-    v5->fWorkoutSessionId = objc_msgSend_decodeObjectOfClass_forKey_(a3, v14, v13, @"kCMRecoverySessionCodingKeyWorkoutSessionId");
-    v5->fWorkoutType = objc_msgSend_decodeIntegerForKey_(a3, v15, @"kCMRecoverySessionCodingKeyWorkoutType");
-    objc_msgSend_decodeDoubleForKey_(a3, v16, @"kCMRecoverySessionCodingKeyHRRecovery");
+    v5->fWorkoutSessionId = objc_msgSend_decodeObjectOfClass_forKey_(coder, v14, v13, @"kCMRecoverySessionCodingKeyWorkoutSessionId");
+    v5->fWorkoutType = objc_msgSend_decodeIntegerForKey_(coder, v15, @"kCMRecoverySessionCodingKeyWorkoutType");
+    objc_msgSend_decodeDoubleForKey_(coder, v16, @"kCMRecoverySessionCodingKeyHRRecovery");
     v5->fHrRecovery = v17;
-    objc_msgSend_decodeDoubleForKey_(a3, v18, @"kCMRecoverySessionCodingKeyLambda");
+    objc_msgSend_decodeDoubleForKey_(coder, v18, @"kCMRecoverySessionCodingKeyLambda");
     v5->fLambda = v19;
-    objc_msgSend_decodeDoubleForKey_(a3, v20, @"kCMRecoverySessionCodingKeyHRMax");
+    objc_msgSend_decodeDoubleForKey_(coder, v20, @"kCMRecoverySessionCodingKeyHRMax");
     v5->fHrMax = v21;
-    objc_msgSend_decodeDoubleForKey_(a3, v22, @"kCMRecoverySessionCodingKeyHRMinAdjusted");
+    objc_msgSend_decodeDoubleForKey_(coder, v22, @"kCMRecoverySessionCodingKeyHRMinAdjusted");
     v5->fHrMinAdjusted = v23;
-    objc_msgSend_decodeDoubleForKey_(a3, v24, @"kCMRecoverySessionCodingKeyRecoveryOnsetTime");
+    objc_msgSend_decodeDoubleForKey_(coder, v24, @"kCMRecoverySessionCodingKeyRecoveryOnsetTime");
     v5->fRecoveryOnsetTime = v25;
-    objc_msgSend_decodeDoubleForKey_(a3, v26, @"kCMRecoverySessionCodingKeySteadyStateHR");
+    objc_msgSend_decodeDoubleForKey_(coder, v26, @"kCMRecoverySessionCodingKeySteadyStateHR");
     v5->fSteadyStateHR = v27;
-    v5->fStatus = objc_msgSend_decodeIntegerForKey_(a3, v28, @"kCMRecoverySessionCodingKeyStatus");
-    objc_msgSend_decodeDoubleForKey_(a3, v29, @"kCMRecoverySessionCodingKeySessionHRRecovery");
+    v5->fStatus = objc_msgSend_decodeIntegerForKey_(coder, v28, @"kCMRecoverySessionCodingKeyStatus");
+    objc_msgSend_decodeDoubleForKey_(coder, v29, @"kCMRecoverySessionCodingKeySessionHRRecovery");
     v5->fSessionHrRecovery = v30;
-    objc_msgSend_decodeDoubleForKey_(a3, v31, @"kCMRecoverySessionCodingKeyPeakHR");
+    objc_msgSend_decodeDoubleForKey_(coder, v31, @"kCMRecoverySessionCodingKeyPeakHR");
     v5->fPeakHR = v32;
-    objc_msgSend_decodeDoubleForKey_(a3, v33, @"kCMRecoverySessionCodingKeyHRRecoveryReference");
+    objc_msgSend_decodeDoubleForKey_(coder, v33, @"kCMRecoverySessionCodingKeyHRRecoveryReference");
     v5->fHrRecoveryReference = v34;
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v27 = *MEMORY[0x1E69E9840];
   fRecordId = self->fRecordId;
   fStartDate = self->fStartDate;
   *&v19 = fRecordId;
-  objc_msgSend_timeIntervalSinceReferenceDate(fStartDate, a2, a3);
+  objc_msgSend_timeIntervalSinceReferenceDate(fStartDate, a2, zone);
   fActivityEndTime = self->fActivityEndTime;
   *(&v19 + 1) = v8;
   v20 = fActivityEndTime;
@@ -176,7 +176,7 @@
   WORD4(v26) = 0;
   objc_msgSend_getUUIDBytes_(fWorkoutSessionId, v11, &v22);
   v12 = objc_opt_class();
-  v14 = objc_msgSend_allocWithZone_(v12, v13, a3);
+  v14 = objc_msgSend_allocWithZone_(v12, v13, zone);
   v18[6] = *&v23[48];
   v18[7] = v24;
   v18[8] = v25;
@@ -192,28 +192,28 @@
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  objc_msgSend_encodeInteger_forKey_(a3, a2, self->fRecordId, @"kCMRecoverySessionCodingKeyRecordId");
-  objc_msgSend_encodeObject_forKey_(a3, v5, self->fStartDate, @"kCMRecoverySessionCodingKeyStartDate");
-  objc_msgSend_encodeDouble_forKey_(a3, v6, @"kCMRecoverySessionCodingKeyActivityEndTime", self->fActivityEndTime);
-  objc_msgSend_encodeObject_forKey_(a3, v7, self->fWorkoutSessionId, @"kCMRecoverySessionCodingKeyWorkoutSessionId");
-  objc_msgSend_encodeInteger_forKey_(a3, v8, self->fWorkoutType, @"kCMRecoverySessionCodingKeyWorkoutType");
-  objc_msgSend_encodeDouble_forKey_(a3, v9, @"kCMRecoverySessionCodingKeyHRRecovery", self->fHrRecovery);
-  objc_msgSend_encodeDouble_forKey_(a3, v10, @"kCMRecoverySessionCodingKeyLambda", self->fLambda);
-  objc_msgSend_encodeDouble_forKey_(a3, v11, @"kCMRecoverySessionCodingKeyHRMax", self->fHrMax);
-  objc_msgSend_encodeDouble_forKey_(a3, v12, @"kCMRecoverySessionCodingKeyHRMinAdjusted", self->fHrMinAdjusted);
-  objc_msgSend_encodeDouble_forKey_(a3, v13, @"kCMRecoverySessionCodingKeyRecoveryOnsetTime", self->fRecoveryOnsetTime);
-  objc_msgSend_encodeDouble_forKey_(a3, v14, @"kCMRecoverySessionCodingKeySteadyStateHR", self->fSteadyStateHR);
-  objc_msgSend_encodeInteger_forKey_(a3, v15, self->fStatus, @"kCMRecoverySessionCodingKeyStatus");
-  objc_msgSend_encodeDouble_forKey_(a3, v16, @"kCMRecoverySessionCodingKeySessionHRRecovery", self->fHrRecovery);
-  objc_msgSend_encodeDouble_forKey_(a3, v17, @"kCMRecoverySessionCodingKeyPeakHR", self->fPeakHR);
+  objc_msgSend_encodeInteger_forKey_(coder, a2, self->fRecordId, @"kCMRecoverySessionCodingKeyRecordId");
+  objc_msgSend_encodeObject_forKey_(coder, v5, self->fStartDate, @"kCMRecoverySessionCodingKeyStartDate");
+  objc_msgSend_encodeDouble_forKey_(coder, v6, @"kCMRecoverySessionCodingKeyActivityEndTime", self->fActivityEndTime);
+  objc_msgSend_encodeObject_forKey_(coder, v7, self->fWorkoutSessionId, @"kCMRecoverySessionCodingKeyWorkoutSessionId");
+  objc_msgSend_encodeInteger_forKey_(coder, v8, self->fWorkoutType, @"kCMRecoverySessionCodingKeyWorkoutType");
+  objc_msgSend_encodeDouble_forKey_(coder, v9, @"kCMRecoverySessionCodingKeyHRRecovery", self->fHrRecovery);
+  objc_msgSend_encodeDouble_forKey_(coder, v10, @"kCMRecoverySessionCodingKeyLambda", self->fLambda);
+  objc_msgSend_encodeDouble_forKey_(coder, v11, @"kCMRecoverySessionCodingKeyHRMax", self->fHrMax);
+  objc_msgSend_encodeDouble_forKey_(coder, v12, @"kCMRecoverySessionCodingKeyHRMinAdjusted", self->fHrMinAdjusted);
+  objc_msgSend_encodeDouble_forKey_(coder, v13, @"kCMRecoverySessionCodingKeyRecoveryOnsetTime", self->fRecoveryOnsetTime);
+  objc_msgSend_encodeDouble_forKey_(coder, v14, @"kCMRecoverySessionCodingKeySteadyStateHR", self->fSteadyStateHR);
+  objc_msgSend_encodeInteger_forKey_(coder, v15, self->fStatus, @"kCMRecoverySessionCodingKeyStatus");
+  objc_msgSend_encodeDouble_forKey_(coder, v16, @"kCMRecoverySessionCodingKeySessionHRRecovery", self->fHrRecovery);
+  objc_msgSend_encodeDouble_forKey_(coder, v17, @"kCMRecoverySessionCodingKeyPeakHR", self->fPeakHR);
   fHrRecoveryReference = self->fHrRecoveryReference;
 
-  objc_msgSend_encodeDouble_forKey_(a3, v18, @"kCMRecoverySessionCodingKeyHRRecoveryReference", fHrRecoveryReference);
+  objc_msgSend_encodeDouble_forKey_(coder, v18, @"kCMRecoverySessionCodingKeyHRRecoveryReference", fHrRecoveryReference);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -222,69 +222,69 @@
   }
 
   v7 = objc_msgSend_recordId(self, v5, v6);
-  if (v7 != objc_msgSend_recordId(a3, v8, v9))
+  if (v7 != objc_msgSend_recordId(equal, v8, v9))
   {
     goto LABEL_21;
   }
 
-  if (!objc_msgSend_startDate(self, v10, v11) && !objc_msgSend_startDate(a3, v12, v13) || (started = objc_msgSend_startDate(self, v12, v13), v17 = objc_msgSend_startDate(a3, v15, v16), (isEqual = objc_msgSend_isEqualToDate_(started, v18, v17)) != 0))
+  if (!objc_msgSend_startDate(self, v10, v11) && !objc_msgSend_startDate(equal, v12, v13) || (started = objc_msgSend_startDate(self, v12, v13), v17 = objc_msgSend_startDate(equal, v15, v16), (isEqual = objc_msgSend_isEqualToDate_(started, v18, v17)) != 0))
   {
-    if (!objc_msgSend_workoutSessionId(self, v12, v13) && !objc_msgSend_workoutSessionId(a3, v20, v21) || (v22 = objc_msgSend_workoutSessionId(self, v20, v21), v25 = objc_msgSend_workoutSessionId(a3, v23, v24), (isEqual = objc_msgSend_isEqual_(v22, v26, v25)) != 0))
+    if (!objc_msgSend_workoutSessionId(self, v12, v13) && !objc_msgSend_workoutSessionId(equal, v20, v21) || (v22 = objc_msgSend_workoutSessionId(self, v20, v21), v25 = objc_msgSend_workoutSessionId(equal, v23, v24), (isEqual = objc_msgSend_isEqual_(v22, v26, v25)) != 0))
     {
       objc_msgSend_activityEndTime(self, v20, v21);
       v28 = v27;
-      objc_msgSend_activityEndTime(a3, v29, v30);
+      objc_msgSend_activityEndTime(equal, v29, v30);
       if (v28 == v33)
       {
         v34 = objc_msgSend_workoutType(self, v31, v32);
-        if (v34 == objc_msgSend_workoutType(a3, v35, v36))
+        if (v34 == objc_msgSend_workoutType(equal, v35, v36))
         {
           objc_msgSend_hrRecovery(self, v37, v38);
           v40 = v39;
-          objc_msgSend_hrRecovery(a3, v41, v42);
+          objc_msgSend_hrRecovery(equal, v41, v42);
           if (v40 == v45)
           {
             objc_msgSend_lambda(self, v43, v44);
             v47 = v46;
-            objc_msgSend_lambda(a3, v48, v49);
+            objc_msgSend_lambda(equal, v48, v49);
             if (v47 == v52)
             {
               objc_msgSend_hrMax(self, v50, v51);
               v54 = v53;
-              objc_msgSend_hrMax(a3, v55, v56);
+              objc_msgSend_hrMax(equal, v55, v56);
               if (v54 == v59)
               {
                 objc_msgSend_hrMinAdjusted(self, v57, v58);
                 v61 = v60;
-                objc_msgSend_hrMinAdjusted(a3, v62, v63);
+                objc_msgSend_hrMinAdjusted(equal, v62, v63);
                 if (v61 == v66)
                 {
                   objc_msgSend_recoveryOnsetTime(self, v64, v65);
                   v68 = v67;
-                  objc_msgSend_recoveryOnsetTime(a3, v69, v70);
+                  objc_msgSend_recoveryOnsetTime(equal, v69, v70);
                   if (v68 == v73)
                   {
                     objc_msgSend_steadyStateHR(self, v71, v72);
                     v75 = v74;
-                    objc_msgSend_steadyStateHR(a3, v76, v77);
+                    objc_msgSend_steadyStateHR(equal, v76, v77);
                     if (v75 == v80)
                     {
                       v81 = objc_msgSend_status(self, v78, v79);
-                      if (v81 == objc_msgSend_status(a3, v82, v83))
+                      if (v81 == objc_msgSend_status(equal, v82, v83))
                       {
                         objc_msgSend_hrRecovery(self, v84, v85);
                         v87 = v86;
-                        objc_msgSend_hrRecovery(a3, v88, v89);
+                        objc_msgSend_hrRecovery(equal, v88, v89);
                         if (v87 == v92)
                         {
                           objc_msgSend_peakHR(self, v90, v91);
                           v94 = v93;
-                          objc_msgSend_peakHR(a3, v95, v96);
+                          objc_msgSend_peakHR(equal, v95, v96);
                           if (v94 == v99)
                           {
                             objc_msgSend_hrRecoveryReference(self, v97, v98);
                             v101 = v100;
-                            objc_msgSend_hrRecoveryReference(a3, v102, v103);
+                            objc_msgSend_hrRecoveryReference(equal, v102, v103);
                             LOBYTE(isEqual) = v101 == v104;
                             return isEqual;
                           }
@@ -342,7 +342,7 @@ LABEL_21:
   return objc_msgSend_stringWithFormat_(v3, v66, @"%@, <recordId, %lu, startDate, %@, activityEndTime, %@, workoutSessionId %@, workoutType, %lu, hrRecovery, %f, lambda, %f, hrMax, %f, hrMinAdjusted, %f, recoveryOnsetTime, %@, steadyStateHR, %f, status, %lu, sessionHrRecovery, %f, peakHR, %f, hrRecoveryReference, %f>", v5, v8, started, v17, v23, v26, v30, v34, v38, v42, v48, v52, v55, v59, v63, v67);
 }
 
-+ (HRRecoverySession)inputFromPreparedStatement:(SEL)a3
++ (HRRecoverySession)inputFromPreparedStatement:(SEL)statement
 {
   retstr->var0 = sqlite3_column_int(a4, 0);
   retstr->var1 = sqlite3_column_double(a4, 1);
@@ -380,9 +380,9 @@ LABEL_21:
   return v5;
 }
 
-- (CMRecoverySession)initWithBinarySampleRepresentation:(id)a3 metadata:(id)a4 timestamp:(double)a5
+- (CMRecoverySession)initWithBinarySampleRepresentation:(id)representation metadata:(id)metadata timestamp:(double)timestamp
 {
-  if (objc_msgSend_length(a3, a2, a3, a4, a5))
+  if (objc_msgSend_length(representation, a2, representation, metadata, timestamp))
   {
     v14.receiver = self;
     v14.super_class = CMRecoverySession;
@@ -391,7 +391,7 @@ LABEL_21:
     {
       v8 = MEMORY[0x1E696ACD0];
       v9 = objc_opt_class();
-      v11 = objc_msgSend_unarchivedObjectOfClass_fromData_error_(v8, v10, v9, a3, 0);
+      v11 = objc_msgSend_unarchivedObjectOfClass_fromData_error_(v8, v10, v9, representation, 0);
       if (v11)
       {
         v12 = v11;

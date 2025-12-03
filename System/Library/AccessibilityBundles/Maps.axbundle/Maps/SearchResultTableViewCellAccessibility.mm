@@ -1,22 +1,22 @@
 @interface SearchResultTableViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_axRatingDescription;
 - (id)accessibilityLabel;
 @end
 
 @implementation SearchResultTableViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"_SearchResultTableViewCell" hasInstanceVariable:@"_titleLabel" withType:"UILabel"];
-  [v3 validateClass:@"_SearchResultTableViewCell" hasInstanceVariable:@"_secondLabel" withType:"UILabel"];
-  [v3 validateClass:@"_SearchResultTableViewCell" hasInstanceVariable:@"_secondPartLabel" withType:"UILabel"];
-  [v3 validateClass:@"_SearchResultTableViewCell" hasInstanceVariable:@"_thirdLabel" withType:"UILabel"];
-  [v3 validateClass:@"_SearchResultTableViewCell" hasInstanceVariable:@"_contextualInformationLabel" withType:"UILabel"];
-  [v3 validateClass:@"_SearchResultTableViewCell" hasInstanceVariable:@"_mapItem" withType:"MKMapItem"];
-  [v3 validateClass:@"_SearchResultTableViewCell" hasInstanceVariable:@"_transitInfoLabel" withType:"MKTransitInfoLabelView"];
-  [v3 validateClass:@"_SearchResultTableViewCell" hasInstanceMethod:@"ratingsAttributedString" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"_SearchResultTableViewCell" hasInstanceVariable:@"_titleLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"_SearchResultTableViewCell" hasInstanceVariable:@"_secondLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"_SearchResultTableViewCell" hasInstanceVariable:@"_secondPartLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"_SearchResultTableViewCell" hasInstanceVariable:@"_thirdLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"_SearchResultTableViewCell" hasInstanceVariable:@"_contextualInformationLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"_SearchResultTableViewCell" hasInstanceVariable:@"_mapItem" withType:"MKMapItem"];
+  [validationsCopy validateClass:@"_SearchResultTableViewCell" hasInstanceVariable:@"_transitInfoLabel" withType:"MKTransitInfoLabelView"];
+  [validationsCopy validateClass:@"_SearchResultTableViewCell" hasInstanceMethod:@"ratingsAttributedString" withFullSignature:{"@", 0}];
 }
 
 - (id)_axRatingDescription
@@ -38,22 +38,22 @@
     v4 = 0;
   }
 
-  v5 = [v3 _reviewsAttribution];
-  v6 = [v5 providerName];
+  _reviewsAttribution = [v3 _reviewsAttribution];
+  providerName = [_reviewsAttribution providerName];
 
-  v7 = [v3 _sampleSizeForUserRatingScore];
-  v8 = [v6 length];
+  _sampleSizeForUserRatingScore = [v3 _sampleSizeForUserRatingScore];
+  v8 = [providerName length];
   v9 = MEMORY[0x29EDBA0F8];
   if (v8)
   {
     v10 = AXMapsLocString(@"REVIEWS_COUNT_WITH_PROVIDER_FORMAT");
-    [v9 localizedStringWithFormat:v10, v7, v6];
+    [v9 localizedStringWithFormat:v10, _sampleSizeForUserRatingScore, providerName];
   }
 
   else
   {
     v10 = AXMapsLocString(@"REVIEWS_COUNT_FORMAT");
-    [v9 localizedStringWithFormat:v10, v7, v16];
+    [v9 localizedStringWithFormat:v10, _sampleSizeForUserRatingScore, v16];
   }
   v11 = ;
 
@@ -77,23 +77,23 @@
   v11 = [(SearchResultTableViewCellAccessibility *)self safeValueForKey:@"ratingsAttributedString"];
   v12 = __UIAccessibilityCastAsClass();
 
-  v13 = [v12 string];
+  string = [v12 string];
 
   v26 = 0;
   objc_opt_class();
   v14 = [(SearchResultTableViewCellAccessibility *)self safeValueForKey:@"_mapItem"];
   v15 = __UIAccessibilityCastAsClass();
 
-  v16 = [v15 _priceRangeString];
+  _priceRangeString = [v15 _priceRangeString];
   v22[0] = MEMORY[0x29EDCA5F8];
   v22[1] = 3221225472;
   v22[2] = __60__SearchResultTableViewCellAccessibility_accessibilityLabel__block_invoke;
   v22[3] = &unk_29F2CC6C0;
-  v23 = v13;
-  v24 = self;
-  v25 = v16;
-  v17 = v16;
-  v18 = v13;
+  v23 = string;
+  selfCopy = self;
+  v25 = _priceRangeString;
+  v17 = _priceRangeString;
+  v18 = string;
   v19 = [v10 ax_flatMappedArrayUsingBlock:v22];
   v20 = MEMORY[0x29C2DCCF0]();
 

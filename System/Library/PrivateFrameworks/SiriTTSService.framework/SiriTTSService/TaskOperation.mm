@@ -8,7 +8,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B1AA62FC();
 
   v3 = sub_1B1C2CB28();
@@ -18,13 +18,13 @@
 
 - (void)main
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B1ABC260();
 }
 
 - (void)cancel
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B1B1AC30();
 }
 

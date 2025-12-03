@@ -1,38 +1,38 @@
 @interface AVCAudioStream
-- (AVCAudioStream)initWithIDSDestination:(id)a3 isOriginator:(BOOL)a4 callID:(id)a5 error:(id *)a6;
-- (AVCAudioStream)initWithIDSDestination:(id)a3 isOriginator:(BOOL)a4 error:(id *)a5;
-- (AVCAudioStream)initWithIDSDestination:(id)a3 options:(id)a4 error:(id *)a5;
-- (AVCAudioStream)initWithLocalAddress:(id)a3 callID:(id)a4 error:(id *)a5;
-- (AVCAudioStream)initWithLocalAddress:(id)a3 error:(id *)a4;
-- (AVCAudioStream)initWithLocalAddress:(id)a3 isOriginator:(BOOL)a4 callID:(id)a5 error:(id *)a6;
-- (AVCAudioStream)initWithLocalAddress:(id)a3 isOriginator:(BOOL)a4 error:(id *)a5;
-- (AVCAudioStream)initWithLocalAddress:(id)a3 networkSockets:(id)a4 IDSDestination:(id)a5 rtpConnectionClientID:(id)a6 rtcpConnectionClientID:(id)a7 localEndpoint:(id)a8 callID:(id)a9 options:(id)a10 error:(id *)a11;
-- (AVCAudioStream)initWithLocalEndpoint:(id)a3 options:(id)a4 error:(id *)a5;
-- (AVCAudioStream)initWithNetworkSockets:(id)a3 isOriginator:(BOOL)a4 callID:(id)a5 error:(id *)a6;
-- (AVCAudioStream)initWithNetworkSockets:(id)a3 isOriginator:(BOOL)a4 error:(id *)a5;
-- (AVCAudioStream)initWithNetworkSockets:(id)a3 options:(id)a4 error:(id *)a5;
-- (AVCAudioStream)initWithRTPNWConnectionClientID:(id)a3 rtcpNWConnectionClientID:(id)a4 options:(id)a5 error:(id *)a6;
-- (BOOL)addRemoteEndpoint:(id)a3 error:(id *)a4;
-- (BOOL)configure:(id)a3 error:(id *)a4;
-- (BOOL)configureInProcess:(id)a3 error:(id *)a4;
-- (BOOL)configureOutOfProcess:(id)a3 error:(id *)a4;
+- (AVCAudioStream)initWithIDSDestination:(id)destination isOriginator:(BOOL)originator callID:(id)d error:(id *)error;
+- (AVCAudioStream)initWithIDSDestination:(id)destination isOriginator:(BOOL)originator error:(id *)error;
+- (AVCAudioStream)initWithIDSDestination:(id)destination options:(id)options error:(id *)error;
+- (AVCAudioStream)initWithLocalAddress:(id)address callID:(id)d error:(id *)error;
+- (AVCAudioStream)initWithLocalAddress:(id)address error:(id *)error;
+- (AVCAudioStream)initWithLocalAddress:(id)address isOriginator:(BOOL)originator callID:(id)d error:(id *)error;
+- (AVCAudioStream)initWithLocalAddress:(id)address isOriginator:(BOOL)originator error:(id *)error;
+- (AVCAudioStream)initWithLocalAddress:(id)address networkSockets:(id)sockets IDSDestination:(id)destination rtpConnectionClientID:(id)d rtcpConnectionClientID:(id)iD localEndpoint:(id)endpoint callID:(id)callID options:(id)self0 error:(id *)self1;
+- (AVCAudioStream)initWithLocalEndpoint:(id)endpoint options:(id)options error:(id *)error;
+- (AVCAudioStream)initWithNetworkSockets:(id)sockets isOriginator:(BOOL)originator callID:(id)d error:(id *)error;
+- (AVCAudioStream)initWithNetworkSockets:(id)sockets isOriginator:(BOOL)originator error:(id *)error;
+- (AVCAudioStream)initWithNetworkSockets:(id)sockets options:(id)options error:(id *)error;
+- (AVCAudioStream)initWithRTPNWConnectionClientID:(id)d rtcpNWConnectionClientID:(id)iD options:(id)options error:(id *)error;
+- (BOOL)addRemoteEndpoint:(id)endpoint error:(id *)error;
+- (BOOL)configure:(id)configure error:(id *)error;
+- (BOOL)configureInProcess:(id)process error:(id *)error;
+- (BOOL)configureOutOfProcess:(id)process error:(id *)error;
 - (BOOL)isInputFrequencyMeteringEnabled;
 - (BOOL)isOutputFrequencyMeteringEnabled;
 - (BOOL)isRTCPEnabled;
 - (BOOL)isRTCPTimeOutEnabled;
 - (BOOL)isRTPTimeOutEnabled;
-- (BOOL)isRemoteEndpointValid:(id)a3 error:(id *)a4;
-- (BOOL)manageRemoteEndpointInProcess:(id)a3 actionType:(int64_t)a4 error:(id *)a5;
-- (BOOL)manageRemoteEndpointOutOfProcess:(id)a3 actionType:(int64_t)a4 error:(id *)a5;
-- (BOOL)removeRemoteEndpoint:(id)a3 error:(id *)a4;
-- (BOOL)setUpAudioStreamInProcessWithClientArgs:(id)a3 xpcArguments:(id)a4 error:(id *)a5;
-- (BOOL)setUpAudioStreamOutOfProcessWithClientArgs:(id)a3 xpcArguments:(id)a4 error:(id *)a5;
-- (BOOL)shouldRunInProcessWithOptions:(id)a3;
+- (BOOL)isRemoteEndpointValid:(id)valid error:(id *)error;
+- (BOOL)manageRemoteEndpointInProcess:(id)process actionType:(int64_t)type error:(id *)error;
+- (BOOL)manageRemoteEndpointOutOfProcess:(id)process actionType:(int64_t)type error:(id *)error;
+- (BOOL)removeRemoteEndpoint:(id)endpoint error:(id *)error;
+- (BOOL)setUpAudioStreamInProcessWithClientArgs:(id)args xpcArguments:(id)arguments error:(id *)error;
+- (BOOL)setUpAudioStreamOutOfProcessWithClientArgs:(id)args xpcArguments:(id)arguments error:(id *)error;
+- (BOOL)shouldRunInProcessWithOptions:(id)options;
 - (double)rtcpSendIntervalSec;
 - (double)rtcpTimeOutIntervalSec;
 - (double)rtpTimeOutIntervalSec;
 - (float)volume;
-- (id)validateInitializeConnectionResult:(id)a3;
+- (id)validateInitializeConnectionResult:(id)result;
 - (int64_t)direction;
 - (unsigned)jitterBufferMode;
 - (void)dealloc;
@@ -40,44 +40,44 @@
 - (void)didInterruptionBeginHandler;
 - (void)didInterruptionEndHandler;
 - (void)pause;
-- (void)processDTMFEventWithDigit:(id)a3;
+- (void)processDTMFEventWithDigit:(id)digit;
 - (void)refreshLoggingParameters;
 - (void)registerBlocksForDelegateNotifications;
 - (void)resume;
-- (void)sendDTMFDigitString:(id)a3 withVolume:(unsigned __int8)a4 duration:(unsigned __int16)a5 interval:(unsigned __int16)a6;
-- (void)setDirection:(int64_t)a3;
-- (void)setInputFrequencyMeteringEnabled:(BOOL)a3;
-- (void)setJitterBufferMode:(unsigned int)a3;
-- (void)setOutputFrequencyMeteringEnabled:(BOOL)a3;
-- (void)setRtcpEnabled:(BOOL)a3;
-- (void)setRtcpSendIntervalSec:(double)a3;
-- (void)setRtcpTimeOutEnabled:(BOOL)a3;
-- (void)setRtcpTimeOutIntervalSec:(double)a3;
-- (void)setRtpTimeOutEnabled:(BOOL)a3;
-- (void)setRtpTimeOutIntervalSec:(double)a3;
-- (void)setVolume:(float)a3;
+- (void)sendDTMFDigitString:(id)string withVolume:(unsigned __int8)volume duration:(unsigned __int16)duration interval:(unsigned __int16)interval;
+- (void)setDirection:(int64_t)direction;
+- (void)setInputFrequencyMeteringEnabled:(BOOL)enabled;
+- (void)setJitterBufferMode:(unsigned int)mode;
+- (void)setOutputFrequencyMeteringEnabled:(BOOL)enabled;
+- (void)setRtcpEnabled:(BOOL)enabled;
+- (void)setRtcpSendIntervalSec:(double)sec;
+- (void)setRtcpTimeOutEnabled:(BOOL)enabled;
+- (void)setRtcpTimeOutIntervalSec:(double)sec;
+- (void)setRtpTimeOutEnabled:(BOOL)enabled;
+- (void)setRtpTimeOutIntervalSec:(double)sec;
+- (void)setVolume:(float)volume;
 - (void)start;
-- (void)startContinuousDTMFWithDigit:(char)a3 volume:(unsigned __int8)a4;
-- (void)startSynchronizeWithStream:(int64_t)a3;
+- (void)startContinuousDTMFWithDigit:(char)digit volume:(unsigned __int8)volume;
+- (void)startSynchronizeWithStream:(int64_t)stream;
 - (void)stop;
 - (void)stopContinuousDTMF;
 - (void)terminateSession;
-- (void)vcMediaStream:(id)a3 didPauseStream:(BOOL)a4 error:(id)a5;
-- (void)vcMediaStream:(id)a3 didReceiveDTMFEventWithDigit:(char)a4;
-- (void)vcMediaStream:(id)a3 didReceiveRTCPPackets:(id)a4;
-- (void)vcMediaStream:(id)a3 didResumeStream:(BOOL)a4 error:(id)a5;
-- (void)vcMediaStream:(id)a3 didStartStream:(BOOL)a4 error:(id)a5;
-- (void)vcMediaStream:(id)a3 updateInputFrequencyLevel:(id)a4;
-- (void)vcMediaStream:(id)a3 updateOutputFrequencyLevel:(id)a4;
-- (void)vcMediaStreamDidRTCPTimeOut:(id)a3;
-- (void)vcMediaStreamDidRTPTimeOut:(id)a3;
-- (void)vcMediaStreamDidStop:(id)a3;
-- (void)vcMediaStreamServerDidDie:(id)a3;
+- (void)vcMediaStream:(id)stream didPauseStream:(BOOL)pauseStream error:(id)error;
+- (void)vcMediaStream:(id)stream didReceiveDTMFEventWithDigit:(char)digit;
+- (void)vcMediaStream:(id)stream didReceiveRTCPPackets:(id)packets;
+- (void)vcMediaStream:(id)stream didResumeStream:(BOOL)resumeStream error:(id)error;
+- (void)vcMediaStream:(id)stream didStartStream:(BOOL)startStream error:(id)error;
+- (void)vcMediaStream:(id)stream updateInputFrequencyLevel:(id)level;
+- (void)vcMediaStream:(id)stream updateOutputFrequencyLevel:(id)level;
+- (void)vcMediaStreamDidRTCPTimeOut:(id)out;
+- (void)vcMediaStreamDidRTPTimeOut:(id)out;
+- (void)vcMediaStreamDidStop:(id)stop;
+- (void)vcMediaStreamServerDidDie:(id)die;
 @end
 
 @implementation AVCAudioStream
 
-- (AVCAudioStream)initWithLocalAddress:(id)a3 error:(id *)a4
+- (AVCAudioStream)initWithLocalAddress:(id)address error:(id *)error
 {
   v21 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 6)
@@ -86,7 +86,7 @@
     v8 = *MEMORY[0x1E6986650];
     if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
     {
-      v9 = *a4;
+      v9 = *error;
       *buf = 136316162;
       v12 = v7;
       v13 = 2080;
@@ -94,17 +94,17 @@
       v15 = 1024;
       v16 = 78;
       v17 = 2112;
-      v18 = a3;
+      addressCopy = address;
       v19 = 2112;
       v20 = v9;
       _os_log_impl(&dword_1DB56E000, v8, OS_LOG_TYPE_DEFAULT, "AVCAudioStream [%s] %s:%d localAddress=%@, error=%@", buf, 0x30u);
     }
   }
 
-  return [(AVCAudioStream *)self initWithLocalAddress:a3 networkSockets:0 IDSDestination:0 rtpConnectionClientID:0 rtcpConnectionClientID:0 localEndpoint:0 callID:0 options:0 error:a4];
+  return [(AVCAudioStream *)self initWithLocalAddress:address networkSockets:0 IDSDestination:0 rtpConnectionClientID:0 rtcpConnectionClientID:0 localEndpoint:0 callID:0 options:0 error:error];
 }
 
-- (AVCAudioStream)initWithLocalAddress:(id)a3 callID:(id)a4 error:(id *)a5
+- (AVCAudioStream)initWithLocalAddress:(id)address callID:(id)d error:(id *)error
 {
   v25 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 6)
@@ -113,7 +113,7 @@
     v10 = *MEMORY[0x1E6986650];
     if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
     {
-      v11 = *a5;
+      v11 = *error;
       *buf = 136316418;
       v14 = v9;
       v15 = 2080;
@@ -121,21 +121,21 @@
       v17 = 1024;
       v18 = 83;
       v19 = 2112;
-      v20 = a3;
+      addressCopy = address;
       v21 = 2112;
-      v22 = a4;
+      dCopy = d;
       v23 = 2112;
       v24 = v11;
       _os_log_impl(&dword_1DB56E000, v10, OS_LOG_TYPE_DEFAULT, "AVCAudioStream [%s] %s:%d localAddress=%@, callID=%@, error=%@", buf, 0x3Au);
     }
   }
 
-  return [(AVCAudioStream *)self initWithLocalAddress:a3 networkSockets:0 IDSDestination:0 rtpConnectionClientID:0 rtcpConnectionClientID:0 localEndpoint:0 callID:a4 options:0 error:a5];
+  return [(AVCAudioStream *)self initWithLocalAddress:address networkSockets:0 IDSDestination:0 rtpConnectionClientID:0 rtcpConnectionClientID:0 localEndpoint:0 callID:d options:0 error:error];
 }
 
-- (AVCAudioStream)initWithLocalAddress:(id)a3 isOriginator:(BOOL)a4 error:(id *)a5
+- (AVCAudioStream)initWithLocalAddress:(id)address isOriginator:(BOOL)originator error:(id *)error
 {
-  v6 = a4;
+  originatorCopy = originator;
   v25 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 6)
   {
@@ -143,7 +143,7 @@
     v10 = *MEMORY[0x1E6986650];
     if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
     {
-      v11 = *a5;
+      v11 = *error;
       *buf = 136316418;
       v14 = v9;
       v15 = 2080;
@@ -151,21 +151,21 @@
       v17 = 1024;
       v18 = 88;
       v19 = 2112;
-      v20 = a3;
+      addressCopy = address;
       v21 = 1024;
-      v22 = v6;
+      v22 = originatorCopy;
       v23 = 2112;
       v24 = v11;
       _os_log_impl(&dword_1DB56E000, v10, OS_LOG_TYPE_DEFAULT, "AVCAudioStream [%s] %s:%d localAddress=%@, isOriginator=%d, error=%@", buf, 0x36u);
     }
   }
 
-  return [(AVCAudioStream *)self initWithLocalAddress:a3 networkSockets:0 IDSDestination:0 rtpConnectionClientID:0 rtcpConnectionClientID:0 localEndpoint:0 callID:0 options:0 error:a5];
+  return [(AVCAudioStream *)self initWithLocalAddress:address networkSockets:0 IDSDestination:0 rtpConnectionClientID:0 rtcpConnectionClientID:0 localEndpoint:0 callID:0 options:0 error:error];
 }
 
-- (AVCAudioStream)initWithLocalAddress:(id)a3 isOriginator:(BOOL)a4 callID:(id)a5 error:(id *)a6
+- (AVCAudioStream)initWithLocalAddress:(id)address isOriginator:(BOOL)originator callID:(id)d error:(id *)error
 {
-  v8 = a4;
+  originatorCopy = originator;
   v29 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 6)
   {
@@ -173,7 +173,7 @@
     v12 = *MEMORY[0x1E6986650];
     if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
     {
-      v13 = *a6;
+      v13 = *error;
       *buf = 136316674;
       v16 = v11;
       v17 = 2080;
@@ -181,23 +181,23 @@
       v19 = 1024;
       v20 = 93;
       v21 = 2112;
-      v22 = a3;
+      addressCopy = address;
       v23 = 1024;
-      v24 = v8;
+      v24 = originatorCopy;
       v25 = 2112;
-      v26 = a5;
+      dCopy = d;
       v27 = 2112;
       v28 = v13;
       _os_log_impl(&dword_1DB56E000, v12, OS_LOG_TYPE_DEFAULT, "AVCAudioStream [%s] %s:%d localAddress=%@, isOriginator=%d, callID=%@, error=%@", buf, 0x40u);
     }
   }
 
-  return [(AVCAudioStream *)self initWithLocalAddress:a3 networkSockets:0 IDSDestination:0 rtpConnectionClientID:0 rtcpConnectionClientID:0 localEndpoint:0 callID:a5 options:0 error:a6];
+  return [(AVCAudioStream *)self initWithLocalAddress:address networkSockets:0 IDSDestination:0 rtpConnectionClientID:0 rtcpConnectionClientID:0 localEndpoint:0 callID:d options:0 error:error];
 }
 
-- (AVCAudioStream)initWithNetworkSockets:(id)a3 isOriginator:(BOOL)a4 error:(id *)a5
+- (AVCAudioStream)initWithNetworkSockets:(id)sockets isOriginator:(BOOL)originator error:(id *)error
 {
-  v6 = a4;
+  originatorCopy = originator;
   v25 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 6)
   {
@@ -205,7 +205,7 @@
     v10 = *MEMORY[0x1E6986650];
     if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
     {
-      v11 = *a5;
+      v11 = *error;
       *buf = 136316418;
       v14 = v9;
       v15 = 2080;
@@ -213,21 +213,21 @@
       v17 = 1024;
       v18 = 98;
       v19 = 2112;
-      v20 = a3;
+      socketsCopy = sockets;
       v21 = 1024;
-      v22 = v6;
+      v22 = originatorCopy;
       v23 = 2112;
       v24 = v11;
       _os_log_impl(&dword_1DB56E000, v10, OS_LOG_TYPE_DEFAULT, "AVCAudioStream [%s] %s:%d socketsDictionary=%@, isOriginator=%d, error=%@", buf, 0x36u);
     }
   }
 
-  return [(AVCAudioStream *)self initWithLocalAddress:0 networkSockets:a3 IDSDestination:0 rtpConnectionClientID:0 rtcpConnectionClientID:0 localEndpoint:0 callID:0 options:0 error:a5];
+  return [(AVCAudioStream *)self initWithLocalAddress:0 networkSockets:sockets IDSDestination:0 rtpConnectionClientID:0 rtcpConnectionClientID:0 localEndpoint:0 callID:0 options:0 error:error];
 }
 
-- (AVCAudioStream)initWithNetworkSockets:(id)a3 isOriginator:(BOOL)a4 callID:(id)a5 error:(id *)a6
+- (AVCAudioStream)initWithNetworkSockets:(id)sockets isOriginator:(BOOL)originator callID:(id)d error:(id *)error
 {
-  v8 = a4;
+  originatorCopy = originator;
   v29 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 6)
   {
@@ -235,7 +235,7 @@
     v12 = *MEMORY[0x1E6986650];
     if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
     {
-      v13 = *a6;
+      v13 = *error;
       *buf = 136316674;
       v16 = v11;
       v17 = 2080;
@@ -243,26 +243,26 @@
       v19 = 1024;
       v20 = 103;
       v21 = 2112;
-      v22 = a3;
+      socketsCopy = sockets;
       v23 = 1024;
-      v24 = v8;
+      v24 = originatorCopy;
       v25 = 2112;
-      v26 = a5;
+      dCopy = d;
       v27 = 2112;
       v28 = v13;
       _os_log_impl(&dword_1DB56E000, v12, OS_LOG_TYPE_DEFAULT, "AVCAudioStream [%s] %s:%d socketsDictionary=%@, isOriginator=%d, callID=%@, error=%@", buf, 0x40u);
     }
   }
 
-  return [(AVCAudioStream *)self initWithLocalAddress:0 networkSockets:a3 IDSDestination:0 rtpConnectionClientID:0 rtcpConnectionClientID:0 localEndpoint:0 callID:a5 options:0 error:a6];
+  return [(AVCAudioStream *)self initWithLocalAddress:0 networkSockets:sockets IDSDestination:0 rtpConnectionClientID:0 rtcpConnectionClientID:0 localEndpoint:0 callID:d options:0 error:error];
 }
 
-- (AVCAudioStream)initWithNetworkSockets:(id)a3 options:(id)a4 error:(id *)a5
+- (AVCAudioStream)initWithNetworkSockets:(id)sockets options:(id)options error:(id *)error
 {
   v35 = *MEMORY[0x1E69E9840];
-  if ([a4 objectForKeyedSubscript:@"avcMediaStreamOptionCallID"])
+  if ([options objectForKeyedSubscript:@"avcMediaStreamOptionCallID"])
   {
-    v9 = [a4 objectForKeyedSubscript:@"avcMediaStreamOptionCallID"];
+    v9 = [options objectForKeyedSubscript:@"avcMediaStreamOptionCallID"];
   }
 
   else
@@ -270,9 +270,9 @@
     v9 = 0;
   }
 
-  if ([a4 objectForKeyedSubscript:@"avcMediaStreamOptionIsOriginator"])
+  if ([options objectForKeyedSubscript:@"avcMediaStreamOptionIsOriginator"])
   {
-    v10 = [objc_msgSend(a4 objectForKeyedSubscript:{@"avcMediaStreamOptionIsOriginator", "BOOLValue"}];
+    v10 = [objc_msgSend(options objectForKeyedSubscript:{@"avcMediaStreamOptionIsOriginator", "BOOLValue"}];
   }
 
   else
@@ -282,13 +282,13 @@
 
   if (VRTraceGetErrorLogLevelForModule() < 6)
   {
-    return [(AVCAudioStream *)self initWithLocalAddress:0 networkSockets:a3 IDSDestination:0 rtpConnectionClientID:0 rtcpConnectionClientID:0 localEndpoint:0 callID:v9 options:a4 error:a5];
+    return [(AVCAudioStream *)self initWithLocalAddress:0 networkSockets:sockets IDSDestination:0 rtpConnectionClientID:0 rtcpConnectionClientID:0 localEndpoint:0 callID:v9 options:options error:error];
   }
 
   __str = 0;
-  if (a3)
+  if (sockets)
   {
-    v11 = [objc_msgSend(a3 "description")];
+    v11 = [objc_msgSend(sockets "description")];
     if (v9)
     {
       goto LABEL_10;
@@ -296,7 +296,7 @@
 
 LABEL_13:
     v12 = "<nil>";
-    if (a4)
+    if (options)
     {
       goto LABEL_11;
     }
@@ -312,19 +312,19 @@ LABEL_13:
 
 LABEL_10:
   v12 = [objc_msgSend(v9 "description")];
-  if (a4)
+  if (options)
   {
 LABEL_11:
-    v13 = [objc_msgSend(a4 "description")];
+    v13 = [objc_msgSend(options "description")];
     goto LABEL_15;
   }
 
 LABEL_14:
   v13 = "<nil>";
 LABEL_15:
-  if (*a5)
+  if (*error)
   {
-    v14 = [objc_msgSend(*a5 "description")];
+    v14 = [objc_msgSend(*error "description")];
   }
 
   else
@@ -336,8 +336,8 @@ LABEL_15:
   if (__str)
   {
     v20 = v9;
-    v21 = self;
-    v22 = a3;
+    selfCopy = self;
+    socketsCopy = sockets;
     __lasts = 0;
     v15 = strtok_r(__str, "\n", &__lasts);
     v16 = MEMORY[0x1E6986650];
@@ -368,17 +368,17 @@ LABEL_15:
 
     while (v15);
     free(__str);
-    self = v21;
-    a3 = v22;
+    self = selfCopy;
+    sockets = socketsCopy;
     v9 = v20;
   }
 
-  return [(AVCAudioStream *)self initWithLocalAddress:0 networkSockets:a3 IDSDestination:0 rtpConnectionClientID:0 rtcpConnectionClientID:0 localEndpoint:0 callID:v9 options:a4 error:a5];
+  return [(AVCAudioStream *)self initWithLocalAddress:0 networkSockets:sockets IDSDestination:0 rtpConnectionClientID:0 rtcpConnectionClientID:0 localEndpoint:0 callID:v9 options:options error:error];
 }
 
-- (AVCAudioStream)initWithIDSDestination:(id)a3 isOriginator:(BOOL)a4 error:(id *)a5
+- (AVCAudioStream)initWithIDSDestination:(id)destination isOriginator:(BOOL)originator error:(id *)error
 {
-  v6 = a4;
+  originatorCopy = originator;
   v25 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 6)
   {
@@ -386,7 +386,7 @@ LABEL_15:
     v10 = *MEMORY[0x1E6986650];
     if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
     {
-      v11 = *a5;
+      v11 = *error;
       *buf = 136316418;
       v14 = v9;
       v15 = 2080;
@@ -394,21 +394,21 @@ LABEL_15:
       v17 = 1024;
       v18 = 123;
       v19 = 2112;
-      v20 = a3;
+      destinationCopy = destination;
       v21 = 1024;
-      v22 = v6;
+      v22 = originatorCopy;
       v23 = 2112;
       v24 = v11;
       _os_log_impl(&dword_1DB56E000, v10, OS_LOG_TYPE_DEFAULT, "AVCAudioStream [%s] %s:%d destination=%@, isOriginator=%d, error=%@", buf, 0x36u);
     }
   }
 
-  return [(AVCAudioStream *)self initWithLocalAddress:0 networkSockets:0 IDSDestination:a3 rtpConnectionClientID:0 rtcpConnectionClientID:0 localEndpoint:0 callID:0 options:0 error:a5];
+  return [(AVCAudioStream *)self initWithLocalAddress:0 networkSockets:0 IDSDestination:destination rtpConnectionClientID:0 rtcpConnectionClientID:0 localEndpoint:0 callID:0 options:0 error:error];
 }
 
-- (AVCAudioStream)initWithIDSDestination:(id)a3 isOriginator:(BOOL)a4 callID:(id)a5 error:(id *)a6
+- (AVCAudioStream)initWithIDSDestination:(id)destination isOriginator:(BOOL)originator callID:(id)d error:(id *)error
 {
-  v8 = a4;
+  originatorCopy = originator;
   v29 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 6)
   {
@@ -416,7 +416,7 @@ LABEL_15:
     v12 = *MEMORY[0x1E6986650];
     if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
     {
-      v13 = *a6;
+      v13 = *error;
       *buf = 136316674;
       v16 = v11;
       v17 = 2080;
@@ -424,21 +424,21 @@ LABEL_15:
       v19 = 1024;
       v20 = 128;
       v21 = 2112;
-      v22 = a3;
+      destinationCopy = destination;
       v23 = 1024;
-      v24 = v8;
+      v24 = originatorCopy;
       v25 = 2112;
-      v26 = a5;
+      dCopy = d;
       v27 = 2112;
       v28 = v13;
       _os_log_impl(&dword_1DB56E000, v12, OS_LOG_TYPE_DEFAULT, "AVCAudioStream [%s] %s:%d destination=%@, isOriginator=%d, callID=%@, error=%@", buf, 0x40u);
     }
   }
 
-  return [(AVCAudioStream *)self initWithLocalAddress:0 networkSockets:0 IDSDestination:a3 rtpConnectionClientID:0 rtcpConnectionClientID:0 localEndpoint:0 callID:a5 options:0 error:a6];
+  return [(AVCAudioStream *)self initWithLocalAddress:0 networkSockets:0 IDSDestination:destination rtpConnectionClientID:0 rtcpConnectionClientID:0 localEndpoint:0 callID:d options:0 error:error];
 }
 
-- (AVCAudioStream)initWithIDSDestination:(id)a3 options:(id)a4 error:(id *)a5
+- (AVCAudioStream)initWithIDSDestination:(id)destination options:(id)options error:(id *)error
 {
   v27 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() < 6)
@@ -453,10 +453,10 @@ LABEL_15:
     goto LABEL_9;
   }
 
-  if (!a4)
+  if (!options)
   {
     v11 = "<nil>";
-    if (a5)
+    if (error)
     {
       goto LABEL_5;
     }
@@ -466,14 +466,14 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v11 = [objc_msgSend(a4 "description")];
-  if (!a5)
+  v11 = [objc_msgSend(options "description")];
+  if (!error)
   {
     goto LABEL_7;
   }
 
 LABEL_5:
-  v12 = *a5;
+  v12 = *error;
 LABEL_8:
   *buf = 136316418;
   v16 = v9;
@@ -482,16 +482,16 @@ LABEL_8:
   v19 = 1024;
   v20 = 133;
   v21 = 2112;
-  v22 = a3;
+  destinationCopy = destination;
   v23 = 2080;
   v24 = v11;
   v25 = 2112;
   v26 = v12;
   _os_log_impl(&dword_1DB56E000, v10, OS_LOG_TYPE_DEFAULT, "AVCAudioStream [%s] %s:%d destination=%@, options=%s, error=%@", buf, 0x3Au);
 LABEL_9:
-  if (a4)
+  if (options)
   {
-    v13 = [a4 objectForKeyedSubscript:@"avcMediaStreamOptionCallID"];
+    v13 = [options objectForKeyedSubscript:@"avcMediaStreamOptionCallID"];
   }
 
   else
@@ -499,15 +499,15 @@ LABEL_9:
     v13 = 0;
   }
 
-  return [(AVCAudioStream *)self initWithLocalAddress:0 networkSockets:0 IDSDestination:a3 rtpConnectionClientID:0 rtcpConnectionClientID:0 localEndpoint:0 callID:v13 options:a4 error:a5];
+  return [(AVCAudioStream *)self initWithLocalAddress:0 networkSockets:0 IDSDestination:destination rtpConnectionClientID:0 rtcpConnectionClientID:0 localEndpoint:0 callID:v13 options:options error:error];
 }
 
-- (AVCAudioStream)initWithRTPNWConnectionClientID:(id)a3 rtcpNWConnectionClientID:(id)a4 options:(id)a5 error:(id *)a6
+- (AVCAudioStream)initWithRTPNWConnectionClientID:(id)d rtcpNWConnectionClientID:(id)iD options:(id)options error:(id *)error
 {
   v38 = *MEMORY[0x1E69E9840];
-  if ([a5 objectForKeyedSubscript:@"avcMediaStreamOptionCallID"])
+  if ([options objectForKeyedSubscript:@"avcMediaStreamOptionCallID"])
   {
-    v11 = [a5 objectForKeyedSubscript:@"avcMediaStreamOptionCallID"];
+    v11 = [options objectForKeyedSubscript:@"avcMediaStreamOptionCallID"];
   }
 
   else
@@ -515,9 +515,9 @@ LABEL_9:
     v11 = 0;
   }
 
-  if ([a5 objectForKeyedSubscript:@"avcMediaStreamOptionIsOriginator"])
+  if ([options objectForKeyedSubscript:@"avcMediaStreamOptionIsOriginator"])
   {
-    v12 = [objc_msgSend(a5 objectForKeyedSubscript:{@"avcMediaStreamOptionIsOriginator", "BOOLValue"}];
+    v12 = [objc_msgSend(options objectForKeyedSubscript:{@"avcMediaStreamOptionIsOriginator", "BOOLValue"}];
   }
 
   else
@@ -531,11 +531,11 @@ LABEL_9:
     v14 = *MEMORY[0x1E6986650];
     if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
     {
-      v19 = [a3 UUIDString];
-      v18 = [a4 UUIDString];
-      if (a5)
+      uUIDString = [d UUIDString];
+      uUIDString2 = [iD UUIDString];
+      if (options)
       {
-        v15 = [objc_msgSend(a5 "description")];
+        v15 = [objc_msgSend(options "description")];
       }
 
       else
@@ -543,9 +543,9 @@ LABEL_9:
         v15 = "<nil>";
       }
 
-      if (*a6)
+      if (*error)
       {
-        v16 = [objc_msgSend(*a6 "description")];
+        v16 = [objc_msgSend(*error "description")];
       }
 
       else
@@ -560,9 +560,9 @@ LABEL_9:
       v24 = 1024;
       v25 = 150;
       v26 = 2112;
-      v27 = v19;
+      v27 = uUIDString;
       v28 = 2112;
-      v29 = v18;
+      v29 = uUIDString2;
       v30 = 1024;
       v31 = v12;
       v32 = 2112;
@@ -575,23 +575,23 @@ LABEL_9:
     }
   }
 
-  if (a3)
+  if (d)
   {
-    return -[AVCAudioStream initWithLocalAddress:networkSockets:IDSDestination:rtpConnectionClientID:rtcpConnectionClientID:localEndpoint:callID:options:error:](self, "initWithLocalAddress:networkSockets:IDSDestination:rtpConnectionClientID:rtcpConnectionClientID:localEndpoint:callID:options:error:", 0, 0, 0, [a3 UUIDString], objc_msgSend(a4, "UUIDString"), 0, v11, a5, a6);
+    return -[AVCAudioStream initWithLocalAddress:networkSockets:IDSDestination:rtpConnectionClientID:rtcpConnectionClientID:localEndpoint:callID:options:error:](self, "initWithLocalAddress:networkSockets:IDSDestination:rtpConnectionClientID:rtcpConnectionClientID:localEndpoint:callID:options:error:", 0, 0, 0, [d UUIDString], objc_msgSend(iD, "UUIDString"), 0, v11, options, error);
   }
 
-  if (a6)
+  if (error)
   {
-    *a6 = [MEMORY[0x1E696ABC0] AVConferenceServiceError:32000 detailCode:0 description:@"rtpClientID cannot not be nil"];
+    *error = [MEMORY[0x1E696ABC0] AVConferenceServiceError:32000 detailCode:0 description:@"rtpClientID cannot not be nil"];
   }
 
   return 0;
 }
 
-- (AVCAudioStream)initWithLocalEndpoint:(id)a3 options:(id)a4 error:(id *)a5
+- (AVCAudioStream)initWithLocalEndpoint:(id)endpoint options:(id)options error:(id *)error
 {
   v27 = *MEMORY[0x1E69E9840];
-  v9 = [a4 objectForKeyedSubscript:@"avcMediaStreamOptionCallID"];
+  v9 = [options objectForKeyedSubscript:@"avcMediaStreamOptionCallID"];
   MEMORY[0x1E128B580](&dword_1DB56E000, "@:@ AVCAudioStream-init");
   if (VRTraceGetErrorLogLevelForModule() >= 6)
   {
@@ -599,10 +599,10 @@ LABEL_9:
     v11 = *MEMORY[0x1E6986650];
     if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [a3 description];
-      if (a4)
+      v12 = [endpoint description];
+      if (options)
       {
-        v13 = [objc_msgSend(a4 "description")];
+        v13 = [objc_msgSend(options "description")];
       }
 
       else
@@ -626,10 +626,10 @@ LABEL_9:
     }
   }
 
-  return [(AVCAudioStream *)self initWithLocalAddress:0 networkSockets:0 IDSDestination:0 rtpConnectionClientID:0 rtcpConnectionClientID:0 localEndpoint:a3 callID:v9 options:a4 error:a5];
+  return [(AVCAudioStream *)self initWithLocalAddress:0 networkSockets:0 IDSDestination:0 rtpConnectionClientID:0 rtcpConnectionClientID:0 localEndpoint:endpoint callID:v9 options:options error:error];
 }
 
-- (AVCAudioStream)initWithLocalAddress:(id)a3 networkSockets:(id)a4 IDSDestination:(id)a5 rtpConnectionClientID:(id)a6 rtcpConnectionClientID:(id)a7 localEndpoint:(id)a8 callID:(id)a9 options:(id)a10 error:(id *)a11
+- (AVCAudioStream)initWithLocalAddress:(id)address networkSockets:(id)sockets IDSDestination:(id)destination rtpConnectionClientID:(id)d rtcpConnectionClientID:(id)iD localEndpoint:(id)endpoint callID:(id)callID options:(id)self0 error:(id *)self1
 {
   v69 = *MEMORY[0x1E69E9840];
   v55.receiver = self;
@@ -641,25 +641,25 @@ LABEL_9:
     if (v18)
     {
       v19 = v18;
-      v20 = a9;
+      callIDCopy2 = callID;
       if (VRTraceGetErrorLogLevelForModule() < 7)
       {
         goto LABEL_32;
       }
 
       __str = 0;
-      if (a3)
+      if (address)
       {
-        v52 = [objc_msgSend(a3 "description")];
-        if (a4)
+        v52 = [objc_msgSend(address "description")];
+        if (sockets)
         {
 LABEL_6:
-          v50 = [objc_msgSend(a4 "description")];
+          v50 = [objc_msgSend(sockets "description")];
 LABEL_9:
-          v49 = a8;
-          if (a5)
+          endpointCopy = endpoint;
+          if (destination)
           {
-            v21 = [objc_msgSend(a5 "description")];
+            v21 = [objc_msgSend(destination "description")];
           }
 
           else
@@ -667,10 +667,10 @@ LABEL_9:
             v21 = "<nil>";
           }
 
-          v47 = a6;
-          if (a6)
+          dCopy = d;
+          if (d)
           {
-            v22 = [objc_msgSend(a6 "description")];
+            v22 = [objc_msgSend(d "description")];
           }
 
           else
@@ -678,10 +678,10 @@ LABEL_9:
             v22 = "<nil>";
           }
 
-          v46 = a5;
-          if (a7)
+          destinationCopy = destination;
+          if (iD)
           {
-            v23 = [objc_msgSend(a7 "description")];
+            v23 = [objc_msgSend(iD "description")];
           }
 
           else
@@ -689,10 +689,10 @@ LABEL_9:
             v23 = "<nil>";
           }
 
-          v45 = a3;
-          if (a9)
+          addressCopy = address;
+          if (callID)
           {
-            v24 = [objc_msgSend(a9 "description")];
+            v24 = [objc_msgSend(callID "description")];
           }
 
           else
@@ -700,10 +700,10 @@ LABEL_9:
             v24 = "<nil>";
           }
 
-          v48 = a7;
-          if (a10)
+          iDCopy = iD;
+          if (options)
           {
-            v25 = [objc_msgSend(a10 "description")];
+            v25 = [objc_msgSend(options "description")];
           }
 
           else
@@ -714,7 +714,7 @@ LABEL_9:
           asprintf(&__str, "localAddress=%s, socketsDictionary=%s, destination=%s, rtpConnectionClientID=%s, rtcpConnectionClientID=%s, callID=%s, options=%s", v52, v50, v21, v22, v23, v24, v25);
           if (__str)
           {
-            v44 = a4;
+            socketsCopy = sockets;
             v51 = v17;
             __lasts = 0;
             v26 = strtok_r(__str, "\n", &__lasts);
@@ -747,55 +747,55 @@ LABEL_9:
             while (v26);
             free(__str);
             v17 = v51;
-            a4 = v44;
-            v20 = a9;
+            sockets = socketsCopy;
+            callIDCopy2 = callID;
           }
 
-          a7 = v48;
-          a8 = v49;
-          a5 = v46;
-          a6 = v47;
-          a3 = v45;
+          iD = iDCopy;
+          endpoint = endpointCopy;
+          destination = destinationCopy;
+          d = dCopy;
+          address = addressCopy;
 LABEL_32:
-          v17->_isInProcess = [(AVCAudioStream *)v17 shouldRunInProcessWithOptions:a10];
+          v17->_isInProcess = [(AVCAudioStream *)v17 shouldRunInProcessWithOptions:options];
           [(AVCAudioStream *)v17 refreshLoggingParameters];
-          if (a4)
+          if (sockets)
           {
-            a4 = xpc_retain(a4);
+            sockets = xpc_retain(sockets);
           }
 
-          if (a3)
+          if (address)
           {
-            [v19 setObject:objc_msgSend(a3 forKeyedSubscript:{"ip"), @"vcMediaStreamSourceIP"}];
-            [v19 setObject:objc_msgSend(a3 forKeyedSubscript:{"interfaceName"), @"vcMediaStreamSourceInterfaceName"}];
+            [v19 setObject:objc_msgSend(address forKeyedSubscript:{"ip"), @"vcMediaStreamSourceIP"}];
+            [v19 setObject:objc_msgSend(address forKeyedSubscript:{"interfaceName"), @"vcMediaStreamSourceInterfaceName"}];
           }
 
-          if (a5)
+          if (destination)
           {
-            [v19 setObject:a5 forKeyedSubscript:@"vcMediaStreamDestID"];
+            [v19 setObject:destination forKeyedSubscript:@"vcMediaStreamDestID"];
           }
 
-          if (a6)
+          if (d)
           {
-            [v19 setObject:a6 forKeyedSubscript:@"vcMediaStreamConnectionClientID"];
+            [v19 setObject:d forKeyedSubscript:@"vcMediaStreamConnectionClientID"];
           }
 
-          if (a7)
+          if (iD)
           {
-            [v19 setObject:a7 forKeyedSubscript:@"vcMediaStreamRTCPConnectionClientID"];
+            [v19 setObject:iD forKeyedSubscript:@"vcMediaStreamRTCPConnectionClientID"];
           }
 
-          if ([a8 endpoint])
+          if ([endpoint endpoint])
           {
-            if (nw_endpoint_get_port([a8 endpoint]))
+            if (nw_endpoint_get_port([endpoint endpoint]))
             {
-              [AVCAudioStream initWithLocalAddress:a4 networkSockets:buf IDSDestination:&__str rtpConnectionClientID:? rtcpConnectionClientID:? localEndpoint:? callID:? options:? error:?];
-              a4 = *buf;
+              [AVCAudioStream initWithLocalAddress:sockets networkSockets:buf IDSDestination:&__str rtpConnectionClientID:? rtcpConnectionClientID:? localEndpoint:? callID:? options:? error:?];
+              sockets = *buf;
               v35 = __str;
               if (*buf)
               {
 LABEL_72:
-                xpc_release(a4);
+                xpc_release(sockets);
               }
 
 LABEL_73:
@@ -809,7 +809,7 @@ LABEL_73:
             }
 
             isInProcess = v17->_isInProcess;
-            v31 = [a8 endpoint];
+            endpoint = [endpoint endpoint];
             if (isInProcess)
             {
               v32 = @"vcMediaStreamLocalNWEndpoint";
@@ -817,41 +817,41 @@ LABEL_73:
 
             else
             {
-              a4 = nw_endpoint_copy_dictionary();
-              v31 = MEMORY[0x1E695E118];
+              sockets = nw_endpoint_copy_dictionary();
+              endpoint = MEMORY[0x1E695E118];
               v32 = @"vcMediaStreamLocalNWEndpointInXpcArgs";
             }
 
-            [v19 setObject:v31 forKeyedSubscript:v32];
+            [v19 setObject:endpoint forKeyedSubscript:v32];
           }
 
-          if (v20)
+          if (callIDCopy2)
           {
-            [v19 setObject:v20 forKeyedSubscript:@"vcMediaStreamCallID"];
+            [v19 setObject:callIDCopy2 forKeyedSubscript:@"vcMediaStreamCallID"];
           }
 
-          if ([a10 objectForKeyedSubscript:@"avcMediaStreamOptionRemoteEndpointInfo"])
+          if ([options objectForKeyedSubscript:@"avcMediaStreamOptionRemoteEndpointInfo"])
           {
-            [v19 setObject:objc_msgSend(a10 forKeyedSubscript:{"objectForKeyedSubscript:", @"avcMediaStreamOptionRemoteEndpointInfo", @"vcMediaStreamRemoteEndpointInfo"}];
+            [v19 setObject:objc_msgSend(options forKeyedSubscript:{"objectForKeyedSubscript:", @"avcMediaStreamOptionRemoteEndpointInfo", @"vcMediaStreamRemoteEndpointInfo"}];
           }
 
-          if ([a10 objectForKeyedSubscript:@"avcMediaStreamOptionClientName"])
+          if ([options objectForKeyedSubscript:@"avcMediaStreamOptionClientName"])
           {
-            [v19 setObject:objc_msgSend(a10 forKeyedSubscript:{"objectForKeyedSubscript:", @"avcMediaStreamOptionClientName", @"vcMediaStreamClientName"}];
+            [v19 setObject:objc_msgSend(options forKeyedSubscript:{"objectForKeyedSubscript:", @"avcMediaStreamOptionClientName", @"vcMediaStreamClientName"}];
           }
 
-          if ([a10 objectForKeyedSubscript:@"avcMediaStreamOptionDelayNWConnectionStart"])
+          if ([options objectForKeyedSubscript:@"avcMediaStreamOptionDelayNWConnectionStart"])
           {
-            [v19 setObject:objc_msgSend(a10 forKeyedSubscript:{"objectForKeyedSubscript:", @"avcMediaStreamOptionDelayNWConnectionStart", @"vcMediaStreamDelayNWConnectionStart"}];
+            [v19 setObject:objc_msgSend(options forKeyedSubscript:{"objectForKeyedSubscript:", @"avcMediaStreamOptionDelayNWConnectionStart", @"vcMediaStreamDelayNWConnectionStart"}];
           }
 
-          if ([a10 objectForKeyedSubscript:@"avcMediaStreamOptionClientSessionID"])
+          if ([options objectForKeyedSubscript:@"avcMediaStreamOptionClientSessionID"])
           {
-            [a10 objectForKeyedSubscript:@"avcMediaStreamOptionClientSessionID"];
+            [options objectForKeyedSubscript:@"avcMediaStreamOptionClientSessionID"];
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              [v19 setObject:objc_msgSend(objc_msgSend(a10 forKeyedSubscript:{"objectForKeyedSubscript:", @"avcMediaStreamOptionClientSessionID", "UUIDString"), @"vcMediaStreamClientSessionID"}];
+              [v19 setObject:objc_msgSend(objc_msgSend(options forKeyedSubscript:{"objectForKeyedSubscript:", @"avcMediaStreamOptionClientSessionID", "UUIDString"), @"vcMediaStreamClientSessionID"}];
             }
 
             else if (VRTraceGetErrorLogLevelForModule() >= 3)
@@ -870,12 +870,12 @@ LABEL_73:
           v17->_callbackQueue = dispatch_queue_create_with_target_V2("com.apple.AVConference.avcaudiostream.callback.queue", 0, CustomRootQueue);
           if (v17->_isInProcess)
           {
-            v34 = [(AVCAudioStream *)v17 setUpAudioStreamInProcessWithClientArgs:v19 xpcArguments:a4 error:a11];
+            v34 = [(AVCAudioStream *)v17 setUpAudioStreamInProcessWithClientArgs:v19 xpcArguments:sockets error:error];
           }
 
           else
           {
-            v34 = [(AVCAudioStream *)v17 setUpAudioStreamOutOfProcessWithClientArgs:v19 xpcArguments:a4 error:a11];
+            v34 = [(AVCAudioStream *)v17 setUpAudioStreamOutOfProcessWithClientArgs:v19 xpcArguments:sockets error:error];
           }
 
           v35 = v34;
@@ -888,9 +888,9 @@ LABEL_73:
             {
               v38 = getpid();
               streamToken = v17->_streamToken;
-              if (a11)
+              if (error)
               {
-                v40 = *a11;
+                v40 = *error;
               }
 
               else
@@ -909,7 +909,7 @@ LABEL_73:
               v63 = 1024;
               *v64 = v38;
               *&v64[4] = 2112;
-              *&v64[6] = v20;
+              *&v64[6] = callIDCopy2;
               v65 = 1024;
               v66 = streamToken;
               v67 = 2112;
@@ -918,7 +918,7 @@ LABEL_73:
             }
           }
 
-          if (a4)
+          if (sockets)
           {
             goto LABEL_72;
           }
@@ -930,7 +930,7 @@ LABEL_73:
       else
       {
         v52 = "<nil>";
-        if (a4)
+        if (sockets)
         {
           goto LABEL_6;
         }
@@ -972,10 +972,10 @@ LABEL_74:
   return 0;
 }
 
-- (BOOL)shouldRunInProcessWithOptions:(id)a3
+- (BOOL)shouldRunInProcessWithOptions:(id)options
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = [objc_msgSend(a3 objectForKeyedSubscript:{@"avcMediaStreamOptionRunInProcess", "BOOLValue"}];
+  v4 = [objc_msgSend(options objectForKeyedSubscript:{@"avcMediaStreamOptionRunInProcess", "BOOLValue"}];
   if (objc_opt_class() == self)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -1039,7 +1039,7 @@ LABEL_74:
         v22 = 2112;
         v23 = v5;
         v24 = 2048;
-        v25 = self;
+        selfCopy = self;
         v26 = 2080;
         v27 = v14;
         v9 = "AVCAudioStream [%s] %s:%d %@(%p) AVCAudioStream will run %s process";
@@ -1054,10 +1054,10 @@ LABEL_15:
   return v4;
 }
 
-- (id)validateInitializeConnectionResult:(id)a3
+- (id)validateInitializeConnectionResult:(id)result
 {
   v54 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!result)
   {
     if (objc_opt_class() == self)
     {
@@ -1109,7 +1109,7 @@ LABEL_15:
             v46 = 2112;
             v47 = v6;
             v48 = 2048;
-            v49 = self;
+            selfCopy16 = self;
             _os_log_error_impl(&dword_1DB56E000, v13, OS_LOG_TYPE_ERROR, "AVCAudioStream [%s] %s:%d %@(%p) Missing result dictionary", &v40, 0x30u);
           }
         }
@@ -1125,7 +1125,7 @@ LABEL_15:
           v46 = 2112;
           v47 = v6;
           v48 = 2048;
-          v49 = self;
+          selfCopy16 = self;
           _os_log_fault_impl(&dword_1DB56E000, v13, OS_LOG_TYPE_FAULT, "AVCAudioStream [%s] %s:%d %@(%p) Missing result dictionary", &v40, 0x30u);
         }
       }
@@ -1136,7 +1136,7 @@ LABEL_15:
     return [v18 AVConferenceServiceError:32000 detailCode:0 description:v19];
   }
 
-  if ([a3 objectForKeyedSubscript:@"SERVERDIED"])
+  if ([result objectForKeyedSubscript:@"SERVERDIED"])
   {
     if (objc_opt_class() == self)
     {
@@ -1188,7 +1188,7 @@ LABEL_15:
             v46 = 2112;
             v47 = v5;
             v48 = 2048;
-            v49 = self;
+            selfCopy16 = self;
             _os_log_error_impl(&dword_1DB56E000, v10, OS_LOG_TYPE_ERROR, "AVCAudioStream [%s] %s:%d %@(%p) Server died", &v40, 0x30u);
           }
         }
@@ -1204,7 +1204,7 @@ LABEL_15:
           v46 = 2112;
           v47 = v5;
           v48 = 2048;
-          v49 = self;
+          selfCopy16 = self;
           _os_log_fault_impl(&dword_1DB56E000, v10, OS_LOG_TYPE_FAULT, "AVCAudioStream [%s] %s:%d %@(%p) Server died", &v40, 0x30u);
         }
       }
@@ -1215,7 +1215,7 @@ LABEL_15:
     return [v18 AVConferenceServiceError:32000 detailCode:0 description:v19];
   }
 
-  if ([a3 objectForKeyedSubscript:@"ERROR"])
+  if ([result objectForKeyedSubscript:@"ERROR"])
   {
     if (objc_opt_class() == self)
     {
@@ -1267,11 +1267,11 @@ LABEL_15:
             v46 = 2112;
             v47 = v7;
             v48 = 2048;
-            v49 = self;
+            selfCopy16 = self;
             v50 = 2112;
-            v51 = [a3 objectForKeyedSubscript:@"ERROR"];
+            resultCopy6 = [result objectForKeyedSubscript:@"ERROR"];
             v52 = 2112;
-            v53 = a3;
+            resultCopy2 = result;
             _os_log_error_impl(&dword_1DB56E000, v17, OS_LOG_TYPE_ERROR, "AVCAudioStream [%s] %s:%d %@(%p) error=%@, result=%@", &v40, 0x44u);
           }
         }
@@ -1287,22 +1287,22 @@ LABEL_15:
           v46 = 2112;
           v47 = v7;
           v48 = 2048;
-          v49 = self;
+          selfCopy16 = self;
           v50 = 2112;
-          v51 = [a3 objectForKeyedSubscript:@"ERROR"];
+          resultCopy6 = [result objectForKeyedSubscript:@"ERROR"];
           v52 = 2112;
-          v53 = a3;
+          resultCopy2 = result;
           _os_log_fault_impl(&dword_1DB56E000, v17, OS_LOG_TYPE_FAULT, "AVCAudioStream [%s] %s:%d %@(%p) error=%@, result=%@", &v40, 0x44u);
         }
       }
     }
 
-    return [a3 objectForKeyedSubscript:@"ERROR"];
+    return [result objectForKeyedSubscript:@"ERROR"];
   }
 
   else
   {
-    if ([a3 objectForKeyedSubscript:@"TIMEOUT"])
+    if ([result objectForKeyedSubscript:@"TIMEOUT"])
     {
       if (objc_opt_class() == self)
       {
@@ -1354,9 +1354,9 @@ LABEL_15:
               v46 = 2112;
               v47 = v14;
               v48 = 2048;
-              v49 = self;
+              selfCopy16 = self;
               v50 = 2112;
-              v51 = a3;
+              resultCopy6 = result;
               _os_log_error_impl(&dword_1DB56E000, v23, OS_LOG_TYPE_ERROR, "AVCAudioStream [%s] %s:%d %@(%p) IPC Timeout: result=%@", &v40, 0x3Au);
             }
           }
@@ -1372,9 +1372,9 @@ LABEL_15:
             v46 = 2112;
             v47 = v14;
             v48 = 2048;
-            v49 = self;
+            selfCopy16 = self;
             v50 = 2112;
-            v51 = a3;
+            resultCopy6 = result;
             _os_log_fault_impl(&dword_1DB56E000, v23, OS_LOG_TYPE_FAULT, "AVCAudioStream [%s] %s:%d %@(%p) IPC Timeout: result=%@", &v40, 0x3Au);
           }
         }
@@ -1385,7 +1385,7 @@ LABEL_15:
       return [v18 AVConferenceServiceError:32000 detailCode:0 description:v19];
     }
 
-    if (![a3 objectForKeyedSubscript:@"vcMediaStreamStreamCapabilities"])
+    if (![result objectForKeyedSubscript:@"vcMediaStreamStreamCapabilities"])
     {
       if (objc_opt_class() == self)
       {
@@ -1437,9 +1437,9 @@ LABEL_15:
               v46 = 2112;
               v47 = v24;
               v48 = 2048;
-              v49 = self;
+              selfCopy16 = self;
               v50 = 2112;
-              v51 = a3;
+              resultCopy6 = result;
               _os_log_error_impl(&dword_1DB56E000, v29, OS_LOG_TYPE_ERROR, "AVCAudioStream [%s] %s:%d %@(%p) Missing capabilities dictionary: result=%@", &v40, 0x3Au);
             }
           }
@@ -1455,9 +1455,9 @@ LABEL_15:
             v46 = 2112;
             v47 = v24;
             v48 = 2048;
-            v49 = self;
+            selfCopy16 = self;
             v50 = 2112;
-            v51 = a3;
+            resultCopy6 = result;
             _os_log_fault_impl(&dword_1DB56E000, v29, OS_LOG_TYPE_FAULT, "AVCAudioStream [%s] %s:%d %@(%p) Missing capabilities dictionary: result=%@", &v40, 0x3Au);
           }
         }
@@ -1468,7 +1468,7 @@ LABEL_15:
       return [v18 AVConferenceServiceError:32000 detailCode:0 description:v19];
     }
 
-    if (![a3 objectForKeyedSubscript:@"vcMediaStreamToken"])
+    if (![result objectForKeyedSubscript:@"vcMediaStreamToken"])
     {
       if (objc_opt_class() == self)
       {
@@ -1520,7 +1520,7 @@ LABEL_15:
               v46 = 2112;
               v47 = v25;
               v48 = 2048;
-              v49 = self;
+              selfCopy16 = self;
               _os_log_error_impl(&dword_1DB56E000, v33, OS_LOG_TYPE_ERROR, "AVCAudioStream [%s] %s:%d %@(%p) Missing stream token", &v40, 0x30u);
             }
           }
@@ -1536,7 +1536,7 @@ LABEL_15:
             v46 = 2112;
             v47 = v25;
             v48 = 2048;
-            v49 = self;
+            selfCopy16 = self;
             _os_log_fault_impl(&dword_1DB56E000, v33, OS_LOG_TYPE_FAULT, "AVCAudioStream [%s] %s:%d %@(%p) Missing stream token", &v40, 0x30u);
           }
         }
@@ -1547,7 +1547,7 @@ LABEL_15:
       return [v18 AVConferenceServiceError:32000 detailCode:0 description:v19];
     }
 
-    if (![a3 objectForKeyedSubscript:@"vcMediaStreamTokenUplink"])
+    if (![result objectForKeyedSubscript:@"vcMediaStreamTokenUplink"])
     {
       if (objc_opt_class() == self)
       {
@@ -1599,7 +1599,7 @@ LABEL_15:
               v46 = 2112;
               v47 = v26;
               v48 = 2048;
-              v49 = self;
+              selfCopy16 = self;
               _os_log_error_impl(&dword_1DB56E000, v36, OS_LOG_TYPE_ERROR, "AVCAudioStream [%s] %s:%d %@(%p) Missing stream token for the uplink", &v40, 0x30u);
             }
           }
@@ -1615,7 +1615,7 @@ LABEL_15:
             v46 = 2112;
             v47 = v26;
             v48 = 2048;
-            v49 = self;
+            selfCopy16 = self;
             _os_log_fault_impl(&dword_1DB56E000, v36, OS_LOG_TYPE_FAULT, "AVCAudioStream [%s] %s:%d %@(%p) Missing stream token for the uplink", &v40, 0x30u);
           }
         }
@@ -1626,7 +1626,7 @@ LABEL_15:
       return [v18 AVConferenceServiceError:32000 detailCode:0 description:v19];
     }
 
-    if (![a3 objectForKeyedSubscript:@"vcMediaStreamTokenDownlink"])
+    if (![result objectForKeyedSubscript:@"vcMediaStreamTokenDownlink"])
     {
       if (objc_opt_class() == self)
       {
@@ -1678,7 +1678,7 @@ LABEL_15:
               v46 = 2112;
               v47 = v30;
               v48 = 2048;
-              v49 = self;
+              selfCopy16 = self;
               _os_log_error_impl(&dword_1DB56E000, v39, OS_LOG_TYPE_ERROR, "AVCAudioStream [%s] %s:%d %@(%p) Missing stream token for the downlink", &v40, 0x30u);
             }
           }
@@ -1694,7 +1694,7 @@ LABEL_15:
             v46 = 2112;
             v47 = v30;
             v48 = 2048;
-            v49 = self;
+            selfCopy16 = self;
             _os_log_fault_impl(&dword_1DB56E000, v39, OS_LOG_TYPE_FAULT, "AVCAudioStream [%s] %s:%d %@(%p) Missing stream token for the downlink", &v40, 0x30u);
           }
         }
@@ -1781,9 +1781,9 @@ LABEL_15:
       v19 = 1024;
       v20 = 320;
       v21 = 2112;
-      v22 = v3;
+      selfCopy2 = v3;
       v23 = 2048;
-      v24 = self;
+      selfCopy = self;
       v6 = "AVCAudioStream [%s] %s:%d %@(%p) ";
       v7 = v10;
       v8 = 48;
@@ -1829,7 +1829,7 @@ LABEL_12:
       v19 = 1024;
       v20 = 338;
       v21 = 2048;
-      v22 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_1DB56E000, v13, OS_LOG_TYPE_DEFAULT, "AVCAudioStream [%s] %s:%d @:@ AVCAudioStream-dealloc (%p)", buf, 0x26u);
     }
   }
@@ -1839,18 +1839,18 @@ LABEL_12:
   [(AVCAudioStream *)&v14 dealloc];
 }
 
-- (BOOL)configure:(id)a3 error:(id *)a4
+- (BOOL)configure:(id)configure error:(id *)error
 {
   v39 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 6)
   {
     __str = 0;
-    v7 = a3 ? [objc_msgSend(a3 "description")] : "<nil>";
-    v8 = *a4 ? [objc_msgSend(*a4 "description")] : "<nil>";
+    v7 = configure ? [objc_msgSend(configure "description")] : "<nil>";
+    v8 = *error ? [objc_msgSend(*error "description")] : "<nil>";
     asprintf(&__str, "configuration=%s, error=%s", v7, v8);
     if (__str)
     {
-      v26 = a4;
+      errorCopy = error;
       __lasts = 0;
       v9 = strtok_r(__str, "\n", &__lasts);
       v10 = MEMORY[0x1E6986650];
@@ -1869,7 +1869,7 @@ LABEL_12:
             v33 = 1024;
             v34 = 353;
             v35 = 2080;
-            v36 = "";
+            selfCopy = "";
             v37 = 2080;
             *v38 = v9;
             _os_log_impl(&dword_1DB56E000, v12, OS_LOG_TYPE_DEFAULT, "AVCAudioStream [%s] %s:%d %s %s", buf, 0x30u);
@@ -1881,20 +1881,20 @@ LABEL_12:
 
       while (v9);
       free(__str);
-      a4 = v26;
+      error = errorCopy;
     }
   }
 
-  if ([a3 isValidAudioConfig])
+  if ([configure isValidAudioConfig])
   {
     if (self->_isInProcess)
     {
-      v13 = [(AVCAudioStream *)self configureInProcess:a3 error:a4];
+      v13 = [(AVCAudioStream *)self configureInProcess:configure error:error];
     }
 
     else
     {
-      v13 = [(AVCAudioStream *)self configureOutOfProcess:a3 error:a4];
+      v13 = [(AVCAudioStream *)self configureOutOfProcess:configure error:error];
     }
 
     v15 = v13;
@@ -1905,9 +1905,9 @@ LABEL_12:
       v17 = *MEMORY[0x1E6986650];
       if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
       {
-        if (a4)
+        if (error)
         {
-          v18 = *a4;
+          v18 = *error;
         }
 
         else
@@ -1922,7 +1922,7 @@ LABEL_12:
         v33 = 1024;
         v34 = 372;
         v35 = 2048;
-        v36 = self;
+        selfCopy = self;
         v37 = 1024;
         *v38 = v15;
         *&v38[4] = 2112;
@@ -1934,7 +1934,7 @@ LABEL_12:
 
   else
   {
-    +[GKVoiceChatError getNSError:code:detailedCode:filePath:description:reason:](GKVoiceChatError, "getNSError:code:detailedCode:filePath:description:reason:", a4, 32016, 105, [MEMORY[0x1E696AEC0] stringWithFormat:@"%s:%d", "/Library/Caches/com.apple.xbs/Sources/AVConference/AVConference.subproj/Sources/AVCAudioStream.m", 360], @"Invalid Parameter", @"Called with an invalid parameter");
+    +[GKVoiceChatError getNSError:code:detailedCode:filePath:description:reason:](GKVoiceChatError, "getNSError:code:detailedCode:filePath:description:reason:", error, 32016, 105, [MEMORY[0x1E696AEC0] stringWithFormat:@"%s:%d", "/Library/Caches/com.apple.xbs/Sources/AVConference/AVConference.subproj/Sources/AVCAudioStream.m", 360], @"Invalid Parameter", @"Called with an invalid parameter");
     if (objc_opt_class() == self)
     {
       if (VRTraceGetErrorLogLevelForModule() >= 2)
@@ -1944,13 +1944,13 @@ LABEL_12:
         {
           if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_ERROR))
           {
-            [AVCAudioStream configure:v19 error:a4];
+            [AVCAudioStream configure:v19 error:error];
           }
         }
 
         else if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_FAULT))
         {
-          [AVCAudioStream configure:v19 error:a4];
+          [AVCAudioStream configure:v19 error:error];
         }
       }
     }
@@ -1976,9 +1976,9 @@ LABEL_12:
         {
           if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_ERROR))
           {
-            if (*a4)
+            if (*error)
             {
-              v23 = [objc_msgSend(*a4 "description")];
+              v23 = [objc_msgSend(*error "description")];
             }
 
             else
@@ -1993,7 +1993,7 @@ LABEL_12:
             v33 = 1024;
             v34 = 363;
             v35 = 2112;
-            v36 = v14;
+            selfCopy = v14;
             v37 = 2048;
             *v38 = self;
             *&v38[8] = 2080;
@@ -2004,9 +2004,9 @@ LABEL_12:
 
         else if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_FAULT))
         {
-          if (*a4)
+          if (*error)
           {
-            v24 = [objc_msgSend(*a4 "description")];
+            v24 = [objc_msgSend(*error "description")];
           }
 
           else
@@ -2021,7 +2021,7 @@ LABEL_12:
           v33 = 1024;
           v34 = 363;
           v35 = 2112;
-          v36 = v14;
+          selfCopy = v14;
           v37 = 2048;
           *v38 = self;
           *&v38[8] = 2080;
@@ -2043,12 +2043,12 @@ LABEL_12:
   MEMORY[0x1E128B590](&dword_1DB56E000, "[AVCAudioStream start]");
   if (![(AVCAudioStream *)self configuration])
   {
-    v7 = [MEMORY[0x1E696ABC0] AVConferenceServiceError:32016 detailCode:0 description:@"AVCAudioStream hasn't been configured"];
+    start = [MEMORY[0x1E696ABC0] AVConferenceServiceError:32016 detailCode:0 description:@"AVCAudioStream hasn't been configured"];
     opaqueStream = self->_opaqueStream;
-    v10 = self;
+    selfCopy2 = self;
     v9 = 0;
 LABEL_8:
-    [(AVCAudioStream *)v10 vcMediaStream:opaqueStream didStartStream:v9 error:v7];
+    [(AVCAudioStream *)selfCopy2 vcMediaStream:opaqueStream didStartStream:v9 error:start];
     goto LABEL_13;
   }
 
@@ -2072,10 +2072,10 @@ LABEL_8:
       }
     }
 
-    v7 = [(VCMediaStream *)self->_opaqueStream start];
+    start = [(VCMediaStream *)self->_opaqueStream start];
     opaqueStream = self->_opaqueStream;
-    v9 = v7 == 0;
-    v10 = self;
+    v9 = start == 0;
+    selfCopy2 = self;
     goto LABEL_8;
   }
 
@@ -2111,7 +2111,7 @@ LABEL_13:
       v19 = 1024;
       v20 = 393;
       v21 = 2048;
-      v22 = self;
+      selfCopy3 = self;
       _os_log_impl(&dword_1DB56E000, v14, OS_LOG_TYPE_DEFAULT, "AVCAudioStream [%s] %s:%d @:@ AVCAudioStream-start (%p)", &v15, 0x26u);
     }
   }
@@ -2146,7 +2146,7 @@ LABEL_13:
       v9 = 1024;
       v10 = 405;
       v11 = 2048;
-      v12 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1DB56E000, v4, OS_LOG_TYPE_DEFAULT, "AVCAudioStream [%s] %s:%d @:@ AVCAudioStream-stop (%p)", &v5, 0x26u);
     }
   }
@@ -2182,7 +2182,7 @@ LABEL_13:
       v11 = 1024;
       v12 = 422;
       v13 = 2048;
-      v14 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, "AVCAudioStream [%s] %s:%d @:@ AVCAudioStream-pause (%p)", buf, 0x26u);
     }
   }
@@ -2218,17 +2218,17 @@ LABEL_13:
       v11 = 1024;
       v12 = 439;
       v13 = 2048;
-      v14 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, "AVCAudioStream [%s] %s:%d @:@ AVCAudioStream-resume (%p)", buf, 0x26u);
     }
   }
 }
 
-- (void)sendDTMFDigitString:(id)a3 withVolume:(unsigned __int8)a4 duration:(unsigned __int16)a5 interval:(unsigned __int16)a6
+- (void)sendDTMFDigitString:(id)string withVolume:(unsigned __int8)volume duration:(unsigned __int16)duration interval:(unsigned __int16)interval
 {
-  v6 = a6;
-  v7 = a5;
-  v8 = a4;
+  intervalCopy = interval;
+  durationCopy = duration;
+  volumeCopy = volume;
   v31 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 6)
   {
@@ -2243,25 +2243,25 @@ LABEL_13:
       v21 = 1024;
       v22 = 444;
       v23 = 2112;
-      v24 = a3;
+      stringCopy = string;
       v25 = 1024;
-      v26 = v8;
+      v26 = volumeCopy;
       v27 = 1024;
-      v28 = v7;
+      v28 = durationCopy;
       v29 = 1024;
-      v30 = v6;
+      v30 = intervalCopy;
       _os_log_impl(&dword_1DB56E000, v12, OS_LOG_TYPE_DEFAULT, "AVCAudioStream [%s] %s:%d digits=%@, volume=%hhu, duration=%hu, interval=%hu", buf, 0x38u);
     }
   }
 
-  v16[0] = a3;
+  v16[0] = string;
   v15[0] = @"event";
   v15[1] = @"volume";
-  v16[1] = [MEMORY[0x1E696AD98] numberWithUnsignedChar:v8];
+  v16[1] = [MEMORY[0x1E696AD98] numberWithUnsignedChar:volumeCopy];
   v15[2] = @"duration";
-  v16[2] = [MEMORY[0x1E696AD98] numberWithUnsignedShort:v7];
+  v16[2] = [MEMORY[0x1E696AD98] numberWithUnsignedShort:durationCopy];
   v15[3] = @"interval";
-  v16[3] = [MEMORY[0x1E696AD98] numberWithUnsignedShort:v6];
+  v16[3] = [MEMORY[0x1E696AD98] numberWithUnsignedShort:intervalCopy];
   v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:v15 count:4];
   if (self->_isInProcess)
   {
@@ -2275,20 +2275,20 @@ LABEL_13:
   }
 }
 
-- (BOOL)manageRemoteEndpointInProcess:(id)a3 actionType:(int64_t)a4 error:(id *)a5
+- (BOOL)manageRemoteEndpointInProcess:(id)process actionType:(int64_t)type error:(id *)error
 {
   v29[1] = *MEMORY[0x1E69E9840];
-  if (a4 == 1)
+  if (type == 1)
   {
-    v8 = [(VCMediaStream *)self->_opaqueStream removeRemoteEndpoint:a3 error:a5];
+    v8 = [(VCMediaStream *)self->_opaqueStream removeRemoteEndpoint:process error:error];
   }
 
   else
   {
-    if (a4)
+    if (type)
     {
       v9 = 0;
-      if (!a5)
+      if (!error)
       {
         return v9;
       }
@@ -2296,20 +2296,20 @@ LABEL_13:
       goto LABEL_8;
     }
 
-    v8 = [(VCMediaStream *)self->_opaqueStream addRemoteEndpoint:a3 error:a5];
+    v8 = [(VCMediaStream *)self->_opaqueStream addRemoteEndpoint:process error:error];
   }
 
   v9 = v8;
-  if (!a5)
+  if (!error)
   {
     return v9;
   }
 
 LABEL_8:
-  if (!v9 && !*a5)
+  if (!v9 && !*error)
   {
     v11 = "remove";
-    if (!a4)
+    if (!type)
     {
       v11 = "add";
     }
@@ -2317,7 +2317,7 @@ LABEL_8:
     v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to %s the remote endpoint", v11];
     v28 = *MEMORY[0x1E696A588];
     v29[0] = v12;
-    *a5 = [MEMORY[0x1E696ABC0] errorWithDomain:@"AVCAudioStream" code:-3 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v29, &v28, 1)}];
+    *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"AVCAudioStream" code:-3 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v29, &v28, 1)}];
     if (objc_opt_class() == self)
     {
       if (VRTraceGetErrorLogLevelForModule() >= 3)
@@ -2357,7 +2357,7 @@ LABEL_8:
           v22 = 2112;
           v23 = v13;
           v24 = 2048;
-          v25 = self;
+          selfCopy = self;
           v26 = 2112;
           v27 = v12;
           _os_log_error_impl(&dword_1DB56E000, v15, OS_LOG_TYPE_ERROR, "AVCAudioStream [%s] %s:%d %@(%p) error=%@", buf, 0x3Au);
@@ -2369,7 +2369,7 @@ LABEL_8:
   return v9;
 }
 
-- (BOOL)manageRemoteEndpointOutOfProcess:(id)a3 actionType:(int64_t)a4 error:(id *)a5
+- (BOOL)manageRemoteEndpointOutOfProcess:(id)process actionType:(int64_t)type error:(id *)error
 {
   v37 = *MEMORY[0x1E69E9840];
   v9 = [AVCEndpoint newEndpointXPCDictionaryWithAVCEndpoint:?];
@@ -2382,8 +2382,8 @@ LABEL_8:
         v17 = VRTraceErrorLogLevelToCSTR();
         if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_ERROR))
         {
-          [AVCAudioStream manageRemoteEndpointOutOfProcess:v17 actionType:a3 error:?];
-          if (a5)
+          [AVCAudioStream manageRemoteEndpointOutOfProcess:v17 actionType:process error:?];
+          if (error)
           {
             goto LABEL_25;
           }
@@ -2420,16 +2420,16 @@ LABEL_8:
           v31 = 2112;
           v32 = v16;
           v33 = 2048;
-          v34 = self;
+          selfCopy2 = self;
           v35 = 2112;
-          v36 = [a3 description];
+          v36 = [process description];
           _os_log_error_impl(&dword_1DB56E000, v19, OS_LOG_TYPE_ERROR, "AVCAudioStream [%s] %s:%d %@(%p) Failed to encode the AVC remote endpoint=%@", buf, 0x3Au);
-          if (a5)
+          if (error)
           {
 LABEL_25:
             v23 = *MEMORY[0x1E696A588];
             v24 = @"Failed to encode the remote endpoint provided";
-            *a5 = [MEMORY[0x1E696ABC0] errorWithDomain:@"AVCAudioStream" code:-3 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v24, &v23, 1)}];
+            *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"AVCAudioStream" code:-3 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v24, &v23, 1)}];
             if (objc_opt_class() == self)
             {
               if (VRTraceGetErrorLogLevelForModule() >= 3)
@@ -2469,7 +2469,7 @@ LABEL_25:
                   v31 = 2112;
                   v32 = v20;
                   v33 = 2048;
-                  v34 = self;
+                  selfCopy2 = self;
                   v35 = 2112;
                   v36 = @"Failed to encode the remote endpoint provided";
                   _os_log_error_impl(&dword_1DB56E000, v22, OS_LOG_TYPE_ERROR, "AVCAudioStream [%s] %s:%d %@(%p) error=%@", buf, 0x3Au);
@@ -2483,7 +2483,7 @@ LABEL_25:
       }
     }
 
-    if (a5)
+    if (error)
     {
       goto LABEL_25;
     }
@@ -2492,9 +2492,9 @@ LABEL_25:
   }
 
   v10 = v9;
-  if (a4)
+  if (type)
   {
-    if (a4 != 1)
+    if (type != 1)
     {
 LABEL_10:
       v14 = 0;
@@ -2522,24 +2522,24 @@ LABEL_10:
     goto LABEL_12;
   }
 
-  if (!a5)
+  if (!error)
   {
     goto LABEL_10;
   }
 
   v14 = 0;
-  *a5 = v13;
+  *error = v13;
 LABEL_12:
   xpc_release(v10);
   return v14;
 }
 
-- (BOOL)isRemoteEndpointValid:(id)a3 error:(id *)a4
+- (BOOL)isRemoteEndpointValid:(id)valid error:(id *)error
 {
   v26 = *MEMORY[0x1E69E9840];
-  if (![a3 endpoint] || !objc_msgSend(a3, "rtpSSRC"))
+  if (![valid endpoint] || !objc_msgSend(valid, "rtpSSRC"))
   {
-    +[GKVoiceChatError getNSError:code:detailedCode:filePath:description:reason:](GKVoiceChatError, "getNSError:code:detailedCode:filePath:description:reason:", a4, 32016, 105, [MEMORY[0x1E696AEC0] stringWithFormat:@"%s:%d", "/Library/Caches/com.apple.xbs/Sources/AVConference/AVConference.subproj/Sources/AVCAudioStream.m", 525], @"Invalid Parameter", @"Remote endpoint is invalid");
+    +[GKVoiceChatError getNSError:code:detailedCode:filePath:description:reason:](GKVoiceChatError, "getNSError:code:detailedCode:filePath:description:reason:", error, 32016, 105, [MEMORY[0x1E696AEC0] stringWithFormat:@"%s:%d", "/Library/Caches/com.apple.xbs/Sources/AVConference/AVConference.subproj/Sources/AVCAudioStream.m", 525], @"Invalid Parameter", @"Remote endpoint is invalid");
     if (objc_opt_class() == self)
     {
       if (VRTraceGetErrorLogLevelForModule() >= 3)
@@ -2586,11 +2586,11 @@ LABEL_12:
         v18 = 2112;
         v19 = v8;
         v20 = 2048;
-        v21 = self;
+        selfCopy = self;
         v22 = 2112;
-        v23 = [objc_msgSend(a3 "endpoint")];
+        v23 = [objc_msgSend(valid "endpoint")];
         v24 = 1024;
-        v25 = [a3 rtpSSRC];
+        rtpSSRC = [valid rtpSSRC];
         _os_log_error_impl(&dword_1DB56E000, v10, OS_LOG_TYPE_ERROR, "AVCAudioStream [%s] %s:%d %@(%p) Invalid remote endpoint: endpoint=%@, rtpSSRC=%d", buf, 0x40u);
       }
     }
@@ -2603,10 +2603,10 @@ LABEL_12:
   return v7;
 }
 
-- (void)startContinuousDTMFWithDigit:(char)a3 volume:(unsigned __int8)a4
+- (void)startContinuousDTMFWithDigit:(char)digit volume:(unsigned __int8)volume
 {
-  v4 = a4;
-  v5 = a3;
+  volumeCopy = volume;
+  digitCopy = digit;
   v24 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 6)
   {
@@ -2621,18 +2621,18 @@ LABEL_12:
       v18 = 1024;
       v19 = 567;
       v20 = 1024;
-      v21 = v5;
+      v21 = digitCopy;
       v22 = 1024;
-      v23 = v4;
+      v23 = volumeCopy;
       _os_log_impl(&dword_1DB56E000, v8, OS_LOG_TYPE_DEFAULT, "AVCAudioStream [%s] %s:%d digit=%c, volume=%u", buf, 0x28u);
     }
   }
 
   v12[0] = @"event";
-  v11 = [MEMORY[0x1E696AD98] numberWithUnsignedChar:v5];
+  v11 = [MEMORY[0x1E696AD98] numberWithUnsignedChar:digitCopy];
   v13[0] = [MEMORY[0x1E695DEC8] arrayWithObjects:&v11 count:1];
   v12[1] = @"volume";
-  v13[1] = [MEMORY[0x1E696AD98] numberWithUnsignedChar:v4];
+  v13[1] = [MEMORY[0x1E696AD98] numberWithUnsignedChar:volumeCopy];
   v13[2] = &unk_1F579B250;
   v12[2] = @"duration";
   v12[3] = @"interval";
@@ -2663,7 +2663,7 @@ LABEL_12:
   }
 }
 
-- (void)startSynchronizeWithStream:(int64_t)a3
+- (void)startSynchronizeWithStream:(int64_t)stream
 {
   v19 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 6)
@@ -2679,14 +2679,14 @@ LABEL_12:
       v15 = 1024;
       v16 = 593;
       v17 = 2048;
-      v18 = a3;
+      streamCopy = stream;
       _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, "AVCAudioStream [%s] %s:%d syncStreamToken=%ld", buf, 0x26u);
     }
   }
 
   if (!self->_isInProcess)
   {
-    v7 = [objc_alloc(MEMORY[0x1E696AD98]) initWithInteger:a3];
+    v7 = [objc_alloc(MEMORY[0x1E696AD98]) initWithInteger:stream];
     v8 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{v7, @"vcMediaStreamToken", 0}];
     [(AVConferenceXPCClient *)self->_connection sendMessageAsync:"vcMediaStreamStartSynchronization" arguments:v8];
     if (VRTraceGetErrorLogLevelForModule() >= 6)
@@ -2702,16 +2702,16 @@ LABEL_12:
         v15 = 1024;
         v16 = 601;
         v17 = 1024;
-        LODWORD(v18) = a3;
+        LODWORD(streamCopy) = stream;
         _os_log_impl(&dword_1DB56E000, v10, OS_LOG_TYPE_DEFAULT, "AVCAudioStream [%s] %s:%d AVCAudioStream: synchronizeWithStream %u", buf, 0x22u);
       }
     }
   }
 }
 
-- (void)setJitterBufferMode:(unsigned int)a3
+- (void)setJitterBufferMode:(unsigned int)mode
 {
-  v3 = *&a3;
+  v3 = *&mode;
   v20 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 6)
   {
@@ -2753,12 +2753,12 @@ LABEL_12:
 
 - (unsigned)jitterBufferMode
 {
-  v2 = [(AVCAudioStream *)self configuration];
+  configuration = [(AVCAudioStream *)self configuration];
 
-  return [(AVCMediaStreamConfig *)v2 jitterBufferMode];
+  return [(AVCMediaStreamConfig *)configuration jitterBufferMode];
 }
 
-- (void)setDirection:(int64_t)a3
+- (void)setDirection:(int64_t)direction
 {
   v19 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 6)
@@ -2774,23 +2774,23 @@ LABEL_12:
       v15 = 1024;
       v16 = 677;
       v17 = 2048;
-      v18 = a3;
+      directionCopy = direction;
       _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, "AVCAudioStream [%s] %s:%d direction=%ld", buf, 0x26u);
     }
   }
 
-  if ([(AVCMediaStreamConfig *)[(AVCAudioStream *)self configuration] direction]!= a3)
+  if ([(AVCMediaStreamConfig *)[(AVCAudioStream *)self configuration] direction]!= direction)
   {
-    [(AVCMediaStreamConfig *)[(AVCAudioStream *)self configuration] setDirection:a3];
+    [(AVCMediaStreamConfig *)[(AVCAudioStream *)self configuration] setDirection:direction];
     if (self->_isInProcess)
     {
-      [(VCAudioStream *)self->_opaqueStream setStreamDirection:[AVCMediaStreamConfig streamDirectionWithClientDirection:a3]];
+      [(VCAudioStream *)self->_opaqueStream setStreamDirection:[AVCMediaStreamConfig streamDirectionWithClientDirection:direction]];
     }
 
     else
     {
       v9 = @"vcMediaStreamDirection";
-      v10 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+      v10 = [MEMORY[0x1E696AD98] numberWithInteger:direction];
       v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v10 forKeys:&v9 count:1];
       v8 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{v7, @"vcMediaStreamDictionary", 0}];
       [(AVConferenceXPCClient *)self->_connection sendMessageAsync:"vcMediaStreamSetStreamDirection" arguments:v8];
@@ -2800,14 +2800,14 @@ LABEL_12:
 
 - (int64_t)direction
 {
-  v2 = [(AVCAudioStream *)self configuration];
+  configuration = [(AVCAudioStream *)self configuration];
 
-  return [(AVCMediaStreamConfig *)v2 direction];
+  return [(AVCMediaStreamConfig *)configuration direction];
 }
 
-- (void)setRtcpEnabled:(BOOL)a3
+- (void)setRtcpEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v19 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 6)
   {
@@ -2822,23 +2822,23 @@ LABEL_12:
       v15 = 1024;
       v16 = 701;
       v17 = 1024;
-      v18 = v3;
+      v18 = enabledCopy;
       _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, "AVCAudioStream [%s] %s:%d rtcpEnabled=%d", buf, 0x22u);
     }
   }
 
-  if ([(AVCMediaStreamConfig *)[(AVCAudioStream *)self configuration] isRTCPEnabled]!= v3)
+  if ([(AVCMediaStreamConfig *)[(AVCAudioStream *)self configuration] isRTCPEnabled]!= enabledCopy)
   {
-    [(AVCMediaStreamConfig *)[(AVCAudioStream *)self configuration] setRtcpEnabled:v3];
+    [(AVCMediaStreamConfig *)[(AVCAudioStream *)self configuration] setRtcpEnabled:enabledCopy];
     if (self->_isInProcess)
     {
-      [(VCMediaStream *)self->_opaqueStream setRtcpEnabled:v3];
+      [(VCMediaStream *)self->_opaqueStream setRtcpEnabled:enabledCopy];
     }
 
     else
     {
       v9 = @"vcMediaStreamRTCPEnabled";
-      v10 = [MEMORY[0x1E696AD98] numberWithBool:v3];
+      v10 = [MEMORY[0x1E696AD98] numberWithBool:enabledCopy];
       v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v10 forKeys:&v9 count:1];
       v8 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{v7, @"vcMediaStreamDictionary", 0}];
       [(AVConferenceXPCClient *)self->_connection sendMessageAsync:"vcMediaStreamSetRTCPEnabled" arguments:v8];
@@ -2848,14 +2848,14 @@ LABEL_12:
 
 - (BOOL)isRTCPEnabled
 {
-  v2 = [(AVCAudioStream *)self configuration];
+  configuration = [(AVCAudioStream *)self configuration];
 
-  return [(AVCMediaStreamConfig *)v2 isRTCPEnabled];
+  return [(AVCMediaStreamConfig *)configuration isRTCPEnabled];
 }
 
-- (void)setRtpTimeOutEnabled:(BOOL)a3
+- (void)setRtpTimeOutEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v19 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 6)
   {
@@ -2870,23 +2870,23 @@ LABEL_12:
       v15 = 1024;
       v16 = 727;
       v17 = 1024;
-      v18 = v3;
+      v18 = enabledCopy;
       _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, "AVCAudioStream [%s] %s:%d rtpTimeOutEnabled=%d", buf, 0x22u);
     }
   }
 
-  if ([(AVCMediaStreamConfig *)[(AVCAudioStream *)self configuration] isRTPTimeOutEnabled]!= v3)
+  if ([(AVCMediaStreamConfig *)[(AVCAudioStream *)self configuration] isRTPTimeOutEnabled]!= enabledCopy)
   {
-    [(AVCMediaStreamConfig *)[(AVCAudioStream *)self configuration] setRtpTimeOutEnabled:v3];
+    [(AVCMediaStreamConfig *)[(AVCAudioStream *)self configuration] setRtpTimeOutEnabled:enabledCopy];
     if (self->_isInProcess)
     {
-      [(VCMediaStream *)self->_opaqueStream setRtpTimeOutEnabled:v3];
+      [(VCMediaStream *)self->_opaqueStream setRtpTimeOutEnabled:enabledCopy];
     }
 
     else
     {
       v9 = @"vcMediaStreamRTPTimeoutEnabled";
-      v10 = [MEMORY[0x1E696AD98] numberWithBool:v3];
+      v10 = [MEMORY[0x1E696AD98] numberWithBool:enabledCopy];
       v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v10 forKeys:&v9 count:1];
       v8 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{v7, @"vcMediaStreamDictionary", 0}];
       [(AVConferenceXPCClient *)self->_connection sendMessageAsync:"vcMediaStreamSetRTPTimeoutEnabled" arguments:v8];
@@ -2896,14 +2896,14 @@ LABEL_12:
 
 - (BOOL)isRTPTimeOutEnabled
 {
-  v2 = [(AVCAudioStream *)self configuration];
+  configuration = [(AVCAudioStream *)self configuration];
 
-  return [(AVCMediaStreamConfig *)v2 isRTPTimeOutEnabled];
+  return [(AVCMediaStreamConfig *)configuration isRTPTimeOutEnabled];
 }
 
-- (void)setRtcpTimeOutEnabled:(BOOL)a3
+- (void)setRtcpTimeOutEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v19 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 6)
   {
@@ -2918,23 +2918,23 @@ LABEL_12:
       v15 = 1024;
       v16 = 753;
       v17 = 1024;
-      v18 = v3;
+      v18 = enabledCopy;
       _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, "AVCAudioStream [%s] %s:%d rtcpTimeOutEnabled=%d", buf, 0x22u);
     }
   }
 
-  if ([(AVCMediaStreamConfig *)[(AVCAudioStream *)self configuration] isRTCPTimeOutEnabled]!= v3)
+  if ([(AVCMediaStreamConfig *)[(AVCAudioStream *)self configuration] isRTCPTimeOutEnabled]!= enabledCopy)
   {
-    [(AVCMediaStreamConfig *)[(AVCAudioStream *)self configuration] setRtcpTimeOutEnabled:v3];
+    [(AVCMediaStreamConfig *)[(AVCAudioStream *)self configuration] setRtcpTimeOutEnabled:enabledCopy];
     if (self->_isInProcess)
     {
-      [(VCMediaStream *)self->_opaqueStream setRtcpTimeOutEnabled:v3];
+      [(VCMediaStream *)self->_opaqueStream setRtcpTimeOutEnabled:enabledCopy];
     }
 
     else
     {
       v9 = @"vcMediaStreamRTCPTimeoutEnabled";
-      v10 = [MEMORY[0x1E696AD98] numberWithBool:v3];
+      v10 = [MEMORY[0x1E696AD98] numberWithBool:enabledCopy];
       v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v10 forKeys:&v9 count:1];
       v8 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{v7, @"vcMediaStreamDictionary", 0}];
       [(AVConferenceXPCClient *)self->_connection sendMessageAsync:"vcMediaStreamSetRTCPTimeoutEnabled" arguments:v8];
@@ -2944,12 +2944,12 @@ LABEL_12:
 
 - (BOOL)isRTCPTimeOutEnabled
 {
-  v2 = [(AVCAudioStream *)self configuration];
+  configuration = [(AVCAudioStream *)self configuration];
 
-  return [(AVCMediaStreamConfig *)v2 isRTCPTimeOutEnabled];
+  return [(AVCMediaStreamConfig *)configuration isRTCPTimeOutEnabled];
 }
 
-- (void)setRtpTimeOutIntervalSec:(double)a3
+- (void)setRtpTimeOutIntervalSec:(double)sec
 {
   v20 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 6)
@@ -2965,24 +2965,24 @@ LABEL_12:
       v16 = 1024;
       v17 = 779;
       v18 = 2048;
-      v19 = a3;
+      secCopy = sec;
       _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, "AVCAudioStream [%s] %s:%d rtpTimeOutIntervalSec=%f", buf, 0x26u);
     }
   }
 
   [(AVCMediaStreamConfig *)[(AVCAudioStream *)self configuration] rtpTimeOutInterval];
-  if (v7 != a3)
+  if (v7 != sec)
   {
-    [(AVCMediaStreamConfig *)[(AVCAudioStream *)self configuration] setRtpTimeOutInterval:a3];
+    [(AVCMediaStreamConfig *)[(AVCAudioStream *)self configuration] setRtpTimeOutInterval:sec];
     if (self->_isInProcess)
     {
-      [(VCMediaStream *)self->_opaqueStream setRtpTimeOutInterval:a3];
+      [(VCMediaStream *)self->_opaqueStream setRtpTimeOutInterval:sec];
     }
 
     else
     {
       v10 = @"vcMediaStreamRTPTimeoutInterval";
-      v11 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+      v11 = [MEMORY[0x1E696AD98] numberWithDouble:sec];
       v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v11 forKeys:&v10 count:1];
       v9 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{v8, @"vcMediaStreamDictionary", 0}];
       [(AVConferenceXPCClient *)self->_connection sendMessageAsync:"vcMediaStreamSetRTPTimeoutInterval" arguments:v9];
@@ -2992,13 +2992,13 @@ LABEL_12:
 
 - (double)rtpTimeOutIntervalSec
 {
-  v2 = [(AVCAudioStream *)self configuration];
+  configuration = [(AVCAudioStream *)self configuration];
 
-  [(AVCMediaStreamConfig *)v2 rtpTimeOutInterval];
+  [(AVCMediaStreamConfig *)configuration rtpTimeOutInterval];
   return result;
 }
 
-- (void)setRtcpTimeOutIntervalSec:(double)a3
+- (void)setRtcpTimeOutIntervalSec:(double)sec
 {
   v20 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 6)
@@ -3014,24 +3014,24 @@ LABEL_12:
       v16 = 1024;
       v17 = 805;
       v18 = 2048;
-      v19 = a3;
+      secCopy = sec;
       _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, "AVCAudioStream [%s] %s:%d rtcpTimeOutIntervalSec=%f", buf, 0x26u);
     }
   }
 
   [(AVCMediaStreamConfig *)[(AVCAudioStream *)self configuration] rtcpTimeOutInterval];
-  if (v7 != a3)
+  if (v7 != sec)
   {
-    [(AVCMediaStreamConfig *)[(AVCAudioStream *)self configuration] setRtcpTimeOutInterval:a3];
+    [(AVCMediaStreamConfig *)[(AVCAudioStream *)self configuration] setRtcpTimeOutInterval:sec];
     if (self->_isInProcess)
     {
-      [(VCMediaStream *)self->_opaqueStream setRtcpTimeOutInterval:a3];
+      [(VCMediaStream *)self->_opaqueStream setRtcpTimeOutInterval:sec];
     }
 
     else
     {
       v10 = @"vcMediaStreamRTCPTimeoutInterval";
-      v11 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+      v11 = [MEMORY[0x1E696AD98] numberWithDouble:sec];
       v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v11 forKeys:&v10 count:1];
       v9 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{v8, @"vcMediaStreamDictionary", 0}];
       [(AVConferenceXPCClient *)self->_connection sendMessageAsync:"vcMediaStreamSetRTCPTimeoutInterval" arguments:v9];
@@ -3041,13 +3041,13 @@ LABEL_12:
 
 - (double)rtcpTimeOutIntervalSec
 {
-  v2 = [(AVCAudioStream *)self configuration];
+  configuration = [(AVCAudioStream *)self configuration];
 
-  [(AVCMediaStreamConfig *)v2 rtcpTimeOutInterval];
+  [(AVCMediaStreamConfig *)configuration rtcpTimeOutInterval];
   return result;
 }
 
-- (void)setRtcpSendIntervalSec:(double)a3
+- (void)setRtcpSendIntervalSec:(double)sec
 {
   v20 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 6)
@@ -3063,24 +3063,24 @@ LABEL_12:
       v16 = 1024;
       v17 = 831;
       v18 = 2048;
-      v19 = a3;
+      secCopy = sec;
       _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, "AVCAudioStream [%s] %s:%d rtcpSendIntervalSec=%f", buf, 0x26u);
     }
   }
 
   [(AVCMediaStreamConfig *)[(AVCAudioStream *)self configuration] rtcpSendInterval];
-  if (v7 != a3)
+  if (v7 != sec)
   {
-    [(AVCMediaStreamConfig *)[(AVCAudioStream *)self configuration] setRtcpSendInterval:a3];
+    [(AVCMediaStreamConfig *)[(AVCAudioStream *)self configuration] setRtcpSendInterval:sec];
     if (self->_isInProcess)
     {
-      [(VCMediaStream *)self->_opaqueStream setRtcpSendInterval:a3];
+      [(VCMediaStream *)self->_opaqueStream setRtcpSendInterval:sec];
     }
 
     else
     {
       v10 = @"vcMediaStreamRTCPSendInterval";
-      v11 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+      v11 = [MEMORY[0x1E696AD98] numberWithDouble:sec];
       v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v11 forKeys:&v10 count:1];
       v9 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{v8, @"vcMediaStreamDictionary", 0}];
       [(AVConferenceXPCClient *)self->_connection sendMessageAsync:"vcMediaStreamSetRTCPSendInterval" arguments:v9];
@@ -3090,21 +3090,21 @@ LABEL_12:
 
 - (double)rtcpSendIntervalSec
 {
-  v2 = [(AVCAudioStream *)self configuration];
+  configuration = [(AVCAudioStream *)self configuration];
 
-  [(AVCMediaStreamConfig *)v2 rtcpSendInterval];
+  [(AVCMediaStreamConfig *)configuration rtcpSendInterval];
   return result;
 }
 
 - (float)volume
 {
-  v2 = [(AVCMediaStreamConfig *)[(AVCAudioStream *)self configuration] audio];
+  audio = [(AVCMediaStreamConfig *)[(AVCAudioStream *)self configuration] audio];
 
-  [(AVCAudioStreamConfig *)v2 volume];
+  [(AVCAudioStreamConfig *)audio volume];
   return result;
 }
 
-- (void)setVolume:(float)a3
+- (void)setVolume:(float)volume
 {
   v25 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 6)
@@ -3120,17 +3120,17 @@ LABEL_12:
       v21 = 1024;
       v22 = 861;
       v23 = 2048;
-      v24 = a3;
+      volumeCopy = volume;
       _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, "AVCAudioStream [%s] %s:%d volume=%f", buf, 0x26u);
     }
   }
 
   [(AVCAudioStreamConfig *)[(AVCMediaStreamConfig *)[(AVCAudioStream *)self configuration] audio] volume];
-  if (*&v7 != a3)
+  if (*&v7 != volume)
   {
     LODWORD(v7) = 0;
     LODWORD(v8) = 1065353216;
-    if (a3 < 0.0 || a3 > 1.0)
+    if (volume < 0.0 || volume > 1.0)
     {
       if (VRTraceGetErrorLogLevelForModule() >= 3)
       {
@@ -3144,19 +3144,19 @@ LABEL_12:
 
     else
     {
-      v10 = [(AVCMediaStreamConfig *)[(AVCAudioStream *)self configuration:v7] audio];
-      *&v11 = a3;
-      [(AVCAudioStreamConfig *)v10 setVolume:v11];
+      audio = [(AVCMediaStreamConfig *)[(AVCAudioStream *)self configuration:v7] audio];
+      *&v11 = volume;
+      [(AVCAudioStreamConfig *)audio setVolume:v11];
       if (self->_isInProcess)
       {
-        *&v12 = a3;
+        *&v12 = volume;
         [(VCAudioStream *)self->_opaqueStream setVolume:v12];
       }
 
       else
       {
         v15 = @"vcMediaStreamVolume";
-        *&v12 = a3;
+        *&v12 = volume;
         v16 = [MEMORY[0x1E696AD98] numberWithFloat:v12];
         v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v16 forKeys:&v15 count:1];
         v14 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{v13, @"vcMediaStreamDictionary", 0}];
@@ -3191,9 +3191,9 @@ LABEL_12:
   }
 }
 
-- (void)setInputFrequencyMeteringEnabled:(BOOL)a3
+- (void)setInputFrequencyMeteringEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v19 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 6)
   {
@@ -3208,20 +3208,20 @@ LABEL_12:
       v15 = 1024;
       v16 = 904;
       v17 = 1024;
-      v18 = v3;
+      v18 = enabledCopy;
       _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, "AVCAudioStream [%s] %s:%d isEnabled=%d", buf, 0x22u);
     }
   }
 
   if (self->_isInProcess)
   {
-    [(VCAudioStream *)self->_opaqueStream setFrequencyMeteringEnabled:v3 meterType:0];
+    [(VCAudioStream *)self->_opaqueStream setFrequencyMeteringEnabled:enabledCopy meterType:0];
   }
 
   else
   {
     v9 = @"vcMediaStreamInputFreqMeterEnabled";
-    v10 = [MEMORY[0x1E696AD98] numberWithBool:v3];
+    v10 = [MEMORY[0x1E696AD98] numberWithBool:enabledCopy];
     v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v10 forKeys:&v9 count:1];
     v8 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{v7, @"vcMediaStreamDictionary", 0}];
     [(AVConferenceXPCClient *)self->_connection sendMessageAsync:"vcMediaStreamSetInputFrequencyMeteringEnabled" arguments:v8];
@@ -3253,9 +3253,9 @@ LABEL_12:
   }
 }
 
-- (void)setOutputFrequencyMeteringEnabled:(BOOL)a3
+- (void)setOutputFrequencyMeteringEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v19 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 6)
   {
@@ -3270,20 +3270,20 @@ LABEL_12:
       v15 = 1024;
       v16 = 934;
       v17 = 1024;
-      v18 = v3;
+      v18 = enabledCopy;
       _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, "AVCAudioStream [%s] %s:%d isEnabled=%d", buf, 0x22u);
     }
   }
 
   if (self->_isInProcess)
   {
-    [(VCAudioStream *)self->_opaqueStream setFrequencyMeteringEnabled:v3 meterType:1];
+    [(VCAudioStream *)self->_opaqueStream setFrequencyMeteringEnabled:enabledCopy meterType:1];
   }
 
   else
   {
     v9 = @"vcMediaStreamOutputFreqMeterEnabled";
-    v10 = [MEMORY[0x1E696AD98] numberWithBool:v3];
+    v10 = [MEMORY[0x1E696AD98] numberWithBool:enabledCopy];
     v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v10 forKeys:&v9 count:1];
     v8 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{v7, @"vcMediaStreamDictionary", 0}];
     [(AVConferenceXPCClient *)self->_connection sendMessageAsync:"vcMediaStreamSetOutputFrequencyMeteringEnabled" arguments:v8];
@@ -3306,11 +3306,11 @@ LABEL_12:
   OUTLINED_FUNCTION_9_7(&dword_1DB56E000, v0, v1, "AVCAudioStream [%s] %s:%d AVCAudioStream: notified client %p interruption end", v2, v3, v4, v5);
 }
 
-- (void)processDTMFEventWithDigit:(id)a3
+- (void)processDTMFEventWithDigit:(id)digit
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = [a3 charValue];
-  v5 = [(AVCAudioStream *)self delegate];
+  charValue = [digit charValue];
+  delegate = [(AVCAudioStream *)self delegate];
   if (objc_opt_respondsToSelector())
   {
     MEMORY[0x1E128B580](&dword_1DB56E000, "@:@ AVCAudioStream-didReceiveDTMFEventWithDigit");
@@ -3327,14 +3327,14 @@ LABEL_12:
         v12 = 1024;
         v13 = 973;
         v14 = 2048;
-        v15 = self;
+        selfCopy = self;
         v16 = 1024;
-        v17 = v4;
+        v17 = charValue;
         _os_log_impl(&dword_1DB56E000, v7, OS_LOG_TYPE_DEFAULT, "AVCAudioStream [%s] %s:%d @:@ AVCAudioStream-didReceiveDTMFEventWithDigit (%p) dtmfDigit=%c", &v8, 0x2Cu);
       }
     }
 
-    [(AVCAudioStreamDelegate *)v5 stream:self didReceiveDTMFEventWithDigit:v4];
+    [(AVCAudioStreamDelegate *)delegate stream:self didReceiveDTMFEventWithDigit:charValue];
   }
 }
 
@@ -4224,24 +4224,24 @@ void __56__AVCAudioStream_registerBlocksForDelegateNotifications__block_invoke_3
   [(AVConferenceXPCClient *)connection deregisterFromService:"vcMediaStreamDTMFDigitReceived"];
 }
 
-- (BOOL)configureInProcess:(id)a3 error:(id *)a4
+- (BOOL)configureInProcess:(id)process error:(id *)error
 {
   v29[1] = *MEMORY[0x1E69E9840];
-  v7 = -[VCAudioStreamConfig initWithClientDictionary:]([VCAudioStreamConfig alloc], "initWithClientDictionary:", [a3 dictionary]);
+  v7 = -[VCAudioStreamConfig initWithClientDictionary:]([VCAudioStreamConfig alloc], "initWithClientDictionary:", [process dictionary]);
   v8 = v7;
-  if (v7 && (opaqueStream = self->_opaqueStream, v29[0] = v7, -[VCMediaStream setStreamConfig:withError:](opaqueStream, "setStreamConfig:withError:", [MEMORY[0x1E695DEC8] arrayWithObjects:v29 count:1], a4)))
+  if (v7 && (opaqueStream = self->_opaqueStream, v29[0] = v7, -[VCMediaStream setStreamConfig:withError:](opaqueStream, "setStreamConfig:withError:", [MEMORY[0x1E695DEC8] arrayWithObjects:v29 count:1], error)))
   {
-    [(AVCAudioStream *)self setConfiguration:a3];
+    [(AVCAudioStream *)self setConfiguration:process];
     v10 = 1;
   }
 
   else
   {
-    if (a4 && !*a4)
+    if (error && !*error)
     {
       v27 = *MEMORY[0x1E696A588];
       v28 = @"Failed to create VCAudioStreamConfig from config dictionary.";
-      *a4 = [MEMORY[0x1E696ABC0] errorWithDomain:@"AVCAudioStream" code:-1 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v28, &v27, 1)}];
+      *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"AVCAudioStream" code:-1 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v28, &v27, 1)}];
       if (objc_opt_class() == self)
       {
         if (VRTraceGetErrorLogLevelForModule() >= 3)
@@ -4281,7 +4281,7 @@ void __56__AVCAudioStream_registerBlocksForDelegateNotifications__block_invoke_3
             v21 = 2112;
             v22 = v12;
             v23 = 2048;
-            v24 = self;
+            selfCopy = self;
             v25 = 2112;
             v26 = @"Failed to create VCAudioStreamConfig from config dictionary.";
             _os_log_error_impl(&dword_1DB56E000, v14, OS_LOG_TYPE_ERROR, "AVCAudioStream [%s] %s:%d %@(%p) error=%@", &v15, 0x3Au);
@@ -4296,21 +4296,21 @@ void __56__AVCAudioStream_registerBlocksForDelegateNotifications__block_invoke_3
   return v10;
 }
 
-- (BOOL)setUpAudioStreamOutOfProcessWithClientArgs:(id)a3 xpcArguments:(id)a4 error:(id *)a5
+- (BOOL)setUpAudioStreamOutOfProcessWithClientArgs:(id)args xpcArguments:(id)arguments error:(id *)error
 {
   v14[1] = *MEMORY[0x1E69E9840];
   self->_connection = objc_alloc_init(AVConferenceXPCClient);
   v13 = @"vcMediaStreamDictionary";
-  v14[0] = a3;
-  v9 = -[AVConferenceXPCClient sendMessageSync:arguments:xpcArguments:](self->_connection, "sendMessageSync:arguments:xpcArguments:", "vcMediaStreamInitializeAudio", [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:&v13 count:1], a4);
+  v14[0] = args;
+  v9 = -[AVConferenceXPCClient sendMessageSync:arguments:xpcArguments:](self->_connection, "sendMessageSync:arguments:xpcArguments:", "vcMediaStreamInitializeAudio", [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:&v13 count:1], arguments);
   [(AVCAudioStream *)self registerBlocksForDelegateNotifications];
   v10 = [(AVCAudioStream *)self validateInitializeConnectionResult:v9];
   v11 = v10;
   if (v10)
   {
-    if (a5)
+    if (error)
     {
-      *a5 = v10;
+      *error = v10;
     }
   }
 
@@ -4325,9 +4325,9 @@ void __56__AVCAudioStream_registerBlocksForDelegateNotifications__block_invoke_3
   return v11 == 0;
 }
 
-- (void)vcMediaStream:(id)a3 didStartStream:(BOOL)a4 error:(id)a5
+- (void)vcMediaStream:(id)stream didStartStream:(BOOL)startStream error:(id)error
 {
-  v6 = a4;
+  startStreamCopy = startStream;
   v25 = *MEMORY[0x1E69E9840];
   [(AVCAudioStream *)self delegate];
   if (objc_opt_respondsToSelector())
@@ -4346,22 +4346,22 @@ void __56__AVCAudioStream_registerBlocksForDelegateNotifications__block_invoke_3
         v15 = 1024;
         v16 = 1409;
         v17 = 2112;
-        v18 = self;
+        selfCopy = self;
         v19 = 2112;
-        v20 = a3;
+        streamCopy = stream;
         v21 = 1024;
-        v22 = v6;
+        v22 = startStreamCopy;
         v23 = 2112;
-        v24 = a5;
+        errorCopy = error;
         _os_log_impl(&dword_1DB56E000, v10, OS_LOG_TYPE_DEFAULT, "AVCAudioStream [%s] %s:%d @:@ AVCAudioStream-didStart instance=%@ stream=%@, didStartStream=%{BOOL}d, error=%@", &v11, 0x40u);
       }
     }
 
-    [(AVCAudioStreamDelegate *)[(AVCAudioStream *)self delegate] stream:self didStart:v6 error:a5];
+    [(AVCAudioStreamDelegate *)[(AVCAudioStream *)self delegate] stream:self didStart:startStreamCopy error:error];
   }
 }
 
-- (void)vcMediaStreamDidStop:(id)a3
+- (void)vcMediaStreamDidStop:(id)stop
 {
   v17 = *MEMORY[0x1E69E9840];
   MEMORY[0x1E128B580](&dword_1DB56E000, "@:@ AVCAudioStream-didStop");
@@ -4378,9 +4378,9 @@ void __56__AVCAudioStream_registerBlocksForDelegateNotifications__block_invoke_3
       v11 = 1024;
       v12 = 1415;
       v13 = 2112;
-      v14 = self;
+      selfCopy = self;
       v15 = 2112;
-      v16 = a3;
+      stopCopy = stop;
       _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, "AVCAudioStream [%s] %s:%d @:@ AVCAudioStream-didStop instance=%@ stream=%@", &v7, 0x30u);
     }
   }
@@ -4392,9 +4392,9 @@ void __56__AVCAudioStream_registerBlocksForDelegateNotifications__block_invoke_3
   }
 }
 
-- (void)vcMediaStream:(id)a3 didPauseStream:(BOOL)a4 error:(id)a5
+- (void)vcMediaStream:(id)stream didPauseStream:(BOOL)pauseStream error:(id)error
 {
-  v6 = a4;
+  pauseStreamCopy = pauseStream;
   v25 = *MEMORY[0x1E69E9840];
   MEMORY[0x1E128B580](&dword_1DB56E000, "@:@ AVCAudioStream-didPause");
   if (VRTraceGetErrorLogLevelForModule() >= 6)
@@ -4410,13 +4410,13 @@ void __56__AVCAudioStream_registerBlocksForDelegateNotifications__block_invoke_3
       v15 = 1024;
       v16 = 1422;
       v17 = 2112;
-      v18 = self;
+      selfCopy = self;
       v19 = 2112;
-      v20 = a3;
+      streamCopy = stream;
       v21 = 1024;
-      v22 = v6;
+      v22 = pauseStreamCopy;
       v23 = 2112;
-      v24 = a5;
+      errorCopy = error;
       _os_log_impl(&dword_1DB56E000, v10, OS_LOG_TYPE_DEFAULT, "AVCAudioStream [%s] %s:%d @:@ AVCAudioStream-didPause instance=%@ stream=%@, didPauseStream=%{BOOL}d, error=%@", &v11, 0x40u);
     }
   }
@@ -4424,13 +4424,13 @@ void __56__AVCAudioStream_registerBlocksForDelegateNotifications__block_invoke_3
   [(AVCAudioStream *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [(AVCAudioStreamDelegate *)[(AVCAudioStream *)self delegate] stream:self didPause:v6 error:a5];
+    [(AVCAudioStreamDelegate *)[(AVCAudioStream *)self delegate] stream:self didPause:pauseStreamCopy error:error];
   }
 }
 
-- (void)vcMediaStream:(id)a3 didResumeStream:(BOOL)a4 error:(id)a5
+- (void)vcMediaStream:(id)stream didResumeStream:(BOOL)resumeStream error:(id)error
 {
-  v6 = a4;
+  resumeStreamCopy = resumeStream;
   v25 = *MEMORY[0x1E69E9840];
   MEMORY[0x1E128B580](&dword_1DB56E000, "@:@ AVCAudioStream-didResume");
   if (VRTraceGetErrorLogLevelForModule() >= 6)
@@ -4446,13 +4446,13 @@ void __56__AVCAudioStream_registerBlocksForDelegateNotifications__block_invoke_3
       v15 = 1024;
       v16 = 1429;
       v17 = 2112;
-      v18 = self;
+      selfCopy = self;
       v19 = 2112;
-      v20 = a3;
+      streamCopy = stream;
       v21 = 1024;
-      v22 = v6;
+      v22 = resumeStreamCopy;
       v23 = 2112;
-      v24 = a5;
+      errorCopy = error;
       _os_log_impl(&dword_1DB56E000, v10, OS_LOG_TYPE_DEFAULT, "AVCAudioStream [%s] %s:%d @:@ AVCAudioStream-didResume instance=%@ stream=%@, didResumeStream=%{BOOL}d, error=%@", &v11, 0x40u);
     }
   }
@@ -4460,11 +4460,11 @@ void __56__AVCAudioStream_registerBlocksForDelegateNotifications__block_invoke_3
   [(AVCAudioStream *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [(AVCAudioStreamDelegate *)[(AVCAudioStream *)self delegate] stream:self didResume:v6 error:a5];
+    [(AVCAudioStreamDelegate *)[(AVCAudioStream *)self delegate] stream:self didResume:resumeStreamCopy error:error];
   }
 }
 
-- (void)vcMediaStreamDidRTPTimeOut:(id)a3
+- (void)vcMediaStreamDidRTPTimeOut:(id)out
 {
   v15 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 6)
@@ -4480,7 +4480,7 @@ void __56__AVCAudioStream_registerBlocksForDelegateNotifications__block_invoke_3
       v11 = 1024;
       v12 = 1436;
       v13 = 2112;
-      v14 = a3;
+      outCopy = out;
       _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, "AVCAudioStream [%s] %s:%d stream=%@", &v7, 0x26u);
     }
   }
@@ -4492,7 +4492,7 @@ void __56__AVCAudioStream_registerBlocksForDelegateNotifications__block_invoke_3
   }
 }
 
-- (void)vcMediaStreamDidRTCPTimeOut:(id)a3
+- (void)vcMediaStreamDidRTCPTimeOut:(id)out
 {
   v15 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 6)
@@ -4508,7 +4508,7 @@ void __56__AVCAudioStream_registerBlocksForDelegateNotifications__block_invoke_3
       v11 = 1024;
       v12 = 1443;
       v13 = 2112;
-      v14 = a3;
+      outCopy = out;
       _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, "AVCAudioStream [%s] %s:%d stream=%@", &v7, 0x26u);
     }
   }
@@ -4520,9 +4520,9 @@ void __56__AVCAudioStream_registerBlocksForDelegateNotifications__block_invoke_3
   }
 }
 
-- (void)vcMediaStream:(id)a3 didReceiveDTMFEventWithDigit:(char)a4
+- (void)vcMediaStream:(id)stream didReceiveDTMFEventWithDigit:(char)digit
 {
-  v4 = a4;
+  digitCopy = digit;
   v19 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 6)
   {
@@ -4537,9 +4537,9 @@ void __56__AVCAudioStream_registerBlocksForDelegateNotifications__block_invoke_3
       v13 = 1024;
       v14 = 1450;
       v15 = 2112;
-      v16 = a3;
+      streamCopy = stream;
       v17 = 1024;
-      v18 = v4;
+      v18 = digitCopy;
       _os_log_impl(&dword_1DB56E000, v8, OS_LOG_TYPE_DEFAULT, "AVCAudioStream [%s] %s:%d stream=%@, digit=%c", &v9, 0x2Cu);
     }
   }
@@ -4547,11 +4547,11 @@ void __56__AVCAudioStream_registerBlocksForDelegateNotifications__block_invoke_3
   [(AVCAudioStream *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [(AVCAudioStreamDelegate *)[(AVCAudioStream *)self delegate] stream:self didReceiveDTMFEventWithDigit:v4];
+    [(AVCAudioStreamDelegate *)[(AVCAudioStream *)self delegate] stream:self didReceiveDTMFEventWithDigit:digitCopy];
   }
 }
 
-- (void)vcMediaStream:(id)a3 didReceiveRTCPPackets:(id)a4
+- (void)vcMediaStream:(id)stream didReceiveRTCPPackets:(id)packets
 {
   v36 = *MEMORY[0x1E69E9840];
   v6 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:2];
@@ -4559,7 +4559,7 @@ void __56__AVCAudioStream_registerBlocksForDelegateNotifications__block_invoke_3
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v7 = [a4 countByEnumeratingWithState:&v32 objects:v31 count:16];
+  v7 = [packets countByEnumeratingWithState:&v32 objects:v31 count:16];
   if (v7)
   {
     v8 = v7;
@@ -4570,7 +4570,7 @@ void __56__AVCAudioStream_registerBlocksForDelegateNotifications__block_invoke_3
       {
         if (*v33 != v9)
         {
-          objc_enumerationMutation(a4);
+          objc_enumerationMutation(packets);
         }
 
         v11 = +[AVCRTCPPacket newPacketWithRTCPPacket:packetLength:](AVCRTCPPacket, "newPacketWithRTCPPacket:packetLength:", [*(*(&v32 + 1) + 8 * i) bytes], objc_msgSend(*(*(&v32 + 1) + 8 * i), "length"));
@@ -4580,7 +4580,7 @@ void __56__AVCAudioStream_registerBlocksForDelegateNotifications__block_invoke_3
         }
       }
 
-      v8 = [a4 countByEnumeratingWithState:&v32 objects:v31 count:16];
+      v8 = [packets countByEnumeratingWithState:&v32 objects:v31 count:16];
     }
 
     while (v8);
@@ -4589,13 +4589,13 @@ void __56__AVCAudioStream_registerBlocksForDelegateNotifications__block_invoke_3
   if (VRTraceGetErrorLogLevelForModule() >= 6)
   {
     __str = 0;
-    if (a3)
+    if (stream)
     {
-      v12 = [objc_msgSend(a3 "description")];
-      if (a4)
+      v12 = [objc_msgSend(stream "description")];
+      if (packets)
       {
 LABEL_13:
-        v13 = [objc_msgSend(a4 "description")];
+        v13 = [objc_msgSend(packets "description")];
         goto LABEL_16;
       }
     }
@@ -4603,7 +4603,7 @@ LABEL_13:
     else
     {
       v12 = "<nil>";
-      if (a4)
+      if (packets)
       {
         goto LABEL_13;
       }
@@ -4654,7 +4654,7 @@ LABEL_16:
   }
 }
 
-- (void)vcMediaStream:(id)a3 updateInputFrequencyLevel:(id)a4
+- (void)vcMediaStream:(id)stream updateInputFrequencyLevel:(id)level
 {
   v19 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 6)
@@ -4670,9 +4670,9 @@ LABEL_16:
       v13 = 1024;
       v14 = 1478;
       v15 = 2112;
-      v16 = a3;
+      streamCopy = stream;
       v17 = 2112;
-      v18 = a4;
+      levelCopy = level;
       _os_log_impl(&dword_1DB56E000, v8, OS_LOG_TYPE_DEFAULT, "AVCAudioStream [%s] %s:%d stream=%@, inputFreq=%@", &v9, 0x30u);
     }
   }
@@ -4680,11 +4680,11 @@ LABEL_16:
   [(AVCAudioStream *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [(AVCAudioStreamDelegate *)[(AVCAudioStream *)self delegate] stream:self updateInputFrequencyLevel:a4];
+    [(AVCAudioStreamDelegate *)[(AVCAudioStream *)self delegate] stream:self updateInputFrequencyLevel:level];
   }
 }
 
-- (void)vcMediaStream:(id)a3 updateOutputFrequencyLevel:(id)a4
+- (void)vcMediaStream:(id)stream updateOutputFrequencyLevel:(id)level
 {
   v19 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 6)
@@ -4700,9 +4700,9 @@ LABEL_16:
       v13 = 1024;
       v14 = 1485;
       v15 = 2112;
-      v16 = a3;
+      streamCopy = stream;
       v17 = 2112;
-      v18 = a4;
+      levelCopy = level;
       _os_log_impl(&dword_1DB56E000, v8, OS_LOG_TYPE_DEFAULT, "AVCAudioStream [%s] %s:%d stream=%@, outputFreq=%@", &v9, 0x30u);
     }
   }
@@ -4710,11 +4710,11 @@ LABEL_16:
   [(AVCAudioStream *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [(AVCAudioStreamDelegate *)[(AVCAudioStream *)self delegate] stream:self updateOutputFrequencyLevel:a4];
+    [(AVCAudioStreamDelegate *)[(AVCAudioStream *)self delegate] stream:self updateOutputFrequencyLevel:level];
   }
 }
 
-- (void)vcMediaStreamServerDidDie:(id)a3
+- (void)vcMediaStreamServerDidDie:(id)die
 {
   v17 = *MEMORY[0x1E69E9840];
   MEMORY[0x1E128B580](&dword_1DB56E000, "@:@ AVCAudioStream-serverDidDie");
@@ -4731,9 +4731,9 @@ LABEL_16:
       v11 = 1024;
       v12 = 1505;
       v13 = 2112;
-      v14 = self;
+      selfCopy = self;
       v15 = 2112;
-      v16 = a3;
+      dieCopy = die;
       _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, "AVCAudioStream [%s] %s:%d @:@ AVCAudioStream-serverDidDie instance=%@ stream=%@", &v7, 0x30u);
     }
   }
@@ -4741,19 +4741,19 @@ LABEL_16:
   [(AVCAudioStream *)self stop];
 }
 
-- (BOOL)addRemoteEndpoint:(id)a3 error:(id *)a4
+- (BOOL)addRemoteEndpoint:(id)endpoint error:(id *)error
 {
   v45 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 6)
   {
     __str = 0;
-    v7 = a3 ? [objc_msgSend(a3 "description")] : "<nil>";
-    v8 = *a4 ? [objc_msgSend(*a4 "description")] : "<nil>";
+    v7 = endpoint ? [objc_msgSend(endpoint "description")] : "<nil>";
+    v8 = *error ? [objc_msgSend(*error "description")] : "<nil>";
     asprintf(&__str, "addRemoteEndpoint=%s, error=%s", v7, v8);
     if (__str)
     {
-      v31 = a4;
-      v33 = self;
+      errorCopy = error;
+      selfCopy = self;
       __lasts = 0;
       strtok_r(__str, "\n", &__lasts);
       *&v9 = 136316162;
@@ -4766,7 +4766,7 @@ LABEL_16:
           v10 = os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT);
           if (v10)
           {
-            OUTLINED_FUNCTION_22_6(v10, v11, v12, v13, v14, v15, v16, v17, v27, v29, v31, v33, v35);
+            OUTLINED_FUNCTION_22_6(v10, v11, v12, v13, v14, v15, v16, v17, v27, v29, errorCopy, selfCopy, v35);
             *(&v41 + 6) = "[AVCAudioStream addRemoteEndpoint:error:]";
             HIWORD(v41) = 1024;
             OUTLINED_FUNCTION_15_13(536, v28, v30, v32, v34, v36, v37, __lasts, __str, v40, v41, *(&v41 + 1), v42, v43, v44);
@@ -4776,7 +4776,7 @@ LABEL_16:
 
       while (strtok_r(0, "\n", &__lasts));
       free(__str);
-      self = v33;
+      self = selfCopy;
     }
   }
 
@@ -4810,26 +4810,26 @@ LABEL_16:
       *(&v41 + 6) = "[AVCAudioStream addRemoteEndpoint:error:]";
       HIWORD(v41) = 1024;
       OUTLINED_FUNCTION_12_11();
-      OUTLINED_FUNCTION_23_6(&dword_1DB56E000, v20, v21, "AVCAudioStream [%s] %s:%d @:@ AVCAudioStream-addRemoteEndpoint (%p) didSucceed=%d, error=%@", v22, v23, v24, v25, v27, v29, v31, v33, v35, *(&v35 + 1), __lasts, __str, v40);
+      OUTLINED_FUNCTION_23_6(&dword_1DB56E000, v20, v21, "AVCAudioStream [%s] %s:%d @:@ AVCAudioStream-addRemoteEndpoint (%p) didSucceed=%d, error=%@", v22, v23, v24, v25, v27, v29, errorCopy, selfCopy, v35, *(&v35 + 1), __lasts, __str, v40);
     }
   }
 
   return v19;
 }
 
-- (BOOL)removeRemoteEndpoint:(id)a3 error:(id *)a4
+- (BOOL)removeRemoteEndpoint:(id)endpoint error:(id *)error
 {
   v45 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 6)
   {
     __str = 0;
-    v7 = a3 ? [objc_msgSend(a3 "description")] : "<nil>";
-    v8 = *a4 ? [objc_msgSend(*a4 "description")] : "<nil>";
+    v7 = endpoint ? [objc_msgSend(endpoint "description")] : "<nil>";
+    v8 = *error ? [objc_msgSend(*error "description")] : "<nil>";
     asprintf(&__str, "removeRemoteEndpoint=%s, error=%s", v7, v8);
     if (__str)
     {
-      v31 = a4;
-      v33 = self;
+      errorCopy = error;
+      selfCopy = self;
       __lasts = 0;
       strtok_r(__str, "\n", &__lasts);
       *&v9 = 136316162;
@@ -4842,7 +4842,7 @@ LABEL_16:
           v10 = os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT);
           if (v10)
           {
-            OUTLINED_FUNCTION_22_6(v10, v11, v12, v13, v14, v15, v16, v17, v27, v29, v31, v33, v35);
+            OUTLINED_FUNCTION_22_6(v10, v11, v12, v13, v14, v15, v16, v17, v27, v29, errorCopy, selfCopy, v35);
             *(&v41 + 6) = "[AVCAudioStream removeRemoteEndpoint:error:]";
             HIWORD(v41) = 1024;
             OUTLINED_FUNCTION_15_13(552, v28, v30, v32, v34, v36, v37, __lasts, __str, v40, v41, *(&v41 + 1), v42, v43, v44);
@@ -4852,7 +4852,7 @@ LABEL_16:
 
       while (strtok_r(0, "\n", &__lasts));
       free(__str);
-      self = v33;
+      self = selfCopy;
     }
   }
 
@@ -4886,14 +4886,14 @@ LABEL_16:
       *(&v41 + 6) = "[AVCAudioStream removeRemoteEndpoint:error:]";
       HIWORD(v41) = 1024;
       OUTLINED_FUNCTION_12_11();
-      OUTLINED_FUNCTION_23_6(&dword_1DB56E000, v20, v21, "AVCAudioStream [%s] %s:%d @:@ AVCAudioStream-removeRemoteEndpoint (%p) didSucceed=%d, error=%@", v22, v23, v24, v25, v27, v29, v31, v33, v35, *(&v35 + 1), __lasts, __str, v40);
+      OUTLINED_FUNCTION_23_6(&dword_1DB56E000, v20, v21, "AVCAudioStream [%s] %s:%d @:@ AVCAudioStream-removeRemoteEndpoint (%p) didSucceed=%d, error=%@", v22, v23, v24, v25, v27, v29, errorCopy, selfCopy, v35, *(&v35 + 1), __lasts, __str, v40);
     }
   }
 
   return v19;
 }
 
-- (BOOL)setUpAudioStreamInProcessWithClientArgs:(id)a3 xpcArguments:(id)a4 error:(id *)a5
+- (BOOL)setUpAudioStreamInProcessWithClientArgs:(id)args xpcArguments:(id)arguments error:(id *)error
 {
   v34[1] = *MEMORY[0x1E69E9840];
   v9 = [VCAudioStream alloc];
@@ -4903,9 +4903,9 @@ LABEL_16:
   {
     [(VCMediaStream *)v10 setDelegate:self];
     [(VCMediaStream *)self->_opaqueStream setDelegateFunctions:_AVCAudioStream_UpdateFrequencyLevel];
-    v11 = [a3 mutableCopy];
+    v11 = [args mutableCopy];
     [v11 setObject:+[AVCAuditToken currentProcessToken](AVCAuditToken forKeyedSubscript:{"currentProcessToken"), @"vcMediaStreamClientAuditToken"}];
-    v12 = [(VCAudioStream *)self->_opaqueStream setLocalParticipantInfo:v11 networkSockets:a4 withError:a5];
+    v12 = [(VCAudioStream *)self->_opaqueStream setLocalParticipantInfo:v11 networkSockets:arguments withError:error];
     v13 = v12 != 0;
     if (v12)
     {
@@ -4913,7 +4913,7 @@ LABEL_16:
     }
 
     self->_streamToken = [(VCMediaStream *)self->_opaqueStream streamToken];
-    if (!a5)
+    if (!error)
     {
       goto LABEL_7;
     }
@@ -4923,20 +4923,20 @@ LABEL_16:
   {
     v11 = 0;
     v13 = 0;
-    if (!a5)
+    if (!error)
     {
       goto LABEL_7;
     }
   }
 
-  if (v13 || *a5)
+  if (v13 || *error)
   {
     goto LABEL_7;
   }
 
   v33 = *MEMORY[0x1E696A588];
   v34[0] = @"Failed to create VCAudioStream";
-  *a5 = [MEMORY[0x1E696ABC0] errorWithDomain:@"AVCAudioStream" code:-2 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v34, &v33, 1)}];
+  *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"AVCAudioStream" code:-2 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v34, &v33, 1)}];
   if (objc_opt_class() == self)
   {
     if (VRTraceGetErrorLogLevelForModule() < 3)
@@ -4985,7 +4985,7 @@ LABEL_18:
       OUTLINED_FUNCTION_29();
       v28 = v15;
       v29 = 2048;
-      v30 = self;
+      selfCopy = self;
       v31 = v25;
       v32 = @"Failed to create VCAudioStream";
       v17 = &dword_1DB56E000;
@@ -5003,14 +5003,14 @@ LABEL_7:
   return v13;
 }
 
-- (BOOL)configureOutOfProcess:(id)a3 error:(id *)a4
+- (BOOL)configureOutOfProcess:(id)process error:(id *)error
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v7 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:{objc_msgSend(a3, "dictionary")}];
+  v7 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:{objc_msgSend(process, "dictionary")}];
   object = xpc_dictionary_create(0, 0, 0);
-  if ([a3 remoteEndpoints])
+  if ([process remoteEndpoints])
   {
-    [a3 encodeRemoteAVCEndpoints:&object];
+    [process encodeRemoteAVCEndpoints:&object];
     [v7 setObject:0 forKeyedSubscript:@"vcMediaStreamRemoteAVCEndpoints"];
   }
 
@@ -5028,15 +5028,15 @@ LABEL_7:
       v12 = v11;
       [(AVCAudioStream *)self setConfiguration:0];
       v8 = 0;
-      if (a4)
+      if (error)
       {
-        *a4 = v12;
+        *error = v12;
       }
     }
 
     else
     {
-      [(AVCAudioStream *)self setConfiguration:a3];
+      [(AVCAudioStream *)self setConfiguration:process];
       return 1;
     }
   }

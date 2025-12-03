@@ -1,6 +1,6 @@
 @interface AVPictureInPicturePlaybackState
-- (AVPictureInPicturePlaybackState)initWithElapsedTime:(double)a3 timelineDuration:(double)a4 timelineRate:(double)a5 paused:(BOOL)a6;
-- (BOOL)isEqual:(id)a3;
+- (AVPictureInPicturePlaybackState)initWithElapsedTime:(double)time timelineDuration:(double)duration timelineRate:(double)rate paused:(BOOL)paused;
+- (BOOL)isEqual:(id)equal;
 - (double)currentElapsedTime;
 @end
 
@@ -35,10 +35,10 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v13 = 1;
   }
@@ -46,11 +46,11 @@
   else
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && (v5 = [(AVPictureInPicturePlaybackState *)self isPaused], v5 == [(AVPictureInPicturePlaybackState *)v4 isPaused]) && ([(AVPictureInPicturePlaybackState *)self timelineDuration], v7 = v6, [(AVPictureInPicturePlaybackState *)v4 timelineDuration], v7 == v8))
+    if ((objc_opt_isKindOfClass() & 1) != 0 && (v5 = [(AVPictureInPicturePlaybackState *)self isPaused], v5 == [(AVPictureInPicturePlaybackState *)equalCopy isPaused]) && ([(AVPictureInPicturePlaybackState *)self timelineDuration], v7 = v6, [(AVPictureInPicturePlaybackState *)equalCopy timelineDuration], v7 == v8))
     {
       [(AVPictureInPicturePlaybackState *)self currentElapsedTime];
       v10 = v9;
-      [(AVPictureInPicturePlaybackState *)v4 currentElapsedTime];
+      [(AVPictureInPicturePlaybackState *)equalCopy currentElapsedTime];
       v12 = v10 - v11;
       if (v12 < 0.0)
       {
@@ -69,7 +69,7 @@
   return v13;
 }
 
-- (AVPictureInPicturePlaybackState)initWithElapsedTime:(double)a3 timelineDuration:(double)a4 timelineRate:(double)a5 paused:(BOOL)a6
+- (AVPictureInPicturePlaybackState)initWithElapsedTime:(double)time timelineDuration:(double)duration timelineRate:(double)rate paused:(BOOL)paused
 {
   v20.receiver = self;
   v20.super_class = AVPictureInPicturePlaybackState;
@@ -77,38 +77,38 @@
   v11 = v10;
   if (v10)
   {
-    v13 = (*&a4 <= -1 || ((*&a4 & 0x7FFFFFFFFFFFFFFFuLL) - 0x10000000000000) >> 53 >= 0x3FF) && (*&a4 - 1) >= 0xFFFFFFFFFFFFFLL;
-    v14 = 0.0;
+    v13 = (*&duration <= -1 || ((*&duration & 0x7FFFFFFFFFFFFFFFuLL) - 0x10000000000000) >> 53 >= 0x3FF) && (*&duration - 1) >= 0xFFFFFFFFFFFFFLL;
+    rateCopy = 0.0;
     if (v13)
     {
-      v15 = 0.0;
+      durationCopy = 0.0;
     }
 
     else
     {
-      v15 = a4;
+      durationCopy = duration;
     }
 
-    v16 = fmax(a3, 0.0);
-    if (v16 >= v15)
+    v16 = fmax(time, 0.0);
+    if (v16 >= durationCopy)
     {
-      v16 = v15;
+      v16 = durationCopy;
     }
 
-    if ((*&a3 <= -1 || ((*&a3 & 0x7FFFFFFFFFFFFFFFuLL) - 0x10000000000000) >> 53 >= 0x3FF) && (*&a3 - 1) >= 0xFFFFFFFFFFFFFLL)
+    if ((*&time <= -1 || ((*&time & 0x7FFFFFFFFFFFFFFFuLL) - 0x10000000000000) >> 53 >= 0x3FF) && (*&time - 1) >= 0xFFFFFFFFFFFFFLL)
     {
       v16 = 0.0;
     }
 
     v10->_initializedElapsedTime = v16;
-    if ((*&a5 & 0x7FFFFFFFFFFFFFFFuLL) < 0x7FF0000000000000)
+    if ((*&rate & 0x7FFFFFFFFFFFFFFFuLL) < 0x7FF0000000000000)
     {
-      v14 = a5;
+      rateCopy = rate;
     }
 
-    v10->_timelineRate = v14;
-    v10->_timelineDuration = v15;
-    v10->_paused = a6;
+    v10->_timelineRate = rateCopy;
+    v10->_timelineDuration = durationCopy;
+    v10->_paused = paused;
     v10->_initializationTimestamp = CFAbsoluteTimeGetCurrent();
   }
 

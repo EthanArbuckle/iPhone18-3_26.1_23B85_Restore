@@ -1,6 +1,6 @@
 @interface FBAInformationCell
 - (void)awakeFromNib;
-- (void)setQuestion:(id)a3;
+- (void)setQuestion:(id)question;
 @end
 
 @implementation FBAInformationCell
@@ -12,15 +12,15 @@
   [(FBAInformationCell *)&v2 awakeFromNib];
 }
 
-- (void)setQuestion:(id)a3
+- (void)setQuestion:(id)question
 {
-  v5 = a3;
-  if ([v5 answerType] == 6)
+  questionCopy = question;
+  if ([questionCopy answerType] == 6)
   {
-    objc_storeStrong(&self->_question, a3);
-    v6 = [v5 text];
-    v7 = [(FBAInformationCell *)self textLabel];
-    [v7 setText:v6];
+    objc_storeStrong(&self->_question, question);
+    text = [questionCopy text];
+    textLabel = [(FBAInformationCell *)self textLabel];
+    [textLabel setText:text];
   }
 
   else
@@ -28,7 +28,7 @@
     v8 = +[FBALog appHandle];
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      sub_100093EAC(v5, v8);
+      sub_100093EAC(questionCopy, v8);
     }
   }
 }

@@ -1,28 +1,28 @@
 @interface TSAudioTimeErrorCorrelator
-- (TSAudioTimeErrorCorrelator)initWithMaxCorrelationLength:(int64_t)a3 andUpscaleFactor:(int64_t)a4 forSamplingRate:(double)a5;
-- (void)_calculateUpsamplerCoefficients:(float *)a3 length:(int64_t *)a4;
+- (TSAudioTimeErrorCorrelator)initWithMaxCorrelationLength:(int64_t)length andUpscaleFactor:(int64_t)factor forSamplingRate:(double)rate;
+- (void)_calculateUpsamplerCoefficients:(float *)coefficients length:(int64_t *)length;
 @end
 
 @implementation TSAudioTimeErrorCorrelator
 
-- (TSAudioTimeErrorCorrelator)initWithMaxCorrelationLength:(int64_t)a3 andUpscaleFactor:(int64_t)a4 forSamplingRate:(double)a5
+- (TSAudioTimeErrorCorrelator)initWithMaxCorrelationLength:(int64_t)length andUpscaleFactor:(int64_t)factor forSamplingRate:(double)rate
 {
   v9.receiver = self;
   v9.super_class = TSAudioTimeErrorCorrelator;
   result = [(TSAudioTimeErrorCorrelator *)&v9 init];
   if (result)
   {
-    result->_samplingRate = a5;
-    result->_maxCorrelationLength = a3;
-    result->_upscaleFactor = a4;
+    result->_samplingRate = rate;
+    result->_maxCorrelationLength = length;
+    result->_upscaleFactor = factor;
   }
 
   return result;
 }
 
-- (void)_calculateUpsamplerCoefficients:(float *)a3 length:(int64_t *)a4
+- (void)_calculateUpsamplerCoefficients:(float *)coefficients length:(int64_t *)length
 {
-  if (a3 && a4)
+  if (coefficients && length)
   {
     upscaleFactor = self->_upscaleFactor;
     v8 = 200 * upscaleFactor;
@@ -31,8 +31,8 @@
     if (!v10)
     {
 LABEL_16:
-      *a3 = v10;
-      *a4 = v9;
+      *coefficients = v10;
+      *length = v9;
       return;
     }
 

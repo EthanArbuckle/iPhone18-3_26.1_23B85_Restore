@@ -1,23 +1,23 @@
 @interface WKPreviewAction
-+ (id)actionWithIdentifier:(id)a3 title:(id)a4 style:(int64_t)a5 handler:(id)a6;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)actionWithIdentifier:(id)identifier title:(id)title style:(int64_t)style handler:(id)handler;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
 @end
 
 @implementation WKPreviewAction
 
-+ (id)actionWithIdentifier:(id)a3 title:(id)a4 style:(int64_t)a5 handler:(id)a6
++ (id)actionWithIdentifier:(id)identifier title:(id)title style:(int64_t)style handler:(id)handler
 {
-  result = [a1 actionWithTitle:a4 style:a5 handler:a6];
-  *(result + 7) = a3;
+  result = [self actionWithTitle:title style:style handler:handler];
+  *(result + 7) = identifier;
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = WKPreviewAction;
-  v4 = [(UIPreviewAction *)&v6 copyWithZone:a3];
+  v4 = [(UIPreviewAction *)&v6 copyWithZone:zone];
   v4[7] = [(WKPreviewAction *)self identifier];
   return v4;
 }

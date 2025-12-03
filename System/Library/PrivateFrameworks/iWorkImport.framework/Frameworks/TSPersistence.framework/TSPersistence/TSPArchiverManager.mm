@@ -1,15 +1,15 @@
 @interface TSPArchiverManager
 - (TSPArchiverManager)init;
-- (TSPArchiverManager)initWithDelegate:(id)a3 archiverClass:(Class)a4 archiverFlags:(char)a5;
-- (id)archiverForObject:(id)a3 hasArchiverAccessLock:(BOOL)a4;
-- (id)explicitComponentRootObjectForObject:(id)a3 hasArchiverAccessLock:(BOOL)a4;
-- (id)impl_archiverForObject:(id)a3;
-- (id)impl_explicitComponentRootObjectForObject:(id)a3;
-- (void)archiveObjectWithHighPriority:(id)a3;
-- (void)archiveObjectWithLowPriority:(id)a3;
-- (void)archiveWithArchiver:(id)a3 queue:(id)a4 waitForArchiving:(BOOL)a5;
+- (TSPArchiverManager)initWithDelegate:(id)delegate archiverClass:(Class)class archiverFlags:(char)flags;
+- (id)archiverForObject:(id)object hasArchiverAccessLock:(BOOL)lock;
+- (id)explicitComponentRootObjectForObject:(id)object hasArchiverAccessLock:(BOOL)lock;
+- (id)impl_archiverForObject:(id)object;
+- (id)impl_explicitComponentRootObjectForObject:(id)object;
+- (void)archiveObjectWithHighPriority:(id)priority;
+- (void)archiveObjectWithLowPriority:(id)priority;
+- (void)archiveWithArchiver:(id)archiver queue:(id)queue waitForArchiving:(BOOL)archiving;
 - (void)dealloc;
-- (void)performAsynchronousArchiverAccessUsingBlock:(id)a3;
+- (void)performAsynchronousArchiverAccessUsingBlock:(id)block;
 - (void)stop;
 @end
 
@@ -31,18 +31,18 @@
   objc_exception_throw(v13);
 }
 
-- (TSPArchiverManager)initWithDelegate:(id)a3 archiverClass:(Class)a4 archiverFlags:(char)a5
+- (TSPArchiverManager)initWithDelegate:(id)delegate archiverClass:(Class)class archiverFlags:(char)flags
 {
-  v8 = a3;
+  delegateCopy = delegate;
   v37.receiver = self;
   v37.super_class = TSPArchiverManager;
   v9 = [(TSPArchiverManager *)&v37 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeWeak(&v9->_delegate, v8);
-    v10->_archiverClass = a4;
-    v10->_archiverFlags = a5;
+    objc_storeWeak(&v9->_delegate, delegateCopy);
+    v10->_archiverClass = class;
+    v10->_archiverFlags = flags;
     v11 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v12 = dispatch_queue_create("TSPArchiverManager.Archivers.High", v11);
     archiversHighQueue = v10->_archiversHighQueue;
@@ -124,13 +124,13 @@
   [(TSPArchiverManager *)&v11 dealloc];
 }
 
-- (id)archiverForObject:(id)a3 hasArchiverAccessLock:(BOOL)a4
+- (id)archiverForObject:(id)object hasArchiverAccessLock:(BOOL)lock
 {
-  v4 = a4;
-  v7 = a3;
-  if (v4)
+  lockCopy = lock;
+  objectCopy = object;
+  if (lockCopy)
   {
-    v8 = objc_msgSend_impl_archiverForObject_(self, v6, v7);
+    v8 = objc_msgSend_impl_archiverForObject_(self, v6, objectCopy);
   }
 
   else
@@ -149,7 +149,7 @@
     block[3] = &unk_27A6E2C00;
     v13 = &v14;
     block[4] = self;
-    v12 = v7;
+    v12 = objectCopy;
     dispatch_sync(archiversHighQueue, block);
     v8 = v15[5];
 
@@ -159,9 +159,9 @@
   return v8;
 }
 
-- (id)impl_archiverForObject:(id)a3
+- (id)impl_archiverForObject:(id)object
 {
-  v5 = a3;
+  objectCopy = object;
   v6 = atomic_load(&self->_flags);
   if (v6)
   {
@@ -173,14 +173,14 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v12, v13);
   }
 
-  v14 = objc_msgSend_archiverForObject_archiveQueue_waitForArchiving_(self, v4, v5, self->_archiveDefaultQueue, 0);
+  v14 = objc_msgSend_archiverForObject_archiveQueue_waitForArchiving_(self, v4, objectCopy, self->_archiveDefaultQueue, 0);
 
   return v14;
 }
 
-- (void)archiveObjectWithHighPriority:(id)a3
+- (void)archiveObjectWithHighPriority:(id)priority
 {
-  v4 = a3;
+  priorityCopy = priority;
   if (objc_msgSend_tsp_isArchiverThread(MEMORY[0x277CCACC8], v5, v6))
   {
     v8 = MEMORY[0x277D81150];
@@ -188,7 +188,7 @@
     v11 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v10, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/persistence/src/TSPArchiverManager.mm");
     v12 = objc_opt_class();
     v13 = NSStringFromClass(v12);
-    v16 = objc_msgSend_tsp_identifier(v4, v14, v15);
+    v16 = objc_msgSend_tsp_identifier(priorityCopy, v14, v15);
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v8, v17, v9, v11, 150, 0, "Attempting to modify object [%{public}@-%llu] while archiving.", v13, v16);
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v18, v19);
@@ -207,16 +207,16 @@
       block[2] = sub_276AA209C;
       block[3] = &unk_27A6E2898;
       block[4] = self;
-      v23 = v4;
+      v23 = priorityCopy;
       dispatch_sync(archiversHighQueue, block);
     }
   }
 }
 
-- (void)archiveObjectWithLowPriority:(id)a3
+- (void)archiveObjectWithLowPriority:(id)priority
 {
-  v4 = a3;
-  v5 = v4;
+  priorityCopy = priority;
+  v5 = priorityCopy;
   v6 = atomic_load(&self->_flags);
   if ((v6 & 1) == 0)
   {
@@ -225,17 +225,17 @@
     v8[1] = 3221225472;
     v8[2] = sub_276AA21A8;
     v8[3] = &unk_27A6E2898;
-    v9 = v4;
-    v10 = self;
+    v9 = priorityCopy;
+    selfCopy = self;
     dispatch_async(archiversLowQueue, v8);
   }
 }
 
-- (id)explicitComponentRootObjectForObject:(id)a3 hasArchiverAccessLock:(BOOL)a4
+- (id)explicitComponentRootObjectForObject:(id)object hasArchiverAccessLock:(BOOL)lock
 {
-  if (a4)
+  if (lock)
   {
-    v6 = objc_msgSend_impl_explicitComponentRootObjectForObject_(self, a2, a3);
+    v6 = objc_msgSend_impl_explicitComponentRootObjectForObject_(self, a2, object);
   }
 
   else
@@ -254,7 +254,7 @@
     block[3] = &unk_27A6E6548;
     block[4] = self;
     block[5] = &v10;
-    block[6] = a3;
+    block[6] = object;
     dispatch_sync(archiversHighQueue, block);
     v6 = v11[5];
     _Block_object_dispose(&v10, 8);
@@ -263,18 +263,18 @@
   return v6;
 }
 
-- (id)impl_explicitComponentRootObjectForObject:(id)a3
+- (id)impl_explicitComponentRootObjectForObject:(id)object
 {
-  v3 = objc_msgSend_archiverForObject_archiveQueue_waitForArchiving_(self, a2, a3, 0, 0);
+  v3 = objc_msgSend_archiverForObject_archiveQueue_waitForArchiving_(self, a2, object, 0, 0);
   v6 = objc_msgSend_explicitComponentRootObject(v3, v4, v5);
 
   return v6;
 }
 
-- (void)performAsynchronousArchiverAccessUsingBlock:(id)a3
+- (void)performAsynchronousArchiverAccessUsingBlock:(id)block
 {
-  v4 = a3;
-  if (v4)
+  blockCopy = block;
+  if (blockCopy)
   {
     dispatch_suspend(self->_archiversLowQueue);
     archiversHighQueue = self->_archiversHighQueue;
@@ -283,7 +283,7 @@
     v6[2] = sub_276AA24B0;
     v6[3] = &unk_27A6E2C78;
     v6[4] = self;
-    v7 = v4;
+    v7 = blockCopy;
     dispatch_async(archiversHighQueue, v6);
   }
 }
@@ -300,14 +300,14 @@
   dispatch_sync(archiversHighQueue, block);
 }
 
-- (void)archiveWithArchiver:(id)a3 queue:(id)a4 waitForArchiving:(BOOL)a5
+- (void)archiveWithArchiver:(id)archiver queue:(id)queue waitForArchiving:(BOOL)archiving
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  objc_msgSend_willScheduleArchive(v8, v10, v11);
-  v14 = objc_msgSend_archiveGroup(v8, v12, v13);
-  v17 = objc_msgSend_serializeGroup(v8, v15, v16);
+  archivingCopy = archiving;
+  archiverCopy = archiver;
+  queueCopy = queue;
+  objc_msgSend_willScheduleArchive(archiverCopy, v10, v11);
+  v14 = objc_msgSend_archiveGroup(archiverCopy, v12, v13);
+  v17 = objc_msgSend_serializeGroup(archiverCopy, v15, v16);
   dispatch_group_enter(v14);
   dispatch_group_enter(v17);
   v23[0] = MEMORY[0x277D85DD0];
@@ -315,17 +315,17 @@
   v23[2] = sub_276AA2BF4;
   v23[3] = &unk_27A6E6598;
   v23[4] = self;
-  v24 = v8;
+  v24 = archiverCopy;
   v25 = v14;
-  v18 = v9;
+  v18 = queueCopy;
   v26 = v18;
   v27 = v17;
-  v28 = v5;
+  v28 = archivingCopy;
   v19 = v17;
   v20 = v14;
-  v21 = v8;
+  v21 = archiverCopy;
   v22 = _Block_copy(v23);
-  if (v5)
+  if (archivingCopy)
   {
     dispatch_sync(v18, v22);
   }

@@ -10,8 +10,8 @@
   v7 = 0u;
   v8 = 0u;
   v9 = 0u;
-  v1 = [a1 registeredTypeIdentifiers];
-  v2 = [v1 countByEnumeratingWithState:&v6 objects:v10 count:16];
+  registeredTypeIdentifiers = [self registeredTypeIdentifiers];
+  v2 = [registeredTypeIdentifiers countByEnumeratingWithState:&v6 objects:v10 count:16];
   if (v2)
   {
     v3 = *v7;
@@ -21,7 +21,7 @@
       {
         if (*v7 != v3)
         {
-          objc_enumerationMutation(v1);
+          objc_enumerationMutation(registeredTypeIdentifiers);
         }
 
         if (QLPreviewControllerSupportsContentType())
@@ -31,7 +31,7 @@
         }
       }
 
-      v2 = [v1 countByEnumeratingWithState:&v6 objects:v10 count:16];
+      v2 = [registeredTypeIdentifiers countByEnumeratingWithState:&v6 objects:v10 count:16];
       if (v2)
       {
         continue;

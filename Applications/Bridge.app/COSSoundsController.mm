@@ -1,36 +1,36 @@
 @interface COSSoundsController
 - (COSSoundsController)init;
-- (id)audioVolume:(id)a3;
+- (id)audioVolume:(id)volume;
 - (id)contextualVolumeProfileValue;
-- (id)detailTextForToneWithSpecifier:(id)a3;
-- (id)hapticIntensity:(id)a3;
-- (id)hapticState:(id)a3;
+- (id)detailTextForToneWithSpecifier:(id)specifier;
+- (id)hapticIntensity:(id)intensity;
+- (id)hapticState:(id)state;
 - (id)hapticsValueText;
-- (id)isAudioMuted:(id)a3;
-- (id)isContextualVolumeEnabled:(id)a3;
-- (id)jackrabbitState:(id)a3;
-- (id)prominentHapticsEnabled:(id)a3;
+- (id)isAudioMuted:(id)muted;
+- (id)isContextualVolumeEnabled:(id)enabled;
+- (id)jackrabbitState:(id)state;
+- (id)prominentHapticsEnabled:(id)enabled;
 - (id)specifiers;
-- (id)systemHapticsState:(id)a3;
-- (void)_handleTonePreferencesDidChangeNotification:(id)a3;
+- (id)systemHapticsState:(id)state;
+- (void)_handleTonePreferencesDidChangeNotification:(id)notification;
 - (void)dealloc;
-- (void)setAudioMuted:(id)a3 specifier:(id)a4;
-- (void)setAudioVolume:(id)a3 specifier:(id)a4;
-- (void)setContextualVolumeEnabled:(id)a3 specifier:(id)a4;
-- (void)setHapticIntensity:(id)a3 specifier:(id)a4;
-- (void)setHapticState:(id)a3 specifier:(id)a4;
-- (void)setHapticStateValue:(int64_t)a3;
-- (void)setJackrabbitState:(id)a3 specifier:(id)a4;
-- (void)setProminentHapticsEnabled:(id)a3 specifier:(id)a4;
-- (void)setSystemHapticsState:(id)a3 specifier:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)setAudioMuted:(id)muted specifier:(id)specifier;
+- (void)setAudioVolume:(id)volume specifier:(id)specifier;
+- (void)setContextualVolumeEnabled:(id)enabled specifier:(id)specifier;
+- (void)setHapticIntensity:(id)intensity specifier:(id)specifier;
+- (void)setHapticState:(id)state specifier:(id)specifier;
+- (void)setHapticStateValue:(int64_t)value;
+- (void)setJackrabbitState:(id)state specifier:(id)specifier;
+- (void)setProminentHapticsEnabled:(id)enabled specifier:(id)specifier;
+- (void)setSystemHapticsState:(id)state specifier:(id)specifier;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)updateAudioVolumeSlider;
 - (void)updateHapticIntensitySlider;
-- (void)updateHapticSliderWithHighlightedDownGlyph:(BOOL)a3;
-- (void)updateVolumeSliderWithHighlightedDownGlyph:(BOOL)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)updateHapticSliderWithHighlightedDownGlyph:(BOOL)glyph;
+- (void)updateVolumeSliderWithHighlightedDownGlyph:(BOOL)glyph;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation COSSoundsController
@@ -74,9 +74,9 @@
     CFNotificationCenterAddObserver(v16, v2, sub_100065C28, @"com.apple.coreaudio.disable_watch_ui_haptics_did_change", 0, 1024);
     v17 = CFNotificationCenterGetDarwinNotifyCenter();
     CFNotificationCenterAddObserver(v17, v2, sub_100065C28, +[COSContextualVolumeController prefsDidChangeNotification], 0, 1024);
-    v18 = [UIApp activeWatch];
+    activeWatch = [UIApp activeWatch];
     v19 = [[NSUUID alloc] initWithUUIDString:@"9B2FB519-D14B-49AB-BB91-67A6BF4E2B9A"];
-    v20 = [v18 supportsCapability:v19];
+    v20 = [activeWatch supportsCapability:v19];
 
     if (v20)
     {
@@ -162,12 +162,12 @@
     contextualVolumeProfile = self->_contextualVolumeProfile;
     self->_contextualVolumeProfile = v15;
 
-    v17 = [UIApp activeWatch];
+    activeWatch = [UIApp activeWatch];
     v110 = [v4 indexOfSpecifierWithID:@"haptic_group_id"];
     v18 = [[NSUUID alloc] initWithUUIDString:@"5DA2E6C5-2C4D-444E-B3E8-CCDEF7AB41AB"];
-    v19 = [v17 supportsCapability:v18];
+    v19 = [activeWatch supportsCapability:v18];
 
-    v113 = v17;
+    v113 = activeWatch;
     if (v19)
     {
       v20 = [v4 specifierForID:@"haptic_group_id"];
@@ -184,11 +184,11 @@
       self->_prominentHapticSwitch = 0;
 
       v24 = [[NSUUID alloc] initWithUUIDString:@"9B2FB519-D14B-49AB-BB91-67A6BF4E2B9A"];
-      v25 = [v17 supportsCapability:v24];
+      v25 = [activeWatch supportsCapability:v24];
 
       if ((v25 & 1) == 0)
       {
-        v108 = [(NACVolumeController *)self->_volumeController hapticState];
+        hapticState = [(NACVolumeController *)self->_volumeController hapticState];
         v26 = +[NSBundle mainBundle];
         v27 = [v26 localizedStringForKey:@"HAPTIC_ALERTS_GROUP_TITLE" value:&stru_10026E598 table:@"Sounds"];
         v28 = [PSSpecifier groupSpecifierWithName:v27];
@@ -201,7 +201,7 @@
         [v4 insertObject:v28 atIndex:v110];
         v33 = v110 + 2;
         [v4 insertObject:v31 atIndex:v110 + 1];
-        if (v108 >= 1)
+        if (hapticState >= 1)
         {
           v105 = +[PSSpecifier emptyGroupSpecifier];
           [v105 setProperty:&__kCFBooleanTrue forKey:PSIsRadioGroupKey];
@@ -220,7 +220,7 @@
           v32 = v38;
 
           [v41 setIdentifier:@"PROMINENT_HAPTIC_RADIO_ID"];
-          if (v108 == 1)
+          if (hapticState == 1)
           {
             v42 = v36;
           }
@@ -252,22 +252,22 @@
     {
       v44 = BPSAccessoryHighlightColor();
       v45 = BPSTintedSymbol();
-      v46 = [v45 imageFlippedForRightToLeftLayoutDirection];
+      imageFlippedForRightToLeftLayoutDirection = [v45 imageFlippedForRightToLeftLayoutDirection];
 
       v47 = BPSAccessoryHighlightColor();
       v48 = BPSTintedSymbol();
 
       v49 = BPSAccessoryHighlightColor();
       v50 = BPSTintedSymbol();
-      v51 = [v50 imageFlippedForRightToLeftLayoutDirection];
+      imageFlippedForRightToLeftLayoutDirection2 = [v50 imageFlippedForRightToLeftLayoutDirection];
       volumeSliderDownEnabled = self->_volumeSliderDownEnabled;
-      self->_volumeSliderDownEnabled = v51;
+      self->_volumeSliderDownEnabled = imageFlippedForRightToLeftLayoutDirection2;
 
       v53 = BPSAccessoryColor();
       v54 = BPSTintedSymbol();
-      v55 = [v54 imageFlippedForRightToLeftLayoutDirection];
+      imageFlippedForRightToLeftLayoutDirection3 = [v54 imageFlippedForRightToLeftLayoutDirection];
       volumeSliderDownDisabled = self->_volumeSliderDownDisabled;
-      self->_volumeSliderDownDisabled = v55;
+      self->_volumeSliderDownDisabled = imageFlippedForRightToLeftLayoutDirection3;
 
       v57 = BPSAccessoryHighlightColor();
       v58 = BPSTintedSymbol();
@@ -283,19 +283,19 @@
     else
     {
       v48 = 0;
-      v46 = 0;
+      imageFlippedForRightToLeftLayoutDirection = 0;
     }
 
     v63 = PSSliderRightImageKey;
-    v109 = v46;
-    [(PSSpecifier *)*p_audioSlider setProperty:v46 forKey:PSSliderRightImageKey];
+    v109 = imageFlippedForRightToLeftLayoutDirection;
+    [(PSSpecifier *)*p_audioSlider setProperty:imageFlippedForRightToLeftLayoutDirection forKey:PSSliderRightImageKey];
     [(NACVolumeController *)self->_volumeController volumeValue];
     v65 = v64;
-    v66 = [(NACVolumeController *)self->_volumeController isVolumeControlAvailable];
-    v67 = v66;
+    isVolumeControlAvailable = [(NACVolumeController *)self->_volumeController isVolumeControlAvailable];
+    v67 = isVolumeControlAvailable;
     if (v65 > 0.0635)
     {
-      v68 = v66;
+      v68 = isVolumeControlAvailable;
     }
 
     else
@@ -388,14 +388,14 @@
       if (v98)
       {
         v99 = self->_contextualVolumeProfile;
-        v100 = [(COSSoundsController *)self contextualVolumeController];
+        contextualVolumeController = [(COSSoundsController *)self contextualVolumeController];
         v101 = +[COSContextualVolumeController propertyKey];
-        [(PSSpecifier *)v99 setProperty:v100 forKey:v101];
+        [(PSSpecifier *)v99 setProperty:contextualVolumeController forKey:v101];
 
-        v102 = [(COSSoundsController *)self contextualVolumeController];
-        LODWORD(v100) = [v102 enabled];
+        contextualVolumeController2 = [(COSSoundsController *)self contextualVolumeController];
+        LODWORD(contextualVolumeController) = [contextualVolumeController2 enabled];
 
-        if (v100)
+        if (contextualVolumeController)
         {
           p_contextualVolumeProfile = &self->_audioSlider;
         }
@@ -420,49 +420,49 @@ LABEL_31:
   return v3;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = COSSoundsController;
-  [(COSSoundsController *)&v4 viewWillAppear:a3];
+  [(COSSoundsController *)&v4 viewWillAppear:appear];
   [(NACVolumeController *)self->_volumeController beginObservingVolume];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v9.receiver = self;
   v9.super_class = COSSoundsController;
-  [(COSSoundsController *)&v9 viewDidAppear:a3];
+  [(COSSoundsController *)&v9 viewDidAppear:appear];
   v3 = [NSBundle bundleForClass:objc_opt_class()];
-  v4 = [v3 bundleURL];
+  bundleURL = [v3 bundleURL];
 
   v5 = [_NSLocalizedStringResource alloc];
   v6 = +[NSLocale currentLocale];
-  v7 = [v5 initWithKey:@"SOUNDS" table:@"Settings" locale:v6 bundleURL:v4];
+  v7 = [v5 initWithKey:@"SOUNDS" table:@"Settings" locale:v6 bundleURL:bundleURL];
 
   v8 = [NSURL URLWithString:@"bridge:root=SOUNDS_ID"];
   [BPSWatchSettingsNavigationDonation emitNavigationEventForSystemSettingWithIconSpecifierIdentifier:@"SOUNDS_ID" title:v7 localizedNavigationComponents:&__NSArray0__struct deepLink:v8];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = COSSoundsController;
-  [(COSSoundsController *)&v4 viewWillDisappear:a3];
+  [(COSSoundsController *)&v4 viewWillDisappear:disappear];
   [(NACVolumeController *)self->_volumeController endObservingVolume];
 }
 
 - (id)hapticsValueText
 {
-  v2 = [(NACVolumeController *)self->_volumeController hapticState];
-  if (v2 > 2)
+  hapticState = [(NACVolumeController *)self->_volumeController hapticState];
+  if (hapticState > 2)
   {
     v5 = 0;
   }
 
   else
   {
-    v3 = off_1002698E8[v2];
+    v3 = off_1002698E8[hapticState];
     v4 = +[NSBundle mainBundle];
     v5 = [v4 localizedStringForKey:v3 value:&stru_10026E598 table:@"Haptics"];
   }
@@ -470,23 +470,23 @@ LABEL_31:
   return v5;
 }
 
-- (void)setHapticState:(id)a3 specifier:(id)a4
+- (void)setHapticState:(id)state specifier:(id)specifier
 {
-  v5 = [a3 BOOLValue];
+  bOOLValue = [state BOOLValue];
 
-  [(COSSoundsController *)self setHapticStateValue:v5];
+  [(COSSoundsController *)self setHapticStateValue:bOOLValue];
 }
 
-- (id)hapticState:(id)a3
+- (id)hapticState:(id)state
 {
-  v3 = [(NACVolumeController *)self->_volumeController hapticState];
+  hapticState = [(NACVolumeController *)self->_volumeController hapticState];
 
-  return [NSNumber numberWithInteger:v3];
+  return [NSNumber numberWithInteger:hapticState];
 }
 
-- (void)setHapticStateValue:(int64_t)a3
+- (void)setHapticStateValue:(int64_t)value
 {
-  [(NACVolumeController *)self->_volumeController setHapticState:a3];
+  [(NACVolumeController *)self->_volumeController setHapticState:value];
 
   [(COSSoundsController *)self reloadSpecifiers];
 }
@@ -495,14 +495,14 @@ LABEL_31:
 {
   [(NACVolumeController *)self->_volumeController volumeValue];
   v4 = v3;
-  v5 = [(NACVolumeController *)self->_volumeController isVolumeControlAvailable];
+  isVolumeControlAvailable = [(NACVolumeController *)self->_volumeController isVolumeControlAvailable];
   audioSlider = self->_audioSlider;
-  v7 = [NSNumber numberWithBool:v5];
+  v7 = [NSNumber numberWithBool:isVolumeControlAvailable];
   [(PSSpecifier *)audioSlider setProperty:v7 forKey:PSEnabledKey];
 
   if (v4 > 0.0635)
   {
-    v8 = v5;
+    v8 = isVolumeControlAvailable;
   }
 
   else
@@ -525,10 +525,10 @@ LABEL_31:
   [(COSSoundsController *)self reloadSpecifier:hapticSlider];
 }
 
-- (void)updateVolumeSliderWithHighlightedDownGlyph:(BOOL)a3
+- (void)updateVolumeSliderWithHighlightedDownGlyph:(BOOL)glyph
 {
   v3 = &OBJC_IVAR___COSSoundsController__volumeSliderDownDisabled;
-  if (a3)
+  if (glyph)
   {
     v3 = &OBJC_IVAR___COSSoundsController__volumeSliderDownEnabled;
   }
@@ -536,10 +536,10 @@ LABEL_31:
   [(PSSpecifier *)self->_audioSlider setProperty:*&self->BPSListController_opaque[*v3] forKey:PSSliderLeftImageKey];
 }
 
-- (void)updateHapticSliderWithHighlightedDownGlyph:(BOOL)a3
+- (void)updateHapticSliderWithHighlightedDownGlyph:(BOOL)glyph
 {
   v3 = &OBJC_IVAR___COSSoundsController__hapticSliderDownDisabled;
-  if (a3)
+  if (glyph)
   {
     v3 = &OBJC_IVAR___COSSoundsController__hapticSliderDownEnabled;
   }
@@ -547,77 +547,77 @@ LABEL_31:
   [(PSSpecifier *)self->_hapticSlider setProperty:*&self->BPSListController_opaque[*v3] forKey:PSSliderLeftImageKey];
 }
 
-- (id)audioVolume:(id)a3
+- (id)audioVolume:(id)volume
 {
   [(NACVolumeController *)self->_volumeController volumeValue];
 
   return [NSNumber numberWithFloat:?];
 }
 
-- (void)setAudioVolume:(id)a3 specifier:(id)a4
+- (void)setAudioVolume:(id)volume specifier:(id)specifier
 {
-  v11 = a3;
-  v6 = a4;
+  volumeCopy = volume;
+  specifierCopy = specifier;
   if ([(NACVolumeController *)self->_volumeController isVolumeControlAvailable])
   {
-    [v11 floatValue];
+    [volumeCopy floatValue];
     v8 = v7;
     [(NACVolumeController *)self->_volumeController setVolumeValue:?];
-    v9 = [(COSSoundsController *)self contextualVolumeController];
+    contextualVolumeController = [(COSSoundsController *)self contextualVolumeController];
     *&v10 = v8;
-    [v9 setRingtoneUserVolume:v10];
+    [contextualVolumeController setRingtoneUserVolume:v10];
 
     [(COSSoundsController *)self updateVolumeSliderWithHighlightedDownGlyph:v8 > 0.0635, v8];
-    [(COSSoundsController *)self reloadSpecifier:v6];
+    [(COSSoundsController *)self reloadSpecifier:specifierCopy];
   }
 }
 
-- (id)isContextualVolumeEnabled:(id)a3
+- (id)isContextualVolumeEnabled:(id)enabled
 {
-  v3 = [(COSSoundsController *)self contextualVolumeController];
-  v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 enabled]);
+  contextualVolumeController = [(COSSoundsController *)self contextualVolumeController];
+  v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [contextualVolumeController enabled]);
 
   return v4;
 }
 
-- (void)setContextualVolumeEnabled:(id)a3 specifier:(id)a4
+- (void)setContextualVolumeEnabled:(id)enabled specifier:(id)specifier
 {
-  v5 = [a3 BOOLValue];
-  v6 = [(COSSoundsController *)self contextualVolumeController];
-  [v6 setEnabled:v5];
+  bOOLValue = [enabled BOOLValue];
+  contextualVolumeController = [(COSSoundsController *)self contextualVolumeController];
+  [contextualVolumeController setEnabled:bOOLValue];
 
-  v7 = [(COSSoundsController *)self contextualVolumeController];
-  v8 = [v7 ringtoneUserVolume];
+  contextualVolumeController2 = [(COSSoundsController *)self contextualVolumeController];
+  ringtoneUserVolume = [contextualVolumeController2 ringtoneUserVolume];
 
-  if ((v5 & 1) == 0 && v8)
+  if ((bOOLValue & 1) == 0 && ringtoneUserVolume)
   {
-    [v8 floatValue];
+    [ringtoneUserVolume floatValue];
     v10 = v9;
-    v11 = [(COSSoundsController *)self volumeController];
+    volumeController = [(COSSoundsController *)self volumeController];
     LODWORD(v12) = v10;
-    [v11 setVolumeValue:v12];
+    [volumeController setVolumeValue:v12];
   }
 
-  v13 = [(COSSoundsController *)self audioSlider];
-  if (v13 && (v14 = v13, [(COSSoundsController *)self contextualVolumeProfile], v15 = objc_claimAutoreleasedReturnValue(), v15, v14, v15))
+  audioSlider = [(COSSoundsController *)self audioSlider];
+  if (audioSlider && (v14 = audioSlider, [(COSSoundsController *)self contextualVolumeProfile], v15 = objc_claimAutoreleasedReturnValue(), v15, v14, v15))
   {
-    if (v5)
+    if (bOOLValue)
     {
-      v16 = [(COSSoundsController *)self audioSlider];
-      v24 = v16;
+      audioSlider2 = [(COSSoundsController *)self audioSlider];
+      v24 = audioSlider2;
       v17 = [NSArray arrayWithObjects:&v24 count:1];
-      v18 = [(COSSoundsController *)self contextualVolumeProfile];
-      v23 = v18;
+      contextualVolumeProfile = [(COSSoundsController *)self contextualVolumeProfile];
+      v23 = contextualVolumeProfile;
       v19 = &v23;
     }
 
     else
     {
-      v16 = [(COSSoundsController *)self contextualVolumeProfile];
-      v22 = v16;
+      audioSlider2 = [(COSSoundsController *)self contextualVolumeProfile];
+      v22 = audioSlider2;
       v17 = [NSArray arrayWithObjects:&v22 count:1];
-      v18 = [(COSSoundsController *)self audioSlider];
-      v21 = v18;
+      contextualVolumeProfile = [(COSSoundsController *)self audioSlider];
+      v21 = contextualVolumeProfile;
       v19 = &v21;
     }
 
@@ -633,62 +633,62 @@ LABEL_31:
 
 - (id)contextualVolumeProfileValue
 {
-  v2 = [(COSSoundsController *)self contextualVolumeController];
-  v3 = [v2 profileValue];
+  contextualVolumeController = [(COSSoundsController *)self contextualVolumeController];
+  profileValue = [contextualVolumeController profileValue];
 
-  return v3;
+  return profileValue;
 }
 
-- (id)hapticIntensity:(id)a3
+- (id)hapticIntensity:(id)intensity
 {
   [(NACVolumeController *)self->_volumeController hapticIntensity];
 
   return [NSNumber numberWithFloat:?];
 }
 
-- (void)setHapticIntensity:(id)a3 specifier:(id)a4
+- (void)setHapticIntensity:(id)intensity specifier:(id)specifier
 {
-  v8 = a4;
-  [a3 floatValue];
+  specifierCopy = specifier;
+  [intensity floatValue];
   v7 = v6;
   [(NACVolumeController *)self->_volumeController setHapticIntensity:?];
   [(COSSoundsController *)self updateHapticSliderWithHighlightedDownGlyph:v7 > 0.001, v7];
-  [(COSSoundsController *)self reloadSpecifier:v8];
+  [(COSSoundsController *)self reloadSpecifier:specifierCopy];
 }
 
-- (void)setAudioMuted:(id)a3 specifier:(id)a4
+- (void)setAudioMuted:(id)muted specifier:(id)specifier
 {
   volumeController = self->_volumeController;
-  v5 = [a3 BOOLValue];
+  bOOLValue = [muted BOOLValue];
 
-  [(NACVolumeController *)volumeController setSystemMuted:v5];
+  [(NACVolumeController *)volumeController setSystemMuted:bOOLValue];
 }
 
-- (id)isAudioMuted:(id)a3
+- (id)isAudioMuted:(id)muted
 {
-  v3 = [(NACVolumeController *)self->_volumeController isSystemMuted];
+  isSystemMuted = [(NACVolumeController *)self->_volumeController isSystemMuted];
 
-  return [NSNumber numberWithBool:v3];
+  return [NSNumber numberWithBool:isSystemMuted];
 }
 
-- (id)prominentHapticsEnabled:(id)a3
+- (id)prominentHapticsEnabled:(id)enabled
 {
-  v3 = [(NACVolumeController *)self->_volumeController isProminentHapticEnabled];
+  isProminentHapticEnabled = [(NACVolumeController *)self->_volumeController isProminentHapticEnabled];
 
-  return [NSNumber numberWithBool:v3];
+  return [NSNumber numberWithBool:isProminentHapticEnabled];
 }
 
-- (void)setProminentHapticsEnabled:(id)a3 specifier:(id)a4
+- (void)setProminentHapticsEnabled:(id)enabled specifier:(id)specifier
 {
   volumeController = self->_volumeController;
-  v5 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
 
-  [(NACVolumeController *)volumeController setProminentHapticEnabled:v5];
+  [(NACVolumeController *)volumeController setProminentHapticEnabled:bOOLValue];
 }
 
-- (id)detailTextForToneWithSpecifier:(id)a3
+- (id)detailTextForToneWithSpecifier:(id)specifier
 {
-  v3 = [a3 propertyForKey:@"alertType"];
+  v3 = [specifier propertyForKey:@"alertType"];
   v4 = TLAlertTypeFromString();
 
   v5 = +[TLToneManager sharedToneManager];
@@ -700,7 +700,7 @@ LABEL_31:
   return v8;
 }
 
-- (void)_handleTonePreferencesDidChangeNotification:(id)a3
+- (void)_handleTonePreferencesDidChangeNotification:(id)notification
 {
   objc_initWeak(&location, self);
   v3[0] = _NSConcreteStackBlock;
@@ -713,11 +713,11 @@ LABEL_31:
   objc_destroyWeak(&location);
 }
 
-- (void)setJackrabbitState:(id)a3 specifier:(id)a4
+- (void)setJackrabbitState:(id)state specifier:(id)specifier
 {
-  v5 = a3;
-  -[NPSDomainAccessor setBool:forKey:](self->_carouselDomain, "setBool:forKey:", [v5 BOOLValue] ^ 1, @"CSLDisableDetents");
-  v6 = [(NPSDomainAccessor *)self->_carouselDomain synchronize];
+  stateCopy = state;
+  -[NPSDomainAccessor setBool:forKey:](self->_carouselDomain, "setBool:forKey:", [stateCopy BOOLValue] ^ 1, @"CSLDisableDetents");
+  synchronize = [(NPSDomainAccessor *)self->_carouselDomain synchronize];
   v7 = objc_opt_new();
   v17 = @"CSLDisableDetents";
   v8 = [NSArray arrayWithObjects:&v17 count:1];
@@ -727,9 +727,9 @@ LABEL_31:
   v10 = pbb_setup_log();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v5 BOOLValue];
+    bOOLValue = [stateCopy BOOLValue];
     v12 = @"Disabled";
-    if (v11)
+    if (bOOLValue)
     {
       v12 = @"Enabled";
     }
@@ -742,9 +742,9 @@ LABEL_31:
   }
 }
 
-- (id)jackrabbitState:(id)a3
+- (id)jackrabbitState:(id)state
 {
-  v4 = [(NPSDomainAccessor *)self->_carouselDomain synchronize];
+  synchronize = [(NPSDomainAccessor *)self->_carouselDomain synchronize];
   v5 = [(NPSDomainAccessor *)self->_carouselDomain objectForKey:@"CSLDisableDetents"];
   v6 = v5;
   if (v5)
@@ -778,11 +778,11 @@ LABEL_31:
   return v10;
 }
 
-- (void)setSystemHapticsState:(id)a3 specifier:(id)a4
+- (void)setSystemHapticsState:(id)state specifier:(id)specifier
 {
-  v5 = a3;
-  -[NPSDomainAccessor setBool:forKey:](self->_coreaudioDomain, "setBool:forKey:", [v5 BOOLValue] ^ 1, @"disable_watch_ui_haptics");
-  v6 = [(NPSDomainAccessor *)self->_coreaudioDomain synchronize];
+  stateCopy = state;
+  -[NPSDomainAccessor setBool:forKey:](self->_coreaudioDomain, "setBool:forKey:", [stateCopy BOOLValue] ^ 1, @"disable_watch_ui_haptics");
+  synchronize = [(NPSDomainAccessor *)self->_coreaudioDomain synchronize];
   v7 = objc_opt_new();
   v17 = @"disable_watch_ui_haptics";
   v8 = [NSArray arrayWithObjects:&v17 count:1];
@@ -792,9 +792,9 @@ LABEL_31:
   v10 = pbb_setup_log();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v5 BOOLValue];
+    bOOLValue = [stateCopy BOOLValue];
     v12 = @"Disabled";
-    if (v11)
+    if (bOOLValue)
     {
       v12 = @"Enabled";
     }
@@ -807,9 +807,9 @@ LABEL_31:
   }
 }
 
-- (id)systemHapticsState:(id)a3
+- (id)systemHapticsState:(id)state
 {
-  v4 = [(NPSDomainAccessor *)self->_coreaudioDomain synchronize];
+  synchronize = [(NPSDomainAccessor *)self->_coreaudioDomain synchronize];
   v5 = [(NPSDomainAccessor *)self->_coreaudioDomain objectForKey:@"disable_watch_ui_haptics"];
   v6 = v5;
   if (v5)
@@ -843,17 +843,17 @@ LABEL_31:
   return v10;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(COSSoundsController *)self indexForIndexPath:v7];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [(COSSoundsController *)self indexForIndexPath:pathCopy];
   v9 = [*&self->BPSListController_opaque[OBJC_IVAR___PSListController__specifiers] objectAtIndex:v8];
-  v10 = [v9 identifier];
-  v11 = [v10 isEqualToString:@"DEFAULTS_HAPTIC_RADIO_ID"];
+  identifier = [v9 identifier];
+  v11 = [identifier isEqualToString:@"DEFAULTS_HAPTIC_RADIO_ID"];
 
-  v12 = [v9 identifier];
-  v13 = [v12 isEqualToString:@"PROMINENT_HAPTIC_RADIO_ID"];
+  identifier2 = [v9 identifier];
+  v13 = [identifier2 isEqualToString:@"PROMINENT_HAPTIC_RADIO_ID"];
 
   if ((v11 & 1) != 0 || v13)
   {
@@ -872,7 +872,7 @@ LABEL_31:
 
   v15.receiver = self;
   v15.super_class = COSSoundsController;
-  [(COSSoundsController *)&v15 tableView:v6 didSelectRowAtIndexPath:v7];
+  [(COSSoundsController *)&v15 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
 }
 
 @end

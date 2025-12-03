@@ -1,27 +1,27 @@
 @interface _INPBPrivatePlayMediaIntentData
-- (BOOL)isEqual:(id)a3;
-- (_INPBPrivatePlayMediaIntentData)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBPrivatePlayMediaIntentData)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addAudioSearchResults:(id)a3;
-- (void)addInternalSignal:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setAudioSearchResults:(id)a3;
-- (void)setHasAppSelectionEnabled:(BOOL)a3;
-- (void)setHasAppSelectionSignalsEnabled:(BOOL)a3;
-- (void)setHasAppSelectionSignalsFrequencyDenominator:(BOOL)a3;
-- (void)setHasEntityConfidenceSignalsEnabled:(BOOL)a3;
-- (void)setHasEntityConfidenceSignalsFrequencyDenominatorInternal:(BOOL)a3;
-- (void)setHasEntityConfidenceSignalsFrequencyDenominatorProd:(BOOL)a3;
-- (void)setHasEntityConfidenceSignalsMaxItemsToDisambiguate:(BOOL)a3;
-- (void)setHasImmediatelyStartPlayback:(BOOL)a3;
-- (void)setHasIsAmbiguousPlay:(BOOL)a3;
-- (void)setHasIsPersonalizedRequest:(BOOL)a3;
-- (void)setHasShouldSuppressCommonWholeHouseAudioRoutes:(BOOL)a3;
-- (void)setInternalSignals:(id)a3;
-- (void)setPegasusMetaData:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addAudioSearchResults:(id)results;
+- (void)addInternalSignal:(id)signal;
+- (void)encodeWithCoder:(id)coder;
+- (void)setAudioSearchResults:(id)results;
+- (void)setHasAppSelectionEnabled:(BOOL)enabled;
+- (void)setHasAppSelectionSignalsEnabled:(BOOL)enabled;
+- (void)setHasAppSelectionSignalsFrequencyDenominator:(BOOL)denominator;
+- (void)setHasEntityConfidenceSignalsEnabled:(BOOL)enabled;
+- (void)setHasEntityConfidenceSignalsFrequencyDenominatorInternal:(BOOL)internal;
+- (void)setHasEntityConfidenceSignalsFrequencyDenominatorProd:(BOOL)prod;
+- (void)setHasEntityConfidenceSignalsMaxItemsToDisambiguate:(BOOL)disambiguate;
+- (void)setHasImmediatelyStartPlayback:(BOOL)playback;
+- (void)setHasIsAmbiguousPlay:(BOOL)play;
+- (void)setHasIsPersonalizedRequest:(BOOL)request;
+- (void)setHasShouldSuppressCommonWholeHouseAudioRoutes:(BOOL)routes;
+- (void)setInternalSignals:(id)signals;
+- (void)setPegasusMetaData:(id)data;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBPrivatePlayMediaIntentData
@@ -29,42 +29,42 @@
 - (id)dictionaryRepresentation
 {
   v40 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(_INPBPrivatePlayMediaIntentData *)self alternativeProviderBundleIdentifier];
-  v5 = [v4 dictionaryRepresentation];
-  [v3 setObject:v5 forKeyedSubscript:@"alternativeProviderBundleIdentifier"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  alternativeProviderBundleIdentifier = [(_INPBPrivatePlayMediaIntentData *)self alternativeProviderBundleIdentifier];
+  dictionaryRepresentation = [alternativeProviderBundleIdentifier dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"alternativeProviderBundleIdentifier"];
 
-  v6 = [(_INPBPrivatePlayMediaIntentData *)self ampPAFDataSetID];
-  v7 = [v6 dictionaryRepresentation];
-  [v3 setObject:v7 forKeyedSubscript:@"ampPAFDataSetID"];
+  ampPAFDataSetID = [(_INPBPrivatePlayMediaIntentData *)self ampPAFDataSetID];
+  dictionaryRepresentation2 = [ampPAFDataSetID dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"ampPAFDataSetID"];
 
   if ([(_INPBPrivatePlayMediaIntentData *)self hasAppInferred])
   {
     v8 = [MEMORY[0x1E696AD98] numberWithBool:{-[_INPBPrivatePlayMediaIntentData appInferred](self, "appInferred")}];
-    [v3 setObject:v8 forKeyedSubscript:@"appInferred"];
+    [dictionary setObject:v8 forKeyedSubscript:@"appInferred"];
   }
 
   if ([(_INPBPrivatePlayMediaIntentData *)self hasAppSelectionEnabled])
   {
     v9 = [MEMORY[0x1E696AD98] numberWithBool:{-[_INPBPrivatePlayMediaIntentData appSelectionEnabled](self, "appSelectionEnabled")}];
-    [v3 setObject:v9 forKeyedSubscript:@"appSelectionEnabled"];
+    [dictionary setObject:v9 forKeyedSubscript:@"appSelectionEnabled"];
   }
 
   if ([(_INPBPrivatePlayMediaIntentData *)self hasAppSelectionSignalsEnabled])
   {
     v10 = [MEMORY[0x1E696AD98] numberWithBool:{-[_INPBPrivatePlayMediaIntentData appSelectionSignalsEnabled](self, "appSelectionSignalsEnabled")}];
-    [v3 setObject:v10 forKeyedSubscript:@"appSelectionSignalsEnabled"];
+    [dictionary setObject:v10 forKeyedSubscript:@"appSelectionSignalsEnabled"];
   }
 
   if ([(_INPBPrivatePlayMediaIntentData *)self hasAppSelectionSignalsFrequencyDenominator])
   {
     v11 = [MEMORY[0x1E696AD98] numberWithInt:{-[_INPBPrivatePlayMediaIntentData appSelectionSignalsFrequencyDenominator](self, "appSelectionSignalsFrequencyDenominator")}];
-    [v3 setObject:v11 forKeyedSubscript:@"appSelectionSignalsFrequencyDenominator"];
+    [dictionary setObject:v11 forKeyedSubscript:@"appSelectionSignalsFrequencyDenominator"];
   }
 
   if ([(NSArray *)self->_audioSearchResults count])
   {
-    v12 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v35 = 0u;
     v36 = 0u;
     v37 = 0u;
@@ -84,8 +84,8 @@
             objc_enumerationMutation(v13);
           }
 
-          v18 = [*(*(&v35 + 1) + 8 * i) dictionaryRepresentation];
-          [v12 addObject:v18];
+          dictionaryRepresentation3 = [*(*(&v35 + 1) + 8 * i) dictionaryRepresentation];
+          [array addObject:dictionaryRepresentation3];
         }
 
         v15 = [(NSArray *)v13 countByEnumeratingWithState:&v35 objects:v39 count:16];
@@ -94,78 +94,78 @@
       while (v15);
     }
 
-    [v3 setObject:v12 forKeyedSubscript:@"audioSearchResults"];
+    [dictionary setObject:array forKeyedSubscript:@"audioSearchResults"];
   }
 
   if ([(_INPBPrivatePlayMediaIntentData *)self hasEntityConfidenceSignalsEnabled])
   {
     v19 = [MEMORY[0x1E696AD98] numberWithBool:{-[_INPBPrivatePlayMediaIntentData entityConfidenceSignalsEnabled](self, "entityConfidenceSignalsEnabled")}];
-    [v3 setObject:v19 forKeyedSubscript:@"entityConfidenceSignalsEnabled"];
+    [dictionary setObject:v19 forKeyedSubscript:@"entityConfidenceSignalsEnabled"];
   }
 
   if ([(_INPBPrivatePlayMediaIntentData *)self hasEntityConfidenceSignalsFrequencyDenominatorInternal])
   {
     v20 = [MEMORY[0x1E696AD98] numberWithInt:{-[_INPBPrivatePlayMediaIntentData entityConfidenceSignalsFrequencyDenominatorInternal](self, "entityConfidenceSignalsFrequencyDenominatorInternal")}];
-    [v3 setObject:v20 forKeyedSubscript:@"entityConfidenceSignalsFrequencyDenominatorInternal"];
+    [dictionary setObject:v20 forKeyedSubscript:@"entityConfidenceSignalsFrequencyDenominatorInternal"];
   }
 
   if ([(_INPBPrivatePlayMediaIntentData *)self hasEntityConfidenceSignalsFrequencyDenominatorProd])
   {
     v21 = [MEMORY[0x1E696AD98] numberWithInt:{-[_INPBPrivatePlayMediaIntentData entityConfidenceSignalsFrequencyDenominatorProd](self, "entityConfidenceSignalsFrequencyDenominatorProd")}];
-    [v3 setObject:v21 forKeyedSubscript:@"entityConfidenceSignalsFrequencyDenominatorProd"];
+    [dictionary setObject:v21 forKeyedSubscript:@"entityConfidenceSignalsFrequencyDenominatorProd"];
   }
 
   if ([(_INPBPrivatePlayMediaIntentData *)self hasEntityConfidenceSignalsMaxItemsToDisambiguate])
   {
     v22 = [MEMORY[0x1E696AD98] numberWithInt:{-[_INPBPrivatePlayMediaIntentData entityConfidenceSignalsMaxItemsToDisambiguate](self, "entityConfidenceSignalsMaxItemsToDisambiguate")}];
-    [v3 setObject:v22 forKeyedSubscript:@"entityConfidenceSignalsMaxItemsToDisambiguate"];
+    [dictionary setObject:v22 forKeyedSubscript:@"entityConfidenceSignalsMaxItemsToDisambiguate"];
   }
 
   if ([(_INPBPrivatePlayMediaIntentData *)self hasImmediatelyStartPlayback])
   {
     v23 = [MEMORY[0x1E696AD98] numberWithBool:{-[_INPBPrivatePlayMediaIntentData immediatelyStartPlayback](self, "immediatelyStartPlayback")}];
-    [v3 setObject:v23 forKeyedSubscript:@"immediatelyStartPlayback"];
+    [dictionary setObject:v23 forKeyedSubscript:@"immediatelyStartPlayback"];
   }
 
   if (self->_internalSignals)
   {
-    v24 = [(_INPBPrivatePlayMediaIntentData *)self internalSignals];
-    v25 = [v24 copy];
-    [v3 setObject:v25 forKeyedSubscript:@"internalSignal"];
+    internalSignals = [(_INPBPrivatePlayMediaIntentData *)self internalSignals];
+    v25 = [internalSignals copy];
+    [dictionary setObject:v25 forKeyedSubscript:@"internalSignal"];
   }
 
   if ([(_INPBPrivatePlayMediaIntentData *)self hasIsAmbiguousPlay])
   {
     v26 = [MEMORY[0x1E696AD98] numberWithBool:{-[_INPBPrivatePlayMediaIntentData isAmbiguousPlay](self, "isAmbiguousPlay")}];
-    [v3 setObject:v26 forKeyedSubscript:@"isAmbiguousPlay"];
+    [dictionary setObject:v26 forKeyedSubscript:@"isAmbiguousPlay"];
   }
 
   if ([(_INPBPrivatePlayMediaIntentData *)self hasIsPersonalizedRequest])
   {
     v27 = [MEMORY[0x1E696AD98] numberWithBool:{-[_INPBPrivatePlayMediaIntentData isPersonalizedRequest](self, "isPersonalizedRequest")}];
-    [v3 setObject:v27 forKeyedSubscript:@"isPersonalizedRequest"];
+    [dictionary setObject:v27 forKeyedSubscript:@"isPersonalizedRequest"];
   }
 
   if (self->_pegasusMetaData)
   {
-    v28 = [(_INPBPrivatePlayMediaIntentData *)self pegasusMetaData];
-    v29 = [v28 copy];
-    [v3 setObject:v29 forKeyedSubscript:@"pegasusMetaData"];
+    pegasusMetaData = [(_INPBPrivatePlayMediaIntentData *)self pegasusMetaData];
+    v29 = [pegasusMetaData copy];
+    [dictionary setObject:v29 forKeyedSubscript:@"pegasusMetaData"];
   }
 
-  v30 = [(_INPBPrivatePlayMediaIntentData *)self privateMediaIntentData];
-  v31 = [v30 dictionaryRepresentation];
-  [v3 setObject:v31 forKeyedSubscript:@"privateMediaIntentData"];
+  privateMediaIntentData = [(_INPBPrivatePlayMediaIntentData *)self privateMediaIntentData];
+  dictionaryRepresentation4 = [privateMediaIntentData dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"privateMediaIntentData"];
 
   if ([(_INPBPrivatePlayMediaIntentData *)self hasShouldSuppressCommonWholeHouseAudioRoutes])
   {
     v32 = [MEMORY[0x1E696AD98] numberWithBool:{-[_INPBPrivatePlayMediaIntentData shouldSuppressCommonWholeHouseAudioRoutes](self, "shouldSuppressCommonWholeHouseAudioRoutes")}];
-    [v3 setObject:v32 forKeyedSubscript:@"shouldSuppressCommonWholeHouseAudioRoutes"];
+    [dictionary setObject:v32 forKeyedSubscript:@"shouldSuppressCommonWholeHouseAudioRoutes"];
   }
 
   v33 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -299,28 +299,28 @@
   return v20 ^ v21 ^ v19 ^ v18 ^ v17 ^ v16 ^ v15 ^ v14 ^ v13 ^ v3 ^ v4 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_76;
   }
 
-  v5 = [(_INPBPrivatePlayMediaIntentData *)self alternativeProviderBundleIdentifier];
-  v6 = [v4 alternativeProviderBundleIdentifier];
-  if ((v5 != 0) == (v6 == 0))
+  alternativeProviderBundleIdentifier = [(_INPBPrivatePlayMediaIntentData *)self alternativeProviderBundleIdentifier];
+  alternativeProviderBundleIdentifier2 = [equalCopy alternativeProviderBundleIdentifier];
+  if ((alternativeProviderBundleIdentifier != 0) == (alternativeProviderBundleIdentifier2 == 0))
   {
     goto LABEL_75;
   }
 
-  v7 = [(_INPBPrivatePlayMediaIntentData *)self alternativeProviderBundleIdentifier];
-  if (v7)
+  alternativeProviderBundleIdentifier3 = [(_INPBPrivatePlayMediaIntentData *)self alternativeProviderBundleIdentifier];
+  if (alternativeProviderBundleIdentifier3)
   {
-    v8 = v7;
-    v9 = [(_INPBPrivatePlayMediaIntentData *)self alternativeProviderBundleIdentifier];
-    v10 = [v4 alternativeProviderBundleIdentifier];
-    v11 = [v9 isEqual:v10];
+    v8 = alternativeProviderBundleIdentifier3;
+    alternativeProviderBundleIdentifier4 = [(_INPBPrivatePlayMediaIntentData *)self alternativeProviderBundleIdentifier];
+    alternativeProviderBundleIdentifier5 = [equalCopy alternativeProviderBundleIdentifier];
+    v11 = [alternativeProviderBundleIdentifier4 isEqual:alternativeProviderBundleIdentifier5];
 
     if (!v11)
     {
@@ -332,20 +332,20 @@
   {
   }
 
-  v5 = [(_INPBPrivatePlayMediaIntentData *)self ampPAFDataSetID];
-  v6 = [v4 ampPAFDataSetID];
-  if ((v5 != 0) == (v6 == 0))
+  alternativeProviderBundleIdentifier = [(_INPBPrivatePlayMediaIntentData *)self ampPAFDataSetID];
+  alternativeProviderBundleIdentifier2 = [equalCopy ampPAFDataSetID];
+  if ((alternativeProviderBundleIdentifier != 0) == (alternativeProviderBundleIdentifier2 == 0))
   {
     goto LABEL_75;
   }
 
-  v12 = [(_INPBPrivatePlayMediaIntentData *)self ampPAFDataSetID];
-  if (v12)
+  ampPAFDataSetID = [(_INPBPrivatePlayMediaIntentData *)self ampPAFDataSetID];
+  if (ampPAFDataSetID)
   {
-    v13 = v12;
-    v14 = [(_INPBPrivatePlayMediaIntentData *)self ampPAFDataSetID];
-    v15 = [v4 ampPAFDataSetID];
-    v16 = [v14 isEqual:v15];
+    v13 = ampPAFDataSetID;
+    ampPAFDataSetID2 = [(_INPBPrivatePlayMediaIntentData *)self ampPAFDataSetID];
+    ampPAFDataSetID3 = [equalCopy ampPAFDataSetID];
+    v16 = [ampPAFDataSetID2 isEqual:ampPAFDataSetID3];
 
     if (!v16)
     {
@@ -357,92 +357,92 @@
   {
   }
 
-  v17 = [(_INPBPrivatePlayMediaIntentData *)self hasAppInferred];
-  if (v17 != [v4 hasAppInferred])
+  hasAppInferred = [(_INPBPrivatePlayMediaIntentData *)self hasAppInferred];
+  if (hasAppInferred != [equalCopy hasAppInferred])
   {
     goto LABEL_76;
   }
 
   if ([(_INPBPrivatePlayMediaIntentData *)self hasAppInferred])
   {
-    if ([v4 hasAppInferred])
+    if ([equalCopy hasAppInferred])
     {
       appInferred = self->_appInferred;
-      if (appInferred != [v4 appInferred])
+      if (appInferred != [equalCopy appInferred])
       {
         goto LABEL_76;
       }
     }
   }
 
-  v19 = [(_INPBPrivatePlayMediaIntentData *)self hasAppSelectionEnabled];
-  if (v19 != [v4 hasAppSelectionEnabled])
+  hasAppSelectionEnabled = [(_INPBPrivatePlayMediaIntentData *)self hasAppSelectionEnabled];
+  if (hasAppSelectionEnabled != [equalCopy hasAppSelectionEnabled])
   {
     goto LABEL_76;
   }
 
   if ([(_INPBPrivatePlayMediaIntentData *)self hasAppSelectionEnabled])
   {
-    if ([v4 hasAppSelectionEnabled])
+    if ([equalCopy hasAppSelectionEnabled])
     {
       appSelectionEnabled = self->_appSelectionEnabled;
-      if (appSelectionEnabled != [v4 appSelectionEnabled])
+      if (appSelectionEnabled != [equalCopy appSelectionEnabled])
       {
         goto LABEL_76;
       }
     }
   }
 
-  v21 = [(_INPBPrivatePlayMediaIntentData *)self hasAppSelectionSignalsEnabled];
-  if (v21 != [v4 hasAppSelectionSignalsEnabled])
+  hasAppSelectionSignalsEnabled = [(_INPBPrivatePlayMediaIntentData *)self hasAppSelectionSignalsEnabled];
+  if (hasAppSelectionSignalsEnabled != [equalCopy hasAppSelectionSignalsEnabled])
   {
     goto LABEL_76;
   }
 
   if ([(_INPBPrivatePlayMediaIntentData *)self hasAppSelectionSignalsEnabled])
   {
-    if ([v4 hasAppSelectionSignalsEnabled])
+    if ([equalCopy hasAppSelectionSignalsEnabled])
     {
       appSelectionSignalsEnabled = self->_appSelectionSignalsEnabled;
-      if (appSelectionSignalsEnabled != [v4 appSelectionSignalsEnabled])
+      if (appSelectionSignalsEnabled != [equalCopy appSelectionSignalsEnabled])
       {
         goto LABEL_76;
       }
     }
   }
 
-  v23 = [(_INPBPrivatePlayMediaIntentData *)self hasAppSelectionSignalsFrequencyDenominator];
-  if (v23 != [v4 hasAppSelectionSignalsFrequencyDenominator])
+  hasAppSelectionSignalsFrequencyDenominator = [(_INPBPrivatePlayMediaIntentData *)self hasAppSelectionSignalsFrequencyDenominator];
+  if (hasAppSelectionSignalsFrequencyDenominator != [equalCopy hasAppSelectionSignalsFrequencyDenominator])
   {
     goto LABEL_76;
   }
 
   if ([(_INPBPrivatePlayMediaIntentData *)self hasAppSelectionSignalsFrequencyDenominator])
   {
-    if ([v4 hasAppSelectionSignalsFrequencyDenominator])
+    if ([equalCopy hasAppSelectionSignalsFrequencyDenominator])
     {
       appSelectionSignalsFrequencyDenominator = self->_appSelectionSignalsFrequencyDenominator;
-      if (appSelectionSignalsFrequencyDenominator != [v4 appSelectionSignalsFrequencyDenominator])
+      if (appSelectionSignalsFrequencyDenominator != [equalCopy appSelectionSignalsFrequencyDenominator])
       {
         goto LABEL_76;
       }
     }
   }
 
-  v5 = [(_INPBPrivatePlayMediaIntentData *)self audioSearchResults];
-  v6 = [v4 audioSearchResults];
-  if ((v5 != 0) == (v6 == 0))
+  alternativeProviderBundleIdentifier = [(_INPBPrivatePlayMediaIntentData *)self audioSearchResults];
+  alternativeProviderBundleIdentifier2 = [equalCopy audioSearchResults];
+  if ((alternativeProviderBundleIdentifier != 0) == (alternativeProviderBundleIdentifier2 == 0))
   {
     goto LABEL_75;
   }
 
-  v25 = [(_INPBPrivatePlayMediaIntentData *)self audioSearchResults];
-  if (v25)
+  audioSearchResults = [(_INPBPrivatePlayMediaIntentData *)self audioSearchResults];
+  if (audioSearchResults)
   {
-    v26 = v25;
-    v27 = [(_INPBPrivatePlayMediaIntentData *)self audioSearchResults];
-    v28 = [v4 audioSearchResults];
-    v29 = [v27 isEqual:v28];
+    v26 = audioSearchResults;
+    audioSearchResults2 = [(_INPBPrivatePlayMediaIntentData *)self audioSearchResults];
+    audioSearchResults3 = [equalCopy audioSearchResults];
+    v29 = [audioSearchResults2 isEqual:audioSearchResults3];
 
     if (!v29)
     {
@@ -454,110 +454,110 @@
   {
   }
 
-  v30 = [(_INPBPrivatePlayMediaIntentData *)self hasEntityConfidenceSignalsEnabled];
-  if (v30 != [v4 hasEntityConfidenceSignalsEnabled])
+  hasEntityConfidenceSignalsEnabled = [(_INPBPrivatePlayMediaIntentData *)self hasEntityConfidenceSignalsEnabled];
+  if (hasEntityConfidenceSignalsEnabled != [equalCopy hasEntityConfidenceSignalsEnabled])
   {
     goto LABEL_76;
   }
 
   if ([(_INPBPrivatePlayMediaIntentData *)self hasEntityConfidenceSignalsEnabled])
   {
-    if ([v4 hasEntityConfidenceSignalsEnabled])
+    if ([equalCopy hasEntityConfidenceSignalsEnabled])
     {
       entityConfidenceSignalsEnabled = self->_entityConfidenceSignalsEnabled;
-      if (entityConfidenceSignalsEnabled != [v4 entityConfidenceSignalsEnabled])
+      if (entityConfidenceSignalsEnabled != [equalCopy entityConfidenceSignalsEnabled])
       {
         goto LABEL_76;
       }
     }
   }
 
-  v32 = [(_INPBPrivatePlayMediaIntentData *)self hasEntityConfidenceSignalsFrequencyDenominatorInternal];
-  if (v32 != [v4 hasEntityConfidenceSignalsFrequencyDenominatorInternal])
+  hasEntityConfidenceSignalsFrequencyDenominatorInternal = [(_INPBPrivatePlayMediaIntentData *)self hasEntityConfidenceSignalsFrequencyDenominatorInternal];
+  if (hasEntityConfidenceSignalsFrequencyDenominatorInternal != [equalCopy hasEntityConfidenceSignalsFrequencyDenominatorInternal])
   {
     goto LABEL_76;
   }
 
   if ([(_INPBPrivatePlayMediaIntentData *)self hasEntityConfidenceSignalsFrequencyDenominatorInternal])
   {
-    if ([v4 hasEntityConfidenceSignalsFrequencyDenominatorInternal])
+    if ([equalCopy hasEntityConfidenceSignalsFrequencyDenominatorInternal])
     {
       entityConfidenceSignalsFrequencyDenominatorInternal = self->_entityConfidenceSignalsFrequencyDenominatorInternal;
-      if (entityConfidenceSignalsFrequencyDenominatorInternal != [v4 entityConfidenceSignalsFrequencyDenominatorInternal])
+      if (entityConfidenceSignalsFrequencyDenominatorInternal != [equalCopy entityConfidenceSignalsFrequencyDenominatorInternal])
       {
         goto LABEL_76;
       }
     }
   }
 
-  v34 = [(_INPBPrivatePlayMediaIntentData *)self hasEntityConfidenceSignalsFrequencyDenominatorProd];
-  if (v34 != [v4 hasEntityConfidenceSignalsFrequencyDenominatorProd])
+  hasEntityConfidenceSignalsFrequencyDenominatorProd = [(_INPBPrivatePlayMediaIntentData *)self hasEntityConfidenceSignalsFrequencyDenominatorProd];
+  if (hasEntityConfidenceSignalsFrequencyDenominatorProd != [equalCopy hasEntityConfidenceSignalsFrequencyDenominatorProd])
   {
     goto LABEL_76;
   }
 
   if ([(_INPBPrivatePlayMediaIntentData *)self hasEntityConfidenceSignalsFrequencyDenominatorProd])
   {
-    if ([v4 hasEntityConfidenceSignalsFrequencyDenominatorProd])
+    if ([equalCopy hasEntityConfidenceSignalsFrequencyDenominatorProd])
     {
       entityConfidenceSignalsFrequencyDenominatorProd = self->_entityConfidenceSignalsFrequencyDenominatorProd;
-      if (entityConfidenceSignalsFrequencyDenominatorProd != [v4 entityConfidenceSignalsFrequencyDenominatorProd])
+      if (entityConfidenceSignalsFrequencyDenominatorProd != [equalCopy entityConfidenceSignalsFrequencyDenominatorProd])
       {
         goto LABEL_76;
       }
     }
   }
 
-  v36 = [(_INPBPrivatePlayMediaIntentData *)self hasEntityConfidenceSignalsMaxItemsToDisambiguate];
-  if (v36 != [v4 hasEntityConfidenceSignalsMaxItemsToDisambiguate])
+  hasEntityConfidenceSignalsMaxItemsToDisambiguate = [(_INPBPrivatePlayMediaIntentData *)self hasEntityConfidenceSignalsMaxItemsToDisambiguate];
+  if (hasEntityConfidenceSignalsMaxItemsToDisambiguate != [equalCopy hasEntityConfidenceSignalsMaxItemsToDisambiguate])
   {
     goto LABEL_76;
   }
 
   if ([(_INPBPrivatePlayMediaIntentData *)self hasEntityConfidenceSignalsMaxItemsToDisambiguate])
   {
-    if ([v4 hasEntityConfidenceSignalsMaxItemsToDisambiguate])
+    if ([equalCopy hasEntityConfidenceSignalsMaxItemsToDisambiguate])
     {
       entityConfidenceSignalsMaxItemsToDisambiguate = self->_entityConfidenceSignalsMaxItemsToDisambiguate;
-      if (entityConfidenceSignalsMaxItemsToDisambiguate != [v4 entityConfidenceSignalsMaxItemsToDisambiguate])
+      if (entityConfidenceSignalsMaxItemsToDisambiguate != [equalCopy entityConfidenceSignalsMaxItemsToDisambiguate])
       {
         goto LABEL_76;
       }
     }
   }
 
-  v38 = [(_INPBPrivatePlayMediaIntentData *)self hasImmediatelyStartPlayback];
-  if (v38 != [v4 hasImmediatelyStartPlayback])
+  hasImmediatelyStartPlayback = [(_INPBPrivatePlayMediaIntentData *)self hasImmediatelyStartPlayback];
+  if (hasImmediatelyStartPlayback != [equalCopy hasImmediatelyStartPlayback])
   {
     goto LABEL_76;
   }
 
   if ([(_INPBPrivatePlayMediaIntentData *)self hasImmediatelyStartPlayback])
   {
-    if ([v4 hasImmediatelyStartPlayback])
+    if ([equalCopy hasImmediatelyStartPlayback])
     {
       immediatelyStartPlayback = self->_immediatelyStartPlayback;
-      if (immediatelyStartPlayback != [v4 immediatelyStartPlayback])
+      if (immediatelyStartPlayback != [equalCopy immediatelyStartPlayback])
       {
         goto LABEL_76;
       }
     }
   }
 
-  v5 = [(_INPBPrivatePlayMediaIntentData *)self internalSignals];
-  v6 = [v4 internalSignals];
-  if ((v5 != 0) == (v6 == 0))
+  alternativeProviderBundleIdentifier = [(_INPBPrivatePlayMediaIntentData *)self internalSignals];
+  alternativeProviderBundleIdentifier2 = [equalCopy internalSignals];
+  if ((alternativeProviderBundleIdentifier != 0) == (alternativeProviderBundleIdentifier2 == 0))
   {
     goto LABEL_75;
   }
 
-  v40 = [(_INPBPrivatePlayMediaIntentData *)self internalSignals];
-  if (v40)
+  internalSignals = [(_INPBPrivatePlayMediaIntentData *)self internalSignals];
+  if (internalSignals)
   {
-    v41 = v40;
-    v42 = [(_INPBPrivatePlayMediaIntentData *)self internalSignals];
-    v43 = [v4 internalSignals];
-    v44 = [v42 isEqual:v43];
+    v41 = internalSignals;
+    internalSignals2 = [(_INPBPrivatePlayMediaIntentData *)self internalSignals];
+    internalSignals3 = [equalCopy internalSignals];
+    v44 = [internalSignals2 isEqual:internalSignals3];
 
     if (!v44)
     {
@@ -569,56 +569,56 @@
   {
   }
 
-  v45 = [(_INPBPrivatePlayMediaIntentData *)self hasIsAmbiguousPlay];
-  if (v45 != [v4 hasIsAmbiguousPlay])
+  hasIsAmbiguousPlay = [(_INPBPrivatePlayMediaIntentData *)self hasIsAmbiguousPlay];
+  if (hasIsAmbiguousPlay != [equalCopy hasIsAmbiguousPlay])
   {
     goto LABEL_76;
   }
 
   if ([(_INPBPrivatePlayMediaIntentData *)self hasIsAmbiguousPlay])
   {
-    if ([v4 hasIsAmbiguousPlay])
+    if ([equalCopy hasIsAmbiguousPlay])
     {
       isAmbiguousPlay = self->_isAmbiguousPlay;
-      if (isAmbiguousPlay != [v4 isAmbiguousPlay])
+      if (isAmbiguousPlay != [equalCopy isAmbiguousPlay])
       {
         goto LABEL_76;
       }
     }
   }
 
-  v47 = [(_INPBPrivatePlayMediaIntentData *)self hasIsPersonalizedRequest];
-  if (v47 != [v4 hasIsPersonalizedRequest])
+  hasIsPersonalizedRequest = [(_INPBPrivatePlayMediaIntentData *)self hasIsPersonalizedRequest];
+  if (hasIsPersonalizedRequest != [equalCopy hasIsPersonalizedRequest])
   {
     goto LABEL_76;
   }
 
   if ([(_INPBPrivatePlayMediaIntentData *)self hasIsPersonalizedRequest])
   {
-    if ([v4 hasIsPersonalizedRequest])
+    if ([equalCopy hasIsPersonalizedRequest])
     {
       isPersonalizedRequest = self->_isPersonalizedRequest;
-      if (isPersonalizedRequest != [v4 isPersonalizedRequest])
+      if (isPersonalizedRequest != [equalCopy isPersonalizedRequest])
       {
         goto LABEL_76;
       }
     }
   }
 
-  v5 = [(_INPBPrivatePlayMediaIntentData *)self pegasusMetaData];
-  v6 = [v4 pegasusMetaData];
-  if ((v5 != 0) == (v6 == 0))
+  alternativeProviderBundleIdentifier = [(_INPBPrivatePlayMediaIntentData *)self pegasusMetaData];
+  alternativeProviderBundleIdentifier2 = [equalCopy pegasusMetaData];
+  if ((alternativeProviderBundleIdentifier != 0) == (alternativeProviderBundleIdentifier2 == 0))
   {
     goto LABEL_75;
   }
 
-  v49 = [(_INPBPrivatePlayMediaIntentData *)self pegasusMetaData];
-  if (v49)
+  pegasusMetaData = [(_INPBPrivatePlayMediaIntentData *)self pegasusMetaData];
+  if (pegasusMetaData)
   {
-    v50 = v49;
-    v51 = [(_INPBPrivatePlayMediaIntentData *)self pegasusMetaData];
-    v52 = [v4 pegasusMetaData];
-    v53 = [v51 isEqual:v52];
+    v50 = pegasusMetaData;
+    pegasusMetaData2 = [(_INPBPrivatePlayMediaIntentData *)self pegasusMetaData];
+    pegasusMetaData3 = [equalCopy pegasusMetaData];
+    v53 = [pegasusMetaData2 isEqual:pegasusMetaData3];
 
     if (!v53)
     {
@@ -630,22 +630,22 @@
   {
   }
 
-  v5 = [(_INPBPrivatePlayMediaIntentData *)self privateMediaIntentData];
-  v6 = [v4 privateMediaIntentData];
-  if ((v5 != 0) == (v6 == 0))
+  alternativeProviderBundleIdentifier = [(_INPBPrivatePlayMediaIntentData *)self privateMediaIntentData];
+  alternativeProviderBundleIdentifier2 = [equalCopy privateMediaIntentData];
+  if ((alternativeProviderBundleIdentifier != 0) == (alternativeProviderBundleIdentifier2 == 0))
   {
 LABEL_75:
 
     goto LABEL_76;
   }
 
-  v54 = [(_INPBPrivatePlayMediaIntentData *)self privateMediaIntentData];
-  if (v54)
+  privateMediaIntentData = [(_INPBPrivatePlayMediaIntentData *)self privateMediaIntentData];
+  if (privateMediaIntentData)
   {
-    v55 = v54;
-    v56 = [(_INPBPrivatePlayMediaIntentData *)self privateMediaIntentData];
-    v57 = [v4 privateMediaIntentData];
-    v58 = [v56 isEqual:v57];
+    v55 = privateMediaIntentData;
+    privateMediaIntentData2 = [(_INPBPrivatePlayMediaIntentData *)self privateMediaIntentData];
+    privateMediaIntentData3 = [equalCopy privateMediaIntentData];
+    v58 = [privateMediaIntentData2 isEqual:privateMediaIntentData3];
 
     if (!v58)
     {
@@ -657,10 +657,10 @@ LABEL_75:
   {
   }
 
-  v61 = [(_INPBPrivatePlayMediaIntentData *)self hasShouldSuppressCommonWholeHouseAudioRoutes];
-  if (v61 == [v4 hasShouldSuppressCommonWholeHouseAudioRoutes])
+  hasShouldSuppressCommonWholeHouseAudioRoutes = [(_INPBPrivatePlayMediaIntentData *)self hasShouldSuppressCommonWholeHouseAudioRoutes];
+  if (hasShouldSuppressCommonWholeHouseAudioRoutes == [equalCopy hasShouldSuppressCommonWholeHouseAudioRoutes])
   {
-    if (!-[_INPBPrivatePlayMediaIntentData hasShouldSuppressCommonWholeHouseAudioRoutes](self, "hasShouldSuppressCommonWholeHouseAudioRoutes") || ![v4 hasShouldSuppressCommonWholeHouseAudioRoutes] || (shouldSuppressCommonWholeHouseAudioRoutes = self->_shouldSuppressCommonWholeHouseAudioRoutes, shouldSuppressCommonWholeHouseAudioRoutes == objc_msgSend(v4, "shouldSuppressCommonWholeHouseAudioRoutes")))
+    if (!-[_INPBPrivatePlayMediaIntentData hasShouldSuppressCommonWholeHouseAudioRoutes](self, "hasShouldSuppressCommonWholeHouseAudioRoutes") || ![equalCopy hasShouldSuppressCommonWholeHouseAudioRoutes] || (shouldSuppressCommonWholeHouseAudioRoutes = self->_shouldSuppressCommonWholeHouseAudioRoutes, shouldSuppressCommonWholeHouseAudioRoutes == objc_msgSend(equalCopy, "shouldSuppressCommonWholeHouseAudioRoutes")))
     {
       v59 = 1;
       goto LABEL_77;
@@ -674,13 +674,13 @@ LABEL_77:
   return v59;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBPrivatePlayMediaIntentData allocWithZone:](_INPBPrivatePlayMediaIntentData init];
-  v6 = [(_INPBString *)self->_alternativeProviderBundleIdentifier copyWithZone:a3];
+  v6 = [(_INPBString *)self->_alternativeProviderBundleIdentifier copyWithZone:zone];
   [(_INPBPrivatePlayMediaIntentData *)v5 setAlternativeProviderBundleIdentifier:v6];
 
-  v7 = [(_INPBString *)self->_ampPAFDataSetID copyWithZone:a3];
+  v7 = [(_INPBString *)self->_ampPAFDataSetID copyWithZone:zone];
   [(_INPBPrivatePlayMediaIntentData *)v5 setAmpPAFDataSetID:v7];
 
   if ([(_INPBPrivatePlayMediaIntentData *)self hasAppInferred])
@@ -703,7 +703,7 @@ LABEL_77:
     [(_INPBPrivatePlayMediaIntentData *)v5 setAppSelectionSignalsFrequencyDenominator:[(_INPBPrivatePlayMediaIntentData *)self appSelectionSignalsFrequencyDenominator]];
   }
 
-  v8 = [(NSArray *)self->_audioSearchResults copyWithZone:a3];
+  v8 = [(NSArray *)self->_audioSearchResults copyWithZone:zone];
   [(_INPBPrivatePlayMediaIntentData *)v5 setAudioSearchResults:v8];
 
   if ([(_INPBPrivatePlayMediaIntentData *)self hasEntityConfidenceSignalsEnabled])
@@ -731,7 +731,7 @@ LABEL_77:
     [(_INPBPrivatePlayMediaIntentData *)v5 setImmediatelyStartPlayback:[(_INPBPrivatePlayMediaIntentData *)self immediatelyStartPlayback]];
   }
 
-  v9 = [(NSArray *)self->_internalSignals copyWithZone:a3];
+  v9 = [(NSArray *)self->_internalSignals copyWithZone:zone];
   [(_INPBPrivatePlayMediaIntentData *)v5 setInternalSignals:v9];
 
   if ([(_INPBPrivatePlayMediaIntentData *)self hasIsAmbiguousPlay])
@@ -744,10 +744,10 @@ LABEL_77:
     [(_INPBPrivatePlayMediaIntentData *)v5 setIsPersonalizedRequest:[(_INPBPrivatePlayMediaIntentData *)self isPersonalizedRequest]];
   }
 
-  v10 = [(NSData *)self->_pegasusMetaData copyWithZone:a3];
+  v10 = [(NSData *)self->_pegasusMetaData copyWithZone:zone];
   [(_INPBPrivatePlayMediaIntentData *)v5 setPegasusMetaData:v10];
 
-  v11 = [(_INPBPrivateMediaIntentData *)self->_privateMediaIntentData copyWithZone:a3];
+  v11 = [(_INPBPrivateMediaIntentData *)self->_privateMediaIntentData copyWithZone:zone];
   [(_INPBPrivatePlayMediaIntentData *)v5 setPrivateMediaIntentData:v11];
 
   if ([(_INPBPrivatePlayMediaIntentData *)self hasShouldSuppressCommonWholeHouseAudioRoutes])
@@ -758,47 +758,47 @@ LABEL_77:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBPrivatePlayMediaIntentData *)self data];
+  coderCopy = coder;
+  data = [(_INPBPrivatePlayMediaIntentData *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBPrivatePlayMediaIntentData)initWithCoder:(id)a3
+- (_INPBPrivatePlayMediaIntentData)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBPrivatePlayMediaIntentData *)self initWithData:v6];
+    self = [(_INPBPrivatePlayMediaIntentData *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v48 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(_INPBPrivatePlayMediaIntentData *)self alternativeProviderBundleIdentifier];
+  toCopy = to;
+  alternativeProviderBundleIdentifier = [(_INPBPrivatePlayMediaIntentData *)self alternativeProviderBundleIdentifier];
 
-  if (v5)
+  if (alternativeProviderBundleIdentifier)
   {
-    v6 = [(_INPBPrivatePlayMediaIntentData *)self alternativeProviderBundleIdentifier];
+    alternativeProviderBundleIdentifier2 = [(_INPBPrivatePlayMediaIntentData *)self alternativeProviderBundleIdentifier];
     PBDataWriterWriteSubmessage();
   }
 
-  v7 = [(_INPBPrivatePlayMediaIntentData *)self ampPAFDataSetID];
+  ampPAFDataSetID = [(_INPBPrivatePlayMediaIntentData *)self ampPAFDataSetID];
 
-  if (v7)
+  if (ampPAFDataSetID)
   {
-    v8 = [(_INPBPrivatePlayMediaIntentData *)self ampPAFDataSetID];
+    ampPAFDataSetID2 = [(_INPBPrivatePlayMediaIntentData *)self ampPAFDataSetID];
     PBDataWriterWriteSubmessage();
   }
 
@@ -932,19 +932,19 @@ LABEL_77:
     PBDataWriterWriteBOOLField();
   }
 
-  v32 = [(_INPBPrivatePlayMediaIntentData *)self pegasusMetaData];
+  pegasusMetaData = [(_INPBPrivatePlayMediaIntentData *)self pegasusMetaData];
 
-  if (v32)
+  if (pegasusMetaData)
   {
     pegasusMetaData = self->_pegasusMetaData;
     PBDataWriterWriteDataField();
   }
 
-  v34 = [(_INPBPrivatePlayMediaIntentData *)self privateMediaIntentData];
+  privateMediaIntentData = [(_INPBPrivatePlayMediaIntentData *)self privateMediaIntentData];
 
-  if (v34)
+  if (privateMediaIntentData)
   {
-    v35 = [(_INPBPrivatePlayMediaIntentData *)self privateMediaIntentData];
+    privateMediaIntentData2 = [(_INPBPrivatePlayMediaIntentData *)self privateMediaIntentData];
     PBDataWriterWriteSubmessage();
   }
 
@@ -957,9 +957,9 @@ LABEL_77:
   v37 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setHasShouldSuppressCommonWholeHouseAudioRoutes:(BOOL)a3
+- (void)setHasShouldSuppressCommonWholeHouseAudioRoutes:(BOOL)routes
 {
-  if (a3)
+  if (routes)
   {
     v3 = 2048;
   }
@@ -972,18 +972,18 @@ LABEL_77:
   *&self->_has = *&self->_has & 0xF7FF | v3;
 }
 
-- (void)setPegasusMetaData:(id)a3
+- (void)setPegasusMetaData:(id)data
 {
-  v4 = [a3 copy];
+  v4 = [data copy];
   pegasusMetaData = self->_pegasusMetaData;
   self->_pegasusMetaData = v4;
 
   MEMORY[0x1EEE66BB8](v4, pegasusMetaData);
 }
 
-- (void)setHasIsPersonalizedRequest:(BOOL)a3
+- (void)setHasIsPersonalizedRequest:(BOOL)request
 {
-  if (a3)
+  if (request)
   {
     v3 = 1024;
   }
@@ -996,9 +996,9 @@ LABEL_77:
   *&self->_has = *&self->_has & 0xFBFF | v3;
 }
 
-- (void)setHasIsAmbiguousPlay:(BOOL)a3
+- (void)setHasIsAmbiguousPlay:(BOOL)play
 {
-  if (a3)
+  if (play)
   {
     v3 = 512;
   }
@@ -1011,36 +1011,36 @@ LABEL_77:
   *&self->_has = *&self->_has & 0xFDFF | v3;
 }
 
-- (void)addInternalSignal:(id)a3
+- (void)addInternalSignal:(id)signal
 {
-  v4 = a3;
+  signalCopy = signal;
   internalSignals = self->_internalSignals;
-  v8 = v4;
+  v8 = signalCopy;
   if (!internalSignals)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_internalSignals;
-    self->_internalSignals = v6;
+    self->_internalSignals = array;
 
-    v4 = v8;
+    signalCopy = v8;
     internalSignals = self->_internalSignals;
   }
 
-  [(NSArray *)internalSignals addObject:v4];
+  [(NSArray *)internalSignals addObject:signalCopy];
 }
 
-- (void)setInternalSignals:(id)a3
+- (void)setInternalSignals:(id)signals
 {
-  v4 = [a3 mutableCopy];
+  v4 = [signals mutableCopy];
   internalSignals = self->_internalSignals;
   self->_internalSignals = v4;
 
   MEMORY[0x1EEE66BB8](v4, internalSignals);
 }
 
-- (void)setHasImmediatelyStartPlayback:(BOOL)a3
+- (void)setHasImmediatelyStartPlayback:(BOOL)playback
 {
-  if (a3)
+  if (playback)
   {
     v3 = 256;
   }
@@ -1053,9 +1053,9 @@ LABEL_77:
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasEntityConfidenceSignalsMaxItemsToDisambiguate:(BOOL)a3
+- (void)setHasEntityConfidenceSignalsMaxItemsToDisambiguate:(BOOL)disambiguate
 {
-  if (a3)
+  if (disambiguate)
   {
     v3 = 128;
   }
@@ -1068,9 +1068,9 @@ LABEL_77:
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasEntityConfidenceSignalsFrequencyDenominatorProd:(BOOL)a3
+- (void)setHasEntityConfidenceSignalsFrequencyDenominatorProd:(BOOL)prod
 {
-  if (a3)
+  if (prod)
   {
     v3 = 64;
   }
@@ -1083,9 +1083,9 @@ LABEL_77:
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasEntityConfidenceSignalsFrequencyDenominatorInternal:(BOOL)a3
+- (void)setHasEntityConfidenceSignalsFrequencyDenominatorInternal:(BOOL)internal
 {
-  if (a3)
+  if (internal)
   {
     v3 = 32;
   }
@@ -1098,9 +1098,9 @@ LABEL_77:
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasEntityConfidenceSignalsEnabled:(BOOL)a3
+- (void)setHasEntityConfidenceSignalsEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 16;
   }
@@ -1113,36 +1113,36 @@ LABEL_77:
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)addAudioSearchResults:(id)a3
+- (void)addAudioSearchResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   audioSearchResults = self->_audioSearchResults;
-  v8 = v4;
+  v8 = resultsCopy;
   if (!audioSearchResults)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_audioSearchResults;
-    self->_audioSearchResults = v6;
+    self->_audioSearchResults = array;
 
-    v4 = v8;
+    resultsCopy = v8;
     audioSearchResults = self->_audioSearchResults;
   }
 
-  [(NSArray *)audioSearchResults addObject:v4];
+  [(NSArray *)audioSearchResults addObject:resultsCopy];
 }
 
-- (void)setAudioSearchResults:(id)a3
+- (void)setAudioSearchResults:(id)results
 {
-  v4 = [a3 mutableCopy];
+  v4 = [results mutableCopy];
   audioSearchResults = self->_audioSearchResults;
   self->_audioSearchResults = v4;
 
   MEMORY[0x1EEE66BB8](v4, audioSearchResults);
 }
 
-- (void)setHasAppSelectionSignalsFrequencyDenominator:(BOOL)a3
+- (void)setHasAppSelectionSignalsFrequencyDenominator:(BOOL)denominator
 {
-  if (a3)
+  if (denominator)
   {
     v3 = 8;
   }
@@ -1155,9 +1155,9 @@ LABEL_77:
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasAppSelectionSignalsEnabled:(BOOL)a3
+- (void)setHasAppSelectionSignalsEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 4;
   }
@@ -1170,9 +1170,9 @@ LABEL_77:
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasAppSelectionEnabled:(BOOL)a3
+- (void)setHasAppSelectionEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 2;
   }

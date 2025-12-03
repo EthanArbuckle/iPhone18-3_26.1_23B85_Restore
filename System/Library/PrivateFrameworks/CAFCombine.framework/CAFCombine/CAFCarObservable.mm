@@ -1,22 +1,22 @@
 @interface CAFCarObservable
-- (void)carDidUpdate:(id)a3 receivedAllValues:(BOOL)a4;
-- (void)carDidUpdateAccessories:(id)a3;
+- (void)carDidUpdate:(id)update receivedAllValues:(BOOL)values;
+- (void)carDidUpdateAccessories:(id)accessories;
 @end
 
 @implementation CAFCarObservable
 
-- (void)carDidUpdate:(id)a3 receivedAllValues:(BOOL)a4
+- (void)carDidUpdate:(id)update receivedAllValues:(BOOL)values
 {
-  v6 = a3;
-  v7 = self;
-  CAFCarObservable.carDidUpdate(_:receivedAllValues:)(v6, a4);
+  updateCopy = update;
+  selfCopy = self;
+  CAFCarObservable.carDidUpdate(_:receivedAllValues:)(updateCopy, values);
 }
 
-- (void)carDidUpdateAccessories:(id)a3
+- (void)carDidUpdateAccessories:(id)accessories
 {
-  v4 = a3;
-  v5 = self;
-  CAFCarObservable.carDidUpdateAccessories(_:)(v4);
+  accessoriesCopy = accessories;
+  selfCopy = self;
+  CAFCarObservable.carDidUpdateAccessories(_:)(accessoriesCopy);
 }
 
 @end

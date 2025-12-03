@@ -7,14 +7,14 @@
 - (double)playerTime;
 - (void)_updatePlayerItemSpeechIsolator;
 - (void)dealloc;
-- (void)setCurrentState:(int)a3;
-- (void)setLayerMix:(float)a3;
-- (void)setLooping:(BOOL)a3;
-- (void)setPlayableRange:(id)a3;
-- (void)setPlaybackError:(id)a3;
-- (void)setPlayerItem:(id)a3;
-- (void)setSpeechIsolatorEnabled:(BOOL)a3;
-- (void)setSpeechIsolatorValue:(float)a3;
+- (void)setCurrentState:(int)state;
+- (void)setLayerMix:(float)mix;
+- (void)setLooping:(BOOL)looping;
+- (void)setPlayableRange:(id)range;
+- (void)setPlaybackError:(id)error;
+- (void)setPlayerItem:(id)item;
+- (void)setSpeechIsolatorEnabled:(BOOL)enabled;
+- (void)setSpeechIsolatorValue:(float)value;
 @end
 
 @implementation VMAudioPlayerImp
@@ -55,16 +55,16 @@
   return result;
 }
 
-- (void)setCurrentState:(int)a3
+- (void)setCurrentState:(int)state
 {
   currentState = self->_currentState;
-  self->_currentState = a3;
-  if ((a3 == 3) != [(VMAudioPlayerImp *)self playing])
+  self->_currentState = state;
+  if ((state == 3) != [(VMAudioPlayerImp *)self playing])
   {
-    [(VMAudioPlayerImp *)self setPlaying:a3 == 3];
+    [(VMAudioPlayerImp *)self setPlaying:state == 3];
   }
 
-  if (a3 == 4 && currentState == 3)
+  if (state == 4 && currentState == 3)
   {
     targetState = self->_targetState;
     if (targetState == 4)
@@ -86,12 +86,12 @@
   }
 }
 
-- (void)setPlaybackError:(id)a3
+- (void)setPlaybackError:(id)error
 {
-  objc_storeStrong(&self->_playbackError, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_playbackError, error);
+  errorCopy = error;
   WeakRetained = objc_loadWeakRetained(&self->_controller);
-  [WeakRetained setPlaybackError:v5];
+  [WeakRetained setPlaybackError:errorCopy];
 }
 
 - (BOOL)startPlaying
@@ -101,55 +101,55 @@
   return 1;
 }
 
-- (void)setLooping:(BOOL)a3
+- (void)setLooping:(BOOL)looping
 {
-  v3 = a3;
-  self->_looping = a3;
-  v4 = [(VMAudioPlayerImp *)self playerItem];
-  if (v4)
+  loopingCopy = looping;
+  self->_looping = looping;
+  playerItem = [(VMAudioPlayerImp *)self playerItem];
+  if (playerItem)
   {
-    v5 = v4;
-    [v4 setLooping:v3];
-    v4 = v5;
+    v5 = playerItem;
+    [playerItem setLooping:loopingCopy];
+    playerItem = v5;
   }
 }
 
-- (void)setLayerMix:(float)a3
+- (void)setLayerMix:(float)mix
 {
-  self->_layerMix = a3;
-  v4 = [(VMAudioPlayerImp *)self playerItem];
-  if (v4)
+  self->_layerMix = mix;
+  playerItem = [(VMAudioPlayerImp *)self playerItem];
+  if (playerItem)
   {
-    *&v5 = a3;
-    v7 = v4;
+    *&v5 = mix;
+    v7 = playerItem;
     v6 = sub_100059888(v5);
     [v7 setTrackVolumes:v6];
 
-    v4 = v7;
+    playerItem = v7;
   }
 }
 
-- (void)setSpeechIsolatorEnabled:(BOOL)a3
+- (void)setSpeechIsolatorEnabled:(BOOL)enabled
 {
-  if (self->_speechIsolatorEnabled != a3)
+  if (self->_speechIsolatorEnabled != enabled)
   {
-    v4 = a3;
-    self->_speechIsolatorEnabled = a3;
+    enabledCopy = enabled;
+    self->_speechIsolatorEnabled = enabled;
     [(VMAudioPlayerImp *)self _updatePlayerItemSpeechIsolator];
     service = self->_service;
 
-    [(VMAudioService *)service setSpeechIsolatorEnabled:v4 controller:self];
+    [(VMAudioService *)service setSpeechIsolatorEnabled:enabledCopy controller:self];
   }
 }
 
-- (void)setSpeechIsolatorValue:(float)a3
+- (void)setSpeechIsolatorValue:(float)value
 {
-  if (self->_speechIsolatorValue != a3)
+  if (self->_speechIsolatorValue != value)
   {
-    self->_speechIsolatorValue = a3;
+    self->_speechIsolatorValue = value;
     [(VMAudioPlayerImp *)self _updatePlayerItemSpeechIsolator];
     service = self->_service;
-    *&v6 = a3;
+    *&v6 = value;
 
     [(VMAudioService *)service setSpeechIsolatorValue:self controller:v6];
   }
@@ -157,8 +157,8 @@
 
 - (void)_updatePlayerItemSpeechIsolator
 {
-  v3 = [(VMAudioPlayerImp *)self playerItem];
-  if (v3)
+  playerItem = [(VMAudioPlayerImp *)self playerItem];
+  if (playerItem)
   {
     v4 = 0.0;
     if (self->_speechIsolatorEnabled)
@@ -166,22 +166,22 @@
       *&v4 = self->_speechIsolatorValue;
     }
 
-    v5 = v3;
-    [v3 setSpeechIsolatorValue:v4];
-    v3 = v5;
+    v5 = playerItem;
+    [playerItem setSpeechIsolatorValue:v4];
+    playerItem = v5;
   }
 }
 
-- (void)setPlayableRange:(id)a3
+- (void)setPlayableRange:(id)range
 {
-  var1 = a3.var1;
-  self->_playableRange = a3;
-  v4 = [(VMAudioPlayerImp *)self playerItem];
-  if (v4)
+  var1 = range.var1;
+  self->_playableRange = range;
+  playerItem = [(VMAudioPlayerImp *)self playerItem];
+  if (playerItem)
   {
-    v5 = v4;
-    [v4 setPlayableRangeEndTime:var1];
-    v4 = v5;
+    v5 = playerItem;
+    [playerItem setPlayableRangeEndTime:var1];
+    playerItem = v5;
   }
 }
 
@@ -200,19 +200,19 @@
   return 1;
 }
 
-- (void)setPlayerItem:(id)a3
+- (void)setPlayerItem:(id)item
 {
-  v7 = a3;
-  objc_storeStrong(&self->_playerItem, a3);
-  if (v7)
+  itemCopy = item;
+  objc_storeStrong(&self->_playerItem, item);
+  if (itemCopy)
   {
-    [v7 setLooping:self->_looping];
+    [itemCopy setLooping:self->_looping];
     *&v5 = self->_layerMix;
     v6 = sub_100059888(v5);
-    [v7 setTrackVolumes:v6];
+    [itemCopy setTrackVolumes:v6];
 
     [(VMAudioPlayerImp *)self _updatePlayerItemSpeechIsolator];
-    [v7 setPlayableRangeEndTime:self->_playableRange.endTime];
+    [itemCopy setPlayableRangeEndTime:self->_playableRange.endTime];
   }
 }
 

@@ -1,11 +1,11 @@
 @interface StocksLayout
-+ (id)fullScreenChartLayoutForSize:(CGSize)a3;
-+ (id)layoutForSize:(CGSize)a3;
-+ (id)singleColumnPortraitLayoutForSize:(CGSize)a3;
-+ (id)threeColumnsLandscapeLayoutForSize:(CGSize)a3;
-+ (id)twoColumnsLandscapeLayoutForSize:(CGSize)a3;
-+ (id)twoColumnsPortraitLayoutForSize:(CGSize)a3;
-+ (unint64_t)numberOfRowsForSize:(CGSize)a3;
++ (id)fullScreenChartLayoutForSize:(CGSize)size;
++ (id)layoutForSize:(CGSize)size;
++ (id)singleColumnPortraitLayoutForSize:(CGSize)size;
++ (id)threeColumnsLandscapeLayoutForSize:(CGSize)size;
++ (id)twoColumnsLandscapeLayoutForSize:(CGSize)size;
++ (id)twoColumnsPortraitLayoutForSize:(CGSize)size;
++ (unint64_t)numberOfRowsForSize:(CGSize)size;
 - (CGRect)blurViewFrame;
 - (CGRect)chartViewFrame;
 - (CGRect)grayViewFrame;
@@ -27,11 +27,11 @@
 
 @implementation StocksLayout
 
-+ (id)layoutForSize:(CGSize)a3
++ (id)layoutForSize:(CGSize)size
 {
-  if (a3.height >= a3.width)
+  if (size.height >= size.width)
   {
-    if (a3.width >= 640.0)
+    if (size.width >= 640.0)
     {
       [StocksLayout twoColumnsPortraitLayoutForSize:?];
     }
@@ -44,13 +44,13 @@
 
   else
   {
-    if (a3.height < 376.0)
+    if (size.height < 376.0)
     {
       v3 = [StocksLayout fullScreenChartLayoutForSize:?];
       goto LABEL_11;
     }
 
-    if (a3.width >= 1024.0)
+    if (size.width >= 1024.0)
     {
       [StocksLayout threeColumnsLandscapeLayoutForSize:?];
     }
@@ -66,15 +66,15 @@ LABEL_11:
   return v3;
 }
 
-+ (id)singleColumnPortraitLayoutForSize:(CGSize)a3
++ (id)singleColumnPortraitLayoutForSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [a1 numberOfRowsForSize:?];
+  height = size.height;
+  width = size.width;
+  v6 = [self numberOfRowsForSize:?];
   v7 = v6 * 56.0;
   v8 = height + -44.0;
-  v9 = [MEMORY[0x277D759A0] mainScreen];
-  [v9 _referenceBounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen _referenceBounds];
   if (v10 == 812.0)
   {
     v11 = 34.0;
@@ -85,7 +85,7 @@ LABEL_11:
     v11 = 0.0;
   }
 
-  v12 = objc_alloc_init(a1);
+  v12 = objc_alloc_init(self);
   [v12 setListViewFrame:RoundRectToPixel(0.0)];
   v13 = v8 - v7;
   [v12 setInfoViewFrame:RoundRectToPixel(0.0)];
@@ -103,17 +103,17 @@ LABEL_11:
   [v12 setChartViewInScrollView:1];
   [v12 setNewsViewInScrollView:1];
   [v12 setHasBlurView:1];
-  v14 = [MEMORY[0x277D759A0] mainScreen];
-  [v14 scale];
-  v15 = [MEMORY[0x277D759A0] mainScreen];
-  [v15 scale];
+  mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen2 scale];
+  mainScreen3 = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen3 scale];
   [v12 setBlurViewFrame:RoundRectToPixel(0.0)];
 
   [v12 setHasGrayView:1];
-  v16 = [MEMORY[0x277D759A0] mainScreen];
-  [v16 scale];
-  v17 = [MEMORY[0x277D759A0] mainScreen];
-  [v17 scale];
+  mainScreen4 = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen4 scale];
+  mainScreen5 = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen5 scale];
   [v12 setGrayViewFrame:RoundRectToPixel(0.0)];
 
   [v12 setHasSecondaryGrayView:0];
@@ -123,8 +123,8 @@ LABEL_11:
   [v12 setHasStatusView:1];
   [v12 setStatusViewFrame:{0.0, v8, width, 44.0}];
   [v12 setHasStatusViewDivider:0];
-  v18 = [MEMORY[0x277D759A0] mainScreen];
-  [v18 scale];
+  mainScreen6 = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen6 scale];
   [v12 setStatusViewDividerFrame:RoundRectToPixel(0.0)];
 
   [v12 setHasPrimaryHorizontalDivider:0];
@@ -132,8 +132,8 @@ LABEL_11:
   [v12 setHasPrimaryVerticalDivider:0];
   [v12 listViewFrame];
   MaxX = CGRectGetMaxX(v29);
-  v20 = [MEMORY[0x277D759A0] mainScreen];
-  [v20 scale];
+  mainScreen7 = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen7 scale];
   [v12 listViewFrame];
   [v12 setPrimaryVerticalDividerFrame:RoundRectToPixel(MaxX)];
 
@@ -149,8 +149,8 @@ LABEL_11:
 
   [v21 setYAxisLabelCount:2];
   [v21 setChartSize:{width, v13}];
-  v24 = [MEMORY[0x277D759A0] mainScreen];
-  [v24 _referenceBounds];
+  mainScreen8 = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen8 _referenceBounds];
   v26 = v25;
 
   if (v26 == 736.0)
@@ -163,11 +163,11 @@ LABEL_11:
   return v12;
 }
 
-+ (id)twoColumnsPortraitLayoutForSize:(CGSize)a3
++ (id)twoColumnsPortraitLayoutForSize:(CGSize)size
 {
-  width = a3.width;
-  v4 = a3.height + -64.0;
-  v5 = objc_alloc_init(a1);
+  width = size.width;
+  v4 = size.height + -64.0;
+  v5 = objc_alloc_init(self);
   [v5 setListViewFrame:RoundRectToPixel(0.0)];
   [v5 setInfoViewFrame:RoundRectToPixel(width * 0.4)];
   [v5 setChartViewFrame:RoundRectToPixel(width * 0.4)];
@@ -190,26 +190,26 @@ LABEL_11:
   [v5 setHasStatusView:1];
   [v5 setStatusViewFrame:RoundRectToPixel(0.0)];
   [v5 setHasStatusViewDivider:1];
-  v6 = [MEMORY[0x277D759A0] mainScreen];
-  [v6 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   [v5 setStatusViewDividerFrame:RoundRectToPixel(0.0)];
 
   [v5 setHasPrimaryHorizontalDivider:1];
-  v7 = [MEMORY[0x277D759A0] mainScreen];
-  [v7 scale];
+  mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen2 scale];
   [v5 setPrimaryHorizontalDividerFrame:RoundRectToPixel(0.0)];
 
   [v5 setHasSecondaryHorizontalDivider:0];
   [v5 setHasPrimaryVerticalDivider:1];
   [v5 listViewFrame];
   MaxX = CGRectGetMaxX(v14);
-  v9 = [MEMORY[0x277D759A0] mainScreen];
-  [v9 scale];
+  mainScreen3 = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen3 scale];
   [v5 setPrimaryVerticalDividerFrame:RoundRectToPixel(MaxX)];
 
   [v5 setHasSecondaryVerticalDivider:0];
-  v10 = [MEMORY[0x277D759A0] mainScreen];
-  [v10 scale];
+  mainScreen4 = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen4 scale];
   [v5 setSecondaryVerticalDividerFrame:RoundRectToPixel(width)];
 
   v11 = +[StockChartDisplayMode defaultDisplayMode];
@@ -224,11 +224,11 @@ LABEL_11:
   return v5;
 }
 
-+ (id)fullScreenChartLayoutForSize:(CGSize)a3
++ (id)fullScreenChartLayoutForSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = objc_alloc_init(a1);
+  height = size.height;
+  width = size.width;
+  v5 = objc_alloc_init(self);
   v6 = *MEMORY[0x277CBF3A0];
   v7 = *(MEMORY[0x277CBF3A0] + 8);
   v8 = *(MEMORY[0x277CBF3A0] + 16);
@@ -273,17 +273,17 @@ LABEL_11:
   return v5;
 }
 
-+ (id)twoColumnsLandscapeLayoutForSize:(CGSize)a3
++ (id)twoColumnsLandscapeLayoutForSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [MEMORY[0x277D75128] sharedApplication];
-  v7 = [v6 userInterfaceLayoutDirection];
+  height = size.height;
+  width = size.width;
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  userInterfaceLayoutDirection = [mEMORY[0x277D75128] userInterfaceLayoutDirection];
 
-  if (v7)
+  if (userInterfaceLayoutDirection)
   {
-    v8 = [MEMORY[0x277D759A0] mainScreen];
-    [v8 scale];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
     v10 = width - (-1.0 / v9 + width * 0.4);
 
     v11 = width * 0.6;
@@ -296,8 +296,8 @@ LABEL_11:
   else
   {
     v12 = width * 0.6;
-    v13 = [MEMORY[0x277D759A0] mainScreen];
-    [v13 scale];
+    mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen2 scale];
     v24 = -1.0 / v14 + width * 0.4;
 
     v11 = 0.0;
@@ -306,7 +306,7 @@ LABEL_11:
     v10 = 0.0;
   }
 
-  if (v7)
+  if (userInterfaceLayoutDirection)
   {
     v15 = 0.0;
   }
@@ -316,9 +316,9 @@ LABEL_11:
     v15 = width * 0.4;
   }
 
-  v16 = objc_alloc_init(a1);
-  v17 = [MEMORY[0x277D759A0] mainScreen];
-  [v17 scale];
+  v16 = objc_alloc_init(self);
+  mainScreen3 = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen3 scale];
   [v16 setListViewFrame:RoundRectToPixel(v10)];
 
   [v16 setInfoViewFrame:RoundRectToPixel(v11)];
@@ -341,15 +341,15 @@ LABEL_11:
   [v16 setStatusViewFrame:RoundRectToPixel(0.0)];
   [v16 setChartViewHasTapGesture:1];
   [v16 setHasStatusViewDivider:1];
-  v18 = [MEMORY[0x277D759A0] mainScreen];
-  [v18 scale];
+  mainScreen4 = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen4 scale];
   [v16 setStatusViewDividerFrame:RoundRectToPixel(0.0)];
 
   [v16 setHasPrimaryHorizontalDivider:0];
   [v16 setHasSecondaryHorizontalDivider:0];
   [v16 setHasPrimaryVerticalDivider:1];
-  v19 = [MEMORY[0x277D759A0] mainScreen];
-  [v19 scale];
+  mainScreen5 = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen5 scale];
   [v16 setPrimaryVerticalDividerFrame:RoundRectToPixel(v24)];
 
   [v16 setHasSecondaryVerticalDivider:1];
@@ -365,11 +365,11 @@ LABEL_11:
   return v16;
 }
 
-+ (id)threeColumnsLandscapeLayoutForSize:(CGSize)a3
++ (id)threeColumnsLandscapeLayoutForSize:(CGSize)size
 {
-  width = a3.width;
-  v4 = a3.height + -64.0;
-  v5 = objc_alloc_init(a1);
+  width = size.width;
+  v4 = size.height + -64.0;
+  v5 = objc_alloc_init(self);
   [v5 setListViewFrame:RoundRectToPixel(0.0)];
   [v5 setInfoViewFrame:RoundRectToPixel(width * 0.3)];
   [v5 setChartViewFrame:RoundRectToPixel(width * 0.65)];
@@ -391,24 +391,24 @@ LABEL_11:
   [v5 setHasStatusView:1];
   [v5 setStatusViewFrame:RoundRectToPixel(0.0)];
   [v5 setHasStatusViewDivider:1];
-  v6 = [MEMORY[0x277D759A0] mainScreen];
-  [v6 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   [v5 setStatusViewDividerFrame:RoundRectToPixel(0.0)];
 
   [v5 setHasPrimaryHorizontalDivider:1];
-  v7 = [MEMORY[0x277D759A0] mainScreen];
-  [v7 scale];
+  mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen2 scale];
   [v5 setPrimaryHorizontalDividerFrame:RoundRectToPixel(width * 0.3)];
 
   [v5 setHasSecondaryHorizontalDivider:0];
   [v5 setHasPrimaryVerticalDivider:1];
-  v8 = [MEMORY[0x277D759A0] mainScreen];
-  [v8 scale];
+  mainScreen3 = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen3 scale];
   [v5 setPrimaryVerticalDividerFrame:RoundRectToPixel(width * 0.3)];
 
   [v5 setHasSecondaryVerticalDivider:1];
-  v9 = [MEMORY[0x277D759A0] mainScreen];
-  [v9 scale];
+  mainScreen4 = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen4 scale];
   [v5 setSecondaryVerticalDividerFrame:RoundRectToPixel(width * 0.65)];
 
   v10 = +[StockChartDisplayMode defaultDisplayMode];
@@ -423,12 +423,12 @@ LABEL_11:
   return v5;
 }
 
-+ (unint64_t)numberOfRowsForSize:(CGSize)a3
++ (unint64_t)numberOfRowsForSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [MEMORY[0x277D759A0] mainScreen];
-  [v5 bounds];
+  height = size.height;
+  width = size.width;
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   v6 = CGRectGetHeight(v17);
 
   v7 = 20.0;
@@ -456,8 +456,8 @@ LABEL_11:
     v11 = v9 + 1;
   }
 
-  v12 = [MEMORY[0x277D759A0] mainScreen];
-  [v12 _referenceBounds];
+  mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen2 _referenceBounds];
   v14 = v13;
 
   v15 = 7;

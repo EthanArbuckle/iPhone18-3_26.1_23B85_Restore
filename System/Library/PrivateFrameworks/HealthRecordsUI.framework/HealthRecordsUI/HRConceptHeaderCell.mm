@@ -1,16 +1,16 @@
 @interface HRConceptHeaderCell
 + (id)defaultReuseIdentifier;
-- (HRConceptHeaderCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (HRConceptHeaderCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (NSString)title;
 - (UIColor)categoryColor;
 - (UIImage)headerImage;
 - (int64_t)intendedPlacement;
-- (void)_traitCollectionDidChange:(id)a3;
+- (void)_traitCollectionDidChange:(id)change;
 - (void)_updateForCurrentSizeCategory;
-- (void)setCategoryColor:(id)a3;
-- (void)setHeaderImage:(id)a3;
-- (void)setIntendedPlacement:(int64_t)a3;
-- (void)setTitle:(id)a3;
+- (void)setCategoryColor:(id)color;
+- (void)setHeaderImage:(id)image;
+- (void)setIntendedPlacement:(int64_t)placement;
+- (void)setTitle:(id)title;
 - (void)setUpConstraints;
 - (void)setupSubviews;
 @end
@@ -24,11 +24,11 @@
   return *(self + v3);
 }
 
-- (void)setHeaderImage:(id)a3
+- (void)setHeaderImage:(id)image
 {
-  v5 = a3;
-  v6 = self;
-  sub_1D1357124(a3);
+  imageCopy = image;
+  selfCopy = self;
+  sub_1D1357124(image);
 }
 
 - (NSString)title
@@ -49,9 +49,9 @@
   return v3;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  if (a3)
+  if (title)
   {
     v4 = sub_1D139016C();
     v6 = v5;
@@ -63,7 +63,7 @@
     v6 = 0;
   }
 
-  v7 = self;
+  selfCopy = self;
   sub_1D1357368(v4, v6);
 }
 
@@ -74,11 +74,11 @@
   return *(self + v3);
 }
 
-- (void)setCategoryColor:(id)a3
+- (void)setCategoryColor:(id)color
 {
-  v5 = a3;
-  v6 = self;
-  sub_1D1357668(a3);
+  colorCopy = color;
+  selfCopy = self;
+  sub_1D1357668(color);
 }
 
 + (id)defaultReuseIdentifier
@@ -93,13 +93,13 @@
 
 - (void)setupSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D1357964();
 }
 
 - (void)setUpConstraints
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D1357B08();
 }
 
@@ -110,10 +110,10 @@
   return [(WDMedicalRecordGroupableCell *)&v3 intendedPlacement];
 }
 
-- (void)setIntendedPlacement:(int64_t)a3
+- (void)setIntendedPlacement:(int64_t)placement
 {
-  v4 = self;
-  sub_1D1357F10(a3);
+  selfCopy = self;
+  sub_1D1357F10(placement);
 }
 
 - (void)_updateForCurrentSizeCategory
@@ -121,23 +121,23 @@
   v3 = *(self + OBJC_IVAR___HRConceptHeaderCell_titleLabel);
   v4 = objc_opt_self();
   v5 = *MEMORY[0x1E69DDD80];
-  v6 = self;
-  v7 = [v4 _preferredFontForTextStyle_variant_];
+  selfCopy = self;
+  _preferredFontForTextStyle_variant_ = [v4 _preferredFontForTextStyle_variant_];
   [v3 setFont_];
 }
 
-- (void)_traitCollectionDidChange:(id)a3
+- (void)_traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_1D1358070(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_1D1358070(change);
 }
 
-- (HRConceptHeaderCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (HRConceptHeaderCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
-    a4 = sub_1D139016C();
+    identifier = sub_1D139016C();
     v6 = v5;
   }
 
@@ -146,7 +146,7 @@
     v6 = 0;
   }
 
-  return ConceptHeaderCell.init(style:reuseIdentifier:)(a3, a4, v6);
+  return ConceptHeaderCell.init(style:reuseIdentifier:)(style, identifier, v6);
 }
 
 @end

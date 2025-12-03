@@ -2,19 +2,19 @@
 - (MKLocationManager)locationManager;
 - (MNNavigationService)navigationService;
 - (NSString)debugDescription;
-- (PedestrianARSessionArrivalStepAvailabilityMonitor)initWithObserver:(id)a3 platformController:(id)a4 navigationService:(id)a5 locationManager:(id)a6;
+- (PedestrianARSessionArrivalStepAvailabilityMonitor)initWithObserver:(id)observer platformController:(id)controller navigationService:(id)service locationManager:(id)manager;
 - (PlatformController)platformController;
 - (void)dealloc;
-- (void)locationManagerUpdatedLocation:(id)a3;
-- (void)navigationService:(id)a3 didChangeFromState:(unint64_t)a4 toState:(unint64_t)a5;
-- (void)navigationService:(id)a3 didSwitchToNewTransportType:(int)a4 newRoute:(id)a5 traffic:(id)a6;
-- (void)navigationService:(id)a3 didUpdateMatchedLocation:(id)a4;
-- (void)navigationService:(id)a3 didUpdateStepIndex:(unint64_t)a4 segmentIndex:(unint64_t)a5;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)platformController:(id)a3 didChangeCurrentSessionFromSession:(id)a4 toSession:(id)a5;
-- (void)routePlanningSession:(id)a3 didChangeCurrentTransportType:(int64_t)a4 userInitiated:(BOOL)a5;
-- (void)routePlanningSession:(id)a3 didUpdateRouteCollectionResult:(id)a4 forTransportType:(int64_t)a5;
-- (void)setRoutePlanningSession:(id)a3;
+- (void)locationManagerUpdatedLocation:(id)location;
+- (void)navigationService:(id)service didChangeFromState:(unint64_t)state toState:(unint64_t)toState;
+- (void)navigationService:(id)service didSwitchToNewTransportType:(int)type newRoute:(id)route traffic:(id)traffic;
+- (void)navigationService:(id)service didUpdateMatchedLocation:(id)location;
+- (void)navigationService:(id)service didUpdateStepIndex:(unint64_t)index segmentIndex:(unint64_t)segmentIndex;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)platformController:(id)controller didChangeCurrentSessionFromSession:(id)session toSession:(id)toSession;
+- (void)routePlanningSession:(id)session didChangeCurrentTransportType:(int64_t)type userInitiated:(BOOL)initiated;
+- (void)routePlanningSession:(id)session didUpdateRouteCollectionResult:(id)result forTransportType:(int64_t)type;
+- (void)setRoutePlanningSession:(id)session;
 - (void)updateState;
 @end
 
@@ -22,43 +22,43 @@
 
 - (void)updateState
 {
-  v3 = [(PedestrianARSessionArrivalStepAvailabilityMonitor *)self routePlanningSession];
+  routePlanningSession = [(PedestrianARSessionArrivalStepAvailabilityMonitor *)self routePlanningSession];
 
-  if (v3)
+  if (routePlanningSession)
   {
     v4 = sub_100073758();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
       *buf = 134349056;
-      v91 = self;
+      selfCopy20 = self;
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "[%{public}p] Checking whether to allow feature during route planning", buf, 0xCu);
     }
 
-    v5 = [(PedestrianARSessionArrivalStepAvailabilityMonitor *)self routePlanningSession];
-    v6 = [v5 currentTransportType];
+    routePlanningSession2 = [(PedestrianARSessionArrivalStepAvailabilityMonitor *)self routePlanningSession];
+    currentTransportType = [routePlanningSession2 currentTransportType];
 
-    if (v6 == 2)
+    if (currentTransportType == 2)
     {
-      v7 = [(PedestrianARSessionArrivalStepAvailabilityMonitor *)self locationManager];
-      v8 = [v7 lastLocation];
+      locationManager = [(PedestrianARSessionArrivalStepAvailabilityMonitor *)self locationManager];
+      lastLocation = [locationManager lastLocation];
 
-      if (v8)
+      if (lastLocation)
       {
-        v9 = [(PedestrianARSessionArrivalStepAvailabilityMonitor *)self routePlanningSession];
-        v10 = [v9 currentRouteCollection];
-        v11 = [v10 currentRoute];
+        routePlanningSession3 = [(PedestrianARSessionArrivalStepAvailabilityMonitor *)self routePlanningSession];
+        currentRouteCollection = [routePlanningSession3 currentRouteCollection];
+        currentRoute = [currentRouteCollection currentRoute];
 
-        if (v11)
+        if (currentRoute)
         {
-          v12 = [[GEOLocation alloc] initWithCLLocation:v8];
-          v13 = [[GEORouteMatcher alloc] initWithRoute:v11 auditToken:0];
+          v12 = [[GEOLocation alloc] initWithCLLocation:lastLocation];
+          v13 = [[GEORouteMatcher alloc] initWithRoute:currentRoute auditToken:0];
           v14 = [v13 matchToRouteWithLocation:v12];
-          v15 = [v14 stepIndex];
-          v16 = [v11 stepsCount] - 1;
-          if (v15 == v16)
+          stepIndex = [v14 stepIndex];
+          v16 = [currentRoute stepsCount] - 1;
+          if (stepIndex == v16)
           {
-            v17 = v11;
-            v18 = v8;
+            route3 = currentRoute;
+            lastLocation2 = lastLocation;
           }
 
           else
@@ -66,24 +66,24 @@
             v39 = sub_100073758();
             if (os_log_type_enabled(v39, OS_LOG_TYPE_INFO))
             {
-              v89 = [v14 stepIndex];
-              [v11 steps];
+              stepIndex2 = [v14 stepIndex];
+              [currentRoute steps];
               v40 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
               *buf = 134349568;
-              v91 = self;
+              selfCopy20 = self;
               v92 = 2048;
-              v93 = v89;
+              v93 = stepIndex2;
               v94 = 2048;
               v95 = v40;
               _os_log_impl(&_mh_execute_header, v39, OS_LOG_TYPE_INFO, "[%{public}p] We are in route planning but user is not on the final step yet (current step index: %lu, total steps: %lu); will not interfere with feature availability", buf, 0x20u);
             }
 
             [(PedestrianARSessionMonitor *)self setShouldShowPedestrianAR:1];
-            v18 = 0;
-            v17 = 0;
+            lastLocation2 = 0;
+            route3 = 0;
           }
 
-          if (v15 != v16)
+          if (stepIndex != v16)
           {
             goto LABEL_24;
           }
@@ -95,14 +95,14 @@
         if (os_log_type_enabled(v38, OS_LOG_TYPE_INFO))
         {
           *buf = 134349056;
-          v91 = self;
+          selfCopy20 = self;
           _os_log_impl(&_mh_execute_header, v38, OS_LOG_TYPE_INFO, "[%{public}p] We are in route planning but do not have a route; will not interfere with feature availability", buf, 0xCu);
         }
 
         [(PedestrianARSessionMonitor *)self setShouldShowPedestrianAR:1];
 LABEL_23:
-        v18 = 0;
-        v17 = 0;
+        lastLocation2 = 0;
+        route3 = 0;
         goto LABEL_24;
       }
 
@@ -110,7 +110,7 @@ LABEL_23:
       if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
       {
         *buf = 134349056;
-        v91 = self;
+        selfCopy20 = self;
         _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_INFO, "[%{public}p] We are in route planning but do not have a last location estimate; will not interfere with feature availability", buf, 0xCu);
       }
 
@@ -126,20 +126,20 @@ LABEL_22:
       goto LABEL_22;
     }
 
-    v25 = [(PedestrianARSessionArrivalStepAvailabilityMonitor *)self routePlanningSession];
-    v26 = [v25 currentTransportType];
-    if ((v26 - 1) > 4)
+    routePlanningSession4 = [(PedestrianARSessionArrivalStepAvailabilityMonitor *)self routePlanningSession];
+    currentTransportType2 = [routePlanningSession4 currentTransportType];
+    if ((currentTransportType2 - 1) > 4)
     {
       v27 = @"Undefined";
     }
 
     else
     {
-      v27 = *(&off_101632878 + (v26 - 1));
+      v27 = *(&off_101632878 + (currentTransportType2 - 1));
     }
 
     *buf = 134349314;
-    v91 = self;
+    selfCopy20 = self;
     v92 = 2112;
     v93 = v27;
     _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_INFO, "[%{public}p] We are route planning with a non-walking transport type (%@); will not interfere with feature availability", buf, 0x16u);
@@ -148,9 +148,9 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  v19 = [(PedestrianARSessionArrivalStepAvailabilityMonitor *)self navigationService];
-  v20 = [v19 state];
-  if (v20 <= 6 && ((1 << v20) & 0x47) != 0)
+  navigationService = [(PedestrianARSessionArrivalStepAvailabilityMonitor *)self navigationService];
+  state = [navigationService state];
+  if (state <= 6 && ((1 << state) & 0x47) != 0)
   {
 
     v21 = sub_100073758();
@@ -159,11 +159,11 @@ LABEL_21:
       goto LABEL_22;
     }
 
-    v22 = [(PedestrianARSessionArrivalStepAvailabilityMonitor *)self navigationService];
-    [v22 state];
+    navigationService2 = [(PedestrianARSessionArrivalStepAvailabilityMonitor *)self navigationService];
+    [navigationService2 state];
     v23 = MNNavigationServiceStateAsString();
     *buf = 134349314;
-    v91 = self;
+    selfCopy20 = self;
     v92 = 2112;
     v93 = v23;
     v24 = "[%{public}p] We are not in route planning nor in a pedestrian AR navigation state (%@); will not interfere with feature availability";
@@ -177,14 +177,14 @@ LABEL_13:
   if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
   {
     *buf = 134349056;
-    v91 = self;
+    selfCopy20 = self;
     _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_INFO, "[%{public}p] Checking whether to allow feature during active guidance", buf, 0xCu);
   }
 
-  v29 = [(PedestrianARSessionArrivalStepAvailabilityMonitor *)self navigationService];
-  v30 = [v29 navigationTransportType];
+  navigationService3 = [(PedestrianARSessionArrivalStepAvailabilityMonitor *)self navigationService];
+  navigationTransportType = [navigationService3 navigationTransportType];
 
-  if (v30 != 2)
+  if (navigationTransportType != 2)
   {
     v21 = sub_100073758();
     if (!os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
@@ -192,33 +192,33 @@ LABEL_13:
       goto LABEL_22;
     }
 
-    v22 = [(PedestrianARSessionArrivalStepAvailabilityMonitor *)self navigationService];
-    v62 = [v22 navigationTransportType];
-    if (v62 >= 7)
+    navigationService2 = [(PedestrianARSessionArrivalStepAvailabilityMonitor *)self navigationService];
+    navigationTransportType2 = [navigationService2 navigationTransportType];
+    if (navigationTransportType2 >= 7)
     {
-      v23 = [NSString stringWithFormat:@"(unknown: %i)", v62];
+      v23 = [NSString stringWithFormat:@"(unknown: %i)", navigationTransportType2];
     }
 
     else
     {
-      v23 = *(&off_101632840 + v62);
+      v23 = *(&off_101632840 + navigationTransportType2);
     }
 
     *buf = 134349314;
-    v91 = self;
+    selfCopy20 = self;
     v92 = 2112;
     v93 = v23;
     v24 = "[%{public}p] We are navigating with a non-walking transport type (%@); will not interfere with feature availability";
     goto LABEL_13;
   }
 
-  v31 = [(PedestrianARSessionArrivalStepAvailabilityMonitor *)self navigationService];
-  v32 = [v31 stepIndex];
-  v33 = [(PedestrianARSessionArrivalStepAvailabilityMonitor *)self navigationService];
-  v34 = [v33 route];
-  v35 = [v34 stepsCount] - 1;
+  navigationService4 = [(PedestrianARSessionArrivalStepAvailabilityMonitor *)self navigationService];
+  stepIndex3 = [navigationService4 stepIndex];
+  navigationService5 = [(PedestrianARSessionArrivalStepAvailabilityMonitor *)self navigationService];
+  route = [navigationService5 route];
+  v35 = [route stepsCount] - 1;
 
-  if (v32 != v35)
+  if (stepIndex3 != v35)
   {
     v21 = sub_100073758();
     if (!os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
@@ -226,15 +226,15 @@ LABEL_13:
       goto LABEL_22;
     }
 
-    v25 = [(PedestrianARSessionArrivalStepAvailabilityMonitor *)self navigationService];
-    v73 = [v25 stepIndex];
-    v74 = [(PedestrianARSessionArrivalStepAvailabilityMonitor *)self navigationService];
-    v75 = [v74 route];
-    v76 = COERCE_DOUBLE([v75 stepsCount]);
+    routePlanningSession4 = [(PedestrianARSessionArrivalStepAvailabilityMonitor *)self navigationService];
+    stepIndex4 = [routePlanningSession4 stepIndex];
+    navigationService6 = [(PedestrianARSessionArrivalStepAvailabilityMonitor *)self navigationService];
+    route2 = [navigationService6 route];
+    v76 = COERCE_DOUBLE([route2 stepsCount]);
     *buf = 134349568;
-    v91 = self;
+    selfCopy20 = self;
     v92 = 2048;
-    v93 = v73;
+    v93 = stepIndex4;
     v94 = 2048;
     v95 = v76;
     _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_INFO, "[%{public}p] User is not on the final step yet (current step index: %lu, total steps: %lu); will not interfere with feature availability", buf, 0x20u);
@@ -242,27 +242,27 @@ LABEL_13:
     goto LABEL_21;
   }
 
-  v36 = [(PedestrianARSessionArrivalStepAvailabilityMonitor *)self navigationService];
-  v17 = [v36 route];
+  navigationService7 = [(PedestrianARSessionArrivalStepAvailabilityMonitor *)self navigationService];
+  route3 = [navigationService7 route];
 
-  v37 = [(PedestrianARSessionArrivalStepAvailabilityMonitor *)self navigationService];
-  v18 = [v37 lastLocation];
+  navigationService8 = [(PedestrianARSessionArrivalStepAvailabilityMonitor *)self navigationService];
+  lastLocation2 = [navigationService8 lastLocation];
 
 LABEL_37:
-  v41 = [v17 steps];
-  v42 = [v41 lastObject];
-  v43 = [v42 endRouteCoordinate];
+  steps = [route3 steps];
+  lastObject = [steps lastObject];
+  endRouteCoordinate = [lastObject endRouteCoordinate];
 
-  [v17 pointAtRouteCoordinate:v43];
+  [route3 pointAtRouteCoordinate:endRouteCoordinate];
   v45 = v44;
   v47 = v46;
-  [v18 coordinate];
+  [lastLocation2 coordinate];
   v49 = v48;
-  [v18 coordinate];
+  [lastLocation2 coordinate];
   v51 = v50;
-  if ([v17 hasArrivalStorefrontGeometry])
+  if ([route3 hasArrivalStorefrontGeometry])
   {
-    [v17 arrivalStorefrontLocation];
+    [route3 arrivalStorefrontLocation];
     GEOCalculateDistance();
     v53 = v52;
     GEOConfigGetDouble();
@@ -273,7 +273,7 @@ LABEL_37:
       if (os_log_type_enabled(v56, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134349568;
-        v91 = self;
+        selfCopy20 = self;
         v92 = 2048;
         v93 = *&v53;
         v94 = 2048;
@@ -288,10 +288,10 @@ LABEL_59:
 
 LABEL_60:
 
-      v77 = self;
+      selfCopy19 = self;
       v78 = 1;
 LABEL_61:
-      [(PedestrianARSessionMonitor *)v77 setShouldShowPedestrianAR:v78];
+      [(PedestrianARSessionMonitor *)selfCopy19 setShouldShowPedestrianAR:v78];
       goto LABEL_24;
     }
 
@@ -306,7 +306,7 @@ LABEL_61:
       if (v67)
       {
         *buf = 134350080;
-        v91 = self;
+        selfCopy20 = self;
         v92 = 2048;
         v93 = *&v53;
         v94 = 2048;
@@ -327,7 +327,7 @@ LABEL_61:
     if (v67)
     {
       *buf = 134350080;
-      v91 = self;
+      selfCopy20 = self;
       v92 = 2048;
       v93 = *&v53;
       v94 = 2048;
@@ -359,7 +359,7 @@ LABEL_68:
     }
 
     *buf = 134349056;
-    v91 = self;
+    selfCopy20 = self;
     v57 = "[%{public}p] The arrival POI does NOT have storefront geometry BUT the inject fake storefront arrival data debug flag is enabled; will allow the feature to be visible";
 LABEL_54:
     v58 = v56;
@@ -379,18 +379,18 @@ LABEL_54:
     }
 
     *buf = 134349056;
-    v91 = self;
+    selfCopy20 = self;
     v57 = "[%{public}p] The arrival POI does NOT have storefront geometry BUT the force show arrival on last step debug flag is enabled; will allow the feature to be visible";
     goto LABEL_54;
   }
 
-  if (v18)
+  if (lastLocation2)
   {
     v79 = sub_100073758();
     if (os_log_type_enabled(v79, OS_LOG_TYPE_DEBUG))
     {
       *buf = 134350080;
-      v91 = self;
+      selfCopy20 = self;
       v92 = 2048;
       v93 = v49;
       v94 = 2048;
@@ -416,7 +416,7 @@ LABEL_54:
       }
 
       *buf = 134349568;
-      v91 = self;
+      selfCopy20 = self;
       v92 = 2048;
       v93 = *&v81;
       v94 = 2048;
@@ -428,7 +428,7 @@ LABEL_54:
     if (v84)
     {
       *buf = 134349568;
-      v91 = self;
+      selfCopy20 = self;
       v92 = 2048;
       v93 = *&v81;
       v94 = 2048;
@@ -441,7 +441,7 @@ LABEL_54:
 
 LABEL_69:
 
-    v77 = self;
+    selfCopy19 = self;
     v78 = 0;
     goto LABEL_61;
   }
@@ -450,7 +450,7 @@ LABEL_69:
   if (os_log_type_enabled(v85, OS_LOG_TYPE_ERROR))
   {
     *buf = 136315650;
-    v91 = "[PedestrianARSessionArrivalStepAvailabilityMonitor updateState]";
+    selfCopy20 = "[PedestrianARSessionArrivalStepAvailabilityMonitor updateState]";
     v92 = 2080;
     v93 = "PedestrianARSessionArrivalStepAvailabilityMonitor.m";
     v94 = 1024;
@@ -465,7 +465,7 @@ LABEL_69:
     {
       v87 = +[NSThread callStackSymbols];
       *buf = 138412290;
-      v91 = v87;
+      selfCopy20 = v87;
       _os_log_impl(&_mh_execute_header, v86, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
     }
   }
@@ -474,12 +474,12 @@ LABEL_69:
   if (os_log_type_enabled(v88, OS_LOG_TYPE_ERROR))
   {
     *buf = 134349056;
-    v91 = self;
+    selfCopy20 = self;
     _os_log_impl(&_mh_execute_header, v88, OS_LOG_TYPE_ERROR, "[%{public}p] The arrival POI does NOT have storefront geometry and we don't know the user's current location; will not allow the feature to be visible", buf, 0xCu);
   }
 
   [(PedestrianARSessionMonitor *)self setShouldShowPedestrianAR:0];
-  v18 = 0;
+  lastLocation2 = 0;
 LABEL_24:
 }
 
@@ -504,25 +504,25 @@ LABEL_24:
   return WeakRetained;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
   v13 = +[NSUserDefaults standardUserDefaults];
 
-  if (v13 != v11)
+  if (v13 != objectCopy)
   {
-    [(PedestrianARSessionArrivalStepAvailabilityMonitor *)&v20 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6, self, PedestrianARSessionArrivalStepAvailabilityMonitor, v21.receiver, v21.super_class];
+    [(PedestrianARSessionArrivalStepAvailabilityMonitor *)&v20 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context, self, PedestrianARSessionArrivalStepAvailabilityMonitor, v21.receiver, v21.super_class];
     goto LABEL_16;
   }
 
-  if ([v10 isEqualToString:@"PedestrianARInjectFakeStorefrontArrivalDataKey"])
+  if ([pathCopy isEqualToString:@"PedestrianARInjectFakeStorefrontArrivalDataKey"])
   {
     v14 = sub_100073758();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
     {
-      v15 = [v12 objectForKeyedSubscript:NSKeyValueChangeNewKey];
+      v15 = [changeCopy objectForKeyedSubscript:NSKeyValueChangeNewKey];
       v16 = @"YES";
       if (!v15)
       {
@@ -531,7 +531,7 @@ LABEL_24:
 
       v17 = v16;
       *buf = 134349314;
-      v23 = self;
+      selfCopy2 = self;
       v24 = 2112;
       v25 = v17;
       v18 = "[%{public}p] Debug inject fake storefront arrival data key was toggled: %@; updating state";
@@ -542,16 +542,16 @@ LABEL_14:
 
   else
   {
-    if (![v10 isEqualToString:@"PedestrianARForceShowArrivalOnLastStepKey"])
+    if (![pathCopy isEqualToString:@"PedestrianARForceShowArrivalOnLastStepKey"])
     {
-      [(PedestrianARSessionArrivalStepAvailabilityMonitor *)&v21 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6, v20.receiver, v20.super_class, self, PedestrianARSessionArrivalStepAvailabilityMonitor];
+      [(PedestrianARSessionArrivalStepAvailabilityMonitor *)&v21 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context, v20.receiver, v20.super_class, self, PedestrianARSessionArrivalStepAvailabilityMonitor];
       goto LABEL_16;
     }
 
     v14 = sub_100073758();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
     {
-      v15 = [v12 objectForKeyedSubscript:NSKeyValueChangeNewKey];
+      v15 = [changeCopy objectForKeyedSubscript:NSKeyValueChangeNewKey];
       v19 = @"YES";
       if (!v15)
       {
@@ -560,7 +560,7 @@ LABEL_14:
 
       v17 = v19;
       *buf = 134349314;
-      v23 = self;
+      selfCopy2 = self;
       v24 = 2112;
       v25 = v17;
       v18 = "[%{public}p] Debug force show arrival on last step key was toggled: %@; updating state";
@@ -572,23 +572,23 @@ LABEL_14:
 LABEL_16:
 }
 
-- (void)routePlanningSession:(id)a3 didChangeCurrentTransportType:(int64_t)a4 userInitiated:(BOOL)a5
+- (void)routePlanningSession:(id)session didChangeCurrentTransportType:(int64_t)type userInitiated:(BOOL)initiated
 {
   v7 = sub_100073758();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    if ((a4 - 1) > 4)
+    if ((type - 1) > 4)
     {
       v8 = @"Undefined";
     }
 
     else
     {
-      v8 = *(&off_101632878 + a4 - 1);
+      v8 = *(&off_101632878 + type - 1);
     }
 
     v9 = 134349314;
-    v10 = self;
+    selfCopy = self;
     v11 = 2112;
     v12 = v8;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEBUG, "[%{public}p] Route planning updated the current transport type: %@", &v9, 0x16u);
@@ -597,18 +597,18 @@ LABEL_16:
   [(PedestrianARSessionArrivalStepAvailabilityMonitor *)self updateState];
 }
 
-- (void)routePlanningSession:(id)a3 didUpdateRouteCollectionResult:(id)a4 forTransportType:(int64_t)a5
+- (void)routePlanningSession:(id)session didUpdateRouteCollectionResult:(id)result forTransportType:(int64_t)type
 {
-  v7 = [(PedestrianARSessionArrivalStepAvailabilityMonitor *)self routePlanningSession:a3];
-  v8 = [v7 currentTransportType];
+  v7 = [(PedestrianARSessionArrivalStepAvailabilityMonitor *)self routePlanningSession:session];
+  currentTransportType = [v7 currentTransportType];
 
-  if (v8 == a5)
+  if (currentTransportType == type)
   {
     v9 = sub_100073758();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
       v10 = 134349056;
-      v11 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEBUG, "[%{public}p] Route planning updated the route collection for the current transport type", &v10, 0xCu);
     }
 
@@ -616,20 +616,20 @@ LABEL_16:
   }
 }
 
-- (void)platformController:(id)a3 didChangeCurrentSessionFromSession:(id)a4 toSession:(id)a5
+- (void)platformController:(id)controller didChangeCurrentSessionFromSession:(id)session toSession:(id)toSession
 {
-  v6 = a5;
+  toSessionCopy = toSession;
   v7 = sub_100073758();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     v11 = 134349314;
-    v12 = self;
+    selfCopy = self;
     v13 = 2112;
-    v14 = v6;
+    v14 = toSessionCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEBUG, "[%{public}p] Got a new session: %@", &v11, 0x16u);
   }
 
-  v8 = v6;
+  v8 = toSessionCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -647,25 +647,25 @@ LABEL_16:
   [(PedestrianARSessionArrivalStepAvailabilityMonitor *)self updateState];
 }
 
-- (void)navigationService:(id)a3 didUpdateMatchedLocation:(id)a4
+- (void)navigationService:(id)service didUpdateMatchedLocation:(id)location
 {
-  v5 = a4;
+  locationCopy = location;
   v6 = sub_100073758();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     v7 = 134349314;
-    v8 = self;
+    selfCopy = self;
     v9 = 2112;
-    v10 = v5;
+    v10 = locationCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEBUG, "[%{public}p] nav service updated matched location: %@", &v7, 0x16u);
   }
 
   [(PedestrianARSessionArrivalStepAvailabilityMonitor *)self updateState];
 }
 
-- (void)navigationService:(id)a3 didSwitchToNewTransportType:(int)a4 newRoute:(id)a5 traffic:(id)a6
+- (void)navigationService:(id)service didSwitchToNewTransportType:(int)type newRoute:(id)route traffic:(id)traffic
 {
-  v6 = *&a4;
+  v6 = *&type;
   v8 = sub_100073758();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -680,7 +680,7 @@ LABEL_16:
     }
 
     *buf = 134349314;
-    v11 = self;
+    selfCopy = self;
     v12 = 2112;
     v13 = v9;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "[%{public}p] nav service switched to new transport type: %@", buf, 0x16u);
@@ -689,24 +689,24 @@ LABEL_16:
   [(PedestrianARSessionArrivalStepAvailabilityMonitor *)self updateState];
 }
 
-- (void)navigationService:(id)a3 didUpdateStepIndex:(unint64_t)a4 segmentIndex:(unint64_t)a5
+- (void)navigationService:(id)service didUpdateStepIndex:(unint64_t)index segmentIndex:(unint64_t)segmentIndex
 {
   v8 = sub_100073758();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     v9 = 134349568;
-    v10 = self;
+    selfCopy = self;
     v11 = 2048;
-    v12 = a4;
+    indexCopy = index;
     v13 = 2048;
-    v14 = a5;
+    segmentIndexCopy = segmentIndex;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "[%{public}p] nav service updated step index: %lu, segment index: %lu; updating state", &v9, 0x20u);
   }
 
   [(PedestrianARSessionArrivalStepAvailabilityMonitor *)self updateState];
 }
 
-- (void)navigationService:(id)a3 didChangeFromState:(unint64_t)a4 toState:(unint64_t)a5
+- (void)navigationService:(id)service didChangeFromState:(unint64_t)state toState:(unint64_t)toState
 {
   v6 = sub_100073758();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
@@ -714,7 +714,7 @@ LABEL_16:
     v7 = MNNavigationServiceStateAsString();
     v8 = MNNavigationServiceStateAsString();
     v9 = 134349570;
-    v10 = self;
+    selfCopy = self;
     v11 = 2112;
     v12 = v7;
     v13 = 2112;
@@ -725,17 +725,17 @@ LABEL_16:
   [(PedestrianARSessionArrivalStepAvailabilityMonitor *)self updateState];
 }
 
-- (void)locationManagerUpdatedLocation:(id)a3
+- (void)locationManagerUpdatedLocation:(id)location
 {
-  v4 = a3;
+  locationCopy = location;
   v5 = sub_100073758();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    v6 = [v4 lastLocation];
+    lastLocation = [locationCopy lastLocation];
     v7 = 134349314;
-    v8 = self;
+    selfCopy = self;
     v9 = 2112;
-    v10 = v6;
+    v10 = lastLocation;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "[%{public}p] Got a new location update: %@", &v7, 0x16u);
   }
 
@@ -744,13 +744,13 @@ LABEL_16:
 
 - (NSString)debugDescription
 {
-  v44 = [objc_opt_class() friendlyName];
+  friendlyName = [objc_opt_class() friendlyName];
   GEOConfigGetDouble();
   v4 = v3;
-  v41 = [(PedestrianARSessionArrivalStepAvailabilityMonitor *)self locationManager];
-  v43 = [v41 lastLocation];
-  v40 = [(PedestrianARSessionArrivalStepAvailabilityMonitor *)self routePlanningSession];
-  if (v40)
+  locationManager = [(PedestrianARSessionArrivalStepAvailabilityMonitor *)self locationManager];
+  lastLocation = [locationManager lastLocation];
+  routePlanningSession = [(PedestrianARSessionArrivalStepAvailabilityMonitor *)self routePlanningSession];
+  if (routePlanningSession)
   {
     v5 = @"YES";
   }
@@ -761,10 +761,10 @@ LABEL_16:
   }
 
   v39 = v5;
-  v38 = [(PedestrianARSessionArrivalStepAvailabilityMonitor *)self routePlanningSession];
-  v37 = [v38 currentRouteCollection];
-  v36 = [v37 currentRoute];
-  if (v36)
+  routePlanningSession2 = [(PedestrianARSessionArrivalStepAvailabilityMonitor *)self routePlanningSession];
+  currentRouteCollection = [routePlanningSession2 currentRouteCollection];
+  currentRoute = [currentRouteCollection currentRoute];
+  if (currentRoute)
   {
     v6 = @"YES";
   }
@@ -775,22 +775,22 @@ LABEL_16:
   }
 
   v42 = v6;
-  v35 = [(PedestrianARSessionArrivalStepAvailabilityMonitor *)self routePlanningSession];
-  v7 = [v35 currentTransportType];
-  if ((v7 - 1) > 4)
+  routePlanningSession3 = [(PedestrianARSessionArrivalStepAvailabilityMonitor *)self routePlanningSession];
+  currentTransportType = [routePlanningSession3 currentTransportType];
+  if ((currentTransportType - 1) > 4)
   {
     v8 = @"Undefined";
   }
 
   else
   {
-    v8 = *(&off_101632878 + (v7 - 1));
+    v8 = *(&off_101632878 + (currentTransportType - 1));
   }
 
   v29 = v8;
-  v33 = [(PedestrianARSessionArrivalStepAvailabilityMonitor *)self navigationService];
-  v32 = [v33 route];
-  if (v32)
+  navigationService = [(PedestrianARSessionArrivalStepAvailabilityMonitor *)self navigationService];
+  route = [navigationService route];
+  if (route)
   {
     v9 = @"YES";
   }
@@ -801,29 +801,29 @@ LABEL_16:
   }
 
   v27 = v9;
-  v31 = [(PedestrianARSessionArrivalStepAvailabilityMonitor *)self navigationService];
-  [v31 state];
+  navigationService2 = [(PedestrianARSessionArrivalStepAvailabilityMonitor *)self navigationService];
+  [navigationService2 state];
   v30 = MNNavigationServiceStateAsString();
-  v28 = [(PedestrianARSessionArrivalStepAvailabilityMonitor *)self navigationService];
-  v10 = [v28 navigationTransportType];
-  if (v10 >= 7)
+  navigationService3 = [(PedestrianARSessionArrivalStepAvailabilityMonitor *)self navigationService];
+  navigationTransportType = [navigationService3 navigationTransportType];
+  if (navigationTransportType >= 7)
   {
-    v11 = [NSString stringWithFormat:@"(unknown: %i)", v10];
+    v11 = [NSString stringWithFormat:@"(unknown: %i)", navigationTransportType];
   }
 
   else
   {
-    v11 = *(&off_101632840 + v10);
+    v11 = *(&off_101632840 + navigationTransportType);
   }
 
-  v26 = [(PedestrianARSessionArrivalStepAvailabilityMonitor *)self navigationService];
-  v23 = [v26 stepIndex];
-  v25 = [(PedestrianARSessionArrivalStepAvailabilityMonitor *)self navigationService];
-  v24 = [v25 route];
-  v12 = [v24 stepsCount];
-  v13 = [(PedestrianARSessionArrivalStepAvailabilityMonitor *)self navigationService];
-  v14 = [v13 route];
-  if ([v14 hasArrivalStorefrontGeometry])
+  navigationService4 = [(PedestrianARSessionArrivalStepAvailabilityMonitor *)self navigationService];
+  stepIndex = [navigationService4 stepIndex];
+  navigationService5 = [(PedestrianARSessionArrivalStepAvailabilityMonitor *)self navigationService];
+  route2 = [navigationService5 route];
+  stepsCount = [route2 stepsCount];
+  navigationService6 = [(PedestrianARSessionArrivalStepAvailabilityMonitor *)self navigationService];
+  route3 = [navigationService6 route];
+  if ([route3 hasArrivalStorefrontGeometry])
   {
     v15 = @"YES";
   }
@@ -857,31 +857,31 @@ LABEL_16:
     v21 = @"NO";
   }
 
-  v34 = [NSString stringWithFormat:@"%@\ncoarse arrival distance threshold: %f\nlast location: %@\nin route planning: %@\nhas route planning route: %@\nroute planning transport type: %@\nhas nav route: %@\nnav state: %@\nnav transport type: %@\nstep index: %lu\ntotal steps: %lu\narrival has storefront geometry: %@\ninject fake storefront arrival data debug flag: %@\nforce show arrival on last step debug flag: %@\n", v44, v4, v43, v39, v42, v29, v27, v30, v11, v23, v12, v16, v19, v21];
+  v34 = [NSString stringWithFormat:@"%@\ncoarse arrival distance threshold: %f\nlast location: %@\nin route planning: %@\nhas route planning route: %@\nroute planning transport type: %@\nhas nav route: %@\nnav state: %@\nnav transport type: %@\nstep index: %lu\ntotal steps: %lu\narrival has storefront geometry: %@\ninject fake storefront arrival data debug flag: %@\nforce show arrival on last step debug flag: %@\n", friendlyName, v4, lastLocation, v39, v42, v29, v27, v30, v11, stepIndex, stepsCount, v16, v19, v21];
 
   return v34;
 }
 
-- (void)setRoutePlanningSession:(id)a3
+- (void)setRoutePlanningSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   [(RoutePlanningSession *)self->_routePlanningSession unregisterObserver:self];
   routePlanningSession = self->_routePlanningSession;
-  self->_routePlanningSession = v4;
-  v6 = v4;
+  self->_routePlanningSession = sessionCopy;
+  v6 = sessionCopy;
 
   [(RoutePlanningSession *)self->_routePlanningSession registerObserver:self];
   v7 = self->_routePlanningSession;
-  v8 = [(PedestrianARSessionArrivalStepAvailabilityMonitor *)self locationManager];
-  v9 = v8;
+  locationManager = [(PedestrianARSessionArrivalStepAvailabilityMonitor *)self locationManager];
+  v9 = locationManager;
   if (v7)
   {
-    [v8 listenForLocationUpdates:self];
+    [locationManager listenForLocationUpdates:self];
   }
 
   else
   {
-    [v8 stopListeningForLocationUpdates:self];
+    [locationManager stopListeningForLocationUpdates:self];
   }
 }
 
@@ -891,7 +891,7 @@ LABEL_16:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134349056;
-    v11 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEBUG, "[%{public}p] Deallocating", buf, 0xCu);
   }
 
@@ -915,13 +915,13 @@ LABEL_16:
   [(PedestrianARSessionMonitor *)&v9 dealloc];
 }
 
-- (PedestrianARSessionArrivalStepAvailabilityMonitor)initWithObserver:(id)a3 platformController:(id)a4 navigationService:(id)a5 locationManager:(id)a6
+- (PedestrianARSessionArrivalStepAvailabilityMonitor)initWithObserver:(id)observer platformController:(id)controller navigationService:(id)service locationManager:(id)manager
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!v11)
+  observerCopy = observer;
+  controllerCopy = controller;
+  serviceCopy = service;
+  managerCopy = manager;
+  if (!controllerCopy)
   {
     v25 = sub_10006D178();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -950,7 +950,7 @@ LABEL_16:
     }
   }
 
-  if (!v12)
+  if (!serviceCopy)
   {
     v28 = sub_10006D178();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
@@ -979,7 +979,7 @@ LABEL_16:
     }
   }
 
-  if (!v13)
+  if (!managerCopy)
   {
     v31 = sub_10006D178();
     if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
@@ -1010,7 +1010,7 @@ LABEL_16:
 
   v34.receiver = self;
   v34.super_class = PedestrianARSessionArrivalStepAvailabilityMonitor;
-  v14 = [(PedestrianARSessionMonitor *)&v34 initWithObserver:v10];
+  v14 = [(PedestrianARSessionMonitor *)&v34 initWithObserver:observerCopy];
   if (v14)
   {
     v15 = sub_100073758();
@@ -1027,20 +1027,20 @@ LABEL_16:
     v17 = +[NSUserDefaults standardUserDefaults];
     [v17 addObserver:v14 forKeyPath:@"PedestrianARForceShowArrivalOnLastStepKey" options:1 context:0];
 
-    v18 = objc_storeWeak(&v14->_platformController, v11);
-    [v11 registerObserver:v14];
+    v18 = objc_storeWeak(&v14->_platformController, controllerCopy);
+    [controllerCopy registerObserver:v14];
 
-    objc_storeWeak(&v14->_locationManager, v13);
-    v19 = objc_storeWeak(&v14->_navigationService, v12);
-    [v12 registerObserver:v14];
+    objc_storeWeak(&v14->_locationManager, managerCopy);
+    v19 = objc_storeWeak(&v14->_navigationService, serviceCopy);
+    [serviceCopy registerObserver:v14];
 
     WeakRetained = objc_loadWeakRetained(&v14->_platformController);
-    v21 = [WeakRetained currentSession];
+    currentSession = [WeakRetained currentSession];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v22 = v21;
+      v22 = currentSession;
     }
 
     else

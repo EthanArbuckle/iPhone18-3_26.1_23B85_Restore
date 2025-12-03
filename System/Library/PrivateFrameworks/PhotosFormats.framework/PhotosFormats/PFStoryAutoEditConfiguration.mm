@@ -1,24 +1,24 @@
 @interface PFStoryAutoEditConfiguration
 + (id)standardConfiguration;
-- ($BFB0C6F6478568252C8128E2BF722AD2)_overallDurationInfoForDurationKind:(SEL)a3;
-- ($BFB0C6F6478568252C8128E2BF722AD2)durationInfoForPlaybackStyle:(SEL)a3 songPace:(int64_t)a4;
+- ($BFB0C6F6478568252C8128E2BF722AD2)_overallDurationInfoForDurationKind:(SEL)kind;
+- ($BFB0C6F6478568252C8128E2BF722AD2)durationInfoForPlaybackStyle:(SEL)style songPace:(int64_t)pace;
 - ($BFB0C6F6478568252C8128E2BF722AD2)maximumDurations;
 - ($BFB0C6F6478568252C8128E2BF722AD2)minimumDurations;
 - (PFStoryAutoEditConfiguration)init;
-- (PFStoryAutoEditConfiguration)initWithConfigurationData:(id)a3;
-- (PFStoryAutoEditConfiguration)initWithConfigurationDictionary:(id)a3;
-- (PFStoryAutoEditConfiguration)initWithConfigurationFileAtURL:(id)a3;
-- (double)durationForTransitionKind:(int64_t)a3 songPace:(int64_t)a4;
-- (double)outroDurationForSongPace:(int64_t)a3;
-- (id)_arrayFromTable:(id)a3 count:(unint64_t)a4 nameToValueMap:(id)a5;
-- (id)_loadData:(id)a3;
-- (id)clusteringPropertiesForMemoryCategoryName:(id)a3;
-- (void)_loadClusteringPropertiesFromMemoryCategories:(id)a3;
+- (PFStoryAutoEditConfiguration)initWithConfigurationData:(id)data;
+- (PFStoryAutoEditConfiguration)initWithConfigurationDictionary:(id)dictionary;
+- (PFStoryAutoEditConfiguration)initWithConfigurationFileAtURL:(id)l;
+- (double)durationForTransitionKind:(int64_t)kind songPace:(int64_t)pace;
+- (double)outroDurationForSongPace:(int64_t)pace;
+- (id)_arrayFromTable:(id)table count:(unint64_t)count nameToValueMap:(id)map;
+- (id)_loadData:(id)data;
+- (id)clusteringPropertiesForMemoryCategoryName:(id)name;
+- (void)_loadClusteringPropertiesFromMemoryCategories:(id)categories;
 @end
 
 @implementation PFStoryAutoEditConfiguration
 
-- ($BFB0C6F6478568252C8128E2BF722AD2)_overallDurationInfoForDurationKind:(SEL)a3
+- ($BFB0C6F6478568252C8128E2BF722AD2)_overallDurationInfoForDurationKind:(SEL)kind
 {
   overallDurationTable = self->_overallDurationTable;
   v6 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
@@ -45,17 +45,17 @@
   return result;
 }
 
-- (id)clusteringPropertiesForMemoryCategoryName:(id)a3
+- (id)clusteringPropertiesForMemoryCategoryName:(id)name
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(NSDictionary *)self->_clusteringPropertiesByCategory objectForKeyedSubscript:v4];
+  nameCopy = name;
+  v5 = [(NSDictionary *)self->_clusteringPropertiesByCategory objectForKeyedSubscript:nameCopy];
   if (!v5)
   {
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
     {
       v8 = 138412290;
-      v9 = v4;
+      v9 = nameCopy;
       _os_log_impl(&dword_1B35C1000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "Falling back to default clustering for '%@'", &v8, 0xCu);
     }
 
@@ -263,26 +263,26 @@
   return result;
 }
 
-- (double)outroDurationForSongPace:(int64_t)a3
+- (double)outroDurationForSongPace:(int64_t)pace
 {
-  v3 = a3;
-  if (!a3)
+  paceCopy = pace;
+  if (!pace)
   {
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
     {
       *v11 = 0;
-      v3 = 2;
+      paceCopy = 2;
       _os_log_impl(&dword_1B35C1000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "Unknown song pace, falling back to medium", v11, 2u);
     }
 
     else
     {
-      v3 = 2;
+      paceCopy = 2;
     }
   }
 
   outroDurations = self->_outroDurations;
-  v6 = [MEMORY[0x1E696AD98] numberWithInteger:v3];
+  v6 = [MEMORY[0x1E696AD98] numberWithInteger:paceCopy];
   v7 = [(NSDictionary *)outroDurations objectForKeyedSubscript:v6];
 
   [v7 doubleValue];
@@ -291,15 +291,15 @@
   return v9;
 }
 
-- (double)durationForTransitionKind:(int64_t)a3 songPace:(int64_t)a4
+- (double)durationForTransitionKind:(int64_t)kind songPace:(int64_t)pace
 {
   transitionDurationsByKind = self->_transitionDurationsByKind;
-  v6 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v6 = [MEMORY[0x1E696AD98] numberWithInteger:kind];
   v7 = [(NSDictionary *)transitionDurationsByKind objectForKeyedSubscript:v6];
 
   if (v7)
   {
-    v8 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+    v8 = [MEMORY[0x1E696AD98] numberWithInteger:pace];
     v9 = [v7 objectForKeyedSubscript:v8];
 
     if (v9)
@@ -322,15 +322,15 @@
   return v11;
 }
 
-- ($BFB0C6F6478568252C8128E2BF722AD2)durationInfoForPlaybackStyle:(SEL)a3 songPace:(int64_t)a4
+- ($BFB0C6F6478568252C8128E2BF722AD2)durationInfoForPlaybackStyle:(SEL)style songPace:(int64_t)pace
 {
   v8 = 0;
-  if (a4 > 6)
+  if (pace > 6)
   {
     goto LABEL_7;
   }
 
-  if (((1 << a4) & 0x2C) != 0)
+  if (((1 << pace) & 0x2C) != 0)
   {
     v8 = 2;
 LABEL_7:
@@ -362,25 +362,25 @@ LABEL_7:
     return result;
   }
 
-  if (a4 == 4)
+  if (pace == 4)
   {
     v8 = 1;
     goto LABEL_7;
   }
 
-  if (((1 << a4) & 0x41) == 0)
+  if (((1 << pace) & 0x41) == 0)
   {
     goto LABEL_7;
   }
 
-  if ((a4 - 1) > 5)
+  if ((pace - 1) > 5)
   {
     v24 = @"unsupported";
   }
 
   else
   {
-    v24 = off_1E7B64A58[a4 - 1];
+    v24 = off_1E7B64A58[pace - 1];
   }
 
   v24;
@@ -389,10 +389,10 @@ LABEL_7:
   return result;
 }
 
-- (void)_loadClusteringPropertiesFromMemoryCategories:(id)a3
+- (void)_loadClusteringPropertiesFromMemoryCategories:(id)categories
 {
   v4 = MEMORY[0x1E695DF90];
-  v5 = a3;
+  categoriesCopy = categories;
   v6 = objc_alloc_init(v4);
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
@@ -400,7 +400,7 @@ LABEL_7:
   v10[3] = &unk_1E7B64528;
   v11 = v6;
   v7 = v6;
-  [v5 enumerateKeysAndObjectsUsingBlock:v10];
+  [categoriesCopy enumerateKeysAndObjectsUsingBlock:v10];
 
   v8 = [v7 copy];
   clusteringPropertiesByCategory = self->_clusteringPropertiesByCategory;
@@ -430,11 +430,11 @@ void __78__PFStoryAutoEditConfiguration__loadClusteringPropertiesFromMemoryCateg
   }
 }
 
-- (id)_arrayFromTable:(id)a3 count:(unint64_t)a4 nameToValueMap:(id)a5
+- (id)_arrayFromTable:(id)table count:(unint64_t)count nameToValueMap:(id)map
 {
-  v7 = a3;
-  v8 = a5;
-  for (i = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:a4]; a4; --a4)
+  tableCopy = table;
+  mapCopy = map;
+  for (i = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:count]; count; --count)
   {
     [i addObject:&unk_1F2AAADF8];
   }
@@ -443,11 +443,11 @@ void __78__PFStoryAutoEditConfiguration__loadClusteringPropertiesFromMemoryCateg
   v15 = 3221225472;
   v16 = __69__PFStoryAutoEditConfiguration__arrayFromTable_count_nameToValueMap___block_invoke;
   v17 = &unk_1E7B64500;
-  v18 = v7;
+  v18 = tableCopy;
   v19 = i;
   v10 = i;
-  v11 = v7;
-  [v8 enumerateKeysAndObjectsUsingBlock:&v14];
+  v11 = tableCopy;
+  [mapCopy enumerateKeysAndObjectsUsingBlock:&v14];
   v12 = [v10 copy];
 
   return v12;
@@ -466,16 +466,16 @@ void __69__PFStoryAutoEditConfiguration__arrayFromTable_count_nameToValueMap___b
   }
 }
 
-- (id)_loadData:(id)a3
+- (id)_loadData:(id)data
 {
   v190 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"version"];
-  v6 = [v5 intValue];
+  dataCopy = data;
+  v5 = [dataCopy objectForKeyedSubscript:@"version"];
+  intValue = [v5 intValue];
 
-  if (v6 > 4)
+  if (intValue > 4)
   {
-    v8 = [v4 objectForKeyedSubscript:@"colorGradeCategories"];
+    v8 = [dataCopy objectForKeyedSubscript:@"colorGradeCategories"];
     v9 = v8;
     v10 = MEMORY[0x1E695E0F8];
     if (v8)
@@ -490,7 +490,7 @@ void __69__PFStoryAutoEditConfiguration__arrayFromTable_count_nameToValueMap___b
 
     v148 = v11;
 
-    v12 = [v4 objectForKeyedSubscript:@"memoryCategories"];
+    v12 = [dataCopy objectForKeyedSubscript:@"memoryCategories"];
     v13 = v12;
     if (v12)
     {
@@ -573,10 +573,10 @@ void __69__PFStoryAutoEditConfiguration__arrayFromTable_count_nameToValueMap___b
       }
     }
 
-    v136 = v4;
+    v136 = dataCopy;
     v132 = [(PFStoryAutoEditConfiguration *)self _arrayFromTable:v26 count:9 nameToValueMap:_loadData__transitionsByName];
     v29 = [v16 objectForKeyedSubscript:@"interModuleTransitions"];
-    v146 = self;
+    selfCopy = self;
     if (!v29)
     {
       v30 = MEMORY[0x1E69E9C10];
@@ -626,7 +626,7 @@ void __69__PFStoryAutoEditConfiguration__arrayFromTable_count_nameToValueMap___b
         _os_log_impl(&dword_1B35C1000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "AutoEdit configuration is missing default triptych motion style table", buf, 2u);
       }
 
-      self = v146;
+      self = selfCopy;
     }
 
     v128 = [(PFStoryAutoEditConfiguration *)self _arrayFromTable:v38 count:4 nameToValueMap:_loadData__motionStylesByName];
@@ -668,7 +668,7 @@ void __69__PFStoryAutoEditConfiguration__arrayFromTable_count_nameToValueMap___b
             v171[3] = &unk_1E7B644B0;
             v160 = v43;
             v172 = v43;
-            v173 = v146;
+            v173 = selfCopy;
             v50 = v44;
             v174 = v50;
             v175 = v42;
@@ -750,39 +750,39 @@ void __69__PFStoryAutoEditConfiguration__arrayFromTable_count_nameToValueMap___b
     }
 
     v57 = [[PFStoryConcreteTransitionTable alloc] initWithTransitionsByColorGrade:v144 defaultFrequencies:v135];
-    v58 = v146;
-    defaultTransitionTable = v146->_defaultTransitionTable;
-    v146->_defaultTransitionTable = v57;
+    v58 = selfCopy;
+    defaultTransitionTable = selfCopy->_defaultTransitionTable;
+    selfCopy->_defaultTransitionTable = v57;
 
     v60 = [[PFStoryConcreteTransitionTable alloc] initWithTransitionsByColorGrade:v143 defaultFrequencies:v134];
-    interMomentTransitionTable = v146->_interMomentTransitionTable;
-    v146->_interMomentTransitionTable = v60;
+    interMomentTransitionTable = selfCopy->_interMomentTransitionTable;
+    selfCopy->_interMomentTransitionTable = v60;
 
     v62 = [[PFStoryConcreteTransitionTable alloc] initWithTransitionsByColorGrade:v142 defaultFrequencies:v133];
-    portraitTransitionTable = v146->_portraitTransitionTable;
-    v146->_portraitTransitionTable = v62;
+    portraitTransitionTable = selfCopy->_portraitTransitionTable;
+    selfCopy->_portraitTransitionTable = v62;
 
     v64 = [[PFStoryConcreteTransitionTable alloc] initWithTransitionsByColorGrade:v141 defaultFrequencies:v132];
-    nUpTransitionTable = v146->_nUpTransitionTable;
-    v146->_nUpTransitionTable = v64;
+    nUpTransitionTable = selfCopy->_nUpTransitionTable;
+    selfCopy->_nUpTransitionTable = v64;
 
     v66 = [[PFStoryConcreteTransitionTable alloc] initWithTransitionsByColorGrade:v140 defaultFrequencies:v131];
-    interModuleTransitionTable = v146->_interModuleTransitionTable;
-    v146->_interModuleTransitionTable = v66;
+    interModuleTransitionTable = selfCopy->_interModuleTransitionTable;
+    selfCopy->_interModuleTransitionTable = v66;
 
     v68 = [[PFStoryConcreteMotionStyleTable alloc] initWithMotionStylesByColorGrade:v139 defaultFrequencies:v130];
-    motionStyleTable = v146->_motionStyleTable;
-    v146->_motionStyleTable = v68;
+    motionStyleTable = selfCopy->_motionStyleTable;
+    selfCopy->_motionStyleTable = v68;
 
     v70 = [[PFStoryConcreteMotionStyleTable alloc] initWithMotionStylesByColorGrade:v138 defaultFrequencies:v129];
-    diptychMotionStyleTable = v146->_diptychMotionStyleTable;
-    v146->_diptychMotionStyleTable = v70;
+    diptychMotionStyleTable = selfCopy->_diptychMotionStyleTable;
+    selfCopy->_diptychMotionStyleTable = v70;
 
     v72 = [[PFStoryConcreteMotionStyleTable alloc] initWithMotionStylesByColorGrade:v137 defaultFrequencies:v128];
-    triptychMotionStyleTable = v146->_triptychMotionStyleTable;
-    v146->_triptychMotionStyleTable = v72;
+    triptychMotionStyleTable = selfCopy->_triptychMotionStyleTable;
+    selfCopy->_triptychMotionStyleTable = v72;
 
-    v4 = v136;
+    dataCopy = v136;
     v74 = [v136 objectForKeyedSubscript:@"durations"];
     v75 = _loadData__playbackStyleMap;
     v168[0] = MEMORY[0x1E69E9820];
@@ -791,7 +791,7 @@ void __69__PFStoryAutoEditConfiguration__arrayFromTable_count_nameToValueMap___b
     v168[3] = &unk_1E7B64500;
     v76 = v74;
     v169 = v76;
-    v170 = v146;
+    v170 = selfCopy;
     [v75 enumerateKeysAndObjectsUsingBlock:v168];
     v77 = [v76 objectForKeyedSubscript:@"multipliers"];
     objc_opt_class();
@@ -802,7 +802,7 @@ void __69__PFStoryAutoEditConfiguration__arrayFromTable_count_nameToValueMap___b
       if (objc_opt_isKindOfClass())
       {
         [v78 doubleValue];
-        v146->_diptychDurationMultiplier = v79;
+        selfCopy->_diptychDurationMultiplier = v79;
       }
 
       v80 = [v77 objectForKeyedSubscript:@"triptych"];
@@ -810,7 +810,7 @@ void __69__PFStoryAutoEditConfiguration__arrayFromTable_count_nameToValueMap___b
       if (objc_opt_isKindOfClass())
       {
         [v80 doubleValue];
-        v146->_triptychDurationMultiplier = v81;
+        selfCopy->_triptychDurationMultiplier = v81;
       }
 
       v82 = [v77 objectForKeyedSubscript:@"initial"];
@@ -818,7 +818,7 @@ void __69__PFStoryAutoEditConfiguration__arrayFromTable_count_nameToValueMap___b
       if (objc_opt_isKindOfClass())
       {
         [v82 doubleValue];
-        v146->_initialDurationMultiplier = v83;
+        selfCopy->_initialDurationMultiplier = v83;
       }
 
       v84 = [v77 objectForKeyedSubscript:@"chapterBegin"];
@@ -826,7 +826,7 @@ void __69__PFStoryAutoEditConfiguration__arrayFromTable_count_nameToValueMap___b
       if (objc_opt_isKindOfClass())
       {
         [v84 doubleValue];
-        v146->_chapterBeginDurationMultiplier = v85;
+        selfCopy->_chapterBeginDurationMultiplier = v85;
       }
 
       v86 = [v77 objectForKeyedSubscript:@"final"];
@@ -834,11 +834,11 @@ void __69__PFStoryAutoEditConfiguration__arrayFromTable_count_nameToValueMap___b
       if (objc_opt_isKindOfClass())
       {
         [v86 doubleValue];
-        v146->_finalDurationMultiplier = v87;
+        selfCopy->_finalDurationMultiplier = v87;
       }
 
-      v4 = v136;
-      v58 = v146;
+      dataCopy = v136;
+      v58 = selfCopy;
     }
 
     v88 = _loadData__overallDurationKindMap;
@@ -867,7 +867,7 @@ void __69__PFStoryAutoEditConfiguration__arrayFromTable_count_nameToValueMap___b
     transitionDurationsByKind = v58->_transitionDurationsByKind;
     v58->_transitionDurationsByKind = v95;
 
-    v97 = [v4 objectForKeyedSubscript:@"songPaceTargets"];
+    v97 = [dataCopy objectForKeyedSubscript:@"songPaceTargets"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -876,7 +876,7 @@ void __69__PFStoryAutoEditConfiguration__arrayFromTable_count_nameToValueMap___b
       if (objc_opt_isKindOfClass())
       {
         [v98 doubleValue];
-        v146->_slowVisualTempoTarget = v99;
+        selfCopy->_slowVisualTempoTarget = v99;
       }
 
       v100 = [v97 objectForKeyedSubscript:@"mediumVisualTempo"];
@@ -884,19 +884,19 @@ void __69__PFStoryAutoEditConfiguration__arrayFromTable_count_nameToValueMap___b
       if (objc_opt_isKindOfClass())
       {
         [v100 doubleValue];
-        v146->_mediumVisualTempoTarget = v101;
+        selfCopy->_mediumVisualTempoTarget = v101;
       }
 
       v102 = [v97 objectForKeyedSubscript:@"fastVisualTempo"];
       objc_opt_class();
-      v58 = v146;
+      v58 = selfCopy;
       if (objc_opt_isKindOfClass())
       {
         [v102 doubleValue];
-        v146->_fastVisualTempoTarget = v103;
+        selfCopy->_fastVisualTempoTarget = v103;
       }
 
-      v4 = v136;
+      dataCopy = v136;
     }
 
     v158 = v97;
@@ -930,7 +930,7 @@ void __69__PFStoryAutoEditConfiguration__arrayFromTable_count_nameToValueMap___b
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v146->_composabilityMaximumNUpRunCount = [v109 integerValue];
+        selfCopy->_composabilityMaximumNUpRunCount = [v109 integerValue];
       }
 
       v110 = [v104 objectForKeyedSubscript:@"threshold"];
@@ -938,11 +938,11 @@ void __69__PFStoryAutoEditConfiguration__arrayFromTable_count_nameToValueMap___b
       if (objc_opt_isKindOfClass())
       {
         [v110 doubleValue];
-        v146->_composabilityScoreThreshold = v111;
+        selfCopy->_composabilityScoreThreshold = v111;
       }
 
-      v4 = v136;
-      v58 = v146;
+      dataCopy = v136;
+      v58 = selfCopy;
     }
 
     v112 = [v89 objectForKeyedSubscript:@"outro"];
@@ -975,7 +975,7 @@ void __69__PFStoryAutoEditConfiguration__arrayFromTable_count_nameToValueMap___b
 
       else
       {
-        v118 = [(NSDictionary *)v146->_outroDurations objectForKeyedSubscript:&unk_1F2AAAE10];
+        v118 = [(NSDictionary *)selfCopy->_outroDurations objectForKeyedSubscript:&unk_1F2AAAE10];
         [v113 setObject:v118 forKeyedSubscript:&unk_1F2AAAE10];
       }
 
@@ -985,13 +985,13 @@ void __69__PFStoryAutoEditConfiguration__arrayFromTable_count_nameToValueMap___b
       if (objc_opt_isKindOfClass())
       {
         [v113 setObject:v120 forKeyedSubscript:&unk_1F2AAAE28];
-        v121 = v146;
+        v121 = selfCopy;
       }
 
       else
       {
-        v121 = v146;
-        v122 = [(NSDictionary *)v146->_outroDurations objectForKeyedSubscript:&unk_1F2AAAE28];
+        v121 = selfCopy;
+        v122 = [(NSDictionary *)selfCopy->_outroDurations objectForKeyedSubscript:&unk_1F2AAAE28];
         [v113 setObject:v122 forKeyedSubscript:&unk_1F2AAAE28];
       }
 
@@ -1000,7 +1000,7 @@ void __69__PFStoryAutoEditConfiguration__arrayFromTable_count_nameToValueMap___b
       outroDurations = v121->_outroDurations;
       v121->_outroDurations = v123;
 
-      v4 = v136;
+      dataCopy = v136;
       v58 = v121;
       v89 = v119;
       v77 = v154;
@@ -1017,7 +1017,7 @@ void __69__PFStoryAutoEditConfiguration__arrayFromTable_count_nameToValueMap___b
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
     {
       *buf = 67109376;
-      *v189 = v6;
+      *v189 = intValue;
       *&v189[4] = 1024;
       *&v189[6] = 5;
       _os_log_impl(&dword_1B35C1000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "Configuration data version (%d) is below the minimum version (%d)", buf, 0xEu);
@@ -1379,28 +1379,28 @@ void __42__PFStoryAutoEditConfiguration__loadData___block_invoke()
   _loadData__overallDurationKindMap = &unk_1F2AABC58;
 }
 
-- (PFStoryAutoEditConfiguration)initWithConfigurationDictionary:(id)a3
+- (PFStoryAutoEditConfiguration)initWithConfigurationDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = [(PFStoryAutoEditConfiguration *)self init];
-  v6 = [(PFStoryAutoEditConfiguration *)v5 _loadData:v4];
+  v6 = [(PFStoryAutoEditConfiguration *)v5 _loadData:dictionaryCopy];
 
   return v6;
 }
 
-- (PFStoryAutoEditConfiguration)initWithConfigurationData:(id)a3
+- (PFStoryAutoEditConfiguration)initWithConfigurationData:(id)data
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  dataCopy = data;
+  if (dataCopy)
   {
     v9 = 0;
-    v5 = [MEMORY[0x1E696AE40] propertyListWithData:v4 options:0 format:0 error:&v9];
+    v5 = [MEMORY[0x1E696AE40] propertyListWithData:dataCopy options:0 format:0 error:&v9];
     v6 = v9;
     if (v5)
     {
       self = [(PFStoryAutoEditConfiguration *)self initWithConfigurationDictionary:v5];
-      v7 = self;
+      selfCopy = self;
     }
 
     else
@@ -1412,7 +1412,7 @@ void __42__PFStoryAutoEditConfiguration__loadData___block_invoke()
         _os_log_impl(&dword_1B35C1000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "PFStoryAutoEditConfiguration failed to load property list from data: %@", buf, 0xCu);
       }
 
-      v7 = 0;
+      selfCopy = 0;
     }
   }
 
@@ -1424,21 +1424,21 @@ void __42__PFStoryAutoEditConfiguration__loadData___block_invoke()
       _os_log_impl(&dword_1B35C1000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "PFStoryAutoEditConfiguration cannot load nil data.", buf, 2u);
     }
 
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (PFStoryAutoEditConfiguration)initWithConfigurationFileAtURL:(id)a3
+- (PFStoryAutoEditConfiguration)initWithConfigurationFileAtURL:(id)l
 {
-  v5 = a3;
-  v6 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:v5];
+  lCopy = l;
+  v6 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:lCopy];
   v7 = [(PFStoryAutoEditConfiguration *)self initWithConfigurationData:v6];
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_url, a3);
+    objc_storeStrong(&v7->_url, l);
   }
 
   return v8;

@@ -1,11 +1,11 @@
 @interface NESMDNSSettingsSession
-- (BOOL)handleUpdateConfiguration:(id)a3;
-- (NESMDNSSettingsSession)initWithConfiguration:(id)a3 andServer:(id)a4;
+- (BOOL)handleUpdateConfiguration:(id)configuration;
+- (NESMDNSSettingsSession)initWithConfiguration:(id)configuration andServer:(id)server;
 - (void)dealloc;
-- (void)handleNetworkDetectionNotification:(int)a3;
-- (void)handleStartMessage:(id)a3;
+- (void)handleNetworkDetectionNotification:(int)notification;
+- (void)handleStartMessage:(id)message;
 - (void)install;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)uninstall;
 @end
 
@@ -33,18 +33,18 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     v9 = 138412290;
-    v10 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "%@ uninstalling DNS settings session", &v9, 0xCu);
   }
 
-  v4 = [(NESMSession *)self policySession];
-  sub_100030D44(v4);
+  policySession = [(NESMSession *)self policySession];
+  sub_100030D44(policySession);
 
-  v5 = [(NESMSession *)self configuration];
-  v6 = [v5 dnsSettings];
-  v7 = [v6 isEnabled];
+  configuration = [(NESMSession *)self configuration];
+  dnsSettings = [configuration dnsSettings];
+  isEnabled = [dnsSettings isEnabled];
 
-  if ((v7 & 1) == 0)
+  if ((isEnabled & 1) == 0)
   {
     sub_100090974(self, v8);
   }
@@ -58,7 +58,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     v6 = 138412290;
-    v7 = self;
+    selfCopy2 = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "%@ installing DNS settings session", &v6, 0xCu);
   }
 
@@ -74,60 +74,60 @@
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
       v6 = 138412290;
-      v7 = self;
+      selfCopy2 = self;
       _os_log_error_impl(&_mh_execute_header, v5, OS_LOG_TYPE_ERROR, "%@ settings is not, not moving to connected", &v6, 0xCu);
     }
   }
 }
 
-- (void)handleNetworkDetectionNotification:(int)a3
+- (void)handleNetworkDetectionNotification:(int)notification
 {
-  if (a3 == 1)
+  if (notification == 1)
   {
     block[7] = v3;
     block[8] = v4;
-    v6 = [(NESMSession *)self queue];
+    queue = [(NESMSession *)self queue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100091124;
     block[3] = &unk_1000EB1C0;
     block[4] = self;
-    dispatch_async(v6, block);
+    dispatch_async(queue, block);
   }
 }
 
-- (BOOL)handleUpdateConfiguration:(id)a3
+- (BOOL)handleUpdateConfiguration:(id)configuration
 {
-  v4 = a3;
-  if (v4 && (v15.receiver = self, v15.super_class = NESMDNSSettingsSession, [(NESMSession *)&v15 handleUpdateConfiguration:v4]))
+  configurationCopy = configuration;
+  if (configurationCopy && (v15.receiver = self, v15.super_class = NESMDNSSettingsSession, [(NESMSession *)&v15 handleUpdateConfiguration:configurationCopy]))
   {
     if (self)
     {
       self->_configurationUpdatePending = 1;
     }
 
-    v5 = [v4 dnsSettings];
-    v7 = [v5 settings];
+    dnsSettings = [configurationCopy dnsSettings];
+    settings = [dnsSettings settings];
     if (self)
     {
-      objc_setProperty_atomic(self, v6, v7, 360);
+      objc_setProperty_atomic(self, v6, settings, 360);
     }
 
-    v8 = [v4 dnsSettings];
-    v9 = [v8 onDemandRules];
-    v11 = v9;
+    dnsSettings2 = [configurationCopy dnsSettings];
+    onDemandRules = [dnsSettings2 onDemandRules];
+    v11 = onDemandRules;
     if (self)
     {
-      objc_setProperty_atomic(self, v10, v9, 368);
+      objc_setProperty_atomic(self, v10, onDemandRules, 368);
 
-      sub_10009134C(self, v4);
+      sub_10009134C(self, configurationCopy);
       sub_100091B50(self, v12);
     }
 
     else
     {
 
-      sub_10009134C(0, v4);
+      sub_10009134C(0, configurationCopy);
     }
 
     v13 = 1;
@@ -141,29 +141,29 @@
   return v13;
 }
 
-- (void)handleStartMessage:(id)a3
+- (void)handleStartMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v5 = ne_log_obj();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v9 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%@ handling start for DNS settings session", buf, 0xCu);
   }
 
   v7.receiver = self;
   v7.super_class = NESMDNSSettingsSession;
-  [(NESMSession *)&v7 handleStartMessage:v4];
+  [(NESMSession *)&v7 handleStartMessage:messageCopy];
 
   sub_100091B50(self, v6);
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v9 = a3;
-  v10 = a4;
-  v12 = a5;
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
   if (self)
   {
     Property = objc_getProperty(self, v11, 384, 1);
@@ -174,7 +174,7 @@
     Property = 0;
   }
 
-  if (Property == v10 && [v9 isEqualToString:@"bestAvailableNetworkDescription"])
+  if (Property == objectCopy && [pathCopy isEqualToString:@"bestAvailableNetworkDescription"])
   {
     v15 = objc_alloc_init(NEOnDemandRuleConnect);
     if (self)
@@ -187,8 +187,8 @@
       v16 = 0;
     }
 
-    v18 = [v16 bestAvailableNetworkDescription];
-    if (v18)
+    bestAvailableNetworkDescription = [v16 bestAvailableNetworkDescription];
+    if (bestAvailableNetworkDescription)
     {
       if (self)
       {
@@ -200,8 +200,8 @@
         v19 = 0;
       }
 
-      v20 = [v19 networkDescriptionArray];
-      v21 = [v20 indexOfObject:v18];
+      networkDescriptionArray = [v19 networkDescriptionArray];
+      v21 = [networkDescriptionArray indexOfObject:bestAvailableNetworkDescription];
 
       if (self)
       {
@@ -237,15 +237,15 @@ LABEL_21:
 
         if ([v15 action] == 3)
         {
-          v49 = v18;
+          v49 = bestAvailableNetworkDescription;
           v32 = objc_alloc_init(NSMutableArray);
           v50 = v15;
-          v33 = [v15 connectionRules];
+          connectionRules = [v15 connectionRules];
           v51 = 0u;
           v52 = 0u;
           v53 = 0u;
           v54 = 0u;
-          v34 = [v33 countByEnumeratingWithState:&v51 objects:v55 count:16];
+          v34 = [connectionRules countByEnumeratingWithState:&v51 objects:v55 count:16];
           if (v34)
           {
             v36 = v34;
@@ -256,18 +256,18 @@ LABEL_21:
               {
                 if (*v52 != v37)
                 {
-                  objc_enumerationMutation(v33);
+                  objc_enumerationMutation(connectionRules);
                 }
 
                 v39 = *(*(&v51 + 1) + 8 * i);
                 if ([v39 action] == 2)
                 {
-                  v40 = [v39 matchDomains];
-                  [v32 addObjectsFromArray:v40];
+                  matchDomains = [v39 matchDomains];
+                  [v32 addObjectsFromArray:matchDomains];
                 }
               }
 
-              v36 = [v33 countByEnumeratingWithState:&v51 objects:v55 count:16];
+              v36 = [connectionRules countByEnumeratingWithState:&v51 objects:v55 count:16];
             }
 
             while (v36);
@@ -283,7 +283,7 @@ LABEL_21:
             v41 = 0;
           }
 
-          v18 = v49;
+          bestAvailableNetworkDescription = v49;
           v42 = [v32 isEqual:{v41, v49}];
           v44 = v42 ^ 1;
           if (self)
@@ -315,8 +315,8 @@ LABEL_21:
 
         if (-[NESMSession status](self, "status") != 1 && ([v15 action] == 2 || objc_msgSend(v15, "action") == 4))
         {
-          v48 = [(NESMSession *)self server];
-          [v48 requestUninstallForSession:self];
+          server = [(NESMSession *)self server];
+          [server requestUninstallForSession:self];
         }
 
         else
@@ -325,7 +325,7 @@ LABEL_21:
           {
             if ((([(NESMSession *)self status]== 3) & v44) == 1)
             {
-              v46 = self;
+              selfCopy2 = self;
               v47 = 0;
             }
 
@@ -337,25 +337,25 @@ LABEL_21:
               }
 
               self->_configurationUpdatePending = 0;
-              v46 = self;
+              selfCopy2 = self;
               v47 = 1;
             }
 
-            sub_100090CC8(v46, v47);
+            sub_100090CC8(selfCopy2, v47);
 LABEL_55:
 
             goto LABEL_56;
           }
 
-          v48 = [(NESMSession *)self server];
-          [v48 requestInstallForSession:self withParentSession:0 exclusive:0];
+          server = [(NESMSession *)self server];
+          [server requestInstallForSession:self withParentSession:0 exclusive:0];
         }
 
         goto LABEL_55;
       }
 
       *buf = 138412546;
-      v57 = self;
+      selfCopy4 = self;
       v58 = 2112;
       v59 = v15;
       v28 = "%@ Matched DNS On Demand rule %@";
@@ -372,7 +372,7 @@ LABEL_55:
       }
 
       *buf = 138412290;
-      v57 = self;
+      selfCopy4 = self;
       v28 = "%@ Matched no DNS On Demand rule";
       v29 = v27;
       v30 = 12;
@@ -385,12 +385,12 @@ LABEL_55:
 LABEL_56:
 }
 
-- (NESMDNSSettingsSession)initWithConfiguration:(id)a3 andServer:(id)a4
+- (NESMDNSSettingsSession)initWithConfiguration:(id)configuration andServer:(id)server
 {
-  v6 = a3;
+  configurationCopy = configuration;
   v23.receiver = self;
   v23.super_class = NESMDNSSettingsSession;
-  v7 = [(NESMSession *)&v23 initWithConfiguration:v6 andServer:a4];
+  v7 = [(NESMSession *)&v23 initWithConfiguration:configurationCopy andServer:server];
   if (!v7)
   {
 LABEL_6:
@@ -406,29 +406,29 @@ LABEL_6:
     goto LABEL_12;
   }
 
-  v8 = [v6 dnsSettings];
-  v9 = [v8 settings];
+  dnsSettings = [configurationCopy dnsSettings];
+  settings = [dnsSettings settings];
 
-  if (v9)
+  if (settings)
   {
-    v10 = [v6 dnsSettings];
-    v11 = [v10 settings];
+    dnsSettings2 = [configurationCopy dnsSettings];
+    settings2 = [dnsSettings2 settings];
     settings = v7->_settings;
-    v7->_settings = v11;
+    v7->_settings = settings2;
 
-    v13 = [v6 dnsSettings];
-    v14 = [v13 onDemandRules];
+    dnsSettings3 = [configurationCopy dnsSettings];
+    onDemandRules = [dnsSettings3 onDemandRules];
     onDemandRules = v7->_onDemandRules;
-    v7->_onDemandRules = v14;
+    v7->_onDemandRules = onDemandRules;
 
     v7->_MCNotifyToken = -1;
-    sub_10009134C(v7, v6);
+    sub_10009134C(v7, configurationCopy);
     v16 = [NESMPolicySession alloc];
-    v17 = [v6 identifier];
-    v18 = [v6 grade];
+    identifier = [configurationCopy identifier];
+    grade = [configurationCopy grade];
     if (v16)
     {
-      v16 = sub_100033D18(&v16->super.isa, v17, 7, v18, 1, 1);
+      v16 = sub_100033D18(&v16->super.isa, identifier, 7, grade, 1, 1);
     }
 
     [(NESMSession *)v7 setPolicySession:v16];

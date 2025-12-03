@@ -1,33 +1,33 @@
 @interface SPRecommendationDatastoreToken
-- (SPRecommendationDatastoreToken)initWithStore:(id)a3;
-- (id)buildSearchResultWithRecommendations:(id)a3 query:(id)a4;
-- (void)begin:(id)a3;
+- (SPRecommendationDatastoreToken)initWithStore:(id)store;
+- (id)buildSearchResultWithRecommendations:(id)recommendations query:(id)query;
+- (void)begin:(id)begin;
 @end
 
 @implementation SPRecommendationDatastoreToken
 
-- (SPRecommendationDatastoreToken)initWithStore:(id)a3
+- (SPRecommendationDatastoreToken)initWithStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v9.receiver = self;
   v9.super_class = SPRecommendationDatastoreToken;
   v6 = [(SPRecommendationDatastoreToken *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_store, a3);
+    objc_storeStrong(&v6->_store, store);
     v7->_type = 9;
   }
 
   return v7;
 }
 
-- (void)begin:(id)a3
+- (void)begin:(id)begin
 {
-  v4 = a3;
-  v5 = [v4 queryContext];
-  v6 = [v5 getTrimmedSearchString];
-  v7 = [v6 mutableCopy];
+  beginCopy = begin;
+  queryContext = [beginCopy queryContext];
+  getTrimmedSearchString = [queryContext getTrimmedSearchString];
+  v7 = [getTrimmedSearchString mutableCopy];
 
   v8 = +[NSLocale currentLocale];
   v9 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
@@ -39,10 +39,10 @@
   if (![v11 isMusicRecEligible:v7])
   {
     v26 = SPLogForSPLogCategoryTelemetry();
-    v27 = [v4 externalID];
-    if (v27)
+    externalID = [beginCopy externalID];
+    if (externalID)
     {
-      v28 = v27;
+      v28 = externalID;
       if (os_signpost_enabled(v26))
       {
         *buf = 0;
@@ -51,7 +51,7 @@
     }
 
     v29 = +[SDController workQueue];
-    v39 = v4;
+    v39 = beginCopy;
     md_tracing_dispatch_async_propagating();
 
     v17 = v39;
@@ -60,7 +60,7 @@
 
   v12 = SSDefaultsGetResources();
   v13 = [[NSUUID alloc] initWithUUIDString:@"6ee794d6-a63f-11ed-afa1-0242ac120002"];
-  [v12 logForTrigger:v13 queryID:{objc_msgSend(v5, "queryIdent")}];
+  [v12 logForTrigger:v13 queryID:{objc_msgSend(queryContext, "queryIdent")}];
 
   LODWORD(v12) = SSShowMusicRec();
   v14 = logForCSLogCategoryRecs();
@@ -74,10 +74,10 @@
     }
 
     v30 = SPLogForSPLogCategoryTelemetry();
-    v31 = [v4 externalID];
-    if (v31)
+    externalID2 = [beginCopy externalID];
+    if (externalID2)
     {
-      v32 = v31;
+      v32 = externalID2;
       if (os_signpost_enabled(v30))
       {
         *buf = 0;
@@ -86,7 +86,7 @@
     }
 
     v33 = +[SDController workQueue];
-    v40 = v4;
+    v40 = beginCopy;
     md_tracing_dispatch_async_propagating();
 
     v17 = v40;
@@ -119,7 +119,7 @@
   v17 = v16;
   v46 = v17;
   [v11 setCompletionHandler:v45];
-  [v11 retrieveMusicWithQuery:v7 queryID:{objc_msgSend(v4, "queryIdent")}];
+  [v11 retrieveMusicWithQuery:v7 queryID:{objc_msgSend(beginCopy, "queryIdent")}];
   v18 = logForCSLogCategoryRecs();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
   {
@@ -135,14 +135,14 @@
   }
 
   v20 = SPLogForSPLogCategoryTelemetry();
-  v21 = [v4 externalID];
-  if (v21 && os_signpost_enabled(v20))
+  externalID3 = [beginCopy externalID];
+  if (externalID3 && os_signpost_enabled(v20))
   {
     LOWORD(v44[0]) = 0;
-    _os_signpost_emit_with_name_impl(&_mh_execute_header, v20, OS_SIGNPOST_INTERVAL_END, v21, "recommendationSpotlightLatency", " enableTelemetry=YES ", v44, 2u);
+    _os_signpost_emit_with_name_impl(&_mh_execute_header, v20, OS_SIGNPOST_INTERVAL_END, externalID3, "recommendationSpotlightLatency", " enableTelemetry=YES ", v44, 2u);
   }
 
-  objc_initWeak(v44, v4);
+  objc_initWeak(v44, beginCopy);
   v22 = *(v49 + 5);
   if (!v22 || ![v22 count])
   {
@@ -164,7 +164,7 @@ LABEL_29:
     goto LABEL_30;
   }
 
-  v37 = [(SPRecommendationDatastoreToken *)self buildSearchResultWithRecommendations:*(v49 + 5) query:v4];
+  v37 = [(SPRecommendationDatastoreToken *)self buildSearchResultWithRecommendations:*(v49 + 5) query:beginCopy];
   v23 = objc_opt_new();
   [v23 setPinToTop:1];
   v24 = v23;
@@ -199,23 +199,23 @@ LABEL_29:
 LABEL_30:
 }
 
-- (id)buildSearchResultWithRecommendations:(id)a3 query:(id)a4
+- (id)buildSearchResultWithRecommendations:(id)recommendations query:(id)query
 {
-  v5 = a3;
-  v55 = a4;
+  recommendationsCopy = recommendations;
+  queryCopy = query;
   v53 = [NSMutableArray arrayWithCapacity:3];
   v54 = +[NSMutableString string];
   v6 = 0;
   v52 = PRSRankingRecommendationSongBundleString;
-  v56 = v5;
+  v56 = recommendationsCopy;
   do
   {
-    if (v6 >= [v5 count])
+    if (v6 >= [recommendationsCopy count])
     {
       break;
     }
 
-    v7 = [v5 objectAtIndexedSubscript:v6];
+    v7 = [recommendationsCopy objectAtIndexedSubscript:v6];
     v58 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%ld", [v7 trackId]);
     [v54 appendString:?];
     [v54 appendString:@" "];
@@ -223,16 +223,16 @@ LABEL_30:
     v9 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"media:%ld", [v7 trackId]);
     [v8 setIdentifier:v9];
 
-    v10 = [v7 trackName];
-    v11 = [SFText textWithString:v10];
+    trackName = [v7 trackName];
+    v11 = [SFText textWithString:trackName];
     [v8 setTitle:v11];
 
     v12 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"https://music.apple.com/us/album/close-friends/%ld?i=%ld", [v7 collectionId], objc_msgSend(v7, "trackId"));
     [v8 setCompletion:v12];
 
     v13 = [NSURL alloc];
-    v14 = [v8 completion];
-    v15 = [v13 initWithString:v14];
+    completion = [v8 completion];
+    v15 = [v13 initWithString:completion];
     [v8 setUrl:v15];
 
     [v8 setStoreIdentifier:@"278911476"];
@@ -243,7 +243,7 @@ LABEL_30:
     [v8 setResultType:@"media"];
     [v8 setResultTemplate:@"generic"];
     [v8 setType:1];
-    [v8 setQueryId:{objc_msgSend(v55, "queryIdent")}];
+    [v8 setQueryId:{objc_msgSend(queryCopy, "queryIdent")}];
     v16 = objc_alloc_init(SFCard);
     v17 = objc_alloc_init(SFDetailedRowCardSection);
     v63 = v17;
@@ -257,43 +257,43 @@ LABEL_30:
     v20 = objc_alloc_init(SFPunchout);
     [v19 setPunchout:v20];
 
-    v21 = [v19 punchout];
-    [v21 setBundleIdentifier:@"com.apple.Music"];
+    punchout = [v19 punchout];
+    [punchout setBundleIdentifier:@"com.apple.Music"];
 
     v22 = [v8 url];
     v62 = v22;
     v23 = [NSArray arrayWithObjects:&v62 count:1];
-    v24 = [v19 punchout];
-    [v24 setUrls:v23];
+    punchout2 = [v19 punchout];
+    [punchout2 setUrls:v23];
 
     [v17 setType:@"detailed_row"];
     v25 = [SFURLImage alloc];
     v26 = [NSURL alloc];
-    v27 = [v7 artworkURL];
-    v28 = [v26 initWithString:v27];
+    artworkURL = [v7 artworkURL];
+    v28 = [v26 initWithString:artworkURL];
     v29 = [v25 initWithURL:v28];
     [v17 setThumbnail:v29];
 
     v30 = objc_alloc_init(SFRichText);
     [v17 setTitle:v30];
 
-    v31 = [v17 title];
-    [v31 setStarRating:0.0];
+    title = [v17 title];
+    [title setStarRating:0.0];
 
-    v32 = [v17 title];
-    [v32 setMaxLines:2];
+    title2 = [v17 title];
+    [title2 setMaxLines:2];
 
-    v33 = [v17 title];
-    v34 = [v7 trackName];
-    [v33 setText:v34];
+    title3 = [v17 title];
+    trackName2 = [v7 trackName];
+    [title3 setText:trackName2];
 
     v35 = objc_alloc_init(SFRichText);
-    v36 = [v7 artistName];
-    [v35 setText:v36];
+    artistName = [v7 artistName];
+    [v35 setText:artistName];
 
     v37 = objc_alloc_init(SFRichText);
-    v38 = [v7 collectionName];
-    [v37 setText:v38];
+    collectionName = [v7 collectionName];
+    [v37 setText:collectionName];
 
     v39 = objc_alloc_init(SFRichText);
     [v39 setMaxLines:0];
@@ -302,12 +302,12 @@ LABEL_30:
       [v39 setContentAdvisory:@"Explicit"];
     }
 
-    v40 = [v7 trackTimeMillis];
-    v5 = v56;
-    if (v40 >= 1000)
+    trackTimeMillis = [v7 trackTimeMillis];
+    recommendationsCopy = v56;
+    if (trackTimeMillis >= 1000)
     {
-      v41 = v40 / 1000;
-      if ((v40 / 1000) >> 7 <= 0x2A2)
+      v41 = trackTimeMillis / 1000;
+      if ((trackTimeMillis / 1000) >> 7 <= 0x2A2)
       {
         if (v41 >= 0xE10)
         {
@@ -322,13 +322,13 @@ LABEL_30:
         v43 = objc_alloc_init(SFRichText);
         [v17 setFootnote:v43];
 
-        v44 = [v17 footnote];
-        [v44 setText:v42];
+        footnote = [v17 footnote];
+        [footnote setText:v42];
 
-        v45 = [v17 footnote];
-        [v45 setMaxLines:1];
+        footnote2 = [v17 footnote];
+        [footnote2 setMaxLines:1];
 
-        v5 = v56;
+        recommendationsCopy = v56;
       }
     }
 
@@ -346,10 +346,10 @@ LABEL_30:
 
   while (v6 != 3);
   v47 = os_log_create("com.apple.corespotlight", "recs");
-  v48 = [v55 queryIdent];
-  if ((v48 - 1) < 0xFFFFFFFFFFFFFFFELL)
+  queryIdent = [queryCopy queryIdent];
+  if ((queryIdent - 1) < 0xFFFFFFFFFFFFFFFELL)
   {
-    v49 = v48;
+    v49 = queryIdent;
     if (os_signpost_enabled(v47))
     {
       *buf = 138412290;

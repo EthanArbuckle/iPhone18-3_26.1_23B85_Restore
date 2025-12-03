@@ -1,20 +1,20 @@
 @interface SDBLEPowerSourceContainer
-- (BOOL)isEqual:(id)a3;
-- (SDBLEPowerSourceContainer)initWithPowerSource:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (SDBLEPowerSourceContainer)initWithPowerSource:(id)source;
 - (id)description;
 - (int)publish;
 - (void)_invalidate;
 - (void)dealloc;
 - (void)invalidate;
-- (void)setInvalidationHandler:(id)a3;
+- (void)setInvalidationHandler:(id)handler;
 - (void)trigger;
 @end
 
 @implementation SDBLEPowerSourceContainer
 
-- (SDBLEPowerSourceContainer)initWithPowerSource:(id)a3
+- (SDBLEPowerSourceContainer)initWithPowerSource:(id)source
 {
-  v5 = a3;
+  sourceCopy = source;
   v22.receiver = self;
   v22.super_class = SDBLEPowerSourceContainer;
   v6 = [(SDBLEPowerSourceContainer *)&v22 init];
@@ -36,7 +36,7 @@
       free(v20);
     }
 
-    objc_storeStrong(&v7->_powerSource, a3);
+    objc_storeStrong(&v7->_powerSource, source);
     v8 = objc_opt_new();
     powerSourceIdleCoalescer = v7->_powerSourceIdleCoalescer;
     v7->_powerSourceIdleCoalescer = v8;
@@ -117,16 +117,16 @@ LABEL_5:
   [(SDBLEPowerSourceContainer *)&v9 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(SDBLEPowerSourceContainer *)self powerSource];
-    v6 = [v4 powerSource];
-    v7 = v5;
-    v8 = v6;
+    powerSource = [(SDBLEPowerSourceContainer *)self powerSource];
+    powerSource2 = [equalCopy powerSource];
+    v7 = powerSource;
+    v8 = powerSource2;
     v9 = v8;
     if (v7 == v8)
     {
@@ -167,11 +167,11 @@ LABEL_5:
   return v3;
 }
 
-- (void)setInvalidationHandler:(id)a3
+- (void)setInvalidationHandler:(id)handler
 {
-  if (self->_invalidationHandler != a3)
+  if (self->_invalidationHandler != handler)
   {
-    v5 = [a3 copy];
+    v5 = [handler copy];
     invalidationHandler = self->_invalidationHandler;
     self->_invalidationHandler = v5;
   }
@@ -198,7 +198,7 @@ LABEL_5:
       v7 = self->_ucat;
     }
 
-    v8 = [(SDBLEPowerSourceContainer *)self powerSource];
+    powerSource = [(SDBLEPowerSourceContainer *)self powerSource];
     LogPrintF();
   }
 
@@ -233,8 +233,8 @@ LABEL_6:
 
 LABEL_11:
     [(SDBLEPowerSourceContainer *)self trigger:v11];
-    v4 = [(SDBLEPowerSourceContainer *)self powerSource];
-    v5 = [v4 publish];
+    powerSource = [(SDBLEPowerSourceContainer *)self powerSource];
+    publish = [powerSource publish];
     goto LABEL_12;
   }
 
@@ -243,12 +243,12 @@ LABEL_11:
     if (var0 != -1)
     {
 LABEL_4:
-      v4 = [(SDBLEPowerSourceContainer *)self powerSource];
+      powerSource = [(SDBLEPowerSourceContainer *)self powerSource];
       LogPrintF();
-      v5 = -6703;
+      publish = -6703;
 LABEL_12:
 
-      return v5;
+      return publish;
     }
 
     v6 = self->_ucat;
@@ -270,7 +270,7 @@ LABEL_12:
     if (var0 != -1)
     {
 LABEL_3:
-      v6 = [(SDBLEPowerSourceContainer *)self powerSource];
+      powerSource = [(SDBLEPowerSourceContainer *)self powerSource];
       LogPrintF();
 
       goto LABEL_5;
@@ -325,15 +325,15 @@ LABEL_6:
   powerSourceIdleCoalescer = self->_powerSourceIdleCoalescer;
   self->_powerSourceIdleCoalescer = 0;
 
-  v6 = [(SDBLEPowerSourceContainer *)self powerSource];
-  [v6 invalidate];
+  powerSource = [(SDBLEPowerSourceContainer *)self powerSource];
+  [powerSource invalidate];
 
-  v7 = [(SDBLEPowerSourceContainer *)self invalidationHandler];
+  invalidationHandler = [(SDBLEPowerSourceContainer *)self invalidationHandler];
 
-  if (v7)
+  if (invalidationHandler)
   {
-    v8 = [(SDBLEPowerSourceContainer *)self invalidationHandler];
-    v8[2]();
+    invalidationHandler2 = [(SDBLEPowerSourceContainer *)self invalidationHandler];
+    invalidationHandler2[2]();
 
     [(SDBLEPowerSourceContainer *)self setInvalidationHandler:0];
   }

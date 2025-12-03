@@ -2,23 +2,23 @@
 - (ATAssetLinkDelegate)delegate;
 - (ATRestoreAssetLink)init;
 - (ATRestoreAssetLinkDelegate)restoreDelegate;
-- (BOOL)canEnqueueAsset:(id)a3;
+- (BOOL)canEnqueueAsset:(id)asset;
 - (BOOL)hasProperNetworkConditions;
 - (BOOL)open;
 - (id)_currentCellularPolicy;
-- (id)enqueueAssets:(id)a3 force:(BOOL)a4;
+- (id)enqueueAssets:(id)assets force:(BOOL)force;
 - (unint64_t)maximumBatchSize;
 - (void)_processQueuedAssets;
-- (void)cancelAssets:(id)a3;
+- (void)cancelAssets:(id)assets;
 - (void)close;
-- (void)environmentMonitorDidChangeNetworkReachability:(id)a3;
-- (void)manager:(id)a3 didFailRestoreWithError:(id)a4;
-- (void)manager:(id)a3 didUpdateProgress:(float)a4 estimatedTimeRemaining:(unint64_t)a5;
-- (void)managerDidCancelRestore:(id)a3;
-- (void)managerDidFinishRestore:(id)a3;
-- (void)managerDidLoseConnectionToService:(id)a3;
-- (void)processRestoreFailureForAsset:(id)a3;
-- (void)restoreSessionActiveWithCompletion:(id)a3;
+- (void)environmentMonitorDidChangeNetworkReachability:(id)reachability;
+- (void)manager:(id)manager didFailRestoreWithError:(id)error;
+- (void)manager:(id)manager didUpdateProgress:(float)progress estimatedTimeRemaining:(unint64_t)remaining;
+- (void)managerDidCancelRestore:(id)restore;
+- (void)managerDidFinishRestore:(id)restore;
+- (void)managerDidLoseConnectionToService:(id)service;
+- (void)processRestoreFailureForAsset:(id)asset;
+- (void)restoreSessionActiveWithCompletion:(id)completion;
 @end
 
 @implementation ATRestoreAssetLink
@@ -82,10 +82,10 @@
 - (void)_processQueuedAssets
 {
   v100 = *MEMORY[0x277D85DE8];
-  v4 = [(ATRestoreAssetLink *)self hasProperNetworkConditions];
+  hasProperNetworkConditions = [(ATRestoreAssetLink *)self hasProperNetworkConditions];
   v5 = _ATLogCategoryRestore();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
-  if (v4)
+  if (hasProperNetworkConditions)
   {
     if (v6)
     {
@@ -110,8 +110,8 @@
     v12 = [(NSMutableArray *)self->_activeAssets count];
     if (v12 > [(NSMutableArray *)self->_queuedAssets count])
     {
-      v70 = [MEMORY[0x277CCA890] currentHandler];
-      [v70 handleFailureInMethod:a2 object:self file:@"ATRestoreAssetLink.m" lineNumber:385 description:{@"too many active assets. _activeAssets=%@", self->_activeAssets}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"ATRestoreAssetLink.m" lineNumber:385 description:{@"too many active assets. _activeAssets=%@", self->_activeAssets}];
     }
 
     if (![(NSMutableArray *)self->_queuedAssets count])
@@ -143,16 +143,16 @@
             }
 
             v18 = *(*(&v87 + 1) + 8 * i);
-            v19 = [v18 dataclass];
-            if ([v19 isEqualToString:@"Application"])
+            dataclass = [v18 dataclass];
+            if ([dataclass isEqualToString:@"Application"])
             {
 
 LABEL_25:
               if (![(NSMutableArray *)self->_activeAssets count])
               {
                 [(NSMutableArray *)self->_activeAssets addObject:v18];
-                v23 = [v18 dataclass];
-                v24 = [v23 isEqualToString:@"Application"];
+                dataclass2 = [v18 dataclass];
+                v24 = [dataclass2 isEqualToString:@"Application"];
 
                 if (v24)
                 {
@@ -170,8 +170,8 @@ LABEL_25:
               goto LABEL_30;
             }
 
-            v20 = [v18 dataclass];
-            v21 = [v20 isEqualToString:@"Book"];
+            dataclass3 = [v18 dataclass];
+            v21 = [dataclass3 isEqualToString:@"Book"];
 
             if (v21)
             {
@@ -179,8 +179,8 @@ LABEL_25:
             }
 
             [(NSMutableArray *)self->_activeAssets addObject:v18];
-            v22 = [v18 path];
-            [v71 addObject:v22];
+            path = [v18 path];
+            [v71 addObject:path];
 
             if (!self->_batchingIsSupported || self->_singleAssetMode)
             {
@@ -244,16 +244,16 @@ LABEL_30:
         while (v30);
       }
 
-      v35 = [(NSMutableArray *)self->_activeAssets firstObject];
-      v36 = [v35 dataclass];
-      v37 = [v36 isEqualToString:@"Application"];
+      firstObject = [(NSMutableArray *)self->_activeAssets firstObject];
+      dataclass4 = [firstObject dataclass];
+      v37 = [dataclass4 isEqualToString:@"Application"];
 
       if (v37)
       {
         mbManager = self->_mbManager;
-        v39 = [v71 firstObject];
+        firstObject2 = [v71 firstObject];
         v82 = 0;
-        v40 = [(MBManager *)mbManager restoreApplicationWithBundleID:v39 failed:0 context:0 error:&v82];
+        v40 = [(MBManager *)mbManager restoreApplicationWithBundleID:firstObject2 failed:0 context:0 error:&v82];
         v41 = v82;
       }
 
@@ -261,24 +261,24 @@ LABEL_30:
       {
         if (self->_batchingIsSupported)
         {
-          v42 = [(NSMutableArray *)self->_activeAssets firstObject];
-          v43 = [v42 dataclass];
-          v44 = [v43 isEqualToString:@"Book"];
+          firstObject3 = [(NSMutableArray *)self->_activeAssets firstObject];
+          dataclass5 = [firstObject3 dataclass];
+          v44 = [dataclass5 isEqualToString:@"Book"];
 
           if (v44)
           {
             v45 = self->_mbManager;
-            v46 = [v71 firstObject];
+            firstObject4 = [v71 firstObject];
             v81 = 0;
-            v47 = [(MBManager *)v45 restoreBookWithPath:v46 error:&v81];
+            v47 = [(MBManager *)v45 restoreBookWithPath:firstObject4 error:&v81];
             v48 = v81;
 
             v49 = _ATLogCategoryRestore();
             if (os_log_type_enabled(v49, OS_LOG_TYPE_DEFAULT))
             {
-              v50 = [v71 firstObject];
+              firstObject5 = [v71 firstObject];
               *buf = 138412546;
-              *v95 = v50;
+              *v95 = firstObject5;
               *&v95[8] = 2114;
               v96 = v48;
               _os_log_impl(&dword_223819000, v49, OS_LOG_TYPE_DEFAULT, "restoreBookWithPath. path='%@' err=%{public}@", buf, 0x16u);
@@ -301,12 +301,12 @@ LABEL_30:
             v48 = v53;
             if ((v52 & 1) == 0)
             {
-              v54 = [v53 domain];
-              if ([v54 isEqualToString:@"MBErrorDomain"])
+              domain = [v53 domain];
+              if ([domain isEqualToString:@"MBErrorDomain"])
               {
-                v55 = [v48 code];
+                code = [v48 code];
 
-                if (v55 == 216)
+                if (code == 216)
                 {
                   v56 = _ATLogCategoryRestore();
                   if (os_log_type_enabled(v56, OS_LOG_TYPE_DEFAULT))
@@ -317,13 +317,13 @@ LABEL_30:
                   }
 
                   self->_batchingIsSupported = 0;
-                  v57 = [(NSMutableArray *)self->_activeAssets firstObject];
+                  firstObject6 = [(NSMutableArray *)self->_activeAssets firstObject];
                   [(NSMutableArray *)self->_activeAssets removeAllObjects];
-                  [(NSMutableArray *)self->_activeAssets addObject:v57];
+                  [(NSMutableArray *)self->_activeAssets addObject:firstObject6];
                   v58 = self->_mbManager;
-                  v59 = [v57 path];
+                  path2 = [firstObject6 path];
                   v79 = v48;
-                  LOBYTE(v58) = [(MBManager *)v58 restoreFileWithPath:v59 error:&v79];
+                  LOBYTE(v58) = [(MBManager *)v58 restoreFileWithPath:path2 error:&v79];
                   v60 = v79;
 
                   v48 = v60;
@@ -348,9 +348,9 @@ LABEL_69:
         }
 
         v61 = self->_mbManager;
-        v39 = [v71 firstObject];
+        firstObject2 = [v71 firstObject];
         v78 = 0;
-        v40 = [(MBManager *)v61 restoreFileWithPath:v39 error:&v78];
+        v40 = [(MBManager *)v61 restoreFileWithPath:firstObject2 error:&v78];
         v41 = v78;
       }
 
@@ -432,7 +432,7 @@ void __42__ATRestoreAssetLink__processQueuedAssets__block_invoke(uint64_t a1)
   [v5 assetLink:v2 didFinishAsset:v3 error:v4 retryable:1];
 }
 
-- (void)managerDidLoseConnectionToService:(id)a3
+- (void)managerDidLoseConnectionToService:(id)service
 {
   v19 = *MEMORY[0x277D85DE8];
   if ([(NSMutableArray *)self->_activeAssets count])
@@ -484,7 +484,7 @@ void __42__ATRestoreAssetLink__processQueuedAssets__block_invoke(uint64_t a1)
   }
 }
 
-- (void)managerDidCancelRestore:(id)a3
+- (void)managerDidCancelRestore:(id)restore
 {
   callbackQueue = self->_callbackQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -504,10 +504,10 @@ void __46__ATRestoreAssetLink_managerDidCancelRestore___block_invoke(uint64_t a1
   }
 }
 
-- (void)manager:(id)a3 didFailRestoreWithError:(id)a4
+- (void)manager:(id)manager didFailRestoreWithError:(id)error
 {
   v32 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  errorCopy = error;
   v6 = _ATLogCategoryRestore();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -515,11 +515,11 @@ void __46__ATRestoreAssetLink_managerDidCancelRestore___block_invoke(uint64_t a1
     *buf = 134218242;
     v29 = v7;
     v30 = 2114;
-    v31 = v5;
+    v31 = errorCopy;
     _os_log_impl(&dword_223819000, v6, OS_LOG_TYPE_DEFAULT, "failed to restore %lu assets. err=%{public}@:", buf, 0x16u);
   }
 
-  v19 = v5;
+  v19 = errorCopy;
 
   v25 = 0u;
   v26 = 0u;
@@ -565,17 +565,17 @@ void __46__ATRestoreAssetLink_managerDidCancelRestore___block_invoke(uint64_t a1
       goto LABEL_19;
     }
 
-    v16 = [(NSMutableArray *)self->_activeAssets firstObject];
-    [(NSMutableArray *)self->_queuedAssets removeObject:v16];
+    firstObject = [(NSMutableArray *)self->_activeAssets firstObject];
+    [(NSMutableArray *)self->_queuedAssets removeObject:firstObject];
     callbackQueue = self->_callbackQueue;
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __54__ATRestoreAssetLink_manager_didFailRestoreWithError___block_invoke;
     block[3] = &unk_2784E59B0;
     block[4] = self;
-    v21 = v16;
+    v21 = firstObject;
     v22 = v19;
-    v18 = v16;
+    v18 = firstObject;
     dispatch_async(callbackQueue, block);
   }
 
@@ -604,7 +604,7 @@ void __54__ATRestoreAssetLink_manager_didFailRestoreWithError___block_invoke(uin
   [v5 assetLink:v2 didFinishAsset:v3 error:v4 retryable:1];
 }
 
-- (void)manager:(id)a3 didUpdateProgress:(float)a4 estimatedTimeRemaining:(unint64_t)a5
+- (void)manager:(id)manager didUpdateProgress:(float)progress estimatedTimeRemaining:(unint64_t)remaining
 {
   v21 = *MEMORY[0x277D85DE8];
   v16 = 0u;
@@ -635,7 +635,7 @@ void __54__ATRestoreAssetLink_manager_didFailRestoreWithError___block_invoke(uin
         block[3] = &unk_2784E5848;
         block[4] = v12;
         block[5] = self;
-        v15 = a4;
+        progressCopy = progress;
         dispatch_async(callbackQueue, block);
         ++v11;
       }
@@ -665,7 +665,7 @@ void __71__ATRestoreAssetLink_manager_didUpdateProgress_estimatedTimeRemaining__
   [v5 assetLink:*(a1 + 40) didUpdateAsset:*(a1 + 32) progress:*(a1 + 48)];
 }
 
-- (void)managerDidFinishRestore:(id)a3
+- (void)managerDidFinishRestore:(id)restore
 {
   v35 = *MEMORY[0x277D85DE8];
   v4 = _ATLogCategoryRestore();
@@ -732,8 +732,8 @@ void __71__ATRestoreAssetLink_manager_didUpdateProgress_estimatedTimeRemaining__
         }
 
         v17 = *(*(&v23 + 1) + 8 * j);
-        v18 = [v17 dataclass];
-        v19 = [v18 isEqualToString:@"Application"];
+        dataclass = [v17 dataclass];
+        v19 = [dataclass isEqualToString:@"Application"];
 
         if (v19)
         {
@@ -767,7 +767,7 @@ void __46__ATRestoreAssetLink_managerDidFinishRestore___block_invoke(uint64_t a1
   [v2 assetLink:*(a1 + 32) didFinishAsset:*(a1 + 40) error:0 retryable:1];
 }
 
-- (void)environmentMonitorDidChangeNetworkReachability:(id)a3
+- (void)environmentMonitorDidChangeNetworkReachability:(id)reachability
 {
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -804,17 +804,17 @@ uint64_t __69__ATRestoreAssetLink_environmentMonitorDidChangeNetworkReachability
   }
 }
 
-- (void)cancelAssets:(id)a3
+- (void)cancelAssets:(id)assets
 {
-  v4 = a3;
+  assetsCopy = assets;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __35__ATRestoreAssetLink_cancelAssets___block_invoke;
   v7[3] = &unk_2784E5960;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = assetsCopy;
+  selfCopy = self;
+  v6 = assetsCopy;
   dispatch_async(queue, v7);
 }
 
@@ -895,19 +895,19 @@ void __35__ATRestoreAssetLink_cancelAssets___block_invoke_2(uint64_t a1)
   [v5 assetLink:v3 didFinishAsset:v2 error:v4 retryable:1];
 }
 
-- (BOOL)canEnqueueAsset:(id)a3
+- (BOOL)canEnqueueAsset:(id)asset
 {
-  v5 = a3;
-  v6 = [(ATRestoreAssetLink *)self allowedDataClasses];
-  v7 = [v5 dataclass];
-  if ([v6 containsObject:v7] && objc_msgSend(v5, "isDownload") && objc_msgSend(v5, "isRestore"))
+  assetCopy = asset;
+  allowedDataClasses = [(ATRestoreAssetLink *)self allowedDataClasses];
+  dataclass = [assetCopy dataclass];
+  if ([allowedDataClasses containsObject:dataclass] && objc_msgSend(assetCopy, "isDownload") && objc_msgSend(assetCopy, "isRestore"))
   {
-    v8 = [v5 dataclass];
-    v9 = [v8 isEqualToString:@"Application"];
-    if ((v9 & 1) != 0 || ([v5 path], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+    dataclass2 = [assetCopy dataclass];
+    v9 = [dataclass2 isEqualToString:@"Application"];
+    if ((v9 & 1) != 0 || ([assetCopy path], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v10 = [v5 dataclass];
-      if ([v10 isEqualToString:@"Application"] && objc_msgSend(v5, "assetParts") != 2)
+      dataclass3 = [assetCopy dataclass];
+      if ([dataclass3 isEqualToString:@"Application"] && objc_msgSend(assetCopy, "assetParts") != 2)
       {
 LABEL_15:
 
@@ -920,8 +920,8 @@ LABEL_15:
         goto LABEL_19;
       }
 
-      v11 = [v5 dataclass];
-      if ([v11 isEqualToString:@"Application"])
+      dataclass4 = [assetCopy dataclass];
+      if ([dataclass4 isEqualToString:@"Application"])
       {
 
         v12 = 1;
@@ -933,15 +933,15 @@ LABEL_15:
         goto LABEL_19;
       }
 
-      v14 = [v5 storeInfo];
-      if (v14)
+      storeInfo = [assetCopy storeInfo];
+      if (storeInfo)
       {
 
         goto LABEL_15;
       }
 
-      v15 = [v5 storePlist];
-      v12 = v15 == 0;
+      storePlist = [assetCopy storePlist];
+      v12 = storePlist == 0;
 
       if (v9)
       {
@@ -967,9 +967,9 @@ LABEL_12:
   return v12;
 }
 
-- (id)enqueueAssets:(id)a3 force:(BOOL)a4
+- (id)enqueueAssets:(id)assets force:(BOOL)force
 {
-  v5 = a3;
+  assetsCopy = assets;
   v6 = objc_opt_new();
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -977,10 +977,10 @@ LABEL_12:
   block[2] = __42__ATRestoreAssetLink_enqueueAssets_force___block_invoke;
   block[3] = &unk_2784E59B0;
   block[4] = self;
-  v14 = v5;
+  v14 = assetsCopy;
   v8 = v6;
   v15 = v8;
-  v9 = v5;
+  v9 = assetsCopy;
   dispatch_sync(queue, block);
   v10 = v15;
   v11 = v8;
@@ -1136,15 +1136,15 @@ void __26__ATRestoreAssetLink_open__block_invoke_38(uint64_t a1)
 
 - (BOOL)hasProperNetworkConditions
 {
-  v3 = [MEMORY[0x277D7FA90] sharedMonitor];
-  if ([v3 isRemoteServerLikelyReachable])
+  mEMORY[0x277D7FA90] = [MEMORY[0x277D7FA90] sharedMonitor];
+  if ([mEMORY[0x277D7FA90] isRemoteServerLikelyReachable])
   {
-    v4 = [(ATRestoreAssetLink *)self _currentCellularPolicy];
-    [v3 networkType];
+    _currentCellularPolicy = [(ATRestoreAssetLink *)self _currentCellularPolicy];
+    [mEMORY[0x277D7FA90] networkType];
     IsCellular = ICEnvironmentNetworkTypeIsCellular();
-    if (v4)
+    if (_currentCellularPolicy)
     {
-      v6 = !IsCellular || (![v3 isCurrentNetworkLinkExpensive] || objc_msgSend(v4, "allowsExpensiveNetworkAccess")) && (!objc_msgSend(v3, "isNetworkConstrained") || objc_msgSend(v4, "allowsConstrainedNetworkAccess"));
+      v6 = !IsCellular || (![mEMORY[0x277D7FA90] isCurrentNetworkLinkExpensive] || objc_msgSend(_currentCellularPolicy, "allowsExpensiveNetworkAccess")) && (!objc_msgSend(mEMORY[0x277D7FA90], "isNetworkConstrained") || objc_msgSend(_currentCellularPolicy, "allowsConstrainedNetworkAccess"));
     }
 
     else
@@ -1161,37 +1161,37 @@ void __26__ATRestoreAssetLink_open__block_invoke_38(uint64_t a1)
   return v6;
 }
 
-- (void)processRestoreFailureForAsset:(id)a3
+- (void)processRestoreFailureForAsset:(id)asset
 {
-  v13 = a3;
-  if (([v13 isRestore] & 1) == 0)
+  assetCopy = asset;
+  if (([assetCopy isRestore] & 1) == 0)
   {
-    v12 = [MEMORY[0x277CCA890] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"ATRestoreAssetLink.m" lineNumber:129 description:{@"processRestoreFailureForAsset called with asset that is not a restore: %@", v13}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ATRestoreAssetLink.m" lineNumber:129 description:{@"processRestoreFailureForAsset called with asset that is not a restore: %@", assetCopy}];
   }
 
   v5 = objc_alloc(MEMORY[0x277D28A58]);
-  v6 = [v13 identifier];
-  v7 = [v13 dataclass];
-  v8 = [v13 assetType];
-  v9 = [v13 prettyName];
-  v10 = [v13 error];
-  v11 = [v5 initWithIdentifier:v6 dataclass:v7 assetType:v8 displayName:v9 error:v10];
+  identifier = [assetCopy identifier];
+  dataclass = [assetCopy dataclass];
+  assetType = [assetCopy assetType];
+  prettyName = [assetCopy prettyName];
+  error = [assetCopy error];
+  v11 = [v5 initWithIdentifier:identifier dataclass:dataclass assetType:assetType displayName:prettyName error:error];
 
   [(MBManager *)self->_mbManager recordRestoreFailure:v11 error:0];
 }
 
-- (void)restoreSessionActiveWithCompletion:(id)a3
+- (void)restoreSessionActiveWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __57__ATRestoreAssetLink_restoreSessionActiveWithCompletion___block_invoke;
   v7[3] = &unk_2784E4E80;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(queue, v7);
 }
 
@@ -1357,14 +1357,14 @@ void __57__ATRestoreAssetLink_restoreSessionActiveWithCompletion___block_invoke_
 
     v2->_singleAssetMode = 0;
     objc_initWeak(&location, v2);
-    v17 = [*MEMORY[0x277D28A80] UTF8String];
+    uTF8String = [*MEMORY[0x277D28A80] UTF8String];
     v18 = v2->_queue;
     handler[0] = MEMORY[0x277D85DD0];
     handler[1] = 3221225472;
     handler[2] = __26__ATRestoreAssetLink_init__block_invoke;
     handler[3] = &unk_2784E46D8;
     objc_copyWeak(&v21, &location);
-    notify_register_dispatch(v17, &v2->_mbCellularAccessChangedNotificationToken, v18, handler);
+    notify_register_dispatch(uTF8String, &v2->_mbCellularAccessChangedNotificationToken, v18, handler);
     objc_destroyWeak(&v21);
     objc_destroyWeak(&location);
   }

@@ -1,31 +1,31 @@
 @interface IMContactStoreChangeHistoryEventsHandler
-- (BOOL)isAcceptedCNID:(id)a3;
-- (BOOL)isCuratedCNID:(id)a3;
-- (id)acceptedIdentifiersFromIdentifiers:(id)a3;
-- (void)postDeleteContactNotificationForContactIdentifier:(id)a3;
-- (void)postNotificationForCNContact:(id)a3 eventType:(unint64_t)a4 handleIDsToProcess:(id)a5;
-- (void)processChangeEventForContact:(id)a3 contactFromCache:(id)a4 eventType:(unint64_t)a5 handleID:(id)a6;
-- (void)processContactChangeEventForContact:(id)a3 ofEventType:(unint64_t)a4;
-- (void)updateWithCurrentAcceptedContactsMap:(id)a3;
-- (void)visitAddContactEvent:(id)a3;
-- (void)visitDeleteContactEvent:(id)a3;
-- (void)visitDropEverythingEvent:(id)a3;
-- (void)visitUpdateContactEvent:(id)a3;
+- (BOOL)isAcceptedCNID:(id)d;
+- (BOOL)isCuratedCNID:(id)d;
+- (id)acceptedIdentifiersFromIdentifiers:(id)identifiers;
+- (void)postDeleteContactNotificationForContactIdentifier:(id)identifier;
+- (void)postNotificationForCNContact:(id)contact eventType:(unint64_t)type handleIDsToProcess:(id)process;
+- (void)processChangeEventForContact:(id)contact contactFromCache:(id)cache eventType:(unint64_t)type handleID:(id)d;
+- (void)processContactChangeEventForContact:(id)contact ofEventType:(unint64_t)type;
+- (void)updateWithCurrentAcceptedContactsMap:(id)map;
+- (void)visitAddContactEvent:(id)event;
+- (void)visitDeleteContactEvent:(id)event;
+- (void)visitDropEverythingEvent:(id)event;
+- (void)visitUpdateContactEvent:(id)event;
 @end
 
 @implementation IMContactStoreChangeHistoryEventsHandler
 
-- (BOOL)isAcceptedCNID:(id)a3
+- (BOOL)isAcceptedCNID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   if (objc_opt_respondsToSelector())
   {
-    v4 = [MEMORY[0x1E695CD58] isCoreRecentsAcceptedIdentifier:v3];
+    v4 = [MEMORY[0x1E695CD58] isCoreRecentsAcceptedIdentifier:dCopy];
   }
 
   else
   {
-    v4 = [v3 hasPrefix:@"CNCoreRecentsContactStore://com.apple.introductions.accepted"];
+    v4 = [dCopy hasPrefix:@"CNCoreRecentsContactStore://com.apple.introductions.accepted"];
   }
 
   v5 = v4;
@@ -33,25 +33,25 @@
   return v5;
 }
 
-- (BOOL)isCuratedCNID:(id)a3
+- (BOOL)isCuratedCNID:(id)d
 {
-  v4 = a3;
-  if ([(IMContactStoreChangeHistoryEventsHandler *)self isUnknownCNID:v4])
+  dCopy = d;
+  if ([(IMContactStoreChangeHistoryEventsHandler *)self isUnknownCNID:dCopy])
   {
     LOBYTE(v5) = 0;
   }
 
   else
   {
-    v5 = ![(IMContactStoreChangeHistoryEventsHandler *)self isAcceptedCNID:v4];
+    v5 = ![(IMContactStoreChangeHistoryEventsHandler *)self isAcceptedCNID:dCopy];
   }
 
   return v5;
 }
 
-- (void)visitDropEverythingEvent:(id)a3
+- (void)visitDropEverythingEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   [(IMContactStoreChangeHistoryEventsHandler *)self setReceivedDropEverythingEvent:1];
   if (IMOSLoggingEnabled())
   {
@@ -66,13 +66,13 @@
   v6 = +[IMContactStore sharedInstance];
   [v6 handleDropEverythingEvent];
 
-  v7 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v7 __mainThreadPostNotificationName:IMCSChangeHistoryDropEverythingEventNotification object:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter __mainThreadPostNotificationName:IMCSChangeHistoryDropEverythingEventNotification object:self];
 }
 
-- (void)visitAddContactEvent:(id)a3
+- (void)visitAddContactEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   if (IMOSLoggingEnabled())
   {
     v5 = OSLogHandleForIMFoundationCategory();
@@ -83,13 +83,13 @@
     }
   }
 
-  v6 = [v4 contact];
-  [(IMContactStoreChangeHistoryEventsHandler *)self processContactChangeEventForContact:v6 ofEventType:1];
+  contact = [eventCopy contact];
+  [(IMContactStoreChangeHistoryEventsHandler *)self processContactChangeEventForContact:contact ofEventType:1];
 }
 
-- (void)visitDeleteContactEvent:(id)a3
+- (void)visitDeleteContactEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   if (IMOSLoggingEnabled())
   {
     v5 = OSLogHandleForIMFoundationCategory();
@@ -100,16 +100,16 @@
     }
   }
 
-  v6 = [v4 contactIdentifier];
-  [(IMContactStoreChangeHistoryEventsHandler *)self postDeleteContactNotificationForContactIdentifier:v6];
+  contactIdentifier = [eventCopy contactIdentifier];
+  [(IMContactStoreChangeHistoryEventsHandler *)self postDeleteContactNotificationForContactIdentifier:contactIdentifier];
 }
 
-- (void)postDeleteContactNotificationForContactIdentifier:(id)a3
+- (void)postDeleteContactNotificationForContactIdentifier:(id)identifier
 {
-  v6 = a3;
-  if ([v6 length])
+  identifierCopy = identifier;
+  if ([identifierCopy length])
   {
-    v4 = [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{v6, @"__kIMCSChangeHistoryContactIdentifierKey", 0}];
+    v4 = [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{identifierCopy, @"__kIMCSChangeHistoryContactIdentifierKey", 0}];
   }
 
   else
@@ -117,13 +117,13 @@
     v4 = 0;
   }
 
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v5 __mainThreadPostNotificationName:IMCSChangeHistoryDeleteContactEventNotification object:self userInfo:v4];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter __mainThreadPostNotificationName:IMCSChangeHistoryDeleteContactEventNotification object:self userInfo:v4];
 }
 
-- (void)visitUpdateContactEvent:(id)a3
+- (void)visitUpdateContactEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   if (IMOSLoggingEnabled())
   {
     v5 = OSLogHandleForIMFoundationCategory();
@@ -134,20 +134,20 @@
     }
   }
 
-  v6 = [v4 contact];
-  [(IMContactStoreChangeHistoryEventsHandler *)self processContactChangeEventForContact:v6 ofEventType:2];
+  contact = [eventCopy contact];
+  [(IMContactStoreChangeHistoryEventsHandler *)self processContactChangeEventForContact:contact ofEventType:2];
 }
 
-- (id)acceptedIdentifiersFromIdentifiers:(id)a3
+- (id)acceptedIdentifiersFromIdentifiers:(id)identifiers
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
+  identifiersCopy = identifiers;
+  array = [MEMORY[0x1E695DF70] array];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = v4;
+  v6 = identifiersCopy;
   v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
@@ -165,7 +165,7 @@
         v11 = *(*(&v13 + 1) + 8 * i);
         if ([(IMContactStoreChangeHistoryEventsHandler *)self isAcceptedCNID:v11, v13])
         {
-          [v5 addObject:v11];
+          [array addObject:v11];
         }
       }
 
@@ -175,23 +175,23 @@
     while (v8);
   }
 
-  return v5;
+  return array;
 }
 
-- (void)updateWithCurrentAcceptedContactsMap:(id)a3
+- (void)updateWithCurrentAcceptedContactsMap:(id)map
 {
   v75 = *MEMORY[0x1E69E9840];
-  v39 = a3;
+  mapCopy = map;
   v3 = +[IMContactStore sharedInstance];
-  v45 = [v3 getCNIDToHandleIDsMap];
+  getCNIDToHandleIDsMap = [v3 getCNIDToHandleIDsMap];
 
   v4 = +[IMContactStore sharedInstance];
-  v5 = [v4 getIDToCNContactMap];
+  getIDToCNContactMap = [v4 getIDToCNContactMap];
 
-  v6 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v7 = MEMORY[0x1E695DFA8];
-  v8 = [v45 allKeys];
-  v9 = [(IMContactStoreChangeHistoryEventsHandler *)self acceptedIdentifiersFromIdentifiers:v8];
+  allKeys = [getCNIDToHandleIDsMap allKeys];
+  v9 = [(IMContactStoreChangeHistoryEventsHandler *)self acceptedIdentifiersFromIdentifiers:allKeys];
   v10 = [v7 setWithArray:v9];
 
   v64[0] = MEMORY[0x1E69E9820];
@@ -201,9 +201,9 @@
   v64[4] = self;
   v11 = v10;
   v65 = v11;
-  v12 = v6;
+  v12 = array;
   v66 = v12;
-  [v39 enumerateKeysAndObjectsUsingBlock:v64];
+  [mapCopy enumerateKeysAndObjectsUsingBlock:v64];
   if (IMOSLoggingEnabled())
   {
     v13 = OSLogHandleForIMFoundationCategory();
@@ -243,7 +243,7 @@
     while (v15);
   }
 
-  v40 = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
   v58 = 0u;
   v59 = 0u;
   v56 = 0u;
@@ -282,11 +282,11 @@
                 objc_enumerationMutation(v20);
               }
 
-              v24 = [v5 objectForKey:*(*(&v52 + 1) + 8 * k)];
+              v24 = [getIDToCNContactMap objectForKey:*(*(&v52 + 1) + 8 * k)];
               if ([IMContactStore isCNContactAKnownContact:v24])
               {
-                v25 = [v24 identifier];
-                v26 = [(IMContactStoreChangeHistoryEventsHandler *)self isCuratedCNID:v25];
+                identifier = [v24 identifier];
+                v26 = [(IMContactStoreChangeHistoryEventsHandler *)self isCuratedCNID:identifier];
 
                 if (v26)
                 {
@@ -306,7 +306,7 @@
           }
         }
 
-        [v40 addObject:v46];
+        [array2 addObject:v46];
 LABEL_28:
       }
 
@@ -320,7 +320,7 @@ LABEL_28:
   v51 = 0u;
   v48 = 0u;
   v49 = 0u;
-  v27 = v40;
+  v27 = array2;
   v28 = [v27 countByEnumeratingWithState:&v48 objects:v71 count:16];
   if (v28)
   {
@@ -335,8 +335,8 @@ LABEL_28:
         }
 
         v31 = *(*(&v48 + 1) + 8 * m);
-        v32 = [v31 identifier];
-        v33 = [v45 objectForKey:v32];
+        identifier2 = [v31 identifier];
+        v33 = [getCNIDToHandleIDsMap objectForKey:identifier2];
         v34 = [v33 count] == 0;
 
         if (v34)
@@ -374,17 +374,17 @@ LABEL_28:
   }
 }
 
-- (void)processContactChangeEventForContact:(id)a3 ofEventType:(unint64_t)a4
+- (void)processContactChangeEventForContact:(id)contact ofEventType:(unint64_t)type
 {
   v83 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  contactCopy = contact;
+  if (contactCopy)
   {
-    v58 = v4;
-    v5 = [IMContactStore IDsFromCNContact:v4];
+    v58 = contactCopy;
+    v5 = [IMContactStore IDsFromCNContact:contactCopy];
     v6 = +[IMContactStore sharedInstance];
-    v7 = [v58 identifier];
-    v8 = [v6 handleIDsForCNID:v7];
+    identifier = [v58 identifier];
+    v8 = [v6 handleIDsForCNID:identifier];
 
     v54 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:1];
     v71 = 0u;
@@ -411,7 +411,7 @@ LABEL_28:
             v13 = +[IMContactStore sharedInstance];
             v14 = [v13 getContactForID:v12];
 
-            [(IMContactStoreChangeHistoryEventsHandler *)self processChangeEventForContact:v58 contactFromCache:v14 eventType:a4 handleID:v12];
+            [(IMContactStoreChangeHistoryEventsHandler *)self processChangeEventForContact:v58 contactFromCache:v14 eventType:type handleID:v12];
             [v54 addObject:v12];
           }
         }
@@ -551,13 +551,13 @@ LABEL_28:
             }
 
             v36 = +[IMContactStore sharedInstance];
-            v37 = [v36 getAllKeysFromIDToCNContactMap];
+            getAllKeysFromIDToCNContactMap = [v36 getAllKeysFromIDToCNContactMap];
 
             v61 = 0u;
             v62 = 0u;
             v59 = 0u;
             v60 = 0u;
-            v38 = v37;
+            v38 = getAllKeysFromIDToCNContactMap;
             v39 = [v38 countByEnumeratingWithState:&v59 objects:v75 count:16];
             if (v39)
             {
@@ -616,7 +616,7 @@ LABEL_56:
           }
 
 LABEL_57:
-          [(IMContactStoreChangeHistoryEventsHandler *)self processChangeEventForContact:v58 contactFromCache:v20 eventType:a4 handleID:v27];
+          [(IMContactStoreChangeHistoryEventsHandler *)self processChangeEventForContact:v58 contactFromCache:v20 eventType:type handleID:v27];
           if ([v27 length])
           {
             [v54 addObject:v27];
@@ -632,8 +632,8 @@ LABEL_57:
       while (v52);
     }
 
-    [(IMContactStoreChangeHistoryEventsHandler *)self postNotificationForCNContact:v58 eventType:a4 handleIDsToProcess:v54];
-    v4 = v58;
+    [(IMContactStoreChangeHistoryEventsHandler *)self postNotificationForCNContact:v58 eventType:type handleIDsToProcess:v54];
+    contactCopy = v58;
   }
 
   else if (IMOSLoggingEnabled())
@@ -647,20 +647,20 @@ LABEL_57:
   }
 }
 
-- (void)processChangeEventForContact:(id)a3 contactFromCache:(id)a4 eventType:(unint64_t)a5 handleID:(id)a6
+- (void)processChangeEventForContact:(id)contact contactFromCache:(id)cache eventType:(unint64_t)type handleID:(id)d
 {
   v42 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
-  v32 = v9;
-  if (a5 == 2)
+  contactCopy = contact;
+  cacheCopy = cache;
+  dCopy = d;
+  v32 = contactCopy;
+  if (type == 2)
   {
-    v17 = [IMContactStore IDsFromCNContact:v9];
-    v18 = [IMContactStore IDsFromCNContact:v10];
+    v17 = [IMContactStore IDsFromCNContact:contactCopy];
+    v18 = [IMContactStore IDsFromCNContact:cacheCopy];
     v30 = [v18 mutableCopy];
 
-    if ([v17 containsObject:v11])
+    if ([v17 containsObject:dCopy])
     {
       if (IMOSLoggingEnabled())
       {
@@ -668,13 +668,13 @@ LABEL_57:
         if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
         {
           *buf = 138412290;
-          v39 = v11;
+          v39 = dCopy;
           _os_log_impl(&dword_1A85E5000, v19, OS_LOG_TYPE_INFO, "Removing contact for ID %@ from Contact Store cache and adding the new one.", buf, 0xCu);
         }
       }
 
       v20 = +[IMContactStore sharedInstance];
-      [v20 replaceContact:v9 withID:v11];
+      [v20 replaceContact:contactCopy withID:dCopy];
     }
 
     v21 = [v30 count];
@@ -712,9 +712,9 @@ LABEL_57:
     }
   }
 
-  else if (a5 == 1)
+  else if (type == 1)
   {
-    v12 = [IMContactStore isCNContactAKnownContact:v10];
+    v12 = [IMContactStore isCNContactAKnownContact:cacheCopy];
     v13 = IMOSLoggingEnabled();
     if (v12)
     {
@@ -723,7 +723,7 @@ LABEL_57:
         v14 = OSLogHandleForIMFoundationCategory();
         if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
         {
-          v15 = [IMContactStore isCNContactAKnownContact:v10];
+          v15 = [IMContactStore isCNContactAKnownContact:cacheCopy];
           v16 = @"NO";
           if (v15)
           {
@@ -731,7 +731,7 @@ LABEL_57:
           }
 
           *buf = 138412546;
-          v39 = v11;
+          v39 = dCopy;
           v40 = 2112;
           v41 = v16;
           _os_log_impl(&dword_1A85E5000, v14, OS_LOG_TYPE_INFO, "Not prcoessing add event for ID already known to us %@. isAKnownContact:%@", buf, 0x16u);
@@ -747,32 +747,32 @@ LABEL_57:
         if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
         {
           *buf = 138412290;
-          v39 = v11;
+          v39 = dCopy;
           _os_log_impl(&dword_1A85E5000, v28, OS_LOG_TYPE_INFO, "Removing contact for ID %@ from Contact Store cache and adding the new one.", buf, 0xCu);
         }
       }
 
       v29 = +[IMContactStore sharedInstance];
-      [v29 replaceContact:v9 withID:v11];
+      [v29 replaceContact:contactCopy withID:dCopy];
     }
   }
 }
 
-- (void)postNotificationForCNContact:(id)a3 eventType:(unint64_t)a4 handleIDsToProcess:(id)a5
+- (void)postNotificationForCNContact:(id)contact eventType:(unint64_t)type handleIDsToProcess:(id)process
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [v9 count];
-  if (v8 && v10)
+  contactCopy = contact;
+  processCopy = process;
+  v10 = [processCopy count];
+  if (contactCopy && v10)
   {
-    if (a4 == 1)
+    if (type == 1)
     {
       v11 = &IMCSChangeHistoryAddContactEventNotification;
     }
 
     else
     {
-      if (a4 != 2)
+      if (type != 2)
       {
         v16 = 0;
         v17 = 0;
@@ -783,14 +783,14 @@ LABEL_57:
     }
 
     v13 = MEMORY[0x1E695DF20];
-    v14 = [v9 copy];
-    v15 = [v8 copy];
+    v14 = [processCopy copy];
+    v15 = [contactCopy copy];
     v16 = [v13 dictionaryWithObjectsAndKeys:{v14, @"__kIMCSChangeHistoryHandleIDsKey", v15, @"__kIMCSChangeHistoryContactKey", 0}];
 
     v17 = *v11;
 LABEL_13:
-    v18 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v18 __mainThreadPostNotificationName:v17 object:self userInfo:v16];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter __mainThreadPostNotificationName:v17 object:self userInfo:v16];
 
     goto LABEL_14;
   }

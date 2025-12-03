@@ -1,17 +1,17 @@
 @interface ServiceDelegate
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 @end
 
 @implementation ServiceDelegate
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  listenerCopy = listener;
+  connectionCopy = connection;
+  v7 = connectionCopy;
+  if (connectionCopy)
   {
-    [v6 auditToken];
+    [connectionCopy auditToken];
   }
 
   else
@@ -51,7 +51,7 @@ LABEL_11:
   v11 = 0;
 LABEL_9:
   v13 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___UserFontServicesProtocol];
-  v25 = v5;
+  v25 = listenerCopy;
   v14 = objc_opt_class();
   v15 = [NSSet setWithObjects:v14, objc_opt_class(), 0];
   [v13 setClasses:v15 forSelector:? argumentIndex:? ofReply:?];
@@ -72,7 +72,7 @@ LABEL_9:
   [v7 setExportedObject:v23];
   [v7 resume];
 
-  v5 = v25;
+  listenerCopy = v25;
 LABEL_12:
 
   return v22;

@@ -1,5 +1,5 @@
 @interface CNArchiver
-+ (id)decodeObjectOfClass:(Class)a3 associatedClasses:(id)a4 data:(id)a5 error:(id *)a6;
++ (id)decodeObjectOfClass:(Class)class associatedClasses:(id)classes data:(id)data error:(id *)error;
 + (id)os_log;
 @end
 
@@ -26,18 +26,18 @@ uint64_t __20__CNArchiver_os_log__block_invoke()
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-+ (id)decodeObjectOfClass:(Class)a3 associatedClasses:(id)a4 data:(id)a5 error:(id *)a6
++ (id)decodeObjectOfClass:(Class)class associatedClasses:(id)classes data:(id)data error:(id *)error
 {
   v46[1] = *MEMORY[0x1E69E9840];
-  v9 = a4;
-  v10 = a5;
+  classesCopy = classes;
+  dataCopy = data;
   v44[0] = 0;
-  v11 = [objc_alloc(MEMORY[0x1E696ACD0]) initForReadingFromData:v10 error:v44];
+  v11 = [objc_alloc(MEMORY[0x1E696ACD0]) initForReadingFromData:dataCopy error:v44];
   v12 = v44[0];
   if (v11)
   {
-    v13 = [MEMORY[0x1E695DFA8] setWithArray:v9];
-    [v13 addObject:a3];
+    v13 = [MEMORY[0x1E695DFA8] setWithArray:classesCopy];
+    [v13 addObject:class];
     v14 = *MEMORY[0x1E696A508];
     v43 = v12;
     v15 = [v11 decodeTopLevelObjectOfClasses:v13 forKey:v14 error:&v43];
@@ -55,9 +55,9 @@ LABEL_22:
         goto LABEL_23;
       }
 
-      if ([v9 count])
+      if ([classesCopy count])
       {
-        v34 = [v9 _cn_map:&__block_literal_global_9];
+        v34 = [classesCopy _cn_map:&__block_literal_global_9];
         v35 = [v34 componentsJoinedByString:{@", "}];
 
         v36 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"or %@, by association", v35];
@@ -68,31 +68,31 @@ LABEL_22:
         v36 = @"no associated classes";
       }
 
-      v37 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"The decoded object was of type %@, but an object of type %@ (%@) was expected", objc_opt_class(), a3, v36];
+      v37 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"The decoded object was of type %@, but an object of type %@ (%@) was expected", objc_opt_class(), class, v36];
       v45 = *MEMORY[0x1E696A278];
       v46[0] = v37;
       v38 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v46 forKeys:&v45 count:1];
       v39 = [CNFoundationError errorWithCode:6 userInfo:v38];
-      if (a6)
+      if (error)
       {
         v39 = v39;
-        *a6 = v39;
+        *error = v39;
       }
     }
 
     else
     {
-      v26 = [a1 os_log];
-      if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
+      os_log = [self os_log];
+      if (os_log_type_enabled(os_log, OS_LOG_TYPE_ERROR))
       {
-        [(CNArchiver *)v16 decodeObjectOfClass:v26 associatedClasses:v27 data:v28 error:v29, v30, v31, v32];
+        [(CNArchiver *)v16 decodeObjectOfClass:os_log associatedClasses:v27 data:v28 error:v29, v30, v31, v32];
       }
 
       v33 = [CNFoundationError errorWithCode:6 underlyingError:v16];
-      if (a6)
+      if (error)
       {
         v33 = v33;
-        *a6 = v33;
+        *error = v33;
       }
     }
 
@@ -100,17 +100,17 @@ LABEL_22:
     goto LABEL_22;
   }
 
-  v18 = [a1 os_log];
-  if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
+  os_log2 = [self os_log];
+  if (os_log_type_enabled(os_log2, OS_LOG_TYPE_ERROR))
   {
-    [(CNArchiver *)v12 decodeObjectOfClass:v18 associatedClasses:v19 data:v20 error:v21, v22, v23, v24];
+    [(CNArchiver *)v12 decodeObjectOfClass:os_log2 associatedClasses:v19 data:v20 error:v21, v22, v23, v24];
   }
 
   v25 = [CNFoundationError errorWithCode:6 underlyingError:v12];
-  if (a6)
+  if (error)
   {
     v25 = v25;
-    *a6 = v25;
+    *error = v25;
   }
 
   v17 = 0;

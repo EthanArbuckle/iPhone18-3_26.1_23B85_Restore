@@ -1,14 +1,14 @@
 @interface ETPVideo
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)mediaTypeAsString:(int)a3;
-- (int)StringAsMediaType:(id)a3;
+- (id)mediaTypeAsString:(int)string;
+- (int)StringAsMediaType:(id)type;
 - (int)mediaType;
 - (unint64_t)hash;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ETPVideo
@@ -26,33 +26,33 @@
   }
 }
 
-- (id)mediaTypeAsString:(int)a3
+- (id)mediaTypeAsString:(int)string
 {
-  if (a3 == 1)
+  if (string == 1)
   {
     v4 = @"Video";
   }
 
-  else if (a3 == 2)
+  else if (string == 2)
   {
     v4 = @"Photo";
   }
 
   else
   {
-    v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"(unknown: %i)", *&a3];
+    v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"(unknown: %i)", *&string];
   }
 
   return v4;
 }
 
-- (int)StringAsMediaType:(id)a3
+- (int)StringAsMediaType:(id)type
 {
-  v3 = a3;
+  typeCopy = type;
   v4 = 1;
-  if (([v3 isEqualToString:@"Video"] & 1) == 0)
+  if (([typeCopy isEqualToString:@"Video"] & 1) == 0)
   {
-    if ([v3 isEqualToString:@"Photo"])
+    if ([typeCopy isEqualToString:@"Photo"])
     {
       v4 = 2;
     }
@@ -72,20 +72,20 @@
   v8.receiver = self;
   v8.super_class = ETPVideo;
   v4 = [(ETPVideo *)&v8 description];
-  v5 = [(ETPVideo *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ETPVideo *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   introMessageData = self->_introMessageData;
   if (introMessageData)
   {
-    [v3 setObject:introMessageData forKey:@"introMessageData"];
+    [dictionary setObject:introMessageData forKey:@"introMessageData"];
   }
 
   playingMessagesData = self->_playingMessagesData;
@@ -118,37 +118,37 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_introMessageData)
   {
     PBDataWriterWriteDataField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_playingMessagesData)
   {
     PBDataWriterWriteDataField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
     PBDataWriterWriteInt32Field();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSData *)self->_introMessageData copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSData *)self->_introMessageData copyWithZone:zone];
   v7 = *(v5 + 8);
   *(v5 + 8) = v6;
 
-  v8 = [(NSData *)self->_playingMessagesData copyWithZone:a3];
+  v8 = [(NSData *)self->_playingMessagesData copyWithZone:zone];
   v9 = *(v5 + 24);
   *(v5 + 24) = v8;
 
@@ -161,16 +161,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_10;
   }
 
   introMessageData = self->_introMessageData;
-  if (introMessageData | *(v4 + 1))
+  if (introMessageData | *(equalCopy + 1))
   {
     if (![(NSData *)introMessageData isEqual:?])
     {
@@ -179,7 +179,7 @@
   }
 
   playingMessagesData = self->_playingMessagesData;
-  if (playingMessagesData | *(v4 + 3))
+  if (playingMessagesData | *(equalCopy + 3))
   {
     if (![(NSData *)playingMessagesData isEqual:?])
     {
@@ -187,10 +187,10 @@
     }
   }
 
-  v7 = (*(v4 + 32) & 1) == 0;
+  v7 = (*(equalCopy + 32) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 32) & 1) != 0 && self->_mediaType == *(v4 + 4))
+    if ((*(equalCopy + 32) & 1) != 0 && self->_mediaType == *(equalCopy + 4))
     {
       v7 = 1;
       goto LABEL_11;
@@ -222,25 +222,25 @@ LABEL_11:
   return v4 ^ v3 ^ v5;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 1))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 1))
   {
     [(ETPVideo *)self setIntroMessageData:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(ETPVideo *)self setPlayingMessagesData:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[8])
+  if (fromCopy[8])
   {
-    self->_mediaType = v4[4];
+    self->_mediaType = fromCopy[4];
     *&self->_has |= 1u;
   }
 }

@@ -6,10 +6,10 @@
 
 - (id)sfSymbolsName
 {
-  v1 = [a1 symbol];
-  v2 = [v1 sfSymbolsName];
+  symbol = [self symbol];
+  sfSymbolsName = [symbol sfSymbolsName];
 
-  return v2;
+  return sfSymbolsName;
 }
 
 @end

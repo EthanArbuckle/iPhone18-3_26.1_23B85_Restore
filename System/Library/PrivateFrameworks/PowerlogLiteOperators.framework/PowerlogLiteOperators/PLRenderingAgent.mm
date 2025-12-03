@@ -7,13 +7,13 @@
 - (PLRenderingAgent)init;
 - (void)dealloc;
 - (void)enableCAScreenTelemetry;
-- (void)handleConnectedChange:(id)a3;
+- (void)handleConnectedChange:(id)change;
 - (void)initOperatorDependancies;
 - (void)initTaskOperatorDependancies;
-- (void)layoutMonitor:(id)a3 didUpdateDisplayLayout:(id)a4 withContext:(id)a5;
+- (void)layoutMonitor:(id)monitor didUpdateDisplayLayout:(id)layout withContext:(id)context;
 - (void)log;
-- (void)logEventBackwardFrameStats:(id)a3;
-- (void)logEventForwardFrameCount:(id)a3;
+- (void)logEventBackwardFrameStats:(id)stats;
+- (void)logEventForwardFrameCount:(id)count;
 - (void)logEventForwardScrollPocket;
 @end
 
@@ -21,7 +21,7 @@
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___PLRenderingAgent;
   objc_msgSendSuper2(&v2, sel_load);
 }
@@ -30,11 +30,11 @@
 {
   v9[2] = *MEMORY[0x277D85DE8];
   v8[0] = @"FrameCount";
-  v3 = [a1 entryEventBackwardDefinitionFrameCount];
+  entryEventBackwardDefinitionFrameCount = [self entryEventBackwardDefinitionFrameCount];
   v8[1] = @"FrameStats";
-  v9[0] = v3;
-  v4 = [a1 entryEventBackwardDefinitionFrameStats];
-  v9[1] = v4;
+  v9[0] = entryEventBackwardDefinitionFrameCount;
+  entryEventBackwardDefinitionFrameStats = [self entryEventBackwardDefinitionFrameStats];
+  v9[1] = entryEventBackwardDefinitionFrameStats;
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v9 forKeys:v8 count:2];
 
   v6 = *MEMORY[0x277D85DE8];
@@ -55,9 +55,9 @@
   v15[0] = v3;
   v14[1] = *MEMORY[0x277D3F540];
   v10 = @"FrameCount";
-  v4 = [MEMORY[0x277D3F198] sharedInstance];
-  v5 = [v4 commonTypeDict_IntegerFormat];
-  v11 = v5;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+  v11 = commonTypeDict_IntegerFormat;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v11 forKeys:&v10 count:1];
   v15[1] = v6;
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:v14 count:2];
@@ -82,33 +82,33 @@
   v27[0] = v21;
   v26[1] = *MEMORY[0x277D3F540];
   v22[0] = @"APL_r";
-  v20 = [MEMORY[0x277D3F198] sharedInstance];
-  v19 = [v20 commonTypeDict_RealFormat];
-  v23[0] = v19;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_RealFormat = [mEMORY[0x277D3F198] commonTypeDict_RealFormat];
+  v23[0] = commonTypeDict_RealFormat;
   v22[1] = @"APL_g";
-  v18 = [MEMORY[0x277D3F198] sharedInstance];
-  v17 = [v18 commonTypeDict_RealFormat];
-  v23[1] = v17;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_RealFormat2 = [mEMORY[0x277D3F198]2 commonTypeDict_RealFormat];
+  v23[1] = commonTypeDict_RealFormat2;
   v22[2] = @"APL_b";
-  v16 = [MEMORY[0x277D3F198] sharedInstance];
-  v15 = [v16 commonTypeDict_RealFormat];
-  v23[2] = v15;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_RealFormat3 = [mEMORY[0x277D3F198]3 commonTypeDict_RealFormat];
+  v23[2] = commonTypeDict_RealFormat3;
   v22[3] = @"AZLE_max";
-  v3 = [MEMORY[0x277D3F198] sharedInstance];
-  v4 = [v3 commonTypeDict_RealFormat];
-  v23[3] = v4;
+  mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_RealFormat4 = [mEMORY[0x277D3F198]4 commonTypeDict_RealFormat];
+  v23[3] = commonTypeDict_RealFormat4;
   v22[4] = @"AZLE_min";
-  v5 = [MEMORY[0x277D3F198] sharedInstance];
-  v6 = [v5 commonTypeDict_RealFormat];
-  v23[4] = v6;
+  mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_RealFormat5 = [mEMORY[0x277D3F198]5 commonTypeDict_RealFormat];
+  v23[4] = commonTypeDict_RealFormat5;
   v22[5] = @"AZLE_mean";
-  v7 = [MEMORY[0x277D3F198] sharedInstance];
-  v8 = [v7 commonTypeDict_RealFormat];
-  v23[5] = v8;
+  mEMORY[0x277D3F198]6 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_RealFormat6 = [mEMORY[0x277D3F198]6 commonTypeDict_RealFormat];
+  v23[5] = commonTypeDict_RealFormat6;
   v22[6] = @"EDR_headroom";
-  v9 = [MEMORY[0x277D3F198] sharedInstance];
-  v10 = [v9 commonTypeDict_RealFormat];
-  v23[6] = v10;
+  mEMORY[0x277D3F198]7 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_RealFormat7 = [mEMORY[0x277D3F198]7 commonTypeDict_RealFormat];
+  v23[6] = commonTypeDict_RealFormat7;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v23 forKeys:v22 count:7];
   v27[1] = v11;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v27 forKeys:v26 count:2];
@@ -122,7 +122,7 @@
 {
   if ([MEMORY[0x277D3F208] isHomePod] & 1) != 0 || (objc_msgSend(MEMORY[0x277D3F258], "isPowerlogHelperd") & 1) != 0 || (objc_msgSend(MEMORY[0x277D3F258], "isPerfPowerMetricd"))
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -140,10 +140,10 @@
     }
 
     self = v5;
-    v3 = self;
+    selfCopy = self;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 - (void)initOperatorDependancies
@@ -164,8 +164,8 @@
   v6 = objc_alloc(MEMORY[0x277D3F1A8]);
   v16 = @"ExternalConnected";
   v14 = &unk_282C10608;
-  v7 = [MEMORY[0x277CBEB68] null];
-  v15 = v7;
+  null = [MEMORY[0x277CBEB68] null];
+  v15 = null;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v15 forKeys:&v14 count:1];
   v17[0] = v8;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v17 forKeys:&v16 count:1];
@@ -248,17 +248,17 @@ void __48__PLRenderingAgent_initTaskOperatorDependancies__block_invoke(uint64_t 
 
 - (void)log
 {
-  v4 = [(PLRenderingAgent *)self mainDisplayMonitor];
-  v3 = [v4 currentLayout];
-  [(PLRenderingAgent *)self logEventForwardFrameCount:v3];
+  mainDisplayMonitor = [(PLRenderingAgent *)self mainDisplayMonitor];
+  currentLayout = [mainDisplayMonitor currentLayout];
+  [(PLRenderingAgent *)self logEventForwardFrameCount:currentLayout];
 }
 
 - (void)logEventForwardScrollPocket
 {
   v25 = *MEMORY[0x277D85DE8];
   state64 = 0;
-  v3 = [(PLRenderingAgent *)self scrollPocketListener];
-  state = notify_get_state([v3 stateToken], &state64);
+  scrollPocketListener = [(PLRenderingAgent *)self scrollPocketListener];
+  state = notify_get_state([scrollPocketListener stateToken], &state64);
 
   if (state)
   {
@@ -324,14 +324,14 @@ void __48__PLRenderingAgent_initTaskOperatorDependancies__block_invoke(uint64_t 
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logEventForwardFrameCount:(id)a3
+- (void)logEventForwardFrameCount:(id)count
 {
-  v4 = a3;
-  if (v4)
+  countCopy = count;
+  if (countCopy)
   {
-    v13 = v4;
-    v5 = [v4 displayBacklightLevel] < 1;
-    v4 = v13;
+    v13 = countCopy;
+    v5 = [countCopy displayBacklightLevel] < 1;
+    countCopy = v13;
     if (!v5)
     {
       v6 = [(PLOperator *)PLRenderingAgent entryKeyForType:*MEMORY[0x277D3F5C8] andName:@"FrameCount"];
@@ -340,58 +340,58 @@ void __48__PLRenderingAgent_initTaskOperatorDependancies__block_invoke(uint64_t 
       [v7 setObject:v8 forKeyedSubscript:@"FrameCount"];
 
       [(PLOperator *)self logEntry:v7];
-      v9 = [(PLRenderingAgent *)self deviceIsPlugged];
+      deviceIsPlugged = [(PLRenderingAgent *)self deviceIsPlugged];
 
-      if (v9)
+      if (deviceIsPlugged)
       {
         v10 = [v7 objectForKeyedSubscript:@"FrameCount"];
-        v11 = [v10 unsignedIntValue];
-        v12 = [(PLRenderingAgent *)self deviceIsPlugged];
-        -[PLRenderingAgent logFrameCount:forConnectedState:](self, "logFrameCount:forConnectedState:", v11, [v12 BOOLValue]);
+        unsignedIntValue = [v10 unsignedIntValue];
+        deviceIsPlugged2 = [(PLRenderingAgent *)self deviceIsPlugged];
+        -[PLRenderingAgent logFrameCount:forConnectedState:](self, "logFrameCount:forConnectedState:", unsignedIntValue, [deviceIsPlugged2 BOOLValue]);
       }
 
-      v4 = v13;
+      countCopy = v13;
     }
   }
 }
 
-- (void)layoutMonitor:(id)a3 didUpdateDisplayLayout:(id)a4 withContext:(id)a5
+- (void)layoutMonitor:(id)monitor didUpdateDisplayLayout:(id)layout withContext:(id)context
 {
-  v9 = a4;
-  v7 = [a5 transitionReason];
+  layoutCopy = layout;
+  transitionReason = [context transitionReason];
   v8 = SBSBacklightChangeSourceForDisplayLayoutTransitionReason();
 
   if (v8 != 8 && v8 != 28)
   {
-    [(PLRenderingAgent *)self logEventForwardFrameCount:v9];
+    [(PLRenderingAgent *)self logEventForwardFrameCount:layoutCopy];
   }
 }
 
-- (void)handleConnectedChange:(id)a3
+- (void)handleConnectedChange:(id)change
 {
-  v4 = [a3 objectForKey:@"entry"];
+  v4 = [change objectForKey:@"entry"];
   if (v4)
   {
     v8 = v4;
     v5 = [v4 objectForKeyedSubscript:@"ExternalConnected"];
-    v6 = [v5 BOOLValue];
+    bOOLValue = [v5 BOOLValue];
 
-    v7 = [MEMORY[0x277CCABB0] numberWithBool:v6];
+    v7 = [MEMORY[0x277CCABB0] numberWithBool:bOOLValue];
     [(PLRenderingAgent *)self setDeviceIsPlugged:v7];
 
-    [(PLRenderingAgent *)self logFrameCount:CARenderServerGetFrameCounter() forConnectedState:v6 ^ 1];
+    [(PLRenderingAgent *)self logFrameCount:CARenderServerGetFrameCounter() forConnectedState:bOOLValue ^ 1];
     v4 = v8;
   }
 }
 
-- (void)logEventBackwardFrameStats:(id)a3
+- (void)logEventBackwardFrameStats:(id)stats
 {
-  if (a3)
+  if (stats)
   {
     v4 = *MEMORY[0x277D3F5C8];
-    v5 = a3;
+    statsCopy = stats;
     v7 = [(PLOperator *)PLRenderingAgent entryKeyForType:v4 andName:@"FrameStats"];
-    v6 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v7 withRawData:v5];
+    v6 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v7 withRawData:statsCopy];
 
     [(PLOperator *)self logEntry:v6];
   }
@@ -428,12 +428,12 @@ uint64_t __39__PLRenderingAgent_shouldLogFrameStats__block_invoke()
 - (void)enableCAScreenTelemetry
 {
   v26 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277CD9E40] mainDisplay];
-  [v2 bounds];
+  mainDisplay = [MEMORY[0x277CD9E40] mainDisplay];
+  [mainDisplay bounds];
   v4 = v3;
 
-  v5 = [MEMORY[0x277CD9E40] mainDisplay];
-  [v5 bounds];
+  mainDisplay2 = [MEMORY[0x277CD9E40] mainDisplay];
+  [mainDisplay2 bounds];
   v7 = v6;
 
   v8 = MGGetSInt32Answer();

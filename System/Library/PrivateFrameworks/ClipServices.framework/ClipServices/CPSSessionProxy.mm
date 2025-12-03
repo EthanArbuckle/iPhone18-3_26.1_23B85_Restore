@@ -1,62 +1,62 @@
 @interface CPSSessionProxy
 - (BOOL)canRequestLocationConfirmation;
-- (BOOL)isEqual:(id)a3;
-- (CPSSessionProxy)initWithURL:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (CPSSessionProxy)initWithURL:(id)l;
 - (CPSSessionProxyDelegate)delegate;
 - (NSString)launchReason;
 - (void)_checkAndConsumeShowsAppAttributionBannerIfNeeded;
 - (void)cancel;
-- (void)checkAndConsumeShowsAppAttributionBannerWithCompletion:(id)a3;
+- (void)checkAndConsumeShowsAppAttributionBannerWithCompletion:(id)completion;
 - (void)connectToService;
-- (void)didFinishLoadingWithError:(id)a3;
-- (void)didFinishTestingAtTime:(double)a3;
+- (void)didFinishLoadingWithError:(id)error;
+- (void)didFinishTestingAtTime:(double)time;
 - (void)didInstallApplicationPlaceholder;
-- (void)didRetrieveApplicationIcon:(id)a3;
-- (void)didRetrieveBusinessIcon:(id)a3;
-- (void)didRetrieveHeroImage:(id)a3;
-- (void)didUpdateInstallProgress:(id)a3;
-- (void)didUpdateMetadata:(id)a3;
+- (void)didRetrieveApplicationIcon:(id)icon;
+- (void)didRetrieveBusinessIcon:(id)icon;
+- (void)didRetrieveHeroImage:(id)image;
+- (void)didUpdateInstallProgress:(id)progress;
+- (void)didUpdateMetadata:(id)metadata;
 - (void)disconnect;
 - (void)fetchClipMetadataAndImages;
-- (void)getLastLaunchOptionsWithCompletion:(id)a3;
-- (void)installClipWithCompletion:(id)a3;
-- (void)notifyWebClipActivationWithBundleID:(id)a3 referrerBundleID:(id)a4;
-- (void)openClipWithLaunchOptions:(id)a3 completion:(id)a4;
-- (void)prewarmClipWithCompletionHandler:(id)a3;
+- (void)getLastLaunchOptionsWithCompletion:(id)completion;
+- (void)installClipWithCompletion:(id)completion;
+- (void)notifyWebClipActivationWithBundleID:(id)d referrerBundleID:(id)iD;
+- (void)openClipWithLaunchOptions:(id)options completion:(id)completion;
+- (void)prewarmClipWithCompletionHandler:(id)handler;
 - (void)remoteServiceDidCrash;
 @end
 
 @implementation CPSSessionProxy
 
-- (CPSSessionProxy)initWithURL:(id)a3
+- (CPSSessionProxy)initWithURL:(id)l
 {
-  v4 = a3;
-  if (v4 && (v9.receiver = self, v9.super_class = CPSSessionProxy, (self = [(CPSSessionProxy *)&v9 init]) != 0))
+  lCopy = l;
+  if (lCopy && (v9.receiver = self, v9.super_class = CPSSessionProxy, (self = [(CPSSessionProxy *)&v9 init]) != 0))
   {
-    v5 = [v4 copy];
+    v5 = [lCopy copy];
     url = self->_url;
     self->_url = v5;
 
     self->_mutableIvarLock._os_unfair_lock_opaque = 0;
     self = self;
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(NSURL *)self->_url isEqual:v4[3]];
+    v5 = [(NSURL *)self->_url isEqual:equalCopy[3]];
   }
 
   else
@@ -69,17 +69,17 @@
 
 - (BOOL)canRequestLocationConfirmation
 {
-  v2 = [(CPSSessionProxy *)self launchReason];
-  if ([v2 isEqualToString:@"QR"] & 1) != 0 || (objc_msgSend(v2, "isEqualToString:", @"AppclipCode") & 1) != 0 || (objc_msgSend(v2, "isEqualToString:", @"NFC") & 1) != 0 || (objc_msgSend(v2, "isEqualToString:", @"ClipTester"))
+  launchReason = [(CPSSessionProxy *)self launchReason];
+  if ([launchReason isEqualToString:@"QR"] & 1) != 0 || (objc_msgSend(launchReason, "isEqualToString:", @"AppclipCode") & 1) != 0 || (objc_msgSend(launchReason, "isEqualToString:", @"NFC") & 1) != 0 || (objc_msgSend(launchReason, "isEqualToString:", @"ClipTester"))
   {
     v3 = 1;
   }
 
   else
   {
-    v5 = [MEMORY[0x277CCA8D8] mainBundle];
-    v6 = [v5 bundleIdentifier];
-    v3 = [v6 isEqualToString:@"com.apple.ClipTester"];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
+    v3 = [bundleIdentifier isEqualToString:@"com.apple.ClipTester"];
   }
 
   return v3;
@@ -87,10 +87,10 @@
 
 - (NSString)launchReason
 {
-  v3 = [(CPSSessionProxy *)self configuration];
-  v4 = [v3 launchReason];
-  launchReason = v4;
-  if (!v4)
+  configuration = [(CPSSessionProxy *)self configuration];
+  launchReason = [configuration launchReason];
+  launchReason = launchReason;
+  if (!launchReason)
   {
     launchReason = self->_launchReason;
   }
@@ -124,11 +124,11 @@
   [v3 unregisterSessionProxy:self];
 }
 
-- (void)prewarmClipWithCompletionHandler:(id)a3
+- (void)prewarmClipWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = +[CPSDaemonConnection sharedConnection];
-  [v5 prewarmClipWithURL:self->_url completionHandler:v4];
+  [v5 prewarmClipWithURL:self->_url completionHandler:handlerCopy];
 }
 
 - (void)fetchClipMetadataAndImages
@@ -137,11 +137,11 @@
   [v3 fetchClipMetadataAndImagesWithURL:self->_url completionHandler:0];
 }
 
-- (void)installClipWithCompletion:(id)a3
+- (void)installClipWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = +[CPSDaemonConnection sharedConnection];
-  [v5 installClipWithURL:self->_url completionHandler:v4];
+  [v5 installClipWithURL:self->_url completionHandler:completionCopy];
 }
 
 - (void)cancel
@@ -153,58 +153,58 @@
   v6[2] = __25__CPSSessionProxy_cancel__block_invoke;
   v6[3] = &unk_278DCDD20;
   v7 = v3;
-  v8 = self;
+  selfCopy = self;
   v5 = v3;
   [v5 cancelPrewarmingClipWithURL:url completionHandler:v6];
 }
 
-- (void)openClipWithLaunchOptions:(id)a3 completion:(id)a4
+- (void)openClipWithLaunchOptions:(id)options completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  optionsCopy = options;
   v8 = +[CPSDaemonConnection sharedConnection];
-  [v8 openClipWithURL:self->_url launchOptions:v7 completion:v6];
+  [v8 openClipWithURL:self->_url launchOptions:optionsCopy completion:completionCopy];
 }
 
-- (void)notifyWebClipActivationWithBundleID:(id)a3 referrerBundleID:(id)a4
+- (void)notifyWebClipActivationWithBundleID:(id)d referrerBundleID:(id)iD
 {
-  v5 = a4;
-  v6 = a3;
+  iDCopy = iD;
+  dCopy = d;
   v7 = +[CPSDaemonConnection sharedConnection];
-  [v7 notifyWebClipActivationWithBundleID:v6 referrerBundleID:v5];
+  [v7 notifyWebClipActivationWithBundleID:dCopy referrerBundleID:iDCopy];
 }
 
-- (void)getLastLaunchOptionsWithCompletion:(id)a3
+- (void)getLastLaunchOptionsWithCompletion:(id)completion
 {
-  v7 = a3;
-  v4 = [(CPSClipMetadata *)self->_metadata clipBundleID];
+  completionCopy = completion;
+  clipBundleID = [(CPSClipMetadata *)self->_metadata clipBundleID];
 
-  if (v4)
+  if (clipBundleID)
   {
     v5 = +[CPSDaemonConnection sharedConnection];
-    v6 = [(CPSClipMetadata *)self->_metadata clipBundleID];
-    [v5 getLastLaunchOptionsWithBundleID:v6 completion:v7];
+    clipBundleID2 = [(CPSClipMetadata *)self->_metadata clipBundleID];
+    [v5 getLastLaunchOptionsWithBundleID:clipBundleID2 completion:completionCopy];
   }
 
   else
   {
-    v7[2](v7, 0);
+    completionCopy[2](completionCopy, 0);
   }
 }
 
-- (void)checkAndConsumeShowsAppAttributionBannerWithCompletion:(id)a3
+- (void)checkAndConsumeShowsAppAttributionBannerWithCompletion:(id)completion
 {
-  v6 = a3;
+  completionCopy = completion;
   os_unfair_lock_lock(&self->_mutableIvarLock);
   if (self->_showAppAttributionBannerCallback)
   {
     os_unfair_lock_unlock(&self->_mutableIvarLock);
-    v6[2](v6, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
   else
   {
-    v4 = MEMORY[0x245D3D5F0](v6);
+    v4 = MEMORY[0x245D3D5F0](completionCopy);
     showAppAttributionBannerCallback = self->_showAppAttributionBannerCallback;
     self->_showAppAttributionBannerCallback = v4;
 
@@ -222,13 +222,13 @@
     os_unfair_lock_unlock(&self->_mutableIvarLock);
     objc_initWeak(&location, self);
     v4 = +[CPSDaemonConnection sharedConnection];
-    v5 = [(CPSClipMetadata *)self->_metadata webClipID];
+    webClipID = [(CPSClipMetadata *)self->_metadata webClipID];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __68__CPSSessionProxy__checkAndConsumeShowsAppAttributionBannerIfNeeded__block_invoke;
     v6[3] = &unk_278DCEFA8;
     objc_copyWeak(&v7, &location);
-    [v4 checkAndConsumeShowsAppAttributionBannerForBundleID:v5 completion:v6];
+    [v4 checkAndConsumeShowsAppAttributionBannerForBundleID:webClipID completion:v6];
 
     objc_destroyWeak(&v7);
     objc_destroyWeak(&location);
@@ -260,10 +260,10 @@ void __68__CPSSessionProxy__checkAndConsumeShowsAppAttributionBannerIfNeeded__bl
   }
 }
 
-- (void)didUpdateMetadata:(id)a3
+- (void)didUpdateMetadata:(id)metadata
 {
-  v8 = a3;
-  objc_storeStrong(&self->_metadata, a3);
+  metadataCopy = metadata;
+  objc_storeStrong(&self->_metadata, metadata);
   [(CPSSessionProxy *)self _checkAndConsumeShowsAppAttributionBannerIfNeeded];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v6 = objc_opt_respondsToSelector();
@@ -275,23 +275,23 @@ void __68__CPSSessionProxy__checkAndConsumeShowsAppAttributionBannerIfNeeded__bl
   }
 }
 
-- (void)didFinishLoadingWithError:(id)a3
+- (void)didFinishLoadingWithError:(id)error
 {
-  v7 = a3;
+  errorCopy = error;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
     v6 = objc_loadWeakRetained(&self->_delegate);
-    [v6 proxy:self didFinishLoadingWithError:v7];
+    [v6 proxy:self didFinishLoadingWithError:errorCopy];
   }
 }
 
-- (void)didUpdateInstallProgress:(id)a3
+- (void)didUpdateInstallProgress:(id)progress
 {
-  v8 = a3;
-  objc_storeStrong(&self->_estimatedProgress, a3);
+  progressCopy = progress;
+  objc_storeStrong(&self->_estimatedProgress, progress);
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v6 = objc_opt_respondsToSelector();
 
@@ -314,21 +314,21 @@ void __68__CPSSessionProxy__checkAndConsumeShowsAppAttributionBannerIfNeeded__bl
   }
 }
 
-- (void)didRetrieveApplicationIcon:(id)a3
+- (void)didRetrieveApplicationIcon:(id)icon
 {
-  v6 = a3;
-  objc_storeStrong(&self->_applicationIconFileURL, a3);
+  iconCopy = icon;
+  objc_storeStrong(&self->_applicationIconFileURL, icon);
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained proxy:self didRetrieveApplicationIcon:v6];
+    [WeakRetained proxy:self didRetrieveApplicationIcon:iconCopy];
   }
 }
 
-- (void)didRetrieveBusinessIcon:(id)a3
+- (void)didRetrieveBusinessIcon:(id)icon
 {
-  v6 = a3;
-  objc_storeStrong(&self->_businessIconURL, a3);
+  iconCopy = icon;
+  objc_storeStrong(&self->_businessIconURL, icon);
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
@@ -336,20 +336,20 @@ void __68__CPSSessionProxy__checkAndConsumeShowsAppAttributionBannerIfNeeded__bl
   }
 }
 
-- (void)didRetrieveHeroImage:(id)a3
+- (void)didRetrieveHeroImage:(id)image
 {
-  v6 = a3;
-  objc_storeStrong(&self->_heroImageFileURL, a3);
+  imageCopy = image;
+  objc_storeStrong(&self->_heroImageFileURL, image);
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained proxy:self didRetrieveHeroImage:v6];
+    [WeakRetained proxy:self didRetrieveHeroImage:imageCopy];
   }
 }
 
-- (void)didFinishTestingAtTime:(double)a3
+- (void)didFinishTestingAtTime:(double)time
 {
-  self->_appLaunchTime = a3;
+  self->_appLaunchTime = time;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {

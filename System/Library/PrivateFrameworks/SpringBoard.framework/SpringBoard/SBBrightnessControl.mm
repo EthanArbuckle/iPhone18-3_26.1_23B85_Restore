@@ -1,34 +1,34 @@
 @interface SBBrightnessControl
-+ (BOOL)handlesKeyCommandsForRoute:(int64_t)a3;
-- (BOOL)_HUDIsDisplayableWithReason:(id *)a3;
-- (BOOL)elasticValueViewController:(id)a3 updateCurrentValue:(float)a4;
-- (SBBrightnessControl)initWithHUDController:(id)a3;
-- (float)elasticValueViewControllerCurrentValue:(id)a3;
-- (id)_controllerForRoute:(int64_t)a3;
-- (id)acquireBrightnessHUDHiddenAssertionForReason:(id)a3;
++ (BOOL)handlesKeyCommandsForRoute:(int64_t)route;
+- (BOOL)_HUDIsDisplayableWithReason:(id *)reason;
+- (BOOL)elasticValueViewController:(id)controller updateCurrentValue:(float)value;
+- (SBBrightnessControl)initWithHUDController:(id)controller;
+- (float)elasticValueViewControllerCurrentValue:(id)value;
+- (id)_controllerForRoute:(int64_t)route;
+- (id)acquireBrightnessHUDHiddenAssertionForReason:(id)reason;
 - (id)existingBrightnessHUDViewController;
 - (id)presentedBrightnessHUDViewController;
-- (int64_t)elasticBrightnessViewControllerBrightnessRouteType:(id)a3;
-- (void)_controlCenterWillPresent:(id)a3;
-- (void)_handleUpdateBrightnessIncrementKeyIsDown:(BOOL)a3 decrementKeyIsDown:(BOOL)a4;
-- (void)_presentOrUpdateBrightnessHUDAsNecessaryForBrightnessLevel:(float)a3;
+- (int64_t)elasticBrightnessViewControllerBrightnessRouteType:(id)type;
+- (void)_controlCenterWillPresent:(id)present;
+- (void)_handleUpdateBrightnessIncrementKeyIsDown:(BOOL)down decrementKeyIsDown:(BOOL)isDown;
+- (void)_presentOrUpdateBrightnessHUDAsNecessaryForBrightnessLevel:(float)level;
 - (void)_resetIdleTimerForUserInteractionIfNecessary;
-- (void)brightnessController:(id)a3 performCoordinatedBrightnessChangeForIncrementKeyDown:(BOOL)a4 decrementKeyDown:(BOOL)a5;
+- (void)brightnessController:(id)controller performCoordinatedBrightnessChangeForIncrementKeyDown:(BOOL)down decrementKeyDown:(BOOL)keyDown;
 - (void)cancelBrightnessKeyPressEvents;
-- (void)elasticBrightnessViewControllerValueUpdatesDidEnd:(id)a3;
-- (void)elasticBrightnessViewControllerValueUpdatesWillBegin:(id)a3;
-- (void)elasticHUDViewControllerRequestsDismissal:(id)a3;
-- (void)handleBrightnessKeyPressEvent:(__IOHIDEvent *)a3 forRoute:(int64_t)a4;
-- (void)setActiveController:(id)a3;
-- (void)setBrightnessLevel:(float)a3 forRoute:(int64_t)a4;
+- (void)elasticBrightnessViewControllerValueUpdatesDidEnd:(id)end;
+- (void)elasticBrightnessViewControllerValueUpdatesWillBegin:(id)begin;
+- (void)elasticHUDViewControllerRequestsDismissal:(id)dismissal;
+- (void)handleBrightnessKeyPressEvent:(__IOHIDEvent *)event forRoute:(int64_t)route;
+- (void)setActiveController:(id)controller;
+- (void)setBrightnessLevel:(float)level forRoute:(int64_t)route;
 @end
 
 @implementation SBBrightnessControl
 
-- (SBBrightnessControl)initWithHUDController:(id)a3
+- (SBBrightnessControl)initWithHUDController:(id)controller
 {
-  v6 = a3;
-  if (!v6)
+  controllerCopy = controller;
+  if (!controllerCopy)
   {
     [(SBBrightnessControl *)a2 initWithHUDController:?];
   }
@@ -39,24 +39,24 @@
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_HUDController, a3);
-    v9 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v9 addObserver:v8 selector:sel__controlCenterWillPresent_ name:@"SBControlCenterWillPresentNotification" object:0];
-    [v9 addObserver:v8 selector:sel__controlCenterWillDismiss_ name:@"SBControlCenterWillDismissNotification" object:0];
+    objc_storeStrong(&v7->_HUDController, controller);
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v8 selector:sel__controlCenterWillPresent_ name:@"SBControlCenterWillPresentNotification" object:0];
+    [defaultCenter addObserver:v8 selector:sel__controlCenterWillDismiss_ name:@"SBControlCenterWillDismissNotification" object:0];
   }
 
   return v8;
 }
 
-+ (BOOL)handlesKeyCommandsForRoute:(int64_t)a3
++ (BOOL)handlesKeyCommandsForRoute:(int64_t)route
 {
-  if (a3 == 1)
+  if (route == 1)
   {
     v3 = off_27839FA70;
     return [(__objc2_class *)*v3 handlesKeyCommands];
   }
 
-  if (a3 == 2)
+  if (route == 2)
   {
     v3 = off_2783A0810;
     return [(__objc2_class *)*v3 handlesKeyCommands];
@@ -65,16 +65,16 @@
   return 0;
 }
 
-- (void)handleBrightnessKeyPressEvent:(__IOHIDEvent *)a3 forRoute:(int64_t)a4
+- (void)handleBrightnessKeyPressEvent:(__IOHIDEvent *)event forRoute:(int64_t)route
 {
-  v5 = [(SBBrightnessControl *)self _controllerForRoute:a4];
-  [v5 handleBrightnessKeyPressEvent:a3];
+  v5 = [(SBBrightnessControl *)self _controllerForRoute:route];
+  [v5 handleBrightnessKeyPressEvent:event];
 }
 
-- (void)setBrightnessLevel:(float)a3 forRoute:(int64_t)a4
+- (void)setBrightnessLevel:(float)level forRoute:(int64_t)route
 {
-  v6 = [(SBBrightnessControl *)self _controllerForRoute:a4];
-  *&v5 = a3;
+  v6 = [(SBBrightnessControl *)self _controllerForRoute:route];
+  *&v5 = level;
   [v6 setBrightnessLevel:1 animated:v5];
 }
 
@@ -86,25 +86,25 @@
   [(SBDisplayBrightnessController *)displayBrightnessController cancelBrightnessKeyPressEvent];
 }
 
-- (id)acquireBrightnessHUDHiddenAssertionForReason:(id)a3
+- (id)acquireBrightnessHUDHiddenAssertionForReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   [(SBBrightnessControl *)self cancelBrightnessKeyPressEvents];
-  v5 = [(SBHUDController *)self->_HUDController acquireHUDHiddenAssertionForIdentifier:*MEMORY[0x277D67038] withReason:v4];
+  v5 = [(SBHUDController *)self->_HUDController acquireHUDHiddenAssertionForIdentifier:*MEMORY[0x277D67038] withReason:reasonCopy];
 
   return v5;
 }
 
-- (void)brightnessController:(id)a3 performCoordinatedBrightnessChangeForIncrementKeyDown:(BOOL)a4 decrementKeyDown:(BOOL)a5
+- (void)brightnessController:(id)controller performCoordinatedBrightnessChangeForIncrementKeyDown:(BOOL)down decrementKeyDown:(BOOL)keyDown
 {
-  v5 = a5;
-  v6 = a4;
-  v15 = a3;
+  keyDownCopy = keyDown;
+  downCopy = down;
+  controllerCopy = controller;
   [(SBBrightnessControl *)self setActiveController:?];
-  [(SBBrightnessControl *)self _handleUpdateBrightnessIncrementKeyIsDown:v6 decrementKeyIsDown:v5];
-  if (v6 || v5)
+  [(SBBrightnessControl *)self _handleUpdateBrightnessIncrementKeyIsDown:downCopy decrementKeyIsDown:keyDownCopy];
+  if (downCopy || keyDownCopy)
   {
-    [v15 brightnessLevel];
+    [controllerCopy brightnessLevel];
     v9 = *&v8 + -0.0625;
     if ((*&v8 + -0.0625) < 0.0)
     {
@@ -112,7 +112,7 @@
     }
 
     v10 = fminf(*&v8 + 0.0625, 1.0);
-    if (v6)
+    if (downCopy)
     {
       v11 = v10;
     }
@@ -124,63 +124,63 @@
 
     if (*&v8 != v11)
     {
-      v12 = [(SBBrightnessControl *)self presentedBrightnessHUDViewController];
+      presentedBrightnessHUDViewController = [(SBBrightnessControl *)self presentedBrightnessHUDViewController];
       *&v13 = v11;
-      [v12 noteValueWillDeltaStepToValue:v13];
+      [presentedBrightnessHUDViewController noteValueWillDeltaStepToValue:v13];
     }
 
     *&v8 = v11;
-    [v15 setBrightnessLevel:1 animated:v8];
+    [controllerCopy setBrightnessLevel:1 animated:v8];
     *&v14 = v11;
     [(SBBrightnessControl *)self _presentOrUpdateBrightnessHUDAsNecessaryForBrightnessLevel:v14];
   }
 }
 
-- (float)elasticValueViewControllerCurrentValue:(id)a3
+- (float)elasticValueViewControllerCurrentValue:(id)value
 {
-  v3 = [(SBBrightnessControl *)self activeDataSource];
-  [v3 brightnessLevel];
+  activeDataSource = [(SBBrightnessControl *)self activeDataSource];
+  [activeDataSource brightnessLevel];
   v5 = v4;
 
   return v5;
 }
 
-- (BOOL)elasticValueViewController:(id)a3 updateCurrentValue:(float)a4
+- (BOOL)elasticValueViewController:(id)controller updateCurrentValue:(float)value
 {
-  v5 = [(SBBrightnessControl *)self activeDataSource];
-  *&v6 = a4;
-  v7 = [v5 setBrightnessLevel:0 animated:v6];
+  activeDataSource = [(SBBrightnessControl *)self activeDataSource];
+  *&v6 = value;
+  v7 = [activeDataSource setBrightnessLevel:0 animated:v6];
 
   return v7;
 }
 
-- (int64_t)elasticBrightnessViewControllerBrightnessRouteType:(id)a3
+- (int64_t)elasticBrightnessViewControllerBrightnessRouteType:(id)type
 {
-  v3 = [(SBBrightnessControl *)self activeDataSource];
-  v4 = [v3 brightnessRouteType];
+  activeDataSource = [(SBBrightnessControl *)self activeDataSource];
+  brightnessRouteType = [activeDataSource brightnessRouteType];
 
-  return v4;
+  return brightnessRouteType;
 }
 
-- (void)elasticBrightnessViewControllerValueUpdatesWillBegin:(id)a3
+- (void)elasticBrightnessViewControllerValueUpdatesWillBegin:(id)begin
 {
-  v3 = [(SBBrightnessControl *)self activeDataSource];
-  [v3 noteValueUpdatesWillBegin];
+  activeDataSource = [(SBBrightnessControl *)self activeDataSource];
+  [activeDataSource noteValueUpdatesWillBegin];
 }
 
-- (void)elasticBrightnessViewControllerValueUpdatesDidEnd:(id)a3
+- (void)elasticBrightnessViewControllerValueUpdatesDidEnd:(id)end
 {
-  v3 = [(SBBrightnessControl *)self activeDataSource];
-  [v3 noteValueUpdatesDidEnd];
+  activeDataSource = [(SBBrightnessControl *)self activeDataSource];
+  [activeDataSource noteValueUpdatesDidEnd];
 }
 
-- (void)elasticHUDViewControllerRequestsDismissal:(id)a3
+- (void)elasticHUDViewControllerRequestsDismissal:(id)dismissal
 {
   v3 = [(SBHUDController *)self->_HUDController presentedHUDControllerForIdentifier:*MEMORY[0x277D67038]];
   [v3 dismissAnimated:0];
 }
 
-- (void)_controlCenterWillPresent:(id)a3
+- (void)_controlCenterWillPresent:(id)present
 {
   if (!self->_controlCenterIsPresented)
   {
@@ -193,20 +193,20 @@
 - (id)presentedBrightnessHUDViewController
 {
   v2 = [(SBHUDController *)self->_HUDController presentedHUDControllerForIdentifier:*MEMORY[0x277D67038]];
-  v3 = [v2 HUDViewController];
+  hUDViewController = [v2 HUDViewController];
 
-  return v3;
+  return hUDViewController;
 }
 
 - (id)existingBrightnessHUDViewController
 {
   v2 = [(SBHUDController *)self->_HUDController knownHUDControllerForIdentifier:*MEMORY[0x277D67038]];
-  v3 = [v2 HUDViewController];
+  hUDViewController = [v2 HUDViewController];
 
-  return v3;
+  return hUDViewController;
 }
 
-- (void)_presentOrUpdateBrightnessHUDAsNecessaryForBrightnessLevel:(float)a3
+- (void)_presentOrUpdateBrightnessHUDAsNecessaryForBrightnessLevel:(float)level
 {
   if (![(SBBrightnessControl *)self _HUDIsDisplayable])
   {
@@ -215,7 +215,7 @@
 
   v5 = *MEMORY[0x277D67038];
   v6 = [(SBHUDController *)self->_HUDController knownHUDControllerForIdentifier:*MEMORY[0x277D67038]];
-  v7 = [v6 HUDViewController];
+  hUDViewController = [v6 HUDViewController];
   if (v6)
   {
     v8 = v6;
@@ -230,13 +230,13 @@
     v12 = [(SBHUDController *)self->_HUDController HUDSessionForViewController:v10 identifier:v5];
 
     v8 = v12;
-    v7 = v10;
+    hUDViewController = v10;
   }
 
   v13 = v8;
   [v8 presentWithDismissalInterval:0 animated:60.0];
-  *&v11 = a3;
-  [v7 noteValueDidChange:v11];
+  *&v11 = level;
+  [hUDViewController noteValueDidChange:v11];
   if (!v6)
   {
     if (self->_brightnessIncrementKeyIsDown)
@@ -252,104 +252,104 @@
       goto LABEL_13;
     }
 
-    [v7 noteButtonDownWasHit:1];
+    [hUDViewController noteButtonDownWasHit:1];
     if (self->_brightnessIncrementKeyIsDown)
     {
 LABEL_12:
-      [v7 noteButtonUpWasHit:1];
+      [hUDViewController noteButtonUpWasHit:1];
     }
   }
 
 LABEL_13:
 }
 
-- (BOOL)_HUDIsDisplayableWithReason:(id *)a3
+- (BOOL)_HUDIsDisplayableWithReason:(id *)reason
 {
   controlCenterIsPresented = self->_controlCenterIsPresented;
-  if (a3 && self->_controlCenterIsPresented)
+  if (reason && self->_controlCenterIsPresented)
   {
-    *a3 = @"Control Center is presented";
+    *reason = @"Control Center is presented";
   }
 
   return !controlCenterIsPresented;
 }
 
-- (void)_handleUpdateBrightnessIncrementKeyIsDown:(BOOL)a3 decrementKeyIsDown:(BOOL)a4
+- (void)_handleUpdateBrightnessIncrementKeyIsDown:(BOOL)down decrementKeyIsDown:(BOOL)isDown
 {
-  v4 = a4;
-  v5 = a3;
-  v7 = [(SBBrightnessControl *)self presentedBrightnessHUDViewController];
+  isDownCopy = isDown;
+  downCopy = down;
+  presentedBrightnessHUDViewController = [(SBBrightnessControl *)self presentedBrightnessHUDViewController];
   brightnessIncrementKeyIsDown = self->_brightnessIncrementKeyIsDown;
   brightnessDecrementKeyIsDown = self->_brightnessDecrementKeyIsDown;
-  v13 = v7;
-  if (v7)
+  v13 = presentedBrightnessHUDViewController;
+  if (presentedBrightnessHUDViewController)
   {
-    v10 = [(SBBrightnessControl *)self _HUDIsDisplayable];
-    if (brightnessIncrementKeyIsDown != v5 && (v5 & 1) == 0)
+    _HUDIsDisplayable = [(SBBrightnessControl *)self _HUDIsDisplayable];
+    if (brightnessIncrementKeyIsDown != downCopy && (downCopy & 1) == 0)
     {
       [v13 noteButtonUpWasHit:0];
     }
 
-    if (brightnessDecrementKeyIsDown != v4 && (v4 & 1) == 0)
+    if (brightnessDecrementKeyIsDown != isDownCopy && (isDownCopy & 1) == 0)
     {
       [v13 noteButtonDownWasHit:0];
     }
 
-    v11 = !v10;
-    if (brightnessIncrementKeyIsDown != v5 && v5 && !v11)
+    v11 = !_HUDIsDisplayable;
+    if (brightnessIncrementKeyIsDown != downCopy && downCopy && !v11)
     {
       [v13 noteButtonUpWasHit:1];
     }
 
-    if (brightnessDecrementKeyIsDown != v4 && (v4 & 1) != 0 && !v11)
+    if (brightnessDecrementKeyIsDown != isDownCopy && (isDownCopy & 1) != 0 && !v11)
     {
       [v13 noteButtonDownWasHit:1];
     }
   }
 
-  if (brightnessIncrementKeyIsDown != v5 || brightnessDecrementKeyIsDown != v4)
+  if (brightnessIncrementKeyIsDown != downCopy || brightnessDecrementKeyIsDown != isDownCopy)
   {
     [(SBBrightnessControl *)self _resetIdleTimerForUserInteractionIfNecessary];
   }
 
-  self->_brightnessIncrementKeyIsDown = v5;
-  self->_brightnessDecrementKeyIsDown = v4;
+  self->_brightnessIncrementKeyIsDown = downCopy;
+  self->_brightnessDecrementKeyIsDown = isDownCopy;
 }
 
-- (void)setActiveController:(id)a3
+- (void)setActiveController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   activeController = self->_activeController;
-  if (activeController != v5)
+  if (activeController != controllerCopy)
   {
-    v9 = v5;
+    v9 = controllerCopy;
     v7 = activeController;
-    objc_storeStrong(&self->_activeController, a3);
+    objc_storeStrong(&self->_activeController, controller);
     if (v7)
     {
       [(SBBrightnessRouteControlling *)v7 noteValueUpdatesDidEnd];
-      v8 = [(SBBrightnessControl *)self existingBrightnessHUDViewController];
-      [v8 reloadData];
+      existingBrightnessHUDViewController = [(SBBrightnessControl *)self existingBrightnessHUDViewController];
+      [existingBrightnessHUDViewController reloadData];
     }
 
-    v5 = v9;
+    controllerCopy = v9;
   }
 }
 
-- (id)_controllerForRoute:(int64_t)a3
+- (id)_controllerForRoute:(int64_t)route
 {
-  v3 = self;
-  switch(a3)
+  selfCopy = self;
+  switch(route)
   {
     case 2:
       keyboardBrightnessController = self->_keyboardBrightnessController;
       if (!keyboardBrightnessController)
       {
         v9 = [[SBKeyboardBrightnessController alloc] initWithCoordinator:self];
-        v10 = v3->_keyboardBrightnessController;
-        v3->_keyboardBrightnessController = v9;
+        v10 = selfCopy->_keyboardBrightnessController;
+        selfCopy->_keyboardBrightnessController = v9;
 
-        keyboardBrightnessController = v3->_keyboardBrightnessController;
+        keyboardBrightnessController = selfCopy->_keyboardBrightnessController;
       }
 
       goto LABEL_11;
@@ -358,10 +358,10 @@ LABEL_13:
       if (!keyboardBrightnessController)
       {
         v7 = [[SBDisplayBrightnessController alloc] initWithCoordinator:self];
-        displayBrightnessController = v3->_displayBrightnessController;
-        v3->_displayBrightnessController = v7;
+        displayBrightnessController = selfCopy->_displayBrightnessController;
+        selfCopy->_displayBrightnessController = v7;
 
-        keyboardBrightnessController = v3->_displayBrightnessController;
+        keyboardBrightnessController = selfCopy->_displayBrightnessController;
       }
 
 LABEL_11:
@@ -388,11 +388,11 @@ LABEL_11:
   v8 = +[SBLockScreenManager sharedInstanceIfExists];
   if ([v8 isUILocked])
   {
-    v2 = [v8 lockScreenEnvironment];
-    v3 = [v2 backlightController];
-    v4 = [v3 isInScreenOffMode];
+    lockScreenEnvironment = [v8 lockScreenEnvironment];
+    backlightController = [lockScreenEnvironment backlightController];
+    isInScreenOffMode = [backlightController isInScreenOffMode];
 
-    if ((v4 & 1) == 0)
+    if ((isInScreenOffMode & 1) == 0)
     {
       v5 = +[SBIdleTimerGlobalCoordinator sharedInstanceIfExists];
       v6 = objc_opt_class();

@@ -1,21 +1,21 @@
 @interface PUILockdownModeController
 - (PUILockdownModeController)init;
-- (id)_2GEnabled:(id)a3;
+- (id)_2GEnabled:(id)enabled;
 - (id)lockdownModeOptionsSpecifiers;
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (void)dataDidChange;
-- (void)didTapEnableLockdownModeButton:(id)a3;
+- (void)didTapEnableLockdownModeButton:(id)button;
 - (void)didTapOnboardingLockdownModeButton;
-- (void)getEligibleDevicesWithCompletion:(id)a3;
+- (void)getEligibleDevicesWithCompletion:(id)completion;
 - (void)init;
 - (void)openLearnMorePage;
-- (void)presentConfirmationAlert:(id)a3 hasPairedWatch:(BOOL)a4;
+- (void)presentConfirmationAlert:(id)alert hasPairedWatch:(BOOL)watch;
 - (void)presentErrorAlert;
 - (void)presentOnboardingController;
 - (void)provideNavigationDonations;
 - (void)refreshLinkStatusInParent;
-- (void)set2GEnabled:(id)a3 specifier:(id)a4;
+- (void)set2GEnabled:(id)enabled specifier:(id)specifier;
 - (void)updateSpecifiersForImposedSettings;
 @end
 
@@ -35,9 +35,9 @@
       v3 = [objc_alloc(MEMORY[0x277CC37B0]) initWithQueue:0];
       [(PUILockdownModeController *)v2 setClient:v3];
 
-      v4 = [(PUILockdownModeController *)v2 client];
+      client = [(PUILockdownModeController *)v2 client];
       v15 = 0;
-      v5 = [v4 get2GSwitchEnabledSync:&v15];
+      v5 = [client get2GSwitchEnabledSync:&v15];
       v6 = v15;
       [(PUILockdownModeController *)v2 setHas2GSupport:v5];
 
@@ -52,9 +52,9 @@
 
       if ([(PUILockdownModeController *)v2 has2GSupport])
       {
-        v8 = [(PUILockdownModeController *)v2 client];
+        client2 = [(PUILockdownModeController *)v2 client];
         v14 = v6;
-        v9 = [v8 get2GUserPreferenceSync:&v14];
+        v9 = [client2 get2GUserPreferenceSync:&v14];
         v10 = v14;
 
         [(PUILockdownModeController *)v2 set_2GEnabled:v9];
@@ -85,15 +85,15 @@
 {
   v14[1] = *MEMORY[0x277D85DE8];
   v3 = PUI_BundleForPrivacySettingsFramework();
-  v4 = [v3 bundleURL];
+  bundleURL = [v3 bundleURL];
 
   v5 = objc_alloc(MEMORY[0x277CCAEB8]);
-  v6 = [MEMORY[0x277CBEAF8] currentLocale];
-  v7 = [v5 initWithKey:@"LOCKDOWN_MODE" table:@"LockdownMode" locale:v6 bundleURL:v4];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  v7 = [v5 initWithKey:@"LOCKDOWN_MODE" table:@"LockdownMode" locale:currentLocale bundleURL:bundleURL];
 
   v8 = objc_alloc(MEMORY[0x277CCAEB8]);
-  v9 = [MEMORY[0x277CBEAF8] currentLocale];
-  v10 = [v8 initWithKey:@"PRIVACY" table:@"Privacy" locale:v9 bundleURL:v4];
+  currentLocale2 = [MEMORY[0x277CBEAF8] currentLocale];
+  v10 = [v8 initWithKey:@"PRIVACY" table:@"Privacy" locale:currentLocale2 bundleURL:bundleURL];
 
   v14[0] = v10;
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:1];
@@ -132,8 +132,8 @@ void __42__PUILockdownModeController_dataDidChange__block_invoke(uint64_t a1)
 {
   if ([(PUILockdownModeController *)self lockdownModeEnabled]&& [(PUILockdownModeController *)self indexOfSpecifierID:@"LOCKDOWN_MODE_OPTIONS_GROUP"]== 0x7FFFFFFFFFFFFFFFLL)
   {
-    v3 = [(PUILockdownModeController *)self lockdownModeOptionsSpecifiers];
-    [(PUILockdownModeController *)self addSpecifiersFromArray:v3 animated:0];
+    lockdownModeOptionsSpecifiers = [(PUILockdownModeController *)self lockdownModeOptionsSpecifiers];
+    [(PUILockdownModeController *)self addSpecifiersFromArray:lockdownModeOptionsSpecifiers animated:0];
   }
 }
 
@@ -145,10 +145,10 @@ void __42__PUILockdownModeController_dataDidChange__block_invoke(uint64_t a1)
   {
     v5 = objc_opt_new();
     v6 = +[PUILockdownModeUtilities getCanSetLockdownMode];
-    v7 = [(PUILockdownModeController *)self traitCollection];
-    v8 = [v7 pe_isSettingsFeatureDescriptionCellSupported];
+    traitCollection = [(PUILockdownModeController *)self traitCollection];
+    pe_isSettingsFeatureDescriptionCellSupported = [traitCollection pe_isSettingsFeatureDescriptionCellSupported];
 
-    if (v8)
+    if (pe_isSettingsFeatureDescriptionCellSupported)
     {
       v9 = MEMORY[0x277D3FAD8];
       v10 = PUI_LocalizedStringForLockdownMode(@"LOCKDOWN_MODE");
@@ -173,9 +173,9 @@ void __42__PUILockdownModeController_dataDidChange__block_invoke(uint64_t a1)
       [v5 addObject:v11];
     }
 
-    v18 = [(PUILockdownModeController *)self lockdownModeEnabled];
+    lockdownModeEnabled = [(PUILockdownModeController *)self lockdownModeEnabled];
     v19 = MEMORY[0x277D3FAD8];
-    if (v18)
+    if (lockdownModeEnabled)
     {
       v20 = PUI_LocalizedStringForLockdownMode(@"STATE_SPECIFIER_TURN_OFF");
       v21 = [v19 deleteButtonSpecifierWithName:v20 target:self action:sel_didTapOnboardingLockdownModeButton];
@@ -216,9 +216,9 @@ void __39__PUILockdownModeController_specifiers__block_invoke(uint64_t a1)
 - (id)lockdownModeOptionsSpecifiers
 {
   v62[8] = *MEMORY[0x277D85DE8];
-  v3 = [(PUILockdownModeController *)self _lockdownModeOptionsSpecifiers];
+  _lockdownModeOptionsSpecifiers = [(PUILockdownModeController *)self _lockdownModeOptionsSpecifiers];
 
-  if (!v3)
+  if (!_lockdownModeOptionsSpecifiers)
   {
     v48 = objc_opt_new();
     v50 = [MEMORY[0x277D3FAD8] groupSpecifierWithID:@"LOCKDOWN_MODE_OPTIONS_GROUP"];
@@ -315,10 +315,10 @@ void __39__PUILockdownModeController_specifiers__block_invoke(uint64_t a1)
     [(PUILockdownModeController *)self set_lockdownModeOptionsSpecifiers:v17];
   }
 
-  v26 = [(PUILockdownModeController *)self _lockdownModeOptionsSpecifiers];
+  _lockdownModeOptionsSpecifiers2 = [(PUILockdownModeController *)self _lockdownModeOptionsSpecifiers];
   v27 = *MEMORY[0x277D85DE8];
 
-  return v26;
+  return _lockdownModeOptionsSpecifiers2;
 }
 
 void __58__PUILockdownModeController_lockdownModeOptionsSpecifiers__block_invoke(uint64_t a1, void *a2, unint64_t a3)
@@ -364,12 +364,12 @@ void __58__PUILockdownModeController_lockdownModeOptionsSpecifiers__block_invoke
   v6 = [MEMORY[0x277CBEBC0] URLWithString:@"https://support.apple.com/kb/HT212650"];
   v7 = [v5 initWithURL:v6];
 
-  v8 = [(PUILockdownModeController *)self presentedViewController];
+  presentedViewController = [(PUILockdownModeController *)self presentedViewController];
 
-  if (v8)
+  if (presentedViewController)
   {
-    v9 = [(PUILockdownModeController *)self presentedViewController];
-    [v9 presentViewController:v7 animated:1 completion:0];
+    presentedViewController2 = [(PUILockdownModeController *)self presentedViewController];
+    [presentedViewController2 presentViewController:v7 animated:1 completion:0];
   }
 
   else
@@ -393,15 +393,15 @@ void __58__PUILockdownModeController_lockdownModeOptionsSpecifiers__block_invoke
   }
 }
 
-- (void)set2GEnabled:(id)a3 specifier:(id)a4
+- (void)set2GEnabled:(id)enabled specifier:(id)specifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 propertyForKey:*MEMORY[0x277D401A8]];
-  if (([v6 isEqual:v8] & 1) == 0)
+  enabledCopy = enabled;
+  specifierCopy = specifier;
+  v8 = [specifierCopy propertyForKey:*MEMORY[0x277D401A8]];
+  if (([enabledCopy isEqual:v8] & 1) == 0)
   {
     objc_initWeak(location, self);
-    if ([v6 BOOLValue])
+    if ([enabledCopy BOOLValue])
     {
       v9 = PUI_LocalizedStringForLockdownMode(@"CELLULAR_ALERT_ENABLE_TITLE");
       v21 = PUI_LocalizedStringForLockdownMode(@"CELLULAR_ALERT_ENABLE_MESSAGE");
@@ -413,7 +413,7 @@ void __58__PUILockdownModeController_lockdownModeOptionsSpecifiers__block_invoke
       v30[2] = __52__PUILockdownModeController_set2GEnabled_specifier___block_invoke;
       v30[3] = &unk_279BA0BC8;
       v30[4] = self;
-      v13 = v7;
+      v13 = specifierCopy;
       v31 = v13;
       v14 = v8;
       v32 = v14;
@@ -442,15 +442,15 @@ void __58__PUILockdownModeController_lockdownModeOptionsSpecifiers__block_invoke
 
     else
     {
-      v20 = [(PUILockdownModeController *)self client];
+      client = [(PUILockdownModeController *)self client];
       v22[0] = MEMORY[0x277D85DD0];
       v22[1] = 3221225472;
       v22[2] = __52__PUILockdownModeController_set2GEnabled_specifier___block_invoke_2_149;
       v22[3] = &unk_279BA0BA0;
-      v23 = v7;
+      v23 = specifierCopy;
       v24 = v8;
       objc_copyWeak(&v25, location);
-      [v20 set2GUserPreference:0 completion:v22];
+      [client set2GUserPreference:0 completion:v22];
 
       objc_destroyWeak(&v25);
       v19 = v23;
@@ -517,15 +517,15 @@ void __52__PUILockdownModeController_set2GEnabled_specifier___block_invoke_2_149
   }
 }
 
-- (id)_2GEnabled:(id)a3
+- (id)_2GEnabled:(id)enabled
 {
   v3 = MEMORY[0x277CCABB0];
-  v4 = [(PUILockdownModeController *)self _2GEnabled];
+  _2GEnabled = [(PUILockdownModeController *)self _2GEnabled];
 
-  return [v3 numberWithBool:v4];
+  return [v3 numberWithBool:_2GEnabled];
 }
 
-- (void)didTapEnableLockdownModeButton:(id)a3
+- (void)didTapEnableLockdownModeButton:(id)button
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
@@ -583,13 +583,13 @@ void __52__PUILockdownModeController_set2GEnabled_specifier___block_invoke_2_149
   v30 = [v28 stringWithFormat:v29, v3];
   [v9 addSectionWithHeader:v27 content:v30];
 
-  v31 = [MEMORY[0x277D37650] linkButton];
+  linkButton = [MEMORY[0x277D37650] linkButton];
   v32 = PUI_LocalizedStringForLockdownMode(@"ENABLE_LOCKDOWN_MODE");
-  [v31 setTitle:v32 forState:0];
+  [linkButton setTitle:v32 forState:0];
 
-  [v31 addTarget:self action:sel_didTapEnableLockdownModeButton_ forEvents:0x2000];
-  v33 = [v9 buttonTray];
-  [v33 addButton:v31];
+  [linkButton addTarget:self action:sel_didTapEnableLockdownModeButton_ forEvents:0x2000];
+  buttonTray = [v9 buttonTray];
+  [buttonTray addButton:linkButton];
 
   v34 = objc_alloc(MEMORY[0x277D751E0]);
   v35 = MEMORY[0x277D750C8];
@@ -602,8 +602,8 @@ void __52__PUILockdownModeController_set2GEnabled_specifier___block_invoke_2_149
   v37 = [v35 actionWithHandler:v41];
   v38 = [v34 initWithBarButtonSystemItem:1 primaryAction:v37];
 
-  v39 = [v36 navigationItem];
-  [v39 setLeftBarButtonItem:v38];
+  navigationItem = [v36 navigationItem];
+  [navigationItem setLeftBarButtonItem:v38];
 
   v40 = [objc_alloc(MEMORY[0x277D757A0]) initWithRootViewController:v36];
   [(PUILockdownModeController *)self presentModalViewController:v40 withTransition:3];
@@ -615,17 +615,17 @@ void __56__PUILockdownModeController_presentOnboardingController__block_invoke(u
   [v1 dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)presentConfirmationAlert:(id)a3 hasPairedWatch:(BOOL)a4
+- (void)presentConfirmationAlert:(id)alert hasPairedWatch:(BOOL)watch
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(PUILockdownModeController *)self lockdownModeEnabled];
-  v34 = !v7;
-  v8 = [MEMORY[0x277D75418] currentDevice];
-  v9 = [v8 sf_isiPhone];
+  watchCopy = watch;
+  alertCopy = alert;
+  lockdownModeEnabled = [(PUILockdownModeController *)self lockdownModeEnabled];
+  v34 = !lockdownModeEnabled;
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  sf_isiPhone = [currentDevice sf_isiPhone];
 
   v10 = getLocalizedDeviceName();
-  if (v7)
+  if (lockdownModeEnabled)
   {
     v11 = @"CONFIRM_ALERT_DISABLE_TITLE";
   }
@@ -636,14 +636,14 @@ void __56__PUILockdownModeController_presentOnboardingController__block_invoke(u
   }
 
   v12 = PUI_LocalizedStringForLockdownMode(v11);
-  if (v6 && [v6 count])
+  if (alertCopy && [alertCopy count])
   {
-    v13 = v4 & v9;
+    v13 = watchCopy & sf_isiPhone;
     v14 = @"CONFIRM_ALERT_ENABLE_ALL_DEVICES_MESSAGE";
     v15 = MEMORY[0x277CCACA8];
-    v16 = !v7;
+    v16 = !lockdownModeEnabled;
     v17 = @"CONFIRM_ALERT_ENABLE_ALL_DEVICES_WITH_WATCH_MESSAGE";
-    if (v7)
+    if (lockdownModeEnabled)
     {
       v14 = @"CONFIRM_ALERT_DISABLE_ALL_DEVICES_MESSAGE";
     }
@@ -653,12 +653,12 @@ void __56__PUILockdownModeController_presentOnboardingController__block_invoke(u
 
   else
   {
-    v13 = v4 & v9;
+    v13 = watchCopy & sf_isiPhone;
     v14 = @"CONFIRM_ALERT_ENABLE_MESSAGE";
     v15 = MEMORY[0x277CCACA8];
-    v16 = !v7;
+    v16 = !lockdownModeEnabled;
     v17 = @"CONFIRM_ALERT_ENABLE_WITH_WATCH_MESSAGE";
-    if (v7)
+    if (lockdownModeEnabled)
     {
       v14 = @"CONFIRM_ALERT_DISABLE_MESSAGE";
     }
@@ -685,7 +685,7 @@ void __56__PUILockdownModeController_presentOnboardingController__block_invoke(u
   v21 = [v15 stringWithFormat:v20, v10];
 
   v22 = [MEMORY[0x277D75110] alertControllerWithTitle:v12 message:v21 preferredStyle:1];
-  if (v7)
+  if (lockdownModeEnabled)
   {
     v23 = @"CONFIRM_ALERT_DISABLE_BUTTON";
   }
@@ -695,7 +695,7 @@ void __56__PUILockdownModeController_presentOnboardingController__block_invoke(u
     v23 = @"CONFIRM_ALERT_ENABLE_BUTTON";
   }
 
-  if (v7)
+  if (lockdownModeEnabled)
   {
     v24 = 2;
   }
@@ -722,12 +722,12 @@ void __56__PUILockdownModeController_presentOnboardingController__block_invoke(u
   v31 = [v29 actionWithTitle:v30 style:1 handler:0];
   [v22 addAction:v31];
 
-  v32 = [(PUILockdownModeController *)self presentedViewController];
+  presentedViewController = [(PUILockdownModeController *)self presentedViewController];
 
-  if (v32)
+  if (presentedViewController)
   {
-    v33 = [(PUILockdownModeController *)self presentedViewController];
-    [v33 presentViewController:v22 animated:1 completion:0];
+    presentedViewController2 = [(PUILockdownModeController *)self presentedViewController];
+    [presentedViewController2 presentViewController:v22 animated:1 completion:0];
   }
 
   else
@@ -738,9 +738,9 @@ void __56__PUILockdownModeController_presentOnboardingController__block_invoke(u
 
 - (void)presentErrorAlert
 {
-  v3 = [(PUILockdownModeController *)self lockdownModeEnabled];
-  v4 = !v3;
-  if (v3)
+  lockdownModeEnabled = [(PUILockdownModeController *)self lockdownModeEnabled];
+  v4 = !lockdownModeEnabled;
+  if (lockdownModeEnabled)
   {
     v5 = @"ERROR_ALERT_DISABLE_TITLE";
   }
@@ -772,12 +772,12 @@ void __56__PUILockdownModeController_presentOnboardingController__block_invoke(u
   v14 = [v12 actionWithTitle:v13 style:1 handler:0];
   [v11 addAction:v14];
 
-  v15 = [(PUILockdownModeController *)self presentedViewController];
+  presentedViewController = [(PUILockdownModeController *)self presentedViewController];
 
-  if (v15)
+  if (presentedViewController)
   {
-    v16 = [(PUILockdownModeController *)self presentedViewController];
-    [v16 presentViewController:v11 animated:1 completion:0];
+    presentedViewController2 = [(PUILockdownModeController *)self presentedViewController];
+    [presentedViewController2 presentViewController:v11 animated:1 completion:0];
   }
 
   else
@@ -806,19 +806,19 @@ void __66__PUILockdownModeController_setLockdownModeEnabled_forAllDevices___bloc
   }
 }
 
-- (void)getEligibleDevicesWithCompletion:(id)a3
+- (void)getEligibleDevicesWithCompletion:(id)completion
 {
   v69[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CB8F48] defaultStore];
-  v5 = [v4 aa_primaryAppleAccount];
+  completionCopy = completion;
+  defaultStore = [MEMORY[0x277CB8F48] defaultStore];
+  aa_primaryAppleAccount = [defaultStore aa_primaryAppleAccount];
   v6 = PUIGetActivePairedDevice();
   v7 = v6;
   v8 = v6 != 0;
-  if (v5)
+  if (aa_primaryAppleAccount)
   {
-    v9 = [v5 aa_altDSID];
-    v10 = [v4 aa_authKitAccountForAltDSID:v9];
+    aa_altDSID = [aa_primaryAppleAccount aa_altDSID];
+    v10 = [defaultStore aa_authKitAccountForAltDSID:aa_altDSID];
     if ([v10 aa_needsToVerifyTerms])
     {
       goto LABEL_14;
@@ -842,13 +842,13 @@ void __66__PUILockdownModeController_setLockdownModeEnabled_forAllDevices___bloc
 
     v12 = v11;
     _Block_object_dispose(&v65, 8);
-    v13 = [v11 sharedInstance];
-    v14 = [v13 securityLevelForAccount:v10] == 4;
+    sharedInstance = [v11 sharedInstance];
+    v14 = [sharedInstance securityLevelForAccount:v10] == 4;
 
     if (!v14)
     {
 LABEL_14:
-      v3[2](v3, 0, v7 != 0);
+      completionCopy[2](completionCopy, 0, v7 != 0);
     }
 
     else
@@ -872,7 +872,7 @@ LABEL_14:
       v16 = v15;
       _Block_object_dispose(&v65, 8);
       v47 = objc_alloc_init(v15);
-      [v47 setAltDSID:v9];
+      [v47 setAltDSID:aa_altDSID];
       [v47 setIncludeFamilyDevices:0];
       [v47 setIncludeUntrustedDevices:0];
       v65 = 0;
@@ -914,8 +914,8 @@ LABEL_14:
       v58[1] = v58;
       v58[2] = 0x2020000000;
       v59 = 0;
-      v24 = [MEMORY[0x277CBEB18] array];
-      v45 = v9;
+      array = [MEMORY[0x277CBEB18] array];
+      v45 = aa_altDSID;
       v32 = dispatch_semaphore_create(0);
       v65 = 0;
       v66 = &v65;
@@ -933,7 +933,7 @@ LABEL_14:
         v33 = v66[3];
       }
 
-      v34 = v24;
+      v34 = array;
       v35 = v23;
       v36 = v33;
       _Block_object_dispose(&v65, 8);
@@ -956,20 +956,20 @@ LABEL_14:
       block[3] = &unk_279BA0CE0;
       v49 = v38;
       v50 = v39;
-      v51 = v3;
+      v51 = completionCopy;
       v52 = v46;
       v40 = v39;
       v41 = v38;
       dispatch_async(MEMORY[0x277D85CD0], block);
 
-      v9 = v45;
+      aa_altDSID = v45;
       _Block_object_dispose(v58, 8);
     }
   }
 
   else
   {
-    v3[2](v3, 0, v6 != 0);
+    completionCopy[2](completionCopy, 0, v6 != 0);
   }
 
   v42 = *MEMORY[0x277D85DE8];
@@ -1165,21 +1165,21 @@ uint64_t __62__PUILockdownModeController_getEligibleDevicesWithCompletion___bloc
   return (*(*(a1 + 48) + 16))();
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v13.receiver = self;
   v13.super_class = PUILockdownModeController;
-  v6 = a4;
-  v7 = [(PUILockdownModeController *)&v13 tableView:a3 cellForRowAtIndexPath:v6];
-  v8 = [(PUILockdownModeController *)self specifierAtIndexPath:v6, v13.receiver, v13.super_class];
+  pathCopy = path;
+  v7 = [(PUILockdownModeController *)&v13 tableView:view cellForRowAtIndexPath:pathCopy];
+  v8 = [(PUILockdownModeController *)self specifierAtIndexPath:pathCopy, v13.receiver, v13.super_class];
 
   v9 = [v8 propertyForKey:*MEMORY[0x277D3FE58]];
-  LODWORD(v6) = [v9 isEqual:objc_opt_class()];
+  LODWORD(pathCopy) = [v9 isEqual:objc_opt_class()];
 
-  if (v6)
+  if (pathCopy)
   {
-    v10 = [v7 detailTextLabel];
-    [v10 setNumberOfLines:0];
+    detailTextLabel = [v7 detailTextLabel];
+    [detailTextLabel setNumberOfLines:0];
   }
 
   v11 = [v8 propertyForKey:@"PUITableCellNoSeparator"];

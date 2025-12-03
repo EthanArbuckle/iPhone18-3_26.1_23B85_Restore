@@ -1,14 +1,14 @@
 @interface DOCSBFolderState
-- (BOOL)compareOrderedFilesToOtherOrderedFiles:(id)a3;
+- (BOOL)compareOrderedFilesToOtherOrderedFiles:(id)files;
 - (DOCSBFolderState)init;
-- (DOCSBFolderState)initWithIdentifier:(id)a3 fileURL:(id)a4;
+- (DOCSBFolderState)initWithIdentifier:(id)identifier fileURL:(id)l;
 - (NSArray)orderedFiles;
 - (NSString)folderIdentifier;
 - (NSURL)folderURL;
-- (void)setFolderIdentifier:(id)a3;
-- (void)setFolderURL:(id)a3;
-- (void)setOrderedFiles:(id)a3;
-- (void)set_folderURL:(id)a3;
+- (void)setFolderIdentifier:(id)identifier;
+- (void)setFolderURL:(id)l;
+- (void)setOrderedFiles:(id)files;
+- (void)set_folderURL:(id)l;
 @end
 
 @implementation DOCSBFolderState
@@ -23,7 +23,7 @@
   return v4;
 }
 
-- (void)setFolderIdentifier:(id)a3
+- (void)setFolderIdentifier:(id)identifier
 {
   v4 = sub_24938A45C();
   v5 = (self + OBJC_IVAR___DOCSBFolderState_folderIdentifier);
@@ -42,13 +42,13 @@
   return v3;
 }
 
-- (void)setOrderedFiles:(id)a3
+- (void)setOrderedFiles:(id)files
 {
   sub_24938A2FC();
   v4 = sub_24938A4FC();
   v5 = *(self + OBJC_IVAR___DOCSBFolderState_orderedFiles);
   *(self + OBJC_IVAR___DOCSBFolderState_orderedFiles) = v4;
-  v6 = self;
+  selfCopy = self;
 
   sub_24937D1BC();
 }
@@ -60,8 +60,8 @@
   v5 = *(v4 + 64);
   MEMORY[0x28223BE20](v3);
   v7 = &v12 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v8 = self;
-  v9 = [(DOCSBFolderState *)v8 _folderURL];
+  selfCopy = self;
+  _folderURL = [(DOCSBFolderState *)selfCopy _folderURL];
   sub_24938A2DC();
 
   v10 = sub_24938A2CC();
@@ -70,7 +70,7 @@
   return v10;
 }
 
-- (void)setFolderURL:(id)a3
+- (void)setFolderURL:(id)l
 {
   v4 = sub_24938A2FC();
   v5 = *(v4 - 8);
@@ -78,21 +78,21 @@
   MEMORY[0x28223BE20](v4);
   v8 = &v11 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_24938A2DC();
-  v9 = self;
+  selfCopy = self;
   v10 = sub_24938A2CC();
-  [(DOCSBFolderState *)v9 set_folderURL:v10];
+  [(DOCSBFolderState *)selfCopy set_folderURL:v10];
 
   (*(v5 + 8))(v8, v4);
 }
 
-- (void)set_folderURL:(id)a3
+- (void)set_folderURL:(id)l
 {
   v4 = *(self + OBJC_IVAR___DOCSBFolderState__folderURL);
-  *(self + OBJC_IVAR___DOCSBFolderState__folderURL) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR___DOCSBFolderState__folderURL) = l;
+  lCopy = l;
 }
 
-- (DOCSBFolderState)initWithIdentifier:(id)a3 fileURL:(id)a4
+- (DOCSBFolderState)initWithIdentifier:(id)identifier fileURL:(id)l
 {
   v5 = sub_24938A2FC();
   v6 = *(v5 - 8);
@@ -116,11 +116,11 @@
   return v15;
 }
 
-- (BOOL)compareOrderedFilesToOtherOrderedFiles:(id)a3
+- (BOOL)compareOrderedFilesToOtherOrderedFiles:(id)files
 {
   sub_24938A2FC();
   v4 = sub_24938A4FC();
-  v5 = self;
+  selfCopy = self;
   v6 = sub_24937DB50(v4);
 
   return v6 & 1;

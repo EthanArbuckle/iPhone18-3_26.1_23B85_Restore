@@ -1,15 +1,15 @@
 @interface WorkoutPlanPreferencesViewController
 - (CGSize)preferredContentSize;
-- (_TtC9SeymourUI36WorkoutPlanPreferencesViewController)initWithCoder:(id)a3;
-- (_TtC9SeymourUI36WorkoutPlanPreferencesViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)onCancelButtonTapped:(id)a3;
-- (void)onUpdateButtonTapped:(id)a3;
-- (void)setPreferredContentSize:(CGSize)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (_TtC9SeymourUI36WorkoutPlanPreferencesViewController)initWithCoder:(id)coder;
+- (_TtC9SeymourUI36WorkoutPlanPreferencesViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)onCancelButtonTapped:(id)tapped;
+- (void)onUpdateButtonTapped:(id)tapped;
+- (void)setPreferredContentSize:(CGSize)size;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation WorkoutPlanPreferencesViewController
@@ -17,7 +17,7 @@
 - (CGSize)preferredContentSize
 {
   ObjectType = swift_getObjectType();
-  v4 = self;
+  selfCopy = self;
   v5 = sub_20C138104();
   if (v5 == sub_20C138104())
   {
@@ -28,7 +28,7 @@
 
   else
   {
-    v12.receiver = v4;
+    v12.receiver = selfCopy;
     v12.super_class = ObjectType;
     [(WorkoutPlanPreferencesViewController *)&v12 preferredContentSize];
     v9 = v8;
@@ -43,16 +43,16 @@
   return result;
 }
 
-- (void)setPreferredContentSize:(CGSize)a3
+- (void)setPreferredContentSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v5.receiver = self;
   v5.super_class = swift_getObjectType();
   [(WorkoutPlanPreferencesViewController *)&v5 setPreferredContentSize:width, height];
 }
 
-- (_TtC9SeymourUI36WorkoutPlanPreferencesViewController)initWithCoder:(id)a3
+- (_TtC9SeymourUI36WorkoutPlanPreferencesViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC9SeymourUI36WorkoutPlanPreferencesViewController_resignActiveObserver) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC9SeymourUI36WorkoutPlanPreferencesViewController_primaryActionButton) = 0;
@@ -64,17 +64,17 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   WorkoutPlanPreferencesViewController.viewDidLoad()();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v7.receiver = self;
   v7.super_class = swift_getObjectType();
   v4 = v7.receiver;
-  [(WorkoutPlanPreferencesViewController *)&v7 viewDidAppear:v3];
+  [(WorkoutPlanPreferencesViewController *)&v7 viewDidAppear:appearCopy];
   type metadata accessor for WorkoutPlanPreferencesPageDataProvider();
   sub_20BAC9A14(&qword_27C769F20, 255, type metadata accessor for WorkoutPlanPreferencesPageDataProvider);
   sub_20C138C54();
@@ -83,19 +83,19 @@
   sub_20C139364();
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v4 = self;
-  WorkoutPlanPreferencesViewController.viewWillDisappear(_:)(a3);
+  selfCopy = self;
+  WorkoutPlanPreferencesViewController.viewWillDisappear(_:)(disappear);
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v7.receiver = self;
   v7.super_class = swift_getObjectType();
   v4 = v7.receiver;
-  [(WorkoutPlanPreferencesViewController *)&v7 viewDidDisappear:v3];
+  [(WorkoutPlanPreferencesViewController *)&v7 viewDidDisappear:disappearCopy];
   sub_20BAC9A14(&qword_27C769F28, v5, type metadata accessor for WorkoutPlanPreferencesViewController);
   sub_20BAC9A14(&qword_27C769F30, v6, type metadata accessor for WorkoutPlanPreferencesViewController);
   sub_20C139374();
@@ -115,21 +115,21 @@
   sub_20B9D8614(v6, v7, v8, v9);
 }
 
-- (void)onCancelButtonTapped:(id)a3
+- (void)onCancelButtonTapped:(id)tapped
 {
-  v4 = a3;
-  v5 = self;
+  tappedCopy = tapped;
+  selfCopy = self;
   sub_20BAC9274();
 }
 
-- (void)onUpdateButtonTapped:(id)a3
+- (void)onUpdateButtonTapped:(id)tapped
 {
-  v4 = a3;
-  v5 = self;
+  tappedCopy = tapped;
+  selfCopy = self;
   sub_20BAC9638();
 }
 
-- (_TtC9SeymourUI36WorkoutPlanPreferencesViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC9SeymourUI36WorkoutPlanPreferencesViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -1,33 +1,33 @@
 @interface VNMemeClassifier
-+ (BOOL)providesSceneLabelsForConfiguration:(id)a3;
++ (BOOL)providesSceneLabelsForConfiguration:(id)configuration;
 + (id)configurationOptionKeysForDetectorKey;
-+ (id)inputImageBlobNameForConfiguration:(id)a3;
-+ (id)modelPathForConfiguration:(id)a3 error:(id *)a4;
-+ (id)sceneLabelsFilePathForConfiguration:(id)a3 error:(id *)a4;
-- (BOOL)completeInitializationForSession:(id)a3 error:(id *)a4;
-- (BOOL)configureImageAnalyzerOptions:(void *)a3 error:(id *)a4;
-- (id)observationsForLastAnalysisOfImageAnalyzer:(void *)a3 processOptions:(id)a4 originatingRequestSpecifier:(id)a5 qosClass:(unsigned int)a6 error:(id *)a7;
-- (id)supportedIdentifiersWithOptions:(id)a3 error:(id *)a4;
++ (id)inputImageBlobNameForConfiguration:(id)configuration;
++ (id)modelPathForConfiguration:(id)configuration error:(id *)error;
++ (id)sceneLabelsFilePathForConfiguration:(id)configuration error:(id *)error;
+- (BOOL)completeInitializationForSession:(id)session error:(id *)error;
+- (BOOL)configureImageAnalyzerOptions:(void *)options error:(id *)error;
+- (id)observationsForLastAnalysisOfImageAnalyzer:(void *)analyzer processOptions:(id)options originatingRequestSpecifier:(id)specifier qosClass:(unsigned int)class error:(id *)error;
+- (id)supportedIdentifiersWithOptions:(id)options error:(id *)error;
 @end
 
 @implementation VNMemeClassifier
 
-+ (id)sceneLabelsFilePathForConfiguration:(id)a3 error:(id *)a4
++ (id)sceneLabelsFilePathForConfiguration:(id)configuration error:(id *)error
 {
-  v6 = a3;
+  configurationCopy = configuration;
   v11 = 0;
-  if (_getModelDropForConfigurationOptions(v6, &v11, a4))
+  if (_getModelDropForConfigurationOptions(configurationCopy, &v11, error))
   {
     if (v11 == 1)
     {
-      v7 = [VNEspressoHelpers pathForEspressoResourceWithFilename:@"SCL_v0.3.1_9c7zcipfrc_558001-labels-v3.txt" error:a4];
+      v7 = [VNEspressoHelpers pathForEspressoResourceWithFilename:@"SCL_v0.3.1_9c7zcipfrc_558001-labels-v3.txt" error:error];
     }
 
     else
     {
-      v10.receiver = a1;
+      v10.receiver = self;
       v10.super_class = &OBJC_METACLASS___VNMemeClassifier;
-      v7 = objc_msgSendSuper2(&v10, sel_sceneLabelsFilePathForConfiguration_error_, v6, a4);
+      v7 = objc_msgSendSuper2(&v10, sel_sceneLabelsFilePathForConfiguration_error_, configurationCopy, error);
     }
 
     v8 = v7;
@@ -41,10 +41,10 @@
   return v8;
 }
 
-+ (BOOL)providesSceneLabelsForConfiguration:(id)a3
++ (BOOL)providesSceneLabelsForConfiguration:(id)configuration
 {
   v4 = 0;
-  result = _getModelDropForConfigurationOptions(a3, &v4, 0);
+  result = _getModelDropForConfigurationOptions(configuration, &v4, 0);
   if (v4 != 1)
   {
     return 0;
@@ -53,10 +53,10 @@
   return result;
 }
 
-+ (id)inputImageBlobNameForConfiguration:(id)a3
++ (id)inputImageBlobNameForConfiguration:(id)configuration
 {
   v6 = 0;
-  _getModelDropForConfigurationOptions(a3, &v6, 0);
+  _getModelDropForConfigurationOptions(configuration, &v6, 0);
   if (v6 == 1)
   {
     v3 = @"image";
@@ -72,10 +72,10 @@
   return v4;
 }
 
-+ (id)modelPathForConfiguration:(id)a3 error:(id *)a4
++ (id)modelPathForConfiguration:(id)configuration error:(id *)error
 {
   v8 = 0;
-  _getModelDropForConfigurationOptions(a3, &v8, 0);
+  _getModelDropForConfigurationOptions(configuration, &v8, 0);
   if (v8 == 1)
   {
     v5 = @"SCL_v0.3.1_9c7zcipfrc_558001.espresso";
@@ -86,7 +86,7 @@
     v5 = 0;
   }
 
-  v6 = [VNEspressoHelpers pathForEspressoNetworkModelFileWithName:v5 error:a4];
+  v6 = [VNEspressoHelpers pathForEspressoNetworkModelFileWithName:v5 error:error];
 
   return v6;
 }
@@ -97,7 +97,7 @@
   block[1] = 3221225472;
   block[2] = __57__VNMemeClassifier_configurationOptionKeysForDetectorKey__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (+[VNMemeClassifier configurationOptionKeysForDetectorKey]::onceToken != -1)
   {
     dispatch_once(&+[VNMemeClassifier configurationOptionKeysForDetectorKey]::onceToken, block);
@@ -121,30 +121,30 @@ void __57__VNMemeClassifier_configurationOptionKeysForDetectorKey__block_invoke(
   +[VNMemeClassifier configurationOptionKeysForDetectorKey]::configurationOptionKeys = v3;
 }
 
-- (id)observationsForLastAnalysisOfImageAnalyzer:(void *)a3 processOptions:(id)a4 originatingRequestSpecifier:(id)a5 qosClass:(unsigned int)a6 error:(id *)a7
+- (id)observationsForLastAnalysisOfImageAnalyzer:(void *)analyzer processOptions:(id)options originatingRequestSpecifier:(id)specifier qosClass:(unsigned int)class error:(id *)error
 {
-  v7 = [(VNImageAnalyzerBasedDetector *)self observationsForSceneLabelsFromLastAnalysisOfImageAnalyzer:a3 identifierAcceptingBlock:0 operationPointsProvider:0 originatingRequestSpecifier:a5 qosClass:*&a6 error:a7];
+  v7 = [(VNImageAnalyzerBasedDetector *)self observationsForSceneLabelsFromLastAnalysisOfImageAnalyzer:analyzer identifierAcceptingBlock:0 operationPointsProvider:0 originatingRequestSpecifier:specifier qosClass:*&class error:error];
 
   return v7;
 }
 
-- (BOOL)configureImageAnalyzerOptions:(void *)a3 error:(id *)a4
+- (BOOL)configureImageAnalyzerOptions:(void *)options error:(id *)error
 {
   v9.receiver = self;
   v9.super_class = VNMemeClassifier;
-  v6 = [(VNImageAnalyzerBasedDetector *)&v9 configureImageAnalyzerOptions:a3 error:a4];
+  v6 = [(VNImageAnalyzerBasedDetector *)&v9 configureImageAnalyzerOptions:options error:error];
   if (v6 && self->_modelDrop == 1)
   {
-    if (*(a3 + 143) < 0)
+    if (*(options + 143) < 0)
     {
-      *(a3 + 16) = 20;
-      v7 = *(a3 + 15);
+      *(options + 16) = 20;
+      v7 = *(options + 15);
     }
 
     else
     {
-      v7 = a3 + 120;
-      *(a3 + 143) = 20;
+      v7 = options + 120;
+      *(options + 143) = 20;
     }
 
     strcpy(v7, "merged/probabilities");
@@ -153,15 +153,15 @@ void __57__VNMemeClassifier_configurationOptionKeysForDetectorKey__block_invoke(
   return v6;
 }
 
-- (BOOL)completeInitializationForSession:(id)a3 error:(id *)a4
+- (BOOL)completeInitializationForSession:(id)session error:(id *)error
 {
-  v6 = a3;
-  v7 = [(VNDetector *)self configurationOptions];
-  if (_getModelDropForConfigurationOptions(v7, &self->_modelDrop, a4))
+  sessionCopy = session;
+  configurationOptions = [(VNDetector *)self configurationOptions];
+  if (_getModelDropForConfigurationOptions(configurationOptions, &self->_modelDrop, error))
   {
     v10.receiver = self;
     v10.super_class = VNMemeClassifier;
-    v8 = [(VNImageAnalyzerBasedDetector *)&v10 completeInitializationForSession:v6 error:a4];
+    v8 = [(VNImageAnalyzerBasedDetector *)&v10 completeInitializationForSession:sessionCopy error:error];
   }
 
   else
@@ -172,9 +172,9 @@ void __57__VNMemeClassifier_configurationOptionKeysForDetectorKey__block_invoke(
   return v8;
 }
 
-- (id)supportedIdentifiersWithOptions:(id)a3 error:(id *)a4
+- (id)supportedIdentifiersWithOptions:(id)options error:(id *)error
 {
-  v4 = [(VNImageAnalyzerBasedDetector *)self supportedClassificationIdentifiersAcceptedByBlock:0 error:a4];
+  v4 = [(VNImageAnalyzerBasedDetector *)self supportedClassificationIdentifiersAcceptedByBlock:0 error:error];
 
   return v4;
 }

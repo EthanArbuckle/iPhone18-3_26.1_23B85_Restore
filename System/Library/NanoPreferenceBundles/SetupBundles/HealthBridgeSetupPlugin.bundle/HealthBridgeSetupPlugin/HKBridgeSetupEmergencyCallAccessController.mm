@@ -1,7 +1,7 @@
 @interface HKBridgeSetupEmergencyCallAccessController
 - (BPSSetupMiniFlowControllerDelegate)miniFlowDelegate;
 - (HKBridgeSetupEmergencyCallAccessController)init;
-- (HKBridgeSetupEmergencyCallAccessController)initWithConfiguration:(id)a3;
+- (HKBridgeSetupEmergencyCallAccessController)initWithConfiguration:(id)configuration;
 - (id)alternateButtonTitle;
 - (id)detailString;
 - (id)imageResourceBundleIdentifier;
@@ -11,16 +11,16 @@
 - (id)termsOfAddress;
 - (id)titleString;
 - (void)completeMiniFlowStep;
-- (void)learnMoreButtonPressed:(id)a3;
-- (void)okayButtonPressed:(id)a3;
-- (void)updateMedicalIDShareDuringEmergencyInSkippedPane:(BOOL)a3;
+- (void)learnMoreButtonPressed:(id)pressed;
+- (void)okayButtonPressed:(id)pressed;
+- (void)updateMedicalIDShareDuringEmergencyInSkippedPane:(BOOL)pane;
 @end
 
 @implementation HKBridgeSetupEmergencyCallAccessController
 
-- (HKBridgeSetupEmergencyCallAccessController)initWithConfiguration:(id)a3
+- (HKBridgeSetupEmergencyCallAccessController)initWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v20.receiver = self;
   v20.super_class = HKBridgeSetupEmergencyCallAccessController;
   v5 = [(HKBridgeSetupEmergencyCallAccessController *)&v20 init];
@@ -28,22 +28,22 @@
   if (v5)
   {
     [(HKBridgeSetupEmergencyCallAccessController *)v5 setStyle:58];
-    v7 = [v4 copy];
+    v7 = [configurationCopy copy];
     configuration = v6->_configuration;
     v6->_configuration = v7;
 
-    v9 = [(_HKBridgeSetupConfiguration *)v6->_configuration healthStore];
+    healthStore = [(_HKBridgeSetupConfiguration *)v6->_configuration healthStore];
     healthStore = v6->_healthStore;
-    v6->_healthStore = v9;
+    v6->_healthStore = healthStore;
 
-    v11 = [(_HKBridgeSetupConfiguration *)v6->_configuration medicalIDStore];
+    medicalIDStore = [(_HKBridgeSetupConfiguration *)v6->_configuration medicalIDStore];
     medicalIDStore = v6->_medicalIDStore;
-    v6->_medicalIDStore = v11;
+    v6->_medicalIDStore = medicalIDStore;
 
-    v13 = [(_HKBridgeSetupConfiguration *)v6->_configuration familyMember];
-    v14 = [v13 firstName];
+    familyMember = [(_HKBridgeSetupConfiguration *)v6->_configuration familyMember];
+    firstName = [familyMember firstName];
     firstName = v6->_firstName;
-    v6->_firstName = v14;
+    v6->_firstName = firstName;
 
     v16 = v6->_medicalIDStore;
     v18[0] = _NSConcreteStackBlock;
@@ -75,13 +75,13 @@
 {
   if (!self->_firstName)
   {
-    v3 = [(HKBridgeSetupEmergencyCallAccessController *)self delegate];
-    v4 = [v3 setupFlowUserInfo];
-    v5 = [v4 objectForKeyedSubscript:BPSPairingFlowFamilyMember];
+    delegate = [(HKBridgeSetupEmergencyCallAccessController *)self delegate];
+    setupFlowUserInfo = [delegate setupFlowUserInfo];
+    v5 = [setupFlowUserInfo objectForKeyedSubscript:BPSPairingFlowFamilyMember];
 
-    v6 = [v5 firstName];
+    firstName = [v5 firstName];
     firstName = self->_firstName;
-    self->_firstName = v6;
+    self->_firstName = firstName;
   }
 
   v8 = [NSBundle bundleForClass:objc_opt_class()];
@@ -96,13 +96,13 @@
 {
   if (!self->_firstName)
   {
-    v3 = [(HKBridgeSetupEmergencyCallAccessController *)self delegate];
-    v4 = [v3 setupFlowUserInfo];
-    v5 = [v4 objectForKeyedSubscript:BPSPairingFlowFamilyMember];
+    delegate = [(HKBridgeSetupEmergencyCallAccessController *)self delegate];
+    setupFlowUserInfo = [delegate setupFlowUserInfo];
+    v5 = [setupFlowUserInfo objectForKeyedSubscript:BPSPairingFlowFamilyMember];
 
-    v6 = [v5 firstName];
+    firstName = [v5 firstName];
     firstName = self->_firstName;
-    self->_firstName = v6;
+    self->_firstName = firstName;
   }
 
   v8 = [NSBundle bundleForClass:objc_opt_class()];
@@ -110,16 +110,16 @@
 
   v10 = [NSAttributedString alloc];
   v18 = NSInflectionConceptsKey;
-  v11 = [(HKBridgeSetupEmergencyCallAccessController *)self termsOfAddress];
-  v17 = v11;
+  termsOfAddress = [(HKBridgeSetupEmergencyCallAccessController *)self termsOfAddress];
+  v17 = termsOfAddress;
   v12 = [NSArray arrayWithObjects:&v17 count:1];
   v19 = v12;
   v13 = [NSDictionary dictionaryWithObjects:&v19 forKeys:&v18 count:1];
   v14 = [v10 initWithFormat:v9 options:0 locale:0 context:v13, self->_firstName];
 
-  v15 = [v14 string];
+  string = [v14 string];
 
-  return v15;
+  return string;
 }
 
 - (id)suggestedButtonTitle
@@ -157,16 +157,16 @@
 - (id)imageResourceBundleIdentifier
 {
   v2 = [NSBundle bundleForClass:objc_opt_class()];
-  v3 = [v2 bundleIdentifier];
+  bundleIdentifier = [v2 bundleIdentifier];
 
-  return v3;
+  return bundleIdentifier;
 }
 
 - (id)termsOfAddress
 {
-  v2 = [(HKBridgeSetupEmergencyCallAccessController *)self delegate];
-  v3 = [v2 setupFlowUserInfo];
-  v4 = [v3 objectForKeyedSubscript:BPSPairingFlowFamilyMember];
+  delegate = [(HKBridgeSetupEmergencyCallAccessController *)self delegate];
+  setupFlowUserInfo = [delegate setupFlowUserInfo];
+  v4 = [setupFlowUserInfo objectForKeyedSubscript:BPSPairingFlowFamilyMember];
 
   v10 = CNContactAddressingGrammarKey;
   v5 = [NSArray arrayWithObjects:&v10 count:1];
@@ -175,39 +175,39 @@
 
   if (v7)
   {
-    v8 = [v7 termsOfAddress];
+    termsOfAddress = [v7 termsOfAddress];
   }
 
   else
   {
-    v8 = &__NSArray0__struct;
+    termsOfAddress = &__NSArray0__struct;
   }
 
-  return v8;
+  return termsOfAddress;
 }
 
-- (void)learnMoreButtonPressed:(id)a3
+- (void)learnMoreButtonPressed:(id)pressed
 {
   v4 = +[MIUIMedicalIDLearnMoreNavigationViewControllerFactory makeViewController];
   [(HKBridgeSetupEmergencyCallAccessController *)self presentViewController:v4 animated:1 completion:0];
 }
 
-- (void)updateMedicalIDShareDuringEmergencyInSkippedPane:(BOOL)a3
+- (void)updateMedicalIDShareDuringEmergencyInSkippedPane:(BOOL)pane
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_452C;
   v3[3] = &unk_C478;
   v3[4] = self;
-  v4 = a3;
+  paneCopy = pane;
   [HKBridgeSetupPrincipalClass getDeviceProfileIdentifierWithCompletion:v3];
 }
 
-- (void)okayButtonPressed:(id)a3
+- (void)okayButtonPressed:(id)pressed
 {
   v4 = objc_opt_class();
-  v5 = [(_HKBridgeSetupConfiguration *)self->_configuration device];
-  [BPSFollowUpController markSkippedSetupPaneClass:v4 forDevice:v5];
+  device = [(_HKBridgeSetupConfiguration *)self->_configuration device];
+  [BPSFollowUpController markSkippedSetupPaneClass:v4 forDevice:device];
 
   [(HKBridgeSetupEmergencyCallAccessController *)self completeMiniFlowStep];
 }

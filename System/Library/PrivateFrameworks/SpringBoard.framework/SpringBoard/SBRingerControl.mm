@@ -1,65 +1,65 @@
 @interface SBRingerControl
 - (BOOL)_accessibilityIsRingerMuted;
-- (BOOL)_isRingerUIDisplayableWithReason:(void *)a1;
-- (BOOL)isRingerHUDVisibleOnWindowScene:(_BOOL8)a1;
+- (BOOL)_isRingerUIDisplayableWithReason:(void *)reason;
+- (BOOL)isRingerHUDVisibleOnWindowScene:(_BOOL8)scene;
 - (SBControlCenterCoordinator)controlCenterCoordinator;
 - (double)volume;
 - (id)_avscOperationsQueue;
 - (id)_ringerUICoordinator;
 - (id)bannerManager;
-- (id)initWithBannerManager:(void *)a3 soundController:;
-- (id)observeRingerMutedWithBlock:(id)a3;
-- (id)previewRingerStateForReason:(id)a3;
-- (id)soundForRingerMuted:(BOOL)a3;
+- (id)initWithBannerManager:(void *)manager soundController:;
+- (id)observeRingerMutedWithBlock:(id)block;
+- (id)previewRingerStateForReason:(id)reason;
+- (id)soundForRingerMuted:(BOOL)muted;
 - (uint64_t)isRingerHUDVisible;
 - (uint64_t)isRingerMuted;
 - (uint64_t)setVolume:(uint64_t)result;
-- (void)_avsc_setRingerMuted:(void *)a3 reason:(int)a4 clientType:;
-- (void)_dismissRingerAlertElement:(void *)a3 forReason:;
-- (void)_dismissRingerHUDViewController:(void *)a3 forReason:;
-- (void)_handleRingerAlertPreviewingEvent:(uint64_t)a1;
-- (void)_playSoundForRingerMuted:(void *)a1;
-- (void)_setRingerMuted:(uint64_t)a1;
+- (void)_avsc_setRingerMuted:(void *)muted reason:(int)reason clientType:;
+- (void)_dismissRingerAlertElement:(void *)element forReason:;
+- (void)_dismissRingerHUDViewController:(void *)controller forReason:;
+- (void)_handleRingerAlertPreviewingEvent:(uint64_t)event;
+- (void)_playSoundForRingerMuted:(void *)muted;
+- (void)_setRingerMuted:(uint64_t)muted;
 - (void)_updateRingerAlertPreviewingState;
-- (void)activateRingerHUD:(uint64_t)a3 withInitialVolume:(NSObject *)a4 fromSource:(float)a5 forPreviewing:;
-- (void)activateRingerHUDForMuteChange:(NSObject *)a3 forPreviewing:;
-- (void)activateRingerHUDForMuteChange:(uint64_t)a1;
-- (void)activateRingerHUDForVolumeChangeWithInitialVolume:(uint64_t)a1;
+- (void)activateRingerHUD:(uint64_t)d withInitialVolume:(NSObject *)volume fromSource:(float)source forPreviewing:;
+- (void)activateRingerHUDForMuteChange:(NSObject *)change forPreviewing:;
+- (void)activateRingerHUDForMuteChange:(uint64_t)change;
+- (void)activateRingerHUDForVolumeChangeWithInitialVolume:(uint64_t)volume;
 - (void)buttonReleased;
-- (void)cache:(id)a3 didUpdateRingerMuted:(BOOL)a4;
-- (void)controlCenter:(id)a3 willPresentOnWindowScene:(id)a4;
+- (void)cache:(id)cache didUpdateRingerMuted:(BOOL)muted;
+- (void)controlCenter:(id)center willPresentOnWindowScene:(id)scene;
 - (void)dismissRingerHUD;
-- (void)nudgeUp:(id *)a1;
-- (void)ringerAlertElementWantsToBePresented:(id)a3;
-- (void)ringerAlertElementWantsToResetAutomaticInvalidationTimer:(id)a3;
-- (void)ringerHUDViewControllerWantsToBeDismissed:(id)a3;
-- (void)ringerHUDViewControllerWantsToBePresented:(id)a3;
-- (void)setControlCenterCoordinator:(id)a3;
-- (void)setRingerMuted:(BOOL)a3 withFeedback:(BOOL)a4 reason:(id)a5 clientType:(unsigned int)a6;
-- (void)setRingerMuted:(uint64_t)a3 reason:;
-- (void)setVolume:(float)a3 forKeyPress:;
+- (void)nudgeUp:(id *)up;
+- (void)ringerAlertElementWantsToBePresented:(id)presented;
+- (void)ringerAlertElementWantsToResetAutomaticInvalidationTimer:(id)timer;
+- (void)ringerHUDViewControllerWantsToBeDismissed:(id)dismissed;
+- (void)ringerHUDViewControllerWantsToBePresented:(id)presented;
+- (void)setControlCenterCoordinator:(id)coordinator;
+- (void)setRingerMuted:(BOOL)muted withFeedback:(BOOL)feedback reason:(id)reason clientType:(unsigned int)type;
+- (void)setRingerMuted:(uint64_t)muted reason:;
+- (void)setVolume:(float)volume forKeyPress:;
 @end
 
 @implementation SBRingerControl
 
-- (void)setRingerMuted:(BOOL)a3 withFeedback:(BOOL)a4 reason:(id)a5 clientType:(unsigned int)a6
+- (void)setRingerMuted:(BOOL)muted withFeedback:(BOOL)feedback reason:(id)reason clientType:(unsigned int)type
 {
-  v7 = a4;
-  v8 = a3;
-  v10 = a5;
-  if (v7)
+  feedbackCopy = feedback;
+  mutedCopy = muted;
+  reasonCopy = reason;
+  if (feedbackCopy)
   {
-    [(SBRingerControl *)self _playSoundForRingerMuted:v8];
+    [(SBRingerControl *)self _playSoundForRingerMuted:mutedCopy];
   }
 
-  [(SBRingerControl *)&self->super.isa _avsc_setRingerMuted:v8 reason:v10 clientType:a6];
+  [(SBRingerControl *)&self->super.isa _avsc_setRingerMuted:mutedCopy reason:reasonCopy clientType:type];
 }
 
-- (void)ringerHUDViewControllerWantsToBePresented:(id)a3
+- (void)ringerHUDViewControllerWantsToBePresented:(id)presented
 {
   v13[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 isActivatedForPreviewing])
+  presentedCopy = presented;
+  if ([presentedCopy isActivatedForPreviewing])
   {
     v5 = *MEMORY[0x277D68088];
     v12[0] = *MEMORY[0x277D68070];
@@ -76,7 +76,7 @@
 
   WeakRetained = objc_loadWeakRetained(&self->_bannerManager);
   v11 = 0;
-  v8 = [WeakRetained postPresentable:v4 withOptions:0 userInfo:v6 error:&v11];
+  v8 = [WeakRetained postPresentable:presentedCopy withOptions:0 userInfo:v6 error:&v11];
 
   v9 = v11;
   if ((v8 & 1) == 0)
@@ -89,25 +89,25 @@
   }
 }
 
-- (void)ringerHUDViewControllerWantsToBeDismissed:(id)a3
+- (void)ringerHUDViewControllerWantsToBeDismissed:(id)dismissed
 {
-  v4 = a3;
-  if (([v4 isActivatedForPreviewing] & 1) == 0)
+  dismissedCopy = dismissed;
+  if (([dismissedCopy isActivatedForPreviewing] & 1) == 0)
   {
-    [(SBRingerControl *)self _dismissRingerHUDViewController:v4 forReason:@"SBRingerControlBannerRevocationReasonTimer"];
+    [(SBRingerControl *)self _dismissRingerHUDViewController:dismissedCopy forReason:@"SBRingerControlBannerRevocationReasonTimer"];
   }
 }
 
-- (void)ringerAlertElementWantsToBePresented:(id)a3
+- (void)ringerAlertElementWantsToBePresented:(id)presented
 {
-  v4 = a3;
-  v5 = [v4 assertion];
-  v6 = [v5 isValid];
+  presentedCopy = presented;
+  assertion = [presentedCopy assertion];
+  isValid = [assertion isValid];
 
-  if ((v6 & 1) == 0)
+  if ((isValid & 1) == 0)
   {
-    v7 = [SBApp systemApertureControllerForMainDisplay];
-    v8 = [v7 registerElement:v4];
+    systemApertureControllerForMainDisplay = [SBApp systemApertureControllerForMainDisplay];
+    v8 = [systemApertureControllerForMainDisplay registerElement:presentedCopy];
     objc_initWeak(&location, self);
     v9 = MEMORY[0x277D85DD0];
     v10 = 3221225472;
@@ -115,23 +115,23 @@
     v12 = &unk_2783B4B88;
     objc_copyWeak(&v13, &location);
     [v8 addInvalidationBlock:&v9];
-    [v4 setAssertion:{v8, v9, v10, v11, v12}];
+    [presentedCopy setAssertion:{v8, v9, v10, v11, v12}];
     objc_destroyWeak(&v13);
     objc_destroyWeak(&location);
   }
 }
 
-- (void)ringerAlertElementWantsToResetAutomaticInvalidationTimer:(id)a3
+- (void)ringerAlertElementWantsToResetAutomaticInvalidationTimer:(id)timer
 {
-  v3 = [a3 alertHost];
-  v4 = [v3 alertAssertion];
+  alertHost = [timer alertHost];
+  alertAssertion = [alertHost alertAssertion];
 
-  [v4 resetAutomaticInvalidationTimer];
+  [alertAssertion resetAutomaticInvalidationTimer];
 }
 
-- (void)setControlCenterCoordinator:(id)a3
+- (void)setControlCenterCoordinator:(id)coordinator
 {
-  obj = a3;
+  obj = coordinator;
   WeakRetained = objc_loadWeakRetained(&self->_controlCenterCoordinator);
   if (WeakRetained != obj)
   {
@@ -141,9 +141,9 @@
   }
 }
 
-- (id)soundForRingerMuted:(BOOL)a3
+- (id)soundForRingerMuted:(BOOL)muted
 {
-  if (a3)
+  if (muted)
   {
     v3 = 1004;
   }
@@ -156,15 +156,15 @@
   return [MEMORY[0x277D679C8] soundWithFeedbackEventType:v3];
 }
 
-- (id)previewRingerStateForReason:(id)a3
+- (id)previewRingerStateForReason:(id)reason
 {
-  v5 = a3;
-  if (!v5)
+  reasonCopy = reason;
+  if (!reasonCopy)
   {
     [(SBRingerControl *)a2 previewRingerStateForReason:?];
   }
 
-  v6 = v5;
+  v6 = reasonCopy;
   if ((SBSIsSystemApertureAvailable() & 1) != 0 || _os_feature_enabled_impl())
   {
     objc_initWeak(&location, self);
@@ -215,23 +215,23 @@ void __47__SBRingerControl_previewRingerStateForReason___block_invoke_2(uint64_t
   [(SBRingerControl *)WeakRetained _handleRingerAlertPreviewingEvent:a3];
 }
 
-- (id)observeRingerMutedWithBlock:(id)a3
+- (id)observeRingerMutedWithBlock:(id)block
 {
-  v5 = a3;
-  if (!v5)
+  blockCopy = block;
+  if (!blockCopy)
   {
     [(SBRingerControl *)a2 observeRingerMutedWithBlock:?];
   }
 
-  v6 = [MEMORY[0x277CCAB98] defaultCenter];
-  v7 = [MEMORY[0x277CCABD8] mainQueue];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  mainQueue = [MEMORY[0x277CCABD8] mainQueue];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __47__SBRingerControl_observeRingerMutedWithBlock___block_invoke;
   v16[3] = &unk_2783B4BD8;
-  v17 = v5;
-  v8 = v5;
-  v9 = [v6 addObserverForName:@"SBRingerChangedNotification" object:0 queue:v7 usingBlock:v16];
+  v17 = blockCopy;
+  v8 = blockCopy;
+  v9 = [defaultCenter addObserverForName:@"SBRingerChangedNotification" object:0 queue:mainQueue usingBlock:v16];
 
   v10 = objc_alloc(MEMORY[0x277CF0CE8]);
   v14[0] = MEMORY[0x277D85DD0];
@@ -308,19 +308,19 @@ void __58__SBRingerControl__avsc_setRingerMuted_reason_clientType___block_invoke
   return WeakRetained;
 }
 
-- (id)initWithBannerManager:(void *)a3 soundController:
+- (id)initWithBannerManager:(void *)manager soundController:
 {
   v5 = a2;
-  v6 = a3;
-  v7 = v6;
-  if (!a1)
+  managerCopy = manager;
+  v7 = managerCopy;
+  if (!self)
   {
     goto LABEL_6;
   }
 
   if (v5)
   {
-    if (v6)
+    if (managerCopy)
     {
       goto LABEL_4;
     }
@@ -328,8 +328,8 @@ void __58__SBRingerControl__avsc_setRingerMuted_reason_clientType___block_invoke
 
   else
   {
-    v12 = [MEMORY[0x277CCA890] currentHandler];
-    [v12 handleFailureInMethod:sel_initWithBannerManager_soundController_ object:a1 file:@"SBRingerControl.m" lineNumber:72 description:{@"Invalid parameter not satisfying: %@", @"bannerManager"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:sel_initWithBannerManager_soundController_ object:self file:@"SBRingerControl.m" lineNumber:72 description:{@"Invalid parameter not satisfying: %@", @"bannerManager"}];
 
     if (v7)
     {
@@ -337,34 +337,34 @@ void __58__SBRingerControl__avsc_setRingerMuted_reason_clientType___block_invoke
     }
   }
 
-  v13 = [MEMORY[0x277CCA890] currentHandler];
-  [v13 handleFailureInMethod:sel_initWithBannerManager_soundController_ object:a1 file:@"SBRingerControl.m" lineNumber:73 description:{@"Invalid parameter not satisfying: %@", @"soundController"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:sel_initWithBannerManager_soundController_ object:self file:@"SBRingerControl.m" lineNumber:73 description:{@"Invalid parameter not satisfying: %@", @"soundController"}];
 
 LABEL_4:
-  v14.receiver = a1;
+  v14.receiver = self;
   v14.super_class = SBRingerControl;
   v8 = objc_msgSendSuper2(&v14, sel_init);
-  a1 = v8;
+  self = v8;
   if (v8)
   {
     objc_storeWeak(v8 + 4, v5);
-    objc_storeStrong(a1 + 5, a3);
+    objc_storeStrong(self + 5, manager);
     v9 = +[SBAVSystemControllerCache sharedInstance];
-    v10 = a1[1];
-    a1[1] = v9;
+    v10 = self[1];
+    self[1] = v9;
 
-    [a1[1] addObserver:a1];
-    *(a1 + 24) = 1;
+    [self[1] addObserver:self];
+    *(self + 24) = 1;
   }
 
 LABEL_6:
 
-  return a1;
+  return self;
 }
 
-- (void)_setRingerMuted:(uint64_t)a1
+- (void)_setRingerMuted:(uint64_t)muted
 {
-  if (a1 && *(a1 + 24) != a2)
+  if (muted && *(muted + 24) != a2)
   {
     v5 = SBLogRingerHUD();
     if (OUTLINED_FUNCTION_3_12(v5))
@@ -373,29 +373,29 @@ LABEL_6:
       _os_log_impl(v6, v7, v8, v9, v10, 0xEu);
     }
 
-    *(a1 + 24) = a2;
+    *(muted + 24) = a2;
     v11 = MEMORY[0x277CBEAC0];
     v12 = [MEMORY[0x277CCABB0] numberWithBool:a2];
     v13 = [v11 dictionaryWithObject:v12 forKey:@"SBRingerChangedRingerMutedUserInfoKey"];
 
-    v14 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v14 postNotificationName:@"SBRingerChangedNotification" object:0 userInfo:v13];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"SBRingerChangedNotification" object:0 userInfo:v13];
   }
 }
 
-- (void)setRingerMuted:(uint64_t)a3 reason:
+- (void)setRingerMuted:(uint64_t)muted reason:
 {
-  if (a1)
+  if (self)
   {
-    return [a1 setRingerMuted:a2 withFeedback:1 reason:a3 clientType:1];
+    return [self setRingerMuted:a2 withFeedback:1 reason:muted clientType:1];
   }
 
-  return a1;
+  return self;
 }
 
-- (void)_playSoundForRingerMuted:(void *)a1
+- (void)_playSoundForRingerMuted:(void *)muted
 {
-  if (a1)
+  if (muted)
   {
     if (__sb__runningInSpringBoard())
     {
@@ -407,108 +407,108 @@ LABEL_6:
 
     else
     {
-      v5 = [MEMORY[0x277D75418] currentDevice];
-      v6 = [v5 userInterfaceIdiom];
+      currentDevice = [MEMORY[0x277D75418] currentDevice];
+      userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-      if (v6 == 1)
+      if (userInterfaceIdiom == 1)
       {
         return;
       }
     }
 
-    v4 = a1[5];
-    v7 = [a1 soundForRingerMuted:a2];
+    v4 = muted[5];
+    v7 = [muted soundForRingerMuted:a2];
     [v4 playSoundWithDefaultEnvironment:v7];
   }
 }
 
-- (void)_avsc_setRingerMuted:(void *)a3 reason:(int)a4 clientType:
+- (void)_avsc_setRingerMuted:(void *)muted reason:(int)reason clientType:
 {
-  v7 = a3;
-  v8 = v7;
-  if (a1)
+  mutedCopy = muted;
+  v8 = mutedCopy;
+  if (self)
   {
-    if (!v7)
+    if (!mutedCopy)
     {
-      v10 = [MEMORY[0x277CCA890] currentHandler];
-      [v10 handleFailureInMethod:sel__avsc_setRingerMuted_reason_clientType_ object:a1 file:@"SBRingerControl.m" lineNumber:433 description:{@"Invalid parameter not satisfying: %@", @"reason"}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:sel__avsc_setRingerMuted_reason_clientType_ object:self file:@"SBRingerControl.m" lineNumber:433 description:{@"Invalid parameter not satisfying: %@", @"reason"}];
     }
 
-    v9 = [(SBRingerControl *)a1 _avscOperationsQueue];
+    _avscOperationsQueue = [(SBRingerControl *)self _avscOperationsQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __58__SBRingerControl__avsc_setRingerMuted_reason_clientType___block_invoke;
     block[3] = &unk_2783B4C00;
     v14 = a2;
     v12 = v8;
-    v13 = a4;
-    dispatch_async(v9, block);
+    reasonCopy = reason;
+    dispatch_async(_avscOperationsQueue, block);
   }
 }
 
 - (uint64_t)isRingerMuted
 {
-  if (a1)
+  if (self)
   {
-    return OUTLINED_FUNCTION_0_26(a1);
+    return OUTLINED_FUNCTION_0_26(self);
   }
 
-  return a1;
+  return self;
 }
 
 - (uint64_t)isRingerHUDVisible
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    WeakRetained = objc_loadWeakRetained((a1 + 48));
-    v1 = (WeakRetained | *(v1 + 64)) != 0;
+    WeakRetained = objc_loadWeakRetained((self + 48));
+    selfCopy = (WeakRetained | *(selfCopy + 64)) != 0;
   }
 
-  return v1;
+  return selfCopy;
 }
 
-- (BOOL)isRingerHUDVisibleOnWindowScene:(_BOOL8)a1
+- (BOOL)isRingerHUDVisibleOnWindowScene:(_BOOL8)scene
 {
   v3 = a2;
-  if (a1)
+  if (scene)
   {
-    if ([(SBRingerControl *)a1 isRingerHUDVisible])
+    if ([(SBRingerControl *)scene isRingerHUDVisible])
     {
-      WeakRetained = objc_loadWeakRetained((a1 + 48));
-      v5 = [WeakRetained _sbWindowScene];
-      a1 = v5 == v3;
+      WeakRetained = objc_loadWeakRetained((scene + 48));
+      _sbWindowScene = [WeakRetained _sbWindowScene];
+      scene = _sbWindowScene == v3;
     }
 
     else
     {
-      a1 = 0;
+      scene = 0;
     }
   }
 
-  return a1;
+  return scene;
 }
 
-- (void)activateRingerHUDForMuteChange:(uint64_t)a1
+- (void)activateRingerHUDForMuteChange:(uint64_t)change
 {
-  if (a1)
+  if (change)
   {
-    [(SBRingerControl *)a1 activateRingerHUD:0 withInitialVolume:0 fromSource:-1.0 forPreviewing:?];
+    [(SBRingerControl *)change activateRingerHUD:0 withInitialVolume:0 fromSource:-1.0 forPreviewing:?];
   }
 }
 
-- (void)activateRingerHUDForMuteChange:(NSObject *)a3 forPreviewing:
+- (void)activateRingerHUDForMuteChange:(NSObject *)change forPreviewing:
 {
-  if (a1)
+  if (self)
   {
-    [(SBRingerControl *)a1 activateRingerHUD:0 withInitialVolume:a3 fromSource:-1.0 forPreviewing:?];
+    [(SBRingerControl *)self activateRingerHUD:0 withInitialVolume:change fromSource:-1.0 forPreviewing:?];
   }
 }
 
-- (void)activateRingerHUD:(uint64_t)a3 withInitialVolume:(NSObject *)a4 fromSource:(float)a5 forPreviewing:
+- (void)activateRingerHUD:(uint64_t)d withInitialVolume:(NSObject *)volume fromSource:(float)source forPreviewing:
 {
   v35 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
     v10 = SBLogRingerHUD();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -525,7 +525,7 @@ LABEL_6:
     }
 
     v30 = 0;
-    v13 = [(SBRingerControl *)a1 _isRingerUIDisplayableWithReason:?];
+    v13 = [(SBRingerControl *)self _isRingerUIDisplayableWithReason:?];
     v14 = v30;
     if (!v13)
     {
@@ -534,10 +534,10 @@ LABEL_6:
       {
         v33 = 138543362;
         v34 = v14;
-        OUTLINED_FUNCTION_2_14(&dword_21ED4E000, a4, v29, "SBRingerControl HUD is not displayable; %{public}@", &v33);
+        OUTLINED_FUNCTION_2_14(&dword_21ED4E000, volume, v29, "SBRingerControl HUD is not displayable; %{public}@", &v33);
       }
 
-      [(SBRingerControl *)a1 dismissRingerHUD];
+      [(SBRingerControl *)self dismissRingerHUD];
       goto LABEL_43;
     }
 
@@ -560,8 +560,8 @@ LABEL_6:
       {
 LABEL_17:
         v31 = @"SBUIUnlockOptionsTurnOnScreenFirstKey";
-        v18 = [MEMORY[0x277CCABB0] numberWithBool:1];
-        v32 = v18;
+        currentDevice = [MEMORY[0x277CCABB0] numberWithBool:1];
+        v32 = currentDevice;
         v20 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v32 forKeys:&v31 count:1];
         [v17 unlockUIFromSource:16 withOptions:v20];
 
@@ -571,15 +571,15 @@ LABEL_18:
 
     else
     {
-      v18 = [MEMORY[0x277D75418] currentDevice];
-      if ([v18 userInterfaceIdiom] != 1 && (v15 || v16))
+      currentDevice = [MEMORY[0x277D75418] currentDevice];
+      if ([currentDevice userInterfaceIdiom] != 1 && (v15 || v16))
       {
         goto LABEL_18;
       }
 
-      v19 = [v17 isUILocked];
+      isUILocked = [v17 isUILocked];
 
-      if (v19)
+      if (isUILocked)
       {
         goto LABEL_17;
       }
@@ -588,48 +588,48 @@ LABEL_18:
 LABEL_19:
     if (SBSIsSystemApertureAvailable())
     {
-      v21 = *(a1 + 64);
+      v21 = *(self + 64);
       v22 = v21 != 0;
       if (v21)
       {
         WeakRetained = v21;
-        if ([(SBRingerAlertElement *)v21 source]!= a3)
+        if ([(SBRingerAlertElement *)v21 source]!= d)
         {
-          [(SBRingerControl *)a1 _dismissRingerAlertElement:@"Ringer source has changed" forReason:?];
-          [(SBRingerControl *)a1 activateRingerHUD:a2 withInitialVolume:a3 fromSource:a4 forPreviewing:a5];
+          [(SBRingerControl *)self _dismissRingerAlertElement:@"Ringer source has changed" forReason:?];
+          [(SBRingerControl *)self activateRingerHUD:a2 withInitialVolume:d fromSource:volume forPreviewing:source];
 LABEL_42:
 
 LABEL_43:
           return;
         }
 
-        [(SBRingerAlertElement *)WeakRetained setActivatedForPreviewing:a4];
+        [(SBRingerAlertElement *)WeakRetained setActivatedForPreviewing:volume];
 LABEL_27:
         if ([(SBRingerAlertElement *)WeakRetained isPresented])
         {
           if (![(SBRingerAlertElement *)WeakRetained isPresented])
           {
 LABEL_34:
-            if (a5 <= 0.0)
+            if (source <= 0.0)
             {
-              a5 = *(a1 + 28);
+              source = *(self + 28);
             }
 
             [(SBRingerAlertElement *)WeakRetained setRingerSilent:a2 == 0];
             if (!v22)
             {
-              *&v26 = a5;
-              [(SBRingerAlertElement *)WeakRetained setVolume:0 animated:a3 == 1 forKeyPress:v26];
+              *&v26 = source;
+              [(SBRingerAlertElement *)WeakRetained setVolume:0 animated:d == 1 forKeyPress:v26];
             }
 
-            if (a3)
+            if (d)
             {
               v27 = 0;
             }
 
             else
             {
-              v27 = a4 ^ 1;
+              v27 = volume ^ 1;
             }
 
             [(SBRingerAlertElement *)WeakRetained presentForMuteChange:v27];
@@ -644,19 +644,19 @@ LABEL_34:
           v25 = 1;
         }
 
-        if (a3 == 1 && v25)
+        if (d == 1 && v25)
         {
-          [(SBRingerControl *)a1 _playSoundForRingerMuted:?];
+          [(SBRingerControl *)self _playSoundForRingerMuted:?];
         }
 
         goto LABEL_34;
       }
 
-      WeakRetained = [[SBRingerAlertElement alloc] initWithSource:a3 ringerSilent:a2 == 0 forPreviewing:a4];
-      v24 = *(a1 + 64);
-      *(a1 + 64) = WeakRetained;
+      WeakRetained = [[SBRingerAlertElement alloc] initWithSource:d ringerSilent:a2 == 0 forPreviewing:volume];
+      v24 = *(self + 64);
+      *(self + 64) = WeakRetained;
 
-      [(SBRingerAlertElement *)WeakRetained setDelegate:a1];
+      [(SBRingerAlertElement *)WeakRetained setDelegate:self];
       if (WeakRetained)
       {
         goto LABEL_27;
@@ -668,12 +668,12 @@ LABEL_34:
       v22 = 1;
     }
 
-    WeakRetained = objc_loadWeakRetained((a1 + 48));
+    WeakRetained = objc_loadWeakRetained((self + 48));
     if (!WeakRetained)
     {
-      WeakRetained = [[SBRingerHUDViewController alloc] initWithActivatedForPreviewing:a4];
-      objc_storeWeak((a1 + 48), WeakRetained);
-      [(SBRingerAlertElement *)WeakRetained setDelegate:a1];
+      WeakRetained = [[SBRingerHUDViewController alloc] initWithActivatedForPreviewing:volume];
+      objc_storeWeak((self + 48), WeakRetained);
+      [(SBRingerAlertElement *)WeakRetained setDelegate:self];
       v22 = 0;
     }
 
@@ -681,31 +681,31 @@ LABEL_34:
   }
 }
 
-- (void)activateRingerHUDForVolumeChangeWithInitialVolume:(uint64_t)a1
+- (void)activateRingerHUDForVolumeChangeWithInitialVolume:(uint64_t)volume
 {
-  if (a1)
+  if (volume)
   {
-    v4 = [*(a1 + 8) isRingerMuted] ^ 1;
+    v4 = [*(volume + 8) isRingerMuted] ^ 1;
 
-    [(SBRingerControl *)a1 activateRingerHUD:v4 withInitialVolume:1 fromSource:0 forPreviewing:a2];
+    [(SBRingerControl *)volume activateRingerHUD:v4 withInitialVolume:1 fromSource:0 forPreviewing:a2];
   }
 }
 
-- (BOOL)_isRingerUIDisplayableWithReason:(void *)a1
+- (BOOL)_isRingerUIDisplayableWithReason:(void *)reason
 {
-  if (!a1)
+  if (!reason)
   {
     return 0;
   }
 
-  v3 = [a1 controlCenterCoordinator];
-  v4 = v3;
-  if (v3 && [v3 isPresented])
+  controlCenterCoordinator = [reason controlCenterCoordinator];
+  v4 = controlCenterCoordinator;
+  if (controlCenterCoordinator && [controlCenterCoordinator isPresented])
   {
-    v5 = [v4 presentedControlCenterController];
-    v6 = [v5 viewController];
+    presentedControlCenterController = [v4 presentedControlCenterController];
+    viewController = [presentedControlCenterController viewController];
 
-    if ([v6 includesVisiblyUnobscuredModuleWithIdentifier:@"com.apple.control-center.MuteModule"])
+    if ([viewController includesVisiblyUnobscuredModuleWithIdentifier:@"com.apple.control-center.MuteModule"])
     {
       v7 = @"Control Center with visible Mute Module presented";
     }
@@ -738,124 +738,124 @@ LABEL_11:
 
 - (void)dismissRingerHUD
 {
-  if (a1)
+  if (self)
   {
-    WeakRetained = objc_loadWeakRetained((a1 + 48));
+    WeakRetained = objc_loadWeakRetained((self + 48));
     if (WeakRetained)
     {
       v6 = WeakRetained;
-      [(SBRingerControl *)a1 _dismissRingerHUDViewController:@"SBRingerControlBannerRevocationReasonDismiss" forReason:?];
+      [(SBRingerControl *)self _dismissRingerHUDViewController:@"SBRingerControlBannerRevocationReasonDismiss" forReason:?];
       WeakRetained = v6;
     }
 
-    v3 = *(a1 + 64);
+    v3 = *(self + 64);
     if (v3)
     {
       v7 = WeakRetained;
       v4 = v3;
       v5 = NSStringFromSelector(sel_dismissRingerHUD);
-      [(SBRingerControl *)a1 _dismissRingerAlertElement:v4 forReason:v5];
+      [(SBRingerControl *)self _dismissRingerAlertElement:v4 forReason:v5];
 
       WeakRetained = v7;
     }
   }
 }
 
-- (void)_dismissRingerAlertElement:(void *)a3 forReason:
+- (void)_dismissRingerAlertElement:(void *)element forReason:
 {
   v13 = *MEMORY[0x277D85DE8];
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  elementCopy = element;
+  if (self)
   {
-    v7 = [v5 assertion];
-    if ([v7 isValid])
+    assertion = [v5 assertion];
+    if ([assertion isValid])
     {
       v8 = SBLogRingerHUD();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
         v11 = 138412290;
-        v12 = v6;
+        v12 = elementCopy;
         OUTLINED_FUNCTION_2_14(&dword_21ED4E000, v8, v9, "SBRingerControl dismiss ringer alert element, reason: %@", &v11);
       }
 
-      [v7 invalidateWithReason:v6];
+      [assertion invalidateWithReason:elementCopy];
     }
 
-    v10 = *(a1 + 64);
+    v10 = *(self + 64);
     if (v10 == v5)
     {
-      *(a1 + 64) = 0;
+      *(self + 64) = 0;
     }
   }
 }
 
-- (void)nudgeUp:(id *)a1
+- (void)nudgeUp:(id *)up
 {
-  if (a1)
+  if (up)
   {
-    v3 = [(SBRingerControl *)a1 _ringerUICoordinator];
-    [v3 nudgeUp:a2];
+    _ringerUICoordinator = [(SBRingerControl *)up _ringerUICoordinator];
+    [_ringerUICoordinator nudgeUp:a2];
   }
 }
 
 - (id)_ringerUICoordinator
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    WeakRetained = objc_loadWeakRetained(a1 + 6);
+    WeakRetained = objc_loadWeakRetained(self + 6);
     v3 = WeakRetained;
     if (!WeakRetained)
     {
-      v3 = v1[8];
+      v3 = selfCopy[8];
     }
 
-    v1 = v3;
+    selfCopy = v3;
   }
 
-  return v1;
+  return selfCopy;
 }
 
 - (void)buttonReleased
 {
-  if (a1)
+  if (self)
   {
-    v1 = [(SBRingerControl *)a1 _ringerUICoordinator];
-    [v1 buttonReleased];
+    _ringerUICoordinator = [(SBRingerControl *)self _ringerUICoordinator];
+    [_ringerUICoordinator buttonReleased];
   }
 }
 
-- (void)_dismissRingerHUDViewController:(void *)a3 forReason:
+- (void)_dismissRingerHUDViewController:(void *)controller forReason:
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (a1)
+  controllerCopy = controller;
+  if (self)
   {
     v6 = a2;
     v7 = SBLogRingerHUD();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v17 = 138412290;
-      v18 = v5;
+      v18 = controllerCopy;
       OUTLINED_FUNCTION_2_14(&dword_21ED4E000, v7, v8, "SBRingerControl _dismissRingerHUDViewController; reason: %@", &v17);
     }
 
-    WeakRetained = objc_loadWeakRetained((a1 + 32));
+    WeakRetained = objc_loadWeakRetained((self + 32));
     v10 = MEMORY[0x277CF0AC0];
-    v11 = [v6 requesterIdentifier];
+    requesterIdentifier = [v6 requesterIdentifier];
 
-    v12 = [v10 identificationWithRequesterIdentifier:v11];
+    v12 = [v10 identificationWithRequesterIdentifier:requesterIdentifier];
     v15 = *MEMORY[0x277D68068];
     v16 = MEMORY[0x277CBEC38];
     v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v16 forKeys:&v15 count:1];
-    v14 = [WeakRetained revokePresentablesWithIdentification:v12 reason:v5 options:0 userInfo:v13 error:0];
+    v14 = [WeakRetained revokePresentablesWithIdentification:v12 reason:controllerCopy options:0 userInfo:v13 error:0];
   }
 }
 
-- (void)setVolume:(float)a3 forKeyPress:
+- (void)setVolume:(float)volume forKeyPress:
 {
-  if (a1)
+  if (self)
   {
     v7 = SBLogRingerHUD();
     if (OUTLINED_FUNCTION_3_12(v7))
@@ -864,16 +864,16 @@ LABEL_11:
       _os_log_impl(v8, v9, v10, v11, v12, 0x12u);
     }
 
-    *(a1 + 28) = a3;
-    v13 = [(SBRingerControl *)a1 _ringerUICoordinator];
-    LODWORD(v14) = *(a1 + 28);
-    [v13 setVolume:1 animated:a2 forKeyPress:v14];
+    *(self + 28) = volume;
+    _ringerUICoordinator = [(SBRingerControl *)self _ringerUICoordinator];
+    LODWORD(v14) = *(self + 28);
+    [_ringerUICoordinator setVolume:1 animated:a2 forKeyPress:v14];
   }
 }
 
-- (void)cache:(id)a3 didUpdateRingerMuted:(BOOL)a4
+- (void)cache:(id)cache didUpdateRingerMuted:(BOOL)muted
 {
-  v5 = a4;
+  mutedCopy = muted;
   v7 = SBLogRingerHUD();
   if (OUTLINED_FUNCTION_3_12(v7))
   {
@@ -881,7 +881,7 @@ LABEL_11:
     _os_log_impl(v8, v9, v10, v11, v12, 8u);
   }
 
-  [(SBRingerControl *)self _setRingerMuted:v5];
+  [(SBRingerControl *)self _setRingerMuted:mutedCopy];
   if (SBUIHasHIDRingerSwitch())
   {
     if (!self)
@@ -892,17 +892,17 @@ LABEL_11:
     goto LABEL_5;
   }
 
-  v13 = [(SBRingerControl *)self isRingerHUDVisible];
-  if (self && (v13 & 1) != 0)
+  isRingerHUDVisible = [(SBRingerControl *)self isRingerHUDVisible];
+  if (self && (isRingerHUDVisible & 1) != 0)
   {
 LABEL_5:
     [(SBRingerControl *)self activateRingerHUD:0 withInitialVolume:0 fromSource:-1.0 forPreviewing:?];
   }
 }
 
-- (void)controlCenter:(id)a3 willPresentOnWindowScene:(id)a4
+- (void)controlCenter:(id)center willPresentOnWindowScene:(id)scene
 {
-  if ([(SBRingerControl *)self isRingerHUDVisibleOnWindowScene:a4]&& ![(SBRingerControl *)self _isRingerUIDisplayableWithReason:?])
+  if ([(SBRingerControl *)self isRingerHUDVisibleOnWindowScene:scene]&& ![(SBRingerControl *)self _isRingerUIDisplayableWithReason:?])
   {
 
     [(SBRingerControl *)self dismissRingerHUD];
@@ -917,118 +917,118 @@ void __56__SBRingerControl_ringerAlertElementWantsToBePresented___block_invoke(u
 
 - (void)_updateRingerAlertPreviewingState
 {
-  if (a1)
+  if (self)
   {
-    v2 = *(a1 + 64);
+    v2 = *(self + 64);
     v12 = v2;
     if (v2)
     {
-      v3 = [v2 alertHost];
-      v4 = [v3 alertAssertion];
+      alertHost = [v2 alertHost];
+      alertAssertion = [alertHost alertAssertion];
 
-      v5 = [(SBSystemActionCompoundPreviewAssertion *)*(a1 + 56) state];
-      if (v5)
+      state = [(SBSystemActionCompoundPreviewAssertion *)*(self + 56) state];
+      if (state)
       {
         v6 = objc_opt_class();
         v7 = NSStringFromClass(v6);
-        [v4 setAutomaticallyInvalidatable:0 lockingWithKey:v7 reason:@"Previewing"];
+        [alertAssertion setAutomaticallyInvalidatable:0 lockingWithKey:v7 reason:@"Previewing"];
       }
 
       else
       {
-        [v4 invalidateWithReason:@"Stop previewing"];
+        [alertAssertion invalidateWithReason:@"Stop previewing"];
       }
 
-      [v12 setPreviewing:v5 & 1];
-      [v12 setUrgent:HIBYTE(v5) & 1];
-      [v12 setExpanding:(v5 >> 8) & 1];
-      [v12 setProminent:HIWORD(v5) & 1];
+      [v12 setPreviewing:state & 1];
+      [v12 setUrgent:HIBYTE(state) & 1];
+      [v12 setExpanding:(state >> 8) & 1];
+      [v12 setProminent:HIWORD(state) & 1];
     }
 
     else
     {
-      v8 = [(SBSystemActionCompoundPreviewAssertion *)*(a1 + 56) state];
-      WeakRetained = objc_loadWeakRetained((a1 + 48));
-      v4 = WeakRetained;
-      if (v8)
+      state2 = [(SBSystemActionCompoundPreviewAssertion *)*(self + 56) state];
+      WeakRetained = objc_loadWeakRetained((self + 48));
+      alertAssertion = WeakRetained;
+      if (state2)
       {
-        if ([WeakRetained isPresentableAppearingOrAppeared] && (v8 & 0x100) != 0)
+        if ([WeakRetained isPresentableAppearingOrAppeared] && (state2 & 0x100) != 0)
         {
-          v11 = [v4 view];
-          [v11 sb_setInflated];
+          view = [alertAssertion view];
+          [view sb_setInflated];
         }
 
-        -[SBRingerControl activateRingerHUD:withInitialVolume:fromSource:forPreviewing:](a1, [*(a1 + 8) isRingerMuted] ^ 1, 0, 1, -1.0);
+        -[SBRingerControl activateRingerHUD:withInitialVolume:fromSource:forPreviewing:](self, [*(self + 8) isRingerMuted] ^ 1, 0, 1, -1.0);
       }
 
       else if (WeakRetained)
       {
-        v10 = [WeakRetained view];
-        [v10 sb_setDeflated];
+        view2 = [WeakRetained view];
+        [view2 sb_setDeflated];
 
-        [(SBRingerControl *)a1 _dismissRingerHUDViewController:v4 forReason:@"SBRingerControlBannerRevocationReasonDismiss"];
+        [(SBRingerControl *)self _dismissRingerHUDViewController:alertAssertion forReason:@"SBRingerControlBannerRevocationReasonDismiss"];
       }
     }
   }
 }
 
-- (void)_handleRingerAlertPreviewingEvent:(uint64_t)a1
+- (void)_handleRingerAlertPreviewingEvent:(uint64_t)event
 {
-  if (!a1)
+  if (!event)
   {
     return;
   }
 
-  v7 = *(a1 + 64);
-  WeakRetained = objc_loadWeakRetained((a1 + 48));
+  v7 = *(event + 64);
+  WeakRetained = objc_loadWeakRetained((event + 48));
   v5 = WeakRetained;
   if (a2 == 1)
   {
-    v6 = [WeakRetained view];
-    [v6 sb_setDeflated];
+    view = [WeakRetained view];
+    [view sb_setDeflated];
     goto LABEL_6;
   }
 
   if (!a2)
   {
     [v7 pop];
-    v6 = [v5 view];
-    [v6 sb_stopInflating];
+    view = [v5 view];
+    [view sb_stopInflating];
 LABEL_6:
   }
 }
 
 - (id)_avscOperationsQueue
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1;
-    v3 = a1[2];
+    selfCopy = self;
+    v3 = self[2];
     if (!v3)
     {
-      v4 = [a1[1] avscOperationsWorkloop];
-      if (!v4)
+      avscOperationsWorkloop = [self[1] avscOperationsWorkloop];
+      if (!avscOperationsWorkloop)
       {
-        v11 = [MEMORY[0x277CCA890] currentHandler];
-        [v11 handleFailureInMethod:sel__avscOperationsQueue object:v2 file:@"SBRingerControl.m" lineNumber:425 description:@"Must use the AVSC cache's target workloop"];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
+        [currentHandler handleFailureInMethod:sel__avscOperationsQueue object:selfCopy file:@"SBRingerControl.m" lineNumber:425 description:@"Must use the AVSC cache's target workloop"];
       }
 
-      v5 = [MEMORY[0x277CF0C18] serial];
-      v6 = [v5 serviceClass:25 relativePriority:2];
-      v7 = [v6 targetQueue:v4];
+      serial = [MEMORY[0x277CF0C18] serial];
+      v6 = [serial serviceClass:25 relativePriority:2];
+      v7 = [v6 targetQueue:avscOperationsWorkloop];
 
       v8 = BSDispatchQueueCreate();
-      v9 = v2[2];
-      v2[2] = v8;
+      v9 = selfCopy[2];
+      selfCopy[2] = v8;
 
-      v3 = v2[2];
+      v3 = selfCopy[2];
     }
 
-    a1 = v3;
+    self = v3;
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (id)bannerManager
@@ -1044,12 +1044,12 @@ LABEL_6:
 
 - (double)volume
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  LODWORD(result) = *(a1 + 28);
+  LODWORD(result) = *(self + 28);
   return result;
 }
 

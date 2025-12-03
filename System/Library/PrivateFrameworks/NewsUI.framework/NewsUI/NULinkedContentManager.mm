@@ -1,36 +1,36 @@
 @interface NULinkedContentManager
-- (NULinkedContentManager)initWithLinkedContentProviders:(id)a3;
-- (id)loadLinkedContentForHeadline:(id)a3 withContext:(id)a4 priority:(int64_t)a5 completion:(id)a6;
+- (NULinkedContentManager)initWithLinkedContentProviders:(id)providers;
+- (id)loadLinkedContentForHeadline:(id)headline withContext:(id)context priority:(int64_t)priority completion:(id)completion;
 @end
 
 @implementation NULinkedContentManager
 
-- (NULinkedContentManager)initWithLinkedContentProviders:(id)a3
+- (NULinkedContentManager)initWithLinkedContentProviders:(id)providers
 {
-  v5 = a3;
+  providersCopy = providers;
   v9.receiver = self;
   v9.super_class = NULinkedContentManager;
   v6 = [(NULinkedContentManager *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_linkedContentProviders, a3);
+    objc_storeStrong(&v6->_linkedContentProviders, providers);
   }
 
   return v7;
 }
 
-- (id)loadLinkedContentForHeadline:(id)a3 withContext:(id)a4 priority:(int64_t)a5 completion:(id)a6
+- (id)loadLinkedContentForHeadline:(id)headline withContext:(id)context priority:(int64_t)priority completion:(id)completion
 {
   v36 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
-  v12 = [MEMORY[0x277CBEB18] array];
+  headlineCopy = headline;
+  contextCopy = context;
+  completionCopy = completion;
+  array = [MEMORY[0x277CBEB18] array];
   v13 = dispatch_group_create();
-  if (v9 && v10)
+  if (headlineCopy && contextCopy)
   {
-    v24 = v11;
+    v24 = completionCopy;
     v33 = 0u;
     v34 = 0u;
     v31 = 0u;
@@ -59,7 +59,7 @@
             v29[2] = __87__NULinkedContentManager_loadLinkedContentForHeadline_withContext_priority_completion___block_invoke;
             v29[3] = &unk_2799A3498;
             v30 = v13;
-            v19 = [v18 loadLinkedContentForHeadline:v9 withContext:v10 priority:a5 completion:v29];
+            v19 = [v18 loadLinkedContentForHeadline:headlineCopy withContext:contextCopy priority:priority completion:v29];
             v20 = &v30;
           }
 
@@ -70,11 +70,11 @@
             v27[2] = __87__NULinkedContentManager_loadLinkedContentForHeadline_withContext_priority_completion___block_invoke_2;
             v27[3] = &unk_2799A3498;
             v28 = v13;
-            v19 = [v18 loadLinkedContentForHeadline:v9 withContext:v10 completion:v27];
+            v19 = [v18 loadLinkedContentForHeadline:headlineCopy withContext:contextCopy completion:v27];
             v20 = &v28;
           }
 
-          [v12 addObject:v19];
+          [array addObject:v19];
         }
 
         v15 = [obj countByEnumeratingWithState:&v31 objects:v35 count:16];
@@ -83,11 +83,11 @@
       while (v15);
     }
 
-    v11 = v24;
+    completionCopy = v24;
   }
 
-  dispatch_group_notify(v13, MEMORY[0x277D85CD0], v11);
-  v21 = [MEMORY[0x277D31088] groupCancelHandlerWithCancelHandlers:v12];
+  dispatch_group_notify(v13, MEMORY[0x277D85CD0], completionCopy);
+  v21 = [MEMORY[0x277D31088] groupCancelHandlerWithCancelHandlers:array];
 
   v22 = *MEMORY[0x277D85DE8];
 

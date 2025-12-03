@@ -1,24 +1,24 @@
 @interface _NSSwiftTimeZone
 - (BOOL)isDaylightSavingTime;
-- (BOOL)isDaylightSavingTimeForDate:(id)a3;
+- (BOOL)isDaylightSavingTimeForDate:(id)date;
 - (Class)classForCoder;
 - (NSData)data;
 - (NSDate)nextDaylightSavingTimeTransition;
 - (NSString)abbreviation;
 - (NSString)name;
 - (_NSSwiftTimeZone)init;
-- (_NSSwiftTimeZone)initWithCoder:(id)a3;
-- (_NSSwiftTimeZone)initWithName:(id)a3;
-- (_NSSwiftTimeZone)initWithName:(id)a3 data:(id)a4;
+- (_NSSwiftTimeZone)initWithCoder:(id)coder;
+- (_NSSwiftTimeZone)initWithName:(id)name;
+- (_NSSwiftTimeZone)initWithName:(id)name data:(id)data;
 - (double)daylightSavingTimeOffset;
-- (double)daylightSavingTimeOffsetForDate:(id)a3;
-- (id)abbreviationForDate:(id)a3;
-- (id)localizedName:(int64_t)a3 locale:(id)a4;
-- (id)nextDaylightSavingTimeTransitionAfterDate:(id)a3;
-- (id)replacementObjectForKeyedArchiver:(id)a3;
+- (double)daylightSavingTimeOffsetForDate:(id)date;
+- (id)abbreviationForDate:(id)date;
+- (id)localizedName:(int64_t)name locale:(id)locale;
+- (id)nextDaylightSavingTimeTransitionAfterDate:(id)date;
+- (id)replacementObjectForKeyedArchiver:(id)archiver;
 - (int64_t)secondsFromGMT;
-- (int64_t)secondsFromGMTForDate:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (int64_t)secondsFromGMTForDate:(id)date;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _NSSwiftTimeZone
@@ -28,7 +28,7 @@
   v3 = *&self->timeZone[OBJC_IVAR____NSSwiftTimeZone_timeZone];
   ObjectType = swift_getObjectType();
   v5 = *(v3 + 32);
-  v6 = self;
+  selfCopy = self;
   swift_unknownObjectRetain();
   v5(ObjectType, v3);
   swift_unknownObjectRelease();
@@ -38,10 +38,10 @@
   return v7;
 }
 
-- (id)replacementObjectForKeyedArchiver:(id)a3
+- (id)replacementObjectForKeyedArchiver:(id)archiver
 {
-  v4 = a3;
-  v5 = self;
+  archiverCopy = archiver;
+  selfCopy = self;
   _NSSwiftTimeZone.replacementObject(for:)(v13);
 
   v6 = v14;
@@ -67,18 +67,18 @@
 
 - (int64_t)secondsFromGMT
 {
-  v2 = self;
+  selfCopy = self;
   v3 = _NSSwiftTimeZone.secondsFromGMT.getter();
 
   return v3;
 }
 
-- (int64_t)secondsFromGMTForDate:(id)a3
+- (int64_t)secondsFromGMTForDate:(id)date
 {
-  v4 = self;
-  [a3 timeIntervalSinceReferenceDate];
+  selfCopy = self;
+  [date timeIntervalSinceReferenceDate];
   v6 = v5;
-  v7 = *&v4->timeZone[OBJC_IVAR____NSSwiftTimeZone_timeZone];
+  v7 = *&selfCopy->timeZone[OBJC_IVAR____NSSwiftTimeZone_timeZone];
   ObjectType = swift_getObjectType();
   v12 = v6;
   v9 = *(v7 + 40);
@@ -91,7 +91,7 @@
 
 - (NSString)abbreviation
 {
-  v2 = self;
+  selfCopy = self;
   _NSSwiftTimeZone.abbreviation.getter();
   v4 = v3;
 
@@ -115,17 +115,17 @@
   return swift_getObjCClassFromMetadata();
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = swift_getObjectType();
-  [(NSTimeZone *)&v4 encodeWithCoder:a3];
+  [(NSTimeZone *)&v4 encodeWithCoder:coder];
 }
 
 - (NSData)data
 {
   v18 = *MEMORY[0x1E69E9840];
-  v2 = self;
+  selfCopy = self;
   v3 = _NSSwiftTimeZone.data.getter();
   v5 = v4;
 
@@ -173,7 +173,7 @@ LABEL_9:
 
 - (double)daylightSavingTimeOffset
 {
-  v2 = self;
+  selfCopy = self;
   v3 = _NSSwiftTimeZone.daylightSavingTimeOffset.getter();
 
   return v3;
@@ -181,18 +181,18 @@ LABEL_9:
 
 - (BOOL)isDaylightSavingTime
 {
-  v2 = self;
+  selfCopy = self;
   v3 = _NSSwiftTimeZone.isDaylightSavingTime.getter();
 
   return v3 & 1;
 }
 
-- (id)nextDaylightSavingTimeTransitionAfterDate:(id)a3
+- (id)nextDaylightSavingTimeTransitionAfterDate:(id)date
 {
-  v4 = self;
-  [a3 timeIntervalSinceReferenceDate];
+  selfCopy = self;
+  [date timeIntervalSinceReferenceDate];
   v6 = v5;
-  v7 = *&v4->timeZone[OBJC_IVAR____NSSwiftTimeZone_timeZone];
+  v7 = *&selfCopy->timeZone[OBJC_IVAR____NSSwiftTimeZone_timeZone];
   ObjectType = swift_getObjectType();
   v12 = v6;
   v9 = *(v7 + 88);
@@ -202,48 +202,48 @@ LABEL_9:
 
   if (v14)
   {
-    v10 = 0;
+    initWithTimeIntervalSinceReferenceDate_ = 0;
   }
 
   else
   {
-    v10 = [objc_allocWithZone(MEMORY[0x1E695DF00]) initWithTimeIntervalSinceReferenceDate_];
+    initWithTimeIntervalSinceReferenceDate_ = [objc_allocWithZone(MEMORY[0x1E695DF00]) initWithTimeIntervalSinceReferenceDate_];
   }
 
-  return v10;
+  return initWithTimeIntervalSinceReferenceDate_;
 }
 
 - (NSDate)nextDaylightSavingTimeTransition
 {
-  v2 = self;
+  selfCopy = self;
   _NSSwiftTimeZone.nextDaylightSavingTimeTransition.getter();
 
   if (v6)
   {
-    v3 = 0;
+    initWithTimeIntervalSinceReferenceDate_ = 0;
   }
 
   else
   {
-    v3 = [objc_allocWithZone(MEMORY[0x1E695DF00]) initWithTimeIntervalSinceReferenceDate_];
+    initWithTimeIntervalSinceReferenceDate_ = [objc_allocWithZone(MEMORY[0x1E695DF00]) initWithTimeIntervalSinceReferenceDate_];
   }
 
-  return v3;
+  return initWithTimeIntervalSinceReferenceDate_;
 }
 
-- (_NSSwiftTimeZone)initWithCoder:(id)a3
+- (_NSSwiftTimeZone)initWithCoder:(id)coder
 {
   result = _assertionFailure(_:_:file:line:flags:)();
   __break(1u);
   return result;
 }
 
-- (id)abbreviationForDate:(id)a3
+- (id)abbreviationForDate:(id)date
 {
-  v4 = self;
-  [a3 timeIntervalSinceReferenceDate];
+  selfCopy = self;
+  [date timeIntervalSinceReferenceDate];
   v6 = v5;
-  v7 = *&v4->timeZone[OBJC_IVAR____NSSwiftTimeZone_timeZone];
+  v7 = *&selfCopy->timeZone[OBJC_IVAR____NSSwiftTimeZone_timeZone];
   ObjectType = swift_getObjectType();
   v14 = v6;
   v9 = *(v7 + 64);
@@ -265,12 +265,12 @@ LABEL_9:
   return v12;
 }
 
-- (BOOL)isDaylightSavingTimeForDate:(id)a3
+- (BOOL)isDaylightSavingTimeForDate:(id)date
 {
-  v4 = self;
-  [a3 timeIntervalSinceReferenceDate];
+  selfCopy = self;
+  [date timeIntervalSinceReferenceDate];
   v6 = v5;
-  v7 = *&v4->timeZone[OBJC_IVAR____NSSwiftTimeZone_timeZone];
+  v7 = *&selfCopy->timeZone[OBJC_IVAR____NSSwiftTimeZone_timeZone];
   ObjectType = swift_getObjectType();
   v11 = v6;
   v9 = *(v7 + 72);
@@ -281,12 +281,12 @@ LABEL_9:
   return v7 & 1;
 }
 
-- (double)daylightSavingTimeOffsetForDate:(id)a3
+- (double)daylightSavingTimeOffsetForDate:(id)date
 {
-  v4 = self;
-  [a3 timeIntervalSinceReferenceDate];
+  selfCopy = self;
+  [date timeIntervalSinceReferenceDate];
   v6 = v5;
-  v7 = *&v4->timeZone[OBJC_IVAR____NSSwiftTimeZone_timeZone];
+  v7 = *&selfCopy->timeZone[OBJC_IVAR____NSSwiftTimeZone_timeZone];
   ObjectType = swift_getObjectType();
   v12 = v6;
   v9 = *(v7 + 80);
@@ -297,9 +297,9 @@ LABEL_9:
   return v10;
 }
 
-- (id)localizedName:(int64_t)a3 locale:(id)a4
+- (id)localizedName:(int64_t)name locale:(id)locale
 {
-  if (a4)
+  if (locale)
   {
     type metadata accessor for _NSSwiftLocale();
     v7 = swift_dynamicCastClass();
@@ -314,9 +314,9 @@ LABEL_9:
     {
       type metadata accessor for _LocaleBridged();
       v8 = swift_allocObject();
-      *(v8 + 16) = a4;
+      *(v8 + 16) = locale;
       v9 = _s10Foundation14_LocaleBridgedCAcA01_B8ProtocolAAWlTm_0(&lazy protocol witness table cache variable for type _LocaleBridged and conformance _LocaleBridged, type metadata accessor for _LocaleBridged);
-      v10 = a4;
+      localeCopy = locale;
     }
   }
 
@@ -331,9 +331,9 @@ LABEL_9:
   v19[0] = v8;
   v19[1] = v9;
   v13 = *(v11 + 96);
-  v14 = self;
+  selfCopy = self;
   swift_unknownObjectRetain();
-  v13(a3, v19, ObjectType, v11);
+  v13(name, v19, ObjectType, v11);
   v16 = v15;
   swift_unknownObjectRelease();
 
@@ -358,19 +358,19 @@ LABEL_9:
   return result;
 }
 
-- (_NSSwiftTimeZone)initWithName:(id)a3
+- (_NSSwiftTimeZone)initWithName:(id)name
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_NSSwiftTimeZone)initWithName:(id)a3 data:(id)a4
+- (_NSSwiftTimeZone)initWithName:(id)name data:(id)data
 {
-  if (a4)
+  if (data)
   {
-    v4 = a4;
-    v5 = specialized Data.init(referencing:)(v4);
+    dataCopy = data;
+    v5 = specialized Data.init(referencing:)(dataCopy);
     v7 = v6;
 
     outlined consume of Data._Representation(v5, v7);

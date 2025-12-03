@@ -1,9 +1,9 @@
 @interface PaddedLabel
-- (CGRect)textRectForBounds:(CGRect)a3 limitedToNumberOfLines:(int64_t)a4;
+- (CGRect)textRectForBounds:(CGRect)bounds limitedToNumberOfLines:(int64_t)lines;
 - (CGSize)intrinsicContentSize;
-- (_TtC11DiagnosticsP33_8A86E77067E9CB1515C284E58CEE59BA11PaddedLabel)initWithCoder:(id)a3;
-- (_TtC11DiagnosticsP33_8A86E77067E9CB1515C284E58CEE59BA11PaddedLabel)initWithFrame:(CGRect)a3;
-- (void)drawTextInRect:(CGRect)a3;
+- (_TtC11DiagnosticsP33_8A86E77067E9CB1515C284E58CEE59BA11PaddedLabel)initWithCoder:(id)coder;
+- (_TtC11DiagnosticsP33_8A86E77067E9CB1515C284E58CEE59BA11PaddedLabel)initWithFrame:(CGRect)frame;
+- (void)drawTextInRect:(CGRect)rect;
 @end
 
 @implementation PaddedLabel
@@ -25,28 +25,28 @@
   return result;
 }
 
-- (void)drawTextInRect:(CGRect)a3
+- (void)drawTextInRect:(CGRect)rect
 {
-  v4 = sub_100112DB0(a3.origin.x, a3.origin.y, a3.size.width, a3.size.height, *(&self->super.super.super.super.isa + OBJC_IVAR____TtC11DiagnosticsP33_8A86E77067E9CB1515C284E58CEE59BA11PaddedLabel_padding), *&self->padding[OBJC_IVAR____TtC11DiagnosticsP33_8A86E77067E9CB1515C284E58CEE59BA11PaddedLabel_padding]);
+  v4 = sub_100112DB0(rect.origin.x, rect.origin.y, rect.size.width, rect.size.height, *(&self->super.super.super.super.isa + OBJC_IVAR____TtC11DiagnosticsP33_8A86E77067E9CB1515C284E58CEE59BA11PaddedLabel_padding), *&self->padding[OBJC_IVAR____TtC11DiagnosticsP33_8A86E77067E9CB1515C284E58CEE59BA11PaddedLabel_padding]);
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12.receiver = self;
   v12.super_class = type metadata accessor for PaddedLabel();
-  v11 = self;
+  selfCopy = self;
   [(PaddedLabel *)&v12 drawTextInRect:v4, v6, v8, v10];
 }
 
-- (CGRect)textRectForBounds:(CGRect)a3 limitedToNumberOfLines:(int64_t)a4
+- (CGRect)textRectForBounds:(CGRect)bounds limitedToNumberOfLines:(int64_t)lines
 {
-  v6 = sub_100112DB0(a3.origin.x, a3.origin.y, a3.size.width, a3.size.height, *(&self->super.super.super.super.isa + OBJC_IVAR____TtC11DiagnosticsP33_8A86E77067E9CB1515C284E58CEE59BA11PaddedLabel_padding), *&self->padding[OBJC_IVAR____TtC11DiagnosticsP33_8A86E77067E9CB1515C284E58CEE59BA11PaddedLabel_padding]);
+  v6 = sub_100112DB0(bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height, *(&self->super.super.super.super.isa + OBJC_IVAR____TtC11DiagnosticsP33_8A86E77067E9CB1515C284E58CEE59BA11PaddedLabel_padding), *&self->padding[OBJC_IVAR____TtC11DiagnosticsP33_8A86E77067E9CB1515C284E58CEE59BA11PaddedLabel_padding]);
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v26.receiver = self;
   v26.super_class = type metadata accessor for PaddedLabel();
-  v13 = self;
-  [(PaddedLabel *)&v26 textRectForBounds:a4 limitedToNumberOfLines:v6, v8, v10, v12];
+  selfCopy = self;
+  [(PaddedLabel *)&v26 textRectForBounds:lines limitedToNumberOfLines:v6, v8, v10, v12];
   v15 = v14;
   v17 = v16;
   v19 = v18;
@@ -63,12 +63,12 @@
   return result;
 }
 
-- (_TtC11DiagnosticsP33_8A86E77067E9CB1515C284E58CEE59BA11PaddedLabel)initWithFrame:(CGRect)a3
+- (_TtC11DiagnosticsP33_8A86E77067E9CB1515C284E58CEE59BA11PaddedLabel)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v7 = *&UIEdgeInsetsZero.bottom;
   v8 = (self + OBJC_IVAR____TtC11DiagnosticsP33_8A86E77067E9CB1515C284E58CEE59BA11PaddedLabel_padding);
   *v8 = *&UIEdgeInsetsZero.top;
@@ -78,7 +78,7 @@
   return [(PaddedLabel *)&v10 initWithFrame:x, y, width, height];
 }
 
-- (_TtC11DiagnosticsP33_8A86E77067E9CB1515C284E58CEE59BA11PaddedLabel)initWithCoder:(id)a3
+- (_TtC11DiagnosticsP33_8A86E77067E9CB1515C284E58CEE59BA11PaddedLabel)initWithCoder:(id)coder
 {
   v4 = (self + OBJC_IVAR____TtC11DiagnosticsP33_8A86E77067E9CB1515C284E58CEE59BA11PaddedLabel_padding);
   v5 = *&UIEdgeInsetsZero.bottom;
@@ -86,8 +86,8 @@
   v4[1] = v5;
   v9.receiver = self;
   v9.super_class = type metadata accessor for PaddedLabel();
-  v6 = a3;
-  v7 = [(PaddedLabel *)&v9 initWithCoder:v6];
+  coderCopy = coder;
+  v7 = [(PaddedLabel *)&v9 initWithCoder:coderCopy];
 
   if (v7)
   {

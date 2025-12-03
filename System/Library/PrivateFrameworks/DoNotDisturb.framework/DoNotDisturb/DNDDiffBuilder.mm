@@ -1,9 +1,9 @@
 @interface DNDDiffBuilder
 - (DNDDiffBuilder)init;
 - (NSArray)children;
-- (id)descriptionWithIndent:(unint64_t)a3;
-- (void)diffObject:(id)a3 againstObject:(id)a4 withDescription:(id)a5;
-- (void)log:(id)a3 withPrefix:(id)a4;
+- (id)descriptionWithIndent:(unint64_t)indent;
+- (void)diffObject:(id)object againstObject:(id)againstObject withDescription:(id)description;
+- (void)log:(id)log withPrefix:(id)prefix;
 @end
 
 @implementation DNDDiffBuilder
@@ -22,13 +22,13 @@
   return v2;
 }
 
-- (id)descriptionWithIndent:(unint64_t)a3
+- (id)descriptionWithIndent:(unint64_t)indent
 {
   v31 = *MEMORY[0x277D85DE8];
-  v5 = [&stru_2833C9B78 stringByPaddingToLength:a3 withString:@"\t" startingAtIndex:0];
+  v5 = [&stru_2833C9B78 stringByPaddingToLength:indent withString:@"\t" startingAtIndex:0];
   if (self->_children)
   {
-    v6 = [MEMORY[0x277CCAB68] string];
+    string = [MEMORY[0x277CCAB68] string];
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
@@ -48,8 +48,8 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v26 + 1) + 8 * i) descriptionWithIndent:a3 + 1];
-          [v6 appendFormat:@"\n%@;\n", v12];
+          v12 = [*(*(&v26 + 1) + 8 * i) descriptionWithIndent:indent + 1];
+          [string appendFormat:@"\n%@;\n", v12];
         }
 
         v9 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v26 objects:v30 count:16];
@@ -61,12 +61,12 @@
     description = self->_description;
     if (description)
     {
-      [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@: {%@%@}", v5, description, v6, v5, v26];
+      [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@: {%@%@}", v5, description, string, v5, v26];
     }
 
     else
     {
-      [MEMORY[0x277CCACA8] stringWithFormat:@"%@{%@%@}", v5, v6, v5, v25, v26];
+      [MEMORY[0x277CCACA8] stringWithFormat:@"%@{%@%@}", v5, string, v5, v25, v26];
     }
     v17 = ;
   }
@@ -85,7 +85,7 @@
     {
       [v16 description];
     }
-    v6 = ;
+    string = ;
     object2 = self->_object2;
     v19 = objc_opt_respondsToSelector();
     v20 = self->_object2;
@@ -102,12 +102,12 @@
     v22 = self->_description;
     if (v22)
     {
-      [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@: object1: %@; object2: %@", v5, v22, v6, v21];
+      [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@: object1: %@; object2: %@", v5, v22, string, v21];
     }
 
     else
     {
-      [MEMORY[0x277CCACA8] stringWithFormat:@"%@object1: %@; object2: %@", v5, v6, v21, v25];
+      [MEMORY[0x277CCACA8] stringWithFormat:@"%@object1: %@; object2: %@", v5, string, v21, v25];
     }
     v17 = ;
   }
@@ -117,28 +117,28 @@
   return v17;
 }
 
-- (void)diffObject:(id)a3 againstObject:(id)a4 withDescription:(id)a5
+- (void)diffObject:(id)object againstObject:(id)againstObject withDescription:(id)description
 {
-  v17 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v17 != v9)
+  objectCopy = object;
+  againstObjectCopy = againstObject;
+  descriptionCopy = description;
+  if (objectCopy != againstObjectCopy)
   {
-    if (!v17 || !v9 || ([v17 isEqual:v9] & 1) == 0 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+    if (!objectCopy || !againstObjectCopy || ([objectCopy isEqual:againstObjectCopy] & 1) == 0 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v11 = objc_alloc_init(DNDDiffBuilder);
-      objc_storeStrong(&v11->_object1, a3);
-      objc_storeStrong(&v11->_object2, a4);
-      v12 = [v10 copy];
+      objc_storeStrong(&v11->_object1, object);
+      objc_storeStrong(&v11->_object2, againstObject);
+      v12 = [descriptionCopy copy];
       description = v11->_description;
       v11->_description = v12;
 
       children = self->_children;
       if (!children)
       {
-        v15 = [MEMORY[0x277CBEB18] array];
+        array = [MEMORY[0x277CBEB18] array];
         v16 = self->_children;
-        self->_children = v15;
+        self->_children = array;
 
         children = self->_children;
       }
@@ -146,22 +146,22 @@
       [(NSMutableArray *)children addObject:v11];
       if (objc_opt_respondsToSelector())
       {
-        [v17 diffAgainstObject:v9 usingDiffBuilder:v11 withDescription:v10];
+        [objectCopy diffAgainstObject:againstObjectCopy usingDiffBuilder:v11 withDescription:descriptionCopy];
       }
     }
   }
 }
 
-- (void)log:(id)a3 withPrefix:(id)a4
+- (void)log:(id)log withPrefix:(id)prefix
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  logCopy = log;
+  prefixCopy = prefix;
+  if (os_log_type_enabled(logCopy, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v22 = v7;
-    _os_log_impl(&dword_22002F000, v6, OS_LOG_TYPE_DEFAULT, "[%{public}@] Begin diff", buf, 0xCu);
+    v22 = prefixCopy;
+    _os_log_impl(&dword_22002F000, logCopy, OS_LOG_TYPE_DEFAULT, "[%{public}@] Begin diff", buf, 0xCu);
   }
 
   v8 = [(DNDDiffBuilder *)self description];
@@ -186,14 +186,14 @@
           objc_enumerationMutation(v10);
         }
 
-        if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+        if (os_log_type_enabled(logCopy, OS_LOG_TYPE_DEFAULT))
         {
           v15 = *(*(&v17 + 1) + 8 * i);
           *buf = 138543619;
-          v22 = v7;
+          v22 = prefixCopy;
           v23 = 2113;
           v24 = v15;
-          _os_log_impl(&dword_22002F000, v6, OS_LOG_TYPE_DEFAULT, "[%{public}@] %{private}@", buf, 0x16u);
+          _os_log_impl(&dword_22002F000, logCopy, OS_LOG_TYPE_DEFAULT, "[%{public}@] %{private}@", buf, 0x16u);
         }
       }
 
@@ -203,11 +203,11 @@
     while (v12);
   }
 
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(logCopy, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v22 = v7;
-    _os_log_impl(&dword_22002F000, v6, OS_LOG_TYPE_DEFAULT, "[%{public}@] End diff", buf, 0xCu);
+    v22 = prefixCopy;
+    _os_log_impl(&dword_22002F000, logCopy, OS_LOG_TYPE_DEFAULT, "[%{public}@] End diff", buf, 0xCu);
   }
 
   v16 = *MEMORY[0x277D85DE8];

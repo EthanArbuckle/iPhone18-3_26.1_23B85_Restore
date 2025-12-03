@@ -1,7 +1,7 @@
 @interface EscrowRequestPerformEscrowEnrollOperation
-+ (void)cdpUploadPrerecord:(id)a3 secretType:(unint64_t)a4 reply:(id)a5;
-- (BOOL)checkFatalError:(id)a3;
-- (EscrowRequestPerformEscrowEnrollOperation)initWithIntendedState:(id)a3 errorState:(id)a4 enforceRateLimiting:(BOOL)a5 lockStateTracker:(id)a6;
++ (void)cdpUploadPrerecord:(id)prerecord secretType:(unint64_t)type reply:(id)reply;
+- (BOOL)checkFatalError:(id)error;
+- (EscrowRequestPerformEscrowEnrollOperation)initWithIntendedState:(id)state errorState:(id)errorState enforceRateLimiting:(BOOL)limiting lockStateTracker:(id)tracker;
 - (void)groupStart;
 @end
 
@@ -25,8 +25,8 @@
     goto LABEL_6;
   }
 
-  v6 = [v4 domain];
-  if (([v6 isEqualToString:NSOSStatusErrorDomain] & 1) == 0)
+  domain = [v4 domain];
+  if (([domain isEqualToString:NSOSStatusErrorDomain] & 1) == 0)
   {
 
     goto LABEL_25;
@@ -46,8 +46,8 @@ LABEL_25:
     }
 
     [(CKKSResultOperation *)self setError:v5];
-    v17 = [(EscrowRequestPerformEscrowEnrollOperation *)self lockStateTracker];
-    v18 = [v17 isLockedError:v5];
+    lockStateTracker = [(EscrowRequestPerformEscrowEnrollOperation *)self lockStateTracker];
+    v18 = [lockStateTracker isLockedError:v5];
 
     if (v18)
     {
@@ -154,8 +154,8 @@ LABEL_21:
 LABEL_23:
 
 LABEL_32:
-  v21 = [0 uuid];
-  v22 = v21 == 0;
+  uuid = [0 uuid];
+  v22 = uuid == 0;
 
   if (v22)
   {
@@ -176,9 +176,9 @@ LABEL_34:
     v23 = sub_100006274("escrowrequest");
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
     {
-      v24 = [v20 uuid];
+      uuid2 = [v20 uuid];
       *buf = 138412290;
-      v48 = v24;
+      v48 = uuid2;
       _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "escrow request have pre-record uploading: %@", buf, 0xCu);
     }
 
@@ -224,20 +224,20 @@ LABEL_34:
 LABEL_45:
 }
 
-- (BOOL)checkFatalError:(id)a3
+- (BOOL)checkFatalError:(id)error
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  errorCopy = error;
+  v4 = errorCopy;
+  if (!errorCopy)
   {
     goto LABEL_14;
   }
 
-  if ([v3 code] == 24)
+  if ([errorCopy code] == 24)
   {
-    v5 = [v4 domain];
+    domain = [v4 domain];
     v6 = kSecureBackupErrorDomain;
-    v7 = [v5 isEqualToString:kSecureBackupErrorDomain];
+    v7 = [domain isEqualToString:kSecureBackupErrorDomain];
 
     if (v7)
     {
@@ -250,12 +250,12 @@ LABEL_45:
     v6 = kSecureBackupErrorDomain;
   }
 
-  v8 = [v4 domain];
-  if ([v8 isEqualToString:v6])
+  domain2 = [v4 domain];
+  if ([domain2 isEqualToString:v6])
   {
-    v9 = [v4 code];
+    code = [v4 code];
 
-    if (v9 == 17)
+    if (code == 17)
     {
       goto LABEL_12;
     }
@@ -265,16 +265,16 @@ LABEL_45:
   {
   }
 
-  v10 = [v4 domain];
-  if (![v10 isEqualToString:CDPStateErrorDomain])
+  domain3 = [v4 domain];
+  if (![domain3 isEqualToString:CDPStateErrorDomain])
   {
 
     goto LABEL_14;
   }
 
-  v11 = [v4 code];
+  code2 = [v4 code];
 
-  if (v11 != -5309)
+  if (code2 != -5309)
   {
 LABEL_14:
     v12 = 0;
@@ -288,43 +288,43 @@ LABEL_15:
   return v12;
 }
 
-- (EscrowRequestPerformEscrowEnrollOperation)initWithIntendedState:(id)a3 errorState:(id)a4 enforceRateLimiting:(BOOL)a5 lockStateTracker:(id)a6
+- (EscrowRequestPerformEscrowEnrollOperation)initWithIntendedState:(id)state errorState:(id)errorState enforceRateLimiting:(BOOL)limiting lockStateTracker:(id)tracker
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  stateCopy = state;
+  errorStateCopy = errorState;
+  trackerCopy = tracker;
   v17.receiver = self;
   v17.super_class = EscrowRequestPerformEscrowEnrollOperation;
   v14 = [(CKKSGroupOperation *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong((v14 + 142), a3);
-    objc_storeStrong((v15 + 134), a4);
-    v15[128] = a5;
-    objc_storeStrong((v15 + 158), a6);
+    objc_storeStrong((v14 + 142), state);
+    objc_storeStrong((v15 + 134), errorState);
+    v15[128] = limiting;
+    objc_storeStrong((v15 + 158), tracker);
   }
 
   return v15;
 }
 
-+ (void)cdpUploadPrerecord:(id)a3 secretType:(unint64_t)a4 reply:(id)a5
++ (void)cdpUploadPrerecord:(id)prerecord secretType:(unint64_t)type reply:(id)reply
 {
-  v7 = a5;
-  v8 = a3;
+  replyCopy = reply;
+  prerecordCopy = prerecord;
   v9 = [CDPStateController alloc];
   v10 = +[CDPContext contextForPrimaryAccount];
   v11 = [v9 initWithContext:v10];
 
-  v12 = [v8 uuid];
+  uuid = [prerecordCopy uuid];
 
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_100113640;
   v14[3] = &unk_100337BD8;
-  v15 = v7;
-  v13 = v7;
-  [v11 attemptToEscrowPreRecord:@"unknown-local-passcode" preRecordUUID:v12 secretType:a4 completion:v14];
+  v15 = replyCopy;
+  v13 = replyCopy;
+  [v11 attemptToEscrowPreRecord:@"unknown-local-passcode" preRecordUUID:uuid secretType:type completion:v14];
 }
 
 @end

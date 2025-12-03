@@ -1,22 +1,22 @@
 @interface PASAnisetteDataRequester
 - (_TtC21ProximityAppleIDSetup24PASAnisetteDataRequester)init;
-- (void)eraseAnisetteWithCompletion:(id)a3;
-- (void)fetchAnisetteDataAndProvisionIfNecessary:(BOOL)a3 withCompletion:(id)a4;
-- (void)fetchPeerAttestationDataForRequest:(NSURLRequest *)a3 completion:(id)a4;
-- (void)legacyAnisetteDataForDSID:(NSString *)a3 withCompletion:(id)a4;
-- (void)provisionAnisetteWithCompletion:(id)a3;
-- (void)syncAnisetteWithSIMData:(NSData *)a3 completion:(id)a4;
+- (void)eraseAnisetteWithCompletion:(id)completion;
+- (void)fetchAnisetteDataAndProvisionIfNecessary:(BOOL)necessary withCompletion:(id)completion;
+- (void)fetchPeerAttestationDataForRequest:(NSURLRequest *)request completion:(id)completion;
+- (void)legacyAnisetteDataForDSID:(NSString *)d withCompletion:(id)completion;
+- (void)provisionAnisetteWithCompletion:(id)completion;
+- (void)syncAnisetteWithSIMData:(NSData *)data completion:(id)completion;
 @end
 
 @implementation PASAnisetteDataRequester
 
-- (void)provisionAnisetteWithCompletion:(id)a3
+- (void)provisionAnisetteWithCompletion:(id)completion
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27FE65800, &qword_2610BF910);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x28223BE20](v5 - 8);
   v8 = &v14 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(completion);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -36,15 +36,15 @@
   sub_2610765E8(0, 0, v8, &unk_2610CC998, v13);
 }
 
-- (void)syncAnisetteWithSIMData:(NSData *)a3 completion:(id)a4
+- (void)syncAnisetteWithSIMData:(NSData *)data completion:(id)completion
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27FE65800, &qword_2610BF910);
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x28223BE20](v7 - 8);
   v10 = &v17 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(completion);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = data;
   v12[3] = v11;
   v12[4] = self;
   v13 = sub_2610BCC94();
@@ -59,18 +59,18 @@
   v15[3] = 0;
   v15[4] = &unk_2610CC970;
   v15[5] = v14;
-  v16 = a3;
+  dataCopy = data;
 
   sub_2610765E8(0, 0, v10, &unk_2610CC978, v15);
 }
 
-- (void)eraseAnisetteWithCompletion:(id)a3
+- (void)eraseAnisetteWithCompletion:(id)completion
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27FE65800, &qword_2610BF910);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x28223BE20](v5 - 8);
   v8 = &v14 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(completion);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -90,15 +90,15 @@
   sub_2610765E8(0, 0, v8, &unk_2610CC958, v13);
 }
 
-- (void)fetchAnisetteDataAndProvisionIfNecessary:(BOOL)a3 withCompletion:(id)a4
+- (void)fetchAnisetteDataAndProvisionIfNecessary:(BOOL)necessary withCompletion:(id)completion
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27FE65800, &qword_2610BF910);
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x28223BE20](v7 - 8);
   v10 = &v16 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(completion);
   v12 = swift_allocObject();
-  *(v12 + 16) = a3;
+  *(v12 + 16) = necessary;
   *(v12 + 24) = v11;
   *(v12 + 32) = self;
   v13 = sub_2610BCC94();
@@ -117,15 +117,15 @@
   sub_2610765E8(0, 0, v10, &unk_2610CC938, v15);
 }
 
-- (void)legacyAnisetteDataForDSID:(NSString *)a3 withCompletion:(id)a4
+- (void)legacyAnisetteDataForDSID:(NSString *)d withCompletion:(id)completion
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27FE65800, &qword_2610BF910);
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x28223BE20](v7 - 8);
   v10 = &v17 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(completion);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = d;
   v12[3] = v11;
   v12[4] = self;
   v13 = sub_2610BCC94();
@@ -140,20 +140,20 @@
   v15[3] = 0;
   v15[4] = &unk_2610CC910;
   v15[5] = v14;
-  v16 = a3;
+  dCopy = d;
 
   sub_2610765E8(0, 0, v10, &unk_2610CC918, v15);
 }
 
-- (void)fetchPeerAttestationDataForRequest:(NSURLRequest *)a3 completion:(id)a4
+- (void)fetchPeerAttestationDataForRequest:(NSURLRequest *)request completion:(id)completion
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27FE65800, &qword_2610BF910);
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x28223BE20](v7 - 8);
   v10 = &v17 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(completion);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = request;
   v12[3] = v11;
   v12[4] = self;
   v13 = sub_2610BCC94();
@@ -168,7 +168,7 @@
   v15[3] = 0;
   v15[4] = &unk_2610CC8D0;
   v15[5] = v14;
-  v16 = a3;
+  requestCopy = request;
 
   sub_2610765E8(0, 0, v10, &unk_2610C8260, v15);
 }

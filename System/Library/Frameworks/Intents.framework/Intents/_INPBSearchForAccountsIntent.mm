@@ -1,68 +1,68 @@
 @interface _INPBSearchForAccountsIntent
-- (BOOL)isEqual:(id)a3;
-- (_INPBSearchForAccountsIntent)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBSearchForAccountsIntent)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (int)StringAsAccountType:(id)a3;
-- (int)StringAsRequestedBalanceType:(id)a3;
+- (int)StringAsAccountType:(id)type;
+- (int)StringAsRequestedBalanceType:(id)type;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setAccountType:(int)a3;
-- (void)setHasRequestedBalanceType:(BOOL)a3;
-- (void)setRequestedBalanceType:(int)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setAccountType:(int)type;
+- (void)setHasRequestedBalanceType:(BOOL)type;
+- (void)setRequestedBalanceType:(int)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBSearchForAccountsIntent
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(_INPBSearchForAccountsIntent *)self accountNickname];
-  v5 = [v4 dictionaryRepresentation];
-  [v3 setObject:v5 forKeyedSubscript:@"accountNickname"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  accountNickname = [(_INPBSearchForAccountsIntent *)self accountNickname];
+  dictionaryRepresentation = [accountNickname dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"accountNickname"];
 
   if ([(_INPBSearchForAccountsIntent *)self hasAccountType])
   {
-    v6 = [(_INPBSearchForAccountsIntent *)self accountType];
-    if ((v6 - 1) >= 7)
+    accountType = [(_INPBSearchForAccountsIntent *)self accountType];
+    if ((accountType - 1) >= 7)
     {
-      v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v6];
+      v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", accountType];
     }
 
     else
     {
-      v7 = off_1E7280310[(v6 - 1)];
+      v7 = off_1E7280310[(accountType - 1)];
     }
 
-    [v3 setObject:v7 forKeyedSubscript:@"accountType"];
+    [dictionary setObject:v7 forKeyedSubscript:@"accountType"];
   }
 
-  v8 = [(_INPBSearchForAccountsIntent *)self intentMetadata];
-  v9 = [v8 dictionaryRepresentation];
-  [v3 setObject:v9 forKeyedSubscript:@"intentMetadata"];
+  intentMetadata = [(_INPBSearchForAccountsIntent *)self intentMetadata];
+  dictionaryRepresentation2 = [intentMetadata dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"intentMetadata"];
 
-  v10 = [(_INPBSearchForAccountsIntent *)self organizationName];
-  v11 = [v10 dictionaryRepresentation];
-  [v3 setObject:v11 forKeyedSubscript:@"organizationName"];
+  organizationName = [(_INPBSearchForAccountsIntent *)self organizationName];
+  dictionaryRepresentation3 = [organizationName dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"organizationName"];
 
   if ([(_INPBSearchForAccountsIntent *)self hasRequestedBalanceType])
   {
-    v12 = [(_INPBSearchForAccountsIntent *)self requestedBalanceType];
-    if ((v12 - 1) >= 3)
+    requestedBalanceType = [(_INPBSearchForAccountsIntent *)self requestedBalanceType];
+    if ((requestedBalanceType - 1) >= 3)
     {
-      v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v12];
+      v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", requestedBalanceType];
     }
 
     else
     {
-      v13 = off_1E7280348[(v12 - 1)];
+      v13 = off_1E7280348[(requestedBalanceType - 1)];
     }
 
-    [v3 setObject:v13 forKeyedSubscript:@"requestedBalanceType"];
+    [dictionary setObject:v13 forKeyedSubscript:@"requestedBalanceType"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -93,28 +93,28 @@
   return v4 ^ v3 ^ v5 ^ v6 ^ v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_21;
   }
 
-  v5 = [(_INPBSearchForAccountsIntent *)self accountNickname];
-  v6 = [v4 accountNickname];
-  if ((v5 != 0) == (v6 == 0))
+  accountNickname = [(_INPBSearchForAccountsIntent *)self accountNickname];
+  accountNickname2 = [equalCopy accountNickname];
+  if ((accountNickname != 0) == (accountNickname2 == 0))
   {
     goto LABEL_20;
   }
 
-  v7 = [(_INPBSearchForAccountsIntent *)self accountNickname];
-  if (v7)
+  accountNickname3 = [(_INPBSearchForAccountsIntent *)self accountNickname];
+  if (accountNickname3)
   {
-    v8 = v7;
-    v9 = [(_INPBSearchForAccountsIntent *)self accountNickname];
-    v10 = [v4 accountNickname];
-    v11 = [v9 isEqual:v10];
+    v8 = accountNickname3;
+    accountNickname4 = [(_INPBSearchForAccountsIntent *)self accountNickname];
+    accountNickname5 = [equalCopy accountNickname];
+    v11 = [accountNickname4 isEqual:accountNickname5];
 
     if (!v11)
     {
@@ -126,38 +126,38 @@
   {
   }
 
-  v12 = [(_INPBSearchForAccountsIntent *)self hasAccountType];
-  if (v12 != [v4 hasAccountType])
+  hasAccountType = [(_INPBSearchForAccountsIntent *)self hasAccountType];
+  if (hasAccountType != [equalCopy hasAccountType])
   {
     goto LABEL_21;
   }
 
   if ([(_INPBSearchForAccountsIntent *)self hasAccountType])
   {
-    if ([v4 hasAccountType])
+    if ([equalCopy hasAccountType])
     {
       accountType = self->_accountType;
-      if (accountType != [v4 accountType])
+      if (accountType != [equalCopy accountType])
       {
         goto LABEL_21;
       }
     }
   }
 
-  v5 = [(_INPBSearchForAccountsIntent *)self intentMetadata];
-  v6 = [v4 intentMetadata];
-  if ((v5 != 0) == (v6 == 0))
+  accountNickname = [(_INPBSearchForAccountsIntent *)self intentMetadata];
+  accountNickname2 = [equalCopy intentMetadata];
+  if ((accountNickname != 0) == (accountNickname2 == 0))
   {
     goto LABEL_20;
   }
 
-  v14 = [(_INPBSearchForAccountsIntent *)self intentMetadata];
-  if (v14)
+  intentMetadata = [(_INPBSearchForAccountsIntent *)self intentMetadata];
+  if (intentMetadata)
   {
-    v15 = v14;
-    v16 = [(_INPBSearchForAccountsIntent *)self intentMetadata];
-    v17 = [v4 intentMetadata];
-    v18 = [v16 isEqual:v17];
+    v15 = intentMetadata;
+    intentMetadata2 = [(_INPBSearchForAccountsIntent *)self intentMetadata];
+    intentMetadata3 = [equalCopy intentMetadata];
+    v18 = [intentMetadata2 isEqual:intentMetadata3];
 
     if (!v18)
     {
@@ -169,22 +169,22 @@
   {
   }
 
-  v5 = [(_INPBSearchForAccountsIntent *)self organizationName];
-  v6 = [v4 organizationName];
-  if ((v5 != 0) == (v6 == 0))
+  accountNickname = [(_INPBSearchForAccountsIntent *)self organizationName];
+  accountNickname2 = [equalCopy organizationName];
+  if ((accountNickname != 0) == (accountNickname2 == 0))
   {
 LABEL_20:
 
     goto LABEL_21;
   }
 
-  v19 = [(_INPBSearchForAccountsIntent *)self organizationName];
-  if (v19)
+  organizationName = [(_INPBSearchForAccountsIntent *)self organizationName];
+  if (organizationName)
   {
-    v20 = v19;
-    v21 = [(_INPBSearchForAccountsIntent *)self organizationName];
-    v22 = [v4 organizationName];
-    v23 = [v21 isEqual:v22];
+    v20 = organizationName;
+    organizationName2 = [(_INPBSearchForAccountsIntent *)self organizationName];
+    organizationName3 = [equalCopy organizationName];
+    v23 = [organizationName2 isEqual:organizationName3];
 
     if (!v23)
     {
@@ -196,10 +196,10 @@ LABEL_20:
   {
   }
 
-  v26 = [(_INPBSearchForAccountsIntent *)self hasRequestedBalanceType];
-  if (v26 == [v4 hasRequestedBalanceType])
+  hasRequestedBalanceType = [(_INPBSearchForAccountsIntent *)self hasRequestedBalanceType];
+  if (hasRequestedBalanceType == [equalCopy hasRequestedBalanceType])
   {
-    if (!-[_INPBSearchForAccountsIntent hasRequestedBalanceType](self, "hasRequestedBalanceType") || ![v4 hasRequestedBalanceType] || (requestedBalanceType = self->_requestedBalanceType, requestedBalanceType == objc_msgSend(v4, "requestedBalanceType")))
+    if (!-[_INPBSearchForAccountsIntent hasRequestedBalanceType](self, "hasRequestedBalanceType") || ![equalCopy hasRequestedBalanceType] || (requestedBalanceType = self->_requestedBalanceType, requestedBalanceType == objc_msgSend(equalCopy, "requestedBalanceType")))
     {
       v24 = 1;
       goto LABEL_22;
@@ -213,10 +213,10 @@ LABEL_22:
   return v24;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBSearchForAccountsIntent allocWithZone:](_INPBSearchForAccountsIntent init];
-  v6 = [(_INPBDataString *)self->_accountNickname copyWithZone:a3];
+  v6 = [(_INPBDataString *)self->_accountNickname copyWithZone:zone];
   [(_INPBSearchForAccountsIntent *)v5 setAccountNickname:v6];
 
   if ([(_INPBSearchForAccountsIntent *)self hasAccountType])
@@ -224,10 +224,10 @@ LABEL_22:
     [(_INPBSearchForAccountsIntent *)v5 setAccountType:[(_INPBSearchForAccountsIntent *)self accountType]];
   }
 
-  v7 = [(_INPBIntentMetadata *)self->_intentMetadata copyWithZone:a3];
+  v7 = [(_INPBIntentMetadata *)self->_intentMetadata copyWithZone:zone];
   [(_INPBSearchForAccountsIntent *)v5 setIntentMetadata:v7];
 
-  v8 = [(_INPBDataString *)self->_organizationName copyWithZone:a3];
+  v8 = [(_INPBDataString *)self->_organizationName copyWithZone:zone];
   [(_INPBSearchForAccountsIntent *)v5 setOrganizationName:v8];
 
   if ([(_INPBSearchForAccountsIntent *)self hasRequestedBalanceType])
@@ -238,38 +238,38 @@ LABEL_22:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBSearchForAccountsIntent *)self data];
+  coderCopy = coder;
+  data = [(_INPBSearchForAccountsIntent *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBSearchForAccountsIntent)initWithCoder:(id)a3
+- (_INPBSearchForAccountsIntent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBSearchForAccountsIntent *)self initWithData:v6];
+    self = [(_INPBSearchForAccountsIntent *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v12 = a3;
-  v4 = [(_INPBSearchForAccountsIntent *)self accountNickname];
+  toCopy = to;
+  accountNickname = [(_INPBSearchForAccountsIntent *)self accountNickname];
 
-  if (v4)
+  if (accountNickname)
   {
-    v5 = [(_INPBSearchForAccountsIntent *)self accountNickname];
+    accountNickname2 = [(_INPBSearchForAccountsIntent *)self accountNickname];
     PBDataWriterWriteSubmessage();
   }
 
@@ -279,19 +279,19 @@ LABEL_22:
     PBDataWriterWriteInt32Field();
   }
 
-  v7 = [(_INPBSearchForAccountsIntent *)self intentMetadata];
+  intentMetadata = [(_INPBSearchForAccountsIntent *)self intentMetadata];
 
-  if (v7)
+  if (intentMetadata)
   {
-    v8 = [(_INPBSearchForAccountsIntent *)self intentMetadata];
+    intentMetadata2 = [(_INPBSearchForAccountsIntent *)self intentMetadata];
     PBDataWriterWriteSubmessage();
   }
 
-  v9 = [(_INPBSearchForAccountsIntent *)self organizationName];
+  organizationName = [(_INPBSearchForAccountsIntent *)self organizationName];
 
-  if (v9)
+  if (organizationName)
   {
-    v10 = [(_INPBSearchForAccountsIntent *)self organizationName];
+    organizationName2 = [(_INPBSearchForAccountsIntent *)self organizationName];
     PBDataWriterWriteSubmessage();
   }
 
@@ -302,20 +302,20 @@ LABEL_22:
   }
 }
 
-- (int)StringAsRequestedBalanceType:(id)a3
+- (int)StringAsRequestedBalanceType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"MONEY"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"MONEY"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"POINTS"])
+  else if ([typeCopy isEqualToString:@"POINTS"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"MILES"])
+  else if ([typeCopy isEqualToString:@"MILES"])
   {
     v4 = 3;
   }
@@ -328,9 +328,9 @@ LABEL_22:
   return v4;
 }
 
-- (void)setHasRequestedBalanceType:(BOOL)a3
+- (void)setHasRequestedBalanceType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }
@@ -343,10 +343,10 @@ LABEL_22:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setRequestedBalanceType:(int)a3
+- (void)setRequestedBalanceType:(int)type
 {
   has = self->_has;
-  if (a3 == 0x7FFFFFFF)
+  if (type == 0x7FFFFFFF)
   {
     *&self->_has = has & 0xFD;
   }
@@ -354,44 +354,44 @@ LABEL_22:
   else
   {
     *&self->_has = has | 2;
-    self->_requestedBalanceType = a3;
+    self->_requestedBalanceType = type;
   }
 }
 
-- (int)StringAsAccountType:(id)a3
+- (int)StringAsAccountType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"CHECKING"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"CHECKING"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"CREDIT"])
+  else if ([typeCopy isEqualToString:@"CREDIT"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"DEBIT"])
+  else if ([typeCopy isEqualToString:@"DEBIT"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"INVESTMENT"])
+  else if ([typeCopy isEqualToString:@"INVESTMENT"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"MORTGAGE"])
+  else if ([typeCopy isEqualToString:@"MORTGAGE"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"PREPAID"])
+  else if ([typeCopy isEqualToString:@"PREPAID"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"SAVING"])
+  else if ([typeCopy isEqualToString:@"SAVING"])
   {
     v4 = 7;
   }
@@ -404,10 +404,10 @@ LABEL_22:
   return v4;
 }
 
-- (void)setAccountType:(int)a3
+- (void)setAccountType:(int)type
 {
   has = self->_has;
-  if (a3 == 0x7FFFFFFF)
+  if (type == 0x7FFFFFFF)
   {
     *&self->_has = has & 0xFE;
   }
@@ -415,7 +415,7 @@ LABEL_22:
   else
   {
     *&self->_has = has | 1;
-    self->_accountType = a3;
+    self->_accountType = type;
   }
 }
 

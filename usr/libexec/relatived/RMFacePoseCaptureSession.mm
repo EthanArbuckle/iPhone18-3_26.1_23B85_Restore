@@ -2,16 +2,16 @@
 - (BOOL)configureCaptureSession;
 - (RMFacePoseCaptureSession)init;
 - (RMFacePoseCaptureSessionDelegate)delegate;
-- (id)chooseBestFormatForFaceKit:(id)a3 forCameraID:(unint64_t)a4;
-- (id)computeCameraParametersFromDimensions:(id)a3;
+- (id)chooseBestFormatForFaceKit:(id)kit forCameraID:(unint64_t)d;
+- (id)computeCameraParametersFromDimensions:(id)dimensions;
 - (unint64_t)numberOfCameras;
-- (void)captureOutput:(id)a3 didOutputMetadataObjects:(id)a4 fromConnection:(id)a5;
-- (void)captureOutput:(id)a3 didOutputSampleBuffer:(opaqueCMSampleBuffer *)a4 fromConnection:(id)a5;
-- (void)setCameraPaused:(BOOL)a3;
-- (void)startCaptureSessionWithHandler:(id)a3;
-- (void)startFaceKitForContext:(id)a3;
+- (void)captureOutput:(id)output didOutputMetadataObjects:(id)objects fromConnection:(id)connection;
+- (void)captureOutput:(id)output didOutputSampleBuffer:(opaqueCMSampleBuffer *)buffer fromConnection:(id)connection;
+- (void)setCameraPaused:(BOOL)paused;
+- (void)startCaptureSessionWithHandler:(id)handler;
+- (void)startFaceKitForContext:(id)context;
 - (void)stopCaptureSession;
-- (void)stopFaceKitForContext:(id)a3;
+- (void)stopFaceKitForContext:(id)context;
 @end
 
 @implementation RMFacePoseCaptureSession
@@ -99,29 +99,29 @@
   return v2;
 }
 
-- (void)startCaptureSessionWithHandler:(id)a3
+- (void)startCaptureSessionWithHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(RMFacePoseCaptureSession *)self captureQueue];
+  handlerCopy = handler;
+  captureQueue = [(RMFacePoseCaptureSession *)self captureQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10000A134;
   v7[3] = &unk_100024D78;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  dispatch_async(captureQueue, v7);
 }
 
 - (void)stopCaptureSession
 {
-  v3 = [(RMFacePoseCaptureSession *)self captureQueue];
+  captureQueue = [(RMFacePoseCaptureSession *)self captureQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10000A598;
   block[3] = &unk_100024948;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(captureQueue, block);
 
   if (qword_10002C0C8 != -1)
   {
@@ -136,22 +136,22 @@
   }
 }
 
-- (void)setCameraPaused:(BOOL)a3
+- (void)setCameraPaused:(BOOL)paused
 {
-  v5 = [(RMFacePoseCaptureSession *)self captureQueue];
+  captureQueue = [(RMFacePoseCaptureSession *)self captureQueue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10000AA14;
   v6[3] = &unk_100024F68;
   v6[4] = self;
-  v7 = a3;
-  dispatch_async(v5, v6);
+  pausedCopy = paused;
+  dispatch_async(captureQueue, v6);
 }
 
 - (unint64_t)numberOfCameras
 {
-  v2 = [(RMFacePoseCaptureSession *)self captureContext];
-  v3 = [v2 count];
+  captureContext = [(RMFacePoseCaptureSession *)self captureContext];
+  v3 = [captureContext count];
 
   return v3;
 }
@@ -202,8 +202,8 @@
     (v160[2])(v160, v7, AVMediaTypeVideo);
   }
 
-  v8 = [(RMFacePoseCaptureSession *)self captureContext];
-  v9 = [v8 count] == 0;
+  captureContext = [(RMFacePoseCaptureSession *)self captureContext];
+  v9 = [captureContext count] == 0;
 
   if (v9)
   {
@@ -232,8 +232,8 @@ LABEL_156:
   v10 = qword_10002C0D0;
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [(RMFacePoseCaptureSession *)self captureContext];
-    v12 = [v11 count];
+    captureContext2 = [(RMFacePoseCaptureSession *)self captureContext];
+    v12 = [captureContext2 count];
     LODWORD(buf.value) = 134349056;
     *(&buf.value + 4) = v12;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Number of face tracking cameras: %{public}lu", &buf, 0xCu);
@@ -243,12 +243,12 @@ LABEL_156:
   v209 = 0u;
   v206 = 0u;
   v207 = 0u;
-  v13 = [(RMFacePoseCaptureSession *)self captureContext];
-  v14 = [v13 countByEnumeratingWithState:&v206 objects:v231 count:16];
+  captureContext3 = [(RMFacePoseCaptureSession *)self captureContext];
+  v14 = [captureContext3 countByEnumeratingWithState:&v206 objects:v231 count:16];
   if (v14)
   {
     v15 = *v207;
-    v163 = v13;
+    v163 = captureContext3;
     v162 = *v207;
     do
     {
@@ -258,7 +258,7 @@ LABEL_156:
       {
         if (*v207 != v15)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(captureContext3);
         }
 
         v17 = *(*(&v206 + 1) + 8 * v16);
@@ -270,13 +270,13 @@ LABEL_156:
         v18 = qword_10002C0D0;
         if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
         {
-          v19 = [v17 cameraID];
-          v166 = [v17 captureDevice];
-          v20 = [v166 uniqueID];
-          v21 = [v17 captureDevice];
-          v22 = [v21 localizedName];
-          v23 = [v17 captureDevice];
-          if ([v23 isContinuityCamera])
+          cameraID = [v17 cameraID];
+          captureDevice = [v17 captureDevice];
+          uniqueID = [captureDevice uniqueID];
+          captureDevice2 = [v17 captureDevice];
+          localizedName = [captureDevice2 localizedName];
+          captureDevice3 = [v17 captureDevice];
+          if ([captureDevice3 isContinuityCamera])
           {
             v24 = " (Continuity Camera)";
           }
@@ -286,21 +286,21 @@ LABEL_156:
             v24 = &unk_10001E8F6;
           }
 
-          v25 = [v17 captureDevice];
-          v26 = [v25 deviceType];
+          captureDevice4 = [v17 captureDevice];
+          deviceType = [captureDevice4 deviceType];
           LODWORD(buf.value) = 134350082;
-          *(&buf.value + 4) = v19;
+          *(&buf.value + 4) = cameraID;
           LOWORD(buf.flags) = 2114;
-          *(&buf.flags + 2) = v20;
+          *(&buf.flags + 2) = uniqueID;
           HIWORD(buf.epoch) = 2114;
-          v226 = v22;
+          v226 = localizedName;
           v227 = 2082;
           v228 = v24;
           v229 = 2114;
-          v230 = v26;
+          v230 = deviceType;
           _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "[Cam %{public}lu] Found camera: %{public}@ %{public}@%{public}s, type: %{public}@", &buf, 0x34u);
 
-          v13 = v163;
+          captureContext3 = v163;
           v15 = v162;
           v14 = obj;
         }
@@ -309,7 +309,7 @@ LABEL_156:
       }
 
       while (v14 != v16);
-      v14 = [v13 countByEnumeratingWithState:&v206 objects:v231 count:16];
+      v14 = [captureContext3 countByEnumeratingWithState:&v206 objects:v231 count:16];
     }
 
     while (v14);
@@ -319,8 +319,8 @@ LABEL_156:
   v205 = 0u;
   v202 = 0u;
   v203 = 0u;
-  v27 = [(RMFacePoseCaptureSession *)self captureContext];
-  v28 = [v27 countByEnumeratingWithState:&v202 objects:v224 count:16];
+  captureContext4 = [(RMFacePoseCaptureSession *)self captureContext];
+  v28 = [captureContext4 countByEnumeratingWithState:&v202 objects:v224 count:16];
   if (!v28)
   {
     goto LABEL_35;
@@ -333,13 +333,13 @@ LABEL_156:
     {
       if (*v203 != v29)
       {
-        objc_enumerationMutation(v27);
+        objc_enumerationMutation(captureContext4);
       }
 
       v31 = *(*(&v202 + 1) + 8 * i);
-      v32 = [v31 captureDevice];
+      captureDevice5 = [v31 captureDevice];
       v201 = 0;
-      v33 = [AVCaptureDeviceInput deviceInputWithDevice:v32 error:&v201];
+      v33 = [AVCaptureDeviceInput deviceInputWithDevice:captureDevice5 error:&v201];
       v34 = v201;
       [v31 setCaptureDeviceInput:v33];
 
@@ -356,9 +356,9 @@ LABEL_156:
           goto LABEL_155;
         }
 
-        v152 = [v31 cameraID];
+        cameraID2 = [v31 cameraID];
         LODWORD(buf.value) = 134349314;
-        *(&buf.value + 4) = v152;
+        *(&buf.value + 4) = cameraID2;
         LOWORD(buf.flags) = 2114;
         *(&buf.flags + 2) = v34;
         v153 = "[Cam %{public}lu] Capture device error: %{public}@";
@@ -367,8 +367,8 @@ LABEL_156:
         goto LABEL_154;
       }
 
-      v35 = [v31 captureDeviceInput];
-      v36 = v35 == 0;
+      captureDeviceInput = [v31 captureDeviceInput];
+      v36 = captureDeviceInput == 0;
 
       if (v36)
       {
@@ -383,9 +383,9 @@ LABEL_156:
           goto LABEL_155;
         }
 
-        v156 = [v31 cameraID];
+        cameraID3 = [v31 cameraID];
         LODWORD(buf.value) = 134349056;
-        *(&buf.value + 4) = v156;
+        *(&buf.value + 4) = cameraID3;
         v153 = "[Cam %{public}lu] Failed to create capture input";
         v154 = v151;
         v155 = 12;
@@ -397,7 +397,7 @@ LABEL_155:
       }
     }
 
-    v28 = [v27 countByEnumeratingWithState:&v202 objects:v224 count:16];
+    v28 = [captureContext4 countByEnumeratingWithState:&v202 objects:v224 count:16];
     if (v28)
     {
       continue;
@@ -413,8 +413,8 @@ LABEL_35:
   v198 = 0u;
   v199 = 0u;
   v200 = 0u;
-  v37 = [(RMFacePoseCaptureSession *)self captureContext];
-  v38 = [v37 countByEnumeratingWithState:&v197 objects:v223 count:16];
+  captureContext5 = [(RMFacePoseCaptureSession *)self captureContext];
+  v38 = [captureContext5 countByEnumeratingWithState:&v197 objects:v223 count:16];
   if (v38)
   {
     v39 = *v198;
@@ -424,12 +424,12 @@ LABEL_35:
       {
         if (*v198 != v39)
         {
-          objc_enumerationMutation(v37);
+          objc_enumerationMutation(captureContext5);
         }
 
         v41 = *(*(&v197 + 1) + 8 * j);
-        v42 = [v41 mediaType];
-        v43 = v42 == AVMediaTypeVideo;
+        mediaType = [v41 mediaType];
+        v43 = mediaType == AVMediaTypeVideo;
 
         if (v43)
         {
@@ -438,7 +438,7 @@ LABEL_35:
         }
       }
 
-      v38 = [v37 countByEnumeratingWithState:&v197 objects:v223 count:16];
+      v38 = [captureContext5 countByEnumeratingWithState:&v197 objects:v223 count:16];
     }
 
     while (v38);
@@ -448,8 +448,8 @@ LABEL_35:
   v196 = 0u;
   v193 = 0u;
   v194 = 0u;
-  v45 = [(RMFacePoseCaptureSession *)self captureContext];
-  v46 = [v45 countByEnumeratingWithState:&v193 objects:v222 count:16];
+  captureContext6 = [(RMFacePoseCaptureSession *)self captureContext];
+  v46 = [captureContext6 countByEnumeratingWithState:&v193 objects:v222 count:16];
   if (v46)
   {
     v47 = *v194;
@@ -459,19 +459,19 @@ LABEL_35:
       {
         if (*v194 != v47)
         {
-          objc_enumerationMutation(v45);
+          objc_enumerationMutation(captureContext6);
         }
 
         v49 = *(*(&v193 + 1) + 8 * k);
         v50 = objc_opt_new();
         [v49 setMetadataOutput:v50];
 
-        v51 = [v49 metadataOutput];
-        v52 = [(RMFacePoseCaptureSession *)self captureQueue];
-        [v51 setMetadataObjectsDelegate:self queue:v52];
+        metadataOutput = [v49 metadataOutput];
+        captureQueue = [(RMFacePoseCaptureSession *)self captureQueue];
+        [metadataOutput setMetadataObjectsDelegate:self queue:captureQueue];
       }
 
-      v46 = [v45 countByEnumeratingWithState:&v193 objects:v222 count:16];
+      v46 = [captureContext6 countByEnumeratingWithState:&v193 objects:v222 count:16];
     }
 
     while (v46);
@@ -481,8 +481,8 @@ LABEL_35:
   v192 = 0u;
   v189 = 0u;
   v190 = 0u;
-  v53 = [(RMFacePoseCaptureSession *)self captureContext];
-  v54 = [v53 countByEnumeratingWithState:&v189 objects:v221 count:16];
+  captureContext7 = [(RMFacePoseCaptureSession *)self captureContext];
+  v54 = [captureContext7 countByEnumeratingWithState:&v189 objects:v221 count:16];
   if (v54)
   {
     v55 = *v190;
@@ -492,25 +492,25 @@ LABEL_35:
       {
         if (*v190 != v55)
         {
-          objc_enumerationMutation(v53);
+          objc_enumerationMutation(captureContext7);
         }
 
         v57 = *(*(&v189 + 1) + 8 * m);
         v58 = objc_opt_new();
         [v57 setCaptureSession:v58];
 
-        v59 = [v57 captureSession];
-        [v59 beginConfiguration];
+        captureSession = [v57 captureSession];
+        [captureSession beginConfiguration];
 
-        v60 = [v57 captureSession];
-        v61 = [v57 captureDeviceInput];
-        [v60 addInput:v61];
+        captureSession2 = [v57 captureSession];
+        captureDeviceInput2 = [v57 captureDeviceInput];
+        [captureSession2 addInput:captureDeviceInput2];
 
-        v62 = [v57 metadataOutput];
-        LODWORD(v61) = v62 == 0;
+        metadataOutput2 = [v57 metadataOutput];
+        LODWORD(captureDeviceInput2) = metadataOutput2 == 0;
 
-        v63 = [v57 captureSession];
-        if (v61)
+        captureSession3 = [v57 captureSession];
+        if (captureDeviceInput2)
         {
           [v57 videoDataOutput];
         }
@@ -520,13 +520,13 @@ LABEL_35:
           [v57 metadataOutput];
         }
         v64 = ;
-        [v63 addOutput:v64];
+        [captureSession3 addOutput:v64];
 
-        v65 = [v57 captureSession];
-        [v65 commitConfiguration];
+        captureSession4 = [v57 captureSession];
+        [captureSession4 commitConfiguration];
       }
 
-      v54 = [v53 countByEnumeratingWithState:&v189 objects:v221 count:16];
+      v54 = [captureContext7 countByEnumeratingWithState:&v189 objects:v221 count:16];
     }
 
     while (v54);
@@ -536,8 +536,8 @@ LABEL_35:
   v188 = 0u;
   v185 = 0u;
   v186 = 0u;
-  v66 = [(RMFacePoseCaptureSession *)self captureContext];
-  v67 = [v66 countByEnumeratingWithState:&v185 objects:v220 count:16];
+  captureContext8 = [(RMFacePoseCaptureSession *)self captureContext];
+  v67 = [captureContext8 countByEnumeratingWithState:&v185 objects:v220 count:16];
   if (v67)
   {
     v68 = *v186;
@@ -548,53 +548,53 @@ LABEL_35:
       {
         if (*v186 != v68)
         {
-          objc_enumerationMutation(v66);
+          objc_enumerationMutation(captureContext8);
         }
 
         v71 = *(*(&v185 + 1) + 8 * n);
-        v72 = [v71 metadataOutput];
-        v73 = v72 == 0;
+        metadataOutput3 = [v71 metadataOutput];
+        v73 = metadataOutput3 == 0;
 
         if (!v73)
         {
-          v74 = [v71 metadataOutput];
-          v75 = [v74 isFaceTrackingSupported];
+          metadataOutput4 = [v71 metadataOutput];
+          isFaceTrackingSupported = [metadataOutput4 isFaceTrackingSupported];
 
-          if (v75)
+          if (isFaceTrackingSupported)
           {
-            v76 = [v71 metadataOutput];
-            [v76 setFaceTrackingMetadataObjectTypesAvailable:1];
+            metadataOutput5 = [v71 metadataOutput];
+            [metadataOutput5 setFaceTrackingMetadataObjectTypesAvailable:1];
 
-            v77 = [v71 metadataOutput];
-            [v77 setFaceTrackingMaxFaces:1];
+            metadataOutput6 = [v71 metadataOutput];
+            [metadataOutput6 setFaceTrackingMaxFaces:1];
 
-            v78 = [v71 metadataOutput];
-            [v78 setFaceTrackingUsesFaceRecognition:0];
+            metadataOutput7 = [v71 metadataOutput];
+            [metadataOutput7 setFaceTrackingUsesFaceRecognition:0];
 
             v219[0] = v69;
             v219[1] = AVMetadataObjectTypeFace;
             v79 = [NSArray arrayWithObjects:v219 count:2];
-            v80 = [v71 metadataOutput];
-            [v80 setMetadataObjectTypes:v79];
+            metadataOutput8 = [v71 metadataOutput];
+            [metadataOutput8 setMetadataObjectTypes:v79];
 
             [(RMFacePoseCaptureSession *)self networkFailureThresholdMultiplier];
             v82 = v81;
-            v83 = [v71 metadataOutput];
+            metadataOutput9 = [v71 metadataOutput];
             *&v84 = v82;
-            [v83 setFaceTrackingNetworkFailureThresholdMultiplier:v84];
+            [metadataOutput9 setFaceTrackingNetworkFailureThresholdMultiplier:v84];
 
             [(RMFacePoseCaptureSession *)self trackingFailureFieldOfViewModifier];
             v86 = v85;
-            v87 = [v71 metadataOutput];
+            metadataOutput10 = [v71 metadataOutput];
             *&v88 = v86;
-            [v87 setFaceTrackingFailureFieldOfViewModifier:v88];
+            [metadataOutput10 setFaceTrackingFailureFieldOfViewModifier:v88];
 
             [v71 setSupportsFaceKitMetadata:1];
           }
         }
       }
 
-      v67 = [v66 countByEnumeratingWithState:&v185 objects:v220 count:16];
+      v67 = [captureContext8 countByEnumeratingWithState:&v185 objects:v220 count:16];
     }
 
     while (v67);
@@ -604,8 +604,8 @@ LABEL_35:
   v184 = 0u;
   v181 = 0u;
   v182 = 0u;
-  v89 = [(RMFacePoseCaptureSession *)self captureContext];
-  v90 = [v89 countByEnumeratingWithState:&v181 objects:v218 count:16];
+  captureContext9 = [(RMFacePoseCaptureSession *)self captureContext];
+  v90 = [captureContext9 countByEnumeratingWithState:&v181 objects:v218 count:16];
   if (v90)
   {
     v91 = *v182;
@@ -616,34 +616,34 @@ LABEL_35:
       {
         if (*v182 != v91)
         {
-          objc_enumerationMutation(v89);
+          objc_enumerationMutation(captureContext9);
         }
 
         v94 = *(*(&v181 + 1) + 8 * ii);
         if (([v94 supportsFaceKitMetadata] & 1) == 0)
         {
-          v95 = [v94 captureSession];
-          [v95 beginConfiguration];
+          captureSession5 = [v94 captureSession];
+          [captureSession5 beginConfiguration];
 
           v216 = v92;
           v217 = &off_100025F00;
           v96 = [NSDictionary dictionaryWithObjects:&v217 forKeys:&v216 count:1];
-          v97 = [v94 videoDataOutput];
-          [v97 setVideoSettings:v96];
+          videoDataOutput = [v94 videoDataOutput];
+          [videoDataOutput setVideoSettings:v96];
 
-          v98 = [v94 videoDataOutput];
-          [v98 setAlwaysDiscardsLateVideoFrames:1];
+          videoDataOutput2 = [v94 videoDataOutput];
+          [videoDataOutput2 setAlwaysDiscardsLateVideoFrames:1];
 
-          v99 = [v94 videoDataOutput];
-          v100 = [(RMFacePoseCaptureSession *)self captureQueue];
-          [v99 setSampleBufferDelegate:self queue:v100];
+          videoDataOutput3 = [v94 videoDataOutput];
+          captureQueue2 = [(RMFacePoseCaptureSession *)self captureQueue];
+          [videoDataOutput3 setSampleBufferDelegate:self queue:captureQueue2];
 
-          v101 = [v94 captureSession];
-          [v101 commitConfiguration];
+          captureSession6 = [v94 captureSession];
+          [captureSession6 commitConfiguration];
         }
       }
 
-      v90 = [v89 countByEnumeratingWithState:&v181 objects:v218 count:16];
+      v90 = [captureContext9 countByEnumeratingWithState:&v181 objects:v218 count:16];
     }
 
     while (v90);
@@ -670,10 +670,10 @@ LABEL_35:
         }
 
         v104 = *(*(&v177 + 1) + 8 * v103);
-        v105 = [v104 captureDeviceInput];
-        v106 = [v105 device];
+        captureDeviceInput3 = [v104 captureDeviceInput];
+        device = [captureDeviceInput3 device];
 
-        if (([v106 lockForConfiguration:0] & 1) == 0)
+        if (([device lockForConfiguration:0] & 1) == 0)
         {
           if (qword_10002C0C8 != -1)
           {
@@ -684,38 +684,38 @@ LABEL_35:
           if (os_log_type_enabled(qword_10002C0D0, OS_LOG_TYPE_ERROR))
           {
             v158 = v157;
-            v159 = [v104 cameraID];
+            cameraID4 = [v104 cameraID];
             LODWORD(buf.value) = 134349056;
-            *(&buf.value + 4) = v159;
+            *(&buf.value + 4) = cameraID4;
             _os_log_impl(&_mh_execute_header, v158, OS_LOG_TYPE_ERROR, "[Cam %{public}lu] Failed to acquire the lock for device configuration", &buf, 0xCu);
           }
 
           return 0;
         }
 
-        v107 = [v104 captureSession];
-        [v107 beginConfiguration];
+        captureSession7 = [v104 captureSession];
+        [captureSession7 beginConfiguration];
 
-        if (([v104 supportsFaceKitMetadata] & 1) != 0 || (objc_msgSend(v106, "activeFormat"), v108 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v108, "supportedDepthDataFormats"), v109 = objc_claimAutoreleasedReturnValue(), v110 = objc_msgSend(v109, "count") == 0, v109, v108, v110))
+        if (([v104 supportsFaceKitMetadata] & 1) != 0 || (objc_msgSend(device, "activeFormat"), v108 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v108, "supportedDepthDataFormats"), v109 = objc_claimAutoreleasedReturnValue(), v110 = objc_msgSend(v109, "count") == 0, v109, v108, v110))
         {
-          v114 = [v106 formats];
-          v113 = -[RMFacePoseCaptureSession chooseBestFormatForFaceKit:forCameraID:](self, "chooseBestFormatForFaceKit:forCameraID:", v114, [v104 cameraID]);
+          formats = [device formats];
+          v113 = -[RMFacePoseCaptureSession chooseBestFormatForFaceKit:forCameraID:](self, "chooseBestFormatForFaceKit:forCameraID:", formats, [v104 cameraID]);
 
           if (v113)
           {
-            [v106 setActiveFormat:v113];
+            [device setActiveFormat:v113];
           }
         }
 
         else
         {
-          v111 = [v106 activeFormat];
-          v112 = [v111 supportedDepthDataFormats];
-          v113 = -[RMFacePoseCaptureSession chooseBestFormatForFaceKit:forCameraID:](self, "chooseBestFormatForFaceKit:forCameraID:", v112, [v104 cameraID]);
+          activeFormat = [device activeFormat];
+          supportedDepthDataFormats = [activeFormat supportedDepthDataFormats];
+          v113 = -[RMFacePoseCaptureSession chooseBestFormatForFaceKit:forCameraID:](self, "chooseBestFormatForFaceKit:forCameraID:", supportedDepthDataFormats, [v104 cameraID]);
 
           if (v113)
           {
-            [v106 setActiveDepthDataFormat:v113];
+            [device setActiveDepthDataFormat:v113];
           }
         }
 
@@ -727,13 +727,13 @@ LABEL_35:
         v115 = qword_10002C0D0;
         if (os_log_type_enabled(v115, OS_LOG_TYPE_DEFAULT))
         {
-          v116 = [v104 cameraID];
-          v117 = [v106 activeFormat];
-          v118 = [v117 description];
-          v119 = [v106 activeDepthDataFormat];
-          v120 = [v119 description];
+          cameraID5 = [v104 cameraID];
+          activeFormat2 = [device activeFormat];
+          v118 = [activeFormat2 description];
+          activeDepthDataFormat = [device activeDepthDataFormat];
+          v120 = [activeDepthDataFormat description];
           LODWORD(buf.value) = 134349570;
-          *(&buf.value + 4) = v116;
+          *(&buf.value + 4) = cameraID5;
           LOWORD(buf.flags) = 2114;
           *(&buf.flags + 2) = v118;
           HIWORD(buf.epoch) = 2114;
@@ -747,10 +747,10 @@ LABEL_35:
           v176 = 0u;
           v173 = 0u;
           v174 = 0u;
-          v121 = [v106 activeFormat];
-          v122 = [v121 videoSupportedFrameRateRanges];
+          activeFormat3 = [device activeFormat];
+          videoSupportedFrameRateRanges = [activeFormat3 videoSupportedFrameRateRanges];
 
-          v123 = [v122 countByEnumeratingWithState:&v173 objects:v214 count:16];
+          v123 = [videoSupportedFrameRateRanges countByEnumeratingWithState:&v173 objects:v214 count:16];
           if (v123)
           {
             v124 = *v174;
@@ -760,17 +760,17 @@ LABEL_35:
               {
                 if (*v174 != v124)
                 {
-                  objc_enumerationMutation(v122);
+                  objc_enumerationMutation(videoSupportedFrameRateRanges);
                 }
 
                 v126 = *(*(&v173 + 1) + 8 * jj);
-                v127 = [(RMFacePoseCaptureSession *)self frameRate];
+                frameRate = [(RMFacePoseCaptureSession *)self frameRate];
                 [v126 minFrameRate];
-                if (v128 <= v127)
+                if (v128 <= frameRate)
                 {
-                  v129 = [(RMFacePoseCaptureSession *)self frameRate];
+                  frameRate2 = [(RMFacePoseCaptureSession *)self frameRate];
                   [v126 maxFrameRate];
-                  if (v130 >= v129)
+                  if (v130 >= frameRate2)
                   {
 
                     if (qword_10002C0C8 != -1)
@@ -781,27 +781,27 @@ LABEL_35:
                     v134 = qword_10002C0D0;
                     if (os_log_type_enabled(v134, OS_LOG_TYPE_DEFAULT))
                     {
-                      v135 = [v104 cameraID];
-                      v136 = [(RMFacePoseCaptureSession *)self frameRate];
+                      cameraID6 = [v104 cameraID];
+                      frameRate3 = [(RMFacePoseCaptureSession *)self frameRate];
                       LODWORD(buf.value) = 134349312;
-                      *(&buf.value + 4) = v135;
+                      *(&buf.value + 4) = cameraID6;
                       LOWORD(buf.flags) = 1026;
-                      *(&buf.flags + 2) = v136;
+                      *(&buf.flags + 2) = frameRate3;
                       _os_log_impl(&_mh_execute_header, v134, OS_LOG_TYPE_DEFAULT, "[Cam %{public}lu] Setting frame rate to %{public}d fps", &buf, 0x12u);
                     }
 
                     memset(&buf, 0, sizeof(buf));
                     CMTimeMake(&buf, 1, [(RMFacePoseCaptureSession *)self frameRate]);
                     v211 = buf;
-                    [v106 setActiveVideoMaxFrameDuration:&v211];
+                    [device setActiveVideoMaxFrameDuration:&v211];
                     v211 = buf;
-                    [v106 setActiveVideoMinFrameDuration:&v211];
+                    [device setActiveVideoMinFrameDuration:&v211];
                     goto LABEL_116;
                   }
                 }
               }
 
-              v123 = [v122 countByEnumeratingWithState:&v173 objects:v214 count:16];
+              v123 = [videoSupportedFrameRateRanges countByEnumeratingWithState:&v173 objects:v214 count:16];
               if (v123)
               {
                 continue;
@@ -819,18 +819,18 @@ LABEL_35:
           v131 = qword_10002C0D0;
           if (os_log_type_enabled(v131, OS_LOG_TYPE_DEFAULT))
           {
-            v132 = [v104 cameraID];
-            v133 = [(RMFacePoseCaptureSession *)self frameRate];
+            cameraID7 = [v104 cameraID];
+            frameRate4 = [(RMFacePoseCaptureSession *)self frameRate];
             LODWORD(buf.value) = 134349312;
-            *(&buf.value + 4) = v132;
+            *(&buf.value + 4) = cameraID7;
             LOWORD(buf.flags) = 1026;
-            *(&buf.flags + 2) = v133;
+            *(&buf.flags + 2) = frameRate4;
             _os_log_impl(&_mh_execute_header, v131, OS_LOG_TYPE_DEFAULT, "[Cam %{public}lu] Frame rate of %{public}d fps is not supported", &buf, 0x12u);
           }
         }
 
 LABEL_116:
-        if ([v106 isExposureModeSupported:3])
+        if ([device isExposureModeSupported:3])
         {
           memset(&v211, 0, sizeof(v211));
           CMTimeMake(&v211, 1, 60);
@@ -842,9 +842,9 @@ LABEL_116:
           v137 = qword_10002C0D0;
           if (os_log_type_enabled(v137, OS_LOG_TYPE_DEFAULT))
           {
-            v138 = [v104 cameraID];
+            cameraID8 = [v104 cameraID];
             LODWORD(buf.value) = v161;
-            *(&buf.value + 4) = v138;
+            *(&buf.value + 4) = cameraID8;
             LOWORD(buf.flags) = 2048;
             *(&buf.flags + 2) = v211.value;
             HIWORD(buf.epoch) = 1026;
@@ -853,7 +853,7 @@ LABEL_116:
           }
 
           buf = v211;
-          [v106 setActiveMaxExposureDuration:&buf];
+          [device setActiveMaxExposureDuration:&buf];
         }
 
         else
@@ -866,18 +866,18 @@ LABEL_116:
           v139 = qword_10002C0D0;
           if (os_log_type_enabled(v139, OS_LOG_TYPE_DEFAULT))
           {
-            v140 = [v104 cameraID];
+            cameraID9 = [v104 cameraID];
             LODWORD(buf.value) = 134349056;
-            *(&buf.value + 4) = v140;
+            *(&buf.value + 4) = cameraID9;
             _os_log_impl(&_mh_execute_header, v139, OS_LOG_TYPE_DEFAULT, "[Cam %{public}lu] Max exposure duration setting is not supported", &buf, 0xCu);
           }
         }
 
-        [v106 setGeometricDistortionCorrectionEnabled:0];
-        v141 = [v104 captureSession];
-        [v141 commitConfiguration];
+        [device setGeometricDistortionCorrectionEnabled:0];
+        captureSession8 = [v104 captureSession];
+        [captureSession8 commitConfiguration];
 
-        [v106 unlockForConfiguration];
+        [device unlockForConfiguration];
         v103 = v103 + 1;
       }
 
@@ -896,8 +896,8 @@ LABEL_116:
   v172 = 0u;
   v169 = 0u;
   v170 = 0u;
-  v142 = [(RMFacePoseCaptureSession *)self captureContext];
-  v143 = [v142 countByEnumeratingWithState:&v169 objects:v213 count:16];
+  captureContext10 = [(RMFacePoseCaptureSession *)self captureContext];
+  v143 = [captureContext10 countByEnumeratingWithState:&v169 objects:v213 count:16];
   if (v143)
   {
     v144 = *v170;
@@ -907,16 +907,16 @@ LABEL_116:
       {
         if (*v170 != v144)
         {
-          objc_enumerationMutation(v142);
+          objc_enumerationMutation(captureContext10);
         }
 
-        v146 = [*(*(&v169 + 1) + 8 * kk) videoDataOutput];
-        v147 = [v146 connectionWithMediaType:AVMediaTypeVideo];
+        videoDataOutput4 = [*(*(&v169 + 1) + 8 * kk) videoDataOutput];
+        v147 = [videoDataOutput4 connectionWithMediaType:AVMediaTypeVideo];
 
         [v147 setVideoMirrored:0];
       }
 
-      v143 = [v142 countByEnumeratingWithState:&v169 objects:v213 count:16];
+      v143 = [captureContext10 countByEnumeratingWithState:&v169 objects:v213 count:16];
     }
 
     while (v143);
@@ -937,17 +937,17 @@ LABEL_116:
   return 1;
 }
 
-- (void)captureOutput:(id)a3 didOutputSampleBuffer:(opaqueCMSampleBuffer *)a4 fromConnection:(id)a5
+- (void)captureOutput:(id)output didOutputSampleBuffer:(opaqueCMSampleBuffer *)buffer fromConnection:(id)connection
 {
-  v66 = a3;
-  v7 = a5;
+  outputCopy = output;
+  connectionCopy = connection;
   v76 = 0u;
   v77 = 0u;
   v78 = 0u;
   v79 = 0u;
-  v63 = self;
-  v8 = [(RMFacePoseCaptureSession *)self captureContext];
-  v9 = [v8 countByEnumeratingWithState:&v76 objects:v93 count:16];
+  selfCopy = self;
+  captureContext = [(RMFacePoseCaptureSession *)self captureContext];
+  v9 = [captureContext countByEnumeratingWithState:&v76 objects:v93 count:16];
   if (v9)
   {
     v10 = 0;
@@ -958,13 +958,13 @@ LABEL_116:
       {
         if (*v77 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(captureContext);
         }
 
         v13 = *(*(&v76 + 1) + 8 * i);
-        v14 = [v13 videoDataOutput];
-        v15 = [v14 connectionWithMediaType:AVMediaTypeVideo];
-        v16 = v15 == v7;
+        videoDataOutput = [v13 videoDataOutput];
+        v15 = [videoDataOutput connectionWithMediaType:AVMediaTypeVideo];
+        v16 = v15 == connectionCopy;
 
         if (v16)
         {
@@ -974,7 +974,7 @@ LABEL_116:
         }
       }
 
-      v9 = [v8 countByEnumeratingWithState:&v76 objects:v93 count:16];
+      v9 = [captureContext countByEnumeratingWithState:&v76 objects:v93 count:16];
     }
 
     while (v9);
@@ -982,8 +982,8 @@ LABEL_116:
     if (v10)
     {
       memset(&v75, 0, sizeof(v75));
-      CMSampleBufferGetPresentationTimeStamp(&v75, a4);
-      ImageBuffer = CMSampleBufferGetImageBuffer(a4);
+      CMSampleBufferGetPresentationTimeStamp(&v75, buffer);
+      ImageBuffer = CMSampleBufferGetImageBuffer(buffer);
       if (ImageBuffer)
       {
         buf.value = 0;
@@ -998,8 +998,8 @@ LABEL_116:
         v74[2] = sub_10000D0D8;
         v74[3] = &unk_100024FB8;
         v74[4] = &buf;
-        v20 = [[VNDetectFaceRectanglesRequest alloc] initWithCompletionHandler:v74];
-        v88 = v20;
+        firstObject2 = [[VNDetectFaceRectanglesRequest alloc] initWithCompletionHandler:v74];
+        v88 = firstObject2;
         v21 = [NSArray arrayWithObjects:&v88 count:1];
         v73 = 0;
         v22 = [v19 performRequests:v21 error:&v73];
@@ -1013,13 +1013,13 @@ LABEL_116:
           v72[2] = sub_10000D124;
           v72[3] = &unk_100024FB8;
           v72[4] = &buf;
-          v20 = [[VNDetectFacePoseRequest alloc] initWithCompletionHandler:v72];
-          v24 = [*(*&buf.timescale + 40) firstObject];
-          v87 = v24;
+          firstObject2 = [[VNDetectFacePoseRequest alloc] initWithCompletionHandler:v72];
+          firstObject = [*(*&buf.timescale + 40) firstObject];
+          v87 = firstObject;
           v25 = [NSArray arrayWithObjects:&v87 count:1];
-          [v20 setInputFaceObservations:v25];
+          [firstObject2 setInputFaceObservations:v25];
 
-          v86 = v20;
+          v86 = firstObject2;
           v26 = [NSArray arrayWithObjects:&v86 count:1];
           v71 = v23;
           LODWORD(v25) = [v19 performRequests:v26 error:&v71];
@@ -1028,14 +1028,14 @@ LABEL_116:
           if (v25 && [*(*&buf.timescale + 40) count])
           {
 
-            v20 = [*(*&buf.timescale + 40) firstObject];
-            [v20 boundingBox];
+            firstObject2 = [*(*&buf.timescale + 40) firstObject];
+            [firstObject2 boundingBox];
             v29 = v28;
             v31 = v30;
             v33 = v32;
             v35 = v34;
             v84[0] = kCVAFaceTracking_DetectedFaceFaceID;
-            v36 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v20 faceId]);
+            v36 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [firstObject2 faceId]);
             v94.origin.y = 1.0 - v35 - v31;
             v85[0] = v36;
             v84[1] = kCVAFaceTracking_DetectedFaceRect;
@@ -1045,13 +1045,13 @@ LABEL_116:
             DictionaryRepresentation = CGRectCreateDictionaryRepresentation(v94);
             v85[1] = DictionaryRepresentation;
             v84[2] = kCVAFaceTracking_DetectedFaceAngleInfoRoll;
-            v60 = [v20 roll];
-            v85[2] = v60;
+            roll = [firstObject2 roll];
+            v85[2] = roll;
             v84[3] = @"AngleInfoPitch";
-            v37 = [v20 pitch];
-            v85[3] = v37;
+            pitch = [firstObject2 pitch];
+            v85[3] = pitch;
             v84[4] = @"AngleInfoYaw";
-            v38 = [v20 yaw];
+            v38 = [firstObject2 yaw];
             v85[4] = v38;
             v84[5] = kCVAFaceTracking_Timestamp;
             time = v75;
@@ -1068,9 +1068,9 @@ LABEL_116:
             v40 = qword_10002C0D0;
             if (os_log_type_enabled(v40, OS_LOG_TYPE_DEBUG))
             {
-              v41 = [v10 cameraID];
+              cameraID = [v10 cameraID];
               LODWORD(time.value) = 134349315;
-              *(&time.value + 4) = v41;
+              *(&time.value + 4) = cameraID;
               LOWORD(time.flags) = 2113;
               *(&time.flags + 2) = sbufa;
               _os_log_impl(&_mh_execute_header, v40, OS_LOG_TYPE_DEBUG, "[Cam %{public}ld] Face detected: %{private}@", &time, 0x16u);
@@ -1097,18 +1097,18 @@ LABEL_116:
         _Block_object_dispose(&buf, 8);
         if (v42)
         {
-          v47 = [v10 captureDeviceInput];
-          v48 = [v47 device];
-          v62 = [v48 activeFormat];
+          captureDeviceInput = [v10 captureDeviceInput];
+          device = [captureDeviceInput device];
+          activeFormat = [device activeFormat];
 
-          v49 = -[RMFacePoseCaptureSession computeCameraParametersFromDimensions:](v63, "computeCameraParametersFromDimensions:", CMVideoFormatDescriptionGetDimensions([v62 formatDescription]));
+          v49 = -[RMFacePoseCaptureSession computeCameraParametersFromDimensions:](selfCopy, "computeCameraParametersFromDimensions:", CMVideoFormatDescriptionGetDimensions([activeFormat formatDescription]));
           v67[0] = _NSConcreteStackBlock;
           v67[1] = 3221225472;
           v67[2] = sub_10000D170;
           v67[3] = &unk_100025008;
           v50 = v10;
           v68 = v50;
-          v69 = v63;
+          v69 = selfCopy;
           v70 = v75;
           v51 = objc_retainBlock(v67);
           v81[0] = kCVAFaceTracking_Timestamp;
@@ -1141,9 +1141,9 @@ LABEL_116:
             if (os_log_type_enabled(qword_10002C0D0, OS_LOG_TYPE_ERROR))
             {
               v58 = v57;
-              v59 = [v50 cameraID];
+              cameraID2 = [v50 cameraID];
               LODWORD(buf.value) = 134349312;
-              *(&buf.value + 4) = v59;
+              *(&buf.value + 4) = cameraID2;
               LOWORD(buf.flags) = 1026;
               *(&buf.flags + 2) = v56;
               _os_log_impl(&_mh_execute_header, v58, OS_LOG_TYPE_ERROR, "[Cam %{public}ld] FaceKit failed %{public}d", &buf, 0x12u);
@@ -1163,9 +1163,9 @@ LABEL_116:
         if (os_log_type_enabled(qword_10002C0D0, OS_LOG_TYPE_ERROR))
         {
           v45 = v44;
-          v46 = [v10 cameraID];
+          cameraID3 = [v10 cameraID];
           LODWORD(buf.value) = 134349056;
-          *(&buf.value + 4) = v46;
+          *(&buf.value + 4) = cameraID3;
           _os_log_impl(&_mh_execute_header, v45, OS_LOG_TYPE_ERROR, "[Cam %{public}lu] Failed to obtain the RGB buffer", &buf, 0xCu);
         }
       }
@@ -1193,14 +1193,14 @@ LABEL_116:
 LABEL_42:
 }
 
-- (id)chooseBestFormatForFaceKit:(id)a3 forCameraID:(unint64_t)a4
+- (id)chooseBestFormatForFaceKit:(id)kit forCameraID:(unint64_t)d
 {
-  v4 = a3;
+  kitCopy = kit;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v23 objects:v33 count:16];
+  v5 = [kitCopy countByEnumeratingWithState:&v23 objects:v33 count:16];
   if (v5)
   {
     v7 = v5;
@@ -1216,7 +1216,7 @@ LABEL_42:
       {
         if (*v24 != v9)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(kitCopy);
         }
 
         v12 = *(*(&v23 + 1) + 8 * v11);
@@ -1243,7 +1243,7 @@ LABEL_42:
           v17 = v16;
           v18 = [v12 description];
           *buf = v21;
-          v28 = a4;
+          dCopy = d;
           v29 = 2114;
           v30 = v18;
           v31 = 2050;
@@ -1263,7 +1263,7 @@ LABEL_42:
       }
 
       while (v7 != v11);
-      v7 = [v4 countByEnumeratingWithState:&v23 objects:v33 count:16];
+      v7 = [kitCopy countByEnumeratingWithState:&v23 objects:v33 count:16];
     }
 
     while (v7);
@@ -1277,17 +1277,17 @@ LABEL_42:
   return v8;
 }
 
-- (void)captureOutput:(id)a3 didOutputMetadataObjects:(id)a4 fromConnection:(id)a5
+- (void)captureOutput:(id)output didOutputMetadataObjects:(id)objects fromConnection:(id)connection
 {
-  v55 = a3;
-  v8 = a4;
-  v9 = a5;
+  outputCopy = output;
+  objectsCopy = objects;
+  connectionCopy = connection;
   v66 = 0u;
   v67 = 0u;
   v68 = 0u;
   v69 = 0u;
-  v10 = [(RMFacePoseCaptureSession *)self captureContext];
-  v11 = [v10 countByEnumeratingWithState:&v66 objects:v71 count:16];
+  captureContext = [(RMFacePoseCaptureSession *)self captureContext];
+  v11 = [captureContext countByEnumeratingWithState:&v66 objects:v71 count:16];
   if (!v11)
   {
 
@@ -1309,8 +1309,8 @@ LABEL_35:
   }
 
   v12 = v11;
-  v53 = self;
-  v54 = v8;
+  selfCopy = self;
+  v54 = objectsCopy;
   v13 = 0;
   v14 = *v67;
   do
@@ -1319,14 +1319,14 @@ LABEL_35:
     {
       if (*v67 != v14)
       {
-        objc_enumerationMutation(v10);
+        objc_enumerationMutation(captureContext);
       }
 
       v16 = *(*(&v66 + 1) + 8 * i);
-      v17 = [v16 metadataOutput];
-      v18 = [v17 connectionWithMediaType:AVMediaTypeMetadataObject];
+      metadataOutput = [v16 metadataOutput];
+      v18 = [metadataOutput connectionWithMediaType:AVMediaTypeMetadataObject];
 
-      if (v18 == v9)
+      if (v18 == connectionCopy)
       {
         v19 = v16;
 
@@ -1334,12 +1334,12 @@ LABEL_35:
       }
     }
 
-    v12 = [v10 countByEnumeratingWithState:&v66 objects:v71 count:16];
+    v12 = [captureContext countByEnumeratingWithState:&v66 objects:v71 count:16];
   }
 
   while (v12);
 
-  v8 = v54;
+  objectsCopy = v54;
   if (!v13)
   {
     goto LABEL_35;
@@ -1368,8 +1368,8 @@ LABEL_35:
         }
 
         v25 = *(*(&v62 + 1) + 8 * j);
-        v26 = [v25 type];
-        v27 = [v26 isEqualToString:v23];
+        type = [v25 type];
+        v27 = [type isEqualToString:v23];
 
         if (v27)
         {
@@ -1401,11 +1401,11 @@ LABEL_35:
             goto LABEL_44;
           }
 
-          v30 = [v25 payload];
-          v31 = [v30 objectForKeyedSubscript:v57];
+          payload = [v25 payload];
+          v31 = [payload objectForKeyedSubscript:v57];
           if (!v31)
           {
-            v31 = v30;
+            v31 = payload;
           }
 
           v32 = [v31 objectForKeyedSubscript:v56];
@@ -1414,8 +1414,8 @@ LABEL_35:
 
         else
         {
-          v28 = [v25 type];
-          v29 = [v28 isEqualToString:AVMetadataObjectTypeFace];
+          type2 = [v25 type];
+          v29 = [type2 isEqualToString:AVMetadataObjectTypeFace];
 
           if (v29)
           {
@@ -1455,7 +1455,7 @@ LABEL_44:
 
   if (([v13 numberOfDetectedFaces] & 0x8000000000000000) != 0 || (objc_msgSend(v13, "trackedFaces"), v35 = objc_claimAutoreleasedReturnValue(), v35, !v35))
   {
-    v8 = v54;
+    objectsCopy = v54;
   }
 
   else
@@ -1464,17 +1464,17 @@ LABEL_44:
     v37 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v13 cameraID]);
     [v36 setObject:v37 forKeyedSubscript:@"rm_camera_id"];
 
-    v38 = [v13 captureDevice];
-    v39 = [v38 localizedName];
-    [v36 setObject:v39 forKeyedSubscript:@"rm_camera_device_name"];
+    captureDevice = [v13 captureDevice];
+    localizedName = [captureDevice localizedName];
+    [v36 setObject:localizedName forKeyedSubscript:@"rm_camera_device_name"];
 
-    v40 = [v13 captureDevice];
-    v41 = [v40 modelID];
-    [v36 setObject:v41 forKeyedSubscript:@"rm_camera_device_model_id"];
+    captureDevice2 = [v13 captureDevice];
+    modelID = [captureDevice2 modelID];
+    [v36 setObject:modelID forKeyedSubscript:@"rm_camera_device_model_id"];
 
-    v42 = [v13 captureDevice];
-    v43 = [v42 uniqueID];
-    [v36 setObject:v43 forKeyedSubscript:@"rm_camera_device_id"];
+    captureDevice3 = [v13 captureDevice];
+    uniqueID = [captureDevice3 uniqueID];
+    [v36 setObject:uniqueID forKeyedSubscript:@"rm_camera_device_id"];
 
     v44 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v13 isBuiltInCamera]);
     [v36 setObject:v44 forKeyedSubscript:@"rm_built_in"];
@@ -1482,25 +1482,25 @@ LABEL_44:
     v45 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v13 numberOfDetectedFaces]);
     [v36 setObject:v45 forKeyedSubscript:@"rm_number_of_detected_faces"];
 
-    v46 = [v13 trackedFaces];
-    [v36 setObject:v46 forKeyedSubscript:@"rm_tracked_faces"];
+    trackedFaces = [v13 trackedFaces];
+    [v36 setObject:trackedFaces forKeyedSubscript:@"rm_tracked_faces"];
 
-    v47 = [v13 videoDataOutput];
-    v48 = [NSNumber numberWithInt:v47 != 0];
+    videoDataOutput = [v13 videoDataOutput];
+    v48 = [NSNumber numberWithInt:videoDataOutput != 0];
     [v36 setObject:v48 forKeyedSubscript:@"rm_has_video_data_output"];
 
-    v49 = [v13 metadataOutput];
-    v50 = [NSNumber numberWithInt:v49 != 0];
+    metadataOutput2 = [v13 metadataOutput];
+    v50 = [NSNumber numberWithInt:metadataOutput2 != 0];
     [v36 setObject:v50 forKeyedSubscript:@"rm_has_metadata_output"];
 
-    v51 = [(RMFacePoseCaptureSession *)v53 handler];
+    handler = [(RMFacePoseCaptureSession *)selfCopy handler];
 
-    v8 = v54;
-    if (v51)
+    objectsCopy = v54;
+    if (handler)
     {
-      v52 = [(RMFacePoseCaptureSession *)v53 handler];
+      handler2 = [(RMFacePoseCaptureSession *)selfCopy handler];
       [v13 detectedFacesTimestamp];
-      (v52)[2](v52, v36, &time1);
+      (handler2)[2](handler2, v36, &time1);
     }
 
     [v13 setNumberOfDetectedFaces:-1];
@@ -1510,10 +1510,10 @@ LABEL_44:
 LABEL_50:
 }
 
-- (void)startFaceKitForContext:(id)a3
+- (void)startFaceKitForContext:(id)context
 {
-  v4 = a3;
-  if (![v4 faceKit])
+  contextCopy = context;
+  if (![contextCopy faceKit])
   {
     if (qword_10002C0C8 != -1)
     {
@@ -1546,7 +1546,7 @@ LABEL_50:
     v8 = [NSDictionary dictionaryWithObjects:v18 forKeys:v17 count:6];
 
     v9 = CVAFaceTrackingCreate();
-    [v4 setFaceKit:0];
+    [contextCopy setFaceKit:0];
     if (v9)
     {
       if (qword_10002C0C8 != -1)
@@ -1558,23 +1558,23 @@ LABEL_50:
       if (os_log_type_enabled(qword_10002C0D0, OS_LOG_TYPE_ERROR))
       {
         v11 = v10;
-        v12 = [v4 cameraID];
+        cameraID = [contextCopy cameraID];
         *buf = 134349312;
-        v14 = v12;
+        v14 = cameraID;
         v15 = 1026;
         v16 = v9;
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_ERROR, "[Cam %{public}lu] Failed to create FaceKit instance: error: %{public}d", buf, 0x12u);
       }
 
-      [v4 setFaceKit:0];
+      [contextCopy setFaceKit:0];
     }
   }
 }
 
-- (void)stopFaceKitForContext:(id)a3
+- (void)stopFaceKitForContext:(id)context
 {
-  v3 = a3;
-  if ([v3 faceKit])
+  contextCopy = context;
+  if ([contextCopy faceKit])
   {
     if (qword_10002C0C8 != -1)
     {
@@ -1586,20 +1586,20 @@ LABEL_50:
     {
       v5 = v4;
       v6 = 134349056;
-      v7 = [v3 cameraID];
+      cameraID = [contextCopy cameraID];
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[Cam %{public}lu] Stopping FaceKit", &v6, 0xCu);
     }
 
-    CFRelease([v3 faceKit]);
-    [v3 setFaceKit:0];
+    CFRelease([contextCopy faceKit]);
+    [contextCopy setFaceKit:0];
   }
 }
 
-- (id)computeCameraParametersFromDimensions:(id)a3
+- (id)computeCameraParametersFromDimensions:(id)dimensions
 {
-  var0 = a3.var0;
-  var1 = a3.var1;
-  v5 = sqrt(a3.var1 * a3.var1 + a3.var0 * a3.var0);
+  var0 = dimensions.var0;
+  var1 = dimensions.var1;
+  v5 = sqrt(dimensions.var1 * dimensions.var1 + dimensions.var0 * dimensions.var0);
   [(RMFacePoseCaptureSession *)self defaultFieldOfView];
   v7 = tan(v6 * 3.14159265 / 180.0 * 0.5);
   v8 = v5 / (v7 + v7);

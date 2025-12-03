@@ -1,21 +1,21 @@
 @interface PKCalendarDayLabelView
-- (CGRect)labelFrameForBounds:(CGRect)a3;
-- (CGSize)_layoutWithBounds:(CGRect)a3 isTemplateLayout:(BOOL)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKCalendarDayLabelView)initWithDayString:(id)a3;
+- (CGRect)labelFrameForBounds:(CGRect)bounds;
+- (CGSize)_layoutWithBounds:(CGRect)bounds isTemplateLayout:(BOOL)layout;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKCalendarDayLabelView)initWithDayString:(id)string;
 - (double)totalSpacingBetweenTextAndLabel;
 - (id)_dayLabelFont;
 - (void)_updateTextColor;
 - (void)layoutSubviews;
-- (void)setSelected:(BOOL)a3;
-- (void)setUserInteractionEnabled:(BOOL)a3;
+- (void)setSelected:(BOOL)selected;
+- (void)setUserInteractionEnabled:(BOOL)enabled;
 @end
 
 @implementation PKCalendarDayLabelView
 
-- (PKCalendarDayLabelView)initWithDayString:(id)a3
+- (PKCalendarDayLabelView)initWithDayString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v15.receiver = self;
   v15.super_class = PKCalendarDayLabelView;
   v5 = [(PKCalendarDayLabelView *)&v15 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
@@ -33,13 +33,13 @@
 
     [(UILabel *)v5->_dayLabel setTextAlignment:1];
     v10 = v5->_dayLabel;
-    v11 = [(PKCalendarDayLabelView *)v5 _dayLabelFont];
-    [(UILabel *)v10 setFont:v11];
+    _dayLabelFont = [(PKCalendarDayLabelView *)v5 _dayLabelFont];
+    [(UILabel *)v10 setFont:_dayLabelFont];
 
-    [(UILabel *)v5->_dayLabel setText:v4];
+    [(UILabel *)v5->_dayLabel setText:stringCopy];
     v12 = v5->_dayLabel;
-    v13 = [MEMORY[0x1E69DC888] labelColor];
-    [(UILabel *)v12 setTextColor:v13];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    [(UILabel *)v12 setTextColor:labelColor];
 
     [(PKCalendarDayLabelView *)v5 addSubview:v5->_dayLabel];
   }
@@ -47,11 +47,11 @@
   return v5;
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  if (self->_selected != a3)
+  if (self->_selected != selected)
   {
-    self->_selected = a3;
+    self->_selected = selected;
     [(PKCalendarDayLabelView *)self _updateTextColor];
   }
 }
@@ -61,67 +61,67 @@
   highlightBackgroundColor = self->_highlightBackgroundColor;
   if (highlightBackgroundColor)
   {
-    v4 = highlightBackgroundColor;
+    redColor = highlightBackgroundColor;
   }
 
   else
   {
-    v4 = [MEMORY[0x1E69DC888] redColor];
+    redColor = [MEMORY[0x1E69DC888] redColor];
   }
 
   highlightView = self->_highlightView;
-  v14 = v4;
+  v14 = redColor;
   if (self->_selected)
   {
-    [(UIView *)highlightView setBackgroundColor:v4];
+    [(UIView *)highlightView setBackgroundColor:redColor];
   }
 
   else
   {
-    v6 = [MEMORY[0x1E69DC888] clearColor];
-    [(UIView *)highlightView setBackgroundColor:v6];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(UIView *)highlightView setBackgroundColor:clearColor];
   }
 
   highlightTextColor = self->_highlightTextColor;
   if (highlightTextColor)
   {
-    v8 = highlightTextColor;
+    whiteColor = highlightTextColor;
   }
 
   else
   {
-    v8 = [MEMORY[0x1E69DC888] whiteColor];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
   }
 
-  v9 = v8;
+  v9 = whiteColor;
   dayLabel = self->_dayLabel;
   if (self->_selected)
   {
-    [(UILabel *)self->_dayLabel setTextColor:v8];
+    [(UILabel *)self->_dayLabel setTextColor:whiteColor];
   }
 
   else
   {
-    v11 = [MEMORY[0x1E69DC888] labelColor];
-    [(UILabel *)dayLabel setTextColor:v11];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    [(UILabel *)dayLabel setTextColor:labelColor];
   }
 
   v12 = self->_dayLabel;
-  v13 = [(PKCalendarDayLabelView *)self _dayLabelFont];
-  [(UILabel *)v12 setFont:v13];
+  _dayLabelFont = [(PKCalendarDayLabelView *)self _dayLabelFont];
+  [(UILabel *)v12 setFont:_dayLabelFont];
 }
 
-- (void)setUserInteractionEnabled:(BOOL)a3
+- (void)setUserInteractionEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v5.receiver = self;
   v5.super_class = PKCalendarDayLabelView;
   [(PKCalendarDayLabelView *)&v5 setUserInteractionEnabled:?];
-  [(UILabel *)self->_dayLabel setUserInteractionEnabled:v3];
-  [(UIView *)self->_highlightView setUserInteractionEnabled:v3];
+  [(UILabel *)self->_dayLabel setUserInteractionEnabled:enabledCopy];
+  [(UIView *)self->_highlightView setUserInteractionEnabled:enabledCopy];
   if (self->_disabledTextColor)
   {
-    if (v3)
+    if (enabledCopy)
     {
       [(PKCalendarDayLabelView *)self _updateTextColor];
     }
@@ -142,17 +142,17 @@
   [(PKCalendarDayLabelView *)self _layoutWithBounds:0 isTemplateLayout:?];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(PKCalendarDayLabelView *)self _layoutWithBounds:1 isTemplateLayout:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), a3.width, a3.height];
+  [(PKCalendarDayLabelView *)self _layoutWithBounds:1 isTemplateLayout:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;
 }
 
-- (CGSize)_layoutWithBounds:(CGRect)a3 isTemplateLayout:(BOOL)a4
+- (CGSize)_layoutWithBounds:(CGRect)bounds isTemplateLayout:(BOOL)layout
 {
-  v4 = a4;
+  layoutCopy = layout;
   [(PKCalendarDayLabelView *)self labelFrameForBounds:?];
   v7 = v6;
   v9 = v8;
@@ -162,12 +162,12 @@
   v15 = v14;
   v17 = v16;
   v19 = v18;
-  if (!v4)
+  if (!layoutCopy)
   {
     [(UILabel *)self->_dayLabel setFrame:v7, v9, v11, v13];
     [(UIView *)self->_highlightView setFrame:v15, 0.0, v17, v19];
-    v20 = [(UIView *)self->_highlightView layer];
-    [v20 setCornerRadius:v17 * 0.5];
+    layer = [(UIView *)self->_highlightView layer];
+    [layer setCornerRadius:v17 * 0.5];
   }
 
   v24.origin.x = v15;
@@ -181,9 +181,9 @@
   return result;
 }
 
-- (CGRect)labelFrameForBounds:(CGRect)a3
+- (CGRect)labelFrameForBounds:(CGRect)bounds
 {
-  [(UILabel *)self->_dayLabel sizeThatFits:a3.size.width, 3.40282347e38];
+  [(UILabel *)self->_dayLabel sizeThatFits:bounds.size.width, 3.40282347e38];
 
   PKRectCenteredIntegralRect();
   result.size.height = v6;
@@ -206,9 +206,9 @@
   }
 
   v3 = PKDefaultSystemFontOfSizeAndWeight(19.0, *v2);
-  v4 = [v3 pk_fixedWidthFont];
+  pk_fixedWidthFont = [v3 pk_fixedWidthFont];
 
-  return v4;
+  return pk_fixedWidthFont;
 }
 
 - (double)totalSpacingBetweenTextAndLabel
@@ -216,15 +216,15 @@
   [(UILabel *)self->_dayLabel frame];
   v4 = v3;
   v6 = v5;
-  v7 = [(UILabel *)self->_dayLabel attributedText];
-  v8 = CTFramesetterCreateWithAttributedString(v7);
+  attributedText = [(UILabel *)self->_dayLabel attributedText];
+  v8 = CTFramesetterCreateWithAttributedString(attributedText);
   v9 = 0.0;
   v18.origin.x = 0.0;
   v18.origin.y = 0.0;
   v18.size.width = v4;
   v18.size.height = v6;
   v10 = CGPathCreateWithRect(v18, 0);
-  v17.length = [(__CFAttributedString *)v7 length];
+  v17.length = [(__CFAttributedString *)attributedText length];
   v17.location = 0;
   Frame = CTFramesetterCreateFrame(v8, v17, v10, 0);
   Lines = CTFrameGetLines(Frame);

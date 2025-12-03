@@ -1,14 +1,14 @@
 @interface OKAudioDucker
 - (OKAudioDucker)init;
 - (void)_handleTimerEvent;
-- (void)beginDuckingToLevel:(double)a3 fadeDuration:(double)a4;
-- (void)beginFadingWithDuration:(double)a3;
+- (void)beginDuckingToLevel:(double)level fadeDuration:(double)duration;
+- (void)beginFadingWithDuration:(double)duration;
 - (void)cancel;
 - (void)dealloc;
 - (void)endDucking;
-- (void)endFading:(BOOL)a3;
-- (void)setSetVolumeBlock:(id)a3;
-- (void)setVolume:(float)a3;
+- (void)endFading:(BOOL)fading;
+- (void)setSetVolumeBlock:(id)block;
+- (void)setVolume:(float)volume;
 @end
 
 @implementation OKAudioDucker
@@ -46,7 +46,7 @@
   [(OKAudioDucker *)&v3 dealloc];
 }
 
-- (void)setSetVolumeBlock:(id)a3
+- (void)setSetVolumeBlock:(id)block
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -54,7 +54,7 @@
   v4[2] = __35__OKAudioDucker_setSetVolumeBlock___block_invoke;
   v4[3] = &unk_279C8FE40;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = block;
   dispatch_sync(queue, v4);
 }
 
@@ -74,7 +74,7 @@ uint64_t __35__OKAudioDucker_setSetVolumeBlock___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setVolume:(float)a3
+- (void)setVolume:(float)volume
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -82,7 +82,7 @@ uint64_t __35__OKAudioDucker_setSetVolumeBlock___block_invoke(uint64_t a1)
   v4[2] = __27__OKAudioDucker_setVolume___block_invoke;
   v4[3] = &unk_279C90C90;
   v4[4] = self;
-  v5 = a3;
+  volumeCopy = volume;
   dispatch_sync(queue, v4);
 }
 
@@ -145,7 +145,7 @@ LABEL_11:
   return result;
 }
 
-- (void)beginDuckingToLevel:(double)a3 fadeDuration:(double)a4
+- (void)beginDuckingToLevel:(double)level fadeDuration:(double)duration
 {
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -153,8 +153,8 @@ LABEL_11:
   block[2] = __50__OKAudioDucker_beginDuckingToLevel_fadeDuration___block_invoke;
   block[3] = &unk_279C91700;
   block[4] = self;
-  *&block[5] = a3;
-  *&block[6] = a4;
+  *&block[5] = level;
+  *&block[6] = duration;
   dispatch_async(queue, block);
 }
 
@@ -303,7 +303,7 @@ LABEL_16:
   }
 }
 
-- (void)beginFadingWithDuration:(double)a3
+- (void)beginFadingWithDuration:(double)duration
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -311,7 +311,7 @@ LABEL_16:
   v4[2] = __41__OKAudioDucker_beginFadingWithDuration___block_invoke;
   v4[3] = &unk_279C903C0;
   v4[4] = self;
-  *&v4[5] = a3;
+  *&v4[5] = duration;
   dispatch_async(queue, v4);
 }
 
@@ -377,7 +377,7 @@ void __41__OKAudioDucker_beginFadingWithDuration___block_invoke(uint64_t a1)
   }
 }
 
-- (void)endFading:(BOOL)a3
+- (void)endFading:(BOOL)fading
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -385,7 +385,7 @@ void __41__OKAudioDucker_beginFadingWithDuration___block_invoke(uint64_t a1)
   v4[2] = __27__OKAudioDucker_endFading___block_invoke;
   v4[3] = &unk_279C90868;
   v4[4] = self;
-  v5 = a3;
+  fadingCopy = fading;
   dispatch_async(queue, v4);
 }
 

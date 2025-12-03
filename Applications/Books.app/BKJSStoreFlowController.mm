@@ -1,70 +1,70 @@
 @interface BKJSStoreFlowController
-- (BOOL)storeHandleURL:(id)a3 sourceApplication:(id)a4 annotation:(id)a5 isLaunch:(BOOL)a6 transaction:(id)a7;
-- (id)_optionsForTransaction:(id)a3;
-- (id)_presentingDelegateForAlertAction:(id)a3;
-- (id)_presentingDelegateForShowProductCardAction:(id)a3;
-- (id)_presentingDelegateForStoreURLAction:(id)a3;
-- (id)_sceneControllerForTransaction:(id)a3;
-- (void)_showStoreWithURL:(id)a3 tabBarIdentifier:(id)a4 transaction:(id)a5 presentingDelegate:(id)a6;
-- (void)_storeCheckConnectionAndShowStoreURL:(id)a3 sourceApplication:(id)a4 annotation:(id)a5 transaction:(id)a6;
-- (void)displayBookUnavailableInStorefrontErrorWithTransaction:(id)a3;
-- (void)displayInternetReachabilityErrorAlert:(BOOL)a3 transaction:(id)a4;
-- (void)displayOffineCannotDownloadErrorForContentType:(signed __int16)a3 transaction:(id)a4;
-- (void)displayStoreConnectionErrorAlert:(BOOL)a3 transaction:(id)a4;
-- (void)showAudiobookStoreWithTransaction:(id)a3;
-- (void)showMangaStoreWithTransaction:(id)a3;
-- (void)showReadingNowWithTransaction:(id)a3;
-- (void)showStore:(id)a3 sourceApplication:(id)a4 annotation:(id)a5 transaction:(id)a6;
-- (void)showStoreSearchWithTransaction:(id)a3;
-- (void)showStoreWithURL:(id)a3 transaction:(id)a4;
-- (void)showTabWithIdentifier:(id)a3 transaction:(id)a4;
-- (void)storeShowBookWithStoreID:(id)a3 resourceType:(int64_t)a4 transaction:(id)a5;
-- (void)storeShowBooksWithStoreIDs:(id)a3 resourceTypes:(id)a4 focusedIndex:(unint64_t)a5 transaction:(id)a6 needsAnalyticsLinkData:(BOOL)a7;
+- (BOOL)storeHandleURL:(id)l sourceApplication:(id)application annotation:(id)annotation isLaunch:(BOOL)launch transaction:(id)transaction;
+- (id)_optionsForTransaction:(id)transaction;
+- (id)_presentingDelegateForAlertAction:(id)action;
+- (id)_presentingDelegateForShowProductCardAction:(id)action;
+- (id)_presentingDelegateForStoreURLAction:(id)action;
+- (id)_sceneControllerForTransaction:(id)transaction;
+- (void)_showStoreWithURL:(id)l tabBarIdentifier:(id)identifier transaction:(id)transaction presentingDelegate:(id)delegate;
+- (void)_storeCheckConnectionAndShowStoreURL:(id)l sourceApplication:(id)application annotation:(id)annotation transaction:(id)transaction;
+- (void)displayBookUnavailableInStorefrontErrorWithTransaction:(id)transaction;
+- (void)displayInternetReachabilityErrorAlert:(BOOL)alert transaction:(id)transaction;
+- (void)displayOffineCannotDownloadErrorForContentType:(signed __int16)type transaction:(id)transaction;
+- (void)displayStoreConnectionErrorAlert:(BOOL)alert transaction:(id)transaction;
+- (void)showAudiobookStoreWithTransaction:(id)transaction;
+- (void)showMangaStoreWithTransaction:(id)transaction;
+- (void)showReadingNowWithTransaction:(id)transaction;
+- (void)showStore:(id)store sourceApplication:(id)application annotation:(id)annotation transaction:(id)transaction;
+- (void)showStoreSearchWithTransaction:(id)transaction;
+- (void)showStoreWithURL:(id)l transaction:(id)transaction;
+- (void)showTabWithIdentifier:(id)identifier transaction:(id)transaction;
+- (void)storeShowBookWithStoreID:(id)d resourceType:(int64_t)type transaction:(id)transaction;
+- (void)storeShowBooksWithStoreIDs:(id)ds resourceTypes:(id)types focusedIndex:(unint64_t)index transaction:(id)transaction needsAnalyticsLinkData:(BOOL)data;
 @end
 
 @implementation BKJSStoreFlowController
 
-- (id)_sceneControllerForTransaction:(id)a3
+- (id)_sceneControllerForTransaction:(id)transaction
 {
-  v4 = a3;
-  v5 = [(BKJSStoreFlowController *)self _sceneManager];
-  v6 = [v5 defaultSceneControllerForTransaction:v4];
+  transactionCopy = transaction;
+  _sceneManager = [(BKJSStoreFlowController *)self _sceneManager];
+  v6 = [_sceneManager defaultSceneControllerForTransaction:transactionCopy];
 
   return v6;
 }
 
-- (id)_presentingDelegateForAlertAction:(id)a3
+- (id)_presentingDelegateForAlertAction:(id)action
 {
-  v3 = [(BKJSStoreFlowController *)self _sceneControllerForTransaction:a3];
-  v4 = [v3 genericPresenting];
+  v3 = [(BKJSStoreFlowController *)self _sceneControllerForTransaction:action];
+  genericPresenting = [v3 genericPresenting];
 
-  return v4;
+  return genericPresenting;
 }
 
-- (id)_presentingDelegateForStoreURLAction:(id)a3
+- (id)_presentingDelegateForStoreURLAction:(id)action
 {
-  v3 = [(BKJSStoreFlowController *)self _sceneControllerForTransaction:a3];
-  v4 = [v3 genericPresenting];
+  v3 = [(BKJSStoreFlowController *)self _sceneControllerForTransaction:action];
+  genericPresenting = [v3 genericPresenting];
 
-  return v4;
+  return genericPresenting;
 }
 
-- (id)_presentingDelegateForShowProductCardAction:(id)a3
+- (id)_presentingDelegateForShowProductCardAction:(id)action
 {
-  v3 = [(BKJSStoreFlowController *)self _sceneControllerForTransaction:a3];
-  v4 = [v3 storeFlowProductPagePresenting];
+  v3 = [(BKJSStoreFlowController *)self _sceneControllerForTransaction:action];
+  storeFlowProductPagePresenting = [v3 storeFlowProductPagePresenting];
 
-  return v4;
+  return storeFlowProductPagePresenting;
 }
 
-- (id)_optionsForTransaction:(id)a3
+- (id)_optionsForTransaction:(id)transaction
 {
-  if (a3)
+  if (transaction)
   {
     v6 = BCTransactionOptionsTransactionKey;
-    v7 = a3;
-    v3 = a3;
-    v4 = [NSDictionary dictionaryWithObjects:&v7 forKeys:&v6 count:1];
+    transactionCopy = transaction;
+    transactionCopy2 = transaction;
+    v4 = [NSDictionary dictionaryWithObjects:&transactionCopy forKeys:&v6 count:1];
   }
 
   else
@@ -75,24 +75,24 @@
   return v4;
 }
 
-- (void)showStore:(id)a3 sourceApplication:(id)a4 annotation:(id)a5 transaction:(id)a6
+- (void)showStore:(id)store sourceApplication:(id)application annotation:(id)annotation transaction:(id)transaction
 {
-  v10 = a6;
-  v11 = [BSUIURL URLWithURL:a3 sourceApplication:a4 annotation:a5];
-  [(BKJSStoreFlowController *)self showStoreWithURL:v11 transaction:v10];
+  transactionCopy = transaction;
+  v11 = [BSUIURL URLWithURL:store sourceApplication:application annotation:annotation];
+  [(BKJSStoreFlowController *)self showStoreWithURL:v11 transaction:transactionCopy];
 }
 
-- (void)showStoreWithURL:(id)a3 transaction:(id)a4
+- (void)showStoreWithURL:(id)l transaction:(id)transaction
 {
-  v6 = a3;
+  lCopy = l;
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_100188874;
   v12[3] = &unk_100A03A30;
   v12[4] = self;
-  v7 = a4;
-  v13 = v7;
-  v8 = v6;
+  transactionCopy = transaction;
+  v13 = transactionCopy;
+  v8 = lCopy;
   v14 = v8;
   v9 = objc_retainBlock(v12);
   if (v9)
@@ -114,182 +114,182 @@
   }
 }
 
-- (void)_showStoreWithURL:(id)a3 tabBarIdentifier:(id)a4 transaction:(id)a5 presentingDelegate:(id)a6
+- (void)_showStoreWithURL:(id)l tabBarIdentifier:(id)identifier transaction:(id)transaction presentingDelegate:(id)delegate
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  lCopy = l;
+  identifierCopy = identifier;
+  transactionCopy = transaction;
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_100188AD8;
   v17[3] = &unk_100A039C0;
-  v18 = a6;
-  v19 = v12;
-  v20 = v10;
-  v21 = self;
-  v22 = v11;
-  v13 = v11;
-  v14 = v10;
-  v15 = v12;
-  v16 = v18;
+  delegateCopy = delegate;
+  v19 = transactionCopy;
+  v20 = lCopy;
+  selfCopy = self;
+  v22 = identifierCopy;
+  v13 = identifierCopy;
+  v14 = lCopy;
+  v15 = transactionCopy;
+  v16 = delegateCopy;
   [v15 commit:v17];
 }
 
-- (void)showStoreSearchWithTransaction:(id)a3
+- (void)showStoreSearchWithTransaction:(id)transaction
 {
-  v3 = [(BKJSStoreFlowController *)self _sceneManager];
-  [v3 requestPrimaryScene:&stru_100A098A0];
+  _sceneManager = [(BKJSStoreFlowController *)self _sceneManager];
+  [_sceneManager requestPrimaryScene:&stru_100A098A0];
 }
 
-- (void)showReadingNowWithTransaction:(id)a3
+- (void)showReadingNowWithTransaction:(id)transaction
 {
-  v7 = a3;
+  transactionCopy = transaction;
   v4 = +[BURestrictionsProvider sharedInstance];
-  v5 = [v4 isBookStoreAllowed];
+  isBookStoreAllowed = [v4 isBookStoreAllowed];
 
-  if (v5)
+  if (isBookStoreAllowed)
   {
     v6 = +[BKRootBarItemsProvider HomeIdentifier];
-    [(BKJSStoreFlowController *)self showTabWithIdentifier:v6 transaction:v7];
+    [(BKJSStoreFlowController *)self showTabWithIdentifier:v6 transaction:transactionCopy];
   }
 }
 
-- (void)showAudiobookStoreWithTransaction:(id)a3
+- (void)showAudiobookStoreWithTransaction:(id)transaction
 {
-  v7 = a3;
+  transactionCopy = transaction;
   v4 = +[BURestrictionsProvider sharedInstance];
-  v5 = [v4 isBookStoreAllowed];
+  isBookStoreAllowed = [v4 isBookStoreAllowed];
 
-  if (v5)
+  if (isBookStoreAllowed)
   {
     v6 = +[BKRootBarItemsProvider AudiobooksIdentifier];
-    [(BKJSStoreFlowController *)self showTabWithIdentifier:v6 transaction:v7];
+    [(BKJSStoreFlowController *)self showTabWithIdentifier:v6 transaction:transactionCopy];
   }
 }
 
-- (void)showMangaStoreWithTransaction:(id)a3
+- (void)showMangaStoreWithTransaction:(id)transaction
 {
-  v7 = a3;
+  transactionCopy = transaction;
   v4 = +[BURestrictionsProvider sharedInstance];
-  v5 = [v4 isBookStoreAllowed];
+  isBookStoreAllowed = [v4 isBookStoreAllowed];
 
-  if (v5)
+  if (isBookStoreAllowed)
   {
     v6 = +[BKRootBarItemsProvider MangaIdentifier];
-    [(BKJSStoreFlowController *)self showTabWithIdentifier:v6 transaction:v7];
+    [(BKJSStoreFlowController *)self showTabWithIdentifier:v6 transaction:transactionCopy];
   }
 }
 
-- (void)showTabWithIdentifier:(id)a3 transaction:(id)a4
+- (void)showTabWithIdentifier:(id)identifier transaction:(id)transaction
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 length])
+  identifierCopy = identifier;
+  transactionCopy = transaction;
+  if ([identifierCopy length])
   {
     [(BKJSStoreFlowController *)self _sceneManager];
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_100189330;
     v10 = v9[3] = &unk_100A03C78;
-    v11 = self;
-    v12 = v6;
-    v13 = v7;
+    selfCopy = self;
+    v12 = identifierCopy;
+    v13 = transactionCopy;
     v8 = v10;
     [v8 forceTransaction:v13 ontoPrimarySceneWithContinuation:v9];
   }
 }
 
-- (void)_storeCheckConnectionAndShowStoreURL:(id)a3 sourceApplication:(id)a4 annotation:(id)a5 transaction:(id)a6
+- (void)_storeCheckConnectionAndShowStoreURL:(id)l sourceApplication:(id)application annotation:(id)annotation transaction:(id)transaction
 {
-  v10 = a3;
-  v11 = a6;
-  v12 = [BSUIURL URLWithURL:v10 sourceApplication:a4 annotation:a5];
+  lCopy = l;
+  transactionCopy = transaction;
+  v12 = [BSUIURL URLWithURL:lCopy sourceApplication:application annotation:annotation];
   v13 = +[BKAppDelegate delegate];
-  v14 = [v13 appLaunchCoordinator];
+  appLaunchCoordinator = [v13 appLaunchCoordinator];
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_1001894DC;
   v18[3] = &unk_100A05178;
-  v19 = v10;
-  v20 = self;
+  v19 = lCopy;
+  selfCopy = self;
   v21 = v12;
-  v22 = v11;
-  v15 = v11;
+  v22 = transactionCopy;
+  v15 = transactionCopy;
   v16 = v12;
-  v17 = v10;
-  [v14 appLaunchCoordinatorOnConditionMask:32 blockID:@"showStoreURL" performBlock:v18];
+  v17 = lCopy;
+  [appLaunchCoordinator appLaunchCoordinatorOnConditionMask:32 blockID:@"showStoreURL" performBlock:v18];
 }
 
-- (BOOL)storeHandleURL:(id)a3 sourceApplication:(id)a4 annotation:(id)a5 isLaunch:(BOOL)a6 transaction:(id)a7
+- (BOOL)storeHandleURL:(id)l sourceApplication:(id)application annotation:(id)annotation isLaunch:(BOOL)launch transaction:(id)transaction
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a7;
-  if (v11)
+  lCopy = l;
+  applicationCopy = application;
+  annotationCopy = annotation;
+  transactionCopy = transaction;
+  if (lCopy)
   {
-    v15 = [(BKJSStoreFlowController *)self _presentingDelegateForShowProductCardAction:v14];
+    v15 = [(BKJSStoreFlowController *)self _presentingDelegateForShowProductCardAction:transactionCopy];
     v16 = +[BKAppDelegate delegate];
-    v17 = [v16 appLaunchCoordinator];
+    appLaunchCoordinator = [v16 appLaunchCoordinator];
 
-    v18 = [v17 appLaunchCoordinatorHoldAtLaunchingAssertion];
-    v19 = v18;
-    if (v18)
+    appLaunchCoordinatorHoldAtLaunchingAssertion = [appLaunchCoordinator appLaunchCoordinatorHoldAtLaunchingAssertion];
+    v19 = appLaunchCoordinatorHoldAtLaunchingAssertion;
+    if (appLaunchCoordinatorHoldAtLaunchingAssertion)
     {
       v38[0] = _NSConcreteStackBlock;
       v38[1] = 3221225472;
       v38[2] = sub_100189B50;
       v38[3] = &unk_100A038D0;
-      v20 = v18;
+      v20 = appLaunchCoordinatorHoldAtLaunchingAssertion;
       v39 = v20;
-      [v17 appLaunchCoordinatorOnConditionMask:1024 blockID:@"invalidate holdAtLaunchScreen" performBlock:v38];
+      [appLaunchCoordinator appLaunchCoordinatorOnConditionMask:1024 blockID:@"invalidate holdAtLaunchScreen" performBlock:v38];
       v36[0] = _NSConcreteStackBlock;
       v36[1] = 3221225472;
       v36[2] = sub_100189B58;
       v36[3] = &unk_100A033C8;
       v37 = v20;
-      [v14 whenCancelled:v36];
+      [transactionCopy whenCancelled:v36];
     }
 
     if ([v15 presenterCanShowStoreProductOnCurrentContent])
     {
-      v26 = [v11 httpURL];
-      v21 = [v17 appLaunchCoordinatorHoldAtLaunchingAssertion];
+      httpURL = [lCopy httpURL];
+      appLaunchCoordinatorHoldAtLaunchingAssertion2 = [appLaunchCoordinator appLaunchCoordinatorHoldAtLaunchingAssertion];
       v22 = +[BSUIStoreServices sharedInstance];
-      v23 = [BSUIURL URLWithURL:v26];
+      v23 = [BSUIURL URLWithURL:httpURL];
       v27[0] = _NSConcreteStackBlock;
       v27[1] = 3221225472;
       v27[2] = sub_100189B60;
       v27[3] = &unk_100A09940;
-      v28 = v14;
-      v29 = v17;
-      v30 = v11;
-      v31 = v12;
-      v32 = v13;
-      v33 = self;
+      v28 = transactionCopy;
+      v29 = appLaunchCoordinator;
+      v30 = lCopy;
+      v31 = applicationCopy;
+      v32 = annotationCopy;
+      selfCopy = self;
       v34 = v15;
-      v35 = v21;
-      v24 = v21;
+      v35 = appLaunchCoordinatorHoldAtLaunchingAssertion2;
+      v24 = appLaunchCoordinatorHoldAtLaunchingAssertion2;
       [v22 canHandleURLAsProductPage:v23 completion:v27];
     }
 
     else
     {
-      [(BKJSStoreFlowController *)self _storeCheckConnectionAndShowStoreURL:v11 sourceApplication:v12 annotation:v13 transaction:v14];
+      [(BKJSStoreFlowController *)self _storeCheckConnectionAndShowStoreURL:lCopy sourceApplication:applicationCopy annotation:annotationCopy transaction:transactionCopy];
     }
   }
 
-  return v11 != 0;
+  return lCopy != 0;
 }
 
-- (void)displayInternetReachabilityErrorAlert:(BOOL)a3 transaction:(id)a4
+- (void)displayInternetReachabilityErrorAlert:(BOOL)alert transaction:(id)transaction
 {
-  [(BKJSStoreFlowController *)self _presentingDelegateForAlertAction:a4];
+  [(BKJSStoreFlowController *)self _presentingDelegateForAlertAction:transaction];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10018A1CC;
   v9[3] = &unk_100A044C8;
-  v5 = v11 = a3;
+  v5 = v11 = alert;
   v10 = v5;
   v6 = objc_retainBlock(v9);
   if (v6)
@@ -311,14 +311,14 @@
   }
 }
 
-- (void)displayOffineCannotDownloadErrorForContentType:(signed __int16)a3 transaction:(id)a4
+- (void)displayOffineCannotDownloadErrorForContentType:(signed __int16)type transaction:(id)transaction
 {
-  [(BKJSStoreFlowController *)self _presentingDelegateForAlertAction:a4];
+  [(BKJSStoreFlowController *)self _presentingDelegateForAlertAction:transaction];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10018A4A8;
   v9[3] = &unk_100A04030;
-  v5 = v11 = a3;
+  v5 = v11 = type;
   v10 = v5;
   v6 = objc_retainBlock(v9);
   if (v6)
@@ -340,14 +340,14 @@
   }
 }
 
-- (void)displayStoreConnectionErrorAlert:(BOOL)a3 transaction:(id)a4
+- (void)displayStoreConnectionErrorAlert:(BOOL)alert transaction:(id)transaction
 {
-  [(BKJSStoreFlowController *)self _presentingDelegateForAlertAction:a4];
+  [(BKJSStoreFlowController *)self _presentingDelegateForAlertAction:transaction];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10018A768;
   v9[3] = &unk_100A044C8;
-  v5 = v11 = a3;
+  v5 = v11 = alert;
   v10 = v5;
   v6 = objc_retainBlock(v9);
   if (v6)
@@ -369,55 +369,55 @@
   }
 }
 
-- (void)storeShowBookWithStoreID:(id)a3 resourceType:(int64_t)a4 transaction:(id)a5
+- (void)storeShowBookWithStoreID:(id)d resourceType:(int64_t)type transaction:(id)transaction
 {
-  v12 = a3;
-  v8 = a5;
-  if (v12)
+  dCopy = d;
+  transactionCopy = transaction;
+  if (dCopy)
   {
     v9 = +[BKAppDelegate delegate];
-    v10 = [v9 isConnectedToInternet];
+    isConnectedToInternet = [v9 isConnectedToInternet];
 
-    if (v10)
+    if (isConnectedToInternet)
     {
       v11 = +[BSUIStoreServices sharedInstance];
-      [v11 showProductPageForStoreID:v12 resourceType:a4 transaction:v8 needsAnalyticsLinkData:0];
+      [v11 showProductPageForStoreID:dCopy resourceType:type transaction:transactionCopy needsAnalyticsLinkData:0];
     }
 
     else
     {
-      [(BKJSStoreFlowController *)self displayInternetReachabilityErrorAlert:1 transaction:v8];
+      [(BKJSStoreFlowController *)self displayInternetReachabilityErrorAlert:1 transaction:transactionCopy];
     }
   }
 }
 
-- (void)storeShowBooksWithStoreIDs:(id)a3 resourceTypes:(id)a4 focusedIndex:(unint64_t)a5 transaction:(id)a6 needsAnalyticsLinkData:(BOOL)a7
+- (void)storeShowBooksWithStoreIDs:(id)ds resourceTypes:(id)types focusedIndex:(unint64_t)index transaction:(id)transaction needsAnalyticsLinkData:(BOOL)data
 {
-  v7 = a7;
-  v17 = a3;
-  v12 = a4;
-  v13 = a6;
-  if ([v17 count])
+  dataCopy = data;
+  dsCopy = ds;
+  typesCopy = types;
+  transactionCopy = transaction;
+  if ([dsCopy count])
   {
     v14 = +[BKAppDelegate delegate];
-    v15 = [v14 isConnectedToInternet];
+    isConnectedToInternet = [v14 isConnectedToInternet];
 
-    if (v15)
+    if (isConnectedToInternet)
     {
       v16 = +[BSUIStoreServices sharedInstance];
-      [v16 showProductPagesForStoreIDs:v17 resourceTypes:v12 focusedIndex:a5 transaction:v13 needsAnalyticsLinkData:v7];
+      [v16 showProductPagesForStoreIDs:dsCopy resourceTypes:typesCopy focusedIndex:index transaction:transactionCopy needsAnalyticsLinkData:dataCopy];
     }
 
     else
     {
-      [(BKJSStoreFlowController *)self displayInternetReachabilityErrorAlert:1 transaction:v13];
+      [(BKJSStoreFlowController *)self displayInternetReachabilityErrorAlert:1 transaction:transactionCopy];
     }
   }
 }
 
-- (void)displayBookUnavailableInStorefrontErrorWithTransaction:(id)a3
+- (void)displayBookUnavailableInStorefrontErrorWithTransaction:(id)transaction
 {
-  [(BKJSStoreFlowController *)self _presentingDelegateForAlertAction:a3];
+  [(BKJSStoreFlowController *)self _presentingDelegateForAlertAction:transaction];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10018ABD4;

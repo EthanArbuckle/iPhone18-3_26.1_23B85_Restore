@@ -12,21 +12,21 @@
   v29 = *MEMORY[0x1E69E9840];
   if (objc_opt_respondsToSelector())
   {
-    v2 = [a1 iconDictionary];
+    iconDictionary = [self iconDictionary];
     v3 = +[ISDefaults sharedInstance];
-    v4 = [v3 isSolariumEnabled];
+    isSolariumEnabled = [v3 isSolariumEnabled];
 
-    if ((v4 & 1) == 0)
+    if ((isSolariumEnabled & 1) == 0)
     {
-      v5 = [v2 mutableCopy];
+      v5 = [iconDictionary mutableCopy];
       [v5 removeObjectForKey:@"ISDocumentIconConfiguration"];
       [v5 removeObjectForKey:@"ISFolderIconConfiguration"];
       v6 = [MEMORY[0x1E695DF20] dictionaryWithDictionary:v5];
 
-      v2 = v6;
+      iconDictionary = v6;
     }
 
-    if ([v2 count])
+    if ([iconDictionary count])
     {
       v7 = 1;
       goto LABEL_22;
@@ -35,7 +35,7 @@
 
   else
   {
-    v2 = 0;
+    iconDictionary = 0;
   }
 
   objc_opt_class();
@@ -53,7 +53,7 @@
     if (v11)
     {
       v12 = v11;
-      v23 = v2;
+      v23 = iconDictionary;
       v13 = *v25;
       while (2)
       {
@@ -65,12 +65,12 @@
           }
 
           v15 = *(*(&v24 + 1) + 8 * i);
-          v16 = [a1 URL];
+          v16 = [self URL];
           v17 = [v16 URLByAppendingPathComponent:v15];
 
-          v18 = [MEMORY[0x1E696AC08] defaultManager];
-          v19 = [v17 path];
-          v20 = [v18 fileExistsAtPath:v19];
+          defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+          path = [v17 path];
+          v20 = [defaultManager fileExistsAtPath:path];
 
           if (v20)
           {
@@ -90,7 +90,7 @@
 
       v7 = 0;
 LABEL_19:
-      v2 = v23;
+      iconDictionary = v23;
     }
 
     else
@@ -112,8 +112,8 @@ LABEL_22:
 
 + (void)_is_getSequenceNumber:()IconServices andUUID:
 {
-  v6 = [MEMORY[0x1E6963648] sharedDatabaseContext];
-  if ((objc_opt_respondsToSelector() & 1) != 0 && ![v6 canAccess])
+  mEMORY[0x1E6963648] = [MEMORY[0x1E6963648] sharedDatabaseContext];
+  if ((objc_opt_respondsToSelector() & 1) != 0 && ![mEMORY[0x1E6963648] canAccess])
   {
     *a4 = [MEMORY[0x1E696AFB0] _IF_nullUUID];
     v8 = &unk_1F1A652B0;
@@ -121,9 +121,9 @@ LABEL_22:
 
   else
   {
-    v7 = [MEMORY[0x1E6963608] defaultWorkspace];
+    defaultWorkspace = [MEMORY[0x1E6963608] defaultWorkspace];
     v9 = 0;
-    [v7 getKnowledgeUUID:a4 andSequenceNumber:&v9];
+    [defaultWorkspace getKnowledgeUUID:a4 andSequenceNumber:&v9];
     v8 = v9;
   }
 
@@ -154,8 +154,8 @@ LABEL_22:
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v14 + 1) + 8 * i) persistentIdentifier];
-        [v4 appendData:v10];
+        persistentIdentifier = [*(*(&v14 + 1) + 8 * i) persistentIdentifier];
+        [v4 appendData:persistentIdentifier];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -177,11 +177,11 @@ LABEL_22:
     return 0;
   }
 
-  v2 = [a1 iconDictionary];
+  iconDictionary = [self iconDictionary];
   v3 = +[ISDefaults sharedInstance];
-  v4 = [v3 defaultToTemplatizedAppIcons];
+  defaultToTemplatizedAppIcons = [v3 defaultToTemplatizedAppIcons];
 
-  v5 = [v2 _IF_BOOLForKeys:&unk_1F1A657D8 defaultValue:v4 ^ 1u];
+  v5 = [iconDictionary _IF_BOOLForKeys:&unk_1F1A657D8 defaultValue:defaultToTemplatizedAppIcons ^ 1u];
   return v5;
 }
 

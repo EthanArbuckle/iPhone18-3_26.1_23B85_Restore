@@ -7,11 +7,11 @@
 
 - (uint64_t)st_removeFirstOccurrenceOfObject:()SystemStatusAdditions
 {
-  result = [a1 indexOfObject:?];
+  result = [self indexOfObject:?];
   if (result != 0x7FFFFFFFFFFFFFFFLL)
   {
 
-    return [a1 removeObjectAtIndex:result];
+    return [self removeObjectAtIndex:result];
   }
 
   return result;
@@ -40,7 +40,7 @@
           objc_enumerationMutation(v4);
         }
 
-        [a1 st_removeFirstOccurrenceOfObject:*(*(&v10 + 1) + 8 * v8++)];
+        [self st_removeFirstOccurrenceOfObject:*(*(&v10 + 1) + 8 * v8++)];
       }
 
       while (v6 != v8);

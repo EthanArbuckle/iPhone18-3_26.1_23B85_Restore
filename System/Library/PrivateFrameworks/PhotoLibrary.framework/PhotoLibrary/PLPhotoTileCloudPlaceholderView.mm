@@ -1,12 +1,12 @@
 @interface PLPhotoTileCloudPlaceholderView
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
-- (PLPhotoTileCloudPlaceholderView)initWithFrame:(CGRect)a3;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
+- (PLPhotoTileCloudPlaceholderView)initWithFrame:(CGRect)frame;
 - (void)_retryDownload;
 - (void)dealloc;
-- (void)fadeOutSoonIfNeededAndRemoveFromSuperview:(BOOL)a3;
+- (void)fadeOutSoonIfNeededAndRemoveFromSuperview:(BOOL)superview;
 - (void)layoutSubviews;
-- (void)setImageRect:(CGRect)a3;
-- (void)setToolbarVisible:(BOOL)a3;
+- (void)setImageRect:(CGRect)rect;
+- (void)setToolbarVisible:(BOOL)visible;
 - (void)showErrorIndicator;
 - (void)showLoadingIndicator;
 - (void)showLoadingIndicatorWhenReady;
@@ -122,14 +122,14 @@
   [(UIView *)self->_loadingContainerView setFrame:v32, CGRectGetMaxY(v35) - v31, v25, v31];
 }
 
-- (void)setImageRect:(CGRect)a3
+- (void)setImageRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   p_imageRect = &self->_imageRect;
-  if (!CGRectEqualToRect(self->_imageRect, a3))
+  if (!CGRectEqualToRect(self->_imageRect, rect))
   {
     p_imageRect->origin.x = x;
     p_imageRect->origin.y = y;
@@ -140,7 +140,7 @@
   }
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
   if (!self->_showingError)
   {
@@ -148,9 +148,9 @@
   }
 
   loadingErrorButton = self->_loadingErrorButton;
-  [(UIButton *)loadingErrorButton convertPoint:self fromView:a3.x, a3.y];
+  [(UIButton *)loadingErrorButton convertPoint:self fromView:inside.x, inside.y];
 
-  return [(UIButton *)loadingErrorButton pointInside:a4 withEvent:?];
+  return [(UIButton *)loadingErrorButton pointInside:event withEvent:?];
 }
 
 - (void)_retryDownload
@@ -165,11 +165,11 @@
   }
 }
 
-- (void)setToolbarVisible:(BOOL)a3
+- (void)setToolbarVisible:(BOOL)visible
 {
-  if (self->_toolbarVisible != a3)
+  if (self->_toolbarVisible != visible)
   {
-    self->_toolbarVisible = a3;
+    self->_toolbarVisible = visible;
     [(PLPhotoTileCloudPlaceholderView *)self setNeedsLayout];
   }
 }
@@ -395,13 +395,13 @@ uint64_t __55__PLPhotoTileCloudPlaceholderView_showLoadingIndicator__block_invok
   }
 }
 
-- (void)fadeOutSoonIfNeededAndRemoveFromSuperview:(BOOL)a3
+- (void)fadeOutSoonIfNeededAndRemoveFromSuperview:(BOOL)superview
 {
-  v3 = a3;
+  superviewCopy = superview;
   self->_delegate = 0;
   [(PLRoundProgressView *)self->_loadingIndicatorView setProgress:1.0];
   [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
-  if (v3)
+  if (superviewCopy)
   {
     v6 = v5 - self->_lastViewPhaseChangeDate;
     v7 = 0.3 - v6;
@@ -453,11 +453,11 @@ uint64_t __77__PLPhotoTileCloudPlaceholderView_fadeOutSoonIfNeededAndRemoveFromS
   [(PLPhotoTileCloudPlaceholderView *)&v3 dealloc];
 }
 
-- (PLPhotoTileCloudPlaceholderView)initWithFrame:(CGRect)a3
+- (PLPhotoTileCloudPlaceholderView)initWithFrame:(CGRect)frame
 {
   v11.receiver = self;
   v11.super_class = PLPhotoTileCloudPlaceholderView;
-  v3 = [(PLPhotoTileCloudPlaceholderView *)&v11 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PLPhotoTileCloudPlaceholderView *)&v11 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];

@@ -2,7 +2,7 @@
 + (CIRAWFilter)filterWithCVPixelBuffer:(CVPixelBufferRef)buffer properties:(NSDictionary *)properties;
 + (CIRAWFilter)filterWithImageData:(NSData *)data identifierHint:(NSString *)identifierHint;
 + (CIRAWFilter)filterWithImageURL:(NSURL *)url;
-+ (CIRAWFilter)filterWithImageURL:(id)a3 options:(id)a4;
++ (CIRAWFilter)filterWithImageURL:(id)l options:(id)options;
 + (NSArray)supportedCameraModels;
 + (id)customAttributes;
 - (BOOL)isColorNoiseReductionSupported;
@@ -22,9 +22,9 @@
 - (CIFilter)linearSpaceFilter;
 - (CIImage)previewImage;
 - (CIRAWDecoderVersion)decoderVersion;
-- (CIRAWFilter)initWithCVPixelBuffer:(__CVBuffer *)a3 properties:(id)a4;
-- (CIRAWFilter)initWithImageData:(id)a3 identifierHint:(id)a4;
-- (CIRAWFilter)initWithImageURL:(id)a3;
+- (CIRAWFilter)initWithCVPixelBuffer:(__CVBuffer *)buffer properties:(id)properties;
+- (CIRAWFilter)initWithImageData:(id)data identifierHint:(id)hint;
+- (CIRAWFilter)initWithImageURL:(id)l;
 - (NSArray)supportedDecoderVersions;
 - (NSDictionary)properties;
 - (float)baselineExposure;
@@ -44,8 +44,8 @@
 - (float)shadowBias;
 - (float)sharpnessAmount;
 - (id)attributes;
-- (id)auxImageWithKey:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)auxImageWithKey:(id)key;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)outputImage;
 - (void)dealloc;
 - (void)setBaselineExposure:(float)baselineExposure;
@@ -59,7 +59,7 @@
 - (void)setExposure:(float)exposure;
 - (void)setExtendedDynamicRangeAmount:(float)extendedDynamicRangeAmount;
 - (void)setGamutMappingEnabled:(BOOL)gamutMappingEnabled;
-- (void)setHighlightRecoveryEnabled:(BOOL)a3;
+- (void)setHighlightRecoveryEnabled:(BOOL)enabled;
 - (void)setLensCorrectionEnabled:(BOOL)lensCorrectionEnabled;
 - (void)setLinearSpaceFilter:(CIFilter *)linearSpaceFilter;
 - (void)setLocalToneMapAmount:(float)localToneMapAmount;
@@ -105,12 +105,12 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_autoreleasePoolPush();
   v8.receiver = self;
   v8.super_class = CIRAWFilter;
-  v6 = [(CIFilter *)&v8 copyWithZone:a3];
+  v6 = [(CIFilter *)&v8 copyWithZone:zone];
   [v6 setFilterImplementation:{-[CIRAWFilterImpl copy](self->filterImplementation, "copy")}];
   [v6 setImageURL:{-[NSURL copy](self->imageURL, "copy")}];
   [v6 setImageData:{-[NSData copy](self->imageData, "copy")}];
@@ -121,16 +121,16 @@
 
 - (id)outputImage
 {
-  v2 = [(CIRAWFilter *)self filterImplementation];
+  filterImplementation = [(CIRAWFilter *)self filterImplementation];
 
-  return [(CIRAWFilterImpl *)v2 outputImage];
+  return [(CIRAWFilterImpl *)filterImplementation outputImage];
 }
 
 - (NSDictionary)properties
 {
-  v2 = [(CIRAWFilter *)self filterImplementation];
+  filterImplementation = [(CIRAWFilter *)self filterImplementation];
 
-  return [(CIRAWFilterImpl *)v2 valueForKey:@"properties"];
+  return [(CIRAWFilterImpl *)filterImplementation valueForKey:@"properties"];
 }
 
 - (CGImagePropertyOrientation)orientation
@@ -143,10 +143,10 @@
 - (void)setOrientation:(CGImagePropertyOrientation)orientation
 {
   v3 = *&orientation;
-  v4 = [(CIRAWFilter *)self filterImplementation];
+  filterImplementation = [(CIRAWFilter *)self filterImplementation];
   v5 = [MEMORY[0x1E696AD98] numberWithInt:v3];
 
-  [(CIRAWFilterImpl *)v4 setValue:v5 forKey:@"inputImageOrientation"];
+  [(CIRAWFilterImpl *)filterImplementation setValue:v5 forKey:@"inputImageOrientation"];
 }
 
 - (BOOL)isDraftModeEnabled
@@ -159,10 +159,10 @@
 - (void)setDraftModeEnabled:(BOOL)draftModeEnabled
 {
   v3 = draftModeEnabled;
-  v4 = [(CIRAWFilter *)self filterImplementation];
+  filterImplementation = [(CIRAWFilter *)self filterImplementation];
   v5 = [MEMORY[0x1E696AD98] numberWithBool:v3];
 
-  [(CIRAWFilterImpl *)v4 setValue:v5 forKey:@"inputDraftMode"];
+  [(CIRAWFilterImpl *)filterImplementation setValue:v5 forKey:@"inputDraftMode"];
 }
 
 - (NSArray)supportedDecoderVersions
@@ -185,7 +185,7 @@
   v19[6] = @"6";
   v19[7] = @"6.dng";
   v3 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v19 forKeys:v18 count:8];
-  v4 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v5 = [(CIRAWFilterImpl *)[(CIRAWFilter *)self filterImplementation] valueForKey:@"supportedDecoderVersions"];
   v12 = 0u;
   v13 = 0u;
@@ -209,7 +209,7 @@
         v10 = [v3 objectForKeyedSubscript:*(*(&v12 + 1) + 8 * v9)];
         if (v10)
         {
-          [v4 addObject:v10];
+          [array addObject:v10];
         }
 
         ++v9;
@@ -222,9 +222,9 @@
     while (v7);
   }
 
-  if ([v4 count])
+  if ([array count])
   {
-    return [MEMORY[0x1E695DEC8] arrayWithArray:v4];
+    return [MEMORY[0x1E695DEC8] arrayWithArray:array];
   }
 
   v16 = @"None";
@@ -233,16 +233,16 @@
 
 - (CIRAWDecoderVersion)decoderVersion
 {
-  v2 = [(CIRAWFilter *)self filterImplementation];
+  filterImplementation = [(CIRAWFilter *)self filterImplementation];
 
-  return [(CIRAWFilterImpl *)v2 valueForKey:@"inputDecoderVersion"];
+  return [(CIRAWFilterImpl *)filterImplementation valueForKey:@"inputDecoderVersion"];
 }
 
 - (void)setDecoderVersion:(CIRAWDecoderVersion)decoderVersion
 {
-  v4 = [(CIRAWFilter *)self filterImplementation];
+  filterImplementation = [(CIRAWFilter *)self filterImplementation];
 
-  [(CIRAWFilterImpl *)v4 setValue:decoderVersion forKey:@"inputDecoderVersion"];
+  [(CIRAWFilterImpl *)filterImplementation setValue:decoderVersion forKey:@"inputDecoderVersion"];
 }
 
 - (float)scaleFactor
@@ -255,11 +255,11 @@
 
 - (void)setScaleFactor:(float)scaleFactor
 {
-  v4 = [(CIRAWFilter *)self filterImplementation];
+  filterImplementation = [(CIRAWFilter *)self filterImplementation];
   *&v5 = scaleFactor;
   v6 = [MEMORY[0x1E696AD98] numberWithFloat:v5];
 
-  [(CIRAWFilterImpl *)v4 setValue:v6 forKey:@"inputScaleFactor"];
+  [(CIRAWFilterImpl *)filterImplementation setValue:v6 forKey:@"inputScaleFactor"];
 }
 
 - (float)exposure
@@ -272,11 +272,11 @@
 
 - (void)setExposure:(float)exposure
 {
-  v4 = [(CIRAWFilter *)self filterImplementation];
+  filterImplementation = [(CIRAWFilter *)self filterImplementation];
   *&v5 = exposure;
   v6 = [MEMORY[0x1E696AD98] numberWithFloat:v5];
 
-  [(CIRAWFilterImpl *)v4 setValue:v6 forKey:@"inputEV"];
+  [(CIRAWFilterImpl *)filterImplementation setValue:v6 forKey:@"inputEV"];
 }
 
 - (float)shadowBias
@@ -289,11 +289,11 @@
 
 - (void)setShadowBias:(float)shadowBias
 {
-  v4 = [(CIRAWFilter *)self filterImplementation];
+  filterImplementation = [(CIRAWFilter *)self filterImplementation];
   *&v5 = shadowBias;
   v6 = [MEMORY[0x1E696AD98] numberWithFloat:v5];
 
-  [(CIRAWFilterImpl *)v4 setValue:v6 forKey:@"inputBias"];
+  [(CIRAWFilterImpl *)filterImplementation setValue:v6 forKey:@"inputBias"];
 }
 
 - (float)baselineExposure
@@ -306,11 +306,11 @@
 
 - (void)setBaselineExposure:(float)baselineExposure
 {
-  v4 = [(CIRAWFilter *)self filterImplementation];
+  filterImplementation = [(CIRAWFilter *)self filterImplementation];
   *&v5 = baselineExposure;
   v6 = [MEMORY[0x1E696AD98] numberWithFloat:v5];
 
-  [(CIRAWFilterImpl *)v4 setValue:v6 forKey:@"inputBaselineExposure"];
+  [(CIRAWFilterImpl *)filterImplementation setValue:v6 forKey:@"inputBaselineExposure"];
 }
 
 - (float)boostAmount
@@ -323,11 +323,11 @@
 
 - (void)setBoostAmount:(float)boostAmount
 {
-  v4 = [(CIRAWFilter *)self filterImplementation];
+  filterImplementation = [(CIRAWFilter *)self filterImplementation];
   *&v5 = boostAmount;
   v6 = [MEMORY[0x1E696AD98] numberWithFloat:v5];
 
-  [(CIRAWFilterImpl *)v4 setValue:v6 forKey:@"inputBoost"];
+  [(CIRAWFilterImpl *)filterImplementation setValue:v6 forKey:@"inputBoost"];
 }
 
 - (float)boostShadowAmount
@@ -340,29 +340,29 @@
 
 - (void)setBoostShadowAmount:(float)boostShadowAmount
 {
-  v4 = [(CIRAWFilter *)self filterImplementation];
+  filterImplementation = [(CIRAWFilter *)self filterImplementation];
   *&v5 = boostShadowAmount;
   v6 = [MEMORY[0x1E696AD98] numberWithFloat:v5];
 
-  [(CIRAWFilterImpl *)v4 setValue:v6 forKey:@"inputBoostShadowAmount"];
+  [(CIRAWFilterImpl *)filterImplementation setValue:v6 forKey:@"inputBoostShadowAmount"];
 }
 
-- (void)setHighlightRecoveryEnabled:(BOOL)a3
+- (void)setHighlightRecoveryEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v4 = [(CIRAWFilter *)self filterImplementation];
-  v5 = [MEMORY[0x1E696AD98] numberWithInt:!v3];
+  enabledCopy = enabled;
+  filterImplementation = [(CIRAWFilter *)self filterImplementation];
+  v5 = [MEMORY[0x1E696AD98] numberWithInt:!enabledCopy];
 
-  [(CIRAWFilterImpl *)v4 setValue:v5 forKey:@"inputDisableHighlightRecovery"];
+  [(CIRAWFilterImpl *)filterImplementation setValue:v5 forKey:@"inputDisableHighlightRecovery"];
 }
 
 - (void)setGamutMappingEnabled:(BOOL)gamutMappingEnabled
 {
   v3 = gamutMappingEnabled;
-  v4 = [(CIRAWFilter *)self filterImplementation];
+  filterImplementation = [(CIRAWFilter *)self filterImplementation];
   v5 = [MEMORY[0x1E696AD98] numberWithInt:!v3];
 
-  [(CIRAWFilterImpl *)v4 setValue:v5 forKey:@"inputDisableGamutMap"];
+  [(CIRAWFilterImpl *)filterImplementation setValue:v5 forKey:@"inputDisableGamutMap"];
 }
 
 - (BOOL)isLensCorrectionSupported
@@ -382,10 +382,10 @@
 - (void)setLensCorrectionEnabled:(BOOL)lensCorrectionEnabled
 {
   v3 = lensCorrectionEnabled;
-  v4 = [(CIRAWFilter *)self filterImplementation];
+  filterImplementation = [(CIRAWFilter *)self filterImplementation];
   v5 = [MEMORY[0x1E696AD98] numberWithBool:v3];
 
-  [(CIRAWFilterImpl *)v4 setValue:v5 forKey:@"inputEnableVendorLensCorrection"];
+  [(CIRAWFilterImpl *)filterImplementation setValue:v5 forKey:@"inputEnableVendorLensCorrection"];
 }
 
 - (BOOL)isLuminanceNoiseReductionSupported
@@ -405,11 +405,11 @@
 
 - (void)setLuminanceNoiseReductionAmount:(float)luminanceNoiseReductionAmount
 {
-  v4 = [(CIRAWFilter *)self filterImplementation];
+  filterImplementation = [(CIRAWFilter *)self filterImplementation];
   *&v5 = luminanceNoiseReductionAmount;
   v6 = [MEMORY[0x1E696AD98] numberWithFloat:v5];
 
-  [(CIRAWFilterImpl *)v4 setValue:v6 forKey:@"inputLuminanceNoiseReductionAmount"];
+  [(CIRAWFilterImpl *)filterImplementation setValue:v6 forKey:@"inputLuminanceNoiseReductionAmount"];
 }
 
 - (BOOL)isColorNoiseReductionSupported
@@ -429,11 +429,11 @@
 
 - (void)setColorNoiseReductionAmount:(float)colorNoiseReductionAmount
 {
-  v4 = [(CIRAWFilter *)self filterImplementation];
+  filterImplementation = [(CIRAWFilter *)self filterImplementation];
   *&v5 = colorNoiseReductionAmount;
   v6 = [MEMORY[0x1E696AD98] numberWithFloat:v5];
 
-  [(CIRAWFilterImpl *)v4 setValue:v6 forKey:@"inputColorNoiseReductionAmount"];
+  [(CIRAWFilterImpl *)filterImplementation setValue:v6 forKey:@"inputColorNoiseReductionAmount"];
 }
 
 - (BOOL)isSharpnessSupported
@@ -453,11 +453,11 @@
 
 - (void)setSharpnessAmount:(float)sharpnessAmount
 {
-  v4 = [(CIRAWFilter *)self filterImplementation];
+  filterImplementation = [(CIRAWFilter *)self filterImplementation];
   *&v5 = sharpnessAmount;
   v6 = [MEMORY[0x1E696AD98] numberWithFloat:v5];
 
-  [(CIRAWFilterImpl *)v4 setValue:v6 forKey:@"inputNoiseReductionSharpnessAmount"];
+  [(CIRAWFilterImpl *)filterImplementation setValue:v6 forKey:@"inputNoiseReductionSharpnessAmount"];
 }
 
 - (BOOL)isContrastSupported
@@ -477,11 +477,11 @@
 
 - (void)setContrastAmount:(float)contrastAmount
 {
-  v4 = [(CIRAWFilter *)self filterImplementation];
+  filterImplementation = [(CIRAWFilter *)self filterImplementation];
   *&v5 = contrastAmount;
   v6 = [MEMORY[0x1E696AD98] numberWithFloat:v5];
 
-  [(CIRAWFilterImpl *)v4 setValue:v6 forKey:@"inputNoiseReductionContrastAmount"];
+  [(CIRAWFilterImpl *)filterImplementation setValue:v6 forKey:@"inputNoiseReductionContrastAmount"];
 }
 
 - (BOOL)isDetailSupported
@@ -501,11 +501,11 @@
 
 - (void)setDetailAmount:(float)detailAmount
 {
-  v4 = [(CIRAWFilter *)self filterImplementation];
+  filterImplementation = [(CIRAWFilter *)self filterImplementation];
   *&v5 = detailAmount;
   v6 = [MEMORY[0x1E696AD98] numberWithFloat:v5];
 
-  [(CIRAWFilterImpl *)v4 setValue:v6 forKey:@"inputNoiseReductionDetailAmount"];
+  [(CIRAWFilterImpl *)filterImplementation setValue:v6 forKey:@"inputNoiseReductionDetailAmount"];
 }
 
 - (BOOL)isMoireReductionSupported
@@ -525,11 +525,11 @@
 
 - (void)setMoireReductionAmount:(float)moireReductionAmount
 {
-  v4 = [(CIRAWFilter *)self filterImplementation];
+  filterImplementation = [(CIRAWFilter *)self filterImplementation];
   *&v5 = moireReductionAmount;
   v6 = [MEMORY[0x1E696AD98] numberWithFloat:v5];
 
-  [(CIRAWFilterImpl *)v4 setValue:v6 forKey:@"inputMoireAmount"];
+  [(CIRAWFilterImpl *)filterImplementation setValue:v6 forKey:@"inputMoireAmount"];
 }
 
 - (BOOL)isLocalToneMapSupported
@@ -549,11 +549,11 @@
 
 - (void)setLocalToneMapAmount:(float)localToneMapAmount
 {
-  v4 = [(CIRAWFilter *)self filterImplementation];
+  filterImplementation = [(CIRAWFilter *)self filterImplementation];
   *&v5 = localToneMapAmount;
   v6 = [MEMORY[0x1E696AD98] numberWithFloat:v5];
 
-  [(CIRAWFilterImpl *)v4 setValue:v6 forKey:@"inputLocalToneMapAmount"];
+  [(CIRAWFilterImpl *)filterImplementation setValue:v6 forKey:@"inputLocalToneMapAmount"];
 }
 
 - (float)extendedDynamicRangeAmount
@@ -567,11 +567,11 @@
 - (void)setExtendedDynamicRangeAmount:(float)extendedDynamicRangeAmount
 {
   v3 = fminf(fmaxf(extendedDynamicRangeAmount, 0.0), 2.0);
-  v4 = [(CIRAWFilter *)self filterImplementation];
+  filterImplementation = [(CIRAWFilter *)self filterImplementation];
   *&v5 = v3;
   v6 = [MEMORY[0x1E696AD98] numberWithFloat:v5];
 
-  [(CIRAWFilterImpl *)v4 setValue:v6 forKey:@"inputEnableEDRMode"];
+  [(CIRAWFilterImpl *)filterImplementation setValue:v6 forKey:@"inputEnableEDRMode"];
 }
 
 - (CGPoint)neutralChromaticity
@@ -590,12 +590,12 @@
 {
   y = neutralChromaticity.y;
   x = neutralChromaticity.x;
-  v6 = [(CIRAWFilter *)self filterImplementation];
-  -[CIRAWFilterImpl setValue:forKey:](v6, "setValue:forKey:", [MEMORY[0x1E696AD98] numberWithDouble:x], @"inputNeutralChromaticityX");
-  v7 = [(CIRAWFilter *)self filterImplementation];
+  filterImplementation = [(CIRAWFilter *)self filterImplementation];
+  -[CIRAWFilterImpl setValue:forKey:](filterImplementation, "setValue:forKey:", [MEMORY[0x1E696AD98] numberWithDouble:x], @"inputNeutralChromaticityX");
+  filterImplementation2 = [(CIRAWFilter *)self filterImplementation];
   v8 = [MEMORY[0x1E696AD98] numberWithDouble:y];
 
-  [(CIRAWFilterImpl *)v7 setValue:v8 forKey:@"inputNeutralChromaticityY"];
+  [(CIRAWFilterImpl *)filterImplementation2 setValue:v8 forKey:@"inputNeutralChromaticityY"];
 }
 
 - (CGPoint)neutralLocation
@@ -614,9 +614,9 @@
 - (void)setNeutralLocation:(CGPoint)neutralLocation
 {
   v4 = [CIVector vectorWithX:neutralLocation.x Y:neutralLocation.y];
-  v5 = [(CIRAWFilter *)self filterImplementation];
+  filterImplementation = [(CIRAWFilter *)self filterImplementation];
 
-  [(CIRAWFilterImpl *)v5 setValue:v4 forKey:@"inputNeutralLocation"];
+  [(CIRAWFilterImpl *)filterImplementation setValue:v4 forKey:@"inputNeutralLocation"];
 }
 
 - (float)neutralTemperature
@@ -629,11 +629,11 @@
 
 - (void)setNeutralTemperature:(float)neutralTemperature
 {
-  v4 = [(CIRAWFilter *)self filterImplementation];
+  filterImplementation = [(CIRAWFilter *)self filterImplementation];
   *&v5 = neutralTemperature;
   v6 = [MEMORY[0x1E696AD98] numberWithFloat:v5];
 
-  [(CIRAWFilterImpl *)v4 setValue:v6 forKey:@"inputNeutralTemperature"];
+  [(CIRAWFilterImpl *)filterImplementation setValue:v6 forKey:@"inputNeutralTemperature"];
 }
 
 - (float)neutralTint
@@ -646,25 +646,25 @@
 
 - (void)setNeutralTint:(float)neutralTint
 {
-  v4 = [(CIRAWFilter *)self filterImplementation];
+  filterImplementation = [(CIRAWFilter *)self filterImplementation];
   *&v5 = neutralTint;
   v6 = [MEMORY[0x1E696AD98] numberWithFloat:v5];
 
-  [(CIRAWFilterImpl *)v4 setValue:v6 forKey:@"inputNeutralTint"];
+  [(CIRAWFilterImpl *)filterImplementation setValue:v6 forKey:@"inputNeutralTint"];
 }
 
 - (CIFilter)linearSpaceFilter
 {
-  v2 = [(CIRAWFilter *)self filterImplementation];
+  filterImplementation = [(CIRAWFilter *)self filterImplementation];
 
-  return [(CIRAWFilterImpl *)v2 valueForKey:@"inputLinearSpaceFilter"];
+  return [(CIRAWFilterImpl *)filterImplementation valueForKey:@"inputLinearSpaceFilter"];
 }
 
 - (void)setLinearSpaceFilter:(CIFilter *)linearSpaceFilter
 {
-  v4 = [(CIRAWFilter *)self filterImplementation];
+  filterImplementation = [(CIRAWFilter *)self filterImplementation];
 
-  [(CIRAWFilterImpl *)v4 setValue:linearSpaceFilter forKey:@"inputLinearSpaceFilter"];
+  [(CIRAWFilterImpl *)filterImplementation setValue:linearSpaceFilter forKey:@"inputLinearSpaceFilter"];
 }
 
 - (CIImage)previewImage
@@ -720,14 +720,14 @@
   return v8;
 }
 
-- (id)auxImageWithKey:(id)a3
+- (id)auxImageWithKey:(id)key
 {
   v15[2] = *MEMORY[0x1E69E9840];
   if ([(CIRAWFilter *)self imageDataHint])
   {
     v15[0] = MEMORY[0x1E695E118];
     v5 = *MEMORY[0x1E696E118];
-    v14[0] = a3;
+    v14[0] = key;
     v14[1] = v5;
     v15[1] = [(CIRAWFilter *)self imageDataHint];
     v6 = MEMORY[0x1E695DF20];
@@ -738,11 +738,11 @@
 
   else
   {
-    v12 = a3;
+    keyCopy = key;
     v13 = MEMORY[0x1E695E118];
     v6 = MEMORY[0x1E695DF20];
     v7 = &v13;
-    v8 = &v12;
+    v8 = &keyCopy;
     v9 = 1;
   }
 
@@ -761,26 +761,26 @@
   return result;
 }
 
-- (CIRAWFilter)initWithImageURL:(id)a3
+- (CIRAWFilter)initWithImageURL:(id)l
 {
   if (self)
   {
-    self->filterImplementation = [CIRAWFilterImpl filterWithImageURL:a3 options:0];
-    self->imageURL = a3;
+    self->filterImplementation = [CIRAWFilterImpl filterWithImageURL:l options:0];
+    self->imageURL = l;
   }
 
   return self;
 }
 
-- (CIRAWFilter)initWithImageData:(id)a3 identifierHint:(id)a4
+- (CIRAWFilter)initWithImageData:(id)data identifierHint:(id)hint
 {
   v10[1] = *MEMORY[0x1E69E9840];
   if (self)
   {
-    if (a4)
+    if (hint)
     {
       v9 = *MEMORY[0x1E696E118];
-      v10[0] = a4;
+      v10[0] = hint;
       v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v10 forKeys:&v9 count:1];
     }
 
@@ -789,19 +789,19 @@
       v7 = 0;
     }
 
-    self->filterImplementation = [CIRAWFilterImpl filterWithImageData:a3 options:v7];
-    self->imageData = a3;
-    self->imageDataHint = a4;
+    self->filterImplementation = [CIRAWFilterImpl filterWithImageData:data options:v7];
+    self->imageData = data;
+    self->imageDataHint = hint;
   }
 
   return self;
 }
 
-- (CIRAWFilter)initWithCVPixelBuffer:(__CVBuffer *)a3 properties:(id)a4
+- (CIRAWFilter)initWithCVPixelBuffer:(__CVBuffer *)buffer properties:(id)properties
 {
   if (self)
   {
-    self->filterImplementation = [CIRAWFilterImpl filterWithCVPixelBuffer:a3 properties:a4 options:0];
+    self->filterImplementation = [CIRAWFilterImpl filterWithCVPixelBuffer:buffer properties:properties options:0];
   }
 
   return self;
@@ -820,28 +820,28 @@
 
 + (CIRAWFilter)filterWithImageURL:(NSURL *)url
 {
-  v3 = [[a1 alloc] initWithImageURL:url];
+  v3 = [[self alloc] initWithImageURL:url];
 
   return v3;
 }
 
-+ (CIRAWFilter)filterWithImageURL:(id)a3 options:(id)a4
++ (CIRAWFilter)filterWithImageURL:(id)l options:(id)options
 {
-  v4 = [[a1 alloc] initWithImageURL:a3];
+  v4 = [[self alloc] initWithImageURL:l];
 
   return v4;
 }
 
 + (CIRAWFilter)filterWithImageData:(NSData *)data identifierHint:(NSString *)identifierHint
 {
-  v4 = [[a1 alloc] initWithImageData:data identifierHint:identifierHint];
+  v4 = [[self alloc] initWithImageData:data identifierHint:identifierHint];
 
   return v4;
 }
 
 + (CIRAWFilter)filterWithCVPixelBuffer:(CVPixelBufferRef)buffer properties:(NSDictionary *)properties
 {
-  v4 = [[a1 alloc] initWithCVPixelBuffer:buffer properties:properties];
+  v4 = [[self alloc] initWithCVPixelBuffer:buffer properties:properties];
 
   return v4;
 }

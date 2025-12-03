@@ -1,5 +1,5 @@
 @interface VSScriptSecurityOrigin
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)host;
 - (NSString)scheme;
 - (id)description;
@@ -36,32 +36,32 @@
   v10.receiver = self;
   v10.super_class = VSScriptSecurityOrigin;
   v4 = [(VSScriptSecurityOrigin *)&v10 description];
-  v5 = [(VSScriptSecurityOrigin *)self scheme];
-  v6 = [(VSScriptSecurityOrigin *)self host];
+  scheme = [(VSScriptSecurityOrigin *)self scheme];
+  host = [(VSScriptSecurityOrigin *)self host];
   v7 = [MEMORY[0x277CCABB0] numberWithInteger:{-[VSScriptSecurityOrigin port](self, "port")}];
-  v8 = [v3 stringWithFormat:@"<%@ %@://%@:%@>", v4, v5, v6, v7];
+  v8 = [v3 stringWithFormat:@"<%@ %@://%@:%@>", v4, scheme, host, v7];
 
   return v8;
 }
 
 - (unint64_t)hash
 {
-  v3 = [(VSScriptSecurityOrigin *)self scheme];
-  v4 = [v3 hash];
+  scheme = [(VSScriptSecurityOrigin *)self scheme];
+  v4 = [scheme hash];
 
-  v5 = [(VSScriptSecurityOrigin *)self host];
-  v6 = [v5 hash] ^ v4;
+  host = [(VSScriptSecurityOrigin *)self host];
+  v6 = [host hash] ^ v4;
 
   return v6 ^ [(VSScriptSecurityOrigin *)self port];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy)
   {
-    v6 = v4;
+    v6 = equalCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -76,11 +76,11 @@
       }
 
       v11 = v6;
-      v12 = [(VSScriptSecurityOrigin *)self scheme];
-      v13 = [v11 scheme];
-      v14 = [v12 compare:v13 options:1];
-      v15 = [(VSScriptSecurityOrigin *)self host];
-      v16 = [v11 host];
+      scheme = [(VSScriptSecurityOrigin *)self scheme];
+      scheme2 = [v11 scheme];
+      v14 = [scheme compare:scheme2 options:1];
+      host = [(VSScriptSecurityOrigin *)self host];
+      host2 = [v11 host];
       if (v14)
       {
         LOBYTE(v17) = 0;
@@ -88,11 +88,11 @@
 
       else
       {
-        v17 = [v15 compare:v16 options:1] == 0;
+        v17 = [host compare:host2 options:1] == 0;
       }
 
-      v19 = [(VSScriptSecurityOrigin *)self port];
-      v18 = v19 == [v11 port] && v17;
+      port = [(VSScriptSecurityOrigin *)self port];
+      v18 = port == [v11 port] && v17;
     }
 
     else

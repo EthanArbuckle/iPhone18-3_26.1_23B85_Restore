@@ -1,23 +1,23 @@
 @interface IMInvocationQueue
-- (BOOL)_acceptsOptions:(unint64_t)a3;
-- (BOOL)_insertInvocation:(id)a3 options:(unint64_t)a4;
-- (BOOL)_invokeInvocation:(id)a3;
-- (BOOL)_replaceSimilarInvocation:(id)a3;
+- (BOOL)_acceptsOptions:(unint64_t)options;
+- (BOOL)_insertInvocation:(id)invocation options:(unint64_t)options;
+- (BOOL)_invokeInvocation:(id)invocation;
+- (BOOL)_replaceSimilarInvocation:(id)invocation;
 - (IMInvocationQueue)init;
 - (id)_dequeueInvocation;
-- (id)methodSignatureForSelector:(SEL)a3;
+- (id)methodSignatureForSelector:(SEL)selector;
 - (id)peek;
 - (int)_maxQueueLimitSize;
 - (int)_numberOfLimitedMessagesInQueue;
-- (int64_t)_enqueueInvocation:(id)a3 options:(unint64_t)a4;
-- (unint64_t)_optionsForInvocation:(id)a3;
+- (int64_t)_enqueueInvocation:(id)invocation options:(unint64_t)options;
+- (unint64_t)_optionsForInvocation:(id)invocation;
 - (void)_checkQueue;
 - (void)_setQueueTimer;
 - (void)dealloc;
-- (void)forwardInvocation:(id)a3;
+- (void)forwardInvocation:(id)invocation;
 - (void)invokeAll;
 - (void)removeAllInvocations;
-- (void)setProtocol:(id)a3;
+- (void)setProtocol:(id)protocol;
 @end
 
 @implementation IMInvocationQueue
@@ -50,63 +50,63 @@
   [(IMInvocationQueue *)&v2 dealloc];
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
-  v4 = a3;
-  objc_msgSend_retainArguments(v4, v5, v6);
-  v8 = objc_msgSend__optionsForInvocation_(self, v7, v4);
+  invocationCopy = invocation;
+  objc_msgSend_retainArguments(invocationCopy, v5, v6);
+  v8 = objc_msgSend__optionsForInvocation_(self, v7, invocationCopy);
   if (v8)
   {
     v11 = v8;
     if ((v8 & 0x10) != 0 && !objc_msgSend_count(self->_queue, v9, v10))
     {
-      objc_msgSend__invokeInvocation_(self, v9, v4);
+      objc_msgSend__invokeInvocation_(self, v9, invocationCopy);
     }
 
     else
     {
-      v17 = objc_msgSend__enqueueInvocation_options_(self, v9, v4, v11) == 0;
-      if (objc_msgSend_wantsReturnValue(v4, v12, v13))
+      v17 = objc_msgSend__enqueueInvocation_options_(self, v9, invocationCopy, v11) == 0;
+      if (objc_msgSend_wantsReturnValue(invocationCopy, v12, v13))
       {
-        objc_msgSend_setReturnValue_(v4, v14, &v17);
+        objc_msgSend_setReturnValue_(invocationCopy, v14, &v17);
       }
     }
   }
 
-  else if (objc_msgSend_wantsReturnValue(v4, v9, v10))
+  else if (objc_msgSend_wantsReturnValue(invocationCopy, v9, v10))
   {
     v16 = 0;
-    objc_msgSend_setReturnValue_(v4, v15, &v16);
+    objc_msgSend_setReturnValue_(invocationCopy, v15, &v16);
   }
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
   protocolChecker = self->_protocolChecker;
   if (protocolChecker)
   {
-    v6 = objc_msgSend_methodSignatureForSelector_(protocolChecker, a2, a3);
+    v6 = objc_msgSend_methodSignatureForSelector_(protocolChecker, a2, selector);
   }
 
   else
   {
-    v7 = objc_msgSend_target(self, a2, a3);
-    v6 = objc_msgSend_methodSignatureForSelector_(v7, v8, a3);
+    v7 = objc_msgSend_target(self, a2, selector);
+    v6 = objc_msgSend_methodSignatureForSelector_(v7, v8, selector);
   }
 
   return v6;
 }
 
-- (void)setProtocol:(id)a3
+- (void)setProtocol:(id)protocol
 {
-  v9 = a3;
+  protocolCopy = protocol;
   protocolChecker = self->_protocolChecker;
   self->_protocolChecker = 0;
 
-  if (v9)
+  if (protocolCopy)
   {
     v5 = objc_alloc(MEMORY[0x1E696AE48]);
-    v7 = objc_msgSend_initWithProtocol_(v5, v6, v9);
+    v7 = objc_msgSend_initWithProtocol_(v5, v6, protocolCopy);
     v8 = self->_protocolChecker;
     self->_protocolChecker = v7;
   }
@@ -125,17 +125,17 @@
   }
 }
 
-- (BOOL)_invokeInvocation:(id)a3
+- (BOOL)_invokeInvocation:(id)invocation
 {
-  v4 = a3;
+  invocationCopy = invocation;
   v7 = objc_msgSend_target(self, v5, v6);
-  objc_msgSend_invokeWithTarget_(v4, v8, v7);
+  objc_msgSend_invokeWithTarget_(invocationCopy, v8, v7);
 
   v9 = 1;
   v14 = 1;
-  if (objc_msgSend_wantsReturnValue(v4, v10, v11))
+  if (objc_msgSend_wantsReturnValue(invocationCopy, v10, v11))
   {
-    objc_msgSend_getReturnValue_(v4, v12, &v14);
+    objc_msgSend_getReturnValue_(invocationCopy, v12, &v14);
     v9 = v14;
   }
 
@@ -180,16 +180,16 @@ LABEL_8:
 LABEL_10:
 }
 
-- (unint64_t)_optionsForInvocation:(id)a3
+- (unint64_t)_optionsForInvocation:(id)invocation
 {
-  v4 = a3;
+  invocationCopy = invocation;
   v7 = objc_msgSend_delegate(self, v5, v6);
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
     v11 = objc_msgSend_delegate(self, v9, v10);
-    v13 = objc_msgSend_queue_optionsForInvocation_(v11, v12, self, v4);
+    v13 = objc_msgSend_queue_optionsForInvocation_(v11, v12, self, invocationCopy);
   }
 
   else
@@ -237,12 +237,12 @@ LABEL_10:
   return result;
 }
 
-- (BOOL)_acceptsOptions:(unint64_t)a3
+- (BOOL)_acceptsOptions:(unint64_t)options
 {
   result = 1;
-  if ((a3 & 8) != 0)
+  if ((options & 8) != 0)
   {
-    v4 = objc_msgSend__numberOfLimitedMessagesInQueue(self, a2, a3);
+    v4 = objc_msgSend__numberOfLimitedMessagesInQueue(self, a2, options);
     if (v4 >= objc_msgSend__maxQueueLimitSize(self, v5, v6))
     {
       return 0;
@@ -252,9 +252,9 @@ LABEL_10:
   return result;
 }
 
-- (BOOL)_replaceSimilarInvocation:(id)a3
+- (BOOL)_replaceSimilarInvocation:(id)invocation
 {
-  v4 = a3;
+  invocationCopy = invocation;
   v5 = self->_queue;
   objc_sync_enter(v5);
   for (i = 0; ; ++i)
@@ -267,9 +267,9 @@ LABEL_10:
 
     v11 = objc_msgSend_objectAtIndex_(self->_queue, v9, i);
     v14 = objc_msgSend_selector(v11, v12, v13);
-    if (v14 == objc_msgSend_selector(v4, v15, v16))
+    if (v14 == objc_msgSend_selector(invocationCopy, v15, v16))
     {
-      objc_msgSend_replaceObjectAtIndex_withObject_(self->_queue, v17, i, v4);
+      objc_msgSend_replaceObjectAtIndex_withObject_(self->_queue, v17, i, invocationCopy);
 
       break;
     }
@@ -280,9 +280,9 @@ LABEL_10:
   return v10 > i;
 }
 
-- (BOOL)_insertInvocation:(id)a3 options:(unint64_t)a4
+- (BOOL)_insertInvocation:(id)invocation options:(unint64_t)options
 {
-  v6 = a3;
+  invocationCopy = invocation;
   v7 = self->_queue;
   objc_sync_enter(v7);
   v10 = 0;
@@ -301,9 +301,9 @@ LABEL_10:
     v10 = v13 + 1;
     if ((v17 & 2) == 0)
     {
-      objc_msgSend_insertObject_atIndex_(self->_queue, v8, v6, v13);
+      objc_msgSend_insertObject_atIndex_(self->_queue, v8, invocationCopy, v13);
       options = self->_options;
-      v20 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x1E696AD98], v19, a4);
+      v20 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x1E696AD98], v19, options);
       objc_msgSend_insertObject_atIndex_(options, v21, v20, v13);
 
       break;
@@ -315,19 +315,19 @@ LABEL_10:
   return v12 > v13;
 }
 
-- (int64_t)_enqueueInvocation:(id)a3 options:(unint64_t)a4
+- (int64_t)_enqueueInvocation:(id)invocation options:(unint64_t)options
 {
-  v6 = a3;
-  objc_msgSend_retainArguments(v6, v7, v8);
-  if (!objc_msgSend__acceptsOptions_(self, v9, a4))
+  invocationCopy = invocation;
+  objc_msgSend_retainArguments(invocationCopy, v7, v8);
+  if (!objc_msgSend__acceptsOptions_(self, v9, options))
   {
     v13 = 2;
     goto LABEL_12;
   }
 
-  if ((a4 & 4) == 0)
+  if ((options & 4) == 0)
   {
-    if (a4 & 2) != 0 && (objc_msgSend__insertInvocation_options_(self, v10, v6, a4))
+    if (options & 2) != 0 && (objc_msgSend__insertInvocation_options_(self, v10, invocationCopy, options))
     {
       goto LABEL_9;
     }
@@ -335,14 +335,14 @@ LABEL_10:
     goto LABEL_8;
   }
 
-  if ((objc_msgSend__replaceSimilarInvocation_(self, v10, v6) & 1) == 0)
+  if ((objc_msgSend__replaceSimilarInvocation_(self, v10, invocationCopy) & 1) == 0)
   {
 LABEL_8:
     v14 = self->_queue;
     objc_sync_enter(v14);
-    objc_msgSend_addObject_(self->_queue, v15, v6);
+    objc_msgSend_addObject_(self->_queue, v15, invocationCopy);
     options = self->_options;
-    v18 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x1E696AD98], v17, a4);
+    v18 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x1E696AD98], v17, options);
     objc_msgSend_addObject_(options, v19, v18);
 
     objc_sync_exit(v14);

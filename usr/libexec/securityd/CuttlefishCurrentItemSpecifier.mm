@@ -1,34 +1,34 @@
 @interface CuttlefishCurrentItemSpecifier
-- (CuttlefishCurrentItemSpecifier)initWithCoder:(id)a3;
+- (CuttlefishCurrentItemSpecifier)initWithCoder:(id)coder;
 - (id)description;
-- (id)init:(id)a3 zoneID:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (id)init:(id)init zoneID:(id)d;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CuttlefishCurrentItemSpecifier
 
 - (id)description
 {
-  v3 = [(CuttlefishCurrentItemSpecifier *)self zoneID];
-  v4 = [(CuttlefishCurrentItemSpecifier *)self itemPtrName];
-  v5 = [NSString stringWithFormat:@"<CuttlefishCurrentItemSpecifier(%@): %@>", v3, v4];
+  zoneID = [(CuttlefishCurrentItemSpecifier *)self zoneID];
+  itemPtrName = [(CuttlefishCurrentItemSpecifier *)self itemPtrName];
+  v5 = [NSString stringWithFormat:@"<CuttlefishCurrentItemSpecifier(%@): %@>", zoneID, itemPtrName];
 
   return v5;
 }
 
-- (CuttlefishCurrentItemSpecifier)initWithCoder:(id)a3
+- (CuttlefishCurrentItemSpecifier)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = CuttlefishCurrentItemSpecifier;
   v5 = [(CuttlefishCurrentItemSpecifier *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"zoneID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"zoneID"];
     zoneID = v5->_zoneID;
     v5->_zoneID = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"itemPtrName"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"itemPtrName"];
     itemPtrName = v5->_itemPtrName;
     v5->_itemPtrName = v8;
   }
@@ -36,28 +36,28 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(CuttlefishCurrentItemSpecifier *)self itemPtrName];
-  [v4 encodeObject:v5 forKey:@"itemPtrName"];
+  coderCopy = coder;
+  itemPtrName = [(CuttlefishCurrentItemSpecifier *)self itemPtrName];
+  [coderCopy encodeObject:itemPtrName forKey:@"itemPtrName"];
 
-  v6 = [(CuttlefishCurrentItemSpecifier *)self zoneID];
-  [v4 encodeObject:v6 forKey:@"zoneID"];
+  zoneID = [(CuttlefishCurrentItemSpecifier *)self zoneID];
+  [coderCopy encodeObject:zoneID forKey:@"zoneID"];
 }
 
-- (id)init:(id)a3 zoneID:(id)a4
+- (id)init:(id)init zoneID:(id)d
 {
-  v7 = a3;
-  v8 = a4;
+  initCopy = init;
+  dCopy = d;
   v12.receiver = self;
   v12.super_class = CuttlefishCurrentItemSpecifier;
   v9 = [(CuttlefishCurrentItemSpecifier *)&v12 init];
   p_isa = &v9->super.isa;
   if (v9)
   {
-    objc_storeStrong(&v9->_itemPtrName, a3);
-    objc_storeStrong(p_isa + 1, a4);
+    objc_storeStrong(&v9->_itemPtrName, init);
+    objc_storeStrong(p_isa + 1, d);
   }
 
   return p_isa;

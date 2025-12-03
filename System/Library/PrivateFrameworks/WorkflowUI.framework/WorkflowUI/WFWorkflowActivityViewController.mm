@@ -1,7 +1,7 @@
 @interface WFWorkflowActivityViewController
 - (LPLinkMetadata)headerMetadata;
-- (WFWorkflowActivityViewController)initWithWorkflow:(id)a3 applicationActivities:(id)a4;
-- (id)_customizationGroupsForActivityViewController:(id)a3;
+- (WFWorkflowActivityViewController)initWithWorkflow:(id)workflow applicationActivities:(id)activities;
+- (id)_customizationGroupsForActivityViewController:(id)controller;
 - (id)generateSharingDestinationGroup;
 - (id)generateSharingModeGroup;
 - (id)headerImage;
@@ -10,19 +10,19 @@
 
 @implementation WFWorkflowActivityViewController
 
-- (id)_customizationGroupsForActivityViewController:(id)a3
+- (id)_customizationGroupsForActivityViewController:(id)controller
 {
   v10[1] = *MEMORY[0x277D85DE8];
-  v4 = [(WFWorkflowActivityViewController *)self generateSharingModeGroup];
+  generateSharingModeGroup = [(WFWorkflowActivityViewController *)self generateSharingModeGroup];
   v5 = MEMORY[0x277CBEB18];
-  v10[0] = v4;
+  v10[0] = generateSharingModeGroup;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v10 count:1];
   v7 = [v5 arrayWithArray:v6];
 
   if ([(WFWorkflowActivityViewController *)self selectedMode]== 1)
   {
-    v8 = [(WFWorkflowActivityViewController *)self generateSharingDestinationGroup];
-    [v7 addObject:v8];
+    generateSharingDestinationGroup = [(WFWorkflowActivityViewController *)self generateSharingDestinationGroup];
+    [v7 addObject:generateSharingDestinationGroup];
   }
 
   return v7;
@@ -37,14 +37,14 @@
   v19[1] = v4;
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v19 count:2];
 
-  v6 = [(WFWorkflowActivityViewController *)self selectedDestination];
-  if (!v6)
+  selectedDestination = [(WFWorkflowActivityViewController *)self selectedDestination];
+  if (!selectedDestination)
   {
     v7 = @"When you export a shortcut file for anyone, Apple will sign your shortcut on its server.";
     goto LABEL_5;
   }
 
-  if (v6 == 1)
+  if (selectedDestination == 1)
   {
     v7 = @"Only people who have you in their contacts will be able to use the shortcut. Your contact info will be included in the shortcut file for verification.\n\nYou can also use this option to make a personal backup of your shortcuts.";
 LABEL_5:
@@ -55,13 +55,13 @@ LABEL_5:
   v8 = 0;
 LABEL_7:
   v9 = MEMORY[0x277D546F8];
-  v10 = [(WFWorkflowActivityViewController *)self selectedDestination];
+  selectedDestination2 = [(WFWorkflowActivityViewController *)self selectedDestination];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __67__WFWorkflowActivityViewController_generateSharingDestinationGroup__block_invoke;
   v17[3] = &unk_279EE7AB0;
   v17[4] = self;
-  v11 = [v9 pickerCustomizationWithIdentifier:@"WFWorkflowSharingDestinationPicker" options:v5 selectedOptionIndex:v10 footerText:v8 valueChangedHandler:v17];
+  v11 = [v9 pickerCustomizationWithIdentifier:@"WFWorkflowSharingDestinationPicker" options:v5 selectedOptionIndex:selectedDestination2 footerText:v8 valueChangedHandler:v17];
   v12 = objc_alloc(MEMORY[0x277D54700]);
   v13 = WFLocalizedString(@"For");
   v18 = v11;
@@ -92,13 +92,13 @@ void __67__WFWorkflowActivityViewController_generateSharingDestinationGroup__blo
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:2];
 
   v6 = MEMORY[0x277D546F8];
-  v7 = [(WFWorkflowActivityViewController *)self selectedMode];
+  selectedMode = [(WFWorkflowActivityViewController *)self selectedMode];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __60__WFWorkflowActivityViewController_generateSharingModeGroup__block_invoke;
   v14[3] = &unk_279EE7AB0;
   v14[4] = self;
-  v8 = [v6 pickerCustomizationWithIdentifier:@"WFWorkflowSharingModePicker" options:v5 selectedOptionIndex:v7 footerText:0 valueChangedHandler:v14];
+  v8 = [v6 pickerCustomizationWithIdentifier:@"WFWorkflowSharingModePicker" options:v5 selectedOptionIndex:selectedMode footerText:0 valueChangedHandler:v14];
   v9 = objc_alloc(MEMORY[0x277D54700]);
   v10 = WFLocalizedString(@"Send As");
   v15 = v8;
@@ -129,11 +129,11 @@ void __60__WFWorkflowActivityViewController_generateSharingModeGroup__block_invo
       return;
     }
 
-    v3 = WFUserInterfaceFromViewController();
-    v4 = [(WFWorkflowActivityViewController *)self selectedDestination];
-    if (v4)
+    linkProvider = WFUserInterfaceFromViewController();
+    selectedDestination = [(WFWorkflowActivityViewController *)self selectedDestination];
+    if (selectedDestination)
     {
-      if (v4 != 1)
+      if (selectedDestination != 1)
       {
 LABEL_9:
         v13 = *MEMORY[0x277D54708];
@@ -145,10 +145,10 @@ LABEL_9:
         v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:5];
         [(WFWorkflowActivityViewController *)self setExcludedActivityTypes:v14];
 
-        v8 = [(WFWorkflowActivityViewController *)self signedShortcutFileProvider];
-        v16[0] = v8;
-        v9 = [(WFWorkflowActivityViewController *)self workflow];
-        v16[1] = v9;
+        signedShortcutFileProvider = [(WFWorkflowActivityViewController *)self signedShortcutFileProvider];
+        v16[0] = signedShortcutFileProvider;
+        workflow = [(WFWorkflowActivityViewController *)self workflow];
+        v16[1] = workflow;
         v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:2];
         [(WFWorkflowActivityViewController *)self _updateActivityItems:v15];
 
@@ -164,8 +164,8 @@ LABEL_9:
     }
 
     v10 = objc_alloc(*v5);
-    v11 = [(WFWorkflowActivityViewController *)self workflow];
-    v12 = [v10 initWithWorkflow:v11 userInterface:v3];
+    workflow2 = [(WFWorkflowActivityViewController *)self workflow];
+    v12 = [v10 initWithWorkflow:workflow2 userInterface:linkProvider];
     [(WFWorkflowActivityViewController *)self setSignedShortcutFileProvider:v12];
 
     goto LABEL_9;
@@ -178,12 +178,12 @@ LABEL_9:
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v19 count:3];
   [(WFWorkflowActivityViewController *)self setExcludedActivityTypes:v7];
 
-  v3 = [(WFWorkflowActivityViewController *)self linkProvider];
-  v18[0] = v3;
-  v8 = [(WFWorkflowActivityViewController *)self workflow];
-  v18[1] = v8;
-  v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v18 count:2];
-  [(WFWorkflowActivityViewController *)self _updateActivityItems:v9];
+  linkProvider = [(WFWorkflowActivityViewController *)self linkProvider];
+  v18[0] = linkProvider;
+  signedShortcutFileProvider = [(WFWorkflowActivityViewController *)self workflow];
+  v18[1] = signedShortcutFileProvider;
+  workflow = [MEMORY[0x277CBEA60] arrayWithObjects:v18 count:2];
+  [(WFWorkflowActivityViewController *)self _updateActivityItems:workflow];
 LABEL_10:
 }
 
@@ -260,12 +260,12 @@ void __47__WFWorkflowActivityViewController_headerImage__block_invoke_3(uint64_t
     v4 = objc_alloc_init(MEMORY[0x277CD4690]);
     v5 = objc_alloc_init(MEMORY[0x277CD46C8]);
     [(LPLinkMetadata *)v5 setSpecialization:v4];
-    v6 = [(WFWorkflowActivityViewController *)self workflow];
-    v7 = [v6 name];
-    [(LPLinkMetadata *)v5 setTitle:v7];
+    workflow = [(WFWorkflowActivityViewController *)self workflow];
+    name = [workflow name];
+    [(LPLinkMetadata *)v5 setTitle:name];
 
-    v8 = [(WFWorkflowActivityViewController *)self headerImage];
-    [(LPLinkMetadata *)v5 setImage:v8];
+    headerImage = [(WFWorkflowActivityViewController *)self headerImage];
+    [(LPLinkMetadata *)v5 setImage:headerImage];
 
     v9 = self->_headerMetadata;
     self->_headerMetadata = v5;
@@ -276,13 +276,13 @@ void __47__WFWorkflowActivityViewController_headerImage__block_invoke_3(uint64_t
   return headerMetadata;
 }
 
-- (WFWorkflowActivityViewController)initWithWorkflow:(id)a3 applicationActivities:(id)a4
+- (WFWorkflowActivityViewController)initWithWorkflow:(id)workflow applicationActivities:(id)activities
 {
   v37[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  workflowCopy = workflow;
+  activitiesCopy = activities;
   v8 = WFGallerySharingURLForIdentifier();
-  v9 = [v7 mutableCopy];
+  v9 = [activitiesCopy mutableCopy];
   v10 = v9;
   if (v9)
   {
@@ -300,9 +300,9 @@ void __47__WFWorkflowActivityViewController_headerImage__block_invoke_3(uint64_t
   [v12 insertObject:v13 atIndex:0];
 
   v14 = WFUserInterfaceFromViewController();
-  v15 = [[WFWorkflowLinkProvider alloc] initWithWorkflow:v6 userInterface:v14];
+  v15 = [[WFWorkflowLinkProvider alloc] initWithWorkflow:workflowCopy userInterface:v14];
   v37[0] = v15;
-  v37[1] = v6;
+  v37[1] = workflowCopy;
   v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v37 count:2];
   v34.receiver = self;
   v34.super_class = WFWorkflowActivityViewController;
@@ -311,11 +311,11 @@ void __47__WFWorkflowActivityViewController_headerImage__block_invoke_3(uint64_t
   if (v17)
   {
     [(WFWorkflowActivityViewController *)v17 setLinkProvider:v15];
-    [(WFWorkflowActivityViewController *)v17 setWorkflow:v6];
-    v18 = [(WFWorkflowActivityViewController *)v17 workflow];
-    v19 = [v18 isReportable];
+    [(WFWorkflowActivityViewController *)v17 setWorkflow:workflowCopy];
+    workflow = [(WFWorkflowActivityViewController *)v17 workflow];
+    isReportable = [workflow isReportable];
 
-    if (v19)
+    if (isReportable)
     {
       objc_initWeak(&location, v17);
       v20 = [WFReportShortcutActivity alloc];
@@ -324,11 +324,11 @@ void __47__WFWorkflowActivityViewController_headerImage__block_invoke_3(uint64_t
       v30 = __75__WFWorkflowActivityViewController_initWithWorkflow_applicationActivities___block_invoke;
       v31 = &unk_279EE7A60;
       objc_copyWeak(&v32, &location);
-      v21 = [(WFReportShortcutActivity *)v20 initWithWorkflow:v6 completion:&v28];
+      v21 = [(WFReportShortcutActivity *)v20 initWithWorkflow:workflowCopy completion:&v28];
       [(WFReportShortcutActivity *)v21 setActivityControler:v17, v28, v29, v30, v31];
       [v12 addObject:v21];
       v36[0] = v15;
-      v36[1] = v6;
+      v36[1] = workflowCopy;
       v22 = [MEMORY[0x277CBEA60] arrayWithObjects:v36 count:2];
       [(WFWorkflowActivityViewController *)v17 _updateActivityItems:v22 applicationActivities:v12];
 
@@ -343,8 +343,8 @@ void __47__WFWorkflowActivityViewController_headerImage__block_invoke_3(uint64_t
     v24 = [MEMORY[0x277CBEA60] arrayWithObjects:v35 count:3];
     [(WFWorkflowActivityViewController *)v17 setExcludedActivityTypes:v24];
 
-    v25 = [(WFWorkflowActivityViewController *)v17 headerMetadata];
-    [(WFWorkflowActivityViewController *)v17 setPhotosHeaderMetadata:v25];
+    headerMetadata = [(WFWorkflowActivityViewController *)v17 headerMetadata];
+    [(WFWorkflowActivityViewController *)v17 setPhotosHeaderMetadata:headerMetadata];
 
     [(WFWorkflowActivityViewController *)v17 setObjectManipulationDelegate:v17];
     v26 = v17;

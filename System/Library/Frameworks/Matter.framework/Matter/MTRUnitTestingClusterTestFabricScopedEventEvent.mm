@@ -1,6 +1,6 @@
 @interface MTRUnitTestingClusterTestFabricScopedEventEvent
 - (MTRUnitTestingClusterTestFabricScopedEventEvent)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -21,11 +21,11 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRUnitTestingClusterTestFabricScopedEventEvent);
-  v5 = [(MTRUnitTestingClusterTestFabricScopedEventEvent *)self fabricIndex];
-  [(MTRUnitTestingClusterTestFabricScopedEventEvent *)v4 setFabricIndex:v5];
+  fabricIndex = [(MTRUnitTestingClusterTestFabricScopedEventEvent *)self fabricIndex];
+  [(MTRUnitTestingClusterTestFabricScopedEventEvent *)v4 setFabricIndex:fabricIndex];
 
   return v4;
 }

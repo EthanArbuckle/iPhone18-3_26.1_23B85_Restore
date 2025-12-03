@@ -1,13 +1,13 @@
 @interface _REBucketFeatureTransformer
-- (BOOL)_validateWithFeatures:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)_validateWithFeatures:(id)features;
+- (BOOL)isEqual:(id)equal;
 - (_REBucketFeatureTransformer)init;
-- (unint64_t)_createTransformFromValues:(unint64_t *)a3 count:(unint64_t)a4;
-- (void)_updateConfigurationForCount:(unint64_t)a3;
-- (void)configureWithInvocation:(id)a3;
+- (unint64_t)_createTransformFromValues:(unint64_t *)values count:(unint64_t)count;
+- (void)_updateConfigurationForCount:(unint64_t)count;
+- (void)configureWithInvocation:(id)invocation;
 - (void)dealloc;
-- (void)setMax:(unint64_t)a3;
-- (void)setMin:(unint64_t)a3;
+- (void)setMax:(unint64_t)max;
+- (void)setMin:(unint64_t)min;
 @end
 
 @implementation _REBucketFeatureTransformer
@@ -37,24 +37,24 @@
   [(_REBucketFeatureTransformer *)&v3 dealloc];
 }
 
-- (void)setMin:(unint64_t)a3
+- (void)setMin:(unint64_t)min
 {
-  RERetainFeatureValueTaggedPointer(a3);
+  RERetainFeatureValueTaggedPointer(min);
   REReleaseFeatureValueTaggedPointer(self->_min);
-  self->_min = a3;
+  self->_min = min;
 }
 
-- (void)setMax:(unint64_t)a3
+- (void)setMax:(unint64_t)max
 {
-  RERetainFeatureValueTaggedPointer(a3);
+  RERetainFeatureValueTaggedPointer(max);
   REReleaseFeatureValueTaggedPointer(self->_max);
-  self->_max = a3;
+  self->_max = max;
 }
 
-- (void)_updateConfigurationForCount:(unint64_t)a3
+- (void)_updateConfigurationForCount:(unint64_t)count
 {
-  self->_count = a3;
-  v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"Bucket%lu", a3];
+  self->_count = count;
+  v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"Bucket%lu", count];
   [(REFeatureTransformer *)self setName:v4];
 
   v5 = 64 - __clz(self->_count - 1);
@@ -66,11 +66,11 @@
   self->_bitCount = v5;
 }
 
-- (void)configureWithInvocation:(id)a3
+- (void)configureWithInvocation:(id)invocation
 {
-  v31 = a3;
-  v4 = [v31 numberOfArguments];
-  if ((v4 & 0xFFFFFFFFFFFFFFFDLL) != 1)
+  invocationCopy = invocation;
+  numberOfArguments = [invocationCopy numberOfArguments];
+  if ((numberOfArguments & 0xFFFFFFFFFFFFFFFDLL) != 1)
   {
     v28 = *MEMORY[0x277CBE660];
     v29 = @"Incorrect number of arguments. Expecting one or three arguments";
@@ -79,8 +79,8 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v11 = v4;
-  v12 = REIntegerValueForTaggedPointer([v31 getArgumentAtIndex:0]);
+  v11 = numberOfArguments;
+  v12 = REIntegerValueForTaggedPointer([invocationCopy getArgumentAtIndex:0]);
   if (!v12)
   {
     v28 = *MEMORY[0x277CBE660];
@@ -91,8 +91,8 @@ LABEL_12:
   [(_REBucketFeatureTransformer *)self _updateConfigurationForCount:v12];
   if (v11 != 1)
   {
-    v13 = [v31 getArgumentAtIndex:1];
-    v14 = [v31 getArgumentAtIndex:2];
+    v13 = [invocationCopy getArgumentAtIndex:1];
+    v14 = [invocationCopy getArgumentAtIndex:2];
     if (REFeatureValueTypeForTaggedPointer(v13) != 1 && REFeatureValueTypeForTaggedPointer(v13) != 2)
     {
       RERaiseInternalException(*MEMORY[0x277CBE660], @"Bucket transformer only supports Int64 or Double values types", v15, v16, v17, v18, v19, v20, v30);
@@ -111,11 +111,11 @@ LABEL_12:
 LABEL_13:
 }
 
-- (unint64_t)_createTransformFromValues:(unint64_t *)a3 count:(unint64_t)a4
+- (unint64_t)_createTransformFromValues:(unint64_t *)values count:(unint64_t)count
 {
   if (self->_count)
   {
-    v5 = *a3;
+    v5 = *values;
     v6 = REFeatureValueTypeForTaggedPointer(self->_min);
     v7 = REFeatureValueTypeForTaggedPointer(v5);
     if (v6 == 1)
@@ -183,18 +183,18 @@ LABEL_13:
   return RECreateIntegerFeatureValueTaggedPointer(v10);
 }
 
-- (BOOL)_validateWithFeatures:(id)a3
+- (BOOL)_validateWithFeatures:(id)features
 {
-  v3 = [a3 firstObject];
-  v4 = [v3 featureType] == 2;
+  firstObject = [features firstObject];
+  v4 = [firstObject featureType] == 2;
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -204,7 +204,7 @@ LABEL_13:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       min = self->_min;
       v7 = v5->_min;
       if (min != v7)

@@ -1,16 +1,16 @@
 @interface KVItemBuilder
-+ (id)buildFieldWithType:(int64_t)a3 label:(id)a4 value:(id)a5 error:(id *)a6;
++ (id)buildFieldWithType:(int64_t)type label:(id)label value:(id)value error:(id *)error;
 + (void)initialize;
 - (KVItemBuilder)init;
 - (id).cxx_construct;
-- (id)_addFieldWithType:(int64_t)a3 localeType:(int64_t)a4 label:(id)a5 value:(id)a6 error:(id *)a7;
-- (id)addFieldWithType:(int64_t)a3 label:(id)a4 value:(id)a5 error:(id *)a6;
-- (id)addFieldWithType:(int64_t)a3 localeType:(int64_t)a4 label:(id)a5 value:(id)a6 error:(id *)a7;
-- (id)addFieldWithType:(int64_t)a3 localeType:(int64_t)a4 value:(id)a5 error:(id *)a6;
-- (id)addFieldWithType:(int64_t)a3 value:(id)a4 error:(id *)a5;
-- (id)buildBufferWithError:(id *)a3;
-- (id)buildItemWithError:(id *)a3;
-- (id)setItemType:(int64_t)a3 itemId:(id)a4 error:(id *)a5;
+- (id)_addFieldWithType:(int64_t)type localeType:(int64_t)localeType label:(id)label value:(id)value error:(id *)error;
+- (id)addFieldWithType:(int64_t)type label:(id)label value:(id)value error:(id *)error;
+- (id)addFieldWithType:(int64_t)type localeType:(int64_t)localeType label:(id)label value:(id)value error:(id *)error;
+- (id)addFieldWithType:(int64_t)type localeType:(int64_t)localeType value:(id)value error:(id *)error;
+- (id)addFieldWithType:(int64_t)type value:(id)value error:(id *)error;
+- (id)buildBufferWithError:(id *)error;
+- (id)buildItemWithError:(id *)error;
+- (id)setItemType:(int64_t)type itemId:(id)id error:(id *)error;
 - (void)_reset;
 @end
 
@@ -31,13 +31,13 @@
   return self;
 }
 
-- (id)buildItemWithError:(id *)a3
+- (id)buildItemWithError:(id *)error
 {
-  v7 = objc_msgSend_buildBufferWithError_(self, a2, a3, v3, v4, v5);
+  v7 = objc_msgSend_buildBufferWithError_(self, a2, error, v3, v4, v5);
   if (v7)
   {
     v8 = [KVItem alloc];
-    v10 = objc_msgSend_initWithBuffer_verify_copy_error_(v8, v9, v7, 0, 0, a3);
+    v10 = objc_msgSend_initWithBuffer_verify_copy_error_(v8, v9, v7, 0, 0, error);
   }
 
   else
@@ -48,12 +48,12 @@
   return v10;
 }
 
-- (id)buildBufferWithError:(id *)a3
+- (id)buildBufferWithError:(id *)error
 {
   v83[1] = *MEMORY[0x277D85DE8];
   if (self->_itemType && (itemId = self->_itemId) != 0)
   {
-    v9 = objc_msgSend_UTF8String(itemId, a2, a3, v3, v4, v5);
+    v9 = objc_msgSend_UTF8String(itemId, a2, error, v3, v4, v5);
     v10 = strlen(v9);
     v11 = sub_2559A7B04(&self->_fbb, v9, v10);
     begin = self->_fields.__begin_;
@@ -126,10 +126,10 @@
       v81 = v71;
       v74 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v72, &v81, &v80, 1, v73);
       v77 = objc_msgSend_errorWithDomain_code_userInfo_(v58, v75, @"com.apple.koa.item.builder", 7, v74, v76);
-      if (a3 && v77)
+      if (error && v77)
       {
         v77 = v77;
-        *a3 = v77;
+        *error = v77;
       }
 
       v30 = 0;
@@ -143,10 +143,10 @@
     v83[0] = @"required properties itemType and itemId are not set.";
     v21 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], a2, v83, &v82, 1, v5);
     v24 = objc_msgSend_errorWithDomain_code_userInfo_(v20, v22, @"com.apple.koa.item.builder", 8, v21, v23);
-    if (a3 && v24)
+    if (error && v24)
     {
       v24 = v24;
-      *a3 = v24;
+      *error = v24;
     }
 
     objc_msgSend__reset(self, v25, v26, v27, v28, v29);
@@ -158,11 +158,11 @@
   return v30;
 }
 
-- (id)_addFieldWithType:(int64_t)a3 localeType:(int64_t)a4 label:(id)a5 value:(id)a6 error:(id *)a7
+- (id)_addFieldWithType:(int64_t)type localeType:(int64_t)localeType label:(id)label value:(id)value error:(id *)error
 {
   v164[1] = *MEMORY[0x277D85DE8];
-  v12 = a5;
-  v15 = a6;
+  labelCopy = label;
+  valueCopy = value;
   itemType = self->_itemType;
   if (!itemType || !self->_itemId)
   {
@@ -172,21 +172,21 @@
     v46 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v13, v164, &v163, 1, v14);
     v49 = objc_msgSend_errorWithDomain_code_userInfo_(v45, v47, @"com.apple.koa.item.builder", 8, v46, v48);
     v50 = v49;
-    if (a7 && v49)
+    if (error && v49)
     {
       v51 = v49;
-      *a7 = v50;
+      *error = v50;
     }
 
     goto LABEL_27;
   }
 
-  if (KVItemTypeFromFieldType(a3) != itemType)
+  if (KVItemTypeFromFieldType(type) != itemType)
   {
     v52 = MEMORY[0x277CCA9B8];
     v161 = *MEMORY[0x277CCA068];
     v53 = MEMORY[0x277CCACA8];
-    v46 = KVFieldTypeDescription(a3);
+    v46 = KVFieldTypeDescription(type);
     v50 = KVItemTypeDescription(self->_itemType, v54, v55, v56, v57, v58);
     v63 = objc_msgSend_stringWithFormat_(v53, v59, @"Cannot add field with invalid type: %@ to item of type: %@ itemId: %@", v60, v61, v62, v46, v50, self->_itemId);
     v162 = v63;
@@ -195,7 +195,7 @@
     goto LABEL_22;
   }
 
-  if (v12)
+  if (labelCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -214,7 +214,7 @@
     }
   }
 
-  if (v15)
+  if (valueCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -230,43 +230,43 @@
       v66 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v110, &v158, &v157, 1, v111);
       v69 = objc_msgSend_errorWithDomain_code_userInfo_(v98, v112, @"com.apple.koa.item.builder", 3, v66, v113);
 LABEL_22:
-      if (a7 && v69)
+      if (error && v69)
       {
         v69 = v69;
-        *a7 = v69;
+        *error = v69;
       }
 
       goto LABEL_26;
     }
   }
 
-  if (a4 >= 0x2D)
+  if (localeType >= 0x2D)
   {
     v86 = MEMORY[0x277CCA9B8];
     v155 = *MEMORY[0x277CCA068];
     v87 = MEMORY[0x277CCACA8];
-    v46 = KVLocaleTypeDescription(a4, v17, v18, v19, v20, v21);
+    v46 = KVLocaleTypeDescription(localeType, v17, v18, v19, v20, v21);
     v50 = objc_msgSend_stringWithFormat_(v87, v88, @"Cannot add field with invalid locale type: %@ itemId: %@", v89, v90, v91, v46, self->_itemId);
     v156 = v50;
     v63 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v92, &v156, &v155, 1, v93);
     v96 = objc_msgSend_errorWithDomain_code_userInfo_(v86, v94, @"com.apple.koa.item.builder", 9, v63, v95);
     v66 = v96;
-    if (a7 && v96)
+    if (error && v96)
     {
       v97 = v96;
-      *a7 = v66;
+      *error = v66;
     }
 
 LABEL_26:
 
 LABEL_27:
     objc_msgSend__reset(self, v114, v115, v116, v117, v118);
-    v119 = 0;
+    selfCopy = 0;
     goto LABEL_28;
   }
 
-  v154 = objc_msgSend_copy(v12, v17, v18, v19, v20, v21);
-  v153 = objc_msgSend_copy(v15, v22, v23, v24, v25, v26);
+  v154 = objc_msgSend_copy(labelCopy, v17, v18, v19, v20, v21);
+  v153 = objc_msgSend_copy(valueCopy, v22, v23, v24, v25, v26);
   if (objc_msgSend_length(v154, v27, v28, v29, v30, v31) || objc_msgSend_length(v153, v32, v33, v34, v35, v36))
   {
     if (objc_msgSend_length(v153, v32, v33, v34, v35, v36))
@@ -298,16 +298,16 @@ LABEL_27:
     reserved = self->_fbb.buf_.reserved_;
     cur = self->_fbb.buf_.cur_;
     buf = self->_fbb.buf_.buf_;
-    sub_2559A7C64(&self->_fbb, 4, a3);
+    sub_2559A7C64(&self->_fbb, 4, type);
     sub_2559A7C14(&self->_fbb, 6, v44);
     sub_2559A7C14(&self->_fbb, 8, v129);
-    if (a4 || self->_fbb.force_defaults_)
+    if (localeType || self->_fbb.force_defaults_)
     {
       sub_2559A86B4(&self->_fbb, 1uLL);
       sub_2559A8418(&self->_fbb, 1uLL);
       v133 = self->_fbb.buf_.cur_;
       self->_fbb.buf_.cur_ = v133 - 1;
-      *(v133 - 1) = a4;
+      *(v133 - 1) = localeType;
       v135 = self->_fbb.buf_.buf_;
       v134 = self->_fbb.buf_.cur_;
       v136 = self->_fbb.buf_.reserved_;
@@ -385,22 +385,22 @@ LABEL_27:
     self->_fields.__end_ = v142;
   }
 
-  v119 = self;
+  selfCopy = self;
 
 LABEL_28:
   v120 = *MEMORY[0x277D85DE8];
 
-  return v119;
+  return selfCopy;
 }
 
-- (id)addFieldWithType:(int64_t)a3 localeType:(int64_t)a4 label:(id)a5 value:(id)a6 error:(id *)a7
+- (id)addFieldWithType:(int64_t)type localeType:(int64_t)localeType label:(id)label value:(id)value error:(id *)error
 {
   v42[1] = *MEMORY[0x277D85DE8];
-  v12 = a5;
-  v18 = a6;
-  if (a4)
+  labelCopy = label;
+  valueCopy = value;
+  if (localeType)
   {
-    v19 = objc_msgSend__addFieldWithType_localeType_label_value_error_(self, v13, a3, a4, v12, v18, a7);
+    v19 = objc_msgSend__addFieldWithType_localeType_label_value_error_(self, v13, type, localeType, labelCopy, valueCopy, error);
   }
 
   else
@@ -413,10 +413,10 @@ LABEL_28:
     v42[0] = v27;
     v30 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v28, v42, &v41, 1, v29);
     v33 = objc_msgSend_errorWithDomain_code_userInfo_(v20, v31, @"com.apple.koa.item.builder", 9, v30, v32);
-    if (a7 && v33)
+    if (error && v33)
     {
       v33 = v33;
-      *a7 = v33;
+      *error = v33;
     }
 
     objc_msgSend__reset(self, v34, v35, v36, v37, v38);
@@ -428,20 +428,20 @@ LABEL_28:
   return v19;
 }
 
-- (id)addFieldWithType:(int64_t)a3 label:(id)a4 value:(id)a5 error:(id *)a6
+- (id)addFieldWithType:(int64_t)type label:(id)label value:(id)value error:(id *)error
 {
-  v6 = objc_msgSend__addFieldWithType_localeType_label_value_error_(self, a2, a3, 0, a4, a5, a6);
+  v6 = objc_msgSend__addFieldWithType_localeType_label_value_error_(self, a2, type, 0, label, value, error);
 
   return v6;
 }
 
-- (id)addFieldWithType:(int64_t)a3 localeType:(int64_t)a4 value:(id)a5 error:(id *)a6
+- (id)addFieldWithType:(int64_t)type localeType:(int64_t)localeType value:(id)value error:(id *)error
 {
   v39[1] = *MEMORY[0x277D85DE8];
-  v15 = a5;
-  if (a4)
+  valueCopy = value;
+  if (localeType)
   {
-    v16 = objc_msgSend__addFieldWithType_localeType_label_value_error_(self, v10, a3, a4, 0, v15, a6);
+    v16 = objc_msgSend__addFieldWithType_localeType_label_value_error_(self, v10, type, localeType, 0, valueCopy, error);
   }
 
   else
@@ -454,10 +454,10 @@ LABEL_28:
     v39[0] = v24;
     v27 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v25, v39, &v38, 1, v26);
     v30 = objc_msgSend_errorWithDomain_code_userInfo_(v17, v28, @"com.apple.koa.item.builder", 9, v27, v29);
-    if (a6 && v30)
+    if (error && v30)
     {
       v30 = v30;
-      *a6 = v30;
+      *error = v30;
     }
 
     objc_msgSend__reset(self, v31, v32, v33, v34, v35);
@@ -469,42 +469,42 @@ LABEL_28:
   return v16;
 }
 
-- (id)addFieldWithType:(int64_t)a3 value:(id)a4 error:(id *)a5
+- (id)addFieldWithType:(int64_t)type value:(id)value error:(id *)error
 {
-  v5 = objc_msgSend__addFieldWithType_localeType_label_value_error_(self, a2, a3, 0, 0, a4, a5);
+  v5 = objc_msgSend__addFieldWithType_localeType_label_value_error_(self, a2, type, 0, 0, value, error);
 
   return v5;
 }
 
-- (id)setItemType:(int64_t)a3 itemId:(id)a4 error:(id *)a5
+- (id)setItemType:(int64_t)type itemId:(id)id error:(id *)error
 {
   v52[1] = *MEMORY[0x277D85DE8];
-  v9 = a4;
-  v15 = v9;
-  if (a3 - 1 >= 0x1A)
+  idCopy = id;
+  v15 = idCopy;
+  if (type - 1 >= 0x1A)
   {
     v21 = MEMORY[0x277CCA9B8];
     v51 = *MEMORY[0x277CCA068];
     v22 = MEMORY[0x277CCACA8];
-    v23 = KVItemTypeDescription(a3, v10, v11, v12, v13, v14);
+    v23 = KVItemTypeDescription(type, v10, v11, v12, v13, v14);
     v28 = objc_msgSend_stringWithFormat_(v22, v24, @"Cannot set invalid item type: %@", v25, v26, v27, v23);
     v52[0] = v28;
     v31 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v29, v52, &v51, 1, v30);
     v34 = objc_msgSend_errorWithDomain_code_userInfo_(v21, v32, @"com.apple.koa.item.builder", 1, v31, v33);
-    if (a5 && v34)
+    if (error && v34)
     {
       v34 = v34;
-      *a5 = v34;
+      *error = v34;
     }
   }
 
   else
   {
-    if (objc_msgSend_length(v9, v10, v11, v12, v13, v14))
+    if (objc_msgSend_length(idCopy, v10, v11, v12, v13, v14))
     {
-      self->_itemType = a3;
-      objc_storeStrong(&self->_itemId, a4);
-      v20 = self;
+      self->_itemType = type;
+      objc_storeStrong(&self->_itemId, id);
+      selfCopy = self;
       goto LABEL_9;
     }
 
@@ -514,20 +514,20 @@ LABEL_28:
     v28 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v43, &v50, &v49, 1, v44);
     v47 = objc_msgSend_errorWithDomain_code_userInfo_(v42, v45, @"com.apple.koa.item.builder", 2, v28, v46);
     v31 = v47;
-    if (a5 && v47)
+    if (error && v47)
     {
       v48 = v47;
-      *a5 = v31;
+      *error = v31;
     }
   }
 
   objc_msgSend__reset(self, v35, v36, v37, v38, v39);
-  v20 = 0;
+  selfCopy = 0;
 LABEL_9:
 
   v40 = *MEMORY[0x277D85DE8];
 
-  return v20;
+  return selfCopy;
 }
 
 - (void)_reset
@@ -578,14 +578,14 @@ LABEL_9:
   return result;
 }
 
-+ (id)buildFieldWithType:(int64_t)a3 label:(id)a4 value:(id)a5 error:(id *)a6
++ (id)buildFieldWithType:(int64_t)type label:(id)label value:(id)value error:(id *)error
 {
   v120[1] = *MEMORY[0x277D85DE8];
-  v9 = a4;
-  v10 = a5;
-  if (KVItemTypeFromFieldType(a3))
+  labelCopy = label;
+  valueCopy = value;
+  if (KVItemTypeFromFieldType(type))
   {
-    if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+    if (labelCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       v44 = MEMORY[0x277CCA9B8];
       v117 = *MEMORY[0x277CCA068];
@@ -596,16 +596,16 @@ LABEL_9:
       v118 = v52;
       v55 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v53, &v118, &v117, 1, v54);
       v58 = objc_msgSend_errorWithDomain_code_userInfo_(v44, v56, @"com.apple.koa.item.builder", 3, v55, v57);
-      if (a6 && v58)
+      if (error && v58)
       {
         v58 = v58;
-        *a6 = v58;
+        *error = v58;
       }
     }
 
     else
     {
-      if (!v10 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+      if (!valueCopy || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
         v106 = 0;
         v107 = 0;
@@ -616,9 +616,9 @@ LABEL_9:
         v112 = 1;
         v113 = 256;
         v114 = 0;
-        if (objc_msgSend_length(v10, v11, v12, v13, v14, v15))
+        if (objc_msgSend_length(valueCopy, v11, v12, v13, v14, v15))
         {
-          v21 = v10;
+          v21 = valueCopy;
           v27 = objc_msgSend_UTF8String(v21, v22, v23, v24, v25, v26);
           v28 = strlen(v27);
           v29 = sub_2559A7B04(&v106, v27, v28);
@@ -629,9 +629,9 @@ LABEL_9:
           v29 = 0;
         }
 
-        if (objc_msgSend_length(v9, v16, v17, v18, v19, v20))
+        if (objc_msgSend_length(labelCopy, v16, v17, v18, v19, v20))
         {
-          v75 = v9;
+          v75 = labelCopy;
           v81 = objc_msgSend_UTF8String(v75, v76, v77, v78, v79, v80);
           v82 = strlen(v81);
           v83 = sub_2559A7B04(&v106, v81, v82);
@@ -647,7 +647,7 @@ LABEL_9:
         v84 = v110;
         v85 = v109;
         v86 = DWORD2(v109);
-        sub_2559A7C64(&v106, 4, a3);
+        sub_2559A7C64(&v106, 4, type);
         sub_2559A7C14(&v106, 6, v29);
         sub_2559A7C14(&v106, 8, v83);
         v87 = sub_2559A7D18(&v106, v85 - v84 + v86);
@@ -672,10 +672,10 @@ LABEL_9:
       v116 = v67;
       v70 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v68, &v116, &v115, 1, v69);
       v73 = objc_msgSend_errorWithDomain_code_userInfo_(v59, v71, @"com.apple.koa.item.builder", 3, v70, v72);
-      if (a6 && v73)
+      if (error && v73)
       {
         v73 = v73;
-        *a6 = v73;
+        *error = v73;
       }
     }
   }
@@ -685,15 +685,15 @@ LABEL_9:
     v30 = MEMORY[0x277CCA9B8];
     v119 = *MEMORY[0x277CCA068];
     v31 = MEMORY[0x277CCACA8];
-    v32 = KVFieldTypeDescription(a3);
+    v32 = KVFieldTypeDescription(type);
     v37 = objc_msgSend_stringWithFormat_(v31, v33, @"Cannot build field with invalid type: %@", v34, v35, v36, v32);
     v120[0] = v37;
     v40 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v38, v120, &v119, 1, v39);
     v43 = objc_msgSend_errorWithDomain_code_userInfo_(v30, v41, @"com.apple.koa.item.builder", 4, v40, v42);
-    if (a6 && v43)
+    if (error && v43)
     {
       v43 = v43;
-      *a6 = v43;
+      *error = v43;
     }
   }
 

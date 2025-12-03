@@ -1,12 +1,12 @@
 @interface PPRoutineSupport
-+ (BOOL)importCoreRoutineDataWithError:(id *)a3 shouldContinueBlock:(id)a4;
-+ (id)fetchLocationOfInterestByType:(int64_t)a3;
-+ (id)locationsOfInterestVisitedBetweenStartDate:(id)a3 endDate:(id)a4;
++ (BOOL)importCoreRoutineDataWithError:(id *)error shouldContinueBlock:(id)block;
++ (id)fetchLocationOfInterestByType:(int64_t)type;
++ (id)locationsOfInterestVisitedBetweenStartDate:(id)date endDate:(id)endDate;
 @end
 
 @implementation PPRoutineSupport
 
-+ (id)fetchLocationOfInterestByType:(int64_t)a3
++ (id)fetchLocationOfInterestByType:(int64_t)type
 {
   v4 = defaultRTRoutineManager();
   if (v4)
@@ -25,7 +25,7 @@
     v15 = buf;
     v6 = v5;
     v14 = v6;
-    [v4 fetchLocationsOfInterestOfType:a3 withHandler:&v10];
+    [v4 fetchLocationsOfInterestOfType:type withHandler:&v10];
     [MEMORY[0x277D425A0] waitForSemaphore:{v6, v10, v11, v12, v13}];
     v7 = *(v17 + 5);
 
@@ -59,10 +59,10 @@ intptr_t __50__PPRoutineSupport_fetchLocationOfInterestByType___block_invoke(uin
   return dispatch_semaphore_signal(v6);
 }
 
-+ (id)locationsOfInterestVisitedBetweenStartDate:(id)a3 endDate:(id)a4
++ (id)locationsOfInterestVisitedBetweenStartDate:(id)date endDate:(id)endDate
 {
-  v5 = a3;
-  v6 = a4;
+  dateCopy = date;
+  endDateCopy = endDate;
   v7 = defaultRTRoutineManager();
   if (v7)
   {
@@ -80,7 +80,7 @@ intptr_t __50__PPRoutineSupport_fetchLocationOfInterestByType___block_invoke(uin
     v17 = buf;
     v9 = v8;
     v16 = v9;
-    [v7 fetchLocationsOfInterestVisitedBetweenStartDate:v5 endDate:v6 withHandler:v15];
+    [v7 fetchLocationsOfInterestVisitedBetweenStartDate:dateCopy endDate:endDateCopy withHandler:v15];
     if ([MEMORY[0x277D425A0] waitForSemaphore:v9 timeoutSeconds:10.0] == 1)
     {
       v10 = pp_default_log_handle();
@@ -174,10 +174,10 @@ void __71__PPRoutineSupport_locationsOfInterestVisitedBetweenStartDate_endDate__
   v22 = *MEMORY[0x277D85DE8];
 }
 
-+ (BOOL)importCoreRoutineDataWithError:(id *)a3 shouldContinueBlock:(id)a4
++ (BOOL)importCoreRoutineDataWithError:(id *)error shouldContinueBlock:(id)block
 {
   v67 = *MEMORY[0x277D85DE8];
-  v4 = a4;
+  blockCopy = block;
   v5 = pp_default_log_handle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -192,7 +192,7 @@ void __71__PPRoutineSupport_locationsOfInterestVisitedBetweenStartDate_endDate__
   v9 = +[PPConfiguration sharedInstance];
   v10 = [v9 extractionAlgorithmsForBundleId:v7 sourceLanguage:0 conservative:0 domain:2];
 
-  if ((v4[2](v4) & 1) == 0)
+  if ((blockCopy[2](blockCopy) & 1) == 0)
   {
     v37 = pp_default_log_handle();
     if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
@@ -255,7 +255,7 @@ LABEL_27:
     }
   }
 
-  if ((v4[2](v4) & 1) == 0)
+  if ((blockCopy[2](blockCopy) & 1) == 0)
   {
     v38 = pp_default_log_handle();
     if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
@@ -303,8 +303,8 @@ LABEL_27:
     v48 = &v56;
     v35 = v34;
     v45 = v35;
-    v49 = a1;
-    v46 = v4;
+    selfCopy = self;
+    v46 = blockCopy;
     v50 = v27;
     v51 = v30;
     v52 = 0.693 / (v33 * 86400.0);
@@ -314,9 +314,9 @@ LABEL_27:
     [MEMORY[0x277D425A0] waitForSemaphore:v35];
 
     v36 = *(v57 + 24);
-    if (a3 && (v57[3] & 1) == 0)
+    if (error && (v57[3] & 1) == 0)
     {
-      *a3 = *(*(&buf + 1) + 40);
+      *error = *(*(&buf + 1) + 40);
       v36 = *(v57 + 24);
     }
   }
@@ -330,9 +330,9 @@ LABEL_27:
       _os_log_error_impl(&dword_23224A000, v41, OS_LOG_TYPE_ERROR, "PPRoutineSupport failed to initialize default RTRoutineManager.", v55, 2u);
     }
 
-    if (a3)
+    if (error)
     {
-      *a3 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D3A580] code:25 userInfo:0];
+      *error = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D3A580] code:25 userInfo:0];
     }
 
     v36 = 0;

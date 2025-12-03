@@ -1,73 +1,73 @@
 @interface VKCImageSubjectHighlightView
 + (BOOL)visualLookUpYear3InvocationEnabled;
 - ($58EB755F713D70195D081A2438463C76)videoPreviewTimeRange;
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
 - (CGPoint)dragInteractionStartLocation;
-- (CGRect)subjectBoundsClippedToVisibleRectWithShouldInsetForCallout:(BOOL)a3;
+- (CGRect)subjectBoundsClippedToVisibleRectWithShouldInsetForCallout:(BOOL)callout;
 - (CGRect)videoPreviewNormalizedCropRect;
 - (UIImageView)currentLiftImageView;
 - (UIView)dragPreviewContainer;
-- (VKCImageSubjectHighlightView)initWithFrame:(CGRect)a3;
+- (VKCImageSubjectHighlightView)initWithFrame:(CGRect)frame;
 - (VKCImageSubjectHighlightViewDelegate)delegate;
 - (VKCSubjectLiftView)currentLiftView;
-- (id)animationWithDuration:(double)a3 fromValue:(id)a4 toValue:(id)a5 key:(id)a6;
+- (id)animationWithDuration:(double)duration fromValue:(id)value toValue:(id)toValue key:(id)key;
 - (id)createItemProvider;
-- (id)dragInteraction:(id)a3 itemsForBeginningSession:(id)a4;
-- (id)dragInteraction:(id)a3 previewForCancellingItem:(id)a4 withDefault:(id)a5;
-- (id)dragInteraction:(id)a3 previewForLiftingItem:(id)a4 session:(id)a5;
-- (id)springAnimationWithFromValue:(id)a3 toValue:(id)a4 key:(id)a5;
-- (id)stringForHighlightState:(unint64_t)a3;
+- (id)dragInteraction:(id)interaction itemsForBeginningSession:(id)session;
+- (id)dragInteraction:(id)interaction previewForCancellingItem:(id)item withDefault:(id)default;
+- (id)dragInteraction:(id)interaction previewForLiftingItem:(id)item session:(id)session;
+- (id)springAnimationWithFromValue:(id)value toValue:(id)toValue key:(id)key;
+- (id)stringForHighlightState:(unint64_t)state;
 - (id)targetedPreviewForCurrentSubject;
-- (id)videoPreviewSubjectMatteAtCompositionTime:(id *)a3;
-- (id)videoPreviewSubjectMatteForImage:(id)a3 atCompositionTime:(id *)a4;
+- (id)videoPreviewSubjectMatteAtCompositionTime:(id *)time;
+- (id)videoPreviewSubjectMatteForImage:(id)image atCompositionTime:(id *)time;
 - (void)_addSticker;
-- (void)_addSticker:(id)a3;
-- (void)_configureGlowWithShowBurst:(BOOL)a3 burstPoint:(CGPoint)a4;
-- (void)_define:(id)a3;
+- (void)_addSticker:(id)sticker;
+- (void)_configureGlowWithShowBurst:(BOOL)burst burstPoint:(CGPoint)point;
+- (void)_define:(id)_define;
 - (void)_dismissCard;
-- (void)_dragInteractionDidCancelLiftWithoutDragging:(id)a3;
+- (void)_dragInteractionDidCancelLiftWithoutDragging:(id)dragging;
 - (void)_presentStickerPickerViewController;
-- (void)_selectAllSubjects:(id)a3;
+- (void)_selectAllSubjects:(id)subjects;
 - (void)_share;
-- (void)_share:(id)a3;
-- (void)_shareHeics:(id)a3;
-- (void)_tempGenerateStickerFromLivePhotoIfNecessaryWithProgress:(id)a3;
+- (void)_share:(id)_share;
+- (void)_shareHeics:(id)heics;
+- (void)_tempGenerateStickerFromLivePhotoIfNecessaryWithProgress:(id)progress;
 - (void)addSticker;
 - (void)beginImageSubjectAnalysisWithDelayIfNecessary;
-- (void)buildMenuWithBuilder:(id)a3;
-- (void)copy:(id)a3;
-- (void)createStickerRepresentationsAtIndexSet:(id)a3 type:(unint64_t)a4 stickerIDs:(id)a5 progress:(id)a6 completion:(id)a7;
+- (void)buildMenuWithBuilder:(id)builder;
+- (void)copy:(id)copy;
+- (void)createStickerRepresentationsAtIndexSet:(id)set type:(unint64_t)type stickerIDs:(id)ds progress:(id)progress completion:(id)completion;
 - (void)dealloc;
 - (void)didMoveToWindow;
-- (void)didTap:(id)a3;
-- (void)dragInteraction:(id)a3 item:(id)a4 willAnimateCancelWithAnimator:(id)a5;
-- (void)dragInteraction:(id)a3 session:(id)a4 didEndWithOperation:(unint64_t)a5;
-- (void)dragInteraction:(id)a3 session:(id)a4 willEndWithOperation:(unint64_t)a5;
-- (void)dragInteraction:(id)a3 sessionWillBegin:(id)a4;
-- (void)dragInteraction:(id)a3 willAnimateLiftWithAnimator:(id)a4 session:(id)a5;
-- (void)handleCancelForUndraggedLiftForInteraction:(id)a3;
+- (void)didTap:(id)tap;
+- (void)dragInteraction:(id)interaction item:(id)item willAnimateCancelWithAnimator:(id)animator;
+- (void)dragInteraction:(id)interaction session:(id)session didEndWithOperation:(unint64_t)operation;
+- (void)dragInteraction:(id)interaction session:(id)session willEndWithOperation:(unint64_t)operation;
+- (void)dragInteraction:(id)interaction sessionWillBegin:(id)begin;
+- (void)dragInteraction:(id)interaction willAnimateLiftWithAnimator:(id)animator session:(id)session;
+- (void)handleCancelForUndraggedLiftForInteraction:(id)interaction;
 - (void)hideCalloutMenuIfNecessary;
-- (void)hideCalloutMenuIfNecessaryWithClearSelectAll:(BOOL)a3;
-- (void)highlightSubjectAtIndexSet:(id)a3 showCallout:(BOOL)a4 showBurst:(BOOL)a5 burstPoint:(CGPoint)a6 animated:(BOOL)a7;
-- (void)livePhotoCoyotePan:(id)a3;
-- (void)livePhotoLongPress:(id)a3;
-- (void)menuControllerWillHide:(id)a3;
-- (void)selectAndShowCalloutForTapToSelectModeAtPoint:(CGPoint)a3;
-- (void)setColorMaskImage:(CGImage *)a3;
-- (void)setGlowLayerActive:(BOOL)a3;
-- (void)setHidden:(BOOL)a3;
-- (void)setIsLivePhoto:(BOOL)a3;
-- (void)setNormalizedVisibleRect:(CGRect)a3;
-- (void)setRecognitionResult:(id)a3;
-- (void)setSubjectContext:(id)a3;
-- (void)setSubjectHighlightState:(unint64_t)a3 animated:(BOOL)a4;
-- (void)setSubjectInteractionInProgress:(BOOL)a3;
-- (void)setSubjectViewUserInteractionDisabled:(BOOL)a3;
-- (void)setTapToSelectModeEnabled:(BOOL)a3;
-- (void)showCalloutMenuAtLocation:(CGPoint)a3 checkDelegate:(BOOL)a4 showPulse:(BOOL)a5;
-- (void)showSharingPaneForURL:(id)a3 sourceRect:(CGRect)a4;
+- (void)hideCalloutMenuIfNecessaryWithClearSelectAll:(BOOL)all;
+- (void)highlightSubjectAtIndexSet:(id)set showCallout:(BOOL)callout showBurst:(BOOL)burst burstPoint:(CGPoint)point animated:(BOOL)animated;
+- (void)livePhotoCoyotePan:(id)pan;
+- (void)livePhotoLongPress:(id)press;
+- (void)menuControllerWillHide:(id)hide;
+- (void)selectAndShowCalloutForTapToSelectModeAtPoint:(CGPoint)point;
+- (void)setColorMaskImage:(CGImage *)image;
+- (void)setGlowLayerActive:(BOOL)active;
+- (void)setHidden:(BOOL)hidden;
+- (void)setIsLivePhoto:(BOOL)photo;
+- (void)setNormalizedVisibleRect:(CGRect)rect;
+- (void)setRecognitionResult:(id)result;
+- (void)setSubjectContext:(id)context;
+- (void)setSubjectHighlightState:(unint64_t)state animated:(BOOL)animated;
+- (void)setSubjectInteractionInProgress:(BOOL)progress;
+- (void)setSubjectViewUserInteractionDisabled:(BOOL)disabled;
+- (void)setTapToSelectModeEnabled:(BOOL)enabled;
+- (void)showCalloutMenuAtLocation:(CGPoint)location checkDelegate:(BOOL)delegate showPulse:(BOOL)pulse;
+- (void)showSharingPaneForURL:(id)l sourceRect:(CGRect)rect;
 - (void)stickerPickerViewControllerDidLoad;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
+- (void)touchesBegan:(id)began withEvent:(id)event;
 - (void)traitStyleDidChange;
 - (void)updateSubjectInteractionInProgressIfNecessary;
 @end
@@ -93,8 +93,8 @@ uint64_t __66__VKCImageSubjectHighlightView_visualLookUpYear3InvocationEnabled__
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   CGImageRelease(self->_colorMaskImage);
   if (self->_traitChangeRegistration)
@@ -107,12 +107,12 @@ uint64_t __66__VKCImageSubjectHighlightView_visualLookUpYear3InvocationEnabled__
   [(VKCImageSubjectHighlightView *)&v4 dealloc];
 }
 
-- (VKCImageSubjectHighlightView)initWithFrame:(CGRect)a3
+- (VKCImageSubjectHighlightView)initWithFrame:(CGRect)frame
 {
   v25[1] = *MEMORY[0x1E69E9840];
   v24.receiver = self;
   v24.super_class = VKCImageSubjectHighlightView;
-  v3 = [(VKCImageSubjectBaseView *)&v24 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(VKCImageSubjectBaseView *)&v24 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [objc_alloc(MEMORY[0x1E69DCC48]) initWithTarget:v3 action:sel_livePhotoLongPress_];
@@ -152,19 +152,19 @@ uint64_t __66__VKCImageSubjectHighlightView_visualLookUpYear3InvocationEnabled__
     traitChangeRegistration = v3->_traitChangeRegistration;
     v3->_traitChangeRegistration = v13;
 
-    v15 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v15 addObserver:v3 selector:sel_menuControllerWillHide_ name:*MEMORY[0x1E69DE0E8] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel_menuControllerWillHide_ name:*MEMORY[0x1E69DE0E8] object:0];
 
     v16 = objc_alloc_init(MEMORY[0x1E6979398]);
     colorMaskLayer = v3->_colorMaskLayer;
     v3->_colorMaskLayer = v16;
 
-    v18 = [(VKCImageSubjectBaseView *)v3 colorLayer];
-    [v18 setInvertsMask:1];
+    colorLayer = [(VKCImageSubjectBaseView *)v3 colorLayer];
+    [colorLayer setInvertsMask:1];
 
     v19 = v3->_colorMaskLayer;
-    v20 = [(VKCImageSubjectBaseView *)v3 colorLayer];
-    [v20 setMask:v19];
+    colorLayer2 = [(VKCImageSubjectBaseView *)v3 colorLayer];
+    [colorLayer2 setMask:v19];
 
     [(VKCImageSubjectHighlightView *)v3 setSubjectHighlightState:0];
     [(VKCImageSubjectHighlightView *)v3 setUserInteractionEnabled:1];
@@ -178,17 +178,17 @@ uint64_t __66__VKCImageSubjectHighlightView_visualLookUpYear3InvocationEnabled__
 
 - (void)traitStyleDidChange
 {
-  v5 = [(VKCImageSubjectHighlightView *)self traitCollection];
-  v3 = [v5 userInterfaceStyle];
-  v4 = [(VKCImageSubjectHighlightView *)self stickerPickerViewController];
-  [v4 setOverrideUserInterfaceStyle:v3];
+  traitCollection = [(VKCImageSubjectHighlightView *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
+  stickerPickerViewController = [(VKCImageSubjectHighlightView *)self stickerPickerViewController];
+  [stickerPickerViewController setOverrideUserInterfaceStyle:userInterfaceStyle];
 }
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
   v4.receiver = self;
   v4.super_class = VKCImageSubjectHighlightView;
-  [(VKCImageSubjectBaseView *)&v4 setHidden:a3];
+  [(VKCImageSubjectBaseView *)&v4 setHidden:hidden];
   if ([(VKCImageSubjectHighlightView *)self isHidden])
   {
     [(VKCImageSubjectHighlightView *)self hideCalloutMenuIfNecessary];
@@ -205,19 +205,19 @@ uint64_t __66__VKCImageSubjectHighlightView_visualLookUpYear3InvocationEnabled__
   [(VKCImageSubjectHighlightView *)self beginImageSubjectAnalysisWithDelayIfNecessary];
 }
 
-- (void)setRecognitionResult:(id)a3
+- (void)setRecognitionResult:(id)result
 {
-  v4 = a3;
-  v5 = [(VKCImageBaseOverlayView *)self recognitionResult];
+  resultCopy = result;
+  recognitionResult = [(VKCImageBaseOverlayView *)self recognitionResult];
 
-  if (v5 != v4)
+  if (recognitionResult != resultCopy)
   {
     v10.receiver = self;
     v10.super_class = VKCImageSubjectHighlightView;
-    [(VKCImageSubjectBaseView *)&v10 setRecognitionResult:v4];
+    [(VKCImageSubjectBaseView *)&v10 setRecognitionResult:resultCopy];
     v9 = 0;
-    v6 = [(VKCImageSubjectHighlightView *)self delegate];
-    -[VKCImageSubjectHighlightView setIsLivePhoto:](self, "setIsLivePhoto:", [v6 isSubjectHighlightShowingLivePhoto:self delegateHasImplementation:&v9]);
+    delegate = [(VKCImageSubjectHighlightView *)self delegate];
+    -[VKCImageSubjectHighlightView setIsLivePhoto:](self, "setIsLivePhoto:", [delegate isSubjectHighlightShowingLivePhoto:self delegateHasImplementation:&v9]);
 
     [(VKCImageSubjectHighlightView *)self setAnalysisDelayTimerActive:0];
     [(VKCImageSubjectHighlightView *)self setCalloutStartTime:0];
@@ -234,16 +234,16 @@ uint64_t __66__VKCImageSubjectHighlightView_visualLookUpYear3InvocationEnabled__
   }
 }
 
-- (void)buildMenuWithBuilder:(id)a3
+- (void)buildMenuWithBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v18.receiver = self;
   v18.super_class = VKCImageSubjectHighlightView;
-  [(VKCImageSubjectHighlightView *)&v18 buildMenuWithBuilder:v4];
-  v5 = [v4 system];
-  v6 = [MEMORY[0x1E69DCC88] contextSystem];
+  [(VKCImageSubjectHighlightView *)&v18 buildMenuWithBuilder:builderCopy];
+  system = [builderCopy system];
+  contextSystem = [MEMORY[0x1E69DCC88] contextSystem];
 
-  if (v5 == v6)
+  if (system == contextSystem)
   {
     v7 = [MEMORY[0x1E695DF70] arrayWithCapacity:3];
     if (vk_deviceSupportsAddingSystemStickers())
@@ -268,99 +268,99 @@ uint64_t __66__VKCImageSubjectHighlightView_visualLookUpYear3InvocationEnabled__
 
     [v7 addObject:v16];
     v17 = [MEMORY[0x1E69DCC60] menuWithTitle:&stru_1F2C04538 image:0 identifier:0 options:1 children:v7];
-    [v4 insertSiblingMenu:v17 beforeMenuForIdentifier:*MEMORY[0x1E69DE1A0]];
+    [builderCopy insertSiblingMenu:v17 beforeMenuForIdentifier:*MEMORY[0x1E69DE1A0]];
   }
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  v5 = self;
-  v6 = [(VKCImageSubjectBaseView *)self subjectContext:a3];
+  selfCopy = self;
+  v6 = [(VKCImageSubjectBaseView *)self subjectContext:action];
   v7 = v6;
-  if (sel_copy_ == a3 || sel__shareHeics_ == a3)
+  if (sel_copy_ == action || sel__shareHeics_ == action)
   {
 LABEL_6:
-    LOBYTE(v5) = 1;
+    LOBYTE(selfCopy) = 1;
     goto LABEL_7;
   }
 
-  if (sel__share_ == a3 || sel__addSticker_ == a3)
+  if (sel__share_ == action || sel__addSticker_ == action)
   {
     if (vk_isDeviceLocked())
     {
-      LOBYTE(v5) = vk_processHasUnlockEntitlement();
+      LOBYTE(selfCopy) = vk_processHasUnlockEntitlement();
       goto LABEL_7;
     }
 
     goto LABEL_6;
   }
 
-  if (sel__selectAllSubjects_ == a3)
+  if (sel__selectAllSubjects_ == action)
   {
-    LODWORD(v5) = [v6 allSubjectsSelected] ^ 1;
+    LODWORD(selfCopy) = [v6 allSubjectsSelected] ^ 1;
   }
 
-  else if (sel__define_ == a3 && +[VKCImageSubjectHighlightView visualLookUpYear3InvocationEnabled])
+  else if (sel__define_ == action && +[VKCImageSubjectHighlightView visualLookUpYear3InvocationEnabled])
   {
-    v11 = [(VKCImageSubjectHighlightView *)v5 delegate];
-    v12 = [(VKCImageSubjectBaseView *)v5 normalizedSubjectPath];
-    LOBYTE(v5) = [v11 subjectHighlightView:v5 containsVSItemForNormalizedPath:v12];
+    delegate = [(VKCImageSubjectHighlightView *)selfCopy delegate];
+    normalizedSubjectPath = [(VKCImageSubjectBaseView *)selfCopy normalizedSubjectPath];
+    LOBYTE(selfCopy) = [delegate subjectHighlightView:selfCopy containsVSItemForNormalizedPath:normalizedSubjectPath];
   }
 
   else
   {
-    LOBYTE(v5) = 0;
+    LOBYTE(selfCopy) = 0;
   }
 
 LABEL_7:
 
-  return v5;
+  return selfCopy;
 }
 
-- (void)setColorMaskImage:(CGImage *)a3
+- (void)setColorMaskImage:(CGImage *)image
 {
   colorMaskImage = self->_colorMaskImage;
-  if (colorMaskImage != a3)
+  if (colorMaskImage != image)
   {
     CGImageRelease(self->_colorMaskImage);
-    self->_colorMaskImage = a3;
-    CGImageRetain(a3);
+    self->_colorMaskImage = image;
+    CGImageRetain(image);
     colorMaskImage = self->_colorMaskImage;
   }
 
-  v6 = [(VKCImageSubjectHighlightView *)self colorMaskLayer];
-  [v6 setContents:colorMaskImage];
+  colorMaskLayer = [(VKCImageSubjectHighlightView *)self colorMaskLayer];
+  [colorMaskLayer setContents:colorMaskImage];
 }
 
-- (void)setIsLivePhoto:(BOOL)a3
+- (void)setIsLivePhoto:(BOOL)photo
 {
-  v3 = a3;
-  self->_isLivePhoto = a3;
-  v5 = [(VKCImageSubjectHighlightView *)self subjectViewUserInteractionDisabled];
-  v6 = [(VKCImageSubjectHighlightView *)self dragInteraction];
-  [v6 _setCancellationTimerEnabled:v3];
+  photoCopy = photo;
+  self->_isLivePhoto = photo;
+  subjectViewUserInteractionDisabled = [(VKCImageSubjectHighlightView *)self subjectViewUserInteractionDisabled];
+  dragInteraction = [(VKCImageSubjectHighlightView *)self dragInteraction];
+  [dragInteraction _setCancellationTimerEnabled:photoCopy];
 
-  LODWORD(v6) = !v5;
-  v7 = [(VKCImageSubjectHighlightView *)self livePhotoPlayGR];
-  [v7 setEnabled:v3 & v6];
+  LODWORD(dragInteraction) = !subjectViewUserInteractionDisabled;
+  livePhotoPlayGR = [(VKCImageSubjectHighlightView *)self livePhotoPlayGR];
+  [livePhotoPlayGR setEnabled:photoCopy & dragInteraction];
 
-  v8 = [(VKCImageSubjectHighlightView *)self coyotePanGR];
-  [v8 setEnabled:v3 & v6];
+  coyotePanGR = [(VKCImageSubjectHighlightView *)self coyotePanGR];
+  [coyotePanGR setEnabled:photoCopy & dragInteraction];
 }
 
-- (void)setNormalizedVisibleRect:(CGRect)a3
+- (void)setNormalizedVisibleRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v17.receiver = self;
   v17.super_class = VKCImageSubjectHighlightView;
   [(VKCImageBaseOverlayView *)&v17 setNormalizedVisibleRect:?];
   [(VKCImageSubjectHighlightView *)self beginImageSubjectAnalysisWithDelayIfNecessary];
   HasArea = VKMRectHasArea(x, y, width, height);
-  v9 = [(VKCImageSubjectHighlightView *)self calloutStartTime];
-  if (!v9 || (v10 = v9, [MEMORY[0x1E695DF00] now], v11 = objc_claimAutoreleasedReturnValue(), -[VKCImageSubjectHighlightView calloutStartTime](self, "calloutStartTime"), v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v11, "timeIntervalSinceDate:", v12), v14 = v13, v12, v11, v10, v14 > 0.8))
+  calloutStartTime = [(VKCImageSubjectHighlightView *)self calloutStartTime];
+  if (!calloutStartTime || (v10 = calloutStartTime, [MEMORY[0x1E695DF00] now], v11 = objc_claimAutoreleasedReturnValue(), -[VKCImageSubjectHighlightView calloutStartTime](self, "calloutStartTime"), v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v11, "timeIntervalSinceDate:", v12), v14 = v13, v12, v11, v10, v14 > 0.8))
   {
     [(VKCImageSubjectHighlightView *)self hideCalloutMenuIfNecessary];
   }
@@ -375,15 +375,15 @@ LABEL_7:
     v15 = [(VKCImageSubjectHighlightView *)self subjectViewUserInteractionDisabled]^ 1;
   }
 
-  v16 = [(VKCImageSubjectHighlightView *)self dragInteraction];
-  [v16 setEnabled:v15];
+  dragInteraction = [(VKCImageSubjectHighlightView *)self dragInteraction];
+  [dragInteraction setEnabled:v15];
 }
 
 - (void)updateSubjectInteractionInProgressIfNecessary
 {
-  v3 = [(VKCImageSubjectHighlightView *)self subjectHighlightActive];
-  v4 = [(VKCImageSubjectHighlightView *)self dragInteraction];
-  v5 = v3 | [v4 _isActive];
+  subjectHighlightActive = [(VKCImageSubjectHighlightView *)self subjectHighlightActive];
+  dragInteraction = [(VKCImageSubjectHighlightView *)self dragInteraction];
+  v5 = subjectHighlightActive | [dragInteraction _isActive];
 
   if ([(VKCImageSubjectHighlightView *)self subjectHighlightState])
   {
@@ -398,32 +398,32 @@ LABEL_7:
   [(VKCImageSubjectHighlightView *)self setSubjectInteractionInProgress:v6];
 }
 
-- (void)setSubjectInteractionInProgress:(BOOL)a3
+- (void)setSubjectInteractionInProgress:(BOOL)progress
 {
-  if (self->_subjectInteractionInProgress != a3)
+  if (self->_subjectInteractionInProgress != progress)
   {
-    self->_subjectInteractionInProgress = a3;
-    v5 = [(VKCImageSubjectHighlightView *)self delegate];
-    [v5 subjectHighlightViewSubjectInteractionInProgressDidChange:self];
+    self->_subjectInteractionInProgress = progress;
+    delegate = [(VKCImageSubjectHighlightView *)self delegate];
+    [delegate subjectHighlightViewSubjectInteractionInProgressDidChange:self];
   }
 }
 
 - (void)beginImageSubjectAnalysisWithDelayIfNecessary
 {
   v27 = *MEMORY[0x1E69E9840];
-  v3 = [(VKCImageBaseOverlayView *)self recognitionResult];
-  v4 = v3 == 0;
+  recognitionResult = [(VKCImageBaseOverlayView *)self recognitionResult];
+  v4 = recognitionResult == 0;
 
-  v5 = [(VKCImageSubjectHighlightView *)self window];
+  window = [(VKCImageSubjectHighlightView *)self window];
 
-  v6 = [(VKCImageSubjectBaseView *)self subjectContext];
+  subjectContext = [(VKCImageSubjectBaseView *)self subjectContext];
 
-  v7 = [(VKCImageSubjectBaseView *)self loadMaskRequestStatus];
-  v8 = [(VKCImageSubjectHighlightView *)self analysisDelayTimerActive];
+  loadMaskRequestStatus = [(VKCImageSubjectBaseView *)self loadMaskRequestStatus];
+  analysisDelayTimerActive = [(VKCImageSubjectHighlightView *)self analysisDelayTimerActive];
   [(VKCImageBaseOverlayView *)self normalizedVisibleRect];
   HasArea = VKMRectHasArea(v9, v10, v11, v12);
-  v14 = [(VKCImageSubjectHighlightView *)self isHidden];
-  if (v5)
+  isHidden = [(VKCImageSubjectHighlightView *)self isHidden];
+  if (window)
   {
     v15 = v4;
   }
@@ -433,16 +433,16 @@ LABEL_7:
     v15 = 1;
   }
 
-  if ((v15 & 1) == 0 && (v14 & 1) == 0 && !v6 && !v7 && !v8 && HasArea && (vk_isSeedBuild() & 1) == 0)
+  if ((v15 & 1) == 0 && (isHidden & 1) == 0 && !subjectContext && !loadMaskRequestStatus && !analysisDelayTimerActive && HasArea && (vk_isSeedBuild() & 1) == 0)
   {
     [(VKCImageSubjectHighlightView *)self setAnalysisDelayTimerActive:1];
-    v16 = [(VKCImageSubjectBaseView *)self analysisResult];
+    analysisResult = [(VKCImageSubjectBaseView *)self analysisResult];
     objc_initWeak(&location, self);
     v17 = os_log_create("com.apple.VisionKit", "com.apple.VisionKit.RemoveBackground");
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v26 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1B4335000, v17, OS_LOG_TYPE_DEFAULT, "Beginning subject analyze delay: %@", buf, 0xCu);
     }
 
@@ -459,7 +459,7 @@ LABEL_7:
     v21[3] = &unk_1E7BE5218;
     v21[4] = self;
     objc_copyWeak(&v23, &location);
-    v20 = v16;
+    v20 = analysisResult;
     v22 = v20;
     vk_dispatchMainAfterDelay(v21, v19);
 
@@ -509,21 +509,21 @@ void __77__VKCImageSubjectHighlightView_beginImageSubjectAnalysisWithDelayIfNece
   }
 }
 
-- (void)setSubjectContext:(id)a3
+- (void)setSubjectContext:(id)context
 {
   v9.receiver = self;
   v9.super_class = VKCImageSubjectHighlightView;
   [(VKCImageSubjectBaseView *)&v9 setSubjectContext:?];
   +[VKCInternalSettings subjectDragLiftDelay];
   v6 = 0.55;
-  if (a3)
+  if (context)
   {
     v6 = 0.0;
   }
 
   v7 = v6 + v5;
-  v8 = [(VKCImageSubjectHighlightView *)self dragInteraction];
-  [v8 _setLiftDelay:v7];
+  dragInteraction = [(VKCImageSubjectHighlightView *)self dragInteraction];
+  [dragInteraction _setLiftDelay:v7];
 
   [(VKCImageSubjectHighlightView *)self setLivePhotoStartTime:0];
   if ([(VKCImageSubjectHighlightView *)self tapToSelectModeEnabled])
@@ -533,13 +533,13 @@ void __77__VKCImageSubjectHighlightView_beginImageSubjectAnalysisWithDelayIfNece
   }
 }
 
-- (id)stringForHighlightState:(unint64_t)a3
+- (id)stringForHighlightState:(unint64_t)state
 {
-  v3 = a3;
-  if (a3)
+  stateCopy = state;
+  if (state)
   {
     v4 = [&stru_1F2C04538 stringByAppendingString:{@"container, "}];
-    if ((v3 & 4) == 0)
+    if ((stateCopy & 4) == 0)
     {
       goto LABEL_6;
     }
@@ -548,7 +548,7 @@ void __77__VKCImageSubjectHighlightView_beginImageSubjectAnalysisWithDelayIfNece
   }
 
   v4 = &stru_1F2C04538;
-  if ((a3 & 4) != 0)
+  if ((state & 4) != 0)
   {
 LABEL_5:
     v5 = [(__CFString *)v4 stringByAppendingString:@"image, "];
@@ -557,9 +557,9 @@ LABEL_5:
   }
 
 LABEL_6:
-  if ((v3 & 2) == 0)
+  if ((stateCopy & 2) == 0)
   {
-    if ((v3 & 8) == 0)
+    if ((stateCopy & 8) == 0)
     {
       goto LABEL_9;
     }
@@ -570,7 +570,7 @@ LABEL_6:
   v8 = [(__CFString *)v4 stringByAppendingString:@"color, "];
 
   v4 = v8;
-  if ((v3 & 8) != 0)
+  if ((stateCopy & 8) != 0)
   {
 LABEL_8:
     v6 = [(__CFString *)v4 stringByAppendingString:@"colorMask, "];
@@ -583,26 +583,26 @@ LABEL_9:
   return v4;
 }
 
-- (void)setSubjectHighlightState:(unint64_t)a3 animated:(BOOL)a4
+- (void)setSubjectHighlightState:(unint64_t)state animated:(BOOL)animated
 {
-  if (self->_subjectHighlightState != a3)
+  if (self->_subjectHighlightState != state)
   {
-    v5 = a4;
-    v6 = a3;
-    self->_subjectHighlightState = a3;
+    animatedCopy = animated;
+    stateCopy = state;
+    self->_subjectHighlightState = state;
     [(VKCImageSubjectHighlightView *)self updateSubjectInteractionInProgressIfNecessary];
-    v8 = [(VKCImageSubjectBaseView *)self inhibitDimmingAndLiftView];
-    v35 = [(VKCImageSubjectBaseView *)self colorLayer];
-    v9 = [(VKCImageSubjectHighlightView *)self colorMaskLayer];
-    v10 = [(VKCImageSubjectBaseView *)self imageHighlightLayer];
-    v11 = [(VKCImageSubjectBaseView *)self imageHighlightLayerContainer];
-    [v35 opacity];
+    inhibitDimmingAndLiftView = [(VKCImageSubjectBaseView *)self inhibitDimmingAndLiftView];
+    colorLayer = [(VKCImageSubjectBaseView *)self colorLayer];
+    colorMaskLayer = [(VKCImageSubjectHighlightView *)self colorMaskLayer];
+    imageHighlightLayer = [(VKCImageSubjectBaseView *)self imageHighlightLayer];
+    imageHighlightLayerContainer = [(VKCImageSubjectBaseView *)self imageHighlightLayerContainer];
+    [colorLayer opacity];
     v13 = v12;
-    [v10 opacity];
+    [imageHighlightLayer opacity];
     v15 = v14;
-    [v11 opacity];
+    [imageHighlightLayerContainer opacity];
     v17 = v16;
-    if ((v6 & 2) == 0 || v8)
+    if ((stateCopy & 2) == 0 || inhibitDimmingAndLiftView)
     {
       v18 = 0.0;
     }
@@ -612,7 +612,7 @@ LABEL_9:
       v18 = 1.0;
     }
 
-    if ((v6 & 4) == 0 || v8)
+    if ((stateCopy & 4) == 0 || inhibitDimmingAndLiftView)
     {
       v19 = 0.0;
     }
@@ -622,7 +622,7 @@ LABEL_9:
       v19 = 1.0;
     }
 
-    if ((v6 & 1) == 0 || v8)
+    if ((stateCopy & 1) == 0 || inhibitDimmingAndLiftView)
     {
       v20 = 0.0;
     }
@@ -632,69 +632,69 @@ LABEL_9:
       v20 = 1.0;
     }
 
-    [v35 removeAllAnimations];
-    [v10 removeAllAnimations];
-    [v11 removeAllAnimations];
+    [colorLayer removeAllAnimations];
+    [imageHighlightLayer removeAllAnimations];
+    [imageHighlightLayerContainer removeAllAnimations];
     [MEMORY[0x1E6979518] begin];
     [MEMORY[0x1E6979518] setDisableActions:1];
     *&v21 = v18;
-    [v35 setOpacity:v21];
+    [colorLayer setOpacity:v21];
     *&v22 = v19;
-    [v10 setOpacity:v22];
+    [imageHighlightLayer setOpacity:v22];
     *&v23 = v20;
-    [v11 setOpacity:v23];
+    [imageHighlightLayerContainer setOpacity:v23];
     v24 = 0;
-    if ((v6 & 8) == 0 || v8 || ([v35 mask], v25 = objc_claimAutoreleasedReturnValue(), v25, v24 = v9, v25 != v9))
+    if ((stateCopy & 8) == 0 || inhibitDimmingAndLiftView || ([colorLayer mask], v25 = objc_claimAutoreleasedReturnValue(), v25, v24 = colorMaskLayer, v25 != colorMaskLayer))
     {
-      [v35 setMask:v24];
+      [colorLayer setMask:v24];
     }
 
-    if (v5)
+    if (animatedCopy)
     {
       v26 = [MEMORY[0x1E696AD98] numberWithDouble:{v24, v13}];
       v27 = [MEMORY[0x1E696AD98] numberWithDouble:v18];
       v28 = [(VKCImageSubjectHighlightView *)self animationWithDuration:v26 fromValue:v27 toValue:@"opacity" key:0.25];
-      [v35 addAnimation:v28 forKey:0];
+      [colorLayer addAnimation:v28 forKey:0];
 
       v29 = [MEMORY[0x1E696AD98] numberWithDouble:v15];
       v30 = [MEMORY[0x1E696AD98] numberWithDouble:v19];
       v31 = [(VKCImageSubjectHighlightView *)self animationWithDuration:v29 fromValue:v30 toValue:@"opacity" key:0.25];
-      [v10 addAnimation:v31 forKey:0];
+      [imageHighlightLayer addAnimation:v31 forKey:0];
 
       v32 = [MEMORY[0x1E696AD98] numberWithDouble:v17];
       v33 = [MEMORY[0x1E696AD98] numberWithDouble:v20];
       v34 = [(VKCImageSubjectHighlightView *)self animationWithDuration:v32 fromValue:v33 toValue:@"opacity" key:0.25];
-      [v11 addAnimation:v34 forKey:0];
+      [imageHighlightLayerContainer addAnimation:v34 forKey:0];
     }
 
     [MEMORY[0x1E6979518] commit];
   }
 }
 
-- (id)animationWithDuration:(double)a3 fromValue:(id)a4 toValue:(id)a5 key:(id)a6
+- (id)animationWithDuration:(double)duration fromValue:(id)value toValue:(id)toValue key:(id)key
 {
   v9 = MEMORY[0x1E6979318];
-  v10 = a5;
-  v11 = a4;
-  v12 = [v9 animationWithKeyPath:a6];
-  [v12 setToValue:v10];
+  toValueCopy = toValue;
+  valueCopy = value;
+  v12 = [v9 animationWithKeyPath:key];
+  [v12 setToValue:toValueCopy];
 
-  [v12 setFromValue:v11];
-  [v12 setDuration:a3];
+  [v12 setFromValue:valueCopy];
+  [v12 setDuration:duration];
   [v12 setFillMode:*MEMORY[0x1E69797E8]];
 
   return v12;
 }
 
-- (id)springAnimationWithFromValue:(id)a3 toValue:(id)a4 key:(id)a5
+- (id)springAnimationWithFromValue:(id)value toValue:(id)toValue key:(id)key
 {
   v7 = MEMORY[0x1E69794A8];
-  v8 = a4;
-  v9 = a3;
-  v10 = [v7 animationWithKeyPath:a5];
-  [v10 setToValue:v8];
+  toValueCopy = toValue;
+  valueCopy = value;
+  v10 = [v7 animationWithKeyPath:key];
+  [v10 setToValue:toValueCopy];
 
-  [v10 setFromValue:v9];
+  [v10 setFromValue:valueCopy];
   [v10 setFillMode:*MEMORY[0x1E69797E8]];
   [v10 setStiffness:195.0];
   [v10 setDamping:19.75];
@@ -727,31 +727,31 @@ LABEL_9:
 {
   v3 = objc_alloc_init(MEMORY[0x1E69DCAE0]);
   [v3 setContentScaleFactor:0.0];
-  v4 = [(VKCImageSubjectBaseView *)self customImageForRemoveBackground];
+  customImageForRemoveBackground = [(VKCImageSubjectBaseView *)self customImageForRemoveBackground];
 
-  if (v4)
+  if (customImageForRemoveBackground)
   {
-    v5 = [(VKCImageSubjectBaseView *)self customImageForRemoveBackground];
-    [v3 setImage:v5];
+    customImageForRemoveBackground2 = [(VKCImageSubjectBaseView *)self customImageForRemoveBackground];
+    [v3 setImage:customImageForRemoveBackground2];
   }
 
   else
   {
-    v6 = [(VKCImageSubjectBaseView *)self subjectContext];
+    subjectContext = [(VKCImageSubjectBaseView *)self subjectContext];
 
-    if (!v6)
+    if (!subjectContext)
     {
       goto LABEL_6;
     }
 
     v7 = MEMORY[0x1E69DCAB8];
-    v8 = [(VKCImageSubjectBaseView *)self subjectContext];
-    v9 = [v8 request];
-    v10 = [v7 imageWithCGImage:{objc_msgSend(v9, "CGImage")}];
+    subjectContext2 = [(VKCImageSubjectBaseView *)self subjectContext];
+    request = [subjectContext2 request];
+    v10 = [v7 imageWithCGImage:{objc_msgSend(request, "CGImage")}];
     [v3 setImage:v10];
 
-    v5 = [(VKCImageSubjectBaseView *)self subjectContext];
-    vk_transformToImageOrientation([v5 imageOrientation], v63);
+    customImageForRemoveBackground2 = [(VKCImageSubjectBaseView *)self subjectContext];
+    vk_transformToImageOrientation([customImageForRemoveBackground2 imageOrientation], v63);
     v62[0] = v63[0];
     v62[1] = v63[1];
     v62[2] = v63[2];
@@ -781,24 +781,24 @@ LABEL_6:
   v28 = v23 * 3.0;
   v29 = VKMMultiplyPointScalar(0.0, 1.0, v23);
   v31 = v30;
-  v32 = [(VKCSubjectLiftView *)v19 layer];
-  v33 = [v21 layer];
-  v34 = [MEMORY[0x1E69DC888] blackColor];
-  [v32 setShadowColor:{objc_msgSend(v34, "CGColor")}];
+  layer = [(VKCSubjectLiftView *)v19 layer];
+  layer2 = [v21 layer];
+  blackColor = [MEMORY[0x1E69DC888] blackColor];
+  [layer setShadowColor:{objc_msgSend(blackColor, "CGColor")}];
 
-  [v32 setShadowRadius:v28];
-  [v32 setShadowOpacity:0.0];
-  [v32 setShadowOffset:{v29, v31}];
-  [v32 setAllowsGroupBlending:1];
-  v35 = [MEMORY[0x1E69DC888] blackColor];
-  [v33 setShadowColor:{objc_msgSend(v35, "CGColor")}];
+  [layer setShadowRadius:v28];
+  [layer setShadowOpacity:0.0];
+  [layer setShadowOffset:{v29, v31}];
+  [layer setAllowsGroupBlending:1];
+  blackColor2 = [MEMORY[0x1E69DC888] blackColor];
+  [layer2 setShadowColor:{objc_msgSend(blackColor2, "CGColor")}];
 
-  [v33 setShadowRadius:v24];
-  [v33 setShadowOpacity:0.0];
-  [v33 setShadowOffset:{v25, v27}];
-  [v33 setAllowsGroupBlending:1];
-  [(VKCSubjectLiftView *)v19 setDiffuseShadowLayer:v33];
-  [(VKCSubjectLiftView *)v19 setRimShadowLayer:v32];
+  [layer2 setShadowRadius:v24];
+  [layer2 setShadowOpacity:0.0];
+  [layer2 setShadowOffset:{v25, v27}];
+  [layer2 setAllowsGroupBlending:1];
+  [(VKCSubjectLiftView *)v19 setDiffuseShadowLayer:layer2];
+  [(VKCSubjectLiftView *)v19 setRimShadowLayer:layer];
   if (v24 + v25 >= v28 + v29)
   {
     v36 = v24 + v25;
@@ -809,8 +809,8 @@ LABEL_6:
     v36 = v28 + v29;
   }
 
-  v37 = [(VKCImageSubjectBaseView *)self subjectPathInBoundsCoordinates];
-  [v37 bounds];
+  subjectPathInBoundsCoordinates = [(VKCImageSubjectBaseView *)self subjectPathInBoundsCoordinates];
+  [subjectPathInBoundsCoordinates bounds];
   v39 = v38;
   v41 = v40;
   v43 = v42;
@@ -827,8 +827,8 @@ LABEL_6:
   height = v66.size.height;
   v50 = objc_alloc_init(MEMORY[0x1E6979398]);
   [(VKCImageSubjectBaseView *)self configureMaskForCurrentSubjectContextWithLayer:v50 animated:0];
-  v51 = [v3 layer];
-  [v51 setMask:v50];
+  layer3 = [v3 layer];
+  [layer3 setMask:v50];
 
   [(VKCImageSubjectHighlightView *)self setCurrentLiftView:v19];
   [(VKCImageSubjectHighlightView *)self setCurrentLiftImageView:v3];
@@ -839,33 +839,33 @@ LABEL_6:
   v54 = [MEMORY[0x1E69DC728] bezierPathWithRect:{VKMSubtractPoints(x, y, v12)}];
   [v52 setVisiblePath:v54];
 
-  v55 = [MEMORY[0x1E69DC888] clearColor];
-  [v52 setBackgroundColor:v55];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [v52 setBackgroundColor:clearColor];
 
   v56 = objc_alloc(MEMORY[0x1E69DD068]);
   v57 = objc_alloc(MEMORY[0x1E69DCE38]);
-  v58 = [(VKCImageSubjectHighlightView *)self dragPreviewContainer];
-  v59 = [v57 initWithContainer:v58 center:{VKMCenterOfRect(x, y, width, height)}];
+  dragPreviewContainer = [(VKCImageSubjectHighlightView *)self dragPreviewContainer];
+  v59 = [v57 initWithContainer:dragPreviewContainer center:{VKMCenterOfRect(x, y, width, height)}];
   v60 = [v56 initWithView:v19 parameters:v52 target:v59];
 
   return v60;
 }
 
-- (void)setTapToSelectModeEnabled:(BOOL)a3
+- (void)setTapToSelectModeEnabled:(BOOL)enabled
 {
-  self->_tapToSelectModeEnabled = a3;
-  if (a3)
+  self->_tapToSelectModeEnabled = enabled;
+  if (enabled)
   {
-    v4 = [(VKCImageSubjectBaseView *)self subjectContext];
-    v5 = [v4 subjectCount];
+    subjectContext = [(VKCImageSubjectBaseView *)self subjectContext];
+    subjectCount = [subjectContext subjectCount];
 
-    if (v5)
+    if (subjectCount)
     {
-      v6 = [(VKCImageSubjectHighlightView *)self tapGR];
-      [v6 setEnabled:1];
+      tapGR = [(VKCImageSubjectHighlightView *)self tapGR];
+      [tapGR setEnabled:1];
 
-      v7 = [MEMORY[0x1E696AC90] indexSet];
-      [(VKCImageSubjectHighlightView *)self highlightSubjectAtIndexSet:v7 showCallout:0 showBurst:0 burstPoint:1 animated:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)];
+      indexSet = [MEMORY[0x1E696AC90] indexSet];
+      [(VKCImageSubjectHighlightView *)self highlightSubjectAtIndexSet:indexSet showCallout:0 showBurst:0 burstPoint:1 animated:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)];
     }
   }
 
@@ -877,34 +877,34 @@ LABEL_6:
   }
 }
 
-- (void)setSubjectViewUserInteractionDisabled:(BOOL)a3
+- (void)setSubjectViewUserInteractionDisabled:(BOOL)disabled
 {
-  v3 = a3;
-  self->_subjectViewUserInteractionDisabled = a3;
-  if (a3)
+  disabledCopy = disabled;
+  self->_subjectViewUserInteractionDisabled = disabled;
+  if (disabled)
   {
-    v5 = [(VKCImageSubjectHighlightView *)self tapGR];
-    [v5 setEnabled:0];
+    tapGR = [(VKCImageSubjectHighlightView *)self tapGR];
+    [tapGR setEnabled:0];
   }
 
-  v6 = [(VKCImageSubjectHighlightView *)self dragInteraction];
-  [v6 setEnabled:!v3];
+  dragInteraction = [(VKCImageSubjectHighlightView *)self dragInteraction];
+  [dragInteraction setEnabled:!disabledCopy];
 }
 
-- (id)dragInteraction:(id)a3 previewForLiftingItem:(id)a4 session:(id)a5
+- (id)dragInteraction:(id)interaction previewForLiftingItem:(id)item session:(id)session
 {
-  [a5 locationInView:{self, a4}];
+  [session locationInView:{self, item}];
   v6 = [MEMORY[0x1E696B098] vk_valueWithPoint:?];
   [(VKCImageSubjectBaseView *)self setBurstPoint:v6];
 
   return [(VKCImageSubjectHighlightView *)self targetedPreviewForCurrentSubject];
 }
 
-- (id)dragInteraction:(id)a3 previewForCancellingItem:(id)a4 withDefault:(id)a5
+- (id)dragInteraction:(id)interaction previewForCancellingItem:(id)item withDefault:(id)default
 {
-  v6 = a5;
-  v7 = [(VKCImageSubjectHighlightView *)self window];
-  if (!v7 || [(VKCImageSubjectHighlightView *)self isHidden])
+  defaultCopy = default;
+  window = [(VKCImageSubjectHighlightView *)self window];
+  if (!window || [(VKCImageSubjectHighlightView *)self isHidden])
   {
 
 LABEL_4:
@@ -913,60 +913,60 @@ LABEL_4:
     goto LABEL_5;
   }
 
-  v10 = [(VKCImageSubjectHighlightView *)self analysisRequestIDAtSubjectLift];
-  v11 = [(VKCImageSubjectBaseView *)self analysisResult];
-  v12 = [v11 analysisRequestID];
+  analysisRequestIDAtSubjectLift = [(VKCImageSubjectHighlightView *)self analysisRequestIDAtSubjectLift];
+  analysisResult = [(VKCImageSubjectBaseView *)self analysisResult];
+  analysisRequestID = [analysisResult analysisRequestID];
 
-  if (v10 != v12)
+  if (analysisRequestIDAtSubjectLift != analysisRequestID)
   {
     goto LABEL_4;
   }
 
-  v13 = [(VKCImageSubjectBaseView *)self subjectPathInBoundsCoordinates];
+  subjectPathInBoundsCoordinates = [(VKCImageSubjectBaseView *)self subjectPathInBoundsCoordinates];
   v14 = objc_alloc(MEMORY[0x1E69DC9A8]);
-  v15 = [(VKCImageSubjectHighlightView *)self dragPreviewContainer];
-  [v13 bounds];
-  v20 = [v14 initWithContainer:v15 center:{VKMCenterOfRect(v16, v17, v18, v19)}];
-  v8 = [v6 retargetedPreviewWithTarget:v20];
+  dragPreviewContainer = [(VKCImageSubjectHighlightView *)self dragPreviewContainer];
+  [subjectPathInBoundsCoordinates bounds];
+  v20 = [v14 initWithContainer:dragPreviewContainer center:{VKMCenterOfRect(v16, v17, v18, v19)}];
+  v8 = [defaultCopy retargetedPreviewWithTarget:v20];
 
 LABEL_5:
 
   return v8;
 }
 
-- (void)_dragInteractionDidCancelLiftWithoutDragging:(id)a3
+- (void)_dragInteractionDidCancelLiftWithoutDragging:(id)dragging
 {
-  v4 = a3;
+  draggingCopy = dragging;
   if (![(VKCImageSubjectHighlightView *)self isLiftingEmptyItemArray])
   {
-    [(VKCImageSubjectHighlightView *)self handleCancelForUndraggedLiftForInteraction:v4];
+    [(VKCImageSubjectHighlightView *)self handleCancelForUndraggedLiftForInteraction:draggingCopy];
   }
 }
 
-- (void)handleCancelForUndraggedLiftForInteraction:(id)a3
+- (void)handleCancelForUndraggedLiftForInteraction:(id)interaction
 {
-  v4 = a3;
-  v5 = [(VKCImageSubjectHighlightView *)self currentLiftView];
+  interactionCopy = interaction;
+  currentLiftView = [(VKCImageSubjectHighlightView *)self currentLiftView];
   v6 = MEMORY[0x1E69DD250];
   v56[0] = MEMORY[0x1E69E9820];
   v56[1] = 3221225472;
   v56[2] = __75__VKCImageSubjectHighlightView_handleCancelForUndraggedLiftForInteraction___block_invoke;
   v56[3] = &unk_1E7BE4208;
-  v7 = v5;
+  v7 = currentLiftView;
   v57 = v7;
   [v6 performWithoutAnimation:v56];
   v8 = CACurrentMediaTime();
   [(VKCImageSubjectHighlightView *)self dragInteractionStartTime];
   v10 = v9;
-  [v4 _cancellationDelay];
+  [interactionCopy _cancellationDelay];
   v12 = v11;
-  LODWORD(v6) = [v4 _isCancellationTimerEnabled];
+  LODWORD(v6) = [interactionCopy _isCancellationTimerEnabled];
 
   if (v6 && (v13 = v12 + -0.01, v14 = v8 - v10, v8 - v10 >= v12 + -0.01) && ![(VKCImageSubjectHighlightView *)self glowLayerWasActiveOnLift:v13])
   {
     [(VKCImageSubjectHighlightView *)self setSubjectHighlightState:0 animated:0];
-    v17 = [MEMORY[0x1E69DCC68] sharedMenuController];
-    [v17 hideMenu];
+    mEMORY[0x1E69DCC68] = [MEMORY[0x1E69DCC68] sharedMenuController];
+    [mEMORY[0x1E69DCC68] hideMenu];
   }
 
   else
@@ -974,49 +974,49 @@ LABEL_5:
     [(VKCImageSubjectHighlightView *)self setSubjectHighlightState:[(VKCImageSubjectHighlightView *)self subjectHighlightState:v13]| 5 animated:0];
     [(VKCImageSubjectHighlightView *)self dragInteractionStartLocation];
     [(VKCImageSubjectHighlightView *)self showCalloutMenuAtLocation:1 checkDelegate:[(VKCImageSubjectHighlightView *)self isLivePhoto] showPulse:v15, v16];
-    v17 = [(VKCImageSubjectBaseView *)self pulseLayer];
-    v18 = [(VKCImageSubjectBaseView *)self imageHighlightLayerContainer];
-    v19 = [(VKCImageSubjectBaseView *)self imageHighlightLayerContainerShadow];
-    v20 = [v7 rimShadowLayer];
+    mEMORY[0x1E69DCC68] = [(VKCImageSubjectBaseView *)self pulseLayer];
+    imageHighlightLayerContainer = [(VKCImageSubjectBaseView *)self imageHighlightLayerContainer];
+    imageHighlightLayerContainerShadow = [(VKCImageSubjectBaseView *)self imageHighlightLayerContainerShadow];
+    rimShadowLayer = [v7 rimShadowLayer];
     v53 = v7;
-    v21 = [v7 diffuseShadowLayer];
+    diffuseShadowLayer = [v7 diffuseShadowLayer];
     [MEMORY[0x1E6979518] begin];
     [MEMORY[0x1E6979518] setDisableActions:1];
-    [v17 timeOffset];
+    [mEMORY[0x1E69DCC68] timeOffset];
     v23 = v22;
-    [v17 beginTime];
+    [mEMORY[0x1E69DCC68] beginTime];
     v25 = v24;
-    v26 = [v17 superlayer];
-    v27 = [(VKCImageSubjectBaseView *)self imageHighlightLayer];
+    superlayer = [mEMORY[0x1E69DCC68] superlayer];
+    imageHighlightLayer = [(VKCImageSubjectBaseView *)self imageHighlightLayer];
 
-    if (v26 != v27)
+    if (superlayer != imageHighlightLayer)
     {
-      v28 = [v17 superlayer];
-      [v17 position];
+      superlayer2 = [mEMORY[0x1E69DCC68] superlayer];
+      [mEMORY[0x1E69DCC68] position];
       v30 = v29;
       v32 = v31;
-      v33 = [(VKCImageSubjectBaseView *)self imageHighlightLayer];
-      [v28 convertPoint:v33 toLayer:{v30, v32}];
-      [v17 setPosition:?];
+      imageHighlightLayer2 = [(VKCImageSubjectBaseView *)self imageHighlightLayer];
+      [superlayer2 convertPoint:imageHighlightLayer2 toLayer:{v30, v32}];
+      [mEMORY[0x1E69DCC68] setPosition:?];
 
-      v34 = [(VKCImageSubjectBaseView *)self imageHighlightLayer];
-      [v34 addSublayer:v17];
+      imageHighlightLayer3 = [(VKCImageSubjectBaseView *)self imageHighlightLayer];
+      [imageHighlightLayer3 addSublayer:mEMORY[0x1E69DCC68]];
     }
 
-    [v17 setTimeOffset:v23];
-    [v17 setBeginTime:v25];
-    [v18 setShadowColor:{objc_msgSend(v20, "shadowColor")}];
-    [v18 setShadowRadius:0.0];
-    [v20 shadowOffset];
-    [v18 setShadowOffset:?];
-    [v20 shadowOpacity];
-    [v18 setShadowOpacity:?];
-    [v19 setShadowColor:{objc_msgSend(v21, "shadowColor")}];
-    [v19 setShadowRadius:0.0];
-    [v21 shadowOffset];
-    [v19 setShadowOffset:?];
-    [v21 shadowOpacity];
-    [v19 setShadowOpacity:?];
+    [mEMORY[0x1E69DCC68] setTimeOffset:v23];
+    [mEMORY[0x1E69DCC68] setBeginTime:v25];
+    [imageHighlightLayerContainer setShadowColor:{objc_msgSend(rimShadowLayer, "shadowColor")}];
+    [imageHighlightLayerContainer setShadowRadius:0.0];
+    [rimShadowLayer shadowOffset];
+    [imageHighlightLayerContainer setShadowOffset:?];
+    [rimShadowLayer shadowOpacity];
+    [imageHighlightLayerContainer setShadowOpacity:?];
+    [imageHighlightLayerContainerShadow setShadowColor:{objc_msgSend(diffuseShadowLayer, "shadowColor")}];
+    [imageHighlightLayerContainerShadow setShadowRadius:0.0];
+    [diffuseShadowLayer shadowOffset];
+    [imageHighlightLayerContainerShadow setShadowOffset:?];
+    [diffuseShadowLayer shadowOpacity];
+    [imageHighlightLayerContainerShadow setShadowOpacity:?];
     memset(&v55, 0, sizeof(v55));
     CATransform3DMakeScale(&v55, 1.02, 1.02, 1.0);
     v51 = *(MEMORY[0x1E69792E8] + 80);
@@ -1035,7 +1035,7 @@ LABEL_5:
     *&v54.m21 = *(MEMORY[0x1E69792E8] + 32);
     v46 = *&v54.m21;
     *&v54.m23 = v45;
-    [v18 setTransform:&v54];
+    [imageHighlightLayerContainer setTransform:&v54];
     v54 = v55;
     v35 = [MEMORY[0x1E696B098] valueWithCATransform3D:&v54];
     *&v54.m31 = v52;
@@ -1050,44 +1050,44 @@ LABEL_5:
     v37 = [(VKCImageSubjectHighlightView *)self springAnimationWithFromValue:v35 toValue:v36 key:@"transform"];
 
     v38 = MEMORY[0x1E696AD98];
-    [v20 shadowRadius];
+    [rimShadowLayer shadowRadius];
     v39 = [v38 numberWithDouble:?];
     v40 = [(VKCImageSubjectHighlightView *)self springAnimationWithFromValue:v39 toValue:&unk_1F2C38E60 key:@"shadowRadius"];
 
     v41 = MEMORY[0x1E696AD98];
-    v42 = v21;
-    [v21 shadowRadius];
+    v42 = diffuseShadowLayer;
+    [diffuseShadowLayer shadowRadius];
     v43 = [v41 numberWithDouble:?];
     v44 = [(VKCImageSubjectHighlightView *)self springAnimationWithFromValue:v43 toValue:&unk_1F2C38E60 key:@"shadowRadius"];
 
-    [v18 addAnimation:v37 forKey:0];
-    [v18 addAnimation:v40 forKey:0];
-    [v19 addAnimation:v44 forKey:0];
+    [imageHighlightLayerContainer addAnimation:v37 forKey:0];
+    [imageHighlightLayerContainer addAnimation:v40 forKey:0];
+    [imageHighlightLayerContainerShadow addAnimation:v44 forKey:0];
     [MEMORY[0x1E6979518] commit];
 
     v7 = v53;
   }
 }
 
-- (void)setGlowLayerActive:(BOOL)a3
+- (void)setGlowLayerActive:(BOOL)active
 {
-  v3 = a3;
+  activeCopy = active;
   v8.receiver = self;
   v8.super_class = VKCImageSubjectHighlightView;
   [(VKCImageSubjectBaseView *)&v8 setGlowLayerActive:?];
-  v5 = [(VKCImageSubjectHighlightView *)self isLivePhoto];
-  v6 = !v3;
-  v7 = [(VKCImageSubjectHighlightView *)self dragInteraction];
-  [v7 _setCancellationTimerEnabled:v5 & v6];
+  isLivePhoto = [(VKCImageSubjectHighlightView *)self isLivePhoto];
+  v6 = !activeCopy;
+  dragInteraction = [(VKCImageSubjectHighlightView *)self dragInteraction];
+  [dragInteraction _setCancellationTimerEnabled:isLivePhoto & v6];
 
   [(VKCImageSubjectHighlightView *)self updateSubjectInteractionInProgressIfNecessary];
 }
 
-- (void)dragInteraction:(id)a3 willAnimateLiftWithAnimator:(id)a4 session:(id)a5
+- (void)dragInteraction:(id)interaction willAnimateLiftWithAnimator:(id)animator session:(id)session
 {
-  v6 = a4;
-  v7 = [(VKCImageSubjectHighlightView *)self feedbackGenerator];
-  [v7 selectionChanged];
+  animatorCopy = animator;
+  feedbackGenerator = [(VKCImageSubjectHighlightView *)self feedbackGenerator];
+  [feedbackGenerator selectionChanged];
 
   [(VKCImageSubjectHighlightView *)self setGlowLayerWasActiveOnLift:[(VKCImageSubjectBaseView *)self glowLayerActive]];
   [(VKCImageSubjectHighlightView *)self hideCalloutMenuIfNecessaryWithClearSelectAll:0];
@@ -1097,7 +1097,7 @@ LABEL_5:
   v8[2] = __84__VKCImageSubjectHighlightView_dragInteraction_willAnimateLiftWithAnimator_session___block_invoke;
   v8[3] = &unk_1E7BE4208;
   v8[4] = self;
-  [v6 addAnimations:v8];
+  [animatorCopy addAnimations:v8];
 }
 
 void __84__VKCImageSubjectHighlightView_dragInteraction_willAnimateLiftWithAnimator_session___block_invoke(uint64_t a1)
@@ -1119,9 +1119,9 @@ void __84__VKCImageSubjectHighlightView_dragInteraction_willAnimateLiftWithAnima
   [v7 setShadowsVisible:1];
 }
 
-- (void)dragInteraction:(id)a3 session:(id)a4 willEndWithOperation:(unint64_t)a5
+- (void)dragInteraction:(id)interaction session:(id)session willEndWithOperation:(unint64_t)operation
 {
-  [a4 locationInView:self];
+  [session locationInView:self];
   v7 = v6;
   v9 = v8;
   [(VKCImageSubjectHighlightView *)self bounds];
@@ -1132,14 +1132,14 @@ void __84__VKCImageSubjectHighlightView_dragInteraction_willAnimateLiftWithAnima
   [(VKCImageSubjectHighlightView *)self setShouldShowCalloutOnDragCancel:v10];
 }
 
-- (void)dragInteraction:(id)a3 item:(id)a4 willAnimateCancelWithAnimator:(id)a5
+- (void)dragInteraction:(id)interaction item:(id)item willAnimateCancelWithAnimator:(id)animator
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __83__VKCImageSubjectHighlightView_dragInteraction_item_willAnimateCancelWithAnimator___block_invoke;
   v5[3] = &unk_1E7BE5240;
   v5[4] = self;
-  [a5 addCompletion:{v5, a4}];
+  [animator addCompletion:{v5, item}];
 }
 
 uint64_t __83__VKCImageSubjectHighlightView_dragInteraction_item_willAnimateCancelWithAnimator___block_invoke(uint64_t a1)
@@ -1157,13 +1157,13 @@ uint64_t __83__VKCImageSubjectHighlightView_dragInteraction_item_willAnimateCanc
   return result;
 }
 
-- (id)dragInteraction:(id)a3 itemsForBeginningSession:(id)a4
+- (id)dragInteraction:(id)interaction itemsForBeginningSession:(id)session
 {
   v71 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [(VKCImageSubjectBaseView *)self subjectContext];
+  sessionCopy = session;
+  subjectContext = [(VKCImageSubjectBaseView *)self subjectContext];
 
-  if (!v6)
+  if (!subjectContext)
   {
     [(VKCImageSubjectBaseView *)self loadSubjectMaskIfNecessary];
 LABEL_7:
@@ -1177,18 +1177,18 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v7 = [(VKCImageSubjectBaseView *)self analysisResult];
-  -[VKCImageSubjectHighlightView setAnalysisRequestIDAtSubjectLift:](self, "setAnalysisRequestIDAtSubjectLift:", [v7 analysisRequestID]);
+  analysisResult = [(VKCImageSubjectBaseView *)self analysisResult];
+  -[VKCImageSubjectHighlightView setAnalysisRequestIDAtSubjectLift:](self, "setAnalysisRequestIDAtSubjectLift:", [analysisResult analysisRequestID]);
 
   [(VKCImageSubjectHighlightView *)self setDragInteractionStartTime:CACurrentMediaTime()];
-  [v5 locationInView:self];
+  [sessionCopy locationInView:self];
   [(VKCImageSubjectHighlightView *)self setDragInteractionStartLocation:?];
-  [v5 locationInView:self];
+  [sessionCopy locationInView:self];
   v9 = v8;
   v11 = v10;
-  v12 = [(VKCImageSubjectBaseView *)self subjectContext];
+  subjectContext2 = [(VKCImageSubjectBaseView *)self subjectContext];
   [(VKCImageBaseOverlayView *)self normalizedPointFromViewPoint:v9, v11];
-  v13 = [v12 indexOfSubjectAtNormalizedPoint:?];
+  v13 = [subjectContext2 indexOfSubjectAtNormalizedPoint:?];
 
   if (v13)
   {
@@ -1215,8 +1215,8 @@ LABEL_7:
   VKMRectFromNormalizedSubrect(v19, v21, v23, v25, v26, v27, v28, v29);
   v31 = v30;
   v33 = v32;
-  v34 = [(VKCImageSubjectBaseView *)self subjectPathInBoundsCoordinates];
-  [v34 bounds];
+  subjectPathInBoundsCoordinates = [(VKCImageSubjectBaseView *)self subjectPathInBoundsCoordinates];
+  [subjectPathInBoundsCoordinates bounds];
   v36 = v35;
   v38 = v37;
   v40 = v39;
@@ -1232,7 +1232,7 @@ LABEL_7:
     if (os_log_type_enabled(v54, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v66 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1B4335000, v54, OS_LOG_TYPE_DEFAULT, "Subject image is zoomed in and no longer fits the view properly to lift: %@", buf, 0xCu);
     }
 
@@ -1251,11 +1251,11 @@ LABEL_7:
       {
         v55 = VKMUIStringForSize(v52, v53);
         *buf = 138412802;
-        v66 = v55;
+        selfCopy = v55;
         v67 = 2048;
         v68 = 0x4050000000000000;
         v69 = 2112;
-        v70 = self;
+        selfCopy2 = self;
         _os_log_impl(&dword_1B4335000, v54, OS_LOG_TYPE_DEFAULT, "Subject image is too small. Image in window coordinates: %@,  Max edge length %f: %@", buf, 0x20u);
       }
 
@@ -1271,12 +1271,12 @@ LABEL_20:
     goto LABEL_22;
   }
 
-  v61 = [(VKCImageSubjectHighlightView *)self delegate];
-  [v61 subjectHighlightView:self willBeginInteractionAtPoint:1 withType:{v9, v11}];
+  delegate = [(VKCImageSubjectHighlightView *)self delegate];
+  [delegate subjectHighlightView:self willBeginInteractionAtPoint:1 withType:{v9, v11}];
 
   v62 = objc_alloc(MEMORY[0x1E69DC990]);
-  v63 = [(VKCImageSubjectHighlightView *)self createItemProvider];
-  v54 = [v62 initWithItemProvider:v63];
+  createItemProvider = [(VKCImageSubjectHighlightView *)self createItemProvider];
+  v54 = [v62 initWithItemProvider:createItemProvider];
 
   v64 = v54;
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v64 count:1];
@@ -1302,68 +1302,68 @@ LABEL_23:
   return v56;
 }
 
-- (void)dragInteraction:(id)a3 sessionWillBegin:(id)a4
+- (void)dragInteraction:(id)interaction sessionWillBegin:(id)begin
 {
-  [(VKCImageSubjectHighlightView *)self setShouldShowCalloutOnDragCancel:0, a4];
+  [(VKCImageSubjectHighlightView *)self setShouldShowCalloutOnDragCancel:0, begin];
   [(VKCImageSubjectHighlightView *)self setSubjectHighlightState:3];
-  v5 = [MEMORY[0x1E69DCC68] sharedMenuController];
-  v6 = [v5 isMenuVisible];
+  mEMORY[0x1E69DCC68] = [MEMORY[0x1E69DCC68] sharedMenuController];
+  isMenuVisible = [mEMORY[0x1E69DCC68] isMenuVisible];
 
-  if (v6)
+  if (isMenuVisible)
   {
-    v7 = [MEMORY[0x1E69DCC68] sharedMenuController];
-    [v7 hideMenuFromView:self];
+    mEMORY[0x1E69DCC68]2 = [MEMORY[0x1E69DCC68] sharedMenuController];
+    [mEMORY[0x1E69DCC68]2 hideMenuFromView:self];
   }
 }
 
-- (void)dragInteraction:(id)a3 session:(id)a4 didEndWithOperation:(unint64_t)a5
+- (void)dragInteraction:(id)interaction session:(id)session didEndWithOperation:(unint64_t)operation
 {
-  if (![(VKCImageSubjectHighlightView *)self shouldShowCalloutOnDragCancel:a3])
+  if (![(VKCImageSubjectHighlightView *)self shouldShowCalloutOnDragCancel:interaction])
   {
     [(VKCImageSubjectHighlightView *)self setSubjectHighlightState:0];
     [(VKCImageSubjectHighlightView *)self setIsSelectAllActive:0];
   }
 
-  if (a5 == 2)
+  if (operation == 2)
   {
 
     [(VKCImageSubjectBaseView *)self sendSubjectAnalyticsEventWithEventType:2 interactionType:3 subjectFound:1 processingDuration:0.0];
   }
 }
 
-- (void)livePhotoCoyotePan:(id)a3
+- (void)livePhotoCoyotePan:(id)pan
 {
-  v17 = a3;
-  if ([v17 state] != 4 && !-[VKCImageSubjectHighlightView subjectViewUserInteractionDisabled](self, "subjectViewUserInteractionDisabled"))
+  panCopy = pan;
+  if ([panCopy state] != 4 && !-[VKCImageSubjectHighlightView subjectViewUserInteractionDisabled](self, "subjectViewUserInteractionDisabled"))
   {
-    [v17 translationInView:self];
+    [panCopy translationInView:self];
     v6 = VKMDistance(v4, v5, *MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8));
     [(UIView *)self vk_viewPointRatioFromWindow];
     v8 = v7;
-    v9 = [(VKCImageSubjectHighlightView *)self livePhotoStartTime];
+    livePhotoStartTime = [(VKCImageSubjectHighlightView *)self livePhotoStartTime];
 
-    if (v9)
+    if (livePhotoStartTime)
     {
       if (v6 * v8 > 20.0)
       {
-        v10 = [v17 _activeEventOfType:{0, v6 * v8}];
-        v11 = [v10 allTouches];
-        v12 = [v11 anyObject];
+        v10 = [panCopy _activeEventOfType:{0, v6 * v8}];
+        allTouches = [v10 allTouches];
+        anyObject = [allTouches anyObject];
 
-        if (v12)
+        if (anyObject)
         {
-          v13 = [(VKCImageSubjectHighlightView *)self dragInteraction];
-          v14 = [v13 _isActive];
+          dragInteraction = [(VKCImageSubjectHighlightView *)self dragInteraction];
+          _isActive = [dragInteraction _isActive];
 
-          if ((v14 & 1) == 0)
+          if ((_isActive & 1) == 0)
           {
-            v15 = [(VKCImageSubjectHighlightView *)self dragInteraction];
-            [v15 setEnabled:1];
+            dragInteraction2 = [(VKCImageSubjectHighlightView *)self dragInteraction];
+            [dragInteraction2 setEnabled:1];
 
             [(VKCImageSubjectHighlightView *)self hideCalloutMenuIfNecessary];
             [(VKCImageSubjectHighlightView *)self setGlowLayerActive:0];
-            v16 = [(VKCImageSubjectHighlightView *)self dragInteraction];
-            [v16 _immediatelyBeginDragWithTouch:v12 completion:&__block_literal_global_286];
+            dragInteraction3 = [(VKCImageSubjectHighlightView *)self dragInteraction];
+            [dragInteraction3 _immediatelyBeginDragWithTouch:anyObject completion:&__block_literal_global_286];
           }
         }
       }
@@ -1371,11 +1371,11 @@ LABEL_23:
   }
 }
 
-- (void)livePhotoLongPress:(id)a3
+- (void)livePhotoLongPress:(id)press
 {
-  v4 = a3;
-  v5 = [v4 state];
-  [v4 locationInView:self];
+  pressCopy = press;
+  state = [pressCopy state];
+  [pressCopy locationInView:self];
   v7 = v6;
   v9 = v8;
 
@@ -1383,57 +1383,57 @@ LABEL_23:
   {
   }
 
-  else if (v5 == 1)
+  else if (state == 1)
   {
     [(VKCImageSubjectHighlightView *)self setSubjectHighlightState:0];
-    v11 = [(VKCImageSubjectHighlightView *)self delegate];
-    [v11 subjectHighlightView:self livePhotoShouldPlay:1];
+    delegate = [(VKCImageSubjectHighlightView *)self delegate];
+    [delegate subjectHighlightView:self livePhotoShouldPlay:1];
 
-    v31 = [MEMORY[0x1E695DF00] now];
-    [(VKCImageSubjectHighlightView *)self setLivePhotoStartTime:v31];
+    livePhotoStartTime = [MEMORY[0x1E695DF00] now];
+    [(VKCImageSubjectHighlightView *)self setLivePhotoStartTime:livePhotoStartTime];
 LABEL_7:
-    v12 = v31;
+    v12 = livePhotoStartTime;
     goto LABEL_8;
   }
 
-  if ((v5 - 3) > 1)
+  if ((state - 3) > 1)
   {
     return;
   }
 
-  v13 = [(VKCImageSubjectHighlightView *)self delegate];
-  [v13 subjectHighlightView:self livePhotoShouldPlay:0];
+  delegate2 = [(VKCImageSubjectHighlightView *)self delegate];
+  [delegate2 subjectHighlightView:self livePhotoShouldPlay:0];
 
-  v31 = [(VKCImageSubjectHighlightView *)self livePhotoStartTime];
+  livePhotoStartTime = [(VKCImageSubjectHighlightView *)self livePhotoStartTime];
   [(VKCImageSubjectHighlightView *)self setLivePhotoStartTime:0];
-  v12 = v31;
-  if (v31)
+  v12 = livePhotoStartTime;
+  if (livePhotoStartTime)
   {
-    v14 = [(VKCImageSubjectBaseView *)self subjectContext];
+    subjectContext = [(VKCImageSubjectBaseView *)self subjectContext];
 
-    if (v14)
+    if (subjectContext)
     {
-      v15 = [MEMORY[0x1E695DF00] date];
-      [v15 timeIntervalSinceDate:v31];
+      date = [MEMORY[0x1E695DF00] date];
+      [date timeIntervalSinceDate:livePhotoStartTime];
       v17 = v16;
 
       if (v17 < 0.8)
       {
-        v18 = [(VKCImageSubjectBaseView *)self imageHighlightLayer];
-        v19 = [(VKCImageSubjectBaseView *)self pulseLayer];
-        v20 = [v19 superlayer];
+        imageHighlightLayer = [(VKCImageSubjectBaseView *)self imageHighlightLayer];
+        pulseLayer = [(VKCImageSubjectBaseView *)self pulseLayer];
+        superlayer = [pulseLayer superlayer];
 
-        if (v20 != v18)
+        if (superlayer != imageHighlightLayer)
         {
-          v21 = [v19 superlayer];
-          [v19 position];
+          superlayer2 = [pulseLayer superlayer];
+          [pulseLayer position];
           v23 = v22;
           v25 = v24;
-          v26 = [v18 superlayer];
-          [v21 convertPoint:v26 toLayer:{v23, v25}];
-          [v19 setPosition:?];
+          superlayer3 = [imageHighlightLayer superlayer];
+          [superlayer2 convertPoint:superlayer3 toLayer:{v23, v25}];
+          [pulseLayer setPosition:?];
 
-          [v18 addSublayer:v19];
+          [imageHighlightLayer addSublayer:pulseLayer];
         }
 
         v27 = [(VKCImageSubjectBaseView *)self indexOfSubjectAtPoint:v7, v9];
@@ -1448,8 +1448,8 @@ LABEL_7:
           [MEMORY[0x1E696AC90] indexSet];
         }
         v29 = ;
-        v30 = [(VKCImageSubjectBaseView *)self subjectContext];
-        [v30 setActiveSubjectIndexes:v29];
+        subjectContext2 = [(VKCImageSubjectBaseView *)self subjectContext];
+        [subjectContext2 setActiveSubjectIndexes:v29];
 
         [(VKCImageSubjectHighlightView *)self setSubjectHighlightState:7 animated:1];
         [(VKCImageSubjectHighlightView *)self showCalloutMenuAtLocation:1 checkDelegate:1 showPulse:v7, v9];
@@ -1462,18 +1462,18 @@ LABEL_7:
 LABEL_8:
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   v6.receiver = self;
   v6.super_class = VKCImageSubjectHighlightView;
-  [(VKCImageSubjectHighlightView *)&v6 touchesBegan:a3 withEvent:a4];
+  [(VKCImageSubjectHighlightView *)&v6 touchesBegan:began withEvent:event];
   if ([(VKCImageSubjectBaseView *)self glowLayerActive])
   {
     [(VKCImageSubjectHighlightView *)self hideCalloutMenuIfNecessary];
   }
 
-  v5 = [(VKCImageSubjectBaseView *)self subjectContext];
-  [(VKCImageSubjectHighlightView *)self setSubjectAnalysisCompleteWhenTouchesBegan:v5 != 0];
+  subjectContext = [(VKCImageSubjectBaseView *)self subjectContext];
+  [(VKCImageSubjectHighlightView *)self setSubjectAnalysisCompleteWhenTouchesBegan:subjectContext != 0];
 }
 
 - (void)hideCalloutMenuIfNecessary
@@ -1485,15 +1485,15 @@ LABEL_8:
   }
 }
 
-- (void)hideCalloutMenuIfNecessaryWithClearSelectAll:(BOOL)a3
+- (void)hideCalloutMenuIfNecessaryWithClearSelectAll:(BOOL)all
 {
-  v9 = [MEMORY[0x1E69DCC68] sharedMenuController];
-  v5 = [v9 _targetView];
+  mEMORY[0x1E69DCC68] = [MEMORY[0x1E69DCC68] sharedMenuController];
+  _targetView = [mEMORY[0x1E69DCC68] _targetView];
   [(VKCImageSubjectHighlightView *)self setCalloutStartTime:0];
-  v6 = [(VKCImageSubjectHighlightView *)self isSelectAllActive];
-  if ([v9 isMenuVisible])
+  isSelectAllActive = [(VKCImageSubjectHighlightView *)self isSelectAllActive];
+  if ([mEMORY[0x1E69DCC68] isMenuVisible])
   {
-    v7 = v5 == self;
+    v7 = _targetView == self;
   }
 
   else
@@ -1503,49 +1503,49 @@ LABEL_8:
 
   if (v7)
   {
-    v8 = [MEMORY[0x1E69DCC68] sharedMenuController];
-    [v8 hideMenuFromView:self];
+    mEMORY[0x1E69DCC68]2 = [MEMORY[0x1E69DCC68] sharedMenuController];
+    [mEMORY[0x1E69DCC68]2 hideMenuFromView:self];
   }
 
-  if (!a3)
+  if (!all)
   {
-    [(VKCImageSubjectHighlightView *)self setIsSelectAllActive:v6];
+    [(VKCImageSubjectHighlightView *)self setIsSelectAllActive:isSelectAllActive];
   }
 }
 
-- (void)highlightSubjectAtIndexSet:(id)a3 showCallout:(BOOL)a4 showBurst:(BOOL)a5 burstPoint:(CGPoint)a6 animated:(BOOL)a7
+- (void)highlightSubjectAtIndexSet:(id)set showCallout:(BOOL)callout showBurst:(BOOL)burst burstPoint:(CGPoint)point animated:(BOOL)animated
 {
-  v7 = a7;
-  y = a6.y;
-  x = a6.x;
-  v10 = a5;
-  v11 = a4;
-  v18 = a3;
-  if (v18)
+  animatedCopy = animated;
+  y = point.y;
+  x = point.x;
+  burstCopy = burst;
+  calloutCopy = callout;
+  setCopy = set;
+  if (setCopy)
   {
-    v13 = [(VKCImageSubjectBaseView *)self subjectContext];
-    v14 = [(VKCImageSubjectBaseView *)self activeSubjectIndexSet];
-    v15 = [v13 subjectIndexes:v18 equivalentToIndexes:v14];
+    subjectContext = [(VKCImageSubjectBaseView *)self subjectContext];
+    activeSubjectIndexSet = [(VKCImageSubjectBaseView *)self activeSubjectIndexSet];
+    v15 = [subjectContext subjectIndexes:setCopy equivalentToIndexes:activeSubjectIndexSet];
 
     [MEMORY[0x1E6979518] begin];
     [MEMORY[0x1E6979518] setDisableActions:1];
     if ((v15 & 1) == 0)
     {
-      [(VKCImageSubjectBaseView *)self setActiveSubjectIndexSet:v18 animated:v7];
+      [(VKCImageSubjectBaseView *)self setActiveSubjectIndexSet:setCopy animated:animatedCopy];
     }
 
     [MEMORY[0x1E6979518] commit];
-    if (v11)
+    if (calloutCopy)
     {
-      if (v10 || !-[VKCImageSubjectBaseView glowLayerActive](self, "glowLayerActive") || ([MEMORY[0x1E69DCC68] sharedMenuController], v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "isMenuVisible"), v16, (v15 & v17 & 1) == 0))
+      if (burstCopy || !-[VKCImageSubjectBaseView glowLayerActive](self, "glowLayerActive") || ([MEMORY[0x1E69DCC68] sharedMenuController], v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "isMenuVisible"), v16, (v15 & v17 & 1) == 0))
       {
-        [(VKCImageSubjectHighlightView *)self showCalloutMenuAtLocation:1 checkDelegate:v10 showPulse:x, y];
+        [(VKCImageSubjectHighlightView *)self showCalloutMenuAtLocation:1 checkDelegate:burstCopy showPulse:x, y];
       }
     }
 
     else
     {
-      [(VKCImageSubjectHighlightView *)self _configureGlowWithShowBurst:v10 burstPoint:x, y];
+      [(VKCImageSubjectHighlightView *)self _configureGlowWithShowBurst:burstCopy burstPoint:x, y];
     }
   }
 
@@ -1553,27 +1553,27 @@ LABEL_8:
   {
     [(VKCImageSubjectHighlightView *)self hideCalloutMenuIfNecessary];
     [(VKCImageSubjectHighlightView *)self setGlowLayerActive:0];
-    [(VKCImageSubjectHighlightView *)self setSubjectHighlightState:0 animated:v7];
+    [(VKCImageSubjectHighlightView *)self setSubjectHighlightState:0 animated:animatedCopy];
   }
 }
 
-- (void)showCalloutMenuAtLocation:(CGPoint)a3 checkDelegate:(BOOL)a4 showPulse:(BOOL)a5
+- (void)showCalloutMenuAtLocation:(CGPoint)location checkDelegate:(BOOL)delegate showPulse:(BOOL)pulse
 {
-  v5 = a5;
-  y = a3.y;
-  x = a3.x;
-  if (!a4)
+  pulseCopy = pulse;
+  y = location.y;
+  x = location.x;
+  if (!delegate)
   {
     goto LABEL_4;
   }
 
-  v9 = [(VKCImageSubjectHighlightView *)self delegate];
-  v10 = [v9 subjectHighlightView:self shouldBeginInteractionAtPoint:1 withType:{x, y}];
+  delegate = [(VKCImageSubjectHighlightView *)self delegate];
+  v10 = [delegate subjectHighlightView:self shouldBeginInteractionAtPoint:1 withType:{x, y}];
 
   if (v10)
   {
-    v11 = [(VKCImageSubjectHighlightView *)self delegate];
-    [v11 subjectHighlightView:self willBeginInteractionAtPoint:1 withType:{x, y}];
+    delegate2 = [(VKCImageSubjectHighlightView *)self delegate];
+    [delegate2 subjectHighlightView:self willBeginInteractionAtPoint:1 withType:{x, y}];
 
 LABEL_4:
     [(VKCImageSubjectHighlightView *)self becomeFirstResponder];
@@ -1582,58 +1582,58 @@ LABEL_4:
     v15 = v14;
     v17 = v16;
     v19 = v18;
-    v21 = [MEMORY[0x1E69DCC68] sharedMenuController];
-    [(VKCImageSubjectHighlightView *)self _configureGlowWithShowBurst:v5 burstPoint:x, y];
-    [v21 showMenuFromView:self rect:{v13, v15, v17, v19}];
+    mEMORY[0x1E69DCC68] = [MEMORY[0x1E69DCC68] sharedMenuController];
+    [(VKCImageSubjectHighlightView *)self _configureGlowWithShowBurst:pulseCopy burstPoint:x, y];
+    [mEMORY[0x1E69DCC68] showMenuFromView:self rect:{v13, v15, v17, v19}];
     v20 = [MEMORY[0x1E695DF00] now];
     [(VKCImageSubjectHighlightView *)self setCalloutStartTime:v20];
 
     goto LABEL_6;
   }
 
-  v21 = objc_alloc_init(MEMORY[0x1E69DCCF0]);
-  [v21 notificationOccurred:1];
+  mEMORY[0x1E69DCC68] = objc_alloc_init(MEMORY[0x1E69DCCF0]);
+  [mEMORY[0x1E69DCC68] notificationOccurred:1];
   [(VKCImageSubjectHighlightView *)self setSubjectHighlightState:0];
   [(VKCImageSubjectHighlightView *)self setGlowLayerActive:0];
   [(VKCImageSubjectHighlightView *)self hideCalloutMenuIfNecessary];
 LABEL_6:
 }
 
-- (void)_configureGlowWithShowBurst:(BOOL)a3 burstPoint:(CGPoint)a4
+- (void)_configureGlowWithShowBurst:(BOOL)burst burstPoint:(CGPoint)point
 {
-  v4 = a3;
-  if (a3)
+  burstCopy = burst;
+  if (burst)
   {
-    v6 = [MEMORY[0x1E696B098] vk_valueWithPoint:{a4.x, a4.y}];
+    v6 = [MEMORY[0x1E696B098] vk_valueWithPoint:{point.x, point.y}];
     [(VKCImageSubjectBaseView *)self setBurstPoint:v6];
   }
 
   else
   {
-    [(VKCImageSubjectBaseView *)self setBurstPoint:0, a4.x, a4.y];
+    [(VKCImageSubjectBaseView *)self setBurstPoint:0, point.x, point.y];
   }
 
-  v7 = [(VKCImageSubjectHighlightView *)self subjectViewUserInteractionDisabled];
-  v8 = [(VKCImageSubjectHighlightView *)self tapGR];
-  [v8 setEnabled:!v7];
+  subjectViewUserInteractionDisabled = [(VKCImageSubjectHighlightView *)self subjectViewUserInteractionDisabled];
+  tapGR = [(VKCImageSubjectHighlightView *)self tapGR];
+  [tapGR setEnabled:!subjectViewUserInteractionDisabled];
 
-  v9 = [(VKCImageSubjectHighlightView *)self dragInteraction];
-  [v9 _cancelLift];
+  dragInteraction = [(VKCImageSubjectHighlightView *)self dragInteraction];
+  [dragInteraction _cancelLift];
 
-  v10 = [(VKCImageSubjectHighlightView *)self livePhotoPlayGR];
-  [v10 setEnabled:0];
+  livePhotoPlayGR = [(VKCImageSubjectHighlightView *)self livePhotoPlayGR];
+  [livePhotoPlayGR setEnabled:0];
 
-  v11 = [(VKCImageSubjectBaseView *)self subjectContext];
-  v12 = [(VKCImageSubjectBaseView *)self activeSubjectIndexSet];
-  v13 = [(VKCImageSubjectBaseView *)self activeGlowLayerIndexSet];
-  v14 = [v11 subjectIndexes:v12 equivalentToIndexes:v13];
+  subjectContext = [(VKCImageSubjectBaseView *)self subjectContext];
+  activeSubjectIndexSet = [(VKCImageSubjectBaseView *)self activeSubjectIndexSet];
+  activeGlowLayerIndexSet = [(VKCImageSubjectBaseView *)self activeGlowLayerIndexSet];
+  v14 = [subjectContext subjectIndexes:activeSubjectIndexSet equivalentToIndexes:activeGlowLayerIndexSet];
 
   if ((v14 & 1) == 0)
   {
     if ([(VKCImageSubjectBaseView *)self glowLayerActive])
     {
-      v15 = [(VKCImageSubjectBaseView *)self activeSubjectIndexSet];
-      if (v15)
+      activeSubjectIndexSet2 = [(VKCImageSubjectBaseView *)self activeSubjectIndexSet];
+      if (activeSubjectIndexSet2)
       {
 
 LABEL_11:
@@ -1646,17 +1646,17 @@ LABEL_11:
         goto LABEL_11;
       }
 
-      v16 = self;
+      selfCopy2 = self;
       v17 = 0;
     }
 
     else
     {
-      v16 = self;
+      selfCopy2 = self;
       v17 = 1;
     }
 
-    [(VKCImageSubjectHighlightView *)v16 setGlowLayerActive:v17];
+    [(VKCImageSubjectHighlightView *)selfCopy2 setGlowLayerActive:v17];
   }
 
 LABEL_12:
@@ -1666,7 +1666,7 @@ LABEL_12:
   }
 
   [(VKCImageSubjectHighlightView *)self setSubjectHighlightState:15 animated:1];
-  if (v4)
+  if (burstCopy)
   {
     [(UIView *)self vk_viewPointRatioFromWindow];
 
@@ -1674,9 +1674,9 @@ LABEL_12:
   }
 }
 
-- (void)_shareHeics:(id)a3
+- (void)_shareHeics:(id)heics
 {
-  v4 = a3;
+  heicsCopy = heics;
   objc_initWeak(&location, self);
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
@@ -1694,9 +1694,9 @@ void __44__VKCImageSubjectHighlightView__shareHeics___block_invoke(uint64_t a1)
   [WeakRetained _tempGenerateStickerFromLivePhotoIfNecessaryWithProgress:0];
 }
 
-- (void)_addSticker:(id)a3
+- (void)_addSticker:(id)sticker
 {
-  v4 = a3;
+  stickerCopy = sticker;
   objc_initWeak(&location, self);
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
@@ -1783,11 +1783,11 @@ void __43__VKCImageSubjectHighlightView__addSticker__block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)_selectAllSubjects:(id)a3
+- (void)_selectAllSubjects:(id)subjects
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E696AC90] indexSet];
-  [(VKCImageSubjectBaseView *)self setActiveSubjectIndexSet:v5];
+  subjectsCopy = subjects;
+  indexSet = [MEMORY[0x1E696AC90] indexSet];
+  [(VKCImageSubjectBaseView *)self setActiveSubjectIndexSet:indexSet];
 
   [(VKCImageSubjectHighlightView *)self hideCalloutMenuIfNecessary];
   [(VKCImageSubjectHighlightView *)self setIsSelectAllActive:1];
@@ -1824,54 +1824,54 @@ void __51__VKCImageSubjectHighlightView__selectAllSubjects___block_invoke(uint64
   v9 = objc_alloc_init(MEMORY[0x1E69DD758]);
   [(VKCImageSubjectHighlightView *)self setStickerPickerViewController:v9];
 
-  v10 = [(VKCImageSubjectHighlightView *)self stickerPickerViewController];
-  [v10 setSourceView:self];
+  stickerPickerViewController = [(VKCImageSubjectHighlightView *)self stickerPickerViewController];
+  [stickerPickerViewController setSourceView:self];
 
   v12 = VKMRectWithOriginAndSize(v11, v7, v8, 40.0, 40.0);
   v14 = v13;
   v16 = v15;
   v18 = v17;
-  v19 = [(VKCImageSubjectHighlightView *)self stickerPickerViewController];
-  [v19 setSourceRect:{v12, v14, v16, v18}];
+  stickerPickerViewController2 = [(VKCImageSubjectHighlightView *)self stickerPickerViewController];
+  [stickerPickerViewController2 setSourceRect:{v12, v14, v16, v18}];
 
-  v20 = [(VKCImageSubjectHighlightView *)self stickerPickerViewController];
-  [v20 setDelegate:self];
+  stickerPickerViewController3 = [(VKCImageSubjectHighlightView *)self stickerPickerViewController];
+  [stickerPickerViewController3 setDelegate:self];
 
-  v21 = [(VKCImageSubjectHighlightView *)self traitCollection];
-  v22 = [v21 userInterfaceStyle];
-  v23 = [(VKCImageSubjectHighlightView *)self stickerPickerViewController];
-  [v23 setOverrideUserInterfaceStyle:v22];
+  traitCollection = [(VKCImageSubjectHighlightView *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
+  stickerPickerViewController4 = [(VKCImageSubjectHighlightView *)self stickerPickerViewController];
+  [stickerPickerViewController4 setOverrideUserInterfaceStyle:userInterfaceStyle];
 
-  v24 = [(VKCImageSubjectHighlightView *)self delegate];
-  v25 = [v24 presentingViewControllerForSubjectHighlightView:self];
+  delegate = [(VKCImageSubjectHighlightView *)self delegate];
+  v25 = [delegate presentingViewControllerForSubjectHighlightView:self];
   v26 = v25;
   if (v25)
   {
-    v29 = v25;
+    rootViewController = v25;
   }
 
   else
   {
-    v27 = [(VKCImageSubjectHighlightView *)self window];
-    v29 = [v27 rootViewController];
+    window = [(VKCImageSubjectHighlightView *)self window];
+    rootViewController = [window rootViewController];
   }
 
-  v28 = [(VKCImageSubjectHighlightView *)self stickerPickerViewController];
-  [v29 presentViewController:v28 animated:0 completion:0];
+  stickerPickerViewController5 = [(VKCImageSubjectHighlightView *)self stickerPickerViewController];
+  [rootViewController presentViewController:stickerPickerViewController5 animated:0 completion:0];
 }
 
 - (void)_dismissCard
 {
-  v2 = [(VKCImageSubjectHighlightView *)self stickerPickerViewController];
-  [v2 dismissCard];
+  stickerPickerViewController = [(VKCImageSubjectHighlightView *)self stickerPickerViewController];
+  [stickerPickerViewController dismissCard];
 }
 
-- (void)didTap:(id)a3
+- (void)didTap:(id)tap
 {
-  v4 = a3;
+  tapCopy = tap;
   if ([(VKCImageSubjectHighlightView *)self tapToSelectModeEnabled])
   {
-    [v4 locationInView:self];
+    [tapCopy locationInView:self];
     v6 = v5;
     v8 = v7;
 
@@ -1880,9 +1880,9 @@ void __51__VKCImageSubjectHighlightView__selectAllSubjects___block_invoke(uint64
 
   else
   {
-    v9 = [v4 state];
+    state = [tapCopy state];
 
-    if (v9 == 3)
+    if (state == 3)
     {
 
       [(VKCImageSubjectHighlightView *)self hideCalloutMenuIfNecessary];
@@ -1890,10 +1890,10 @@ void __51__VKCImageSubjectHighlightView__selectAllSubjects___block_invoke(uint64
   }
 }
 
-- (void)selectAndShowCalloutForTapToSelectModeAtPoint:(CGPoint)a3
+- (void)selectAndShowCalloutForTapToSelectModeAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v6 = [(VKCImageSubjectBaseView *)self indexOfSubjectAtPoint:?];
   v14 = v6;
   if (v6)
@@ -1906,15 +1906,15 @@ void __51__VKCImageSubjectHighlightView__selectAllSubjects___block_invoke(uint64
     [MEMORY[0x1E696AC90] indexSet];
   }
   v7 = ;
-  v8 = [(VKCImageSubjectBaseView *)self subjectContext];
-  v9 = [(VKCImageSubjectBaseView *)self activeSubjectIndexSet];
-  v10 = [v8 subjectIndexes:v7 equivalentToIndexes:v9];
+  subjectContext = [(VKCImageSubjectBaseView *)self subjectContext];
+  activeSubjectIndexSet = [(VKCImageSubjectBaseView *)self activeSubjectIndexSet];
+  v10 = [subjectContext subjectIndexes:v7 equivalentToIndexes:activeSubjectIndexSet];
 
   [(VKCImageSubjectHighlightView *)self highlightSubjectAtIndexSet:v7 showCallout:v14 != 0 showBurst:0 burstPoint:1 animated:x, y];
   if (v14)
   {
-    v11 = [MEMORY[0x1E69DCC68] sharedMenuController];
-    [v11 update];
+    mEMORY[0x1E69DCC68] = [MEMORY[0x1E69DCC68] sharedMenuController];
+    [mEMORY[0x1E69DCC68] update];
 LABEL_6:
 
     goto LABEL_10;
@@ -1922,13 +1922,13 @@ LABEL_6:
 
   if ((v10 & 1) == 0)
   {
-    v12 = [MEMORY[0x1E69DCC68] sharedMenuController];
-    v13 = [v12 isMenuVisible];
+    mEMORY[0x1E69DCC68]2 = [MEMORY[0x1E69DCC68] sharedMenuController];
+    isMenuVisible = [mEMORY[0x1E69DCC68]2 isMenuVisible];
 
-    if (v13)
+    if (isMenuVisible)
     {
-      v11 = [MEMORY[0x1E69DCC68] sharedMenuController];
-      [v11 hideMenu];
+      mEMORY[0x1E69DCC68] = [MEMORY[0x1E69DCC68] sharedMenuController];
+      [mEMORY[0x1E69DCC68] hideMenu];
       goto LABEL_6;
     }
   }
@@ -1936,30 +1936,30 @@ LABEL_6:
 LABEL_10:
 }
 
-- (void)menuControllerWillHide:(id)a3
+- (void)menuControllerWillHide:(id)hide
 {
-  v4 = a3;
+  hideCopy = hide;
   v5 = objc_opt_class();
-  v6 = [v4 object];
+  object = [hideCopy object];
 
-  v18 = VKDynamicCast(v5, v6);
+  v18 = VKDynamicCast(v5, object);
 
-  v7 = [(VKCImageSubjectHighlightView *)self subjectViewUserInteractionDisabled];
-  v8 = [v18 _targetView];
-  v9 = v8;
-  if (v8 == self)
+  subjectViewUserInteractionDisabled = [(VKCImageSubjectHighlightView *)self subjectViewUserInteractionDisabled];
+  _targetView = [v18 _targetView];
+  v9 = _targetView;
+  if (_targetView == self)
   {
-    v10 = [(VKCImageSubjectHighlightView *)self tapToSelectModeEnabled];
+    tapToSelectModeEnabled = [(VKCImageSubjectHighlightView *)self tapToSelectModeEnabled];
 
-    if (!v10)
+    if (!tapToSelectModeEnabled)
     {
-      v11 = [(VKCImageSubjectHighlightView *)self dragInteraction];
-      v12 = [v11 _isActive];
+      dragInteraction = [(VKCImageSubjectHighlightView *)self dragInteraction];
+      _isActive = [dragInteraction _isActive];
 
-      if (v12)
+      if (_isActive)
       {
-        v13 = [(VKCImageSubjectHighlightView *)self dragInteraction];
-        [v13 _cancelLift];
+        dragInteraction2 = [(VKCImageSubjectHighlightView *)self dragInteraction];
+        [dragInteraction2 _cancelLift];
       }
 
       else if (![(VKCImageSubjectHighlightView *)self isHidingMenuController])
@@ -1970,16 +1970,16 @@ LABEL_10:
         [(VKCImageSubjectHighlightView *)self setIsHidingMenuController:0];
       }
 
-      v14 = [(VKCImageSubjectHighlightView *)self tapGR];
-      [v14 setEnabled:0];
+      tapGR = [(VKCImageSubjectHighlightView *)self tapGR];
+      [tapGR setEnabled:0];
 
-      v15 = !v7;
-      v16 = [(VKCImageSubjectHighlightView *)self dragInteraction];
-      [v16 setEnabled:v15];
+      v15 = !subjectViewUserInteractionDisabled;
+      dragInteraction3 = [(VKCImageSubjectHighlightView *)self dragInteraction];
+      [dragInteraction3 setEnabled:v15];
 
-      LODWORD(v16) = [(VKCImageSubjectHighlightView *)self isLivePhoto];
-      v17 = [(VKCImageSubjectHighlightView *)self livePhotoPlayGR];
-      [v17 setEnabled:v16 & v15];
+      LODWORD(dragInteraction3) = [(VKCImageSubjectHighlightView *)self isLivePhoto];
+      livePhotoPlayGR = [(VKCImageSubjectHighlightView *)self livePhotoPlayGR];
+      [livePhotoPlayGR setEnabled:dragInteraction3 & v15];
 
       [(VKCImageSubjectHighlightView *)self setGlowLayerActive:0];
       [(VKCImageSubjectHighlightView *)self setIsSelectAllActive:0];
@@ -1991,15 +1991,15 @@ LABEL_10:
   }
 }
 
-- (void)_tempGenerateStickerFromLivePhotoIfNecessaryWithProgress:(id)a3
+- (void)_tempGenerateStickerFromLivePhotoIfNecessaryWithProgress:(id)progress
 {
-  v4 = a3;
+  progressCopy = progress;
   if ([(VKCImageSubjectHighlightView *)self isLivePhoto])
   {
     v5 = [VKCRemoveBackgroundVideoRequest alloc];
-    v6 = [(VKCImageSubjectBaseView *)self analysisResult];
-    v7 = [v6 request];
-    v8 = [(VKCRemoveBackgroundVideoRequest *)v5 initWithPhotosAnalyzerRequest:v7];
+    analysisResult = [(VKCImageSubjectBaseView *)self analysisResult];
+    request = [analysisResult request];
+    v8 = [(VKCRemoveBackgroundVideoRequest *)v5 initWithPhotosAnalyzerRequest:request];
 
     v9 = +[VKImageDataRequirements stickerRequirements];
     v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v9, "maxLength")}];
@@ -2011,11 +2011,11 @@ LABEL_10:
     v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v9, "maxDataLength")}];
     [(VKCRemoveBackgroundVideoRequest *)v8 setMaxFileSize:v12];
 
-    v13 = [(VKCImageSubjectBaseView *)self burstPoint];
-    v14 = v13;
-    if (v13)
+    burstPoint = [(VKCImageSubjectBaseView *)self burstPoint];
+    v14 = burstPoint;
+    if (burstPoint)
     {
-      [v13 pointValue];
+      [burstPoint pointValue];
       [(VKCImageBaseOverlayView *)self normalizedPointFromViewPoint:?];
       VKMFlipPoint();
       v22[0] = v15;
@@ -2032,7 +2032,7 @@ LABEL_10:
     v19[3] = &unk_1E7BE5300;
     objc_copyWeak(&v20, &location);
     v19[4] = self;
-    [(VKCRemoveBackgroundVideoRequestHandler *)v18 performRequest:v8 previewResultAvailable:0 progress:v4 completion:v19];
+    [(VKCRemoveBackgroundVideoRequestHandler *)v18 performRequest:v8 previewResultAvailable:0 progress:progressCopy completion:v19];
     objc_destroyWeak(&v20);
     objc_destroyWeak(&location);
   }
@@ -2129,13 +2129,13 @@ void __89__VKCImageSubjectHighlightView__tempGenerateStickerFromLivePhotoIfNeces
   }
 }
 
-- (void)showSharingPaneForURL:(id)a3 sourceRect:(CGRect)a4
+- (void)showSharingPaneForURL:(id)l sourceRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = a3;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  lCopy = l;
   objc_initWeak(&location, self);
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
@@ -2143,7 +2143,7 @@ void __89__VKCImageSubjectHighlightView__tempGenerateStickerFromLivePhotoIfNeces
   v11[3] = &unk_1E7BE5328;
   objc_copyWeak(v13, &location);
   v11[4] = self;
-  v10 = v9;
+  v10 = lCopy;
   v12 = v10;
   v13[1] = *&x;
   v13[2] = *&y;
@@ -2210,20 +2210,20 @@ LABEL_6:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v11 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B4335000, v3, OS_LOG_TYPE_DEFAULT, "Activating Subject share from callout menu: %@", buf, 0xCu);
   }
 
-  v4 = [(VKCImageBaseOverlayView *)self recognitionResult];
+  recognitionResult = [(VKCImageBaseOverlayView *)self recognitionResult];
   objc_initWeak(buf, self);
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __38__VKCImageSubjectHighlightView__share__block_invoke;
   v6[3] = &unk_1E7BE5350;
   objc_copyWeak(&v9, buf);
-  v5 = v4;
+  v5 = recognitionResult;
   v7 = v5;
-  v8 = self;
+  selfCopy2 = self;
   [(VKCImageSubjectBaseView *)self loadImageSubjectIfNecessaryWithCompletion:v6];
 
   objc_destroyWeak(&v9);
@@ -2287,29 +2287,29 @@ void __38__VKCImageSubjectHighlightView__share__block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)_define:(id)a3
+- (void)_define:(id)_define
 {
   v11 = *MEMORY[0x1E69E9840];
   v4 = os_log_create("com.apple.VisionKit", "com.apple.VisionKit.visualSearch");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412290;
-    v10 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B4335000, v4, OS_LOG_TYPE_DEFAULT, "Activating Subject LookUp from callout menu: %@", &v9, 0xCu);
   }
 
-  v5 = [(VKCImageSubjectBaseView *)self subjectContext];
-  v6 = [(VKCImageSubjectBaseView *)self activeSubjectIndexSet];
+  subjectContext = [(VKCImageSubjectBaseView *)self subjectContext];
+  activeSubjectIndexSet = [(VKCImageSubjectBaseView *)self activeSubjectIndexSet];
   [(VKCImageBaseOverlayView *)self contentsRect];
-  v7 = [v5 normalizedPathForSubjectWithIndexSet:v6 contentsRect:1 topLevelOnly:?];
+  v7 = [subjectContext normalizedPathForSubjectWithIndexSet:activeSubjectIndexSet contentsRect:1 topLevelOnly:?];
 
-  v8 = [(VKCImageSubjectHighlightView *)self delegate];
-  [v8 subjectHighlightView:self activateVSItemForNormalizedPath:v7];
+  delegate = [(VKCImageSubjectHighlightView *)self delegate];
+  [delegate subjectHighlightView:self activateVSItemForNormalizedPath:v7];
 }
 
-- (void)_share:(id)a3
+- (void)_share:(id)_share
 {
-  v4 = a3;
+  _shareCopy = _share;
   objc_initWeak(&location, self);
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
@@ -2359,24 +2359,24 @@ void __39__VKCImageSubjectHighlightView__share___block_invoke_3(uint64_t a1)
   [WeakRetained _share];
 }
 
-- (void)copy:(id)a3
+- (void)copy:(id)copy
 {
   v11 = *MEMORY[0x1E69E9840];
   v4 = os_log_create("com.apple.VisionKit", "com.apple.VisionKit.RemoveBackground");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v10 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B4335000, v4, OS_LOG_TYPE_DEFAULT, "Subject copy: %@", buf, 0xCu);
   }
 
-  v5 = [(VKCImageSubjectHighlightView *)self createItemProvider];
-  if (v5)
+  createItemProvider = [(VKCImageSubjectHighlightView *)self createItemProvider];
+  if (createItemProvider)
   {
-    v6 = [MEMORY[0x1E69DCD50] generalPasteboard];
-    v8 = v5;
+    generalPasteboard = [MEMORY[0x1E69DCD50] generalPasteboard];
+    v8 = createItemProvider;
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v8 count:1];
-    [v6 setItemProviders:v7];
+    [generalPasteboard setItemProviders:v7];
 
     [(VKCImageSubjectBaseView *)self sendSubjectAnalyticsEventWithEventType:2 interactionType:1 subjectFound:1 processingDuration:0.0];
   }
@@ -2385,26 +2385,26 @@ void __39__VKCImageSubjectHighlightView__share___block_invoke_3(uint64_t a1)
 - (id)createItemProvider
 {
   objc_initWeak(&location, self);
-  v3 = [(VKCImageSubjectBaseView *)self analysisResult];
+  analysisResult = [(VKCImageSubjectBaseView *)self analysisResult];
   v4 = +[VKCInternalSettings addSubjectCropRectToPasteboard];
   v5 = objc_alloc_init(MEMORY[0x1E696ACA0]);
-  v6 = [(VKCImageSubjectBaseView *)self subjectContext];
+  subjectContext = [(VKCImageSubjectBaseView *)self subjectContext];
   v7 = objc_opt_class();
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __50__VKCImageSubjectHighlightView_createItemProvider__block_invoke;
   v24[3] = &unk_1E7BE53C8;
   objc_copyWeak(&v27, &location);
-  v8 = v3;
+  v8 = analysisResult;
   v25 = v8;
-  v9 = v6;
+  v9 = subjectContext;
   v26 = v9;
   [v5 registerObjectOfClass:v7 visibility:0 loadHandler:v24];
   if (v4)
   {
-    v10 = [(VKCImageSubjectBaseView *)self subjectContext];
+    subjectContext2 = [(VKCImageSubjectBaseView *)self subjectContext];
     [(VKCImageBaseOverlayView *)self contentsRect];
-    v11 = [v10 normalizedPathForActiveSubjectsWithContentsRect:0 topLevelOnly:?];
+    v11 = [subjectContext2 normalizedPathForActiveSubjectsWithContentsRect:0 topLevelOnly:?];
     [v11 bounds];
     v13 = v12;
     v15 = v14;
@@ -2510,14 +2510,14 @@ void __50__VKCImageSubjectHighlightView_createItemProvider__block_invoke_5(uint6
   (*(v1 + 16))(v1, v2, 0);
 }
 
-- (CGRect)subjectBoundsClippedToVisibleRectWithShouldInsetForCallout:(BOOL)a3
+- (CGRect)subjectBoundsClippedToVisibleRectWithShouldInsetForCallout:(BOOL)callout
 {
-  v3 = a3;
+  calloutCopy = callout;
   [(VKCImageBaseOverlayView *)self normalizedVisibleRect];
   [(VKCImageBaseOverlayView *)self viewRectFromNormalizedRect:?];
   v9 = v8;
   v10 = v7 > 88.0;
-  if (v10 && v3)
+  if (v10 && calloutCopy)
   {
     v11 = v7 + -44.0;
   }
@@ -2527,7 +2527,7 @@ void __50__VKCImageSubjectHighlightView_createItemProvider__block_invoke_5(uint6
     v11 = v7;
   }
 
-  if (v10 && v3)
+  if (v10 && calloutCopy)
   {
     v12 = v6 + 0.0;
   }
@@ -2537,7 +2537,7 @@ void __50__VKCImageSubjectHighlightView_createItemProvider__block_invoke_5(uint6
     v12 = v6;
   }
 
-  if (v10 && v3)
+  if (v10 && calloutCopy)
   {
     v13 = v5 + 0.0;
   }
@@ -2547,8 +2547,8 @@ void __50__VKCImageSubjectHighlightView_createItemProvider__block_invoke_5(uint6
     v13 = v5;
   }
 
-  v14 = [(VKCImageSubjectBaseView *)self subjectPathInBoundsCoordinates];
-  [v14 bounds];
+  subjectPathInBoundsCoordinates = [(VKCImageSubjectBaseView *)self subjectPathInBoundsCoordinates];
+  [subjectPathInBoundsCoordinates bounds];
   v16 = v15;
   v18 = v17;
   v20 = v19;
@@ -2593,24 +2593,24 @@ void __50__VKCImageSubjectHighlightView_createItemProvider__block_invoke_5(uint6
   return result;
 }
 
-- (void)createStickerRepresentationsAtIndexSet:(id)a3 type:(unint64_t)a4 stickerIDs:(id)a5 progress:(id)a6 completion:(id)a7
+- (void)createStickerRepresentationsAtIndexSet:(id)set type:(unint64_t)type stickerIDs:(id)ds progress:(id)progress completion:(id)completion
 {
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
+  dsCopy = ds;
+  progressCopy = progress;
+  completionCopy = completion;
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __107__VKCImageSubjectHighlightView_createStickerRepresentationsAtIndexSet_type_stickerIDs_progress_completion___block_invoke;
   v18[3] = &unk_1E7BE54E0;
-  v21 = v14;
-  v22 = a4;
+  v21 = completionCopy;
+  typeCopy = type;
   v18[4] = self;
-  v19 = v12;
-  v20 = v13;
-  v15 = v14;
-  v16 = v13;
-  v17 = v12;
-  [(VKCImageSubjectBaseView *)self loadImageSubjectWithIndexes:a3 completion:v18];
+  v19 = dsCopy;
+  v20 = progressCopy;
+  v15 = completionCopy;
+  v16 = progressCopy;
+  v17 = dsCopy;
+  [(VKCImageSubjectBaseView *)self loadImageSubjectWithIndexes:set completion:v18];
 }
 
 void __107__VKCImageSubjectHighlightView_createStickerRepresentationsAtIndexSet_type_stickerIDs_progress_completion___block_invoke(uint64_t a1, void *a2)
@@ -2845,33 +2845,33 @@ void __107__VKCImageSubjectHighlightView_createStickerRepresentationsAtIndexSet_
   (*(*(a1 + 48) + 16))();
 }
 
-- (id)videoPreviewSubjectMatteAtCompositionTime:(id *)a3
+- (id)videoPreviewSubjectMatteAtCompositionTime:(id *)time
 {
-  v4 = [(VKCImageSubjectHighlightView *)self videoPreview];
-  v7 = *a3;
-  v5 = [v4 subjectMatteAtCompositionTime:&v7];
+  videoPreview = [(VKCImageSubjectHighlightView *)self videoPreview];
+  v7 = *time;
+  v5 = [videoPreview subjectMatteAtCompositionTime:&v7];
 
   return v5;
 }
 
-- (id)videoPreviewSubjectMatteForImage:(id)a3 atCompositionTime:(id *)a4
+- (id)videoPreviewSubjectMatteForImage:(id)image atCompositionTime:(id *)time
 {
-  v6 = a3;
-  v7 = [(VKCImageSubjectHighlightView *)self videoPreview];
-  v10 = *a4;
-  v8 = [v7 subjectMatteForImage:v6 atCompositionTime:&v10];
+  imageCopy = image;
+  videoPreview = [(VKCImageSubjectHighlightView *)self videoPreview];
+  v10 = *time;
+  v8 = [videoPreview subjectMatteForImage:imageCopy atCompositionTime:&v10];
 
   return v8;
 }
 
 - ($58EB755F713D70195D081A2438463C76)videoPreviewTimeRange
 {
-  v4 = [(VKCImageSubjectHighlightView *)self videoPreview];
-  if (v4)
+  videoPreview = [(VKCImageSubjectHighlightView *)self videoPreview];
+  if (videoPreview)
   {
-    v6 = v4;
-    [v4 timeRange];
-    v4 = v6;
+    v6 = videoPreview;
+    [videoPreview timeRange];
+    videoPreview = v6;
   }
 
   else
@@ -2886,8 +2886,8 @@ void __107__VKCImageSubjectHighlightView_createStickerRepresentationsAtIndexSet_
 
 - (CGRect)videoPreviewNormalizedCropRect
 {
-  v2 = [(VKCImageSubjectHighlightView *)self videoPreview];
-  [v2 normalizedCropRect];
+  videoPreview = [(VKCImageSubjectHighlightView *)self videoPreview];
+  [videoPreview normalizedCropRect];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -2918,11 +2918,11 @@ void __107__VKCImageSubjectHighlightView_createStickerRepresentationsAtIndexSet_
 {
   v20 = *MEMORY[0x1E69E9840];
   objc_initWeak(&location, self);
-  v3 = [(VKCImageSubjectHighlightView *)self isLivePhoto];
-  v4 = [(VKCImageSubjectBaseView *)self activeSubjectIndexSet];
-  v5 = [v4 copy];
+  isLivePhoto = [(VKCImageSubjectHighlightView *)self isLivePhoto];
+  activeSubjectIndexSet = [(VKCImageSubjectBaseView *)self activeSubjectIndexSet];
+  v5 = [activeSubjectIndexSet copy];
 
-  v6 = [(VKCImageSubjectHighlightView *)self stickerPickerViewController];
+  stickerPickerViewController = [(VKCImageSubjectHighlightView *)self stickerPickerViewController];
   v7 = objc_opt_respondsToSelector();
 
   v8 = v7 & 1;
@@ -2940,7 +2940,7 @@ void __107__VKCImageSubjectHighlightView_createStickerRepresentationsAtIndexSet_
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v19 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B4335000, v10, OS_LOG_TYPE_DEFAULT, "StickerPickerDidLoad: %@", buf, 0xCu);
   }
 
@@ -2951,7 +2951,7 @@ void __107__VKCImageSubjectHighlightView_createStickerRepresentationsAtIndexSet_
   objc_copyWeak(&v14, &location);
   v12[4] = self;
   v15 = v8;
-  v16 = v3;
+  v16 = isLivePhoto;
   v11 = v5;
   v13 = v11;
   [(VKCImageSubjectHighlightView *)self createStickerRepresentationsAtIndexSet:v11 type:v9 stickerIDs:MEMORY[0x1E695E0F0] progress:0 completion:v12];

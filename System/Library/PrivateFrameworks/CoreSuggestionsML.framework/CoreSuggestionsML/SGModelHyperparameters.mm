@@ -1,9 +1,9 @@
 @interface SGModelHyperparameters
-+ (unint64_t)strategyForString:(id)a3 modelTypeName:(id)a4;
-- (SGModelHyperparameters)initWithDictionary:(id)a3 modelTypeName:(id)a4;
++ (unint64_t)strategyForString:(id)string modelTypeName:(id)name;
+- (SGModelHyperparameters)initWithDictionary:(id)dictionary modelTypeName:(id)name;
 - (_NSRange)characterNGramRange;
 - (_NSRange)tokenNGramRange;
-- (id)sessionDescriptorForLanguage:(id)a3;
+- (id)sessionDescriptorForLanguage:(id)language;
 @end
 
 @implementation SGModelHyperparameters
@@ -26,23 +26,23 @@
   return result;
 }
 
-- (id)sessionDescriptorForLanguage:(id)a3
+- (id)sessionDescriptorForLanguage:(id)language
 {
   v4 = MEMORY[0x277CCACA8];
-  v5 = a3;
+  languageCopy = language;
   v6 = [v4 alloc];
   vectorNormalization = self->_vectorNormalization;
   v8 = [v6 initWithFormat:@"VL=%lu&CL=%lu&CH=%lu&TL=%lu&TH=%lu&SN=%lu&IDL=%lu&IDS=%lu&VN=%ld&FV=%@", self->_vectorLength, self->_characterNGramRange.location, self->_characterNGramRange.length + self->_characterNGramRange.location, self->_tokenNGramRange.location, self->_tokenNGramRange.length + self->_tokenNGramRange.location, self->_vectorizerStrategy, self->_idVectorLength, self->_extraIdOptions, vectorNormalization, self->_featuresVersion];
-  v9 = [MEMORY[0x277D41F68] descriptorForName:self->_featuresModelId version:v8 locale:v5];
+  v9 = [MEMORY[0x277D41F68] descriptorForName:self->_featuresModelId version:v8 locale:languageCopy];
 
   return v9;
 }
 
-- (SGModelHyperparameters)initWithDictionary:(id)a3 modelTypeName:(id)a4
+- (SGModelHyperparameters)initWithDictionary:(id)dictionary modelTypeName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
+  dictionaryCopy = dictionary;
+  nameCopy = name;
+  v8 = dictionaryCopy;
   v9 = v8;
   if (!v8)
   {
@@ -128,14 +128,14 @@
     }
 
     v17 = v16;
-    v18 = [v16 unsignedIntegerValue];
+    unsignedIntegerValue = [v16 unsignedIntegerValue];
     v19 = [v9 numberAssertedForKey:@"CHARACTER_N_GRAM_RANGE_N_LENGTH"];
     if (v19)
     {
       v20 = v19;
-      v21 = [v19 unsignedIntegerValue];
-      self->_characterNGramRange.location = v18;
-      self->_characterNGramRange.length = v21;
+      unsignedIntegerValue2 = [v19 unsignedIntegerValue];
+      self->_characterNGramRange.location = unsignedIntegerValue;
+      self->_characterNGramRange.length = unsignedIntegerValue2;
 
       v22 = [v9 numberAssertedForKey:@"TOKEN_N_GRAM_MINIMUM_N"];
       if (!v22)
@@ -152,24 +152,24 @@
       }
 
       v17 = v22;
-      v23 = [v22 unsignedIntegerValue];
+      unsignedIntegerValue3 = [v22 unsignedIntegerValue];
       v24 = [v9 numberAssertedForKey:@"TOKEN_N_GRAM_RANGE_N_LENGTH"];
       if (v24)
       {
         v25 = v24;
-        v26 = [v24 unsignedIntegerValue];
-        self->_tokenNGramRange.location = v23;
-        self->_tokenNGramRange.length = v26;
+        unsignedIntegerValue4 = [v24 unsignedIntegerValue];
+        self->_tokenNGramRange.location = unsignedIntegerValue3;
+        self->_tokenNGramRange.length = unsignedIntegerValue4;
 
         v27 = [v9 stringAssertedForKey:@"VECTORIZER_STRATEGY"];
-        self->_vectorizerStrategy = [SGModelHyperparameters strategyForString:v27 modelTypeName:v7];
+        self->_vectorizerStrategy = [SGModelHyperparameters strategyForString:v27 modelTypeName:nameCopy];
 
         v28 = [v9 numberAssertedForKey:@"ID_VECTOR_LENGTH"];
-        v29 = [v28 unsignedIntegerValue];
+        unsignedIntegerValue5 = [v28 unsignedIntegerValue];
         v30 = 200;
-        if (v29)
+        if (unsignedIntegerValue5)
         {
-          v30 = v29;
+          v30 = unsignedIntegerValue5;
         }
 
         self->_idVectorLength = v30;
@@ -178,9 +178,9 @@
         self->_extraIdOptions |= [v31 BOOLValue];
 
         v32 = [v9 numberAssertedForKey:@"ID_VECTOR_SHOULD_APPEND_SENTEND"];
-        v33 = [v32 BOOLValue];
+        bOOLValue = [v32 BOOLValue];
         v34 = 2;
-        if (!v33)
+        if (!bOOLValue)
         {
           v34 = 0;
         }
@@ -188,9 +188,9 @@
         self->_extraIdOptions |= v34;
 
         v35 = [v9 numberAssertedForKey:@"ID_VECTOR_SHOULD_APPEND_SENTSTART"];
-        v36 = [v35 BOOLValue];
+        bOOLValue2 = [v35 BOOLValue];
         v37 = 4;
-        if (!v36)
+        if (!bOOLValue2)
         {
           v37 = 0;
         }
@@ -240,7 +240,7 @@
                 }
 
 LABEL_51:
-                v40 = 0;
+                selfCopy = 0;
                 goto LABEL_52;
               }
 
@@ -315,21 +315,21 @@ LABEL_39:
 
 LABEL_23:
   self = self;
-  v40 = self;
+  selfCopy = self;
 LABEL_52:
 
-  return v40;
+  return selfCopy;
 }
 
-+ (unint64_t)strategyForString:(id)a3 modelTypeName:(id)a4
++ (unint64_t)strategyForString:(id)string modelTypeName:(id)name
 {
   v16 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 UTF8String];
-  if (v7)
+  stringCopy = string;
+  nameCopy = name;
+  uTF8String = [stringCopy UTF8String];
+  if (uTF8String)
   {
-    v8 = v7;
+    v8 = uTF8String;
     v9 = 0;
     while (strcmp(v8, off_278EB7388[v9]))
     {
@@ -341,7 +341,7 @@ LABEL_52:
         }
 
         v14 = 138412290;
-        v15 = v5;
+        v15 = stringCopy;
         v10 = MEMORY[0x277D86220];
         v11 = "Unknown strategy string %@ when initializing SGQuickResponsesConfig from plist.";
         goto LABEL_12;
@@ -349,17 +349,17 @@ LABEL_52:
     }
   }
 
-  else if ([v6 isEqualToString:@"quickResponsesBinaryLogisticMultiLabel"])
+  else if ([nameCopy isEqualToString:@"quickResponsesBinaryLogisticMultiLabel"])
   {
     v9 = 0;
   }
 
   else
   {
-    if (([v6 isEqualToString:@"quickResponsesEspressoClassifierMultiLabel"] & 1) == 0 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
+    if (([nameCopy isEqualToString:@"quickResponsesEspressoClassifierMultiLabel"] & 1) == 0 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
     {
       v14 = 138412290;
-      v15 = v6;
+      v15 = nameCopy;
       v10 = MEMORY[0x277D86220];
       v11 = "Unknown model type name %@ when initializing SGQuickResponsesConfig from plist.";
 LABEL_12:

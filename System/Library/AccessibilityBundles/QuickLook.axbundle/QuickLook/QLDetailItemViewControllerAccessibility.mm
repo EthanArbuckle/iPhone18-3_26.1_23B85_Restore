@@ -1,15 +1,15 @@
 @interface QLDetailItemViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation QLDetailItemViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"QLDetailItemViewController" hasInstanceMethod:@"_setActionButtonView:animated:actionButtonLabel:informationVisible:" withFullSignature:{"v", "@", "B", "@", "B", 0}];
-  [v3 validateClass:@"QLDetailItemViewController" hasInstanceVariable:@"_actionIconButton" withType:"UIButton"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"QLDetailItemViewController" hasInstanceMethod:@"_setActionButtonView:animated:actionButtonLabel:informationVisible:" withFullSignature:{"v", "@", "B", "@", "B", 0}];
+  [validationsCopy validateClass:@"QLDetailItemViewController" hasInstanceVariable:@"_actionIconButton" withType:"UIButton"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

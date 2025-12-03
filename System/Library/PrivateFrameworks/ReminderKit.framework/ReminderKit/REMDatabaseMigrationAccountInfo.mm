@@ -1,13 +1,13 @@
 @interface REMDatabaseMigrationAccountInfo
-- (REMDatabaseMigrationAccountInfo)initWithAccountType:(int64_t)a3 identifier:(id)a4 name:(id)a5;
+- (REMDatabaseMigrationAccountInfo)initWithAccountType:(int64_t)type identifier:(id)identifier name:(id)name;
 @end
 
 @implementation REMDatabaseMigrationAccountInfo
 
-- (REMDatabaseMigrationAccountInfo)initWithAccountType:(int64_t)a3 identifier:(id)a4 name:(id)a5
+- (REMDatabaseMigrationAccountInfo)initWithAccountType:(int64_t)type identifier:(id)identifier name:(id)name
 {
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  nameCopy = name;
   v15.receiver = self;
   v15.super_class = REMDatabaseMigrationAccountInfo;
   v11 = [(REMDatabaseMigrationAccountInfo *)&v15 init];
@@ -18,16 +18,16 @@ LABEL_7:
     goto LABEL_11;
   }
 
-  if (a3 && v9)
+  if (type && identifierCopy)
   {
-    if (!v10)
+    if (!nameCopy)
     {
-      v10 = NSStringFromREMAccountType(a3);
+      nameCopy = NSStringFromREMAccountType(type);
     }
 
-    objc_storeStrong(&v11->_identifier, a4);
-    objc_storeStrong(&v11->_name, v10);
-    v11->_type = a3;
+    objc_storeStrong(&v11->_identifier, identifier);
+    objc_storeStrong(&v11->_name, nameCopy);
+    v11->_type = type;
     goto LABEL_7;
   }
 

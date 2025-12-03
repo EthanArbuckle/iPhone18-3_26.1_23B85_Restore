@@ -1,24 +1,24 @@
 @interface PKContactFormatConfiguration
-- (PKContactFormatConfiguration)initWithCoder:(id)a3;
-- (PKContactFormatConfiguration)initWithDictionary:(id)a3;
+- (PKContactFormatConfiguration)initWithCoder:(id)coder;
+- (PKContactFormatConfiguration)initWithDictionary:(id)dictionary;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKContactFormatConfiguration
 
-- (PKContactFormatConfiguration)initWithDictionary:(id)a3
+- (PKContactFormatConfiguration)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v19.receiver = self;
   v19.super_class = PKContactFormatConfiguration;
   v5 = [(PKContactFormatConfiguration *)&v19 init];
   if (v5)
   {
-    v5->_checkFormatOfPhoneNumber = [v4 PKBoolForKey:@"checkFormatOfPhoneNumber"];
-    v5->_checkFormatOfEmailAddress = [v4 PKBoolForKey:@"checkFormatOfEmailAddress"];
+    v5->_checkFormatOfPhoneNumber = [dictionaryCopy PKBoolForKey:@"checkFormatOfPhoneNumber"];
+    v5->_checkFormatOfEmailAddress = [dictionaryCopy PKBoolForKey:@"checkFormatOfEmailAddress"];
     v6 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    v7 = [v4 PKDictionaryForKey:@"regionalAddressFormatConfigurations"];
+    v7 = [dictionaryCopy PKDictionaryForKey:@"regionalAddressFormatConfigurations"];
     v13 = MEMORY[0x1E69E9820];
     v14 = 3221225472;
     v15 = __51__PKContactFormatConfiguration_initWithDictionary___block_invoke;
@@ -98,33 +98,33 @@ void __51__PKContactFormatConfiguration_initWithDictionary___block_invoke(uint64
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   checkFormatOfPhoneNumber = self->_checkFormatOfPhoneNumber;
-  v5 = a3;
-  [v5 encodeBool:checkFormatOfPhoneNumber forKey:@"checkFormatOfPhoneNumber"];
-  [v5 encodeBool:self->_checkFormatOfEmailAddress forKey:@"checkFormatOfEmailAddress"];
-  [v5 encodeObject:self->_regionalAddressFormatConfigurations forKey:@"regionalAddressFormatConfigurations"];
+  coderCopy = coder;
+  [coderCopy encodeBool:checkFormatOfPhoneNumber forKey:@"checkFormatOfPhoneNumber"];
+  [coderCopy encodeBool:self->_checkFormatOfEmailAddress forKey:@"checkFormatOfEmailAddress"];
+  [coderCopy encodeObject:self->_regionalAddressFormatConfigurations forKey:@"regionalAddressFormatConfigurations"];
 }
 
-- (PKContactFormatConfiguration)initWithCoder:(id)a3
+- (PKContactFormatConfiguration)initWithCoder:(id)coder
 {
   v13[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = PKContactFormatConfiguration;
   v5 = [(PKContactFormatConfiguration *)&v12 init];
   if (v5)
   {
-    v5->_checkFormatOfPhoneNumber = [v4 decodeBoolForKey:@"checkFormatOfPhoneNumber"];
-    v5->_checkFormatOfEmailAddress = [v4 decodeBoolForKey:@"checkFormatOfEmailAddress"];
+    v5->_checkFormatOfPhoneNumber = [coderCopy decodeBoolForKey:@"checkFormatOfPhoneNumber"];
+    v5->_checkFormatOfEmailAddress = [coderCopy decodeBoolForKey:@"checkFormatOfEmailAddress"];
     v6 = objc_alloc(MEMORY[0x1E695DFD8]);
     v13[0] = objc_opt_class();
     v13[1] = objc_opt_class();
     v13[2] = objc_opt_class();
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:3];
     v8 = [v6 initWithArray:v7];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"regionalAddressFormatConfigurations"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"regionalAddressFormatConfigurations"];
     regionalAddressFormatConfigurations = v5->_regionalAddressFormatConfigurations;
     v5->_regionalAddressFormatConfigurations = v9;
   }

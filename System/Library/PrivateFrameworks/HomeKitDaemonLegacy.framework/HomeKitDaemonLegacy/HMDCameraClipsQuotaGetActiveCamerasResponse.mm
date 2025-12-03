@@ -1,25 +1,25 @@
 @interface HMDCameraClipsQuotaGetActiveCamerasResponse
-- (BOOL)isEqual:(id)a3;
-- (BOOL)readFrom:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)readFrom:(id)from;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (void)addZoneNames:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addZoneNames:(id)names;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HMDCameraClipsQuotaGetActiveCamerasResponse
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v15 = *MEMORY[0x277D85DE8];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = *(a3 + 1);
+  v4 = *(from + 1);
   v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
@@ -48,13 +48,13 @@
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
     zoneNames = self->_zoneNames;
-    if (zoneNames | v4[1])
+    if (zoneNames | equalCopy[1])
     {
       v6 = [(NSMutableArray *)zoneNames isEqual:?];
     }
@@ -73,10 +73,10 @@
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -97,7 +97,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v14 + 1) + 8 * v10) copyWithZone:{a3, v14}];
+        v11 = [*(*(&v14 + 1) + 8 * v10) copyWithZone:{zone, v14}];
         [v5 addZoneNames:v11];
 
         ++v10;
@@ -114,29 +114,29 @@
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if ([(HMDCameraClipsQuotaGetActiveCamerasResponse *)self zoneNamesCount])
   {
-    [v8 clearZoneNames];
-    v4 = [(HMDCameraClipsQuotaGetActiveCamerasResponse *)self zoneNamesCount];
-    if (v4)
+    [toCopy clearZoneNames];
+    zoneNamesCount = [(HMDCameraClipsQuotaGetActiveCamerasResponse *)self zoneNamesCount];
+    if (zoneNamesCount)
     {
-      v5 = v4;
+      v5 = zoneNamesCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(HMDCameraClipsQuotaGetActiveCamerasResponse *)self zoneNamesAtIndex:i];
-        [v8 addZoneNames:v7];
+        [toCopy addZoneNames:v7];
       }
     }
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -172,12 +172,12 @@
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)readFrom:(id)a3
+- (BOOL)readFrom:(id)from
 {
-  for (i = a3; ; i = a3)
+  for (i = from; ; i = from)
   {
-    v6 = [i position];
-    if (v6 >= [a3 length] || (objc_msgSend(a3, "hasError") & 1) != 0)
+    position = [i position];
+    if (position >= [from length] || (objc_msgSend(from, "hasError") & 1) != 0)
     {
       break;
     }
@@ -188,18 +188,18 @@
     while (1)
     {
       v18 = 0;
-      v10 = [a3 position] + 1;
-      if (v10 >= [a3 position] && (v11 = objc_msgSend(a3, "position") + 1, v11 <= objc_msgSend(a3, "length")))
+      v10 = [from position] + 1;
+      if (v10 >= [from position] && (v11 = objc_msgSend(from, "position") + 1, v11 <= objc_msgSend(from, "length")))
       {
-        v12 = [a3 data];
-        [v12 getBytes:&v18 range:{objc_msgSend(a3, "position"), 1}];
+        data = [from data];
+        [data getBytes:&v18 range:{objc_msgSend(from, "position"), 1}];
 
-        [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+        [from setPosition:{objc_msgSend(from, "position") + 1}];
       }
 
       else
       {
-        [a3 _setError];
+        [from _setError];
       }
 
       v9 |= (v18 & 0x7F) << v7;
@@ -216,9 +216,9 @@
       }
     }
 
-    v14 = [a3 hasError] ? 0 : v9;
+    v14 = [from hasError] ? 0 : v9;
 LABEL_16:
-    if (([a3 hasError] & 1) != 0 || (v14 & 7) == 4)
+    if (([from hasError] & 1) != 0 || (v14 & 7) == 4)
     {
       break;
     }
@@ -242,18 +242,18 @@ LABEL_16:
     }
   }
 
-  LOBYTE(v16) = [a3 hasError] ^ 1;
+  LOBYTE(v16) = [from hasError] ^ 1;
   return v16;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   zoneNames = self->_zoneNames;
   if (zoneNames)
   {
-    [v3 setObject:zoneNames forKey:@"zoneNames"];
+    [dictionary setObject:zoneNames forKey:@"zoneNames"];
   }
 
   return v4;
@@ -265,28 +265,28 @@ LABEL_16:
   v8.receiver = self;
   v8.super_class = HMDCameraClipsQuotaGetActiveCamerasResponse;
   v4 = [(HMDCameraClipsQuotaGetActiveCamerasResponse *)&v8 description];
-  v5 = [(HMDCameraClipsQuotaGetActiveCamerasResponse *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HMDCameraClipsQuotaGetActiveCamerasResponse *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)addZoneNames:(id)a3
+- (void)addZoneNames:(id)names
 {
-  v4 = a3;
+  namesCopy = names;
   zoneNames = self->_zoneNames;
-  v8 = v4;
+  v8 = namesCopy;
   if (!zoneNames)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_zoneNames;
     self->_zoneNames = v6;
 
-    v4 = v8;
+    namesCopy = v8;
     zoneNames = self->_zoneNames;
   }
 
-  [(NSMutableArray *)zoneNames addObject:v4];
+  [(NSMutableArray *)zoneNames addObject:namesCopy];
 }
 
 @end

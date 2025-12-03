@@ -1,8 +1,8 @@
 @interface RBCompoundAllDomainRestriction
-+ (id)domainRestrictionForDictionary:(id)a3 withError:(id *)a4;
-- (BOOL)allowsContext:(id)a3 withError:(id *)a4;
-- (BOOL)isEqual:(id)a3;
-- (id)_initWithRestrictions:(id)a3;
++ (id)domainRestrictionForDictionary:(id)dictionary withError:(id *)error;
+- (BOOL)allowsContext:(id)context withError:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (id)_initWithRestrictions:(id)restrictions;
 - (id)allEntitlements;
 - (id)description;
 - (id)dictionaryRepresentation;
@@ -10,32 +10,32 @@
 
 @implementation RBCompoundAllDomainRestriction
 
-- (id)_initWithRestrictions:(id)a3
+- (id)_initWithRestrictions:(id)restrictions
 {
-  v4 = a3;
+  restrictionsCopy = restrictions;
   v10.receiver = self;
   v10.super_class = RBCompoundAllDomainRestriction;
-  v5 = [(RBDomainRestriction *)&v10 _init];
-  if (v5)
+  _init = [(RBDomainRestriction *)&v10 _init];
+  if (_init)
   {
-    v6 = [v4 copy];
-    v7 = v5[1];
-    v5[1] = v6;
+    v6 = [restrictionsCopy copy];
+    v7 = _init[1];
+    _init[1] = v6;
 
-    v8 = v5;
+    v8 = _init;
   }
 
-  return v5;
+  return _init;
 }
 
-+ (id)domainRestrictionForDictionary:(id)a3 withError:(id *)a4
++ (id)domainRestrictionForDictionary:(id)dictionary withError:(id *)error
 {
   v28[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [v5 objectForKey:@"Restrictions"];
+  dictionaryCopy = dictionary;
+  v6 = [dictionaryCopy objectForKey:@"Restrictions"];
   if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v7 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
@@ -55,7 +55,7 @@
             objc_enumerationMutation(v8);
           }
 
-          v13 = [RBDomainRestriction domainRestrictionForDictionary:*(*(&v22 + 1) + 8 * i) withError:a4];
+          v13 = [RBDomainRestriction domainRestrictionForDictionary:*(*(&v22 + 1) + 8 * i) withError:error];
           if (!v13)
           {
 
@@ -64,7 +64,7 @@
           }
 
           v14 = v13;
-          [v7 addObject:v13];
+          [array addObject:v13];
         }
 
         v10 = [v8 countByEnumeratingWithState:&v22 objects:v26 count:16];
@@ -77,12 +77,12 @@
       }
     }
 
-    v15 = [[RBCompoundAllDomainRestriction alloc] _initWithRestrictions:v7];
+    v15 = [[RBCompoundAllDomainRestriction alloc] _initWithRestrictions:array];
   }
 
   else
   {
-    if (!a4)
+    if (!error)
     {
       v15 = 0;
       goto LABEL_17;
@@ -90,14 +90,14 @@
 
     v16 = MEMORY[0x277CCA9B8];
     v27 = *MEMORY[0x277CCA470];
-    v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"RBCompoundAllDomainRestriction doesn't specify restrictions: %@", v5];
-    v28[0] = v17;
+    dictionaryCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"RBCompoundAllDomainRestriction doesn't specify restrictions: %@", dictionaryCopy];
+    v28[0] = dictionaryCopy;
     v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v28 forKeys:&v27 count:1];
-    v7 = [v16 errorWithDomain:@"RBDomainAttributeManagerDataProviderErrorDomain" code:1 userInfo:v18];
+    array = [v16 errorWithDomain:@"RBDomainAttributeManagerDataProviderErrorDomain" code:1 userInfo:v18];
 
-    v19 = v7;
+    v19 = array;
     v15 = 0;
-    *a4 = v7;
+    *error = array;
   }
 
 LABEL_16:
@@ -131,8 +131,8 @@ LABEL_17:
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v13 + 1) + 8 * i) dictionaryRepresentation];
-        [v3 addObject:v9];
+        dictionaryRepresentation = [*(*(&v13 + 1) + 8 * i) dictionaryRepresentation];
+        [v3 addObject:dictionaryRepresentation];
       }
 
       v6 = [(NSArray *)v4 countByEnumeratingWithState:&v13 objects:v19 count:16];
@@ -152,10 +152,10 @@ LABEL_17:
   return v10;
 }
 
-- (BOOL)allowsContext:(id)a3 withError:(id *)a4
+- (BOOL)allowsContext:(id)context withError:(id *)error
 {
   v37 = *MEMORY[0x277D85DE8];
-  v28 = a3;
+  contextCopy = context;
   v27 = objc_msgSend(MEMORY[0x277CCAB68], "stringWithString:", @"(");
   v30 = 0u;
   v31 = 0u;
@@ -189,19 +189,19 @@ LABEL_17:
 
       v15 = *(*(&v30 + 1) + 8 * i);
       v29 = v10;
-      v16 = [v15 allowsContext:v28 withError:&v29];
+      v16 = [v15 allowsContext:contextCopy withError:&v29];
       v10 = v29;
 
       v8 &= v16;
-      if ((v16 & 1) == 0 && a4)
+      if ((v16 & 1) == 0 && error)
       {
         if ((v12 & 1) == 0)
         {
           [v27 appendString:@" AND "];
         }
 
-        v17 = [v10 userInfo];
-        v18 = [v17 objectForKey:v26];
+        userInfo = [v10 userInfo];
+        v18 = [userInfo objectForKey:v26];
         [v27 appendString:v18];
 
         v8 = 0;
@@ -214,7 +214,7 @@ LABEL_17:
 
   while (v9);
 
-  if (a4)
+  if (error)
   {
     v19 = v8;
   }
@@ -233,7 +233,7 @@ LABEL_17:
     v6 = [v27 copy];
     v35 = v6;
     v22 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v35 forKeys:&v34 count:1];
-    *a4 = [v20 errorWithDomain:v21 code:1 userInfo:v22];
+    *error = [v20 errorWithDomain:v21 code:1 userInfo:v22];
 
     v8 = v25;
 LABEL_19:
@@ -266,8 +266,8 @@ LABEL_19:
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v13 + 1) + 8 * i) allEntitlements];
-        [v3 unionSet:v9];
+        allEntitlements = [*(*(&v13 + 1) + 8 * i) allEntitlements];
+        [v3 unionSet:allEntitlements];
       }
 
       v6 = [(NSArray *)v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -282,10 +282,10 @@ LABEL_19:
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     goto LABEL_10;
   }
@@ -297,7 +297,7 @@ LABEL_19:
   }
 
   restrictions = self->_restrictions;
-  v8 = v4->_restrictions;
+  v8 = equalCopy->_restrictions;
   if (restrictions == v8)
   {
 LABEL_10:

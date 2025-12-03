@@ -1,23 +1,23 @@
 @interface AMSUIWebDelegateAction
-- (AMSUIWebDelegateAction)initWithJSObject:(id)a3 context:(id)a4;
-- (id)_didResolveWithResult:(id)a3 error:(id)a4;
-- (id)_handleActionObject:(id)a3;
-- (id)_handleResolveActionWithData:(id)a3;
-- (id)_infoWithBuyParams:(id)a3 additionalInfo:(id)a4;
+- (AMSUIWebDelegateAction)initWithJSObject:(id)object context:(id)context;
+- (id)_didResolveWithResult:(id)result error:(id)error;
+- (id)_handleActionObject:(id)object;
+- (id)_handleResolveActionWithData:(id)data;
+- (id)_infoWithBuyParams:(id)params additionalInfo:(id)info;
 - (id)runAction;
 @end
 
 @implementation AMSUIWebDelegateAction
 
-- (AMSUIWebDelegateAction)initWithJSObject:(id)a3 context:(id)a4
+- (AMSUIWebDelegateAction)initWithJSObject:(id)object context:(id)context
 {
-  v6 = a3;
+  objectCopy = object;
   v12.receiver = self;
   v12.super_class = AMSUIWebDelegateAction;
-  v7 = [(AMSUIWebAction *)&v12 initWithJSObject:v6 context:a4];
+  v7 = [(AMSUIWebAction *)&v12 initWithJSObject:objectCopy context:context];
   if (v7)
   {
-    v8 = [v6 objectForKeyedSubscript:@"data"];
+    v8 = [objectCopy objectForKeyedSubscript:@"data"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -41,16 +41,16 @@
   v22 = *MEMORY[0x1E69E9840];
   v17.receiver = self;
   v17.super_class = AMSUIWebDelegateAction;
-  v3 = [(AMSUIWebAction *)&v17 runAction];
-  v4 = [(AMSUIWebDelegateAction *)self delegateData];
-  v5 = [MEMORY[0x1E698C968] sharedWebUIConfig];
-  if (!v5)
+  runAction = [(AMSUIWebAction *)&v17 runAction];
+  delegateData = [(AMSUIWebDelegateAction *)self delegateData];
+  mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedWebUIConfig];
+  if (!mEMORY[0x1E698C968])
   {
-    v5 = [MEMORY[0x1E698C968] sharedConfig];
+    mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
   }
 
-  v6 = [v5 OSLogObject];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v7 = objc_opt_class();
     v8 = AMSLogKey();
@@ -58,11 +58,11 @@
     v19 = v7;
     v20 = 2114;
     v21 = v8;
-    _os_log_impl(&dword_1BB036000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Running delegate action", buf, 0x16u);
+    _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Running delegate action", buf, 0x16u);
   }
 
-  v9 = [(AMSUIWebDelegateAction *)self _handleResolveActionWithData:v4];
-  if (v9 || ([(AMSUIWebDelegateAction *)self _handleActionObject:v4], (v9 = objc_claimAutoreleasedReturnValue()) != 0))
+  v9 = [(AMSUIWebDelegateAction *)self _handleResolveActionWithData:delegateData];
+  if (v9 || ([(AMSUIWebDelegateAction *)self _handleActionObject:delegateData], (v9 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v10 = v9;
   }
@@ -150,11 +150,11 @@ void __35__AMSUIWebDelegateAction_runAction__block_invoke_51(uint64_t a1, void *
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_handleResolveActionWithData:(id)a3
+- (id)_handleResolveActionWithData:(id)data
 {
   v58[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"action"];
+  dataCopy = data;
+  v5 = [dataCopy objectForKeyedSubscript:@"action"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -168,7 +168,7 @@ void __35__AMSUIWebDelegateAction_runAction__block_invoke_51(uint64_t a1, void *
 
   if ([v6 isEqualToString:@"resolve"])
   {
-    v7 = [v4 objectForKeyedSubscript:@"state"];
+    v7 = [dataCopy objectForKeyedSubscript:@"state"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -182,7 +182,7 @@ void __35__AMSUIWebDelegateAction_runAction__block_invoke_51(uint64_t a1, void *
 
     if ([v8 isEqualToString:@"success"])
     {
-      v11 = [v4 objectForKeyedSubscript:@"buyParams"];
+      v11 = [dataCopy objectForKeyedSubscript:@"buyParams"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -207,7 +207,7 @@ void __35__AMSUIWebDelegateAction_runAction__block_invoke_51(uint64_t a1, void *
       v52 = &unk_1E7F25528;
       v53 = v17;
       v18 = v17;
-      v19 = [v4 ams_filterUsingTest:&v49];
+      v19 = [dataCopy ams_filterUsingTest:&v49];
       v10 = [(AMSUIWebDelegateAction *)self _infoWithBuyParams:v12 additionalInfo:v19];
 
       v9 = 0;
@@ -217,7 +217,7 @@ void __35__AMSUIWebDelegateAction_runAction__block_invoke_51(uint64_t a1, void *
     {
       if ([v8 isEqualToString:@"failed"])
       {
-        v13 = [v4 objectForKeyedSubscript:@"error"];
+        v13 = [dataCopy objectForKeyedSubscript:@"error"];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
@@ -294,7 +294,7 @@ void __35__AMSUIWebDelegateAction_runAction__block_invoke_51(uint64_t a1, void *
     v10 = 0;
   }
 
-  v28 = [v4 objectForKeyedSubscript:@"actionName"];
+  v28 = [dataCopy objectForKeyedSubscript:@"actionName"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -315,7 +315,7 @@ void __35__AMSUIWebDelegateAction_runAction__block_invoke_51(uint64_t a1, void *
       goto LABEL_53;
     }
 
-    v30 = [v4 objectForKeyedSubscript:@"options"];
+    v30 = [dataCopy objectForKeyedSubscript:@"options"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -331,11 +331,11 @@ void __35__AMSUIWebDelegateAction_runAction__block_invoke_51(uint64_t a1, void *
     if (objc_opt_respondsToSelector())
     {
       v33 = [v31 objectForKeyedSubscript:@"status"];
-      v34 = [v33 longLongValue];
+      longLongValue = [v33 longLongValue];
 
-      if (v34)
+      if (longLongValue)
       {
-        v35 = [MEMORY[0x1E696AD98] numberWithLong:v34];
+        v35 = [MEMORY[0x1E696AD98] numberWithLong:longLongValue];
         v48 = v35;
         v9 = AMSErrorWithFormat();
         v10 = 0;
@@ -367,17 +367,17 @@ LABEL_52:
   }
 
 LABEL_53:
-  v37 = [MEMORY[0x1E698C968] sharedWebUIConfig];
-  v38 = v37;
+  mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedWebUIConfig];
+  mEMORY[0x1E698C968]2 = mEMORY[0x1E698C968];
   if (v10 | v9)
   {
-    if (!v37)
+    if (!mEMORY[0x1E698C968])
     {
-      v38 = [MEMORY[0x1E698C968] sharedConfig];
+      mEMORY[0x1E698C968]2 = [MEMORY[0x1E698C968] sharedConfig];
     }
 
-    v43 = [v38 OSLogObject];
-    if (os_log_type_enabled(v43, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [mEMORY[0x1E698C968]2 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v44 = objc_opt_class();
       v45 = AMSLogKey();
@@ -385,7 +385,7 @@ LABEL_53:
       v55 = v44;
       v56 = 2114;
       v57 = v45;
-      _os_log_impl(&dword_1BB036000, v43, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Action is a resolve action", buf, 0x16u);
+      _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Action is a resolve action", buf, 0x16u);
     }
 
     v42 = [(AMSUIWebDelegateAction *)self _didResolveWithResult:v10 error:v9];
@@ -393,13 +393,13 @@ LABEL_53:
 
   else
   {
-    if (!v37)
+    if (!mEMORY[0x1E698C968])
     {
-      v38 = [MEMORY[0x1E698C968] sharedConfig];
+      mEMORY[0x1E698C968]2 = [MEMORY[0x1E698C968] sharedConfig];
     }
 
-    v39 = [v38 OSLogObject];
-    if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
+    oSLogObject2 = [mEMORY[0x1E698C968]2 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
     {
       v40 = objc_opt_class();
       v41 = AMSLogKey();
@@ -407,7 +407,7 @@ LABEL_53:
       v55 = v40;
       v56 = 2114;
       v57 = v41;
-      _os_log_impl(&dword_1BB036000, v39, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Action is not a resolve action", buf, 0x16u);
+      _os_log_impl(&dword_1BB036000, oSLogObject2, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Action is not a resolve action", buf, 0x16u);
     }
 
     v42 = 0;
@@ -418,10 +418,10 @@ LABEL_53:
   return v42;
 }
 
-- (id)_infoWithBuyParams:(id)a3 additionalInfo:(id)a4
+- (id)_infoWithBuyParams:(id)params additionalInfo:(id)info
 {
-  v5 = a3;
-  v6 = [a4 mutableCopy];
+  paramsCopy = params;
+  v6 = [info mutableCopy];
   v7 = v6;
   if (v6)
   {
@@ -435,58 +435,58 @@ LABEL_53:
 
   v9 = v8;
 
-  [v9 setObject:v5 forKeyedSubscript:*MEMORY[0x1E698C540]];
+  [v9 setObject:paramsCopy forKeyedSubscript:*MEMORY[0x1E698C540]];
 
   return v9;
 }
 
-- (id)_handleActionObject:(id)a3
+- (id)_handleActionObject:(id)object
 {
-  v4 = a3;
-  v5 = [(AMSUIWebAction *)self context];
-  v6 = [v5 actionDelegate];
+  objectCopy = object;
+  context = [(AMSUIWebAction *)self context];
+  actionDelegate = [context actionDelegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(AMSUIWebAction *)self context];
-    v9 = [v8 actionDelegate];
-    v10 = [v9 action:self handleActionObject:v4];
+    context2 = [(AMSUIWebAction *)self context];
+    actionDelegate2 = [context2 actionDelegate];
+    v10 = [actionDelegate2 action:self handleActionObject:objectCopy];
   }
 
   else
   {
     v11 = MEMORY[0x1E698CAD0];
-    v8 = [(AMSUIWebAction *)self context];
-    v9 = [v8 actionDelegate];
+    context2 = [(AMSUIWebAction *)self context];
+    actionDelegate2 = [context2 actionDelegate];
     v12 = AMSErrorWithFormat();
-    v10 = [v11 promiseWithError:{v12, v9}];
+    v10 = [v11 promiseWithError:{v12, actionDelegate2}];
   }
 
   return v10;
 }
 
-- (id)_didResolveWithResult:(id)a3 error:(id)a4
+- (id)_didResolveWithResult:(id)result error:(id)error
 {
   v34 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  [MEMORY[0x1E698CAA8] sendCUICallbackEventWithResolveData:v6];
-  v8 = [(AMSUIWebAction *)self context];
-  v9 = [v8 actionDelegate];
+  resultCopy = result;
+  errorCopy = error;
+  [MEMORY[0x1E698CAA8] sendCUICallbackEventWithResolveData:resultCopy];
+  context = [(AMSUIWebAction *)self context];
+  actionDelegate = [context actionDelegate];
   v10 = objc_opt_respondsToSelector();
 
-  v11 = [MEMORY[0x1E698C968] sharedWebUIConfig];
-  v12 = v11;
+  mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedWebUIConfig];
+  mEMORY[0x1E698C968]2 = mEMORY[0x1E698C968];
   if (v10)
   {
-    if (!v11)
+    if (!mEMORY[0x1E698C968])
     {
-      v12 = [MEMORY[0x1E698C968] sharedConfig];
+      mEMORY[0x1E698C968]2 = [MEMORY[0x1E698C968] sharedConfig];
     }
 
-    v13 = [v12 OSLogObject];
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [mEMORY[0x1E698C968]2 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v14 = objc_opt_class();
       v15 = AMSLogKey();
@@ -495,26 +495,26 @@ LABEL_53:
       v28 = 2114;
       v29 = v15;
       v30 = 2114;
-      v31 = v6;
+      v31 = resultCopy;
       v32 = 2114;
-      v33 = v7;
-      _os_log_impl(&dword_1BB036000, v13, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Forwarding resolve payload to delegate: Result=%{public}@ Error=%{public}@", buf, 0x2Au);
+      v33 = errorCopy;
+      _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Forwarding resolve payload to delegate: Result=%{public}@ Error=%{public}@", buf, 0x2Au);
     }
 
-    v16 = [(AMSUIWebAction *)self context];
-    v17 = [v16 actionDelegate];
-    v18 = [v17 action:self didResolveWithResult:v6 error:v7];
+    context2 = [(AMSUIWebAction *)self context];
+    actionDelegate2 = [context2 actionDelegate];
+    v18 = [actionDelegate2 action:self didResolveWithResult:resultCopy error:errorCopy];
   }
 
   else
   {
-    if (!v11)
+    if (!mEMORY[0x1E698C968])
     {
-      v12 = [MEMORY[0x1E698C968] sharedConfig];
+      mEMORY[0x1E698C968]2 = [MEMORY[0x1E698C968] sharedConfig];
     }
 
-    v19 = [v12 OSLogObject];
-    if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
+    oSLogObject2 = [mEMORY[0x1E698C968]2 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
     {
       v20 = objc_opt_class();
       v21 = AMSLogKey();
@@ -522,14 +522,14 @@ LABEL_53:
       v27 = v20;
       v28 = 2114;
       v29 = v21;
-      _os_log_impl(&dword_1BB036000, v19, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Delegate does not handle resolve action.", buf, 0x16u);
+      _os_log_impl(&dword_1BB036000, oSLogObject2, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Delegate does not handle resolve action.", buf, 0x16u);
     }
 
     v22 = MEMORY[0x1E698CAD0];
-    v16 = [(AMSUIWebAction *)self context];
-    v17 = [v16 actionDelegate];
+    context2 = [(AMSUIWebAction *)self context];
+    actionDelegate2 = [context2 actionDelegate];
     v23 = AMSErrorWithFormat();
-    v18 = [v22 promiseWithError:{v23, v17}];
+    v18 = [v22 promiseWithError:{v23, actionDelegate2}];
   }
 
   v24 = *MEMORY[0x1E69E9840];

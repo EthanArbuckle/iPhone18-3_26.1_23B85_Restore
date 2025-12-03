@@ -1,31 +1,31 @@
 @interface ATXModeClassifier
-+ (id)updateModeWithUUID:(id)a3 userModeName:(id)a4 modeType:(int)a5 modeOrigin:(int)a6 originAnchorType:(id)a7 originBundleId:(id)a8 uiLocation:(unint64_t)a9 confidenceScore:(double)a10 serializedTriggers:(id)a11 allowsSmartEntry:(BOOL)a12 shouldSuggestTriggers:(BOOL)a13 currentMode:(id)a14 stream:(id)a15;
-+ (void)provideModeClassifierWhenReadyWithBlock:(id)a3;
-+ (void)provideModeClassifierWhenReadyWithDuetHelper:(id)a3 block:(id)a4;
++ (id)updateModeWithUUID:(id)d userModeName:(id)name modeType:(int)type modeOrigin:(int)origin originAnchorType:(id)anchorType originBundleId:(id)id uiLocation:(unint64_t)location confidenceScore:(double)self0 serializedTriggers:(id)self1 allowsSmartEntry:(BOOL)self2 shouldSuggestTriggers:(BOOL)self3 currentMode:(id)self4 stream:(id)self5;
++ (void)provideModeClassifierWhenReadyWithBlock:(id)block;
++ (void)provideModeClassifierWhenReadyWithDuetHelper:(id)helper block:(id)block;
 - (ATXModeClassifier)init;
-- (BOOL)_isModeType:(int)a3 uuid:(id)a4 sameAsModeFromEvent:(id)a5;
-- (BOOL)_shouldUpdateMode:(int)a3 currentModeScore:(id)a4 newModeOrigin:(int)a5 newModeScore:(id)a6;
-- (BOOL)allowSmartEntryWithModeUUID:(id)a3;
+- (BOOL)_isModeType:(int)type uuid:(id)uuid sameAsModeFromEvent:(id)event;
+- (BOOL)_shouldUpdateMode:(int)mode currentModeScore:(id)score newModeOrigin:(int)origin newModeScore:(id)modeScore;
+- (BOOL)allowSmartEntryWithModeUUID:(id)d;
 - (id)currentMode;
 - (void)_expireMode;
-- (void)_setUpModeExpirationTimerIfNeededWithModeOrigin:(int)a3;
-- (void)_updateWithNewModeUUID:(id)a3 userModeName:(id)a4 modeType:(int)a5 modeOrigin:(int)a6 originBundleId:(id)a7 originAnchorType:(id)a8 uiLocation:(unint64_t)a9 confidenceScore:(double)a10 serializedTriggers:(id)a11 allowsSmartEntry:(BOOL)a12 shouldSuggestTriggers:(BOOL)a13;
-- (void)_updateWithNewModeUUIDIfNeeded:(id)a3 userModeName:(id)a4 modeType:(int)a5 modeOrigin:(int)a6 originBundleId:(id)a7 originAnchorType:(id)a8 confidenceScore:(double)a9 serializedTriggers:(id)a10;
+- (void)_setUpModeExpirationTimerIfNeededWithModeOrigin:(int)origin;
+- (void)_updateWithNewModeUUID:(id)d userModeName:(id)name modeType:(int)type modeOrigin:(int)origin originBundleId:(id)id originAnchorType:(id)anchorType uiLocation:(unint64_t)location confidenceScore:(double)self0 serializedTriggers:(id)self1 allowsSmartEntry:(BOOL)self2 shouldSuggestTriggers:(BOOL)self3;
+- (void)_updateWithNewModeUUIDIfNeeded:(id)needed userModeName:(id)name modeType:(int)type modeOrigin:(int)origin originBundleId:(id)id originAnchorType:(id)anchorType confidenceScore:(double)score serializedTriggers:(id)self0;
 - (void)init;
 @end
 
 @implementation ATXModeClassifier
 
-+ (void)provideModeClassifierWhenReadyWithDuetHelper:(id)a3 block:(id)a4
++ (void)provideModeClassifierWhenReadyWithDuetHelper:(id)helper block:(id)block
 {
-  v4 = a4;
+  blockCopy = block;
   v5 = MEMORY[0x277D42598];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __72__ATXModeClassifier_provideModeClassifierWhenReadyWithDuetHelper_block___block_invoke;
   v7[3] = &unk_279AB8030;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   [v5 runBlockWhenDeviceIsClassCUnlocked:v7];
 }
 
@@ -36,16 +36,16 @@ void __72__ATXModeClassifier_provideModeClassifierWhenReadyWithDuetHelper_block_
   (*(v1 + 16))(v1, v2);
 }
 
-+ (void)provideModeClassifierWhenReadyWithBlock:(id)a3
++ (void)provideModeClassifierWhenReadyWithBlock:(id)block
 {
-  v3 = a3;
+  blockCopy = block;
   v4 = MEMORY[0x277D42598];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __61__ATXModeClassifier_provideModeClassifierWhenReadyWithBlock___block_invoke;
   v6[3] = &unk_279AB8030;
-  v7 = v3;
-  v5 = v3;
+  v7 = blockCopy;
+  v5 = blockCopy;
   [v4 runBlockWhenDeviceIsClassCUnlocked:v6];
 }
 
@@ -80,17 +80,17 @@ void __61__ATXModeClassifier_provideModeClassifierWhenReadyWithBlock___block_inv
     v8 = objc_opt_class();
     v9 = NSStringFromClass(v8);
     v10 = v9;
-    v11 = [v9 UTF8String];
+    uTF8String = [v9 UTF8String];
     v12 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v13 = dispatch_queue_create(v11, v12);
+    v13 = dispatch_queue_create(uTF8String, v12);
     queue = v3->_queue;
     v3->_queue = v13;
 
     v15 = BiomeLibrary();
-    v16 = [v15 UserFocus];
-    v17 = [v16 InferredMode];
+    userFocus = [v15 UserFocus];
+    inferredMode = [userFocus InferredMode];
     inferredModeStream = v3->_inferredModeStream;
-    v3->_inferredModeStream = v17;
+    v3->_inferredModeStream = inferredMode;
 
     v19 = [[ATXMiloProvider alloc] initWithInferredModeStream:v3->_inferredModeStream];
     miloProvider = v3->_miloProvider;
@@ -122,16 +122,16 @@ void __61__ATXModeClassifier_provideModeClassifierWhenReadyWithBlock___block_inv
     v29 = objc_opt_new();
     v30 = [ATXUserFocusInferredMode alloc];
     v31 = [(ATXUserFocusInferredMode *)v30 initWithStream:v3->_inferredModeStream, v41, v42, v43, v44];
-    v32 = [(ATXUserFocusInferredMode *)v31 currentMode];
+    currentMode = [(ATXUserFocusInferredMode *)v31 currentMode];
     v33 = v29[1];
-    v29[1] = v32;
+    v29[1] = currentMode;
 
     v34 = __atxlog_handle_modes();
     if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
     {
-      v35 = [v29[1] modeIdentifier];
+      modeIdentifier = [v29[1] modeIdentifier];
       *buf = 138412290;
-      v49 = v35;
+      v49 = modeIdentifier;
       _os_log_impl(&dword_260C9F000, v34, OS_LOG_TYPE_DEFAULT, "ATXModeClassifier initing with current mode: %@", buf, 0xCu);
     }
 
@@ -192,28 +192,28 @@ uint64_t __32__ATXModeClassifier_currentMode__block_invoke(uint64_t a1, uint64_t
   return MEMORY[0x2821F96F8]();
 }
 
-- (BOOL)_isModeType:(int)a3 uuid:(id)a4 sameAsModeFromEvent:(id)a5
+- (BOOL)_isModeType:(int)type uuid:(id)uuid sameAsModeFromEvent:(id)event
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [v8 modeIdentifier];
-  v10 = v9;
-  if (v7 && v9 && ([v7 isEqualToString:v9] & 1) != 0)
+  uuidCopy = uuid;
+  eventCopy = event;
+  modeIdentifier = [eventCopy modeIdentifier];
+  v10 = modeIdentifier;
+  if (uuidCopy && modeIdentifier && ([uuidCopy isEqualToString:modeIdentifier] & 1) != 0)
   {
     v11 = 1;
   }
 
   else
   {
-    v12 = [v8 modeType];
-    if (v7 | v10)
+    modeType = [eventCopy modeType];
+    if (uuidCopy | v10)
     {
       v13 = 0;
     }
 
     else
     {
-      v13 = v12 == a3;
+      v13 = modeType == type;
     }
 
     v11 = v13;
@@ -222,28 +222,28 @@ uint64_t __32__ATXModeClassifier_currentMode__block_invoke(uint64_t a1, uint64_t
   return v11;
 }
 
-+ (id)updateModeWithUUID:(id)a3 userModeName:(id)a4 modeType:(int)a5 modeOrigin:(int)a6 originAnchorType:(id)a7 originBundleId:(id)a8 uiLocation:(unint64_t)a9 confidenceScore:(double)a10 serializedTriggers:(id)a11 allowsSmartEntry:(BOOL)a12 shouldSuggestTriggers:(BOOL)a13 currentMode:(id)a14 stream:(id)a15
++ (id)updateModeWithUUID:(id)d userModeName:(id)name modeType:(int)type modeOrigin:(int)origin originAnchorType:(id)anchorType originBundleId:(id)id uiLocation:(unint64_t)location confidenceScore:(double)self0 serializedTriggers:(id)self1 allowsSmartEntry:(BOOL)self2 shouldSuggestTriggers:(BOOL)self3 currentMode:(id)self4 stream:(id)self5
 {
-  v52 = a3;
-  v19 = a4;
-  v51 = a7;
-  v50 = a8;
-  v49 = a11;
-  v53 = a15;
-  v54 = v19;
-  if (a14)
+  dCopy = d;
+  nameCopy = name;
+  anchorTypeCopy = anchorType;
+  idCopy = id;
+  triggersCopy = triggers;
+  streamCopy = stream;
+  v54 = nameCopy;
+  if (mode)
   {
     v20 = MEMORY[0x277CF16E8];
-    v21 = a14;
+    modeCopy = mode;
     v22 = [v20 alloc];
     v45 = objc_opt_new();
-    v44 = [v21 modeIdentifier];
-    v23 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v21, "isAutomationEnabled")}];
-    v24 = [v21 uuid];
-    v25 = v24;
-    if (v24)
+    modeIdentifier = [modeCopy modeIdentifier];
+    v23 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(modeCopy, "isAutomationEnabled")}];
+    uuid = [modeCopy uuid];
+    v25 = uuid;
+    if (uuid)
     {
-      v26 = v24;
+      v26 = uuid;
     }
 
     else
@@ -251,76 +251,76 @@ uint64_t __32__ATXModeClassifier_currentMode__block_invoke(uint64_t a1, uint64_t
       v26 = &stru_287331708;
     }
 
-    v27 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v21, "uiLocation")}];
-    v28 = [MEMORY[0x277CCABB0] numberWithDouble:a10];
-    v29 = [v21 modeType];
-    v30 = [v21 userModeName];
+    v27 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(modeCopy, "uiLocation")}];
+    v28 = [MEMORY[0x277CCABB0] numberWithDouble:score];
+    modeType = [modeCopy modeType];
+    userModeName = [modeCopy userModeName];
 
-    LODWORD(v43) = v29;
-    v31 = [v22 initWithAbsoluteTimestamp:v45 modeIdentifier:v44 origin:1 originBundleID:0 isAutomationEnabled:v23 isStart:v26 uuid:0 originAnchorType:v27 uiLocation:v28 confidenceScore:MEMORY[0x277CBEBF8] serializedTriggers:v43 modeType:MEMORY[0x277CBEC28] shouldSuggestTriggers:v30 userModeName:?];
+    LODWORD(v43) = modeType;
+    v31 = [v22 initWithAbsoluteTimestamp:v45 modeIdentifier:modeIdentifier origin:1 originBundleID:0 isAutomationEnabled:v23 isStart:v26 uuid:0 originAnchorType:v27 uiLocation:v28 confidenceScore:MEMORY[0x277CBEBF8] serializedTriggers:v43 modeType:MEMORY[0x277CBEC28] shouldSuggestTriggers:userModeName userModeName:?];
 
-    v19 = v54;
-    v32 = [v53 source];
-    [v32 sendEvent:v31];
+    nameCopy = v54;
+    source = [streamCopy source];
+    [source sendEvent:v31];
   }
 
   v33 = objc_opt_new();
-  v46 = [v33 UUIDString];
+  uUIDString = [v33 UUIDString];
 
   v34 = objc_alloc(MEMORY[0x277CF16E8]);
   v35 = objc_opt_new();
-  v36 = [MEMORY[0x277CCABB0] numberWithBool:a12];
-  v37 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a9];
-  v38 = [MEMORY[0x277CCABB0] numberWithDouble:a10];
-  v39 = [MEMORY[0x277CCABB0] numberWithBool:a13];
-  LODWORD(v43) = a5;
-  v40 = [v34 initWithAbsoluteTimestamp:v35 modeIdentifier:v52 origin:a6 originBundleID:v50 isAutomationEnabled:v36 isStart:MEMORY[0x277CBEC38] uuid:v46 originAnchorType:v51 uiLocation:v37 confidenceScore:v38 serializedTriggers:v49 modeType:v43 shouldSuggestTriggers:v39 userModeName:v19];
+  v36 = [MEMORY[0x277CCABB0] numberWithBool:entry];
+  v37 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:location];
+  v38 = [MEMORY[0x277CCABB0] numberWithDouble:score];
+  v39 = [MEMORY[0x277CCABB0] numberWithBool:suggestTriggers];
+  LODWORD(v43) = type;
+  v40 = [v34 initWithAbsoluteTimestamp:v35 modeIdentifier:dCopy origin:origin originBundleID:idCopy isAutomationEnabled:v36 isStart:MEMORY[0x277CBEC38] uuid:uUIDString originAnchorType:anchorTypeCopy uiLocation:v37 confidenceScore:v38 serializedTriggers:triggersCopy modeType:v43 shouldSuggestTriggers:v39 userModeName:nameCopy];
 
-  v41 = [v53 source];
-  [v41 sendEvent:v40];
+  source2 = [streamCopy source];
+  [source2 sendEvent:v40];
 
   return v40;
 }
 
-- (void)_updateWithNewModeUUID:(id)a3 userModeName:(id)a4 modeType:(int)a5 modeOrigin:(int)a6 originBundleId:(id)a7 originAnchorType:(id)a8 uiLocation:(unint64_t)a9 confidenceScore:(double)a10 serializedTriggers:(id)a11 allowsSmartEntry:(BOOL)a12 shouldSuggestTriggers:(BOOL)a13
+- (void)_updateWithNewModeUUID:(id)d userModeName:(id)name modeType:(int)type modeOrigin:(int)origin originBundleId:(id)id originAnchorType:(id)anchorType uiLocation:(unint64_t)location confidenceScore:(double)self0 serializedTriggers:(id)self1 allowsSmartEntry:(BOOL)self2 shouldSuggestTriggers:(BOOL)self3
 {
-  v20 = a3;
-  v21 = a4;
-  v22 = a7;
-  v23 = a8;
-  v24 = a11;
+  dCopy = d;
+  nameCopy = name;
+  idCopy = id;
+  anchorTypeCopy = anchorType;
+  triggersCopy = triggers;
   lock = self->_lock;
   v31[0] = MEMORY[0x277D85DD0];
   v31[1] = 3221225472;
   v31[2] = __194__ATXModeClassifier__updateWithNewModeUUID_userModeName_modeType_modeOrigin_originBundleId_originAnchorType_uiLocation_confidenceScore_serializedTriggers_allowsSmartEntry_shouldSuggestTriggers___block_invoke;
   v31[3] = &unk_279AB8080;
   v31[4] = self;
-  v32 = v20;
-  v39 = a5;
-  v40 = a6;
-  v33 = v21;
-  v34 = v22;
-  v36 = v24;
-  v37 = a9;
-  v38 = a10;
-  v35 = v23;
-  v41 = a12;
-  v42 = a13;
-  v26 = v24;
-  v27 = v23;
-  v28 = v22;
-  v29 = v21;
-  v30 = v20;
+  v32 = dCopy;
+  typeCopy = type;
+  originCopy = origin;
+  v33 = nameCopy;
+  v34 = idCopy;
+  v36 = triggersCopy;
+  locationCopy = location;
+  scoreCopy = score;
+  v35 = anchorTypeCopy;
+  entryCopy = entry;
+  suggestTriggersCopy = suggestTriggers;
+  v26 = triggersCopy;
+  v27 = anchorTypeCopy;
+  v28 = idCopy;
+  v29 = nameCopy;
+  v30 = dCopy;
   [(_PASQueueLock *)lock runAsyncWithLockAcquired:v31];
 }
 
-- (void)_updateWithNewModeUUIDIfNeeded:(id)a3 userModeName:(id)a4 modeType:(int)a5 modeOrigin:(int)a6 originBundleId:(id)a7 originAnchorType:(id)a8 confidenceScore:(double)a9 serializedTriggers:(id)a10
+- (void)_updateWithNewModeUUIDIfNeeded:(id)needed userModeName:(id)name modeType:(int)type modeOrigin:(int)origin originBundleId:(id)id originAnchorType:(id)anchorType confidenceScore:(double)score serializedTriggers:(id)self0
 {
-  v17 = a3;
-  v18 = a4;
-  v19 = a7;
-  v20 = a8;
-  v21 = a10;
+  neededCopy = needed;
+  nameCopy = name;
+  idCopy = id;
+  anchorTypeCopy = anchorType;
+  triggersCopy = triggers;
   objc_initWeak(&location, self);
   lock = self->_lock;
   v28[0] = MEMORY[0x277D85DD0];
@@ -328,18 +328,18 @@ uint64_t __32__ATXModeClassifier_currentMode__block_invoke(uint64_t a1, uint64_t
   v28[2] = __152__ATXModeClassifier__updateWithNewModeUUIDIfNeeded_userModeName_modeType_modeOrigin_originBundleId_originAnchorType_confidenceScore_serializedTriggers___block_invoke;
   v28[3] = &unk_279AB80F8;
   objc_copyWeak(v34, &location);
-  v35 = a5;
-  v23 = v17;
+  typeCopy = type;
+  v23 = neededCopy;
   v29 = v23;
-  v36 = a6;
-  v24 = v19;
+  originCopy = origin;
+  v24 = idCopy;
   v30 = v24;
-  v25 = v20;
+  v25 = anchorTypeCopy;
   v31 = v25;
-  v34[1] = *&a9;
-  v26 = v21;
+  v34[1] = *&score;
+  v26 = triggersCopy;
   v32 = v26;
-  v27 = v18;
+  v27 = nameCopy;
   v33 = v27;
   [(_PASQueueLock *)lock runAsyncWithLockAcquired:v28];
 
@@ -523,37 +523,37 @@ void __152__ATXModeClassifier__updateWithNewModeUUIDIfNeeded_userModeName_modeTy
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)allowSmartEntryWithModeUUID:(id)a3
+- (BOOL)allowSmartEntryWithModeUUID:(id)d
 {
-  v3 = [(ATXConfiguredModeService *)self->_modeService DNDModeConfigurationForActivityWithUUID:a3];
+  v3 = [(ATXConfiguredModeService *)self->_modeService DNDModeConfigurationForActivityWithUUID:d];
   v4 = [v3 allowSmartEntry] == 2;
 
   return v4;
 }
 
-- (BOOL)_shouldUpdateMode:(int)a3 currentModeScore:(id)a4 newModeOrigin:(int)a5 newModeScore:(id)a6
+- (BOOL)_shouldUpdateMode:(int)mode currentModeScore:(id)score newModeOrigin:(int)origin newModeScore:(id)modeScore
 {
-  v9 = a4;
-  v10 = a6;
-  if (BMUserFocusInferredModeOriginIsHeuristic(a3) && (BMUserFocusInferredModeOriginIsHeuristic(a5) & 1) != 0)
+  scoreCopy = score;
+  modeScoreCopy = modeScore;
+  if (BMUserFocusInferredModeOriginIsHeuristic(mode) && (BMUserFocusInferredModeOriginIsHeuristic(origin) & 1) != 0)
   {
     v11 = 1;
   }
 
   else
   {
-    [v10 doubleValue];
+    [modeScoreCopy doubleValue];
     v13 = v12;
-    [v9 doubleValue];
+    [scoreCopy doubleValue];
     v11 = v13 >= v14;
   }
 
   return v11;
 }
 
-- (void)_setUpModeExpirationTimerIfNeededWithModeOrigin:(int)a3
+- (void)_setUpModeExpirationTimerIfNeededWithModeOrigin:(int)origin
 {
-  if (a3 == 11)
+  if (origin == 11)
   {
     [(_PASSimpleCoalescingTimer *)self->_modeExpirationTimer runAfterDelaySeconds:1 coalescingBehavior:7200.0];
   }
@@ -579,8 +579,8 @@ void __152__ATXModeClassifier__updateWithNewModeUUIDIfNeeded_userModeName_modeTy
 
 - (void)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"ATXModeClassifier.m" lineNumber:71 description:@"ATXModeClassifier must not be initialized when the device is Class C locked"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"ATXModeClassifier.m" lineNumber:71 description:@"ATXModeClassifier must not be initialized when the device is Class C locked"];
 }
 
 void __152__ATXModeClassifier__updateWithNewModeUUIDIfNeeded_userModeName_modeType_modeOrigin_originBundleId_originAnchorType_confidenceScore_serializedTriggers___block_invoke_42_cold_1(uint64_t a1, uint64_t a2, os_log_t log)

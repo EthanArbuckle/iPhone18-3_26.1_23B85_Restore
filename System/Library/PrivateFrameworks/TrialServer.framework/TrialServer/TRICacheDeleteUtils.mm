@@ -1,5 +1,5 @@
 @interface TRICacheDeleteUtils
-+ (BOOL)hasSufficientDiskSpaceForDownload:(unint64_t)a3;
++ (BOOL)hasSufficientDiskSpaceForDownload:(unint64_t)download;
 + (id)getFreeDiskSpace;
 + (id)getPurgeableDiskSpace;
 @end
@@ -9,10 +9,10 @@
 + (id)getFreeDiskSpace
 {
   v15 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v3 = NSHomeDirectory();
   v12 = 0;
-  v4 = [v2 attributesOfFileSystemForPath:v3 error:&v12];
+  v4 = [defaultManager attributesOfFileSystemForPath:v3 error:&v12];
   v5 = v12;
 
   if (v4)
@@ -98,32 +98,32 @@ LABEL_10:
   return v6;
 }
 
-+ (BOOL)hasSufficientDiskSpaceForDownload:(unint64_t)a3
++ (BOOL)hasSufficientDiskSpaceForDownload:(unint64_t)download
 {
   v35 = *MEMORY[0x277D85DE8];
   v4 = +[TRICacheDeleteUtils getFreeDiskSpace];
-  v5 = [v4 unsignedLongLongValue];
+  unsignedLongLongValue = [v4 unsignedLongLongValue];
 
-  v6 = 2 * a3;
-  v7 = 2 * a3 >= v5;
-  v8 = 2 * a3 - v5;
+  v6 = 2 * download;
+  v7 = 2 * download >= unsignedLongLongValue;
+  v8 = 2 * download - unsignedLongLongValue;
   if (v8 != 0 && v7)
   {
     v9 = +[TRICacheDeleteUtils getPurgeableDiskSpace];
-    v10 = [v9 unsignedLongLongValue];
+    unsignedLongLongValue2 = [v9 unsignedLongLongValue];
 
     v11 = TRILogCategory_Server();
     v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
-    if (v10 + v5 >= v6)
+    if (unsignedLongLongValue2 + unsignedLongLongValue >= v6)
     {
       if (v12)
       {
         *buf = 134218496;
-        *&buf[4] = v5;
+        *&buf[4] = unsignedLongLongValue;
         *&buf[12] = 2048;
         *&buf[14] = v6;
         *&buf[22] = 2048;
-        v34 = v10;
+        v34 = unsignedLongLongValue2;
         _os_log_impl(&dword_26F567000, v11, OS_LOG_TYPE_DEFAULT, "Sufficient disk space, if we purge the cache. Free space: %llu, required space: %llu, purgeable space: %llu", buf, 0x20u);
       }
 
@@ -146,7 +146,7 @@ LABEL_10:
       v18 = v17;
       v27 = v18;
       v28 = buf;
-      v29 = v5;
+      v29 = unsignedLongLongValue;
       v30 = v6;
       CacheDeletePurgeSpaceWithInfo();
       if ([MEMORY[0x277D425A0] waitForSemaphore:v18 timeoutSeconds:120.0])
@@ -174,11 +174,11 @@ LABEL_10:
       if (v12)
       {
         *buf = 134218496;
-        *&buf[4] = v5;
+        *&buf[4] = unsignedLongLongValue;
         *&buf[12] = 2048;
         *&buf[14] = v6;
         *&buf[22] = 2048;
-        v34 = v10;
+        v34 = unsignedLongLongValue2;
         _os_log_impl(&dword_26F567000, v11, OS_LOG_TYPE_DEFAULT, "Insufficient disk space. Free space: %llu, required space: %llu, purgeable space: %llu", buf, 0x20u);
       }
 
@@ -192,7 +192,7 @@ LABEL_10:
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218240;
-      *&buf[4] = v5;
+      *&buf[4] = unsignedLongLongValue;
       *&buf[12] = 2048;
       *&buf[14] = v6;
       _os_log_impl(&dword_26F567000, v14, OS_LOG_TYPE_DEFAULT, "Sufficient disk space. Free space: %llu, required space: %llu", buf, 0x16u);

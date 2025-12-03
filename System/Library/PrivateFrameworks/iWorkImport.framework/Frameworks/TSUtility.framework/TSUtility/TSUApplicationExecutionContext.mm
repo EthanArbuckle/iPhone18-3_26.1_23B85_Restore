@@ -1,27 +1,27 @@
 @interface TSUApplicationExecutionContext
 - (BOOL)isUILayoutRTL;
-- (void)performWithApplication:(id)a3;
+- (void)performWithApplication:(id)application;
 @end
 
 @implementation TSUApplicationExecutionContext
 
 - (BOOL)isUILayoutRTL
 {
-  v2 = [MEMORY[0x277D75128] sharedApplication];
-  v3 = [v2 userInterfaceLayoutDirection] == 1;
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  v3 = [mEMORY[0x277D75128] userInterfaceLayoutDirection] == 1;
 
   return v3;
 }
 
-- (void)performWithApplication:(id)a3
+- (void)performWithApplication:(id)application
 {
-  v7 = a3;
-  v4 = [(TSUApplicationExecutionContext *)self application];
-  if (v4)
+  applicationCopy = application;
+  application = [(TSUApplicationExecutionContext *)self application];
+  if (application)
   {
-    if (v7)
+    if (applicationCopy)
     {
-      v7[2](v7, v4);
+      applicationCopy[2](applicationCopy, application);
     }
   }
 

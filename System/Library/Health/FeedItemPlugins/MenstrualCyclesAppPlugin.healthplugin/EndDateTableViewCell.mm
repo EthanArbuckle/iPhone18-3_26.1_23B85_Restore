@@ -1,24 +1,24 @@
 @interface EndDateTableViewCell
-- (_TtC24MenstrualCyclesAppPlugin20EndDateTableViewCell)initWithCoder:(id)a3;
-- (_TtC24MenstrualCyclesAppPlugin20EndDateTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (void)dateXButtonPressedWithSender:(id)a3 event:(id)a4;
+- (_TtC24MenstrualCyclesAppPlugin20EndDateTableViewCell)initWithCoder:(id)coder;
+- (_TtC24MenstrualCyclesAppPlugin20EndDateTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (void)dateXButtonPressedWithSender:(id)sender event:(id)event;
 @end
 
 @implementation EndDateTableViewCell
 
-- (void)dateXButtonPressedWithSender:(id)a3 event:(id)a4
+- (void)dateXButtonPressedWithSender:(id)sender event:(id)event
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  senderCopy = sender;
+  eventCopy = event;
+  selfCopy = self;
   sub_29DF5C9D4();
 }
 
-- (_TtC24MenstrualCyclesAppPlugin20EndDateTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC24MenstrualCyclesAppPlugin20EndDateTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
-    a4 = _sSo25HKMCDisplayTypeIdentifiera24MenstrualCyclesAppPluginE2idSSvg_0();
+    identifier = _sSo25HKMCDisplayTypeIdentifiera24MenstrualCyclesAppPluginE2idSSvg_0();
     v6 = v5;
   }
 
@@ -27,10 +27,10 @@
     v6 = 0;
   }
 
-  return sub_29DF5C528(a3, a4, v6);
+  return sub_29DF5C528(style, identifier, v6);
 }
 
-- (_TtC24MenstrualCyclesAppPlugin20EndDateTableViewCell)initWithCoder:(id)a3
+- (_TtC24MenstrualCyclesAppPlugin20EndDateTableViewCell)initWithCoder:(id)coder
 {
   v4 = self + OBJC_IVAR____TtC24MenstrualCyclesAppPlugin20EndDateTableViewCell_item;
   *v4 = 0u;

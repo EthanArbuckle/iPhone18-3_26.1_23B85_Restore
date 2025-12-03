@@ -1,25 +1,25 @@
 @interface PLUSSchemaPLUSUSOGraphTier1
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (PLUSSchemaPLUSUSOGraphTier1)initWithDictionary:(id)a3;
-- (PLUSSchemaPLUSUSOGraphTier1)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (PLUSSchemaPLUSUSOGraphTier1)initWithDictionary:(id)dictionary;
+- (PLUSSchemaPLUSUSOGraphTier1)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PLUSSchemaPLUSUSOGraphTier1
 
-- (PLUSSchemaPLUSUSOGraphTier1)initWithDictionary:(id)a3
+- (PLUSSchemaPLUSUSOGraphTier1)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v10.receiver = self;
   v10.super_class = PLUSSchemaPLUSUSOGraphTier1;
   v5 = [(PLUSSchemaPLUSUSOGraphTier1 *)&v10 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"usoGraphTier1"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"usoGraphTier1"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -33,30 +33,30 @@
   return v5;
 }
 
-- (PLUSSchemaPLUSUSOGraphTier1)initWithJSON:(id)a3
+- (PLUSSchemaPLUSUSOGraphTier1)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(PLUSSchemaPLUSUSOGraphTier1 *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(PLUSSchemaPLUSUSOGraphTier1 *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(PLUSSchemaPLUSUSOGraphTier1 *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -69,40 +69,40 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_usoGraphTier1)
   {
-    v4 = [(PLUSSchemaPLUSUSOGraphTier1 *)self usoGraphTier1];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    usoGraphTier1 = [(PLUSSchemaPLUSUSOGraphTier1 *)self usoGraphTier1];
+    dictionaryRepresentation = [usoGraphTier1 dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"usoGraphTier1"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"usoGraphTier1"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"usoGraphTier1"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"usoGraphTier1"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(PLUSSchemaPLUSUSOGraphTier1 *)self usoGraphTier1];
-    v6 = [v4 usoGraphTier1];
-    v7 = v6;
-    if ((v5 != 0) != (v6 == 0))
+    usoGraphTier1 = [(PLUSSchemaPLUSUSOGraphTier1 *)self usoGraphTier1];
+    usoGraphTier12 = [equalCopy usoGraphTier1];
+    v7 = usoGraphTier12;
+    if ((usoGraphTier1 != 0) != (usoGraphTier12 == 0))
     {
-      v8 = [(PLUSSchemaPLUSUSOGraphTier1 *)self usoGraphTier1];
-      if (!v8)
+      usoGraphTier13 = [(PLUSSchemaPLUSUSOGraphTier1 *)self usoGraphTier1];
+      if (!usoGraphTier13)
       {
 
 LABEL_10:
@@ -110,10 +110,10 @@ LABEL_10:
         goto LABEL_8;
       }
 
-      v9 = v8;
-      v10 = [(PLUSSchemaPLUSUSOGraphTier1 *)self usoGraphTier1];
-      v11 = [v4 usoGraphTier1];
-      v12 = [v10 isEqual:v11];
+      v9 = usoGraphTier13;
+      usoGraphTier14 = [(PLUSSchemaPLUSUSOGraphTier1 *)self usoGraphTier1];
+      usoGraphTier15 = [equalCopy usoGraphTier1];
+      v12 = [usoGraphTier14 isEqual:usoGraphTier15];
 
       if (v12)
       {
@@ -132,54 +132,54 @@ LABEL_8:
   return v13;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
-  v4 = [(PLUSSchemaPLUSUSOGraphTier1 *)self usoGraphTier1];
+  toCopy = to;
+  usoGraphTier1 = [(PLUSSchemaPLUSUSOGraphTier1 *)self usoGraphTier1];
 
-  if (v4)
+  if (usoGraphTier1)
   {
-    v5 = [(PLUSSchemaPLUSUSOGraphTier1 *)self usoGraphTier1];
+    usoGraphTier12 = [(PLUSSchemaPLUSUSOGraphTier1 *)self usoGraphTier1];
     PBDataWriterWriteSubmessage();
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v10.receiver = self;
   v10.super_class = PLUSSchemaPLUSUSOGraphTier1;
-  v5 = [(SISchemaInstrumentationMessage *)&v10 applySensitiveConditionsPolicy:v4];
-  if ([v4 isConditionSet:2])
+  v5 = [(SISchemaInstrumentationMessage *)&v10 applySensitiveConditionsPolicy:policyCopy];
+  if ([policyCopy isConditionSet:2])
   {
     [(PLUSSchemaPLUSUSOGraphTier1 *)self deleteUsoGraphTier1];
   }
 
-  if ([v4 isConditionSet:4])
+  if ([policyCopy isConditionSet:4])
   {
     [(PLUSSchemaPLUSUSOGraphTier1 *)self deleteUsoGraphTier1];
   }
 
-  if ([v4 isConditionSet:5])
+  if ([policyCopy isConditionSet:5])
   {
     [(PLUSSchemaPLUSUSOGraphTier1 *)self deleteUsoGraphTier1];
   }
 
-  if ([v4 isConditionSet:6])
+  if ([policyCopy isConditionSet:6])
   {
     [(PLUSSchemaPLUSUSOGraphTier1 *)self deleteUsoGraphTier1];
   }
 
-  if ([v4 isConditionSet:7])
+  if ([policyCopy isConditionSet:7])
   {
     [(PLUSSchemaPLUSUSOGraphTier1 *)self deleteUsoGraphTier1];
   }
 
-  v6 = [(PLUSSchemaPLUSUSOGraphTier1 *)self usoGraphTier1];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  usoGraphTier1 = [(PLUSSchemaPLUSUSOGraphTier1 *)self usoGraphTier1];
+  v7 = [usoGraphTier1 applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(PLUSSchemaPLUSUSOGraphTier1 *)self deleteUsoGraphTier1];
   }

@@ -1,57 +1,57 @@
 @interface VNRecognizeDocumentsRequest
-+ (id)supportedRecognitionLanguagesForTextRecognitionLevel:(int64_t)a3 revision:(unint64_t)a4 error:(id *)a5;
++ (id)supportedRecognitionLanguagesForTextRecognitionLevel:(int64_t)level revision:(unint64_t)revision error:(id *)error;
 - (BOOL)detectionOnly;
-- (BOOL)internalPerformRevision:(unint64_t)a3 inContext:(id)a4 error:(id *)a5;
+- (BOOL)internalPerformRevision:(unint64_t)revision inContext:(id)context error:(id *)error;
 - (BOOL)keepResourcesLoaded;
 - (BOOL)usesAlternateLineGrouping;
 - (BOOL)usesFormFieldDetection;
 - (BOOL)usesLanguageCorrection;
 - (BOOL)usesLanguageDetection;
-- (BOOL)willAcceptCachedResultsFromRequestWithConfiguration:(id)a3;
+- (BOOL)willAcceptCachedResultsFromRequestWithConfiguration:(id)configuration;
 - (NSArray)customWords;
 - (NSArray)recognitionLanguages;
-- (VNRecognizeDocumentsRequest)initWithFrameAnalysisSpacing:(id *)a3 trackingLevelBlockType:(unint64_t)a4 completionHandler:(id)a5;
+- (VNRecognizeDocumentsRequest)initWithFrameAnalysisSpacing:(id *)spacing trackingLevelBlockType:(unint64_t)type completionHandler:(id)handler;
 - (float)minimumTextHeight;
-- (id)applicableDetectorTypeForRevision:(unint64_t)a3 error:(id *)a4;
-- (id)newDefaultDetectorOptionsForRequestRevision:(unint64_t)a3 session:(id)a4;
+- (id)applicableDetectorTypeForRevision:(unint64_t)revision error:(id *)error;
+- (id)newDefaultDetectorOptionsForRequestRevision:(unint64_t)revision session:(id)session;
 - (id)sequencedRequestPreviousObservationsKey;
-- (id)supportedRecognitionLanguagesAndReturnError:(id *)a3;
+- (id)supportedRecognitionLanguagesAndReturnError:(id *)error;
 - (int64_t)recognitionLevel;
-- (unint64_t)_CRImageReaderRevisionForRevision:(unint64_t)a3;
+- (unint64_t)_CRImageReaderRevisionForRevision:(unint64_t)revision;
 - (unint64_t)maximumCandidateCount;
-- (void)setCustomWords:(id)a3;
-- (void)setDetectionOnly:(BOOL)a3;
-- (void)setKeepResourcesLoaded:(BOOL)a3;
-- (void)setMaximumCandidateCount:(unint64_t)a3;
-- (void)setMinimumTextHeight:(float)a3;
-- (void)setRecognitionLanguages:(id)a3;
-- (void)setRecognitionLevel:(int64_t)a3;
-- (void)setUsesAlternateLineGrouping:(BOOL)a3;
-- (void)setUsesFormFieldDetection:(BOOL)a3;
-- (void)setUsesLanguageCorrection:(BOOL)a3;
-- (void)setUsesLanguageDetection:(BOOL)a3;
+- (void)setCustomWords:(id)words;
+- (void)setDetectionOnly:(BOOL)only;
+- (void)setKeepResourcesLoaded:(BOOL)loaded;
+- (void)setMaximumCandidateCount:(unint64_t)count;
+- (void)setMinimumTextHeight:(float)height;
+- (void)setRecognitionLanguages:(id)languages;
+- (void)setRecognitionLevel:(int64_t)level;
+- (void)setUsesAlternateLineGrouping:(BOOL)grouping;
+- (void)setUsesFormFieldDetection:(BOOL)detection;
+- (void)setUsesLanguageCorrection:(BOOL)correction;
+- (void)setUsesLanguageDetection:(BOOL)detection;
 @end
 
 @implementation VNRecognizeDocumentsRequest
 
-- (id)supportedRecognitionLanguagesAndReturnError:(id *)a3
+- (id)supportedRecognitionLanguagesAndReturnError:(id *)error
 {
   v4 = [(VNRecognizeDocumentsRequest *)self newDefaultDetectorOptionsForRequestRevision:[(VNRequest *)self resolvedRevision] session:0];
-  v5 = [VNCRImageReaderDetector supportedLanguagesForProcessOptions:v4 error:a3];
+  v5 = [VNCRImageReaderDetector supportedLanguagesForProcessOptions:v4 error:error];
 
   return v5;
 }
 
-- (BOOL)internalPerformRevision:(unint64_t)a3 inContext:(id)a4 error:(id *)a5
+- (BOOL)internalPerformRevision:(unint64_t)revision inContext:(id)context error:(id *)error
 {
   v21[1] = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = [v8 imageBufferAndReturnError:a5];
+  contextCopy = context;
+  v9 = [contextCopy imageBufferAndReturnError:error];
   if (v9)
   {
-    v10 = [v8 session];
+    session = [contextCopy session];
     v20 = 0;
-    v11 = [(VNRequest *)self applicableDetectorAndOptions:&v20 forRevision:a3 loadedInSession:v10 error:a5];
+    v11 = [(VNRequest *)self applicableDetectorAndOptions:&v20 forRevision:revision loadedInSession:session error:error];
     v12 = v20;
     if (v11)
     {
@@ -65,10 +65,10 @@
         [v12 setObject:trackingSession forKeyedSubscript:@"VNCRImageReaderForDocumentsDetectorProcessOption_CRImageReaderTrackingSession"];
       }
 
-      v15 = [(VNRequest *)self detectorProgressHandler];
-      v16 = [v8 qosClass];
+      detectorProgressHandler = [(VNRequest *)self detectorProgressHandler];
+      qosClass = [contextCopy qosClass];
       [(VNImageBasedRequest *)self regionOfInterest];
-      v17 = [v11 processUsingQualityOfServiceClass:v16 options:v12 regionOfInterest:self warningRecorder:a5 error:v15 progressHandler:?];
+      v17 = [v11 processUsingQualityOfServiceClass:qosClass options:v12 regionOfInterest:self warningRecorder:error error:detectorProgressHandler progressHandler:?];
       v18 = v17 != 0;
       if (v17)
       {
@@ -95,195 +95,195 @@
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
   v17.receiver = self;
   v17.super_class = VNRecognizeDocumentsRequest;
-  v16 = [(VNRequest *)&v17 sequencedRequestPreviousObservationsKey];
-  v15 = [(VNRecognizeDocumentsRequest *)self recognitionLanguages];
-  v4 = _sequenceKeyComponentForArray(v15);
-  v5 = [(VNRecognizeDocumentsRequest *)self customWords];
-  v6 = _sequenceKeyComponentForArray(v5);
-  v7 = [(VNRecognizeDocumentsRequest *)self recognitionLevel];
-  v8 = [(VNRecognizeDocumentsRequest *)self usesLanguageCorrection];
-  v9 = [(VNRecognizeDocumentsRequest *)self usesLanguageDetection];
-  v10 = [(VNRecognizeDocumentsRequest *)self usesAlternateLineGrouping];
-  v11 = [(VNRecognizeDocumentsRequest *)self usesFormFieldDetection];
+  sequencedRequestPreviousObservationsKey = [(VNRequest *)&v17 sequencedRequestPreviousObservationsKey];
+  recognitionLanguages = [(VNRecognizeDocumentsRequest *)self recognitionLanguages];
+  v4 = _sequenceKeyComponentForArray(recognitionLanguages);
+  customWords = [(VNRecognizeDocumentsRequest *)self customWords];
+  v6 = _sequenceKeyComponentForArray(customWords);
+  recognitionLevel = [(VNRecognizeDocumentsRequest *)self recognitionLevel];
+  usesLanguageCorrection = [(VNRecognizeDocumentsRequest *)self usesLanguageCorrection];
+  usesLanguageDetection = [(VNRecognizeDocumentsRequest *)self usesLanguageDetection];
+  usesAlternateLineGrouping = [(VNRecognizeDocumentsRequest *)self usesAlternateLineGrouping];
+  usesFormFieldDetection = [(VNRecognizeDocumentsRequest *)self usesFormFieldDetection];
   [(VNRecognizeDocumentsRequest *)self minimumTextHeight];
-  v13 = [v3 initWithFormat:@"%@:%@:%p:%ld:%d:%d:%d:%d:%f", v16, v4, v6, v7, v8, v9, v10, v11, v12];
+  v13 = [v3 initWithFormat:@"%@:%@:%p:%ld:%d:%d:%d:%d:%f", sequencedRequestPreviousObservationsKey, v4, v6, recognitionLevel, usesLanguageCorrection, usesLanguageDetection, usesAlternateLineGrouping, usesFormFieldDetection, v12];
 
   return v13;
 }
 
 - (unint64_t)maximumCandidateCount
 {
-  v2 = [(VNRequest *)self configuration];
-  v3 = [v2 maximumCandidateCount];
+  configuration = [(VNRequest *)self configuration];
+  maximumCandidateCount = [configuration maximumCandidateCount];
 
-  return v3;
+  return maximumCandidateCount;
 }
 
-- (void)setMaximumCandidateCount:(unint64_t)a3
+- (void)setMaximumCandidateCount:(unint64_t)count
 {
-  v4 = [(VNRequest *)self configuration];
-  [v4 setMaximumCandidateCount:a3];
+  configuration = [(VNRequest *)self configuration];
+  [configuration setMaximumCandidateCount:count];
 }
 
 - (BOOL)detectionOnly
 {
-  v2 = [(VNRequest *)self configuration];
-  v3 = [v2 detectionOnly];
+  configuration = [(VNRequest *)self configuration];
+  detectionOnly = [configuration detectionOnly];
 
-  return v3;
+  return detectionOnly;
 }
 
-- (void)setDetectionOnly:(BOOL)a3
+- (void)setDetectionOnly:(BOOL)only
 {
-  v3 = a3;
-  v4 = [(VNRequest *)self configuration];
-  [v4 setDetectionOnly:v3];
+  onlyCopy = only;
+  configuration = [(VNRequest *)self configuration];
+  [configuration setDetectionOnly:onlyCopy];
 }
 
 - (BOOL)keepResourcesLoaded
 {
-  v2 = [(VNRequest *)self configuration];
-  v3 = [v2 keepResourcesLoaded];
+  configuration = [(VNRequest *)self configuration];
+  keepResourcesLoaded = [configuration keepResourcesLoaded];
 
-  return v3;
+  return keepResourcesLoaded;
 }
 
-- (void)setKeepResourcesLoaded:(BOOL)a3
+- (void)setKeepResourcesLoaded:(BOOL)loaded
 {
-  v3 = a3;
-  v4 = [(VNRequest *)self configuration];
-  [v4 setKeepResourcesLoaded:v3];
+  loadedCopy = loaded;
+  configuration = [(VNRequest *)self configuration];
+  [configuration setKeepResourcesLoaded:loadedCopy];
 }
 
 - (float)minimumTextHeight
 {
-  v2 = [(VNRequest *)self configuration];
-  [v2 minimumTextHeight];
+  configuration = [(VNRequest *)self configuration];
+  [configuration minimumTextHeight];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setMinimumTextHeight:(float)a3
+- (void)setMinimumTextHeight:(float)height
 {
-  v5 = [(VNRequest *)self configuration];
-  *&v4 = a3;
-  [v5 setMinimumTextHeight:v4];
+  configuration = [(VNRequest *)self configuration];
+  *&v4 = height;
+  [configuration setMinimumTextHeight:v4];
 }
 
 - (BOOL)usesFormFieldDetection
 {
-  v2 = [(VNRequest *)self configuration];
-  v3 = [v2 usesFormFieldDetection];
+  configuration = [(VNRequest *)self configuration];
+  usesFormFieldDetection = [configuration usesFormFieldDetection];
 
-  return v3;
+  return usesFormFieldDetection;
 }
 
-- (void)setUsesFormFieldDetection:(BOOL)a3
+- (void)setUsesFormFieldDetection:(BOOL)detection
 {
-  v3 = a3;
-  v4 = [(VNRequest *)self configuration];
-  [v4 setUsesFormFieldDetection:v3];
+  detectionCopy = detection;
+  configuration = [(VNRequest *)self configuration];
+  [configuration setUsesFormFieldDetection:detectionCopy];
 }
 
 - (BOOL)usesAlternateLineGrouping
 {
-  v2 = [(VNRequest *)self configuration];
-  v3 = [v2 usesAlternateLineGrouping];
+  configuration = [(VNRequest *)self configuration];
+  usesAlternateLineGrouping = [configuration usesAlternateLineGrouping];
 
-  return v3;
+  return usesAlternateLineGrouping;
 }
 
-- (void)setUsesAlternateLineGrouping:(BOOL)a3
+- (void)setUsesAlternateLineGrouping:(BOOL)grouping
 {
-  v3 = a3;
-  v4 = [(VNRequest *)self configuration];
-  [v4 setUsesAlternateLineGrouping:v3];
+  groupingCopy = grouping;
+  configuration = [(VNRequest *)self configuration];
+  [configuration setUsesAlternateLineGrouping:groupingCopy];
 }
 
 - (BOOL)usesLanguageDetection
 {
-  v2 = [(VNRequest *)self configuration];
-  v3 = [v2 automaticallyDetectsLanguage];
+  configuration = [(VNRequest *)self configuration];
+  automaticallyDetectsLanguage = [configuration automaticallyDetectsLanguage];
 
-  return v3;
+  return automaticallyDetectsLanguage;
 }
 
-- (void)setUsesLanguageDetection:(BOOL)a3
+- (void)setUsesLanguageDetection:(BOOL)detection
 {
-  v3 = a3;
-  v4 = [(VNRequest *)self configuration];
-  [v4 setAutomaticallyDetectsLanguage:v3];
+  detectionCopy = detection;
+  configuration = [(VNRequest *)self configuration];
+  [configuration setAutomaticallyDetectsLanguage:detectionCopy];
 }
 
 - (BOOL)usesLanguageCorrection
 {
-  v2 = [(VNRequest *)self configuration];
-  v3 = [v2 usesLanguageCorrection];
+  configuration = [(VNRequest *)self configuration];
+  usesLanguageCorrection = [configuration usesLanguageCorrection];
 
-  return v3;
+  return usesLanguageCorrection;
 }
 
-- (void)setUsesLanguageCorrection:(BOOL)a3
+- (void)setUsesLanguageCorrection:(BOOL)correction
 {
-  v3 = a3;
-  v4 = [(VNRequest *)self configuration];
-  [v4 setUsesLanguageCorrection:v3];
+  correctionCopy = correction;
+  configuration = [(VNRequest *)self configuration];
+  [configuration setUsesLanguageCorrection:correctionCopy];
 }
 
 - (int64_t)recognitionLevel
 {
-  v2 = [(VNRequest *)self configuration];
-  v3 = [v2 recognitionLevel];
+  configuration = [(VNRequest *)self configuration];
+  recognitionLevel = [configuration recognitionLevel];
 
-  return v3;
+  return recognitionLevel;
 }
 
-- (void)setRecognitionLevel:(int64_t)a3
+- (void)setRecognitionLevel:(int64_t)level
 {
-  v4 = [(VNRequest *)self configuration];
-  [v4 setRecognitionLevel:a3];
+  configuration = [(VNRequest *)self configuration];
+  [configuration setRecognitionLevel:level];
 }
 
 - (NSArray)customWords
 {
-  v2 = [(VNRequest *)self configuration];
-  v3 = [v2 customWords];
+  configuration = [(VNRequest *)self configuration];
+  customWords = [configuration customWords];
 
-  return v3;
+  return customWords;
 }
 
-- (void)setCustomWords:(id)a3
+- (void)setCustomWords:(id)words
 {
-  v5 = [a3 copy];
-  v4 = [(VNRequest *)self configuration];
-  [v4 setCustomWords:v5];
+  v5 = [words copy];
+  configuration = [(VNRequest *)self configuration];
+  [configuration setCustomWords:v5];
 }
 
 - (NSArray)recognitionLanguages
 {
-  v2 = [(VNRequest *)self configuration];
-  v3 = [v2 recognitionLanguages];
+  configuration = [(VNRequest *)self configuration];
+  recognitionLanguages = [configuration recognitionLanguages];
 
-  return v3;
+  return recognitionLanguages;
 }
 
-- (void)setRecognitionLanguages:(id)a3
+- (void)setRecognitionLanguages:(id)languages
 {
-  v5 = [a3 copy];
-  v4 = [(VNRequest *)self configuration];
-  [v4 setRecognitionLanguages:v5];
+  v5 = [languages copy];
+  configuration = [(VNRequest *)self configuration];
+  [configuration setRecognitionLanguages:v5];
 }
 
-- (BOOL)willAcceptCachedResultsFromRequestWithConfiguration:(id)a3
+- (BOOL)willAcceptCachedResultsFromRequestWithConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [(VNRecognizeDocumentsRequest *)self detectionOnly];
-  if (v5 == [v4 detectionOnly] && (v6 = -[VNRecognizeDocumentsRequest maximumCandidateCount](self, "maximumCandidateCount"), v6 == objc_msgSend(v4, "maximumCandidateCount")) && (-[VNRecognizeDocumentsRequest recognitionLanguages](self, "recognitionLanguages"), v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "recognitionLanguages"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v7, "isEqualToArray:", v8), v8, v7, (v9 & 1) != 0) && (-[VNRecognizeDocumentsRequest customWords](self, "customWords"), v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "customWords"), v11 = objc_claimAutoreleasedReturnValue(), v12 = VisionCoreEquivalentOrNilUnorderedArrays(), v11, v10, (v12 & 1) != 0) && (v13 = -[VNRecognizeDocumentsRequest recognitionLevel](self, "recognitionLevel"), v13 == objc_msgSend(v4, "recognitionLevel")) && (v14 = -[VNRecognizeDocumentsRequest usesLanguageCorrection](self, "usesLanguageCorrection"), v14 == objc_msgSend(v4, "usesLanguageCorrection")) && (v15 = -[VNRecognizeDocumentsRequest usesLanguageDetection](self, "usesLanguageDetection"), v15 == objc_msgSend(v4, "automaticallyDetectsLanguage")) && (v16 = -[VNRecognizeDocumentsRequest usesAlternateLineGrouping](self, "usesAlternateLineGrouping"), v16 == objc_msgSend(v4, "usesAlternateLineGrouping")) && (v17 = -[VNRecognizeDocumentsRequest usesFormFieldDetection](self, "usesFormFieldDetection"), v17 == objc_msgSend(v4, "usesFormFieldDetection")) && (-[VNRecognizeDocumentsRequest minimumTextHeight](self, "minimumTextHeight"), v19 = v18, objc_msgSend(v4, "minimumTextHeight"), v19 == v20))
+  configurationCopy = configuration;
+  detectionOnly = [(VNRecognizeDocumentsRequest *)self detectionOnly];
+  if (detectionOnly == [configurationCopy detectionOnly] && (v6 = -[VNRecognizeDocumentsRequest maximumCandidateCount](self, "maximumCandidateCount"), v6 == objc_msgSend(configurationCopy, "maximumCandidateCount")) && (-[VNRecognizeDocumentsRequest recognitionLanguages](self, "recognitionLanguages"), v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(configurationCopy, "recognitionLanguages"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v7, "isEqualToArray:", v8), v8, v7, (v9 & 1) != 0) && (-[VNRecognizeDocumentsRequest customWords](self, "customWords"), v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(configurationCopy, "customWords"), v11 = objc_claimAutoreleasedReturnValue(), v12 = VisionCoreEquivalentOrNilUnorderedArrays(), v11, v10, (v12 & 1) != 0) && (v13 = -[VNRecognizeDocumentsRequest recognitionLevel](self, "recognitionLevel"), v13 == objc_msgSend(configurationCopy, "recognitionLevel")) && (v14 = -[VNRecognizeDocumentsRequest usesLanguageCorrection](self, "usesLanguageCorrection"), v14 == objc_msgSend(configurationCopy, "usesLanguageCorrection")) && (v15 = -[VNRecognizeDocumentsRequest usesLanguageDetection](self, "usesLanguageDetection"), v15 == objc_msgSend(configurationCopy, "automaticallyDetectsLanguage")) && (v16 = -[VNRecognizeDocumentsRequest usesAlternateLineGrouping](self, "usesAlternateLineGrouping"), v16 == objc_msgSend(configurationCopy, "usesAlternateLineGrouping")) && (v17 = -[VNRecognizeDocumentsRequest usesFormFieldDetection](self, "usesFormFieldDetection"), v17 == objc_msgSend(configurationCopy, "usesFormFieldDetection")) && (-[VNRecognizeDocumentsRequest minimumTextHeight](self, "minimumTextHeight"), v19 = v18, objc_msgSend(configurationCopy, "minimumTextHeight"), v19 == v20))
   {
     v23.receiver = self;
     v23.super_class = VNRecognizeDocumentsRequest;
-    v21 = [(VNImageBasedRequest *)&v23 willAcceptCachedResultsFromRequestWithConfiguration:v4];
+    v21 = [(VNImageBasedRequest *)&v23 willAcceptCachedResultsFromRequestWithConfiguration:configurationCopy];
   }
 
   else
@@ -294,18 +294,18 @@
   return v21;
 }
 
-- (id)applicableDetectorTypeForRevision:(unint64_t)a3 error:(id *)a4
+- (id)applicableDetectorTypeForRevision:(unint64_t)revision error:(id *)error
 {
-  if (a3 == 1)
+  if (revision == 1)
   {
     v4 = @"VNCRImageReaderForDocumentsDetectorType";
     v5 = @"VNCRImageReaderForDocumentsDetectorType";
   }
 
-  else if (a4)
+  else if (error)
   {
     [VNError errorForUnsupportedRevision:"errorForUnsupportedRevision:ofRequest:" ofRequest:?];
-    *a4 = v4 = 0;
+    *error = v4 = 0;
   }
 
   else
@@ -316,13 +316,13 @@
   return v4;
 }
 
-- (id)newDefaultDetectorOptionsForRequestRevision:(unint64_t)a3 session:(id)a4
+- (id)newDefaultDetectorOptionsForRequestRevision:(unint64_t)revision session:(id)session
 {
   v25.receiver = self;
   v25.super_class = VNRecognizeDocumentsRequest;
-  v6 = [(VNRequest *)&v25 newDefaultDetectorOptionsForRequestRevision:a3 session:a4];
+  v6 = [(VNRequest *)&v25 newDefaultDetectorOptionsForRequestRevision:revision session:session];
   v7 = v6;
-  if (a3 == 1)
+  if (revision == 1)
   {
     [v6 setObject:self forKeyedSubscript:@"VNCRImageReaderForDocumentsDetectorProcessOption_OriginatingRequest"];
     v8 = [MEMORY[0x1E696AD98] numberWithBool:{-[VNRecognizeDocumentsRequest recognitionLevel](self, "recognitionLevel") != 0}];
@@ -331,8 +331,8 @@
     v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[VNRecognizeDocumentsRequest maximumCandidateCount](self, "maximumCandidateCount")}];
     [v7 setObject:v9 forKeyedSubscript:@"VNCRImageReaderDetectorCreationOption_MaximumCandidatesCount"];
 
-    v10 = [(VNRecognizeDocumentsRequest *)self recognitionLanguages];
-    [v7 setObject:v10 forKeyedSubscript:@"VNCRImageReaderDetectorCreationOption_RecognitionLanguages"];
+    recognitionLanguages = [(VNRecognizeDocumentsRequest *)self recognitionLanguages];
+    [v7 setObject:recognitionLanguages forKeyedSubscript:@"VNCRImageReaderDetectorCreationOption_RecognitionLanguages"];
 
     v11 = [MEMORY[0x1E696AD98] numberWithBool:{-[VNRecognizeDocumentsRequest usesLanguageDetection](self, "usesLanguageDetection")}];
     [v7 setObject:v11 forKeyedSubscript:@"VNCRImageReaderDetectorCreationOption_UsesLanguageDetection"];
@@ -360,18 +360,18 @@
     v18 = [v17 numberWithFloat:?];
     [v7 setObject:v18 forKeyedSubscript:@"VNCRImageReaderDetectorProcessOption_MinimumTextHeight"];
 
-    v19 = [(VNRecognizeDocumentsRequest *)self customWords];
-    [v7 setObject:v19 forKeyedSubscript:@"VNCRImageReaderDetectorCreationOption_CustomWords"];
+    customWords = [(VNRecognizeDocumentsRequest *)self customWords];
+    [v7 setObject:customWords forKeyedSubscript:@"VNCRImageReaderDetectorCreationOption_CustomWords"];
 
     v20 = [MEMORY[0x1E696AD98] numberWithBool:{-[VNRecognizeDocumentsRequest detectionOnly](self, "detectionOnly")}];
     [v7 setObject:v20 forKeyedSubscript:@"VNCRImageReaderForDocumentsDetectorProcessOption_DetectionOnly"];
 
-    v21 = [(VNRecognizeDocumentsRequest *)self inputTextBlocks];
+    inputTextBlocks = [(VNRecognizeDocumentsRequest *)self inputTextBlocks];
 
-    if (v21)
+    if (inputTextBlocks)
     {
-      v22 = [(VNRecognizeDocumentsRequest *)self inputTextBlocks];
-      [v7 setObject:v22 forKeyedSubscript:@"VNCRImageReaderForDocumentsDetectorProcessOption_TextObservationsToRecognize"];
+      inputTextBlocks2 = [(VNRecognizeDocumentsRequest *)self inputTextBlocks];
+      [v7 setObject:inputTextBlocks2 forKeyedSubscript:@"VNCRImageReaderForDocumentsDetectorProcessOption_TextObservationsToRecognize"];
     }
 
     v23 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[VNRequest maximumProcessingDimensionOnTheLongSide](self, "maximumProcessingDimensionOnTheLongSide")}];
@@ -381,9 +381,9 @@
   return v7;
 }
 
-- (unint64_t)_CRImageReaderRevisionForRevision:(unint64_t)a3
+- (unint64_t)_CRImageReaderRevisionForRevision:(unint64_t)revision
 {
-  if (a3 == 1)
+  if (revision == 1)
   {
     return 3;
   }
@@ -394,23 +394,23 @@
   }
 }
 
-- (VNRecognizeDocumentsRequest)initWithFrameAnalysisSpacing:(id *)a3 trackingLevelBlockType:(unint64_t)a4 completionHandler:(id)a5
+- (VNRecognizeDocumentsRequest)initWithFrameAnalysisSpacing:(id *)spacing trackingLevelBlockType:(unint64_t)type completionHandler:(id)handler
 {
-  v13 = *a3;
+  v13 = *spacing;
   v12.receiver = self;
   v12.super_class = VNRecognizeDocumentsRequest;
-  v6 = [(VNStatefulRequest *)&v12 initWithFrameAnalysisSpacing:&v13 completionHandler:a5];
+  v6 = [(VNStatefulRequest *)&v12 initWithFrameAnalysisSpacing:&v13 completionHandler:handler];
   if (v6)
   {
     v7 = objc_alloc(MEMORY[0x1E69D9DA0]);
-    if (a4 == 8)
+    if (type == 8)
     {
       v8 = 2;
     }
 
     else
     {
-      v8 = a4 == 4;
+      v8 = type == 4;
     }
 
     v9 = [v7 initWithTrackingLevel:v8];
@@ -421,13 +421,13 @@
   return v6;
 }
 
-+ (id)supportedRecognitionLanguagesForTextRecognitionLevel:(int64_t)a3 revision:(unint64_t)a4 error:(id *)a5
++ (id)supportedRecognitionLanguagesForTextRecognitionLevel:(int64_t)level revision:(unint64_t)revision error:(id *)error
 {
-  v8 = objc_alloc_init(a1);
-  if ([v8 setRevision:a4 error:a5])
+  v8 = objc_alloc_init(self);
+  if ([v8 setRevision:revision error:error])
   {
-    [v8 setRecognitionLevel:a3];
-    v9 = [v8 supportedRecognitionLanguagesAndReturnError:a5];
+    [v8 setRecognitionLevel:level];
+    v9 = [v8 supportedRecognitionLanguagesAndReturnError:error];
   }
 
   else

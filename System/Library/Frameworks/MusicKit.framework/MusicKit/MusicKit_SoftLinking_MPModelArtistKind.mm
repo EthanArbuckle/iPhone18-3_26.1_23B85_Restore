@@ -1,6 +1,6 @@
 @interface MusicKit_SoftLinking_MPModelArtistKind
 - (MusicKit_SoftLinking_MPModelArtistKind)init;
-- (MusicKit_SoftLinking_MPModelArtistKind)initWithAlbumKind:(id)a3;
+- (MusicKit_SoftLinking_MPModelArtistKind)initWithAlbumKind:(id)kind;
 @end
 
 @implementation MusicKit_SoftLinking_MPModelArtistKind
@@ -15,13 +15,13 @@
   return v4;
 }
 
-- (MusicKit_SoftLinking_MPModelArtistKind)initWithAlbumKind:(id)a3
+- (MusicKit_SoftLinking_MPModelArtistKind)initWithAlbumKind:(id)kind
 {
-  v4 = a3;
+  kindCopy = kind;
   MPModelArtistClass = getMPModelArtistClass();
-  v6 = [v4 _underlyingKind];
+  _underlyingKind = [kindCopy _underlyingKind];
 
-  v7 = [MPModelArtistClass kindWithAlbumKind:v6];
+  v7 = [MPModelArtistClass kindWithAlbumKind:_underlyingKind];
 
   v10.receiver = self;
   v10.super_class = MusicKit_SoftLinking_MPModelArtistKind;

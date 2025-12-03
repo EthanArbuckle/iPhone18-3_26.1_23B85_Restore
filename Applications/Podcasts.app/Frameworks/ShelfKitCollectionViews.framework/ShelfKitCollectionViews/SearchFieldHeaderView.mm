@@ -1,17 +1,17 @@
 @interface SearchFieldHeaderView
-- (_TtC23ShelfKitCollectionViews21SearchFieldHeaderView)initWithCoder:(id)a3;
-- (_TtC23ShelfKitCollectionViews21SearchFieldHeaderView)initWithFrame:(CGRect)a3;
+- (_TtC23ShelfKitCollectionViews21SearchFieldHeaderView)initWithCoder:(id)coder;
+- (_TtC23ShelfKitCollectionViews21SearchFieldHeaderView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation SearchFieldHeaderView
 
-- (_TtC23ShelfKitCollectionViews21SearchFieldHeaderView)initWithFrame:(CGRect)a3
+- (_TtC23ShelfKitCollectionViews21SearchFieldHeaderView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v7 = (self + OBJC_IVAR____TtC23ShelfKitCollectionViews21SearchFieldHeaderView_margins);
   *v7 = xmmword_3297F0;
   v7[1] = xmmword_329800;
@@ -21,7 +21,7 @@
   return [(SearchFieldHeaderView *)&v9 initWithFrame:x, y, width, height];
 }
 
-- (_TtC23ShelfKitCollectionViews21SearchFieldHeaderView)initWithCoder:(id)a3
+- (_TtC23ShelfKitCollectionViews21SearchFieldHeaderView)initWithCoder:(id)coder
 {
   v3 = (self + OBJC_IVAR____TtC23ShelfKitCollectionViews21SearchFieldHeaderView_margins);
   *v3 = xmmword_3297F0;
@@ -34,7 +34,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_19F028();
 }
 

@@ -1,26 +1,26 @@
 @interface _TVAlertTemplateView
 - (UIEdgeInsets)padding;
 - (void)layoutSubviews;
-- (void)setBgImage:(id)a3;
-- (void)setCollectionView:(id)a3;
-- (void)setViewsAbove:(id)a3;
-- (void)setViewsBelow:(id)a3;
+- (void)setBgImage:(id)image;
+- (void)setCollectionView:(id)view;
+- (void)setViewsAbove:(id)above;
+- (void)setViewsBelow:(id)below;
 @end
 
 @implementation _TVAlertTemplateView
 
-- (void)setBgImage:(id)a3
+- (void)setBgImage:(id)image
 {
-  v4 = a3;
-  if (self->_bgImage != v4)
+  imageCopy = image;
+  if (self->_bgImage != imageCopy)
   {
     bgImageView = self->_bgImageView;
-    if (v4)
+    if (imageCopy)
     {
       if (bgImageView)
       {
 LABEL_8:
-        [(UIImageView *)bgImageView setImage:v4];
+        [(UIImageView *)bgImageView setImage:imageCopy];
         goto LABEL_9;
       }
     }
@@ -48,15 +48,15 @@ LABEL_8:
 
 LABEL_9:
   bgImage = self->_bgImage;
-  self->_bgImage = v4;
+  self->_bgImage = imageCopy;
 }
 
-- (void)setViewsAbove:(id)a3
+- (void)setViewsAbove:(id)above
 {
   v16 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  aboveCopy = above;
   [(NSArray *)self->_viewsAbove makeObjectsPerformSelector:sel_removeFromSuperview];
-  objc_storeStrong(&self->_viewsAbove, a3);
+  objc_storeStrong(&self->_viewsAbove, above);
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
@@ -88,12 +88,12 @@ LABEL_9:
   }
 }
 
-- (void)setViewsBelow:(id)a3
+- (void)setViewsBelow:(id)below
 {
   v16 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  belowCopy = below;
   [(NSArray *)self->_viewsBelow makeObjectsPerformSelector:sel_removeFromSuperview];
-  objc_storeStrong(&self->_viewsBelow, a3);
+  objc_storeStrong(&self->_viewsBelow, below);
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
@@ -125,15 +125,15 @@ LABEL_9:
   }
 }
 
-- (void)setCollectionView:(id)a3
+- (void)setCollectionView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   collectionView = self->_collectionView;
-  v7 = v5;
-  if (collectionView != v5)
+  v7 = viewCopy;
+  if (collectionView != viewCopy)
   {
     [(UICollectionView *)collectionView removeFromSuperview];
-    objc_storeStrong(&self->_collectionView, a3);
+    objc_storeStrong(&self->_collectionView, view);
     if (self->_collectionView)
     {
       [(_TVAlertTemplateView *)self addSubview:?];
@@ -254,14 +254,14 @@ LABEL_9:
     v25 = 0.0;
   }
 
-  v34 = [(UICollectionView *)self->_collectionView collectionViewLayout];
-  [v34 itemSize];
+  collectionViewLayout = [(UICollectionView *)self->_collectionView collectionViewLayout];
+  [collectionViewLayout itemSize];
   v54 = v35;
   v37 = v36;
 
   v38 = [(UICollectionView *)self->_collectionView numberOfItemsInSection:0];
-  v39 = [(UICollectionView *)self->_collectionView collectionViewLayout];
-  [v39 minimumLineSpacing];
+  collectionViewLayout2 = [(UICollectionView *)self->_collectionView collectionViewLayout];
+  [collectionViewLayout2 minimumLineSpacing];
   v41 = v40;
   v42 = [(UICollectionView *)self->_collectionView numberOfItemsInSection:0];
 

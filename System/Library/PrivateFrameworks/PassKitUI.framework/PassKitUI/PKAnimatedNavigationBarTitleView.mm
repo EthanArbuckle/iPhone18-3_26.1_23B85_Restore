@@ -1,18 +1,18 @@
 @interface PKAnimatedNavigationBarTitleView
-- (PKAnimatedNavigationBarTitleView)initWithFrame:(CGRect)a3;
-- (void)_animateTitleView:(id)a3 animateIn:(BOOL)a4 completion:(id)a5;
+- (PKAnimatedNavigationBarTitleView)initWithFrame:(CGRect)frame;
+- (void)_animateTitleView:(id)view animateIn:(BOOL)in completion:(id)completion;
 - (void)layoutSubviews;
-- (void)setTitleView:(id)a3 alpha:(double)a4;
-- (void)setTitleView:(id)a3 animated:(BOOL)a4;
+- (void)setTitleView:(id)view alpha:(double)alpha;
+- (void)setTitleView:(id)view animated:(BOOL)animated;
 @end
 
 @implementation PKAnimatedNavigationBarTitleView
 
-- (PKAnimatedNavigationBarTitleView)initWithFrame:(CGRect)a3
+- (PKAnimatedNavigationBarTitleView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = PKAnimatedNavigationBarTitleView;
-  v3 = [(PKAnimatedNavigationBarTitleView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PKAnimatedNavigationBarTitleView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -22,40 +22,40 @@
   return v4;
 }
 
-- (void)setTitleView:(id)a3 animated:(BOOL)a4
+- (void)setTitleView:(id)view animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v36[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  viewCopy = view;
   titleView = self->_titleView;
-  if (titleView != v7)
+  if (titleView != viewCopy)
   {
     v9 = titleView;
     if (_UISolariumFeatureFlagEnabled())
     {
-      objc_storeStrong(&self->_titleView, a3);
+      objc_storeStrong(&self->_titleView, view);
       if (self->_titleView)
       {
         [(PKAnimatedNavigationBarTitleView *)self addSubview:?];
         [(PKAnimatedNavigationBarTitleView *)self setNeedsLayout];
         [(PKAnimatedNavigationBarTitleView *)self layoutIfNeeded];
-        v10 = [(UIView *)self->_titleView layer];
+        layer = [(UIView *)self->_titleView layer];
         v11 = objc_alloc(MEMORY[0x1E6979378]);
         v12 = [v11 initWithType:*MEMORY[0x1E6979928]];
         [v12 setName:@"gaussianBlur"];
         v36[0] = v12;
         v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v36 count:1];
-        [v10 setFilters:v13];
+        [layer setFilters:v13];
       }
 
-      if (v4)
+      if (animatedCopy)
       {
         v22 = MEMORY[0x1E69E9820];
         v23 = 3221225472;
         v24 = __58__PKAnimatedNavigationBarTitleView_setTitleView_animated___block_invoke_4;
         v25 = &unk_1E8010A10;
         v26 = v9;
-        v27 = self;
+        selfCopy = self;
         [(PKAnimatedNavigationBarTitleView *)self _animateTitleView:v26 animateIn:0 completion:&v22];
         [(PKAnimatedNavigationBarTitleView *)self _animateTitleView:self->_titleView animateIn:1 completion:0, v22, v23, v24, v25];
       }
@@ -63,8 +63,8 @@
       else
       {
         [(UIView *)v9 removeFromSuperview];
-        v21 = [(UIView *)v9 layer];
-        [v21 setFilters:0];
+        layer2 = [(UIView *)v9 layer];
+        [layer2 setFilters:0];
       }
     }
 
@@ -72,7 +72,7 @@
     {
       if (v9)
       {
-        v14 = !v4;
+        v14 = !animatedCopy;
       }
 
       else
@@ -95,7 +95,7 @@
         v32[3] = &unk_1E8010A10;
         v16 = v9;
         v33 = v16;
-        v34 = self;
+        selfCopy2 = self;
         v29[0] = MEMORY[0x1E69E9820];
         v29[1] = 3221225472;
         v29[2] = __58__PKAnimatedNavigationBarTitleView_setTitleView_animated___block_invoke_2;
@@ -108,12 +108,12 @@
         objc_destroyWeak(&location);
       }
 
-      objc_storeStrong(&self->_titleView, a3);
+      objc_storeStrong(&self->_titleView, view);
       v17 = self->_titleView;
       if (v17)
       {
-        v18 = [(UIView *)v17 superview];
-        v19 = v18 == self;
+        superview = [(UIView *)v17 superview];
+        v19 = superview == self;
 
         if (!v19)
         {
@@ -121,10 +121,10 @@
         }
 
         [(PKAnimatedNavigationBarTitleView *)self setNeedsLayout];
-        self->_viewState = !v4;
+        self->_viewState = !animatedCopy;
         [(PKAnimatedNavigationBarTitleView *)self layoutIfNeeded];
         v20 = self->_titleView;
-        if (v4)
+        if (animatedCopy)
         {
           [(UIView *)v20 setAlpha:0.0];
           self->_viewState = 1;
@@ -191,25 +191,25 @@ void __58__PKAnimatedNavigationBarTitleView_setTitleView_animated___block_invoke
   }
 }
 
-- (void)setTitleView:(id)a3 alpha:(double)a4
+- (void)setTitleView:(id)view alpha:(double)alpha
 {
-  v7 = a3;
+  viewCopy = view;
   titleView = self->_titleView;
-  v12 = v7;
-  if (titleView != v7)
+  v12 = viewCopy;
+  if (titleView != viewCopy)
   {
     [(UIView *)titleView removeFromSuperview];
-    objc_storeStrong(&self->_titleView, a3);
+    objc_storeStrong(&self->_titleView, view);
     v9 = self->_titleView;
     if (!v9)
     {
       goto LABEL_7;
     }
 
-    v10 = [(UIView *)v9 superview];
+    superview = [(UIView *)v9 superview];
 
     titleView = self->_titleView;
-    if (v10 != self)
+    if (superview != self)
     {
       [(PKAnimatedNavigationBarTitleView *)self addSubview:titleView];
       [(PKAnimatedNavigationBarTitleView *)self setNeedsLayout];
@@ -219,9 +219,9 @@ void __58__PKAnimatedNavigationBarTitleView_setTitleView_animated___block_invoke
   }
 
   [(UIView *)titleView alpha];
-  if (v11 != a4)
+  if (v11 != alpha)
   {
-    [(UIView *)self->_titleView setAlpha:a4];
+    [(UIView *)self->_titleView setAlpha:alpha];
   }
 
 LABEL_7:
@@ -237,7 +237,7 @@ LABEL_7:
   [(UIView *)self->_titleView sizeThatFits:v5, v3 + -10.0];
   v7 = v6;
   v9 = v8;
-  v10 = [(UIView *)self->_titleView layer];
+  layer = [(UIView *)self->_titleView layer];
   maxWidth = self->_maxWidth;
   if (maxWidth <= 0.0 || v7 <= maxWidth)
   {
@@ -252,7 +252,7 @@ LABEL_7:
     if ((v15 & 1) == 0)
     {
       CATransform3DMakeScale(&v26, self->_maxWidth / v7, self->_maxWidth / v7, 1.0);
-      [v10 setTransform:&v26];
+      [layer setTransform:&v26];
     }
 
     PKSizeAspectFit();
@@ -269,21 +269,21 @@ LABEL_7:
     v19 = v4;
   }
 
-  [v10 setBounds:{0.0, 0.0, v7, v9}];
-  [v10 anchorPoint];
-  [v10 setPosition:{v17 + v24 * v21, v19 + v25 * v23}];
+  [layer setBounds:{0.0, 0.0, v7, v9}];
+  [layer anchorPoint];
+  [layer setPosition:{v17 + v24 * v21, v19 + v25 * v23}];
 }
 
-- (void)_animateTitleView:(id)a3 animateIn:(BOOL)a4 completion:(id)a5
+- (void)_animateTitleView:(id)view animateIn:(BOOL)in completion:(id)completion
 {
-  v5 = a4;
-  v8 = a5;
-  if (a3)
+  inCopy = in;
+  completionCopy = completion;
+  if (view)
   {
-    v9 = a3;
-    v10 = [v9 layer];
-    v11 = !v5;
-    if (v5)
+    viewCopy = view;
+    layer = [viewCopy layer];
+    v11 = !inCopy;
+    if (inCopy)
     {
       v12 = 0.0;
     }
@@ -293,7 +293,7 @@ LABEL_7:
       v12 = 30.0;
     }
 
-    if (v5)
+    if (inCopy)
     {
       v13 = 30.0;
     }
@@ -304,7 +304,7 @@ LABEL_7:
     }
 
     [(PKAnimatedNavigationBarTitleView *)self bounds];
-    [v9 sizeThatFits:{v15, v14 + -10.0}];
+    [viewCopy sizeThatFits:{v15, v14 + -10.0}];
     v17 = v16;
 
     maxWidth = self->_maxWidth;
@@ -322,7 +322,7 @@ LABEL_7:
     }
 
     memset(&v43, 0, 32);
-    if (!v5)
+    if (!inCopy)
     {
       CATransform3DMakeScale(&v43, 0.1, 0.1, 1.0);
       memset(&v42, 0, sizeof(v42));
@@ -342,7 +342,7 @@ LABEL_7:
 
     CATransform3DMakeScale(&v42, v22, v23, v24);
     v25 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    if (v5 == v11)
+    if (inCopy == v11)
     {
       v28 = 0.0;
     }
@@ -350,7 +350,7 @@ LABEL_7:
     else
     {
       v26 = [MEMORY[0x1E69B92B0] springAnimationWithKeyPath:@"opacity"];
-      [v26 pkui_updateForAdditiveAnimationFromScalar:v11 toScalar:v5];
+      [v26 pkui_updateForAdditiveAnimationFromScalar:v11 toScalar:inCopy];
       [v25 addObject:v26];
       [v26 duration];
       v28 = fmax(v27, 0.0);
@@ -377,28 +377,28 @@ LABEL_7:
 
     if ([v25 count])
     {
-      v34 = [MEMORY[0x1E6979308] animation];
-      [v34 setDuration:{fmax(v33, v28)}];
-      [v34 setAnimations:v25];
+      animation = [MEMORY[0x1E6979308] animation];
+      [animation setDuration:{fmax(v33, v28)}];
+      [animation setAnimations:v25];
       v38[0] = MEMORY[0x1E69E9820];
       v38[1] = 3221225472;
       v38[2] = __75__PKAnimatedNavigationBarTitleView__animateTitleView_animateIn_completion___block_invoke;
       v38[3] = &unk_1E8010AD8;
-      v39 = v8;
-      [v34 pkui_setCompletionHandler:v38];
-      v35 = [v10 pkui_addAdditiveAnimation:v34];
-      *&v36 = v5;
-      [v10 setOpacity:v36];
+      v39 = completionCopy;
+      [animation pkui_setCompletionHandler:v38];
+      v35 = [layer pkui_addAdditiveAnimation:animation];
+      *&v36 = inCopy;
+      [layer setOpacity:v36];
       v37 = [MEMORY[0x1E696AD98] numberWithDouble:v12];
-      [v10 setValue:v37 forKeyPath:@"filters.gaussianBlur.inputRadius"];
+      [layer setValue:v37 forKeyPath:@"filters.gaussianBlur.inputRadius"];
 
       a = v43;
-      [v10 setTransform:&a];
+      [layer setTransform:&a];
     }
 
-    else if (v8)
+    else if (completionCopy)
     {
-      v8[2](v8);
+      completionCopy[2](completionCopy);
     }
   }
 }

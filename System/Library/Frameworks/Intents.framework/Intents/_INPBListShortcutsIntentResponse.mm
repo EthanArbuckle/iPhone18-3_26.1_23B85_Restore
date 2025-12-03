@@ -1,12 +1,12 @@
 @interface _INPBListShortcutsIntentResponse
-- (BOOL)isEqual:(id)a3;
-- (_INPBListShortcutsIntentResponse)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBListShortcutsIntentResponse)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (void)addShortcuts:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setShortcuts:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addShortcuts:(id)shortcuts;
+- (void)encodeWithCoder:(id)coder;
+- (void)setShortcuts:(id)shortcuts;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBListShortcutsIntentResponse
@@ -14,10 +14,10 @@
 - (id)dictionaryRepresentation
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSArray *)self->_shortcuts count])
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
@@ -37,8 +37,8 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v13 + 1) + 8 * i) dictionaryRepresentation];
-          [v4 addObject:v10];
+          dictionaryRepresentation = [*(*(&v13 + 1) + 8 * i) dictionaryRepresentation];
+          [array addObject:dictionaryRepresentation];
         }
 
         v7 = [(NSArray *)v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -47,26 +47,26 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKeyedSubscript:@"shortcuts"];
+    [dictionary setObject:array forKeyedSubscript:@"shortcuts"];
   }
 
   v11 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(_INPBListShortcutsIntentResponse *)self shortcuts];
-    v6 = [v4 shortcuts];
-    v7 = v6;
-    if ((v5 != 0) != (v6 == 0))
+    shortcuts = [(_INPBListShortcutsIntentResponse *)self shortcuts];
+    shortcuts2 = [equalCopy shortcuts];
+    v7 = shortcuts2;
+    if ((shortcuts != 0) != (shortcuts2 == 0))
     {
-      v8 = [(_INPBListShortcutsIntentResponse *)self shortcuts];
-      if (!v8)
+      shortcuts3 = [(_INPBListShortcutsIntentResponse *)self shortcuts];
+      if (!shortcuts3)
       {
 
 LABEL_10:
@@ -74,10 +74,10 @@ LABEL_10:
         goto LABEL_8;
       }
 
-      v9 = v8;
-      v10 = [(_INPBListShortcutsIntentResponse *)self shortcuts];
-      v11 = [v4 shortcuts];
-      v12 = [v10 isEqual:v11];
+      v9 = shortcuts3;
+      shortcuts4 = [(_INPBListShortcutsIntentResponse *)self shortcuts];
+      shortcuts5 = [equalCopy shortcuts];
+      v12 = [shortcuts4 isEqual:shortcuts5];
 
       if (v12)
       {
@@ -96,43 +96,43 @@ LABEL_8:
   return v13;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBListShortcutsIntentResponse allocWithZone:](_INPBListShortcutsIntentResponse init];
-  v6 = [(NSArray *)self->_shortcuts copyWithZone:a3];
+  v6 = [(NSArray *)self->_shortcuts copyWithZone:zone];
   [(_INPBListShortcutsIntentResponse *)v5 setShortcuts:v6];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBListShortcutsIntentResponse *)self data];
+  coderCopy = coder;
+  data = [(_INPBListShortcutsIntentResponse *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBListShortcutsIntentResponse)initWithCoder:(id)a3
+- (_INPBListShortcutsIntentResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBListShortcutsIntentResponse *)self initWithData:v6];
+    self = [(_INPBListShortcutsIntentResponse *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -168,27 +168,27 @@ LABEL_8:
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addShortcuts:(id)a3
+- (void)addShortcuts:(id)shortcuts
 {
-  v4 = a3;
+  shortcutsCopy = shortcuts;
   shortcuts = self->_shortcuts;
-  v8 = v4;
+  v8 = shortcutsCopy;
   if (!shortcuts)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_shortcuts;
-    self->_shortcuts = v6;
+    self->_shortcuts = array;
 
-    v4 = v8;
+    shortcutsCopy = v8;
     shortcuts = self->_shortcuts;
   }
 
-  [(NSArray *)shortcuts addObject:v4];
+  [(NSArray *)shortcuts addObject:shortcutsCopy];
 }
 
-- (void)setShortcuts:(id)a3
+- (void)setShortcuts:(id)shortcuts
 {
-  v4 = [a3 mutableCopy];
+  v4 = [shortcuts mutableCopy];
   shortcuts = self->_shortcuts;
   self->_shortcuts = v4;
 

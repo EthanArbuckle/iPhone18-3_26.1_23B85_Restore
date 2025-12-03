@@ -33,46 +33,46 @@
 - (NSURL)standaloneApplicationURL;
 - (NSUUID)identifier;
 - (_WKWebsiteDataStoreConfiguration)init;
-- (_WKWebsiteDataStoreConfiguration)initWithDirectory:(id)a3;
-- (_WKWebsiteDataStoreConfiguration)initWithIdentifier:(id)a3;
+- (_WKWebsiteDataStoreConfiguration)initWithDirectory:(id)directory;
+- (_WKWebsiteDataStoreConfiguration)initWithIdentifier:(id)identifier;
 - (id)initNonPersistentConfiguration;
 - (int64_t)unifiedOriginStorageLevel;
-- (void)_setCacheStorageDirectory:(id)a3;
-- (void)_setCookieStorageFile:(id)a3;
-- (void)_setIndexedDBDatabaseDirectory:(id)a3;
-- (void)_setResourceLoadStatisticsDirectory:(id)a3;
-- (void)_setResourceMonitorThrottlerDirectory:(id)a3;
-- (void)_setServiceWorkerRegistrationDirectory:(id)a3;
-- (void)_setWebSQLDatabaseDirectory:(id)a3;
-- (void)_setWebStorageDirectory:(id)a3;
+- (void)_setCacheStorageDirectory:(id)directory;
+- (void)_setCookieStorageFile:(id)file;
+- (void)_setIndexedDBDatabaseDirectory:(id)directory;
+- (void)_setResourceLoadStatisticsDirectory:(id)directory;
+- (void)_setResourceMonitorThrottlerDirectory:(id)directory;
+- (void)_setServiceWorkerRegistrationDirectory:(id)directory;
+- (void)_setWebSQLDatabaseDirectory:(id)directory;
+- (void)_setWebStorageDirectory:(id)directory;
 - (void)dealloc;
-- (void)setAlternativeServicesStorageDirectory:(id)a3;
-- (void)setApplicationCacheDirectory:(id)a3;
-- (void)setApplicationCacheFlatFileSubdirectoryName:(id)a3;
-- (void)setBoundInterfaceIdentifier:(id)a3;
-- (void)setDataConnectionServiceType:(id)a3;
-- (void)setDefaultTrackingPreventionEnabledOverride:(id)a3;
-- (void)setDeviceIdHashSaltsStorageDirectory:(id)a3;
-- (void)setGeneralStorageDirectory:(id)a3;
-- (void)setHSTSStorageDirectory:(id)a3;
-- (void)setHTTPProxy:(id)a3;
-- (void)setHTTPSProxy:(id)a3;
-- (void)setMediaCacheDirectory:(id)a3;
-- (void)setMediaKeysStorageDirectory:(id)a3;
-- (void)setNetworkCacheDirectory:(id)a3;
-- (void)setOriginQuotaRatio:(id)a3;
-- (void)setPCMMachServiceName:(id)a3;
-- (void)setProxyConfiguration:(id)a3;
-- (void)setSourceApplicationBundleIdentifier:(id)a3;
-- (void)setSourceApplicationSecondaryIdentifier:(id)a3;
-- (void)setStandaloneApplicationURL:(id)a3;
-- (void)setStandardVolumeCapacity:(id)a3;
-- (void)setTotalQuotaRatio:(id)a3;
-- (void)setUnifiedOriginStorageLevel:(int64_t)a3;
-- (void)setVolumeCapacityOverride:(id)a3;
-- (void)setWebContentRestrictionsConfigurationURL:(id)a3;
-- (void)setWebPushMachServiceName:(id)a3;
-- (void)setWebPushPartitionString:(id)a3;
+- (void)setAlternativeServicesStorageDirectory:(id)directory;
+- (void)setApplicationCacheDirectory:(id)directory;
+- (void)setApplicationCacheFlatFileSubdirectoryName:(id)name;
+- (void)setBoundInterfaceIdentifier:(id)identifier;
+- (void)setDataConnectionServiceType:(id)type;
+- (void)setDefaultTrackingPreventionEnabledOverride:(id)override;
+- (void)setDeviceIdHashSaltsStorageDirectory:(id)directory;
+- (void)setGeneralStorageDirectory:(id)directory;
+- (void)setHSTSStorageDirectory:(id)directory;
+- (void)setHTTPProxy:(id)proxy;
+- (void)setHTTPSProxy:(id)proxy;
+- (void)setMediaCacheDirectory:(id)directory;
+- (void)setMediaKeysStorageDirectory:(id)directory;
+- (void)setNetworkCacheDirectory:(id)directory;
+- (void)setOriginQuotaRatio:(id)ratio;
+- (void)setPCMMachServiceName:(id)name;
+- (void)setProxyConfiguration:(id)configuration;
+- (void)setSourceApplicationBundleIdentifier:(id)identifier;
+- (void)setSourceApplicationSecondaryIdentifier:(id)identifier;
+- (void)setStandaloneApplicationURL:(id)l;
+- (void)setStandardVolumeCapacity:(id)capacity;
+- (void)setTotalQuotaRatio:(id)ratio;
+- (void)setUnifiedOriginStorageLevel:(int64_t)level;
+- (void)setVolumeCapacityOverride:(id)override;
+- (void)setWebContentRestrictionsConfigurationURL:(id)l;
+- (void)setWebPushMachServiceName:(id)name;
+- (void)setWebPushPartitionString:(id)string;
 @end
 
 @implementation _WKWebsiteDataStoreConfiguration
@@ -119,7 +119,7 @@
   return v3;
 }
 
-- (_WKWebsiteDataStoreConfiguration)initWithIdentifier:(id)a3
+- (_WKWebsiteDataStoreConfiguration)initWithIdentifier:(id)identifier
 {
   v20 = *MEMORY[0x1E69E9840];
   v14.receiver = self;
@@ -127,16 +127,16 @@
   v5 = [(_WKWebsiteDataStoreConfiguration *)&v14 init];
   if (v5)
   {
-    if (!a3)
+    if (!identifier)
     {
       [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"Identifier is nil"];
     }
 
-    v6 = WTF::UUID::fromNSUUID(&v18, a3, v4);
+    v6 = WTF::UUID::fromNSUUID(&v18, identifier, v4);
     if (v19 != 1 || v18 <= 1)
     {
       v7 = MEMORY[0x1E695DF30];
-      MEMORY[0x19EB02040](&v17, [a3 UUIDString]);
+      MEMORY[0x19EB02040](&v17, [identifier UUIDString]);
       WTF::String::utf8();
       if (v15)
       {
@@ -178,9 +178,9 @@
     }
 
     v11 = API::Object::apiObjectsUnderConstruction(v6);
-    v12 = [(_WKWebsiteDataStoreConfiguration *)v5 _apiObject];
+    _apiObject = [(_WKWebsiteDataStoreConfiguration *)v5 _apiObject];
     v16 = v5;
-    v17 = v12;
+    v17 = _apiObject;
     WTF::HashMap<API::Object *,void const*,WTF::DefaultHash<API::Object *>,WTF::HashTraits<API::Object *>,WTF::HashTraits<void const*>,WTF::HashTableTraits,(WTF::ShouldValidateKey)1,WTF::FastMalloc>::add<void const*>(v11, &v17, &v16, &v15);
     WebKit::WebsiteDataStoreConfiguration::WebsiteDataStoreConfiguration([(_WKWebsiteDataStoreConfiguration *)v5 _apiObject], &v18);
   }
@@ -188,29 +188,29 @@
   return v5;
 }
 
-- (_WKWebsiteDataStoreConfiguration)initWithDirectory:(id)a3
+- (_WKWebsiteDataStoreConfiguration)initWithDirectory:(id)directory
 {
   v12.receiver = self;
   v12.super_class = _WKWebsiteDataStoreConfiguration;
   v4 = [(_WKWebsiteDataStoreConfiguration *)&v12 init];
   if (v4)
   {
-    if (!a3)
+    if (!directory)
     {
       [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"Directory is nil"];
     }
 
-    v5 = [a3 path];
-    v6 = API::Object::apiObjectsUnderConstruction(v5);
-    v15 = [(_WKWebsiteDataStoreConfiguration *)v4 _apiObject];
+    path = [directory path];
+    v6 = API::Object::apiObjectsUnderConstruction(path);
+    _apiObject = [(_WKWebsiteDataStoreConfiguration *)v4 _apiObject];
     v14 = v4;
-    WTF::HashMap<API::Object *,void const*,WTF::DefaultHash<API::Object *>,WTF::HashTraits<API::Object *>,WTF::HashTraits<void const*>,WTF::HashTableTraits,(WTF::ShouldValidateKey)1,WTF::FastMalloc>::add<void const*>(v6, &v15, &v14, v13);
-    v7 = [(_WKWebsiteDataStoreConfiguration *)v4 _apiObject];
-    MEMORY[0x19EB02040](v13, v5);
-    MEMORY[0x19EB02040](&v15, v5);
-    WebKit::WebsiteDataStoreConfiguration::WebsiteDataStoreConfiguration(v7, v13, &v15);
-    v9 = v15;
-    v15 = 0;
+    WTF::HashMap<API::Object *,void const*,WTF::DefaultHash<API::Object *>,WTF::HashTraits<API::Object *>,WTF::HashTraits<void const*>,WTF::HashTableTraits,(WTF::ShouldValidateKey)1,WTF::FastMalloc>::add<void const*>(v6, &_apiObject, &v14, v13);
+    _apiObject2 = [(_WKWebsiteDataStoreConfiguration *)v4 _apiObject];
+    MEMORY[0x19EB02040](v13, path);
+    MEMORY[0x19EB02040](&_apiObject, path);
+    WebKit::WebsiteDataStoreConfiguration::WebsiteDataStoreConfiguration(_apiObject2, v13, &_apiObject);
+    v9 = _apiObject;
+    _apiObject = 0;
     if (v9 && atomic_fetch_add_explicit(v9, 0xFFFFFFFE, memory_order_relaxed) == 2)
     {
       WTF::StringImpl::destroy(v9, v8);
@@ -257,7 +257,7 @@
   return v6;
 }
 
-- (void)_setWebStorageDirectory:(id)a3
+- (void)_setWebStorageDirectory:(id)directory
 {
   if ((self->_configuration.m_storage.data[16] & 1) == 0)
   {
@@ -266,7 +266,7 @@
 
   if (*&self->_configuration.m_storage.data[32] == 0)
   {
-    if (!a3)
+    if (!directory)
     {
       goto LABEL_7;
     }
@@ -275,19 +275,19 @@
   else
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D920] format:@"Cannot set _webStorageDirectory on a _WKWebsiteDataStoreConfiguration created with identifier"];
-    if (!a3)
+    if (!directory)
     {
       goto LABEL_7;
     }
   }
 
-  if (([a3 isFileURL] & 1) == 0)
+  if (([directory isFileURL] & 1) == 0)
   {
-    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"%@ is not a file URL", a3}];
+    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"%@ is not a file URL", directory}];
   }
 
 LABEL_7:
-  MEMORY[0x19EB02040](&v9, [a3 path]);
+  MEMORY[0x19EB02040](&v9, [directory path]);
   v6 = v9;
   v9 = 0;
   v7 = *&self[2]._configuration.m_storage.data[24];
@@ -341,7 +341,7 @@ LABEL_7:
   return v6;
 }
 
-- (void)_setIndexedDBDatabaseDirectory:(id)a3
+- (void)_setIndexedDBDatabaseDirectory:(id)directory
 {
   if ((self->_configuration.m_storage.data[16] & 1) == 0)
   {
@@ -350,7 +350,7 @@ LABEL_7:
 
   if (*&self->_configuration.m_storage.data[32] == 0)
   {
-    if (!a3)
+    if (!directory)
     {
       goto LABEL_7;
     }
@@ -359,19 +359,19 @@ LABEL_7:
   else
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D920] format:@"Cannot set _indexedDBDatabaseDirectory on a _WKWebsiteDataStoreConfiguration created with identifier"];
-    if (!a3)
+    if (!directory)
     {
       goto LABEL_7;
     }
   }
 
-  if (([a3 isFileURL] & 1) == 0)
+  if (([directory isFileURL] & 1) == 0)
   {
-    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"%@ is not a file URL", a3}];
+    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"%@ is not a file URL", directory}];
   }
 
 LABEL_7:
-  MEMORY[0x19EB02040](&v9, [a3 path]);
+  MEMORY[0x19EB02040](&v9, [directory path]);
   v6 = v9;
   v9 = 0;
   v7 = *&self[2]._configuration.m_storage.data[8];
@@ -425,7 +425,7 @@ LABEL_7:
   return v6;
 }
 
-- (void)setNetworkCacheDirectory:(id)a3
+- (void)setNetworkCacheDirectory:(id)directory
 {
   if ((self->_configuration.m_storage.data[16] & 1) == 0)
   {
@@ -434,7 +434,7 @@ LABEL_7:
 
   if (*&self->_configuration.m_storage.data[32] == 0)
   {
-    if (!a3)
+    if (!directory)
     {
       goto LABEL_7;
     }
@@ -443,19 +443,19 @@ LABEL_7:
   else
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D920] format:@"Cannot set networkCacheDirectory on a _WKWebsiteDataStoreConfiguration created with identifier"];
-    if (!a3)
+    if (!directory)
     {
       goto LABEL_7;
     }
   }
 
-  if (([a3 isFileURL] & 1) == 0)
+  if (([directory isFileURL] & 1) == 0)
   {
-    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"%@ is not a file URL", a3}];
+    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"%@ is not a file URL", directory}];
   }
 
 LABEL_7:
-  MEMORY[0x19EB02040](&v9, [a3 path]);
+  MEMORY[0x19EB02040](&v9, [directory path]);
   v6 = v9;
   v9 = 0;
   isa = self[3].super.isa;
@@ -509,7 +509,7 @@ LABEL_7:
   return v6;
 }
 
-- (void)setDeviceIdHashSaltsStorageDirectory:(id)a3
+- (void)setDeviceIdHashSaltsStorageDirectory:(id)directory
 {
   if ((self->_configuration.m_storage.data[16] & 1) == 0)
   {
@@ -518,7 +518,7 @@ LABEL_7:
 
   if (*&self->_configuration.m_storage.data[32] == 0)
   {
-    if (!a3)
+    if (!directory)
     {
       goto LABEL_7;
     }
@@ -527,19 +527,19 @@ LABEL_7:
   else
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D920] format:@"Cannot set deviceIdHashSaltsStorageDirectory on a _WKWebsiteDataStoreConfiguration created with identifier"];
-    if (!a3)
+    if (!directory)
     {
       goto LABEL_7;
     }
   }
 
-  if (([a3 isFileURL] & 1) == 0)
+  if (([directory isFileURL] & 1) == 0)
   {
-    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"%@ is not a file URL", a3}];
+    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"%@ is not a file URL", directory}];
   }
 
 LABEL_7:
-  MEMORY[0x19EB02040](&v9, [a3 path]);
+  MEMORY[0x19EB02040](&v9, [directory path]);
   v6 = v9;
   v9 = 0;
   v7 = *&self[1]._configuration.m_storage.data[40];
@@ -593,7 +593,7 @@ LABEL_7:
   return v6;
 }
 
-- (void)_setWebSQLDatabaseDirectory:(id)a3
+- (void)_setWebSQLDatabaseDirectory:(id)directory
 {
   if ((self->_configuration.m_storage.data[16] & 1) == 0)
   {
@@ -602,7 +602,7 @@ LABEL_7:
 
   if (*&self->_configuration.m_storage.data[32] == 0)
   {
-    if (!a3)
+    if (!directory)
     {
       goto LABEL_7;
     }
@@ -611,19 +611,19 @@ LABEL_7:
   else
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D920] format:@"Cannot set _webSQLDatabaseDirectory on a _WKWebsiteDataStoreConfiguration created with identifier"];
-    if (!a3)
+    if (!directory)
     {
       goto LABEL_7;
     }
   }
 
-  if (([a3 isFileURL] & 1) == 0)
+  if (([directory isFileURL] & 1) == 0)
   {
-    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"%@ is not a file URL", a3}];
+    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"%@ is not a file URL", directory}];
   }
 
 LABEL_7:
-  MEMORY[0x19EB02040](&v9, [a3 path]);
+  MEMORY[0x19EB02040](&v9, [directory path]);
   v6 = v9;
   v9 = 0;
   v7 = *&self[3]._configuration.m_storage.data[16];
@@ -665,9 +665,9 @@ LABEL_7:
   return v2;
 }
 
-- (void)setHTTPProxy:(id)a3
+- (void)setHTTPProxy:(id)proxy
 {
-  MEMORY[0x19EB01DE0](v6, a3);
+  MEMORY[0x19EB01DE0](v6, proxy);
   WTF::URL::operator=(&self[5]._configuration.m_storage.data[24], v6);
   v5 = v6[0];
   v6[0] = 0;
@@ -698,9 +698,9 @@ LABEL_7:
   return v2;
 }
 
-- (void)setHTTPSProxy:(id)a3
+- (void)setHTTPSProxy:(id)proxy
 {
-  MEMORY[0x19EB01DE0](v6, a3);
+  MEMORY[0x19EB01DE0](v6, proxy);
   WTF::URL::operator=(&self[6]._configuration, v6);
   v5 = v6[0];
   v6[0] = 0;
@@ -743,7 +743,7 @@ LABEL_7:
   return v6;
 }
 
-- (void)_setCookieStorageFile:(id)a3
+- (void)_setCookieStorageFile:(id)file
 {
   v5 = MEMORY[0x1E695D940];
   if ((self->_configuration.m_storage.data[16] & 1) == 0)
@@ -753,7 +753,7 @@ LABEL_7:
 
   if (*&self->_configuration.m_storage.data[32] == 0)
   {
-    if (!a3)
+    if (!file)
     {
       goto LABEL_7;
     }
@@ -762,24 +762,24 @@ LABEL_7:
   else
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D920] format:@"Cannot set _cookieStorageFile on a _WKWebsiteDataStoreConfiguration created with identifier"];
-    if (!a3)
+    if (!file)
     {
       goto LABEL_7;
     }
   }
 
-  if (([a3 isFileURL] & 1) == 0)
+  if (([file isFileURL] & 1) == 0)
   {
-    [MEMORY[0x1E695DF30] raise:*v5 format:{@"%@ is not a file URL", a3}];
+    [MEMORY[0x1E695DF30] raise:*v5 format:{@"%@ is not a file URL", file}];
   }
 
 LABEL_7:
-  if ([a3 hasDirectoryPath])
+  if ([file hasDirectoryPath])
   {
     [MEMORY[0x1E695DF30] raise:*v5 format:{@"The cookie storage path must point to a file, not a directory."}];
   }
 
-  MEMORY[0x19EB02040](&v10, [a3 path]);
+  MEMORY[0x19EB02040](&v10, [file path]);
   v7 = v10;
   v10 = 0;
   v8 = *&self[1]._configuration.m_storage.data[32];
@@ -833,7 +833,7 @@ LABEL_7:
   return v6;
 }
 
-- (void)_setResourceLoadStatisticsDirectory:(id)a3
+- (void)_setResourceLoadStatisticsDirectory:(id)directory
 {
   if ((self->_configuration.m_storage.data[16] & 1) == 0)
   {
@@ -842,7 +842,7 @@ LABEL_7:
 
   if (*&self->_configuration.m_storage.data[32] == 0)
   {
-    if (!a3)
+    if (!directory)
     {
       goto LABEL_7;
     }
@@ -851,19 +851,19 @@ LABEL_7:
   else
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D920] format:@"Cannot set _resourceLoadStatisticsDirectory on a _WKWebsiteDataStoreConfiguration created with identifier"];
-    if (!a3)
+    if (!directory)
     {
       goto LABEL_7;
     }
   }
 
-  if (([a3 isFileURL] & 1) == 0)
+  if (([directory isFileURL] & 1) == 0)
   {
-    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"%@ is not a file URL", a3}];
+    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"%@ is not a file URL", directory}];
   }
 
 LABEL_7:
-  MEMORY[0x19EB02040](&v9, [a3 path]);
+  MEMORY[0x19EB02040](&v9, [directory path]);
   v6 = v9;
   v9 = 0;
   v7 = *self[3]._anon_8;
@@ -917,7 +917,7 @@ LABEL_7:
   return v6;
 }
 
-- (void)_setCacheStorageDirectory:(id)a3
+- (void)_setCacheStorageDirectory:(id)directory
 {
   if ((self->_configuration.m_storage.data[16] & 1) == 0)
   {
@@ -926,7 +926,7 @@ LABEL_7:
 
   if (*&self->_configuration.m_storage.data[32] == 0)
   {
-    if (!a3)
+    if (!directory)
     {
       goto LABEL_7;
     }
@@ -935,19 +935,19 @@ LABEL_7:
   else
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D920] format:@"Cannot set _cacheStorageDirectory on a _WKWebsiteDataStoreConfiguration created with identifier"];
-    if (!a3)
+    if (!directory)
     {
       goto LABEL_7;
     }
   }
 
-  if (([a3 isFileURL] & 1) == 0)
+  if (([directory isFileURL] & 1) == 0)
   {
-    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"%@ is not a file URL", a3}];
+    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"%@ is not a file URL", directory}];
   }
 
 LABEL_7:
-  MEMORY[0x19EB02040](&v9, [a3 path]);
+  MEMORY[0x19EB02040](&v9, [directory path]);
   v6 = v9;
   v9 = 0;
   v7 = *&self[1]._configuration.m_storage.data[24];
@@ -1001,7 +1001,7 @@ LABEL_7:
   return v6;
 }
 
-- (void)_setServiceWorkerRegistrationDirectory:(id)a3
+- (void)_setServiceWorkerRegistrationDirectory:(id)directory
 {
   if ((self->_configuration.m_storage.data[16] & 1) == 0)
   {
@@ -1010,7 +1010,7 @@ LABEL_7:
 
   if (*&self->_configuration.m_storage.data[32] == 0)
   {
-    if (!a3)
+    if (!directory)
     {
       goto LABEL_7;
     }
@@ -1019,19 +1019,19 @@ LABEL_7:
   else
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D920] format:@"Cannot set _serviceWorkerRegistrationDirectory on a _WKWebsiteDataStoreConfiguration created with identifier"];
-    if (!a3)
+    if (!directory)
     {
       goto LABEL_7;
     }
   }
 
-  if (([a3 isFileURL] & 1) == 0)
+  if (([directory isFileURL] & 1) == 0)
   {
-    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"%@ is not a file URL", a3}];
+    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"%@ is not a file URL", directory}];
   }
 
 LABEL_7:
-  MEMORY[0x19EB02040](&v9, [a3 path]);
+  MEMORY[0x19EB02040](&v9, [directory path]);
   v6 = v9;
   v9 = 0;
   v7 = *&self[3]._configuration.m_storage.data[8];
@@ -1055,9 +1055,9 @@ LABEL_7:
   }
 }
 
-- (void)setSourceApplicationBundleIdentifier:(id)a3
+- (void)setSourceApplicationBundleIdentifier:(id)identifier
 {
-  MEMORY[0x19EB02040](&v8, a3);
+  MEMORY[0x19EB02040](&v8, identifier);
   v5 = v8;
   v8 = 0;
   v6 = *self[5]._anon_8;
@@ -1153,9 +1153,9 @@ LABEL_7:
   return &v4->isa;
 }
 
-- (void)setSourceApplicationSecondaryIdentifier:(id)a3
+- (void)setSourceApplicationSecondaryIdentifier:(id)identifier
 {
-  MEMORY[0x19EB02040](&v8, a3);
+  MEMORY[0x19EB02040](&v8, identifier);
   v5 = v8;
   v8 = 0;
   v6 = *self[5]._configuration.m_storage.data;
@@ -1209,7 +1209,7 @@ LABEL_7:
   return v6;
 }
 
-- (void)setApplicationCacheDirectory:(id)a3
+- (void)setApplicationCacheDirectory:(id)directory
 {
   if ((self->_configuration.m_storage.data[16] & 1) == 0)
   {
@@ -1218,7 +1218,7 @@ LABEL_7:
 
   if (*&self->_configuration.m_storage.data[32] == 0)
   {
-    if (!a3)
+    if (!directory)
     {
       goto LABEL_7;
     }
@@ -1227,19 +1227,19 @@ LABEL_7:
   else
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D920] format:@"Cannot set applicationCacheDirectory on a _WKWebsiteDataStoreConfiguration created with identifier"];
-    if (!a3)
+    if (!directory)
     {
       goto LABEL_7;
     }
   }
 
-  if (([a3 isFileURL] & 1) == 0)
+  if (([directory isFileURL] & 1) == 0)
   {
-    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"%@ is not a file URL", a3}];
+    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"%@ is not a file URL", directory}];
   }
 
 LABEL_7:
-  MEMORY[0x19EB02040](&v9, [a3 path]);
+  MEMORY[0x19EB02040](&v9, [directory path]);
   v6 = v9;
   v9 = 0;
   v7 = *&self[1]._configuration.m_storage.data[8];
@@ -1299,7 +1299,7 @@ LABEL_7:
   return &v4->isa;
 }
 
-- (void)setApplicationCacheFlatFileSubdirectoryName:(id)a3
+- (void)setApplicationCacheFlatFileSubdirectoryName:(id)name
 {
   if ((self->_configuration.m_storage.data[16] & 1) == 0)
   {
@@ -1311,7 +1311,7 @@ LABEL_7:
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D920] format:@"Cannot set applicationCacheFlatFileSubdirectoryName on a _WKWebsiteDataStoreConfiguration created with identifier"];
   }
 
-  MEMORY[0x19EB02040](&v9, a3);
+  MEMORY[0x19EB02040](&v9, name);
   v6 = v9;
   v9 = 0;
   v7 = *self[1]._configuration.m_storage.data;
@@ -1365,7 +1365,7 @@ LABEL_7:
   return v6;
 }
 
-- (void)setMediaCacheDirectory:(id)a3
+- (void)setMediaCacheDirectory:(id)directory
 {
   if ((self->_configuration.m_storage.data[16] & 1) == 0)
   {
@@ -1374,7 +1374,7 @@ LABEL_7:
 
   if (*&self->_configuration.m_storage.data[32] == 0)
   {
-    if (!a3)
+    if (!directory)
     {
       goto LABEL_7;
     }
@@ -1383,19 +1383,19 @@ LABEL_7:
   else
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D920] format:@"Cannot set mediaCacheDirectory on a _WKWebsiteDataStoreConfiguration created with identifier"];
-    if (!a3)
+    if (!directory)
     {
       goto LABEL_7;
     }
   }
 
-  if (([a3 isFileURL] & 1) == 0)
+  if (([directory isFileURL] & 1) == 0)
   {
-    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"%@ is not a file URL", a3}];
+    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"%@ is not a file URL", directory}];
   }
 
 LABEL_7:
-  MEMORY[0x19EB02040](&v9, [a3 path]);
+  MEMORY[0x19EB02040](&v9, [directory path]);
   v6 = v9;
   v9 = 0;
   v7 = *&self[2]._configuration.m_storage.data[32];
@@ -1449,7 +1449,7 @@ LABEL_7:
   return v6;
 }
 
-- (void)setMediaKeysStorageDirectory:(id)a3
+- (void)setMediaKeysStorageDirectory:(id)directory
 {
   if ((self->_configuration.m_storage.data[16] & 1) == 0)
   {
@@ -1458,7 +1458,7 @@ LABEL_7:
 
   if (*&self->_configuration.m_storage.data[32] == 0)
   {
-    if (!a3)
+    if (!directory)
     {
       goto LABEL_7;
     }
@@ -1467,19 +1467,19 @@ LABEL_7:
   else
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D920] format:@"Cannot set mediaKeysStorageDirectory on a _WKWebsiteDataStoreConfiguration created with identifier"];
-    if (!a3)
+    if (!directory)
     {
       goto LABEL_7;
     }
   }
 
-  if (([a3 isFileURL] & 1) == 0)
+  if (([directory isFileURL] & 1) == 0)
   {
-    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"%@ is not a file URL", a3}];
+    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"%@ is not a file URL", directory}];
   }
 
 LABEL_7:
-  MEMORY[0x19EB02040](&v9, [a3 path]);
+  MEMORY[0x19EB02040](&v9, [directory path]);
   v6 = v9;
   v9 = 0;
   v7 = *&self[2]._configuration.m_storage.data[40];
@@ -1533,7 +1533,7 @@ LABEL_7:
   return v6;
 }
 
-- (void)setHSTSStorageDirectory:(id)a3
+- (void)setHSTSStorageDirectory:(id)directory
 {
   if ((self->_configuration.m_storage.data[16] & 1) == 0)
   {
@@ -1542,7 +1542,7 @@ LABEL_7:
 
   if (*&self->_configuration.m_storage.data[32] == 0)
   {
-    if (!a3)
+    if (!directory)
     {
       goto LABEL_7;
     }
@@ -1551,19 +1551,19 @@ LABEL_7:
   else
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D920] format:@"Cannot set hstsStorageDirectory on a _WKWebsiteDataStoreConfiguration created with identifier"];
-    if (!a3)
+    if (!directory)
     {
       goto LABEL_7;
     }
   }
 
-  if (([a3 isFileURL] & 1) == 0)
+  if (([directory isFileURL] & 1) == 0)
   {
-    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"%@ is not a file URL", a3}];
+    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"%@ is not a file URL", directory}];
   }
 
 LABEL_7:
-  MEMORY[0x19EB02040](&v9, [a3 path]);
+  MEMORY[0x19EB02040](&v9, [directory path]);
   v6 = v9;
   v9 = 0;
   v7 = *self[2]._configuration.m_storage.data;
@@ -1617,7 +1617,7 @@ LABEL_7:
   return v6;
 }
 
-- (void)setAlternativeServicesStorageDirectory:(id)a3
+- (void)setAlternativeServicesStorageDirectory:(id)directory
 {
   if ((self->_configuration.m_storage.data[16] & 1) == 0)
   {
@@ -1626,7 +1626,7 @@ LABEL_7:
 
   if (*&self->_configuration.m_storage.data[32] == 0)
   {
-    if (!a3)
+    if (!directory)
     {
       goto LABEL_7;
     }
@@ -1635,19 +1635,19 @@ LABEL_7:
   else
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D920] format:@"Cannot set alternativeServicesStorageDirectory on a _WKWebsiteDataStoreConfiguration created with identifier"];
-    if (!a3)
+    if (!directory)
     {
       goto LABEL_7;
     }
   }
 
-  if (([a3 isFileURL] & 1) == 0)
+  if (([directory isFileURL] & 1) == 0)
   {
-    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"%@ is not a file URL", a3}];
+    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"%@ is not a file URL", directory}];
   }
 
 LABEL_7:
-  MEMORY[0x19EB02040](&v9, [a3 path]);
+  MEMORY[0x19EB02040](&v9, [directory path]);
   v6 = v9;
   v9 = 0;
   v7 = *&self[1]._configuration.m_storage.data[16];
@@ -1695,7 +1695,7 @@ LABEL_7:
   return v2;
 }
 
-- (void)setGeneralStorageDirectory:(id)a3
+- (void)setGeneralStorageDirectory:(id)directory
 {
   if ((self->_configuration.m_storage.data[16] & 1) == 0)
   {
@@ -1704,7 +1704,7 @@ LABEL_7:
 
   if (*&self->_configuration.m_storage.data[32] == 0)
   {
-    if (!a3)
+    if (!directory)
     {
       goto LABEL_7;
     }
@@ -1713,19 +1713,19 @@ LABEL_7:
   else
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D920] format:@"Cannot set generalStorageDirectory on a _WKWebsiteDataStoreConfiguration created with identifier"];
-    if (!a3)
+    if (!directory)
     {
       goto LABEL_7;
     }
   }
 
-  if (([a3 isFileURL] & 1) == 0)
+  if (([directory isFileURL] & 1) == 0)
   {
-    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"%@ is not a file URL", a3}];
+    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"%@ is not a file URL", directory}];
   }
 
 LABEL_7:
-  MEMORY[0x19EB02040](&v9, [a3 path]);
+  MEMORY[0x19EB02040](&v9, [directory path]);
   v6 = v9;
   v9 = 0;
   v7 = *self[2]._anon_8;
@@ -1763,10 +1763,10 @@ LABEL_7:
   }
 }
 
-- (void)setUnifiedOriginStorageLevel:(int64_t)a3
+- (void)setUnifiedOriginStorageLevel:(int64_t)level
 {
-  v3 = a3 == 1;
-  if (a3 == 2)
+  v3 = level == 1;
+  if (level == 2)
   {
     v3 = 2;
   }
@@ -1810,9 +1810,9 @@ LABEL_7:
   return &v4->isa;
 }
 
-- (void)setWebPushPartitionString:(id)a3
+- (void)setWebPushPartitionString:(id)string
 {
-  MEMORY[0x19EB02040](&v8, a3);
+  MEMORY[0x19EB02040](&v8, string);
   v5 = v8;
   v8 = 0;
   v6 = *self[8]._configuration.m_storage.data;
@@ -1849,11 +1849,11 @@ LABEL_7:
   }
 }
 
-- (void)setOriginQuotaRatio:(id)a3
+- (void)setOriginQuotaRatio:(id)ratio
 {
-  if (a3)
+  if (ratio)
   {
-    [a3 doubleValue];
+    [ratio doubleValue];
     v5 = *&v4;
     if (v4 < 0.0 || v4 > 1.0)
     {
@@ -1886,11 +1886,11 @@ LABEL_7:
   }
 }
 
-- (void)setTotalQuotaRatio:(id)a3
+- (void)setTotalQuotaRatio:(id)ratio
 {
-  if (a3)
+  if (ratio)
   {
-    [a3 doubleValue];
+    [ratio doubleValue];
     v5 = v4;
     if (v4 < 0.0 || v4 > 1.0)
     {
@@ -1923,21 +1923,21 @@ LABEL_7:
   }
 }
 
-- (void)setStandardVolumeCapacity:(id)a3
+- (void)setStandardVolumeCapacity:(id)capacity
 {
-  if (a3)
+  if (capacity)
   {
-    v4 = [a3 unsignedLongLongValue];
+    unsignedLongLongValue = [capacity unsignedLongLongValue];
     v5 = 1;
   }
 
   else
   {
-    v4 = 0;
+    unsignedLongLongValue = 0;
     v5 = 0;
   }
 
-  *&self[4]._configuration.m_storage.data[16] = v4;
+  *&self[4]._configuration.m_storage.data[16] = unsignedLongLongValue;
   self[4]._configuration.m_storage.data[24] = v5;
 }
 
@@ -1954,21 +1954,21 @@ LABEL_7:
   }
 }
 
-- (void)setVolumeCapacityOverride:(id)a3
+- (void)setVolumeCapacityOverride:(id)override
 {
-  if (a3)
+  if (override)
   {
-    v4 = [a3 unsignedLongLongValue];
+    unsignedLongLongValue = [override unsignedLongLongValue];
     v5 = 1;
   }
 
   else
   {
-    v4 = 0;
+    unsignedLongLongValue = 0;
     v5 = 0;
   }
 
-  *&self[4]._configuration.m_storage.data[32] = v4;
+  *&self[4]._configuration.m_storage.data[32] = unsignedLongLongValue;
   self[4]._configuration.m_storage.data[40] = v5;
 }
 
@@ -2002,7 +2002,7 @@ LABEL_7:
   return v6;
 }
 
-- (void)_setResourceMonitorThrottlerDirectory:(id)a3
+- (void)_setResourceMonitorThrottlerDirectory:(id)directory
 {
   if ((self->_configuration.m_storage.data[16] & 1) == 0)
   {
@@ -2011,7 +2011,7 @@ LABEL_7:
 
   if (*&self->_configuration.m_storage.data[32] == 0)
   {
-    if (!a3)
+    if (!directory)
     {
       goto LABEL_7;
     }
@@ -2020,19 +2020,19 @@ LABEL_7:
   else
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D920] format:@"Cannot set _resourceMonitorThrottlerDirectory on a _WKWebsiteDataStoreConfiguration created with identifier"];
-    if (!a3)
+    if (!directory)
     {
       goto LABEL_7;
     }
   }
 
-  if (([a3 isFileURL] & 1) == 0)
+  if (([directory isFileURL] & 1) == 0)
   {
-    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"%@ is not a file URL", a3}];
+    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"%@ is not a file URL", directory}];
   }
 
 LABEL_7:
-  MEMORY[0x19EB02040](&v9, [a3 path]);
+  MEMORY[0x19EB02040](&v9, [directory path]);
   v6 = v9;
   v9 = 0;
   v7 = *&self[3]._configuration.m_storage.data[32];
@@ -2056,13 +2056,13 @@ LABEL_7:
   }
 }
 
-- (void)setWebContentRestrictionsConfigurationURL:(id)a3
+- (void)setWebContentRestrictionsConfigurationURL:(id)l
 {
-  if (a3)
+  if (l)
   {
-    if (([a3 isFileURL] & 1) == 0)
+    if (([l isFileURL] & 1) == 0)
     {
-      [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"%@ is not a file URL", a3}];
+      [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"%@ is not a file URL", l}];
     }
   }
 }
@@ -2103,9 +2103,9 @@ LABEL_7:
   return &v4->isa;
 }
 
-- (void)setBoundInterfaceIdentifier:(id)a3
+- (void)setBoundInterfaceIdentifier:(id)identifier
 {
-  MEMORY[0x19EB02040](&v8, a3);
+  MEMORY[0x19EB02040](&v8, identifier);
   v5 = v8;
   v8 = 0;
   v6 = *&self[5]._configuration.m_storage.data[8];
@@ -2165,9 +2165,9 @@ LABEL_7:
   return &v4->isa;
 }
 
-- (void)setDataConnectionServiceType:(id)a3
+- (void)setDataConnectionServiceType:(id)type
 {
-  MEMORY[0x19EB02040](&v8, a3);
+  MEMORY[0x19EB02040](&v8, type);
   v5 = v8;
   v8 = 0;
   v6 = *&self[5]._configuration.m_storage.data[16];
@@ -2191,9 +2191,9 @@ LABEL_7:
   }
 }
 
-- (void)setProxyConfiguration:(id)a3
+- (void)setProxyConfiguration:(id)configuration
 {
-  v4 = [a3 copy];
+  v4 = [configuration copy];
   WTF::RetainPtr<void const*>::operator=(&self[8]._configuration.m_storage.data[8], v4);
   if (v4)
   {
@@ -2218,9 +2218,9 @@ LABEL_7:
   return v2;
 }
 
-- (void)setStandaloneApplicationURL:(id)a3
+- (void)setStandaloneApplicationURL:(id)l
 {
-  MEMORY[0x19EB01DE0](v6, a3);
+  MEMORY[0x19EB01DE0](v6, l);
   WTF::URL::operator=(&self[7]._configuration, v6);
   v5 = v6[0];
   v6[0] = 0;
@@ -2269,9 +2269,9 @@ LABEL_7:
   return &v4->isa;
 }
 
-- (void)setPCMMachServiceName:(id)a3
+- (void)setPCMMachServiceName:(id)name
 {
-  MEMORY[0x19EB02040](&v8, a3);
+  MEMORY[0x19EB02040](&v8, name);
   v5 = v8;
   v8 = 0;
   isa = self[8].super.isa;
@@ -2331,9 +2331,9 @@ LABEL_7:
   return &v4->isa;
 }
 
-- (void)setWebPushMachServiceName:(id)a3
+- (void)setWebPushMachServiceName:(id)name
 {
-  MEMORY[0x19EB02040](&v8, a3);
+  MEMORY[0x19EB02040](&v8, name);
   v5 = v8;
   v8 = 0;
   v6 = *self[8]._anon_8;
@@ -2371,21 +2371,21 @@ LABEL_7:
   }
 }
 
-- (void)setDefaultTrackingPreventionEnabledOverride:(id)a3
+- (void)setDefaultTrackingPreventionEnabledOverride:(id)override
 {
-  if (a3)
+  if (override)
   {
-    v4 = [a3 BOOLValue];
+    bOOLValue = [override BOOLValue];
     v5 = 1;
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
     v5 = 0;
   }
 
-  *&self[8]._configuration.m_storage.data[32] = v4 | (v5 << 8);
+  *&self[8]._configuration.m_storage.data[32] = bOOLValue | (v5 << 8);
 }
 
 - (NSUUID)identifier

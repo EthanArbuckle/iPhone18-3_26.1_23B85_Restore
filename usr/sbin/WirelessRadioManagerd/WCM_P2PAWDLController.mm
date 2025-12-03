@@ -1,9 +1,9 @@
 @interface WCM_P2PAWDLController
 - (WCM_P2PAWDLController)init;
 - (void)dealloc;
-- (void)handleAWDLOn:(id)a3;
-- (void)handleDisconnection:(id)a3;
-- (void)handleMessage:(id)a3;
+- (void)handleAWDLOn:(id)on;
+- (void)handleDisconnection:(id)disconnection;
+- (void)handleMessage:(id)message;
 @end
 
 @implementation WCM_P2PAWDLController
@@ -43,16 +43,16 @@
   [(WCM_Controller *)&v3 dealloc];
 }
 
-- (void)handleMessage:(id)a3
+- (void)handleMessage:(id)message
 {
-  uint64 = xpc_dictionary_get_uint64(a3, "kMessageId");
+  uint64 = xpc_dictionary_get_uint64(message, "kMessageId");
   if (uint64)
   {
     [WCM_Logging logLevel:2 message:@"Received P2PAWDL message-id: %lld", uint64];
     if (uint64 == 2700)
     {
 
-      [(WCM_P2PAWDLController *)self handleAWDLOn:a3];
+      [(WCM_P2PAWDLController *)self handleAWDLOn:message];
     }
 
     else
@@ -68,7 +68,7 @@
   }
 }
 
-- (void)handleDisconnection:(id)a3
+- (void)handleDisconnection:(id)disconnection
 {
   [WCM_Logging logLevel:2 message:@"P2PAWDLController handleDisconnection"];
   [(WCM_P2PAWDLController *)self setMAwdlEnabled:0];
@@ -81,9 +81,9 @@
   [v4 updateControllerState:2702];
 }
 
-- (void)handleAWDLOn:(id)a3
+- (void)handleAWDLOn:(id)on
 {
-  dictionary = xpc_dictionary_get_dictionary(a3, "kMessageArgs");
+  dictionary = xpc_dictionary_get_dictionary(on, "kMessageArgs");
   v5 = xpc_dictionary_get_BOOL(dictionary, "kWCMP2PAWDLOn");
   [WCM_Logging logLevel:2 message:@"Received from P2P AWDL Controller AWDLOn:(%d -> %d)", [(WCM_P2PAWDLController *)self mAwdlEnabled], v5];
   if (v5 != [(WCM_P2PAWDLController *)self mAwdlEnabled])

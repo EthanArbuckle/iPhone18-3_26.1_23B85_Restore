@@ -1,7 +1,7 @@
 @interface SegmentedOptionPickerCell
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)segmentedControlTapped:(id)a3;
+- (void)segmentedControlTapped:(id)tapped;
 @end
 
 @implementation SegmentedOptionPickerCell
@@ -14,27 +14,27 @@
   v6 = type metadata accessor for SegmentedOptionPickerCell();
   v11.receiver = self;
   v11.super_class = v6;
-  v7 = self;
+  selfCopy = self;
   [(SegmentedOptionPickerCell *)&v11 prepareForReuse];
   v8 = type metadata accessor for ShelfCellItemInfo();
   (*(*(v8 - 8) + 56))(v5, 1, 1, v8);
   v9 = OBJC_IVAR____TtC9SeymourUI25SegmentedOptionPickerCell_itemInfo;
   swift_beginAccess();
-  sub_20B5E267C(v5, v7 + v9);
+  sub_20B5E267C(v5, selfCopy + v9);
   swift_endAccess();
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_20B852DE8();
 }
 
-- (void)segmentedControlTapped:(id)a3
+- (void)segmentedControlTapped:(id)tapped
 {
-  v4 = a3;
-  v5 = self;
-  sub_20B852FAC(v4);
+  tappedCopy = tapped;
+  selfCopy = self;
+  sub_20B852FAC(tappedCopy);
 }
 
 @end

@@ -1,5 +1,5 @@
 @interface MKPlaceInlineMapViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_axUpdateMapContentView;
 - (void)_updateMap;
@@ -7,13 +7,13 @@
 
 @implementation MKPlaceInlineMapViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MKPlaceInlineMapViewController" hasInstanceVariable:@"_contentView" withType:"_MKPlaceInlineMapContentView"];
-  [v3 validateClass:@"MKPlaceInlineMapViewController" hasInstanceMethod:@"mapItem" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MKMapItem" hasInstanceMethod:@"name" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MKPlaceInlineMapViewController" hasInstanceMethod:@"_updateMap" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MKPlaceInlineMapViewController" hasInstanceVariable:@"_contentView" withType:"_MKPlaceInlineMapContentView"];
+  [validationsCopy validateClass:@"MKPlaceInlineMapViewController" hasInstanceMethod:@"mapItem" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MKMapItem" hasInstanceMethod:@"name" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MKPlaceInlineMapViewController" hasInstanceMethod:@"_updateMap" withFullSignature:{"v", 0}];
 }
 
 - (void)_axUpdateMapContentView

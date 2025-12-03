@@ -1,28 +1,28 @@
 @interface SEEndPointCA
-+ (id)decodeWithData:(id)a3 error:(id *)a4;
-+ (id)endPointCAWithIdentifier:(id)a3 subjectIdentifier:(id)a4 instanceAID:(id)a5 secureElementAttestation:(id)a6 error:(id *)a7;
-- (SEEndPointCA)initWithCoder:(id)a3;
++ (id)decodeWithData:(id)data error:(id *)error;
++ (id)endPointCAWithIdentifier:(id)identifier subjectIdentifier:(id)subjectIdentifier instanceAID:(id)d secureElementAttestation:(id)attestation error:(id *)error;
+- (SEEndPointCA)initWithCoder:(id)coder;
 - (id)description;
 - (id)dumpState;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SEEndPointCA
 
-+ (id)endPointCAWithIdentifier:(id)a3 subjectIdentifier:(id)a4 instanceAID:(id)a5 secureElementAttestation:(id)a6 error:(id *)a7
++ (id)endPointCAWithIdentifier:(id)identifier subjectIdentifier:(id)subjectIdentifier instanceAID:(id)d secureElementAttestation:(id)attestation error:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = v15;
-  if (v12 && v13 && v15 && a7)
+  identifierCopy = identifier;
+  subjectIdentifierCopy = subjectIdentifier;
+  dCopy = d;
+  attestationCopy = attestation;
+  v16 = attestationCopy;
+  if (identifierCopy && subjectIdentifierCopy && attestationCopy && error)
   {
     v17 = objc_opt_new();
-    objc_storeStrong((v17 + 8), a3);
-    objc_storeStrong((v17 + 24), a4);
-    objc_storeStrong((v17 + 40), a6);
-    v18 = v14;
+    objc_storeStrong((v17 + 8), identifier);
+    objc_storeStrong((v17 + 24), subjectIdentifier);
+    objc_storeStrong((v17 + 40), attestation);
+    v18 = dCopy;
     v19 = *(v17 + 16);
     *(v17 + 16) = v18;
 LABEL_8:
@@ -30,12 +30,12 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if (a7)
+  if (error)
   {
     v19 = SESDefaultLogObject();
     v20 = *MEMORY[0x1E69E5148];
     SESCreateAndLogError();
-    *a7 = v17 = 0;
+    *error = v17 = 0;
     goto LABEL_8;
   }
 
@@ -45,11 +45,11 @@ LABEL_9:
   return v17;
 }
 
-+ (id)decodeWithData:(id)a3 error:(id *)a4
++ (id)decodeWithData:(id)data error:(id *)error
 {
   v5 = MEMORY[0x1E696ACD0];
-  v6 = a3;
-  v7 = [v5 unarchivedObjectOfClass:objc_opt_class() fromData:v6 error:a4];
+  dataCopy = data;
+  v7 = [v5 unarchivedObjectOfClass:objc_opt_class() fromData:dataCopy error:error];
 
   return v7;
 }
@@ -58,21 +58,21 @@ LABEL_9:
 {
   v25 = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E696AD60];
-  v4 = [(SEEndPointCA *)self identifier];
-  v5 = [(SEEndPointCA *)self instanceAID];
-  v6 = [v5 asHexString];
-  v7 = [(SEEndPointCA *)self subjectIdentifier];
-  v8 = [(SEEndPointCA *)self secureElementAttestation];
-  v9 = [v8 asHexString];
-  v10 = [(SEEndPointCA *)self certificates];
-  v11 = [v3 stringWithFormat:@"Identifier : %@ InstanceAID %@ : {\n\tsubjectIdentifier : %@\n\tsecureElementAttestation : %@\n\tcertificates (%lu) : {\n", v4, v6, v7, v9, objc_msgSend(v10, "count")];
+  identifier = [(SEEndPointCA *)self identifier];
+  instanceAID = [(SEEndPointCA *)self instanceAID];
+  asHexString = [instanceAID asHexString];
+  subjectIdentifier = [(SEEndPointCA *)self subjectIdentifier];
+  secureElementAttestation = [(SEEndPointCA *)self secureElementAttestation];
+  asHexString2 = [secureElementAttestation asHexString];
+  certificates = [(SEEndPointCA *)self certificates];
+  v11 = [v3 stringWithFormat:@"Identifier : %@ InstanceAID %@ : {\n\tsubjectIdentifier : %@\n\tsecureElementAttestation : %@\n\tcertificates (%lu) : {\n", identifier, asHexString, subjectIdentifier, asHexString2, objc_msgSend(certificates, "count")];
 
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v12 = [(SEEndPointCA *)self certificates];
-  v13 = [v12 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  certificates2 = [(SEEndPointCA *)self certificates];
+  v13 = [certificates2 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v13)
   {
     v14 = v13;
@@ -83,14 +83,14 @@ LABEL_9:
       {
         if (*v21 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(certificates2);
         }
 
-        v17 = [*(*(&v20 + 1) + 8 * i) asHexString];
-        [v11 appendFormat:@"\t\t : %@, \n", v17];
+        asHexString3 = [*(*(&v20 + 1) + 8 * i) asHexString];
+        [v11 appendFormat:@"\t\t : %@, \n", asHexString3];
       }
 
-      v14 = [v12 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v14 = [certificates2 countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v14);
@@ -105,39 +105,39 @@ LABEL_9:
 - (id)dumpState
 {
   v3 = objc_opt_new();
-  v4 = [(SEEndPointCA *)self identifier];
+  identifier = [(SEEndPointCA *)self identifier];
 
-  if (v4)
+  if (identifier)
   {
-    v5 = [(SEEndPointCA *)self identifier];
-    [v3 setObject:v5 forKeyedSubscript:@"identifier"];
+    identifier2 = [(SEEndPointCA *)self identifier];
+    [v3 setObject:identifier2 forKeyedSubscript:@"identifier"];
   }
 
-  v6 = [(SEEndPointCA *)self subjectIdentifier];
+  subjectIdentifier = [(SEEndPointCA *)self subjectIdentifier];
 
-  if (v6)
+  if (subjectIdentifier)
   {
-    v7 = [(SEEndPointCA *)self subjectIdentifier];
-    [v3 setObject:v7 forKeyedSubscript:@"subjectIdentifier"];
+    subjectIdentifier2 = [(SEEndPointCA *)self subjectIdentifier];
+    [v3 setObject:subjectIdentifier2 forKeyedSubscript:@"subjectIdentifier"];
   }
 
-  v8 = [(SEEndPointCA *)self instanceAID];
+  instanceAID = [(SEEndPointCA *)self instanceAID];
 
-  if (v8)
+  if (instanceAID)
   {
-    v9 = [(SEEndPointCA *)self instanceAID];
-    v10 = [v9 asHexString];
-    [v3 setObject:v10 forKeyedSubscript:@"instanceAID"];
+    instanceAID2 = [(SEEndPointCA *)self instanceAID];
+    asHexString = [instanceAID2 asHexString];
+    [v3 setObject:asHexString forKeyedSubscript:@"instanceAID"];
   }
 
-  v11 = [(SEEndPointCA *)self certificates];
+  certificates = [(SEEndPointCA *)self certificates];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __25__SEEndPointCA_dumpState__block_invoke;
   v14[3] = &unk_1E82D0FC8;
   v12 = v3;
   v15 = v12;
-  [v11 enumerateObjectsUsingBlock:v14];
+  [certificates enumerateObjectsUsingBlock:v14];
 
   return v12;
 }
@@ -150,53 +150,53 @@ void __25__SEEndPointCA_dumpState__block_invoke(uint64_t a1, void *a2, uint64_t 
   [v5 setObject:v7 forKeyedSubscript:v6];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(SEEndPointCA *)self identifier];
-  [v4 encodeObject:v5 forKey:@"identifier"];
+  coderCopy = coder;
+  identifier = [(SEEndPointCA *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
 
-  v6 = [(SEEndPointCA *)self subjectIdentifier];
-  [v4 encodeObject:v6 forKey:@"subjectIdentifier"];
+  subjectIdentifier = [(SEEndPointCA *)self subjectIdentifier];
+  [coderCopy encodeObject:subjectIdentifier forKey:@"subjectIdentifier"];
 
-  v7 = [(SEEndPointCA *)self secureElementAttestation];
-  [v4 encodeObject:v7 forKey:@"secureElementAttestation"];
+  secureElementAttestation = [(SEEndPointCA *)self secureElementAttestation];
+  [coderCopy encodeObject:secureElementAttestation forKey:@"secureElementAttestation"];
 
-  v8 = [(SEEndPointCA *)self certificates];
-  [v4 encodeObject:v8 forKey:@"certificates"];
+  certificates = [(SEEndPointCA *)self certificates];
+  [coderCopy encodeObject:certificates forKey:@"certificates"];
 
-  v9 = [(SEEndPointCA *)self instanceAID];
-  [v4 encodeObject:v9 forKey:@"instanceAID"];
+  instanceAID = [(SEEndPointCA *)self instanceAID];
+  [coderCopy encodeObject:instanceAID forKey:@"instanceAID"];
 }
 
-- (SEEndPointCA)initWithCoder:(id)a3
+- (SEEndPointCA)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v24.receiver = self;
   v24.super_class = SEEndPointCA;
   v5 = [(SEEndPointCA *)&v24 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"subjectIdentifier"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"subjectIdentifier"];
     subjectIdentifier = v5->_subjectIdentifier;
     v5->_subjectIdentifier = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"secureElementAttestation"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"secureElementAttestation"];
     secureElementAttestation = v5->_secureElementAttestation;
     v5->_secureElementAttestation = v10;
 
     v12 = MEMORY[0x1E695DFD8];
     v13 = objc_opt_class();
     v14 = [v12 setWithObjects:{v13, objc_opt_class(), 0}];
-    v15 = [v4 decodeObjectOfClasses:v14 forKey:@"certificates"];
+    v15 = [coderCopy decodeObjectOfClasses:v14 forKey:@"certificates"];
     certificates = v5->_certificates;
     v5->_certificates = v15;
 
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"instanceAID"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"instanceAID"];
     instanceAID = v5->_instanceAID;
     v5->_instanceAID = v17;
 
@@ -209,9 +209,9 @@ void __25__SEEndPointCA_dumpState__block_invoke(uint64_t a1, void *a2, uint64_t 
         _os_log_impl(&dword_1C7B9A000, v19, OS_LOG_TYPE_INFO, "InstanceAID missing in CA, assuming legacy (CCC) AID", buf, 2u);
       }
 
-      v20 = [@"A000000809434343444B417631" hexStringAsData];
+      hexStringAsData = [@"A000000809434343444B417631" hexStringAsData];
       v21 = v5->_instanceAID;
-      v5->_instanceAID = v20;
+      v5->_instanceAID = hexStringAsData;
     }
   }
 

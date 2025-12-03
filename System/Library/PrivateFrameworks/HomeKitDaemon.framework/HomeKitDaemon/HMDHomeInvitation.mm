@@ -1,8 +1,8 @@
 @interface HMDHomeInvitation
 + (id)noRetryDate;
 - (HMDHome)home;
-- (HMDHomeInvitation)initWithCoder:(id)a3 invitationData:(id)a4;
-- (HMDHomeInvitation)initWithInvitationData:(id)a3 forHome:(id)a4;
+- (HMDHomeInvitation)initWithCoder:(id)coder invitationData:(id)data;
+- (HMDHomeInvitation)initWithInvitationData:(id)data forHome:(id)home;
 - (NSDate)endDate;
 - (NSDate)startDate;
 - (NSUUID)identifier;
@@ -11,12 +11,12 @@
 - (int64_t)invitationState;
 - (void)_clearTimer;
 - (void)_configureTimer;
-- (void)_resolve:(BOOL)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_resolve:(BOOL)_resolve;
+- (void)encodeWithCoder:(id)coder;
 - (void)expire;
-- (void)setEndDate:(id)a3;
-- (void)updateInvitationState:(int64_t)a3;
-- (void)updateTimer:(unint64_t)a3 clientQueue:(id)a4;
+- (void)setEndDate:(id)date;
+- (void)updateInvitationState:(int64_t)state;
+- (void)updateTimer:(unint64_t)timer clientQueue:(id)queue;
 @end
 
 @implementation HMDHomeInvitation
@@ -31,25 +31,25 @@
 - (id)describeWithFormat
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HMDHomeInvitation *)self identifier];
-  v5 = [v4 UUIDString];
-  v6 = [(HMDHomeInvitation *)self startDate];
-  v7 = [(HMDHomeInvitation *)self endDate];
+  identifier = [(HMDHomeInvitation *)self identifier];
+  uUIDString = [identifier UUIDString];
+  startDate = [(HMDHomeInvitation *)self startDate];
+  endDate = [(HMDHomeInvitation *)self endDate];
   v8 = [MEMORY[0x277CD1A88] homeInvitationStateDescription:{-[HMDHomeInvitation invitationState](self, "invitationState")}];
-  v9 = [(HMDHomeInvitation *)self home];
-  v10 = [v9 name];
-  v11 = [v3 stringWithFormat:@"(IV), identifier = %@, startDate = %@, endDate = %@, state = %@, home = %@  ", v5, v6, v7, v8, v10];
+  home = [(HMDHomeInvitation *)self home];
+  name = [home name];
+  v11 = [v3 stringWithFormat:@"(IV), identifier = %@, startDate = %@, endDate = %@, state = %@, home = %@  ", uUIDString, startDate, endDate, v8, name];
 
   return v11;
 }
 
-- (void)_resolve:(BOOL)a3
+- (void)_resolve:(BOOL)_resolve
 {
-  v3 = a3;
+  _resolveCopy = _resolve;
   v19 = *MEMORY[0x277D85DE8];
   if ([(HMDHomeInvitation *)self isPending])
   {
-    if (v3)
+    if (_resolveCopy)
     {
       v5 = 3;
     }
@@ -60,20 +60,20 @@
     }
 
     [(HMDHomeInvitation *)self updateInvitationState:v5];
-    v6 = [(HMDHomeInvitation *)self clientQueue];
+    clientQueue = [(HMDHomeInvitation *)self clientQueue];
 
-    if (v6)
+    if (clientQueue)
     {
       objc_initWeak(location, self);
-      v7 = [(HMDHomeInvitation *)self clientQueue];
+      clientQueue2 = [(HMDHomeInvitation *)self clientQueue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __30__HMDHomeInvitation__resolve___block_invoke;
       block[3] = &unk_278681A08;
       objc_copyWeak(&v14, location);
-      v15 = v3;
+      v15 = _resolveCopy;
       block[4] = self;
-      dispatch_async(v7, block);
+      dispatch_async(clientQueue2, block);
 
       objc_destroyWeak(&v14);
       objc_destroyWeak(location);
@@ -86,11 +86,11 @@
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
         v10 = HMFGetLogIdentifier();
-        v11 = [(HMDHomeInvitation *)self identifier];
+        identifier = [(HMDHomeInvitation *)self identifier];
         *location = 138543618;
         *&location[4] = v10;
         v17 = 2112;
-        v18 = v11;
+        v18 = identifier;
         _os_log_impl(&dword_229538000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@Not calling invitation (%@) resolution handler, no client queue set", location, 0x16u);
       }
 
@@ -124,8 +124,8 @@ void __30__HMDHomeInvitation__resolve___block_invoke(uint64_t a1)
 
 - (void)_clearTimer
 {
-  v3 = [(HMDHomeInvitation *)self timer];
-  [v3 cancel];
+  timer = [(HMDHomeInvitation *)self timer];
+  [timer cancel];
 
   [(HMDHomeInvitation *)self setTimer:0];
   [(HMDHomeInvitation *)self setClientQueue:0];
@@ -136,9 +136,9 @@ void __30__HMDHomeInvitation__resolve___block_invoke(uint64_t a1)
 
 - (void)_configureTimer
 {
-  v3 = [(HMDHomeInvitation *)self endDate];
-  v4 = [MEMORY[0x277CBEAA8] date];
-  [v3 timeIntervalSinceDate:v4];
+  endDate = [(HMDHomeInvitation *)self endDate];
+  date = [MEMORY[0x277CBEAA8] date];
+  [endDate timeIntervalSinceDate:date];
   v6 = v5;
 
   if (v6 <= 3.0)
@@ -152,11 +152,11 @@ void __30__HMDHomeInvitation__resolve___block_invoke(uint64_t a1)
     v7 = [objc_alloc(MEMORY[0x277D0F920]) initWithTimeInterval:1 options:v6];
     [(HMDHomeInvitation *)self setTimer:v7];
 
-    v8 = [(HMDHomeInvitation *)self timer];
-    [v8 setDelegate:self];
+    timer = [(HMDHomeInvitation *)self timer];
+    [timer setDelegate:self];
 
-    v9 = [(HMDHomeInvitation *)self timer];
-    [v9 resume];
+    timer2 = [(HMDHomeInvitation *)self timer];
+    [timer2 resume];
   }
 }
 
@@ -166,19 +166,19 @@ void __30__HMDHomeInvitation__resolve___block_invoke(uint64_t a1)
   if ([(HMDHomeInvitation *)self isPending])
   {
     [(HMDHomeInvitation *)self updateInvitationState:6];
-    v3 = [(HMDHomeInvitation *)self clientQueue];
+    clientQueue = [(HMDHomeInvitation *)self clientQueue];
 
-    if (v3)
+    if (clientQueue)
     {
       objc_initWeak(location, self);
-      v4 = [(HMDHomeInvitation *)self clientQueue];
+      clientQueue2 = [(HMDHomeInvitation *)self clientQueue];
       v10[0] = MEMORY[0x277D85DD0];
       v10[1] = 3221225472;
       v10[2] = __27__HMDHomeInvitation_expire__block_invoke;
       v10[3] = &unk_278686B48;
       objc_copyWeak(&v11, location);
       v10[4] = self;
-      dispatch_async(v4, v10);
+      dispatch_async(clientQueue2, v10);
 
       objc_destroyWeak(&v11);
       objc_destroyWeak(location);
@@ -191,11 +191,11 @@ void __30__HMDHomeInvitation__resolve___block_invoke(uint64_t a1)
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
       {
         v7 = HMFGetLogIdentifier();
-        v8 = [(HMDHomeInvitation *)self identifier];
+        identifier = [(HMDHomeInvitation *)self identifier];
         *location = 138543618;
         *&location[4] = v7;
         v13 = 2112;
-        v14 = v8;
+        v14 = identifier;
         _os_log_impl(&dword_229538000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@Not calling invitation (%@) expiration handler, no client queue set", location, 0x16u);
       }
 
@@ -255,33 +255,33 @@ void __27__HMDHomeInvitation_expire__block_invoke(uint64_t a1)
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateTimer:(unint64_t)a3 clientQueue:(id)a4
+- (void)updateTimer:(unint64_t)timer clientQueue:(id)queue
 {
-  v6 = a4;
-  v9 = [(HMDHomeInvitation *)self resolutionHandler];
-  v7 = [(HMDHomeInvitation *)self expirationHandler];
+  queueCopy = queue;
+  resolutionHandler = [(HMDHomeInvitation *)self resolutionHandler];
+  expirationHandler = [(HMDHomeInvitation *)self expirationHandler];
   [(HMDHomeInvitation *)self _clearTimer];
-  v8 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:a3];
+  v8 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:timer];
   [(HMDHomeInvitation *)self setEndDate:v8];
 
   [(HMDHomeInvitation *)self _configureTimer];
-  [(HMDHomeInvitation *)self setClientQueue:v6];
+  [(HMDHomeInvitation *)self setClientQueue:queueCopy];
 
-  [(HMDHomeInvitation *)self setResolutionHandler:v9];
-  [(HMDHomeInvitation *)self setExpirationHandler:v7];
+  [(HMDHomeInvitation *)self setResolutionHandler:resolutionHandler];
+  [(HMDHomeInvitation *)self setExpirationHandler:expirationHandler];
 }
 
-- (void)updateInvitationState:(int64_t)a3
+- (void)updateInvitationState:(int64_t)state
 {
-  v4 = [(HMDHomeInvitation *)self invitationData];
-  [v4 setInvitationState:a3];
+  invitationData = [(HMDHomeInvitation *)self invitationData];
+  [invitationData setInvitationState:state];
 }
 
 - (double)age
 {
   v3 = [MEMORY[0x277CBEAA8] now];
-  v4 = [(HMDHomeInvitation *)self startDate];
-  [v3 timeIntervalSinceDate:v4];
+  startDate = [(HMDHomeInvitation *)self startDate];
+  [v3 timeIntervalSinceDate:startDate];
   v6 = v5;
 
   return v6;
@@ -289,71 +289,71 @@ void __27__HMDHomeInvitation_expire__block_invoke(uint64_t a1)
 
 - (int64_t)invitationState
 {
-  v2 = [(HMDHomeInvitation *)self invitationData];
-  v3 = [v2 invitationState];
+  invitationData = [(HMDHomeInvitation *)self invitationData];
+  invitationState = [invitationData invitationState];
 
-  return v3;
+  return invitationState;
 }
 
-- (void)setEndDate:(id)a3
+- (void)setEndDate:(id)date
 {
-  v4 = a3;
-  v5 = [(HMDHomeInvitation *)self invitationData];
-  [v5 setEndDate:v4];
+  dateCopy = date;
+  invitationData = [(HMDHomeInvitation *)self invitationData];
+  [invitationData setEndDate:dateCopy];
 }
 
 - (NSDate)endDate
 {
-  v2 = [(HMDHomeInvitation *)self invitationData];
-  v3 = [v2 endDate];
+  invitationData = [(HMDHomeInvitation *)self invitationData];
+  endDate = [invitationData endDate];
 
-  return v3;
+  return endDate;
 }
 
 - (NSDate)startDate
 {
-  v2 = [(HMDHomeInvitation *)self invitationData];
-  v3 = [v2 startDate];
+  invitationData = [(HMDHomeInvitation *)self invitationData];
+  startDate = [invitationData startDate];
 
-  return v3;
+  return startDate;
 }
 
 - (NSUUID)identifier
 {
-  v2 = [(HMDHomeInvitation *)self invitationData];
-  v3 = [v2 identifier];
+  invitationData = [(HMDHomeInvitation *)self invitationData];
+  identifier = [invitationData identifier];
 
-  return v3;
+  return identifier;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v8 = a3;
-  v4 = [(HMDHomeInvitation *)self home];
-  [v8 encodeConditionalObject:v4 forKey:@"home"];
+  coderCopy = coder;
+  home = [(HMDHomeInvitation *)self home];
+  [coderCopy encodeConditionalObject:home forKey:@"home"];
 
-  v5 = [(HMDHomeInvitation *)self invitationData];
-  [v8 encodeObject:v5 forKey:@"HM.invitationData"];
+  invitationData = [(HMDHomeInvitation *)self invitationData];
+  [coderCopy encodeObject:invitationData forKey:@"HM.invitationData"];
 
-  v6 = [(HMDHomeInvitation *)self idsInvitationUUID];
+  idsInvitationUUID = [(HMDHomeInvitation *)self idsInvitationUUID];
 
-  if (v6)
+  if (idsInvitationUUID)
   {
-    v7 = [(HMDHomeInvitation *)self idsInvitationUUID];
-    [v8 encodeObject:v7 forKey:@"idsInvitationUUID"];
+    idsInvitationUUID2 = [(HMDHomeInvitation *)self idsInvitationUUID];
+    [coderCopy encodeObject:idsInvitationUUID2 forKey:@"idsInvitationUUID"];
   }
 }
 
-- (HMDHomeInvitation)initWithCoder:(id)a3 invitationData:(id)a4
+- (HMDHomeInvitation)initWithCoder:(id)coder invitationData:(id)data
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 decodeObjectOfClass:objc_opt_class() forKey:@"home"];
-  v9 = [(HMDHomeInvitation *)self initWithInvitationData:v7 forHome:v8];
+  coderCopy = coder;
+  dataCopy = data;
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"home"];
+  v9 = [(HMDHomeInvitation *)self initWithInvitationData:dataCopy forHome:v8];
 
-  if (v9 && [v6 containsValueForKey:@"idsInvitationUUID"])
+  if (v9 && [coderCopy containsValueForKey:@"idsInvitationUUID"])
   {
-    v10 = [v6 decodeObjectOfClass:objc_opt_class() forKey:@"idsInvitationUUID"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"idsInvitationUUID"];
     idsInvitationUUID = v9->_idsInvitationUUID;
     v9->_idsInvitationUUID = v10;
   }
@@ -361,18 +361,18 @@ void __27__HMDHomeInvitation_expire__block_invoke(uint64_t a1)
   return v9;
 }
 
-- (HMDHomeInvitation)initWithInvitationData:(id)a3 forHome:(id)a4
+- (HMDHomeInvitation)initWithInvitationData:(id)data forHome:(id)home
 {
-  v7 = a3;
-  v8 = a4;
+  dataCopy = data;
+  homeCopy = home;
   v12.receiver = self;
   v12.super_class = HMDHomeInvitation;
   v9 = [(HMDHomeInvitation *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_invitationData, a3);
-    objc_storeWeak(&v10->_home, v8);
+    objc_storeStrong(&v9->_invitationData, data);
+    objc_storeWeak(&v10->_home, homeCopy);
     [(HMDHomeInvitation *)v10 _configureTimer];
   }
 
@@ -392,8 +392,8 @@ void __27__HMDHomeInvitation_expire__block_invoke(uint64_t a1)
     [v3 setYear:4001];
     [v3 setMonth:1];
     [v3 setDay:1];
-    v4 = [MEMORY[0x277CBEA80] currentCalendar];
-    v5 = [v4 dateFromComponents:v3];
+    currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+    v5 = [currentCalendar dateFromComponents:v3];
     v6 = noRetryDate_noRetryDate;
     noRetryDate_noRetryDate = v5;
 

@@ -1,42 +1,42 @@
 @interface ICPlayActivityEnqueuerProperties
-- (ICPlayActivityEnqueuerProperties)initWithCoder:(id)a3;
-- (id)_copyWithClass:(Class)a3 zone:(_NSZone *)a4;
+- (ICPlayActivityEnqueuerProperties)initWithCoder:(id)coder;
+- (id)_copyWithClass:(Class)class zone:(_NSZone *)zone;
 - (id)description;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ICPlayActivityEnqueuerProperties
 
-- (id)_copyWithClass:(Class)a3 zone:(_NSZone *)a4
+- (id)_copyWithClass:(Class)class zone:(_NSZone *)zone
 {
-  v6 = [[(objc_class *)a3 allocWithZone:a4] init];
+  v6 = [[(objc_class *)class allocWithZone:zone] init];
   if (v6)
   {
-    v7 = [(NSString *)self->_buildVersion copyWithZone:a4];
+    v7 = [(NSString *)self->_buildVersion copyWithZone:zone];
     v8 = *(v6 + 1);
     *(v6 + 1) = v7;
 
-    v9 = [(NSString *)self->_deviceGUID copyWithZone:a4];
+    v9 = [(NSString *)self->_deviceGUID copyWithZone:zone];
     v10 = *(v6 + 2);
     *(v6 + 2) = v9;
 
-    v11 = [(NSString *)self->_deviceName copyWithZone:a4];
+    v11 = [(NSString *)self->_deviceName copyWithZone:zone];
     v12 = *(v6 + 3);
     *(v6 + 3) = v11;
 
-    v13 = [(NSNumber *)self->_privateListeningEnabled copyWithZone:a4];
+    v13 = [(NSNumber *)self->_privateListeningEnabled copyWithZone:zone];
     v14 = *(v6 + 4);
     *(v6 + 4) = v13;
 
     *(v6 + 40) = self->_SBEnabled;
     *(v6 + 6) = self->_storeAccountID;
-    v15 = [(NSString *)self->_storeFrontID copyWithZone:a4];
+    v15 = [(NSString *)self->_storeFrontID copyWithZone:zone];
     v16 = *(v6 + 7);
     *(v6 + 7) = v15;
 
     *(v6 + 8) = self->_systemReleaseType;
-    v17 = [(NSTimeZone *)self->_timeZone copyWithZone:a4];
+    v17 = [(NSTimeZone *)self->_timeZone copyWithZone:zone];
     v18 = *(v6 + 9);
     *(v6 + 9) = v17;
   }
@@ -44,45 +44,45 @@
   return v6;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
 
-  return [(ICPlayActivityEnqueuerProperties *)self _copyWithClass:v5 zone:a3];
+  return [(ICPlayActivityEnqueuerProperties *)self _copyWithClass:v5 zone:zone];
 }
 
-- (ICPlayActivityEnqueuerProperties)initWithCoder:(id)a3
+- (ICPlayActivityEnqueuerProperties)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v19.receiver = self;
   v19.super_class = ICPlayActivityEnqueuerProperties;
   v5 = [(ICPlayActivityEnqueuerProperties *)&v19 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"buildVersion"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"buildVersion"];
     buildVersion = v5->_buildVersion;
     v5->_buildVersion = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"deviceGUID"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"deviceGUID"];
     deviceGUID = v5->_deviceGUID;
     v5->_deviceGUID = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"deviceName"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"deviceName"];
     deviceName = v5->_deviceName;
     v5->_deviceName = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"privateListeningEnabled"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"privateListeningEnabled"];
     privateListeningEnabled = v5->_privateListeningEnabled;
     v5->_privateListeningEnabled = v12;
 
-    v5->_systemReleaseType = [v4 decodeIntegerForKey:@"internalBuild"];
-    v5->_SBEnabled = [v4 decodeBoolForKey:@"SBEnabled"];
-    v5->_storeAccountID = [v4 decodeInt64ForKey:@"storeAccountID"];
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"storeFrontID"];
+    v5->_systemReleaseType = [coderCopy decodeIntegerForKey:@"internalBuild"];
+    v5->_SBEnabled = [coderCopy decodeBoolForKey:@"SBEnabled"];
+    v5->_storeAccountID = [coderCopy decodeInt64ForKey:@"storeAccountID"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"storeFrontID"];
     storeFrontID = v5->_storeFrontID;
     v5->_storeFrontID = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"timeZone"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"timeZone"];
     timeZone = v5->_timeZone;
     v5->_timeZone = v16;
   }
@@ -90,19 +90,19 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   buildVersion = self->_buildVersion;
-  v5 = a3;
-  [v5 encodeObject:buildVersion forKey:@"buildVersion"];
-  [v5 encodeObject:self->_deviceGUID forKey:@"deviceGUID"];
-  [v5 encodeObject:self->_deviceName forKey:@"deviceName"];
-  [v5 encodeObject:self->_privateListeningEnabled forKey:@"privateListeningEnabled"];
-  [v5 encodeBool:self->_SBEnabled forKey:@"SBEnabled"];
-  [v5 encodeInt64:self->_storeAccountID forKey:@"storeAccountID"];
-  [v5 encodeObject:self->_storeFrontID forKey:@"storeFrontID"];
-  [v5 encodeInteger:self->_systemReleaseType forKey:@"internalBuild"];
-  [v5 encodeObject:self->_timeZone forKey:@"timeZone"];
+  coderCopy = coder;
+  [coderCopy encodeObject:buildVersion forKey:@"buildVersion"];
+  [coderCopy encodeObject:self->_deviceGUID forKey:@"deviceGUID"];
+  [coderCopy encodeObject:self->_deviceName forKey:@"deviceName"];
+  [coderCopy encodeObject:self->_privateListeningEnabled forKey:@"privateListeningEnabled"];
+  [coderCopy encodeBool:self->_SBEnabled forKey:@"SBEnabled"];
+  [coderCopy encodeInt64:self->_storeAccountID forKey:@"storeAccountID"];
+  [coderCopy encodeObject:self->_storeFrontID forKey:@"storeFrontID"];
+  [coderCopy encodeInteger:self->_systemReleaseType forKey:@"internalBuild"];
+  [coderCopy encodeObject:self->_timeZone forKey:@"timeZone"];
 }
 
 - (id)description

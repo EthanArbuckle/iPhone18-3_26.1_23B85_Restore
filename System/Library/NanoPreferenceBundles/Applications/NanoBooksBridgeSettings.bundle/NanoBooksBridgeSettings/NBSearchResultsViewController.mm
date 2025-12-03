@@ -1,13 +1,13 @@
 @interface NBSearchResultsViewController
 - (NBSearchResultsViewController)init;
 - (NBSelectAudiobookDelegate)delegate;
-- (id)_specifierForJaliscoItem:(id)a3;
-- (id)_specifierForMediaItem:(id)a3;
+- (id)_specifierForJaliscoItem:(id)item;
+- (id)_specifierForMediaItem:(id)item;
 - (id)specifiers;
-- (void)searchForString:(id)a3;
-- (void)setFamilyDSIDs:(id)a3;
-- (void)setIncludeFamily:(BOOL)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)searchForString:(id)string;
+- (void)setFamilyDSIDs:(id)ds;
+- (void)setIncludeFamily:(BOOL)family;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation NBSearchResultsViewController
@@ -32,24 +32,24 @@
   return v3;
 }
 
-- (void)setFamilyDSIDs:(id)a3
+- (void)setFamilyDSIDs:(id)ds
 {
-  v4 = [a3 copy];
+  v4 = [ds copy];
   familyDSIDs = self->_familyDSIDs;
   self->_familyDSIDs = v4;
 
   if ([(NBSearchResultsViewController *)self includeFamily])
   {
     v6 = self->_familyDSIDs;
-    v7 = [(NBSearchResultsViewController *)self searchDataSource];
-    [v7 setFamilyDSIDs:v6];
+    searchDataSource = [(NBSearchResultsViewController *)self searchDataSource];
+    [searchDataSource setFamilyDSIDs:v6];
   }
 }
 
-- (void)setIncludeFamily:(BOOL)a3
+- (void)setIncludeFamily:(BOOL)family
 {
-  self->_includeFamily = a3;
-  if (a3)
+  self->_includeFamily = family;
+  if (family)
   {
     familyDSIDs = self->_familyDSIDs;
   }
@@ -59,8 +59,8 @@
     familyDSIDs = &__NSArray0__struct;
   }
 
-  v4 = [(NBSearchResultsViewController *)self searchDataSource];
-  [v4 setFamilyDSIDs:familyDSIDs];
+  searchDataSource = [(NBSearchResultsViewController *)self searchDataSource];
+  [searchDataSource setFamilyDSIDs:familyDSIDs];
 }
 
 - (id)specifiers
@@ -154,44 +154,44 @@ LABEL_19:
   return v3;
 }
 
-- (void)searchForString:(id)a3
+- (void)searchForString:(id)string
 {
-  v4 = a3;
-  v5 = [(NBSearchResultsViewController *)self searchDataSource];
+  stringCopy = string;
+  searchDataSource = [(NBSearchResultsViewController *)self searchDataSource];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_6B64;
   v6[3] = &unk_20A38;
   v6[4] = self;
-  [v5 filterResultsUsingSearchString:v4 completion:v6];
+  [searchDataSource filterResultsUsingSearchString:stringCopy completion:v6];
 }
 
-- (id)_specifierForMediaItem:(id)a3
+- (id)_specifierForMediaItem:(id)item
 {
-  v4 = a3;
-  v5 = [v4 bk_effectiveTitle];
-  v6 = [PSSpecifier preferenceSpecifierNamed:v5 target:self set:0 get:0 detail:0 cell:3 edit:0];
+  itemCopy = item;
+  bk_effectiveTitle = [itemCopy bk_effectiveTitle];
+  v6 = [PSSpecifier preferenceSpecifierNamed:bk_effectiveTitle target:self set:0 get:0 detail:0 cell:3 edit:0];
 
   [v6 setProperty:objc_opt_class() forKey:PSCellClassKey];
-  v7 = [v4 bk_effectiveTitle];
-  [v6 setProperty:v7 forKey:NMBUISpecifierTitleKey];
+  bk_effectiveTitle2 = [itemCopy bk_effectiveTitle];
+  [v6 setProperty:bk_effectiveTitle2 forKey:NMBUISpecifierTitleKey];
 
-  v8 = [v4 bk_effectiveAuthor];
-  [v6 setProperty:v8 forKey:NMBUISpecifierSubtitleKey];
+  bk_effectiveAuthor = [itemCopy bk_effectiveAuthor];
+  [v6 setProperty:bk_effectiveAuthor forKey:NMBUISpecifierSubtitleKey];
 
   [v6 setProperty:&off_21A68 forKey:PSTableCellStyleOverrideKey];
-  v9 = [v4 artworkCatalog];
-  [v6 setProperty:v9 forKey:NMBUISpecifierArtworkCatalogKey];
+  artworkCatalog = [itemCopy artworkCatalog];
+  [v6 setProperty:artworkCatalog forKey:NMBUISpecifierArtworkCatalogKey];
 
   v10 = +[NBBridgeUtilities audiobookArtworkPlaceholderImage];
   [v6 setProperty:v10 forKey:NMBUISpecifierPlaceholderImageKey];
 
-  v11 = [v4 bk_storeID];
+  bk_storeID = [itemCopy bk_storeID];
 
-  v12 = [(NBSearchResultsViewController *)self delegate];
-  LODWORD(v4) = [v12 selectAudiobookAdamIdAlreadyPinned:v11];
+  delegate = [(NBSearchResultsViewController *)self delegate];
+  LODWORD(itemCopy) = [delegate selectAudiobookAdamIdAlreadyPinned:bk_storeID];
 
-  if (v4)
+  if (itemCopy)
   {
     [v6 setProperty:&__kCFBooleanFalse forKey:PSEnabledKey];
   }
@@ -199,32 +199,32 @@ LABEL_19:
   return v6;
 }
 
-- (id)_specifierForJaliscoItem:(id)a3
+- (id)_specifierForJaliscoItem:(id)item
 {
-  v4 = a3;
-  v5 = [v4 title];
-  v6 = [PSSpecifier preferenceSpecifierNamed:v5 target:self set:0 get:0 detail:0 cell:3 edit:0];
+  itemCopy = item;
+  title = [itemCopy title];
+  v6 = [PSSpecifier preferenceSpecifierNamed:title target:self set:0 get:0 detail:0 cell:3 edit:0];
 
   [v6 setProperty:objc_opt_class() forKey:PSCellClassKey];
-  v7 = [v4 title];
-  [v6 setProperty:v7 forKey:NMBUISpecifierTitleKey];
+  title2 = [itemCopy title];
+  [v6 setProperty:title2 forKey:NMBUISpecifierTitleKey];
 
-  v8 = [v4 artist];
-  [v6 setProperty:v8 forKey:NMBUISpecifierSubtitleKey];
+  artist = [itemCopy artist];
+  [v6 setProperty:artist forKey:NMBUISpecifierSubtitleKey];
 
   [v6 setProperty:&off_21A68 forKey:PSTableCellStyleOverrideKey];
-  v9 = [v4 artworkCatalog];
-  [v6 setProperty:v9 forKey:NMBUISpecifierArtworkCatalogKey];
+  artworkCatalog = [itemCopy artworkCatalog];
+  [v6 setProperty:artworkCatalog forKey:NMBUISpecifierArtworkCatalogKey];
 
   v10 = +[NBBridgeUtilities audiobookArtworkPlaceholderImage];
   [v6 setProperty:v10 forKey:NMBUISpecifierPlaceholderImageKey];
 
-  v11 = [v4 storeID];
+  storeID = [itemCopy storeID];
 
-  v12 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [v11 longLongValue]);
+  v12 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [storeID longLongValue]);
 
-  v13 = [(NBSearchResultsViewController *)self delegate];
-  LODWORD(v10) = [v13 selectAudiobookAdamIdAlreadyPinned:v12];
+  delegate = [(NBSearchResultsViewController *)self delegate];
+  LODWORD(v10) = [delegate selectAudiobookAdamIdAlreadyPinned:v12];
 
   if (v10)
   {
@@ -234,35 +234,35 @@ LABEL_19:
   return v6;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 row];
-  v9 = [(NBSearchResultsViewController *)self searchResults];
-  v10 = [v9 count];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [pathCopy row];
+  searchResults = [(NBSearchResultsViewController *)self searchResults];
+  v10 = [searchResults count];
 
   if (v8 >= v10)
   {
-    v16 = NBDefaultLog();
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+    bk_storeID = NBDefaultLog();
+    if (os_log_type_enabled(bk_storeID, OS_LOG_TYPE_ERROR))
     {
-      sub_119A8(self, v7);
+      sub_119A8(self, pathCopy);
     }
 
     goto LABEL_14;
   }
 
-  v11 = [(NBSearchResultsViewController *)self searchDataSource];
-  v12 = [v11 items];
-  v13 = [v12 objectAtIndexedSubscript:{objc_msgSend(v7, "row")}];
+  searchDataSource = [(NBSearchResultsViewController *)self searchDataSource];
+  items = [searchDataSource items];
+  v13 = [items objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
 
   objc_opt_class();
   v14 = BUDynamicCast();
   v15 = v14;
   if (v14)
   {
-    v16 = [v14 bk_storeID];
+    bk_storeID = [v14 bk_storeID];
   }
 
   else
@@ -272,8 +272,8 @@ LABEL_19:
     v18 = v17;
     if (v17)
     {
-      v19 = [v17 storeID];
-      v16 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v19 nb_uint64_t]);
+      storeID = [v17 storeID];
+      bk_storeID = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [storeID nb_uint64_t]);
     }
 
     else
@@ -281,22 +281,22 @@ LABEL_19:
       v20 = NBDefaultLog();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
       {
-        sub_11A58(v13, v7);
+        sub_11A58(v13, pathCopy);
       }
 
-      v16 = 0;
+      bk_storeID = 0;
     }
   }
 
-  if (v16)
+  if (bk_storeID)
   {
-    v21 = [(NBSearchResultsViewController *)self delegate];
-    [v21 selectAudiobookDidSelectAudiobookWithAdamId:v16];
+    delegate = [(NBSearchResultsViewController *)self delegate];
+    [delegate selectAudiobookDidSelectAudiobookWithAdamId:bk_storeID];
 
 LABEL_14:
   }
 
-  [v6 deselectRowAtIndexPath:v7 animated:1];
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
 }
 
 - (NBSelectAudiobookDelegate)delegate

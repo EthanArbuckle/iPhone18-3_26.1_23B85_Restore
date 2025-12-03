@@ -9,8 +9,8 @@
 
 - (id)mui_sortedIndexPathsForVisibleItems
 {
-  v1 = [a1 indexPathsForVisibleItems];
-  v2 = [v1 sortedArrayUsingSelector:sel_compare_];
+  indexPathsForVisibleItems = [self indexPathsForVisibleItems];
+  v2 = [indexPathsForVisibleItems sortedArrayUsingSelector:sel_compare_];
 
   return v2;
 }
@@ -21,7 +21,7 @@
   block[1] = 3221225472;
   block[2] = __58__UICollectionView_MailUI__mui_indexPathsForPreparedItems__block_invoke;
   block[3] = &unk_278188BB0;
-  block[4] = a1;
+  block[4] = self;
   if (mui_indexPathsForPreparedItems_onceToken != -1)
   {
     dispatch_once(&mui_indexPathsForPreparedItems_onceToken, block);
@@ -29,41 +29,41 @@
 
   if (mui_indexPathsForPreparedItems_shouldUseImprovedSPI == 1)
   {
-    v2 = [a1 _indexPathsForPreparedItems];
+    _indexPathsForPreparedItems = [self _indexPathsForPreparedItems];
   }
 
   else
   {
-    v3 = [a1 preparedCells];
+    preparedCells = [self preparedCells];
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
     v5[2] = __58__UICollectionView_MailUI__mui_indexPathsForPreparedItems__block_invoke_2;
     v5[3] = &unk_27818A5B0;
-    v5[4] = a1;
-    v2 = [v3 ef_compactMap:v5];
+    v5[4] = self;
+    _indexPathsForPreparedItems = [preparedCells ef_compactMap:v5];
   }
 
-  return v2;
+  return _indexPathsForPreparedItems;
 }
 
 - (double)mui_safeVisibleBounds
 {
-  [a1 visibleBounds];
+  [self visibleBounds];
   v3 = v2;
-  [a1 safeAreaInsets];
+  [self safeAreaInsets];
   return v3 + v4;
 }
 
 - (BOOL)mui_isIndexPathVisible:()MailUI
 {
   v4 = a3;
-  v5 = [a1 indexPathsForVisibleItems];
-  v6 = [v5 containsObject:v4];
+  indexPathsForVisibleItems = [self indexPathsForVisibleItems];
+  v6 = [indexPathsForVisibleItems containsObject:v4];
 
   if (v6)
   {
-    v7 = [a1 layoutAttributesForItemAtIndexPath:v4];
-    [a1 mui_safeVisibleBounds];
+    v7 = [self layoutAttributesForItemAtIndexPath:v4];
+    [self mui_safeVisibleBounds];
     v9 = v8;
     v11 = v10;
     v13 = v12;

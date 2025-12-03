@@ -1,6 +1,6 @@
 @interface OpensAppIntentDispatcher
 - (NSString)bundleIdentifier;
-- (void)performWithCompletionHandler:(id)a3;
+- (void)performWithCompletionHandler:(id)handler;
 @end
 
 @implementation OpensAppIntentDispatcher
@@ -22,13 +22,13 @@
   return v7;
 }
 
-- (void)performWithCompletionHandler:(id)a3
+- (void)performWithCompletionHandler:(id)handler
 {
   v5 = sub_100024EA8(&qword_10009B150, &qword_10006DC50);
   v6 = *(*(v5 - 8) + 64);
   __chkstk_darwin(v5 - 8);
   v8 = &v14 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;

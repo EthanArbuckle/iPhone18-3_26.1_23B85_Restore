@@ -9,19 +9,19 @@
 
 - (id)hv_firstHeaderForKey:()HVHeadersMapTable
 {
-  v1 = [a1 objectForKey:?];
+  v1 = [self objectForKey:?];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v2 = [v1 firstObject];
+    firstObject = [v1 firstObject];
   }
 
   else
   {
-    v2 = 0;
+    firstObject = 0;
   }
 
-  return v2;
+  return firstObject;
 }
 
 - (uint64_t)hv_addEntriesFromHeadersDictionary:()HVHeadersMapTable
@@ -30,7 +30,7 @@
   v4[1] = 3221225472;
   v4[2] = __68__NSMapTable_HVHeadersMapTable__hv_addEntriesFromHeadersDictionary___block_invoke;
   v4[3] = &unk_278968DA8;
-  v4[4] = a1;
+  v4[4] = self;
   return [a3 enumerateKeysAndObjectsUsingBlock:v4];
 }
 

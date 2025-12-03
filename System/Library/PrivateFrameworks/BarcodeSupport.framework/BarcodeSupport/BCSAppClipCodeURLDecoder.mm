@@ -1,7 +1,7 @@
 @interface BCSAppClipCodeURLDecoder
 + (id)sharedDecoder;
 - (BCSAppClipCodeURLDecoder)init;
-- (void)parseEncodedURLData:(id)a3 version:(unint64_t)a4 completion:(id)a5;
+- (void)parseEncodedURLData:(id)data version:(unint64_t)version completion:(id)completion;
 @end
 
 @implementation BCSAppClipCodeURLDecoder
@@ -42,23 +42,23 @@ uint64_t __41__BCSAppClipCodeURLDecoder_sharedDecoder__block_invoke()
   return v2;
 }
 
-- (void)parseEncodedURLData:(id)a3 version:(unint64_t)a4 completion:(id)a5
+- (void)parseEncodedURLData:(id)data version:(unint64_t)version completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  dataCopy = data;
+  completionCopy = completion;
   v10 = clock_gettime_nsec_np(_CLOCK_MONOTONIC_RAW);
   serviceConnection = self->_serviceConnection;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __67__BCSAppClipCodeURLDecoder_parseEncodedURLData_version_completion___block_invoke;
   v14[3] = &unk_278CFF670;
-  v15 = v8;
-  v16 = v9;
-  v17 = a4;
+  v15 = dataCopy;
+  v16 = completionCopy;
+  versionCopy = version;
   v18 = v10;
-  v12 = v9;
-  v13 = v8;
-  [(BCSParsingServiceConnection *)serviceConnection decodeAppClipCodeURLWithEncodedData:v13 codingVersion:a4 requiresAuthorization:0 withReply:v14];
+  v12 = completionCopy;
+  v13 = dataCopy;
+  [(BCSParsingServiceConnection *)serviceConnection decodeAppClipCodeURLWithEncodedData:v13 codingVersion:version requiresAuthorization:0 withReply:v14];
 }
 
 void __67__BCSAppClipCodeURLDecoder_parseEncodedURLData_version_completion___block_invoke(uint64_t a1, void *a2, uint64_t a3)

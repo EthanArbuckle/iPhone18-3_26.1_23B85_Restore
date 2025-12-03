@@ -1,16 +1,16 @@
 @interface ACSettingsSwitchView
-- (ACSettingsSwitchView)initWithFrame:(CGRect)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (void)setIcon:(id)a3;
+- (ACSettingsSwitchView)initWithFrame:(CGRect)frame;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (void)setIcon:(id)icon;
 @end
 
 @implementation ACSettingsSwitchView
 
-- (ACSettingsSwitchView)initWithFrame:(CGRect)a3
+- (ACSettingsSwitchView)initWithFrame:(CGRect)frame
 {
   v40.receiver = self;
   v40.super_class = ACSettingsSwitchView;
-  v3 = [(ACSettingsSnippetView *)&v40 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(ACSettingsSnippetView *)&v40 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [UIImageView alloc];
@@ -78,11 +78,11 @@
           }
 
           v29 = *(*(&v36 + 1) + 8 * i);
-          v30 = [v29 firstItem];
-          if ([v23 containsObject:v30])
+          firstItem = [v29 firstItem];
+          if ([v23 containsObject:firstItem])
           {
-            v31 = [v29 secondItem];
-            v32 = [v23 containsObject:v31];
+            secondItem = [v29 secondItem];
+            v32 = [v23 containsObject:secondItem];
 
             if (v32)
             {
@@ -112,12 +112,12 @@ LABEL_13:
   return v3;
 }
 
-- (void)setIcon:(id)a3
+- (void)setIcon:(id)icon
 {
-  objc_storeStrong(&self->_icon, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_icon, icon);
+  iconCopy = icon;
   iconHorizontalSpacingConstraint = self->_iconHorizontalSpacingConstraint;
-  [v5 size];
+  [iconCopy size];
   v8 = v7 == 0.0;
   v9 = 0.0;
   if (v8)
@@ -132,15 +132,15 @@ LABEL_13:
   }
 
   [(NSLayoutConstraint *)iconHorizontalSpacingConstraint setConstant:v9];
-  [(UIImageView *)self->_iconImageView setImage:v5];
+  [(UIImageView *)self->_iconImageView setImage:iconCopy];
 
   [(ACSettingsSwitchView *)self setNeedsLayout];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  v5 = [(UIImageView *)self->_iconImageView image:a3.width];
+  width = fits.width;
+  v5 = [(UIImageView *)self->_iconImageView image:fits.width];
   [v5 size];
   v7 = v6 + SiriUIPlatterStyle[30] * 2.0;
 

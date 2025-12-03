@@ -1,5 +1,5 @@
 @interface JavaUtilArrayList_ArrayListIterator
-- (JavaUtilArrayList_ArrayListIterator)initWithJavaUtilArrayList:(id)a3;
+- (JavaUtilArrayList_ArrayListIterator)initWithJavaUtilArrayList:(id)list;
 - (id)next;
 - (void)dealloc;
 - (void)remove;
@@ -78,12 +78,12 @@ LABEL_8:
   self->expectedModCount_ = v9;
 }
 
-- (JavaUtilArrayList_ArrayListIterator)initWithJavaUtilArrayList:(id)a3
+- (JavaUtilArrayList_ArrayListIterator)initWithJavaUtilArrayList:(id)list
 {
-  JreStrongAssign(&self->this$0_, a3);
-  self->remaining_ = *(a3 + 3);
+  JreStrongAssign(&self->this$0_, list);
+  self->remaining_ = *(list + 3);
   self->removalIndex_ = -1;
-  self->expectedModCount_ = *(a3 + 2);
+  self->expectedModCount_ = *(list + 2);
   return self;
 }
 

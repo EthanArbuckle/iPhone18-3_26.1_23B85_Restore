@@ -1,16 +1,16 @@
 @interface _DASSwapModelCustomAggregator
-- (_DASSwapModelCustomAggregator)initWithAlgorithms:(id)a3;
-- (double)scoreForApplication:(id)a3 atDate:(id)a4;
-- (id)scoresForAllApplicationsAtDate:(id)a3;
+- (_DASSwapModelCustomAggregator)initWithAlgorithms:(id)algorithms;
+- (double)scoreForApplication:(id)application atDate:(id)date;
+- (id)scoresForAllApplicationsAtDate:(id)date;
 @end
 
 @implementation _DASSwapModelCustomAggregator
 
-- (_DASSwapModelCustomAggregator)initWithAlgorithms:(id)a3
+- (_DASSwapModelCustomAggregator)initWithAlgorithms:(id)algorithms
 {
   v16.receiver = self;
   v16.super_class = _DASSwapModelCustomAggregator;
-  v3 = [(_DASSwapModelAbstractAggregator *)&v16 initWithAlgorithms:a3];
+  v3 = [(_DASSwapModelAbstractAggregator *)&v16 initWithAlgorithms:algorithms];
   v4 = v3;
   if (v3)
   {
@@ -18,8 +18,8 @@
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v5 = [(_DASSwapModelAbstractAggregator *)v3 algorithms];
-    v6 = [v5 countByEnumeratingWithState:&v12 objects:v17 count:16];
+    algorithms = [(_DASSwapModelAbstractAggregator *)v3 algorithms];
+    v6 = [algorithms countByEnumeratingWithState:&v12 objects:v17 count:16];
     if (v6)
     {
       v7 = v6;
@@ -31,7 +31,7 @@
         {
           if (*v13 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(algorithms);
           }
 
           v10 = *(*(&v12 + 1) + 8 * v9);
@@ -45,7 +45,7 @@
         }
 
         while (v7 != v9);
-        v7 = [v5 countByEnumeratingWithState:&v12 objects:v17 count:16];
+        v7 = [algorithms countByEnumeratingWithState:&v12 objects:v17 count:16];
       }
 
       while (v7);
@@ -55,23 +55,23 @@
   return v4;
 }
 
-- (id)scoresForAllApplicationsAtDate:(id)a3
+- (id)scoresForAllApplicationsAtDate:(id)date
 {
-  v70 = a3;
+  dateCopy = date;
   v4 = objc_autoreleasePoolPush();
-  v5 = [(_DASSwapModelAbstractAggregator *)self algorithms];
-  v6 = [v5 count];
+  algorithms = [(_DASSwapModelAbstractAggregator *)self algorithms];
+  firstObject4 = [algorithms count];
 
-  if (!v6)
+  if (!firstObject4)
   {
     goto LABEL_4;
   }
 
-  if (v6 == 1)
+  if (firstObject4 == 1)
   {
-    v7 = [(_DASSwapModelAbstractAggregator *)self algorithms];
-    v8 = [v7 firstObject];
-    v6 = [v8 scoresForAllApplicationsAtDate:v70];
+    algorithms2 = [(_DASSwapModelAbstractAggregator *)self algorithms];
+    firstObject = [algorithms2 firstObject];
+    firstObject4 = [firstObject scoresForAllApplicationsAtDate:dateCopy];
 
 LABEL_4:
     objc_autoreleasePoolPop(v4);
@@ -81,34 +81,34 @@ LABEL_4:
 
   v11 = +[NSMutableSet set];
   v12 = +[NSMutableArray array];
-  v13 = [(_DASSwapModeling *)self->_applicationUsageModeling scoresForAllApplicationsAtDate:v70];
+  v13 = [(_DASSwapModeling *)self->_applicationUsageModeling scoresForAllApplicationsAtDate:dateCopy];
   v14 = [v13 count];
   [v12 addObject:v13];
-  v15 = [v13 allKeys];
+  allKeys = [v13 allKeys];
   v69 = v11;
-  [v11 addObjectsFromArray:v15];
+  [v11 addObjectsFromArray:allKeys];
 
   v77 = 0u;
   v78 = 0u;
   v75 = 0u;
   v76 = 0u;
-  v16 = [(_DASSwapModelAbstractAggregator *)self algorithms];
-  v17 = [v16 countByEnumeratingWithState:&v75 objects:v80 count:16];
+  algorithms3 = [(_DASSwapModelAbstractAggregator *)self algorithms];
+  v17 = [algorithms3 countByEnumeratingWithState:&v75 objects:v80 count:16];
   if (v17)
   {
     v18 = v17;
     v65 = v14;
-    obj = v16;
-    v60 = v6;
+    obj = algorithms3;
+    v60 = firstObject4;
     v62 = v13;
     v63 = v4;
-    v6 = *v76;
+    firstObject4 = *v76;
     v19 = 1;
     do
     {
       for (i = 0; i != v18; i = i + 1)
       {
-        if (*v76 != v6)
+        if (*v76 != firstObject4)
         {
           objc_enumerationMutation(obj);
         }
@@ -117,11 +117,11 @@ LABEL_4:
         v22 = objc_autoreleasePoolPush();
         if (v21 != self->_applicationUsageModeling)
         {
-          v23 = [(_DASSwapModeling *)v21 scoresForAllApplicationsAtDate:v70];
+          v23 = [(_DASSwapModeling *)v21 scoresForAllApplicationsAtDate:dateCopy];
           v19 &= [v23 count] == 0;
           [v12 addObject:v23];
-          v24 = [v23 allKeys];
-          [v69 addObjectsFromArray:v24];
+          allKeys2 = [v23 allKeys];
+          [v69 addObjectsFromArray:allKeys2];
         }
 
         objc_autoreleasePoolPop(v22);
@@ -140,7 +140,7 @@ LABEL_4:
       {
         v25 = 0;
         v9 = 0;
-        v6 = &__NSDictionary0__struct;
+        firstObject4 = &__NSDictionary0__struct;
         goto LABEL_42;
       }
 
@@ -158,7 +158,7 @@ LABEL_4:
 
       v27 = v26;
       v28 = *v72;
-      v6 = &NSLocalizedDescriptionKey_ptr;
+      firstObject4 = &NSLocalizedDescriptionKey_ptr;
 LABEL_25:
       v29 = 0;
       v64 = v27;
@@ -193,14 +193,14 @@ LABEL_25:
             }
           }
 
-          v50 = v6[20];
+          v50 = firstObject4[20];
           v51 = v55 / v61;
           goto LABEL_38;
         }
 
-        v31 = v6[20];
-        v32 = [v12 firstObject];
-        v33 = [v32 objectForKeyedSubscript:v30];
+        v31 = firstObject4[20];
+        firstObject2 = [v12 firstObject];
+        v33 = [firstObject2 objectForKeyedSubscript:v30];
         [v33 doubleValue];
         v35 = v34;
         [v12 lastObject];
@@ -211,7 +211,7 @@ LABEL_25:
         [obja setObject:v40 forKeyedSubscript:v30];
 
         v28 = v36;
-        v6 = &NSLocalizedDescriptionKey_ptr;
+        firstObject4 = &NSLocalizedDescriptionKey_ptr;
 
         v27 = v64;
 LABEL_39:
@@ -234,8 +234,8 @@ LABEL_41:
         }
       }
 
-      v41 = [v12 firstObject];
-      v42 = [v41 objectForKeyedSubscript:v30];
+      firstObject3 = [v12 firstObject];
+      v42 = [firstObject3 objectForKeyedSubscript:v30];
       [v42 doubleValue];
       v44 = v43;
 
@@ -248,11 +248,11 @@ LABEL_41:
         v45 = v45 + v49;
       }
 
-      v50 = v6[20];
+      v50 = firstObject4[20];
       v51 = v45 * 0.75 * 0.5 + v44 * 0.25;
 LABEL_38:
-      v32 = [v50 numberWithDouble:v51];
-      [obja setObject:v32 forKeyedSubscript:v30];
+      firstObject2 = [v50 numberWithDouble:v51];
+      [obja setObject:firstObject2 forKeyedSubscript:v30];
       goto LABEL_39;
     }
   }
@@ -261,7 +261,7 @@ LABEL_38:
   {
   }
 
-  v6 = [v12 firstObject];
+  firstObject4 = [v12 firstObject];
   v25 = 0;
   v9 = 0;
 LABEL_42:
@@ -270,41 +270,41 @@ LABEL_42:
   if (v25)
   {
     v9 = v9;
-    v6 = v9;
+    firstObject4 = v9;
   }
 
 LABEL_5:
 
-  return v6;
+  return firstObject4;
 }
 
-- (double)scoreForApplication:(id)a3 atDate:(id)a4
+- (double)scoreForApplication:(id)application atDate:(id)date
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(_DASSwapModelAbstractAggregator *)self algorithms];
-  v9 = [v8 count];
+  applicationCopy = application;
+  dateCopy = date;
+  algorithms = [(_DASSwapModelAbstractAggregator *)self algorithms];
+  v9 = [algorithms count];
 
   if (v9)
   {
     if (v9 == 1)
     {
-      v10 = [(_DASSwapModelAbstractAggregator *)self algorithms];
-      v11 = [v10 firstObject];
-      [v11 scoreForApplication:v6 atDate:v7];
+      algorithms2 = [(_DASSwapModelAbstractAggregator *)self algorithms];
+      firstObject = [algorithms2 firstObject];
+      [firstObject scoreForApplication:applicationCopy atDate:dateCopy];
       v13 = v12;
     }
 
     else
     {
-      [(_DASSwapModeling *)self->_applicationUsageModeling scoreForApplication:v6 atDate:v7];
+      [(_DASSwapModeling *)self->_applicationUsageModeling scoreForApplication:applicationCopy atDate:dateCopy];
       v13 = v14;
       v25 = 0u;
       v26 = 0u;
       v27 = 0u;
       v28 = 0u;
-      v15 = [(_DASSwapModelAbstractAggregator *)self algorithms];
-      v16 = [v15 countByEnumeratingWithState:&v25 objects:v29 count:16];
+      algorithms3 = [(_DASSwapModelAbstractAggregator *)self algorithms];
+      v16 = [algorithms3 countByEnumeratingWithState:&v25 objects:v29 count:16];
       if (v16)
       {
         v17 = v16;
@@ -316,18 +316,18 @@ LABEL_5:
           {
             if (*v26 != v18)
             {
-              objc_enumerationMutation(v15);
+              objc_enumerationMutation(algorithms3);
             }
 
             v21 = *(*(&v25 + 1) + 8 * i);
             if (v21 != self->_applicationUsageModeling)
             {
-              [(_DASSwapModeling *)v21 scoreForApplication:v6 atDate:v7];
+              [(_DASSwapModeling *)v21 scoreForApplication:applicationCopy atDate:dateCopy];
               v19 = v19 + v22;
             }
           }
 
-          v17 = [v15 countByEnumeratingWithState:&v25 objects:v29 count:16];
+          v17 = [algorithms3 countByEnumeratingWithState:&v25 objects:v29 count:16];
         }
 
         while (v17);

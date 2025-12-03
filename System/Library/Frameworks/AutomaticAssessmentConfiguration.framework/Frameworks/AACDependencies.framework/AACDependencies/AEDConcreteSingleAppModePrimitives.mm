@@ -1,19 +1,19 @@
 @interface AEDConcreteSingleAppModePrimitives
-- (void)activateSingleAppModeSessionWithConfiguration:(id)a3 completion:(id)a4;
+- (void)activateSingleAppModeSessionWithConfiguration:(id)configuration completion:(id)completion;
 @end
 
 @implementation AEDConcreteSingleAppModePrimitives
 
-- (void)activateSingleAppModeSessionWithConfiguration:(id)a3 completion:(id)a4
+- (void)activateSingleAppModeSessionWithConfiguration:(id)configuration completion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   v6 = MEMORY[0x277D751B0];
-  v7 = a3;
+  configurationCopy = configuration;
   v8 = [v6 defaultConfigurationForStyle:1];
   [v8 setAutomaticallyRelaunchesAfterAppCrash:0];
-  v9 = [v7 MCSingleAppModeConfigurationRepresentation];
-  v10 = [v9 dictionaryValue];
-  v11 = [v10 mutableCopy];
+  mCSingleAppModeConfigurationRepresentation = [configurationCopy MCSingleAppModeConfigurationRepresentation];
+  dictionaryValue = [mCSingleAppModeConfigurationRepresentation dictionaryValue];
+  v11 = [dictionaryValue mutableCopy];
 
   v12 = MEMORY[0x277CBEC28];
   [v11 setObject:MEMORY[0x277CBEC28] forKeyedSubscript:*MEMORY[0x277D26100]];
@@ -21,15 +21,15 @@
   v13 = [v11 copy];
   [v8 setManagedConfigurationSettings:v13];
 
-  v14 = [v7 showsUserConfirmationPromptsAndBanners];
-  [v8 setShowsUserConfirmationPromptsAndBanners:v14];
+  showsUserConfirmationPromptsAndBanners = [configurationCopy showsUserConfirmationPromptsAndBanners];
+  [v8 setShowsUserConfirmationPromptsAndBanners:showsUserConfirmationPromptsAndBanners];
   v15 = MEMORY[0x277D751B8];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __95__AEDConcreteSingleAppModePrimitives_activateSingleAppModeSessionWithConfiguration_completion___block_invoke;
   v17[3] = &unk_278A0C3F0;
-  v18 = v5;
-  v16 = v5;
+  v18 = completionCopy;
+  v16 = completionCopy;
   [v15 requestSessionWithConfiguration:v8 completion:v17];
 }
 

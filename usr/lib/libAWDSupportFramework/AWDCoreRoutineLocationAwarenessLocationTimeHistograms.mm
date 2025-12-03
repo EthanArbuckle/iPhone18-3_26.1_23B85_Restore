@@ -1,14 +1,14 @@
 @interface AWDCoreRoutineLocationAwarenessLocationTimeHistograms
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasTimestamp:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasTimestamp:(BOOL)timestamp;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDCoreRoutineLocationAwarenessLocationTimeHistograms
@@ -25,9 +25,9 @@
   [(AWDCoreRoutineLocationAwarenessLocationTimeHistograms *)&v3 dealloc];
 }
 
-- (void)setHasTimestamp:(BOOL)a3
+- (void)setHasTimestamp:(BOOL)timestamp
 {
-  if (a3)
+  if (timestamp)
   {
     v3 = 2;
   }
@@ -49,53 +49,53 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   has = self->_has;
   if ((has & 2) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
     has = self->_has;
   }
 
   if (has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_duration), @"duration"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_duration), @"duration"}];
   }
 
   lessThan10mHistogram = self->_lessThan10mHistogram;
   if (lessThan10mHistogram)
   {
-    [v3 setObject:-[AWDCoreRoutineLocationAwarenessBasicHistogram dictionaryRepresentation](lessThan10mHistogram forKey:{"dictionaryRepresentation"), @"LessThan10mHistogram"}];
+    [dictionary setObject:-[AWDCoreRoutineLocationAwarenessBasicHistogram dictionaryRepresentation](lessThan10mHistogram forKey:{"dictionaryRepresentation"), @"LessThan10mHistogram"}];
   }
 
   lessThan20mHistogram = self->_lessThan20mHistogram;
   if (lessThan20mHistogram)
   {
-    [v3 setObject:-[AWDCoreRoutineLocationAwarenessBasicHistogram dictionaryRepresentation](lessThan20mHistogram forKey:{"dictionaryRepresentation"), @"LessThan20mHistogram"}];
+    [dictionary setObject:-[AWDCoreRoutineLocationAwarenessBasicHistogram dictionaryRepresentation](lessThan20mHistogram forKey:{"dictionaryRepresentation"), @"LessThan20mHistogram"}];
   }
 
   lessThan55mHistogram = self->_lessThan55mHistogram;
   if (lessThan55mHistogram)
   {
-    [v3 setObject:-[AWDCoreRoutineLocationAwarenessBasicHistogram dictionaryRepresentation](lessThan55mHistogram forKey:{"dictionaryRepresentation"), @"LessThan55mHistogram"}];
+    [dictionary setObject:-[AWDCoreRoutineLocationAwarenessBasicHistogram dictionaryRepresentation](lessThan55mHistogram forKey:{"dictionaryRepresentation"), @"LessThan55mHistogram"}];
   }
 
   lessThan200mHistogram = self->_lessThan200mHistogram;
   if (lessThan200mHistogram)
   {
-    [v3 setObject:-[AWDCoreRoutineLocationAwarenessBasicHistogram dictionaryRepresentation](lessThan200mHistogram forKey:{"dictionaryRepresentation"), @"LessThan200mHistogram"}];
+    [dictionary setObject:-[AWDCoreRoutineLocationAwarenessBasicHistogram dictionaryRepresentation](lessThan200mHistogram forKey:{"dictionaryRepresentation"), @"LessThan200mHistogram"}];
   }
 
   anyPositiveHistogram = self->_anyPositiveHistogram;
   if (anyPositiveHistogram)
   {
-    [v3 setObject:-[AWDCoreRoutineLocationAwarenessBasicHistogram dictionaryRepresentation](anyPositiveHistogram forKey:{"dictionaryRepresentation"), @"AnyPositiveHistogram"}];
+    [dictionary setObject:-[AWDCoreRoutineLocationAwarenessBasicHistogram dictionaryRepresentation](anyPositiveHistogram forKey:{"dictionaryRepresentation"), @"AnyPositiveHistogram"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   has = self->_has;
   if ((has & 2) != 0)
@@ -138,52 +138,52 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(a3 + 2) = self->_timestamp;
-    *(a3 + 64) |= 2u;
+    *(to + 2) = self->_timestamp;
+    *(to + 64) |= 2u;
     has = self->_has;
   }
 
   if (has)
   {
-    *(a3 + 1) = self->_duration;
-    *(a3 + 64) |= 1u;
+    *(to + 1) = self->_duration;
+    *(to + 64) |= 1u;
   }
 
   if (self->_lessThan10mHistogram)
   {
-    [a3 setLessThan10mHistogram:?];
+    [to setLessThan10mHistogram:?];
   }
 
   if (self->_lessThan20mHistogram)
   {
-    [a3 setLessThan20mHistogram:?];
+    [to setLessThan20mHistogram:?];
   }
 
   if (self->_lessThan55mHistogram)
   {
-    [a3 setLessThan55mHistogram:?];
+    [to setLessThan55mHistogram:?];
   }
 
   if (self->_lessThan200mHistogram)
   {
-    [a3 setLessThan200mHistogram:?];
+    [to setLessThan200mHistogram:?];
   }
 
   if (self->_anyPositiveHistogram)
   {
 
-    [a3 setAnyPositiveHistogram:?];
+    [to setAnyPositiveHistogram:?];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 2) != 0)
@@ -199,31 +199,31 @@
     *(v5 + 64) |= 1u;
   }
 
-  *(v6 + 32) = [(AWDCoreRoutineLocationAwarenessBasicHistogram *)self->_lessThan10mHistogram copyWithZone:a3];
-  *(v6 + 48) = [(AWDCoreRoutineLocationAwarenessBasicHistogram *)self->_lessThan20mHistogram copyWithZone:a3];
+  *(v6 + 32) = [(AWDCoreRoutineLocationAwarenessBasicHistogram *)self->_lessThan10mHistogram copyWithZone:zone];
+  *(v6 + 48) = [(AWDCoreRoutineLocationAwarenessBasicHistogram *)self->_lessThan20mHistogram copyWithZone:zone];
 
-  *(v6 + 56) = [(AWDCoreRoutineLocationAwarenessBasicHistogram *)self->_lessThan55mHistogram copyWithZone:a3];
-  *(v6 + 40) = [(AWDCoreRoutineLocationAwarenessBasicHistogram *)self->_lessThan200mHistogram copyWithZone:a3];
+  *(v6 + 56) = [(AWDCoreRoutineLocationAwarenessBasicHistogram *)self->_lessThan55mHistogram copyWithZone:zone];
+  *(v6 + 40) = [(AWDCoreRoutineLocationAwarenessBasicHistogram *)self->_lessThan200mHistogram copyWithZone:zone];
 
-  *(v6 + 24) = [(AWDCoreRoutineLocationAwarenessBasicHistogram *)self->_anyPositiveHistogram copyWithZone:a3];
+  *(v6 + 24) = [(AWDCoreRoutineLocationAwarenessBasicHistogram *)self->_anyPositiveHistogram copyWithZone:zone];
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
-    v6 = *(a3 + 64);
+    v6 = *(equal + 64);
     if ((*&self->_has & 2) != 0)
     {
-      if ((*(a3 + 64) & 2) == 0 || self->_timestamp != *(a3 + 2))
+      if ((*(equal + 64) & 2) == 0 || self->_timestamp != *(equal + 2))
       {
         goto LABEL_22;
       }
     }
 
-    else if ((*(a3 + 64) & 2) != 0)
+    else if ((*(equal + 64) & 2) != 0)
     {
 LABEL_22:
       LOBYTE(v5) = 0;
@@ -232,31 +232,31 @@ LABEL_22:
 
     if (*&self->_has)
     {
-      if ((*(a3 + 64) & 1) == 0 || self->_duration != *(a3 + 1))
+      if ((*(equal + 64) & 1) == 0 || self->_duration != *(equal + 1))
       {
         goto LABEL_22;
       }
     }
 
-    else if (*(a3 + 64))
+    else if (*(equal + 64))
     {
       goto LABEL_22;
     }
 
     lessThan10mHistogram = self->_lessThan10mHistogram;
-    if (!(lessThan10mHistogram | *(a3 + 4)) || (v5 = [(AWDCoreRoutineLocationAwarenessBasicHistogram *)lessThan10mHistogram isEqual:?]) != 0)
+    if (!(lessThan10mHistogram | *(equal + 4)) || (v5 = [(AWDCoreRoutineLocationAwarenessBasicHistogram *)lessThan10mHistogram isEqual:?]) != 0)
     {
       lessThan20mHistogram = self->_lessThan20mHistogram;
-      if (!(lessThan20mHistogram | *(a3 + 6)) || (v5 = [(AWDCoreRoutineLocationAwarenessBasicHistogram *)lessThan20mHistogram isEqual:?]) != 0)
+      if (!(lessThan20mHistogram | *(equal + 6)) || (v5 = [(AWDCoreRoutineLocationAwarenessBasicHistogram *)lessThan20mHistogram isEqual:?]) != 0)
       {
         lessThan55mHistogram = self->_lessThan55mHistogram;
-        if (!(lessThan55mHistogram | *(a3 + 7)) || (v5 = [(AWDCoreRoutineLocationAwarenessBasicHistogram *)lessThan55mHistogram isEqual:?]) != 0)
+        if (!(lessThan55mHistogram | *(equal + 7)) || (v5 = [(AWDCoreRoutineLocationAwarenessBasicHistogram *)lessThan55mHistogram isEqual:?]) != 0)
         {
           lessThan200mHistogram = self->_lessThan200mHistogram;
-          if (!(lessThan200mHistogram | *(a3 + 5)) || (v5 = [(AWDCoreRoutineLocationAwarenessBasicHistogram *)lessThan200mHistogram isEqual:?]) != 0)
+          if (!(lessThan200mHistogram | *(equal + 5)) || (v5 = [(AWDCoreRoutineLocationAwarenessBasicHistogram *)lessThan200mHistogram isEqual:?]) != 0)
           {
             anyPositiveHistogram = self->_anyPositiveHistogram;
-            if (anyPositiveHistogram | *(a3 + 3))
+            if (anyPositiveHistogram | *(equal + 3))
             {
 
               LOBYTE(v5) = [(AWDCoreRoutineLocationAwarenessBasicHistogram *)anyPositiveHistogram isEqual:?];
@@ -306,24 +306,24 @@ LABEL_6:
   return v7 ^ v8 ^ [(AWDCoreRoutineLocationAwarenessBasicHistogram *)self->_anyPositiveHistogram hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v5 = *(a3 + 64);
+  v5 = *(from + 64);
   if ((v5 & 2) != 0)
   {
-    self->_timestamp = *(a3 + 2);
+    self->_timestamp = *(from + 2);
     *&self->_has |= 2u;
-    v5 = *(a3 + 64);
+    v5 = *(from + 64);
   }
 
   if (v5)
   {
-    self->_duration = *(a3 + 1);
+    self->_duration = *(from + 1);
     *&self->_has |= 1u;
   }
 
   lessThan10mHistogram = self->_lessThan10mHistogram;
-  v7 = *(a3 + 4);
+  v7 = *(from + 4);
   if (lessThan10mHistogram)
   {
     if (v7)
@@ -338,7 +338,7 @@ LABEL_6:
   }
 
   lessThan20mHistogram = self->_lessThan20mHistogram;
-  v9 = *(a3 + 6);
+  v9 = *(from + 6);
   if (lessThan20mHistogram)
   {
     if (v9)
@@ -353,7 +353,7 @@ LABEL_6:
   }
 
   lessThan55mHistogram = self->_lessThan55mHistogram;
-  v11 = *(a3 + 7);
+  v11 = *(from + 7);
   if (lessThan55mHistogram)
   {
     if (v11)
@@ -368,7 +368,7 @@ LABEL_6:
   }
 
   lessThan200mHistogram = self->_lessThan200mHistogram;
-  v13 = *(a3 + 5);
+  v13 = *(from + 5);
   if (lessThan200mHistogram)
   {
     if (v13)
@@ -383,7 +383,7 @@ LABEL_6:
   }
 
   anyPositiveHistogram = self->_anyPositiveHistogram;
-  v15 = *(a3 + 3);
+  v15 = *(from + 3);
   if (anyPositiveHistogram)
   {
     if (v15)

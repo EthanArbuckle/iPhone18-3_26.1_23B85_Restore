@@ -1,34 +1,34 @@
 @interface EKRecurrenceRule
-+ (BOOL)canParseRRULEString:(id)a3;
-+ (EKRecurrenceRule)recurrenceRuleWithType:(int64_t)a3 interval:(unint64_t)a4 end:(id)a5;
-+ (id)_acceptableStartDateRangeForDailyRecurrenceWithCurrentStartDate:(id)a3;
-+ (id)_acceptableStartDateRangeForMonthlyRecurrenceWithCurrentStartDate:(id)a3 calendar:(id)a4;
-+ (id)_acceptableStartDateRangeForWeeklyRecurrenceWithCurrentStartDate:(id)a3 calendar:(id)a4;
-+ (id)_acceptableStartDateRangeForYearlyRecurrenceWithCurrentStartDate:(id)a3 calendar:(id)a4;
-+ (id)adjustDateIntoUTC:(id)a3 dateOnly:(BOOL)a4 floating:(BOOL)a5;
-+ (id)iCalendarValueFromDate:(id)a3 isDateOnly:(BOOL)a4 isFloating:(BOOL)a5;
-+ (id)iCalendarValueFromRecurrenceType:(int64_t)a3;
++ (BOOL)canParseRRULEString:(id)string;
++ (EKRecurrenceRule)recurrenceRuleWithType:(int64_t)type interval:(unint64_t)interval end:(id)end;
++ (id)_acceptableStartDateRangeForDailyRecurrenceWithCurrentStartDate:(id)date;
++ (id)_acceptableStartDateRangeForMonthlyRecurrenceWithCurrentStartDate:(id)date calendar:(id)calendar;
++ (id)_acceptableStartDateRangeForWeeklyRecurrenceWithCurrentStartDate:(id)date calendar:(id)calendar;
++ (id)_acceptableStartDateRangeForYearlyRecurrenceWithCurrentStartDate:(id)date calendar:(id)calendar;
++ (id)adjustDateIntoUTC:(id)c dateOnly:(BOOL)only floating:(BOOL)floating;
++ (id)iCalendarValueFromDate:(id)date isDateOnly:(BOOL)only isFloating:(BOOL)floating;
++ (id)iCalendarValueFromRecurrenceType:(int64_t)type;
 + (id)knownIdentityKeysForComparison;
 + (id)knownRelationshipWeakKeys;
 + (id)knownSingleValueKeysForComparison;
-+ (int)_calDayOfWeekFromEKWeekday:(int64_t)a3;
-+ (int64_t)daysTypeForDayArray:(id)a3;
++ (int)_calDayOfWeekFromEKWeekday:(int64_t)weekday;
++ (int64_t)daysTypeForDayArray:(id)array;
 - (BOOL)dirtyStateMayAffectExceptionDates;
 - (BOOL)hasDuplicateMonthsOfYear;
 - (BOOL)isAnyDayRule;
-- (BOOL)isEqualToRecurrenceRule:(id)a3;
+- (BOOL)isEqualToRecurrenceRule:(id)rule;
 - (BOOL)isPinnedToEndOfFrequency;
 - (BOOL)isSimpleRule;
 - (BOOL)isWeekdayRule;
 - (BOOL)isWeekendRule;
-- (BOOL)mayOccurAfterDate:(id)a3;
-- (BOOL)newStartDateIsValid:(id)a3 currentStartDate:(id)a4 calendar:(id)a5;
+- (BOOL)mayOccurAfterDate:(id)date;
+- (BOOL)newStartDateIsValid:(id)valid currentStartDate:(id)date calendar:(id)calendar;
 - (BOOL)recurrenceEndHasChanges;
 - (EKRecurrenceEnd)recurrenceEnd;
 - (EKRecurrenceFrequency)frequency;
 - (EKRecurrenceRule)init;
 - (EKRecurrenceRule)initRecurrenceWithFrequency:(EKRecurrenceFrequency)type interval:(NSInteger)interval daysOfTheWeek:(NSArray *)days daysOfTheMonth:(NSArray *)monthDays monthsOfTheYear:(NSArray *)months weeksOfTheYear:(NSArray *)weeksOfTheYear daysOfTheYear:(NSArray *)daysOfTheYear setPositions:(NSArray *)setPositions end:(EKRecurrenceEnd *)end;
-- (EKRecurrenceRule)initWithRRULEString:(id)a3;
+- (EKRecurrenceRule)initWithRRULEString:(id)string;
 - (NSArray)daysOfTheMonth;
 - (NSArray)daysOfTheWeek;
 - (NSArray)daysOfTheYear;
@@ -38,30 +38,30 @@
 - (NSDateComponents)dateComponents;
 - (NSInteger)firstDayOfTheWeek;
 - (NSInteger)interval;
-- (id)_acceptableStartDateRangeWithCurrentStartDate:(id)a3 calendar:(id)a4;
+- (id)_acceptableStartDateRangeWithCurrentStartDate:(id)date calendar:(id)calendar;
 - (id)_recurrenceHelper;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)initRecurrenceWithRecurrenceRule:(id)a3;
+- (id)initRecurrenceWithRecurrenceRule:(id)rule;
 - (int)firstDayOfTheWeekRaw;
 - (int)frequencyRaw;
-- (int64_t)ekRecurrenceFrequencyFromICSFrequency:(unint64_t)a3;
+- (int64_t)ekRecurrenceFrequencyFromICSFrequency:(unint64_t)frequency;
 - (unint64_t)count;
 - (void)_updateSpecifierIfNeeded;
 - (void)frequency;
 - (void)invalidateCachedEndDate;
 - (void)rollback;
-- (void)setCount:(unint64_t)a3;
-- (void)setDaysOfTheMonth:(id)a3;
-- (void)setDaysOfTheWeek:(id)a3;
-- (void)setDaysOfTheYear:(id)a3;
-- (void)setFirstDayOfTheWeek:(unint64_t)a3;
-- (void)setFrequency:(int64_t)a3;
-- (void)setInterval:(unint64_t)a3;
-- (void)setMonthsOfTheYear:(id)a3;
+- (void)setCount:(unint64_t)count;
+- (void)setDaysOfTheMonth:(id)month;
+- (void)setDaysOfTheWeek:(id)week;
+- (void)setDaysOfTheYear:(id)year;
+- (void)setFirstDayOfTheWeek:(unint64_t)week;
+- (void)setFrequency:(int64_t)frequency;
+- (void)setInterval:(unint64_t)interval;
+- (void)setMonthsOfTheYear:(id)year;
 - (void)setRecurrenceEnd:(EKRecurrenceEnd *)recurrenceEnd;
-- (void)setSetPositions:(id)a3;
-- (void)setWeeksOfTheYear:(id)a3;
+- (void)setSetPositions:(id)positions;
+- (void)setWeeksOfTheYear:(id)year;
 @end
 
 @implementation EKRecurrenceRule
@@ -143,29 +143,29 @@ void __45__EKRecurrenceRule_knownRelationshipWeakKeys__block_invoke()
   v2 = *MEMORY[0x1E69E9840];
 }
 
-+ (EKRecurrenceRule)recurrenceRuleWithType:(int64_t)a3 interval:(unint64_t)a4 end:(id)a5
++ (EKRecurrenceRule)recurrenceRuleWithType:(int64_t)type interval:(unint64_t)interval end:(id)end
 {
-  v8 = a5;
-  v9 = [[a1 alloc] initRecurrenceWithFrequency:a3 interval:a4 end:v8];
+  endCopy = end;
+  v9 = [[self alloc] initRecurrenceWithFrequency:type interval:interval end:endCopy];
 
   return v9;
 }
 
-- (id)initRecurrenceWithRecurrenceRule:(id)a3
+- (id)initRecurrenceWithRecurrenceRule:(id)rule
 {
-  v3 = a3;
+  ruleCopy = rule;
   v15 = [EKRecurrenceRule alloc];
-  v4 = [v3 frequency];
-  v5 = [v3 interval];
-  v6 = [v3 daysOfTheWeek];
-  v7 = [v3 daysOfTheMonth];
-  v8 = [v3 monthsOfTheYear];
-  v9 = [v3 weeksOfTheYear];
-  v10 = [v3 daysOfTheYear];
-  v11 = [v3 setPositions];
-  v12 = [v3 recurrenceEnd];
+  frequency = [ruleCopy frequency];
+  interval = [ruleCopy interval];
+  daysOfTheWeek = [ruleCopy daysOfTheWeek];
+  daysOfTheMonth = [ruleCopy daysOfTheMonth];
+  monthsOfTheYear = [ruleCopy monthsOfTheYear];
+  weeksOfTheYear = [ruleCopy weeksOfTheYear];
+  daysOfTheYear = [ruleCopy daysOfTheYear];
+  setPositions = [ruleCopy setPositions];
+  recurrenceEnd = [ruleCopy recurrenceEnd];
 
-  v13 = [(EKRecurrenceRule *)v15 initRecurrenceWithFrequency:v4 interval:v5 daysOfTheWeek:v6 daysOfTheMonth:v7 monthsOfTheYear:v8 weeksOfTheYear:v9 daysOfTheYear:v10 setPositions:v11 end:v12];
+  v13 = [(EKRecurrenceRule *)v15 initRecurrenceWithFrequency:frequency interval:interval daysOfTheWeek:daysOfTheWeek daysOfTheMonth:daysOfTheMonth monthsOfTheYear:monthsOfTheYear weeksOfTheYear:weeksOfTheYear daysOfTheYear:daysOfTheYear setPositions:setPositions end:recurrenceEnd];
   return v13;
 }
 
@@ -219,30 +219,30 @@ void __45__EKRecurrenceRule_knownRelationshipWeakKeys__block_invoke()
   return v24;
 }
 
-+ (BOOL)canParseRRULEString:(id)a3
++ (BOOL)canParseRRULEString:(id)string
 {
-  v3 = [a1 trimmedRRULEString:a3];
+  v3 = [self trimmedRRULEString:string];
   v4 = [MEMORY[0x1E69E3CD8] recurrenceRuleFromICSString:v3];
   v5 = v4 != 0;
 
   return v5;
 }
 
-- (EKRecurrenceRule)initWithRRULEString:(id)a3
+- (EKRecurrenceRule)initWithRRULEString:(id)string
 {
   v46 = *MEMORY[0x1E69E9840];
-  v38 = a3;
-  v37 = [objc_opt_class() trimmedRRULEString:v38];
+  stringCopy = string;
+  v37 = [objc_opt_class() trimmedRRULEString:stringCopy];
   v4 = [MEMORY[0x1E69E3CD8] recurrenceRuleFromICSString:?];
-  v39 = self;
+  selfCopy = self;
   v36 = -[EKRecurrenceRule ekRecurrenceFrequencyFromICSFrequency:](self, "ekRecurrenceFrequencyFromICSFrequency:", [v4 freq]);
-  v5 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v6 = [v4 byday];
-  v7 = [v6 countByEnumeratingWithState:&v41 objects:v45 count:16];
+  byday = [v4 byday];
+  v7 = [byday countByEnumeratingWithState:&v41 objects:v45 count:16];
   if (v7)
   {
     v8 = v7;
@@ -253,33 +253,33 @@ void __45__EKRecurrenceRule_knownRelationshipWeakKeys__block_invoke()
       {
         if (*v42 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(byday);
         }
 
         v11 = *(*(&v41 + 1) + 8 * i);
         v12 = [EKRecurrenceDayOfWeek alloc];
-        v13 = [v11 weekday];
-        v14 = [v11 number];
-        v15 = -[EKRecurrenceDayOfWeek initWithDayOfTheWeek:weekNumber:](v12, "initWithDayOfTheWeek:weekNumber:", v13, [v14 integerValue]);
+        weekday = [v11 weekday];
+        number = [v11 number];
+        v15 = -[EKRecurrenceDayOfWeek initWithDayOfTheWeek:weekNumber:](v12, "initWithDayOfTheWeek:weekNumber:", weekday, [number integerValue]);
 
-        [v5 addObject:v15];
+        [array addObject:v15];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v41 objects:v45 count:16];
+      v8 = [byday countByEnumeratingWithState:&v41 objects:v45 count:16];
     }
 
     while (v8);
   }
 
-  v16 = [v4 until];
+  until = [v4 until];
 
-  if (v16)
+  if (until)
   {
-    v17 = [v4 until];
-    v18 = [v17 components];
+    until2 = [v4 until];
+    components = [until2 components];
 
-    v19 = [MEMORY[0x1E6992F28] activeCalendar];
-    v20 = [v19 dateFromComponents:v18];
+    activeCalendar = [MEMORY[0x1E6992F28] activeCalendar];
+    v20 = [activeCalendar dateFromComponents:components];
     v40 = [[EKRecurrenceEnd alloc] initWithEndDate:v20];
   }
 
@@ -290,9 +290,9 @@ void __45__EKRecurrenceRule_knownRelationshipWeakKeys__block_invoke()
     if (v21)
     {
       v22 = [v4 count];
-      v23 = [v22 unsignedIntegerValue];
+      unsignedIntegerValue = [v22 unsignedIntegerValue];
 
-      v40 = [[EKRecurrenceEnd alloc] initWithOccurrenceCount:v23];
+      v40 = [[EKRecurrenceEnd alloc] initWithOccurrenceCount:unsignedIntegerValue];
     }
 
     else
@@ -302,26 +302,26 @@ void __45__EKRecurrenceRule_knownRelationshipWeakKeys__block_invoke()
   }
 
   v24 = [EKRecurrenceRule alloc];
-  v25 = [v4 interval];
-  if (v25)
+  interval = [v4 interval];
+  if (interval)
   {
-    v35 = [v4 interval];
-    v26 = [v35 integerValue];
+    interval2 = [v4 interval];
+    integerValue = [interval2 integerValue];
   }
 
   else
   {
-    v26 = 1;
+    integerValue = 1;
   }
 
-  v27 = [v4 bymonthday];
-  v28 = [v4 bymonth];
-  v29 = [v4 byweekno];
-  v30 = [v4 byyearday];
-  v31 = [v4 bysetpos];
-  v32 = [(EKRecurrenceRule *)v24 initRecurrenceWithFrequency:v36 interval:v26 daysOfTheWeek:v5 daysOfTheMonth:v27 monthsOfTheYear:v28 weeksOfTheYear:v29 daysOfTheYear:v30 setPositions:v31 end:v40];
+  bymonthday = [v4 bymonthday];
+  bymonth = [v4 bymonth];
+  byweekno = [v4 byweekno];
+  byyearday = [v4 byyearday];
+  bysetpos = [v4 bysetpos];
+  v32 = [(EKRecurrenceRule *)v24 initRecurrenceWithFrequency:v36 interval:integerValue daysOfTheWeek:array daysOfTheMonth:bymonthday monthsOfTheYear:bymonth weeksOfTheYear:byweekno daysOfTheYear:byyearday setPositions:bysetpos end:v40];
 
-  if (v25)
+  if (interval)
   {
   }
 
@@ -329,16 +329,16 @@ void __45__EKRecurrenceRule_knownRelationshipWeakKeys__block_invoke()
   return v32;
 }
 
-- (int64_t)ekRecurrenceFrequencyFromICSFrequency:(unint64_t)a3
+- (int64_t)ekRecurrenceFrequencyFromICSFrequency:(unint64_t)frequency
 {
-  if (a3 - 4 >= 4)
+  if (frequency - 4 >= 4)
   {
     return -1;
   }
 
   else
   {
-    return a3 - 4;
+    return frequency - 4;
   }
 }
 
@@ -352,13 +352,13 @@ void __45__EKRecurrenceRule_knownRelationshipWeakKeys__block_invoke()
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   if ([MEMORY[0x1E6992F30] isProgramSDKAtLeast:0x7E30901FFFFFFFFLL])
   {
     v9.receiver = self;
     v9.super_class = EKRecurrenceRule;
-    return [(EKObject *)&v9 copyWithZone:a3];
+    return [(EKObject *)&v9 copyWithZone:zone];
   }
 
   else
@@ -366,11 +366,11 @@ void __45__EKRecurrenceRule_knownRelationshipWeakKeys__block_invoke()
     v5 = objc_alloc_init(EKRecurrenceRule);
     [(EKRecurrenceRule *)v5 setFrequency:[(EKRecurrenceRule *)self frequency]];
     [(EKRecurrenceRule *)v5 setInterval:[(EKRecurrenceRule *)self interval]];
-    v6 = [(EKRecurrenceRule *)self recurrenceEnd];
-    [(EKRecurrenceRule *)v5 setRecurrenceEnd:v6];
+    recurrenceEnd = [(EKRecurrenceRule *)self recurrenceEnd];
+    [(EKRecurrenceRule *)v5 setRecurrenceEnd:recurrenceEnd];
 
-    v7 = [(EKRecurrenceRule *)self specifier];
-    [(EKRecurrenceRule *)v5 setSpecifier:v7];
+    specifier = [(EKRecurrenceRule *)self specifier];
+    [(EKRecurrenceRule *)v5 setSpecifier:specifier];
 
     [(EKRecurrenceRule *)v5 setFirstDayOfTheWeekRaw:[(EKRecurrenceRule *)self firstDayOfTheWeekRaw]];
   }
@@ -381,21 +381,21 @@ void __45__EKRecurrenceRule_knownRelationshipWeakKeys__block_invoke()
 - (NSDateComponents)dateComponents
 {
   v3 = objc_opt_new();
-  v4 = [(EKRecurrenceRule *)self interval];
-  if (v4 >= 1)
+  interval = [(EKRecurrenceRule *)self interval];
+  if (interval >= 1)
   {
-    v5 = [(EKRecurrenceRule *)self frequency];
-    if (v5 <= EKRecurrenceFrequencyWeekly)
+    frequency = [(EKRecurrenceRule *)self frequency];
+    if (frequency <= EKRecurrenceFrequencyWeekly)
     {
-      if (v5 == EKRecurrenceFrequencyDaily)
+      if (frequency == EKRecurrenceFrequencyDaily)
       {
-        v6 = v4 & 0x7FFFFFFF;
+        v6 = interval & 0x7FFFFFFF;
         goto LABEL_10;
       }
 
-      if (v5 == EKRecurrenceFrequencyWeekly)
+      if (frequency == EKRecurrenceFrequencyWeekly)
       {
-        v6 = (7 * v4);
+        v6 = (7 * interval);
 LABEL_10:
         [v3 setDay:v6];
         goto LABEL_12;
@@ -406,18 +406,18 @@ LABEL_15:
       objc_exception_throw(v8);
     }
 
-    if (v5 != EKRecurrenceFrequencyMonthly)
+    if (frequency != EKRecurrenceFrequencyMonthly)
     {
-      if (v5 == EKRecurrenceFrequencyYearly)
+      if (frequency == EKRecurrenceFrequencyYearly)
       {
-        [v3 setYear:v4 & 0x7FFFFFFF];
+        [v3 setYear:interval & 0x7FFFFFFF];
         goto LABEL_12;
       }
 
       goto LABEL_15;
     }
 
-    [v3 setMonth:v4 & 0x7FFFFFFF];
+    [v3 setMonth:interval & 0x7FFFFFFF];
   }
 
 LABEL_12:
@@ -428,21 +428,21 @@ LABEL_12:
 - (int)frequencyRaw
 {
   v2 = [(EKObject *)self singleChangedValueForKey:*MEMORY[0x1E6992BC8]];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 - (EKRecurrenceFrequency)frequency
 {
-  v2 = [(EKRecurrenceRule *)self frequencyRaw];
-  result = (v2 - 1);
+  frequencyRaw = [(EKRecurrenceRule *)self frequencyRaw];
+  result = (frequencyRaw - 1);
   if (result >= 4)
   {
     v4 = EKLogHandle;
     if (os_log_type_enabled(EKLogHandle, OS_LOG_TYPE_ERROR))
     {
-      [(EKRecurrenceRule *)v2 frequency:v4];
+      [(EKRecurrenceRule *)frequencyRaw frequency:v4];
     }
 
     return 0;
@@ -451,11 +451,11 @@ LABEL_12:
   return result;
 }
 
-- (void)setFrequency:(int64_t)a3
+- (void)setFrequency:(int64_t)frequency
 {
-  if (a3 < 4)
+  if (frequency < 4)
   {
-    v3 = (a3 + 1);
+    v3 = (frequency + 1);
   }
 
   else
@@ -469,33 +469,33 @@ LABEL_12:
 - (NSInteger)interval
 {
   v2 = [(EKObject *)self singleChangedValueForKey:*MEMORY[0x1E6992BD0]];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
-- (void)setInterval:(unint64_t)a3
+- (void)setInterval:(unint64_t)interval
 {
-  if (a3 <= 0)
+  if (interval <= 0)
   {
     [(EKRecurrenceRule *)a2 setInterval:?];
   }
 
-  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:interval];
   [(EKObject *)self setSingleChangedValue:v5 forKey:*MEMORY[0x1E6992BD0]];
 }
 
 - (unint64_t)count
 {
   v2 = [(EKObject *)self singleChangedValueForKey:*MEMORY[0x1E6992BB0]];
-  v3 = [v2 unsignedIntegerValue];
+  unsignedIntegerValue = [v2 unsignedIntegerValue];
 
-  return v3;
+  return unsignedIntegerValue;
 }
 
-- (void)setCount:(unint64_t)a3
+- (void)setCount:(unint64_t)count
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:count];
   [(EKObject *)self setSingleChangedValue:v4 forKey:*MEMORY[0x1E6992BB0]];
 }
 
@@ -540,8 +540,8 @@ LABEL_6:
 - (void)setRecurrenceEnd:(EKRecurrenceEnd *)recurrenceEnd
 {
   v10 = recurrenceEnd;
-  v4 = [(EKRecurrenceRule *)self recurrenceEnd];
-  v5 = [(EKRecurrenceEnd *)v10 isEqual:v4];
+  recurrenceEnd = [(EKRecurrenceRule *)self recurrenceEnd];
+  v5 = [(EKRecurrenceEnd *)v10 isEqual:recurrenceEnd];
 
   v6 = v10;
   if (!v5)
@@ -554,12 +554,12 @@ LABEL_6:
       if (![(EKRecurrenceEnd *)v10 usesEndDate])
       {
         [(EKRecurrenceRule *)self setEndDate:0];
-        v9 = [(EKRecurrenceEnd *)v10 occurrenceCount];
+        occurrenceCount = [(EKRecurrenceEnd *)v10 occurrenceCount];
         goto LABEL_8;
       }
 
-      v8 = [(EKRecurrenceEnd *)v10 endDate];
-      [(EKRecurrenceRule *)self setEndDate:v8];
+      endDate = [(EKRecurrenceEnd *)v10 endDate];
+      [(EKRecurrenceRule *)self setEndDate:endDate];
     }
 
     else
@@ -567,9 +567,9 @@ LABEL_6:
       [(EKRecurrenceRule *)self setEndDate:0];
     }
 
-    v9 = 0;
+    occurrenceCount = 0;
 LABEL_8:
-    [(EKRecurrenceRule *)self setCount:v9];
+    [(EKRecurrenceRule *)self setCount:occurrenceCount];
     v6 = v10;
   }
 }
@@ -596,22 +596,22 @@ LABEL_8:
 - (int)firstDayOfTheWeekRaw
 {
   v2 = [(EKObject *)self singleChangedValueForKey:*MEMORY[0x1E6992BC0]];
-  v3 = [v2 intValue];
+  intValue = [v2 intValue];
 
-  return v3;
+  return intValue;
 }
 
-+ (int)_calDayOfWeekFromEKWeekday:(int64_t)a3
++ (int)_calDayOfWeekFromEKWeekday:(int64_t)weekday
 {
-  if (a3 < 8)
+  if (weekday < 8)
   {
-    return dword_1A81C3A60[a3];
+    return dword_1A81C3A60[weekday];
   }
 
   v5 = EKLogHandle;
   if (os_log_type_enabled(EKLogHandle, OS_LOG_TYPE_ERROR))
   {
-    [(EKRecurrenceRule *)a3 _calDayOfWeekFromEKWeekday:v5, v6, v7, v8, v9, v10, v11];
+    [(EKRecurrenceRule *)weekday _calDayOfWeekFromEKWeekday:v5, v6, v7, v8, v9, v10, v11];
   }
 
   return 7;
@@ -628,14 +628,14 @@ LABEL_8:
   return result;
 }
 
-- (void)setFirstDayOfTheWeek:(unint64_t)a3
+- (void)setFirstDayOfTheWeek:(unint64_t)week
 {
-  if (a3 >= 8)
+  if (week >= 8)
   {
     [(EKRecurrenceRule *)a2 setFirstDayOfTheWeek:?];
   }
 
-  v5 = [objc_opt_class() _calDayOfWeekFromEKWeekday:a3];
+  v5 = [objc_opt_class() _calDayOfWeekFromEKWeekday:week];
 
   [(EKRecurrenceRule *)self setFirstDayOfTheWeekRaw:v5];
 }
@@ -646,8 +646,8 @@ LABEL_8:
   if (!recurrenceHelper)
   {
     v4 = [EKRecurrenceHelper alloc];
-    v5 = [(EKRecurrenceRule *)self specifier];
-    v6 = [(EKRecurrenceHelper *)v4 initWithSpecifier:v5];
+    specifier = [(EKRecurrenceRule *)self specifier];
+    v6 = [(EKRecurrenceHelper *)v4 initWithSpecifier:specifier];
     v7 = self->_recurrenceHelper;
     self->_recurrenceHelper = v6;
 
@@ -659,102 +659,102 @@ LABEL_8:
 
 - (NSArray)daysOfTheWeek
 {
-  v2 = [(EKRecurrenceRule *)self _recurrenceHelper];
-  v3 = [v2 daysOfTheWeek];
+  _recurrenceHelper = [(EKRecurrenceRule *)self _recurrenceHelper];
+  daysOfTheWeek = [_recurrenceHelper daysOfTheWeek];
 
-  return v3;
+  return daysOfTheWeek;
 }
 
-- (void)setDaysOfTheWeek:(id)a3
+- (void)setDaysOfTheWeek:(id)week
 {
-  v4 = a3;
-  v5 = [(EKRecurrenceRule *)self _recurrenceHelper];
-  [v5 setDaysOfTheWeek:v4];
+  weekCopy = week;
+  _recurrenceHelper = [(EKRecurrenceRule *)self _recurrenceHelper];
+  [_recurrenceHelper setDaysOfTheWeek:weekCopy];
 
   [(EKRecurrenceRule *)self _updateSpecifierIfNeeded];
 }
 
 - (NSArray)daysOfTheMonth
 {
-  v2 = [(EKRecurrenceRule *)self _recurrenceHelper];
-  v3 = [v2 daysOfTheMonth];
+  _recurrenceHelper = [(EKRecurrenceRule *)self _recurrenceHelper];
+  daysOfTheMonth = [_recurrenceHelper daysOfTheMonth];
 
-  return v3;
+  return daysOfTheMonth;
 }
 
-- (void)setDaysOfTheMonth:(id)a3
+- (void)setDaysOfTheMonth:(id)month
 {
-  v4 = a3;
-  v5 = [(EKRecurrenceRule *)self _recurrenceHelper];
-  [v5 setDaysOfTheMonth:v4];
+  monthCopy = month;
+  _recurrenceHelper = [(EKRecurrenceRule *)self _recurrenceHelper];
+  [_recurrenceHelper setDaysOfTheMonth:monthCopy];
 
   [(EKRecurrenceRule *)self _updateSpecifierIfNeeded];
 }
 
 - (NSArray)daysOfTheYear
 {
-  v2 = [(EKRecurrenceRule *)self _recurrenceHelper];
-  v3 = [v2 daysOfTheYear];
+  _recurrenceHelper = [(EKRecurrenceRule *)self _recurrenceHelper];
+  daysOfTheYear = [_recurrenceHelper daysOfTheYear];
 
-  return v3;
+  return daysOfTheYear;
 }
 
-- (void)setDaysOfTheYear:(id)a3
+- (void)setDaysOfTheYear:(id)year
 {
-  v4 = a3;
-  v5 = [(EKRecurrenceRule *)self _recurrenceHelper];
-  [v5 setDaysOfTheYear:v4];
+  yearCopy = year;
+  _recurrenceHelper = [(EKRecurrenceRule *)self _recurrenceHelper];
+  [_recurrenceHelper setDaysOfTheYear:yearCopy];
 
   [(EKRecurrenceRule *)self _updateSpecifierIfNeeded];
 }
 
 - (NSArray)weeksOfTheYear
 {
-  v2 = [(EKRecurrenceRule *)self _recurrenceHelper];
-  v3 = [v2 weeksOfTheYear];
+  _recurrenceHelper = [(EKRecurrenceRule *)self _recurrenceHelper];
+  weeksOfTheYear = [_recurrenceHelper weeksOfTheYear];
 
-  return v3;
+  return weeksOfTheYear;
 }
 
-- (void)setWeeksOfTheYear:(id)a3
+- (void)setWeeksOfTheYear:(id)year
 {
-  v4 = a3;
-  v5 = [(EKRecurrenceRule *)self _recurrenceHelper];
-  [v5 setWeeksOfTheYear:v4];
+  yearCopy = year;
+  _recurrenceHelper = [(EKRecurrenceRule *)self _recurrenceHelper];
+  [_recurrenceHelper setWeeksOfTheYear:yearCopy];
 
   [(EKRecurrenceRule *)self _updateSpecifierIfNeeded];
 }
 
 - (NSArray)monthsOfTheYear
 {
-  v2 = [(EKRecurrenceRule *)self _recurrenceHelper];
-  v3 = [v2 monthsOfTheYear];
+  _recurrenceHelper = [(EKRecurrenceRule *)self _recurrenceHelper];
+  monthsOfTheYear = [_recurrenceHelper monthsOfTheYear];
 
-  return v3;
+  return monthsOfTheYear;
 }
 
-- (void)setMonthsOfTheYear:(id)a3
+- (void)setMonthsOfTheYear:(id)year
 {
-  v4 = a3;
-  v5 = [(EKRecurrenceRule *)self _recurrenceHelper];
-  [v5 setMonthsOfTheYear:v4];
+  yearCopy = year;
+  _recurrenceHelper = [(EKRecurrenceRule *)self _recurrenceHelper];
+  [_recurrenceHelper setMonthsOfTheYear:yearCopy];
 
   [(EKRecurrenceRule *)self _updateSpecifierIfNeeded];
 }
 
 - (NSArray)setPositions
 {
-  v2 = [(EKRecurrenceRule *)self _recurrenceHelper];
-  v3 = [v2 setPositions];
+  _recurrenceHelper = [(EKRecurrenceRule *)self _recurrenceHelper];
+  setPositions = [_recurrenceHelper setPositions];
 
-  return v3;
+  return setPositions;
 }
 
-- (void)setSetPositions:(id)a3
+- (void)setSetPositions:(id)positions
 {
-  v4 = a3;
-  v5 = [(EKRecurrenceRule *)self _recurrenceHelper];
-  [v5 setSetPositions:v4];
+  positionsCopy = positions;
+  _recurrenceHelper = [(EKRecurrenceRule *)self _recurrenceHelper];
+  [_recurrenceHelper setSetPositions:positionsCopy];
 
   [(EKRecurrenceRule *)self _updateSpecifierIfNeeded];
 }
@@ -763,8 +763,8 @@ LABEL_8:
 {
   if ([(EKRecurrenceHelper *)self->_recurrenceHelper isDirty])
   {
-    v3 = [(EKRecurrenceHelper *)self->_recurrenceHelper specifier];
-    [(EKRecurrenceRule *)self setSpecifier:v3];
+    specifier = [(EKRecurrenceHelper *)self->_recurrenceHelper specifier];
+    [(EKRecurrenceRule *)self setSpecifier:specifier];
   }
 }
 
@@ -780,14 +780,14 @@ LABEL_8:
 - (BOOL)dirtyStateMayAffectExceptionDates
 {
   v20 = *MEMORY[0x1E69E9840];
-  v2 = [(EKObject *)self changeSet];
-  v3 = [v2 changedKeys];
+  changeSet = [(EKObject *)self changeSet];
+  changedKeys = [changeSet changedKeys];
 
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = v3;
+  v4 = changedKeys;
   v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v5)
   {
@@ -829,29 +829,29 @@ LABEL_12:
   return v12;
 }
 
-- (BOOL)mayOccurAfterDate:(id)a3
+- (BOOL)mayOccurAfterDate:(id)date
 {
-  v4 = a3;
-  v5 = [(EKRecurrenceRule *)self recurrenceEnd];
-  v6 = [v5 endDate];
+  dateCopy = date;
+  recurrenceEnd = [(EKRecurrenceRule *)self recurrenceEnd];
+  endDate = [recurrenceEnd endDate];
 
-  if (v6 && [v6 compare:v4] == -1)
+  if (endDate && [endDate compare:dateCopy] == -1)
   {
     v11 = 0;
   }
 
   else
   {
-    v7 = [(EKRecurrenceRule *)self recurrenceEnd];
-    v8 = [v7 occurrenceCount];
+    recurrenceEnd2 = [(EKRecurrenceRule *)self recurrenceEnd];
+    occurrenceCount = [recurrenceEnd2 occurrenceCount];
 
-    if (v8)
+    if (occurrenceCount)
     {
-      v9 = [(EKRecurrenceRule *)self cachedEndDate];
-      v10 = v9;
-      if (v9)
+      cachedEndDate = [(EKRecurrenceRule *)self cachedEndDate];
+      v10 = cachedEndDate;
+      if (cachedEndDate)
       {
-        v11 = [v9 compare:v4] != -1;
+        v11 = [cachedEndDate compare:dateCopy] != -1;
       }
 
       else
@@ -877,16 +877,16 @@ LABEL_12:
     goto LABEL_18;
   }
 
-  v3 = [(EKRecurrenceRule *)self setPositions];
-  if ([v3 count] != 1)
+  setPositions = [(EKRecurrenceRule *)self setPositions];
+  if ([setPositions count] != 1)
   {
 LABEL_17:
 
     goto LABEL_18;
   }
 
-  v4 = [(EKRecurrenceRule *)self setPositions];
-  v5 = [v4 objectAtIndexedSubscript:0];
+  setPositions2 = [(EKRecurrenceRule *)self setPositions];
+  v5 = [setPositions2 objectAtIndexedSubscript:0];
   if ([v5 integerValue] != -1)
   {
 LABEL_16:
@@ -894,15 +894,15 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  v6 = [(EKRecurrenceRule *)self daysOfTheMonth];
-  if ([v6 count] < 2)
+  daysOfTheMonth = [(EKRecurrenceRule *)self daysOfTheMonth];
+  if ([daysOfTheMonth count] < 2)
   {
 
     goto LABEL_16;
   }
 
-  v7 = [(EKRecurrenceRule *)self daysOfTheMonth];
-  v8 = [v7 count];
+  daysOfTheMonth2 = [(EKRecurrenceRule *)self daysOfTheMonth];
+  v8 = [daysOfTheMonth2 count];
 
   if (v8 <= 4)
   {
@@ -925,8 +925,8 @@ LABEL_8:
         }
 
         v13 = *(*(&v22 + 1) + 8 * v12);
-        v14 = [(EKRecurrenceRule *)self daysOfTheMonth];
-        LOBYTE(v13) = [v13 isEqualToArray:v14];
+        daysOfTheMonth3 = [(EKRecurrenceRule *)self daysOfTheMonth];
+        LOBYTE(v13) = [v13 isEqualToArray:daysOfTheMonth3];
 
         if (v13)
         {
@@ -950,24 +950,24 @@ LABEL_8:
 LABEL_18:
   if ([(EKRecurrenceRule *)self frequency]== EKRecurrenceFrequencyYearly)
   {
-    v15 = [(EKRecurrenceRule *)self setPositions];
-    if ([v15 count] != 1)
+    setPositions3 = [(EKRecurrenceRule *)self setPositions];
+    if ([setPositions3 count] != 1)
     {
 LABEL_22:
 
       goto LABEL_23;
     }
 
-    v16 = [(EKRecurrenceRule *)self setPositions];
-    v17 = [v16 objectAtIndexedSubscript:0];
+    setPositions4 = [(EKRecurrenceRule *)self setPositions];
+    v17 = [setPositions4 objectAtIndexedSubscript:0];
     if ([v17 integerValue] != -1)
     {
 
       goto LABEL_22;
     }
 
-    v20 = [(EKRecurrenceRule *)self daysOfTheMonth];
-    v21 = [&unk_1F1B6B0E0 isEqualToArray:v20];
+    daysOfTheMonth4 = [(EKRecurrenceRule *)self daysOfTheMonth];
+    v21 = [&unk_1F1B6B0E0 isEqualToArray:daysOfTheMonth4];
 
     if (v21)
     {
@@ -986,29 +986,29 @@ LABEL_24:
 
 - (BOOL)isWeekdayRule
 {
-  v2 = [(EKRecurrenceRule *)self daysOfTheWeek];
-  v3 = [v2 valueForKey:@"dayOfTheWeek"];
+  daysOfTheWeek = [(EKRecurrenceRule *)self daysOfTheWeek];
+  v3 = [daysOfTheWeek valueForKey:@"dayOfTheWeek"];
 
-  LOBYTE(v2) = [v3 isEqualToArray:&unk_1F1B6B0F8];
-  return v2;
+  LOBYTE(daysOfTheWeek) = [v3 isEqualToArray:&unk_1F1B6B0F8];
+  return daysOfTheWeek;
 }
 
 - (BOOL)isWeekendRule
 {
-  v2 = [(EKRecurrenceRule *)self daysOfTheWeek];
-  v3 = [v2 valueForKey:@"dayOfTheWeek"];
+  daysOfTheWeek = [(EKRecurrenceRule *)self daysOfTheWeek];
+  v3 = [daysOfTheWeek valueForKey:@"dayOfTheWeek"];
 
-  LOBYTE(v2) = [v3 isEqualToArray:&unk_1F1B6B110];
-  return v2;
+  LOBYTE(daysOfTheWeek) = [v3 isEqualToArray:&unk_1F1B6B110];
+  return daysOfTheWeek;
 }
 
 - (BOOL)isAnyDayRule
 {
-  v2 = [(EKRecurrenceRule *)self daysOfTheWeek];
-  v3 = [v2 valueForKey:@"dayOfTheWeek"];
+  daysOfTheWeek = [(EKRecurrenceRule *)self daysOfTheWeek];
+  v3 = [daysOfTheWeek valueForKey:@"dayOfTheWeek"];
 
-  LOBYTE(v2) = [v3 isEqualToArray:&unk_1F1B6B128];
-  return v2;
+  LOBYTE(daysOfTheWeek) = [v3 isEqualToArray:&unk_1F1B6B128];
+  return daysOfTheWeek;
 }
 
 - (BOOL)isSimpleRule
@@ -1018,11 +1018,11 @@ LABEL_24:
     return 1;
   }
 
-  v6 = [(EKRecurrenceRule *)self frequency];
-  if (v6 == EKRecurrenceFrequencyWeekly)
+  frequency = [(EKRecurrenceRule *)self frequency];
+  if (frequency == EKRecurrenceFrequencyWeekly)
   {
-    v2 = [(EKRecurrenceRule *)self daysOfTheWeek];
-    if ([v2 count] < 2)
+    daysOfTheWeek = [(EKRecurrenceRule *)self daysOfTheWeek];
+    if ([daysOfTheWeek count] < 2)
     {
       v7 = 1;
 LABEL_14:
@@ -1031,8 +1031,8 @@ LABEL_14:
     }
   }
 
-  v8 = [(EKRecurrenceRule *)self frequency];
-  if (v8 != EKRecurrenceFrequencyMonthly || (-[EKRecurrenceRule daysOfTheWeek](self, "daysOfTheWeek"), v3 = objc_claimAutoreleasedReturnValue(), [v3 count]))
+  frequency2 = [(EKRecurrenceRule *)self frequency];
+  if (frequency2 != EKRecurrenceFrequencyMonthly || (-[EKRecurrenceRule daysOfTheWeek](self, "daysOfTheWeek"), v3 = objc_claimAutoreleasedReturnValue(), [v3 count]))
   {
     v9 = 0;
     v7 = 0;
@@ -1042,8 +1042,8 @@ LABEL_14:
     }
 
 LABEL_8:
-    v10 = [(EKRecurrenceRule *)self daysOfTheWeek];
-    if ([v10 count])
+    daysOfTheWeek2 = [(EKRecurrenceRule *)self daysOfTheWeek];
+    if ([daysOfTheWeek2 count])
     {
 
       v7 = 0;
@@ -1055,20 +1055,20 @@ LABEL_8:
       goto LABEL_10;
     }
 
-    v12 = [(EKRecurrenceRule *)self monthsOfTheYear];
-    if (![v12 count])
+    monthsOfTheYear = [(EKRecurrenceRule *)self monthsOfTheYear];
+    if (![monthsOfTheYear count])
     {
-      v13 = [(EKRecurrenceRule *)self weeksOfTheYear];
-      if (![v13 count])
+      weeksOfTheYear = [(EKRecurrenceRule *)self weeksOfTheYear];
+      if (![weeksOfTheYear count])
       {
-        v14 = [(EKRecurrenceRule *)self daysOfTheYear];
-        v15 = v13;
-        v7 = [v14 count] < 2;
+        daysOfTheYear = [(EKRecurrenceRule *)self daysOfTheYear];
+        v15 = weeksOfTheYear;
+        v7 = [daysOfTheYear count] < 2;
 
         if ((v9 & 1) == 0)
         {
 LABEL_11:
-          if (v8 != EKRecurrenceFrequencyMonthly)
+          if (frequency2 != EKRecurrenceFrequencyMonthly)
           {
             goto LABEL_13;
           }
@@ -1091,8 +1091,8 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  v4 = [(EKRecurrenceRule *)self daysOfTheMonth];
-  if ([v4 count] > 1)
+  daysOfTheMonth = [(EKRecurrenceRule *)self daysOfTheMonth];
+  if ([daysOfTheMonth count] > 1)
   {
     if ([(EKRecurrenceRule *)self frequency]!= EKRecurrenceFrequencyYearly)
     {
@@ -1109,7 +1109,7 @@ LABEL_12:
 
   v7 = 1;
 LABEL_13:
-  if (v6 == EKRecurrenceFrequencyWeekly)
+  if (frequency == EKRecurrenceFrequencyWeekly)
   {
     goto LABEL_14;
   }
@@ -1117,35 +1117,35 @@ LABEL_13:
   return v7;
 }
 
-+ (id)iCalendarValueFromRecurrenceType:(int64_t)a3
++ (id)iCalendarValueFromRecurrenceType:(int64_t)type
 {
-  if (a3 >= 4)
+  if (type >= 4)
   {
     v6 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"Encountered illegal value for  EKRecurrenceFrequency" userInfo:{0, v3, v4}];
     objc_exception_throw(v6);
   }
 
-  return off_1E77FCF60[a3];
+  return off_1E77FCF60[type];
 }
 
-+ (id)iCalendarValueFromDate:(id)a3 isDateOnly:(BOOL)a4 isFloating:(BOOL)a5
++ (id)iCalendarValueFromDate:(id)date isDateOnly:(BOOL)only isFloating:(BOOL)floating
 {
-  v5 = a5;
-  v6 = a4;
+  floatingCopy = floating;
+  onlyCopy = only;
   v7 = MEMORY[0x1E696AB78];
-  v8 = a3;
+  dateCopy = date;
   v9 = objc_alloc_init(v7);
   [v9 setFormatterBehavior:1040];
   v10 = [MEMORY[0x1E695DFE8] timeZoneWithName:@"GMT"];
   [v9 setTimeZone:v10];
 
   v11 = @"yyyyMMdd'T'HHmmss'Z'";
-  if (v5)
+  if (floatingCopy)
   {
     v11 = @"yyyyMMdd'T'HHmmss";
   }
 
-  if (v6)
+  if (onlyCopy)
   {
     v12 = @"yyyyMMdd";
   }
@@ -1156,37 +1156,37 @@ LABEL_13:
   }
 
   [v9 setDateFormat:v12];
-  v13 = [v9 stringFromDate:v8];
+  v13 = [v9 stringFromDate:dateCopy];
 
   return v13;
 }
 
-+ (id)adjustDateIntoUTC:(id)a3 dateOnly:(BOOL)a4 floating:(BOOL)a5
++ (id)adjustDateIntoUTC:(id)c dateOnly:(BOOL)only floating:(BOOL)floating
 {
-  v5 = a5;
-  v7 = a3;
-  if (a4 || v5)
+  floatingCopy = floating;
+  cCopy = c;
+  if (only || floatingCopy)
   {
     v8 = MEMORY[0x1E6992FA8];
-    v9 = [MEMORY[0x1E695DFE8] defaultTimeZone];
-    v10 = [v8 dateInFloatingTimeZoneFromDate:v7 inTimeZone:v9];
+    defaultTimeZone = [MEMORY[0x1E695DFE8] defaultTimeZone];
+    v10 = [v8 dateInFloatingTimeZoneFromDate:cCopy inTimeZone:defaultTimeZone];
 
-    v7 = v10;
+    cCopy = v10;
   }
 
-  return v7;
+  return cCopy;
 }
 
-+ (int64_t)daysTypeForDayArray:(id)a3
++ (int64_t)daysTypeForDayArray:(id)array
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  arrayCopy = array;
   v4 = objc_opt_new();
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  obj = v3;
+  obj = arrayCopy;
   v5 = [obj countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v5)
   {
@@ -1228,8 +1228,8 @@ LABEL_13:
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v4 = [(EKRecurrenceRule *)self monthsOfTheYear];
-  v5 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  monthsOfTheYear = [(EKRecurrenceRule *)self monthsOfTheYear];
+  v5 = [monthsOfTheYear countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1241,14 +1241,14 @@ LABEL_13:
       {
         if (*v17 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(monthsOfTheYear);
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
         v11 = [v3 objectAtIndexedSubscript:{(objc_msgSend(v10, "intValue") - 1)}];
-        v12 = [v11 BOOLValue];
+        bOOLValue = [v11 BOOLValue];
 
-        if (v12)
+        if (bOOLValue)
         {
           v13 = 1;
           goto LABEL_11;
@@ -1257,7 +1257,7 @@ LABEL_13:
         [v3 setObject:v8 atIndexedSubscript:{(objc_msgSend(v10, "intValue") - 1)}];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v6 = [monthsOfTheYear countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v6)
       {
         continue;
@@ -1274,30 +1274,30 @@ LABEL_11:
   return v13;
 }
 
-- (BOOL)newStartDateIsValid:(id)a3 currentStartDate:(id)a4 calendar:(id)a5
+- (BOOL)newStartDateIsValid:(id)valid currentStartDate:(id)date calendar:(id)calendar
 {
-  v8 = a3;
-  v9 = [(EKRecurrenceRule *)self _acceptableStartDateRangeWithCurrentStartDate:a4 calendar:a5];
-  LOBYTE(a4) = [v9 containsDate:v8];
+  validCopy = valid;
+  v9 = [(EKRecurrenceRule *)self _acceptableStartDateRangeWithCurrentStartDate:date calendar:calendar];
+  LOBYTE(date) = [v9 containsDate:validCopy];
 
-  return a4;
+  return date;
 }
 
-+ (id)_acceptableStartDateRangeForDailyRecurrenceWithCurrentStartDate:(id)a3
++ (id)_acceptableStartDateRangeForDailyRecurrenceWithCurrentStartDate:(id)date
 {
   v3 = MEMORY[0x1E6992F70];
-  v4 = [MEMORY[0x1E695DF00] distantPast];
-  v5 = [MEMORY[0x1E695DF00] distantFuture];
-  v6 = [v3 rangeWithStartDate:v4 endDate:v5];
+  distantPast = [MEMORY[0x1E695DF00] distantPast];
+  distantFuture = [MEMORY[0x1E695DF00] distantFuture];
+  v6 = [v3 rangeWithStartDate:distantPast endDate:distantFuture];
 
   return v6;
 }
 
-+ (id)_acceptableStartDateRangeForWeeklyRecurrenceWithCurrentStartDate:(id)a3 calendar:(id)a4
++ (id)_acceptableStartDateRangeForWeeklyRecurrenceWithCurrentStartDate:(id)date calendar:(id)calendar
 {
   v8 = 0;
   v9 = 0.0;
-  v4 = [a4 rangeOfUnit:0x2000 startDate:&v8 interval:&v9 forDate:a3];
+  v4 = [calendar rangeOfUnit:0x2000 startDate:&v8 interval:&v9 forDate:date];
   v5 = v8;
   v6 = 0;
   if (v4)
@@ -1308,11 +1308,11 @@ LABEL_11:
   return v6;
 }
 
-+ (id)_acceptableStartDateRangeForMonthlyRecurrenceWithCurrentStartDate:(id)a3 calendar:(id)a4
++ (id)_acceptableStartDateRangeForMonthlyRecurrenceWithCurrentStartDate:(id)date calendar:(id)calendar
 {
   v8 = 0;
   v9 = 0.0;
-  v4 = [a4 rangeOfUnit:8 startDate:&v8 interval:&v9 forDate:a3];
+  v4 = [calendar rangeOfUnit:8 startDate:&v8 interval:&v9 forDate:date];
   v5 = v8;
   v6 = 0;
   if (v4)
@@ -1323,11 +1323,11 @@ LABEL_11:
   return v6;
 }
 
-+ (id)_acceptableStartDateRangeForYearlyRecurrenceWithCurrentStartDate:(id)a3 calendar:(id)a4
++ (id)_acceptableStartDateRangeForYearlyRecurrenceWithCurrentStartDate:(id)date calendar:(id)calendar
 {
   v8 = 0;
   v9 = 0.0;
-  v4 = [a4 rangeOfUnit:4 startDate:&v8 interval:&v9 forDate:a3];
+  v4 = [calendar rangeOfUnit:4 startDate:&v8 interval:&v9 forDate:date];
   v5 = v8;
   v6 = 0;
   if (v4)
@@ -1338,42 +1338,42 @@ LABEL_11:
   return v6;
 }
 
-- (id)_acceptableStartDateRangeWithCurrentStartDate:(id)a3 calendar:(id)a4
+- (id)_acceptableStartDateRangeWithCurrentStartDate:(id)date calendar:(id)calendar
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(EKRecurrenceRule *)self frequency];
-  if (v9 > EKRecurrenceFrequencyWeekly)
+  dateCopy = date;
+  calendarCopy = calendar;
+  frequency = [(EKRecurrenceRule *)self frequency];
+  if (frequency > EKRecurrenceFrequencyWeekly)
   {
-    if (v9 == EKRecurrenceFrequencyMonthly)
+    if (frequency == EKRecurrenceFrequencyMonthly)
     {
-      v10 = [objc_opt_class() _acceptableStartDateRangeForMonthlyRecurrenceWithCurrentStartDate:v7 calendar:v8];
+      v10 = [objc_opt_class() _acceptableStartDateRangeForMonthlyRecurrenceWithCurrentStartDate:dateCopy calendar:calendarCopy];
     }
 
     else
     {
-      if (v9 != EKRecurrenceFrequencyYearly)
+      if (frequency != EKRecurrenceFrequencyYearly)
       {
         goto LABEL_11;
       }
 
-      v10 = [objc_opt_class() _acceptableStartDateRangeForYearlyRecurrenceWithCurrentStartDate:v7 calendar:v8];
+      v10 = [objc_opt_class() _acceptableStartDateRangeForYearlyRecurrenceWithCurrentStartDate:dateCopy calendar:calendarCopy];
     }
   }
 
-  else if (v9)
+  else if (frequency)
   {
-    if (v9 != EKRecurrenceFrequencyWeekly)
+    if (frequency != EKRecurrenceFrequencyWeekly)
     {
       goto LABEL_11;
     }
 
-    v10 = [objc_opt_class() _acceptableStartDateRangeForWeeklyRecurrenceWithCurrentStartDate:v7 calendar:v8];
+    v10 = [objc_opt_class() _acceptableStartDateRangeForWeeklyRecurrenceWithCurrentStartDate:dateCopy calendar:calendarCopy];
   }
 
   else
   {
-    v10 = [objc_opt_class() _acceptableStartDateRangeForDailyRecurrenceWithCurrentStartDate:v7];
+    v10 = [objc_opt_class() _acceptableStartDateRangeForDailyRecurrenceWithCurrentStartDate:dateCopy];
   }
 
   v4 = v10;
@@ -1382,22 +1382,22 @@ LABEL_11:
   return v4;
 }
 
-- (BOOL)isEqualToRecurrenceRule:(id)a3
+- (BOOL)isEqualToRecurrenceRule:(id)rule
 {
-  v8 = a3;
-  v9 = [(EKRecurrenceRule *)self frequency];
-  if (v9 != [v8 frequency] || (v10 = -[EKRecurrenceRule interval](self, "interval"), v10 != objc_msgSend(v8, "interval")) || (v11 = -[EKRecurrenceRule firstDayOfTheWeek](self, "firstDayOfTheWeek"), v11 != objc_msgSend(v8, "firstDayOfTheWeek")))
+  ruleCopy = rule;
+  frequency = [(EKRecurrenceRule *)self frequency];
+  if (frequency != [ruleCopy frequency] || (v10 = -[EKRecurrenceRule interval](self, "interval"), v10 != objc_msgSend(ruleCopy, "interval")) || (v11 = -[EKRecurrenceRule firstDayOfTheWeek](self, "firstDayOfTheWeek"), v11 != objc_msgSend(ruleCopy, "firstDayOfTheWeek")))
   {
     v14 = 0;
     goto LABEL_9;
   }
 
-  v12 = [(EKRecurrenceRule *)self recurrenceEnd];
-  if (v12 || ([v8 recurrenceEnd], (v60 = objc_claimAutoreleasedReturnValue()) != 0))
+  recurrenceEnd = [(EKRecurrenceRule *)self recurrenceEnd];
+  if (recurrenceEnd || ([ruleCopy recurrenceEnd], (v60 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v3 = [(EKRecurrenceRule *)self recurrenceEnd];
-    v4 = [v8 recurrenceEnd];
-    if (![v3 isEqual:v4])
+    recurrenceEnd2 = [(EKRecurrenceRule *)self recurrenceEnd];
+    recurrenceEnd3 = [ruleCopy recurrenceEnd];
+    if (![recurrenceEnd2 isEqual:recurrenceEnd3])
     {
       v14 = 0;
 LABEL_76:
@@ -1414,12 +1414,12 @@ LABEL_76:
     v13 = 0;
   }
 
-  v16 = [(EKRecurrenceRule *)self monthsOfTheYear];
-  if (v16 || ([v8 monthsOfTheYear], (v54 = objc_claimAutoreleasedReturnValue()) != 0))
+  monthsOfTheYear = [(EKRecurrenceRule *)self monthsOfTheYear];
+  if (monthsOfTheYear || ([ruleCopy monthsOfTheYear], (v54 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v5 = [(EKRecurrenceRule *)self monthsOfTheYear];
-    v6 = [v8 monthsOfTheYear];
-    if (![v5 isEqual:v6])
+    monthsOfTheYear2 = [(EKRecurrenceRule *)self monthsOfTheYear];
+    monthsOfTheYear3 = [ruleCopy monthsOfTheYear];
+    if (![monthsOfTheYear2 isEqual:monthsOfTheYear3])
     {
       v14 = 0;
       goto LABEL_73;
@@ -1436,13 +1436,13 @@ LABEL_76:
     v54 = 0;
   }
 
-  v17 = [(EKRecurrenceRule *)self daysOfTheMonth];
-  if (v17 || ([v8 daysOfTheMonth], (v50 = objc_claimAutoreleasedReturnValue()) != 0))
+  daysOfTheMonth = [(EKRecurrenceRule *)self daysOfTheMonth];
+  if (daysOfTheMonth || ([ruleCopy daysOfTheMonth], (v50 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v18 = [(EKRecurrenceRule *)self daysOfTheMonth];
-    v55 = [v8 daysOfTheMonth];
-    v56 = v18;
-    if (![v18 isEqual:?])
+    daysOfTheMonth2 = [(EKRecurrenceRule *)self daysOfTheMonth];
+    daysOfTheMonth3 = [ruleCopy daysOfTheMonth];
+    v56 = daysOfTheMonth2;
+    if (![daysOfTheMonth2 isEqual:?])
     {
       v14 = 0;
 LABEL_68:
@@ -1459,13 +1459,13 @@ LABEL_68:
     v53 = 0;
   }
 
-  v57 = [(EKRecurrenceRule *)self daysOfTheYear];
-  if (v57 || ([v8 daysOfTheYear], (v45 = objc_claimAutoreleasedReturnValue()) != 0))
+  daysOfTheYear = [(EKRecurrenceRule *)self daysOfTheYear];
+  if (daysOfTheYear || ([ruleCopy daysOfTheYear], (v45 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v19 = [(EKRecurrenceRule *)self daysOfTheYear];
-    v51 = [v8 daysOfTheYear];
-    v52 = v19;
-    if (![v19 isEqual:v51])
+    daysOfTheYear2 = [(EKRecurrenceRule *)self daysOfTheYear];
+    daysOfTheYear3 = [ruleCopy daysOfTheYear];
+    v52 = daysOfTheYear2;
+    if (![daysOfTheYear2 isEqual:daysOfTheYear3])
     {
       v14 = 0;
 LABEL_64:
@@ -1482,13 +1482,13 @@ LABEL_64:
     v48 = 0;
   }
 
-  v49 = [(EKRecurrenceRule *)self weeksOfTheYear];
-  if (v49 || ([v8 weeksOfTheYear], (v40 = objc_claimAutoreleasedReturnValue()) != 0))
+  weeksOfTheYear = [(EKRecurrenceRule *)self weeksOfTheYear];
+  if (weeksOfTheYear || ([ruleCopy weeksOfTheYear], (v40 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v20 = [(EKRecurrenceRule *)self weeksOfTheYear];
-    v46 = [v8 weeksOfTheYear];
-    v47 = v20;
-    if (![v20 isEqual:v46])
+    weeksOfTheYear2 = [(EKRecurrenceRule *)self weeksOfTheYear];
+    weeksOfTheYear3 = [ruleCopy weeksOfTheYear];
+    v47 = weeksOfTheYear2;
+    if (![weeksOfTheYear2 isEqual:weeksOfTheYear3])
     {
       v14 = 0;
 LABEL_60:
@@ -1505,13 +1505,13 @@ LABEL_60:
     v43 = 0;
   }
 
-  v44 = [(EKRecurrenceRule *)self daysOfTheWeek];
-  if (v44 || ([v8 daysOfTheWeek], (v35 = objc_claimAutoreleasedReturnValue()) != 0))
+  daysOfTheWeek = [(EKRecurrenceRule *)self daysOfTheWeek];
+  if (daysOfTheWeek || ([ruleCopy daysOfTheWeek], (v35 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v21 = [(EKRecurrenceRule *)self daysOfTheWeek];
-    v41 = [v8 daysOfTheWeek];
-    v42 = v21;
-    if (![v21 isEqual:v41])
+    daysOfTheWeek2 = [(EKRecurrenceRule *)self daysOfTheWeek];
+    daysOfTheWeek3 = [ruleCopy daysOfTheWeek];
+    v42 = daysOfTheWeek2;
+    if (![daysOfTheWeek2 isEqual:daysOfTheWeek3])
     {
       v14 = 0;
 LABEL_56:
@@ -1528,13 +1528,13 @@ LABEL_56:
     v38 = 0;
   }
 
-  v39 = [(EKRecurrenceRule *)self setPositions];
-  if (v39 || ([v8 setPositions], (v31 = objc_claimAutoreleasedReturnValue()) != 0))
+  setPositions = [(EKRecurrenceRule *)self setPositions];
+  if (setPositions || ([ruleCopy setPositions], (v31 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v22 = [(EKRecurrenceRule *)self setPositions];
-    v36 = [v8 setPositions];
-    v37 = v22;
-    if (![v22 isEqual:?])
+    setPositions2 = [(EKRecurrenceRule *)self setPositions];
+    setPositions3 = [ruleCopy setPositions];
+    v37 = setPositions2;
+    if (![setPositions2 isEqual:?])
     {
       v14 = 0;
       goto LABEL_52;
@@ -1549,15 +1549,15 @@ LABEL_56:
     v23 = 0;
   }
 
-  v34 = [(EKRecurrenceRule *)self calendarIdentifier];
-  if (v34 || ([v8 calendarIdentifier], (v30 = objc_claimAutoreleasedReturnValue()) != 0))
+  calendarIdentifier = [(EKRecurrenceRule *)self calendarIdentifier];
+  if (calendarIdentifier || ([ruleCopy calendarIdentifier], (v30 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v33 = v23;
-    v32 = [(EKRecurrenceRule *)self calendarIdentifier];
-    v24 = [v8 calendarIdentifier];
-    v14 = [v32 isEqual:v24];
+    calendarIdentifier2 = [(EKRecurrenceRule *)self calendarIdentifier];
+    calendarIdentifier3 = [ruleCopy calendarIdentifier];
+    v14 = [calendarIdentifier2 isEqual:calendarIdentifier3];
 
-    if (v34)
+    if (calendarIdentifier)
     {
 
       if (!v33)
@@ -1584,8 +1584,8 @@ LABEL_52:
   }
 
 LABEL_53:
-  v25 = v39;
-  if (!v39)
+  v25 = setPositions;
+  if (!setPositions)
   {
 
     v25 = 0;
@@ -1597,8 +1597,8 @@ LABEL_53:
   }
 
 LABEL_57:
-  v26 = v44;
-  if (!v44)
+  v26 = daysOfTheWeek;
+  if (!daysOfTheWeek)
   {
 
     v26 = 0;
@@ -1610,8 +1610,8 @@ LABEL_57:
   }
 
 LABEL_61:
-  v27 = v49;
-  if (!v49)
+  v27 = weeksOfTheYear;
+  if (!weeksOfTheYear)
   {
 
     v27 = 0;
@@ -1623,8 +1623,8 @@ LABEL_61:
   }
 
 LABEL_65:
-  v28 = v57;
-  if (!v57)
+  v28 = daysOfTheYear;
+  if (!daysOfTheYear)
   {
 
     v28 = 0;
@@ -1636,7 +1636,7 @@ LABEL_65:
   }
 
 LABEL_69:
-  if (!v17)
+  if (!daysOfTheMonth)
   {
   }
 
@@ -1645,7 +1645,7 @@ LABEL_69:
     v13 = v59;
 LABEL_73:
 
-    if (v16)
+    if (monthsOfTheYear)
     {
       goto LABEL_75;
     }
@@ -1654,7 +1654,7 @@ LABEL_73:
   }
 
   v13 = v59;
-  if (!v16)
+  if (!monthsOfTheYear)
   {
 LABEL_74:
   }
@@ -1667,7 +1667,7 @@ LABEL_75:
   }
 
 LABEL_77:
-  if (!v12)
+  if (!recurrenceEnd)
   {
   }
 

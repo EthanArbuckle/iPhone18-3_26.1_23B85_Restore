@@ -1,11 +1,11 @@
 @interface HMDNaturalLightingContext
 + (id)logCategory;
-- (BOOL)isEqual:(id)a3;
-- (HMDNaturalLightingContext)initWithCoder:(id)a3;
-- (HMDNaturalLightingContext)initWithCurve:(id)a3 timeZone:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (HMDNaturalLightingContext)initWithCoder:(id)coder;
+- (HMDNaturalLightingContext)initWithCurve:(id)curve timeZone:(id)zone;
 - (id)attributeDescriptions;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMDNaturalLightingContext
@@ -14,12 +14,12 @@
 {
   v12[2] = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277D0F778]);
-  v4 = [(HMDNaturalLightingContext *)self curve];
-  v5 = [v3 initWithName:@"Curve" value:v4];
+  curve = [(HMDNaturalLightingContext *)self curve];
+  v5 = [v3 initWithName:@"Curve" value:curve];
   v12[0] = v5;
   v6 = objc_alloc(MEMORY[0x277D0F778]);
-  v7 = [(HMDNaturalLightingContext *)self timeZone];
-  v8 = [v6 initWithName:@"Time Zone" value:v7];
+  timeZone = [(HMDNaturalLightingContext *)self timeZone];
+  v8 = [v6 initWithName:@"Time Zone" value:timeZone];
   v12[1] = v8;
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:2];
 
@@ -30,22 +30,22 @@
 
 - (unint64_t)hash
 {
-  v3 = [(HMDNaturalLightingContext *)self curve];
-  v4 = [v3 hash];
+  curve = [(HMDNaturalLightingContext *)self curve];
+  v4 = [curve hash];
 
-  v5 = [(HMDNaturalLightingContext *)self timeZone];
-  v6 = [v5 hash];
+  timeZone = [(HMDNaturalLightingContext *)self timeZone];
+  v6 = [timeZone hash];
 
   return v6 ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -57,13 +57,13 @@
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 curve];
-    v9 = [(HMDNaturalLightingContext *)self curve];
-    if ([v8 isEqual:v9])
+    curve = [v6 curve];
+    curve2 = [(HMDNaturalLightingContext *)self curve];
+    if ([curve isEqual:curve2])
     {
-      v10 = [v7 timeZone];
-      v11 = [v7 timeZone];
-      v12 = [v10 isEqual:v11];
+      timeZone = [v7 timeZone];
+      timeZone2 = [v7 timeZone];
+      v12 = [timeZone isEqual:timeZone2];
     }
 
     else
@@ -80,34 +80,34 @@
   return v12;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HMDNaturalLightingContext *)self curve];
-  [v4 encodeObject:v5 forKey:@"HHNLC.cck"];
+  coderCopy = coder;
+  curve = [(HMDNaturalLightingContext *)self curve];
+  [coderCopy encodeObject:curve forKey:@"HHNLC.cck"];
 
-  v6 = [(HMDNaturalLightingContext *)self timeZone];
-  [v4 encodeObject:v6 forKey:@"HHNLC.tzk"];
+  timeZone = [(HMDNaturalLightingContext *)self timeZone];
+  [coderCopy encodeObject:timeZone forKey:@"HHNLC.tzk"];
 }
 
-- (HMDNaturalLightingContext)initWithCoder:(id)a3
+- (HMDNaturalLightingContext)initWithCoder:(id)coder
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HHNLC.cck"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HHNLC.cck"];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HHNLC.tzk"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HHNLC.tzk"];
     if (v6)
     {
-      v7 = [(HMDNaturalLightingContext *)self initWithCurve:v5 timeZone:v6];
-      v8 = v7;
+      selfCopy2 = [(HMDNaturalLightingContext *)self initWithCurve:v5 timeZone:v6];
+      v8 = selfCopy2;
     }
 
     else
     {
       v12 = objc_autoreleasePoolPush();
-      v7 = self;
+      selfCopy2 = self;
       v13 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
@@ -125,7 +125,7 @@
   else
   {
     v9 = objc_autoreleasePoolPush();
-    v7 = self;
+    selfCopy2 = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
@@ -143,20 +143,20 @@
   return v8;
 }
 
-- (HMDNaturalLightingContext)initWithCurve:(id)a3 timeZone:(id)a4
+- (HMDNaturalLightingContext)initWithCurve:(id)curve timeZone:(id)zone
 {
-  v6 = a3;
-  v7 = a4;
+  curveCopy = curve;
+  zoneCopy = zone;
   v14.receiver = self;
   v14.super_class = HMDNaturalLightingContext;
   v8 = [(HMDNaturalLightingContext *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [curveCopy copy];
     curve = v8->_curve;
     v8->_curve = v9;
 
-    v11 = [v7 copy];
+    v11 = [zoneCopy copy];
     timeZone = v8->_timeZone;
     v8->_timeZone = v11;
   }

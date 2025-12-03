@@ -1,46 +1,46 @@
 @interface PUWallpaperPlaygroundViewController
-- (PUWallpaperPlaygroundViewController)initWithAssets:(id)a3;
-- (PUWallpaperPlaygroundViewController)initWithConfiguration:(id)a3 assetDirectory:(id)a4;
+- (PUWallpaperPlaygroundViewController)initWithAssets:(id)assets;
+- (PUWallpaperPlaygroundViewController)initWithConfiguration:(id)configuration assetDirectory:(id)directory;
 - (double)px_backlightTransformAnimationDuration;
 - (double)px_lowLuminanceAlphaAnimationDuration;
 - (double)px_shuffleSleepFadeInAnimationDuration;
 - (double)px_shuffleSleepFadeOutAnimationDuration;
 - (double)px_shuffleSleepTransformOutAnimationDuration;
-- (id)_renderingEnvironmentForAssets:(id)a3;
-- (id)px_extendRenderSessionForReason:(id)a3;
+- (id)_renderingEnvironmentForAssets:(id)assets;
+- (id)px_extendRenderSessionForReason:(id)reason;
 - (void)_commonInit;
 - (void)_dismiss;
-- (void)_handlePanGesture:(id)a3;
-- (void)_handleTap:(id)a3;
-- (void)_handleTwoFingerTap:(id)a3;
+- (void)_handlePanGesture:(id)gesture;
+- (void)_handleTap:(id)tap;
+- (void)_handleTwoFingerTap:(id)tap;
 - (void)_setupControls;
 - (void)_setupLowLuminanceFilter;
 - (void)_setupPosterController;
 - (void)_setupRendererViews;
-- (void)_updateEnvironmentUsingBlock:(id)a3;
+- (void)_updateEnvironmentUsingBlock:(id)block;
 - (void)_updateLowLuminanceState;
 - (void)_updateTitleTransform;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)presentPlaygroundWithPresentingViewController:(id)a3;
-- (void)px_updatePreferences:(id)a3;
-- (void)setPosterController:(id)a3;
-- (void)setShowsControls:(BOOL)a3;
-- (void)setUseLowLuminance:(BOOL)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)presentPlaygroundWithPresentingViewController:(id)controller;
+- (void)px_updatePreferences:(id)preferences;
+- (void)setPosterController:(id)controller;
+- (void)setShowsControls:(BOOL)controls;
+- (void)setUseLowLuminance:(BOOL)luminance;
+- (void)traitCollectionDidChange:(id)change;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
 
 @implementation PUWallpaperPlaygroundViewController
 
-- (void)presentPlaygroundWithPresentingViewController:(id)a3
+- (void)presentPlaygroundWithPresentingViewController:(id)controller
 {
-  v4 = [a3 view];
-  v8 = [v4 window];
+  view = [controller view];
+  window = [view window];
 
-  v5 = [v8 windowScene];
-  v6 = [objc_alloc(MEMORY[0x1E69DD2E8]) initWithWindowScene:v5];
+  windowScene = [window windowScene];
+  v6 = [objc_alloc(MEMORY[0x1E69DD2E8]) initWithWindowScene:windowScene];
   v7 = wrapperWindow;
   wrapperWindow = v6;
 
@@ -48,16 +48,16 @@
   [wrapperWindow makeKeyAndVisible];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (ViewModelObservationContext == a6)
+  if (ViewModelObservationContext == context)
   {
-    v7 = [(PUWallpaperPlaygroundViewController *)self view:a3];
+    v7 = [(PUWallpaperPlaygroundViewController *)self view:path];
     [v7 setNeedsLayout];
   }
 }
 
-- (id)px_extendRenderSessionForReason:(id)a3
+- (id)px_extendRenderSessionForReason:(id)reason
 {
   v3 = objc_alloc_init(PUWallpaperPlaygroundInvalidatable);
 
@@ -66,12 +66,12 @@
 
 - (void)_updateTitleTransform
 {
-  v3 = [(PUWallpaperPlaygroundViewController *)self environment];
-  [v3 containerFrame];
+  environment = [(PUWallpaperPlaygroundViewController *)self environment];
+  [environment containerFrame];
   PXRectWithSize();
 
-  v4 = [(PUWallpaperPlaygroundViewController *)self environment];
-  [v4 px_titleBoundsForLayout:0];
+  environment2 = [(PUWallpaperPlaygroundViewController *)self environment];
+  [environment2 px_titleBoundsForLayout:0];
   PXRectDenormalize();
   v6 = v5;
   v8 = v7;
@@ -84,8 +84,8 @@
   v33.size.height = v12;
   if (!CGRectIsEmpty(v33))
   {
-    v13 = [(PUWallpaperPlaygroundViewController *)self environment];
-    [v13 px_minimumTitleBounds];
+    environment3 = [(PUWallpaperPlaygroundViewController *)self environment];
+    [environment3 px_minimumTitleBounds];
     v15 = v14;
     v17 = v16;
     v19 = v18;
@@ -110,33 +110,33 @@
 
     CGAffineTransformMakeScale(&v32, 1.0, v24);
     v31 = v32;
-    v25 = [(PUWallpaperPlaygroundViewController *)self dateView];
+    dateView = [(PUWallpaperPlaygroundViewController *)self dateView];
     v30 = v31;
-    [v25 setTransform:&v30];
+    [dateView setTransform:&v30];
 
     v26 = *MEMORY[0x1E695EFF8];
     v27 = *(MEMORY[0x1E695EFF8] + 8);
-    v28 = [(PUWallpaperPlaygroundViewController *)self dateView];
-    v29 = [v28 layer];
-    [v29 setAnchorPoint:{v26, v27}];
+    dateView2 = [(PUWallpaperPlaygroundViewController *)self dateView];
+    layer = [dateView2 layer];
+    [layer setAnchorPoint:{v26, v27}];
   }
 }
 
-- (void)px_updatePreferences:(id)a3
+- (void)px_updatePreferences:(id)preferences
 {
-  v5 = a3;
-  v6 = [(PUWallpaperPlaygroundViewController *)self preferences];
+  preferencesCopy = preferences;
+  preferences = [(PUWallpaperPlaygroundViewController *)self preferences];
   v7 = objc_opt_new();
-  (*(a3 + 2))(v5, v6, v7);
+  (*(preferences + 2))(preferencesCopy, preferences, v7);
 
-  v8 = [(PUWallpaperPlaygroundViewController *)self preferences];
-  [v8 px_preferredTitleBounds];
+  preferences2 = [(PUWallpaperPlaygroundViewController *)self preferences];
+  [preferences2 px_preferredTitleBounds];
   v10 = v9;
   v12 = v11;
   v14 = v13;
   v16 = v15;
-  v17 = [(PUWallpaperPlaygroundViewController *)self environment];
-  [v17 setPx_preferredTitleBounds:{v10, v12, v14, v16}];
+  environment = [(PUWallpaperPlaygroundViewController *)self environment];
+  [environment setPx_preferredTitleBounds:{v10, v12, v14, v16}];
 
   [(PUWallpaperPlaygroundViewController *)self _updateTitleTransform];
 }
@@ -194,13 +194,13 @@
     [v3 lowLuminanceAlphaAnimationDuration];
     v5 = v4;
     v6 = MEMORY[0x1E69DD250];
-    v7 = [(PUWallpaperPlaygroundViewController *)self dateView];
+    dateView = [(PUWallpaperPlaygroundViewController *)self dateView];
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __63__PUWallpaperPlaygroundViewController__updateLowLuminanceState__block_invoke;
     v20[3] = &unk_1E7B80DD0;
     v20[4] = self;
-    [v6 transitionWithView:v7 duration:5242880 options:v20 animations:0 completion:v5];
+    [v6 transitionWithView:dateView duration:5242880 options:v20 animations:0 completion:v5];
 
     if ([v3 applyLowAPLFilter])
     {
@@ -216,13 +216,13 @@
         v8 = &unk_1F2B7F3A8;
       }
 
-      v9 = [(PUWallpaperPlaygroundViewController *)self hostingView];
-      v10 = [v9 layer];
+      hostingView = [(PUWallpaperPlaygroundViewController *)self hostingView];
+      layer = [hostingView layer];
 
-      v11 = [(PUWallpaperPlaygroundViewController *)self lowLuminanceFilterInputScaleKeyPath];
-      v12 = [MEMORY[0x1E6979318] animationWithKeyPath:v11];
-      v13 = [v10 presentationLayer];
-      v14 = [v13 valueForKeyPath:v11];
+      lowLuminanceFilterInputScaleKeyPath = [(PUWallpaperPlaygroundViewController *)self lowLuminanceFilterInputScaleKeyPath];
+      v12 = [MEMORY[0x1E6979318] animationWithKeyPath:lowLuminanceFilterInputScaleKeyPath];
+      presentationLayer = [layer presentationLayer];
+      v14 = [presentationLayer valueForKeyPath:lowLuminanceFilterInputScaleKeyPath];
       [v12 setFromValue:v14];
 
       [v12 setToValue:v8];
@@ -232,14 +232,14 @@
       v15 = [MEMORY[0x1E69793D0] functionWithName:*MEMORY[0x1E6979ED0]];
       [v12 setTimingFunction:v15];
 
-      [v10 addAnimation:v12 forKey:@"lowLuminanceIntensity"];
-      [v10 setValue:v8 forKeyPath:v11];
+      [layer addAnimation:v12 forKey:@"lowLuminanceIntensity"];
+      [layer setValue:v8 forKeyPath:lowLuminanceFilterInputScaleKeyPath];
       v16 = MEMORY[0x1E696AD98];
       v17 = +[PUWallpaperPlaygroundSettings sharedInstance];
       [v17 lowAPLFilterAmount];
       v18 = [v16 numberWithDouble:?];
-      v19 = [(PUWallpaperPlaygroundViewController *)self lowLuminanceFilterInputAmountKeyPath];
-      [v10 setValue:v18 forKeyPath:v19];
+      lowLuminanceFilterInputAmountKeyPath = [(PUWallpaperPlaygroundViewController *)self lowLuminanceFilterInputAmountKeyPath];
+      [layer setValue:v18 forKeyPath:lowLuminanceFilterInputAmountKeyPath];
 
       [MEMORY[0x1E6979518] commit];
     }
@@ -253,22 +253,22 @@ void __63__PUWallpaperPlaygroundViewController__updateLowLuminanceState__block_i
   [v3 setUseThinnerFontWeightForTime:v2];
 }
 
-- (void)setUseLowLuminance:(BOOL)a3
+- (void)setUseLowLuminance:(BOOL)luminance
 {
-  if (self->_useLowLuminance != a3)
+  if (self->_useLowLuminance != luminance)
   {
     v11 = v3;
     v12 = v4;
-    self->_useLowLuminance = a3;
+    self->_useLowLuminance = luminance;
     [(PUWallpaperPlaygroundViewController *)self _updateLowLuminanceState];
-    v7 = [(PUWallpaperPlaygroundViewController *)self posterController];
-    v8 = [v7 viewModel];
+    posterController = [(PUWallpaperPlaygroundViewController *)self posterController];
+    viewModel = [posterController viewModel];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __58__PUWallpaperPlaygroundViewController_setUseLowLuminance___block_invoke;
     v9[3] = &__block_descriptor_33_e48_v16__0___PUParallaxLayerStackMutableViewModel__8l;
-    v10 = a3;
-    [v8 performChanges:v9];
+    luminanceCopy = luminance;
+    [viewModel performChanges:v9];
   }
 }
 
@@ -305,9 +305,9 @@ void __58__PUWallpaperPlaygroundViewController_setUseLowLuminance___block_invoke
   [v4 setValue:&unk_1F2B7F3A8 forKey:*MEMORY[0x1E6979BF0]];
   v15[0] = v4;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:1];
-  v11 = [(PUWallpaperPlaygroundViewController *)self hostingView];
-  v12 = [v11 layer];
-  [v12 setFilters:v10];
+  hostingView = [(PUWallpaperPlaygroundViewController *)self hostingView];
+  layer = [hostingView layer];
+  [layer setFilters:v10];
 
   v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"filters.%@.%@", v3, v9];
   [(PUWallpaperPlaygroundViewController *)self setLowLuminanceFilterInputScaleKeyPath:v13];
@@ -322,48 +322,48 @@ void __60__PUWallpaperPlaygroundViewController__handleShuffleTrigger__block_invo
   [v2 setPx_significantEventsCounter:{objc_msgSend(v2, "px_significantEventsCounter") + 1}];
 }
 
-- (void)_handleTwoFingerTap:(id)a3
+- (void)_handleTwoFingerTap:(id)tap
 {
   v4 = [(PUWallpaperPlaygroundViewController *)self useLowLuminance]^ 1;
 
   [(PUWallpaperPlaygroundViewController *)self setUseLowLuminance:v4];
 }
 
-- (void)_handleTap:(id)a3
+- (void)_handleTap:(id)tap
 {
   v4 = [(PUWallpaperPlaygroundViewController *)self showsControls]^ 1;
 
   [(PUWallpaperPlaygroundViewController *)self setShowsControls:v4];
 }
 
-- (void)_updateEnvironmentUsingBlock:(id)a3
+- (void)_updateEnvironmentUsingBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(PUWallpaperPlaygroundViewController *)self environment];
-  v6 = [v5 copy];
+  blockCopy = block;
+  environment = [(PUWallpaperPlaygroundViewController *)self environment];
+  v6 = [environment copy];
 
-  v4[2](v4, v6);
+  blockCopy[2](blockCopy, v6);
   environment = self->_environment;
   self->_environment = v6;
   v8 = v6;
 
-  v9 = [(PUWallpaperPlaygroundViewController *)self posterController];
-  [v9 renderer:self didUpdateEnvironment:v8 withTransition:0];
+  posterController = [(PUWallpaperPlaygroundViewController *)self posterController];
+  [posterController renderer:self didUpdateEnvironment:v8 withTransition:0];
 }
 
-- (void)setShowsControls:(BOOL)a3
+- (void)setShowsControls:(BOOL)controls
 {
-  if (self->_showsControls != a3)
+  if (self->_showsControls != controls)
   {
     v7 = v3;
     v8 = v4;
-    self->_showsControls = a3;
+    self->_showsControls = controls;
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __56__PUWallpaperPlaygroundViewController_setShowsControls___block_invoke;
     v5[3] = &unk_1E7B7FF98;
     v5[4] = self;
-    v6 = a3;
+    controlsCopy = controls;
     [MEMORY[0x1E69DD250] _animateUsingDefaultTimingWithOptions:2 animations:v5 completion:0];
   }
 }
@@ -403,9 +403,9 @@ uint64_t __56__PUWallpaperPlaygroundViewController_setShowsControls___block_invo
 
 - (void)_dismiss
 {
-  v2 = [(PUWallpaperPlaygroundViewController *)self view];
-  v3 = [v2 window];
-  [v3 setHidden:1];
+  view = [(PUWallpaperPlaygroundViewController *)self view];
+  window = [view window];
+  [window setHidden:1];
 
   v4 = wrapperWindow;
   wrapperWindow = 0;
@@ -414,14 +414,14 @@ uint64_t __56__PUWallpaperPlaygroundViewController_setShowsControls___block_invo
 - (void)_setupControls
 {
   v40[4] = *MEMORY[0x1E69E9840];
-  v35 = [(PUWallpaperPlaygroundViewController *)self view];
-  v34 = [MEMORY[0x1E69DC740] grayButtonConfiguration];
-  [v34 setButtonSize:1];
-  [v34 setCornerStyle:4];
-  v3 = [MEMORY[0x1E69DC888] systemWhiteColor];
-  [v34 setBaseForegroundColor:v3];
+  view = [(PUWallpaperPlaygroundViewController *)self view];
+  grayButtonConfiguration = [MEMORY[0x1E69DC740] grayButtonConfiguration];
+  [grayButtonConfiguration setButtonSize:1];
+  [grayButtonConfiguration setCornerStyle:4];
+  systemWhiteColor = [MEMORY[0x1E69DC888] systemWhiteColor];
+  [grayButtonConfiguration setBaseForegroundColor:systemWhiteColor];
 
-  [v34 setTitle:@"Done"];
+  [grayButtonConfiguration setTitle:@"Done"];
   objc_initWeak(&location, self);
   v4 = objc_alloc(MEMORY[0x1E69DC738]);
   v5 = MEMORY[0x1E69DC628];
@@ -437,16 +437,16 @@ uint64_t __56__PUWallpaperPlaygroundViewController_setShowsControls___block_invo
   v10 = *(MEMORY[0x1E695F058] + 24);
   v33 = [v4 initWithFrame:v6 primaryAction:{*MEMORY[0x1E695F058], v8, v9, v10}];
 
-  [v33 setConfiguration:v34];
+  [v33 setConfiguration:grayButtonConfiguration];
   [v33 setTranslatesAutoresizingMaskIntoConstraints:0];
-  [v35 addSubview:v33];
+  [view addSubview:v33];
   [(PUWallpaperPlaygroundViewController *)self setDoneButton:v33];
-  v11 = [MEMORY[0x1E69DC740] grayButtonConfiguration];
-  [v11 setButtonSize:3];
-  [v11 setCornerStyle:4];
-  v12 = [MEMORY[0x1E69DC888] systemWhiteColor];
-  [v11 setBaseForegroundColor:v12];
-  v32 = v11;
+  grayButtonConfiguration2 = [MEMORY[0x1E69DC740] grayButtonConfiguration];
+  [grayButtonConfiguration2 setButtonSize:3];
+  [grayButtonConfiguration2 setCornerStyle:4];
+  systemWhiteColor2 = [MEMORY[0x1E69DC888] systemWhiteColor];
+  [grayButtonConfiguration2 setBaseForegroundColor:systemWhiteColor2];
+  v32 = grayButtonConfiguration2;
 
   v13 = objc_alloc(MEMORY[0x1E69DC738]);
   v14 = MEMORY[0x1E69DC628];
@@ -461,24 +461,24 @@ uint64_t __56__PUWallpaperPlaygroundViewController_setShowsControls___block_invo
 
   [v17 setConfiguration:v32];
   [v17 setTranslatesAutoresizingMaskIntoConstraints:0];
-  [v35 addSubview:v17];
+  [view addSubview:v17];
   [(PUWallpaperPlaygroundViewController *)self setSettingsButton:v17];
   v27 = MEMORY[0x1E696ACD8];
-  v31 = [v33 trailingAnchor];
-  v30 = [v35 trailingAnchor];
-  v29 = [v31 constraintEqualToAnchor:v30 constant:-20.0];
+  trailingAnchor = [v33 trailingAnchor];
+  trailingAnchor2 = [view trailingAnchor];
+  v29 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-20.0];
   v40[0] = v29;
-  v28 = [v33 topAnchor];
-  v18 = [v35 topAnchor];
-  v19 = [v28 constraintEqualToAnchor:v18 constant:20.0];
+  topAnchor = [v33 topAnchor];
+  topAnchor2 = [view topAnchor];
+  v19 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:20.0];
   v40[1] = v19;
-  v20 = [v17 centerXAnchor];
-  v21 = [v35 centerXAnchor];
-  v22 = [v20 constraintEqualToAnchor:v21];
+  centerXAnchor = [v17 centerXAnchor];
+  centerXAnchor2 = [view centerXAnchor];
+  v22 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v40[2] = v22;
-  v23 = [v17 bottomAnchor];
-  v24 = [v35 bottomAnchor];
-  v25 = [v23 constraintEqualToAnchor:v24 constant:-50.0];
+  bottomAnchor = [v17 bottomAnchor];
+  bottomAnchor2 = [view bottomAnchor];
+  v25 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-50.0];
   v40[3] = v25;
   v26 = [MEMORY[0x1E695DEC8] arrayWithObjects:v40 count:4];
   [v27 activateConstraints:v26];
@@ -511,12 +511,12 @@ void __53__PUWallpaperPlaygroundViewController__setupControls__block_invoke_2(ui
   [*(a1 + 32) presentViewController:v4 animated:1 completion:0];
 }
 
-- (void)setPosterController:(id)a3
+- (void)setPosterController:(id)controller
 {
-  v8 = a3;
+  controllerCopy = controller;
   v5 = self->_posterController;
   v6 = v5;
-  if (v5 == v8)
+  if (v5 == controllerCopy)
   {
   }
 
@@ -527,7 +527,7 @@ void __53__PUWallpaperPlaygroundViewController__setupControls__block_invoke_2(ui
     if ((v7 & 1) == 0)
     {
       [(PUWallpaperPosterController *)self->_posterController removeObserver:self forKeyPath:@"viewModel" context:&ViewModelObservationContext];
-      objc_storeStrong(&self->_posterController, a3);
+      objc_storeStrong(&self->_posterController, controller);
       [(PUWallpaperPosterController *)self->_posterController addObserver:self forKeyPath:@"viewModel" options:0 context:&ViewModelObservationContext];
     }
   }
@@ -536,28 +536,28 @@ void __53__PUWallpaperPlaygroundViewController__setupControls__block_invoke_2(ui
 - (void)_setupPosterController
 {
   v3 = [PUWallpaperPosterController alloc];
-  v4 = [(PUWallpaperPlaygroundViewController *)self assets];
-  v5 = [v4 firstObject];
-  v6 = [v5 photoLibrary];
-  v8 = [(PUWallpaperPosterController *)v3 initWithRenderer:self photoLibrary:v6];
+  assets = [(PUWallpaperPlaygroundViewController *)self assets];
+  firstObject = [assets firstObject];
+  photoLibrary = [firstObject photoLibrary];
+  v8 = [(PUWallpaperPosterController *)v3 initWithRenderer:self photoLibrary:photoLibrary];
 
-  v7 = [(PUWallpaperPlaygroundViewController *)self environment];
-  [(PUWallpaperPosterController *)v8 renderer:self didInitializeWithEnvironment:v7];
+  environment = [(PUWallpaperPlaygroundViewController *)self environment];
+  [(PUWallpaperPosterController *)v8 renderer:self didInitializeWithEnvironment:environment];
 
   [(PUWallpaperPlaygroundViewController *)self setPosterController:v8];
 }
 
 - (void)_setupRendererViews
 {
-  v23 = [(PUWallpaperPlaygroundViewController *)self view];
-  [v23 bounds];
+  view = [(PUWallpaperPlaygroundViewController *)self view];
+  [view bounds];
   v4 = v3;
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v11 = [objc_alloc(MEMORY[0x1E69DD250]) initWithFrame:{v3, v5, v7, v9}];
   [(UIView *)v11 setAutoresizingMask:18];
-  [v23 addSubview:v11];
+  [view addSubview:v11];
   hostingView = self->_hostingView;
   self->_hostingView = v11;
   v13 = v11;
@@ -596,19 +596,19 @@ void __53__PUWallpaperPlaygroundViewController__setupControls__block_invoke_2(ui
   v18.receiver = self;
   v18.super_class = PUWallpaperPlaygroundViewController;
   [(PUWallpaperPlaygroundViewController *)&v18 viewDidLayoutSubviews];
-  v3 = [(PUWallpaperPlaygroundViewController *)self posterController];
-  v4 = [v3 viewModel];
-  v5 = [v4 currentLayerStack];
+  posterController = [(PUWallpaperPlaygroundViewController *)self posterController];
+  viewModel = [posterController viewModel];
+  currentLayerStack = [viewModel currentLayerStack];
 
-  v6 = [v5 layout];
-  v7 = [(PUWallpaperPlaygroundViewController *)self view];
-  [v7 bounds];
+  layout = [currentLayerStack layout];
+  view = [(PUWallpaperPlaygroundViewController *)self view];
+  [view bounds];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
 
-  if (v6)
+  if (layout)
   {
     v19.origin.x = v9;
     v19.origin.y = v11;
@@ -616,8 +616,8 @@ void __53__PUWallpaperPlaygroundViewController__setupControls__block_invoke_2(ui
     v19.size.height = v15;
     if (!CGRectIsEmpty(v19))
     {
-      v16 = [(PUWallpaperPlaygroundViewController *)self dateView];
-      [v16 layoutWithLayout:v6 inContainerFrame:{v9, v11, v13, v15}];
+      dateView = [(PUWallpaperPlaygroundViewController *)self dateView];
+      [dateView layoutWithLayout:layout inContainerFrame:{v9, v11, v13, v15}];
 
       v17[0] = MEMORY[0x1E69E9820];
       v17[1] = 3221225472;
@@ -642,14 +642,14 @@ void __60__PUWallpaperPlaygroundViewController_viewDidLayoutSubviews__block_invo
   [v4 setContainerFrame:?];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v6.receiver = self;
   v6.super_class = PUWallpaperPlaygroundViewController;
-  [(PUWallpaperPlaygroundViewController *)&v6 traitCollectionDidChange:a3];
-  v4 = [(PUWallpaperPlaygroundViewController *)self posterController];
+  [(PUWallpaperPlaygroundViewController *)&v6 traitCollectionDidChange:change];
+  posterController = [(PUWallpaperPlaygroundViewController *)self posterController];
 
-  if (v4)
+  if (posterController)
   {
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
@@ -669,15 +669,15 @@ void __64__PUWallpaperPlaygroundViewController_traitCollectionDidChange___block_
   [v3 setPx_traitCollection:v4];
 }
 
-- (void)_handlePanGesture:(id)a3
+- (void)_handlePanGesture:(id)gesture
 {
-  v4 = a3;
-  v5 = [(PUWallpaperPlaygroundViewController *)self view];
-  [v4 translationInView:v5];
+  gestureCopy = gesture;
+  view = [(PUWallpaperPlaygroundViewController *)self view];
+  [gestureCopy translationInView:view];
   v7 = v6;
 
-  v8 = [(PUWallpaperPlaygroundViewController *)self view];
-  [v8 frame];
+  view2 = [(PUWallpaperPlaygroundViewController *)self view];
+  [view2 frame];
   v10 = v7 / v9 + 1.0;
 
   v11 = 0.0;
@@ -700,37 +700,37 @@ void __64__PUWallpaperPlaygroundViewController_traitCollectionDidChange___block_
   v13.receiver = self;
   v13.super_class = PUWallpaperPlaygroundViewController;
   [(PUWallpaperPlaygroundViewController *)&v13 viewDidLoad];
-  v3 = [(PUWallpaperPlaygroundViewController *)self view];
-  v4 = [v3 traitCollection];
-  v5 = [(PUWallpaperPlaygroundViewController *)self environment];
-  [v5 setPx_traitCollection:v4];
+  view = [(PUWallpaperPlaygroundViewController *)self view];
+  traitCollection = [view traitCollection];
+  environment = [(PUWallpaperPlaygroundViewController *)self environment];
+  [environment setPx_traitCollection:traitCollection];
 
-  v6 = [(PUWallpaperPlaygroundViewController *)self view];
-  v7 = [MEMORY[0x1E69DC888] blackColor];
-  [v6 setBackgroundColor:v7];
+  view2 = [(PUWallpaperPlaygroundViewController *)self view];
+  blackColor = [MEMORY[0x1E69DC888] blackColor];
+  [view2 setBackgroundColor:blackColor];
 
-  v8 = [(PUWallpaperPlaygroundViewController *)self view];
-  v9 = [(PUWallpaperPlaygroundViewController *)self panGestureRecognizer];
-  [v8 addGestureRecognizer:v9];
+  view3 = [(PUWallpaperPlaygroundViewController *)self view];
+  panGestureRecognizer = [(PUWallpaperPlaygroundViewController *)self panGestureRecognizer];
+  [view3 addGestureRecognizer:panGestureRecognizer];
 
   [(PUWallpaperPlaygroundViewController *)self _setupRendererViews];
   [(PUWallpaperPlaygroundViewController *)self _setupPosterController];
   [(PUWallpaperPlaygroundViewController *)self _setupControls];
   [(PUWallpaperPlaygroundViewController *)self _setupLowLuminanceFilter];
   v10 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:self action:sel__handleTap_];
-  [v6 addGestureRecognizer:v10];
+  [view2 addGestureRecognizer:v10];
   v11 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:self action:sel__handleTwoFingerTap_];
   [v11 setNumberOfTouchesRequired:2];
-  [v6 addGestureRecognizer:v11];
+  [view2 addGestureRecognizer:v11];
   v12 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:self action:sel__handleThreeFingerTap_];
   [v12 setNumberOfTouchesRequired:3];
-  [v6 addGestureRecognizer:v12];
+  [view2 addGestureRecognizer:v12];
 }
 
-- (id)_renderingEnvironmentForAssets:(id)a3
+- (id)_renderingEnvironmentForAssets:(id)assets
 {
-  v3 = a3;
-  v4 = [v3 count];
+  assetsCopy = assets;
+  v4 = [assetsCopy count];
   v5 = [objc_alloc(MEMORY[0x1E69C07E8]) initWithConfigurationType:v4 > 1];
   if (v4 >= 2)
   {
@@ -760,8 +760,8 @@ id __70__PUWallpaperPlaygroundViewController__renderingEnvironmentForAssets___bl
 
 - (void)dealloc
 {
-  v3 = [(PUWallpaperPlaygroundViewController *)self posterController];
-  [v3 removeObserver:self forKeyPath:@"viewModel" context:&ViewModelObservationContext];
+  posterController = [(PUWallpaperPlaygroundViewController *)self posterController];
+  [posterController removeObserver:self forKeyPath:@"viewModel" context:&ViewModelObservationContext];
 
   v4.receiver = self;
   v4.super_class = PUWallpaperPlaygroundViewController;
@@ -780,13 +780,13 @@ id __70__PUWallpaperPlaygroundViewController__renderingEnvironmentForAssets___bl
   self->_panGestureRecognizer = v5;
 
   objc_initWeak(&location, self);
-  v7 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __50__PUWallpaperPlaygroundViewController__commonInit__block_invoke;
   v10[3] = &unk_1E7B75BB8;
   objc_copyWeak(&v11, &location);
-  v8 = [v7 addObserverForName:@"PUWallpaperShuffleNotificationName" object:0 queue:0 usingBlock:v10];
+  v8 = [defaultCenter addObserverForName:@"PUWallpaperShuffleNotificationName" object:0 queue:0 usingBlock:v10];
   shuffleTriggerObserver = self->_shuffleTriggerObserver;
   self->_shuffleTriggerObserver = v8;
 
@@ -800,16 +800,16 @@ void __50__PUWallpaperPlaygroundViewController__commonInit__block_invoke(uint64_
   [WeakRetained _handleShuffleTrigger];
 }
 
-- (PUWallpaperPlaygroundViewController)initWithConfiguration:(id)a3 assetDirectory:(id)a4
+- (PUWallpaperPlaygroundViewController)initWithConfiguration:(id)configuration assetDirectory:(id)directory
 {
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  directoryCopy = directory;
   v12.receiver = self;
   v12.super_class = PUWallpaperPlaygroundViewController;
   v8 = [(PUWallpaperPlaygroundViewController *)&v12 initWithNibName:0 bundle:0];
   if (v8)
   {
-    v9 = [[_PUWallpaperDebugRenderingEnvironment alloc] initWithPosterConfiguration:v6 assetDirectory:v7];
+    v9 = [[_PUWallpaperDebugRenderingEnvironment alloc] initWithPosterConfiguration:configurationCopy assetDirectory:directoryCopy];
     environment = v8->_environment;
     v8->_environment = v9;
 
@@ -819,19 +819,19 @@ void __50__PUWallpaperPlaygroundViewController__commonInit__block_invoke(uint64_
   return v8;
 }
 
-- (PUWallpaperPlaygroundViewController)initWithAssets:(id)a3
+- (PUWallpaperPlaygroundViewController)initWithAssets:(id)assets
 {
-  v4 = a3;
+  assetsCopy = assets;
   v11.receiver = self;
   v11.super_class = PUWallpaperPlaygroundViewController;
   v5 = [(PUWallpaperPlaygroundViewController *)&v11 initWithNibName:0 bundle:0];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [assetsCopy copy];
     assets = v5->_assets;
     v5->_assets = v6;
 
-    v8 = [(PUWallpaperPlaygroundViewController *)v5 _renderingEnvironmentForAssets:v4];
+    v8 = [(PUWallpaperPlaygroundViewController *)v5 _renderingEnvironmentForAssets:assetsCopy];
     environment = v5->_environment;
     v5->_environment = v8;
 

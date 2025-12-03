@@ -1,23 +1,23 @@
 @interface SoundActionsPracticeCollectionViewCell
-+ (BOOL)willTruncateForCellWidth:(double)a3 withText:(id)a4;
-+ (id)_colorHighlighted:(BOOL)a3 background:(BOOL)a4;
-- (SoundActionsPracticeCollectionViewCell)initWithFrame:(CGRect)a3;
++ (BOOL)willTruncateForCellWidth:(double)width withText:(id)text;
++ (id)_colorHighlighted:(BOOL)highlighted background:(BOOL)background;
+- (SoundActionsPracticeCollectionViewCell)initWithFrame:(CGRect)frame;
 - (double)cornerRadius;
 - (void)_configureCell;
 - (void)prepareForReuse;
-- (void)setCornerRadius:(double)a3;
-- (void)setDetected:(BOOL)a3;
-- (void)setSelected:(BOOL)a3;
-- (void)setText:(id)a3;
+- (void)setCornerRadius:(double)radius;
+- (void)setDetected:(BOOL)detected;
+- (void)setSelected:(BOOL)selected;
+- (void)setText:(id)text;
 @end
 
 @implementation SoundActionsPracticeCollectionViewCell
 
-- (SoundActionsPracticeCollectionViewCell)initWithFrame:(CGRect)a3
+- (SoundActionsPracticeCollectionViewCell)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = SoundActionsPracticeCollectionViewCell;
-  v3 = [(SoundActionsPracticeCollectionViewCell *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SoundActionsPracticeCollectionViewCell *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -27,19 +27,19 @@
   return v4;
 }
 
-+ (BOOL)willTruncateForCellWidth:(double)a3 withText:(id)a4
++ (BOOL)willTruncateForCellWidth:(double)width withText:(id)text
 {
   v12 = NSFontAttributeName;
-  v5 = a4;
+  textCopy = text;
   v6 = +[SoundActionsPracticeCollectionViewCell font];
   v13 = v6;
   v7 = [NSDictionary dictionaryWithObjects:&v13 forKeys:&v12 count:1];
 
-  [v5 boundingRectWithSize:1 options:v7 attributes:0 context:{1.79769313e308, 1.79769313e308}];
+  [textCopy boundingRectWithSize:1 options:v7 attributes:0 context:{1.79769313e308, 1.79769313e308}];
   v9 = v8;
 
   +[SoundActionsPracticeCollectionViewCell _horizontalPadding];
-  LOBYTE(v6) = v9 + v10 * 2.0 >= a3;
+  LOBYTE(v6) = v9 + v10 * 2.0 >= width;
 
   return v6;
 }
@@ -52,26 +52,26 @@
   [(SoundActionsPracticeCollectionViewCell *)self _configureCell];
 }
 
-- (void)setDetected:(BOOL)a3
+- (void)setDetected:(BOOL)detected
 {
-  v3 = a3;
-  v5 = [SoundActionsPracticeCollectionViewCell _colorHighlighted:a3 background:1];
-  v6 = [v5 cgColor];
-  v7 = [(SoundActionsPracticeCollectionViewCell *)self layer];
-  [v7 setBackgroundColor:v6];
+  detectedCopy = detected;
+  v5 = [SoundActionsPracticeCollectionViewCell _colorHighlighted:detected background:1];
+  cgColor = [v5 cgColor];
+  layer = [(SoundActionsPracticeCollectionViewCell *)self layer];
+  [layer setBackgroundColor:cgColor];
 
-  v8 = [SoundActionsPracticeCollectionViewCell _colorHighlighted:v3 background:0];
+  v8 = [SoundActionsPracticeCollectionViewCell _colorHighlighted:detectedCopy background:0];
   [(UILabel *)self->_nameLabel setTextColor:v8];
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  v3 = a3;
+  selectedCopy = selected;
   v6.receiver = self;
   v6.super_class = SoundActionsPracticeCollectionViewCell;
   [(SoundActionsPracticeCollectionViewCell *)&v6 setSelected:?];
   v5 = 1.0;
-  if (v3)
+  if (selectedCopy)
   {
     v5 = 0.5;
   }
@@ -79,10 +79,10 @@
   [(SoundActionsPracticeCollectionViewCell *)self setAlpha:v5];
 }
 
-+ (id)_colorHighlighted:(BOOL)a3 background:(BOOL)a4
++ (id)_colorHighlighted:(BOOL)highlighted background:(BOOL)background
 {
-  v4 = a4;
-  if (a3)
+  backgroundCopy = background;
+  if (highlighted)
   {
     +[UIColor systemGreenColor];
   }
@@ -94,7 +94,7 @@
   v5 = ;
   v6 = v5;
   v7 = 0.16;
-  if (!v4)
+  if (!backgroundCopy)
   {
     v7 = 1.0;
   }
@@ -107,9 +107,9 @@
 - (void)_configureCell
 {
   v3 = [SoundActionsPracticeCollectionViewCell _colorHighlighted:0 background:1];
-  v4 = [v3 cgColor];
-  v5 = [(SoundActionsPracticeCollectionViewCell *)self layer];
-  [v5 setBackgroundColor:v4];
+  cgColor = [v3 cgColor];
+  layer = [(SoundActionsPracticeCollectionViewCell *)self layer];
+  [layer setBackgroundColor:cgColor];
 
   [(SoundActionsPracticeCollectionViewCell *)self setClipsToBounds:1];
   if (!self->_nameLabel)
@@ -131,8 +131,8 @@
     [(UILabel *)self->_nameLabel setNumberOfLines:1];
     [(UILabel *)self->_nameLabel setTextAlignment:1];
     [(UILabel *)self->_nameLabel setAdjustsFontForContentSizeCategory:1];
-    v11 = [(SoundActionsPracticeCollectionViewCell *)self contentView];
-    [v11 addSubview:self->_nameLabel];
+    contentView = [(SoundActionsPracticeCollectionViewCell *)self contentView];
+    [contentView addSubview:self->_nameLabel];
 
     v26 = [NSLayoutConstraint constraintWithItem:self->_nameLabel attribute:10 relatedBy:0 toItem:self attribute:10 multiplier:1.0 constant:0.0];
     v27[0] = v26;
@@ -161,24 +161,24 @@
   [(SoundActionsPracticeCollectionViewCell *)self setIsAccessibilityElement:1];
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
   nameLabel = self->_nameLabel;
-  v5 = a3;
-  [(UILabel *)nameLabel setText:v5];
-  [(SoundActionsPracticeCollectionViewCell *)self setAccessibilityLabel:v5];
+  textCopy = text;
+  [(UILabel *)nameLabel setText:textCopy];
+  [(SoundActionsPracticeCollectionViewCell *)self setAccessibilityLabel:textCopy];
 }
 
-- (void)setCornerRadius:(double)a3
+- (void)setCornerRadius:(double)radius
 {
-  v4 = [(SoundActionsPracticeCollectionViewCell *)self layer];
-  [v4 setCornerRadius:a3];
+  layer = [(SoundActionsPracticeCollectionViewCell *)self layer];
+  [layer setCornerRadius:radius];
 }
 
 - (double)cornerRadius
 {
-  v2 = [(SoundActionsPracticeCollectionViewCell *)self layer];
-  [v2 cornerRadius];
+  layer = [(SoundActionsPracticeCollectionViewCell *)self layer];
+  [layer cornerRadius];
   v4 = v3;
 
   return v4;

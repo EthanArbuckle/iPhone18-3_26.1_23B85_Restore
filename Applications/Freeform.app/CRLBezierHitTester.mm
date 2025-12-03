@@ -1,29 +1,29 @@
 @interface CRLBezierHitTester
-- (BOOL)isAnyPathNearPoint:(CGPoint)a3 withSearchThreshold:(double)a4;
-- (CRLBezierHitTester)initWithBucketSize:(double)a3;
+- (BOOL)isAnyPathNearPoint:(CGPoint)point withSearchThreshold:(double)threshold;
+- (CRLBezierHitTester)initWithBucketSize:(double)size;
 - (id).cxx_construct;
-- (id)p_bucketPointValueForPoint:(CGPoint)a3;
+- (id)p_bucketPointValueForPoint:(CGPoint)point;
 - (id)p_wrapHitInfos:()vector<CRLBezierHitTesterHitInfo;
-- (id)pathsCrossingPath:(id)a3 withSearchThreshold:(double)a4;
-- (id)pathsWithPercentage:(double)a3 approximatelyInsidePath:(id)a4 requiringPercentForFilledEdges:(BOOL)a5;
-- (id)wrappedAllHitsAlongPath:(id)a3 withSearchThreshold:(double)a4;
-- (id)wrappedClosestHitsTo:(CGPoint)a3 withSearchThreshold:(double)a4 passingTest:(id)a5;
-- (vector<CRLBezierHitTesterHitInfo,)allHitsAlongPath:(CRLBezierHitTester *)self withSearchThreshold:(SEL)a3;
-- (vector<CRLBezierHitTesterHitInfo,)closestHitsTo:(CRLBezierHitTester *)self withSearchThreshold:(SEL)a3 passingTest:(CGPoint)a4;
-- (void)addPath:(id)a3 filled:(BOOL)a4 pathID:(unint64_t)a5 crawlingDistance:(double)a6 clippedToRect:(CGRect)a7;
-- (void)p_addFilledPathToGrid:(id)a3 withPathId:(unint64_t)a4 clippedToRect:(CGRect)a5;
-- (void)p_addOpenPathToGrid:(id)a3 withPathId:(unint64_t)a4 crawlingDistance:(double)a5 clippedToRect:(CGRect)a6;
-- (void)p_addPointInfoStruct:(id *)a3;
-- (void)p_iterateOverEveryBucketPointInRect:(CGRect)a3 usingBlock:(id)a4;
-- (void)p_iterateOverEveryExistingBucketPointInRect:(CGRect)a3 usingBlock:(id)a4;
-- (void)p_iterateOverEveryNonEmptyBucketInRect:(CGRect)a3 usingBlock:(id)a4;
-- (void)p_iterateOverEveryNonEmptyBucketNear:(CGPoint)a3 withSearchThreshold:(double)a4 usingBlock:(id)a5;
-- (void)removePath:(id)a3;
+- (id)pathsCrossingPath:(id)path withSearchThreshold:(double)threshold;
+- (id)pathsWithPercentage:(double)percentage approximatelyInsidePath:(id)path requiringPercentForFilledEdges:(BOOL)edges;
+- (id)wrappedAllHitsAlongPath:(id)path withSearchThreshold:(double)threshold;
+- (id)wrappedClosestHitsTo:(CGPoint)to withSearchThreshold:(double)threshold passingTest:(id)test;
+- (vector<CRLBezierHitTesterHitInfo,)allHitsAlongPath:(CRLBezierHitTester *)self withSearchThreshold:(SEL)threshold;
+- (vector<CRLBezierHitTesterHitInfo,)closestHitsTo:(CRLBezierHitTester *)self withSearchThreshold:(SEL)threshold passingTest:(CGPoint)test;
+- (void)addPath:(id)path filled:(BOOL)filled pathID:(unint64_t)d crawlingDistance:(double)distance clippedToRect:(CGRect)rect;
+- (void)p_addFilledPathToGrid:(id)grid withPathId:(unint64_t)id clippedToRect:(CGRect)rect;
+- (void)p_addOpenPathToGrid:(id)grid withPathId:(unint64_t)id crawlingDistance:(double)distance clippedToRect:(CGRect)rect;
+- (void)p_addPointInfoStruct:(id *)struct;
+- (void)p_iterateOverEveryBucketPointInRect:(CGRect)rect usingBlock:(id)block;
+- (void)p_iterateOverEveryExistingBucketPointInRect:(CGRect)rect usingBlock:(id)block;
+- (void)p_iterateOverEveryNonEmptyBucketInRect:(CGRect)rect usingBlock:(id)block;
+- (void)p_iterateOverEveryNonEmptyBucketNear:(CGPoint)near withSearchThreshold:(double)threshold usingBlock:(id)block;
+- (void)removePath:(id)path;
 @end
 
 @implementation CRLBezierHitTester
 
-- (CRLBezierHitTester)initWithBucketSize:(double)a3
+- (CRLBezierHitTester)initWithBucketSize:(double)size
 {
   v9.receiver = self;
   v9.super_class = CRLBezierHitTester;
@@ -31,7 +31,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_bucketSize = a3;
+    v4->_bucketSize = size;
     v4->_nextPathIdForInsertion = 0;
     v6 = [NSHashTable hashTableWithOptions:512];
     allPathTable = v5->_allPathTable;
@@ -41,16 +41,16 @@
   return v5;
 }
 
-- (void)addPath:(id)a3 filled:(BOOL)a4 pathID:(unint64_t)a5 crawlingDistance:(double)a6 clippedToRect:(CGRect)a7
+- (void)addPath:(id)path filled:(BOOL)filled pathID:(unint64_t)d crawlingDistance:(double)distance clippedToRect:(CGRect)rect
 {
-  height = a7.size.height;
-  width = a7.size.width;
-  y = a7.origin.y;
-  x = a7.origin.x;
-  v12 = a4;
-  v22 = a5;
-  v23 = a3;
-  if (a6 > 1.0 && !self->_allowsLargeCrawlingDistances)
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  filledCopy = filled;
+  dCopy = d;
+  pathCopy = path;
+  if (distance > 1.0 && !self->_allowsLargeCrawlingDistances)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -81,7 +81,7 @@
     [CRLAssertionHandler handleFailureInFunction:v15 file:v16 lineNumber:153 isFatal:0 description:"Passing a crawlingDistance greater than the default may cause unexpected problems hit testing with some methods."];
   }
 
-  if (sub_1000D8228(&self->_allPathMap.__table_.__bucket_list_.__ptr_, &v22))
+  if (sub_1000D8228(&self->_allPathMap.__table_.__bucket_list_.__ptr_, &dCopy))
   {
     v17 = +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -92,7 +92,7 @@
     v18 = off_1019EDA68;
     if (os_log_type_enabled(off_1019EDA68, OS_LOG_TYPE_ERROR))
     {
-      sub_1013105D0(&v22, v17, v18);
+      sub_1013105D0(&dCopy, v17, v18);
     }
 
     if (qword_101AD5A10 != -1)
@@ -110,47 +110,47 @@
 
     v20 = [NSString stringWithUTF8String:"[CRLBezierHitTester addPath:filled:pathID:crawlingDistance:clippedToRect:]"];
     v21 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLUtility/CRLBezierHitTester.mm"];
-    [CRLAssertionHandler handleFailureInFunction:v20 file:v21 lineNumber:178 isFatal:0 description:"Tried to add a path with pathID that already exists (%lu)", v22];
+    [CRLAssertionHandler handleFailureInFunction:v20 file:v21 lineNumber:178 isFatal:0 description:"Tried to add a path with pathID that already exists (%lu)", dCopy];
   }
 
   else
   {
-    sub_1000D82DC(&self->_allPathMap.__table_.__bucket_list_.__ptr_, &v22);
-    [(NSHashTable *)self->_allPathTable addObject:v23];
+    sub_1000D82DC(&self->_allPathMap.__table_.__bucket_list_.__ptr_, &dCopy);
+    [(NSHashTable *)self->_allPathTable addObject:pathCopy];
     v25 = 0;
     v26 = 0;
     v24 = &v25;
-    sub_1000D8844(&self->_allNonFilledPointInfosForPathMap.__table_.__bucket_list_.__ptr_, &v23);
+    sub_1000D8844(&self->_allNonFilledPointInfosForPathMap.__table_.__bucket_list_.__ptr_, &pathCopy);
     sub_1000D87F0(&v24, v25);
     v25 = 0;
     v26 = 0;
     v24 = &v25;
-    sub_1000D8844(&self->_allFilledPointInfosForPathMap.__table_.__bucket_list_.__ptr_, &v23);
+    sub_1000D8844(&self->_allFilledPointInfosForPathMap.__table_.__bucket_list_.__ptr_, &pathCopy);
     sub_1000D87F0(&v24, v25);
-    if (v12)
+    if (filledCopy)
     {
       self->_hasAtLeastOneFilledPath = 1;
-      [(CRLBezierHitTester *)self p_addOpenPathToGrid:v23 withPathId:v22 crawlingDistance:a6 clippedToRect:x, y, width, height];
-      [(CRLBezierHitTester *)self p_addFilledPathToGrid:v23 withPathId:v22 clippedToRect:x, y, width, height];
+      [(CRLBezierHitTester *)self p_addOpenPathToGrid:pathCopy withPathId:dCopy crawlingDistance:distance clippedToRect:x, y, width, height];
+      [(CRLBezierHitTester *)self p_addFilledPathToGrid:pathCopy withPathId:dCopy clippedToRect:x, y, width, height];
     }
 
     else
     {
       self->_hasAtLeastOneOpenPath = 1;
-      [(CRLBezierHitTester *)self p_addOpenPathToGrid:v23 withPathId:v22 crawlingDistance:a6 clippedToRect:x, y, width, height];
+      [(CRLBezierHitTester *)self p_addOpenPathToGrid:pathCopy withPathId:dCopy crawlingDistance:distance clippedToRect:x, y, width, height];
     }
 
-    if (v22 == self->_nextPathIdForInsertion)
+    if (dCopy == self->_nextPathIdForInsertion)
     {
-      self->_nextPathIdForInsertion = v22 + 1;
+      self->_nextPathIdForInsertion = dCopy + 1;
     }
   }
 }
 
-- (void)removePath:(id)a3
+- (void)removePath:(id)path
 {
-  v4 = a3;
-  v28 = v4;
+  pathCopy = path;
+  v28 = pathCopy;
   p_first_node = &self->_allPathMap.__table_.__first_node_;
   do
   {
@@ -161,7 +161,7 @@
     }
   }
 
-  while (p_first_node[3].__next_ != v4);
+  while (p_first_node[3].__next_ != pathCopy);
   next = p_first_node[2].__next_;
   if (next == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -268,10 +268,10 @@ LABEL_5:
 LABEL_24:
 }
 
-- (vector<CRLBezierHitTesterHitInfo,)closestHitsTo:(CRLBezierHitTester *)self withSearchThreshold:(SEL)a3 passingTest:(CGPoint)a4
+- (vector<CRLBezierHitTesterHitInfo,)closestHitsTo:(CRLBezierHitTester *)self withSearchThreshold:(SEL)threshold passingTest:(CGPoint)test
 {
-  y = a4.y;
-  x = a4.x;
+  y = test.y;
+  x = test.x;
   v11 = a6;
   retstr->var1 = 0;
   retstr->var2 = 0;
@@ -380,9 +380,9 @@ LABEL_24:
   return result;
 }
 
-- (id)wrappedClosestHitsTo:(CGPoint)a3 withSearchThreshold:(double)a4 passingTest:(id)a5
+- (id)wrappedClosestHitsTo:(CGPoint)to withSearchThreshold:(double)threshold passingTest:(id)test
 {
-  [(CRLBezierHitTester *)self closestHitsTo:a5 withSearchThreshold:a3.x passingTest:a3.y, a4];
+  [(CRLBezierHitTester *)self closestHitsTo:test withSearchThreshold:to.x passingTest:to.y, threshold];
   v6 = [(CRLBezierHitTester *)self p_wrapHitInfos:__p];
   if (__p[0])
   {
@@ -393,7 +393,7 @@ LABEL_24:
   return v6;
 }
 
-- (vector<CRLBezierHitTesterHitInfo,)allHitsAlongPath:(CRLBezierHitTester *)self withSearchThreshold:(SEL)a3
+- (vector<CRLBezierHitTesterHitInfo,)allHitsAlongPath:(CRLBezierHitTester *)self withSearchThreshold:(SEL)threshold
 {
   v8 = a4;
   if (self->_hasAtLeastOneFilledPath)
@@ -467,9 +467,9 @@ LABEL_24:
   return result;
 }
 
-- (id)wrappedAllHitsAlongPath:(id)a3 withSearchThreshold:(double)a4
+- (id)wrappedAllHitsAlongPath:(id)path withSearchThreshold:(double)threshold
 {
-  [(CRLBezierHitTester *)self allHitsAlongPath:a3 withSearchThreshold:a4];
+  [(CRLBezierHitTester *)self allHitsAlongPath:path withSearchThreshold:threshold];
   v5 = [(CRLBezierHitTester *)self p_wrapHitInfos:__p];
   if (__p[0])
   {
@@ -480,7 +480,7 @@ LABEL_24:
   return v5;
 }
 
-- (BOOL)isAnyPathNearPoint:(CGPoint)a3 withSearchThreshold:(double)a4
+- (BOOL)isAnyPathNearPoint:(CGPoint)point withSearchThreshold:(double)threshold
 {
   v9 = 0;
   v10 = &v9;
@@ -490,18 +490,18 @@ LABEL_24:
   v6[1] = 3221225472;
   v6[2] = sub_1000D6B64;
   v6[3] = &unk_10183ACB0;
-  v7 = a3;
-  v8 = a4 * a4;
+  pointCopy = point;
+  v8 = threshold * threshold;
   v6[4] = &v9;
-  [(CRLBezierHitTester *)self p_iterateOverEveryNonEmptyBucketInRect:v6 usingBlock:sub_10011EC70(a3.x, a3.y, a4 + a4)];
+  [(CRLBezierHitTester *)self p_iterateOverEveryNonEmptyBucketInRect:v6 usingBlock:sub_10011EC70(point.x, point.y, threshold + threshold)];
   v4 = *(v10 + 24);
   _Block_object_dispose(&v9, 8);
   return v4;
 }
 
-- (id)pathsCrossingPath:(id)a3 withSearchThreshold:(double)a4
+- (id)pathsCrossingPath:(id)path withSearchThreshold:(double)threshold
 {
-  v6 = a3;
+  pathCopy = path;
   if (self->_allowsLargeCrawlingDistances)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -535,20 +535,20 @@ LABEL_24:
 
   v10 = [NSHashTable hashTableWithOptions:512];
   v11 = (vcvts_n_f32_u64(self->_bucketSize, 1uLL) * 1.4142);
-  if (v11 <= a4)
+  if (v11 <= threshold)
   {
-    v12 = a4;
+    thresholdCopy = threshold;
   }
 
   else
   {
-    v12 = v11;
+    thresholdCopy = v11;
   }
 
   v13 = [[CRLBezierHitTester alloc] initWithBucketSize:self->_bucketSize];
-  [(CRLBezierHitTester *)v13 addPath:v6 filled:0];
-  [v6 bounds];
-  v30 = CGRectInset(v29, -v12, -v12);
+  [(CRLBezierHitTester *)v13 addPath:pathCopy filled:0];
+  [pathCopy bounds];
+  v30 = CGRectInset(v29, -thresholdCopy, -thresholdCopy);
   x = v30.origin.x;
   y = v30.origin.y;
   width = v30.size.width;
@@ -558,12 +558,12 @@ LABEL_24:
   v23[2] = sub_1000D6FE8;
   v23[3] = &unk_10183AD18;
   v23[4] = self;
-  v27 = v12;
-  v28 = a4;
+  v27 = thresholdCopy;
+  thresholdCopy2 = threshold;
   v18 = v10;
   v24 = v18;
   v25 = v13;
-  v19 = v6;
+  v19 = pathCopy;
   v26 = v19;
   [(CRLBezierHitTester *)self p_iterateOverEveryNonEmptyBucketInRect:v23 usingBlock:x, y, width, height];
   v20 = v26;
@@ -572,10 +572,10 @@ LABEL_24:
   return v18;
 }
 
-- (id)pathsWithPercentage:(double)a3 approximatelyInsidePath:(id)a4 requiringPercentForFilledEdges:(BOOL)a5
+- (id)pathsWithPercentage:(double)percentage approximatelyInsidePath:(id)path requiringPercentForFilledEdges:(BOOL)edges
 {
-  v5 = a5;
-  v43 = a4;
+  edgesCopy = edges;
+  pathCopy = path;
   v8 = [[NSMapTable alloc] initWithKeyOptions:512 valueOptions:0 capacity:self->_allPathMap.__table_.__size_];
   v9 = [[NSMapTable alloc] initWithKeyOptions:512 valueOptions:0 capacity:self->_allPathMap.__table_.__size_];
   for (i = self->_allPathMap.__table_.__first_node_.__next_; i; i = *i)
@@ -585,8 +585,8 @@ LABEL_24:
     [v9 setObject:&off_1018E2088 forKeyedSubscript:v11];
   }
 
-  v42 = v5;
-  [v43 bounds];
+  v42 = edgesCopy;
+  [pathCopy bounds];
   next = self->_pointInfoGridMap.__table_.__first_node_.__next_;
   if (next)
   {
@@ -604,7 +604,7 @@ LABEL_24:
       v52.size.height = v20;
       v51.x = v21;
       v51.y = v22;
-      if (CGRectContainsPoint(v52, v51) && [v43 containsPoint:{v21, v22}])
+      if (CGRectContainsPoint(v52, v51) && [pathCopy containsPoint:{v21, v22}])
       {
         sub_1000D8DCC(&v47, (next + 4));
         v23 = v47;
@@ -686,7 +686,7 @@ LABEL_24:
       if (v45)
       {
         [v36 crl_CGFloatValue];
-        if (v38 / v45 < a3)
+        if (v38 / v45 < percentage)
         {
           goto LABEL_30;
         }
@@ -694,7 +694,7 @@ LABEL_24:
         if (v42)
         {
           [v35 crl_CGFloatValue];
-          if (v39 / v49 < a3)
+          if (v39 / v49 < percentage)
           {
             goto LABEL_30;
           }
@@ -706,7 +706,7 @@ LABEL_29:
       }
 
       [v35 crl_CGFloatValue];
-      if (v40 / v49 >= a3)
+      if (v40 / v49 >= percentage)
       {
         goto LABEL_29;
       }
@@ -721,11 +721,11 @@ LABEL_30:
   return v31;
 }
 
-- (id)p_bucketPointValueForPoint:(CGPoint)a3
+- (id)p_bucketPointValueForPoint:(CGPoint)point
 {
-  y = a3.y;
+  y = point.y;
   bucketSize = self->_bucketSize;
-  v5 = sub_1004C3204(a3.x, bucketSize);
+  v5 = sub_1004C3204(point.x, bucketSize);
   v6 = sub_1004C3204(y, bucketSize);
 
   return [NSValue valueWithCGPoint:v5, v6];
@@ -770,24 +770,24 @@ LABEL_30:
   return v5;
 }
 
-- (void)p_addPointInfoStruct:(id *)a3
+- (void)p_addPointInfoStruct:(id *)struct
 {
-  y = a3->var0.y;
+  y = struct->var0.y;
   bucketSize = self->_bucketSize;
-  v12.x = sub_1004C3204(a3->var0.x, bucketSize);
+  v12.x = sub_1004C3204(struct->var0.x, bucketSize);
   v12.y = sub_1004C3204(y, bucketSize);
   v7 = sub_1000D9360(&self->_pointInfoGridMap.__table_.__bucket_list_.__ptr_, &v12.x);
   if (v7)
   {
-    sub_1000DA1C8((v7 + 4), a3);
+    sub_1000DA1C8((v7 + 4), struct);
   }
 
   else
   {
-    v8 = *&a3->var1;
-    var0 = a3->var0;
+    v8 = *&struct->var1;
+    var0 = struct->var0;
     v14 = v8;
-    v15 = *&a3->var3;
+    v15 = *&struct->var3;
     sub_1000DA264(v11, &var0, 1);
     var0 = v12;
     sub_1000D8DCC(&v14, v11);
@@ -796,44 +796,44 @@ LABEL_30:
     sub_1000D87F0(v11, v11[1]);
   }
 
-  p_var1 = &a3->var1;
-  if (a3->var3)
+  p_var1 = &struct->var1;
+  if (struct->var3)
   {
-    *&var0.x = &a3->var1;
+    *&var0.x = &struct->var1;
     *&var0.x = sub_1000DA634(&self->_allPathMap.__table_.__bucket_list_.__ptr_, p_var1) + 3;
     v10 = sub_1000D8B70(&self->_allFilledPointInfosForPathMap.__table_.__bucket_list_.__ptr_, *&var0.x);
   }
 
   else
   {
-    *&var0.x = &a3->var1;
+    *&var0.x = &struct->var1;
     *&var0.x = sub_1000DA634(&self->_allPathMap.__table_.__bucket_list_.__ptr_, p_var1) + 3;
     v10 = sub_1000D8B70(&self->_allNonFilledPointInfosForPathMap.__table_.__bucket_list_.__ptr_, *&var0.x);
   }
 
-  sub_1000DA1C8((v10 + 3), a3);
+  sub_1000DA1C8((v10 + 3), struct);
 }
 
-- (void)p_addOpenPathToGrid:(id)a3 withPathId:(unint64_t)a4 crawlingDistance:(double)a5 clippedToRect:(CGRect)a6
+- (void)p_addOpenPathToGrid:(id)grid withPathId:(unint64_t)id crawlingDistance:(double)distance clippedToRect:(CGRect)rect
 {
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1000D7A00;
   v6[3] = &unk_10183AD40;
-  v7 = a6;
-  v8 = a4;
+  rectCopy = rect;
+  idCopy = id;
   v6[4] = self;
-  [a3 iterateOverPathWithPointDistancePerIteration:v6 usingBlock:a5];
+  [grid iterateOverPathWithPointDistancePerIteration:v6 usingBlock:distance];
 }
 
-- (void)p_addFilledPathToGrid:(id)a3 withPathId:(unint64_t)a4 clippedToRect:(CGRect)a5
+- (void)p_addFilledPathToGrid:(id)grid withPathId:(unint64_t)id clippedToRect:(CGRect)rect
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v11 = a3;
-  [v11 bounds];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  gridCopy = grid;
+  [gridCopy bounds];
   v23.origin.x = x;
   v23.origin.y = y;
   v23.size.width = width;
@@ -847,20 +847,20 @@ LABEL_30:
   v17[1] = 3221225472;
   v17[2] = sub_1000D7B9C;
   v17[3] = &unk_10183AD68;
-  v16 = v11;
-  v19 = self;
-  v20 = a4;
+  v16 = gridCopy;
+  selfCopy = self;
+  idCopy = id;
   v18 = v16;
   [(CRLBezierHitTester *)self p_iterateOverEveryBucketPointInRect:v17 usingBlock:v12, v13, v14, v15];
 }
 
-- (void)p_iterateOverEveryBucketPointInRect:(CGRect)a3 usingBlock:(id)a4
+- (void)p_iterateOverEveryBucketPointInRect:(CGRect)rect usingBlock:(id)block
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v21 = a4;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  blockCopy = block;
   v23.origin.x = x;
   v23.origin.y = y;
   v23.size.width = width;
@@ -902,7 +902,7 @@ LABEL_30:
           v20 = v14;
           do
           {
-            v21[2](v17, v20);
+            blockCopy[2](v17, v20);
             bucketSize = self->_bucketSize;
             v20 += bucketSize;
           }
@@ -923,13 +923,13 @@ LABEL_30:
   }
 }
 
-- (void)p_iterateOverEveryExistingBucketPointInRect:(CGRect)a3 usingBlock:(id)a4
+- (void)p_iterateOverEveryExistingBucketPointInRect:(CGRect)rect usingBlock:(id)block
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  blockCopy = block;
   v29 = 0;
   v30.origin.x = x;
   v30.origin.y = y;
@@ -976,7 +976,7 @@ LABEL_23:
       v26 = v17;
       while (1)
       {
-        v9[2](v9, &v29, v15, v26);
+        blockCopy[2](blockCopy, &v29, v15, v26);
         if (v29)
         {
           break;
@@ -1004,7 +1004,7 @@ LABEL_23:
       v22 = i[3];
       if (v21 >= v15 && v21 <= v16 && v22 >= v17 && v22 <= v19)
       {
-        (v9[2])(v9, &v29);
+        (blockCopy[2])(blockCopy, &v29);
         if (v29)
         {
           break;
@@ -1016,27 +1016,27 @@ LABEL_23:
 LABEL_17:
 }
 
-- (void)p_iterateOverEveryNonEmptyBucketInRect:(CGRect)a3 usingBlock:(id)a4
+- (void)p_iterateOverEveryNonEmptyBucketInRect:(CGRect)rect usingBlock:(id)block
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1000D80E0;
   v9[3] = &unk_10183AD90;
-  v10 = self;
-  v11 = a4;
-  v8 = v11;
-  [(CRLBezierHitTester *)v10 p_iterateOverEveryExistingBucketPointInRect:v9 usingBlock:x, y, width, height];
+  selfCopy = self;
+  blockCopy = block;
+  v8 = blockCopy;
+  [(CRLBezierHitTester *)selfCopy p_iterateOverEveryExistingBucketPointInRect:v9 usingBlock:x, y, width, height];
 }
 
-- (void)p_iterateOverEveryNonEmptyBucketNear:(CGPoint)a3 withSearchThreshold:(double)a4 usingBlock:(id)a5
+- (void)p_iterateOverEveryNonEmptyBucketNear:(CGPoint)near withSearchThreshold:(double)threshold usingBlock:(id)block
 {
-  v7 = sub_10011EC70(a3.x, a3.y, a4 + a4);
+  v7 = sub_10011EC70(near.x, near.y, threshold + threshold);
 
-  [(CRLBezierHitTester *)self p_iterateOverEveryNonEmptyBucketInRect:a5 usingBlock:v7];
+  [(CRLBezierHitTester *)self p_iterateOverEveryNonEmptyBucketInRect:block usingBlock:v7];
 }
 
 - (id).cxx_construct

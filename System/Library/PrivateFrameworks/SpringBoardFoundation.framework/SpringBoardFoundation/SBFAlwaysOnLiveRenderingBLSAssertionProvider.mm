@@ -1,10 +1,10 @@
 @interface SBFAlwaysOnLiveRenderingBLSAssertionProvider
 - (BLSAssertionObserving)assertionObserver;
 - (SBFAlwaysOnLiveRenderingBLSAssertionProvider)init;
-- (id)acquireWithExplanation:(id)a3 attributes:(id)a4;
+- (id)acquireWithExplanation:(id)explanation attributes:(id)attributes;
 - (int64_t)acquiredAssertionsCount;
-- (void)assertion:(id)a3 didCancelWithError:(id)a4;
-- (void)assertionWasAcquired:(id)a3;
+- (void)assertion:(id)assertion didCancelWithError:(id)error;
+- (void)assertionWasAcquired:(id)acquired;
 @end
 
 @implementation SBFAlwaysOnLiveRenderingBLSAssertionProvider
@@ -16,19 +16,19 @@
   v2 = [(SBFAlwaysOnLiveRenderingBLSAssertionProvider *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
     assertions = v2->_assertions;
-    v2->_assertions = v3;
+    v2->_assertions = weakToStrongObjectsMapTable;
   }
 
   return v2;
 }
 
-- (id)acquireWithExplanation:(id)a3 attributes:(id)a4
+- (id)acquireWithExplanation:(id)explanation attributes:(id)attributes
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [MEMORY[0x1E698E518] acquireWithExplanation:v6 observer:self attributes:a4];
+  explanationCopy = explanation;
+  v7 = [MEMORY[0x1E698E518] acquireWithExplanation:explanationCopy observer:self attributes:attributes];
   v8 = SBLogLiveRendering();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -39,7 +39,7 @@
     v14 = 2048;
     v15 = v7;
     v16 = 2112;
-    v17 = v6;
+    v17 = explanationCopy;
     _os_log_impl(&dword_1BEA11000, v8, OS_LOG_TYPE_DEFAULT, "<%{public}@: %p> live-rendering assertion created with reason '%@'", &v12, 0x20u);
   }
 
@@ -48,33 +48,33 @@
 
 - (int64_t)acquiredAssertionsCount
 {
-  v2 = [(NSMapTable *)self->_assertions keyEnumerator];
+  keyEnumerator = [(NSMapTable *)self->_assertions keyEnumerator];
   v3 = 0;
   v4 = -1;
   do
   {
-    v5 = [v2 nextObject];
+    nextObject = [keyEnumerator nextObject];
 
     ++v4;
-    v3 = v5;
+    v3 = nextObject;
   }
 
-  while (v5);
+  while (nextObject);
 
   return v4;
 }
 
-- (void)assertionWasAcquired:(id)a3
+- (void)assertionWasAcquired:(id)acquired
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  acquiredCopy = acquired;
   assertions = self->_assertions;
   v6 = [MEMORY[0x1E695DF00] now];
-  v7 = [v4 identifier];
-  [(NSMapTable *)assertions setObject:v6 forKey:v7];
+  identifier = [acquiredCopy identifier];
+  [(NSMapTable *)assertions setObject:v6 forKey:identifier];
 
-  v8 = [v4 explanation];
-  v9 = [(SBFAlwaysOnLiveRenderingBLSAssertionProvider *)self acquiredAssertionsCount];
+  explanation = [acquiredCopy explanation];
+  acquiredAssertionsCount = [(SBFAlwaysOnLiveRenderingBLSAssertionProvider *)self acquiredAssertionsCount];
   v10 = SBLogLiveRendering();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
@@ -83,32 +83,32 @@
     v13 = 138544130;
     v14 = v12;
     v15 = 2048;
-    v16 = v4;
+    v16 = acquiredCopy;
     v17 = 2112;
-    v18 = v8;
+    v18 = explanation;
     v19 = 1024;
-    v20 = v9;
+    v20 = acquiredAssertionsCount;
     _os_log_impl(&dword_1BEA11000, v10, OS_LOG_TYPE_DEFAULT, "<%{public}@: %p> live-rendering assertion acquired with reason '%@' (activeCount: %d)", &v13, 0x26u);
   }
 }
 
-- (void)assertion:(id)a3 didCancelWithError:(id)a4
+- (void)assertion:(id)assertion didCancelWithError:(id)error
 {
   v31 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 identifier];
-  v9 = [(NSMapTable *)self->_assertions objectForKey:v8];
+  assertionCopy = assertion;
+  errorCopy = error;
+  identifier = [assertionCopy identifier];
+  v9 = [(NSMapTable *)self->_assertions objectForKey:identifier];
   if (v9)
   {
-    [(NSMapTable *)self->_assertions removeObjectForKey:v8];
-    v10 = [v6 explanation];
-    v11 = [(SBFAlwaysOnLiveRenderingBLSAssertionProvider *)self acquiredAssertionsCount];
-    v12 = [v7 debugDescription];
+    [(NSMapTable *)self->_assertions removeObjectForKey:identifier];
+    explanation = [assertionCopy explanation];
+    acquiredAssertionsCount = [(SBFAlwaysOnLiveRenderingBLSAssertionProvider *)self acquiredAssertionsCount];
+    v12 = [errorCopy debugDescription];
     [v9 timeIntervalSinceNow];
     v14 = v13;
-    v15 = SBLogLiveRendering();
-    if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+    explanation2 = SBLogLiveRendering();
+    if (os_log_type_enabled(explanation2, OS_LOG_TYPE_DEFAULT))
     {
       if (v14 < 0.0)
       {
@@ -120,34 +120,34 @@
       v19 = 138544642;
       v20 = v17;
       v21 = 2048;
-      v22 = v6;
+      v22 = assertionCopy;
       v23 = 2048;
       v24 = v14;
       v25 = 2112;
-      v26 = v10;
+      v26 = explanation;
       v27 = 2112;
       v28 = v12;
       v29 = 1024;
-      v30 = v11;
-      _os_log_impl(&dword_1BEA11000, v15, OS_LOG_TYPE_DEFAULT, "<%{public}@: %p> live-rendering assertion released after %.2f seconds with reason '%@' (error: %@, activeCount: %d)", &v19, 0x3Au);
+      v30 = acquiredAssertionsCount;
+      _os_log_impl(&dword_1BEA11000, explanation2, OS_LOG_TYPE_DEFAULT, "<%{public}@: %p> live-rendering assertion released after %.2f seconds with reason '%@' (error: %@, activeCount: %d)", &v19, 0x3Au);
     }
 
     goto LABEL_8;
   }
 
-  v10 = SBLogLiveRendering();
-  if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
+  explanation = SBLogLiveRendering();
+  if (os_log_type_enabled(explanation, OS_LOG_TYPE_INFO))
   {
     v18 = objc_opt_class();
     v12 = NSStringFromClass(v18);
-    v15 = [v6 explanation];
+    explanation2 = [assertionCopy explanation];
     v19 = 138543874;
     v20 = v12;
     v21 = 2048;
-    v22 = v6;
+    v22 = assertionCopy;
     v23 = 2112;
-    v24 = *&v15;
-    _os_log_impl(&dword_1BEA11000, v10, OS_LOG_TYPE_INFO, "<%{public}@: %p> live-rendering assertion release ignored because is not ours (reason: '%@')", &v19, 0x20u);
+    v24 = *&explanation2;
+    _os_log_impl(&dword_1BEA11000, explanation, OS_LOG_TYPE_INFO, "<%{public}@: %p> live-rendering assertion release ignored because is not ours (reason: '%@')", &v19, 0x20u);
 LABEL_8:
   }
 }

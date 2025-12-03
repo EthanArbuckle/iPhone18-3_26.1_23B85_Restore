@@ -1,21 +1,21 @@
 @interface MPUAbbreviatingLabel
 - (void)_calculateTextSizes;
 - (void)_selectBestRepresentation;
-- (void)_setTextRepresentation:(id)a3;
-- (void)setBounds:(CGRect)a3;
-- (void)setFont:(id)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setTextRepresentations:(id)a3;
+- (void)_setTextRepresentation:(id)representation;
+- (void)setBounds:(CGRect)bounds;
+- (void)setFont:(id)font;
+- (void)setFrame:(CGRect)frame;
+- (void)setTextRepresentations:(id)representations;
 @end
 
 @implementation MPUAbbreviatingLabel
 
-- (void)setTextRepresentations:(id)a3
+- (void)setTextRepresentations:(id)representations
 {
-  v6 = a3;
+  representationsCopy = representations;
   if (![(NSArray *)self->_textRepresentations isEqualToArray:?])
   {
-    v4 = [v6 copy];
+    v4 = [representationsCopy copy];
     textRepresentations = self->_textRepresentations;
     self->_textRepresentations = v4;
 
@@ -23,20 +23,20 @@
   }
 }
 
-- (void)setFont:(id)a3
+- (void)setFont:(id)font
 {
   v4.receiver = self;
   v4.super_class = MPUAbbreviatingLabel;
-  [(MPUAbbreviatingLabel *)&v4 setFont:a3];
+  [(MPUAbbreviatingLabel *)&v4 setFont:font];
   [(MPUAbbreviatingLabel *)self _calculateTextSizes];
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(MPUAbbreviatingLabel *)self bounds];
   v9 = v8;
   v11 = v10;
@@ -60,12 +60,12 @@
   }
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(MPUAbbreviatingLabel *)self bounds];
   v9 = v8;
   v11 = v10;
@@ -92,9 +92,9 @@
 - (void)_calculateTextSizes
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   textRepresentationSizes = self->_textRepresentationSizes;
-  self->_textRepresentationSizes = v3;
+  self->_textRepresentationSizes = array;
 
   v15 = 0u;
   v16 = 0u;
@@ -145,7 +145,7 @@
   textRepresentations = self->_textRepresentations;
   if (v5)
   {
-    v7 = [(NSArray *)textRepresentations firstObject];
+    firstObject = [(NSArray *)textRepresentations firstObject];
   }
 
   else if ([(NSArray *)textRepresentations count])
@@ -168,49 +168,49 @@
       }
     }
 
-    v7 = [(NSArray *)self->_textRepresentations objectAtIndexedSubscript:v8];
+    firstObject = [(NSArray *)self->_textRepresentations objectAtIndexedSubscript:v8];
   }
 
   else
   {
 LABEL_7:
-    v7 = [(NSArray *)self->_textRepresentations lastObject];
+    firstObject = [(NSArray *)self->_textRepresentations lastObject];
   }
 
-  v12 = v7;
+  v12 = firstObject;
   [(MPUAbbreviatingLabel *)self _setTextRepresentation:?];
 }
 
-- (void)_setTextRepresentation:(id)a3
+- (void)_setTextRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(MPUAbbreviatingLabel *)self attributedText];
-    v6 = [v5 isEqualToAttributedString:v4];
+    attributedText = [(MPUAbbreviatingLabel *)self attributedText];
+    v6 = [attributedText isEqualToAttributedString:representationCopy];
 
     if ((v6 & 1) == 0)
     {
-      v12 = self;
+      selfCopy = self;
       v7 = &selRef_setAttributedText_;
-      v8 = &v12;
+      v8 = &selfCopy;
 LABEL_6:
       v8[1] = MPUAbbreviatingLabel;
-      objc_msgSendSuper2(v8, *v7, v4, v11);
+      objc_msgSendSuper2(v8, *v7, representationCopy, selfCopy2);
     }
   }
 
   else
   {
-    v9 = [(MPUAbbreviatingLabel *)self text];
-    v10 = [v9 isEqualToString:v4];
+    text = [(MPUAbbreviatingLabel *)self text];
+    v10 = [text isEqualToString:representationCopy];
 
     if ((v10 & 1) == 0)
     {
-      v11 = self;
+      selfCopy2 = self;
       v7 = &selRef_setText_;
-      v8 = &v11;
+      v8 = &selfCopy2;
       goto LABEL_6;
     }
   }

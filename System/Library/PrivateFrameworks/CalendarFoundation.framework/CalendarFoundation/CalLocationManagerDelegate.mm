@@ -1,11 +1,11 @@
 @interface CalLocationManagerDelegate
-- (CalLocationManagerDelegate)initWithCurrentBundleID:(id)a3 completionBlock:(id)a4;
+- (CalLocationManagerDelegate)initWithCurrentBundleID:(id)d completionBlock:(id)block;
 - (void)cancel;
 - (void)dealloc;
-- (void)didFinishLocationLookupWithLocation:(id)a3 error:(id)a4;
-- (void)locationManager:(id)a3 didFailWithError:(id)a4;
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4;
-- (void)locationManagerDidChangeAuthorization:(id)a3;
+- (void)didFinishLocationLookupWithLocation:(id)location error:(id)error;
+- (void)locationManager:(id)manager didFailWithError:(id)error;
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations;
+- (void)locationManagerDidChangeAuthorization:(id)authorization;
 - (void)timeout;
 @end
 
@@ -22,18 +22,18 @@
   [(CalLocationManagerDelegate *)&v3 dealloc];
 }
 
-- (CalLocationManagerDelegate)initWithCurrentBundleID:(id)a3 completionBlock:(id)a4
+- (CalLocationManagerDelegate)initWithCurrentBundleID:(id)d completionBlock:(id)block
 {
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  blockCopy = block;
   v19.receiver = self;
   v19.super_class = CalLocationManagerDelegate;
   v9 = [(CalLocationManagerDelegate *)&v19 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_currentBundleID, a3);
-    v11 = _Block_copy(v8);
+    objc_storeStrong(&v9->_currentBundleID, d);
+    v11 = _Block_copy(blockCopy);
     completionBlock = v10->_completionBlock;
     v10->_completionBlock = v11;
 
@@ -62,10 +62,10 @@
   return v10;
 }
 
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations
 {
-  v5 = a4;
-  if ([v5 count])
+  locationsCopy = locations;
+  if ([locationsCopy count])
   {
     v6 = +[CalFoundationLogSubsystem locations];
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
@@ -73,14 +73,14 @@
       [CalLocationManagerDelegate locationManager:didUpdateLocations:];
     }
 
-    v7 = [v5 lastObject];
-    [(CalLocationManagerDelegate *)self didFinishLocationLookupWithLocation:v7 error:0];
+    lastObject = [locationsCopy lastObject];
+    [(CalLocationManagerDelegate *)self didFinishLocationLookupWithLocation:lastObject error:0];
   }
 }
 
-- (void)locationManagerDidChangeAuthorization:(id)a3
+- (void)locationManagerDidChangeAuthorization:(id)authorization
 {
-  if ([a3 authorizationStatus] - 1 <= 1)
+  if ([authorization authorizationStatus] - 1 <= 1)
   {
     v4 = +[CalFoundationLogSubsystem locations];
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -93,22 +93,22 @@
   }
 }
 
-- (void)locationManager:(id)a3 didFailWithError:(id)a4
+- (void)locationManager:(id)manager didFailWithError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v7)
+  managerCopy = manager;
+  errorCopy = error;
+  v8 = errorCopy;
+  if (!errorCopy)
   {
     goto LABEL_12;
   }
 
-  v9 = [v7 domain];
-  if ([v9 isEqualToString:*MEMORY[0x1E695FC60]])
+  domain = [errorCopy domain];
+  if ([domain isEqualToString:*MEMORY[0x1E695FC60]])
   {
-    v10 = [v8 code];
+    code = [v8 code];
 
-    if (v10 == 1 && ![v6 authorizationStatus])
+    if (code == 1 && ![managerCopy authorizationStatus])
     {
       v11 = +[CalFoundationLogSubsystem locations];
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -148,13 +148,13 @@ LABEL_12:
   _os_log_debug_impl(v0, v1, v2, v3, v4, 2u);
 }
 
-- (void)didFinishLocationLookupWithLocation:(id)a3 error:(id)a4
+- (void)didFinishLocationLookupWithLocation:(id)location error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  objc_sync_enter(v8);
-  if ([(CalLocationManagerDelegate *)v8 didFinish])
+  locationCopy = location;
+  errorCopy = error;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ([(CalLocationManagerDelegate *)selfCopy didFinish])
   {
     v9 = +[CalFoundationLogSubsystem locations];
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -165,22 +165,22 @@ LABEL_12:
 
   else
   {
-    [(CalLocationManagerDelegate *)v8 setDidFinish:1];
-    [objc_opt_class() cancelPreviousPerformRequestsWithTarget:v8];
-    v10 = [(CalLocationManagerDelegate *)v8 completionBlock];
-    (v10)[2](v10, v6, v7);
+    [(CalLocationManagerDelegate *)selfCopy setDidFinish:1];
+    [objc_opt_class() cancelPreviousPerformRequestsWithTarget:selfCopy];
+    completionBlock = [(CalLocationManagerDelegate *)selfCopy completionBlock];
+    (completionBlock)[2](completionBlock, locationCopy, errorCopy);
 
     v11 = +[CalFoundationLogSubsystem locations];
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
-      [CalLocationManagerDelegate didFinishLocationLookupWithLocation:v8 error:?];
+      [CalLocationManagerDelegate didFinishLocationLookupWithLocation:selfCopy error:?];
     }
 
-    [(CLLocationManager *)v8->_manager stopUpdatingLocation];
-    [(CLLocationManager *)v8->_manager setDelegate:0];
+    [(CLLocationManager *)selfCopy->_manager stopUpdatingLocation];
+    [(CLLocationManager *)selfCopy->_manager setDelegate:0];
   }
 
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)initWithCurrentBundleID:(uint64_t *)a1 completionBlock:.cold.1(uint64_t *a1)

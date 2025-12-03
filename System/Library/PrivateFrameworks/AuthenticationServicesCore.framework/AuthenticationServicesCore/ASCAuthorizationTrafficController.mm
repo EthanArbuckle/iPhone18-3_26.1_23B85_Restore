@@ -1,10 +1,10 @@
 @interface ASCAuthorizationTrafficController
 + (ASCAuthorizationTrafficController)sharedInstance;
-+ (BOOL)_appWithAppIdentifierIsWebBrowser:(id)a3;
++ (BOOL)_appWithAppIdentifierIsWebBrowser:(id)browser;
 - (ASCAuthorizationTrafficController)init;
-- (void)beginAuthorizationForApplicationIdentifier:(id)a3 token:(id)a4 withClearanceHandler:(id)a5;
-- (void)cancelAuthorizationForAppIdentifierIfNecessary:(id)a3 token:(id)a4;
-- (void)endAuthorizationForAppIdentifier:(id)a3 token:(id)a4 clearanceHandler:(id)a5;
+- (void)beginAuthorizationForApplicationIdentifier:(id)identifier token:(id)token withClearanceHandler:(id)handler;
+- (void)cancelAuthorizationForAppIdentifierIfNecessary:(id)necessary token:(id)token;
+- (void)endAuthorizationForAppIdentifier:(id)identifier token:(id)token clearanceHandler:(id)handler;
 @end
 
 @implementation ASCAuthorizationTrafficController
@@ -57,31 +57,31 @@ uint64_t __51__ASCAuthorizationTrafficController_sharedInstance__block_invoke()
   return v2;
 }
 
-+ (BOOL)_appWithAppIdentifierIsWebBrowser:(id)a3
++ (BOOL)_appWithAppIdentifierIsWebBrowser:(id)browser
 {
   v9 = 0;
-  v3 = [MEMORY[0x1E6963620] bundleRecordWithApplicationIdentifier:a3 error:&v9];
+  v3 = [MEMORY[0x1E6963620] bundleRecordWithApplicationIdentifier:browser error:&v9];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 entitlements];
-    v6 = [v5 objectForKey:@"com.apple.developer.web-browser" ofClass:objc_opt_class()];
-    v7 = [v6 BOOLValue];
+    entitlements = [v3 entitlements];
+    v6 = [entitlements objectForKey:@"com.apple.developer.web-browser" ofClass:objc_opt_class()];
+    bOOLValue = [v6 BOOLValue];
   }
 
   else
   {
-    v7 = 0;
+    bOOLValue = 0;
   }
 
-  return v7;
+  return bOOLValue;
 }
 
-- (void)beginAuthorizationForApplicationIdentifier:(id)a3 token:(id)a4 withClearanceHandler:(id)a5
+- (void)beginAuthorizationForApplicationIdentifier:(id)identifier token:(id)token withClearanceHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  tokenCopy = token;
+  handlerCopy = handler;
   v21[0] = 0;
   v21[1] = v21;
   v21[2] = 0x3032000000;
@@ -93,14 +93,14 @@ uint64_t __51__ASCAuthorizationTrafficController_sharedInstance__block_invoke()
   block[1] = 3221225472;
   block[2] = __107__ASCAuthorizationTrafficController_beginAuthorizationForApplicationIdentifier_token_withClearanceHandler___block_invoke;
   block[3] = &unk_1E81601D0;
-  v16 = v8;
-  v17 = self;
-  v18 = v9;
-  v19 = v10;
+  v16 = identifierCopy;
+  selfCopy = self;
+  v18 = tokenCopy;
+  v19 = handlerCopy;
   v20 = v21;
-  v12 = v9;
-  v13 = v10;
-  v14 = v8;
+  v12 = tokenCopy;
+  v13 = handlerCopy;
+  v14 = identifierCopy;
   dispatch_async(trafficQueue, block);
 
   _Block_object_dispose(v21, 8);
@@ -212,23 +212,23 @@ void __107__ASCAuthorizationTrafficController_beginAuthorizationForApplicationId
   dispatch_async(v1, block);
 }
 
-- (void)endAuthorizationForAppIdentifier:(id)a3 token:(id)a4 clearanceHandler:(id)a5
+- (void)endAuthorizationForAppIdentifier:(id)identifier token:(id)token clearanceHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  tokenCopy = token;
+  handlerCopy = handler;
   trafficQueue = self->_trafficQueue;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __93__ASCAuthorizationTrafficController_endAuthorizationForAppIdentifier_token_clearanceHandler___block_invoke;
   v15[3] = &unk_1E81601F8;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = identifierCopy;
+  v17 = tokenCopy;
+  v18 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = tokenCopy;
+  v14 = identifierCopy;
   dispatch_async(trafficQueue, v15);
 }
 
@@ -253,11 +253,11 @@ void __93__ASCAuthorizationTrafficController_endAuthorizationForAppIdentifier_to
   dispatch_async(v3, block);
 }
 
-- (void)cancelAuthorizationForAppIdentifierIfNecessary:(id)a3 token:(id)a4
+- (void)cancelAuthorizationForAppIdentifierIfNecessary:(id)necessary token:(id)token
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  necessaryCopy = necessary;
+  tokenCopy = token;
+  if (necessaryCopy)
   {
     trafficQueue = self->_trafficQueue;
     block[0] = MEMORY[0x1E69E9820];
@@ -265,8 +265,8 @@ void __93__ASCAuthorizationTrafficController_endAuthorizationForAppIdentifier_to
     block[2] = __90__ASCAuthorizationTrafficController_cancelAuthorizationForAppIdentifierIfNecessary_token___block_invoke;
     block[3] = &unk_1E815FEC0;
     block[4] = self;
-    v10 = v6;
-    v11 = v7;
+    v10 = necessaryCopy;
+    v11 = tokenCopy;
     dispatch_async(trafficQueue, block);
   }
 }

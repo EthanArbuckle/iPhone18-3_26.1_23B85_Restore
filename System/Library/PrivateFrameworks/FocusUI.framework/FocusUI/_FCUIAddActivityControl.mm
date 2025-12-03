@@ -1,10 +1,10 @@
 @interface _FCUIAddActivityControl
 - (BOOL)adjustForContentSizeCategoryChange;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_FCUIAddActivityControl)initWithAction:(id)a3;
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4;
-- (id)visualStylingProviderForCategory:(int64_t)a3;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_FCUIAddActivityControl)initWithAction:(id)action;
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region;
+- (id)visualStylingProviderForCategory:(int64_t)category;
 - (void)_configureBackgroundMaterialViewIfNecesssary;
 - (void)_configureGlyphImageViewIfNecessary;
 - (void)layoutSubviews;
@@ -12,20 +12,20 @@
 
 @implementation _FCUIAddActivityControl
 
-- (_FCUIAddActivityControl)initWithAction:(id)a3
+- (_FCUIAddActivityControl)initWithAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   v11.receiver = self;
   v11.super_class = _FCUIAddActivityControl;
   v5 = [(_FCUIAddActivityControl *)&v11 init];
   v6 = v5;
   if (v5)
   {
-    [(_FCUIAddActivityControl *)v5 addAction:v4 forControlEvents:64];
-    v7 = [MEMORY[0x277D75418] currentDevice];
-    v8 = [v7 userInterfaceIdiom];
+    [(_FCUIAddActivityControl *)v5 addAction:actionCopy forControlEvents:64];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if (v8 == 1)
+    if (userInterfaceIdiom == 1)
     {
       v9 = [objc_alloc(MEMORY[0x277D75870]) initWithDelegate:v6];
       [(_FCUIAddActivityControl *)v6 addInteraction:v9];
@@ -35,10 +35,10 @@
   return v6;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   [(_FCUIAddActivityControl *)self _configureGlyphImageViewIfNecessary];
   [(UIImageView *)self->_glyphImageView sizeThatFits:width, height];
   UIRoundToScale();
@@ -54,10 +54,10 @@
   v5.super_class = _FCUIAddActivityControl;
   [(_FCUIAddActivityControl *)&v5 layoutSubviews];
   [(_FCUIAddActivityControl *)self _configureBackgroundMaterialViewIfNecesssary];
-  v3 = [(_FCUIAddActivityControl *)self _background];
+  _background = [(_FCUIAddActivityControl *)self _background];
 
   backgroundMaterialView = self;
-  if (!v3)
+  if (!_background)
   {
     backgroundMaterialView = self->_backgroundMaterialView;
   }
@@ -67,35 +67,35 @@
   [(_FCUIAddActivityControl *)self _configureGlyphImageViewIfNecessary];
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = [v4 view];
-  v6 = v5 == self || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || [v4 numberOfTouchesRequired] != 1 || objc_msgSend(v4, "numberOfTapsRequired") != 1;
+  beginCopy = begin;
+  view = [beginCopy view];
+  v6 = view == self || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || [beginCopy numberOfTouchesRequired] != 1 || objc_msgSend(beginCopy, "numberOfTapsRequired") != 1;
 
   return v6;
 }
 
-- (id)visualStylingProviderForCategory:(int64_t)a3
+- (id)visualStylingProviderForCategory:(int64_t)category
 {
   [(_FCUIAddActivityControl *)self _configureBackgroundMaterialViewIfNecesssary];
   backgroundMaterialView = self->_backgroundMaterialView;
 
-  return [(MTMaterialView *)backgroundMaterialView visualStylingProviderForCategory:a3];
+  return [(MTMaterialView *)backgroundMaterialView visualStylingProviderForCategory:category];
 }
 
 - (BOOL)adjustForContentSizeCategoryChange
 {
-  v3 = [(_FCUIAddActivityControl *)self adjustsFontForContentSizeCategory];
-  if (v3)
+  adjustsFontForContentSizeCategory = [(_FCUIAddActivityControl *)self adjustsFontForContentSizeCategory];
+  if (adjustsFontForContentSizeCategory)
   {
     [(_FCUIAddActivityControl *)self setNeedsLayout];
   }
 
-  return v3;
+  return adjustsFontForContentSizeCategory;
 }
 
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region
 {
   v5 = objc_alloc_init(MEMORY[0x277D758D8]);
   v6 = MEMORY[0x277D75208];

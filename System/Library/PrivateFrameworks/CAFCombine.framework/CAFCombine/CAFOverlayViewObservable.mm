@@ -1,20 +1,20 @@
 @interface CAFOverlayViewObservable
 - (NSString)description;
-- (void)overlayViewService:(id)a3 didUpdateHeight:(float)a4;
-- (void)overlayViewService:(id)a3 didUpdateOn:(BOOL)a4;
-- (void)overlayViewService:(id)a3 didUpdateOriginX:(float)a4;
-- (void)overlayViewService:(id)a3 didUpdateOriginY:(float)a4;
-- (void)overlayViewService:(id)a3 didUpdateWidth:(float)a4;
-- (void)serviceDidFinishGroupUpdate:(id)a3;
-- (void)serviceDidUpdate:(id)a3 characteristic:(id)a4 fromGroupUpdate:(BOOL)a5;
-- (void)serviceDidUpdate:(id)a3 receivedAllValues:(BOOL)a4;
+- (void)overlayViewService:(id)service didUpdateHeight:(float)height;
+- (void)overlayViewService:(id)service didUpdateOn:(BOOL)on;
+- (void)overlayViewService:(id)service didUpdateOriginX:(float)x;
+- (void)overlayViewService:(id)service didUpdateOriginY:(float)y;
+- (void)overlayViewService:(id)service didUpdateWidth:(float)width;
+- (void)serviceDidFinishGroupUpdate:(id)update;
+- (void)serviceDidUpdate:(id)update characteristic:(id)characteristic fromGroupUpdate:(BOOL)groupUpdate;
+- (void)serviceDidUpdate:(id)update receivedAllValues:(BOOL)values;
 @end
 
 @implementation CAFOverlayViewObservable
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CAFOverlayViewObservable.description.getter();
   v5 = v4;
 
@@ -23,60 +23,60 @@
   return v6;
 }
 
-- (void)overlayViewService:(id)a3 didUpdateOn:(BOOL)a4
+- (void)overlayViewService:(id)service didUpdateOn:(BOOL)on
 {
-  v5 = a3;
-  v6 = self;
+  serviceCopy = service;
+  selfCopy = self;
   CAFOverlayViewObservable.overlayViewService(_:didUpdateOn:)();
 }
 
-- (void)overlayViewService:(id)a3 didUpdateOriginX:(float)a4
+- (void)overlayViewService:(id)service didUpdateOriginX:(float)x
 {
-  v5 = a3;
-  v6 = self;
-  CAFOverlayViewObservable.overlayViewService(_:didUpdateOriginX:)(v6);
+  serviceCopy = service;
+  selfCopy = self;
+  CAFOverlayViewObservable.overlayViewService(_:didUpdateOriginX:)(selfCopy);
 }
 
-- (void)overlayViewService:(id)a3 didUpdateOriginY:(float)a4
+- (void)overlayViewService:(id)service didUpdateOriginY:(float)y
 {
-  v5 = a3;
-  v6 = self;
-  CAFOverlayViewObservable.overlayViewService(_:didUpdateOriginY:)(v6);
+  serviceCopy = service;
+  selfCopy = self;
+  CAFOverlayViewObservable.overlayViewService(_:didUpdateOriginY:)(selfCopy);
 }
 
-- (void)overlayViewService:(id)a3 didUpdateWidth:(float)a4
+- (void)overlayViewService:(id)service didUpdateWidth:(float)width
 {
-  v5 = a3;
-  v6 = self;
-  CAFOverlayViewObservable.overlayViewService(_:didUpdateWidth:)(v6);
+  serviceCopy = service;
+  selfCopy = self;
+  CAFOverlayViewObservable.overlayViewService(_:didUpdateWidth:)(selfCopy);
 }
 
-- (void)overlayViewService:(id)a3 didUpdateHeight:(float)a4
+- (void)overlayViewService:(id)service didUpdateHeight:(float)height
 {
-  v5 = a3;
-  v6 = self;
-  CAFOverlayViewObservable.overlayViewService(_:didUpdateHeight:)(v6);
+  serviceCopy = service;
+  selfCopy = self;
+  CAFOverlayViewObservable.overlayViewService(_:didUpdateHeight:)(selfCopy);
 }
 
-- (void)serviceDidUpdate:(id)a3 characteristic:(id)a4 fromGroupUpdate:(BOOL)a5
+- (void)serviceDidUpdate:(id)update characteristic:(id)characteristic fromGroupUpdate:(BOOL)groupUpdate
 {
-  v8 = a3;
-  v9 = a4;
-  v11 = self;
-  CAFOverlayViewObservable.serviceDidUpdate(_:characteristic:fromGroupUpdate:)(v11, v10, a5);
+  updateCopy = update;
+  characteristicCopy = characteristic;
+  selfCopy = self;
+  CAFOverlayViewObservable.serviceDidUpdate(_:characteristic:fromGroupUpdate:)(selfCopy, v10, groupUpdate);
 }
 
-- (void)serviceDidUpdate:(id)a3 receivedAllValues:(BOOL)a4
+- (void)serviceDidUpdate:(id)update receivedAllValues:(BOOL)values
 {
-  v6 = a3;
-  v7 = self;
-  CAFOverlayViewObservable.serviceDidUpdate(_:receivedAllValues:)(v7, a4);
+  updateCopy = update;
+  selfCopy = self;
+  CAFOverlayViewObservable.serviceDidUpdate(_:receivedAllValues:)(selfCopy, values);
 }
 
-- (void)serviceDidFinishGroupUpdate:(id)a3
+- (void)serviceDidFinishGroupUpdate:(id)update
 {
-  v4 = a3;
-  v5 = self;
+  updateCopy = update;
+  selfCopy = self;
   CAFOverlayViewObservable.serviceDidFinishGroupUpdate(_:)();
 }
 

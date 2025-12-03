@@ -1,46 +1,46 @@
 @interface CRSessionInfo
 + (id)placeholderImage;
-+ (id)sessionInfoWithNotification:(id)a3;
-- (CRSessionInfo)initWithNotification:(id)a3;
-- (void)initDataWithNotification:(id)a3;
-- (void)initTestDataWithNotification:(id)a3;
-- (void)updateKeyboardPropertiesWithTextSessionInfo:(id)a3;
-- (void)updateWithTextSessionInfo:(id)a3;
++ (id)sessionInfoWithNotification:(id)notification;
+- (CRSessionInfo)initWithNotification:(id)notification;
+- (void)initDataWithNotification:(id)notification;
+- (void)initTestDataWithNotification:(id)notification;
+- (void)updateKeyboardPropertiesWithTextSessionInfo:(id)info;
+- (void)updateWithTextSessionInfo:(id)info;
 @end
 
 @implementation CRSessionInfo
 
-+ (id)sessionInfoWithNotification:(id)a3
++ (id)sessionInfoWithNotification:(id)notification
 {
-  v3 = a3;
-  v4 = [[CRSessionInfo alloc] initWithNotification:v3];
+  notificationCopy = notification;
+  v4 = [[CRSessionInfo alloc] initWithNotification:notificationCopy];
 
   return v4;
 }
 
-- (CRSessionInfo)initWithNotification:(id)a3
+- (CRSessionInfo)initWithNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v11.receiver = self;
   v11.super_class = CRSessionInfo;
   v5 = [(CRSessionInfo *)&v11 init];
   if (v5)
   {
-    v6 = [v4 request];
-    v7 = [v6 content];
-    v8 = [v7 userInfo];
-    v9 = [v8 objectForKey:@"deviceIdentifier"];
+    request = [notificationCopy request];
+    content = [request content];
+    userInfo = [content userInfo];
+    v9 = [userInfo objectForKey:@"deviceIdentifier"];
 
     if (v9)
     {
       if ([v9 isEqualToString:@"00000000-0000-0000-0000-000000000000"])
       {
-        [(CRSessionInfo *)v5 initTestDataWithNotification:v4];
+        [(CRSessionInfo *)v5 initTestDataWithNotification:notificationCopy];
       }
 
       else
       {
-        [(CRSessionInfo *)v5 initDataWithNotification:v4];
+        [(CRSessionInfo *)v5 initDataWithNotification:notificationCopy];
       }
     }
 
@@ -53,76 +53,76 @@
   return v5;
 }
 
-- (void)updateKeyboardPropertiesWithTextSessionInfo:(id)a3
+- (void)updateKeyboardPropertiesWithTextSessionInfo:(id)info
 {
-  v4 = a3;
-  self->_keyboardType = [v4 keyboardType];
-  self->_returnKeyType = [v4 returnKeyType];
-  v5 = [v4 secureTextEntry];
+  infoCopy = info;
+  self->_keyboardType = [infoCopy keyboardType];
+  self->_returnKeyType = [infoCopy returnKeyType];
+  secureTextEntry = [infoCopy secureTextEntry];
 
-  self->_secureTextEntry = v5;
+  self->_secureTextEntry = secureTextEntry;
 }
 
-- (void)updateWithTextSessionInfo:(id)a3
+- (void)updateWithTextSessionInfo:(id)info
 {
-  v13 = a3;
-  v4 = [v13 identifier];
+  infoCopy = info;
+  identifier = [infoCopy identifier];
 
-  if (v4)
+  if (identifier)
   {
-    v5 = [v13 identifier];
+    identifier2 = [infoCopy identifier];
     sessionID = self->_sessionID;
-    self->_sessionID = v5;
+    self->_sessionID = identifier2;
   }
 
-  v7 = [v13 prompt];
+  prompt = [infoCopy prompt];
 
-  if (v7)
+  if (prompt)
   {
-    v8 = [v13 prompt];
+    prompt2 = [infoCopy prompt];
     descriptiveText = self->_descriptiveText;
-    self->_descriptiveText = v8;
+    self->_descriptiveText = prompt2;
   }
 
-  v10 = [v13 title];
+  title = [infoCopy title];
 
-  if (v10)
+  if (title)
   {
-    v11 = [v13 title];
+    title2 = [infoCopy title];
     appName = self->_appName;
-    self->_appName = v11;
+    self->_appName = title2;
   }
 }
 
-- (void)initDataWithNotification:(id)a3
+- (void)initDataWithNotification:(id)notification
 {
-  v4 = [a3 request];
-  v5 = [v4 content];
+  request = [notification request];
+  content = [request content];
 
-  v6 = [v5 subtitle];
+  subtitle = [content subtitle];
   appName = self->_appName;
-  self->_appName = v6;
+  self->_appName = subtitle;
 
-  v8 = [v5 body];
+  body = [content body];
   descriptiveText = self->_descriptiveText;
-  self->_descriptiveText = v8;
+  self->_descriptiveText = body;
 
-  v10 = [v5 title];
+  title = [content title];
   deviceName = self->_deviceName;
-  self->_deviceName = v10;
+  self->_deviceName = title;
 
-  v12 = [v5 userInfo];
-  v20 = [v12 objectForKey:@"appImage"];
+  userInfo = [content userInfo];
+  v20 = [userInfo objectForKey:@"appImage"];
 
   v13 = [UIImage imageWithData:v20];
-  v14 = [v5 userInfo];
-  v15 = [v14 objectForKey:@"deviceIdentifier"];
+  userInfo2 = [content userInfo];
+  v15 = [userInfo2 objectForKey:@"deviceIdentifier"];
 
-  v16 = [v5 userInfo];
-  v17 = [v16 objectForKey:@"placeholderText"];
+  userInfo3 = [content userInfo];
+  v17 = [userInfo3 objectForKey:@"placeholderText"];
 
-  v18 = [v5 userInfo];
-  v19 = [v18 objectForKey:@"sessionID"];
+  userInfo4 = [content userInfo];
+  v19 = [userInfo4 objectForKey:@"sessionID"];
 
   if (v13)
   {
@@ -145,10 +145,10 @@
   }
 }
 
-- (void)initTestDataWithNotification:(id)a3
+- (void)initTestDataWithNotification:(id)notification
 {
-  v4 = [a3 request];
-  v5 = [v4 content];
+  request = [notification request];
+  content = [request content];
 
   v6 = +[CRSessionInfo placeholderImage];
   appImage = self->_appImage;
@@ -169,8 +169,8 @@
   placeholderText = self->_placeholderText;
   self->_placeholderText = @"Enter text";
 
-  v13 = [v5 userInfo];
-  v14 = [v13 objectForKey:@"postAndUpdateKey"];
+  userInfo = [content userInfo];
+  v14 = [userInfo objectForKey:@"postAndUpdateKey"];
   self->_shouldUpdateAfterOpen = [v14 BOOLValue];
 
   if (self->_shouldUpdateAfterOpen)

@@ -1,31 +1,31 @@
 @interface CRLiOSFolderGridViewController.Item
 - (BOOL)accessibilityPerformMagicTap;
 - (NSArray)accessibilityCustomActions;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setSelected:(BOOL)a3;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setSelected:(BOOL)selected;
 @end
 
 @implementation CRLiOSFolderGridViewController.Item
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  v4 = self;
-  sub_100EE2780(a3);
+  selfCopy = self;
+  sub_100EE2780(selected);
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v5.receiver = self;
   v5.super_class = _s4ItemCMa();
   v4 = v5.receiver;
-  [(CRLiOSFolderGridViewController.Item *)&v5 setHighlighted:v3];
+  [(CRLiOSFolderGridViewController.Item *)&v5 setHighlighted:highlightedCopy];
   sub_100EE2A3C();
 }
 
 - (NSArray)accessibilityCustomActions
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100EE6160();
 
   if (v3)
@@ -44,7 +44,7 @@
 
 - (BOOL)accessibilityPerformMagicTap
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100EE6A3C();
 
   return v3 & 1;

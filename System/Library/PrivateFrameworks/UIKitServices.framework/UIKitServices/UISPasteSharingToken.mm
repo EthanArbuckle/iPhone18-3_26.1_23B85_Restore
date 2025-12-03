@@ -1,8 +1,8 @@
 @interface UISPasteSharingToken
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (UISPasteSharingToken)init;
-- (UISPasteSharingToken)initWithCoder:(id)a3;
-- (UISPasteSharingToken)initWithTokenValue:(unint64_t)a3;
+- (UISPasteSharingToken)initWithCoder:(id)coder;
+- (UISPasteSharingToken)initWithTokenValue:(unint64_t)value;
 @end
 
 @implementation UISPasteSharingToken
@@ -14,30 +14,30 @@
   return [(UISPasteSharingToken *)self initWithTokenValue:__buf];
 }
 
-- (UISPasteSharingToken)initWithTokenValue:(unint64_t)a3
+- (UISPasteSharingToken)initWithTokenValue:(unint64_t)value
 {
   v5.receiver = self;
   v5.super_class = UISPasteSharingToken;
   result = [(UISPasteSharingToken *)&v5 init];
   if (result)
   {
-    result->_tokenValue = a3;
+    result->_tokenValue = value;
   }
 
   return result;
 }
 
-- (UISPasteSharingToken)initWithCoder:(id)a3
+- (UISPasteSharingToken)initWithCoder:(id)coder
 {
-  v4 = [a3 decodeInt64ForKey:@"sharingTokenValue"];
+  v4 = [coder decodeInt64ForKey:@"sharingTokenValue"];
 
   return [(UISPasteSharingToken *)self initWithTokenValue:v4];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
@@ -47,8 +47,8 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(UISPasteSharingToken *)v4 tokenValue];
-      v6 = v5 == [(UISPasteSharingToken *)self tokenValue];
+      tokenValue = [(UISPasteSharingToken *)equalCopy tokenValue];
+      v6 = tokenValue == [(UISPasteSharingToken *)self tokenValue];
     }
 
     else

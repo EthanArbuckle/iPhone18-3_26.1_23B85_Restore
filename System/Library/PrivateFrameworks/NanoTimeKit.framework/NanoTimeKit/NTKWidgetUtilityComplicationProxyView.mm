@@ -1,36 +1,36 @@
 @interface NTKWidgetUtilityComplicationProxyView
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (NTKUtilityFlatComplicationViewDelegate)delegate;
-- (NTKWidgetUtilityComplicationProxyView)initWithFamily:(int64_t)a3;
+- (NTKWidgetUtilityComplicationProxyView)initWithFamily:(int64_t)family;
 - (double)textWidthInRadians;
 - (id)_chsWidgetTintParameters;
-- (void)_applyFaceColorScheme:(id)a3 monochromeFraction:(double)a4;
-- (void)applyFaceColorPalette:(id)a3 units:(unint64_t)a4;
-- (void)applyTransitionFraction:(double)a3 fromFaceColorPalette:(id)a4 toFaceColorPalette:(id)a5 units:(unint64_t)a6 brightenedUnits:(unint64_t)a7;
+- (void)_applyFaceColorScheme:(id)scheme monochromeFraction:(double)fraction;
+- (void)applyFaceColorPalette:(id)palette units:(unint64_t)units;
+- (void)applyTransitionFraction:(double)fraction fromFaceColorPalette:(id)palette toFaceColorPalette:(id)colorPalette units:(unint64_t)units brightenedUnits:(unint64_t)brightenedUnits;
 - (void)curvedLabelAngularWidthChanged;
-- (void)setAccentColor:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setForegroundColor:(id)a3;
-- (void)setPlacement:(unint64_t)a3;
-- (void)setShadowColor:(id)a3;
-- (void)setUseRoundedFontDesign:(BOOL)a3;
-- (void)setUsesLegibility:(BOOL)a3;
+- (void)setAccentColor:(id)color;
+- (void)setDelegate:(id)delegate;
+- (void)setForegroundColor:(id)color;
+- (void)setPlacement:(unint64_t)placement;
+- (void)setShadowColor:(id)color;
+- (void)setUseRoundedFontDesign:(BOOL)design;
+- (void)setUsesLegibility:(BOOL)legibility;
 @end
 
 @implementation NTKWidgetUtilityComplicationProxyView
 
-- (NTKWidgetUtilityComplicationProxyView)initWithFamily:(int64_t)a3
+- (NTKWidgetUtilityComplicationProxyView)initWithFamily:(int64_t)family
 {
   v7.receiver = self;
   v7.super_class = NTKWidgetUtilityComplicationProxyView;
-  v3 = [(NTKWidgetRichComplicationInlineView *)&v7 initWithFamily:a3];
+  v3 = [(NTKWidgetRichComplicationInlineView *)&v7 initWithFamily:family];
   if (v3)
   {
-    v4 = [MEMORY[0x277D75348] whiteColor];
-    [(NTKWidgetRichComplicationInlineView *)v3 setTextColor:v4];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [(NTKWidgetRichComplicationInlineView *)v3 setTextColor:whiteColor];
 
-    v5 = [MEMORY[0x277D75348] whiteColor];
-    [(NTKWidgetUtilityComplicationProxyView *)v3 setForegroundColor:v5];
+    whiteColor2 = [MEMORY[0x277D75348] whiteColor];
+    [(NTKWidgetUtilityComplicationProxyView *)v3 setForegroundColor:whiteColor2];
 
     [(NTKWidgetRichComplicationView *)v3 transitionToMonochromeWithFraction:1.0];
   }
@@ -38,15 +38,15 @@
   return v3;
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   if ([(CDRichComplicationView *)self textLayoutStyle]== 1)
   {
     [(NTKWidgetRichComplicationInlineView *)self bezelTextAngularWidth];
     v8 = v7;
-    v9 = [(NTKWidgetRichComplicationInlineView *)self interior];
+    interior = [(NTKWidgetRichComplicationInlineView *)self interior];
     [(NTKWidgetRichComplicationInlineView *)self curveCenterAngle];
     v11 = v10;
     [(NTKWidgetRichComplicationInlineView *)self curveRadius];
@@ -55,7 +55,7 @@
     v15 = v14;
     v17 = v16;
     v18 = -1.57079633;
-    if (v9)
+    if (interior)
     {
       v18 = 1.57079633;
     }
@@ -63,7 +63,7 @@
     v19 = v11 + v18;
     v20 = v19 - v8 * 0.5;
     v21 = v8 * 0.5 + v19;
-    if (v9)
+    if (interior)
     {
       v22 = v21;
     }
@@ -73,7 +73,7 @@
       v22 = v20;
     }
 
-    if (v9)
+    if (interior)
     {
       v23 = v20;
     }
@@ -83,9 +83,9 @@
       v23 = v21;
     }
 
-    v24 = [(CDRichComplicationView *)self device];
-    v25 = NTKUtilityComplicationCurvedPlatterInsets(v24);
-    v30 = NTKUtilityComplicationCurvedPointInside(v9, x, y, v13, v15, v17, v22, v23, v29, v25, v26, v27, v28);
+    device = [(CDRichComplicationView *)self device];
+    v25 = NTKUtilityComplicationCurvedPlatterInsets(device);
+    v30 = NTKUtilityComplicationCurvedPointInside(interior, x, y, v13, v15, v17, v22, v23, v29, v25, v26, v27, v28);
 
     return v30;
   }
@@ -106,61 +106,61 @@
   }
 }
 
-- (void)setForegroundColor:(id)a3
+- (void)setForegroundColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   v6.receiver = self;
   v6.super_class = NTKWidgetUtilityComplicationProxyView;
-  [(CDRichComplicationView *)&v6 setForegroundColor:v5];
-  if (self->_foregroundColor != v5)
+  [(CDRichComplicationView *)&v6 setForegroundColor:colorCopy];
+  if (self->_foregroundColor != colorCopy)
   {
-    objc_storeStrong(&self->_foregroundColor, a3);
-    [(NTKWidgetRichComplicationInlineView *)self setTextColor:v5];
+    objc_storeStrong(&self->_foregroundColor, color);
+    [(NTKWidgetRichComplicationInlineView *)self setTextColor:colorCopy];
     [(NTKWidgetUtilityComplicationProxyView *)self setNeedsLayout];
   }
 }
 
-- (void)setAccentColor:(id)a3
+- (void)setAccentColor:(id)color
 {
-  v5 = a3;
-  if (self->_accentColor != v5)
+  colorCopy = color;
+  if (self->_accentColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_accentColor, a3);
-    v5 = v6;
+    v6 = colorCopy;
+    objc_storeStrong(&self->_accentColor, color);
+    colorCopy = v6;
   }
 }
 
-- (void)setUsesLegibility:(BOOL)a3
+- (void)setUsesLegibility:(BOOL)legibility
 {
-  if (self->_usesLegibility != a3)
+  if (self->_usesLegibility != legibility)
   {
-    self->_usesLegibility = a3;
+    self->_usesLegibility = legibility;
   }
 }
 
-- (void)setShadowColor:(id)a3
+- (void)setShadowColor:(id)color
 {
-  v5 = a3;
-  if (self->_shadowColor != v5)
+  colorCopy = color;
+  if (self->_shadowColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_shadowColor, a3);
-    v5 = v6;
+    v6 = colorCopy;
+    objc_storeStrong(&self->_shadowColor, color);
+    colorCopy = v6;
   }
 }
 
-- (void)setPlacement:(unint64_t)a3
+- (void)setPlacement:(unint64_t)placement
 {
-  v3 = a3;
-  self->_placement = a3;
-  if ((a3 & 2) != 0)
+  placementCopy = placement;
+  self->_placement = placement;
+  if ((placement & 2) != 0)
   {
     [(NTKWidgetRichComplicationInlineView *)self setTextAlignment:3];
     v5 = 1;
   }
 
-  else if ((a3 & 8) != 0)
+  else if ((placement & 8) != 0)
   {
     [(NTKWidgetRichComplicationInlineView *)self setTextAlignment:4];
     v5 = 2;
@@ -181,16 +181,16 @@
   }
 
   [(NTKWidgetRichComplicationInlineView *)self setImagePlacement:v5];
-  v9 = [(CDRichComplicationView *)self device];
-  self->_touchEdgeInsets.top = NTKUtilityTouchEdgeInsetsForPlacementAndDevice(v3, v9);
+  device = [(CDRichComplicationView *)self device];
+  self->_touchEdgeInsets.top = NTKUtilityTouchEdgeInsetsForPlacementAndDevice(placementCopy, device);
   self->_touchEdgeInsets.left = v6;
   self->_touchEdgeInsets.bottom = v7;
   self->_touchEdgeInsets.right = v8;
 }
 
-- (void)setUseRoundedFontDesign:(BOOL)a3
+- (void)setUseRoundedFontDesign:(BOOL)design
 {
-  if (a3)
+  if (design)
   {
     v3 = 2;
   }
@@ -203,15 +203,15 @@
   [(NTKWidgetRichComplicationInlineView *)self setFontDesign:v3];
 }
 
-- (void)applyFaceColorPalette:(id)a3 units:(unint64_t)a4
+- (void)applyFaceColorPalette:(id)palette units:(unint64_t)units
 {
-  v6 = a3;
-  v7 = [(CDRichComplicationView *)self device];
-  v9 = [NTKFaceColorScheme colorSchemeForDevice:v7 withFaceColorPalette:v6 units:a4];
+  paletteCopy = palette;
+  device = [(CDRichComplicationView *)self device];
+  v9 = [NTKFaceColorScheme colorSchemeForDevice:device withFaceColorPalette:paletteCopy units:units];
 
-  LODWORD(a4) = [v6 isMulticolor];
+  LODWORD(units) = [paletteCopy isMulticolor];
   v8 = 1.0;
-  if (a4)
+  if (units)
   {
     v8 = 0.0;
   }
@@ -219,37 +219,37 @@
   [(NTKWidgetUtilityComplicationProxyView *)self _applyFaceColorScheme:v9 monochromeFraction:v8];
 }
 
-- (void)applyTransitionFraction:(double)a3 fromFaceColorPalette:(id)a4 toFaceColorPalette:(id)a5 units:(unint64_t)a6 brightenedUnits:(unint64_t)a7
+- (void)applyTransitionFraction:(double)fraction fromFaceColorPalette:(id)palette toFaceColorPalette:(id)colorPalette units:(unint64_t)units brightenedUnits:(unint64_t)brightenedUnits
 {
-  v12 = a5;
-  v13 = a4;
-  v14 = [(CDRichComplicationView *)self device];
+  colorPaletteCopy = colorPalette;
+  paletteCopy = palette;
+  device = [(CDRichComplicationView *)self device];
   LOBYTE(v15) = 0;
-  v16 = [NTKFaceColorScheme interpolationForDevice:v14 fromFaceColorPalette:v13 toFaceColorPalette:v12 fraction:a6 units:a7 brightenUnits:0 overrideColor:a3 alternateHighlight:v15];
+  v16 = [NTKFaceColorScheme interpolationForDevice:device fromFaceColorPalette:paletteCopy toFaceColorPalette:colorPaletteCopy fraction:units units:brightenedUnits brightenUnits:0 overrideColor:fraction alternateHighlight:v15];
 
-  [v13 isMulticolor];
-  [v12 isMulticolor];
+  [paletteCopy isMulticolor];
+  [colorPaletteCopy isMulticolor];
 
   CLKInterpolateBetweenFloatsClipped();
   [(NTKWidgetUtilityComplicationProxyView *)self _applyFaceColorScheme:v16 monochromeFraction:?];
 }
 
-- (void)_applyFaceColorScheme:(id)a3 monochromeFraction:(double)a4
+- (void)_applyFaceColorScheme:(id)scheme monochromeFraction:(double)fraction
 {
-  v6 = [a3 foregroundColor];
-  [(NTKWidgetUtilityComplicationProxyView *)self setForegroundColor:v6];
+  foregroundColor = [scheme foregroundColor];
+  [(NTKWidgetUtilityComplicationProxyView *)self setForegroundColor:foregroundColor];
 
-  [(NTKWidgetRichComplicationView *)self transitionToMonochromeWithFraction:a4];
+  [(NTKWidgetRichComplicationView *)self transitionToMonochromeWithFraction:fraction];
 }
 
 - (id)_chsWidgetTintParameters
 {
-  v3 = [(NTKWidgetRichComplicationInlineView *)self textColor];
-  v4 = [v3 BSColor];
+  textColor = [(NTKWidgetRichComplicationInlineView *)self textColor];
+  bSColor = [textColor BSColor];
 
   v5 = objc_alloc(MEMORY[0x277CFA440]);
   [(NTKWidgetRichComplicationView *)self monochromeFraction];
-  v6 = [v5 initWithPrimaryTintColor:v4 secondaryTintColor:v4 filterStyle:0 fallbackFilterStyle:0 fraction:?];
+  v6 = [v5 initWithPrimaryTintColor:bSColor secondaryTintColor:bSColor filterStyle:0 fallbackFilterStyle:0 fraction:?];
 
   return v6;
 }
@@ -259,14 +259,14 @@
   v4.receiver = self;
   v4.super_class = NTKWidgetUtilityComplicationProxyView;
   [(NTKWidgetRichComplicationInlineView *)&v4 curvedLabelAngularWidthChanged];
-  v3 = [(NTKWidgetUtilityComplicationProxyView *)self delegate];
+  delegate = [(NTKWidgetUtilityComplicationProxyView *)self delegate];
   [(NTKWidgetRichComplicationInlineView *)self bezelTextAngularWidth];
-  [v3 utilityComplicationView:self didChangeTextWidth:?];
+  [delegate utilityComplicationView:self didChangeTextWidth:?];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   if (WeakRetained != obj)
@@ -283,8 +283,8 @@
   v4 = v3;
   if (v3 > 0.0)
   {
-    v5 = [(CDRichComplicationView *)self device];
-    v4 = v4 + NTKUtilityComplicationBezelAngularPadding(v5);
+    device = [(CDRichComplicationView *)self device];
+    v4 = v4 + NTKUtilityComplicationBezelAngularPadding(device);
   }
 
   return v4;

@@ -1,20 +1,20 @@
 @interface _DKTombstoneNotifier
-+ (void)sendDistributedNotificationsForTombstoneRequirementIdentifiers:(id)a3 queue:(id)a4;
++ (void)sendDistributedNotificationsForTombstoneRequirementIdentifiers:(id)identifiers queue:(id)queue;
 @end
 
 @implementation _DKTombstoneNotifier
 
-+ (void)sendDistributedNotificationsForTombstoneRequirementIdentifiers:(id)a3 queue:(id)a4
++ (void)sendDistributedNotificationsForTombstoneRequirementIdentifiers:(id)identifiers queue:(id)queue
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  identifiersCopy = identifiers;
+  queueCopy = queue;
   v7 = +[_DKThrottledActivity standardInstance];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  obj = v5;
+  obj = identifiersCopy;
   v8 = [obj countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v8)
   {
@@ -37,7 +37,7 @@
         v16[3] = &unk_1E7367440;
         v16[4] = v12;
         v13 = MEMORY[0x193B00C50](v16);
-        [v7 performWithMinimumIntervalInSecondsOf:v12 name:v6 queue:v13 activityBlock:2.0];
+        [v7 performWithMinimumIntervalInSecondsOf:v12 name:queueCopy queue:v13 activityBlock:2.0];
 
         ++v11;
       }

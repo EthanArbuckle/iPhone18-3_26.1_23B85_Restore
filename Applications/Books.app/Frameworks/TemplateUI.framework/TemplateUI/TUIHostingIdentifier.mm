@@ -1,29 +1,29 @@
 @interface TUIHostingIdentifier
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToType:(id)a3 identifier:(id)a4 parameters:(id)a5 modelIdentifier:(id)a6;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToType:(id)type identifier:(id)identifier parameters:(id)parameters modelIdentifier:(id)modelIdentifier;
 - (TUIHostingIdentifier)identifierWithoutModelIdentifier;
-- (TUIHostingIdentifier)initWithType:(id)a3 identifier:(id)a4 parameters:(id)a5 modelIdentifier:(id)a6;
+- (TUIHostingIdentifier)initWithType:(id)type identifier:(id)identifier parameters:(id)parameters modelIdentifier:(id)modelIdentifier;
 - (id)description;
 @end
 
 @implementation TUIHostingIdentifier
 
-- (TUIHostingIdentifier)initWithType:(id)a3 identifier:(id)a4 parameters:(id)a5 modelIdentifier:(id)a6
+- (TUIHostingIdentifier)initWithType:(id)type identifier:(id)identifier parameters:(id)parameters modelIdentifier:(id)modelIdentifier
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  typeCopy = type;
+  identifierCopy = identifier;
+  parametersCopy = parameters;
+  modelIdentifierCopy = modelIdentifier;
   v18.receiver = self;
   v18.super_class = TUIHostingIdentifier;
   v15 = [(TUIHostingIdentifier *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_type, a3);
-    objc_storeStrong(&v16->_identifier, a4);
-    objc_storeStrong(&v16->_parameters, a5);
-    objc_storeStrong(&v16->_modelIdentifier, a6);
+    objc_storeStrong(&v15->_type, type);
+    objc_storeStrong(&v16->_identifier, identifier);
+    objc_storeStrong(&v16->_parameters, parameters);
+    objc_storeStrong(&v16->_modelIdentifier, modelIdentifier);
   }
 
   return v16;
@@ -33,24 +33,24 @@
 {
   if (self->_modelIdentifier)
   {
-    v2 = [[TUIHostingIdentifier alloc] initWithType:self->_type identifier:self->_identifier parameters:self->_parameters modelIdentifier:0];
+    selfCopy = [[TUIHostingIdentifier alloc] initWithType:self->_type identifier:self->_identifier parameters:self->_parameters modelIdentifier:0];
   }
 
   else
   {
-    v2 = self;
+    selfCopy = self;
   }
 
-  return v2;
+  return selfCopy;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
   if (v5 == objc_opt_class())
   {
-    v7 = v4;
+    v7 = equalCopy;
     type = self->_type;
     if ((type == v7[1] || [(NSString *)type isEqualToString:?]) && ((identifier = self->_identifier, identifier == v7[2]) || [(NSString *)identifier isEqualToString:?]) && ((parameters = self->_parameters, parameters == v7[4]) || [parameters isEqual:?]))
     {
@@ -80,24 +80,24 @@
   return v6;
 }
 
-- (BOOL)isEqualToType:(id)a3 identifier:(id)a4 parameters:(id)a5 modelIdentifier:(id)a6
+- (BOOL)isEqualToType:(id)type identifier:(id)identifier parameters:(id)parameters modelIdentifier:(id)modelIdentifier
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  typeCopy = type;
+  identifierCopy = identifier;
+  parametersCopy = parameters;
+  modelIdentifierCopy = modelIdentifier;
   type = self->_type;
-  if ((type == v10 || [(NSString *)type isEqualToString:v10]) && ((identifier = self->_identifier, identifier == v11) || [(NSString *)identifier isEqualToString:v11]) && ((parameters = self->_parameters, parameters == v12) || [parameters isEqual:v12]))
+  if ((type == typeCopy || [(NSString *)type isEqualToString:typeCopy]) && ((identifier = self->_identifier, identifier == identifierCopy) || [(NSString *)identifier isEqualToString:identifierCopy]) && ((parameters = self->_parameters, parameters == parametersCopy) || [parameters isEqual:parametersCopy]))
   {
     modelIdentifier = self->_modelIdentifier;
-    if (modelIdentifier == v13)
+    if (modelIdentifier == modelIdentifierCopy)
     {
       v18 = 1;
     }
 
     else
     {
-      v18 = [(TUIIdentifier *)modelIdentifier isEqual:v13];
+      v18 = [(TUIIdentifier *)modelIdentifier isEqual:modelIdentifierCopy];
     }
   }
 
@@ -115,8 +115,8 @@
   v4 = NSStringFromClass(v3);
   type = self->_type;
   identifier = self->_identifier;
-  v7 = [(TUIIdentifier *)self->_modelIdentifier tui_identifierToString];
-  v8 = [NSString stringWithFormat:@"<%@ type='%@' identifier='%@' modelIdentifier='%@'>", v4, type, identifier, v7];
+  tui_identifierToString = [(TUIIdentifier *)self->_modelIdentifier tui_identifierToString];
+  v8 = [NSString stringWithFormat:@"<%@ type='%@' identifier='%@' modelIdentifier='%@'>", v4, type, identifier, tui_identifierToString];
 
   return v8;
 }

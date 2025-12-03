@@ -1,10 +1,10 @@
 @interface PSCalendarPolicyController
 + (id)loadPrivacySettingsBundle;
-+ (unint64_t)authorizationRightforAccessLevel:(int)a3;
-+ (void)setCalendarAccessForApp:(id)a3 toValue:(int)a4 shouldPrompt:(BOOL)a5;
-- (id)appSpecifierWithName:(id)a3 bundleID:(id)a4;
-- (id)calendarStatus:(id)a3;
-- (void)setCalendarStatus:(id)a3 specifier:(id)a4;
++ (unint64_t)authorizationRightforAccessLevel:(int)level;
++ (void)setCalendarAccessForApp:(id)app toValue:(int)value shouldPrompt:(BOOL)prompt;
+- (id)appSpecifierWithName:(id)name bundleID:(id)d;
+- (id)calendarStatus:(id)status;
+- (void)setCalendarStatus:(id)status specifier:(id)specifier;
 @end
 
 @implementation PSCalendarPolicyController
@@ -20,10 +20,10 @@
   return v5;
 }
 
-- (id)appSpecifierWithName:(id)a3 bundleID:(id)a4
+- (id)appSpecifierWithName:(id)name bundleID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  dCopy = d;
   v17 = 0;
   v18 = 0;
   v16 = 0;
@@ -31,30 +31,30 @@
   v8 = v18;
   v9 = v17;
   v10 = v16;
-  if (([v8 containsObject:v7] & 1) != 0 || (objc_msgSend(v9, "containsObject:", v7) & 1) != 0 || objc_msgSend(v10, "containsObject:", v7))
+  if (([v8 containsObject:dCopy] & 1) != 0 || (objc_msgSend(v9, "containsObject:", dCopy) & 1) != 0 || objc_msgSend(v10, "containsObject:", dCopy))
   {
-    v11 = [PSSpecifier preferenceSpecifierNamed:v6 target:self set:sel_setCalendarStatus_specifier_ get:sel_calendarStatus_ detail:objc_opt_class() cell:2 edit:0];
+    v11 = [PSSpecifier preferenceSpecifierNamed:nameCopy target:self set:sel_setCalendarStatus_specifier_ get:sel_calendarStatus_ detail:objc_opt_class() cell:2 edit:0];
     v12 = MEMORY[0x1E695E118];
     [v11 setProperty:MEMORY[0x1E695E118] forKey:@"useLazyIcons"];
-    [v11 setProperty:v7 forKey:@"BUNDLE_ID"];
-    [v11 setProperty:v7 forKey:@"APP_NAME"];
+    [v11 setProperty:dCopy forKey:@"BUNDLE_ID"];
+    [v11 setProperty:dCopy forKey:@"APP_NAME"];
     [v11 setObject:v12 forKeyedSubscript:@"enabled"];
-    [v11 setProperty:v7 forKey:@"id"];
+    [v11 setProperty:dCopy forKey:@"id"];
     [v11 setObject:@"com.apple.mobilecal" forKeyedSubscript:@"appIDForLazyIcon"];
-    v13 = [MEMORY[0x1E695DF70] array];
-    v14 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     if (appSpecifierWithName_bundleID__onceToken != -1)
     {
       [PSCalendarPolicyController appSpecifierWithName:bundleID:];
     }
 
-    [v13 addObject:appSpecifierWithName_bundleID__noAccessStr];
-    [v14 addObject:&unk_1EFE659E8];
-    [v13 addObject:appSpecifierWithName_bundleID__writeAccessStr];
-    [v14 addObject:&unk_1EFE659B8];
-    [v13 addObject:appSpecifierWithName_bundleID__fullAccessStr];
-    [v14 addObject:&unk_1EFE659D0];
-    [v11 setValues:v14 titles:v13];
+    [array addObject:appSpecifierWithName_bundleID__noAccessStr];
+    [array2 addObject:&unk_1EFE659E8];
+    [array addObject:appSpecifierWithName_bundleID__writeAccessStr];
+    [array2 addObject:&unk_1EFE659B8];
+    [array addObject:appSpecifierWithName_bundleID__fullAccessStr];
+    [array2 addObject:&unk_1EFE659D0];
+    [v11 setValues:array2 titles:array];
   }
 
   else
@@ -81,9 +81,9 @@ void __60__PSCalendarPolicyController_appSpecifierWithName_bundleID___block_invo
   appSpecifierWithName_bundleID__noAccessStr = v4;
 }
 
-- (id)calendarStatus:(id)a3
+- (id)calendarStatus:(id)status
 {
-  v3 = [a3 propertyForKey:@"BUNDLE_ID"];
+  v3 = [status propertyForKey:@"BUNDLE_ID"];
   v11 = 0;
   v12 = 0;
   v10 = 0;
@@ -118,12 +118,12 @@ void __60__PSCalendarPolicyController_appSpecifierWithName_bundleID___block_invo
   return v7;
 }
 
-- (void)setCalendarStatus:(id)a3 specifier:(id)a4
+- (void)setCalendarStatus:(id)status specifier:(id)specifier
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [a4 propertyForKey:@"BUNDLE_ID"];
-  if ([v5 intValue] == 2)
+  statusCopy = status;
+  v6 = [specifier propertyForKey:@"BUNDLE_ID"];
+  if ([statusCopy intValue] == 2)
   {
     v7 = _PSLoggingFacility();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -140,7 +140,7 @@ void __60__PSCalendarPolicyController_appSpecifierWithName_bundleID___block_invo
 
   else
   {
-    if ([v5 intValue] == 1)
+    if ([statusCopy intValue] == 1)
     {
       v11 = _PSLoggingFacility();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -156,15 +156,15 @@ void __60__PSCalendarPolicyController_appSpecifierWithName_bundleID___block_invo
 
     else
     {
-      v12 = [v5 intValue];
+      intValue = [statusCopy intValue];
       v13 = _PSLoggingFacility();
       v14 = os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT);
-      if (v12)
+      if (intValue)
       {
         if (v14)
         {
           v15 = 138412290;
-          v16 = v5;
+          v16 = statusCopy;
           _os_log_impl(&dword_18B008000, v13, OS_LOG_TYPE_DEFAULT, "Unexpected value set for calendar tcc access: %@", &v15, 0xCu);
         }
 
@@ -192,25 +192,25 @@ void __60__PSCalendarPolicyController_appSpecifierWithName_bundleID___block_invo
   [PSCalendarPolicyController setCalendarAccessForApp:v8 toValue:v9 shouldPrompt:v10];
 }
 
-+ (unint64_t)authorizationRightforAccessLevel:(int)a3
++ (unint64_t)authorizationRightforAccessLevel:(int)level
 {
-  if ((a3 - 1) > 2)
+  if ((level - 1) > 2)
   {
     return 0;
   }
 
   else
   {
-    return qword_18B103B80[a3 - 1];
+    return qword_18B103B80[level - 1];
   }
 }
 
-+ (void)setCalendarAccessForApp:(id)a3 toValue:(int)a4 shouldPrompt:(BOOL)a5
++ (void)setCalendarAccessForApp:(id)app toValue:(int)value shouldPrompt:(BOOL)prompt
 {
-  v5 = a5;
-  v6 = *&a4;
+  promptCopy = prompt;
+  v6 = *&value;
   v25 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  appCopy = app;
   if (setCalendarAccessForApp_toValue_shouldPrompt__onceToken != -1)
   {
     +[PSCalendarPolicyController setCalendarAccessForApp:toValue:shouldPrompt:];
@@ -223,24 +223,24 @@ void __60__PSCalendarPolicyController_appSpecifierWithName_bundleID___block_invo
     *buf = 138412802;
     v20 = v10;
     v21 = 2112;
-    v22 = v8;
+    v22 = appCopy;
     v23 = 1024;
     v24 = v6;
     _os_log_impl(&dword_18B008000, v9, OS_LOG_TYPE_DEFAULT, "Setting TCC auth for service: %@ appIdentifier:%@, accessLevel:%d", buf, 0x1Cu);
   }
 
-  [v8 cStringUsingEncoding:4];
+  [appCopy cStringUsingEncoding:4];
   v11 = tcc_identity_create();
   v12 = tcc_service_singleton_for_CF_name();
   [PSCalendarPolicyController authorizationRightforAccessLevel:v6];
-  if (v5)
+  if (promptCopy)
   {
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __75__PSCalendarPolicyController_setCalendarAccessForApp_toValue_shouldPrompt___block_invoke_80;
     v16[3] = &unk_1E71DBE48;
-    v18 = a1;
-    v13 = v8;
+    selfCopy = self;
+    v13 = appCopy;
     v17 = v13;
     v14 = _Block_copy(v16);
     v15 = _PSLoggingFacility();

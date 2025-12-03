@@ -1,32 +1,32 @@
 @interface PBUIWallpaperEffectViewBase
-- (BOOL)_needsBlurViewForStyle:(int64_t)a3;
+- (BOOL)_needsBlurViewForStyle:(int64_t)style;
 - (BOOL)currentTransitionStateIsOpaque;
-- (BOOL)prepareToAnimateToTransitionState:(id *)a3;
+- (BOOL)prepareToAnimateToTransitionState:(id *)state;
 - (NSString)description;
-- (PBUIWallpaperEffectViewBase)initWithCoder:(id)a3;
-- (PBUIWallpaperEffectViewBase)initWithFrame:(CGRect)a3;
-- (PBUIWallpaperEffectViewBase)initWithWallpaperPresenter:(id)a3 variant:(int64_t)a4 transformOptions:(unint64_t)a5;
-- (void)_accessibilityReduceTransparencyChanged:(id)a3;
+- (PBUIWallpaperEffectViewBase)initWithCoder:(id)coder;
+- (PBUIWallpaperEffectViewBase)initWithFrame:(CGRect)frame;
+- (PBUIWallpaperEffectViewBase)initWithWallpaperPresenter:(id)presenter variant:(int64_t)variant transformOptions:(unint64_t)options;
+- (void)_accessibilityReduceTransparencyChanged:(id)changed;
 - (void)_configureForCurrentBlurStyle;
 - (void)_configureFromScratch;
-- (void)_configureGrayscaleAndColorTintViewForStartStyle:(BOOL)a3;
+- (void)_configureGrayscaleAndColorTintViewForStartStyle:(BOOL)style;
 - (void)_configureViews;
 - (void)_configureViewsPositioning;
-- (void)_setTransitionFraction:(double)a3;
-- (void)_updateWallpaperAverageColor:(id)a3;
+- (void)_setTransitionFraction:(double)fraction;
+- (void)_updateWallpaperAverageColor:(id)color;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)offsetWallpaperBy:(CGPoint)a3;
-- (void)setExternalDisplayConfiguration:(id)a3;
-- (void)setForcesOpaque:(BOOL)a3;
-- (void)setHidden:(BOOL)a3;
-- (void)setMaskImage:(id)a3 masksBlur:(BOOL)a4 masksTint:(BOOL)a5;
-- (void)setShouldMatchWallpaperPosition:(BOOL)a3;
-- (void)setStyle:(int64_t)a3;
-- (void)setTransformOptions:(unint64_t)a3;
-- (void)setTransitionState:(id *)a3;
-- (void)setWallpaperStyle:(int64_t)a3;
-- (void)wallpaperLegibilityEnvironmentDidChange:(id)a3;
+- (void)offsetWallpaperBy:(CGPoint)by;
+- (void)setExternalDisplayConfiguration:(id)configuration;
+- (void)setForcesOpaque:(BOOL)opaque;
+- (void)setHidden:(BOOL)hidden;
+- (void)setMaskImage:(id)image masksBlur:(BOOL)blur masksTint:(BOOL)tint;
+- (void)setShouldMatchWallpaperPosition:(BOOL)position;
+- (void)setStyle:(int64_t)style;
+- (void)setTransformOptions:(unint64_t)options;
+- (void)setTransitionState:(id *)state;
+- (void)setWallpaperStyle:(int64_t)style;
+- (void)wallpaperLegibilityEnvironmentDidChange:(id)change;
 @end
 
 @implementation PBUIWallpaperEffectViewBase
@@ -46,8 +46,8 @@
     goto LABEL_4;
   }
 
-  v11 = [MEMORY[0x277CF0CA8] sharedInstance];
-  if ([v11 deviceClass] == 2)
+  mEMORY[0x277CF0CA8] = [MEMORY[0x277CF0CA8] sharedInstance];
+  if ([mEMORY[0x277CF0CA8] deviceClass] == 2)
   {
 
     goto LABEL_5;
@@ -78,10 +78,10 @@ LABEL_5:
 
 - (void)_configureViewsPositioning
 {
-  v3 = [(PBUIWallpaperEffectViewBase *)self shouldMatchWallpaperPosition];
-  [(PBUIFakeBluring *)self->_blurView setShouldMatchWallpaperPosition:v3];
-  [(PBUIFakeBluring *)self->_transitionBlurView setShouldMatchWallpaperPosition:v3];
-  if (!v3)
+  shouldMatchWallpaperPosition = [(PBUIWallpaperEffectViewBase *)self shouldMatchWallpaperPosition];
+  [(PBUIFakeBluring *)self->_blurView setShouldMatchWallpaperPosition:shouldMatchWallpaperPosition];
+  [(PBUIFakeBluring *)self->_transitionBlurView setShouldMatchWallpaperPosition:shouldMatchWallpaperPosition];
+  if (!shouldMatchWallpaperPosition)
   {
     v4 = *MEMORY[0x277CBF348];
     v5 = *(MEMORY[0x277CBF348] + 8);
@@ -92,18 +92,18 @@ LABEL_5:
 
 - (void)_configureFromScratch
 {
-  v3 = [(PBUIWallpaperEffectViewBase *)self _shouldEffectivelyMatchWallpaperPosition];
+  _shouldEffectivelyMatchWallpaperPosition = [(PBUIWallpaperEffectViewBase *)self _shouldEffectivelyMatchWallpaperPosition];
   if ([(PBUIWallpaperEffectViewBase *)self _needsBlurViewForStyle:self->_startStyle]&& ([(PBUIWallpaperEffectViewBase *)self wallpaperPresenter], v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_opt_respondsToSelector(), v4, (v5 & 1) != 0))
   {
     if (!self->_blurView)
     {
-      v6 = [(PBUIWallpaperEffectViewBase *)self wallpaperPresenter];
-      v7 = [v6 newFakeBlurViewForVariant:self->_variant style:self->_startStyle transformOptions:self->_transformOptions];
+      wallpaperPresenter = [(PBUIWallpaperEffectViewBase *)self wallpaperPresenter];
+      v7 = [wallpaperPresenter newFakeBlurViewForVariant:self->_variant style:self->_startStyle transformOptions:self->_transformOptions];
       blurView = self->_blurView;
       self->_blurView = v7;
 
       [(PBUIFakeBluring *)self->_blurView setObserver:self];
-      [(PBUIFakeBluring *)self->_blurView setShouldMatchWallpaperPosition:v3];
+      [(PBUIFakeBluring *)self->_blurView setShouldMatchWallpaperPosition:_shouldEffectivelyMatchWallpaperPosition];
     }
 
     startStyle = self->_startStyle;
@@ -126,13 +126,13 @@ LABEL_5:
   {
     if (!self->_transitionBlurView)
     {
-      v12 = [(PBUIWallpaperEffectViewBase *)self wallpaperPresenter];
-      v13 = [v12 newFakeBlurViewForVariant:self->_variant style:self->_endStyle transformOptions:self->_transformOptions];
+      wallpaperPresenter2 = [(PBUIWallpaperEffectViewBase *)self wallpaperPresenter];
+      v13 = [wallpaperPresenter2 newFakeBlurViewForVariant:self->_variant style:self->_endStyle transformOptions:self->_transformOptions];
       transitionBlurView = self->_transitionBlurView;
       self->_transitionBlurView = v13;
 
       [(PBUIFakeBluring *)self->_transitionBlurView setObserver:self];
-      [(PBUIFakeBluring *)self->_transitionBlurView setShouldMatchWallpaperPosition:v3];
+      [(PBUIFakeBluring *)self->_transitionBlurView setShouldMatchWallpaperPosition:_shouldEffectivelyMatchWallpaperPosition];
     }
 
     endStyle = self->_endStyle;
@@ -210,9 +210,9 @@ LABEL_15:
     }
 
     [(PBUIWallpaperEffectViewBase *)self insertSubview:blurMaskingContainer atIndex:0];
-    v18 = [(UIView *)self->_blurMaskingContainer layer];
-    v19 = [(UIImageView *)self->_maskImageView layer];
-    [v18 setMask:v19];
+    layer = [(UIView *)self->_blurMaskingContainer layer];
+    layer2 = [(UIImageView *)self->_maskImageView layer];
+    [layer setMask:layer2];
 
     if (!shouldMaskTint)
     {
@@ -233,9 +233,9 @@ LABEL_15:
   }
 
   [(PBUIWallpaperEffectViewBase *)self insertSubview:tintMaskingContainer atIndex:0];
-  v12 = [(UIView *)self->_tintMaskingContainer layer];
-  v13 = [(UIImageView *)self->_maskImageView layer];
-  [v12 setMask:v13];
+  layer3 = [(UIView *)self->_tintMaskingContainer layer];
+  layer4 = [(UIImageView *)self->_maskImageView layer];
+  [layer3 setMask:layer4];
 
   if (v5)
   {
@@ -248,15 +248,15 @@ LABEL_11:
   if (!shouldMaskTint)
   {
 LABEL_12:
-    v14 = [(PBUIWallpaperEffectViewBase *)self layer];
-    [v14 setMask:0];
+    layer5 = [(PBUIWallpaperEffectViewBase *)self layer];
+    [layer5 setMask:0];
     goto LABEL_19;
   }
 
 LABEL_18:
-  v14 = [(PBUIWallpaperEffectViewBase *)self layer];
-  v20 = [(UIImageView *)self->_maskImageView layer];
-  [v14 setMask:v20];
+  layer5 = [(PBUIWallpaperEffectViewBase *)self layer];
+  layer6 = [(UIImageView *)self->_maskImageView layer];
+  [layer5 setMask:layer6];
 
 LABEL_19:
   [(PBUIWallpaperEffectViewBase *)self _configureViews];
@@ -314,60 +314,60 @@ LABEL_19:
   }
 }
 
-- (PBUIWallpaperEffectViewBase)initWithWallpaperPresenter:(id)a3 variant:(int64_t)a4 transformOptions:(unint64_t)a5
+- (PBUIWallpaperEffectViewBase)initWithWallpaperPresenter:(id)presenter variant:(int64_t)variant transformOptions:(unint64_t)options
 {
-  v9 = a3;
+  presenterCopy = presenter;
   v19.receiver = self;
   v19.super_class = PBUIWallpaperEffectViewBase;
   v10 = [(PBUIWallpaperEffectViewBase *)&v19 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_wallpaperPresenter, a3);
+    objc_storeStrong(&v10->_wallpaperPresenter, presenter);
     v11->_startStyle = -1;
-    v11->_variant = a4;
-    v11->_transformOptions = a5;
+    v11->_variant = variant;
+    v11->_transformOptions = options;
     [(PBUIWallpaperEffectViewBase *)v11 setClipsToBounds:1];
-    v12 = [(PBUIWallpaperEffectViewBase *)v11 layer];
-    [v12 setAllowsEdgeAntialiasing:0];
+    layer = [(PBUIWallpaperEffectViewBase *)v11 layer];
+    [layer setAllowsEdgeAntialiasing:0];
 
-    v13 = [(PBUIWallpaperEffectViewBase *)v11 layer];
-    [v13 setAllowsGroupOpacity:1];
+    layer2 = [(PBUIWallpaperEffectViewBase *)v11 layer];
+    [layer2 setAllowsGroupOpacity:1];
 
     if (objc_opt_respondsToSelector())
     {
-      v14 = [v9 legibilityEnvironment];
-      [v14 averageColor];
+      legibilityEnvironment = [presenterCopy legibilityEnvironment];
+      [legibilityEnvironment averageColor];
     }
 
     else
     {
-      v14 = [v9 legibilitySettingsForVariant:a4];
-      [v14 contentColor];
+      legibilityEnvironment = [presenterCopy legibilitySettingsForVariant:variant];
+      [legibilityEnvironment contentColor];
     }
     v15 = ;
     wallpaperAverageColor = v11->_wallpaperAverageColor;
     v11->_wallpaperAverageColor = v15;
 
-    [v9 addObserver:v11 forVariant:v11->_variant];
+    [presenterCopy addObserver:v11 forVariant:v11->_variant];
     [(PBUIWallpaperEffectViewBase *)v11 setShouldMatchWallpaperPosition:1];
     v11->_accessibilityReduceTransparencyEnabled = UIAccessibilityIsReduceTransparencyEnabled();
-    v17 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v17 addObserver:v11 selector:sel__accessibilityReduceTransparencyChanged_ name:*MEMORY[0x277D764C8] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v11 selector:sel__accessibilityReduceTransparencyChanged_ name:*MEMORY[0x277D764C8] object:0];
   }
 
   return v11;
 }
 
-- (PBUIWallpaperEffectViewBase)initWithFrame:(CGRect)a3
+- (PBUIWallpaperEffectViewBase)initWithFrame:(CGRect)frame
 {
-  v3 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE658] reason:@"-initWithFrame: unavailable" userInfo:{0, a3.origin.x, a3.origin.y, a3.size.width, a3.size.height}];
+  v3 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE658] reason:@"-initWithFrame: unavailable" userInfo:{0, frame.origin.x, frame.origin.y, frame.size.width, frame.size.height}];
   objc_exception_throw(v3);
 }
 
-- (PBUIWallpaperEffectViewBase)initWithCoder:(id)a3
+- (PBUIWallpaperEffectViewBase)initWithCoder:(id)coder
 {
-  v3 = a3;
+  coderCopy = coder;
   v4 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE658] reason:@"This class does not support unarchiving from a nib" userInfo:0];
   objc_exception_throw(v4);
 }
@@ -375,8 +375,8 @@ LABEL_19:
 - (void)dealloc
 {
   [(PBUIWallpaperPresenting *)self->_wallpaperPresenter removeObserver:self forVariant:self->_variant];
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
   [(PBUIFakeBluring *)self->_blurView setObserver:0];
   [(PBUIFakeBluring *)self->_transitionBlurView setObserver:0];
 
@@ -410,25 +410,25 @@ LABEL_19:
     v14 = [v3 appendFloat:@"transitionFraction" withName:2 decimalPrecision:self->_transitionFraction];
   }
 
-  v15 = [v3 appendSuper];
-  v16 = [v3 build];
+  appendSuper = [v3 appendSuper];
+  build = [v3 build];
 
-  return v16;
+  return build;
 }
 
-- (void)setStyle:(int64_t)a3
+- (void)setStyle:(int64_t)style
 {
-  if (a3 == 1)
+  if (style == 1)
   {
     [(PBUIWallpaperEffectViewBase *)a2 setStyle:?];
   }
 
-  if (self->_startStyle != a3 || self->_endStyle != a3)
+  if (self->_startStyle != style || self->_endStyle != style)
   {
     if (UIAccessibilityIsReduceTransparencyEnabled())
     {
       startStyle = self->_startStyle;
-      if (startStyle != a3 && (!a3 || !startStyle))
+      if (startStyle != style && (!style || !startStyle))
       {
         [(PBUIFakeBluring *)self->_blurView setObserver:0];
         [(PBUIFakeBluring *)self->_blurView removeFromSuperview];
@@ -436,7 +436,7 @@ LABEL_19:
       }
 
       endStyle = self->_endStyle;
-      if (endStyle != a3 && (!a3 || !endStyle))
+      if (endStyle != style && (!style || !endStyle))
       {
         [(PBUIFakeBluring *)self->_transitionBlurView setObserver:0];
         [(PBUIFakeBluring *)self->_transitionBlurView removeFromSuperview];
@@ -444,77 +444,77 @@ LABEL_19:
       }
     }
 
-    self->_startStyle = a3;
-    self->_endStyle = a3;
+    self->_startStyle = style;
+    self->_endStyle = style;
 
     [(PBUIWallpaperEffectViewBase *)self _configureFromScratch];
   }
 }
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
-  v3 = a3;
-  v5 = [(PBUIWallpaperEffectViewBase *)self isHidden];
+  hiddenCopy = hidden;
+  isHidden = [(PBUIWallpaperEffectViewBase *)self isHidden];
   v6.receiver = self;
   v6.super_class = PBUIWallpaperEffectViewBase;
-  [(PBUIWallpaperEffectViewBase *)&v6 setHidden:v3];
-  if (v5 != [(PBUIWallpaperEffectViewBase *)self isHidden])
+  [(PBUIWallpaperEffectViewBase *)&v6 setHidden:hiddenCopy];
+  if (isHidden != [(PBUIWallpaperEffectViewBase *)self isHidden])
   {
     [(PBUIWallpaperEffectViewBase *)self _configureViewsPositioning];
   }
 }
 
-- (void)setForcesOpaque:(BOOL)a3
+- (void)setForcesOpaque:(BOOL)opaque
 {
-  if (self->_forcesOpaque != a3)
+  if (self->_forcesOpaque != opaque)
   {
-    self->_forcesOpaque = a3;
+    self->_forcesOpaque = opaque;
     [(PBUIWallpaperEffectViewBase *)self _configureFromScratch];
   }
 }
 
-- (void)setShouldMatchWallpaperPosition:(BOOL)a3
+- (void)setShouldMatchWallpaperPosition:(BOOL)position
 {
-  if (self->_shouldMatchWallpaperPosition != a3)
+  if (self->_shouldMatchWallpaperPosition != position)
   {
-    self->_shouldMatchWallpaperPosition = a3;
+    self->_shouldMatchWallpaperPosition = position;
     [(PBUIWallpaperEffectViewBase *)self _configureViewsPositioning];
   }
 }
 
-- (void)setTransformOptions:(unint64_t)a3
+- (void)setTransformOptions:(unint64_t)options
 {
-  if (self->_transformOptions != a3)
+  if (self->_transformOptions != options)
   {
-    self->_transformOptions = a3;
+    self->_transformOptions = options;
     [(PBUIFakeBluring *)self->_blurView setTransformOptions:?];
     transitionBlurView = self->_transitionBlurView;
 
-    [(PBUIFakeBluring *)transitionBlurView setTransformOptions:a3];
+    [(PBUIFakeBluring *)transitionBlurView setTransformOptions:options];
   }
 }
 
-- (void)setExternalDisplayConfiguration:(id)a3
+- (void)setExternalDisplayConfiguration:(id)configuration
 {
-  v8 = a3;
+  configurationCopy = configuration;
   if (![(PBUIExternalDisplayConfiguration *)self->_externalDisplayConfiguration isEqual:?])
   {
-    objc_storeStrong(&self->_externalDisplayConfiguration, a3);
-    v5 = [(PBUIWallpaperEffectViewBase *)self wallpaperPresenter];
+    objc_storeStrong(&self->_externalDisplayConfiguration, configuration);
+    wallpaperPresenter = [(PBUIWallpaperEffectViewBase *)self wallpaperPresenter];
     v6 = objc_opt_respondsToSelector();
 
     if (v6)
     {
-      v7 = [(PBUIWallpaperEffectViewBase *)self wallpaperPresenter];
-      [v7 setExternalDisplayConfiguration:v8];
+      wallpaperPresenter2 = [(PBUIWallpaperEffectViewBase *)self wallpaperPresenter];
+      [wallpaperPresenter2 setExternalDisplayConfiguration:configurationCopy];
     }
   }
 }
 
-- (BOOL)prepareToAnimateToTransitionState:(id *)a3
+- (BOOL)prepareToAnimateToTransitionState:(id *)state
 {
-  var0 = a3->var0;
-  var1 = a3->var1;
+  var0 = state->var0;
+  var1 = state->var1;
   startStyle = self->_startStyle;
   endStyle = self->_endStyle;
   if (startStyle != endStyle && var0 != var1)
@@ -529,8 +529,8 @@ LABEL_19:
       return 0;
     }
 
-    v12 = 1.0 - a3->var2;
-    v13 = a3->var1;
+    v12 = 1.0 - state->var2;
+    v13 = state->var1;
     goto LABEL_25;
   }
 
@@ -538,7 +538,7 @@ LABEL_19:
   {
     if (var0 == var1)
     {
-      PBUIWallpaperStyleTransitionStateMake(self->_startStyle, a3->var0, &v16, 0.0);
+      PBUIWallpaperStyleTransitionStateMake(self->_startStyle, state->var0, &v16, 0.0);
       [(PBUIWallpaperEffectViewBase *)self setTransitionState:&v16];
 LABEL_24:
       v12 = 1.0;
@@ -552,7 +552,7 @@ LABEL_25:
     {
       v14 = 0.0;
 LABEL_31:
-      PBUIWallpaperStyleTransitionStateMake(a3->var0, a3->var1, &v16, v14);
+      PBUIWallpaperStyleTransitionStateMake(state->var0, state->var1, &v16, v14);
       [(PBUIWallpaperEffectViewBase *)self setTransitionState:&v16];
       return 1;
     }
@@ -569,11 +569,11 @@ LABEL_31:
     if (startStyle == var0 && self->_transitionFraction < 1.0)
     {
       v12 = 0.0;
-      v13 = a3->var0;
+      v13 = state->var0;
 LABEL_26:
       PBUIWallpaperStyleTransitionStateMake(v13, endStyle, &v16, v12);
-      *&a3->var0 = v16;
-      a3->var2 = v17;
+      *&state->var0 = v16;
+      state->var2 = v17;
       return 1;
     }
 
@@ -586,16 +586,16 @@ LABEL_26:
   return 0;
 }
 
-- (void)setTransitionState:(id *)a3
+- (void)setTransitionState:(id *)state
 {
-  if (a3->var0 != self->_startStyle || a3->var1 != self->_endStyle)
+  if (state->var0 != self->_startStyle || state->var1 != self->_endStyle)
   {
-    self->_startStyle = a3->var0;
-    self->_endStyle = a3->var1;
+    self->_startStyle = state->var0;
+    self->_endStyle = state->var1;
     [(PBUIWallpaperEffectViewBase *)self _configureFromScratch];
   }
 
-  var2 = a3->var2;
+  var2 = state->var2;
 
   [(PBUIWallpaperEffectViewBase *)self _setTransitionFraction:var2];
 }
@@ -635,65 +635,65 @@ LABEL_5:
   return _WallpaperStyleHasBlur(endStyle);
 }
 
-- (void)setMaskImage:(id)a3 masksBlur:(BOOL)a4 masksTint:(BOOL)a5
+- (void)setMaskImage:(id)image masksBlur:(BOOL)blur masksTint:(BOOL)tint
 {
-  v5 = a5;
-  v6 = a4;
-  v8 = a3;
-  v9 = v8;
+  tintCopy = tint;
+  blurCopy = blur;
+  imageCopy = image;
+  v9 = imageCopy;
   maskImage = self->_maskImage;
-  if (maskImage != v8 || self->_shouldMaskBlur != v6 || self->_shouldMaskTint != v5)
+  if (maskImage != imageCopy || self->_shouldMaskBlur != blurCopy || self->_shouldMaskTint != tintCopy)
   {
     v11 = 0;
     v12 = 0;
     v14 = v9;
     v13 = 0;
-    if (v9 && (v6 || v5))
+    if (v9 && (blurCopy || tintCopy))
     {
       v12 = v9;
       maskImage = self->_maskImage;
-      v11 = v6;
-      v13 = v5;
+      v11 = blurCopy;
+      v13 = tintCopy;
     }
 
     self->_maskImage = v12;
 
     self->_shouldMaskBlur = v11;
     self->_shouldMaskTint = v13;
-    v8 = [(PBUIWallpaperEffectViewBase *)self _configureFromScratch];
+    imageCopy = [(PBUIWallpaperEffectViewBase *)self _configureFromScratch];
     v9 = v14;
   }
 
-  MEMORY[0x2821F96F8](v8, v9);
+  MEMORY[0x2821F96F8](imageCopy, v9);
 }
 
-- (void)offsetWallpaperBy:(CGPoint)a3
+- (void)offsetWallpaperBy:(CGPoint)by
 {
-  y = a3.y;
-  x = a3.x;
+  y = by.y;
+  x = by.x;
   [(PBUIFakeBluring *)self->_blurView offsetWallpaperBy:?];
   transitionBlurView = self->_transitionBlurView;
 
   [(PBUIFakeBluring *)transitionBlurView offsetWallpaperBy:x, y];
 }
 
-- (void)wallpaperLegibilityEnvironmentDidChange:(id)a3
+- (void)wallpaperLegibilityEnvironmentDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v7 = getPLKLegibilityEnvironmentVariantLockScreen();
-  v5 = [v4 legibilityEnvironmentContextForVariant:v7];
+  v5 = [changeCopy legibilityEnvironmentContextForVariant:v7];
 
-  v6 = [v5 averageColor];
-  [(PBUIWallpaperEffectViewBase *)self _updateWallpaperAverageColor:v6];
+  averageColor = [v5 averageColor];
+  [(PBUIWallpaperEffectViewBase *)self _updateWallpaperAverageColor:averageColor];
 }
 
-- (void)_updateWallpaperAverageColor:(id)a3
+- (void)_updateWallpaperAverageColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   v5 = _BackdropRenderingHintForWallpaperAverageColor(self->_wallpaperAverageColor);
   wallpaperAverageColor = self->_wallpaperAverageColor;
-  self->_wallpaperAverageColor = v4;
-  v7 = v4;
+  self->_wallpaperAverageColor = colorCopy;
+  v7 = colorCopy;
 
   v8 = _BackdropRenderingHintForWallpaperAverageColor(self->_wallpaperAverageColor);
   if (v8 != v5)
@@ -703,53 +703,53 @@ LABEL_5:
   }
 }
 
-- (void)setWallpaperStyle:(int64_t)a3
+- (void)setWallpaperStyle:(int64_t)style
 {
-  if (a3 == 1)
+  if (style == 1)
   {
-    a3 = 2;
+    style = 2;
   }
 
-  [(PBUIWallpaperEffectViewBase *)self setStyle:a3];
+  [(PBUIWallpaperEffectViewBase *)self setStyle:style];
 }
 
-- (void)_setTransitionFraction:(double)a3
+- (void)_setTransitionFraction:(double)fraction
 {
-  self->_transitionFraction = a3;
+  self->_transitionFraction = fraction;
   if (self->_startStyle == self->_endStyle)
   {
-    v4 = 0.0;
+    fractionCopy = 0.0;
   }
 
   else
   {
-    v4 = a3;
+    fractionCopy = fraction;
   }
 
   blurView = self->_blurView;
   if (blurView && self->_transitionBlurView)
   {
     [(PBUIFakeBluring *)blurView setAlpha:1.0];
-    [(PBUIFakeBluring *)self->_transitionBlurView setAlpha:v4];
-    v6 = 1.0 - v4;
+    [(PBUIFakeBluring *)self->_transitionBlurView setAlpha:fractionCopy];
+    v6 = 1.0 - fractionCopy;
   }
 
   else
   {
-    v6 = 1.0 - v4;
-    [(PBUIFakeBluring *)blurView setAlpha:1.0 - v4];
-    [(PBUIFakeBluring *)self->_transitionBlurView setAlpha:v4];
+    v6 = 1.0 - fractionCopy;
+    [(PBUIFakeBluring *)blurView setAlpha:1.0 - fractionCopy];
+    [(PBUIFakeBluring *)self->_transitionBlurView setAlpha:fractionCopy];
   }
 
   [(UIView *)self->_grayscaleTintView setAlpha:v6];
   [(UIView *)self->_colorTintView setAlpha:v6];
-  [(UIView *)self->_transitionGrayscaleTintView setAlpha:v4];
+  [(UIView *)self->_transitionGrayscaleTintView setAlpha:fractionCopy];
   transitionColorTintView = self->_transitionColorTintView;
 
-  [(UIView *)transitionColorTintView setAlpha:v4];
+  [(UIView *)transitionColorTintView setAlpha:fractionCopy];
 }
 
-- (BOOL)_needsBlurViewForStyle:(int64_t)a3
+- (BOOL)_needsBlurViewForStyle:(int64_t)style
 {
   if (self->_forcesOpaque)
   {
@@ -758,13 +758,13 @@ LABEL_5:
 
   else
   {
-    return _WallpaperStyleHasBlur(a3);
+    return _WallpaperStyleHasBlur(style);
   }
 }
 
-- (void)_configureGrayscaleAndColorTintViewForStartStyle:(BOOL)a3
+- (void)_configureGrayscaleAndColorTintViewForStartStyle:(BOOL)style
 {
-  v3 = a3;
+  styleCopy = style;
   tintMaskingContainer = self->_tintMaskingContainer;
   if (!tintMaskingContainer)
   {
@@ -773,7 +773,7 @@ LABEL_5:
 
   v6 = tintMaskingContainer;
   v7 = &OBJC_IVAR___PBUIWallpaperEffectViewBase__endStyle;
-  if (v3)
+  if (styleCopy)
   {
     v7 = &OBJC_IVAR___PBUIWallpaperEffectViewBase__startStyle;
   }
@@ -792,7 +792,7 @@ LABEL_5:
   v10 = v9;
   if (v8 == 2)
   {
-    v11 = [MEMORY[0x277D75348] blackColor];
+    blackColor = [MEMORY[0x277D75348] blackColor];
   }
 
   else
@@ -801,18 +801,18 @@ LABEL_5:
     if (v12 <= 0.00000011920929)
     {
 LABEL_12:
-      if (v3)
+      if (styleCopy)
       {
-        v15 = [(PBUIWallpaperEffectViewBase *)self grayscaleTintView];
-        [v15 removeFromSuperview];
+        grayscaleTintView = [(PBUIWallpaperEffectViewBase *)self grayscaleTintView];
+        [grayscaleTintView removeFromSuperview];
 
         [(PBUIWallpaperEffectViewBase *)self setGrayscaleTintView:0];
       }
 
       else
       {
-        v16 = [(PBUIWallpaperEffectViewBase *)self transitionGrayscaleTintView];
-        [v16 removeFromSuperview];
+        transitionGrayscaleTintView = [(PBUIWallpaperEffectViewBase *)self transitionGrayscaleTintView];
+        [transitionGrayscaleTintView removeFromSuperview];
 
         [(PBUIWallpaperEffectViewBase *)self setTransitionGrayscaleTintView:0];
       }
@@ -823,16 +823,16 @@ LABEL_12:
 
     v13 = MEMORY[0x277D75348];
     [v10 grayscaleTintLevel];
-    v11 = [v13 colorWithWhite:? alpha:?];
+    blackColor = [v13 colorWithWhite:? alpha:?];
   }
 
-  v14 = v11;
-  if (!v11)
+  v14 = blackColor;
+  if (!blackColor)
   {
     goto LABEL_12;
   }
 
-  if (v3)
+  if (styleCopy)
   {
     [(PBUIWallpaperEffectViewBase *)self grayscaleTintView];
   }
@@ -847,7 +847,7 @@ LABEL_12:
     v19 = [_SBTintView alloc];
     [(PBUIWallpaperEffectViewBase *)self bounds];
     v18 = [(_SBTintView *)v19 initWithFrame:?];
-    if (v3)
+    if (styleCopy)
     {
       [(PBUIWallpaperEffectViewBase *)self setGrayscaleTintView:v18];
     }
@@ -875,7 +875,7 @@ LABEL_22:
   v23 = v22;
   if (v22 > 0.00000011920929 && ([v10 colorTint], v24 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v24, "colorWithAlphaComponent:", v23), v25 = objc_claimAutoreleasedReturnValue(), v24, v25))
   {
-    if (v3)
+    if (styleCopy)
     {
       [(PBUIWallpaperEffectViewBase *)self colorTintView];
     }
@@ -890,7 +890,7 @@ LABEL_22:
       v29 = [_SBTintView alloc];
       [(PBUIWallpaperEffectViewBase *)self bounds];
       v28 = [(_SBTintView *)v29 initWithFrame:?];
-      if (v3)
+      if (styleCopy)
       {
         [(PBUIWallpaperEffectViewBase *)self setColorTintView:v28];
       }
@@ -914,18 +914,18 @@ LABEL_22:
     [(PBUIWallpaperEffectViewBase *)v6 addSubview:v32, v33, v34, v35, v36];
   }
 
-  else if (v3)
+  else if (styleCopy)
   {
-    v26 = [(PBUIWallpaperEffectViewBase *)self colorTintView];
-    [v26 removeFromSuperview];
+    colorTintView = [(PBUIWallpaperEffectViewBase *)self colorTintView];
+    [colorTintView removeFromSuperview];
 
     [(PBUIWallpaperEffectViewBase *)self setColorTintView:0];
   }
 
   else
   {
-    v27 = [(PBUIWallpaperEffectViewBase *)self transitionColorTintView];
-    [v27 removeFromSuperview];
+    transitionColorTintView = [(PBUIWallpaperEffectViewBase *)self transitionColorTintView];
+    [transitionColorTintView removeFromSuperview];
 
     [(PBUIWallpaperEffectViewBase *)self setTransitionColorTintView:0];
   }
@@ -949,7 +949,7 @@ uint64_t __80__PBUIWallpaperEffectViewBase__configureGrayscaleAndColorTintViewFo
   return [v2 setBackgroundColor:v3];
 }
 
-- (void)_accessibilityReduceTransparencyChanged:(id)a3
+- (void)_accessibilityReduceTransparencyChanged:(id)changed
 {
   IsReduceTransparencyEnabled = UIAccessibilityIsReduceTransparencyEnabled();
   if (self->_accessibilityReduceTransparencyEnabled != IsReduceTransparencyEnabled)

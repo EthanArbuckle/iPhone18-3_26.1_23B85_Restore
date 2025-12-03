@@ -1,65 +1,65 @@
 @interface HUCameraPresenceRecordingSettingsModule
-+ (id)messageForQuotaAlertForCameraCount:(id)a3;
-+ (id)stringFromNumber:(id)a3;
-+ (id)titleForHomeOwnerQuotaAlertForCameraCount:(id)a3;
-+ (id)titleForQuotaAlertForCameraCount:(id)a3;
-+ (id)upgradeURLForCameraCount:(id)a3;
-- (HUCameraPresenceRecordingSettingsModule)initWithItemUpdater:(id)a3;
-- (HUCameraPresenceRecordingSettingsModule)initWithItemUpdater:(id)a3 cameraProfiles:(id)a4 presenceEventType:(unint64_t)a5;
++ (id)messageForQuotaAlertForCameraCount:(id)count;
++ (id)stringFromNumber:(id)number;
++ (id)titleForHomeOwnerQuotaAlertForCameraCount:(id)count;
++ (id)titleForQuotaAlertForCameraCount:(id)count;
++ (id)upgradeURLForCameraCount:(id)count;
+- (HUCameraPresenceRecordingSettingsModule)initWithItemUpdater:(id)updater;
+- (HUCameraPresenceRecordingSettingsModule)initWithItemUpdater:(id)updater cameraProfiles:(id)profiles presenceEventType:(unint64_t)type;
 - (NSString)longestCameraUsageOptionItemTitle;
 - (UIViewController)viewController;
 - (id)_titleString;
-- (id)buildSectionsWithDisplayedItems:(id)a3;
-- (id)didSelectItem:(id)a3;
+- (id)buildSectionsWithDisplayedItems:(id)items;
+- (id)didSelectItem:(id)item;
 - (id)itemProviders;
-- (id)updateStreamingSetting:(unint64_t)a3 isRetry:(BOOL)a4;
+- (id)updateStreamingSetting:(unint64_t)setting isRetry:(BOOL)retry;
 - (unint64_t)accessModeSetting;
 - (unint64_t)countCameraProfilesWithRecordingService;
 - (void)_buildItemProvider;
 - (void)_clearItemsUpdating;
-- (void)_dispatchUpdateForCameraProfile:(id)a3;
-- (void)_presentCloudUpgradeFlowWithCameraCount:(unint64_t)a3;
+- (void)_dispatchUpdateForCameraProfile:(id)profile;
+- (void)_presentCloudUpgradeFlowWithCameraCount:(unint64_t)count;
 - (void)clearLoadingIndicator;
 - (void)dealloc;
-- (void)presentCloudUpgradeFlowWithCameraCount:(unint64_t)a3;
+- (void)presentCloudUpgradeFlowWithCameraCount:(unint64_t)count;
 - (void)presentGenericError;
-- (void)presentHomeOwnerQuotaAlertForOverflowCount:(int64_t)a3;
+- (void)presentHomeOwnerQuotaAlertForOverflowCount:(int64_t)count;
 - (void)presentInsufficientPrivilegesAlert;
 - (void)presentMissingSupportedHubAlert;
-- (void)presentSharedAdminQuotaAlertForCount:(unint64_t)a3;
+- (void)presentSharedAdminQuotaAlertForCount:(unint64_t)count;
 - (void)sendCAMetricInfo;
 - (void)updatePlanCameraCount;
-- (void)upgradeFlowManagerDidCancel:(id)a3;
-- (void)upgradeFlowManagerDidComplete:(id)a3;
+- (void)upgradeFlowManagerDidCancel:(id)cancel;
+- (void)upgradeFlowManagerDidComplete:(id)complete;
 @end
 
 @implementation HUCameraPresenceRecordingSettingsModule
 
-- (HUCameraPresenceRecordingSettingsModule)initWithItemUpdater:(id)a3 cameraProfiles:(id)a4 presenceEventType:(unint64_t)a5
+- (HUCameraPresenceRecordingSettingsModule)initWithItemUpdater:(id)updater cameraProfiles:(id)profiles presenceEventType:(unint64_t)type
 {
-  v9 = a3;
-  v10 = a4;
-  if (![v10 count])
+  updaterCopy = updater;
+  profilesCopy = profiles;
+  if (![profilesCopy count])
   {
-    v21 = [MEMORY[0x277CCA890] currentHandler];
-    [v21 handleFailureInMethod:a2 object:self file:@"HUCameraPresenceRecordingSettingsModule.m" lineNumber:90 description:{@"Invalid parameter not satisfying: %@", @"cameraProfiles.count > 0"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HUCameraPresenceRecordingSettingsModule.m" lineNumber:90 description:{@"Invalid parameter not satisfying: %@", @"cameraProfiles.count > 0"}];
   }
 
   v25.receiver = self;
   v25.super_class = HUCameraPresenceRecordingSettingsModule;
-  v11 = [(HFItemModule *)&v25 initWithItemUpdater:v9];
+  v11 = [(HFItemModule *)&v25 initWithItemUpdater:updaterCopy];
   if (v11)
   {
-    v12 = [v10 copy];
+    v12 = [profilesCopy copy];
     cameraProfiles = v11->_cameraProfiles;
     v11->_cameraProfiles = v12;
 
-    v11->_presenceEventType = a5;
-    v14 = [v10 anyObject];
-    v15 = [v14 accessory];
-    v16 = [v15 home];
+    v11->_presenceEventType = type;
+    anyObject = [profilesCopy anyObject];
+    accessory = [anyObject accessory];
+    home = [accessory home];
     home = v11->_home;
-    v11->_home = v16;
+    v11->_home = home;
 
     if (_os_feature_enabled_impl())
     {
@@ -90,11 +90,11 @@ void __96__HUCameraPresenceRecordingSettingsModule_initWithItemUpdater_cameraPro
   [WeakRetained updatePlanCameraCount];
 }
 
-- (HUCameraPresenceRecordingSettingsModule)initWithItemUpdater:(id)a3
+- (HUCameraPresenceRecordingSettingsModule)initWithItemUpdater:(id)updater
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v6 = NSStringFromSelector(sel_initWithItemUpdater_cameraProfiles_presenceEventType_);
-  [v5 handleFailureInMethod:a2 object:self file:@"HUCameraPresenceRecordingSettingsModule.m" lineNumber:117 description:{@"%s is unavailable; use %@ instead", "-[HUCameraPresenceRecordingSettingsModule initWithItemUpdater:]", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUCameraPresenceRecordingSettingsModule.m" lineNumber:117 description:{@"%s is unavailable; use %@ instead", "-[HUCameraPresenceRecordingSettingsModule initWithItemUpdater:]", v6}];
 
   return 0;
 }
@@ -102,17 +102,17 @@ void __96__HUCameraPresenceRecordingSettingsModule_initWithItemUpdater_cameraPro
 - (unint64_t)accessModeSetting
 {
   v3 = MEMORY[0x277CD1920];
-  v4 = [(HUCameraPresenceRecordingSettingsModule *)self cameraProfiles];
-  v5 = [v3 hf_cameraAccessModeSelectedOptionForCameraProfiles:v4 presenceType:{-[HUCameraPresenceRecordingSettingsModule presenceEventType](self, "presenceEventType")}];
+  cameraProfiles = [(HUCameraPresenceRecordingSettingsModule *)self cameraProfiles];
+  v5 = [v3 hf_cameraAccessModeSelectedOptionForCameraProfiles:cameraProfiles presenceType:{-[HUCameraPresenceRecordingSettingsModule presenceEventType](self, "presenceEventType")}];
 
   return v5;
 }
 
-- (id)updateStreamingSetting:(unint64_t)a3 isRetry:(BOOL)a4
+- (id)updateStreamingSetting:(unint64_t)setting isRetry:(BOOL)retry
 {
   v38 = *MEMORY[0x277D85DE8];
   v7 = _os_feature_enabled_impl();
-  if (a3 == 2 && v7 && (v8 = a4, -[HUCameraPresenceRecordingSettingsModule home](self, "home"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 hf_currentUserIsAdministrator], v9, a4 = v8, (v10 & 1) == 0))
+  if (setting == 2 && v7 && (v8 = retry, -[HUCameraPresenceRecordingSettingsModule home](self, "home"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 hf_currentUserIsAdministrator], v9, retry = v8, (v10 & 1) == 0))
   {
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
@@ -120,7 +120,7 @@ void __96__HUCameraPresenceRecordingSettingsModule_initWithItemUpdater_cameraPro
     block[3] = &unk_277DB8488;
     block[4] = self;
     dispatch_async(MEMORY[0x277D85CD0], block);
-    v19 = [MEMORY[0x277D2C900] futureWithNoResult];
+    futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
   }
 
   else
@@ -135,19 +135,19 @@ void __96__HUCameraPresenceRecordingSettingsModule_initWithItemUpdater_cameraPro
     v33[2] = 0x2020000000;
     v34 = 0;
     [(HUCameraPresenceRecordingSettingsModule *)self setNumCamerasSupportRecordingService:[(HUCameraPresenceRecordingSettingsModule *)self countCameraProfilesWithRecordingService]];
-    if (!a4)
+    if (!retry)
     {
       [(HUCameraPresenceRecordingSettingsModule *)self setUpgradeState:0];
       [(HUCameraPresenceRecordingSettingsModule *)self setOfferState:0];
     }
 
-    v21 = a4;
+    retryCopy = retry;
     v31 = 0u;
     v32 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v11 = [(HUCameraPresenceRecordingSettingsModule *)self cameraProfiles];
-    v12 = [v11 countByEnumeratingWithState:&v29 objects:v37 count:16];
+    cameraProfiles = [(HUCameraPresenceRecordingSettingsModule *)self cameraProfiles];
+    v12 = [cameraProfiles countByEnumeratingWithState:&v29 objects:v37 count:16];
     if (v12)
     {
       v13 = *v30;
@@ -157,7 +157,7 @@ void __96__HUCameraPresenceRecordingSettingsModule_initWithItemUpdater_cameraPro
         {
           if (*v30 != v13)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(cameraProfiles);
           }
 
           v15 = *(*(&v29 + 1) + 8 * i);
@@ -170,7 +170,7 @@ void __96__HUCameraPresenceRecordingSettingsModule_initWithItemUpdater_cameraPro
           objc_copyWeak(v27, &location);
           v26[4] = v15;
           v26[5] = v35;
-          v27[1] = a3;
+          v27[1] = setting;
           v26[6] = v33;
           v17 = [v16 futureWithBlock:v26];
           [v22 addObject:v17];
@@ -179,7 +179,7 @@ void __96__HUCameraPresenceRecordingSettingsModule_initWithItemUpdater_cameraPro
           objc_destroyWeak(&location);
         }
 
-        v12 = [v11 countByEnumeratingWithState:&v29 objects:v37 count:16];
+        v12 = [cameraProfiles countByEnumeratingWithState:&v29 objects:v37 count:16];
       }
 
       while (v12);
@@ -193,8 +193,8 @@ void __96__HUCameraPresenceRecordingSettingsModule_initWithItemUpdater_cameraPro
     v23[3] = &unk_277DBF410;
     objc_copyWeak(&v24, &location);
     v23[4] = v35;
-    v25 = v21;
-    v19 = [v18 addCompletionBlock:v23];
+    v25 = retryCopy;
+    futureWithNoResult = [v18 addCompletionBlock:v23];
     objc_destroyWeak(&v24);
 
     objc_destroyWeak(&location);
@@ -202,7 +202,7 @@ void __96__HUCameraPresenceRecordingSettingsModule_initWithItemUpdater_cameraPro
     _Block_object_dispose(v35, 8);
   }
 
-  return v19;
+  return futureWithNoResult;
 }
 
 void __74__HUCameraPresenceRecordingSettingsModule_updateStreamingSetting_isRetry___block_invoke_2(uint64_t a1, void *a2)
@@ -379,10 +379,10 @@ void __64__HUCameraPresenceRecordingSettingsModule_clearLoadingIndicator__block_
 
 - (void)updatePlanCameraCount
 {
-  v3 = [(HUCameraPresenceRecordingSettingsModule *)self home];
-  v4 = [(HUCameraPresenceRecordingSettingsModule *)self home];
-  v5 = [v4 currentUser];
-  v6 = [v3 hf_userIsOwner:v5];
+  home = [(HUCameraPresenceRecordingSettingsModule *)self home];
+  home2 = [(HUCameraPresenceRecordingSettingsModule *)self home];
+  currentUser = [home2 currentUser];
+  v6 = [home hf_userIsOwner:currentUser];
 
   v7 = HFLogForCategory();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
@@ -491,11 +491,11 @@ LABEL_15:
   }
 }
 
-- (void)_presentCloudUpgradeFlowWithCameraCount:(unint64_t)a3
+- (void)_presentCloudUpgradeFlowWithCameraCount:(unint64_t)count
 {
   v12 = *MEMORY[0x277D85DE8];
   v5 = objc_opt_class();
-  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:count];
   v7 = [v5 upgradeURLForCameraCount:v6];
 
   [(HUCameraPresenceRecordingSettingsModule *)self setPendingUpgradeRequest:1];
@@ -522,7 +522,7 @@ LABEL_15:
   }
 }
 
-- (void)presentCloudUpgradeFlowWithCameraCount:(unint64_t)a3
+- (void)presentCloudUpgradeFlowWithCameraCount:(unint64_t)count
 {
   v23[2] = *MEMORY[0x277D85DE8];
   v18 = 0;
@@ -545,7 +545,7 @@ LABEL_15:
   _Block_object_dispose(&v18, 8);
   v7 = objc_alloc_init(v5);
   v22[0] = @"cameraCount";
-  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:count];
   v22[1] = @"appContext";
   v23[0] = v8;
   v9 = *MEMORY[0x277D13948];
@@ -673,28 +673,28 @@ void __82__HUCameraPresenceRecordingSettingsModule_presentCloudUpgradeFlowWithCa
   v8 = [v6 actionWithTitle:v7 style:0 handler:0];
   [v10 addAction:v8];
 
-  v9 = [(HUCameraPresenceRecordingSettingsModule *)self presentingViewController];
-  [v9 presentViewController:v10 animated:1 completion:0];
+  presentingViewController = [(HUCameraPresenceRecordingSettingsModule *)self presentingViewController];
+  [presentingViewController presentViewController:v10 animated:1 completion:0];
 }
 
-+ (id)upgradeURLForCameraCount:(id)a3
++ (id)upgradeURLForCameraCount:(id)count
 {
-  v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%d", @"https://icq.icloud.com/?context=aUNsb3VkU3Vic2NyaXB0aW9uX2NvbS5hcHBsZS5ob21lS2l0X2NhbWVyYVNldHRpbmdz&cameraCount=", objc_msgSend(a3, "intValue")];
+  v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%d", @"https://icq.icloud.com/?context=aUNsb3VkU3Vic2NyaXB0aW9uX2NvbS5hcHBsZS5ob21lS2l0X2NhbWVyYVNldHRpbmdz&cameraCount=", objc_msgSend(count, "intValue")];
   v4 = [MEMORY[0x277CBEBC0] URLWithString:v3];
 
   return v4;
 }
 
-+ (id)titleForQuotaAlertForCameraCount:(id)a3
++ (id)titleForQuotaAlertForCameraCount:(id)count
 {
-  v3 = [a3 integerValue];
+  integerValue = [count integerValue];
   v4 = @"HUCameraRecordingSettingsInsufficientQuotaMultipleAlert_Title";
-  if (v3 == 1)
+  if (integerValue == 1)
   {
     v4 = @"HUCameraRecordingSettingsInsufficientQuotaOneAlert_Title";
   }
 
-  if (v3)
+  if (integerValue)
   {
     v5 = v4;
   }
@@ -709,17 +709,17 @@ void __82__HUCameraPresenceRecordingSettingsModule_presentCloudUpgradeFlowWithCa
   return v6;
 }
 
-+ (id)messageForQuotaAlertForCameraCount:(id)a3
++ (id)messageForQuotaAlertForCameraCount:(id)count
 {
-  v4 = a3;
-  v5 = [v4 integerValue];
-  if (v5 == 1)
+  countCopy = count;
+  integerValue = [countCopy integerValue];
+  if (integerValue == 1)
   {
     v6 = @"HUCameraRecordingSettingsInsufficientQuotaOneAlert_Message";
     goto LABEL_5;
   }
 
-  if (!v5)
+  if (!integerValue)
   {
     v6 = @"HUCameraRecordingSettingsInsufficientQuotaNoneAlert_Message";
 LABEL_5:
@@ -727,7 +727,7 @@ LABEL_5:
     goto LABEL_7;
   }
 
-  v8 = [a1 stringFromNumber:v4];
+  v8 = [self stringFromNumber:countCopy];
   v7 = HULocalizedStringWithFormat(@"HUCameraRecordingSettingsInsufficientQuotaMultipleAlert_Message", @"%@", v9, v10, v11, v12, v13, v14, v8);
 
 LABEL_7:
@@ -735,21 +735,21 @@ LABEL_7:
   return v7;
 }
 
-+ (id)titleForHomeOwnerQuotaAlertForCameraCount:(id)a3
++ (id)titleForHomeOwnerQuotaAlertForCameraCount:(id)count
 {
-  v4 = a3;
-  v5 = [a1 stringFromNumber:v4];
-  v6 = [v5 capitalizedString];
+  countCopy = count;
+  v5 = [self stringFromNumber:countCopy];
+  capitalizedString = [v5 capitalizedString];
 
-  v7 = [v4 integerValue];
-  v14 = HULocalizedStringWithFormat(@"HUCameraRecordingSettingsInsufficientQuotaHomeOwnerAlert_Title", @"%lu", v8, v9, v10, v11, v12, v13, v7);
-  v15 = [MEMORY[0x277CCA900] decimalDigitCharacterSet];
-  v16 = [v14 rangeOfCharacterFromSet:v15];
+  integerValue = [countCopy integerValue];
+  v14 = HULocalizedStringWithFormat(@"HUCameraRecordingSettingsInsufficientQuotaHomeOwnerAlert_Title", @"%lu", v8, v9, v10, v11, v12, v13, integerValue);
+  decimalDigitCharacterSet = [MEMORY[0x277CCA900] decimalDigitCharacterSet];
+  v16 = [v14 rangeOfCharacterFromSet:decimalDigitCharacterSet];
   v18 = v17;
 
   if (v16 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v19 = [v14 stringByReplacingCharactersInRange:v16 withString:{v18, v6}];
+    v19 = [v14 stringByReplacingCharactersInRange:v16 withString:{v18, capitalizedString}];
 
     v14 = v19;
   }
@@ -757,27 +757,27 @@ LABEL_7:
   return v14;
 }
 
-+ (id)stringFromNumber:(id)a3
++ (id)stringFromNumber:(id)number
 {
   v3 = MEMORY[0x277CCABB8];
-  v4 = a3;
+  numberCopy = number;
   v5 = objc_alloc_init(v3);
   [v5 setNumberStyle:5];
-  v6 = [v5 stringFromNumber:v4];
+  v6 = [v5 stringFromNumber:numberCopy];
 
   return v6;
 }
 
-- (void)presentHomeOwnerQuotaAlertForOverflowCount:(int64_t)a3
+- (void)presentHomeOwnerQuotaAlertForOverflowCount:(int64_t)count
 {
   [(HUCameraPresenceRecordingSettingsModule *)self clearLoadingIndicator];
   v5 = objc_opt_class();
-  v6 = [(HUCameraPresenceRecordingSettingsModule *)self currentPlanCameraCount];
-  v7 = [v5 titleForHomeOwnerQuotaAlertForCameraCount:v6];
+  currentPlanCameraCount = [(HUCameraPresenceRecordingSettingsModule *)self currentPlanCameraCount];
+  v7 = [v5 titleForHomeOwnerQuotaAlertForCameraCount:currentPlanCameraCount];
 
   v8 = objc_opt_class();
-  v9 = [(HUCameraPresenceRecordingSettingsModule *)self currentPlanCameraCount];
-  v10 = [v8 messageForHomeOwnerQuotaAlertForCameraCount:v9];
+  currentPlanCameraCount2 = [(HUCameraPresenceRecordingSettingsModule *)self currentPlanCameraCount];
+  v10 = [v8 messageForHomeOwnerQuotaAlertForCameraCount:currentPlanCameraCount2];
 
   v11 = [MEMORY[0x277D75110] alertControllerWithTitle:v7 message:v10 preferredStyle:1];
   objc_initWeak(&location, self);
@@ -788,7 +788,7 @@ LABEL_7:
   v19[2] = __86__HUCameraPresenceRecordingSettingsModule_presentHomeOwnerQuotaAlertForOverflowCount___block_invoke;
   v19[3] = &unk_277DBF488;
   objc_copyWeak(v20, &location);
-  v20[1] = a3;
+  v20[1] = count;
   v14 = [v12 actionWithTitle:v13 style:0 handler:v19];
 
   [v11 addAction:v14];
@@ -797,8 +797,8 @@ LABEL_7:
   v17 = [v15 actionWithTitle:v16 style:1 handler:0];
   [v11 addAction:v17];
 
-  v18 = [(HUCameraPresenceRecordingSettingsModule *)self presentingViewController];
-  [v18 presentViewController:v11 animated:1 completion:0];
+  presentingViewController = [(HUCameraPresenceRecordingSettingsModule *)self presentingViewController];
+  [presentingViewController presentViewController:v11 animated:1 completion:0];
 
   objc_destroyWeak(v20);
   objc_destroyWeak(&location);
@@ -810,15 +810,15 @@ void __86__HUCameraPresenceRecordingSettingsModule_presentHomeOwnerQuotaAlertFor
   [WeakRetained _presentCloudUpgradeFlowWithCameraCount:*(a1 + 40)];
 }
 
-- (void)presentSharedAdminQuotaAlertForCount:(unint64_t)a3
+- (void)presentSharedAdminQuotaAlertForCount:(unint64_t)count
 {
   [(HUCameraPresenceRecordingSettingsModule *)self clearLoadingIndicator];
   v5 = objc_opt_class();
-  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:count];
   v15 = [v5 titleForQuotaAlertForCameraCount:v6];
 
   v7 = objc_opt_class();
-  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:count];
   v9 = [v7 messageForQuotaAlertForCameraCount:v8];
 
   v10 = [MEMORY[0x277D75110] alertControllerWithTitle:v15 message:v9 preferredStyle:1];
@@ -827,8 +827,8 @@ void __86__HUCameraPresenceRecordingSettingsModule_presentHomeOwnerQuotaAlertFor
   v13 = [v11 actionWithTitle:v12 style:0 handler:0];
   [v10 addAction:v13];
 
-  v14 = [(HUCameraPresenceRecordingSettingsModule *)self presentingViewController];
-  [v14 presentViewController:v10 animated:1 completion:0];
+  presentingViewController = [(HUCameraPresenceRecordingSettingsModule *)self presentingViewController];
+  [presentingViewController presentViewController:v10 animated:1 completion:0];
 }
 
 - (void)presentGenericError
@@ -843,15 +843,15 @@ void __86__HUCameraPresenceRecordingSettingsModule_presentHomeOwnerQuotaAlertFor
   v8 = [v6 actionWithTitle:v7 style:0 handler:0];
   [v10 addAction:v8];
 
-  v9 = [(HUCameraPresenceRecordingSettingsModule *)self presentingViewController];
-  [v9 presentViewController:v10 animated:1 completion:0];
+  presentingViewController = [(HUCameraPresenceRecordingSettingsModule *)self presentingViewController];
+  [presentingViewController presentViewController:v10 animated:1 completion:0];
 }
 
 - (void)presentMissingSupportedHubAlert
 {
-  v3 = [(HUCameraPresenceRecordingSettingsModule *)self home];
-  v4 = [v3 residentDevices];
-  v5 = [v4 count];
+  home = [(HUCameraPresenceRecordingSettingsModule *)self home];
+  residentDevices = [home residentDevices];
+  v5 = [residentDevices count];
 
   if (v5)
   {
@@ -881,21 +881,21 @@ void __86__HUCameraPresenceRecordingSettingsModule_presentHomeOwnerQuotaAlertFor
   v12 = [v10 actionWithTitle:v11 style:0 handler:0];
   [v9 addAction:v12];
 
-  v13 = [(HUCameraPresenceRecordingSettingsModule *)self presentingViewController];
-  [v13 presentViewController:v9 animated:1 completion:0];
+  presentingViewController = [(HUCameraPresenceRecordingSettingsModule *)self presentingViewController];
+  [presentingViewController presentViewController:v9 animated:1 completion:0];
 }
 
 - (void)_clearItemsUpdating
 {
   v18 = *MEMORY[0x277D85DE8];
-  v2 = [(HUCameraPresenceRecordingSettingsModule *)self itemProvider];
-  v3 = [v2 items];
+  itemProvider = [(HUCameraPresenceRecordingSettingsModule *)self itemProvider];
+  items = [itemProvider items];
 
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = v3;
+  v4 = items;
   v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
@@ -938,17 +938,17 @@ void __86__HUCameraPresenceRecordingSettingsModule_presentHomeOwnerQuotaAlertFor
   }
 }
 
-- (void)_dispatchUpdateForCameraProfile:(id)a3
+- (void)_dispatchUpdateForCameraProfile:(id)profile
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277D146E8] sharedDispatcher];
+  profileCopy = profile;
+  mEMORY[0x277D146E8] = [MEMORY[0x277D146E8] sharedDispatcher];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __75__HUCameraPresenceRecordingSettingsModule__dispatchUpdateForCameraProfile___block_invoke;
   v6[3] = &unk_277DBF4B0;
-  v7 = v3;
-  v5 = v3;
-  [v4 dispatchCameraObserverMessage:v6 sender:0];
+  v7 = profileCopy;
+  v5 = profileCopy;
+  [mEMORY[0x277D146E8] dispatchCameraObserverMessage:v6 sender:0];
 }
 
 void __75__HUCameraPresenceRecordingSettingsModule__dispatchUpdateForCameraProfile___block_invoke(uint64_t a1, void *a2)
@@ -976,28 +976,28 @@ void __75__HUCameraPresenceRecordingSettingsModule__dispatchUpdateForCameraProfi
   return v3;
 }
 
-- (id)didSelectItem:(id)a3
+- (id)didSelectItem:(id)item
 {
   v33 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [(HUCameraPresenceRecordingSettingsModule *)self home];
-  v7 = [v6 hf_hasCameraRecordingResident];
+  itemCopy = item;
+  home = [(HUCameraPresenceRecordingSettingsModule *)self home];
+  hf_hasCameraRecordingResident = [home hf_hasCameraRecordingResident];
 
-  if (v7)
+  if (hf_hasCameraRecordingResident)
   {
-    v8 = [v5 latestResults];
-    v9 = [v8 objectForKeyedSubscript:@"HUCameraSettingResultKey"];
-    v10 = [v9 unsignedIntegerValue];
+    latestResults = [itemCopy latestResults];
+    v9 = [latestResults objectForKeyedSubscript:@"HUCameraSettingResultKey"];
+    unsignedIntegerValue = [v9 unsignedIntegerValue];
 
     [(HUCameraPresenceRecordingSettingsModule *)self _clearItemsUpdating];
-    v11 = [(HUCameraPresenceRecordingSettingsModule *)self recordingSettingItemProvider];
-    v12 = [v11 items];
-    v13 = [v12 containsObject:v5];
+    recordingSettingItemProvider = [(HUCameraPresenceRecordingSettingsModule *)self recordingSettingItemProvider];
+    items = [recordingSettingItemProvider items];
+    v13 = [items containsObject:itemCopy];
 
     if (v13)
     {
       objc_opt_class();
-      v14 = v5;
+      v14 = itemCopy;
       if (objc_opt_isKindOfClass())
       {
         v15 = v14;
@@ -1012,14 +1012,14 @@ void __75__HUCameraPresenceRecordingSettingsModule__dispatchUpdateForCameraProfi
 
       [v16 setUpdateInProgress:1];
       v17 = objc_alloc(MEMORY[0x277D14788]);
-      v18 = [(HUCameraPresenceRecordingSettingsModule *)self itemProviders];
+      itemProviders = [(HUCameraPresenceRecordingSettingsModule *)self itemProviders];
       v19 = [MEMORY[0x277CBEB98] setWithObject:v14];
-      v20 = [v17 initWithItemProviders:v18 items:v19 senderSelector:a2];
+      v20 = [v17 initWithItemProviders:itemProviders items:v19 senderSelector:a2];
 
-      v21 = [(HFItemModule *)self itemUpdater];
-      v22 = [v21 performItemUpdateRequest:v20];
+      itemUpdater = [(HFItemModule *)self itemUpdater];
+      v22 = [itemUpdater performItemUpdateRequest:v20];
 
-      v23 = [(HUCameraPresenceRecordingSettingsModule *)self updateStreamingSetting:v10 isRetry:0];
+      futureWithNoResult = [(HUCameraPresenceRecordingSettingsModule *)self updateStreamingSetting:unsignedIntegerValue isRetry:0];
 
       goto LABEL_11;
     }
@@ -1030,30 +1030,30 @@ void __75__HUCameraPresenceRecordingSettingsModule__dispatchUpdateForCameraProfi
     v24 = HFLogForCategory();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
     {
-      v25 = [(HUCameraPresenceRecordingSettingsModule *)self home];
-      v26 = [(HUCameraPresenceRecordingSettingsModule *)self home];
-      v27 = [v26 residentDevices];
+      home2 = [(HUCameraPresenceRecordingSettingsModule *)self home];
+      home3 = [(HUCameraPresenceRecordingSettingsModule *)self home];
+      residentDevices = [home3 residentDevices];
       v29 = 138412546;
-      v30 = v25;
+      v30 = home2;
       v31 = 2112;
-      v32 = v27;
+      v32 = residentDevices;
       _os_log_impl(&dword_20CEB6000, v24, OS_LOG_TYPE_INFO, "Expected a camera recording resident, but none found. Home: %@ Residents: %@", &v29, 0x16u);
     }
 
     [(HUCameraPresenceRecordingSettingsModule *)self presentMissingSupportedHubAlert];
   }
 
-  v23 = [MEMORY[0x277D2C900] futureWithNoResult];
+  futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
 LABEL_11:
 
-  return v23;
+  return futureWithNoResult;
 }
 
 - (id)itemProviders
 {
   v2 = MEMORY[0x277CBEB98];
-  v3 = [(HUCameraPresenceRecordingSettingsModule *)self itemProvider];
-  v4 = [v2 setWithObject:v3];
+  itemProvider = [(HUCameraPresenceRecordingSettingsModule *)self itemProvider];
+  v4 = [v2 setWithObject:itemProvider];
 
   return v4;
 }
@@ -1073,23 +1073,23 @@ LABEL_11:
 
   v6 = [HUCameraUsageOptionItemProvider alloc];
   v7 = [(HUCameraPresenceRecordingSettingsModule *)self presenceEventType:v21];
-  v8 = [(HUCameraPresenceRecordingSettingsModule *)self cameraProfiles];
-  v9 = [(HUCameraUsageOptionItemProvider *)v6 initWithPresenceEventType:v7 cameraProfiles:v8];
+  cameraProfiles = [(HUCameraPresenceRecordingSettingsModule *)self cameraProfiles];
+  v9 = [(HUCameraUsageOptionItemProvider *)v6 initWithPresenceEventType:v7 cameraProfiles:cameraProfiles];
   [(HUCameraPresenceRecordingSettingsModule *)self setRecordingSettingItemProvider:v9];
 
-  v10 = [(HUCameraPresenceRecordingSettingsModule *)self recordingSettingItemProvider];
-  v11 = [v10 reloadItems];
+  recordingSettingItemProvider = [(HUCameraPresenceRecordingSettingsModule *)self recordingSettingItemProvider];
+  reloadItems = [recordingSettingItemProvider reloadItems];
 
-  v12 = [(HUCameraPresenceRecordingSettingsModule *)self recordingSettingItemProvider];
-  v13 = [v12 items];
-  v14 = [v13 allObjects];
-  [(HUCameraPresenceRecordingSettingsModule *)self setOptionItems:v14];
+  recordingSettingItemProvider2 = [(HUCameraPresenceRecordingSettingsModule *)self recordingSettingItemProvider];
+  items = [recordingSettingItemProvider2 items];
+  allObjects = [items allObjects];
+  [(HUCameraPresenceRecordingSettingsModule *)self setOptionItems:allObjects];
 
   v15 = MEMORY[0x277CBEB98];
-  v16 = [(HUCameraPresenceRecordingSettingsModule *)self optionItems];
-  v17 = [v15 setWithArray:v16];
-  v18 = [(HUCameraPresenceRecordingSettingsModule *)self showOptionsItem];
-  v19 = [v17 setByAddingObject:v18];
+  optionItems = [(HUCameraPresenceRecordingSettingsModule *)self optionItems];
+  v17 = [v15 setWithArray:optionItems];
+  showOptionsItem = [(HUCameraPresenceRecordingSettingsModule *)self showOptionsItem];
+  v19 = [v17 setByAddingObject:showOptionsItem];
 
   v20 = [objc_alloc(MEMORY[0x277D14B40]) initWithItems:v19];
   [(HUCameraPresenceRecordingSettingsModule *)self setItemProvider:v20];
@@ -1143,22 +1143,22 @@ id __61__HUCameraPresenceRecordingSettingsModule__buildItemProvider__block_invok
   return v9;
 }
 
-- (id)buildSectionsWithDisplayedItems:(id)a3
+- (id)buildSectionsWithDisplayedItems:(id)items
 {
   v19[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  itemsCopy = items;
   v5 = objc_alloc(MEMORY[0x277D14850]);
   v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lu", -[HUCameraPresenceRecordingSettingsModule presenceEventType](self, "presenceEventType")];
   v7 = [v5 initWithIdentifier:v6];
 
   v8 = MEMORY[0x277CBEB18];
-  v9 = [(HUCameraPresenceRecordingSettingsModule *)self showOptionsItem];
-  v10 = [v8 arrayWithObject:v9];
+  showOptionsItem = [(HUCameraPresenceRecordingSettingsModule *)self showOptionsItem];
+  v10 = [v8 arrayWithObject:showOptionsItem];
 
   if ([(HUExpandableItemModule *)self showOptions])
   {
-    v11 = [(HUCameraPresenceRecordingSettingsModule *)self optionItems];
-    v12 = [v11 sortedArrayUsingComparator:&__block_literal_global_144];
+    optionItems = [(HUCameraPresenceRecordingSettingsModule *)self optionItems];
+    v12 = [optionItems sortedArrayUsingComparator:&__block_literal_global_144];
 
     [v10 addObjectsFromArray:v12];
   }
@@ -1167,8 +1167,8 @@ id __61__HUCameraPresenceRecordingSettingsModule__buildItemProvider__block_invok
   v17[1] = 3221225472;
   v17[2] = __75__HUCameraPresenceRecordingSettingsModule_buildSectionsWithDisplayedItems___block_invoke_3;
   v17[3] = &unk_277DB85D8;
-  v18 = v4;
-  v13 = v4;
+  v18 = itemsCopy;
+  v13 = itemsCopy;
   v14 = [v10 na_filter:v17];
   [v7 setItems:v14];
 
@@ -1245,14 +1245,14 @@ uint64_t __75__HUCameraPresenceRecordingSettingsModule_buildSectionsWithDisplaye
     v12 = __Block_byref_object_copy__18;
     v13 = __Block_byref_object_dispose__18;
     v14 = 0;
-    v5 = [(HUCameraPresenceRecordingSettingsModule *)self recordingSettingItemProvider];
-    v6 = [v5 items];
+    recordingSettingItemProvider = [(HUCameraPresenceRecordingSettingsModule *)self recordingSettingItemProvider];
+    items = [recordingSettingItemProvider items];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __76__HUCameraPresenceRecordingSettingsModule_longestCameraUsageOptionItemTitle__block_invoke;
     v8[3] = &unk_277DBF4D8;
     v8[4] = &v9;
-    [v6 na_each:v8];
+    [items na_each:v8];
 
     objc_storeStrong(&self->_longestCameraUsageOptionItemTitle, v10[5]);
     v3 = v10[5];
@@ -1281,7 +1281,7 @@ void __76__HUCameraPresenceRecordingSettingsModule_longestCameraUsageOptionItemT
   }
 }
 
-- (void)upgradeFlowManagerDidCancel:(id)a3
+- (void)upgradeFlowManagerDidCancel:(id)cancel
 {
   v16 = *MEMORY[0x277D85DE8];
   v4 = HFLogForCategory();
@@ -1295,8 +1295,8 @@ void __76__HUCameraPresenceRecordingSettingsModule_longestCameraUsageOptionItemT
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v5 = [(HUCameraPresenceRecordingSettingsModule *)self cameraProfiles];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v15 count:16];
+  cameraProfiles = [(HUCameraPresenceRecordingSettingsModule *)self cameraProfiles];
+  v6 = [cameraProfiles countByEnumeratingWithState:&v10 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1308,14 +1308,14 @@ void __76__HUCameraPresenceRecordingSettingsModule_longestCameraUsageOptionItemT
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(cameraProfiles);
         }
 
         [(HUCameraPresenceRecordingSettingsModule *)self _dispatchUpdateForCameraProfile:*(*(&v10 + 1) + 8 * v9++)];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v15 count:16];
+      v7 = [cameraProfiles countByEnumeratingWithState:&v10 objects:v15 count:16];
     }
 
     while (v7);
@@ -1324,7 +1324,7 @@ void __76__HUCameraPresenceRecordingSettingsModule_longestCameraUsageOptionItemT
   [(HUCameraPresenceRecordingSettingsModule *)self sendCAMetricInfo];
 }
 
-- (void)upgradeFlowManagerDidComplete:(id)a3
+- (void)upgradeFlowManagerDidComplete:(id)complete
 {
   [(HUCameraPresenceRecordingSettingsModule *)self setDidCompleteCloudUpgradeOffer:1];
   [(HUCameraPresenceRecordingSettingsModule *)self setUpgradeState:3];
@@ -1345,8 +1345,8 @@ void __76__HUCameraPresenceRecordingSettingsModule_longestCameraUsageOptionItemT
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = [(HUCameraPresenceRecordingSettingsModule *)self cameraProfiles];
-  v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  cameraProfiles = [(HUCameraPresenceRecordingSettingsModule *)self cameraProfiles];
+  v3 = [cameraProfiles countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v3)
   {
     v4 = v3;
@@ -1358,13 +1358,13 @@ void __76__HUCameraPresenceRecordingSettingsModule_longestCameraUsageOptionItemT
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(cameraProfiles);
         }
 
         v5 += [*(*(&v9 + 1) + 8 * i) hf_supportsRecordingEvents];
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v4 = [cameraProfiles countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v4);
@@ -1385,11 +1385,11 @@ void __76__HUCameraPresenceRecordingSettingsModule_longestCameraUsageOptionItemT
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     *buf = 134218496;
-    v12 = [(HUCameraPresenceRecordingSettingsModule *)self numCamerasSupportRecordingService];
+    numCamerasSupportRecordingService = [(HUCameraPresenceRecordingSettingsModule *)self numCamerasSupportRecordingService];
     v13 = 2048;
-    v14 = [(HUCameraPresenceRecordingSettingsModule *)self offerState];
+    offerState = [(HUCameraPresenceRecordingSettingsModule *)self offerState];
     v15 = 2048;
-    v16 = [(HUCameraPresenceRecordingSettingsModule *)self upgradeState];
+    upgradeState = [(HUCameraPresenceRecordingSettingsModule *)self upgradeState];
     _os_log_impl(&dword_20CEB6000, v3, OS_LOG_TYPE_INFO, "[Core-Analytics iCloud Upgrade Metric Info] numCamerasSupportRecording: %lu offerState: %lu iCloudUpgradeState: %lu", buf, 0x20u);
   }
 
@@ -1411,8 +1411,8 @@ void __76__HUCameraPresenceRecordingSettingsModule_longestCameraUsageOptionItemT
   if (_os_feature_enabled_impl())
   {
     v3 = MEMORY[0x277CFB450];
-    v4 = [(HUCameraPresenceRecordingSettingsModule *)self featureChangeObserver];
-    [v3 unregisterForFeatureChangeNotificationsUsingObserver:v4];
+    featureChangeObserver = [(HUCameraPresenceRecordingSettingsModule *)self featureChangeObserver];
+    [v3 unregisterForFeatureChangeNotificationsUsingObserver:featureChangeObserver];
   }
 
   v5.receiver = self;

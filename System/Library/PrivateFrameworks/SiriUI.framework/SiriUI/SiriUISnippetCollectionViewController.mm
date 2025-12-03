@@ -1,24 +1,24 @@
 @interface SiriUISnippetCollectionViewController
-- (SiriUISnippetCollectionViewController)initWithCollectionViewLayout:(id)a3;
+- (SiriUISnippetCollectionViewController)initWithCollectionViewLayout:(id)layout;
 - (UICollectionViewLayout)collectionViewLayout;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
 - (void)loadView;
 - (void)viewWillLayoutSubviews;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation SiriUISnippetCollectionViewController
 
-- (SiriUISnippetCollectionViewController)initWithCollectionViewLayout:(id)a3
+- (SiriUISnippetCollectionViewController)initWithCollectionViewLayout:(id)layout
 {
-  v5 = a3;
+  layoutCopy = layout;
   v9.receiver = self;
   v9.super_class = SiriUISnippetCollectionViewController;
   v6 = [(SiriUISnippetViewController *)&v9 initWithNibName:0 bundle:0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_collectionViewLayout, a3);
+    objc_storeStrong(&v6->_collectionViewLayout, layout);
   }
 
   return v7;
@@ -28,11 +28,11 @@
 {
   self->_needsToInvalidateCollectionViewLayoutOnViewWillLayoutSubviews = 1;
   v3 = objc_alloc(MEMORY[0x277D752A0]);
-  v4 = [(SiriUIBaseSnippetViewController *)self delegate];
-  [v4 siriViewControllerExpectedWidth:self];
+  delegate = [(SiriUIBaseSnippetViewController *)self delegate];
+  [delegate siriViewControllerExpectedWidth:self];
   v6 = v5;
-  v7 = [(SiriUISnippetCollectionViewController *)self collectionViewLayout];
-  v8 = [v3 initWithFrame:v7 collectionViewLayout:{0.0, 0.0, v6, 0.0}];
+  collectionViewLayout = [(SiriUISnippetCollectionViewController *)self collectionViewLayout];
+  v8 = [v3 initWithFrame:collectionViewLayout collectionViewLayout:{0.0, 0.0, v6, 0.0}];
   collectionView = self->_collectionView;
   self->_collectionView = v8;
 
@@ -41,13 +41,13 @@
   [(UICollectionView *)self->_collectionView setScrollEnabled:0];
   [(UICollectionView *)self->_collectionView setShowsVerticalScrollIndicator:0];
   v10 = self->_collectionView;
-  v11 = [MEMORY[0x277D75348] clearColor];
-  [(UICollectionView *)v10 setBackgroundColor:v11];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [(UICollectionView *)v10 setBackgroundColor:clearColor];
 
-  v12 = [MEMORY[0x277CEF368] sharedPreferences];
-  LODWORD(v11) = [v12 enableDragAndDrop];
+  mEMORY[0x277CEF368] = [MEMORY[0x277CEF368] sharedPreferences];
+  LODWORD(clearColor) = [mEMORY[0x277CEF368] enableDragAndDrop];
 
-  if (v11)
+  if (clearColor)
   {
     [(UICollectionView *)self->_collectionView setDragDelegate:self];
   }
@@ -62,8 +62,8 @@
   v14.receiver = self;
   v14.super_class = SiriUISnippetCollectionViewController;
   [(SiriUISnippetCollectionViewController *)&v14 viewWillLayoutSubviews];
-  v3 = [(SiriUISnippetCollectionViewController *)self view];
-  [v3 bounds];
+  view = [(SiriUISnippetCollectionViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -73,8 +73,8 @@
   {
     if (self->_needsToInvalidateCollectionViewLayoutOnViewWillLayoutSubviews)
     {
-      v13 = [(UICollectionView *)self->_collectionView collectionViewLayout];
-      [v13 invalidateLayout];
+      collectionViewLayout = [(UICollectionView *)self->_collectionView collectionViewLayout];
+      [collectionViewLayout invalidateLayout];
     }
 
     self->_needsToInvalidateCollectionViewLayoutOnViewWillLayoutSubviews = 1;
@@ -85,13 +85,13 @@
   }
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
-  v8 = [(SiriUISnippetCollectionViewController *)self view];
-  [v8 bounds];
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
+  view = [(SiriUISnippetCollectionViewController *)self view];
+  [view bounds];
   v10 = v9;
   v12 = v11;
 
@@ -103,12 +103,12 @@
     v15[2] = __92__SiriUISnippetCollectionViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke;
     v15[3] = &unk_279C5A068;
     v15[4] = self;
-    [v7 animateAlongsideTransition:v15 completion:0];
+    [coordinatorCopy animateAlongsideTransition:v15 completion:0];
   }
 
   v14.receiver = self;
   v14.super_class = SiriUISnippetCollectionViewController;
-  [(SiriUISnippetCollectionViewController *)&v14 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  [(SiriUISnippetCollectionViewController *)&v14 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
 }
 
 void __92__SiriUISnippetCollectionViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke(uint64_t a1)
@@ -147,12 +147,12 @@ void __92__SiriUISnippetCollectionViewController_viewWillTransitionToSize_withTr
   return collectionViewLayout;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v7 = objc_opt_class();
   v8 = NSStringFromClass(v7);
-  [v6 handleFailureInMethod:a2 object:self file:@"SiriUISnippetCollectionViewController.m" lineNumber:105 description:{@"SiriUISnippetCollectionViewController unexpectedly asked to provide a cell, subclass %@ should override", v8}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"SiriUISnippetCollectionViewController.m" lineNumber:105 description:{@"SiriUISnippetCollectionViewController unexpectedly asked to provide a cell, subclass %@ should override", v8}];
 
   return 0;
 }

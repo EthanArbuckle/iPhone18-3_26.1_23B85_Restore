@@ -1,23 +1,23 @@
 @interface SUUITrendingSearchView
-- (SUUITrendingSearchView)initWithCoder:(id)a3;
-- (SUUITrendingSearchView)initWithFrame:(CGRect)a3;
+- (SUUITrendingSearchView)initWithCoder:(id)coder;
+- (SUUITrendingSearchView)initWithFrame:(CGRect)frame;
 - (UIStackView)titleStackView;
 - (UIStackView)trendingSearchesStackView;
-- (void)commonInitWithFrame:(CGRect)a3;
+- (void)commonInitWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setTrendingSearchViews:(id)a3;
-- (void)setTrendingTitleView:(id)a3;
+- (void)setTrendingSearchViews:(id)views;
+- (void)setTrendingTitleView:(id)view;
 - (void)updateConstraints;
 @end
 
 @implementation SUUITrendingSearchView
 
-- (SUUITrendingSearchView)initWithFrame:(CGRect)a3
+- (SUUITrendingSearchView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v10.receiver = self;
   v10.super_class = SUUITrendingSearchView;
   v7 = [(SUUITrendingSearchView *)&v10 initWithFrame:?];
@@ -30,11 +30,11 @@
   return v8;
 }
 
-- (SUUITrendingSearchView)initWithCoder:(id)a3
+- (SUUITrendingSearchView)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = SUUITrendingSearchView;
-  v3 = [(SUUITrendingSearchView *)&v6 initWithCoder:a3];
+  v3 = [(SUUITrendingSearchView *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -45,12 +45,12 @@
   return v4;
 }
 
-- (void)commonInitWithFrame:(CGRect)a3
+- (void)commonInitWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v29[1] = *MEMORY[0x277D85DE8];
   [(SUUITrendingSearchView *)self setPreservesSuperviewLayoutMargins:1];
   v8 = [objc_alloc(MEMORY[0x277D75A68]) initWithFrame:{x, y, width, height}];
@@ -69,24 +69,24 @@
   [v9 setSpacing:2.0];
   [v8 addArrangedSubview:v9];
   objc_storeWeak(&self->_trendingSearchesStackView, v9);
-  v10 = [MEMORY[0x277D75418] currentDevice];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
     goto LABEL_4;
   }
 
-  v11 = [MEMORY[0x277D75418] currentDevice];
-  v12 = [v11 userInterfaceIdiom];
+  currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice2 userInterfaceIdiom];
 
-  if (v12)
+  if (userInterfaceIdiom)
   {
     v13 = MEMORY[0x277CCAAD0];
-    v14 = [(SUUITrendingSearchView *)self titleStackView];
-    v10 = [v13 constraintWithItem:v14 attribute:10 relatedBy:0 toItem:self attribute:10 multiplier:1.0 constant:0.0];
+    titleStackView = [(SUUITrendingSearchView *)self titleStackView];
+    currentDevice = [v13 constraintWithItem:titleStackView attribute:10 relatedBy:0 toItem:self attribute:10 multiplier:1.0 constant:0.0];
 
     LODWORD(v15) = 1144733696;
-    [v10 setPriority:v15];
-    v29[0] = v10;
+    [currentDevice setPriority:v15];
+    v29[0] = currentDevice;
     v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v29 count:1];
     [(SUUITrendingSearchView *)self addConstraints:v16];
 
@@ -99,41 +99,41 @@ LABEL_4:
   self->_verticalMarginRelatedConstraints = v18;
 
   [(SUUITrendingSearchView *)self addConstraints:self->_verticalMarginRelatedConstraints];
-  v20 = [v8 leadingAnchor];
-  v21 = [(SUUITrendingSearchView *)self leadingAnchor];
-  v22 = [v20 constraintEqualToAnchor:v21];
+  leadingAnchor = [v8 leadingAnchor];
+  leadingAnchor2 = [(SUUITrendingSearchView *)self leadingAnchor];
+  v22 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   [v22 setActive:1];
 
-  v23 = [v8 trailingAnchor];
-  v24 = [(SUUITrendingSearchView *)self trailingAnchor];
-  v25 = [v23 constraintEqualToAnchor:v24];
+  trailingAnchor = [v8 trailingAnchor];
+  trailingAnchor2 = [(SUUITrendingSearchView *)self trailingAnchor];
+  v25 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   [v25 setActive:1];
 
-  v26 = [v8 widthAnchor];
-  v27 = [(SUUITrendingSearchView *)self widthAnchor];
-  v28 = [v26 constraintEqualToAnchor:v27];
+  widthAnchor = [v8 widthAnchor];
+  widthAnchor2 = [(SUUITrendingSearchView *)self widthAnchor];
+  v28 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
   [v28 setActive:1];
 }
 
-- (void)setTrendingTitleView:(id)a3
+- (void)setTrendingTitleView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   [(UIView *)self->_trendingTitleView removeFromSuperview];
   trendingTitleView = self->_trendingTitleView;
-  self->_trendingTitleView = v4;
-  v6 = v4;
+  self->_trendingTitleView = viewCopy;
+  v6 = viewCopy;
 
   [(UIView *)self->_trendingTitleView setTranslatesAutoresizingMaskIntoConstraints:0];
   LODWORD(v7) = 1148846080;
   [(UIView *)self->_trendingTitleView setContentCompressionResistancePriority:1 forAxis:v7];
-  v8 = [(SUUITrendingSearchView *)self titleStackView];
-  [v8 insertArrangedSubview:v6 atIndex:0];
+  titleStackView = [(SUUITrendingSearchView *)self titleStackView];
+  [titleStackView insertArrangedSubview:v6 atIndex:0];
 }
 
-- (void)setTrendingSearchViews:(id)a3
+- (void)setTrendingSearchViews:(id)views
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  viewsCopy = views;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
@@ -164,7 +164,7 @@ LABEL_4:
     while (v7);
   }
 
-  v10 = [v4 copy];
+  v10 = [viewsCopy copy];
   trendingSearchViews = self->_trendingSearchViews;
   self->_trendingSearchViews = v10;
 
@@ -189,8 +189,8 @@ LABEL_4:
         }
 
         v17 = *(*(&v19 + 1) + 8 * v16);
-        v18 = [(SUUITrendingSearchView *)self trendingSearchesStackView];
-        [v18 addArrangedSubview:v17];
+        trendingSearchesStackView = [(SUUITrendingSearchView *)self trendingSearchesStackView];
+        [trendingSearchesStackView addArrangedSubview:v17];
 
         ++v16;
       }
@@ -210,23 +210,23 @@ LABEL_4:
   v11.receiver = self;
   v11.super_class = SUUITrendingSearchView;
   [(SUUITrendingSearchView *)&v11 layoutSubviews];
-  v3 = [MEMORY[0x277D75418] currentDevice];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
 
     goto LABEL_5;
   }
 
-  v4 = [MEMORY[0x277D75418] currentDevice];
-  v5 = [v4 userInterfaceIdiom];
+  currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice2 userInterfaceIdiom];
 
-  if (v5 != 1)
+  if (userInterfaceIdiom != 1)
   {
 LABEL_5:
     [(SUUITrendingSearchView *)self bounds];
     v7 = v6;
-    v8 = [(SUUITrendingSearchView *)self titleStackView];
-    [v8 bounds];
+    titleStackView = [(SUUITrendingSearchView *)self titleStackView];
+    [titleStackView bounds];
     MaxY = CGRectGetMaxY(v12);
     [(SUUITrendingSearchView *)self safeAreaInsets];
     [(SUUITrendingSearchView *)self setContentSize:v7, MaxY + v10];
@@ -240,8 +240,8 @@ LABEL_5:
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [(SUUITrendingSearchView *)self verticalMarginRelatedConstraints];
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  verticalMarginRelatedConstraints = [(SUUITrendingSearchView *)self verticalMarginRelatedConstraints];
+  v4 = [verticalMarginRelatedConstraints countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -253,7 +253,7 @@ LABEL_5:
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(verticalMarginRelatedConstraints);
         }
 
         v8 = *(*(&v10 + 1) + 8 * v7);
@@ -263,7 +263,7 @@ LABEL_5:
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [verticalMarginRelatedConstraints countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);

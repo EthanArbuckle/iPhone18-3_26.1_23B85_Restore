@@ -1,6 +1,6 @@
 @interface NSDate
-+ (id)_durationDescription:(double)a3;
-- (BOOL)isDueForPasscodeChangedBackupWithLastBackupDate:(id)a3;
++ (id)_durationDescription:(double)description;
+- (BOOL)isDueForPasscodeChangedBackupWithLastBackupDate:(id)date;
 - (BOOL)isWithinDefaultBackupPeriod;
 - (id)iso8601String;
 @end
@@ -15,11 +15,11 @@
   return v4;
 }
 
-+ (id)_durationDescription:(double)a3
++ (id)_durationDescription:(double)description
 {
   v4 = objc_opt_new();
   [v4 setUnitsStyle:0];
-  v5 = [v4 localizedStringFromTimeInterval:a3];
+  v5 = [v4 localizedStringFromTimeInterval:description];
 
   return v5;
 }
@@ -33,12 +33,12 @@
   return v5 < 86400.0 && v5 > 0.0;
 }
 
-- (BOOL)isDueForPasscodeChangedBackupWithLastBackupDate:(id)a3
+- (BOOL)isDueForPasscodeChangedBackupWithLastBackupDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   if ([(NSDate *)self isWithinDefaultBackupPeriod])
   {
-    v5 = [(NSDate *)self compare:v4]== 1;
+    v5 = [(NSDate *)self compare:dateCopy]== 1;
   }
 
   else

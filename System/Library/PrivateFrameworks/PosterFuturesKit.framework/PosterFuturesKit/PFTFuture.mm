@@ -1,44 +1,44 @@
 @interface PFTFuture
-+ (id)_joinMany:(id)a3;
++ (id)_joinMany:(id)many;
 + (id)cancelledFuture;
-+ (id)chain:(id)a3;
-+ (id)flatMap:(id)a3 withBlock:(id)a4 continuationScheduler:(id)a5 schedulerProvider:(id)a6;
++ (id)chain:(id)chain;
++ (id)flatMap:(id)map withBlock:(id)block continuationScheduler:(id)scheduler schedulerProvider:(id)provider;
 + (id)future;
-+ (id)futureWithBlock:(id)a3;
-+ (id)futureWithBlock:(id)a3 scheduler:(id)a4;
-+ (id)futureWithBlock:(id)a3 scheduler:(id)a4 schedulerProvider:(id)a5;
-+ (id)futureWithBlock:(id)a3 schedulerProvider:(id)a4;
-+ (id)futureWithError:(id)a3;
-+ (id)futureWithResult:(id)a3;
-+ (id)join:(id)a3;
-+ (id)lazyFutureWithBlock:(id)a3;
++ (id)futureWithBlock:(id)block;
++ (id)futureWithBlock:(id)block scheduler:(id)scheduler;
++ (id)futureWithBlock:(id)block scheduler:(id)scheduler schedulerProvider:(id)provider;
++ (id)futureWithBlock:(id)block schedulerProvider:(id)provider;
++ (id)futureWithError:(id)error;
++ (id)futureWithResult:(id)result;
++ (id)join:(id)join;
++ (id)lazyFutureWithBlock:(id)block;
 + (id)promiseFuture;
-+ (id)recover:(id)a3 withBlock:(id)a4 onErrorScheduler:(id)a5 schedulerProvider:(id)a6;
-+ (id)sequence:(id)a3;
-+ (void)finishPromise:(id)a3 withFuture:(id)a4;
++ (id)recover:(id)recover withBlock:(id)block onErrorScheduler:(id)scheduler schedulerProvider:(id)provider;
++ (id)sequence:(id)sequence;
++ (void)finishPromise:(id)promise withFuture:(id)future;
 - (BOOL)cancel;
-- (BOOL)cancelWithReason:(id)a3;
-- (BOOL)finishWithError:(id)a3;
-- (BOOL)finishWithResult:(id)a3;
+- (BOOL)cancelWithReason:(id)reason;
+- (BOOL)finishWithError:(id)error;
+- (BOOL)finishWithResult:(id)result;
 - (NSString)description;
 - (PFTFuture)init;
-- (PFTFuture)initWithImpl:(id)a3;
-- (PFTFuture)initWithSchedulerProvider:(id)a3;
-- (id)flatMap:(id)a3;
-- (id)flatMap:(id)a3 continuationScheduler:(id)a4;
-- (id)recover:(id)a3;
-- (id)recover:(id)a3 onErrorScheduler:(id)a4;
-- (id)result:(id *)a3;
-- (id)resultWithTimeout:(double)a3 error:(id *)a4;
-- (id)timeoutAfter:(double)a3 scheduler:(id)a4 cleanup:(id)a5;
-- (id)trackWithActivity:(id)a3;
+- (PFTFuture)initWithImpl:(id)impl;
+- (PFTFuture)initWithSchedulerProvider:(id)provider;
+- (id)flatMap:(id)map;
+- (id)flatMap:(id)map continuationScheduler:(id)scheduler;
+- (id)recover:(id)recover;
+- (id)recover:(id)recover onErrorScheduler:(id)scheduler;
+- (id)result:(id *)result;
+- (id)resultWithTimeout:(double)timeout error:(id *)error;
+- (id)timeoutAfter:(double)after scheduler:(id)scheduler cleanup:(id)cleanup;
+- (id)trackWithActivity:(id)activity;
 - (void)_flushCompletionBlocks;
-- (void)addCompletionBlock:(id)a3;
-- (void)addCompletionBlock:(id)a3 scheduler:(id)a4;
-- (void)addFailureBlock:(id)a3 scheduler:(id)a4;
-- (void)addSuccessBlock:(id)a3 andFailureBlock:(id)a4;
-- (void)addSuccessBlock:(id)a3 andFailureBlock:(id)a4 scheduler:(id)a5;
-- (void)addSuccessBlock:(id)a3 scheduler:(id)a4;
+- (void)addCompletionBlock:(id)block;
+- (void)addCompletionBlock:(id)block scheduler:(id)scheduler;
+- (void)addFailureBlock:(id)block scheduler:(id)scheduler;
+- (void)addSuccessBlock:(id)block andFailureBlock:(id)failureBlock;
+- (void)addSuccessBlock:(id)block andFailureBlock:(id)failureBlock scheduler:(id)scheduler;
+- (void)addSuccessBlock:(id)block scheduler:(id)scheduler;
 @end
 
 @implementation PFTFuture
@@ -58,34 +58,34 @@
 
 + (id)promiseFuture
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
 
 + (id)future
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
 
-+ (id)futureWithResult:(id)a3
++ (id)futureWithResult:(id)result
 {
-  v4 = a3;
-  v5 = [[_PFTConstantFutureImpl alloc] initWithResult:v4];
+  resultCopy = result;
+  v5 = [[_PFTConstantFutureImpl alloc] initWithResult:resultCopy];
 
-  v6 = [[a1 alloc] initWithImpl:v5];
+  v6 = [[self alloc] initWithImpl:v5];
 
   return v6;
 }
 
-+ (id)futureWithError:(id)a3
++ (id)futureWithError:(id)error
 {
-  v4 = a3;
-  v5 = [[_PFTFailedFutureImpl alloc] initWithError:v4];
+  errorCopy = error;
+  v5 = [[_PFTFailedFutureImpl alloc] initWithError:errorCopy];
 
-  v6 = [[a1 alloc] initWithImpl:v5];
+  v6 = [[self alloc] initWithImpl:v5];
 
   return v6;
 }
@@ -93,54 +93,54 @@
 + (id)cancelledFuture
 {
   v3 = +[PFTError userCanceledError];
-  v4 = [a1 futureWithError:v3];
+  v4 = [self futureWithError:v3];
 
   return v4;
 }
 
-+ (id)futureWithBlock:(id)a3
++ (id)futureWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = +[PFTSchedulerProvider defaultProvider];
-  v6 = [a1 futureWithBlock:v4 schedulerProvider:v5];
+  v6 = [self futureWithBlock:blockCopy schedulerProvider:v5];
 
   return v6;
 }
 
-+ (id)futureWithBlock:(id)a3 scheduler:(id)a4
++ (id)futureWithBlock:(id)block scheduler:(id)scheduler
 {
-  v6 = a4;
-  v7 = a3;
+  schedulerCopy = scheduler;
+  blockCopy = block;
   v8 = +[PFTSchedulerProvider defaultProvider];
-  v9 = [a1 futureWithBlock:v7 scheduler:v6 schedulerProvider:v8];
+  v9 = [self futureWithBlock:blockCopy scheduler:schedulerCopy schedulerProvider:v8];
 
   return v9;
 }
 
-+ (id)futureWithBlock:(id)a3 schedulerProvider:(id)a4
++ (id)futureWithBlock:(id)block schedulerProvider:(id)provider
 {
-  v6 = a4;
-  v7 = a3;
+  providerCopy = provider;
+  blockCopy = block;
   v8 = +[PFTScheduler immediateScheduler];
-  v9 = [a1 futureWithBlock:v7 scheduler:v8 schedulerProvider:v6];
+  v9 = [self futureWithBlock:blockCopy scheduler:v8 schedulerProvider:providerCopy];
 
   return v9;
 }
 
-+ (id)futureWithBlock:(id)a3 scheduler:(id)a4 schedulerProvider:(id)a5
++ (id)futureWithBlock:(id)block scheduler:(id)scheduler schedulerProvider:(id)provider
 {
-  v6 = a3;
-  v7 = a4;
+  blockCopy = block;
+  schedulerCopy = scheduler;
   v8 = objc_alloc_init(PFTPromise);
   v13 = MEMORY[0x277D85DD0];
   v14 = 3221225472;
   v15 = __57__PFTFuture_futureWithBlock_scheduler_schedulerProvider___block_invoke;
   v16 = &unk_279A52AE8;
   v17 = v8;
-  v18 = v6;
+  v18 = blockCopy;
   v9 = v8;
-  v10 = v6;
-  [v7 performBlock:&v13];
+  v10 = blockCopy;
+  [schedulerCopy performBlock:&v13];
 
   v11 = [(PFTPromise *)v9 future:v13];
 
@@ -156,45 +156,45 @@ void __57__PFTFuture_futureWithBlock_scheduler_schedulerProvider___block_invoke(
   [*(a1 + 32) finishWithResult:v3 error:v4];
 }
 
-+ (id)lazyFutureWithBlock:(id)a3
++ (id)lazyFutureWithBlock:(id)block
 {
-  v4 = [_PFTBlockFutureImpl lazyImplWithBlock:a3];
-  v5 = [[a1 alloc] initWithImpl:v4];
+  v4 = [_PFTBlockFutureImpl lazyImplWithBlock:block];
+  v5 = [[self alloc] initWithImpl:v4];
 
   return v5;
 }
 
-+ (id)flatMap:(id)a3 withBlock:(id)a4 continuationScheduler:(id)a5 schedulerProvider:(id)a6
++ (id)flatMap:(id)map withBlock:(id)block continuationScheduler:(id)scheduler schedulerProvider:(id)provider
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = a3;
-  v14 = [[PFTPromise alloc] initWithSchedulerProvider:v12];
+  blockCopy = block;
+  schedulerCopy = scheduler;
+  providerCopy = provider;
+  mapCopy = map;
+  v14 = [[PFTPromise alloc] initWithSchedulerProvider:providerCopy];
 
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __71__PFTFuture_flatMap_withBlock_continuationScheduler_schedulerProvider___block_invoke;
   v23[3] = &unk_279A53508;
-  v26 = v10;
-  v27 = a1;
+  v26 = blockCopy;
+  selfCopy = self;
   v15 = v14;
   v24 = v15;
-  v25 = v11;
-  v16 = v11;
-  v17 = v10;
-  [v13 addSuccessBlock:v23];
+  v25 = schedulerCopy;
+  v16 = schedulerCopy;
+  v17 = blockCopy;
+  [mapCopy addSuccessBlock:v23];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __71__PFTFuture_flatMap_withBlock_continuationScheduler_schedulerProvider___block_invoke_4;
   v21[3] = &unk_279A53530;
   v22 = v15;
   v18 = v15;
-  [v13 addFailureBlock:v21];
-  v19 = [(PFTPromise *)v18 future];
-  [v19 addCalculationDependency:v13];
+  [mapCopy addFailureBlock:v21];
+  future = [(PFTPromise *)v18 future];
+  [future addCalculationDependency:mapCopy];
 
-  return v19;
+  return future;
 }
 
 void __71__PFTFuture_flatMap_withBlock_continuationScheduler_schedulerProvider___block_invoke(uint64_t a1, void *a2)
@@ -238,13 +238,13 @@ void __71__PFTFuture_flatMap_withBlock_continuationScheduler_schedulerProvider__
   [v3 addCalculationDependency:v4];
 }
 
-+ (id)recover:(id)a3 withBlock:(id)a4 onErrorScheduler:(id)a5 schedulerProvider:(id)a6
++ (id)recover:(id)recover withBlock:(id)block onErrorScheduler:(id)scheduler schedulerProvider:(id)provider
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = a3;
-  v14 = [[PFTPromise alloc] initWithSchedulerProvider:v12];
+  blockCopy = block;
+  schedulerCopy = scheduler;
+  providerCopy = provider;
+  recoverCopy = recover;
+  v14 = [[PFTPromise alloc] initWithSchedulerProvider:providerCopy];
 
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
@@ -252,23 +252,23 @@ void __71__PFTFuture_flatMap_withBlock_continuationScheduler_schedulerProvider__
   v26[3] = &unk_279A53558;
   v15 = v14;
   v27 = v15;
-  [v13 addSuccessBlock:v26];
+  [recoverCopy addSuccessBlock:v26];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __66__PFTFuture_recover_withBlock_onErrorScheduler_schedulerProvider___block_invoke_2;
   v21[3] = &unk_279A53580;
-  v24 = v10;
-  v25 = a1;
+  v24 = blockCopy;
+  selfCopy = self;
   v22 = v15;
-  v23 = v11;
-  v16 = v11;
+  v23 = schedulerCopy;
+  v16 = schedulerCopy;
   v17 = v15;
-  v18 = v10;
-  [v13 addFailureBlock:v21];
-  v19 = [(PFTPromise *)v17 future];
-  [v19 addCalculationDependency:v13];
+  v18 = blockCopy;
+  [recoverCopy addFailureBlock:v21];
+  future = [(PFTPromise *)v17 future];
+  [future addCalculationDependency:recoverCopy];
 
-  return v19;
+  return future;
 }
 
 void __66__PFTFuture_recover_withBlock_onErrorScheduler_schedulerProvider___block_invoke_2(uint64_t a1, void *a2)
@@ -310,35 +310,35 @@ void __66__PFTFuture_recover_withBlock_onErrorScheduler_schedulerProvider___bloc
   [*(a1 + 56) finishPromise:*(a1 + 40) withFuture:v3];
 }
 
-+ (void)finishPromise:(id)a3 withFuture:(id)a4
++ (void)finishPromise:(id)promise withFuture:(id)future
 {
-  v5 = a3;
+  promiseCopy = promise;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __38__PFTFuture_finishPromise_withFuture___block_invoke;
   v11[3] = &unk_279A53558;
-  v6 = v5;
+  v6 = promiseCopy;
   v12 = v6;
-  v7 = a4;
-  [v7 addSuccessBlock:v11];
+  futureCopy = future;
+  [futureCopy addSuccessBlock:v11];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __38__PFTFuture_finishPromise_withFuture___block_invoke_2;
   v9[3] = &unk_279A53530;
   v10 = v6;
   v8 = v6;
-  [v7 addFailureBlock:v9];
+  [futureCopy addFailureBlock:v9];
 }
 
-+ (id)chain:(id)a3
++ (id)chain:(id)chain
 {
-  v4 = a3;
-  v5 = [v4 firstObject];
-  v6 = [v4 pft_tail];
+  chainCopy = chain;
+  firstObject = [chainCopy firstObject];
+  pft_tail = [chainCopy pft_tail];
 
-  if (off_2870E41C0(&__block_literal_global_4, v6))
+  if (off_2870E41C0(&__block_literal_global_4, pft_tail))
   {
-    v7 = v5;
+    v7 = firstObject;
   }
 
   else
@@ -347,16 +347,16 @@ void __66__PFTFuture_recover_withBlock_onErrorScheduler_schedulerProvider___bloc
     v15[1] = 3221225472;
     v15[2] = __19__PFTFuture_chain___block_invoke;
     v15[3] = &unk_279A535A8;
-    v17 = a1;
-    v8 = v6;
+    selfCopy = self;
+    v8 = pft_tail;
     v16 = v8;
-    v9 = [v5 flatMap:v15];
+    v9 = [firstObject flatMap:v15];
 
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __19__PFTFuture_chain___block_invoke_2;
     v12[3] = &unk_279A535D0;
-    v14 = a1;
+    selfCopy2 = self;
     v13 = v8;
     v10 = [v9 recover:v12];
 
@@ -385,26 +385,26 @@ id __19__PFTFuture_chain___block_invoke(uint64_t a1, void *a2)
   return v6;
 }
 
-+ (id)sequence:(id)a3
++ (id)sequence:(id)sequence
 {
   v28 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (off_2870E41C0(&__block_literal_global_4, v3))
+  sequenceCopy = sequence;
+  if (off_2870E41C0(&__block_literal_global_4, sequenceCopy))
   {
     v4 = [PFTFuture futureWithResult:MEMORY[0x277CBEBF8]];
   }
 
   else
   {
-    v5 = [MEMORY[0x277CBEB18] array];
-    v6 = [v3 firstObject];
+    array = [MEMORY[0x277CBEB18] array];
+    firstObject = [sequenceCopy firstObject];
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v17 = v3;
-    v7 = [v3 pft_tail];
-    v8 = [v7 countByEnumeratingWithState:&v23 objects:v27 count:16];
+    v17 = sequenceCopy;
+    pft_tail = [sequenceCopy pft_tail];
+    v8 = [pft_tail countByEnumeratingWithState:&v23 objects:v27 count:16];
     if (v8)
     {
       v9 = v8;
@@ -412,12 +412,12 @@ id __19__PFTFuture_chain___block_invoke(uint64_t a1, void *a2)
       do
       {
         v11 = 0;
-        v12 = v6;
+        v12 = firstObject;
         do
         {
           if (*v24 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(pft_tail);
           }
 
           v13 = *(*(&v23 + 1) + 8 * v11);
@@ -425,16 +425,16 @@ id __19__PFTFuture_chain___block_invoke(uint64_t a1, void *a2)
           v20[1] = 3221225472;
           v20[2] = __22__PFTFuture_sequence___block_invoke;
           v20[3] = &unk_279A535F8;
-          v21 = v5;
+          v21 = array;
           v22 = v13;
-          v6 = [v12 flatMap:v20];
+          firstObject = [v12 flatMap:v20];
 
           ++v11;
-          v12 = v6;
+          v12 = firstObject;
         }
 
         while (v9 != v11);
-        v9 = [v7 countByEnumeratingWithState:&v23 objects:v27 count:16];
+        v9 = [pft_tail countByEnumeratingWithState:&v23 objects:v27 count:16];
       }
 
       while (v9);
@@ -444,11 +444,11 @@ id __19__PFTFuture_chain___block_invoke(uint64_t a1, void *a2)
     v18[1] = 3221225472;
     v18[2] = __22__PFTFuture_sequence___block_invoke_2;
     v18[3] = &unk_279A53620;
-    v19 = v5;
-    v14 = v5;
-    v4 = [v6 flatMap:v18];
+    v19 = array;
+    v14 = array;
+    v4 = [firstObject flatMap:v18];
 
-    v3 = v17;
+    sequenceCopy = v17;
   }
 
   v15 = *MEMORY[0x277D85DE8];
@@ -472,21 +472,21 @@ PFTFuture *__22__PFTFuture_sequence___block_invoke_2(uint64_t a1, uint64_t a2)
   return [PFTFuture futureWithResult:v3];
 }
 
-+ (id)join:(id)a3
++ (id)join:(id)join
 {
-  v3 = a3;
-  v4 = [v3 count];
+  joinCopy = join;
+  v4 = [joinCopy count];
   if (v4 == 1)
   {
-    v5 = [v3 firstObject];
-    v6 = [PFTFuture _joinOne:v5];
+    firstObject = [joinCopy firstObject];
+    v6 = [PFTFuture _joinOne:firstObject];
   }
 
   else
   {
     if (v4)
     {
-      [PFTFuture _joinMany:v3];
+      [PFTFuture _joinMany:joinCopy];
     }
 
     else
@@ -513,20 +513,20 @@ id __22__PFTFuture__joinOne___block_invoke(uint64_t a1, void *a2)
   return v5;
 }
 
-+ (id)_joinMany:(id)a3
++ (id)_joinMany:(id)many
 {
   v32 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  manyCopy = many;
   v4 = objc_alloc_init(PFTPromise);
   v5 = [PFTScheduler synchronousSerialDispatchQueueWithName:@"com.apple.PosterFuturesKit.future.join"];
-  v6 = [v3 count];
+  v6 = [manyCopy count];
   for (i = [MEMORY[0x277CBEB18] arrayWithCapacity:v6];
   {
-    v8 = [MEMORY[0x277CBEB68] null];
-    [i addObject:v8];
+    null = [MEMORY[0x277CBEB68] null];
+    [i addObject:null];
   }
 
-  v9 = [v3 mutableCopy];
+  v9 = [manyCopy mutableCopy];
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __23__PFTFuture__joinMany___block_invoke;
@@ -539,13 +539,13 @@ id __22__PFTFuture__joinOne___block_invoke(uint64_t a1, void *a2)
   v29 = v12;
   v13 = v5;
   v30 = v13;
-  [v3 enumerateObjectsUsingBlock:v26];
-  v14 = [(PFTPromise *)v12 future];
+  [manyCopy enumerateObjectsUsingBlock:v26];
+  future = [(PFTPromise *)v12 future];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v15 = v3;
+  v15 = manyCopy;
   v16 = [v15 countByEnumeratingWithState:&v22 objects:v31 count:16];
   if (v16)
   {
@@ -560,7 +560,7 @@ id __22__PFTFuture__joinOne___block_invoke(uint64_t a1, void *a2)
           objc_enumerationMutation(v15);
         }
 
-        [v14 addCalculationDependency:{*(*(&v22 + 1) + 8 * j), v22}];
+        [future addCalculationDependency:{*(*(&v22 + 1) + 8 * j), v22}];
       }
 
       v17 = [v15 countByEnumeratingWithState:&v22 objects:v31 count:16];
@@ -571,7 +571,7 @@ id __22__PFTFuture__joinOne___block_invoke(uint64_t a1, void *a2)
 
   v20 = *MEMORY[0x277D85DE8];
 
-  return v14;
+  return future;
 }
 
 void __23__PFTFuture__joinMany___block_invoke(id *a1, void *a2, void *a3)
@@ -690,25 +690,25 @@ void __23__PFTFuture__joinMany___block_invoke_4(id *a1)
   return v4;
 }
 
-- (PFTFuture)initWithSchedulerProvider:(id)a3
+- (PFTFuture)initWithSchedulerProvider:(id)provider
 {
-  v4 = a3;
-  v5 = [[_PFTBlockFutureImpl alloc] initWithSchedulerProvider:v4];
+  providerCopy = provider;
+  v5 = [[_PFTBlockFutureImpl alloc] initWithSchedulerProvider:providerCopy];
 
   v6 = [(PFTFuture *)self initWithImpl:v5];
   return v6;
 }
 
-- (PFTFuture)initWithImpl:(id)a3
+- (PFTFuture)initWithImpl:(id)impl
 {
-  v5 = a3;
+  implCopy = impl;
   v12.receiver = self;
   v12.super_class = PFTFuture;
   v6 = [(PFTFuture *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_impl, a3);
+    objc_storeStrong(&v6->_impl, impl);
     v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
     calculationDependencies = v7->_calculationDependencies;
     v7->_calculationDependencies = v8;
@@ -726,7 +726,7 @@ void __23__PFTFuture__joinMany___block_invoke_4(id *a1)
   v8 = 3221225472;
   v9 = __24__PFTFuture_description__block_invoke;
   v10 = &unk_279A52B88;
-  v11 = self;
+  selfCopy = self;
   v12 = v3;
   v4 = v3;
   [v4 appendProem:self block:&v7];
@@ -735,29 +735,29 @@ void __23__PFTFuture__joinMany___block_invoke_4(id *a1)
   return v5;
 }
 
-- (id)result:(id *)a3
+- (id)result:(id *)result
 {
-  v5 = [MEMORY[0x277CBEAA8] distantFuture];
-  v6 = [(PFTFuture *)self resultBeforeDate:v5 error:a3];
+  distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
+  v6 = [(PFTFuture *)self resultBeforeDate:distantFuture error:result];
 
   return v6;
 }
 
-- (id)resultWithTimeout:(double)a3 error:(id *)a4
+- (id)resultWithTimeout:(double)timeout error:(id *)error
 {
-  v6 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:a3];
-  v7 = [(PFTFuture *)self resultBeforeDate:v6 error:a4];
+  v6 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:timeout];
+  v7 = [(PFTFuture *)self resultBeforeDate:v6 error:error];
 
   return v7;
 }
 
-- (id)timeoutAfter:(double)a3 scheduler:(id)a4 cleanup:(id)a5
+- (id)timeoutAfter:(double)after scheduler:(id)scheduler cleanup:(id)cleanup
 {
-  v8 = a4;
-  v9 = a5;
-  if (!v8)
+  schedulerCopy = scheduler;
+  cleanupCopy = cleanup;
+  if (!schedulerCopy)
   {
-    v8 = +[PFTScheduler mainThreadScheduler];
+    schedulerCopy = +[PFTScheduler mainThreadScheduler];
   }
 
   objc_initWeak(&location, self);
@@ -766,9 +766,9 @@ void __23__PFTFuture__joinMany___block_invoke_4(id *a1)
   v20[2] = __44__PFTFuture_timeoutAfter_scheduler_cleanup___block_invoke;
   v20[3] = &unk_279A52C88;
   objc_copyWeak(&v22, &location);
-  v10 = v9;
+  v10 = cleanupCopy;
   v21 = v10;
-  v11 = [v8 afterDelay:v20 performBlock:a3];
+  v11 = [schedulerCopy afterDelay:v20 performBlock:after];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __44__PFTFuture_timeoutAfter_scheduler_cleanup___block_invoke_2;
@@ -808,10 +808,10 @@ void __44__PFTFuture_timeoutAfter_scheduler_cleanup___block_invoke(uint64_t a1)
   }
 }
 
-- (BOOL)finishWithResult:(id)a3
+- (BOOL)finishWithResult:(id)result
 {
-  v4 = a3;
-  if (!v4)
+  resultCopy = result;
+  if (!resultCopy)
   {
     v5 = PFTLogFutures();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -828,15 +828,15 @@ void __44__PFTFuture_timeoutAfter_scheduler_cleanup___block_invoke(uint64_t a1)
     PFTFutureThrowProtocolExceptionWithReason(@"result must be non-nil", 0);
   }
 
-  v7 = [(PFTFuture *)self finishWithResult:v4 error:0];
+  v7 = [(PFTFuture *)self finishWithResult:resultCopy error:0];
 
   return v7;
 }
 
-- (BOOL)finishWithError:(id)a3
+- (BOOL)finishWithError:(id)error
 {
-  v4 = a3;
-  if (!v4)
+  errorCopy = error;
+  if (!errorCopy)
   {
     v5 = PFTLogFutures();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -853,20 +853,20 @@ void __44__PFTFuture_timeoutAfter_scheduler_cleanup___block_invoke(uint64_t a1)
     PFTFutureThrowProtocolExceptionWithReason(@"error must be non-nil", 0);
   }
 
-  v7 = [(PFTFuture *)self finishWithResult:0 error:v4];
+  v7 = [(PFTFuture *)self finishWithResult:0 error:errorCopy];
 
   return v7;
 }
 
-- (BOOL)cancelWithReason:(id)a3
+- (BOOL)cancelWithReason:(id)reason
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  reasonCopy = reason;
+  v5 = reasonCopy;
+  if (reasonCopy)
   {
     v11 = *MEMORY[0x277CCA470];
-    v12[0] = v4;
+    v12[0] = reasonCopy;
     v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v12 forKeys:&v11 count:1];
   }
 
@@ -882,18 +882,18 @@ void __44__PFTFuture_timeoutAfter_scheduler_cleanup___block_invoke(uint64_t a1)
   return v8;
 }
 
-- (void)addSuccessBlock:(id)a3 scheduler:(id)a4
+- (void)addSuccessBlock:(id)block scheduler:(id)scheduler
 {
-  v6 = a3;
-  v7 = a4;
+  blockCopy = block;
+  schedulerCopy = scheduler;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __39__PFTFuture_addSuccessBlock_scheduler___block_invoke;
   v10[3] = &unk_279A53708;
-  v11 = v7;
-  v12 = v6;
-  v8 = v6;
-  v9 = v7;
+  v11 = schedulerCopy;
+  v12 = blockCopy;
+  v8 = blockCopy;
+  v9 = schedulerCopy;
   [(PFTFuture *)self addSuccessBlock:v10];
 }
 
@@ -912,18 +912,18 @@ void __39__PFTFuture_addSuccessBlock_scheduler___block_invoke(uint64_t a1, void 
   [v4 performBlock:v7];
 }
 
-- (void)addFailureBlock:(id)a3 scheduler:(id)a4
+- (void)addFailureBlock:(id)block scheduler:(id)scheduler
 {
-  v6 = a3;
-  v7 = a4;
+  blockCopy = block;
+  schedulerCopy = scheduler;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __39__PFTFuture_addFailureBlock_scheduler___block_invoke;
   v10[3] = &unk_279A53730;
-  v11 = v7;
-  v12 = v6;
-  v8 = v6;
-  v9 = v7;
+  v11 = schedulerCopy;
+  v12 = blockCopy;
+  v8 = blockCopy;
+  v9 = schedulerCopy;
   [(PFTFuture *)self addFailureBlock:v10];
 }
 
@@ -942,48 +942,48 @@ void __39__PFTFuture_addFailureBlock_scheduler___block_invoke(uint64_t a1, void 
   [v4 performBlock:v7];
 }
 
-- (void)addSuccessBlock:(id)a3 andFailureBlock:(id)a4
+- (void)addSuccessBlock:(id)block andFailureBlock:(id)failureBlock
 {
-  v7 = a3;
-  v6 = a4;
-  if (v7)
+  blockCopy = block;
+  failureBlockCopy = failureBlock;
+  if (blockCopy)
   {
-    [(PFTFuture *)self addSuccessBlock:v7];
+    [(PFTFuture *)self addSuccessBlock:blockCopy];
   }
 
-  if (v6)
+  if (failureBlockCopy)
   {
-    [(PFTFuture *)self addFailureBlock:v6];
+    [(PFTFuture *)self addFailureBlock:failureBlockCopy];
   }
 }
 
-- (void)addSuccessBlock:(id)a3 andFailureBlock:(id)a4 scheduler:(id)a5
+- (void)addSuccessBlock:(id)block andFailureBlock:(id)failureBlock scheduler:(id)scheduler
 {
-  v10 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v10)
+  blockCopy = block;
+  failureBlockCopy = failureBlock;
+  schedulerCopy = scheduler;
+  if (blockCopy)
   {
-    [(PFTFuture *)self addSuccessBlock:v10 scheduler:v9];
+    [(PFTFuture *)self addSuccessBlock:blockCopy scheduler:schedulerCopy];
   }
 
-  if (v8)
+  if (failureBlockCopy)
   {
-    [(PFTFuture *)self addFailureBlock:v8 scheduler:v9];
+    [(PFTFuture *)self addFailureBlock:failureBlockCopy scheduler:schedulerCopy];
   }
 }
 
-- (void)addCompletionBlock:(id)a3
+- (void)addCompletionBlock:(id)block
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  blockCopy = block;
+  v5 = blockCopy;
+  if (blockCopy)
   {
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __32__PFTFuture_addCompletionBlock___block_invoke;
     v8[3] = &unk_279A53758;
-    v9 = v4;
+    v9 = blockCopy;
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __32__PFTFuture_addCompletionBlock___block_invoke_2;
@@ -993,37 +993,37 @@ void __39__PFTFuture_addFailureBlock_scheduler___block_invoke(uint64_t a1, void 
   }
 }
 
-- (void)addCompletionBlock:(id)a3 scheduler:(id)a4
+- (void)addCompletionBlock:(id)block scheduler:(id)scheduler
 {
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  blockCopy = block;
+  v7 = blockCopy;
+  if (blockCopy)
   {
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __42__PFTFuture_addCompletionBlock_scheduler___block_invoke;
     v10[3] = &unk_279A53758;
-    v11 = v6;
+    v11 = blockCopy;
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __42__PFTFuture_addCompletionBlock_scheduler___block_invoke_2;
     v8[3] = &unk_279A53780;
     v9 = v11;
-    [(PFTFuture *)self addSuccessBlock:v10 andFailureBlock:v8 scheduler:a4];
+    [(PFTFuture *)self addSuccessBlock:v10 andFailureBlock:v8 scheduler:scheduler];
   }
 }
 
-- (id)trackWithActivity:(id)a3
+- (id)trackWithActivity:(id)activity
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  activityCopy = activity;
+  v5 = activityCopy;
+  if (activityCopy)
   {
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __31__PFTFuture_trackWithActivity___block_invoke;
     v9[3] = &unk_279A53558;
-    v10 = v4;
+    v10 = activityCopy;
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __31__PFTFuture_trackWithActivity___block_invoke_2;
@@ -1035,40 +1035,40 @@ void __39__PFTFuture_addFailureBlock_scheduler___block_invoke(uint64_t a1, void 
   return self;
 }
 
-- (id)flatMap:(id)a3
+- (id)flatMap:(id)map
 {
-  v4 = a3;
+  mapCopy = map;
   v5 = +[PFTSchedulerProvider defaultProvider];
-  v6 = [(PFTFuture *)self flatMap:v4 continuationScheduler:0 schedulerProvider:v5];
+  v6 = [(PFTFuture *)self flatMap:mapCopy continuationScheduler:0 schedulerProvider:v5];
 
   return v6;
 }
 
-- (id)flatMap:(id)a3 continuationScheduler:(id)a4
+- (id)flatMap:(id)map continuationScheduler:(id)scheduler
 {
-  v6 = a4;
-  v7 = a3;
+  schedulerCopy = scheduler;
+  mapCopy = map;
   v8 = +[PFTSchedulerProvider defaultProvider];
-  v9 = [(PFTFuture *)self flatMap:v7 continuationScheduler:v6 schedulerProvider:v8];
+  v9 = [(PFTFuture *)self flatMap:mapCopy continuationScheduler:schedulerCopy schedulerProvider:v8];
 
   return v9;
 }
 
-- (id)recover:(id)a3
+- (id)recover:(id)recover
 {
-  v4 = a3;
+  recoverCopy = recover;
   v5 = +[PFTSchedulerProvider defaultProvider];
-  v6 = [(PFTFuture *)self recover:v4 onErrorScheduler:0 schedulerProvider:v5];
+  v6 = [(PFTFuture *)self recover:recoverCopy onErrorScheduler:0 schedulerProvider:v5];
 
   return v6;
 }
 
-- (id)recover:(id)a3 onErrorScheduler:(id)a4
+- (id)recover:(id)recover onErrorScheduler:(id)scheduler
 {
-  v6 = a4;
-  v7 = a3;
+  schedulerCopy = scheduler;
+  recoverCopy = recover;
   v8 = +[PFTSchedulerProvider defaultProvider];
-  v9 = [(PFTFuture *)self recover:v7 onErrorScheduler:v6 schedulerProvider:v8];
+  v9 = [(PFTFuture *)self recover:recoverCopy onErrorScheduler:schedulerCopy schedulerProvider:v8];
 
   return v9;
 }

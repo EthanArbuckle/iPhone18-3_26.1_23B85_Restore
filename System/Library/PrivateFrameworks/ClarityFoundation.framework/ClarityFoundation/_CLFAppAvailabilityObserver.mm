@@ -1,19 +1,19 @@
 @interface _CLFAppAvailabilityObserver
-- (_CLFAppAvailabilityObserver)initWithHandler:(id)a3;
+- (_CLFAppAvailabilityObserver)initWithHandler:(id)handler;
 - (void)invalidate;
 @end
 
 @implementation _CLFAppAvailabilityObserver
 
-- (_CLFAppAvailabilityObserver)initWithHandler:(id)a3
+- (_CLFAppAvailabilityObserver)initWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v14.receiver = self;
   v14.super_class = _CLFAppAvailabilityObserver;
   v5 = [(_CLFAppAvailabilityObserver *)&v14 init];
   if (v5)
   {
-    v6 = MEMORY[0x1E12F0180](v4);
+    v6 = MEMORY[0x1E12F0180](handlerCopy);
     handler = v5->_handler;
     v5->_handler = v6;
 
@@ -35,8 +35,8 @@
 
     v9 = v8;
     _Block_object_dispose(&v16, 8);
-    v10 = [v8 subjectMonitorRegistry];
-    v11 = [v10 addMonitor:v5 subjectMask:1];
+    subjectMonitorRegistry = [v8 subjectMonitorRegistry];
+    v11 = [subjectMonitorRegistry addMonitor:v5 subjectMask:1];
     subscription = v5->_subscription;
     v5->_subscription = v11;
   }
@@ -46,8 +46,8 @@
 
 - (void)invalidate
 {
-  v2 = [(_CLFAppAvailabilityObserver *)self subscription];
-  [v2 invalidate];
+  subscription = [(_CLFAppAvailabilityObserver *)self subscription];
+  [subscription invalidate];
 }
 
 @end

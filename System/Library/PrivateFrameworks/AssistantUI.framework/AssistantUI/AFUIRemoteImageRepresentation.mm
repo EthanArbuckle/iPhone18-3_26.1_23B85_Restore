@@ -1,21 +1,21 @@
 @interface AFUIRemoteImageRepresentation
 + (NSArray)writableTypeIdentifiersForItemProvider;
-- (AFUIRemoteImageRepresentation)initWithImageURL:(id)a3;
-- (id)loadDataWithTypeIdentifier:(id)a3 forItemProviderCompletionHandler:(id)a4;
+- (AFUIRemoteImageRepresentation)initWithImageURL:(id)l;
+- (id)loadDataWithTypeIdentifier:(id)identifier forItemProviderCompletionHandler:(id)handler;
 - (void)_commonInit;
 @end
 
 @implementation AFUIRemoteImageRepresentation
 
-- (AFUIRemoteImageRepresentation)initWithImageURL:(id)a3
+- (AFUIRemoteImageRepresentation)initWithImageURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v9.receiver = self;
   v9.super_class = AFUIRemoteImageRepresentation;
   v5 = [(AFUIRemoteImageRepresentation *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [lCopy copy];
     imageURL = v5->_imageURL;
     v5->_imageURL = v6;
 
@@ -41,17 +41,17 @@
   return v2;
 }
 
-- (id)loadDataWithTypeIdentifier:(id)a3 forItemProviderCompletionHandler:(id)a4
+- (id)loadDataWithTypeIdentifier:(id)identifier forItemProviderCompletionHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   queue = self->_queue;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __93__AFUIRemoteImageRepresentation_loadDataWithTypeIdentifier_forItemProviderCompletionHandler___block_invoke;
   v9[3] = &unk_278CD5790;
   v9[4] = self;
-  v10 = v5;
-  v7 = v5;
+  v10 = handlerCopy;
+  v7 = handlerCopy;
   dispatch_async(queue, v9);
 
   return 0;

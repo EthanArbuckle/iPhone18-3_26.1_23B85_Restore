@@ -1,11 +1,11 @@
 @interface TSPDocumentResourceInfo
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToDocumentResourceInfo:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToDocumentResourceInfo:(id)info;
 - (CGSize)pixelSize;
 - (NSString)description;
 - (NSString)recordName;
 - (TSPDocumentResourceInfo)init;
-- (TSPDocumentResourceInfo)initWithDigestString:(id)a3 locator:(id)a4 fileExtension:(id)a5 fileSize:(unint64_t)a6 tags:(id)a7 pixelSize:(CGSize)a8 fallbackColor:(id)a9;
+- (TSPDocumentResourceInfo)initWithDigestString:(id)string locator:(id)locator fileExtension:(id)extension fileSize:(unint64_t)size tags:(id)tags pixelSize:(CGSize)pixelSize fallbackColor:(id)color;
 @end
 
 @implementation TSPDocumentResourceInfo
@@ -26,34 +26,34 @@
   objc_exception_throw(v13);
 }
 
-- (TSPDocumentResourceInfo)initWithDigestString:(id)a3 locator:(id)a4 fileExtension:(id)a5 fileSize:(unint64_t)a6 tags:(id)a7 pixelSize:(CGSize)a8 fallbackColor:(id)a9
+- (TSPDocumentResourceInfo)initWithDigestString:(id)string locator:(id)locator fileExtension:(id)extension fileSize:(unint64_t)size tags:(id)tags pixelSize:(CGSize)pixelSize fallbackColor:(id)color
 {
-  height = a8.height;
-  width = a8.width;
-  v17 = a3;
-  v18 = a4;
-  v19 = a5;
-  v20 = a7;
-  v21 = a9;
+  height = pixelSize.height;
+  width = pixelSize.width;
+  stringCopy = string;
+  locatorCopy = locator;
+  extensionCopy = extension;
+  tagsCopy = tags;
+  colorCopy = color;
   v48.receiver = self;
   v48.super_class = TSPDocumentResourceInfo;
   v24 = [(TSPDocumentResourceInfo *)&v48 init];
   if (v24)
   {
-    v25 = objc_msgSend_copy(v17, v22, v23);
+    v25 = objc_msgSend_copy(stringCopy, v22, v23);
     digestString = v24->_digestString;
     v24->_digestString = v25;
 
-    v29 = objc_msgSend_copy(v18, v27, v28);
+    v29 = objc_msgSend_copy(locatorCopy, v27, v28);
     locator = v24->_locator;
     v24->_locator = v29;
 
-    v33 = objc_msgSend_copy(v19, v31, v32);
+    v33 = objc_msgSend_copy(extensionCopy, v31, v32);
     fileExtension = v24->_fileExtension;
     v24->_fileExtension = v33;
 
-    v24->_fileSize = a6;
-    v37 = objc_msgSend_copy(v20, v35, v36);
+    v24->_fileSize = size;
+    v37 = objc_msgSend_copy(tagsCopy, v35, v36);
     v40 = v37;
     if (v37)
     {
@@ -70,7 +70,7 @@
 
     v24->_pixelSize.width = width;
     v24->_pixelSize.height = height;
-    v45 = objc_msgSend_copy(v21, v43, v44);
+    v45 = objc_msgSend_copy(colorCopy, v43, v44);
     fallbackColor = v24->_fallbackColor;
     v24->_fallbackColor = v45;
   }
@@ -78,10 +78,10 @@
   return v24;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     isEqualToDocumentResourceInfo = 1;
   }
@@ -115,18 +115,18 @@
   return v6;
 }
 
-- (BOOL)isEqualToDocumentResourceInfo:(id)a3
+- (BOOL)isEqualToDocumentResourceInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   digestString = self->_digestString;
-  v8 = objc_msgSend_digestString(v4, v6, v7);
+  v8 = objc_msgSend_digestString(infoCopy, v6, v7);
   if (!objc_msgSend_isEqualToString_(digestString, v9, v8))
   {
     goto LABEL_6;
   }
 
   locator = self->_locator;
-  v13 = objc_msgSend_locator(v4, v10, v11);
+  v13 = objc_msgSend_locator(infoCopy, v10, v11);
   if ((objc_msgSend_isEqualToString_(locator, v14, v13) & 1) == 0)
   {
 
@@ -136,7 +136,7 @@ LABEL_6:
   }
 
   fileExtension = self->_fileExtension;
-  v18 = objc_msgSend_fileExtension(v4, v15, v16);
+  v18 = objc_msgSend_fileExtension(infoCopy, v15, v16);
   LODWORD(fileExtension) = objc_msgSend_isEqualToString_(fileExtension, v19, v18);
 
   if (!fileExtension)
@@ -145,7 +145,7 @@ LABEL_6:
     goto LABEL_8;
   }
 
-  v8 = objc_msgSend_tags(v4, v20, v21);
+  v8 = objc_msgSend_tags(infoCopy, v20, v21);
   isEqualToSet = objc_msgSend_isEqualToSet_(self->_tags, v22, v8);
 LABEL_7:
 

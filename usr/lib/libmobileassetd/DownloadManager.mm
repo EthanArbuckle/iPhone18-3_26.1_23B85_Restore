@@ -1,91 +1,91 @@
 @interface DownloadManager
 + (BOOL)isDeviceBeforeFirstUnlock;
-+ (id)_extractCheckedNSErrorFromDict:(id)a3 withKey:(id)a4;
-+ (id)getPallasUrl:(BOOL)a3 assetType:(id)a4;
-+ (id)pathToCatalogLookupServer:(id)a3 usingDownloadOptions:(id)a4;
-+ (void)addNWActivityToDownloadInfo:(id)a3 andTask:(id)a4 andLabel:(unsigned int)a5 withOptions:(id)a6;
-- (BOOL)_shouldLogAssetDetails:(id)a3 extraServerOptions:(id)a4;
-- (BOOL)addInFailedJobs:(id)a3 finalEvents:(id)a4;
-- (BOOL)checkAssetDownloadIsSkipped:(id)a3 connection:(id)a4 with:(id)a5 autoAssetJob:(id)a6;
-- (BOOL)checkCatalogDownloadIsSkipped:(id)a3 connection:(id)a4 with:(id)a5 autoAssetJob:(id)a6;
-- (BOOL)checkDownloadIsSyncing:(id)a3 using:(id)a4 with:(id)a5 autoAssetJob:(id)a6 ofJobType:(id)a7;
-- (BOOL)checkPmvDownloadIsSkipped:(id)a3 connection:(id)a4 with:(id)a5;
-- (BOOL)decryptContentEncryptedAssetAtPathIfRequired:(id)a3;
-- (BOOL)downloadNeedsSSO:(id)a3 taskDescriptor:(id)a4 url:(id)a5;
-- (BOOL)getPallasEnabledForAssetType:(id)a3;
++ (id)_extractCheckedNSErrorFromDict:(id)dict withKey:(id)key;
++ (id)getPallasUrl:(BOOL)url assetType:(id)type;
++ (id)pathToCatalogLookupServer:(id)server usingDownloadOptions:(id)options;
++ (void)addNWActivityToDownloadInfo:(id)info andTask:(id)task andLabel:(unsigned int)label withOptions:(id)options;
+- (BOOL)_shouldLogAssetDetails:(id)details extraServerOptions:(id)options;
+- (BOOL)addInFailedJobs:(id)jobs finalEvents:(id)events;
+- (BOOL)checkAssetDownloadIsSkipped:(id)skipped connection:(id)connection with:(id)with autoAssetJob:(id)job;
+- (BOOL)checkCatalogDownloadIsSkipped:(id)skipped connection:(id)connection with:(id)with autoAssetJob:(id)job;
+- (BOOL)checkDownloadIsSyncing:(id)syncing using:(id)using with:(id)with autoAssetJob:(id)job ofJobType:(id)type;
+- (BOOL)checkPmvDownloadIsSkipped:(id)skipped connection:(id)connection with:(id)with;
+- (BOOL)decryptContentEncryptedAssetAtPathIfRequired:(id)required;
+- (BOOL)downloadNeedsSSO:(id)o taskDescriptor:(id)descriptor url:(id)url;
+- (BOOL)getPallasEnabledForAssetType:(id)type;
 - (BOOL)isBuddyRunning;
-- (BOOL)isValidUUID:(id)a3;
-- (BOOL)useBootstrapDataPathForScan:(id)a3;
+- (BOOL)isValidUUID:(id)d;
+- (BOOL)useBootstrapDataPathForScan:(id)scan;
 - (DownloadManager)init;
 - (MADAnalyticsManager)analytics;
-- (id)MACopyDawToken:(id)a3;
+- (id)MACopyDawToken:(id)token;
 - (id)_getKeysNotLoggedForAutoResponse;
 - (id)_getKeysNotLoggedForV2Response;
-- (id)_parseForAssetDetailsToLog:(id)a3;
-- (id)addSUOptions:(id)a3 options:(id)a4;
+- (id)_parseForAssetDetailsToLog:(id)log;
+- (id)addSUOptions:(id)options options:(id)a4;
 - (id)currentConfig;
 - (id)currentSession;
-- (id)getBaseURLOverrideForAssetType:(id)a3;
-- (id)getUserAgentStringForClient:(id)a3 withAssetType:(id)a4;
-- (id)grabTaskID:(id)a3;
-- (id)lastModifiedDateFromResponse:(id)a3;
-- (id)newAssetAudience:(BOOL)a3 assetType:(id)a4 logMessage:(id *)a5;
-- (id)newDefaultEventDictionary:(id)a3 sessionId:(id)a4 nonce:(id)a5 url:(id)a6 statusCode:(int64_t)a7 assetAudience:(id)a8 uuid:(id)a9 assetType:(id)a10 version:(id)a11 baseUrl:(id)a12 discretionary:(BOOL)a13 deviceCheck:(id)a14;
-- (id)pallasRequestedAssetSetID:(id)a3;
-- (id)startDownloadTask:(id)a3 downloadSize:(int64_t)a4 for:(id)a5 startingAt:(id)a6 withLength:(id)a7 extractWith:(id)a8 options:(id)a9 modified:(id)a10 session:(id)a11;
-- (id)startDownloadTask:(id)a3 downloadSize:(int64_t)a4 for:(id)a5 startingAt:(id)a6 withLength:(id)a7 extractWith:(id)a8 options:(id)a9 modified:(id)a10 session:(id)a11 isCachingServer:(BOOL)a12;
+- (id)getBaseURLOverrideForAssetType:(id)type;
+- (id)getUserAgentStringForClient:(id)client withAssetType:(id)type;
+- (id)grabTaskID:(id)d;
+- (id)lastModifiedDateFromResponse:(id)response;
+- (id)newAssetAudience:(BOOL)audience assetType:(id)type logMessage:(id *)message;
+- (id)newDefaultEventDictionary:(id)dictionary sessionId:(id)id nonce:(id)nonce url:(id)url statusCode:(int64_t)code assetAudience:(id)audience uuid:(id)uuid assetType:(id)self0 version:(id)self1 baseUrl:(id)self2 discretionary:(BOOL)self3 deviceCheck:(id)self4;
+- (id)pallasRequestedAssetSetID:(id)d;
+- (id)startDownloadTask:(id)task downloadSize:(int64_t)size for:(id)for startingAt:(id)at withLength:(id)length extractWith:(id)with options:(id)options modified:(id)self0 session:(id)self1;
+- (id)startDownloadTask:(id)task downloadSize:(int64_t)size for:(id)for startingAt:(id)at withLength:(id)length extractWith:(id)with options:(id)options modified:(id)self0 session:(id)self1 isCachingServer:(BOOL)self2;
 - (int)triggerVPN;
-- (int64_t)massagePmvAndPersist:(id)a3 from:(id)a4 to:(id)a5 postedDate:(id)a6;
-- (int64_t)massageXmlAndPersist:(id)a3 catalogInfo:(id)a4 descriptor:(id)a5 assets:(id)a6 transformations:(id)a7 to:(id)a8 postedDate:(id)a9 assetSetId:(id)a10 pallasUrl:(id)a11 considerCaching:(BOOL)a12;
-- (int64_t)massageXmlAndPersist:(id)a3 from:(id)a4 to:(id)a5 with:(id)a6 postedDate:(id)a7 considerCaching:(BOOL)a8;
-- (int64_t)processAssetDownload:(id)a3 with:(id)a4 and:(id)a5 shouldMove:(BOOL)a6 extractorExists:(BOOL)a7;
-- (void)_logResponseBody:(id)a3 nonce:(id)a4 extraServerOptions:(id)a5;
-- (void)activityNotification:(id)a3 ofStatusChange:(unint64_t)a4 withReason:(id)a5;
-- (void)addLiveServerRequest:(id)a3 forAssetType:(id)a4 withPurpose:(id)a5 audience:(id)a6 pallasUrl:(id)a7 using:(id)a8 with:(id)a9 clientName:(id)a10 autoAssetJobID:(id)a11 task:(id)a12 options:(id)a13;
-- (void)allDownloading:(id)a3;
-- (void)assessDownloadCompletion:(id)a3 originalUrl:(id)a4 taskDescription:(id)a5 taskId:(id)a6 error:(id)a7 moveFile:(BOOL)a8 extractorExists:(BOOL)a9;
-- (void)augmentSplunkEvent:(id)a3 withResultForHTTPStatusCode:(int64_t)a4;
-- (void)cancelAllDownloading:(id)a3 withPurpose:(id)a4 includingAssets:(BOOL)a5 includingCatalog:(BOOL)a6 includingOther:(BOOL)a7 clientName:(id)a8 then:(id)a9;
-- (void)cancelAssetDownloadJob:(id)a3 forAssetType:(id)a4 withPurpose:(id)a5 matchingAssetId:(id)a6 forAutoAssetName:(id)a7;
-- (void)cancelAssetDownloadTask:(id)a3;
-- (void)checkSplunkStatus:(id)a3 failureReason:(id)a4 productVersion:(id)a5 sessionId:(id)a6 nonce:(id)a7 url:(id)a8 statusCode:(int64_t)a9 assetAudience:(id)a10 version:(id)a11 baseUrl:(id)a12 discretionary:(BOOL)a13 deviceCheck:(id)a14;
-- (void)completeNWActivity:(id)a3 withParams:(id)a4 andError:(id)a5;
-- (void)configAssetDownload:(id)a3 withPurpose:(id)a4 matchingAssetId:(id)a5 usingDownloadConfig:(id)a6 usingXPCConnection:(id)a7 withXPCMessage:(id)a8 performingAutoAssetJob:(id)a9 asClientName:(id)a10;
-- (void)configAssetDownloadJob:(id)a3 forAssetType:(id)a4 withPurpose:(id)a5 matchingAssetId:(id)a6 usingDownloadOptions:(id)a7 forAutoAssetName:(id)a8;
-- (void)configDownload:(id)a3 clientName:(id)a4 using:(id)a5 with:(id)a6;
-- (void)getCurrentInflightDownloads:(id)a3;
-- (void)handleDownloadCannotStartResult:(int64_t)a3 assetType:(id)a4 connection:(id)a5 requestMessage:(id)a6 clientName:(id)a7 autoAssetJobID:(id)a8 ofJobType:(id)a9 underlyingError:(id)a10 additionalData:(id)a11 notifyingAutoAssetLayer:(BOOL)a12;
-- (void)handleSplunkReportFinished:(id)a3 result:(BOOL)a4;
-- (void)handleSuccessfulDownload:(id)a3 task:(id)a4 taskId:(id)a5 shouldMove:(BOOL)a6 extractorExists:(BOOL)a7 postedDate:(id)a8 notModified:(BOOL)a9;
-- (void)indicateAutoDownloadJobFinished:(int)a3 downloadInfo:(id)a4 performingAutoAssetJob:(id)a5 ofJobType:(id)a6;
-- (void)indicateDownloadJobFinished:(int)a3 usingXPCConnection:(id)a4 withXPCMessage:(id)a5 performingAutoAssetJob:(id)a6 ofJobType:(id)a7;
+- (int64_t)massagePmvAndPersist:(id)persist from:(id)from to:(id)to postedDate:(id)date;
+- (int64_t)massageXmlAndPersist:(id)persist catalogInfo:(id)info descriptor:(id)descriptor assets:(id)assets transformations:(id)transformations to:(id)to postedDate:(id)date assetSetId:(id)self0 pallasUrl:(id)self1 considerCaching:(BOOL)self2;
+- (int64_t)massageXmlAndPersist:(id)persist from:(id)from to:(id)to with:(id)with postedDate:(id)date considerCaching:(BOOL)caching;
+- (int64_t)processAssetDownload:(id)download with:(id)with and:(id)and shouldMove:(BOOL)move extractorExists:(BOOL)exists;
+- (void)_logResponseBody:(id)body nonce:(id)nonce extraServerOptions:(id)options;
+- (void)activityNotification:(id)notification ofStatusChange:(unint64_t)change withReason:(id)reason;
+- (void)addLiveServerRequest:(id)request forAssetType:(id)type withPurpose:(id)purpose audience:(id)audience pallasUrl:(id)url using:(id)using with:(id)with clientName:(id)self0 autoAssetJobID:(id)self1 task:(id)self2 options:(id)self3;
+- (void)allDownloading:(id)downloading;
+- (void)assessDownloadCompletion:(id)completion originalUrl:(id)url taskDescription:(id)description taskId:(id)id error:(id)error moveFile:(BOOL)file extractorExists:(BOOL)exists;
+- (void)augmentSplunkEvent:(id)event withResultForHTTPStatusCode:(int64_t)code;
+- (void)cancelAllDownloading:(id)downloading withPurpose:(id)purpose includingAssets:(BOOL)assets includingCatalog:(BOOL)catalog includingOther:(BOOL)other clientName:(id)name then:(id)then;
+- (void)cancelAssetDownloadJob:(id)job forAssetType:(id)type withPurpose:(id)purpose matchingAssetId:(id)id forAutoAssetName:(id)name;
+- (void)cancelAssetDownloadTask:(id)task;
+- (void)checkSplunkStatus:(id)status failureReason:(id)reason productVersion:(id)version sessionId:(id)id nonce:(id)nonce url:(id)url statusCode:(int64_t)code assetAudience:(id)self0 version:(id)self1 baseUrl:(id)self2 discretionary:(BOOL)self3 deviceCheck:(id)self4;
+- (void)completeNWActivity:(id)activity withParams:(id)params andError:(id)error;
+- (void)configAssetDownload:(id)download withPurpose:(id)purpose matchingAssetId:(id)id usingDownloadConfig:(id)config usingXPCConnection:(id)connection withXPCMessage:(id)message performingAutoAssetJob:(id)job asClientName:(id)self0;
+- (void)configAssetDownloadJob:(id)job forAssetType:(id)type withPurpose:(id)purpose matchingAssetId:(id)id usingDownloadOptions:(id)options forAutoAssetName:(id)name;
+- (void)configDownload:(id)download clientName:(id)name using:(id)using with:(id)with;
+- (void)getCurrentInflightDownloads:(id)downloads;
+- (void)handleDownloadCannotStartResult:(int64_t)result assetType:(id)type connection:(id)connection requestMessage:(id)message clientName:(id)name autoAssetJobID:(id)d ofJobType:(id)jobType underlyingError:(id)self0 additionalData:(id)self1 notifyingAutoAssetLayer:(BOOL)self2;
+- (void)handleSplunkReportFinished:(id)finished result:(BOOL)result;
+- (void)handleSuccessfulDownload:(id)download task:(id)task taskId:(id)id shouldMove:(BOOL)move extractorExists:(BOOL)exists postedDate:(id)date notModified:(BOOL)modified;
+- (void)indicateAutoDownloadJobFinished:(int)finished downloadInfo:(id)info performingAutoAssetJob:(id)job ofJobType:(id)type;
+- (void)indicateDownloadJobFinished:(int)finished usingXPCConnection:(id)connection withXPCMessage:(id)message performingAutoAssetJob:(id)job ofJobType:(id)type;
 - (void)initializeSessionsAsync;
 - (void)isBuddyRunning;
-- (void)isDownloading:(id)a3 then:(id)a4;
-- (void)pallasRequestV2:(id)a3 normalizedType:(id)a4 withPurpose:(id)a5 options:(id)a6 using:(id)a7 with:(id)a8 autoAssetJob:(id)a9 clientName:(id)a10 then:(id)a11;
+- (void)isDownloading:(id)downloading then:(id)then;
+- (void)pallasRequestV2:(id)v2 normalizedType:(id)type withPurpose:(id)purpose options:(id)options using:(id)using with:(id)with autoAssetJob:(id)job clientName:(id)self0 then:(id)self1;
 - (void)queryNSUrlSessiondAndUpdateState;
-- (void)registerAssetDownloadJob:(id)a3 forAssetType:(id)a4 withPurpose:(id)a5 clientName:(id)a6 usingDownloadOptions:(id)a7 forAssetId:(id)a8 withCatalogMetadata:(id)a9 withSpaceCheckedUUID:(id)a10;
-- (void)registerAssetDownloadJob:(id)a3 forThis:(id)a4 withBase:(id)a5 relativeTo:(id)a6 startingAt:(id)a7 withLength:(id)a8 extractWith:(id)a9 allocateExtractorIfNecessary:(BOOL)a10 connection:(id)a11 message:(id)a12 clientName:(id)a13 notify:(unint64_t)a14 withCatalogMetadata:(id)a15 withSpaceCheckedUUID:(id)a16;
-- (void)registerAssetDownloadJob:(id)a3 withPurpose:(id)a4 usingDownloadOptions:(id)a5 forAssetId:(id)a6 withBase:(id)a7 relativeTo:(id)a8 startingAt:(id)a9 withLength:(id)a10 extractWith:(id)a11 allocateExtractorIfNecessary:(BOOL)a12 usingXPCConnection:(id)a13 withXPCMessage:(id)a14 clientName:(id)a15 performingAutoAssetJob:(id)a16 notify:(unint64_t)a17 withCatalogMetadata:(id)a18 withSpaceCheckedUUID:(id)a19;
-- (void)registerCatalogDownloadJob:(id)a3 withPurpose:(id)a4 usingDownloadOptions:(id)a5 usingXPCConnection:(id)a6 withXPCMessage:(id)a7 performingAutoAssetJob:(id)a8 asClientName:(id)a9;
-- (void)registerPmvDownloadJob:(id)a3 using:(id)a4 with:(id)a5 clientName:(id)a6;
-- (void)registerXmlDownloadJob:(id)a3 using:(id)a4 with:(id)a5 clientName:(id)a6;
-- (void)reportDownloadAttemptResult:(id)a3 with:(int64_t)a4;
-- (void)retryTask:(id)a3 retryUrl:(id)a4 modified:(id)a5 clientName:(id)a6;
-- (void)sendDownloadResult:(id)a3 with:(int64_t)a4 extraInfo:(id)a5;
-- (void)sendEvents:(id)a3 sessionId:(id)a4;
-- (void)sendMobileAssetHealthReport:(id)a3 commonFields:(id)a4 sessionId:(id)a5;
-- (void)sendNotification:(id)a3;
-- (void)sendNotification:(id)a3 suffix:(id)a4;
-- (void)setPreviousBatchedFailureEvent:(id)a3 inSendEventsByUUID:(id)a4;
-- (void)startDownloadAndUpdateState:(id)a3 for:(id)a4 modified:(id)a5 options:(id)a6 using:(id)a7 with:(id)a8 clientName:(id)a9 autoAssetJob:(id)a10 ofJobType:(id)a11;
-- (void)startDownloadAndUpdateState:(id)a3 for:(id)a4 startingAt:(id)a5 withLength:(id)a6 extractWith:(id)a7 modified:(id)a8 options:(id)a9 downloadSize:(int64_t)a10 using:(id)a11 with:(id)a12 clientName:(id)a13 autoAssetJob:(id)a14 ofJobType:(id)a15 notify:(unint64_t)a16 spaceCheckedUUID:(id)a17;
+- (void)registerAssetDownloadJob:(id)job forAssetType:(id)type withPurpose:(id)purpose clientName:(id)name usingDownloadOptions:(id)options forAssetId:(id)id withCatalogMetadata:(id)metadata withSpaceCheckedUUID:(id)self0;
+- (void)registerAssetDownloadJob:(id)job forThis:(id)this withBase:(id)base relativeTo:(id)to startingAt:(id)at withLength:(id)length extractWith:(id)with allocateExtractorIfNecessary:(BOOL)self0 connection:(id)self1 message:(id)self2 clientName:(id)self3 notify:(unint64_t)self4 withCatalogMetadata:(id)self5 withSpaceCheckedUUID:(id)self6;
+- (void)registerAssetDownloadJob:(id)job withPurpose:(id)purpose usingDownloadOptions:(id)options forAssetId:(id)id withBase:(id)base relativeTo:(id)to startingAt:(id)at withLength:(id)self0 extractWith:(id)self1 allocateExtractorIfNecessary:(BOOL)self2 usingXPCConnection:(id)self3 withXPCMessage:(id)self4 clientName:(id)self5 performingAutoAssetJob:(id)self6 notify:(unint64_t)self7 withCatalogMetadata:(id)self8 withSpaceCheckedUUID:(id)self9;
+- (void)registerCatalogDownloadJob:(id)job withPurpose:(id)purpose usingDownloadOptions:(id)options usingXPCConnection:(id)connection withXPCMessage:(id)message performingAutoAssetJob:(id)assetJob asClientName:(id)name;
+- (void)registerPmvDownloadJob:(id)job using:(id)using with:(id)with clientName:(id)name;
+- (void)registerXmlDownloadJob:(id)job using:(id)using with:(id)with clientName:(id)name;
+- (void)reportDownloadAttemptResult:(id)result with:(int64_t)with;
+- (void)retryTask:(id)task retryUrl:(id)url modified:(id)modified clientName:(id)name;
+- (void)sendDownloadResult:(id)result with:(int64_t)with extraInfo:(id)info;
+- (void)sendEvents:(id)events sessionId:(id)id;
+- (void)sendMobileAssetHealthReport:(id)report commonFields:(id)fields sessionId:(id)id;
+- (void)sendNotification:(id)notification;
+- (void)sendNotification:(id)notification suffix:(id)suffix;
+- (void)setPreviousBatchedFailureEvent:(id)event inSendEventsByUUID:(id)d;
+- (void)startDownloadAndUpdateState:(id)state for:(id)for modified:(id)modified options:(id)options using:(id)using with:(id)with clientName:(id)name autoAssetJob:(id)self0 ofJobType:(id)self1;
+- (void)startDownloadAndUpdateState:(id)state for:(id)for startingAt:(id)at withLength:(id)length extractWith:(id)with modified:(id)modified options:(id)options downloadSize:(int64_t)self0 using:(id)self1 with:(id)self2 clientName:(id)self3 autoAssetJob:(id)self4 ofJobType:(id)self5 notify:(unint64_t)self6 spaceCheckedUUID:(id)self7;
 - (void)startDownloadTimer;
 - (void)stopTimerIfNoDownloadsInProgress;
 - (void)syncSplunkTasks;
-- (void)taskFinishedUpdateState:(id)a3 with:(int64_t)a4 extraInfo:(id)a5 fromLocation:(id)a6;
-- (void)updateEstimateInfo:(double)a3;
-- (void)updateProgressIfRequired:(id)a3 totalWritten:(int64_t)a4 totalExpected:(int64_t)a5 notify:(BOOL)a6;
+- (void)taskFinishedUpdateState:(id)state with:(int64_t)with extraInfo:(id)info fromLocation:(id)location;
+- (void)updateEstimateInfo:(double)info;
+- (void)updateProgressIfRequired:(id)required totalWritten:(int64_t)written totalExpected:(int64_t)expected notify:(BOOL)notify;
 - (void)updateStateAndNotifyIfRequired;
 @end
 
@@ -93,8 +93,8 @@
 
 - (void)stopTimerIfNoDownloadsInProgress
 {
-  v3 = [(NSMutableDictionary *)self->_downloadTasksInFlight allKeys];
-  v4 = [v3 count];
+  allKeys = [(NSMutableDictionary *)self->_downloadTasksInFlight allKeys];
+  v4 = [allKeys count];
 
   if (!v4)
   {
@@ -124,7 +124,7 @@
   v14 = &v13;
   v15 = 0x2020000000;
   v16 = 0;
-  v3 = [v2 deviceStatusQueue];
+  deviceStatusQueue = [v2 deviceStatusQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __44__DownloadManager_isDeviceBeforeFirstUnlock__block_invoke;
@@ -133,7 +133,7 @@
   v10 = v4;
   v11 = &v13;
   v12 = &v17;
-  dispatch_sync(v3, block);
+  dispatch_sync(deviceStatusQueue, block);
 
   if (*(v14 + 24) == 1)
   {
@@ -258,9 +258,9 @@ void __37__DownloadManager_startDownloadTimer__block_invoke(uint64_t a1)
 - (MADAnalyticsManager)analytics
 {
   v2 = getControlManager();
-  v3 = [v2 analytics];
+  analytics = [v2 analytics];
 
-  return v3;
+  return analytics;
 }
 
 - (int)triggerVPN
@@ -597,10 +597,10 @@ void *__23__DownloadManager_init__block_invoke(uint64_t a1)
   return result;
 }
 
-- (id)getUserAgentStringForClient:(id)a3 withAssetType:(id)a4
+- (id)getUserAgentStringForClient:(id)client withAssetType:(id)type
 {
-  v6 = a4;
-  v7 = a3;
+  typeCopy = type;
+  clientCopy = client;
   v8 = MGCopyAnswer();
   brainVersion = self->_brainVersion;
   if (!brainVersion)
@@ -609,15 +609,15 @@ void *__23__DownloadManager_init__block_invoke(uint64_t a1)
   }
 
   v10 = @"unknownClient";
-  if (v7)
+  if (clientCopy)
   {
-    v10 = v7;
+    v10 = clientCopy;
   }
 
   v11 = @"unknownAssetType";
-  if (v6)
+  if (typeCopy)
   {
-    v11 = v6;
+    v11 = typeCopy;
   }
 
   v12 = @"unknownBuildVersion";
@@ -631,19 +631,19 @@ void *__23__DownloadManager_init__block_invoke(uint64_t a1)
   return v13;
 }
 
-- (void)completeNWActivity:(id)a3 withParams:(id)a4 andError:(id)a5
+- (void)completeNWActivity:(id)activity withParams:(id)params andError:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  objc_sync_enter(v11);
-  v12 = [(NSMutableDictionary *)v11->_nwActivityObjectsByJobUUID safeObjectForKey:v8 ofClass:objc_opt_class()];
+  activityCopy = activity;
+  paramsCopy = params;
+  errorCopy = error;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v12 = [(NSMutableDictionary *)selfCopy->_nwActivityObjectsByJobUUID safeObjectForKey:activityCopy ofClass:objc_opt_class()];
   v13 = v12;
   if (v12)
   {
-    v18 = v8;
-    v19 = v10;
+    v18 = activityCopy;
+    v19 = errorCopy;
     v22 = 0u;
     v23 = 0u;
     v20 = 0u;
@@ -662,7 +662,7 @@ void *__23__DownloadManager_init__block_invoke(uint64_t a1)
             objc_enumerationMutation(v14);
           }
 
-          if (v9)
+          if (paramsCopy)
           {
             nw_activity_submit_metrics();
           }
@@ -676,12 +676,12 @@ void *__23__DownloadManager_init__block_invoke(uint64_t a1)
       while (v15);
     }
 
-    v8 = v18;
-    v10 = v19;
-    [(NSMutableDictionary *)v11->_nwActivityObjectsByJobUUID removeObjectForKey:v18];
+    activityCopy = v18;
+    errorCopy = v19;
+    [(NSMutableDictionary *)selfCopy->_nwActivityObjectsByJobUUID removeObjectForKey:v18];
   }
 
-  objc_sync_exit(v11);
+  objc_sync_exit(selfCopy);
 }
 
 void __37__DownloadManager_startDownloadTimer__block_invoke_1807(uint64_t a1)
@@ -704,7 +704,7 @@ void __37__DownloadManager_startDownloadTimer__block_invoke_1807(uint64_t a1)
   [*(a1 + 32) stopTimerIfNoDownloadsInProgress];
 }
 
-- (void)updateEstimateInfo:(double)a3
+- (void)updateEstimateInfo:(double)info
 {
   downloadStateQueue = self->_downloadStateQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -712,7 +712,7 @@ void __37__DownloadManager_startDownloadTimer__block_invoke_1807(uint64_t a1)
   v4[2] = __38__DownloadManager_updateEstimateInfo___block_invoke;
   v4[3] = &unk_4B36C0;
   v4[4] = self;
-  *&v4[5] = a3;
+  *&v4[5] = info;
   dispatch_async(downloadStateQueue, v4);
 }
 
@@ -900,20 +900,20 @@ LABEL_12:
   os_activity_scope_leave(&state);
 }
 
-- (void)handleSplunkReportFinished:(id)a3 result:(BOOL)a4
+- (void)handleSplunkReportFinished:(id)finished result:(BOOL)result
 {
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  finishedCopy = finished;
+  v7 = finishedCopy;
+  if (finishedCopy)
   {
     splunkStateQueue = self->_splunkStateQueue;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = __53__DownloadManager_handleSplunkReportFinished_result___block_invoke;
     block[3] = &unk_4B3378;
-    v11 = v6;
-    v12 = self;
-    v13 = a4;
+    v11 = finishedCopy;
+    selfCopy = self;
+    resultCopy = result;
     dispatch_async(splunkStateQueue, block);
     v9 = v11;
   }
@@ -1006,13 +1006,13 @@ LABEL_16:
 LABEL_17:
 }
 
-- (BOOL)addInFailedJobs:(id)a3 finalEvents:(id)a4
+- (BOOL)addInFailedJobs:(id)jobs finalEvents:(id)events
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  v52 = v5;
-  if (!v5 || !v6)
+  jobsCopy = jobs;
+  eventsCopy = events;
+  v7 = eventsCopy;
+  v52 = jobsCopy;
+  if (!jobsCopy || !eventsCopy)
   {
     v9 = _MADLog(@"Download");
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -1089,9 +1089,9 @@ LABEL_52:
           goto LABEL_37;
         }
 
-        v21 = [p_weak_ivar_lyt[278] defaultManager];
+        defaultManager = [p_weak_ivar_lyt[278] defaultManager];
         v53 = v19;
-        v22 = [v21 removeItemAtPath:? error:?];
+        v22 = [defaultManager removeItemAtPath:? error:?];
 
         if (v22)
         {
@@ -1254,17 +1254,17 @@ LABEL_44:
 LABEL_54:
 
 LABEL_55:
-  v42 = [v52 allValues];
-  [v7 addObjectsFromArray:v42];
+  allValues = [v52 allValues];
+  [v7 addObjectsFromArray:allValues];
 
   return v40;
 }
 
-- (void)sendEvents:(id)a3 sessionId:(id)a4
+- (void)sendEvents:(id)events sessionId:(id)id
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  eventsCopy = events;
+  idCopy = id;
+  if (eventsCopy)
   {
     if (+[DownloadManager isDeviceBeforeFirstUnlock])
     {
@@ -1290,8 +1290,8 @@ LABEL_55:
         _os_log_impl(&dword_0, v11, OS_LOG_TYPE_DEFAULT, "already batching", buf, 2u);
       }
 
-      v13 = [v6 allValues];
-      [v9 addObjectsFromArray:v13];
+      allValues = [eventsCopy allValues];
+      [v9 addObjectsFromArray:allValues];
 
       v14 = 0;
     }
@@ -1304,12 +1304,12 @@ LABEL_55:
         _os_log_impl(&dword_0, v11, OS_LOG_TYPE_DEFAULT, "Doing batching", buf, 2u);
       }
 
-      v14 = [(DownloadManager *)self addInFailedJobs:v6 finalEvents:v9];
+      v14 = [(DownloadManager *)self addInFailedJobs:eventsCopy finalEvents:v9];
     }
 
     v48[0] = @"clientId";
     v48[1] = @"events";
-    v49[0] = v7;
+    v49[0] = idCopy;
     v49[1] = v9;
     v15 = [NSDictionary dictionaryWithObjects:v49 forKeys:v48 count:2];
     if ([NSJSONSerialization isValidJSONObject:v15])
@@ -1319,27 +1319,27 @@ LABEL_55:
       {
         v17 = v16;
         v18 = +[NSUUID UUID];
-        v19 = [v18 UUIDString];
+        uUIDString = [v18 UUIDString];
 
-        v39 = v19;
+        v39 = uUIDString;
         if (v14)
         {
           self->_currentlyBatchingSplunk = 1;
           v20 = getPathToSplunkRetry(@"bathFileForSendingEvents");
-          v21 = [v20 absoluteString];
-          v8 = [NSURL fileURLWithPath:v21];
+          absoluteString = [v20 absoluteString];
+          v8 = [NSURL fileURLWithPath:absoluteString];
 
           goto LABEL_26;
         }
 
         if (self->_haveSyncedSplunkState)
         {
-          getPathToSplunkData(v19);
+          getPathToSplunkData(uUIDString);
         }
 
         else
         {
-          getPathToSplunkRetry(v19);
+          getPathToSplunkRetry(uUIDString);
         }
         v8 = ;
         if (v8)
@@ -1513,12 +1513,12 @@ LABEL_48:
 LABEL_49:
 }
 
-- (void)sendMobileAssetHealthReport:(id)a3 commonFields:(id)a4 sessionId:(id)a5
+- (void)sendMobileAssetHealthReport:(id)report commonFields:(id)fields sessionId:(id)id
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8)
+  reportCopy = report;
+  fieldsCopy = fields;
+  idCopy = id;
+  if (reportCopy)
   {
     if (+[DownloadManager isDeviceBeforeFirstUnlock])
     {
@@ -1534,12 +1534,12 @@ LABEL_49:
 
     v30[0] = @"clientId";
     v30[1] = @"events";
-    v31[0] = v10;
-    v31[1] = v8;
+    v31[0] = idCopy;
+    v31[1] = reportCopy;
     v12 = [NSDictionary dictionaryWithObjects:v31 forKeys:v30 count:2];
     v11 = [NSMutableDictionary dictionaryWithDictionary:v12];
 
-    [v11 addEntriesFromDictionary:v9];
+    [v11 addEntriesFromDictionary:fieldsCopy];
     if ([NSJSONSerialization isValidJSONObject:v11])
     {
       v13 = [NSJSONSerialization dataWithJSONObject:v11 options:0 error:0];
@@ -1571,8 +1571,8 @@ LABEL_49:
               }
 
               v18 = v17;
-              v19 = [NSString stringWithFormat:@"MAHR-%@", v10];
-              [v18 setTaskDescription:v19];
+              idCopy = [NSString stringWithFormat:@"MAHR-%@", idCopy];
+              [v18 setTaskDescription:idCopy];
 
               PreferenceLong = getPreferenceLong(@"SplunkTimeout");
               if ((PreferenceLong & 0x8000000000000000) == 0)
@@ -1600,7 +1600,7 @@ LABEL_33:
               else if (v24)
               {
                 *buf = 138543362;
-                v29 = v10;
+                v29 = idCopy;
                 v25 = "Sending splunk event; session id: %{public}@";
                 goto LABEL_33;
               }
@@ -1678,22 +1678,22 @@ LABEL_26:
 LABEL_39:
 }
 
-- (void)configDownload:(id)a3 clientName:(id)a4 using:(id)a5 with:(id)a6
+- (void)configDownload:(id)download clientName:(id)name using:(id)using with:(id)with
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  downloadCopy = download;
+  nameCopy = name;
+  usingCopy = using;
+  withCopy = with;
   v14 = _MADLog(@"Download");
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v25 = v11;
+    v25 = nameCopy;
     _os_log_impl(&dword_0, v14, OS_LOG_TYPE_DEFAULT, "In configDownload for client: %{public}@", buf, 0xCu);
   }
 
   v15 = downloadManagerDecodeClasses();
-  v16 = getObjectFromMessage(v13, "downloadConfigLength", "downloadConfig", v15);
+  v16 = getObjectFromMessage(withCopy, "downloadConfigLength", "downloadConfig", v15);
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -1719,17 +1719,17 @@ LABEL_39:
       if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v25 = v11;
+        v25 = nameCopy;
         _os_log_impl(&dword_0, v23, OS_LOG_TYPE_DEFAULT, "No options specified for download config, wrong class, skipping configDownload for: %{public}@", buf, 0xCu);
       }
 
-      [(DownloadManager *)self indicateDownloadJobFinished:2 usingXPCConnection:v12 withXPCMessage:v13];
+      [(DownloadManager *)self indicateDownloadJobFinished:2 usingXPCConnection:usingCopy withXPCMessage:withCopy];
       goto LABEL_24;
     }
 
     [v16 logConfig];
 LABEL_9:
-    string = xpc_dictionary_get_string(v13, "Purpose");
+    string = xpc_dictionary_get_string(withCopy, "Purpose");
     if (string)
     {
       v19 = [NSString stringWithUTF8String:string];
@@ -1739,11 +1739,11 @@ LABEL_9:
         if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543362;
-          v25 = v11;
+          v25 = nameCopy;
           _os_log_impl(&dword_0, v20, OS_LOG_TYPE_DEFAULT, "Supplied purpose for download config is not well formed, skipping configDownload for: %{public}@", buf, 0xCu);
         }
 
-        [(DownloadManager *)self indicateDownloadJobFinished:2 usingXPCConnection:v12 withXPCMessage:v13];
+        [(DownloadManager *)self indicateDownloadJobFinished:2 usingXPCConnection:usingCopy withXPCMessage:withCopy];
         goto LABEL_20;
       }
     }
@@ -1753,8 +1753,8 @@ LABEL_9:
       v19 = 0;
     }
 
-    v22 = [NSString stringWithUTF8String:xpc_dictionary_get_string(v13, "AssetId")];
-    [(DownloadManager *)self configAssetDownload:v10 withPurpose:v19 matchingAssetId:v22 usingDownloadConfig:v16 usingXPCConnection:v12 withXPCMessage:v13 performingAutoAssetJob:0 asClientName:v11];
+    v22 = [NSString stringWithUTF8String:xpc_dictionary_get_string(withCopy, "AssetId")];
+    [(DownloadManager *)self configAssetDownload:downloadCopy withPurpose:v19 matchingAssetId:v22 usingDownloadConfig:v16 usingXPCConnection:usingCopy withXPCMessage:withCopy performingAutoAssetJob:0 asClientName:nameCopy];
 
 LABEL_20:
 LABEL_24:
@@ -1768,42 +1768,42 @@ LABEL_15:
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v25 = v11;
+    v25 = nameCopy;
     _os_log_impl(&dword_0, v21, OS_LOG_TYPE_DEFAULT, "No options specified for download config, skipping configDownload for: %{public}@", buf, 0xCu);
   }
 
-  [(DownloadManager *)self indicateDownloadJobFinished:2 usingXPCConnection:v12 withXPCMessage:v13];
+  [(DownloadManager *)self indicateDownloadJobFinished:2 usingXPCConnection:usingCopy withXPCMessage:withCopy];
 LABEL_25:
 }
 
-- (void)configAssetDownloadJob:(id)a3 forAssetType:(id)a4 withPurpose:(id)a5 matchingAssetId:(id)a6 usingDownloadOptions:(id)a7 forAutoAssetName:(id)a8
+- (void)configAssetDownloadJob:(id)job forAssetType:(id)type withPurpose:(id)purpose matchingAssetId:(id)id usingDownloadOptions:(id)options forAutoAssetName:(id)name
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  jobCopy = job;
+  typeCopy = type;
+  purposeCopy = purpose;
+  idCopy = id;
+  optionsCopy = options;
+  nameCopy = name;
   v34[0] = 0;
   v34[1] = v34;
   v34[2] = 0x2020000000;
   v34[3] = 2;
-  v20 = normalizedAssetType(v15);
-  v21 = assembleTaskDescriptorWithPurposeAndAutoAssetJobID(v20, v17, v16, v14);
+  v20 = normalizedAssetType(typeCopy);
+  v21 = assembleTaskDescriptorWithPurposeAndAutoAssetJobID(v20, idCopy, purposeCopy, jobCopy);
   downloadStateQueue = self->_downloadStateQueue;
   v27[0] = _NSConcreteStackBlock;
   v27[1] = 3221225472;
   v27[2] = __121__DownloadManager_configAssetDownloadJob_forAssetType_withPurpose_matchingAssetId_usingDownloadOptions_forAutoAssetName___block_invoke;
   v27[3] = &unk_4B3F60;
   v28 = v21;
-  v29 = self;
-  v30 = v19;
-  v31 = v18;
-  v32 = v14;
+  selfCopy = self;
+  v30 = nameCopy;
+  v31 = optionsCopy;
+  v32 = jobCopy;
   v33 = v34;
-  v23 = v14;
-  v24 = v18;
-  v25 = v19;
+  v23 = jobCopy;
+  v24 = optionsCopy;
+  v25 = nameCopy;
   v26 = v21;
   dispatch_async(downloadStateQueue, v27);
 
@@ -1946,16 +1946,16 @@ LABEL_36:
   [*(a1 + 40) indicateAutoDownloadJobFinished:*(*(*(a1 + 72) + 8) + 24) downloadInfo:v3 performingAutoAssetJob:*(a1 + 64) ofJobType:@"config_job"];
 }
 
-- (void)configAssetDownload:(id)a3 withPurpose:(id)a4 matchingAssetId:(id)a5 usingDownloadConfig:(id)a6 usingXPCConnection:(id)a7 withXPCMessage:(id)a8 performingAutoAssetJob:(id)a9 asClientName:(id)a10
+- (void)configAssetDownload:(id)download withPurpose:(id)purpose matchingAssetId:(id)id usingDownloadConfig:(id)config usingXPCConnection:(id)connection withXPCMessage:(id)message performingAutoAssetJob:(id)job asClientName:(id)self0
 {
-  v15 = a3;
-  v34 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v20 = a9;
-  v21 = a10;
+  downloadCopy = download;
+  purposeCopy = purpose;
+  idCopy = id;
+  configCopy = config;
+  connectionCopy = connection;
+  messageCopy = message;
+  jobCopy = job;
+  nameCopy = name;
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   v22 = _os_activity_create(&dword_0, "DownloadManager:configAssetDownload", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
@@ -1965,27 +1965,27 @@ LABEL_36:
   v44[1] = v44;
   v44[2] = 0x2020000000;
   v44[3] = 2;
-  v33 = v15;
-  v23 = normalizedAssetType(v15);
-  v24 = assembleTaskDescriptorWithPurposeAndAutoAssetJobID(v23, v16, v34, v20);
+  v33 = downloadCopy;
+  v23 = normalizedAssetType(downloadCopy);
+  v24 = assembleTaskDescriptorWithPurposeAndAutoAssetJobID(v23, idCopy, purposeCopy, jobCopy);
   downloadStateQueue = self->_downloadStateQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __157__DownloadManager_configAssetDownload_withPurpose_matchingAssetId_usingDownloadConfig_usingXPCConnection_withXPCMessage_performingAutoAssetJob_asClientName___block_invoke;
   block[3] = &unk_4B3F88;
   v36 = v24;
-  v37 = self;
-  v38 = v21;
-  v39 = v17;
-  v40 = v20;
-  v41 = v18;
-  v42 = v19;
+  selfCopy = self;
+  v38 = nameCopy;
+  v39 = configCopy;
+  v40 = jobCopy;
+  v41 = connectionCopy;
+  v42 = messageCopy;
   v43 = v44;
-  v26 = v19;
-  v27 = v18;
-  v28 = v20;
-  v29 = v17;
-  v30 = v21;
+  v26 = messageCopy;
+  v27 = connectionCopy;
+  v28 = jobCopy;
+  v29 = configCopy;
+  v30 = nameCopy;
   v31 = v24;
   dispatch_async(downloadStateQueue, block);
 
@@ -2052,37 +2052,37 @@ LABEL_11:
   }
 }
 
-- (void)cancelAssetDownloadJob:(id)a3 forAssetType:(id)a4 withPurpose:(id)a5 matchingAssetId:(id)a6 forAutoAssetName:(id)a7
+- (void)cancelAssetDownloadJob:(id)job forAssetType:(id)type withPurpose:(id)purpose matchingAssetId:(id)id forAutoAssetName:(id)name
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  jobCopy = job;
+  typeCopy = type;
+  purposeCopy = purpose;
+  idCopy = id;
+  nameCopy = name;
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   v17 = _os_activity_create(&dword_0, "DownloadManager:cancelAssetDownloadJob", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
   os_activity_scope_enter(v17, &state);
 
-  v18 = normalizedAssetType(v13);
-  v19 = assembleTaskDescriptorWithPurposeAndAutoAssetJobID(v18, v15, v14, v12);
+  v18 = normalizedAssetType(typeCopy);
+  v19 = assembleTaskDescriptorWithPurposeAndAutoAssetJobID(v18, idCopy, purposeCopy, jobCopy);
   downloadStateQueue = self->_downloadStateQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __100__DownloadManager_cancelAssetDownloadJob_forAssetType_withPurpose_matchingAssetId_forAutoAssetName___block_invoke;
   block[3] = &unk_4B3FB0;
   v28 = v19;
-  v29 = v12;
-  v30 = v13;
-  v31 = v14;
-  v32 = v15;
-  v33 = v16;
-  v34 = self;
-  v21 = v16;
-  v22 = v15;
-  v23 = v14;
-  v24 = v13;
-  v25 = v12;
+  v29 = jobCopy;
+  v30 = typeCopy;
+  v31 = purposeCopy;
+  v32 = idCopy;
+  v33 = nameCopy;
+  selfCopy = self;
+  v21 = nameCopy;
+  v22 = idCopy;
+  v23 = purposeCopy;
+  v24 = typeCopy;
+  v25 = jobCopy;
   v26 = v19;
   dispatch_async(downloadStateQueue, block);
 
@@ -2191,9 +2191,9 @@ LABEL_10:
   }
 }
 
-- (void)cancelAssetDownloadTask:(id)a3
+- (void)cancelAssetDownloadTask:(id)task
 {
-  v4 = a3;
+  taskCopy = task;
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   v5 = _os_activity_create(&dword_0, "DownloadManager:cancelAssetDownloadTask", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
@@ -2204,9 +2204,9 @@ LABEL_10:
   v8[1] = 3221225472;
   v8[2] = __43__DownloadManager_cancelAssetDownloadTask___block_invoke;
   v8[3] = &unk_4B2B18;
-  v9 = v4;
-  v10 = self;
-  v7 = v4;
+  v9 = taskCopy;
+  selfCopy = self;
+  v7 = taskCopy;
   dispatch_async(downloadStateQueue, v8);
 
   os_activity_scope_leave(&state);
@@ -2255,52 +2255,52 @@ void __43__DownloadManager_cancelAssetDownloadTask___block_invoke(uint64_t a1)
   }
 }
 
-+ (id)pathToCatalogLookupServer:(id)a3 usingDownloadOptions:(id)a4
++ (id)pathToCatalogLookupServer:(id)server usingDownloadOptions:(id)options
 {
-  v5 = a3;
-  v6 = a4;
+  serverCopy = server;
+  optionsCopy = options;
   v7 = getDownloadManager();
   IsInternalAllowed = _MAPreferencesIsInternalAllowed();
-  if ([v7 getPallasEnabledForAssetType:v5])
+  if ([v7 getPallasEnabledForAssetType:serverCopy])
   {
-    _MAPreferencesSync(@"pathToCatalogLookupServer", v5);
-    v9 = [DownloadManager getPallasUrl:IsInternalAllowed assetType:v5];
+    _MAPreferencesSync(@"pathToCatalogLookupServer", serverCopy);
+    v9 = [DownloadManager getPallasUrl:IsInternalAllowed assetType:serverCopy];
   }
 
-  else if (v6 && ([v6 liveServerCatalogOnly] & 1) != 0)
+  else if (optionsCopy && ([optionsCopy liveServerCatalogOnly] & 1) != 0)
   {
     v9 = 0;
   }
 
   else
   {
-    v10 = normalizedAssetType(v5);
-    v9 = getStandardUrl(v5, v10);
+    v10 = normalizedAssetType(serverCopy);
+    v9 = getStandardUrl(serverCopy, v10);
   }
 
   return v9;
 }
 
-- (void)handleDownloadCannotStartResult:(int64_t)a3 assetType:(id)a4 connection:(id)a5 requestMessage:(id)a6 clientName:(id)a7 autoAssetJobID:(id)a8 ofJobType:(id)a9 underlyingError:(id)a10 additionalData:(id)a11 notifyingAutoAssetLayer:(BOOL)a12
+- (void)handleDownloadCannotStartResult:(int64_t)result assetType:(id)type connection:(id)connection requestMessage:(id)message clientName:(id)name autoAssetJobID:(id)d ofJobType:(id)jobType underlyingError:(id)self0 additionalData:(id)self1 notifyingAutoAssetLayer:(BOOL)self2
 {
-  v56 = a4;
-  connection = a5;
-  original = a6;
-  v55 = a7;
-  v63 = a8;
-  v62 = a9;
-  v59 = a10;
-  v61 = a11;
+  typeCopy = type;
+  connection = connection;
+  original = message;
+  nameCopy = name;
+  dCopy = d;
+  jobTypeCopy = jobType;
+  errorCopy = error;
+  dataCopy = data;
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   v16 = _os_activity_create(&dword_0, "DownloadManager:handleDownloadCannotStartResult", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
   os_activity_scope_enter(v16, &state);
 
   v54 = self->_brainVersion;
-  if (a3)
+  if (result)
   {
-    v17 = [SUCore stringIsEqual:v62 to:@"catalog_job"];
-    v18 = errorStringForMADownloadResult(a3);
+    v17 = [SUCore stringIsEqual:jobTypeCopy to:@"catalog_job"];
+    v18 = errorStringForMADownloadResult(result);
     v19 = v18;
     v20 = @"asset";
     if (v17)
@@ -2308,9 +2308,9 @@ void __43__DownloadManager_cancelAssetDownloadTask___block_invoke(uint64_t a1)
       v20 = @"catalog";
     }
 
-    v21 = [NSString stringWithFormat:@"Cannot start %@ download: %@(%ld)", v20, v18, a3];
+    result = [NSString stringWithFormat:@"Cannot start %@ download: %@(%ld)", v20, v18, result];
 
-    v27 = MAErrorForDownloadResultWithUnderlying(a3, v59, @"%@", v22, v23, v24, v25, v26, v21);
+    v27 = MAErrorForDownloadResultWithUnderlying(result, errorCopy, @"%@", v22, v23, v24, v25, v26, result);
   }
 
   else
@@ -2318,13 +2318,13 @@ void __43__DownloadManager_cancelAssetDownloadTask___block_invoke(uint64_t a1)
     v27 = 0;
   }
 
-  if (v63)
+  if (dCopy)
   {
-    if ([SUCore stringIsEqual:v62 to:@"catalog_job"])
+    if ([SUCore stringIsEqual:jobTypeCopy to:@"catalog_job"])
     {
-      if (a12)
+      if (layer)
       {
-        [MADAutoAssetControlManager catalogDownloadJobFinished:v63 withCatalog:0 error:v27];
+        [MADAutoAssetControlManager catalogDownloadJobFinished:dCopy withCatalog:0 error:v27];
       }
 
       v28 = @"XML";
@@ -2332,22 +2332,22 @@ void __43__DownloadManager_cancelAssetDownloadTask___block_invoke(uint64_t a1)
 
     else
     {
-      if (a12)
+      if (layer)
       {
-        [MADAutoAssetControlManager assetDownloadJobFinished:v63 error:v27];
+        [MADAutoAssetControlManager assetDownloadJobFinished:dCopy error:v27];
       }
 
-      if (([SUCore stringIsEqual:v62 to:@"PMV_job"]& 1) != 0)
+      if (([SUCore stringIsEqual:jobTypeCopy to:@"PMV_job"]& 1) != 0)
       {
         v28 = @"PMV";
       }
 
-      else if (([SUCore stringIsEqual:v62 to:@"asset_job"]& 1) != 0)
+      else if (([SUCore stringIsEqual:jobTypeCopy to:@"asset_job"]& 1) != 0)
       {
         v28 = @"ZIP";
       }
 
-      else if ([SUCore stringIsEqual:v62 to:@"config_job"])
+      else if ([SUCore stringIsEqual:jobTypeCopy to:@"config_job"])
       {
         v28 = @"CFG";
       }
@@ -2373,7 +2373,7 @@ void __43__DownloadManager_cancelAssetDownloadTask___block_invoke(uint64_t a1)
       v30 = reply;
       if (reply)
       {
-        xpc_dictionary_set_int64(reply, "Result", a3);
+        xpc_dictionary_set_int64(reply, "Result", result);
         xpc_connection_send_message(connection, v30);
       }
 
@@ -2406,10 +2406,10 @@ LABEL_31:
   if (!v27)
   {
     v41 = 0;
-    v42 = 0;
-    v43 = 0;
+    checkedDomain = 0;
+    checkedDescription3 = 0;
 LABEL_45:
-    v33 = @"No underlying errors";
+    checkedDescription2 = @"No underlying errors";
     goto LABEL_46;
   }
 
@@ -2417,9 +2417,9 @@ LABEL_45:
   v77 = 0u;
   v74 = 0u;
   v75 = 0u;
-  v32 = [v27 underlyingErrors];
-  v33 = 0;
-  v34 = [v32 countByEnumeratingWithState:&v74 objects:v82 count:16];
+  underlyingErrors = [v27 underlyingErrors];
+  checkedDescription2 = 0;
+  v34 = [underlyingErrors countByEnumeratingWithState:&v74 objects:v82 count:16];
   if (v34)
   {
     v35 = *v75;
@@ -2429,35 +2429,35 @@ LABEL_45:
       {
         if (*v75 != v35)
         {
-          objc_enumerationMutation(v32);
+          objc_enumerationMutation(underlyingErrors);
         }
 
         v37 = *(*(&v74 + 1) + 8 * i);
-        if (v33)
+        if (checkedDescription2)
         {
           v38 = [NSString alloc];
-          v39 = [v37 checkedDescription];
-          v40 = [v38 initWithFormat:@"%@\n%@", v33, v39];
+          checkedDescription = [v37 checkedDescription];
+          v40 = [v38 initWithFormat:@"%@\n%@", checkedDescription2, checkedDescription];
 
-          v33 = v40;
+          checkedDescription2 = v40;
         }
 
         else
         {
-          v33 = [*(*(&v74 + 1) + 8 * i) checkedDescription];
+          checkedDescription2 = [*(*(&v74 + 1) + 8 * i) checkedDescription];
         }
       }
 
-      v34 = [v32 countByEnumeratingWithState:&v74 objects:v82 count:16];
+      v34 = [underlyingErrors countByEnumeratingWithState:&v74 objects:v82 count:16];
     }
 
     while (v34);
   }
 
   v41 = [[NSNumber alloc] initWithInteger:{objc_msgSend(v27, "checkedCode")}];
-  v42 = [v27 checkedDomain];
-  v43 = [v27 checkedDescription];
-  if (!v33)
+  checkedDomain = [v27 checkedDomain];
+  checkedDescription3 = [v27 checkedDescription];
+  if (!checkedDescription2)
   {
     goto LABEL_45;
   }
@@ -2472,9 +2472,9 @@ LABEL_46:
   v80[0] = @"FailureErrorCode";
   v80[1] = @"FailureErrorDomain";
   v45 = @"com.apple.MobileAssetError.Download";
-  if (v42)
+  if (checkedDomain)
   {
-    v45 = v42;
+    v45 = checkedDomain;
   }
 
   v81[0] = v44;
@@ -2482,19 +2482,19 @@ LABEL_46:
   v80[2] = @"FailureErrorMessage";
   v80[3] = @"FailureErrorUnderlying";
   v46 = @"Unknown error starting download";
-  if (v43)
+  if (checkedDescription3)
   {
-    v46 = v43;
+    v46 = checkedDescription3;
   }
 
   v81[2] = v46;
-  v81[3] = v33;
+  v81[3] = checkedDescription2;
   v47 = [NSDictionary dictionaryWithObjects:v81 forKeys:v80 count:4];
   v48 = [NSMutableDictionary dictionaryWithDictionary:v47];
 
-  if (v61)
+  if (dataCopy)
   {
-    [v48 addEntriesFromDictionary:v61];
+    [v48 addEntriesFromDictionary:dataCopy];
   }
 
   splunkStateQueue = self->_splunkStateQueue;
@@ -2503,17 +2503,17 @@ LABEL_46:
   block[2] = __178__DownloadManager_handleDownloadCannotStartResult_assetType_connection_requestMessage_clientName_autoAssetJobID_ofJobType_underlyingError_additionalData_notifyingAutoAssetLayer___block_invoke;
   block[3] = &unk_4B3FD8;
   block[4] = self;
-  v67 = v56;
+  v67 = typeCopy;
   v71 = v48;
-  v72 = a3;
-  v68 = v55;
+  resultCopy = result;
+  v68 = nameCopy;
   v69 = v53;
-  v73 = v63 != 0;
+  v73 = dCopy != 0;
   v70 = v54;
   valuea = v48;
   v50 = v54;
-  v51 = v55;
-  v52 = v56;
+  v51 = nameCopy;
+  v52 = typeCopy;
   dispatch_async(splunkStateQueue, block);
 
   os_activity_scope_leave(&state);
@@ -2530,11 +2530,11 @@ void __178__DownloadManager_handleDownloadCannotStartResult_assetType_connection
   [v7 recordDownloadAttemptForAssetType:v2 clientName:v3 baseUrl:0 relativePath:0 purpose:0 result:v4 analyticsFileType:*(a1 + 56) isAutoDownload:v5 isPallas:0 pallasAssetAudience:v6 isUserPriority:0 bytesWritten:0 bytesTransferredEst:*(a1 + 64) brainVersion:0 withTaskMetrics:0 withOptions:*(a1 + 72) additionalData:?];
 }
 
-- (void)reportDownloadAttemptResult:(id)a3 with:(int64_t)a4
+- (void)reportDownloadAttemptResult:(id)result with:(int64_t)with
 {
-  v6 = a3;
-  v7 = [v6 taskDescriptor];
-  v8 = disassembleTaskDescriptor(v7);
+  resultCopy = result;
+  taskDescriptor = [resultCopy taskDescriptor];
+  v8 = disassembleTaskDescriptor(taskDescriptor);
 
   v9 = [v8 objectForKey:@"normalizedAssetType"];
   v59 = v9;
@@ -2549,88 +2549,88 @@ void __178__DownloadManager_handleDownloadCannotStartResult_assetType_connection
   }
 
   v61 = [v8 objectForKey:@"Purpose"];
-  v68 = [v6 firstClientName];
-  v65 = [v6 baseUrlNoACS];
-  v66 = [v6 relativePath];
-  v63 = a4;
-  v57 = stringForMADownloadResult(a4);
+  firstClientName = [resultCopy firstClientName];
+  baseUrlNoACS = [resultCopy baseUrlNoACS];
+  relativePath = [resultCopy relativePath];
+  withCopy = with;
+  v57 = stringForMADownloadResult(with);
   v10 = [v8 objectForKey:@"isXml"];
-  v11 = [v10 intValue];
+  intValue = [v10 intValue];
   v55 = v8;
-  if (v11 >= 6)
+  if (intValue >= 6)
   {
     v53 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"Unknown%d", [v10 intValue]);
   }
 
   else
   {
-    v53 = *(&off_4B4420 + v11);
+    v53 = *(&off_4B4420 + intValue);
   }
 
-  v12 = [v6 currentTotalWritten];
-  v13 = [v6 transferredBytesEst];
-  v51 = [[NSNumber alloc] initWithLongLong:v12];
-  v50 = [[NSNumber alloc] initWithLongLong:v13 & ~(v13 >> 63)];
-  v14 = [v6 downloadStartTime];
-  v15 = [v14 copy];
+  currentTotalWritten = [resultCopy currentTotalWritten];
+  transferredBytesEst = [resultCopy transferredBytesEst];
+  v51 = [[NSNumber alloc] initWithLongLong:currentTotalWritten];
+  v50 = [[NSNumber alloc] initWithLongLong:transferredBytesEst & ~(transferredBytesEst >> 63)];
+  downloadStartTime = [resultCopy downloadStartTime];
+  v15 = [downloadStartTime copy];
 
-  v16 = [v6 nonDiscretionaryUpgradeTime];
-  v17 = [v16 copy];
+  nonDiscretionaryUpgradeTime = [resultCopy nonDiscretionaryUpgradeTime];
+  v17 = [nonDiscretionaryUpgradeTime copy];
 
-  v18 = [v6 isDiscretionary];
-  v19 = [v6 isPallas];
-  v47 = [v6 isAutoDownload];
-  v20 = [v6 assetAudience];
-  v49 = [v20 copy];
+  isDiscretionary = [resultCopy isDiscretionary];
+  isPallas = [resultCopy isPallas];
+  isAutoDownload = [resultCopy isAutoDownload];
+  assetAudience = [resultCopy assetAudience];
+  v49 = [assetAudience copy];
 
   v48 = self->_brainVersion;
-  v21 = [v6 analyticsData];
+  analyticsData = [resultCopy analyticsData];
 
-  if (v21)
+  if (analyticsData)
   {
-    v22 = v19;
-    v23 = self;
-    v24 = [v6 analyticsData];
-    v25 = [v24 copy];
+    v22 = isPallas;
+    selfCopy2 = self;
+    analyticsData2 = [resultCopy analyticsData];
+    v25 = [analyticsData2 copy];
   }
 
   else
   {
-    v36 = [v6 options];
-    if (!v36)
+    options = [resultCopy options];
+    if (!options)
     {
       v25 = 0;
       goto LABEL_10;
     }
 
-    v37 = v36;
-    queue = v18;
-    v22 = v19;
+    v37 = options;
+    queue = isDiscretionary;
+    v22 = isPallas;
     v38 = v15;
-    v23 = self;
-    v39 = [v6 options];
-    v40 = [v39 analyticsData];
+    selfCopy2 = self;
+    options2 = [resultCopy options];
+    analyticsData3 = [options2 analyticsData];
 
-    if (!v40)
+    if (!analyticsData3)
     {
       v25 = 0;
-      self = v23;
+      self = selfCopy2;
       v15 = v38;
-      v19 = v22;
-      v18 = queue;
+      isPallas = v22;
+      isDiscretionary = queue;
       goto LABEL_10;
     }
 
-    v24 = [v6 options];
-    v41 = [v24 analyticsData];
-    v25 = [v41 mutableCopy];
+    analyticsData2 = [resultCopy options];
+    v24AnalyticsData = [analyticsData2 analyticsData];
+    v25 = [v24AnalyticsData mutableCopy];
 
     v15 = v38;
-    v18 = queue;
+    isDiscretionary = queue;
   }
 
-  self = v23;
-  v19 = v22;
+  self = selfCopy2;
+  isPallas = v22;
 LABEL_10:
   v42 = v25;
   v44 = v15;
@@ -2641,20 +2641,20 @@ LABEL_10:
   block[3] = &unk_4B4028;
   v71 = v25;
   v72 = v15;
-  v91 = v18;
+  v91 = isDiscretionary;
   v43 = v17;
   v73 = v17;
-  v74 = v6;
-  v75 = self;
+  v74 = resultCopy;
+  selfCopy3 = self;
   v76 = v69;
-  v77 = v68;
-  v78 = v65;
-  v79 = v66;
+  v77 = firstClientName;
+  v78 = baseUrlNoACS;
+  v79 = relativePath;
   v80 = v61;
   v81 = v57;
   v82 = v53;
-  v92 = v47;
-  v93 = v19;
+  v92 = isAutoDownload;
+  v93 = isPallas;
   v83 = v49;
   v84 = v51;
   v85 = v50;
@@ -2662,7 +2662,7 @@ LABEL_10:
   v87 = v55;
   v88 = v10;
   v89 = v59;
-  v90 = v63;
+  v90 = withCopy;
   v64 = v59;
   v60 = v10;
   v56 = v55;
@@ -2673,11 +2673,11 @@ LABEL_10:
   v54 = v53;
   v58 = v57;
   v62 = v61;
-  v67 = v66;
-  v29 = v65;
-  v30 = v68;
+  v67 = relativePath;
+  v29 = baseUrlNoACS;
+  v30 = firstClientName;
   v31 = v69;
-  v32 = v6;
+  v32 = resultCopy;
   v33 = v43;
   v34 = v44;
   v35 = v42;
@@ -2865,20 +2865,20 @@ void __52__DownloadManager_reportDownloadAttemptResult_with___block_invoke_1917(
   }
 }
 
-+ (id)_extractCheckedNSErrorFromDict:(id)a3 withKey:(id)a4
++ (id)_extractCheckedNSErrorFromDict:(id)dict withKey:(id)key
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (!v5)
+  dictCopy = dict;
+  keyCopy = key;
+  v7 = keyCopy;
+  if (!dictCopy)
   {
     v10 = 0;
     goto LABEL_15;
   }
 
-  if (v6)
+  if (keyCopy)
   {
-    v8 = [v5 objectForKeyedSubscript:v6];
+    v8 = [dictCopy objectForKeyedSubscript:keyCopy];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -2909,7 +2909,7 @@ void __52__DownloadManager_reportDownloadAttemptResult_with___block_invoke_1917(
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
       v14 = 138543362;
-      v15 = v5;
+      v15 = dictCopy;
       _os_log_impl(&dword_0, v8, OS_LOG_TYPE_ERROR, "Can't extract NSError at nil key from dictionary: %{public}@", &v14, 0xCu);
     }
   }
@@ -2922,10 +2922,10 @@ LABEL_15:
   return v10;
 }
 
-- (void)sendDownloadResult:(id)a3 with:(int64_t)a4 extraInfo:(id)a5
+- (void)sendDownloadResult:(id)result with:(int64_t)with extraInfo:(id)info
 {
-  v88 = a3;
-  v82 = a5;
+  resultCopy = result;
+  infoCopy = info;
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   v6 = _os_activity_create(&dword_0, "DownloadManager:sendDownloadResult", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
@@ -2934,31 +2934,31 @@ LABEL_15:
   v7 = _MADLog(@"Download");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = stringForMADownloadResult(a4);
-    v9 = [v88 task];
-    v10 = [v9 _loggableDescription];
-    v11 = [(DownloadManager *)self grabTaskID:v10];
+    v8 = stringForMADownloadResult(with);
+    task = [resultCopy task];
+    _loggableDescription = [task _loggableDescription];
+    v11 = [(DownloadManager *)self grabTaskID:_loggableDescription];
     *buf = 134218754;
-    v99 = a4;
+    withCopy = with;
     v100 = 2114;
     v101 = v8;
     v102 = 2114;
     v103 = v11;
     v104 = 2114;
-    v105 = v88;
+    v105 = resultCopy;
     _os_log_impl(&dword_0, v7, OS_LOG_TYPE_DEFAULT, "Sending download result %ld (%{public}@) <%{public}@> for %{public}@", buf, 0x2Au);
   }
 
-  v12 = [objc_opt_class() _extractCheckedNSErrorFromDict:v82 withKey:@"CFNetworkError"];
+  v12 = [objc_opt_class() _extractCheckedNSErrorFromDict:infoCopy withKey:@"CFNetworkError"];
   v84 = v12;
-  if (!v88)
+  if (!resultCopy)
   {
-    v13 = _MADLog(@"Download");
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+    callbacks = _MADLog(@"Download");
+    if (os_log_type_enabled(callbacks, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v99 = v12;
-      _os_log_impl(&dword_0, v13, OS_LOG_TYPE_DEFAULT, "Skipping due to no downloadInfo. CFNetwork error: %{public}@", buf, 0xCu);
+      withCopy = v12;
+      _os_log_impl(&dword_0, callbacks, OS_LOG_TYPE_DEFAULT, "Skipping due to no downloadInfo. CFNetwork error: %{public}@", buf, 0xCu);
     }
 
     goto LABEL_92;
@@ -2968,8 +2968,8 @@ LABEL_15:
   v94 = 0u;
   v91 = 0u;
   v92 = 0u;
-  v13 = [v88 callbacks];
-  v14 = [v13 countByEnumeratingWithState:&v91 objects:v110 count:16];
+  callbacks = [resultCopy callbacks];
+  v14 = [callbacks countByEnumeratingWithState:&v91 objects:v110 count:16];
   if (!v14)
   {
 LABEL_92:
@@ -2979,7 +2979,7 @@ LABEL_92:
 
   v15 = 0;
   v85 = *v92;
-  obj = v13;
+  obj = callbacks;
   do
   {
     v16 = 0;
@@ -3005,10 +3005,10 @@ LABEL_92:
           v27 = v29;
           if (v29)
           {
-            xpc_dictionary_set_int64(v29, "Result", a4);
-            if (v82)
+            xpc_dictionary_set_int64(v29, "Result", with);
+            if (infoCopy)
             {
-              v30 = [v82 objectForKey:@"productMarketingVersions"];
+              v30 = [infoCopy objectForKey:@"productMarketingVersions"];
               objc_opt_class();
               if (objc_opt_isKindOfClass())
               {
@@ -3028,57 +3028,57 @@ LABEL_92:
                   v31 = &off_4F7F28;
                 }
 
-                v72 = [v84 checkedDomain];
-                if (v72)
+                checkedDomain = [v84 checkedDomain];
+                if (checkedDomain)
                 {
-                  v53 = [v84 checkedDomain];
+                  checkedDomain2 = [v84 checkedDomain];
                 }
 
                 else
                 {
-                  v53 = @"com.apple.MobileAssetError.Download";
+                  checkedDomain2 = @"com.apple.MobileAssetError.Download";
                 }
 
-                v73 = [v84 checkedDescription];
-                if (v73)
+                checkedDescription = [v84 checkedDescription];
+                if (checkedDescription)
                 {
-                  v52 = [v84 checkedDescription];
+                  checkedDescription2 = [v84 checkedDescription];
                 }
 
                 else
                 {
-                  v52 = @"Unknown error starting download";
+                  checkedDescription2 = @"Unknown error starting download";
                 }
 
-                v74 = [v88 analyticsData];
-                v75 = v74 == 0;
+                analyticsData = [resultCopy analyticsData];
+                v75 = analyticsData == 0;
 
                 if (!v75)
                 {
-                  v76 = [v88 analyticsData];
-                  v77 = [v76 mutableCopy];
+                  analyticsData2 = [resultCopy analyticsData];
+                  v77 = [analyticsData2 mutableCopy];
 
                   [v77 setObject:v31 forKeyedSubscript:@"FailureErrorCode"];
-                  [v77 setObject:v53 forKeyedSubscript:@"FailureErrorDomain"];
-                  [v77 setObject:v52 forKeyedSubscript:@"FailureErrorMessage"];
-                  [v88 setAnalyticsData:v77];
+                  [v77 setObject:checkedDomain2 forKeyedSubscript:@"FailureErrorDomain"];
+                  [v77 setObject:checkedDescription2 forKeyedSubscript:@"FailureErrorMessage"];
+                  [resultCopy setAnalyticsData:v77];
                   goto LABEL_86;
                 }
 
                 v108[0] = @"FailureErrorCode";
                 v108[1] = @"FailureErrorDomain";
                 v109[0] = v31;
-                v109[1] = v53;
+                v109[1] = checkedDomain2;
                 v108[2] = @"FailureErrorMessage";
-                v109[2] = v52;
+                v109[2] = checkedDescription2;
                 v78 = [NSDictionary dictionaryWithObjects:v109 forKeys:v108 count:3];
-                [v88 setAnalyticsData:v78];
+                [resultCopy setAnalyticsData:v78];
               }
 
               else
               {
-                v52 = 0;
-                v53 = 0;
+                checkedDescription2 = 0;
+                checkedDomain2 = 0;
                 v31 = 0;
               }
 
@@ -3090,8 +3090,8 @@ LABEL_86:
 
             else
             {
-              v52 = 0;
-              v53 = 0;
+              checkedDescription2 = 0;
+              checkedDomain2 = 0;
               v31 = 0;
               v15 = v90;
             }
@@ -3119,8 +3119,8 @@ LABEL_86:
         }
 
 LABEL_64:
-        v52 = 0;
-        v53 = 0;
+        checkedDescription2 = 0;
+        checkedDomain2 = 0;
         v31 = 0;
 LABEL_72:
         v15 = v90;
@@ -3130,10 +3130,10 @@ LABEL_72:
       v20 = [v18 safeObjectForKey:@"downloadManagerJobTypeKey" ofClass:objc_opt_class()];
       if (![SUCore stringIsEqual:v20 to:@"catalog_job"])
       {
-        if (a4)
+        if (with)
         {
-          v32 = errorStringForMADownloadResult(a4);
-          v27 = MAErrorForDownloadResultWithUnderlying(a4, v84, @"Asset download failed: %@(%ld)", v33, v34, v35, v36, v37, v32);
+          v32 = errorStringForMADownloadResult(with);
+          v27 = MAErrorForDownloadResultWithUnderlying(with, v84, @"Asset download failed: %@(%ld)", v33, v34, v35, v36, v37, v32);
         }
 
         else
@@ -3145,16 +3145,16 @@ LABEL_72:
         goto LABEL_52;
       }
 
-      if (!a4)
+      if (!with)
       {
-        v38 = [v88 taskDescriptor];
-        v21 = getAssetTypeFromTaskDescriptor(v38);
+        taskDescriptor = [resultCopy taskDescriptor];
+        v21 = getAssetTypeFromTaskDescriptor(taskDescriptor);
 
-        v39 = [v88 taskDescriptor];
-        v40 = getPurposeFromTaskDescriptor(v39);
+        taskDescriptor2 = [resultCopy taskDescriptor];
+        v40 = getPurposeFromTaskDescriptor(taskDescriptor2);
 
-        v41 = [v88 taskDescriptor];
-        v42 = getAutoAssetJobIDFromTaskDescriptor(v41);
+        taskDescriptor3 = [resultCopy taskDescriptor];
+        v42 = getAutoAssetJobIDFromTaskDescriptor(taskDescriptor3);
 
         if (v21 && v40 && v42)
         {
@@ -3164,7 +3164,7 @@ LABEL_72:
             if (os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
             {
               *buf = 138544386;
-              v99 = v19;
+              withCopy = v19;
               v100 = 2114;
               v101 = v21;
               v102 = 2114;
@@ -3172,12 +3172,12 @@ LABEL_72:
               v104 = 2114;
               v105 = v42;
               v106 = 2114;
-              v107 = v88;
+              v107 = resultCopy;
               _os_log_impl(&dword_0, v43, OS_LOG_TYPE_ERROR, "{sendDownloadResult} [SUCCESS] ANOMALY | jobID != autoAssetJobID:%{public}@ | assetType:%{public}@, purpose:%{public}@, jobID:%{public}@ | downloadInfo:%{public}@", buf, 0x34u);
             }
           }
 
-          a4 = 0;
+          with = 0;
 LABEL_45:
           v54 = getPathToAssetFileWithPurpose(v21, v40);
           if (v54 && (+[NSFileManager defaultManager](NSFileManager, "defaultManager"), v55 = objc_claimAutoreleasedReturnValue(), v56 = [v55 fileExistsAtPath:v54], v55, v56))
@@ -3201,7 +3201,7 @@ LABEL_45:
           if (os_log_type_enabled(v45, OS_LOG_TYPE_ERROR))
           {
             *buf = 138544386;
-            v99 = v21;
+            withCopy = v21;
             v100 = 2114;
             v101 = v40;
             v102 = 2114;
@@ -3209,7 +3209,7 @@ LABEL_45:
             v104 = 2114;
             v105 = v19;
             v106 = 2114;
-            v107 = v88;
+            v107 = resultCopy;
             _os_log_impl(&dword_0, v45, OS_LOG_TYPE_ERROR, "{sendDownloadResult} catalog download success yet incomplete information | [session] assetType:%{public}@, purpose:%{public}@, jobID:%{public}@ | autoAssetJobID:%{public}@ | downloadInfo:%{public}@", buf, 0x34u);
           }
 
@@ -3218,19 +3218,19 @@ LABEL_45:
 
           if (!v27)
           {
-            a4 = 30;
+            with = 30;
             goto LABEL_45;
           }
 
           v28 = 0;
-          a4 = 30;
+          with = 30;
         }
 
         goto LABEL_51;
       }
 
-      v21 = errorStringForMADownloadResult(a4);
-      v27 = MAErrorForDownloadResultWithUnderlying(a4, v84, @"Catalog download failed: %@(%ld)", v22, v23, v24, v25, v26, v21);
+      v21 = errorStringForMADownloadResult(with);
+      v27 = MAErrorForDownloadResultWithUnderlying(with, v84, @"Catalog download failed: %@(%ld)", v22, v23, v24, v25, v26, v21);
       v28 = 0;
 LABEL_51:
 
@@ -3242,10 +3242,10 @@ LABEL_52:
       }
 
       v31 = [[NSNumber alloc] initWithInteger:{-[NSObject checkedCode](v27, "checkedCode")}];
-      v53 = [v27 checkedDomain];
-      v52 = [v27 checkedDescription];
-      v62 = [v88 analyticsData];
-      v63 = v62 == 0;
+      checkedDomain2 = [v27 checkedDomain];
+      checkedDescription2 = [v27 checkedDescription];
+      analyticsData3 = [resultCopy analyticsData];
+      v63 = analyticsData3 == 0;
 
       if (v63)
       {
@@ -3258,29 +3258,29 @@ LABEL_52:
         v96[0] = @"FailureErrorCode";
         v96[1] = @"FailureErrorDomain";
         v69 = @"com.apple.MobileAssetError.Download";
-        if (v53)
+        if (checkedDomain2)
         {
-          v69 = v53;
+          v69 = checkedDomain2;
         }
 
         v97[0] = v68;
         v97[1] = v69;
         v96[2] = @"FailureErrorMessage";
         v70 = @"Unknown error during download";
-        if (v52)
+        if (checkedDescription2)
         {
-          v70 = v52;
+          v70 = checkedDescription2;
         }
 
         v97[2] = v70;
         v71 = [NSDictionary dictionaryWithObjects:v97 forKeys:v96 count:3];
-        [v88 setAnalyticsData:v71];
+        [resultCopy setAnalyticsData:v71];
 
         goto LABEL_72;
       }
 
-      v64 = [v88 analyticsData];
-      v15 = [v64 mutableCopy];
+      analyticsData4 = [resultCopy analyticsData];
+      v15 = [analyticsData4 mutableCopy];
 
       if (v31)
       {
@@ -3293,9 +3293,9 @@ LABEL_52:
       }
 
       [v15 setObject:v65 forKeyedSubscript:@"FailureErrorCode"];
-      if (v53)
+      if (checkedDomain2)
       {
-        v66 = v53;
+        v66 = checkedDomain2;
       }
 
       else
@@ -3304,9 +3304,9 @@ LABEL_52:
       }
 
       [v15 setObject:v66 forKeyedSubscript:@"FailureErrorDomain"];
-      if (v52)
+      if (checkedDescription2)
       {
-        v67 = v52;
+        v67 = checkedDescription2;
       }
 
       else
@@ -3315,7 +3315,7 @@ LABEL_52:
       }
 
       [v15 setObject:v67 forKeyedSubscript:@"FailureErrorMessage"];
-      [v88 setAnalyticsData:v15];
+      [resultCopy setAnalyticsData:v15];
 LABEL_73:
 
       objc_autoreleasePoolPop(context);
@@ -3324,7 +3324,7 @@ LABEL_73:
     }
 
     while (v86 != v16);
-    v13 = obj;
+    callbacks = obj;
     v14 = [obj countByEnumeratingWithState:&v91 objects:v110 count:16];
   }
 
@@ -3335,11 +3335,11 @@ LABEL_93:
   if (os_log_type_enabled(v79, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v99 = v88;
+    withCopy = resultCopy;
     _os_log_impl(&dword_0, v79, OS_LOG_TYPE_DEFAULT, "reporting download attempt %{public}@", buf, 0xCu);
   }
 
-  [(DownloadManager *)self reportDownloadAttemptResult:v88 with:a4];
+  [(DownloadManager *)self reportDownloadAttemptResult:resultCopy with:with];
   os_activity_scope_leave(&state);
 }
 
@@ -3434,14 +3434,14 @@ LABEL_93:
     goto LABEL_14;
   }
 
-  v5 = [(DownloadManager *)self dedupNSURLSessionSyncQueue];
+  dedupNSURLSessionSyncQueue = [(DownloadManager *)self dedupNSURLSessionSyncQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __51__DownloadManager_queryNSUrlSessiondAndUpdateState__block_invoke_2;
   block[3] = &unk_4B2AC8;
   block[4] = self;
   block[5] = &v13;
-  dispatch_sync(v5, block);
+  dispatch_sync(dedupNSURLSessionSyncQueue, block);
 
   if (*(v14 + 24) != 1)
   {
@@ -3918,18 +3918,18 @@ LABEL_47:
   dispatch_resume(v63);
 }
 
-- (void)allDownloading:(id)a3
+- (void)allDownloading:(id)downloading
 {
-  v4 = a3;
-  v5 = [(DownloadManager *)self downloadStateQueue];
+  downloadingCopy = downloading;
+  downloadStateQueue = [(DownloadManager *)self downloadStateQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = __34__DownloadManager_allDownloading___block_invoke;
   v7[3] = &unk_4B4078;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = downloadingCopy;
+  v6 = downloadingCopy;
+  dispatch_async(downloadStateQueue, v7);
 }
 
 void __34__DownloadManager_allDownloading___block_invoke(uint64_t a1)
@@ -3977,52 +3977,52 @@ void __34__DownloadManager_allDownloading___block_invoke(uint64_t a1)
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)cancelAllDownloading:(id)a3 withPurpose:(id)a4 includingAssets:(BOOL)a5 includingCatalog:(BOOL)a6 includingOther:(BOOL)a7 clientName:(id)a8 then:(id)a9
+- (void)cancelAllDownloading:(id)downloading withPurpose:(id)purpose includingAssets:(BOOL)assets includingCatalog:(BOOL)catalog includingOther:(BOOL)other clientName:(id)name then:(id)then
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a8;
-  v18 = a9;
+  downloadingCopy = downloading;
+  purposeCopy = purpose;
+  nameCopy = name;
+  thenCopy = then;
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   v19 = _os_activity_create(&dword_0, "DownloadManager:cancelAllDownloading", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
   os_activity_scope_enter(v19, &state);
 
-  v20 = [(DownloadManager *)self currentState];
-  if (v20 != 1)
+  currentState = [(DownloadManager *)self currentState];
+  if (currentState != 1)
   {
     v21 = _MADLog(@"Download");
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138544130;
-      v37 = v17;
+      v37 = nameCopy;
       v38 = 2048;
-      v39 = v20;
+      v39 = currentState;
       v40 = 2114;
-      v41 = v15;
+      v41 = downloadingCopy;
       v42 = 2114;
-      v43 = v16;
+      v43 = purposeCopy;
       _os_log_impl(&dword_0, v21, OS_LOG_TYPE_DEFAULT, "%{public}@ proceeding before cancel happens. Cannot get in-flight downloads state: %ld for %{public}@ with purpose: %{public}@", buf, 0x2Au);
     }
 
-    v18[2](v18, 0);
+    thenCopy[2](thenCopy, 0);
   }
 
   v26[0] = _NSConcreteStackBlock;
   v26[1] = 3221225472;
   v26[2] = __116__DownloadManager_cancelAllDownloading_withPurpose_includingAssets_includingCatalog_includingOther_clientName_then___block_invoke;
   v26[3] = &unk_4B40A0;
-  v31 = v20 != 1;
-  v22 = v17;
+  v31 = currentState != 1;
+  v22 = nameCopy;
   v27 = v22;
-  v23 = v15;
+  v23 = downloadingCopy;
   v28 = v23;
-  v24 = v16;
+  v24 = purposeCopy;
   v29 = v24;
-  v32 = a6;
-  v33 = a5;
-  v34 = a7;
-  v25 = v18;
+  catalogCopy = catalog;
+  assetsCopy = assets;
+  otherCopy = other;
+  v25 = thenCopy;
   v30 = v25;
   [(DownloadManager *)self getCurrentInflightDownloads:v26];
 
@@ -4226,20 +4226,20 @@ LABEL_40:
   }
 }
 
-- (void)isDownloading:(id)a3 then:(id)a4
+- (void)isDownloading:(id)downloading then:(id)then
 {
-  v6 = a3;
-  v7 = a4;
+  downloadingCopy = downloading;
+  thenCopy = then;
   downloadStateQueue = self->_downloadStateQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __38__DownloadManager_isDownloading_then___block_invoke;
   block[3] = &unk_4B3020;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = downloadingCopy;
+  v13 = thenCopy;
+  v9 = thenCopy;
+  v10 = downloadingCopy;
   dispatch_async(downloadStateQueue, block);
 }
 
@@ -4253,40 +4253,40 @@ uint64_t __38__DownloadManager_isDownloading_then___block_invoke(uint64_t a1)
   return v3();
 }
 
-- (id)newDefaultEventDictionary:(id)a3 sessionId:(id)a4 nonce:(id)a5 url:(id)a6 statusCode:(int64_t)a7 assetAudience:(id)a8 uuid:(id)a9 assetType:(id)a10 version:(id)a11 baseUrl:(id)a12 discretionary:(BOOL)a13 deviceCheck:(id)a14
+- (id)newDefaultEventDictionary:(id)dictionary sessionId:(id)id nonce:(id)nonce url:(id)url statusCode:(int64_t)code assetAudience:(id)audience uuid:(id)uuid assetType:(id)self0 version:(id)self1 baseUrl:(id)self2 discretionary:(BOOL)self3 deviceCheck:(id)self4
 {
-  v17 = a3;
-  v18 = a4;
-  v19 = a5;
-  v20 = a8;
-  v21 = a9;
-  v22 = a10;
-  v23 = a11;
-  v24 = a12;
-  v25 = a14;
+  dictionaryCopy = dictionary;
+  idCopy = id;
+  nonceCopy = nonce;
+  audienceCopy = audience;
+  uuidCopy = uuid;
+  typeCopy = type;
+  versionCopy = version;
+  baseUrlCopy = baseUrl;
+  checkCopy = check;
   v26 = objc_opt_new();
   if (v26)
   {
     +[SUCoreDevice sharedDevice];
-    v27 = v70 = v17;
+    v27 = v70 = dictionaryCopy;
     [v27 buildVersion];
-    v28 = v78 = v19;
+    v28 = v78 = nonceCopy;
     ensureNSStringFromData(v28);
-    v77 = v25;
-    v29 = v24;
-    v31 = v30 = v22;
+    v77 = checkCopy;
+    v29 = baseUrlCopy;
+    v31 = v30 = typeCopy;
     [v26 setObject:v31 forKey:@"BuildVersion"];
 
-    v32 = [v27 hwModelString];
-    v33 = ensureNSStringFromData(v32);
+    hwModelString = [v27 hwModelString];
+    v33 = ensureNSStringFromData(hwModelString);
     [v26 setObject:v33 forKey:@"HWModelStr"];
 
-    v34 = [v27 releaseType];
-    v35 = ensureNSStringFromData(v34);
+    releaseType = [v27 releaseType];
+    v35 = ensureNSStringFromData(releaseType);
     [v26 setObject:v35 forKey:@"ReleaseType"];
 
-    v36 = [v27 deviceClass];
-    v37 = ensureNSStringFromData(v36);
+    deviceClass = [v27 deviceClass];
+    v37 = ensureNSStringFromData(deviceClass);
     [v26 setObject:v37 forKey:@"DeviceClass"];
 
     v38 = getCurrentOSType();
@@ -4321,7 +4321,7 @@ uint64_t __38__DownloadManager_isDownloading_then___block_invoke(uint64_t a1)
     }
 
     [v26 setObject:v45 forKey:@"type"];
-    if (a13)
+    if (discretionary)
     {
       v46 = @"true";
     }
@@ -4336,28 +4336,28 @@ uint64_t __38__DownloadManager_isDownloading_then___block_invoke(uint64_t a1)
     v47 = ensureNSStringFromData(v29);
     [v26 setObject:v47 forKey:@"baseUrl"];
 
-    v48 = ensureNSStringFromData(v21);
+    v48 = ensureNSStringFromData(uuidCopy);
     [v26 setObject:v48 forKey:@"eventUuid"];
 
-    v73 = v23;
-    v49 = ensureNSStringFromData(v23);
+    v73 = versionCopy;
+    v49 = ensureNSStringFromData(versionCopy);
     [v26 setObject:v49 forKey:@"reportVersion"];
 
     v50 = _currentTimeInMilliseconds();
     v51 = ensureNSStringFromData(v50);
     [v26 setObject:v51 forKey:@"eventTime"];
 
-    v52 = ensureNSStringFromData(v18);
+    v52 = ensureNSStringFromData(idCopy);
     [v26 setObject:v52 forKey:@"SessionId"];
 
-    v53 = [v78 UUIDString];
-    v54 = ensureNSStringFromData(v53);
+    uUIDString = [v78 UUIDString];
+    v54 = ensureNSStringFromData(uUIDString);
     [v26 setObject:v54 forKey:@"pallasClientNonce"];
 
     v55 = ensureNSStringFromData(v70);
     [v26 setObject:v55 forKey:@"currentOSVersion"];
 
-    v56 = ensureNSStringFromData(v20);
+    v56 = ensureNSStringFromData(audienceCopy);
     [v26 setObject:v56 forKey:@"MobileAssetAssetAudience"];
 
     v57 = ensureNSStringFromData(v77);
@@ -4382,27 +4382,27 @@ uint64_t __38__DownloadManager_isDownloading_then___block_invoke(uint64_t a1)
 
       if (objc_opt_respondsToSelector())
       {
-        v59 = [v27 splatCryptex1BuildVersion];
-        [v26 setSafeObject:v59 forKey:@"SplatBuildVersion"];
+        splatCryptex1BuildVersion = [v27 splatCryptex1BuildVersion];
+        [v26 setSafeObject:splatCryptex1BuildVersion forKey:@"SplatBuildVersion"];
       }
     }
 
     v71 = v27;
-    v75 = v21;
-    v60 = [NSNumber numberWithLong:a7];
+    v75 = uuidCopy;
+    v60 = [NSNumber numberWithLong:code];
     if (v60)
     {
       [v26 setObject:v60 forKey:@"httpCode"];
     }
 
     v61 = +[MABrainUpdater sharedInstance];
-    v62 = [v61 info];
-    v63 = [v62 objectForKeyedSubscript:@"MobileAssetProperties"];
+    info = [v61 info];
+    v63 = [info objectForKeyedSubscript:@"MobileAssetProperties"];
     v64 = [v63 objectForKeyedSubscript:@"Build"];
 
     v65 = +[MABrainUpdater sharedInstance];
-    v66 = [v65 info];
-    v67 = [v66 objectForKeyedSubscript:@"MobileAssetProperties"];
+    info2 = [v65 info];
+    v67 = [info2 objectForKeyedSubscript:@"MobileAssetProperties"];
     v68 = [v67 objectForKeyedSubscript:@"RestoreVersion"];
 
     if (v64)
@@ -4410,63 +4410,63 @@ uint64_t __38__DownloadManager_isDownloading_then___block_invoke(uint64_t a1)
       [v26 setObject:v64 forKey:@"MABrainBuildVersion"];
     }
 
-    v17 = v70;
-    v21 = v75;
-    v23 = v73;
+    dictionaryCopy = v70;
+    uuidCopy = v75;
+    versionCopy = v73;
     if (v68)
     {
       [v26 setObject:v68 forKey:@"MABrainRestoreVersion"];
     }
 
-    v25 = v77;
-    v19 = v78;
-    v22 = v74;
-    v24 = v72;
+    checkCopy = v77;
+    nonceCopy = v78;
+    typeCopy = v74;
+    baseUrlCopy = v72;
   }
 
   return v26;
 }
 
-- (void)checkSplunkStatus:(id)a3 failureReason:(id)a4 productVersion:(id)a5 sessionId:(id)a6 nonce:(id)a7 url:(id)a8 statusCode:(int64_t)a9 assetAudience:(id)a10 version:(id)a11 baseUrl:(id)a12 discretionary:(BOOL)a13 deviceCheck:(id)a14
+- (void)checkSplunkStatus:(id)status failureReason:(id)reason productVersion:(id)version sessionId:(id)id nonce:(id)nonce url:(id)url statusCode:(int64_t)code assetAudience:(id)self0 version:(id)self1 baseUrl:(id)self2 discretionary:(BOOL)self3 deviceCheck:(id)self4
 {
-  v37 = a3;
-  v20 = a4;
-  v36 = a5;
-  v21 = a6;
-  v22 = a7;
-  v23 = a8;
-  v24 = a10;
+  statusCopy = status;
+  reasonCopy = reason;
+  versionCopy = version;
+  idCopy = id;
+  nonceCopy = nonce;
+  urlCopy = url;
+  audienceCopy = audience;
   v25 = a11;
-  v26 = a12;
-  v27 = a14;
+  baseUrlCopy = baseUrl;
+  checkCopy = check;
   queue = self->_splunkStateQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __153__DownloadManager_checkSplunkStatus_failureReason_productVersion_sessionId_nonce_url_statusCode_assetAudience_version_baseUrl_discretionary_deviceCheck___block_invoke;
   block[3] = &unk_4B40C8;
-  v42 = v37;
-  v43 = self;
-  v44 = v21;
-  v45 = v36;
-  v46 = v22;
-  v47 = v23;
-  v48 = v24;
+  v42 = statusCopy;
+  selfCopy = self;
+  v44 = idCopy;
+  v45 = versionCopy;
+  v46 = nonceCopy;
+  v47 = urlCopy;
+  v48 = audienceCopy;
   v49 = v25;
-  v54 = a13;
-  v50 = v26;
-  v51 = v27;
-  v52 = v20;
-  v53 = a9;
-  v40 = v20;
-  v39 = v27;
-  v28 = v26;
+  discretionaryCopy = discretionary;
+  v50 = baseUrlCopy;
+  v51 = checkCopy;
+  v52 = reasonCopy;
+  codeCopy = code;
+  v40 = reasonCopy;
+  v39 = checkCopy;
+  v28 = baseUrlCopy;
   v29 = v25;
-  v30 = v24;
-  v31 = v23;
-  v32 = v22;
-  v33 = v36;
-  v34 = v21;
-  v35 = v37;
+  v30 = audienceCopy;
+  v31 = urlCopy;
+  v32 = nonceCopy;
+  v33 = versionCopy;
+  v34 = idCopy;
+  v35 = statusCopy;
   dispatch_async(queue, block);
 }
 
@@ -4760,13 +4760,13 @@ LABEL_34:
 LABEL_68:
 }
 
-- (void)augmentSplunkEvent:(id)a3 withResultForHTTPStatusCode:(int64_t)a4
+- (void)augmentSplunkEvent:(id)event withResultForHTTPStatusCode:(int64_t)code
 {
-  v5 = a3;
-  v6 = [[NSString alloc] initWithFormat:@"HTTP-%ld", a4];
-  if (v6)
+  eventCopy = event;
+  code = [[NSString alloc] initWithFormat:@"HTTP-%ld", code];
+  if (code)
   {
-    v7 = v6;
+    v7 = code;
   }
 
   else
@@ -4775,26 +4775,26 @@ LABEL_68:
   }
 
   v8 = v7;
-  [v5 setObject:? forKey:?];
+  [eventCopy setObject:? forKey:?];
 }
 
-- (void)setPreviousBatchedFailureEvent:(id)a3 inSendEventsByUUID:(id)a4
+- (void)setPreviousBatchedFailureEvent:(id)event inSendEventsByUUID:(id)d
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5 && v6)
+  eventCopy = event;
+  dCopy = d;
+  v7 = dCopy;
+  if (eventCopy && dCopy)
   {
-    v8 = [v5 objectForKey:@"splunkErrorCount"];
+    v8 = [eventCopy objectForKey:@"splunkErrorCount"];
     if (v8)
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) != 0 && [v8 longValue]>= 1)
       {
-        v9 = [v5 objectForKey:@"eventUuid"];
+        v9 = [eventCopy objectForKey:@"eventUuid"];
         if (v9)
         {
-          [v7 setObject:v5 forKey:v9];
+          [v7 setObject:eventCopy forKey:v9];
         }
 
         else
@@ -4816,7 +4816,7 @@ LABEL_68:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
       v10 = @"Y";
-      if (v5)
+      if (eventCopy)
       {
         v11 = @"Y";
       }
@@ -4840,18 +4840,18 @@ LABEL_68:
   }
 }
 
-+ (id)getPallasUrl:(BOOL)a3 assetType:(id)a4
++ (id)getPallasUrl:(BOOL)url assetType:(id)type
 {
-  v4 = a3;
-  v5 = a4;
-  if (v5)
+  urlCopy = url;
+  typeCopy = type;
+  if (typeCopy)
   {
-    v6 = [&off_4F6F08 containsObject:v5];
+    v6 = [&off_4F6F08 containsObject:typeCopy];
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && ([v5 isEqualToString:&stru_4BD3F0] & 1) == 0)
+    if ((objc_opt_isKindOfClass() & 1) != 0 && ([typeCopy isEqualToString:&stru_4BD3F0] & 1) == 0)
     {
-      v13 = [NSString stringWithFormat:@"%@-%@", @"PallasUrlOverrideV2", v5];
-      v7 = _MAPreferencesCopyValue(v13);
+      typeCopy = [NSString stringWithFormat:@"%@-%@", @"PallasUrlOverrideV2", typeCopy];
+      v7 = _MAPreferencesCopyValue(typeCopy);
 
       if (v7)
       {
@@ -4906,18 +4906,18 @@ LABEL_8:
     v21 = 2112;
     v22 = v10;
     v23 = 2112;
-    v24 = v5;
+    v24 = typeCopy;
     _os_log_impl(&dword_0, v11, OS_LOG_TYPE_DEFAULT, "%@ was in preferences (%@) and was not false ('%@'), pallasURL=%@ assetType=%@", buf, 0x34u);
   }
 
   if (!v10)
   {
 LABEL_14:
-    if (v4)
+    if (urlCopy)
     {
-      if (!isExternalPreReleaseAssetType(v5) || !isAppleDynamicOverridesSupportedAssetType(v5))
+      if (!isExternalPreReleaseAssetType(typeCopy) || !isAppleDynamicOverridesSupportedAssetType(typeCopy))
       {
-        if (!isExternalPreReleaseAssetType(v5))
+        if (!isExternalPreReleaseAssetType(typeCopy))
         {
           v12 = @"https://gdmf-staging-int.apple.com/v2/assets";
 LABEL_28:
@@ -4931,7 +4931,7 @@ LABEL_27:
       }
     }
 
-    else if (!isAppleDynamicOverridesSupportedAssetType(v5))
+    else if (!isAppleDynamicOverridesSupportedAssetType(typeCopy))
     {
       if (v6 && isCarrierReleaseType())
       {
@@ -4951,11 +4951,11 @@ LABEL_29:
   return v10;
 }
 
-- (BOOL)getPallasEnabledForAssetType:(id)a3
+- (BOOL)getPallasEnabledForAssetType:(id)type
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && isXMLAssetType(v3))
+  typeCopy = type;
+  v4 = typeCopy;
+  if (typeCopy && isXMLAssetType(typeCopy))
   {
     v5 = _MADLog(@"Download");
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -5053,13 +5053,13 @@ LABEL_21:
   return v6;
 }
 
-- (id)newAssetAudience:(BOOL)a3 assetType:(id)a4 logMessage:(id *)a5
+- (id)newAssetAudience:(BOOL)audience assetType:(id)type logMessage:(id *)message
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  audienceCopy = audience;
+  typeCopy = type;
+  if (typeCopy)
   {
-    v8 = [&off_4F6F20 containsObject:v7];
+    v8 = [&off_4F6F20 containsObject:typeCopy];
     if (v8)
     {
       v9 = @"MobileAssetAssetAudience";
@@ -5078,10 +5078,10 @@ LABEL_21:
   }
 
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && ([v7 isEqualToString:&stru_4BD3F0] & 1) == 0)
+  if ((objc_opt_isKindOfClass() & 1) != 0 && ([typeCopy isEqualToString:&stru_4BD3F0] & 1) == 0)
   {
-    v21 = [NSString stringWithFormat:@"%@-%@", @"MobileAssetAssetAudience", v7];
-    v10 = _MAPreferencesCopyValue(v21);
+    typeCopy = [NSString stringWithFormat:@"%@-%@", @"MobileAssetAssetAudience", typeCopy];
+    v10 = _MAPreferencesCopyValue(typeCopy);
 
     if (v10)
     {
@@ -5105,7 +5105,7 @@ LABEL_21:
     v11 = @"Asset Type Software Update";
   }
 
-  if (v7)
+  if (typeCopy)
   {
     v12 = v11;
   }
@@ -5120,7 +5120,7 @@ LABEL_21:
   if (!v13)
   {
     v10 = 0;
-    if (v6)
+    if (audienceCopy)
     {
       goto LABEL_18;
     }
@@ -5134,17 +5134,17 @@ LABEL_16:
   if (objc_opt_isKindOfClass())
   {
 LABEL_37:
-    if (!a5)
+    if (!message)
     {
       goto LABEL_39;
     }
 
 LABEL_38:
-    *a5 = [NSString stringWithFormat:@"Using asset audience '%@' via selection '%@' for asset type '%@'", v10, v12, v7];
+    *message = [NSString stringWithFormat:@"Using asset audience '%@' via selection '%@' for asset type '%@'", v10, v12, typeCopy];
     goto LABEL_39;
   }
 
-  if (!v6)
+  if (!audienceCopy)
   {
 LABEL_30:
     if (!v8)
@@ -5152,7 +5152,7 @@ LABEL_30:
 
       v12 = @"iOS Mobile Asset Customer";
       v10 = @"0c88076f-c292-4dad-95e7-304db9d29d34";
-      if (!a5)
+      if (!message)
       {
         goto LABEL_39;
       }
@@ -5190,7 +5190,7 @@ LABEL_18:
   v15 = v14;
   if (!v14 || ([v14 isEqualToString:&stru_4BD3F0] & 1) != 0 || (objc_msgSend(v15, "isEqualToString:", @"$RC_PALLAS_ID") & 1) != 0)
   {
-    v16 = isExternalPreReleaseAssetType(v7);
+    v16 = isExternalPreReleaseAssetType(typeCopy);
 
     v17 = v16 == 0;
     if (v16)
@@ -5229,7 +5229,7 @@ LABEL_18:
   }
 
   v10 = v18;
-  if (a5)
+  if (message)
   {
     goto LABEL_38;
   }
@@ -5239,18 +5239,18 @@ LABEL_39:
   return v10;
 }
 
-- (id)addSUOptions:(id)a3 options:(id)a4
+- (id)addSUOptions:(id)options options:(id)a4
 {
-  v5 = a3;
+  optionsCopy = options;
   v6 = a4;
   v7 = [NSNumber numberWithInt:MGGetSInt32Answer()];
-  [v5 setObject:v7 forKey:@"DeviceClass"];
+  [optionsCopy setObject:v7 forKey:@"DeviceClass"];
 
-  [v5 setObject:@"true" forKey:@"IsUIBuild"];
+  [optionsCopy setObject:@"true" forKey:@"IsUIBuild"];
   v8 = pallasStringParams();
   if (v8)
   {
-    [v5 addEntriesFromDictionary:v8];
+    [optionsCopy addEntriesFromDictionary:v8];
   }
 
   v9 = MGGetStringAnswer();
@@ -5264,13 +5264,13 @@ LABEL_39:
     v10 = @"false";
   }
 
-  [v5 setObject:v10 forKey:@"SigningFuse"];
+  [optionsCopy setObject:v10 forKey:@"SigningFuse"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    [v5 setObject:@"false" forKey:@"DelayRequested"];
+    [optionsCopy setObject:@"false" forKey:@"DelayRequested"];
     v26 = @"Supervised";
-    v27 = v5;
+    v27 = optionsCopy;
     v28 = @"false";
 LABEL_32:
     [v27 setObject:v28 forKey:v26];
@@ -5278,70 +5278,70 @@ LABEL_32:
   }
 
   v11 = v6;
-  v12 = [v11 requestedProductVersion];
+  requestedProductVersion = [v11 requestedProductVersion];
 
-  if (v12)
+  if (requestedProductVersion)
   {
-    v13 = [v11 requestedProductVersion];
-    [v5 setObject:v13 forKey:@"RequestedProductVersion"];
+    requestedProductVersion2 = [v11 requestedProductVersion];
+    [optionsCopy setObject:requestedProductVersion2 forKey:@"RequestedProductVersion"];
   }
 
   if (__isPlatformVersionAtLeast(2, 18, 4, 0))
   {
     if (objc_opt_respondsToSelector())
     {
-      v14 = [v11 requestedBuildVersion];
+      requestedBuildVersion = [v11 requestedBuildVersion];
 
-      if (v14)
+      if (requestedBuildVersion)
       {
-        v15 = [v11 requestedBuildVersion];
-        [v5 setObject:v15 forKey:@"RequestedBuildVersion"];
+        requestedBuildVersion2 = [v11 requestedBuildVersion];
+        [optionsCopy setObject:requestedBuildVersion2 forKey:@"RequestedBuildVersion"];
       }
     }
   }
 
-  v16 = [v11 delayPeriod];
-  if (v16)
+  delayPeriod = [v11 delayPeriod];
+  if (delayPeriod)
   {
     v17 = +[NSNumber numberWithLong:](NSNumber, "numberWithLong:", [v11 delayPeriod]);
-    [v5 setObject:v17 forKey:@"DelayPeriod"];
+    [optionsCopy setObject:v17 forKey:@"DelayPeriod"];
   }
 
-  v18 = [v11 supervised];
-  v19 = [v11 allowSameVersion];
-  v20 = [v11 prerequisiteBuildVersion];
+  supervised = [v11 supervised];
+  allowSameVersion = [v11 allowSameVersion];
+  prerequisiteBuildVersion = [v11 prerequisiteBuildVersion];
 
-  if (v20)
+  if (prerequisiteBuildVersion)
   {
-    v21 = [v11 prerequisiteBuildVersion];
-    [v5 setObject:v21 forKey:@"BuildVersion"];
+    prerequisiteBuildVersion2 = [v11 prerequisiteBuildVersion];
+    [optionsCopy setObject:prerequisiteBuildVersion2 forKey:@"BuildVersion"];
   }
 
-  v22 = [v11 prerequisiteProductVersion];
+  prerequisiteProductVersion = [v11 prerequisiteProductVersion];
 
-  if (v22)
+  if (prerequisiteProductVersion)
   {
-    v23 = [v11 prerequisiteProductVersion];
-    [v5 setObject:v23 forKey:@"ProductVersion"];
+    prerequisiteProductVersion2 = [v11 prerequisiteProductVersion];
+    [optionsCopy setObject:prerequisiteProductVersion2 forKey:@"ProductVersion"];
   }
 
   if ([v11 prerequisiteReleaseTypeIsOverridden])
   {
-    v24 = [v11 prerequisiteReleaseType];
+    prerequisiteReleaseType = [v11 prerequisiteReleaseType];
 
-    if (v24)
+    if (prerequisiteReleaseType)
     {
-      v25 = [v11 prerequisiteReleaseType];
-      [v5 setObject:v25 forKey:@"ReleaseType"];
+      prerequisiteReleaseType2 = [v11 prerequisiteReleaseType];
+      [optionsCopy setObject:prerequisiteReleaseType2 forKey:@"ReleaseType"];
     }
 
     else
     {
-      [v5 removeObjectForKey:@"ReleaseType"];
+      [optionsCopy removeObjectForKey:@"ReleaseType"];
     }
   }
 
-  if (v16)
+  if (delayPeriod)
   {
     v29 = @"true";
   }
@@ -5351,8 +5351,8 @@ LABEL_32:
     v29 = @"false";
   }
 
-  [v5 setObject:v29 forKey:@"DelayRequested"];
-  if (v18)
+  [optionsCopy setObject:v29 forKey:@"DelayRequested"];
+  if (supervised)
   {
     v30 = @"true";
   }
@@ -5362,12 +5362,12 @@ LABEL_32:
     v30 = @"false";
   }
 
-  [v5 setObject:v30 forKey:@"Supervised"];
-  if (v19)
+  [optionsCopy setObject:v30 forKey:@"Supervised"];
+  if (allowSameVersion)
   {
     v28 = @"true";
     v26 = @"InternalBuild";
-    v27 = v5;
+    v27 = optionsCopy;
     goto LABEL_32;
   }
 
@@ -5426,8 +5426,8 @@ LABEL_22:
       return v7;
     }
 
-    v8 = [v5 currentState];
-    v9 = +[NSNumber numberWithUnsignedChar:](NSNumber, "numberWithUnsignedChar:", [v8 taskState]);
+    currentState = [v5 currentState];
+    v9 = +[NSNumber numberWithUnsignedChar:](NSNumber, "numberWithUnsignedChar:", [currentState taskState]);
     LODWORD(v7) = [&off_4F6F38 containsObject:v9];
 
     v10 = _MADLog(@"Download");
@@ -5551,9 +5551,9 @@ LABEL_19:
   }
 }
 
-- (BOOL)useBootstrapDataPathForScan:(id)a3
+- (BOOL)useBootstrapDataPathForScan:(id)scan
 {
-  v4 = a3;
+  scanCopy = scan;
   if (!__isPlatformVersionAtLeast(2, 17, 0, 0))
   {
     v5 = _MADLog(@"Download");
@@ -5568,7 +5568,7 @@ LABEL_19:
     }
 
 LABEL_20:
-    LOBYTE(v8) = 0;
+    LOBYTE(bOOLValue) = 0;
 LABEL_21:
 
     goto LABEL_22;
@@ -5594,7 +5594,7 @@ LABEL_21:
     goto LABEL_20;
   }
 
-  if ((([v4 isEqualToString:@"com.apple.MobileAsset.SoftwareUpdate"] & 1) != 0 || objc_msgSend(v4, "isEqualToString:", @"com.apple.MobileAsset.SoftwareUpdateDocumentation")) && -[DownloadManager isBuddyRunning](self, "isBuddyRunning"))
+  if ((([scanCopy isEqualToString:@"com.apple.MobileAsset.SoftwareUpdate"] & 1) != 0 || objc_msgSend(scanCopy, "isEqualToString:", @"com.apple.MobileAsset.SoftwareUpdateDocumentation")) && -[DownloadManager isBuddyRunning](self, "isBuddyRunning"))
   {
     v16 = 0;
     v5 = [useBootstrapDataPathForScan__telephonyClient usingBootstrapDataService:&v16];
@@ -5616,17 +5616,17 @@ LABEL_21:
         _os_log_impl(&dword_0, v9, OS_LOG_TYPE_ERROR, "Got error while checking if BootstrapDataService is in use. Assuming not in use: %{public}@", buf, 0xCu);
       }
 
-      LOBYTE(v8) = 1;
+      LOBYTE(bOOLValue) = 1;
     }
 
     else
     {
-      v8 = [v5 BOOLValue];
+      bOOLValue = [v5 BOOLValue];
       v9 = _MADLog(@"Download");
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
         v10 = @"not available";
-        if (v8)
+        if (bOOLValue)
         {
           v10 = @"available";
         }
@@ -5640,10 +5640,10 @@ LABEL_21:
     goto LABEL_21;
   }
 
-  LOBYTE(v8) = 0;
+  LOBYTE(bOOLValue) = 0;
 LABEL_22:
 
-  return v8;
+  return bOOLValue;
 }
 
 void __47__DownloadManager_useBootstrapDataPathForScan___block_invoke(id a1)
@@ -5714,17 +5714,17 @@ LABEL_13:
 LABEL_14:
 }
 
-- (BOOL)isValidUUID:(id)a3
+- (BOOL)isValidUUID:(id)d
 {
-  v3 = a3;
-  if (v3)
+  dCopy = d;
+  if (dCopy)
   {
-    v4 = [[NSUUID alloc] initWithUUIDString:v3];
+    v4 = [[NSUUID alloc] initWithUUIDString:dCopy];
     v5 = v4;
     if (v4)
     {
-      v6 = [v4 UUIDString];
-      v7 = [v3 caseInsensitiveCompare:v6] == 0;
+      uUIDString = [v4 UUIDString];
+      v7 = [dCopy caseInsensitiveCompare:uUIDString] == 0;
     }
 
     else
@@ -5741,11 +5741,11 @@ LABEL_14:
   return v7;
 }
 
-- (id)pallasRequestedAssetSetID:(id)a3
+- (id)pallasRequestedAssetSetID:(id)d
 {
-  v4 = a3;
-  v5 = [NSString stringWithFormat:@"RequestedAssetSetID-%@", v4];
-  v6 = _MAPreferencesCopyNSStringValue(v5);
+  dCopy = d;
+  dCopy = [NSString stringWithFormat:@"RequestedAssetSetID-%@", dCopy];
+  v6 = _MAPreferencesCopyNSStringValue(dCopy);
   if (!v6)
   {
 LABEL_9:
@@ -5761,7 +5761,7 @@ LABEL_9:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
-      v13 = v5;
+      v13 = dCopy;
       _os_log_impl(&dword_0, v9, OS_LOG_TYPE_ERROR, "Invalid RequestedAssetSetID for key: %{public}@", buf, 0xCu);
     }
 
@@ -5771,9 +5771,9 @@ LABEL_9:
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v13 = v5;
+    v13 = dCopy;
     v14 = 2114;
-    v15 = v4;
+    v15 = dCopy;
     _os_log_impl(&dword_0, v9, OS_LOG_TYPE_DEFAULT, "Using RequestedAssetSetID %{public}@ for asset type %{public}@", buf, 0x16u);
   }
 
@@ -5783,17 +5783,17 @@ LABEL_10:
   return v10;
 }
 
-- (void)pallasRequestV2:(id)a3 normalizedType:(id)a4 withPurpose:(id)a5 options:(id)a6 using:(id)a7 with:(id)a8 autoAssetJob:(id)a9 clientName:(id)a10 then:(id)a11
+- (void)pallasRequestV2:(id)v2 normalizedType:(id)type withPurpose:(id)purpose options:(id)options using:(id)using with:(id)with autoAssetJob:(id)job clientName:(id)self0 then:(id)self1
 {
-  v16 = a3;
-  v124 = a4;
-  v110 = a5;
-  v128 = a6;
-  v116 = a7;
-  v117 = a8;
-  v118 = a9;
-  v126 = a10;
-  v122 = a11;
+  v2Copy = v2;
+  typeCopy = type;
+  purposeCopy = purpose;
+  optionsCopy = options;
+  usingCopy = using;
+  withCopy = with;
+  jobCopy = job;
+  nameCopy = name;
+  thenCopy = then;
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   v17 = _os_activity_create(&dword_0, "DownloadManager:pallasRequestV2", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
@@ -5814,7 +5814,7 @@ LABEL_10:
 
   dispatch_assert_queue_V2(self->_downloadStateQueue);
   context = objc_autoreleasePoolPush();
-  _MAPreferencesSync(@"pallasRequestV2", v16);
+  _MAPreferencesSync(@"pallasRequestV2", v2Copy);
   v152 = 0;
   v153 = &v152;
   v154 = 0x2020000000;
@@ -5826,25 +5826,25 @@ LABEL_10:
   v166 = 0x3032000000;
   v167 = __Block_byref_object_copy__11;
   v168 = __Block_byref_object_dispose__11;
-  v169 = [DownloadManager getPallasUrl:IsInternalAllowed assetType:v16];
+  v169 = [DownloadManager getPallasUrl:IsInternalAllowed assetType:v2Copy];
   if (*(*(&buf + 1) + 40))
   {
     v23 = objc_opt_new();
     v24 = +[ASAssetMetadataUpdatePolicy policy];
-    v25 = [v24 serverURLForAssetType:v16];
-    v121 = [v25 absoluteString];
+    v25 = [v24 serverURLForAssetType:v2Copy];
+    absoluteString = [v25 absoluteString];
 
-    if (v121)
+    if (absoluteString)
     {
-      [(__CFString *)v23 setObject:v121 forKey:@"BaseUrl"];
+      [(__CFString *)v23 setObject:absoluteString forKey:@"BaseUrl"];
     }
 
     v26 = +[ASAssetMetadataUpdatePolicy policy];
-    v27 = [v26 syntheticTrainName];
+    syntheticTrainName = [v26 syntheticTrainName];
 
-    if (v27)
+    if (syntheticTrainName)
     {
-      v28 = [NSString stringWithUTF8String:v27];
+      v28 = [NSString stringWithUTF8String:syntheticTrainName];
       if (v28)
       {
         [(__CFString *)v23 setObject:v28 forKey:@"TrainName"];
@@ -5865,29 +5865,29 @@ LABEL_10:
     [(__CFString *)v23 setObject:v30 forKey:@"InternalBuild"];
 
     v151 = 0;
-    v123 = [(DownloadManager *)self newAssetAudience:IsInternalAllowed assetType:v16 logMessage:&v151];
+    v123 = [(DownloadManager *)self newAssetAudience:IsInternalAllowed assetType:v2Copy logMessage:&v151];
     v109 = v151;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v31 = [v128 liveAssetAudienceUUID];
-      v32 = v31 == 0;
+      liveAssetAudienceUUID = [optionsCopy liveAssetAudienceUUID];
+      v32 = liveAssetAudienceUUID == 0;
 
       if (!v32)
       {
         [(__CFString *)v23 setObject:v123 forKey:@"OriginalAssetAudience"];
-        v33 = [v128 liveAssetAudienceUUID];
-        v34 = [v33 copy];
+        liveAssetAudienceUUID2 = [optionsCopy liveAssetAudienceUUID];
+        v34 = [liveAssetAudienceUUID2 copy];
 
         v123 = v34;
       }
     }
 
     [(__CFString *)v23 setObject:v123 forKey:@"AssetAudience"];
-    [(__CFString *)v23 setObject:v16 forKey:@"AssetType"];
+    [(__CFString *)v23 setObject:v2Copy forKey:@"AssetType"];
     v125 = objc_opt_new();
-    [v125 setObject:v126 forKey:@"DeviceAccessClient"];
-    if (isXMLAssetType(v16))
+    [v125 setObject:nameCopy forKey:@"DeviceAccessClient"];
+    if (isXMLAssetType(v2Copy))
     {
       v35 = @"true";
     }
@@ -5904,24 +5904,24 @@ LABEL_10:
     v37 = [NSNumber numberWithInt:2];
     [(__CFString *)v23 setObject:v37 forKey:@"ClientVersion"];
 
-    v38 = [v127 UUIDString];
-    [(__CFString *)v23 setObject:v38 forKey:@"Nonce"];
+    uUIDString = [v127 UUIDString];
+    [(__CFString *)v23 setObject:uUIDString forKey:@"Nonce"];
 
-    v39 = [v128 sessionId];
-    if (!v39)
+    sessionId = [optionsCopy sessionId];
+    if (!sessionId)
     {
       v40 = +[NSUUID UUID];
-      v41 = [v40 UUIDString];
+      uUIDString2 = [v40 UUIDString];
 
-      v39 = v41;
+      sessionId = uUIDString2;
     }
 
-    v115 = v39;
+    v115 = sessionId;
     [__CFString setObject:v23 forKey:"setObject:forKey:"];
-    v114 = [(DownloadManager *)self addSUOptions:v23 options:v128];
-    if ([v128 liveServerCatalogOnlyIsOverridden])
+    v114 = [(DownloadManager *)self addSUOptions:v23 options:optionsCopy];
+    if ([optionsCopy liveServerCatalogOnlyIsOverridden])
     {
-      if ([v128 liveServerCatalogOnly])
+      if ([optionsCopy liveServerCatalogOnly])
       {
         v42 = @"true";
       }
@@ -5935,7 +5935,7 @@ LABEL_10:
       [(__CFString *)v23 setObject:v43 forKey:@"NoFallback"];
     }
 
-    v113 = [(DownloadManager *)self pallasRequestedAssetSetID:v16];
+    v113 = [(DownloadManager *)self pallasRequestedAssetSetID:v2Copy];
     if (v113)
     {
       [(__CFString *)v23 setObject:v113 forKey:@"RequestedAssetSetID"];
@@ -5944,11 +5944,11 @@ LABEL_10:
     if (!os_variant_has_internal_content())
     {
 LABEL_48:
-      v53 = [v128 additionalServerParams];
-      if (v53 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+      additionalServerParams = [optionsCopy additionalServerParams];
+      if (additionalServerParams && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
-        addAdditionalParams(v23, v53);
-        v108 = [v53 objectForKey:@"DeviceCheck"];
+        addAdditionalParams(v23, additionalServerParams);
+        v108 = [additionalServerParams objectForKey:@"DeviceCheck"];
       }
 
       else
@@ -5962,7 +5962,7 @@ LABEL_48:
         [(__CFString *)v23 setSafeObject:v112 forKey:@"DeviceOSData"];
       }
 
-      v107 = v53;
+      v107 = additionalServerParams;
       if (!IsInternalAllowed)
       {
         v50 = v23;
@@ -6041,7 +6041,7 @@ LABEL_73:
               v157 = 138544130;
               v158 = v127;
               v159 = 2114;
-              v160 = v16;
+              v160 = v2Copy;
               v161 = 2114;
               v162 = v73;
               v163 = 2114;
@@ -6066,14 +6066,14 @@ LABEL_73:
           [v70 close];
           objc_autoreleasePoolPop(v69);
           v77 = [NSMutableURLRequest requestWithURL:*(*(&buf + 1) + 40)];
-          v106 = [(DownloadManager *)self getUserAgentStringForClient:v126 withAssetType:v124];
+          v106 = [(DownloadManager *)self getUserAgentStringForClient:nameCopy withAssetType:typeCopy];
           [v77 setCachePolicy:4];
           [v77 setHTTPMethod:@"POST"];
           [v77 setValue:v106 forHTTPHeaderField:@"User-Agent"];
           [v77 setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
           [v77 setValue:@"application/json" forHTTPHeaderField:@"Accept"];
-          v78 = [v127 UUIDString];
-          [v77 setValue:v78 forHTTPHeaderField:@"Nonce"];
+          uUIDString3 = [v127 UUIDString];
+          [v77 setValue:uUIDString3 forHTTPHeaderField:@"Nonce"];
 
           [v77 setHTTPBody:v105];
           if (_MAPreferencesIsVerboseLoggingEnabled())
@@ -6092,9 +6092,9 @@ LABEL_73:
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v80 = v128;
-            v81 = [v80 purpose];
-            v82 = normalizePurpose(v81);
+            v80 = optionsCopy;
+            purpose = [v80 purpose];
+            v82 = normalizePurpose(purpose);
 
             if (!isWellFormedPurpose(v82))
             {
@@ -6106,7 +6106,7 @@ LABEL_73:
                 v159 = 2114;
                 v160 = v82;
                 v161 = 2114;
-                v162 = v16;
+                v162 = v2Copy;
                 _os_log_impl(&dword_0, v83, OS_LOG_TYPE_ERROR, "[PallasNonce:%{public}@] The purpose for pallas v2 is: '%{public}@' which is not well formed, and type is: %{public}@", &v157, 0x20u);
               }
             }
@@ -6117,7 +6117,7 @@ LABEL_73:
             v82 = 0;
           }
 
-          v84 = assembleTaskDescriptorWithPurposeAndAutoAssetJobID(v124, @"xml", v82, v118);
+          v84 = assembleTaskDescriptorWithPurposeAndAutoAssetJobID(typeCopy, @"xml", v82, jobCopy);
           v131[0] = _NSConcreteStackBlock;
           v131[1] = 3221225472;
           v131[2] = __110__DownloadManager_pallasRequestV2_normalizedType_withPurpose_options_using_with_autoAssetJob_clientName_then___block_invoke;
@@ -6125,26 +6125,26 @@ LABEL_73:
           v147 = &v152;
           v101 = v127;
           v132 = v101;
-          v133 = self;
+          selfCopy = self;
           v134 = v107;
           p_buf = &buf;
-          v100 = v118;
+          v100 = jobCopy;
           v135 = v100;
-          v85 = v16;
+          v85 = v2Copy;
           v136 = v85;
           v104 = v84;
           v137 = v104;
-          v138 = v124;
+          v138 = typeCopy;
           v103 = v82;
           v139 = v103;
           v149 = spid;
-          v146 = v122;
+          v146 = thenCopy;
           v140 = v114;
           v141 = v115;
           v99 = v123;
           v142 = v99;
-          v143 = v121;
-          v102 = v128;
+          v143 = absoluteString;
+          v102 = optionsCopy;
           v144 = v102;
           v145 = v108;
           spida = objc_retainBlock(v131);
@@ -6160,20 +6160,20 @@ LABEL_73:
               _os_log_impl(&dword_0, v86, OS_LOG_TYPE_DEFAULT, "[PallasNonce:%{public}@] Using auth pallas session for %{public}@", &v157, 0x16u);
             }
 
-            v87 = [(DownloadManager *)self pallasDelegate];
-            [v87 refreshBAACertificate];
+            pallasDelegate = [(DownloadManager *)self pallasDelegate];
+            [pallasDelegate refreshBAACertificate];
           }
 
           else
           {
-            v87 = _MADLog(@"Download");
-            if (os_log_type_enabled(v87, OS_LOG_TYPE_DEFAULT))
+            pallasDelegate = _MADLog(@"Download");
+            if (os_log_type_enabled(pallasDelegate, OS_LOG_TYPE_DEFAULT))
             {
               v157 = 138543618;
               v158 = v101;
               v159 = 2114;
               v160 = v85;
-              _os_log_impl(&dword_0, v87, OS_LOG_TYPE_DEFAULT, "[PallasNonce:%{public}@] Using standard pallas session for %{public}@", &v157, 0x16u);
+              _os_log_impl(&dword_0, pallasDelegate, OS_LOG_TYPE_DEFAULT, "[PallasNonce:%{public}@] Using standard pallas session for %{public}@", &v157, 0x16u);
             }
           }
 
@@ -6212,8 +6212,8 @@ LABEL_73:
             _os_log_impl(&dword_0, v93, OS_LOG_TYPE_DEFAULT, "[PallasNonce:%{public}@] Using BootstrapDataService config for pallas request for %{public}@", &v157, 0x16u);
           }
 
-          v94 = [(DownloadManager *)self currentConfig];
-          v95 = [v94 copy];
+          currentConfig = [(DownloadManager *)self currentConfig];
+          v95 = [currentConfig copy];
 
           [v95 set_sourceApplicationSecondaryIdentifier:@"com.apple.CommCenter.CellularPlanProvisioning"];
           if ((backgroundDownloadsPossibleWithInfo(&v130) & 1) == 0)
@@ -6257,8 +6257,8 @@ LABEL_124:
                 _os_log_impl(&dword_0, v97, OS_LOG_TYPE_DEFAULT, "[PallasNonce:%{public}@] Download foreground download, timeout: %ld forced in-proc: %d", &v157, 0x1Cu);
               }
 
-              v98 = [(DownloadManager *)self currentConfig];
-              v95 = [v98 copy];
+              currentConfig2 = [(DownloadManager *)self currentConfig];
+              v95 = [currentConfig2 copy];
 
               [v95 setTimeoutIntervalForResource:v92];
               [v95 set_socketStreamProperties:&off_4F83B8];
@@ -6267,7 +6267,7 @@ LABEL_124:
           }
 
           [v88 set_timeoutIntervalForResource:v92];
-          [(DownloadManager *)self addLiveServerRequest:v104 forAssetType:v85 withPurpose:v103 audience:v99 pallasUrl:*(*(&buf + 1) + 40) using:v116 with:v117 clientName:v126 autoAssetJobID:v100 task:v88 options:v102];
+          [(DownloadManager *)self addLiveServerRequest:v104 forAssetType:v85 withPurpose:v103 audience:v99 pallasUrl:*(*(&buf + 1) + 40) using:usingCopy with:withCopy clientName:nameCopy autoAssetJobID:v100 task:v88 options:v102];
 
           v74 = v105;
         }
@@ -6287,8 +6287,8 @@ LABEL_124:
       }
 
       v54 = objc_autoreleasePoolPush();
-      v55 = [NSString stringWithFormat:@"%@-%@", @"PallasOverrides", v16];
-      v56 = _MAPreferencesCopyNSDictionaryValue(v55);
+      v2Copy = [NSString stringWithFormat:@"%@-%@", @"PallasOverrides", v2Copy];
+      v56 = _MAPreferencesCopyNSDictionaryValue(v2Copy);
       if (v56)
       {
         v57 = _MADLog(@"Download");
@@ -6297,7 +6297,7 @@ LABEL_124:
           v157 = 138543874;
           v158 = v127;
           v159 = 2114;
-          v160 = v55;
+          v160 = v2Copy;
           v161 = 2114;
           v162 = v56;
           v58 = "[PallasNonce:%{public}@] [PALLAS OVERRIDES]: Parsing value set in asset specific default(%{public}@) for PallasOverrides(%{public}@)";
@@ -6450,8 +6450,8 @@ LABEL_46:
     _os_log_impl(&dword_0, v49, OS_LOG_TYPE_DEFAULT, "Skipping live asset due to nil server url", &v157, 2u);
   }
 
-  v50 = getStandardUrl(v16, v124);
-  (*(v122 + 2))(v122, v50, v153[3], 27);
+  v50 = getStandardUrl(v2Copy, typeCopy);
+  (*(thenCopy + 2))(thenCopy, v50, v153[3], 27);
   v114 = 0;
   v115 = 0;
 LABEL_131:
@@ -7591,9 +7591,9 @@ void __34__DownloadManager_syncSplunkTasks__block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)getCurrentInflightDownloads:(id)a3
+- (void)getCurrentInflightDownloads:(id)downloads
 {
-  v4 = a3;
+  downloadsCopy = downloads;
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   v5 = _os_activity_create(&dword_0, "DownloadManager:getCurrentInflightDownloads", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
@@ -7609,7 +7609,7 @@ void __34__DownloadManager_syncSplunkTasks__block_invoke_2(uint64_t a1)
       v9[2] = __47__DownloadManager_getCurrentInflightDownloads___block_invoke_2278;
       v9[3] = &unk_4B4180;
       v9[4] = self;
-      v10 = v4;
+      v10 = downloadsCopy;
       [(NSURLSession *)backgroundSession getAllTasksWithCompletionHandler:v9];
     }
 
@@ -7623,7 +7623,7 @@ void __34__DownloadManager_syncSplunkTasks__block_invoke_2(uint64_t a1)
         _os_log_impl(&dword_0, v8, OS_LOG_TYPE_ERROR, "[%{public}s] No background session present for fetching inflight downloads", buf, 0xCu);
       }
 
-      (*(v4 + 2))(v4, 0);
+      (*(downloadsCopy + 2))(downloadsCopy, 0);
     }
   }
 
@@ -7635,7 +7635,7 @@ void __34__DownloadManager_syncSplunkTasks__block_invoke_2(uint64_t a1)
     block[2] = __47__DownloadManager_getCurrentInflightDownloads___block_invoke;
     block[3] = &unk_4B4078;
     block[4] = self;
-    v12 = v4;
+    v12 = downloadsCopy;
     dispatch_async(downloadStateQueue, block);
   }
 
@@ -7809,27 +7809,27 @@ void __47__DownloadManager_getCurrentInflightDownloads___block_invoke_2279(uint6
   }
 }
 
-- (id)startDownloadTask:(id)a3 downloadSize:(int64_t)a4 for:(id)a5 startingAt:(id)a6 withLength:(id)a7 extractWith:(id)a8 options:(id)a9 modified:(id)a10 session:(id)a11 isCachingServer:(BOOL)a12
+- (id)startDownloadTask:(id)task downloadSize:(int64_t)size for:(id)for startingAt:(id)at withLength:(id)length extractWith:(id)with options:(id)options modified:(id)self0 session:(id)self1 isCachingServer:(BOOL)self2
 {
-  v82 = a3;
-  v17 = a5;
-  v79 = a6;
-  v76 = a7;
-  v80 = a8;
-  v18 = a9;
-  v81 = a10;
-  v84 = a11;
+  taskCopy = task;
+  forCopy = for;
+  atCopy = at;
+  lengthCopy = length;
+  withCopy = with;
+  optionsCopy = options;
+  modifiedCopy = modified;
+  sessionCopy = session;
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   v19 = _os_activity_create(&dword_0, "DownloadManager:startDownloadTask", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
   os_activity_scope_enter(v19, &state);
 
-  v20 = [(DownloadManager *)self currentConfig];
-  v83 = [v20 copy];
+  currentConfig = [(DownloadManager *)self currentConfig];
+  v83 = [currentConfig copy];
 
   v86 = 0;
   dispatch_assert_queue_V2(self->_downloadStateQueue);
-  if (!v84)
+  if (!sessionCopy)
   {
     v32 = _MADLog(@"Download");
     if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
@@ -7843,11 +7843,11 @@ LABEL_21:
     }
 
 LABEL_22:
-    v36 = 0;
+    downloadAuthorizationHeader = 0;
     v77 = 0;
     v78 = 0;
     v74 = 0;
-    v75 = 0;
+    firstClientName = 0;
     v23 = 0;
     v37 = 0;
     v73 = 0;
@@ -7856,7 +7856,7 @@ LABEL_22:
     goto LABEL_23;
   }
 
-  if (!v82)
+  if (!taskCopy)
   {
     v32 = _MADLog(@"Download");
     if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
@@ -7872,7 +7872,7 @@ LABEL_22:
   }
 
   v21 = [NSMutableURLRequest requestWithURL:?];
-  v22 = [(NSMutableDictionary *)self->_downloadTasksInFlight objectForKey:v17];
+  v22 = [(NSMutableDictionary *)self->_downloadTasksInFlight objectForKey:forCopy];
   v23 = v22;
   if (!v22)
   {
@@ -7883,11 +7883,11 @@ LABEL_22:
       _os_log_impl(&dword_0, v32, OS_LOG_TYPE_ERROR, "Cannot start download with nil DownloadInfo", buf, 2u);
     }
 
-    v36 = 0;
+    downloadAuthorizationHeader = 0;
     v77 = 0;
     v78 = 0;
     v74 = 0;
-    v75 = 0;
+    firstClientName = 0;
     v23 = 0;
     v37 = 0;
     v73 = 0;
@@ -7895,14 +7895,14 @@ LABEL_22:
     goto LABEL_23;
   }
 
-  v75 = [v22 firstClientName];
-  v71 = downloadTypeForTaskDescriptor(v17);
-  v24 = getAssetTypeFromTaskDescriptor(v17);
+  firstClientName = [v22 firstClientName];
+  v71 = downloadTypeForTaskDescriptor(forCopy);
+  v24 = getAssetTypeFromTaskDescriptor(forCopy);
   v25 = repositoryPath(v24);
   v26 = ensureDirectory(v25);
 
   v74 = normalizedAssetType(v24);
-  v78 = [(DownloadManager *)self getUserAgentStringForClient:v75 withAssetType:v74];
+  v78 = [(DownloadManager *)self getUserAgentStringForClient:firstClientName withAssetType:v74];
   [v21 setValue:v78 forHTTPHeaderField:@"User-Agent"];
   if (_MAPreferencesIsVerboseLoggingEnabled())
   {
@@ -7910,40 +7910,40 @@ LABEL_22:
     if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412290;
-      v89 = v78;
+      sizeCopy = v78;
       _os_log_impl(&dword_0, v27, OS_LOG_TYPE_DEBUG, "User Agent String is: %@", buf, 0xCu);
     }
   }
 
-  v73 = getPathToStagedFile(v24, v17, 0);
+  v73 = getPathToStagedFile(v24, forCopy, 0);
   removeItem(v73);
   v77 = 0;
-  if (v79 && v76)
+  if (atCopy && lengthCopy)
   {
-    v28 = [v79 intValue];
-    v77 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"bytes=%d-%d", v28, v28 + [v76 intValue] - 1);
+    intValue = [atCopy intValue];
+    v77 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"bytes=%d-%d", intValue, intValue + [lengthCopy intValue] - 1);
     v29 = _MADLog(@"Download");
     if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v89 = v77;
+      sizeCopy = v77;
       _os_log_impl(&dword_0, v29, OS_LOG_TYPE_DEFAULT, "Range string is: %{public}@", buf, 0xCu);
     }
 
     [v21 setValue:v77 forHTTPHeaderField:@"Range"];
   }
 
-  if (v81)
+  if (modifiedCopy)
   {
     v30 = _MADLog(@"Download");
     if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v89 = v81;
+      sizeCopy = modifiedCopy;
       _os_log_impl(&dword_0, v30, OS_LOG_TYPE_DEFAULT, "Setting ifModified header to: %{public}@", buf, 0xCu);
     }
 
-    v31 = ASHTTPDateStringForDate(v81);
+    v31 = ASHTTPDateStringForDate(modifiedCopy);
     [v21 setValue:v31 forHTTPHeaderField:@"If-Modified-Since"];
   }
 
@@ -7957,8 +7957,8 @@ LABEL_22:
     }
   }
 
-  v36 = [v18 downloadAuthorizationHeader];
-  if ([v36 length])
+  downloadAuthorizationHeader = [optionsCopy downloadAuthorizationHeader];
+  if ([downloadAuthorizationHeader length])
   {
     v40 = _MADLog(@"Download");
     if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
@@ -7967,7 +7967,7 @@ LABEL_22:
       _os_log_impl(&dword_0, v40, OS_LOG_TYPE_DEFAULT, "Attaching downloadAuthorizationHeader to the request", buf, 2u);
     }
 
-    [v21 setValue:v36 forHTTPHeaderField:@"Authorization"];
+    [v21 setValue:downloadAuthorizationHeader forHTTPHeaderField:@"Authorization"];
   }
 
   else
@@ -7980,13 +7980,13 @@ LABEL_22:
     }
   }
 
-  if (v18)
+  if (optionsCopy)
   {
-    [v18 logOptions];
-    [v21 setAllowsCellularAccess:{objc_msgSend(v18, "allowsCellularAccess")}];
+    [optionsCopy logOptions];
+    [v21 setAllowsCellularAccess:{objc_msgSend(optionsCopy, "allowsCellularAccess")}];
   }
 
-  v32 = [v84 downloadTaskWithRequest:v21];
+  v32 = [sessionCopy downloadTaskWithRequest:v21];
   if (!v32)
   {
     v32 = _MADLog(@"Download");
@@ -8000,7 +8000,7 @@ LABEL_22:
     goto LABEL_23;
   }
 
-  v42 = calculateTimeout(a4);
+  v42 = calculateTimeout(size);
   if (v71 == 5)
   {
     v42 = 604800;
@@ -8015,14 +8015,14 @@ LABEL_22:
     }
   }
 
-  if (!v18)
+  if (!optionsCopy)
   {
     [v32 set_timeoutIntervalForResource:v42];
     v50 = _MADLog(@"Download");
     if (os_log_type_enabled(v50, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v89 = v17;
+      sizeCopy = forCopy;
       v90 = 2048;
       v91 = v42;
       v51 = "Setting the time out on: %{public}@ to: %ld due to nil options";
@@ -8038,7 +8038,7 @@ LABEL_74:
     goto LABEL_75;
   }
 
-  if ([v18 discretionary])
+  if ([optionsCopy discretionary])
   {
     v44 = 1;
   }
@@ -8049,16 +8049,16 @@ LABEL_74:
   }
 
   [v32 set_discretionaryOverride:v44];
-  if (!a12)
+  if (!server)
   {
-    if ([v18 timeoutIntervalForResource] < 1)
+    if ([optionsCopy timeoutIntervalForResource] < 1)
     {
       [v32 set_timeoutIntervalForResource:v42];
       v50 = _MADLog(@"Download");
       if (os_log_type_enabled(v50, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543618;
-        v89 = v17;
+        sizeCopy = forCopy;
         v90 = 2048;
         v91 = v42;
         v51 = "Setting the time out on: %{public}@ to: %ld due to options specifying to use default";
@@ -8068,18 +8068,18 @@ LABEL_74:
 
     else
     {
-      v52 = +[NSNumber numberWithLong:](NSNumber, "numberWithLong:", [v18 timeoutIntervalForResource]);
+      v52 = +[NSNumber numberWithLong:](NSNumber, "numberWithLong:", [optionsCopy timeoutIntervalForResource]);
       [v52 doubleValue];
       [v32 set_timeoutIntervalForResource:?];
 
       v50 = _MADLog(@"Download");
       if (os_log_type_enabled(v50, OS_LOG_TYPE_DEFAULT))
       {
-        v53 = [v18 timeoutIntervalForResource];
+        timeoutIntervalForResource = [optionsCopy timeoutIntervalForResource];
         *buf = 138543618;
-        v89 = v17;
+        sizeCopy = forCopy;
         v90 = 2048;
-        v91 = v53;
+        v91 = timeoutIntervalForResource;
         v51 = "Setting the time out on: %{public}@ to: %ld due to options";
         goto LABEL_72;
       }
@@ -8088,7 +8088,7 @@ LABEL_74:
     goto LABEL_74;
   }
 
-  v45 = calculateTimeout(a4);
+  v45 = calculateTimeout(size);
   if (v45 >= 3600)
   {
     v46 = 3600;
@@ -8107,7 +8107,7 @@ LABEL_74:
   if (os_log_type_enabled(v48, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v89 = v17;
+    sizeCopy = forCopy;
     v90 = 2048;
     v91 = v46;
     _os_log_impl(&dword_0, v48, OS_LOG_TYPE_DEFAULT, "Setting the time out on: %{public}@ to: %ld due to caching server", buf, 0x16u);
@@ -8161,34 +8161,34 @@ LABEL_75:
     }
   }
 
-  if (v80)
+  if (withCopy)
   {
     objc_opt_class();
-    if (!((v17 == 0) | ((objc_opt_isKindOfClass() & 1) == 0)))
+    if (!((forCopy == 0) | ((objc_opt_isKindOfClass() & 1) == 0)))
     {
-      [v80 setSessionID:v17];
+      [withCopy setSessionID:forCopy];
     }
 
-    [v32 set_extractor:v80];
+    [v32 set_extractor:withCopy];
   }
 
-  [v32 setTaskDescription:v17];
+  [v32 setTaskDescription:forCopy];
   v58 = _MADLog(@"Download");
   if (os_log_type_enabled(v58, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v89 = a4;
+    sizeCopy = size;
     _os_log_impl(&dword_0, v58, OS_LOG_TYPE_DEFAULT, "The download size is: %llu", buf, 0xCu);
   }
 
-  if (a4 >= 1)
+  if (size >= 1)
   {
-    [v32 setCountOfBytesClientExpectsToReceive:a4];
+    [v32 setCountOfBytesClientExpectsToReceive:size];
   }
 
   [v83 setDiscretionary:1];
-  [v83 set_allowsExpensiveAccess:{objc_msgSend(v18, "allowsExpensiveAccess")}];
-  [v83 set_requiresPowerPluggedIn:{objc_msgSend(v18, "requiresPowerPluggedIn")}];
+  [v83 set_allowsExpensiveAccess:{objc_msgSend(optionsCopy, "allowsExpensiveAccess")}];
+  [v83 set_requiresPowerPluggedIn:{objc_msgSend(optionsCopy, "requiresPowerPluggedIn")}];
   if (_MAPreferencesIsInternalAllowed())
   {
     v85 = 0;
@@ -8215,7 +8215,7 @@ LABEL_75:
     if (os_log_type_enabled(v61, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v89 = v17;
+      sizeCopy = forCopy;
       v90 = 1024;
       LODWORD(v91) = v86;
       _os_log_impl(&dword_0, v61, OS_LOG_TYPE_DEFAULT, "Downloading in foreground: %{public}@, removing timeout. (forced inProc: %d)", buf, 0x12u);
@@ -8224,20 +8224,20 @@ LABEL_75:
     [v83 set_socketStreamProperties:&off_4F83E0];
   }
 
-  if (!v17)
+  if (!forCopy)
   {
     v37 = 0;
     goto LABEL_104;
   }
 
-  v62 = getPathToTempDownloadFile(v24, v17, 1);
+  v62 = getPathToTempDownloadFile(v24, forCopy, 1);
   v37 = v62;
   if (v62)
   {
     if (removeItem(v62))
     {
-      v63 = [v37 path];
-      [v32 set_pathToDownloadTaskFile:v63];
+      path = [v37 path];
+      [v32 set_pathToDownloadTaskFile:path];
 
       goto LABEL_104;
     }
@@ -8246,7 +8246,7 @@ LABEL_75:
     if (os_log_type_enabled(v70, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v89 = v17;
+      sizeCopy = forCopy;
       _os_log_impl(&dword_0, v70, OS_LOG_TYPE_DEFAULT, "Download failed for: %{public}@, could not remove temp file before starting", buf, 0xCu);
     }
 
@@ -8259,7 +8259,7 @@ LABEL_104:
   [v32 _adoptEffectiveConfiguration:v83];
   if (__isPlatformVersionAtLeast(2, 17, 0, 0) && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v64 = [(DownloadManager *)self clientIdentifierWithName:v75];
+    v64 = [(DownloadManager *)self clientIdentifierWithName:firstClientName];
     [v32 set_sourceApplicationBundleIdentifierForMobileAsset:v64];
   }
 
@@ -8292,20 +8292,20 @@ LABEL_113:
     v65 = objc_opt_class();
     v66 = 2;
 LABEL_115:
-    [v65 addNWActivityToDownloadInfo:v23 andTask:v32 andLabel:v66 withOptions:v18];
+    [v65 addNWActivityToDownloadInfo:v23 andTask:v32 andLabel:v66 withOptions:optionsCopy];
   }
 
 LABEL_116:
   if ([v23 signpost])
   {
     v67 = _MADLog(@"Download");
-    v68 = [v23 signpost];
-    if ((v68 - 1) <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v67))
+    signpost = [v23 signpost];
+    if ((signpost - 1) <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v67))
     {
       v69 = mach_continuous_time();
       *buf = 134349056;
-      v89 = v69;
-      _os_signpost_emit_with_name_impl(&dword_0, v67, OS_SIGNPOST_INTERVAL_BEGIN, v68, "DownloadSession", "%{public, signpost.description:begin_time}llu  enableTelemetry=YES ", buf, 0xCu);
+      sizeCopy = v69;
+      _os_signpost_emit_with_name_impl(&dword_0, v67, OS_SIGNPOST_INTERVAL_BEGIN, signpost, "DownloadSession", "%{public, signpost.description:begin_time}llu  enableTelemetry=YES ", buf, 0xCu);
     }
   }
 
@@ -8318,88 +8318,88 @@ LABEL_24:
   return v38;
 }
 
-+ (void)addNWActivityToDownloadInfo:(id)a3 andTask:(id)a4 andLabel:(unsigned int)a5 withOptions:(id)a6
++ (void)addNWActivityToDownloadInfo:(id)info andTask:(id)task andLabel:(unsigned int)label withOptions:(id)options
 {
-  v18 = a3;
-  v8 = a4;
-  v9 = a6;
+  infoCopy = info;
+  taskCopy = task;
+  optionsCopy = options;
   if (!__isPlatformVersionAtLeast(2, 18, 4, 0))
   {
     goto LABEL_9;
   }
 
   v10 = nw_activity_create();
-  [v18 setNwActivity:v10];
-  [v8 set_nw_activity:v10];
+  [infoCopy setNwActivity:v10];
+  [taskCopy set_nw_activity:v10];
   nw_activity_activate();
   v11 = xpc_dictionary_create(0, 0, 0);
-  v12 = [v9 additionalServerParams];
-  v13 = [v12 safeObjectForKey:@"SetID" ofClass:objc_opt_class()];
+  additionalServerParams = [optionsCopy additionalServerParams];
+  v13 = [additionalServerParams safeObjectForKey:@"SetID" ofClass:objc_opt_class()];
   if (v13)
   {
-    v14 = v13;
+    assetType = v13;
 
 LABEL_5:
-    xpc_dictionary_set_string(v11, [@"SetID" UTF8String], objc_msgSend(v14, "UTF8String"));
+    xpc_dictionary_set_string(v11, [@"SetID" UTF8String], objc_msgSend(assetType, "UTF8String"));
 
     goto LABEL_6;
   }
 
-  v14 = [v18 assetType];
+  assetType = [infoCopy assetType];
 
-  if (v14)
+  if (assetType)
   {
     goto LABEL_5;
   }
 
 LABEL_6:
-  v15 = [v18 taskDescriptor];
+  taskDescriptor = [infoCopy taskDescriptor];
 
-  if (v15)
+  if (taskDescriptor)
   {
-    v16 = [v18 taskDescriptor];
-    xpc_dictionary_set_string(v11, "taskDescriptor", [v16 UTF8String]);
+    taskDescriptor2 = [infoCopy taskDescriptor];
+    xpc_dictionary_set_string(v11, "taskDescriptor", [taskDescriptor2 UTF8String]);
   }
 
-  v17 = [v18 nwActivity];
+  nwActivity = [infoCopy nwActivity];
   nw_activity_submit_metrics();
 
 LABEL_9:
 }
 
-- (id)startDownloadTask:(id)a3 downloadSize:(int64_t)a4 for:(id)a5 startingAt:(id)a6 withLength:(id)a7 extractWith:(id)a8 options:(id)a9 modified:(id)a10 session:(id)a11
+- (id)startDownloadTask:(id)task downloadSize:(int64_t)size for:(id)for startingAt:(id)at withLength:(id)length extractWith:(id)with options:(id)options modified:(id)self0 session:(id)self1
 {
-  v18 = a10;
-  v19 = a9;
-  v20 = a8;
-  v21 = a7;
-  v22 = a6;
-  v23 = a5;
-  v24 = a3;
-  v25 = [(DownloadManager *)self currentSession];
+  modifiedCopy = modified;
+  optionsCopy = options;
+  withCopy = with;
+  lengthCopy = length;
+  atCopy = at;
+  forCopy = for;
+  taskCopy = task;
+  currentSession = [(DownloadManager *)self currentSession];
   LOBYTE(v28) = 0;
-  v26 = [(DownloadManager *)self startDownloadTask:v24 downloadSize:a4 for:v23 startingAt:v22 withLength:v21 extractWith:v20 options:v19 modified:v18 session:v25 isCachingServer:v28];
+  v26 = [(DownloadManager *)self startDownloadTask:taskCopy downloadSize:size for:forCopy startingAt:atCopy withLength:lengthCopy extractWith:withCopy options:optionsCopy modified:modifiedCopy session:currentSession isCachingServer:v28];
 
   return v26;
 }
 
-- (int64_t)massageXmlAndPersist:(id)a3 catalogInfo:(id)a4 descriptor:(id)a5 assets:(id)a6 transformations:(id)a7 to:(id)a8 postedDate:(id)a9 assetSetId:(id)a10 pallasUrl:(id)a11 considerCaching:(BOOL)a12
+- (int64_t)massageXmlAndPersist:(id)persist catalogInfo:(id)info descriptor:(id)descriptor assets:(id)assets transformations:(id)transformations to:(id)to postedDate:(id)date assetSetId:(id)self0 pallasUrl:(id)self1 considerCaching:(BOOL)self2
 {
-  v51 = a3;
-  v44 = a4;
-  v43 = a5;
-  v50 = a6;
-  v48 = a7;
-  v49 = a8;
-  v46 = a9;
-  v47 = a10;
-  v45 = a11;
+  persistCopy = persist;
+  infoCopy = info;
+  descriptorCopy = descriptor;
+  assetsCopy = assets;
+  transformationsCopy = transformations;
+  toCopy = to;
+  dateCopy = date;
+  idCopy = id;
+  urlCopy = url;
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   v18 = _os_activity_create(&dword_0, "DownloadManager:massageXmlAndPersist_Live", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
   os_activity_scope_enter(v18, &state);
 
-  if (!v49)
+  if (!toCopy)
   {
     v26 = _MADLog(@"Download");
     if (!os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
@@ -8414,7 +8414,7 @@ LABEL_25:
     goto LABEL_26;
   }
 
-  if (!v50)
+  if (!assetsCopy)
   {
     v26 = _MADLog(@"Download");
     if (!os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
@@ -8430,9 +8430,9 @@ LABEL_25:
   v19 = _MADLog(@"Download");
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
   {
-    v20 = [v50 count];
+    v20 = [assetsCopy count];
     *buf = 138543618;
-    v62 = v51;
+    v62 = persistCopy;
     v63 = 2048;
     v64 = v20;
     _os_log_impl(&dword_0, v19, OS_LOG_TYPE_DEFAULT, "Catalog download for: %{public}@ got: %ld assets", buf, 0x16u);
@@ -8454,7 +8454,7 @@ LABEL_26:
     goto LABEL_27;
   }
 
-  if (v48 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  if (transformationsCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v26 = _MADLog(@"Download");
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
@@ -8469,11 +8469,11 @@ LABEL_26:
   else
   {
     v42 = objc_opt_new();
-    [v42 setObject:v51 forKey:@"AssetType"];
-    if (v47)
+    [v42 setObject:persistCopy forKey:@"AssetType"];
+    if (idCopy)
     {
-      [v42 setObject:v47 forKey:@"CachedAssetSetId"];
-      if (a12)
+      [v42 setObject:idCopy forKey:@"CachedAssetSetId"];
+      if (caching)
       {
         downloadStateQueue = self->_downloadStateQueue;
         block[0] = _NSConcreteStackBlock;
@@ -8481,8 +8481,8 @@ LABEL_26:
         block[2] = __137__DownloadManager_massageXmlAndPersist_catalogInfo_descriptor_assets_transformations_to_postedDate_assetSetId_pallasUrl_considerCaching___block_invoke;
         block[3] = &unk_4B2AF0;
         block[4] = self;
-        v57 = v47;
-        v58 = v51;
+        v57 = idCopy;
+        v58 = persistCopy;
         dispatch_async(downloadStateQueue, block);
       }
     }
@@ -8490,9 +8490,9 @@ LABEL_26:
     v22 = +[NSDate date];
     [v42 setObject:v22 forKey:@"lastTimeChecked"];
 
-    if (v44)
+    if (infoCopy)
     {
-      v23 = v44;
+      v23 = infoCopy;
     }
 
     else
@@ -8501,15 +8501,15 @@ LABEL_26:
     }
 
     [v42 setObject:v23 forKey:@"catalogInfo"];
-    if (v45)
+    if (urlCopy)
     {
-      v24 = [v45 absoluteString];
-      [v42 setObject:v24 forKey:@"DownloadedFromLive"];
+      absoluteString = [urlCopy absoluteString];
+      [v42 setObject:absoluteString forKey:@"DownloadedFromLive"];
     }
 
-    if (v46)
+    if (dateCopy)
     {
-      v25 = [(NSDateFormatter *)self->_dateFormatter dateFromString:v46];
+      v25 = [(NSDateFormatter *)self->_dateFormatter dateFromString:dateCopy];
       if (v25)
       {
         [v42 setObject:v25 forKey:@"postedDate"];
@@ -8521,15 +8521,15 @@ LABEL_26:
         if (os_log_type_enabled(v30, OS_LOG_TYPE_FAULT))
         {
           *buf = 138412290;
-          v62 = v46;
+          v62 = dateCopy;
           _os_log_impl(&dword_0, v30, OS_LOG_TYPE_FAULT, "Cannot parse posting date: '%@'", buf, 0xCu);
         }
       }
     }
 
-    if ([v50 count])
+    if ([assetsCopy count])
     {
-      applyCatalogTransforms(v48, v50);
+      applyCatalogTransforms(transformationsCopy, assetsCopy);
     }
 
     else
@@ -8542,16 +8542,16 @@ LABEL_26:
       }
     }
 
-    [v42 setObject:v50 forKey:@"Assets"];
+    [v42 setObject:assetsCopy forKey:@"Assets"];
     v41 = getControlManager();
     if (v41 && v42)
     {
-      updated = isSoftwareUpdateType(v51);
+      updated = isSoftwareUpdateType(persistCopy);
       v54 = 0u;
       v55 = 0u;
       v52 = 0u;
       v53 = 0u;
-      v33 = v50;
+      v33 = assetsCopy;
       v34 = [v33 countByEnumeratingWithState:&v52 objects:v60 count:16];
       if (v34)
       {
@@ -8573,7 +8573,7 @@ LABEL_26:
               if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
               {
                 *buf = 138543618;
-                v62 = v51;
+                v62 = persistCopy;
                 v63 = 2114;
                 v64 = v37;
                 _os_log_impl(&dword_0, v38, OS_LOG_TYPE_DEFAULT, "assetType: %{public}@ asset: %{public}@", buf, 0x16u);
@@ -8588,8 +8588,8 @@ LABEL_26:
       }
 
       [v41 ensureSUDownloadTempDir];
-      v39 = [v49 path];
-      [v41 writeDictionaryToFile:v42 to:v39 with:v43];
+      path = [toCopy path];
+      [v41 writeDictionaryToFile:v42 to:path with:descriptorCopy];
 
       v28 = 31;
     }
@@ -8621,33 +8621,33 @@ void __137__DownloadManager_massageXmlAndPersist_catalogInfo_descriptor_assets_t
   [v2 setObject:*(a1 + 40) forKey:*(a1 + 48)];
 }
 
-- (int64_t)massageXmlAndPersist:(id)a3 from:(id)a4 to:(id)a5 with:(id)a6 postedDate:(id)a7 considerCaching:(BOOL)a8
+- (int64_t)massageXmlAndPersist:(id)persist from:(id)from to:(id)to with:(id)with postedDate:(id)date considerCaching:(BOOL)caching
 {
-  v43 = a8;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v44 = a7;
+  cachingCopy = caching;
+  persistCopy = persist;
+  fromCopy = from;
+  toCopy = to;
+  withCopy = with;
+  dateCopy = date;
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   v16 = _os_activity_create(&dword_0, "DownloadManager:massageXmlAndPersist_XML", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
   os_activity_scope_enter(v16, &state);
 
-  v17 = getPathToStagedFile(v12, v15, 0);
+  v17 = getPathToStagedFile(persistCopy, withCopy, 0);
   v18 = _MADLog(@"Download");
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543874;
     v52 = v17;
     v53 = 2114;
-    v54 = v13;
+    v54 = fromCopy;
     v55 = 2114;
-    v56 = v14;
+    v56 = toCopy;
     _os_log_impl(&dword_0, v18, OS_LOG_TYPE_DEFAULT, "The staging path is: %{public}@ from %{public}@ target %{public}@", buf, 0x20u);
   }
 
-  if (!v14 || !v17)
+  if (!toCopy || !v17)
   {
     v22 = _MADLog(@"Download");
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
@@ -8655,9 +8655,9 @@ void __137__DownloadManager_massageXmlAndPersist_catalogInfo_descriptor_assets_t
       *buf = 138543874;
       v52 = v17;
       v53 = 2114;
-      v54 = v14;
+      v54 = toCopy;
       v55 = 2114;
-      v56 = v12;
+      v56 = persistCopy;
       _os_log_impl(&dword_0, v22, OS_LOG_TYPE_DEFAULT, "Cannot persist xml as there is no target location for copying %{public}@ to %{public}@ for %{public}@", buf, 0x20u);
     }
 
@@ -8675,20 +8675,20 @@ void __137__DownloadManager_massageXmlAndPersist_catalogInfo_descriptor_assets_t
     {
       if (v20)
       {
-        v24 = [v20 checkedDescription];
+        checkedDescription = [v20 checkedDescription];
       }
 
       else
       {
-        v24 = @"None";
+        checkedDescription = @"None";
       }
 
       *buf = 138543874;
       v52 = v17;
       v53 = 2114;
-      v54 = v13;
+      v54 = fromCopy;
       v55 = 2114;
-      v56 = v24;
+      v56 = checkedDescription;
       _os_log_impl(&dword_0, v23, OS_LOG_TYPE_DEFAULT, "could not load xml file after download: %{public}@ from %{public}@.  Error: %{public}@", buf, 0x20u);
       if (v20)
       {
@@ -8707,7 +8707,7 @@ void __137__DownloadManager_massageXmlAndPersist_catalogInfo_descriptor_assets_t
       *buf = 138543618;
       v52 = v17;
       v53 = 2114;
-      v54 = v13;
+      v54 = fromCopy;
       _os_log_impl(&dword_0, v21, OS_LOG_TYPE_DEFAULT, "xml file contents were not a dictionary: %{public}@ from %{public}@", buf, 0x16u);
     }
 
@@ -8720,9 +8720,9 @@ void __137__DownloadManager_massageXmlAndPersist_catalogInfo_descriptor_assets_t
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v52 = v14;
+      v52 = toCopy;
       v53 = 2114;
-      v54 = v13;
+      v54 = fromCopy;
       _os_log_impl(&dword_0, v21, OS_LOG_TYPE_DEFAULT, "xml file failed signature check: %{public}@ from %{public}@", buf, 0x16u);
     }
 
@@ -8730,60 +8730,60 @@ LABEL_11:
 
 LABEL_25:
     v25 = 0;
-    v26 = 0;
+    path = 0;
     v27 = 0;
 LABEL_26:
     v28 = 5;
     goto LABEL_27;
   }
 
-  if (v13)
+  if (fromCopy)
   {
-    v30 = [(__CFString *)v13 absoluteString];
-    [(__CFDictionary *)v19 setObject:v30 forKey:@"DownloadedFromXml"];
+    absoluteString = [(__CFString *)fromCopy absoluteString];
+    [(__CFDictionary *)v19 setObject:absoluteString forKey:@"DownloadedFromXml"];
 
     if (objc_opt_respondsToSelector())
     {
-      v31 = [(__CFString *)v13 URLByDeletingLastPathComponent];
-      v32 = [v31 URLByDeletingLastPathComponent];
-      v33 = [v32 absoluteString];
+      uRLByDeletingLastPathComponent = [(__CFString *)fromCopy URLByDeletingLastPathComponent];
+      v31URLByDeletingLastPathComponent = [uRLByDeletingLastPathComponent URLByDeletingLastPathComponent];
+      absoluteString2 = [v31URLByDeletingLastPathComponent absoluteString];
 
-      if (v33)
+      if (absoluteString2)
       {
-        [(__CFDictionary *)v19 setObject:v33 forKey:@"DownloadedFrom"];
+        [(__CFDictionary *)v19 setObject:absoluteString2 forKey:@"DownloadedFrom"];
       }
     }
   }
 
-  [(__CFDictionary *)v19 setObject:v12 forKey:@"AssetType", self];
+  [(__CFDictionary *)v19 setObject:persistCopy forKey:@"AssetType", self];
   v34 = +[NSDate date];
   [(__CFDictionary *)v19 setObject:v34 forKey:@"lastTimeChecked"];
 
-  if (v44)
+  if (dateCopy)
   {
     v35 = _MADLog(@"Download");
     if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543874;
-      v52 = v44;
+      v52 = dateCopy;
       v53 = 2114;
-      v54 = v12;
+      v54 = persistCopy;
       v55 = 2114;
-      v56 = v13;
+      v56 = fromCopy;
       _os_log_impl(&dword_0, v35, OS_LOG_TYPE_DEFAULT, "The xml posting date is: %{public}@ for %{public}@ from %{public}@", buf, 0x20u);
     }
 
-    [(__CFDictionary *)v19 setObject:v44 forKey:@"postedDate"];
+    [(__CFDictionary *)v19 setObject:dateCopy forKey:@"postedDate"];
   }
 
   v49 = @"isLiveServer";
   v50 = &__kCFBooleanFalse;
   v27 = [NSDictionary dictionaryWithObjects:&v50 forKeys:&v49 count:1];
   [(__CFDictionary *)v19 setObject:v27 forKey:@"catalogInfo"];
-  v36 = [(__CFString *)v14 URLByDeletingLastPathComponent];
-  v26 = [v36 path];
+  uRLByDeletingLastPathComponent2 = [(__CFString *)toCopy URLByDeletingLastPathComponent];
+  path = [uRLByDeletingLastPathComponent2 path];
 
-  v37 = ensureDirectory(v26);
+  v37 = ensureDirectory(path);
   v25 = getControlManager();
   if (!v25)
   {
@@ -8791,7 +8791,7 @@ LABEL_26:
     if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v52 = v12;
+      v52 = persistCopy;
       _os_log_impl(&dword_0, v40, OS_LOG_TYPE_DEFAULT, "Cannot write xml for %{public}@ as control manager is nil", buf, 0xCu);
     }
 
@@ -8799,10 +8799,10 @@ LABEL_26:
     goto LABEL_26;
   }
 
-  v38 = [(__CFString *)v14 path];
-  [v25 writeDictionaryToFile:v19 to:v38 with:v15];
+  path2 = [(__CFString *)toCopy path];
+  [v25 writeDictionaryToFile:v19 to:path2 with:withCopy];
 
-  if (v43)
+  if (cachingCopy)
   {
     v39 = *(v42 + 128);
     block[0] = _NSConcreteStackBlock;
@@ -8810,7 +8810,7 @@ LABEL_26:
     block[2] = __80__DownloadManager_massageXmlAndPersist_from_to_with_postedDate_considerCaching___block_invoke;
     block[3] = &unk_4B2B18;
     block[4] = v42;
-    v46 = v12;
+    v46 = persistCopy;
     dispatch_async(v39, block);
   }
 
@@ -8827,20 +8827,20 @@ void __80__DownloadManager_massageXmlAndPersist_from_to_with_postedDate_consider
   [v2 removeObjectForKey:*(a1 + 40)];
 }
 
-- (void)startDownloadAndUpdateState:(id)a3 for:(id)a4 modified:(id)a5 options:(id)a6 using:(id)a7 with:(id)a8 clientName:(id)a9 autoAssetJob:(id)a10 ofJobType:(id)a11
+- (void)startDownloadAndUpdateState:(id)state for:(id)for modified:(id)modified options:(id)options using:(id)using with:(id)with clientName:(id)name autoAssetJob:(id)self0 ofJobType:(id)self1
 {
-  v26 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
-  v22 = a9;
-  v23 = a10;
-  v24 = a11;
-  if (v21)
+  stateCopy = state;
+  forCopy = for;
+  modifiedCopy = modified;
+  optionsCopy = options;
+  usingCopy = using;
+  withCopy = with;
+  nameCopy = name;
+  jobCopy = job;
+  typeCopy = type;
+  if (withCopy)
   {
-    int64 = xpc_dictionary_get_int64(v21, "downloadSize");
+    int64 = xpc_dictionary_get_int64(withCopy, "downloadSize");
   }
 
   else
@@ -8848,23 +8848,23 @@ void __80__DownloadManager_massageXmlAndPersist_from_to_with_postedDate_consider
     int64 = 0;
   }
 
-  [(DownloadManager *)self startDownloadAndUpdateState:v26 for:v17 startingAt:0 withLength:0 extractWith:0 modified:v18 options:v19 downloadSize:int64 using:v20 with:v21 clientName:v22 autoAssetJob:v23 ofJobType:v24 notify:0 spaceCheckedUUID:0];
+  [(DownloadManager *)self startDownloadAndUpdateState:stateCopy for:forCopy startingAt:0 withLength:0 extractWith:0 modified:modifiedCopy options:optionsCopy downloadSize:int64 using:usingCopy with:withCopy clientName:nameCopy autoAssetJob:jobCopy ofJobType:typeCopy notify:0 spaceCheckedUUID:0];
 }
 
-- (void)addLiveServerRequest:(id)a3 forAssetType:(id)a4 withPurpose:(id)a5 audience:(id)a6 pallasUrl:(id)a7 using:(id)a8 with:(id)a9 clientName:(id)a10 autoAssetJobID:(id)a11 task:(id)a12 options:(id)a13
+- (void)addLiveServerRequest:(id)request forAssetType:(id)type withPurpose:(id)purpose audience:(id)audience pallasUrl:(id)url using:(id)using with:(id)with clientName:(id)self0 autoAssetJobID:(id)self1 task:(id)self2 options:(id)self3
 {
-  v19 = a3;
-  v45 = a4;
-  v46 = a5;
-  v44 = a6;
-  v47 = a7;
-  v20 = a8;
-  v21 = self;
-  v22 = a9;
-  v49 = a10;
-  v48 = a11;
-  v23 = a12;
-  v24 = a13;
+  requestCopy = request;
+  typeCopy = type;
+  purposeCopy = purpose;
+  audienceCopy = audience;
+  urlCopy = url;
+  usingCopy = using;
+  selfCopy = self;
+  withCopy = with;
+  nameCopy = name;
+  dCopy = d;
+  taskCopy = task;
+  optionsCopy = options;
   dispatch_assert_queue_V2(self->_downloadStateQueue);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -8873,21 +8873,21 @@ void __80__DownloadManager_massageXmlAndPersist_from_to_with_postedDate_consider
 
   v26 = objc_opt_new();
   v27 = v26;
-  if (v20 && v22)
+  if (usingCopy && withCopy)
   {
-    reply = xpc_dictionary_create_reply(v22);
+    reply = xpc_dictionary_create_reply(withCopy);
     if (reply)
     {
       [v27 setObject:reply forKey:@"downloadManagerReplyKey"];
-      [v27 setObject:v20 forKey:@"downloadManagerConnectionKey"];
+      [v27 setObject:usingCopy forKey:@"downloadManagerConnectionKey"];
     }
   }
 
   else
   {
-    if (v48)
+    if (dCopy)
     {
-      [v26 setObject:v48 forKey:@"downloadManagerAutoAssetJobIDKey"];
+      [v26 setObject:dCopy forKey:@"downloadManagerAutoAssetJobIDKey"];
       [v27 setObject:@"catalog_job" forKey:@"downloadManagerJobTypeKey"];
       goto LABEL_10;
     }
@@ -8901,14 +8901,14 @@ void __80__DownloadManager_massageXmlAndPersist_from_to_with_postedDate_consider
   }
 
 LABEL_10:
-  v29 = [(NSMutableDictionary *)self->_downloadTasksInFlight objectForKey:v19, a12];
-  if (v29)
+  task = [(NSMutableDictionary *)self->_downloadTasksInFlight objectForKey:requestCopy, task];
+  if (task)
   {
     v30 = _MADLog(@"Download");
     if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v52 = v19;
+      v52 = requestCopy;
       _os_log_impl(&dword_0, v30, OS_LOG_TYPE_DEFAULT, "Download already started for: %{public}@", buf, 0xCu);
     }
   }
@@ -8918,77 +8918,77 @@ LABEL_10:
     v31 = _MADLog(@"Download");
     if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
     {
-      v32 = [v23 _loggableDescription];
-      v33 = [(DownloadManager *)self grabTaskID:v32];
+      _loggableDescription = [taskCopy _loggableDescription];
+      v33 = [(DownloadManager *)self grabTaskID:_loggableDescription];
       *buf = 138543362;
       v52 = v33;
       _os_log_impl(&dword_0, v31, OS_LOG_TYPE_DEFAULT, "Catalog Download Started with taskID: %{public}@", buf, 0xCu);
     }
 
-    v29 = [[DownloadInfo alloc] initForAssetType:v45 withPurpose:v46 clientName:v49 options:v24];
-    [v29 setIsPallas:1];
-    v34 = [v47 absoluteString];
-    [v29 setPallasUrl:v34];
+    task = [[DownloadInfo alloc] initForAssetType:typeCopy withPurpose:purposeCopy clientName:nameCopy options:optionsCopy];
+    [task setIsPallas:1];
+    absoluteString = [urlCopy absoluteString];
+    [task setPallasUrl:absoluteString];
 
-    [v29 setAssetAudience:v44];
-    [v29 setTaskDescriptor:v19];
+    [task setAssetAudience:audienceCopy];
+    [task setTaskDescriptor:requestCopy];
     v35 = objc_alloc_init(NSDate);
-    [v29 setDownloadStartTime:v35];
+    [task setDownloadStartTime:v35];
 
-    [v29 setTask:v23];
-    v36 = [v24 analyticsData];
+    [task setTask:taskCopy];
+    analyticsData = [optionsCopy analyticsData];
 
-    if (v36)
+    if (analyticsData)
     {
-      v37 = [v24 analyticsData];
-      [v29 setAnalyticsData:v37];
+      analyticsData2 = [optionsCopy analyticsData];
+      [task setAnalyticsData:analyticsData2];
 
       v38 = _MADLog(@"Download");
       if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
       {
-        v39 = [v29 analyticsData];
+        analyticsData3 = [task analyticsData];
         *buf = 138543362;
-        v52 = v39;
+        v52 = analyticsData3;
         _os_log_impl(&dword_0, v38, OS_LOG_TYPE_DEFAULT, "{addLiveServerRequest} Additional AnalyticsInfo for task : %{public}@", buf, 0xCu);
       }
     }
 
-    [(NSMutableDictionary *)v21->_downloadTasksInFlight setObject:v29 forKey:v19];
+    [(NSMutableDictionary *)selfCopy->_downloadTasksInFlight setObject:task forKey:requestCopy];
   }
 
-  [v29 addNewDownloadInfo:v27];
+  [task addNewDownloadInfo:v27];
   if (__isPlatformVersionAtLeast(2, 17, 0, 0) && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v40 = [(DownloadManager *)v21 clientIdentifierWithName:v49];
-    [v23 set_sourceApplicationBundleIdentifierForMobileAsset:v40];
+    v40 = [(DownloadManager *)selfCopy clientIdentifierWithName:nameCopy];
+    [taskCopy set_sourceApplicationBundleIdentifierForMobileAsset:v40];
   }
 
-  [objc_opt_class() addNWActivityToDownloadInfo:v29 andTask:v23 andLabel:2 withOptions:v24];
-  if ([v29 signpost])
+  [objc_opt_class() addNWActivityToDownloadInfo:task andTask:taskCopy andLabel:2 withOptions:optionsCopy];
+  if ([task signpost])
   {
     v41 = _MADLog(@"Download");
-    v42 = [v29 signpost];
-    if ((v42 - 1) <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v41))
+    signpost = [task signpost];
+    if ((signpost - 1) <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v41))
     {
       v43 = mach_continuous_time();
       *buf = 134349056;
       v52 = v43;
-      _os_signpost_emit_with_name_impl(&dword_0, v41, OS_SIGNPOST_INTERVAL_BEGIN, v42, "DownloadSession", "%{public, signpost.description:begin_time}llu  enableTelemetry=YES ", buf, 0xCu);
+      _os_signpost_emit_with_name_impl(&dword_0, v41, OS_SIGNPOST_INTERVAL_BEGIN, signpost, "DownloadSession", "%{public, signpost.description:begin_time}llu  enableTelemetry=YES ", buf, 0xCu);
     }
   }
 
-  [v23 resume];
+  [taskCopy resume];
 
   os_activity_scope_leave(&state);
 }
 
-- (void)assessDownloadCompletion:(id)a3 originalUrl:(id)a4 taskDescription:(id)a5 taskId:(id)a6 error:(id)a7 moveFile:(BOOL)a8 extractorExists:(BOOL)a9
+- (void)assessDownloadCompletion:(id)completion originalUrl:(id)url taskDescription:(id)description taskId:(id)id error:(id)error moveFile:(BOOL)file extractorExists:(BOOL)exists
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
+  completionCopy = completion;
+  urlCopy = url;
+  descriptionCopy = description;
+  idCopy = id;
+  errorCopy = error;
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   v20 = _os_activity_create(&dword_0, "DownloadManager:assessDownloadCompletion", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
@@ -8999,19 +8999,19 @@ LABEL_10:
   block[1] = 3221225472;
   block[2] = __110__DownloadManager_assessDownloadCompletion_originalUrl_taskDescription_taskId_error_moveFile_extractorExists___block_invoke;
   block[3] = &unk_4B41A8;
-  v28 = v15;
-  v29 = v17;
-  v30 = v18;
-  v31 = v19;
-  v32 = self;
-  v33 = v16;
-  v34 = a8;
-  v35 = a9;
-  v22 = v16;
-  v23 = v19;
-  v24 = v18;
-  v25 = v17;
-  v26 = v15;
+  v28 = completionCopy;
+  v29 = descriptionCopy;
+  v30 = idCopy;
+  v31 = errorCopy;
+  selfCopy = self;
+  v33 = urlCopy;
+  fileCopy = file;
+  existsCopy = exists;
+  v22 = urlCopy;
+  v23 = errorCopy;
+  v24 = idCopy;
+  v25 = descriptionCopy;
+  v26 = completionCopy;
   dispatch_async(downloadStateQueue, block);
 
   os_activity_scope_leave(&state);
@@ -9132,17 +9132,17 @@ void __110__DownloadManager_assessDownloadCompletion_originalUrl_taskDescription
   }
 }
 
-- (BOOL)downloadNeedsSSO:(id)a3 taskDescriptor:(id)a4 url:(id)a5
+- (BOOL)downloadNeedsSSO:(id)o taskDescriptor:(id)descriptor url:(id)url
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  oCopy = o;
+  descriptorCopy = descriptor;
+  urlCopy = url;
   v16.opaque[0] = 0;
   v16.opaque[1] = 0;
   v10 = _os_activity_create(&dword_0, "DownloadManager:downloadNeedsSSO", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
   os_activity_scope_enter(v10, &v16);
 
-  if (!v7 || !v8)
+  if (!oCopy || !descriptorCopy)
   {
     v12 = _MADLog(@"Download");
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -9152,24 +9152,24 @@ void __110__DownloadManager_assessDownloadCompletion_originalUrl_taskDescription
       _os_log_impl(&dword_0, v12, OS_LOG_TYPE_ERROR, "Invalid options passed to %{public}s", buf, 0xCu);
     }
 
-    v11 = 0;
+    downloadAuthorizationHeader = 0;
     goto LABEL_10;
   }
 
-  if ((isSSONeededForURL(v9) & 1) == 0)
+  if ((isSSONeededForURL(urlCopy) & 1) == 0)
   {
-    v11 = 0;
+    downloadAuthorizationHeader = 0;
     goto LABEL_12;
   }
 
-  v11 = [v7 downloadAuthorizationHeader];
-  if (v11)
+  downloadAuthorizationHeader = [oCopy downloadAuthorizationHeader];
+  if (downloadAuthorizationHeader)
   {
     v12 = _MADLog(@"Download");
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v18 = v8;
+      v18 = descriptorCopy;
       _os_log_impl(&dword_0, v12, OS_LOG_TYPE_DEFAULT, "DownloadAuthorizationHeader already set in options for task (%{public}@)", buf, 0xCu);
     }
 
@@ -9180,7 +9180,7 @@ LABEL_12:
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v18 = v8;
+      v18 = descriptorCopy;
       _os_log_impl(&dword_0, v13, OS_LOG_TYPE_DEFAULT, "SSO token does not need to be collected for this task (%{public}@)", buf, 0xCu);
     }
 
@@ -9188,12 +9188,12 @@ LABEL_12:
     goto LABEL_15;
   }
 
-  v11 = _MADLog(@"Download");
-  if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+  downloadAuthorizationHeader = _MADLog(@"Download");
+  if (os_log_type_enabled(downloadAuthorizationHeader, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v18 = v8;
-    _os_log_impl(&dword_0, v11, OS_LOG_TYPE_DEFAULT, "SSO token needs to be collected for this task (%{public}@)", buf, 0xCu);
+    v18 = descriptorCopy;
+    _os_log_impl(&dword_0, downloadAuthorizationHeader, OS_LOG_TYPE_DEFAULT, "SSO token needs to be collected for this task (%{public}@)", buf, 0xCu);
   }
 
   v14 = 1;
@@ -9203,20 +9203,20 @@ LABEL_15:
   return v14;
 }
 
-- (id)MACopyDawToken:(id)a3
+- (id)MACopyDawToken:(id)token
 {
-  v4 = a3;
+  tokenCopy = token;
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   v5 = _os_activity_create(&dword_0, "DownloadManager:MACopyDawToken", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
   os_activity_scope_enter(v5, &state);
 
-  v6 = [(DownloadManager *)self ssoQueue];
-  dispatch_assert_queue_V2(v6);
+  ssoQueue = [(DownloadManager *)self ssoQueue];
+  dispatch_assert_queue_V2(ssoQueue);
 
-  v7 = [(DownloadManager *)self keyManager];
+  keyManager = [(DownloadManager *)self keyManager];
   v14 = 0;
-  v8 = [v7 copyDawToken:objc_msgSend(v7 useAppleConnect:"shouldDisableUIForUsage:assetAttributes:downloadOptions:" error:{@"server auth", 0, v4), 1, &v14}];
+  v8 = [keyManager copyDawToken:objc_msgSend(keyManager useAppleConnect:"shouldDisableUIForUsage:assetAttributes:downloadOptions:" error:{@"server auth", 0, tokenCopy), 1, &v14}];
   v9 = v14;
   v10 = _MADLog(@"Download");
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -9238,55 +9238,55 @@ LABEL_15:
   return v12;
 }
 
-- (void)startDownloadAndUpdateState:(id)a3 for:(id)a4 startingAt:(id)a5 withLength:(id)a6 extractWith:(id)a7 modified:(id)a8 options:(id)a9 downloadSize:(int64_t)a10 using:(id)a11 with:(id)a12 clientName:(id)a13 autoAssetJob:(id)a14 ofJobType:(id)a15 notify:(unint64_t)a16 spaceCheckedUUID:(id)a17
+- (void)startDownloadAndUpdateState:(id)state for:(id)for startingAt:(id)at withLength:(id)length extractWith:(id)with modified:(id)modified options:(id)options downloadSize:(int64_t)self0 using:(id)self1 with:(id)self2 clientName:(id)self3 autoAssetJob:(id)self4 ofJobType:(id)self5 notify:(unint64_t)self6 spaceCheckedUUID:(id)self7
 {
-  v60 = a3;
-  v23 = a4;
-  v54 = a5;
-  v53 = a6;
-  v52 = a7;
-  v50 = a8;
-  v24 = a9;
-  v25 = self;
-  v62 = a11;
+  stateCopy = state;
+  forCopy = for;
+  atCopy = at;
+  lengthCopy = length;
+  withCopy = with;
+  modifiedCopy = modified;
+  optionsCopy = options;
+  selfCopy = self;
+  usingCopy = using;
   v26 = a12;
-  v27 = a13;
-  v28 = a14;
-  v61 = a15;
-  v29 = a17;
+  nameCopy = name;
+  jobCopy = job;
+  typeCopy = type;
+  dCopy = d;
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   v30 = _os_activity_create(&dword_0, "DownloadManager:startDownloadAndUpdateState", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
   os_activity_scope_enter(v30, &state);
 
-  v31 = ![(DownloadManager *)v25 downloadNeedsSSO:v24 taskDescriptor:v23 url:?];
-  if (!v24)
+  v31 = ![(DownloadManager *)selfCopy downloadNeedsSSO:optionsCopy taskDescriptor:forCopy url:?];
+  if (!optionsCopy)
   {
     LOBYTE(v31) = 1;
   }
 
   if (v31)
   {
-    if (v28)
+    if (jobCopy)
     {
       v42 = objc_opt_new();
-      [v42 setSafeObject:v28 forKey:@"downloadManagerAutoAssetJobIDKey"];
-      [v42 setSafeObject:v61 forKey:@"downloadManagerJobTypeKey"];
-      [v42 setSafeObject:v27 forKey:@"firstClientName"];
+      [v42 setSafeObject:jobCopy forKey:@"downloadManagerAutoAssetJobIDKey"];
+      [v42 setSafeObject:typeCopy forKey:@"downloadManagerJobTypeKey"];
+      [v42 setSafeObject:nameCopy forKey:@"firstClientName"];
     }
 
     else if (v26)
     {
-      v57 = v25;
+      v57 = selfCopy;
       v43 = v26;
       reply = xpc_dictionary_create_reply(v26);
       if (reply)
       {
         v42 = objc_opt_new();
         [v42 setObject:reply forKey:@"downloadManagerReplyKey"];
-        [v42 setObject:v62 forKey:@"downloadManagerConnectionKey"];
-        [v42 setSafeObject:v27 forKey:@"firstClientName"];
-        v45 = [NSNumber numberWithUnsignedLongLong:a16];
+        [v42 setObject:usingCopy forKey:@"downloadManagerConnectionKey"];
+        [v42 setSafeObject:nameCopy forKey:@"firstClientName"];
+        v45 = [NSNumber numberWithUnsignedLongLong:notify];
         [v42 setObject:v45 forKey:@"downloadManagerNotificationInterval"];
       }
 
@@ -9296,7 +9296,7 @@ LABEL_15:
       }
 
       v26 = v43;
-      v25 = v57;
+      selfCopy = v57;
     }
 
     else
@@ -9304,85 +9304,85 @@ LABEL_15:
       v42 = 0;
     }
 
-    queuea = v25->_downloadStateQueue;
+    queuea = selfCopy->_downloadStateQueue;
     v63[0] = _NSConcreteStackBlock;
     v63[1] = 3221225472;
     v63[2] = __184__DownloadManager_startDownloadAndUpdateState_for_startingAt_withLength_extractWith_modified_options_downloadSize_using_with_clientName_autoAssetJob_ofJobType_notify_spaceCheckedUUID___block_invoke_2314;
     v63[3] = &unk_4B4220;
-    v63[4] = v25;
-    v64 = v23;
+    v63[4] = selfCopy;
+    v64 = forCopy;
     v65 = v42;
-    v66 = v24;
-    v67 = v29;
-    v68 = v28;
-    v69 = v60;
-    v70 = v27;
-    v46 = v29;
-    v71 = v54;
-    v72 = v53;
-    v73 = v52;
-    v74 = v50;
-    v75 = a10;
-    v51 = v50;
-    v59 = v52;
-    v58 = v53;
-    v56 = v54;
-    v55 = v27;
-    v35 = v60;
-    v37 = v28;
+    v66 = optionsCopy;
+    v67 = dCopy;
+    v68 = jobCopy;
+    v69 = stateCopy;
+    v70 = nameCopy;
+    v46 = dCopy;
+    v71 = atCopy;
+    v72 = lengthCopy;
+    v73 = withCopy;
+    v74 = modifiedCopy;
+    sizeCopy = size;
+    v51 = modifiedCopy;
+    v59 = withCopy;
+    v58 = lengthCopy;
+    v56 = atCopy;
+    v55 = nameCopy;
+    v35 = stateCopy;
+    v37 = jobCopy;
     v38 = v46;
-    v39 = v24;
+    v39 = optionsCopy;
     v40 = v42;
-    v47 = v23;
+    v47 = forCopy;
     v32 = v26;
     dispatch_async(queuea, v63);
 
-    v36 = v61;
+    v36 = typeCopy;
   }
 
   else
   {
     v32 = v26;
     v33 = _MADLog(@"Download");
-    v34 = v29;
+    v34 = dCopy;
     if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
       _os_log_impl(&dword_0, v33, OS_LOG_TYPE_DEFAULT, "Download will be re-attempted after DAW token is obtained", buf, 2u);
     }
 
-    queue = v25->_ssoQueue;
+    queue = selfCopy->_ssoQueue;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = __184__DownloadManager_startDownloadAndUpdateState_for_startingAt_withLength_extractWith_modified_options_downloadSize_using_with_clientName_autoAssetJob_ofJobType_notify_spaceCheckedUUID___block_invoke;
     block[3] = &unk_4B41D0;
-    block[4] = v25;
-    v77 = v24;
-    v78 = v23;
-    v79 = v62;
+    block[4] = selfCopy;
+    v77 = optionsCopy;
+    v78 = forCopy;
+    v79 = usingCopy;
     v80 = v32;
-    v81 = v27;
-    v82 = v28;
-    v83 = v61;
-    v84 = v60;
-    v85 = v54;
-    v86 = v53;
-    v87 = v52;
-    v88 = v50;
-    v90 = a10;
-    v91 = a16;
-    v89 = v29;
-    v59 = v50;
-    v58 = v52;
-    v56 = v53;
-    v55 = v54;
-    v35 = v27;
-    v36 = v61;
-    v37 = v60;
-    v38 = v28;
+    v81 = nameCopy;
+    v82 = jobCopy;
+    v83 = typeCopy;
+    v84 = stateCopy;
+    v85 = atCopy;
+    v86 = lengthCopy;
+    v87 = withCopy;
+    v88 = modifiedCopy;
+    sizeCopy2 = size;
+    notifyCopy = notify;
+    v89 = dCopy;
+    v59 = modifiedCopy;
+    v58 = withCopy;
+    v56 = lengthCopy;
+    v55 = atCopy;
+    v35 = nameCopy;
+    v36 = typeCopy;
+    v37 = stateCopy;
+    v38 = jobCopy;
     v39 = v34;
-    v40 = v24;
-    v41 = v23;
+    v40 = optionsCopy;
+    v41 = forCopy;
     dispatch_async(queue, block);
   }
 
@@ -9777,20 +9777,20 @@ void __184__DownloadManager_startDownloadAndUpdateState_for_startingAt_withLengt
   [*(a1 + 88) setTask:v14];
 }
 
-- (void)updateProgressIfRequired:(id)a3 totalWritten:(int64_t)a4 totalExpected:(int64_t)a5 notify:(BOOL)a6
+- (void)updateProgressIfRequired:(id)required totalWritten:(int64_t)written totalExpected:(int64_t)expected notify:(BOOL)notify
 {
-  v10 = a3;
+  requiredCopy = required;
   downloadStateQueue = self->_downloadStateQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __78__DownloadManager_updateProgressIfRequired_totalWritten_totalExpected_notify___block_invoke;
   block[3] = &unk_4B4248;
   block[4] = self;
-  v14 = v10;
-  v15 = a5;
-  v16 = a4;
-  v17 = a6;
-  v12 = v10;
+  v14 = requiredCopy;
+  expectedCopy = expected;
+  writtenCopy = written;
+  notifyCopy = notify;
+  v12 = requiredCopy;
   dispatch_async(downloadStateQueue, block);
 }
 
@@ -9888,13 +9888,13 @@ void __78__DownloadManager_updateProgressIfRequired_totalWritten_totalExpected_n
   }
 }
 
-- (BOOL)checkDownloadIsSyncing:(id)a3 using:(id)a4 with:(id)a5 autoAssetJob:(id)a6 ofJobType:(id)a7
+- (BOOL)checkDownloadIsSyncing:(id)syncing using:(id)using with:(id)with autoAssetJob:(id)job ofJobType:(id)type
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  syncingCopy = syncing;
+  usingCopy = using;
+  withCopy = with;
+  jobCopy = job;
+  typeCopy = type;
   currentState = self->_currentState;
   if (currentState == 3 || currentState == 0)
   {
@@ -9902,11 +9902,11 @@ void __78__DownloadManager_updateProgressIfRequired_totalWritten_totalExpected_n
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
       v22 = 138543362;
-      v23 = v12;
+      v23 = syncingCopy;
       _os_log_impl(&dword_0, v19, OS_LOG_TYPE_ERROR, "%{public}@ | Daemon not ready for download", &v22, 0xCu);
     }
 
-    [(DownloadManager *)self indicateDownloadJobFinished:13 usingXPCConnection:v13 withXPCMessage:v14 performingAutoAssetJob:v15 ofJobType:v16];
+    [(DownloadManager *)self indicateDownloadJobFinished:13 usingXPCConnection:usingCopy withXPCMessage:withCopy performingAutoAssetJob:jobCopy ofJobType:typeCopy];
     v20 = 1;
   }
 
@@ -9918,14 +9918,14 @@ void __78__DownloadManager_updateProgressIfRequired_totalWritten_totalExpected_n
   return v20;
 }
 
-- (BOOL)checkAssetDownloadIsSkipped:(id)a3 connection:(id)a4 with:(id)a5 autoAssetJob:(id)a6
+- (BOOL)checkAssetDownloadIsSkipped:(id)skipped connection:(id)connection with:(id)with autoAssetJob:(id)job
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  skippedCopy = skipped;
+  connectionCopy = connection;
+  withCopy = with;
+  jobCopy = job;
   *v19 = 3;
-  v14 = isForcedResultPreferenceSetForAssetType(@"ForceAssetDownloadResult", v10, v19);
+  v14 = isForcedResultPreferenceSetForAssetType(@"ForceAssetDownloadResult", skippedCopy, v19);
   if (v14)
   {
     v15 = *v19;
@@ -9934,7 +9934,7 @@ void __78__DownloadManager_updateProgressIfRequired_totalWritten_totalExpected_n
     {
       v17 = stringForMADownloadResult(v15);
       *v19 = 138543874;
-      *&v19[4] = v10;
+      *&v19[4] = skippedCopy;
       v20 = 2048;
       v21 = v15;
       v22 = 2114;
@@ -9942,20 +9942,20 @@ void __78__DownloadManager_updateProgressIfRequired_totalWritten_totalExpected_n
       _os_log_impl(&dword_0, v16, OS_LOG_TYPE_ERROR, "Skipping asset download for %{public}@ due to preferences, giving result %ld (%{public}@)", v19, 0x20u);
     }
 
-    [(DownloadManager *)self indicateDownloadJobFinished:v15 usingXPCConnection:v11 withXPCMessage:v12 performingAutoAssetJob:v13 ofJobType:@"asset_job"];
+    [(DownloadManager *)self indicateDownloadJobFinished:v15 usingXPCConnection:connectionCopy withXPCMessage:withCopy performingAutoAssetJob:jobCopy ofJobType:@"asset_job"];
   }
 
   return v14;
 }
 
-- (BOOL)checkCatalogDownloadIsSkipped:(id)a3 connection:(id)a4 with:(id)a5 autoAssetJob:(id)a6
+- (BOOL)checkCatalogDownloadIsSkipped:(id)skipped connection:(id)connection with:(id)with autoAssetJob:(id)job
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  skippedCopy = skipped;
+  connectionCopy = connection;
+  withCopy = with;
+  jobCopy = job;
   *v19 = 3;
-  v14 = isForcedResultPreferenceSetForAssetType(@"ForceCatalogDownloadResult", v10, v19);
+  v14 = isForcedResultPreferenceSetForAssetType(@"ForceCatalogDownloadResult", skippedCopy, v19);
   if (v14)
   {
     v15 = *v19;
@@ -9964,7 +9964,7 @@ void __78__DownloadManager_updateProgressIfRequired_totalWritten_totalExpected_n
     {
       v17 = stringForMADownloadResult(v15);
       *v19 = 138543874;
-      *&v19[4] = v10;
+      *&v19[4] = skippedCopy;
       v20 = 2048;
       v21 = v15;
       v22 = 2114;
@@ -9972,19 +9972,19 @@ void __78__DownloadManager_updateProgressIfRequired_totalWritten_totalExpected_n
       _os_log_impl(&dword_0, v16, OS_LOG_TYPE_ERROR, "Skipping catalog download for %{public}@ due to preferences, giving result %ld (%{public}@)", v19, 0x20u);
     }
 
-    [(DownloadManager *)self indicateDownloadJobFinished:v15 usingXPCConnection:v11 withXPCMessage:v12 performingAutoAssetJob:v13 ofJobType:@"catalog_job"];
+    [(DownloadManager *)self indicateDownloadJobFinished:v15 usingXPCConnection:connectionCopy withXPCMessage:withCopy performingAutoAssetJob:jobCopy ofJobType:@"catalog_job"];
   }
 
   return v14;
 }
 
-- (BOOL)checkPmvDownloadIsSkipped:(id)a3 connection:(id)a4 with:(id)a5
+- (BOOL)checkPmvDownloadIsSkipped:(id)skipped connection:(id)connection with:(id)with
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  skippedCopy = skipped;
+  connectionCopy = connection;
+  withCopy = with;
   *v16 = 3;
-  v11 = isForcedResultPreferenceSetForAssetType(@"ForcePmvDownloadResult", v8, v16);
+  v11 = isForcedResultPreferenceSetForAssetType(@"ForcePmvDownloadResult", skippedCopy, v16);
   if (v11)
   {
     v12 = *v16;
@@ -9993,7 +9993,7 @@ void __78__DownloadManager_updateProgressIfRequired_totalWritten_totalExpected_n
     {
       v14 = stringForMADownloadResult(v12);
       *v16 = 138543874;
-      *&v16[4] = v8;
+      *&v16[4] = skippedCopy;
       v17 = 2048;
       v18 = v12;
       v19 = 2114;
@@ -10001,78 +10001,78 @@ void __78__DownloadManager_updateProgressIfRequired_totalWritten_totalExpected_n
       _os_log_impl(&dword_0, v13, OS_LOG_TYPE_ERROR, "Skipping catalog download for %{public}@ due to preferences, giving result %ld (%{public}@)", v16, 0x20u);
     }
 
-    [(DownloadManager *)self indicateDownloadJobFinished:v12 usingXPCConnection:v9 withXPCMessage:v10 performingAutoAssetJob:0 ofJobType:@"asset_job"];
+    [(DownloadManager *)self indicateDownloadJobFinished:v12 usingXPCConnection:connectionCopy withXPCMessage:withCopy performingAutoAssetJob:0 ofJobType:@"asset_job"];
   }
 
   return v11;
 }
 
-- (void)registerAssetDownloadJob:(id)a3 forThis:(id)a4 withBase:(id)a5 relativeTo:(id)a6 startingAt:(id)a7 withLength:(id)a8 extractWith:(id)a9 allocateExtractorIfNecessary:(BOOL)a10 connection:(id)a11 message:(id)a12 clientName:(id)a13 notify:(unint64_t)a14 withCatalogMetadata:(id)a15 withSpaceCheckedUUID:(id)a16
+- (void)registerAssetDownloadJob:(id)job forThis:(id)this withBase:(id)base relativeTo:(id)to startingAt:(id)at withLength:(id)length extractWith:(id)with allocateExtractorIfNecessary:(BOOL)self0 connection:(id)self1 message:(id)self2 clientName:(id)self3 notify:(unint64_t)self4 withCatalogMetadata:(id)self5 withSpaceCheckedUUID:(id)self6
 {
-  v21 = a3;
-  v54 = a4;
-  v56 = a5;
-  v22 = a6;
-  v23 = a7;
-  v57 = a8;
-  v24 = a9;
-  v25 = a11;
-  v26 = a12;
-  v55 = a13;
-  v27 = a15;
-  v50 = a16;
-  v58 = v21;
-  _MAPreferencesSync(@"registerAssetDownloadJob", v21);
-  v52 = v24;
-  v53 = v23;
-  v51 = v22;
-  v48 = v25;
-  if (backgroundDownloadsPossibleWithInfo(0) && [(DownloadManager *)self checkDownloadIsSyncing:@"registerAssetDownloadJob" using:v25 with:v26 autoAssetJob:0 ofJobType:@"asset_job"])
+  jobCopy = job;
+  thisCopy = this;
+  baseCopy = base;
+  toCopy = to;
+  atCopy = at;
+  lengthCopy = length;
+  withCopy = with;
+  connectionCopy = connection;
+  messageCopy = message;
+  nameCopy = name;
+  metadataCopy = metadata;
+  dCopy = d;
+  v58 = jobCopy;
+  _MAPreferencesSync(@"registerAssetDownloadJob", jobCopy);
+  v52 = withCopy;
+  v53 = atCopy;
+  v51 = toCopy;
+  v48 = connectionCopy;
+  if (backgroundDownloadsPossibleWithInfo(0) && [(DownloadManager *)self checkDownloadIsSyncing:@"registerAssetDownloadJob" using:connectionCopy with:messageCopy autoAssetJob:0 ofJobType:@"asset_job"])
   {
     v28 = _MADLog(@"Download");
     if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v60 = v21;
+      v60 = jobCopy;
       _os_log_impl(&dword_0, v28, OS_LOG_TYPE_DEFAULT, "Trying to create an asset download job while background sync is ongoing, bailing, %{public}@", buf, 0xCu);
     }
 
     v29 = 0;
     v30 = 0;
-    v31 = v54;
+    v31 = thisCopy;
 LABEL_16:
-    v33 = v56;
+    v33 = baseCopy;
     goto LABEL_17;
   }
 
-  v32 = [(DownloadManager *)self checkAssetDownloadIsSkipped:v21 connection:v25 with:v26 autoAssetJob:0];
+  v32 = [(DownloadManager *)self checkAssetDownloadIsSkipped:jobCopy connection:connectionCopy with:messageCopy autoAssetJob:0];
   v29 = 0;
   v30 = 0;
-  v31 = v54;
-  v33 = v56;
+  v31 = thisCopy;
+  v33 = baseCopy;
   if (v32)
   {
 LABEL_17:
-    v39 = v55;
-    v47 = v25;
-    LOBYTE(v46) = a10;
-    v45 = v24;
+    v39 = nameCopy;
+    v47 = connectionCopy;
+    LOBYTE(v46) = necessary;
+    v45 = withCopy;
     v42 = v53;
     v43 = v33;
     v40 = v51;
-    [(DownloadManager *)self registerAssetDownloadJob:v58 withPurpose:v30 usingDownloadOptions:v29 forAssetId:v31 withBase:v33 relativeTo:v51 startingAt:v53 withLength:v57 extractWith:v45 allocateExtractorIfNecessary:v46 usingXPCConnection:v47 withXPCMessage:v26 clientName:v55 performingAutoAssetJob:0 notify:a14 withCatalogMetadata:v27 withSpaceCheckedUUID:v50, v48];
+    [(DownloadManager *)self registerAssetDownloadJob:v58 withPurpose:v30 usingDownloadOptions:v29 forAssetId:v31 withBase:v33 relativeTo:v51 startingAt:v53 withLength:lengthCopy extractWith:v45 allocateExtractorIfNecessary:v46 usingXPCConnection:v47 withXPCMessage:messageCopy clientName:nameCopy performingAutoAssetJob:0 notify:notify withCatalogMetadata:metadataCopy withSpaceCheckedUUID:dCopy, v48];
 
-    v38 = v27;
-    v41 = v50;
+    v38 = metadataCopy;
+    v41 = dCopy;
     goto LABEL_18;
   }
 
-  string = xpc_dictionary_get_string(v26, "Purpose");
+  string = xpc_dictionary_get_string(messageCopy, "Purpose");
   v30 = normalizePurposeFromUtf8(string);
   if (isWellFormedPurpose(v30))
   {
     v35 = downloadManagerDecodeClasses();
-    v36 = getObjectFromMessage(v26, "downloadOptionsLength", "downloadOptions", v35);
+    v36 = getObjectFromMessage(messageCopy, "downloadOptionsLength", "downloadOptions", v35);
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -10088,11 +10088,11 @@ LABEL_17:
         *buf = 138543618;
         v60 = v58;
         v61 = 2114;
-        v62 = v54;
+        v62 = thisCopy;
         _os_log_impl(&dword_0, v44, OS_LOG_TYPE_ERROR, "The asset download options for %{public}@ and %{public}@ were not a valid class, failing", buf, 0x16u);
       }
 
-      [(DownloadManager *)self sendDownloadCannotStartResult:22 assetType:v58 connection:v25 requestMessage:v26 clientName:v55 autoAssetJobID:0 ofJobType:@"asset_job" underlyingError:0];
+      [(DownloadManager *)self sendDownloadCannotStartResult:22 assetType:v58 connection:connectionCopy requestMessage:messageCopy clientName:nameCopy autoAssetJobID:0 ofJobType:@"asset_job" underlyingError:0];
       v29 = 0;
     }
 
@@ -10100,7 +10100,7 @@ LABEL_17:
   }
 
   v37 = _MADLog(@"Download");
-  v38 = v27;
+  v38 = metadataCopy;
   if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
@@ -10108,33 +10108,33 @@ LABEL_17:
     _os_log_impl(&dword_0, v37, OS_LOG_TYPE_DEFAULT, "Trying to create a download job without a well formed purpose, bailing, %{public}@", buf, 0xCu);
   }
 
-  v39 = v55;
-  [(DownloadManager *)self sendDownloadCannotStartResult:3 assetType:v58 connection:v25 requestMessage:v26 clientName:v55 autoAssetJobID:0 ofJobType:@"asset_job" underlyingError:0];
-  v41 = v50;
-  v40 = v22;
+  v39 = nameCopy;
+  [(DownloadManager *)self sendDownloadCannotStartResult:3 assetType:v58 connection:connectionCopy requestMessage:messageCopy clientName:nameCopy autoAssetJobID:0 ofJobType:@"asset_job" underlyingError:0];
+  v41 = dCopy;
+  v40 = toCopy;
   v42 = v53;
-  v43 = v56;
+  v43 = baseCopy;
 LABEL_18:
 }
 
-- (void)registerAssetDownloadJob:(id)a3 forAssetType:(id)a4 withPurpose:(id)a5 clientName:(id)a6 usingDownloadOptions:(id)a7 forAssetId:(id)a8 withCatalogMetadata:(id)a9 withSpaceCheckedUUID:(id)a10
+- (void)registerAssetDownloadJob:(id)job forAssetType:(id)type withPurpose:(id)purpose clientName:(id)name usingDownloadOptions:(id)options forAssetId:(id)id withCatalogMetadata:(id)metadata withSpaceCheckedUUID:(id)self0
 {
-  v15 = a3;
-  v16 = a4;
-  v31 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v20 = a9;
-  v21 = a10;
-  v22 = [v20 safeStringForKey:@"__BaseURL"];
-  v23 = [v20 safeStringForKey:@"__RelativePath"];
+  jobCopy = job;
+  typeCopy = type;
+  purposeCopy = purpose;
+  nameCopy = name;
+  optionsCopy = options;
+  idCopy = id;
+  metadataCopy = metadata;
+  dCopy = d;
+  v22 = [metadataCopy safeStringForKey:@"__BaseURL"];
+  v23 = [metadataCopy safeStringForKey:@"__RelativePath"];
   v24 = v23;
   if (v22 && v23)
   {
     LOBYTE(v29) = 1;
-    v25 = v31;
-    [(DownloadManager *)self registerAssetDownloadJob:v16 withPurpose:v31 usingDownloadOptions:v18 forAssetId:v19 withBase:v22 relativeTo:v23 startingAt:0 withLength:0 extractWith:0 allocateExtractorIfNecessary:v29 usingXPCConnection:0 withXPCMessage:0 clientName:v17 performingAutoAssetJob:v15 notify:0 withCatalogMetadata:v20 withSpaceCheckedUUID:v21];
+    v25 = purposeCopy;
+    [(DownloadManager *)self registerAssetDownloadJob:typeCopy withPurpose:purposeCopy usingDownloadOptions:optionsCopy forAssetId:idCopy withBase:v22 relativeTo:v23 startingAt:0 withLength:0 extractWith:0 allocateExtractorIfNecessary:v29 usingXPCConnection:0 withXPCMessage:0 clientName:nameCopy performingAutoAssetJob:jobCopy notify:0 withCatalogMetadata:metadataCopy withSpaceCheckedUUID:dCopy];
   }
 
   else
@@ -10154,18 +10154,18 @@ LABEL_18:
         v28 = @"MISSING";
       }
 
-      v33 = v15;
+      v33 = jobCopy;
       v34 = 2112;
       if (v24)
       {
         v27 = v24;
       }
 
-      v35 = v16;
+      v35 = typeCopy;
       v36 = 2112;
-      v37 = v31;
+      v37 = purposeCopy;
       v38 = 2112;
-      v39 = v19;
+      v39 = idCopy;
       v40 = 2112;
       v41 = v28;
       v42 = 2112;
@@ -10173,14 +10173,14 @@ LABEL_18:
       _os_log_impl(&dword_0, v26, OS_LOG_TYPE_ERROR, "Unable to register asset download job (catalog missing URLs) | autoAssetJobID:%@, assetType:%@, purpose:%@, assetId:%@ | baseURL:%@, relativeURL:%@", buf, 0x3Eu);
     }
 
-    [(DownloadManager *)self sendDownloadCannotStartResult:5 assetType:v16 connection:0 requestMessage:0 clientName:v17 autoAssetJobID:v15 ofJobType:@"asset_job" underlyingError:0];
-    v25 = v31;
+    [(DownloadManager *)self sendDownloadCannotStartResult:5 assetType:typeCopy connection:0 requestMessage:0 clientName:nameCopy autoAssetJobID:jobCopy ofJobType:@"asset_job" underlyingError:0];
+    v25 = purposeCopy;
   }
 }
 
-- (id)getBaseURLOverrideForAssetType:(id)a3
+- (id)getBaseURLOverrideForAssetType:(id)type
 {
-  v3 = a3;
+  typeCopy = type;
   if (!__isPlatformVersionAtLeast(2, 19, 0, 0))
   {
     v10 = 0;
@@ -10210,9 +10210,9 @@ LABEL_18:
     v8 = _MADLog(@"Download");
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      v9 = [v7 checkedDescription];
+      checkedDescription = [v7 checkedDescription];
       *buf = 138543362;
-      v21 = v9;
+      v21 = checkedDescription;
       _os_log_impl(&dword_0, v8, OS_LOG_TYPE_ERROR, "[BaseURLOverride]: Failed to determine if device in PalletUpdateMode: %{public}@", buf, 0xCu);
     }
 
@@ -10229,7 +10229,7 @@ LABEL_11:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v21 = v3;
+      v21 = typeCopy;
       _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "[BaseURLOverride]: Using PalletUpdateMode URL for asset | Asset:%{public}@.", buf, 0xCu);
     }
 
@@ -10243,8 +10243,8 @@ LABEL_11:
 LABEL_12:
   if (os_variant_has_internal_content())
   {
-    v11 = [NSString stringWithFormat:@"%@-%@", @"DownloadServerBaseURLOverride", v3];
-    v12 = _MAPreferencesCopyValue(v11);
+    typeCopy = [NSString stringWithFormat:@"%@-%@", @"DownloadServerBaseURLOverride", typeCopy];
+    v12 = _MAPreferencesCopyValue(typeCopy);
     if (v12)
     {
       v13 = v12;
@@ -10252,9 +10252,9 @@ LABEL_12:
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543618;
-        v21 = v11;
+        v21 = typeCopy;
         v22 = 2114;
-        v23 = v3;
+        v23 = typeCopy;
         v15 = "[BaseURLOverride]: Using baseURLOverride from asset specific default(%{public}@) for asset(%{public}@)";
 LABEL_23:
         _os_log_impl(&dword_0, v14, OS_LOG_TYPE_DEFAULT, v15, buf, 0x16u);
@@ -10278,7 +10278,7 @@ LABEL_25:
         *buf = 138543618;
         v21 = @"DownloadServerBaseURLOverride";
         v22 = 2114;
-        v23 = v3;
+        v23 = typeCopy;
         v15 = "[BaseURLOverride]: Using baseURLOverride from global default(%{public}@) for asset(%{public}@)";
         goto LABEL_23;
       }
@@ -10295,7 +10295,7 @@ LABEL_26:
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v21 = v3;
+      v21 = typeCopy;
       v22 = 2112;
       v23 = v10;
       _os_log_impl(&dword_0, v17, OS_LOG_TYPE_DEFAULT, "[BaseURLOverride]: Final baseURLOverride for asset(%@) is %@", buf, 0x16u);
@@ -10307,23 +10307,23 @@ LABEL_31:
   return v10;
 }
 
-- (void)registerAssetDownloadJob:(id)a3 withPurpose:(id)a4 usingDownloadOptions:(id)a5 forAssetId:(id)a6 withBase:(id)a7 relativeTo:(id)a8 startingAt:(id)a9 withLength:(id)a10 extractWith:(id)a11 allocateExtractorIfNecessary:(BOOL)a12 usingXPCConnection:(id)a13 withXPCMessage:(id)a14 clientName:(id)a15 performingAutoAssetJob:(id)a16 notify:(unint64_t)a17 withCatalogMetadata:(id)a18 withSpaceCheckedUUID:(id)a19
+- (void)registerAssetDownloadJob:(id)job withPurpose:(id)purpose usingDownloadOptions:(id)options forAssetId:(id)id withBase:(id)base relativeTo:(id)to startingAt:(id)at withLength:(id)self0 extractWith:(id)self1 allocateExtractorIfNecessary:(BOOL)self2 usingXPCConnection:(id)self3 withXPCMessage:(id)self4 clientName:(id)self5 performingAutoAssetJob:(id)self6 notify:(unint64_t)self7 withCatalogMetadata:(id)self8 withSpaceCheckedUUID:(id)self9
 {
-  v24 = a3;
-  v62 = a4;
-  v57 = a5;
-  v63 = a6;
-  v55 = a7;
-  v56 = a8;
-  v51 = a9;
-  v52 = a10;
-  v25 = a11;
-  v58 = a13;
-  v59 = a14;
-  v60 = a15;
-  v26 = a16;
-  v61 = a18;
-  v53 = a19;
+  jobCopy = job;
+  purposeCopy = purpose;
+  optionsCopy = options;
+  idCopy = id;
+  baseCopy = base;
+  toCopy = to;
+  atCopy = at;
+  lengthCopy = length;
+  withCopy = with;
+  connectionCopy = connection;
+  messageCopy = message;
+  nameCopy = name;
+  assetJobCopy = assetJob;
+  metadataCopy = metadata;
+  dCopy = d;
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   v27 = _os_activity_create(&dword_0, "DownloadManager:registerAssetDownloadJob", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
@@ -10335,8 +10335,8 @@ LABEL_31:
   v100 = __Block_byref_object_copy__11;
   v101 = __Block_byref_object_dispose__11;
   v102 = 0;
-  v28 = normalizedAssetType(v24);
-  v29 = assembleTaskDescriptorWithPurposeAndAutoAssetJobID(v28, v63, v62, v26);
+  v28 = normalizedAssetType(jobCopy);
+  v29 = assembleTaskDescriptorWithPurposeAndAutoAssetJobID(v28, idCopy, purposeCopy, assetJobCopy);
   v30 = v98[5];
   v98[5] = v29;
 
@@ -10346,7 +10346,7 @@ LABEL_31:
     if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      *&buf[4] = v24;
+      *&buf[4] = jobCopy;
       _os_log_impl(&dword_0, v34, OS_LOG_TYPE_DEFAULT, "Trying to create a download job with nil task descriptor, bailing, %{public}@", buf, 0xCu);
     }
 
@@ -10356,7 +10356,7 @@ LABEL_31:
     goto LABEL_12;
   }
 
-  v31 = [v61 safeDictionaryForKey:@"RequiredFeatures"];
+  v31 = [metadataCopy safeDictionaryForKey:@"RequiredFeatures"];
   if (v31)
   {
     v32 = _MADLog(@"Download");
@@ -10386,7 +10386,7 @@ LABEL_31:
       v38 = 78;
 LABEL_12:
 
-      [(DownloadManager *)self sendDownloadCannotStartResult:v38 assetType:v24 connection:v58 requestMessage:v59 clientName:v60 autoAssetJobID:v26 ofJobType:@"asset_job" underlyingError:v36, a19, v51, v52];
+      [(DownloadManager *)self sendDownloadCannotStartResult:v38 assetType:jobCopy connection:connectionCopy requestMessage:messageCopy clientName:nameCopy autoAssetJobID:assetJobCopy ofJobType:@"asset_job" underlyingError:v36, d, atCopy, lengthCopy];
       goto LABEL_29;
     }
 
@@ -10404,14 +10404,14 @@ LABEL_12:
       [v47 setObject:v31 forKeyedSubscript:@"requiredFeatures"];
       [v47 setObject:&__kCFBooleanTrue forKeyedSubscript:@"relaunchBrain"];
       v48 = &__kCFBooleanFalse;
-      if (v57 && ![v57 discretionary])
+      if (optionsCopy && ![optionsCopy discretionary])
       {
         v48 = &__kCFBooleanTrue;
       }
 
       [v47 setObject:v48 forKeyedSubscript:@"nonDiscetionary"];
-      v49 = [v57 downloadAuthorizationHeader];
-      [v47 setObject:v49 forKeyedSubscript:@"dawHeader"];
+      downloadAuthorizationHeader = [optionsCopy downloadAuthorizationHeader];
+      [v47 setObject:downloadAuthorizationHeader forKeyedSubscript:@"dawHeader"];
 
       v50 = +[MABrainUpdater sharedInstance];
       v89[0] = _NSConcreteStackBlock;
@@ -10419,11 +10419,11 @@ LABEL_12:
       v89[2] = __287__DownloadManager_registerAssetDownloadJob_withPurpose_usingDownloadOptions_forAssetId_withBase_relativeTo_startingAt_withLength_extractWith_allocateExtractorIfNecessary_usingXPCConnection_withXPCMessage_clientName_performingAutoAssetJob_notify_withCatalogMetadata_withSpaceCheckedUUID___block_invoke;
       v89[3] = &unk_4B4270;
       v89[4] = self;
-      v90 = v24;
-      v91 = v58;
-      v92 = v59;
-      v93 = v60;
-      v94 = v26;
+      v90 = jobCopy;
+      v91 = connectionCopy;
+      v92 = messageCopy;
+      v93 = nameCopy;
+      v94 = assetJobCopy;
       [v50 update:v47 completion:v89];
 
       v36 = 0;
@@ -10432,9 +10432,9 @@ LABEL_12:
   }
 
   v36 = 0;
-  if (v25 || !a12)
+  if (withCopy || !necessary)
   {
-    v42 = v25;
+    v42 = withCopy;
   }
 
   else
@@ -10442,7 +10442,7 @@ LABEL_12:
     v39 = getControlManager();
     v40 = v98[5];
     v88 = 0;
-    v41 = [v39 newExtractor:v61 downloadOptions:v57 sessionID:v40 error:&v88];
+    v41 = [v39 newExtractor:metadataCopy downloadOptions:optionsCopy sessionID:v40 error:&v88];
     v36 = v88;
 
     if (!v41)
@@ -10451,17 +10451,17 @@ LABEL_12:
       if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
       {
         *buf = 138413826;
-        *&buf[4] = v26;
+        *&buf[4] = assetJobCopy;
         *&buf[12] = 2112;
-        *&buf[14] = v24;
+        *&buf[14] = jobCopy;
         *&buf[22] = 2112;
-        v105 = v62;
+        v105 = purposeCopy;
         *v106 = 2112;
-        *&v106[2] = v63;
+        *&v106[2] = idCopy;
         *&v106[10] = 2112;
-        *&v106[12] = v55;
+        *&v106[12] = baseCopy;
         v107 = 2112;
-        v108 = v56;
+        v108 = toCopy;
         v109 = 2112;
         v110 = v36;
         _os_log_impl(&dword_0, v34, OS_LOG_TYPE_ERROR, "Unable to register asset download job (unable to create catalog-based extractor) | autoAssetJobID:%@, assetType:%@, purpose:%@, assetId:%@ | baseURL:%@, relativeURL:%@ error:%@", buf, 0x48u);
@@ -10488,33 +10488,33 @@ LABEL_12:
   v64[1] = 3221225472;
   v64[2] = __287__DownloadManager_registerAssetDownloadJob_withPurpose_usingDownloadOptions_forAssetId_withBase_relativeTo_startingAt_withLength_extractWith_allocateExtractorIfNecessary_usingXPCConnection_withXPCMessage_clientName_performingAutoAssetJob_notify_withCatalogMetadata_withSpaceCheckedUUID___block_invoke_2362;
   v64[3] = &unk_4B4298;
-  v43 = v61;
+  v43 = metadataCopy;
   v65 = v43;
   v66 = v42;
-  v67 = v24;
-  v68 = v63;
-  v69 = v55;
-  v70 = v56;
-  v71 = self;
-  v72 = v57;
-  v73 = v62;
+  v67 = jobCopy;
+  v68 = idCopy;
+  v69 = baseCopy;
+  v70 = toCopy;
+  selfCopy = self;
+  v72 = optionsCopy;
+  v73 = purposeCopy;
   v80 = &v97;
-  v74 = v51;
-  v75 = v52;
+  v74 = atCopy;
+  v75 = lengthCopy;
   v81 = &v84;
-  v25 = v66;
-  v76 = v58;
-  v77 = v59;
-  v78 = v60;
+  withCopy = v66;
+  v76 = connectionCopy;
+  v77 = messageCopy;
+  v78 = nameCopy;
   v82 = buf;
-  v83 = a17;
-  v79 = v26;
+  notifyCopy = notify;
+  v79 = assetJobCopy;
   v44 = objc_retainBlock(v64);
   v45 = [v43 safeULLForKey:@"_DownloadSize"];
   v85[3] = v45;
-  if (v53)
+  if (dCopy)
   {
-    objc_storeStrong((*&buf[8] + 40), a19);
+    objc_storeStrong((*&buf[8] + 40), d);
   }
 
   dispatch_async(self->_downloadStateQueue, v44);
@@ -10714,12 +10714,12 @@ LABEL_39:
   [*(a1 + 80) startDownloadAndUpdateState:v20 for:*(*(*(a1 + 152) + 8) + 40) startingAt:*(a1 + 104) withLength:*(a1 + 112) extractWith:*(a1 + 40) modified:0 options:*(a1 + 88) downloadSize:*(*(*(a1 + 160) + 8) + 24) using:*(a1 + 120) with:*(a1 + 128) clientName:*(a1 + 136) autoAssetJob:*(a1 + 144) ofJobType:@"asset_job" notify:*(a1 + 176) spaceCheckedUUID:*(*(*(a1 + 168) + 8) + 40)];
 }
 
-- (void)registerPmvDownloadJob:(id)a3 using:(id)a4 with:(id)a5 clientName:(id)a6
+- (void)registerPmvDownloadJob:(id)job using:(id)using with:(id)with clientName:(id)name
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  jobCopy = job;
+  usingCopy = using;
+  withCopy = with;
+  nameCopy = name;
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   v14 = _os_activity_create(&dword_0, "DownloadManager:registerPmvDownloadJob", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
@@ -10729,14 +10729,14 @@ LABEL_39:
   v21[1] = 3221225472;
   v21[2] = __64__DownloadManager_registerPmvDownloadJob_using_with_clientName___block_invoke;
   v21[3] = &unk_4B42C0;
-  v15 = v10;
+  v15 = jobCopy;
   v22 = v15;
-  v16 = v12;
+  v16 = withCopy;
   v23 = v16;
-  v24 = self;
-  v17 = v11;
+  selfCopy = self;
+  v17 = usingCopy;
   v25 = v17;
-  v18 = v13;
+  v18 = nameCopy;
   v26 = v18;
   v19 = objc_retainBlock(v21);
   if (backgroundDownloadsPossibleWithInfo(0) && [(DownloadManager *)self checkDownloadIsSyncing:@"registerPmvDownloadJob" using:v17 with:v16 autoAssetJob:0 ofJobType:@"asset_job"])
@@ -10891,21 +10891,21 @@ LABEL_10:
 LABEL_24:
 }
 
-- (void)registerXmlDownloadJob:(id)a3 using:(id)a4 with:(id)a5 clientName:(id)a6
+- (void)registerXmlDownloadJob:(id)job using:(id)using with:(id)with clientName:(id)name
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  jobCopy = job;
+  usingCopy = using;
+  withCopy = with;
+  nameCopy = name;
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   v14 = _os_activity_create(&dword_0, "DownloadManager:registerXmlDownloadJob", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
   os_activity_scope_enter(v14, &state);
 
   v15 = downloadManagerDecodeClasses();
-  v16 = getObjectFromMessage(v12, "downloadOptionsLength", "downloadOptions", v15);
+  v16 = getObjectFromMessage(withCopy, "downloadOptionsLength", "downloadOptions", v15);
 
-  _MAPreferencesSync(@"registerXmlDownloadJob", v10);
+  _MAPreferencesSync(@"registerXmlDownloadJob", jobCopy);
   if (!v16)
   {
     goto LABEL_7;
@@ -10921,13 +10921,13 @@ LABEL_24:
       if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543618;
-        v27 = v10;
+        v27 = jobCopy;
         v28 = 2114;
         v29 = v16;
         _os_log_impl(&dword_0, v24, OS_LOG_TYPE_ERROR, "The asset download options for %{public}@ catalog were not a valid class, failing: %{public}@", buf, 0x16u);
       }
 
-      [(DownloadManager *)self sendDownloadCannotStartResult:22 assetType:v10 connection:v11 requestMessage:v12 clientName:v13 autoAssetJobID:0 ofJobType:@"catalog_job" underlyingError:0, state.opaque[0], state.opaque[1]];
+      [(DownloadManager *)self sendDownloadCannotStartResult:22 assetType:jobCopy connection:usingCopy requestMessage:withCopy clientName:nameCopy autoAssetJobID:0 ofJobType:@"catalog_job" underlyingError:0, state.opaque[0], state.opaque[1]];
       v22 = 0;
       goto LABEL_21;
     }
@@ -10969,14 +10969,14 @@ LABEL_7:
   }
 
   v20 = v16;
-  v21 = [v20 purpose];
-  v22 = normalizePurpose(v21);
+  purpose = [v20 purpose];
+  v22 = normalizePurpose(purpose);
 
   if (isWellFormedPurpose(v22))
   {
 
 LABEL_14:
-    [(DownloadManager *)self registerCatalogDownloadJob:v10 withPurpose:v22 usingDownloadOptions:v16 usingXPCConnection:v11 withXPCMessage:v12 performingAutoAssetJob:0 asClientName:v13];
+    [(DownloadManager *)self registerCatalogDownloadJob:jobCopy withPurpose:v22 usingDownloadOptions:v16 usingXPCConnection:usingCopy withXPCMessage:withCopy performingAutoAssetJob:0 asClientName:nameCopy];
     goto LABEL_21;
   }
 
@@ -10986,26 +10986,26 @@ LABEL_14:
     *buf = 138543618;
     v27 = v22;
     v28 = 2114;
-    v29 = v10;
+    v29 = jobCopy;
     _os_log_impl(&dword_0, v23, OS_LOG_TYPE_DEFAULT, "The purpose for XML is: '%{public}@' which is not well formed, and type is: %{public}@, bailing", buf, 0x16u);
   }
 
-  [(DownloadManager *)self sendDownloadCannotStartResult:74 assetType:v10 connection:v11 requestMessage:v12 clientName:v13 autoAssetJobID:0 ofJobType:@"catalog_job" underlyingError:0, state.opaque[0], state.opaque[1]];
+  [(DownloadManager *)self sendDownloadCannotStartResult:74 assetType:jobCopy connection:usingCopy requestMessage:withCopy clientName:nameCopy autoAssetJobID:0 ofJobType:@"catalog_job" underlyingError:0, state.opaque[0], state.opaque[1]];
   v16 = v20;
 LABEL_21:
 
   os_activity_scope_leave(&state);
 }
 
-- (void)registerCatalogDownloadJob:(id)a3 withPurpose:(id)a4 usingDownloadOptions:(id)a5 usingXPCConnection:(id)a6 withXPCMessage:(id)a7 performingAutoAssetJob:(id)a8 asClientName:(id)a9
+- (void)registerCatalogDownloadJob:(id)job withPurpose:(id)purpose usingDownloadOptions:(id)options usingXPCConnection:(id)connection withXPCMessage:(id)message performingAutoAssetJob:(id)assetJob asClientName:(id)name
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
+  jobCopy = job;
+  purposeCopy = purpose;
+  optionsCopy = options;
+  connectionCopy = connection;
+  messageCopy = message;
+  assetJobCopy = assetJob;
+  nameCopy = name;
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   v22 = _os_activity_create(&dword_0, "DownloadManager:registerCatalogDownloadJob", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
@@ -11021,20 +11021,20 @@ LABEL_21:
   v32[1] = 3221225472;
   v32[2] = __149__DownloadManager_registerCatalogDownloadJob_withPurpose_usingDownloadOptions_usingXPCConnection_withXPCMessage_performingAutoAssetJob_asClientName___block_invoke;
   v32[3] = &unk_4B4310;
-  v23 = v15;
+  v23 = jobCopy;
   v33 = v23;
-  v24 = v16;
+  v24 = purposeCopy;
   v34 = v24;
-  v25 = v20;
+  v25 = assetJobCopy;
   v35 = v25;
-  v36 = self;
-  v26 = v18;
+  selfCopy = self;
+  v26 = connectionCopy;
   v37 = v26;
-  v27 = v19;
+  v27 = messageCopy;
   v38 = v27;
-  v28 = v21;
+  v28 = nameCopy;
   v39 = v28;
-  v29 = v17;
+  v29 = optionsCopy;
   v40 = v29;
   v41 = v42;
   v30 = objc_retainBlock(v32);
@@ -11548,9 +11548,9 @@ LABEL_43:
 LABEL_55:
 }
 
-- (void)sendNotification:(id)a3
+- (void)sendNotification:(id)notification
 {
-  v4 = disassembleTaskDescriptor(a3);
+  v4 = disassembleTaskDescriptor(notification);
   v5 = v4;
   if (v4)
   {
@@ -11558,7 +11558,7 @@ LABEL_55:
     v7 = v6;
     if (v6)
     {
-      v8 = [v6 intValue];
+      intValue = [v6 intValue];
       v9 = [v5 objectForKey:@"normalizedAssetType"];
       v10 = assetTypeFromNormalized(v9);
 
@@ -11566,9 +11566,9 @@ LABEL_55:
       {
         v11 = 0;
         v12 = 1;
-        if (v8 <= 2)
+        if (intValue <= 2)
         {
-          if (v8 == 1)
+          if (intValue == 1)
           {
             v12 = 0;
             v13 = @"XML";
@@ -11578,7 +11578,7 @@ LABEL_55:
           else
           {
             v13 = 0;
-            if (v8 == 2)
+            if (intValue == 2)
             {
               v12 = 0;
               v13 = @"ZIP";
@@ -11587,14 +11587,14 @@ LABEL_55:
           }
         }
 
-        else if (v8 == 3)
+        else if (intValue == 3)
         {
           v12 = 0;
           v13 = @"PMV";
           v11 = @".ma.pmv-updated";
         }
 
-        else if (v8 == 4)
+        else if (intValue == 4)
         {
           v12 = 0;
           v13 = @"XML";
@@ -11604,7 +11604,7 @@ LABEL_55:
         else
         {
           v13 = 0;
-          if (v8 == 5)
+          if (intValue == 5)
           {
             v12 = 0;
             v13 = @"ZIP";
@@ -11617,7 +11617,7 @@ LABEL_55:
         v17 = 3221225472;
         v18 = __36__DownloadManager_sendNotification___block_invoke;
         v19 = &unk_4B3350;
-        v20 = self;
+        selfCopy = self;
         v15 = v10;
         v21 = v15;
         v22 = v11;
@@ -11625,7 +11625,7 @@ LABEL_55:
         dispatch_async(splunkStateQueue, &v16);
         if ((v12 & 1) == 0)
         {
-          [(DownloadManager *)self sendNotification:v15 suffix:v11, v16, v17, v18, v19, v20];
+          [(DownloadManager *)self sendNotification:v15 suffix:v11, v16, v17, v18, v19, selfCopy];
         }
       }
     }
@@ -11643,9 +11643,9 @@ void __36__DownloadManager_sendNotification___block_invoke(uint64_t a1)
   [v2 recordDownloadSuccessForAssetType:*(a1 + 40) notificationSuffix:*(a1 + 48) fileType:*(a1 + 56)];
 }
 
-- (void)sendNotification:(id)a3 suffix:(id)a4
+- (void)sendNotification:(id)notification suffix:(id)suffix
 {
-  v4 = [a3 stringByAppendingString:a4];
+  v4 = [notification stringByAppendingString:suffix];
   v5 = _MADLog(@"Download");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -11685,26 +11685,26 @@ void __36__DownloadManager_sendNotification___block_invoke(uint64_t a1)
   return v5;
 }
 
-- (void)retryTask:(id)a3 retryUrl:(id)a4 modified:(id)a5 clientName:(id)a6
+- (void)retryTask:(id)task retryUrl:(id)url modified:(id)modified clientName:(id)name
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  taskCopy = task;
+  urlCopy = url;
+  modifiedCopy = modified;
+  nameCopy = name;
   downloadStateQueue = self->_downloadStateQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __58__DownloadManager_retryTask_retryUrl_modified_clientName___block_invoke;
   block[3] = &unk_4B42C0;
   block[4] = self;
-  v20 = v10;
-  v21 = v13;
-  v22 = v11;
-  v23 = v12;
-  v15 = v12;
-  v16 = v11;
-  v17 = v13;
-  v18 = v10;
+  v20 = taskCopy;
+  v21 = nameCopy;
+  v22 = urlCopy;
+  v23 = modifiedCopy;
+  v15 = modifiedCopy;
+  v16 = urlCopy;
+  v17 = nameCopy;
+  v18 = taskCopy;
   dispatch_async(downloadStateQueue, block);
 }
 
@@ -11784,10 +11784,10 @@ LABEL_14:
 LABEL_15:
 }
 
-- (void)taskFinishedUpdateState:(id)a3 with:(int64_t)a4 extraInfo:(id)a5 fromLocation:(id)a6
+- (void)taskFinishedUpdateState:(id)state with:(int64_t)with extraInfo:(id)info fromLocation:(id)location
 {
-  v9 = a3;
-  v10 = a5;
+  stateCopy = state;
+  infoCopy = info;
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   v11 = _os_activity_create(&dword_0, "DownloadManager:taskFinishedUpdateState", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
@@ -11796,7 +11796,7 @@ LABEL_15:
   v24[0] = 0;
   v24[1] = v24;
   v24[2] = 0x2020000000;
-  v24[3] = a4;
+  v24[3] = with;
   v22[0] = 0;
   v22[1] = v22;
   v22[2] = 0x2020000000;
@@ -11806,14 +11806,14 @@ LABEL_15:
   v15[1] = 3221225472;
   v15[2] = __71__DownloadManager_taskFinishedUpdateState_with_extraInfo_fromLocation___block_invoke;
   v15[3] = &unk_4B4338;
-  v16 = v9;
-  v17 = self;
+  v16 = stateCopy;
+  selfCopy = self;
   v20 = v22;
-  v21 = a4;
-  v18 = v10;
+  withCopy = with;
+  v18 = infoCopy;
   v19 = v24;
-  v13 = v10;
-  v14 = v9;
+  v13 = infoCopy;
+  v14 = stateCopy;
   dispatch_async(downloadStateQueue, v15);
 
   _Block_object_dispose(v22, 8);
@@ -12081,31 +12081,31 @@ LABEL_56:
 LABEL_63:
 }
 
-- (int64_t)massagePmvAndPersist:(id)a3 from:(id)a4 to:(id)a5 postedDate:(id)a6
+- (int64_t)massagePmvAndPersist:(id)persist from:(id)from to:(id)to postedDate:(id)date
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  persistCopy = persist;
+  fromCopy = from;
+  toCopy = to;
+  dateCopy = date;
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   v13 = _os_activity_create(&dword_0, "DownloadManager:massagePmvAndPersist", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
   os_activity_scope_enter(v13, &state);
 
   v14 = objc_autoreleasePoolPush();
-  v15 = getAssetTypeFromTaskDescriptor(v9);
-  v16 = getPathToStagedFile(v15, v9, 0);
+  v15 = getAssetTypeFromTaskDescriptor(persistCopy);
+  v16 = getPathToStagedFile(v15, persistCopy, 0);
   v17 = _MADLog(@"Download");
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
     v37 = v16;
     v38 = 2114;
-    v39 = v10;
+    v39 = fromCopy;
     _os_log_impl(&dword_0, v17, OS_LOG_TYPE_DEFAULT, "The PMV staging path is: %{public}@ from %{public}@", buf, 0x16u);
   }
 
-  if (!v11 || !v16)
+  if (!toCopy || !v16)
   {
     v21 = _MADLog(@"Download");
     if (!os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -12116,7 +12116,7 @@ LABEL_63:
     *buf = 138543874;
     v37 = v16;
     v38 = 2114;
-    v39 = v11;
+    v39 = toCopy;
     v40 = 2114;
     v41 = v15;
     v23 = "Cannot persist PMV as there is no target location for copying %{public}@ to %{public}@ for %{public}@";
@@ -12128,8 +12128,8 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  v18 = [v16 path];
-  v19 = [NSData dataWithContentsOfFile:v18];
+  path = [v16 path];
+  v19 = [NSData dataWithContentsOfFile:path];
 
   if (!v19)
   {
@@ -12142,7 +12142,7 @@ LABEL_14:
     *buf = 138543618;
     v37 = v16;
     v38 = 2114;
-    v39 = v10;
+    v39 = fromCopy;
     v23 = "could not load PMV file after download: %{public}@ from %{public}@";
     v24 = v21;
     v25 = OS_LOG_TYPE_DEFAULT;
@@ -12160,15 +12160,15 @@ LABEL_14:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        if (v12)
+        if (dateCopy)
         {
           v29 = _MADLog(@"Download");
           if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138543618;
-            v37 = v12;
+            v37 = dateCopy;
             v38 = 2114;
-            v39 = v10;
+            v39 = fromCopy;
             _os_log_impl(&dword_0, v29, OS_LOG_TYPE_DEFAULT, "The PMV posting date is: %{public}@ from %{public}@", buf, 0x16u);
           }
         }
@@ -12176,8 +12176,8 @@ LABEL_14:
         v21 = getControlManager();
         if (v21)
         {
-          v30 = [v11 path];
-          [v21 writeJsonDictionaryToFile:v33 to:v30 with:v9];
+          path2 = [toCopy path];
+          [v21 writeJsonDictionaryToFile:v33 to:path2 with:persistCopy];
 
           v27 = 31;
           goto LABEL_16;
@@ -12199,7 +12199,7 @@ LABEL_14:
           *buf = 138543618;
           v37 = v16;
           v38 = 2114;
-          v39 = v10;
+          v39 = fromCopy;
           _os_log_impl(&dword_0, v32, OS_LOG_TYPE_ERROR, "PMV file contents were not JSON dictionary: %{public}@ from %{public}@", buf, 0x16u);
         }
       }
@@ -12213,7 +12213,7 @@ LABEL_14:
         *buf = 138543618;
         v37 = v16;
         v38 = 2114;
-        v39 = v10;
+        v39 = fromCopy;
         _os_log_impl(&dword_0, v31, OS_LOG_TYPE_ERROR, "could not load PMV JSON after download: %{public}@ from %{public}@", buf, 0x16u);
       }
     }
@@ -12230,7 +12230,7 @@ LABEL_14:
     *buf = 138543874;
     v37 = v16;
     v38 = 2114;
-    v39 = v10;
+    v39 = fromCopy;
     v40 = 2114;
     v41 = v21;
     _os_log_impl(&dword_0, v22, OS_LOG_TYPE_ERROR, "could not load PMV JSON after download: %{public}@ from %{public}@ error %{public}@", buf, 0x20u);
@@ -12246,24 +12246,24 @@ LABEL_16:
   return v27;
 }
 
-- (BOOL)decryptContentEncryptedAssetAtPathIfRequired:(id)a3
+- (BOOL)decryptContentEncryptedAssetAtPathIfRequired:(id)required
 {
-  v4 = a3;
-  v5 = [(DownloadManager *)self keyManager];
-  if (!v4 || ([v4 isFileURL] & 1) == 0)
+  requiredCopy = required;
+  keyManager = [(DownloadManager *)self keyManager];
+  if (!requiredCopy || ([requiredCopy isFileURL] & 1) == 0)
   {
     v12 = _MADLog(@"Download");
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      v13 = [v4 isFileURL];
+      isFileURL = [requiredCopy isFileURL];
       v14 = @"NO";
-      if (v13)
+      if (isFileURL)
       {
         v14 = @"YES";
       }
 
       *buf = 138412546;
-      v19 = v4;
+      v19 = requiredCopy;
       v20 = 2112;
       v21 = v14;
       _os_log_impl(&dword_0, v12, OS_LOG_TYPE_ERROR, "Invalid value(expected valid file url) passed in for assetPath: %@ isFileURL: %@", buf, 0x16u);
@@ -12276,7 +12276,7 @@ LABEL_16:
     goto LABEL_11;
   }
 
-  v6 = [v4 URLByAppendingPathComponent:@"Info.plist" isDirectory:0];
+  v6 = [requiredCopy URLByAppendingPathComponent:@"Info.plist" isDirectory:0];
   v17 = 0;
   v7 = [NSDictionary dictionaryWithContentsOfURL:v6 error:&v17];
   v8 = v17;
@@ -12286,7 +12286,7 @@ LABEL_16:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v19 = v4;
+      v19 = requiredCopy;
       v20 = 2114;
       v21 = v8;
       _os_log_impl(&dword_0, v12, OS_LOG_TYPE_ERROR, "Info plist does not exist under location %{public}@: %{public}@", buf, 0x16u);
@@ -12298,7 +12298,7 @@ LABEL_16:
   }
 
   v16 = 0;
-  v9 = [v5 decryptContentEncryptedAssetAtURL:v4 assetAttributes:v7 error:&v16];
+  v9 = [keyManager decryptContentEncryptedAssetAtURL:requiredCopy assetAttributes:v7 error:&v16];
   v10 = v16;
   if ((v9 & 1) == 0)
   {
@@ -12306,7 +12306,7 @@ LABEL_16:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v19 = v4;
+      v19 = requiredCopy;
       v20 = 2112;
       v21 = v10;
       _os_log_impl(&dword_0, v12, OS_LOG_TYPE_ERROR, "Failed to decrypt ContentEncrypted asset at %@ : %@", buf, 0x16u);
@@ -12324,52 +12324,52 @@ LABEL_12:
   return v11;
 }
 
-- (int64_t)processAssetDownload:(id)a3 with:(id)a4 and:(id)a5 shouldMove:(BOOL)a6 extractorExists:(BOOL)a7
+- (int64_t)processAssetDownload:(id)download with:(id)with and:(id)and shouldMove:(BOOL)move extractorExists:(BOOL)exists
 {
-  v8 = a6;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
+  moveCopy = move;
+  downloadCopy = download;
+  withCopy = with;
+  andCopy = and;
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   v15 = _os_activity_create(&dword_0, "DownloadManager:processAssetDownload", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
   os_activity_scope_enter(v15, &state);
 
-  if (a7)
+  if (exists)
   {
-    v16 = assetTypeFromNormalized(v12);
-    v17 = getPathToStagedFile(v16, v14, 0);
+    v16 = assetTypeFromNormalized(downloadCopy);
+    v17 = getPathToStagedFile(v16, andCopy, 0);
     v18 = v17;
     if (v17)
     {
-      v19 = [v17 path];
-      aks_migrate_path([v19 UTF8String]);
+      path = [v17 path];
+      aks_migrate_path([path UTF8String]);
 
       if ([(DownloadManager *)self decryptContentEncryptedAssetAtPathIfRequired:v18])
       {
         v20 = getControlManager();
         if (v20)
         {
-          if (!v8)
+          if (!moveCopy)
           {
             v23 = 0;
             goto LABEL_20;
           }
 
-          v21 = [v18 path];
-          v22 = [NSURL fileURLWithPath:v21];
-          [v20 moveAssetIntoRepo:v22 forType:v12 forAsset:v13 cleanUp:v18 with:v14];
+          path2 = [v18 path];
+          v22 = [NSURL fileURLWithPath:path2];
+          [v20 moveAssetIntoRepo:v22 forType:downloadCopy forAsset:withCopy cleanUp:v18 with:andCopy];
 
           v23 = 31;
         }
 
         else
         {
-          v21 = _MADLog(@"Download");
-          if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
+          path2 = _MADLog(@"Download");
+          if (os_log_type_enabled(path2, OS_LOG_TYPE_ERROR))
           {
             *v25 = 0;
-            _os_log_impl(&dword_0, v21, OS_LOG_TYPE_ERROR, "Cannot move file as control manager is nil", v25, 2u);
+            _os_log_impl(&dword_0, path2, OS_LOG_TYPE_ERROR, "Cannot move file as control manager is nil", v25, 2u);
           }
 
           v20 = 0;
@@ -12379,11 +12379,11 @@ LABEL_12:
 
       else
       {
-        v21 = _MADLog(@"Download");
-        if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
+        path2 = _MADLog(@"Download");
+        if (os_log_type_enabled(path2, OS_LOG_TYPE_ERROR))
         {
           *v25 = 0;
-          _os_log_impl(&dword_0, v21, OS_LOG_TYPE_ERROR, "Failed to decrypt asset content", v25, 2u);
+          _os_log_impl(&dword_0, path2, OS_LOG_TYPE_ERROR, "Failed to decrypt asset content", v25, 2u);
         }
 
         v20 = 0;
@@ -12393,11 +12393,11 @@ LABEL_12:
 
     else
     {
-      v21 = _MADLog(@"Download");
-      if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
+      path2 = _MADLog(@"Download");
+      if (os_log_type_enabled(path2, OS_LOG_TYPE_DEFAULT))
       {
         *v25 = 0;
-        _os_log_impl(&dword_0, v21, OS_LOG_TYPE_DEFAULT, "Error, download failed due to invalid staging path", v25, 2u);
+        _os_log_impl(&dword_0, path2, OS_LOG_TYPE_DEFAULT, "Error, download failed due to invalid staging path", v25, 2u);
       }
 
       v18 = 0;
@@ -12408,13 +12408,13 @@ LABEL_12:
 
   else
   {
-    v21 = _MADLog(@"Download");
+    path2 = _MADLog(@"Download");
     v23 = 16;
-    if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(path2, OS_LOG_TYPE_ERROR))
     {
       *v25 = 0;
       v23 = 16;
-      _os_log_impl(&dword_0, v21, OS_LOG_TYPE_ERROR, "Error, download failed due to nil extractor", v25, 2u);
+      _os_log_impl(&dword_0, path2, OS_LOG_TYPE_ERROR, "Error, download failed due to nil extractor", v25, 2u);
     }
 
     v18 = 0;
@@ -12428,26 +12428,26 @@ LABEL_20:
   return v23;
 }
 
-- (void)handleSuccessfulDownload:(id)a3 task:(id)a4 taskId:(id)a5 shouldMove:(BOOL)a6 extractorExists:(BOOL)a7 postedDate:(id)a8 notModified:(BOOL)a9
+- (void)handleSuccessfulDownload:(id)download task:(id)task taskId:(id)id shouldMove:(BOOL)move extractorExists:(BOOL)exists postedDate:(id)date notModified:(BOOL)modified
 {
-  v10 = a7;
-  v11 = a6;
-  v39 = a3;
-  v15 = a4;
-  v42 = a5;
-  v40 = a8;
+  existsCopy = exists;
+  moveCopy = move;
+  downloadCopy = download;
+  taskCopy = task;
+  idCopy = id;
+  dateCopy = date;
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   v16 = _os_activity_create(&dword_0, "DownloadManager:handleSuccessfulDownload", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
   os_activity_scope_enter(v16, &state);
 
-  if (!v15)
+  if (!taskCopy)
   {
     v29 = _MADLog(@"Download");
     if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
-      v45 = v42;
+      v45 = idCopy;
       v30 = "Task descriptor is nil, skipping. task %{public}@";
 LABEL_16:
       _os_log_impl(&dword_0, v29, OS_LOG_TYPE_ERROR, v30, buf, 0xCu);
@@ -12467,7 +12467,7 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  v17 = disassembleTaskDescriptor(v15);
+  v17 = disassembleTaskDescriptor(taskCopy);
   v18 = v17;
   if (!v17)
   {
@@ -12475,7 +12475,7 @@ LABEL_17:
     if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
-      v45 = v42;
+      v45 = idCopy;
       v30 = "Task info is nil, skipping. task %{public}@";
       goto LABEL_16;
     }
@@ -12484,8 +12484,8 @@ LABEL_17:
   }
 
   v41 = [v17 objectForKey:@"isXml"];
-  v19 = [v41 intValue];
-  if (v19)
+  intValue = [v41 intValue];
+  if (intValue)
   {
     v20 = [v18 objectForKey:@"normalizedAssetType"];
     v21 = assetTypeFromNormalized(v20);
@@ -12496,9 +12496,9 @@ LABEL_17:
       if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543618;
-        v45 = v15;
+        v45 = taskCopy;
         v46 = 2114;
-        v47 = v42;
+        v47 = idCopy;
         _os_log_impl(&dword_0, v33, OS_LOG_TYPE_ERROR, "Could not create asset type from: %{public}@. task %{public}@", buf, 0x16u);
       }
 
@@ -12516,12 +12516,12 @@ LABEL_17:
       }
 
 LABEL_35:
-      v35 = getPathToStagedFile(v22, v15, 0);
+      v35 = getPathToStagedFile(v22, taskCopy, 0);
       if (v35)
       {
         v38 = +[NSFileManager defaultManager];
-        v36 = [v35 path];
-        [v38 removeItemAtPath:v36 error:0];
+        path = [v35 path];
+        [v38 removeItemAtPath:path error:0];
       }
 
       goto LABEL_18;
@@ -12531,19 +12531,19 @@ LABEL_35:
     v24 = normalizePurpose(v23);
 
     v25 = repositoryPath(v22);
-    if (v19 != 4)
+    if (intValue != 4)
     {
-      if (v19 == 3)
+      if (intValue == 3)
       {
         v26 = getPathToPmvFile(v22);
-        v34 = [(DownloadManager *)self massagePmvAndPersist:v15 from:v39 to:v26 postedDate:v40];
+        v34 = [(DownloadManager *)self massagePmvAndPersist:taskCopy from:downloadCopy to:v26 postedDate:dateCopy];
         goto LABEL_29;
       }
 
-      if (v19 != 1)
+      if (intValue != 1)
       {
         v31 = [v18 objectForKey:@"assetIdentifier"];
-        v28 = [(DownloadManager *)self processAssetDownload:v20 with:v31 and:v15 shouldMove:v11 extractorExists:v10];
+        v28 = [(DownloadManager *)self processAssetDownload:v20 with:v31 and:taskCopy shouldMove:moveCopy extractorExists:existsCopy];
         v26 = 0;
 LABEL_33:
         if (v28 == &dword_1C + 3)
@@ -12551,7 +12551,7 @@ LABEL_33:
           goto LABEL_18;
         }
 
-        [(DownloadManager *)self taskFinishedUpdateState:v15 with:v28 fromLocation:@"handleSuccessfulDownload"];
+        [(DownloadManager *)self taskFinishedUpdateState:taskCopy with:v28 fromLocation:@"handleSuccessfulDownload"];
         if (!v28)
         {
           goto LABEL_18;
@@ -12562,7 +12562,7 @@ LABEL_33:
     }
 
     v26 = assembleXmlPathWithPurpose(v22, v20, v25, v24);
-    if (a9)
+    if (modified)
     {
       v27 = [v18 safeStringForKey:@"AutoAssetJob"];
       if (v27)
@@ -12573,13 +12573,13 @@ LABEL_33:
       else
       {
         v37 = getControlManager();
-        v28 = [v37 updateLastFetchedDate:v20 assetType:v22 withPurpose:v24 with:v15];
+        v28 = [v37 updateLastFetchedDate:v20 assetType:v22 withPurpose:v24 with:taskCopy];
       }
 
       goto LABEL_32;
     }
 
-    v34 = [(DownloadManager *)self massageXmlAndPersist:v22 from:v39 to:v26 with:v15 postedDate:v40 considerCaching:v19 == 1];
+    v34 = [(DownloadManager *)self massageXmlAndPersist:v22 from:downloadCopy to:v26 with:taskCopy postedDate:dateCopy considerCaching:intValue == 1];
 LABEL_29:
     v28 = v34;
 LABEL_32:
@@ -12591,9 +12591,9 @@ LABEL_32:
   if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
   {
     *buf = 138543618;
-    v45 = v15;
+    v45 = taskCopy;
     v46 = 2114;
-    v47 = v42;
+    v47 = idCopy;
     _os_log_impl(&dword_0, v32, OS_LOG_TYPE_ERROR, "Could not parse the taskDescriptor of: %{public}@. task %{public}@", buf, 0x16u);
   }
 
@@ -12609,22 +12609,22 @@ LABEL_18:
   os_activity_scope_leave(&state);
 }
 
-- (void)indicateAutoDownloadJobFinished:(int)a3 downloadInfo:(id)a4 performingAutoAssetJob:(id)a5 ofJobType:(id)a6
+- (void)indicateAutoDownloadJobFinished:(int)finished downloadInfo:(id)info performingAutoAssetJob:(id)job ofJobType:(id)type
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
+  infoCopy = info;
+  jobCopy = job;
+  typeCopy = type;
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   v12 = _os_activity_create(&dword_0, "DownloadManager:indicateAutoDownloadJobFinished", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
   os_activity_scope_enter(v12, &state);
 
-  if ([SUCore stringIsEqual:v11 to:@"catalog_job"])
+  if ([SUCore stringIsEqual:typeCopy to:@"catalog_job"])
   {
-    if (a3)
+    if (finished)
     {
-      v13 = stringForMADownloadResult(a3);
-      MAErrorForDownloadResultWithUnderlying(a3, 0, @"Catalog download failed: %@(%ld)", v14, v15, v16, v17, v18, v13);
+      v13 = stringForMADownloadResult(finished);
+      MAErrorForDownloadResultWithUnderlying(finished, 0, @"Catalog download failed: %@(%ld)", v14, v15, v16, v17, v18, v13);
     }
 
     else
@@ -12634,15 +12634,15 @@ LABEL_18:
     }
     v25 = ;
 
-    [MADAutoAssetControlManager catalogDownloadJobFinished:v10 withCatalog:0 error:v25];
+    [MADAutoAssetControlManager catalogDownloadJobFinished:jobCopy withCatalog:0 error:v25];
   }
 
-  else if ([SUCore stringIsEqual:v11 to:@"asset_job"])
+  else if ([SUCore stringIsEqual:typeCopy to:@"asset_job"])
   {
-    if (a3)
+    if (finished)
     {
-      v19 = stringForMADownloadResult(a3);
-      v25 = MAErrorForDownloadResultWithUnderlying(a3, 0, @"Asset download failed: %@(%ld)", v20, v21, v22, v23, v24, v19);
+      v19 = stringForMADownloadResult(finished);
+      v25 = MAErrorForDownloadResultWithUnderlying(finished, 0, @"Asset download failed: %@(%ld)", v20, v21, v22, v23, v24, v19);
     }
 
     else
@@ -12650,15 +12650,15 @@ LABEL_18:
       v25 = 0;
     }
 
-    [MADAutoAssetControlManager assetDownloadJobFinished:v10 error:v25];
+    [MADAutoAssetControlManager assetDownloadJobFinished:jobCopy error:v25];
   }
 
-  else if ([SUCore stringIsEqual:v11 to:@"config_job"])
+  else if ([SUCore stringIsEqual:typeCopy to:@"config_job"])
   {
-    if (a3)
+    if (finished)
     {
-      v26 = stringForMAOperationResult(a3);
-      v25 = MAErrorForDownloadResultWithUnderlying(a3, 0, @"Configuration change for download failed: %@(%ld)", v27, v28, v29, v30, v31, v26);
+      v26 = stringForMAOperationResult(finished);
+      v25 = MAErrorForDownloadResultWithUnderlying(finished, 0, @"Configuration change for download failed: %@(%ld)", v27, v28, v29, v30, v31, v26);
     }
 
     else
@@ -12666,7 +12666,7 @@ LABEL_18:
       v25 = 0;
     }
 
-    [MADAutoAssetControlManager assetConfigJobFinished:v10 withDownloadInfo:v9 error:v25];
+    [MADAutoAssetControlManager assetConfigJobFinished:jobCopy withDownloadInfo:infoCopy error:v25];
   }
 
   else
@@ -12675,9 +12675,9 @@ LABEL_18:
     if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v40 = v11;
+      v40 = typeCopy;
       v41 = 2114;
-      v42 = v10;
+      v42 = jobCopy;
       _os_log_impl(&dword_0, v37, OS_LOG_TYPE_ERROR, "{indicateDownloadJobFinished} unknown job-type(%{public}@) for autoAssetJobID:%{public}@", buf, 0x16u);
     }
 
@@ -12687,29 +12687,29 @@ LABEL_18:
   os_activity_scope_leave(&state);
 }
 
-- (void)indicateDownloadJobFinished:(int)a3 usingXPCConnection:(id)a4 withXPCMessage:(id)a5 performingAutoAssetJob:(id)a6 ofJobType:(id)a7
+- (void)indicateDownloadJobFinished:(int)finished usingXPCConnection:(id)connection withXPCMessage:(id)message performingAutoAssetJob:(id)job ofJobType:(id)type
 {
-  if (a6)
+  if (job)
   {
-    [(DownloadManager *)self indicateAutoDownloadJobFinished:*&a3 downloadInfo:0 performingAutoAssetJob:a6 ofJobType:a7];
+    [(DownloadManager *)self indicateAutoDownloadJobFinished:*&finished downloadInfo:0 performingAutoAssetJob:job ofJobType:type];
   }
 
   else
   {
-    [(DownloadManager *)self indicateDownloadJobFinished:*&a3 usingXPCConnection:a4 withXPCMessage:a5, 0, a7];
+    [(DownloadManager *)self indicateDownloadJobFinished:*&finished usingXPCConnection:connection withXPCMessage:message, 0, type];
   }
 }
 
-- (id)lastModifiedDateFromResponse:(id)a3
+- (id)lastModifiedDateFromResponse:(id)response
 {
-  v3 = a3;
-  v4 = [v3 allHeaderFields];
-  v5 = [v4 allKeys];
+  responseCopy = response;
+  allHeaderFields = [responseCopy allHeaderFields];
+  allKeys = [allHeaderFields allKeys];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v6 = [allKeys countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
     v7 = v6;
@@ -12721,19 +12721,19 @@ LABEL_18:
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allKeys);
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
         if (![@"Last-Modified" caseInsensitiveCompare:v11])
         {
-          v12 = [v4 objectForKey:v11];
+          v12 = [allHeaderFields objectForKey:v11];
 
           v8 = v12;
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v7 = [allKeys countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v7);
@@ -12755,27 +12755,27 @@ LABEL_14:
   return v13;
 }
 
-- (void)activityNotification:(id)a3 ofStatusChange:(unint64_t)a4 withReason:(id)a5
+- (void)activityNotification:(id)notification ofStatusChange:(unint64_t)change withReason:(id)reason
 {
-  v7 = a5;
-  v8 = a3;
+  reasonCopy = reason;
+  notificationCopy = notification;
   v9 = [NSString alloc];
-  v11 = [MADActivityTracker nameOfStatus:a4];
+  v11 = [MADActivityTracker nameOfStatus:change];
   v10 = [v9 initWithFormat:@"unexpected statusChange(%@)", v11];
-  [MADActivityManager warningForActivity:v8 fromMethod:@"activityNotification" leaderNote:v10 warning:v7];
+  [MADActivityManager warningForActivity:notificationCopy fromMethod:@"activityNotification" leaderNote:v10 warning:reasonCopy];
 }
 
-- (BOOL)_shouldLogAssetDetails:(id)a3 extraServerOptions:(id)a4
+- (BOOL)_shouldLogAssetDetails:(id)details extraServerOptions:(id)options
 {
-  v6 = a3;
-  v7 = a4;
+  detailsCopy = details;
+  optionsCopy = options;
   v10 = 1;
-  if (![(DownloadManager *)self _isAutoAsset:v6])
+  if (![(DownloadManager *)self _isAutoAsset:detailsCopy])
   {
-    v8 = [v6 objectForKeyedSubscript:@"AssetType"];
+    v8 = [detailsCopy objectForKeyedSubscript:@"AssetType"];
     updated = isSoftwareUpdateType(v8);
 
-    if ((updated & 1) == 0 && (!v7 || ![v7 count]))
+    if ((updated & 1) == 0 && (!optionsCopy || ![optionsCopy count]))
     {
       v10 = 0;
     }
@@ -12836,10 +12836,10 @@ void __51__DownloadManager__getKeysNotLoggedForAutoResponse__block_invoke(id a1)
   _getKeysNotLoggedForAutoResponse_autoNotLoggedKeys = v3;
 }
 
-- (id)_parseForAssetDetailsToLog:(id)a3
+- (id)_parseForAssetDetailsToLog:(id)log
 {
-  v4 = a3;
-  if ([(DownloadManager *)self _isAutoAsset:v4])
+  logCopy = log;
+  if ([(DownloadManager *)self _isAutoAsset:logCopy])
   {
     [(DownloadManager *)self _getKeysNotLoggedForAutoResponse];
   }
@@ -12854,7 +12854,7 @@ void __51__DownloadManager__getKeysNotLoggedForAutoResponse__block_invoke(id a1)
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = v4;
+  v7 = logCopy;
   v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {
@@ -12886,18 +12886,18 @@ void __51__DownloadManager__getKeysNotLoggedForAutoResponse__block_invoke(id a1)
   return v6;
 }
 
-- (void)_logResponseBody:(id)a3 nonce:(id)a4 extraServerOptions:(id)a5
+- (void)_logResponseBody:(id)body nonce:(id)nonce extraServerOptions:(id)options
 {
-  v8 = a3;
-  v44 = a4;
-  v40 = a5;
+  bodyCopy = body;
+  nonceCopy = nonce;
+  optionsCopy = options;
   v9 = objc_alloc_init(NSMutableDictionary);
   v10 = objc_alloc_init(NSMutableArray);
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
   v52 = 0u;
-  v11 = v8;
+  v11 = bodyCopy;
   v12 = [v11 countByEnumeratingWithState:&v49 objects:v62 count:16];
   v38 = v11;
   v39 = v9;
@@ -12939,7 +12939,7 @@ void __51__DownloadManager__getKeysNotLoggedForAutoResponse__block_invoke(id a1)
             if ([v19 count])
             {
               v20 = [v19 objectAtIndexedSubscript:0];
-              v15 = [(DownloadManager *)self _shouldLogAssetDetails:v20 extraServerOptions:v40];
+              v15 = [(DownloadManager *)self _shouldLogAssetDetails:v20 extraServerOptions:optionsCopy];
 
               v47 = 0u;
               v48 = 0u;
@@ -12975,7 +12975,7 @@ void __51__DownloadManager__getKeysNotLoggedForAutoResponse__block_invoke(id a1)
                         if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
                         {
                           *buf = 138543618;
-                          v54 = v44;
+                          v54 = nonceCopy;
                           v55 = 2114;
                           v56 = v25;
                           _os_log_impl(&dword_0, v27, OS_LOG_TYPE_ERROR, "[PallasNonce:%{public}@] {_logResponseBody} ANOMALY:_parseForAssetDetailsToLog returned nil for detailsToLog for the following asset meta data: %{public}@", buf, 0x16u);
@@ -13004,7 +13004,7 @@ void __51__DownloadManager__getKeysNotLoggedForAutoResponse__block_invoke(id a1)
             if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
             {
               *buf = v36;
-              v54 = v44;
+              v54 = nonceCopy;
               _os_log_impl(&dword_0, v28, OS_LOG_TYPE_ERROR, "[PallasNonce:%{public}@] {_logResponseBody} ANOMALY: list of assets is not of type NSArray", buf, 0xCu);
             }
           }
@@ -13039,7 +13039,7 @@ LABEL_35:
   if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543874;
-    v54 = v44;
+    v54 = nonceCopy;
     v55 = 2048;
     v56 = v43;
     v57 = 2114;
@@ -13059,7 +13059,7 @@ LABEL_35:
     if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543874;
-      v54 = v44;
+      v54 = nonceCopy;
       v55 = 2048;
       v56 = v43;
       v57 = 2048;
@@ -13079,7 +13079,7 @@ LABEL_42:
           v34 = v32 + 1;
           v35 = [v10 objectAtIndexedSubscript:v32];
           *buf = 138544130;
-          v54 = v44;
+          v54 = nonceCopy;
           v55 = 2048;
           v56 = v34;
           v57 = 2048;
@@ -13102,18 +13102,18 @@ LABEL_42:
   }
 }
 
-- (id)grabTaskID:(id)a3
+- (id)grabTaskID:(id)d
 {
-  v3 = a3;
-  if (v3)
+  dCopy = d;
+  if (dCopy)
   {
     v4 = +[NSRegularExpression regularExpressionWithPattern:options:error:](NSRegularExpression, "regularExpressionWithPattern:options:error:", @"<([0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12})>", 0, 0);
-    v5 = [v4 firstMatchInString:v3 options:0 range:{0, objc_msgSend(v3, "length")}];
+    v5 = [v4 firstMatchInString:dCopy options:0 range:{0, objc_msgSend(dCopy, "length")}];
     v6 = v5;
     if (v5)
     {
       v7 = [v5 rangeAtIndex:1];
-      v9 = [v3 substringWithRange:{v7, v8}];
+      v9 = [dCopy substringWithRange:{v7, v8}];
     }
 
     else

@@ -1,7 +1,7 @@
 @interface CIConfidenceMap
 + (id)customAttributes;
 - (id)_confidenceExtractRed;
-- (id)extractLuminance:(id)a3;
+- (id)extractLuminance:(id)luminance;
 - (id)outputImage;
 @end
 
@@ -33,26 +33,26 @@
   return qword_8C950;
 }
 
-- (id)extractLuminance:(id)a3
+- (id)extractLuminance:(id)luminance
 {
-  if (!a3)
+  if (!luminance)
   {
     return 0;
   }
 
-  v5 = [a3 colorSpace];
-  v6 = v5;
-  if (!v5)
+  colorSpace = [luminance colorSpace];
+  v6 = colorSpace;
+  if (!colorSpace)
   {
     v6 = CGColorSpaceCreateWithName(kCGColorSpaceSRGB);
   }
 
-  v7 = [+[CIImage imageYCC444:matrix:fullRange:colorSpace:](CIImage imageYCC444:objc_msgSend(a3 matrix:"imageByApplyingFilter:" fullRange:@"CILinearToSRGBToneCurve" colorSpace:{709, 1, 0), "imageByApplyingFilter:", @"CISRGBToneCurveToLinear"}];
-  v8 = [(CIConfidenceMap *)self _confidenceExtractRed];
+  v7 = [+[CIImage imageYCC444:matrix:fullRange:colorSpace:](CIImage imageYCC444:objc_msgSend(luminance matrix:"imageByApplyingFilter:" fullRange:@"CILinearToSRGBToneCurve" colorSpace:{709, 1, 0), "imageByApplyingFilter:", @"CISRGBToneCurveToLinear"}];
+  _confidenceExtractRed = [(CIConfidenceMap *)self _confidenceExtractRed];
   [v7 extent];
   v15 = v7;
-  v13 = [v8 applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", &v15, 1), v9, v10, v11, v12}];
-  if (!v5)
+  v13 = [_confidenceExtractRed applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", &v15, 1), v9, v10, v11, v12}];
+  if (!colorSpace)
   {
     CGColorSpaceRelease(v6);
   }
@@ -128,8 +128,8 @@
         y = v60.origin.y;
         width = v60.size.width;
         height = v60.size.height;
-        v55 = [(CIImage *)inputDisparityImage imageByClampingToExtent];
-        v35 = [NSArray arrayWithObjects:&v55 count:1];
+        imageByClampingToExtent = [(CIImage *)inputDisparityImage imageByClampingToExtent];
+        v35 = [NSArray arrayWithObjects:&imageByClampingToExtent count:1];
         v36 = kCIKernelOutputFormat;
         v53 = kCIKernelOutputFormat;
         v54 = v4;

@@ -1,28 +1,28 @@
 @interface PRSidebarWidgetSuggestionsCollectionViewLayout
-- ($0AC6E346AE4835514AAA8AC86D8F4844)_gridCoordinateForCircularItemAtIndex:(int64_t)a3;
-- ($0AC6E346AE4835514AAA8AC86D8F4844)_gridCoordinateForDescriptor:(id)a3 atIndex:(int64_t)a4;
-- ($0AC6E346AE4835514AAA8AC86D8F4844)_gridCoordinateForRectangularItemAtIndex:(int64_t)a3;
-- ($0AC6E346AE4835514AAA8AC86D8F4844)_gridCoordinateForSystemSmallItemAtIndex:(int64_t)a3;
-- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)a3;
-- (CGPoint)_originForGridCoordinate:(id)a3;
+- ($0AC6E346AE4835514AAA8AC86D8F4844)_gridCoordinateForCircularItemAtIndex:(int64_t)index;
+- ($0AC6E346AE4835514AAA8AC86D8F4844)_gridCoordinateForDescriptor:(id)descriptor atIndex:(int64_t)index;
+- ($0AC6E346AE4835514AAA8AC86D8F4844)_gridCoordinateForRectangularItemAtIndex:(int64_t)index;
+- ($0AC6E346AE4835514AAA8AC86D8F4844)_gridCoordinateForSystemSmallItemAtIndex:(int64_t)index;
+- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)change;
+- (CGPoint)_originForGridCoordinate:(id)coordinate;
 - (CGRect)contentBounds;
 - (CGSize)collectionViewContentSize;
-- (PRSidebarWidgetSuggestionsCollectionViewLayout)initWithDisplayScale:(double)a3;
+- (PRSidebarWidgetSuggestionsCollectionViewLayout)initWithDisplayScale:(double)scale;
 - (PRSidebarWidgetSuggestionsCollectionViewLayoutDelegate)layoutDelegate;
-- (id)layoutAttributesForElementsInRect:(CGRect)a3;
+- (id)layoutAttributesForElementsInRect:(CGRect)rect;
 - (void)prepareLayout;
 @end
 
 @implementation PRSidebarWidgetSuggestionsCollectionViewLayout
 
-- (PRSidebarWidgetSuggestionsCollectionViewLayout)initWithDisplayScale:(double)a3
+- (PRSidebarWidgetSuggestionsCollectionViewLayout)initWithDisplayScale:(double)scale
 {
   v5.receiver = self;
   v5.super_class = PRSidebarWidgetSuggestionsCollectionViewLayout;
   result = [(PRSidebarWidgetSuggestionsCollectionViewLayout *)&v5 init];
   if (result)
   {
-    result->_displayScale = a3;
+    result->_displayScale = scale;
   }
 
   return result;
@@ -37,8 +37,8 @@
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v6 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v7 = [(PRSidebarWidgetSuggestionsCollectionViewLayout *)self collectionView];
-  v8 = [v7 numberOfItemsInSection:0];
+  collectionView = [(PRSidebarWidgetSuggestionsCollectionViewLayout *)self collectionView];
+  v8 = [collectionView numberOfItemsInSection:0];
 
   if (v8 >= 1)
   {
@@ -46,8 +46,8 @@
     {
       v10 = [MEMORY[0x1E696AC88] indexPathForItem:i inSection:0];
       [v4 addObject:v10];
-      v11 = [(PRSidebarWidgetSuggestionsCollectionViewLayout *)self layoutDelegate];
-      v12 = [v11 complicationDescriptorForItemAtIndexPath:v10];
+      layoutDelegate = [(PRSidebarWidgetSuggestionsCollectionViewLayout *)self layoutDelegate];
+      v12 = [layoutDelegate complicationDescriptorForItemAtIndexPath:v10];
 
       [v5 addObject:v12];
       [v6 setObject:v10 forKeyedSubscript:v12];
@@ -71,25 +71,25 @@
   [v17 enumerateObjectsUsingBlock:v15];
   v18 = [v5 bs_filter:&__block_literal_global_9];
   [v18 enumerateObjectsUsingBlock:v15];
-  v19 = [(PRSidebarWidgetSuggestionsCollectionViewLayout *)self collectionView];
-  [v19 bounds];
+  collectionView2 = [(PRSidebarWidgetSuggestionsCollectionViewLayout *)self collectionView];
+  [collectionView2 bounds];
   v21 = v20;
 
   v22 = (v21 - p_contentBounds->size.width) * 0.5;
-  v23 = [(PRSidebarWidgetSuggestionsCollectionViewLayout *)self collectionView];
-  [v23 bounds];
+  collectionView3 = [(PRSidebarWidgetSuggestionsCollectionViewLayout *)self collectionView];
+  [collectionView3 bounds];
   v25 = v24;
 
   v26 = (v25 - p_contentBounds->size.height) * 0.5;
   memset(&v34, 0, sizeof(v34));
   CGAffineTransformMakeTranslation(&v34, v22, v26);
-  v27 = [v14 allValues];
+  allValues = [v14 allValues];
   v32[0] = MEMORY[0x1E69E9820];
   v32[1] = 3221225472;
   v32[2] = __63__PRSidebarWidgetSuggestionsCollectionViewLayout_prepareLayout__block_invoke_5;
   v32[3] = &__block_descriptor_80_e49_v32__0__UICollectionViewLayoutAttributes_8Q16_B24l;
   v33 = v34;
-  [v27 enumerateObjectsUsingBlock:v32];
+  [allValues enumerateObjectsUsingBlock:v32];
 
   v28 = [v14 copy];
   computedAttributesByIndexPath = self->_computedAttributesByIndexPath;
@@ -170,24 +170,24 @@ void __63__PRSidebarWidgetSuggestionsCollectionViewLayout_prepareLayout__block_i
   return result;
 }
 
-- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)a3
+- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)change
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  v5 = [(PRSidebarWidgetSuggestionsCollectionViewLayout *)self collectionView:a3.origin.x];
+  height = change.size.height;
+  width = change.size.width;
+  v5 = [(PRSidebarWidgetSuggestionsCollectionViewLayout *)self collectionView:change.origin.x];
   [v5 bounds];
   v8 = height != v7 || width != v6;
 
   return v8;
 }
 
-- (id)layoutAttributesForElementsInRect:(CGRect)a3
+- (id)layoutAttributesForElementsInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = [(NSDictionary *)self->_computedAttributesByIndexPath allValues];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  allValues = [(NSDictionary *)self->_computedAttributesByIndexPath allValues];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __84__PRSidebarWidgetSuggestionsCollectionViewLayout_layoutAttributesForElementsInRect___block_invoke;
@@ -196,7 +196,7 @@ void __63__PRSidebarWidgetSuggestionsCollectionViewLayout_prepareLayout__block_i
   *&v10[5] = y;
   *&v10[6] = width;
   *&v10[7] = height;
-  v8 = [v7 bs_filter:v10];
+  v8 = [allValues bs_filter:v10];
 
   return v8;
 }
@@ -212,27 +212,27 @@ BOOL __84__PRSidebarWidgetSuggestionsCollectionViewLayout_layoutAttributesForEle
   return CGRectIntersectsRect(*&v3, *&v7);
 }
 
-- ($0AC6E346AE4835514AAA8AC86D8F4844)_gridCoordinateForDescriptor:(id)a3 atIndex:(int64_t)a4
+- ($0AC6E346AE4835514AAA8AC86D8F4844)_gridCoordinateForDescriptor:(id)descriptor atIndex:(int64_t)index
 {
-  v6 = [a3 widget];
-  v7 = [v6 family];
+  widget = [descriptor widget];
+  family = [widget family];
 
-  if (v7 == 11)
+  if (family == 11)
   {
 
-    v8 = [(PRSidebarWidgetSuggestionsCollectionViewLayout *)self _gridCoordinateForRectangularItemAtIndex:a4];
+    v8 = [(PRSidebarWidgetSuggestionsCollectionViewLayout *)self _gridCoordinateForRectangularItemAtIndex:index];
   }
 
-  else if (v7 == 1)
+  else if (family == 1)
   {
 
-    v8 = [(PRSidebarWidgetSuggestionsCollectionViewLayout *)self _gridCoordinateForSystemSmallItemAtIndex:a4];
+    v8 = [(PRSidebarWidgetSuggestionsCollectionViewLayout *)self _gridCoordinateForSystemSmallItemAtIndex:index];
   }
 
   else
   {
 
-    v8 = [(PRSidebarWidgetSuggestionsCollectionViewLayout *)self _gridCoordinateForCircularItemAtIndex:a4];
+    v8 = [(PRSidebarWidgetSuggestionsCollectionViewLayout *)self _gridCoordinateForCircularItemAtIndex:index];
   }
 
   result.var1 = v9;
@@ -240,46 +240,46 @@ BOOL __84__PRSidebarWidgetSuggestionsCollectionViewLayout_layoutAttributesForEle
   return result;
 }
 
-- ($0AC6E346AE4835514AAA8AC86D8F4844)_gridCoordinateForSystemSmallItemAtIndex:(int64_t)a3
+- ($0AC6E346AE4835514AAA8AC86D8F4844)_gridCoordinateForSystemSmallItemAtIndex:(int64_t)index
 {
-  v3 = 2 * a3;
-  v4 = (2 * a3) & 2;
+  v3 = 2 * index;
+  v4 = (2 * index) & 2;
   result.var1 = v3;
   result.var0 = v4;
   return result;
 }
 
-- ($0AC6E346AE4835514AAA8AC86D8F4844)_gridCoordinateForRectangularItemAtIndex:(int64_t)a3
+- ($0AC6E346AE4835514AAA8AC86D8F4844)_gridCoordinateForRectangularItemAtIndex:(int64_t)index
 {
-  v3 = 2 * a3;
-  v4 = ~(2 * a3) & 2;
+  v3 = 2 * index;
+  v4 = ~(2 * index) & 2;
   result.var1 = v3;
   result.var0 = v4;
   return result;
 }
 
-- ($0AC6E346AE4835514AAA8AC86D8F4844)_gridCoordinateForCircularItemAtIndex:(int64_t)a3
+- ($0AC6E346AE4835514AAA8AC86D8F4844)_gridCoordinateForCircularItemAtIndex:(int64_t)index
 {
-  if (a3 + 2 <= 0)
+  if (index + 2 <= 0)
   {
-    v3 = -(-(a3 + 2) & 3);
+    v3 = -(-(index + 2) & 3);
   }
 
   else
   {
-    v3 = (a3 + 2) & 3;
+    v3 = (index + 2) & 3;
   }
 
-  v4 = (a3 + (a3 >> 63)) | 1;
+  v4 = (index + (index >> 63)) | 1;
   result.var1 = v4;
   result.var0 = v3;
   return result;
 }
 
-- (CGPoint)_originForGridCoordinate:(id)a3
+- (CGPoint)_originForGridCoordinate:(id)coordinate
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = coordinate.var1;
+  var0 = coordinate.var0;
   [MEMORY[0x1E6999618] gridUnitSize];
   v6 = v5;
   [MEMORY[0x1E6999618] complicationEdgeInset];

@@ -1,16 +1,16 @@
 @interface PKAccountWebServiceSchedulePaymentResponse
-- (PKAccountWebServiceSchedulePaymentResponse)initWithData:(id)a3 account:(id)a4 request:(id)a5;
+- (PKAccountWebServiceSchedulePaymentResponse)initWithData:(id)data account:(id)account request:(id)request;
 @end
 
 @implementation PKAccountWebServiceSchedulePaymentResponse
 
-- (PKAccountWebServiceSchedulePaymentResponse)initWithData:(id)a3 account:(id)a4 request:(id)a5
+- (PKAccountWebServiceSchedulePaymentResponse)initWithData:(id)data account:(id)account request:(id)request
 {
   v43 = *MEMORY[0x1E69E9840];
-  v7 = a4;
+  accountCopy = account;
   v37.receiver = self;
   v37.super_class = PKAccountWebServiceSchedulePaymentResponse;
-  v8 = [(PKWebServiceResponse *)&v37 initWithData:a3];
+  v8 = [(PKWebServiceResponse *)&v37 initWithData:data];
   v9 = v8;
   if (!v8)
   {
@@ -19,16 +19,16 @@ LABEL_13:
     goto LABEL_17;
   }
 
-  v10 = [(PKWebServiceResponse *)v8 JSONObject];
+  jSONObject = [(PKWebServiceResponse *)v8 JSONObject];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v31 = v9;
-    v11 = [v10 PKArrayForKey:@"payments"];
-    v12 = [MEMORY[0x1E695DF70] array];
-    v32 = v7;
-    v13 = [v7 creditDetails];
-    v14 = [v13 productTimeZone];
+    v11 = [jSONObject PKArrayForKey:@"payments"];
+    array = [MEMORY[0x1E695DF70] array];
+    v32 = accountCopy;
+    creditDetails = [accountCopy creditDetails];
+    productTimeZone = [creditDetails productTimeZone];
 
     v35 = 0u;
     v36 = 0u;
@@ -54,8 +54,8 @@ LABEL_13:
           if (objc_opt_isKindOfClass())
           {
             v21 = v20;
-            v22 = [[PKAccountPayment alloc] initWithDictionary:v21 productTimeZone:v14];
-            [(NSArray *)v12 safelyAddObject:v22];
+            v22 = [[PKAccountPayment alloc] initWithDictionary:v21 productTimeZone:productTimeZone];
+            [(NSArray *)array safelyAddObject:v22];
           }
         }
 
@@ -67,9 +67,9 @@ LABEL_13:
 
     v9 = v31;
     payments = v31->_payments;
-    v31->_payments = v12;
+    v31->_payments = array;
 
-    v7 = v32;
+    accountCopy = v32;
     goto LABEL_13;
   }
 

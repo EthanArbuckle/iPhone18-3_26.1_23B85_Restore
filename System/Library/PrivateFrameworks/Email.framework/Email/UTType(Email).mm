@@ -11,7 +11,7 @@
   block[1] = 3221225472;
   block[2] = __20__UTType_Email__log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_41 != -1)
   {
     dispatch_once(&log_onceToken_41, block);
@@ -27,9 +27,9 @@
   v22 = *MEMORY[0x1E69E9840];
   v5 = a3;
   v6 = a4;
-  v7 = [v5 pathExtension];
+  pathExtension = [v5 pathExtension];
   v8 = MEMORY[0x1E6982D60];
-  if (v7 && ([MEMORY[0x1E6982C40] typeWithFilenameExtension:v7 conformingToType:*MEMORY[0x1E6982D60]], (v9 = objc_claimAutoreleasedReturnValue()) != 0))
+  if (pathExtension && ([MEMORY[0x1E6982C40] typeWithFilenameExtension:pathExtension conformingToType:*MEMORY[0x1E6982D60]], (v9 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v10 = [MEMORY[0x1E6982C40] log];
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -46,9 +46,9 @@
 
   else
   {
-    v11 = [v6 pathExtension];
+    pathExtension2 = [v6 pathExtension];
 
-    if (v11 && ([MEMORY[0x1E6982C40] typeWithFilenameExtension:v11 conformingToType:*v8], (v9 = objc_claimAutoreleasedReturnValue()) != 0))
+    if (pathExtension2 && ([MEMORY[0x1E6982C40] typeWithFilenameExtension:pathExtension2 conformingToType:*v8], (v9 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v12 = [MEMORY[0x1E6982C40] log];
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -74,7 +74,7 @@
       v9 = *v8;
     }
 
-    v7 = v11;
+    pathExtension = pathExtension2;
   }
 
   v14 = *MEMORY[0x1E69E9840];

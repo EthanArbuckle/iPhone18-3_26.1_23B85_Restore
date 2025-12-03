@@ -2,53 +2,53 @@
 + (id)EBookDownloadManager;
 + (id)IPodDownloadManager;
 + (id)softwareDownloadManager;
-+ (void)_sendGlobalHandler:(id)a3;
++ (void)_sendGlobalHandler:(id)handler;
 + (void)_triggerDownloads;
 + (void)reconnectToLSApplicationWorkspace;
-+ (void)removePersistenceIdentifier:(id)a3;
++ (void)removePersistenceIdentifier:(id)identifier;
 + (void)retryAllRestoreDownloads;
-+ (void)setDownloadHandler:(id)a3;
++ (void)setDownloadHandler:(id)handler;
 - (BOOL)isUsingNetwork;
 - (NSArray)activeDownloads;
 - (NSArray)downloads;
-- (SSDownloadManager)initWithDownloadKinds:(id)a3;
-- (SSDownloadManager)initWithManagerOptions:(id)a3;
+- (SSDownloadManager)initWithDownloadKinds:(id)kinds;
+- (SSDownloadManager)initWithManagerOptions:(id)options;
 - (SSDownloadManagerOptions)managerOptions;
 - (id)_copyDownloadKindsUsingNetwork;
 - (id)_copyDownloads;
-- (id)_copyDownloadsForMessage:(int64_t)a3 downloadIDs:(id)a4;
-- (id)_initSSDownloadManagerWithOptions:(id)a3;
+- (id)_copyDownloadsForMessage:(int64_t)message downloadIDs:(id)ds;
+- (id)_initSSDownloadManagerWithOptions:(id)options;
 - (id)_newOptionsDictionary;
 - (void)_connectAfterDaemonLaunch;
 - (void)_connectAsObserver;
-- (void)_finishDownloads:(id)a3;
-- (void)_handleDownloadKindsUsingNetworkChanged:(id)a3;
-- (void)_handleDownloadStatesChanged:(id)a3;
-- (void)_handleDownloadsChanged:(id)a3;
-- (void)_handleDownloadsRemoved:(id)a3;
-- (void)_handleMessage:(id)a3 fromServerConnection:(id)a4;
-- (void)_handleReply:(id)a3 forDownloads:(id)a4 message:(id)a5 isRetry:(BOOL)a6 block:(id)a7;
-- (void)_insertDownloads:(id)a3 before:(id)a4 after:(id)a5 completionBlock:(id)a6;
+- (void)_finishDownloads:(id)downloads;
+- (void)_handleDownloadKindsUsingNetworkChanged:(id)changed;
+- (void)_handleDownloadStatesChanged:(id)changed;
+- (void)_handleDownloadsChanged:(id)changed;
+- (void)_handleDownloadsRemoved:(id)removed;
+- (void)_handleMessage:(id)message fromServerConnection:(id)connection;
+- (void)_handleReply:(id)reply forDownloads:(id)downloads message:(id)message isRetry:(BOOL)retry block:(id)block;
+- (void)_insertDownloads:(id)downloads before:(id)before after:(id)after completionBlock:(id)block;
 - (void)_loadDownloadKindsUsingNetwork;
-- (void)_moveDownload:(id)a3 before:(id)a4 after:(id)a5 completionBlock:(id)a6;
-- (void)_pauseDownloads:(id)a3 forced:(BOOL)a4 completionBlock:(id)a5;
-- (void)_reloadIsUsingNetworkWithDownloadKinds:(id)a3;
-- (void)_sendDownloadsChanged:(id)a3;
-- (void)_sendMessage:(id)a3 withCompletionBlock:(id)a4;
-- (void)_sendMessageToObservers:(SEL)a3;
+- (void)_moveDownload:(id)download before:(id)before after:(id)after completionBlock:(id)block;
+- (void)_pauseDownloads:(id)downloads forced:(BOOL)forced completionBlock:(id)block;
+- (void)_reloadIsUsingNetworkWithDownloadKinds:(id)kinds;
+- (void)_sendDownloadsChanged:(id)changed;
+- (void)_sendMessage:(id)message withCompletionBlock:(id)block;
+- (void)_sendMessageToObservers:(SEL)observers;
 - (void)_sendObserverConnection;
-- (void)_willFinishDownloads:(id)a3;
-- (void)addObserver:(id)a3;
-- (void)cancelAllDownloadsWithCompletionBlock:(id)a3;
-- (void)cancelDownloads:(id)a3 completionBlock:(id)a4;
+- (void)_willFinishDownloads:(id)downloads;
+- (void)addObserver:(id)observer;
+- (void)cancelAllDownloadsWithCompletionBlock:(id)block;
+- (void)cancelDownloads:(id)downloads completionBlock:(id)block;
 - (void)dealloc;
-- (void)finishDownloads:(id)a3;
-- (void)getDownloadsUsingBlock:(id)a3;
+- (void)finishDownloads:(id)downloads;
+- (void)getDownloadsUsingBlock:(id)block;
 - (void)reloadFromServer;
-- (void)removeObserver:(id)a3;
-- (void)restartDownloads:(id)a3 completionBlock:(id)a4;
-- (void)resumeDownloads:(id)a3 completionBlock:(id)a4;
-- (void)setDownloads:(id)a3 forKinds:(id)a4 completionBlock:(id)a5;
+- (void)removeObserver:(id)observer;
+- (void)restartDownloads:(id)downloads completionBlock:(id)block;
+- (void)resumeDownloads:(id)downloads completionBlock:(id)block;
+- (void)setDownloads:(id)downloads forKinds:(id)kinds completionBlock:(id)block;
 @end
 
 @implementation SSDownloadManager
@@ -89,19 +89,19 @@
     v3 = +[SSLogConfig sharedConfig];
   }
 
-  v4 = [v3 shouldLog];
+  shouldLog = [v3 shouldLog];
   if ([v3 shouldLogToDisk])
   {
-    v5 = v4 | 2;
+    v5 = shouldLog | 2;
   }
 
   else
   {
-    v5 = v4;
+    v5 = shouldLog;
   }
 
-  v6 = [v3 OSLogObject];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
+  oSLogObject = [v3 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
   {
     v7 = v5;
   }
@@ -123,9 +123,9 @@
 
   if (v8)
   {
-    v6 = [MEMORY[0x1E696AEC0] stringWithCString:v8 encoding:{4, &v20, v19}];
+    oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v8 encoding:{4, &v20, v19}];
     free(v8);
-    SSFileLog(v3, @"%@", v9, v10, v11, v12, v13, v14, v6);
+    SSFileLog(v3, @"%@", v9, v10, v11, v12, v13, v14, oSLogObject);
 LABEL_14:
   }
 
@@ -134,13 +134,13 @@ LABEL_16:
   {
     v15 = xpc_dictionary_create(0, 0, 0);
     xpc_dictionary_set_int64(v15, "0", 18);
-    v16 = [(SSDownloadManagerOptions *)self->_options downloadKinds];
-    SSXPCDictionarySetObject(v15, "1", v16);
+    downloadKinds = [(SSDownloadManagerOptions *)self->_options downloadKinds];
+    SSXPCDictionarySetObject(v15, "1", downloadKinds);
 
-    v17 = [(SSXPCConnection *)self->_observerConnection createXPCEndpoint];
-    xpc_dictionary_set_value(v15, "2", v17);
-    v18 = [(SSDownloadManager *)self _newOptionsDictionary];
-    xpc_dictionary_set_value(v15, "3", v18);
+    createXPCEndpoint = [(SSXPCConnection *)self->_observerConnection createXPCEndpoint];
+    xpc_dictionary_set_value(v15, "2", createXPCEndpoint);
+    _newOptionsDictionary = [(SSDownloadManager *)self _newOptionsDictionary];
+    xpc_dictionary_set_value(v15, "3", _newOptionsDictionary);
     [(SSXPCConnection *)self->_connection sendMessage:v15];
   }
 }
@@ -148,15 +148,15 @@ LABEL_16:
 - (id)_newOptionsDictionary
 {
   v3 = xpc_dictionary_create(0, 0, 0);
-  v4 = [(SSDownloadManagerOptions *)self->_options persistenceIdentifier];
-  SSXPCDictionarySetObject(v3, "0", v4);
+  persistenceIdentifier = [(SSDownloadManagerOptions *)self->_options persistenceIdentifier];
+  SSXPCDictionarySetObject(v3, "0", persistenceIdentifier);
 
   xpc_dictionary_set_BOOL(v3, "1", [(SSDownloadManagerOptions *)self->_options shouldFilterExternalOriginatedDownloads]);
-  v5 = [(SSDownloadManagerOptions *)self->_options prefetchedDownloadProperties];
-  SSXPCDictionarySetObject(v3, "2", v5);
+  prefetchedDownloadProperties = [(SSDownloadManagerOptions *)self->_options prefetchedDownloadProperties];
+  SSXPCDictionarySetObject(v3, "2", prefetchedDownloadProperties);
 
-  v6 = [(SSDownloadManagerOptions *)self->_options prefetchedDownloadExternalProperties];
-  SSXPCDictionarySetObject(v3, "3", v6);
+  prefetchedDownloadExternalProperties = [(SSDownloadManagerOptions *)self->_options prefetchedDownloadExternalProperties];
+  SSXPCDictionarySetObject(v3, "3", prefetchedDownloadExternalProperties);
 
   return v3;
 }
@@ -184,19 +184,19 @@ LABEL_16:
       v3 = +[SSLogConfig sharedConfig];
     }
 
-    v4 = [v3 shouldLog];
+    shouldLog = [v3 shouldLog];
     if ([v3 shouldLogToDisk])
     {
-      v5 = v4 | 2;
+      v5 = shouldLog | 2;
     }
 
     else
     {
-      v5 = v4;
+      v5 = shouldLog;
     }
 
-    v6 = [v3 OSLogObject];
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
+    oSLogObject = [v3 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
     {
       v7 = v5;
     }
@@ -221,9 +221,9 @@ LABEL_15:
         goto LABEL_16;
       }
 
-      v6 = [MEMORY[0x1E696AEC0] stringWithCString:v8 encoding:{4, &v27, v26}];
+      oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v8 encoding:{4, &v27, v26}];
       free(v8);
-      SSFileLog(v3, @"%@", v9, v10, v11, v12, v13, v14, v6);
+      SSFileLog(v3, @"%@", v9, v10, v11, v12, v13, v14, oSLogObject);
     }
 
     goto LABEL_15;
@@ -312,15 +312,15 @@ void __30__SSDownloadManager_downloads__block_invoke(uint64_t a1)
   *(v3 + 40) = v2;
 }
 
-- (id)_initSSDownloadManagerWithOptions:(id)a3
+- (id)_initSSDownloadManagerWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v21.receiver = self;
   v21.super_class = SSDownloadManager;
   v5 = [(SSDownloadManager *)&v21 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [optionsCopy copy];
     options = v5->_options;
     v5->_options = v6;
 
@@ -337,7 +337,7 @@ void __30__SSDownloadManager_downloads__block_invoke(uint64_t a1)
     v5->_observerQueue = v12;
 
     v14 = [SSWeakReference weakReferenceWithObject:v5];
-    v15 = [(__CFString *)@"com.apple.iTunesStore.daemon.launched" UTF8String];
+    uTF8String = [(__CFString *)@"com.apple.iTunesStore.daemon.launched" UTF8String];
     v16 = v5->_accessQueue;
     handler[0] = MEMORY[0x1E69E9820];
     handler[1] = 3221225472;
@@ -345,7 +345,7 @@ void __30__SSDownloadManager_downloads__block_invoke(uint64_t a1)
     handler[3] = &unk_1E84AE5F8;
     v20 = v14;
     v17 = v14;
-    notify_register_dispatch(v15, &v5->_launchNotificationToken, v16, handler);
+    notify_register_dispatch(uTF8String, &v5->_launchNotificationToken, v16, handler);
     [(SSDownloadManager *)v5 _connectAsObserver];
   }
 
@@ -358,21 +358,21 @@ void __55__SSDownloadManager__initSSDownloadManagerWithOptions___block_invoke(ui
   [v1 _connectAfterDaemonLaunch];
 }
 
-- (SSDownloadManager)initWithDownloadKinds:(id)a3
+- (SSDownloadManager)initWithDownloadKinds:(id)kinds
 {
-  v4 = a3;
+  kindsCopy = kinds;
   v5 = objc_alloc_init(SSDownloadManagerOptions);
-  [(SSDownloadManagerOptions *)v5 setDownloadKinds:v4];
+  [(SSDownloadManagerOptions *)v5 setDownloadKinds:kindsCopy];
 
   v6 = [(SSDownloadManager *)self initWithManagerOptions:v5];
   return v6;
 }
 
-- (SSDownloadManager)initWithManagerOptions:(id)a3
+- (SSDownloadManager)initWithManagerOptions:(id)options
 {
-  v4 = a3;
-  v5 = [v4 downloadKinds];
-  if (![v5 count])
+  optionsCopy = options;
+  downloadKinds = [optionsCopy downloadKinds];
+  if (![downloadKinds count])
   {
 
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"Must have download kinds"];
@@ -383,11 +383,11 @@ void __55__SSDownloadManager__initSSDownloadManagerWithOptions___block_invoke(ui
   v6 = objc_opt_class();
   if (v6 == objc_opt_class())
   {
-    v10 = [v4 downloadKinds];
-    v11 = SSDownloadKindsContainsBookToShimKind(v10);
+    downloadKinds2 = [optionsCopy downloadKinds];
+    v11 = SSDownloadKindsContainsBookToShimKind(downloadKinds2);
 
-    v12 = [v4 downloadKinds];
-    v13 = [v12 containsObject:@"software"];
+    downloadKinds3 = [optionsCopy downloadKinds];
+    v13 = [downloadKinds3 containsObject:@"software"];
 
     if (!v11 || (v13 & 1) != 0)
     {
@@ -398,13 +398,13 @@ void __55__SSDownloadManager__initSSDownloadManagerWithOptions___block_invoke(ui
 
       else
       {
-        v15 = [v4 downloadKinds];
-        v16 = [v15 containsObject:@"software"];
+        downloadKinds4 = [optionsCopy downloadKinds];
+        v16 = [downloadKinds4 containsObject:@"software"];
 
         if (!v16)
         {
 LABEL_16:
-          self = [(SSDownloadManager *)self _initSSDownloadManagerWithOptions:v4];
+          self = [(SSDownloadManager *)self _initSSDownloadManagerWithOptions:optionsCopy];
           goto LABEL_17;
         }
 
@@ -417,7 +417,7 @@ LABEL_16:
       v14 = SSDownloadManagerBookShim2;
     }
 
-    v17 = [[v14 alloc] initWithManagerOptions:v4];
+    v17 = [[v14 alloc] initWithManagerOptions:optionsCopy];
 
     self = v17;
     goto LABEL_17;
@@ -454,10 +454,10 @@ LABEL_17:
   [(SSXPCConnection *)v3 sendMessage:v2];
 }
 
-+ (void)removePersistenceIdentifier:(id)a3
++ (void)removePersistenceIdentifier:(id)identifier
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  identifierCopy = identifier;
   if (SSIsInternalBuild() && _os_feature_enabled_impl())
   {
     v4 = +[SSLogConfig sharedStoreServicesConfig];
@@ -466,19 +466,19 @@ LABEL_17:
       v4 = +[SSLogConfig sharedConfig];
     }
 
-    v5 = [v4 shouldLog];
+    shouldLog = [v4 shouldLog];
     if ([v4 shouldLogToDisk])
     {
-      v6 = v5 | 2;
+      v6 = shouldLog | 2;
     }
 
     else
     {
-      v6 = v5;
+      v6 = shouldLog;
     }
 
-    v7 = [v4 OSLogObject];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
+    oSLogObject = [v4 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
     {
       v8 = v6;
     }
@@ -502,9 +502,9 @@ LABEL_15:
         goto LABEL_16;
       }
 
-      v7 = [MEMORY[0x1E696AEC0] stringWithCString:v9 encoding:{4, &v19, v18}];
+      oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v9 encoding:{4, &v19, v18}];
       free(v9);
-      SSFileLog(v4, @"%@", v10, v11, v12, v13, v14, v15, v7);
+      SSFileLog(v4, @"%@", v10, v11, v12, v13, v14, v15, oSLogObject);
     }
 
     goto LABEL_15;
@@ -514,19 +514,19 @@ LABEL_16:
   v16 = [[SSXPCConnection alloc] initWithServiceName:@"com.apple.itunesstored.xpc"];
   v17 = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_int64(v17, "0", 6);
-  SSXPCDictionarySetObject(v17, "1", v3);
+  SSXPCDictionarySetObject(v17, "1", identifierCopy);
 
   [(SSXPCConnection *)v16 sendMessage:v17];
 }
 
-+ (void)setDownloadHandler:(id)a3
++ (void)setDownloadHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   pthread_mutex_lock(&__GlobalHandlerLock);
-  if (__GlobalHandler != v5)
+  if (__GlobalHandler != handlerCopy)
   {
-    objc_storeStrong(&__GlobalHandler, a3);
-    [a1 _sendGlobalHandler:__GlobalHandler];
+    objc_storeStrong(&__GlobalHandler, handler);
+    [self _sendGlobalHandler:__GlobalHandler];
   }
 
   pthread_mutex_unlock(&__GlobalHandlerLock);
@@ -543,19 +543,19 @@ LABEL_16:
       v3 = +[SSLogConfig sharedConfig];
     }
 
-    v4 = [v3 shouldLog];
+    shouldLog = [v3 shouldLog];
     if ([v3 shouldLogToDisk])
     {
-      v5 = v4 | 2;
+      v5 = shouldLog | 2;
     }
 
     else
     {
-      v5 = v4;
+      v5 = shouldLog;
     }
 
-    v6 = [v3 OSLogObject];
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_FAULT))
+    oSLogObject = [v3 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_FAULT))
     {
       v7 = v5;
     }
@@ -579,9 +579,9 @@ LABEL_15:
         goto LABEL_16;
       }
 
-      v6 = [MEMORY[0x1E696AEC0] stringWithCString:v8 encoding:{4, &v20, v18}];
+      oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v8 encoding:{4, &v20, v18}];
       free(v8);
-      SSFileLog(v3, @"%@", v9, v10, v11, v12, v13, v14, v6);
+      SSFileLog(v3, @"%@", v9, v10, v11, v12, v13, v14, oSLogObject);
     }
 
     goto LABEL_15;
@@ -633,17 +633,17 @@ void __36__SSDownloadManager_activeDownloads__block_invoke(uint64_t a1)
   objc_storeStrong(v8, v3);
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   accessQueue = self->_accessQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __33__SSDownloadManager_addObserver___block_invoke;
   v7[3] = &unk_1E84AC028;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_sync(accessQueue, v7);
 }
 
@@ -665,10 +665,10 @@ uint64_t __33__SSDownloadManager_addObserver___block_invoke(uint64_t a1)
   return [v2 addObject:v6];
 }
 
-- (void)cancelAllDownloadsWithCompletionBlock:(id)a3
+- (void)cancelAllDownloadsWithCompletionBlock:(id)block
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   if (SSIsInternalBuild() && _os_feature_enabled_impl())
   {
     v5 = +[SSLogConfig sharedStoreServicesConfig];
@@ -677,19 +677,19 @@ uint64_t __33__SSDownloadManager_addObserver___block_invoke(uint64_t a1)
       v5 = +[SSLogConfig sharedConfig];
     }
 
-    v6 = [v5 shouldLog];
+    shouldLog = [v5 shouldLog];
     if ([v5 shouldLogToDisk])
     {
-      v7 = v6 | 2;
+      v7 = shouldLog | 2;
     }
 
     else
     {
-      v7 = v6;
+      v7 = shouldLog;
     }
 
-    v8 = [v5 OSLogObject];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_FAULT))
+    oSLogObject = [v5 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_FAULT))
     {
       v9 = v7;
     }
@@ -713,9 +713,9 @@ LABEL_15:
         goto LABEL_16;
       }
 
-      v8 = [MEMORY[0x1E696AEC0] stringWithCString:v10 encoding:{4, &v19, v18}];
+      oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v10 encoding:{4, &v19, v18}];
       free(v10);
-      SSFileLog(v5, @"%@", v11, v12, v13, v14, v15, v16, v8);
+      SSFileLog(v5, @"%@", v11, v12, v13, v14, v15, v16, oSLogObject);
     }
 
     goto LABEL_15;
@@ -725,14 +725,14 @@ LABEL_16:
   v17 = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_int64(v17, "0", 0);
   xpc_dictionary_set_BOOL(v17, "1", [(SSDownloadManagerOptions *)self->_options shouldFilterExternalOriginatedDownloads]);
-  [(SSDownloadManager *)self _sendMessage:v17 withCompletionBlock:v4];
+  [(SSDownloadManager *)self _sendMessage:v17 withCompletionBlock:blockCopy];
 }
 
-- (void)cancelDownloads:(id)a3 completionBlock:(id)a4
+- (void)cancelDownloads:(id)downloads completionBlock:(id)block
 {
   v36 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  downloadsCopy = downloads;
+  blockCopy = block;
   if (SSIsInternalBuild() && _os_feature_enabled_impl())
   {
     v8 = +[SSLogConfig sharedStoreServicesConfig];
@@ -741,19 +741,19 @@ LABEL_16:
       v8 = +[SSLogConfig sharedConfig];
     }
 
-    v9 = [v8 shouldLog];
+    shouldLog = [v8 shouldLog];
     if ([v8 shouldLogToDisk])
     {
-      v10 = v9 | 2;
+      v10 = shouldLog | 2;
     }
 
     else
     {
-      v10 = v9;
+      v10 = shouldLog;
     }
 
-    v11 = [v8 OSLogObject];
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
+    oSLogObject = [v8 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
     {
       v12 = v10;
     }
@@ -778,9 +778,9 @@ LABEL_15:
         goto LABEL_16;
       }
 
-      v11 = [MEMORY[0x1E696AEC0] stringWithCString:v13 encoding:{4, &v34, v28}];
+      oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v13 encoding:{4, &v34, v28}];
       free(v13);
-      SSFileLog(v8, @"%@", v14, v15, v16, v17, v18, v19, v11);
+      SSFileLog(v8, @"%@", v14, v15, v16, v17, v18, v19, oSLogObject);
     }
 
     goto LABEL_15;
@@ -794,7 +794,7 @@ LABEL_16:
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v22 = v6;
+  v22 = downloadsCopy;
   v23 = [v22 countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (v23)
   {
@@ -819,20 +819,20 @@ LABEL_16:
   }
 
   xpc_dictionary_set_value(v20, "1", v21);
-  [(SSDownloadManager *)self _sendMessage:v20 withCompletionBlock:v7];
+  [(SSDownloadManager *)self _sendMessage:v20 withCompletionBlock:blockCopy];
 }
 
-- (void)finishDownloads:(id)a3
+- (void)finishDownloads:(id)downloads
 {
-  v4 = a3;
-  [(SSDownloadManager *)self _willFinishDownloads:v4];
-  [(SSDownloadManager *)self _finishDownloads:v4];
+  downloadsCopy = downloads;
+  [(SSDownloadManager *)self _willFinishDownloads:downloadsCopy];
+  [(SSDownloadManager *)self _finishDownloads:downloadsCopy];
 }
 
-- (void)getDownloadsUsingBlock:(id)a3
+- (void)getDownloadsUsingBlock:(id)block
 {
-  v4 = a3;
-  if (!v4)
+  blockCopy = block;
+  if (!blockCopy)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"nil block"];
   }
@@ -843,8 +843,8 @@ LABEL_16:
   v7[2] = __44__SSDownloadManager_getDownloadsUsingBlock___block_invoke;
   v7[3] = &unk_1E84AC360;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   dispatch_async(accessQueue, v7);
 }
 
@@ -889,11 +889,11 @@ void __44__SSDownloadManager_getDownloadsUsingBlock___block_invoke(uint64_t a1)
   return v2;
 }
 
-- (void)resumeDownloads:(id)a3 completionBlock:(id)a4
+- (void)resumeDownloads:(id)downloads completionBlock:(id)block
 {
   v36 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  downloadsCopy = downloads;
+  blockCopy = block;
   if (SSIsInternalBuild() && _os_feature_enabled_impl())
   {
     v8 = +[SSLogConfig sharedStoreServicesConfig];
@@ -902,19 +902,19 @@ void __44__SSDownloadManager_getDownloadsUsingBlock___block_invoke(uint64_t a1)
       v8 = +[SSLogConfig sharedConfig];
     }
 
-    v9 = [v8 shouldLog];
+    shouldLog = [v8 shouldLog];
     if ([v8 shouldLogToDisk])
     {
-      v10 = v9 | 2;
+      v10 = shouldLog | 2;
     }
 
     else
     {
-      v10 = v9;
+      v10 = shouldLog;
     }
 
-    v11 = [v8 OSLogObject];
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_FAULT))
+    oSLogObject = [v8 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_FAULT))
     {
       v12 = v10;
     }
@@ -939,9 +939,9 @@ LABEL_15:
         goto LABEL_16;
       }
 
-      v11 = [MEMORY[0x1E696AEC0] stringWithCString:v13 encoding:{4, &v34, v28}];
+      oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v13 encoding:{4, &v34, v28}];
       free(v13);
-      SSFileLog(v8, @"%@", v14, v15, v16, v17, v18, v19, v11);
+      SSFileLog(v8, @"%@", v14, v15, v16, v17, v18, v19, oSLogObject);
     }
 
     goto LABEL_15;
@@ -955,7 +955,7 @@ LABEL_16:
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v22 = v6;
+  v22 = downloadsCopy;
   v23 = [v22 countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (v23)
   {
@@ -980,14 +980,14 @@ LABEL_16:
   }
 
   xpc_dictionary_set_value(v20, "1", v21);
-  [(SSDownloadManager *)self _sendMessage:v20 withCompletionBlock:v7];
+  [(SSDownloadManager *)self _sendMessage:v20 withCompletionBlock:blockCopy];
 }
 
-- (void)restartDownloads:(id)a3 completionBlock:(id)a4
+- (void)restartDownloads:(id)downloads completionBlock:(id)block
 {
   v36 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  downloadsCopy = downloads;
+  blockCopy = block;
   if (SSIsInternalBuild() && _os_feature_enabled_impl())
   {
     v8 = +[SSLogConfig sharedStoreServicesConfig];
@@ -996,19 +996,19 @@ LABEL_16:
       v8 = +[SSLogConfig sharedConfig];
     }
 
-    v9 = [v8 shouldLog];
+    shouldLog = [v8 shouldLog];
     if ([v8 shouldLogToDisk])
     {
-      v10 = v9 | 2;
+      v10 = shouldLog | 2;
     }
 
     else
     {
-      v10 = v9;
+      v10 = shouldLog;
     }
 
-    v11 = [v8 OSLogObject];
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_FAULT))
+    oSLogObject = [v8 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_FAULT))
     {
       v12 = v10;
     }
@@ -1033,9 +1033,9 @@ LABEL_15:
         goto LABEL_16;
       }
 
-      v11 = [MEMORY[0x1E696AEC0] stringWithCString:v13 encoding:{4, &v34, v28}];
+      oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v13 encoding:{4, &v34, v28}];
       free(v13);
-      SSFileLog(v8, @"%@", v14, v15, v16, v17, v18, v19, v11);
+      SSFileLog(v8, @"%@", v14, v15, v16, v17, v18, v19, oSLogObject);
     }
 
     goto LABEL_15;
@@ -1049,7 +1049,7 @@ LABEL_16:
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v22 = v6;
+  v22 = downloadsCopy;
   v23 = [v22 countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (v23)
   {
@@ -1074,20 +1074,20 @@ LABEL_16:
   }
 
   xpc_dictionary_set_value(v20, "1", v21);
-  [(SSDownloadManager *)self _sendMessage:v20 withCompletionBlock:v7];
+  [(SSDownloadManager *)self _sendMessage:v20 withCompletionBlock:blockCopy];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   accessQueue = self->_accessQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __36__SSDownloadManager_removeObserver___block_invoke;
   v7[3] = &unk_1E84AC028;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_sync(accessQueue, v7);
 }
 
@@ -1107,7 +1107,7 @@ uint64_t __36__SSDownloadManager_removeObserver___block_invoke(uint64_t result)
   block[1] = 3221225472;
   block[2] = __41__SSDownloadManager_EBookDownloadManager__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (EBookDownloadManager_sOnce != -1)
   {
     dispatch_once(&EBookDownloadManager_sOnce, block);
@@ -1133,7 +1133,7 @@ void __41__SSDownloadManager_EBookDownloadManager__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __40__SSDownloadManager_IPodDownloadManager__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (IPodDownloadManager_sOnce != -1)
   {
     dispatch_once(&IPodDownloadManager_sOnce, block);
@@ -1159,7 +1159,7 @@ void __40__SSDownloadManager_IPodDownloadManager__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __44__SSDownloadManager_softwareDownloadManager__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (softwareDownloadManager_sOnce != -1)
   {
     dispatch_once(&softwareDownloadManager_sOnce, block);
@@ -1195,19 +1195,19 @@ void __44__SSDownloadManager_softwareDownloadManager__block_invoke(uint64_t a1)
       v3 = +[SSLogConfig sharedConfig];
     }
 
-    v4 = [v3 shouldLog];
+    shouldLog = [v3 shouldLog];
     if ([v3 shouldLogToDisk])
     {
-      v5 = v4 | 2;
+      v5 = shouldLog | 2;
     }
 
     else
     {
-      v5 = v4;
+      v5 = shouldLog;
     }
 
-    v6 = [v3 OSLogObject];
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_FAULT))
+    oSLogObject = [v3 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_FAULT))
     {
       v7 = v5;
     }
@@ -1237,9 +1237,9 @@ LABEL_20:
         return;
       }
 
-      v6 = [MEMORY[0x1E696AEC0] stringWithCString:v8 encoding:{4, &v18, v17}];
+      oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v8 encoding:{4, &v18, v17}];
       free(v8);
-      SSFileLog(v3, @"%@", v9, v10, v11, v12, v13, v14, v6);
+      SSFileLog(v3, @"%@", v9, v10, v11, v12, v13, v14, oSLogObject);
     }
 
     goto LABEL_19;
@@ -1261,19 +1261,19 @@ LABEL_20:
       v3 = +[SSLogConfig sharedConfig];
     }
 
-    v4 = [v3 shouldLog];
+    shouldLog = [v3 shouldLog];
     if ([v3 shouldLogToDisk])
     {
-      v5 = v4 | 2;
+      v5 = shouldLog | 2;
     }
 
     else
     {
-      v5 = v4;
+      v5 = shouldLog;
     }
 
-    v6 = [v3 OSLogObject];
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
+    oSLogObject = [v3 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
     {
       v7 = v5;
     }
@@ -1297,9 +1297,9 @@ LABEL_15:
         goto LABEL_16;
       }
 
-      v6 = [MEMORY[0x1E696AEC0] stringWithCString:v8 encoding:{4, &v17, v16}];
+      oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v8 encoding:{4, &v17, v16}];
       free(v8);
-      SSFileLog(v3, @"%@", v9, v10, v11, v12, v13, v14, v6);
+      SSFileLog(v3, @"%@", v9, v10, v11, v12, v13, v14, oSLogObject);
     }
 
     goto LABEL_15;
@@ -1311,12 +1311,12 @@ LABEL_16:
   [(SSXPCConnection *)self->_connection sendMessage:v15];
 }
 
-- (void)setDownloads:(id)a3 forKinds:(id)a4 completionBlock:(id)a5
+- (void)setDownloads:(id)downloads forKinds:(id)kinds completionBlock:(id)block
 {
   v48 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  downloadsCopy = downloads;
+  kindsCopy = kinds;
+  blockCopy = block;
   if (SSIsInternalBuild() && _os_feature_enabled_impl())
   {
     v11 = +[SSLogConfig sharedStoreServicesConfig];
@@ -1325,19 +1325,19 @@ LABEL_16:
       v11 = +[SSLogConfig sharedConfig];
     }
 
-    v12 = [v11 shouldLog];
+    shouldLog = [v11 shouldLog];
     if ([v11 shouldLogToDisk])
     {
-      v13 = v12 | 2;
+      v13 = shouldLog | 2;
     }
 
     else
     {
-      v13 = v12;
+      v13 = shouldLog;
     }
 
-    v14 = [v11 OSLogObject];
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_FAULT))
+    oSLogObject = [v11 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_FAULT))
     {
       v15 = v13;
     }
@@ -1362,9 +1362,9 @@ LABEL_15:
         goto LABEL_16;
       }
 
-      v14 = [MEMORY[0x1E696AEC0] stringWithCString:v16 encoding:{4, &v46, v36}];
+      oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v16 encoding:{4, &v46, v36}];
       free(v16);
-      SSFileLog(v11, @"%@", v17, v18, v19, v20, v21, v22, v14);
+      SSFileLog(v11, @"%@", v17, v18, v19, v20, v21, v22, oSLogObject);
     }
 
     goto LABEL_15;
@@ -1374,9 +1374,9 @@ LABEL_16:
   v23 = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_int64(v23, "0", 39);
   xpc_dictionary_set_BOOL(v23, "1", 1);
-  if (v9)
+  if (kindsCopy)
   {
-    SSXPCDictionarySetObject(v23, "3", v9);
+    SSXPCDictionarySetObject(v23, "3", kindsCopy);
   }
 
   v24 = xpc_array_create(0, 0);
@@ -1384,7 +1384,7 @@ LABEL_16:
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v25 = v8;
+  v25 = downloadsCopy;
   v26 = [v25 countByEnumeratingWithState:&v41 objects:v45 count:16];
   if (v26)
   {
@@ -1399,10 +1399,10 @@ LABEL_16:
           objc_enumerationMutation(v25);
         }
 
-        v30 = [*(*(&v41 + 1) + 8 * i) copyXPCEncoding];
-        if (v30)
+        copyXPCEncoding = [*(*(&v41 + 1) + 8 * i) copyXPCEncoding];
+        if (copyXPCEncoding)
         {
-          xpc_array_append_value(v24, v30);
+          xpc_array_append_value(v24, copyXPCEncoding);
         }
       }
 
@@ -1422,8 +1422,8 @@ LABEL_16:
   v37[4] = self;
   v38 = v25;
   v39 = v23;
-  v40 = v10;
-  v32 = v10;
+  v40 = blockCopy;
+  v32 = blockCopy;
   v33 = v23;
   v34 = v25;
   [(SSXPCConnection *)connection sendMessage:v33 withReply:v37];
@@ -1443,19 +1443,19 @@ LABEL_16:
     v2 = +[SSLogConfig sharedConfig];
   }
 
-  v3 = [v2 shouldLog];
+  shouldLog = [v2 shouldLog];
   if ([v2 shouldLogToDisk])
   {
-    v4 = v3 | 2;
+    v4 = shouldLog | 2;
   }
 
   else
   {
-    v4 = v3;
+    v4 = shouldLog;
   }
 
-  v5 = [v2 OSLogObject];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_FAULT))
+  oSLogObject = [v2 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_FAULT))
   {
     v6 = v4;
   }
@@ -1477,9 +1477,9 @@ LABEL_16:
 
   if (v7)
   {
-    v5 = [MEMORY[0x1E696AEC0] stringWithCString:v7 encoding:{4, &v18, v17}];
+    oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v7 encoding:{4, &v18, v17}];
     free(v7);
-    SSFileLog(v2, @"%@", v8, v9, v10, v11, v12, v13, v5);
+    SSFileLog(v2, @"%@", v8, v9, v10, v11, v12, v13, oSLogObject);
 LABEL_14:
   }
 
@@ -1499,10 +1499,10 @@ LABEL_16:
   }
 }
 
-- (void)_finishDownloads:(id)a3
+- (void)_finishDownloads:(id)downloads
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  downloadsCopy = downloads;
   if (SSIsInternalBuild() && _os_feature_enabled_impl())
   {
     v5 = +[SSLogConfig sharedStoreServicesConfig];
@@ -1511,19 +1511,19 @@ LABEL_16:
       v5 = +[SSLogConfig sharedConfig];
     }
 
-    v6 = [v5 shouldLog];
+    shouldLog = [v5 shouldLog];
     if ([v5 shouldLogToDisk])
     {
-      v7 = v6 | 2;
+      v7 = shouldLog | 2;
     }
 
     else
     {
-      v7 = v6;
+      v7 = shouldLog;
     }
 
-    v8 = [v5 OSLogObject];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
+    oSLogObject = [v5 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
     {
       v9 = v7;
     }
@@ -1548,9 +1548,9 @@ LABEL_15:
         goto LABEL_16;
       }
 
-      v8 = [MEMORY[0x1E696AEC0] stringWithCString:v10 encoding:{4, &v33, v26}];
+      oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v10 encoding:{4, &v33, v26}];
       free(v10);
-      SSFileLog(v5, @"%@", v11, v12, v13, v14, v15, v16, v8);
+      SSFileLog(v5, @"%@", v11, v12, v13, v14, v15, v16, oSLogObject);
     }
 
     goto LABEL_15;
@@ -1564,7 +1564,7 @@ LABEL_16:
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v19 = v4;
+  v19 = downloadsCopy;
   v20 = [v19 countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v20)
   {
@@ -1617,17 +1617,17 @@ void __38__SSDownloadManager__finishDownloads___block_invoke_2(uint64_t a1)
   *(v1 + 96) = 0;
 }
 
-- (void)_willFinishDownloads:(id)a3
+- (void)_willFinishDownloads:(id)downloads
 {
-  v4 = a3;
+  downloadsCopy = downloads;
   accessQueue = self->_accessQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __42__SSDownloadManager__willFinishDownloads___block_invoke;
   v7[3] = &unk_1E84AC028;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = downloadsCopy;
+  v6 = downloadsCopy;
   dispatch_async(accessQueue, v7);
 }
 
@@ -1675,10 +1675,10 @@ void __42__SSDownloadManager__willFinishDownloads___block_invoke(uint64_t a1)
   }
 }
 
-+ (void)_sendGlobalHandler:(id)a3
++ (void)_sendGlobalHandler:(id)handler
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  handlerCopy = handler;
   if (!SSIsInternalBuild() || !_os_feature_enabled_impl())
   {
     goto LABEL_16;
@@ -1690,19 +1690,19 @@ void __42__SSDownloadManager__willFinishDownloads___block_invoke(uint64_t a1)
     v4 = +[SSLogConfig sharedConfig];
   }
 
-  v5 = [v4 shouldLog];
+  shouldLog = [v4 shouldLog];
   if ([v4 shouldLogToDisk])
   {
-    v6 = v5 | 2;
+    v6 = shouldLog | 2;
   }
 
   else
   {
-    v6 = v5;
+    v6 = shouldLog;
   }
 
-  v7 = [v4 OSLogObject];
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_FAULT))
+  oSLogObject = [v4 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_FAULT))
   {
     v8 = v6;
   }
@@ -1724,26 +1724,26 @@ void __42__SSDownloadManager__willFinishDownloads___block_invoke(uint64_t a1)
 
   if (v9)
   {
-    v7 = [MEMORY[0x1E696AEC0] stringWithCString:v9 encoding:{4, &v20, v19}];
+    oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v9 encoding:{4, &v20, v19}];
     free(v9);
-    SSFileLog(v4, @"%@", v10, v11, v12, v13, v14, v15, v7);
+    SSFileLog(v4, @"%@", v10, v11, v12, v13, v14, v15, oSLogObject);
 LABEL_14:
   }
 
 LABEL_16:
   v16 = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_int64(v16, "0", 22);
-  if (v3)
+  if (handlerCopy)
   {
-    v17 = [v3 handlerIdentifier];
+    handlerIdentifier = [handlerCopy handlerIdentifier];
   }
 
   else
   {
-    v17 = 0;
+    handlerIdentifier = 0;
   }
 
-  xpc_dictionary_set_int64(v16, "1", v17);
+  xpc_dictionary_set_int64(v16, "1", handlerIdentifier);
   v18 = [[SSXPCConnection alloc] initWithServiceName:@"com.apple.itunesstored.xpc"];
   [(SSXPCConnection *)v18 sendMessage:v16];
 }
@@ -1764,19 +1764,19 @@ LABEL_16:
       v3 = +[SSLogConfig sharedConfig];
     }
 
-    v4 = [v3 shouldLog];
+    shouldLog = [v3 shouldLog];
     if ([v3 shouldLogToDisk])
     {
-      v5 = v4 | 2;
+      v5 = shouldLog | 2;
     }
 
     else
     {
-      v5 = v4;
+      v5 = shouldLog;
     }
 
-    v6 = [v3 OSLogObject];
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
+    oSLogObject = [v3 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
     {
       v7 = v5;
     }
@@ -1801,9 +1801,9 @@ LABEL_14:
         goto LABEL_15;
       }
 
-      v6 = [MEMORY[0x1E696AEC0] stringWithCString:v8 encoding:{4, &v16, v15}];
+      oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v8 encoding:{4, &v16, v15}];
       free(v8);
-      SSFileLog(v3, @"%@", v9, v10, v11, v12, v13, v14, v6);
+      SSFileLog(v3, @"%@", v9, v10, v11, v12, v13, v14, oSLogObject);
     }
 
     goto LABEL_14;
@@ -1824,19 +1824,19 @@ LABEL_15:
       v3 = +[SSLogConfig sharedConfig];
     }
 
-    v4 = [v3 shouldLog];
+    shouldLog = [v3 shouldLog];
     if ([v3 shouldLogToDisk])
     {
-      v5 = v4 | 2;
+      v5 = shouldLog | 2;
     }
 
     else
     {
-      v5 = v4;
+      v5 = shouldLog;
     }
 
-    v6 = [v3 OSLogObject];
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
+    oSLogObject = [v3 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
     {
       v7 = v5;
     }
@@ -1910,16 +1910,16 @@ void __51__SSDownloadManager__copyDownloadKindsUsingNetwork__block_invoke(uint64
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (id)_copyDownloadsForMessage:(int64_t)a3 downloadIDs:(id)a4
+- (id)_copyDownloadsForMessage:(int64_t)message downloadIDs:(id)ds
 {
-  v6 = a4;
+  dsCopy = ds;
   v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v8 = xpc_dictionary_create(0, 0, 0);
-  xpc_dictionary_set_int64(v8, "0", a3);
+  xpc_dictionary_set_int64(v8, "0", message);
   xpc_dictionary_set_BOOL(v8, "1", [(SSDownloadManagerOptions *)self->_options shouldFilterExternalOriginatedDownloads]);
-  if (v6)
+  if (dsCopy)
   {
-    xpc_dictionary_set_value(v8, "2", v6);
+    xpc_dictionary_set_value(v8, "2", dsCopy);
   }
 
   v9 = dispatch_semaphore_create(0);
@@ -1995,11 +1995,11 @@ LABEL_7:
   return 1;
 }
 
-- (void)_handleDownloadKindsUsingNetworkChanged:(id)a3
+- (void)_handleDownloadKindsUsingNetworkChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   v5 = objc_opt_class();
-  v6 = SSXPCDictionaryCopyObjectWithClass(v4, "1", v5);
+  v6 = SSXPCDictionaryCopyObjectWithClass(changedCopy, "1", v5);
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -2013,12 +2013,12 @@ LABEL_7:
   }
 }
 
-- (void)_handleDownloadsChanged:(id)a3
+- (void)_handleDownloadsChanged:(id)changed
 {
   v67 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  changedCopy = changed;
   v54 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-  v5 = xpc_dictionary_get_value(v4, "1");
+  v5 = xpc_dictionary_get_value(changedCopy, "1");
   if ([(NSArray *)self->_downloads count])
   {
     v6 = v5 == 0;
@@ -2034,7 +2034,7 @@ LABEL_7:
     goto LABEL_43;
   }
 
-  v52 = v4;
+  v52 = changedCopy;
   v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v8 = [objc_alloc(MEMORY[0x1E696AD98]) initWithInteger:0x7FFFFFFFFFFFFFFFLL];
   applier[0] = MEMORY[0x1E69E9820];
@@ -2083,10 +2083,10 @@ LABEL_7:
   {
 LABEL_42:
 
-    v4 = v52;
+    changedCopy = v52;
 LABEL_43:
     [(SSDownloadManager *)self _resetAllDownloads];
-    v46 = self;
+    selfCopy2 = self;
     v47 = 0;
     goto LABEL_44;
   }
@@ -2100,21 +2100,21 @@ LABEL_43:
       v19 = +[SSLogConfig sharedConfig];
     }
 
-    v20 = [v19 shouldLog];
+    shouldLog = [v19 shouldLog];
     if ([v19 shouldLogToDisk])
     {
-      v20 |= 2u;
+      shouldLog |= 2u;
     }
 
-    v21 = [v19 OSLogObject];
-    if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
+    oSLogObject = [v19 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
     {
-      v22 = v20;
+      v22 = shouldLog;
     }
 
     else
     {
-      v22 = v20 & 2;
+      v22 = shouldLog & 2;
     }
 
     if (v22)
@@ -2132,9 +2132,9 @@ LABEL_28:
         goto LABEL_29;
       }
 
-      v21 = [MEMORY[0x1E696AEC0] stringWithCString:v23 encoding:{4, &v65, v50, v51}];
+      oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v23 encoding:{4, &v65, v50, v51}];
       free(v23);
-      SSFileLog(v19, @"%@", v24, v25, v26, v27, v28, v29, v21);
+      SSFileLog(v19, @"%@", v24, v25, v26, v27, v28, v29, oSLogObject);
     }
 
     goto LABEL_28;
@@ -2181,8 +2181,8 @@ LABEL_29:
           v44 = v43 = self;
           [v42 _setLocalExternalValues:v44];
 
-          v45 = [v38 _localValues];
-          [v42 _setLocalValues:v45];
+          _localValues = [v38 _localValues];
+          [v42 _setLocalValues:_localValues];
 
           self = v43;
           v32 = v55;
@@ -2206,7 +2206,7 @@ LABEL_29:
 
   v48 = [obj count];
   v6 = v35 == v48;
-  v4 = v52;
+  changedCopy = v52;
   v5 = v53;
   if (!v6)
   {
@@ -2218,10 +2218,10 @@ LABEL_29:
     goto LABEL_45;
   }
 
-  v46 = self;
+  selfCopy2 = self;
   v47 = v54;
 LABEL_44:
-  [(SSDownloadManager *)v46 _sendDownloadsChanged:v47];
+  [(SSDownloadManager *)selfCopy2 _sendDownloadsChanged:v47];
 LABEL_45:
 }
 
@@ -2236,10 +2236,10 @@ uint64_t __45__SSDownloadManager__handleDownloadsChanged___block_invoke(uint64_t
   return 1;
 }
 
-- (void)_handleDownloadsRemoved:(id)a3
+- (void)_handleDownloadsRemoved:(id)removed
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = xpc_dictionary_get_value(a3, "1");
+  v4 = xpc_dictionary_get_value(removed, "1");
   v5 = v4;
   if (v4 && MEMORY[0x1DA6E0380](v4) == MEMORY[0x1E69E9E50] && [(NSArray *)self->_downloads count])
   {
@@ -2258,7 +2258,7 @@ uint64_t __45__SSDownloadManager__handleDownloadsChanged___block_invoke(uint64_t
       v21 = 0u;
       v22 = 0u;
       v23 = 0u;
-      v19 = self;
+      selfCopy = self;
       v9 = self->_downloads;
       v10 = [(NSArray *)v9 countByEnumeratingWithState:&v20 objects:v26 count:16];
       if (v10)
@@ -2288,14 +2288,14 @@ uint64_t __45__SSDownloadManager__handleDownloadsChanged___block_invoke(uint64_t
         while (v11);
       }
 
-      v16 = [(NSArray *)v19->_downloads count];
+      v16 = [(NSArray *)selfCopy->_downloads count];
       if (v16 != [v8 count])
       {
         v17 = [v8 copy];
-        downloads = v19->_downloads;
-        v19->_downloads = v17;
+        downloads = selfCopy->_downloads;
+        selfCopy->_downloads = v17;
 
-        [(SSDownloadManager *)v19 _sendDownloadsChanged:0];
+        [(SSDownloadManager *)selfCopy _sendDownloadsChanged:0];
       }
     }
   }
@@ -2313,20 +2313,20 @@ uint64_t __45__SSDownloadManager__handleDownloadsRemoved___block_invoke(uint64_t
   return 1;
 }
 
-- (void)_handleDownloadStatesChanged:(id)a3
+- (void)_handleDownloadStatesChanged:(id)changed
 {
   v85 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
+  changedCopy = changed;
+  v5 = changedCopy;
   if (self->_observers)
   {
-    xdict = v4;
+    xdict = changedCopy;
     v6 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     v77 = 0u;
     v78 = 0u;
     v79 = 0u;
     v80 = 0u;
-    v56 = self;
+    selfCopy = self;
     v7 = self->_observers;
     v8 = [(NSHashTable *)v7 countByEnumeratingWithState:&v77 objects:v84 count:16];
     if (v8)
@@ -2355,8 +2355,8 @@ uint64_t __45__SSDownloadManager__handleDownloadsRemoved___block_invoke(uint64_t
       while (v9);
     }
 
-    v13 = v56;
-    v56->_activeDownloadsChanged = 1;
+    v13 = selfCopy;
+    selfCopy->_activeDownloadsChanged = 1;
     v5 = xdict;
     if ([v6 count])
     {
@@ -2366,8 +2366,8 @@ uint64_t __45__SSDownloadManager__handleDownloadsRemoved___block_invoke(uint64_t
       {
         v16 = objc_alloc_init(MEMORY[0x1E695DFA8]);
         v17 = objc_alloc_init(MEMORY[0x1E695DF70]);
-        v18 = [(SSDownloadManagerOptions *)v56->_options prefetchedDownloadExternalProperties];
-        v19 = [(SSDownloadManagerOptions *)v56->_options prefetchedDownloadProperties];
+        prefetchedDownloadExternalProperties = [(SSDownloadManagerOptions *)selfCopy->_options prefetchedDownloadExternalProperties];
+        prefetchedDownloadProperties = [(SSDownloadManagerOptions *)selfCopy->_options prefetchedDownloadProperties];
         applier[0] = MEMORY[0x1E69E9820];
         applier[1] = 3221225472;
         applier[2] = __50__SSDownloadManager__handleDownloadStatesChanged___block_invoke;
@@ -2376,14 +2376,14 @@ uint64_t __45__SSDownloadManager__handleDownloadsRemoved___block_invoke(uint64_t
         v76 = v20;
         xpc_array_apply(v15, applier);
         v58 = v20;
-        v51 = v19;
+        v51 = prefetchedDownloadProperties;
         v52 = [v20 count];
         v49 = v15;
-        v50 = v18;
+        v50 = prefetchedDownloadExternalProperties;
         v54 = v17;
         if (v52 == 1)
         {
-          v21 = [v18 count];
+          v21 = [prefetchedDownloadExternalProperties count];
           v53 = v21 == 0;
           v22 = 0x1E695D000uLL;
           if (v21)
@@ -2394,7 +2394,7 @@ uint64_t __45__SSDownloadManager__handleDownloadsRemoved___block_invoke(uint64_t
             v72 = 0u;
             v73 = 0u;
             v74 = 0u;
-            v25 = v18;
+            v25 = prefetchedDownloadExternalProperties;
             v26 = [v25 countByEnumeratingWithState:&v71 objects:v83 count:16];
             if (v26)
             {
@@ -2423,9 +2423,9 @@ uint64_t __45__SSDownloadManager__handleDownloadsRemoved___block_invoke(uint64_t
               while (v27);
             }
 
-            v13 = v56;
+            v13 = selfCopy;
             v5 = xdict;
-            v19 = v51;
+            prefetchedDownloadProperties = v51;
             v22 = 0x1E695D000;
           }
 
@@ -2434,7 +2434,7 @@ uint64_t __45__SSDownloadManager__handleDownloadsRemoved___block_invoke(uint64_t
             v24 = 0;
           }
 
-          if ([v19 count])
+          if ([prefetchedDownloadProperties count])
           {
             v33 = SSXPCDictionaryCopyCFObject(v5, "3");
             v32 = objc_alloc_init(*(v22 + 3984));
@@ -2442,7 +2442,7 @@ uint64_t __45__SSDownloadManager__handleDownloadsRemoved___block_invoke(uint64_t
             v68 = 0u;
             v69 = 0u;
             v70 = 0u;
-            v34 = v19;
+            v34 = prefetchedDownloadProperties;
             v35 = [v34 countByEnumeratingWithState:&v67 objects:v82 count:16];
             if (v35)
             {
@@ -2472,7 +2472,7 @@ uint64_t __45__SSDownloadManager__handleDownloadsRemoved___block_invoke(uint64_t
             }
 
             v53 = 0;
-            v13 = v56;
+            v13 = selfCopy;
           }
 
           else
@@ -2575,13 +2575,13 @@ LABEL_61:
 
         if ([v54 count])
         {
-          observerQueue = v56->_observerQueue;
+          observerQueue = selfCopy->_observerQueue;
           block[0] = MEMORY[0x1E69E9820];
           block[1] = 3221225472;
           block[2] = __50__SSDownloadManager__handleDownloadStatesChanged___block_invoke_2;
           block[3] = &unk_1E84AC078;
           v60 = v6;
-          v61 = v56;
+          v61 = selfCopy;
           v62 = v54;
           dispatch_async(observerQueue, block);
         }
@@ -2644,20 +2644,20 @@ void __50__SSDownloadManager__handleDownloadStatesChanged___block_invoke_2(uint6
   }
 }
 
-- (void)_handleMessage:(id)a3 fromServerConnection:(id)a4
+- (void)_handleMessage:(id)message fromServerConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  connectionCopy = connection;
   accessQueue = self->_accessQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __57__SSDownloadManager__handleMessage_fromServerConnection___block_invoke;
   block[3] = &unk_1E84AC078;
-  v12 = v6;
-  v13 = v7;
-  v14 = self;
-  v9 = v7;
-  v10 = v6;
+  v12 = messageCopy;
+  v13 = connectionCopy;
+  selfCopy = self;
+  v9 = connectionCopy;
+  v10 = messageCopy;
   dispatch_async(accessQueue, block);
 }
 
@@ -2694,28 +2694,28 @@ void __57__SSDownloadManager__handleMessage_fromServerConnection___block_invoke(
   }
 }
 
-- (void)_handleReply:(id)a3 forDownloads:(id)a4 message:(id)a5 isRetry:(BOOL)a6 block:(id)a7
+- (void)_handleReply:(id)reply forDownloads:(id)downloads message:(id)message isRetry:(BOOL)retry block:(id)block
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
-  if (v12 && MEMORY[0x1DA6E0380](v12) == MEMORY[0x1E69E9E80])
+  replyCopy = reply;
+  downloadsCopy = downloads;
+  messageCopy = message;
+  blockCopy = block;
+  if (replyCopy && MEMORY[0x1DA6E0380](replyCopy) == MEMORY[0x1E69E9E80])
   {
-    if (xpc_dictionary_get_BOOL(v12, "0"))
+    if (xpc_dictionary_get_BOOL(replyCopy, "0"))
     {
       v16 = 0;
       goto LABEL_10;
     }
 
-    int64 = xpc_dictionary_get_int64(v12, "1");
+    int64 = xpc_dictionary_get_int64(replyCopy, "1");
     v16 = SSError(@"SSErrorDomain", int64, 0, 0);
   }
 
   else
   {
     v16 = SSError(@"SSErrorDomain", 111, 0, 0);
-    if (!a6)
+    if (!retry)
     {
       connection = self->_connection;
       v24[0] = MEMORY[0x1E69E9820];
@@ -2723,9 +2723,9 @@ void __57__SSDownloadManager__handleMessage_fromServerConnection___block_invoke(
       v24[2] = __69__SSDownloadManager__handleReply_forDownloads_message_isRetry_block___block_invoke;
       v24[3] = &unk_1E84B05F8;
       v24[4] = self;
-      v25 = v13;
-      v26 = v14;
-      v27 = v15;
+      v25 = downloadsCopy;
+      v26 = messageCopy;
+      v27 = blockCopy;
       [(SSXPCConnection *)connection sendMessage:v26 withReply:v24];
 
       v18 = v25;
@@ -2737,18 +2737,18 @@ LABEL_12:
 
   if (v16)
   {
-    [v13 makeObjectsPerformSelector:sel__becomeManagedOnConnection_ withObject:0];
+    [downloadsCopy makeObjectsPerformSelector:sel__becomeManagedOnConnection_ withObject:0];
   }
 
 LABEL_10:
-  if (v15)
+  if (blockCopy)
   {
     v20 = dispatch_get_global_queue(0, 0);
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
     v21[2] = __69__SSDownloadManager__handleReply_forDownloads_message_isRetry_block___block_invoke_2;
     v21[3] = &unk_1E84AC338;
-    v23 = v15;
+    v23 = blockCopy;
     v16 = v16;
     v22 = v16;
     dispatch_async(v20, v21);
@@ -2760,13 +2760,13 @@ LABEL_10:
 LABEL_13:
 }
 
-- (void)_insertDownloads:(id)a3 before:(id)a4 after:(id)a5 completionBlock:(id)a6
+- (void)_insertDownloads:(id)downloads before:(id)before after:(id)after completionBlock:(id)block
 {
   v56 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  downloadsCopy = downloads;
+  beforeCopy = before;
+  afterCopy = after;
+  blockCopy = block;
   if (SSIsInternalBuild() && _os_feature_enabled_impl())
   {
     v14 = +[SSLogConfig sharedStoreServicesConfig];
@@ -2775,19 +2775,19 @@ LABEL_13:
       v14 = +[SSLogConfig sharedConfig];
     }
 
-    v15 = [v14 shouldLog];
+    shouldLog = [v14 shouldLog];
     if ([v14 shouldLogToDisk])
     {
-      v16 = v15 | 2;
+      v16 = shouldLog | 2;
     }
 
     else
     {
-      v16 = v15;
+      v16 = shouldLog;
     }
 
-    v17 = [v14 OSLogObject];
-    if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
+    oSLogObject = [v14 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
     {
       v18 = v16;
     }
@@ -2812,9 +2812,9 @@ LABEL_15:
         goto LABEL_16;
       }
 
-      v17 = [MEMORY[0x1E696AEC0] stringWithCString:v19 encoding:{4, &v54, v43}];
+      oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v19 encoding:{4, &v54, v43}];
       free(v19);
-      SSFileLog(v14, @"%@", v20, v21, v22, v23, v24, v25, v17);
+      SSFileLog(v14, @"%@", v20, v21, v22, v23, v24, v25, oSLogObject);
     }
 
     goto LABEL_15;
@@ -2823,33 +2823,33 @@ LABEL_15:
 LABEL_16:
   v26 = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_int64(v26, "0", 15);
-  if (v11)
+  if (beforeCopy)
   {
     v27 = "1";
-    v28 = v11;
+    v28 = beforeCopy;
   }
 
   else
   {
-    if (!v12)
+    if (!afterCopy)
     {
       goto LABEL_21;
     }
 
     v27 = "2";
-    v28 = v12;
+    v28 = afterCopy;
   }
 
   xpc_dictionary_set_int64(v26, v27, [v28 persistentIdentifier]);
 LABEL_21:
-  v44 = v11;
-  v29 = v12;
+  v44 = beforeCopy;
+  v29 = afterCopy;
   v30 = xpc_array_create(0, 0);
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
   v52 = 0u;
-  v31 = v10;
+  v31 = downloadsCopy;
   v32 = [v31 countByEnumeratingWithState:&v49 objects:v53 count:16];
   if (v32)
   {
@@ -2867,10 +2867,10 @@ LABEL_21:
         v36 = *(*(&v49 + 1) + 8 * i);
         if (([v36 _isManaged] & 1) == 0)
         {
-          v37 = [v36 copyXPCEncoding];
-          if (v37)
+          copyXPCEncoding = [v36 copyXPCEncoding];
+          if (copyXPCEncoding)
           {
-            xpc_array_append_value(v30, v37);
+            xpc_array_append_value(v30, copyXPCEncoding);
           }
         }
       }
@@ -2891,8 +2891,8 @@ LABEL_21:
   v45[4] = self;
   v46 = v31;
   v47 = v26;
-  v48 = v13;
-  v39 = v13;
+  v48 = blockCopy;
+  v39 = blockCopy;
   v40 = v26;
   v41 = v31;
   [(SSXPCConnection *)connection sendMessage:v40 withReply:v45];
@@ -2924,13 +2924,13 @@ void __51__SSDownloadManager__loadDownloadKindsUsingNetwork__block_invoke(uint64
   dispatch_async(v4, v6);
 }
 
-- (void)_moveDownload:(id)a3 before:(id)a4 after:(id)a5 completionBlock:(id)a6
+- (void)_moveDownload:(id)download before:(id)before after:(id)after completionBlock:(id)block
 {
   v34 = *MEMORY[0x1E69E9840];
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = a3;
+  beforeCopy = before;
+  afterCopy = after;
+  blockCopy = block;
+  downloadCopy = download;
   if (SSIsInternalBuild() && _os_feature_enabled_impl())
   {
     v14 = +[SSLogConfig sharedStoreServicesConfig];
@@ -2939,19 +2939,19 @@ void __51__SSDownloadManager__loadDownloadKindsUsingNetwork__block_invoke(uint64
       v14 = +[SSLogConfig sharedConfig];
     }
 
-    v15 = [v14 shouldLog];
+    shouldLog = [v14 shouldLog];
     if ([v14 shouldLogToDisk])
     {
-      v16 = v15 | 2;
+      v16 = shouldLog | 2;
     }
 
     else
     {
-      v16 = v15;
+      v16 = shouldLog;
     }
 
-    v17 = [v14 OSLogObject];
-    if (os_log_type_enabled(v17, OS_LOG_TYPE_FAULT))
+    oSLogObject = [v14 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_FAULT))
     {
       v18 = v16;
     }
@@ -2976,9 +2976,9 @@ LABEL_15:
         goto LABEL_16;
       }
 
-      v17 = [MEMORY[0x1E696AEC0] stringWithCString:v19 encoding:{4, &v32, v31}];
+      oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v19 encoding:{4, &v32, v31}];
       free(v19);
-      SSFileLog(v14, @"%@", v20, v21, v22, v23, v24, v25, v17);
+      SSFileLog(v14, @"%@", v20, v21, v22, v23, v24, v25, oSLogObject);
     }
 
     goto LABEL_15;
@@ -2987,34 +2987,34 @@ LABEL_15:
 LABEL_16:
   v26 = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_int64(v26, "0", 16);
-  v27 = [v13 persistentIdentifier];
+  persistentIdentifier = [downloadCopy persistentIdentifier];
 
-  xpc_dictionary_set_int64(v26, "1", v27);
-  if (v10)
+  xpc_dictionary_set_int64(v26, "1", persistentIdentifier);
+  if (beforeCopy)
   {
     v28 = "2";
-    v29 = v10;
+    v29 = beforeCopy;
 LABEL_20:
     xpc_dictionary_set_int64(v26, v28, [v29 persistentIdentifier]);
     goto LABEL_21;
   }
 
-  if (v11)
+  if (afterCopy)
   {
     v28 = "3";
-    v29 = v11;
+    v29 = afterCopy;
     goto LABEL_20;
   }
 
 LABEL_21:
-  [(SSDownloadManager *)self _sendMessage:v26 withCompletionBlock:v12, v30];
+  [(SSDownloadManager *)self _sendMessage:v26 withCompletionBlock:blockCopy, v30];
 }
 
-- (void)_pauseDownloads:(id)a3 forced:(BOOL)a4 completionBlock:(id)a5
+- (void)_pauseDownloads:(id)downloads forced:(BOOL)forced completionBlock:(id)block
 {
   v38 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  downloadsCopy = downloads;
+  blockCopy = block;
   if (SSIsInternalBuild() && _os_feature_enabled_impl())
   {
     v10 = +[SSLogConfig sharedStoreServicesConfig];
@@ -3023,19 +3023,19 @@ LABEL_21:
       v10 = +[SSLogConfig sharedConfig];
     }
 
-    v11 = [v10 shouldLog];
+    shouldLog = [v10 shouldLog];
     if ([v10 shouldLogToDisk])
     {
-      v12 = v11 | 2;
+      v12 = shouldLog | 2;
     }
 
     else
     {
-      v12 = v11;
+      v12 = shouldLog;
     }
 
-    v13 = [v10 OSLogObject];
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_FAULT))
+    oSLogObject = [v10 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_FAULT))
     {
       v14 = v12;
     }
@@ -3060,9 +3060,9 @@ LABEL_15:
         goto LABEL_16;
       }
 
-      v13 = [MEMORY[0x1E696AEC0] stringWithCString:v15 encoding:{4, &v36, v30}];
+      oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v15 encoding:{4, &v36, v30}];
       free(v15);
-      SSFileLog(v10, @"%@", v16, v17, v18, v19, v20, v21, v13);
+      SSFileLog(v10, @"%@", v16, v17, v18, v19, v20, v21, oSLogObject);
     }
 
     goto LABEL_15;
@@ -3071,13 +3071,13 @@ LABEL_15:
 LABEL_16:
   v22 = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_int64(v22, "0", 17);
-  xpc_dictionary_set_BOOL(v22, "2", a4);
+  xpc_dictionary_set_BOOL(v22, "2", forced);
   v23 = xpc_array_create(0, 0);
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v24 = v8;
+  v24 = downloadsCopy;
   v25 = [v24 countByEnumeratingWithState:&v31 objects:v35 count:16];
   if (v25)
   {
@@ -3102,15 +3102,15 @@ LABEL_16:
   }
 
   xpc_dictionary_set_value(v22, "1", v23);
-  [(SSDownloadManager *)self _sendMessage:v22 withCompletionBlock:v9];
+  [(SSDownloadManager *)self _sendMessage:v22 withCompletionBlock:blockCopy];
 }
 
-- (void)_reloadIsUsingNetworkWithDownloadKinds:(id)a3
+- (void)_reloadIsUsingNetworkWithDownloadKinds:(id)kinds
 {
   options = self->_options;
-  v5 = a3;
-  v6 = [(SSDownloadManagerOptions *)options downloadKinds];
-  v7 = [v5 firstObjectCommonWithArray:v6];
+  kindsCopy = kinds;
+  downloadKinds = [(SSDownloadManagerOptions *)options downloadKinds];
+  v7 = [kindsCopy firstObjectCommonWithArray:downloadKinds];
 
   v8 = v7 != 0;
   if (self->_isUsingNetwork != v8)
@@ -3121,15 +3121,15 @@ LABEL_16:
   }
 }
 
-- (void)_sendDownloadsChanged:(id)a3
+- (void)_sendDownloadsChanged:(id)changed
 {
   v38 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  changedCopy = changed;
   if (self->_observers)
   {
     v25 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v23 = self;
+    selfCopy = self;
     v24 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v33 = 0u;
     v34 = 0u;
@@ -3152,7 +3152,7 @@ LABEL_16:
           }
 
           v11 = *(*(&v33 + 1) + 8 * v10);
-          if (v4 && (v12 = objc_opt_respondsToSelector(), v13 = v25, (v12 & 1) != 0) || (v14 = objc_opt_respondsToSelector(), v13 = v5, (v14 & 1) != 0) || (v15 = objc_opt_respondsToSelector(), v13 = v24, (v15 & 1) != 0))
+          if (changedCopy && (v12 = objc_opt_respondsToSelector(), v13 = v25, (v12 & 1) != 0) || (v14 = objc_opt_respondsToSelector(), v13 = v5, (v14 & 1) != 0) || (v15 = objc_opt_respondsToSelector(), v13 = v24, (v15 & 1) != 0))
           {
             [v13 addObject:v11];
           }
@@ -3169,18 +3169,18 @@ LABEL_16:
 
     if ([v24 count])
     {
-      v16 = [v4 allObjects];
-      v17 = v23;
-      if (!v16)
+      allObjects = [changedCopy allObjects];
+      v17 = selfCopy;
+      if (!allObjects)
       {
-        v16 = [(SSDownloadManager *)v23 _copyDownloads];
+        allObjects = [(SSDownloadManager *)selfCopy _copyDownloads];
       }
     }
 
     else
     {
-      v16 = 0;
-      v17 = v23;
+      allObjects = 0;
+      v17 = selfCopy;
     }
 
     observerQueue = v17->_observerQueue;
@@ -3190,11 +3190,11 @@ LABEL_16:
     block[3] = &unk_1E84B06C0;
     v27 = v25;
     v28 = v17;
-    v29 = v4;
+    v29 = changedCopy;
     v30 = v5;
     v31 = v24;
-    v32 = v16;
-    v19 = v16;
+    v32 = allObjects;
+    v19 = allObjects;
     v20 = v24;
     v21 = v5;
     v22 = v25;
@@ -3296,17 +3296,17 @@ void __43__SSDownloadManager__sendDownloadsChanged___block_invoke(uint64_t a1)
   }
 }
 
-- (void)_sendMessage:(id)a3 withCompletionBlock:(id)a4
+- (void)_sendMessage:(id)message withCompletionBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   connection = self->_connection;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __54__SSDownloadManager__sendMessage_withCompletionBlock___block_invoke;
   v9[3] = &unk_1E84AE2D8;
-  v10 = v6;
-  v8 = v6;
-  [(SSXPCConnection *)connection sendMessage:a3 withReply:v9];
+  v10 = blockCopy;
+  v8 = blockCopy;
+  [(SSXPCConnection *)connection sendMessage:message withReply:v9];
 }
 
 void __54__SSDownloadManager__sendMessage_withCompletionBlock___block_invoke(uint64_t a1, void *a2)
@@ -3343,7 +3343,7 @@ LABEL_5:
   }
 }
 
-- (void)_sendMessageToObservers:(SEL)a3
+- (void)_sendMessageToObservers:(SEL)observers
 {
   v21 = *MEMORY[0x1E69E9840];
   if (self->_observers)
@@ -3386,8 +3386,8 @@ LABEL_5:
       block[1] = 3221225472;
       block[2] = __45__SSDownloadManager__sendMessageToObservers___block_invoke;
       block[3] = &unk_1E84AD6E0;
-      v14 = self;
-      v15 = a3;
+      selfCopy = self;
+      observersCopy = observers;
       v13 = v5;
       dispatch_async(observerQueue, block);
     }

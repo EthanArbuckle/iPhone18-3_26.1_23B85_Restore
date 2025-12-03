@@ -1,10 +1,10 @@
 @interface SKUIGiftThemePickerFlowLayout
-- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)a3;
+- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)offset;
 @end
 
 @implementation SKUIGiftThemePickerFlowLayout
 
-- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)a3
+- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)offset
 {
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
@@ -12,8 +12,8 @@
   }
 
   currentPage = self->_currentPage;
-  v5 = [(SKUIGiftThemePickerFlowLayout *)self collectionView];
-  [v5 frame];
+  collectionView = [(SKUIGiftThemePickerFlowLayout *)self collectionView];
+  [collectionView frame];
   v7 = v6 * currentPage;
 
   v8 = 0.0;

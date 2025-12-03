@@ -1,30 +1,30 @@
 @interface INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentPhoneCallSignals
-- (BOOL)isEqual:(id)a3;
-- (INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentPhoneCallSignals)initWithDictionary:(id)a3;
-- (INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentPhoneCallSignals)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentPhoneCallSignals)initWithDictionary:(id)dictionary;
+- (INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentPhoneCallSignals)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasAppAffinityScoreForPhoneCallReceived:(BOOL)a3;
-- (void)setHasAppAffinityScoreForPhoneCallUsingSiri:(BOOL)a3;
-- (void)setHasAppFreqForPhoneCall:(BOOL)a3;
-- (void)setHasAppFreqForPhoneCallForCountryCode:(BOOL)a3;
-- (void)setHasAppFreqForPhoneCallUsingSiri:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasAppAffinityScoreForPhoneCallReceived:(BOOL)received;
+- (void)setHasAppAffinityScoreForPhoneCallUsingSiri:(BOOL)siri;
+- (void)setHasAppFreqForPhoneCall:(BOOL)call;
+- (void)setHasAppFreqForPhoneCallForCountryCode:(BOOL)code;
+- (void)setHasAppFreqForPhoneCallUsingSiri:(BOOL)siri;
+- (void)writeTo:(id)to;
 @end
 
 @implementation INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentPhoneCallSignals
 
-- (INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentPhoneCallSignals)initWithDictionary:(id)a3
+- (INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentPhoneCallSignals)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v14.receiver = self;
   v14.super_class = INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentPhoneCallSignals;
   v5 = [(INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentPhoneCallSignals *)&v14 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"appAffinityScoreForPhoneCall"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"appAffinityScoreForPhoneCall"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -32,7 +32,7 @@
       [(INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentPhoneCallSignals *)v5 setAppAffinityScoreForPhoneCall:?];
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"appAffinityScoreForPhoneCallUsingSiri"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"appAffinityScoreForPhoneCallUsingSiri"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -40,7 +40,7 @@
       [(INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentPhoneCallSignals *)v5 setAppAffinityScoreForPhoneCallUsingSiri:?];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"appAffinityScoreForPhoneCallReceived"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"appAffinityScoreForPhoneCallReceived"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -48,21 +48,21 @@
       [(INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentPhoneCallSignals *)v5 setAppAffinityScoreForPhoneCallReceived:?];
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"appFreqForPhoneCall"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"appFreqForPhoneCall"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentPhoneCallSignals setAppFreqForPhoneCall:](v5, "setAppFreqForPhoneCall:", [v9 intValue]);
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"appFreqForPhoneCallUsingSiri"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"appFreqForPhoneCallUsingSiri"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentPhoneCallSignals setAppFreqForPhoneCallUsingSiri:](v5, "setAppFreqForPhoneCallUsingSiri:", [v10 intValue]);
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"appFreqForPhoneCallForCountryCode"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"appFreqForPhoneCallForCountryCode"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -75,30 +75,30 @@
   return v5;
 }
 
-- (INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentPhoneCallSignals)initWithJSON:(id)a3
+- (INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentPhoneCallSignals)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentPhoneCallSignals *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentPhoneCallSignals *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentPhoneCallSignals *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -111,14 +111,14 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if (has)
   {
     v7 = MEMORY[0x1E696AD98];
     [(INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentPhoneCallSignals *)self appAffinityScoreForPhoneCall];
     v8 = [v7 numberWithFloat:?];
-    [v3 setObject:v8 forKeyedSubscript:@"appAffinityScoreForPhoneCall"];
+    [dictionary setObject:v8 forKeyedSubscript:@"appAffinityScoreForPhoneCall"];
 
     has = self->_has;
     if ((has & 4) == 0)
@@ -141,7 +141,7 @@ LABEL_3:
   v9 = MEMORY[0x1E696AD98];
   [(INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentPhoneCallSignals *)self appAffinityScoreForPhoneCallReceived];
   v10 = [v9 numberWithFloat:?];
-  [v3 setObject:v10 forKeyedSubscript:@"appAffinityScoreForPhoneCallReceived"];
+  [dictionary setObject:v10 forKeyedSubscript:@"appAffinityScoreForPhoneCallReceived"];
 
   has = self->_has;
   if ((has & 2) == 0)
@@ -159,7 +159,7 @@ LABEL_13:
   v11 = MEMORY[0x1E696AD98];
   [(INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentPhoneCallSignals *)self appAffinityScoreForPhoneCallUsingSiri];
   v12 = [v11 numberWithFloat:?];
-  [v3 setObject:v12 forKeyedSubscript:@"appAffinityScoreForPhoneCallUsingSiri"];
+  [dictionary setObject:v12 forKeyedSubscript:@"appAffinityScoreForPhoneCallUsingSiri"];
 
   has = self->_has;
   if ((has & 8) == 0)
@@ -175,7 +175,7 @@ LABEL_5:
 
 LABEL_14:
   v13 = [MEMORY[0x1E696AD98] numberWithInt:{-[INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentPhoneCallSignals appFreqForPhoneCall](self, "appFreqForPhoneCall")}];
-  [v3 setObject:v13 forKeyedSubscript:@"appFreqForPhoneCall"];
+  [dictionary setObject:v13 forKeyedSubscript:@"appFreqForPhoneCall"];
 
   has = self->_has;
   if ((has & 0x20) == 0)
@@ -191,19 +191,19 @@ LABEL_6:
 
 LABEL_15:
   v14 = [MEMORY[0x1E696AD98] numberWithInt:{-[INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentPhoneCallSignals appFreqForPhoneCallForCountryCode](self, "appFreqForPhoneCallForCountryCode")}];
-  [v3 setObject:v14 forKeyedSubscript:@"appFreqForPhoneCallForCountryCode"];
+  [dictionary setObject:v14 forKeyedSubscript:@"appFreqForPhoneCallForCountryCode"];
 
   if ((*&self->_has & 0x10) != 0)
   {
 LABEL_7:
     v5 = [MEMORY[0x1E696AD98] numberWithInt:{-[INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentPhoneCallSignals appFreqForPhoneCallUsingSiri](self, "appFreqForPhoneCallUsingSiri")}];
-    [v3 setObject:v5 forKeyedSubscript:@"appFreqForPhoneCallUsingSiri"];
+    [dictionary setObject:v5 forKeyedSubscript:@"appFreqForPhoneCallUsingSiri"];
   }
 
 LABEL_8:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -362,16 +362,16 @@ LABEL_31:
   return v9 ^ v4 ^ v14 ^ v19 ^ v20 ^ v21;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_26;
   }
 
   has = self->_has;
-  v6 = v4[32];
+  v6 = equalCopy[32];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_26;
@@ -380,14 +380,14 @@ LABEL_31:
   if (*&has)
   {
     appAffinityScoreForPhoneCall = self->_appAffinityScoreForPhoneCall;
-    [v4 appAffinityScoreForPhoneCall];
+    [equalCopy appAffinityScoreForPhoneCall];
     if (appAffinityScoreForPhoneCall != v8)
     {
       goto LABEL_26;
     }
 
     has = self->_has;
-    v6 = v4[32];
+    v6 = equalCopy[32];
   }
 
   v9 = (*&has >> 1) & 1;
@@ -399,14 +399,14 @@ LABEL_31:
   if (v9)
   {
     appAffinityScoreForPhoneCallUsingSiri = self->_appAffinityScoreForPhoneCallUsingSiri;
-    [v4 appAffinityScoreForPhoneCallUsingSiri];
+    [equalCopy appAffinityScoreForPhoneCallUsingSiri];
     if (appAffinityScoreForPhoneCallUsingSiri != v11)
     {
       goto LABEL_26;
     }
 
     has = self->_has;
-    v6 = v4[32];
+    v6 = equalCopy[32];
   }
 
   v12 = (*&has >> 2) & 1;
@@ -418,14 +418,14 @@ LABEL_31:
   if (v12)
   {
     appAffinityScoreForPhoneCallReceived = self->_appAffinityScoreForPhoneCallReceived;
-    [v4 appAffinityScoreForPhoneCallReceived];
+    [equalCopy appAffinityScoreForPhoneCallReceived];
     if (appAffinityScoreForPhoneCallReceived != v14)
     {
       goto LABEL_26;
     }
 
     has = self->_has;
-    v6 = v4[32];
+    v6 = equalCopy[32];
   }
 
   v15 = (*&has >> 3) & 1;
@@ -437,13 +437,13 @@ LABEL_31:
   if (v15)
   {
     appFreqForPhoneCall = self->_appFreqForPhoneCall;
-    if (appFreqForPhoneCall != [v4 appFreqForPhoneCall])
+    if (appFreqForPhoneCall != [equalCopy appFreqForPhoneCall])
     {
       goto LABEL_26;
     }
 
     has = self->_has;
-    v6 = v4[32];
+    v6 = equalCopy[32];
   }
 
   v17 = (*&has >> 4) & 1;
@@ -455,10 +455,10 @@ LABEL_31:
   if (v17)
   {
     appFreqForPhoneCallUsingSiri = self->_appFreqForPhoneCallUsingSiri;
-    if (appFreqForPhoneCallUsingSiri == [v4 appFreqForPhoneCallUsingSiri])
+    if (appFreqForPhoneCallUsingSiri == [equalCopy appFreqForPhoneCallUsingSiri])
     {
       has = self->_has;
-      v6 = v4[32];
+      v6 = equalCopy[32];
       goto LABEL_22;
     }
 
@@ -477,7 +477,7 @@ LABEL_22:
   if (v19)
   {
     appFreqForPhoneCallForCountryCode = self->_appFreqForPhoneCallForCountryCode;
-    if (appFreqForPhoneCallForCountryCode != [v4 appFreqForPhoneCallForCountryCode])
+    if (appFreqForPhoneCallForCountryCode != [equalCopy appFreqForPhoneCallForCountryCode])
     {
       goto LABEL_26;
     }
@@ -489,9 +489,9 @@ LABEL_27:
   return v21;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -566,9 +566,9 @@ LABEL_7:
 LABEL_8:
 }
 
-- (void)setHasAppFreqForPhoneCallForCountryCode:(BOOL)a3
+- (void)setHasAppFreqForPhoneCallForCountryCode:(BOOL)code
 {
-  if (a3)
+  if (code)
   {
     v3 = 32;
   }
@@ -581,9 +581,9 @@ LABEL_8:
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setHasAppFreqForPhoneCallUsingSiri:(BOOL)a3
+- (void)setHasAppFreqForPhoneCallUsingSiri:(BOOL)siri
 {
-  if (a3)
+  if (siri)
   {
     v3 = 16;
   }
@@ -596,9 +596,9 @@ LABEL_8:
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasAppFreqForPhoneCall:(BOOL)a3
+- (void)setHasAppFreqForPhoneCall:(BOOL)call
 {
-  if (a3)
+  if (call)
   {
     v3 = 8;
   }
@@ -611,9 +611,9 @@ LABEL_8:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasAppAffinityScoreForPhoneCallReceived:(BOOL)a3
+- (void)setHasAppAffinityScoreForPhoneCallReceived:(BOOL)received
 {
-  if (a3)
+  if (received)
   {
     v3 = 4;
   }
@@ -626,9 +626,9 @@ LABEL_8:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasAppAffinityScoreForPhoneCallUsingSiri:(BOOL)a3
+- (void)setHasAppAffinityScoreForPhoneCallUsingSiri:(BOOL)siri
 {
-  if (a3)
+  if (siri)
   {
     v3 = 2;
   }

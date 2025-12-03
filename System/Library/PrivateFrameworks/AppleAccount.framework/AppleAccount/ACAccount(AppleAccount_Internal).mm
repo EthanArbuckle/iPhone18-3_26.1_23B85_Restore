@@ -12,7 +12,7 @@
 - (uint64_t)aa_isSubscribedToTrustedContactContainers
 {
   objc_opt_class();
-  v2 = [a1 objectForKeyedSubscript:@"subscribedToTrustedContactContainers"];
+  v2 = [self objectForKeyedSubscript:@"subscribedToTrustedContactContainers"];
   if (objc_opt_isKindOfClass())
   {
     v3 = v2;
@@ -23,28 +23,28 @@
     v3 = 0;
   }
 
-  v4 = [v3 BOOLValue];
-  return v4;
+  bOOLValue = [v3 BOOLValue];
+  return bOOLValue;
 }
 
 - (void)aa_setSubscribedToTrustedContactContainers:()AppleAccount_Internal
 {
   v2 = [MEMORY[0x1E696AD98] numberWithBool:?];
-  [a1 setAccountProperty:v2 forKey:@"subscribedToTrustedContactContainers"];
+  [self setAccountProperty:v2 forKey:@"subscribedToTrustedContactContainers"];
 }
 
 - (uint64_t)_aa_benefactorAccount
 {
-  v1 = [a1 accountPropertyForKey:@"benefactorAccount"];
-  v2 = [v1 BOOLValue];
+  v1 = [self accountPropertyForKey:@"benefactorAccount"];
+  bOOLValue = [v1 BOOLValue];
 
-  return v2;
+  return bOOLValue;
 }
 
 - (void)_aa_setBenefactorAccount:()AppleAccount_Internal
 {
   v2 = [MEMORY[0x1E696AD98] numberWithBool:?];
-  [a1 setAccountProperty:v2 forKey:@"benefactorAccount"];
+  [self setAccountProperty:v2 forKey:@"benefactorAccount"];
 }
 
 - (void)_aa_setPersonID:()AppleAccount_Internal
@@ -52,7 +52,7 @@
   v4 = a3;
   if ([v4 length])
   {
-    [a1 setAccountProperty:v4 forKey:@"personID"];
+    [self setAccountProperty:v4 forKey:@"personID"];
   }
 }
 
@@ -61,7 +61,7 @@
   v4 = a3;
   if ([v4 count])
   {
-    [a1 setAccountProperty:v4 forKey:@"lastAgreedTerms"];
+    [self setAccountProperty:v4 forKey:@"lastAgreedTerms"];
   }
 }
 

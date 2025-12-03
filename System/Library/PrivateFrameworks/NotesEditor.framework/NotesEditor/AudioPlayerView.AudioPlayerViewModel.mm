@@ -1,7 +1,7 @@
 @interface AudioPlayerView.AudioPlayerViewModel
-- (void)audioControllerPlayPauseToggled:(id)a3;
-- (void)audioControllerStopped:(id)a3;
-- (void)audioControllerTimeChanged:(id)a3;
+- (void)audioControllerPlayPauseToggled:(id)toggled;
+- (void)audioControllerStopped:(id)stopped;
+- (void)audioControllerTimeChanged:(id)changed;
 - (void)takeValuesViaNotification;
 @end
 
@@ -13,7 +13,7 @@
   sub_215389F2C();
 }
 
-- (void)audioControllerTimeChanged:(id)a3
+- (void)audioControllerTimeChanged:(id)changed
 {
   v3 = sub_21549E19C();
   v4 = *(v3 - 8);
@@ -26,7 +26,7 @@
   (*(v4 + 8))(v6, v3);
 }
 
-- (void)audioControllerPlayPauseToggled:(id)a3
+- (void)audioControllerPlayPauseToggled:(id)toggled
 {
   v3 = sub_21549E19C();
   v4 = *(v3 - 8);
@@ -39,7 +39,7 @@
   (*(v4 + 8))(v6, v3);
 }
 
-- (void)audioControllerStopped:(id)a3
+- (void)audioControllerStopped:(id)stopped
 {
   v4 = sub_21549E19C();
   v5 = *(v4 - 8);

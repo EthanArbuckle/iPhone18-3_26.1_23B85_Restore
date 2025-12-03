@@ -1,16 +1,16 @@
 @interface PXStoryExportOrientation
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)localizedTitle;
-- (PXStoryExportOrientation)initWithOrientationType:(int64_t)a3;
-- (PXStoryExportOrientation)initWithUserInterfaceOrientation:(int64_t)a3;
+- (PXStoryExportOrientation)initWithOrientationType:(int64_t)type;
+- (PXStoryExportOrientation)initWithUserInterfaceOrientation:(int64_t)orientation;
 @end
 
 @implementation PXStoryExportOrientation
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -20,11 +20,11 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(PXStoryExportOrientation *)self type];
-      v7 = [(PXStoryExportOrientation *)v5 type];
+      v5 = equalCopy;
+      type = [(PXStoryExportOrientation *)self type];
+      type2 = [(PXStoryExportOrientation *)v5 type];
 
-      v8 = v6 == v7;
+      v8 = type == type2;
     }
 
     else
@@ -38,25 +38,25 @@
 
 - (NSString)localizedTitle
 {
-  v2 = [(PXStoryExportOrientation *)self type];
-  if (v2 > 2)
+  type = [(PXStoryExportOrientation *)self type];
+  if (type > 2)
   {
     v3 = 0;
   }
 
   else
   {
-    v3 = off_1E773D200[v2];
+    v3 = off_1E773D200[type];
   }
 
   return PXLocalizedStringFromTable(v3, @"PhotosUICore");
 }
 
-- (PXStoryExportOrientation)initWithUserInterfaceOrientation:(int64_t)a3
+- (PXStoryExportOrientation)initWithUserInterfaceOrientation:(int64_t)orientation
 {
-  if (a3)
+  if (orientation)
   {
-    v3 = a3 == 1;
+    v3 = orientation == 1;
   }
 
   else
@@ -67,14 +67,14 @@
   return [(PXStoryExportOrientation *)self initWithOrientationType:v3];
 }
 
-- (PXStoryExportOrientation)initWithOrientationType:(int64_t)a3
+- (PXStoryExportOrientation)initWithOrientationType:(int64_t)type
 {
   v5.receiver = self;
   v5.super_class = PXStoryExportOrientation;
   result = [(PXStoryExportOrientation *)&v5 init];
   if (result)
   {
-    result->_type = a3;
+    result->_type = type;
   }
 
   return result;

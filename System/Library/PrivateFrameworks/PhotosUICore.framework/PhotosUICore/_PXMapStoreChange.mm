@@ -1,8 +1,8 @@
 @interface _PXMapStoreChange
 - (BOOL)hasChanges;
-- (_PXMapStoreChange)initWithAddedItems:(id)a3 removedItems:(id)a4 updatedItems:(id)a5;
+- (_PXMapStoreChange)initWithAddedItems:(id)items removedItems:(id)removedItems updatedItems:(id)updatedItems;
 - (void)dealloc;
-- (void)updateWithChange:(id)a3;
+- (void)updateWithChange:(id)change;
 @end
 
 @implementation _PXMapStoreChange
@@ -27,54 +27,54 @@
   return updatedItems;
 }
 
-- (void)updateWithChange:(id)a3
+- (void)updateWithChange:(id)change
 {
-  if ([a3 addedItems])
+  if ([change addedItems])
   {
     if (self->_addedItems)
     {
-      v5 = [MEMORY[0x1E695DFA8] setWithSet:?];
-      [v5 unionSet:{objc_msgSend(a3, "addedItems")}];
+      addedItems = [MEMORY[0x1E695DFA8] setWithSet:?];
+      [addedItems unionSet:{objc_msgSend(change, "addedItems")}];
     }
 
     else
     {
-      v5 = [a3 addedItems];
+      addedItems = [change addedItems];
     }
 
-    self->_addedItems = v5;
+    self->_addedItems = addedItems;
   }
 
-  if ([a3 removedItems])
+  if ([change removedItems])
   {
     if (self->_removedItems)
     {
-      v6 = [MEMORY[0x1E695DFA8] setWithSet:?];
-      [v6 unionSet:{objc_msgSend(a3, "removedItems")}];
+      removedItems = [MEMORY[0x1E695DFA8] setWithSet:?];
+      [removedItems unionSet:{objc_msgSend(change, "removedItems")}];
     }
 
     else
     {
-      v6 = [a3 removedItems];
+      removedItems = [change removedItems];
     }
 
-    self->_removedItems = v6;
+    self->_removedItems = removedItems;
   }
 
-  if ([a3 updatedItems])
+  if ([change updatedItems])
   {
     if (self->_updatedItems)
     {
-      v7 = [MEMORY[0x1E695DFA8] setWithSet:?];
-      [v7 unionSet:{objc_msgSend(a3, "updatedItems")}];
+      updatedItems = [MEMORY[0x1E695DFA8] setWithSet:?];
+      [updatedItems unionSet:{objc_msgSend(change, "updatedItems")}];
     }
 
     else
     {
-      v7 = [a3 updatedItems];
+      updatedItems = [change updatedItems];
     }
 
-    self->_updatedItems = v7;
+    self->_updatedItems = updatedItems;
   }
 }
 
@@ -85,16 +85,16 @@
   [(_PXMapStoreChange *)&v3 dealloc];
 }
 
-- (_PXMapStoreChange)initWithAddedItems:(id)a3 removedItems:(id)a4 updatedItems:(id)a5
+- (_PXMapStoreChange)initWithAddedItems:(id)items removedItems:(id)removedItems updatedItems:(id)updatedItems
 {
   v10.receiver = self;
   v10.super_class = _PXMapStoreChange;
   v8 = [(_PXMapStoreChange *)&v10 init];
   if (v8)
   {
-    v8->_addedItems = a3;
-    v8->_removedItems = a4;
-    v8->_updatedItems = a5;
+    v8->_addedItems = items;
+    v8->_removedItems = removedItems;
+    v8->_updatedItems = updatedItems;
   }
 
   return v8;

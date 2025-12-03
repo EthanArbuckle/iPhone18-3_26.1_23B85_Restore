@@ -1,19 +1,19 @@
 @interface HKGraphViewRendererSeriesConfiguration
-- (HKGraphViewRendererSeriesConfiguration)initWithRendererSeriesRows:(id)a3;
+- (HKGraphViewRendererSeriesConfiguration)initWithRendererSeriesRows:(id)rows;
 @end
 
 @implementation HKGraphViewRendererSeriesConfiguration
 
-- (HKGraphViewRendererSeriesConfiguration)initWithRendererSeriesRows:(id)a3
+- (HKGraphViewRendererSeriesConfiguration)initWithRendererSeriesRows:(id)rows
 {
-  v5 = a3;
+  rowsCopy = rows;
   v9.receiver = self;
   v9.super_class = HKGraphViewRendererSeriesConfiguration;
   v6 = [(HKGraphViewRendererSeriesConfiguration *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_seriesRows, a3);
+    objc_storeStrong(&v6->_seriesRows, rows);
   }
 
   return v7;

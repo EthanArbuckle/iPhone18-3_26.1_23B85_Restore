@@ -1,5 +1,5 @@
 @interface UIDOMHTMLOptionPickerCell
-- (UIDOMHTMLOptionPickerCell)initWithHTMLOptionNode:(id)a3;
+- (UIDOMHTMLOptionPickerCell)initWithHTMLOptionNode:(id)node;
 - (id)initCommon;
 @end
 
@@ -19,21 +19,21 @@
   return v3;
 }
 
-- (UIDOMHTMLOptionPickerCell)initWithHTMLOptionNode:(id)a3
+- (UIDOMHTMLOptionPickerCell)initWithHTMLOptionNode:(id)node
 {
-  v4 = [(UIDOMHTMLOptionPickerCell *)self initCommon];
-  if (v4)
+  initCommon = [(UIDOMHTMLOptionPickerCell *)self initCommon];
+  if (initCommon)
   {
-    -[UILabel setText:](-[UIPickerContentView titleLabel](v4, "titleLabel"), "setText:", [a3 itemTitle]);
-    -[UIPickerContentView setChecked:](v4, "setChecked:", [a3 selected]);
-    -[UIDOMHTMLOptionPickerCell setDisabled:](v4, "setDisabled:", [a3 disabled]);
-    if ([(UIDOMHTMLOptionPickerCell *)v4 disabled])
+    -[UILabel setText:](-[UIPickerContentView titleLabel](initCommon, "titleLabel"), "setText:", [node itemTitle]);
+    -[UIPickerContentView setChecked:](initCommon, "setChecked:", [node selected]);
+    -[UIDOMHTMLOptionPickerCell setDisabled:](initCommon, "setDisabled:", [node disabled]);
+    if ([(UIDOMHTMLOptionPickerCell *)initCommon disabled])
     {
-      [(UILabel *)[(UIPickerContentView *)v4 titleLabel] setTextColor:[UIColor colorWithWhite:0.0 alpha:0.3]];
+      [(UILabel *)[(UIPickerContentView *)initCommon titleLabel] setTextColor:[UIColor colorWithWhite:0.0 alpha:0.3]];
     }
   }
 
-  return v4;
+  return initCommon;
 }
 
 @end

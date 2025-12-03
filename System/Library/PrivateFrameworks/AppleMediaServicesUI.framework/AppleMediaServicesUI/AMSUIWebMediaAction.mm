@@ -1,22 +1,22 @@
 @interface AMSUIWebMediaAction
-- (AMSUIWebMediaAction)initWithJSObject:(id)a3 context:(id)a4;
-- (id)_runMediaRequestWithType:(int64_t)a3 clientIdentifier:(id)a4 clientVersion:(id)a5;
-- (id)_runMediaRequestWithURL:(id)a3 clientIdentifier:(id)a4 clientVersion:(id)a5;
+- (AMSUIWebMediaAction)initWithJSObject:(id)object context:(id)context;
+- (id)_runMediaRequestWithType:(int64_t)type clientIdentifier:(id)identifier clientVersion:(id)version;
+- (id)_runMediaRequestWithURL:(id)l clientIdentifier:(id)identifier clientVersion:(id)version;
 - (id)runAction;
 @end
 
 @implementation AMSUIWebMediaAction
 
-- (AMSUIWebMediaAction)initWithJSObject:(id)a3 context:(id)a4
+- (AMSUIWebMediaAction)initWithJSObject:(id)object context:(id)context
 {
-  v7 = a3;
-  v8 = a4;
+  objectCopy = object;
+  contextCopy = context;
   v35.receiver = self;
   v35.super_class = AMSUIWebMediaAction;
-  v9 = [(AMSUIWebAction *)&v35 initWithJSObject:v7 context:v8];
+  v9 = [(AMSUIWebAction *)&v35 initWithJSObject:objectCopy context:contextCopy];
   if (v9)
   {
-    v10 = [v7 objectForKeyedSubscript:@"url"];
+    v10 = [objectCopy objectForKeyedSubscript:@"url"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -33,27 +33,27 @@
       objc_storeStrong(&v9->_urlString, v11);
     }
 
-    v12 = [v7 objectForKeyedSubscript:@"type"];
+    v12 = [objectCopy objectForKeyedSubscript:@"type"];
     if (objc_opt_respondsToSelector())
     {
       v9->_type = [v12 integerValue];
     }
 
-    v13 = [v7 objectForKeyedSubscript:@"account"];
-    v14 = [v8 iTunesAccountFromJSAccount:v13];
-    v15 = v14;
+    v13 = [objectCopy objectForKeyedSubscript:@"account"];
+    v14 = [contextCopy iTunesAccountFromJSAccount:v13];
+    account = v14;
     if (!v14)
     {
-      v4 = [(AMSUIWebAction *)v9 context];
-      v15 = [v4 account];
+      context = [(AMSUIWebAction *)v9 context];
+      account = [context account];
     }
 
-    objc_storeStrong(&v9->_account, v15);
+    objc_storeStrong(&v9->_account, account);
     if (!v14)
     {
     }
 
-    v16 = [v7 objectForKeyedSubscript:@"bundleIdentifiers"];
+    v16 = [objectCopy objectForKeyedSubscript:@"bundleIdentifiers"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -68,7 +68,7 @@
     bundleIdentifiers = v9->_bundleIdentifiers;
     v9->_bundleIdentifiers = v17;
 
-    v19 = [v7 objectForKeyedSubscript:@"clientIdentifier"];
+    v19 = [objectCopy objectForKeyedSubscript:@"clientIdentifier"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -92,7 +92,7 @@
 
     objc_storeStrong(&v9->_clientIdentifier, v21);
 
-    v22 = [v7 objectForKeyedSubscript:@"clientVersion"];
+    v22 = [objectCopy objectForKeyedSubscript:@"clientVersion"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -116,7 +116,7 @@
 
     objc_storeStrong(&v9->_clientVersion, v24);
 
-    v25 = [v7 objectForKeyedSubscript:@"itemIdentifiers"];
+    v25 = [objectCopy objectForKeyedSubscript:@"itemIdentifiers"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -131,7 +131,7 @@
     itemIdentifiers = v9->_itemIdentifiers;
     v9->_itemIdentifiers = v26;
 
-    v28 = [v7 objectForKeyedSubscript:@"includedResultKeys"];
+    v28 = [objectCopy objectForKeyedSubscript:@"includedResultKeys"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -146,7 +146,7 @@
     includedResultKeys = v9->_includedResultKeys;
     v9->_includedResultKeys = v29;
 
-    v31 = [v7 objectForKeyedSubscript:@"method"];
+    v31 = [objectCopy objectForKeyedSubscript:@"method"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -170,47 +170,47 @@
   v27 = *MEMORY[0x1E69E9840];
   v18.receiver = self;
   v18.super_class = AMSUIWebMediaAction;
-  v3 = [(AMSUIWebAction *)&v18 runAction];
-  v4 = [MEMORY[0x1E698C968] sharedWebUIConfig];
-  if (!v4)
+  runAction = [(AMSUIWebAction *)&v18 runAction];
+  mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedWebUIConfig];
+  if (!mEMORY[0x1E698C968])
   {
-    v4 = [MEMORY[0x1E698C968] sharedConfig];
+    mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
   }
 
-  v5 = [v4 OSLogObject];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v6 = objc_opt_class();
     v7 = AMSLogKey();
-    v8 = [(AMSUIWebMediaAction *)self bundleIdentifiers];
-    v9 = [(AMSUIWebMediaAction *)self itemIdentifiers];
+    bundleIdentifiers = [(AMSUIWebMediaAction *)self bundleIdentifiers];
+    itemIdentifiers = [(AMSUIWebMediaAction *)self itemIdentifiers];
     *buf = 138544130;
     v20 = v6;
     v21 = 2114;
     v22 = v7;
     v23 = 2112;
-    v24 = v8;
+    v24 = bundleIdentifiers;
     v25 = 2112;
-    v26 = v9;
-    _os_log_impl(&dword_1BB036000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Running media action with identifiers: %@ %@", buf, 0x2Au);
+    v26 = itemIdentifiers;
+    _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Running media action with identifiers: %@ %@", buf, 0x2Au);
   }
 
-  v10 = [(AMSUIWebMediaAction *)self urlString];
+  urlString = [(AMSUIWebMediaAction *)self urlString];
 
-  if (v10)
+  if (urlString)
   {
-    v11 = [(AMSUIWebMediaAction *)self urlString];
-    v12 = [(AMSUIWebMediaAction *)self clientIdentifier];
-    v13 = [(AMSUIWebMediaAction *)self clientVersion];
-    v14 = [(AMSUIWebMediaAction *)self _runMediaRequestWithURL:v11 clientIdentifier:v12 clientVersion:v13];
+    urlString2 = [(AMSUIWebMediaAction *)self urlString];
+    clientIdentifier = [(AMSUIWebMediaAction *)self clientIdentifier];
+    clientVersion = [(AMSUIWebMediaAction *)self clientVersion];
+    v14 = [(AMSUIWebMediaAction *)self _runMediaRequestWithURL:urlString2 clientIdentifier:clientIdentifier clientVersion:clientVersion];
   }
 
   else
   {
-    v15 = [(AMSUIWebMediaAction *)self type];
-    v11 = [(AMSUIWebMediaAction *)self clientIdentifier];
-    v12 = [(AMSUIWebMediaAction *)self clientVersion];
-    v14 = [(AMSUIWebMediaAction *)self _runMediaRequestWithType:v15 clientIdentifier:v11 clientVersion:v12];
+    type = [(AMSUIWebMediaAction *)self type];
+    urlString2 = [(AMSUIWebMediaAction *)self clientIdentifier];
+    clientIdentifier = [(AMSUIWebMediaAction *)self clientVersion];
+    v14 = [(AMSUIWebMediaAction *)self _runMediaRequestWithType:type clientIdentifier:urlString2 clientVersion:clientIdentifier];
   }
 
   v16 = *MEMORY[0x1E69E9840];
@@ -218,50 +218,50 @@
   return v14;
 }
 
-- (id)_runMediaRequestWithURL:(id)a3 clientIdentifier:(id)a4 clientVersion:(id)a5
+- (id)_runMediaRequestWithURL:(id)l clientIdentifier:(id)identifier clientVersion:(id)version
 {
-  v7 = a4;
+  identifierCopy = identifier;
   v8 = MEMORY[0x1E696AF20];
-  v9 = a3;
-  v10 = [[v8 alloc] initWithString:v9];
+  lCopy = l;
+  v10 = [[v8 alloc] initWithString:lCopy];
 
   if (v10)
   {
     v11 = objc_alloc(MEMORY[0x1E698C9E8]);
-    v12 = [(AMSUIWebAction *)self context];
-    v13 = [v12 bag];
-    v14 = [v11 initWithClientIdentifier:v7 bag:v13];
+    context = [(AMSUIWebAction *)self context];
+    v13 = [context bag];
+    v14 = [v11 initWithClientIdentifier:identifierCopy bag:v13];
 
     v15 = objc_alloc(MEMORY[0x1E698C9C0]);
-    v16 = [(AMSUIWebAction *)self context];
-    v17 = [v16 bag];
+    context2 = [(AMSUIWebAction *)self context];
+    v17 = [context2 bag];
     v18 = [v15 initWithTokenService:v14 bag:v17];
 
     v19 = objc_alloc_init(MEMORY[0x1E698C9C8]);
     [v18 setResponseDecoder:v19];
 
-    v20 = [(AMSUIWebMediaAction *)self account];
-    [v18 setAccount:v20];
+    account = [(AMSUIWebMediaAction *)self account];
+    [v18 setAccount:account];
 
     v21 = AMSLogKey();
     [v18 setLogKey:v21];
 
-    v22 = [(AMSUIWebAction *)self context];
-    v23 = [v22 URLSession];
+    context3 = [(AMSUIWebAction *)self context];
+    uRLSession = [context3 URLSession];
 
     v24 = [objc_alloc(MEMORY[0x1E698C9B8]) initWithTokenService:v14];
-    [v23 setProtocolHandler:v24];
+    [uRLSession setProtocolHandler:v24];
 
     v25 = [v18 requestWithComponents:v10];
-    v26 = [(AMSUIWebMediaAction *)self method];
+    method = [(AMSUIWebMediaAction *)self method];
     v37[0] = MEMORY[0x1E69E9820];
     v37[1] = 3221225472;
     v37[2] = __78__AMSUIWebMediaAction__runMediaRequestWithURL_clientIdentifier_clientVersion___block_invoke;
     v37[3] = &unk_1E7F25780;
-    v38 = v26;
-    v39 = v23;
-    v27 = v23;
-    v28 = v26;
+    v38 = method;
+    v39 = uRLSession;
+    v27 = uRLSession;
+    v28 = method;
     v29 = [v25 thenWithBlock:v37];
     v30 = objc_alloc_init(MEMORY[0x1E698CAD0]);
     v35[0] = MEMORY[0x1E69E9820];
@@ -318,37 +318,37 @@ void __78__AMSUIWebMediaAction__runMediaRequestWithURL_clientIdentifier_clientVe
   [v8 finishWithResult:v9 error:v5];
 }
 
-- (id)_runMediaRequestWithType:(int64_t)a3 clientIdentifier:(id)a4 clientVersion:(id)a5
+- (id)_runMediaRequestWithType:(int64_t)type clientIdentifier:(id)identifier clientVersion:(id)version
 {
   v6 = objc_alloc_init(MEMORY[0x1E698CAD0]);
   v7 = objc_alloc(MEMORY[0x1E698C9E0]);
-  v8 = [(AMSUIWebMediaAction *)self type];
-  v9 = [(AMSUIWebMediaAction *)self clientIdentifier];
-  v10 = [(AMSUIWebMediaAction *)self clientVersion];
-  v11 = [(AMSUIWebAction *)self context];
-  v12 = [v11 bag];
-  v13 = [v7 initWithType:v8 clientIdentifier:v9 clientVersion:v10 bag:v12];
+  type = [(AMSUIWebMediaAction *)self type];
+  clientIdentifier = [(AMSUIWebMediaAction *)self clientIdentifier];
+  clientVersion = [(AMSUIWebMediaAction *)self clientVersion];
+  context = [(AMSUIWebAction *)self context];
+  v12 = [context bag];
+  v13 = [v7 initWithType:type clientIdentifier:clientIdentifier clientVersion:clientVersion bag:v12];
 
-  v14 = [(AMSUIWebMediaAction *)self account];
-  [v13 setAccount:v14];
+  account = [(AMSUIWebMediaAction *)self account];
+  [v13 setAccount:account];
 
-  v15 = [(AMSUIWebMediaAction *)self bundleIdentifiers];
-  [v13 setBundleIdentifiers:v15];
+  bundleIdentifiers = [(AMSUIWebMediaAction *)self bundleIdentifiers];
+  [v13 setBundleIdentifiers:bundleIdentifiers];
 
-  v16 = [(AMSUIWebMediaAction *)self itemIdentifiers];
-  [v13 setItemIdentifiers:v16];
+  itemIdentifiers = [(AMSUIWebMediaAction *)self itemIdentifiers];
+  [v13 setItemIdentifiers:itemIdentifiers];
 
-  v17 = [(AMSUIWebMediaAction *)self includedResultKeys];
-  [v13 setIncludedResultKeys:v17];
+  includedResultKeys = [(AMSUIWebMediaAction *)self includedResultKeys];
+  [v13 setIncludedResultKeys:includedResultKeys];
 
-  v18 = [v13 perform];
+  perform = [v13 perform];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __79__AMSUIWebMediaAction__runMediaRequestWithType_clientIdentifier_clientVersion___block_invoke;
   v21[3] = &unk_1E7F267A0;
   v19 = v6;
   v22 = v19;
-  [v18 addFinishBlock:v21];
+  [perform addFinishBlock:v21];
 
   return v19;
 }

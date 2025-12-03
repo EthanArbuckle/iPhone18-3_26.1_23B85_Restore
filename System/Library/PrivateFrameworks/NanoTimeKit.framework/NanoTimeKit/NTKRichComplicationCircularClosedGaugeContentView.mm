@@ -1,14 +1,14 @@
 @interface NTKRichComplicationCircularClosedGaugeContentView
-- (NTKRichComplicationCircularClosedGaugeContentView)initWithFamily:(int64_t)a3;
-- (id)gaugeProviderFromTemplate:(id)a3;
+- (NTKRichComplicationCircularClosedGaugeContentView)initWithFamily:(int64_t)family;
+- (id)gaugeProviderFromTemplate:(id)template;
 - (id)innerView;
-- (void)_handleTemplate:(id)a3 reason:(int64_t)a4;
+- (void)_handleTemplate:(id)template reason:(int64_t)reason;
 - (void)layoutSubviews;
 @end
 
 @implementation NTKRichComplicationCircularClosedGaugeContentView
 
-- (NTKRichComplicationCircularClosedGaugeContentView)initWithFamily:(int64_t)a3
+- (NTKRichComplicationCircularClosedGaugeContentView)initWithFamily:(int64_t)family
 {
   v17.receiver = self;
   v17.super_class = NTKRichComplicationCircularClosedGaugeContentView;
@@ -16,25 +16,25 @@
   v5 = v4;
   if (v4)
   {
-    v6 = [(CDRichComplicationView *)v4 device];
-    v7 = _LayoutConstants_6(v6, a3);
+    device = [(CDRichComplicationView *)v4 device];
+    v7 = _LayoutConstants_6(device, family);
 
     v8 = [NTKRichComplicationRingProgressView alloc];
-    v9 = [(CDRichComplicationView *)v5 device];
-    v10 = [(NTKRichComplicationRingProgressView *)v8 initWithFamily:a3 curveWidth:v9 padding:v7 forDevice:0.0];
+    device2 = [(CDRichComplicationView *)v5 device];
+    v10 = [(NTKRichComplicationRingProgressView *)v8 initWithFamily:family curveWidth:device2 padding:v7 forDevice:0.0];
     progressView = v5->_progressView;
     v5->_progressView = v10;
 
     [(CDRichComplicationProgressView *)v5->_progressView setFilterProvider:v5];
-    v12 = [(NTKRichComplicationCircularBaseView *)v5 contentView];
-    [v12 addSubview:v5->_progressView];
+    contentView = [(NTKRichComplicationCircularBaseView *)v5 contentView];
+    [contentView addSubview:v5->_progressView];
 
-    v13 = [(NTKRichComplicationCircularClosedGaugeContentView *)v5 innerView];
+    innerView = [(NTKRichComplicationCircularClosedGaugeContentView *)v5 innerView];
     innerView = v5->_innerView;
-    v5->_innerView = v13;
+    v5->_innerView = innerView;
 
-    v15 = [(NTKRichComplicationCircularBaseView *)v5 contentView];
-    [v15 addSubview:v5->_innerView];
+    contentView2 = [(NTKRichComplicationCircularBaseView *)v5 contentView];
+    [contentView2 addSubview:v5->_innerView];
   }
 
   return v5;
@@ -45,27 +45,27 @@
   v14.receiver = self;
   v14.super_class = NTKRichComplicationCircularClosedGaugeContentView;
   [(NTKRichComplicationCircularBaseView *)&v14 layoutSubviews];
-  v3 = [(CDRichComplicationView *)self device];
-  _LayoutConstants_6(v3, [(CDRichComplicationView *)self family]);
+  device = [(CDRichComplicationView *)self device];
+  _LayoutConstants_6(device, [(CDRichComplicationView *)self family]);
 
-  v4 = [(NTKRichComplicationCircularBaseView *)self contentView];
-  [v4 bounds];
+  contentView = [(NTKRichComplicationCircularBaseView *)self contentView];
+  [contentView bounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
 
   [(NTKRichComplicationRingProgressView *)self->_progressView setFrame:v6, v8, v10, v12];
-  v13 = [(CDRichComplicationView *)self device];
+  device2 = [(CDRichComplicationView *)self device];
   CLKPixelAlignRectForDevice();
   [(UIView *)self->_innerView setFrame:?];
 }
 
-- (void)_handleTemplate:(id)a3 reason:(int64_t)a4
+- (void)_handleTemplate:(id)template reason:(int64_t)reason
 {
   progressView = self->_progressView;
-  v6 = [(NTKRichComplicationCircularClosedGaugeContentView *)self gaugeProviderFromTemplate:a3, a4];
-  [(CDRichComplicationProgressView *)progressView setGaugeProvider:v6];
+  reason = [(NTKRichComplicationCircularClosedGaugeContentView *)self gaugeProviderFromTemplate:template, reason];
+  [(CDRichComplicationProgressView *)progressView setGaugeProvider:reason];
 
   v7 = self->_progressView;
 
@@ -79,7 +79,7 @@
   return 0;
 }
 
-- (id)gaugeProviderFromTemplate:(id)a3
+- (id)gaugeProviderFromTemplate:(id)template
 {
   objc_opt_class();
   NSRequestConcreteImplementation();

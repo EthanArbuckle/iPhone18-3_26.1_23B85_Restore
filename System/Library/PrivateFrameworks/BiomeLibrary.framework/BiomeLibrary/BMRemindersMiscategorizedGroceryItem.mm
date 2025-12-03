@@ -1,38 +1,38 @@
 @interface BMRemindersMiscategorizedGroceryItem
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMRemindersMiscategorizedGroceryItem)initWithItemChanged:(id)a3 originalCategory:(id)a4 destinationCategory:(id)a5 locale:(id)a6;
-- (BMRemindersMiscategorizedGroceryItem)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
+- (BMRemindersMiscategorizedGroceryItem)initWithItemChanged:(id)changed originalCategory:(id)category destinationCategory:(id)destinationCategory locale:(id)locale;
+- (BMRemindersMiscategorizedGroceryItem)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMRemindersMiscategorizedGroceryItem
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMRemindersMiscategorizedGroceryItem *)self itemChanged];
-    v7 = [v5 itemChanged];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    itemChanged = [(BMRemindersMiscategorizedGroceryItem *)self itemChanged];
+    itemChanged2 = [v5 itemChanged];
+    v8 = itemChanged2;
+    if (itemChanged == itemChanged2)
     {
     }
 
     else
     {
-      v9 = [(BMRemindersMiscategorizedGroceryItem *)self itemChanged];
-      v10 = [v5 itemChanged];
-      v11 = [v9 isEqual:v10];
+      itemChanged3 = [(BMRemindersMiscategorizedGroceryItem *)self itemChanged];
+      itemChanged4 = [v5 itemChanged];
+      v11 = [itemChanged3 isEqual:itemChanged4];
 
       if (!v11)
       {
@@ -40,18 +40,18 @@
       }
     }
 
-    v13 = [(BMRemindersMiscategorizedGroceryItem *)self originalCategory];
-    v14 = [v5 originalCategory];
-    v15 = v14;
-    if (v13 == v14)
+    originalCategory = [(BMRemindersMiscategorizedGroceryItem *)self originalCategory];
+    originalCategory2 = [v5 originalCategory];
+    v15 = originalCategory2;
+    if (originalCategory == originalCategory2)
     {
     }
 
     else
     {
-      v16 = [(BMRemindersMiscategorizedGroceryItem *)self originalCategory];
-      v17 = [v5 originalCategory];
-      v18 = [v16 isEqual:v17];
+      originalCategory3 = [(BMRemindersMiscategorizedGroceryItem *)self originalCategory];
+      originalCategory4 = [v5 originalCategory];
+      v18 = [originalCategory3 isEqual:originalCategory4];
 
       if (!v18)
       {
@@ -59,18 +59,18 @@
       }
     }
 
-    v19 = [(BMRemindersMiscategorizedGroceryItem *)self destinationCategory];
-    v20 = [v5 destinationCategory];
-    v21 = v20;
-    if (v19 == v20)
+    destinationCategory = [(BMRemindersMiscategorizedGroceryItem *)self destinationCategory];
+    destinationCategory2 = [v5 destinationCategory];
+    v21 = destinationCategory2;
+    if (destinationCategory == destinationCategory2)
     {
     }
 
     else
     {
-      v22 = [(BMRemindersMiscategorizedGroceryItem *)self destinationCategory];
-      v23 = [v5 destinationCategory];
-      v24 = [v22 isEqual:v23];
+      destinationCategory3 = [(BMRemindersMiscategorizedGroceryItem *)self destinationCategory];
+      destinationCategory4 = [v5 destinationCategory];
+      v24 = [destinationCategory3 isEqual:destinationCategory4];
 
       if (!v24)
       {
@@ -82,18 +82,18 @@ LABEL_19:
       }
     }
 
-    v25 = [(BMRemindersMiscategorizedGroceryItem *)self locale];
-    v26 = [v5 locale];
-    if (v25 == v26)
+    locale = [(BMRemindersMiscategorizedGroceryItem *)self locale];
+    locale2 = [v5 locale];
+    if (locale == locale2)
     {
       v12 = 1;
     }
 
     else
     {
-      v27 = [(BMRemindersMiscategorizedGroceryItem *)self locale];
-      v28 = [v5 locale];
-      v12 = [v27 isEqual:v28];
+      locale3 = [(BMRemindersMiscategorizedGroceryItem *)self locale];
+      locale4 = [v5 locale];
+      v12 = [locale3 isEqual:locale4];
     }
 
     goto LABEL_19;
@@ -108,46 +108,46 @@ LABEL_20:
 - (id)jsonDictionary
 {
   v15[4] = *MEMORY[0x1E69E9840];
-  v3 = [(BMRemindersMiscategorizedGroceryItem *)self itemChanged];
-  v4 = [(BMRemindersMiscategorizedGroceryItem *)self originalCategory];
-  v5 = [(BMRemindersMiscategorizedGroceryItem *)self destinationCategory];
-  v6 = [(BMRemindersMiscategorizedGroceryItem *)self locale];
+  itemChanged = [(BMRemindersMiscategorizedGroceryItem *)self itemChanged];
+  originalCategory = [(BMRemindersMiscategorizedGroceryItem *)self originalCategory];
+  destinationCategory = [(BMRemindersMiscategorizedGroceryItem *)self destinationCategory];
+  locale = [(BMRemindersMiscategorizedGroceryItem *)self locale];
   v14[0] = @"itemChanged";
-  v7 = v3;
-  if (!v3)
+  null = itemChanged;
+  if (!itemChanged)
   {
-    v7 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v15[0] = v7;
+  v15[0] = null;
   v14[1] = @"originalCategory";
-  v8 = v4;
-  if (!v4)
+  null2 = originalCategory;
+  if (!originalCategory)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v15[1] = v8;
+  v15[1] = null2;
   v14[2] = @"destinationCategory";
-  v9 = v5;
-  if (!v5)
+  null3 = destinationCategory;
+  if (!destinationCategory)
   {
-    v9 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v15[2] = v9;
+  v15[2] = null3;
   v14[3] = @"locale";
-  v10 = v6;
-  if (!v6)
+  null4 = locale;
+  if (!locale)
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v15[3] = v10;
+  v15[3] = null4;
   v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:v14 count:4];
-  if (v6)
+  if (locale)
   {
-    if (v5)
+    if (destinationCategory)
     {
       goto LABEL_11;
     }
@@ -156,17 +156,17 @@ LABEL_20:
   else
   {
 
-    if (v5)
+    if (destinationCategory)
     {
 LABEL_11:
-      if (v4)
+      if (originalCategory)
       {
         goto LABEL_12;
       }
 
 LABEL_18:
 
-      if (v3)
+      if (itemChanged)
       {
         goto LABEL_13;
       }
@@ -175,13 +175,13 @@ LABEL_18:
     }
   }
 
-  if (!v4)
+  if (!originalCategory)
   {
     goto LABEL_18;
   }
 
 LABEL_12:
-  if (v3)
+  if (itemChanged)
   {
     goto LABEL_13;
   }
@@ -194,23 +194,23 @@ LABEL_13:
   return v11;
 }
 
-- (BMRemindersMiscategorizedGroceryItem)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMRemindersMiscategorizedGroceryItem)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v40[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"itemChanged"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"itemChanged"];
   if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v8 = 0;
 LABEL_4:
-    v9 = [v6 objectForKeyedSubscript:@"originalCategory"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"originalCategory"];
     v32 = v7;
     if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v15 = 0;
           goto LABEL_16;
@@ -223,8 +223,8 @@ LABEL_4:
         v38 = v12;
         v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v38 forKeys:&v37 count:1];
         v15 = 0;
-        *a4 = [v21 initWithDomain:v22 code:2 userInfo:v10];
-        a4 = 0;
+        *error = [v21 initWithDomain:v22 code:2 userInfo:v10];
+        error = 0;
         goto LABEL_15;
       }
 
@@ -236,23 +236,23 @@ LABEL_4:
       v31 = 0;
     }
 
-    v10 = [v6 objectForKeyedSubscript:@"destinationCategory"];
-    v11 = self;
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"destinationCategory"];
+    selfCopy = self;
     if (v10 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v12 = 0;
           v15 = 0;
-          a4 = v31;
+          error = v31;
           goto LABEL_15;
         }
 
         v23 = objc_alloc(MEMORY[0x1E696ABC0]);
-        v29 = a4;
+        errorCopy = error;
         v24 = *MEMORY[0x1E698F240];
         v35 = *MEMORY[0x1E696A578];
         v14 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"destinationCategory"];
@@ -261,8 +261,8 @@ LABEL_4:
         v25 = [v23 initWithDomain:v24 code:2 userInfo:v13];
         v12 = 0;
         v15 = 0;
-        a4 = v31;
-        *v29 = v25;
+        error = v31;
+        *errorCopy = v25;
         goto LABEL_14;
       }
 
@@ -274,13 +274,13 @@ LABEL_4:
       v12 = 0;
     }
 
-    v13 = [v6 objectForKeyedSubscript:@"locale"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"locale"];
     if (v13 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (a4)
+        if (error)
         {
           v30 = objc_alloc(MEMORY[0x1E696ABC0]);
           v28 = *MEMORY[0x1E698F240];
@@ -288,12 +288,12 @@ LABEL_4:
           v26 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"locale"];
           v34 = v26;
           v27 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v34 forKeys:&v33 count:1];
-          *a4 = [v30 initWithDomain:v28 code:2 userInfo:v27];
+          *error = [v30 initWithDomain:v28 code:2 userInfo:v27];
         }
 
         v14 = 0;
         v15 = 0;
-        a4 = v31;
+        error = v31;
         goto LABEL_14;
       }
 
@@ -305,12 +305,12 @@ LABEL_4:
       v14 = 0;
     }
 
-    a4 = v31;
-    v15 = [(BMRemindersMiscategorizedGroceryItem *)v11 initWithItemChanged:v8 originalCategory:v31 destinationCategory:v12 locale:v14];
-    v11 = v15;
+    error = v31;
+    v15 = [(BMRemindersMiscategorizedGroceryItem *)selfCopy initWithItemChanged:v8 originalCategory:v31 destinationCategory:v12 locale:v14];
+    selfCopy = v15;
 LABEL_14:
 
-    self = v11;
+    self = selfCopy;
 LABEL_15:
 
     v7 = v32;
@@ -324,7 +324,7 @@ LABEL_15:
     goto LABEL_4;
   }
 
-  if (!a4)
+  if (!error)
   {
     v8 = 0;
     v15 = 0;
@@ -339,8 +339,8 @@ LABEL_15:
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v40 forKeys:&v39 count:1];
   v8 = 0;
   v15 = 0;
-  *a4 = [v18 initWithDomain:v19 code:2 userInfo:v9];
-  a4 = v20;
+  *error = [v18 initWithDomain:v19 code:2 userInfo:v9];
+  error = v20;
 LABEL_16:
 
 LABEL_17:
@@ -352,43 +352,43 @@ LABEL_17:
 {
   v3 = objc_opt_new();
   [(BMRemindersMiscategorizedGroceryItem *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_itemChanged)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_originalCategory)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_destinationCategory)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_locale)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v23.receiver = self;
   v23.super_class = BMRemindersMiscategorizedGroceryItem;
   v5 = [(BMEventBase *)&v23 init];
@@ -397,12 +397,12 @@ LABEL_17:
     goto LABEL_24;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -413,18 +413,18 @@ LABEL_17:
       while (1)
       {
         v24 = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v24 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v24 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (v24 & 0x7F) << v7;
@@ -441,9 +441,9 @@ LABEL_17:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         break;
       }
@@ -466,13 +466,13 @@ LABEL_16:
         *(&v5->super.super.isa + v18) = v17;
       }
 
-      v20 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v20 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_23:
     v21 = 0;
@@ -490,31 +490,31 @@ LABEL_24:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMRemindersMiscategorizedGroceryItem *)self itemChanged];
-  v5 = [(BMRemindersMiscategorizedGroceryItem *)self originalCategory];
-  v6 = [(BMRemindersMiscategorizedGroceryItem *)self destinationCategory];
-  v7 = [(BMRemindersMiscategorizedGroceryItem *)self locale];
-  v8 = [v3 initWithFormat:@"BMRemindersMiscategorizedGroceryItem with itemChanged: %@, originalCategory: %@, destinationCategory: %@, locale: %@", v4, v5, v6, v7];
+  itemChanged = [(BMRemindersMiscategorizedGroceryItem *)self itemChanged];
+  originalCategory = [(BMRemindersMiscategorizedGroceryItem *)self originalCategory];
+  destinationCategory = [(BMRemindersMiscategorizedGroceryItem *)self destinationCategory];
+  locale = [(BMRemindersMiscategorizedGroceryItem *)self locale];
+  v8 = [v3 initWithFormat:@"BMRemindersMiscategorizedGroceryItem with itemChanged: %@, originalCategory: %@, destinationCategory: %@, locale: %@", itemChanged, originalCategory, destinationCategory, locale];
 
   return v8;
 }
 
-- (BMRemindersMiscategorizedGroceryItem)initWithItemChanged:(id)a3 originalCategory:(id)a4 destinationCategory:(id)a5 locale:(id)a6
+- (BMRemindersMiscategorizedGroceryItem)initWithItemChanged:(id)changed originalCategory:(id)category destinationCategory:(id)destinationCategory locale:(id)locale
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  changedCopy = changed;
+  categoryCopy = category;
+  destinationCategoryCopy = destinationCategory;
+  localeCopy = locale;
   v17.receiver = self;
   v17.super_class = BMRemindersMiscategorizedGroceryItem;
   v15 = [(BMEventBase *)&v17 init];
   if (v15)
   {
     v15->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v15->_itemChanged, a3);
-    objc_storeStrong(&v15->_originalCategory, a4);
-    objc_storeStrong(&v15->_destinationCategory, a5);
-    objc_storeStrong(&v15->_locale, a6);
+    objc_storeStrong(&v15->_itemChanged, changed);
+    objc_storeStrong(&v15->_originalCategory, category);
+    objc_storeStrong(&v15->_destinationCategory, destinationCategory);
+    objc_storeStrong(&v15->_locale, locale);
   }
 
   return v15;
@@ -556,9 +556,9 @@ LABEL_24:
   return v6;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -566,8 +566,8 @@ LABEL_24:
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMRemindersMiscategorizedGroceryItem alloc] initByReadFrom:v7];
     v4 = v8;

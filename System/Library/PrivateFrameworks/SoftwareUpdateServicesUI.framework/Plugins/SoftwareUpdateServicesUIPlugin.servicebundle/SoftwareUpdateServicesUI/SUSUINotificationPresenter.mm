@@ -1,11 +1,11 @@
 @interface SUSUINotificationPresenter
 - (BOOL)presentAlert;
 - (SUSUINotificationPresenter)init;
-- (SUSUINotificationPresenter)initWithQueue:(id)a3 alert:(id)a4;
+- (SUSUINotificationPresenter)initWithQueue:(id)queue alert:(id)alert;
 - (id)_notificationButtonActions;
 - (id)_notificationButtons;
 - (id)_notificationOptions;
-- (int)_SBPresentationStyleForSUSPresentationStyle:(unint64_t)a3;
+- (int)_SBPresentationStyleForSUSPresentationStyle:(unint64_t)style;
 - (unint64_t)_notificationFlags;
 - (void)dismissAlert;
 - (void)updateAlert;
@@ -20,48 +20,48 @@
   return 0;
 }
 
-- (SUSUINotificationPresenter)initWithQueue:(id)a3 alert:(id)a4
+- (SUSUINotificationPresenter)initWithQueue:(id)queue alert:(id)alert
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, queue);
   v10 = 0;
-  objc_storeStrong(&v10, a4);
-  v4 = v12;
-  v12 = 0;
+  objc_storeStrong(&v10, alert);
+  v4 = selfCopy;
+  selfCopy = 0;
   v9.receiver = v4;
   v9.super_class = SUSUINotificationPresenter;
   v8 = [(SUSUINotificationPresenter *)&v9 init];
-  v12 = v8;
-  objc_storeStrong(&v12, v8);
+  selfCopy = v8;
+  objc_storeStrong(&selfCopy, v8);
   if (v8)
   {
-    objc_storeStrong(&v12->_alertItem, v10);
-    objc_storeStrong(&v12->_queue, location[0]);
-    v12->_notification = 0;
-    objc_storeStrong(&v12->_buttonActions, 0);
+    objc_storeStrong(&selfCopy->_alertItem, v10);
+    objc_storeStrong(&selfCopy->_queue, location[0]);
+    selfCopy->_notification = 0;
+    objc_storeStrong(&selfCopy->_buttonActions, 0);
   }
 
-  v6 = v12;
+  v6 = selfCopy;
   objc_storeStrong(&v10, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v12, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v6;
 }
 
 - (BOOL)presentAlert
 {
-  v20 = self;
+  selfCopy = self;
   v19 = a2;
   [(SUSUIBaseAlertItem *)self->_alertItem willPresentAlert];
-  v18 = [(SUSUINotificationPresenter *)v20 _notificationFlags];
-  v17 = [(SUSUINotificationPresenter *)v20 _notificationOptions];
-  v16 = [(SUSUINotificationPresenter *)v20 _notificationButtonActions];
+  _notificationFlags = [(SUSUINotificationPresenter *)selfCopy _notificationFlags];
+  _notificationOptions = [(SUSUINotificationPresenter *)selfCopy _notificationOptions];
+  _notificationButtonActions = [(SUSUINotificationPresenter *)selfCopy _notificationButtonActions];
   error = -1;
-  v2 = CFUserNotificationCreate(kCFAllocatorDefault, 0.0, v18, &error, v17);
-  v20->_notification = v2;
-  if (v20->_notification && !error)
+  v2 = CFUserNotificationCreate(kCFAllocatorDefault, 0.0, _notificationFlags, &error, _notificationOptions);
+  selfCopy->_notification = v2;
+  if (selfCopy->_notification && !error)
   {
     queue = dispatch_get_global_queue(33, 0);
     v5 = _NSConcreteStackBlock;
@@ -69,8 +69,8 @@
     v7 = 0;
     v8 = sub_38648;
     v9 = &unk_5D008;
-    v10 = v20;
-    v11 = v16;
+    v10 = selfCopy;
+    v11 = _notificationButtonActions;
     dispatch_async(queue, &v5);
 
     v21 = 1;
@@ -94,8 +94,8 @@
     v12 = 1;
   }
 
-  objc_storeStrong(&v16, 0);
-  objc_storeStrong(&v17, 0);
+  objc_storeStrong(&_notificationButtonActions, 0);
+  objc_storeStrong(&_notificationOptions, 0);
   return v21 & 1;
 }
 
@@ -109,13 +109,13 @@
 
 - (void)updateAlert
 {
-  v5 = self;
+  selfCopy = self;
   v4 = a2;
   flags = [(SUSUINotificationPresenter *)self _notificationFlags];
-  dictionary = [(SUSUINotificationPresenter *)v5 _notificationOptions];
-  if (v5->_notification)
+  dictionary = [(SUSUINotificationPresenter *)selfCopy _notificationOptions];
+  if (selfCopy->_notification)
   {
-    CFUserNotificationUpdate(v5->_notification, 0.0, flags, dictionary);
+    CFUserNotificationUpdate(selfCopy->_notification, 0.0, flags, dictionary);
   }
 
   objc_storeStrong(&dictionary, 0);
@@ -123,30 +123,30 @@
 
 - (id)_notificationOptions
 {
-  v43 = self;
+  selfCopy = self;
   v42[1] = a2;
   v42[0] = +[NSMutableDictionary dictionary];
-  v41 = [(SUSUIBaseAlertItem *)v43->_alertItem buildAlertItemDefinition];
-  v33 = [v41 title];
+  buildAlertItemDefinition = [(SUSUIBaseAlertItem *)selfCopy->_alertItem buildAlertItemDefinition];
+  title = [buildAlertItemDefinition title];
 
-  if (v33)
+  if (title)
   {
-    v32 = [v41 title];
+    title2 = [buildAlertItemDefinition title];
     [v42[0] setObject:? forKeyedSubscript:?];
   }
 
-  v31 = [(SUSUIBaseAlertItem *)v43->_alertItem contentExtensionID];
+  contentExtensionID = [(SUSUIBaseAlertItem *)selfCopy->_alertItem contentExtensionID];
 
-  if (v31)
+  if (contentExtensionID)
   {
-    v27 = [(SUSUIBaseAlertItem *)v43->_alertItem contentExtensionID];
+    contentExtensionID2 = [(SUSUIBaseAlertItem *)selfCopy->_alertItem contentExtensionID];
     [v42[0] setObject:? forKeyedSubscript:?];
 
-    v28 = [(SUSUIBaseAlertItem *)v43->_alertItem extensionDictionary];
-    if (v28)
+    extensionDictionary = [(SUSUIBaseAlertItem *)selfCopy->_alertItem extensionDictionary];
+    if (extensionDictionary)
     {
       v40 = objc_alloc_init(NSExtensionItem);
-      v25 = [(SUSUIBaseAlertItem *)v43->_alertItem extensionDictionary];
+      extensionDictionary2 = [(SUSUIBaseAlertItem *)selfCopy->_alertItem extensionDictionary];
       [v40 setUserInfo:?];
 
       v48 = v40;
@@ -165,31 +165,31 @@
 
   else
   {
-    v30 = [v41 message];
+    message = [buildAlertItemDefinition message];
 
-    if (v30)
+    if (message)
     {
-      v29 = [v41 message];
+      message2 = [buildAlertItemDefinition message];
       [v42[0] setObject:? forKeyedSubscript:?];
     }
   }
 
-  v38 = [(SUSUINotificationPresenter *)v43 _notificationButtons];
-  if (v38 && [v38 count])
+  _notificationButtons = [(SUSUINotificationPresenter *)selfCopy _notificationButtons];
+  if (_notificationButtons && [_notificationButtons count])
   {
-    v24 = [(SUSUINotificationPresenter *)v43 _notificationButtons];
+    _notificationButtons2 = [(SUSUINotificationPresenter *)selfCopy _notificationButtons];
     [v42[0] setObject:? forKeyedSubscript:?];
   }
 
-  v22 = [(SUSUINotificationPresenter *)v43 alertItem];
-  v23 = [(SUSUIBaseAlertItem *)v22 graphicIcon];
+  alertItem = [(SUSUINotificationPresenter *)selfCopy alertItem];
+  graphicIcon = [(SUSUIBaseAlertItem *)alertItem graphicIcon];
 
-  if (v23)
+  if (graphicIcon)
   {
     v46 = SBUserNotificationGraphicIconTypeKey;
-    v21 = [(SUSUINotificationPresenter *)v43 alertItem];
-    v20 = [(SUSUIBaseAlertItem *)v21 graphicIcon];
-    v47 = v20;
+    alertItem2 = [(SUSUINotificationPresenter *)selfCopy alertItem];
+    graphicIcon2 = [(SUSUIBaseAlertItem *)alertItem2 graphicIcon];
+    v47 = graphicIcon2;
     v19 = [NSDictionary dictionaryWithObjects:&v47 forKeys:&v46 count:1];
     [v42[0] setObject:? forKeyedSubscript:?];
 
@@ -200,9 +200,9 @@
     {
       log = v37;
       type = v36;
-      v18 = [(SUSUINotificationPresenter *)v43 alertItem];
-      v17 = [(SUSUIBaseAlertItem *)v18 graphicIcon];
-      v35 = v17;
+      alertItem3 = [(SUSUINotificationPresenter *)selfCopy alertItem];
+      graphicIcon3 = [(SUSUIBaseAlertItem *)alertItem3 graphicIcon];
+      v35 = graphicIcon3;
       sub_1FCC(v45, v35);
       _os_log_impl(&dword_0, log, type, "Using custom graphic icon: %@", v45, 0xCu);
 
@@ -212,37 +212,37 @@
     objc_storeStrong(&v37, 0);
   }
 
-  v5 = [NSNumber numberWithBool:[(SUSUIBaseAlertItem *)v43->_alertItem shouldShowInLockScreen]];
+  v5 = [NSNumber numberWithBool:[(SUSUIBaseAlertItem *)selfCopy->_alertItem shouldShowInLockScreen]];
   [v42[0] setObject:? forKeyedSubscript:?];
 
-  v6 = [NSNumber numberWithInt:[(SUSUIBaseAlertItem *)v43->_alertItem reappearsAfterLock]^ 1];
+  v6 = [NSNumber numberWithInt:[(SUSUIBaseAlertItem *)selfCopy->_alertItem reappearsAfterLock]^ 1];
   [v42[0] setObject:? forKeyedSubscript:?];
 
-  v7 = [NSNumber numberWithBool:[(SUSUIBaseAlertItem *)v43->_alertItem reappearsAfterUnlock]];
+  v7 = [NSNumber numberWithBool:[(SUSUIBaseAlertItem *)selfCopy->_alertItem reappearsAfterUnlock]];
   [v42[0] setObject:? forKeyedSubscript:?];
 
-  v8 = [NSNumber numberWithBool:[(SUSUIBaseAlertItem *)v43->_alertItem forcesModalAlertAppearance]];
+  v8 = [NSNumber numberWithBool:[(SUSUIBaseAlertItem *)selfCopy->_alertItem forcesModalAlertAppearance]];
   [v42[0] setObject:? forKeyedSubscript:?];
 
-  v9 = [NSNumber numberWithBool:[(SUSUIBaseAlertItem *)v43->_alertItem showButtonsOnLockScreen]];
+  v9 = [NSNumber numberWithBool:[(SUSUIBaseAlertItem *)selfCopy->_alertItem showButtonsOnLockScreen]];
   [v42[0] setObject:? forKeyedSubscript:?];
 
-  v10 = [NSNumber numberWithBool:[(SUSUIBaseAlertItem *)v43->_alertItem allowInSetup]];
+  v10 = [NSNumber numberWithBool:[(SUSUIBaseAlertItem *)selfCopy->_alertItem allowInSetup]];
   [v42[0] setObject:? forKeyedSubscript:?];
 
-  v11 = [NSNumber numberWithBool:[(SUSUIBaseAlertItem *)v43->_alertItem undimsScreen]];
+  v11 = [NSNumber numberWithBool:[(SUSUIBaseAlertItem *)selfCopy->_alertItem undimsScreen]];
   [v42[0] setObject:? forKeyedSubscript:?];
 
-  v12 = [NSNumber numberWithBool:[(SUSUIBaseAlertItem *)v43->_alertItem allowLockScreenDismissal]];
+  v12 = [NSNumber numberWithBool:[(SUSUIBaseAlertItem *)selfCopy->_alertItem allowLockScreenDismissal]];
   [v42[0] setObject:? forKeyedSubscript:?];
 
-  v13 = [NSNumber numberWithBool:[(SUSUIBaseAlertItem *)v43->_alertItem allowMenuButtonDismissal]];
+  v13 = [NSNumber numberWithBool:[(SUSUIBaseAlertItem *)selfCopy->_alertItem allowMenuButtonDismissal]];
   [v42[0] setObject:? forKeyedSubscript:?];
 
-  v14 = [(SUSUIBaseAlertItem *)v43->_alertItem allowedApps];
-  if (v14)
+  allowedApps = [(SUSUIBaseAlertItem *)selfCopy->_alertItem allowedApps];
+  if (allowedApps)
   {
-    v4 = [(SUSUIBaseAlertItem *)v43->_alertItem allowedApps];
+    allowedApps2 = [(SUSUIBaseAlertItem *)selfCopy->_alertItem allowedApps];
     [v42[0] setObject:? forKeyedSubscript:?];
   }
 
@@ -255,8 +255,8 @@
 
   objc_storeStrong(&v34, 0);
   v3 = v42[0];
-  objc_storeStrong(&v38, 0);
-  objc_storeStrong(&v41, 0);
+  objc_storeStrong(&_notificationButtons, 0);
+  objc_storeStrong(&buildAlertItemDefinition, 0);
   objc_storeStrong(v42, 0);
 
   return v3;
@@ -275,12 +275,12 @@
 
 - (id)_notificationButtons
 {
-  v19 = self;
+  selfCopy = self;
   v18[1] = a2;
   v18[0] = +[NSMutableArray array];
-  v17 = [(SUSUIBaseAlertItem *)v19->_alertItem buildAlertItemDefinition];
+  buildAlertItemDefinition = [(SUSUIBaseAlertItem *)selfCopy->_alertItem buildAlertItemDefinition];
   memset(__b, 0, sizeof(__b));
-  obj = [v17 buttons];
+  obj = [buildAlertItemDefinition buttons];
   v13 = [obj countByEnumeratingWithState:__b objects:v20 count:16];
   if (v13)
   {
@@ -297,13 +297,13 @@
 
       v16 = *(__b[1] + 8 * v10);
       v4 = [SBSMutableUserNotificationButtonDefinition alloc];
-      v5 = [v16 label];
+      label = [v16 label];
       v14 = [v4 initWithTitle:?];
 
-      [v14 setPresentationStyle:{-[SUSUINotificationPresenter _SBPresentationStyleForSUSPresentationStyle:](v19, "_SBPresentationStyleForSUSPresentationStyle:", objc_msgSend(v16, "presentationStyle"))}];
+      [v14 setPresentationStyle:{-[SUSUINotificationPresenter _SBPresentationStyleForSUSPresentationStyle:](selfCopy, "_SBPresentationStyleForSUSPresentationStyle:", objc_msgSend(v16, "presentationStyle"))}];
       [v14 setIsPreferredButton:{objc_msgSend(v16, "isPreferredButton")}];
       v6 = v18[0];
-      v7 = [v14 build];
+      build = [v14 build];
       [v6 addObject:?];
 
       objc_storeStrong(&v14, 0);
@@ -321,7 +321,7 @@
   }
 
   v3 = [v18[0] copy];
-  objc_storeStrong(&v17, 0);
+  objc_storeStrong(&buildAlertItemDefinition, 0);
   objc_storeStrong(v18, 0);
 
   return v3;
@@ -329,10 +329,10 @@
 
 - (id)_notificationButtonActions
 {
-  v16 = self;
+  selfCopy = self;
   v15[1] = a2;
   v15[0] = +[NSMutableArray array];
-  location = [(SUSUIBaseAlertItem *)v16->_alertItem buildAlertItemDefinition];
+  location = [(SUSUIBaseAlertItem *)selfCopy->_alertItem buildAlertItemDefinition];
   memset(__b, 0, sizeof(__b));
   obj = [location buttons];
   v11 = [obj countByEnumeratingWithState:__b objects:v17 count:16];
@@ -351,7 +351,7 @@
 
       v13 = *(__b[1] + 8 * v8);
       v4 = v15[0];
-      v5 = [v13 handler];
+      handler = [v13 handler];
       [v4 addObject:?];
 
       ++v8;
@@ -374,19 +374,19 @@
   return v3;
 }
 
-- (int)_SBPresentationStyleForSUSPresentationStyle:(unint64_t)a3
+- (int)_SBPresentationStyleForSUSPresentationStyle:(unint64_t)style
 {
-  if (!a3)
+  if (!style)
   {
     return 0;
   }
 
-  if (a3 == 1)
+  if (style == 1)
   {
     return 1;
   }
 
-  if (a3 != 2)
+  if (style != 2)
   {
     return 0;
   }

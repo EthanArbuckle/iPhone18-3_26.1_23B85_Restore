@@ -1,9 +1,9 @@
 @interface PowerTargetControllerService
 + (id)sharedInstance;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (PowerTargetControllerService)init;
-- (void)registerWithIdentifier:(id)a3;
-- (void)updateClients:(unint64_t)a3 andLevel:(unint64_t)a4;
+- (void)registerWithIdentifier:(id)identifier;
+- (void)updateClients:(unint64_t)clients andLevel:(unint64_t)level;
 @end
 
 @implementation PowerTargetControllerService
@@ -46,58 +46,58 @@
   return v2;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
+  connectionCopy = connection;
   v6 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___ContextualPowerTargetsProtocol];
-  [v5 setExportedInterface:v6];
+  [connectionCopy setExportedInterface:v6];
 
-  [v5 setExportedObject:self];
+  [connectionCopy setExportedObject:self];
   v7 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___ContextualPowerTargetsCallbackProtocol];
-  [v5 setRemoteObjectInterface:v7];
+  [connectionCopy setRemoteObjectInterface:v7];
 
   v8 = qword_100036CD0;
   if (os_log_type_enabled(qword_100036CD0, OS_LOG_TYPE_INFO))
   {
     v9 = v8;
     v11[0] = 67109120;
-    v11[1] = [v5 processIdentifier];
+    v11[1] = [connectionCopy processIdentifier];
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "PowerTargetControllerService: listener: accepted new connection from pid %d", v11, 8u);
   }
 
-  [v5 resume];
+  [connectionCopy resume];
 
   return 1;
 }
 
-- (void)updateClients:(unint64_t)a3 andLevel:(unint64_t)a4
+- (void)updateClients:(unint64_t)clients andLevel:(unint64_t)level
 {
-  v7 = [(PowerTargetControllerService *)self queue];
+  queue = [(PowerTargetControllerService *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100017B88;
   block[3] = &unk_10002CCD0;
   block[4] = self;
-  block[5] = a3;
-  block[6] = a4;
-  dispatch_async(v7, block);
+  block[5] = clients;
+  block[6] = level;
+  dispatch_async(queue, block);
 }
 
-- (void)registerWithIdentifier:(id)a3
+- (void)registerWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = +[NSXPCConnection currentConnection];
-  v6 = [(PowerTargetControllerService *)self queue];
+  queue = [(PowerTargetControllerService *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100017DF8;
   block[3] = &unk_10002CCF8;
-  v10 = v4;
+  v10 = identifierCopy;
   v11 = v5;
-  v12 = self;
+  selfCopy = self;
   v7 = v5;
-  v8 = v4;
-  dispatch_async(v6, block);
+  v8 = identifierCopy;
+  dispatch_async(queue, block);
 }
 
 @end

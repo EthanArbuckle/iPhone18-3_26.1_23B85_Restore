@@ -1,14 +1,14 @@
 @interface EKColor
 + (id)knownIdentityKeysForComparison;
-- (BOOL)save:(id *)a3;
-- (BOOL)validate:(id *)a3;
-- (EKColor)initWithEventStore:(id)a3;
-- (void)setSource:(id)a3;
+- (BOOL)save:(id *)save;
+- (BOOL)validate:(id *)validate;
+- (EKColor)initWithEventStore:(id)store;
+- (void)setSource:(id)source;
 @end
 
 @implementation EKColor
 
-- (EKColor)initWithEventStore:(id)a3
+- (EKColor)initWithEventStore:(id)store
 {
   v6.receiver = self;
   v6.super_class = EKColor;
@@ -47,14 +47,14 @@ void __41__EKColor_knownIdentityKeysForComparison__block_invoke()
   v2 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setSource:(id)a3
+- (void)setSource:(id)source
 {
   v4 = *MEMORY[0x1E69928C0];
-  v5 = a3;
-  [(EKObject *)self updateMeltedAndCachedSingleRelationObject:v5 forKey:v4 frozenClass:objc_opt_class()];
+  sourceCopy = source;
+  [(EKObject *)self updateMeltedAndCachedSingleRelationObject:sourceCopy forKey:v4 frozenClass:objc_opt_class()];
 }
 
-- (BOOL)validate:(id *)a3
+- (BOOL)validate:(id *)validate
 {
   v19[1] = *MEMORY[0x1E69E9840];
   v17.receiver = self;
@@ -70,14 +70,14 @@ void __41__EKColor_knownIdentityKeysForComparison__block_invoke()
 
       if (v7)
       {
-        if (a3)
+        if (validate)
         {
           v8 = 72;
 LABEL_16:
           v14 = [MEMORY[0x1E696ABC0] errorWithEKErrorCode:v8];
           v5 = v14;
           LOBYTE(v5) = 0;
-          *a3 = v14;
+          *validate = v14;
           goto LABEL_18;
         }
 
@@ -93,7 +93,7 @@ LABEL_16:
 
       if (v10)
       {
-        if (a3)
+        if (validate)
         {
           v8 = 74;
           goto LABEL_16;
@@ -105,11 +105,11 @@ LABEL_17:
       }
     }
 
-    v11 = [(EKColor *)self externalID];
-    if ([v11 length])
+    externalID = [(EKColor *)self externalID];
+    if ([externalID length])
     {
-      v12 = [(EKColor *)self providerIdentifier];
-      v13 = [v12 length];
+      providerIdentifier = [(EKColor *)self providerIdentifier];
+      v13 = [providerIdentifier length];
 
       if (v13)
       {
@@ -122,7 +122,7 @@ LABEL_17:
     {
     }
 
-    if (a3)
+    if (validate)
     {
       v8 = 75;
       goto LABEL_16;
@@ -136,14 +136,14 @@ LABEL_18:
   return v5;
 }
 
-- (BOOL)save:(id *)a3
+- (BOOL)save:(id *)save
 {
-  v5 = [(EKObject *)self isNew];
-  if (v5)
+  isNew = [(EKObject *)self isNew];
+  if (isNew)
   {
-    if (a3)
+    if (save)
     {
-      *a3 = [MEMORY[0x1E696ABC0] errorWithEKErrorCode:73];
+      *save = [MEMORY[0x1E696ABC0] errorWithEKErrorCode:73];
     }
   }
 
@@ -152,7 +152,7 @@ LABEL_18:
     [(EKObject *)self updatePersistentObject];
   }
 
-  return !v5;
+  return !isNew;
 }
 
 @end

@@ -1,12 +1,12 @@
 @interface DBSmartWidgetCalendarSource
 + (id)predictionClasses;
 + (void)load;
-- (BOOL)_includeCalendar:(id)a3;
-- (BOOL)_includeEvent:(id)a3 forNow:(id)a4;
-- (BOOL)shouldKeepPrediction:(id)a3;
-- (DBSmartWidgetCalendarSource)initWithDelegate:(id)a3 resourceProvider:(id)a4;
+- (BOOL)_includeCalendar:(id)calendar;
+- (BOOL)_includeEvent:(id)event forNow:(id)now;
+- (BOOL)shouldKeepPrediction:(id)prediction;
+- (DBSmartWidgetCalendarSource)initWithDelegate:(id)delegate resourceProvider:(id)provider;
 - (id)freshPredictions;
-- (void)_eventStoreDidChange:(id)a3;
+- (void)_eventStoreDidChange:(id)change;
 - (void)dealloc;
 - (void)freshPredictions;
 @end
@@ -15,7 +15,7 @@
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___DBSmartWidgetCalendarSource;
   objc_msgSendSuper2(&v2, sel_load);
 }
@@ -29,19 +29,19 @@
   return v2;
 }
 
-- (BOOL)shouldKeepPrediction:(id)a3
+- (BOOL)shouldKeepPrediction:(id)prediction
 {
-  v3 = [(DBSmartWidgetSource *)self predictions];
-  v4 = [v3 firstObject];
-  v5 = [v4 validRanges];
-  v6 = [v5 firstObject];
+  predictions = [(DBSmartWidgetSource *)self predictions];
+  firstObject = [predictions firstObject];
+  validRanges = [firstObject validRanges];
+  firstObject2 = [validRanges firstObject];
 
   v7 = [MEMORY[0x277CBEAA8] now];
-  if ([v6 containsDate:v7])
+  if ([firstObject2 containsDate:v7])
   {
-    v8 = [v6 start];
-    v9 = [MEMORY[0x277CBEAA8] distantPast];
-    v10 = [v8 isEqualToDate:v9];
+    start = [firstObject2 start];
+    distantPast = [MEMORY[0x277CBEAA8] distantPast];
+    v10 = [start isEqualToDate:distantPast];
   }
 
   else
@@ -52,13 +52,13 @@
   return v10;
 }
 
-- (DBSmartWidgetCalendarSource)initWithDelegate:(id)a3 resourceProvider:(id)a4
+- (DBSmartWidgetCalendarSource)initWithDelegate:(id)delegate resourceProvider:(id)provider
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  providerCopy = provider;
   v23.receiver = self;
   v23.super_class = DBSmartWidgetCalendarSource;
-  v8 = [(DBSmartWidgetSource *)&v23 initWithDelegate:v6 resourceProvider:v7];
+  v8 = [(DBSmartWidgetSource *)&v23 initWithDelegate:delegateCopy resourceProvider:providerCopy];
   if (v8)
   {
     v9 = objc_alloc_init(MEMORY[0x277CC5A40]);
@@ -77,8 +77,8 @@
     calendarVisibilityManager = v8->_calendarVisibilityManager;
     v8->_calendarVisibilityManager = v13;
 
-    v15 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v15 addObserver:v8 selector:sel__eventStoreDidChange_ name:*MEMORY[0x277CC5948] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v8 selector:sel__eventStoreDidChange_ name:*MEMORY[0x277CC5948] object:0];
 
     objc_destroyWeak(&v21);
     objc_destroyWeak(&location);
@@ -101,8 +101,8 @@ void __65__DBSmartWidgetCalendarSource_initWithDelegate_resourceProvider___block
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterRemoveEveryObserver(DarwinNotifyCenter, self);
@@ -115,12 +115,12 @@ void __65__DBSmartWidgetCalendarSource_initWithDelegate_resourceProvider___block
 {
   v67 = *MEMORY[0x277D85DE8];
   v3 = +[DBApplicationController sharedInstance];
-  v4 = [v3 calendarApplication];
+  calendarApplication = [v3 calendarApplication];
 
-  if (!v4)
+  if (!calendarApplication)
   {
-    v5 = DBLogForCategory(9uLL);
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
+    date = DBLogForCategory(9uLL);
+    if (os_log_type_enabled(date, OS_LOG_TYPE_DEBUG))
     {
       [DBSmartWidgetCalendarSource freshPredictions];
     }
@@ -128,10 +128,10 @@ void __65__DBSmartWidgetCalendarSource_initWithDelegate_resourceProvider___block
     goto LABEL_7;
   }
 
-  if ([v4 isLockedOrHidden])
+  if ([calendarApplication isLockedOrHidden])
   {
-    v5 = DBLogForCategory(9uLL);
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
+    date = DBLogForCategory(9uLL);
+    if (os_log_type_enabled(date, OS_LOG_TYPE_DEBUG))
     {
       [DBSmartWidgetCalendarSource freshPredictions];
     }
@@ -141,25 +141,25 @@ LABEL_7:
     goto LABEL_53;
   }
 
-  v5 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   v7 = DBLogForCategory(9uLL);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    [(DBSmartWidgetCalendarSource *)v5 freshPredictions];
+    [(DBSmartWidgetCalendarSource *)date freshPredictions];
   }
 
-  [DBSmartWidgetCalendarPrediction setNow:v5];
+  [DBSmartWidgetCalendarPrediction setNow:date];
   v8 = +[DBSmartWidgetCalendarPrediction earliestStartDate];
   v9 = +[DBSmartWidgetCalendarPrediction latestStartDate];
-  v10 = [(DBSmartWidgetCalendarSource *)self calendarVisibilityManager];
-  v11 = [v10 visibleCalendars];
+  calendarVisibilityManager = [(DBSmartWidgetCalendarSource *)self calendarVisibilityManager];
+  visibleCalendars = [calendarVisibilityManager visibleCalendars];
 
   v12 = objc_opt_new();
   v60 = 0u;
   v61 = 0u;
   v62 = 0u;
   v63 = 0u;
-  obj = v11;
+  obj = visibleCalendars;
   v13 = [obj countByEnumeratingWithState:&v60 objects:v66 count:16];
   if (v13)
   {
@@ -187,17 +187,17 @@ LABEL_7:
     while (v14);
   }
 
-  v51 = v4;
+  v51 = calendarApplication;
 
-  v18 = [(DBSmartWidgetCalendarSource *)self eventStore];
+  eventStore = [(DBSmartWidgetCalendarSource *)self eventStore];
   v49 = v9;
   v50 = v8;
   v48 = v12;
-  v19 = [v18 predicateForEventsWithStartDate:v8 endDate:v9 calendars:v12];
+  v19 = [eventStore predicateForEventsWithStartDate:v8 endDate:v9 calendars:v12];
 
-  v20 = [(DBSmartWidgetCalendarSource *)self eventStore];
+  eventStore2 = [(DBSmartWidgetCalendarSource *)self eventStore];
   v47 = v19;
-  v21 = [v20 eventsMatchingPredicate:v19];
+  v21 = [eventStore2 eventsMatchingPredicate:v19];
 
   v22 = objc_opt_new();
   v56 = 0u;
@@ -223,28 +223,28 @@ LABEL_7:
         }
 
         v27 = *(*(&v56 + 1) + 8 * v26);
-        v28 = [v27 startDate];
-        v29 = [v27 endDate];
-        if ([(DBSmartWidgetCalendarSource *)self _includeEvent:v27 forNow:v5])
+        startDate = [v27 startDate];
+        endDate = [v27 endDate];
+        if ([(DBSmartWidgetCalendarSource *)self _includeEvent:v27 forNow:date])
         {
-          v30 = v5;
-          v31 = [v27 startDate];
-          [v22 objectForKeyedSubscript:v31];
+          v30 = date;
+          startDate2 = [v27 startDate];
+          [v22 objectForKeyedSubscript:startDate2];
           v33 = v32 = v22;
 
           if (v33)
           {
-            v34 = [v27 startDate];
-            v35 = [v32 objectForKeyedSubscript:v34];
+            startDate3 = [v27 startDate];
+            v35 = [v32 objectForKeyedSubscript:startDate3];
             [v35 addEvent:v27];
-            v5 = v30;
+            date = v30;
           }
 
           else
           {
-            v5 = v30;
+            date = v30;
             v35 = [v30 dateByAddingTimeInterval:900.0];
-            if (([v28 compare:v30] == 1 || !objc_msgSend(v28, "compare:", v30)) && (objc_msgSend(v28, "compare:", v35) == -1 || !objc_msgSend(v28, "compare:", v35)) || (objc_msgSend(v28, "compare:", v30) == -1 || !objc_msgSend(v28, "compare:", v30)) && (-[NSObject compare:](v30, "compare:", v29) == -1 || !-[NSObject compare:](v30, "compare:", v29)))
+            if (([startDate compare:v30] == 1 || !objc_msgSend(startDate, "compare:", v30)) && (objc_msgSend(startDate, "compare:", v35) == -1 || !objc_msgSend(startDate, "compare:", v35)) || (objc_msgSend(startDate, "compare:", v30) == -1 || !objc_msgSend(startDate, "compare:", v30)) && (-[NSObject compare:](v30, "compare:", endDate) == -1 || !-[NSObject compare:](v30, "compare:", endDate)))
             {
               v36 = off_278EFF0B8;
             }
@@ -254,12 +254,12 @@ LABEL_7:
               v36 = off_278EFF0A0;
             }
 
-            v34 = [objc_alloc(*v36) initWithEvent:v27];
-            [v34 setDelegate:self];
-            v37 = [v27 startDate];
-            [v55 setObject:v34 forKeyedSubscript:v37];
+            startDate3 = [objc_alloc(*v36) initWithEvent:v27];
+            [startDate3 setDelegate:self];
+            startDate4 = [v27 startDate];
+            [v55 setObject:startDate3 forKeyedSubscript:startDate4];
 
-            [v34 updateVirtualConferenceBundleIDIfNeeded];
+            [startDate3 updateVirtualConferenceBundleIDIfNeeded];
           }
 
           v22 = v55;
@@ -276,8 +276,8 @@ LABEL_7:
     while (v24);
   }
 
-  v38 = [v22 allValues];
-  v6 = [v38 sortedArrayUsingComparator:&__block_literal_global_18];
+  allValues = [v22 allValues];
+  v6 = [allValues sortedArrayUsingComparator:&__block_literal_global_18];
 
   keyExistsAndHasValidFormat = 0;
   AppIntegerValue = CFPreferencesGetAppIntegerValue(@"SmartEngineCalendar_MaxCount", @"com.apple.carplay.internal", &keyExistsAndHasValidFormat);
@@ -294,14 +294,14 @@ LABEL_7:
   if ([v6 count] <= v40)
   {
     v42 = v50;
-    v4 = v51;
+    calendarApplication = v51;
   }
 
   else
   {
     v41 = DBLogForCategory(9uLL);
     v42 = v50;
-    v4 = v51;
+    calendarApplication = v51;
     if (os_log_type_enabled(v41, OS_LOG_TYPE_DEBUG))
     {
       [(DBSmartWidgetCalendarSource *)v6 freshPredictions];
@@ -341,9 +341,9 @@ uint64_t __47__DBSmartWidgetCalendarSource_freshPredictions__block_invoke(uint64
   return v7;
 }
 
-- (BOOL)_includeCalendar:(id)a3
+- (BOOL)_includeCalendar:(id)calendar
 {
-  v3 = a3;
+  calendarCopy = calendar;
   v4 = DBLogForCategory(9uLL);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
@@ -359,18 +359,18 @@ uint64_t __47__DBSmartWidgetCalendarSource_freshPredictions__block_invoke(uint64
   return 1;
 }
 
-- (BOOL)_includeEvent:(id)a3 forNow:(id)a4
+- (BOOL)_includeEvent:(id)event forNow:(id)now
 {
-  v5 = a3;
-  v6 = a4;
+  eventCopy = event;
+  nowCopy = now;
   v7 = DBLogForCategory(9uLL);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    [DBSmartWidgetCalendarSource _includeEvent:v5 forNow:?];
+    [DBSmartWidgetCalendarSource _includeEvent:eventCopy forNow:?];
   }
 
-  v8 = [v5 isAllDay];
-  if (v8)
+  isAllDay = [eventCopy isAllDay];
+  if (isAllDay)
   {
     v9 = DBLogForCategory(9uLL);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -379,10 +379,10 @@ uint64_t __47__DBSmartWidgetCalendarSource_freshPredictions__block_invoke(uint64
     }
   }
 
-  v10 = [v5 endDate];
-  [v10 timeIntervalSinceReferenceDate];
+  endDate = [eventCopy endDate];
+  [endDate timeIntervalSinceReferenceDate];
   v12 = v11;
-  [v6 timeIntervalSinceReferenceDate];
+  [nowCopy timeIntervalSinceReferenceDate];
   v14 = v13;
 
   if (v12 <= v14)
@@ -398,10 +398,10 @@ uint64_t __47__DBSmartWidgetCalendarSource_freshPredictions__block_invoke(uint64
 
   else
   {
-    v15 = v8 ^ 1u;
+    v15 = isAllDay ^ 1u;
   }
 
-  if ([v5 status] == 3)
+  if ([eventCopy status] == 3)
   {
     v17 = DBLogForCategory(9uLL);
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
@@ -412,14 +412,14 @@ uint64_t __47__DBSmartWidgetCalendarSource_freshPredictions__block_invoke(uint64
     v15 = 0;
   }
 
-  v18 = [v5 selfAttendee];
-  if (v18)
+  selfAttendee = [eventCopy selfAttendee];
+  if (selfAttendee)
   {
-    v19 = v18;
-    v20 = [v5 selfAttendee];
-    v21 = [v20 participantStatus];
+    v19 = selfAttendee;
+    selfAttendee2 = [eventCopy selfAttendee];
+    participantStatus = [selfAttendee2 participantStatus];
 
-    if (v21 == 3)
+    if (participantStatus == 3)
     {
       v22 = DBLogForCategory(9uLL);
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
@@ -434,19 +434,19 @@ uint64_t __47__DBSmartWidgetCalendarSource_freshPredictions__block_invoke(uint64
   v23 = DBLogForCategory(9uLL);
   if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
   {
-    [DBSmartWidgetCalendarSource _includeEvent:v15 forNow:v5];
+    [DBSmartWidgetCalendarSource _includeEvent:v15 forNow:eventCopy];
   }
 
   return v15;
 }
 
-- (void)_eventStoreDidChange:(id)a3
+- (void)_eventStoreDidChange:(id)change
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x277CC5940]];
-  v6 = [v5 unsignedIntegerValue];
+  userInfo = [change userInfo];
+  v5 = [userInfo objectForKeyedSubscript:*MEMORY[0x277CC5940]];
+  unsignedIntegerValue = [v5 unsignedIntegerValue];
 
-  if (v6)
+  if (unsignedIntegerValue)
   {
     v7 = DBLogForCategory(9uLL);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
@@ -467,7 +467,7 @@ void __65__DBSmartWidgetCalendarSource_initWithDelegate_resourceProvider___block
 
 - (void)freshPredictions
 {
-  [a1 count];
+  [self count];
   OUTLINED_FUNCTION_1();
   OUTLINED_FUNCTION_1_1();
   _os_log_debug_impl(v1, v2, v3, v4, v5, 0x16u);

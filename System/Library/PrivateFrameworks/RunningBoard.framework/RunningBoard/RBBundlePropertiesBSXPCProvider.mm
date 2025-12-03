@@ -1,8 +1,8 @@
 @interface RBBundlePropertiesBSXPCProvider
 - (RBBundlePropertiesBSXPCProvider)init;
 - (id)debugDescription;
-- (id)propertiesForIdentifier:(id)a3;
-- (void)removePropertiesForIdentifier:(id)a3;
+- (id)propertiesForIdentifier:(id)identifier;
+- (void)removePropertiesForIdentifier:(id)identifier;
 @end
 
 @implementation RBBundlePropertiesBSXPCProvider
@@ -16,23 +16,23 @@
   if (v2)
   {
     v2->_lock._os_unfair_lock_opaque = 0;
-    v4 = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
     propertiesByIdentifier = v3->_propertiesByIdentifier;
-    v3->_propertiesByIdentifier = v4;
+    v3->_propertiesByIdentifier = weakToStrongObjectsMapTable;
   }
 
   return v3;
 }
 
-- (id)propertiesForIdentifier:(id)a3
+- (id)propertiesForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(NSMapTable *)self->_propertiesByIdentifier objectForKey:v4];
+  v5 = [(NSMapTable *)self->_propertiesByIdentifier objectForKey:identifierCopy];
   if (!v5)
   {
-    v5 = -[RBXPCBundleProperties initWithPID:]([RBXPCBundleProperties alloc], "initWithPID:", [v4 pid]);
-    [(NSMapTable *)self->_propertiesByIdentifier setObject:v5 forKey:v4];
+    v5 = -[RBXPCBundleProperties initWithPID:]([RBXPCBundleProperties alloc], "initWithPID:", [identifierCopy pid]);
+    [(NSMapTable *)self->_propertiesByIdentifier setObject:v5 forKey:identifierCopy];
   }
 
   os_unfair_lock_unlock(&self->_lock);
@@ -40,11 +40,11 @@
   return v5;
 }
 
-- (void)removePropertiesForIdentifier:(id)a3
+- (void)removePropertiesForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_lock(&self->_lock);
-  [(NSMapTable *)self->_propertiesByIdentifier removeObjectForKey:v4];
+  [(NSMapTable *)self->_propertiesByIdentifier removeObjectForKey:identifierCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }

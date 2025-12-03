@@ -1,10 +1,10 @@
 @interface TSDMutableReflection
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation TSDMutableReflection
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [TSDReflection alloc];
   objc_msgSend_opacity(self, v5, v6);

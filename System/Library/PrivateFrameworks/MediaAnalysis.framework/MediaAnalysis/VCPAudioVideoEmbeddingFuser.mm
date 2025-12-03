@@ -1,31 +1,31 @@
 @interface VCPAudioVideoEmbeddingFuser
-+ (BOOL)supportFusionForVersion:(int)a3;
-+ (id)sharedFuser:(id)a3 version:(int)a4;
-- (VCPAudioVideoEmbeddingFuser)initWithEmbeddingVersion:(unint64_t)a3;
++ (BOOL)supportFusionForVersion:(int)version;
++ (id)sharedFuser:(id)fuser version:(int)version;
+- (VCPAudioVideoEmbeddingFuser)initWithEmbeddingVersion:(unint64_t)version;
 - (id)results;
-- (int)fuse:(id)a3;
-- (int)loadAudioEmbeddingResults:(id)a3 andVideoEmbeddingResults:(id)a4;
+- (int)fuse:(id)fuse;
+- (int)loadAudioEmbeddingResults:(id)results andVideoEmbeddingResults:(id)embeddingResults;
 @end
 
 @implementation VCPAudioVideoEmbeddingFuser
 
-+ (BOOL)supportFusionForVersion:(int)a3
++ (BOOL)supportFusionForVersion:(int)version
 {
   v4 = objc_opt_class();
 
-  return [v4 supportsFusionOfVisionEmbeddingVersion:a3 audioEmbeddingVersion:a3];
+  return [v4 supportsFusionOfVisionEmbeddingVersion:version audioEmbeddingVersion:version];
 }
 
-+ (id)sharedFuser:(id)a3 version:(int)a4
++ (id)sharedFuser:(id)fuser version:(int)version
 {
-  v5 = a3;
+  fuserCopy = fuser;
   v6 = +[VCPSharedInstanceManager sharedManager];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __51__VCPAudioVideoEmbeddingFuser_sharedFuser_version___block_invoke;
   v9[3] = &__block_descriptor_36_e31___SNLanguageAlignedAVFuser_8__0l;
-  v10 = a4;
-  v7 = [v6 sharedInstanceWithIdentifier:v5 andCreationBlock:v9];
+  versionCopy = version;
+  v7 = [v6 sharedInstanceWithIdentifier:fuserCopy andCreationBlock:v9];
 
   return v7;
 }
@@ -49,12 +49,12 @@ id __51__VCPAudioVideoEmbeddingFuser_sharedFuser_version___block_invoke(uint64_t
   return v4;
 }
 
-- (VCPAudioVideoEmbeddingFuser)initWithEmbeddingVersion:(unint64_t)a3
+- (VCPAudioVideoEmbeddingFuser)initWithEmbeddingVersion:(unint64_t)version
 {
   v17.receiver = self;
   v17.super_class = VCPAudioVideoEmbeddingFuser;
   v4 = [(VCPAudioVideoEmbeddingFuser *)&v17 init];
-  if (v4 && ([MEMORY[0x1E695DF70] array], v5 = objc_claimAutoreleasedReturnValue(), results = v4->_results, v4->_results = v5, results, v4->_embeddingVersion = a3, v4->_embeddingDim = 512, v7 = MEMORY[0x1E696AEC0], objc_msgSend(MEMORY[0x1E696AD98], "numberWithInt:", a3), v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "stringValue"), v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "stringWithFormat:", @"SNLanguageAlignedAVFuser_%@", v9), v10 = objc_claimAutoreleasedReturnValue(), v9, v8, objc_msgSend(objc_opt_class(), "sharedFuser:version:", v10, v4->_embeddingVersion), v11 = objc_claimAutoreleasedReturnValue(), avFuser = v4->_avFuser, v4->_avFuser = v11, avFuser, v13 = v4->_avFuser, v10, !v13))
+  if (v4 && ([MEMORY[0x1E695DF70] array], v5 = objc_claimAutoreleasedReturnValue(), results = v4->_results, v4->_results = v5, results, v4->_embeddingVersion = version, v4->_embeddingDim = 512, v7 = MEMORY[0x1E696AEC0], objc_msgSend(MEMORY[0x1E696AD98], "numberWithInt:", version), v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "stringValue"), v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "stringWithFormat:", @"SNLanguageAlignedAVFuser_%@", v9), v10 = objc_claimAutoreleasedReturnValue(), v9, v8, objc_msgSend(objc_opt_class(), "sharedFuser:version:", v10, v4->_embeddingVersion), v11 = objc_claimAutoreleasedReturnValue(), avFuser = v4->_avFuser, v4->_avFuser = v11, avFuser, v13 = v4->_avFuser, v10, !v13))
   {
     v14 = 0;
   }
@@ -69,24 +69,24 @@ id __51__VCPAudioVideoEmbeddingFuser_sharedFuser_version___block_invoke(uint64_t
   return v15;
 }
 
-- (int)loadAudioEmbeddingResults:(id)a3 andVideoEmbeddingResults:(id)a4
+- (int)loadAudioEmbeddingResults:(id)results andVideoEmbeddingResults:(id)embeddingResults
 {
-  v6 = a3;
-  v7 = a4;
+  resultsCopy = results;
+  embeddingResultsCopy = embeddingResults;
   audioEmbeddingResults = self->_audioEmbeddingResults;
-  self->_audioEmbeddingResults = v6;
-  v9 = v6;
+  self->_audioEmbeddingResults = resultsCopy;
+  v9 = resultsCopy;
 
   videoEmbeddingResults = self->_videoEmbeddingResults;
-  self->_videoEmbeddingResults = v7;
+  self->_videoEmbeddingResults = embeddingResultsCopy;
 
   return 0;
 }
 
-- (int)fuse:(id)a3
+- (int)fuse:(id)fuse
 {
   v89 = *MEMORY[0x1E69E9840];
-  v61 = a3;
+  fuseCopy = fuse;
   if (![(NSArray *)self->_videoEmbeddingResults count]|| ![(NSArray *)self->_audioEmbeddingResults count])
   {
     goto LABEL_82;
@@ -132,16 +132,16 @@ LABEL_5:
     }
 
     v7 = *(*(&v78 + 1) + 8 * v6);
-    v61[2]();
+    fuseCopy[2]();
     v8 = [v7 objectForKeyedSubscript:@"attributes"];
     v62 = [v8 objectForKeyedSubscript:@"embeddings"];
 
     v9 = [v7 objectForKeyedSubscript:@"attributes"];
     v10 = [v9 objectForKeyedSubscript:@"embeddingVersion"];
-    v11 = [v10 intValue];
+    intValue = [v10 intValue];
 
     embeddingVersion = self->_embeddingVersion;
-    if (v11 != embeddingVersion && (embeddingVersion != 5 || v11 != 7) && (embeddingVersion != 7 || (v11 & 0xFFFFFFFE) != 8))
+    if (intValue != embeddingVersion && (embeddingVersion != 5 || intValue != 7) && (embeddingVersion != 7 || (intValue & 0xFFFFFFFE) != 8))
     {
       if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
@@ -149,7 +149,7 @@ LABEL_5:
         LODWORD(v88.start.value) = 67109376;
         HIDWORD(v88.start.value) = v50;
         LOWORD(v88.start.timescale) = 1024;
-        *(&v88.start.timescale + 2) = v11;
+        *(&v88.start.timescale + 2) = intValue;
         _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "EmbeddingFuser - expect embedding version %d, but got %d", &v88, 0xEu);
       }
 
@@ -293,14 +293,14 @@ LABEL_45:
 
   v23 = objc_alloc(MEMORY[0x1E695FED0]);
   v24 = v57;
-  v25 = [v57 bytes];
+  bytes = [v57 bytes];
   v85[0] = &unk_1F49BD738;
   [MEMORY[0x1E696AD98] numberWithInt:self->_embeddingDim];
   v53 = v26 = v5;
   v85[1] = v53;
   v27 = [MEMORY[0x1E695DEC8] arrayWithObjects:v85 count:2];
   v67 = 0;
-  v55 = [v23 initWithDataPointer:v25 shape:v27 dataType:65552 strides:&unk_1F49BEC80 deallocator:0 error:&v67];
+  v55 = [v23 initWithDataPointer:bytes shape:v27 dataType:65552 strides:&unk_1F49BEC80 deallocator:0 error:&v67];
   v28 = v67;
 
   v5 = v26;
@@ -321,13 +321,13 @@ LABEL_45:
   {
     v29 = objc_alloc(MEMORY[0x1E695FED0]);
     v30 = v13;
-    v31 = [v13 bytes];
+    bytes2 = [v13 bytes];
     v84[0] = &unk_1F49BD738;
     v51 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v13, "length") >> 1}];
     v84[1] = v51;
     v32 = [MEMORY[0x1E695DEC8] arrayWithObjects:v84 count:2];
     v66 = 0;
-    v54 = [v29 initWithDataPointer:v31 shape:v32 dataType:65552 strides:&unk_1F49BEC98 deallocator:0 error:&v66];
+    v54 = [v29 initWithDataPointer:bytes2 shape:v32 dataType:65552 strides:&unk_1F49BEC98 deallocator:0 error:&v66];
     v33 = v66;
 
     if (v33 || !v54)
@@ -408,7 +408,7 @@ LABEL_71:
       v83[0] = v72[5];
       v82[0] = @"embeddings";
       v82[1] = @"embeddingVersion";
-      v47 = [MEMORY[0x1E696AD98] numberWithInt:v11];
+      v47 = [MEMORY[0x1E696AD98] numberWithInt:intValue];
       v83[1] = v47;
       v48 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v83 forKeys:v82 count:2];
       [v46 setObject:v48 forKeyedSubscript:@"attributes"];

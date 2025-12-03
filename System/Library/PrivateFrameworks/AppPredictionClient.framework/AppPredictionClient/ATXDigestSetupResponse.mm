@@ -1,25 +1,25 @@
 @interface ATXDigestSetupResponse
-- (ATXDigestSetupResponse)initWithBundleId:(id)a3 avgNumBasicNotifications:(unint64_t)a4 avgNumMessageNotifications:(unint64_t)a5 avgNumTimeSensitiveNonMessageNotifications:(unint64_t)a6 numBasicNotifications:(unint64_t)a7 numMessageNotifications:(unint64_t)a8 numTimeSensitiveNonMessageNotifications:(unint64_t)a9;
+- (ATXDigestSetupResponse)initWithBundleId:(id)id avgNumBasicNotifications:(unint64_t)notifications avgNumMessageNotifications:(unint64_t)messageNotifications avgNumTimeSensitiveNonMessageNotifications:(unint64_t)nonMessageNotifications numBasicNotifications:(unint64_t)basicNotifications numMessageNotifications:(unint64_t)numMessageNotifications numTimeSensitiveNonMessageNotifications:(unint64_t)sensitiveNonMessageNotifications;
 @end
 
 @implementation ATXDigestSetupResponse
 
-- (ATXDigestSetupResponse)initWithBundleId:(id)a3 avgNumBasicNotifications:(unint64_t)a4 avgNumMessageNotifications:(unint64_t)a5 avgNumTimeSensitiveNonMessageNotifications:(unint64_t)a6 numBasicNotifications:(unint64_t)a7 numMessageNotifications:(unint64_t)a8 numTimeSensitiveNonMessageNotifications:(unint64_t)a9
+- (ATXDigestSetupResponse)initWithBundleId:(id)id avgNumBasicNotifications:(unint64_t)notifications avgNumMessageNotifications:(unint64_t)messageNotifications avgNumTimeSensitiveNonMessageNotifications:(unint64_t)nonMessageNotifications numBasicNotifications:(unint64_t)basicNotifications numMessageNotifications:(unint64_t)numMessageNotifications numTimeSensitiveNonMessageNotifications:(unint64_t)sensitiveNonMessageNotifications
 {
-  v16 = a3;
+  idCopy = id;
   v20.receiver = self;
   v20.super_class = ATXDigestSetupResponse;
   v17 = [(ATXDigestSetupResponse *)&v20 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_bundleId, a3);
-    v18->_avgNumBasicNotifications = a4;
-    v18->_avgNumMessageNotifications = a5;
-    v18->_avgNumTimeSensitiveNonMessageNotifications = a6;
-    v18->_numBasicNotifications = a7;
-    v18->_numMessageNotifications = a8;
-    v18->_numTimeSensitiveNonMessageNotifications = a9;
+    objc_storeStrong(&v17->_bundleId, id);
+    v18->_avgNumBasicNotifications = notifications;
+    v18->_avgNumMessageNotifications = messageNotifications;
+    v18->_avgNumTimeSensitiveNonMessageNotifications = nonMessageNotifications;
+    v18->_numBasicNotifications = basicNotifications;
+    v18->_numMessageNotifications = numMessageNotifications;
+    v18->_numTimeSensitiveNonMessageNotifications = sensitiveNonMessageNotifications;
   }
 
   return v18;

@@ -7,12 +7,12 @@
 + (id)tps_telephonyTapToRadarURLForError:()TelephonyPreferences
 {
   v3 = a3;
-  v4 = [v3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x277CCA068]];
+  userInfo = [v3 userInfo];
+  v5 = [userInfo objectForKeyedSubscript:*MEMORY[0x277CCA068]];
 
-  v6 = [v3 localizedFailureReason];
+  localizedFailureReason = [v3 localizedFailureReason];
 
-  if ([v5 length] && objc_msgSend(v6, "length"))
+  if ([v5 length] && objc_msgSend(localizedFailureReason, "length"))
   {
     v7 = objc_alloc_init(MEMORY[0x277CCACE0]);
     v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -33,7 +33,7 @@
     v14 = [objc_alloc(MEMORY[0x277CCAD18]) initWithName:@"Reproducibility" value:@"Always"];
 
     [v8 addObject:v14];
-    v15 = [objc_alloc(MEMORY[0x277CCAD18]) initWithName:@"Title" value:v6];
+    v15 = [objc_alloc(MEMORY[0x277CCAD18]) initWithName:@"Title" value:localizedFailureReason];
 
     [v8 addObject:v15];
     v16 = [objc_alloc(MEMORY[0x277CCAD18]) initWithName:@"Description" value:v5];

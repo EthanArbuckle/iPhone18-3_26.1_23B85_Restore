@@ -1,19 +1,19 @@
 @interface IMAVEmbeddedInterface
 + (void)updateCriticalState;
-- (int64_t)_runPingTestForChat:(id)a3;
-- (void)_conferenceEnded:(id)a3;
-- (void)_conferenceWillStart:(id)a3;
+- (int64_t)_runPingTestForChat:(id)chat;
+- (void)_conferenceEnded:(id)ended;
+- (void)_conferenceWillStart:(id)start;
 - (void)chatStateUpdated;
 @end
 
 @implementation IMAVEmbeddedInterface
 
-- (void)_conferenceWillStart:(id)a3
+- (void)_conferenceWillStart:(id)start
 {
-  v4 = a3;
+  startCopy = start;
   v25.receiver = self;
   v25.super_class = IMAVEmbeddedInterface;
-  [(IMAVInterface *)&v25 _conferenceWillStart:v4];
+  [(IMAVInterface *)&v25 _conferenceWillStart:startCopy];
   if (!qword_27F610658)
   {
     qword_27F610658 = MEMORY[0x259C18990](@"AVSystemController", @"Celestial");
@@ -29,26 +29,26 @@
 
   if (objc_msgSend_BOOLValue(v13, v14, v15, v16, v17))
   {
-    v21 = objc_msgSend__existingConferenceForAVChat_(self, v18, v4, v19, v20);
+    v21 = objc_msgSend__existingConferenceForAVChat_(self, v18, startCopy, v19, v20);
     objc_msgSend_setMicrophoneMuted_(v21, v22, 1, v23, v24);
   }
 }
 
-- (void)_conferenceEnded:(id)a3
+- (void)_conferenceEnded:(id)ended
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  endedCopy = ended;
   v5 = sub_254761764();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v9 = v4;
+    v9 = endedCopy;
     _os_log_impl(&dword_254743000, v5, OS_LOG_TYPE_DEFAULT, "_conferenceEnded: %@", buf, 0xCu);
   }
 
   v7.receiver = self;
   v7.super_class = IMAVEmbeddedInterface;
-  [(IMAVConferenceInterface *)&v7 _conferenceEnded:v4];
+  [(IMAVConferenceInterface *)&v7 _conferenceEnded:endedCopy];
 
   v6 = *MEMORY[0x277D85DE8];
 }
@@ -173,11 +173,11 @@ LABEL_18:
   v67 = *MEMORY[0x277D85DE8];
 }
 
-- (int64_t)_runPingTestForChat:(id)a3
+- (int64_t)_runPingTestForChat:(id)chat
 {
   *&v108[5] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (objc_msgSend__localNetworkConnectionType(v3, v4, v5, v6, v7) == 2)
+  chatCopy = chat;
+  if (objc_msgSend__localNetworkConnectionType(chatCopy, v4, v5, v6, v7) == 2)
   {
     v12 = objc_msgSend_sharedInstance(MEMORY[0x277D192E8], v8, v9, v10, v11);
     v17 = objc_msgSend_myGatewayAddress(v12, v13, v14, v15, v16);
@@ -200,7 +200,7 @@ LABEL_18:
       v29 = objc_msgSend_packetsSuccessfullySent(v24, v25, v26, v27, v28);
       v30 = 4 * (v29 < 1);
       objc_autoreleasePoolPop(v23);
-      objc_msgSend__setPingTestResult_(v3, v31, v30, v32, v33);
+      objc_msgSend__setPingTestResult_(chatCopy, v31, v30, v32, v33);
       v34 = sub_254761764();
       v35 = os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT);
       if (v29 < 1)
@@ -279,7 +279,7 @@ LABEL_18:
         v96 = objc_msgSend_numberWithFloat_(v84, v89, v90, v91, v92, v95);
         v97 = objc_alloc(MEMORY[0x277CBEAC0]);
         v101 = objc_msgSend_initWithObjectsAndKeys_(v97, v98, v34, v99, v100, @"AVPingTestMin", v59, @"AVPingTestMax", v72, @"AVPingTestAvg", v83, @"AVPingTestStdDeviation", v96, @"AVPingTestPacketLoss", 0);
-        objc_msgSend__setPingTestResults_(v3, v102, v101, v103, v104);
+        objc_msgSend__setPingTestResults_(chatCopy, v102, v101, v103, v104);
       }
     }
 

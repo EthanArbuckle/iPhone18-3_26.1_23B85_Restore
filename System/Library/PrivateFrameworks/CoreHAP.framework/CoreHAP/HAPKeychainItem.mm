@@ -1,25 +1,25 @@
 @interface HAPKeychainItem
-+ (BOOL)isQueryResultValid:(__CFDictionary *)a3 shouldIncludeData:(BOOL)a4;
-- (BOOL)matchesPublicKeyData:(id)a3;
-- (HAPKeychainItem)initWithQueryResult:(__CFDictionary *)a3 shouldIncludeData:(BOOL)a4;
-- (id)copyWithZone:(_NSZone *)a3;
++ (BOOL)isQueryResultValid:(__CFDictionary *)valid shouldIncludeData:(BOOL)data;
+- (BOOL)matchesPublicKeyData:(id)data;
+- (HAPKeychainItem)initWithQueryResult:(__CFDictionary *)result shouldIncludeData:(BOOL)data;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (void)dealloc;
 @end
 
 @implementation HAPKeychainItem
 
-- (BOOL)matchesPublicKeyData:(id)a3
+- (BOOL)matchesPublicKeyData:(id)data
 {
   v12 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if ([a3 bytes])
+  dataCopy = data;
+  if ([data bytes])
   {
     DataToHexCStringEx();
     v6 = [MEMORY[0x277CBEA90] dataWithBytes:v11 length:64];
-    v7 = [(HAPKeychainItem *)self valueData];
-    v8 = [v6 isEqual:v7];
+    valueData = [(HAPKeychainItem *)self valueData];
+    v8 = [v6 isEqual:valueData];
   }
 
   else
@@ -45,87 +45,87 @@
   [(HAPKeychainItem *)&v4 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
-  v5 = [(HAPKeychainItem *)self accessGroup];
+  accessGroup = [(HAPKeychainItem *)self accessGroup];
   v6 = v4[2];
-  v4[2] = v5;
+  v4[2] = accessGroup;
 
-  v7 = [(HAPKeychainItem *)self type];
+  type = [(HAPKeychainItem *)self type];
   v8 = v4[3];
-  v4[3] = v7;
+  v4[3] = type;
 
-  v9 = [(HAPKeychainItem *)self account];
+  account = [(HAPKeychainItem *)self account];
   v10 = v4[4];
-  v4[4] = v9;
+  v4[4] = account;
 
-  v11 = [(HAPKeychainItem *)self valueData];
+  valueData = [(HAPKeychainItem *)self valueData];
   v12 = v4[5];
-  v4[5] = v11;
+  v4[5] = valueData;
 
   *(v4 + 8) = [(HAPKeychainItem *)self isSyncable];
-  v13 = [(HAPKeychainItem *)self viewHint];
+  viewHint = [(HAPKeychainItem *)self viewHint];
   v14 = v4[8];
-  v4[8] = v13;
+  v4[8] = viewHint;
 
-  v15 = [(HAPKeychainItem *)self label];
+  label = [(HAPKeychainItem *)self label];
   v16 = v4[6];
-  v4[6] = v15;
+  v4[6] = label;
 
-  v17 = [(HAPKeychainItem *)self itemDescription];
+  itemDescription = [(HAPKeychainItem *)self itemDescription];
   v18 = v4[7];
-  v4[7] = v17;
+  v4[7] = itemDescription;
 
-  v19 = [(HAPKeychainItem *)self creationDate];
+  creationDate = [(HAPKeychainItem *)self creationDate];
   v20 = v4[9];
-  v4[9] = v19;
+  v4[9] = creationDate;
 
-  v21 = [(HAPKeychainItem *)self genericData];
+  genericData = [(HAPKeychainItem *)self genericData];
   v22 = v4[10];
-  v4[10] = v21;
+  v4[10] = genericData;
 
   return v4;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(HAPMutableKeychainItem);
-  v5 = [(HAPKeychainItem *)self accessGroup];
-  [(HAPKeychainItem *)v4 setAccessGroup:v5];
+  accessGroup = [(HAPKeychainItem *)self accessGroup];
+  [(HAPKeychainItem *)v4 setAccessGroup:accessGroup];
 
-  v6 = [(HAPKeychainItem *)self type];
-  [(HAPKeychainItem *)v4 setType:v6];
+  type = [(HAPKeychainItem *)self type];
+  [(HAPKeychainItem *)v4 setType:type];
 
-  v7 = [(HAPKeychainItem *)self account];
-  [(HAPKeychainItem *)v4 setAccount:v7];
+  account = [(HAPKeychainItem *)self account];
+  [(HAPKeychainItem *)v4 setAccount:account];
 
-  v8 = [(HAPKeychainItem *)self valueData];
-  [(HAPKeychainItem *)v4 setValueData:v8];
+  valueData = [(HAPKeychainItem *)self valueData];
+  [(HAPKeychainItem *)v4 setValueData:valueData];
 
   [(HAPKeychainItem *)v4 setSyncable:[(HAPKeychainItem *)self isSyncable]];
-  v9 = [(HAPKeychainItem *)self viewHint];
-  [(HAPKeychainItem *)v4 setViewHint:v9];
+  viewHint = [(HAPKeychainItem *)self viewHint];
+  [(HAPKeychainItem *)v4 setViewHint:viewHint];
 
-  v10 = [(HAPKeychainItem *)self label];
-  [(HAPKeychainItem *)v4 setLabel:v10];
+  label = [(HAPKeychainItem *)self label];
+  [(HAPKeychainItem *)v4 setLabel:label];
 
-  v11 = [(HAPKeychainItem *)self itemDescription];
-  [(HAPKeychainItem *)v4 setItemDescription:v11];
+  itemDescription = [(HAPKeychainItem *)self itemDescription];
+  [(HAPKeychainItem *)v4 setItemDescription:itemDescription];
 
-  v12 = [(HAPKeychainItem *)self creationDate];
-  [(HAPKeychainItem *)v4 setCreationDate:v12];
+  creationDate = [(HAPKeychainItem *)self creationDate];
+  [(HAPKeychainItem *)v4 setCreationDate:creationDate];
 
-  v13 = [(HAPKeychainItem *)self genericData];
-  [(HAPKeychainItem *)v4 setGenericData:v13];
+  genericData = [(HAPKeychainItem *)self genericData];
+  [(HAPKeychainItem *)v4 setGenericData:genericData];
 
   return v4;
 }
 
-+ (BOOL)isQueryResultValid:(__CFDictionary *)a3 shouldIncludeData:(BOOL)a4
++ (BOOL)isQueryResultValid:(__CFDictionary *)valid shouldIncludeData:(BOOL)data
 {
-  v4 = a4;
-  Value = CFDictionaryGetValue(a3, *MEMORY[0x277CDBEC8]);
+  dataCopy = data;
+  Value = CFDictionaryGetValue(valid, *MEMORY[0x277CDBEC8]);
   if (Value)
   {
     v7 = CFGetTypeID(Value);
@@ -134,7 +134,7 @@
       goto LABEL_17;
     }
 
-    Value = CFDictionaryGetValue(a3, *MEMORY[0x277CDC188]);
+    Value = CFDictionaryGetValue(valid, *MEMORY[0x277CDC188]);
     if (!Value)
     {
       return Value;
@@ -146,7 +146,7 @@
       goto LABEL_17;
     }
 
-    Value = CFDictionaryGetValue(a3, *MEMORY[0x277CDC080]);
+    Value = CFDictionaryGetValue(valid, *MEMORY[0x277CDC080]);
     if (!Value)
     {
       return Value;
@@ -158,7 +158,7 @@
       goto LABEL_17;
     }
 
-    Value = CFDictionaryGetValue(a3, *MEMORY[0x277CDBFA0]);
+    Value = CFDictionaryGetValue(valid, *MEMORY[0x277CDBFA0]);
     if (!Value)
     {
       return Value;
@@ -170,7 +170,7 @@
       goto LABEL_17;
     }
 
-    Value = CFDictionaryGetValue(a3, *MEMORY[0x277CDBF20]);
+    Value = CFDictionaryGetValue(valid, *MEMORY[0x277CDBF20]);
     if (!Value)
     {
       return Value;
@@ -182,17 +182,17 @@
       goto LABEL_17;
     }
 
-    Value = CFDictionaryGetValue(a3, *MEMORY[0x277CDC5F0]);
+    Value = CFDictionaryGetValue(valid, *MEMORY[0x277CDC5F0]);
     if (Value)
     {
-      if (!v4)
+      if (!dataCopy)
       {
 LABEL_15:
         LOBYTE(Value) = 1;
         return Value;
       }
 
-      Value = CFDictionaryGetValue(a3, *MEMORY[0x277CDC5E8]);
+      Value = CFDictionaryGetValue(valid, *MEMORY[0x277CDC5E8]);
       if (Value)
       {
         v12 = CFGetTypeID(Value);
@@ -210,58 +210,58 @@ LABEL_17:
   return Value;
 }
 
-- (HAPKeychainItem)initWithQueryResult:(__CFDictionary *)a3 shouldIncludeData:(BOOL)a4
+- (HAPKeychainItem)initWithQueryResult:(__CFDictionary *)result shouldIncludeData:(BOOL)data
 {
-  v4 = a4;
+  dataCopy = data;
   v39.receiver = self;
   v39.super_class = HAPKeychainItem;
   v6 = [(HAPKeychainItem *)&v39 init];
   if (v6)
   {
-    Value = CFDictionaryGetValue(a3, *MEMORY[0x277CDBEC8]);
+    Value = CFDictionaryGetValue(result, *MEMORY[0x277CDBEC8]);
     Copy = CFStringCreateCopy(0, Value);
     accessGroup = v6->_accessGroup;
     v6->_accessGroup = &Copy->isa;
 
     valuePtr = 0;
-    v10 = CFDictionaryGetValue(a3, *MEMORY[0x277CDC188]);
+    v10 = CFDictionaryGetValue(result, *MEMORY[0x277CDC188]);
     CFNumberGetValue(v10, kCFNumberIntType, &valuePtr);
     v11 = [MEMORY[0x277CCABB0] numberWithInt:valuePtr];
     type = v6->_type;
     v6->_type = v11;
 
-    v13 = CFDictionaryGetValue(a3, *MEMORY[0x277CDC080]);
+    v13 = CFDictionaryGetValue(result, *MEMORY[0x277CDC080]);
     v14 = CFStringCreateCopy(0, v13);
     label = v6->_label;
     v6->_label = &v14->isa;
 
-    v16 = CFDictionaryGetValue(a3, *MEMORY[0x277CDBFA0]);
+    v16 = CFDictionaryGetValue(result, *MEMORY[0x277CDBFA0]);
     v17 = CFStringCreateCopy(0, v16);
     itemDescription = v6->_itemDescription;
     v6->_itemDescription = &v17->isa;
 
-    v19 = CFDictionaryGetValue(a3, *MEMORY[0x277CDC140]);
+    v19 = CFDictionaryGetValue(result, *MEMORY[0x277CDC140]);
     if (v19)
     {
       v6->_syncable = CFBooleanGetValue(v19) != 0;
     }
 
-    v20 = CFDictionaryGetValue(a3, *MEMORY[0x277CDBFC0]);
+    v20 = CFDictionaryGetValue(result, *MEMORY[0x277CDBFC0]);
     if (v20)
     {
       v6->_invisible = CFBooleanGetValue(v20) != 0;
     }
 
-    v21 = CFDictionaryGetValue(a3, *MEMORY[0x277CDBF20]);
+    v21 = CFDictionaryGetValue(result, *MEMORY[0x277CDBF20]);
     v22 = CFStringCreateCopy(0, v21);
     account = v6->_account;
     v6->_account = &v22->isa;
 
-    v24 = CFDictionaryGetValue(a3, *MEMORY[0x277CDC5F0]);
+    v24 = CFDictionaryGetValue(result, *MEMORY[0x277CDC5F0]);
     v6->_platformReference = CFRetain(v24);
-    if (v4)
+    if (dataCopy)
     {
-      v25 = CFDictionaryGetValue(a3, *MEMORY[0x277CDC5E8]);
+      v25 = CFDictionaryGetValue(result, *MEMORY[0x277CDC5E8]);
       v26 = CFDataCreateCopy(0, v25);
       valueData = v6->_valueData;
       v6->_valueData = v26;
@@ -277,7 +277,7 @@ LABEL_17:
       v6->_genericData = v30;
     }
 
-    v32 = CFDictionaryGetValue(a3, *MEMORY[0x277CDC138]);
+    v32 = CFDictionaryGetValue(result, *MEMORY[0x277CDC138]);
     if (v32)
     {
       v33 = CFStringCreateCopy(0, v32);
@@ -300,14 +300,14 @@ LABEL_17:
 - (id)description
 {
   v3 = objc_opt_class();
-  v4 = [(HAPKeychainItem *)self genericData];
-  v23 = [v3 getDictionaryFromGenericData:v4];
+  genericData = [(HAPKeychainItem *)self genericData];
+  v23 = [v3 getDictionaryFromGenericData:genericData];
 
   v20 = MEMORY[0x277CCACA8];
-  v22 = [(HAPKeychainItem *)self accessGroup];
-  v21 = [(HAPKeychainItem *)self type];
-  v19 = KeyTypeDescription(v21);
-  v5 = [(HAPKeychainItem *)self account];
+  accessGroup = [(HAPKeychainItem *)self accessGroup];
+  type = [(HAPKeychainItem *)self type];
+  v19 = KeyTypeDescription(type);
+  account = [(HAPKeychainItem *)self account];
   if ([(HAPKeychainItem *)self isSyncable])
   {
     v6 = @"Yes";
@@ -318,7 +318,7 @@ LABEL_17:
     v6 = @"No";
   }
 
-  v7 = [(HAPKeychainItem *)self valueData];
+  valueData = [(HAPKeychainItem *)self valueData];
   v8 = CUPrintNSObjectMasked();
   if ([(HAPKeychainItem *)self isInvisible])
   {
@@ -330,8 +330,8 @@ LABEL_17:
     v9 = @"No";
   }
 
-  v10 = [(HAPKeychainItem *)self viewHint];
-  if (v10)
+  viewHint = [(HAPKeychainItem *)self viewHint];
+  if (viewHint)
   {
     v11 = @", viewHint: ";
   }
@@ -341,20 +341,20 @@ LABEL_17:
     v11 = &stru_283E79C60;
   }
 
-  v12 = [(HAPKeychainItem *)self viewHint];
-  if (v12)
+  viewHint2 = [(HAPKeychainItem *)self viewHint];
+  if (viewHint2)
   {
-    v13 = [(HAPKeychainItem *)self viewHint];
+    viewHint3 = [(HAPKeychainItem *)self viewHint];
     v17 = v6;
-    v14 = v22;
-    v15 = [v20 stringWithFormat:@"agrp: %@, type: %s, acct: %@, sync: %@, hash: %@, invisible: %@%@%@, dictionary:%@", v22, v19, v5, v17, v8, v9, v11, v13, v23];
+    v14 = accessGroup;
+    v15 = [v20 stringWithFormat:@"agrp: %@, type: %s, acct: %@, sync: %@, hash: %@, invisible: %@%@%@, dictionary:%@", accessGroup, v19, account, v17, v8, v9, v11, viewHint3, v23];
   }
 
   else
   {
     v18 = v6;
-    v14 = v22;
-    v15 = [v20 stringWithFormat:@"agrp: %@, type: %s, acct: %@, sync: %@, hash: %@, invisible: %@%@%@, dictionary:%@", v22, v19, v5, v18, v8, v9, v11, &stru_283E79C60, v23];
+    v14 = accessGroup;
+    v15 = [v20 stringWithFormat:@"agrp: %@, type: %s, acct: %@, sync: %@, hash: %@, invisible: %@%@%@, dictionary:%@", accessGroup, v19, account, v18, v8, v9, v11, &stru_283E79C60, v23];
   }
 
   return v15;

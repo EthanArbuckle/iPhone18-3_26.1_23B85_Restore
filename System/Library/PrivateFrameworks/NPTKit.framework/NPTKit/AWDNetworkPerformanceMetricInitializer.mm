@@ -1,19 +1,19 @@
 @interface AWDNetworkPerformanceMetricInitializer
-+ (id)createPerformanceMetricFromDictionary:(id)a3;
++ (id)createPerformanceMetricFromDictionary:(id)dictionary;
 @end
 
 @implementation AWDNetworkPerformanceMetricInitializer
 
-+ (id)createPerformanceMetricFromDictionary:(id)a3
++ (id)createPerformanceMetricFromDictionary:(id)dictionary
 {
   v172 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  dictionaryCopy = dictionary;
   v4 = objc_alloc_init(AWDNetworkPerformanceMetric);
   v167 = 0u;
   v168 = 0u;
   v169 = 0u;
   v170 = 0u;
-  v5 = v3;
+  v5 = dictionaryCopy;
   v6 = [v5 countByEnumeratingWithState:&v167 objects:v171 count:16];
   if (v6)
   {

@@ -1,12 +1,12 @@
 @interface IMActionComposeText
 - (IMActionComposeText)init;
-- (IMActionComposeText)initWithPhoneNumber:(id)a3 text:(id)a4;
+- (IMActionComposeText)initWithPhoneNumber:(id)number text:(id)text;
 - (id)dictionaryRepresentation;
 @end
 
 @implementation IMActionComposeText
 
-- (IMActionComposeText)initWithPhoneNumber:(id)a3 text:(id)a4
+- (IMActionComposeText)initWithPhoneNumber:(id)number text:(id)text
 {
   v5 = sub_1A88C82E8();
   v7 = v6;
@@ -24,7 +24,7 @@
 
 - (id)dictionaryRepresentation
 {
-  v2 = self;
+  selfCopy = self;
   sub_1A8731D24();
 
   v3 = sub_1A88C8188();

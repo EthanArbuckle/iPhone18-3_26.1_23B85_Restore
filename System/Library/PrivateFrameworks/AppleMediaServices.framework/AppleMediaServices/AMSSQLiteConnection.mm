@@ -1,30 +1,30 @@
 @interface AMSSQLiteConnection
-- (AMSSQLiteConnection)initWithOptions:(id)a3;
+- (AMSSQLiteConnection)initWithOptions:(id)options;
 - (AMSSQLiteConnectionDelegate)delegate;
-- (BOOL)_closeDueToError:(id)a3 error:(id *)a4;
-- (BOOL)_executeStatement:(id)a3 error:(id *)a4;
-- (BOOL)_executeWithError:(id *)a3 usingBlock:(id)a4;
-- (BOOL)_openAndAllowRetry:(BOOL)a3 error:(id *)a4;
-- (BOOL)_performResetAfterCorruptionError:(id)a3 error:(id *)a4;
-- (BOOL)_resetAfterCorruptionError:(id)a3 error:(id *)a4;
-- (BOOL)_resetAfterIOError:(id)a3 error:(id *)a4;
-- (BOOL)executePreparedStatement:(id)a3 error:(id *)a4 bindings:(id)a5;
-- (BOOL)executeStatement:(id)a3 error:(id *)a4 bindings:(id)a5;
-- (BOOL)finalizePreparedStatement:(id)a3 error:(id *)a4;
-- (BOOL)truncateWithError:(id *)a3;
-- (id)_prepareStatement:(id)a3 error:(id *)a4;
-- (id)_statementForPreparedStatement:(id)a3 error:(id *)a4;
-- (id)_verifiedStatementForPreparedStatement:(id)a3 error:(id *)a4;
-- (id)_verifiedStatementForSQL:(id)a3 error:(id *)a4;
-- (id)prepareStatement:(id)a3 error:(id *)a4;
+- (BOOL)_closeDueToError:(id)error error:(id *)a4;
+- (BOOL)_executeStatement:(id)statement error:(id *)error;
+- (BOOL)_executeWithError:(id *)error usingBlock:(id)block;
+- (BOOL)_openAndAllowRetry:(BOOL)retry error:(id *)error;
+- (BOOL)_performResetAfterCorruptionError:(id)error error:(id *)a4;
+- (BOOL)_resetAfterCorruptionError:(id)error error:(id *)a4;
+- (BOOL)_resetAfterIOError:(id)error error:(id *)a4;
+- (BOOL)executePreparedStatement:(id)statement error:(id *)error bindings:(id)bindings;
+- (BOOL)executeStatement:(id)statement error:(id *)error bindings:(id)bindings;
+- (BOOL)finalizePreparedStatement:(id)statement error:(id *)error;
+- (BOOL)truncateWithError:(id *)error;
+- (id)_prepareStatement:(id)statement error:(id *)error;
+- (id)_statementForPreparedStatement:(id)statement error:(id *)error;
+- (id)_verifiedStatementForPreparedStatement:(id)statement error:(id *)error;
+- (id)_verifiedStatementForSQL:(id)l error:(id *)error;
+- (id)prepareStatement:(id)statement error:(id *)error;
 - (int64_t)lastChangeCount;
 - (void)_finalizeAllStatements;
 - (void)_flushAfterTransactionBlocks;
 - (void)dealloc;
-- (void)dispatchAfterTransaction:(id)a3;
-- (void)executePreparedQuery:(id)a3 withResults:(id)a4;
-- (void)executeQuery:(id)a3 withResults:(id)a4;
-- (void)performTransaction:(id)a3;
+- (void)dispatchAfterTransaction:(id)transaction;
+- (void)executePreparedQuery:(id)query withResults:(id)results;
+- (void)executeQuery:(id)query withResults:(id)results;
+- (void)performTransaction:(id)transaction;
 @end
 
 @implementation AMSSQLiteConnection
@@ -36,8 +36,8 @@
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [(NSMapTable *)self->_preparedStatements objectEnumerator];
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  objectEnumerator = [(NSMapTable *)self->_preparedStatements objectEnumerator];
+  v4 = [objectEnumerator countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -49,14 +49,14 @@
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         [*(*(&v10 + 1) + 8 * v7++) finalizeStatement];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [objectEnumerator countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);
@@ -105,30 +105,30 @@
   }
 }
 
-- (AMSSQLiteConnection)initWithOptions:(id)a3
+- (AMSSQLiteConnection)initWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v11.receiver = self;
   v11.super_class = AMSSQLiteConnection;
   v5 = [(AMSSQLiteConnection *)&v11 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [optionsCopy copy];
     options = v5->_options;
     v5->_options = v6;
 
-    v8 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
     preparedStatements = v5->_preparedStatements;
-    v5->_preparedStatements = v8;
+    v5->_preparedStatements = strongToStrongObjectsMapTable;
   }
 
   return v5;
 }
 
-- (void)dispatchAfterTransaction:(id)a3
+- (void)dispatchAfterTransaction:(id)transaction
 {
-  v4 = a3;
-  v10 = v4;
+  transactionCopy = transaction;
+  v10 = transactionCopy;
   if (self->_transactionDepth)
   {
     if (!self->_afterTransactionBlocks)
@@ -137,10 +137,10 @@
       afterTransactionBlocks = self->_afterTransactionBlocks;
       self->_afterTransactionBlocks = v5;
 
-      v4 = v10;
+      transactionCopy = v10;
     }
 
-    v7 = [v4 copy];
+    v7 = [transactionCopy copy];
     v8 = self->_afterTransactionBlocks;
     v9 = _Block_copy(v7);
     [(NSMutableArray *)v8 addObject:v9];
@@ -148,16 +148,16 @@
 
   else
   {
-    v4[2]();
+    transactionCopy[2]();
   }
 }
 
-- (void)executePreparedQuery:(id)a3 withResults:(id)a4
+- (void)executePreparedQuery:(id)query withResults:(id)results
 {
-  v6 = a3;
-  v7 = a4;
+  queryCopy = query;
+  resultsCopy = results;
   v11 = 0;
-  v8 = [(AMSSQLiteConnection *)self _verifiedStatementForPreparedStatement:v6 error:&v11];
+  v8 = [(AMSSQLiteConnection *)self _verifiedStatementForPreparedStatement:queryCopy error:&v11];
   v9 = v11;
   if (v8)
   {
@@ -169,23 +169,23 @@
     v10 = 0;
   }
 
-  v7[2](v7, v10, v9);
+  resultsCopy[2](resultsCopy, v10, v9);
   [v8 clearBindings];
   [v8 reset];
 }
 
-- (BOOL)executePreparedStatement:(id)a3 error:(id *)a4 bindings:(id)a5
+- (BOOL)executePreparedStatement:(id)statement error:(id *)error bindings:(id)bindings
 {
-  v8 = a5;
+  bindingsCopy = bindings;
   v17 = 0;
-  v9 = [(AMSSQLiteConnection *)self _verifiedStatementForPreparedStatement:a3 error:&v17];
+  v9 = [(AMSSQLiteConnection *)self _verifiedStatementForPreparedStatement:statement error:&v17];
   v10 = v17;
   v11 = v10;
   if (v9 && !v10)
   {
-    if (v8)
+    if (bindingsCopy)
     {
-      v8[2](v8, v9);
+      bindingsCopy[2](bindingsCopy, v9);
     }
 
     v16 = 0;
@@ -194,7 +194,7 @@
     if (v13)
     {
       v11 = v13;
-      if (!a4)
+      if (!error)
       {
         goto LABEL_16;
       }
@@ -202,7 +202,7 @@
       goto LABEL_14;
     }
 
-    if (v8)
+    if (bindingsCopy)
     {
       [v9 clearBindings];
     }
@@ -210,7 +210,7 @@
 LABEL_13:
     [v9 reset];
     v11 = 0;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_16;
     }
@@ -224,7 +224,7 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  if (!a4)
+  if (!error)
   {
     goto LABEL_16;
   }
@@ -233,7 +233,7 @@ LABEL_14:
   if (!v12)
   {
     v14 = v11;
-    *a4 = v11;
+    *error = v11;
   }
 
 LABEL_16:
@@ -241,14 +241,14 @@ LABEL_16:
   return v12;
 }
 
-- (void)executeQuery:(id)a3 withResults:(id)a4
+- (void)executeQuery:(id)query withResults:(id)results
 {
-  v6 = a3;
-  v7 = a4;
+  queryCopy = query;
+  resultsCopy = results;
   v12 = 0;
-  v8 = [(AMSSQLiteConnection *)self _verifiedStatementForSQL:v6 error:&v12];
+  v8 = [(AMSSQLiteConnection *)self _verifiedStatementForSQL:queryCopy error:&v12];
   v9 = v12;
-  v10 = [[AMSSQLitePreparedStatement alloc] initWithConnection:self->_database SQL:v6];
+  v10 = [[AMSSQLitePreparedStatement alloc] initWithConnection:self->_database SQL:queryCopy];
   if (v10)
   {
     [(NSMapTable *)self->_preparedStatements setObject:v8 forKey:v10];
@@ -264,7 +264,7 @@ LABEL_16:
     v11 = 0;
   }
 
-  v7[2](v7, v11, v9);
+  resultsCopy[2](resultsCopy, v11, v9);
   [v8 finalizeStatement];
   if (v10)
   {
@@ -272,14 +272,14 @@ LABEL_16:
   }
 }
 
-- (BOOL)executeStatement:(id)a3 error:(id *)a4 bindings:(id)a5
+- (BOOL)executeStatement:(id)statement error:(id *)error bindings:(id)bindings
 {
-  v8 = a5;
+  bindingsCopy = bindings;
   v18 = 0;
-  v9 = a3;
-  v10 = [(AMSSQLiteConnection *)self _verifiedStatementForSQL:v9 error:&v18];
+  statementCopy = statement;
+  v10 = [(AMSSQLiteConnection *)self _verifiedStatementForSQL:statementCopy error:&v18];
   v11 = v18;
-  v12 = [[AMSSQLitePreparedStatement alloc] initWithConnection:self->_database SQL:v9];
+  v12 = [[AMSSQLitePreparedStatement alloc] initWithConnection:self->_database SQL:statementCopy];
 
   if (v12)
   {
@@ -289,7 +289,7 @@ LABEL_16:
   if (!v10)
   {
     v13 = 0;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_13;
     }
@@ -297,9 +297,9 @@ LABEL_16:
     goto LABEL_11;
   }
 
-  if (v8)
+  if (bindingsCopy)
   {
-    v8[2](v8, v10);
+    bindingsCopy[2](bindingsCopy, v10);
   }
 
   v17 = v11;
@@ -313,13 +313,13 @@ LABEL_16:
   }
 
   v11 = v14;
-  if (a4)
+  if (error)
   {
 LABEL_11:
     if (!v13)
     {
       v15 = v11;
-      *a4 = v11;
+      *error = v11;
     }
   }
 
@@ -328,29 +328,29 @@ LABEL_13:
   return v13;
 }
 
-- (BOOL)finalizePreparedStatement:(id)a3 error:(id *)a4
+- (BOOL)finalizePreparedStatement:(id)statement error:(id *)error
 {
-  v6 = a3;
+  statementCopy = statement;
   v14 = 0;
-  v7 = [(AMSSQLiteConnection *)self _verifiedStatementForPreparedStatement:v6 error:&v14];
+  v7 = [(AMSSQLiteConnection *)self _verifiedStatementForPreparedStatement:statementCopy error:&v14];
   v8 = v14;
   if (v7)
   {
-    v9 = [v7 finalizeStatement];
-    if (v9 - 100 >= 2 && v9 != 0)
+    finalizeStatement = [v7 finalizeStatement];
+    if (finalizeStatement - 100 >= 2 && finalizeStatement != 0)
     {
-      v11 = AMSSQLiteCreateError(-7708, @"Error Finalizing Prepared Statement", v9, 0);
+      v11 = AMSSQLiteCreateError(-7708, @"Error Finalizing Prepared Statement", finalizeStatement, 0);
 
       v8 = v11;
     }
 
-    [(NSMapTable *)self->_preparedStatements removeObjectForKey:v6];
+    [(NSMapTable *)self->_preparedStatements removeObjectForKey:statementCopy];
   }
 
-  if (a4)
+  if (error)
   {
     v12 = v8;
-    *a4 = v8;
+    *error = v8;
   }
 
   return 0;
@@ -368,9 +368,9 @@ LABEL_13:
   return result;
 }
 
-- (void)performTransaction:(id)a3
+- (void)performTransaction:(id)transaction
 {
-  v9 = a3;
+  transactionCopy = transaction;
   transactionDepth = self->_transactionDepth;
   if (transactionDepth < 1)
   {
@@ -388,7 +388,7 @@ LABEL_13:
     self->_transactionDepth = transactionDepth + 1;
   }
 
-  v5 = v9[2]() ^ 1;
+  v5 = transactionCopy[2]() ^ 1;
   v6 = self->_transactionDepth;
   v7 = self->_transactionWantsRollback | v5;
   self->_transactionWantsRollback = v7 & 1;
@@ -412,9 +412,9 @@ LABEL_13:
 LABEL_10:
 }
 
-- (id)prepareStatement:(id)a3 error:(id *)a4
+- (id)prepareStatement:(id)statement error:(id *)error
 {
-  v6 = a3;
+  statementCopy = statement;
   v16 = 0;
   v7 = [(AMSSQLiteConnection *)self _openWithError:&v16];
   v8 = v16;
@@ -422,12 +422,12 @@ LABEL_10:
   if (v7)
   {
     v15 = v8;
-    v10 = [(AMSSQLiteConnection *)self _prepareStatement:v6 error:&v15];
+    v10 = [(AMSSQLiteConnection *)self _prepareStatement:statementCopy error:&v15];
     v11 = v15;
 
     if (v10)
     {
-      v12 = [[AMSSQLitePreparedStatement alloc] initWithConnection:self SQL:v6];
+      v12 = [[AMSSQLitePreparedStatement alloc] initWithConnection:self SQL:statementCopy];
       [(NSMapTable *)self->_preparedStatements setObject:v10 forKey:v12];
     }
 
@@ -437,7 +437,7 @@ LABEL_10:
     }
 
     v9 = v11;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_10;
     }
@@ -446,7 +446,7 @@ LABEL_10:
   else
   {
     v12 = 0;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_10;
     }
@@ -455,7 +455,7 @@ LABEL_10:
   if (!v12)
   {
     v13 = v9;
-    *a4 = v9;
+    *error = v9;
   }
 
 LABEL_10:
@@ -463,23 +463,23 @@ LABEL_10:
   return v12;
 }
 
-- (BOOL)truncateWithError:(id *)a3
+- (BOOL)truncateWithError:(id *)error
 {
   if ([(AMSSQLiteConnectionOptions *)self->_options isReadOnly])
   {
-    if (a3)
+    if (error)
     {
       v5 = AMSSQLiteCreateError(-7701, @"Unable to Truncate Read-Only Database", 0, 0);
       v6 = 0;
 LABEL_8:
-      *a3 = v5;
+      *error = v5;
       return v6;
     }
 
     return 0;
   }
 
-  if (![(AMSSQLiteConnection *)self _openAndAllowRetry:0 error:a3])
+  if (![(AMSSQLiteConnection *)self _openAndAllowRetry:0 error:error])
   {
     return 0;
   }
@@ -495,7 +495,7 @@ LABEL_8:
     return v6;
   }
 
-  if (a3)
+  if (error)
   {
     v5 = AMSSQLiteCreateError(-7707, @"Failed to Truncate Database", v7, 0);
     goto LABEL_8;
@@ -504,10 +504,10 @@ LABEL_8:
   return v6;
 }
 
-- (BOOL)_closeDueToError:(id)a3 error:(id *)a4
+- (BOOL)_closeDueToError:(id)error error:(id *)a4
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  errorCopy = error;
   if (self->_database)
   {
     [(AMSSQLiteConnection *)self _finalizeAllStatements];
@@ -521,20 +521,20 @@ LABEL_8:
         v9 = +[AMSLogConfig sharedConfig];
       }
 
-      v10 = [v9 OSLogObject];
-      if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+      oSLogObject = [v9 OSLogObject];
+      if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
       {
         v15 = 138543618;
         v16 = objc_opt_class();
         v17 = 1024;
         v18 = v8;
         v11 = v16;
-        _os_log_impl(&dword_192869000, v10, OS_LOG_TYPE_ERROR, "%{public}@: Failed to close the database: closeResult=%d", &v15, 0x12u);
+        _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: Failed to close the database: closeResult=%d", &v15, 0x12u);
       }
 
       if (a4)
       {
-        AMSSQLiteCreateError(-7706, @"Failed to Close Database", v8, v6);
+        AMSSQLiteCreateError(-7706, @"Failed to Close Database", v8, errorCopy);
         *a4 = v12 = 0;
       }
 
@@ -564,16 +564,16 @@ LABEL_8:
   return v12;
 }
 
-- (BOOL)_executeStatement:(id)a3 error:(id *)a4
+- (BOOL)_executeStatement:(id)statement error:(id *)error
 {
-  v6 = a3;
+  statementCopy = statement;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __47__AMSSQLiteConnection__executeStatement_error___block_invoke;
   v10[3] = &unk_1E73BBF20;
-  v7 = v6;
+  v7 = statementCopy;
   v11 = v7;
-  v8 = [(AMSSQLiteConnection *)self _executeWithError:a4 usingBlock:v10];
+  v8 = [(AMSSQLiteConnection *)self _executeWithError:error usingBlock:v10];
   if (v8)
   {
     [v7 reset];
@@ -582,10 +582,10 @@ LABEL_8:
   return v8;
 }
 
-- (BOOL)_executeWithError:(id *)a3 usingBlock:(id)a4
+- (BOOL)_executeWithError:(id *)error usingBlock:(id)block
 {
   v44 = *MEMORY[0x1E69E9840];
-  v4 = a4;
+  blockCopy = block;
   v5 = 0;
   v6 = 0;
 LABEL_2:
@@ -594,7 +594,7 @@ LABEL_2:
   {
     v7 = objc_autoreleasePoolPush();
     v39 = 0;
-    v8 = v4[2](v4, &v39);
+    v8 = blockCopy[2](blockCopy, &v39);
     if (v8 - 5 >= 2)
     {
       if (v8 <= 0xAu)
@@ -693,8 +693,8 @@ LABEL_34:
       v9 = +[AMSLogConfig sharedConfig];
     }
 
-    v10 = [v9 OSLogObject];
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
+    oSLogObject = [v9 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
     {
       v11 = objc_opt_class();
       *buf = 138543618;
@@ -702,7 +702,7 @@ LABEL_34:
       v42 = 1024;
       LODWORD(v43) = v8;
       v12 = v11;
-      _os_log_impl(&dword_192869000, v10, OS_LOG_TYPE_INFO, "%{public}@: Database locked or busy: sqlResult=%d", buf, 0x12u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_INFO, "%{public}@: Database locked or busy: sqlResult=%d", buf, 0x12u);
     }
 
     if (v6 > 999)
@@ -736,8 +736,8 @@ LABEL_38:
     v22 = +[AMSLogConfig sharedConfig];
   }
 
-  v23 = [v22 OSLogObject];
-  if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
+  oSLogObject2 = [v22 OSLogObject];
+  if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
   {
     v35 = v17;
     v24 = AMSLogKey();
@@ -760,7 +760,7 @@ LABEL_38:
     v41 = v28;
     v42 = 2114;
     v43 = v29;
-    _os_log_impl(&dword_192869000, v23, OS_LOG_TYPE_ERROR, "%{public}@Execution error: %{public}@", buf, 0x16u);
+    _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@Execution error: %{public}@", buf, 0x16u);
     if (v24)
     {
 
@@ -782,7 +782,7 @@ LABEL_38:
 
   if (v30 == 1)
   {
-    if (a3)
+    if (error)
     {
       v31 = v16;
       goto LABEL_55;
@@ -794,7 +794,7 @@ LABEL_56:
 
   else
   {
-    if (!a3)
+    if (!error)
     {
       goto LABEL_56;
     }
@@ -802,7 +802,7 @@ LABEL_56:
     v31 = AMSErrorBySettingUnderlyingError(v15, v16);
 LABEL_55:
     v5 = 0;
-    *a3 = v31;
+    *error = v31;
   }
 
 LABEL_57:
@@ -845,47 +845,47 @@ void __51__AMSSQLiteConnection__flushAfterTransactionBlocks__block_invoke(uint64
   }
 }
 
-- (BOOL)_openAndAllowRetry:(BOOL)a3 error:(id *)a4
+- (BOOL)_openAndAllowRetry:(BOOL)retry error:(id *)error
 {
   v72 = *MEMORY[0x1E69E9840];
   v5 = 1;
   if (!self->_database)
   {
-    v6 = self;
+    selfCopy3 = self;
     v7 = 0;
     v63 = 0;
     v8 = 1;
-    v56 = a3;
+    retryCopy = retry;
     while (1)
     {
       v9 = v8;
       v10 = v7;
       v62 = 0;
-      options = v6->_options;
+      options = selfCopy3->_options;
       v61 = v7;
       v5 = AMSSQLiteOpen(options, &v63, &v62, &v61);
       v7 = v61;
 
       if (v5)
       {
-        v6->_database = v63;
+        selfCopy3->_database = v63;
         goto LABEL_40;
       }
 
-      v12 = [v7 userInfo];
-      v13 = [v12 objectForKeyedSubscript:0x1F0738738];
+      userInfo = [v7 userInfo];
+      v13 = [userInfo objectForKeyedSubscript:0x1F0738738];
       v57 = v9;
       v58 = v7;
       if (objc_opt_respondsToSelector())
       {
-        v14 = [v7 userInfo];
-        v15 = [v14 objectForKeyedSubscript:0x1F0738738];
-        v16 = [v15 longLongValue];
+        userInfo2 = [v7 userInfo];
+        v15 = [userInfo2 objectForKeyedSubscript:0x1F0738738];
+        longLongValue = [v15 longLongValue];
       }
 
       else
       {
-        v16 = 0;
+        longLongValue = 0;
       }
 
       if (v62)
@@ -895,7 +895,7 @@ void __51__AMSSQLiteConnection__flushAfterTransactionBlocks__block_invoke(uint64
 
       else
       {
-        v17 = v16;
+        v17 = longLongValue;
       }
 
       v18 = +[AMSLogConfig sharedConfig];
@@ -905,8 +905,8 @@ void __51__AMSSQLiteConnection__flushAfterTransactionBlocks__block_invoke(uint64
         v18 = +[AMSLogConfig sharedConfig];
       }
 
-      v20 = [v18 OSLogObject];
-      if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
+      oSLogObject = [v18 OSLogObject];
+      if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
       {
         v21 = AMSLogKey();
         v22 = MEMORY[0x1E696AEC0];
@@ -929,8 +929,8 @@ void __51__AMSSQLiteConnection__flushAfterTransactionBlocks__block_invoke(uint64
 
         v27 = v17;
         v28 = v17;
-        v29 = [(AMSSQLiteConnectionOptions *)self->_options databasePath];
-        v30 = AMSHashIfNeeded(v29);
+        databasePath = [(AMSSQLiteConnectionOptions *)self->_options databasePath];
+        v30 = AMSHashIfNeeded(databasePath);
         *buf = 138544386;
         v65 = v25;
         v66 = 2114;
@@ -938,10 +938,10 @@ void __51__AMSSQLiteConnection__flushAfterTransactionBlocks__block_invoke(uint64
         v68 = 1026;
         *v69 = v62;
         *&v69[4] = 1026;
-        *&v69[6] = v16;
+        *&v69[6] = longLongValue;
         v70 = 1026;
         v71 = v28;
-        _os_log_impl(&dword_192869000, v20, OS_LOG_TYPE_ERROR, "%{public}@Failed to open AMS database at path %{public}@. openResult = %{public}d, setupResult = %{public}d, baseSqliteResult = %{public}d", buf, 0x28u);
+        _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@Failed to open AMS database at path %{public}@. openResult = %{public}d, setupResult = %{public}d, baseSqliteResult = %{public}d", buf, 0x28u);
 
         v31 = v19;
         if (v21)
@@ -951,15 +951,15 @@ void __51__AMSSQLiteConnection__flushAfterTransactionBlocks__block_invoke(uint64
         }
 
         v5 = v55;
-        v6 = self;
-        v26 = v56;
+        selfCopy3 = self;
+        v26 = retryCopy;
       }
 
       else
       {
-        v26 = v56;
+        v26 = retryCopy;
         v27 = v17;
-        v6 = self;
+        selfCopy3 = self;
       }
 
       if (!v26 || v27 > 0x1Au || ((1 << v27) & 0x4000C00) == 0)
@@ -972,7 +972,7 @@ void __51__AMSSQLiteConnection__flushAfterTransactionBlocks__block_invoke(uint64
       v4 = v19;
       v60 = 0;
       v7 = v58;
-      v32 = [(AMSSQLiteConnection *)v6 _performResetAfterCorruptionError:v58 error:&v60];
+      v32 = [(AMSSQLiteConnection *)selfCopy3 _performResetAfterCorruptionError:v58 error:&v60];
       v33 = v60;
       v34 = v33;
       v35 = 0x1E73B0000uLL;
@@ -990,18 +990,18 @@ void __51__AMSSQLiteConnection__flushAfterTransactionBlocks__block_invoke(uint64
 
     v7 = v34;
 LABEL_29:
-    v36 = [*(v35 + 3552) sharedConfig];
-    if (!v36)
+    sharedConfig = [*(v35 + 3552) sharedConfig];
+    if (!sharedConfig)
     {
-      v36 = [*(v35 + 3552) sharedConfig];
+      sharedConfig = [*(v35 + 3552) sharedConfig];
     }
 
-    v37 = [v36 OSLogObject];
-    if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
+    oSLogObject2 = [sharedConfig OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
     {
       v38 = v7;
       v39 = AMSLogKey();
-      v40 = v6;
+      v40 = selfCopy3;
       v41 = v39;
       v42 = MEMORY[0x1E696AEC0];
       v43 = v40;
@@ -1019,15 +1019,15 @@ LABEL_29:
         [v42 stringWithFormat:@"%@: ", v44];
       }
       v47 = ;
-      v48 = [(AMSSQLiteConnectionOptions *)v43->_options databasePath];
-      v49 = AMSHashIfNeeded(v48);
+      databasePath2 = [(AMSSQLiteConnectionOptions *)v43->_options databasePath];
+      v49 = AMSHashIfNeeded(databasePath2);
       *buf = 138543874;
       v65 = v47;
       v66 = 2114;
       v67 = v49;
       v68 = 2112;
       *v69 = v38;
-      _os_log_impl(&dword_192869000, v37, OS_LOG_TYPE_ERROR, "%{public}@Error opening database. path = %{public}@ | error = %@", buf, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@Error opening database. path = %{public}@ | error = %@", buf, 0x20u);
 
       if (v41)
       {
@@ -1039,10 +1039,10 @@ LABEL_29:
       v7 = v38;
     }
 
-    if (a4)
+    if (error)
     {
       v50 = v7;
-      *a4 = v7;
+      *error = v7;
     }
 
 LABEL_40:
@@ -1051,10 +1051,10 @@ LABEL_40:
   return v5;
 }
 
-- (BOOL)_performResetAfterCorruptionError:(id)a3 error:(id *)a4
+- (BOOL)_performResetAfterCorruptionError:(id)error error:(id *)a4
 {
   v51 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  errorCopy = error;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v8 = objc_opt_respondsToSelector();
 
@@ -1066,26 +1066,26 @@ LABEL_40:
       v9 = +[AMSLogConfig sharedConfig];
     }
 
-    v10 = [v9 OSLogObject];
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v9 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v11 = objc_opt_class();
       options = self->_options;
       v13 = v11;
-      v14 = [(AMSSQLiteConnectionOptions *)options databasePath];
-      v15 = AMSLogableError(v6);
+      databasePath = [(AMSSQLiteConnectionOptions *)options databasePath];
+      v15 = AMSLogableError(errorCopy);
       *buf = 138543874;
       v46 = v11;
       v47 = 2114;
-      v48 = v14;
+      v48 = databasePath;
       v49 = 2114;
       v50 = v15;
-      _os_log_impl(&dword_192869000, v10, OS_LOG_TYPE_ERROR, "%{public}@: Asking delegate to reset database after corruption: %{public}@, error = %{public}@", buf, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: Asking delegate to reset database after corruption: %{public}@, error = %{public}@", buf, 0x20u);
     }
 
     v16 = objc_loadWeakRetained(&self->_delegate);
     v44 = 0;
-    v17 = [v16 connection:self needsResetForCorruptionError:v6 error:&v44];
+    v17 = [v16 connection:self needsResetForCorruptionError:errorCopy error:&v44];
     v18 = v44;
 
     if ((v17 & 1) == 0)
@@ -1097,7 +1097,7 @@ LABEL_40:
 
       else
       {
-        v19 = AMSError(0, @"Database Reset Error", @"AMSSQLiteConnecton delegate failed to reset the database, but did not return an error", v6);
+        v19 = AMSError(0, @"Database Reset Error", @"AMSSQLiteConnecton delegate failed to reset the database, but did not return an error", errorCopy);
       }
 
       v30 = v19;
@@ -1107,8 +1107,8 @@ LABEL_40:
         v31 = +[AMSLogConfig sharedConfig];
       }
 
-      v32 = [v31 OSLogObject];
-      if (!os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
+      oSLogObject2 = [v31 OSLogObject];
+      if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
       {
         goto LABEL_27;
       }
@@ -1116,17 +1116,17 @@ LABEL_40:
       v39 = objc_opt_class();
       v40 = self->_options;
       v35 = v39;
-      v36 = [(AMSSQLiteConnectionOptions *)v40 databasePath];
+      databasePath2 = [(AMSSQLiteConnectionOptions *)v40 databasePath];
       v37 = AMSLogableError(v30);
       *buf = 138543874;
       v46 = v39;
       v47 = 2114;
-      v48 = v36;
+      v48 = databasePath2;
       v49 = 2114;
       v50 = v37;
       v38 = "%{public}@: Delegate failed to reset database after corruption: %{public}@, error = %{public}@";
 LABEL_26:
-      _os_log_impl(&dword_192869000, v32, OS_LOG_TYPE_ERROR, v38, buf, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_ERROR, v38, buf, 0x20u);
 
 LABEL_27:
       if (a4)
@@ -1150,39 +1150,39 @@ LABEL_27:
       v21 = +[AMSLogConfig sharedConfig];
     }
 
-    v22 = [v21 OSLogObject];
-    if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
+    oSLogObject3 = [v21 OSLogObject];
+    if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_ERROR))
     {
       v23 = objc_opt_class();
       v24 = self->_options;
       v25 = v23;
-      v26 = [(AMSSQLiteConnectionOptions *)v24 databasePath];
-      v27 = AMSLogableError(v6);
+      databasePath3 = [(AMSSQLiteConnectionOptions *)v24 databasePath];
+      v27 = AMSLogableError(errorCopy);
       *buf = 138543874;
       v46 = v23;
       v47 = 2114;
-      v48 = v26;
+      v48 = databasePath3;
       v49 = 2114;
       v50 = v27;
-      _os_log_impl(&dword_192869000, v22, OS_LOG_TYPE_ERROR, "%{public}@: Truncating database after corruption: %{public}@, error = %{public}@", buf, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject3, OS_LOG_TYPE_ERROR, "%{public}@: Truncating database after corruption: %{public}@, error = %{public}@", buf, 0x20u);
     }
 
-    v28 = [(AMSSQLiteConnectionOptions *)self->_options databasePath];
+    databasePath4 = [(AMSSQLiteConnectionOptions *)self->_options databasePath];
     v43 = 0;
-    v29 = AMSSQLiteTruncateDatabase(v28, &v43);
+    v29 = AMSSQLiteTruncateDatabase(databasePath4, &v43);
     v18 = v43;
 
     if (!v29)
     {
-      v30 = AMSErrorBySettingUnderlyingError(v18, v6);
+      v30 = AMSErrorBySettingUnderlyingError(v18, errorCopy);
       v31 = +[AMSLogConfig sharedConfig];
       if (!v31)
       {
         v31 = +[AMSLogConfig sharedConfig];
       }
 
-      v32 = [v31 OSLogObject];
-      if (!os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
+      oSLogObject2 = [v31 OSLogObject];
+      if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
       {
         goto LABEL_27;
       }
@@ -1190,12 +1190,12 @@ LABEL_27:
       v33 = objc_opt_class();
       v34 = self->_options;
       v35 = v33;
-      v36 = [(AMSSQLiteConnectionOptions *)v34 databasePath];
+      databasePath2 = [(AMSSQLiteConnectionOptions *)v34 databasePath];
       v37 = AMSLogableError(v30);
       *buf = 138543874;
       v46 = v33;
       v47 = 2114;
-      v48 = v36;
+      v48 = databasePath2;
       v49 = 2114;
       v50 = v37;
       v38 = "%{public}@: Failed to truncate database after corruption: %{public}@, error = %{public}@";
@@ -1215,24 +1215,24 @@ LABEL_31:
   return v20;
 }
 
-- (id)_prepareStatement:(id)a3 error:(id *)a4
+- (id)_prepareStatement:(id)statement error:(id *)error
 {
-  v6 = a3;
+  statementCopy = statement;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
   v14 = __Block_byref_object_copy__61;
   v15 = __Block_byref_object_dispose__61;
   v16 = 0;
-  v7 = [v6 UTF8String];
+  uTF8String = [statementCopy UTF8String];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __47__AMSSQLiteConnection__prepareStatement_error___block_invoke;
   v10[3] = &unk_1E73BBF48;
   v10[5] = &v11;
-  v10[6] = v7;
+  v10[6] = uTF8String;
   v10[4] = self;
-  [(AMSSQLiteConnection *)self _executeWithError:a4 usingBlock:v10];
+  [(AMSSQLiteConnection *)self _executeWithError:error usingBlock:v10];
   v8 = v12[5];
   _Block_object_dispose(&v11, 8);
 
@@ -1260,9 +1260,9 @@ uint64_t __47__AMSSQLiteConnection__prepareStatement_error___block_invoke(uint64
   return v2;
 }
 
-- (BOOL)_resetAfterCorruptionError:(id)a3 error:(id *)a4
+- (BOOL)_resetAfterCorruptionError:(id)error error:(id *)a4
 {
-  v6 = a3;
+  errorCopy = error;
   if (self->_didResetForCorruption)
   {
     v7 = 0;
@@ -1273,7 +1273,7 @@ uint64_t __47__AMSSQLiteConnection__prepareStatement_error___block_invoke(uint64
     v8 = 1;
     self->_didResetForCorruption = 1;
     v13 = 0;
-    v9 = [(AMSSQLiteConnection *)self _resetAfterIOError:v6 error:&v13];
+    v9 = [(AMSSQLiteConnection *)self _resetAfterIOError:errorCopy error:&v13];
     v7 = v13;
     if (v9)
     {
@@ -1308,34 +1308,34 @@ LABEL_10:
   return v8;
 }
 
-- (BOOL)_resetAfterIOError:(id)a3 error:(id *)a4
+- (BOOL)_resetAfterIOError:(id)error error:(id *)a4
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  errorCopy = error;
   v7 = +[AMSLogConfig sharedConfig];
   if (!v7)
   {
     v7 = +[AMSLogConfig sharedConfig];
   }
 
-  v8 = [v7 OSLogObject];
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+  oSLogObject = [v7 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
   {
     v9 = objc_opt_class();
     options = self->_options;
     v11 = v9;
-    v12 = [(AMSSQLiteConnectionOptions *)options databasePath];
+    databasePath = [(AMSSQLiteConnectionOptions *)options databasePath];
     *buf = 138543618;
     v25 = v9;
     v26 = 2114;
-    v27 = v12;
-    _os_log_impl(&dword_192869000, v8, OS_LOG_TYPE_ERROR, "%{public}@: Reopening database after IO error: %{public}@", buf, 0x16u);
+    v27 = databasePath;
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: Reopening database after IO error: %{public}@", buf, 0x16u);
   }
 
   afterTransactionBlocks = self->_afterTransactionBlocks;
   v14 = afterTransactionBlocks;
   transactionDepth = self->_transactionDepth;
-  if ([(AMSSQLiteConnection *)self _closeDueToError:v6 error:a4])
+  if ([(AMSSQLiteConnection *)self _closeDueToError:errorCopy error:a4])
   {
     v23 = 0;
     v16 = [(AMSSQLiteConnection *)self _openWithError:&v23];
@@ -1361,7 +1361,7 @@ LABEL_10:
 
       if (a4)
       {
-        v20 = AMSSQLiteCreateError(-7708, @"Failed to Begin Transaction After I/O Error", v19, v6);
+        v20 = AMSSQLiteCreateError(-7708, @"Failed to Begin Transaction After I/O Error", v19, errorCopy);
 LABEL_14:
         v21 = 0;
         *a4 = v20;
@@ -1373,7 +1373,7 @@ LABEL_18:
 
     else if (a4)
     {
-      v20 = AMSErrorBySettingUnderlyingError(v17, v6);
+      v20 = AMSErrorBySettingUnderlyingError(v17, errorCopy);
       goto LABEL_14;
     }
 
@@ -1387,10 +1387,10 @@ LABEL_19:
   return v21;
 }
 
-- (id)_statementForPreparedStatement:(id)a3 error:(id *)a4
+- (id)_statementForPreparedStatement:(id)statement error:(id *)error
 {
-  v6 = a3;
-  v7 = [(NSMapTable *)self->_preparedStatements objectForKey:v6];
+  statementCopy = statement;
+  v7 = [(NSMapTable *)self->_preparedStatements objectForKey:statementCopy];
   if (v7)
   {
     v8 = v7;
@@ -1399,21 +1399,21 @@ LABEL_19:
 
   else
   {
-    v10 = [v6 SQL];
+    v10 = [statementCopy SQL];
     v13 = 0;
     v8 = [(AMSSQLiteConnection *)self _prepareStatement:v10 error:&v13];
     v9 = v13;
 
     if (v8)
     {
-      [(NSMapTable *)self->_preparedStatements setObject:v8 forKey:v6];
+      [(NSMapTable *)self->_preparedStatements setObject:v8 forKey:statementCopy];
     }
 
-    else if (a4)
+    else if (error)
     {
       v11 = v9;
       v8 = 0;
-      *a4 = v9;
+      *error = v9;
     }
 
     else
@@ -1425,10 +1425,10 @@ LABEL_19:
   return v8;
 }
 
-- (id)_verifiedStatementForPreparedStatement:(id)a3 error:(id *)a4
+- (id)_verifiedStatementForPreparedStatement:(id)statement error:(id *)error
 {
-  v6 = a3;
-  if ([v6 connectionPointer] == self)
+  statementCopy = statement;
+  if ([statementCopy connectionPointer] == self)
   {
     v17 = 0;
     v9 = [(AMSSQLiteConnection *)self _openWithError:&v17];
@@ -1437,7 +1437,7 @@ LABEL_19:
     if (v9)
     {
       v16 = v10;
-      v11 = [(AMSSQLiteConnection *)self _statementForPreparedStatement:v6 error:&v16];
+      v11 = [(AMSSQLiteConnection *)self _statementForPreparedStatement:statementCopy error:&v16];
       v12 = v16;
 
       if (v11)
@@ -1462,7 +1462,7 @@ LABEL_19:
       }
 
       v8 = v12;
-      if (!a4)
+      if (!error)
       {
         goto LABEL_16;
       }
@@ -1471,7 +1471,7 @@ LABEL_19:
     else
     {
       v7 = 0;
-      if (!a4)
+      if (!error)
       {
         goto LABEL_16;
       }
@@ -1483,7 +1483,7 @@ LABEL_19:
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"Statement from a different connection"];
     v7 = 0;
     v8 = 0;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_16;
     }
@@ -1492,7 +1492,7 @@ LABEL_19:
   if (!v7)
   {
     v14 = v8;
-    *a4 = v8;
+    *error = v8;
   }
 
 LABEL_16:
@@ -1500,9 +1500,9 @@ LABEL_16:
   return v7;
 }
 
-- (id)_verifiedStatementForSQL:(id)a3 error:(id *)a4
+- (id)_verifiedStatementForSQL:(id)l error:(id *)error
 {
-  v6 = a3;
+  lCopy = l;
   v17 = 0;
   v7 = [(AMSSQLiteConnection *)self _openWithError:&v17];
   v8 = v17;
@@ -1510,7 +1510,7 @@ LABEL_16:
   if (v7)
   {
     v16 = v8;
-    v10 = [(AMSSQLiteConnection *)self _prepareStatement:v6 error:&v16];
+    v10 = [(AMSSQLiteConnection *)self _prepareStatement:lCopy error:&v16];
     v11 = v16;
 
     if (v10)
@@ -1536,7 +1536,7 @@ LABEL_16:
     }
 
     v9 = v11;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_13;
     }
@@ -1545,7 +1545,7 @@ LABEL_16:
   else
   {
     v12 = 0;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_13;
     }
@@ -1554,7 +1554,7 @@ LABEL_16:
   if (!v12)
   {
     v14 = v9;
-    *a4 = v9;
+    *error = v9;
   }
 
 LABEL_13:

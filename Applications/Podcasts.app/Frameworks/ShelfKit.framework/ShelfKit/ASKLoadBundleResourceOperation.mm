@@ -1,24 +1,24 @@
 @interface ASKLoadBundleResourceOperation
-- (ASKLoadBundleResourceOperation)initWithResourceName:(id)a3 searchBundles:(id)a4;
+- (ASKLoadBundleResourceOperation)initWithResourceName:(id)name searchBundles:(id)bundles;
 - (void)main;
 @end
 
 @implementation ASKLoadBundleResourceOperation
 
-- (ASKLoadBundleResourceOperation)initWithResourceName:(id)a3 searchBundles:(id)a4
+- (ASKLoadBundleResourceOperation)initWithResourceName:(id)name searchBundles:(id)bundles
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  bundlesCopy = bundles;
   v14.receiver = self;
   v14.super_class = ASKLoadBundleResourceOperation;
   v8 = [(ASKLoadBundleResourceOperation *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [nameCopy copy];
     resourceName = v8->_resourceName;
     v8->_resourceName = v9;
 
-    v11 = [v7 copy];
+    v11 = [bundlesCopy copy];
     searchBundles = v8->_searchBundles;
     v8->_searchBundles = v11;
   }
@@ -32,8 +32,8 @@
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v3 = [(ASKLoadBundleResourceOperation *)self searchBundles];
-  v4 = [v3 countByEnumeratingWithState:&v17 objects:v23 count:16];
+  searchBundles = [(ASKLoadBundleResourceOperation *)self searchBundles];
+  v4 = [searchBundles countByEnumeratingWithState:&v17 objects:v23 count:16];
   if (v4)
   {
     v5 = v4;
@@ -44,7 +44,7 @@ LABEL_3:
     {
       if (*v18 != v6)
       {
-        objc_enumerationMutation(v3);
+        objc_enumerationMutation(searchBundles);
       }
 
       v8 = *(*(&v17 + 1) + 8 * v7);
@@ -53,12 +53,12 @@ LABEL_3:
         break;
       }
 
-      v9 = [(ASKLoadBundleResourceOperation *)self resourceName];
-      v10 = [UIImage imageNamed:v9 inBundle:v8 compatibleWithTraitCollection:0];
+      resourceName = [(ASKLoadBundleResourceOperation *)self resourceName];
+      v10 = [UIImage imageNamed:resourceName inBundle:v8 compatibleWithTraitCollection:0];
 
       if (v10)
       {
-        v14 = self;
+        selfCopy2 = self;
         v15 = v10;
         v16 = 0;
         goto LABEL_13;
@@ -66,7 +66,7 @@ LABEL_3:
 
       if (v5 == ++v7)
       {
-        v5 = [v3 countByEnumeratingWithState:&v17 objects:v23 count:16];
+        v5 = [searchBundles countByEnumeratingWithState:&v17 objects:v23 count:16];
         if (v5)
         {
           goto LABEL_3;
@@ -86,20 +86,20 @@ LABEL_10:
       return;
     }
 
-    v11 = [(ASKLoadBundleResourceOperation *)self resourceName];
-    v12 = [(ASKLoadBundleResourceOperation *)self searchBundles];
-    v3 = [NSString stringWithFormat:@"No image found for %@ in %@", v11, v12];
+    resourceName2 = [(ASKLoadBundleResourceOperation *)self resourceName];
+    searchBundles2 = [(ASKLoadBundleResourceOperation *)self searchBundles];
+    searchBundles = [NSString stringWithFormat:@"No image found for %@ in %@", resourceName2, searchBundles2];
 
     v21 = NSLocalizedDescriptionKey;
-    v22 = v3;
+    v22 = searchBundles;
     v13 = [NSDictionary dictionaryWithObjects:&v22 forKeys:&v21 count:1];
     v10 = [NSError errorWithDomain:@"ASKLoadBundleResourceOperationErrorDomain" code:560557415 userInfo:v13];
 
-    v14 = self;
+    selfCopy2 = self;
     v15 = 0;
     v16 = v10;
 LABEL_13:
-    [(ASKLoadResourceOperation *)v14 didCompleteWithResource:v15 error:v16];
+    [(ASKLoadResourceOperation *)selfCopy2 didCompleteWithResource:v15 error:v16];
   }
 }
 

@@ -2,43 +2,43 @@
 - (BOOL)isActive;
 - (void)cancel;
 - (void)dealloc;
-- (void)resetWithTimeInterval:(double)a3 block:(id)a4;
+- (void)resetWithTimeInterval:(double)interval block:(id)block;
 @end
 
 @implementation Timer
 
-- (void)resetWithTimeInterval:(double)a3 block:(id)a4
+- (void)resetWithTimeInterval:(double)interval block:(id)block
 {
-  v6 = a4;
-  v7 = self;
-  objc_sync_enter(v7);
-  [(Timer *)v7 cancel];
-  if (v6)
+  blockCopy = block;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(Timer *)selfCopy cancel];
+  if (blockCopy)
   {
-    objc_initWeak(&location, v7);
+    objc_initWeak(&location, selfCopy);
     v8 = dispatch_get_global_queue(21, 0);
     v9 = dispatch_source_create(MEMORY[0x29EDCA5D0], 0, 0, v8);
-    timer = v7->_timer;
-    v7->_timer = v9;
+    timer = selfCopy->_timer;
+    selfCopy->_timer = v9;
 
-    v11 = v7->_timer;
-    v12 = dispatch_walltime(0, (a3 * 1000000000.0));
+    v11 = selfCopy->_timer;
+    v12 = dispatch_walltime(0, (interval * 1000000000.0));
     dispatch_source_set_timer(v11, v12, 0xFFFFFFFFFFFFFFFFLL, 0x3B9ACA00uLL);
-    v13 = v7->_timer;
+    v13 = selfCopy->_timer;
     handler[0] = MEMORY[0x29EDCA5F8];
     handler[1] = 3254779904;
     handler[2] = __37__Timer_resetWithTimeInterval_block___block_invoke;
     handler[3] = &__block_descriptor_48_e8_32bs40w_e5_v8__0l;
     objc_copyWeak(&v16, &location);
-    v15 = v6;
+    v15 = blockCopy;
     dispatch_source_set_event_handler(v13, handler);
-    dispatch_activate(v7->_timer);
+    dispatch_activate(selfCopy->_timer);
 
     objc_destroyWeak(&v16);
     objc_destroyWeak(&location);
   }
 
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
 }
 
 void __37__Timer_resetWithTimeInterval_block___block_invoke(uint64_t a1)
@@ -54,25 +54,25 @@ void __37__Timer_resetWithTimeInterval_block___block_invoke(uint64_t a1)
 
 - (void)cancel
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  timer = v2->_timer;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  timer = selfCopy->_timer;
   if (timer)
   {
     dispatch_source_cancel(timer);
-    v4 = v2->_timer;
-    v2->_timer = 0;
+    v4 = selfCopy->_timer;
+    selfCopy->_timer = 0;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
 - (BOOL)isActive
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_timer != 0;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_timer != 0;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }

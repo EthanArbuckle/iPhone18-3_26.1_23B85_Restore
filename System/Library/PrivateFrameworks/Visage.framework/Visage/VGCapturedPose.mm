@@ -1,46 +1,46 @@
 @interface VGCapturedPose
-- (BOOL)isEqual:(id)a3;
-- (VGCapturedPose)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (VGCapturedPose)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation VGCapturedPose
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v8 = a3;
-  v4 = [(VGCapturedPose *)self captureData];
-  [v8 encodeObject:v4 forKey:@"captureData"];
+  coderCopy = coder;
+  captureData = [(VGCapturedPose *)self captureData];
+  [coderCopy encodeObject:captureData forKey:@"captureData"];
 
-  v5 = [(VGCapturedPose *)self trackingData];
-  [v8 encodeObject:v5 forKey:@"trackingData"];
+  trackingData = [(VGCapturedPose *)self trackingData];
+  [coderCopy encodeObject:trackingData forKey:@"trackingData"];
 
-  [v8 encodeBool:-[VGCapturedPose frontPose](self forKey:{"frontPose"), @"frontPose"}];
+  [coderCopy encodeBool:-[VGCapturedPose frontPose](self forKey:{"frontPose"), @"frontPose"}];
   [(VGCapturedPose *)self selectedAngle];
-  [v8 encodeFloat:@"selectedAngle" forKey:?];
+  [coderCopy encodeFloat:@"selectedAngle" forKey:?];
   [(VGCapturedPose *)self selectedPitch];
-  [v8 encodeFloat:@"selectedPitch" forKey:?];
+  [coderCopy encodeFloat:@"selectedPitch" forKey:?];
   [(VGCapturedPose *)self selectedYaw];
-  [v8 encodeFloat:@"selectedYaw" forKey:?];
-  v6 = [(VGCapturedPose *)self bodyPoseFrameState];
+  [coderCopy encodeFloat:@"selectedYaw" forKey:?];
+  bodyPoseFrameState = [(VGCapturedPose *)self bodyPoseFrameState];
 
-  if (v6)
+  if (bodyPoseFrameState)
   {
-    v7 = [(VGCapturedPose *)self bodyPoseFrameState];
-    [v8 encodeObject:v7 forKey:@"bodyPoseFrameState"];
+    bodyPoseFrameState2 = [(VGCapturedPose *)self bodyPoseFrameState];
+    [coderCopy encodeObject:bodyPoseFrameState2 forKey:@"bodyPoseFrameState"];
   }
 }
 
-- (VGCapturedPose)initWithCoder:(id)a3
+- (VGCapturedPose)initWithCoder:(id)coder
 {
   v18[7] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = VGCapturedPose;
   v5 = [(VGCapturedPose *)&v17 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"captureData"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"captureData"];
     [(VGCapturedPose *)v5 setCaptureData:v6];
 
     v7 = MEMORY[0x277CBEB98];
@@ -53,15 +53,15 @@
     v18[6] = objc_opt_class();
     v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v18 count:7];
     v9 = [v7 setWithArray:v8];
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"trackingData"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"trackingData"];
     [(VGCapturedPose *)v5 setTrackingData:v10];
 
-    -[VGCapturedPose setFrontPose:](v5, "setFrontPose:", [v4 decodeBoolForKey:@"frontPose"]);
-    [v4 decodeFloatForKey:@"selectedAngle"];
+    -[VGCapturedPose setFrontPose:](v5, "setFrontPose:", [coderCopy decodeBoolForKey:@"frontPose"]);
+    [coderCopy decodeFloatForKey:@"selectedAngle"];
     [(VGCapturedPose *)v5 setSelectedAngle:?];
-    if ([v4 containsValueForKey:@"selectedPitch"])
+    if ([coderCopy containsValueForKey:@"selectedPitch"])
     {
-      [v4 decodeFloatForKey:@"selectedPitch"];
+      [coderCopy decodeFloatForKey:@"selectedPitch"];
     }
 
     else
@@ -70,9 +70,9 @@
     }
 
     [(VGCapturedPose *)v5 setSelectedPitch:v11];
-    if ([v4 containsValueForKey:@"selectedYaw"])
+    if ([coderCopy containsValueForKey:@"selectedYaw"])
     {
-      [v4 decodeFloatForKey:@"selectedYaw"];
+      [coderCopy decodeFloatForKey:@"selectedYaw"];
     }
 
     else
@@ -81,9 +81,9 @@
     }
 
     [(VGCapturedPose *)v5 setSelectedYaw:v12];
-    if ([v4 containsValueForKey:@"bodyPoseFrameState"])
+    if ([coderCopy containsValueForKey:@"bodyPoseFrameState"])
     {
-      v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bodyPoseFrameState"];
+      v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bodyPoseFrameState"];
       [(VGCapturedPose *)v5 setBodyPoseFrameState:v13];
     }
 
@@ -94,9 +94,9 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v7 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -104,14 +104,14 @@
     goto LABEL_35;
   }
 
-  v8 = v7;
+  v8 = equalCopy;
   v9 = v8;
   captureData = self->_captureData;
   v11 = captureData;
   if (!captureData)
   {
-    v3 = [v8 captureData];
-    if (!v3)
+    captureData = [v8 captureData];
+    if (!captureData)
     {
       v12 = 0;
       goto LABEL_10;
@@ -120,8 +120,8 @@
     v11 = self->_captureData;
   }
 
-  v4 = [v9 captureData];
-  if (![(VGCaptureData *)v11 isEqual:v4])
+  captureData2 = [v9 captureData];
+  if (![(VGCaptureData *)v11 isEqual:captureData2])
   {
 
     v13 = 0;
@@ -134,11 +134,11 @@ LABEL_10:
   v15 = trackingData;
   if (!trackingData)
   {
-    v32 = [v9 trackingData];
-    if (!v32)
+    trackingData = [v9 trackingData];
+    if (!trackingData)
     {
-      v32 = 0;
-      v33 = v3;
+      trackingData = 0;
+      v33 = captureData;
       v16 = 0;
       goto LABEL_17;
     }
@@ -146,15 +146,15 @@ LABEL_10:
     v15 = self->_trackingData;
   }
 
-  v5 = [v9 trackingData];
-  if (([(NSDictionary *)v15 isEqual:v5]& 1) == 0)
+  trackingData2 = [v9 trackingData];
+  if (([(NSDictionary *)v15 isEqual:trackingData2]& 1) == 0)
   {
 
     v13 = 0;
     goto LABEL_29;
   }
 
-  v33 = v3;
+  v33 = captureData;
   v16 = 1;
 LABEL_17:
   frontPose = self->_frontPose;
@@ -176,12 +176,12 @@ LABEL_17:
           v25 = bodyPoseFrameState;
           if (!bodyPoseFrameState)
           {
-            v26 = [v9 bodyPoseFrameState];
-            if (!v26)
+            bodyPoseFrameState = [v9 bodyPoseFrameState];
+            if (!bodyPoseFrameState)
             {
               v27 = 0;
               v13 = 1;
-              v3 = v33;
+              captureData = v33;
 LABEL_39:
 
               if ((v16 & 1) == 0)
@@ -192,13 +192,13 @@ LABEL_39:
               goto LABEL_28;
             }
 
-            v29 = v26;
+            v29 = bodyPoseFrameState;
             v25 = self->_bodyPoseFrameState;
           }
 
           v31 = bodyPoseFrameState;
           v13 = [(VGBodyPoseFrameState *)v25 isEqual:v9[5], v29];
-          v3 = v33;
+          captureData = v33;
           v27 = v30;
           if (v31)
           {
@@ -217,7 +217,7 @@ LABEL_39:
   }
 
   v13 = 0;
-  v3 = v33;
+  captureData = v33;
   if (v16)
   {
 LABEL_28:

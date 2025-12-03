@@ -1,15 +1,15 @@
 @interface PasswordSharingInterface
-- (void)service:(id)a3 receivedNetworkInfo:(id)a4;
+- (void)service:(id)service receivedNetworkInfo:(id)info;
 @end
 
 @implementation PasswordSharingInterface
 
-- (void)service:(id)a3 receivedNetworkInfo:(id)a4
+- (void)service:(id)service receivedNetworkInfo:(id)info
 {
-  v5 = a3;
-  v6 = a4;
+  serviceCopy = service;
+  infoCopy = info;
 
-  sub_2740FE2C4(v6);
+  sub_2740FE2C4(infoCopy);
 }
 
 @end

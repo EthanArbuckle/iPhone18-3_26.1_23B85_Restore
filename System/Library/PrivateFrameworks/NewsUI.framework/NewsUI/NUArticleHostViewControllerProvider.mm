@@ -1,20 +1,20 @@
 @interface NUArticleHostViewControllerProvider
 - (NUArticleHostViewController)articleHostViewController;
-- (NUArticleHostViewControllerProvider)initWithArticleHostViewController:(id)a3;
+- (NUArticleHostViewControllerProvider)initWithArticleHostViewController:(id)controller;
 @end
 
 @implementation NUArticleHostViewControllerProvider
 
-- (NUArticleHostViewControllerProvider)initWithArticleHostViewController:(id)a3
+- (NUArticleHostViewControllerProvider)initWithArticleHostViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v8.receiver = self;
   v8.super_class = NUArticleHostViewControllerProvider;
   v5 = [(NUArticleHostViewControllerProvider *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_articleHostViewController, v4);
+    objc_storeWeak(&v5->_articleHostViewController, controllerCopy);
   }
 
   return v6;

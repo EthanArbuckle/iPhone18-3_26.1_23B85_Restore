@@ -1,37 +1,37 @@
 @interface ECNWActivity
-+ (void)attachCurrentActivityToConnection:(id)a3;
-+ (void)detachCurrentActivityFromConnection:(id)a3;
-- (ECNWActivity)initWithDomain:(unsigned int)a3 type:(unsigned int)a4;
++ (void)attachCurrentActivityToConnection:(id)connection;
++ (void)detachCurrentActivityFromConnection:(id)connection;
+- (ECNWActivity)initWithDomain:(unsigned int)domain type:(unsigned int)type;
 - (void)startActivity;
-- (void)stopActivityWithSuccess:(BOOL)a3;
+- (void)stopActivityWithSuccess:(BOOL)success;
 @end
 
 @implementation ECNWActivity
 
-+ (void)attachCurrentActivityToConnection:(id)a3
++ (void)attachCurrentActivityToConnection:(id)connection
 {
-  v9 = a3;
-  v4 = [MEMORY[0x277CCACC8] currentThread];
-  v5 = [v4 threadDictionary];
+  connectionCopy = connection;
+  currentThread = [MEMORY[0x277CCACC8] currentThread];
+  threadDictionary = [currentThread threadDictionary];
 
-  v6 = [v5 objectForKeyedSubscript:@"_ECNWActivityCurrentActivity"];
+  v6 = [threadDictionary objectForKeyedSubscript:@"_ECNWActivityCurrentActivity"];
   v7 = v6;
   if (v6 && !*(v6 + 16))
   {
     v8 = *(v6 + 8);
     nw_connection_start_activity();
-    objc_storeStrong(v7 + 2, a3);
+    objc_storeStrong(v7 + 2, connection);
   }
 }
 
-+ (void)detachCurrentActivityFromConnection:(id)a3
++ (void)detachCurrentActivityFromConnection:(id)connection
 {
-  v8 = a3;
-  v3 = [MEMORY[0x277CCACC8] currentThread];
-  v4 = [v3 threadDictionary];
+  connectionCopy = connection;
+  currentThread = [MEMORY[0x277CCACC8] currentThread];
+  threadDictionary = [currentThread threadDictionary];
 
-  v5 = [v4 objectForKeyedSubscript:@"_ECNWActivityCurrentActivity"];
-  if (v5 && v5[2] == v8)
+  v5 = [threadDictionary objectForKeyedSubscript:@"_ECNWActivityCurrentActivity"];
+  if (v5 && v5[2] == connectionCopy)
   {
     v6 = v5[1];
     nw_connection_end_activity();
@@ -40,7 +40,7 @@
   }
 }
 
-- (ECNWActivity)initWithDomain:(unsigned int)a3 type:(unsigned int)a4
+- (ECNWActivity)initWithDomain:(unsigned int)domain type:(unsigned int)type
 {
   v8.receiver = self;
   v8.super_class = ECNWActivity;
@@ -57,32 +57,32 @@
 
 - (void)startActivity
 {
-  v4 = [MEMORY[0x277CCACC8] currentThread];
-  v8 = [v4 threadDictionary];
+  currentThread = [MEMORY[0x277CCACC8] currentThread];
+  threadDictionary = [currentThread threadDictionary];
 
   activity = self->_activity;
   nw_activity_activate();
-  v6 = [v8 objectForKeyedSubscript:@"_ECNWActivityCurrentActivity"];
+  v6 = [threadDictionary objectForKeyedSubscript:@"_ECNWActivityCurrentActivity"];
 
   if (v6)
   {
-    v7 = [MEMORY[0x277CCA890] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"ECNWActivity.m" lineNumber:49 description:@"We don't currently support nesting activities"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ECNWActivity.m" lineNumber:49 description:@"We don't currently support nesting activities"];
   }
 
-  [v8 setObject:self forKeyedSubscript:@"_ECNWActivityCurrentActivity"];
+  [threadDictionary setObject:self forKeyedSubscript:@"_ECNWActivityCurrentActivity"];
 }
 
-- (void)stopActivityWithSuccess:(BOOL)a3
+- (void)stopActivityWithSuccess:(BOOL)success
 {
-  v4 = [MEMORY[0x277CCACC8] currentThread];
-  v7 = [v4 threadDictionary];
+  currentThread = [MEMORY[0x277CCACC8] currentThread];
+  threadDictionary = [currentThread threadDictionary];
 
-  v5 = [v7 objectForKeyedSubscript:@"_ECNWActivityCurrentActivity"];
+  v5 = [threadDictionary objectForKeyedSubscript:@"_ECNWActivityCurrentActivity"];
 
   if (v5 == self)
   {
-    [v7 setObject:0 forKeyedSubscript:@"_ECNWActivityCurrentActivity"];
+    [threadDictionary setObject:0 forKeyedSubscript:@"_ECNWActivityCurrentActivity"];
   }
 
   activity = self->_activity;

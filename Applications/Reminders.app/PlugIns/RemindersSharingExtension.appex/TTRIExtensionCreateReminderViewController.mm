@@ -1,11 +1,11 @@
 @interface TTRIExtensionCreateReminderViewController
 - (UIBarButtonItem)addBarButtonItem;
 - (UITableView)tableView;
-- (_TtC25RemindersSharingExtension41TTRIExtensionCreateReminderViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)didTapAdd:(id)a3;
-- (void)didTapCancel:(id)a3;
+- (_TtC25RemindersSharingExtension41TTRIExtensionCreateReminderViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)didTapAdd:(id)add;
+- (void)didTapCancel:(id)cancel;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)viewWillLayoutSubviews;
 @end
 
@@ -13,19 +13,19 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_100018E74();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_10001A038(a3);
+  selfCopy = self;
+  sub_10001A038(appear);
 }
 
 - (void)viewWillLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_10001A258();
 }
 
@@ -43,13 +43,13 @@
   return Strong;
 }
 
-- (void)didTapCancel:(id)a3
+- (void)didTapCancel:(id)cancel
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_10004CBA0();
   swift_unknownObjectRelease();
-  v5 = *(v4 + OBJC_IVAR____TtC25RemindersSharingExtension41TTRIExtensionCreateReminderViewController_presenter);
+  v5 = *(selfCopy + OBJC_IVAR____TtC25RemindersSharingExtension41TTRIExtensionCreateReminderViewController_presenter);
   if (qword_100066EF8 != -1)
   {
     swift_once();
@@ -70,20 +70,20 @@
   sub_10000343C(v8);
 }
 
-- (void)didTapAdd:(id)a3
+- (void)didTapAdd:(id)add
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_10004CBA0();
   swift_unknownObjectRelease();
   sub_10004C930();
-  [(TTRIExtensionCreateReminderViewController *)v4 resignFirstResponder];
-  v5 = *(v4 + OBJC_IVAR____TtC25RemindersSharingExtension41TTRIExtensionCreateReminderViewController_presenter);
+  [(TTRIExtensionCreateReminderViewController *)selfCopy resignFirstResponder];
+  v5 = *(selfCopy + OBJC_IVAR____TtC25RemindersSharingExtension41TTRIExtensionCreateReminderViewController_presenter);
   sub_10000F348();
   sub_10000343C(v6);
 }
 
-- (_TtC25RemindersSharingExtension41TTRIExtensionCreateReminderViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC25RemindersSharingExtension41TTRIExtensionCreateReminderViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -18,13 +18,13 @@
     *(v2 + 1) = v4;
 
     *(v2 + 2) = 0x3FE3333340000000;
-    v6 = [MEMORY[0x1E69DC888] labelColor];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
     v7 = *(v2 + 3);
-    *(v2 + 3) = v6;
+    *(v2 + 3) = labelColor;
 
-    v8 = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
     v9 = *(v2 + 4);
-    *(v2 + 4) = v8;
+    *(v2 + 4) = secondaryLabelColor;
 
     v10 = *MEMORY[0x1E6979CC0];
     v11 = [MEMORY[0x1E6979378] filterWithType:*MEMORY[0x1E6979CC0]];
@@ -36,9 +36,9 @@
     v14 = v3;
 
     *(v2 + 7) = 0x3FE3333340000000;
-    v15 = [MEMORY[0x1E69DC888] labelColor];
+    labelColor2 = [MEMORY[0x1E69DC888] labelColor];
     v16 = *(v2 + 8);
-    *(v2 + 8) = v15;
+    *(v2 + 8) = labelColor2;
 
     v17 = [MEMORY[0x1E6979378] filterWithType:v10];
     v18 = *(v2 + 9);
@@ -50,9 +50,9 @@
 
     *(v2 + 88) = xmmword_1A531CF00;
     *(v2 + 13) = 0x3FE99999A0000000;
-    v21 = [MEMORY[0x1E69DC888] systemBackgroundColor];
+    systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
     v22 = *(v2 + 14);
-    *(v2 + 14) = v21;
+    *(v2 + 14) = systemBackgroundColor;
 
     v23 = *(v2 + 15);
     *(v2 + 15) = 0;

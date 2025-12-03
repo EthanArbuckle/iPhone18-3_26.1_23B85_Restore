@@ -1,25 +1,25 @@
 @interface HKInteractiveChartTimePeriodFormatter
-- (double)_boundedTimePeriodFromDataPoint:(id)a3 boundedValueRange:(id)a4;
-- (id)_formattedSelectedRangeLabelDataWithChartData:(id)a3 items:(id)a4 customDataType:(int64_t)a5 boundedValueRange:(id)a6;
-- (id)_formattedStringWithData:(id)a3 roundToHours:(BOOL)a4 displayUnit:(BOOL)a5;
-- (id)formattedBoundedSelectedRangeLabelDataWithChartData:(id)a3 items:(id)a4 customDataType:(int64_t)a5 chartRangeProvider:(id)a6;
+- (double)_boundedTimePeriodFromDataPoint:(id)point boundedValueRange:(id)range;
+- (id)_formattedSelectedRangeLabelDataWithChartData:(id)data items:(id)items customDataType:(int64_t)type boundedValueRange:(id)range;
+- (id)_formattedStringWithData:(id)data roundToHours:(BOOL)hours displayUnit:(BOOL)unit;
+- (id)formattedBoundedSelectedRangeLabelDataWithChartData:(id)data items:(id)items customDataType:(int64_t)type chartRangeProvider:(id)provider;
 @end
 
 @implementation HKInteractiveChartTimePeriodFormatter
 
-- (id)_formattedStringWithData:(id)a3 roundToHours:(BOOL)a4 displayUnit:(BOOL)a5
+- (id)_formattedStringWithData:(id)data roundToHours:(BOOL)hours displayUnit:(BOOL)unit
 {
-  v5 = a4;
-  v7 = a3;
+  hoursCopy = hours;
+  dataCopy = data;
   timePeriodFormatter = self->_timePeriodFormatter;
   if (!timePeriodFormatter)
   {
-    v9 = [(HKInteractiveChartDataFormatter *)self unitController];
-    v10 = [(HKInteractiveChartDataFormatter *)self displayType];
-    v11 = [v9 unitForDisplayType:v10];
+    unitController = [(HKInteractiveChartDataFormatter *)self unitController];
+    displayType = [(HKInteractiveChartDataFormatter *)self displayType];
+    v11 = [unitController unitForDisplayType:displayType];
 
-    v12 = [(HKInteractiveChartDataFormatter *)self displayType];
-    v13 = [v12 hk_numberFormatterForUnit:v11];
+    displayType2 = [(HKInteractiveChartDataFormatter *)self displayType];
+    v13 = [displayType2 hk_numberFormatterForUnit:v11];
 
     v14 = [(HKDisplayTypeValueFormatter *)[HKTimePeriodDisplayTypeValueFormatter alloc] initWithNumberFormatter:v13];
     v15 = self->_timePeriodFormatter;
@@ -29,43 +29,43 @@
   }
 
   v16 = MEMORY[0x1E696AD98];
-  [v7 timePeriod];
+  [dataCopy timePeriod];
   v17 = [v16 numberWithDouble:?];
-  v18 = [(HKInteractiveChartDataFormatter *)self displayType];
-  v19 = [(HKInteractiveChartDataFormatter *)self unitController];
-  v20 = [(HKInteractiveChartDataFormatter *)self majorFont];
-  v21 = [(HKInteractiveChartDataFormatter *)self minorFont];
+  displayType3 = [(HKInteractiveChartDataFormatter *)self displayType];
+  unitController2 = [(HKInteractiveChartDataFormatter *)self unitController];
+  majorFont = [(HKInteractiveChartDataFormatter *)self majorFont];
+  minorFont = [(HKInteractiveChartDataFormatter *)self minorFont];
   LOBYTE(v24) = 1;
-  v22 = [(HKTimePeriodDisplayTypeValueFormatter *)timePeriodFormatter attributedStringFromValue:v17 roundToHours:v5 displayType:v18 unitController:v19 valueFont:v20 unitFont:v21 formatForChart:v24];
+  v22 = [(HKTimePeriodDisplayTypeValueFormatter *)timePeriodFormatter attributedStringFromValue:v17 roundToHours:hoursCopy displayType:displayType3 unitController:unitController2 valueFont:majorFont unitFont:minorFont formatForChart:v24];
 
   return v22;
 }
 
-- (id)_formattedSelectedRangeLabelDataWithChartData:(id)a3 items:(id)a4 customDataType:(int64_t)a5 boundedValueRange:(id)a6
+- (id)_formattedSelectedRangeLabelDataWithChartData:(id)data items:(id)items customDataType:(int64_t)type boundedValueRange:(id)range
 {
   v101[1] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
-  if (!v9 || ![v9 count])
+  dataCopy = data;
+  itemsCopy = items;
+  rangeCopy = range;
+  if (!dataCopy || ![dataCopy count])
   {
     v80 = MEMORY[0x1E695E0F0];
     goto LABEL_60;
   }
 
-  v12 = [v9 firstObject];
-  if ([v9 count] == 1)
+  firstObject = [dataCopy firstObject];
+  if ([dataCopy count] == 1)
   {
-    v13 = [v12 recordCount];
-    if (!v11 && v13 <= 1)
+    recordCount = [firstObject recordCount];
+    if (!rangeCopy && recordCount <= 1)
     {
       v14 = [[HKSelectedRangeData alloc] initWithStatisticsType:0];
-      [(HKSelectedRangeData *)v14 setDataType:a5];
-      v15 = [(HKInteractiveChartTimePeriodFormatter *)self _formattedStringWithData:v12 roundToHours:0 displayUnit:1];
+      [(HKSelectedRangeData *)v14 setDataType:type];
+      v15 = [(HKInteractiveChartTimePeriodFormatter *)self _formattedStringWithData:firstObject roundToHours:0 displayUnit:1];
       [(HKSelectedRangeData *)v14 setAttributedString:v15];
 
       v16 = MEMORY[0x1E696AD98];
-      [v12 timePeriod];
+      [firstObject timePeriod];
       v17 = [v16 numberWithDouble:?];
       [(HKSelectedRangeData *)v14 setValueAsNumber:v17];
 
@@ -80,22 +80,22 @@ LABEL_58:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v14 = v12;
+    v14 = firstObject;
     v93 = 0u;
     v94 = 0u;
     v95 = 0u;
     v96 = 0u;
-    v18 = v9;
+    v18 = dataCopy;
     v19 = [v18 countByEnumeratingWithState:&v93 objects:v100 count:16];
-    v86 = v11;
-    v77 = v9;
-    v78 = v10;
-    v76 = v12;
+    v86 = rangeCopy;
+    v77 = dataCopy;
+    v78 = itemsCopy;
+    v76 = firstObject;
     obj = v18;
     if (v19)
     {
       v20 = v19;
-      v81 = a5;
+      typeCopy = type;
       v21 = 0;
       v22 = 0;
       v84 = *v94;
@@ -115,9 +115,9 @@ LABEL_58:
 
           v29 = *(*(&v93 + 1) + 8 * i);
           [v29 timePeriod];
-          if (v11)
+          if (rangeCopy)
           {
-            [(HKInteractiveChartTimePeriodFormatter *)self _boundedTimePeriodFromDataPoint:v29 boundedValueRange:v11];
+            [(HKInteractiveChartTimePeriodFormatter *)self _boundedTimePeriodFromDataPoint:v29 boundedValueRange:rangeCopy];
           }
 
           v31 = v30;
@@ -142,10 +142,10 @@ LABEL_58:
             v88 = v35;
           }
 
-          v36 = [v29 recordCount];
-          v37 = [v29 recordCount];
-          v38 = [v29 statisticsInterval];
-          [v38 hk_approximateDuration];
+          recordCount2 = [v29 recordCount];
+          recordCount3 = [v29 recordCount];
+          statisticsInterval = [v29 statisticsInterval];
+          [statisticsInterval hk_approximateDuration];
           v40 = HKUIEqualDoubles(v39, v23);
 
           if (v40)
@@ -159,9 +159,9 @@ LABEL_58:
             v22 = 0;
           }
 
-          v11 = v86;
-          v25 = v25 + v31 * v36;
-          v21 += v37;
+          rangeCopy = v86;
+          v25 = v25 + v31 * recordCount2;
+          v21 += recordCount3;
           v27 = v88;
         }
 
@@ -182,8 +182,8 @@ LABEL_58:
         v79 = 1;
       }
 
-      v10 = v78;
-      a5 = v81;
+      itemsCopy = v78;
+      type = typeCopy;
       v14 = v26;
     }
 
@@ -202,7 +202,7 @@ LABEL_58:
     v90 = 0u;
     v91 = 0u;
     v92 = 0u;
-    v43 = v10;
+    v43 = itemsCopy;
     v44 = v42;
     v85 = v43;
     v45 = [v43 countByEnumeratingWithState:&v89 objects:v99 count:16];
@@ -211,10 +211,10 @@ LABEL_58:
     {
 LABEL_57:
 
-      v11 = v86;
-      v9 = v77;
-      v10 = v78;
-      v12 = v76;
+      rangeCopy = v86;
+      dataCopy = v77;
+      itemsCopy = v78;
+      firstObject = v76;
       goto LABEL_58;
     }
 
@@ -230,13 +230,13 @@ LABEL_34:
         objc_enumerationMutation(v85);
       }
 
-      v49 = [*(*(&v89 + 1) + 8 * v48) integerValue];
-      if (v49 <= 7)
+      integerValue = [*(*(&v89 + 1) + 8 * v48) integerValue];
+      if (integerValue <= 7)
       {
-        if (v49 == 2)
+        if (integerValue == 2)
         {
           v50 = [[HKSelectedRangeData alloc] initWithStatisticsType:1];
-          [(HKSelectedRangeData *)v50 setDataType:a5];
+          [(HKSelectedRangeData *)v50 setDataType:type];
           v72 = [(HKInteractiveChartTimePeriodFormatter *)self _formattedStringWithData:v14 roundToHours:0 displayUnit:0];
           [(HKSelectedRangeData *)v50 setAttributedString:v72];
 
@@ -253,10 +253,10 @@ LABEL_51:
           goto LABEL_52;
         }
 
-        if (v49 == 4)
+        if (integerValue == 4)
         {
           v50 = [[HKSelectedRangeData alloc] initWithStatisticsType:2];
-          [(HKSelectedRangeData *)v50 setDataType:a5];
+          [(HKSelectedRangeData *)v50 setDataType:type];
           v57 = [(HKInteractiveChartTimePeriodFormatter *)self _formattedStringWithData:v88 roundToHours:0 displayUnit:0];
           [(HKSelectedRangeData *)v50 setAttributedString:v57];
 
@@ -269,19 +269,19 @@ LABEL_51:
 
       else
       {
-        switch(v49)
+        switch(integerValue)
         {
           case 8:
             v50 = objc_alloc_init(HKInteractiveChartTimePeriodData);
             [(HKSelectedRangeData *)v50 setTimePeriod:v41];
-            v60 = [(HKSelectedRangeData *)v14 timePeriodPrefix];
-            [(HKSelectedRangeData *)v50 setTimePeriodPrefix:v60];
+            timePeriodPrefix = [(HKSelectedRangeData *)v14 timePeriodPrefix];
+            [(HKSelectedRangeData *)v50 setTimePeriodPrefix:timePeriodPrefix];
 
-            v61 = [(HKInteractiveChartDataFormatter *)self displayType];
-            v62 = [v61 displayTypeIdentifier] == 70;
+            displayType = [(HKInteractiveChartDataFormatter *)self displayType];
+            v62 = [displayType displayTypeIdentifier] == 70;
 
             v63 = [[HKSelectedRangeData alloc] initWithStatisticsType:3];
-            [(HKSelectedRangeData *)v63 setDataType:a5];
+            [(HKSelectedRangeData *)v63 setDataType:type];
             v64 = [(HKInteractiveChartTimePeriodFormatter *)self _formattedStringWithData:v50 roundToHours:v62 displayUnit:0];
             [(HKSelectedRangeData *)v63 setAttributedString:v64];
 
@@ -298,14 +298,14 @@ LABEL_48:
           case 16:
             v50 = objc_alloc_init(HKInteractiveChartTimePeriodData);
             [(HKSelectedRangeData *)v50 setTimePeriod:v25];
-            v67 = [(HKSelectedRangeData *)v14 timePeriodPrefix];
-            [(HKSelectedRangeData *)v50 setTimePeriodPrefix:v67];
+            timePeriodPrefix2 = [(HKSelectedRangeData *)v14 timePeriodPrefix];
+            [(HKSelectedRangeData *)v50 setTimePeriodPrefix:timePeriodPrefix2];
 
-            v68 = [(HKInteractiveChartDataFormatter *)self displayType];
-            v69 = [v68 displayTypeIdentifier] == 70;
+            displayType2 = [(HKInteractiveChartDataFormatter *)self displayType];
+            v69 = [displayType2 displayTypeIdentifier] == 70;
 
             v63 = [[HKSelectedRangeData alloc] initWithStatisticsType:5];
-            [(HKSelectedRangeData *)v63 setDataType:a5];
+            [(HKSelectedRangeData *)v63 setDataType:type];
             v70 = [(HKInteractiveChartTimePeriodFormatter *)self _formattedStringWithData:v50 roundToHours:v69 displayUnit:0];
             [(HKSelectedRangeData *)v63 setAttributedString:v70];
 
@@ -316,14 +316,14 @@ LABEL_48:
             if (v79)
             {
               v50 = [[HKSelectedRangeData alloc] initWithStatisticsType:8];
-              [(HKSelectedRangeData *)v50 setDataType:a5];
+              [(HKSelectedRangeData *)v50 setDataType:type];
               v51 = objc_alloc_init(HKInteractiveChartTimePeriodData);
               [(HKInteractiveChartTimePeriodData *)v51 setTimePeriod:v24];
-              v52 = [(HKSelectedRangeData *)v82 timePeriodPrefix];
-              [(HKInteractiveChartTimePeriodData *)v51 setTimePeriodPrefix:v52];
+              timePeriodPrefix3 = [(HKSelectedRangeData *)v82 timePeriodPrefix];
+              [(HKInteractiveChartTimePeriodData *)v51 setTimePeriodPrefix:timePeriodPrefix3];
 
-              v53 = [(HKInteractiveChartDataFormatter *)self displayType];
-              v54 = [v53 displayTypeIdentifier] == 70;
+              displayType3 = [(HKInteractiveChartDataFormatter *)self displayType];
+              v54 = [displayType3 displayTypeIdentifier] == 70;
 
               v44 = v80;
               v55 = [(HKInteractiveChartTimePeriodFormatter *)self _formattedStringWithData:v51 roundToHours:v54 displayUnit:0];
@@ -375,58 +375,58 @@ LABEL_60:
   return v80;
 }
 
-- (double)_boundedTimePeriodFromDataPoint:(id)a3 boundedValueRange:(id)a4
+- (double)_boundedTimePeriodFromDataPoint:(id)point boundedValueRange:(id)range
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 startDate];
+  pointCopy = point;
+  rangeCopy = range;
+  startDate = [pointCopy startDate];
   v8 = 0.0;
   v9 = 0.0;
-  if (v7)
+  if (startDate)
   {
-    v10 = v7;
-    v11 = [v6 startDate];
-    v12 = [v5 startDate];
-    v13 = [v11 hk_isAfterDate:v12];
+    v10 = startDate;
+    startDate2 = [rangeCopy startDate];
+    startDate3 = [pointCopy startDate];
+    v13 = [startDate2 hk_isAfterDate:startDate3];
 
     if (v13)
     {
-      v14 = [v6 startDate];
-      v15 = [v5 startDate];
-      [v14 timeIntervalSinceDate:v15];
+      startDate4 = [rangeCopy startDate];
+      startDate5 = [pointCopy startDate];
+      [startDate4 timeIntervalSinceDate:startDate5];
       v9 = v16;
     }
   }
 
-  v17 = [v5 endDate];
-  if (v17)
+  endDate = [pointCopy endDate];
+  if (endDate)
   {
-    v18 = v17;
-    v19 = [v6 endDate];
-    v20 = [v5 endDate];
-    v21 = [v19 hk_isBeforeDate:v20];
+    v18 = endDate;
+    endDate2 = [rangeCopy endDate];
+    endDate3 = [pointCopy endDate];
+    v21 = [endDate2 hk_isBeforeDate:endDate3];
 
     if (v21)
     {
-      v22 = [v5 endDate];
-      v23 = [v6 endDate];
-      [v22 timeIntervalSinceDate:v23];
+      endDate4 = [pointCopy endDate];
+      endDate5 = [rangeCopy endDate];
+      [endDate4 timeIntervalSinceDate:endDate5];
       v8 = v24;
     }
   }
 
-  [v5 timePeriod];
+  [pointCopy timePeriod];
   v26 = v25 - v9 - v8;
 
   return v26;
 }
 
-- (id)formattedBoundedSelectedRangeLabelDataWithChartData:(id)a3 items:(id)a4 customDataType:(int64_t)a5 chartRangeProvider:(id)a6
+- (id)formattedBoundedSelectedRangeLabelDataWithChartData:(id)data items:(id)items customDataType:(int64_t)type chartRangeProvider:(id)provider
 {
-  v10 = a4;
-  v11 = a3;
-  v12 = [a6 actualVisibleRange];
-  v13 = [(HKInteractiveChartTimePeriodFormatter *)self _formattedSelectedRangeLabelDataWithChartData:v11 items:v10 customDataType:a5 boundedValueRange:v12];
+  itemsCopy = items;
+  dataCopy = data;
+  actualVisibleRange = [provider actualVisibleRange];
+  v13 = [(HKInteractiveChartTimePeriodFormatter *)self _formattedSelectedRangeLabelDataWithChartData:dataCopy items:itemsCopy customDataType:type boundedValueRange:actualVisibleRange];
 
   return v13;
 }

@@ -1,18 +1,18 @@
 @interface PAESlitScan
 - (BOOL)addParameters;
-- (BOOL)canThrowRenderOutput:(id)a3 withInput:(id)a4 withInfo:(id *)a5;
-- (BOOL)frameSetup:(id *)a3 inputInfo:(id *)a4 hardware:(BOOL *)a5 software:(BOOL *)a6;
-- (PAESlitScan)initWithAPIManager:(id)a3;
+- (BOOL)canThrowRenderOutput:(id)output withInput:(id)input withInfo:(id *)info;
+- (BOOL)frameSetup:(id *)setup inputInfo:(id *)info hardware:(BOOL *)hardware software:(BOOL *)software;
+- (PAESlitScan)initWithAPIManager:(id)manager;
 - (id)properties;
 @end
 
 @implementation PAESlitScan
 
-- (PAESlitScan)initWithAPIManager:(id)a3
+- (PAESlitScan)initWithAPIManager:(id)manager
 {
   v4.receiver = self;
   v4.super_class = PAESlitScan;
-  return [(PAESharedDefaultBase *)&v4 initWithAPIManager:a3];
+  return [(PAESharedDefaultBase *)&v4 initWithAPIManager:manager];
 }
 
 - (id)properties
@@ -47,7 +47,7 @@
   return 1;
 }
 
-- (BOOL)canThrowRenderOutput:(id)a3 withInput:(id)a4 withInfo:(id *)a5
+- (BOOL)canThrowRenderOutput:(id)output withInput:(id)input withInfo:(id *)info
 {
   v130 = *MEMORY[0x277D85DE8];
   v9 = [(PROAPIAccessing *)self->super.super._apiManager apiForProtocol:&unk_28735E258];
@@ -67,29 +67,29 @@
     return 0;
   }
 
-  v87 = [a4 width];
-  v86 = [a4 height];
+  width = [input width];
+  height = [input height];
   v107 = 0.0;
   v106 = 0.0;
-  [v9 getXValue:&v107 YValue:&v106 fromParm:1 atFxTime:a5->var0.var1];
-  v107 = v107 * v87;
-  v106 = v106 * v86;
+  [v9 getXValue:&v107 YValue:&v106 fromParm:1 atFxTime:info->var0.var1];
+  v107 = v107 * width;
+  v106 = v106 * height;
   v105 = 0.0;
-  [v9 getFloatValue:&v105 fromParm:2 atFxTime:a5->var0.var1];
+  [v9 getFloatValue:&v105 fromParm:2 atFxTime:info->var0.var1];
   v104 = 0.0;
-  [v9 getFloatValue:&v104 fromParm:3 atFxTime:a5->var0.var1];
+  [v9 getFloatValue:&v104 fromParm:3 atFxTime:info->var0.var1];
   v103 = 0.0;
-  [v9 getFloatValue:&v103 fromParm:4 atFxTime:a5->var0.var1];
+  [v9 getFloatValue:&v103 fromParm:4 atFxTime:info->var0.var1];
   v102 = 0.0;
-  [v9 getFloatValue:&v102 fromParm:5 atFxTime:a5->var0.var1];
+  [v9 getFloatValue:&v102 fromParm:5 atFxTime:info->var0.var1];
   v101 = 0.0;
   v100 = 0.0;
   v99 = 0.0;
-  [v9 getRedValue:&v101 greenValue:&v100 blueValue:&v99 fromParm:6 atFxTime:a5->var0.var1];
+  [v9 getRedValue:&v101 greenValue:&v100 blueValue:&v99 fromParm:6 atFxTime:info->var0.var1];
   v98 = 0.0;
-  [v9 getFloatValue:&v98 fromParm:7 atFxTime:a5->var0.var1];
-  v98 = v98 * v87;
-  [(PAESharedDefaultBase *)self getScaleForImage:a4];
+  [v9 getFloatValue:&v98 fromParm:7 atFxTime:info->var0.var1];
+  v98 = v98 * width;
+  [(PAESharedDefaultBase *)self getScaleForImage:input];
   if (v96 <= v97)
   {
     v13 = v97;
@@ -102,17 +102,17 @@
 
   v103 = v103 / v13;
   v14 = __sincos_stret(v105);
-  [(PAESharedDefaultBase *)self secondsFromFxTime:a5->var0.var1];
+  [(PAESharedDefaultBase *)self secondsFromFxTime:info->var0.var1];
   v16 = v15;
   v17 = v104;
   v18 = v107;
   v19 = v106;
   v20 = v98;
   v21 = v102;
-  v22 = [a4 imageType];
-  v23 = [(PAESharedDefaultBase *)self getRenderMode:a5->var0.var1];
+  imageType = [input imageType];
+  v23 = [(PAESharedDefaultBase *)self getRenderMode:info->var0.var1];
   result = 0;
-  if (!v23 || v22 != 3)
+  if (!v23 || imageType != 3)
   {
     return result;
   }
@@ -123,9 +123,9 @@
     return 0;
   }
 
-  if (a4)
+  if (input)
   {
-    [a4 heliumRef];
+    [input heliumRef];
   }
 
   else
@@ -133,10 +133,10 @@
     v95 = 0;
   }
 
-  v25 = [a4 width];
-  v107 = v107 - (v25 >> 1);
-  v26 = [a4 height];
-  v106 = v106 - (v26 >> 1);
+  width2 = [input width];
+  v107 = v107 - (width2 >> 1);
+  height2 = [input height];
+  v106 = v106 - (height2 >> 1);
   v27 = HGObject::operator new(0x1D0uLL);
   HGTextureWrap::HGTextureWrap(v27);
   v80 = v27;
@@ -144,7 +144,7 @@
   HGTextureWrap::SetTextureWrapMode(v27, 2, v28);
   v85 = HGObject::operator new(0x1A0uLL);
   HGCrop::HGCrop(v85);
-  v29 = HGRectMake4i(([a4 width] * -1.5), (objc_msgSend(a4, "height") * -1.5), (objc_msgSend(a4, "width") * 1.5), (objc_msgSend(a4, "height") * 1.5));
+  v29 = HGRectMake4i(([input width] * -1.5), (objc_msgSend(input, "height") * -1.5), (objc_msgSend(input, "width") * 1.5), (objc_msgSend(input, "height") * 1.5));
   (*(*v85 + 96))(v85, 0, v29, SHIDWORD(v29), v30, v31);
   (*(*v85 + 120))(v85, 0, v27);
   HGTransform::HGTransform(v94);
@@ -166,14 +166,14 @@
   HGTransform::HGTransform(v93);
   v32 = v98;
   v33 = v105;
-  v34 = [a4 width];
+  width3 = [input width];
   v35 = v105;
-  v36 = [a4 height];
+  height3 = [input height];
   v37 = v13 * -(v16 * v17);
   v38 = sin(v33);
-  v39 = fmod(-((v32 + v37) * v38), v34 * 1.5);
+  v39 = fmod(-((v32 + v37) * v38), width3 * 1.5);
   v40 = cos(v35);
-  v41 = fmod((v32 + v37) * v40, v36 * 1.5);
+  v41 = fmod((v32 + v37) * v40, height3 * 1.5);
   HGTransform::Translate(v93, -v39, -v41, 0.0);
   HGTransform::Translate(v93, -v107, -v106, 0.0);
   HGTransform::Rotate(v93, v105 * 180.0 / 3.14159265, 0.0, 0.0, 1.0);
@@ -211,14 +211,14 @@
   HGTransform::LoadMatrixd(v91, &v108);
   HGTransform::HGTransform(v90);
   v45 = v105;
-  v46 = [a4 width];
+  width4 = [input width];
   v47 = sin(v45);
-  v48 = fmod(v47 * -v37, v46 * 1.5);
+  v48 = fmod(v47 * -v37, width4 * 1.5);
   v49 = v105;
-  v50 = [a4 height];
+  height4 = [input height];
   HGTransform::Scale(v90, 1.0, -1.0, 1.0);
   v51 = cos(v49);
-  v52 = fmod(v51 * v37, v50 * 1.5);
+  v52 = fmod(v51 * v37, height4 * 1.5);
   HGTransform::Translate(v90, -v48, v52, 0.0);
   HGTransform::Translate(v90, 0.0, v106 + v106, 0.0);
   HGTransform::Translate(v90, -v107, -v106, 0.0);
@@ -249,28 +249,28 @@
   v57 = HGObject::operator new(0x1A0uLL);
   v58 = v24;
   HGCrop::HGCrop(v57);
-  LODWORD(v34) = [a4 width];
-  LODWORD(v44) = [a4 width];
-  v59 = [a4 height];
-  v60 = [a4 height];
+  LODWORD(width3) = [input width];
+  LODWORD(v44) = [input width];
+  height5 = [input height];
+  height6 = [input height];
   (*(*v57 + 120))(v57, 0, v56);
-  (*(*v57 + 96))(v57, 0, (v34 / -2), (v59 / -2), (v44 / 2), (v60 / 2));
+  (*(*v57 + 96))(v57, 0, (width3 / -2), (height5 / -2), (v44 / 2), (height6 / 2));
   [v58 versionAtCreation];
   v61 = HGObject::operator new(0x1A0uLL);
   HgcSlitScanGlow::HgcSlitScanGlow(v61);
   (*(*v61 + 120))(v61, 0, v57);
-  v62 = [a4 width];
-  v107 = v107 + (v62 >> 1);
-  v63 = [a4 height];
+  width5 = [input width];
+  v107 = v107 + (width5 >> 1);
+  height7 = [input height];
   sinval = v14.__sinval;
   *&v32 = -sinval;
   cosval = v14.__cosval;
   v66 = v18 + (-sinval * v37);
   v67 = v79 + (cosval * v37);
-  v106 = v106 + (v63 >> 1);
+  v106 = v106 + (height7 >> 1);
   (*(*v61 + 96))(v61, 0, v66, v67, 0.0, 0.0);
-  (*(*v61 + 96))(v61, 1, v87, v86, 0.0, 0.0);
-  v68 = v77 * (v87 >> 2);
+  (*(*v61 + 96))(v61, 1, width, height, 0.0, 0.0);
+  v68 = v77 * (width >> 2);
   (*(*v61 + 96))(v61, 2, v68, 0.0, 0.0, 0.0);
   v69 = v101;
   v70 = v100;
@@ -285,7 +285,7 @@
   (*(*v61 + 96))(v61, 6, *&v32, cosval, 0.0, 0.0);
   v88 = v61;
   (*(*v61 + 16))(v61);
-  [a3 setHeliumRef:&v88];
+  [output setHeliumRef:&v88];
   if (v88)
   {
     (*(*v88 + 24))(v88);
@@ -316,15 +316,15 @@
   return 1;
 }
 
-- (BOOL)frameSetup:(id *)a3 inputInfo:(id *)a4 hardware:(BOOL *)a5 software:(BOOL *)a6
+- (BOOL)frameSetup:(id *)setup inputInfo:(id *)info hardware:(BOOL *)hardware software:(BOOL *)software
 {
-  *a6 = 0;
-  *a5 = 0;
-  v6 = *&a3->var2;
-  v8[0] = *&a3->var0.var0;
+  *software = 0;
+  *hardware = 0;
+  v6 = *&setup->var2;
+  v8[0] = *&setup->var0.var0;
   v8[1] = v6;
-  v8[2] = *&a3->var4;
-  [(PAESharedDefaultBase *)self overrideFrameSetupForRenderMode:v8 hardware:a5 software:a6];
+  v8[2] = *&setup->var4;
+  [(PAESharedDefaultBase *)self overrideFrameSetupForRenderMode:v8 hardware:hardware software:software];
   return 1;
 }
 

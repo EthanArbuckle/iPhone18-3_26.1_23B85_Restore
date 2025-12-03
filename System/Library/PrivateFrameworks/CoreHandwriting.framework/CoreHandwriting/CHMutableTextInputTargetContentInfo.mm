@@ -1,14 +1,14 @@
 @interface CHMutableTextInputTargetContentInfo
 - (_NSRange)referenceSubstringRange;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setProtectedCharacterIndexes:(id)a3;
-- (void)setReferenceSubstring:(id)a3 range:(_NSRange)a4 characterRects:(CGRect *)a5;
-- (void)setTextInputTarget:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setProtectedCharacterIndexes:(id)indexes;
+- (void)setReferenceSubstring:(id)substring range:(_NSRange)range characterRects:(CGRect *)rects;
+- (void)setTextInputTarget:(id)target;
 @end
 
 @implementation CHMutableTextInputTargetContentInfo
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v115 = [CHTextInputTargetContentInfo alloc];
   v114 = objc_msgSend_textInputTarget(self, v4, v5, v6, v7, v8);
@@ -50,38 +50,38 @@
   return result;
 }
 
-- (void)setTextInputTarget:(id)a3
+- (void)setTextInputTarget:(id)target
 {
-  v5 = a3;
+  targetCopy = target;
   textInputTarget = self->super._textInputTarget;
   p_textInputTarget = &self->super._textInputTarget;
-  if (textInputTarget != v5)
+  if (textInputTarget != targetCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_textInputTarget, a3);
-    v5 = v8;
+    v8 = targetCopy;
+    objc_storeStrong(p_textInputTarget, target);
+    targetCopy = v8;
   }
 }
 
-- (void)setProtectedCharacterIndexes:(id)a3
+- (void)setProtectedCharacterIndexes:(id)indexes
 {
-  if (self[1].super.super.isa != a3)
+  if (self[1].super.super.isa != indexes)
   {
-    v8 = objc_msgSend_copy(a3, a2, a3, v3, v4, v5);
+    v8 = objc_msgSend_copy(indexes, a2, indexes, v3, v4, v5);
     isa = self[1].super.super.isa;
     self[1].super.super.isa = v8;
   }
 }
 
-- (void)setReferenceSubstring:(id)a3 range:(_NSRange)a4 characterRects:(CGRect *)a5
+- (void)setReferenceSubstring:(id)substring range:(_NSRange)range characterRects:(CGRect *)rects
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v42 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  if (objc_msgSend_length(v9, v10, v11, v12, v13, v14) == length)
+  substringCopy = substring;
+  if (objc_msgSend_length(substringCopy, v10, v11, v12, v13, v14) == length)
   {
-    if (objc_msgSend_length(v9, v15, v16, v17, v18, v19) == length)
+    if (objc_msgSend_length(substringCopy, v15, v16, v17, v18, v19) == length)
     {
       goto LABEL_3;
     }
@@ -111,12 +111,12 @@ LABEL_22:
 
 LABEL_23:
 
-  if (objc_msgSend_length(v9, v34, v35, v36, v37, v38) == length)
+  if (objc_msgSend_length(substringCopy, v34, v35, v36, v37, v38) == length)
   {
 LABEL_3:
     self->super._referenceSubstringRange.location = location;
     self->super._referenceSubstringRange.length = length;
-    if (self->super._referenceSubstring == v9)
+    if (self->super._referenceSubstring == substringCopy)
     {
       goto LABEL_5;
     }
@@ -149,10 +149,10 @@ LABEL_27:
 
   self->super._referenceSubstringRange.location = location;
   self->super._referenceSubstringRange.length = length;
-  if (self->super._referenceSubstring != v9)
+  if (self->super._referenceSubstring != substringCopy)
   {
 LABEL_4:
-    v25 = objc_msgSend_copy(v9, v20, v21, v22, v23, v24);
+    v25 = objc_msgSend_copy(substringCopy, v20, v21, v22, v23, v24);
     referenceSubstring = self->super._referenceSubstring;
     self->super._referenceSubstring = v25;
 
@@ -165,7 +165,7 @@ LABEL_5:
     goto LABEL_19;
   }
 
-  if (!a5)
+  if (!rects)
   {
     if (qword_1EA84DC48 != -1)
     {
@@ -212,7 +212,7 @@ LABEL_14:
 
 LABEL_15:
   characterRectsInReferenceSubstring = self->super._characterRectsInReferenceSubstring;
-  if (characterRectsInReferenceSubstring != a5)
+  if (characterRectsInReferenceSubstring != rects)
   {
     if (characterRectsInReferenceSubstring)
     {
@@ -221,7 +221,7 @@ LABEL_15:
 
     v32 = malloc_type_calloc(self->super._referenceSubstringRange.length, 0x20uLL, 0x1000040E0EAB150uLL);
     self->super._characterRectsInReferenceSubstring = v32;
-    memcpy(v32, a5, 32 * self->super._referenceSubstringRange.length);
+    memcpy(v32, rects, 32 * self->super._referenceSubstringRange.length);
   }
 
 LABEL_19:

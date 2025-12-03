@@ -1,7 +1,7 @@
 @interface _MPMediaLibraryMLCoreStorage
 - (id).cxx_construct;
 - (shared_ptr<mlcore::DeviceLibrary>)_MediaLibrary_coreLibrary;
-- (void)set_MediaLibrary_coreLibrary:(shared_ptr<mlcore::DeviceLibrary>)a3;
+- (void)set_MediaLibrary_coreLibrary:(shared_ptr<mlcore::DeviceLibrary>)library;
 @end
 
 @implementation _MPMediaLibraryMLCoreStorage
@@ -28,10 +28,10 @@
   return result;
 }
 
-- (void)set_MediaLibrary_coreLibrary:(shared_ptr<mlcore::DeviceLibrary>)a3
+- (void)set_MediaLibrary_coreLibrary:(shared_ptr<mlcore::DeviceLibrary>)library
 {
-  v4 = *a3.__ptr_;
-  v3 = *(a3.__ptr_ + 1);
+  v4 = *library.__ptr_;
+  v3 = *(library.__ptr_ + 1);
   if (v3)
   {
     atomic_fetch_add_explicit((v3 + 8), 1uLL, memory_order_relaxed);

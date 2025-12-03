@@ -1,19 +1,19 @@
 @interface PLCodec
-+ (BOOL)isPlayableFourCharCodecName:(id)a3;
-+ (BOOL)isProResRAWFourCharCodecName:(id)a3;
++ (BOOL)isPlayableFourCharCodecName:(id)name;
++ (BOOL)isProResRAWFourCharCodecName:(id)name;
 + (id)H264fourCharCode;
 + (id)HEVCfourCharCode;
-+ (unsigned)_typeCodeFromString:(id)a3;
++ (unsigned)_typeCodeFromString:(id)string;
 @end
 
 @implementation PLCodec
 
-+ (BOOL)isProResRAWFourCharCodecName:(id)a3
++ (BOOL)isProResRAWFourCharCodecName:(id)name
 {
-  v4 = a3;
-  if ([v4 length])
+  nameCopy = name;
+  if ([nameCopy length])
   {
-    v5 = [a1 _typeCodeFromString:v4];
+    v5 = [self _typeCodeFromString:nameCopy];
     v7 = v5 == 1634759278 || v5 == 1634759272;
   }
 
@@ -63,12 +63,12 @@ void __27__PLCodec_H264fourCharCode__block_invoke()
   H264fourCharCode_codecName = v0;
 }
 
-+ (BOOL)isPlayableFourCharCodecName:(id)a3
++ (BOOL)isPlayableFourCharCodecName:(id)name
 {
-  v4 = a3;
-  if ([v4 length])
+  nameCopy = name;
+  if ([nameCopy length])
   {
-    [a1 _typeCodeFromString:v4];
+    [self _typeCodeFromString:nameCopy];
     v5 = VTSelectAndCreateVideoDecoderInstance() == 0;
   }
 
@@ -80,9 +80,9 @@ void __27__PLCodec_H264fourCharCode__block_invoke()
   return v5;
 }
 
-+ (unsigned)_typeCodeFromString:(id)a3
++ (unsigned)_typeCodeFromString:(id)string
 {
-  v3 = [a3 dataUsingEncoding:4];
+  v3 = [string dataUsingEncoding:4];
   if ([v3 length] < 4)
   {
     v4 = 0;

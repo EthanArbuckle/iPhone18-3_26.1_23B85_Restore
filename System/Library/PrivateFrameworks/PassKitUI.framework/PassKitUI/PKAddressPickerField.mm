@@ -1,39 +1,39 @@
 @interface PKAddressPickerField
-- (PKAddressPickerField)initWithFrame:(CGRect)a3 addressTextField:(id)a4;
+- (PKAddressPickerField)initWithFrame:(CGRect)frame addressTextField:(id)field;
 @end
 
 @implementation PKAddressPickerField
 
-- (PKAddressPickerField)initWithFrame:(CGRect)a3 addressTextField:(id)a4
+- (PKAddressPickerField)initWithFrame:(CGRect)frame addressTextField:(id)field
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = a4;
-  v11 = [v10 contactFieldConfiguration];
-  if ([v11 type] == 2)
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  fieldCopy = field;
+  contactFieldConfiguration = [fieldCopy contactFieldConfiguration];
+  if ([contactFieldConfiguration type] == 2)
   {
     v16.receiver = self;
     v16.super_class = PKAddressPickerField;
-    v12 = [(PKAddressPickerField *)&v16 initWithFrame:x, y, width, height];
-    p_isa = &v12->super.super.super.super.isa;
-    if (v12)
+    height = [(PKAddressPickerField *)&v16 initWithFrame:x, y, width, height];
+    p_isa = &height->super.super.super.super.isa;
+    if (height)
     {
-      objc_storeStrong(&v12->_addressTextField, a4);
-      objc_storeStrong(p_isa + 69, v11);
+      objc_storeStrong(&height->_addressTextField, field);
+      objc_storeStrong(p_isa + 69, contactFieldConfiguration);
     }
 
     self = p_isa;
-    v14 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v14 = 0;
+    selfCopy = 0;
   }
 
-  return v14;
+  return selfCopy;
 }
 
 @end

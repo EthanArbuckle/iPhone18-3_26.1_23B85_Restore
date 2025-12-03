@@ -1,11 +1,11 @@
 @interface VideoControlButton
 - (BOOL)isSelected;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC23ShelfKitCollectionViews18VideoControlButton)initWithCoder:(id)a3;
-- (_TtC23ShelfKitCollectionViews18VideoControlButton)initWithFrame:(CGRect)a3;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC23ShelfKitCollectionViews18VideoControlButton)initWithCoder:(id)coder;
+- (_TtC23ShelfKitCollectionViews18VideoControlButton)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setSelected:(BOOL)a3;
+- (void)setSelected:(BOOL)selected;
 - (void)wasTapped;
 @end
 
@@ -18,17 +18,17 @@
   return [(VideoControlButton *)&v3 isSelected];
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  v3 = a3;
+  selectedCopy = selected;
   v5.receiver = self;
   v5.super_class = type metadata accessor for VideoControlButton();
   v4 = v5.receiver;
-  [(VideoControlButton *)&v5 setSelected:v3];
+  [(VideoControlButton *)&v5 setSelected:selectedCopy];
   sub_2F9250();
 }
 
-- (_TtC23ShelfKitCollectionViews18VideoControlButton)initWithCoder:(id)a3
+- (_TtC23ShelfKitCollectionViews18VideoControlButton)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC23ShelfKitCollectionViews18VideoControlButton_selectedGlyph) = 0;
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC23ShelfKitCollectionViews18VideoControlButton_selectedType) = 7;
@@ -42,13 +42,13 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_2F9498();
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  v3 = self;
+  selfCopy = self;
   v4 = sub_2F9B8C();
   v6 = v5;
 
@@ -61,16 +61,16 @@
 
 - (void)wasTapped
 {
-  v2 = self;
-  [(VideoControlButton *)v2 setSelected:[(VideoControlButton *)v2 isSelected]^ 1];
+  selfCopy = self;
+  [(VideoControlButton *)selfCopy setSelected:[(VideoControlButton *)selfCopy isSelected]^ 1];
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = self;
-  [(VideoControlButton *)v6 bounds];
+  y = inside.y;
+  x = inside.x;
+  selfCopy = self;
+  [(VideoControlButton *)selfCopy bounds];
   v11.origin.x = UIEdgeInsetsInsetRect_4(v7);
   v10.x = x;
   v10.y = y;
@@ -79,7 +79,7 @@
   return v8;
 }
 
-- (_TtC23ShelfKitCollectionViews18VideoControlButton)initWithFrame:(CGRect)a3
+- (_TtC23ShelfKitCollectionViews18VideoControlButton)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

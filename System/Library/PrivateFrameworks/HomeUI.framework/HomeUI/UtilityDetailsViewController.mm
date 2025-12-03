@@ -1,25 +1,25 @@
 @interface UtilityDetailsViewController
-- (_TtC6HomeUI28UtilityDetailsViewController)initWithCoder:(id)a3;
-- (_TtC6HomeUI28UtilityDetailsViewController)initWithHome:(id)a3 details:(id)a4;
-- (_TtC6HomeUI28UtilityDetailsViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC6HomeUI28UtilityDetailsViewController)initWithCoder:(id)coder;
+- (_TtC6HomeUI28UtilityDetailsViewController)initWithHome:(id)home details:(id)details;
+- (_TtC6HomeUI28UtilityDetailsViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLoad;
 @end
 
 @implementation UtilityDetailsViewController
 
-- (_TtC6HomeUI28UtilityDetailsViewController)initWithHome:(id)a3 details:(id)a4
+- (_TtC6HomeUI28UtilityDetailsViewController)initWithHome:(id)home details:(id)details
 {
   __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27C81CE20);
   v6 = sub_20D567758();
-  *(&self->super.super.super.isa + OBJC_IVAR____TtC6HomeUI28UtilityDetailsViewController_home) = a3;
+  *(&self->super.super.super.isa + OBJC_IVAR____TtC6HomeUI28UtilityDetailsViewController_home) = home;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC6HomeUI28UtilityDetailsViewController_details) = v6;
   v9.receiver = self;
   v9.super_class = type metadata accessor for UtilityDetailsViewController();
-  v7 = a3;
+  homeCopy = home;
   return [(UtilityDetailsViewController *)&v9 initWithNibName:0 bundle:0];
 }
 
-- (_TtC6HomeUI28UtilityDetailsViewController)initWithCoder:(id)a3
+- (_TtC6HomeUI28UtilityDetailsViewController)initWithCoder:(id)coder
 {
   type metadata accessor for UtilityDetailsViewController();
   swift_deallocPartialClassInstance();
@@ -28,11 +28,11 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_20CF0A734();
 }
 
-- (_TtC6HomeUI28UtilityDetailsViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC6HomeUI28UtilityDetailsViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

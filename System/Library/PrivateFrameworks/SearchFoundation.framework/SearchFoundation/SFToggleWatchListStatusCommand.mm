@@ -1,12 +1,12 @@
 @interface SFToggleWatchListStatusCommand
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (SFToggleWatchListStatusCommand)initWithCoder:(id)a3;
-- (SFToggleWatchListStatusCommand)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SFToggleWatchListStatusCommand)initWithCoder:(id)coder;
+- (SFToggleWatchListStatusCommand)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFToggleWatchListStatusCommand
@@ -16,33 +16,33 @@
   v8.receiver = self;
   v8.super_class = SFToggleWatchListStatusCommand;
   v3 = [(SFCommand *)&v8 hash];
-  v4 = [(SFToggleWatchListStatusCommand *)self watchListItem];
-  v5 = [v4 hash];
+  watchListItem = [(SFToggleWatchListStatusCommand *)self watchListItem];
+  v5 = [watchListItem hash];
   v6 = v5 ^ [(SFToggleWatchListStatusCommand *)self shouldAddToWatchList];
 
   return v6 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
-  if (self == v6)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     LOBYTE(v11) = 1;
   }
 
   else
   {
-    if ([(SFToggleWatchListStatusCommand *)v6 isMemberOfClass:objc_opt_class()])
+    if ([(SFToggleWatchListStatusCommand *)equalCopy isMemberOfClass:objc_opt_class()])
     {
       v14.receiver = self;
       v14.super_class = SFToggleWatchListStatusCommand;
-      if ([(SFCommand *)&v14 isEqual:v6])
+      if ([(SFCommand *)&v14 isEqual:equalCopy])
       {
-        v7 = v6;
-        v8 = [(SFToggleWatchListStatusCommand *)self watchListItem];
-        v9 = [(SFToggleWatchListStatusCommand *)v7 watchListItem];
-        if ((v8 != 0) == (v9 == 0))
+        v7 = equalCopy;
+        watchListItem = [(SFToggleWatchListStatusCommand *)self watchListItem];
+        watchListItem2 = [(SFToggleWatchListStatusCommand *)v7 watchListItem];
+        if ((watchListItem != 0) == (watchListItem2 == 0))
         {
           LOBYTE(v11) = 0;
 LABEL_14:
@@ -50,12 +50,12 @@ LABEL_14:
           goto LABEL_15;
         }
 
-        v10 = [(SFToggleWatchListStatusCommand *)self watchListItem];
-        if (!v10 || (-[SFToggleWatchListStatusCommand watchListItem](self, "watchListItem"), v3 = objc_claimAutoreleasedReturnValue(), -[SFToggleWatchListStatusCommand watchListItem](v7, "watchListItem"), v4 = objc_claimAutoreleasedReturnValue(), [v3 isEqual:v4]))
+        watchListItem3 = [(SFToggleWatchListStatusCommand *)self watchListItem];
+        if (!watchListItem3 || (-[SFToggleWatchListStatusCommand watchListItem](self, "watchListItem"), v3 = objc_claimAutoreleasedReturnValue(), -[SFToggleWatchListStatusCommand watchListItem](v7, "watchListItem"), v4 = objc_claimAutoreleasedReturnValue(), [v3 isEqual:v4]))
         {
-          v12 = [(SFToggleWatchListStatusCommand *)self shouldAddToWatchList];
-          v11 = v12 ^ [(SFToggleWatchListStatusCommand *)v7 shouldAddToWatchList]^ 1;
-          if (!v10)
+          shouldAddToWatchList = [(SFToggleWatchListStatusCommand *)self shouldAddToWatchList];
+          v11 = shouldAddToWatchList ^ [(SFToggleWatchListStatusCommand *)v7 shouldAddToWatchList]^ 1;
+          if (!watchListItem3)
           {
 LABEL_13:
 
@@ -80,13 +80,13 @@ LABEL_15:
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = SFToggleWatchListStatusCommand;
-  v4 = [(SFCommand *)&v8 copyWithZone:a3];
-  v5 = [(SFToggleWatchListStatusCommand *)self watchListItem];
-  v6 = [v5 copy];
+  v4 = [(SFCommand *)&v8 copyWithZone:zone];
+  watchListItem = [(SFToggleWatchListStatusCommand *)self watchListItem];
+  v6 = [watchListItem copy];
   [v4 setWatchListItem:v6];
 
   [v4 setShouldAddToWatchList:{-[SFToggleWatchListStatusCommand shouldAddToWatchList](self, "shouldAddToWatchList")}];
@@ -96,78 +96,78 @@ LABEL_15:
 - (NSData)jsonData
 {
   v2 = [[_SFPBToggleWatchListStatusCommand alloc] initWithFacade:self];
-  v3 = [(_SFPBToggleWatchListStatusCommand *)v2 jsonData];
+  jsonData = [(_SFPBToggleWatchListStatusCommand *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBToggleWatchListStatusCommand alloc] initWithFacade:self];
-  v3 = [(_SFPBToggleWatchListStatusCommand *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBToggleWatchListStatusCommand *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = SFToggleWatchListStatusCommand;
-  [(SFCommand *)&v3 encodeWithCoder:a3];
+  [(SFCommand *)&v3 encodeWithCoder:coder];
 }
 
-- (SFToggleWatchListStatusCommand)initWithCoder:(id)a3
+- (SFToggleWatchListStatusCommand)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(SFToggleWatchListStatusCommand *)self init];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v7 = [[_SFPBCommand alloc] initWithData:v6];
   v8 = [[SFCommand alloc] initWithProtobuf:v7];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [(SFCommand *)v8 watchListItem];
-    [(SFToggleWatchListStatusCommand *)v5 setWatchListItem:v9];
+    watchListItem = [(SFCommand *)v8 watchListItem];
+    [(SFToggleWatchListStatusCommand *)v5 setWatchListItem:watchListItem];
 
     [(SFToggleWatchListStatusCommand *)v5 setShouldAddToWatchList:[(SFCommand *)v8 shouldAddToWatchList]];
-    v10 = [(SFCommand *)v8 commandDetail];
-    [(SFCommand *)v5 setCommandDetail:v10];
+    commandDetail = [(SFCommand *)v8 commandDetail];
+    [(SFCommand *)v5 setCommandDetail:commandDetail];
 
-    v11 = [(SFCommand *)v8 normalizedTopic];
-    [(SFCommand *)v5 setNormalizedTopic:v11];
+    normalizedTopic = [(SFCommand *)v8 normalizedTopic];
+    [(SFCommand *)v5 setNormalizedTopic:normalizedTopic];
 
-    v12 = [(SFCommand *)v8 backendData];
-    [(SFCommand *)v5 setBackendData:v12];
+    backendData = [(SFCommand *)v8 backendData];
+    [(SFCommand *)v5 setBackendData:backendData];
 
-    v13 = [(SFCommand *)v8 commandReference];
-    [(SFCommand *)v5 setCommandReference:v13];
+    commandReference = [(SFCommand *)v8 commandReference];
+    [(SFCommand *)v5 setCommandReference:commandReference];
   }
 
   return v5;
 }
 
-- (SFToggleWatchListStatusCommand)initWithProtobuf:(id)a3
+- (SFToggleWatchListStatusCommand)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
+  protobufCopy = protobuf;
   v12.receiver = self;
   v12.super_class = SFToggleWatchListStatusCommand;
   v5 = [(SFToggleWatchListStatusCommand *)&v12 init];
   if (v5)
   {
-    v6 = [v4 watchListItem];
+    watchListItem = [protobufCopy watchListItem];
 
-    if (v6)
+    if (watchListItem)
     {
       v7 = [SFWatchListItem alloc];
-      v8 = [v4 watchListItem];
-      v9 = [(SFWatchListItem *)v7 initWithProtobuf:v8];
+      watchListItem2 = [protobufCopy watchListItem];
+      v9 = [(SFWatchListItem *)v7 initWithProtobuf:watchListItem2];
       [(SFToggleWatchListStatusCommand *)v5 setWatchListItem:v9];
     }
 
-    if ([v4 shouldAddToWatchList])
+    if ([protobufCopy shouldAddToWatchList])
     {
-      -[SFToggleWatchListStatusCommand setShouldAddToWatchList:](v5, "setShouldAddToWatchList:", [v4 shouldAddToWatchList]);
+      -[SFToggleWatchListStatusCommand setShouldAddToWatchList:](v5, "setShouldAddToWatchList:", [protobufCopy shouldAddToWatchList]);
     }
 
     v10 = v5;

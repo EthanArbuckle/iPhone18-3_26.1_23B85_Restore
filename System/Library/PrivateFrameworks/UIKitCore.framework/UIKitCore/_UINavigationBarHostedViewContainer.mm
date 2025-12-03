@@ -1,15 +1,15 @@
 @interface _UINavigationBarHostedViewContainer
-- (_UINavigationBarHostedViewContainer)initWithFrame:(CGRect)a3;
+- (_UINavigationBarHostedViewContainer)initWithFrame:(CGRect)frame;
 @end
 
 @implementation _UINavigationBarHostedViewContainer
 
-- (_UINavigationBarHostedViewContainer)initWithFrame:(CGRect)a3
+- (_UINavigationBarHostedViewContainer)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   ObjectType = swift_getObjectType();
   v9 = MEMORY[0x1E69E7CC0];
   *(&self->super.super.super.super.isa + OBJC_IVAR____UINavigationBarHostedViewContainer_hostedViews) = MEMORY[0x1E69E7CC0];

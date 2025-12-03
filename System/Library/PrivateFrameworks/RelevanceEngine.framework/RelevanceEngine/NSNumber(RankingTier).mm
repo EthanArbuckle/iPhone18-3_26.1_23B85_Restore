@@ -6,7 +6,7 @@
 
 + (id)none
 {
-  v1 = [[a1 alloc] initWithInteger:-1];
+  v1 = [[self alloc] initWithInteger:-1];
 
   return v1;
 }

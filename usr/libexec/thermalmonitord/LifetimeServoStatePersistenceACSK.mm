@@ -1,24 +1,24 @@
 @interface LifetimeServoStatePersistenceACSK
 - (BOOL)initializeLTSPersistence;
-- (BOOL)saveLTSStateToNand:(void *)a3;
+- (BOOL)saveLTSStateToNand:(void *)nand;
 - (BOOL)sendLTSStateToPMP;
-- (BOOL)updateLTSStateISFromPMP:(ltsStateACSKV4 *)a3 total_cores:(unsigned int)a4;
-- (BOOL)updateLTSStateISRev:(ltsStateACSKV4 *)a3 total_cores:(unsigned int)a4;
-- (BOOL)updateLTSStateTDDBISFromPMP:(ltsStateACSKV4 *)a3 tddb_cluster_mask:(unsigned int)a4 tddb_cores:(unsigned int)a5;
-- (BOOL)writePersistedStateNvram:(void *)a3 path:(__CFString *)a4;
-- (LifetimeServoStatePersistenceACSK)initWithParams:(id)a3;
-- (unsigned)getNumTotalEntries:(ltsStateACSKV4 *)a3;
-- (unsigned)getNumTotalTDDBEntries:(ltsStateACSKV4 *)a3;
+- (BOOL)updateLTSStateISFromPMP:(ltsStateACSKV4 *)p total_cores:(unsigned int)total_cores;
+- (BOOL)updateLTSStateISRev:(ltsStateACSKV4 *)rev total_cores:(unsigned int)total_cores;
+- (BOOL)updateLTSStateTDDBISFromPMP:(ltsStateACSKV4 *)p tddb_cluster_mask:(unsigned int)tddb_cluster_mask tddb_cores:(unsigned int)tddb_cores;
+- (BOOL)writePersistedStateNvram:(void *)nvram path:(__CFString *)path;
+- (LifetimeServoStatePersistenceACSK)initWithParams:(id)params;
+- (unsigned)getNumTotalEntries:(ltsStateACSKV4 *)entries;
+- (unsigned)getNumTotalTDDBEntries:(ltsStateACSKV4 *)entries;
 - (void)copyUpdatedLTSState;
 - (void)dealloc;
 - (void)initClassVariables;
 - (void)readNVRAM;
-- (void)safeFreeLTSStatePtrs:(void *)a3;
+- (void)safeFreeLTSStatePtrs:(void *)ptrs;
 @end
 
 @implementation LifetimeServoStatePersistenceACSK
 
-- (LifetimeServoStatePersistenceACSK)initWithParams:(id)a3
+- (LifetimeServoStatePersistenceACSK)initWithParams:(id)params
 {
   v5 = objc_autoreleasePoolPush();
   v10.receiver = self;
@@ -28,7 +28,7 @@
   {
     v9.receiver = v6;
     v9.super_class = LifetimeServoStatePersistenceACSK;
-    v7 = [(LifetimeServoStatePersistenceBase *)&v9 initWithParams:a3];
+    v7 = [(LifetimeServoStatePersistenceBase *)&v9 initWithParams:params];
   }
 
   else
@@ -135,7 +135,7 @@ LABEL_18:
       }
 
       v16 = v15;
-      v17 = self;
+      selfCopy = self;
       v18 = [(LifetimeServoStatePersistenceBase *)self copyKeyFromPMP:v15 is_64:0];
       if (!v18)
       {
@@ -181,7 +181,7 @@ LABEL_18:
       v12 = (v20 + v12);
       CFRelease(v19);
       *(*v5 + 4 * (v11 + v14++)) = v46;
-      self = v17;
+      self = selfCopy;
       if (v9 == v14)
       {
         goto LABEL_18;
@@ -233,7 +233,7 @@ LABEL_21:
     v28 = 0;
     while (1)
     {
-      v29 = self;
+      selfCopy2 = self;
       if (v9)
       {
         break;
@@ -242,7 +242,7 @@ LABEL_21:
 LABEL_32:
       v28 = (v28 + 1);
       v25 += v9;
-      self = v29;
+      self = selfCopy2;
       if (v28 == v44)
       {
         goto LABEL_46;
@@ -259,7 +259,7 @@ LABEL_32:
       }
 
       v32 = v31;
-      v33 = [(LifetimeServoStatePersistenceBase *)v29 copyKeyFromPMP:v31 is_64:1];
+      v33 = [(LifetimeServoStatePersistenceBase *)selfCopy2 copyKeyFromPMP:v31 is_64:1];
       if (v33)
       {
         v27 = (*(*v5 + 4 * (v25 + v30)) + v27);
@@ -275,7 +275,7 @@ LABEL_32:
     }
 
     v34 = qword_1000AB718;
-    self = v29;
+    self = selfCopy2;
     v4 = v42;
     if (!os_log_type_enabled(qword_1000AB718, OS_LOG_TYPE_ERROR))
     {
@@ -347,12 +347,12 @@ LABEL_41:
   return 0;
 }
 
-- (BOOL)updateLTSStateISRev:(ltsStateACSKV4 *)a3 total_cores:(unsigned int)a4
+- (BOOL)updateLTSStateISRev:(ltsStateACSKV4 *)rev total_cores:(unsigned int)total_cores
 {
-  var2 = a3->ltsStateCommonPtr->var2;
-  var3 = a3->ltsStateCommonPtr->var3;
-  v8 = malloc_type_calloc(a4, 4uLL, 0x100004052888210uLL);
-  a3->integratorStateRevPtr = v8;
+  var2 = rev->ltsStateCommonPtr->var2;
+  var3 = rev->ltsStateCommonPtr->var3;
+  v8 = malloc_type_calloc(total_cores, 4uLL, 0x100004052888210uLL);
+  rev->integratorStateRevPtr = v8;
   if (v8)
   {
     if (var2)
@@ -373,7 +373,7 @@ LABEL_14:
 
       v11 = 0;
       v21 = v10 * var3;
-      perIPCoreCountPtr = a3->perIPCoreCountPtr;
+      perIPCoreCountPtr = rev->perIPCoreCountPtr;
       while (!perIPCoreCountPtr[(v21 + v11)])
       {
 LABEL_13:
@@ -400,9 +400,9 @@ LABEL_13:
         }
 
         CFRelease(v15);
-        a3->integratorStateRevPtr[v9++] = *buf;
+        rev->integratorStateRevPtr[v9++] = *buf;
         v13 = (v13 + 1);
-        perIPCoreCountPtr = a3->perIPCoreCountPtr;
+        perIPCoreCountPtr = rev->perIPCoreCountPtr;
         if (v13 >= perIPCoreCountPtr[(v21 + v11)])
         {
           var3 = v20;
@@ -441,12 +441,12 @@ LABEL_15:
   return v16;
 }
 
-- (BOOL)updateLTSStateTDDBISFromPMP:(ltsStateACSKV4 *)a3 tddb_cluster_mask:(unsigned int)a4 tddb_cores:(unsigned int)a5
+- (BOOL)updateLTSStateTDDBISFromPMP:(ltsStateACSKV4 *)p tddb_cluster_mask:(unsigned int)tddb_cluster_mask tddb_cores:(unsigned int)tddb_cores
 {
-  var2 = a3->ltsStateCommonPtr->var2;
-  var3 = a3->ltsStateCommonPtr->var3;
-  v9 = malloc_type_calloc(a5, 8uLL, 0x100004000313F17uLL);
-  a3->TDDBintegratorStatePtr = v9;
+  var2 = p->ltsStateCommonPtr->var2;
+  var3 = p->ltsStateCommonPtr->var3;
+  v9 = malloc_type_calloc(tddb_cores, 8uLL, 0x100004000313F17uLL);
+  p->TDDBintegratorStatePtr = v9;
   if (v9)
   {
     if (var2)
@@ -470,9 +470,9 @@ LABEL_16:
       while (1)
       {
         v13 = v28 + v12;
-        if (a4 >> (v28 + v12))
+        if (tddb_cluster_mask >> (v28 + v12))
         {
-          if (a3->perIPCoreCountPtr[v13])
+          if (p->perIPCoreCountPtr[v13])
           {
             break;
           }
@@ -539,10 +539,10 @@ LABEL_28:
           goto LABEL_29;
         }
 
-        a3->TDDBintegratorStatePtr[v10++] = *BytePtr;
+        p->TDDBintegratorStatePtr[v10++] = *BytePtr;
         CFRelease(v18);
         v14 = (v14 + 1);
-        if (v14 >= a3->perIPCoreCountPtr[v13])
+        if (v14 >= p->perIPCoreCountPtr[v13])
         {
           goto LABEL_15;
         }
@@ -592,12 +592,12 @@ LABEL_17:
   return v21;
 }
 
-- (BOOL)updateLTSStateISFromPMP:(ltsStateACSKV4 *)a3 total_cores:(unsigned int)a4
+- (BOOL)updateLTSStateISFromPMP:(ltsStateACSKV4 *)p total_cores:(unsigned int)total_cores
 {
-  var2 = a3->ltsStateCommonPtr->var2;
-  var3 = a3->ltsStateCommonPtr->var3;
-  v8 = malloc_type_calloc(a4, 8uLL, 0x100004000313F17uLL);
-  a3->integratorStatePtr = v8;
+  var2 = p->ltsStateCommonPtr->var2;
+  var3 = p->ltsStateCommonPtr->var3;
+  v8 = malloc_type_calloc(total_cores, 8uLL, 0x100004000313F17uLL);
+  p->integratorStatePtr = v8;
   if (v8)
   {
     if (var2)
@@ -618,7 +618,7 @@ LABEL_16:
 
       v11 = 0;
       v12 = v10 * var3;
-      perIPCoreCountPtr = a3->perIPCoreCountPtr;
+      perIPCoreCountPtr = p->perIPCoreCountPtr;
       v29 = v10 * var3;
       while (1)
       {
@@ -687,10 +687,10 @@ LABEL_28:
           goto LABEL_29;
         }
 
-        a3->integratorStatePtr[v9++] = *BytePtr;
+        p->integratorStatePtr[v9++] = *BytePtr;
         CFRelease(v19);
         v15 = (v15 + 1);
-        perIPCoreCountPtr = a3->perIPCoreCountPtr;
+        perIPCoreCountPtr = p->perIPCoreCountPtr;
         if (v15 >= perIPCoreCountPtr[v14])
         {
           var2 = v28;
@@ -744,50 +744,50 @@ LABEL_17:
   return v22;
 }
 
-- (void)safeFreeLTSStatePtrs:(void *)a3
+- (void)safeFreeLTSStatePtrs:(void *)ptrs
 {
-  if (*a3)
+  if (*ptrs)
   {
-    free(*a3);
-    *a3 = 0;
+    free(*ptrs);
+    *ptrs = 0;
   }
 
-  v4 = *(a3 + 4);
+  v4 = *(ptrs + 4);
   if (v4)
   {
     free(v4);
-    *(a3 + 4) = 0;
+    *(ptrs + 4) = 0;
   }
 
-  v5 = *(a3 + 2);
+  v5 = *(ptrs + 2);
   if (v5)
   {
     free(v5);
-    *(a3 + 2) = 0;
+    *(ptrs + 2) = 0;
   }
 
-  v6 = *(a3 + 3);
+  v6 = *(ptrs + 3);
   if (v6)
   {
     free(v6);
-    *(a3 + 3) = 0;
+    *(ptrs + 3) = 0;
   }
 
-  v7 = *(a3 + 5);
+  v7 = *(ptrs + 5);
   if (v7)
   {
     free(v7);
-    *(a3 + 5) = 0;
+    *(ptrs + 5) = 0;
   }
 }
 
 - (void)readNVRAM
 {
-  v3 = [(LifetimeServoStatePersistenceBase *)self readNVRAMData];
-  if (v3)
+  readNVRAMData = [(LifetimeServoStatePersistenceBase *)self readNVRAMData];
+  if (readNVRAMData)
   {
-    v4 = v3;
-    BytePtr = CFDataGetBytePtr(v3);
+    v4 = readNVRAMData;
+    BytePtr = CFDataGetBytePtr(readNVRAMData);
     self->super._nvramLength = CFDataGetLength(v4);
     v6 = malloc_type_calloc(1uLL, 0x10uLL, 0x61198F5EuLL);
     p_currNvramLTSStateACSK = &self->_currNvramLTSStateACSK;
@@ -966,9 +966,9 @@ LABEL_11:
   return v6;
 }
 
-- (unsigned)getNumTotalEntries:(ltsStateACSKV4 *)a3
+- (unsigned)getNumTotalEntries:(ltsStateACSKV4 *)entries
 {
-  var2 = a3->ltsStateCommonPtr->var2;
+  var2 = entries->ltsStateCommonPtr->var2;
   if (!var2)
   {
     return 0;
@@ -977,16 +977,16 @@ LABEL_11:
   v4 = 0;
   result = 0;
   v6 = 0;
-  var3 = a3->ltsStateCommonPtr->var3;
+  var3 = entries->ltsStateCommonPtr->var3;
   do
   {
     if (var3)
     {
-      v8 = a3->ltsStateCommonPtr->var3;
+      v8 = entries->ltsStateCommonPtr->var3;
       v9 = v4;
       do
       {
-        result += a3->perIPCoreCountPtr[v9++];
+        result += entries->perIPCoreCountPtr[v9++];
         --v8;
       }
 
@@ -1001,9 +1001,9 @@ LABEL_11:
   return result;
 }
 
-- (unsigned)getNumTotalTDDBEntries:(ltsStateACSKV4 *)a3
+- (unsigned)getNumTotalTDDBEntries:(ltsStateACSKV4 *)entries
 {
-  var2 = a3->ltsStateCommonPtr->var2;
+  var2 = entries->ltsStateCommonPtr->var2;
   if (!var2)
   {
     return 0;
@@ -1012,17 +1012,17 @@ LABEL_11:
   v4 = 0;
   result = 0;
   v6 = 0;
-  var3 = a3->ltsStateCommonPtr->var3;
+  var3 = entries->ltsStateCommonPtr->var3;
   do
   {
     if (var3)
     {
-      v8 = a3->ltsStateCommonPtr->var3;
+      v8 = entries->ltsStateCommonPtr->var3;
       v9 = v4;
       do
       {
-        v10 = a3->perIPCoreCountPtr[v9];
-        if (((a3->tddbClusterMask >> v9) & 1) == 0)
+        v10 = entries->perIPCoreCountPtr[v9];
+        if (((entries->tddbClusterMask >> v9) & 1) == 0)
         {
           v10 = 0;
         }
@@ -1043,32 +1043,32 @@ LABEL_11:
   return result;
 }
 
-- (BOOL)writePersistedStateNvram:(void *)a3 path:(__CFString *)a4
+- (BOOL)writePersistedStateNvram:(void *)nvram path:(__CFString *)path
 {
-  if (a4)
+  if (path)
   {
     v7 = IORegistryEntryFromPath(kIOMainPortDefault, "IODeviceTree:/options");
     if (v7)
     {
       v8 = v7;
       context = objc_autoreleasePoolPush();
-      v9 = [(LifetimeServoStatePersistenceACSK *)self getNumTotalEntries:a3];
-      v10 = [(LifetimeServoStatePersistenceACSK *)self getNumTotalTDDBEntries:a3];
-      v11 = *(*a3 + 8);
-      v12 = *(*a3 + 12);
+      v9 = [(LifetimeServoStatePersistenceACSK *)self getNumTotalEntries:nvram];
+      v10 = [(LifetimeServoStatePersistenceACSK *)self getNumTotalTDDBEntries:nvram];
+      v11 = *(*nvram + 8);
+      v12 = *(*nvram + 12);
       v13 = [NSData dataWithBytes:"dataWithBytes:length:" length:?];
-      v14 = [NSData dataWithBytes:*(a3 + 2) length:4 * (v12 * v11)];
-      v15 = [NSData dataWithBytes:a3 + 8 length:4];
-      v16 = [NSData dataWithBytes:*(a3 + 3) length:8 * v9];
-      v17 = [NSData dataWithBytes:*(a3 + 4) length:8 * v10];
-      v18 = [NSData dataWithBytes:*(a3 + 5) length:4 * v9];
+      v14 = [NSData dataWithBytes:*(nvram + 2) length:4 * (v12 * v11)];
+      v15 = [NSData dataWithBytes:nvram + 8 length:4];
+      v16 = [NSData dataWithBytes:*(nvram + 3) length:8 * v9];
+      v17 = [NSData dataWithBytes:*(nvram + 4) length:8 * v10];
+      v18 = [NSData dataWithBytes:*(nvram + 5) length:4 * v9];
       v19 = [(NSData *)v13 mutableCopy];
       [v19 appendData:v15];
       [v19 appendData:v14];
       [v19 appendData:v16];
       [v19 appendData:v17];
       [v19 appendData:v18];
-      v20 = IORegistryEntrySetCFProperty(v8, a4, v19);
+      v20 = IORegistryEntrySetCFProperty(v8, path, v19);
       v21 = v20 == 0;
       if (v20 && os_log_type_enabled(qword_1000AB718, OS_LOG_TYPE_ERROR))
       {
@@ -1379,9 +1379,9 @@ LABEL_50:
   [(LifetimeServoStatePersistenceBase *)&v3 dealloc];
 }
 
-- (BOOL)saveLTSStateToNand:(void *)a3
+- (BOOL)saveLTSStateToNand:(void *)nand
 {
-  if (![(LifetimeServoStatePersistenceBase *)self writeInteger:**a3 withKey:@"version"])
+  if (![(LifetimeServoStatePersistenceBase *)self writeInteger:**nand withKey:@"version"])
   {
     sub_1000591FC(buf);
 LABEL_56:
@@ -1389,21 +1389,21 @@ LABEL_56:
     return v38 & 1;
   }
 
-  v5 = *(*a3 + 8);
+  v5 = *(*nand + 8);
   if (![(LifetimeServoStatePersistenceBase *)self writeInteger:v5 withKey:@"lts-ctrl-die-count"])
   {
     sub_100059260(buf);
     goto LABEL_56;
   }
 
-  v50 = *(*a3 + 12);
+  v50 = *(*nand + 12);
   if (![LifetimeServoStatePersistenceBase writeInteger:"writeInteger:withKey:" withKey:?])
   {
     sub_1000592C4(buf);
     goto LABEL_56;
   }
 
-  v6 = *(a3 + 2);
+  v6 = *(nand + 2);
   if (byte_1000AB2F8 == 1)
   {
     v7 = qword_1000AB718;
@@ -1453,7 +1453,7 @@ LABEL_46:
       v52 = v9;
       while (1)
       {
-        v60 = *(*(a3 + 2) + 4 * (v49 + v12));
+        v60 = *(*(nand + 2) + 4 * (v49 + v12));
         v13 = [LifetimeServoStatePersistenceBase writeInteger:"writeInteger:withKey:" withKey:?];
         CFRelease(v11);
         v56 = v13;
@@ -1514,7 +1514,7 @@ LABEL_40:
         }
 
         v22 = v21;
-        v23 = CFDataCreate(0, (*(a3 + 3) + 8 * (v59 + v17)), 8);
+        v23 = CFDataCreate(0, (*(nand + 3) + 8 * (v59 + v17)), 8);
         if (v23)
         {
           v24 = v23;
@@ -1544,7 +1544,7 @@ LABEL_40:
           }
 
           v27 = v26;
-          v28 = CFDataCreate(0, (*(a3 + 4) + v18), 8);
+          v28 = CFDataCreate(0, (*(nand + 4) + v18), 8);
           if (v28)
           {
             v29 = v28;
@@ -1570,7 +1570,7 @@ LABEL_40:
         if (v31)
         {
           v32 = v31;
-          v33 = [(LifetimeServoStatePersistenceBase *)self writeInteger:*(*(a3 + 5) + 4 * (v59 + v17)) withKey:v31];
+          v33 = [(LifetimeServoStatePersistenceBase *)self writeInteger:*(*(nand + 5) + 4 * (v59 + v17)) withKey:v31];
           CFRelease(v32);
           if (v33)
           {
@@ -1669,7 +1669,7 @@ LABEL_54:
   }
 
 LABEL_47:
-  if (![(LifetimeServoStatePersistenceBase *)self writeInteger:*(*a3 + 4) withKey:@"counter"])
+  if (![(LifetimeServoStatePersistenceBase *)self writeInteger:*(*nand + 4) withKey:@"counter"])
   {
     sub_10005944C(buf);
     goto LABEL_56;

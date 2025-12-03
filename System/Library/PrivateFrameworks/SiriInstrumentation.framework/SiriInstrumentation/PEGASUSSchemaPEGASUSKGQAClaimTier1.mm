@@ -1,29 +1,29 @@
 @interface PEGASUSSchemaPEGASUSKGQAClaimTier1
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (PEGASUSSchemaPEGASUSKGQAClaimTier1)initWithDictionary:(id)a3;
-- (PEGASUSSchemaPEGASUSKGQAClaimTier1)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (PEGASUSSchemaPEGASUSKGQAClaimTier1)initWithDictionary:(id)dictionary;
+- (PEGASUSSchemaPEGASUSKGQAClaimTier1)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addQualifiers:(id)a3;
-- (void)addReferences:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addQualifiers:(id)qualifiers;
+- (void)addReferences:(id)references;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PEGASUSSchemaPEGASUSKGQAClaimTier1
 
-- (PEGASUSSchemaPEGASUSKGQAClaimTier1)initWithDictionary:(id)a3
+- (PEGASUSSchemaPEGASUSKGQAClaimTier1)initWithDictionary:(id)dictionary
 {
   v45 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v42.receiver = self;
   v42.super_class = PEGASUSSchemaPEGASUSKGQAClaimTier1;
   v5 = [(PEGASUSSchemaPEGASUSKGQAClaimTier1 *)&v42 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"entityId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"entityId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -31,7 +31,7 @@
       [(PEGASUSSchemaPEGASUSKGQAClaimTier1 *)v5 setEntityId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"propId"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"propId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -39,7 +39,7 @@
       [(PEGASUSSchemaPEGASUSKGQAClaimTier1 *)v5 setPropId:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"value"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"value"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -50,7 +50,7 @@
       v6 = v11;
     }
 
-    v13 = [v4 objectForKeyedSubscript:@"qualifiers"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"qualifiers"];
     objc_opt_class();
     v33 = v10;
     v32 = v13;
@@ -94,7 +94,7 @@
       v13 = v32;
     }
 
-    v21 = [v4 objectForKeyedSubscript:@"references"];
+    v21 = [dictionaryCopy objectForKeyedSubscript:@"references"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -144,30 +144,30 @@
   return v5;
 }
 
-- (PEGASUSSchemaPEGASUSKGQAClaimTier1)initWithJSON:(id)a3
+- (PEGASUSSchemaPEGASUSKGQAClaimTier1)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(PEGASUSSchemaPEGASUSKGQAClaimTier1 *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(PEGASUSSchemaPEGASUSKGQAClaimTier1 *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(PEGASUSSchemaPEGASUSKGQAClaimTier1 *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -181,24 +181,24 @@
 - (id)dictionaryRepresentation
 {
   v37 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_entityId)
   {
-    v4 = [(PEGASUSSchemaPEGASUSKGQAClaimTier1 *)self entityId];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"entityId"];
+    entityId = [(PEGASUSSchemaPEGASUSKGQAClaimTier1 *)self entityId];
+    v5 = [entityId copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"entityId"];
   }
 
   if (self->_propId)
   {
-    v6 = [(PEGASUSSchemaPEGASUSKGQAClaimTier1 *)self propId];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"propId"];
+    propId = [(PEGASUSSchemaPEGASUSKGQAClaimTier1 *)self propId];
+    v7 = [propId copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"propId"];
   }
 
   if ([(NSArray *)self->_qualifiers count])
   {
-    v8 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v31 = 0u;
     v32 = 0u;
     v33 = 0u;
@@ -218,16 +218,16 @@
             objc_enumerationMutation(v9);
           }
 
-          v14 = [*(*(&v31 + 1) + 8 * i) dictionaryRepresentation];
-          if (v14)
+          dictionaryRepresentation = [*(*(&v31 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation)
           {
-            [v8 addObject:v14];
+            [array addObject:dictionaryRepresentation];
           }
 
           else
           {
-            v15 = [MEMORY[0x1E695DFB0] null];
-            [v8 addObject:v15];
+            null = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null];
           }
         }
 
@@ -237,12 +237,12 @@
       while (v11);
     }
 
-    [v3 setObject:v8 forKeyedSubscript:@"qualifiers"];
+    [dictionary setObject:array forKeyedSubscript:@"qualifiers"];
   }
 
   if ([(NSArray *)self->_references count])
   {
-    v16 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
@@ -262,16 +262,16 @@
             objc_enumerationMutation(v17);
           }
 
-          v22 = [*(*(&v27 + 1) + 8 * j) dictionaryRepresentation];
-          if (v22)
+          dictionaryRepresentation2 = [*(*(&v27 + 1) + 8 * j) dictionaryRepresentation];
+          if (dictionaryRepresentation2)
           {
-            [v16 addObject:v22];
+            [array2 addObject:dictionaryRepresentation2];
           }
 
           else
           {
-            v23 = [MEMORY[0x1E695DFB0] null];
-            [v16 addObject:v23];
+            null2 = [MEMORY[0x1E695DFB0] null];
+            [array2 addObject:null2];
           }
         }
 
@@ -281,19 +281,19 @@
       while (v19);
     }
 
-    [v3 setObject:v16 forKeyedSubscript:@"references"];
+    [dictionary setObject:array2 forKeyedSubscript:@"references"];
   }
 
   if (self->_value)
   {
-    v24 = [(PEGASUSSchemaPEGASUSKGQAClaimTier1 *)self value];
-    v25 = [v24 copy];
-    [v3 setObject:v25 forKeyedSubscript:@"value"];
+    value = [(PEGASUSSchemaPEGASUSKGQAClaimTier1 *)self value];
+    v25 = [value copy];
+    [dictionary setObject:v25 forKeyedSubscript:@"value"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3, v27];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary, v27];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -305,28 +305,28 @@
   return v6 ^ [(NSArray *)self->_references hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_27;
   }
 
-  v5 = [(PEGASUSSchemaPEGASUSKGQAClaimTier1 *)self entityId];
-  v6 = [v4 entityId];
-  if ((v5 != 0) == (v6 == 0))
+  entityId = [(PEGASUSSchemaPEGASUSKGQAClaimTier1 *)self entityId];
+  entityId2 = [equalCopy entityId];
+  if ((entityId != 0) == (entityId2 == 0))
   {
     goto LABEL_26;
   }
 
-  v7 = [(PEGASUSSchemaPEGASUSKGQAClaimTier1 *)self entityId];
-  if (v7)
+  entityId3 = [(PEGASUSSchemaPEGASUSKGQAClaimTier1 *)self entityId];
+  if (entityId3)
   {
-    v8 = v7;
-    v9 = [(PEGASUSSchemaPEGASUSKGQAClaimTier1 *)self entityId];
-    v10 = [v4 entityId];
-    v11 = [v9 isEqual:v10];
+    v8 = entityId3;
+    entityId4 = [(PEGASUSSchemaPEGASUSKGQAClaimTier1 *)self entityId];
+    entityId5 = [equalCopy entityId];
+    v11 = [entityId4 isEqual:entityId5];
 
     if (!v11)
     {
@@ -338,20 +338,20 @@
   {
   }
 
-  v5 = [(PEGASUSSchemaPEGASUSKGQAClaimTier1 *)self propId];
-  v6 = [v4 propId];
-  if ((v5 != 0) == (v6 == 0))
+  entityId = [(PEGASUSSchemaPEGASUSKGQAClaimTier1 *)self propId];
+  entityId2 = [equalCopy propId];
+  if ((entityId != 0) == (entityId2 == 0))
   {
     goto LABEL_26;
   }
 
-  v12 = [(PEGASUSSchemaPEGASUSKGQAClaimTier1 *)self propId];
-  if (v12)
+  propId = [(PEGASUSSchemaPEGASUSKGQAClaimTier1 *)self propId];
+  if (propId)
   {
-    v13 = v12;
-    v14 = [(PEGASUSSchemaPEGASUSKGQAClaimTier1 *)self propId];
-    v15 = [v4 propId];
-    v16 = [v14 isEqual:v15];
+    v13 = propId;
+    propId2 = [(PEGASUSSchemaPEGASUSKGQAClaimTier1 *)self propId];
+    propId3 = [equalCopy propId];
+    v16 = [propId2 isEqual:propId3];
 
     if (!v16)
     {
@@ -363,20 +363,20 @@
   {
   }
 
-  v5 = [(PEGASUSSchemaPEGASUSKGQAClaimTier1 *)self value];
-  v6 = [v4 value];
-  if ((v5 != 0) == (v6 == 0))
+  entityId = [(PEGASUSSchemaPEGASUSKGQAClaimTier1 *)self value];
+  entityId2 = [equalCopy value];
+  if ((entityId != 0) == (entityId2 == 0))
   {
     goto LABEL_26;
   }
 
-  v17 = [(PEGASUSSchemaPEGASUSKGQAClaimTier1 *)self value];
-  if (v17)
+  value = [(PEGASUSSchemaPEGASUSKGQAClaimTier1 *)self value];
+  if (value)
   {
-    v18 = v17;
-    v19 = [(PEGASUSSchemaPEGASUSKGQAClaimTier1 *)self value];
-    v20 = [v4 value];
-    v21 = [v19 isEqual:v20];
+    v18 = value;
+    value2 = [(PEGASUSSchemaPEGASUSKGQAClaimTier1 *)self value];
+    value3 = [equalCopy value];
+    v21 = [value2 isEqual:value3];
 
     if (!v21)
     {
@@ -388,20 +388,20 @@
   {
   }
 
-  v5 = [(PEGASUSSchemaPEGASUSKGQAClaimTier1 *)self qualifiers];
-  v6 = [v4 qualifiers];
-  if ((v5 != 0) == (v6 == 0))
+  entityId = [(PEGASUSSchemaPEGASUSKGQAClaimTier1 *)self qualifiers];
+  entityId2 = [equalCopy qualifiers];
+  if ((entityId != 0) == (entityId2 == 0))
   {
     goto LABEL_26;
   }
 
-  v22 = [(PEGASUSSchemaPEGASUSKGQAClaimTier1 *)self qualifiers];
-  if (v22)
+  qualifiers = [(PEGASUSSchemaPEGASUSKGQAClaimTier1 *)self qualifiers];
+  if (qualifiers)
   {
-    v23 = v22;
-    v24 = [(PEGASUSSchemaPEGASUSKGQAClaimTier1 *)self qualifiers];
-    v25 = [v4 qualifiers];
-    v26 = [v24 isEqual:v25];
+    v23 = qualifiers;
+    qualifiers2 = [(PEGASUSSchemaPEGASUSKGQAClaimTier1 *)self qualifiers];
+    qualifiers3 = [equalCopy qualifiers];
+    v26 = [qualifiers2 isEqual:qualifiers3];
 
     if (!v26)
     {
@@ -413,12 +413,12 @@
   {
   }
 
-  v5 = [(PEGASUSSchemaPEGASUSKGQAClaimTier1 *)self references];
-  v6 = [v4 references];
-  if ((v5 != 0) != (v6 == 0))
+  entityId = [(PEGASUSSchemaPEGASUSKGQAClaimTier1 *)self references];
+  entityId2 = [equalCopy references];
+  if ((entityId != 0) != (entityId2 == 0))
   {
-    v27 = [(PEGASUSSchemaPEGASUSKGQAClaimTier1 *)self references];
-    if (!v27)
+    references = [(PEGASUSSchemaPEGASUSKGQAClaimTier1 *)self references];
+    if (!references)
     {
 
 LABEL_30:
@@ -426,10 +426,10 @@ LABEL_30:
       goto LABEL_28;
     }
 
-    v28 = v27;
-    v29 = [(PEGASUSSchemaPEGASUSKGQAClaimTier1 *)self references];
-    v30 = [v4 references];
-    v31 = [v29 isEqual:v30];
+    v28 = references;
+    references2 = [(PEGASUSSchemaPEGASUSKGQAClaimTier1 *)self references];
+    references3 = [equalCopy references];
+    v31 = [references2 isEqual:references3];
 
     if (v31)
     {
@@ -449,27 +449,27 @@ LABEL_28:
   return v32;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PEGASUSSchemaPEGASUSKGQAClaimTier1 *)self entityId];
+  toCopy = to;
+  entityId = [(PEGASUSSchemaPEGASUSKGQAClaimTier1 *)self entityId];
 
-  if (v5)
+  if (entityId)
   {
     PBDataWriterWriteStringField();
   }
 
-  v6 = [(PEGASUSSchemaPEGASUSKGQAClaimTier1 *)self propId];
+  propId = [(PEGASUSSchemaPEGASUSKGQAClaimTier1 *)self propId];
 
-  if (v6)
+  if (propId)
   {
     PBDataWriterWriteStringField();
   }
 
-  v7 = [(PEGASUSSchemaPEGASUSKGQAClaimTier1 *)self value];
+  value = [(PEGASUSSchemaPEGASUSKGQAClaimTier1 *)self value];
 
-  if (v7)
+  if (value)
   {
     PBDataWriterWriteStringField();
   }
@@ -537,89 +537,89 @@ LABEL_28:
   }
 }
 
-- (void)addReferences:(id)a3
+- (void)addReferences:(id)references
 {
-  v4 = a3;
+  referencesCopy = references;
   references = self->_references;
-  v8 = v4;
+  v8 = referencesCopy;
   if (!references)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_references;
-    self->_references = v6;
+    self->_references = array;
 
-    v4 = v8;
+    referencesCopy = v8;
     references = self->_references;
   }
 
-  [(NSArray *)references addObject:v4];
+  [(NSArray *)references addObject:referencesCopy];
 }
 
-- (void)addQualifiers:(id)a3
+- (void)addQualifiers:(id)qualifiers
 {
-  v4 = a3;
+  qualifiersCopy = qualifiers;
   qualifiers = self->_qualifiers;
-  v8 = v4;
+  v8 = qualifiersCopy;
   if (!qualifiers)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_qualifiers;
-    self->_qualifiers = v6;
+    self->_qualifiers = array;
 
-    v4 = v8;
+    qualifiersCopy = v8;
     qualifiers = self->_qualifiers;
   }
 
-  [(NSArray *)qualifiers addObject:v4];
+  [(NSArray *)qualifiers addObject:qualifiersCopy];
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v11.receiver = self;
   v11.super_class = PEGASUSSchemaPEGASUSKGQAClaimTier1;
-  v5 = [(SISchemaInstrumentationMessage *)&v11 applySensitiveConditionsPolicy:v4];
-  if ([v4 isConditionSet:2])
+  v5 = [(SISchemaInstrumentationMessage *)&v11 applySensitiveConditionsPolicy:policyCopy];
+  if ([policyCopy isConditionSet:2])
   {
     [(PEGASUSSchemaPEGASUSKGQAClaimTier1 *)self deleteEntityId];
     [(PEGASUSSchemaPEGASUSKGQAClaimTier1 *)self deletePropId];
     [(PEGASUSSchemaPEGASUSKGQAClaimTier1 *)self deleteValue];
   }
 
-  if ([v4 isConditionSet:4])
+  if ([policyCopy isConditionSet:4])
   {
     [(PEGASUSSchemaPEGASUSKGQAClaimTier1 *)self deleteEntityId];
     [(PEGASUSSchemaPEGASUSKGQAClaimTier1 *)self deletePropId];
     [(PEGASUSSchemaPEGASUSKGQAClaimTier1 *)self deleteValue];
   }
 
-  if ([v4 isConditionSet:5])
+  if ([policyCopy isConditionSet:5])
   {
     [(PEGASUSSchemaPEGASUSKGQAClaimTier1 *)self deleteEntityId];
     [(PEGASUSSchemaPEGASUSKGQAClaimTier1 *)self deletePropId];
     [(PEGASUSSchemaPEGASUSKGQAClaimTier1 *)self deleteValue];
   }
 
-  if ([v4 isConditionSet:6])
+  if ([policyCopy isConditionSet:6])
   {
     [(PEGASUSSchemaPEGASUSKGQAClaimTier1 *)self deleteEntityId];
     [(PEGASUSSchemaPEGASUSKGQAClaimTier1 *)self deletePropId];
     [(PEGASUSSchemaPEGASUSKGQAClaimTier1 *)self deleteValue];
   }
 
-  if ([v4 isConditionSet:7])
+  if ([policyCopy isConditionSet:7])
   {
     [(PEGASUSSchemaPEGASUSKGQAClaimTier1 *)self deleteEntityId];
     [(PEGASUSSchemaPEGASUSKGQAClaimTier1 *)self deletePropId];
     [(PEGASUSSchemaPEGASUSKGQAClaimTier1 *)self deleteValue];
   }
 
-  v6 = [(PEGASUSSchemaPEGASUSKGQAClaimTier1 *)self qualifiers];
-  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:v4];
+  qualifiers = [(PEGASUSSchemaPEGASUSKGQAClaimTier1 *)self qualifiers];
+  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:qualifiers underConditions:policyCopy];
   [(PEGASUSSchemaPEGASUSKGQAClaimTier1 *)self setQualifiers:v7];
 
-  v8 = [(PEGASUSSchemaPEGASUSKGQAClaimTier1 *)self references];
-  v9 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v8 underConditions:v4];
+  references = [(PEGASUSSchemaPEGASUSKGQAClaimTier1 *)self references];
+  v9 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:references underConditions:policyCopy];
   [(PEGASUSSchemaPEGASUSKGQAClaimTier1 *)self setReferences:v9];
 
   return v5;

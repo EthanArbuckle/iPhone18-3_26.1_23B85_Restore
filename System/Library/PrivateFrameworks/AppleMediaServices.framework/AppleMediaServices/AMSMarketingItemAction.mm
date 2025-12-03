@@ -1,6 +1,6 @@
 @interface AMSMarketingItemAction
 - (AMSBuyParams)buyParams;
-- (AMSMarketingItemAction)initWithDictionary:(id)a3;
+- (AMSMarketingItemAction)initWithDictionary:(id)dictionary;
 - (BOOL)isDefault;
 - (BOOL)isFamily;
 - (BOOL)isRecommended;
@@ -16,23 +16,23 @@
 - (NSString)valuePropDetail;
 - (NSString)valuePropInfo;
 - (NSURL)url;
-- (id)_serviceComponentsFromMap:(id)a3 withNames:(id)a4;
+- (id)_serviceComponentsFromMap:(id)map withNames:(id)names;
 - (id)_serviceNames;
 - (id)_servicesData;
 @end
 
 @implementation AMSMarketingItemAction
 
-- (AMSMarketingItemAction)initWithDictionary:(id)a3
+- (AMSMarketingItemAction)initWithDictionary:(id)dictionary
 {
-  v5 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = AMSMarketingItemAction;
   v6 = [(AMSMarketingItemAction *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_rawValues, a3);
+    objc_storeStrong(&v6->_rawValues, dictionary);
   }
 
   return v7;
@@ -40,8 +40,8 @@
 
 - (AMSBuyParams)buyParams
 {
-  v2 = [(AMSMarketingItemAction *)self rawValues];
-  v3 = [v2 objectForKeyedSubscript:qword_1F0719CE8];
+  rawValues = [(AMSMarketingItemAction *)self rawValues];
+  v3 = [rawValues objectForKeyedSubscript:qword_1F0719CE8];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -61,8 +61,8 @@
 
 - (NSString)callToActionLabel
 {
-  v2 = [(AMSMarketingItemAction *)self rawValues];
-  v3 = [v2 objectForKeyedSubscript:qword_1F0719CF0];
+  rawValues = [(AMSMarketingItemAction *)self rawValues];
+  v3 = [rawValues objectForKeyedSubscript:qword_1F0719CF0];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -80,8 +80,8 @@
 
 - (NSString)disclaimerText
 {
-  v2 = [(AMSMarketingItemAction *)self rawValues];
-  v3 = [v2 objectForKeyedSubscript:qword_1F0719CF8];
+  rawValues = [(AMSMarketingItemAction *)self rawValues];
+  v3 = [rawValues objectForKeyedSubscript:qword_1F0719CF8];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -99,8 +99,8 @@
 
 - (BOOL)isDefault
 {
-  v2 = [(AMSMarketingItemAction *)self rawValues];
-  v3 = [v2 objectForKeyedSubscript:qword_1F0719D00];
+  rawValues = [(AMSMarketingItemAction *)self rawValues];
+  v3 = [rawValues objectForKeyedSubscript:qword_1F0719D00];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -113,14 +113,14 @@
     v4 = 0;
   }
 
-  v5 = [v4 BOOLValue];
-  return v5;
+  bOOLValue = [v4 BOOLValue];
+  return bOOLValue;
 }
 
 - (BOOL)isFamily
 {
-  v2 = [(AMSMarketingItemAction *)self rawValues];
-  v3 = [v2 objectForKeyedSubscript:qword_1F0719D08];
+  rawValues = [(AMSMarketingItemAction *)self rawValues];
+  v3 = [rawValues objectForKeyedSubscript:qword_1F0719D08];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -133,14 +133,14 @@
     v4 = 0;
   }
 
-  v5 = [v4 BOOLValue];
-  return v5;
+  bOOLValue = [v4 BOOLValue];
+  return bOOLValue;
 }
 
 - (BOOL)isRecommended
 {
-  v2 = [(AMSMarketingItemAction *)self rawValues];
-  v3 = [v2 objectForKeyedSubscript:qword_1F0719D10];
+  rawValues = [(AMSMarketingItemAction *)self rawValues];
+  v3 = [rawValues objectForKeyedSubscript:qword_1F0719D10];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -153,14 +153,14 @@
     v4 = 0;
   }
 
-  v5 = [v4 BOOLValue];
-  return v5;
+  bOOLValue = [v4 BOOLValue];
+  return bOOLValue;
 }
 
 - (NSString)offerID
 {
-  v2 = [(AMSMarketingItemAction *)self rawValues];
-  v3 = [v2 objectForKeyedSubscript:qword_1F0719D20];
+  rawValues = [(AMSMarketingItemAction *)self rawValues];
+  v3 = [rawValues objectForKeyedSubscript:qword_1F0719D20];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -178,8 +178,8 @@
 
 - (NSNumber)price
 {
-  v2 = [(AMSMarketingItemAction *)self rawValues];
-  v3 = [v2 valueForKeyPath:qword_1F0719D28];
+  rawValues = [(AMSMarketingItemAction *)self rawValues];
+  v3 = [rawValues valueForKeyPath:qword_1F0719D28];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -197,8 +197,8 @@
 
 - (NSNumber)priceDiff
 {
-  v2 = [(AMSMarketingItemAction *)self rawValues];
-  v3 = [v2 valueForKeyPath:qword_1F0719D30];
+  rawValues = [(AMSMarketingItemAction *)self rawValues];
+  v3 = [rawValues valueForKeyPath:qword_1F0719D30];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -216,8 +216,8 @@
 
 - (NSString)priceDiffForDisplay
 {
-  v2 = [(AMSMarketingItemAction *)self rawValues];
-  v3 = [v2 valueForKeyPath:qword_1F0719D38];
+  rawValues = [(AMSMarketingItemAction *)self rawValues];
+  v3 = [rawValues valueForKeyPath:qword_1F0719D38];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -235,8 +235,8 @@
 
 - (NSString)priceForDisplay
 {
-  v2 = [(AMSMarketingItemAction *)self rawValues];
-  v3 = [v2 valueForKeyPath:qword_1F0719D40];
+  rawValues = [(AMSMarketingItemAction *)self rawValues];
+  v3 = [rawValues valueForKeyPath:qword_1F0719D40];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -254,13 +254,13 @@
 
 - (NSArray)serviceComponents
 {
-  v3 = [(AMSMarketingItemAction *)self _serviceNames];
-  v4 = [(AMSMarketingItemAction *)self _servicesData];
-  v5 = v4;
+  _serviceNames = [(AMSMarketingItemAction *)self _serviceNames];
+  _servicesData = [(AMSMarketingItemAction *)self _servicesData];
+  v5 = _servicesData;
   v6 = 0;
-  if (v3 && v4)
+  if (_serviceNames && _servicesData)
   {
-    v6 = [(AMSMarketingItemAction *)self _serviceComponentsFromMap:v4 withNames:v3];
+    v6 = [(AMSMarketingItemAction *)self _serviceComponentsFromMap:_servicesData withNames:_serviceNames];
   }
 
   return v6;
@@ -268,8 +268,8 @@
 
 - (NSString)type
 {
-  v2 = [(AMSMarketingItemAction *)self rawValues];
-  v3 = [v2 objectForKeyedSubscript:qword_1F0719D18];
+  rawValues = [(AMSMarketingItemAction *)self rawValues];
+  v3 = [rawValues objectForKeyedSubscript:qword_1F0719D18];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -287,8 +287,8 @@
 
 - (NSURL)url
 {
-  v2 = [(AMSMarketingItemAction *)self rawValues];
-  v3 = [v2 objectForKeyedSubscript:qword_1F0719D50];
+  rawValues = [(AMSMarketingItemAction *)self rawValues];
+  v3 = [rawValues objectForKeyedSubscript:qword_1F0719D50];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -316,8 +316,8 @@ LABEL_6:
 
 - (NSString)valuePropDetail
 {
-  v2 = [(AMSMarketingItemAction *)self rawValues];
-  v3 = [v2 valueForKeyPath:qword_1F0719D58];
+  rawValues = [(AMSMarketingItemAction *)self rawValues];
+  v3 = [rawValues valueForKeyPath:qword_1F0719D58];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -335,8 +335,8 @@ LABEL_6:
 
 - (NSString)valuePropInfo
 {
-  v2 = [(AMSMarketingItemAction *)self rawValues];
-  v3 = [v2 valueForKeyPath:qword_1F0719D60];
+  rawValues = [(AMSMarketingItemAction *)self rawValues];
+  v3 = [rawValues valueForKeyPath:qword_1F0719D60];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -354,8 +354,8 @@ LABEL_6:
 
 - (id)_servicesData
 {
-  v2 = [(AMSMarketingItemAction *)self rawValues];
-  v3 = [v2 objectForKeyedSubscript:qword_1F0719C90];
+  rawValues = [(AMSMarketingItemAction *)self rawValues];
+  v3 = [rawValues objectForKeyedSubscript:qword_1F0719C90];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -373,8 +373,8 @@ LABEL_6:
 
 - (id)_serviceNames
 {
-  v2 = [(AMSMarketingItemAction *)self rawValues];
-  v3 = [v2 objectForKeyedSubscript:qword_1F0719D48];
+  rawValues = [(AMSMarketingItemAction *)self rawValues];
+  v3 = [rawValues objectForKeyedSubscript:qword_1F0719D48];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -390,16 +390,16 @@ LABEL_6:
   return v4;
 }
 
-- (id)_serviceComponentsFromMap:(id)a3 withNames:(id)a4
+- (id)_serviceComponentsFromMap:(id)map withNames:(id)names
 {
-  v5 = a3;
+  mapCopy = map;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __62__AMSMarketingItemAction__serviceComponentsFromMap_withNames___block_invoke;
   v9[3] = &unk_1E73B8C00;
-  v10 = v5;
-  v6 = v5;
-  v7 = [a4 ams_mapWithTransformIgnoresNil:v9];
+  v10 = mapCopy;
+  v6 = mapCopy;
+  v7 = [names ams_mapWithTransformIgnoresNil:v9];
 
   return v7;
 }

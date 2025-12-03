@@ -1,14 +1,14 @@
 @interface DailySchedulerDelegate
 - (_TtC14HomeKitMetrics22DailySchedulerDelegate)init;
-- (void)registerDailyTaskRunner:(id)a3;
+- (void)registerDailyTaskRunner:(id)runner;
 @end
 
 @implementation DailySchedulerDelegate
 
-- (void)registerDailyTaskRunner:(id)a3
+- (void)registerDailyTaskRunner:(id)runner
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_22B0BB874();
   swift_unknownObjectRelease();
 }

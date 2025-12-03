@@ -1,9 +1,9 @@
 @interface NTSectionPlaceholderDescriptor
 - (NTSectionPlaceholderDescriptor)init;
-- (NTSectionPlaceholderDescriptor)initWithName:(id)a3 nameColorLight:(id)a4 nameColorDark:(id)a5 minimumStoriesAllocation:(unint64_t)a6 maximumStoriesAllocation:(unint64_t)a7 backingTagID:(id)a8;
-- (id)assembleResultsWithCatchUpOperation:(id)a3;
-- (id)incrementalLimitTransformationWithFeedPersonalizer:(id)a3 limit:(unint64_t)a4 priorFeedItems:(id)a5;
-- (id)incrementalSortTransformationWithFeedPersonalizer:(id)a3;
+- (NTSectionPlaceholderDescriptor)initWithName:(id)name nameColorLight:(id)light nameColorDark:(id)dark minimumStoriesAllocation:(unint64_t)allocation maximumStoriesAllocation:(unint64_t)storiesAllocation backingTagID:(id)d;
+- (id)assembleResultsWithCatchUpOperation:(id)operation;
+- (id)incrementalLimitTransformationWithFeedPersonalizer:(id)personalizer limit:(unint64_t)limit priorFeedItems:(id)items;
+- (id)incrementalSortTransformationWithFeedPersonalizer:(id)personalizer;
 @end
 
 @implementation NTSectionPlaceholderDescriptor
@@ -34,47 +34,47 @@
   objc_exception_throw(v6);
 }
 
-- (NTSectionPlaceholderDescriptor)initWithName:(id)a3 nameColorLight:(id)a4 nameColorDark:(id)a5 minimumStoriesAllocation:(unint64_t)a6 maximumStoriesAllocation:(unint64_t)a7 backingTagID:(id)a8
+- (NTSectionPlaceholderDescriptor)initWithName:(id)name nameColorLight:(id)light nameColorDark:(id)dark minimumStoriesAllocation:(unint64_t)allocation maximumStoriesAllocation:(unint64_t)storiesAllocation backingTagID:(id)d
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a8;
+  nameCopy = name;
+  lightCopy = light;
+  darkCopy = dark;
+  dCopy = d;
   v32.receiver = self;
   v32.super_class = NTSectionPlaceholderDescriptor;
   v18 = [(NTSectionPlaceholderDescriptor *)&v32 init];
   if (v18)
   {
-    v19 = [MEMORY[0x277CCAD78] UUID];
-    v20 = [v19 UUIDString];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
     identifier = v18->_identifier;
-    v18->_identifier = v20;
+    v18->_identifier = uUIDString;
 
-    v22 = [v14 copy];
+    v22 = [nameCopy copy];
     name = v18->_name;
     v18->_name = v22;
 
-    v24 = [v15 copy];
+    v24 = [lightCopy copy];
     nameColorLight = v18->_nameColorLight;
     v18->_nameColorLight = v24;
 
-    if (v16)
+    if (darkCopy)
     {
-      v26 = v16;
+      v26 = darkCopy;
     }
 
     else
     {
-      v26 = v15;
+      v26 = lightCopy;
     }
 
     v27 = [v26 copy];
     nameColorDark = v18->_nameColorDark;
     v18->_nameColorDark = v27;
 
-    v18->_maximumStoriesAllocation = a7;
-    v18->_minimumStoriesAllocation = a6;
-    v29 = [v17 copy];
+    v18->_maximumStoriesAllocation = storiesAllocation;
+    v18->_minimumStoriesAllocation = allocation;
+    v29 = [dCopy copy];
     backingTagID = v18->_backingTagID;
     v18->_backingTagID = v29;
   }
@@ -82,10 +82,10 @@
   return v18;
 }
 
-- (id)assembleResultsWithCatchUpOperation:(id)a3
+- (id)assembleResultsWithCatchUpOperation:(id)operation
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  operationCopy = operation;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     v4 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Do not call method"];
@@ -109,18 +109,18 @@
   objc_exception_throw(v8);
 }
 
-- (id)incrementalLimitTransformationWithFeedPersonalizer:(id)a3 limit:(unint64_t)a4 priorFeedItems:(id)a5
+- (id)incrementalLimitTransformationWithFeedPersonalizer:(id)personalizer limit:(unint64_t)limit priorFeedItems:(id)items
 {
-  v5 = [[NTFeedTransformationLimit alloc] initWithLimit:a4];
+  v5 = [[NTFeedTransformationLimit alloc] initWithLimit:limit];
 
   return v5;
 }
 
-- (id)incrementalSortTransformationWithFeedPersonalizer:(id)a3
+- (id)incrementalSortTransformationWithFeedPersonalizer:(id)personalizer
 {
   v3 = [NTFeedTransformationItemFeedTransformation alloc];
-  v4 = [MEMORY[0x277D31010] sharedInstance];
-  v5 = [(NTFeedTransformationItemFeedTransformation *)v3 initWithFeedItemTransformation:v4];
+  mEMORY[0x277D31010] = [MEMORY[0x277D31010] sharedInstance];
+  v5 = [(NTFeedTransformationItemFeedTransformation *)v3 initWithFeedItemTransformation:mEMORY[0x277D31010]];
 
   return v5;
 }

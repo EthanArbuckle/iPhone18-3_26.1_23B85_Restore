@@ -1,35 +1,35 @@
 @interface CPUIGridImageRenderer
 - (CPUIGridImageRenderer)init;
-- (CPUIGridImageRenderer)initWithImage:(id)a3 unread:(BOOL)a4 scale:(double)a5;
+- (CPUIGridImageRenderer)initWithImage:(id)image unread:(BOOL)unread scale:(double)scale;
 - (UIImage)image;
-- (void)setBaseImage:(id)a3;
+- (void)setBaseImage:(id)image;
 @end
 
 @implementation CPUIGridImageRenderer
 
 - (UIImage)image
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CPUIGridImageRenderer.image.getter();
 
   return v3;
 }
 
-- (void)setBaseImage:(id)a3
+- (void)setBaseImage:(id)image
 {
   v4 = *(&self->super.isa + OBJC_IVAR___CPUIGridImageRenderer_baseImage);
-  *(&self->super.isa + OBJC_IVAR___CPUIGridImageRenderer_baseImage) = a3;
-  v3 = a3;
+  *(&self->super.isa + OBJC_IVAR___CPUIGridImageRenderer_baseImage) = image;
+  imageCopy = image;
 }
 
-- (CPUIGridImageRenderer)initWithImage:(id)a3 unread:(BOOL)a4 scale:(double)a5
+- (CPUIGridImageRenderer)initWithImage:(id)image unread:(BOOL)unread scale:(double)scale
 {
-  *(&self->super.isa + OBJC_IVAR___CPUIGridImageRenderer_unread) = a4;
-  *(&self->super.isa + OBJC_IVAR___CPUIGridImageRenderer_baseImage) = a3;
-  *(&self->super.isa + OBJC_IVAR___CPUIGridImageRenderer_scale) = a5;
+  *(&self->super.isa + OBJC_IVAR___CPUIGridImageRenderer_unread) = unread;
+  *(&self->super.isa + OBJC_IVAR___CPUIGridImageRenderer_baseImage) = image;
+  *(&self->super.isa + OBJC_IVAR___CPUIGridImageRenderer_scale) = scale;
   v7.receiver = self;
   v7.super_class = CPUIGridImageRenderer;
-  v5 = a3;
+  imageCopy = image;
   return [(CPUIGridImageRenderer *)&v7 init];
 }
 

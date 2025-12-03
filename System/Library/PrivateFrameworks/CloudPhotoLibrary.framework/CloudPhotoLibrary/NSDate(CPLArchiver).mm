@@ -18,12 +18,12 @@
       v9 = __CPLGenericOSLogDomain();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
-        v10 = [v4 archiverContext];
+        archiverContext = [v4 archiverContext];
         v11 = v4[2];
         v12 = objc_opt_class();
         v13 = v4[2];
         *buf = 138412802;
-        v25 = v10;
+        v25 = archiverContext;
         v26 = 2112;
         v27 = v12;
         v28 = 2112;
@@ -40,7 +40,7 @@
   }
 
   [v4[2] doubleValue];
-  v6 = [a1 initWithTimeIntervalSinceReferenceDate:?];
+  v6 = [self initWithTimeIntervalSinceReferenceDate:?];
 
   v7 = *MEMORY[0x1E69E9840];
   return v6;
@@ -50,13 +50,13 @@
 {
   if ([a3 forDisplay])
   {
-    [a1 description];
+    [self description];
   }
 
   else
   {
     v5 = MEMORY[0x1E696AD98];
-    [a1 timeIntervalSinceReferenceDate];
+    [self timeIntervalSinceReferenceDate];
     [v5 numberWithDouble:?];
   }
   v4 = ;

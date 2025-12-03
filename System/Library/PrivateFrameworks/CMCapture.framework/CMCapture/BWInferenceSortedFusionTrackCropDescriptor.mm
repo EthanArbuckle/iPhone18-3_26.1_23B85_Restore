@@ -1,28 +1,28 @@
 @interface BWInferenceSortedFusionTrackCropDescriptor
-- (BOOL)applicableToSampleBuffer:(opaqueCMSampleBuffer *)a3 forMediaKey:(id)a4;
-- (BWInferenceSortedFusionTrackCropDescriptor)initWithIdentifier:(char)a3 orderedFusionTrackIndex:(int)a4;
-- (CGRect)rectForSampleBuffer:(opaqueCMSampleBuffer *)a3;
+- (BOOL)applicableToSampleBuffer:(opaqueCMSampleBuffer *)buffer forMediaKey:(id)key;
+- (BWInferenceSortedFusionTrackCropDescriptor)initWithIdentifier:(char)identifier orderedFusionTrackIndex:(int)index;
+- (CGRect)rectForSampleBuffer:(opaqueCMSampleBuffer *)buffer;
 @end
 
 @implementation BWInferenceSortedFusionTrackCropDescriptor
 
-- (BWInferenceSortedFusionTrackCropDescriptor)initWithIdentifier:(char)a3 orderedFusionTrackIndex:(int)a4
+- (BWInferenceSortedFusionTrackCropDescriptor)initWithIdentifier:(char)identifier orderedFusionTrackIndex:(int)index
 {
   v7.receiver = self;
   v7.super_class = BWInferenceSortedFusionTrackCropDescriptor;
   result = [(BWInferenceSortedFusionTrackCropDescriptor *)&v7 init];
   if (result)
   {
-    result->_identifier = a3;
-    result->_orderedFusionTrackIndex = a4;
+    result->_identifier = identifier;
+    result->_orderedFusionTrackIndex = index;
   }
 
   return result;
 }
 
-- (CGRect)rectForSampleBuffer:(opaqueCMSampleBuffer *)a3
+- (CGRect)rectForSampleBuffer:(opaqueCMSampleBuffer *)buffer
 {
-  v4 = CMGetAttachment(a3, @"SortedFusionTrackerCrops", 0);
+  v4 = CMGetAttachment(buffer, @"SortedFusionTrackerCrops", 0);
   v9 = *MEMORY[0x1E695F050];
   v10 = *(MEMORY[0x1E695F050] + 16);
   if (v4 && CFArrayGetCount(v4) > self->_orderedFusionTrackIndex)
@@ -41,9 +41,9 @@
   return result;
 }
 
-- (BOOL)applicableToSampleBuffer:(opaqueCMSampleBuffer *)a3 forMediaKey:(id)a4
+- (BOOL)applicableToSampleBuffer:(opaqueCMSampleBuffer *)buffer forMediaKey:(id)key
 {
-  v5 = CMGetAttachment(a3, @"SortedFusionTrackerCrops", 0);
+  v5 = CMGetAttachment(buffer, @"SortedFusionTrackerCrops", 0);
   if (v5)
   {
     LOBYTE(v5) = CFArrayGetCount(v5) > self->_orderedFusionTrackIndex;

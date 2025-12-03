@@ -1,11 +1,11 @@
 @interface PLClientLogAggregator
 + (id)sharedInstance;
-- (BOOL)_aggregateForClientID:(id)a3 eventName:(id)a4 eventDictionary:(id)a5 configuration:(id)a6;
-- (BOOL)_isEventInputValid:(id)a3 configuration:(id)a4;
-- (BOOL)_setEventAggregate:(id)a3 eventName:(id)a4 aggregateKey:(id)a5 valueLabel:(id)a6 value:(id)a7;
-- (BOOL)aggregateForClientID_async:(signed __int16)a3 eventName:(id)a4 eventDictionary:(id)a5 configuration:(id)a6;
+- (BOOL)_aggregateForClientID:(id)d eventName:(id)name eventDictionary:(id)dictionary configuration:(id)configuration;
+- (BOOL)_isEventInputValid:(id)valid configuration:(id)configuration;
+- (BOOL)_setEventAggregate:(id)aggregate eventName:(id)name aggregateKey:(id)key valueLabel:(id)label value:(id)value;
+- (BOOL)aggregateForClientID_async:(signed __int16)d_async eventName:(id)name eventDictionary:(id)dictionary configuration:(id)configuration;
 - (PLClientLogAggregator)init;
-- (id)_eventAggregate:(id)a3 eventName:(id)a4 aggregateKey:(id)a5 valueLabel:(id)a6;
+- (id)_eventAggregate:(id)aggregate eventName:(id)name aggregateKey:(id)key valueLabel:(id)label;
 - (void)_flushToPowerLog;
 - (void)_scheduleFlushTimer;
 - (void)cleanCache;
@@ -64,59 +64,59 @@ uint64_t __39__PLClientLogAggregator_sharedInstance__block_invoke()
 
 - (void)_scheduleFlushTimer
 {
-  v3 = [(PLClientLogAggregator *)self flushTimer];
+  flushTimer = [(PLClientLogAggregator *)self flushTimer];
 
-  if (!v3)
+  if (!flushTimer)
   {
-    v4 = [(PLClientLogAggregator *)self executionQueue];
-    v5 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, v4);
+    executionQueue = [(PLClientLogAggregator *)self executionQueue];
+    v5 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, executionQueue);
     [(PLClientLogAggregator *)self setFlushTimer:v5];
 
-    v6 = [(PLClientLogAggregator *)self flushTimer];
+    flushTimer2 = [(PLClientLogAggregator *)self flushTimer];
     v7 = dispatch_walltime(0, 900000000000);
-    dispatch_source_set_timer(v6, v7, 0xFFFFFFFFFFFFFFFFLL, 0x14F46B0400uLL);
+    dispatch_source_set_timer(flushTimer2, v7, 0xFFFFFFFFFFFFFFFFLL, 0x14F46B0400uLL);
 
-    v8 = [(PLClientLogAggregator *)self flushTimer];
+    flushTimer3 = [(PLClientLogAggregator *)self flushTimer];
     handler[0] = MEMORY[0x1E69E9820];
     handler[1] = 3221225472;
     handler[2] = __44__PLClientLogAggregator__scheduleFlushTimer__block_invoke;
     handler[3] = &unk_1E7F187A0;
     handler[4] = self;
-    dispatch_source_set_event_handler(v8, handler);
+    dispatch_source_set_event_handler(flushTimer3, handler);
 
-    v9 = [(PLClientLogAggregator *)self flushTimer];
-    dispatch_resume(v9);
+    flushTimer4 = [(PLClientLogAggregator *)self flushTimer];
+    dispatch_resume(flushTimer4);
   }
 }
 
-- (BOOL)aggregateForClientID_async:(signed __int16)a3 eventName:(id)a4 eventDictionary:(id)a5 configuration:(id)a6
+- (BOOL)aggregateForClientID_async:(signed __int16)d_async eventName:(id)name eventDictionary:(id)dictionary configuration:(id)configuration
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  nameCopy = name;
+  dictionaryCopy = dictionary;
+  configurationCopy = configuration;
   v24 = 0;
   v25 = &v24;
   v26 = 0x2020000000;
   v27 = 0;
-  v13 = [(PLClientLogAggregator *)self executionQueue];
+  executionQueue = [(PLClientLogAggregator *)self executionQueue];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __92__PLClientLogAggregator_aggregateForClientID_async_eventName_eventDictionary_configuration___block_invoke;
   v18[3] = &unk_1E7F18B50;
-  v21 = v12;
+  v21 = configurationCopy;
   v22 = &v24;
-  v23 = a3;
+  d_asyncCopy = d_async;
   v18[4] = self;
-  v19 = v10;
-  v20 = v11;
-  v14 = v12;
-  v15 = v11;
-  v16 = v10;
-  dispatch_async(v13, v18);
+  v19 = nameCopy;
+  v20 = dictionaryCopy;
+  v14 = configurationCopy;
+  v15 = dictionaryCopy;
+  v16 = nameCopy;
+  dispatch_async(executionQueue, v18);
 
-  LOBYTE(a3) = *(v25 + 24);
+  LOBYTE(d_async) = *(v25 + 24);
   _Block_object_dispose(&v24, 8);
-  return a3;
+  return d_async;
 }
 
 void __92__PLClientLogAggregator_aggregateForClientID_async_eventName_eventDictionary_configuration___block_invoke(uint64_t a1)
@@ -129,43 +129,43 @@ void __92__PLClientLogAggregator_aggregateForClientID_async_eventName_eventDicti
   *(*(*(a1 + 64) + 8) + 24) = [v2 _aggregateForClientID:v6 eventName:v3 eventDictionary:v4 configuration:v5];
 }
 
-- (BOOL)_aggregateForClientID:(id)a3 eventName:(id)a4 eventDictionary:(id)a5 configuration:(id)a6
+- (BOOL)_aggregateForClientID:(id)d eventName:(id)name eventDictionary:(id)dictionary configuration:(id)configuration
 {
   v59 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v44 = a5;
-  v12 = a6;
-  v13 = v12;
+  dCopy = d;
+  nameCopy = name;
+  dictionaryCopy = dictionary;
+  configurationCopy = configuration;
+  v13 = configurationCopy;
   v14 = 0;
-  v41 = v10;
-  if (v10 && v11 && v44 && v12)
+  v41 = dCopy;
+  if (dCopy && nameCopy && dictionaryCopy && configurationCopy)
   {
-    v15 = [(PLClientLogAggregator *)self logHandle];
-    if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
+    logHandle = [(PLClientLogAggregator *)self logHandle];
+    if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138413058;
-      v52 = v10;
+      v52 = dCopy;
       v53 = 2112;
-      v54 = v11;
+      v54 = nameCopy;
       v55 = 2112;
-      v56 = v44;
+      v56 = dictionaryCopy;
       v57 = 2112;
       v58 = v13;
-      _os_log_debug_impl(&dword_1BACB7000, v15, OS_LOG_TYPE_DEBUG, "Received (clientID:%@, eventName:%@, eventDictionary:%@) for aggregation with configuration:%@", buf, 0x2Au);
+      _os_log_debug_impl(&dword_1BACB7000, logHandle, OS_LOG_TYPE_DEBUG, "Received (clientID:%@, eventName:%@, eventDictionary:%@) for aggregation with configuration:%@", buf, 0x2Au);
     }
 
-    if ([(PLClientLogAggregator *)self _isEventInputValid:v44 configuration:v13])
+    if ([(PLClientLogAggregator *)self _isEventInputValid:dictionaryCopy configuration:v13])
     {
       v16 = [v13 allKeysForObject:&unk_1F38E3260];
       if ([v16 count])
       {
-        v17 = [MEMORY[0x1E695DFB0] null];
-        v18 = [v44 objectsForKeys:v16 notFoundMarker:v17];
+        null = [MEMORY[0x1E695DFB0] null];
+        v18 = [dictionaryCopy objectsForKeys:v16 notFoundMarker:null];
 
-        v19 = [MEMORY[0x1E695DFB0] null];
+        null2 = [MEMORY[0x1E695DFB0] null];
         v20 = v16;
-        v21 = [v18 indexOfObject:v19];
+        v21 = [v18 indexOfObject:null2];
 
         if (v21 != 0x7FFFFFFFFFFFFFFFLL)
         {
@@ -197,7 +197,7 @@ LABEL_31:
       if (v43)
       {
         v42 = *v47;
-        v38 = self;
+        selfCopy = self;
         v39 = v22;
         while (2)
         {
@@ -225,17 +225,17 @@ LABEL_31:
               }
 
               v27 = *(&off_1E7F18B90 + v26);
-              v28 = [v44 objectForKeyedSubscript:v24];
+              v28 = [dictionaryCopy objectForKeyedSubscript:v24];
 
               if (v28)
               {
-                v29 = [(PLClientLogAggregator *)self _eventAggregate:v41 eventName:v11 aggregateKey:v40 valueLabel:v24];
-                v30 = [v44 objectForKeyedSubscript:v24];
+                v29 = [(PLClientLogAggregator *)self _eventAggregate:v41 eventName:nameCopy aggregateKey:v40 valueLabel:v24];
+                v30 = [dictionaryCopy objectForKeyedSubscript:v24];
                 v31 = (*(v27 + 16))(v27, v29, v30);
 
                 v22 = v39;
-                self = v38;
-                [(PLClientLogAggregator *)v38 _setEventAggregate:v41 eventName:v11 aggregateKey:v40 valueLabel:v24 value:v31];
+                self = selfCopy;
+                [(PLClientLogAggregator *)selfCopy _setEventAggregate:v41 eventName:nameCopy aggregateKey:v40 valueLabel:v24 value:v31];
               }
             }
 
@@ -258,9 +258,9 @@ LABEL_31:
         [(PLClientLogAggregator *)self _scheduleFlushTimer];
       }
 
-      v32 = [(PLClientLogAggregator *)self numAggregations];
+      numAggregations = [(PLClientLogAggregator *)self numAggregations];
       v20 = v36;
-      if (v32 >= 0x14)
+      if (numAggregations >= 0x14)
       {
         [(PLClientLogAggregator *)self _flushToPowerLog];
       }
@@ -279,24 +279,24 @@ LABEL_32:
   return v14;
 }
 
-- (BOOL)_isEventInputValid:(id)a3 configuration:(id)a4
+- (BOOL)_isEventInputValid:(id)valid configuration:(id)configuration
 {
   v38 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 count];
-  if (v8 == [v7 count])
+  validCopy = valid;
+  configurationCopy = configuration;
+  v8 = [validCopy count];
+  if (v8 == [configurationCopy count])
   {
     v29 = 0u;
     v30 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v9 = v6;
-    v10 = [v9 countByEnumeratingWithState:&v27 objects:v37 count:16];
+    logHandle4 = validCopy;
+    v10 = [logHandle4 countByEnumeratingWithState:&v27 objects:v37 count:16];
     if (v10)
     {
       v11 = v10;
-      v25 = v6;
+      v25 = validCopy;
       v26 = 0;
       v12 = *v28;
       while (2)
@@ -305,58 +305,58 @@ LABEL_32:
         {
           if (*v28 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(logHandle4);
           }
 
           v14 = *(*(&v27 + 1) + 8 * i);
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) == 0)
           {
-            v19 = [(PLClientLogAggregator *)self logHandle];
-            if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
+            logHandle = [(PLClientLogAggregator *)self logHandle];
+            if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEBUG))
             {
-              [PLClientLogAggregator _isEventInputValid:v14 configuration:v19];
+              [PLClientLogAggregator _isEventInputValid:v14 configuration:logHandle];
             }
 
             goto LABEL_31;
           }
 
-          v15 = [v7 objectForKey:v14];
+          v15 = [configurationCopy objectForKey:v14];
           if (!v15 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || [v15 unsignedIntegerValue] >= 5)
           {
-            v18 = [(PLClientLogAggregator *)self logHandle];
-            if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
+            logHandle2 = [(PLClientLogAggregator *)self logHandle];
+            if (os_log_type_enabled(logHandle2, OS_LOG_TYPE_DEBUG))
             {
               [PLClientLogAggregator _isEventInputValid:configuration:];
             }
 
 LABEL_31:
-            v6 = v25;
+            validCopy = v25;
             goto LABEL_32;
           }
 
-          v16 = [v9 objectForKey:v14];
+          v16 = [logHandle4 objectForKey:v14];
           if ([v15 unsignedIntegerValue])
           {
             objc_opt_class();
             if ((objc_opt_isKindOfClass() & 1) == 0)
             {
-              v22 = [(PLClientLogAggregator *)self logHandle];
-              if (!os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
+              logHandle3 = [(PLClientLogAggregator *)self logHandle];
+              if (!os_log_type_enabled(logHandle3, OS_LOG_TYPE_DEBUG))
               {
                 goto LABEL_39;
               }
 
-              v23 = [v15 unsignedIntegerValue];
-              v6 = v25;
-              if (v23 > 4)
+              unsignedIntegerValue = [v15 unsignedIntegerValue];
+              validCopy = v25;
+              if (unsignedIntegerValue > 4)
               {
                 v24 = @"(null)";
               }
 
               else
               {
-                v24 = off_1E7F18BB0[v23 & 7];
+                v24 = off_1E7F18BB0[unsignedIntegerValue & 7];
               }
 
               *buf = 138412802;
@@ -365,7 +365,7 @@ LABEL_31:
               v34 = v16;
               v35 = 2112;
               v36 = v24;
-              _os_log_debug_impl(&dword_1BACB7000, v22, OS_LOG_TYPE_DEBUG, "Invalid event data -- value for %@: %@ (according to configuration, %@ expects NSNumber)", buf, 0x20u);
+              _os_log_debug_impl(&dword_1BACB7000, logHandle3, OS_LOG_TYPE_DEBUG, "Invalid event data -- value for %@: %@ (according to configuration, %@ expects NSNumber)", buf, 0x20u);
               goto LABEL_40;
             }
 
@@ -380,14 +380,14 @@ LABEL_31:
               objc_opt_class();
               if ((objc_opt_isKindOfClass() & 1) == 0)
               {
-                v22 = [(PLClientLogAggregator *)self logHandle];
-                if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
+                logHandle3 = [(PLClientLogAggregator *)self logHandle];
+                if (os_log_type_enabled(logHandle3, OS_LOG_TYPE_DEBUG))
                 {
                   [PLClientLogAggregator _isEventInputValid:configuration:];
                 }
 
 LABEL_39:
-                v6 = v25;
+                validCopy = v25;
 LABEL_40:
 
                 goto LABEL_32;
@@ -396,7 +396,7 @@ LABEL_40:
           }
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v27 objects:v37 count:16];
+        v11 = [logHandle4 countByEnumeratingWithState:&v27 objects:v37 count:16];
         if (v11)
         {
           continue;
@@ -405,7 +405,7 @@ LABEL_40:
         break;
       }
 
-      v6 = v25;
+      validCopy = v25;
       if (v26)
       {
         v17 = 1;
@@ -417,19 +417,19 @@ LABEL_40:
     {
     }
 
-    v9 = [(PLClientLogAggregator *)self logHandle];
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
+    logHandle4 = [(PLClientLogAggregator *)self logHandle];
+    if (os_log_type_enabled(logHandle4, OS_LOG_TYPE_DEBUG))
     {
-      [PLClientLogAggregator _isEventInputValid:v9 configuration:?];
+      [PLClientLogAggregator _isEventInputValid:logHandle4 configuration:?];
     }
   }
 
   else
   {
-    v9 = [(PLClientLogAggregator *)self logHandle];
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
+    logHandle4 = [(PLClientLogAggregator *)self logHandle];
+    if (os_log_type_enabled(logHandle4, OS_LOG_TYPE_DEBUG))
     {
-      [(PLClientLogAggregator *)v6 _isEventInputValid:v7 configuration:v9];
+      [(PLClientLogAggregator *)validCopy _isEventInputValid:configurationCopy configuration:logHandle4];
     }
   }
 
@@ -444,131 +444,131 @@ LABEL_33:
 
 - (void)_flushToPowerLog
 {
-  v7 = [a2 numAggregations];
-  *a1 = 67109120;
-  *a3 = v7;
-  _os_log_debug_impl(&dword_1BACB7000, a4, OS_LOG_TYPE_DEBUG, "# of aggregations before flush: %d", a1, 8u);
+  numAggregations = [a2 numAggregations];
+  *self = 67109120;
+  *a3 = numAggregations;
+  _os_log_debug_impl(&dword_1BACB7000, a4, OS_LOG_TYPE_DEBUG, "# of aggregations before flush: %d", self, 8u);
 }
 
 - (void)cleanCache
 {
-  v3 = [(PLClientLogAggregator *)self aggregatesCache];
-  [v3 removeAllObjects];
+  aggregatesCache = [(PLClientLogAggregator *)self aggregatesCache];
+  [aggregatesCache removeAllObjects];
 
   [(PLClientLogAggregator *)self setNumAggregates:0];
 
   [(PLClientLogAggregator *)self setNumAggregations:0];
 }
 
-- (id)_eventAggregate:(id)a3 eventName:(id)a4 aggregateKey:(id)a5 valueLabel:(id)a6
+- (id)_eventAggregate:(id)aggregate eventName:(id)name aggregateKey:(id)key valueLabel:(id)label
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [(PLClientLogAggregator *)self aggregatesCache];
-  v15 = [v14 objectForKeyedSubscript:v13];
+  labelCopy = label;
+  keyCopy = key;
+  nameCopy = name;
+  aggregateCopy = aggregate;
+  aggregatesCache = [(PLClientLogAggregator *)self aggregatesCache];
+  v15 = [aggregatesCache objectForKeyedSubscript:aggregateCopy];
 
-  v16 = [v15 objectForKeyedSubscript:v12];
+  v16 = [v15 objectForKeyedSubscript:nameCopy];
 
-  v17 = [v16 objectForKeyedSubscript:v11];
+  v17 = [v16 objectForKeyedSubscript:keyCopy];
 
-  v18 = [v17 objectForKeyedSubscript:v10];
+  v18 = [v17 objectForKeyedSubscript:labelCopy];
 
   return v18;
 }
 
-- (BOOL)_setEventAggregate:(id)a3 eventName:(id)a4 aggregateKey:(id)a5 valueLabel:(id)a6 value:(id)a7
+- (BOOL)_setEventAggregate:(id)aggregate eventName:(id)name aggregateKey:(id)key valueLabel:(id)label value:(id)value
 {
   v70 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = [(PLClientLogAggregator *)self aggregatesCache];
-  v18 = [v17 objectForKeyedSubscript:v12];
+  aggregateCopy = aggregate;
+  nameCopy = name;
+  keyCopy = key;
+  labelCopy = label;
+  valueCopy = value;
+  aggregatesCache = [(PLClientLogAggregator *)self aggregatesCache];
+  v18 = [aggregatesCache objectForKeyedSubscript:aggregateCopy];
 
   if (!v18)
   {
     v19 = objc_opt_new();
-    v20 = [(PLClientLogAggregator *)self aggregatesCache];
-    [v20 setObject:v19 forKeyedSubscript:v12];
+    aggregatesCache2 = [(PLClientLogAggregator *)self aggregatesCache];
+    [aggregatesCache2 setObject:v19 forKeyedSubscript:aggregateCopy];
   }
 
-  v65 = v15;
-  v21 = [(PLClientLogAggregator *)self aggregatesCache];
-  v22 = [v21 objectForKeyedSubscript:v12];
-  v23 = [v22 objectForKeyedSubscript:v13];
+  v65 = labelCopy;
+  aggregatesCache3 = [(PLClientLogAggregator *)self aggregatesCache];
+  v22 = [aggregatesCache3 objectForKeyedSubscript:aggregateCopy];
+  v23 = [v22 objectForKeyedSubscript:nameCopy];
 
   if (!v23)
   {
     v24 = objc_opt_new();
-    v25 = [(PLClientLogAggregator *)self aggregatesCache];
-    v26 = [v25 objectForKeyedSubscript:v12];
-    [v26 setObject:v24 forKeyedSubscript:v13];
+    aggregatesCache4 = [(PLClientLogAggregator *)self aggregatesCache];
+    v26 = [aggregatesCache4 objectForKeyedSubscript:aggregateCopy];
+    [v26 setObject:v24 forKeyedSubscript:nameCopy];
   }
 
-  v27 = [MEMORY[0x1E695DF00] date];
-  [v27 timeIntervalSince1970];
+  date = [MEMORY[0x1E695DF00] date];
+  [date timeIntervalSince1970];
   v29 = v28;
 
-  v30 = [(PLClientLogAggregator *)self aggregatesCache];
-  v31 = [v30 objectForKeyedSubscript:v12];
-  v32 = [v31 objectForKeyedSubscript:v13];
-  v33 = [v32 objectForKeyedSubscript:v14];
+  aggregatesCache5 = [(PLClientLogAggregator *)self aggregatesCache];
+  v31 = [aggregatesCache5 objectForKeyedSubscript:aggregateCopy];
+  v32 = [v31 objectForKeyedSubscript:nameCopy];
+  v33 = [v32 objectForKeyedSubscript:keyCopy];
 
   if (!v33)
   {
     v34 = objc_opt_new();
-    v35 = [(PLClientLogAggregator *)self aggregatesCache];
-    v36 = [v35 objectForKeyedSubscript:v12];
-    v37 = [v36 objectForKeyedSubscript:v13];
-    [v37 setObject:v34 forKeyedSubscript:v14];
+    aggregatesCache6 = [(PLClientLogAggregator *)self aggregatesCache];
+    v36 = [aggregatesCache6 objectForKeyedSubscript:aggregateCopy];
+    v37 = [v36 objectForKeyedSubscript:nameCopy];
+    [v37 setObject:v34 forKeyedSubscript:keyCopy];
 
     v38 = [MEMORY[0x1E696AD98] numberWithDouble:v29];
-    v39 = [(PLClientLogAggregator *)self aggregatesCache];
-    v40 = [v39 objectForKeyedSubscript:v12];
-    v41 = [v40 objectForKeyedSubscript:v13];
-    v42 = [v41 objectForKeyedSubscript:v14];
+    aggregatesCache7 = [(PLClientLogAggregator *)self aggregatesCache];
+    v40 = [aggregatesCache7 objectForKeyedSubscript:aggregateCopy];
+    v41 = [v40 objectForKeyedSubscript:nameCopy];
+    v42 = [v41 objectForKeyedSubscript:keyCopy];
     [v42 setObject:v38 forKeyedSubscript:@"__firstTimestamp"];
 
     v43 = [MEMORY[0x1E696AD98] numberWithUnsignedChar:{-[PLClientLogAggregator numAggregates](self, "numAggregates")}];
-    v44 = [(PLClientLogAggregator *)self aggregatesCache];
-    v45 = [v44 objectForKeyedSubscript:v12];
-    v46 = [v45 objectForKeyedSubscript:v13];
-    v47 = [v46 objectForKeyedSubscript:v14];
+    aggregatesCache8 = [(PLClientLogAggregator *)self aggregatesCache];
+    v45 = [aggregatesCache8 objectForKeyedSubscript:aggregateCopy];
+    v46 = [v45 objectForKeyedSubscript:nameCopy];
+    v47 = [v46 objectForKeyedSubscript:keyCopy];
     [v47 setObject:v43 forKeyedSubscript:@"__number"];
 
     [(PLClientLogAggregator *)self setNumAggregates:([(PLClientLogAggregator *)self numAggregates]+ 1)];
   }
 
-  v48 = [(PLClientLogAggregator *)self aggregatesCache];
-  v49 = [v48 objectForKeyedSubscript:v12];
-  v50 = [v49 objectForKeyedSubscript:v13];
-  v51 = [v50 objectForKeyedSubscript:v14];
-  [v51 setObject:v16 forKeyedSubscript:v65];
+  aggregatesCache9 = [(PLClientLogAggregator *)self aggregatesCache];
+  v49 = [aggregatesCache9 objectForKeyedSubscript:aggregateCopy];
+  v50 = [v49 objectForKeyedSubscript:nameCopy];
+  v51 = [v50 objectForKeyedSubscript:keyCopy];
+  [v51 setObject:valueCopy forKeyedSubscript:v65];
 
   v52 = [MEMORY[0x1E696AD98] numberWithDouble:v29];
-  v53 = [(PLClientLogAggregator *)self aggregatesCache];
-  v54 = [v53 objectForKeyedSubscript:v12];
-  v55 = [v54 objectForKeyedSubscript:v13];
-  v56 = [v55 objectForKeyedSubscript:v14];
+  aggregatesCache10 = [(PLClientLogAggregator *)self aggregatesCache];
+  v54 = [aggregatesCache10 objectForKeyedSubscript:aggregateCopy];
+  v55 = [v54 objectForKeyedSubscript:nameCopy];
+  v56 = [v55 objectForKeyedSubscript:keyCopy];
   [v56 setObject:v52 forKeyedSubscript:@"__lastTimestamp"];
 
-  v57 = [(PLClientLogAggregator *)self logHandle];
-  if (os_log_type_enabled(v57, OS_LOG_TYPE_DEBUG))
+  logHandle = [(PLClientLogAggregator *)self logHandle];
+  if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEBUG))
   {
-    v60 = [(PLClientLogAggregator *)self aggregatesCache];
-    v61 = [v60 objectForKeyedSubscript:v12];
-    v62 = [v61 objectForKeyedSubscript:v13];
-    v63 = [v62 objectForKeyedSubscript:v14];
+    aggregatesCache11 = [(PLClientLogAggregator *)self aggregatesCache];
+    v61 = [aggregatesCache11 objectForKeyedSubscript:aggregateCopy];
+    v62 = [v61 objectForKeyedSubscript:nameCopy];
+    v63 = [v62 objectForKeyedSubscript:keyCopy];
     v64 = [v63 objectForKeyedSubscript:@"__number"];
     *buf = 138412546;
     v67 = v64;
     v68 = 2112;
     v69 = v65;
-    _os_log_debug_impl(&dword_1BACB7000, v57, OS_LOG_TYPE_DEBUG, "-- Updated aggregated event #%@ (key: %@)", buf, 0x16u);
+    _os_log_debug_impl(&dword_1BACB7000, logHandle, OS_LOG_TYPE_DEBUG, "-- Updated aggregated event #%@ (key: %@)", buf, 0x16u);
   }
 
   v58 = *MEMORY[0x1E69E9840];

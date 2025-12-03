@@ -1,15 +1,15 @@
 @interface ANSTForegroundSegmentationConfiguration
-- (ANSTForegroundSegmentationConfiguration)initWithVersion:(unint64_t)a3;
+- (ANSTForegroundSegmentationConfiguration)initWithVersion:(unint64_t)version;
 - (id)description;
 @end
 
 @implementation ANSTForegroundSegmentationConfiguration
 
-- (ANSTForegroundSegmentationConfiguration)initWithVersion:(unint64_t)a3
+- (ANSTForegroundSegmentationConfiguration)initWithVersion:(unint64_t)version
 {
   v4.receiver = self;
   v4.super_class = ANSTForegroundSegmentationConfiguration;
-  result = [(ANSTConfiguration *)&v4 initWithVersion:a3];
+  result = [(ANSTConfiguration *)&v4 initWithVersion:version];
   if (result)
   {
     result->_networkResolution = 0;

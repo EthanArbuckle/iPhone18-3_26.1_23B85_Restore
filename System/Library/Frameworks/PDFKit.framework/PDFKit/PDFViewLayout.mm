@@ -1,25 +1,25 @@
 @interface PDFViewLayout
-- (CGPoint)convertPoint:(CGPoint)a3 fromPage:(id)a4;
-- (CGPoint)convertPoint:(CGPoint)a3 fromPage:(id)a4 forScaleFactor:(double)a5;
-- (CGPoint)convertPoint:(CGPoint)a3 toPage:(id)a4;
-- (CGPoint)convertPoint:(CGPoint)a3 toPage:(id)a4 forScaleFactor:(double)a5;
-- (CGRect)boundsForPage:(id)a3;
-- (CGRect)convertRect:(CGRect)a3 fromPage:(id)a4 forScaleFactor:(double)a5;
-- (CGRect)normalizedBoundsForPageAtIndex:(unint64_t)a3;
-- (CGSize)contentSizeWithCurrentPage:(id)a3;
+- (CGPoint)convertPoint:(CGPoint)point fromPage:(id)page;
+- (CGPoint)convertPoint:(CGPoint)point fromPage:(id)page forScaleFactor:(double)factor;
+- (CGPoint)convertPoint:(CGPoint)point toPage:(id)page;
+- (CGPoint)convertPoint:(CGPoint)point toPage:(id)page forScaleFactor:(double)factor;
+- (CGRect)boundsForPage:(id)page;
+- (CGRect)convertRect:(CGRect)rect fromPage:(id)page forScaleFactor:(double)factor;
+- (CGRect)normalizedBoundsForPageAtIndex:(unint64_t)index;
+- (CGSize)contentSizeWithCurrentPage:(id)page;
 - (PDFDocument)document;
 - (PDFViewLayout)init;
-- (_NSRange)visiblePageRangeInBounds:(CGRect)a3 currentPage:(id)a4;
-- (const)boundsForPageAtIndex:(unint64_t)a3;
+- (_NSRange)visiblePageRangeInBounds:(CGRect)bounds currentPage:(id)page;
+- (const)boundsForPageAtIndex:(unint64_t)index;
 - (id)delegate;
-- (id)facingPageForPage:(id)a3;
-- (id)pageNearestPoint:(CGPoint)a3 currentPage:(id)a4;
-- (id)visiblePagesInBounds:(CGRect)a3 currentPage:(id)a4;
+- (id)facingPageForPage:(id)page;
+- (id)pageNearestPoint:(CGPoint)point currentPage:(id)page;
+- (id)visiblePagesInBounds:(CGRect)bounds currentPage:(id)page;
 - (int64_t)functionalDisplayMode;
 - (void)generateInternalDocumentGeometry;
 - (void)invalidateInternalDocumentGeometry;
-- (void)setDelegate:(id)a3;
-- (void)setDocument:(id)a3;
+- (void)setDelegate:(id)delegate;
+- (void)setDocument:(id)document;
 @end
 
 @implementation PDFViewLayout
@@ -60,9 +60,9 @@
   return v2;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_private->delegate);
 
   if (WeakRetained != obj)
@@ -87,9 +87,9 @@
   return WeakRetained;
 }
 
-- (void)setDocument:(id)a3
+- (void)setDocument:(id)document
 {
-  obj = a3;
+  obj = document;
   WeakRetained = objc_loadWeakRetained(&self->_private->document);
 
   if (WeakRetained != obj)
@@ -107,14 +107,14 @@
   return WeakRetained;
 }
 
-- (CGSize)contentSizeWithCurrentPage:(id)a3
+- (CGSize)contentSizeWithCurrentPage:(id)page
 {
-  v4 = a3;
+  pageCopy = page;
   v5 = *MEMORY[0x1E695F060];
   v6 = *(MEMORY[0x1E695F060] + 8);
   WeakRetained = objc_loadWeakRetained(&self->_private->document);
   v8 = WeakRetained;
-  if (v4 && WeakRetained)
+  if (pageCopy && WeakRetained)
   {
     v9 = objc_loadWeakRetained(&self->_private->delegate);
     v10 = v9;
@@ -158,13 +158,13 @@
 
     if (v12->delegateKnowsDisplaysDirection)
     {
-      v27 = [v10 displayDirection];
+      displayDirection = [v10 displayDirection];
       v12 = self->_private;
     }
 
     else
     {
-      v27 = 0;
+      displayDirection = 0;
     }
 
     [(NSLock *)v12->pageLayoutLock lock];
@@ -174,8 +174,8 @@
       [(PDFViewLayout *)self generateInternalDocumentGeometry];
     }
 
-    v30 = [v4 document];
-    v31 = [v30 indexForPage:v4];
+    document = [pageCopy document];
+    v31 = [document indexForPage:pageCopy];
 
     v32 = self->_private;
     if (v31 == 0x7FFFFFFFFFFFFFFFLL || !v32->pageCount)
@@ -183,12 +183,12 @@
       goto LABEL_41;
     }
 
-    v33 = [(PDFViewLayout *)self functionalDisplayMode];
+    functionalDisplayMode = [(PDFViewLayout *)self functionalDisplayMode];
     v34 = v16 + v86 + v20 + v21;
     v35 = v85 + v18 + v19 + v22;
-    if (v33 > 1)
+    if (functionalDisplayMode > 1)
     {
-      if (v33 == 2)
+      if (functionalDisplayMode == 2)
       {
         v45 = &self->_private->pageLayoutBounds.__begin_[v31];
         x = v45->origin.x;
@@ -197,15 +197,15 @@
         height = v45->size.height;
         MaxX = PDFRectGetMaxX(v45->origin.x, y, width);
         MaxY = PDFRectGetMaxY(x, y, width, height);
-        v52 = [(PDFViewLayout *)self facingPageForPage:v4];
+        v52 = [(PDFViewLayout *)self facingPageForPage:pageCopy];
         v53 = v52;
         v5 = v34 + MaxX;
         v6 = v35 + MaxY;
         if (v52)
         {
           v87 = v35;
-          v54 = [v52 document];
-          v55 = [v54 indexForPage:v53];
+          document2 = [v52 document];
+          v55 = [document2 indexForPage:v53];
 
           v56 = &self->_private->pageLayoutBounds.__begin_[v55];
           v57 = v56->origin.x;
@@ -219,11 +219,11 @@
         goto LABEL_40;
       }
 
-      if (v33 == 3)
+      if (functionalDisplayMode == 3)
       {
         v37 = self->_private;
         v5 = v37->twoUpContinousSize.width;
-        if (v5 > 0.0 && v37->cachedContinuousSizeDisplayDirection == v27)
+        if (v5 > 0.0 && v37->cachedContinuousSizeDisplayDirection == displayDirection)
         {
           v6 = v37->twoUpContinousSize.height;
           goto LABEL_40;
@@ -257,7 +257,7 @@
 
     else
     {
-      if (!v33)
+      if (!functionalDisplayMode)
       {
         v38 = &self->_private->pageLayoutBounds.__begin_[v31];
         v39 = v38->origin.x;
@@ -271,11 +271,11 @@
         goto LABEL_40;
       }
 
-      if (v33 == 1)
+      if (functionalDisplayMode == 1)
       {
         v36 = self->_private;
         v5 = v36->singlePageContinuousSize.width;
-        if (v5 > 0.0 && v36->cachedContinuousSizeDisplayDirection == v27)
+        if (v5 > 0.0 && v36->cachedContinuousSizeDisplayDirection == displayDirection)
         {
           v6 = v36->singlePageContinuousSize.height;
           goto LABEL_40;
@@ -318,7 +318,7 @@
         v76->singlePageContinuousSize.width = v5;
         v76->singlePageContinuousSize.height = v75;
 LABEL_39:
-        self->_private->cachedContinuousSizeDisplayDirection = v27;
+        self->_private->cachedContinuousSizeDisplayDirection = displayDirection;
       }
     }
 
@@ -337,40 +337,40 @@ LABEL_41:
   return result;
 }
 
-- (_NSRange)visiblePageRangeInBounds:(CGRect)a3 currentPage:(id)a4
+- (_NSRange)visiblePageRangeInBounds:(CGRect)bounds currentPage:(id)page
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  pageCopy = page;
   WeakRetained = objc_loadWeakRetained(&self->_private->document);
   v11 = 0;
   v12 = 0x7FFFFFFFFFFFFFFFLL;
-  if (!v9 || !self->_private->pageCount)
+  if (!pageCopy || !self->_private->pageCount)
   {
     goto LABEL_38;
   }
 
-  v13 = [(PDFViewLayout *)self functionalDisplayMode];
+  functionalDisplayMode = [(PDFViewLayout *)self functionalDisplayMode];
   v11 = 0;
-  if (v13 > 1)
+  if (functionalDisplayMode > 1)
   {
-    if (v13 != 2)
+    if (functionalDisplayMode != 2)
     {
-      if (v13 != 3)
+      if (functionalDisplayMode != 3)
       {
         goto LABEL_38;
       }
 
       MaxY = PDFRectGetMaxY(x, y, width, height);
-      v21 = [(PDFViewLayout *)self pageNearestPoint:v9 currentPage:PDFPointMake(0.0, MaxY)];
+      v21 = [(PDFViewLayout *)self pageNearestPoint:pageCopy currentPage:PDFPointMake(0.0, MaxY)];
       v16 = [WeakRetained indexForPage:v21];
       v22 = [(PDFViewLayout *)self facingPageForPage:v21];
 
       if (v22)
       {
-        v23 = [WeakRetained indexForPage:v9];
+        v23 = [WeakRetained indexForPage:pageCopy];
         if (v23 < v16)
         {
           v16 = v23;
@@ -378,7 +378,7 @@ LABEL_41:
       }
 
       MinY = PDFRectGetMinY(x, y, width, height);
-      v25 = [(PDFViewLayout *)self pageNearestPoint:v9 currentPage:PDFPointMake(0.0, MinY)];
+      v25 = [(PDFViewLayout *)self pageNearestPoint:pageCopy currentPage:PDFPointMake(0.0, MinY)];
 
       v26 = [WeakRetained indexForPage:v25];
       v18 = [(PDFViewLayout *)self facingPageForPage:v25];
@@ -395,8 +395,8 @@ LABEL_41:
       goto LABEL_20;
     }
 
-    v16 = [WeakRetained indexForPage:v9];
-    v18 = [(PDFViewLayout *)self facingPageForPage:v9];
+    v16 = [WeakRetained indexForPage:pageCopy];
+    v18 = [(PDFViewLayout *)self facingPageForPage:pageCopy];
     if (!v18)
     {
       v26 = v16;
@@ -411,24 +411,24 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  if (v13)
+  if (functionalDisplayMode)
   {
-    if (v13 != 1)
+    if (functionalDisplayMode != 1)
     {
       goto LABEL_38;
     }
 
     v14 = PDFRectGetMaxY(x, y, width, height);
-    v15 = [(PDFViewLayout *)self pageNearestPoint:v9 currentPage:PDFPointMake(0.0, v14)];
+    v15 = [(PDFViewLayout *)self pageNearestPoint:pageCopy currentPage:PDFPointMake(0.0, v14)];
     v16 = [WeakRetained indexForPage:v15];
 
     v17 = PDFRectGetMinY(x, y, width, height);
-    v18 = [(PDFViewLayout *)self pageNearestPoint:v9 currentPage:PDFPointMake(0.0, v17)];
+    v18 = [(PDFViewLayout *)self pageNearestPoint:pageCopy currentPage:PDFPointMake(0.0, v17)];
     v19 = [WeakRetained indexForPage:v18];
     goto LABEL_19;
   }
 
-  v26 = [WeakRetained indexForPage:v9];
+  v26 = [WeakRetained indexForPage:pageCopy];
   v16 = v26;
 LABEL_21:
   if (v26 <= v16)
@@ -497,30 +497,30 @@ LABEL_38:
   return result;
 }
 
-- (id)visiblePagesInBounds:(CGRect)a3 currentPage:(id)a4
+- (id)visiblePagesInBounds:(CGRect)bounds currentPage:(id)page
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  pageCopy = page;
   v10 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v12 = [(PDFViewLayout *)self visiblePageRangeInBounds:v9 currentPage:x, y, width, height];
-  if (v12 != 0x7FFFFFFFFFFFFFFFLL)
+  height = [(PDFViewLayout *)self visiblePageRangeInBounds:pageCopy currentPage:x, y, width, height];
+  if (height != 0x7FFFFFFFFFFFFFFFLL)
   {
     v13 = v11;
     WeakRetained = objc_loadWeakRetained(&self->_private->document);
-    if (v12 < v12 + v13)
+    if (height < height + v13)
     {
       do
       {
-        v15 = [WeakRetained pageAtIndex:v12];
+        v15 = [WeakRetained pageAtIndex:height];
         if (v15)
         {
           [v10 addObject:v15];
         }
 
-        ++v12;
+        ++height;
         --v13;
       }
 
@@ -531,9 +531,9 @@ LABEL_38:
   return v10;
 }
 
-- (CGRect)boundsForPage:(id)a3
+- (CGRect)boundsForPage:(id)page
 {
-  v4 = a3;
+  pageCopy = page;
   v15 = *MEMORY[0x1E695F058];
   v17 = *(MEMORY[0x1E695F058] + 16);
   WeakRetained = objc_loadWeakRetained(&self->_private->document);
@@ -549,11 +549,11 @@ LABEL_38:
         [(PDFViewLayout *)self generateInternalDocumentGeometry];
       }
 
-      v7 = [v4 document];
-      v8 = [v7 indexForPage:v4];
+      document = [pageCopy document];
+      v8 = [document indexForPage:pageCopy];
 
       v9 = self->_private;
-      if (v4 && v8 != 0x7FFFFFFFFFFFFFFFLL)
+      if (pageCopy && v8 != 0x7FFFFFFFFFFFFFFFLL)
       {
         v10 = &v9->pageLayoutBounds.__begin_[v8];
         v16 = *v10;
@@ -575,7 +575,7 @@ LABEL_38:
   return result;
 }
 
-- (const)boundsForPageAtIndex:(unint64_t)a3
+- (const)boundsForPageAtIndex:(unint64_t)index
 {
   WeakRetained = objc_loadWeakRetained(&self->_private->document);
   if (WeakRetained)
@@ -594,9 +594,9 @@ LABEL_38:
         end = self->_private->pageLayoutBounds.__end_;
       }
 
-      if (a3 < end - begin)
+      if (index < end - begin)
       {
-        return &begin[a3];
+        return &begin[index];
       }
 
       NSLog(&cfstr_InvalidIndex.isa);
@@ -606,12 +606,12 @@ LABEL_38:
   return MEMORY[0x1E695F058];
 }
 
-- (id)pageNearestPoint:(CGPoint)a3 currentPage:(id)a4
+- (id)pageNearestPoint:(CGPoint)point currentPage:(id)page
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  if (!v7)
+  y = point.y;
+  x = point.x;
+  pageCopy = page;
+  if (!pageCopy)
   {
     v22 = 0;
     goto LABEL_49;
@@ -678,15 +678,15 @@ LABEL_38:
     goto LABEL_48;
   }
 
-  v28 = [(PDFViewLayout *)self functionalDisplayMode];
-  v29 = v28;
-  if (!v28)
+  functionalDisplayMode = [(PDFViewLayout *)self functionalDisplayMode];
+  v29 = functionalDisplayMode;
+  if (!functionalDisplayMode)
   {
-    v22 = v7;
+    v22 = pageCopy;
     goto LABEL_48;
   }
 
-  if (v28 != 1)
+  if (functionalDisplayMode != 1)
   {
     v39 = 0;
     goto LABEL_30;
@@ -746,7 +746,7 @@ LABEL_29:
 LABEL_30:
   if (v29 == 2)
   {
-    v22 = v7;
+    v22 = pageCopy;
 
     v45 = [(PDFViewLayout *)self facingPageForPage:v22];
     if (v45)
@@ -859,12 +859,12 @@ LABEL_49:
   return v22;
 }
 
-- (CGPoint)convertPoint:(CGPoint)a3 toPage:(id)a4 forScaleFactor:(double)a5
+- (CGPoint)convertPoint:(CGPoint)point toPage:(id)page forScaleFactor:(double)factor
 {
-  y = a3.y;
-  x = a3.x;
-  v9 = a4;
-  if (v9)
+  y = point.y;
+  x = point.x;
+  pageCopy = page;
+  if (pageCopy)
   {
     [(NSLock *)self->_private->pageLayoutLock lock];
     v10 = self->_private;
@@ -881,8 +881,8 @@ LABEL_49:
 
     v12 = *MEMORY[0x1E695EFF8];
     v11 = *(MEMORY[0x1E695EFF8] + 8);
-    v13 = [v9 document];
-    v14 = [v13 indexForPage:v9];
+    document = [pageCopy document];
+    v14 = [document indexForPage:pageCopy];
 
     v15 = self->_private;
     if (v14 != 0x7FFFFFFFFFFFFFFFLL)
@@ -895,7 +895,7 @@ LABEL_49:
     if (v15->delegateKnowsDisplayBox)
     {
       WeakRetained = objc_loadWeakRetained(&v15->delegate);
-      [v9 boundsForBox:{objc_msgSend(WeakRetained, "displayBox")}];
+      [pageCopy boundsForBox:{objc_msgSend(WeakRetained, "displayBox")}];
       tx = v18;
       v20 = v19;
       v22 = v21;
@@ -904,24 +904,24 @@ LABEL_49:
 
     else
     {
-      [v9 boundsForBox:1];
+      [pageCopy boundsForBox:1];
       v22 = v25;
       v24 = v26;
       tx = v27;
       v20 = v28;
     }
 
-    v29 = [v9 rotation];
-    x = x / a5 - v12;
-    y = y / a5 - v11;
+    rotation = [pageCopy rotation];
+    x = x / factor - v12;
+    y = y / factor - v11;
     v30 = *(MEMORY[0x1E695EFD0] + 8);
     v32 = *(MEMORY[0x1E695EFD0] + 16);
     v31 = *(MEMORY[0x1E695EFD0] + 24);
     v34 = *(MEMORY[0x1E695EFD0] + 32);
     v33 = *(MEMORY[0x1E695EFD0] + 40);
-    if (v29 > 179)
+    if (rotation > 179)
     {
-      if (v29 == 180)
+      if (rotation == 180)
       {
         v75.a = *MEMORY[0x1E695EFD0];
         v75.b = v30;
@@ -944,7 +944,7 @@ LABEL_49:
         goto LABEL_19;
       }
 
-      if (v29 == 270)
+      if (rotation == 270)
       {
         v75.a = *MEMORY[0x1E695EFD0];
         v75.b = v30;
@@ -970,7 +970,7 @@ LABEL_49:
 
     else
     {
-      if (!v29)
+      if (!rotation)
       {
         v75.a = *MEMORY[0x1E695EFD0];
         v75.b = v30;
@@ -990,7 +990,7 @@ LABEL_49:
         goto LABEL_19;
       }
 
-      if (v29 == 90)
+      if (rotation == 90)
       {
         v75.a = *MEMORY[0x1E695EFD0];
         v75.b = v30;
@@ -1027,20 +1027,20 @@ LABEL_20:
   return result;
 }
 
-- (CGPoint)convertPoint:(CGPoint)a3 toPage:(id)a4
+- (CGPoint)convertPoint:(CGPoint)point toPage:(id)page
 {
-  [(PDFViewLayout *)self convertPoint:a4 toPage:a3.x forScaleFactor:a3.y, 1.0];
+  [(PDFViewLayout *)self convertPoint:page toPage:point.x forScaleFactor:point.y, 1.0];
   result.y = v5;
   result.x = v4;
   return result;
 }
 
-- (CGPoint)convertPoint:(CGPoint)a3 fromPage:(id)a4 forScaleFactor:(double)a5
+- (CGPoint)convertPoint:(CGPoint)point fromPage:(id)page forScaleFactor:(double)factor
 {
-  y = a3.y;
-  x = a3.x;
-  v9 = a4;
-  if (v9)
+  y = point.y;
+  x = point.x;
+  pageCopy = page;
+  if (pageCopy)
   {
     [(NSLock *)self->_private->pageLayoutLock lock];
     v10 = self->_private;
@@ -1058,7 +1058,7 @@ LABEL_20:
     if (v10->delegateKnowsDisplayBox)
     {
       WeakRetained = objc_loadWeakRetained(&v10->delegate);
-      [v9 boundsForBox:{objc_msgSend(WeakRetained, "displayBox")}];
+      [pageCopy boundsForBox:{objc_msgSend(WeakRetained, "displayBox")}];
       v13 = v12;
       v15 = v14;
       v17 = v16;
@@ -1067,24 +1067,24 @@ LABEL_20:
 
     else
     {
-      [v9 boundsForBox:1];
+      [pageCopy boundsForBox:1];
       v13 = v20;
       v15 = v21;
       v17 = v22;
       v19 = v23;
     }
 
-    v24 = [v9 rotation];
+    rotation = [pageCopy rotation];
     v25 = *(MEMORY[0x1E695EFD0] + 8);
     v27 = *(MEMORY[0x1E695EFD0] + 16);
     v26 = *(MEMORY[0x1E695EFD0] + 24);
     v29 = *(MEMORY[0x1E695EFD0] + 32);
     v28 = *(MEMORY[0x1E695EFD0] + 40);
-    if (v24 > 179)
+    if (rotation > 179)
     {
-      if (v24 == 180)
+      if (rotation == 180)
       {
-        v72 = a5;
+        factorCopy4 = factor;
         v73.a = *MEMORY[0x1E695EFD0];
         v73.b = v25;
         v73.c = v27;
@@ -1107,12 +1107,12 @@ LABEL_20:
 
       else
       {
-        if (v24 != 270)
+        if (rotation != 270)
         {
           goto LABEL_18;
         }
 
-        v72 = a5;
+        factorCopy4 = factor;
         v73.a = *MEMORY[0x1E695EFD0];
         v73.b = v25;
         v73.c = v27;
@@ -1134,14 +1134,14 @@ LABEL_20:
       }
     }
 
-    else if (v24)
+    else if (rotation)
     {
-      if (v24 != 90)
+      if (rotation != 90)
       {
         goto LABEL_18;
       }
 
-      v72 = a5;
+      factorCopy4 = factor;
       v73.a = *MEMORY[0x1E695EFD0];
       v73.b = v25;
       v73.c = v27;
@@ -1164,7 +1164,7 @@ LABEL_20:
 
     else
     {
-      v72 = a5;
+      factorCopy4 = factor;
       v73.a = *MEMORY[0x1E695EFD0];
       v73.b = v25;
       v73.c = v27;
@@ -1184,10 +1184,10 @@ LABEL_20:
 
     x = v39;
     y = v40;
-    a5 = v72;
+    factor = factorCopy4;
 LABEL_18:
-    v67 = [v9 document];
-    v68 = [v67 indexForPage:v9];
+    document = [pageCopy document];
+    v68 = [document indexForPage:pageCopy];
 
     v10 = self->_private;
     if (v68 != 0x7FFFFFFFFFFFFFFFLL && v68 < v10->pageCount)
@@ -1197,8 +1197,8 @@ LABEL_18:
       y = y + p_x[1];
     }
 
-    x = x * a5;
-    y = y * a5;
+    x = x * factor;
+    y = y * factor;
 LABEL_22:
     [(NSLock *)v10->pageLayoutLock unlock];
   }
@@ -1210,15 +1210,15 @@ LABEL_22:
   return result;
 }
 
-- (CGRect)convertRect:(CGRect)a3 fromPage:(id)a4 forScaleFactor:(double)a5
+- (CGRect)convertRect:(CGRect)rect fromPage:(id)page forScaleFactor:(double)factor
 {
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
-  v10 = [(PDFViewLayout *)self convertPoint:v9 fromPage:x forScaleFactor:y, a5];
+  y = rect.origin.y;
+  x = rect.origin.x;
+  pageCopy = page;
+  factor = [(PDFViewLayout *)self convertPoint:pageCopy fromPage:x forScaleFactor:y, factor];
   v12 = v11;
   v14 = v13;
-  v33.origin.x = PDFRectToCGRect(v10);
+  v33.origin.x = PDFRectToCGRect(factor);
   v15 = v33.origin.x;
   v16 = v33.origin.y;
   width = v33.size.width;
@@ -1229,7 +1229,7 @@ LABEL_22:
   v34.size.width = width;
   v34.size.height = height;
   MaxY = CGRectGetMaxY(v34);
-  [(PDFViewLayout *)self convertPoint:v9 fromPage:PDFPointMake(MaxX forScaleFactor:MaxY)];
+  [(PDFViewLayout *)self convertPoint:pageCopy fromPage:PDFPointMake(MaxX forScaleFactor:MaxY)];
   v22 = PDFRectFromPDFPoints(v12, v14, v21);
   v24 = v23;
   v26 = v25;
@@ -1246,9 +1246,9 @@ LABEL_22:
   return result;
 }
 
-- (CGPoint)convertPoint:(CGPoint)a3 fromPage:(id)a4
+- (CGPoint)convertPoint:(CGPoint)point fromPage:(id)page
 {
-  [(PDFViewLayout *)self convertPoint:a4 fromPage:a3.x forScaleFactor:a3.y, 1.0];
+  [(PDFViewLayout *)self convertPoint:page fromPage:point.x forScaleFactor:point.y, 1.0];
   result.y = v5;
   result.x = v4;
   return result;
@@ -1261,13 +1261,13 @@ LABEL_22:
   v5 = self->_private;
   if (v5->delegateKnowsDisplayMode)
   {
-    v6 = [WeakRetained displayMode];
+    displayMode = [WeakRetained displayMode];
     v5 = self->_private;
   }
 
   else
   {
-    v6 = 1;
+    displayMode = 1;
   }
 
   v7 = objc_loadWeakRetained(&v5->document);
@@ -1281,37 +1281,37 @@ LABEL_22:
   pageCount = v8->pageCount;
   if (pageCount == 1)
   {
-    v6 &= 1u;
+    displayMode &= 1u;
     goto LABEL_27;
   }
 
-  if (pageCount == 2 && v6 == 2)
+  if (pageCount == 2 && displayMode == 2)
   {
     if (v8->delegateKnowsDisplayAsBook)
     {
       if ([v4 displaysAsBook])
       {
-        v6 = 0;
+        displayMode = 0;
       }
 
       else
       {
-        v6 = 2;
+        displayMode = 2;
       }
 
       goto LABEL_27;
     }
 
 LABEL_26:
-    v6 = 2;
+    displayMode = 2;
     goto LABEL_27;
   }
 
-  if (pageCount == 2 && v6 == 3)
+  if (pageCount == 2 && displayMode == 3)
   {
     if (v8->delegateKnowsDisplayAsBook && ([v4 displaysAsBook] & 1) != 0)
     {
-      v6 = 1;
+      displayMode = 1;
       goto LABEL_27;
     }
 
@@ -1320,12 +1320,12 @@ LABEL_26:
 
   if (v8->delegateKnowsIsUsingPageViewController && [v4 isUsingPageViewController])
   {
-    v6 = 0;
+    displayMode = 0;
   }
 
 LABEL_27:
 
-  return v6;
+  return displayMode;
 }
 
 - (void)invalidateInternalDocumentGeometry
@@ -1340,18 +1340,18 @@ LABEL_27:
   [(NSLock *)pageLayoutLock unlock];
 }
 
-- (id)facingPageForPage:(id)a3
+- (id)facingPageForPage:(id)page
 {
-  v4 = a3;
+  pageCopy = page;
   WeakRetained = objc_loadWeakRetained(&self->_private->document);
-  if (!v4 || ([v4 document], v6 = objc_claimAutoreleasedReturnValue(), v6, v6 != WeakRetained) || -[PDFViewLayout functionalDisplayMode](self, "functionalDisplayMode") < 2)
+  if (!pageCopy || ([pageCopy document], v6 = objc_claimAutoreleasedReturnValue(), v6, v6 != WeakRetained) || -[PDFViewLayout functionalDisplayMode](self, "functionalDisplayMode") < 2)
   {
     v7 = 0;
     goto LABEL_5;
   }
 
   v9 = objc_loadWeakRetained(&self->_private->delegate);
-  v10 = [WeakRetained indexForPage:v4];
+  v10 = [WeakRetained indexForPage:pageCopy];
   if (self->_private->delegateKnowsDisplayAsBook && [v9 displaysAsBook])
   {
     if (!v10)
@@ -1453,33 +1453,33 @@ LABEL_5:
 
       if (v7->delegateKnowsDisplayAsBook)
       {
-        v24 = [v5 displaysAsBook];
+        displaysAsBook = [v5 displaysAsBook];
         v7 = self->_private;
       }
 
       else
       {
-        v24 = 0;
+        displaysAsBook = 0;
       }
 
       if (v7->delegateKnowsDisplayRTL)
       {
-        v25 = [v5 displaysRTL];
+        displaysRTL = [v5 displaysRTL];
       }
 
       else
       {
-        v25 = 0;
+        displaysRTL = 0;
       }
 
-      v26 = [(PDFViewLayout *)self functionalDisplayMode];
+      functionalDisplayMode = [(PDFViewLayout *)self functionalDisplayMode];
       v27 = v12 + v116 + v15 + v18;
       v28 = v10 + v14 + v16 + v17;
-      if (v26 <= 1)
+      if (functionalDisplayMode <= 1)
       {
-        if (v26)
+        if (functionalDisplayMode)
         {
-          if (v26 == 1)
+          if (functionalDisplayMode == 1)
           {
             [WeakRetained beginBatchPageChanges];
             pageCount = self->_private->pageCount;
@@ -1607,7 +1607,7 @@ LABEL_88:
         goto LABEL_93;
       }
 
-      if (v26 == 2)
+      if (functionalDisplayMode == 2)
       {
         if (self->_private->pageCount)
         {
@@ -1627,7 +1627,7 @@ LABEL_88:
             *v99 = v27 + *v99;
             v100 = v28 + v97[v91 + 1].origin.y;
             v97[v91 + 1].origin.y = v100;
-            if (v90 && ((v24 ^ v90) & 1) != 0)
+            if (v90 && ((displaysAsBook ^ v90) & 1) != 0)
             {
               height = v97[v91 + 1].size.height;
               v102 = &self->_private->pageLayoutBounds.__begin_[v91];
@@ -1645,7 +1645,7 @@ LABEL_88:
 
               width = self->_private->pageLayoutBounds.__begin_[v91].size.width;
               *v99 = v27 + width + PDFScreenGetBackingScaleFactor() * -0.5 + *v99;
-              if (v25)
+              if (displaysRTL)
               {
                 v106 = &self->_private->pageLayoutBounds.__begin_[v91];
                 origin = v106->origin;
@@ -1668,7 +1668,7 @@ LABEL_88:
         goto LABEL_93;
       }
 
-      if (v26 != 3 || (v49 = self->_private->pageCount) == 0)
+      if (functionalDisplayMode != 3 || (v49 = self->_private->pageCount) == 0)
       {
 LABEL_93:
 
@@ -1701,7 +1701,7 @@ LABEL_93:
         {
           if (v49 - 1 == v51)
           {
-            v67 = v24;
+            v67 = displaysAsBook;
           }
 
           else
@@ -1709,14 +1709,14 @@ LABEL_93:
             v67 = 0;
           }
 
-          if ((v67 & 1) != 0 || ((v24 ^ v56) & 1) == 0)
+          if ((v67 & 1) != 0 || ((displaysAsBook ^ v56) & 1) == 0)
           {
             v68 = &v62[v49 + v50].origin.x;
             if (v54 > 0.0)
             {
               v66 = v54 + v66;
               v63->origin.y = v66;
-              if (((v49 - 1 == v51) & v24) == 0)
+              if (((v49 - 1 == v51) & displaysAsBook) == 0)
               {
                 v68[1] = v54 + v68[1];
               }
@@ -1732,7 +1732,7 @@ LABEL_93:
         v70 = v10 + v66;
         v63->origin.y = v70;
         v71 = self->_private->pageCount;
-        if (v24)
+        if (displaysAsBook)
         {
           break;
         }
@@ -1757,7 +1757,7 @@ LABEL_55:
             while (1)
             {
               v75 = v72->pageLayoutBounds.__begin_;
-              if (v24)
+              if (displaysAsBook)
               {
                 if (!v74 || v74 == v49 - 1 && (v49 & 1) == 0)
                 {
@@ -1787,7 +1787,7 @@ LABEL_66:
                 {
 LABEL_70:
                   v75[v73].origin.x = v12 + v116 + v55 + v76;
-                  if (v25)
+                  if (displaysRTL)
                   {
                     v77 = &self->_private->pageLayoutBounds.__begin_[v73];
                     v79 = v77->origin;
@@ -1831,24 +1831,24 @@ LABEL_54:
 LABEL_94:
 }
 
-- (CGRect)normalizedBoundsForPageAtIndex:(unint64_t)a3
+- (CGRect)normalizedBoundsForPageAtIndex:(unint64_t)index
 {
   v4 = self->_private;
   if (v4->delegateKnowsDisplayBox)
   {
     WeakRetained = objc_loadWeakRetained(&v4->delegate);
-    v7 = [WeakRetained displayBox];
+    displayBox = [WeakRetained displayBox];
 
     v4 = self->_private;
   }
 
   else
   {
-    v7 = 1;
+    displayBox = 1;
   }
 
   v8 = objc_loadWeakRetained(&v4->document);
-  [v8 normalizedBoundsForBox:v7 ofPageAtIndex:a3];
+  [v8 normalizedBoundsForBox:displayBox ofPageAtIndex:index];
   v10 = v9;
   v12 = v11;
   v14 = v13;

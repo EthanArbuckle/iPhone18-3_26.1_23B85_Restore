@@ -1,17 +1,17 @@
 @interface RegistryCrux
-- (void)xpcDeviceID:(id)a3 needsPasscode:(id)a4;
-- (void)xpcHasNewOOBKey:(id)a3;
+- (void)xpcDeviceID:(id)d needsPasscode:(id)passcode;
+- (void)xpcHasNewOOBKey:(id)key;
 @end
 
 @implementation RegistryCrux
 
-- (void)xpcDeviceID:(id)a3 needsPasscode:(id)a4
+- (void)xpcDeviceID:(id)d needsPasscode:(id)passcode
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&_s10Foundation4UUIDVSgMd, &_s10Foundation4UUIDVSgMR);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x28223BE20](v5 - 8);
   v8 = &v11 - v7;
-  if (a3)
+  if (d)
   {
     static UUID._unconditionallyBridgeFromObjectiveC(_:)();
     v9 = type metadata accessor for UUID();
@@ -28,14 +28,14 @@
   outlined destroy of UUID?(v8, &_s10Foundation4UUIDVSgMd, &_s10Foundation4UUIDVSgMR);
 }
 
-- (void)xpcHasNewOOBKey:(id)a3
+- (void)xpcHasNewOOBKey:(id)key
 {
-  v3 = a3;
-  if (a3)
+  keyCopy = key;
+  if (key)
   {
 
-    v4 = v3;
-    v3 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
+    v4 = keyCopy;
+    keyCopy = static Data._unconditionallyBridgeFromObjectiveC(_:)();
     v6 = v5;
   }
 
@@ -46,7 +46,7 @@
   }
 
   closure #2 in RegistryCrux.connectionLocked()("RegistryCrux: xpcHasNewOOBKey");
-  outlined consume of Data?(v3, v6);
+  outlined consume of Data?(keyCopy, v6);
 }
 
 @end

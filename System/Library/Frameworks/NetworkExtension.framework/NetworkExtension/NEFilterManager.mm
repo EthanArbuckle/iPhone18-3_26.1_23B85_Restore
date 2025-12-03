@@ -2,8 +2,8 @@
 + (NEFilterManager)sharedManager;
 + (id)appConfigurationManager;
 + (id)globalConfigurationManager;
-+ (void)loadAllFromPreferencesWithCompletionHandler:(id)a3;
-+ (void)loadMyFiltersFromPreferencesWithCompletionHandler:(id)a3;
++ (void)loadAllFromPreferencesWithCompletionHandler:(id)handler;
++ (void)loadMyFiltersFromPreferencesWithCompletionHandler:(id)handler;
 - (BOOL)disableEncryptedDNSSettings;
 - (BOOL)isEnabled;
 - (BOOL)isFromMDM;
@@ -16,17 +16,17 @@
 - (NSString)localizedDescription;
 - (NSUUID)identifier;
 - (id)initPrivate;
-- (id)initWithConfiguration:(void *)a3 configurationManager:;
+- (id)initWithConfiguration:(void *)configuration configurationManager:;
 - (void)createEmptyConfiguration;
 - (void)dealloc;
-- (void)fetchStatusWithCompletionHandler:(id)a3;
+- (void)fetchStatusWithCompletionHandler:(id)handler;
 - (void)loadFromPreferencesWithCompletionHandler:(void *)completionHandler;
 - (void)removeFromPreferencesWithCompletionHandler:(void *)completionHandler;
 - (void)saveToPreferencesWithCompletionHandler:(void *)completionHandler;
 - (void)setGrade:(NEFilterManagerGrade)grade;
 - (void)setLocalizedDescription:(NSString *)localizedDescription;
 - (void)setProviderConfiguration:(NEFilterProviderConfiguration *)providerConfiguration;
-- (void)setupSessionWithCompletionHandler:(uint64_t)a1;
+- (void)setupSessionWithCompletionHandler:(uint64_t)handler;
 @end
 
 @implementation NEFilterManager
@@ -38,9 +38,9 @@
   return WeakRetained;
 }
 
-- (void)fetchStatusWithCompletionHandler:(id)a3
+- (void)fetchStatusWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (self)
   {
     connection = self->_connection;
@@ -56,8 +56,8 @@
   v7[2] = __52__NEFilterManager_fetchStatusWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E7F0B110;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   [(NEVPNConnection *)connection updateSessionInfoForce:0 notify:v7 withCompletionHandler:?];
 }
 
@@ -87,10 +87,10 @@ uint64_t __52__NEFilterManager_fetchStatusWithCompletionHandler___block_invoke(u
 
 - (NEProfileIngestionPayloadInfo)configurationPayloadInfo
 {
-  v2 = [(NEFilterManager *)self configuration];
-  v3 = [v2 payloadInfo];
+  configuration = [(NEFilterManager *)self configuration];
+  payloadInfo = [configuration payloadInfo];
 
-  return v3;
+  return payloadInfo;
 }
 
 - (BOOL)isFromMDM
@@ -100,207 +100,207 @@ uint64_t __52__NEFilterManager_fetchStatusWithCompletionHandler___block_invoke(u
     return 0;
   }
 
-  v3 = [(NEFilterManager *)self configuration];
-  v4 = [v3 payloadInfo];
-  v5 = [v4 profileSource] == 2;
+  configuration = [(NEFilterManager *)self configuration];
+  payloadInfo = [configuration payloadInfo];
+  v5 = [payloadInfo profileSource] == 2;
 
   return v5;
 }
 
 - (BOOL)isFromProfile
 {
-  v2 = [(NEFilterManager *)self configuration];
-  v3 = [v2 payloadInfo];
-  v4 = v3 != 0;
+  configuration = [(NEFilterManager *)self configuration];
+  payloadInfo = [configuration payloadInfo];
+  v4 = payloadInfo != 0;
 
   return v4;
 }
 
 - (NSString)appBundleIdentifier
 {
-  v2 = [(NEFilterManager *)self configuration];
-  v3 = [v2 application];
+  configuration = [(NEFilterManager *)self configuration];
+  application = [configuration application];
 
-  return v3;
+  return application;
 }
 
 - (NSUUID)identifier
 {
-  v2 = [(NEFilterManager *)self configuration];
-  v3 = [v2 identifier];
+  configuration = [(NEFilterManager *)self configuration];
+  identifier = [configuration identifier];
 
-  return v3;
+  return identifier;
 }
 
 - (void)setGrade:(NEFilterManagerGrade)grade
 {
   obj = self;
   objc_sync_enter(obj);
-  v4 = [(NEFilterManager *)obj configuration];
-  v5 = [v4 contentFilter];
-  [v5 setGrade:grade];
+  configuration = [(NEFilterManager *)obj configuration];
+  contentFilter = [configuration contentFilter];
+  [contentFilter setGrade:grade];
 
   objc_sync_exit(obj);
 }
 
 - (NEFilterManagerGrade)grade
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NEFilterManager *)v2 configuration];
-  v4 = [v3 contentFilter];
-  v5 = [v4 grade];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  configuration = [(NEFilterManager *)selfCopy configuration];
+  contentFilter = [configuration contentFilter];
+  grade = [contentFilter grade];
 
-  objc_sync_exit(v2);
-  return v5;
+  objc_sync_exit(selfCopy);
+  return grade;
 }
 
 - (void)setLocalizedDescription:(NSString *)localizedDescription
 {
   v6 = localizedDescription;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(NEFilterManager *)v4 configuration];
-  [v5 setName:v6];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  configuration = [(NEFilterManager *)selfCopy configuration];
+  [configuration setName:v6];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 - (NSString)localizedDescription
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NEFilterManager *)v2 configuration];
-  v4 = [v3 name];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  configuration = [(NEFilterManager *)selfCopy configuration];
+  name = [configuration name];
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  return v4;
+  return name;
 }
 
 - (BOOL)disableEncryptedDNSSettings
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NEFilterManager *)v2 configuration];
-  v4 = [v3 contentFilter];
-  v5 = [v4 disableEncryptedDNSSettings];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  configuration = [(NEFilterManager *)selfCopy configuration];
+  contentFilter = [configuration contentFilter];
+  disableEncryptedDNSSettings = [contentFilter disableEncryptedDNSSettings];
 
-  objc_sync_exit(v2);
-  return v5;
+  objc_sync_exit(selfCopy);
+  return disableEncryptedDNSSettings;
 }
 
 - (BOOL)isEnabled
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NEFilterManager *)v2 configuration];
-  v4 = [v3 contentFilter];
-  v5 = [v4 isEnabled];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  configuration = [(NEFilterManager *)selfCopy configuration];
+  contentFilter = [configuration contentFilter];
+  isEnabled = [contentFilter isEnabled];
 
-  objc_sync_exit(v2);
-  return v5;
+  objc_sync_exit(selfCopy);
+  return isEnabled;
 }
 
 - (void)setProviderConfiguration:(NEFilterProviderConfiguration *)providerConfiguration
 {
   v7 = providerConfiguration;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(NEFilterManager *)v4 configuration];
-  v6 = [v5 contentFilter];
-  [v6 setProvider:v7];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  configuration = [(NEFilterManager *)selfCopy configuration];
+  contentFilter = [configuration contentFilter];
+  [contentFilter setProvider:v7];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 - (NEFilterProviderConfiguration)providerConfiguration
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NEFilterManager *)v2 configuration];
-  v4 = [v3 contentFilter];
-  v5 = [v4 provider];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  configuration = [(NEFilterManager *)selfCopy configuration];
+  contentFilter = [configuration contentFilter];
+  provider = [contentFilter provider];
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  return v5;
+  return provider;
 }
 
 - (void)saveToPreferencesWithCompletionHandler:(void *)completionHandler
 {
   v4 = completionHandler;
-  v5 = self;
-  objc_sync_enter(v5);
-  if (v5 && v5->_hasLoaded)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy && selfCopy->_hasLoaded)
   {
-    v6 = [(NEFilterManager *)v5 providerConfiguration];
+    providerConfiguration = [(NEFilterManager *)selfCopy providerConfiguration];
 
-    if (v6)
+    if (providerConfiguration)
     {
-      v7 = [(NEFilterManager *)v5 providerConfiguration];
-      v8 = [v7 filterSockets];
+      providerConfiguration2 = [(NEFilterManager *)selfCopy providerConfiguration];
+      filterSockets = [providerConfiguration2 filterSockets];
 
-      if (v8)
+      if (filterSockets)
       {
-        v9 = [(NEFilterManager *)v5 providerConfiguration];
-        v10 = [v9 filterDataProviderBundleIdentifier];
+        providerConfiguration3 = [(NEFilterManager *)selfCopy providerConfiguration];
+        filterDataProviderBundleIdentifier = [providerConfiguration3 filterDataProviderBundleIdentifier];
 
-        v11 = [(NEFilterManager *)v5 providerConfiguration];
-        v12 = [v11 dataProviderURL];
+        providerConfiguration4 = [(NEFilterManager *)selfCopy providerConfiguration];
+        dataProviderURL = [providerConfiguration4 dataProviderURL];
         objc_opt_self();
-        v13 = v10;
+        v13 = filterDataProviderBundleIdentifier;
 
-        v14 = [(NEFilterManager *)v5 providerConfiguration];
-        [v14 setFilterDataProviderBundleIdentifier:v13];
+        providerConfiguration5 = [(NEFilterManager *)selfCopy providerConfiguration];
+        [providerConfiguration5 setFilterDataProviderBundleIdentifier:v13];
 
-        v15 = [(NEFilterManager *)v5 configuration];
-        if (v15)
+        configuration = [(NEFilterManager *)selfCopy configuration];
+        if (configuration)
         {
-          v15[22] = 0;
+          configuration[22] = 0;
         }
       }
 
-      v16 = [(NEFilterManager *)v5 providerConfiguration];
-      v17 = [v16 filterPackets];
+      providerConfiguration6 = [(NEFilterManager *)selfCopy providerConfiguration];
+      filterPackets = [providerConfiguration6 filterPackets];
 
-      if (v17)
+      if (filterPackets)
       {
-        v19 = [(NEFilterManager *)v5 providerConfiguration];
-        v20 = [v19 filterPacketProviderBundleIdentifier];
+        providerConfiguration7 = [(NEFilterManager *)selfCopy providerConfiguration];
+        filterPacketProviderBundleIdentifier = [providerConfiguration7 filterPacketProviderBundleIdentifier];
 
-        v21 = [(NEFilterManager *)v5 providerConfiguration];
-        v22 = [v21 packetProviderURL];
+        providerConfiguration8 = [(NEFilterManager *)selfCopy providerConfiguration];
+        packetProviderURL = [providerConfiguration8 packetProviderURL];
         objc_opt_self();
-        v23 = v20;
+        v23 = filterPacketProviderBundleIdentifier;
 
-        v24 = [(NEFilterManager *)v5 providerConfiguration];
-        [v24 setFilterPacketProviderBundleIdentifier:v23];
+        providerConfiguration9 = [(NEFilterManager *)selfCopy providerConfiguration];
+        [providerConfiguration9 setFilterPacketProviderBundleIdentifier:v23];
 
-        v25 = [(NEFilterManager *)v5 configuration];
-        if (!v25 || (v26 = v25[22], v25, !v26))
+        configuration2 = [(NEFilterManager *)selfCopy configuration];
+        if (!configuration2 || (v26 = configuration2[22], configuration2, !v26))
         {
-          v27 = [(NEFilterManager *)v5 configuration];
-          if (v27)
+          configuration3 = [(NEFilterManager *)selfCopy configuration];
+          if (configuration3)
           {
-            v27[22] = 0;
+            configuration3[22] = 0;
           }
         }
       }
 
-      v28 = objc_getProperty(v5, v18, 16, 1);
-      v29 = [v28 pluginType];
+      v28 = objc_getProperty(selfCopy, v18, 16, 1);
+      pluginType = [v28 pluginType];
 
-      if (v29)
+      if (pluginType)
       {
-        v31 = objc_getProperty(v5, v30, 16, 1);
-        v32 = [v31 pluginType];
-        v33 = [(NEFilterManager *)v5 providerConfiguration];
-        [v33 setPluginType:v32];
+        v31 = objc_getProperty(selfCopy, v30, 16, 1);
+        pluginType2 = [v31 pluginType];
+        providerConfiguration10 = [(NEFilterManager *)selfCopy providerConfiguration];
+        [providerConfiguration10 setPluginType:pluginType2];
       }
 
-      v34 = objc_getProperty(v5, v30, 16, 1);
-      v35 = [(NEFilterManager *)v5 configuration];
+      v34 = objc_getProperty(selfCopy, v30, 16, 1);
+      configuration4 = [(NEFilterManager *)selfCopy configuration];
       v36 = MEMORY[0x1E69E96A0];
       v37 = MEMORY[0x1E69E96A0];
       v41[0] = MEMORY[0x1E69E9820];
@@ -308,7 +308,7 @@ uint64_t __52__NEFilterManager_fetchStatusWithCompletionHandler___block_invoke(u
       v41[2] = __58__NEFilterManager_saveToPreferencesWithCompletionHandler___block_invoke_3;
       v41[3] = &unk_1E7F097A8;
       v42 = v4;
-      [v34 saveConfiguration:v35 withCompletionQueue:v36 handler:v41];
+      [v34 saveConfiguration:configuration4 withCompletionQueue:v36 handler:v41];
       v38 = &v42;
 
       goto LABEL_23;
@@ -343,7 +343,7 @@ LABEL_22:
 LABEL_23:
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 void __58__NEFilterManager_saveToPreferencesWithCompletionHandler___block_invoke(uint64_t a1)
@@ -406,20 +406,20 @@ void __58__NEFilterManager_saveToPreferencesWithCompletionHandler___block_invoke
 - (void)removeFromPreferencesWithCompletionHandler:(void *)completionHandler
 {
   v4 = completionHandler;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(NEFilterManager *)v5 configuration];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  configuration = [(NEFilterManager *)selfCopy configuration];
 
-  if (v6)
+  if (configuration)
   {
-    v7 = [(NEFilterManager *)v5 configuration];
-    v8 = [v7 payloadInfo];
+    configuration2 = [(NEFilterManager *)selfCopy configuration];
+    payloadInfo = [configuration2 payloadInfo];
 
-    if (!v8)
+    if (!payloadInfo)
     {
-      if (v5)
+      if (selfCopy)
       {
-        Property = objc_getProperty(v5, v9, 16, 1);
+        Property = objc_getProperty(selfCopy, v9, 16, 1);
       }
 
       else
@@ -428,7 +428,7 @@ void __58__NEFilterManager_saveToPreferencesWithCompletionHandler___block_invoke
       }
 
       v14 = Property;
-      v15 = [(NEFilterManager *)v5 configuration];
+      configuration3 = [(NEFilterManager *)selfCopy configuration];
       v16 = MEMORY[0x1E69E96A0];
       v17 = MEMORY[0x1E69E96A0];
       v18[0] = MEMORY[0x1E69E9820];
@@ -436,7 +436,7 @@ void __58__NEFilterManager_saveToPreferencesWithCompletionHandler___block_invoke
       v18[2] = __62__NEFilterManager_removeFromPreferencesWithCompletionHandler___block_invoke_3;
       v18[3] = &unk_1E7F097A8;
       v19 = v4;
-      [v14 removeConfiguration:v15 withCompletionQueue:v16 handler:v18];
+      [v14 removeConfiguration:configuration3 withCompletionQueue:v16 handler:v18];
       v10 = &v19;
 
       goto LABEL_11;
@@ -471,7 +471,7 @@ LABEL_11:
     goto LABEL_7;
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 void __62__NEFilterManager_removeFromPreferencesWithCompletionHandler___block_invoke(uint64_t a1)
@@ -536,11 +536,11 @@ void __62__NEFilterManager_removeFromPreferencesWithCompletionHandler___block_in
   v4 = completionHandler;
   if (v4)
   {
-    v5 = self;
-    objc_sync_enter(v5);
-    if (v5)
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    if (selfCopy)
     {
-      Property = objc_getProperty(v5, v6, 16, 1);
+      Property = objc_getProperty(selfCopy, v6, 16, 1);
     }
 
     else
@@ -555,11 +555,11 @@ void __62__NEFilterManager_removeFromPreferencesWithCompletionHandler___block_in
     v11[1] = 3221225472;
     v11[2] = __60__NEFilterManager_loadFromPreferencesWithCompletionHandler___block_invoke;
     v11[3] = &unk_1E7F0B5B0;
-    v11[4] = v5;
+    v11[4] = selfCopy;
     v12 = v4;
     [v8 loadConfigurationsWithCompletionQueue:v9 handler:v11];
 
-    objc_sync_exit(v5);
+    objc_sync_exit(selfCopy);
   }
 }
 
@@ -672,31 +672,31 @@ LABEL_23:
 
 - (void)createEmptyConfiguration
 {
-  if (a1)
+  if (self)
   {
-    v2 = [MEMORY[0x1E696AAE8] mainBundle];
-    v3 = [v2 infoDictionary];
-    v12 = [v3 objectForKey:*MEMORY[0x1E695E120]];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    infoDictionary = [mainBundle infoDictionary];
+    bundleIdentifier = [infoDictionary objectForKey:*MEMORY[0x1E695E120]];
 
-    if (!v12)
+    if (!bundleIdentifier)
     {
-      v4 = [MEMORY[0x1E696AAE8] mainBundle];
-      v12 = [v4 bundleIdentifier];
+      mainBundle2 = [MEMORY[0x1E696AAE8] mainBundle];
+      bundleIdentifier = [mainBundle2 bundleIdentifier];
     }
 
-    v5 = [[NEConfiguration alloc] initWithName:v12 grade:1];
-    [a1 setConfiguration:v5];
+    v5 = [[NEConfiguration alloc] initWithName:bundleIdentifier grade:1];
+    [self setConfiguration:v5];
 
     v6 = objc_alloc_init(NEContentFilter);
-    v7 = [a1 configuration];
-    [v7 setContentFilter:v6];
+    configuration = [self configuration];
+    [configuration setContentFilter:v6];
 
-    v9 = [objc_getProperty(a1 v8];
-    v10 = [a1 configuration];
-    [v10 setApplication:v9];
+    v9 = [objc_getProperty(self v8];
+    configuration2 = [self configuration];
+    [configuration2 setApplication:v9];
 
-    v11 = [a1 configuration];
-    [v11 setApplicationName:v12];
+    configuration3 = [self configuration];
+    [configuration3 setApplicationName:bundleIdentifier];
   }
 }
 
@@ -762,9 +762,9 @@ void __42__NEFilterManager_appConfigurationManager__block_invoke_2()
 {
   if (self && self->_statusObserver)
   {
-    v3 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     v4 = self->_statusObserver;
-    [v3 removeObserver:v4 name:@"com.apple.networkextension.statuschanged" object:self->_connection];
+    [defaultCenter removeObserver:v4 name:@"com.apple.networkextension.statuschanged" object:self->_connection];
   }
 
   v5.receiver = self;
@@ -772,16 +772,16 @@ void __42__NEFilterManager_appConfigurationManager__block_invoke_2()
   [(NEFilterManager *)&v5 dealloc];
 }
 
-+ (void)loadMyFiltersFromPreferencesWithCompletionHandler:(id)a3
++ (void)loadMyFiltersFromPreferencesWithCompletionHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   v4 = +[NEFilterManager appConfigurationManager];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __69__NEFilterManager_loadMyFiltersFromPreferencesWithCompletionHandler___block_invoke;
   v6[3] = &unk_1E7F0B510;
-  v7 = v3;
-  v5 = v3;
+  v7 = handlerCopy;
+  v5 = handlerCopy;
   [v4 loadConfigurationsWithCompletionQueue:MEMORY[0x1E69E96A0] handler:v6];
 }
 
@@ -870,27 +870,27 @@ void __69__NEFilterManager_loadMyFiltersFromPreferencesWithCompletionHandler___b
   v21 = *MEMORY[0x1E69E9840];
 }
 
-- (id)initWithConfiguration:(void *)a3 configurationManager:
+- (id)initWithConfiguration:(void *)configuration configurationManager:
 {
   v6 = a2;
-  v7 = a3;
-  if (a1)
+  configurationCopy = configuration;
+  if (self)
   {
-    v12.receiver = a1;
+    v12.receiver = self;
     v12.super_class = NEFilterManager;
     v8 = objc_msgSendSuper2(&v12, sel_init);
-    a1 = v8;
+    self = v8;
     if (v8)
     {
       objc_storeStrong(v8 + 5, a2);
-      objc_storeStrong(a1 + 2, a3);
+      objc_storeStrong(self + 2, configuration);
       v9 = [[NEVPNConnection alloc] initWithType:?];
-      v10 = a1[3];
-      a1[3] = v9;
+      v10 = self[3];
+      self[3] = v9;
     }
   }
 
-  return a1;
+  return self;
 }
 
 void __69__NEFilterManager_loadMyFiltersFromPreferencesWithCompletionHandler___block_invoke_2(uint64_t a1, void *a2)
@@ -919,30 +919,30 @@ void __69__NEFilterManager_loadMyFiltersFromPreferencesWithCompletionHandler___b
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setupSessionWithCompletionHandler:(uint64_t)a1
+- (void)setupSessionWithCompletionHandler:(uint64_t)handler
 {
   v3 = a2;
-  if (a1)
+  if (handler)
   {
-    objc_initWeak(&location, a1);
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
-    v5 = *(a1 + 24);
-    v6 = [MEMORY[0x1E696ADC8] mainQueue];
+    objc_initWeak(&location, handler);
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    v5 = *(handler + 24);
+    mainQueue = [MEMORY[0x1E696ADC8] mainQueue];
     v12 = MEMORY[0x1E69E9820];
     v13 = 3221225472;
     v14 = __53__NEFilterManager_setupSessionWithCompletionHandler___block_invoke;
     v15 = &unk_1E7F09780;
     objc_copyWeak(&v16, &location);
-    v7 = [v4 addObserverForName:@"com.apple.networkextension.statuschanged" object:v5 queue:v6 usingBlock:&v12];
-    v8 = *(a1 + 32);
-    *(a1 + 32) = v7;
+    v7 = [defaultCenter addObserverForName:@"com.apple.networkextension.statuschanged" object:v5 queue:mainQueue usingBlock:&v12];
+    v8 = *(handler + 32);
+    *(handler + 32) = v7;
 
-    v9 = *(a1 + 24);
-    v10 = [a1 configuration];
-    v11 = [v10 identifier];
+    v9 = *(handler + 24);
+    configuration = [handler configuration];
+    identifier = [configuration identifier];
     if (v9)
     {
-      [(NEVPNConnection *)v9 createSessionWithConfigurationIdentifier:v11 forceInfoFetch:0 completionHandler:v3];
+      [(NEVPNConnection *)v9 createSessionWithConfigurationIdentifier:identifier forceInfoFetch:0 completionHandler:v3];
     }
 
     objc_destroyWeak(&v16);
@@ -974,16 +974,16 @@ void __53__NEFilterManager_setupSessionWithCompletionHandler___block_invoke(uint
   }
 }
 
-+ (void)loadAllFromPreferencesWithCompletionHandler:(id)a3
++ (void)loadAllFromPreferencesWithCompletionHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   v4 = +[NEFilterManager globalConfigurationManager];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __63__NEFilterManager_loadAllFromPreferencesWithCompletionHandler___block_invoke;
   v6[3] = &unk_1E7F0B510;
-  v7 = v3;
-  v5 = v3;
+  v7 = handlerCopy;
+  v5 = handlerCopy;
   [v4 loadConfigurationsWithCompletionQueue:MEMORY[0x1E69E96A0] handler:v6];
 }
 

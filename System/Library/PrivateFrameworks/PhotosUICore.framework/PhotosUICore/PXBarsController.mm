@@ -1,24 +1,24 @@
 @interface PXBarsController
-- (BOOL)_isSpaceItem:(id)a3;
+- (BOOL)_isSpaceItem:(id)item;
 - (PXActionPerformerDelegate)actionPerformerDelegate;
 - (PXBarsController)init;
 - (PXBarsControllerDelegate)delegate;
 - (UIViewController)viewController;
-- (id)_getCachedOrCreateNewBarButtonItemForIdentifier:(id)a3 placement:(unint64_t)a4;
-- (id)cachedBarButtonItemForIdentifier:(id)a3;
-- (id)createBarButtonItemForIdentifier:(id)a3 placement:(unint64_t)a4;
+- (id)_getCachedOrCreateNewBarButtonItemForIdentifier:(id)identifier placement:(unint64_t)placement;
+- (id)cachedBarButtonItemForIdentifier:(id)identifier;
+- (id)createBarButtonItemForIdentifier:(id)identifier placement:(unint64_t)placement;
 - (id)makeFixedSpacingBarButtonItem;
 - (void)_invalidateAndUpdateBars;
 - (void)_updateBarsIfNeeded;
-- (void)invalidateBarButtonItemWithIdentifier:(id)a3;
+- (void)invalidateBarButtonItemWithIdentifier:(id)identifier;
 - (void)purgeCachedBarButtonItems;
-- (void)purgeCachedBarButtonItemsForIdentifiers:(id)a3;
-- (void)setAdditionalCenterToolbarButtonItems:(id)a3;
-- (void)setAdditionalLeftBarButtonItems:(id)a3;
-- (void)setAdditionalRightBarButtonItemsAfterExisting:(id)a3;
-- (void)setAdditionalRightBarButtonItemsBeforeExisting:(id)a3;
-- (void)setBarSpec:(id)a3;
-- (void)setViewController:(id)a3;
+- (void)purgeCachedBarButtonItemsForIdentifiers:(id)identifiers;
+- (void)setAdditionalCenterToolbarButtonItems:(id)items;
+- (void)setAdditionalLeftBarButtonItems:(id)items;
+- (void)setAdditionalRightBarButtonItemsAfterExisting:(id)existing;
+- (void)setAdditionalRightBarButtonItemsBeforeExisting:(id)existing;
+- (void)setBarSpec:(id)spec;
+- (void)setViewController:(id)controller;
 - (void)updateBars;
 - (void)updateIfNeeded;
 @end
@@ -34,9 +34,9 @@
   if (v2)
   {
     v2->_needsUpdateFlags.needsUpdateBars = 1;
-    v4 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     barButtonItemCache = v3->_barButtonItemCache;
-    v3->_barButtonItemCache = v4;
+    v3->_barButtonItemCache = dictionary;
 
     v6 = objc_alloc_init(MEMORY[0x1E695DF90]);
     barButtonItemCachedPlacement = v3->_barButtonItemCachedPlacement;
@@ -76,8 +76,8 @@
 - (void)updateBars
 {
   v71[1] = *MEMORY[0x1E69E9840];
-  v3 = [(PXBarsController *)self viewController];
-  v61 = [v3 navigationItem];
+  viewController = [(PXBarsController *)self viewController];
+  navigationItem = [viewController navigationItem];
 
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -91,26 +91,26 @@
   v66[3] = &unk_1E772F178;
   v66[4] = self;
   v5 = _Block_copy(v66);
-  v62 = [(PXBarsController *)self wantsAnimatedBarsUpdate];
-  v6 = [(PXBarsController *)self leftBarButtonItemIdentifiers];
-  v7 = [(PXBarsController *)self additionalLeftBarButtonItemsAfterExisting];
+  wantsAnimatedBarsUpdate = [(PXBarsController *)self wantsAnimatedBarsUpdate];
+  leftBarButtonItemIdentifiers = [(PXBarsController *)self leftBarButtonItemIdentifiers];
+  additionalLeftBarButtonItemsAfterExisting = [(PXBarsController *)self additionalLeftBarButtonItemsAfterExisting];
   v8 = (v4 + 16);
-  v9 = (*(v4 + 2))(v4, v6, 2, 0, v7);
+  v9 = (*(v4 + 2))(v4, leftBarButtonItemIdentifiers, 2, 0, additionalLeftBarButtonItemsAfterExisting);
 
-  v10 = [(PXBarsController *)self centerBarButtonItemIdentifiers];
-  v11 = (*(v4 + 2))(v4, v10, 3, 0, 0);
+  centerBarButtonItemIdentifiers = [(PXBarsController *)self centerBarButtonItemIdentifiers];
+  v11 = (*(v4 + 2))(v4, centerBarButtonItemIdentifiers, 3, 0, 0);
 
-  v12 = [(PXBarsController *)self centerBarButtonItemIdentifiers];
+  centerBarButtonItemIdentifiers2 = [(PXBarsController *)self centerBarButtonItemIdentifiers];
   v60 = v5;
-  v13 = v5[2](v5, v12, 3);
+  v13 = v5[2](v5, centerBarButtonItemIdentifiers2, 3);
 
-  v14 = [(PXBarsController *)self rightBarButtonItemIdentifiers];
-  v15 = [(PXBarsController *)self additionalRightBarButtonItemsBeforeExisting];
-  v16 = [(PXBarsController *)self additionalRightBarButtonItemsAfterExisting];
-  v17 = (*(v4 + 2))(v4, v14, 4, v15, v16);
+  rightBarButtonItemIdentifiers = [(PXBarsController *)self rightBarButtonItemIdentifiers];
+  additionalRightBarButtonItemsBeforeExisting = [(PXBarsController *)self additionalRightBarButtonItemsBeforeExisting];
+  additionalRightBarButtonItemsAfterExisting = [(PXBarsController *)self additionalRightBarButtonItemsAfterExisting];
+  v17 = (*(v4 + 2))(v4, rightBarButtonItemIdentifiers, 4, additionalRightBarButtonItemsBeforeExisting, additionalRightBarButtonItemsAfterExisting);
 
   v59 = v9;
-  [v61 setLeftBarButtonItems:v9 animated:v62];
+  [navigationItem setLeftBarButtonItems:v9 animated:wantsAnimatedBarsUpdate];
   v18 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v11, "count")}];
   v63[0] = MEMORY[0x1E69E9820];
   v63[1] = 3221225472;
@@ -122,28 +122,28 @@
   v65 = v56;
   v58 = v11;
   v20 = v11;
-  v21 = v61;
+  v21 = navigationItem;
   [v20 enumerateObjectsUsingBlock:v63];
   v55 = v19;
-  [v61 setCenterItemGroups:v19];
+  [navigationItem setCenterItemGroups:v19];
   v57 = v17;
   v22 = v17;
   v23 = v4;
-  [v61 setRightBarButtonItems:v22 animated:v62];
-  v24 = [(PXBarsController *)self centerToolbarItemIdentifiers];
-  v25 = [(PXBarsController *)self additionalCenterToolbarButtonItemsAfterExisting];
-  v26 = (*(v4 + 2))(v4, v24, 6, 0, v25);
+  [navigationItem setRightBarButtonItems:v22 animated:wantsAnimatedBarsUpdate];
+  centerToolbarItemIdentifiers = [(PXBarsController *)self centerToolbarItemIdentifiers];
+  additionalCenterToolbarButtonItemsAfterExisting = [(PXBarsController *)self additionalCenterToolbarButtonItemsAfterExisting];
+  v26 = (*(v4 + 2))(v4, centerToolbarItemIdentifiers, 6, 0, additionalCenterToolbarButtonItemsAfterExisting);
 
-  v27 = [(PXBarsController *)self leadingToolbarItemIdentifiers];
-  v28 = (*(v4 + 2))(v4, v27, 5, 0, 0);
+  leadingToolbarItemIdentifiers = [(PXBarsController *)self leadingToolbarItemIdentifiers];
+  v28 = (*(v4 + 2))(v4, leadingToolbarItemIdentifiers, 5, 0, 0);
 
-  v29 = [(PXBarsController *)self trailingToolbarItemIdentifiers];
-  v30 = (*v8)(v23, v29, 7, 0, 0);
+  trailingToolbarItemIdentifiers = [(PXBarsController *)self trailingToolbarItemIdentifiers];
+  v30 = (*v8)(v23, trailingToolbarItemIdentifiers, 7, 0, 0);
 
   if (![v28 count])
   {
-    v31 = [MEMORY[0x1E69DC708] flexibleSpaceItem];
-    v71[0] = v31;
+    flexibleSpaceItem = [MEMORY[0x1E69DC708] flexibleSpaceItem];
+    v71[0] = flexibleSpaceItem;
     v32 = [MEMORY[0x1E695DEC8] arrayWithObjects:v71 count:1];
 
     v28 = v32;
@@ -151,8 +151,8 @@
 
   if (![v26 count])
   {
-    v33 = [MEMORY[0x1E69DC708] flexibleSpaceItem];
-    v70 = v33;
+    flexibleSpaceItem2 = [MEMORY[0x1E69DC708] flexibleSpaceItem];
+    v70 = flexibleSpaceItem2;
     v34 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v70 count:1];
 
     v26 = v34;
@@ -160,22 +160,22 @@
 
   if (![v30 count])
   {
-    v35 = [MEMORY[0x1E69DC708] flexibleSpaceItem];
-    v69 = v35;
+    flexibleSpaceItem3 = [MEMORY[0x1E69DC708] flexibleSpaceItem];
+    v69 = flexibleSpaceItem3;
     v36 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v69 count:1];
 
     v30 = v36;
   }
 
   v37 = MEMORY[0x1A590D320]();
-  v38 = [(PXBarsController *)self viewController];
-  v39 = v38;
+  viewController2 = [(PXBarsController *)self viewController];
+  v39 = viewController2;
   if (v37)
   {
-    v40 = [v38 px_extendedTraitCollection];
-    v41 = [v40 layoutSizeClass];
+    px_extendedTraitCollection = [viewController2 px_extendedTraitCollection];
+    layoutSizeClass = [px_extendedTraitCollection layoutSizeClass];
 
-    if (v41 == 2)
+    if (layoutSizeClass == 2)
     {
       [MEMORY[0x1E69DC708] fixedSpaceItemOfWidth:20.0];
     }
@@ -191,33 +191,33 @@
     v45 = [v44 arrayByAddingObject:v39];
     v46 = [v45 arrayByAddingObjectsFromArray:v30];
 
-    v47 = [(PXBarsController *)self viewController];
-    v48 = v47;
-    if (v41 == 2)
+    viewController3 = [(PXBarsController *)self viewController];
+    v48 = viewController3;
+    if (layoutSizeClass == 2)
     {
-      v53 = [MEMORY[0x1E69DC708] flexibleSpaceItem];
-      v68 = v53;
+      flexibleSpaceItem4 = [MEMORY[0x1E69DC708] flexibleSpaceItem];
+      v68 = flexibleSpaceItem4;
       v49 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v68 count:1];
       v50 = [v49 arrayByAddingObjectsFromArray:v46];
-      v51 = [MEMORY[0x1E69DC708] flexibleSpaceItem];
-      v52 = [v50 arrayByAddingObject:v51];
-      [v48 setToolbarItems:v52 animated:v62];
+      flexibleSpaceItem5 = [MEMORY[0x1E69DC708] flexibleSpaceItem];
+      v52 = [v50 arrayByAddingObject:flexibleSpaceItem5];
+      [v48 setToolbarItems:v52 animated:wantsAnimatedBarsUpdate];
     }
 
     else
     {
-      [v47 setToolbarItems:v46 animated:v62];
+      [viewController3 setToolbarItems:v46 animated:wantsAnimatedBarsUpdate];
     }
 
     v42 = v60;
-    v21 = v61;
+    v21 = navigationItem;
 
     v28 = v54;
   }
 
   else
   {
-    [v38 setToolbarItems:v26 animated:v62];
+    [viewController2 setToolbarItems:v26 animated:wantsAnimatedBarsUpdate];
     v42 = v60;
   }
 }
@@ -250,15 +250,15 @@ void __30__PXBarsController_updateBars__block_invoke(uint64_t a1, uint64_t a2, u
   return WeakRetained;
 }
 
-- (void)purgeCachedBarButtonItemsForIdentifiers:(id)a3
+- (void)purgeCachedBarButtonItemsForIdentifiers:(id)identifiers
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifiersCopy = identifiers;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v5 = [identifiersCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -270,21 +270,21 @@ void __30__PXBarsController_updateBars__block_invoke(uint64_t a1, uint64_t a2, u
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(identifiersCopy);
         }
 
         v9 = *(*(&v12 + 1) + 8 * v8);
-        v10 = [(PXBarsController *)self barButtonItemCache];
-        [v10 removeObjectForKey:v9];
+        barButtonItemCache = [(PXBarsController *)self barButtonItemCache];
+        [barButtonItemCache removeObjectForKey:v9];
 
-        v11 = [(PXBarsController *)self barButtonItemCachedPlacement];
-        [v11 removeObjectForKey:v9];
+        barButtonItemCachedPlacement = [(PXBarsController *)self barButtonItemCachedPlacement];
+        [barButtonItemCachedPlacement removeObjectForKey:v9];
 
         ++v8;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [identifiersCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -293,31 +293,31 @@ void __30__PXBarsController_updateBars__block_invoke(uint64_t a1, uint64_t a2, u
 
 - (void)purgeCachedBarButtonItems
 {
-  v3 = [(PXBarsController *)self barButtonItemCache];
-  [v3 removeAllObjects];
+  barButtonItemCache = [(PXBarsController *)self barButtonItemCache];
+  [barButtonItemCache removeAllObjects];
 
-  v4 = [(PXBarsController *)self barButtonItemCachedPlacement];
-  [v4 removeAllObjects];
+  barButtonItemCachedPlacement = [(PXBarsController *)self barButtonItemCachedPlacement];
+  [barButtonItemCachedPlacement removeAllObjects];
 }
 
-- (id)cachedBarButtonItemForIdentifier:(id)a3
+- (id)cachedBarButtonItemForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(PXBarsController *)self barButtonItemCache];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  identifierCopy = identifier;
+  barButtonItemCache = [(PXBarsController *)self barButtonItemCache];
+  v6 = [barButtonItemCache objectForKeyedSubscript:identifierCopy];
 
   return v6;
 }
 
-- (void)invalidateBarButtonItemWithIdentifier:(id)a3
+- (void)invalidateBarButtonItemWithIdentifier:(id)identifier
 {
   v8 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  identifierCopy = identifier;
   v4 = MEMORY[0x1E695DEC8];
-  v5 = a3;
-  v6 = [v4 arrayWithObjects:&v7 count:1];
+  identifierCopy2 = identifier;
+  v6 = [v4 arrayWithObjects:&identifierCopy count:1];
 
-  [(PXBarsController *)self purgeCachedBarButtonItemsForIdentifiers:v6, v7, v8];
+  [(PXBarsController *)self purgeCachedBarButtonItemsForIdentifiers:v6, identifierCopy, v8];
   [(PXBarsController *)self invalidateBars];
 }
 
@@ -337,39 +337,39 @@ void __30__PXBarsController_updateBars__block_invoke(uint64_t a1, uint64_t a2, u
   return v3;
 }
 
-- (id)createBarButtonItemForIdentifier:(id)a3 placement:(unint64_t)a4
+- (id)createBarButtonItemForIdentifier:(id)identifier placement:(unint64_t)placement
 {
-  v5 = a3;
-  if ([v5 isEqualToString:*off_1E7721EE8])
+  identifierCopy = identifier;
+  if ([identifierCopy isEqualToString:*off_1E7721EE8])
   {
-    v6 = [MEMORY[0x1E69DC708] px_localizedSelectBarButtonItem];
+    px_localizedSelectBarButtonItem = [MEMORY[0x1E69DC708] px_localizedSelectBarButtonItem];
 LABEL_16:
-    v11 = v6;
+    v11 = px_localizedSelectBarButtonItem;
     goto LABEL_17;
   }
 
-  if ([v5 isEqualToString:*off_1E7721EF0])
+  if ([identifierCopy isEqualToString:*off_1E7721EF0])
   {
-    v6 = [MEMORY[0x1E69DC708] px_localizedSelectAllBarButtonItem];
+    px_localizedSelectBarButtonItem = [MEMORY[0x1E69DC708] px_localizedSelectAllBarButtonItem];
     goto LABEL_16;
   }
 
-  if ([v5 isEqualToString:*off_1E7721E50])
+  if ([identifierCopy isEqualToString:*off_1E7721E50])
   {
-    v6 = [MEMORY[0x1E69DC708] px_localizedDeselectAllBarButtonItem];
+    px_localizedSelectBarButtonItem = [MEMORY[0x1E69DC708] px_localizedDeselectAllBarButtonItem];
     goto LABEL_16;
   }
 
-  if ([v5 isEqualToString:*off_1E7721E60])
+  if ([identifierCopy isEqualToString:*off_1E7721E60])
   {
     v7 = objc_alloc(MEMORY[0x1E69DC708]);
     v8 = 0;
 LABEL_15:
-    v6 = [v7 initWithBarButtonSystemItem:v8 target:0 action:0];
+    px_localizedSelectBarButtonItem = [v7 initWithBarButtonSystemItem:v8 target:0 action:0];
     goto LABEL_16;
   }
 
-  if ([v5 isEqualToString:*off_1E7721E30])
+  if ([identifierCopy isEqualToString:*off_1E7721E30])
   {
     v9 = MEMORY[0x1A590D320]();
     v7 = objc_alloc(MEMORY[0x1E69DC708]);
@@ -384,7 +384,7 @@ LABEL_15:
     goto LABEL_30;
   }
 
-  if ([v5 isEqualToString:*off_1E7721E28])
+  if ([identifierCopy isEqualToString:*off_1E7721E28])
   {
     v7 = objc_alloc(MEMORY[0x1E69DC708]);
 LABEL_14:
@@ -392,13 +392,13 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  if ([v5 isEqualToString:*off_1E7721E08])
+  if ([identifierCopy isEqualToString:*off_1E7721E08])
   {
-    v6 = [MEMORY[0x1E69DC708] px_localizedAddBarButtonItem];
+    px_localizedSelectBarButtonItem = [MEMORY[0x1E69DC708] px_localizedAddBarButtonItem];
     goto LABEL_16;
   }
 
-  if ([v5 isEqualToString:*off_1E7721E00])
+  if ([identifierCopy isEqualToString:*off_1E7721E00])
   {
     v15 = objc_alloc(MEMORY[0x1E69DC708]);
     v16 = MEMORY[0x1E69DCAB8];
@@ -416,27 +416,27 @@ LABEL_14:
     goto LABEL_28;
   }
 
-  if (![v5 isEqualToString:*off_1E7721E58])
+  if (![identifierCopy isEqualToString:*off_1E7721E58])
   {
-    if ([v5 isEqualToString:*off_1E7721E38])
+    if ([identifierCopy isEqualToString:*off_1E7721E38])
     {
       v7 = objc_alloc(MEMORY[0x1E69DC708]);
       v8 = 24;
       goto LABEL_15;
     }
 
-    if ([v5 isEqualToString:*off_1E7721E90])
+    if ([identifierCopy isEqualToString:*off_1E7721E90])
     {
-      v6 = [(PXBarsController *)self makeFixedSpacingBarButtonItem];
+      px_localizedSelectBarButtonItem = [(PXBarsController *)self makeFixedSpacingBarButtonItem];
       goto LABEL_16;
     }
 
-    if ([v5 isEqualToString:*off_1E7721E20])
+    if ([identifierCopy isEqualToString:*off_1E7721E20])
     {
       [(PXBarsController *)self fixedSpaceForEndButtonSpacing];
       if (v24 > 0.0)
       {
-        v6 = [MEMORY[0x1E69DC708] fixedSpaceItemOfWidth:?];
+        px_localizedSelectBarButtonItem = [MEMORY[0x1E69DC708] fixedSpaceItemOfWidth:?];
         goto LABEL_16;
       }
 
@@ -445,14 +445,14 @@ LABEL_51:
       goto LABEL_17;
     }
 
-    if ([v5 isEqualToString:*off_1E7721E18] || objc_msgSend(v5, "isEqualToString:", *off_1E7721E40))
+    if ([identifierCopy isEqualToString:*off_1E7721E18] || objc_msgSend(identifierCopy, "isEqualToString:", *off_1E7721E40))
     {
       v15 = objc_alloc(MEMORY[0x1E69DC708]);
       v18 = MEMORY[0x1E69DCAB8];
       v17 = @"square.and.arrow.down";
     }
 
-    else if ([v5 isEqualToString:*off_1E7721E88])
+    else if ([identifierCopy isEqualToString:*off_1E7721E88])
     {
       v15 = objc_alloc(MEMORY[0x1E69DC708]);
       v18 = MEMORY[0x1E69DCAB8];
@@ -461,9 +461,9 @@ LABEL_51:
 
     else
     {
-      if (![v5 isEqualToString:*off_1E7721F48])
+      if (![identifierCopy isEqualToString:*off_1E7721F48])
       {
-        if ([v5 isEqualToString:*off_1E7721EB8])
+        if ([identifierCopy isEqualToString:*off_1E7721EB8])
         {
           v15 = objc_alloc(MEMORY[0x1E69DC708]);
           v19 = [MEMORY[0x1E69DCAB8] _systemImageNamed:@"apple.photos"];
@@ -499,24 +499,24 @@ LABEL_30:
   v20 = MEMORY[0x1E69DCAB8];
   v21 = [MEMORY[0x1E69DCAD8] configurationWithWeight:6];
   v22 = [v20 systemImageNamed:@"chevron.left" withConfiguration:v21];
-  v23 = [v22 imageFlippedForRightToLeftLayoutDirection];
+  imageFlippedForRightToLeftLayoutDirection = [v22 imageFlippedForRightToLeftLayoutDirection];
 
-  v11 = [objc_alloc(MEMORY[0x1E69DC708]) initWithImage:v23 style:0 target:0 action:0];
+  v11 = [objc_alloc(MEMORY[0x1E69DC708]) initWithImage:imageFlippedForRightToLeftLayoutDirection style:0 target:0 action:0];
 LABEL_17:
 
   return v11;
 }
 
-- (id)_getCachedOrCreateNewBarButtonItemForIdentifier:(id)a3 placement:(unint64_t)a4
+- (id)_getCachedOrCreateNewBarButtonItemForIdentifier:(id)identifier placement:(unint64_t)placement
 {
-  v6 = a3;
-  v7 = [(PXBarsController *)self barButtonItemCache];
-  v8 = [v7 objectForKeyedSubscript:v6];
+  identifierCopy = identifier;
+  barButtonItemCache = [(PXBarsController *)self barButtonItemCache];
+  v8 = [barButtonItemCache objectForKeyedSubscript:identifierCopy];
 
-  v9 = [(PXBarsController *)self barButtonItemCachedPlacement];
-  v10 = [v9 objectForKeyedSubscript:v6];
+  barButtonItemCachedPlacement = [(PXBarsController *)self barButtonItemCachedPlacement];
+  v10 = [barButtonItemCachedPlacement objectForKeyedSubscript:identifierCopy];
 
-  v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
+  v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:placement];
   v12 = [v10 isEqualToNumber:v11];
 
   if (v12)
@@ -531,15 +531,15 @@ LABEL_17:
   {
   }
 
-  v8 = [(PXBarsController *)self createBarButtonItemForIdentifier:v6 placement:a4];
+  v8 = [(PXBarsController *)self createBarButtonItemForIdentifier:identifierCopy placement:placement];
   if (v8)
   {
-    v13 = [(PXBarsController *)self barButtonItemCache];
-    [v13 setObject:v8 forKeyedSubscript:v6];
+    barButtonItemCache2 = [(PXBarsController *)self barButtonItemCache];
+    [barButtonItemCache2 setObject:v8 forKeyedSubscript:identifierCopy];
 
-    v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
-    v15 = [(PXBarsController *)self barButtonItemCachedPlacement];
-    [v15 setObject:v14 forKeyedSubscript:v6];
+    v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:placement];
+    barButtonItemCachedPlacement2 = [(PXBarsController *)self barButtonItemCachedPlacement];
+    [barButtonItemCachedPlacement2 setObject:v14 forKeyedSubscript:identifierCopy];
   }
 
 LABEL_7:
@@ -547,14 +547,14 @@ LABEL_7:
   return v8;
 }
 
-- (void)setAdditionalCenterToolbarButtonItems:(id)a3
+- (void)setAdditionalCenterToolbarButtonItems:(id)items
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_additionalCenterToolbarButtonItemsAfterExisting != v4)
+  itemsCopy = items;
+  v5 = itemsCopy;
+  if (self->_additionalCenterToolbarButtonItemsAfterExisting != itemsCopy)
   {
-    v9 = v4;
-    v6 = [(NSArray *)v4 isEqual:?];
+    v9 = itemsCopy;
+    v6 = [(NSArray *)itemsCopy isEqual:?];
     v5 = v9;
     if ((v6 & 1) == 0)
     {
@@ -568,14 +568,14 @@ LABEL_7:
   }
 }
 
-- (void)setAdditionalRightBarButtonItemsAfterExisting:(id)a3
+- (void)setAdditionalRightBarButtonItemsAfterExisting:(id)existing
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_additionalRightBarButtonItemsAfterExisting != v4)
+  existingCopy = existing;
+  v5 = existingCopy;
+  if (self->_additionalRightBarButtonItemsAfterExisting != existingCopy)
   {
-    v9 = v4;
-    v6 = [(NSArray *)v4 isEqual:?];
+    v9 = existingCopy;
+    v6 = [(NSArray *)existingCopy isEqual:?];
     v5 = v9;
     if ((v6 & 1) == 0)
     {
@@ -589,14 +589,14 @@ LABEL_7:
   }
 }
 
-- (void)setAdditionalRightBarButtonItemsBeforeExisting:(id)a3
+- (void)setAdditionalRightBarButtonItemsBeforeExisting:(id)existing
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_additionalRightBarButtonItemsBeforeExisting != v4)
+  existingCopy = existing;
+  v5 = existingCopy;
+  if (self->_additionalRightBarButtonItemsBeforeExisting != existingCopy)
   {
-    v9 = v4;
-    v6 = [(NSArray *)v4 isEqual:?];
+    v9 = existingCopy;
+    v6 = [(NSArray *)existingCopy isEqual:?];
     v5 = v9;
     if ((v6 & 1) == 0)
     {
@@ -610,14 +610,14 @@ LABEL_7:
   }
 }
 
-- (void)setAdditionalLeftBarButtonItems:(id)a3
+- (void)setAdditionalLeftBarButtonItems:(id)items
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_additionalLeftBarButtonItemsAfterExisting != v4)
+  itemsCopy = items;
+  v5 = itemsCopy;
+  if (self->_additionalLeftBarButtonItemsAfterExisting != itemsCopy)
   {
-    v9 = v4;
-    v6 = [(NSArray *)v4 isEqual:?];
+    v9 = itemsCopy;
+    v6 = [(NSArray *)itemsCopy isEqual:?];
     v5 = v9;
     if ((v6 & 1) == 0)
     {
@@ -631,12 +631,12 @@ LABEL_7:
   }
 }
 
-- (BOOL)_isSpaceItem:(id)a3
+- (BOOL)_isSpaceItem:(id)item
 {
-  v3 = a3;
-  if ([v3 isSystemItem])
+  itemCopy = item;
+  if ([itemCopy isSystemItem])
   {
-    v4 = ([v3 systemItem] - 5) < 2;
+    v4 = ([itemCopy systemItem] - 5) < 2;
   }
 
   else
@@ -661,41 +661,41 @@ void __30__PXBarsController_updateBars__block_invoke_5(uint64_t a1, void *a2, ui
   [v5 addObject:v11];
 }
 
-- (void)setBarSpec:(id)a3
+- (void)setBarSpec:(id)spec
 {
-  v5 = a3;
-  if (self->_barSpec != v5)
+  specCopy = spec;
+  if (self->_barSpec != specCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_barSpec, a3);
+    v6 = specCopy;
+    objc_storeStrong(&self->_barSpec, spec);
     [(PXBarsController *)self invalidateBars];
     [(PXBarsController *)self _updateBarsIfNeeded];
-    v5 = v6;
+    specCopy = v6;
   }
 }
 
-- (void)setViewController:(id)a3
+- (void)setViewController:(id)controller
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  controllerCopy = controller;
   WeakRetained = objc_loadWeakRetained(&self->_viewController);
 
-  if (WeakRetained != v4)
+  if (WeakRetained != controllerCopy)
   {
     v6 = objc_loadWeakRetained(&self->_viewController);
-    objc_storeWeak(&self->_viewController, v4);
-    v7 = [(PXBarsController *)self viewControllerHorizontalSizeClassTraitChangeRegistration];
+    objc_storeWeak(&self->_viewController, controllerCopy);
+    viewControllerHorizontalSizeClassTraitChangeRegistration = [(PXBarsController *)self viewControllerHorizontalSizeClassTraitChangeRegistration];
 
-    if (v7)
+    if (viewControllerHorizontalSizeClassTraitChangeRegistration)
     {
       v8 = objc_loadWeakRetained(&self->_viewController);
-      v9 = [(PXBarsController *)self viewControllerHorizontalSizeClassTraitChangeRegistration];
-      [v8 unregisterForTraitChanges:v9];
+      viewControllerHorizontalSizeClassTraitChangeRegistration2 = [(PXBarsController *)self viewControllerHorizontalSizeClassTraitChangeRegistration];
+      [v8 unregisterForTraitChanges:viewControllerHorizontalSizeClassTraitChangeRegistration2];
     }
 
     v12[0] = objc_opt_class();
     v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:1];
-    v11 = [v4 registerForTraitChanges:v10 withTarget:self action:sel__invalidateAndUpdateBars];
+    v11 = [controllerCopy registerForTraitChanges:v10 withTarget:self action:sel__invalidateAndUpdateBars];
     [(PXBarsController *)self setViewControllerHorizontalSizeClassTraitChangeRegistration:v11];
 
     [(PXBarsController *)self viewControllerDidChange:v6];

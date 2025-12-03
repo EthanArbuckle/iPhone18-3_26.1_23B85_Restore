@@ -1,40 +1,40 @@
 @interface EKPersistentSuggestedEventInfo
 + (id)relations;
-+ (id)suggestedEventInfoWithOpaqueKey:(id)a3 uniqueKey:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)suggestedEventInfoWithOpaqueKey:(id)key uniqueKey:(id)uniqueKey;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)semanticIdentifier;
 @end
 
 @implementation EKPersistentSuggestedEventInfo
 
-+ (id)suggestedEventInfoWithOpaqueKey:(id)a3 uniqueKey:(id)a4
++ (id)suggestedEventInfoWithOpaqueKey:(id)key uniqueKey:(id)uniqueKey
 {
-  v5 = a4;
-  v6 = a3;
+  uniqueKeyCopy = uniqueKey;
+  keyCopy = key;
   v7 = objc_opt_new();
-  [v7 setOpaqueKey:v6];
+  [v7 setOpaqueKey:keyCopy];
 
-  [v7 setUniqueKey:v5];
+  [v7 setUniqueKey:uniqueKeyCopy];
 
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_new();
-  v5 = [(EKPersistentSuggestedEventInfo *)self opaqueKey];
-  [v4 setOpaqueKey:v5];
+  opaqueKey = [(EKPersistentSuggestedEventInfo *)self opaqueKey];
+  [v4 setOpaqueKey:opaqueKey];
 
-  v6 = [(EKPersistentSuggestedEventInfo *)self uniqueKey];
-  [v4 setUniqueKey:v6];
+  uniqueKey = [(EKPersistentSuggestedEventInfo *)self uniqueKey];
+  [v4 setUniqueKey:uniqueKey];
 
-  v7 = [(EKPersistentSuggestedEventInfo *)self extractionGroupIdentifier];
-  [v4 setExtractionGroupIdentifier:v7];
+  extractionGroupIdentifier = [(EKPersistentSuggestedEventInfo *)self extractionGroupIdentifier];
+  [v4 setExtractionGroupIdentifier:extractionGroupIdentifier];
 
   [v4 setChangesAcknowledged:{-[EKPersistentSuggestedEventInfo changesAcknowledged](self, "changesAcknowledged")}];
   [v4 setChangedFields:{-[EKPersistentSuggestedEventInfo changedFields](self, "changedFields")}];
-  v8 = [(EKPersistentSuggestedEventInfo *)self timestampAsDate];
-  [v4 setTimestampAsDate:v8];
+  timestampAsDate = [(EKPersistentSuggestedEventInfo *)self timestampAsDate];
+  [v4 setTimestampAsDate:timestampAsDate];
 
   return v4;
 }
@@ -63,21 +63,21 @@ void __43__EKPersistentSuggestedEventInfo_relations__block_invoke()
 
 - (id)semanticIdentifier
 {
-  v3 = [(EKPersistentObject *)self uniqueIdentifier];
-  v4 = v3;
-  if (v3)
+  uniqueIdentifier = [(EKPersistentObject *)self uniqueIdentifier];
+  v4 = uniqueIdentifier;
+  if (uniqueIdentifier)
   {
-    v5 = v3;
+    semanticIdentifier = uniqueIdentifier;
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = EKPersistentSuggestedEventInfo;
-    v5 = [(EKPersistentObject *)&v8 semanticIdentifier];
+    semanticIdentifier = [(EKPersistentObject *)&v8 semanticIdentifier];
   }
 
-  v6 = v5;
+  v6 = semanticIdentifier;
 
   return v6;
 }

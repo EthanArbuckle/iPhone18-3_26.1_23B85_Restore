@@ -1,14 +1,14 @@
 @interface HMDUserActivityReportCoordinatorFactory
-+ (id)coordinatorWithHome:(id)a3;
++ (id)coordinatorWithHome:(id)home;
 - (HMDUserActivityReportCoordinatorFactory)init;
 @end
 
 @implementation HMDUserActivityReportCoordinatorFactory
 
-+ (id)coordinatorWithHome:(id)a3
++ (id)coordinatorWithHome:(id)home
 {
-  v3 = a3;
-  v4 = sub_229793830(v3);
+  homeCopy = home;
+  v4 = sub_229793830(homeCopy);
 
   return v4;
 }

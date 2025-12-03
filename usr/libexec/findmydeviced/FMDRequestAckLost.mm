@@ -1,5 +1,5 @@
 @interface FMDRequestAckLost
-- (BOOL)canReplace:(id)a3;
+- (BOOL)canReplace:(id)replace;
 - (FMDServiceProvider)provider;
 - (id)requestBody;
 @end
@@ -10,61 +10,61 @@
 {
   v19.receiver = self;
   v19.super_class = FMDRequestAckLost;
-  v3 = [(FMDRequest *)&v19 requestBody];
-  v4 = [(FMDRequestAckLost *)self provider];
-  if (v4)
+  requestBody = [(FMDRequest *)&v19 requestBody];
+  provider = [(FMDRequestAckLost *)self provider];
+  if (provider)
   {
     v5 = objc_alloc_init(FMDActingRequestDecorator);
-    v6 = [(FMDActingRequestDecorator *)v5 standardDeviceContext];
+    standardDeviceContext = [(FMDActingRequestDecorator *)v5 standardDeviceContext];
 
-    [v3 fm_safelyMapKey:@"deviceContext" toObject:v6];
+    [requestBody fm_safelyMapKey:@"deviceContext" toObject:standardDeviceContext];
     v7 = +[ServerDeviceInfo sharedInstance];
-    v8 = [v4 account];
-    v9 = [v7 deviceInfoForAccount:v8];
-    [v3 fm_safelyMapKey:@"deviceInfo" toObject:v9];
+    account = [provider account];
+    v9 = [v7 deviceInfoForAccount:account];
+    [requestBody fm_safelyMapKey:@"deviceInfo" toObject:v9];
   }
 
   v10 = [NSNumber numberWithInteger:[(FMDRequestAckLost *)self cmdStatusCode]];
-  [v3 setObject:v10 forKeyedSubscript:@"statusCode"];
+  [requestBody setObject:v10 forKeyedSubscript:@"statusCode"];
 
   if ([(FMDRequestAckLost *)self locationServicesStateChanged])
   {
     v11 = [NSNumber numberWithBool:[(FMDRequestAckLost *)self locationServicesStateChanged]];
-    [v3 setObject:v11 forKeyedSubscript:@"locationsServicesChanged"];
+    [requestBody setObject:v11 forKeyedSubscript:@"locationsServicesChanged"];
   }
 
-  v12 = [(FMDRequestAckLost *)self cmdStatusCode];
-  if (v12 == qword_100312AD8)
+  cmdStatusCode = [(FMDRequestAckLost *)self cmdStatusCode];
+  if (cmdStatusCode == qword_100312AD8)
   {
     v13 = +[MCProfileConnection sharedConnection];
-    v14 = [v13 localizedDescriptionOfCurrentPasscodeConstraints];
-    [v3 setObject:v14 forKeyedSubscript:@"errorMsg"];
+    localizedDescriptionOfCurrentPasscodeConstraints = [v13 localizedDescriptionOfCurrentPasscodeConstraints];
+    [requestBody setObject:localizedDescriptionOfCurrentPasscodeConstraints forKeyedSubscript:@"errorMsg"];
 
     v15 = +[FMDSystemConfig sharedInstance];
-    v16 = [v15 currentPasscodeConstraintStr];
-    [v3 setObject:v16 forKeyedSubscript:@"passcodeConstraint"];
+    currentPasscodeConstraintStr = [v15 currentPasscodeConstraintStr];
+    [requestBody setObject:currentPasscodeConstraintStr forKeyedSubscript:@"passcodeConstraint"];
   }
 
-  v17 = [(FMDRequestAckLost *)self lostCommand];
-  [v3 setObject:v17 forKeyedSubscript:@"cmdContext"];
+  lostCommand = [(FMDRequestAckLost *)self lostCommand];
+  [requestBody setObject:lostCommand forKeyedSubscript:@"cmdContext"];
 
-  return v3;
+  return requestBody;
 }
 
-- (BOOL)canReplace:(id)a3
+- (BOOL)canReplace:(id)replace
 {
-  v4 = a3;
+  replaceCopy = replace;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = replaceCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [(FMDRequestAckLost *)self lostCommand];
-      v7 = [v6 objectForKeyedSubscript:@"id"];
-      v8 = [v5 lostCommand];
-      v9 = [v8 objectForKeyedSubscript:@"id"];
+      lostCommand = [(FMDRequestAckLost *)self lostCommand];
+      v7 = [lostCommand objectForKeyedSubscript:@"id"];
+      lostCommand2 = [v5 lostCommand];
+      v9 = [lostCommand2 objectForKeyedSubscript:@"id"];
       v10 = [v7 isEqualToString:v9];
     }
 

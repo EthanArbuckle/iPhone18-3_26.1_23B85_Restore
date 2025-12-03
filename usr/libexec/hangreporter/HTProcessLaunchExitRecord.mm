@@ -1,57 +1,57 @@
 @interface HTProcessLaunchExitRecord
-+ (id)getProcessExitsAndLaunchesDuringHang:(unint64_t)a3 endTime:(unint64_t)a4;
++ (id)getProcessExitsAndLaunchesDuringHang:(unint64_t)hang endTime:(unint64_t)time;
 + (void)fetchProcessRecords;
-- (HTProcessLaunchExitRecord)initWithCoder:(id)a3;
-- (HTProcessLaunchExitRecord)initWithInfo:(id)a3 pid:(int)a4 spawnTimestamp:(unint64_t)a5 exitTimestamp:(unint64_t)a6 exitReasonCode:(unint64_t)a7 exitReasonNamespace:(unsigned __int8)a8 jetsam_priority:(unsigned __int16)a9;
-- (void)encodeWithCoder:(id)a3;
+- (HTProcessLaunchExitRecord)initWithCoder:(id)coder;
+- (HTProcessLaunchExitRecord)initWithInfo:(id)info pid:(int)pid spawnTimestamp:(unint64_t)timestamp exitTimestamp:(unint64_t)exitTimestamp exitReasonCode:(unint64_t)code exitReasonNamespace:(unsigned __int8)namespace jetsam_priority:(unsigned __int16)jetsam_priority;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HTProcessLaunchExitRecord
 
-- (HTProcessLaunchExitRecord)initWithInfo:(id)a3 pid:(int)a4 spawnTimestamp:(unint64_t)a5 exitTimestamp:(unint64_t)a6 exitReasonCode:(unint64_t)a7 exitReasonNamespace:(unsigned __int8)a8 jetsam_priority:(unsigned __int16)a9
+- (HTProcessLaunchExitRecord)initWithInfo:(id)info pid:(int)pid spawnTimestamp:(unint64_t)timestamp exitTimestamp:(unint64_t)exitTimestamp exitReasonCode:(unint64_t)code exitReasonNamespace:(unsigned __int8)namespace jetsam_priority:(unsigned __int16)jetsam_priority
 {
-  v16 = a3;
+  infoCopy = info;
   v20.receiver = self;
   v20.super_class = HTProcessLaunchExitRecord;
   v17 = [(HTProcessLaunchExitRecord *)&v20 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_processName, a3);
-    v18->_pid = a4;
-    v18->_spawnTimestamp = a5;
-    v18->_exitTimestamp = a6;
-    v18->_exitReasonCode = a7;
-    v18->_exitReasonNamespace = a8;
-    v18->_jetsam_priority = a9;
+    objc_storeStrong(&v17->_processName, info);
+    v18->_pid = pid;
+    v18->_spawnTimestamp = timestamp;
+    v18->_exitTimestamp = exitTimestamp;
+    v18->_exitReasonCode = code;
+    v18->_exitReasonNamespace = namespace;
+    v18->_jetsam_priority = jetsam_priority;
   }
 
   return v18;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   processName = self->_processName;
-  v5 = a3;
-  [v5 encodeObject:processName forKey:@"processName"];
-  [v5 encodeInt64:self->_pid forKey:@"pid"];
-  [v5 encodeInt64:self->_spawnTimestamp forKey:@"spawnTimestamp"];
-  [v5 encodeInt64:self->_exitTimestamp forKey:@"exitTimestamp"];
-  [v5 encodeInt64:self->_exitReasonCode forKey:@"exitReasonCode"];
-  [v5 encodeInt:self->_exitReasonNamespace forKey:@"exitReasonNamespace"];
-  [v5 encodeInt:self->_jetsam_priority forKey:@"jetsamPriority"];
+  coderCopy = coder;
+  [coderCopy encodeObject:processName forKey:@"processName"];
+  [coderCopy encodeInt64:self->_pid forKey:@"pid"];
+  [coderCopy encodeInt64:self->_spawnTimestamp forKey:@"spawnTimestamp"];
+  [coderCopy encodeInt64:self->_exitTimestamp forKey:@"exitTimestamp"];
+  [coderCopy encodeInt64:self->_exitReasonCode forKey:@"exitReasonCode"];
+  [coderCopy encodeInt:self->_exitReasonNamespace forKey:@"exitReasonNamespace"];
+  [coderCopy encodeInt:self->_jetsam_priority forKey:@"jetsamPriority"];
 }
 
-- (HTProcessLaunchExitRecord)initWithCoder:(id)a3
+- (HTProcessLaunchExitRecord)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"processName"];
-  v6 = [v4 decodeInt64ForKey:@"pid"];
-  v7 = [v4 decodeInt64ForKey:@"spawnTimestamp"];
-  v8 = [v4 decodeInt64ForKey:@"exitTimestamp"];
-  v9 = [v4 decodeInt64ForKey:@"exitReasonCode"];
-  v10 = [v4 decodeIntForKey:@"exitReasonNamespace"];
-  v11 = [v4 decodeIntForKey:@"jetsamPriority"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"processName"];
+  v6 = [coderCopy decodeInt64ForKey:@"pid"];
+  v7 = [coderCopy decodeInt64ForKey:@"spawnTimestamp"];
+  v8 = [coderCopy decodeInt64ForKey:@"exitTimestamp"];
+  v9 = [coderCopy decodeInt64ForKey:@"exitReasonCode"];
+  v10 = [coderCopy decodeIntForKey:@"exitReasonNamespace"];
+  v11 = [coderCopy decodeIntForKey:@"jetsamPriority"];
 
   LOWORD(v14) = v11;
   v12 = [(HTProcessLaunchExitRecord *)self initWithInfo:v5 pid:v6 spawnTimestamp:v7 exitTimestamp:v8 exitReasonCode:v9 exitReasonNamespace:v10 jetsam_priority:v14];
@@ -95,12 +95,12 @@
     v7 = +[HTPrefs sharedPrefs];
     v8 = dispatch_time(0, 1000000 * [v7 runloopHangTimeoutDurationMSec] + 30000000000);
 
-    v9 = [qword_100090458 timer];
-    dispatch_source_set_timer(v9, v8, 0xFFFFFFFFFFFFFFFFLL, 0x3E8uLL);
+    timer = [qword_100090458 timer];
+    dispatch_source_set_timer(timer, v8, 0xFFFFFFFFFFFFFFFFLL, 0x3E8uLL);
   }
 }
 
-+ (id)getProcessExitsAndLaunchesDuringHang:(unint64_t)a3 endTime:(unint64_t)a4
++ (id)getProcessExitsAndLaunchesDuringHang:(unint64_t)hang endTime:(unint64_t)time
 {
   v45 = objc_alloc_init(NSMutableArray);
   v43 = objc_alloc_init(NSMutableArray);
@@ -109,9 +109,9 @@
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 134218240;
-    v61 = sub_10000B548(a3);
+    v61 = sub_10000B548(hang);
     v62 = 2048;
-    v63 = sub_10000B548(a4);
+    v63 = sub_10000B548(time);
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "getProcessExitsAndLaunchesDuringHang: called with windown [%.0f - %.0f]ms", buf, 0x16u);
   }
 
@@ -128,69 +128,69 @@
     do
     {
       v11 = [*&v6[17].__opaque[16] objectAtIndex:v7];
-      if ([v11 exitTimestamp] >= a3)
+      if ([v11 exitTimestamp] >= hang)
       {
         v12 = 0;
       }
 
       else
       {
-        v12 = a3 - [v11 exitTimestamp];
+        v12 = hang - [v11 exitTimestamp];
       }
 
-      v13 = [v9 + 396 sharedPrefs];
-      v14 = sub_10000B5E4([v13 runloopHangTimeoutDurationMSec] + 30000);
+      sharedPrefs = [v9 + 396 sharedPrefs];
+      v14 = sub_10000B5E4([sharedPrefs runloopHangTimeoutDurationMSec] + 30000);
 
       if (v14 >= v12)
       {
         v74[0] = @"processName";
-        v57 = [v11 processName];
-        v75[0] = v57;
+        processName = [v11 processName];
+        v75[0] = processName;
         v74[1] = @"processID";
         v55 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v11 pid]);
         v75[1] = v55;
         v74[2] = @"spawnTimestamp";
-        v23 = [*&v6[17].__opaque[16] dateFormatter];
+        dateFormatter = [*&v6[17].__opaque[16] dateFormatter];
         v53 = sub_10000B420([v11 spawnTimestamp], v47, v46);
-        v54 = v23;
-        v52 = [v23 stringFromDate:?];
+        v54 = dateFormatter;
+        v52 = [dateFormatter stringFromDate:?];
         v75[2] = v52;
         v74[3] = @"exitTimestamp";
-        v24 = [*&v6[17].__opaque[16] dateFormatter];
+        dateFormatter2 = [*&v6[17].__opaque[16] dateFormatter];
         v50 = sub_10000B420([v11 exitTimestamp], v47, v46);
-        v51 = v24;
-        v49 = [v24 stringFromDate:?];
+        v51 = dateFormatter2;
+        v49 = [dateFormatter2 stringFromDate:?];
         v75[3] = v49;
         v74[4] = @"relativeSpawnTimeToHangStart";
-        v25 = [v11 spawnTimestamp];
+        spawnTimestamp = [v11 spawnTimestamp];
         v26 = v10[267];
-        v27 = [v11 spawnTimestamp];
-        if (v25 <= a3)
+        spawnTimestamp2 = [v11 spawnTimestamp];
+        if (spawnTimestamp <= hang)
         {
-          [v26 stringWithFormat:@"-%.3lfs", sub_10000B590(a3 - v27)];
+          [v26 stringWithFormat:@"-%.3lfs", sub_10000B590(hang - spawnTimestamp2)];
         }
 
         else
         {
-          [v26 stringWithFormat:@"%.3lfs", sub_10000B590(v27 - a3)];
+          [v26 stringWithFormat:@"%.3lfs", sub_10000B590(spawnTimestamp2 - hang)];
         }
         v28 = ;
         v75[4] = v28;
         v74[5] = @"relativeExitTimeToHangStart";
-        v29 = [v11 exitTimestamp];
+        exitTimestamp = [v11 exitTimestamp];
         v30 = v10[267];
-        v31 = [v11 exitTimestamp];
-        if (v29 <= a3)
+        exitTimestamp2 = [v11 exitTimestamp];
+        if (exitTimestamp <= hang)
         {
-          [v30 stringWithFormat:@"-%.3lfs", sub_10000B590(a3 - v31)];
+          [v30 stringWithFormat:@"-%.3lfs", sub_10000B590(hang - exitTimestamp2)];
         }
 
         else
         {
-          [v30 stringWithFormat:@"%.3lfs", sub_10000B590(v31 - a3)];
+          [v30 stringWithFormat:@"%.3lfs", sub_10000B590(exitTimestamp2 - hang)];
         }
         v32 = ;
-        v33 = a3;
+        hangCopy = hang;
         v75[5] = v32;
         v74[6] = @"processUptime";
         v34 = [v10[267] stringWithFormat:@"%.3lfs", sub_10000B590(objc_msgSend(v11, "exitTimestamp") - objc_msgSend(v11, "spawnTimestamp"))];
@@ -206,10 +206,10 @@
         v75[9] = v37;
         v15 = [NSDictionary dictionaryWithObjects:v75 forKeys:v74 count:10];
 
-        a3 = v33;
-        if ([v11 exitTimestamp] < v33 || (v38 = objc_msgSend(v11, "exitTimestamp"), v39 = v43, v38 >= a4))
+        hang = hangCopy;
+        if ([v11 exitTimestamp] < hangCopy || (v38 = objc_msgSend(v11, "exitTimestamp"), v39 = v43, v38 >= time))
         {
-          if ([v11 exitTimestamp] >= a4)
+          if ([v11 exitTimestamp] >= time)
           {
             v39 = v44;
           }
@@ -231,31 +231,31 @@
         v15 = sub_100001684();
         if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
         {
-          v56 = [v9 + 396 sharedPrefs];
-          v16 = sub_10000B5E4([v56 runloopHangTimeoutDurationMSec] + 30000);
-          v17 = [v11 processName];
+          sharedPrefs2 = [v9 + 396 sharedPrefs];
+          v16 = sub_10000B5E4([sharedPrefs2 runloopHangTimeoutDurationMSec] + 30000);
+          processName2 = [v11 processName];
           v18 = [v11 pid];
-          v19 = a3;
-          v20 = [v11 exitTimestamp];
-          v21 = [v11 exitReasonCode];
-          v22 = [v11 exitReasonNamespace];
+          hangCopy2 = hang;
+          exitTimestamp3 = [v11 exitTimestamp];
+          exitReasonCode = [v11 exitReasonCode];
+          exitReasonNamespace = [v11 exitReasonNamespace];
           *buf = 134219522;
           v61 = *&v12;
           v62 = 2048;
           v63 = *&v16;
           v10 = &MGGetBoolAnswer_ptr;
           v64 = 2112;
-          v65 = v17;
+          v65 = processName2;
           v66 = 1024;
           v67 = v18;
           v6 = &stru_100090000;
           v68 = 2048;
-          v69 = v20;
-          a3 = v19;
+          v69 = exitTimestamp3;
+          hang = hangCopy2;
           v70 = 2048;
-          v71 = v21;
+          v71 = exitReasonCode;
           v72 = 1024;
-          v73 = v22;
+          v73 = exitReasonNamespace;
           _os_log_debug_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEBUG, "excluding process exit record, timediff (%llu) > %llu, processName %@, pid %d, exitTimestamp %llu, exitReasonCode %llu, exitReasonNamespace %u", buf, 0x40u);
 
           v9 = &selRef_setValue_forKey_;

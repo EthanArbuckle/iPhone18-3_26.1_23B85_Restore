@@ -21,7 +21,7 @@
 
 - (BOOL)isUnderFirstDataProtectionLock
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1A85F5C04();
 
   return v3;
@@ -29,7 +29,7 @@
 
 - (BOOL)hasReceivedFirstUnlockNotification
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1A8820F7C();
 
   return v3 & 1;
@@ -37,7 +37,7 @@
 
 - (BOOL)isSystemLocked
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1A882105C();
 
   return v3 & 1;

@@ -1,29 +1,29 @@
 @interface TTMSchemaTTMNeuralCombinerRequestEnded
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (TTMSchemaTTMNeuralCombinerRequestEnded)initWithDictionary:(id)a3;
-- (TTMSchemaTTMNeuralCombinerRequestEnded)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (TTMSchemaTTMNeuralCombinerRequestEnded)initWithDictionary:(id)dictionary;
+- (TTMSchemaTTMNeuralCombinerRequestEnded)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addResults:(id)a3;
-- (void)setHasSpeakerIdThreshold:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addResults:(id)results;
+- (void)setHasSpeakerIdThreshold:(BOOL)threshold;
+- (void)writeTo:(id)to;
 @end
 
 @implementation TTMSchemaTTMNeuralCombinerRequestEnded
 
-- (TTMSchemaTTMNeuralCombinerRequestEnded)initWithDictionary:(id)a3
+- (TTMSchemaTTMNeuralCombinerRequestEnded)initWithDictionary:(id)dictionary
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v27.receiver = self;
   v27.super_class = TTMSchemaTTMNeuralCombinerRequestEnded;
   v5 = [(TTMSchemaTTMNeuralCombinerRequestEnded *)&v27 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"results"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"results"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -67,7 +67,7 @@
       }
     }
 
-    v15 = [v4 objectForKeyedSubscript:{@"asset", v23}];
+    v15 = [dictionaryCopy objectForKeyedSubscript:{@"asset", v23}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -75,7 +75,7 @@
       [(TTMSchemaTTMNeuralCombinerRequestEnded *)v5 setAsset:v16];
     }
 
-    v17 = [v4 objectForKeyedSubscript:@"neuralCombinerThreshold"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"neuralCombinerThreshold"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -83,7 +83,7 @@
       [(TTMSchemaTTMNeuralCombinerRequestEnded *)v5 setNeuralCombinerThreshold:?];
     }
 
-    v18 = [v4 objectForKeyedSubscript:@"mitigationAssetVersion"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"mitigationAssetVersion"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -91,7 +91,7 @@
       [(TTMSchemaTTMNeuralCombinerRequestEnded *)v5 setMitigationAssetVersion:v19];
     }
 
-    v20 = [v4 objectForKeyedSubscript:@"speakerIdThreshold"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"speakerIdThreshold"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -105,30 +105,30 @@
   return v5;
 }
 
-- (TTMSchemaTTMNeuralCombinerRequestEnded)initWithJSON:(id)a3
+- (TTMSchemaTTMNeuralCombinerRequestEnded)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(TTMSchemaTTMNeuralCombinerRequestEnded *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(TTMSchemaTTMNeuralCombinerRequestEnded *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(TTMSchemaTTMNeuralCombinerRequestEnded *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -142,28 +142,28 @@
 - (id)dictionaryRepresentation
 {
   v27 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_asset)
   {
-    v4 = [(TTMSchemaTTMNeuralCombinerRequestEnded *)self asset];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    asset = [(TTMSchemaTTMNeuralCombinerRequestEnded *)self asset];
+    dictionaryRepresentation = [asset dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"asset"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"asset"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"asset"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"asset"];
     }
   }
 
   if (self->_mitigationAssetVersion)
   {
-    v7 = [(TTMSchemaTTMNeuralCombinerRequestEnded *)self mitigationAssetVersion];
-    v8 = [v7 copy];
-    [v3 setObject:v8 forKeyedSubscript:@"mitigationAssetVersion"];
+    mitigationAssetVersion = [(TTMSchemaTTMNeuralCombinerRequestEnded *)self mitigationAssetVersion];
+    v8 = [mitigationAssetVersion copy];
+    [dictionary setObject:v8 forKeyedSubscript:@"mitigationAssetVersion"];
   }
 
   if (*&self->_has)
@@ -171,12 +171,12 @@
     v9 = MEMORY[0x1E696AD98];
     [(TTMSchemaTTMNeuralCombinerRequestEnded *)self neuralCombinerThreshold];
     v10 = [v9 numberWithFloat:?];
-    [v3 setObject:v10 forKeyedSubscript:@"neuralCombinerThreshold"];
+    [dictionary setObject:v10 forKeyedSubscript:@"neuralCombinerThreshold"];
   }
 
   if ([(NSArray *)self->_results count])
   {
-    v11 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
@@ -196,16 +196,16 @@
             objc_enumerationMutation(v12);
           }
 
-          v17 = [*(*(&v22 + 1) + 8 * i) dictionaryRepresentation];
-          if (v17)
+          dictionaryRepresentation2 = [*(*(&v22 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation2)
           {
-            [v11 addObject:v17];
+            [array addObject:dictionaryRepresentation2];
           }
 
           else
           {
-            v18 = [MEMORY[0x1E695DFB0] null];
-            [v11 addObject:v18];
+            null2 = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null2];
           }
         }
 
@@ -215,7 +215,7 @@
       while (v14);
     }
 
-    [v3 setObject:v11 forKeyedSubscript:@"results"];
+    [dictionary setObject:array forKeyedSubscript:@"results"];
   }
 
   if ((*&self->_has & 2) != 0)
@@ -223,12 +223,12 @@
     v19 = MEMORY[0x1E696AD98];
     [(TTMSchemaTTMNeuralCombinerRequestEnded *)self speakerIdThreshold];
     v20 = [v19 numberWithFloat:?];
-    [v3 setObject:v20 forKeyedSubscript:@"speakerIdThreshold"];
+    [dictionary setObject:v20 forKeyedSubscript:@"speakerIdThreshold"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -315,28 +315,28 @@
   return v4 ^ v3 ^ v7 ^ v12 ^ v15;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_20;
   }
 
-  v5 = [(TTMSchemaTTMNeuralCombinerRequestEnded *)self results];
-  v6 = [v4 results];
-  if ((v5 != 0) == (v6 == 0))
+  results = [(TTMSchemaTTMNeuralCombinerRequestEnded *)self results];
+  results2 = [equalCopy results];
+  if ((results != 0) == (results2 == 0))
   {
     goto LABEL_19;
   }
 
-  v7 = [(TTMSchemaTTMNeuralCombinerRequestEnded *)self results];
-  if (v7)
+  results3 = [(TTMSchemaTTMNeuralCombinerRequestEnded *)self results];
+  if (results3)
   {
-    v8 = v7;
-    v9 = [(TTMSchemaTTMNeuralCombinerRequestEnded *)self results];
-    v10 = [v4 results];
-    v11 = [v9 isEqual:v10];
+    v8 = results3;
+    results4 = [(TTMSchemaTTMNeuralCombinerRequestEnded *)self results];
+    results5 = [equalCopy results];
+    v11 = [results4 isEqual:results5];
 
     if (!v11)
     {
@@ -348,20 +348,20 @@
   {
   }
 
-  v5 = [(TTMSchemaTTMNeuralCombinerRequestEnded *)self asset];
-  v6 = [v4 asset];
-  if ((v5 != 0) == (v6 == 0))
+  results = [(TTMSchemaTTMNeuralCombinerRequestEnded *)self asset];
+  results2 = [equalCopy asset];
+  if ((results != 0) == (results2 == 0))
   {
     goto LABEL_19;
   }
 
-  v12 = [(TTMSchemaTTMNeuralCombinerRequestEnded *)self asset];
-  if (v12)
+  asset = [(TTMSchemaTTMNeuralCombinerRequestEnded *)self asset];
+  if (asset)
   {
-    v13 = v12;
-    v14 = [(TTMSchemaTTMNeuralCombinerRequestEnded *)self asset];
-    v15 = [v4 asset];
-    v16 = [v14 isEqual:v15];
+    v13 = asset;
+    asset2 = [(TTMSchemaTTMNeuralCombinerRequestEnded *)self asset];
+    asset3 = [equalCopy asset];
+    v16 = [asset2 isEqual:asset3];
 
     if (!v16)
     {
@@ -373,7 +373,7 @@
   {
   }
 
-  if ((*&self->_has & 1) != (v4[44] & 1))
+  if ((*&self->_has & 1) != (equalCopy[44] & 1))
   {
     goto LABEL_20;
   }
@@ -381,29 +381,29 @@
   if (*&self->_has)
   {
     neuralCombinerThreshold = self->_neuralCombinerThreshold;
-    [v4 neuralCombinerThreshold];
+    [equalCopy neuralCombinerThreshold];
     if (neuralCombinerThreshold != v18)
     {
       goto LABEL_20;
     }
   }
 
-  v5 = [(TTMSchemaTTMNeuralCombinerRequestEnded *)self mitigationAssetVersion];
-  v6 = [v4 mitigationAssetVersion];
-  if ((v5 != 0) == (v6 == 0))
+  results = [(TTMSchemaTTMNeuralCombinerRequestEnded *)self mitigationAssetVersion];
+  results2 = [equalCopy mitigationAssetVersion];
+  if ((results != 0) == (results2 == 0))
   {
 LABEL_19:
 
     goto LABEL_20;
   }
 
-  v19 = [(TTMSchemaTTMNeuralCombinerRequestEnded *)self mitigationAssetVersion];
-  if (v19)
+  mitigationAssetVersion = [(TTMSchemaTTMNeuralCombinerRequestEnded *)self mitigationAssetVersion];
+  if (mitigationAssetVersion)
   {
-    v20 = v19;
-    v21 = [(TTMSchemaTTMNeuralCombinerRequestEnded *)self mitigationAssetVersion];
-    v22 = [v4 mitigationAssetVersion];
-    v23 = [v21 isEqual:v22];
+    v20 = mitigationAssetVersion;
+    mitigationAssetVersion2 = [(TTMSchemaTTMNeuralCombinerRequestEnded *)self mitigationAssetVersion];
+    mitigationAssetVersion3 = [equalCopy mitigationAssetVersion];
+    v23 = [mitigationAssetVersion2 isEqual:mitigationAssetVersion3];
 
     if (!v23)
     {
@@ -416,9 +416,9 @@ LABEL_19:
   }
 
   v26 = (*&self->_has >> 1) & 1;
-  if (v26 == ((v4[44] >> 1) & 1))
+  if (v26 == ((equalCopy[44] >> 1) & 1))
   {
-    if (!v26 || (speakerIdThreshold = self->_speakerIdThreshold, [v4 speakerIdThreshold], speakerIdThreshold == v28))
+    if (!v26 || (speakerIdThreshold = self->_speakerIdThreshold, [equalCopy speakerIdThreshold], speakerIdThreshold == v28))
     {
       v24 = 1;
       goto LABEL_21;
@@ -432,10 +432,10 @@ LABEL_21:
   return v24;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -467,11 +467,11 @@ LABEL_21:
     while (v7);
   }
 
-  v10 = [(TTMSchemaTTMNeuralCombinerRequestEnded *)self asset];
+  asset = [(TTMSchemaTTMNeuralCombinerRequestEnded *)self asset];
 
-  if (v10)
+  if (asset)
   {
-    v11 = [(TTMSchemaTTMNeuralCombinerRequestEnded *)self asset];
+    asset2 = [(TTMSchemaTTMNeuralCombinerRequestEnded *)self asset];
     PBDataWriterWriteSubmessage();
   }
 
@@ -480,9 +480,9 @@ LABEL_21:
     PBDataWriterWriteFloatField();
   }
 
-  v12 = [(TTMSchemaTTMNeuralCombinerRequestEnded *)self mitigationAssetVersion];
+  mitigationAssetVersion = [(TTMSchemaTTMNeuralCombinerRequestEnded *)self mitigationAssetVersion];
 
-  if (v12)
+  if (mitigationAssetVersion)
   {
     PBDataWriterWriteStringField();
   }
@@ -493,9 +493,9 @@ LABEL_21:
   }
 }
 
-- (void)setHasSpeakerIdThreshold:(BOOL)a3
+- (void)setHasSpeakerIdThreshold:(BOOL)threshold
 {
-  if (a3)
+  if (threshold)
   {
     v3 = 2;
   }
@@ -508,39 +508,39 @@ LABEL_21:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)addResults:(id)a3
+- (void)addResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   results = self->_results;
-  v8 = v4;
+  v8 = resultsCopy;
   if (!results)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_results;
-    self->_results = v6;
+    self->_results = array;
 
-    v4 = v8;
+    resultsCopy = v8;
     results = self->_results;
   }
 
-  [(NSArray *)results addObject:v4];
+  [(NSArray *)results addObject:resultsCopy];
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v11.receiver = self;
   v11.super_class = TTMSchemaTTMNeuralCombinerRequestEnded;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v11 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v11 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(TTMSchemaTTMNeuralCombinerRequestEnded *)self results:v11.receiver];
-  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:v4];
+  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:policyCopy];
   [(TTMSchemaTTMNeuralCombinerRequestEnded *)self setResults:v7];
 
-  v8 = [(TTMSchemaTTMNeuralCombinerRequestEnded *)self asset];
-  v9 = [v8 applySensitiveConditionsPolicy:v4];
+  asset = [(TTMSchemaTTMNeuralCombinerRequestEnded *)self asset];
+  v9 = [asset applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v9 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v9 suppressMessage];
+  if (policyCopy)
   {
     [(TTMSchemaTTMNeuralCombinerRequestEnded *)self deleteAsset];
   }

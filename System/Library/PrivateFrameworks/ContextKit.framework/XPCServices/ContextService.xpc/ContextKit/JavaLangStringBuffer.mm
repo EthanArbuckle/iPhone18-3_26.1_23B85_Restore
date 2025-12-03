@@ -1,14 +1,14 @@
 @interface JavaLangStringBuffer
-- (JavaLangStringBuffer)initWithJavaLangCharSequence:(id)a3;
+- (JavaLangStringBuffer)initWithJavaLangCharSequence:(id)sequence;
 - (NSString)description;
-- (id)appendWithBoolean:(BOOL)a3;
-- (id)appendWithChar:(unsigned __int16)a3;
-- (id)appendWithCharArray:(id)a3;
-- (id)appendWithCharArray:(id)a3 withInt:(int)a4 withInt:(int)a5;
-- (id)appendWithId:(id)a3;
-- (id)appendWithJavaLangCharSequence:(id)a3;
-- (id)appendWithJavaLangStringBuffer:(id)a3;
-- (id)appendWithNSString:(id)a3;
+- (id)appendWithBoolean:(BOOL)boolean;
+- (id)appendWithChar:(unsigned __int16)char;
+- (id)appendWithCharArray:(id)array;
+- (id)appendWithCharArray:(id)array withInt:(int)int withInt:(int)withInt;
+- (id)appendWithId:(id)id;
+- (id)appendWithJavaLangCharSequence:(id)sequence;
+- (id)appendWithJavaLangStringBuffer:(id)buffer;
+- (id)appendWithNSString:(id)string;
 - (id)reverse;
 - (int)length;
 - (void)trimToSize;
@@ -16,20 +16,20 @@
 
 @implementation JavaLangStringBuffer
 
-- (JavaLangStringBuffer)initWithJavaLangCharSequence:(id)a3
+- (JavaLangStringBuffer)initWithJavaLangCharSequence:(id)sequence
 {
-  if (!a3)
+  if (!sequence)
   {
     JreThrowNullPointerException();
   }
 
-  JavaLangStringBuffer_initWithNSString_(self, [a3 description]);
+  JavaLangStringBuffer_initWithNSString_(self, [sequence description]);
   return self;
 }
 
-- (id)appendWithBoolean:(BOOL)a3
+- (id)appendWithBoolean:(BOOL)boolean
 {
-  if (a3)
+  if (boolean)
   {
     v3 = @"true";
   }
@@ -42,20 +42,20 @@
   return [(JavaLangStringBuffer *)self appendWithNSString:v3];
 }
 
-- (id)appendWithChar:(unsigned __int16)a3
+- (id)appendWithChar:(unsigned __int16)char
 {
   objc_sync_enter(self);
-  JreStringBuilder_appendChar(&self->super.delegate_, a3);
+  JreStringBuilder_appendChar(&self->super.delegate_, char);
   objc_sync_exit(self);
   return self;
 }
 
-- (id)appendWithId:(id)a3
+- (id)appendWithId:(id)id
 {
   objc_sync_enter(self);
-  if (a3)
+  if (id)
   {
-    JreStringBuilder_appendString(&self->super.delegate_, [a3 description]);
+    JreStringBuilder_appendString(&self->super.delegate_, [id description]);
   }
 
   else
@@ -67,22 +67,22 @@
   return self;
 }
 
-- (id)appendWithNSString:(id)a3
+- (id)appendWithNSString:(id)string
 {
   objc_sync_enter(self);
-  JreStringBuilder_appendString(&self->super.delegate_, a3);
+  JreStringBuilder_appendString(&self->super.delegate_, string);
   objc_sync_exit(self);
   return self;
 }
 
-- (id)appendWithJavaLangStringBuffer:(id)a3
+- (id)appendWithJavaLangStringBuffer:(id)buffer
 {
   objc_sync_enter(self);
-  if (a3)
+  if (buffer)
   {
-    objc_sync_enter(a3);
-    JreStringBuilder_appendBuffer(&self->super.delegate_, *(a3 + 1), *(a3 + 5));
-    objc_sync_exit(a3);
+    objc_sync_enter(buffer);
+    JreStringBuilder_appendBuffer(&self->super.delegate_, *(buffer + 1), *(buffer + 5));
+    objc_sync_exit(buffer);
   }
 
   else
@@ -94,28 +94,28 @@
   return self;
 }
 
-- (id)appendWithCharArray:(id)a3
+- (id)appendWithCharArray:(id)array
 {
   objc_sync_enter(self);
-  JreStringBuilder_appendCharArray(&self->super.delegate_, a3);
+  JreStringBuilder_appendCharArray(&self->super.delegate_, array);
   objc_sync_exit(self);
   return self;
 }
 
-- (id)appendWithCharArray:(id)a3 withInt:(int)a4 withInt:(int)a5
+- (id)appendWithCharArray:(id)array withInt:(int)int withInt:(int)withInt
 {
   objc_sync_enter(self);
-  JreStringBuilder_appendCharArraySubset(&self->super.delegate_, a3, a4, a5);
+  JreStringBuilder_appendCharArraySubset(&self->super.delegate_, array, int, withInt);
   objc_sync_exit(self);
   return self;
 }
 
-- (id)appendWithJavaLangCharSequence:(id)a3
+- (id)appendWithJavaLangCharSequence:(id)sequence
 {
   objc_sync_enter(self);
-  if (a3)
+  if (sequence)
   {
-    JreStringBuilder_appendCharSequence(&self->super.delegate_, a3, 0, [a3 length]);
+    JreStringBuilder_appendCharSequence(&self->super.delegate_, sequence, 0, [sequence length]);
   }
 
   else

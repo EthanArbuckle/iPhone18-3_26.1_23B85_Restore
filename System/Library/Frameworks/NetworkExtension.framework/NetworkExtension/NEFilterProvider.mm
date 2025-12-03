@@ -1,5 +1,5 @@
 @interface NEFilterProvider
-+ (__CFString)descriptionForAction:(uint64_t)a1;
++ (__CFString)descriptionForAction:(uint64_t)action;
 - (void)handleReport:(NEFilterReport *)report;
 - (void)startFilterWithCompletionHandler:(void *)completionHandler;
 - (void)stopFilterWithReason:(NEProviderStopReason)reason completionHandler:(void *)completionHandler;
@@ -15,7 +15,7 @@
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v7 = 138412546;
-    v8 = self;
+    selfCopy = self;
     v9 = 2112;
     v10 = v4;
     _os_log_impl(&dword_1BA83C000, v5, OS_LOG_TYPE_INFO, "%@: handleReport %@", &v7, 0x16u);
@@ -32,7 +32,7 @@
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v9 = 138412546;
-    v10 = self;
+    selfCopy = self;
     v11 = 2048;
     v12 = reason;
     _os_log_impl(&dword_1BA83C000, v7, OS_LOG_TYPE_INFO, "%@: Stop Filter with reason %ld", &v9, 0x16u);
@@ -50,7 +50,7 @@
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v7 = 138412290;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1BA83C000, v5, OS_LOG_TYPE_INFO, "%@: Start Filter", &v7, 0xCu);
   }
 
@@ -58,7 +58,7 @@
   v6 = *MEMORY[0x1E69E9840];
 }
 
-+ (__CFString)descriptionForAction:(uint64_t)a1
++ (__CFString)descriptionForAction:(uint64_t)action
 {
   objc_opt_self();
   if ((a2 - 1) >= 4)

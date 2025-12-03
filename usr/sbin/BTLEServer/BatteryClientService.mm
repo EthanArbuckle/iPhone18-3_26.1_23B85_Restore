@@ -1,30 +1,30 @@
 @interface BatteryClientService
-- (BOOL)_validData:(id)a3;
-- (BOOL)isAccessoryCategoryPencil:(id)a3;
-- (BOOL)updatePowerSource:(id)a3;
-- (BatteryClientService)initWithManager:(id)a3 peripheral:(id)a4 service:(id)a5;
-- (id)batteryPowerStateString:(unsigned __int8)a3;
-- (unsigned)characteristicFormatFrom:(id)a3;
-- (void)_handleValueForDescriptor:(id)a3;
-- (void)_setBatteryLevelCharacteristicFormatFrom:(id)a3;
+- (BOOL)_validData:(id)data;
+- (BOOL)isAccessoryCategoryPencil:(id)pencil;
+- (BOOL)updatePowerSource:(id)source;
+- (BatteryClientService)initWithManager:(id)manager peripheral:(id)peripheral service:(id)service;
+- (id)batteryPowerStateString:(unsigned __int8)string;
+- (unsigned)characteristicFormatFrom:(id)from;
+- (void)_handleValueForDescriptor:(id)descriptor;
+- (void)_setBatteryLevelCharacteristicFormatFrom:(id)from;
 - (void)extractBatteryLevel;
 - (void)extractBatteryLevelStatus;
 - (void)extractBatteryPowerState;
-- (void)peripheral:(id)a3 didDiscoverCharacteristicsForService:(id)a4 error:(id)a5;
-- (void)peripheral:(id)a3 didDiscoverDescriptorsForCharacteristic:(id)a4 error:(id)a5;
-- (void)peripheral:(id)a3 didUpdateValueForCharacteristic:(id)a4 error:(id)a5;
-- (void)peripheral:(id)a3 didUpdateValueForDescriptor:(id)a4 error:(id)a5;
+- (void)peripheral:(id)peripheral didDiscoverCharacteristicsForService:(id)service error:(id)error;
+- (void)peripheral:(id)peripheral didDiscoverDescriptorsForCharacteristic:(id)characteristic error:(id)error;
+- (void)peripheral:(id)peripheral didUpdateValueForCharacteristic:(id)characteristic error:(id)error;
+- (void)peripheral:(id)peripheral didUpdateValueForDescriptor:(id)descriptor error:(id)error;
 - (void)start;
 - (void)stop;
 @end
 
 @implementation BatteryClientService
 
-- (BatteryClientService)initWithManager:(id)a3 peripheral:(id)a4 service:(id)a5
+- (BatteryClientService)initWithManager:(id)manager peripheral:(id)peripheral service:(id)service
 {
   v7.receiver = self;
   v7.super_class = BatteryClientService;
-  v5 = [(ClientService *)&v7 initWithManager:a3 peripheral:a4 service:a5];
+  v5 = [(ClientService *)&v7 initWithManager:manager peripheral:peripheral service:service];
   [(ClientService *)v5 setIsPrimary:1];
   return v5;
 }
@@ -54,14 +54,14 @@
     if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
     {
       v11 = v10;
-      v12 = [(ClientService *)self peripheral];
-      v13 = [v12 name];
-      v14 = [(ClientService *)self peripheral];
-      v15 = [v14 services];
+      peripheral = [(ClientService *)self peripheral];
+      name = [peripheral name];
+      peripheral2 = [(ClientService *)self peripheral];
+      services = [peripheral2 services];
       *buf = 138412546;
-      v35 = v13;
+      v35 = name;
       v36 = 2112;
-      v37 = v15;
+      v37 = services;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "BatteryClientService started for '%@' with services: %@", buf, 0x16u);
     }
 
@@ -70,10 +70,10 @@
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v17 = [(ClientService *)self peripheral];
-    v18 = [v17 services];
+    peripheral3 = [(ClientService *)self peripheral];
+    services2 = [peripheral3 services];
 
-    v19 = [v18 countByEnumeratingWithState:&v28 objects:v33 count:16];
+    v19 = [services2 countByEnumeratingWithState:&v28 objects:v33 count:16];
     if (v19)
     {
       v20 = v19;
@@ -85,11 +85,11 @@
         {
           if (*v29 != v22)
           {
-            objc_enumerationMutation(v18);
+            objc_enumerationMutation(services2);
           }
 
-          v24 = [*(*(&v28 + 1) + 8 * i) UUID];
-          v25 = [v24 isEqual:v16];
+          uUID = [*(*(&v28 + 1) + 8 * i) UUID];
+          v25 = [uUID isEqual:v16];
 
           v21 += v25;
           if (v21 >= 2u)
@@ -99,7 +99,7 @@
           }
         }
 
-        v20 = [v18 countByEnumeratingWithState:&v28 objects:v33 count:16];
+        v20 = [services2 countByEnumeratingWithState:&v28 objects:v33 count:16];
         if (v20)
         {
           continue;
@@ -112,9 +112,9 @@
 LABEL_14:
   }
 
-  v26 = [(ClientService *)self peripheral];
-  v27 = [(ClientService *)self service];
-  [v26 discoverCharacteristics:v9 forService:v27];
+  peripheral4 = [(ClientService *)self peripheral];
+  service = [(ClientService *)self service];
+  [peripheral4 discoverCharacteristics:v9 forService:service];
 }
 
 - (void)stop
@@ -130,18 +130,18 @@ LABEL_14:
   [(ClientService *)&v3 stop];
 }
 
-- (void)peripheral:(id)a3 didDiscoverCharacteristicsForService:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didDiscoverCharacteristicsForService:(id)service error:(id)error
 {
-  v8 = a3;
-  v9 = v8;
-  if (!a5)
+  peripheralCopy = peripheral;
+  v9 = peripheralCopy;
+  if (!error)
   {
-    v43 = v8;
+    v43 = peripheralCopy;
     v50 = 0u;
     v51 = 0u;
     v48 = 0u;
     v49 = 0u;
-    obj = [a4 characteristics];
+    obj = [service characteristics];
     v10 = [obj countByEnumeratingWithState:&v48 objects:v52 count:16];
     if (v10)
     {
@@ -161,39 +161,39 @@ LABEL_14:
           }
 
           v14 = *(*(&v48 + 1) + 8 * v13);
-          v15 = [v14 UUID];
-          v16 = [v15 UUIDString];
-          v17 = [v16 isEqualToString:v46];
+          uUID = [v14 UUID];
+          uUIDString = [uUID UUIDString];
+          v17 = [uUIDString isEqualToString:v46];
 
-          v18 = [v14 UUID];
-          v19 = [v18 UUIDString];
-          v20 = [v19 isEqualToString:v45];
+          uUID2 = [v14 UUID];
+          uUIDString2 = [uUID2 UUIDString];
+          v20 = [uUIDString2 isEqualToString:v45];
 
-          v21 = [v14 UUID];
-          v22 = [v21 UUIDString];
-          v23 = [v22 isEqualToString:v12];
+          uUID3 = [v14 UUID];
+          uUIDString3 = [uUID3 UUIDString];
+          v23 = [uUIDString3 isEqualToString:v12];
 
           if ((v17 & 1) != 0 || (v20 & 1) != 0 || v23)
           {
-            v24 = [(BatteryClientService *)self batteryLevelCharacteristic];
-            v25 = (v24 == 0) & v17;
+            batteryLevelCharacteristic = [(BatteryClientService *)self batteryLevelCharacteristic];
+            v25 = (batteryLevelCharacteristic == 0) & v17;
 
             if (v25 == 1)
             {
               [(BatteryClientService *)self setBatteryLevelCharacteristic:v14];
-              v26 = [(BatteryClientService *)self batteryLevelCharacteristic];
-              [v43 setNotifyValue:1 forCharacteristic:v26];
+              batteryLevelCharacteristic2 = [(BatteryClientService *)self batteryLevelCharacteristic];
+              [v43 setNotifyValue:1 forCharacteristic:batteryLevelCharacteristic2];
 
               requireDescriptor = self->_requireDescriptor;
-              v28 = [(BatteryClientService *)self batteryLevelCharacteristic];
+              batteryLevelCharacteristic3 = [(BatteryClientService *)self batteryLevelCharacteristic];
               if (requireDescriptor)
               {
-                [v43 discoverDescriptorsForCharacteristic:v28];
+                [v43 discoverDescriptorsForCharacteristic:batteryLevelCharacteristic3];
               }
 
               else
               {
-                v34 = [(BatteryClientService *)self _validData:v28];
+                v34 = [(BatteryClientService *)self _validData:batteryLevelCharacteristic3];
 
                 if (v34)
                 {
@@ -204,20 +204,20 @@ LABEL_14:
 
             else
             {
-              v29 = [(BatteryClientService *)self batteryLevelStatusCharacteristic];
-              v30 = (v29 == 0) & v20;
+              batteryLevelStatusCharacteristic = [(BatteryClientService *)self batteryLevelStatusCharacteristic];
+              v30 = (batteryLevelStatusCharacteristic == 0) & v20;
 
               if (v30 == 1)
               {
                 [(BatteryClientService *)self setBatteryLevelStatusCharacteristic:v14];
-                v31 = [(ClientService *)self peripheral];
-                v32 = [(BatteryClientService *)self batteryLevelStatusCharacteristic];
-                [v31 setNotifyValue:1 forCharacteristic:v32];
+                peripheral = [(ClientService *)self peripheral];
+                batteryLevelStatusCharacteristic2 = [(BatteryClientService *)self batteryLevelStatusCharacteristic];
+                [peripheral setNotifyValue:1 forCharacteristic:batteryLevelStatusCharacteristic2];
 
-                v33 = [(BatteryClientService *)self batteryLevelStatusCharacteristic];
-                LODWORD(v32) = [(BatteryClientService *)self _validData:v33];
+                batteryLevelStatusCharacteristic3 = [(BatteryClientService *)self batteryLevelStatusCharacteristic];
+                LODWORD(batteryLevelStatusCharacteristic2) = [(BatteryClientService *)self _validData:batteryLevelStatusCharacteristic3];
 
-                if (v32)
+                if (batteryLevelStatusCharacteristic2)
                 {
                   [(BatteryClientService *)self extractBatteryLevelStatus];
                 }
@@ -225,20 +225,20 @@ LABEL_14:
 
               else
               {
-                v35 = [(BatteryClientService *)self batteryPowerStateCharacteristic];
-                v36 = (v35 == 0) & v23;
+                batteryPowerStateCharacteristic = [(BatteryClientService *)self batteryPowerStateCharacteristic];
+                v36 = (batteryPowerStateCharacteristic == 0) & v23;
 
                 if (v36 == 1)
                 {
                   [(BatteryClientService *)self setBatteryPowerStateCharacteristic:v14];
-                  v37 = [(ClientService *)self peripheral];
-                  v38 = [(BatteryClientService *)self batteryPowerStateCharacteristic];
-                  [v37 setNotifyValue:1 forCharacteristic:v38];
+                  peripheral2 = [(ClientService *)self peripheral];
+                  batteryPowerStateCharacteristic2 = [(BatteryClientService *)self batteryPowerStateCharacteristic];
+                  [peripheral2 setNotifyValue:1 forCharacteristic:batteryPowerStateCharacteristic2];
 
-                  v39 = [(BatteryClientService *)self batteryPowerStateCharacteristic];
-                  LODWORD(v38) = [(BatteryClientService *)self _validData:v39];
+                  batteryPowerStateCharacteristic3 = [(BatteryClientService *)self batteryPowerStateCharacteristic];
+                  LODWORD(batteryPowerStateCharacteristic2) = [(BatteryClientService *)self _validData:batteryPowerStateCharacteristic3];
 
-                  if (v38)
+                  if (batteryPowerStateCharacteristic2)
                   {
                     [(BatteryClientService *)self extractBatteryPowerState];
                   }
@@ -259,10 +259,10 @@ LABEL_14:
     }
 
     [(ClientService *)self notifyDidStart];
-    v41 = [(BatteryClientService *)self batteryLevelCharacteristic];
+    batteryLevelCharacteristic4 = [(BatteryClientService *)self batteryLevelCharacteristic];
 
     v9 = v43;
-    if (!v41)
+    if (!batteryLevelCharacteristic4)
     {
       v42 = qword_1000DDBC8;
       if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_ERROR))
@@ -273,27 +273,27 @@ LABEL_14:
   }
 }
 
-- (void)peripheral:(id)a3 didUpdateValueForCharacteristic:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didUpdateValueForCharacteristic:(id)characteristic error:(id)error
 {
-  v7 = a4;
-  v8 = v7;
-  if (a5)
+  characteristicCopy = characteristic;
+  v8 = characteristicCopy;
+  if (error)
   {
     goto LABEL_20;
   }
 
-  v23 = v7;
-  v9 = [v7 UUID];
-  v10 = [v9 UUIDString];
-  v11 = [v10 isEqualToString:CBUUIDBatteryLevelCharacteristicString];
+  v23 = characteristicCopy;
+  uUID = [characteristicCopy UUID];
+  uUIDString = [uUID UUIDString];
+  v11 = [uUIDString isEqualToString:CBUUIDBatteryLevelCharacteristicString];
 
-  v12 = [v23 UUID];
-  v13 = [v12 UUIDString];
-  v14 = [v13 isEqualToString:CBUUIDBatteryLevelStatusCharacteristicString];
+  uUID2 = [v23 UUID];
+  uUIDString2 = [uUID2 UUIDString];
+  v14 = [uUIDString2 isEqualToString:CBUUIDBatteryLevelStatusCharacteristicString];
 
-  v15 = [v23 UUID];
-  v16 = [v15 UUIDString];
-  v17 = [v16 isEqualToString:CBUUIDBatteryPowerStateCharacteristicString];
+  uUID3 = [v23 UUID];
+  uUIDString3 = [uUID3 UUIDString];
+  v17 = [uUIDString3 isEqualToString:CBUUIDBatteryPowerStateCharacteristicString];
 
   v8 = v23;
   if ((v11 & 1) == 0 && (v14 & 1) == 0 && !v17)
@@ -301,23 +301,23 @@ LABEL_14:
     goto LABEL_20;
   }
 
-  v7 = [(BatteryClientService *)self _validData:v23];
+  characteristicCopy = [(BatteryClientService *)self _validData:v23];
   v8 = v23;
-  if (!v7)
+  if (!characteristicCopy)
   {
     goto LABEL_20;
   }
 
   if (self->_retryAttemptsMap)
   {
-    v18 = [v23 UUID];
-    v19 = [v18 UUIDString];
+    uUID4 = [v23 UUID];
+    uUIDString4 = [uUID4 UUIDString];
 
-    v20 = [(NSMutableDictionary *)self->_retryAttemptsMap objectForKeyedSubscript:v19];
+    v20 = [(NSMutableDictionary *)self->_retryAttemptsMap objectForKeyedSubscript:uUIDString4];
 
     if (v20)
     {
-      [(NSMutableDictionary *)self->_retryAttemptsMap setObject:&off_1000C3D68 forKeyedSubscript:v19];
+      [(NSMutableDictionary *)self->_retryAttemptsMap setObject:&off_1000C3D68 forKeyedSubscript:uUIDString4];
     }
 
     v8 = v23;
@@ -328,21 +328,21 @@ LABEL_14:
     [(BatteryClientService *)self setBatteryLevelCharacteristic:v8];
     if (self->_requireDescriptor && ![(BatteryClientService *)self batteryLevelCharacteristicFormat])
     {
-      v21 = [(ClientService *)self peripheral];
-      v22 = [(BatteryClientService *)self batteryLevelCharacteristic];
-      [v21 discoverDescriptorsForCharacteristic:v22];
+      peripheral = [(ClientService *)self peripheral];
+      batteryLevelCharacteristic = [(BatteryClientService *)self batteryLevelCharacteristic];
+      [peripheral discoverDescriptorsForCharacteristic:batteryLevelCharacteristic];
     }
 
     else
     {
-      v7 = [(BatteryClientService *)self extractBatteryLevel];
+      characteristicCopy = [(BatteryClientService *)self extractBatteryLevel];
     }
   }
 
   else if (v14)
   {
     [(BatteryClientService *)self setBatteryLevelStatusCharacteristic:v23];
-    v7 = [(BatteryClientService *)self extractBatteryLevelStatus];
+    characteristicCopy = [(BatteryClientService *)self extractBatteryLevelStatus];
   }
 
   else
@@ -353,25 +353,25 @@ LABEL_14:
     }
 
     [(BatteryClientService *)self setBatteryPowerStateCharacteristic:v23];
-    v7 = [(BatteryClientService *)self extractBatteryPowerState];
+    characteristicCopy = [(BatteryClientService *)self extractBatteryPowerState];
   }
 
   v8 = v23;
 LABEL_20:
 
-  _objc_release_x1(v7, v8);
+  _objc_release_x1(characteristicCopy, v8);
 }
 
-- (void)peripheral:(id)a3 didDiscoverDescriptorsForCharacteristic:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didDiscoverDescriptorsForCharacteristic:(id)characteristic error:(id)error
 {
-  if (!a5)
+  if (!error)
   {
     v13 = 0u;
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v6 = [a4 descriptors];
-    v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    descriptors = [characteristic descriptors];
+    v7 = [descriptors countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v7)
     {
       v8 = v7;
@@ -383,7 +383,7 @@ LABEL_20:
         {
           if (*v12 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(descriptors);
           }
 
           [(BatteryClientService *)self _handleValueForDescriptor:*(*(&v11 + 1) + 8 * v10)];
@@ -391,7 +391,7 @@ LABEL_20:
         }
 
         while (v8 != v10);
-        v8 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v8 = [descriptors countByEnumeratingWithState:&v11 objects:v15 count:16];
       }
 
       while (v8);
@@ -399,32 +399,32 @@ LABEL_20:
   }
 }
 
-- (void)peripheral:(id)a3 didUpdateValueForDescriptor:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didUpdateValueForDescriptor:(id)descriptor error:(id)error
 {
-  if (!a5)
+  if (!error)
   {
-    [(BatteryClientService *)self _handleValueForDescriptor:a4];
+    [(BatteryClientService *)self _handleValueForDescriptor:descriptor];
   }
 }
 
-- (unsigned)characteristicFormatFrom:(id)a3
+- (unsigned)characteristicFormatFrom:(id)from
 {
-  v3 = a3;
-  v4 = [v3 value];
+  fromCopy = from;
+  value = [fromCopy value];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v6 = [v3 value];
-    if ([v6 length] < 5)
+    value2 = [fromCopy value];
+    if ([value2 length] < 5)
     {
       v7 = 0;
     }
 
     else
     {
-      v7 = *([v6 bytes] + 5);
+      v7 = *([value2 bytes] + 5);
     }
   }
 
@@ -438,15 +438,15 @@ LABEL_20:
 
 - (void)extractBatteryLevel
 {
-  v3 = [(BatteryClientService *)self batteryLevelCharacteristic];
-  v4 = [v3 value];
-  v5 = [DataInputStream inputStreamWithData:v4];
+  batteryLevelCharacteristic = [(BatteryClientService *)self batteryLevelCharacteristic];
+  value = [batteryLevelCharacteristic value];
+  v5 = [DataInputStream inputStreamWithData:value];
 
   v31 = 0;
   if ([v5 readUint8:&v31])
   {
-    v6 = [(ClientService *)self peripheral];
-    v7 = [v6 hasTag:@"A3085"];
+    peripheral = [(ClientService *)self peripheral];
+    v7 = [peripheral hasTag:@"A3085"];
     v8 = v31;
 
     if (v7 && v8 == 255)
@@ -460,34 +460,34 @@ LABEL_20:
 
     else
     {
-      v11 = [(BatteryClientService *)self powerSourceDetails];
-      v12 = [v11 objectForKeyedSubscript:@"Current Capacity"];
+      powerSourceDetails = [(BatteryClientService *)self powerSourceDetails];
+      v12 = [powerSourceDetails objectForKeyedSubscript:@"Current Capacity"];
 
       if (!v12)
       {
         goto LABEL_11;
       }
 
-      v13 = [(BatteryClientService *)self powerSourceDetails];
-      v14 = [v13 objectForKeyedSubscript:@"Current Capacity"];
+      powerSourceDetails2 = [(BatteryClientService *)self powerSourceDetails];
+      v14 = [powerSourceDetails2 objectForKeyedSubscript:@"Current Capacity"];
 
-      LODWORD(v13) = [v14 intValue];
+      LODWORD(powerSourceDetails2) = [v14 intValue];
       v15 = v31;
 
-      if (v13 != v15)
+      if (powerSourceDetails2 != v15)
       {
 LABEL_11:
         v16 = qword_1000DDBC8;
         if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
         {
           v17 = v16;
-          v18 = [(ClientService *)self peripheral];
-          v19 = [v18 name];
-          v20 = [(BatteryClientService *)self batteryLevelCharacteristicFormat];
+          peripheral2 = [(ClientService *)self peripheral];
+          name = [peripheral2 name];
+          batteryLevelCharacteristicFormat = [(BatteryClientService *)self batteryLevelCharacteristicFormat];
           *buf = 138412802;
-          v33 = v19;
+          v33 = name;
           v34 = 1024;
-          v35 = v20;
+          v35 = batteryLevelCharacteristicFormat;
           v36 = 1024;
           v37 = v31;
           _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "Battery level for peripheral %@ (0x%04X): %u%%", buf, 0x18u);
@@ -509,21 +509,21 @@ LABEL_11:
               goto LABEL_17;
             }
 
-            v22 = [(BatteryClientService *)self powerSourceDetails];
-            v23 = [v22 objectForKeyedSubscript:@"Part Identifier"];
+            powerSourceDetails3 = [(BatteryClientService *)self powerSourceDetails];
+            v23 = [powerSourceDetails3 objectForKeyedSubscript:@"Part Identifier"];
 
-            v24 = [(BatteryClientService *)self powerSourceDetails];
-            v25 = [v24 objectForKeyedSubscript:@"Accessory Identifier"];
+            powerSourceDetails4 = [(BatteryClientService *)self powerSourceDetails];
+            v25 = [powerSourceDetails4 objectForKeyedSubscript:@"Accessory Identifier"];
 
-            v26 = [(BatteryClientService *)self powerSourceDetails];
-            [v26 setObject:v25 forKeyedSubscript:@"Group Identifier"];
+            powerSourceDetails5 = [(BatteryClientService *)self powerSourceDetails];
+            [powerSourceDetails5 setObject:v25 forKeyedSubscript:@"Group Identifier"];
 
             if (v23)
             {
 LABEL_17:
               v27 = +[BTLEXpcServer instance];
-              v28 = [(BatteryClientService *)self powerSourceDetails];
-              [v27 sendBatteryServiceNotification:v28];
+              powerSourceDetails6 = [(BatteryClientService *)self powerSourceDetails];
+              [v27 sendBatteryServiceNotification:powerSourceDetails6];
             }
           }
         }
@@ -543,9 +543,9 @@ LABEL_17:
 
 - (void)extractBatteryPowerState
 {
-  v3 = [(BatteryClientService *)self batteryPowerStateCharacteristic];
-  v4 = [v3 value];
-  v5 = [DataInputStream inputStreamWithData:v4];
+  batteryPowerStateCharacteristic = [(BatteryClientService *)self batteryPowerStateCharacteristic];
+  value = [batteryPowerStateCharacteristic value];
+  v5 = [DataInputStream inputStreamWithData:value];
 
   v13 = 0;
   if ([v5 readUint8:&v13])
@@ -554,11 +554,11 @@ LABEL_17:
     if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
     {
       v7 = v6;
-      v8 = [(ClientService *)self peripheral];
-      v9 = [v8 name];
+      peripheral = [(ClientService *)self peripheral];
+      name = [peripheral name];
       v10 = [(BatteryClientService *)self batteryPowerStateString:v13];
       *buf = 138412546;
-      v15 = v9;
+      v15 = name;
       v16 = 2114;
       v17 = v10;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Battery power state for peripheral %@: %{public}@", buf, 0x16u);
@@ -574,19 +574,19 @@ LABEL_17:
   }
 }
 
-- (void)_handleValueForDescriptor:(id)a3
+- (void)_handleValueForDescriptor:(id)descriptor
 {
-  v25 = a3;
-  v4 = [v25 UUID];
-  v5 = [v4 UUIDString];
-  v6 = [v5 isEqualToString:CBUUIDCharacteristicFormatString];
+  descriptorCopy = descriptor;
+  uUID = [descriptorCopy UUID];
+  uUIDString = [uUID UUIDString];
+  v6 = [uUIDString isEqualToString:CBUUIDCharacteristicFormatString];
 
   if (v6)
   {
-    v7 = [v25 characteristic];
-    v8 = [v7 UUID];
-    v9 = [v8 UUIDString];
-    v10 = [v9 isEqualToString:CBUUIDBatteryLevelCharacteristicString];
+    characteristic = [descriptorCopy characteristic];
+    uUID2 = [characteristic UUID];
+    uUIDString2 = [uUID2 UUIDString];
+    v10 = [uUIDString2 isEqualToString:CBUUIDBatteryLevelCharacteristicString];
   }
 
   else
@@ -594,42 +594,42 @@ LABEL_17:
     v10 = 0;
   }
 
-  v11 = [v25 characteristic];
-  v12 = [v11 UUID];
-  v13 = [v12 UUIDString];
-  v14 = [v13 isEqualToString:CBUUIDBatteryLevelStatusCharacteristicString];
+  characteristic2 = [descriptorCopy characteristic];
+  uUID3 = [characteristic2 UUID];
+  uUIDString3 = [uUID3 UUIDString];
+  v14 = [uUIDString3 isEqualToString:CBUUIDBatteryLevelStatusCharacteristicString];
 
-  v15 = [v25 characteristic];
-  v16 = [v15 UUID];
-  v17 = [v16 UUIDString];
-  v18 = [v17 isEqualToString:CBUUIDBatteryPowerStateCharacteristicString];
+  characteristic3 = [descriptorCopy characteristic];
+  uUID4 = [characteristic3 UUID];
+  uUIDString4 = [uUID4 UUIDString];
+  v18 = [uUIDString4 isEqualToString:CBUUIDBatteryPowerStateCharacteristicString];
 
   if ((v10 & 1) != 0 || (v14 & 1) != 0 || v18)
   {
-    if ([(BatteryClientService *)self _validData:v25])
+    if ([(BatteryClientService *)self _validData:descriptorCopy])
     {
-      v19 = [v25 characteristic];
-      v20 = [(BatteryClientService *)self _validData:v19];
+      characteristic4 = [descriptorCopy characteristic];
+      v20 = [(BatteryClientService *)self _validData:characteristic4];
 
       if (v20)
       {
         if (self->_retryAttemptsMap)
         {
-          v21 = [v25 characteristic];
-          v22 = [v21 UUID];
-          v23 = [v22 UUIDString];
+          characteristic5 = [descriptorCopy characteristic];
+          uUID5 = [characteristic5 UUID];
+          uUIDString5 = [uUID5 UUIDString];
 
-          v24 = [(NSMutableDictionary *)self->_retryAttemptsMap objectForKeyedSubscript:v23];
+          v24 = [(NSMutableDictionary *)self->_retryAttemptsMap objectForKeyedSubscript:uUIDString5];
 
           if (v24)
           {
-            [(NSMutableDictionary *)self->_retryAttemptsMap setObject:&off_1000C3D68 forKeyedSubscript:v23];
+            [(NSMutableDictionary *)self->_retryAttemptsMap setObject:&off_1000C3D68 forKeyedSubscript:uUIDString5];
           }
         }
 
         if (v10)
         {
-          [(BatteryClientService *)self _setBatteryLevelCharacteristicFormatFrom:v25];
+          [(BatteryClientService *)self _setBatteryLevelCharacteristicFormatFrom:descriptorCopy];
           [(BatteryClientService *)self extractBatteryLevel];
         }
 
@@ -647,28 +647,28 @@ LABEL_17:
   }
 }
 
-- (BOOL)_validData:(id)a3
+- (BOOL)_validData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v64 = self;
-    v5 = v4;
-    v6 = [v5 UUID];
-    v7 = [v6 UUIDString];
+    selfCopy2 = self;
+    value4 = dataCopy;
+    uUID = [value4 UUID];
+    uUIDString = [uUID UUIDString];
     v63 = CBUUIDBatteryLevelCharacteristicString;
-    v8 = [v7 isEqualToString:?];
+    v8 = [uUIDString isEqualToString:?];
 
-    v9 = [v5 UUID];
-    v10 = [v9 UUIDString];
+    uUID2 = [value4 UUID];
+    uUIDString2 = [uUID2 UUIDString];
     v11 = CBUUIDBatteryLevelStatusCharacteristicString;
-    v12 = [v10 isEqualToString:CBUUIDBatteryLevelStatusCharacteristicString];
+    v12 = [uUIDString2 isEqualToString:CBUUIDBatteryLevelStatusCharacteristicString];
 
-    v13 = [v5 UUID];
-    v14 = [v13 UUIDString];
+    uUID3 = [value4 UUID];
+    uUIDString3 = [uUID3 UUIDString];
     v15 = CBUUIDBatteryPowerStateCharacteristicString;
-    v16 = [v14 isEqualToString:CBUUIDBatteryPowerStateCharacteristicString];
+    v16 = [uUIDString3 isEqualToString:CBUUIDBatteryPowerStateCharacteristicString];
 
     v17 = v8 | v12;
     if (((v8 | v12) & 1) == 0 && (v16 & 1) == 0)
@@ -679,26 +679,26 @@ LABEL_15:
       goto LABEL_64;
     }
 
-    v19 = v5 == 0;
-    if (v5)
+    v19 = value4 == 0;
+    if (value4)
     {
-      v20 = [v5 value];
-      if (v20)
+      value = [value4 value];
+      if (value)
       {
-        v21 = v20;
-        v62 = v4;
-        v22 = [v5 value];
-        v61 = [v22 isZeroValue];
+        v21 = value;
+        v62 = dataCopy;
+        value2 = [value4 value];
+        isZeroValue = [value2 isZeroValue];
 
-        if ((v61 & 1) == 0)
+        if ((isZeroValue & 1) == 0)
         {
           v18 = 0;
           v19 = 1;
-          v4 = v62;
+          dataCopy = v62;
           goto LABEL_64;
         }
 
-        v4 = v62;
+        dataCopy = v62;
         if ((v8 & 1) == 0)
         {
 LABEL_21:
@@ -714,31 +714,31 @@ LABEL_21:
           }
 
 LABEL_36:
-          v35 = v4;
+          v35 = dataCopy;
           v36 = v15;
           if (!v36)
           {
             v19 = 0;
 LABEL_63:
-            v4 = v35;
+            dataCopy = v35;
             goto LABEL_64;
           }
 
           v37 = v36;
-          retryAttemptsMap = v64->_retryAttemptsMap;
+          retryAttemptsMap = selfCopy2->_retryAttemptsMap;
           if (!retryAttemptsMap)
           {
             v39 = objc_alloc_init(NSMutableDictionary);
-            v40 = v64->_retryAttemptsMap;
-            v64->_retryAttemptsMap = v39;
+            v40 = selfCopy2->_retryAttemptsMap;
+            selfCopy2->_retryAttemptsMap = v39;
 
-            retryAttemptsMap = v64->_retryAttemptsMap;
+            retryAttemptsMap = selfCopy2->_retryAttemptsMap;
           }
 
           v41 = [(NSMutableDictionary *)retryAttemptsMap objectForKeyedSubscript:v37];
           if (v41)
           {
-            v42 = [(NSMutableDictionary *)v64->_retryAttemptsMap objectForKeyedSubscript:v37];
+            v42 = [(NSMutableDictionary *)selfCopy2->_retryAttemptsMap objectForKeyedSubscript:v37];
           }
 
           else
@@ -750,7 +750,7 @@ LABEL_63:
           {
             v43 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v42 intValue] + 1);
 
-            [(NSMutableDictionary *)v64->_retryAttemptsMap setObject:v43 forKeyedSubscript:v37];
+            [(NSMutableDictionary *)selfCopy2->_retryAttemptsMap setObject:v43 forKeyedSubscript:v37];
             if (v19)
             {
               if (!v18)
@@ -760,11 +760,11 @@ LABEL_56:
                 if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
                 {
                   v55 = v54;
-                  v56 = [(ClientService *)v64 peripheral];
-                  v57 = [v56 name];
-                  v58 = v64->_retryAttemptsMap;
+                  peripheral = [(ClientService *)selfCopy2 peripheral];
+                  name = [peripheral name];
+                  v58 = selfCopy2->_retryAttemptsMap;
                   *buf = 138412802;
-                  v66 = v57;
+                  v66 = name;
                   v67 = 1024;
                   LODWORD(v68[0]) = 2;
                   WORD2(v68[0]) = 2112;
@@ -780,17 +780,17 @@ LABEL_56:
               if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
               {
                 v45 = v44;
-                v46 = [(ClientService *)v64 peripheral];
-                v47 = [v46 name];
+                peripheral2 = [(ClientService *)selfCopy2 peripheral];
+                name2 = [peripheral2 name];
                 *buf = 138412546;
-                v66 = v47;
+                v66 = name2;
                 v67 = 2112;
                 v68[0] = v18;
                 _os_log_impl(&_mh_execute_header, v45, OS_LOG_TYPE_DEFAULT, "## Invalid value received from %@, trying again: %@", buf, 0x16u);
               }
 
-              v48 = [(ClientService *)v64 peripheral];
-              [v48 readValueForDescriptor:v18];
+              peripheral3 = [(ClientService *)selfCopy2 peripheral];
+              [peripheral3 readValueForDescriptor:v18];
             }
 
             else
@@ -799,17 +799,17 @@ LABEL_56:
               if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
               {
                 v51 = v50;
-                v52 = [(ClientService *)v64 peripheral];
-                v53 = [v52 name];
+                peripheral4 = [(ClientService *)selfCopy2 peripheral];
+                name3 = [peripheral4 name];
                 *buf = 138412546;
-                v66 = v53;
+                v66 = name3;
                 v67 = 2112;
-                v68[0] = v5;
+                v68[0] = value4;
                 _os_log_impl(&_mh_execute_header, v51, OS_LOG_TYPE_DEFAULT, "## Invalid value received from %@, trying again: %@", buf, 0x16u);
               }
 
-              v48 = [(ClientService *)v64 peripheral];
-              [v48 readValueForCharacteristic:v5];
+              peripheral3 = [(ClientService *)selfCopy2 peripheral];
+              [peripheral3 readValueForCharacteristic:value4];
             }
 
             goto LABEL_56;
@@ -828,11 +828,11 @@ LABEL_56:
 
           else
           {
-            v49 = v5;
+            v49 = value4;
           }
 
-          v59 = [v49 value];
-          v19 = v59 != 0;
+          value3 = [v49 value];
+          v19 = value3 != 0;
 
 LABEL_61:
           v43 = v42;
@@ -859,7 +859,7 @@ LABEL_62:
       }
 
       v18 = 0;
-      v5 = 0;
+      value4 = 0;
       v19 = 1;
     }
 
@@ -871,62 +871,62 @@ LABEL_62:
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v18 = 0;
-    v5 = 0;
+    value4 = 0;
     goto LABEL_15;
   }
 
   if (self->_requireDescriptor && ![(BatteryClientService *)self batteryLevelCharacteristicFormat])
   {
-    v64 = self;
-    v23 = v4;
-    v18 = v4;
-    v24 = [v18 UUID];
-    v25 = [v24 UUIDString];
-    v26 = [v25 isEqualToString:CBUUIDCharacteristicFormatString];
+    selfCopy2 = self;
+    v23 = dataCopy;
+    v18 = dataCopy;
+    uUID4 = [v18 UUID];
+    uUIDString4 = [uUID4 UUIDString];
+    v26 = [uUIDString4 isEqualToString:CBUUIDCharacteristicFormatString];
 
     if (!v26)
     {
       goto LABEL_33;
     }
 
-    v27 = [v18 characteristic];
-    v28 = [v27 UUID];
-    v29 = [v28 UUIDString];
+    characteristic = [v18 characteristic];
+    uUID5 = [characteristic UUID];
+    uUIDString5 = [uUID5 UUIDString];
     v15 = CBUUIDBatteryLevelCharacteristicString;
-    v30 = [v29 isEqualToString:CBUUIDBatteryLevelCharacteristicString];
+    v30 = [uUIDString5 isEqualToString:CBUUIDBatteryLevelCharacteristicString];
 
     if ((v30 & 1) == 0)
     {
 LABEL_33:
-      v5 = 0;
+      value4 = 0;
       v19 = 0;
-      v4 = v23;
+      dataCopy = v23;
       goto LABEL_64;
     }
 
-    v4 = v23;
+    dataCopy = v23;
     if (v18)
     {
-      v5 = [v18 value];
-      if (!v5)
+      value4 = [v18 value];
+      if (!value4)
       {
 LABEL_35:
         v19 = 1;
         goto LABEL_36;
       }
 
-      v31 = [v18 value];
+      value5 = [v18 value];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
       if (isKindOfClass)
       {
-        v33 = [v18 value];
-        v34 = [v33 isZeroValue];
+        value6 = [v18 value];
+        isZeroValue2 = [value6 isZeroValue];
 
-        v5 = 0;
+        value4 = 0;
         v19 = 1;
-        if ((v34 & 1) == 0)
+        if ((isZeroValue2 & 1) == 0)
         {
           goto LABEL_64;
         }
@@ -935,28 +935,28 @@ LABEL_35:
       }
     }
 
-    v5 = 0;
+    value4 = 0;
     goto LABEL_35;
   }
 
   v18 = 0;
-  v5 = 0;
+  value4 = 0;
   v19 = 1;
 LABEL_64:
 
   return v19;
 }
 
-- (void)_setBatteryLevelCharacteristicFormatFrom:(id)a3
+- (void)_setBatteryLevelCharacteristicFormatFrom:(id)from
 {
-  v8 = a3;
-  v4 = [v8 UUID];
-  v5 = [v4 UUIDString];
-  v6 = [v5 isEqualToString:CBUUIDCharacteristicFormatString];
+  fromCopy = from;
+  uUID = [fromCopy UUID];
+  uUIDString = [uUID UUIDString];
+  v6 = [uUIDString isEqualToString:CBUUIDCharacteristicFormatString];
 
   if (v6)
   {
-    v7 = [(BatteryClientService *)self characteristicFormatFrom:v8];
+    v7 = [(BatteryClientService *)self characteristicFormatFrom:fromCopy];
     if (![(BatteryClientService *)self batteryLevelCharacteristicFormat])
     {
       if (v7)
@@ -967,12 +967,12 @@ LABEL_64:
   }
 }
 
-- (BOOL)updatePowerSource:(id)a3
+- (BOOL)updatePowerSource:(id)source
 {
-  v4 = a3;
-  v5 = [(BatteryClientService *)self powerSourceDetails];
+  sourceCopy = source;
+  powerSourceDetails = [(BatteryClientService *)self powerSourceDetails];
 
-  if (!v5)
+  if (!powerSourceDetails)
   {
     v6 = [NSMutableDictionary alloc];
     v37[0] = @"Type";
@@ -982,10 +982,10 @@ LABEL_64:
     v38[2] = @"Battery Power";
     v37[2] = @"Power Source State";
     v37[3] = @"Accessory Identifier";
-    v7 = [(ClientService *)self peripheral];
-    v8 = [v7 identifier];
-    v9 = [v8 UUIDString];
-    v38[3] = v9;
+    peripheral = [(ClientService *)self peripheral];
+    identifier = [peripheral identifier];
+    uUIDString = [identifier UUIDString];
+    v38[3] = uUIDString;
     v38[4] = &off_1000C3D80;
     v37[4] = @"Max Capacity";
     v37[5] = @"Low Warn Level";
@@ -994,39 +994,39 @@ LABEL_64:
     v11 = [v6 initWithDictionary:v10];
     [(BatteryClientService *)self setPowerSourceDetails:v11];
 
-    v12 = [(ClientService *)self peripheral];
-    v13 = [v12 name];
+    peripheral2 = [(ClientService *)self peripheral];
+    name = [peripheral2 name];
 
-    if (v13)
+    if (name)
     {
-      v14 = [(ClientService *)self peripheral];
-      v15 = [v14 name];
-      v16 = [(BatteryClientService *)self powerSourceDetails];
-      [v16 setObject:v15 forKeyedSubscript:@"Name"];
+      peripheral3 = [(ClientService *)self peripheral];
+      name2 = [peripheral3 name];
+      powerSourceDetails2 = [(BatteryClientService *)self powerSourceDetails];
+      [powerSourceDetails2 setObject:name2 forKeyedSubscript:@"Name"];
     }
 
-    v17 = [(ClientService *)self manager];
+    manager = [(ClientService *)self manager];
     v18 = [CBUUID UUIDWithString:CBUUIDDeviceInformationServiceString];
-    v19 = [v17 clientServiceForUUID:v18];
+    v19 = [manager clientServiceForUUID:v18];
 
     if ([v19 hasIDs])
     {
       v20 = +[NSNumber numberWithUnsignedChar:](NSNumber, "numberWithUnsignedChar:", [v19 vendorIDSource]);
-      v21 = [(BatteryClientService *)self powerSourceDetails];
-      [v21 setObject:v20 forKeyedSubscript:@"Vendor ID Source"];
+      powerSourceDetails3 = [(BatteryClientService *)self powerSourceDetails];
+      [powerSourceDetails3 setObject:v20 forKeyedSubscript:@"Vendor ID Source"];
 
       v22 = +[NSNumber numberWithUnsignedShort:](NSNumber, "numberWithUnsignedShort:", [v19 vendorID]);
-      v23 = [(BatteryClientService *)self powerSourceDetails];
-      [v23 setObject:v22 forKeyedSubscript:@"Vendor ID"];
+      powerSourceDetails4 = [(BatteryClientService *)self powerSourceDetails];
+      [powerSourceDetails4 setObject:v22 forKeyedSubscript:@"Vendor ID"];
 
       v24 = +[NSNumber numberWithUnsignedShort:](NSNumber, "numberWithUnsignedShort:", [v19 productID]);
-      v25 = [(BatteryClientService *)self powerSourceDetails];
-      [v25 setObject:v24 forKeyedSubscript:@"Product ID"];
+      powerSourceDetails5 = [(BatteryClientService *)self powerSourceDetails];
+      [powerSourceDetails5 setObject:v24 forKeyedSubscript:@"Product ID"];
 
       if ([(BatteryClientService *)self isAccessoryCategoryPencil:v19])
       {
-        v26 = [(BatteryClientService *)self powerSourceDetails];
-        [v26 setObject:@"Pencil" forKeyedSubscript:@"Accessory Category"];
+        powerSourceDetails6 = [(BatteryClientService *)self powerSourceDetails];
+        [powerSourceDetails6 setObject:@"Pencil" forKeyedSubscript:@"Accessory Category"];
       }
     }
   }
@@ -1037,8 +1037,8 @@ LABEL_64:
     {
       v27 = @"Left";
 LABEL_15:
-      v28 = [(BatteryClientService *)self powerSourceDetails];
-      [v28 setObject:v27 forKeyedSubscript:@"Part Identifier"];
+      powerSourceDetails7 = [(BatteryClientService *)self powerSourceDetails];
+      [powerSourceDetails7 setObject:v27 forKeyedSubscript:@"Part Identifier"];
 
       goto LABEL_16;
     }
@@ -1057,12 +1057,12 @@ LABEL_15:
   }
 
 LABEL_16:
-  v4[2](v4);
+  sourceCopy[2](sourceCopy);
   if (![(BatteryClientService *)self powerSourceID])
   {
     v29 = +[ConnectionManager instance];
-    v30 = [(ClientService *)self peripheral];
-    v31 = [v29 isAlwaysConnecting:v30];
+    peripheral4 = [(ClientService *)self peripheral];
+    v31 = [v29 isAlwaysConnecting:peripheral4];
 
     if (v31)
     {
@@ -1070,11 +1070,11 @@ LABEL_16:
     }
   }
 
-  v32 = [(BatteryClientService *)self powerSourceID];
-  if (v32)
+  powerSourceID = [(BatteryClientService *)self powerSourceID];
+  if (powerSourceID)
   {
     [(BatteryClientService *)self powerSourceID];
-    v33 = [(BatteryClientService *)self powerSourceDetails];
+    powerSourceDetails8 = [(BatteryClientService *)self powerSourceDetails];
     v34 = IOPSSetPowerSourceDetails();
 
     if (v34)
@@ -1087,21 +1087,21 @@ LABEL_16:
     }
   }
 
-  return v32 != 0;
+  return powerSourceID != 0;
 }
 
-- (id)batteryPowerStateString:(unsigned __int8)a3
+- (id)batteryPowerStateString:(unsigned __int8)string
 {
-  v3 = off_1000BE660[a3 & 3];
-  v4 = off_1000BE680[(a3 >> 4) & 3];
-  return [NSString stringWithFormat:@"%@ / %@ / %@ / %@", v3, off_1000BE6A0[(a3 >> 2) & 3], v4, off_1000BE6C0[a3 >> 6]];
+  v3 = off_1000BE660[string & 3];
+  v4 = off_1000BE680[(string >> 4) & 3];
+  return [NSString stringWithFormat:@"%@ / %@ / %@ / %@", v3, off_1000BE6A0[(string >> 2) & 3], v4, off_1000BE6C0[string >> 6]];
 }
 
-- (BOOL)isAccessoryCategoryPencil:(id)a3
+- (BOOL)isAccessoryCategoryPencil:(id)pencil
 {
-  v3 = a3;
-  v4 = [v3 productID] == 546 || objc_msgSend(v3, "productID") == 332 || objc_msgSend(v3, "productID") == 482 || objc_msgSend(v3, "productID") == 1106;
-  v5 = [v3 vendorIDSource] == 1 && objc_msgSend(v3, "vendorID") == 76 && v4;
+  pencilCopy = pencil;
+  v4 = [pencilCopy productID] == 546 || objc_msgSend(pencilCopy, "productID") == 332 || objc_msgSend(pencilCopy, "productID") == 482 || objc_msgSend(pencilCopy, "productID") == 1106;
+  v5 = [pencilCopy vendorIDSource] == 1 && objc_msgSend(pencilCopy, "vendorID") == 76 && v4;
 
   return v5;
 }
@@ -1109,9 +1109,9 @@ LABEL_16:
 - (void)extractBatteryLevelStatus
 {
   v3 = [BatteryLevelStatus alloc];
-  v4 = [(BatteryClientService *)self batteryLevelStatusCharacteristic];
-  v5 = [v4 value];
-  v6 = [(BatteryLevelStatus *)v3 initWithData:v5];
+  batteryLevelStatusCharacteristic = [(BatteryClientService *)self batteryLevelStatusCharacteristic];
+  value = [batteryLevelStatusCharacteristic value];
+  v6 = [(BatteryLevelStatus *)v3 initWithData:value];
 
   if (v6)
   {
@@ -1119,12 +1119,12 @@ LABEL_16:
     if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
     {
       v8 = v7;
-      v9 = [(ClientService *)self peripheral];
-      v10 = [v9 name];
+      peripheral = [(ClientService *)self peripheral];
+      name = [peripheral name];
       *buf = 138412802;
-      v20 = v10;
+      v20 = name;
       v21 = 1024;
-      v22 = [(BatteryClientService *)self batteryLevelCharacteristicFormat];
+      batteryLevelCharacteristicFormat = [(BatteryClientService *)self batteryLevelCharacteristicFormat];
       v23 = 2112;
       v24 = v6;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%@ (0x%04X): %@", buf, 0x1Cu);
@@ -1143,21 +1143,21 @@ LABEL_16:
         goto LABEL_7;
       }
 
-      v11 = [(BatteryClientService *)self powerSourceDetails];
-      v12 = [v11 objectForKeyedSubscript:@"Part Identifier"];
+      powerSourceDetails = [(BatteryClientService *)self powerSourceDetails];
+      v12 = [powerSourceDetails objectForKeyedSubscript:@"Part Identifier"];
 
-      v13 = [(BatteryClientService *)self powerSourceDetails];
-      v14 = [v13 objectForKeyedSubscript:@"Accessory Identifier"];
+      powerSourceDetails2 = [(BatteryClientService *)self powerSourceDetails];
+      v14 = [powerSourceDetails2 objectForKeyedSubscript:@"Accessory Identifier"];
 
-      v15 = [(BatteryClientService *)self powerSourceDetails];
-      [v15 setObject:v14 forKeyedSubscript:@"Group Identifier"];
+      powerSourceDetails3 = [(BatteryClientService *)self powerSourceDetails];
+      [powerSourceDetails3 setObject:v14 forKeyedSubscript:@"Group Identifier"];
 
       if (v12)
       {
 LABEL_7:
         v16 = +[BTLEXpcServer instance];
-        v17 = [(BatteryClientService *)self powerSourceDetails];
-        [v16 sendBatteryServiceNotification:v17];
+        powerSourceDetails4 = [(BatteryClientService *)self powerSourceDetails];
+        [v16 sendBatteryServiceNotification:powerSourceDetails4];
       }
     }
   }

@@ -1,7 +1,7 @@
 @interface APFixedHTTPSessionManager
 - (APFixedHTTPSessionManager)init;
-- (BOOL)cancelTasksForService:(id)a3 withCompletionHandler:(id)a4;
-- (id)sessionForService:(id)a3;
+- (BOOL)cancelTasksForService:(id)service withCompletionHandler:(id)handler;
+- (id)sessionForService:(id)service;
 @end
 
 @implementation APFixedHTTPSessionManager
@@ -26,13 +26,13 @@
   return v5;
 }
 
-- (id)sessionForService:(id)a3
+- (id)sessionForService:(id)service
 {
-  v4 = a3;
+  serviceCopy = service;
   v8 = objc_msgSend_lock(self, v5, v6, v7);
   objc_msgSend_lock(v8, v9, v10, v11);
   v15 = objc_msgSend_sessions(self, v12, v13, v14);
-  v18 = objc_msgSend_objectForKey_(v15, v16, v4, v17);
+  v18 = objc_msgSend_objectForKey_(v15, v16, serviceCopy, v17);
 
   if (!v18)
   {
@@ -41,12 +41,12 @@
     if (v18)
     {
       v23 = objc_msgSend_createSessionBlock(self, v19, v20, v21);
-      v18 = (v23)[2](v23, v4, -1);
+      v18 = (v23)[2](v23, serviceCopy, -1);
 
       if (v18)
       {
         v24 = objc_msgSend_sessions(self, v19, v20, v21);
-        objc_msgSend_setObject_forKey_(v24, v25, v18, v4);
+        objc_msgSend_setObject_forKey_(v24, v25, v18, serviceCopy);
       }
     }
   }
@@ -56,24 +56,24 @@
   return v18;
 }
 
-- (BOOL)cancelTasksForService:(id)a3 withCompletionHandler:(id)a4
+- (BOOL)cancelTasksForService:(id)service withCompletionHandler:(id)handler
 {
   v33 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  serviceCopy = service;
+  handlerCopy = handler;
   v11 = objc_msgSend_lock(self, v8, v9, v10);
   objc_msgSend_lock(v11, v12, v13, v14);
   v18 = objc_msgSend_sessions(self, v15, v16, v17);
-  v21 = objc_msgSend_objectForKey_(v18, v19, v6, v20);
+  v21 = objc_msgSend_objectForKey_(v18, v19, serviceCopy, v20);
 
   if (v21)
   {
-    objc_msgSend_cancelTaskWithCompletionHandler_(v21, v22, v7, v23);
+    objc_msgSend_cancelTaskWithCompletionHandler_(v21, v22, handlerCopy, v23);
     v24 = APLogForCategory(0x22uLL);
     if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
     {
       v31 = 138543362;
-      v32 = v6;
+      v32 = serviceCopy;
       _os_log_impl(&dword_1BADC1000, v24, OS_LOG_TYPE_INFO, "All pending tasks of %{public}@ are canceled.", &v31, 0xCu);
     }
   }
@@ -84,11 +84,11 @@
     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
     {
       v31 = 138543362;
-      v32 = v6;
+      v32 = serviceCopy;
       _os_log_impl(&dword_1BADC1000, v28, OS_LOG_TYPE_ERROR, "Service %{public}@ is not found.", &v31, 0xCu);
     }
 
-    v7[2](v7);
+    handlerCopy[2](handlerCopy);
   }
 
   objc_msgSend_unlock(v11, v25, v26, v27);

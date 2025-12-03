@@ -1,40 +1,40 @@
 @interface FIUIHealthSettingsDatePicker
-- (FIUIHealthSettingsDatePicker)initWithFrame:(CGRect)a3;
-- (void)_dateDidChange:(id)a3;
+- (FIUIHealthSettingsDatePicker)initWithFrame:(CGRect)frame;
+- (void)_dateDidChange:(id)change;
 - (void)layoutSubviews;
 @end
 
 @implementation FIUIHealthSettingsDatePicker
 
-- (FIUIHealthSettingsDatePicker)initWithFrame:(CGRect)a3
+- (FIUIHealthSettingsDatePicker)initWithFrame:(CGRect)frame
 {
   v15.receiver = self;
   v15.super_class = FIUIHealthSettingsDatePicker;
-  v3 = [(FIUIHealthSettingsDatePicker *)&v15 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(FIUIHealthSettingsDatePicker *)&v15 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     [(FIUIHealthSettingsDatePicker *)v3 setDatePickerMode:1];
     [(FIUIHealthSettingsDatePicker *)v4 setPreferredDatePickerStyle:1];
-    v5 = [MEMORY[0x1E695DFE8] localTimeZone];
-    [(FIUIHealthSettingsDatePicker *)v4 setTimeZone:v5];
+    localTimeZone = [MEMORY[0x1E695DFE8] localTimeZone];
+    [(FIUIHealthSettingsDatePicker *)v4 setTimeZone:localTimeZone];
 
-    v6 = [MEMORY[0x1E695DF00] date];
-    [(FIUIHealthSettingsDatePicker *)v4 setMaximumDate:v6];
+    date = [MEMORY[0x1E695DF00] date];
+    [(FIUIHealthSettingsDatePicker *)v4 setMaximumDate:date];
 
-    v7 = [MEMORY[0x1E695DEE8] currentCalendar];
-    v8 = [MEMORY[0x1E695DF00] date];
-    v9 = [v7 components:4 fromDate:v8];
+    currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+    date2 = [MEMORY[0x1E695DF00] date];
+    v9 = [currentCalendar components:4 fromDate:date2];
 
     [v9 setYear:{objc_msgSend(v9, "year") - 150}];
     [v9 setDay:1];
     [v9 setMonth:1];
-    v10 = [MEMORY[0x1E695DEE8] currentCalendar];
-    v11 = [v10 dateFromComponents:v9];
+    currentCalendar2 = [MEMORY[0x1E695DEE8] currentCalendar];
+    v11 = [currentCalendar2 dateFromComponents:v9];
 
     [(FIUIHealthSettingsDatePicker *)v4 setMinimumDate:v11];
-    v12 = [MEMORY[0x1E69DC888] grayColor];
-    [(FIUIHealthSettingsDatePicker *)v4 _setTextColor:v12];
+    grayColor = [MEMORY[0x1E69DC888] grayColor];
+    [(FIUIHealthSettingsDatePicker *)v4 _setTextColor:grayColor];
 
     [(FIUIHealthSettingsDatePicker *)v4 _setHighlightsToday:0];
     [(FIUIHealthSettingsDatePicker *)v4 addTarget:v4 action:sel__dateDidChange_ forControlEvents:4096];
@@ -53,15 +53,15 @@
   _changeSeparatorLineColors(self);
 }
 
-- (void)_dateDidChange:(id)a3
+- (void)_dateDidChange:(id)change
 {
-  v4 = [(FIUIHealthSettingsDatePicker *)self dateUpdateHandler];
+  dateUpdateHandler = [(FIUIHealthSettingsDatePicker *)self dateUpdateHandler];
 
-  if (v4)
+  if (dateUpdateHandler)
   {
-    v6 = [(FIUIHealthSettingsDatePicker *)self dateUpdateHandler];
-    v5 = [(FIUIHealthSettingsDatePicker *)self date];
-    v6[2](v6, v5);
+    dateUpdateHandler2 = [(FIUIHealthSettingsDatePicker *)self dateUpdateHandler];
+    date = [(FIUIHealthSettingsDatePicker *)self date];
+    dateUpdateHandler2[2](dateUpdateHandler2, date);
   }
 }
 

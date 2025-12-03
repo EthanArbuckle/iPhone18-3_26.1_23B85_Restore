@@ -1,28 +1,28 @@
 @interface DMTimeManager
-+ (double)intervalFromStart:(unint64_t)a3 toEnd:(unint64_t)a4;
-+ (double)intervalSinceTimestamp:(unint64_t)a3;
++ (double)intervalFromStart:(unint64_t)start toEnd:(unint64_t)end;
++ (double)intervalSinceTimestamp:(unint64_t)timestamp;
 @end
 
 @implementation DMTimeManager
 
-+ (double)intervalFromStart:(unint64_t)a3 toEnd:(unint64_t)a4
++ (double)intervalFromStart:(unint64_t)start toEnd:(unint64_t)end
 {
   if (qword_100030A30 != -1)
   {
     sub_100012B60();
   }
 
-  *&v7 = a3;
+  *&v7 = start;
   LODWORD(v7) = dword_100030A28;
   LODWORD(v4) = *algn_100030A2C;
-  return (a4 - a3) * v7 / v4 / 1000000000.0;
+  return (end - start) * v7 / v4 / 1000000000.0;
 }
 
-+ (double)intervalSinceTimestamp:(unint64_t)a3
++ (double)intervalSinceTimestamp:(unint64_t)timestamp
 {
-  v5 = [a1 currentTimestamp];
+  currentTimestamp = [self currentTimestamp];
 
-  [a1 intervalFromStart:a3 toEnd:v5];
+  [self intervalFromStart:timestamp toEnd:currentTimestamp];
   return result;
 }
 

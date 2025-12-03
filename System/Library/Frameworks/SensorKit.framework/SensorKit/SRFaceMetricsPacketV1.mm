@@ -1,5 +1,5 @@
 @interface SRFaceMetricsPacketV1
-+ (id)packetWithHAFacialMetricsPacket:(id *)a3;
++ (id)packetWithHAFacialMetricsPacket:(id *)packet;
 - (NSArray)gaze;
 - (NSArray)partialFaceExpressions;
 - (NSArray)rotation;
@@ -11,9 +11,9 @@
 
 @implementation SRFaceMetricsPacketV1
 
-+ (id)packetWithHAFacialMetricsPacket:(id *)a3
++ (id)packetWithHAFacialMetricsPacket:(id *)packet
 {
-  if (a3->var0 != 1)
+  if (packet->var0 != 1)
   {
     v9 = _MergedGlobals_4;
     if (os_log_type_enabled(_MergedGlobals_4, OS_LOG_TYPE_FAULT))
@@ -28,7 +28,7 @@ LABEL_15:
     return 0;
   }
 
-  v4 = [MEMORY[0x1E696AFB0] sr_UUIDWithUint32_t:a3->var1];
+  v4 = [MEMORY[0x1E696AFB0] sr_UUIDWithUint32_t:packet->var1];
   if (!v4)
   {
     v9 = _MergedGlobals_4;
@@ -65,7 +65,7 @@ LABEL_15:
   v7 = v6;
   if (v6)
   {
-    v6->_packet = a3;
+    v6->_packet = packet;
     v6->_faceIdentifier = v5;
   }
 

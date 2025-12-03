@@ -1,23 +1,23 @@
 @interface BLSBacklightChangeSourceEventDisplaySwipeMetadata
-- (BLSBacklightChangeSourceEventDisplaySwipeMetadata)initWithCoder:(id)a3;
-- (BLSBacklightChangeSourceEventDisplaySwipeMetadata)initWithDirection:(int64_t)a3;
-- (BLSBacklightChangeSourceEventDisplaySwipeMetadata)initWithXPCDictionary:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BLSBacklightChangeSourceEventDisplaySwipeMetadata)initWithCoder:(id)coder;
+- (BLSBacklightChangeSourceEventDisplaySwipeMetadata)initWithDirection:(int64_t)direction;
+- (BLSBacklightChangeSourceEventDisplaySwipeMetadata)initWithXPCDictionary:(id)dictionary;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithXPCDictionary:(id)a3;
+- (void)encodeWithXPCDictionary:(id)dictionary;
 @end
 
 @implementation BLSBacklightChangeSourceEventDisplaySwipeMetadata
 
-- (BLSBacklightChangeSourceEventDisplaySwipeMetadata)initWithDirection:(int64_t)a3
+- (BLSBacklightChangeSourceEventDisplaySwipeMetadata)initWithDirection:(int64_t)direction
 {
   v5.receiver = self;
   v5.super_class = BLSBacklightChangeSourceEventDisplaySwipeMetadata;
   result = [(BLSBacklightChangeSourceEventDisplaySwipeMetadata *)&v5 init];
   if (result)
   {
-    result->_direction = a3;
+    result->_direction = direction;
   }
 
   return result;
@@ -39,24 +39,24 @@
   }
 
   [v3 appendString:v6 withName:@"direction"];
-  v7 = [v4 build];
+  build = [v4 build];
 
-  return v7;
+  return build;
 }
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x277CF0C40] builder];
-  v4 = [v3 appendInteger:self->_direction];
-  v5 = [v3 hash];
+  builder = [MEMORY[0x277CF0C40] builder];
+  v4 = [builder appendInteger:self->_direction];
+  v5 = [builder hash];
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
@@ -67,7 +67,7 @@
     if (objc_opt_isKindOfClass())
     {
       direction = self->_direction;
-      v6 = direction == [(BLSBacklightChangeSourceEventDisplaySwipeMetadata *)v4 direction];
+      v6 = direction == [(BLSBacklightChangeSourceEventDisplaySwipeMetadata *)equalCopy direction];
     }
 
     else
@@ -79,23 +79,23 @@
   return v6;
 }
 
-- (BLSBacklightChangeSourceEventDisplaySwipeMetadata)initWithXPCDictionary:(id)a3
+- (BLSBacklightChangeSourceEventDisplaySwipeMetadata)initWithXPCDictionary:(id)dictionary
 {
-  v4 = a3;
-  int64 = xpc_dictionary_get_int64(v4, [@"direction" UTF8String]);
+  dictionaryCopy = dictionary;
+  int64 = xpc_dictionary_get_int64(dictionaryCopy, [@"direction" UTF8String]);
 
   return [(BLSBacklightChangeSourceEventDisplaySwipeMetadata *)self initWithDirection:int64];
 }
 
-- (void)encodeWithXPCDictionary:(id)a3
+- (void)encodeWithXPCDictionary:(id)dictionary
 {
-  xdict = a3;
+  xdict = dictionary;
   xpc_dictionary_set_int64(xdict, [@"direction" UTF8String], self->_direction);
 }
 
-- (BLSBacklightChangeSourceEventDisplaySwipeMetadata)initWithCoder:(id)a3
+- (BLSBacklightChangeSourceEventDisplaySwipeMetadata)initWithCoder:(id)coder
 {
-  v4 = [a3 decodeIntegerForKey:@"direction"];
+  v4 = [coder decodeIntegerForKey:@"direction"];
 
   return [(BLSBacklightChangeSourceEventDisplaySwipeMetadata *)self initWithDirection:v4];
 }

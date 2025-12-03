@@ -6,72 +6,72 @@
 + (id)nodeSortDescriptors;
 + (id)peopleSortDescriptors;
 + (id)personProcessingSortDescriptors;
-- (BOOL)pn_performChangesAndWait:(id)a3 error:(id *)a4;
-- (PNPersonClusterManager)initWithPhotoLibrary:(id)a3 detectionType:(signed __int16)a4 promoterDelegate:(id)a5;
-- (float)_adjustDistanceFactorForPerson:(id)a3 andPerson:(id)a4 forAgeType:(unsigned __int16)a5 andAgeType:(unsigned __int16)a6;
-- (float)animalprintBasedDistanceBetweenPetFaces:(id)a3 andPetFaces:(id)a4;
-- (float)distanceBetweenHuman:(id)a3 andHuman:(id)a4 useCommonMoments:(BOOL)a5 minAgeType:(unsigned __int16 *)a6 updateBlock:(id)a7 error:(id *)a8;
-- (float)distanceBetweenPerson:(id)a3 andPerson:(id)a4 useCommonMoments:(BOOL)a5 minAgeType:(unsigned __int16 *)a6 updateBlock:(id)a7 error:(id *)a8;
-- (float)distanceBetweenPet:(id)a3 andPet:(id)a4 useCommonMoments:(BOOL)a5;
-- (float)distanceBetweenPetFaces:(id)a3 andPetFaces:(id)a4;
-- (float)distanceWithOverlapCheckBetweenPerson:(id)a3 andPerson:(id)a4 useCommonMoments:(BOOL)a5 minAgeType:(unsigned __int16 *)a6 updateBlock:(id)a7 error:(id *)a8;
-- (float)mergeConfidenceBetweenPersonLocalIdentifier:(id)a3 andCandidateLocalIdentifiers:(id)a4;
-- (float)momentBasedDistanceBetweenPet:(id)a3 andPet:(id)a4;
+- (BOOL)pn_performChangesAndWait:(id)wait error:(id *)error;
+- (PNPersonClusterManager)initWithPhotoLibrary:(id)library detectionType:(signed __int16)type promoterDelegate:(id)delegate;
+- (float)_adjustDistanceFactorForPerson:(id)person andPerson:(id)andPerson forAgeType:(unsigned __int16)type andAgeType:(unsigned __int16)ageType;
+- (float)animalprintBasedDistanceBetweenPetFaces:(id)faces andPetFaces:(id)petFaces;
+- (float)distanceBetweenHuman:(id)human andHuman:(id)andHuman useCommonMoments:(BOOL)moments minAgeType:(unsigned __int16 *)type updateBlock:(id)block error:(id *)error;
+- (float)distanceBetweenPerson:(id)person andPerson:(id)andPerson useCommonMoments:(BOOL)moments minAgeType:(unsigned __int16 *)type updateBlock:(id)block error:(id *)error;
+- (float)distanceBetweenPet:(id)pet andPet:(id)andPet useCommonMoments:(BOOL)moments;
+- (float)distanceBetweenPetFaces:(id)faces andPetFaces:(id)petFaces;
+- (float)distanceWithOverlapCheckBetweenPerson:(id)person andPerson:(id)andPerson useCommonMoments:(BOOL)moments minAgeType:(unsigned __int16 *)type updateBlock:(id)block error:(id *)error;
+- (float)mergeConfidenceBetweenPersonLocalIdentifier:(id)identifier andCandidateLocalIdentifiers:(id)identifiers;
+- (float)momentBasedDistanceBetweenPet:(id)pet andPet:(id)andPet;
 - (float)pn_faceProcessingProgress;
-- (id)_mapPersonClustersToFaceGroups:(id)a3;
-- (id)_mapPersonClustersToPersons:(id)a3;
-- (id)_representativeFaceObservationForPerson:(id)a3 ageType:(unsigned __int16 *)a4 inAssetCollections:(id)a5;
-- (id)pn_fetchAssetsForFaceGroup:(id)a3;
-- (id)pn_fetchAssetsForFaceLocalIdentifiers:(id)a3;
-- (id)pn_fetchAssetsInMoment:(id)a3;
-- (id)pn_fetchAssetsWithLocalIdentifiers:(id)a3;
-- (id)pn_fetchCandidatePersonsForPerson:(id)a3;
+- (id)_mapPersonClustersToFaceGroups:(id)groups;
+- (id)_mapPersonClustersToPersons:(id)persons;
+- (id)_representativeFaceObservationForPerson:(id)person ageType:(unsigned __int16 *)type inAssetCollections:(id)collections;
+- (id)pn_fetchAssetsForFaceGroup:(id)group;
+- (id)pn_fetchAssetsForFaceLocalIdentifiers:(id)identifiers;
+- (id)pn_fetchAssetsInMoment:(id)moment;
+- (id)pn_fetchAssetsWithLocalIdentifiers:(id)identifiers;
+- (id)pn_fetchCandidatePersonsForPerson:(id)person;
 - (id)pn_fetchFaceGroups;
-- (id)pn_fetchFaceGroupsForPerson:(id)a3;
-- (id)pn_fetchFacesForFaceGroup:(id)a3;
-- (id)pn_fetchFacesForPerson:(id)a3 inMoment:(id)a4;
-- (id)pn_fetchFacesForPersonLocalIdentifiers:(id)a3 inMoment:(id)a4;
-- (id)pn_fetchFacesGroupedByAssetLocalIdentifierForAssets:(id)a3;
-- (id)pn_fetchFacesWithLocalIdentifiers:(id)a3;
+- (id)pn_fetchFaceGroupsForPerson:(id)person;
+- (id)pn_fetchFacesForFaceGroup:(id)group;
+- (id)pn_fetchFacesForPerson:(id)person inMoment:(id)moment;
+- (id)pn_fetchFacesForPersonLocalIdentifiers:(id)identifiers inMoment:(id)moment;
+- (id)pn_fetchFacesGroupedByAssetLocalIdentifierForAssets:(id)assets;
+- (id)pn_fetchFacesWithLocalIdentifiers:(id)identifiers;
 - (id)pn_fetchInvalidAssetIdentifiersForCommonComparison;
-- (id)pn_fetchInvalidCandidatePersonsForPerson:(id)a3;
+- (id)pn_fetchInvalidCandidatePersonsForPerson:(id)person;
 - (id)pn_fetchMoments;
-- (id)pn_fetchMomentsForAssetsWithLocalIdentifiers:(id)a3;
-- (id)pn_fetchMomentsWithLocalIdentifiers:(id)a3;
-- (id)pn_fetchPersonsGroupedByAssetLocalIdentifierForAssets:(id)a3;
-- (id)pn_fetchPersonsInMoment:(id)a3;
-- (id)pn_fetchPersonsWithLocalIdentifiers:(id)a3;
-- (id)pn_fetchPersonsWithType:(unint64_t)a3;
+- (id)pn_fetchMomentsForAssetsWithLocalIdentifiers:(id)identifiers;
+- (id)pn_fetchMomentsWithLocalIdentifiers:(id)identifiers;
+- (id)pn_fetchPersonsGroupedByAssetLocalIdentifierForAssets:(id)assets;
+- (id)pn_fetchPersonsInMoment:(id)moment;
+- (id)pn_fetchPersonsWithLocalIdentifiers:(id)identifiers;
+- (id)pn_fetchPersonsWithType:(unint64_t)type;
 - (id)pn_lastAssetDate;
 - (id)pn_persistentStorageDirectoryURL;
-- (id)representativeFaceObservationForFaces:(id)a3 ageType:(unsigned __int16 *)a4 inPerson:(id)a5;
-- (int64_t)assetsOverlapBetweenPerson:(id)a3 andPerson:(id)a4;
-- (int64_t)assetsOverlapBetweenPersonAssetIdentifiers:(id)a3 andPersonAssetIdentifiers:(id)a4;
-- (unint64_t)numberOfAssetsInCommonBetweenPerson:(id)a3 andPerson:(id)a4;
-- (unint64_t)numberOfAssetsInCommonBetweenPersonAssetIdentifiers:(id)a3 andPersonAssetIdentifiers:(id)a4;
-- (unint64_t)numberOfMomentsInCommonBetweenPerson:(id)a3 andPerson:(id)a4;
+- (id)representativeFaceObservationForFaces:(id)faces ageType:(unsigned __int16 *)type inPerson:(id)person;
+- (int64_t)assetsOverlapBetweenPerson:(id)person andPerson:(id)andPerson;
+- (int64_t)assetsOverlapBetweenPersonAssetIdentifiers:(id)identifiers andPersonAssetIdentifiers:(id)assetIdentifiers;
+- (unint64_t)numberOfAssetsInCommonBetweenPerson:(id)person andPerson:(id)andPerson;
+- (unint64_t)numberOfAssetsInCommonBetweenPersonAssetIdentifiers:(id)identifiers andPersonAssetIdentifiers:(id)assetIdentifiers;
+- (unint64_t)numberOfMomentsInCommonBetweenPerson:(id)person andPerson:(id)andPerson;
 - (unint64_t)pn_numberOfFacesWithFaceprints;
-- (unsigned)minAgeTypeForFaceAgeType:(unsigned __int16)a3 andFaceAgeType:(unsigned __int16)a4;
+- (unsigned)minAgeTypeForFaceAgeType:(unsigned __int16)type andFaceAgeType:(unsigned __int16)ageType;
 - (void)clearCaches;
-- (void)invalidateCachesForPerson:(id)a3;
-- (void)mergePersons:(id)a3 withPerson:(id)a4;
-- (void)updateConfidenceCacheBetweenPersonLocalIdentifier:(id)a3 andOtherPersonLocalIdentifier:(id)a4 withDistance:(double)a5;
+- (void)invalidateCachesForPerson:(id)person;
+- (void)mergePersons:(id)persons withPerson:(id)person;
+- (void)updateConfidenceCacheBetweenPersonLocalIdentifier:(id)identifier andOtherPersonLocalIdentifier:(id)localIdentifier withDistance:(double)distance;
 @end
 
 @implementation PNPersonClusterManager
 
 - (id)pn_lastAssetDate
 {
-  v2 = [(PNPersonClusterManager *)self photoLibrary];
-  v3 = [v2 pn_lastAssetDate];
+  photoLibrary = [(PNPersonClusterManager *)self photoLibrary];
+  pn_lastAssetDate = [photoLibrary pn_lastAssetDate];
 
-  return v3;
+  return pn_lastAssetDate;
 }
 
 - (float)pn_faceProcessingProgress
 {
-  v2 = [(PNPersonClusterManager *)self photoLibrary];
-  [v2 pn_faceProcessingProgress];
+  photoLibrary = [(PNPersonClusterManager *)self photoLibrary];
+  [photoLibrary pn_faceProcessingProgress];
   v4 = v3;
 
   return v4;
@@ -79,164 +79,164 @@
 
 - (id)pn_fetchInvalidAssetIdentifiersForCommonComparison
 {
-  v2 = [(PNPersonClusterManager *)self photoLibrary];
-  v3 = [v2 pn_fetchInvalidAssetIdentifiersForCommonComparison];
+  photoLibrary = [(PNPersonClusterManager *)self photoLibrary];
+  pn_fetchInvalidAssetIdentifiersForCommonComparison = [photoLibrary pn_fetchInvalidAssetIdentifiersForCommonComparison];
 
-  return v3;
+  return pn_fetchInvalidAssetIdentifiersForCommonComparison;
 }
 
-- (id)pn_fetchFaceGroupsForPerson:(id)a3
+- (id)pn_fetchFaceGroupsForPerson:(id)person
 {
-  v4 = a3;
-  v5 = [(PNPersonClusterManager *)self photoLibrary];
-  v6 = [v4 sourcePerson];
+  personCopy = person;
+  photoLibrary = [(PNPersonClusterManager *)self photoLibrary];
+  sourcePerson = [personCopy sourcePerson];
 
-  v7 = [v5 pn_fetchFaceGroupsForPerson:v6];
+  v7 = [photoLibrary pn_fetchFaceGroupsForPerson:sourcePerson];
 
   return v7;
 }
 
 - (id)pn_fetchFaceGroups
 {
-  v2 = [(PNPersonClusterManager *)self photoLibrary];
-  v3 = [v2 pn_fetchFaceGroups];
+  photoLibrary = [(PNPersonClusterManager *)self photoLibrary];
+  pn_fetchFaceGroups = [photoLibrary pn_fetchFaceGroups];
 
-  return v3;
+  return pn_fetchFaceGroups;
 }
 
-- (id)pn_fetchAssetsForFaceGroup:(id)a3
+- (id)pn_fetchAssetsForFaceGroup:(id)group
 {
-  v4 = a3;
-  v5 = [(PNPersonClusterManager *)self photoLibrary];
-  v6 = [v5 pn_fetchAssetsForFaceGroup:v4];
+  groupCopy = group;
+  photoLibrary = [(PNPersonClusterManager *)self photoLibrary];
+  v6 = [photoLibrary pn_fetchAssetsForFaceGroup:groupCopy];
 
   return v6;
 }
 
-- (id)pn_fetchAssetsInMoment:(id)a3
+- (id)pn_fetchAssetsInMoment:(id)moment
 {
-  v4 = a3;
-  v5 = [(PNPersonClusterManager *)self photoLibrary];
-  v6 = [v5 pn_fetchAssetsInMoment:v4];
+  momentCopy = moment;
+  photoLibrary = [(PNPersonClusterManager *)self photoLibrary];
+  v6 = [photoLibrary pn_fetchAssetsInMoment:momentCopy];
 
   return v6;
 }
 
-- (id)pn_fetchAssetsWithLocalIdentifiers:(id)a3
+- (id)pn_fetchAssetsWithLocalIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  v5 = [(PNPersonClusterManager *)self photoLibrary];
-  v6 = [v5 pn_fetchAssetsWithLocalIdentifiers:v4];
+  identifiersCopy = identifiers;
+  photoLibrary = [(PNPersonClusterManager *)self photoLibrary];
+  v6 = [photoLibrary pn_fetchAssetsWithLocalIdentifiers:identifiersCopy];
 
   return v6;
 }
 
-- (id)pn_fetchMomentsForAssetsWithLocalIdentifiers:(id)a3
+- (id)pn_fetchMomentsForAssetsWithLocalIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  v5 = [(PNPersonClusterManager *)self photoLibrary];
-  v6 = [v5 pn_fetchMomentsForAssetsWithLocalIdentifiers:v4];
+  identifiersCopy = identifiers;
+  photoLibrary = [(PNPersonClusterManager *)self photoLibrary];
+  v6 = [photoLibrary pn_fetchMomentsForAssetsWithLocalIdentifiers:identifiersCopy];
 
   return v6;
 }
 
-- (id)pn_fetchMomentsWithLocalIdentifiers:(id)a3
+- (id)pn_fetchMomentsWithLocalIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  v5 = [(PNPersonClusterManager *)self photoLibrary];
-  v6 = [v5 pn_fetchMomentsWithLocalIdentifiers:v4];
+  identifiersCopy = identifiers;
+  photoLibrary = [(PNPersonClusterManager *)self photoLibrary];
+  v6 = [photoLibrary pn_fetchMomentsWithLocalIdentifiers:identifiersCopy];
 
   return v6;
 }
 
 - (id)pn_fetchMoments
 {
-  v2 = [(PNPersonClusterManager *)self photoLibrary];
-  v3 = [v2 pn_fetchMoments];
+  photoLibrary = [(PNPersonClusterManager *)self photoLibrary];
+  pn_fetchMoments = [photoLibrary pn_fetchMoments];
 
-  return v3;
+  return pn_fetchMoments;
 }
 
-- (id)pn_fetchAssetsForFaceLocalIdentifiers:(id)a3
+- (id)pn_fetchAssetsForFaceLocalIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  v5 = [(PNPersonClusterManager *)self photoLibrary];
-  v6 = [v5 pn_fetchAssetsForFaceLocalIdentifiers:v4];
+  identifiersCopy = identifiers;
+  photoLibrary = [(PNPersonClusterManager *)self photoLibrary];
+  v6 = [photoLibrary pn_fetchAssetsForFaceLocalIdentifiers:identifiersCopy];
 
   return v6;
 }
 
-- (id)pn_fetchFacesGroupedByAssetLocalIdentifierForAssets:(id)a3
+- (id)pn_fetchFacesGroupedByAssetLocalIdentifierForAssets:(id)assets
 {
-  v4 = a3;
-  v5 = [(PNPersonClusterManager *)self photoLibrary];
-  v6 = [v5 pn_fetchFacesGroupedByAssetLocalIdentifierForAssets:v4];
+  assetsCopy = assets;
+  photoLibrary = [(PNPersonClusterManager *)self photoLibrary];
+  v6 = [photoLibrary pn_fetchFacesGroupedByAssetLocalIdentifierForAssets:assetsCopy];
 
   return v6;
 }
 
-- (id)pn_fetchFacesForFaceGroup:(id)a3
+- (id)pn_fetchFacesForFaceGroup:(id)group
 {
-  v4 = a3;
-  v5 = [(PNPersonClusterManager *)self photoLibrary];
-  v6 = [v5 pn_fetchFacesForFaceGroup:v4];
+  groupCopy = group;
+  photoLibrary = [(PNPersonClusterManager *)self photoLibrary];
+  v6 = [photoLibrary pn_fetchFacesForFaceGroup:groupCopy];
 
   return v6;
 }
 
-- (id)pn_fetchFacesForPersonLocalIdentifiers:(id)a3 inMoment:(id)a4
+- (id)pn_fetchFacesForPersonLocalIdentifiers:(id)identifiers inMoment:(id)moment
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PNPersonClusterManager *)self photoLibrary];
-  v9 = [v8 pn_fetchFacesForPersonLocalIdentifiers:v7 inMoment:v6];
+  momentCopy = moment;
+  identifiersCopy = identifiers;
+  photoLibrary = [(PNPersonClusterManager *)self photoLibrary];
+  v9 = [photoLibrary pn_fetchFacesForPersonLocalIdentifiers:identifiersCopy inMoment:momentCopy];
 
   return v9;
 }
 
-- (id)pn_fetchFacesForPerson:(id)a3 inMoment:(id)a4
+- (id)pn_fetchFacesForPerson:(id)person inMoment:(id)moment
 {
   v40 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  personCopy = person;
+  momentCopy = moment;
+  if (momentCopy)
   {
-    v8 = [v6 backingFaceIdentifiersByMomentIdentifiers];
-    v9 = [v7 localIdentifier];
-    v10 = [v8 objectForKeyedSubscript:v9];
+    backingFaceIdentifiersByMomentIdentifiers = [personCopy backingFaceIdentifiersByMomentIdentifiers];
+    localIdentifier = [momentCopy localIdentifier];
+    photoLibrary2 = [backingFaceIdentifiersByMomentIdentifiers objectForKeyedSubscript:localIdentifier];
 
-    v11 = [(PNPersonClusterManager *)self photoLibrary];
-    if (v10)
+    photoLibrary = [(PNPersonClusterManager *)self photoLibrary];
+    if (photoLibrary2)
     {
-      v12 = [v10 allObjects];
-      v13 = [v11 pn_fetchFacesWithLocalIdentifiers:v12];
+      allObjects = [photoLibrary2 allObjects];
+      v13 = [photoLibrary pn_fetchFacesWithLocalIdentifiers:allObjects];
     }
 
     else
     {
-      v16 = [v6 personLocalIdentifiers];
-      v17 = [v11 pn_fetchFacesForPersonLocalIdentifiers:v16 inMoment:v7];
+      personLocalIdentifiers = [personCopy personLocalIdentifiers];
+      v17 = [photoLibrary pn_fetchFacesForPersonLocalIdentifiers:personLocalIdentifiers inMoment:momentCopy];
 
       v18 = objc_opt_new();
       v33 = v17;
-      v19 = [v17 fetchedObjects];
-      v20 = [v6 sourceFaceGroup];
-      v34 = v6;
-      if (v20)
+      fetchedObjects = [v17 fetchedObjects];
+      sourceFaceGroup = [personCopy sourceFaceGroup];
+      v34 = personCopy;
+      if (sourceFaceGroup)
       {
-        v21 = [v6 backingFaceIdentifiers];
+        backingFaceIdentifiers = [personCopy backingFaceIdentifiers];
       }
 
       else
       {
-        v21 = 0;
+        backingFaceIdentifiers = 0;
       }
 
       v37 = 0u;
       v38 = 0u;
       v35 = 0u;
       v36 = 0u;
-      v13 = v19;
+      v13 = fetchedObjects;
       v22 = [v13 countByEnumeratingWithState:&v35 objects:v39 count:16];
       if (v22)
       {
@@ -252,10 +252,10 @@
             }
 
             v26 = *(*(&v35 + 1) + 8 * i);
-            if (v21)
+            if (backingFaceIdentifiers)
             {
-              v27 = [*(*(&v35 + 1) + 8 * i) localIdentifier];
-              v28 = [v21 containsObject:v27];
+              localIdentifier2 = [*(*(&v35 + 1) + 8 * i) localIdentifier];
+              v28 = [backingFaceIdentifiers containsObject:localIdentifier2];
 
               if (!v28)
               {
@@ -263,8 +263,8 @@
               }
             }
 
-            v29 = [v26 localIdentifier];
-            [v18 addObject:v29];
+            localIdentifier3 = [v26 localIdentifier];
+            [v18 addObject:localIdentifier3];
           }
 
           v23 = [v13 countByEnumeratingWithState:&v35 objects:v39 count:16];
@@ -273,48 +273,48 @@
         while (v23);
       }
 
-      v6 = v34;
-      v30 = [v34 backingFaceIdentifiersByMomentIdentifiers];
-      v31 = [v7 localIdentifier];
-      [v30 setObject:v18 forKeyedSubscript:v31];
+      personCopy = v34;
+      backingFaceIdentifiersByMomentIdentifiers2 = [v34 backingFaceIdentifiersByMomentIdentifiers];
+      localIdentifier4 = [momentCopy localIdentifier];
+      [backingFaceIdentifiersByMomentIdentifiers2 setObject:v18 forKeyedSubscript:localIdentifier4];
 
-      v10 = 0;
+      photoLibrary2 = 0;
     }
   }
 
   else
   {
-    v10 = [(PNPersonClusterManager *)self photoLibrary];
-    v14 = [v6 backingFaceIdentifiers];
-    v15 = [v14 allObjects];
-    v13 = [v10 pn_fetchFacesWithLocalIdentifiers:v15];
+    photoLibrary2 = [(PNPersonClusterManager *)self photoLibrary];
+    backingFaceIdentifiers2 = [personCopy backingFaceIdentifiers];
+    allObjects2 = [backingFaceIdentifiers2 allObjects];
+    v13 = [photoLibrary2 pn_fetchFacesWithLocalIdentifiers:allObjects2];
   }
 
   return v13;
 }
 
-- (id)pn_fetchFacesWithLocalIdentifiers:(id)a3
+- (id)pn_fetchFacesWithLocalIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  v5 = [(PNPersonClusterManager *)self photoLibrary];
-  v6 = [v5 pn_fetchFacesWithLocalIdentifiers:v4];
+  identifiersCopy = identifiers;
+  photoLibrary = [(PNPersonClusterManager *)self photoLibrary];
+  v6 = [photoLibrary pn_fetchFacesWithLocalIdentifiers:identifiersCopy];
 
   return v6;
 }
 
 - (unint64_t)pn_numberOfFacesWithFaceprints
 {
-  v2 = [(PNPersonClusterManager *)self photoLibrary];
-  v3 = [v2 pn_numberOfFacesWithFaceprints];
+  photoLibrary = [(PNPersonClusterManager *)self photoLibrary];
+  pn_numberOfFacesWithFaceprints = [photoLibrary pn_numberOfFacesWithFaceprints];
 
-  return v3;
+  return pn_numberOfFacesWithFaceprints;
 }
 
-- (id)pn_fetchPersonsGroupedByAssetLocalIdentifierForAssets:(id)a3
+- (id)pn_fetchPersonsGroupedByAssetLocalIdentifierForAssets:(id)assets
 {
-  v4 = a3;
-  v5 = [(PNPersonClusterManager *)self photoLibrary];
-  v6 = [v5 pn_fetchPersonsGroupedByAssetLocalIdentifierForAssets:v4];
+  assetsCopy = assets;
+  photoLibrary = [(PNPersonClusterManager *)self photoLibrary];
+  v6 = [photoLibrary pn_fetchPersonsGroupedByAssetLocalIdentifierForAssets:assetsCopy];
 
   v7 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v6, "count")}];
   v11[0] = MEMORY[0x1E69E9820];
@@ -323,7 +323,7 @@
   v11[3] = &unk_1E82A25B0;
   v8 = v7;
   v12 = v8;
-  v13 = self;
+  selfCopy = self;
   [v6 enumerateKeysAndObjectsUsingBlock:v11];
   v9 = v8;
 
@@ -338,76 +338,76 @@ void __80__PNPersonClusterManager_pn_fetchPersonsGroupedByAssetLocalIdentifierFo
   [*(a1 + 32) setObject:v7 forKeyedSubscript:v6];
 }
 
-- (id)pn_fetchInvalidCandidatePersonsForPerson:(id)a3
+- (id)pn_fetchInvalidCandidatePersonsForPerson:(id)person
 {
-  v4 = a3;
-  v5 = [(PNPersonClusterManager *)self photoLibrary];
-  v6 = [v4 sourcePerson];
+  personCopy = person;
+  photoLibrary = [(PNPersonClusterManager *)self photoLibrary];
+  sourcePerson = [personCopy sourcePerson];
 
-  v7 = [v5 pn_fetchInvalidCandidatePersonsForPerson:v6];
+  v7 = [photoLibrary pn_fetchInvalidCandidatePersonsForPerson:sourcePerson];
 
   v8 = [(PNPersonClusterManager *)self _mapPersonClustersToPersons:v7];
 
   return v8;
 }
 
-- (id)pn_fetchCandidatePersonsForPerson:(id)a3
+- (id)pn_fetchCandidatePersonsForPerson:(id)person
 {
-  v4 = a3;
-  v5 = [(PNPersonClusterManager *)self photoLibrary];
-  v6 = [v4 sourcePerson];
+  personCopy = person;
+  photoLibrary = [(PNPersonClusterManager *)self photoLibrary];
+  sourcePerson = [personCopy sourcePerson];
 
-  v7 = [v5 pn_fetchCandidatePersonsForPerson:v6];
+  v7 = [photoLibrary pn_fetchCandidatePersonsForPerson:sourcePerson];
 
   v8 = [(PNPersonClusterManager *)self _mapPersonClustersToPersons:v7];
 
   return v8;
 }
 
-- (id)pn_fetchPersonsInMoment:(id)a3
+- (id)pn_fetchPersonsInMoment:(id)moment
 {
-  v4 = a3;
-  v5 = [(PNPersonClusterManager *)self photoLibrary];
-  v6 = [v5 pn_fetchPersonsInMoment:v4];
+  momentCopy = moment;
+  photoLibrary = [(PNPersonClusterManager *)self photoLibrary];
+  v6 = [photoLibrary pn_fetchPersonsInMoment:momentCopy];
 
   v7 = [(PNPersonClusterManager *)self _mapPersonClustersToPersons:v6];
 
   return v7;
 }
 
-- (id)pn_fetchPersonsWithType:(unint64_t)a3
+- (id)pn_fetchPersonsWithType:(unint64_t)type
 {
-  v5 = [(PNPersonClusterManager *)self photoLibrary];
-  v6 = v5;
-  if (a3)
+  photoLibrary = [(PNPersonClusterManager *)self photoLibrary];
+  v6 = photoLibrary;
+  if (type)
   {
-    v7 = [v5 pn_fetchPersonsWithType:a3];
+    pn_fetchFaceGroups = [photoLibrary pn_fetchPersonsWithType:type];
 
-    [(PNPersonClusterManager *)self _mapPersonClustersToPersons:v7];
+    [(PNPersonClusterManager *)self _mapPersonClustersToPersons:pn_fetchFaceGroups];
   }
 
   else
   {
-    v7 = [v5 pn_fetchFaceGroups];
+    pn_fetchFaceGroups = [photoLibrary pn_fetchFaceGroups];
 
-    [(PNPersonClusterManager *)self _mapPersonClustersToFaceGroups:v7];
+    [(PNPersonClusterManager *)self _mapPersonClustersToFaceGroups:pn_fetchFaceGroups];
   }
   v8 = ;
 
   return v8;
 }
 
-- (id)pn_fetchPersonsWithLocalIdentifiers:(id)a3
+- (id)pn_fetchPersonsWithLocalIdentifiers:(id)identifiers
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifiersCopy = identifiers;
   v5 = objc_opt_new();
   v6 = objc_opt_new();
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v7 = v4;
+  v7 = identifiersCopy;
   v8 = [v7 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v8)
   {
@@ -447,8 +447,8 @@ void __80__PNPersonClusterManager_pn_fetchPersonsGroupedByAssetLocalIdentifierFo
 
   if ([v6 count])
   {
-    v16 = [(PNPersonClusterManager *)self photoLibrary];
-    v17 = [v16 pn_fetchPersonsWithLocalIdentifiers:v6];
+    photoLibrary = [(PNPersonClusterManager *)self photoLibrary];
+    v17 = [photoLibrary pn_fetchPersonsWithLocalIdentifiers:v6];
 
     v18 = [(PNPersonClusterManager *)self _mapPersonClustersToPersons:v17];
     [v5 unionSet:v18];
@@ -457,44 +457,44 @@ void __80__PNPersonClusterManager_pn_fetchPersonsGroupedByAssetLocalIdentifierFo
   return v5;
 }
 
-- (BOOL)pn_performChangesAndWait:(id)a3 error:(id *)a4
+- (BOOL)pn_performChangesAndWait:(id)wait error:(id *)error
 {
-  v6 = a3;
-  v7 = [(PNPersonClusterManager *)self photoLibrary];
-  LOBYTE(a4) = [v7 pn_performChangesAndWait:v6 error:a4];
+  waitCopy = wait;
+  photoLibrary = [(PNPersonClusterManager *)self photoLibrary];
+  LOBYTE(error) = [photoLibrary pn_performChangesAndWait:waitCopy error:error];
 
-  return a4;
+  return error;
 }
 
 - (id)pn_persistentStorageDirectoryURL
 {
-  v2 = [(PNPersonClusterManager *)self photoLibrary];
-  v3 = [v2 pn_persistentStorageDirectoryURL];
+  photoLibrary = [(PNPersonClusterManager *)self photoLibrary];
+  pn_persistentStorageDirectoryURL = [photoLibrary pn_persistentStorageDirectoryURL];
 
-  return v3;
+  return pn_persistentStorageDirectoryURL;
 }
 
-- (float)momentBasedDistanceBetweenPet:(id)a3 andPet:(id)a4
+- (float)momentBasedDistanceBetweenPet:(id)pet andPet:(id)andPet
 {
   v69 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 localIdentifier];
-  [v6 localIdentifier];
+  petCopy = pet;
+  andPetCopy = andPet;
+  localIdentifier = [petCopy localIdentifier];
+  [andPetCopy localIdentifier];
   *&v8 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
-  v9 = [v5 backingMomentIdentifiers];
-  v10 = [v6 backingMomentIdentifiers];
-  if ([v9 count] >= 2 && objc_msgSend(v10, "count") > 1)
+  backingMomentIdentifiers = [petCopy backingMomentIdentifiers];
+  backingMomentIdentifiers2 = [andPetCopy backingMomentIdentifiers];
+  if ([backingMomentIdentifiers count] >= 2 && objc_msgSend(backingMomentIdentifiers2, "count") > 1)
   {
-    v12 = [v9 mutableCopy];
-    [v12 intersectSet:v10];
+    v12 = [backingMomentIdentifiers mutableCopy];
+    [v12 intersectSet:backingMomentIdentifiers2];
     v13 = [v12 count];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
     {
       *buf = 134218498;
       v59 = v13;
       v60 = 2112;
-      v61 = v7;
+      v61 = localIdentifier;
       v62 = 2112;
       v63 = v8;
       _os_log_impl(&dword_1C6F5C000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "[PNPersonClusterManager] Found %lu common moments between %@ and %@", buf, 0x20u);
@@ -510,18 +510,18 @@ LABEL_38:
 
     if (v13 == 1)
     {
-      v14 = [v5 backingAssetIdentifiers];
-      v15 = [v6 backingAssetIdentifiers];
-      v52 = v14;
-      v16 = [v14 mutableCopy];
-      [v16 intersectSet:v15];
+      backingAssetIdentifiers = [petCopy backingAssetIdentifiers];
+      backingAssetIdentifiers2 = [andPetCopy backingAssetIdentifiers];
+      v52 = backingAssetIdentifiers;
+      v16 = [backingAssetIdentifiers mutableCopy];
+      [v16 intersectSet:backingAssetIdentifiers2];
       v17 = [v16 count];
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
       {
         *buf = 134218498;
         v59 = v17;
         v60 = 2112;
-        v61 = v7;
+        v61 = localIdentifier;
         v62 = 2112;
         v63 = v8;
         _os_log_impl(&dword_1C6F5C000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "[PNPersonClusterManager] Found %lu common assets between %@ and %@", buf, 0x20u);
@@ -545,10 +545,10 @@ LABEL_38:
     }
 
     v46 = v12;
-    v47 = v10;
-    v19 = [v12 allObjects];
-    v20 = self;
-    v21 = [(PNPersonClusterManager *)self pn_fetchMomentsWithLocalIdentifiers:v19];
+    v47 = backingMomentIdentifiers2;
+    allObjects = [v12 allObjects];
+    selfCopy2 = self;
+    v21 = [(PNPersonClusterManager *)self pn_fetchMomentsWithLocalIdentifiers:allObjects];
 
     v56 = 0u;
     v57 = 0u;
@@ -559,9 +559,9 @@ LABEL_38:
     if (v22)
     {
       v23 = v22;
-      v45 = v9;
+      v45 = backingMomentIdentifiers;
       v48 = v8;
-      v49 = v7;
+      v49 = localIdentifier;
       v24 = *v55;
       v25 = 0.0;
       v26 = 0.0;
@@ -579,18 +579,18 @@ LABEL_38:
 
           v28 = *(*(&v54 + 1) + 8 * v27);
           v29 = objc_autoreleasePoolPush();
-          v30 = [(PNPersonClusterManager *)v20 pn_fetchFacesForPerson:v5 inMoment:v28];
+          v30 = [(PNPersonClusterManager *)selfCopy2 pn_fetchFacesForPerson:petCopy inMoment:v28];
           if ([v30 count] >= 2)
           {
-            v31 = [(PNPersonClusterManager *)v20 pn_fetchFacesForPerson:v6 inMoment:v28];
+            v31 = [(PNPersonClusterManager *)selfCopy2 pn_fetchFacesForPerson:andPetCopy inMoment:v28];
             if ([v31 count] >= 2)
             {
               v32 = v18;
-              v33 = v5;
-              v34 = v6;
-              v35 = [v30 fetchedObjects];
-              v36 = [v31 fetchedObjects];
-              [(PNPersonClusterManager *)v20 distanceBetweenPetFaces:v35 andPetFaces:v36];
+              v33 = petCopy;
+              v34 = andPetCopy;
+              fetchedObjects = [v30 fetchedObjects];
+              fetchedObjects2 = [v31 fetchedObjects];
+              [(PNPersonClusterManager *)selfCopy2 distanceBetweenPetFaces:fetchedObjects andPetFaces:fetchedObjects2];
               v38 = v37;
 
               v26 = v26 + v38;
@@ -613,11 +613,11 @@ LABEL_38:
                 _os_log_impl(&dword_1C6F5C000, v39, OS_LOG_TYPE_INFO, "[PNPersonClusterManager] Distance between %@ (%lu faces) and %@ (%lu faces) is %lf", buf, 0x34u);
               }
 
-              v6 = v34;
-              v5 = v33;
+              andPetCopy = v34;
+              petCopy = v33;
               v18 = v32;
               v24 = v50;
-              v20 = self;
+              selfCopy2 = self;
               v23 = v53;
             }
           }
@@ -633,13 +633,13 @@ LABEL_38:
       while (v23);
 
       v8 = v48;
-      v7 = v49;
-      v9 = v45;
+      localIdentifier = v49;
+      backingMomentIdentifiers = v45;
       if (v25 != 0.0)
       {
         v11 = v26 / v25;
         v12 = v46;
-        v10 = v47;
+        backingMomentIdentifiers2 = v47;
         if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
         {
           *buf = 138412802;
@@ -665,11 +665,11 @@ LABEL_36:
 
     v11 = 1.0;
     v12 = v46;
-    v10 = v47;
+    backingMomentIdentifiers2 = v47;
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
     {
       *buf = 138412802;
-      v59 = v7;
+      v59 = localIdentifier;
       v60 = 2112;
       v61 = v8;
       v62 = 2048;
@@ -688,13 +688,13 @@ LABEL_37:
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
   {
     *buf = 138413058;
-    v59 = v7;
+    v59 = localIdentifier;
     v60 = 2048;
-    v61 = [v9 count];
+    v61 = [backingMomentIdentifiers count];
     v62 = 2112;
     v63 = v8;
     v64 = 2048;
-    v65 = [v10 count];
+    v65 = [backingMomentIdentifiers2 count];
     _os_log_impl(&dword_1C6F5C000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "[PNPersonClusterManager] Pet %@ has %lu moments and pet %@ has %lu moments, returning a distance of 1.0 because a pet has too few moments", buf, 0x2Au);
   }
 
@@ -703,14 +703,14 @@ LABEL_39:
   return v11;
 }
 
-- (float)animalprintBasedDistanceBetweenPetFaces:(id)a3 andPetFaces:(id)a4
+- (float)animalprintBasedDistanceBetweenPetFaces:(id)faces andPetFaces:(id)petFaces
 {
   v45 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v28 = v5;
-  v29 = v6;
-  if ([v5 count] && objc_msgSend(v6, "count"))
+  facesCopy = faces;
+  petFacesCopy = petFaces;
+  v28 = facesCopy;
+  v29 = petFacesCopy;
+  if ([facesCopy count] && objc_msgSend(petFacesCopy, "count"))
   {
     *buf = 0;
     v38 = buf;
@@ -726,7 +726,7 @@ LABEL_39:
     v36 = buf;
     v8 = v7;
     v35 = v8;
-    [v5 enumerateObjectsUsingBlock:v34];
+    [facesCopy enumerateObjectsUsingBlock:v34];
     v9 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v31[0] = MEMORY[0x1E69E9820];
     v31[1] = 3221225472;
@@ -735,7 +735,7 @@ LABEL_39:
     v33 = buf;
     v10 = v9;
     v32 = v10;
-    [v6 enumerateObjectsUsingBlock:v31];
+    [petFacesCopy enumerateObjectsUsingBlock:v31];
     v11 = [v8 count];
     if (v11 >= [v10 count])
     {
@@ -913,40 +913,40 @@ uint64_t __78__PNPersonClusterManager_animalprintBasedDistanceBetweenPetFaces_an
   return v13;
 }
 
-- (float)distanceBetweenPetFaces:(id)a3 andPetFaces:(id)a4
+- (float)distanceBetweenPetFaces:(id)faces andPetFaces:(id)petFaces
 {
   if (self->_vuDistanceSPIEnabled)
   {
     v6 = MEMORY[0x1E695DF70];
-    v7 = a4;
-    v8 = a3;
-    v9 = [[v6 alloc] initWithCapacity:{objc_msgSend(v8, "count")}];
-    v10 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v7, "count")}];
+    petFacesCopy = petFaces;
+    facesCopy = faces;
+    v9 = [[v6 alloc] initWithCapacity:{objc_msgSend(facesCopy, "count")}];
+    v10 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(petFacesCopy, "count")}];
     v22[0] = MEMORY[0x1E69E9820];
     v22[1] = 3221225472;
     v22[2] = __62__PNPersonClusterManager_distanceBetweenPetFaces_andPetFaces___block_invoke;
     v22[3] = &unk_1E82A2540;
     v23 = v9;
-    v11 = v9;
-    [v8 enumerateObjectsUsingBlock:v22];
+    facesCopy2 = v9;
+    [facesCopy enumerateObjectsUsingBlock:v22];
 
     v17 = MEMORY[0x1E69E9820];
     v18 = 3221225472;
     v19 = __62__PNPersonClusterManager_distanceBetweenPetFaces_andPetFaces___block_invoke_2;
     v20 = &unk_1E82A2540;
     v21 = v10;
-    v12 = v10;
-    [v7 enumerateObjectsUsingBlock:&v17];
+    petFacesCopy2 = v10;
+    [petFacesCopy enumerateObjectsUsingBlock:&v17];
 
-    [(PNPersonPromoterDelegate *)self->_promoterDelegate similarityBetweenFacesWithVUIdentifiers:v11 andOtherFacesWithVUIdentifiers:v12, v17, v18, v19, v20];
+    [(PNPersonPromoterDelegate *)self->_promoterDelegate similarityBetweenFacesWithVUIdentifiers:facesCopy2 andOtherFacesWithVUIdentifiers:petFacesCopy2, v17, v18, v19, v20];
     v14 = 1.0 - v13;
   }
 
   else
   {
-    v12 = a4;
-    v11 = a3;
-    [(PNPersonClusterManager *)self animalprintBasedDistanceBetweenPetFaces:v11 andPetFaces:v12];
+    petFacesCopy2 = petFaces;
+    facesCopy2 = faces;
+    [(PNPersonClusterManager *)self animalprintBasedDistanceBetweenPetFaces:facesCopy2 andPetFaces:petFacesCopy2];
     v14 = v15;
   }
 
@@ -967,18 +967,18 @@ void __62__PNPersonClusterManager_distanceBetweenPetFaces_andPetFaces___block_in
   [v2 addObject:v3];
 }
 
-- (float)distanceBetweenPet:(id)a3 andPet:(id)a4 useCommonMoments:(BOOL)a5
+- (float)distanceBetweenPet:(id)pet andPet:(id)andPet useCommonMoments:(BOOL)moments
 {
-  v5 = a5;
+  momentsCopy = moments;
   v47 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 detectionType];
+  petCopy = pet;
+  andPetCopy = andPet;
+  detectionType = [petCopy detectionType];
   v11 = 1.0;
-  if (v10 == [v9 detectionType])
+  if (detectionType == [andPetCopy detectionType])
   {
     v12 = 16;
-    if (v5)
+    if (momentsCopy)
     {
       v12 = 24;
     }
@@ -991,15 +991,15 @@ void __62__PNPersonClusterManager_distanceBetweenPetFaces_andPetFaces___block_in
     v33 = v13;
     v36 = v33;
     v14 = _Block_copy(aBlock);
-    v15 = [v8 localIdentifier];
-    [v9 localIdentifier];
+    localIdentifier = [petCopy localIdentifier];
+    [andPetCopy localIdentifier];
     v16 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
-    v17 = [(PNPersonClusterManager *)self pn_fetchFacesForPerson:v8];
-    v18 = [(PNPersonClusterManager *)self pn_fetchFacesForPerson:v9];
+    v17 = [(PNPersonClusterManager *)self pn_fetchFacesForPerson:petCopy];
+    v18 = [(PNPersonClusterManager *)self pn_fetchFacesForPerson:andPetCopy];
     v34 = v17;
-    v19 = [v17 fetchedObjects];
-    v20 = [v18 fetchedObjects];
-    [(PNPersonClusterManager *)self distanceBetweenPetFaces:v19 andPetFaces:v20];
+    fetchedObjects = [v17 fetchedObjects];
+    fetchedObjects2 = [v18 fetchedObjects];
+    [(PNPersonClusterManager *)self distanceBetweenPetFaces:fetchedObjects andPetFaces:fetchedObjects2];
     v22 = v21;
 
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
@@ -1007,7 +1007,7 @@ void __62__PNPersonClusterManager_distanceBetweenPetFaces_andPetFaces___block_in
       v24 = [v34 count];
       v25 = [v18 count];
       *buf = 138413314;
-      v38 = v15;
+      v38 = localIdentifier;
       v39 = 2048;
       v40 = v24;
       v41 = 2112;
@@ -1020,9 +1020,9 @@ void __62__PNPersonClusterManager_distanceBetweenPetFaces_andPetFaces___block_in
     }
 
     v11 = v22;
-    if (v5)
+    if (momentsCopy)
     {
-      [(PNPersonClusterManager *)self momentBasedDistanceBetweenPet:v8 andPet:v9];
+      [(PNPersonClusterManager *)self momentBasedDistanceBetweenPet:petCopy andPet:andPetCopy];
       v27 = v26;
       v28 = os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO);
       v11 = 1.0;
@@ -1040,7 +1040,7 @@ void __62__PNPersonClusterManager_distanceBetweenPetFaces_andPetFaces___block_in
         if (v28)
         {
           *buf = 138412802;
-          v38 = v15;
+          v38 = localIdentifier;
           v39 = 2112;
           v40 = *&v16;
           v41 = 2048;
@@ -1062,11 +1062,11 @@ void __62__PNPersonClusterManager_distanceBetweenPetFaces_andPetFaces___block_in
 
     *&v23 = v11;
     v29 = [MEMORY[0x1E696AD98] numberWithFloat:v23];
-    (v14[2])(v14, v15, COERCE_DOUBLE(*&v16), v29, &unk_1F46E5498);
+    (v14[2])(v14, localIdentifier, COERCE_DOUBLE(*&v16), v29, &unk_1F46E5498);
 
     *&v30 = v11;
     v31 = [MEMORY[0x1E696AD98] numberWithFloat:v30];
-    (v14[2])(v14, COERCE_DOUBLE(*&v16), v15, v31, &unk_1F46E5498);
+    (v14[2])(v14, COERCE_DOUBLE(*&v16), localIdentifier, v31, &unk_1F46E5498);
   }
 
   return v11;
@@ -1100,11 +1100,11 @@ void __69__PNPersonClusterManager_distanceBetweenPet_andPet_useCommonMoments___b
   }
 }
 
-- (id)representativeFaceObservationForFaces:(id)a3 ageType:(unsigned __int16 *)a4 inPerson:(id)a5
+- (id)representativeFaceObservationForFaces:(id)faces ageType:(unsigned __int16 *)type inPerson:(id)person
 {
   v70 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v37 = a5;
+  facesCopy = faces;
+  personCopy = person;
   v58 = 0;
   v59 = &v58;
   v60 = 0x3032000000;
@@ -1112,13 +1112,13 @@ void __69__PNPersonClusterManager_distanceBetweenPet_andPet_useCommonMoments___b
   v62 = __Block_byref_object_dispose__3142;
   v63 = 0;
   v40 = objc_opt_new();
-  v36 = a4;
+  typeCopy = type;
   v39 = objc_opt_new();
   v56 = 0u;
   v57 = 0u;
   v54 = 0u;
   v55 = 0u;
-  obj = v8;
+  obj = facesCopy;
   v9 = [obj countByEnumeratingWithState:&v54 objects:v69 count:16];
   if (v9)
   {
@@ -1137,10 +1137,10 @@ void __69__PNPersonClusterManager_distanceBetweenPet_andPet_useCommonMoments___b
         v14 = [(PNVisionHelper *)self->_visionHelper faceObservationFromFace:v12];
         if (v14)
         {
-          v15 = [v12 localIdentifier];
-          [v40 setObject:v14 forKeyedSubscript:v15];
+          localIdentifier = [v12 localIdentifier];
+          [v40 setObject:v14 forKeyedSubscript:localIdentifier];
           v16 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:{objc_msgSend(v12, "ageType")}];
-          [v39 setObject:v16 forKeyedSubscript:v15];
+          [v39 setObject:v16 forKeyedSubscript:localIdentifier];
         }
 
         else if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
@@ -1162,9 +1162,9 @@ void __69__PNPersonClusterManager_distanceBetweenPet_andPet_useCommonMoments___b
   if ([v40 count])
   {
     visionHelper = self->_visionHelper;
-    v18 = [v40 allValues];
+    allValues = [v40 allValues];
     v53 = 0;
-    v19 = [(PNVisionHelper *)visionHelper representativenessFromFaceObservations:v18 error:&v53];
+    v19 = [(PNVisionHelper *)visionHelper representativenessFromFaceObservations:allValues error:&v53];
     v20 = v53;
 
     if (v20 || !v19)
@@ -1204,10 +1204,10 @@ void __69__PNPersonClusterManager_distanceBetweenPet_andPet_useCommonMoments___b
       [v40 enumerateKeysAndObjectsUsingBlock:v46];
       if (v59[5])
       {
-        if (v37)
+        if (personCopy)
         {
-          v21 = [v37 representativeFaceByFaceIdentifiers];
-          v22 = [v21 count] > 1;
+          representativeFaceByFaceIdentifiers = [personCopy representativeFaceByFaceIdentifiers];
+          v22 = [representativeFaceByFaceIdentifiers count] > 1;
 
           if (v22)
           {
@@ -1215,10 +1215,10 @@ void __69__PNPersonClusterManager_distanceBetweenPet_andPet_useCommonMoments___b
             v44 = 0u;
             v41 = 0u;
             v42 = 0u;
-            v23 = [v37 representativeFaceByFaceIdentifiers];
-            v24 = [v23 keyEnumerator];
+            representativeFaceByFaceIdentifiers2 = [personCopy representativeFaceByFaceIdentifiers];
+            keyEnumerator = [representativeFaceByFaceIdentifiers2 keyEnumerator];
 
-            v25 = [v24 countByEnumeratingWithState:&v41 objects:v64 count:16];
+            v25 = [keyEnumerator countByEnumeratingWithState:&v41 objects:v64 count:16];
             if (v25)
             {
               v26 = *v42;
@@ -1228,20 +1228,20 @@ void __69__PNPersonClusterManager_distanceBetweenPet_andPet_useCommonMoments___b
                 {
                   if (*v42 != v26)
                   {
-                    objc_enumerationMutation(v24);
+                    objc_enumerationMutation(keyEnumerator);
                   }
 
                   v28 = *(*(&v41 + 1) + 8 * j);
                   if ([v28 containsObject:*(*&buf[8] + 40)])
                   {
-                    v29 = [v37 representativeFaceByFaceIdentifiers];
-                    v30 = [v29 objectForKeyedSubscript:v28];
+                    representativeFaceByFaceIdentifiers3 = [personCopy representativeFaceByFaceIdentifiers];
+                    v30 = [representativeFaceByFaceIdentifiers3 objectForKeyedSubscript:v28];
                     v31 = v59[5];
                     v59[5] = v30;
                   }
                 }
 
-                v25 = [v24 countByEnumeratingWithState:&v41 objects:v64 count:16];
+                v25 = [keyEnumerator countByEnumeratingWithState:&v41 objects:v64 count:16];
               }
 
               while (v25);
@@ -1250,11 +1250,11 @@ void __69__PNPersonClusterManager_distanceBetweenPet_andPet_useCommonMoments___b
         }
 
         v32 = [v39 objectForKeyedSubscript:*(*&buf[8] + 40)];
-        v33 = [v32 unsignedShortValue];
+        unsignedShortValue = [v32 unsignedShortValue];
 
-        if (v36)
+        if (typeCopy)
         {
-          *v36 = v33;
+          *typeCopy = unsignedShortValue;
         }
 
         v34 = v59[5];
@@ -1313,19 +1313,19 @@ void __81__PNPersonClusterManager_representativeFaceObservationForFaces_ageType_
   }
 }
 
-- (id)_representativeFaceObservationForPerson:(id)a3 ageType:(unsigned __int16 *)a4 inAssetCollections:(id)a5
+- (id)_representativeFaceObservationForPerson:(id)person ageType:(unsigned __int16 *)type inAssetCollections:(id)collections
 {
   v54 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a5;
-  v47 = 0;
-  v38 = v7;
-  v9 = [v7 localIdentifier];
+  personCopy = person;
+  collectionsCopy = collections;
+  unsignedShortValue = 0;
+  v38 = personCopy;
+  localIdentifier = [personCopy localIdentifier];
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
-  v10 = v8;
+  v10 = collectionsCopy;
   v11 = [v10 countByEnumeratingWithState:&v43 objects:v53 count:16];
   if (v11)
   {
@@ -1334,7 +1334,7 @@ void __81__PNPersonClusterManager_representativeFaceObservationForFaces_ageType_
     do
     {
       v14 = 0;
-      v15 = v9;
+      v15 = localIdentifier;
       do
       {
         if (*v44 != v13)
@@ -1342,11 +1342,11 @@ void __81__PNPersonClusterManager_representativeFaceObservationForFaces_ageType_
           objc_enumerationMutation(v10);
         }
 
-        v16 = [*(*(&v43 + 1) + 8 * v14) localIdentifier];
-        v9 = [v15 stringByAppendingString:v16];
+        localIdentifier2 = [*(*(&v43 + 1) + 8 * v14) localIdentifier];
+        localIdentifier = [v15 stringByAppendingString:localIdentifier2];
 
         ++v14;
-        v15 = v9;
+        v15 = localIdentifier;
       }
 
       while (v12 != v14);
@@ -1356,13 +1356,13 @@ void __81__PNPersonClusterManager_representativeFaceObservationForFaces_ageType_
     while (v12);
   }
 
-  v17 = [(NSMutableDictionary *)self->_representativeFaceObservationForPersonIdentifier objectForKeyedSubscript:v9];
+  v17 = [(NSMutableDictionary *)self->_representativeFaceObservationForPersonIdentifier objectForKeyedSubscript:localIdentifier];
   if (v17)
   {
     v18 = v17;
     v19 = [v17 objectForKeyedSubscript:@"distance"];
     v20 = [v18 objectForKeyedSubscript:@"minAgeType"];
-    v47 = [v20 unsignedShortValue];
+    unsignedShortValue = [v20 unsignedShortValue];
   }
 
   else
@@ -1389,8 +1389,8 @@ void __81__PNPersonClusterManager_representativeFaceObservationForFaces_ageType_
           }
 
           v27 = [(PNPersonClusterManager *)self pn_fetchFacesForPerson:v38 inMoment:*(*(&v39 + 1) + 8 * i)];
-          v28 = [v27 fetchedObjects];
-          [v21 addObjectsFromArray:v28];
+          fetchedObjects = [v27 fetchedObjects];
+          [v21 addObjectsFromArray:fetchedObjects];
         }
 
         v24 = [v22 countByEnumeratingWithState:&v39 objects:v52 count:16];
@@ -1402,7 +1402,7 @@ void __81__PNPersonClusterManager_representativeFaceObservationForFaces_ageType_
     if (v22 && [v21 count] > 1)
     {
       v29 = v21;
-      v30 = self;
+      selfCopy2 = self;
       v31 = v29;
       v32 = 0;
     }
@@ -1410,19 +1410,19 @@ void __81__PNPersonClusterManager_representativeFaceObservationForFaces_ageType_
     else
     {
       v29 = [(PNPersonClusterManager *)self pn_fetchFacesForPerson:v38];
-      v30 = self;
+      selfCopy2 = self;
       v31 = v29;
       v32 = v38;
     }
 
-    v33 = [(PNPersonClusterManager *)v30 representativeFaceObservationForFaces:v31 ageType:&v47 inPerson:v32];
+    v33 = [(PNPersonClusterManager *)selfCopy2 representativeFaceObservationForFaces:v31 ageType:&unsignedShortValue inPerson:v32];
     v19 = v33;
     if (v33)
     {
       v50[1] = @"minAgeType";
       v51[0] = v33;
       v50[0] = @"distance";
-      v34 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:v47];
+      v34 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:unsignedShortValue];
       v51[1] = v34;
       v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v51 forKeys:v50 count:2];
     }
@@ -1440,32 +1440,32 @@ void __81__PNPersonClusterManager_representativeFaceObservationForFaces_ageType_
       v18 = 0;
     }
 
-    [(NSMutableDictionary *)self->_representativeFaceObservationForPersonIdentifier setObject:v18 forKeyedSubscript:v9];
+    [(NSMutableDictionary *)self->_representativeFaceObservationForPersonIdentifier setObject:v18 forKeyedSubscript:localIdentifier];
 
     objc_autoreleasePoolPop(context);
   }
 
-  if (a4)
+  if (type)
   {
-    *a4 = v47;
+    *type = unsignedShortValue;
   }
 
   return v19;
 }
 
-- (float)_adjustDistanceFactorForPerson:(id)a3 andPerson:(id)a4 forAgeType:(unsigned __int16)a5 andAgeType:(unsigned __int16)a6
+- (float)_adjustDistanceFactorForPerson:(id)person andPerson:(id)andPerson forAgeType:(unsigned __int16)type andAgeType:(unsigned __int16)ageType
 {
-  v6 = a6;
-  v7 = a5;
-  v9 = a3;
-  v10 = a4;
+  ageTypeCopy = ageType;
+  typeCopy = type;
+  personCopy = person;
+  andPersonCopy = andPerson;
   v11 = 1.0;
-  if (v6 | v7)
+  if (ageTypeCopy | typeCopy)
   {
-    if ((v6 | v7) == 1)
+    if ((ageTypeCopy | typeCopy) == 1)
     {
-      v12 = [v9 firstSeenDateWithoutOutliersForAgeType:1];
-      v13 = [v10 firstSeenDateWithoutOutliersForAgeType:1];
+      v12 = [personCopy firstSeenDateWithoutOutliersForAgeType:1];
+      v13 = [andPersonCopy firstSeenDateWithoutOutliersForAgeType:1];
       [v12 timeIntervalSinceDate:v13];
       if (v14 < 0.0)
       {
@@ -1478,13 +1478,13 @@ void __81__PNPersonClusterManager_representativeFaceObservationForFaces_ageType_
 
     else
     {
-      if ((v7 | 2) != 2 || (v6 | 2) != 2)
+      if ((typeCopy | 2) != 2 || (ageTypeCopy | 2) != 2)
       {
         goto LABEL_15;
       }
 
-      v12 = [v9 firstSeenDateWithoutOutliersForAgeType:2];
-      v13 = [v10 firstSeenDateWithoutOutliersForAgeType:2];
+      v12 = [personCopy firstSeenDateWithoutOutliersForAgeType:2];
+      v13 = [andPersonCopy firstSeenDateWithoutOutliersForAgeType:2];
       [v12 timeIntervalSinceDate:v13];
       if (v17 < 0.0)
       {
@@ -1512,18 +1512,18 @@ LABEL_15:
   return v11;
 }
 
-- (float)mergeConfidenceBetweenPersonLocalIdentifier:(id)a3 andCandidateLocalIdentifiers:(id)a4
+- (float)mergeConfidenceBetweenPersonLocalIdentifier:(id)identifier andCandidateLocalIdentifiers:(id)identifiers
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [(NSMutableDictionary *)self->_confidencesForMergedPersonLocalIdentifier objectForKeyedSubscript:a3];
+  identifiersCopy = identifiers;
+  v7 = [(NSMutableDictionary *)self->_confidencesForMergedPersonLocalIdentifier objectForKeyedSubscript:identifier];
   if (v7)
   {
     v22 = 0u;
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v8 = v6;
+    v8 = identifiersCopy;
     v9 = [v8 countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v9)
     {
@@ -1574,28 +1574,28 @@ LABEL_15:
   return v12;
 }
 
-- (float)distanceBetweenHuman:(id)a3 andHuman:(id)a4 useCommonMoments:(BOOL)a5 minAgeType:(unsigned __int16 *)a6 updateBlock:(id)a7 error:(id *)a8
+- (float)distanceBetweenHuman:(id)human andHuman:(id)andHuman useCommonMoments:(BOOL)moments minAgeType:(unsigned __int16 *)type updateBlock:(id)block error:(id *)error
 {
-  v11 = a5;
+  momentsCopy = moments;
   v109 = *MEMORY[0x1E69E9840];
-  v86 = a3;
-  v14 = a4;
-  v15 = a7;
+  humanCopy = human;
+  andHumanCopy = andHuman;
+  blockCopy = block;
   v95 = 0;
-  v15[2](v15, &v95, 0.2);
+  blockCopy[2](blockCopy, &v95, 0.2);
   v16 = 1.0;
   if ((v95 & 1) == 0)
   {
-    v80 = a6;
+    typeCopy = type;
     v17 = 16;
-    if (v11)
+    if (momentsCopy)
     {
       v17 = 24;
     }
 
     v18 = *(&self->super.isa + v17);
-    v19 = [v86 localIdentifier];
-    v20 = [v14 localIdentifier];
+    localIdentifier = [humanCopy localIdentifier];
+    localIdentifier2 = [andHumanCopy localIdentifier];
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __102__PNPersonClusterManager_distanceBetweenHuman_andHuman_useCommonMoments_minAgeType_updateBlock_error___block_invoke;
@@ -1604,36 +1604,36 @@ LABEL_15:
     v94 = v21;
     v83 = _Block_copy(aBlock);
     v81 = v21;
-    v85 = v19;
-    v22 = [v21 objectForKeyedSubscript:v19];
+    v85 = localIdentifier;
+    v22 = [v21 objectForKeyedSubscript:localIdentifier];
     v23 = v22;
-    if (v22 && ([v22 objectForKeyedSubscript:v20], (v24 = objc_claimAutoreleasedReturnValue()) != 0))
+    if (v22 && ([v22 objectForKeyedSubscript:localIdentifier2], (v24 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v25 = v24;
       v26 = [v24 objectForKeyedSubscript:@"minAgeType"];
-      v27 = [v26 unsignedShortValue];
+      unsignedShortValue = [v26 unsignedShortValue];
 
       v28 = [v25 objectForKeyedSubscript:@"distance"];
       [v28 floatValue];
       v16 = v29;
 
-      if (v80)
+      if (typeCopy)
       {
-        *v80 = v27;
+        *typeCopy = unsignedShortValue;
       }
     }
 
     else
     {
       v92 = 0;
-      v30 = [(PNPersonClusterManager *)self representativeFaceObservationForPerson:v86 ageType:&v92 + 2];
-      v31 = [(PNPersonClusterManager *)self representativeFaceObservationForPerson:v14 ageType:&v92];
+      v30 = [(PNPersonClusterManager *)self representativeFaceObservationForPerson:humanCopy ageType:&v92 + 2];
+      v31 = [(PNPersonClusterManager *)self representativeFaceObservationForPerson:andHumanCopy ageType:&v92];
       v73 = [(PNPersonClusterManager *)self minAgeTypeForFaceAgeType:HIWORD(v92) andFaceAgeType:v92];
       v70 = v31;
       v71 = v30;
-      [(PNVisionHelper *)self->_visionHelper distanceBetweenFaceObservation:v30 andFaceObservation:v31 error:a8];
+      [(PNVisionHelper *)self->_visionHelper distanceBetweenFaceObservation:v30 andFaceObservation:v31 error:error];
       v33 = v32;
-      [(PNPersonClusterManager *)self _adjustDistanceFactorForPerson:v86 andPerson:v14 forAgeType:HIWORD(v92) andAgeType:v92];
+      [(PNPersonClusterManager *)self _adjustDistanceFactorForPerson:humanCopy andPerson:andHumanCopy forAgeType:HIWORD(v92) andAgeType:v92];
       v35 = v34;
       if (v34 == 1.0)
       {
@@ -1648,7 +1648,7 @@ LABEL_15:
           *buf = 138413058;
           v97 = v85;
           v98 = 2112;
-          v99 = v20;
+          v99 = localIdentifier2;
           v100 = 2048;
           v101 = v33;
           v102 = 2048;
@@ -1657,24 +1657,24 @@ LABEL_15:
         }
       }
 
-      v15[2](v15, &v95, 0.9);
-      v74 = v15;
+      blockCopy[2](blockCopy, &v95, 0.9);
+      v74 = blockCopy;
       v72 = v23;
-      if (v11)
+      if (momentsCopy)
       {
         [(PNPersonClusterManager *)self _minimiumDistanceRequiredForCommonAssetDistanceForAgeType:v73];
         if (v16 <= *&v36)
         {
-          v37 = [v86 backingMomentIdentifiers];
-          v38 = [v37 mutableCopy];
+          backingMomentIdentifiers = [humanCopy backingMomentIdentifiers];
+          v38 = [backingMomentIdentifiers mutableCopy];
 
-          v39 = [v14 backingMomentIdentifiers];
-          [v38 intersectSet:v39];
+          backingMomentIdentifiers2 = [andHumanCopy backingMomentIdentifiers];
+          [v38 intersectSet:backingMomentIdentifiers2];
 
           if ([v38 count])
           {
-            v40 = [v38 allObjects];
-            v41 = [(PNPersonClusterManager *)self pn_fetchMomentsWithLocalIdentifiers:v40];
+            allObjects = [v38 allObjects];
+            v41 = [(PNPersonClusterManager *)self pn_fetchMomentsWithLocalIdentifiers:allObjects];
 
             v42 = [v41 count];
             v88 = 0u;
@@ -1690,10 +1690,10 @@ LABEL_15:
               v43 = 0.0;
               v44 = MEMORY[0x1E69E9C10];
               v68 = 138413058;
-              v82 = self;
-              v84 = v20;
+              selfCopy = self;
+              v84 = localIdentifier2;
               v75 = v38;
-              v76 = a8;
+              errorCopy = error;
               while (2)
               {
                 for (i = 0; i != v79; ++i)
@@ -1706,24 +1706,24 @@ LABEL_15:
                   v46 = *(*(&v88 + 1) + 8 * i);
                   v47 = objc_autoreleasePoolPush();
                   v48 = (v43 + 0.3) * 0.5 / v77 + 0.2;
-                  v15[2](v15, &v95, v48);
+                  blockCopy[2](blockCopy, &v95, v48);
                   if (v95)
                   {
                     objc_autoreleasePoolPop(v47);
 
                     v16 = 1.0;
-                    v20 = v84;
+                    localIdentifier2 = v84;
                     goto LABEL_40;
                   }
 
                   v92 = 0;
                   v107 = v46;
                   v49 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v107 count:1];
-                  v50 = [(PNPersonClusterManager *)self _representativeFaceObservationForPerson:v86 ageType:&v92 + 2 inAssetCollections:v49];
+                  v50 = [(PNPersonClusterManager *)self _representativeFaceObservationForPerson:humanCopy ageType:&v92 + 2 inAssetCollections:v49];
 
                   v106 = v46;
                   v51 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v106 count:1];
-                  v52 = [(PNPersonClusterManager *)self _representativeFaceObservationForPerson:v14 ageType:&v92 inAssetCollections:v51];
+                  v52 = [(PNPersonClusterManager *)self _representativeFaceObservationForPerson:andHumanCopy ageType:&v92 inAssetCollections:v51];
 
                   visionHelper = self->_visionHelper;
                   v87 = 0;
@@ -1741,7 +1741,7 @@ LABEL_15:
                     if (os_log_type_enabled(v44, OS_LOG_TYPE_INFO))
                     {
                       [v46 localIdentifier];
-                      v59 = v58 = v14;
+                      v59 = v58 = andHumanCopy;
                       *buf = 138413314;
                       v97 = v59;
                       v98 = 2112;
@@ -1754,20 +1754,20 @@ LABEL_15:
                       v105 = v57;
                       _os_log_impl(&dword_1C6F5C000, v44, OS_LOG_TYPE_INFO, "[PNPersonClusterManager] Common moment %@ between %@ and %@: adjust distance from %.3f to %.3f", buf, 0x34u);
 
-                      v14 = v58;
-                      v15 = v74;
+                      andHumanCopy = v58;
+                      blockCopy = v74;
                     }
 
-                    self = v82;
+                    self = selfCopy;
                   }
 
                   if (v57 < v16)
                   {
                     if (os_log_type_enabled(v44, OS_LOG_TYPE_INFO))
                     {
-                      v60 = [v46 localIdentifier];
+                      localIdentifier3 = [v46 localIdentifier];
                       *buf = 138413058;
-                      v97 = v60;
+                      v97 = localIdentifier3;
                       v98 = 2112;
                       v99 = v85;
                       v100 = 2112;
@@ -1778,19 +1778,19 @@ LABEL_15:
                     }
 
                     v16 = v57;
-                    self = v82;
+                    self = selfCopy;
                   }
 
                   objc_autoreleasePoolPop(v47);
-                  if (v76)
+                  if (errorCopy)
                   {
                     v61 = v56;
-                    *v76 = v56;
+                    *errorCopy = v56;
                   }
 
                   v43 = v43 + 1.0;
 
-                  v20 = v84;
+                  localIdentifier2 = v84;
                   v38 = v75;
                 }
 
@@ -1810,19 +1810,19 @@ LABEL_15:
       *&v36 = v16;
       v62 = [MEMORY[0x1E696AD98] numberWithFloat:{v36, v68}];
       v63 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:v73];
-      v83[2](v83, v85, v20, v62, v63);
+      v83[2](v83, v85, localIdentifier2, v62, v63);
 
       *&v64 = v16;
       v65 = [MEMORY[0x1E696AD98] numberWithFloat:v64];
       v66 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:v73];
-      v83[2](v83, v20, v85, v65, v66);
+      v83[2](v83, localIdentifier2, v85, v65, v66);
 
-      if (v80)
+      if (typeCopy)
       {
-        *v80 = v73;
+        *typeCopy = v73;
       }
 
-      v15 = v74;
+      blockCopy = v74;
 LABEL_40:
       v23 = v72;
     }
@@ -1859,20 +1859,20 @@ void __102__PNPersonClusterManager_distanceBetweenHuman_andHuman_useCommonMoment
   }
 }
 
-- (float)distanceBetweenPerson:(id)a3 andPerson:(id)a4 useCommonMoments:(BOOL)a5 minAgeType:(unsigned __int16 *)a6 updateBlock:(id)a7 error:(id *)a8
+- (float)distanceBetweenPerson:(id)person andPerson:(id)andPerson useCommonMoments:(BOOL)moments minAgeType:(unsigned __int16 *)type updateBlock:(id)block error:(id *)error
 {
-  v10 = a5;
-  v14 = a7;
-  v15 = a4;
-  v16 = a3;
+  momentsCopy = moments;
+  blockCopy = block;
+  andPersonCopy = andPerson;
+  personCopy = person;
   if ([(PNPersonClusterManager *)self detectionType]== 1)
   {
-    [(PNPersonClusterManager *)self distanceBetweenHuman:v16 andHuman:v15 useCommonMoments:v10 minAgeType:a6 updateBlock:v14 error:a8];
+    [(PNPersonClusterManager *)self distanceBetweenHuman:personCopy andHuman:andPersonCopy useCommonMoments:momentsCopy minAgeType:type updateBlock:blockCopy error:error];
   }
 
   else
   {
-    [(PNPersonClusterManager *)self distanceBetweenPet:v16 andPet:v15 useCommonMoments:v10];
+    [(PNPersonClusterManager *)self distanceBetweenPet:personCopy andPet:andPersonCopy useCommonMoments:momentsCopy];
   }
 
   v18 = v17;
@@ -1880,18 +1880,18 @@ void __102__PNPersonClusterManager_distanceBetweenHuman_andHuman_useCommonMoment
   return v18;
 }
 
-- (float)distanceWithOverlapCheckBetweenPerson:(id)a3 andPerson:(id)a4 useCommonMoments:(BOOL)a5 minAgeType:(unsigned __int16 *)a6 updateBlock:(id)a7 error:(id *)a8
+- (float)distanceWithOverlapCheckBetweenPerson:(id)person andPerson:(id)andPerson useCommonMoments:(BOOL)moments minAgeType:(unsigned __int16 *)type updateBlock:(id)block error:(id *)error
 {
-  v11 = a5;
-  v14 = a3;
-  v15 = a4;
-  v16 = a7;
-  v17 = [(PNPersonClusterManager *)self assetsOverlapBetweenPerson:v14 andPerson:v15];
+  momentsCopy = moments;
+  personCopy = person;
+  andPersonCopy = andPerson;
+  blockCopy = block;
+  v17 = [(PNPersonClusterManager *)self assetsOverlapBetweenPerson:personCopy andPerson:andPersonCopy];
   v18 = 1.0;
   if (v17 != 2)
   {
     v19 = v17;
-    [(PNPersonClusterManager *)self distanceBetweenPerson:v14 andPerson:v15 useCommonMoments:v11 minAgeType:a6 updateBlock:v16 error:a8];
+    [(PNPersonClusterManager *)self distanceBetweenPerson:personCopy andPerson:andPersonCopy useCommonMoments:momentsCopy minAgeType:type updateBlock:blockCopy error:error];
     if (v20 > 0.15 && v19 == 1)
     {
       v18 = 1.0;
@@ -1906,28 +1906,28 @@ void __102__PNPersonClusterManager_distanceBetweenHuman_andHuman_useCommonMoment
   return v18;
 }
 
-- (unint64_t)numberOfMomentsInCommonBetweenPerson:(id)a3 andPerson:(id)a4
+- (unint64_t)numberOfMomentsInCommonBetweenPerson:(id)person andPerson:(id)andPerson
 {
-  v5 = a4;
-  v6 = [a3 backingMomentIdentifiers];
-  v7 = [v6 mutableCopy];
+  andPersonCopy = andPerson;
+  backingMomentIdentifiers = [person backingMomentIdentifiers];
+  v7 = [backingMomentIdentifiers mutableCopy];
 
-  v8 = [v5 backingMomentIdentifiers];
+  backingMomentIdentifiers2 = [andPersonCopy backingMomentIdentifiers];
 
-  [v7 intersectSet:v8];
+  [v7 intersectSet:backingMomentIdentifiers2];
   v9 = [v7 count];
 
   return v9;
 }
 
-- (unint64_t)numberOfAssetsInCommonBetweenPersonAssetIdentifiers:(id)a3 andPersonAssetIdentifiers:(id)a4
+- (unint64_t)numberOfAssetsInCommonBetweenPersonAssetIdentifiers:(id)identifiers andPersonAssetIdentifiers:(id)assetIdentifiers
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 intersectsSet:v7])
+  identifiersCopy = identifiers;
+  assetIdentifiersCopy = assetIdentifiers;
+  if ([identifiersCopy intersectsSet:assetIdentifiersCopy])
   {
-    v8 = [v6 mutableCopy];
-    [v8 intersectSet:v7];
+    v8 = [identifiersCopy mutableCopy];
+    [v8 intersectSet:assetIdentifiersCopy];
     [v8 minusSet:self->_assetsToIgnore];
     v9 = [v8 count];
   }
@@ -1940,22 +1940,22 @@ void __102__PNPersonClusterManager_distanceBetweenHuman_andHuman_useCommonMoment
   return v9;
 }
 
-- (unint64_t)numberOfAssetsInCommonBetweenPerson:(id)a3 andPerson:(id)a4
+- (unint64_t)numberOfAssetsInCommonBetweenPerson:(id)person andPerson:(id)andPerson
 {
-  v6 = a4;
-  v7 = [a3 backingAssetIdentifiers];
-  v8 = [v6 backingAssetIdentifiers];
+  andPersonCopy = andPerson;
+  backingAssetIdentifiers = [person backingAssetIdentifiers];
+  backingAssetIdentifiers2 = [andPersonCopy backingAssetIdentifiers];
 
-  v9 = [(PNPersonClusterManager *)self numberOfAssetsInCommonBetweenPersonAssetIdentifiers:v7 andPersonAssetIdentifiers:v8];
+  v9 = [(PNPersonClusterManager *)self numberOfAssetsInCommonBetweenPersonAssetIdentifiers:backingAssetIdentifiers andPersonAssetIdentifiers:backingAssetIdentifiers2];
   return v9;
 }
 
-- (int64_t)assetsOverlapBetweenPersonAssetIdentifiers:(id)a3 andPersonAssetIdentifiers:(id)a4
+- (int64_t)assetsOverlapBetweenPersonAssetIdentifiers:(id)identifiers andPersonAssetIdentifiers:(id)assetIdentifiers
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 count];
-  v9 = [v6 count];
+  assetIdentifiersCopy = assetIdentifiers;
+  identifiersCopy = identifiers;
+  v8 = [identifiersCopy count];
+  v9 = [assetIdentifiersCopy count];
   if (v8 >= v9)
   {
     v10 = v9;
@@ -1966,7 +1966,7 @@ void __102__PNPersonClusterManager_distanceBetweenHuman_andHuman_useCommonMoment
     v10 = v8;
   }
 
-  v11 = [(PNPersonClusterManager *)self numberOfAssetsInCommonBetweenPersonAssetIdentifiers:v7 andPersonAssetIdentifiers:v6];
+  v11 = [(PNPersonClusterManager *)self numberOfAssetsInCommonBetweenPersonAssetIdentifiers:identifiersCopy andPersonAssetIdentifiers:assetIdentifiersCopy];
 
   if (v10 < 0xF)
   {
@@ -1986,45 +1986,45 @@ void __102__PNPersonClusterManager_distanceBetweenHuman_andHuman_useCommonMoment
   return 2;
 }
 
-- (int64_t)assetsOverlapBetweenPerson:(id)a3 andPerson:(id)a4
+- (int64_t)assetsOverlapBetweenPerson:(id)person andPerson:(id)andPerson
 {
-  v6 = a4;
-  v7 = [a3 backingAssetIdentifiers];
-  v8 = [v6 backingAssetIdentifiers];
+  andPersonCopy = andPerson;
+  backingAssetIdentifiers = [person backingAssetIdentifiers];
+  backingAssetIdentifiers2 = [andPersonCopy backingAssetIdentifiers];
 
-  v9 = [(PNPersonClusterManager *)self assetsOverlapBetweenPersonAssetIdentifiers:v7 andPersonAssetIdentifiers:v8];
+  v9 = [(PNPersonClusterManager *)self assetsOverlapBetweenPersonAssetIdentifiers:backingAssetIdentifiers andPersonAssetIdentifiers:backingAssetIdentifiers2];
   return v9;
 }
 
-- (unsigned)minAgeTypeForFaceAgeType:(unsigned __int16)a3 andFaceAgeType:(unsigned __int16)a4
+- (unsigned)minAgeTypeForFaceAgeType:(unsigned __int16)type andFaceAgeType:(unsigned __int16)ageType
 {
-  if (a3 >= a4)
+  if (type >= ageType)
   {
-    v4 = a4;
+    typeCopy2 = ageType;
   }
 
   else
   {
-    v4 = a3;
+    typeCopy2 = type;
   }
 
-  if (!a4)
+  if (!ageType)
   {
-    v4 = a3;
+    typeCopy2 = type;
   }
 
-  if (a3)
+  if (type)
   {
-    return v4;
+    return typeCopy2;
   }
 
   else
   {
-    return a4;
+    return ageType;
   }
 }
 
-- (void)updateConfidenceCacheBetweenPersonLocalIdentifier:(id)a3 andOtherPersonLocalIdentifier:(id)a4 withDistance:(double)a5
+- (void)updateConfidenceCacheBetweenPersonLocalIdentifier:(id)identifier andOtherPersonLocalIdentifier:(id)localIdentifier withDistance:(double)distance
 {
   v8 = self->_confidencesForMergedPersonLocalIdentifier;
   aBlock[0] = MEMORY[0x1E69E9820];
@@ -2033,18 +2033,18 @@ void __102__PNPersonClusterManager_distanceBetweenHuman_andHuman_useCommonMoment
   aBlock[3] = &unk_1E82A24C8;
   v18 = v8;
   v9 = v8;
-  v10 = a4;
-  v11 = a3;
+  localIdentifierCopy = localIdentifier;
+  identifierCopy = identifier;
   v12 = _Block_copy(aBlock);
-  v13 = 1.0 - a5;
-  *&a5 = 1.0 - a5;
-  LODWORD(v13) = LODWORD(a5);
+  v13 = 1.0 - distance;
+  *&distance = 1.0 - distance;
+  LODWORD(v13) = LODWORD(distance);
   v14 = [MEMORY[0x1E696AD98] numberWithFloat:v13];
-  v12[2](v12, v11, v10, v14);
+  v12[2](v12, identifierCopy, localIdentifierCopy, v14);
 
-  LODWORD(v15) = LODWORD(a5);
+  LODWORD(v15) = LODWORD(distance);
   v16 = [MEMORY[0x1E696AD98] numberWithFloat:v15];
-  v12[2](v12, v10, v11, v16);
+  v12[2](v12, localIdentifierCopy, identifierCopy, v16);
 }
 
 void __119__PNPersonClusterManager_updateConfidenceCacheBetweenPersonLocalIdentifier_andOtherPersonLocalIdentifier_withDistance___block_invoke(uint64_t a1, void *a2, void *a3, void *a4)
@@ -2073,49 +2073,49 @@ void __119__PNPersonClusterManager_updateConfidenceCacheBetweenPersonLocalIdenti
   }
 }
 
-- (void)mergePersons:(id)a3 withPerson:(id)a4
+- (void)mergePersons:(id)persons withPerson:(id)person
 {
   v73 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if ([v7 detectionType] == 1)
+  personsCopy = persons;
+  personCopy = person;
+  if ([personCopy detectionType] == 1)
   {
-    v8 = [v7 representativeFaceByFaceIdentifiers];
-    v9 = [v8 count];
+    representativeFaceByFaceIdentifiers = [personCopy representativeFaceByFaceIdentifiers];
+    v9 = [representativeFaceByFaceIdentifiers count];
 
     if (!v9)
     {
-      v10 = [(PNPersonClusterManager *)self representativeFaceObservationForPerson:v7 ageType:0];
+      v10 = [(PNPersonClusterManager *)self representativeFaceObservationForPerson:personCopy ageType:0];
       if (v10)
       {
-        v11 = [v7 representativeFaceByFaceIdentifiers];
-        v12 = [v7 backingFaceIdentifiers];
-        [v11 setObject:v10 forKeyedSubscript:v12];
+        representativeFaceByFaceIdentifiers2 = [personCopy representativeFaceByFaceIdentifiers];
+        backingFaceIdentifiers = [personCopy backingFaceIdentifiers];
+        [representativeFaceByFaceIdentifiers2 setObject:v10 forKeyedSubscript:backingFaceIdentifiers];
       }
     }
   }
 
-  v52 = [v7 mergedPersonIdentifiers];
-  if (!v52)
+  mergedPersonIdentifiers = [personCopy mergedPersonIdentifiers];
+  if (!mergedPersonIdentifiers)
   {
     v13 = objc_opt_new();
-    [v7 setMergedPersonIdentifiers:v13];
+    [personCopy setMergedPersonIdentifiers:v13];
 
-    v52 = [v7 mergedPersonIdentifiers];
+    mergedPersonIdentifiers = [personCopy mergedPersonIdentifiers];
   }
 
   v68 = 0u;
   v69 = 0u;
   v66 = 0u;
   v67 = 0u;
-  v14 = v6;
+  v14 = personsCopy;
   v53 = [v14 countByEnumeratingWithState:&v66 objects:v72 count:16];
   if (v53)
   {
     v15 = 0;
     v49 = *v67;
     v50 = v14;
-    v51 = self;
+    selfCopy = self;
     do
     {
       v16 = 0;
@@ -2130,53 +2130,53 @@ void __119__PNPersonClusterManager_updateConfidenceCacheBetweenPersonLocalIdenti
         v56 = v16;
         v17 = *(*(&v66 + 1) + 8 * v16);
         context = objc_autoreleasePoolPush();
-        v54 = [v17 faceCount];
+        faceCount = [v17 faceCount];
         [(PNPersonClusterManager *)self invalidateCachesForPerson:v17];
-        v18 = [v17 mergedPersonIdentifiers];
-        [v52 unionSet:v18];
+        mergedPersonIdentifiers2 = [v17 mergedPersonIdentifiers];
+        [mergedPersonIdentifiers unionSet:mergedPersonIdentifiers2];
 
-        v19 = [v17 localIdentifier];
-        [v52 addObject:v19];
+        localIdentifier = [v17 localIdentifier];
+        [mergedPersonIdentifiers addObject:localIdentifier];
 
-        v20 = [v7 backingFaceIdentifiers];
-        v21 = [v17 backingFaceIdentifiers];
-        [v20 unionSet:v21];
+        backingFaceIdentifiers2 = [personCopy backingFaceIdentifiers];
+        backingFaceIdentifiers3 = [v17 backingFaceIdentifiers];
+        [backingFaceIdentifiers2 unionSet:backingFaceIdentifiers3];
 
-        v22 = [v7 backingAssetIdentifiers];
-        v23 = [v17 backingAssetIdentifiers];
-        [v22 unionSet:v23];
+        backingAssetIdentifiers = [personCopy backingAssetIdentifiers];
+        backingAssetIdentifiers2 = [v17 backingAssetIdentifiers];
+        [backingAssetIdentifiers unionSet:backingAssetIdentifiers2];
 
-        v24 = [v7 backingMomentIdentifiers];
-        v25 = [v17 backingMomentIdentifiers];
-        [v24 unionSet:v25];
+        backingMomentIdentifiers = [personCopy backingMomentIdentifiers];
+        backingMomentIdentifiers2 = [v17 backingMomentIdentifiers];
+        [backingMomentIdentifiers unionSet:backingMomentIdentifiers2];
 
         if ([v17 detectionType] == 1)
         {
-          v26 = [v17 representativeFaceByFaceIdentifiers];
-          v27 = [v26 count];
+          representativeFaceByFaceIdentifiers3 = [v17 representativeFaceByFaceIdentifiers];
+          v27 = [representativeFaceByFaceIdentifiers3 count];
 
           if (!v27)
           {
             v28 = [(PNPersonClusterManager *)self representativeFaceObservationForPerson:v17 ageType:0];
             if (v28)
             {
-              v29 = [v17 representativeFaceByFaceIdentifiers];
-              v30 = [v17 backingFaceIdentifiers];
-              [v29 setObject:v28 forKeyedSubscript:v30];
+              representativeFaceByFaceIdentifiers4 = [v17 representativeFaceByFaceIdentifiers];
+              backingFaceIdentifiers4 = [v17 backingFaceIdentifiers];
+              [representativeFaceByFaceIdentifiers4 setObject:v28 forKeyedSubscript:backingFaceIdentifiers4];
             }
           }
         }
 
-        v31 = [v7 representativeFaceByFaceIdentifiers];
-        v32 = [v17 representativeFaceByFaceIdentifiers];
-        [v31 addEntriesFromDictionary:v32];
+        representativeFaceByFaceIdentifiers5 = [personCopy representativeFaceByFaceIdentifiers];
+        representativeFaceByFaceIdentifiers6 = [v17 representativeFaceByFaceIdentifiers];
+        [representativeFaceByFaceIdentifiers5 addEntriesFromDictionary:representativeFaceByFaceIdentifiers6];
 
         v64 = 0u;
         v65 = 0u;
         v62 = 0u;
         v63 = 0u;
-        v33 = [v17 backingFaceIdentifiersByMomentIdentifiers];
-        v34 = [v33 countByEnumeratingWithState:&v62 objects:v71 count:16];
+        backingFaceIdentifiersByMomentIdentifiers = [v17 backingFaceIdentifiersByMomentIdentifiers];
+        v34 = [backingFaceIdentifiersByMomentIdentifiers countByEnumeratingWithState:&v62 objects:v71 count:16];
         if (v34)
         {
           v35 = v34;
@@ -2187,15 +2187,15 @@ void __119__PNPersonClusterManager_updateConfidenceCacheBetweenPersonLocalIdenti
             {
               if (*v63 != v36)
               {
-                objc_enumerationMutation(v33);
+                objc_enumerationMutation(backingFaceIdentifiersByMomentIdentifiers);
               }
 
               v38 = *(*(&v62 + 1) + 8 * i);
-              v39 = [v17 backingFaceIdentifiersByMomentIdentifiers];
-              v40 = [v39 objectForKeyedSubscript:v38];
+              backingFaceIdentifiersByMomentIdentifiers2 = [v17 backingFaceIdentifiersByMomentIdentifiers];
+              v40 = [backingFaceIdentifiersByMomentIdentifiers2 objectForKeyedSubscript:v38];
 
-              v41 = [v7 backingFaceIdentifiersByMomentIdentifiers];
-              v42 = [v41 objectForKeyedSubscript:v38];
+              backingFaceIdentifiersByMomentIdentifiers3 = [personCopy backingFaceIdentifiersByMomentIdentifiers];
+              v42 = [backingFaceIdentifiersByMomentIdentifiers3 objectForKeyedSubscript:v38];
 
               if (v42)
               {
@@ -2204,12 +2204,12 @@ void __119__PNPersonClusterManager_updateConfidenceCacheBetweenPersonLocalIdenti
 
               else
               {
-                v43 = [v7 backingFaceIdentifiersByMomentIdentifiers];
-                [v43 setObject:v40 forKeyedSubscript:v38];
+                backingFaceIdentifiersByMomentIdentifiers4 = [personCopy backingFaceIdentifiersByMomentIdentifiers];
+                [backingFaceIdentifiersByMomentIdentifiers4 setObject:v40 forKeyedSubscript:v38];
               }
             }
 
-            v35 = [v33 countByEnumeratingWithState:&v62 objects:v71 count:16];
+            v35 = [backingFaceIdentifiersByMomentIdentifiers countByEnumeratingWithState:&v62 objects:v71 count:16];
           }
 
           while (v35);
@@ -2219,9 +2219,9 @@ void __119__PNPersonClusterManager_updateConfidenceCacheBetweenPersonLocalIdenti
         v61 = 0u;
         v58 = 0u;
         v59 = 0u;
-        v44 = [v17 mergedPersonIdentifiers];
-        v45 = [v44 countByEnumeratingWithState:&v58 objects:v70 count:16];
-        self = v51;
+        mergedPersonIdentifiers3 = [v17 mergedPersonIdentifiers];
+        v45 = [mergedPersonIdentifiers3 countByEnumeratingWithState:&v58 objects:v70 count:16];
+        self = selfCopy;
         if (v45)
         {
           v46 = v45;
@@ -2232,19 +2232,19 @@ void __119__PNPersonClusterManager_updateConfidenceCacheBetweenPersonLocalIdenti
             {
               if (*v59 != v47)
               {
-                objc_enumerationMutation(v44);
+                objc_enumerationMutation(mergedPersonIdentifiers3);
               }
 
-              [(NSMutableDictionary *)v51->_personClusters setObject:v7 forKeyedSubscript:*(*(&v58 + 1) + 8 * j)];
+              [(NSMutableDictionary *)selfCopy->_personClusters setObject:personCopy forKeyedSubscript:*(*(&v58 + 1) + 8 * j)];
             }
 
-            v46 = [v44 countByEnumeratingWithState:&v58 objects:v70 count:16];
+            v46 = [mergedPersonIdentifiers3 countByEnumeratingWithState:&v58 objects:v70 count:16];
           }
 
           while (v46);
         }
 
-        v15 = v54 + v57;
+        v15 = faceCount + v57;
 
         objc_autoreleasePoolPop(context);
         v16 = v56 + 1;
@@ -2259,8 +2259,8 @@ void __119__PNPersonClusterManager_updateConfidenceCacheBetweenPersonLocalIdenti
 
     if (v15)
     {
-      [(PNPersonClusterManager *)v51 invalidateCachesForPerson:v7];
-      [v7 invalidateCaches];
+      [(PNPersonClusterManager *)selfCopy invalidateCachesForPerson:personCopy];
+      [personCopy invalidateCaches];
     }
   }
 
@@ -2269,16 +2269,16 @@ void __119__PNPersonClusterManager_updateConfidenceCacheBetweenPersonLocalIdenti
   }
 }
 
-- (id)_mapPersonClustersToFaceGroups:(id)a3
+- (id)_mapPersonClustersToFaceGroups:(id)groups
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  groupsCopy = groups;
   v5 = objc_opt_new();
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = v4;
+  v6 = groupsCopy;
   v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
@@ -2294,15 +2294,15 @@ void __119__PNPersonClusterManager_updateConfidenceCacheBetweenPersonLocalIdenti
         }
 
         v11 = *(*(&v17 + 1) + 8 * i);
-        v12 = [v11 localIdentifier];
-        v13 = [(NSMutableDictionary *)self->_personClusters objectForKeyedSubscript:v12];
+        localIdentifier = [v11 localIdentifier];
+        v13 = [(NSMutableDictionary *)self->_personClusters objectForKeyedSubscript:localIdentifier];
         if (!v13)
         {
           v14 = [PNPersonCluster alloc];
-          v15 = [(PNPersonClusterManager *)self photoLibrary];
-          v13 = [(PNPersonCluster *)v14 initWithFaceGroup:v11 inPhotoLibrary:v15];
+          photoLibrary = [(PNPersonClusterManager *)self photoLibrary];
+          v13 = [(PNPersonCluster *)v14 initWithFaceGroup:v11 inPhotoLibrary:photoLibrary];
 
-          [(NSMutableDictionary *)self->_personClusters setObject:v13 forKeyedSubscript:v12];
+          [(NSMutableDictionary *)self->_personClusters setObject:v13 forKeyedSubscript:localIdentifier];
         }
 
         [v5 addObject:v13];
@@ -2317,17 +2317,17 @@ void __119__PNPersonClusterManager_updateConfidenceCacheBetweenPersonLocalIdenti
   return v5;
 }
 
-- (id)_mapPersonClustersToPersons:(id)a3
+- (id)_mapPersonClustersToPersons:(id)persons
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  personsCopy = persons;
   v5 = objc_opt_new();
-  v6 = [(PNPersonClusterManager *)self photoLibrary];
+  photoLibrary = [(PNPersonClusterManager *)self photoLibrary];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v7 = v4;
+  v7 = personsCopy;
   v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v8)
   {
@@ -2343,12 +2343,12 @@ void __119__PNPersonClusterManager_updateConfidenceCacheBetweenPersonLocalIdenti
         }
 
         v12 = *(*(&v16 + 1) + 8 * i);
-        v13 = [v12 localIdentifier];
-        v14 = [(NSMutableDictionary *)self->_personClusters objectForKeyedSubscript:v13];
+        localIdentifier = [v12 localIdentifier];
+        v14 = [(NSMutableDictionary *)self->_personClusters objectForKeyedSubscript:localIdentifier];
         if (!v14)
         {
-          v14 = [[PNPersonCluster alloc] initWithPerson:v12 inPhotoLibrary:v6];
-          [(NSMutableDictionary *)self->_personClusters setObject:v14 forKeyedSubscript:v13];
+          v14 = [[PNPersonCluster alloc] initWithPerson:v12 inPhotoLibrary:photoLibrary];
+          [(NSMutableDictionary *)self->_personClusters setObject:v14 forKeyedSubscript:localIdentifier];
         }
 
         [v5 addObject:v14];
@@ -2363,15 +2363,15 @@ void __119__PNPersonClusterManager_updateConfidenceCacheBetweenPersonLocalIdenti
   return v5;
 }
 
-- (void)invalidateCachesForPerson:(id)a3
+- (void)invalidateCachesForPerson:(id)person
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = [a3 localIdentifier];
+  localIdentifier = [person localIdentifier];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __52__PNPersonClusterManager_invalidateCachesForPerson___block_invoke;
   aBlock[3] = &unk_1E82A24A0;
-  v5 = v4;
+  v5 = localIdentifier;
   v19 = v5;
   v6 = _Block_copy(aBlock);
   v6[2](v6, self->_distancesForPersonLocalIdentifier);
@@ -2381,8 +2381,8 @@ void __119__PNPersonClusterManager_updateConfidenceCacheBetweenPersonLocalIdenti
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v8 = [(NSMutableDictionary *)self->_representativeFaceObservationForPersonIdentifier allKeys];
-  v9 = [v8 countByEnumeratingWithState:&v14 objects:v20 count:16];
+  allKeys = [(NSMutableDictionary *)self->_representativeFaceObservationForPersonIdentifier allKeys];
+  v9 = [allKeys countByEnumeratingWithState:&v14 objects:v20 count:16];
   if (v9)
   {
     v10 = v9;
@@ -2393,7 +2393,7 @@ void __119__PNPersonClusterManager_updateConfidenceCacheBetweenPersonLocalIdenti
       {
         if (*v15 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(allKeys);
         }
 
         v13 = *(*(&v14 + 1) + 8 * i);
@@ -2403,7 +2403,7 @@ void __119__PNPersonClusterManager_updateConfidenceCacheBetweenPersonLocalIdenti
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v14 objects:v20 count:16];
+      v10 = [allKeys countByEnumeratingWithState:&v14 objects:v20 count:16];
     }
 
     while (v10);
@@ -2460,11 +2460,11 @@ void __52__PNPersonClusterManager_invalidateCachesForPerson___block_invoke_2(uin
   [(NSMutableDictionary *)confidencesForMergedPersonLocalIdentifier removeAllObjects];
 }
 
-- (PNPersonClusterManager)initWithPhotoLibrary:(id)a3 detectionType:(signed __int16)a4 promoterDelegate:(id)a5
+- (PNPersonClusterManager)initWithPhotoLibrary:(id)library detectionType:(signed __int16)type promoterDelegate:(id)delegate
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
+  typeCopy = type;
+  libraryCopy = library;
+  delegateCopy = delegate;
   v31.receiver = self;
   v31.super_class = PNPersonClusterManager;
   v10 = [(PNPersonClusterManager *)&v31 init];
@@ -2474,8 +2474,8 @@ void __52__PNPersonClusterManager_invalidateCachesForPerson___block_invoke_2(uin
     goto LABEL_10;
   }
 
-  [(PNPersonClusterManager *)v10 setPhotoLibrary:v8];
-  [(PNPersonClusterManager *)v11 setDetectionType:v6];
+  [(PNPersonClusterManager *)v10 setPhotoLibrary:libraryCopy];
+  [(PNPersonClusterManager *)v11 setDetectionType:typeCopy];
   v12 = objc_alloc_init(PNVisionHelper);
   visionHelper = v11->_visionHelper;
   v11->_visionHelper = v12;
@@ -2500,11 +2500,11 @@ void __52__PNPersonClusterManager_invalidateCachesForPerson___block_invoke_2(uin
   confidencesForMergedPersonLocalIdentifier = v11->_confidencesForMergedPersonLocalIdentifier;
   v11->_confidencesForMergedPersonLocalIdentifier = v22;
 
-  v24 = [v8 pn_fetchInvalidAssetIdentifiersForCommonComparison];
+  pn_fetchInvalidAssetIdentifiersForCommonComparison = [libraryCopy pn_fetchInvalidAssetIdentifiersForCommonComparison];
   assetsToIgnore = v11->_assetsToIgnore;
-  v11->_assetsToIgnore = v24;
+  v11->_assetsToIgnore = pn_fetchInvalidAssetIdentifiersForCommonComparison;
 
-  objc_storeStrong(&v11->_promoterDelegate, a5);
+  objc_storeStrong(&v11->_promoterDelegate, delegate);
   if (v11->_promoterDelegate)
   {
     v26 = objc_opt_respondsToSelector();

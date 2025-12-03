@@ -1,36 +1,36 @@
 @interface TSPObjectContext
-+ (void)waitForPendingEndSaveGroup:(id)a3;
++ (void)waitForPendingEndSaveGroup:(id)group;
 - (BOOL)areExternalReferencesSupported;
-- (BOOL)areExternalReferencesToDataAllowedAtURL:(id)a3;
+- (BOOL)areExternalReferencesToDataAllowedAtURL:(id)l;
 - (BOOL)areNewExternalReferencesToDataAllowed;
 - (BOOL)ignoreDocumentSupport;
 - (BOOL)isDocumentSupportTemporary;
 - (NSURL)documentURL;
 - (TSPObjectContext)init;
-- (TSPObjectContext)initWithDelegate:(id)a3;
+- (TSPObjectContext)initWithDelegate:(id)delegate;
 - (TSPObjectContextDelegate)delegate;
 - (id).cxx_construct;
-- (id)addLoadedObjectsAndEnqueueNotifications:(id)a3;
-- (id)dataOrNilForIdentifier:(int64_t)a3;
+- (id)addLoadedObjectsAndEnqueueNotifications:(id)notifications;
+- (id)dataOrNilForIdentifier:(int64_t)identifier;
 - (id)documentRoot;
-- (id)objectForIdentifier:(int64_t)a3;
+- (id)objectForIdentifier:(int64_t)identifier;
 - (id)supportDirectoryURL;
 - (id)temporaryDirectory;
-- (int64_t)incrementLastObjectIdentifier:(int64_t)a3;
+- (int64_t)incrementLastObjectIdentifier:(int64_t)identifier;
 - (int64_t)modifyObjectTokenForNewObject;
-- (void)addLoadObserver:(id)a3 action:(SEL)a4 forLazyReference:(id)a5;
-- (void)addLoadObserver:(id)a3 action:(SEL)a4 forObjectIdentifier:(int64_t)a5 objectOrNil:(id)a6;
+- (void)addLoadObserver:(id)observer action:(SEL)action forLazyReference:(id)reference;
+- (void)addLoadObserver:(id)observer action:(SEL)action forObjectIdentifier:(int64_t)identifier objectOrNil:(id)nil;
 - (void)beginWriteOperation;
-- (void)checkforDataWarningsWithPackageURL:(id)a3;
+- (void)checkforDataWarningsWithPackageURL:(id)l;
 - (void)dealloc;
-- (void)didMoveSupportToURL:(id)a3;
-- (void)didMoveToURL:(id)a3;
-- (void)didReadDocumentObject:(id)a3;
-- (void)performReadOperation:(id)a3;
-- (void)performReadOperationOnKnownObjects:(id)a3;
-- (void)runObjectNotificationsInQueue:(id)a3;
-- (void)setDocumentObject:(id)a3;
-- (void)setLastObjectIdentifier:(int64_t)a3;
+- (void)didMoveSupportToURL:(id)l;
+- (void)didMoveToURL:(id)l;
+- (void)didReadDocumentObject:(id)object;
+- (void)performReadOperation:(id)operation;
+- (void)performReadOperationOnKnownObjects:(id)objects;
+- (void)runObjectNotificationsInQueue:(id)queue;
+- (void)setDocumentObject:(id)object;
+- (void)setLastObjectIdentifier:(int64_t)identifier;
 - (void)waitForSaveToFinishIfNeeded;
 @end
 
@@ -38,10 +38,10 @@
 
 - (TSPObjectContext)init
 {
-  v2 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v3 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSPObjectContext init]"];
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/persistence/src/TSPObjectContext.mm"];
-  [v2 handleFailureInFunction:v3 file:v4 lineNumber:166 description:@"Do not call method"];
+  [currentHandler handleFailureInFunction:v3 file:v4 lineNumber:166 description:@"Do not call method"];
 
   v5 = MEMORY[0x277CBEAD8];
   v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@: %s", @"Do not call method", "-[TSPObjectContext init]"];
@@ -51,15 +51,15 @@
   objc_exception_throw(v7);
 }
 
-- (TSPObjectContext)initWithDelegate:(id)a3
+- (TSPObjectContext)initWithDelegate:(id)delegate
 {
-  v4 = a3;
-  if (!v4)
+  delegateCopy = delegate;
+  if (!delegateCopy)
   {
-    v5 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSPObjectContext initWithDelegate:]"];
     v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/persistence/src/TSPObjectContext.mm"];
-    [v5 handleFailureInFunction:v6 file:v7 lineNumber:171 description:{@"Invalid parameter not satisfying: %s", "delegate"}];
+    [currentHandler handleFailureInFunction:v6 file:v7 lineNumber:171 description:{@"Invalid parameter not satisfying: %s", "delegate"}];
   }
 
   v37.receiver = self;
@@ -68,14 +68,14 @@
   v9 = v8;
   if (v8)
   {
-    [(TSPObjectContext *)v8 setDelegate:v4];
+    [(TSPObjectContext *)v8 setDelegate:delegateCopy];
     v10 = [[TSPDataManager alloc] initWithContext:v9];
     dataManager = v9->_dataManager;
     v9->_dataManager = v10;
 
-    v12 = [MEMORY[0x277CCAB00] newTspWeakObjectsMapTable];
+    newTspWeakObjectsMapTable = [MEMORY[0x277CCAB00] newTspWeakObjectsMapTable];
     objects = v9->_objects;
-    v9->_objects = v12;
+    v9->_objects = newTspWeakObjectsMapTable;
 
     v14 = dispatch_queue_create("TSPObjectContext.Objects", MEMORY[0x277D85CD8]);
     objectsQueue = v9->_objectsQueue;
@@ -156,24 +156,24 @@
   dispatch_sync(writeQueue, block);
 }
 
-- (void)performReadOperation:(id)a3
+- (void)performReadOperation:(id)operation
 {
-  v4 = a3;
-  if (v4)
+  operationCopy = operation;
+  if (operationCopy)
   {
-    v5 = v4;
+    v5 = operationCopy;
     dispatch_suspend(self->_writeQueue);
     [(NSRecursiveLock *)self->_readLock lock];
     v5[2]();
     [(NSRecursiveLock *)self->_readLock unlock];
     dispatch_resume(self->_writeQueue);
-    v4 = v5;
+    operationCopy = v5;
   }
 }
 
-- (id)objectForIdentifier:(int64_t)a3
+- (id)objectForIdentifier:(int64_t)identifier
 {
-  switch(a3)
+  switch(identifier)
   {
     case 1:
       documentObject = self->_documentObject;
@@ -204,7 +204,7 @@ LABEL_9:
       block[3] = &unk_279D469E0;
       block[4] = self;
       block[5] = &v9;
-      block[6] = a3;
+      block[6] = identifier;
       dispatch_sync(objectsQueue, block);
       v4 = v10[5];
       _Block_object_dispose(&v9, 8);
@@ -222,17 +222,17 @@ uint64_t __40__TSPObjectContext_objectForIdentifier___block_invoke(void *a1)
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)performReadOperationOnKnownObjects:(id)a3
+- (void)performReadOperationOnKnownObjects:(id)objects
 {
-  v4 = a3;
+  objectsCopy = objects;
   objectsQueue = self->_objectsQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __55__TSPObjectContext_performReadOperationOnKnownObjects___block_invoke;
   v7[3] = &unk_279D46A08;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = objectsCopy;
+  v6 = objectsCopy;
   dispatch_sync(objectsQueue, v7);
 }
 
@@ -245,9 +245,9 @@ uint64_t __40__TSPObjectContext_objectForIdentifier___block_invoke(void *a1)
   block[3] = &unk_279D469B8;
   block[4] = self;
   dispatch_sync(temporaryDirectoryQueue, block);
-  v4 = [(TSUTemporaryDirectory *)self->_temporaryDirectory path];
+  path = [(TSUTemporaryDirectory *)self->_temporaryDirectory path];
 
-  return v4;
+  return path;
 }
 
 uint64_t __38__TSPObjectContext_temporaryDirectory__block_invoke(uint64_t result)
@@ -262,13 +262,13 @@ uint64_t __38__TSPObjectContext_temporaryDirectory__block_invoke(uint64_t result
   return result;
 }
 
-- (void)checkforDataWarningsWithPackageURL:(id)a3
+- (void)checkforDataWarningsWithPackageURL:(id)l
 {
-  v6 = a3;
+  lCopy = l;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    v5 = [(TSPDataManager *)self->_dataManager checkForPersistenceWarningsWithPackageURL:v6];
+    v5 = [(TSPDataManager *)self->_dataManager checkForPersistenceWarningsWithPackageURL:lCopy];
     [WeakRetained addPersistenceWarnings:v5];
   }
 }
@@ -302,19 +302,19 @@ uint64_t __31__TSPObjectContext_documentURL__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)didMoveToURL:(id)a3
+- (void)didMoveToURL:(id)l
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  lCopy = l;
+  v5 = lCopy;
+  if (lCopy)
   {
     documentStateQueue = self->_documentStateQueue;
     v11 = MEMORY[0x277D85DD0];
     v12 = 3221225472;
     v13 = __33__TSPObjectContext_didMoveToURL___block_invoke;
     v14 = &unk_279D46A58;
-    v15 = self;
-    v7 = v4;
+    selfCopy = self;
+    v7 = lCopy;
     v16 = v7;
     dispatch_barrier_async(documentStateQueue, &v11);
     if ([(TSPObjectContext *)self areExternalReferencesSupported:v11]&& ![(TSPObjectContext *)self areExternalReferencesToDataAllowedAtURL:v7])
@@ -325,10 +325,10 @@ uint64_t __31__TSPObjectContext_documentURL__block_invoke(uint64_t a1)
 
   else
   {
-    v8 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSPObjectContext didMoveToURL:]"];
     v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/persistence/src/TSPObjectContext.mm"];
-    [v8 handleFailureInFunction:v9 file:v10 lineNumber:1367 description:@"Invalid nil document URL."];
+    [currentHandler handleFailureInFunction:v9 file:v10 lineNumber:1367 description:@"Invalid nil document URL."];
   }
 }
 
@@ -339,17 +339,17 @@ uint64_t __33__TSPObjectContext_didMoveToURL___block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)didMoveSupportToURL:(id)a3
+- (void)didMoveSupportToURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   documentStateQueue = self->_documentStateQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __40__TSPObjectContext_didMoveSupportToURL___block_invoke;
   v7[3] = &unk_279D46A58;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = lCopy;
+  v6 = lCopy;
   dispatch_barrier_async(documentStateQueue, v7);
 }
 
@@ -373,24 +373,24 @@ uint64_t __40__TSPObjectContext_didMoveSupportToURL___block_invoke(uint64_t a1)
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    v3 = [WeakRetained areNewExternalReferencesToDataAllowed];
+    areNewExternalReferencesToDataAllowed = [WeakRetained areNewExternalReferencesToDataAllowed];
   }
 
   else
   {
-    v3 = 0;
+    areNewExternalReferencesToDataAllowed = 0;
   }
 
-  return v3;
+  return areNewExternalReferencesToDataAllowed;
 }
 
-- (BOOL)areExternalReferencesToDataAllowedAtURL:(id)a3
+- (BOOL)areExternalReferencesToDataAllowedAtURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    v6 = [WeakRetained areExternalReferencesToDataAllowedAtURL:v4];
+    v6 = [WeakRetained areExternalReferencesToDataAllowedAtURL:lCopy];
   }
 
   else
@@ -401,24 +401,24 @@ uint64_t __40__TSPObjectContext_didMoveSupportToURL___block_invoke(uint64_t a1)
   return v6;
 }
 
-+ (void)waitForPendingEndSaveGroup:(id)a3
++ (void)waitForPendingEndSaveGroup:(id)group
 {
-  group = a3;
+  group = group;
   if ([MEMORY[0x277CCACC8] isMainThread])
   {
     v3 = *MEMORY[0x277CBE640];
     while (dispatch_group_wait(group, 0))
     {
-      v4 = [MEMORY[0x277CBEB88] currentRunLoop];
-      v5 = [MEMORY[0x277CBEAA8] distantFuture];
-      v6 = [v4 runMode:v3 beforeDate:v5];
+      currentRunLoop = [MEMORY[0x277CBEB88] currentRunLoop];
+      distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
+      v6 = [currentRunLoop runMode:v3 beforeDate:distantFuture];
 
       if ((v6 & 1) == 0)
       {
-        v7 = [MEMORY[0x277D6C290] currentHandler];
+        currentHandler = [MEMORY[0x277D6C290] currentHandler];
         v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[TSPObjectContext waitForPendingEndSaveGroup:]"];
         v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/persistence/src/TSPObjectContext.mm"];
-        [v7 handleFailureInFunction:v8 file:v9 lineNumber:2134 description:@"Run loop could not be started."];
+        [currentHandler handleFailureInFunction:v8 file:v9 lineNumber:2134 description:@"Run loop could not be started."];
 
         break;
       }
@@ -463,21 +463,21 @@ uint64_t __40__TSPObjectContext_didMoveSupportToURL___block_invoke(uint64_t a1)
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    v3 = [WeakRetained supportDirectoryURL];
+    supportDirectoryURL = [WeakRetained supportDirectoryURL];
   }
 
   else
   {
-    v3 = 0;
+    supportDirectoryURL = 0;
   }
 
-  return v3;
+  return supportDirectoryURL;
 }
 
-- (id)dataOrNilForIdentifier:(int64_t)a3
+- (id)dataOrNilForIdentifier:(int64_t)identifier
 {
-  v4 = [(TSPObjectContext *)self dataManager];
-  v5 = [v4 dataOrNilForIdentifier:a3];
+  dataManager = [(TSPObjectContext *)self dataManager];
+  v5 = [dataManager dataOrNilForIdentifier:identifier];
 
   return v5;
 }
@@ -492,15 +492,15 @@ uint64_t __40__TSPObjectContext_didMoveSupportToURL___block_invoke(uint64_t a1)
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    v3 = [WeakRetained ignoreDocumentSupport];
+    ignoreDocumentSupport = [WeakRetained ignoreDocumentSupport];
   }
 
   else
   {
-    v3 = 0;
+    ignoreDocumentSupport = 0;
   }
 
-  return v3;
+  return ignoreDocumentSupport;
 }
 
 - (BOOL)isDocumentSupportTemporary
@@ -513,66 +513,66 @@ uint64_t __40__TSPObjectContext_didMoveSupportToURL___block_invoke(uint64_t a1)
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    v3 = [WeakRetained isDocumentSupportTemporary];
+    isDocumentSupportTemporary = [WeakRetained isDocumentSupportTemporary];
   }
 
   else
   {
-    v3 = 0;
+    isDocumentSupportTemporary = 0;
   }
 
-  return v3;
+  return isDocumentSupportTemporary;
 }
 
-- (void)setDocumentObject:(id)a3
+- (void)setDocumentObject:(id)object
 {
-  v18 = a3;
-  v5 = [v18 context];
+  objectCopy = object;
+  context = [objectCopy context];
 
-  if (v5 != self)
+  if (context != self)
   {
-    v6 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSPObjectContext setDocumentObject:]"];
     v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/persistence/src/TSPObjectContext.mm"];
-    [v6 handleFailureInFunction:v7 file:v8 lineNumber:2403 description:{@"Document object should belong to object context %@.", self}];
+    [currentHandler handleFailureInFunction:v7 file:v8 lineNumber:2403 description:{@"Document object should belong to object context %@.", self}];
   }
 
-  v9 = [v18 packageLocator];
+  packageLocator = [objectCopy packageLocator];
 
-  if (v9)
+  if (packageLocator)
   {
-    v10 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
     v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSPObjectContext setDocumentObject:]"];
     v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/persistence/src/TSPObjectContext.mm"];
-    [v10 handleFailureInFunction:v11 file:v12 lineNumber:2404 description:@"Document object shouldn't have a package locator."];
+    [currentHandler2 handleFailureInFunction:v11 file:v12 lineNumber:2404 description:@"Document object shouldn't have a package locator."];
   }
 
   documentObject = self->_documentObject;
   p_documentObject = &self->_documentObject;
   if (documentObject)
   {
-    v15 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler3 = [MEMORY[0x277D6C290] currentHandler];
     v16 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSPObjectContext setDocumentObject:]"];
     v17 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/persistence/src/TSPObjectContext.mm"];
-    [v15 handleFailureInFunction:v16 file:v17 lineNumber:2421 description:@"Already have a document object"];
+    [currentHandler3 handleFailureInFunction:v16 file:v17 lineNumber:2421 description:@"Already have a document object"];
   }
 
   else
   {
-    objc_storeStrong(p_documentObject, a3);
+    objc_storeStrong(p_documentObject, object);
     [(TSPObject *)*p_documentObject setTsp_identifier:1];
   }
 }
 
-- (void)didReadDocumentObject:(id)a3
+- (void)didReadDocumentObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   if (self->_documentObject)
   {
-    v5 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSPObjectContext didReadDocumentObject:]"];
     v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/persistence/src/TSPObjectContext.mm"];
-    [v5 handleFailureInFunction:v6 file:v7 lineNumber:2427 description:{@"expected nil value for '%s'", "_documentObject"}];
+    [currentHandler handleFailureInFunction:v6 file:v7 lineNumber:2427 description:{@"expected nil value for '%s'", "_documentObject"}];
   }
 
   objc_opt_class();
@@ -580,50 +580,50 @@ uint64_t __40__TSPObjectContext_didMoveSupportToURL___block_invoke(uint64_t a1)
   {
     TSULogErrorInFunction();
 
-    v4 = 0;
+    objectCopy = 0;
   }
 
   documentObject = self->_documentObject;
-  self->_documentObject = v4;
+  self->_documentObject = objectCopy;
 }
 
-- (void)setLastObjectIdentifier:(int64_t)a3
+- (void)setLastObjectIdentifier:(int64_t)identifier
 {
   do
   {
     lastObjectIdentifier = self->_lastObjectIdentifier;
-    if (lastObjectIdentifier >= a3)
+    if (lastObjectIdentifier >= identifier)
     {
       break;
     }
 
     v4 = self->_lastObjectIdentifier;
-    atomic_compare_exchange_strong(&self->_lastObjectIdentifier, &v4, a3);
+    atomic_compare_exchange_strong(&self->_lastObjectIdentifier, &v4, identifier);
   }
 
   while (v4 != lastObjectIdentifier);
 }
 
-- (int64_t)incrementLastObjectIdentifier:(int64_t)a3
+- (int64_t)incrementLastObjectIdentifier:(int64_t)identifier
 {
-  if (a3 > 0)
+  if (identifier > 0)
   {
-    return atomic_fetch_add(&self->_lastObjectIdentifier, a3) + a3;
+    return atomic_fetch_add(&self->_lastObjectIdentifier, identifier) + identifier;
   }
 
-  v5 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSPObjectContext incrementLastObjectIdentifier:]"];
   v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/persistence/src/TSPObjectContext.mm"];
-  [v5 handleFailureInFunction:v6 file:v7 lineNumber:2547 description:@"don't increment by a negative value"];
+  [currentHandler handleFailureInFunction:v6 file:v7 lineNumber:2547 description:@"don't increment by a negative value"];
 
   return self->_lastObjectIdentifier;
 }
 
-- (id)addLoadedObjectsAndEnqueueNotifications:(id)a3
+- (id)addLoadedObjectsAndEnqueueNotifications:(id)notifications
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  notificationsCopy = notifications;
+  v5 = notificationsCopy;
+  if (notificationsCopy)
   {
     v12 = 0;
     v13 = &v12;
@@ -637,7 +637,7 @@ uint64_t __40__TSPObjectContext_didMoveSupportToURL___block_invoke(uint64_t a1)
     block[2] = __60__TSPObjectContext_addLoadedObjectsAndEnqueueNotifications___block_invoke;
     block[3] = &unk_279D46AA8;
     block[4] = self;
-    v10 = v4;
+    v10 = notificationsCopy;
     v11 = &v12;
     dispatch_barrier_sync(objectsQueue, block);
     v7 = v13[5];
@@ -749,11 +749,11 @@ void __60__TSPObjectContext_addLoadedObjectsAndEnqueueNotifications___block_invo
   }
 }
 
-- (void)runObjectNotificationsInQueue:(id)a3
+- (void)runObjectNotificationsInQueue:(id)queue
 {
-  if (a3)
+  if (queue)
   {
-    dispatch_resume(a3);
+    dispatch_resume(queue);
   }
 
   runLoadObserversQueue = self->_runLoadObserversQueue;
@@ -761,22 +761,22 @@ void __60__TSPObjectContext_addLoadedObjectsAndEnqueueNotifications___block_invo
   dispatch_sync(runLoadObserversQueue, &__block_literal_global_5);
 }
 
-- (void)addLoadObserver:(id)a3 action:(SEL)a4 forObjectIdentifier:(int64_t)a5 objectOrNil:(id)a6
+- (void)addLoadObserver:(id)observer action:(SEL)action forObjectIdentifier:(int64_t)identifier objectOrNil:(id)nil
 {
-  v10 = a3;
-  v11 = a6;
+  observerCopy = observer;
+  nilCopy = nil;
   loadObserversQueue = self->_loadObserversQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __75__TSPObjectContext_addLoadObserver_action_forObjectIdentifier_objectOrNil___block_invoke;
   block[3] = &unk_279D46AF8;
-  v16 = v10;
-  v17 = self;
-  v19 = a4;
-  v20 = a5;
-  v18 = v11;
-  v13 = v11;
-  v14 = v10;
+  v16 = observerCopy;
+  selfCopy = self;
+  actionCopy = action;
+  identifierCopy = identifier;
+  v18 = nilCopy;
+  v13 = nilCopy;
+  v14 = observerCopy;
   dispatch_barrier_async(loadObserversQueue, block);
 }
 
@@ -852,23 +852,23 @@ void __75__TSPObjectContext_addLoadObserver_action_forObjectIdentifier_objectOrN
   }
 }
 
-- (void)addLoadObserver:(id)a3 action:(SEL)a4 forLazyReference:(id)a5
+- (void)addLoadObserver:(id)observer action:(SEL)action forLazyReference:(id)reference
 {
-  v12 = a3;
-  v8 = a5;
-  v9 = [v8 weakObject];
-  v10 = v9;
-  if (v9)
+  observerCopy = observer;
+  referenceCopy = reference;
+  weakObject = [referenceCopy weakObject];
+  v10 = weakObject;
+  if (weakObject)
   {
-    v11 = [v9 tsp_identifier];
+    tsp_identifier = [weakObject tsp_identifier];
   }
 
   else
   {
-    v11 = [v8 identifier];
+    tsp_identifier = [referenceCopy identifier];
   }
 
-  [(TSPObjectContext *)self addLoadObserver:v12 action:a4 forObjectIdentifier:v11 objectOrNil:v10];
+  [(TSPObjectContext *)self addLoadObserver:observerCopy action:action forObjectIdentifier:tsp_identifier objectOrNil:v10];
 }
 
 - (TSPObjectContextDelegate)delegate

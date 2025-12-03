@@ -1,12 +1,12 @@
 @interface UITextSelectionWindowAveragedValue
-- (UITextSelectionWindowAveragedValue)initWithDepth:(unint64_t)a3;
+- (UITextSelectionWindowAveragedValue)initWithDepth:(unint64_t)depth;
 - (double)windowAveragedValue;
-- (void)addValue:(double)a3;
+- (void)addValue:(double)value;
 @end
 
 @implementation UITextSelectionWindowAveragedValue
 
-- (UITextSelectionWindowAveragedValue)initWithDepth:(unint64_t)a3
+- (UITextSelectionWindowAveragedValue)initWithDepth:(unint64_t)depth
 {
   v9.receiver = self;
   v9.super_class = UITextSelectionWindowAveragedValue;
@@ -14,7 +14,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_depth = a3;
+    v4->_depth = depth;
     v6 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v4->_depth];
     values = v5->_values;
     v5->_values = v6;
@@ -23,10 +23,10 @@
   return v5;
 }
 
-- (void)addValue:(double)a3
+- (void)addValue:(double)value
 {
   values = self->_values;
-  v5 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+  v5 = [MEMORY[0x1E696AD98] numberWithDouble:value];
   [(NSMutableArray *)values insertObject:v5 atIndex:0];
 
   if ([(NSMutableArray *)self->_values count]> self->_depth)

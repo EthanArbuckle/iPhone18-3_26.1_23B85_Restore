@@ -1,44 +1,44 @@
 @interface _NFCredentialSession
-+ (id)validateEntitlements:(id)a3;
-- (BOOL)_validateCAPDU:(id)a3 isDFSelectCommand:(BOOL *)a4 outError:(id *)a5;
-- (BOOL)suspendWithInfo:(id)a3;
++ (id)validateEntitlements:(id)entitlements;
+- (BOOL)_validateCAPDU:(id)u isDFSelectCommand:(BOOL *)command outError:(id *)error;
+- (BOOL)suspendWithInfo:(id)info;
 - (BOOL)willStartSession;
-- (id)_startCardEmulationWithApplet:(id)a3 externalAuth:(id)a4 ceType:(unsigned int)a5;
-- (id)_startWiredModeWithExternalAuth:(id)a3 applets:(id)a4 selectOnStart:(id)a5;
-- (void)_setupFirstFieldNotificationTimer:(unint64_t)a3;
+- (id)_startCardEmulationWithApplet:(id)applet externalAuth:(id)auth ceType:(unsigned int)type;
+- (id)_startWiredModeWithExternalAuth:(id)auth applets:(id)applets selectOnStart:(id)start;
+- (void)_setupFirstFieldNotificationTimer:(unint64_t)timer;
 - (void)cleanup;
-- (void)deleteApplets:(id)a3 completion:(id)a4;
-- (void)didStartSession:(id)a3;
-- (void)handleSecureElementTransactionData:(id)a3 appletIdentifier:(id)a4;
-- (void)handleTimerExpiredEvent:(id)a3;
-- (void)listAppletsAndRefreshCache:(BOOL)a3 completion:(id)a4;
-- (void)queryExtraInfoForApplets:(id)a3 completion:(id)a4;
-- (void)requestApplets:(id)a3 selectOnStart:(id)a4 AIDAllowList:(id)a5 externalAuth:(id)a6 mode:(unint64_t)a7 ceType:(unsigned int)a8 completion:(id)a9;
-- (void)signChallenge:(id)a3 completion:(id)a4;
-- (void)transceive:(id)a3 completion:(id)a4;
+- (void)deleteApplets:(id)applets completion:(id)completion;
+- (void)didStartSession:(id)session;
+- (void)handleSecureElementTransactionData:(id)data appletIdentifier:(id)identifier;
+- (void)handleTimerExpiredEvent:(id)event;
+- (void)listAppletsAndRefreshCache:(BOOL)cache completion:(id)completion;
+- (void)queryExtraInfoForApplets:(id)applets completion:(id)completion;
+- (void)requestApplets:(id)applets selectOnStart:(id)start AIDAllowList:(id)list externalAuth:(id)auth mode:(unint64_t)mode ceType:(unsigned int)type completion:(id)completion;
+- (void)signChallenge:(id)challenge completion:(id)completion;
+- (void)transceive:(id)transceive completion:(id)completion;
 @end
 
 @implementation _NFCredentialSession
 
-- (BOOL)_validateCAPDU:(id)a3 isDFSelectCommand:(BOOL *)a4 outError:(id *)a5
+- (BOOL)_validateCAPDU:(id)u isDFSelectCommand:(BOOL *)command outError:(id *)error
 {
-  v9 = a3;
-  v10 = [[NFCommandAPDU alloc] initWithData:v9];
+  uCopy = u;
+  v10 = [[NFCommandAPDU alloc] initWithData:uCopy];
   v11 = v10;
-  if (a4)
+  if (command)
   {
-    *a4 = 0;
+    *command = 0;
   }
 
   if (!v10)
   {
-    if (a5)
+    if (error)
     {
       v14 = [NSError alloc];
-      v15 = [NSString stringWithUTF8String:"nfcd"];
+      payload = [NSString stringWithUTF8String:"nfcd"];
       v108[0] = NSLocalizedDescriptionKey;
-      v16 = [NSString stringWithUTF8String:"Invalid Parameter"];
-      v109[0] = v16;
+      nF_asHexString5 = [NSString stringWithUTF8String:"Invalid Parameter"];
+      v109[0] = nF_asHexString5;
       v109[1] = &off_100330558;
       v108[1] = @"Line";
       v108[2] = @"Method";
@@ -49,10 +49,10 @@
       v109[3] = v18;
       v19 = [NSDictionary dictionaryWithObjects:v109 forKeys:v108 count:4];
       v20 = v14;
-      v21 = v15;
+      v21 = payload;
       v22 = 10;
 LABEL_71:
-      *a5 = [v20 initWithDomain:v21 code:v22 userInfo:v19];
+      *error = [v20 initWithDomain:v21 code:v22 userInfo:v19];
       goto LABEL_72;
     }
 
@@ -72,15 +72,15 @@ LABEL_71:
   if ([v11 p1] != 4)
   {
 LABEL_74:
-    LOBYTE(a5) = 1;
+    LOBYTE(error) = 1;
     goto LABEL_75;
   }
 
   v12 = [v11 clss] & 0xC0;
-  v13 = [v11 clss];
+  clss = [v11 clss];
   if (v12 == 64)
   {
-    if ((v13 & 0x20) == 0)
+    if ((clss & 0x20) == 0)
     {
       goto LABEL_25;
     }
@@ -95,14 +95,14 @@ LABEL_14:
       isMetaClass = class_isMetaClass(Class);
       ClassName = object_getClassName(self);
       Name = sel_getName(a2);
-      v29 = [v9 NF_asHexString];
+      nF_asHexString = [uCopy NF_asHexString];
       v30 = 45;
       if (isMetaClass)
       {
         v30 = 43;
       }
 
-      v24(3, "%c[%{public}s %{public}s]:%i Select command not supported: %{public}@", v30, ClassName, Name, 98, v29);
+      v24(3, "%c[%{public}s %{public}s]:%i Select command not supported: %{public}@", v30, ClassName, Name, 98, nF_asHexString);
     }
 
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -122,7 +122,7 @@ LABEL_14:
 
       v34 = object_getClassName(self);
       v35 = sel_getName(a2);
-      v36 = [v9 NF_asHexString];
+      nF_asHexString2 = [uCopy NF_asHexString];
       *buf = 67110146;
       v99 = v33;
       v100 = 2082;
@@ -132,20 +132,20 @@ LABEL_14:
       v104 = 1024;
       v105 = 98;
       v106 = 2114;
-      v107 = v36;
+      v107 = nF_asHexString2;
       _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Select command not supported: %{public}@", buf, 0x2Cu);
     }
 
-    if (!a5)
+    if (!error)
     {
       goto LABEL_75;
     }
 
     v37 = [NSError alloc];
-    v15 = [NSString stringWithUTF8String:"nfcd"];
+    payload = [NSString stringWithUTF8String:"nfcd"];
     v96[0] = NSLocalizedDescriptionKey;
-    v16 = [NSString stringWithUTF8String:"Security Violation"];
-    v97[0] = v16;
+    nF_asHexString5 = [NSString stringWithUTF8String:"Security Violation"];
+    v97[0] = nF_asHexString5;
     v97[1] = &off_100330570;
     v96[1] = @"Line";
     v96[2] = @"Method";
@@ -159,20 +159,20 @@ LABEL_14:
 LABEL_70:
     v19 = [NSDictionary dictionaryWithObjects:v38 forKeys:v39 count:4];
     v20 = v37;
-    v21 = v15;
+    v21 = payload;
     v22 = 8;
     goto LABEL_71;
   }
 
-  if (v13 <= 0x3F && ([v11 clss] & 0xC) != 0)
+  if (clss <= 0x3F && ([v11 clss] & 0xC) != 0)
   {
     goto LABEL_14;
   }
 
 LABEL_25:
-  if (a4)
+  if (command)
   {
-    *a4 = 1;
+    *command = 1;
   }
 
   if (![v11 payloadLength])
@@ -186,14 +186,14 @@ LABEL_25:
       v48 = class_isMetaClass(v47);
       v49 = object_getClassName(self);
       v50 = sel_getName(a2);
-      v51 = [v9 NF_asHexString];
+      nF_asHexString3 = [uCopy NF_asHexString];
       v52 = 45;
       if (v48)
       {
         v52 = 43;
       }
 
-      v46(3, "%c[%{public}s %{public}s]:%i Select command not supported: %@", v52, v49, v50, 108, v51);
+      v46(3, "%c[%{public}s %{public}s]:%i Select command not supported: %@", v52, v49, v50, 108, nF_asHexString3);
     }
 
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -213,7 +213,7 @@ LABEL_25:
 
       v56 = object_getClassName(self);
       v57 = sel_getName(a2);
-      v58 = [v9 NF_asHexString];
+      nF_asHexString4 = [uCopy NF_asHexString];
       *buf = 67110146;
       v99 = v55;
       v100 = 2082;
@@ -223,20 +223,20 @@ LABEL_25:
       v104 = 1024;
       v105 = 108;
       v106 = 2112;
-      v107 = v58;
+      v107 = nF_asHexString4;
       _os_log_impl(&_mh_execute_header, v53, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Select command not supported: %@", buf, 0x2Cu);
     }
 
-    if (!a5)
+    if (!error)
     {
       goto LABEL_75;
     }
 
     v37 = [NSError alloc];
-    v15 = [NSString stringWithUTF8String:"nfcd"];
+    payload = [NSString stringWithUTF8String:"nfcd"];
     v94[0] = NSLocalizedDescriptionKey;
-    v16 = [NSString stringWithUTF8String:"Security Violation"];
-    v95[0] = v16;
+    nF_asHexString5 = [NSString stringWithUTF8String:"Security Violation"];
+    v95[0] = nF_asHexString5;
     v95[1] = &off_100330588;
     v94[1] = @"Line";
     v94[2] = @"Method";
@@ -250,13 +250,13 @@ LABEL_25:
     goto LABEL_70;
   }
 
-  v15 = [v11 payload];
-  v16 = [v15 NF_asHexString];
-  v40 = [(_NFCredentialSession *)self allowedAIDsListInWiredMode];
-  v41 = [v40 member:v15];
+  payload = [v11 payload];
+  nF_asHexString5 = [payload NF_asHexString];
+  allowedAIDsListInWiredMode = [(_NFCredentialSession *)self allowedAIDsListInWiredMode];
+  v41 = [allowedAIDsListInWiredMode member:payload];
 
-  v42 = [(_NFCredentialSession *)self allowedAIDsListInWiredMode];
-  v43 = [v42 count];
+  allowedAIDsListInWiredMode2 = [(_NFCredentialSession *)self allowedAIDsListInWiredMode];
+  v43 = [allowedAIDsListInWiredMode2 count];
 
   if (!v43 || !v41)
   {
@@ -275,7 +275,7 @@ LABEL_25:
         v64 = 43;
       }
 
-      v60(3, "%c[%{public}s %{public}s]:%i AID=%@ selection is not allowed", v64, v63, v83, 119, v16);
+      v60(3, "%c[%{public}s %{public}s]:%i AID=%@ selection is not allowed", v64, v63, v83, 119, nF_asHexString5);
     }
 
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -304,11 +304,11 @@ LABEL_25:
       v104 = 1024;
       v105 = 119;
       v106 = 2112;
-      v107 = v16;
+      v107 = nF_asHexString5;
       _os_log_impl(&_mh_execute_header, v65, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i AID=%@ selection is not allowed", buf, 0x2Cu);
     }
 
-    if (!a5)
+    if (!error)
     {
       goto LABEL_73;
     }
@@ -327,23 +327,23 @@ LABEL_25:
     v70 = [[NSString alloc] initWithFormat:@"%s:%d", sel_getName(a2), 121];
     v93[3] = v70;
     v71 = [NSDictionary dictionaryWithObjects:v93 forKeys:v92 count:4];
-    *a5 = [v85 initWithDomain:v17 code:8 userInfo:v71];
+    *error = [v85 initWithDomain:v17 code:8 userInfo:v71];
 
 LABEL_72:
 LABEL_73:
 
-    LOBYTE(a5) = 0;
+    LOBYTE(error) = 0;
     goto LABEL_75;
   }
 
-  if (v16)
+  if (nF_asHexString5)
   {
     v88[0] = _NSConcreteStackBlock;
     v88[1] = 3221225472;
     v88[2] = sub_100074B0C;
     v88[3] = &unk_100316F30;
     v88[4] = self;
-    v89 = v16;
+    v89 = nF_asHexString5;
     os_unfair_lock_lock(&self->_requestedAppletsLock);
     v44 = sub_100074B0C(v88);
     os_unfair_lock_unlock(&self->_requestedAppletsLock);
@@ -371,7 +371,7 @@ LABEL_73:
         v76 = 43;
       }
 
-      v73(6, "%c[%{public}s %{public}s]:%i Non-applet=%{public}@ selection", v76, v86, v84, 134, v16);
+      v73(6, "%c[%{public}s %{public}s]:%i Non-applet=%{public}@ selection", v76, v86, v84, 134, nF_asHexString5);
     }
 
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -401,7 +401,7 @@ LABEL_73:
       v104 = 1024;
       v105 = 134;
       v106 = 2114;
-      v107 = v16;
+      v107 = nF_asHexString5;
       _os_log_impl(&_mh_execute_header, v77, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i Non-applet=%{public}@ selection", buf, 0x2Cu);
     }
   }
@@ -414,13 +414,13 @@ LABEL_67:
     goto LABEL_74;
   }
 
-  if (a5)
+  if (error)
   {
     v37 = [NSError alloc];
-    v15 = [NSString stringWithUTF8String:"nfcd"];
+    payload = [NSString stringWithUTF8String:"nfcd"];
     v90[0] = NSLocalizedDescriptionKey;
-    v16 = [NSString stringWithUTF8String:"Security Violation"];
-    v91[0] = v16;
+    nF_asHexString5 = [NSString stringWithUTF8String:"Security Violation"];
+    v91[0] = nF_asHexString5;
     v91[1] = &off_1003305E8;
     v90[1] = @"Line";
     v90[2] = @"Method";
@@ -436,12 +436,12 @@ LABEL_67:
 
 LABEL_75:
 
-  return a5;
+  return error;
 }
 
-+ (id)validateEntitlements:(id)a3
++ (id)validateEntitlements:(id)entitlements
 {
-  if ([a3 seCredentialManagerAccess])
+  if ([entitlements seCredentialManagerAccess])
   {
     v5 = 0;
   }
@@ -453,9 +453,9 @@ LABEL_75:
     if (Logger)
     {
       v7 = Logger;
-      Class = object_getClass(a1);
+      Class = object_getClass(self);
       isMetaClass = class_isMetaClass(Class);
-      ClassName = object_getClassName(a1);
+      ClassName = object_getClassName(self);
       Name = sel_getName(a2);
       v11 = 45;
       if (isMetaClass)
@@ -470,7 +470,7 @@ LABEL_75:
     v12 = NFSharedLogGetLogger();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      v13 = object_getClass(a1);
+      v13 = object_getClass(self);
       if (class_isMetaClass(v13))
       {
         v14 = 43;
@@ -484,7 +484,7 @@ LABEL_75:
       *buf = 67109890;
       v26 = v14;
       v27 = 2082;
-      v28 = object_getClassName(a1);
+      v28 = object_getClassName(self);
       v29 = 2082;
       v30 = sel_getName(a2);
       v31 = 1024;
@@ -520,9 +520,9 @@ LABEL_75:
   return [(_NFSession *)&v4 willStartSession];
 }
 
-- (void)didStartSession:(id)a3
+- (void)didStartSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   v5 = NFSharedSignpostLog();
   if (os_signpost_enabled(v5))
   {
@@ -532,19 +532,19 @@ LABEL_75:
 
   v10.receiver = self;
   v10.super_class = _NFCredentialSession;
-  [(_NFXPCSession *)&v10 didStartSession:v4];
+  [(_NFXPCSession *)&v10 didStartSession:sessionCopy];
   v6 = +[_NFHardwareManager sharedHardwareManager];
-  v7 = [v6 secureElementWrapper];
+  secureElementWrapper = [v6 secureElementWrapper];
   secureElementWrapper = self->_secureElementWrapper;
-  self->_secureElementWrapper = v7;
+  self->_secureElementWrapper = secureElementWrapper;
 
-  v9 = [(_NFXPCSession *)self remoteObject];
-  [v9 didStartSession:v4];
+  remoteObject = [(_NFXPCSession *)self remoteObject];
+  [remoteObject didStartSession:sessionCopy];
 }
 
-- (BOOL)suspendWithInfo:(id)a3
+- (BOOL)suspendWithInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v5 = NFSharedSignpostLog();
   if (os_signpost_enabled(v5))
   {
@@ -554,12 +554,12 @@ LABEL_75:
 
   v11.receiver = self;
   v11.super_class = _NFCredentialSession;
-  v6 = [(_NFXPCSession *)&v11 suspendWithInfo:v4];
+  v6 = [(_NFXPCSession *)&v11 suspendWithInfo:infoCopy];
 
   if (v6)
   {
-    v7 = [(_NFCredentialSession *)self firstFieldNotificationTimer];
-    [v7 stopTimer];
+    firstFieldNotificationTimer = [(_NFCredentialSession *)self firstFieldNotificationTimer];
+    [firstFieldNotificationTimer stopTimer];
 
     if (self && self->_mode == 2)
     {
@@ -573,17 +573,17 @@ LABEL_75:
   return v6;
 }
 
-- (void)_setupFirstFieldNotificationTimer:(unint64_t)a3
+- (void)_setupFirstFieldNotificationTimer:(unint64_t)timer
 {
   [(_NFCredentialSession *)self setFirstFieldNotification:0];
-  v5 = [(_NFCredentialSession *)self firstFieldNotificationTimer];
-  [v5 stopTimer];
+  firstFieldNotificationTimer = [(_NFCredentialSession *)self firstFieldNotificationTimer];
+  [firstFieldNotificationTimer stopTimer];
 
-  if (a3 == 2)
+  if (timer == 2)
   {
-    v6 = [(_NFCredentialSession *)self firstFieldNotificationTimer];
+    firstFieldNotificationTimer2 = [(_NFCredentialSession *)self firstFieldNotificationTimer];
 
-    if (!v6)
+    if (!firstFieldNotificationTimer2)
     {
       objc_initWeak(&location, self);
       v7 = [NFTimer alloc];
@@ -596,23 +596,23 @@ LABEL_75:
       objc_destroyWeak(&location);
     }
 
-    v10 = [(_NFCredentialSession *)self firstFieldNotificationTimer];
-    [v10 startTimer:0.3];
+    firstFieldNotificationTimer3 = [(_NFCredentialSession *)self firstFieldNotificationTimer];
+    [firstFieldNotificationTimer3 startTimer:0.3];
   }
 }
 
-- (id)_startCardEmulationWithApplet:(id)a3 externalAuth:(id)a4 ceType:(unsigned int)a5
+- (id)_startCardEmulationWithApplet:(id)applet externalAuth:(id)auth ceType:(unsigned int)type
 {
-  v5 = a5;
-  v9 = a3;
-  v10 = a4;
+  typeCopy = type;
+  appletCopy = applet;
+  authCopy = auth;
   v11 = sub_10004BF60(NFRoutingConfig, 0);
-  v56 = sub_10004C050(NFRoutingConfig, 0, v5 & 7);
+  v56 = sub_10004C050(NFRoutingConfig, 0, typeCopy & 7);
   v12 = +[_NFHardwareManager sharedHardwareManager];
   v55 = v11;
   v13 = [v12 setRoutingConfig:v11];
 
-  v54 = v10;
+  v54 = authCopy;
   if (v13)
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_FAULT))
@@ -624,20 +624,20 @@ LABEL_75:
 
     v14 = [NSError alloc];
     v15 = [NSString stringWithUTF8String:"nfcd"];
-    v16 = [v13 code];
+    code = [v13 code];
     v65[0] = NSLocalizedDescriptionKey;
-    v17 = v9;
+    v17 = appletCopy;
     if ([v13 code] > 75)
     {
-      v18 = 76;
+      code2 = 76;
     }
 
     else
     {
-      v18 = [v13 code];
+      code2 = [v13 code];
     }
 
-    v23 = [NSString stringWithUTF8String:off_100316CC0[v18]];
+    v23 = [NSString stringWithUTF8String:off_100316CC0[code2]];
     v66[0] = v23;
     v66[1] = v13;
     v65[1] = NSUnderlyingErrorKey;
@@ -650,32 +650,32 @@ LABEL_75:
     v25 = [[NSString alloc] initWithFormat:@"%s:%d", sel_getName(a2), 255];
     v66[4] = v25;
     v26 = [NSDictionary dictionaryWithObjects:v66 forKeys:v65 count:5];
-    v27 = [v14 initWithDomain:v15 code:v16 userInfo:v26];
+    v27 = [v14 initWithDomain:v15 code:code userInfo:v26];
 
     goto LABEL_25;
   }
 
-  v19 = [(_NFCredentialSession *)self secureElementWrapper];
-  v13 = sub_1002562FC(v19);
+  secureElementWrapper = [(_NFCredentialSession *)self secureElementWrapper];
+  v13 = sub_1002562FC(secureElementWrapper);
 
   if (v13)
   {
     v20 = [NSError alloc];
     v15 = [NSString stringWithUTF8String:"nfcd"];
-    v21 = [v13 code];
+    code3 = [v13 code];
     v63[0] = NSLocalizedDescriptionKey;
-    v17 = v9;
+    v17 = appletCopy;
     if ([v13 code] > 75)
     {
-      v22 = 76;
+      code4 = 76;
     }
 
     else
     {
-      v22 = [v13 code];
+      code4 = [v13 code];
     }
 
-    v23 = [NSString stringWithUTF8String:off_100316CC0[v22]];
+    v23 = [NSString stringWithUTF8String:off_100316CC0[code4]];
     v64[0] = v23;
     v64[1] = v13;
     v63[1] = NSUnderlyingErrorKey;
@@ -691,39 +691,39 @@ LABEL_75:
     v35 = v63;
 LABEL_24:
     v48 = [NSDictionary dictionaryWithObjects:v34 forKeys:v35 count:5];
-    v27 = [v20 initWithDomain:v15 code:v21 userInfo:v48];
+    v27 = [v20 initWithDomain:v15 code:code3 userInfo:v48];
 
 LABEL_25:
-    v9 = v17;
-    v10 = v54;
+    appletCopy = v17;
+    authCopy = v54;
     goto LABEL_26;
   }
 
-  v28 = [(_NFCredentialSession *)self secureElementWrapper];
-  v29 = [NSSet setWithObject:v9];
-  v30 = sub_10015CB40(v28, v29);
+  secureElementWrapper2 = [(_NFCredentialSession *)self secureElementWrapper];
+  v29 = [NSSet setWithObject:appletCopy];
+  v30 = sub_10015CB40(secureElementWrapper2, v29);
 
-  v31 = [(_NFCredentialSession *)self secureElementWrapper];
-  v13 = sub_100254768(v31, v9);
+  secureElementWrapper3 = [(_NFCredentialSession *)self secureElementWrapper];
+  v13 = sub_100254768(secureElementWrapper3, appletCopy);
 
   if (v13)
   {
     v20 = [NSError alloc];
     v15 = [NSString stringWithUTF8String:"nfcd"];
-    v21 = [v13 code];
+    code3 = [v13 code];
     v61[0] = NSLocalizedDescriptionKey;
-    v17 = v9;
+    v17 = appletCopy;
     if ([v13 code] > 75)
     {
-      v32 = 76;
+      code5 = 76;
     }
 
     else
     {
-      v32 = [v13 code];
+      code5 = [v13 code];
     }
 
-    v23 = [NSString stringWithUTF8String:off_100316CC0[v32]];
+    v23 = [NSString stringWithUTF8String:off_100316CC0[code5]];
     v62[0] = v23;
     v62[1] = v13;
     v61[1] = NSUnderlyingErrorKey;
@@ -740,12 +740,12 @@ LABEL_25:
     goto LABEL_24;
   }
 
-  if (v10)
+  if (authCopy)
   {
-    v36 = [(_NFCredentialSession *)self secureElementWrapper];
+    secureElementWrapper4 = [(_NFCredentialSession *)self secureElementWrapper];
     v37 = [(_NFSession *)self uid];
-    v38 = [v9 identifierAsData];
-    v39 = sub_1001F5428(v36, v10, v37, v38, 0, 0);
+    identifierAsData = [appletCopy identifierAsData];
+    v39 = sub_1001F5428(secureElementWrapper4, authCopy, v37, identifierAsData, 0, 0);
 
     if (v39)
     {
@@ -794,20 +794,20 @@ LABEL_25:
 
     v20 = [NSError alloc];
     v15 = [NSString stringWithUTF8String:"nfcd"];
-    v21 = [v13 code];
+    code3 = [v13 code];
     v57[0] = NSLocalizedDescriptionKey;
-    v17 = v9;
+    v17 = appletCopy;
     if ([v13 code] > 75)
     {
-      v51 = 76;
+      code6 = 76;
     }
 
     else
     {
-      v51 = [v13 code];
+      code6 = [v13 code];
     }
 
-    v23 = [NSString stringWithUTF8String:off_100316CC0[v51]];
+    v23 = [NSString stringWithUTF8String:off_100316CC0[code6]];
     v58[0] = v23;
     v58[1] = v13;
     v57[1] = NSUnderlyingErrorKey;
@@ -833,58 +833,58 @@ LABEL_26:
   return v27;
 }
 
-- (id)_startWiredModeWithExternalAuth:(id)a3 applets:(id)a4 selectOnStart:(id)a5
+- (id)_startWiredModeWithExternalAuth:(id)auth applets:(id)applets selectOnStart:(id)start
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  authCopy = auth;
+  appletsCopy = applets;
+  startCopy = start;
   v12 = sub_10004BF60(NFRoutingConfig, 0);
   v13 = +[_NFHardwareManager sharedHardwareManager];
   v14 = [v13 setRoutingConfig:v12];
 
-  v51 = v11;
+  v51 = startCopy;
   if (!v14)
   {
-    v19 = [(_NFCredentialSession *)self secureElementWrapper];
-    v20 = sub_1002562FC(v19);
+    secureElementWrapper = [(_NFCredentialSession *)self secureElementWrapper];
+    v20 = sub_1002562FC(secureElementWrapper);
 
-    v21 = [v10 count];
-    v22 = [(_NFCredentialSession *)self secureElementWrapper];
-    v23 = v22;
+    v21 = [appletsCopy count];
+    secureElementWrapper2 = [(_NFCredentialSession *)self secureElementWrapper];
+    v23 = secureElementWrapper2;
     if (v21)
     {
-      v24 = [NSSet setWithArray:v10];
+      v24 = [NSSet setWithArray:appletsCopy];
       v25 = sub_10015CB40(v23, v24);
 
-      v16 = [v11 identifierAsData];
-      if (!v16)
+      identifierAsData = [startCopy identifierAsData];
+      if (!identifierAsData)
       {
-        v16 = [[NSData alloc] initWithBytes:"FACTORYTESTAPP" length:14];
+        identifierAsData = [[NSData alloc] initWithBytes:"FACTORYTESTAPP" length:14];
       }
 
-      v26 = [(_NFCredentialSession *)self secureElementWrapper];
+      secureElementWrapper3 = [(_NFCredentialSession *)self secureElementWrapper];
       v52 = 0;
-      v27 = sub_1001595DC(v26, v16, &v52);
+      v27 = sub_1001595DC(secureElementWrapper3, identifierAsData, &v52);
       v14 = v52;
 
       if ((v27 & 1) == 0)
       {
         v49 = [NSError alloc];
         v29 = [NSString stringWithUTF8String:"nfcd"];
-        v46 = [v14 code];
+        code = [v14 code];
         v55[0] = NSLocalizedDescriptionKey;
-        v50 = v9;
+        v50 = authCopy;
         if ([v14 code] > 75)
         {
-          v47 = 76;
+          code2 = 76;
         }
 
         else
         {
-          v47 = [v14 code];
+          code2 = [v14 code];
         }
 
-        v30 = [NSString stringWithUTF8String:off_100316CC0[v47]];
+        v30 = [NSString stringWithUTF8String:off_100316CC0[code2]];
         v56[0] = v30;
         v56[1] = v14;
         v55[1] = NSUnderlyingErrorKey;
@@ -897,14 +897,14 @@ LABEL_26:
         v32 = [[NSString alloc] initWithFormat:@"%s:%d", sel_getName(a2), 316];
         v56[4] = v32;
         v48 = [NSDictionary dictionaryWithObjects:v56 forKeys:v55 count:5];
-        v28 = [v49 initWithDomain:v29 code:v46 userInfo:v48];
+        v28 = [v49 initWithDomain:v29 code:code userInfo:v48];
 
         goto LABEL_15;
       }
 
-      [(_NFCredentialSession *)self setDefaultWiredModeApplet:v16];
+      [(_NFCredentialSession *)self setDefaultWiredModeApplet:identifierAsData];
 
-      if (!v9)
+      if (!authCopy)
       {
 LABEL_11:
         v28 = 0;
@@ -914,20 +914,20 @@ LABEL_11:
 
     else
     {
-      v37 = sub_10015D3EC(v22);
+      v37 = sub_10015D3EC(secureElementWrapper2);
 
       v14 = 0;
-      if (!v9)
+      if (!authCopy)
       {
         goto LABEL_11;
       }
     }
 
-    v38 = [(_NFCredentialSession *)self secureElementWrapper];
+    secureElementWrapper4 = [(_NFCredentialSession *)self secureElementWrapper];
     v39 = [(_NFSession *)self uid];
-    v40 = [v10 firstObject];
-    v41 = [v40 identifierAsData];
-    v42 = sub_1001F5428(v38, v9, v39, v41, 0, 0);
+    firstObject = [appletsCopy firstObject];
+    identifierAsData2 = [firstObject identifierAsData];
+    v42 = sub_1001F5428(secureElementWrapper4, authCopy, v39, identifierAsData2, 0, 0);
 
     if (!v42)
     {
@@ -935,9 +935,9 @@ LABEL_11:
       goto LABEL_16;
     }
 
-    v50 = v9;
+    v50 = authCopy;
     v43 = [NSError alloc];
-    v16 = [NSString stringWithUTF8String:"nfcd"];
+    identifierAsData = [NSString stringWithUTF8String:"nfcd"];
     v44 = v42;
     v53[0] = NSLocalizedDescriptionKey;
     if (v42 >= 0x4C)
@@ -962,12 +962,12 @@ LABEL_11:
     v54[3] = v31;
     v32 = [NSDictionary dictionaryWithObjects:v54 forKeys:v53 count:4];
     v33 = v43;
-    v34 = v16;
+    v34 = identifierAsData;
     v35 = v44;
     goto LABEL_14;
   }
 
-  v50 = v9;
+  v50 = authCopy;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_FAULT))
   {
     *buf = 138412290;
@@ -976,20 +976,20 @@ LABEL_11:
   }
 
   v15 = [NSError alloc];
-  v16 = [NSString stringWithUTF8String:"nfcd"];
-  v17 = [v14 code];
+  identifierAsData = [NSString stringWithUTF8String:"nfcd"];
+  code3 = [v14 code];
   v57[0] = NSLocalizedDescriptionKey;
   if ([v14 code] > 75)
   {
-    v18 = 76;
+    code4 = 76;
   }
 
   else
   {
-    v18 = [v14 code];
+    code4 = [v14 code];
   }
 
-  v29 = [NSString stringWithUTF8String:off_100316CC0[v18]];
+  v29 = [NSString stringWithUTF8String:off_100316CC0[code4]];
   v58[0] = v29;
   v58[1] = v14;
   v57[1] = NSUnderlyingErrorKey;
@@ -1003,27 +1003,27 @@ LABEL_11:
   v58[4] = v31;
   v32 = [NSDictionary dictionaryWithObjects:v58 forKeys:v57 count:5];
   v33 = v15;
-  v34 = v16;
-  v35 = v17;
+  v34 = identifierAsData;
+  v35 = code3;
 LABEL_14:
   v28 = [v33 initWithDomain:v34 code:v35 userInfo:v32];
 LABEL_15:
 
-  v9 = v50;
+  authCopy = v50;
 LABEL_16:
-  v11 = v51;
+  startCopy = v51;
 LABEL_17:
 
   return v28;
 }
 
-- (void)requestApplets:(id)a3 selectOnStart:(id)a4 AIDAllowList:(id)a5 externalAuth:(id)a6 mode:(unint64_t)a7 ceType:(unsigned int)a8 completion:(id)a9
+- (void)requestApplets:(id)applets selectOnStart:(id)start AIDAllowList:(id)list externalAuth:(id)auth mode:(unint64_t)mode ceType:(unsigned int)type completion:(id)completion
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a9;
+  appletsCopy = applets;
+  startCopy = start;
+  listCopy = list;
+  authCopy = auth;
+  completionCopy = completion;
   v21 = NFSharedSignpostLog();
   if (os_signpost_enabled(v21))
   {
@@ -1033,32 +1033,32 @@ LABEL_17:
 
   v37.receiver = self;
   v37.super_class = _NFCredentialSession;
-  v22 = [(_NFSession *)&v37 workQueue];
+  workQueue = [(_NFSession *)&v37 workQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000765D4;
   block[3] = &unk_100316F78;
   v34 = a2;
-  v35 = a7;
+  modeCopy = mode;
   block[4] = self;
-  v29 = v19;
-  v30 = v16;
-  v31 = v18;
-  v36 = a8;
-  v32 = v17;
-  v33 = v20;
-  v23 = v17;
-  v24 = v18;
-  v25 = v16;
-  v26 = v19;
-  v27 = v20;
-  dispatch_async(v22, block);
+  v29 = authCopy;
+  v30 = appletsCopy;
+  v31 = listCopy;
+  typeCopy = type;
+  v32 = startCopy;
+  v33 = completionCopy;
+  v23 = startCopy;
+  v24 = listCopy;
+  v25 = appletsCopy;
+  v26 = authCopy;
+  v27 = completionCopy;
+  dispatch_async(workQueue, block);
 }
 
-- (void)transceive:(id)a3 completion:(id)a4
+- (void)transceive:(id)transceive completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  transceiveCopy = transceive;
+  completionCopy = completion;
   v9 = NFSharedSignpostLog();
   if (os_signpost_enabled(v9))
   {
@@ -1068,23 +1068,23 @@ LABEL_17:
 
   v17.receiver = self;
   v17.super_class = _NFCredentialSession;
-  v10 = [(_NFSession *)&v17 workQueue];
+  workQueue = [(_NFSession *)&v17 workQueue];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100078738;
   v13[3] = &unk_1003165E8;
-  v15 = v8;
+  v15 = completionCopy;
   v16 = a2;
   v13[4] = self;
-  v14 = v7;
-  v11 = v7;
-  v12 = v8;
-  dispatch_async(v10, v13);
+  v14 = transceiveCopy;
+  v11 = transceiveCopy;
+  v12 = completionCopy;
+  dispatch_async(workQueue, v13);
 }
 
-- (void)listAppletsAndRefreshCache:(BOOL)a3 completion:(id)a4
+- (void)listAppletsAndRefreshCache:(BOOL)cache completion:(id)completion
 {
-  v7 = a4;
+  completionCopy = completion;
   v8 = NFSharedSignpostLog();
   if (os_signpost_enabled(v8))
   {
@@ -1094,23 +1094,23 @@ LABEL_17:
 
   v15.receiver = self;
   v15.super_class = _NFCredentialSession;
-  v9 = [(_NFSession *)&v15 workQueue];
+  workQueue = [(_NFSession *)&v15 workQueue];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1000794A8;
   v11[3] = &unk_100316FA0;
-  v12 = v7;
+  v12 = completionCopy;
   v13 = a2;
   v11[4] = self;
-  v14 = a3;
-  v10 = v7;
-  dispatch_async(v9, v11);
+  cacheCopy = cache;
+  v10 = completionCopy;
+  dispatch_async(workQueue, v11);
 }
 
-- (void)queryExtraInfoForApplets:(id)a3 completion:(id)a4
+- (void)queryExtraInfoForApplets:(id)applets completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  appletsCopy = applets;
+  completionCopy = completion;
   v9 = NFSharedSignpostLog();
   if (os_signpost_enabled(v9))
   {
@@ -1120,24 +1120,24 @@ LABEL_17:
 
   v17.receiver = self;
   v17.super_class = _NFCredentialSession;
-  v10 = [(_NFSession *)&v17 workQueue];
+  workQueue = [(_NFSession *)&v17 workQueue];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100079DFC;
   v13[3] = &unk_1003165E8;
-  v15 = v8;
+  v15 = completionCopy;
   v16 = a2;
   v13[4] = self;
-  v14 = v7;
-  v11 = v7;
-  v12 = v8;
-  dispatch_async(v10, v13);
+  v14 = appletsCopy;
+  v11 = appletsCopy;
+  v12 = completionCopy;
+  dispatch_async(workQueue, v13);
 }
 
-- (void)deleteApplets:(id)a3 completion:(id)a4
+- (void)deleteApplets:(id)applets completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  appletsCopy = applets;
+  completionCopy = completion;
   v9 = NFSharedSignpostLog();
   if (os_signpost_enabled(v9))
   {
@@ -1147,24 +1147,24 @@ LABEL_17:
 
   v17.receiver = self;
   v17.super_class = _NFCredentialSession;
-  v10 = [(_NFSession *)&v17 workQueue];
+  workQueue = [(_NFSession *)&v17 workQueue];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_10007A50C;
   v13[3] = &unk_1003165E8;
-  v15 = v8;
+  v15 = completionCopy;
   v16 = a2;
   v13[4] = self;
-  v14 = v7;
-  v11 = v7;
-  v12 = v8;
-  dispatch_async(v10, v13);
+  v14 = appletsCopy;
+  v11 = appletsCopy;
+  v12 = completionCopy;
+  dispatch_async(workQueue, v13);
 }
 
-- (void)signChallenge:(id)a3 completion:(id)a4
+- (void)signChallenge:(id)challenge completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  challengeCopy = challenge;
+  completionCopy = completion;
   v9 = NFSharedSignpostLog();
   if (os_signpost_enabled(v9))
   {
@@ -1174,18 +1174,18 @@ LABEL_17:
 
   v17.receiver = self;
   v17.super_class = _NFCredentialSession;
-  v10 = [(_NFSession *)&v17 workQueue];
+  workQueue = [(_NFSession *)&v17 workQueue];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_10007AFCC;
   v13[3] = &unk_1003165E8;
-  v15 = v8;
+  v15 = completionCopy;
   v16 = a2;
   v13[4] = self;
-  v14 = v7;
-  v11 = v7;
-  v12 = v8;
-  dispatch_async(v10, v13);
+  v14 = challengeCopy;
+  v11 = challengeCopy;
+  v12 = completionCopy;
+  dispatch_async(workQueue, v13);
 }
 
 - (void)cleanup
@@ -1245,15 +1245,15 @@ LABEL_17:
 
     else
     {
-      v16 = [(_NFCredentialSession *)self secureElementWrapper];
-      v17 = sub_1002562FC(v16);
+      secureElementWrapper = [(_NFCredentialSession *)self secureElementWrapper];
+      v17 = sub_1002562FC(secureElementWrapper);
 
-      v18 = [(_NFCredentialSession *)self secureElementWrapper];
-      v19 = sub_10015D3EC(v18);
+      secureElementWrapper2 = [(_NFCredentialSession *)self secureElementWrapper];
+      v19 = sub_10015D3EC(secureElementWrapper2);
     }
 
-    v20 = [(_NFCredentialSession *)self firstFieldNotificationTimer];
-    [v20 stopTimer];
+    firstFieldNotificationTimer = [(_NFCredentialSession *)self firstFieldNotificationTimer];
+    [firstFieldNotificationTimer stopTimer];
 
     v21 = sub_1001AE20C();
     sub_1001AEDB0(v21, v22);
@@ -1262,10 +1262,10 @@ LABEL_17:
   }
 }
 
-- (void)handleSecureElementTransactionData:(id)a3 appletIdentifier:(id)a4
+- (void)handleSecureElementTransactionData:(id)data appletIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = a3;
+  identifierCopy = identifier;
+  dataCopy = data;
   v8 = NFSharedSignpostLog();
   if (os_signpost_enabled(v8))
   {
@@ -1273,13 +1273,13 @@ LABEL_17:
     _os_signpost_emit_with_name_impl(&_mh_execute_header, v8, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "HCI data", &unk_1002E8B7A, v10, 2u);
   }
 
-  v9 = [(_NFXPCSession *)self remoteObject];
-  [v9 notifyHCIData:v7 appletIdentifier:v6];
+  remoteObject = [(_NFXPCSession *)self remoteObject];
+  [remoteObject notifyHCIData:dataCopy appletIdentifier:identifierCopy];
 }
 
-- (void)handleTimerExpiredEvent:(id)a3
+- (void)handleTimerExpiredEvent:(id)event
 {
-  v5 = a3;
+  eventCopy = event;
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
   Logger = NFLogGetLogger();
   if (Logger)
@@ -1295,7 +1295,7 @@ LABEL_17:
       v10 = 43;
     }
 
-    v7(6, "%c[%{public}s %{public}s]:%i %{public}@", v10, ClassName, Name, 754, v5);
+    v7(6, "%c[%{public}s %{public}s]:%i %{public}@", v10, ClassName, Name, 754, eventCopy);
   }
 
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -1324,7 +1324,7 @@ LABEL_17:
     v55 = 1024;
     v56 = 754;
     v57 = 2114;
-    v58 = v5;
+    v58 = eventCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i %{public}@", buf, 0x2Cu);
   }
 
@@ -1347,7 +1347,7 @@ LABEL_17:
   v46 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v18 = v5;
+  v18 = eventCopy;
   v19 = [v18 countByEnumeratingWithState:&v43 objects:v48 count:16];
   if (v19)
   {
@@ -1365,7 +1365,7 @@ LABEL_17:
         v23 = [v17 objectForKey:*(*(&v43 + 1) + 8 * i)];
         if (v23)
         {
-          v25 = v23;
+          firstObject = v23;
           v34 = v18;
           goto LABEL_30;
         }
@@ -1381,8 +1381,8 @@ LABEL_17:
     }
   }
 
-  v24 = [v17 allValues];
-  v25 = [v24 firstObject];
+  allValues = [v17 allValues];
+  firstObject = [allValues firstObject];
 
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
   v26 = NFLogGetLogger();
@@ -1393,14 +1393,14 @@ LABEL_17:
     v29 = class_isMetaClass(v28);
     v30 = object_getClassName(self);
     v31 = sel_getName(a2);
-    v32 = [v25 identifier];
+    identifier = [firstObject identifier];
     v33 = 45;
     if (v29)
     {
       v33 = 43;
     }
 
-    v27(6, "%c[%{public}s %{public}s]:%i Assumes %{public}@", v33, v30, v31, 773, v32);
+    v27(6, "%c[%{public}s %{public}s]:%i Assumes %{public}@", v33, v30, v31, 773, identifier);
   }
 
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -1420,7 +1420,7 @@ LABEL_17:
 
     v37 = object_getClassName(self);
     v38 = sel_getName(a2);
-    v39 = [v25 identifier];
+    identifier2 = [firstObject identifier];
     *buf = 67110146;
     v50 = v36;
     v51 = 2082;
@@ -1430,14 +1430,14 @@ LABEL_17:
     v55 = 1024;
     v56 = 773;
     v57 = 2114;
-    v58 = v39;
+    v58 = identifier2;
     _os_log_impl(&_mh_execute_header, v34, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i Assumes %{public}@", buf, 0x2Cu);
   }
 
 LABEL_30:
 
-  v40 = [(_NFXPCSession *)self remoteObject];
-  [v40 didExpireTransactionForApplet:v25];
+  remoteObject = [(_NFXPCSession *)self remoteObject];
+  [remoteObject didExpireTransactionForApplet:firstObject];
 
   [(_NFCredentialSession *)self requestApplets:0 selectOnStart:0 AIDAllowList:0 externalAuth:0 mode:0 ceType:0 completion:&stru_100316FE8];
 }

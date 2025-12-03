@@ -1,5 +1,5 @@
 @interface CBMutableDescriptor
-- (CBMutableDescriptor)initWithCharacteristic:(id)a3 dictionary:(id)a4;
+- (CBMutableDescriptor)initWithCharacteristic:(id)characteristic dictionary:(id)dictionary;
 - (CBMutableDescriptor)initWithType:(CBUUID *)UUID value:(id)value;
 - (id)description;
 @end
@@ -55,8 +55,8 @@ LABEL_17:
 
   else
   {
-    v14 = [(CBUUID *)v6 data];
-    v15 = [v14 length];
+    data = [(CBUUID *)v6 data];
+    v15 = [data length];
 
     if (v15 == 16)
     {
@@ -82,17 +82,17 @@ LABEL_13:
   return v17;
 }
 
-- (CBMutableDescriptor)initWithCharacteristic:(id)a3 dictionary:(id)a4
+- (CBMutableDescriptor)initWithCharacteristic:(id)characteristic dictionary:(id)dictionary
 {
-  v5 = a4;
-  v6 = [v5 objectForKeyedSubscript:@"kCBMsgArgUUID"];
+  dictionaryCopy = dictionary;
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"kCBMsgArgUUID"];
   v7 = [CBUUID UUIDWithData:v6];
 
-  v8 = [v5 objectForKeyedSubscript:@"kCBMsgArgData"];
+  v8 = [dictionaryCopy objectForKeyedSubscript:@"kCBMsgArgData"];
   v9 = [(CBMutableDescriptor *)self initWithType:v7 value:v8];
   if (v9)
   {
-    v10 = [v5 objectForKeyedSubscript:@"kCBMsgArgAttributeID"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"kCBMsgArgAttributeID"];
     ID = v9->_ID;
     v9->_ID = v10;
   }
@@ -104,9 +104,9 @@ LABEL_13:
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(CBAttribute *)self UUID];
-  v6 = [(CBDescriptor *)self value];
-  v7 = [v3 stringWithFormat:@"<%@: %p UUID = %@, Value = %@>", v4, self, v5, v6];
+  uUID = [(CBAttribute *)self UUID];
+  value = [(CBDescriptor *)self value];
+  v7 = [v3 stringWithFormat:@"<%@: %p UUID = %@, Value = %@>", v4, self, uUID, value];
 
   return v7;
 }

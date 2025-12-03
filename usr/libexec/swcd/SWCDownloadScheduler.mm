@@ -1,27 +1,27 @@
 @interface SWCDownloadScheduler
-- (SWCDownloadScheduler)initWithDownloader:(id)a3 database:(id)a4;
+- (SWCDownloadScheduler)initWithDownloader:(id)downloader database:(id)database;
 - (id)_init;
 - (id)_updateableEntries;
-- (void)_performUpdateWithActivity:(id)a3;
-- (void)_performUpdatesWithTransaction:(id)a3;
+- (void)_performUpdateWithActivity:(id)activity;
+- (void)_performUpdatesWithTransaction:(id)transaction;
 - (void)_scheduleUpdateTimer;
 - (void)update;
 @end
 
 @implementation SWCDownloadScheduler
 
-- (SWCDownloadScheduler)initWithDownloader:(id)a3 database:(id)a4
+- (SWCDownloadScheduler)initWithDownloader:(id)downloader database:(id)database
 {
-  v7 = a3;
-  v8 = a4;
+  downloaderCopy = downloader;
+  databaseCopy = database;
   v12.receiver = self;
   v12.super_class = SWCDownloadScheduler;
   v9 = [(SWCDownloadScheduler *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_downloader, a3);
-    objc_storeStrong(&v10->_database, a4);
+    objc_storeStrong(&v9->_downloader, downloader);
+    objc_storeStrong(&v10->_database, database);
     v10->_enabled = 1;
   }
 
@@ -68,11 +68,11 @@
   }
 }
 
-- (void)_performUpdateWithActivity:(id)a3
+- (void)_performUpdateWithActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy = activity;
   v5 = os_transaction_create();
-  state = xpc_activity_get_state(v4);
+  state = xpc_activity_get_state(activityCopy);
   if (qword_10003ACF8 != -1)
   {
     dispatch_once(&qword_10003ACF8, &stru_100034DE8);
@@ -110,7 +110,7 @@ LABEL_8:
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Performing SWC update.", buf, 2u);
     }
 
-    if (xpc_activity_set_state(v4, 4))
+    if (xpc_activity_set_state(activityCopy, 4))
     {
       v9 = +[SWCDatabase queue];
       block[0] = _NSConcreteStackBlock;
@@ -119,7 +119,7 @@ LABEL_8:
       block[3] = &unk_100034DC8;
       block[4] = self;
       v13 = v5;
-      v14 = v4;
+      v14 = activityCopy;
       dispatch_async(v9, block);
     }
 
@@ -178,7 +178,7 @@ LABEL_20:
   return v7;
 }
 
-- (void)_performUpdatesWithTransaction:(id)a3
+- (void)_performUpdatesWithTransaction:(id)transaction
 {
   if ([(SWCDownloadScheduler *)self isEnabled])
   {
@@ -186,8 +186,8 @@ LABEL_20:
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v4 = [(SWCDownloadScheduler *)self _updateableEntries];
-    v5 = [v4 countByEnumeratingWithState:&v17 objects:v23 count:16];
+    _updateableEntries = [(SWCDownloadScheduler *)self _updateableEntries];
+    v5 = [_updateableEntries countByEnumeratingWithState:&v17 objects:v23 count:16];
     if (v5)
     {
       v7 = *v18;
@@ -200,16 +200,16 @@ LABEL_20:
         {
           if (*v18 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(_updateableEntries);
           }
 
           v9 = *(*(&v17 + 1) + 8 * v8);
           if ([v9 needsFirstDownload])
           {
             downloader = self->_downloader;
-            v11 = [v9 domain];
-            v12 = [v9 applicationIdentifier];
-            [(SWCDownloader *)downloader downloadAASAFileForDomain:v11 applicationIdentifier:v12 completionHandler:0];
+            domain = [v9 domain];
+            applicationIdentifier = [v9 applicationIdentifier];
+            [(SWCDownloader *)downloader downloadAASAFileForDomain:domain applicationIdentifier:applicationIdentifier completionHandler:0];
           }
 
           else
@@ -228,16 +228,16 @@ LABEL_20:
             }
 
             v14 = self->_downloader;
-            v11 = [v9 domain];
-            v12 = [v9 applicationIdentifier];
-            [(SWCDownloader *)v14 updateAASAFileForDomain:v11 applicationIdentifier:v12 completionHandler:0];
+            domain = [v9 domain];
+            applicationIdentifier = [v9 applicationIdentifier];
+            [(SWCDownloader *)v14 updateAASAFileForDomain:domain applicationIdentifier:applicationIdentifier completionHandler:0];
           }
 
           v8 = v8 + 1;
         }
 
         while (v5 != v8);
-        v5 = [v4 countByEnumeratingWithState:&v17 objects:v23 count:16];
+        v5 = [_updateableEntries countByEnumeratingWithState:&v17 objects:v23 count:16];
       }
 
       while (v5);

@@ -1,15 +1,15 @@
 @interface KNIrisBase
 + (BOOL)isTransition;
-+ (void)downgradeAttributes:(id *)a3 animationName:(id *)a4 warning:(id *)a5 type:(int)a6 isToClassic:(BOOL)a7 version:(unint64_t)a8;
-+ (void)upgradeAttributes:(id *)a3 animationName:(id)a4 warning:(id *)a5 type:(int)a6 isFromClassic:(BOOL)a7 version:(unint64_t)a8;
-- (KNIrisBase)initWithAnimationContext:(id)a3;
-- (double)p_largestDividedAngleInRect:(CGRect)a3;
-- (unint64_t)p_setupMetalFadeDataBufferContentsWithOpaqueAttributes:(id)a3 frameRect:(CGRect)a4 openFromCenter:(BOOL)a5 maxRadius:(double)a6 center:(id)a7;
-- (unint64_t)p_setupMetalOpaqueDataBufferContentsWithOpaqueAttributes:(id)a3 frameRect:(CGRect)a4 openFromCenter:(BOOL)a5 minRadius:(double)a6 maxRadius:(double)a7 center:(id)a8;
-- (void)animationWillBeginWithContext:(id)a3;
-- (void)p_setupDataBuffersWithFrameRect:(CGRect)a3 openFromCenter:(BOOL)a4 device:(id)a5;
-- (void)p_setupMetalShadersWithContext:(id)a3;
-- (void)renderFrameWithContext:(id)a3;
++ (void)downgradeAttributes:(id *)attributes animationName:(id *)name warning:(id *)warning type:(int)type isToClassic:(BOOL)classic version:(unint64_t)version;
++ (void)upgradeAttributes:(id *)attributes animationName:(id)name warning:(id *)warning type:(int)type isFromClassic:(BOOL)classic version:(unint64_t)version;
+- (KNIrisBase)initWithAnimationContext:(id)context;
+- (double)p_largestDividedAngleInRect:(CGRect)rect;
+- (unint64_t)p_setupMetalFadeDataBufferContentsWithOpaqueAttributes:(id)attributes frameRect:(CGRect)rect openFromCenter:(BOOL)center maxRadius:(double)radius center:(id)a7;
+- (unint64_t)p_setupMetalOpaqueDataBufferContentsWithOpaqueAttributes:(id)attributes frameRect:(CGRect)rect openFromCenter:(BOOL)center minRadius:(double)radius maxRadius:(double)maxRadius center:(id)a8;
+- (void)animationWillBeginWithContext:(id)context;
+- (void)p_setupDataBuffersWithFrameRect:(CGRect)rect openFromCenter:(BOOL)center device:(id)device;
+- (void)p_setupMetalShadersWithContext:(id)context;
+- (void)renderFrameWithContext:(id)context;
 @end
 
 @implementation KNIrisBase
@@ -24,11 +24,11 @@
   return 0;
 }
 
-- (KNIrisBase)initWithAnimationContext:(id)a3
+- (KNIrisBase)initWithAnimationContext:(id)context
 {
   v4.receiver = self;
   v4.super_class = KNIrisBase;
-  result = [(KNAnimationEffect *)&v4 initWithAnimationContext:a3];
+  result = [(KNAnimationEffect *)&v4 initWithAnimationContext:context];
   if (result)
   {
     result->_numDivisionsPerQuadrant = 10;
@@ -37,36 +37,36 @@
   return result;
 }
 
-- (void)p_setupMetalShadersWithContext:(id)a3
+- (void)p_setupMetalShadersWithContext:(id)context
 {
-  v4 = a3;
-  v13 = [v4 device];
+  contextCopy = context;
+  device = [contextCopy device];
   v5 = objc_alloc_init(MTLRenderPipelineColorAttachmentDescriptor);
-  v6 = [v4 pixelFormat];
+  pixelFormat = [contextCopy pixelFormat];
 
-  [v5 setPixelFormat:v6];
+  [v5 setPixelFormat:pixelFormat];
   [v5 setBlendingEnabled:1];
   [v5 setDestinationAlphaBlendFactor:5];
   [v5 setDestinationRGBBlendFactor:5];
-  v7 = [[TSDMetalShader alloc] initDefaultTextureShaderWithDevice:v13 colorAttachment:v5];
+  v7 = [[TSDMetalShader alloc] initDefaultTextureShaderWithDevice:device colorAttachment:v5];
   quadMetalShader = self->_quadMetalShader;
   self->_quadMetalShader = v7;
 
-  v9 = [[TSDMetalShader alloc] initCustomShaderWithVertexShader:@"transitionIrisVertexShader_Fade" fragmentShader:@"transitionIrisFragmentShader_Fade" device:v13 library:@"KeynoteMetalLibrary" colorAttachment:v5];
+  v9 = [[TSDMetalShader alloc] initCustomShaderWithVertexShader:@"transitionIrisVertexShader_Fade" fragmentShader:@"transitionIrisFragmentShader_Fade" device:device library:@"KeynoteMetalLibrary" colorAttachment:v5];
   fadeMetalShader = self->_fadeMetalShader;
   self->_fadeMetalShader = v9;
 
-  v11 = [[TSDMetalShader alloc] initCustomShaderWithVertexShader:@"transitionIrisVertexShader_Opaque" fragmentShader:@"transitionIrisFragmentShader_Opaque" device:v13 library:@"KeynoteMetalLibrary" colorAttachment:v5];
+  v11 = [[TSDMetalShader alloc] initCustomShaderWithVertexShader:@"transitionIrisVertexShader_Opaque" fragmentShader:@"transitionIrisFragmentShader_Opaque" device:device library:@"KeynoteMetalLibrary" colorAttachment:v5];
   opaqueMetalShader = self->_opaqueMetalShader;
   self->_opaqueMetalShader = v11;
 }
 
-- (double)p_largestDividedAngleInRect:(CGRect)a3
+- (double)p_largestDividedAngleInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   [(KNIrisBase *)self p_angleFromQuadrant:0 inRect:?];
   [(KNIrisBase *)self p_angleFromQuadrant:1 inRect:x, y, width, height];
   [(KNIrisBase *)self p_angleFromQuadrant:2 inRect:x, y, width, height];
@@ -81,15 +81,15 @@
   return v10 / self->_numDivisionsPerQuadrant;
 }
 
-- (unint64_t)p_setupMetalOpaqueDataBufferContentsWithOpaqueAttributes:(id)a3 frameRect:(CGRect)a4 openFromCenter:(BOOL)a5 minRadius:(double)a6 maxRadius:(double)a7 center:(id)a8
+- (unint64_t)p_setupMetalOpaqueDataBufferContentsWithOpaqueAttributes:(id)attributes frameRect:(CGRect)rect openFromCenter:(BOOL)center minRadius:(double)radius maxRadius:(double)maxRadius center:(id)a8
 {
   var1 = a8.var1;
   var0 = a8.var0;
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v18 = a3;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  attributesCopy = attributes;
   v26 = 0;
   v27 = &v26;
   v28 = 0x2020000000;
@@ -102,30 +102,30 @@
   *&v22[7] = y;
   *&v22[8] = width;
   *&v22[9] = height;
-  *&v22[10] = a6;
-  *&v22[11] = a7;
+  *&v22[10] = radius;
+  *&v22[11] = maxRadius;
   v23 = var0;
   v24 = var1;
-  v25 = a5;
+  centerCopy = center;
   v22[4] = self;
   v22[5] = &v26;
   v19 = objc_retainBlock(v22);
-  [(TSDMTLDataBuffer *)self->_opaqueMetalDataBuffer updateMetalDataBufferAttributes:v18 withBlock:v19];
+  [(TSDMTLDataBuffer *)self->_opaqueMetalDataBuffer updateMetalDataBufferAttributes:attributesCopy withBlock:v19];
   v20 = v27[3];
 
   _Block_object_dispose(&v26, 8);
   return v20;
 }
 
-- (unint64_t)p_setupMetalFadeDataBufferContentsWithOpaqueAttributes:(id)a3 frameRect:(CGRect)a4 openFromCenter:(BOOL)a5 maxRadius:(double)a6 center:(id)a7
+- (unint64_t)p_setupMetalFadeDataBufferContentsWithOpaqueAttributes:(id)attributes frameRect:(CGRect)rect openFromCenter:(BOOL)center maxRadius:(double)radius center:(id)a7
 {
   var1 = a7.var1;
   var0 = a7.var0;
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v15 = a3;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  attributesCopy = attributes;
   v22 = 0;
   v23 = &v22;
   v24 = 0x2020000000;
@@ -138,27 +138,27 @@
   *&v19[7] = y;
   *&v19[8] = width;
   *&v19[9] = height;
-  *&v19[10] = a6;
+  *&v19[10] = radius;
   v20 = var0;
   v21 = var1;
   v19[4] = self;
   v19[5] = &v22;
   v16 = objc_retainBlock(v19);
-  [(TSDMTLDataBuffer *)self->_fadeMetalDataBuffer updateMetalDataBufferAttributes:v15 withBlock:v16];
+  [(TSDMTLDataBuffer *)self->_fadeMetalDataBuffer updateMetalDataBufferAttributes:attributesCopy withBlock:v16];
   v17 = v23[3];
 
   _Block_object_dispose(&v22, 8);
   return v17;
 }
 
-- (void)p_setupDataBuffersWithFrameRect:(CGRect)a3 openFromCenter:(BOOL)a4 device:(id)a5
+- (void)p_setupDataBuffersWithFrameRect:(CGRect)rect openFromCenter:(BOOL)center device:(id)device
 {
-  v54 = a4;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = a5;
+  centerCopy = center;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  deviceCopy = device;
   if (self->_initializedBuffers)
   {
     v11 = +[TSUAssertionHandler currentHandler];
@@ -169,7 +169,7 @@
 
   if ([objc_opt_class() isTransition])
   {
-    v14 = [TSDGPUDataBuffer newDataBufferWithVertexRect:v10 textureRect:x device:y, width, height, TSDRectUnit[0], TSDRectUnit[1], TSDRectUnit[2], TSDRectUnit[3]];
+    v14 = [TSDGPUDataBuffer newDataBufferWithVertexRect:deviceCopy textureRect:x device:y, width, height, TSDRectUnit[0], TSDRectUnit[1], TSDRectUnit[2], TSDRectUnit[3]];
     quadMetalDataBuffer = self->_quadMetalDataBuffer;
     self->_quadMetalDataBuffer = v14;
   }
@@ -184,7 +184,7 @@
   v23 = (8 * self->_numDivisionsPerQuadrant) | 2;
   v24 = kTSDGPUShaderAttributePosition;
   [TSDGPUDataBufferAttribute attributeWithName:kTSDGPUShaderAttributePosition bufferUsage:35044 dataType:5 normalized:0 componentCount:2];
-  v26 = v25 = v10;
+  v26 = v25 = deviceCopy;
   v27 = kTSDGPUShaderAttributeTexCoord;
   v28 = [TSDGPUDataBufferAttribute attributeWithName:kTSDGPUShaderAttributeTexCoord bufferUsage:35044 dataType:5 normalized:0 componentCount:2];
   [TSDGPUDataBufferAttribute attributeWithName:@"RadiusType" bufferUsage:35044 dataType:5 normalized:0 componentCount:1];
@@ -215,10 +215,10 @@
   [(TSDMTLDataBuffer *)self->_fadeMetalDataBuffer setMetalDrawMode:4];
   *&v38 = v20;
   *&v39 = v22;
-  v40 = [(KNIrisBase *)self p_setupMetalOpaqueDataBufferContentsWithOpaqueAttributes:v29 frameRect:v54 openFromCenter:x minRadius:y maxRadius:width center:height, v16, v18, v38, v39];
+  v40 = [(KNIrisBase *)self p_setupMetalOpaqueDataBufferContentsWithOpaqueAttributes:v29 frameRect:centerCopy openFromCenter:x minRadius:y maxRadius:width center:height, v16, v18, v38, v39];
   *&v41 = v20;
   *&v42 = v22;
-  v43 = [(KNIrisBase *)self p_setupMetalFadeDataBufferContentsWithOpaqueAttributes:v35 frameRect:v54 openFromCenter:x maxRadius:y center:width, height, v18, v41, v42];
+  v43 = [(KNIrisBase *)self p_setupMetalFadeDataBufferContentsWithOpaqueAttributes:v35 frameRect:centerCopy openFromCenter:x maxRadius:y center:width, height, v18, v41, v42];
   if (v40 != v23)
   {
     v44 = +[TSUAssertionHandler currentHandler];
@@ -236,30 +236,30 @@
   }
 }
 
-- (void)animationWillBeginWithContext:(id)a3
+- (void)animationWillBeginWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [v4 textures];
-  v6 = [v4 direction];
-  v7 = [v5 firstObject];
-  v8 = [v4 metalContext];
-  [(KNIrisBase *)self p_setupMetalShadersWithContext:v8];
+  contextCopy = context;
+  textures = [contextCopy textures];
+  direction = [contextCopy direction];
+  firstObject = [textures firstObject];
+  metalContext = [contextCopy metalContext];
+  [(KNIrisBase *)self p_setupMetalShadersWithContext:metalContext];
 
-  LOBYTE(v6) = (v6 == &stru_20.segname[2]) ^ self->_isBuildOut;
-  [v7 frame];
+  LOBYTE(direction) = (direction == &stru_20.segname[2]) ^ self->_isBuildOut;
+  [firstObject frame];
   TSDRectWithSize();
   v10 = v9;
   v12 = v11;
   v14 = v13;
   v16 = v15;
-  v17 = [v4 metalContext];
-  v18 = [v17 device];
-  v19 = v6 & 1;
-  [(KNIrisBase *)self p_setupDataBuffersWithFrameRect:v19 openFromCenter:v18 device:v10, v12, v14, v16];
+  metalContext2 = [contextCopy metalContext];
+  device = [metalContext2 device];
+  v19 = direction & 1;
+  [(KNIrisBase *)self p_setupDataBuffersWithFrameRect:v19 openFromCenter:device device:v10, v12, v14, v16];
 
-  [(KNAnimationEffect *)self mvpMatrixWithContext:v4];
+  [(KNAnimationEffect *)self mvpMatrixWithContext:contextCopy];
   v30 = vcvt_hight_f32_f64(vcvt_f32_f64(0), 0);
-  [v7 frame];
+  [firstObject frame];
   TSDRectWithSize();
   TSDCenterOfRect();
   v21.f64[1] = v20;
@@ -298,55 +298,55 @@
   *&self->_anon_280[48] = v30;
 }
 
-- (void)renderFrameWithContext:(id)a3
+- (void)renderFrameWithContext:(id)context
 {
-  v53 = a3;
-  v4 = [v53 textures];
-  v5 = [v53 direction];
-  [v53 percent];
-  if ([v4 count] < 2)
+  contextCopy = context;
+  textures = [contextCopy textures];
+  direction = [contextCopy direction];
+  [contextCopy percent];
+  if ([textures count] < 2)
   {
     v52 = 0;
   }
 
   else
   {
-    v52 = [v4 objectAtIndexedSubscript:0];
+    v52 = [textures objectAtIndexedSubscript:0];
   }
 
-  v6 = [v4 lastObject];
+  lastObject = [textures lastObject];
   TSUSineMap();
   v8 = v7;
-  if (v5 == &stru_20.segname[1])
+  if (direction == &stru_20.segname[1])
   {
     TSUSineMap();
     v8 = v9;
   }
 
-  v47 = v5 == &stru_20.segname[2];
+  v47 = direction == &stru_20.segname[2];
   isBuildOut = self->_isBuildOut;
-  [v6 frame];
+  [lastObject frame];
   v12 = v11;
   v14 = v13;
-  v15 = [v53 metalContext];
-  v16 = [v15 device];
-  v17 = [v15 commandBuffer];
-  v51 = [v15 passDescriptor];
-  v18 = [v15 renderEncoder];
-  v50 = v16;
-  if (!v16)
+  metalContext = [contextCopy metalContext];
+  device = [metalContext device];
+  commandBuffer = [metalContext commandBuffer];
+  passDescriptor = [metalContext passDescriptor];
+  renderEncoder = [metalContext renderEncoder];
+  v50 = device;
+  if (!device)
   {
     v19 = +[TSUAssertionHandler currentHandler];
     v20 = [NSString stringWithUTF8String:"[KNIrisBase renderFrameWithContext:]"];
     [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Alder/bliss/Classes/Widgets/Keynote/Animations/Transitions/KNTransitionIris.m"];
-    v22 = v21 = v17;
+    v22 = v21 = commandBuffer;
     [v19 handleFailureInFunction:v20 file:v22 lineNumber:478 description:{@"invalid nil value for '%s'", "device"}];
 
-    v17 = v21;
+    commandBuffer = v21;
   }
 
-  v49 = v17;
-  if (!v17)
+  v49 = commandBuffer;
+  if (!commandBuffer)
   {
     v23 = +[TSUAssertionHandler currentHandler];
     v24 = [NSString stringWithUTF8String:"[KNIrisBase renderFrameWithContext:]"];
@@ -354,9 +354,9 @@
     [v23 handleFailureInFunction:v24 file:v25 lineNumber:479 description:{@"invalid nil value for '%s'", "commandBuffer"}];
   }
 
-  if (v51)
+  if (passDescriptor)
   {
-    if (v18)
+    if (renderEncoder)
     {
       goto LABEL_12;
     }
@@ -369,7 +369,7 @@
     v41 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Alder/bliss/Classes/Widgets/Keynote/Animations/Transitions/KNTransitionIris.m"];
     [v39 handleFailureInFunction:v40 file:v41 lineNumber:480 description:{@"invalid nil value for '%s'", "passDescriptor"}];
 
-    if (v18)
+    if (renderEncoder)
     {
       goto LABEL_12;
     }
@@ -381,8 +381,8 @@
   [v42 handleFailureInFunction:v43 file:v44 lineNumber:481 description:{@"invalid nil value for '%s'", "renderEncoder"}];
 
 LABEL_12:
-  v26 = [v6 metalTextureWithContext:v15];
-  v27 = [v52 metalTextureWithContext:v15];
+  v26 = [lastObject metalTextureWithContext:metalContext];
+  v27 = [v52 metalTextureWithContext:metalContext];
   v28 = v27;
   if (v26)
   {
@@ -392,26 +392,26 @@ LABEL_12:
     v48 = v8 * (v29 * 1.15384615);
     if (v27)
     {
-      [(TSDMetalShader *)self->_quadMetalShader setPipelineStateWithEncoder:v18 vertexBytes:self->_anon_280];
-      [v18 setFragmentTexture:v28 atIndex:0];
-      [(TSDMTLDataBuffer *)self->_quadMetalDataBuffer drawWithEncoder:v18 atIndex:0];
+      [(TSDMetalShader *)self->_quadMetalShader setPipelineStateWithEncoder:renderEncoder vertexBytes:self->_anon_280];
+      [renderEncoder setFragmentTexture:v28 atIndex:0];
+      [(TSDMTLDataBuffer *)self->_quadMetalDataBuffer drawWithEncoder:renderEncoder atIndex:0];
     }
 
-    [v18 setFragmentTexture:v26 atIndex:0];
-    v31 = [v53 metalContext];
-    v32 = [v31 currentBuffer];
+    [renderEncoder setFragmentTexture:v26 atIndex:0];
+    metalContext2 = [contextCopy metalContext];
+    currentBuffer = [metalContext2 currentBuffer];
 
     v33.f64[0] = v46;
     v33.f64[1] = v48;
     v45 = vcvt_f32_f64(v33);
-    *&self->_anon_40[80 * v32 + 72] = v45;
-    [v6 singleTextureOpacity];
+    *&self->_anon_40[80 * currentBuffer + 72] = v45;
+    [lastObject singleTextureOpacity];
     *&v34 = v34;
-    v35 = &self->_anon_220[24 * v32];
+    v35 = &self->_anon_220[24 * currentBuffer];
     *(v35 + 5) = LODWORD(v34);
     *v35 = v45;
-    [(TSDMetalShader *)self->_fadeMetalShader setPipelineStateWithEncoder:v18 vertexBytes:&self->_anon_40[80 * v32] fragmentBytes:?];
-    [(TSDMTLDataBuffer *)self->_fadeMetalDataBuffer drawWithEncoder:v18 atIndex:0];
+    [(TSDMetalShader *)self->_fadeMetalShader setPipelineStateWithEncoder:renderEncoder vertexBytes:&self->_anon_40[80 * currentBuffer] fragmentBytes:?];
+    [(TSDMTLDataBuffer *)self->_fadeMetalDataBuffer drawWithEncoder:renderEncoder atIndex:0];
     v36 = v46;
     if ((v30 & 1) == 0)
     {
@@ -419,27 +419,27 @@ LABEL_12:
     }
 
     *&v37 = v36;
-    *&self->_anon_130[80 * v32 + 72] = __PAIR64__(v45.u32[1], v37);
-    [v6 singleTextureOpacity];
+    *&self->_anon_130[80 * currentBuffer + 72] = __PAIR64__(v45.u32[1], v37);
+    [lastObject singleTextureOpacity];
     *&v38 = v38;
-    self->_opaqueFragmentInput[v32].Opacity = *&v38;
-    [(TSDMetalShader *)self->_opaqueMetalShader setPipelineStateWithEncoder:v18 vertexBytes:&self->_anon_130[80 * v32] fragmentBytes:?];
-    [(TSDMTLDataBuffer *)self->_opaqueMetalDataBuffer drawWithEncoder:v18 atIndex:0];
+    self->_opaqueFragmentInput[currentBuffer].Opacity = *&v38;
+    [(TSDMetalShader *)self->_opaqueMetalShader setPipelineStateWithEncoder:renderEncoder vertexBytes:&self->_anon_130[80 * currentBuffer] fragmentBytes:?];
+    [(TSDMTLDataBuffer *)self->_opaqueMetalDataBuffer drawWithEncoder:renderEncoder atIndex:0];
   }
 }
 
-+ (void)upgradeAttributes:(id *)a3 animationName:(id)a4 warning:(id *)a5 type:(int)a6 isFromClassic:(BOOL)a7 version:(unint64_t)a8
++ (void)upgradeAttributes:(id *)attributes animationName:(id)name warning:(id *)warning type:(int)type isFromClassic:(BOOL)classic version:(unint64_t)version
 {
-  if (a8 <= 0x174876E7FFLL && a7)
+  if (version <= 0x174876E7FFLL && classic)
   {
-    v11 = [*a3 objectForKeyedSubscript:{@"KNTransitionAttributesDirection", a4, a5, *&a6, a7}];
+    v11 = [*attributes objectForKeyedSubscript:{@"KNTransitionAttributesDirection", name, warning, *&type, classic}];
     if (v11)
     {
     }
 
     else
     {
-      v12 = [*a3 objectForKeyedSubscript:@"KNBuildAttributesDirection"];
+      v12 = [*attributes objectForKeyedSubscript:@"KNBuildAttributesDirection"];
 
       if (!v12)
       {
@@ -447,13 +447,13 @@ LABEL_12:
       }
     }
 
-    if (a6 == 3)
+    if (type == 3)
     {
       v21 = @"KNTransitionAttributesDirection";
-      v13 = [*a3 objectForKeyedSubscript:?];
-      v14 = [v13 unsignedIntegerValue];
+      v13 = [*attributes objectForKeyedSubscript:?];
+      unsignedIntegerValue = [v13 unsignedIntegerValue];
 
-      if (v14 == &stru_68.reserved1)
+      if (unsignedIntegerValue == &stru_68.reserved1)
       {
         v15 = 41;
       }
@@ -467,10 +467,10 @@ LABEL_12:
     else
     {
       v21 = @"KNBuildAttributesDirection";
-      v16 = [*a3 objectForKeyedSubscript:?];
-      v17 = [v16 unsignedIntegerValue];
+      v16 = [*attributes objectForKeyedSubscript:?];
+      unsignedIntegerValue2 = [v16 unsignedIntegerValue];
 
-      if (v17 == &stru_68.reserved1)
+      if (unsignedIntegerValue2 == &stru_68.reserved1)
       {
         v15 = 41;
       }
@@ -480,44 +480,44 @@ LABEL_12:
         v15 = 42;
       }
 
-      if (a6 == 2)
+      if (type == 2)
       {
         v15 = sub_130B80(v15);
       }
     }
 
-    v18 = [*a3 mutableCopy];
+    v18 = [*attributes mutableCopy];
     v19 = [NSNumber numberWithUnsignedInteger:v15];
     [v18 setObject:v19 forKeyedSubscript:v21];
 
     v20 = v18;
-    *a3 = v18;
+    *attributes = v18;
   }
 }
 
-+ (void)downgradeAttributes:(id *)a3 animationName:(id *)a4 warning:(id *)a5 type:(int)a6 isToClassic:(BOOL)a7 version:(unint64_t)a8
++ (void)downgradeAttributes:(id *)attributes animationName:(id *)name warning:(id *)warning type:(int)type isToClassic:(BOOL)classic version:(unint64_t)version
 {
-  if (a8 <= 0x174876E7FFLL && a7)
+  if (version <= 0x174876E7FFLL && classic)
   {
-    v11 = [*a3 objectForKeyedSubscript:{@"direction", a4, a5, *&a6, a7}];
+    v11 = [*attributes objectForKeyedSubscript:{@"direction", name, warning, *&type, classic}];
 
     if (v11)
     {
-      v12 = [*a3 objectForKeyedSubscript:@"direction"];
-      v13 = [v12 unsignedIntegerValue];
+      v12 = [*attributes objectForKeyedSubscript:@"direction"];
+      unsignedIntegerValue = [v12 unsignedIntegerValue];
 
-      if (a6 == 2)
+      if (type == 2)
       {
-        v13 = sub_130B80(v13);
+        unsignedIntegerValue = sub_130B80(unsignedIntegerValue);
       }
 
       v14 = 42;
-      if (v13 == &stru_20.segname[2])
+      if (unsignedIntegerValue == &stru_20.segname[2])
       {
         v14 = 173;
       }
 
-      if (v13 == &stru_20.segname[1])
+      if (unsignedIntegerValue == &stru_20.segname[1])
       {
         v15 = 172;
       }
@@ -527,12 +527,12 @@ LABEL_12:
         v15 = v14;
       }
 
-      v18 = [*a3 mutableCopy];
+      v18 = [*attributes mutableCopy];
       v16 = [NSNumber numberWithUnsignedInteger:v15];
       [v18 setObject:v16 forKeyedSubscript:@"direction"];
 
       v17 = v18;
-      *a3 = v18;
+      *attributes = v18;
     }
   }
 }

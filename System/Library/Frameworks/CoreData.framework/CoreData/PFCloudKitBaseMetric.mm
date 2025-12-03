@@ -1,21 +1,21 @@
 @interface PFCloudKitBaseMetric
 - (NSString)description;
 - (NSString)name;
-- (PFCloudKitBaseMetric)initWithContainerIdentifier:(id)a3;
+- (PFCloudKitBaseMetric)initWithContainerIdentifier:(id)identifier;
 - (id)createPayload;
 - (void)dealloc;
 @end
 
 @implementation PFCloudKitBaseMetric
 
-- (PFCloudKitBaseMetric)initWithContainerIdentifier:(id)a3
+- (PFCloudKitBaseMetric)initWithContainerIdentifier:(id)identifier
 {
   v6.receiver = self;
   v6.super_class = PFCloudKitBaseMetric;
   v4 = [(PFCloudKitBaseMetric *)&v6 init];
   if (v4)
   {
-    v4->_containerIdentifier = a3;
+    v4->_containerIdentifier = identifier;
     v4->_processName = [objc_msgSend(MEMORY[0x1E696AE30] "processInfo")];
   }
 
@@ -69,10 +69,10 @@
 - (NSString)description
 {
   v3 = objc_autoreleasePoolPush();
-  v4 = [(PFCloudKitBaseMetric *)self createPayload];
+  createPayload = [(PFCloudKitBaseMetric *)self createPayload];
   v8.receiver = self;
   v8.super_class = PFCloudKitBaseMetric;
-  v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ %@\n%@", -[PFCloudKitBaseMetric description](&v8, sel_description), -[PFCloudKitBaseMetric name](self, "name"), v4];
+  v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ %@\n%@", -[PFCloudKitBaseMetric description](&v8, sel_description), -[PFCloudKitBaseMetric name](self, "name"), createPayload];
 
   v6 = v5;
   objc_autoreleasePoolPop(v3);

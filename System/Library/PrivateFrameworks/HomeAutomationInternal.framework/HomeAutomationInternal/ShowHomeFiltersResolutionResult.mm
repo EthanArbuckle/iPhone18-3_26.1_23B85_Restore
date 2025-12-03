@@ -1,27 +1,27 @@
 @interface ShowHomeFiltersResolutionResult
-+ (id)unsupportedForReason:(int64_t)a3;
-- (ShowHomeFiltersResolutionResult)initWithJSONDictionary:(id)a3 forIntent:(id)a4;
++ (id)unsupportedForReason:(int64_t)reason;
+- (ShowHomeFiltersResolutionResult)initWithJSONDictionary:(id)dictionary forIntent:(id)intent;
 @end
 
 @implementation ShowHomeFiltersResolutionResult
 
-+ (id)unsupportedForReason:(int64_t)a3
++ (id)unsupportedForReason:(int64_t)reason
 {
   swift_getObjCClassMetadata();
-  v4 = sub_252E20FF8(a3);
+  v4 = sub_252E20FF8(reason);
 
   return v4;
 }
 
-- (ShowHomeFiltersResolutionResult)initWithJSONDictionary:(id)a3 forIntent:(id)a4
+- (ShowHomeFiltersResolutionResult)initWithJSONDictionary:(id)dictionary forIntent:(id)intent
 {
   sub_252E36E44();
-  v6 = a4;
+  intentCopy = intent;
   v7 = sub_252E36E24();
 
   v10.receiver = self;
   v10.super_class = type metadata accessor for ShowHomeFiltersResolutionResult();
-  v8 = [(HomeFilterResolutionResult *)&v10 initWithJSONDictionary:v7 forIntent:v6];
+  v8 = [(HomeFilterResolutionResult *)&v10 initWithJSONDictionary:v7 forIntent:intentCopy];
 
   if (v8)
   {

@@ -1,29 +1,29 @@
 @interface SESConfig
-- (SESConfig)initWithDeviceClass:(id)a3 productVersion:(float)a4;
-- (SESConfig)initWithDeviceClass:(id)a3 productVersion:(float)a4 path:(id)a5;
-- (id)getConfigForManufacturer:(id)a3 component:(unint64_t)a4 error:(id *)a5;
-- (id)getContentsOfAssetFile:(id)a3 component:(unint64_t)a4 error:(id *)a5;
-- (id)readContentsOfPlist:(id)a3 component:(id)a4 isProfile:(BOOL)a5 error:(id *)a6;
+- (SESConfig)initWithDeviceClass:(id)class productVersion:(float)version;
+- (SESConfig)initWithDeviceClass:(id)class productVersion:(float)version path:(id)path;
+- (id)getConfigForManufacturer:(id)manufacturer component:(unint64_t)component error:(id *)error;
+- (id)getContentsOfAssetFile:(id)file component:(unint64_t)component error:(id *)error;
+- (id)readContentsOfPlist:(id)plist component:(id)component isProfile:(BOOL)profile error:(id *)error;
 @end
 
 @implementation SESConfig
 
-- (SESConfig)initWithDeviceClass:(id)a3 productVersion:(float)a4
+- (SESConfig)initWithDeviceClass:(id)class productVersion:(float)version
 {
   v6 = MEMORY[0x1E695DFF8];
-  v7 = a3;
+  classCopy = class;
   v8 = [v6 fileURLWithPath:@"/private/var/mobile/Library/SecureElementService/Asset/"];
-  *&v9 = a4;
-  v10 = [(SESConfig *)self initWithDeviceClass:v7 productVersion:v8 path:v9];
+  *&v9 = version;
+  v10 = [(SESConfig *)self initWithDeviceClass:classCopy productVersion:v8 path:v9];
 
   return v10;
 }
 
-- (SESConfig)initWithDeviceClass:(id)a3 productVersion:(float)a4 path:(id)a5
+- (SESConfig)initWithDeviceClass:(id)class productVersion:(float)version path:(id)path
 {
   v23 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  classCopy = class;
+  pathCopy = path;
   v20.receiver = self;
   v20.super_class = SESConfig;
   v10 = [(SESConfig *)&v20 init];
@@ -33,15 +33,15 @@
     goto LABEL_7;
   }
 
-  objc_storeStrong(&v10->_path, a5);
-  if ([@"iPhone" isEqualToString:v8])
+  objc_storeStrong(&v10->_path, path);
+  if ([@"iPhone" isEqualToString:classCopy])
   {
     v12 = @"MinOSPhone";
 LABEL_6:
     minOSKey = v11->_minOSKey;
     v11->_minOSKey = &v12->isa;
 
-    v11->_productVersion = a4;
+    v11->_productVersion = version;
     v11->_cachedComponent = 0;
     cachedFileName = v11->_cachedFileName;
     v11->_cachedFileName = 0;
@@ -54,7 +54,7 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if ([@"Watch" isEqualToString:v8])
+  if ([@"Watch" isEqualToString:classCopy])
   {
     v12 = @"MinOSWatch";
     goto LABEL_6;
@@ -64,7 +64,7 @@ LABEL_7:
   if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412290;
-    v22 = v8;
+    v22 = classCopy;
     _os_log_impl(&dword_1E0FCB000, v19, OS_LOG_TYPE_ERROR, "Unknown device class %@", buf, 0xCu);
   }
 
@@ -75,10 +75,10 @@ LABEL_8:
   return v16;
 }
 
-- (id)getConfigForManufacturer:(id)a3 component:(unint64_t)a4 error:(id *)a5
+- (id)getConfigForManufacturer:(id)manufacturer component:(unint64_t)component error:(id *)error
 {
   v27 = 0;
-  v7 = [(SESConfig *)self getContentsOfAssetFile:a3 component:a4 error:&v27];
+  v7 = [(SESConfig *)self getContentsOfAssetFile:manufacturer component:component error:&v27];
   v8 = v27;
   v9 = v8;
   if (!v8)
@@ -97,12 +97,12 @@ LABEL_8:
           goto LABEL_17;
         }
 
-        if (a5)
+        if (error)
         {
           v15 = SESDefaultLogObject();
           productVersion = self->_productVersion;
           SESCreateAndLogError(0, v15, SESErrorDomain, 6, @"MinOS not satisfied config %f > %f current", v16, v17, v18, COERCE__INT64(v14));
-          *a5 = LABEL_15:;
+          *error = LABEL_15:;
         }
 
 LABEL_16:
@@ -112,7 +112,7 @@ LABEL_17:
         goto LABEL_18;
       }
 
-      if (!a5)
+      if (!error)
       {
         goto LABEL_16;
       }
@@ -125,7 +125,7 @@ LABEL_17:
 
     else
     {
-      if (!a5)
+      if (!error)
       {
         goto LABEL_16;
       }
@@ -140,11 +140,11 @@ LABEL_17:
     goto LABEL_15;
   }
 
-  if (a5)
+  if (error)
   {
     v10 = v8;
     v11 = 0;
-    *a5 = v9;
+    *error = v9;
   }
 
   else
@@ -157,17 +157,17 @@ LABEL_18:
   return v11;
 }
 
-- (id)getContentsOfAssetFile:(id)a3 component:(unint64_t)a4 error:(id *)a5
+- (id)getContentsOfAssetFile:(id)file component:(unint64_t)component error:(id *)error
 {
-  v9 = a3;
-  v10 = v9;
-  if (self->_cachedComponent == a4 && [v9 isEqualToString:self->_cachedFileName])
+  fileCopy = file;
+  v10 = fileCopy;
+  if (self->_cachedComponent == component && [fileCopy isEqualToString:self->_cachedFileName])
   {
     v11 = self->_cache;
     goto LABEL_24;
   }
 
-  if (a4 == 1)
+  if (component == 1)
   {
     v12 = @"DCK";
 LABEL_8:
@@ -179,11 +179,11 @@ LABEL_8:
       v15 = v14;
       if ([v14 code] != 4)
       {
-        if (a5)
+        if (error)
         {
           v22 = v15;
           v11 = 0;
-          *a5 = v15;
+          *error = v15;
         }
 
         else
@@ -201,7 +201,7 @@ LABEL_8:
       v13 = v16;
       if (v15)
       {
-        if (!a5)
+        if (!error)
         {
 LABEL_13:
           v11 = v16;
@@ -213,7 +213,7 @@ LABEL_23:
 
 LABEL_12:
         v17 = v15;
-        *a5 = v15;
+        *error = v15;
         goto LABEL_13;
       }
     }
@@ -223,11 +223,11 @@ LABEL_12:
       v16 = v13;
     }
 
-    objc_storeStrong(&self->_cachedFileName, a3);
-    self->_cachedComponent = a4;
+    objc_storeStrong(&self->_cachedFileName, file);
+    self->_cachedComponent = component;
     objc_storeStrong(&self->_cache, v13);
     v15 = 0;
-    if (!a5)
+    if (!error)
     {
       goto LABEL_13;
     }
@@ -235,16 +235,16 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  if (a4 == 2)
+  if (component == 2)
   {
     v12 = @"Aliro";
     goto LABEL_8;
   }
 
-  if (a5)
+  if (error)
   {
     v18 = SESDefaultLogObject();
-    *a5 = SESCreateAndLogError(0, v18, SESErrorDomain, 1, @"Invalid component", v19, v20, v21, v24);
+    *error = SESCreateAndLogError(0, v18, SESErrorDomain, 1, @"Invalid component", v19, v20, v21, v24);
   }
 
   v11 = 0;
@@ -253,20 +253,20 @@ LABEL_24:
   return v11;
 }
 
-- (id)readContentsOfPlist:(id)a3 component:(id)a4 isProfile:(BOOL)a5 error:(id *)a6
+- (id)readContentsOfPlist:(id)plist component:(id)component isProfile:(BOOL)profile error:(id *)error
 {
   v35 = *MEMORY[0x1E69E9840];
   v8 = &stru_1F5BEA718;
-  if (a5)
+  if (profile)
   {
     v8 = @"profile_";
   }
 
-  v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@/%@%@.plist", a4, v8, a3];
-  v10 = [(NSURL *)self->_path URLByAppendingPathComponent:v9];
-  v11 = [MEMORY[0x1E696AC08] defaultManager];
-  v12 = [v10 path];
-  v13 = [v11 isReadableFileAtPath:v12];
+  plist = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@/%@%@.plist", component, v8, plist];
+  v10 = [(NSURL *)self->_path URLByAppendingPathComponent:plist];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  path = [v10 path];
+  v13 = [defaultManager isReadableFileAtPath:path];
 
   if (v13)
   {
@@ -275,14 +275,14 @@ LABEL_24:
     v15 = v32;
     if (v15)
     {
-      if (a6)
+      if (error)
       {
         v16 = SESDefaultLogObject();
         v17 = SESErrorDomain;
-        v18 = [v10 path];
-        *a6 = SESCreateAndLogError(v15, v16, v17, 0, @"Failed to load contents from %@", v19, v20, v21, v18);
+        path2 = [v10 path];
+        *error = SESCreateAndLogError(v15, v16, v17, 0, @"Failed to load contents from %@", v19, v20, v21, path2);
 
-        a6 = 0;
+        error = 0;
       }
     }
 
@@ -291,29 +291,29 @@ LABEL_24:
       v28 = SESDefaultLogObject();
       if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
       {
-        v29 = [v10 path];
+        path3 = [v10 path];
         *buf = 138412290;
-        v34 = v29;
+        v34 = path3;
         _os_log_impl(&dword_1E0FCB000, v28, OS_LOG_TYPE_INFO, "Contents retrieved from %@", buf, 0xCu);
       }
 
-      a6 = v14;
+      error = v14;
     }
   }
 
-  else if (a6)
+  else if (error)
   {
     v22 = SESDefaultLogObject();
     v23 = SESErrorDomain;
-    v24 = [v10 path];
-    *a6 = SESCreateAndLogError(0, v22, v23, 4, @"File not found %@", v25, v26, v27, v24);
+    path4 = [v10 path];
+    *error = SESCreateAndLogError(0, v22, v23, 4, @"File not found %@", v25, v26, v27, path4);
 
-    a6 = 0;
+    error = 0;
   }
 
   v30 = *MEMORY[0x1E69E9840];
 
-  return a6;
+  return error;
 }
 
 @end

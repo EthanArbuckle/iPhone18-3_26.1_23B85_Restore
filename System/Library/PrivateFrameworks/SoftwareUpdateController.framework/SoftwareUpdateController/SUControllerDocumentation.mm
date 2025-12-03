@@ -1,75 +1,75 @@
 @interface SUControllerDocumentation
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)licenseAgreement;
 - (NSData)releaseNotes;
 - (NSData)releaseNotesSummary;
 - (NSString)humanReadableUpdateName;
-- (SUControllerDocumentation)initWithCoder:(id)a3;
-- (SUControllerDocumentation)initWithDocumentationBundleURL:(id)a3 serverAssetURL:(id)a4 serverAssetMeasurement:(id)a5 serverAssetAlgorithm:(id)a6 serverAssetChunkSize:(int64_t)a7;
-- (id)_resourceFromBundle:(__CFBundle *)a3 forKey:(id)a4;
+- (SUControllerDocumentation)initWithCoder:(id)coder;
+- (SUControllerDocumentation)initWithDocumentationBundleURL:(id)l serverAssetURL:(id)rL serverAssetMeasurement:(id)measurement serverAssetAlgorithm:(id)algorithm serverAssetChunkSize:(int64_t)size;
+- (id)_resourceFromBundle:(__CFBundle *)bundle forKey:(id)key;
 - (id)description;
 - (void)_loadBundleResources;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SUControllerDocumentation
 
-- (SUControllerDocumentation)initWithDocumentationBundleURL:(id)a3 serverAssetURL:(id)a4 serverAssetMeasurement:(id)a5 serverAssetAlgorithm:(id)a6 serverAssetChunkSize:(int64_t)a7
+- (SUControllerDocumentation)initWithDocumentationBundleURL:(id)l serverAssetURL:(id)rL serverAssetMeasurement:(id)measurement serverAssetAlgorithm:(id)algorithm serverAssetChunkSize:(int64_t)size
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
+  lCopy = l;
+  rLCopy = rL;
+  measurementCopy = measurement;
+  algorithmCopy = algorithm;
   v20.receiver = self;
   v20.super_class = SUControllerDocumentation;
   v17 = [(SUControllerDocumentation *)&v20 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_localBundleURL, a3);
-    objc_storeStrong(&v18->_serverAssetURL, a4);
-    objc_storeStrong(&v18->_serverAssetMeasurement, a5);
-    objc_storeStrong(&v18->_serverAssetAlgorithm, a6);
-    v18->_serverAssetChunkSize = a7;
+    objc_storeStrong(&v17->_localBundleURL, l);
+    objc_storeStrong(&v18->_serverAssetURL, rL);
+    objc_storeStrong(&v18->_serverAssetMeasurement, measurement);
+    objc_storeStrong(&v18->_serverAssetAlgorithm, algorithm);
+    v18->_serverAssetChunkSize = size;
   }
 
   return v18;
 }
 
-- (SUControllerDocumentation)initWithCoder:(id)a3
+- (SUControllerDocumentation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v21.receiver = self;
   v21.super_class = SUControllerDocumentation;
   v5 = [(SUControllerDocumentation *)&v21 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"localBundleURL"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"localBundleURL"];
     localBundleURL = v5->_localBundleURL;
     v5->_localBundleURL = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"serverAssetURL"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"serverAssetURL"];
     serverAssetURL = v5->_serverAssetURL;
     v5->_serverAssetURL = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"serverAssetMeasurement"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"serverAssetMeasurement"];
     serverAssetMeasurement = v5->_serverAssetMeasurement;
     v5->_serverAssetMeasurement = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"serverAssetAlgorithm"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"serverAssetAlgorithm"];
     serverAssetAlgorithm = v5->_serverAssetAlgorithm;
     v5->_serverAssetAlgorithm = v12;
 
-    v5->_serverAssetChunkSize = [v4 decodeInt64ForKey:@"serverAssetChunkSize"];
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"releaseNotesSummary"];
+    v5->_serverAssetChunkSize = [coderCopy decodeInt64ForKey:@"serverAssetChunkSize"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"releaseNotesSummary"];
     releaseNotesSummary = v5->_releaseNotesSummary;
     v5->_releaseNotesSummary = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"releaseNotes"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"releaseNotes"];
     releaseNotes = v5->_releaseNotes;
     v5->_releaseNotes = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"licenseAgreement"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"licenseAgreement"];
     licenseAgreement = v5->_licenseAgreement;
     v5->_licenseAgreement = v18;
   }
@@ -77,30 +77,30 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(SUControllerDocumentation *)self localBundleURL];
-  [v4 encodeObject:v5 forKey:@"localBundleURL"];
+  coderCopy = coder;
+  localBundleURL = [(SUControllerDocumentation *)self localBundleURL];
+  [coderCopy encodeObject:localBundleURL forKey:@"localBundleURL"];
 
-  v6 = [(SUControllerDocumentation *)self serverAssetURL];
-  [v4 encodeObject:v6 forKey:@"serverAssetURL"];
+  serverAssetURL = [(SUControllerDocumentation *)self serverAssetURL];
+  [coderCopy encodeObject:serverAssetURL forKey:@"serverAssetURL"];
 
-  v7 = [(SUControllerDocumentation *)self serverAssetMeasurement];
-  [v4 encodeObject:v7 forKey:@"serverAssetMeasurement"];
+  serverAssetMeasurement = [(SUControllerDocumentation *)self serverAssetMeasurement];
+  [coderCopy encodeObject:serverAssetMeasurement forKey:@"serverAssetMeasurement"];
 
-  v8 = [(SUControllerDocumentation *)self serverAssetAlgorithm];
-  [v4 encodeObject:v8 forKey:@"serverAssetAlgorithm"];
+  serverAssetAlgorithm = [(SUControllerDocumentation *)self serverAssetAlgorithm];
+  [coderCopy encodeObject:serverAssetAlgorithm forKey:@"serverAssetAlgorithm"];
 
-  [v4 encodeInt64:-[SUControllerDocumentation serverAssetChunkSize](self forKey:{"serverAssetChunkSize"), @"serverAssetChunkSize"}];
-  v9 = [(SUControllerDocumentation *)self releaseNotesSummary];
-  [v4 encodeObject:v9 forKey:@"releaseNotesSummary"];
+  [coderCopy encodeInt64:-[SUControllerDocumentation serverAssetChunkSize](self forKey:{"serverAssetChunkSize"), @"serverAssetChunkSize"}];
+  releaseNotesSummary = [(SUControllerDocumentation *)self releaseNotesSummary];
+  [coderCopy encodeObject:releaseNotesSummary forKey:@"releaseNotesSummary"];
 
-  v10 = [(SUControllerDocumentation *)self releaseNotes];
-  [v4 encodeObject:v10 forKey:@"releaseNotes"];
+  releaseNotes = [(SUControllerDocumentation *)self releaseNotes];
+  [coderCopy encodeObject:releaseNotes forKey:@"releaseNotes"];
 
-  v11 = [(SUControllerDocumentation *)self licenseAgreement];
-  [v4 encodeObject:v11 forKey:@"licenseAgreement"];
+  licenseAgreement = [(SUControllerDocumentation *)self licenseAgreement];
+  [coderCopy encodeObject:licenseAgreement forKey:@"licenseAgreement"];
 }
 
 - (NSString)humanReadableUpdateName
@@ -135,9 +135,9 @@
   return licenseAgreement;
 }
 
-- (id)_resourceFromBundle:(__CFBundle *)a3 forKey:(id)a4
+- (id)_resourceFromBundle:(__CFBundle *)bundle forKey:(id)key
 {
-  v4 = CFBundleCopyResourceURL(a3, a4, @"html", 0);
+  v4 = CFBundleCopyResourceURL(bundle, key, @"html", 0);
   if (v4)
   {
     v5 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:v4];
@@ -153,13 +153,13 @@
 
 - (void)_loadBundleResources
 {
-  v3 = [(SUControllerDocumentation *)self localBundleURL];
+  localBundleURL = [(SUControllerDocumentation *)self localBundleURL];
 
-  if (v3)
+  if (localBundleURL)
   {
-    v4 = [MEMORY[0x277CBEAF8] preferredLanguages];
-    v5 = v4;
-    if (v4 && [v4 count])
+    preferredLanguages = [MEMORY[0x277CBEAF8] preferredLanguages];
+    v5 = preferredLanguages;
+    if (preferredLanguages && [preferredLanguages count])
     {
       v6 = [v5 objectAtIndex:0];
     }
@@ -170,8 +170,8 @@
     }
 
     v16 = v6;
-    v7 = [(SUControllerDocumentation *)self currentLanguage];
-    v8 = [(__CFString *)v16 isEqualToString:v7];
+    currentLanguage = [(SUControllerDocumentation *)self currentLanguage];
+    v8 = [(__CFString *)v16 isEqualToString:currentLanguage];
 
     if ((v8 & 1) == 0)
     {
@@ -181,8 +181,8 @@
       [(SUControllerDocumentation *)self setReleaseNotes:0];
       [(SUControllerDocumentation *)self setLicenseAgreement:0];
       v9 = *MEMORY[0x277CBECE8];
-      v10 = [(SUControllerDocumentation *)self localBundleURL];
-      v11 = CFBundleCreate(v9, v10);
+      localBundleURL2 = [(SUControllerDocumentation *)self localBundleURL];
+      v11 = CFBundleCreate(v9, localBundleURL2);
 
       if (v11)
       {
@@ -207,10 +207,10 @@
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v7 = 1;
   }
@@ -220,9 +220,9 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(SUControllerDocumentation *)v4 localBundleURL];
-      v6 = [(SUControllerDocumentation *)self localBundleURL];
-      v7 = [v5 isEqual:v6];
+      localBundleURL = [(SUControllerDocumentation *)equalCopy localBundleURL];
+      localBundleURL2 = [(SUControllerDocumentation *)self localBundleURL];
+      v7 = [localBundleURL isEqual:localBundleURL2];
     }
 
     else
@@ -237,11 +237,11 @@
 - (id)description
 {
   v19 = MEMORY[0x277CCACA8];
-  v18 = [(SUControllerDocumentation *)self localBundleURL];
-  v17 = [(SUControllerDocumentation *)self serverAssetURL];
-  v20 = [(SUControllerDocumentation *)self serverAssetMeasurement];
+  localBundleURL = [(SUControllerDocumentation *)self localBundleURL];
+  serverAssetURL = [(SUControllerDocumentation *)self serverAssetURL];
+  serverAssetMeasurement = [(SUControllerDocumentation *)self serverAssetMeasurement];
   v3 = @"absent";
-  if (v20)
+  if (serverAssetMeasurement)
   {
     v4 = @"present";
   }
@@ -252,10 +252,10 @@
   }
 
   v16 = v4;
-  v5 = [(SUControllerDocumentation *)self serverAssetAlgorithm];
-  v6 = [(SUControllerDocumentation *)self serverAssetChunkSize];
-  v7 = [(SUControllerDocumentation *)self releaseNotesSummary];
-  if (v7)
+  serverAssetAlgorithm = [(SUControllerDocumentation *)self serverAssetAlgorithm];
+  serverAssetChunkSize = [(SUControllerDocumentation *)self serverAssetChunkSize];
+  releaseNotesSummary = [(SUControllerDocumentation *)self releaseNotesSummary];
+  if (releaseNotesSummary)
   {
     v8 = @"present";
   }
@@ -265,8 +265,8 @@
     v8 = @"absent";
   }
 
-  v9 = [(SUControllerDocumentation *)self releaseNotes];
-  if (v9)
+  releaseNotes = [(SUControllerDocumentation *)self releaseNotes];
+  if (releaseNotes)
   {
     v10 = @"present";
   }
@@ -276,15 +276,15 @@
     v10 = @"absent";
   }
 
-  v11 = [(SUControllerDocumentation *)self licenseAgreement];
-  if (v11)
+  licenseAgreement = [(SUControllerDocumentation *)self licenseAgreement];
+  if (licenseAgreement)
   {
     v3 = @"present";
   }
 
-  v12 = [(SUControllerDocumentation *)self humanReadableUpdateName];
-  v13 = [(SUControllerDocumentation *)self currentLanguage];
-  v14 = [v19 stringWithFormat:@"\nLocalBundleURL: %@\nServerAssetURL: %@\nServerAssetMeasurement: %@\nServerAssetAlgorithm: %@\nServerAssetChunkSize: %lld\nReleaseNotesSummary: %@\nReleaseNotes: %@\nLicenseAgreement: %@\nHumanReadableUpdateName: %@\ncurrentLanguage: %@\n", v18, v17, v16, v5, v6, v8, v10, v3, v12, v13];
+  humanReadableUpdateName = [(SUControllerDocumentation *)self humanReadableUpdateName];
+  currentLanguage = [(SUControllerDocumentation *)self currentLanguage];
+  v14 = [v19 stringWithFormat:@"\nLocalBundleURL: %@\nServerAssetURL: %@\nServerAssetMeasurement: %@\nServerAssetAlgorithm: %@\nServerAssetChunkSize: %lld\nReleaseNotesSummary: %@\nReleaseNotes: %@\nLicenseAgreement: %@\nHumanReadableUpdateName: %@\ncurrentLanguage: %@\n", localBundleURL, serverAssetURL, v16, serverAssetAlgorithm, serverAssetChunkSize, v8, v10, v3, humanReadableUpdateName, currentLanguage];
 
   return v14;
 }

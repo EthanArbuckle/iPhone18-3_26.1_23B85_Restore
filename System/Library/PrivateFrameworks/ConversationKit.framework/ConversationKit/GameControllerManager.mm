@@ -1,7 +1,7 @@
 @interface GameControllerManager
 - (BOOL)consumePressEventForGCSystemButton;
 - (GCSystemButtonServiceRevlock)systemButtonService;
-- (void)observerDeliveryPolicyDidChange:(id)a3;
+- (void)observerDeliveryPolicyDidChange:(id)change;
 @end
 
 @implementation GameControllerManager
@@ -13,16 +13,16 @@
   return v2;
 }
 
-- (void)observerDeliveryPolicyDidChange:(id)a3
+- (void)observerDeliveryPolicyDidChange:(id)change
 {
-  v4 = a3;
-  v5 = self;
-  GameControllerManager.observerDeliveryPolicyDidChange(_:)(v4);
+  changeCopy = change;
+  selfCopy = self;
+  GameControllerManager.observerDeliveryPolicyDidChange(_:)(changeCopy);
 }
 
 - (BOOL)consumePressEventForGCSystemButton
 {
-  v2 = self;
+  selfCopy = self;
   v3 = GameControllerManager.consumePressEventForGCSystemButton()();
 
   return v3;

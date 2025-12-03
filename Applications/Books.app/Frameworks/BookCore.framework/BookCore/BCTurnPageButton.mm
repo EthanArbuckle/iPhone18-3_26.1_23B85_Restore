@@ -5,11 +5,11 @@
 - (BOOL)useMaterialFill;
 - (NSString)accessibilityLabel;
 - (UIColor)fillColor;
-- (void)_traitCollectionDidChangeWithSender:(id)a3 previousTraitCollection:(id)a4;
-- (void)setFillColor:(id)a3;
-- (void)setHovering:(BOOL)a3;
-- (void)setPressed:(BOOL)a3;
-- (void)setUseMaterialFill:(BOOL)a3;
+- (void)_traitCollectionDidChangeWithSender:(id)sender previousTraitCollection:(id)collection;
+- (void)setFillColor:(id)color;
+- (void)setHovering:(BOOL)hovering;
+- (void)setPressed:(BOOL)pressed;
+- (void)setUseMaterialFill:(BOOL)fill;
 @end
 
 @implementation BCTurnPageButton
@@ -21,16 +21,16 @@
   return *(self + v3);
 }
 
-- (void)setUseMaterialFill:(BOOL)a3
+- (void)setUseMaterialFill:(BOOL)fill
 {
-  v3 = a3;
+  fillCopy = fill;
   v5 = OBJC_IVAR___BCTurnPageButton_useMaterialFill;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = v3;
-  if (v6 != v3)
+  *(self + v5) = fillCopy;
+  if (v6 != fillCopy)
   {
-    v7 = self;
+    selfCopy = self;
     sub_1D7B1C();
   }
 }
@@ -42,12 +42,12 @@
   return *(self + v3);
 }
 
-- (void)setHovering:(BOOL)a3
+- (void)setHovering:(BOOL)hovering
 {
   v5 = OBJC_IVAR___BCTurnPageButton_hovering;
   swift_beginAccess();
-  *(self + v5) = a3;
-  v6 = self;
+  *(self + v5) = hovering;
+  selfCopy = self;
   sub_1D67F8();
 }
 
@@ -58,17 +58,17 @@
   return *(self + v3);
 }
 
-- (void)setPressed:(BOOL)a3
+- (void)setPressed:(BOOL)pressed
 {
-  v3 = a3;
+  pressedCopy = pressed;
   v5 = OBJC_IVAR___BCTurnPageButton_pressed;
   swift_beginAccess();
-  *(self + v5) = v3;
+  *(self + v5) = pressedCopy;
   v6 = *(self + OBJC_IVAR___BCTurnPageButton_pressedLayer);
   if (v6)
   {
     v7 = 0.0;
-    if (v3)
+    if (pressedCopy)
     {
       *&v7 = 1.0;
     }
@@ -84,11 +84,11 @@
   return *(self + v3);
 }
 
-- (void)setFillColor:(id)a3
+- (void)setFillColor:(id)color
 {
-  v5 = a3;
-  v6 = self;
-  sub_1D6F84(a3);
+  colorCopy = color;
+  selfCopy = self;
+  sub_1D6F84(color);
 }
 
 - (BCTurnPageButtonAccessibilityDelegate)delegate
@@ -99,11 +99,11 @@
   return Strong;
 }
 
-- (void)_traitCollectionDidChangeWithSender:(id)a3 previousTraitCollection:(id)a4
+- (void)_traitCollectionDidChangeWithSender:(id)sender previousTraitCollection:(id)collection
 {
   swift_unknownObjectRetain();
-  v6 = a4;
-  v7 = self;
+  collectionCopy = collection;
+  selfCopy = self;
   sub_1EF444();
   swift_unknownObjectRelease();
   sub_1D7988();
@@ -113,7 +113,7 @@
 
 - (NSString)accessibilityLabel
 {
-  v2 = self;
+  selfCopy = self;
   TurnPageButton.accessibilityLabel.getter();
   v4 = v3;
 

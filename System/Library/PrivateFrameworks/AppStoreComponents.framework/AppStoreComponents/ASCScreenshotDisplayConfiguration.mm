@@ -1,33 +1,33 @@
 @interface ASCScreenshotDisplayConfiguration
 + (id)defaultConfiguration;
-- (ASCScreenshotDisplayConfiguration)initWithCoder:(id)a3;
-- (ASCScreenshotDisplayConfiguration)initWithDeviceCornerRadiusFactor:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (ASCScreenshotDisplayConfiguration)initWithCoder:(id)coder;
+- (ASCScreenshotDisplayConfiguration)initWithDeviceCornerRadiusFactor:(id)factor;
+- (BOOL)isEqual:(id)equal;
 - (NSString)cornerCurve;
-- (double)cornerRadiusForSize:(CGSize)a3;
+- (double)cornerRadiusForSize:(CGSize)size;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ASCScreenshotDisplayConfiguration
 
 + (id)defaultConfiguration
 {
-  v2 = [[a1 alloc] initWithDeviceCornerRadiusFactor:0];
+  v2 = [[self alloc] initWithDeviceCornerRadiusFactor:0];
 
   return v2;
 }
 
-- (ASCScreenshotDisplayConfiguration)initWithDeviceCornerRadiusFactor:(id)a3
+- (ASCScreenshotDisplayConfiguration)initWithDeviceCornerRadiusFactor:(id)factor
 {
-  v4 = a3;
+  factorCopy = factor;
   v9.receiver = self;
   v9.super_class = ASCScreenshotDisplayConfiguration;
   v5 = [(ASCScreenshotDisplayConfiguration *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [factorCopy copy];
     deviceCornerRadiusFactor = v5->_deviceCornerRadiusFactor;
     v5->_deviceCornerRadiusFactor = v6;
   }
@@ -35,10 +35,10 @@
   return v5;
 }
 
-- (ASCScreenshotDisplayConfiguration)initWithCoder:(id)a3
+- (ASCScreenshotDisplayConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"deviceCornerRadiusFactor"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"deviceCornerRadiusFactor"];
 
   v10.receiver = self;
   v10.super_class = ASCScreenshotDisplayConfiguration;
@@ -53,17 +53,17 @@
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(ASCScreenshotDisplayConfiguration *)self deviceCornerRadiusFactor];
-  [v4 encodeObject:v5 forKey:@"deviceCornerRadiusFactor"];
+  coderCopy = coder;
+  deviceCornerRadiusFactor = [(ASCScreenshotDisplayConfiguration *)self deviceCornerRadiusFactor];
+  [coderCopy encodeObject:deviceCornerRadiusFactor forKey:@"deviceCornerRadiusFactor"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -71,7 +71,7 @@
   else
   {
     objc_opt_class();
-    v5 = v4;
+    v5 = equalCopy;
     if (v5)
     {
       if (objc_opt_isKindOfClass())
@@ -94,17 +94,17 @@
 
     if (v8)
     {
-      v9 = [(ASCScreenshotDisplayConfiguration *)self deviceCornerRadiusFactor];
-      v10 = [(ASCScreenshotDisplayConfiguration *)v8 deviceCornerRadiusFactor];
-      v11 = v10;
-      if (v9 && v10)
+      deviceCornerRadiusFactor = [(ASCScreenshotDisplayConfiguration *)self deviceCornerRadiusFactor];
+      deviceCornerRadiusFactor2 = [(ASCScreenshotDisplayConfiguration *)v8 deviceCornerRadiusFactor];
+      v11 = deviceCornerRadiusFactor2;
+      if (deviceCornerRadiusFactor && deviceCornerRadiusFactor2)
       {
-        v7 = [v9 isEqual:v10];
+        v7 = [deviceCornerRadiusFactor isEqual:deviceCornerRadiusFactor2];
       }
 
       else
       {
-        v7 = v9 == v10;
+        v7 = deviceCornerRadiusFactor == deviceCornerRadiusFactor2;
       }
     }
 
@@ -120,34 +120,34 @@
 - (id)description
 {
   v3 = [[ASCDescriber alloc] initWithObject:self];
-  v4 = [(ASCScreenshotDisplayConfiguration *)self deviceCornerRadiusFactor];
-  [(ASCDescriber *)v3 addObject:v4 withName:@"deviceCornerRadiusFactor"];
+  deviceCornerRadiusFactor = [(ASCScreenshotDisplayConfiguration *)self deviceCornerRadiusFactor];
+  [(ASCDescriber *)v3 addObject:deviceCornerRadiusFactor withName:@"deviceCornerRadiusFactor"];
 
-  v5 = [(ASCDescriber *)v3 finalizeDescription];
+  finalizeDescription = [(ASCDescriber *)v3 finalizeDescription];
 
-  return v5;
+  return finalizeDescription;
 }
 
 - (unint64_t)hash
 {
   v3 = objc_alloc_init(ASCHasher);
-  v4 = [(ASCScreenshotDisplayConfiguration *)self deviceCornerRadiusFactor];
-  [(ASCHasher *)v3 combineObject:v4];
+  deviceCornerRadiusFactor = [(ASCScreenshotDisplayConfiguration *)self deviceCornerRadiusFactor];
+  [(ASCHasher *)v3 combineObject:deviceCornerRadiusFactor];
 
-  v5 = [(ASCHasher *)v3 finalizeHash];
-  return v5;
+  finalizeHash = [(ASCHasher *)v3 finalizeHash];
+  return finalizeHash;
 }
 
-- (double)cornerRadiusForSize:(CGSize)a3
+- (double)cornerRadiusForSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(ASCScreenshotDisplayConfiguration *)self deviceCornerRadiusFactor];
+  height = size.height;
+  width = size.width;
+  deviceCornerRadiusFactor = [(ASCScreenshotDisplayConfiguration *)self deviceCornerRadiusFactor];
 
-  if (v6)
+  if (deviceCornerRadiusFactor)
   {
-    v7 = [(ASCScreenshotDisplayConfiguration *)self deviceCornerRadiusFactor];
-    [v7 floatValue];
+    deviceCornerRadiusFactor2 = [(ASCScreenshotDisplayConfiguration *)self deviceCornerRadiusFactor];
+    [deviceCornerRadiusFactor2 floatValue];
     v9 = v8;
     if (width >= height)
     {
@@ -175,10 +175,10 @@
 
 - (NSString)cornerCurve
 {
-  v2 = [(ASCScreenshotDisplayConfiguration *)self deviceCornerRadiusFactor];
+  deviceCornerRadiusFactor = [(ASCScreenshotDisplayConfiguration *)self deviceCornerRadiusFactor];
 
   v3 = MEMORY[0x277CDA130];
-  if (v2)
+  if (deviceCornerRadiusFactor)
   {
     v3 = MEMORY[0x277CDA138];
   }

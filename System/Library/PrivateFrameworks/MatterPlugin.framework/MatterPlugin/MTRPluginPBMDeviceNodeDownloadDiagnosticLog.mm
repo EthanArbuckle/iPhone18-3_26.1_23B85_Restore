@@ -1,28 +1,28 @@
 @interface MTRPluginPBMDeviceNodeDownloadDiagnosticLog
-+ (id)deviceNodeDownloadDiagnosticLogMessageFromMessage:(id)a3;
-+ (id)deviceNodeDownloadDiagnosticLogOfType:(int64_t)a3 timeout:(double)a4 nodeID:(id)a5;
-+ (id)urlFromResponsePayload:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)deviceNodeDownloadDiagnosticLogMessageFromMessage:(id)message;
++ (id)deviceNodeDownloadDiagnosticLogOfType:(int64_t)type timeout:(double)timeout nodeID:(id)d;
++ (id)urlFromResponsePayload:(id)payload error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isValid;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasLogType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasLogType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation MTRPluginPBMDeviceNodeDownloadDiagnosticLog
 
-+ (id)deviceNodeDownloadDiagnosticLogMessageFromMessage:(id)a3
++ (id)deviceNodeDownloadDiagnosticLogMessageFromMessage:(id)message
 {
-  v3 = a3;
+  messageCopy = message;
   v4 = [MTRPluginPBMDeviceNodeDownloadDiagnosticLog alloc];
-  v5 = [v3 messageData];
+  messageData = [messageCopy messageData];
 
-  v6 = [(MTRPluginPBMDeviceNodeDownloadDiagnosticLog *)v4 initWithData:v5];
+  v6 = [(MTRPluginPBMDeviceNodeDownloadDiagnosticLog *)v4 initWithData:messageData];
   if ([(MTRPluginPBMDeviceNodeDownloadDiagnosticLog *)v6 isValid])
   {
     v7 = v6;
@@ -36,15 +36,15 @@
   return v7;
 }
 
-+ (id)deviceNodeDownloadDiagnosticLogOfType:(int64_t)a3 timeout:(double)a4 nodeID:(id)a5
++ (id)deviceNodeDownloadDiagnosticLogOfType:(int64_t)type timeout:(double)timeout nodeID:(id)d
 {
-  v7 = a5;
+  dCopy = d;
   v8 = objc_alloc_init(MTRPluginPBMDeviceNodeDownloadDiagnosticLog);
-  v9 = [MTRPluginPBMDeviceNode deviceNodeWithNodeID:v7];
+  v9 = [MTRPluginPBMDeviceNode deviceNodeWithNodeID:dCopy];
 
   [(MTRPluginPBMDeviceNodeDownloadDiagnosticLog *)v8 setNode:v9];
-  [(MTRPluginPBMDeviceNodeDownloadDiagnosticLog *)v8 setLogType:a3];
-  [(MTRPluginPBMDeviceNodeDownloadDiagnosticLog *)v8 setTimeoutInterval:a4];
+  [(MTRPluginPBMDeviceNodeDownloadDiagnosticLog *)v8 setLogType:type];
+  [(MTRPluginPBMDeviceNodeDownloadDiagnosticLog *)v8 setTimeoutInterval:timeout];
 
   return v8;
 }
@@ -56,47 +56,47 @@
     return 0;
   }
 
-  v3 = [(MTRPluginPBMDeviceNodeDownloadDiagnosticLog *)self header];
-  if ([v3 isValid] && -[MTRPluginPBMDeviceNodeDownloadDiagnosticLog hasNode](self, "hasNode"))
+  header = [(MTRPluginPBMDeviceNodeDownloadDiagnosticLog *)self header];
+  if ([header isValid] && -[MTRPluginPBMDeviceNodeDownloadDiagnosticLog hasNode](self, "hasNode"))
   {
-    v4 = [(MTRPluginPBMDeviceNodeDownloadDiagnosticLog *)self node];
-    if ([v4 isValid])
+    node = [(MTRPluginPBMDeviceNodeDownloadDiagnosticLog *)self node];
+    if ([node isValid])
     {
-      v5 = [(MTRPluginPBMDeviceNodeDownloadDiagnosticLog *)self hasLogType];
+      hasLogType = [(MTRPluginPBMDeviceNodeDownloadDiagnosticLog *)self hasLogType];
     }
 
     else
     {
-      v5 = 0;
+      hasLogType = 0;
     }
   }
 
   else
   {
-    v5 = 0;
+    hasLogType = 0;
   }
 
-  return v5;
+  return hasLogType;
 }
 
-+ (id)urlFromResponsePayload:(id)a3 error:(id *)a4
++ (id)urlFromResponsePayload:(id)payload error:(id *)error
 {
   v37[1] = *MEMORY[0x277D85DE8];
-  v6 = [MTRPluginPBMVariableValueResponseMessage variableValueFromResponsePayloadData:a3];
-  v7 = [v6 object];
+  v6 = [MTRPluginPBMVariableValueResponseMessage variableValueFromResponsePayloadData:payload];
+  object = [v6 object];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [v6 object];
+    object2 = [v6 object];
 
-    if (v8)
+    if (object2)
     {
       v9 = NSTemporaryDirectory();
       v10 = [v9 stringByAppendingPathComponent:@"com.apple.homed"];
 
-      v11 = [MEMORY[0x277CCAA00] defaultManager];
+      defaultManager = [MEMORY[0x277CCAA00] defaultManager];
       v37[0] = 0;
-      v12 = [v11 createDirectoryAtPath:v10 withIntermediateDirectories:1 attributes:0 error:v37];
+      v12 = [defaultManager createDirectoryAtPath:v10 withIntermediateDirectories:1 attributes:0 error:v37];
       v13 = v37[0];
 
       if (v12)
@@ -119,9 +119,9 @@
       v36 = *MEMORY[0x277CCA180];
       v37[0] = &unk_28697C6C0;
       v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v37 forKeys:&v36 count:1];
-      v20 = [MEMORY[0x277CCAA00] defaultManager];
+      defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
       v35 = 0;
-      if ([v20 fileExistsAtPath:v18 isDirectory:&v35])
+      if ([defaultManager2 fileExistsAtPath:v18 isDirectory:&v35])
       {
         v21 = 0;
         if ((v35 & 1) == 0)
@@ -133,7 +133,7 @@
       else
       {
         v34 = 0;
-        v22 = [v20 createDirectoryAtPath:v18 withIntermediateDirectories:1 attributes:v19 error:&v34];
+        v22 = [defaultManager2 createDirectoryAtPath:v18 withIntermediateDirectories:1 attributes:v19 error:&v34];
         v21 = v34;
         v35 = v22;
         if (!v22)
@@ -149,7 +149,7 @@ LABEL_16:
       }
 
       v33 = v21;
-      [v20 setAttributes:v19 ofItemAtPath:v18 error:&v33];
+      [defaultManager2 setAttributes:v19 ofItemAtPath:v18 error:&v33];
       v23 = v33;
 
       v21 = v23;
@@ -168,17 +168,17 @@ LABEL_20:
 
       if (v25)
       {
-        v26 = [MEMORY[0x277CCAD78] UUID];
-        v27 = [v26 UUIDString];
-        v28 = [v25 stringByAppendingString:v27];
+        uUID = [MEMORY[0x277CCAD78] UUID];
+        uUIDString = [uUID UUIDString];
+        v28 = [v25 stringByAppendingString:uUIDString];
 
-        v29 = [MEMORY[0x277CCAA00] defaultManager];
-        if ([v29 createFileAtPath:v28 contents:v8 attributes:0])
+        defaultManager3 = [MEMORY[0x277CCAA00] defaultManager];
+        if ([defaultManager3 createFileAtPath:v28 contents:object2 attributes:0])
         {
           v16 = [MEMORY[0x277CBEBC0] fileURLWithPath:v28];
         }
 
-        else if (a4)
+        else if (error)
         {
           if (os_log_type_enabled(matterPluginLog_default, OS_LOG_TYPE_ERROR))
           {
@@ -186,7 +186,7 @@ LABEL_20:
           }
 
           [MEMORY[0x277CCA9B8] errorWithDomain:@"kMTRPluginErrorDomain" code:-1011 userInfo:0];
-          *a4 = v16 = 0;
+          *error = v16 = 0;
         }
 
         else
@@ -195,16 +195,16 @@ LABEL_20:
         }
       }
 
-      else if (a4)
+      else if (error)
       {
         v30 = matterPluginLog_default;
         if (os_log_type_enabled(matterPluginLog_default, OS_LOG_TYPE_ERROR))
         {
-          [MTRPluginPBMDeviceNodeDownloadDiagnosticLog(Helpers) urlFromResponsePayload:a1 error:v30];
+          [MTRPluginPBMDeviceNodeDownloadDiagnosticLog(Helpers) urlFromResponsePayload:self error:v30];
         }
 
         [MEMORY[0x277CCA9B8] errorWithDomain:@"kMTRPluginErrorDomain" code:-1011 userInfo:0];
-        *a4 = v16 = 0;
+        *error = v16 = 0;
       }
 
       else
@@ -220,16 +220,16 @@ LABEL_20:
   {
   }
 
-  if (a4)
+  if (error)
   {
     v15 = matterPluginLog_default;
     if (os_log_type_enabled(matterPluginLog_default, OS_LOG_TYPE_ERROR))
     {
-      [MTRPluginPBMDeviceNodeDownloadDiagnosticLog(Helpers) urlFromResponsePayload:a1 error:v15];
+      [MTRPluginPBMDeviceNodeDownloadDiagnosticLog(Helpers) urlFromResponsePayload:self error:v15];
     }
 
     [MEMORY[0x277CCA9B8] errorWithDomain:@"kMTRPluginErrorDomain" code:-1008 userInfo:0];
-    *a4 = v16 = 0;
+    *error = v16 = 0;
   }
 
   else
@@ -244,9 +244,9 @@ LABEL_38:
   return v16;
 }
 
-- (void)setHasLogType:(BOOL)a3
+- (void)setHasLogType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }
@@ -266,8 +266,8 @@ LABEL_38:
   v9.receiver = self;
   v9.super_class = MTRPluginPBMDeviceNodeDownloadDiagnosticLog;
   v5 = [(MTRPluginPBMDeviceNodeDownloadDiagnosticLog *)&v9 description];
-  v6 = [(MTRPluginPBMDeviceNodeDownloadDiagnosticLog *)self dictionaryRepresentation];
-  v7 = [v4 stringWithFormat:@"%@ %@", v5, v6];
+  dictionaryRepresentation = [(MTRPluginPBMDeviceNodeDownloadDiagnosticLog *)self dictionaryRepresentation];
+  v7 = [v4 stringWithFormat:@"%@ %@", v5, dictionaryRepresentation];
 
   objc_autoreleasePoolPop(v3);
 
@@ -276,26 +276,26 @@ LABEL_38:
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   header = self->_header;
   if (header)
   {
-    v5 = [(MTRPluginPBMHeader *)header dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"header"];
+    dictionaryRepresentation = [(MTRPluginPBMHeader *)header dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"header"];
   }
 
   node = self->_node;
   if (node)
   {
-    v7 = [(MTRPluginPBMDeviceNode *)node dictionaryRepresentation];
-    [v3 setObject:v7 forKey:@"node"];
+    dictionaryRepresentation2 = [(MTRPluginPBMDeviceNode *)node dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"node"];
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
     v9 = [MEMORY[0x277CCABB0] numberWithInt:self->_logType];
-    [v3 setObject:v9 forKey:@"logType"];
+    [dictionary setObject:v9 forKey:@"logType"];
 
     has = self->_has;
   }
@@ -303,26 +303,26 @@ LABEL_38:
   if (has)
   {
     v10 = [MEMORY[0x277CCABB0] numberWithDouble:self->_timeoutInterval];
-    [v3 setObject:v10 forKey:@"timeoutInterval"];
+    [dictionary setObject:v10 forKey:@"timeoutInterval"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v8 = v4;
+  toCopy = to;
+  v8 = toCopy;
   if (self->_header)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_node)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v8;
+    toCopy = v8;
   }
 
   has = self->_has;
@@ -330,7 +330,7 @@ LABEL_38:
   {
     logType = self->_logType;
     PBDataWriterWriteInt32Field();
-    v4 = v8;
+    toCopy = v8;
     has = self->_has;
   }
 
@@ -338,49 +338,49 @@ LABEL_38:
   {
     timeoutInterval = self->_timeoutInterval;
     PBDataWriterWriteDoubleField();
-    v4 = v8;
+    toCopy = v8;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_header)
   {
-    [v4 setHeader:?];
-    v4 = v6;
+    [toCopy setHeader:?];
+    toCopy = v6;
   }
 
   if (self->_node)
   {
     [v6 setNode:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(v4 + 6) = self->_logType;
-    *(v4 + 40) |= 2u;
+    *(toCopy + 6) = self->_logType;
+    *(toCopy + 40) |= 2u;
     has = self->_has;
   }
 
   if (has)
   {
-    *(v4 + 1) = *&self->_timeoutInterval;
-    *(v4 + 40) |= 1u;
+    *(toCopy + 1) = *&self->_timeoutInterval;
+    *(toCopy + 40) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(MTRPluginPBMHeader *)self->_header copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(MTRPluginPBMHeader *)self->_header copyWithZone:zone];
   v7 = *(v5 + 16);
   *(v5 + 16) = v6;
 
-  v8 = [(MTRPluginPBMDeviceNode *)self->_node copyWithZone:a3];
+  v8 = [(MTRPluginPBMDeviceNode *)self->_node copyWithZone:zone];
   v9 = *(v5 + 32);
   *(v5 + 32) = v8;
 
@@ -401,16 +401,16 @@ LABEL_38:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_15;
   }
 
   header = self->_header;
-  if (header | *(v4 + 2))
+  if (header | *(equalCopy + 2))
   {
     if (![(MTRPluginPBMHeader *)header isEqual:?])
     {
@@ -419,7 +419,7 @@ LABEL_38:
   }
 
   node = self->_node;
-  if (node | *(v4 + 4))
+  if (node | *(equalCopy + 4))
   {
     if (![(MTRPluginPBMDeviceNode *)node isEqual:?])
     {
@@ -429,23 +429,23 @@ LABEL_38:
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 40) & 2) == 0 || self->_logType != *(v4 + 6))
+    if ((*(equalCopy + 40) & 2) == 0 || self->_logType != *(equalCopy + 6))
     {
       goto LABEL_15;
     }
   }
 
-  else if ((*(v4 + 40) & 2) != 0)
+  else if ((*(equalCopy + 40) & 2) != 0)
   {
 LABEL_15:
     v7 = 0;
     goto LABEL_16;
   }
 
-  v7 = (*(v4 + 40) & 1) == 0;
+  v7 = (*(equalCopy + 40) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 40) & 1) == 0 || self->_timeoutInterval != *(v4 + 1))
+    if ((*(equalCopy + 40) & 1) == 0 || self->_timeoutInterval != *(equalCopy + 1))
     {
       goto LABEL_15;
     }
@@ -510,12 +510,12 @@ LABEL_3:
   return v4 ^ v3 ^ v7 ^ v11;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   header = self->_header;
-  v6 = *(v4 + 2);
-  v10 = v4;
+  v6 = *(fromCopy + 2);
+  v10 = fromCopy;
   if (header)
   {
     if (!v6)
@@ -536,10 +536,10 @@ LABEL_3:
     [(MTRPluginPBMDeviceNodeDownloadDiagnosticLog *)self setHeader:?];
   }
 
-  v4 = v10;
+  fromCopy = v10;
 LABEL_7:
   node = self->_node;
-  v8 = *(v4 + 4);
+  v8 = *(fromCopy + 4);
   if (node)
   {
     if (!v8)
@@ -560,19 +560,19 @@ LABEL_7:
     [(MTRPluginPBMDeviceNodeDownloadDiagnosticLog *)self setNode:?];
   }
 
-  v4 = v10;
+  fromCopy = v10;
 LABEL_13:
-  v9 = *(v4 + 40);
+  v9 = *(fromCopy + 40);
   if ((v9 & 2) != 0)
   {
-    self->_logType = *(v4 + 6);
+    self->_logType = *(fromCopy + 6);
     *&self->_has |= 2u;
-    v9 = *(v4 + 40);
+    v9 = *(fromCopy + 40);
   }
 
   if (v9)
   {
-    self->_timeoutInterval = *(v4 + 1);
+    self->_timeoutInterval = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 

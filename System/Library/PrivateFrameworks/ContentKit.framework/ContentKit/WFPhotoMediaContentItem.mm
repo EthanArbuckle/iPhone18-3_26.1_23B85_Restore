@@ -1,27 +1,27 @@
 @interface WFPhotoMediaContentItem
-+ (BOOL)supportedTypeMustBeDeterminedByInstance:(id)a3;
++ (BOOL)supportedTypeMustBeDeterminedByInstance:(id)instance;
 + (id)coercions;
-+ (id)fetchOptionsForLibrary:(int64_t)a3;
-+ (id)itemWithAssetIdentifier:(id)a3 library:(int64_t)a4 assetFile:(id)a5 nameIfKnown:(id)a6 attributionSet:(id)a7 cachingIdentifier:(id)a8;
-+ (id)itemWithSerializedItem:(id)a3 forType:(id)a4 named:(id)a5 attributionSet:(id)a6 cachingIdentifier:(id)a7;
-+ (id)itemsWithBurstIdentifier:(id)a3;
-+ (id)localizedFilterDescriptionWithContext:(id)a3;
-+ (id)localizedPluralFilterDescriptionWithContext:(id)a3;
-+ (id)localizedPluralTypeDescriptionWithContext:(id)a3;
-+ (id)localizedTypeDescriptionWithContext:(id)a3;
++ (id)fetchOptionsForLibrary:(int64_t)library;
++ (id)itemWithAssetIdentifier:(id)identifier library:(int64_t)library assetFile:(id)file nameIfKnown:(id)known attributionSet:(id)set cachingIdentifier:(id)cachingIdentifier;
++ (id)itemWithSerializedItem:(id)item forType:(id)type named:(id)named attributionSet:(id)set cachingIdentifier:(id)identifier;
++ (id)itemsWithBurstIdentifier:(id)identifier;
++ (id)localizedFilterDescriptionWithContext:(id)context;
++ (id)localizedPluralFilterDescriptionWithContext:(id)context;
++ (id)localizedPluralTypeDescriptionWithContext:(id)context;
++ (id)localizedTypeDescriptionWithContext:(id)context;
 + (id)outputTypes;
 + (id)ownedPasteboardTypes;
 + (id)ownedTypes;
 + (id)photoAlbums;
 + (id)propertyBuilders;
-+ (id)remoteItemWithAssetIdentifier:(id)a3 named:(id)a4;
++ (id)remoteItemWithAssetIdentifier:(id)identifier named:(id)named;
 + (id)stringConversionBehavior;
-- (BOOL)canGenerateRepresentationForType:(id)a3;
-- (BOOL)getListAltText:(id)a3;
-- (BOOL)getListSubtitle:(id)a3;
-- (BOOL)getListThumbnail:(id)a3 forSize:(CGSize)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isPhotoType:(id)a3;
+- (BOOL)canGenerateRepresentationForType:(id)type;
+- (BOOL)getListAltText:(id)text;
+- (BOOL)getListSubtitle:(id)subtitle;
+- (BOOL)getListThumbnail:(id)thumbnail forSize:(CGSize)size;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isPhotoType:(id)type;
 - (BOOL)isScreenRecording;
 - (BOOL)isScreenshot;
 - (CGSize)size;
@@ -30,13 +30,13 @@
 - (WFFileType)preferredFileType;
 - (id)assetRepresentationTypes;
 - (id)assetResourceManager;
-- (id)defaultSourceForRepresentation:(id)a3;
+- (id)defaultSourceForRepresentation:(id)representation;
 - (id)duration;
-- (id)fullSizeAssetResourcesInResources:(id)a3;
-- (id)generateObjectRepresentationForClass:(Class)a3 options:(id)a4 error:(id *)a5;
+- (id)fullSizeAssetResourcesInResources:(id)resources;
+- (id)generateObjectRepresentationForClass:(Class)class options:(id)options error:(id *)error;
 - (id)height;
 - (id)imageManager;
-- (id)intermediaryTypesForCoercionToItemClass:(Class)a3;
+- (id)intermediaryTypesForCoercionToItemClass:(Class)class;
 - (id)isBurst;
 - (id)isFavorite;
 - (id)isHidden;
@@ -49,33 +49,33 @@
 - (id)orientation;
 - (id)outputTypes;
 - (id)photoTypes;
-- (id)preferredAssetResourceForType:(id)a3;
+- (id)preferredAssetResourceForType:(id)type;
 - (id)width;
 - (unint64_t)hash;
-- (void)copyStateToItem:(id)a3;
-- (void)generateAVAsset:(id)a3 networkAccessAllowed:(BOOL)a4;
-- (void)generateFileRepresentation:(id)a3 options:(id)a4 forType:(id)a5;
-- (void)generateObjectRepresentation:(id)a3 options:(id)a4 forClass:(Class)a5;
-- (void)getFrameRate:(id)a3;
-- (void)getMetadata:(id)a3;
-- (void)getPreferredFileExtension:(id)a3;
-- (void)getPreferredFileSize:(id)a3;
-- (void)getThumbnail:(id)a3 ofSize:(CGSize)a4;
-- (void)retrieveAssetResource:(id)a3 withNetworkAccess:(BOOL)a4 completionHandler:(id)a5;
-- (void)retrieveFileWithImageManager:(id)a3 forType:(id)a4;
+- (void)copyStateToItem:(id)item;
+- (void)generateAVAsset:(id)asset networkAccessAllowed:(BOOL)allowed;
+- (void)generateFileRepresentation:(id)representation options:(id)options forType:(id)type;
+- (void)generateObjectRepresentation:(id)representation options:(id)options forClass:(Class)class;
+- (void)getFrameRate:(id)rate;
+- (void)getMetadata:(id)metadata;
+- (void)getPreferredFileExtension:(id)extension;
+- (void)getPreferredFileSize:(id)size;
+- (void)getThumbnail:(id)thumbnail ofSize:(CGSize)size;
+- (void)retrieveAssetResource:(id)resource withNetworkAccess:(BOOL)access completionHandler:(id)handler;
+- (void)retrieveFileWithImageManager:(id)manager forType:(id)type;
 @end
 
 @implementation WFPhotoMediaContentItem
 
-- (id)defaultSourceForRepresentation:(id)a3
+- (id)defaultSourceForRepresentation:(id)representation
 {
   v4 = objc_alloc(MEMORY[0x277CD3A58]);
   v5 = [v4 initWithBundleIdentifier:*MEMORY[0x277D7A2A8]];
-  v6 = [MEMORY[0x277CD3A88] sharedResolver];
-  v7 = [v6 resolvedAppMatchingDescriptor:v5];
+  mEMORY[0x277CD3A88] = [MEMORY[0x277CD3A88] sharedResolver];
+  v7 = [mEMORY[0x277CD3A88] resolvedAppMatchingDescriptor:v5];
 
-  v8 = [(WFContentItem *)self cachingIdentifier];
-  v9 = [WFContentAttributionSet attributionSetWithAppDescriptor:v7 disclosureLevel:1 originalItemIdentifier:v8];
+  cachingIdentifier = [(WFContentItem *)self cachingIdentifier];
+  v9 = [WFContentAttributionSet attributionSetWithAppDescriptor:v7 disclosureLevel:1 originalItemIdentifier:cachingIdentifier];
 
   return v9;
 }
@@ -83,14 +83,14 @@
 - (id)outputTypes
 {
   v3 = MEMORY[0x277D79F68];
-  v4 = [(WFPhotoMediaContentItem *)self assetRepresentationTypes];
-  v5 = [v3 typesFromStrings:v4];
+  assetRepresentationTypes = [(WFPhotoMediaContentItem *)self assetRepresentationTypes];
+  v5 = [v3 typesFromStrings:assetRepresentationTypes];
 
   v6 = [objc_alloc(MEMORY[0x277CBEB40]) initWithArray:v5];
   v10.receiver = self;
   v10.super_class = WFPhotoMediaContentItem;
-  v7 = [(WFContentItem *)&v10 outputTypes];
-  [v6 unionOrderedSet:v7];
+  outputTypes = [(WFContentItem *)&v10 outputTypes];
+  [v6 unionOrderedSet:outputTypes];
 
   preferredFileType = self->_preferredFileType;
   if (preferredFileType)
@@ -101,13 +101,13 @@
   return v6;
 }
 
-- (id)intermediaryTypesForCoercionToItemClass:(Class)a3
+- (id)intermediaryTypesForCoercionToItemClass:(Class)class
 {
   v10.receiver = self;
   v10.super_class = WFPhotoMediaContentItem;
   v4 = [(WFContentItem *)&v10 intermediaryTypesForCoercionToItemClass:?];
   v5 = [WFObjectType typeWithClassName:@"AVAsset" frameworkName:@"AVFoundation" location:0];
-  if ([v4 containsObject:v5] && objc_opt_class() == a3)
+  if ([v4 containsObject:v5] && objc_opt_class() == class)
   {
     v6 = [v4 mutableCopy];
     v8 = [v6 indexOfObject:v5];
@@ -131,25 +131,25 @@
   preferredFileType = self->_preferredFileType;
   if (preferredFileType)
   {
-    v3 = preferredFileType;
+    preferredFileType = preferredFileType;
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = WFPhotoMediaContentItem;
-    v3 = [(WFContentItem *)&v5 preferredFileType];
+    preferredFileType = [(WFContentItem *)&v5 preferredFileType];
   }
 
-  return v3;
+  return preferredFileType;
 }
 
 - (id)assetRepresentationTypes
 {
   v11[1] = *MEMORY[0x277D85DE8];
   PHAssetResourceClass = getPHAssetResourceClass();
-  v4 = [(WFPhotoMediaContentItem *)self asset];
-  v5 = [PHAssetResourceClass assetResourcesForAsset:v4];
+  asset = [(WFPhotoMediaContentItem *)self asset];
+  v5 = [PHAssetResourceClass assetResourcesForAsset:asset];
 
   if ([v5 count] || (-[WFPhotoMediaContentItem asset](self, "asset"), v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "uniformTypeIdentifier"), v6 = objc_claimAutoreleasedReturnValue(), v8, !v6))
   {
@@ -168,10 +168,10 @@
   return v9;
 }
 
-- (id)fullSizeAssetResourcesInResources:(id)a3
+- (id)fullSizeAssetResourcesInResources:(id)resources
 {
-  v4 = a3;
-  v5 = [v4 if_objectsPassingTest:&__block_literal_global_552];
+  resourcesCopy = resources;
+  v5 = [resourcesCopy if_objectsPassingTest:&__block_literal_global_552];
   if ([v5 count])
   {
     v6 = v5;
@@ -179,15 +179,15 @@
 
   else
   {
-    v6 = v4;
+    v6 = resourcesCopy;
   }
 
   v7 = v6;
 
-  v8 = [(WFPhotoMediaContentItem *)self isLivePhoto];
-  v9 = [v8 BOOLValue];
+  isLivePhoto = [(WFPhotoMediaContentItem *)self isLivePhoto];
+  bOOLValue = [isLivePhoto BOOLValue];
 
-  if (v9)
+  if (bOOLValue)
   {
     v10 = [v7 sortedArrayUsingComparator:&__block_literal_global_555];
 
@@ -216,15 +216,15 @@ uint64_t __61__WFPhotoMediaContentItem_fullSizeAssetResourcesInResources___block
   }
 }
 
-- (BOOL)canGenerateRepresentationForType:(id)a3
+- (BOOL)canGenerateRepresentationForType:(id)type
 {
-  v4 = a3;
-  if (v4)
+  typeCopy = type;
+  if (typeCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = typeCopy;
     }
 
     else
@@ -239,13 +239,13 @@ uint64_t __61__WFPhotoMediaContentItem_fullSizeAssetResourcesInResources___block
   }
 
   v6 = v5;
-  v7 = [v6 string];
+  string = [v6 string];
 
-  LODWORD(v6) = [v7 isEqualToString:@"AVAsset"];
+  LODWORD(v6) = [string isEqualToString:@"AVAsset"];
   if (!v6)
   {
-    v15 = v4;
-    if (v4)
+    v15 = typeCopy;
+    if (typeCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -266,8 +266,8 @@ uint64_t __61__WFPhotoMediaContentItem_fullSizeAssetResourcesInResources___block
 
     v17 = v16;
 
-    v18 = [v17 string];
-    if ([v18 isEqualToString:@"PHLivePhoto"])
+    string2 = [v17 string];
+    if ([string2 isEqualToString:@"PHLivePhoto"])
     {
     }
 
@@ -279,7 +279,7 @@ uint64_t __61__WFPhotoMediaContentItem_fullSizeAssetResourcesInResources___block
       if (!v20)
       {
         v23 = v15;
-        if (v4)
+        if (typeCopy)
         {
           objc_opt_class();
           if (objc_opt_isKindOfClass())
@@ -300,13 +300,13 @@ uint64_t __61__WFPhotoMediaContentItem_fullSizeAssetResourcesInResources___block
 
         v25 = v24;
 
-        v26 = [v25 string];
+        string3 = [v25 string];
 
-        LODWORD(v25) = [v26 isEqualToString:@"CLLocation"];
+        LODWORD(v25) = [string3 isEqualToString:@"CLLocation"];
         if (v25)
         {
-          v27 = [(WFPhotoMediaContentItem *)self location];
-          v14 = v27 != 0;
+          location = [(WFPhotoMediaContentItem *)self location];
+          bOOLValue = location != 0;
 
           goto LABEL_18;
         }
@@ -315,41 +315,41 @@ uint64_t __61__WFPhotoMediaContentItem_fullSizeAssetResourcesInResources___block
         {
           v29.receiver = self;
           v29.super_class = WFPhotoMediaContentItem;
-          v14 = [(WFGenericFileContentItem *)&v29 canGenerateRepresentationForType:v23];
+          bOOLValue = [(WFGenericFileContentItem *)&v29 canGenerateRepresentationForType:v23];
           goto LABEL_18;
         }
 
-        v21 = [(WFPhotoMediaContentItem *)self asset];
-        v28 = [v21 creationDate];
-        v14 = v28 != 0;
+        asset = [(WFPhotoMediaContentItem *)self asset];
+        creationDate = [asset creationDate];
+        bOOLValue = creationDate != 0;
 
         goto LABEL_17;
       }
     }
 
-    v21 = [(WFPhotoMediaContentItem *)self isLivePhoto];
-    v14 = [v21 BOOLValue];
+    asset = [(WFPhotoMediaContentItem *)self isLivePhoto];
+    bOOLValue = [asset BOOLValue];
 LABEL_17:
 
     goto LABEL_18;
   }
 
   v8 = MEMORY[0x277CBEB98];
-  v9 = [(WFPhotoMediaContentItem *)self assetRepresentationTypes];
-  v10 = [v8 setWithArray:v9];
+  assetRepresentationTypes = [(WFPhotoMediaContentItem *)self assetRepresentationTypes];
+  v10 = [v8 setWithArray:assetRepresentationTypes];
   v11 = MEMORY[0x277CBEB98];
-  v12 = [getAVURLAssetClass() audiovisualTypes];
-  v13 = [v11 setWithArray:v12];
-  v14 = [v10 intersectsSet:v13];
+  audiovisualTypes = [getAVURLAssetClass() audiovisualTypes];
+  v13 = [v11 setWithArray:audiovisualTypes];
+  bOOLValue = [v10 intersectsSet:v13];
 
 LABEL_18:
-  return v14;
+  return bOOLValue;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v7 = 1;
   }
@@ -359,9 +359,9 @@ LABEL_18:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(WFPhotoMediaContentItem *)self asset];
-      v6 = [(WFPhotoMediaContentItem *)v4 asset];
-      v7 = [v5 isEqual:v6];
+      asset = [(WFPhotoMediaContentItem *)self asset];
+      asset2 = [(WFPhotoMediaContentItem *)equalCopy asset];
+      v7 = [asset isEqual:asset2];
     }
 
     else
@@ -375,64 +375,64 @@ LABEL_18:
 
 - (unint64_t)hash
 {
-  v2 = [(WFPhotoMediaContentItem *)self asset];
-  v3 = [v2 hash];
+  asset = [(WFPhotoMediaContentItem *)self asset];
+  v3 = [asset hash];
 
   return v3 ^ 0xC842;
 }
 
-- (void)copyStateToItem:(id)a3
+- (void)copyStateToItem:(id)item
 {
-  objc_storeStrong(a3 + 6, self->_preferredFileType);
-  v5 = a3;
-  v5[7] = self->_library;
+  objc_storeStrong(item + 6, self->_preferredFileType);
+  itemCopy = item;
+  itemCopy[7] = self->_library;
 }
 
-- (id)generateObjectRepresentationForClass:(Class)a3 options:(id)a4 error:(id *)a5
+- (id)generateObjectRepresentationForClass:(Class)class options:(id)options error:(id *)error
 {
   v36 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = NSStringFromClass(a3);
+  optionsCopy = options;
+  v8 = NSStringFromClass(class);
   v9 = [@"CLLocation" isEqualToString:v8];
 
   if (v9)
   {
-    v10 = [(WFPhotoMediaContentItem *)self location];
-    v11 = [WFObjectRepresentation object:v10];
+    location = [(WFPhotoMediaContentItem *)self location];
+    v11 = [WFObjectRepresentation object:location];
 LABEL_7:
 
     goto LABEL_8;
   }
 
-  if (objc_opt_class() == a3)
+  if (objc_opt_class() == class)
   {
-    v10 = [(WFPhotoMediaContentItem *)self asset];
-    v12 = [v10 creationDate];
-    v11 = [WFObjectRepresentation object:v12];
+    location = [(WFPhotoMediaContentItem *)self asset];
+    creationDate = [location creationDate];
+    v11 = [WFObjectRepresentation object:creationDate];
 
     goto LABEL_7;
   }
 
-  if (objc_opt_class() == a3)
+  if (objc_opt_class() == class)
   {
     v14 = getWFAppIntentsLogObject();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = [(WFPhotoMediaContentItem *)self asset];
-      v16 = [v15 localIdentifier];
+      asset = [(WFPhotoMediaContentItem *)self asset];
+      localIdentifier = [asset localIdentifier];
       *buf = 136315394;
       *&buf[4] = "[WFPhotoMediaContentItem generateObjectRepresentationForClass:options:error:]";
       *&buf[12] = 2112;
-      *&buf[14] = v16;
+      *&buf[14] = localIdentifier;
       _os_log_impl(&dword_21E1BD000, v14, OS_LOG_TYPE_DEFAULT, "%s Creating LNEntity for asset: %@", buf, 0x16u);
     }
 
     v17 = objc_alloc(MEMORY[0x277D23BA8]);
     v18 = [v17 initWithBundleIdentifier:*MEMORY[0x277D7A2A8]];
     v19 = objc_alloc(MEMORY[0x277D23C60]);
-    v20 = [(WFPhotoMediaContentItem *)self asset];
-    v21 = [v20 localIdentifier];
-    v22 = [v19 initWithString:v21 entityType:@"LinkAsset"];
+    asset2 = [(WFPhotoMediaContentItem *)self asset];
+    localIdentifier2 = [asset2 localIdentifier];
+    v22 = [v19 initWithString:localIdentifier2 entityType:@"LinkAsset"];
 
     *buf = 0;
     *&buf[8] = buf;
@@ -541,11 +541,11 @@ void __78__WFPhotoMediaContentItem_generateObjectRepresentationForClass_options_
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (void)generateObjectRepresentation:(id)a3 options:(id)a4 forClass:(Class)a5
+- (void)generateObjectRepresentation:(id)representation options:(id)options forClass:(Class)class
 {
   v50 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  representationCopy = representation;
+  optionsCopy = options;
   v10 = getWFAppIntentsLogObject();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
@@ -554,35 +554,35 @@ void __78__WFPhotoMediaContentItem_generateObjectRepresentationForClass_options_
     _os_log_impl(&dword_21E1BD000, v10, OS_LOG_TYPE_DEFAULT, "%s Calling old generate method", &buf, 0xCu);
   }
 
-  if (objc_opt_class() == a5)
+  if (objc_opt_class() == class)
   {
     v13 = objc_alloc_init(getPHImageRequestOptionsClass());
     [v13 setNetworkAccessAllowed:1];
     [v13 setDeliveryMode:1];
-    v14 = [(WFPhotoMediaContentItem *)self imageManager];
-    v15 = [(WFPhotoMediaContentItem *)self asset];
+    imageManager = [(WFPhotoMediaContentItem *)self imageManager];
+    asset = [(WFPhotoMediaContentItem *)self asset];
     v40[0] = MEMORY[0x277D85DD0];
     v40[1] = 3221225472;
     v40[2] = __73__WFPhotoMediaContentItem_generateObjectRepresentation_options_forClass___block_invoke;
     v40[3] = &unk_278344D58;
     v40[4] = self;
-    v41 = v8;
-    [v14 requestImageDataAndOrientationForAsset:v15 options:v13 resultHandler:v40];
+    v41 = representationCopy;
+    [imageManager requestImageDataAndOrientationForAsset:asset options:v13 resultHandler:v40];
   }
 
   else
   {
-    v11 = NSStringFromClass(a5);
+    v11 = NSStringFromClass(class);
     v12 = [@"AVAsset" isEqualToString:v11];
 
     if (v12)
     {
-      [(WFPhotoMediaContentItem *)self generateAVAsset:v8 networkAccessAllowed:1];
+      [(WFPhotoMediaContentItem *)self generateAVAsset:representationCopy networkAccessAllowed:1];
     }
 
     else
     {
-      v16 = NSStringFromClass(a5);
+      v16 = NSStringFromClass(class);
       v17 = [@"AVPlayerItem" isEqualToString:v16];
 
       if (v17)
@@ -590,20 +590,20 @@ void __78__WFPhotoMediaContentItem_generateObjectRepresentationForClass_options_
         v18 = objc_alloc_init(getPHVideoRequestOptionsClass());
         [v18 setNetworkAccessAllowed:1];
         [v18 setDeliveryMode:1];
-        v19 = [(WFPhotoMediaContentItem *)self imageManager];
-        v20 = [(WFPhotoMediaContentItem *)self asset];
+        imageManager2 = [(WFPhotoMediaContentItem *)self imageManager];
+        asset2 = [(WFPhotoMediaContentItem *)self asset];
         v38[0] = MEMORY[0x277D85DD0];
         v38[1] = 3221225472;
         v38[2] = __73__WFPhotoMediaContentItem_generateObjectRepresentation_options_forClass___block_invoke_2;
         v38[3] = &unk_278344D80;
         v38[4] = self;
-        v39 = v8;
-        [v19 requestPlayerItemForVideo:v20 options:v18 resultHandler:v38];
+        v39 = representationCopy;
+        [imageManager2 requestPlayerItemForVideo:asset2 options:v18 resultHandler:v38];
       }
 
       else
       {
-        v21 = NSStringFromClass(a5);
+        v21 = NSStringFromClass(class);
         v22 = [@"PHLivePhoto" isEqualToString:v21];
 
         if (v22)
@@ -629,8 +629,8 @@ void __78__WFPhotoMediaContentItem_generateObjectRepresentationForClass_options_
           v25 = objc_alloc_init(v23);
           [v25 setNetworkAccessAllowed:1];
           [v25 setDeliveryMode:1];
-          v26 = [(WFPhotoMediaContentItem *)self imageManager];
-          v27 = [(WFPhotoMediaContentItem *)self asset];
+          imageManager3 = [(WFPhotoMediaContentItem *)self imageManager];
+          asset3 = [(WFPhotoMediaContentItem *)self asset];
           v42 = 0;
           v43 = &v42;
           v44 = 0x2020000000;
@@ -653,9 +653,9 @@ void __78__WFPhotoMediaContentItem_generateObjectRepresentationForClass_options_
           _Block_object_dispose(&v42, 8);
           if (!v28)
           {
-            v34 = [MEMORY[0x277CCA890] currentHandler];
+            currentHandler = [MEMORY[0x277CCA890] currentHandler];
             v35 = [MEMORY[0x277CCACA8] stringWithUTF8String:"CGSize getPHImageManagerMaximumSize(void)"];
-            [v34 handleFailureInFunction:v35 file:@"WFPhotoMediaContentItem.m" lineNumber:51 description:{@"%s", dlerror()}];
+            [currentHandler handleFailureInFunction:v35 file:@"WFPhotoMediaContentItem.m" lineNumber:51 description:{@"%s", dlerror()}];
 
             __break(1u);
           }
@@ -667,14 +667,14 @@ void __78__WFPhotoMediaContentItem_generateObjectRepresentationForClass_options_
           v36[2] = __73__WFPhotoMediaContentItem_generateObjectRepresentation_options_forClass___block_invoke_3;
           v36[3] = &unk_278344DA8;
           v36[4] = self;
-          v37 = v8;
-          [v26 requestLivePhotoForAsset:v27 targetSize:0 contentMode:v25 options:v36 resultHandler:{v31, v32}];
+          v37 = representationCopy;
+          [imageManager3 requestLivePhotoForAsset:asset3 targetSize:0 contentMode:v25 options:v36 resultHandler:{v31, v32}];
         }
 
         else
         {
-          v33 = [objc_opt_class() badCoercionErrorForObjectClass:a5];
-          (*(v8 + 2))(v8, 0, 0, v33);
+          v33 = [objc_opt_class() badCoercionErrorForObjectClass:class];
+          (*(representationCopy + 2))(representationCopy, 0, 0, v33);
         }
       }
     }
@@ -758,23 +758,23 @@ void __73__WFPhotoMediaContentItem_generateObjectRepresentation_options_forClass
   }
 }
 
-- (void)generateAVAsset:(id)a3 networkAccessAllowed:(BOOL)a4
+- (void)generateAVAsset:(id)asset networkAccessAllowed:(BOOL)allowed
 {
-  v4 = a4;
-  v6 = a3;
+  allowedCopy = allowed;
+  assetCopy = asset;
   v7 = objc_alloc_init(getPHVideoRequestOptionsClass());
-  [v7 setNetworkAccessAllowed:v4];
+  [v7 setNetworkAccessAllowed:allowedCopy];
   [v7 setDeliveryMode:1];
-  v8 = [(WFPhotoMediaContentItem *)self imageManager];
-  v9 = [(WFPhotoMediaContentItem *)self asset];
+  imageManager = [(WFPhotoMediaContentItem *)self imageManager];
+  asset = [(WFPhotoMediaContentItem *)self asset];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __64__WFPhotoMediaContentItem_generateAVAsset_networkAccessAllowed___block_invoke;
   v11[3] = &unk_278344D30;
   v11[4] = self;
-  v12 = v6;
-  v10 = v6;
-  [v8 requestAVAssetForVideo:v9 options:v7 resultHandler:v11];
+  v12 = assetCopy;
+  v10 = assetCopy;
+  [imageManager requestAVAssetForVideo:asset options:v7 resultHandler:v11];
 }
 
 void __64__WFPhotoMediaContentItem_generateAVAsset_networkAccessAllowed___block_invoke(uint64_t a1, void *a2, uint64_t a3, void *a4)
@@ -796,19 +796,19 @@ void __64__WFPhotoMediaContentItem_generateAVAsset_networkAccessAllowed___block_
   }
 }
 
-- (void)generateFileRepresentation:(id)a3 options:(id)a4 forType:(id)a5
+- (void)generateFileRepresentation:(id)representation options:(id)options forType:(id)type
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(WFPhotoMediaContentItem *)self asset];
-  if ([v11 mediaType] == 2)
+  representationCopy = representation;
+  optionsCopy = options;
+  typeCopy = type;
+  asset = [(WFPhotoMediaContentItem *)self asset];
+  if ([asset mediaType] == 2)
   {
-    v12 = [v10 conformsToUTType:*MEMORY[0x277CE1D08]];
+    v12 = [typeCopy conformsToUTType:*MEMORY[0x277CE1D08]];
 
     if (v12)
     {
-      [(WFPhotoMediaContentItem *)self retrieveFileWithImageManager:v8 forType:v10];
+      [(WFPhotoMediaContentItem *)self retrieveFileWithImageManager:representationCopy forType:typeCopy];
       goto LABEL_13;
     }
   }
@@ -818,7 +818,7 @@ void __64__WFPhotoMediaContentItem_generateAVAsset_networkAccessAllowed___block_
   }
 
   v13 = WFLivePhotoFileType();
-  v14 = [v10 conformsToUTType:v13];
+  v14 = [typeCopy conformsToUTType:v13];
 
   if (v14)
   {
@@ -826,8 +826,8 @@ void __64__WFPhotoMediaContentItem_generateAVAsset_networkAccessAllowed___block_
     v21[1] = 3221225472;
     v21[2] = __70__WFPhotoMediaContentItem_generateFileRepresentation_options_forType___block_invoke;
     v21[3] = &unk_278344D08;
-    v23 = v8;
-    v22 = v10;
+    v23 = representationCopy;
+    v22 = typeCopy;
     v25 = 0;
     v26 = &v25;
     v27 = 0x2050000000;
@@ -851,10 +851,10 @@ void __64__WFPhotoMediaContentItem_generateAVAsset_networkAccessAllowed___block_
 
   else
   {
-    v17 = [(WFPhotoMediaContentItem *)self preferredAssetResourceForType:v10];
+    v17 = [(WFPhotoMediaContentItem *)self preferredAssetResourceForType:typeCopy];
     if (v17)
     {
-      [(WFPhotoMediaContentItem *)self retrieveAssetResource:v17 withNetworkAccess:1 completionHandler:v8];
+      [(WFPhotoMediaContentItem *)self retrieveAssetResource:v17 withNetworkAccess:1 completionHandler:representationCopy];
     }
 
     else
@@ -864,8 +864,8 @@ void __64__WFPhotoMediaContentItem_generateAVAsset_networkAccessAllowed___block_
       v18[2] = __70__WFPhotoMediaContentItem_generateFileRepresentation_options_forType___block_invoke_2;
       v18[3] = &unk_278349FC8;
       v18[4] = self;
-      v19 = v10;
-      v20 = v8;
+      v19 = typeCopy;
+      v20 = representationCopy;
       [(WFPhotoMediaContentItem *)self retrieveFileWithImageManager:v18 forType:v19];
     }
   }
@@ -917,17 +917,17 @@ void __70__WFPhotoMediaContentItem_generateFileRepresentation_options_forType___
   (*(*(a1 + 48) + 16))();
 }
 
-- (id)preferredAssetResourceForType:(id)a3
+- (id)preferredAssetResourceForType:(id)type
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  typeCopy = type;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   PHAssetResourceClass = getPHAssetResourceClass();
-  v6 = [(WFPhotoMediaContentItem *)self asset];
-  v7 = [PHAssetResourceClass assetResourcesForAsset:v6];
+  asset = [(WFPhotoMediaContentItem *)self asset];
+  v7 = [PHAssetResourceClass assetResourcesForAsset:asset];
 
   obj = v7;
   v8 = [v7 countByEnumeratingWithState:&v22 objects:v26 count:16];
@@ -947,9 +947,9 @@ void __70__WFPhotoMediaContentItem_generateFileRepresentation_options_forType___
 
         v13 = *(*(&v22 + 1) + 8 * i);
         v14 = MEMORY[0x277D79F68];
-        v15 = [v13 uniformTypeIdentifier];
-        v16 = [v14 typeWithString:v15];
-        v17 = [v16 conformsToType:v4];
+        uniformTypeIdentifier = [v13 uniformTypeIdentifier];
+        v16 = [v14 typeWithString:uniformTypeIdentifier];
+        v17 = [v16 conformsToType:typeCopy];
 
         if (v17)
         {
@@ -987,39 +987,39 @@ LABEL_15:
   return v19;
 }
 
-- (void)retrieveFileWithImageManager:(id)a3 forType:(id)a4
+- (void)retrieveFileWithImageManager:(id)manager forType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 conformsToUTType:*MEMORY[0x277CE1DB0]])
+  managerCopy = manager;
+  typeCopy = type;
+  if ([typeCopy conformsToUTType:*MEMORY[0x277CE1DB0]])
   {
     v8 = objc_alloc_init(getPHImageRequestOptionsClass());
     [v8 setNetworkAccessAllowed:1];
     [v8 setDeliveryMode:1];
-    v9 = [(WFPhotoMediaContentItem *)self imageManager];
-    v10 = [(WFPhotoMediaContentItem *)self asset];
+    imageManager = [(WFPhotoMediaContentItem *)self imageManager];
+    asset = [(WFPhotoMediaContentItem *)self asset];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __64__WFPhotoMediaContentItem_retrieveFileWithImageManager_forType___block_invoke;
     v16[3] = &unk_278344CB8;
-    v17 = v7;
-    v18 = self;
-    v19 = v6;
-    [v9 requestImageDataAndOrientationForAsset:v10 options:v8 resultHandler:v16];
+    v17 = typeCopy;
+    selfCopy = self;
+    v19 = managerCopy;
+    [imageManager requestImageDataAndOrientationForAsset:asset options:v8 resultHandler:v16];
 
 LABEL_8:
     goto LABEL_9;
   }
 
-  if (([v7 conformsToUTType:*MEMORY[0x277CE1D08]] & 1) != 0 || objc_msgSend(v7, "conformsToUTType:", *MEMORY[0x277CE1D00]))
+  if (([typeCopy conformsToUTType:*MEMORY[0x277CE1D08]] & 1) != 0 || objc_msgSend(typeCopy, "conformsToUTType:", *MEMORY[0x277CE1D00]))
   {
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __64__WFPhotoMediaContentItem_retrieveFileWithImageManager_forType___block_invoke_2;
     v13[3] = &unk_278344CE0;
-    v15 = v6;
+    v15 = managerCopy;
     v13[4] = self;
-    v14 = v7;
+    v14 = typeCopy;
     v21 = 0;
     v22 = &v21;
     v23 = 0x2050000000;
@@ -1102,16 +1102,16 @@ void __64__WFPhotoMediaContentItem_retrieveFileWithImageManager_forType___block_
   }
 }
 
-- (void)retrieveAssetResource:(id)a3 withNetworkAccess:(BOOL)a4 completionHandler:(id)a5
+- (void)retrieveAssetResource:(id)resource withNetworkAccess:(BOOL)access completionHandler:(id)handler
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
-  v10 = [(WFContentItem *)self name];
+  accessCopy = access;
+  resourceCopy = resource;
+  handlerCopy = handler;
+  name = [(WFContentItem *)self name];
   v11 = MEMORY[0x277D79F68];
-  v12 = [v8 uniformTypeIdentifier];
-  v13 = [v11 typeWithString:v12];
-  v14 = [WFFileRepresentation proposedFilenameForFile:v10 ofType:v13];
+  uniformTypeIdentifier = [resourceCopy uniformTypeIdentifier];
+  v13 = [v11 typeWithString:uniformTypeIdentifier];
+  v14 = [WFFileRepresentation proposedFilenameForFile:name ofType:v13];
   v15 = [WFTemporaryFileManager proposedTemporaryFileURLForFilename:v14];
 
   v28 = 0;
@@ -1133,19 +1133,19 @@ void __64__WFPhotoMediaContentItem_retrieveFileWithImageManager_forType___block_
   v17 = v16;
   _Block_object_dispose(&v28, 8);
   v18 = objc_opt_new();
-  [v18 setNetworkAccessAllowed:v6];
-  v19 = [(WFPhotoMediaContentItem *)self assetResourceManager];
+  [v18 setNetworkAccessAllowed:accessCopy];
+  assetResourceManager = [(WFPhotoMediaContentItem *)self assetResourceManager];
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __85__WFPhotoMediaContentItem_retrieveAssetResource_withNetworkAccess_completionHandler___block_invoke;
   v23[3] = &unk_278344C90;
-  v25 = v8;
-  v26 = v9;
+  v25 = resourceCopy;
+  v26 = handlerCopy;
   v24 = v15;
-  v20 = v8;
+  v20 = resourceCopy;
   v21 = v15;
-  v22 = v9;
-  [v19 writeDataForAssetResource:v20 toFile:v21 options:v18 completionHandler:v23];
+  v22 = handlerCopy;
+  [assetResourceManager writeDataForAssetResource:v20 toFile:v21 options:v18 completionHandler:v23];
 }
 
 void __85__WFPhotoMediaContentItem_retrieveAssetResource_withNetworkAccess_completionHandler___block_invoke(uint64_t a1, uint64_t a2)
@@ -1177,11 +1177,11 @@ void __85__WFPhotoMediaContentItem_retrieveAssetResource_withNetworkAccess_compl
   }
 }
 
-- (void)getThumbnail:(id)a3 ofSize:(CGSize)a4
+- (void)getThumbnail:(id)thumbnail ofSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = a3;
+  height = size.height;
+  width = size.width;
+  thumbnailCopy = thumbnail;
   v8 = objc_alloc_init(getPHImageRequestOptionsClass());
   [v8 setNetworkAccessAllowed:1];
   [v8 setDeliveryMode:1];
@@ -1193,28 +1193,28 @@ void __85__WFPhotoMediaContentItem_retrieveAssetResource_withNetworkAccess_compl
   aBlock[4] = self;
   v9 = v8;
   v20 = v9;
-  v10 = v7;
+  v10 = thumbnailCopy;
   v21 = v10;
   v11 = _Block_copy(aBlock);
-  v12 = [(WFPhotoMediaContentItem *)self asset];
-  v13 = [v12 isAnimatedGIF];
+  asset = [(WFPhotoMediaContentItem *)self asset];
+  isAnimatedGIF = [asset isAnimatedGIF];
 
-  if (v13)
+  if (isAnimatedGIF)
   {
     v11[2](v11);
   }
 
   else
   {
-    v14 = [(WFPhotoMediaContentItem *)self imageManager];
-    v15 = [(WFPhotoMediaContentItem *)self asset];
+    imageManager = [(WFPhotoMediaContentItem *)self imageManager];
+    asset2 = [(WFPhotoMediaContentItem *)self asset];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __47__WFPhotoMediaContentItem_getThumbnail_ofSize___block_invoke_3;
     v16[3] = &unk_278344C68;
     v17 = v11;
     v18 = v10;
-    [v14 requestImageForAsset:v15 targetSize:1 contentMode:v9 options:v16 resultHandler:{width, height}];
+    [imageManager requestImageForAsset:asset2 targetSize:1 contentMode:v9 options:v16 resultHandler:{width, height}];
   }
 }
 
@@ -1283,10 +1283,10 @@ void __47__WFPhotoMediaContentItem_getThumbnail_ofSize___block_invoke_2(uint64_t
 
 - (id)orientation
 {
-  v2 = [(WFPhotoMediaContentItem *)self asset];
-  if ([v2 mediaType] == 1)
+  asset = [(WFPhotoMediaContentItem *)self asset];
+  if ([asset mediaType] == 1)
   {
-    v3 = [v2 imageOrientation] - 1;
+    v3 = [asset imageOrientation] - 1;
     if (v3 > 6)
     {
       v4 = 1;
@@ -1310,33 +1310,33 @@ void __47__WFPhotoMediaContentItem_getThumbnail_ofSize___block_invoke_2(uint64_t
 
 - (BOOL)isScreenRecording
 {
-  v2 = [(WFPhotoMediaContentItem *)self asset];
-  v3 = ([v2 mediaSubtypes] >> 19) & 1;
+  asset = [(WFPhotoMediaContentItem *)self asset];
+  v3 = ([asset mediaSubtypes] >> 19) & 1;
 
   return v3;
 }
 
 - (BOOL)isScreenshot
 {
-  v2 = [(WFPhotoMediaContentItem *)self asset];
-  v3 = ([v2 mediaSubtypes] >> 2) & 1;
+  asset = [(WFPhotoMediaContentItem *)self asset];
+  v3 = ([asset mediaSubtypes] >> 2) & 1;
 
   return v3;
 }
 
 - (id)mediaType
 {
-  v2 = [(WFPhotoMediaContentItem *)self asset];
-  v3 = [v2 mediaType];
+  asset = [(WFPhotoMediaContentItem *)self asset];
+  mediaType = [asset mediaType];
 
-  if ((v3 - 1) > 2)
+  if ((mediaType - 1) > 2)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = WFLocalizedContentPropertyPossibleValueMarker(off_27834A698[v3 - 1]);
+    v4 = WFLocalizedContentPropertyPossibleValueMarker(off_27834A698[mediaType - 1]);
   }
 
   return v4;
@@ -1345,8 +1345,8 @@ void __47__WFPhotoMediaContentItem_getThumbnail_ofSize___block_invoke_2(uint64_t
 - (id)isFavorite
 {
   v2 = MEMORY[0x277CCABB0];
-  v3 = [(WFPhotoMediaContentItem *)self asset];
-  v4 = [v2 numberWithBool:{objc_msgSend(v3, "isFavorite")}];
+  asset = [(WFPhotoMediaContentItem *)self asset];
+  v4 = [v2 numberWithBool:{objc_msgSend(asset, "isFavorite")}];
 
   return v4;
 }
@@ -1354,8 +1354,8 @@ void __47__WFPhotoMediaContentItem_getThumbnail_ofSize___block_invoke_2(uint64_t
 - (id)isHidden
 {
   v2 = MEMORY[0x277CCABB0];
-  v3 = [(WFPhotoMediaContentItem *)self asset];
-  v4 = [v2 numberWithBool:{objc_msgSend(v3, "isHidden")}];
+  asset = [(WFPhotoMediaContentItem *)self asset];
+  v4 = [v2 numberWithBool:{objc_msgSend(asset, "isHidden")}];
 
   return v4;
 }
@@ -1363,8 +1363,8 @@ void __47__WFPhotoMediaContentItem_getThumbnail_ofSize___block_invoke_2(uint64_t
 - (id)isLivePhoto
 {
   v2 = MEMORY[0x277CCABB0];
-  v3 = [(WFPhotoMediaContentItem *)self asset];
-  v4 = [v2 numberWithInt:{(objc_msgSend(v3, "mediaSubtypes") >> 3) & 1}];
+  asset = [(WFPhotoMediaContentItem *)self asset];
+  v4 = [v2 numberWithInt:{(objc_msgSend(asset, "mediaSubtypes") >> 3) & 1}];
 
   return v4;
 }
@@ -1372,9 +1372,9 @@ void __47__WFPhotoMediaContentItem_getThumbnail_ofSize___block_invoke_2(uint64_t
 - (id)isBurst
 {
   v2 = MEMORY[0x277CCABB0];
-  v3 = [(WFPhotoMediaContentItem *)self asset];
-  v4 = [v3 burstIdentifier];
-  v5 = [v2 numberWithInt:v4 != 0];
+  asset = [(WFPhotoMediaContentItem *)self asset];
+  burstIdentifier = [asset burstIdentifier];
+  v5 = [v2 numberWithInt:burstIdentifier != 0];
 
   return v5;
 }
@@ -1392,45 +1392,45 @@ void __47__WFPhotoMediaContentItem_getThumbnail_ofSize___block_invoke_2(uint64_t
   return v4;
 }
 
-- (BOOL)isPhotoType:(id)a3
+- (BOOL)isPhotoType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   v5 = WFLocalizedContentPropertyPossibleValueMarker(@"HDR");
-  v6 = [v4 isEqualToString:v5];
+  v6 = [typeCopy isEqualToString:v5];
 
   if (v6)
   {
-    v7 = [(WFPhotoMediaContentItem *)self asset];
-    v8 = ([v7 mediaSubtypes] >> 1) & 1;
+    asset = [(WFPhotoMediaContentItem *)self asset];
+    v8 = ([asset mediaSubtypes] >> 1) & 1;
   }
 
   else
   {
     v9 = WFLocalizedContentPropertyPossibleValueMarker(@"Panorama");
-    v10 = [v4 isEqualToString:v9];
+    v10 = [typeCopy isEqualToString:v9];
 
     if (v10)
     {
-      v7 = [(WFPhotoMediaContentItem *)self asset];
-      v8 = [v7 mediaSubtypes] & 1;
+      asset = [(WFPhotoMediaContentItem *)self asset];
+      v8 = [asset mediaSubtypes] & 1;
     }
 
     else
     {
       v11 = WFLocalizedContentPropertyPossibleValueMarker(@"Burst");
-      v12 = [v4 isEqualToString:v11];
+      v12 = [typeCopy isEqualToString:v11];
 
       if (v12)
       {
-        v7 = [(WFPhotoMediaContentItem *)self asset];
-        v13 = [v7 burstIdentifier];
-        LOBYTE(v8) = v13 != 0;
+        asset = [(WFPhotoMediaContentItem *)self asset];
+        burstIdentifier = [asset burstIdentifier];
+        LOBYTE(v8) = burstIdentifier != 0;
       }
 
       else
       {
         v14 = WFLocalizedContentPropertyPossibleValueMarker(@"Live Photo");
-        v15 = [v4 isEqualToString:v14];
+        v15 = [typeCopy isEqualToString:v14];
 
         if (!v15)
         {
@@ -1438,8 +1438,8 @@ void __47__WFPhotoMediaContentItem_getThumbnail_ofSize___block_invoke_2(uint64_t
           goto LABEL_10;
         }
 
-        v7 = [(WFPhotoMediaContentItem *)self isLivePhoto];
-        LOBYTE(v8) = [v7 BOOLValue];
+        asset = [(WFPhotoMediaContentItem *)self isLivePhoto];
+        LOBYTE(v8) = [asset BOOLValue];
       }
     }
   }
@@ -1466,28 +1466,28 @@ LABEL_10:
 
 - (id)model
 {
-  v2 = [(WFPhotoMediaContentItem *)self metadataIfLocallyAvailable];
-  v3 = WFImageModelFromMetadata(v2);
+  metadataIfLocallyAvailable = [(WFPhotoMediaContentItem *)self metadataIfLocallyAvailable];
+  v3 = WFImageModelFromMetadata(metadataIfLocallyAvailable);
 
   return v3;
 }
 
 - (id)make
 {
-  v2 = [(WFPhotoMediaContentItem *)self metadataIfLocallyAvailable];
-  v3 = WFImageMakeFromMetadata(v2);
+  metadataIfLocallyAvailable = [(WFPhotoMediaContentItem *)self metadataIfLocallyAvailable];
+  v3 = WFImageMakeFromMetadata(metadataIfLocallyAvailable);
 
   return v3;
 }
 
 - (CGSize)size
 {
-  v2 = [(WFPhotoMediaContentItem *)self asset];
-  v3 = [v2 pixelWidth];
-  v4 = [v2 pixelHeight];
+  asset = [(WFPhotoMediaContentItem *)self asset];
+  pixelWidth = [asset pixelWidth];
+  pixelHeight = [asset pixelHeight];
 
-  v5 = v3;
-  v6 = v4;
+  v5 = pixelWidth;
+  v6 = pixelHeight;
   result.height = v6;
   result.width = v5;
   return result;
@@ -1498,19 +1498,19 @@ LABEL_10:
   v3 = [(WFContentItem *)self fileRepresentationForType:self->_preferredFileType];
   if (v3)
   {
-    v4 = [(WFContentItem *)WFAVAssetContentItem itemWithFile:v3];
-    if (!v4)
+    asset = [(WFContentItem *)WFAVAssetContentItem itemWithFile:v3];
+    if (!asset)
     {
       v5 = [(WFContentItem *)WFImageContentItem itemWithFile:v3];
       v6 = v5;
       if (v5)
       {
-        v7 = [v5 location];
+        location = [v5 location];
       }
 
       else
       {
-        v7 = 0;
+        location = 0;
       }
 
       v8 = 0;
@@ -1520,20 +1520,20 @@ LABEL_10:
 
   else
   {
-    v4 = [(WFPhotoMediaContentItem *)self asset];
+    asset = [(WFPhotoMediaContentItem *)self asset];
   }
 
-  v8 = v4;
-  v7 = [v4 location];
+  v8 = asset;
+  location = [asset location];
 LABEL_9:
 
-  return v7;
+  return location;
 }
 
 - (id)metadataIfLocallyAvailable
 {
-  v3 = [(WFPhotoMediaContentItem *)self asset];
-  if ([v3 mediaType] == 1)
+  asset = [(WFPhotoMediaContentItem *)self asset];
+  if ([asset mediaType] == 1)
   {
     v9 = 0;
     v10 = &v9;
@@ -1545,13 +1545,13 @@ LABEL_9:
     [v4 setNetworkAccessAllowed:0];
     [v4 setSynchronous:1];
     [v4 setDeliveryMode:1];
-    v5 = [(WFPhotoMediaContentItem *)self imageManager];
+    imageManager = [(WFPhotoMediaContentItem *)self imageManager];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __53__WFPhotoMediaContentItem_metadataIfLocallyAvailable__block_invoke;
     v8[3] = &unk_278344BF0;
     v8[4] = &v9;
-    [v5 requestImageDataAndOrientationForAsset:v3 options:v4 resultHandler:v8];
+    [imageManager requestImageDataAndOrientationForAsset:asset options:v4 resultHandler:v8];
 
     v6 = v10[5];
     _Block_object_dispose(&v9, 8);
@@ -1586,15 +1586,15 @@ void __53__WFPhotoMediaContentItem_metadataIfLocallyAvailable__block_invoke(uint
   }
 }
 
-- (void)getFrameRate:(id)a3
+- (void)getFrameRate:(id)rate
 {
-  v4 = a3;
+  rateCopy = rate;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __40__WFPhotoMediaContentItem_getFrameRate___block_invoke;
   v6[3] = &unk_278344BC8;
-  v7 = v4;
-  v5 = v4;
+  v7 = rateCopy;
+  v5 = rateCopy;
   [(WFPhotoMediaContentItem *)self generateAVAsset:v6 networkAccessAllowed:0];
 }
 
@@ -1646,11 +1646,11 @@ LABEL_7:
   __break(1u);
 }
 
-- (void)getMetadata:(id)a3
+- (void)getMetadata:(id)metadata
 {
-  v4 = a3;
-  v5 = [(WFPhotoMediaContentItem *)self asset];
-  if ([v5 mediaType] == 1)
+  metadataCopy = metadata;
+  asset = [(WFPhotoMediaContentItem *)self asset];
+  if ([asset mediaType] == 1)
   {
     v11[0] = 0;
     v11[1] = v11;
@@ -1662,21 +1662,21 @@ LABEL_7:
     [v6 setNetworkAccessAllowed:1];
     [v6 setSynchronous:0];
     [v6 setDeliveryMode:1];
-    v7 = [(WFPhotoMediaContentItem *)self imageManager];
+    imageManager = [(WFPhotoMediaContentItem *)self imageManager];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __39__WFPhotoMediaContentItem_getMetadata___block_invoke;
     v8[3] = &unk_278344BA0;
-    v9 = v4;
+    v9 = metadataCopy;
     v10 = v11;
-    [v7 requestImageDataAndOrientationForAsset:v5 options:v6 resultHandler:v8];
+    [imageManager requestImageDataAndOrientationForAsset:asset options:v6 resultHandler:v8];
 
     _Block_object_dispose(v11, 8);
   }
 
   else
   {
-    (*(v4 + 2))(v4, 0, 0);
+    (*(metadataCopy + 2))(metadataCopy, 0, 0);
   }
 }
 
@@ -1726,9 +1726,9 @@ void __39__WFPhotoMediaContentItem_getMetadata___block_invoke(uint64_t a1, void 
 
   v3 = v2;
   _Block_object_dispose(&v7, 8);
-  v4 = [v2 defaultManager];
+  defaultManager = [v2 defaultManager];
 
-  return v4;
+  return defaultManager;
 }
 
 - (id)imageManager
@@ -1751,15 +1751,15 @@ void __39__WFPhotoMediaContentItem_getMetadata___block_invoke(uint64_t a1, void 
 
   v3 = v2;
   _Block_object_dispose(&v7, 8);
-  v4 = [v2 defaultManager];
+  defaultManager = [v2 defaultManager];
 
-  return v4;
+  return defaultManager;
 }
 
 - (id)duration
 {
-  v2 = [(WFPhotoMediaContentItem *)self asset];
-  [v2 duration];
+  asset = [(WFPhotoMediaContentItem *)self asset];
+  [asset duration];
   v4 = v3;
 
   if (v4 == 0.0)
@@ -1769,11 +1769,11 @@ void __39__WFPhotoMediaContentItem_getMetadata___block_invoke(uint64_t a1, void 
 
   else
   {
-    v5 = [MEMORY[0x277CBEAA8] date];
-    v6 = [MEMORY[0x277CBEA80] currentCalendar];
-    v7 = [v5 dateByAddingTimeInterval:v4];
+    date = [MEMORY[0x277CBEAA8] date];
+    currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+    v7 = [date dateByAddingTimeInterval:v4];
     v8 = 224;
-    v9 = [v6 components:224 fromDate:v5 toDate:v7 options:0];
+    v9 = [currentCalendar components:224 fromDate:date toDate:v7 options:0];
 
     if ([v9 hour])
     {
@@ -1782,8 +1782,8 @@ void __39__WFPhotoMediaContentItem_getMetadata___block_invoke(uint64_t a1, void 
 
     else
     {
-      v12 = [v9 minute];
-      if (v12)
+      minute = [v9 minute];
+      if (minute)
       {
         v8 = 224;
       }
@@ -1793,7 +1793,7 @@ void __39__WFPhotoMediaContentItem_getMetadata___block_invoke(uint64_t a1, void 
         v8 = 192;
       }
 
-      if (v12)
+      if (minute)
       {
         v10 = 1;
       }
@@ -1810,21 +1810,21 @@ void __39__WFPhotoMediaContentItem_getMetadata___block_invoke(uint64_t a1, void 
   return v11;
 }
 
-- (void)getPreferredFileExtension:(id)a3
+- (void)getPreferredFileExtension:(id)extension
 {
-  v5 = a3;
-  v7 = [(WFPhotoMediaContentItem *)self preferredFileType];
-  v6 = [v7 fileExtension];
-  (*(a3 + 2))(v5, v6);
+  extensionCopy = extension;
+  preferredFileType = [(WFPhotoMediaContentItem *)self preferredFileType];
+  fileExtension = [preferredFileType fileExtension];
+  (*(extension + 2))(extensionCopy, fileExtension);
 }
 
-- (void)getPreferredFileSize:(id)a3
+- (void)getPreferredFileSize:(id)size
 {
-  v4 = a3;
-  v5 = [(WFPhotoMediaContentItem *)self preferredFileType];
-  v6 = [(WFPhotoMediaContentItem *)self preferredAssetResourceForType:v5];
+  sizeCopy = size;
+  preferredFileType = [(WFPhotoMediaContentItem *)self preferredFileType];
+  v6 = [(WFPhotoMediaContentItem *)self preferredAssetResourceForType:preferredFileType];
 
-  v4[2](v4, [v6 fileSize]);
+  sizeCopy[2](sizeCopy, [v6 fileSize]);
 }
 
 - (NSDictionary)additionalRepresentationsForSerialization
@@ -1832,51 +1832,51 @@ void __39__WFPhotoMediaContentItem_getMetadata___block_invoke(uint64_t a1, void 
   v19[4] = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CBEB38];
   v18[0] = @"com.apple.mobileslideshow.asset.localidentifier";
-  v4 = [(WFPhotoMediaContentItem *)self asset];
-  v5 = [v4 localIdentifier];
-  v19[0] = v5;
+  asset = [(WFPhotoMediaContentItem *)self asset];
+  localIdentifier = [asset localIdentifier];
+  v19[0] = localIdentifier;
   v18[1] = @"link.contentkit.phasset.representationtypes";
-  v6 = [(WFPhotoMediaContentItem *)self assetRepresentationTypes];
-  v19[1] = v6;
+  assetRepresentationTypes = [(WFPhotoMediaContentItem *)self assetRepresentationTypes];
+  v19[1] = assetRepresentationTypes;
   v18[2] = @"link.contentkit.remoteitem.preferredfiletype";
-  v7 = [(WFPhotoMediaContentItem *)self preferredFileType];
-  v8 = [v7 string];
-  v19[2] = v8;
+  preferredFileType = [(WFPhotoMediaContentItem *)self preferredFileType];
+  string = [preferredFileType string];
+  v19[2] = string;
   v18[3] = @"library";
   v9 = [MEMORY[0x277CCABB0] numberWithInteger:{-[WFPhotoMediaContentItem library](self, "library")}];
   v19[3] = v9;
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v19 forKeys:v18 count:4];
   v11 = [v3 dictionaryWithDictionary:v10];
 
-  v12 = [(WFPhotoMediaContentItem *)self preferredFileType];
-  v13 = [(WFContentItem *)self fileRepresentationForType:v12];
+  preferredFileType2 = [(WFPhotoMediaContentItem *)self preferredFileType];
+  v13 = [(WFContentItem *)self fileRepresentationForType:preferredFileType2];
 
-  v14 = [v13 originalURL];
-  v15 = [v14 absoluteString];
+  originalURL = [v13 originalURL];
+  absoluteString = [originalURL absoluteString];
 
-  if (v15)
+  if (absoluteString)
   {
-    v16 = [v13 originalURL];
-    [v11 setObject:v16 forKey:@"fileURL"];
+    originalURL2 = [v13 originalURL];
+    [v11 setObject:originalURL2 forKey:@"fileURL"];
   }
 
   return v11;
 }
 
-+ (id)localizedPluralFilterDescriptionWithContext:(id)a3
++ (id)localizedPluralFilterDescriptionWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"Photos", @"Photos");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
 
-+ (id)localizedFilterDescriptionWithContext:(id)a3
++ (id)localizedFilterDescriptionWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"Photo (singular)", @"Photo");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
@@ -1899,20 +1899,20 @@ void __39__WFPhotoMediaContentItem_getMetadata___block_invoke(uint64_t a1, void 
   return v13;
 }
 
-+ (id)localizedPluralTypeDescriptionWithContext:(id)a3
++ (id)localizedPluralTypeDescriptionWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"Photo media (plural)", @"Photo media");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
 
-+ (id)localizedTypeDescriptionWithContext:(id)a3
++ (id)localizedTypeDescriptionWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"Photo media (singular)", @"Photo media");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
@@ -1935,15 +1935,15 @@ void __39__WFPhotoMediaContentItem_getMetadata___block_invoke(uint64_t a1, void 
   return v4;
 }
 
-+ (BOOL)supportedTypeMustBeDeterminedByInstance:(id)a3
++ (BOOL)supportedTypeMustBeDeterminedByInstance:(id)instance
 {
-  v4 = a3;
-  if (v4)
+  instanceCopy = instance;
+  if (instanceCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = instanceCopy;
     }
 
     else
@@ -1958,17 +1958,17 @@ void __39__WFPhotoMediaContentItem_getMetadata___block_invoke(uint64_t a1, void 
   }
 
   v6 = v5;
-  v7 = [v6 string];
+  string = [v6 string];
 
-  LOBYTE(v6) = [v7 isEqualToString:@"AVAsset"];
-  if (v6 & 1) != 0 || ((v8 = v4, !v4) ? (v9 = 0) : (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) ? (v9 = 0) : (v9 = v8), (v10 = v9, v8, [v10 string], v11 = objc_claimAutoreleasedReturnValue(), v10, LOBYTE(v10) = objc_msgSend(v11, "isEqualToString:", @"CLLocation"), v11, (v10) || (objc_msgSend(v8, "isEqualToClass:", objc_opt_class())))
+  LOBYTE(v6) = [string isEqualToString:@"AVAsset"];
+  if (v6 & 1) != 0 || ((v8 = instanceCopy, !instanceCopy) ? (v9 = 0) : (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) ? (v9 = 0) : (v9 = v8), (v10 = v9, v8, [v10 string], v11 = objc_claimAutoreleasedReturnValue(), v10, LOBYTE(v10) = objc_msgSend(v11, "isEqualToString:", @"CLLocation"), v11, (v10) || (objc_msgSend(v8, "isEqualToClass:", objc_opt_class())))
   {
     v12 = 1;
   }
 
   else
   {
-    v14.receiver = a1;
+    v14.receiver = self;
     v14.super_class = &OBJC_METACLASS___WFPhotoMediaContentItem;
     v12 = objc_msgSendSuper2(&v14, sel_supportedTypeMustBeDeterminedByInstance_, v8);
   }
@@ -1995,32 +1995,32 @@ id __52__WFPhotoMediaContentItem_linkEntityCoercionHandler__block_invoke(uint64_
 {
   v8[1] = *MEMORY[0x277D85DE8];
   v3 = [WFObjectType typeWithClassName:@"LNEntity" frameworkName:@"LinkMetadata" location:1];
-  v4 = [a1 linkEntityCoercionHandler];
-  v5 = [WFCoercion coercionToType:v3 handler:v4];
+  linkEntityCoercionHandler = [self linkEntityCoercionHandler];
+  v5 = [WFCoercion coercionToType:v3 handler:linkEntityCoercionHandler];
   v8[0] = v5;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:1];
 
   return v6;
 }
 
-+ (id)remoteItemWithAssetIdentifier:(id)a3 named:(id)a4
++ (id)remoteItemWithAssetIdentifier:(id)identifier named:(id)named
 {
   v13[1] = *MEMORY[0x277D85DE8];
   v12 = @"com.apple.mobileslideshow.asset.localidentifier";
-  v13[0] = a3;
+  v13[0] = identifier;
   v6 = MEMORY[0x277CBEAC0];
-  v7 = a4;
-  v8 = a3;
+  namedCopy = named;
+  identifierCopy = identifier;
   v9 = [v6 dictionaryWithObjects:v13 forKeys:&v12 count:1];
 
-  v10 = [a1 itemWithSerializedItem:v9 forType:0 named:v7 attributionSet:0 cachingIdentifier:0];
+  v10 = [self itemWithSerializedItem:v9 forType:0 named:namedCopy attributionSet:0 cachingIdentifier:0];
 
   return v10;
 }
 
 + (id)stringConversionBehavior
 {
-  v2 = [a1 propertyForName:@"Name"];
+  v2 = [self propertyForName:@"Name"];
   v3 = [WFContentItemStringConversionBehavior accessingProperty:v2];
 
   return v3;
@@ -2036,7 +2036,7 @@ id __52__WFPhotoMediaContentItem_linkEntityCoercionHandler__block_invoke(uint64_
   v99[1] = 3221225472;
   v99[2] = __43__WFPhotoMediaContentItem_propertyBuilders__block_invoke_383;
   v99[3] = &__block_descriptor_40_e14___NSArray_8__0l;
-  v99[4] = a1;
+  v99[4] = self;
   v95 = [v96 possibleValuesGetter:v99];
   v105[0] = v95;
   v94 = WFLocalizedContentPropertyNameMarker(@"Width");
@@ -2425,23 +2425,23 @@ void __43__WFPhotoMediaContentItem_propertyBuilders__block_invoke(uint64_t a1, v
   return v5;
 }
 
-+ (id)itemWithSerializedItem:(id)a3 forType:(id)a4 named:(id)a5 attributionSet:(id)a6 cachingIdentifier:(id)a7
++ (id)itemWithSerializedItem:(id)item forType:(id)type named:(id)named attributionSet:(id)set cachingIdentifier:(id)identifier
 {
-  v11 = a7;
-  v12 = a6;
-  v13 = a5;
-  v14 = a3;
-  v15 = [v14 wfObjectOfClass:objc_opt_class() forKey:@"com.apple.mobileslideshow.asset.localidentifier"];
-  v16 = [v14 wfObjectOfClass:objc_opt_class() forKey:@"library"];
-  v17 = [v14 wfObjectOfClass:objc_opt_class() forKey:@"fileURL"];
+  identifierCopy = identifier;
+  setCopy = set;
+  namedCopy = named;
+  itemCopy = item;
+  v15 = [itemCopy wfObjectOfClass:objc_opt_class() forKey:@"com.apple.mobileslideshow.asset.localidentifier"];
+  v16 = [itemCopy wfObjectOfClass:objc_opt_class() forKey:@"library"];
+  v17 = [itemCopy wfObjectOfClass:objc_opt_class() forKey:@"fileURL"];
 
   v18 = [WFFileRepresentation fileWithURL:v17 options:0];
-  v19 = [a1 itemWithAssetIdentifier:v15 library:objc_msgSend(v16 assetFile:"integerValue") nameIfKnown:v18 attributionSet:v13 cachingIdentifier:{v12, v11}];
+  v19 = [self itemWithAssetIdentifier:v15 library:objc_msgSend(v16 assetFile:"integerValue") nameIfKnown:v18 attributionSet:namedCopy cachingIdentifier:{setCopy, identifierCopy}];
 
   return v19;
 }
 
-+ (id)fetchOptionsForLibrary:(int64_t)a3
++ (id)fetchOptionsForLibrary:(int64_t)library
 {
   v16 = *MEMORY[0x277D85DE8];
   v4 = +[WFSharedPhotoLibrary sharedLibrary];
@@ -2457,7 +2457,7 @@ void __43__WFPhotoMediaContentItem_propertyBuilders__block_invoke(uint64_t a1, v
       *buf = 136315650;
       v11 = "+[WFPhotoMediaContentItem fetchOptionsForLibrary:]";
       v12 = 2048;
-      v13 = a3;
+      libraryCopy = library;
       v14 = 2112;
       v15 = v6;
       _os_log_impl(&dword_21E1BD000, v7, OS_LOG_TYPE_ERROR, "%s Unable to get fetch options for library: %li, error: %@", buf, 0x20u);
@@ -2470,11 +2470,11 @@ void __43__WFPhotoMediaContentItem_propertyBuilders__block_invoke(uint64_t a1, v
   return v5;
 }
 
-+ (id)itemsWithBurstIdentifier:(id)a3
++ (id)itemsWithBurstIdentifier:(id)identifier
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [a1 fetchOptionsForLibrary:0];
+  identifierCopy = identifier;
+  v5 = [self fetchOptionsForLibrary:0];
   v6 = v5;
   if (v5)
   {
@@ -2491,7 +2491,7 @@ void __43__WFPhotoMediaContentItem_propertyBuilders__block_invoke(uint64_t a1, v
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v10 = [getPHAssetClass() fetchAssetsWithBurstIdentifier:v4 options:{v6, 0}];
+    v10 = [getPHAssetClass() fetchAssetsWithBurstIdentifier:identifierCopy options:{v6, 0}];
     v11 = [v10 countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v11)
     {
@@ -2506,7 +2506,7 @@ void __43__WFPhotoMediaContentItem_propertyBuilders__block_invoke(uint64_t a1, v
             objc_enumerationMutation(v10);
           }
 
-          v15 = [a1 itemWithObject:*(*(&v17 + 1) + 8 * i)];
+          v15 = [self itemWithObject:*(*(&v17 + 1) + 8 * i)];
           [v9 addObject:v15];
         }
 
@@ -2533,23 +2533,23 @@ void __43__WFPhotoMediaContentItem_propertyBuilders__block_invoke(uint64_t a1, v
   return v9;
 }
 
-+ (id)itemWithAssetIdentifier:(id)a3 library:(int64_t)a4 assetFile:(id)a5 nameIfKnown:(id)a6 attributionSet:(id)a7 cachingIdentifier:(id)a8
++ (id)itemWithAssetIdentifier:(id)identifier library:(int64_t)library assetFile:(id)file nameIfKnown:(id)known attributionSet:(id)set cachingIdentifier:(id)cachingIdentifier
 {
   v37[1] = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  if (!v14)
+  identifierCopy = identifier;
+  fileCopy = file;
+  knownCopy = known;
+  setCopy = set;
+  cachingIdentifierCopy = cachingIdentifier;
+  if (!identifierCopy)
   {
     v24 = 0;
     goto LABEL_11;
   }
 
-  v19 = [a1 fetchOptionsForLibrary:a4];
+  v19 = [self fetchOptionsForLibrary:library];
   PHAssetClass = getPHAssetClass();
-  v37[0] = v14;
+  v37[0] = identifierCopy;
   v21 = [MEMORY[0x277CBEA60] arrayWithObjects:v37 count:1];
   v22 = [PHAssetClass fetchAssetsWithLocalIdentifiers:v21 options:v19];
 
@@ -2561,9 +2561,9 @@ void __43__WFPhotoMediaContentItem_propertyBuilders__block_invoke(uint64_t a1, v
       *buf = 136315650;
       v32 = "+[WFPhotoMediaContentItem itemWithAssetIdentifier:library:assetFile:nameIfKnown:attributionSet:cachingIdentifier:]";
       v33 = 2112;
-      v34 = v14;
+      v34 = identifierCopy;
       v35 = 2048;
-      v36 = a4;
+      libraryCopy = library;
       _os_log_impl(&dword_21E1BD000, v27, OS_LOG_TYPE_DEFAULT, "%s No PHAsset found for asset identifier: %@, library: %li", buf, 0x20u);
     }
 
@@ -2571,20 +2571,20 @@ void __43__WFPhotoMediaContentItem_propertyBuilders__block_invoke(uint64_t a1, v
     goto LABEL_9;
   }
 
-  v23 = [v22 firstObject];
-  v24 = [a1 itemWithObject:v23 named:v16 attributionSet:v17 cachingIdentifier:v18];
+  firstObject = [v22 firstObject];
+  v24 = [self itemWithObject:firstObject named:knownCopy attributionSet:setCopy cachingIdentifier:cachingIdentifierCopy];
 
-  [v24 setLibrary:a4];
-  if (v15)
+  [v24 setLibrary:library];
+  if (fileCopy)
   {
-    v25 = [v15 wfType];
+    wfType = [fileCopy wfType];
     v26 = v24[6];
-    v24[6] = v25;
+    v24[6] = wfType;
 
-    v30 = v15;
+    v30 = fileCopy;
     v27 = [MEMORY[0x277CBEA60] arrayWithObjects:&v30 count:1];
-    v28 = [v15 wfType];
-    [v24 setFileRepresentations:v27 forType:v28];
+    wfType2 = [fileCopy wfType];
+    [v24 setFileRepresentations:v27 forType:wfType2];
 
 LABEL_9:
   }
@@ -2594,17 +2594,17 @@ LABEL_11:
   return v24;
 }
 
-- (BOOL)getListAltText:(id)a3
+- (BOOL)getListAltText:(id)text
 {
-  v4 = a3;
-  v5 = [(WFPhotoMediaContentItem *)self asset];
-  if (([v5 mediaType] & 0xFFFFFFFFFFFFFFFELL) == 2)
+  textCopy = text;
+  asset = [(WFPhotoMediaContentItem *)self asset];
+  if (([asset mediaType] & 0xFFFFFFFFFFFFFFFELL) == 2)
   {
-    v6 = [(WFPhotoMediaContentItem *)self asset];
-    [v6 duration];
+    asset2 = [(WFPhotoMediaContentItem *)self asset];
+    [asset2 duration];
     v8 = WFChooseFromListFormatPlaybackDuration(v7);
 
-    if (!v4)
+    if (!textCopy)
     {
       goto LABEL_6;
     }
@@ -2613,10 +2613,10 @@ LABEL_11:
   }
 
   v8 = 0;
-  if (v4)
+  if (textCopy)
   {
 LABEL_5:
-    v4[2](v4, v8);
+    textCopy[2](textCopy, v8);
   }
 
 LABEL_6:
@@ -2624,15 +2624,15 @@ LABEL_6:
   return 1;
 }
 
-- (BOOL)getListThumbnail:(id)a3 forSize:(CGSize)a4
+- (BOOL)getListThumbnail:(id)thumbnail forSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v5 = a3;
-  if (v5)
+  height = size.height;
+  width = size.width;
+  thumbnailCopy = thumbnail;
+  if (thumbnailCopy)
   {
-    v6 = [MEMORY[0x277D79F18] currentDevice];
-    [v6 screenScale];
+    currentDevice = [MEMORY[0x277D79F18] currentDevice];
+    [currentDevice screenScale];
     v8 = v7;
 
     CGAffineTransformMakeScale(&v15, v8, v8);
@@ -2641,19 +2641,19 @@ LABEL_6:
     v13[1] = 3221225472;
     v13[2] = __68__WFPhotoMediaContentItem_ChooseFromList__getListThumbnail_forSize___block_invoke;
     v13[3] = &unk_278347A98;
-    v14 = v5;
+    v14 = thumbnailCopy;
     [(WFPhotoMediaContentItem *)self getThumbnail:v13 ofSize:*&v12];
   }
 
   return 1;
 }
 
-- (BOOL)getListSubtitle:(id)a3
+- (BOOL)getListSubtitle:(id)subtitle
 {
-  v4 = a3;
-  v5 = [(WFPhotoMediaContentItem *)self asset];
-  v6 = [v5 mediaType];
-  switch(v6)
+  subtitleCopy = subtitle;
+  asset = [(WFPhotoMediaContentItem *)self asset];
+  mediaType = [asset mediaType];
+  switch(mediaType)
   {
     case 3:
       v8 = @"Audio";
@@ -2672,9 +2672,9 @@ LABEL_6:
   v7 = WFLocalizedString(v8);
 LABEL_9:
   v9 = v7;
-  if (v4)
+  if (subtitleCopy)
   {
-    v4[2](v4, v7);
+    subtitleCopy[2](subtitleCopy, v7);
   }
 
   return 1;

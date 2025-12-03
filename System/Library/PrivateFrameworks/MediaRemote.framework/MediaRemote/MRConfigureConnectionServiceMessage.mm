@@ -1,5 +1,5 @@
 @interface MRConfigureConnectionServiceMessage
-- (MRConfigureConnectionServiceMessage)initWithServiceType:(id)a3 sourceOutputDeviceUID:(id)a4 sourceOutputDeviceName:(id)a5;
+- (MRConfigureConnectionServiceMessage)initWithServiceType:(id)type sourceOutputDeviceUID:(id)d sourceOutputDeviceName:(id)name;
 - (NSString)destinationOutputDeviceUID;
 - (NSString)serviceType;
 - (NSString)sourceOutputDeviceName;
@@ -8,25 +8,25 @@
 
 @implementation MRConfigureConnectionServiceMessage
 
-- (MRConfigureConnectionServiceMessage)initWithServiceType:(id)a3 sourceOutputDeviceUID:(id)a4 sourceOutputDeviceName:(id)a5
+- (MRConfigureConnectionServiceMessage)initWithServiceType:(id)type sourceOutputDeviceUID:(id)d sourceOutputDeviceName:(id)name
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  typeCopy = type;
+  dCopy = d;
+  nameCopy = name;
   v17.receiver = self;
   v17.super_class = MRConfigureConnectionServiceMessage;
   v11 = [(MRConfigureConnectionMessage *)&v17 initWithGroupID:&stru_1F1513E38];
   v12 = v11;
   if (v11)
   {
-    v13 = [(MRProtocolMessage *)v11 underlyingCodableMessage];
-    [v13 setServiceName:v8];
+    underlyingCodableMessage = [(MRProtocolMessage *)v11 underlyingCodableMessage];
+    [underlyingCodableMessage setServiceName:typeCopy];
 
-    v14 = [(MRProtocolMessage *)v12 underlyingCodableMessage];
-    [v14 setSourceOutputDeviceUID:v9];
+    underlyingCodableMessage2 = [(MRProtocolMessage *)v12 underlyingCodableMessage];
+    [underlyingCodableMessage2 setSourceOutputDeviceUID:dCopy];
 
-    v15 = [(MRProtocolMessage *)v12 underlyingCodableMessage];
-    [v15 setSourceOutputDeviceName:v10];
+    underlyingCodableMessage3 = [(MRProtocolMessage *)v12 underlyingCodableMessage];
+    [underlyingCodableMessage3 setSourceOutputDeviceName:nameCopy];
   }
 
   return v12;
@@ -34,34 +34,34 @@
 
 - (NSString)serviceType
 {
-  v2 = [(MRProtocolMessage *)self underlyingCodableMessage];
-  v3 = [v2 serviceName];
+  underlyingCodableMessage = [(MRProtocolMessage *)self underlyingCodableMessage];
+  serviceName = [underlyingCodableMessage serviceName];
 
-  return v3;
+  return serviceName;
 }
 
 - (NSString)sourceOutputDeviceUID
 {
-  v2 = [(MRProtocolMessage *)self underlyingCodableMessage];
-  v3 = [v2 sourceOutputDeviceUID];
+  underlyingCodableMessage = [(MRProtocolMessage *)self underlyingCodableMessage];
+  sourceOutputDeviceUID = [underlyingCodableMessage sourceOutputDeviceUID];
 
-  return v3;
+  return sourceOutputDeviceUID;
 }
 
 - (NSString)sourceOutputDeviceName
 {
-  v2 = [(MRProtocolMessage *)self underlyingCodableMessage];
-  v3 = [v2 sourceOutputDeviceName];
+  underlyingCodableMessage = [(MRProtocolMessage *)self underlyingCodableMessage];
+  sourceOutputDeviceName = [underlyingCodableMessage sourceOutputDeviceName];
 
-  return v3;
+  return sourceOutputDeviceName;
 }
 
 - (NSString)destinationOutputDeviceUID
 {
-  v2 = [(MRProtocolMessage *)self underlyingCodableMessage];
-  v3 = [v2 destinationOutputDeviceUID];
+  underlyingCodableMessage = [(MRProtocolMessage *)self underlyingCodableMessage];
+  destinationOutputDeviceUID = [underlyingCodableMessage destinationOutputDeviceUID];
 
-  return v3;
+  return destinationOutputDeviceUID;
 }
 
 @end

@@ -1,45 +1,45 @@
 @interface MPSGraphTensorToBufferOp
-- (MPSGraphTensorToBufferOp)initWithGraph:(id)a3 inputTensors:(id)a4 controlDependencies:(id)a5 shape:(id)a6 type:(unsigned int)a7 interleave:(id)a8 isTensorBufferOp:(BOOL)a9 isChannelAndInterleaveSame:(BOOL)a10 name:(id)a11;
-- (void)makeMLIROpWithBuilder:(void *)a3 symbolTable:(void *)a4 inputValues:(void *)a5 opInitialization:(BOOL)a6 name:(id)a7;
+- (MPSGraphTensorToBufferOp)initWithGraph:(id)graph inputTensors:(id)tensors controlDependencies:(id)dependencies shape:(id)shape type:(unsigned int)type interleave:(id)interleave isTensorBufferOp:(BOOL)op isChannelAndInterleaveSame:(BOOL)self0 name:(id)self1;
+- (void)makeMLIROpWithBuilder:(void *)builder symbolTable:(void *)table inputValues:(void *)values opInitialization:(BOOL)initialization name:(id)name;
 @end
 
 @implementation MPSGraphTensorToBufferOp
 
-- (MPSGraphTensorToBufferOp)initWithGraph:(id)a3 inputTensors:(id)a4 controlDependencies:(id)a5 shape:(id)a6 type:(unsigned int)a7 interleave:(id)a8 isTensorBufferOp:(BOOL)a9 isChannelAndInterleaveSame:(BOOL)a10 name:(id)a11
+- (MPSGraphTensorToBufferOp)initWithGraph:(id)graph inputTensors:(id)tensors controlDependencies:(id)dependencies shape:(id)shape type:(unsigned int)type interleave:(id)interleave isTensorBufferOp:(BOOL)op isChannelAndInterleaveSame:(BOOL)self0 name:(id)self1
 {
-  v26 = a6;
-  v18 = a8;
-  objc_storeStrong(&self->_shape, a6);
-  v19 = a11;
-  v20 = a5;
-  v21 = a4;
-  v22 = a3;
-  self->_type = a7;
+  shapeCopy = shape;
+  interleaveCopy = interleave;
+  objc_storeStrong(&self->_shape, shape);
+  nameCopy = name;
+  dependenciesCopy = dependencies;
+  tensorsCopy = tensors;
+  graphCopy = graph;
+  self->_type = type;
   interleave = self->_interleave;
-  self->_interleave = v18;
+  self->_interleave = interleaveCopy;
 
-  self->_isTensorBufferOp = a9;
-  self->_isChannelAndInterleaveSame = a10;
-  v24 = [(MPSGraphOperation *)self initWithGraph:v22 inputTensors:v21 controlDependencies:v20 name:v19];
+  self->_isTensorBufferOp = op;
+  self->_isChannelAndInterleaveSame = same;
+  v24 = [(MPSGraphOperation *)self initWithGraph:graphCopy inputTensors:tensorsCopy controlDependencies:dependenciesCopy name:nameCopy];
 
   return v24;
 }
 
-- (void)makeMLIROpWithBuilder:(void *)a3 symbolTable:(void *)a4 inputValues:(void *)a5 opInitialization:(BOOL)a6 name:(id)a7
+- (void)makeMLIROpWithBuilder:(void *)builder symbolTable:(void *)table inputValues:(void *)values opInitialization:(BOOL)initialization name:(id)name
 {
   v42 = *MEMORY[0x1E69E9840];
-  v33 = a7;
+  nameCopy = name;
   mpsFileLoc("[MPSGraphTensorToBufferOp makeMLIROpWithBuilder:symbolTable:inputValues:opInitialization:name:]", "/Library/Caches/com.apple.xbs/Sources/MetalPerformanceShadersGraph/mpsgraph/MetalPerformanceShadersGraph/Core/Files/Operations/MPSGraphTensorBufferOpsPrivate.mm", v35);
-  v10 = v33;
+  v10 = nameCopy;
   v41 = 260;
   v40[0] = v35;
-  StringAttr = mlir::Builder::getStringAttr(a3, v40);
+  StringAttr = mlir::Builder::getStringAttr(builder, v40);
   v13 = mlir::FileLineColLoc::get(StringAttr, 0x4Eu, 0);
   if (v10)
   {
     v14 = v10;
-    v15 = [v10 UTF8String];
-    v16 = strlen(v15);
+    uTF8String = [v10 UTF8String];
+    v16 = strlen(uTF8String);
     if (v16 >= 0x7FFFFFFFFFFFFFF8)
     {
       std::string::__throw_length_error[abi:ne200100]();
@@ -54,7 +54,7 @@
     v39[2] = v16;
     if (v16)
     {
-      memmove(__dst, v15, v16);
+      memmove(__dst, uTF8String, v16);
     }
 
     v18 = &__dst[v17];
@@ -68,7 +68,7 @@
   }
 
   *v18 = 0;
-  MPSSymbolTable::insertOpInSymbolTable(a4, __dst, v12, &__p);
+  MPSSymbolTable::insertOpInSymbolTable(table, __dst, v12, &__p);
   p_p = __p.__r_.__value_.__r.__words[0];
   if ((__p.__r_.__value_.__r.__words[2] & 0x8000000000000000) == 0)
   {
@@ -84,7 +84,7 @@
   }
 
   LOBYTE(v41) = v20;
-  v21 = mlir::Builder::getStringAttr(a3, v40);
+  v21 = mlir::Builder::getStringAttr(builder, v40);
   v22 = mlir::NameLoc::get(v21, v13);
   if (SHIBYTE(__p.__r_.__value_.__r.__words[2]) < 0)
   {
@@ -107,12 +107,12 @@ LABEL_16:
   {
     operator delete(v35[0]);
     shape = self->_shape;
-    v24 = a3;
+    builderCopy2 = builder;
     if (shape)
     {
 LABEL_18:
       v25 = [(NSArray *)shape count];
-      getMLIRElementType(*v24, self->_type);
+      getMLIRElementType(*builderCopy2, self->_type);
       v26 = malloc_type_malloc(4 * v25, 0x100004052888210uLL);
       v27 = malloc_type_malloc(4 * v25, 0x100004052888210uLL);
       if (v25)
@@ -127,9 +127,9 @@ LABEL_18:
         }
       }
 
-      if (*(a5 + 1) != *a5)
+      if (*(values + 1) != *values)
       {
-        arrayToU64Attr(a3, v26);
+        arrayToU64Attr(builder, v26);
       }
 
       std::vector<mlir::Value>::__throw_out_of_range[abi:ne200100]();
@@ -139,19 +139,19 @@ LABEL_18:
   else
   {
     shape = self->_shape;
-    v24 = a3;
+    builderCopy2 = builder;
     if (shape)
     {
       goto LABEL_18;
     }
   }
 
-  if (*(a5 + 1) == *a5)
+  if (*(values + 1) == *values)
   {
     std::vector<mlir::Value>::__throw_out_of_range[abi:ne200100]();
   }
 
-  v40[0] = mlir::OpBuilder::create<mlir::mpsx::TensorToBufferOp,mlir::detail::TypedValue<mlir::TensorType>>(v24, v22, *a5) - 16;
+  v40[0] = mlir::OpBuilder::create<mlir::mpsx::TensorToBufferOp,mlir::detail::TypedValue<mlir::TensorType>>(builderCopy2, v22, *values) - 16;
   DefiningOp = mlir::Value::getDefiningOp(v40);
 
   return DefiningOp;

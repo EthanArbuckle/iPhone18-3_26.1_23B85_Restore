@@ -6,13 +6,13 @@
 - (id)createViewProfile;
 - (unint64_t)_paletteType;
 - (void)cancelButtonTapped;
-- (void)didSelectColorAtIndexPath:(id)a3;
+- (void)didSelectColorAtIndexPath:(id)path;
 - (void)doneButtonTapped;
-- (void)interactionCoordinator:(id)a3 colorPaletteDidChange:(id)a4;
-- (void)interactionCoordinator:(id)a3 didSelectColorAtIndexPath:(id)a4;
-- (void)interactionCoordinator:(id)a3 viewValueDidChange:(id)a4;
-- (void)presentFullColorViewForInteractionCoordinator:(id)a3 selectedColorIndexPath:(id)a4;
-- (void)quickControlItemUpdater:(id)a3 didUpdateResultsForControlItems:(id)a4;
+- (void)interactionCoordinator:(id)coordinator colorPaletteDidChange:(id)change;
+- (void)interactionCoordinator:(id)coordinator didSelectColorAtIndexPath:(id)path;
+- (void)interactionCoordinator:(id)coordinator viewValueDidChange:(id)change;
+- (void)presentFullColorViewForInteractionCoordinator:(id)coordinator selectedColorIndexPath:(id)path;
+- (void)quickControlItemUpdater:(id)updater didUpdateResultsForControlItems:(id)items;
 - (void)updateValueFromControlItem;
 @end
 
@@ -20,15 +20,15 @@
 
 - (void)updateValueFromControlItem
 {
-  v3 = [(HUQuickControlSingleControlViewController *)self controlItem];
-  v4 = [v3 latestResults];
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x277D14008]];
+  controlItem = [(HUQuickControlSingleControlViewController *)self controlItem];
+  latestResults = [controlItem latestResults];
+  v5 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D14008]];
 
   if (v5)
   {
-    v6 = [v5 BOOLValue];
-    v7 = [(HUQuickControlSingleControlViewController *)self viewProfile];
-    [v7 setNaturalLightingEnabled:v6];
+    bOOLValue = [v5 BOOLValue];
+    viewProfile = [(HUQuickControlSingleControlViewController *)self viewProfile];
+    [viewProfile setNaturalLightingEnabled:bOOLValue];
   }
 
   v8.receiver = self;
@@ -38,25 +38,25 @@
 
 - (unint64_t)_paletteType
 {
-  v3 = [(HUQuickControlSingleControlViewController *)self viewProfile];
-  v4 = [v3 supportsNaturalLighting];
+  viewProfile = [(HUQuickControlSingleControlViewController *)self viewProfile];
+  supportsNaturalLighting = [viewProfile supportsNaturalLighting];
 
-  v5 = [(HUQuickControlSingleControlViewController *)self controlItem];
-  v6 = [v5 supportsRGBColor];
+  controlItem = [(HUQuickControlSingleControlViewController *)self controlItem];
+  supportsRGBColor = [controlItem supportsRGBColor];
 
   v7 = 2;
-  if (!v4)
+  if (!supportsNaturalLighting)
   {
     v7 = 0;
   }
 
   v8 = 3;
-  if (!v4)
+  if (!supportsNaturalLighting)
   {
     v8 = 1;
   }
 
-  if (v6)
+  if (supportsRGBColor)
   {
     return v7;
   }
@@ -69,12 +69,12 @@
 
 - (id)createInteractionCoordinator
 {
-  v3 = [(HUQuickControlViewController *)self home];
-  v4 = [v3 hf_colorPaletteOfType:{-[HUQuickControlColorViewController _paletteType](self, "_paletteType")}];
+  home = [(HUQuickControlViewController *)self home];
+  v4 = [home hf_colorPaletteOfType:{-[HUQuickControlColorViewController _paletteType](self, "_paletteType")}];
 
   v5 = [HUQuickControlColorView alloc];
-  v6 = [(HUQuickControlSingleControlViewController *)self viewProfile];
-  v7 = [(HUQuickControlColorView *)v5 initWithProfile:v6 colorPalette:v4];
+  viewProfile = [(HUQuickControlSingleControlViewController *)self viewProfile];
+  v7 = [(HUQuickControlColorView *)v5 initWithProfile:viewProfile colorPalette:v4];
 
   v8 = [[HUQuickControlColorInteractionCoordinator alloc] initWithControlView:v7 colorPalette:v4 delegate:self];
   [(HUQuickControlSimpleInteractionCoordinator *)v8 setShouldDismissAutomatically:0];
@@ -85,18 +85,18 @@
 - (id)createViewProfile
 {
   v3 = objc_alloc_init(HUQuickControlColorViewProfile);
-  v4 = [(HUQuickControlSingleControlViewController *)self controlItem];
-  -[HUQuickControlColorViewProfile setSupportsRGBColor:](v3, "setSupportsRGBColor:", [v4 supportsRGBColor]);
+  controlItem = [(HUQuickControlSingleControlViewController *)self controlItem];
+  -[HUQuickControlColorViewProfile setSupportsRGBColor:](v3, "setSupportsRGBColor:", [controlItem supportsRGBColor]);
 
-  v5 = [(HUQuickControlSingleControlViewController *)self controlItem];
-  -[HUQuickControlColorViewProfile setSupportsNaturalLighting:](v3, "setSupportsNaturalLighting:", [v5 supportsNaturalLighting]);
+  controlItem2 = [(HUQuickControlSingleControlViewController *)self controlItem];
+  -[HUQuickControlColorViewProfile setSupportsNaturalLighting:](v3, "setSupportsNaturalLighting:", [controlItem2 supportsNaturalLighting]);
 
-  v6 = [(HUQuickControlSingleControlViewController *)self controlItem];
-  -[HUQuickControlColorViewProfile setNaturalLightingEnabled:](v3, "setNaturalLightingEnabled:", [v6 naturalLightingEnabled]);
+  controlItem3 = [(HUQuickControlSingleControlViewController *)self controlItem];
+  -[HUQuickControlColorViewProfile setNaturalLightingEnabled:](v3, "setNaturalLightingEnabled:", [controlItem3 naturalLightingEnabled]);
 
-  v7 = [(HUQuickControlSingleControlViewController *)self controlItem];
-  v8 = [v7 colorProfile];
-  [(HUQuickControlColorViewProfile *)v3 setColorProfile:v8];
+  controlItem4 = [(HUQuickControlSingleControlViewController *)self controlItem];
+  colorProfile = [controlItem4 colorProfile];
+  [(HUQuickControlColorViewProfile *)v3 setColorProfile:colorProfile];
 
   [(HUQuickControlColorViewProfile *)v3 setMode:[(HUQuickControlColorViewController *)self mode]];
   [(HUQuickControlViewProfile *)v3 setOrientation:1];
@@ -129,31 +129,31 @@ id __66__HUQuickControlColorViewController_controlToViewValueTransformer__block_
   return v4;
 }
 
-- (void)interactionCoordinator:(id)a3 colorPaletteDidChange:(id)a4
+- (void)interactionCoordinator:(id)coordinator colorPaletteDidChange:(id)change
 {
-  v5 = a4;
-  v6 = [(HUQuickControlViewController *)self home];
-  v7 = [v6 hf_updateColorPalette:v5 type:{-[HUQuickControlColorViewController _paletteType](self, "_paletteType")}];
+  changeCopy = change;
+  home = [(HUQuickControlViewController *)self home];
+  v7 = [home hf_updateColorPalette:changeCopy type:{-[HUQuickControlColorViewController _paletteType](self, "_paletteType")}];
 
-  v8 = [(HUQuickControlSingleControlViewController *)self interactionCoordinator];
-  v10 = [v8 controlView];
+  interactionCoordinator = [(HUQuickControlSingleControlViewController *)self interactionCoordinator];
+  controlView = [interactionCoordinator controlView];
 
-  [v10 setColorPalette:v5];
-  if ([v10 isSelectedColorInPalette])
+  [controlView setColorPalette:changeCopy];
+  if ([controlView isSelectedColorInPalette])
   {
-    v9 = [(HUQuickControlViewController *)self delegate];
-    [v9 quickControlViewControllerDidUpdateStatusOverrides:self];
+    delegate = [(HUQuickControlViewController *)self delegate];
+    [delegate quickControlViewControllerDidUpdateStatusOverrides:self];
   }
 }
 
-- (void)presentFullColorViewForInteractionCoordinator:(id)a3 selectedColorIndexPath:(id)a4
+- (void)presentFullColorViewForInteractionCoordinator:(id)coordinator selectedColorIndexPath:(id)path
 {
   objc_opt_class();
-  v5 = [(HUQuickControlSingleControlViewController *)self interactionCoordinator];
-  v6 = [v5 controlView];
+  interactionCoordinator = [(HUQuickControlSingleControlViewController *)self interactionCoordinator];
+  controlView = [interactionCoordinator controlView];
   if (objc_opt_isKindOfClass())
   {
-    v7 = v6;
+    v7 = controlView;
   }
 
   else
@@ -169,25 +169,25 @@ id __66__HUQuickControlColorViewController_controlToViewValueTransformer__block_
   }
 
   v8 = [HUQuickControlColorViewController alloc];
-  v9 = [(HUQuickControlSingleControlViewController *)self controlItem];
-  v10 = [(HUQuickControlViewController *)self home];
-  v11 = [(HUQuickControlViewController *)self itemUpdater];
-  v12 = [(HUQuickControlSingleControlViewController *)v8 initWithControlItem:v9 home:v10 itemUpdater:v11 controlOrientation:[(HUQuickControlViewController *)self controlOrientation] preferredControl:[(HUQuickControlViewController *)self preferredControl]];
+  controlItem = [(HUQuickControlSingleControlViewController *)self controlItem];
+  home = [(HUQuickControlViewController *)self home];
+  itemUpdater = [(HUQuickControlViewController *)self itemUpdater];
+  v12 = [(HUQuickControlSingleControlViewController *)v8 initWithControlItem:controlItem home:home itemUpdater:itemUpdater controlOrientation:[(HUQuickControlViewController *)self controlOrientation] preferredControl:[(HUQuickControlViewController *)self preferredControl]];
   [(HUQuickControlColorViewController *)self setColorViewController:v12];
 
-  v13 = [(HUQuickControlColorViewController *)self colorViewController];
-  [v13 setMode:1];
+  colorViewController = [(HUQuickControlColorViewController *)self colorViewController];
+  [colorViewController setMode:1];
 
-  v14 = [(HUQuickControlColorViewController *)self colorViewController];
-  [v14 setPresentingColorViewController:self];
+  colorViewController2 = [(HUQuickControlColorViewController *)self colorViewController];
+  [colorViewController2 setPresentingColorViewController:self];
 
   objc_opt_class();
-  v15 = [(HUQuickControlColorViewController *)self colorViewController];
-  v16 = [v15 interactionCoordinator];
-  v17 = [v16 controlView];
+  colorViewController3 = [(HUQuickControlColorViewController *)self colorViewController];
+  interactionCoordinator2 = [colorViewController3 interactionCoordinator];
+  controlView2 = [interactionCoordinator2 controlView];
   if (objc_opt_isKindOfClass())
   {
-    v18 = v17;
+    v18 = controlView2;
   }
 
   else
@@ -199,60 +199,60 @@ id __66__HUQuickControlColorViewController_controlToViewValueTransformer__block_
 
   if (v19)
   {
-    v20 = [v40 linearPaletteViewSelectedColorIndexPath];
-    [v19 updateSelectedColorIndexPathToIndexPath:v20];
+    linearPaletteViewSelectedColorIndexPath = [v40 linearPaletteViewSelectedColorIndexPath];
+    [v19 updateSelectedColorIndexPathToIndexPath:linearPaletteViewSelectedColorIndexPath];
 
-    v21 = [v40 value];
-    [v19 setValue:v21];
+    value = [v40 value];
+    [v19 setValue:value];
 
     [v19 storeCurrentColorInformationAsOriginalValues];
   }
 
   v22 = objc_alloc(MEMORY[0x277D757A0]);
-  v23 = [(HUQuickControlColorViewController *)self colorViewController];
-  v24 = [v22 initWithRootViewController:v23];
+  colorViewController4 = [(HUQuickControlColorViewController *)self colorViewController];
+  v24 = [v22 initWithRootViewController:colorViewController4];
 
-  v25 = 2;
+  userInterfaceStyle = 2;
   [v24 setModalPresentationStyle:2];
   v26 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:1 target:self action:sel_cancelButtonTapped];
-  v27 = [(HUQuickControlColorViewController *)self colorViewController];
-  v28 = [v27 navigationItem];
-  [v28 setLeftBarButtonItem:v26];
+  colorViewController5 = [(HUQuickControlColorViewController *)self colorViewController];
+  navigationItem = [colorViewController5 navigationItem];
+  [navigationItem setLeftBarButtonItem:v26];
 
   v29 = _HULocalizedStringWithDefaultValue(@"HUQuickControlColorFullPickerModeViewControllerTitle", @"HUQuickControlColorFullPickerModeViewControllerTitle", 1);
-  v30 = [(HUQuickControlColorViewController *)self colorViewController];
-  [v30 setTitle:v29];
+  colorViewController6 = [(HUQuickControlColorViewController *)self colorViewController];
+  [colorViewController6 setTitle:v29];
 
   v31 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:0 target:self action:sel_doneButtonTapped];
-  v32 = [(HUQuickControlColorViewController *)self colorViewController];
-  v33 = [v32 navigationItem];
-  [v33 setRightBarButtonItem:v31];
+  colorViewController7 = [(HUQuickControlColorViewController *)self colorViewController];
+  navigationItem2 = [colorViewController7 navigationItem];
+  [navigationItem2 setRightBarButtonItem:v31];
 
   if (([MEMORY[0x277D14CE8] shouldUseControlCenterMaterials] & 1) == 0)
   {
-    v34 = [(HUQuickControlColorViewController *)self view];
-    v35 = [v34 traitCollection];
-    v25 = [v35 userInterfaceStyle];
+    view = [(HUQuickControlColorViewController *)self view];
+    traitCollection = [view traitCollection];
+    userInterfaceStyle = [traitCollection userInterfaceStyle];
   }
 
-  v36 = [HUQuickControlUtilities backgroundColorForUserInterfaceStyle:v25];
-  v37 = [(HUQuickControlColorViewController *)self colorViewController];
-  v38 = [v37 view];
-  [v38 setBackgroundColor:v36];
+  v36 = [HUQuickControlUtilities backgroundColorForUserInterfaceStyle:userInterfaceStyle];
+  colorViewController8 = [(HUQuickControlColorViewController *)self colorViewController];
+  view2 = [colorViewController8 view];
+  [view2 setBackgroundColor:v36];
 
-  [v24 setOverrideUserInterfaceStyle:v25];
+  [v24 setOverrideUserInterfaceStyle:userInterfaceStyle];
   v39 = [(UIViewController *)self hu_presentPreloadableViewController:v24 animated:1];
 }
 
-- (void)interactionCoordinator:(id)a3 didSelectColorAtIndexPath:(id)a4
+- (void)interactionCoordinator:(id)coordinator didSelectColorAtIndexPath:(id)path
 {
-  v10 = a4;
+  pathCopy = path;
   objc_opt_class();
-  v5 = [(HUQuickControlSingleControlViewController *)self interactionCoordinator];
-  v6 = [v5 controlView];
+  interactionCoordinator = [(HUQuickControlSingleControlViewController *)self interactionCoordinator];
+  controlView = [interactionCoordinator controlView];
   if (objc_opt_isKindOfClass())
   {
-    v7 = v6;
+    v7 = controlView;
   }
 
   else
@@ -264,22 +264,22 @@ id __66__HUQuickControlColorViewController_controlToViewValueTransformer__block_
 
   if (v8 && [v8 mode] == 1)
   {
-    v9 = [(HUQuickControlColorViewController *)self presentingColorViewController];
-    [v9 didSelectColorAtIndexPath:v10];
+    presentingColorViewController = [(HUQuickControlColorViewController *)self presentingColorViewController];
+    [presentingColorViewController didSelectColorAtIndexPath:pathCopy];
   }
 }
 
-- (void)interactionCoordinator:(id)a3 viewValueDidChange:(id)a4
+- (void)interactionCoordinator:(id)coordinator viewValueDidChange:(id)change
 {
-  v7 = a3;
-  v8 = a4;
-  if (([v7 isUserInteractionActive] & 1) == 0)
+  coordinatorCopy = coordinator;
+  changeCopy = change;
+  if (([coordinatorCopy isUserInteractionActive] & 1) == 0)
   {
-    NSLog(&cfstr_ReceivedAValue.isa, v7);
+    NSLog(&cfstr_ReceivedAValue.isa, coordinatorCopy);
   }
 
-  v9 = [(HUQuickControlColorViewController *)self controlToViewValueTransformer];
-  v10 = [v9 valueForTransformedValue:v8];
+  controlToViewValueTransformer = [(HUQuickControlColorViewController *)self controlToViewValueTransformer];
+  v10 = [controlToViewValueTransformer valueForTransformedValue:changeCopy];
 
   objc_opt_class();
   v11 = v10;
@@ -311,36 +311,36 @@ id __66__HUQuickControlColorViewController_controlToViewValueTransformer__block_
 
   if (v13)
   {
-    v17 = [(HUQuickControlSingleControlViewController *)self controlItem];
-    [v17 setNaturalLightingEnabled:0];
+    controlItem = [(HUQuickControlSingleControlViewController *)self controlItem];
+    [controlItem setNaturalLightingEnabled:0];
 
     v20.receiver = self;
     v20.super_class = HUQuickControlColorViewController;
-    [(HUQuickControlSingleControlViewController *)&v20 interactionCoordinator:v7 viewValueDidChange:v8];
+    [(HUQuickControlSingleControlViewController *)&v20 interactionCoordinator:coordinatorCopy viewValueDidChange:changeCopy];
   }
 
   else if (v16)
   {
-    v18 = [(HUQuickControlSingleControlViewController *)self controlItem];
-    [v18 setNaturalLightingEnabled:1];
+    controlItem2 = [(HUQuickControlSingleControlViewController *)self controlItem];
+    [controlItem2 setNaturalLightingEnabled:1];
   }
 
   else
   {
-    v19 = [MEMORY[0x277CCA890] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"HUQuickControlColorViewController.m" lineNumber:205 description:{@"Unknown color value: %@", v14}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HUQuickControlColorViewController.m" lineNumber:205 description:{@"Unknown color value: %@", v14}];
   }
 }
 
-- (void)didSelectColorAtIndexPath:(id)a3
+- (void)didSelectColorAtIndexPath:(id)path
 {
-  v8 = a3;
+  pathCopy = path;
   objc_opt_class();
-  v4 = [(HUQuickControlSingleControlViewController *)self interactionCoordinator];
-  v5 = [v4 controlView];
+  interactionCoordinator = [(HUQuickControlSingleControlViewController *)self interactionCoordinator];
+  controlView = [interactionCoordinator controlView];
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = controlView;
   }
 
   else
@@ -352,7 +352,7 @@ id __66__HUQuickControlColorViewController_controlToViewValueTransformer__block_
 
   if (v7 && ![v7 mode])
   {
-    [v7 updateSelectedColorIndexPathToIndexPath:v8];
+    [v7 updateSelectedColorIndexPathToIndexPath:pathCopy];
   }
 }
 
@@ -363,18 +363,18 @@ id __66__HUQuickControlColorViewController_controlToViewValueTransformer__block_
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412546;
-    v8 = self;
+    selfCopy = self;
     v9 = 2080;
     v10 = "[HUQuickControlColorViewController cancelButtonTapped]";
     _os_log_impl(&dword_20CEB6000, v3, OS_LOG_TYPE_DEFAULT, "%@:%s User tapped cancel button", &v7, 0x16u);
   }
 
-  v4 = [(HUQuickControlSingleControlViewController *)self interactionCoordinator];
-  [v4 cancelButtonTappedToDismissColorViewController];
+  interactionCoordinator = [(HUQuickControlSingleControlViewController *)self interactionCoordinator];
+  [interactionCoordinator cancelButtonTappedToDismissColorViewController];
 
-  v5 = [(HUQuickControlColorViewController *)self colorViewController];
-  v6 = [v5 interactionCoordinator];
-  [v6 cancelButtonTappedToDismissColorViewController];
+  colorViewController = [(HUQuickControlColorViewController *)self colorViewController];
+  interactionCoordinator2 = [colorViewController interactionCoordinator];
+  [interactionCoordinator2 cancelButtonTappedToDismissColorViewController];
 
   [(HUQuickControlColorViewController *)self dismissViewControllerAnimated:1 completion:0];
 }
@@ -386,17 +386,17 @@ id __66__HUQuickControlColorViewController_controlToViewValueTransformer__block_
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v20 = 138412546;
-    v21 = self;
+    selfCopy = self;
     v22 = 2080;
     v23 = "[HUQuickControlColorViewController doneButtonTapped]";
     _os_log_impl(&dword_20CEB6000, v3, OS_LOG_TYPE_DEFAULT, "%@:%s User tapped done button", &v20, 0x16u);
   }
 
   objc_opt_class();
-  v4 = [(HUQuickControlSingleControlViewController *)self interactionCoordinator];
+  interactionCoordinator = [(HUQuickControlSingleControlViewController *)self interactionCoordinator];
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = interactionCoordinator;
   }
 
   else
@@ -420,10 +420,10 @@ id __66__HUQuickControlColorViewController_controlToViewValueTransformer__block_
   v9 = v8;
 
   objc_opt_class();
-  v10 = [v9 controlView];
+  controlView = [v9 controlView];
   if (objc_opt_isKindOfClass())
   {
-    v11 = v10;
+    v11 = controlView;
   }
 
   else
@@ -434,12 +434,12 @@ id __66__HUQuickControlColorViewController_controlToViewValueTransformer__block_
   v12 = v11;
 
   objc_opt_class();
-  v13 = [(HUQuickControlColorViewController *)self colorViewController];
-  v14 = [v13 interactionCoordinator];
-  v15 = [v14 controlView];
+  colorViewController = [(HUQuickControlColorViewController *)self colorViewController];
+  interactionCoordinator2 = [colorViewController interactionCoordinator];
+  controlView2 = [interactionCoordinator2 controlView];
   if (objc_opt_isKindOfClass())
   {
-    v16 = v15;
+    v16 = controlView2;
   }
 
   else
@@ -449,13 +449,13 @@ id __66__HUQuickControlColorViewController_controlToViewValueTransformer__block_
 
   v17 = v16;
 
-  v18 = [v17 colorPalette];
+  colorPalette = [v17 colorPalette];
 
   if (v9)
   {
     if (v12)
     {
-      v19 = v18 == 0;
+      v19 = colorPalette == 0;
     }
 
     else
@@ -465,33 +465,33 @@ id __66__HUQuickControlColorViewController_controlToViewValueTransformer__block_
 
     if (!v19)
     {
-      [v9 controlView:v12 colorPaletteDidChange:v18];
+      [v9 controlView:v12 colorPaletteDidChange:colorPalette];
     }
   }
 
   [(HUQuickControlColorViewController *)self dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)quickControlItemUpdater:(id)a3 didUpdateResultsForControlItems:(id)a4
+- (void)quickControlItemUpdater:(id)updater didUpdateResultsForControlItems:(id)items
 {
-  v6 = a3;
-  v7 = a4;
+  updaterCopy = updater;
+  itemsCopy = items;
   v10.receiver = self;
   v10.super_class = HUQuickControlColorViewController;
-  [(HUQuickControlSingleControlViewController *)&v10 quickControlItemUpdater:v6 didUpdateResultsForControlItems:v7];
-  v8 = [(HUQuickControlColorViewController *)self colorViewController];
+  [(HUQuickControlSingleControlViewController *)&v10 quickControlItemUpdater:updaterCopy didUpdateResultsForControlItems:itemsCopy];
+  colorViewController = [(HUQuickControlColorViewController *)self colorViewController];
 
-  if (v8)
+  if (colorViewController)
   {
-    v9 = [(HUQuickControlColorViewController *)self colorViewController];
-    [v9 quickControlItemUpdater:v6 didUpdateResultsForControlItems:v7];
+    colorViewController2 = [(HUQuickControlColorViewController *)self colorViewController];
+    [colorViewController2 quickControlItemUpdater:updaterCopy didUpdateResultsForControlItems:itemsCopy];
   }
 }
 
 - (CGSize)preferredContentSize
 {
-  v2 = [(HUQuickControlColorViewController *)self presentingViewController];
-  [v2 preferredContentSize];
+  presentingViewController = [(HUQuickControlColorViewController *)self presentingViewController];
+  [presentingViewController preferredContentSize];
   v4 = v3;
   v6 = v5;
 

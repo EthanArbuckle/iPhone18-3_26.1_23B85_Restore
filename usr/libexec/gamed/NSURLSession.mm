@@ -1,6 +1,6 @@
 @interface NSURLSession
 + (id)_gkForGameDaemonProcess;
-+ (void)_gkSendAsynchronousRequest:(id)a3 preconnect:(BOOL)a4 completionHandler:(id)a5;
++ (void)_gkSendAsynchronousRequest:(id)request preconnect:(BOOL)preconnect completionHandler:(id)handler;
 @end
 
 @implementation NSURLSession
@@ -17,10 +17,10 @@
   return v3;
 }
 
-+ (void)_gkSendAsynchronousRequest:(id)a3 preconnect:(BOOL)a4 completionHandler:(id)a5
++ (void)_gkSendAsynchronousRequest:(id)request preconnect:(BOOL)preconnect completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  requestCopy = request;
+  handlerCopy = handler;
   if (qword_1003B9170 != -1)
   {
     sub_10028D044();
@@ -31,12 +31,12 @@
   v13[1] = 3221225472;
   v13[2] = sub_1000EFE2C;
   v13[3] = &unk_100366588;
-  v15 = v9;
-  v16 = a1;
-  v14 = v8;
-  v17 = a4;
-  v11 = v9;
-  v12 = v8;
+  v15 = handlerCopy;
+  selfCopy = self;
+  v14 = requestCopy;
+  preconnectCopy = preconnect;
+  v11 = handlerCopy;
+  v12 = requestCopy;
   dispatch_async(v10, v13);
 }
 

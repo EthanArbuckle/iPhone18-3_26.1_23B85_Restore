@@ -1,69 +1,69 @@
 @interface MAAutoAssetSet
 + (id)_privateStateQueue;
 + (id)defaultDispatchQueue;
-+ (id)endAtomicLocksSync:(id)a3 usingClientDomain:(id)a4 forClientName:(id)a5 forAssetSetIdentifier:(id)a6 ofAtomicInstance:(id)a7 removingLockCount:(int64_t)a8;
++ (id)endAtomicLocksSync:(id)sync usingClientDomain:(id)domain forClientName:(id)name forAssetSetIdentifier:(id)identifier ofAtomicInstance:(id)instance removingLockCount:(int64_t)count;
 + (id)frameworkInstanceUUID;
-+ (void)endAtomicLocks:(id)a3 usingClientDomain:(id)a4 forClientName:(id)a5 forAssetSetIdentifier:(id)a6 ofAtomicInstance:(id)a7 removingLockCount:(int64_t)a8 completion:(id)a9;
++ (void)endAtomicLocks:(id)locks usingClientDomain:(id)domain forClientName:(id)name forAssetSetIdentifier:(id)identifier ofAtomicInstance:(id)instance removingLockCount:(int64_t)count completion:(id)completion;
 + (void)frameworkInstanceSetLogDomain;
-- (MAAutoAssetSet)initWithCoder:(id)a3;
-- (id)_endAtomicLocksSync:(id)a3 usingClientDomain:(id)a4 forClientName:(id)a5 forAssetSetIdentifier:(id)a6 ofAtomicInstance:(id)a7 removingLockCount:(int64_t)a8;
-- (id)_newProxyObjectForSetProgressBlock:(id)a3 withLogMessage:(id)a4;
-- (id)_readLockedSetStatusFromSharedLockFile:(id)a3 error:(id *)a4;
-- (id)alterEntriesRepresentingAtomicSync:(id)a3 toBeComprisedOfEntries:(id)a4 withNeedPolicy:(id)a5;
-- (id)assetSetForStagingSync:(id)a3 asEntriesWhenTargeting:(id)a4;
-- (id)checkAtomicSync:(id)a3 forAtomicInstance:(id)a4 awaitingDownload:(BOOL)a5 withNeedPolicy:(id)a6 withTimeout:(int64_t)a7 discoveredAtomicEntries:(id *)a8 error:(id *)a9 reportingProgress:(id)a10;
-- (id)continueAtomicLockSync:(id)a3 ofAtomicInstance:(id)a4 withNeedPolicy:(id)a5;
-- (id)currentSetStatusSync:(id *)a3;
-- (id)endAtomicLockSync:(id)a3 ofAtomicInstance:(id)a4;
-- (id)formSubAtomicInstanceSync:(id)a3 fromAtomicInstance:(id)a4 toBeComprisedOfEntries:(id)a5 error:(id *)a6;
-- (id)initLockerUsingClientDomain:(id)a3 forAssetSetIdentifier:(id)a4 error:(id *)a5;
-- (id)initUsingClientDomain:(id)a3 forClientName:(id)a4 forAssetSetIdentifier:(id)a5 asShortTermLocker:(BOOL)a6 comprisedOfEntries:(id)a7 usingDesiredPolicyCategory:(id)a8 completingFromQueue:(id)a9 error:(id *)a10;
-- (id)initUsingClientDomain:(id)a3 forClientName:(id)a4 forAssetSetIdentifier:(id)a5 comprisedOfEntries:(id)a6 error:(id *)a7;
-- (id)initUsingClientDomain:(id)a3 forClientName:(id)a4 forAssetSetIdentifier:(id)a5 comprisedOfEntries:(id)a6 usingDesiredPolicyCategory:(id)a7 error:(id *)a8;
-- (id)lockAtomicSync:(id)a3 forAtomicInstance:(id)a4 withNeedPolicy:(id)a5 withTimeout:(int64_t)a6 lockedAtomicEntries:(id *)a7 error:(id *)a8 reportingProgress:(id)a9;
-- (id)mapLockedAtomicEntrySync:(id)a3 forAtomicInstance:(id)a4 mappingSelector:(id)a5 mappedSelector:(id *)a6;
-- (id)needForAtomicSync:(id)a3 withNeedPolicy:(id)a4;
+- (MAAutoAssetSet)initWithCoder:(id)coder;
+- (id)_endAtomicLocksSync:(id)sync usingClientDomain:(id)domain forClientName:(id)name forAssetSetIdentifier:(id)identifier ofAtomicInstance:(id)instance removingLockCount:(int64_t)count;
+- (id)_newProxyObjectForSetProgressBlock:(id)block withLogMessage:(id)message;
+- (id)_readLockedSetStatusFromSharedLockFile:(id)file error:(id *)error;
+- (id)alterEntriesRepresentingAtomicSync:(id)sync toBeComprisedOfEntries:(id)entries withNeedPolicy:(id)policy;
+- (id)assetSetForStagingSync:(id)sync asEntriesWhenTargeting:(id)targeting;
+- (id)checkAtomicSync:(id)sync forAtomicInstance:(id)instance awaitingDownload:(BOOL)download withNeedPolicy:(id)policy withTimeout:(int64_t)timeout discoveredAtomicEntries:(id *)entries error:(id *)error reportingProgress:(id)self0;
+- (id)continueAtomicLockSync:(id)sync ofAtomicInstance:(id)instance withNeedPolicy:(id)policy;
+- (id)currentSetStatusSync:(id *)sync;
+- (id)endAtomicLockSync:(id)sync ofAtomicInstance:(id)instance;
+- (id)formSubAtomicInstanceSync:(id)sync fromAtomicInstance:(id)instance toBeComprisedOfEntries:(id)entries error:(id *)error;
+- (id)initLockerUsingClientDomain:(id)domain forAssetSetIdentifier:(id)identifier error:(id *)error;
+- (id)initUsingClientDomain:(id)domain forClientName:(id)name forAssetSetIdentifier:(id)identifier asShortTermLocker:(BOOL)locker comprisedOfEntries:(id)entries usingDesiredPolicyCategory:(id)category completingFromQueue:(id)queue error:(id *)self0;
+- (id)initUsingClientDomain:(id)domain forClientName:(id)name forAssetSetIdentifier:(id)identifier comprisedOfEntries:(id)entries error:(id *)error;
+- (id)initUsingClientDomain:(id)domain forClientName:(id)name forAssetSetIdentifier:(id)identifier comprisedOfEntries:(id)entries usingDesiredPolicyCategory:(id)category error:(id *)error;
+- (id)lockAtomicSync:(id)sync forAtomicInstance:(id)instance withNeedPolicy:(id)policy withTimeout:(int64_t)timeout lockedAtomicEntries:(id *)entries error:(id *)error reportingProgress:(id)progress;
+- (id)mapLockedAtomicEntrySync:(id)sync forAtomicInstance:(id)instance mappingSelector:(id)selector mappedSelector:(id *)mappedSelector;
+- (id)needForAtomicSync:(id)sync withNeedPolicy:(id)policy;
 - (id)summary;
-- (int)_shortTermOpenSharedLockFile:(id)a3 lockingAtomicInstance:(id)a4 forLockReason:(id)a5 verifyingLocalContentURLs:(BOOL)a6 openingFilename:(id)a7 providingLockedSetStatus:(id *)a8 sharedLockError:(id *)a9;
-- (void)_alterEntriesRepresentingAtomic:(id)a3 toBeComprisedOfEntries:(id)a4 withNeedPolicy:(id)a5 isSynchronous:(BOOL)a6 completion:(id)a7;
-- (void)_assetSetForStaging:(id)a3 asEntriesWhenTargeting:(id)a4 isSynchronous:(BOOL)a5 completion:(id)a6;
-- (void)_autoSetAtomicOperationStatusProgress:(id)a3 withLogMessage:(id)a4 progressBlock:(id)a5;
-- (void)_checkAtomic:(id)a3 forAtomicInstance:(id)a4 awaitingDownload:(BOOL)a5 withNeedPolicy:(id)a6 withTimeout:(int64_t)a7 reportingProgress:(id)a8 isSynchronous:(BOOL)a9 completion:(id)a10;
-- (void)_closeAndRemoveShortTermLock:(id)a3 forShortTermLock:(id)a4;
-- (void)_continueAtomicLock:(id)a3 ofAtomicInstance:(id)a4 withNeedPolicy:(id)a5 isSynchronous:(BOOL)a6 completion:(id)a7;
-- (void)_eliminateAtomic:(id)a3 awaitingUnlocked:(BOOL)a4 isSynchronous:(BOOL)a5 completion:(id)a6;
-- (void)_endAtomicLocks:(id)a3 usingClientDomain:(id)a4 forClientName:(id)a5 forAssetSetIdentifier:(id)a6 ofAtomicInstance:(id)a7 removingLockCount:(int64_t)a8 isSynchronous:(BOOL)a9 completion:(id)a10;
-- (void)_failedCheckAtomic:(id)a3 forAssetSetIdentifier:(id)a4 withErrorCode:(int64_t)a5 withResponseError:(id)a6 description:(id)a7 isSynchronous:(BOOL)a8 completion:(id)a9;
-- (void)_failedCurrentSetStatus:(id)a3 forAssetSetIdentifier:(id)a4 withErrorCode:(int64_t)a5 withResponseError:(id)a6 description:(id)a7 isSynchronous:(BOOL)a8 completion:(id)a9;
-- (void)_failedFormSubAtomicInstance:(id)a3 withErrorCode:(int64_t)a4 withResponseError:(id)a5 description:(id)a6 isSynchronous:(BOOL)a7 completion:(id)a8;
-- (void)_failedLockAtomic:(id)a3 forAssetSetIdentifier:(id)a4 withErrorCode:(int64_t)a5 withResponseError:(id)a6 description:(id)a7 isSynchronous:(BOOL)a8 completion:(id)a9;
-- (void)_failedMapLockedAtomicEntry:(id)a3 forAssetSetIdentifier:(id)a4 withErrorCode:(int64_t)a5 withResponseError:(id)a6 description:(id)a7 isSynchronous:(BOOL)a8 completion:(id)a9;
-- (void)_failedOperation:(id)a3 forAssetSetIdentifier:(id)a4 withErrorCode:(int64_t)a5 withResponseError:(id)a6 description:(id)a7 isSynchronous:(BOOL)a8 completion:(id)a9;
-- (void)_formSubAtomicInstance:(id)a3 fromAtomicInstance:(id)a4 toBeComprisedOfEntries:(id)a5 isSynchronous:(BOOL)a6 completion:(id)a7;
-- (void)_lockAtomic:(id)a3 forAtomicInstance:(id)a4 withNeedPolicy:(id)a5 withTimeout:(int64_t)a6 reportingProgress:(id)a7 isSynchronous:(BOOL)a8 completion:(id)a9;
-- (void)_needForAtomic:(id)a3 withNeedPolicy:(id)a4 isSynchronous:(BOOL)a5 completion:(id)a6;
-- (void)_shortTermCurrentSetStatusIsSynchronous:(BOOL)a3 completion:(id)a4;
-- (void)_shortTermEndAtomicLock:(id)a3 ofAtomicInstance:(id)a4 isSynchronous:(BOOL)a5 completion:(id)a6;
-- (void)_shortTermLockAtomicHelper:(id)a3 forAtomicInstance:(id)a4 performContentValidation:(BOOL)a5 isSynchronous:(BOOL)a6 completionHandler:(id)a7;
-- (void)_shortTermLogResult:(id)a3 forLockReason:(id)a4 forAtomicInstance:(id)a5 atomicInstanceFilename:(id)a6 forShortTermLock:(id)a7 withSetStatus:(id)a8 returningError:(id)a9;
-- (void)_successCheckAtomic:(id)a3 forAssetSetIdentifier:(id)a4 newerInstanceDiscovered:(id)a5 discoveredAtomicEntries:(id)a6 isSynchronous:(BOOL)a7 completion:(id)a8;
-- (void)_successCurrentSetStatus:(id)a3 forAssetSetIdentifier:(id)a4 withAssetSetStatus:(id)a5 isSynchronous:(BOOL)a6 completion:(id)a7;
-- (void)_successFormSubAtomicInstance:(id)a3 formedSubAtomicInstance:(id)a4 isSynchronous:(BOOL)a5 completion:(id)a6;
-- (void)_successLockAtomic:(id)a3 forAssetSetIdentifier:(id)a4 lockedAtomicInstance:(id)a5 lockedAtomicEntries:(id)a6 sandboxExtension:(id)a7 sandboxExtensionPath:(id)a8 isSynchronous:(BOOL)a9 completion:(id)a10;
-- (void)_successMapLockedAtomicEntry:(id)a3 forAtomicInstance:(id)a4 forMappedSelector:(id)a5 isSynchronous:(BOOL)a6 completion:(id)a7;
-- (void)_successOperation:(id)a3 forAssetSetIdentifier:(id)a4 isSynchronous:(BOOL)a5 completion:(id)a6;
-- (void)alterEntriesRepresentingAtomic:(id)a3 toBeComprisedOfEntries:(id)a4 withNeedPolicy:(id)a5 completion:(id)a6;
-- (void)assetSetForStaging:(id)a3 asEntriesWhenTargeting:(id)a4 completion:(id)a5;
-- (void)connectToServerFrameworkCompletion:(id)a3;
-- (void)continueAtomicLock:(id)a3 ofAtomicInstance:(id)a4 withNeedPolicy:(id)a5 completion:(id)a6;
-- (void)currentSetStatus:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)endAtomicLock:(id)a3 ofAtomicInstance:(id)a4 completion:(id)a5;
-- (void)formSubAtomicInstance:(id)a3 fromAtomicInstance:(id)a4 toBeComprisedOfEntries:(id)a5 completion:(id)a6;
-- (void)lockAtomic:(id)a3 forAtomicInstance:(id)a4 completion:(id)a5;
-- (void)lockAtomic:(id)a3 forAtomicInstance:(id)a4 withNeedPolicy:(id)a5 withTimeout:(int64_t)a6 reportingProgress:(id)a7 completion:(id)a8;
-- (void)mapLockedAtomicEntry:(id)a3 forAtomicInstance:(id)a4 mappingSelector:(id)a5 completion:(id)a6;
-- (void)needForAtomic:(id)a3 withNeedPolicy:(id)a4 completion:(id)a5;
+- (int)_shortTermOpenSharedLockFile:(id)file lockingAtomicInstance:(id)instance forLockReason:(id)reason verifyingLocalContentURLs:(BOOL)ls openingFilename:(id)filename providingLockedSetStatus:(id *)status sharedLockError:(id *)error;
+- (void)_alterEntriesRepresentingAtomic:(id)atomic toBeComprisedOfEntries:(id)entries withNeedPolicy:(id)policy isSynchronous:(BOOL)synchronous completion:(id)completion;
+- (void)_assetSetForStaging:(id)staging asEntriesWhenTargeting:(id)targeting isSynchronous:(BOOL)synchronous completion:(id)completion;
+- (void)_autoSetAtomicOperationStatusProgress:(id)progress withLogMessage:(id)message progressBlock:(id)block;
+- (void)_checkAtomic:(id)atomic forAtomicInstance:(id)instance awaitingDownload:(BOOL)download withNeedPolicy:(id)policy withTimeout:(int64_t)timeout reportingProgress:(id)progress isSynchronous:(BOOL)synchronous completion:(id)self0;
+- (void)_closeAndRemoveShortTermLock:(id)lock forShortTermLock:(id)termLock;
+- (void)_continueAtomicLock:(id)lock ofAtomicInstance:(id)instance withNeedPolicy:(id)policy isSynchronous:(BOOL)synchronous completion:(id)completion;
+- (void)_eliminateAtomic:(id)atomic awaitingUnlocked:(BOOL)unlocked isSynchronous:(BOOL)synchronous completion:(id)completion;
+- (void)_endAtomicLocks:(id)locks usingClientDomain:(id)domain forClientName:(id)name forAssetSetIdentifier:(id)identifier ofAtomicInstance:(id)instance removingLockCount:(int64_t)count isSynchronous:(BOOL)synchronous completion:(id)self0;
+- (void)_failedCheckAtomic:(id)atomic forAssetSetIdentifier:(id)identifier withErrorCode:(int64_t)code withResponseError:(id)error description:(id)description isSynchronous:(BOOL)synchronous completion:(id)completion;
+- (void)_failedCurrentSetStatus:(id)status forAssetSetIdentifier:(id)identifier withErrorCode:(int64_t)code withResponseError:(id)error description:(id)description isSynchronous:(BOOL)synchronous completion:(id)completion;
+- (void)_failedFormSubAtomicInstance:(id)instance withErrorCode:(int64_t)code withResponseError:(id)error description:(id)description isSynchronous:(BOOL)synchronous completion:(id)completion;
+- (void)_failedLockAtomic:(id)atomic forAssetSetIdentifier:(id)identifier withErrorCode:(int64_t)code withResponseError:(id)error description:(id)description isSynchronous:(BOOL)synchronous completion:(id)completion;
+- (void)_failedMapLockedAtomicEntry:(id)entry forAssetSetIdentifier:(id)identifier withErrorCode:(int64_t)code withResponseError:(id)error description:(id)description isSynchronous:(BOOL)synchronous completion:(id)completion;
+- (void)_failedOperation:(id)operation forAssetSetIdentifier:(id)identifier withErrorCode:(int64_t)code withResponseError:(id)error description:(id)description isSynchronous:(BOOL)synchronous completion:(id)completion;
+- (void)_formSubAtomicInstance:(id)instance fromAtomicInstance:(id)atomicInstance toBeComprisedOfEntries:(id)entries isSynchronous:(BOOL)synchronous completion:(id)completion;
+- (void)_lockAtomic:(id)atomic forAtomicInstance:(id)instance withNeedPolicy:(id)policy withTimeout:(int64_t)timeout reportingProgress:(id)progress isSynchronous:(BOOL)synchronous completion:(id)completion;
+- (void)_needForAtomic:(id)atomic withNeedPolicy:(id)policy isSynchronous:(BOOL)synchronous completion:(id)completion;
+- (void)_shortTermCurrentSetStatusIsSynchronous:(BOOL)synchronous completion:(id)completion;
+- (void)_shortTermEndAtomicLock:(id)lock ofAtomicInstance:(id)instance isSynchronous:(BOOL)synchronous completion:(id)completion;
+- (void)_shortTermLockAtomicHelper:(id)helper forAtomicInstance:(id)instance performContentValidation:(BOOL)validation isSynchronous:(BOOL)synchronous completionHandler:(id)handler;
+- (void)_shortTermLogResult:(id)result forLockReason:(id)reason forAtomicInstance:(id)instance atomicInstanceFilename:(id)filename forShortTermLock:(id)lock withSetStatus:(id)status returningError:(id)error;
+- (void)_successCheckAtomic:(id)atomic forAssetSetIdentifier:(id)identifier newerInstanceDiscovered:(id)discovered discoveredAtomicEntries:(id)entries isSynchronous:(BOOL)synchronous completion:(id)completion;
+- (void)_successCurrentSetStatus:(id)status forAssetSetIdentifier:(id)identifier withAssetSetStatus:(id)setStatus isSynchronous:(BOOL)synchronous completion:(id)completion;
+- (void)_successFormSubAtomicInstance:(id)instance formedSubAtomicInstance:(id)atomicInstance isSynchronous:(BOOL)synchronous completion:(id)completion;
+- (void)_successLockAtomic:(id)atomic forAssetSetIdentifier:(id)identifier lockedAtomicInstance:(id)instance lockedAtomicEntries:(id)entries sandboxExtension:(id)extension sandboxExtensionPath:(id)path isSynchronous:(BOOL)synchronous completion:(id)self0;
+- (void)_successMapLockedAtomicEntry:(id)entry forAtomicInstance:(id)instance forMappedSelector:(id)selector isSynchronous:(BOOL)synchronous completion:(id)completion;
+- (void)_successOperation:(id)operation forAssetSetIdentifier:(id)identifier isSynchronous:(BOOL)synchronous completion:(id)completion;
+- (void)alterEntriesRepresentingAtomic:(id)atomic toBeComprisedOfEntries:(id)entries withNeedPolicy:(id)policy completion:(id)completion;
+- (void)assetSetForStaging:(id)staging asEntriesWhenTargeting:(id)targeting completion:(id)completion;
+- (void)connectToServerFrameworkCompletion:(id)completion;
+- (void)continueAtomicLock:(id)lock ofAtomicInstance:(id)instance withNeedPolicy:(id)policy completion:(id)completion;
+- (void)currentSetStatus:(id)status;
+- (void)encodeWithCoder:(id)coder;
+- (void)endAtomicLock:(id)lock ofAtomicInstance:(id)instance completion:(id)completion;
+- (void)formSubAtomicInstance:(id)instance fromAtomicInstance:(id)atomicInstance toBeComprisedOfEntries:(id)entries completion:(id)completion;
+- (void)lockAtomic:(id)atomic forAtomicInstance:(id)instance completion:(id)completion;
+- (void)lockAtomic:(id)atomic forAtomicInstance:(id)instance withNeedPolicy:(id)policy withTimeout:(int64_t)timeout reportingProgress:(id)progress completion:(id)completion;
+- (void)mapLockedAtomicEntry:(id)entry forAtomicInstance:(id)instance mappingSelector:(id)selector completion:(id)completion;
+- (void)needForAtomic:(id)atomic withNeedPolicy:(id)policy completion:(id)completion;
 @end
 
 @implementation MAAutoAssetSet
@@ -128,50 +128,50 @@ void __36__MAAutoAssetSet__privateStateQueue__block_invoke()
   return v3;
 }
 
-- (id)initUsingClientDomain:(id)a3 forClientName:(id)a4 forAssetSetIdentifier:(id)a5 comprisedOfEntries:(id)a6 error:(id *)a7
+- (id)initUsingClientDomain:(id)domain forClientName:(id)name forAssetSetIdentifier:(id)identifier comprisedOfEntries:(id)entries error:(id *)error
 {
-  v12 = a6;
-  v13 = a5;
-  v14 = a4;
-  v15 = a3;
+  entriesCopy = entries;
+  identifierCopy = identifier;
+  nameCopy = name;
+  domainCopy = domain;
   v16 = +[MAAutoAssetSet defaultDispatchQueue];
-  v17 = [(MAAutoAssetSet *)self initUsingClientDomain:v15 forClientName:v14 forAssetSetIdentifier:v13 asShortTermLocker:0 comprisedOfEntries:v12 usingDesiredPolicyCategory:0 completingFromQueue:v16 error:a7];
+  v17 = [(MAAutoAssetSet *)self initUsingClientDomain:domainCopy forClientName:nameCopy forAssetSetIdentifier:identifierCopy asShortTermLocker:0 comprisedOfEntries:entriesCopy usingDesiredPolicyCategory:0 completingFromQueue:v16 error:error];
 
   return v17;
 }
 
-- (id)initUsingClientDomain:(id)a3 forClientName:(id)a4 forAssetSetIdentifier:(id)a5 comprisedOfEntries:(id)a6 usingDesiredPolicyCategory:(id)a7 error:(id *)a8
+- (id)initUsingClientDomain:(id)domain forClientName:(id)name forAssetSetIdentifier:(id)identifier comprisedOfEntries:(id)entries usingDesiredPolicyCategory:(id)category error:(id *)error
 {
-  v14 = a7;
-  v15 = a6;
-  v16 = a5;
-  v17 = a4;
-  v18 = a3;
+  categoryCopy = category;
+  entriesCopy = entries;
+  identifierCopy = identifier;
+  nameCopy = name;
+  domainCopy = domain;
   v19 = +[MAAutoAssetSet defaultDispatchQueue];
-  v20 = [(MAAutoAssetSet *)self initUsingClientDomain:v18 forClientName:v17 forAssetSetIdentifier:v16 asShortTermLocker:0 comprisedOfEntries:v15 usingDesiredPolicyCategory:v14 completingFromQueue:v19 error:a8];
+  v20 = [(MAAutoAssetSet *)self initUsingClientDomain:domainCopy forClientName:nameCopy forAssetSetIdentifier:identifierCopy asShortTermLocker:0 comprisedOfEntries:entriesCopy usingDesiredPolicyCategory:categoryCopy completingFromQueue:v19 error:error];
 
   return v20;
 }
 
-- (id)initLockerUsingClientDomain:(id)a3 forAssetSetIdentifier:(id)a4 error:(id *)a5
+- (id)initLockerUsingClientDomain:(id)domain forAssetSetIdentifier:(id)identifier error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
+  identifierCopy = identifier;
+  domainCopy = domain;
   v10 = +[MAAutoAssetSet defaultDispatchQueue];
-  v11 = [(MAAutoAssetSet *)self initUsingClientDomain:v9 forClientName:@"SHORT_TERM_LOCKER" forAssetSetIdentifier:v8 asShortTermLocker:1 comprisedOfEntries:0 usingDesiredPolicyCategory:0 completingFromQueue:v10 error:a5];
+  v11 = [(MAAutoAssetSet *)self initUsingClientDomain:domainCopy forClientName:@"SHORT_TERM_LOCKER" forAssetSetIdentifier:identifierCopy asShortTermLocker:1 comprisedOfEntries:0 usingDesiredPolicyCategory:0 completingFromQueue:v10 error:error];
 
   return v11;
 }
 
-- (id)initUsingClientDomain:(id)a3 forClientName:(id)a4 forAssetSetIdentifier:(id)a5 asShortTermLocker:(BOOL)a6 comprisedOfEntries:(id)a7 usingDesiredPolicyCategory:(id)a8 completingFromQueue:(id)a9 error:(id *)a10
+- (id)initUsingClientDomain:(id)domain forClientName:(id)name forAssetSetIdentifier:(id)identifier asShortTermLocker:(BOOL)locker comprisedOfEntries:(id)entries usingDesiredPolicyCategory:(id)category completingFromQueue:(id)queue error:(id *)self0
 {
-  v12 = a6;
-  v17 = a3;
-  v30 = a4;
-  v29 = a5;
-  v28 = a7;
-  v27 = a8;
-  v18 = a9;
+  lockerCopy = locker;
+  domainCopy = domain;
+  nameCopy = name;
+  identifierCopy = identifier;
+  entriesCopy = entries;
+  categoryCopy = category;
+  queueCopy = queue;
   v31.receiver = self;
   v31.super_class = MAAutoAssetSet;
   v19 = [(MAAutoAssetSet *)&v31 init];
@@ -182,16 +182,16 @@ void __36__MAAutoAssetSet__privateStateQueue__block_invoke()
   }
 
   +[MAAutoAssetSet frameworkInstanceSetLogDomain];
-  objc_storeStrong(&v19->_clientDomainName, a3);
-  objc_storeStrong(&v19->_autoAssetSetClientName, a4);
-  objc_storeStrong(&v19->_assetSetIdentifier, a5);
-  v19->_shortTermLocker = v12;
-  objc_storeStrong(&v19->_autoAssetEntries, a7);
-  objc_storeStrong(&v19->_updateCategoryDesiredByClient, a8);
+  objc_storeStrong(&v19->_clientDomainName, domain);
+  objc_storeStrong(&v19->_autoAssetSetClientName, name);
+  objc_storeStrong(&v19->_assetSetIdentifier, identifier);
+  v19->_shortTermLocker = lockerCopy;
+  objc_storeStrong(&v19->_autoAssetEntries, entries);
+  objc_storeStrong(&v19->_updateCategoryDesiredByClient, category);
   +[MAAutoAssetError mapAutoAssetErrorIndications];
-  if (v18)
+  if (queueCopy)
   {
-    v20 = v18;
+    v20 = queueCopy;
   }
 
   else
@@ -202,7 +202,7 @@ void __36__MAAutoAssetSet__privateStateQueue__block_invoke()
   completionDispatchQueue = v19->_completionDispatchQueue;
   v19->_completionDispatchQueue = v20;
 
-  if (!v12)
+  if (!lockerCopy)
   {
     if (v19->_completionDispatchQueue)
     {
@@ -241,10 +241,10 @@ LABEL_17:
 LABEL_14:
   v24 = 0;
 LABEL_18:
-  if (a10)
+  if (error)
   {
     v25 = v24;
-    *a10 = v24;
+    *error = v24;
   }
 
   if (v24)
@@ -273,10 +273,10 @@ uint64_t __166__MAAutoAssetSet_initUsingClientDomain_forClientName_forAssetSetId
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (MAAutoAssetSet)initWithCoder:(id)a3
+- (MAAutoAssetSet)initWithCoder:(id)coder
 {
   v22[4] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v21.receiver = self;
   v21.super_class = MAAutoAssetSet;
   v5 = [(MAAutoAssetSet *)&v21 init];
@@ -290,24 +290,24 @@ uint64_t __166__MAAutoAssetSet_initUsingClientDomain_forClientName_forAssetSetId
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:4];
     v8 = [v6 setWithArray:v7];
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"clientDomainName"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"clientDomainName"];
     clientDomainName = v5->_clientDomainName;
     v5->_clientDomainName = v9;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"autoAssetSetClientName"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"autoAssetSetClientName"];
     autoAssetSetClientName = v5->_autoAssetSetClientName;
     v5->_autoAssetSetClientName = v11;
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"assetSetIdentifier"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"assetSetIdentifier"];
     assetSetIdentifier = v5->_assetSetIdentifier;
     v5->_assetSetIdentifier = v13;
 
-    v5->_shortTermLocker = [v4 decodeBoolForKey:@"shortTermLocker"];
-    v15 = [v4 decodeObjectOfClasses:v8 forKey:@"autoAssetEntries"];
+    v5->_shortTermLocker = [coderCopy decodeBoolForKey:@"shortTermLocker"];
+    v15 = [coderCopy decodeObjectOfClasses:v8 forKey:@"autoAssetEntries"];
     autoAssetEntries = v5->_autoAssetEntries;
     v5->_autoAssetEntries = v15;
 
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"updateCategoryDesiredByClient"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"updateCategoryDesiredByClient"];
     updateCategoryDesiredByClient = v5->_updateCategoryDesiredByClient;
     v5->_updateCategoryDesiredByClient = v17;
   }
@@ -316,37 +316,37 @@ uint64_t __166__MAAutoAssetSet_initUsingClientDomain_forClientName_forAssetSetId
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(MAAutoAssetSet *)self clientDomainName];
-  [v4 encodeObject:v5 forKey:@"clientDomainName"];
+  coderCopy = coder;
+  clientDomainName = [(MAAutoAssetSet *)self clientDomainName];
+  [coderCopy encodeObject:clientDomainName forKey:@"clientDomainName"];
 
-  v6 = [(MAAutoAssetSet *)self autoAssetSetClientName];
-  [v4 encodeObject:v6 forKey:@"autoAssetSetClientName"];
+  autoAssetSetClientName = [(MAAutoAssetSet *)self autoAssetSetClientName];
+  [coderCopy encodeObject:autoAssetSetClientName forKey:@"autoAssetSetClientName"];
 
-  v7 = [(MAAutoAssetSet *)self assetSetIdentifier];
-  [v4 encodeObject:v7 forKey:@"assetSetIdentifier"];
+  assetSetIdentifier = [(MAAutoAssetSet *)self assetSetIdentifier];
+  [coderCopy encodeObject:assetSetIdentifier forKey:@"assetSetIdentifier"];
 
-  [v4 encodeBool:-[MAAutoAssetSet shortTermLocker](self forKey:{"shortTermLocker"), @"shortTermLocker"}];
-  v8 = [(MAAutoAssetSet *)self autoAssetEntries];
-  [v4 encodeObject:v8 forKey:@"autoAssetEntries"];
+  [coderCopy encodeBool:-[MAAutoAssetSet shortTermLocker](self forKey:{"shortTermLocker"), @"shortTermLocker"}];
+  autoAssetEntries = [(MAAutoAssetSet *)self autoAssetEntries];
+  [coderCopy encodeObject:autoAssetEntries forKey:@"autoAssetEntries"];
 
-  v9 = [(MAAutoAssetSet *)self updateCategoryDesiredByClient];
-  [v4 encodeObject:v9 forKey:@"updateCategoryDesiredByClient"];
+  updateCategoryDesiredByClient = [(MAAutoAssetSet *)self updateCategoryDesiredByClient];
+  [coderCopy encodeObject:updateCategoryDesiredByClient forKey:@"updateCategoryDesiredByClient"];
 }
 
-- (void)alterEntriesRepresentingAtomic:(id)a3 toBeComprisedOfEntries:(id)a4 withNeedPolicy:(id)a5 completion:(id)a6
+- (void)alterEntriesRepresentingAtomic:(id)atomic toBeComprisedOfEntries:(id)entries withNeedPolicy:(id)policy completion:(id)completion
 {
-  v10 = a6;
+  completionCopy = completion;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __98__MAAutoAssetSet_alterEntriesRepresentingAtomic_toBeComprisedOfEntries_withNeedPolicy_completion___block_invoke;
   v12[3] = &unk_1E74CB200;
   v12[4] = self;
-  v13 = v10;
-  v11 = v10;
-  [(MAAutoAssetSet *)self _alterEntriesRepresentingAtomic:a3 toBeComprisedOfEntries:a4 withNeedPolicy:a5 isSynchronous:0 completion:v12];
+  v13 = completionCopy;
+  v11 = completionCopy;
+  [(MAAutoAssetSet *)self _alterEntriesRepresentingAtomic:atomic toBeComprisedOfEntries:entries withNeedPolicy:policy isSynchronous:0 completion:v12];
 }
 
 void __98__MAAutoAssetSet_alterEntriesRepresentingAtomic_toBeComprisedOfEntries_withNeedPolicy_completion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -381,14 +381,14 @@ uint64_t __98__MAAutoAssetSet_alterEntriesRepresentingAtomic_toBeComprisedOfEntr
   return result;
 }
 
-- (void)_alterEntriesRepresentingAtomic:(id)a3 toBeComprisedOfEntries:(id)a4 withNeedPolicy:(id)a5 isSynchronous:(BOOL)a6 completion:(id)a7
+- (void)_alterEntriesRepresentingAtomic:(id)atomic toBeComprisedOfEntries:(id)entries withNeedPolicy:(id)policy isSynchronous:(BOOL)synchronous completion:(id)completion
 {
-  v8 = a6;
+  synchronousCopy = synchronous;
   v35 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  atomicCopy = atomic;
+  entriesCopy = entries;
+  policyCopy = policy;
+  completionCopy = completion;
   v16 = +[MAAutoAssetSet _privateStateQueue];
   dispatch_assert_queue_not_V2(v16);
 
@@ -397,7 +397,7 @@ uint64_t __98__MAAutoAssetSet_alterEntriesRepresentingAtomic_toBeComprisedOfEntr
   v17 = _os_activity_create(&dword_197AD5000, "MAAutoSet:_alterEntriesRepresentingAtomic", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   os_activity_scope_enter(v17, &state);
 
-  if (v15)
+  if (completionCopy)
   {
     if ([(MAAutoAssetSet *)self shortTermLocker])
     {
@@ -406,11 +406,11 @@ uint64_t __98__MAAutoAssetSet_alterEntriesRepresentingAtomic_toBeComprisedOfEntr
       v29[2] = __113__MAAutoAssetSet__alterEntriesRepresentingAtomic_toBeComprisedOfEntries_withNeedPolicy_isSynchronous_completion___block_invoke;
       v29[3] = &unk_1E74CB228;
       v29[4] = self;
-      v31 = v8;
-      v30 = v15;
+      v31 = synchronousCopy;
+      v30 = completionCopy;
       v18 = MEMORY[0x19A8EC5D0](v29);
       +[MAAutoAssetSet _privateStateQueue];
-      if (v8)
+      if (synchronousCopy)
         v19 = {;
         dispatch_sync(v19, v18);
       }
@@ -428,11 +428,11 @@ uint64_t __98__MAAutoAssetSet_alterEntriesRepresentingAtomic_toBeComprisedOfEntr
       v23[2] = __113__MAAutoAssetSet__alterEntriesRepresentingAtomic_toBeComprisedOfEntries_withNeedPolicy_isSynchronous_completion___block_invoke_2;
       v23[3] = &unk_1E74CB250;
       v23[4] = self;
-      v24 = v13;
-      v25 = v14;
-      v26 = v12;
-      v28 = v8;
-      v27 = v15;
+      v24 = entriesCopy;
+      v25 = policyCopy;
+      v26 = atomicCopy;
+      v28 = synchronousCopy;
+      v27 = completionCopy;
       [(MAAutoAssetSet *)self connectToServerFrameworkCompletion:v23];
     }
   }
@@ -560,11 +560,11 @@ void __113__MAAutoAssetSet__alterEntriesRepresentingAtomic_toBeComprisedOfEntrie
   [v2 _failedOperation:@"alterEntriesRepresentingAtomic" forAssetSetIdentifier:v3 withErrorCode:0 withResponseError:*(a1 + 40) description:@"unable to connect to the auto-asset-set XPC service" isSynchronous:*(a1 + 56) completion:*(a1 + 48)];
 }
 
-- (id)alterEntriesRepresentingAtomicSync:(id)a3 toBeComprisedOfEntries:(id)a4 withNeedPolicy:(id)a5
+- (id)alterEntriesRepresentingAtomicSync:(id)sync toBeComprisedOfEntries:(id)entries withNeedPolicy:(id)policy
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  syncCopy = sync;
+  entriesCopy = entries;
+  policyCopy = policy;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
@@ -576,7 +576,7 @@ void __113__MAAutoAssetSet__alterEntriesRepresentingAtomic_toBeComprisedOfEntrie
   v13[2] = __91__MAAutoAssetSet_alterEntriesRepresentingAtomicSync_toBeComprisedOfEntries_withNeedPolicy___block_invoke;
   v13[3] = &unk_1E74CB278;
   v13[4] = &v14;
-  [(MAAutoAssetSet *)self _alterEntriesRepresentingAtomic:v8 toBeComprisedOfEntries:v9 withNeedPolicy:v10 isSynchronous:1 completion:v13];
+  [(MAAutoAssetSet *)self _alterEntriesRepresentingAtomic:syncCopy toBeComprisedOfEntries:entriesCopy withNeedPolicy:policyCopy isSynchronous:1 completion:v13];
   v11 = v15[5];
   _Block_object_dispose(&v14, 8);
 
@@ -594,17 +594,17 @@ void __91__MAAutoAssetSet_alterEntriesRepresentingAtomicSync_toBeComprisedOfEntr
   *(v6 + 40) = v4;
 }
 
-- (void)needForAtomic:(id)a3 withNeedPolicy:(id)a4 completion:(id)a5
+- (void)needForAtomic:(id)atomic withNeedPolicy:(id)policy completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __58__MAAutoAssetSet_needForAtomic_withNeedPolicy_completion___block_invoke;
   v10[3] = &unk_1E74CB200;
   v10[4] = self;
-  v11 = v8;
-  v9 = v8;
-  [(MAAutoAssetSet *)self _needForAtomic:a3 withNeedPolicy:a4 isSynchronous:0 completion:v10];
+  v11 = completionCopy;
+  v9 = completionCopy;
+  [(MAAutoAssetSet *)self _needForAtomic:atomic withNeedPolicy:policy isSynchronous:0 completion:v10];
 }
 
 void __58__MAAutoAssetSet_needForAtomic_withNeedPolicy_completion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -639,13 +639,13 @@ uint64_t __58__MAAutoAssetSet_needForAtomic_withNeedPolicy_completion___block_in
   return result;
 }
 
-- (void)_needForAtomic:(id)a3 withNeedPolicy:(id)a4 isSynchronous:(BOOL)a5 completion:(id)a6
+- (void)_needForAtomic:(id)atomic withNeedPolicy:(id)policy isSynchronous:(BOOL)synchronous completion:(id)completion
 {
-  v7 = a5;
+  synchronousCopy = synchronous;
   v31 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  atomicCopy = atomic;
+  policyCopy = policy;
+  completionCopy = completion;
   v13 = +[MAAutoAssetSet _privateStateQueue];
   dispatch_assert_queue_not_V2(v13);
 
@@ -654,7 +654,7 @@ uint64_t __58__MAAutoAssetSet_needForAtomic_withNeedPolicy_completion___block_in
   v14 = _os_activity_create(&dword_197AD5000, "MAAutoSet:_needForAtomic", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   os_activity_scope_enter(v14, &state);
 
-  if (v12)
+  if (completionCopy)
   {
     if ([(MAAutoAssetSet *)self shortTermLocker])
     {
@@ -663,11 +663,11 @@ uint64_t __58__MAAutoAssetSet_needForAtomic_withNeedPolicy_completion___block_in
       v25[2] = __73__MAAutoAssetSet__needForAtomic_withNeedPolicy_isSynchronous_completion___block_invoke;
       v25[3] = &unk_1E74CB228;
       v25[4] = self;
-      v27 = v7;
-      v26 = v12;
+      v27 = synchronousCopy;
+      v26 = completionCopy;
       v15 = MEMORY[0x19A8EC5D0](v25);
       +[MAAutoAssetSet _privateStateQueue];
-      if (v7)
+      if (synchronousCopy)
         v16 = {;
         dispatch_sync(v16, v15);
       }
@@ -685,10 +685,10 @@ uint64_t __58__MAAutoAssetSet_needForAtomic_withNeedPolicy_completion___block_in
       v20[2] = __73__MAAutoAssetSet__needForAtomic_withNeedPolicy_isSynchronous_completion___block_invoke_2;
       v20[3] = &unk_1E74C97F0;
       v20[4] = self;
-      v21 = v11;
-      v22 = v10;
-      v24 = v7;
-      v23 = v12;
+      v21 = policyCopy;
+      v22 = atomicCopy;
+      v24 = synchronousCopy;
+      v23 = completionCopy;
       [(MAAutoAssetSet *)self connectToServerFrameworkCompletion:v20];
     }
   }
@@ -816,10 +816,10 @@ void __73__MAAutoAssetSet__needForAtomic_withNeedPolicy_isSynchronous_completion
   [v2 _failedOperation:@"needForAtomic" forAssetSetIdentifier:v3 withErrorCode:0 withResponseError:*(a1 + 40) description:@"unable to connect to the auto-asset-set XPC service" isSynchronous:*(a1 + 56) completion:*(a1 + 48)];
 }
 
-- (id)needForAtomicSync:(id)a3 withNeedPolicy:(id)a4
+- (id)needForAtomicSync:(id)sync withNeedPolicy:(id)policy
 {
-  v6 = a3;
-  v7 = a4;
+  syncCopy = sync;
+  policyCopy = policy;
   v17[0] = 0;
   v17[1] = v17;
   v17[2] = 0x3032000000;
@@ -838,7 +838,7 @@ void __73__MAAutoAssetSet__needForAtomic_withNeedPolicy_isSynchronous_completion
   v10[3] = &unk_1E74CB2A0;
   v10[4] = v17;
   v10[5] = &v11;
-  [(MAAutoAssetSet *)self _needForAtomic:v6 withNeedPolicy:v7 isSynchronous:1 completion:v10];
+  [(MAAutoAssetSet *)self _needForAtomic:syncCopy withNeedPolicy:policyCopy isSynchronous:1 completion:v10];
   v8 = v12[5];
   _Block_object_dispose(&v11, 8);
 
@@ -931,14 +931,14 @@ uint64_t __121__MAAutoAssetSet_checkAtomic_forAtomicInstance_awaitingDownload_wi
   return result;
 }
 
-- (void)_checkAtomic:(id)a3 forAtomicInstance:(id)a4 awaitingDownload:(BOOL)a5 withNeedPolicy:(id)a6 withTimeout:(int64_t)a7 reportingProgress:(id)a8 isSynchronous:(BOOL)a9 completion:(id)a10
+- (void)_checkAtomic:(id)atomic forAtomicInstance:(id)instance awaitingDownload:(BOOL)download withNeedPolicy:(id)policy withTimeout:(int64_t)timeout reportingProgress:(id)progress isSynchronous:(BOOL)synchronous completion:(id)self0
 {
   v43 = *MEMORY[0x1E69E9840];
-  v16 = a3;
-  v17 = a4;
-  v18 = a6;
-  v19 = a8;
-  v20 = a10;
+  atomicCopy = atomic;
+  instanceCopy = instance;
+  policyCopy = policy;
+  progressCopy = progress;
+  completionCopy = completion;
   v21 = +[MAAutoAssetSet _privateStateQueue];
   dispatch_assert_queue_not_V2(v21);
 
@@ -947,7 +947,7 @@ uint64_t __121__MAAutoAssetSet_checkAtomic_forAtomicInstance_awaitingDownload_wi
   v22 = _os_activity_create(&dword_197AD5000, "MAAutoSet:_checkAtomic", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   os_activity_scope_enter(v22, &state);
 
-  if (v20)
+  if (completionCopy)
   {
     if ([(MAAutoAssetSet *)self shortTermLocker])
     {
@@ -956,11 +956,11 @@ uint64_t __121__MAAutoAssetSet_checkAtomic_forAtomicInstance_awaitingDownload_wi
       v37[2] = __136__MAAutoAssetSet__checkAtomic_forAtomicInstance_awaitingDownload_withNeedPolicy_withTimeout_reportingProgress_isSynchronous_completion___block_invoke;
       v37[3] = &unk_1E74CB228;
       v37[4] = self;
-      v39 = a9;
-      v38 = v20;
+      synchronousCopy = synchronous;
+      v38 = completionCopy;
       v23 = MEMORY[0x19A8EC5D0](v37);
       v24 = +[MAAutoAssetSet _privateStateQueue];
-      if (a9)
+      if (synchronous)
       {
         dispatch_sync(v24, v23);
       }
@@ -978,14 +978,14 @@ uint64_t __121__MAAutoAssetSet_checkAtomic_forAtomicInstance_awaitingDownload_wi
       v28[2] = __136__MAAutoAssetSet__checkAtomic_forAtomicInstance_awaitingDownload_withNeedPolicy_withTimeout_reportingProgress_isSynchronous_completion___block_invoke_2;
       v28[3] = &unk_1E74CB340;
       v28[4] = self;
-      v29 = v17;
-      v30 = v18;
-      v35 = a5;
-      v31 = v16;
-      v34 = a7;
-      v32 = v19;
-      v36 = a9;
-      v33 = v20;
+      v29 = instanceCopy;
+      v30 = policyCopy;
+      downloadCopy = download;
+      v31 = atomicCopy;
+      timeoutCopy = timeout;
+      v32 = progressCopy;
+      synchronousCopy2 = synchronous;
+      v33 = completionCopy;
       [(MAAutoAssetSet *)self connectToServerFrameworkCompletion:v28];
     }
   }
@@ -1171,14 +1171,14 @@ void __136__MAAutoAssetSet__checkAtomic_forAtomicInstance_awaitingDownload_withN
   [v2 _failedCheckAtomic:@"checkAtomic" forAssetSetIdentifier:v3 withErrorCode:0 withResponseError:*(a1 + 40) description:@"unable to connect to the auto-asset-set XPC service" isSynchronous:*(a1 + 56) completion:*(a1 + 48)];
 }
 
-- (id)checkAtomicSync:(id)a3 forAtomicInstance:(id)a4 awaitingDownload:(BOOL)a5 withNeedPolicy:(id)a6 withTimeout:(int64_t)a7 discoveredAtomicEntries:(id *)a8 error:(id *)a9 reportingProgress:(id)a10
+- (id)checkAtomicSync:(id)sync forAtomicInstance:(id)instance awaitingDownload:(BOOL)download withNeedPolicy:(id)policy withTimeout:(int64_t)timeout discoveredAtomicEntries:(id *)entries error:(id *)error reportingProgress:(id)self0
 {
-  v22 = a5;
-  v25 = a3;
-  v24 = a4;
-  v14 = a6;
-  v15 = a10;
-  v16 = v15;
+  downloadCopy = download;
+  syncCopy = sync;
+  instanceCopy = instance;
+  policyCopy = policy;
+  progressCopy = progress;
+  v16 = progressCopy;
   v41 = 0;
   v42 = &v41;
   v43 = 0x3032000000;
@@ -1197,7 +1197,7 @@ void __136__MAAutoAssetSet__checkAtomic_forAtomicInstance_awaitingDownload_withN
   v32 = __Block_byref_object_copy__8;
   v33 = __Block_byref_object_dispose__8;
   v34 = 0;
-  if (v15)
+  if (progressCopy)
   {
     v17 = v27;
     v27[0] = MEMORY[0x1E69E9820];
@@ -1206,7 +1206,7 @@ void __136__MAAutoAssetSet__checkAtomic_forAtomicInstance_awaitingDownload_withN
     v27[3] = &unk_1E74CB2C8;
     v27[4] = self;
     v21 = &v28;
-    v28 = v15;
+    v28 = progressCopy;
   }
 
   else
@@ -1222,15 +1222,15 @@ void __136__MAAutoAssetSet__checkAtomic_forAtomicInstance_awaitingDownload_withN
   v26[5] = &v35;
   v26[6] = &v29;
   LOBYTE(v20) = 1;
-  [(MAAutoAssetSet *)self _checkAtomic:v25 forAtomicInstance:v24 awaitingDownload:v22 withNeedPolicy:v14 withTimeout:a7 reportingProgress:v17 isSynchronous:v20 completion:v26];
-  if (a8)
+  [(MAAutoAssetSet *)self _checkAtomic:syncCopy forAtomicInstance:instanceCopy awaitingDownload:downloadCopy withNeedPolicy:policyCopy withTimeout:timeout reportingProgress:v17 isSynchronous:v20 completion:v26];
+  if (entries)
   {
-    *a8 = v36[5];
+    *entries = v36[5];
   }
 
-  if (a9)
+  if (error)
   {
-    *a9 = v30[5];
+    *error = v30[5];
   }
 
   v18 = v42[5];
@@ -1290,11 +1290,11 @@ void __144__MAAutoAssetSet_checkAtomicSync_forAtomicInstance_awaitingDownload_wi
   *(v16 + 40) = v9;
 }
 
-- (void)lockAtomic:(id)a3 forAtomicInstance:(id)a4 withNeedPolicy:(id)a5 withTimeout:(int64_t)a6 reportingProgress:(id)a7 completion:(id)a8
+- (void)lockAtomic:(id)atomic forAtomicInstance:(id)instance withNeedPolicy:(id)policy withTimeout:(int64_t)timeout reportingProgress:(id)progress completion:(id)completion
 {
-  v14 = a7;
-  v15 = a8;
-  if (v14)
+  progressCopy = progress;
+  completionCopy = completion;
+  if (progressCopy)
   {
     v16 = v21;
     v21[0] = MEMORY[0x1E69E9820];
@@ -1303,7 +1303,7 @@ void __144__MAAutoAssetSet_checkAtomicSync_forAtomicInstance_awaitingDownload_wi
     v21[3] = &unk_1E74CB2C8;
     v21[4] = self;
     v18 = &v22;
-    v22 = v14;
+    v22 = progressCopy;
   }
 
   else
@@ -1316,11 +1316,11 @@ void __144__MAAutoAssetSet_checkAtomicSync_forAtomicInstance_awaitingDownload_wi
   v19[2] = __103__MAAutoAssetSet_lockAtomic_forAtomicInstance_withNeedPolicy_withTimeout_reportingProgress_completion___block_invoke_3;
   v19[3] = &unk_1E74CB2F0;
   v19[4] = self;
-  v17 = v15;
+  v17 = completionCopy;
   v20 = v17;
-  [(MAAutoAssetSet *)self _lockAtomic:a3 forAtomicInstance:a4 withNeedPolicy:a5 withTimeout:a6 reportingProgress:v16 isSynchronous:0 completion:v19];
+  [(MAAutoAssetSet *)self _lockAtomic:atomic forAtomicInstance:instance withNeedPolicy:policy withTimeout:timeout reportingProgress:v16 isSynchronous:0 completion:v19];
 
-  if (v14)
+  if (progressCopy)
   {
   }
 }
@@ -1381,15 +1381,15 @@ uint64_t __103__MAAutoAssetSet_lockAtomic_forAtomicInstance_withNeedPolicy_withT
   return result;
 }
 
-- (void)_lockAtomic:(id)a3 forAtomicInstance:(id)a4 withNeedPolicy:(id)a5 withTimeout:(int64_t)a6 reportingProgress:(id)a7 isSynchronous:(BOOL)a8 completion:(id)a9
+- (void)_lockAtomic:(id)atomic forAtomicInstance:(id)instance withNeedPolicy:(id)policy withTimeout:(int64_t)timeout reportingProgress:(id)progress isSynchronous:(BOOL)synchronous completion:(id)completion
 {
-  v9 = a8;
+  synchronousCopy = synchronous;
   v41 = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a7;
-  v19 = a9;
+  atomicCopy = atomic;
+  instanceCopy = instance;
+  policyCopy = policy;
+  progressCopy = progress;
+  completionCopy = completion;
   v20 = +[MAAutoAssetSet _privateStateQueue];
   dispatch_assert_queue_not_V2(v20);
 
@@ -1398,7 +1398,7 @@ uint64_t __103__MAAutoAssetSet_lockAtomic_forAtomicInstance_withNeedPolicy_withT
   v21 = _os_activity_create(&dword_197AD5000, "MAAutoSet:_lockAtomic", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   os_activity_scope_enter(v21, &state);
 
-  if (v19)
+  if (completionCopy)
   {
     if ([(MAAutoAssetSet *)self shortTermLocker])
     {
@@ -1407,11 +1407,11 @@ uint64_t __103__MAAutoAssetSet_lockAtomic_forAtomicInstance_withNeedPolicy_withT
       v35[2] = __118__MAAutoAssetSet__lockAtomic_forAtomicInstance_withNeedPolicy_withTimeout_reportingProgress_isSynchronous_completion___block_invoke;
       v35[3] = &unk_1E74CB228;
       v35[4] = self;
-      v37 = v9;
-      v36 = v19;
+      v37 = synchronousCopy;
+      v36 = completionCopy;
       v22 = MEMORY[0x19A8EC5D0](v35);
       +[MAAutoAssetSet _privateStateQueue];
-      if (v9)
+      if (synchronousCopy)
         v23 = {;
         dispatch_sync(v23, v22);
       }
@@ -1429,13 +1429,13 @@ uint64_t __103__MAAutoAssetSet_lockAtomic_forAtomicInstance_withNeedPolicy_withT
       v27[2] = __118__MAAutoAssetSet__lockAtomic_forAtomicInstance_withNeedPolicy_withTimeout_reportingProgress_isSynchronous_completion___block_invoke_2;
       v27[3] = &unk_1E74CB390;
       v27[4] = self;
-      v28 = v16;
-      v29 = v17;
-      v30 = v15;
-      v33 = a6;
-      v31 = v18;
-      v34 = v9;
-      v32 = v19;
+      v28 = instanceCopy;
+      v29 = policyCopy;
+      v30 = atomicCopy;
+      timeoutCopy = timeout;
+      v31 = progressCopy;
+      v34 = synchronousCopy;
+      v32 = completionCopy;
       [(MAAutoAssetSet *)self connectToServerFrameworkCompletion:v27];
     }
   }
@@ -1613,13 +1613,13 @@ void __118__MAAutoAssetSet__lockAtomic_forAtomicInstance_withNeedPolicy_withTime
   [v2 _failedLockAtomic:@"lockAtomic" forAssetSetIdentifier:v3 withErrorCode:0 withResponseError:*(a1 + 40) description:@"unable to connect to the auto-asset-set XPC service" isSynchronous:*(a1 + 56) completion:*(a1 + 48)];
 }
 
-- (id)lockAtomicSync:(id)a3 forAtomicInstance:(id)a4 withNeedPolicy:(id)a5 withTimeout:(int64_t)a6 lockedAtomicEntries:(id *)a7 error:(id *)a8 reportingProgress:(id)a9
+- (id)lockAtomicSync:(id)sync forAtomicInstance:(id)instance withNeedPolicy:(id)policy withTimeout:(int64_t)timeout lockedAtomicEntries:(id *)entries error:(id *)error reportingProgress:(id)progress
 {
-  v24 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a9;
-  v16 = v15;
+  syncCopy = sync;
+  instanceCopy = instance;
+  policyCopy = policy;
+  progressCopy = progress;
+  v16 = progressCopy;
   v40 = 0;
   v41 = &v40;
   v42 = 0x3032000000;
@@ -1638,7 +1638,7 @@ void __118__MAAutoAssetSet__lockAtomic_forAtomicInstance_withNeedPolicy_withTime
   v31 = __Block_byref_object_copy__8;
   v32 = __Block_byref_object_dispose__8;
   v33 = 0;
-  if (v15)
+  if (progressCopy)
   {
     v17 = v26;
     v26[0] = MEMORY[0x1E69E9820];
@@ -1647,7 +1647,7 @@ void __118__MAAutoAssetSet__lockAtomic_forAtomicInstance_withNeedPolicy_withTime
     v26[3] = &unk_1E74CB2C8;
     v26[4] = self;
     v21 = &v27;
-    v27 = v15;
+    v27 = progressCopy;
   }
 
   else
@@ -1662,16 +1662,16 @@ void __118__MAAutoAssetSet__lockAtomic_forAtomicInstance_withNeedPolicy_withTime
   v25[4] = &v40;
   v25[5] = &v34;
   v25[6] = &v28;
-  v18 = v13;
-  [(MAAutoAssetSet *)self _lockAtomic:v24 forAtomicInstance:v13 withNeedPolicy:v14 withTimeout:a6 reportingProgress:v17 isSynchronous:1 completion:v25];
-  if (a7)
+  v18 = instanceCopy;
+  [(MAAutoAssetSet *)self _lockAtomic:syncCopy forAtomicInstance:instanceCopy withNeedPolicy:policyCopy withTimeout:timeout reportingProgress:v17 isSynchronous:1 completion:v25];
+  if (entries)
   {
-    *a7 = v35[5];
+    *entries = v35[5];
   }
 
-  if (a8)
+  if (error)
   {
-    *a8 = v29[5];
+    *error = v29[5];
   }
 
   v19 = v41[5];
@@ -1731,17 +1731,17 @@ void __122__MAAutoAssetSet_lockAtomicSync_forAtomicInstance_withNeedPolicy_withT
   *(v16 + 40) = v9;
 }
 
-- (void)mapLockedAtomicEntry:(id)a3 forAtomicInstance:(id)a4 mappingSelector:(id)a5 completion:(id)a6
+- (void)mapLockedAtomicEntry:(id)entry forAtomicInstance:(id)instance mappingSelector:(id)selector completion:(id)completion
 {
-  v10 = a6;
+  completionCopy = completion;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __84__MAAutoAssetSet_mapLockedAtomicEntry_forAtomicInstance_mappingSelector_completion___block_invoke;
   v12[3] = &unk_1E74CB3B8;
   v12[4] = self;
-  v13 = v10;
-  v11 = v10;
-  [(MAAutoAssetSet *)self _mapLockedAtomicEntry:a3 forAtomicInstance:a4 mappingSelector:a5 isSynchronous:0 completion:v12];
+  v13 = completionCopy;
+  v11 = completionCopy;
+  [(MAAutoAssetSet *)self _mapLockedAtomicEntry:entry forAtomicInstance:instance mappingSelector:selector isSynchronous:0 completion:v12];
 }
 
 void __84__MAAutoAssetSet_mapLockedAtomicEntry_forAtomicInstance_mappingSelector_completion___block_invoke(uint64_t a1, void *a2, void *a3, void *a4)
@@ -1997,11 +1997,11 @@ void __99__MAAutoAssetSet__mapLockedAtomicEntry_forAtomicInstance_mappingSelecto
   [v2 _failedMapLockedAtomicEntry:@"mapLockedAtomicEntry" forAssetSetIdentifier:v3 withErrorCode:0 withResponseError:*(a1 + 40) description:@"unable to connect to the auto-asset-set XPC service" isSynchronous:*(a1 + 56) completion:*(a1 + 48)];
 }
 
-- (id)mapLockedAtomicEntrySync:(id)a3 forAtomicInstance:(id)a4 mappingSelector:(id)a5 mappedSelector:(id *)a6
+- (id)mapLockedAtomicEntrySync:(id)sync forAtomicInstance:(id)instance mappingSelector:(id)selector mappedSelector:(id *)mappedSelector
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  syncCopy = sync;
+  instanceCopy = instance;
+  selectorCopy = selector;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
@@ -2020,10 +2020,10 @@ void __99__MAAutoAssetSet__mapLockedAtomicEntry_forAtomicInstance_mappingSelecto
   v15[3] = &unk_1E74CB408;
   v15[4] = &v22;
   v15[5] = &v16;
-  [(MAAutoAssetSet *)self _mapLockedAtomicEntry:v10 forAtomicInstance:v11 mappingSelector:v12 isSynchronous:1 completion:v15];
-  if (a6)
+  [(MAAutoAssetSet *)self _mapLockedAtomicEntry:syncCopy forAtomicInstance:instanceCopy mappingSelector:selectorCopy isSynchronous:1 completion:v15];
+  if (mappedSelector)
   {
-    *a6 = v23[5];
+    *mappedSelector = v23[5];
   }
 
   v13 = v17[5];
@@ -2051,17 +2051,17 @@ void __92__MAAutoAssetSet_mapLockedAtomicEntrySync_forAtomicInstance_mappingSele
   *(v11 + 40) = v7;
 }
 
-- (void)lockAtomic:(id)a3 forAtomicInstance:(id)a4 completion:(id)a5
+- (void)lockAtomic:(id)atomic forAtomicInstance:(id)instance completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __58__MAAutoAssetSet_lockAtomic_forAtomicInstance_completion___block_invoke;
   v10[3] = &unk_1E74CB2C8;
   v10[4] = self;
-  v11 = v8;
-  v9 = v8;
-  [(MAAutoAssetSet *)self _shortTermLockAtomic:a3 forAtomicInstance:a4 performContentValidation:1 isSynchronous:0 completion:v10];
+  v11 = completionCopy;
+  v9 = completionCopy;
+  [(MAAutoAssetSet *)self _shortTermLockAtomic:atomic forAtomicInstance:instance performContentValidation:1 isSynchronous:0 completion:v10];
 }
 
 void __58__MAAutoAssetSet_lockAtomic_forAtomicInstance_completion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -2161,17 +2161,17 @@ void __83__MAAutoAssetSet__lockAtomicSync_forAtomicInstance_performContentValida
   *(v10 + 40) = v6;
 }
 
-- (void)formSubAtomicInstance:(id)a3 fromAtomicInstance:(id)a4 toBeComprisedOfEntries:(id)a5 completion:(id)a6
+- (void)formSubAtomicInstance:(id)instance fromAtomicInstance:(id)atomicInstance toBeComprisedOfEntries:(id)entries completion:(id)completion
 {
-  v10 = a6;
+  completionCopy = completion;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __93__MAAutoAssetSet_formSubAtomicInstance_fromAtomicInstance_toBeComprisedOfEntries_completion___block_invoke;
   v12[3] = &unk_1E74CB200;
   v12[4] = self;
-  v13 = v10;
-  v11 = v10;
-  [(MAAutoAssetSet *)self _formSubAtomicInstance:a3 fromAtomicInstance:a4 toBeComprisedOfEntries:a5 isSynchronous:0 completion:v12];
+  v13 = completionCopy;
+  v11 = completionCopy;
+  [(MAAutoAssetSet *)self _formSubAtomicInstance:instance fromAtomicInstance:atomicInstance toBeComprisedOfEntries:entries isSynchronous:0 completion:v12];
 }
 
 void __93__MAAutoAssetSet_formSubAtomicInstance_fromAtomicInstance_toBeComprisedOfEntries_completion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -2206,18 +2206,18 @@ uint64_t __93__MAAutoAssetSet_formSubAtomicInstance_fromAtomicInstance_toBeCompr
   return result;
 }
 
-- (void)_formSubAtomicInstance:(id)a3 fromAtomicInstance:(id)a4 toBeComprisedOfEntries:(id)a5 isSynchronous:(BOOL)a6 completion:(id)a7
+- (void)_formSubAtomicInstance:(id)instance fromAtomicInstance:(id)atomicInstance toBeComprisedOfEntries:(id)entries isSynchronous:(BOOL)synchronous completion:(id)completion
 {
-  v8 = a6;
+  synchronousCopy = synchronous;
   v35 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  instanceCopy = instance;
+  atomicInstanceCopy = atomicInstance;
+  entriesCopy = entries;
+  completionCopy = completion;
   v16 = +[MAAutoAssetSet _privateStateQueue];
   dispatch_assert_queue_not_V2(v16);
 
-  if (v15)
+  if (completionCopy)
   {
     if ([(MAAutoAssetSet *)self shortTermLocker])
     {
@@ -2226,12 +2226,12 @@ uint64_t __93__MAAutoAssetSet_formSubAtomicInstance_fromAtomicInstance_toBeCompr
       v30[2] = __108__MAAutoAssetSet__formSubAtomicInstance_fromAtomicInstance_toBeComprisedOfEntries_isSynchronous_completion___block_invoke;
       v30[3] = &unk_1E74CB228;
       v30[4] = self;
-      v32 = v8;
-      v31 = v15;
+      v32 = synchronousCopy;
+      v31 = completionCopy;
       v17 = MEMORY[0x19A8EC5D0](v30);
       v18 = +[MAAutoAssetSet _privateStateQueue];
       v19 = v18;
-      if (v8)
+      if (synchronousCopy)
       {
         dispatch_sync(v18, v17);
       }
@@ -2251,11 +2251,11 @@ uint64_t __93__MAAutoAssetSet_formSubAtomicInstance_fromAtomicInstance_toBeCompr
       v24[2] = __108__MAAutoAssetSet__formSubAtomicInstance_fromAtomicInstance_toBeComprisedOfEntries_isSynchronous_completion___block_invoke_2;
       v24[3] = &unk_1E74CB250;
       v24[4] = self;
-      v25 = v13;
-      v26 = v14;
-      v27 = v12;
-      v29 = v8;
-      v28 = v15;
+      v25 = atomicInstanceCopy;
+      v26 = entriesCopy;
+      v27 = instanceCopy;
+      v29 = synchronousCopy;
+      v28 = completionCopy;
       [(MAAutoAssetSet *)self connectToServerFrameworkCompletion:v24];
 
       v22 = v25;
@@ -2388,11 +2388,11 @@ void __108__MAAutoAssetSet__formSubAtomicInstance_fromAtomicInstance_toBeCompris
   }
 }
 
-- (id)formSubAtomicInstanceSync:(id)a3 fromAtomicInstance:(id)a4 toBeComprisedOfEntries:(id)a5 error:(id *)a6
+- (id)formSubAtomicInstanceSync:(id)sync fromAtomicInstance:(id)instance toBeComprisedOfEntries:(id)entries error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  syncCopy = sync;
+  instanceCopy = instance;
+  entriesCopy = entries;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
@@ -2411,10 +2411,10 @@ void __108__MAAutoAssetSet__formSubAtomicInstance_fromAtomicInstance_toBeCompris
   v15[3] = &unk_1E74CB2A0;
   v15[4] = &v22;
   v15[5] = &v16;
-  [(MAAutoAssetSet *)self _formSubAtomicInstance:v10 fromAtomicInstance:v11 toBeComprisedOfEntries:v12 isSynchronous:1 completion:v15];
-  if (a6)
+  [(MAAutoAssetSet *)self _formSubAtomicInstance:syncCopy fromAtomicInstance:instanceCopy toBeComprisedOfEntries:entriesCopy isSynchronous:1 completion:v15];
+  if (error)
   {
-    *a6 = v17[5];
+    *error = v17[5];
   }
 
   v13 = v23[5];
@@ -2442,17 +2442,17 @@ void __92__MAAutoAssetSet_formSubAtomicInstanceSync_fromAtomicInstance_toBeCompr
   *(v10 + 40) = v6;
 }
 
-- (void)continueAtomicLock:(id)a3 ofAtomicInstance:(id)a4 withNeedPolicy:(id)a5 completion:(id)a6
+- (void)continueAtomicLock:(id)lock ofAtomicInstance:(id)instance withNeedPolicy:(id)policy completion:(id)completion
 {
-  v10 = a6;
+  completionCopy = completion;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __80__MAAutoAssetSet_continueAtomicLock_ofAtomicInstance_withNeedPolicy_completion___block_invoke;
   v12[3] = &unk_1E74CB200;
   v12[4] = self;
-  v13 = v10;
-  v11 = v10;
-  [(MAAutoAssetSet *)self _continueAtomicLock:a3 ofAtomicInstance:a4 withNeedPolicy:a5 isSynchronous:0 completion:v12];
+  v13 = completionCopy;
+  v11 = completionCopy;
+  [(MAAutoAssetSet *)self _continueAtomicLock:lock ofAtomicInstance:instance withNeedPolicy:policy isSynchronous:0 completion:v12];
 }
 
 void __80__MAAutoAssetSet_continueAtomicLock_ofAtomicInstance_withNeedPolicy_completion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -2487,18 +2487,18 @@ uint64_t __80__MAAutoAssetSet_continueAtomicLock_ofAtomicInstance_withNeedPolicy
   return result;
 }
 
-- (void)_continueAtomicLock:(id)a3 ofAtomicInstance:(id)a4 withNeedPolicy:(id)a5 isSynchronous:(BOOL)a6 completion:(id)a7
+- (void)_continueAtomicLock:(id)lock ofAtomicInstance:(id)instance withNeedPolicy:(id)policy isSynchronous:(BOOL)synchronous completion:(id)completion
 {
-  v8 = a6;
+  synchronousCopy = synchronous;
   v35 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  lockCopy = lock;
+  instanceCopy = instance;
+  policyCopy = policy;
+  completionCopy = completion;
   v16 = +[MAAutoAssetSet _privateStateQueue];
   dispatch_assert_queue_not_V2(v16);
 
-  if (v15)
+  if (completionCopy)
   {
     if ([(MAAutoAssetSet *)self shortTermLocker])
     {
@@ -2507,12 +2507,12 @@ uint64_t __80__MAAutoAssetSet_continueAtomicLock_ofAtomicInstance_withNeedPolicy
       v30[2] = __95__MAAutoAssetSet__continueAtomicLock_ofAtomicInstance_withNeedPolicy_isSynchronous_completion___block_invoke;
       v30[3] = &unk_1E74CB228;
       v30[4] = self;
-      v32 = v8;
-      v31 = v15;
+      v32 = synchronousCopy;
+      v31 = completionCopy;
       v17 = MEMORY[0x19A8EC5D0](v30);
       v18 = +[MAAutoAssetSet _privateStateQueue];
       v19 = v18;
-      if (v8)
+      if (synchronousCopy)
       {
         dispatch_sync(v18, v17);
       }
@@ -2532,11 +2532,11 @@ uint64_t __80__MAAutoAssetSet_continueAtomicLock_ofAtomicInstance_withNeedPolicy
       v24[2] = __95__MAAutoAssetSet__continueAtomicLock_ofAtomicInstance_withNeedPolicy_isSynchronous_completion___block_invoke_2;
       v24[3] = &unk_1E74CB250;
       v24[4] = self;
-      v25 = v13;
-      v26 = v14;
-      v27 = v12;
-      v29 = v8;
-      v28 = v15;
+      v25 = instanceCopy;
+      v26 = policyCopy;
+      v27 = lockCopy;
+      v29 = synchronousCopy;
+      v28 = completionCopy;
       [(MAAutoAssetSet *)self connectToServerFrameworkCompletion:v24];
 
       v22 = v25;
@@ -2664,11 +2664,11 @@ void __95__MAAutoAssetSet__continueAtomicLock_ofAtomicInstance_withNeedPolicy_is
   [v2 _failedOperation:@"continueAtomicLock" forAssetSetIdentifier:v3 withErrorCode:0 withResponseError:*(a1 + 40) description:@"unable to connect to the auto-asset-set XPC service" isSynchronous:*(a1 + 56) completion:*(a1 + 48)];
 }
 
-- (id)continueAtomicLockSync:(id)a3 ofAtomicInstance:(id)a4 withNeedPolicy:(id)a5
+- (id)continueAtomicLockSync:(id)sync ofAtomicInstance:(id)instance withNeedPolicy:(id)policy
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  syncCopy = sync;
+  instanceCopy = instance;
+  policyCopy = policy;
   v11 = +[MAAutoAssetSet _privateStateQueue];
   dispatch_assert_queue_not_V2(v11);
 
@@ -2688,7 +2688,7 @@ void __95__MAAutoAssetSet__continueAtomicLock_ofAtomicInstance_withNeedPolicy_is
   v14[2] = __73__MAAutoAssetSet_continueAtomicLockSync_ofAtomicInstance_withNeedPolicy___block_invoke;
   v14[3] = &unk_1E74CB278;
   v14[4] = &v15;
-  [(MAAutoAssetSet *)self _continueAtomicLock:v8 ofAtomicInstance:v9 withNeedPolicy:v10 isSynchronous:1 completion:v14];
+  [(MAAutoAssetSet *)self _continueAtomicLock:syncCopy ofAtomicInstance:instanceCopy withNeedPolicy:policyCopy isSynchronous:1 completion:v14];
   v12 = v16[5];
   _Block_object_dispose(&v15, 8);
 
@@ -2706,11 +2706,11 @@ void __73__MAAutoAssetSet_continueAtomicLockSync_ofAtomicInstance_withNeedPolicy
   *(v6 + 40) = v4;
 }
 
-- (void)endAtomicLock:(id)a3 ofAtomicInstance:(id)a4 completion:(id)a5
+- (void)endAtomicLock:(id)lock ofAtomicInstance:(id)instance completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  lockCopy = lock;
+  instanceCopy = instance;
+  completionCopy = completion;
   v11 = +[MAAutoAssetSet _privateStateQueue];
   dispatch_assert_queue_not_V2(v11);
 
@@ -2724,9 +2724,9 @@ void __73__MAAutoAssetSet_continueAtomicLockSync_ofAtomicInstance_withNeedPolicy
   v13[2] = __60__MAAutoAssetSet_endAtomicLock_ofAtomicInstance_completion___block_invoke;
   v13[3] = &unk_1E74CB200;
   v13[4] = self;
-  v14 = v10;
-  v12 = v10;
-  [(MAAutoAssetSet *)self _endAtomicLock:v8 ofAtomicInstance:v9 isSynchronous:0 completion:v13];
+  v14 = completionCopy;
+  v12 = completionCopy;
+  [(MAAutoAssetSet *)self _endAtomicLock:lockCopy ofAtomicInstance:instanceCopy isSynchronous:0 completion:v13];
 }
 
 void __60__MAAutoAssetSet_endAtomicLock_ofAtomicInstance_completion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -2860,10 +2860,10 @@ void __75__MAAutoAssetSet__endAtomicLock_ofAtomicInstance_isSynchronous_completi
   [v2 _failedOperation:@"endAtomicLock" forAssetSetIdentifier:v3 withErrorCode:0 withResponseError:*(a1 + 40) description:@"unable to connect to the auto-asset-set XPC service" isSynchronous:*(a1 + 56) completion:*(a1 + 48)];
 }
 
-- (id)endAtomicLockSync:(id)a3 ofAtomicInstance:(id)a4
+- (id)endAtomicLockSync:(id)sync ofAtomicInstance:(id)instance
 {
-  v6 = a3;
-  v7 = a4;
+  syncCopy = sync;
+  instanceCopy = instance;
   v8 = +[MAAutoAssetSet _privateStateQueue];
   dispatch_assert_queue_not_V2(v8);
 
@@ -2885,7 +2885,7 @@ void __75__MAAutoAssetSet__endAtomicLock_ofAtomicInstance_isSynchronous_completi
     v12[2] = __53__MAAutoAssetSet_endAtomicLockSync_ofAtomicInstance___block_invoke;
     v12[3] = &unk_1E74CB278;
     v12[4] = &v13;
-    [(MAAutoAssetSet *)self _shortTermEndAtomicLock:v6 ofAtomicInstance:v7 isSynchronous:1 completion:v12];
+    [(MAAutoAssetSet *)self _shortTermEndAtomicLock:syncCopy ofAtomicInstance:instanceCopy isSynchronous:1 completion:v12];
   }
 
   else
@@ -2895,7 +2895,7 @@ void __75__MAAutoAssetSet__endAtomicLock_ofAtomicInstance_isSynchronous_completi
     v11[2] = __53__MAAutoAssetSet_endAtomicLockSync_ofAtomicInstance___block_invoke_2;
     v11[3] = &unk_1E74CB278;
     v11[4] = &v13;
-    [(MAAutoAssetSet *)self _endAtomicLock:v6 ofAtomicInstance:v7 isSynchronous:1 completion:v11];
+    [(MAAutoAssetSet *)self _endAtomicLock:syncCopy ofAtomicInstance:instanceCopy isSynchronous:1 completion:v11];
   }
 
   v9 = v14[5];
@@ -2926,17 +2926,17 @@ void __53__MAAutoAssetSet_endAtomicLockSync_ofAtomicInstance___block_invoke_2(ui
   *(v6 + 40) = v4;
 }
 
-- (void)assetSetForStaging:(id)a3 asEntriesWhenTargeting:(id)a4 completion:(id)a5
+- (void)assetSetForStaging:(id)staging asEntriesWhenTargeting:(id)targeting completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __71__MAAutoAssetSet_assetSetForStaging_asEntriesWhenTargeting_completion___block_invoke;
   v10[3] = &unk_1E74CB200;
   v10[4] = self;
-  v11 = v8;
-  v9 = v8;
-  [(MAAutoAssetSet *)self _assetSetForStaging:a3 asEntriesWhenTargeting:a4 isSynchronous:0 completion:v10];
+  v11 = completionCopy;
+  v9 = completionCopy;
+  [(MAAutoAssetSet *)self _assetSetForStaging:staging asEntriesWhenTargeting:targeting isSynchronous:0 completion:v10];
 }
 
 void __71__MAAutoAssetSet_assetSetForStaging_asEntriesWhenTargeting_completion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -2971,17 +2971,17 @@ uint64_t __71__MAAutoAssetSet_assetSetForStaging_asEntriesWhenTargeting_completi
   return result;
 }
 
-- (void)_assetSetForStaging:(id)a3 asEntriesWhenTargeting:(id)a4 isSynchronous:(BOOL)a5 completion:(id)a6
+- (void)_assetSetForStaging:(id)staging asEntriesWhenTargeting:(id)targeting isSynchronous:(BOOL)synchronous completion:(id)completion
 {
-  v7 = a5;
+  synchronousCopy = synchronous;
   v31 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  stagingCopy = staging;
+  targetingCopy = targeting;
+  completionCopy = completion;
   v13 = +[MAAutoAssetSet _privateStateQueue];
   dispatch_assert_queue_not_V2(v13);
 
-  if (v12)
+  if (completionCopy)
   {
     if ([(MAAutoAssetSet *)self shortTermLocker])
     {
@@ -2990,12 +2990,12 @@ uint64_t __71__MAAutoAssetSet_assetSetForStaging_asEntriesWhenTargeting_completi
       v26[2] = __86__MAAutoAssetSet__assetSetForStaging_asEntriesWhenTargeting_isSynchronous_completion___block_invoke;
       v26[3] = &unk_1E74CB228;
       v26[4] = self;
-      v28 = v7;
-      v27 = v12;
+      v28 = synchronousCopy;
+      v27 = completionCopy;
       v14 = MEMORY[0x19A8EC5D0](v26);
       v15 = +[MAAutoAssetSet _privateStateQueue];
       v16 = v15;
-      if (v7)
+      if (synchronousCopy)
       {
         dispatch_sync(v15, v14);
       }
@@ -3015,10 +3015,10 @@ uint64_t __71__MAAutoAssetSet_assetSetForStaging_asEntriesWhenTargeting_completi
       v21[2] = __86__MAAutoAssetSet__assetSetForStaging_asEntriesWhenTargeting_isSynchronous_completion___block_invoke_2;
       v21[3] = &unk_1E74C97F0;
       v21[4] = self;
-      v22 = v11;
-      v23 = v10;
-      v25 = v7;
-      v24 = v12;
+      v22 = targetingCopy;
+      v23 = stagingCopy;
+      v25 = synchronousCopy;
+      v24 = completionCopy;
       [(MAAutoAssetSet *)self connectToServerFrameworkCompletion:v21];
 
       v19 = v22;
@@ -3146,10 +3146,10 @@ void __86__MAAutoAssetSet__assetSetForStaging_asEntriesWhenTargeting_isSynchrono
   [v2 _failedOperation:@"assetSetForStaging" forAssetSetIdentifier:v3 withErrorCode:0 withResponseError:*(a1 + 40) description:@"unable to connect to the auto-asset-set XPC service" isSynchronous:*(a1 + 56) completion:*(a1 + 48)];
 }
 
-- (id)assetSetForStagingSync:(id)a3 asEntriesWhenTargeting:(id)a4
+- (id)assetSetForStagingSync:(id)sync asEntriesWhenTargeting:(id)targeting
 {
-  v6 = a3;
-  v7 = a4;
+  syncCopy = sync;
+  targetingCopy = targeting;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -3161,7 +3161,7 @@ void __86__MAAutoAssetSet__assetSetForStaging_asEntriesWhenTargeting_isSynchrono
   v10[2] = __64__MAAutoAssetSet_assetSetForStagingSync_asEntriesWhenTargeting___block_invoke;
   v10[3] = &unk_1E74CB278;
   v10[4] = &v11;
-  [(MAAutoAssetSet *)self _assetSetForStaging:v6 asEntriesWhenTargeting:v7 isSynchronous:1 completion:v10];
+  [(MAAutoAssetSet *)self _assetSetForStaging:syncCopy asEntriesWhenTargeting:targetingCopy isSynchronous:1 completion:v10];
   v8 = v12[5];
   _Block_object_dispose(&v11, 8);
 
@@ -3179,16 +3179,16 @@ void __64__MAAutoAssetSet_assetSetForStagingSync_asEntriesWhenTargeting___block_
   *(v6 + 40) = v4;
 }
 
-- (void)currentSetStatus:(id)a3
+- (void)currentSetStatus:(id)status
 {
-  v4 = a3;
+  statusCopy = status;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __35__MAAutoAssetSet_currentSetStatus___block_invoke;
   v6[3] = &unk_1E74CB2C8;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = statusCopy;
+  v5 = statusCopy;
   [(MAAutoAssetSet *)self _currentSetStatusIsSynchronous:0 completion:v6];
 }
 
@@ -3348,7 +3348,7 @@ void __60__MAAutoAssetSet__currentSetStatusIsSynchronous_completion___block_invo
   [v2 _failedCurrentSetStatus:@"currentSetStatus" forAssetSetIdentifier:v3 withErrorCode:0 withResponseError:*(a1 + 40) description:@"unable to connect to the auto-asset-set XPC service" isSynchronous:*(a1 + 56) completion:*(a1 + 48)];
 }
 
-- (id)currentSetStatusSync:(id *)a3
+- (id)currentSetStatusSync:(id *)sync
 {
   v15 = 0;
   v16 = &v15;
@@ -3384,9 +3384,9 @@ void __60__MAAutoAssetSet__currentSetStatusIsSynchronous_completion___block_invo
     [(MAAutoAssetSet *)self _currentSetStatusIsSynchronous:1 completion:v7];
   }
 
-  if (a3)
+  if (sync)
   {
-    *a3 = v10[5];
+    *sync = v10[5];
   }
 
   v5 = v16[5];
@@ -3431,12 +3431,12 @@ void __39__MAAutoAssetSet_currentSetStatusSync___block_invoke_2(uint64_t a1, voi
   *(v10 + 40) = v6;
 }
 
-- (void)_shortTermLockAtomicHelper:(id)a3 forAtomicInstance:(id)a4 performContentValidation:(BOOL)a5 isSynchronous:(BOOL)a6 completionHandler:(id)a7
+- (void)_shortTermLockAtomicHelper:(id)helper forAtomicInstance:(id)instance performContentValidation:(BOOL)validation isSynchronous:(BOOL)synchronous completionHandler:(id)handler
 {
-  v8 = a6;
-  v12 = a3;
-  v13 = a4;
-  v14 = a7;
+  synchronousCopy = synchronous;
+  helperCopy = helper;
+  instanceCopy = instance;
+  handlerCopy = handler;
   v15 = +[MAAutoAssetSet _privateStateQueue];
   dispatch_assert_queue_not_V2(v15);
 
@@ -3461,20 +3461,20 @@ void __39__MAAutoAssetSet_currentSetStatusSync___block_invoke_2(uint64_t a1, voi
   v21[1] = 3221225472;
   v21[2] = __120__MAAutoAssetSet__shortTermLockAtomicHelper_forAtomicInstance_performContentValidation_isSynchronous_completionHandler___block_invoke;
   v21[3] = &unk_1E74CB4A8;
-  v16 = v13;
+  v16 = instanceCopy;
   v22 = v16;
-  v23 = self;
-  v17 = v12;
-  v28 = a5;
+  selfCopy = self;
+  v17 = helperCopy;
+  validationCopy = validation;
   v24 = v17;
   v26 = v32;
   v27 = v30;
-  v18 = v14;
+  v18 = handlerCopy;
   v25 = v18;
-  v29 = v8;
+  v29 = synchronousCopy;
   v19 = MEMORY[0x19A8EC5D0](v21);
   v20 = MEMORY[0x19A8EC5D0]();
-  if (v8)
+  if (synchronousCopy)
   {
     dispatch_sync(__maAutoAssetSetShortTermLockerDispatchQueue, v20);
   }
@@ -3698,12 +3698,12 @@ LABEL_17:
   v46 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_shortTermEndAtomicLock:(id)a3 ofAtomicInstance:(id)a4 isSynchronous:(BOOL)a5 completion:(id)a6
+- (void)_shortTermEndAtomicLock:(id)lock ofAtomicInstance:(id)instance isSynchronous:(BOOL)synchronous completion:(id)completion
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  synchronousCopy = synchronous;
+  lockCopy = lock;
+  instanceCopy = instance;
+  completionCopy = completion;
   v13 = +[MAAutoAssetSet _privateStateQueue];
   dispatch_assert_queue_not_V2(v13);
 
@@ -3722,18 +3722,18 @@ LABEL_17:
   v22[1] = 3221225472;
   v22[2] = __84__MAAutoAssetSet__shortTermEndAtomicLock_ofAtomicInstance_isSynchronous_completion___block_invoke;
   v22[3] = &unk_1E74CB4F8;
-  v14 = v11;
+  v14 = instanceCopy;
   v23 = v14;
-  v15 = v10;
+  v15 = lockCopy;
   v24 = v15;
-  v25 = self;
+  selfCopy = self;
   v27 = v29;
-  v16 = v12;
+  v16 = completionCopy;
   v26 = v16;
-  v28 = v7;
+  v28 = synchronousCopy;
   v17 = MEMORY[0x19A8EC5D0](v22);
   v21 = MEMORY[0x19A8EC5D0](v17, v18, v19, v20);
-  if (v7)
+  if (synchronousCopy)
   {
     dispatch_sync(__maAutoAssetSetShortTermLockerDispatchQueue, v21);
   }
@@ -4133,10 +4133,10 @@ void __84__MAAutoAssetSet__shortTermEndAtomicLock_ofAtomicInstance_isSynchronous
   (*(v2 + 16))(v2, v3, *(*(*(a1 + 48) + 8) + 40));
 }
 
-- (void)_shortTermCurrentSetStatusIsSynchronous:(BOOL)a3 completion:(id)a4
+- (void)_shortTermCurrentSetStatusIsSynchronous:(BOOL)synchronous completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
+  synchronousCopy = synchronous;
+  completionCopy = completion;
   v17[0] = 0;
   v17[1] = v17;
   v17[2] = 0x3032000000;
@@ -4156,12 +4156,12 @@ void __84__MAAutoAssetSet__shortTermEndAtomicLock_ofAtomicInstance_isSynchronous
   v10[4] = self;
   v12 = v17;
   v13 = v15;
-  v7 = v6;
+  v7 = completionCopy;
   v11 = v7;
-  v14 = v4;
+  v14 = synchronousCopy;
   v8 = MEMORY[0x19A8EC5D0](v10);
   v9 = MEMORY[0x19A8EC5D0]();
-  if (v4)
+  if (synchronousCopy)
   {
     dispatch_sync(__maAutoAssetSetShortTermLockerDispatchQueue, v9);
   }
@@ -4274,46 +4274,46 @@ LABEL_9:
   v26 = *MEMORY[0x1E69E9840];
 }
 
-- (int)_shortTermOpenSharedLockFile:(id)a3 lockingAtomicInstance:(id)a4 forLockReason:(id)a5 verifyingLocalContentURLs:(BOOL)a6 openingFilename:(id)a7 providingLockedSetStatus:(id *)a8 sharedLockError:(id *)a9
+- (int)_shortTermOpenSharedLockFile:(id)file lockingAtomicInstance:(id)instance forLockReason:(id)reason verifyingLocalContentURLs:(BOOL)ls openingFilename:(id)filename providingLockedSetStatus:(id *)status sharedLockError:(id *)error
 {
-  v11 = a6;
-  v15 = a9;
+  lsCopy = ls;
+  errorCopy4 = error;
   v101 = *MEMORY[0x1E69E9840];
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a7;
+  fileCopy = file;
+  instanceCopy = instance;
+  reasonCopy = reason;
+  filenameCopy = filename;
   v20 = @"SYMLINK";
-  v88 = v17;
-  if (v17)
+  v88 = instanceCopy;
+  if (instanceCopy)
   {
-    v20 = v17;
+    v20 = instanceCopy;
   }
 
   v21 = v20;
-  v22 = open([v19 UTF8String], 20);
+  v22 = open([filenameCopy UTF8String], 20);
   v23 = v22;
-  v89 = v11;
+  v89 = lsCopy;
   if (v22 < 0)
   {
     v83 = v22;
-    v29 = a8;
+    statusCopy = status;
     v30 = *__error();
     v31 = v21;
-    v32 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unable to obtain shared lock (%@) | lockReason:%@ | atomicInstanceFilename:%@ | errno:%d", v21, v18, v19, v30];
-    v28 = [MAAutoAssetError buildError:6582 fromOperation:v16 underlyingError:0 withDescription:v32];
+    v32 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unable to obtain shared lock (%@) | lockReason:%@ | atomicInstanceFilename:%@ | errno:%d", v21, reasonCopy, filenameCopy, v30];
+    v28 = [MAAutoAssetError buildError:6582 fromOperation:fileCopy underlyingError:0 withDescription:v32];
 
     v33 = _MAClientLog(@"AutoSet");
     if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
     {
       *buf = 138544386;
-      v96 = v16;
+      v96 = fileCopy;
       v97 = 2114;
       *v98 = v31;
       *&v98[8] = 2114;
-      *&v98[10] = v18;
+      *&v98[10] = reasonCopy;
       *&v98[18] = 2114;
-      *&v98[20] = v19;
+      *&v98[20] = filenameCopy;
       *&v98[28] = 1024;
       *&v98[30] = v30;
       _os_log_impl(&dword_197AD5000, v33, OS_LOG_TYPE_ERROR, "MA-auto-set[AUTO-SHORT-TERM][FRAMEWORK]{%{public}@:_shortTermOpenSharedLockFile} (%{public}@) | lockReason:%{public}@ | unable to obtain shared lock | atomicInstanceFilename:%{public}@ | errno:%d", buf, 0x30u);
@@ -4322,19 +4322,19 @@ LABEL_9:
     v86 = 0;
     v87 = 0;
     v21 = v31;
-    v34 = v29;
-    v15 = a9;
+    v34 = statusCopy;
+    errorCopy4 = error;
     v23 = v83;
-    v35 = v16;
+    v35 = fileCopy;
     v26 = v33;
     goto LABEL_53;
   }
 
-  v85 = a8;
-  v24 = v18;
-  v25 = v16;
+  statusCopy2 = status;
+  v24 = reasonCopy;
+  v25 = fileCopy;
   v94 = 0;
-  v26 = [(MAAutoAssetSet *)self _readLockedSetStatusFromSharedLockFile:v19 error:&v94];
+  v26 = [(MAAutoAssetSet *)self _readLockedSetStatusFromSharedLockFile:filenameCopy error:&v94];
   v27 = v94;
   if (v27)
   {
@@ -4346,13 +4346,13 @@ LABEL_9:
 
   if (!v26)
   {
-    v52 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unable to read contents of shared lock (%@) | lockReason:%@ | atomicInstanceFilename:%@", v21, v24, v19];
+    filenameCopy = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unable to read contents of shared lock (%@) | lockReason:%@ | atomicInstanceFilename:%@", v21, v24, filenameCopy];
     v53 = 6582;
     v35 = v25;
-    v18 = v24;
-    v54 = v52;
+    reasonCopy = v24;
+    filenameCopy2 = filenameCopy;
     v55 = v35;
-    v56 = v52;
+    v56 = filenameCopy;
 LABEL_33:
     v28 = [MAAutoAssetError buildError:v53 fromOperation:v55 underlyingError:0 withDescription:v56];
     v86 = 0;
@@ -4362,7 +4362,7 @@ LABEL_33:
 
   v36 = _MAClientLog(@"AutoSet");
   v35 = v25;
-  v18 = v24;
+  reasonCopy = v24;
   if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138544386;
@@ -4374,28 +4374,28 @@ LABEL_33:
     *&v98[14] = 2112;
     *&v98[16] = v24;
     *&v98[24] = 2114;
-    *&v98[26] = v19;
+    *&v98[26] = filenameCopy;
     _os_log_impl(&dword_197AD5000, v36, OS_LOG_TYPE_DEFAULT, "MA-auto-set[AUTO-SHORT-TERM][FRAMEWORK]{%{public}@:_shortTermOpenSharedLockFile}\n[SHORT_FILE_OPEN][%d] (%{public}@) | lockReason:%@ | successfully opened SHORT-TERM | atomicInstanceFilename:%{public}@ | ", buf, 0x30u);
   }
 
-  v37 = [v26 latestDownloadedAtomicInstance];
+  latestDownloadedAtomicInstance = [v26 latestDownloadedAtomicInstance];
 
-  v34 = v85;
-  if (!v37)
+  v34 = statusCopy2;
+  if (!latestDownloadedAtomicInstance)
   {
-    v54 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"No latestDownloadedAtomicInstance in locked set-status from shared lock (%@) | lockReason:%@ | atomicInstanceFilename:%@", v21, v18, v19];
+    filenameCopy2 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"No latestDownloadedAtomicInstance in locked set-status from shared lock (%@) | lockReason:%@ | atomicInstanceFilename:%@", v21, reasonCopy, filenameCopy];
     v53 = 6111;
     v55 = v35;
-    v56 = v54;
+    v56 = filenameCopy2;
     goto LABEL_33;
   }
 
-  if (!v11)
+  if (!lsCopy)
   {
     v86 = 0;
     v87 = 0;
     v28 = 0;
-    if (v85)
+    if (statusCopy2)
     {
       goto LABEL_54;
     }
@@ -4403,7 +4403,7 @@ LABEL_33:
     goto LABEL_55;
   }
 
-  v81 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v90 = 0u;
   v91 = 0u;
   v92 = 0u;
@@ -4435,78 +4435,78 @@ LABEL_33:
       }
 
       v39 = *(*(&v90 + 1) + 8 * v38);
-      v40 = [v39 localContentURL];
+      localContentURL = [v39 localContentURL];
 
-      if (!v40)
+      if (!localContentURL)
       {
         v62 = objc_alloc(MEMORY[0x1E696AEC0]);
-        v82 = [v39 summary];
-        v61 = [v62 initWithFormat:@"AtomicEntry in locked set-status has nil localContentURL (%@) | lockReason:%@ | atomicInstanceFilename:%@ | nextAtomicEntry:%@", v80, v18, v19, v82];
+        summary = [v39 summary];
+        summary2 = [v62 initWithFormat:@"AtomicEntry in locked set-status has nil localContentURL (%@) | lockReason:%@ | atomicInstanceFilename:%@ | nextAtomicEntry:%@", v80, reasonCopy, filenameCopy, summary];
         v21 = v80;
-        v28 = [MAAutoAssetError buildError:6108 fromOperation:v35 underlyingError:0 withDescription:v61];
+        v28 = [MAAutoAssetError buildError:6108 fromOperation:v35 underlyingError:0 withDescription:summary2];
         goto LABEL_41;
       }
 
-      v41 = [v39 localContentURL];
-      v42 = [v41 lastPathComponent];
+      localContentURL2 = [v39 localContentURL];
+      lastPathComponent = [localContentURL2 lastPathComponent];
 
-      v43 = [MEMORY[0x1E69D3880] stringIsEqual:v42 to:@".AssetData"];
-      v82 = v42;
-      if ((v43 & 1) == 0 && ([MEMORY[0x1E69D3880] stringIsEqual:v42 to:@"AssetData"] & 1) == 0)
+      v43 = [MEMORY[0x1E69D3880] stringIsEqual:lastPathComponent to:@".AssetData"];
+      summary = lastPathComponent;
+      if ((v43 & 1) == 0 && ([MEMORY[0x1E69D3880] stringIsEqual:lastPathComponent to:@"AssetData"] & 1) == 0)
       {
         v63 = objc_alloc(MEMORY[0x1E696AEC0]);
-        v61 = [v39 summary];
-        v64 = [v63 initWithFormat:@"AtomicEntry in locked set-status that is neither standard nor secure asset (%@) | lockReason:%@ | atomicInstanceFilename:%@ | nextAtomicEntry:%@", v80, v18, v19, v61];
+        summary2 = [v39 summary];
+        v64 = [v63 initWithFormat:@"AtomicEntry in locked set-status that is neither standard nor secure asset (%@) | lockReason:%@ | atomicInstanceFilename:%@ | nextAtomicEntry:%@", v80, reasonCopy, filenameCopy, summary2];
         v28 = [MAAutoAssetError buildError:6108 fromOperation:v35 underlyingError:0 withDescription:v64];
 
         v21 = v80;
         goto LABEL_41;
       }
 
-      v44 = v18;
-      v45 = [v39 localContentURL];
-      v46 = [v45 URLByDeletingLastPathComponent];
-      v47 = [v46 URLByAppendingPathComponent:@"Info.plist"];
-      v48 = [v47 path];
+      v44 = reasonCopy;
+      localContentURL3 = [v39 localContentURL];
+      uRLByDeletingLastPathComponent = [localContentURL3 URLByDeletingLastPathComponent];
+      v47 = [uRLByDeletingLastPathComponent URLByAppendingPathComponent:@"Info.plist"];
+      path = [v47 path];
 
-      if (!v48 || ([v81 fileExistsAtPath:v48] & 1) == 0)
+      if (!path || ([defaultManager fileExistsAtPath:path] & 1) == 0)
       {
         v57 = objc_alloc(MEMORY[0x1E696AEC0]);
-        v58 = [v39 summary];
+        summary3 = [v39 summary];
         v59 = v44;
         v21 = v80;
-        v60 = [v57 initWithFormat:@"AtomicEntry in locked set-status has localContentURL where Info.plist is missing (%@) | lockReason:%@ | atomicInstanceFilename:%@ | nextAtomicEntry:%@ | infoPlistPath:%@", v80, v44, v19, v58, v48];
-        v61 = v48;
+        v60 = [v57 initWithFormat:@"AtomicEntry in locked set-status has localContentURL where Info.plist is missing (%@) | lockReason:%@ | atomicInstanceFilename:%@ | nextAtomicEntry:%@ | infoPlistPath:%@", v80, v44, filenameCopy, summary3, path];
+        summary2 = path;
         v28 = [MAAutoAssetError buildError:6108 fromOperation:v78 underlyingError:0 withDescription:v60];
 
-        v18 = v59;
+        reasonCopy = v59;
         v35 = v78;
 LABEL_41:
 
-        v15 = a9;
+        errorCopy4 = error;
         v23 = v84;
         goto LABEL_42;
       }
 
       if (v43)
       {
-        v49 = [v39 localContentURL];
-        v50 = [v49 path];
-        v51 = [v50 stringByAppendingPathComponent:@"System/Library/CoreServices/RestoreVersion.plist"];
+        localContentURL4 = [v39 localContentURL];
+        path2 = [localContentURL4 path];
+        v51 = [path2 stringByAppendingPathComponent:@"System/Library/CoreServices/RestoreVersion.plist"];
 
         v35 = v78;
-        if (![v81 fileExistsAtPath:v51])
+        if (![defaultManager fileExistsAtPath:v51])
         {
           v65 = objc_alloc(MEMORY[0x1E696AEC0]);
-          v66 = [v39 summary];
-          v67 = [v65 initWithFormat:@"AtomicEntry in locked set-status for secure grafted/mounted auto-asset where required content is missing (%@) | lockReason:%@ | atomicInstanceFilename:%@ | nextAtomicEntry:%@ | secureGraftedReqiredFilename:%@", v80, v44, v19, v66, v51];
+          summary4 = [v39 summary];
+          v67 = [v65 initWithFormat:@"AtomicEntry in locked set-status for secure grafted/mounted auto-asset where required content is missing (%@) | lockReason:%@ | atomicInstanceFilename:%@ | nextAtomicEntry:%@ | secureGraftedReqiredFilename:%@", v80, v44, filenameCopy, summary4, v51];
           v28 = [MAAutoAssetError buildError:6108 fromOperation:v78 underlyingError:0 withDescription:v67];
 
-          v18 = v44;
+          reasonCopy = v44;
           v35 = v78;
 
           v21 = v80;
-          v61 = v48;
+          summary2 = path;
           goto LABEL_41;
         }
 
@@ -4520,9 +4520,9 @@ LABEL_41:
       }
 
       ++v38;
-      v18 = v44;
+      reasonCopy = v44;
       v21 = v80;
-      v15 = a9;
+      errorCopy4 = error;
     }
 
     while (v77 != v38);
@@ -4539,17 +4539,17 @@ LABEL_41:
 
 LABEL_42:
 
-  v54 = v81;
+  filenameCopy2 = defaultManager;
 LABEL_43:
 
   if (v28)
   {
-    v24 = v18;
+    v24 = reasonCopy;
     v25 = v35;
 LABEL_45:
     if (close(v23))
     {
-      v68 = v15;
+      v68 = errorCopy4;
       v69 = *__error();
       v70 = _MAClientLog(@"AutoSet");
       if (os_log_type_enabled(v70, OS_LOG_TYPE_ERROR))
@@ -4563,16 +4563,16 @@ LABEL_45:
         *&v98[14] = 2112;
         *&v98[16] = v24;
         *&v98[24] = 2114;
-        *&v98[26] = v19;
+        *&v98[26] = filenameCopy;
         *&v98[34] = 1024;
         *&v98[36] = v69;
         _os_log_impl(&dword_197AD5000, v70, OS_LOG_TYPE_ERROR, "MA-auto-set[AUTO-SHORT-TERM][FRAMEWORK]{%{public}@:_shortTermOpenSharedLockFile}\n[SHORT_FILE_CLOSE][%d] (%{public}@) | lockReason:%@ | WARNING | failed close of shared lock file | atomicInstanceFilename:%{public}@ | errno:%d", buf, 0x36u);
       }
 
-      v15 = v68;
+      errorCopy4 = v68;
 LABEL_51:
       v35 = v25;
-      v18 = v24;
+      reasonCopy = v24;
     }
 
     else
@@ -4591,15 +4591,15 @@ LABEL_51:
       *&v98[4] = 2114;
       *&v98[6] = v21;
       *&v98[14] = 2112;
-      v18 = v24;
+      reasonCopy = v24;
       *&v98[16] = v24;
       *&v98[24] = 2114;
-      *&v98[26] = v19;
+      *&v98[26] = filenameCopy;
       _os_log_impl(&dword_197AD5000, v70, OS_LOG_TYPE_DEFAULT, "MA-auto-set[AUTO-SHORT-TERM][FRAMEWORK]{%{public}@:_shortTermOpenSharedLockFile}\n[SHORT_FILE_CLOSE][%d] (%{public}@) | lockReason:%@ | released sharedLockFileDescriptor | atomicInstanceFilename:%{public}@", buf, 0x30u);
     }
 
     v23 = -1;
-    v34 = v85;
+    v34 = statusCopy2;
 LABEL_53:
 
     v26 = 0;
@@ -4613,18 +4613,18 @@ LABEL_54:
 
   else
   {
-    v34 = v85;
-    if (v85)
+    v34 = statusCopy2;
+    if (statusCopy2)
     {
       goto LABEL_54;
     }
   }
 
 LABEL_55:
-  if (v15)
+  if (errorCopy4)
   {
     v72 = v28;
-    *v15 = v28;
+    *errorCopy4 = v28;
   }
 
   if (v89 && !v28 && v26)
@@ -4635,11 +4635,11 @@ LABEL_55:
       *buf = 138544642;
       v96 = v35;
       v97 = 2114;
-      *v98 = v19;
+      *v98 = filenameCopy;
       *&v98[8] = 2112;
       *&v98[10] = v21;
       *&v98[18] = 2114;
-      *&v98[20] = v18;
+      *&v98[20] = reasonCopy;
       *&v98[28] = 2048;
       *&v98[30] = v87;
       *&v98[38] = 2048;
@@ -4652,36 +4652,36 @@ LABEL_55:
   return v23;
 }
 
-- (void)_shortTermLogResult:(id)a3 forLockReason:(id)a4 forAtomicInstance:(id)a5 atomicInstanceFilename:(id)a6 forShortTermLock:(id)a7 withSetStatus:(id)a8 returningError:(id)a9
+- (void)_shortTermLogResult:(id)result forLockReason:(id)reason forAtomicInstance:(id)instance atomicInstanceFilename:(id)filename forShortTermLock:(id)lock withSetStatus:(id)status returningError:(id)error
 {
   v71 = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v16 = a4;
-  v56 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v20 = a9;
+  resultCopy = result;
+  reasonCopy = reason;
+  instanceCopy = instance;
+  filenameCopy = filename;
+  lockCopy = lock;
+  statusCopy = status;
+  errorCopy = error;
   dispatch_assert_queue_V2(__maAutoAssetSetShortTermLockerDispatchQueue);
   v21 = _MAClientLog(@"AutoSet");
   v22 = v21;
-  if (v20)
+  if (errorCopy)
   {
     v23 = os_log_type_enabled(v21, OS_LOG_TYPE_ERROR);
-    if (v18)
+    if (lockCopy)
     {
       if (!v23)
       {
         goto LABEL_23;
       }
 
-      v52 = v17;
-      v54 = v15;
-      v24 = [(MAAutoAssetSet *)self assetSetIdentifier];
-      v25 = @"N";
-      if (v16)
+      v52 = filenameCopy;
+      v54 = resultCopy;
+      assetSetIdentifier = [(MAAutoAssetSet *)self assetSetIdentifier];
+      summary2 = @"N";
+      if (reasonCopy)
       {
-        v26 = v16;
+        v26 = reasonCopy;
       }
 
       else
@@ -4689,32 +4689,32 @@ LABEL_55:
         v26 = @"N";
       }
 
-      v27 = [v18 summary];
-      if (v19)
+      summary = [lockCopy summary];
+      if (statusCopy)
       {
-        v25 = [v19 summary];
+        summary2 = [statusCopy summary];
       }
 
-      v28 = [v20 checkedDescription];
+      checkedDescription = [errorCopy checkedDescription];
       *buf = 138544642;
       v58 = v54;
       v59 = 2114;
-      v60 = v24;
+      v60 = assetSetIdentifier;
       v61 = 2114;
       v62 = v26;
       v63 = 2114;
-      v64 = v27;
+      v64 = summary;
       v65 = 2114;
-      v66 = v25;
+      v66 = summary2;
       v67 = 2114;
-      v68 = v28;
+      v68 = checkedDescription;
       _os_log_impl(&dword_197AD5000, v22, OS_LOG_TYPE_ERROR, "MA-auto-set[AUTO-SHORT-TERM][FRAMEWORK]{%{public}@} %{public}@ ERROR | lockReason:%{public}@ | shortTermLock:%{public}@ | setStatus:%{public}@ | error:%{public}@", buf, 0x3Eu);
 
-      if (v19)
+      if (statusCopy)
       {
       }
 
-      v15 = v54;
+      resultCopy = v54;
       goto LABEL_22;
     }
 
@@ -4723,11 +4723,11 @@ LABEL_55:
       goto LABEL_56;
     }
 
-    v36 = [(MAAutoAssetSet *)self assetSetIdentifier];
-    v37 = @"N";
-    if (v16)
+    assetSetIdentifier2 = [(MAAutoAssetSet *)self assetSetIdentifier];
+    summary3 = @"N";
+    if (reasonCopy)
     {
-      v38 = v16;
+      v38 = reasonCopy;
     }
 
     else
@@ -4735,10 +4735,10 @@ LABEL_55:
       v38 = @"N";
     }
 
-    v39 = v17;
-    if (v56)
+    v39 = filenameCopy;
+    if (instanceCopy)
     {
-      v40 = v56;
+      v40 = instanceCopy;
     }
 
     else
@@ -4746,7 +4746,7 @@ LABEL_55:
       v40 = @"N";
     }
 
-    v50 = v36;
+    v50 = assetSetIdentifier2;
     v53 = v39;
     if (v39)
     {
@@ -4758,13 +4758,13 @@ LABEL_55:
       v41 = @"N";
     }
 
-    v55 = v15;
-    if (v19)
+    v55 = resultCopy;
+    if (statusCopy)
     {
-      v37 = [v19 summary];
+      summary3 = [statusCopy summary];
     }
 
-    v42 = [v20 checkedDescription];
+    checkedDescription2 = [errorCopy checkedDescription];
     *buf = 138544898;
     v58 = v55;
     v59 = 2114;
@@ -4776,35 +4776,35 @@ LABEL_55:
     v65 = 2114;
     v66 = v41;
     v67 = 2114;
-    v68 = v37;
+    v68 = summary3;
     v69 = 2114;
-    v70 = v42;
+    v70 = checkedDescription2;
     _os_log_impl(&dword_197AD5000, v22, OS_LOG_TYPE_ERROR, "MA-auto-set[AUTO-SHORT-TERM][FRAMEWORK]{%{public}@} %{public}@ ERROR | lockReason:%{public}@ | forAtomicInstance:%{public}@ | atomicInstanceFilename:%{public}@ | setStatus:%{public}@ | error:%{public}@", buf, 0x48u);
 
-    if (v19)
+    if (statusCopy)
     {
     }
 
 LABEL_55:
-    v17 = v53;
-    v15 = v55;
+    filenameCopy = v53;
+    resultCopy = v55;
     goto LABEL_56;
   }
 
   v29 = os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT);
-  if (!v18)
+  if (!lockCopy)
   {
     if (!v29)
     {
       goto LABEL_56;
     }
 
-    v55 = v15;
-    v43 = [(MAAutoAssetSet *)self assetSetIdentifier];
-    v44 = @"N";
-    if (v16)
+    v55 = resultCopy;
+    assetSetIdentifier3 = [(MAAutoAssetSet *)self assetSetIdentifier];
+    summary4 = @"N";
+    if (reasonCopy)
     {
-      v45 = v16;
+      v45 = reasonCopy;
     }
 
     else
@@ -4812,10 +4812,10 @@ LABEL_55:
       v45 = @"N";
     }
 
-    v46 = v17;
-    if (v56)
+    v46 = filenameCopy;
+    if (instanceCopy)
     {
-      v47 = v56;
+      v47 = instanceCopy;
     }
 
     else
@@ -4834,15 +4834,15 @@ LABEL_55:
       v48 = @"N";
     }
 
-    if (v19)
+    if (statusCopy)
     {
-      v44 = [v19 summary];
+      summary4 = [statusCopy summary];
     }
 
     *buf = 138544642;
     v58 = v55;
     v59 = 2114;
-    v60 = v43;
+    v60 = assetSetIdentifier3;
     v61 = 2114;
     v62 = v45;
     v63 = 2114;
@@ -4850,9 +4850,9 @@ LABEL_55:
     v65 = 2114;
     v66 = v48;
     v67 = 2114;
-    v68 = v44;
+    v68 = summary4;
     _os_log_impl(&dword_197AD5000, v22, OS_LOG_TYPE_DEFAULT, "MA-auto-set[AUTO-SHORT-TERM][FRAMEWORK]{%{public}@} %{public}@ SUCCESS | lockReason:%{public}@ | forAtomicInstance:%{public}@ | atomicInstanceFilename:%{public}@ | setStatus:%{public}@", buf, 0x3Eu);
-    if (v19)
+    if (statusCopy)
     {
     }
 
@@ -4864,13 +4864,13 @@ LABEL_55:
     goto LABEL_23;
   }
 
-  v52 = v17;
-  v30 = v15;
-  v31 = [(MAAutoAssetSet *)self assetSetIdentifier];
-  v32 = @"N";
-  if (v16)
+  v52 = filenameCopy;
+  v30 = resultCopy;
+  assetSetIdentifier4 = [(MAAutoAssetSet *)self assetSetIdentifier];
+  summary6 = @"N";
+  if (reasonCopy)
   {
-    v33 = v16;
+    v33 = reasonCopy;
   }
 
   else
@@ -4878,38 +4878,38 @@ LABEL_55:
     v33 = @"N";
   }
 
-  v34 = [v18 summary];
-  if (v19)
+  summary5 = [lockCopy summary];
+  if (statusCopy)
   {
-    v32 = [v19 summary];
+    summary6 = [statusCopy summary];
   }
 
   *buf = 138544386;
   v58 = v30;
   v59 = 2114;
-  v60 = v31;
+  v60 = assetSetIdentifier4;
   v61 = 2114;
   v62 = v33;
   v63 = 2114;
-  v64 = v34;
+  v64 = summary5;
   v65 = 2114;
-  v66 = v32;
+  v66 = summary6;
   _os_log_impl(&dword_197AD5000, v22, OS_LOG_TYPE_DEFAULT, "MA-auto-set[AUTO-SHORT-TERM][FRAMEWORK]{%{public}@} %{public}@ SUCCESS | lockReason:%{public}@ | shortTermLock:%{public}@ | setStatus:%{public}@", buf, 0x34u);
-  if (v19)
+  if (statusCopy)
   {
   }
 
-  v15 = v30;
+  resultCopy = v30;
 LABEL_22:
-  v17 = v52;
+  filenameCopy = v52;
 LABEL_23:
 
   v22 = _MAClientLog(@"AutoSet");
   if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
   {
-    v35 = [v18 lockCountByReason];
+    lockCountByReason = [lockCopy lockCountByReason];
     *buf = 138543362;
-    v58 = v35;
+    v58 = lockCountByReason;
     _os_log_impl(&dword_197AD5000, v22, OS_LOG_TYPE_DEFAULT, "MA-auto-set[AUTO-SHORT-TERM][FRAMEWORK] lockCountByReason:\n%{public}@", buf, 0xCu);
   }
 
@@ -4918,10 +4918,10 @@ LABEL_56:
   v49 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_readLockedSetStatusFromSharedLockFile:(id)a3 error:(id *)a4
+- (id)_readLockedSetStatusFromSharedLockFile:(id)file error:(id *)error
 {
   v49 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  fileCopy = file;
   v6 = MAAutoAssetInfoFound;
   dispatch_assert_queue_V2(__maAutoAssetSetShortTermLockerDispatchQueue);
   if (_readLockedSetStatusFromSharedLockFile_error__readSetStatusSetupDispatchOnce != -1)
@@ -4931,7 +4931,7 @@ LABEL_56:
 
   v7 = MAAutoAssetInfoFound;
   v8 = 0x1E696A000uLL;
-  if (realpath_DARWIN_EXTSN([v5 fileSystemRepresentation], v48))
+  if (realpath_DARWIN_EXTSN([fileCopy fileSystemRepresentation], v48))
   {
     v9 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v48];
     v39 = 0u;
@@ -4954,8 +4954,8 @@ LABEL_6:
         }
 
         v15 = *(*(&v39 + 1) + 8 * v14);
-        v16 = [v15 lockerFileRealPath];
-        v17 = [v16 isEqualToString:v9];
+        lockerFileRealPath = [v15 lockerFileRealPath];
+        v17 = [lockerFileRealPath isEqualToString:v9];
 
         if (v17)
         {
@@ -4976,7 +4976,7 @@ LABEL_6:
 
       if ([v15 isCurrentlyValid])
       {
-        v19 = [v15 setStatus];
+        setStatus = [v15 setStatus];
 
         v18 = 0;
         v20 = 0;
@@ -4990,7 +4990,7 @@ LABEL_6:
       if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v44 = v5;
+        v44 = fileCopy;
         _os_log_impl(&dword_197AD5000, v24, OS_LOG_TYPE_DEFAULT, "MA-auto-set[AUTO-SHORT-TERM][FRAMEWORK] _readLockedSetStatusFromSharedLockFile: In memory record for lock file(%@) not valid. Discarding", buf, 0xCu);
       }
 
@@ -5020,7 +5020,7 @@ LABEL_12:
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v44 = v5;
+      v44 = fileCopy;
       _os_log_impl(&dword_197AD5000, v23, OS_LOG_TYPE_DEFAULT, "MA-auto-set[AUTO-SHORT-TERM][FRAMEWORK] _readLockedSetStatusFromSharedLockFile: Failed to determine realpath for %@. Skipping caching", buf, 0xCu);
     }
 
@@ -5035,12 +5035,12 @@ LABEL_12:
   cache = v6[26].cache;
   if (v26)
   {
-    v29 = [v27 initWithDispatchQueue:cache withPersistencePath:v5 forPolicyVersion:@"1.0" issuingDefaultLevelLogging:0];
+    v29 = [v27 initWithDispatchQueue:cache withPersistencePath:fileCopy forPolicyVersion:@"1.0" issuingDefaultLevelLogging:0];
   }
 
   else
   {
-    v29 = [v27 initWithDispatchQueue:cache withPersistencePath:v5 forPolicyVersion:@"1.0"];
+    v29 = [v27 initWithDispatchQueue:cache withPersistencePath:fileCopy forPolicyVersion:@"1.0"];
   }
 
   v20 = v29;
@@ -5061,11 +5061,11 @@ LABEL_12:
   {
     v32 = @"Unable to read set-status from persisted-state for shared lock file | sharedLockFilename:%@";
 LABEL_33:
-    v33 = [objc_alloc(*(v8 + 3776)) initWithFormat:v32, v5];
-    v21 = [MAAutoAssetError buildError:6101 fromOperation:@"auto-set(_readLockedSetStatusFromSharedLockFile)" underlyingError:0 withDescription:v33];
+    fileCopy = [objc_alloc(*(v8 + 3776)) initWithFormat:v32, fileCopy];
+    v21 = [MAAutoAssetError buildError:6101 fromOperation:@"auto-set(_readLockedSetStatusFromSharedLockFile)" underlyingError:0 withDescription:fileCopy];
 
     v31 = 0;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_35;
     }
@@ -5075,11 +5075,11 @@ LABEL_33:
 
   v31 = v30;
   v21 = 0;
-  if (a4)
+  if (error)
   {
 LABEL_34:
     v34 = v21;
-    *a4 = v21;
+    *error = v21;
   }
 
 LABEL_35:
@@ -5096,7 +5096,7 @@ LABEL_35:
     if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v44 = v5;
+      v44 = fileCopy;
       v45 = 2112;
       v46 = v9;
       _os_log_impl(&dword_197AD5000, v36, OS_LOG_TYPE_DEFAULT, "MA-auto-set[AUTO-SHORT-TERM][FRAMEWORK] _readLockedSetStatusFromSharedLockFile: Updating in memory record for lockerFile:'%@' realPath:'%@'", buf, 0x16u);
@@ -5104,12 +5104,12 @@ LABEL_35:
   }
 
   v22 = v31;
-  v19 = v22;
+  setStatus = v22;
 LABEL_43:
 
   v37 = *MEMORY[0x1E69E9840];
 
-  return v19;
+  return setStatus;
 }
 
 uint64_t __63__MAAutoAssetSet__readLockedSetStatusFromSharedLockFile_error___block_invoke()
@@ -5119,35 +5119,35 @@ uint64_t __63__MAAutoAssetSet__readLockedSetStatusFromSharedLockFile_error___blo
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)_closeAndRemoveShortTermLock:(id)a3 forShortTermLock:(id)a4
+- (void)_closeAndRemoveShortTermLock:(id)lock forShortTermLock:(id)termLock
 {
   *&v32[13] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  lockCopy = lock;
+  termLockCopy = termLock;
   dispatch_assert_queue_V2(__maAutoAssetSetShortTermLockerDispatchQueue);
-  v8 = [v7 lockedFileDescriptor];
-  if (([v7 lockedFileDescriptor] & 0x80000000) == 0)
+  lockedFileDescriptor = [termLockCopy lockedFileDescriptor];
+  if (([termLockCopy lockedFileDescriptor] & 0x80000000) == 0)
   {
-    v9 = close([v7 lockedFileDescriptor]);
-    [v7 setLockedFileDescriptor:0xFFFFFFFFLL];
+    v9 = close([termLockCopy lockedFileDescriptor]);
+    [termLockCopy setLockedFileDescriptor:0xFFFFFFFFLL];
     if (v9)
     {
       v10 = *__error();
       v11 = _MAClientLog(@"AutoSet");
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
-        v12 = [v7 assetSetAtomicInstance];
-        v13 = [v7 summary];
+        assetSetAtomicInstance = [termLockCopy assetSetAtomicInstance];
+        summary = [termLockCopy summary];
         v27 = 138544386;
-        v28 = v6;
+        v28 = lockCopy;
         v29 = 1024;
-        *v30 = v8;
+        *v30 = lockedFileDescriptor;
         *&v30[4] = 2114;
-        *&v30[6] = v12;
+        *&v30[6] = assetSetAtomicInstance;
         v31 = 1024;
         *v32 = v10;
         v32[2] = 2114;
-        *&v32[3] = v13;
+        *&v32[3] = summary;
         v14 = "MA-auto-set[AUTO-SHORT-TERM][FRAMEWORK]{%{public}@:_closeAndRemoveShortTermLock}\n[SHORT_FILE_CLOSE][%d] (%{public}@) | WARNING | failed close of shared lock file | errno:%d | shortTermLock:%{public}@";
         v15 = v11;
         v16 = OS_LOG_TYPE_ERROR;
@@ -5162,16 +5162,16 @@ LABEL_9:
       v11 = _MAClientLog(@"AutoSet");
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
-        v12 = [v7 assetSetAtomicInstance];
-        v13 = [v7 summary];
+        assetSetAtomicInstance = [termLockCopy assetSetAtomicInstance];
+        summary = [termLockCopy summary];
         v27 = 138544130;
-        v28 = v6;
+        v28 = lockCopy;
         v29 = 1024;
-        *v30 = v8;
+        *v30 = lockedFileDescriptor;
         *&v30[4] = 2114;
-        *&v30[6] = v12;
+        *&v30[6] = assetSetAtomicInstance;
         v31 = 2114;
-        *v32 = v13;
+        *v32 = summary;
         v14 = "MA-auto-set[AUTO-SHORT-TERM][FRAMEWORK]{%{public}@:_closeAndRemoveShortTermLock}\n[SHORT_FILE_CLOSE][%d] (%{public}@) | released shared lock | shortTermLock:%{public}@";
         v15 = v11;
         v16 = OS_LOG_TYPE_DEFAULT;
@@ -5181,50 +5181,50 @@ LABEL_9:
     }
 
     v20 = __maAutoAssetSetSharedProcessByClientDomainName;
-    v21 = [(MAAutoAssetSet *)self clientDomainName];
-    v18 = [v20 safeObjectForKey:v21 ofClass:objc_opt_class()];
+    clientDomainName = [(MAAutoAssetSet *)self clientDomainName];
+    v18 = [v20 safeObjectForKey:clientDomainName ofClass:objc_opt_class()];
 
     if (v18)
     {
-      v22 = [(MAAutoAssetSet *)self assetSetIdentifier];
-      v19 = [v18 safeObjectForKey:v22 ofClass:objc_opt_class()];
+      assetSetIdentifier = [(MAAutoAssetSet *)self assetSetIdentifier];
+      summary3 = [v18 safeObjectForKey:assetSetIdentifier ofClass:objc_opt_class()];
 
-      if (v19)
+      if (summary3)
       {
         v23 = objc_alloc_init(MEMORY[0x1E695DF90]);
-        [v7 setLockCountByReason:v23];
+        [termLockCopy setLockCountByReason:v23];
 
-        [v7 setTotalLockCount:0];
-        v24 = [v7 assetSetAtomicInstance];
-        [v19 removeObjectForKey:v24];
+        [termLockCopy setTotalLockCount:0];
+        assetSetAtomicInstance2 = [termLockCopy assetSetAtomicInstance];
+        [summary3 removeObjectForKey:assetSetAtomicInstance2];
       }
 
       else
       {
-        v24 = _MAClientLog(@"AutoSet");
-        if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
+        assetSetAtomicInstance2 = _MAClientLog(@"AutoSet");
+        if (os_log_type_enabled(assetSetAtomicInstance2, OS_LOG_TYPE_ERROR))
         {
-          v25 = [v7 summary];
+          summary2 = [termLockCopy summary];
           v27 = 138543618;
-          v28 = v6;
+          v28 = lockCopy;
           v29 = 2114;
-          *v30 = v25;
-          _os_log_impl(&dword_197AD5000, v24, OS_LOG_TYPE_ERROR, "MA-auto-set[AUTO-SHORT-TERM][FRAMEWORK]{%{public}@:_closeAndRemoveShortTermLock} | WARNING | unable to locate byAtomicInstance when ending SHORT-TERM lock | shortTermLock:%{public}@", &v27, 0x16u);
+          *v30 = summary2;
+          _os_log_impl(&dword_197AD5000, assetSetAtomicInstance2, OS_LOG_TYPE_ERROR, "MA-auto-set[AUTO-SHORT-TERM][FRAMEWORK]{%{public}@:_closeAndRemoveShortTermLock} | WARNING | unable to locate byAtomicInstance when ending SHORT-TERM lock | shortTermLock:%{public}@", &v27, 0x16u);
         }
       }
 
       goto LABEL_17;
     }
 
-    v19 = _MAClientLog(@"AutoSet");
-    if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
+    summary3 = _MAClientLog(@"AutoSet");
+    if (os_log_type_enabled(summary3, OS_LOG_TYPE_ERROR))
     {
-      v24 = [v7 summary];
+      assetSetAtomicInstance2 = [termLockCopy summary];
       v27 = 138543618;
-      v28 = v6;
+      v28 = lockCopy;
       v29 = 2114;
-      *v30 = v24;
-      _os_log_impl(&dword_197AD5000, v19, OS_LOG_TYPE_ERROR, "MA-auto-set[AUTO-SHORT-TERM][FRAMEWORK]{%{public}@:_closeAndRemoveShortTermLock} | WARNING | unable to locate byAssetSetIdentifier when ending SHORT-TERM lock | shortTermLock:%{public}@", &v27, 0x16u);
+      *v30 = assetSetAtomicInstance2;
+      _os_log_impl(&dword_197AD5000, summary3, OS_LOG_TYPE_ERROR, "MA-auto-set[AUTO-SHORT-TERM][FRAMEWORK]{%{public}@:_closeAndRemoveShortTermLock} | WARNING | unable to locate byAssetSetIdentifier when ending SHORT-TERM lock | shortTermLock:%{public}@", &v27, 0x16u);
 LABEL_17:
     }
 
@@ -5236,11 +5236,11 @@ LABEL_18:
   v18 = _MAClientLog(@"AutoSet");
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
   {
-    v19 = [v7 summary];
+    summary3 = [termLockCopy summary];
     v27 = 138543618;
-    v28 = v6;
+    v28 = lockCopy;
     v29 = 2114;
-    *v30 = v19;
+    *v30 = summary3;
     _os_log_impl(&dword_197AD5000, v18, OS_LOG_TYPE_DEFAULT, "MA-auto-set[AUTO-SHORT-TERM][FRAMEWORK]{%{public}@:_closeAndRemoveShortTermLock} | WARNING | invalid lockedFileDesciptor | shortTermLock:%{public}@", &v27, 0x16u);
     goto LABEL_18;
   }
@@ -5253,8 +5253,8 @@ LABEL_19:
 - (id)summary
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(MAAutoAssetSet *)self autoAssetSetClientName];
-  v5 = [(MAAutoAssetSet *)self assetSetIdentifier];
+  autoAssetSetClientName = [(MAAutoAssetSet *)self autoAssetSetClientName];
+  assetSetIdentifier = [(MAAutoAssetSet *)self assetSetIdentifier];
   if ([(MAAutoAssetSet *)self shortTermLocker])
   {
     v6 = @"Y";
@@ -5265,39 +5265,39 @@ LABEL_19:
     v6 = @"N";
   }
 
-  v7 = [(MAAutoAssetSet *)self autoAssetEntries];
-  if (v7)
+  autoAssetEntries = [(MAAutoAssetSet *)self autoAssetEntries];
+  if (autoAssetEntries)
   {
     v8 = objc_alloc(MEMORY[0x1E696AEC0]);
-    v9 = [(MAAutoAssetSet *)self autoAssetEntries];
-    v10 = [v8 initWithFormat:@"%ld", objc_msgSend(v9, "count")];
-    v11 = [v3 initWithFormat:@"autoAssetSetClientName:%@|assetSetIdentifier:%@|shortTermLocker:%@|autoAssetEntries:%@", v4, v5, v6, v10];
+    autoAssetEntries2 = [(MAAutoAssetSet *)self autoAssetEntries];
+    v10 = [v8 initWithFormat:@"%ld", objc_msgSend(autoAssetEntries2, "count")];
+    v11 = [v3 initWithFormat:@"autoAssetSetClientName:%@|assetSetIdentifier:%@|shortTermLocker:%@|autoAssetEntries:%@", autoAssetSetClientName, assetSetIdentifier, v6, v10];
   }
 
   else
   {
-    v11 = [v3 initWithFormat:@"autoAssetSetClientName:%@|assetSetIdentifier:%@|shortTermLocker:%@|autoAssetEntries:%@", v4, v5, v6, @"N"];
+    v11 = [v3 initWithFormat:@"autoAssetSetClientName:%@|assetSetIdentifier:%@|shortTermLocker:%@|autoAssetEntries:%@", autoAssetSetClientName, assetSetIdentifier, v6, @"N"];
   }
 
   return v11;
 }
 
-+ (void)endAtomicLocks:(id)a3 usingClientDomain:(id)a4 forClientName:(id)a5 forAssetSetIdentifier:(id)a6 ofAtomicInstance:(id)a7 removingLockCount:(int64_t)a8 completion:(id)a9
++ (void)endAtomicLocks:(id)locks usingClientDomain:(id)domain forClientName:(id)name forAssetSetIdentifier:(id)identifier ofAtomicInstance:(id)instance removingLockCount:(int64_t)count completion:(id)completion
 {
   v39 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a9;
-  if (v19)
+  locksCopy = locks;
+  domainCopy = domain;
+  nameCopy = name;
+  identifierCopy = identifier;
+  instanceCopy = instance;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v29 = v14;
+    v29 = locksCopy;
     v20 = [MAAutoAssetSet alloc];
     v21 = +[MAAutoAssetSet defaultDispatchQueue];
     v36 = 0;
-    v22 = [(MAAutoAssetSet *)v20 initUsingClientDomain:v15 forClientName:v16 forAssetSetIdentifier:v17 comprisedOfEntries:0 usingDesiredPolicyCategory:0 completingFromQueue:v21 error:&v36];
+    v22 = [(MAAutoAssetSet *)v20 initUsingClientDomain:domainCopy forClientName:nameCopy forAssetSetIdentifier:identifierCopy comprisedOfEntries:0 usingDesiredPolicyCategory:0 completingFromQueue:v21 error:&v36];
     v23 = v36;
 
     if (v23)
@@ -5308,8 +5308,8 @@ LABEL_19:
       block[2] = __133__MAAutoAssetSet_endAtomicLocks_usingClientDomain_forClientName_forAssetSetIdentifier_ofAtomicInstance_removingLockCount_completion___block_invoke_3;
       block[3] = &unk_1E74CAA40;
       v25 = &v33;
-      v33 = v19;
-      v31 = v17;
+      v33 = completionCopy;
+      v31 = identifierCopy;
       v32 = v23;
       dispatch_async(v24, block);
     }
@@ -5321,12 +5321,12 @@ LABEL_19:
       v34[2] = __133__MAAutoAssetSet_endAtomicLocks_usingClientDomain_forClientName_forAssetSetIdentifier_ofAtomicInstance_removingLockCount_completion___block_invoke;
       v34[3] = &unk_1E74CB548;
       v25 = &v35;
-      v35 = v19;
+      v35 = completionCopy;
       LOBYTE(v28) = 0;
-      [v22 _endAtomicLocks:v29 usingClientDomain:v15 forClientName:v16 forAssetSetIdentifier:v17 ofAtomicInstance:v18 removingLockCount:a8 isSynchronous:v28 completion:v34];
+      [v22 _endAtomicLocks:v29 usingClientDomain:domainCopy forClientName:nameCopy forAssetSetIdentifier:identifierCopy ofAtomicInstance:instanceCopy removingLockCount:count isSynchronous:v28 completion:v34];
     }
 
-    v14 = v29;
+    locksCopy = v29;
   }
 
   else
@@ -5377,15 +5377,15 @@ uint64_t __133__MAAutoAssetSet_endAtomicLocks_usingClientDomain_forClientName_fo
   return result;
 }
 
-- (void)_endAtomicLocks:(id)a3 usingClientDomain:(id)a4 forClientName:(id)a5 forAssetSetIdentifier:(id)a6 ofAtomicInstance:(id)a7 removingLockCount:(int64_t)a8 isSynchronous:(BOOL)a9 completion:(id)a10
+- (void)_endAtomicLocks:(id)locks usingClientDomain:(id)domain forClientName:(id)name forAssetSetIdentifier:(id)identifier ofAtomicInstance:(id)instance removingLockCount:(int64_t)count isSynchronous:(BOOL)synchronous completion:(id)self0
 {
   v58 = *MEMORY[0x1E69E9840];
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a10;
+  locksCopy = locks;
+  domainCopy = domain;
+  nameCopy = name;
+  identifierCopy = identifier;
+  instanceCopy = instance;
+  completionCopy = completion;
   v22 = +[MAAutoAssetSet _privateStateQueue];
   dispatch_assert_queue_not_V2(v22);
 
@@ -5394,21 +5394,21 @@ uint64_t __133__MAAutoAssetSet_endAtomicLocks_usingClientDomain_forClientName_fo
   v23 = _os_activity_create(&dword_197AD5000, "MAAutoSet:_endAtomicLocks", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   os_activity_scope_enter(v23, &state);
 
-  if (v21)
+  if (completionCopy)
   {
-    if (!v16 && a8 != -1)
+    if (!locksCopy && count != -1)
     {
       v51[0] = MEMORY[0x1E69E9820];
       v51[1] = 3221225472;
       v51[2] = __148__MAAutoAssetSet__endAtomicLocks_usingClientDomain_forClientName_forAssetSetIdentifier_ofAtomicInstance_removingLockCount_isSynchronous_completion___block_invoke;
       v51[3] = &unk_1E74C97C8;
       v51[4] = self;
-      v52 = v19;
-      v54 = a9;
-      v53 = v21;
+      v52 = identifierCopy;
+      synchronousCopy = synchronous;
+      v53 = completionCopy;
       v24 = MEMORY[0x19A8EC5D0](v51);
       v25 = +[MAAutoAssetSet _privateStateQueue];
-      if (a9)
+      if (synchronous)
       {
         dispatch_sync(v25, v24);
       }
@@ -5421,24 +5421,24 @@ uint64_t __133__MAAutoAssetSet_endAtomicLocks_usingClientDomain_forClientName_fo
       goto LABEL_23;
     }
 
-    if (![v20 isEqualToString:@"ALL_INSTANCES"])
+    if (![instanceCopy isEqualToString:@"ALL_INSTANCES"])
     {
       goto LABEL_18;
     }
 
-    if (a8 != -1)
+    if (count != -1)
     {
       v47[0] = MEMORY[0x1E69E9820];
       v47[1] = 3221225472;
       v47[2] = __148__MAAutoAssetSet__endAtomicLocks_usingClientDomain_forClientName_forAssetSetIdentifier_ofAtomicInstance_removingLockCount_isSynchronous_completion___block_invoke_2;
       v47[3] = &unk_1E74C97C8;
       v47[4] = self;
-      v48 = v19;
-      v50 = a9;
-      v49 = v21;
+      v48 = identifierCopy;
+      synchronousCopy2 = synchronous;
+      v49 = completionCopy;
       v28 = MEMORY[0x19A8EC5D0](v47);
       v29 = +[MAAutoAssetSet _privateStateQueue];
-      if (a9)
+      if (synchronous)
       {
         dispatch_sync(v29, v28);
       }
@@ -5451,22 +5451,22 @@ uint64_t __133__MAAutoAssetSet_endAtomicLocks_usingClientDomain_forClientName_fo
       goto LABEL_23;
     }
 
-    if (!v16)
+    if (!locksCopy)
     {
 LABEL_18:
       v33[0] = MEMORY[0x1E69E9820];
       v33[1] = 3221225472;
       v33[2] = __148__MAAutoAssetSet__endAtomicLocks_usingClientDomain_forClientName_forAssetSetIdentifier_ofAtomicInstance_removingLockCount_isSynchronous_completion___block_invoke_4;
       v33[3] = &unk_1E74CB598;
-      v34 = v17;
-      v35 = v18;
-      v36 = v19;
-      v37 = v20;
-      v41 = a8;
-      v42 = a9;
-      v38 = v16;
-      v39 = self;
-      v40 = v21;
+      v34 = domainCopy;
+      v35 = nameCopy;
+      v36 = identifierCopy;
+      v37 = instanceCopy;
+      countCopy = count;
+      synchronousCopy3 = synchronous;
+      v38 = locksCopy;
+      selfCopy = self;
+      v40 = completionCopy;
       [(MAAutoAssetSet *)self connectToServerFrameworkCompletion:v33];
 
       goto LABEL_23;
@@ -5477,12 +5477,12 @@ LABEL_18:
     v43[2] = __148__MAAutoAssetSet__endAtomicLocks_usingClientDomain_forClientName_forAssetSetIdentifier_ofAtomicInstance_removingLockCount_isSynchronous_completion___block_invoke_3;
     v43[3] = &unk_1E74C97C8;
     v43[4] = self;
-    v44 = v19;
-    v46 = a9;
-    v45 = v21;
+    v44 = identifierCopy;
+    synchronousCopy4 = synchronous;
+    v45 = completionCopy;
     v30 = MEMORY[0x19A8EC5D0](v43);
     v31 = +[MAAutoAssetSet _privateStateQueue];
-    if (a9)
+    if (synchronous)
     {
       dispatch_sync(v31, v30);
     }
@@ -5609,34 +5609,34 @@ void __148__MAAutoAssetSet__endAtomicLocks_usingClientDomain_forClientName_forAs
   }
 }
 
-+ (id)endAtomicLocksSync:(id)a3 usingClientDomain:(id)a4 forClientName:(id)a5 forAssetSetIdentifier:(id)a6 ofAtomicInstance:(id)a7 removingLockCount:(int64_t)a8
++ (id)endAtomicLocksSync:(id)sync usingClientDomain:(id)domain forClientName:(id)name forAssetSetIdentifier:(id)identifier ofAtomicInstance:(id)instance removingLockCount:(int64_t)count
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  syncCopy = sync;
+  domainCopy = domain;
+  nameCopy = name;
+  identifierCopy = identifier;
+  instanceCopy = instance;
   v18 = [MAAutoAssetSet alloc];
   v19 = +[MAAutoAssetSet defaultDispatchQueue];
   v23 = 0;
-  v20 = [(MAAutoAssetSet *)v18 initUsingClientDomain:v14 forClientName:v15 forAssetSetIdentifier:v16 comprisedOfEntries:0 usingDesiredPolicyCategory:0 completingFromQueue:v19 error:&v23];
+  v20 = [(MAAutoAssetSet *)v18 initUsingClientDomain:domainCopy forClientName:nameCopy forAssetSetIdentifier:identifierCopy comprisedOfEntries:0 usingDesiredPolicyCategory:0 completingFromQueue:v19 error:&v23];
   v21 = v23;
 
   if (!v21)
   {
-    v21 = [v20 _endAtomicLocksSync:v13 usingClientDomain:v14 forClientName:v15 forAssetSetIdentifier:v16 ofAtomicInstance:v17 removingLockCount:a8];
+    v21 = [v20 _endAtomicLocksSync:syncCopy usingClientDomain:domainCopy forClientName:nameCopy forAssetSetIdentifier:identifierCopy ofAtomicInstance:instanceCopy removingLockCount:count];
   }
 
   return v21;
 }
 
-- (id)_endAtomicLocksSync:(id)a3 usingClientDomain:(id)a4 forClientName:(id)a5 forAssetSetIdentifier:(id)a6 ofAtomicInstance:(id)a7 removingLockCount:(int64_t)a8
+- (id)_endAtomicLocksSync:(id)sync usingClientDomain:(id)domain forClientName:(id)name forAssetSetIdentifier:(id)identifier ofAtomicInstance:(id)instance removingLockCount:(int64_t)count
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
+  syncCopy = sync;
+  domainCopy = domain;
+  nameCopy = name;
+  identifierCopy = identifier;
+  instanceCopy = instance;
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
@@ -5649,7 +5649,7 @@ void __148__MAAutoAssetSet__endAtomicLocks_usingClientDomain_forClientName_forAs
   v22[3] = &unk_1E74CB278;
   v22[4] = &v23;
   LOBYTE(v21) = 1;
-  [(MAAutoAssetSet *)self _endAtomicLocks:v14 usingClientDomain:v15 forClientName:v16 forAssetSetIdentifier:v17 ofAtomicInstance:v18 removingLockCount:a8 isSynchronous:v21 completion:v22];
+  [(MAAutoAssetSet *)self _endAtomicLocks:syncCopy usingClientDomain:domainCopy forClientName:nameCopy forAssetSetIdentifier:identifierCopy ofAtomicInstance:instanceCopy removingLockCount:count isSynchronous:v21 completion:v22];
   v19 = v24[5];
   _Block_object_dispose(&v23, 8);
 
@@ -5688,11 +5688,11 @@ void __102__MAAutoAssetSet_eliminateAtomic_usingClientDomain_forAssetSetIdentifi
   dispatch_async(v8, block);
 }
 
-- (void)_eliminateAtomic:(id)a3 awaitingUnlocked:(BOOL)a4 isSynchronous:(BOOL)a5 completion:(id)a6
+- (void)_eliminateAtomic:(id)atomic awaitingUnlocked:(BOOL)unlocked isSynchronous:(BOOL)synchronous completion:(id)completion
 {
   v25 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a6;
+  atomicCopy = atomic;
+  completionCopy = completion;
   v12 = +[MAAutoAssetSet _privateStateQueue];
   dispatch_assert_queue_not_V2(v12);
 
@@ -5701,17 +5701,17 @@ void __102__MAAutoAssetSet_eliminateAtomic_usingClientDomain_forAssetSetIdentifi
   v13 = _os_activity_create(&dword_197AD5000, "MAAutoSet:_eliminateAtomic", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   os_activity_scope_enter(v13, &state);
 
-  if (v11)
+  if (completionCopy)
   {
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __77__MAAutoAssetSet__eliminateAtomic_awaitingUnlocked_isSynchronous_completion___block_invoke;
     v17[3] = &unk_1E74CB030;
     v17[4] = self;
-    v18 = v10;
-    v20 = a4;
-    v21 = a5;
-    v19 = v11;
+    v18 = atomicCopy;
+    unlockedCopy = unlocked;
+    synchronousCopy = synchronous;
+    v19 = completionCopy;
     [(MAAutoAssetSet *)self connectToServerFrameworkCompletion:v17];
   }
 
@@ -5841,9 +5841,9 @@ void __56__MAAutoAssetSet__eliminateAtomicSync_awaitingUnlocked___block_invoke(u
   *(v6 + 40) = v4;
 }
 
-- (void)connectToServerFrameworkCompletion:(id)a3
+- (void)connectToServerFrameworkCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v6 = 0;
   v7 = &v6;
   v8 = 0x3032000000;
@@ -5861,7 +5861,7 @@ void __56__MAAutoAssetSet__eliminateAtomicSync_awaitingUnlocked___block_invoke(u
     dispatch_once(&__maAutoAssetSetSharedDispatchOnce, v5);
   }
 
-  v4[2](v4, v7[5]);
+  completionCopy[2](completionCopy, v7[5]);
   _Block_object_dispose(&v6, 8);
 }
 
@@ -5964,10 +5964,10 @@ LABEL_8:
   v29 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_newProxyObjectForSetProgressBlock:(id)a3 withLogMessage:(id)a4
+- (id)_newProxyObjectForSetProgressBlock:(id)block withLogMessage:(id)message
 {
-  v6 = a3;
-  v7 = a4;
+  blockCopy = block;
+  messageCopy = message;
   v20[0] = 0;
   v20[1] = v20;
   v20[2] = 0x3042000000;
@@ -5976,18 +5976,18 @@ LABEL_8:
   objc_initWeak(&v21, self);
   v8 = objc_alloc(MEMORY[0x1E69D3870]);
   v9 = +[MAAutoAssetSet frameworkInstanceUUID];
-  v10 = [v9 UUIDString];
+  uUIDString = [v9 UUIDString];
   v11 = +[MAAutoAssetSet _privateStateQueue];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __68__MAAutoAssetSet__newProxyObjectForSetProgressBlock_withLogMessage___block_invoke;
   v16[3] = &unk_1E74CB5E8;
   v19 = v20;
-  v12 = v7;
+  v12 = messageCopy;
   v17 = v12;
-  v13 = v6;
+  v13 = blockCopy;
   v18 = v13;
-  v14 = [v8 initWithClientID:v10 completionQueue:v11 genericBlock:v16];
+  v14 = [v8 initWithClientID:uUIDString completionQueue:v11 genericBlock:v16];
 
   _Block_object_dispose(v20, 8);
   objc_destroyWeak(&v21);
@@ -6053,31 +6053,31 @@ LABEL_12:
 LABEL_13:
 }
 
-- (void)_successCheckAtomic:(id)a3 forAssetSetIdentifier:(id)a4 newerInstanceDiscovered:(id)a5 discoveredAtomicEntries:(id)a6 isSynchronous:(BOOL)a7 completion:(id)a8
+- (void)_successCheckAtomic:(id)atomic forAssetSetIdentifier:(id)identifier newerInstanceDiscovered:(id)discovered discoveredAtomicEntries:(id)entries isSynchronous:(BOOL)synchronous completion:(id)completion
 {
   v25 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a8;
+  atomicCopy = atomic;
+  identifierCopy = identifier;
+  discoveredCopy = discovered;
+  entriesCopy = entries;
+  completionCopy = completion;
   v17 = +[MAAutoAssetSet _privateStateQueue];
   dispatch_assert_queue_V2(v17);
 
   v18 = _MAClientLog(@"AutoSet");
   v19 = v18;
-  if (v16)
+  if (completionCopy)
   {
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
       v21 = 138543618;
-      v22 = v12;
+      v22 = atomicCopy;
       v23 = 2114;
-      v24 = v13;
+      v24 = identifierCopy;
       _os_log_impl(&dword_197AD5000, v19, OS_LOG_TYPE_DEFAULT, "MA-auto-set{_successCheckAtomic:%{public}@} | assetSetIdentifier:%{public}@ | SUCCESS", &v21, 0x16u);
     }
 
-    v16[2](v16, v14, v15, 0);
+    completionCopy[2](completionCopy, discoveredCopy, entriesCopy, 0);
   }
 
   else
@@ -6085,9 +6085,9 @@ LABEL_13:
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
       v21 = 138543618;
-      v22 = v12;
+      v22 = atomicCopy;
       v23 = 2114;
-      v24 = v13;
+      v24 = identifierCopy;
       _os_log_impl(&dword_197AD5000, v19, OS_LOG_TYPE_ERROR, "MA-auto-set{_successCheckAtomic:%{public}@}| assetSetIdentifier:%{public}@ | no client completion block", &v21, 0x16u);
     }
   }
@@ -6095,25 +6095,25 @@ LABEL_13:
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_failedCheckAtomic:(id)a3 forAssetSetIdentifier:(id)a4 withErrorCode:(int64_t)a5 withResponseError:(id)a6 description:(id)a7 isSynchronous:(BOOL)a8 completion:(id)a9
+- (void)_failedCheckAtomic:(id)atomic forAssetSetIdentifier:(id)identifier withErrorCode:(int64_t)code withResponseError:(id)error description:(id)description isSynchronous:(BOOL)synchronous completion:(id)completion
 {
   v38 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a4;
-  v15 = a6;
-  v16 = a7;
-  v17 = a9;
+  atomicCopy = atomic;
+  identifierCopy = identifier;
+  errorCopy = error;
+  descriptionCopy = description;
+  completionCopy = completion;
   v18 = +[MAAutoAssetSet _privateStateQueue];
   dispatch_assert_queue_V2(v18);
 
-  if (v17)
+  if (completionCopy)
   {
-    v19 = v15;
+    v19 = errorCopy;
     v20 = v19;
-    if (a5 && !v19)
+    if (code && !v19)
     {
-      v21 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"auto-set(%@) | assetSetIdentifier:%@", v13, v14];
-      v20 = [MAAutoAssetError buildError:a5 fromOperation:v21 underlyingError:0 withDescription:v16];
+      identifierCopy = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"auto-set(%@) | assetSetIdentifier:%@", atomicCopy, identifierCopy];
+      v20 = [MAAutoAssetError buildError:code fromOperation:identifierCopy underlyingError:0 withDescription:descriptionCopy];
     }
 
     v22 = _MAClientLog(@"AutoSet");
@@ -6122,15 +6122,15 @@ LABEL_13:
     {
       if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
       {
-        v24 = [v20 checkedDescription];
+        checkedDescription = [v20 checkedDescription];
         *buf = 138544130;
-        v31 = v13;
+        v31 = atomicCopy;
         v32 = 2114;
-        v33 = v16;
+        v33 = descriptionCopy;
         v34 = 2114;
-        v35 = v14;
+        v35 = identifierCopy;
         v36 = 2114;
-        v37 = v24;
+        v37 = checkedDescription;
         _os_log_impl(&dword_197AD5000, v23, OS_LOG_TYPE_ERROR, "MA-auto-set{_failedCheckAtomic:%{public}@} | %{public}@ | assetSetIdentifier:%{public}@ | error:%{public}@", buf, 0x2Au);
       }
     }
@@ -6138,30 +6138,30 @@ LABEL_13:
     else if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543874;
-      v31 = v13;
+      v31 = atomicCopy;
       v32 = 2114;
-      v33 = v16;
+      v33 = descriptionCopy;
       v34 = 2114;
-      v35 = v14;
+      v35 = identifierCopy;
       _os_log_impl(&dword_197AD5000, v23, OS_LOG_TYPE_DEFAULT, "MA-auto-set{_failedCheckAtomic:%{public}@} | %{public}@ | assetSetIdentifier:%{public}@ | SUCCESS", buf, 0x20u);
     }
 
-    (*(v17 + 2))(v17, 0, 0, v20);
+    (*(completionCopy + 2))(completionCopy, 0, 0, v20);
   }
 
   else
   {
     v25 = objc_alloc(MEMORY[0x1E696AEC0]);
-    if (v15)
+    if (errorCopy)
     {
-      v26 = [v15 checkedDescription];
-      v27 = [v25 initWithFormat:@"%@ | error:%@", v16, v26];
+      checkedDescription2 = [errorCopy checkedDescription];
+      v27 = [v25 initWithFormat:@"%@ | error:%@", descriptionCopy, checkedDescription2];
     }
 
     else
     {
-      v26 = [MAAutoAssetError summaryForCode:a5 fromOperation:v13];
-      v27 = [v25 initWithFormat:@"%@ | result:%@", v16, v26];
+      checkedDescription2 = [MAAutoAssetError summaryForCode:code fromOperation:atomicCopy];
+      v27 = [v25 initWithFormat:@"%@ | result:%@", descriptionCopy, checkedDescription2];
     }
 
     v20 = v27;
@@ -6170,11 +6170,11 @@ LABEL_13:
     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543874;
-      v31 = v13;
+      v31 = atomicCopy;
       v32 = 2114;
       v33 = v20;
       v34 = 2114;
-      v35 = v14;
+      v35 = identifierCopy;
       _os_log_impl(&dword_197AD5000, v28, OS_LOG_TYPE_ERROR, "MA-auto-set{_failedCheckAtomic:%{public}@} | %{public}@ | assetSetIdentifier:%{public}@ | no client completion block", buf, 0x20u);
     }
   }
@@ -6182,30 +6182,30 @@ LABEL_13:
   v29 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_successCurrentSetStatus:(id)a3 forAssetSetIdentifier:(id)a4 withAssetSetStatus:(id)a5 isSynchronous:(BOOL)a6 completion:(id)a7
+- (void)_successCurrentSetStatus:(id)status forAssetSetIdentifier:(id)identifier withAssetSetStatus:(id)setStatus isSynchronous:(BOOL)synchronous completion:(id)completion
 {
   v22 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a7;
+  statusCopy = status;
+  identifierCopy = identifier;
+  setStatusCopy = setStatus;
+  completionCopy = completion;
   v14 = +[MAAutoAssetSet _privateStateQueue];
   dispatch_assert_queue_V2(v14);
 
   v15 = _MAClientLog(@"AutoSet");
   v16 = v15;
-  if (v13)
+  if (completionCopy)
   {
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       v18 = 138543618;
-      v19 = v10;
+      v19 = statusCopy;
       v20 = 2114;
-      v21 = v11;
+      v21 = identifierCopy;
       _os_log_impl(&dword_197AD5000, v16, OS_LOG_TYPE_DEFAULT, "MA-auto-set{_successCurrentSetStatus:%{public}@} | assetSetIdentifier:%{public}@ | SUCCESS", &v18, 0x16u);
     }
 
-    v13[2](v13, v12, 0);
+    completionCopy[2](completionCopy, setStatusCopy, 0);
   }
 
   else
@@ -6213,9 +6213,9 @@ LABEL_13:
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
       v18 = 138543618;
-      v19 = v10;
+      v19 = statusCopy;
       v20 = 2114;
-      v21 = v11;
+      v21 = identifierCopy;
       _os_log_impl(&dword_197AD5000, v16, OS_LOG_TYPE_ERROR, "MA-auto-set{_successCurrentSetStatus:%{public}@}| assetSetIdentifier:%{public}@ | no client completion block", &v18, 0x16u);
     }
   }
@@ -6223,25 +6223,25 @@ LABEL_13:
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_failedCurrentSetStatus:(id)a3 forAssetSetIdentifier:(id)a4 withErrorCode:(int64_t)a5 withResponseError:(id)a6 description:(id)a7 isSynchronous:(BOOL)a8 completion:(id)a9
+- (void)_failedCurrentSetStatus:(id)status forAssetSetIdentifier:(id)identifier withErrorCode:(int64_t)code withResponseError:(id)error description:(id)description isSynchronous:(BOOL)synchronous completion:(id)completion
 {
   v38 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a4;
-  v15 = a6;
-  v16 = a7;
-  v17 = a9;
+  statusCopy = status;
+  identifierCopy = identifier;
+  errorCopy = error;
+  descriptionCopy = description;
+  completionCopy = completion;
   v18 = +[MAAutoAssetSet _privateStateQueue];
   dispatch_assert_queue_V2(v18);
 
-  if (v17)
+  if (completionCopy)
   {
-    v19 = v15;
+    v19 = errorCopy;
     v20 = v19;
-    if (a5 && !v19)
+    if (code && !v19)
     {
-      v21 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"auto-set(%@) | assetSetIdentifier:%@", v13, v14];
-      v20 = [MAAutoAssetError buildError:a5 fromOperation:v21 underlyingError:0 withDescription:v16];
+      identifierCopy = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"auto-set(%@) | assetSetIdentifier:%@", statusCopy, identifierCopy];
+      v20 = [MAAutoAssetError buildError:code fromOperation:identifierCopy underlyingError:0 withDescription:descriptionCopy];
     }
 
     v22 = _MAClientLog(@"AutoSet");
@@ -6250,15 +6250,15 @@ LABEL_13:
     {
       if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
       {
-        v24 = [v20 checkedDescription];
+        checkedDescription = [v20 checkedDescription];
         *buf = 138544130;
-        v31 = v13;
+        v31 = statusCopy;
         v32 = 2114;
-        v33 = v16;
+        v33 = descriptionCopy;
         v34 = 2114;
-        v35 = v14;
+        v35 = identifierCopy;
         v36 = 2114;
-        v37 = v24;
+        v37 = checkedDescription;
         _os_log_impl(&dword_197AD5000, v23, OS_LOG_TYPE_ERROR, "MA-auto-set{_failedCurrentSetStatus:%{public}@} | %{public}@ | assetSetIdentifier:%{public}@ | error:%{public}@", buf, 0x2Au);
       }
     }
@@ -6266,30 +6266,30 @@ LABEL_13:
     else if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543874;
-      v31 = v13;
+      v31 = statusCopy;
       v32 = 2114;
-      v33 = v16;
+      v33 = descriptionCopy;
       v34 = 2114;
-      v35 = v14;
+      v35 = identifierCopy;
       _os_log_impl(&dword_197AD5000, v23, OS_LOG_TYPE_DEFAULT, "MA-auto-set{_failedCurrentSetStatus:%{public}@} | %{public}@ | assetSetIdentifier:%{public}@ | SUCCESS", buf, 0x20u);
     }
 
-    v17[2](v17, 0, v20);
+    completionCopy[2](completionCopy, 0, v20);
   }
 
   else
   {
     v25 = objc_alloc(MEMORY[0x1E696AEC0]);
-    if (v15)
+    if (errorCopy)
     {
-      v26 = [v15 checkedDescription];
-      v27 = [v25 initWithFormat:@"%@ | error:%@", v16, v26];
+      checkedDescription2 = [errorCopy checkedDescription];
+      v27 = [v25 initWithFormat:@"%@ | error:%@", descriptionCopy, checkedDescription2];
     }
 
     else
     {
-      v26 = [MAAutoAssetError summaryForCode:a5 fromOperation:v13];
-      v27 = [v25 initWithFormat:@"%@ | result:%@", v16, v26];
+      checkedDescription2 = [MAAutoAssetError summaryForCode:code fromOperation:statusCopy];
+      v27 = [v25 initWithFormat:@"%@ | result:%@", descriptionCopy, checkedDescription2];
     }
 
     v20 = v27;
@@ -6298,11 +6298,11 @@ LABEL_13:
     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543874;
-      v31 = v13;
+      v31 = statusCopy;
       v32 = 2114;
       v33 = v20;
       v34 = 2114;
-      v35 = v14;
+      v35 = identifierCopy;
       _os_log_impl(&dword_197AD5000, v28, OS_LOG_TYPE_ERROR, "MA-auto-set{_failedCurrentSetStatus:%{public}@} | %{public}@ | assetSetIdentifier:%{public}@ | no client completion block", buf, 0x20u);
     }
   }
@@ -6310,18 +6310,18 @@ LABEL_13:
   v29 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_autoSetAtomicOperationStatusProgress:(id)a3 withLogMessage:(id)a4 progressBlock:(id)a5
+- (void)_autoSetAtomicOperationStatusProgress:(id)progress withLogMessage:(id)message progressBlock:(id)block
 {
   v18 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  progressCopy = progress;
+  messageCopy = message;
+  blockCopy = block;
   v10 = +[MAAutoAssetSet _privateStateQueue];
   dispatch_assert_queue_V2(v10);
 
-  if (v9)
+  if (blockCopy)
   {
-    v9[2](v9, v7, 0);
+    blockCopy[2](blockCopy, progressCopy, 0);
   }
 
   else
@@ -6329,11 +6329,11 @@ LABEL_13:
     v11 = _MAClientLog(@"AutoSet");
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [v7 summary];
+      summary = [progressCopy summary];
       v14 = 138543618;
-      v15 = v8;
+      v15 = messageCopy;
       v16 = 2114;
-      v17 = v12;
+      v17 = summary;
       _os_log_impl(&dword_197AD5000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@ | no client progress block | %{public}@", &v14, 0x16u);
     }
   }
@@ -6341,33 +6341,33 @@ LABEL_13:
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_successLockAtomic:(id)a3 forAssetSetIdentifier:(id)a4 lockedAtomicInstance:(id)a5 lockedAtomicEntries:(id)a6 sandboxExtension:(id)a7 sandboxExtensionPath:(id)a8 isSynchronous:(BOOL)a9 completion:(id)a10
+- (void)_successLockAtomic:(id)atomic forAssetSetIdentifier:(id)identifier lockedAtomicInstance:(id)instance lockedAtomicEntries:(id)entries sandboxExtension:(id)extension sandboxExtensionPath:(id)path isSynchronous:(BOOL)synchronous completion:(id)self0
 {
   v30 = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a10;
+  atomicCopy = atomic;
+  identifierCopy = identifier;
+  instanceCopy = instance;
+  entriesCopy = entries;
+  extensionCopy = extension;
+  pathCopy = path;
+  completionCopy = completion;
   v22 = +[MAAutoAssetSet _privateStateQueue];
   dispatch_assert_queue_V2(v22);
 
-  if (v21)
+  if (completionCopy)
   {
-    [MAAutoAssetAuthorizationPolicy consumeSandboxExtension:v19 forPath:v20];
+    [MAAutoAssetAuthorizationPolicy consumeSandboxExtension:extensionCopy forPath:pathCopy];
     v23 = _MAClientLog(@"AutoSet");
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
     {
       v26 = 138543618;
-      v27 = v15;
+      v27 = atomicCopy;
       v28 = 2114;
-      v29 = v16;
+      v29 = identifierCopy;
       _os_log_impl(&dword_197AD5000, v23, OS_LOG_TYPE_DEFAULT, "MA-auto-set{_successLockAtomic:%{public}@} | assetSetIdentifier:%{public}@ | SUCCESS", &v26, 0x16u);
     }
 
-    v21[2](v21, v17, v18, 0);
+    completionCopy[2](completionCopy, instanceCopy, entriesCopy, 0);
   }
 
   else
@@ -6376,9 +6376,9 @@ LABEL_13:
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
     {
       v26 = 138543618;
-      v27 = v15;
+      v27 = atomicCopy;
       v28 = 2114;
-      v29 = v16;
+      v29 = identifierCopy;
       _os_log_impl(&dword_197AD5000, v24, OS_LOG_TYPE_ERROR, "MA-auto-set{_successLockAtomic:%{public}@}| assetSetIdentifier:%{public}@ | no client completion block", &v26, 0x16u);
     }
   }
@@ -6386,25 +6386,25 @@ LABEL_13:
   v25 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_failedLockAtomic:(id)a3 forAssetSetIdentifier:(id)a4 withErrorCode:(int64_t)a5 withResponseError:(id)a6 description:(id)a7 isSynchronous:(BOOL)a8 completion:(id)a9
+- (void)_failedLockAtomic:(id)atomic forAssetSetIdentifier:(id)identifier withErrorCode:(int64_t)code withResponseError:(id)error description:(id)description isSynchronous:(BOOL)synchronous completion:(id)completion
 {
   v38 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a4;
-  v15 = a6;
-  v16 = a7;
-  v17 = a9;
+  atomicCopy = atomic;
+  identifierCopy = identifier;
+  errorCopy = error;
+  descriptionCopy = description;
+  completionCopy = completion;
   v18 = +[MAAutoAssetSet _privateStateQueue];
   dispatch_assert_queue_V2(v18);
 
-  if (v17)
+  if (completionCopy)
   {
-    v19 = v15;
+    v19 = errorCopy;
     v20 = v19;
-    if (a5 && !v19)
+    if (code && !v19)
     {
-      v21 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"auto-set(%@) | assetSetIdentifier:%@", v13, v14];
-      v20 = [MAAutoAssetError buildError:a5 fromOperation:v21 underlyingError:0 withDescription:v16];
+      identifierCopy = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"auto-set(%@) | assetSetIdentifier:%@", atomicCopy, identifierCopy];
+      v20 = [MAAutoAssetError buildError:code fromOperation:identifierCopy underlyingError:0 withDescription:descriptionCopy];
     }
 
     v22 = _MAClientLog(@"AutoSet");
@@ -6413,15 +6413,15 @@ LABEL_13:
     {
       if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
       {
-        v24 = [v20 checkedDescription];
+        checkedDescription = [v20 checkedDescription];
         *buf = 138544130;
-        v31 = v13;
+        v31 = atomicCopy;
         v32 = 2114;
-        v33 = v16;
+        v33 = descriptionCopy;
         v34 = 2114;
-        v35 = v14;
+        v35 = identifierCopy;
         v36 = 2114;
-        v37 = v24;
+        v37 = checkedDescription;
         _os_log_impl(&dword_197AD5000, v23, OS_LOG_TYPE_ERROR, "MA-auto-set{_failedLockAtomic:%{public}@} | %{public}@ | assetSetIdentifier:%{public}@ | error:%{public}@", buf, 0x2Au);
       }
     }
@@ -6429,30 +6429,30 @@ LABEL_13:
     else if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543874;
-      v31 = v13;
+      v31 = atomicCopy;
       v32 = 2114;
-      v33 = v16;
+      v33 = descriptionCopy;
       v34 = 2114;
-      v35 = v14;
+      v35 = identifierCopy;
       _os_log_impl(&dword_197AD5000, v23, OS_LOG_TYPE_DEFAULT, "MA-auto-set{_failedLockAtomic:%{public}@} | %{public}@ | assetSetIdentifier:%{public}@ | SUCCESS", buf, 0x20u);
     }
 
-    (*(v17 + 2))(v17, 0, 0, v20);
+    (*(completionCopy + 2))(completionCopy, 0, 0, v20);
   }
 
   else
   {
     v25 = objc_alloc(MEMORY[0x1E696AEC0]);
-    if (v15)
+    if (errorCopy)
     {
-      v26 = [v15 checkedDescription];
-      v27 = [v25 initWithFormat:@"%@ | error:%@", v16, v26];
+      checkedDescription2 = [errorCopy checkedDescription];
+      v27 = [v25 initWithFormat:@"%@ | error:%@", descriptionCopy, checkedDescription2];
     }
 
     else
     {
-      v26 = [MAAutoAssetError summaryForCode:a5 fromOperation:v13];
-      v27 = [v25 initWithFormat:@"%@ | result:%@", v16, v26];
+      checkedDescription2 = [MAAutoAssetError summaryForCode:code fromOperation:atomicCopy];
+      v27 = [v25 initWithFormat:@"%@ | result:%@", descriptionCopy, checkedDescription2];
     }
 
     v20 = v27;
@@ -6461,11 +6461,11 @@ LABEL_13:
     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543874;
-      v31 = v13;
+      v31 = atomicCopy;
       v32 = 2114;
       v33 = v20;
       v34 = 2114;
-      v35 = v14;
+      v35 = identifierCopy;
       _os_log_impl(&dword_197AD5000, v28, OS_LOG_TYPE_ERROR, "MA-auto-set{_failedLockAtomic:%{public}@} | %{public}@ | assetSetIdentifier:%{public}@ | no client completion block", buf, 0x20u);
     }
   }
@@ -6473,57 +6473,57 @@ LABEL_13:
   v29 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_successMapLockedAtomicEntry:(id)a3 forAtomicInstance:(id)a4 forMappedSelector:(id)a5 isSynchronous:(BOOL)a6 completion:(id)a7
+- (void)_successMapLockedAtomicEntry:(id)entry forAtomicInstance:(id)instance forMappedSelector:(id)selector isSynchronous:(BOOL)synchronous completion:(id)completion
 {
   v26 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a7;
+  entryCopy = entry;
+  instanceCopy = instance;
+  selectorCopy = selector;
+  completionCopy = completion;
   v14 = +[MAAutoAssetSet _privateStateQueue];
   dispatch_assert_queue_V2(v14);
 
   v15 = _MAClientLog(@"AutoSet");
   v16 = v15;
-  if (v13)
+  if (completionCopy)
   {
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
-      v17 = [v12 summary];
+      summary = [selectorCopy summary];
       v20 = 138543874;
-      v21 = v10;
+      v21 = entryCopy;
       v22 = 2114;
-      v23 = v11;
+      v23 = instanceCopy;
       v24 = 2114;
-      v25 = v17;
+      v25 = summary;
       _os_log_impl(&dword_197AD5000, v16, OS_LOG_TYPE_DEFAULT, "MA-auto-set{_successMapLockedAtomicEntry:%{public}@} | assetSetAtomicInstance:%{public}@ | mappedSelector:%{public}@ | SUCCESS", &v20, 0x20u);
     }
 
-    v13[2](v13, v11, v12, 0);
+    completionCopy[2](completionCopy, instanceCopy, selectorCopy, 0);
   }
 
   else
   {
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
-      if (v12)
+      if (selectorCopy)
       {
-        v18 = [v12 summary];
+        summary2 = [selectorCopy summary];
       }
 
       else
       {
-        v18 = @"N";
+        summary2 = @"N";
       }
 
       v20 = 138543874;
-      v21 = v10;
+      v21 = entryCopy;
       v22 = 2114;
-      v23 = v11;
+      v23 = instanceCopy;
       v24 = 2114;
-      v25 = v18;
+      v25 = summary2;
       _os_log_impl(&dword_197AD5000, v16, OS_LOG_TYPE_ERROR, "MA-auto-set{_successMapLockedAtomicEntry:%{public}@}| assetSetAtomicInstance:%{public}@ | mappedSelector:%{public}@ | no client completion block", &v20, 0x20u);
-      if (v12)
+      if (selectorCopy)
       {
       }
     }
@@ -6532,25 +6532,25 @@ LABEL_13:
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_failedMapLockedAtomicEntry:(id)a3 forAssetSetIdentifier:(id)a4 withErrorCode:(int64_t)a5 withResponseError:(id)a6 description:(id)a7 isSynchronous:(BOOL)a8 completion:(id)a9
+- (void)_failedMapLockedAtomicEntry:(id)entry forAssetSetIdentifier:(id)identifier withErrorCode:(int64_t)code withResponseError:(id)error description:(id)description isSynchronous:(BOOL)synchronous completion:(id)completion
 {
   v38 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a4;
-  v15 = a6;
-  v16 = a7;
-  v17 = a9;
+  entryCopy = entry;
+  identifierCopy = identifier;
+  errorCopy = error;
+  descriptionCopy = description;
+  completionCopy = completion;
   v18 = +[MAAutoAssetSet _privateStateQueue];
   dispatch_assert_queue_V2(v18);
 
-  if (v17)
+  if (completionCopy)
   {
-    v19 = v15;
+    v19 = errorCopy;
     v20 = v19;
-    if (a5 && !v19)
+    if (code && !v19)
     {
-      v21 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"auto-set(%@) | assetSetIdentifier:%@", v13, v14];
-      v20 = [MAAutoAssetError buildError:a5 fromOperation:v21 underlyingError:0 withDescription:v16];
+      identifierCopy = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"auto-set(%@) | assetSetIdentifier:%@", entryCopy, identifierCopy];
+      v20 = [MAAutoAssetError buildError:code fromOperation:identifierCopy underlyingError:0 withDescription:descriptionCopy];
     }
 
     v22 = _MAClientLog(@"AutoSet");
@@ -6559,15 +6559,15 @@ LABEL_13:
     {
       if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
       {
-        v24 = [v20 checkedDescription];
+        checkedDescription = [v20 checkedDescription];
         *buf = 138544130;
-        v31 = v13;
+        v31 = entryCopy;
         v32 = 2114;
-        v33 = v16;
+        v33 = descriptionCopy;
         v34 = 2114;
-        v35 = v14;
+        v35 = identifierCopy;
         v36 = 2114;
-        v37 = v24;
+        v37 = checkedDescription;
         _os_log_impl(&dword_197AD5000, v23, OS_LOG_TYPE_ERROR, "MA-auto-set{_failedMapLockedAtomicEntry:%{public}@} | %{public}@ | assetSetIdentifier:%{public}@ | error:%{public}@", buf, 0x2Au);
       }
     }
@@ -6575,30 +6575,30 @@ LABEL_13:
     else if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543874;
-      v31 = v13;
+      v31 = entryCopy;
       v32 = 2114;
-      v33 = v16;
+      v33 = descriptionCopy;
       v34 = 2114;
-      v35 = v14;
+      v35 = identifierCopy;
       _os_log_impl(&dword_197AD5000, v23, OS_LOG_TYPE_DEFAULT, "MA-auto-set{_failedMapLockedAtomicEntry:%{public}@} | %{public}@ | assetSetIdentifier:%{public}@ | SUCCESS", buf, 0x20u);
     }
 
-    (*(v17 + 2))(v17, 0, 0, v20);
+    (*(completionCopy + 2))(completionCopy, 0, 0, v20);
   }
 
   else
   {
     v25 = objc_alloc(MEMORY[0x1E696AEC0]);
-    if (v15)
+    if (errorCopy)
     {
-      v26 = [v15 checkedDescription];
-      v27 = [v25 initWithFormat:@"%@ | error:%@", v16, v26];
+      checkedDescription2 = [errorCopy checkedDescription];
+      v27 = [v25 initWithFormat:@"%@ | error:%@", descriptionCopy, checkedDescription2];
     }
 
     else
     {
-      v26 = [MAAutoAssetError summaryForCode:a5 fromOperation:v13];
-      v27 = [v25 initWithFormat:@"%@ | result:%@", v16, v26];
+      checkedDescription2 = [MAAutoAssetError summaryForCode:code fromOperation:entryCopy];
+      v27 = [v25 initWithFormat:@"%@ | result:%@", descriptionCopy, checkedDescription2];
     }
 
     v20 = v27;
@@ -6607,11 +6607,11 @@ LABEL_13:
     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543874;
-      v31 = v13;
+      v31 = entryCopy;
       v32 = 2114;
       v33 = v20;
       v34 = 2114;
-      v35 = v14;
+      v35 = identifierCopy;
       _os_log_impl(&dword_197AD5000, v28, OS_LOG_TYPE_ERROR, "MA-auto-set{_failedMapLockedAtomicEntry:%{public}@} | %{public}@ | assetSetIdentifier:%{public}@ | no client completion block", buf, 0x20u);
     }
   }
@@ -6619,29 +6619,29 @@ LABEL_13:
   v29 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_successFormSubAtomicInstance:(id)a3 formedSubAtomicInstance:(id)a4 isSynchronous:(BOOL)a5 completion:(id)a6
+- (void)_successFormSubAtomicInstance:(id)instance formedSubAtomicInstance:(id)atomicInstance isSynchronous:(BOOL)synchronous completion:(id)completion
 {
   v19 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a6;
+  instanceCopy = instance;
+  atomicInstanceCopy = atomicInstance;
+  completionCopy = completion;
   v11 = +[MAAutoAssetSet _privateStateQueue];
   dispatch_assert_queue_V2(v11);
 
   v12 = _MAClientLog(@"AutoSet");
   v13 = v12;
-  if (v10)
+  if (completionCopy)
   {
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       v15 = 138543618;
-      v16 = v8;
+      v16 = instanceCopy;
       v17 = 2114;
-      v18 = v9;
+      v18 = atomicInstanceCopy;
       _os_log_impl(&dword_197AD5000, v13, OS_LOG_TYPE_DEFAULT, "MA-auto-set{_successFormSubAtomicInstance:%{public}@} | subAtomicInstance:%{public}@ | SUCCESS", &v15, 0x16u);
     }
 
-    v10[2](v10, v9, 0);
+    completionCopy[2](completionCopy, atomicInstanceCopy, 0);
   }
 
   else
@@ -6649,9 +6649,9 @@ LABEL_13:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
       v15 = 138543618;
-      v16 = v8;
+      v16 = instanceCopy;
       v17 = 2114;
-      v18 = v9;
+      v18 = atomicInstanceCopy;
       _os_log_impl(&dword_197AD5000, v13, OS_LOG_TYPE_ERROR, "MA-auto-set{_successFormSubAtomicInstance:%{public}@}| subAtomicInstance:%{public}@ | no client completion block", &v15, 0x16u);
     }
   }
@@ -6659,24 +6659,24 @@ LABEL_13:
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_failedFormSubAtomicInstance:(id)a3 withErrorCode:(int64_t)a4 withResponseError:(id)a5 description:(id)a6 isSynchronous:(BOOL)a7 completion:(id)a8
+- (void)_failedFormSubAtomicInstance:(id)instance withErrorCode:(int64_t)code withResponseError:(id)error description:(id)description isSynchronous:(BOOL)synchronous completion:(id)completion
 {
   v34 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a8;
+  instanceCopy = instance;
+  errorCopy = error;
+  descriptionCopy = description;
+  completionCopy = completion;
   v16 = +[MAAutoAssetSet _privateStateQueue];
   dispatch_assert_queue_V2(v16);
 
-  if (v15)
+  if (completionCopy)
   {
-    v17 = v13;
+    v17 = errorCopy;
     v18 = v17;
-    if (a4 && !v17)
+    if (code && !v17)
     {
-      v19 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"auto-set(%@)", v12];
-      v18 = [MAAutoAssetError buildError:a4 fromOperation:v19 underlyingError:0 withDescription:v14];
+      instanceCopy = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"auto-set(%@)", instanceCopy];
+      v18 = [MAAutoAssetError buildError:code fromOperation:instanceCopy underlyingError:0 withDescription:descriptionCopy];
     }
 
     v20 = _MAClientLog(@"AutoSet");
@@ -6685,13 +6685,13 @@ LABEL_13:
     {
       if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
       {
-        v22 = [v18 checkedDescription];
+        checkedDescription = [v18 checkedDescription];
         *buf = 138543874;
-        v29 = v12;
+        v29 = instanceCopy;
         v30 = 2114;
-        v31 = v14;
+        v31 = descriptionCopy;
         v32 = 2114;
-        v33 = v22;
+        v33 = checkedDescription;
         _os_log_impl(&dword_197AD5000, v21, OS_LOG_TYPE_ERROR, "MA-auto-set{_failedFormSubAtomicInstance:%{public}@} | %{public}@ | error:%{public}@", buf, 0x20u);
       }
     }
@@ -6699,28 +6699,28 @@ LABEL_13:
     else if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v29 = v12;
+      v29 = instanceCopy;
       v30 = 2114;
-      v31 = v14;
+      v31 = descriptionCopy;
       _os_log_impl(&dword_197AD5000, v21, OS_LOG_TYPE_DEFAULT, "MA-auto-set{_failedFormSubAtomicInstance:%{public}@} | %{public}@ | SUCCESS", buf, 0x16u);
     }
 
-    v15[2](v15, 0, v18);
+    completionCopy[2](completionCopy, 0, v18);
   }
 
   else
   {
     v23 = objc_alloc(MEMORY[0x1E696AEC0]);
-    if (v13)
+    if (errorCopy)
     {
-      v24 = [v13 checkedDescription];
-      v25 = [v23 initWithFormat:@"%@ | error:%@", v14, v24];
+      checkedDescription2 = [errorCopy checkedDescription];
+      v25 = [v23 initWithFormat:@"%@ | error:%@", descriptionCopy, checkedDescription2];
     }
 
     else
     {
-      v24 = [MAAutoAssetError summaryForCode:a4 fromOperation:v12];
-      v25 = [v23 initWithFormat:@"%@ | result:%@", v14, v24];
+      checkedDescription2 = [MAAutoAssetError summaryForCode:code fromOperation:instanceCopy];
+      v25 = [v23 initWithFormat:@"%@ | result:%@", descriptionCopy, checkedDescription2];
     }
 
     v18 = v25;
@@ -6729,7 +6729,7 @@ LABEL_13:
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v29 = v12;
+      v29 = instanceCopy;
       v30 = 2114;
       v31 = v18;
       _os_log_impl(&dword_197AD5000, v26, OS_LOG_TYPE_ERROR, "MA-auto-set{_failedFormSubAtomicInstance:%{public}@} | %{public}@ | no client completion block", buf, 0x16u);
@@ -6739,29 +6739,29 @@ LABEL_13:
   v27 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_successOperation:(id)a3 forAssetSetIdentifier:(id)a4 isSynchronous:(BOOL)a5 completion:(id)a6
+- (void)_successOperation:(id)operation forAssetSetIdentifier:(id)identifier isSynchronous:(BOOL)synchronous completion:(id)completion
 {
   v19 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a6;
+  operationCopy = operation;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v11 = +[MAAutoAssetSet _privateStateQueue];
   dispatch_assert_queue_V2(v11);
 
   v12 = _MAClientLog(@"AutoSet");
   v13 = v12;
-  if (v10)
+  if (completionCopy)
   {
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       v15 = 138543618;
-      v16 = v8;
+      v16 = operationCopy;
       v17 = 2114;
-      v18 = v9;
+      v18 = identifierCopy;
       _os_log_impl(&dword_197AD5000, v13, OS_LOG_TYPE_DEFAULT, "MA-auto-set{_successOperation:%{public}@} | assetSetIdentifier:%{public}@ | SUCCESS", &v15, 0x16u);
     }
 
-    v10[2](v10, v9, 0);
+    completionCopy[2](completionCopy, identifierCopy, 0);
   }
 
   else
@@ -6769,9 +6769,9 @@ LABEL_13:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
       v15 = 138543618;
-      v16 = v8;
+      v16 = operationCopy;
       v17 = 2114;
-      v18 = v9;
+      v18 = identifierCopy;
       _os_log_impl(&dword_197AD5000, v13, OS_LOG_TYPE_ERROR, "MA-auto-set{_successOperation:%{public}@} | assetSetIdentifier:%{public}@ | no client completion block", &v15, 0x16u);
     }
   }
@@ -6779,24 +6779,24 @@ LABEL_13:
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_failedOperation:(id)a3 forAssetSetIdentifier:(id)a4 withErrorCode:(int64_t)a5 withResponseError:(id)a6 description:(id)a7 isSynchronous:(BOOL)a8 completion:(id)a9
+- (void)_failedOperation:(id)operation forAssetSetIdentifier:(id)identifier withErrorCode:(int64_t)code withResponseError:(id)error description:(id)description isSynchronous:(BOOL)synchronous completion:(id)completion
 {
   v34 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a6;
-  v14 = a7;
-  v15 = a9;
+  operationCopy = operation;
+  errorCopy = error;
+  descriptionCopy = description;
+  completionCopy = completion;
   v16 = +[MAAutoAssetSet _privateStateQueue];
   dispatch_assert_queue_V2(v16);
 
-  if (v15)
+  if (completionCopy)
   {
-    v17 = v13;
+    v17 = errorCopy;
     v18 = v17;
-    if (a5 && !v17)
+    if (code && !v17)
     {
-      v19 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"auto-set(%@)", v12];
-      v18 = [MAAutoAssetError buildError:a5 fromOperation:v19 underlyingError:0 withDescription:v14];
+      operationCopy = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"auto-set(%@)", operationCopy];
+      v18 = [MAAutoAssetError buildError:code fromOperation:operationCopy underlyingError:0 withDescription:descriptionCopy];
     }
 
     v20 = _MAClientLog(@"AutoSet");
@@ -6805,13 +6805,13 @@ LABEL_13:
     {
       if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
       {
-        v22 = [v18 checkedDescription];
+        checkedDescription = [v18 checkedDescription];
         *buf = 138543874;
-        v29 = v12;
+        v29 = operationCopy;
         v30 = 2114;
-        v31 = v14;
+        v31 = descriptionCopy;
         v32 = 2114;
-        v33 = v22;
+        v33 = checkedDescription;
         _os_log_impl(&dword_197AD5000, v21, OS_LOG_TYPE_ERROR, "MA-auto-set{_failedOperation:%{public}@} | %{public}@ | error:%{public}@", buf, 0x20u);
       }
     }
@@ -6819,28 +6819,28 @@ LABEL_13:
     else if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v29 = v12;
+      v29 = operationCopy;
       v30 = 2114;
-      v31 = v14;
+      v31 = descriptionCopy;
       _os_log_impl(&dword_197AD5000, v21, OS_LOG_TYPE_DEFAULT, "MA-auto-set{_failedOperation:%{public}@} | %{public}@ | SUCCESS", buf, 0x16u);
     }
 
-    v15[2](v15, 0, v18);
+    completionCopy[2](completionCopy, 0, v18);
   }
 
   else
   {
     v23 = objc_alloc(MEMORY[0x1E696AEC0]);
-    if (v13)
+    if (errorCopy)
     {
-      v24 = [v13 checkedDescription];
-      v25 = [v23 initWithFormat:@"%@ | error:%@", v14, v24];
+      checkedDescription2 = [errorCopy checkedDescription];
+      v25 = [v23 initWithFormat:@"%@ | error:%@", descriptionCopy, checkedDescription2];
     }
 
     else
     {
-      v24 = [MAAutoAssetError summaryForCode:a5 fromOperation:v12];
-      v25 = [v23 initWithFormat:@"%@ | result:%@", v14, v24];
+      checkedDescription2 = [MAAutoAssetError summaryForCode:code fromOperation:operationCopy];
+      v25 = [v23 initWithFormat:@"%@ | result:%@", descriptionCopy, checkedDescription2];
     }
 
     v18 = v25;
@@ -6849,7 +6849,7 @@ LABEL_13:
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v29 = v12;
+      v29 = operationCopy;
       v30 = 2114;
       v31 = v18;
       _os_log_impl(&dword_197AD5000, v26, OS_LOG_TYPE_ERROR, "MA-auto-set{_failedOperation:%{public}@} | no client completion block | %{public}@", buf, 0x16u);

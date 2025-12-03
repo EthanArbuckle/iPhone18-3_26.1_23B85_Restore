@@ -1,14 +1,14 @@
 @interface APPBAdRequester
 + (id)options;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasWidth:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasWidth:(BOOL)width;
+- (void)writeTo:(id)to;
 @end
 
 @implementation APPBAdRequester
@@ -25,9 +25,9 @@
   return v3;
 }
 
-- (void)setHasWidth:(BOOL)a3
+- (void)setHasWidth:(BOOL)width
 {
-  if (a3)
+  if (width)
   {
     v3 = 2;
   }
@@ -45,8 +45,8 @@
   v7.receiver = self;
   v7.super_class = APPBAdRequester;
   v3 = [(APPBAdRequester *)&v7 description];
-  v4 = [(APPBAdRequester *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(APPBAdRequester *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -85,72 +85,72 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_identifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
     PBDataWriterWriteInt32Field();
-    v4 = v6;
+    toCopy = v6;
     has = self->_has;
   }
 
   if (has)
   {
     PBDataWriterWriteInt32Field();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_contextJSON)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_identifier)
   {
-    [v4 setIdentifier:?];
-    v4 = v6;
+    [toCopy setIdentifier:?];
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(v4 + 8) = self->_width;
-    *(v4 + 36) |= 2u;
+    *(toCopy + 8) = self->_width;
+    *(toCopy + 36) |= 2u;
     has = self->_has;
   }
 
   if (has)
   {
-    *(v4 + 4) = self->_height;
-    *(v4 + 36) |= 1u;
+    *(toCopy + 4) = self->_height;
+    *(toCopy + 36) |= 1u;
   }
 
   if (self->_contextJSON)
   {
     [v6 setContextJSON:?];
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_identifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_identifier copyWithZone:zone];
   v7 = v5[3];
   v5[3] = v6;
 
@@ -168,23 +168,23 @@
     *(v5 + 36) |= 1u;
   }
 
-  v9 = [(NSString *)self->_contextJSON copyWithZone:a3];
+  v9 = [(NSString *)self->_contextJSON copyWithZone:zone];
   v10 = v5[1];
   v5[1] = v9;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_16;
   }
 
   identifier = self->_identifier;
-  if (identifier | *(v4 + 3))
+  if (identifier | *(equalCopy + 3))
   {
     if (![(NSString *)identifier isEqual:?])
     {
@@ -194,13 +194,13 @@
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 36) & 2) == 0 || self->_width != *(v4 + 8))
+    if ((*(equalCopy + 36) & 2) == 0 || self->_width != *(equalCopy + 8))
     {
       goto LABEL_16;
     }
   }
 
-  else if ((*(v4 + 36) & 2) != 0)
+  else if ((*(equalCopy + 36) & 2) != 0)
   {
 LABEL_16:
     v7 = 0;
@@ -209,19 +209,19 @@ LABEL_16:
 
   if (*&self->_has)
   {
-    if ((*(v4 + 36) & 1) == 0 || self->_height != *(v4 + 4))
+    if ((*(equalCopy + 36) & 1) == 0 || self->_height != *(equalCopy + 4))
     {
       goto LABEL_16;
     }
   }
 
-  else if (*(v4 + 36))
+  else if (*(equalCopy + 36))
   {
     goto LABEL_16;
   }
 
   contextJSON = self->_contextJSON;
-  if (contextJSON | *(v4 + 1))
+  if (contextJSON | *(equalCopy + 1))
   {
     v7 = [(NSString *)contextJSON isEqual:?];
   }
@@ -263,34 +263,34 @@ LABEL_3:
   return v4 ^ v3 ^ v5 ^ [(NSString *)self->_contextJSON hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v6 = v4;
-  if (*(v4 + 3))
+  fromCopy = from;
+  v6 = fromCopy;
+  if (*(fromCopy + 3))
   {
     [(APPBAdRequester *)self setIdentifier:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  v5 = *(v4 + 36);
+  v5 = *(fromCopy + 36);
   if ((v5 & 2) != 0)
   {
-    self->_width = v4[8];
+    self->_width = fromCopy[8];
     *&self->_has |= 2u;
-    v5 = *(v4 + 36);
+    v5 = *(fromCopy + 36);
   }
 
   if (v5)
   {
-    self->_height = v4[4];
+    self->_height = fromCopy[4];
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
     [(APPBAdRequester *)self setContextJSON:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 }
 

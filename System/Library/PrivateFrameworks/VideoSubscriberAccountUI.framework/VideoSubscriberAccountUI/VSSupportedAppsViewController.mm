@@ -1,20 +1,20 @@
 @interface VSSupportedAppsViewController
-- (VSSupportedAppsViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (VSSupportedAppsViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (VSSupportedAppsViewControllerDelegate)delegate;
 - (void)_didFinish;
 - (void)_displayApps;
-- (void)_presentError:(id)a3;
+- (void)_presentError:(id)error;
 - (void)beginLoadingImages;
 - (void)viewDidLoad;
 @end
 
 @implementation VSSupportedAppsViewController
 
-- (VSSupportedAppsViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (VSSupportedAppsViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v10.receiver = self;
   v10.super_class = VSSupportedAppsViewController;
-  v4 = [(VSSupportedAppsViewController *)&v10 initWithNibName:a3 bundle:a4];
+  v4 = [(VSSupportedAppsViewController *)&v10 initWithNibName:name bundle:bundle];
   if (v4)
   {
     v5 = objc_alloc_init(MEMORY[0x277CCABD8]);
@@ -23,9 +23,9 @@
 
     [(NSOperationQueue *)v4->_privateQueue setName:@"VSSupportedAppsViewController"];
     [(NSOperationQueue *)v4->_privateQueue setMaxConcurrentOperationCount:1];
-    v7 = [(VSSupportedAppsViewController *)v4 navigationItem];
+    navigationItem = [(VSSupportedAppsViewController *)v4 navigationItem];
     v8 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:0 target:v4 action:sel__doneButtonPresed_];
-    [v7 setRightBarButtonItem:v8];
+    [navigationItem setRightBarButtonItem:v8];
   }
 
   return v4;
@@ -33,18 +33,18 @@
 
 - (void)_didFinish
 {
-  v3 = [(VSSupportedAppsViewController *)self delegate];
-  [v3 supportedAppsViewControllerDidFinish:self];
+  delegate = [(VSSupportedAppsViewController *)self delegate];
+  [delegate supportedAppsViewControllerDidFinish:self];
 }
 
-- (void)_presentError:(id)a3
+- (void)_presentError:(id)error
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __47__VSSupportedAppsViewController__presentError___block_invoke;
   v5[3] = &unk_279E1A398;
   v5[4] = self;
-  v4 = VSAlertForError(a3, v5);
+  v4 = VSAlertForError(error, v5);
   v3 = v4;
   VSPerformBlockOnMainThread();
 }
@@ -74,11 +74,11 @@
 
         v8 = *(*(&v14 + 1) + 8 * i);
         v9 = objc_alloc_init(MEMORY[0x277CBEB38]);
-        v10 = [v8 shortenedDisplayName];
-        [v9 vs_setObjectUnlessNil:v10 forKey:@"appName"];
+        shortenedDisplayName = [v8 shortenedDisplayName];
+        [v9 vs_setObjectUnlessNil:shortenedDisplayName forKey:@"appName"];
 
-        v11 = [v8 icon];
-        [v9 vs_setObjectUnlessNil:v11 forKey:@"appIcon"];
+        icon = [v8 icon];
+        [v9 vs_setObjectUnlessNil:icon forKey:@"appIcon"];
 
         [v3 addObject:v9];
       }
@@ -106,8 +106,8 @@
   v4 = [(VSSupportedAppsViewController *)self supportedApps:v7];
   v5 = [[VSLoadAllAppIconsOperation alloc] initWithApps:v4 shouldPrecomposeIcon:0];
   [v3 addDependency:v5];
-  v6 = [(VSSupportedAppsViewController *)self privateQueue];
-  [v6 addOperation:v5];
+  privateQueue = [(VSSupportedAppsViewController *)self privateQueue];
+  [privateQueue addOperation:v5];
 
   VSEnqueueCompletionOperation();
   objc_destroyWeak(&v8);
@@ -125,14 +125,14 @@ void __51__VSSupportedAppsViewController_beginLoadingImages__block_invoke(uint64
   v34.receiver = self;
   v34.super_class = VSSupportedAppsViewController;
   [(VSSupportedAppsViewController *)&v34 viewDidLoad];
-  v3 = [(VSSupportedAppsViewController *)self view];
-  v4 = [MEMORY[0x277D75348] whiteColor];
-  [v3 setBackgroundColor:v4];
+  view = [(VSSupportedAppsViewController *)self view];
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  [view setBackgroundColor:whiteColor];
 
   v5 = [objc_alloc(MEMORY[0x277D750E8]) initWithActivityIndicatorStyle:2];
   [v5 startAnimating];
   [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
-  [v3 addSubview:v5];
+  [view addSubview:v5];
   v6 = VSMainConcurrencyBindingOptions();
   v7 = [v6 mutableCopy];
 
@@ -148,45 +148,45 @@ void __51__VSSupportedAppsViewController_beginLoadingImages__block_invoke(uint64
   [v9 vs_bind:@"title" toObject:self withKeyPath:@"title" options:v11];
 
   [(VSSupportedAppsViewController *)self addChildViewController:v9];
-  v12 = [v9 view];
-  [v12 setTranslatesAutoresizingMaskIntoConstraints:0];
-  [v3 addSubview:v12];
+  view2 = [v9 view];
+  [view2 setTranslatesAutoresizingMaskIntoConstraints:0];
+  [view addSubview:view2];
   [v9 didMoveToParentViewController:self];
   v13 = VSMainConcurrencyBindingOptions();
   v14 = [v13 mutableCopy];
 
   [v14 setObject:*MEMORY[0x277CCA2B0] forKey:v8];
-  [v12 vs_bind:@"hidden" toObject:self withKeyPath:@"apps" options:v14];
+  [view2 vs_bind:@"hidden" toObject:self withKeyPath:@"apps" options:v14];
 
   v15 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v16 = [v5 centerXAnchor];
-  v17 = [v3 centerXAnchor];
-  v18 = [v16 constraintEqualToAnchor:v17];
+  centerXAnchor = [v5 centerXAnchor];
+  centerXAnchor2 = [view centerXAnchor];
+  v18 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   [v15 addObject:v18];
 
-  v19 = [v5 centerYAnchor];
-  v20 = [v3 centerYAnchor];
-  v21 = [v19 constraintEqualToAnchor:v20];
+  centerYAnchor = [v5 centerYAnchor];
+  centerYAnchor2 = [view centerYAnchor];
+  v21 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   [v15 addObject:v21];
 
-  v22 = [v12 topAnchor];
-  v23 = [v3 topAnchor];
-  v24 = [v22 constraintEqualToAnchor:v23];
+  topAnchor = [view2 topAnchor];
+  topAnchor2 = [view topAnchor];
+  v24 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v15 addObject:v24];
 
-  v25 = [v12 bottomAnchor];
-  v26 = [v3 bottomAnchor];
-  v27 = [v25 constraintEqualToAnchor:v26];
+  bottomAnchor = [view2 bottomAnchor];
+  bottomAnchor2 = [view bottomAnchor];
+  v27 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   [v15 addObject:v27];
 
-  v28 = [v12 leftAnchor];
-  v29 = [v3 leftAnchor];
-  v30 = [v28 constraintEqualToAnchor:v29];
+  leftAnchor = [view2 leftAnchor];
+  leftAnchor2 = [view leftAnchor];
+  v30 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
   [v15 addObject:v30];
 
-  v31 = [v12 rightAnchor];
-  v32 = [v3 rightAnchor];
-  v33 = [v31 constraintEqualToAnchor:v32];
+  rightAnchor = [view2 rightAnchor];
+  rightAnchor2 = [view rightAnchor];
+  v33 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
   [v15 addObject:v33];
 
   [MEMORY[0x277CCAAD0] activateConstraints:v15];

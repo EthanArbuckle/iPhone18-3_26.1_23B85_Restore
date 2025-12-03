@@ -1,28 +1,28 @@
 @interface SUResponderChainInvocationRecorder
-- (SUResponderChainInvocationRecorder)initWithTarget:(id)a3 protocol:(id)a4;
-- (id)_targetForSelector:(SEL)a3 sender:(id)a4;
-- (id)methodSignatureForSelector:(SEL)a3;
-- (void)invokeInvocation:(id)a3;
+- (SUResponderChainInvocationRecorder)initWithTarget:(id)target protocol:(id)protocol;
+- (id)_targetForSelector:(SEL)selector sender:(id)sender;
+- (id)methodSignatureForSelector:(SEL)selector;
+- (void)invokeInvocation:(id)invocation;
 @end
 
 @implementation SUResponderChainInvocationRecorder
 
-- (SUResponderChainInvocationRecorder)initWithTarget:(id)a3 protocol:(id)a4
+- (SUResponderChainInvocationRecorder)initWithTarget:(id)target protocol:(id)protocol
 {
-  result = [(ISInvocationRecorder *)self initWithTarget:a3];
+  result = [(ISInvocationRecorder *)self initWithTarget:target];
   if (result)
   {
-    result->_protocol = a4;
+    result->_protocol = protocol;
   }
 
   return result;
 }
 
-- (id)_targetForSelector:(SEL)a3 sender:(id)a4
+- (id)_targetForSelector:(SEL)selector sender:(id)sender
 {
   for (i = *(&self->super.super.isa + *MEMORY[0x1E69E4820]); i; i = [i nextResponder])
   {
-    if ([i canPerformAction:a3 withSender:a4])
+    if ([i canPerformAction:selector withSender:sender])
     {
       break;
     }
@@ -31,27 +31,27 @@
   return i;
 }
 
-- (void)invokeInvocation:(id)a3
+- (void)invokeInvocation:(id)invocation
 {
   v8 = 0;
-  v5 = [a3 methodSignature];
-  if ([v5 numberOfArguments] >= 3)
+  methodSignature = [invocation methodSignature];
+  if ([methodSignature numberOfArguments] >= 3)
   {
-    v6 = [v5 getArgumentTypeAtIndex:2];
+    v6 = [methodSignature getArgumentTypeAtIndex:2];
     if (v6)
     {
       if (*v6 == 64 && !v6[1])
       {
-        [a3 getArgument:&v8 atIndex:2];
+        [invocation getArgument:&v8 atIndex:2];
       }
     }
   }
 
-  v7 = [a3 selector];
-  [a3 invokeWithTarget:{-[SUResponderChainInvocationRecorder _targetForSelector:sender:](self, "_targetForSelector:sender:", v7, v8)}];
+  selector = [invocation selector];
+  [invocation invokeWithTarget:{-[SUResponderChainInvocationRecorder _targetForSelector:sender:](self, "_targetForSelector:sender:", selector, v8)}];
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
   v7.receiver = self;
   v7.super_class = SUResponderChainInvocationRecorder;
@@ -61,7 +61,7 @@
     result = self->_protocol;
     if (result)
     {
-      MethodDescription = protocol_getMethodDescription(result, a3, 1, 1);
+      MethodDescription = protocol_getMethodDescription(result, selector, 1, 1);
       result = MethodDescription.name;
       if (MethodDescription.name)
       {

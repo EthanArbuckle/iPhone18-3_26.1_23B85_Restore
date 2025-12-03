@@ -1,14 +1,14 @@
 @interface MOEventEntityInviteProvider
 - (_TtC8momentsd27MOEventEntityInviteProvider)init;
-- (void)fetchEventEntityPropertiesWithSpotlightIdentifiers:(id)a3 startDateFetch:(id)a4 endDateFetch:(id)a5 bundleIdentifier:(id)a6 completion:(id)a7;
+- (void)fetchEventEntityPropertiesWithSpotlightIdentifiers:(id)identifiers startDateFetch:(id)fetch endDateFetch:(id)dateFetch bundleIdentifier:(id)identifier completion:(id)completion;
 @end
 
 @implementation MOEventEntityInviteProvider
 
-- (void)fetchEventEntityPropertiesWithSpotlightIdentifiers:(id)a3 startDateFetch:(id)a4 endDateFetch:(id)a5 bundleIdentifier:(id)a6 completion:(id)a7
+- (void)fetchEventEntityPropertiesWithSpotlightIdentifiers:(id)identifiers startDateFetch:(id)fetch endDateFetch:(id)dateFetch bundleIdentifier:(id)identifier completion:(id)completion
 {
-  v51 = a4;
-  v52 = a5;
+  fetchCopy = fetch;
+  dateFetchCopy = dateFetch;
   v8 = __swift_instantiateConcreteTypeFromMangledNameV2(&_sScPSgMd, &_sScPSgMR);
   v9 = *(*(v8 - 8) + 64);
   __chkstk_darwin(v8 - 8, v10);
@@ -24,15 +24,15 @@
   v23 = &v46 - v22;
   __chkstk_darwin(v21, v24);
   v26 = &v46 - v25;
-  v27 = _Block_copy(a7);
+  v27 = _Block_copy(completion);
   v49 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   v50 = v26;
   static Date._unconditionallyBridgeFromObjectiveC(_:)();
   v47 = v23;
   static Date._unconditionallyBridgeFromObjectiveC(_:)();
   v28 = static String._unconditionallyBridgeFromObjectiveC(_:)();
-  v51 = v29;
-  v52 = v28;
+  fetchCopy = v29;
+  dateFetchCopy = v28;
   v30 = swift_allocObject();
   *(v30 + 16) = v27;
   v31 = type metadata accessor for TaskPriority();
@@ -53,8 +53,8 @@
   *(v41 + 3) = 0;
   *(v41 + 4) = v49;
   *(v41 + 5) = partial apply for thunk for @escaping @callee_unowned @convention(block) (@unowned NSArray?, @unowned NSError?) -> ();
-  v42 = v51;
-  v43 = v52;
+  v42 = fetchCopy;
+  v43 = dateFetchCopy;
   *(v41 + 6) = v30;
   *(v41 + 7) = v43;
   *(v41 + 8) = v42;

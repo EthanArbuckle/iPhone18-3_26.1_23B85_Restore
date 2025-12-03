@@ -1,24 +1,24 @@
 @interface TVRCKeyboardController
 - (NSString)text;
 - (TVRCKeyboardControllerDelegate)delegate;
-- (id)_initWithDevice:(id)a3;
-- (void)_setCurrentState:(id)a3;
+- (id)_initWithDevice:(id)device;
+- (void)_setCurrentState:(id)state;
 - (void)sendReturnKey;
-- (void)setText:(id)a3;
+- (void)setText:(id)text;
 @end
 
 @implementation TVRCKeyboardController
 
-- (id)_initWithDevice:(id)a3
+- (id)_initWithDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v10.receiver = self;
   v10.super_class = TVRCKeyboardController;
   v5 = [(TVRCKeyboardController *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_device, v4);
+    objc_storeWeak(&v5->_device, deviceCopy);
     v6->_editing = 0;
     attributes = v6->_attributes;
     v6->_attributes = 0;
@@ -43,30 +43,30 @@
   }
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
-  v4 = [a3 copy];
+  v4 = [text copy];
   text = self->_text;
   self->_text = v4;
 
   v9 = +[TVRCXPCClient sharedInstance];
   v6 = self->_text;
   WeakRetained = objc_loadWeakRetained(&self->_device);
-  v8 = [WeakRetained identifier];
-  [v9 sendInputText:v6 toDeviceWithIdentifier:v8];
+  identifier = [WeakRetained identifier];
+  [v9 sendInputText:v6 toDeviceWithIdentifier:identifier];
 }
 
 - (void)sendReturnKey
 {
   v5 = +[TVRCXPCClient sharedInstance];
   WeakRetained = objc_loadWeakRetained(&self->_device);
-  v4 = [WeakRetained identifier];
-  [v5 sendInputReturnKeyToDeviceWithIdentifier:v4];
+  identifier = [WeakRetained identifier];
+  [v5 sendInputReturnKeyToDeviceWithIdentifier:identifier];
 }
 
-- (void)_setCurrentState:(id)a3
+- (void)_setCurrentState:(id)state
 {
-  if (!a3)
+  if (!state)
   {
     return;
   }
@@ -74,17 +74,17 @@
   editing = self->_editing;
   v24 = self->_text;
   v6 = self->_attributes;
-  v7 = a3;
-  self->_editing = [v7 isEditing];
-  v8 = [v7 text];
-  v9 = [v8 copy];
+  stateCopy = state;
+  self->_editing = [stateCopy isEditing];
+  text = [stateCopy text];
+  v9 = [text copy];
   text = self->_text;
   self->_text = v9;
 
-  v11 = [v7 attributes];
+  attributes = [stateCopy attributes];
 
   attributes = self->_attributes;
-  self->_attributes = v11;
+  self->_attributes = attributes;
 
   if (editing)
   {

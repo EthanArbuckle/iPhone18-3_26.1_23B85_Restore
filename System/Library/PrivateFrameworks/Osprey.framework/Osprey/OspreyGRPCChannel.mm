@@ -1,31 +1,31 @@
 @interface OspreyGRPCChannel
-- (OspreyGRPCChannel)initWithURL:(id)a3 configuration:(id)a4 queue:(id)a5;
-- (id)bidirectionalStreamingRequest:(id)a3 streamingResponseHandler:(id)a4 completion:(id)a5;
-- (id)clientStreamingContextForRequest:(id)a3 streamingResponseHandler:(id)a4 completion:(id)a5;
-- (id)clientStreamingRequest:(id)a3 responseHandler:(id)a4 streamingContext:(id)a5;
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveData:(id)a5;
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveResponse:(id)a5 completionHandler:(id)a6;
-- (void)URLSession:(id)a3 didReceiveChallenge:(id)a4 completionHandler:(id)a5;
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5;
-- (void)URLSession:(id)a3 task:(id)a4 didFinishCollectingMetrics:(id)a5;
-- (void)URLSession:(id)a3 task:(id)a4 needNewBodyStream:(id)a5;
-- (void)bidirectionalStreamingRequest:(id)a3 streamingContext:(id)a4;
+- (OspreyGRPCChannel)initWithURL:(id)l configuration:(id)configuration queue:(id)queue;
+- (id)bidirectionalStreamingRequest:(id)request streamingResponseHandler:(id)handler completion:(id)completion;
+- (id)clientStreamingContextForRequest:(id)request streamingResponseHandler:(id)handler completion:(id)completion;
+- (id)clientStreamingRequest:(id)request responseHandler:(id)handler streamingContext:(id)context;
+- (void)URLSession:(id)session dataTask:(id)task didReceiveData:(id)data;
+- (void)URLSession:(id)session dataTask:(id)task didReceiveResponse:(id)response completionHandler:(id)handler;
+- (void)URLSession:(id)session didReceiveChallenge:(id)challenge completionHandler:(id)handler;
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error;
+- (void)URLSession:(id)session task:(id)task didFinishCollectingMetrics:(id)metrics;
+- (void)URLSession:(id)session task:(id)task needNewBodyStream:(id)stream;
+- (void)bidirectionalStreamingRequest:(id)request streamingContext:(id)context;
 - (void)cancel;
 - (void)close;
 - (void)dealloc;
 - (void)preconnect;
-- (void)serverStreamingRequest:(id)a3 requestData:(id)a4 streamingResponseHandler:(id)a5 completion:(id)a6;
-- (void)setAbsintheTimestampForKey:(id)a3;
-- (void)unaryRequest:(id)a3 requestData:(id)a4 responseHandler:(id)a5;
+- (void)serverStreamingRequest:(id)request requestData:(id)data streamingResponseHandler:(id)handler completion:(id)completion;
+- (void)setAbsintheTimestampForKey:(id)key;
+- (void)unaryRequest:(id)request requestData:(id)data responseHandler:(id)handler;
 @end
 
 @implementation OspreyGRPCChannel
 
-- (OspreyGRPCChannel)initWithURL:(id)a3 configuration:(id)a4 queue:(id)a5
+- (OspreyGRPCChannel)initWithURL:(id)l configuration:(id)configuration queue:(id)queue
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  lCopy = l;
+  configurationCopy = configuration;
+  queueCopy = queue;
   v25.receiver = self;
   v25.super_class = OspreyGRPCChannel;
   v11 = [(OspreyGRPCChannel *)&v25 init];
@@ -37,38 +37,38 @@
       [OspreyGRPCChannel initWithURL:configuration:queue:];
     }
 
-    v12 = [v8 copy];
+    v12 = [lCopy copy];
     baseURL = v11->_baseURL;
     v11->_baseURL = v12;
 
-    objc_storeStrong(&v11->_queue, a5);
+    objc_storeStrong(&v11->_queue, queue);
     v14 = objc_alloc_init(MEMORY[0x277CCABD8]);
     [v14 setUnderlyingQueue:v11->_queue];
     if (OspreyIsEntitledForMPTCP())
     {
-      [v9 set_allowsMultipathTCP:1];
-      [v9 set_multipathAlternatePort:5228];
+      [configurationCopy set_allowsMultipathTCP:1];
+      [configurationCopy set_multipathAlternatePort:5228];
       OspreyLoggingInit();
       v15 = OspreyLogContextGRPC;
       if (os_log_type_enabled(OspreyLogContextGRPC, OS_LOG_TYPE_DEBUG))
       {
-        [OspreyGRPCChannel initWithURL:v9 configuration:v15 queue:?];
+        [OspreyGRPCChannel initWithURL:configurationCopy configuration:v15 queue:?];
       }
     }
 
-    if ([v9 TLSMinimumSupportedProtocolVersion] <= 0x302)
+    if ([configurationCopy TLSMinimumSupportedProtocolVersion] <= 0x302)
     {
-      [v9 setTLSMinimumSupportedProtocolVersion:771];
+      [configurationCopy setTLSMinimumSupportedProtocolVersion:771];
     }
 
-    [v9 set_allowsTLSFalseStart:1];
-    v16 = [MEMORY[0x277CCAD30] sessionWithConfiguration:v9 delegate:v11 delegateQueue:v14];
+    [configurationCopy set_allowsTLSFalseStart:1];
+    v16 = [MEMORY[0x277CCAD30] sessionWithConfiguration:configurationCopy delegate:v11 delegateQueue:v14];
     session = v11->_session;
     v11->_session = v16;
 
-    v18 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
     taskToContext = v11->_taskToContext;
-    v11->_taskToContext = v18;
+    v11->_taskToContext = strongToStrongObjectsMapTable;
 
     v20 = objc_alloc_init(OspreyMessageWriter);
     messageWriter = v11->_messageWriter;
@@ -112,31 +112,31 @@
   [(NSURLSession *)self->_session invalidateAndCancel];
 }
 
-- (void)setAbsintheTimestampForKey:(id)a3
+- (void)setAbsintheTimestampForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(OspreyGRPCChannel *)self absintheDurations];
-  [v5 setAbsintheAuthenticationTimestampForKey:v4];
+  keyCopy = key;
+  absintheDurations = [(OspreyGRPCChannel *)self absintheDurations];
+  [absintheDurations setAbsintheAuthenticationTimestampForKey:keyCopy];
 }
 
-- (id)clientStreamingContextForRequest:(id)a3 streamingResponseHandler:(id)a4 completion:(id)a5
+- (id)clientStreamingContextForRequest:(id)request streamingResponseHandler:(id)handler completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[OspreyGRPCStreamingContext alloc] initWithQueue:self->_queue responseHandler:v9 completion:v8];
+  completionCopy = completion;
+  handlerCopy = handler;
+  requestCopy = request;
+  v11 = [[OspreyGRPCStreamingContext alloc] initWithQueue:self->_queue responseHandler:handlerCopy completion:completionCopy];
 
-  v12 = [v10 useCompression];
-  [(OspreyGRPCStreamingContext *)v11 setCompressionEnabled:v12];
+  useCompression = [requestCopy useCompression];
+  [(OspreyGRPCStreamingContext *)v11 setCompressionEnabled:useCompression];
 
   return v11;
 }
 
-- (void)unaryRequest:(id)a3 requestData:(id)a4 responseHandler:(id)a5
+- (void)unaryRequest:(id)request requestData:(id)data responseHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  requestCopy = request;
+  dataCopy = data;
+  handlerCopy = handler;
   v24[0] = 0;
   v24[1] = v24;
   v24[2] = 0x3032000000;
@@ -158,12 +158,12 @@
   v16 = 3221225472;
   v17 = __62__OspreyGRPCChannel_unaryRequest_requestData_responseHandler___block_invoke_2;
   v18 = &unk_2799F20C0;
-  v12 = v10;
+  v12 = handlerCopy;
   v19 = v12;
   v20 = v24;
   v13 = MEMORY[0x25F8A5BA0](&v15);
-  v14 = [(OspreyGRPCChannel *)self bidirectionalStreamingRequest:v8 streamingResponseHandler:v11 completion:v13, v15, v16, v17, v18];
-  [v14 writeFrame:v9];
+  v14 = [(OspreyGRPCChannel *)self bidirectionalStreamingRequest:requestCopy streamingResponseHandler:v11 completion:v13, v15, v16, v17, v18];
+  [v14 writeFrame:dataCopy];
   [v14 finishWriting];
 
   _Block_object_dispose(v22, 8);
@@ -193,20 +193,20 @@ uint64_t __62__OspreyGRPCChannel_unaryRequest_requestData_responseHandler___bloc
   return result;
 }
 
-- (void)serverStreamingRequest:(id)a3 requestData:(id)a4 streamingResponseHandler:(id)a5 completion:(id)a6
+- (void)serverStreamingRequest:(id)request requestData:(id)data streamingResponseHandler:(id)handler completion:(id)completion
 {
-  v10 = a4;
-  v11 = [(OspreyGRPCChannel *)self bidirectionalStreamingRequest:a3 streamingResponseHandler:a5 completion:a6];
-  [v11 writeFrame:v10];
+  dataCopy = data;
+  v11 = [(OspreyGRPCChannel *)self bidirectionalStreamingRequest:request streamingResponseHandler:handler completion:completion];
+  [v11 writeFrame:dataCopy];
 
   [v11 finishWriting];
 }
 
-- (id)clientStreamingRequest:(id)a3 responseHandler:(id)a4 streamingContext:(id)a5
+- (id)clientStreamingRequest:(id)request responseHandler:(id)handler streamingContext:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  requestCopy = request;
+  handlerCopy = handler;
+  contextCopy = context;
   v25[0] = 0;
   v25[1] = v25;
   v25[2] = 0x3032000000;
@@ -228,11 +228,11 @@ uint64_t __62__OspreyGRPCChannel_unaryRequest_requestData_responseHandler___bloc
   v17 = 3221225472;
   v18 = __77__OspreyGRPCChannel_clientStreamingRequest_responseHandler_streamingContext___block_invoke_2;
   v19 = &unk_2799F20C0;
-  v12 = v9;
+  v12 = handlerCopy;
   v20 = v12;
   v21 = v25;
   v13 = MEMORY[0x25F8A5BA0](&v16);
-  v14 = [(OspreyGRPCChannel *)self bidirectionalStreamingRequest:v8 streamingResponseHandler:v11 completion:v13, v16, v17, v18, v19];
+  v14 = [(OspreyGRPCChannel *)self bidirectionalStreamingRequest:requestCopy streamingResponseHandler:v11 completion:v13, v16, v17, v18, v19];
 
   _Block_object_dispose(v23, 8);
   _Block_object_dispose(v25, 8);
@@ -263,40 +263,40 @@ uint64_t __77__OspreyGRPCChannel_clientStreamingRequest_responseHandler_streamin
   return result;
 }
 
-- (id)bidirectionalStreamingRequest:(id)a3 streamingResponseHandler:(id)a4 completion:(id)a5
+- (id)bidirectionalStreamingRequest:(id)request streamingResponseHandler:(id)handler completion:(id)completion
 {
-  v8 = a3;
-  v9 = [(OspreyGRPCChannel *)self clientStreamingContextForRequest:v8 streamingResponseHandler:a4 completion:a5];
-  [(OspreyGRPCChannel *)self bidirectionalStreamingRequest:v8 streamingContext:v9];
+  requestCopy = request;
+  v9 = [(OspreyGRPCChannel *)self clientStreamingContextForRequest:requestCopy streamingResponseHandler:handler completion:completion];
+  [(OspreyGRPCChannel *)self bidirectionalStreamingRequest:requestCopy streamingContext:v9];
 
   return v9;
 }
 
-- (void)bidirectionalStreamingRequest:(id)a3 streamingContext:(id)a4
+- (void)bidirectionalStreamingRequest:(id)request streamingContext:(id)context
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  contextCopy = context;
   OspreyLoggingInit();
   v8 = OspreyLogContextGRPC;
   if (os_log_type_enabled(OspreyLogContextGRPC, OS_LOG_TYPE_INFO))
   {
     baseURL = self->_baseURL;
     v10 = v8;
-    v11 = [v6 methodName];
+    methodName = [requestCopy methodName];
     v14 = 136315650;
     v15 = "[OspreyGRPCChannel bidirectionalStreamingRequest:streamingContext:]";
     v16 = 2112;
     v17 = baseURL;
     v18 = 2112;
-    v19 = v11;
+    v19 = methodName;
     _os_log_impl(&dword_25DDE6000, v10, OS_LOG_TYPE_INFO, "%s baseURL: %@, method: %@", &v14, 0x20u);
   }
 
-  v12 = [v6 grpcRequestWithBaseURL:self->_baseURL];
-  [v7 bindToUrlRequest:v12];
+  v12 = [requestCopy grpcRequestWithBaseURL:self->_baseURL];
+  [contextCopy bindToUrlRequest:v12];
   v13 = [(NSURLSession *)self->_session dataTaskWithRequest:v12];
-  [(NSMapTable *)self->_taskToContext setObject:v7 forKey:v13];
+  [(NSMapTable *)self->_taskToContext setObject:contextCopy forKey:v13];
 
   [(OspreyGRPCChannel *)self _startTask:v13];
 }
@@ -343,10 +343,10 @@ void __31__OspreyGRPCChannel_preconnect__block_invoke(uint64_t a1, void *a2, voi
   }
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didFinishCollectingMetrics:(id)a5
+- (void)URLSession:(id)session task:(id)task didFinishCollectingMetrics:(id)metrics
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a5;
+  metricsCopy = metrics;
   OspreyLoggingInit();
   v7 = OspreyLogContextGRPC;
   if (os_log_type_enabled(OspreyLogContextGRPC, OS_LOG_TYPE_INFO))
@@ -354,16 +354,16 @@ void __31__OspreyGRPCChannel_preconnect__block_invoke(uint64_t a1, void *a2, voi
     v13 = 136315394;
     v14 = "[OspreyGRPCChannel URLSession:task:didFinishCollectingMetrics:]";
     v15 = 2112;
-    v16 = v6;
+    v16 = metricsCopy;
     _os_log_impl(&dword_25DDE6000, v7, OS_LOG_TYPE_INFO, "%s Successfully collected metrics %@", &v13, 0x16u);
   }
 
-  if (v6)
+  if (metricsCopy)
   {
-    v8 = [[OspreyConnectionMetrics alloc] initWithMetrics:v6];
-    v9 = [(OspreyGRPCChannel *)self absintheDurations];
-    v10 = [(OspreyConnectionMetrics *)v8 connectionMethod];
-    [v9 setAbsintheConnectionMethodWith:v10];
+    v8 = [[OspreyConnectionMetrics alloc] initWithMetrics:metricsCopy];
+    absintheDurations = [(OspreyGRPCChannel *)self absintheDurations];
+    connectionMethod = [(OspreyConnectionMetrics *)v8 connectionMethod];
+    [absintheDurations setAbsintheConnectionMethodWith:connectionMethod];
 
     v11 = +[OspreyAnalytics reporter];
     [v11 reportConnectionMetrics:v8];
@@ -376,28 +376,28 @@ void __31__OspreyGRPCChannel_preconnect__block_invoke(uint64_t a1, void *a2, voi
   }
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 needNewBodyStream:(id)a5
+- (void)URLSession:(id)session task:(id)task needNewBodyStream:(id)stream
 {
   queue = self->_queue;
-  v6 = a5;
+  streamCopy = stream;
   dispatch_assert_queue_V2(queue);
-  v6[2](v6, 0);
+  streamCopy[2](streamCopy, 0);
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error
 {
-  v7 = a4;
-  v8 = a5;
+  taskCopy = task;
+  errorCopy = error;
   dispatch_assert_queue_V2(self->_queue);
-  v9 = [v7 originalRequest];
-  v10 = [v9 URL];
+  originalRequest = [taskCopy originalRequest];
+  v10 = [originalRequest URL];
 
-  v11 = [(NSMapTable *)self->_taskToContext objectForKey:v7];
+  v11 = [(NSMapTable *)self->_taskToContext objectForKey:taskCopy];
   OspreyLoggingInit();
   if (os_log_type_enabled(OspreyLogContextGRPC, OS_LOG_TYPE_DEBUG))
   {
     [OspreyGRPCChannel URLSession:task:didCompleteWithError:];
-    if (!v8)
+    if (!errorCopy)
     {
       goto LABEL_4;
     }
@@ -405,27 +405,27 @@ void __31__OspreyGRPCChannel_preconnect__block_invoke(uint64_t a1, void *a2, voi
     goto LABEL_3;
   }
 
-  if (v8)
+  if (errorCopy)
   {
 LABEL_3:
     v12 = +[OspreyAnalytics reporter];
-    [v12 reportError:v8 forURL:v10];
+    [v12 reportError:errorCopy forURL:v10];
   }
 
 LABEL_4:
-  [v11 completeWithError:v8];
-  [(NSMapTable *)self->_taskToContext removeObjectForKey:v7];
+  [v11 completeWithError:errorCopy];
+  [(NSMapTable *)self->_taskToContext removeObjectForKey:taskCopy];
 }
 
-- (void)URLSession:(id)a3 didReceiveChallenge:(id)a4 completionHandler:(id)a5
+- (void)URLSession:(id)session didReceiveChallenge:(id)challenge completionHandler:(id)handler
 {
-  v7 = a4;
+  challengeCopy = challenge;
   queue = self->_queue;
-  v9 = a5;
+  handlerCopy = handler;
   dispatch_assert_queue_V2(queue);
-  v10 = [v7 protectionSpace];
-  v11 = [v10 authenticationMethod];
-  v12 = [v11 isEqualToString:*MEMORY[0x277CCA720]];
+  protectionSpace = [challengeCopy protectionSpace];
+  authenticationMethod = [protectionSpace authenticationMethod];
+  v12 = [authenticationMethod isEqualToString:*MEMORY[0x277CCA720]];
 
   OspreyLoggingInit();
   v13 = OspreyLogContextGRPC;
@@ -444,20 +444,20 @@ LABEL_4:
   {
     if (v14)
     {
-      [OspreyGRPCChannel URLSession:v7 didReceiveChallenge:v13 completionHandler:v10];
+      [OspreyGRPCChannel URLSession:challengeCopy didReceiveChallenge:v13 completionHandler:protectionSpace];
     }
 
     v15 = 1;
   }
 
-  v9[2](v9, v15, 0);
+  handlerCopy[2](handlerCopy, v15, 0);
 }
 
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveResponse:(id)a5 completionHandler:(id)a6
+- (void)URLSession:(id)session dataTask:(id)task didReceiveResponse:(id)response completionHandler:(id)handler
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
+  taskCopy = task;
+  responseCopy = response;
+  handlerCopy = handler;
   OspreyLoggingInit();
   if (os_log_type_enabled(OspreyLogContextGRPC, OS_LOG_TYPE_DEBUG))
   {
@@ -465,19 +465,19 @@ LABEL_4:
   }
 
   dispatch_assert_queue_V2(self->_queue);
-  v12 = v10;
-  v13 = [v12 statusCode];
-  v14 = [v12 allHeaderFields];
-  v15 = [v14 objectForKey:@"grpc-status"];
-  v16 = [v15 longLongValue];
+  v12 = responseCopy;
+  statusCode = [v12 statusCode];
+  allHeaderFields = [v12 allHeaderFields];
+  v15 = [allHeaderFields objectForKey:@"grpc-status"];
+  longLongValue = [v15 longLongValue];
 
   v17 = +[OspreyAnalytics reporter];
   v18 = [v12 URL];
-  [v17 reportHttpStatus:v13 grpcStatus:v16 forURL:v18];
+  [v17 reportHttpStatus:statusCode grpcStatus:longLongValue forURL:v18];
 
-  if (v13 != 200)
+  if (statusCode != 200)
   {
-    v20 = [MEMORY[0x277CCAA40] localizedStringForStatusCode:v13];
+    v20 = [MEMORY[0x277CCAA40] localizedStringForStatusCode:statusCode];
     OspreyLoggingInit();
     if (os_log_type_enabled(OspreyLogContextGRPC, OS_LOG_TYPE_ERROR))
     {
@@ -487,10 +487,10 @@ LABEL_4:
     goto LABEL_10;
   }
 
-  if (v16)
+  if (longLongValue)
   {
-    v19 = [v12 allHeaderFields];
-    v20 = [v19 objectForKey:@"grpc-message"];
+    allHeaderFields2 = [v12 allHeaderFields];
+    v20 = [allHeaderFields2 objectForKey:@"grpc-message"];
 
     OspreyLoggingInit();
     if (os_log_type_enabled(OspreyLogContextGRPC, OS_LOG_TYPE_ERROR))
@@ -498,17 +498,17 @@ LABEL_4:
       [OspreyGRPCChannel URLSession:dataTask:didReceiveResponse:completionHandler:];
     }
 
-    v13 = -1011;
+    statusCode = -1011;
 LABEL_10:
     v21 = MEMORY[0x277CCA9B8];
     v22 = *MEMORY[0x277CCA738];
-    v23 = [v12 allHeaderFields];
-    v24 = [v21 errorWithDomain:v22 code:v13 userInfo:v23];
+    allHeaderFields3 = [v12 allHeaderFields];
+    v24 = [v21 errorWithDomain:v22 code:statusCode userInfo:allHeaderFields3];
 
-    v25 = [(NSMapTable *)self->_taskToContext objectForKey:v9];
+    v25 = [(NSMapTable *)self->_taskToContext objectForKey:taskCopy];
     [v25 completeWithError:v24];
-    [(NSMapTable *)self->_taskToContext removeObjectForKey:v9];
-    v11[2](v11, 0);
+    [(NSMapTable *)self->_taskToContext removeObjectForKey:taskCopy];
+    handlerCopy[2](handlerCopy, 0);
 
     goto LABEL_11;
   }
@@ -519,14 +519,14 @@ LABEL_10:
     [OspreyGRPCChannel URLSession:dataTask:didReceiveResponse:completionHandler:];
   }
 
-  v11[2](v11, 1);
+  handlerCopy[2](handlerCopy, 1);
 LABEL_11:
 }
 
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveData:(id)a5
+- (void)URLSession:(id)session dataTask:(id)task didReceiveData:(id)data
 {
-  v7 = a4;
-  v8 = a5;
+  taskCopy = task;
+  dataCopy = data;
   dispatch_assert_queue_V2(self->_queue);
   OspreyLoggingInit();
   if (os_log_type_enabled(OspreyLogContextGRPC, OS_LOG_TYPE_DEBUG))
@@ -534,8 +534,8 @@ LABEL_11:
     [OspreyGRPCChannel URLSession:dataTask:didReceiveData:];
   }
 
-  v9 = [(NSMapTable *)self->_taskToContext objectForKey:v7];
-  [v9 handleResponseData:v8];
+  v9 = [(NSMapTable *)self->_taskToContext objectForKey:taskCopy];
+  [v9 handleResponseData:dataCopy];
 }
 
 - (void)initWithURL:(void *)a1 configuration:(void *)a2 queue:.cold.2(void *a1, void *a2)

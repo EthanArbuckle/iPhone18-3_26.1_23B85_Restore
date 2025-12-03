@@ -1,23 +1,23 @@
 @interface AlphanumericPINTextFieldAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (void)_accessibilityInsertText:(id)a3;
-- (void)_accessibilityReplaceCharactersAtCursor:(unint64_t)a3 withString:(id)a4;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (void)_accessibilityInsertText:(id)text;
+- (void)_accessibilityReplaceCharactersAtCursor:(unint64_t)cursor withString:(id)string;
 @end
 
 @implementation AlphanumericPINTextFieldAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"AlphanumericPINTextField" isKindOfClass:@"UITextField"];
-  [v3 validateClass:@"PINView" hasInstanceMethod:@"notifyDelegatePINChanged" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"AlphanumericPINTextField" isKindOfClass:@"UITextField"];
+  [validationsCopy validateClass:@"PINView" hasInstanceMethod:@"notifyDelegatePINChanged" withFullSignature:{"v", 0}];
 }
 
-- (void)_accessibilityInsertText:(id)a3
+- (void)_accessibilityInsertText:(id)text
 {
   v3.receiver = self;
   v3.super_class = AlphanumericPINTextFieldAccessibility;
-  [(AlphanumericPINTextFieldAccessibility *)&v3 _accessibilityInsertText:a3];
+  [(AlphanumericPINTextFieldAccessibility *)&v3 _accessibilityInsertText:text];
   AXPerformSafeBlock();
 }
 
@@ -30,11 +30,11 @@ void __66__AlphanumericPINTextFieldAccessibility__accessibilityInsertText___bloc
   [v4 notifyDelegatePINChanged];
 }
 
-- (void)_accessibilityReplaceCharactersAtCursor:(unint64_t)a3 withString:(id)a4
+- (void)_accessibilityReplaceCharactersAtCursor:(unint64_t)cursor withString:(id)string
 {
   v4.receiver = self;
   v4.super_class = AlphanumericPINTextFieldAccessibility;
-  [(AlphanumericPINTextFieldAccessibility *)&v4 _accessibilityReplaceCharactersAtCursor:a3 withString:a4];
+  [(AlphanumericPINTextFieldAccessibility *)&v4 _accessibilityReplaceCharactersAtCursor:cursor withString:string];
   AXPerformSafeBlock();
 }
 

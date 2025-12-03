@@ -1,11 +1,11 @@
 @interface _ExpandedMessageListCellLayoutValues
-- (double)_heightWithNumberOfSummaryLines:(int64_t)a3 isAvatarHidden:(BOOL)a4;
+- (double)_heightWithNumberOfSummaryLines:(int64_t)lines isAvatarHidden:(BOOL)hidden;
 - (double)defaultRowHeight;
 - (double)topPadding;
 - (id)addressFont;
-- (id)backgroundColorForSelectedState:(unint64_t)a3 disclosureEnabled:(BOOL)a4;
+- (id)backgroundColorForSelectedState:(unint64_t)state disclosureEnabled:(BOOL)enabled;
 - (id)subjectFont;
-- (int64_t)linesOfSummaryForCompactHeight:(BOOL)a3;
+- (int64_t)linesOfSummaryForCompactHeight:(BOOL)height;
 @end
 
 @implementation _ExpandedMessageListCellLayoutValues
@@ -23,8 +23,8 @@
 
     else
     {
-      v4 = [(_ExpandedMessageListCellLayoutValues *)self addressFont];
-      [v4 _bodyLeading];
+      addressFont = [(_ExpandedMessageListCellLayoutValues *)self addressFont];
+      [addressFont _bodyLeading];
       v6 = v5;
       [(MessageListCellLayoutValues *)self addressCapHeight];
       self->super._topPadding = round(v6 - v7);
@@ -66,11 +66,11 @@
   return addressFont;
 }
 
-- (id)backgroundColorForSelectedState:(unint64_t)a3 disclosureEnabled:(BOOL)a4
+- (id)backgroundColorForSelectedState:(unint64_t)state disclosureEnabled:(BOOL)enabled
 {
-  if (a3 == 1)
+  if (state == 1)
   {
-    [MEMORY[0x277D75348] mailCellSelectionStateColorForInterfaceLevel:{-[UITraitCollection userInterfaceLevel](self->super._traitCollection, "userInterfaceLevel", 1, a4)}];
+    [MEMORY[0x277D75348] mailCellSelectionStateColorForInterfaceLevel:{-[UITraitCollection userInterfaceLevel](self->super._traitCollection, "userInterfaceLevel", 1, enabled)}];
   }
 
   else
@@ -82,25 +82,25 @@
   return v4;
 }
 
-- (double)_heightWithNumberOfSummaryLines:(int64_t)a3 isAvatarHidden:(BOOL)a4
+- (double)_heightWithNumberOfSummaryLines:(int64_t)lines isAvatarHidden:(BOOL)hidden
 {
   if (MUISolariumFeatureEnabled())
   {
     [(_ExpandedMessageListCellLayoutValues *)self topPadding];
     [(MessageListCellLayoutValues *)self addressCapHeight];
-    v7 = [(MessageListCellLayoutValues *)self summaryFont];
-    [v7 lineHeight];
+    summaryFont = [(MessageListCellLayoutValues *)self summaryFont];
+    [summaryFont lineHeight];
 
-    if (a3 >= 2)
+    if (lines >= 2)
     {
-      v8 = [(MessageListCellLayoutValues *)self summaryFont];
-      [v8 _bodyLeading];
+      summaryFont2 = [(MessageListCellLayoutValues *)self summaryFont];
+      [summaryFont2 _bodyLeading];
     }
 
     [(MessageListCellLayoutValues *)self bottomPadding];
     UIRoundToViewScale();
     v10 = v9;
-    if (!a4)
+    if (!hidden)
     {
       [(_ExpandedMessageListCellLayoutValues *)self topPadding];
       [(MessageListCellLayoutValues *)self avatarSize];
@@ -117,11 +117,11 @@
 
   else
   {
-    v13 = [(_ExpandedMessageListCellLayoutValues *)self addressFont];
-    [v13 _bodyLeading];
+    addressFont = [(_ExpandedMessageListCellLayoutValues *)self addressFont];
+    [addressFont _bodyLeading];
 
-    v14 = [(MessageListCellLayoutValues *)self summaryFont];
-    [v14 _bodyLeading];
+    summaryFont3 = [(MessageListCellLayoutValues *)self summaryFont];
+    [summaryFont3 _bodyLeading];
 
     UIRoundToViewScale();
   }
@@ -135,8 +135,8 @@
   if (result == 2.22507386e-308)
   {
     v4 = [(_ExpandedMessageListCellLayoutValues *)self linesOfSummaryForCompactHeight:0];
-    v5 = [MEMORY[0x277CBEBD0] em_userDefaults];
-    -[_ExpandedMessageListCellLayoutValues _heightWithNumberOfSummaryLines:isAvatarHidden:](self, "_heightWithNumberOfSummaryLines:isAvatarHidden:", v4, [v5 BOOLForKey:*MEMORY[0x277D06C88]]);
+    em_userDefaults = [MEMORY[0x277CBEBD0] em_userDefaults];
+    -[_ExpandedMessageListCellLayoutValues _heightWithNumberOfSummaryLines:isAvatarHidden:](self, "_heightWithNumberOfSummaryLines:isAvatarHidden:", v4, [em_userDefaults BOOLForKey:*MEMORY[0x277D06C88]]);
     self->super._defaultRowHeight = v6;
 
     return self->super._defaultRowHeight;
@@ -145,18 +145,18 @@
   return result;
 }
 
-- (int64_t)linesOfSummaryForCompactHeight:(BOOL)a3
+- (int64_t)linesOfSummaryForCompactHeight:(BOOL)height
 {
-  if (a3)
+  if (height)
   {
     return 1;
   }
 
-  v6 = [MEMORY[0x277CBEBD0] em_linesOfPreview];
+  em_linesOfPreview = [MEMORY[0x277CBEBD0] em_linesOfPreview];
   v7 = 2;
-  if (v6 > 2)
+  if (em_linesOfPreview > 2)
   {
-    v7 = v6;
+    v7 = em_linesOfPreview;
   }
 
   return v7 - 1;

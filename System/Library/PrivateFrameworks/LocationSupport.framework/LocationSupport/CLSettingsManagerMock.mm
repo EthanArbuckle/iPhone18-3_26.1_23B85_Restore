@@ -1,6 +1,6 @@
 @interface CLSettingsManagerMock
 - (CLSettingsManagerMock)init;
-- (void)setSettings:(id)a3;
+- (void)setSettings:(id)settings;
 @end
 
 @implementation CLSettingsManagerMock
@@ -12,9 +12,9 @@
   return [(CLIntersiloService *)&v3 initWithInboundProtocol:&unk_1F5ACB008 outboundProtocol:&unk_1F5ACA808];
 }
 
-- (void)setSettings:(id)a3
+- (void)setSettings:(id)settings
 {
-  -[CLSettingsManagerInternal setSettingsDictionary:](self, "setSettingsDictionary:", [a3 cl_deepMutableCopy]);
+  -[CLSettingsManagerInternal setSettingsDictionary:](self, "setSettingsDictionary:", [settings cl_deepMutableCopy]);
   [MEMORY[0x1E695DF20] dictionaryWithDictionary:{-[CLSettingsManagerInternal settingsDictionary](self, "settingsDictionary")}];
 
   MEMORY[0x1EEE66B58](self, sel_updateClientsWithDictionary_);

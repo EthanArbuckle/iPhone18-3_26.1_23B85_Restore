@@ -1,37 +1,37 @@
 @interface BCCloudKitTransaction
-- (BCCloudKitTransaction)initWithEntityName:(id)a3 delegate:(id)a4;
+- (BCCloudKitTransaction)initWithEntityName:(id)name delegate:(id)delegate;
 - (BCCloudKitTransactionDelegate)delegate;
 - (id)transactionName;
 - (void)clientConnected;
 - (void)laq_scheduleTransactionLifetime;
-- (void)performWorkWithCompletion:(id)a3;
+- (void)performWorkWithCompletion:(id)completion;
 - (void)signal;
 @end
 
 @implementation BCCloudKitTransaction
 
-- (BCCloudKitTransaction)initWithEntityName:(id)a3 delegate:(id)a4
+- (BCCloudKitTransaction)initWithEntityName:(id)name delegate:(id)delegate
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  delegateCopy = delegate;
   v32.receiver = self;
   v32.super_class = BCCloudKitTransaction;
   v8 = [(BCCloudKitTransaction *)&v32 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [nameCopy copy];
     entityName = v8->_entityName;
     v8->_entityName = v9;
 
-    objc_storeWeak(&v8->_delegate, v7);
+    objc_storeWeak(&v8->_delegate, delegateCopy);
     v11 = [BDSOSTransaction alloc];
-    v12 = [(BCCloudKitTransaction *)v8 transactionName];
-    v13 = -[BDSOSTransaction initWithTransactionName:](v11, "initWithTransactionName:", [v12 cStringUsingEncoding:4]);
+    transactionName = [(BCCloudKitTransaction *)v8 transactionName];
+    v13 = -[BDSOSTransaction initWithTransactionName:](v11, "initWithTransactionName:", [transactionName cStringUsingEncoding:4]);
     osTransaction = v8->_osTransaction;
     v8->_osTransaction = v13;
 
-    v15 = [(BCCloudKitTransaction *)v8 transactionName];
-    v16 = [@"com.apple.iBooks.CloudKitTransaction." stringByAppendingString:v15];
+    transactionName2 = [(BCCloudKitTransaction *)v8 transactionName];
+    v16 = [@"com.apple.iBooks.CloudKitTransaction." stringByAppendingString:transactionName2];
 
     v17 = [v16 cStringUsingEncoding:4];
     v18 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
@@ -66,15 +66,15 @@
 - (id)transactionName
 {
   v3 = objc_opt_class();
-  v4 = [(BCCloudKitTransaction *)self entityName];
-  v5 = [v3 transactionNameForEntityName:v4];
+  entityName = [(BCCloudKitTransaction *)self entityName];
+  v5 = [v3 transactionNameForEntityName:entityName];
 
   return v5;
 }
 
-- (void)performWorkWithCompletion:(id)a3
+- (void)performWorkWithCompletion:(id)completion
 {
-  v3 = _Block_copy(a3);
+  v3 = _Block_copy(completion);
   if (v3)
   {
     v4 = v3;
@@ -85,42 +85,42 @@
 
 - (void)clientConnected
 {
-  v3 = [(BCCloudKitTransaction *)self lifecycleAccessQueue];
+  lifecycleAccessQueue = [(BCCloudKitTransaction *)self lifecycleAccessQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = sub_1E4619B80;
   block[3] = &unk_1E875A008;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(lifecycleAccessQueue, block);
 }
 
 - (void)signal
 {
   v13 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E698F550] shared];
-  v4 = [v3 verboseLoggingEnabled];
+  mEMORY[0x1E698F550] = [MEMORY[0x1E698F550] shared];
+  verboseLoggingEnabled = [mEMORY[0x1E698F550] verboseLoggingEnabled];
 
-  if (v4)
+  if (verboseLoggingEnabled)
   {
     v5 = BDSCloudKitDevelopmentLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [(BCCloudKitTransaction *)self transactionName];
+      transactionName = [(BCCloudKitTransaction *)self transactionName];
       *buf = 138412290;
-      v12 = v6;
+      v12 = transactionName;
       _os_log_impl(&dword_1E45E0000, v5, OS_LOG_TYPE_DEFAULT, "\\Transaction signaling for %@\\"", buf, 0xCu);
     }
   }
 
   objc_initWeak(buf, self);
-  v7 = [(BCCloudKitTransaction *)self coalescedNotification];
+  coalescedNotification = [(BCCloudKitTransaction *)self coalescedNotification];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = sub_1E4619DB0;
   v9[3] = &unk_1E875A230;
   v9[4] = self;
   objc_copyWeak(&v10, buf);
-  [v7 signalWithCompletion:v9];
+  [coalescedNotification signalWithCompletion:v9];
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(buf);
@@ -130,27 +130,27 @@
 - (void)laq_scheduleTransactionLifetime
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [(BCCloudKitTransaction *)self transactionLifetime];
+  transactionLifetime = [(BCCloudKitTransaction *)self transactionLifetime];
 
-  if (!v3)
+  if (!transactionLifetime)
   {
-    v4 = [MEMORY[0x1E698F550] shared];
-    v5 = [v4 verboseLoggingEnabled];
+    mEMORY[0x1E698F550] = [MEMORY[0x1E698F550] shared];
+    verboseLoggingEnabled = [mEMORY[0x1E698F550] verboseLoggingEnabled];
 
-    if (v5)
+    if (verboseLoggingEnabled)
     {
       v6 = BDSCloudKitDevelopmentLog();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
       {
-        v7 = [(BCCloudKitTransaction *)self transactionName];
+        transactionName = [(BCCloudKitTransaction *)self transactionName];
         *buf = 138412290;
-        v16 = v7;
+        v16 = transactionName;
         _os_log_impl(&dword_1E45E0000, v6, OS_LOG_TYPE_DEFAULT, "\\Transaction scheduletransactionLifetime for %@\\"", buf, 0xCu);
       }
     }
 
-    v8 = [(BCCloudKitTransaction *)self lifecycleAccessQueue];
-    v9 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, v8);
+    lifecycleAccessQueue = [(BCCloudKitTransaction *)self lifecycleAccessQueue];
+    v9 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, lifecycleAccessQueue);
 
     v10 = dispatch_time(0, 5000000000);
     dispatch_source_set_timer(v9, v10, 0xFFFFFFFFFFFFFFFFLL, 0xBEBC200uLL);
@@ -167,8 +167,8 @@
     v13[4] = self;
     dispatch_source_set_cancel_handler(v9, v13);
     [(BCCloudKitTransaction *)self setTransactionLifetime:v9];
-    v11 = [(BCCloudKitTransaction *)self transactionLifetime];
-    dispatch_resume(v11);
+    transactionLifetime2 = [(BCCloudKitTransaction *)self transactionLifetime];
+    dispatch_resume(transactionLifetime2);
   }
 
   v12 = *MEMORY[0x1E69E9840];

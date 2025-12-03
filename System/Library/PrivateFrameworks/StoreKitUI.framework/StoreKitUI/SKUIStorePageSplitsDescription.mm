@@ -1,19 +1,19 @@
 @interface SKUIStorePageSplitsDescription
 - (SKUIStorePageSplit)firstSplit;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (int64_t)numberOfSplits;
 - (void)description;
-- (void)enumerateSplitsUsingBlock:(id)a3;
-- (void)sizeSplitsToFitWidth:(double)a3 usingBlock:(id)a4;
+- (void)enumerateSplitsUsingBlock:(id)block;
+- (void)sizeSplitsToFitWidth:(double)width usingBlock:(id)block;
 @end
 
 @implementation SKUIStorePageSplitsDescription
 
-- (void)enumerateSplitsUsingBlock:(id)a3
+- (void)enumerateSplitsUsingBlock:(id)block
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  blockCopy = block;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -44,7 +44,7 @@
     v21 = *(v24 + v17);
     if (v21)
     {
-      v4[2](v4, v21, v18, &v23);
+      blockCopy[2](blockCopy, v21, v18, &v23);
       if (v23)
       {
         break;
@@ -123,9 +123,9 @@
   return v11;
 }
 
-- (void)sizeSplitsToFitWidth:(double)a3 usingBlock:(id)a4
+- (void)sizeSplitsToFitWidth:(double)width usingBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -148,15 +148,15 @@
   v24[0] = 0;
   v24[1] = v24;
   v24[2] = 0x2020000000;
-  *&v24[3] = a3;
+  *&v24[3] = width;
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __66__SKUIStorePageSplitsDescription_sizeSplitsToFitWidth_usingBlock___block_invoke;
   v19[3] = &unk_2781FDFE8;
   v19[4] = self;
-  v17 = v6;
+  v17 = blockCopy;
   v21 = v17;
-  v23 = a3;
+  widthCopy = width;
   v18 = v16;
   v20 = v18;
   v22 = v24;
@@ -201,7 +201,7 @@ LABEL_8:
 LABEL_9:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   if (os_variant_has_internal_content())
   {
@@ -215,7 +215,7 @@ LABEL_9:
     }
   }
 
-  v13 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v13 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v13 setBottomSplit:self->_bottomSplit];
   [v13 setLeftSplit:self->_leftSplit];
   [v13 setRightSplit:self->_rightSplit];

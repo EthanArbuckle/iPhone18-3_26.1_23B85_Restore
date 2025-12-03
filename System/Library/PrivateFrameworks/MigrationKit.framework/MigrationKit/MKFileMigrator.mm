@@ -1,6 +1,6 @@
 @interface MKFileMigrator
 - (MKFileMigrator)init;
-- (void)import:(id)a3 filename:(id)a4 offset:(unint64_t)a5 length:(unint64_t)a6 total:(unint64_t)a7 complete:(BOOL)a8;
+- (void)import:(id)import filename:(id)filename offset:(unint64_t)offset length:(unint64_t)length total:(unint64_t)total complete:(BOOL)complete;
 @end
 
 @implementation MKFileMigrator
@@ -18,9 +18,9 @@
 
   [(MKMigrator *)v2 setType:9];
   v4 = objc_alloc_init(MKFileProvider);
-  v5 = [(MKFileProvider *)v4 fetchRootPath];
+  fetchRootPath = [(MKFileProvider *)v4 fetchRootPath];
   root = v3->_root;
-  v3->_root = v5;
+  v3->_root = fetchRootPath;
 
   if (!v3->_root)
   {
@@ -42,25 +42,25 @@ LABEL_3:
   return v7;
 }
 
-- (void)import:(id)a3 filename:(id)a4 offset:(unint64_t)a5 length:(unint64_t)a6 total:(unint64_t)a7 complete:(BOOL)a8
+- (void)import:(id)import filename:(id)filename offset:(unint64_t)offset length:(unint64_t)length total:(unint64_t)total complete:(BOOL)complete
 {
-  v8 = a8;
+  completeCopy = complete;
   v48 = *MEMORY[0x277D85DE8];
-  v43 = a3;
-  v14 = a4;
-  if ([v14 length])
+  importCopy = import;
+  filenameCopy = filename;
+  if ([filenameCopy length])
   {
-    v38 = a6;
-    v39 = a7;
-    v15 = [MEMORY[0x277CBEAA8] date];
+    lengthCopy = length;
+    totalCopy = total;
+    date = [MEMORY[0x277CBEAA8] date];
     v40 = self->_root;
-    v16 = [(NSString *)v40 stringByAppendingPathComponent:v14];
-    v42 = [v16 stringByDeletingLastPathComponent];
-    v17 = [MEMORY[0x277CCAA00] defaultManager];
-    if (([v17 fileExistsAtPath:v42] & 1) != 0 || (v45 = 0, objc_msgSend(v17, "createDirectoryAtPath:withIntermediateDirectories:attributes:error:", v42, 1, 0, &v45), (v41 = v45) == 0))
+    v16 = [(NSString *)v40 stringByAppendingPathComponent:filenameCopy];
+    stringByDeletingLastPathComponent = [v16 stringByDeletingLastPathComponent];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    if (([defaultManager fileExistsAtPath:stringByDeletingLastPathComponent] & 1) != 0 || (v45 = 0, objc_msgSend(defaultManager, "createDirectoryAtPath:withIntermediateDirectories:attributes:error:", stringByDeletingLastPathComponent, 1, 0, &v45), (v41 = v45) == 0))
     {
       v41 = 0;
-      if (a5)
+      if (offset)
       {
         goto LABEL_7;
       }
@@ -74,11 +74,11 @@ LABEL_3:
         [MKFileMigrator import:filename:offset:length:total:complete:];
       }
 
-      if (a5)
+      if (offset)
       {
 LABEL_7:
         v44 = 0;
-        v19 = [v17 attributesOfItemAtPath:v16 error:&v44];
+        v19 = [defaultManager attributesOfItemAtPath:v16 error:&v44];
         v20 = v44;
         if (v20)
         {
@@ -93,40 +93,40 @@ LABEL_7:
         }
 
         v24 = [v19 objectForKey:*MEMORY[0x277CCA1C0]];
-        v25 = [v24 unsignedLongLongValue];
+        unsignedLongLongValue = [v24 unsignedLongLongValue];
 
-        if (v25 == a5)
+        if (unsignedLongLongValue == offset)
         {
           v26 = [MEMORY[0x277CCA9F8] fileHandleForWritingAtPath:v16];
           [v26 seekToEndOfFile];
-          [v26 writeData:v43];
+          [v26 writeData:importCopy];
           [v26 synchronizeFile];
           [v26 closeFile];
           v27 = +[MKLog log];
           if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
           {
-            v28 = [v43 length];
+            v28 = [importCopy length];
             *buf = 134217984;
             v47 = v28;
             _os_log_impl(&dword_2592D2000, v27, OS_LOG_TYPE_INFO, "appended some bytes to a file. bytes=%ld", buf, 0xCu);
           }
 
-          if (a5 + v38 == v39)
+          if (offset + lengthCopy == totalCopy)
           {
-            v8 = 1;
+            completeCopy = 1;
           }
         }
 
         else
         {
-          if (v25 == v39)
+          if (unsignedLongLongValue == totalCopy)
           {
-            v8 = 1;
+            completeCopy = 1;
 LABEL_31:
 
 LABEL_32:
-            -[MKMigrator migratorDidAppendDataSize:](self, "migratorDidAppendDataSize:", [v43 length]);
-            if (!v8)
+            -[MKMigrator migratorDidAppendDataSize:](self, "migratorDidAppendDataSize:", [importCopy length]);
+            if (!completeCopy)
             {
 LABEL_36:
 
@@ -136,17 +136,17 @@ LABEL_36:
             [(MKMigrator *)self migratorDidImport];
             v21 = +[MKAnalytics sharedInstance];
             objc_sync_enter(v21);
-            v29 = [v21 payload];
-            v30 = [v29 files];
+            payload = [v21 payload];
+            files = [payload files];
 
-            v31 = [MEMORY[0x277CBEAA8] date];
-            [v31 timeIntervalSinceDate:v15];
+            date2 = [MEMORY[0x277CBEAA8] date];
+            [date2 timeIntervalSinceDate:date];
             v33 = v32;
 
             v34 = [objc_alloc(MEMORY[0x277CCA980]) initWithDouble:v33];
-            v35 = [v30 importElapsedTime];
-            v36 = [v35 decimalNumberByAdding:v34];
-            [v30 setImportElapsedTime:v36];
+            importElapsedTime = [files importElapsedTime];
+            v36 = [importElapsedTime decimalNumberByAdding:v34];
+            [files setImportElapsedTime:v36];
 
             objc_sync_exit(v21);
             v19 = +[MKLog log];
@@ -172,27 +172,27 @@ LABEL_35:
       }
     }
 
-    if (([v17 fileExistsAtPath:v16] & 1) == 0 && (objc_msgSend(v43, "writeToFile:atomically:", v16, 1) & 1) == 0)
+    if (([defaultManager fileExistsAtPath:v16] & 1) == 0 && (objc_msgSend(importCopy, "writeToFile:atomically:", v16, 1) & 1) == 0)
     {
-      v23 = [v14 mk_validatePath];
-      if (!v23)
+      mk_validatePath = [filenameCopy mk_validatePath];
+      if (!mk_validatePath)
       {
-        v23 = [MEMORY[0x277CCA9B8] errorWithDomain:@"MKFileError" code:1 userInfo:0];
+        mk_validatePath = [MEMORY[0x277CCA9B8] errorWithDomain:@"MKFileError" code:1 userInfo:0];
       }
 
-      [(MKMigrator *)self migratorDidFailWithImportError:v23];
+      [(MKMigrator *)self migratorDidFailWithImportError:mk_validatePath];
     }
 
-    if (a6 == v39)
+    if (length == totalCopy)
     {
-      v8 = 1;
+      completeCopy = 1;
     }
 
     goto LABEL_32;
   }
 
-  v15 = +[MKLog log];
-  if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+  date = +[MKLog log];
+  if (os_log_type_enabled(date, OS_LOG_TYPE_ERROR))
   {
     [MKFileMigrator import:filename:offset:length:total:complete:];
   }

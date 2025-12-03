@@ -1,9 +1,9 @@
 @interface CADSyntheticRouteHypothesizerCache
 + (CADSyntheticRouteHypothesizerCache)sharedInstance;
 - (id)_init;
-- (id)syntheticRouteHypothesizerForEventExternalURL:(id)a3;
-- (void)addSyntheticRouteHypothesizer:(id)a3 forEventExternalURL:(id)a4;
-- (void)removeSyntheticRouteHypothesizerForEventExternalURL:(id)a3;
+- (id)syntheticRouteHypothesizerForEventExternalURL:(id)l;
+- (void)addSyntheticRouteHypothesizer:(id)hypothesizer forEventExternalURL:(id)l;
+- (void)removeSyntheticRouteHypothesizerForEventExternalURL:(id)l;
 @end
 
 @implementation CADSyntheticRouteHypothesizerCache
@@ -14,7 +14,7 @@
   block[1] = 3221225472;
   block[2] = __52__CADSyntheticRouteHypothesizerCache_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken != -1)
   {
     dispatch_once(&sharedInstance_onceToken, block);
@@ -53,25 +53,25 @@ uint64_t __52__CADSyntheticRouteHypothesizerCache_sharedInstance__block_invoke(u
   return v2;
 }
 
-- (id)syntheticRouteHypothesizerForEventExternalURL:(id)a3
+- (id)syntheticRouteHypothesizerForEventExternalURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy__13;
   v16 = __Block_byref_object_dispose__13;
   v17 = 0;
-  v5 = [(CADSyntheticRouteHypothesizerCache *)self workQueue];
+  workQueue = [(CADSyntheticRouteHypothesizerCache *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __84__CADSyntheticRouteHypothesizerCache_syntheticRouteHypothesizerForEventExternalURL___block_invoke;
   block[3] = &unk_27851BB80;
-  v10 = v4;
+  v10 = lCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v6 = lCopy;
+  dispatch_sync(workQueue, block);
 
   v7 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -88,21 +88,21 @@ void __84__CADSyntheticRouteHypothesizerCache_syntheticRouteHypothesizerForEvent
   *(v3 + 40) = v2;
 }
 
-- (void)addSyntheticRouteHypothesizer:(id)a3 forEventExternalURL:(id)a4
+- (void)addSyntheticRouteHypothesizer:(id)hypothesizer forEventExternalURL:(id)l
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CADSyntheticRouteHypothesizerCache *)self workQueue];
+  hypothesizerCopy = hypothesizer;
+  lCopy = l;
+  workQueue = [(CADSyntheticRouteHypothesizerCache *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __88__CADSyntheticRouteHypothesizerCache_addSyntheticRouteHypothesizer_forEventExternalURL___block_invoke;
   block[3] = &unk_27851AFA8;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
-  dispatch_sync(v8, block);
+  v12 = lCopy;
+  v13 = hypothesizerCopy;
+  v9 = hypothesizerCopy;
+  v10 = lCopy;
+  dispatch_sync(workQueue, block);
 }
 
 void __88__CADSyntheticRouteHypothesizerCache_addSyntheticRouteHypothesizer_forEventExternalURL___block_invoke(uint64_t a1)
@@ -112,18 +112,18 @@ void __88__CADSyntheticRouteHypothesizerCache_addSyntheticRouteHypothesizer_forE
   [v3 setObject:v2 forKeyedSubscript:*(a1 + 40)];
 }
 
-- (void)removeSyntheticRouteHypothesizerForEventExternalURL:(id)a3
+- (void)removeSyntheticRouteHypothesizerForEventExternalURL:(id)l
 {
-  v4 = a3;
-  v5 = [(CADSyntheticRouteHypothesizerCache *)self workQueue];
+  lCopy = l;
+  workQueue = [(CADSyntheticRouteHypothesizerCache *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __90__CADSyntheticRouteHypothesizerCache_removeSyntheticRouteHypothesizerForEventExternalURL___block_invoke;
   v7[3] = &unk_27851AB28;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = lCopy;
+  v6 = lCopy;
+  dispatch_sync(workQueue, v7);
 }
 
 void __90__CADSyntheticRouteHypothesizerCache_removeSyntheticRouteHypothesizerForEventExternalURL___block_invoke(uint64_t a1)

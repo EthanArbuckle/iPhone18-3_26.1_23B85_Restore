@@ -1,14 +1,14 @@
 @interface UpsellBannerViewController
-- (_TtC16MusicApplication26UpsellBannerViewController)initWithCoder:(id)a3;
-- (_TtC16MusicApplication26UpsellBannerViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (_TtC16MusicApplication26UpsellBannerViewController)initWithCoder:(id)coder;
+- (_TtC16MusicApplication26UpsellBannerViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container;
+- (void)traitCollectionDidChange:(id)change;
 - (void)viewDidLayoutSubviews;
 @end
 
 @implementation UpsellBannerViewController
 
-- (_TtC16MusicApplication26UpsellBannerViewController)initWithCoder:(id)a3
+- (_TtC16MusicApplication26UpsellBannerViewController)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC16MusicApplication26UpsellBannerViewController_bannerView;
   type metadata accessor for UpsellBannerView();
@@ -25,20 +25,20 @@
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D58B8();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v10.receiver = self;
   v10.super_class = swift_getObjectType();
-  v4 = a3;
+  changeCopy = change;
   v5 = v10.receiver;
-  [(UpsellBannerViewController *)&v10 traitCollectionDidChange:v4];
+  [(UpsellBannerViewController *)&v10 traitCollectionDidChange:changeCopy];
   v6 = *&v5[OBJC_IVAR____TtC16MusicApplication26UpsellBannerViewController_textDrawingCache];
-  v7 = [v5 traitCollection];
-  [v7 displayScale];
+  traitCollection = [v5 traitCollection];
+  [traitCollection displayScale];
   v9 = v8;
 
   swift_beginAccess();
@@ -46,15 +46,15 @@
   sub_106F0C();
 }
 
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_1D5B08(a3);
+  selfCopy = self;
+  sub_1D5B08(container);
   swift_unknownObjectRelease();
 }
 
-- (_TtC16MusicApplication26UpsellBannerViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC16MusicApplication26UpsellBannerViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

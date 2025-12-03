@@ -1,15 +1,15 @@
 @interface PGGraphIsOwnedByEdge
 + (id)filter;
-- (id)initFromHomeWorkNode:(id)a3 toPersonNode:(id)a4;
+- (id)initFromHomeWorkNode:(id)node toPersonNode:(id)personNode;
 @end
 
 @implementation PGGraphIsOwnedByEdge
 
-- (id)initFromHomeWorkNode:(id)a3 toPersonNode:(id)a4
+- (id)initFromHomeWorkNode:(id)node toPersonNode:(id)personNode
 {
   v5.receiver = self;
   v5.super_class = PGGraphIsOwnedByEdge;
-  return [(PGGraphEdge *)&v5 initWithSourceNode:a3 targetNode:a4];
+  return [(PGGraphEdge *)&v5 initWithSourceNode:node targetNode:personNode];
 }
 
 + (id)filter

@@ -1,12 +1,12 @@
 @interface CRLSEAudioPreviewView
-- (_TtC24FreeformSharingExtension21CRLSEAudioPreviewView)initWithCoder:(id)a3;
-- (_TtC24FreeformSharingExtension21CRLSEAudioPreviewView)initWithFrame:(CGRect)a3;
+- (_TtC24FreeformSharingExtension21CRLSEAudioPreviewView)initWithCoder:(id)coder;
+- (_TtC24FreeformSharingExtension21CRLSEAudioPreviewView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation CRLSEAudioPreviewView
 
-- (_TtC24FreeformSharingExtension21CRLSEAudioPreviewView)initWithCoder:(id)a3
+- (_TtC24FreeformSharingExtension21CRLSEAudioPreviewView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC24FreeformSharingExtension21CRLSEAudioPreviewView_gradientBackground) = 0;
   result = sub_10007E8F4();
@@ -29,7 +29,7 @@
   }
 }
 
-- (_TtC24FreeformSharingExtension21CRLSEAudioPreviewView)initWithFrame:(CGRect)a3
+- (_TtC24FreeformSharingExtension21CRLSEAudioPreviewView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

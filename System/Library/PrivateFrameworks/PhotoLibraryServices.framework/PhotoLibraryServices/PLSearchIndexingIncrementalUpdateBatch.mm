@@ -1,22 +1,22 @@
 @interface PLSearchIndexingIncrementalUpdateBatch
 - (BOOL)hasDonations;
-- (PLSearchIndexingIncrementalUpdateBatch)initWithWorkItems:(id)a3 flags:(int64_t)a4;
-- (id)_descriptionForSearchableIdentifiers:(id)a3 ineligibleIdentifiers:(id)a4 entity:(unint64_t)a5;
-- (unint64_t)_inLibraryPerform_searchableEntityForAmbiguousIdentifier:(id)a3 library:(id)a4;
+- (PLSearchIndexingIncrementalUpdateBatch)initWithWorkItems:(id)items flags:(int64_t)flags;
+- (id)_descriptionForSearchableIdentifiers:(id)identifiers ineligibleIdentifiers:(id)ineligibleIdentifiers entity:(unint64_t)entity;
+- (unint64_t)_inLibraryPerform_searchableEntityForAmbiguousIdentifier:(id)identifier library:(id)library;
 - (unint64_t)targetEntity;
-- (void)_inPerformBlock_coalesceWithLibrary:(id)a3;
+- (void)_inPerformBlock_coalesceWithLibrary:(id)library;
 - (void)_inPerformBlock_removeWorkItemsNotMatchingOriginalFlags;
-- (void)_inPerformTransaction_processAmbiguousEntityJobsWithFlags:(int64_t)a3 library:(id)a4;
-- (void)inPerformBlock_prepareDonationsWithLibrary:(id)a3;
-- (void)inPerformTransaction_cleanUpWithSuccess:(BOOL)a3 library:(id)a4;
+- (void)_inPerformTransaction_processAmbiguousEntityJobsWithFlags:(int64_t)flags library:(id)library;
+- (void)inPerformBlock_prepareDonationsWithLibrary:(id)library;
+- (void)inPerformTransaction_cleanUpWithSuccess:(BOOL)success library:(id)library;
 @end
 
 @implementation PLSearchIndexingIncrementalUpdateBatch
 
-- (void)_inPerformTransaction_processAmbiguousEntityJobsWithFlags:(int64_t)a3 library:(id)a4
+- (void)_inPerformTransaction_processAmbiguousEntityJobsWithFlags:(int64_t)flags library:(id)library
 {
   v51 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  libraryCopy = library;
   v32 = [(NSArray *)self->_workItems count];
   v38 = 0u;
   v39 = 0u;
@@ -29,7 +29,7 @@
     v7 = v6;
     v8 = 0;
     v36 = *v39;
-    v33 = self;
+    selfCopy = self;
     do
     {
       v9 = 0;
@@ -42,8 +42,8 @@
         }
 
         v10 = *(*(&v38 + 1) + 8 * v9);
-        v11 = [v10 identifier];
-        v12 = [(PLSearchIndexingIncrementalUpdateBatch *)self _inLibraryPerform_searchableEntityForAmbiguousIdentifier:v11 library:v5];
+        identifier = [v10 identifier];
+        v12 = [(PLSearchIndexingIncrementalUpdateBatch *)self _inLibraryPerform_searchableEntityForAmbiguousIdentifier:identifier library:libraryCopy];
 
         if (v12 > 9)
         {
@@ -55,7 +55,7 @@
           v13 = qword_19C60FC88[v12];
         }
 
-        v14 = v13 & a3;
+        v14 = v13 & flags;
         v15 = PLSearchBackendIndexingEngineGetLog();
         v16 = v15;
         if (v14)
@@ -63,7 +63,7 @@
           if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
           {
             v17 = v8;
-            v18 = PLBackgroundJobWorkerSearchJobFlagsDescription(a3);
+            v18 = PLBackgroundJobWorkerSearchJobFlagsDescription(flags);
             v19 = PLBackgroundJobWorkerSearchJobFlagsDescription(v14);
             v20 = @"invalid";
             if (v12 <= 9)
@@ -72,7 +72,7 @@
             }
 
             v21 = v20;
-            v22 = [v10 identifier];
+            identifier2 = [v10 identifier];
             *buf = 138413058;
             v43 = v18;
             v44 = 2112;
@@ -80,16 +80,16 @@
             v46 = 2112;
             v47 = v21;
             v48 = 2112;
-            v49 = v22;
+            v49 = identifier2;
             _os_log_impl(&dword_19BF1F000, v16, OS_LOG_TYPE_DEBUG, "Converting ambiguous job with flags: %@ to new job with flags: %@, entity: %@, identifier: %@", buf, 0x2Au);
 
             v8 = v17;
-            self = v33;
+            self = selfCopy;
             v7 = v34;
           }
 
-          v23 = [v10 identifier];
-          v16 = [PLBackgroundJobWorkItem addSearchIndexWorkItemIfNeededWithIdentifier:v23 flags:v14 inLibrary:v5];
+          identifier3 = [v10 identifier];
+          v16 = [PLBackgroundJobWorkItem addSearchIndexWorkItemIfNeededWithIdentifier:identifier3 flags:v14 inLibrary:libraryCopy];
 
           -[NSObject setJobType:](v16, "setJobType:", [v10 jobType]);
           ++v8;
@@ -98,7 +98,7 @@
         else if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
         {
           v24 = v8;
-          v25 = PLBackgroundJobWorkerSearchJobFlagsDescription(a3);
+          v25 = PLBackgroundJobWorkerSearchJobFlagsDescription(flags);
           v26 = @"invalid";
           if (v12 <= 9)
           {
@@ -106,22 +106,22 @@
           }
 
           v27 = v26;
-          v28 = [v10 identifier];
+          identifier4 = [v10 identifier];
           *buf = 138543874;
           v43 = v25;
           v44 = 2114;
           v45 = v27;
           v46 = 2114;
-          v47 = v28;
+          v47 = identifier4;
           _os_log_impl(&dword_19BF1F000, v16, OS_LOG_TYPE_ERROR, "Incompatible job flags: %{public}@ for entity: %{public}@ with identifier: %{public}@, job will be a no op", buf, 0x20u);
 
           v8 = v24;
-          self = v33;
+          self = selfCopy;
           v7 = v34;
         }
 
-        v29 = [v5 managedObjectContext];
-        [v29 deleteObject:v10];
+        managedObjectContext = [libraryCopy managedObjectContext];
+        [managedObjectContext deleteObject:v10];
 
         ++v9;
       }
@@ -141,7 +141,7 @@
   v30 = PLSearchBackendIndexingEngineGetLog();
   if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
   {
-    v31 = PLBackgroundJobWorkerSearchJobFlagsDescription(a3);
+    v31 = PLBackgroundJobWorkerSearchJobFlagsDescription(flags);
     *buf = 134218498;
     v43 = v8;
     v44 = 2048;
@@ -152,12 +152,12 @@
   }
 }
 
-- (unint64_t)_inLibraryPerform_searchableEntityForAmbiguousIdentifier:(id)a3 library:(id)a4
+- (unint64_t)_inLibraryPerform_searchableEntityForAmbiguousIdentifier:(id)identifier library:(id)library
 {
   v26[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [PLManagedAsset assetWithUUID:v6 inLibrary:v7];
+  identifierCopy = identifier;
+  libraryCopy = library;
+  v8 = [PLManagedAsset assetWithUUID:identifierCopy inLibrary:libraryCopy];
   if (v8)
   {
     v9 = 1;
@@ -165,7 +165,7 @@
 
   else
   {
-    v10 = [PLGenericAlbum albumWithUUID:v6 inLibrary:v7];
+    v10 = [PLGenericAlbum albumWithUUID:identifierCopy inLibrary:libraryCopy];
     if (v10)
     {
       v9 = 3;
@@ -173,20 +173,20 @@
 
     else
     {
-      v26[0] = v6;
+      v26[0] = identifierCopy;
       v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:1];
-      v12 = [v7 managedObjectContext];
-      v13 = [PLPhotosHighlight fetchHighlightsWithUUIDs:v11 managedObjectContext:v12 error:0];
-      v14 = [v13 firstObject];
+      managedObjectContext = [libraryCopy managedObjectContext];
+      v13 = [PLPhotosHighlight fetchHighlightsWithUUIDs:v11 managedObjectContext:managedObjectContext error:0];
+      firstObject = [v13 firstObject];
 
-      if (v14)
+      if (firstObject)
       {
         v9 = 4;
       }
 
       else
       {
-        v15 = [PLMemory memoryWithUUID:v6 inPhotoLibrary:v7];
+        v15 = [PLMemory memoryWithUUID:identifierCopy inPhotoLibrary:libraryCopy];
         if (v15)
         {
           v9 = 5;
@@ -194,23 +194,23 @@
 
         else
         {
-          v25 = [(NSMutableSet *)self->_identifiers allObjects];
+          allObjects = [(NSMutableSet *)self->_identifiers allObjects];
           v24 = +[PLCollectionShare propertiesToFetch];
-          v16 = [v7 managedObjectContext];
-          v17 = [PLCollectionShare fetchCollectionSharesWithUUIDs:v25 propertiesToFetch:v24 managedObjectContext:v16];
-          v18 = [v17 result];
-          v19 = [v18 firstObject];
+          managedObjectContext2 = [libraryCopy managedObjectContext];
+          v17 = [PLCollectionShare fetchCollectionSharesWithUUIDs:allObjects propertiesToFetch:v24 managedObjectContext:managedObjectContext2];
+          result = [v17 result];
+          firstObject2 = [result firstObject];
 
-          v20 = v19;
-          if (v19)
+          v20 = firstObject2;
+          if (firstObject2)
           {
             v9 = 9;
           }
 
           else
           {
-            v21 = [v7 managedObjectContext];
-            v22 = [PLPerson personWithUUID:v6 inManagedObjectContext:v21];
+            managedObjectContext3 = [libraryCopy managedObjectContext];
+            v22 = [PLPerson personWithUUID:identifierCopy inManagedObjectContext:managedObjectContext3];
 
             if (v22)
             {
@@ -230,47 +230,47 @@
   return v9;
 }
 
-- (id)_descriptionForSearchableIdentifiers:(id)a3 ineligibleIdentifiers:(id)a4 entity:(unint64_t)a5
+- (id)_descriptionForSearchableIdentifiers:(id)identifiers ineligibleIdentifiers:(id)ineligibleIdentifiers entity:(unint64_t)entity
 {
-  v7 = a3;
-  v8 = a4;
+  identifiersCopy = identifiers;
+  ineligibleIdentifiersCopy = ineligibleIdentifiers;
   v9 = objc_alloc_init(MEMORY[0x1E696AD60]);
-  v10 = [v7 count];
-  if (a5 > 9)
+  v10 = [identifiersCopy count];
+  if (entity > 9)
   {
     v11 = @"invalid";
   }
 
   else
   {
-    v11 = off_1E7571300[a5];
+    v11 = off_1E7571300[entity];
   }
 
   v12 = v11;
   [v9 appendFormat:@"%tu %@ searchable objects", v10, v12];
 
-  if ([v7 count] && objc_msgSend(v7, "count") <= 9)
+  if ([identifiersCopy count] && objc_msgSend(identifiersCopy, "count") <= 9)
   {
-    v13 = [v7 componentsJoinedByString:{@", "}];
+    v13 = [identifiersCopy componentsJoinedByString:{@", "}];
     [v9 appendFormat:@" (%@)", v13];
   }
 
-  [v9 appendFormat:@", %tu ineligible identifiers to remove", objc_msgSend(v8, "count")];
-  if ([v8 count] && objc_msgSend(v8, "count") <= 9)
+  [v9 appendFormat:@", %tu ineligible identifiers to remove", objc_msgSend(ineligibleIdentifiersCopy, "count")];
+  if ([ineligibleIdentifiersCopy count] && objc_msgSend(ineligibleIdentifiersCopy, "count") <= 9)
   {
-    v14 = [v8 componentsJoinedByString:{@", "}];
+    v14 = [ineligibleIdentifiersCopy componentsJoinedByString:{@", "}];
     [v9 appendFormat:@" (%@)", v14];
   }
 
   return v9;
 }
 
-- (void)inPerformTransaction_cleanUpWithSuccess:(BOOL)a3 library:(id)a4
+- (void)inPerformTransaction_cleanUpWithSuccess:(BOOL)success library:(id)library
 {
   v183 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v120 = self;
-  if (!a3)
+  libraryCopy = library;
+  selfCopy = self;
+  if (!success)
   {
     v169 = 0u;
     v170 = 0u;
@@ -292,10 +292,10 @@
           }
 
           v22 = *(*(&v167 + 1) + 8 * i);
-          v23 = [v6 addBackgroundJobWorkItemWithIdentifier:v22 jobType:3 jobFlags:1];
+          v23 = [libraryCopy addBackgroundJobWorkItemWithIdentifier:v22 jobType:3 jobFlags:1];
           v24 = [(NSMutableDictionary *)self->_normalizedWorkItemsByIdentifiers objectForKeyedSubscript:v22];
-          v25 = [v24 timestamp];
-          [v23 setTimestamp:v25];
+          timestamp = [v24 timestamp];
+          [v23 setTimestamp:timestamp];
 
           v26 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:60.0];
           [v23 setDelayUntilDate:v26];
@@ -326,16 +326,16 @@
             objc_enumerationMutation(v27);
           }
 
-          normalizedWorkItemsByIdentifiers = v120->_normalizedWorkItemsByIdentifiers;
+          normalizedWorkItemsByIdentifiers = selfCopy->_normalizedWorkItemsByIdentifiers;
           v33 = *(*(&v163 + 1) + 8 * j);
-          v34 = [v33 searchIdentifier];
-          v35 = [(NSMutableDictionary *)normalizedWorkItemsByIdentifiers objectForKeyedSubscript:v34];
+          searchIdentifier = [v33 searchIdentifier];
+          v35 = [(NSMutableDictionary *)normalizedWorkItemsByIdentifiers objectForKeyedSubscript:searchIdentifier];
 
-          v36 = [v33 searchIdentifier];
-          v37 = [v6 addBackgroundJobWorkItemWithIdentifier:v36 jobType:3 jobFlags:{objc_msgSend(v35, "jobFlags")}];
+          searchIdentifier2 = [v33 searchIdentifier];
+          v37 = [libraryCopy addBackgroundJobWorkItemWithIdentifier:searchIdentifier2 jobType:3 jobFlags:{objc_msgSend(v35, "jobFlags")}];
 
-          v38 = [v35 timestamp];
-          [v37 setTimestamp:v38];
+          timestamp2 = [v35 timestamp];
+          [v37 setTimestamp:timestamp2];
 
           v39 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:300.0];
           [v37 setDelayUntilDate:v39];
@@ -348,20 +348,20 @@
     }
 
 LABEL_31:
-    self = v120;
+    self = selfCopy;
     goto LABEL_32;
   }
 
   if (![(PLSearchIndexingIncrementalUpdateBatch *)self _flagsAreAmbiguous]&& ![(PLSearchIndexingIncrementalUpdateBatch *)self _flagsAreIncompatible])
   {
-    v7 = [(PLSearchIndexingIncrementalUpdateBatch *)self targetEntity];
-    if (v7 > 5)
+    targetEntity = [(PLSearchIndexingIncrementalUpdateBatch *)self targetEntity];
+    if (targetEntity > 5)
     {
-      if (v7 != 6)
+      if (targetEntity != 6)
       {
-        if (v7 != 7)
+        if (targetEntity != 7)
         {
-          if (v7 != 8)
+          if (targetEntity != 8)
           {
             goto LABEL_32;
           }
@@ -386,18 +386,18 @@ LABEL_31:
                 }
 
                 v11 = *(*(&v138 + 1) + 8 * k);
-                v12 = [(NSMutableDictionary *)v120->_normalizedWorkItemsByIdentifiers objectForKeyedSubscript:v11];
-                v13 = [v6 managedObjectContext];
-                v14 = [v6 libraryServicesManager];
-                v15 = [v14 wellKnownPhotoLibraryIdentifier];
+                v12 = [(NSMutableDictionary *)selfCopy->_normalizedWorkItemsByIdentifiers objectForKeyedSubscript:v11];
+                managedObjectContext = [libraryCopy managedObjectContext];
+                libraryServicesManager = [libraryCopy libraryServicesManager];
+                wellKnownPhotoLibraryIdentifier = [libraryServicesManager wellKnownPhotoLibraryIdentifier];
                 v135[0] = MEMORY[0x1E69E9820];
                 v135[1] = 3221225472;
                 v135[2] = __90__PLSearchIndexingIncrementalUpdateBatch_inPerformTransaction_cleanUpWithSuccess_library___block_invoke_70;
                 v135[3] = &unk_1E7572788;
-                v136 = v6;
+                v136 = libraryCopy;
                 v137 = v12;
                 v16 = v12;
-                [PLMoment enumerateAssetUUIDsForSearchIndexingWithMomentUUID:v11 managedObjectContext:v13 libraryIdentifier:v15 assetUUIDHandler:v135];
+                [PLMoment enumerateAssetUUIDsForSearchIndexingWithMomentUUID:v11 managedObjectContext:managedObjectContext libraryIdentifier:wellKnownPhotoLibraryIdentifier assetUUIDHandler:v135];
               }
 
               v9 = [(NSMutableSet *)obj countByEnumeratingWithState:&v138 objects:v173 count:16];
@@ -427,7 +427,7 @@ LABEL_31:
         v112 = v63;
         v113 = v61;
         v114 = *v151;
-        v123 = v6;
+        v123 = libraryCopy;
 LABEL_60:
         v67 = 0;
         v115 = v64;
@@ -439,29 +439,29 @@ LABEL_60:
           }
 
           v68 = *(*(&v150 + 1) + 8 * v67);
-          v126 = [(NSMutableDictionary *)self->_normalizedWorkItemsByIdentifiers objectForKeyedSubscript:v68, v112];
-          if (([v126 jobFlags] & 0x400) == 0)
+          v112 = [(NSMutableDictionary *)self->_normalizedWorkItemsByIdentifiers objectForKeyedSubscript:v68, v112];
+          if (([v112 jobFlags] & 0x400) == 0)
           {
             goto LABEL_91;
           }
 
-          v69 = [(__objc2_class *)v66[421] fetchSearchEntityWithEncodedIdentifierString:v68 inLibrary:v6];
+          v69 = [(__objc2_class *)v66[421] fetchSearchEntityWithEncodedIdentifierString:v68 inLibrary:libraryCopy];
           v70 = v69;
           if (![v69 isSuccess])
           {
             break;
           }
 
-          v71 = [v69 result];
-          v72 = [v71 count];
+          result = [v69 result];
+          v72 = [result count];
 
           v69 = v70;
           if (v72)
           {
-            v73 = [v70 result];
-            v74 = [v73 firstObject];
+            result2 = [v70 result];
+            firstObject = [result2 firstObject];
             v149 = 0;
-            v75 = [v74 fetchAllMomentsWithError:&v149];
+            v75 = [firstObject fetchAllMomentsWithError:&v149];
             v119 = v149;
 
             v76 = v75;
@@ -495,28 +495,28 @@ LABEL_60:
                       v83 = PLSearchBackendIndexingEngineGetLog();
                       if (os_log_type_enabled(v83, OS_LOG_TYPE_DEFAULT))
                       {
-                        v84 = [v82 uuid];
-                        v85 = [v70 result];
-                        v86 = [v85 firstObject];
-                        v87 = [v86 uuid];
+                        uuid = [v82 uuid];
+                        result3 = [v70 result];
+                        firstObject2 = [result3 firstObject];
+                        uuid2 = [firstObject2 uuid];
                         *buf = 138543618;
-                        v176 = v84;
+                        v176 = uuid;
                         v177 = 2114;
-                        v178 = v87;
+                        v178 = uuid2;
                         _os_log_impl(&dword_19BF1F000, v83, OS_LOG_TYPE_DEFAULT, "Fanning out to moment %{public}@ for search entity %{public}@", buf, 0x16u);
                       }
 
-                      v88 = [v82 uuid];
-                      v89 = [v123 managedObjectContext];
-                      v90 = [v123 libraryServicesManager];
-                      v91 = [v90 wellKnownPhotoLibraryIdentifier];
+                      uuid3 = [v82 uuid];
+                      managedObjectContext2 = [v123 managedObjectContext];
+                      libraryServicesManager2 = [v123 libraryServicesManager];
+                      wellKnownPhotoLibraryIdentifier2 = [libraryServicesManager2 wellKnownPhotoLibraryIdentifier];
                       v142[0] = MEMORY[0x1E69E9820];
                       v142[1] = 3221225472;
                       v142[2] = __90__PLSearchIndexingIncrementalUpdateBatch_inPerformTransaction_cleanUpWithSuccess_library___block_invoke_69;
                       v142[3] = &unk_1E7572788;
                       v143 = v123;
-                      v144 = v126;
-                      [PLMoment enumerateAssetUUIDsForSearchIndexingWithMomentUUID:v88 managedObjectContext:v89 libraryIdentifier:v91 assetUUIDHandler:v142];
+                      v144 = v112;
+                      [PLMoment enumerateAssetUUIDsForSearchIndexingWithMomentUUID:uuid3 managedObjectContext:managedObjectContext2 libraryIdentifier:wellKnownPhotoLibraryIdentifier2 assetUUIDHandler:v142];
 
                       v77 = obja;
                     }
@@ -526,7 +526,7 @@ LABEL_60:
                   }
 
                   while (v79);
-                  self = v120;
+                  self = selfCopy;
                   v61 = v113;
                   v65 = v114;
                   v64 = v115;
@@ -554,8 +554,8 @@ LABEL_89:
                 {
                   [v70 result];
                   v100 = v118 = v76;
-                  v101 = [v100 firstObject];
-                  [v101 uuid];
+                  firstObject3 = [v100 firstObject];
+                  [firstObject3 uuid];
                   v103 = v102 = v67;
                   *buf = v112;
                   v176 = v103;
@@ -581,8 +581,8 @@ LABEL_89:
               {
                 [v70 result];
                 v95 = v117 = 0;
-                v96 = [v95 firstObject];
-                [v96 uuid];
+                firstObject4 = [v95 firstObject];
+                [firstObject4 uuid];
                 v98 = v97 = v67;
                 *buf = 138543618;
                 v176 = v98;
@@ -610,7 +610,7 @@ LABEL_89:
 
 LABEL_90:
 
-          v6 = v123;
+          libraryCopy = v123;
 LABEL_91:
 
           if (++v67 == v64)
@@ -628,11 +628,11 @@ LABEL_91:
         v92 = PLSearchBackendIndexingEngineGetLog();
         if (os_log_type_enabled(v92, OS_LOG_TYPE_ERROR))
         {
-          v93 = [v69 error];
+          error = [v69 error];
           *buf = 138412546;
           v176 = v68;
           v177 = 2112;
-          v178 = v93;
+          v178 = error;
           _os_log_impl(&dword_19BF1F000, v92, OS_LOG_TYPE_ERROR, "Failed to fetch search entity with identifier: %@, error: %@", buf, 0x16u);
 
           v69 = v70;
@@ -664,18 +664,18 @@ LABEL_91:
             v56 = [(NSMutableDictionary *)self->_normalizedWorkItemsByIdentifiers objectForKeyedSubscript:v55];
             if (([v56 jobFlags] & 0x100) != 0)
             {
-              v57 = [v6 managedObjectContext];
-              v58 = [v6 libraryServicesManager];
-              v59 = [v58 wellKnownPhotoLibraryIdentifier];
+              managedObjectContext3 = [libraryCopy managedObjectContext];
+              libraryServicesManager3 = [libraryCopy libraryServicesManager];
+              wellKnownPhotoLibraryIdentifier3 = [libraryServicesManager3 wellKnownPhotoLibraryIdentifier];
               v154[0] = MEMORY[0x1E69E9820];
               v154[1] = 3221225472;
               v154[2] = __90__PLSearchIndexingIncrementalUpdateBatch_inPerformTransaction_cleanUpWithSuccess_library___block_invoke_2;
               v154[3] = &unk_1E7572788;
-              v155 = v6;
+              v155 = libraryCopy;
               v156 = v56;
-              v60 = v59;
-              self = v120;
-              [PLPerson enumerateAssetUUIDsForSearchIndexingWithPersonUUID:v55 managedObjectContext:v57 libraryIdentifier:v60 assetUUIDHandler:v154];
+              v60 = wellKnownPhotoLibraryIdentifier3;
+              self = selfCopy;
+              [PLPerson enumerateAssetUUIDsForSearchIndexingWithPersonUUID:v55 managedObjectContext:managedObjectContext3 libraryIdentifier:v60 assetUUIDHandler:v154];
             }
           }
 
@@ -691,22 +691,22 @@ LABEL_57:
       goto LABEL_32;
     }
 
-    if (v7)
+    if (targetEntity)
     {
-      if (v7 != 2)
+      if (targetEntity != 2)
       {
         goto LABEL_32;
       }
 
-      v48 = [(NSMutableSet *)self->_identifiers allObjects];
-      v49 = [v6 managedObjectContext];
+      allObjects = [(NSMutableSet *)self->_identifiers allObjects];
+      managedObjectContext4 = [libraryCopy managedObjectContext];
       v161[0] = MEMORY[0x1E69E9820];
       v161[1] = 3221225472;
       v161[2] = __90__PLSearchIndexingIncrementalUpdateBatch_inPerformTransaction_cleanUpWithSuccess_library___block_invoke;
       v161[3] = &unk_1E7571B58;
       v161[4] = self;
-      v162 = v6;
-      [PLPerson enumerateAssetUUIDsForSearchIndexingWithDetectedFaceUUIDs:v48 managedObjectContext:v49 assetUUIDHandler:v161];
+      v162 = libraryCopy;
+      [PLPerson enumerateAssetUUIDsForSearchIndexingWithDetectedFaceUUIDs:allObjects managedObjectContext:managedObjectContext4 assetUUIDHandler:v161];
 
       v50 = v162;
       goto LABEL_57;
@@ -735,9 +735,9 @@ LABEL_57:
           v109 = [(NSMutableDictionary *)self->_normalizedWorkItemsByIdentifiers objectForKeyedSubscript:v108];
           if (([v109 jobFlags] & 1) == 0)
           {
-            v110 = +[PLBackgroundJobWorkItem addSearchIndexWorkItemIfNeededWithIdentifier:flags:inLibrary:](PLBackgroundJobWorkItem, "addSearchIndexWorkItemIfNeededWithIdentifier:flags:inLibrary:", v108, [v109 jobFlags], v6);
-            v111 = [v109 timestamp];
-            [v110 setTimestamp:v111];
+            v110 = +[PLBackgroundJobWorkItem addSearchIndexWorkItemIfNeededWithIdentifier:flags:inLibrary:](PLBackgroundJobWorkItem, "addSearchIndexWorkItemIfNeededWithIdentifier:flags:inLibrary:", v108, [v109 jobFlags], libraryCopy);
+            timestamp3 = [v109 timestamp];
+            [v110 setTimestamp:timestamp3];
 
             [v110 setJobType:{objc_msgSend(v109, "jobType")}];
           }
@@ -762,7 +762,7 @@ LABEL_32:
       _os_log_impl(&dword_19BF1F000, v40, OS_LOG_TYPE_DEFAULT, "Search indexing job flags map to mutliple entities, replacing with unambiguous jobs", buf, 2u);
     }
 
-    [(PLSearchIndexingIncrementalUpdateBatch *)self _inPerformTransaction_processAmbiguousEntityJobsWithFlags:self->_originalFlags library:v6];
+    [(PLSearchIndexingIncrementalUpdateBatch *)self _inPerformTransaction_processAmbiguousEntityJobsWithFlags:self->_originalFlags library:libraryCopy];
   }
 
   v41 = self->_coalescedWorkItems;
@@ -785,8 +785,8 @@ LABEL_32:
         }
 
         v46 = *(*(&v127 + 1) + 8 * jj);
-        v47 = [v6 managedObjectContext];
-        [v47 deleteObject:v46];
+        managedObjectContext5 = [libraryCopy managedObjectContext];
+        [managedObjectContext5 deleteObject:v46];
       }
 
       v43 = [(NSArray *)v41 countByEnumeratingWithState:&v127 objects:v171 count:16];
@@ -836,30 +836,30 @@ void __90__PLSearchIndexingIncrementalUpdateBatch_inPerformTransaction_cleanUpWi
   [v4 setJobType:{objc_msgSend(*(a1 + 40), "jobType")}];
 }
 
-- (void)inPerformBlock_prepareDonationsWithLibrary:(id)a3
+- (void)inPerformBlock_prepareDonationsWithLibrary:(id)library
 {
   v97 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  libraryCopy = library;
   [(PLSearchIndexingIncrementalUpdateBatch *)self _inPerformBlock_removeWorkItemsNotMatchingOriginalFlags];
-  [(PLSearchIndexingIncrementalUpdateBatch *)self _inPerformBlock_coalesceWithLibrary:v4];
+  [(PLSearchIndexingIncrementalUpdateBatch *)self _inPerformBlock_coalesceWithLibrary:libraryCopy];
   if (![(PLSearchIndexingIncrementalUpdateBatch *)self _flagsAreAmbiguous]&& ![(PLSearchIndexingIncrementalUpdateBatch *)self _flagsAreIncompatible])
   {
     v5 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     v6 = 0x1E695D000uLL;
     v75 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v7 = [(PLSearchIndexingIncrementalUpdateBatch *)self targetEntity];
+    targetEntity = [(PLSearchIndexingIncrementalUpdateBatch *)self targetEntity];
     v8 = 0;
-    v70 = self;
+    selfCopy = self;
     v74 = v5;
-    if (v7 > 4)
+    if (targetEntity > 4)
     {
-      if (v7 <= 6)
+      if (targetEntity <= 6)
       {
-        if (v7 == 5)
+        if (targetEntity == 5)
         {
-          v9 = [(NSMutableSet *)self->_identifiers allObjects];
-          v10 = [v4 managedObjectContext];
-          v11 = [PLMemory fetchMemoriesWithUUIDs:v9 managedObjectContext:v10];
+          allObjects = [(NSMutableSet *)self->_identifiers allObjects];
+          managedObjectContext = [libraryCopy managedObjectContext];
+          v11 = [PLMemory fetchMemoriesWithUUIDs:allObjects managedObjectContext:managedObjectContext];
         }
 
         else
@@ -870,9 +870,9 @@ void __90__PLSearchIndexingIncrementalUpdateBatch_inPerformTransaction_cleanUpWi
             goto LABEL_32;
           }
 
-          v9 = [(NSMutableSet *)self->_identifiers allObjects];
-          v10 = [v4 managedObjectContext];
-          v11 = [PLPerson fetchPersonsWithUUIDs:v9 managedObjectContext:v10];
+          allObjects = [(NSMutableSet *)self->_identifiers allObjects];
+          managedObjectContext = [libraryCopy managedObjectContext];
+          v11 = [PLPerson fetchPersonsWithUUIDs:allObjects managedObjectContext:managedObjectContext];
         }
 
 LABEL_28:
@@ -882,7 +882,7 @@ LABEL_31:
         goto LABEL_32;
       }
 
-      if (v7 == 7)
+      if (targetEntity == 7)
       {
         v73 = objc_alloc_init(MEMORY[0x1E695DF70]);
         v84 = 0u;
@@ -904,21 +904,21 @@ LABEL_31:
                 objc_enumerationMutation(v56);
               }
 
-              v61 = [PLSearchEntity fetchSearchEntityWithEncodedIdentifierString:*(*(&v84 + 1) + 8 * i) inLibrary:v4];
+              v61 = [PLSearchEntity fetchSearchEntityWithEncodedIdentifierString:*(*(&v84 + 1) + 8 * i) inLibrary:libraryCopy];
               if ([v61 isSuccess])
               {
-                v62 = [v61 result];
-                v63 = [v62 count];
+                result = [v61 result];
+                v63 = [result count];
 
                 if (v63)
                 {
-                  v64 = [v61 result];
-                  v65 = [v64 firstObject];
-                  [v65 sourceNode];
-                  v67 = v66 = v4;
+                  result2 = [v61 result];
+                  firstObject = [result2 firstObject];
+                  [firstObject sourceNode];
+                  v67 = v66 = libraryCopy;
                   [v73 addObject:v67];
 
-                  v4 = v66;
+                  libraryCopy = v66;
                 }
               }
             }
@@ -936,31 +936,31 @@ LABEL_31:
         goto LABEL_32;
       }
 
-      if (v7 != 9)
+      if (targetEntity != 9)
       {
         goto LABEL_32;
       }
 
-      v9 = [(NSMutableSet *)self->_identifiers allObjects];
-      v10 = +[PLCollectionShare propertiesToFetch];
-      v12 = [v4 managedObjectContext];
-      v13 = [PLCollectionShare fetchCollectionSharesWithUUIDs:v9 propertiesToFetch:v10 managedObjectContext:v12];
+      allObjects = [(NSMutableSet *)self->_identifiers allObjects];
+      managedObjectContext = +[PLCollectionShare propertiesToFetch];
+      managedObjectContext2 = [libraryCopy managedObjectContext];
+      v13 = [PLCollectionShare fetchCollectionSharesWithUUIDs:allObjects propertiesToFetch:managedObjectContext managedObjectContext:managedObjectContext2];
     }
 
     else
     {
-      if (v7 <= 2)
+      if (targetEntity <= 2)
       {
-        if (v7)
+        if (targetEntity)
         {
-          if (v7 != 1)
+          if (targetEntity != 1)
           {
             goto LABEL_32;
           }
 
-          v9 = [(NSMutableSet *)self->_identifiers allObjects];
-          v10 = [v4 managedObjectContext];
-          v11 = [PLManagedAsset fetchAssetsWithUUIDs:v9 managedObjectContext:v10];
+          allObjects = [(NSMutableSet *)self->_identifiers allObjects];
+          managedObjectContext = [libraryCopy managedObjectContext];
+          v11 = [PLManagedAsset fetchAssetsWithUUIDs:allObjects managedObjectContext:managedObjectContext];
           goto LABEL_28;
         }
 
@@ -1001,17 +1001,17 @@ LABEL_31:
 LABEL_32:
         if ([v8 isSuccess])
         {
-          v69 = v4;
+          v69 = libraryCopy;
           error = objc_alloc_init(*(v6 + 3952));
           v72 = objc_alloc_init(*(v6 + 3952));
           v71 = objc_alloc_init(MEMORY[0x1E695DF90]);
           v68 = v8;
-          v22 = [v8 result];
+          result3 = [v8 result];
           v76 = 0u;
           v77 = 0u;
           v78 = 0u;
           v79 = 0u;
-          v23 = [v22 countByEnumeratingWithState:&v76 objects:v94 count:16];
+          v23 = [result3 countByEnumeratingWithState:&v76 objects:v94 count:16];
           if (v23)
           {
             v24 = v23;
@@ -1022,33 +1022,33 @@ LABEL_32:
               {
                 if (*v77 != v25)
                 {
-                  objc_enumerationMutation(v22);
+                  objc_enumerationMutation(result3);
                 }
 
                 v27 = *(*(&v76 + 1) + 8 * k);
-                v28 = [v27 searchIdentifier];
-                [v5 addObject:v28];
+                searchIdentifier = [v27 searchIdentifier];
+                [v5 addObject:searchIdentifier];
 
                 if ([v27 isEligibleForSearchIndexing])
                 {
-                  v29 = v27;
-                  [(NSError *)error addObject:v29];
-                  v30 = [v29 searchIdentifier];
-                  [v72 addObject:v30];
+                  searchIdentifier4 = v27;
+                  [(NSError *)error addObject:searchIdentifier4];
+                  searchIdentifier2 = [searchIdentifier4 searchIdentifier];
+                  [v72 addObject:searchIdentifier2];
 
                   if ([(PLSearchIndexingIncrementalUpdateBatch *)self targetEntity]== 1)
                   {
                     normalizedWorkItemsByIdentifiers = self->_normalizedWorkItemsByIdentifiers;
-                    v32 = [v29 searchIdentifier];
-                    v33 = [(NSMutableDictionary *)normalizedWorkItemsByIdentifiers objectForKeyedSubscript:v32];
-                    v34 = [v33 jobFlags];
-                    v35 = (v34 >> 2) & 2;
-                    if ((v34 & 0x14) != 0)
+                    searchIdentifier3 = [searchIdentifier4 searchIdentifier];
+                    v33 = [(NSMutableDictionary *)normalizedWorkItemsByIdentifiers objectForKeyedSubscript:searchIdentifier3];
+                    jobFlags = [v33 jobFlags];
+                    v35 = (jobFlags >> 2) & 2;
+                    if ((jobFlags & 0x14) != 0)
                     {
                       ++v35;
                     }
 
-                    if ((v34 & 2) != 0)
+                    if ((jobFlags & 2) != 0)
                     {
                       v36 = 3;
                     }
@@ -1058,7 +1058,7 @@ LABEL_32:
                       v36 = v35;
                     }
 
-                    self = v70;
+                    self = selfCopy;
                   }
 
                   else
@@ -1067,20 +1067,20 @@ LABEL_32:
                   }
 
                   v37 = [MEMORY[0x1E696AD98] numberWithLongLong:v36];
-                  v38 = [v29 objectID];
-                  [v71 setObject:v37 forKeyedSubscript:v38];
+                  objectID = [searchIdentifier4 objectID];
+                  [v71 setObject:v37 forKeyedSubscript:objectID];
 
                   v5 = v74;
                 }
 
                 else
                 {
-                  v29 = [v27 searchIdentifier];
-                  [v75 addObject:v29];
+                  searchIdentifier4 = [v27 searchIdentifier];
+                  [v75 addObject:searchIdentifier4];
                 }
               }
 
-              v24 = [v22 countByEnumeratingWithState:&v76 objects:v94 count:16];
+              v24 = [result3 countByEnumeratingWithState:&v76 objects:v94 count:16];
             }
 
             while (v24);
@@ -1090,14 +1090,14 @@ LABEL_32:
           {
             v39 = [(NSMutableSet *)self->_identifiers mutableCopy];
             [v39 minusSet:v5];
-            v40 = [v39 allObjects];
-            [v75 addObjectsFromArray:v40];
+            allObjects2 = [v39 allObjects];
+            [v75 addObjectsFromArray:allObjects2];
 
             v5 = v74;
           }
 
           v41 = PLSearchBackendIndexingEngineGetLog();
-          v4 = v69;
+          libraryCopy = v69;
           if (os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT))
           {
             v42 = [(PLSearchIndexingIncrementalUpdateBatch *)self _descriptionForSearchableIdentifiers:v72 ineligibleIdentifiers:v75 entity:[(PLSearchIndexingIncrementalUpdateBatch *)self targetEntity]];
@@ -1109,15 +1109,15 @@ LABEL_32:
           v43 = PLSearchBackendIndexingEngineGetLog();
           if (os_log_type_enabled(v43, OS_LOG_TYPE_DEBUG))
           {
-            v44 = [(PLSearchIndexingIncrementalUpdateBatch *)self targetEntity];
-            if (v44 > 9)
+            targetEntity2 = [(PLSearchIndexingIncrementalUpdateBatch *)self targetEntity];
+            if (targetEntity2 > 9)
             {
               v45 = @"invalid";
             }
 
             else
             {
-              v45 = off_1E7571300[v44];
+              v45 = off_1E7571300[targetEntity2];
             }
 
             v47 = v45;
@@ -1131,7 +1131,7 @@ LABEL_32:
             v93 = v49;
             _os_log_impl(&dword_19BF1F000, v43, OS_LOG_TYPE_DEBUG, "Searchable object entity: %@, identifiers: %@, ineligible identifiers: %@", buf, 0x20u);
 
-            self = v70;
+            self = selfCopy;
             v5 = v74;
           }
 
@@ -1159,26 +1159,26 @@ LABEL_64:
             goto LABEL_65;
           }
 
-          v46 = [v8 error];
+          error = [v8 error];
           error = self->_error;
-          self->_error = v46;
+          self->_error = error;
         }
 
         goto LABEL_64;
       }
 
-      if (v7 != 3)
+      if (targetEntity != 3)
       {
-        v9 = [(NSMutableSet *)self->_identifiers allObjects];
-        v10 = [v4 managedObjectContext];
-        v11 = [PLPhotosHighlight fetchHighlightsWithUUIDs:v9 managedObjectContext:v10];
+        allObjects = [(NSMutableSet *)self->_identifiers allObjects];
+        managedObjectContext = [libraryCopy managedObjectContext];
+        v11 = [PLPhotosHighlight fetchHighlightsWithUUIDs:allObjects managedObjectContext:managedObjectContext];
         goto LABEL_28;
       }
 
-      v9 = [(NSMutableSet *)self->_identifiers allObjects];
-      v10 = +[PLGenericAlbum propertiesToFetch];
-      v12 = [v4 managedObjectContext];
-      v13 = [PLGenericAlbum fetchAlbumsWithUUIDs:v9 propertiesToFetch:v10 managedObjectContext:v12];
+      allObjects = [(NSMutableSet *)self->_identifiers allObjects];
+      managedObjectContext = +[PLGenericAlbum propertiesToFetch];
+      managedObjectContext2 = [libraryCopy managedObjectContext];
+      v13 = [PLGenericAlbum fetchAlbumsWithUUIDs:allObjects propertiesToFetch:managedObjectContext managedObjectContext:managedObjectContext2];
     }
 
     v8 = v13;
@@ -1189,10 +1189,10 @@ LABEL_64:
 LABEL_65:
 }
 
-- (void)_inPerformBlock_coalesceWithLibrary:(id)a3
+- (void)_inPerformBlock_coalesceWithLibrary:(id)library
 {
   v81 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  libraryCopy = library;
   if (![(PLSearchIndexingIncrementalUpdateBatch *)self _flagsAreIncompatible]&& ![(PLSearchIndexingIncrementalUpdateBatch *)self _flagsAreAmbiguous])
   {
     v64 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -1212,8 +1212,8 @@ LABEL_65:
     *&v7 = 138543618;
     v53 = v7;
     v57 = *v72;
-    v54 = self;
-    v55 = v4;
+    selfCopy = self;
+    v55 = libraryCopy;
     v56 = v5;
     while (1)
     {
@@ -1228,22 +1228,22 @@ LABEL_65:
 
         v11 = *(*(&v71 + 1) + 8 * v10);
         identifiers = self->_identifiers;
-        v13 = [v11 identifier];
-        LOBYTE(identifiers) = [(NSMutableSet *)identifiers containsObject:v13];
+        identifier = [v11 identifier];
+        LOBYTE(identifiers) = [(NSMutableSet *)identifiers containsObject:identifier];
 
         if ((identifiers & 1) == 0)
         {
-          v14 = [v11 identifier];
-          v15 = [v4 managedObjectContext];
+          identifier2 = [v11 identifier];
+          managedObjectContext = [libraryCopy managedObjectContext];
           v70 = 0;
-          v16 = [PLBackgroundJobWorkItem workItemsSortedByTimestampWithIdentifier:v14 jobTypes:&unk_1F0FBFE98 inManagedObjectContext:v15 error:&v70];
+          v16 = [PLBackgroundJobWorkItem workItemsSortedByTimestampWithIdentifier:identifier2 jobTypes:&unk_1F0FBFE98 inManagedObjectContext:managedObjectContext error:&v70];
           v62 = v70;
 
           if (v16)
           {
             originalFlags = self->_originalFlags;
-            v65 = [v11 jobType];
-            v18 = [v11 timestamp];
+            jobType = [v11 jobType];
+            timestamp = [v11 timestamp];
             v61 = v16;
             v59 = v10;
             v60 = v11;
@@ -1251,10 +1251,10 @@ LABEL_65:
             {
               originalFlags = [v11 jobFlags];
               [v64 addObject:v11];
-              v41 = [v11 timestamp];
+              timestamp2 = [v11 timestamp];
 
               v25 = 1;
-              v18 = v41;
+              timestamp = timestamp2;
               goto LABEL_47;
             }
 
@@ -1262,11 +1262,11 @@ LABEL_65:
             if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
             {
               v20 = [v16 count];
-              v21 = [v11 identifier];
+              identifier3 = [v11 identifier];
               *buf = 134218242;
               v77 = v20;
               v78 = 2114;
-              v79 = v21;
+              v79 = identifier3;
               _os_log_impl(&dword_19BF1F000, v19, OS_LOG_TYPE_INFO, "Attempting to coalesce %ld work items for identifier: %{public}@", buf, 0x16u);
             }
 
@@ -1300,12 +1300,12 @@ LABEL_65:
                 v29 = PLBatchSizeForJobFlags(originalFlags);
                 if (v29 == PLBatchSizeForJobFlags([v28 jobFlags]))
                 {
-                  v30 = v18;
+                  v30 = timestamp;
                   v31 = v22;
                   originalFlags |= [v28 jobFlags];
-                  v32 = [v28 jobFlags];
-                  v33 = (v32 & 2) == 0;
-                  if ((v32 & 2) != 0)
+                  jobFlags = [v28 jobFlags];
+                  v33 = (jobFlags & 2) == 0;
+                  if ((jobFlags & 2) != 0)
                   {
                     originalFlags &= ~1uLL;
                     v34 = PLSearchBackendIndexingEngineGetLog();
@@ -1340,24 +1340,24 @@ LABEL_27:
 
                   if ([v28 jobType] == 1)
                   {
-                    v65 = 1;
+                    jobType = 1;
                   }
 
                   else
                   {
-                    v37 = [v28 jobType];
-                    v38 = v65;
-                    if (v65 == 3 && v37 == 2)
+                    jobType2 = [v28 jobType];
+                    v38 = jobType;
+                    if (jobType == 3 && jobType2 == 2)
                     {
                       v38 = 2;
                     }
 
-                    v65 = v38;
+                    jobType = v38;
                   }
 
                   v22 = v31;
                   [v64 addObject:v28];
-                  v18 = [v28 timestamp];
+                  timestamp = [v28 timestamp];
 
                   ++v25;
                   continue;
@@ -1373,33 +1373,33 @@ LABEL_27:
                   originalFlags = 1;
                 }
 
-                self = v54;
-                v4 = v55;
+                self = selfCopy;
+                libraryCopy = v55;
 LABEL_46:
                 v5 = v56;
 LABEL_47:
                 v42 = PLSearchBackendIndexingEngineGetLog();
                 if (os_log_type_enabled(v42, OS_LOG_TYPE_INFO))
                 {
-                  v43 = [v60 identifier];
+                  identifier4 = [v60 identifier];
                   *buf = 134218242;
                   v77 = v25;
                   v78 = 2114;
-                  v79 = v43;
+                  v79 = identifier4;
                   _os_log_impl(&dword_19BF1F000, v42, OS_LOG_TYPE_INFO, "Coalesced %ld work items for identifier: %{public}@", buf, 0x16u);
                 }
 
                 v44 = [PLSearchIndexingNormalizedWorkItem alloc];
-                v45 = [v60 identifier];
-                v46 = [(PLSearchIndexingNormalizedWorkItem *)v44 initWithIdentifier:v45 jobType:v65 jobFlags:originalFlags entityToIndex:[(PLSearchIndexingIncrementalUpdateBatch *)self targetEntity] timestamp:v18];
+                identifier5 = [v60 identifier];
+                v46 = [(PLSearchIndexingNormalizedWorkItem *)v44 initWithIdentifier:identifier5 jobType:jobType jobFlags:originalFlags entityToIndex:[(PLSearchIndexingIncrementalUpdateBatch *)self targetEntity] timestamp:timestamp];
 
                 normalizedWorkItemsByIdentifiers = self->_normalizedWorkItemsByIdentifiers;
-                v48 = [v60 identifier];
-                [(NSMutableDictionary *)normalizedWorkItemsByIdentifiers setObject:v46 forKeyedSubscript:v48];
+                identifier6 = [v60 identifier];
+                [(NSMutableDictionary *)normalizedWorkItemsByIdentifiers setObject:v46 forKeyedSubscript:identifier6];
 
                 v49 = self->_identifiers;
-                v50 = [v60 identifier];
-                [(NSMutableSet *)v49 addObject:v50];
+                identifier7 = [v60 identifier];
+                [(NSMutableSet *)v49 addObject:identifier7];
 
                 v9 = v57;
                 v8 = v58;
@@ -1412,8 +1412,8 @@ LABEL_50:
             }
           }
 
-          v18 = PLSearchBackendIndexingEngineGetLog();
-          if (!os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
+          timestamp = PLSearchBackendIndexingEngineGetLog();
+          if (!os_log_type_enabled(timestamp, OS_LOG_TYPE_ERROR))
           {
             goto LABEL_50;
           }
@@ -1423,7 +1423,7 @@ LABEL_50:
           v78 = 2112;
           v40 = v62;
           v79 = v62;
-          _os_log_impl(&dword_19BF1F000, v18, OS_LOG_TYPE_ERROR, "Failed to fetch work items for coalescing, skipping item %{public}@, error: %@", buf, 0x16u);
+          _os_log_impl(&dword_19BF1F000, timestamp, OS_LOG_TYPE_ERROR, "Failed to fetch work items for coalescing, skipping item %{public}@, error: %@", buf, 0x16u);
 LABEL_51:
         }
 
@@ -1474,9 +1474,9 @@ LABEL_55:
 
         v9 = *(*(&v21 + 1) + 8 * i);
         v10 = PLBackgroundJobSearchIndexingEntitiesFromJobFlags([v9 jobFlags]);
-        v11 = [(PLSearchIndexingIncrementalUpdateBatch *)self _flagsAreAmbiguous];
+        _flagsAreAmbiguous = [(PLSearchIndexingIncrementalUpdateBatch *)self _flagsAreAmbiguous];
         v12 = [v10 count];
-        if (v11)
+        if (_flagsAreAmbiguous)
         {
           if (v12 > 1)
           {
@@ -1488,16 +1488,16 @@ LABEL_55:
         {
           if (v12 == 1)
           {
-            v13 = [v10 firstObject];
-            v14 = [v13 unsignedIntegerValue];
+            firstObject = [v10 firstObject];
+            unsignedIntegerValue = [firstObject unsignedIntegerValue];
           }
 
           else
           {
-            v14 = 0;
+            unsignedIntegerValue = 0;
           }
 
-          if ([(PLSearchIndexingIncrementalUpdateBatch *)self targetEntity]== v14)
+          if ([(PLSearchIndexingIncrementalUpdateBatch *)self targetEntity]== unsignedIntegerValue)
           {
 LABEL_13:
             [v3 addObject:v9];
@@ -1537,41 +1537,41 @@ LABEL_13:
     return 0;
   }
 
-  v3 = [(NSArray *)self->_possibleEntities firstObject];
-  v4 = [v3 unsignedIntegerValue];
+  firstObject = [(NSArray *)self->_possibleEntities firstObject];
+  unsignedIntegerValue = [firstObject unsignedIntegerValue];
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
 - (BOOL)hasDonations
 {
-  v3 = [(PLSearchIndexingIncrementalUpdateBatch *)self eligibleManagedObjects];
-  if ([v3 count])
+  eligibleManagedObjects = [(PLSearchIndexingIncrementalUpdateBatch *)self eligibleManagedObjects];
+  if ([eligibleManagedObjects count])
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(PLSearchIndexingIncrementalUpdateBatch *)self ineligibleIdentifiers];
-    v4 = [v5 count] != 0;
+    ineligibleIdentifiers = [(PLSearchIndexingIncrementalUpdateBatch *)self ineligibleIdentifiers];
+    v4 = [ineligibleIdentifiers count] != 0;
   }
 
   return v4;
 }
 
-- (PLSearchIndexingIncrementalUpdateBatch)initWithWorkItems:(id)a3 flags:(int64_t)a4
+- (PLSearchIndexingIncrementalUpdateBatch)initWithWorkItems:(id)items flags:(int64_t)flags
 {
-  v7 = a3;
+  itemsCopy = items;
   v17.receiver = self;
   v17.super_class = PLSearchIndexingIncrementalUpdateBatch;
   v8 = [(PLSearchIndexingIncrementalUpdateBatch *)&v17 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_workItems, a3);
-    v9->_originalFlags = a4;
-    v10 = PLBackgroundJobSearchIndexingEntitiesFromJobFlags(a4);
+    objc_storeStrong(&v8->_workItems, items);
+    v9->_originalFlags = flags;
+    v10 = PLBackgroundJobSearchIndexingEntitiesFromJobFlags(flags);
     possibleEntities = v9->_possibleEntities;
     v9->_possibleEntities = v10;
 

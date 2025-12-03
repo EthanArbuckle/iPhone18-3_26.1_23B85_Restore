@@ -6,15 +6,15 @@
 - (double)inputHoldDuration;
 - (double)longPressDuration;
 - (double)totalLongPressDuration;
-- (id)_interDeviceActionForIdentifier:(id)a3;
-- (id)_switchEventWithAction:(id)a3 longPressAction:(id)a4 start:(BOOL)a5 switchIdentifier:(id)a6 switchDisplayName:(id)a7;
-- (int64_t)_identifierForInterDeviceAction:(id)a3;
+- (id)_interDeviceActionForIdentifier:(id)identifier;
+- (id)_switchEventWithAction:(id)action longPressAction:(id)pressAction start:(BOOL)start switchIdentifier:(id)identifier switchDisplayName:(id)name;
+- (int64_t)_identifierForInterDeviceAction:(id)action;
 - (void)_clearActions;
-- (void)_handleAction:(id)a3 longPressAction:(id)a4 start:(BOOL)a5 switchIdentifier:(id)a6 switchDisplayName:(id)a7;
+- (void)_handleAction:(id)action longPressAction:(id)pressAction start:(BOOL)start switchIdentifier:(id)identifier switchDisplayName:(id)name;
 - (void)_handleInterDeviceBailOut;
-- (void)beginSimulatedLongPressForInputSource:(id)a3;
-- (void)endSimulatedLongPressForInputSource:(id)a3;
-- (void)setDelegate:(id)a3 queue:(id)a4;
+- (void)beginSimulatedLongPressForInputSource:(id)source;
+- (void)endSimulatedLongPressForInputSource:(id)source;
+- (void)setDelegate:(id)delegate queue:(id)queue;
 @end
 
 @implementation SCATInputSource
@@ -31,44 +31,44 @@
     [(SCATInputSource *)v3 setButtonDownStartTime:-9.22337204e18];
     v4 = [[AXDispatchTimer alloc] initWithTargetSerialQueue:&_dispatch_main_q];
     [(SCATInputSource *)v3 setLongPressTimer:v4];
-    v5 = [(SCATInputSource *)v3 longPressTimer];
-    [v5 setAutomaticallyCancelPendingBlockUponSchedulingNewBlock:1];
+    longPressTimer = [(SCATInputSource *)v3 longPressTimer];
+    [longPressTimer setAutomaticallyCancelPendingBlockUponSchedulingNewBlock:1];
 
-    v6 = [(SCATInputSource *)v3 longPressTimer];
-    [v6 setLabel:@"input long press timer"];
+    longPressTimer2 = [(SCATInputSource *)v3 longPressTimer];
+    [longPressTimer2 setLabel:@"input long press timer"];
   }
 
   return v3;
 }
 
-- (void)setDelegate:(id)a3 queue:(id)a4
+- (void)setDelegate:(id)delegate queue:(id)queue
 {
-  v8 = a3;
-  v6 = a4;
-  if (v6)
+  delegateCopy = delegate;
+  queueCopy = queue;
+  if (queueCopy)
   {
     v7 = +[AXAccessQueue mainAccessQueue];
 
-    if (v7 != v6)
+    if (v7 != queueCopy)
     {
       _AXAssert();
     }
   }
 
-  [(SCATInputSource *)self setDelegate:v8];
-  [(SCATInputSource *)self setQueue:v6];
+  [(SCATInputSource *)self setDelegate:delegateCopy];
+  [(SCATInputSource *)self setQueue:queueCopy];
 }
 
 - (void)_clearActions
 {
-  v3 = [(SCATInputSource *)self actions];
+  actions = [(SCATInputSource *)self actions];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v5 = [(SCATInputSource *)self actions];
-    [v5 removeAllObjects];
+    actions2 = [(SCATInputSource *)self actions];
+    [actions2 removeAllObjects];
   }
 
   [(SCATInputSource *)self setActions:0];
@@ -80,9 +80,9 @@
 - (BOOL)longPressEnabled
 {
   v2 = +[AXSettings sharedInstance];
-  v3 = [v2 assistiveTouchLongPressEnabled];
+  assistiveTouchLongPressEnabled = [v2 assistiveTouchLongPressEnabled];
 
-  return v3;
+  return assistiveTouchLongPressEnabled;
 }
 
 - (double)longPressDuration
@@ -97,9 +97,9 @@
 - (BOOL)inputHoldEnabled
 {
   v2 = +[AXSettings sharedInstance];
-  v3 = [v2 assistiveTouchInputHoldEnabled];
+  assistiveTouchInputHoldEnabled = [v2 assistiveTouchInputHoldEnabled];
 
-  return v3;
+  return assistiveTouchInputHoldEnabled;
 }
 
 - (double)inputHoldDuration
@@ -124,20 +124,20 @@
   return v3 + v5;
 }
 
-- (id)_interDeviceActionForIdentifier:(id)a3
+- (id)_interDeviceActionForIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = [v3 action];
+  identifierCopy = identifier;
+  action = [identifierCopy action];
   v5 = 0;
-  if (v4 <= 205)
+  if (action <= 205)
   {
-    if (v4 <= 106)
+    if (action <= 106)
     {
-      if (v4 > 102)
+      if (action > 102)
       {
-        if (v4 > 104)
+        if (action > 104)
         {
-          if (v4 == 105)
+          if (action == 105)
           {
             v6 = &AXSSSwitchActionMoveToPreviousItem;
           }
@@ -148,7 +148,7 @@
           }
         }
 
-        else if (v4 == 103)
+        else if (action == 103)
         {
           v6 = &AXSSSwitchActionSelect;
         }
@@ -159,9 +159,9 @@
         }
       }
 
-      else if (v4 > 100)
+      else if (action > 100)
       {
-        if (v4 == 101)
+        if (action == 101)
         {
           v6 = &AXSSSwitchActionMenu;
         }
@@ -174,12 +174,12 @@
 
       else
       {
-        if (!v4)
+        if (!action)
         {
           goto LABEL_5;
         }
 
-        if (v4 != 100)
+        if (action != 100)
         {
           goto LABEL_67;
         }
@@ -190,11 +190,11 @@
       goto LABEL_66;
     }
 
-    if (v4 > 200)
+    if (action > 200)
     {
-      if (v4 <= 202)
+      if (action <= 202)
       {
-        if (v4 == 201)
+        if (action == 201)
         {
           v6 = &AXSSSwitchActionHome;
         }
@@ -205,12 +205,12 @@
         }
       }
 
-      else if (v4 == 203)
+      else if (action == 203)
       {
         v6 = &AXSSSwitchActionSiri;
       }
 
-      else if (v4 == 204)
+      else if (action == 204)
       {
         v6 = &AXSSSwitchActionVolumeDown;
       }
@@ -223,15 +223,15 @@
       goto LABEL_66;
     }
 
-    if (v4 > 108)
+    if (action > 108)
     {
-      if (v4 == 109)
+      if (action == 109)
       {
         v5 = @"selectandresumeautoscanning";
         goto LABEL_67;
       }
 
-      if (v4 != 200)
+      if (action != 200)
       {
         goto LABEL_67;
       }
@@ -240,7 +240,7 @@
       goto LABEL_66;
     }
 
-    if (v4 != 107)
+    if (action != 107)
     {
 LABEL_31:
       _AXLogWithFacility();
@@ -253,13 +253,13 @@ LABEL_66:
     goto LABEL_67;
   }
 
-  if (v4 > 299)
+  if (action > 299)
   {
-    if (v4 <= 303)
+    if (action <= 303)
     {
-      if (v4 > 301)
+      if (action > 301)
       {
-        if (v4 == 302)
+        if (action == 302)
         {
           v6 = &AXSSSwitchActionATVHome;
         }
@@ -270,7 +270,7 @@ LABEL_66:
         }
       }
 
-      else if (v4 == 300)
+      else if (action == 300)
       {
         v6 = &AXSSSwitchActionATVSelect;
       }
@@ -283,9 +283,9 @@ LABEL_66:
       goto LABEL_66;
     }
 
-    if (v4 <= 305)
+    if (action <= 305)
     {
-      if (v4 == 304)
+      if (action == 304)
       {
         v6 = &AXSSSwitchActionATVArrowUp;
       }
@@ -298,7 +298,7 @@ LABEL_66:
       goto LABEL_66;
     }
 
-    switch(v4)
+    switch(action)
     {
       case 306:
         v6 = &AXSSSwitchActionATVArrowLeft;
@@ -315,14 +315,14 @@ LABEL_66:
     goto LABEL_66;
   }
 
-  if (v4 <= 208)
+  if (action <= 208)
   {
-    if (v4 == 206)
+    if (action == 206)
     {
       v6 = &AXSSSwitchActionForceTouch;
     }
 
-    else if (v4 == 207)
+    else if (action == 207)
     {
       v6 = &AXSSSwitchActionDictation;
     }
@@ -335,10 +335,10 @@ LABEL_66:
     goto LABEL_66;
   }
 
-  if ((v4 - 210) < 5)
+  if ((action - 210) < 5)
   {
 LABEL_5:
-    v8 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v3 action]);
+    v8 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [identifierCopy action]);
     _AXLogWithFacility();
 
 LABEL_32:
@@ -346,7 +346,7 @@ LABEL_32:
     goto LABEL_67;
   }
 
-  if (v4 == 209)
+  if (action == 209)
   {
     v6 = &AXSSSwitchActionControlCenter;
     goto LABEL_66;
@@ -357,100 +357,100 @@ LABEL_67:
   return v5;
 }
 
-- (int64_t)_identifierForInterDeviceAction:(id)a3
+- (int64_t)_identifierForInterDeviceAction:(id)action
 {
-  v3 = a3;
-  if ([v3 isEqualToString:AXSSSwitchActionRun])
+  actionCopy = action;
+  if ([actionCopy isEqualToString:AXSSSwitchActionRun])
   {
     v4 = 102;
   }
 
-  else if ([v3 isEqualToString:AXSSSwitchActionStop])
+  else if ([actionCopy isEqualToString:AXSSSwitchActionStop])
   {
     v4 = 106;
   }
 
-  else if ([v3 isEqualToString:AXSSSwitchActionSelect])
+  else if ([actionCopy isEqualToString:AXSSSwitchActionSelect])
   {
     v4 = 103;
   }
 
-  else if ([v3 isEqualToString:@"selectandresumeautoscanning"])
+  else if ([actionCopy isEqualToString:@"selectandresumeautoscanning"])
   {
     v4 = 109;
   }
 
-  else if ([v3 isEqualToString:AXSSSwitchActionMoveToNextItem])
+  else if ([actionCopy isEqualToString:AXSSSwitchActionMoveToNextItem])
   {
     v4 = 104;
   }
 
-  else if ([v3 isEqualToString:AXSSSwitchActionMoveToPreviousItem])
+  else if ([actionCopy isEqualToString:AXSSSwitchActionMoveToPreviousItem])
   {
     v4 = 105;
   }
 
-  else if ([v3 isEqualToString:AXSSSwitchActionActivate])
+  else if ([actionCopy isEqualToString:AXSSSwitchActionActivate])
   {
     v4 = 100;
   }
 
-  else if ([v3 isEqualToString:AXSSSwitchActionMenu])
+  else if ([actionCopy isEqualToString:AXSSSwitchActionMenu])
   {
     v4 = 101;
   }
 
-  else if ([v3 isEqualToString:AXSSSwitchActionAppSwitcher])
+  else if ([actionCopy isEqualToString:AXSSSwitchActionAppSwitcher])
   {
     v4 = 200;
   }
 
-  else if ([v3 isEqualToString:AXSSSwitchActionHome])
+  else if ([actionCopy isEqualToString:AXSSSwitchActionHome])
   {
     v4 = 201;
   }
 
-  else if ([v3 isEqualToString:AXSSSwitchActionSiri])
+  else if ([actionCopy isEqualToString:AXSSSwitchActionSiri])
   {
     v4 = 203;
   }
 
-  else if ([v3 isEqualToString:AXSSSwitchActionVolumeDown])
+  else if ([actionCopy isEqualToString:AXSSSwitchActionVolumeDown])
   {
     v4 = 204;
   }
 
-  else if ([v3 isEqualToString:AXSSSwitchActionVolumeUp])
+  else if ([actionCopy isEqualToString:AXSSSwitchActionVolumeUp])
   {
     v4 = 205;
   }
 
-  else if ([v3 isEqualToString:AXSSSwitchActionForceTouch])
+  else if ([actionCopy isEqualToString:AXSSSwitchActionForceTouch])
   {
     v4 = 206;
   }
 
-  else if ([v3 isEqualToString:AXSSSwitchActionDictation])
+  else if ([actionCopy isEqualToString:AXSSSwitchActionDictation])
   {
     v4 = 207;
   }
 
-  else if ([v3 isEqualToString:AXSSSwitchActionTripleClick])
+  else if ([actionCopy isEqualToString:AXSSSwitchActionTripleClick])
   {
     v4 = 208;
   }
 
-  else if ([v3 isEqualToString:AXSSSwitchActionControlCenter])
+  else if ([actionCopy isEqualToString:AXSSSwitchActionControlCenter])
   {
     v4 = 209;
   }
 
-  else if ([v3 isEqualToString:AXSSSwitchActionNotificationCenter])
+  else if ([actionCopy isEqualToString:AXSSSwitchActionNotificationCenter])
   {
     v4 = 202;
   }
 
-  else if ([v3 isEqualToString:AXSSSwitchActionSiriShortcutsMenu])
+  else if ([actionCopy isEqualToString:AXSSSwitchActionSiriShortcutsMenu])
   {
     v4 = 107;
   }
@@ -463,13 +463,13 @@ LABEL_67:
   return v4;
 }
 
-- (id)_switchEventWithAction:(id)a3 longPressAction:(id)a4 start:(BOOL)a5 switchIdentifier:(id)a6 switchDisplayName:(id)a7
+- (id)_switchEventWithAction:(id)action longPressAction:(id)pressAction start:(BOOL)start switchIdentifier:(id)identifier switchDisplayName:(id)name
 {
-  v8 = a5;
-  v12 = a7;
-  v13 = a6;
-  v14 = a4;
-  v15 = [(SCATInputSource *)self _interDeviceActionForIdentifier:a3];
+  startCopy = start;
+  nameCopy = name;
+  identifierCopy = identifier;
+  pressActionCopy = pressAction;
+  v15 = [(SCATInputSource *)self _interDeviceActionForIdentifier:action];
   v16 = v15;
   if (v15)
   {
@@ -485,7 +485,7 @@ LABEL_67:
   }
 
   v18 = [NSArray arrayWithObjects:v17 count:1];
-  v19 = [(SCATInputSource *)self _interDeviceActionForIdentifier:v14];
+  v19 = [(SCATInputSource *)self _interDeviceActionForIdentifier:pressActionCopy];
 
   if (v19)
   {
@@ -504,51 +504,51 @@ LABEL_67:
   }
 
   v21 = [AXSSInterDeviceSwitchEvent alloc];
-  v22 = [v21 initWithSwitchIdentifier:v13 switchDisplayName:v12 deviceIdentifier:qword_100218BC8 actions:v18 longPressActions:v20 isDown:v8];
+  v22 = [v21 initWithSwitchIdentifier:identifierCopy switchDisplayName:nameCopy deviceIdentifier:qword_100218BC8 actions:v18 longPressActions:v20 isDown:startCopy];
 
   return v22;
 }
 
 - (void)_handleInterDeviceBailOut
 {
-  v3 = [(SCATInputSource *)self delegate];
-  [v3 handleInterDeviceBailOutForInputSource:self];
+  delegate = [(SCATInputSource *)self delegate];
+  [delegate handleInterDeviceBailOutForInputSource:self];
 }
 
-- (void)_handleAction:(id)a3 longPressAction:(id)a4 start:(BOOL)a5 switchIdentifier:(id)a6 switchDisplayName:(id)a7
+- (void)_handleAction:(id)action longPressAction:(id)pressAction start:(BOOL)start switchIdentifier:(id)identifier switchDisplayName:(id)name
 {
-  v9 = a5;
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
+  startCopy = start;
+  actionCopy = action;
+  pressActionCopy = pressAction;
+  identifierCopy = identifier;
+  nameCopy = name;
   [NSObject cancelPreviousPerformRequestsWithTarget:self selector:"_handleInterDeviceBailOut" object:0];
   if (!+[NSThread isMainThread])
   {
     _AXAssert();
   }
 
-  v16 = [(SCATInputSource *)self queue];
+  queue = [(SCATInputSource *)self queue];
   v17 = +[AXAccessQueue mainAccessQueue];
 
-  if (v16 != v17)
+  if (queue != v17)
   {
     _AXAssert();
   }
 
-  v18 = [(SCATInputSource *)self delegate];
-  v19 = [v18 shouldForwardSwitchEventsForInputSource:self];
+  delegate = [(SCATInputSource *)self delegate];
+  v19 = [delegate shouldForwardSwitchEventsForInputSource:self];
 
   if (!v19)
   {
-    if (v9)
+    if (startCopy)
     {
-      v22 = [(SCATInputSource *)self longPressEnabled];
+      longPressEnabled = [(SCATInputSource *)self longPressEnabled];
       [(SCATInputSource *)self setButtonDownStartTime:CFAbsoluteTimeGetCurrent()];
-      if (v22 && [v13 action])
+      if (longPressEnabled && [pressActionCopy action])
       {
-        v23 = [(SCATInputSource *)self delegate];
-        [v23 didBeginLongPressForInputSource:self];
+        delegate2 = [(SCATInputSource *)self delegate];
+        [delegate2 didBeginLongPressForInputSource:self];
 
         objc_initWeak(&location, self);
         v43[0] = _NSConcreteStackBlock;
@@ -556,9 +556,9 @@ LABEL_67:
         v43[2] = sub_1000C9D38;
         v43[3] = &unk_1001D3438;
         objc_copyWeak(&v45, &location);
-        v44 = v12;
+        v44 = actionCopy;
         [(SCATInputSource *)self setFallbackActionBlock:v43];
-        v24 = [(SCATInputSource *)self longPressTimer];
+        longPressTimer = [(SCATInputSource *)self longPressTimer];
         [(SCATInputSource *)self totalLongPressDuration];
         v26 = v25;
         v40[0] = _NSConcreteStackBlock;
@@ -566,8 +566,8 @@ LABEL_67:
         v40[2] = sub_1000C9D90;
         v40[3] = &unk_1001D3438;
         objc_copyWeak(&v42, &location);
-        v41 = v13;
-        [v24 afterDelay:v40 processBlock:v26];
+        v41 = pressActionCopy;
+        [longPressTimer afterDelay:v40 processBlock:v26];
 
         objc_destroyWeak(&v42);
         objc_destroyWeak(&v45);
@@ -575,78 +575,78 @@ LABEL_67:
         goto LABEL_24;
       }
 
-      v37 = self;
-      v38 = v12;
+      selfCopy2 = self;
+      v38 = actionCopy;
       v39 = 1;
     }
 
     else
     {
-      v27 = [(SCATInputSource *)self longPressTimer];
-      v28 = [v27 isPending];
+      longPressTimer2 = [(SCATInputSource *)self longPressTimer];
+      isPending = [longPressTimer2 isPending];
 
-      if (v28)
+      if (isPending)
       {
-        v29 = [(SCATInputSource *)self delegate];
-        [v29 didEndLongPressForInputSource:self];
+        delegate3 = [(SCATInputSource *)self delegate];
+        [delegate3 didEndLongPressForInputSource:self];
 
-        v30 = [(SCATInputSource *)self longPressTimer];
-        [v30 cancel];
+        longPressTimer3 = [(SCATInputSource *)self longPressTimer];
+        [longPressTimer3 cancel];
       }
 
       Current = CFAbsoluteTimeGetCurrent();
       [(SCATInputSource *)self buttonDownStartTime];
       v33 = v32;
-      v34 = [(SCATInputSource *)self fallbackActionBlock];
+      fallbackActionBlock = [(SCATInputSource *)self fallbackActionBlock];
 
-      if (v34)
+      if (fallbackActionBlock)
       {
         [(SCATInputSource *)self inputHoldDuration];
         if (Current - v33 >= v35 || ![(SCATInputSource *)self inputHoldEnabled])
         {
-          v36 = [(SCATInputSource *)self fallbackActionBlock];
-          v36[2]();
+          fallbackActionBlock2 = [(SCATInputSource *)self fallbackActionBlock];
+          fallbackActionBlock2[2]();
         }
 
         [(SCATInputSource *)self setFallbackActionBlock:0];
       }
 
-      v37 = self;
-      v38 = v12;
+      selfCopy2 = self;
+      v38 = actionCopy;
       v39 = 0;
     }
 
-    [(SCATInputSource *)v37 _didReceiveActionWithIdentifier:v38 start:v39 ignoreInputHold:0];
+    [(SCATInputSource *)selfCopy2 _didReceiveActionWithIdentifier:v38 start:v39 ignoreInputHold:0];
     goto LABEL_24;
   }
 
-  if (v9)
+  if (startCopy)
   {
     [(SCATInputSource *)self performSelector:"_handleInterDeviceBailOut" withObject:0 afterDelay:10.0];
   }
 
-  if ([v12 action])
+  if ([actionCopy action])
   {
-    v20 = [(SCATInputSource *)self delegate];
-    v21 = [(SCATInputSource *)self _switchEventWithAction:v12 longPressAction:v13 start:v9 switchIdentifier:v14 switchDisplayName:v15];
-    [v20 inputSource:self forwardSwitchEvent:v21];
+    delegate4 = [(SCATInputSource *)self delegate];
+    v21 = [(SCATInputSource *)self _switchEventWithAction:actionCopy longPressAction:pressActionCopy start:startCopy switchIdentifier:identifierCopy switchDisplayName:nameCopy];
+    [delegate4 inputSource:self forwardSwitchEvent:v21];
   }
 
 LABEL_24:
 }
 
-- (void)beginSimulatedLongPressForInputSource:(id)a3
+- (void)beginSimulatedLongPressForInputSource:(id)source
 {
-  v4 = a3;
-  v5 = [(SCATInputSource *)self delegate];
-  [v5 didBeginLongPressForInputSource:v4];
+  sourceCopy = source;
+  delegate = [(SCATInputSource *)self delegate];
+  [delegate didBeginLongPressForInputSource:sourceCopy];
 }
 
-- (void)endSimulatedLongPressForInputSource:(id)a3
+- (void)endSimulatedLongPressForInputSource:(id)source
 {
-  v4 = a3;
-  v5 = [(SCATInputSource *)self delegate];
-  [v5 didEndLongPressForInputSource:v4];
+  sourceCopy = source;
+  delegate = [(SCATInputSource *)self delegate];
+  [delegate didEndLongPressForInputSource:sourceCopy];
 }
 
 - (SCATInputSourceDelegate)delegate

@@ -1,35 +1,35 @@
 @interface PKDatePickerImpl_DatePicker
 - (NSDate)date;
-- (id)initShowingDay:(BOOL)a3 month:(BOOL)a4 year:(BOOL)a5 locale:(id)a6 calendar:(id)a7;
-- (void)setDate:(id)a3;
-- (void)setDateValueChangedTarget:(id)a3 action:(SEL)a4;
+- (id)initShowingDay:(BOOL)day month:(BOOL)month year:(BOOL)year locale:(id)locale calendar:(id)calendar;
+- (void)setDate:(id)date;
+- (void)setDateValueChangedTarget:(id)target action:(SEL)action;
 @end
 
 @implementation PKDatePickerImpl_DatePicker
 
-- (id)initShowingDay:(BOOL)a3 month:(BOOL)a4 year:(BOOL)a5 locale:(id)a6 calendar:(id)a7
+- (id)initShowingDay:(BOOL)day month:(BOOL)month year:(BOOL)year locale:(id)locale calendar:(id)calendar
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v12 = a6;
-  v13 = a7;
+  yearCopy = year;
+  monthCopy = month;
+  dayCopy = day;
+  localeCopy = locale;
+  calendarCopy = calendar;
   v23.receiver = self;
   v23.super_class = PKDatePickerImpl_DatePicker;
   v14 = [(PKDatePickerImpl_DatePicker *)&v23 init];
   v15 = v14;
   if (v14)
   {
-    [(PKDatePickerImpl_DatePicker *)v14 setLocale:v12];
-    [(PKDatePickerImpl_DatePicker *)v15 setCalendar:v13];
+    [(PKDatePickerImpl_DatePicker *)v14 setLocale:localeCopy];
+    [(PKDatePickerImpl_DatePicker *)v15 setCalendar:calendarCopy];
     [(PKDatePickerImpl_DatePicker *)v15 setPreferredDatePickerStyle:1];
-    if (v10 && v9 && v8)
+    if (dayCopy && monthCopy && yearCopy)
     {
       v16 = v15;
       v17 = 1;
     }
 
-    else if (v9 && v8)
+    else if (monthCopy && yearCopy)
     {
       v16 = v15;
       v17 = 4;
@@ -37,7 +37,7 @@
 
     else
     {
-      if (!v10 || !v9)
+      if (!dayCopy || !monthCopy)
       {
         v19 = MEMORY[0x1E695DF30];
         v20 = *MEMORY[0x1E695D930];
@@ -64,27 +64,27 @@ LABEL_11:
 {
   v4.receiver = self;
   v4.super_class = PKDatePickerImpl_DatePicker;
-  v2 = [(PKDatePickerImpl_DatePicker *)&v4 date];
+  date = [(PKDatePickerImpl_DatePicker *)&v4 date];
 
-  return v2;
+  return date;
 }
 
-- (void)setDate:(id)a3
+- (void)setDate:(id)date
 {
   v3.receiver = self;
   v3.super_class = PKDatePickerImpl_DatePicker;
-  [(PKDatePickerImpl_DatePicker *)&v3 setDate:a3];
+  [(PKDatePickerImpl_DatePicker *)&v3 setDate:date];
 }
 
-- (void)setDateValueChangedTarget:(id)a3 action:(SEL)a4
+- (void)setDateValueChangedTarget:(id)target action:(SEL)action
 {
-  v7 = a3;
+  targetCopy = target;
   [(PKDatePickerImpl_DatePicker *)self removeTarget:0 action:0 forControlEvents:4096];
-  v6 = v7;
-  if (v7 && a4)
+  v6 = targetCopy;
+  if (targetCopy && action)
   {
-    [(PKDatePickerImpl_DatePicker *)self addTarget:v7 action:a4 forControlEvents:4096];
-    v6 = v7;
+    [(PKDatePickerImpl_DatePicker *)self addTarget:targetCopy action:action forControlEvents:4096];
+    v6 = targetCopy;
   }
 }
 

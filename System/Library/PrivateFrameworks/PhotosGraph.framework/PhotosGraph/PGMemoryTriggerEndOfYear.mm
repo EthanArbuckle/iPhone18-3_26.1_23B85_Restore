@@ -1,16 +1,16 @@
 @interface PGMemoryTriggerEndOfYear
-- (id)resultsTriggeredWithContext:(id)a3 inGraph:(id)a4 progressReporter:(id)a5;
+- (id)resultsTriggeredWithContext:(id)context inGraph:(id)graph progressReporter:(id)reporter;
 @end
 
 @implementation PGMemoryTriggerEndOfYear
 
-- (id)resultsTriggeredWithContext:(id)a3 inGraph:(id)a4 progressReporter:(id)a5
+- (id)resultsTriggeredWithContext:(id)context inGraph:(id)graph progressReporter:(id)reporter
 {
   v54 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([v9 isCancelledWithProgress:0.0])
+  contextCopy = context;
+  graphCopy = graph;
+  reporterCopy = reporter;
+  if ([reporterCopy isCancelledWithProgress:0.0])
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -27,25 +27,25 @@
   else
   {
     v11 = MEMORY[0x277D27690];
-    v12 = [v7 localDate];
-    v13 = [v7 timeZone];
-    v14 = [v11 universalDateFromLocalDate:v12 inTimeZone:v13];
+    localDate = [contextCopy localDate];
+    timeZone = [contextCopy timeZone];
+    v14 = [v11 universalDateFromLocalDate:localDate inTimeZone:timeZone];
 
     v49 = v14;
     v15 = [MEMORY[0x277D27690] dateByAddingMonths:1 toDate:v14];
     v16 = MEMORY[0x277D27690];
-    v17 = [v7 timeZone];
-    v18 = [v16 localDateFromUniversalDate:v15 inTimeZone:v17];
+    timeZone2 = [contextCopy timeZone];
+    v18 = [v16 localDateFromUniversalDate:v15 inTimeZone:timeZone2];
 
     v19 = MEMORY[0x277D27690];
-    v20 = [v7 localDate];
-    v21 = [v19 components:4 fromDate:v20];
+    localDate2 = [contextCopy localDate];
+    v21 = [v19 components:4 fromDate:localDate2];
 
     v22 = [MEMORY[0x277D27690] components:4 fromDate:v18];
-    v23 = [v21 year];
-    if (v23 == [v22 year])
+    year = [v21 year];
+    if (year == [v22 year])
     {
-      if ([v9 isCancelledWithProgress:1.0] && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
+      if ([reporterCopy isCancelledWithProgress:1.0] && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {
         *buf = 67109378;
         v51 = 39;
@@ -61,35 +61,35 @@
     {
       v45 = v18;
       v47 = v15;
-      v48 = v8;
+      v48 = graphCopy;
       v24 = MEMORY[0x277D27690];
-      v25 = [v7 localDate];
+      localDate3 = [contextCopy localDate];
       v26 = v24;
-      v8 = v48;
-      v27 = +[PGGraphYearNodeCollection yearNodesForYear:inGraph:](PGGraphYearNodeCollection, "yearNodesForYear:inGraph:", [v26 yearFromDate:v25], v48);
+      graphCopy = v48;
+      v27 = +[PGGraphYearNodeCollection yearNodesForYear:inGraph:](PGGraphYearNodeCollection, "yearNodesForYear:inGraph:", [v26 yearFromDate:localDate3], v48);
 
       v46 = v27;
-      v28 = [v27 featureNodeCollection];
-      v29 = [v28 memoryNodes];
+      featureNodeCollection = [v27 featureNodeCollection];
+      memoryNodes = [featureNodeCollection memoryNodes];
 
-      v30 = v29;
-      if ([v29 count])
+      v30 = memoryNodes;
+      if ([memoryNodes count])
       {
         v31 = MEMORY[0x277D27690];
-        v32 = [v7 localDate];
-        v33 = [v31 endOfMonthForDate:v32];
+        localDate4 = [contextCopy localDate];
+        v33 = [v31 endOfMonthForDate:localDate4];
 
         v34 = MEMORY[0x277D27690];
-        v35 = [v7 localDate];
-        v36 = [v34 startOfMonthForDate:v35];
+        localDate5 = [contextCopy localDate];
+        v36 = [v34 startOfMonthForDate:localDate5];
 
         v37 = objc_opt_class();
-        v38 = [v7 timeZone];
+        timeZone3 = [contextCopy timeZone];
         v43 = v36;
         v44 = v33;
-        v39 = [v37 validityIntervalForLocalStartDate:v36 localEndDate:v33 timeZone:v38];
+        v39 = [v37 validityIntervalForLocalStartDate:v36 localEndDate:v33 timeZone:timeZone3];
 
-        if ([v9 isCancelledWithProgress:1.0])
+        if ([reporterCopy isCancelledWithProgress:1.0])
         {
           v15 = v47;
           v40 = v30;
@@ -114,12 +114,12 @@
 
         v18 = v45;
 
-        v8 = v48;
+        graphCopy = v48;
       }
 
       else
       {
-        if ([v9 isCancelledWithProgress:1.0])
+        if ([reporterCopy isCancelledWithProgress:1.0])
         {
           v15 = v47;
           v40 = v30;

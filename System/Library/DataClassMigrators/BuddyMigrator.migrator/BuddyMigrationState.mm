@@ -1,34 +1,34 @@
 @interface BuddyMigrationState
-+ (BOOL)hasStateFromPreferences:(id)a3;
-+ (id)loadFromPreferences:(id)a3;
-- (BuddyMigrationState)initWithProductBuild:(id)a3 intent:(unint64_t)a4 persistDate:(id)a5;
++ (BOOL)hasStateFromPreferences:(id)preferences;
++ (id)loadFromPreferences:(id)preferences;
+- (BuddyMigrationState)initWithProductBuild:(id)build intent:(unint64_t)intent persistDate:(id)date;
 - (id)description;
-- (void)persistUsingPreferences:(id)a3;
+- (void)persistUsingPreferences:(id)preferences;
 @end
 
 @implementation BuddyMigrationState
 
-- (BuddyMigrationState)initWithProductBuild:(id)a3 intent:(unint64_t)a4 persistDate:(id)a5
+- (BuddyMigrationState)initWithProductBuild:(id)build intent:(unint64_t)intent persistDate:(id)date
 {
-  v9 = a3;
-  v10 = a5;
+  buildCopy = build;
+  dateCopy = date;
   v14.receiver = self;
   v14.super_class = BuddyMigrationState;
   v11 = [(BuddyMigrationState *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_productBuild, a3);
-    v12->_intent = a4;
-    objc_storeStrong(&v12->_persistDate, a5);
+    objc_storeStrong(&v11->_productBuild, build);
+    v12->_intent = intent;
+    objc_storeStrong(&v12->_persistDate, date);
   }
 
   return v12;
 }
 
-+ (id)loadFromPreferences:(id)a3
++ (id)loadFromPreferences:(id)preferences
 {
-  v3 = [a3 objectForKey:@"showMigrationOnLaunch" includeCache:0];
+  v3 = [preferences objectForKey:@"showMigrationOnLaunch" includeCache:0];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -61,37 +61,37 @@ LABEL_3:
   return v7;
 }
 
-+ (BOOL)hasStateFromPreferences:(id)a3
++ (BOOL)hasStateFromPreferences:(id)preferences
 {
-  v3 = [a3 objectForKey:@"showMigrationOnLaunch"];
+  v3 = [preferences objectForKey:@"showMigrationOnLaunch"];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (void)persistUsingPreferences:(id)a3
+- (void)persistUsingPreferences:(id)preferences
 {
-  v4 = a3;
+  preferencesCopy = preferences;
   v8 = objc_alloc_init(NSMutableDictionary);
-  v5 = [(BuddyMigrationState *)self productBuild];
+  productBuild = [(BuddyMigrationState *)self productBuild];
 
-  if (v5)
+  if (productBuild)
   {
-    v6 = [(BuddyMigrationState *)self productBuild];
-    [v8 setObject:v6 forKeyedSubscript:@"productBuild"];
+    productBuild2 = [(BuddyMigrationState *)self productBuild];
+    [v8 setObject:productBuild2 forKeyedSubscript:@"productBuild"];
   }
 
   v7 = [NSNumber numberWithUnsignedInteger:[(BuddyMigrationState *)self intent]];
   [v8 setObject:v7 forKeyedSubscript:@"intent"];
 
-  [v4 setObject:v8 forKey:@"showMigrationOnLaunch" persistImmediately:1];
+  [preferencesCopy setObject:v8 forKey:@"showMigrationOnLaunch" persistImmediately:1];
 }
 
 - (id)description
 {
   v3 = objc_opt_class();
-  v4 = [(BuddyMigrationState *)self productBuild];
-  v5 = [NSString stringWithFormat:@"<%@ : %p> Build: %@ Intent: %ld", v3, self, v4, [(BuddyMigrationState *)self intent]];
+  productBuild = [(BuddyMigrationState *)self productBuild];
+  v5 = [NSString stringWithFormat:@"<%@ : %p> Build: %@ Intent: %ld", v3, self, productBuild, [(BuddyMigrationState *)self intent]];
 
   return v5;
 }

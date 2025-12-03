@@ -1,5 +1,5 @@
 @interface VSUserAccountFacade
-- (VSUserAccountFacade)initWithAccount:(id)a3;
+- (VSUserAccountFacade)initWithAccount:(id)account;
 - (id)_synchedToThisDeviceIndicator;
 - (id)accountType;
 - (id)authenticationDataString;
@@ -22,16 +22,16 @@
 
 @implementation VSUserAccountFacade
 
-- (VSUserAccountFacade)initWithAccount:(id)a3
+- (VSUserAccountFacade)initWithAccount:(id)account
 {
-  v4 = a3;
+  accountCopy = account;
   v8.receiver = self;
   v8.super_class = VSUserAccountFacade;
   v5 = [(VSUserAccountFacade *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(VSUserAccountFacade *)v5 setAccount:v4];
+    [(VSUserAccountFacade *)v5 setAccount:accountCopy];
   }
 
   return v6;
@@ -39,21 +39,21 @@
 
 - (id)displayName
 {
-  v3 = [(VSUserAccountFacade *)self account];
-  v4 = [v3 deviceName];
-  v5 = v4;
+  account = [(VSUserAccountFacade *)self account];
+  deviceName = [account deviceName];
+  v5 = deviceName;
   v6 = &stru_83C0;
-  if (v4)
+  if (deviceName)
   {
-    v6 = v4;
+    v6 = deviceName;
   }
 
   v7 = v6;
 
-  v8 = [(VSUserAccountFacade *)self account];
-  v9 = [v8 isDeveloperCreated];
+  account2 = [(VSUserAccountFacade *)self account];
+  isDeveloperCreated = [account2 isDeveloperCreated];
 
-  if (v9)
+  if (isDeveloperCreated)
   {
     v10 = [(__CFString *)v7 stringByAppendingString:@" 🚧"];
 
@@ -65,17 +65,17 @@
 
 - (id)displayNameWithSynchedToThisDeviceIndicator
 {
-  v3 = [(VSUserAccountFacade *)self displayName];
-  v4 = [(VSUserAccountFacade *)self _synchedToThisDeviceIndicator];
-  v5 = [v3 stringByAppendingString:v4];
+  displayName = [(VSUserAccountFacade *)self displayName];
+  _synchedToThisDeviceIndicator = [(VSUserAccountFacade *)self _synchedToThisDeviceIndicator];
+  v5 = [displayName stringByAppendingString:_synchedToThisDeviceIndicator];
 
   return v5;
 }
 
 - (id)_synchedToThisDeviceIndicator
 {
-  v2 = [(VSUserAccountFacade *)self account];
-  if ([v2 isFromCurrentDevice])
+  account = [(VSUserAccountFacade *)self account];
+  if ([account isFromCurrentDevice])
   {
     v3 = &stru_83C0;
   }
@@ -92,9 +92,9 @@
 
 - (id)lastModified
 {
-  v2 = [(VSUserAccountFacade *)self account];
-  v3 = [v2 modified];
-  v4 = [VSTVAppDeveloperSettingsUtilities stringFromDate:v3];
+  account = [(VSUserAccountFacade *)self account];
+  modified = [account modified];
+  v4 = [VSTVAppDeveloperSettingsUtilities stringFromDate:modified];
 
   return v4;
 }
@@ -104,9 +104,9 @@
   v3 = +[NSBundle vs_frameworkBundle];
   v4 = [v3 localizedStringForKey:@"TV_APP_DEVELOPER_LAST_MODIFIED" value:0 table:0];
 
-  v5 = [(VSUserAccountFacade *)self account];
-  v6 = [v5 modified];
-  v7 = [VSTVAppDeveloperSettingsUtilities stringFromDate:v6];
+  account = [(VSUserAccountFacade *)self account];
+  modified = [account modified];
+  v7 = [VSTVAppDeveloperSettingsUtilities stringFromDate:modified];
   v8 = [NSString stringWithFormat:@"%@: %@", v4, v7];
 
   return v8;
@@ -114,17 +114,17 @@
 
 - (id)created
 {
-  v2 = [(VSUserAccountFacade *)self account];
-  v3 = [v2 created];
-  v4 = [VSTVAppDeveloperSettingsUtilities stringFromDate:v3];
+  account = [(VSUserAccountFacade *)self account];
+  created = [account created];
+  v4 = [VSTVAppDeveloperSettingsUtilities stringFromDate:created];
 
   return v4;
 }
 
 - (id)deviceCategory
 {
-  v2 = [(VSUserAccountFacade *)self account];
-  if ([v2 deviceCategory])
+  account = [(VSUserAccountFacade *)self account];
+  if ([account deviceCategory])
   {
     v3 = @"Other";
   }
@@ -141,28 +141,28 @@
 
 - (id)fromThisDevice
 {
-  v2 = [(VSUserAccountFacade *)self account];
-  v3 = +[NSString vs_localizedStringFromBool:](NSString, "vs_localizedStringFromBool:", [v2 isFromCurrentDevice]);
+  account = [(VSUserAccountFacade *)self account];
+  v3 = +[NSString vs_localizedStringFromBool:](NSString, "vs_localizedStringFromBool:", [account isFromCurrentDevice]);
 
   return v3;
 }
 
 - (id)sourceIdentifier
 {
-  v2 = [(VSUserAccountFacade *)self account];
-  v3 = [v2 sourceIdentifier];
+  account = [(VSUserAccountFacade *)self account];
+  sourceIdentifier = [account sourceIdentifier];
 
-  return v3;
+  return sourceIdentifier;
 }
 
 - (id)identifier
 {
-  v2 = [(VSUserAccountFacade *)self account];
-  v3 = [v2 identifier];
-  v4 = v3;
-  if (v3)
+  account = [(VSUserAccountFacade *)self account];
+  identifier = [account identifier];
+  v4 = identifier;
+  if (identifier)
   {
-    v5 = v3;
+    v5 = identifier;
   }
 
   else
@@ -177,28 +177,28 @@
 
 - (id)tvProviderIdentifier
 {
-  v2 = [(VSUserAccountFacade *)self account];
-  v3 = [v2 accountProviderIdentifier];
+  account = [(VSUserAccountFacade *)self account];
+  accountProviderIdentifier = [account accountProviderIdentifier];
 
-  return v3;
+  return accountProviderIdentifier;
 }
 
 - (id)requiresSystemTrust
 {
-  v2 = [(VSUserAccountFacade *)self account];
-  v3 = +[NSString vs_localizedStringFromBool:](NSString, "vs_localizedStringFromBool:", [v2 requiresSystemTrust]);
+  account = [(VSUserAccountFacade *)self account];
+  v3 = +[NSString vs_localizedStringFromBool:](NSString, "vs_localizedStringFromBool:", [account requiresSystemTrust]);
 
   return v3;
 }
 
 - (id)accountType
 {
-  v2 = [(VSUserAccountFacade *)self account];
-  v3 = [v2 accountType];
+  account = [(VSUserAccountFacade *)self account];
+  accountType = [account accountType];
 
-  if (v3)
+  if (accountType)
   {
-    if (v3 != &dword_0 + 1)
+    if (accountType != &dword_0 + 1)
     {
       goto LABEL_6;
     }
@@ -212,21 +212,21 @@
   }
 
   v5 = +[NSBundle vs_frameworkBundle];
-  v2 = [v5 localizedStringForKey:v4 value:0 table:0];
+  account = [v5 localizedStringForKey:v4 value:0 table:0];
 
 LABEL_6:
 
-  return v2;
+  return account;
 }
 
 - (id)billingIdentifier
 {
-  v2 = [(VSUserAccountFacade *)self account];
-  v3 = [v2 billingIdentifier];
-  v4 = v3;
-  if (v3)
+  account = [(VSUserAccountFacade *)self account];
+  billingIdentifier = [account billingIdentifier];
+  v4 = billingIdentifier;
+  if (billingIdentifier)
   {
-    v5 = v3;
+    v5 = billingIdentifier;
   }
 
   else
@@ -241,22 +241,22 @@ LABEL_6:
 
 - (id)billingCycleEndDate
 {
-  v2 = [(VSUserAccountFacade *)self account];
-  v3 = [v2 subscriptionBillingCycleEndDate];
-  v4 = [VSTVAppDeveloperSettingsUtilities stringFromDate:v3];
+  account = [(VSUserAccountFacade *)self account];
+  subscriptionBillingCycleEndDate = [account subscriptionBillingCycleEndDate];
+  v4 = [VSTVAppDeveloperSettingsUtilities stringFromDate:subscriptionBillingCycleEndDate];
 
   return v4;
 }
 
 - (id)updateURLString
 {
-  v2 = [(VSUserAccountFacade *)self account];
-  v3 = [v2 updateURL];
-  v4 = [v3 absoluteString];
-  v5 = v4;
-  if (v4)
+  account = [(VSUserAccountFacade *)self account];
+  updateURL = [account updateURL];
+  absoluteString = [updateURL absoluteString];
+  v5 = absoluteString;
+  if (absoluteString)
   {
-    v6 = v4;
+    v6 = absoluteString;
   }
 
   else
@@ -271,39 +271,39 @@ LABEL_6:
 
 - (id)authenticationDataString
 {
-  v3 = [(VSUserAccountFacade *)self account];
-  if ([v3 isFromCurrentDevice])
+  account = [(VSUserAccountFacade *)self account];
+  if ([account isFromCurrentDevice])
   {
-    v4 = [(VSUserAccountFacade *)self account];
-    v5 = [v4 authenticationData];
-    if (v5)
+    account2 = [(VSUserAccountFacade *)self account];
+    authenticationData = [account2 authenticationData];
+    if (authenticationData)
     {
-      v6 = [(VSUserAccountFacade *)self account];
-      v7 = [v6 authenticationData];
+      account3 = [(VSUserAccountFacade *)self account];
+      authenticationData2 = [account3 authenticationData];
     }
 
     else
     {
-      v7 = &stru_83C0;
+      authenticationData2 = &stru_83C0;
     }
   }
 
   else
   {
-    v7 = &stru_83C0;
+    authenticationData2 = &stru_83C0;
   }
 
-  return v7;
+  return authenticationData2;
 }
 
 - (id)tierIdentifiers
 {
-  v2 = [(VSUserAccountFacade *)self account];
-  v3 = [v2 tierIdentifiers];
-  v4 = v3;
-  if (v3)
+  account = [(VSUserAccountFacade *)self account];
+  tierIdentifiers = [account tierIdentifiers];
+  v4 = tierIdentifiers;
+  if (tierIdentifiers)
   {
-    v5 = v3;
+    v5 = tierIdentifiers;
   }
 
   else

@@ -1,13 +1,13 @@
 @interface _NSStandardTextGraphicsContextProvider
-+ (Class)colorClassForApplicationFrameworkContext:(int64_t)a3;
++ (Class)colorClassForApplicationFrameworkContext:(int64_t)context;
 @end
 
 @implementation _NSStandardTextGraphicsContextProvider
 
-+ (Class)colorClassForApplicationFrameworkContext:(int64_t)a3
++ (Class)colorClassForApplicationFrameworkContext:(int64_t)context
 {
   v3 = getUIColorClass;
-  if (a3 != 1)
+  if (context != 1)
   {
     v3 = &getNSColorClass_1;
   }

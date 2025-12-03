@@ -9,20 +9,20 @@
 
 + (id)avkit_tintColorForControlElementWithUserInterfaceStyle:()AVAdditions
 {
-  v4 = [MEMORY[0x1E69DC888] whiteColor];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
   if (a3 == 1)
   {
-    v5 = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
 
-    v4 = v5;
+    whiteColor = secondaryLabelColor;
   }
 
-  return v4;
+  return whiteColor;
 }
 
 + (id)avkit_tintColorForControlElementIsOverVideo:()AVAdditions withUserInterfaceStyle:
 {
-  v6 = [MEMORY[0x1E69DC888] whiteColor];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
   if (a4 == 1)
   {
     if (a3)
@@ -36,10 +36,10 @@
     }
     v7 = ;
 
-    v6 = v7;
+    whiteColor = v7;
   }
 
-  return v6;
+  return whiteColor;
 }
 
 + (id)AV_indicatorForegroundColor

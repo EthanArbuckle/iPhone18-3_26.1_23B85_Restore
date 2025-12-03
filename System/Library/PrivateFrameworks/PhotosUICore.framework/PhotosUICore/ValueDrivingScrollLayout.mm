@@ -1,16 +1,16 @@
 @interface ValueDrivingScrollLayout
 - (_TtC12PhotosUICore24ValueDrivingScrollLayout)init;
-- (_TtC12PhotosUICore24ValueDrivingScrollLayout)initWithContentLayout:(id)a3;
+- (_TtC12PhotosUICore24ValueDrivingScrollLayout)initWithContentLayout:(id)layout;
 - (void)isScrollingDidChange;
-- (void)scrollLayoutDidScroll:(id)a3;
+- (void)scrollLayoutDidScroll:(id)scroll;
 @end
 
 @implementation ValueDrivingScrollLayout
 
-- (void)scrollLayoutDidScroll:(id)a3
+- (void)scrollLayoutDidScroll:(id)scroll
 {
-  v4 = a3;
-  v5 = self;
+  scrollCopy = scroll;
+  selfCopy = self;
   sub_1A43F22E0();
 }
 
@@ -23,7 +23,7 @@
   sub_1A43F18F8();
 }
 
-- (_TtC12PhotosUICore24ValueDrivingScrollLayout)initWithContentLayout:(id)a3
+- (_TtC12PhotosUICore24ValueDrivingScrollLayout)initWithContentLayout:(id)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

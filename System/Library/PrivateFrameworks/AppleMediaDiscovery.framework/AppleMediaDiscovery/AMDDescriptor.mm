@@ -1,16 +1,16 @@
 @interface AMDDescriptor
-+ (id)deleteAll:(id *)a3;
-+ (id)getDescriptorsForDomain:(int64_t)a3 error:(id *)a4;
-+ (id)refreshDescriptors:(id)a3 forDomain:(int64_t)a4 error:(id *)a5;
++ (id)deleteAll:(id *)all;
++ (id)getDescriptorsForDomain:(int64_t)domain error:(id *)error;
++ (id)refreshDescriptors:(id)descriptors forDomain:(int64_t)domain error:(id *)error;
 @end
 
 @implementation AMDDescriptor
 
-+ (id)deleteAll:(id *)a3
++ (id)deleteAll:(id *)all
 {
-  v33 = a1;
+  selfCopy = self;
   v32 = a2;
-  v31 = a3;
+  allCopy = all;
   v24 = 0;
   v25 = &v24;
   v26 = 838860800;
@@ -26,14 +26,14 @@
   v22 = __Block_byref_object_dispose__11;
   v23 = 0;
   v16 = +[AMDCoreDataPersistentContainer sharedContainer];
-  v15 = [v16 getManagedObjectContext];
-  v7 = v15;
+  getManagedObjectContext = [v16 getManagedObjectContext];
+  v7 = getManagedObjectContext;
   v8 = MEMORY[0x277D85DD0];
   v9 = -1073741824;
   v10 = 0;
   v11 = __27__AMDDescriptor_deleteAll___block_invoke;
   v12 = &unk_278CB5AA8;
-  v13 = MEMORY[0x277D82BE0](v15);
+  v13 = MEMORY[0x277D82BE0](getManagedObjectContext);
   v14[1] = &v24;
   v14[0] = MEMORY[0x277D82BE0](v16);
   v14[2] = &v17;
@@ -42,7 +42,7 @@
   {
     v6 = v25[5];
     v3 = v6;
-    *v31 = v6;
+    *allCopy = v6;
     v34 = 0;
   }
 
@@ -53,7 +53,7 @@
 
   objc_storeStrong(v14, 0);
   objc_storeStrong(&v13, 0);
-  objc_storeStrong(&v15, 0);
+  objc_storeStrong(&getManagedObjectContext, 0);
   objc_storeStrong(&v16, 0);
   _Block_object_dispose(&v17, 8);
   objc_storeStrong(&v23, 0);
@@ -107,16 +107,16 @@ void __27__AMDDescriptor_deleteAll___block_invoke(void *a1)
   objc_storeStrong(v18, 0);
 }
 
-+ (id)refreshDescriptors:(id)a3 forDomain:(int64_t)a4 error:(id *)a5
++ (id)refreshDescriptors:(id)descriptors forDomain:(int64_t)domain error:(id *)error
 {
   v49 = *MEMORY[0x277D85DE8];
-  v46 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v44 = a4;
-  v43 = a5;
-  v42 = [v46 deleteAll:a5];
+  objc_storeStrong(location, descriptors);
+  domainCopy = domain;
+  errorCopy = error;
+  v42 = [selfCopy deleteAll:error];
   v35 = 0;
   v36 = &v35;
   v37 = 838860800;
@@ -124,22 +124,22 @@ void __27__AMDDescriptor_deleteAll___block_invoke(void *a1)
   v39 = __Block_byref_object_copy__11;
   v40 = __Block_byref_object_dispose__11;
   v41 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  if (*v43)
+  if (*errorCopy)
   {
     v34 = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
     v33 = OS_LOG_TYPE_ERROR;
     if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
     {
-      v10 = [*v43 localizedDescription];
-      v32 = MEMORY[0x277D82BE0](v10);
+      localizedDescription = [*errorCopy localizedDescription];
+      v32 = MEMORY[0x277D82BE0](localizedDescription);
       __os_log_helper_16_2_1_8_64(v48, v32);
       _os_log_error_impl(&dword_240CB9000, v34, v33, "Error deleting descriptors: %@", v48, 0xCu);
-      MEMORY[0x277D82BD8](v10);
+      MEMORY[0x277D82BD8](localizedDescription);
       objc_storeStrong(&v32, 0);
     }
 
     objc_storeStrong(&v34, 0);
-    *v43 = 0;
+    *errorCopy = 0;
   }
 
   else
@@ -174,8 +174,8 @@ void __27__AMDDescriptor_deleteAll___block_invoke(void *a1)
   v28 = __Block_byref_object_dispose__11;
   v29 = 0;
   v22 = +[AMDCoreDataPersistentContainer sharedContainer];
-  v21 = [v22 getManagedObjectContext];
-  v9 = v21;
+  getManagedObjectContext = [v22 getManagedObjectContext];
+  v9 = getManagedObjectContext;
   v13 = MEMORY[0x277D85DD0];
   v14 = -1073741824;
   v15 = 0;
@@ -183,8 +183,8 @@ void __27__AMDDescriptor_deleteAll___block_invoke(void *a1)
   v17 = &unk_278CB6500;
   v18 = MEMORY[0x277D82BE0](location[0]);
   v20[1] = &v23;
-  v19 = MEMORY[0x277D82BE0](v21);
-  v20[3] = v44;
+  v19 = MEMORY[0x277D82BE0](getManagedObjectContext);
+  v20[3] = domainCopy;
   v20[2] = &v35;
   v20[0] = MEMORY[0x277D82BE0](v22);
   [v9 performBlockAndWait:&v13];
@@ -192,14 +192,14 @@ void __27__AMDDescriptor_deleteAll___block_invoke(void *a1)
   {
     v8 = v24[5];
     v5 = v8;
-    *v43 = v8;
+    *errorCopy = v8;
   }
 
   v7 = MEMORY[0x277D82BE0](v36[5]);
   objc_storeStrong(v20, 0);
   objc_storeStrong(&v19, 0);
   objc_storeStrong(&v18, 0);
-  objc_storeStrong(&v21, 0);
+  objc_storeStrong(&getManagedObjectContext, 0);
   objc_storeStrong(&v22, 0);
   _Block_object_dispose(&v23, 8);
   objc_storeStrong(&v29, 0);
@@ -377,12 +377,12 @@ LABEL_14:
   *MEMORY[0x277D85DE8];
 }
 
-+ (id)getDescriptorsForDomain:(int64_t)a3 error:(id *)a4
++ (id)getDescriptorsForDomain:(int64_t)domain error:(id *)error
 {
-  v34 = a1;
+  selfCopy = self;
   v33 = a2;
-  v32 = a3;
-  v31 = a4;
+  domainCopy = domain;
+  errorCopy = error;
   v24 = 0;
   v25 = &v24;
   v26 = 838860800;
@@ -398,16 +398,16 @@ LABEL_14:
   v22 = __Block_byref_object_dispose__11;
   v23 = 0;
   v9 = +[AMDCoreDataPersistentContainer sharedContainer];
-  v16 = [v9 getManagedObjectContext];
+  getManagedObjectContext = [v9 getManagedObjectContext];
   MEMORY[0x277D82BD8](v9);
-  v8 = v16;
+  v8 = getManagedObjectContext;
   v10 = MEMORY[0x277D85DD0];
   v11 = -1073741824;
   v12 = 0;
   v13 = __47__AMDDescriptor_getDescriptorsForDomain_error___block_invoke;
   v14 = &unk_278CB6528;
-  v15[3] = v32;
-  v15[0] = MEMORY[0x277D82BE0](v16);
+  v15[3] = domainCopy;
+  v15[0] = MEMORY[0x277D82BE0](getManagedObjectContext);
   v15[1] = &v24;
   v15[2] = &v17;
   [v8 performBlockAndWait:&v10];
@@ -415,7 +415,7 @@ LABEL_14:
   {
     v7 = v25[5];
     v4 = v7;
-    *v31 = v7;
+    *errorCopy = v7;
     v35 = 0;
   }
 
@@ -425,7 +425,7 @@ LABEL_14:
   }
 
   objc_storeStrong(v15, 0);
-  objc_storeStrong(&v16, 0);
+  objc_storeStrong(&getManagedObjectContext, 0);
   _Block_object_dispose(&v17, 8);
   objc_storeStrong(&v23, 0);
   _Block_object_dispose(&v24, 8);

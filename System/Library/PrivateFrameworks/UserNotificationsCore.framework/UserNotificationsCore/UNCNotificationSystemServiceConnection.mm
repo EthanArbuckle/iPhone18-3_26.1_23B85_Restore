@@ -1,29 +1,29 @@
 @interface UNCNotificationSystemServiceConnection
-- (BOOL)isApplicationForeground:(id)a3;
-- (BOOL)setBadgeNumber:(id)a3 forBundleIdentifier:(id)a4;
-- (BOOL)setBadgeString:(id)a3 forBundleIdentifier:(id)a4;
-- (UNCNotificationSystemServiceConnection)initWithConnection:(id)a3 connectionDelegate:(id)a4 delegate:(id)a5;
+- (BOOL)isApplicationForeground:(id)foreground;
+- (BOOL)setBadgeNumber:(id)number forBundleIdentifier:(id)identifier;
+- (BOOL)setBadgeString:(id)string forBundleIdentifier:(id)identifier;
+- (UNCNotificationSystemServiceConnection)initWithConnection:(id)connection connectionDelegate:(id)delegate delegate:(id)a5;
 - (id)allBundleIdentifiersForCategories;
-- (id)badgeNumberForBundleIdentifier:(id)a3;
-- (id)categoriesForBundleIdentifier:(id)a3;
-- (id)categoryForIdentifier:(id)a3 bundleIdentifier:(id)a4;
-- (void)categoryRepositoryDidChangeCategoriesForBundleIdentifier:(id)a3;
+- (id)badgeNumberForBundleIdentifier:(id)identifier;
+- (id)categoriesForBundleIdentifier:(id)identifier;
+- (id)categoryForIdentifier:(id)identifier bundleIdentifier:(id)bundleIdentifier;
+- (void)categoryRepositoryDidChangeCategoriesForBundleIdentifier:(id)identifier;
 - (void)dealloc;
-- (void)notificationRepositoryDidDiscoverContentOnFirstUnlockForBundleIdentifier:(id)a3;
-- (void)notificationRepositoryDidPerformUpdates:(id)a3 forBundleIdentifier:(id)a4;
-- (void)pendingNotificationRepositoryDidPerformUpdates:(id)a3 forBundleIdentifier:(id)a4;
-- (void)removeNotificationRecordsForIdentifiers:(id)a3 bundleIdentifier:(id)a4;
-- (void)setCategories:(id)a3 forBundleIdentifier:(id)a4;
-- (void)topicRepositoryDidChangeTopicsForBundleIdentifier:(id)a3;
-- (void)willPresentNotification:(id)a3 forBundleIdentifier:(id)a4 completionHandler:(id)a5;
+- (void)notificationRepositoryDidDiscoverContentOnFirstUnlockForBundleIdentifier:(id)identifier;
+- (void)notificationRepositoryDidPerformUpdates:(id)updates forBundleIdentifier:(id)identifier;
+- (void)pendingNotificationRepositoryDidPerformUpdates:(id)updates forBundleIdentifier:(id)identifier;
+- (void)removeNotificationRecordsForIdentifiers:(id)identifiers bundleIdentifier:(id)identifier;
+- (void)setCategories:(id)categories forBundleIdentifier:(id)identifier;
+- (void)topicRepositoryDidChangeTopicsForBundleIdentifier:(id)identifier;
+- (void)willPresentNotification:(id)notification forBundleIdentifier:(id)identifier completionHandler:(id)handler;
 @end
 
 @implementation UNCNotificationSystemServiceConnection
 
-- (UNCNotificationSystemServiceConnection)initWithConnection:(id)a3 connectionDelegate:(id)a4 delegate:(id)a5
+- (UNCNotificationSystemServiceConnection)initWithConnection:(id)connection connectionDelegate:(id)delegate delegate:(id)a5
 {
-  v9 = a3;
-  v10 = a4;
+  connectionCopy = connection;
+  delegateCopy = delegate;
   v11 = a5;
   v20.receiver = self;
   v20.super_class = UNCNotificationSystemServiceConnection;
@@ -31,8 +31,8 @@
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_connection, a3);
-    objc_storeWeak(&v13->_connectionDelegate, v10);
+    objc_storeStrong(&v12->_connection, connection);
+    objc_storeWeak(&v13->_connectionDelegate, delegateCopy);
     objc_storeWeak(&v13->_delegate, v11);
     objc_initWeak(&location, v13);
     connection = v13->_connection;
@@ -99,26 +99,6 @@ void __89__UNCNotificationSystemServiceConnection_initWithConnection_connectionD
   }
 }
 
-{
-  WeakRetained = objc_loadWeakRetained((a1 + 32));
-  if (WeakRetained)
-  {
-    v2 = *MEMORY[0x1E6983358];
-    if (os_log_type_enabled(*MEMORY[0x1E6983358], OS_LOG_TYPE_INFO))
-    {
-      *v5 = 0;
-      _os_log_impl(&dword_1DA7A9000, v2, OS_LOG_TYPE_INFO, "System service connection is invalidated", v5, 2u);
-    }
-
-    v3 = objc_loadWeakRetained(WeakRetained + 1);
-    v4 = v3;
-    if (v3)
-    {
-      [v3 systemServiceConnectionDidInvalidate:WeakRetained];
-    }
-  }
-}
-
 - (void)dealloc
 {
   [(BSServiceConnectionHost *)self->_connection invalidate];
@@ -127,14 +107,14 @@ void __89__UNCNotificationSystemServiceConnection_initWithConnection_connectionD
   [(UNCNotificationSystemServiceConnection *)&v3 dealloc];
 }
 
-- (id)badgeNumberForBundleIdentifier:(id)a3
+- (id)badgeNumberForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v6 = WeakRetained;
   if (WeakRetained)
   {
-    v7 = [WeakRetained badgeNumberForBundleIdentifier:v4];
+    v7 = [WeakRetained badgeNumberForBundleIdentifier:identifierCopy];
   }
 
   else
@@ -150,15 +130,15 @@ void __89__UNCNotificationSystemServiceConnection_initWithConnection_connectionD
   return v7;
 }
 
-- (BOOL)setBadgeNumber:(id)a3 forBundleIdentifier:(id)a4
+- (BOOL)setBadgeNumber:(id)number forBundleIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  numberCopy = number;
+  identifierCopy = identifier;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v9 = WeakRetained;
   if (WeakRetained)
   {
-    v10 = [WeakRetained setBadgeNumber:v6 forBundleIdentifier:v7];
+    v10 = [WeakRetained setBadgeNumber:numberCopy forBundleIdentifier:identifierCopy];
   }
 
   else
@@ -174,15 +154,15 @@ void __89__UNCNotificationSystemServiceConnection_initWithConnection_connectionD
   return v10;
 }
 
-- (BOOL)setBadgeString:(id)a3 forBundleIdentifier:(id)a4
+- (BOOL)setBadgeString:(id)string forBundleIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  stringCopy = string;
+  identifierCopy = identifier;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v9 = WeakRetained;
   if (WeakRetained)
   {
-    v10 = [WeakRetained setBadgeString:v6 forBundleIdentifier:v7];
+    v10 = [WeakRetained setBadgeString:stringCopy forBundleIdentifier:identifierCopy];
   }
 
   else
@@ -198,14 +178,14 @@ void __89__UNCNotificationSystemServiceConnection_initWithConnection_connectionD
   return v10;
 }
 
-- (BOOL)isApplicationForeground:(id)a3
+- (BOOL)isApplicationForeground:(id)foreground
 {
-  v4 = a3;
+  foregroundCopy = foreground;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v6 = WeakRetained;
   if (WeakRetained)
   {
-    v7 = [WeakRetained isApplicationForeground:v4];
+    v7 = [WeakRetained isApplicationForeground:foregroundCopy];
   }
 
   else
@@ -221,11 +201,11 @@ void __89__UNCNotificationSystemServiceConnection_initWithConnection_connectionD
   return v7;
 }
 
-- (void)willPresentNotification:(id)a3 forBundleIdentifier:(id)a4 completionHandler:(id)a5
+- (void)willPresentNotification:(id)notification forBundleIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  notificationCopy = notification;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (WeakRetained)
   {
@@ -233,8 +213,8 @@ void __89__UNCNotificationSystemServiceConnection_initWithConnection_connectionD
     v13[1] = 3221225472;
     v13[2] = __104__UNCNotificationSystemServiceConnection_willPresentNotification_forBundleIdentifier_completionHandler___block_invoke;
     v13[3] = &unk_1E85D7448;
-    v14 = v10;
-    [WeakRetained willPresentNotification:v8 forBundleIdentifier:v9 withCompletionHandler:v13];
+    v14 = handlerCopy;
+    [WeakRetained willPresentNotification:notificationCopy forBundleIdentifier:identifierCopy withCompletionHandler:v13];
     v12 = v14;
 LABEL_6:
 
@@ -244,7 +224,7 @@ LABEL_6:
   if (os_log_type_enabled(*MEMORY[0x1E69833B0], OS_LOG_TYPE_ERROR))
   {
     [UNCNotificationSystemServiceConnection badgeNumberForBundleIdentifier:];
-    if (!v10)
+    if (!handlerCopy)
     {
       goto LABEL_7;
     }
@@ -252,11 +232,11 @@ LABEL_6:
     goto LABEL_5;
   }
 
-  if (v10)
+  if (handlerCopy)
   {
 LABEL_5:
     v12 = _UNCNilDelegateError("[UNCNotificationSystemServiceConnection willPresentNotification:forBundleIdentifier:completionHandler:]");
-    (*(v10 + 2))(v10, &unk_1F5663620, v12);
+    (*(handlerCopy + 2))(handlerCopy, &unk_1F5663620, v12);
     goto LABEL_6;
   }
 
@@ -275,15 +255,15 @@ void __104__UNCNotificationSystemServiceConnection_willPresentNotification_forBu
   }
 }
 
-- (void)notificationRepositoryDidPerformUpdates:(id)a3 forBundleIdentifier:(id)a4
+- (void)notificationRepositoryDidPerformUpdates:(id)updates forBundleIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  updatesCopy = updates;
+  identifierCopy = identifier;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v9 = WeakRetained;
   if (WeakRetained)
   {
-    [WeakRetained notificationRepositoryDidPerformUpdates:v6 forBundleIdentifier:v7];
+    [WeakRetained notificationRepositoryDidPerformUpdates:updatesCopy forBundleIdentifier:identifierCopy];
   }
 
   else if (os_log_type_enabled(*MEMORY[0x1E69833B0], OS_LOG_TYPE_ERROR))
@@ -292,14 +272,14 @@ void __104__UNCNotificationSystemServiceConnection_willPresentNotification_forBu
   }
 }
 
-- (void)notificationRepositoryDidDiscoverContentOnFirstUnlockForBundleIdentifier:(id)a3
+- (void)notificationRepositoryDidDiscoverContentOnFirstUnlockForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v6 = WeakRetained;
   if (WeakRetained)
   {
-    [WeakRetained notificationRepositoryDidDiscoverContentOnFirstUnlockForBundleIdentifier:v4];
+    [WeakRetained notificationRepositoryDidDiscoverContentOnFirstUnlockForBundleIdentifier:identifierCopy];
   }
 
   else if (os_log_type_enabled(*MEMORY[0x1E69833B0], OS_LOG_TYPE_ERROR))
@@ -308,15 +288,15 @@ void __104__UNCNotificationSystemServiceConnection_willPresentNotification_forBu
   }
 }
 
-- (void)pendingNotificationRepositoryDidPerformUpdates:(id)a3 forBundleIdentifier:(id)a4
+- (void)pendingNotificationRepositoryDidPerformUpdates:(id)updates forBundleIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  updatesCopy = updates;
+  identifierCopy = identifier;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v9 = WeakRetained;
   if (WeakRetained)
   {
-    [WeakRetained pendingNotificationRepositoryDidPerformUpdates:v6 forBundleIdentifier:v7];
+    [WeakRetained pendingNotificationRepositoryDidPerformUpdates:updatesCopy forBundleIdentifier:identifierCopy];
   }
 
   else if (os_log_type_enabled(*MEMORY[0x1E69833B0], OS_LOG_TYPE_ERROR))
@@ -325,14 +305,14 @@ void __104__UNCNotificationSystemServiceConnection_willPresentNotification_forBu
   }
 }
 
-- (void)categoryRepositoryDidChangeCategoriesForBundleIdentifier:(id)a3
+- (void)categoryRepositoryDidChangeCategoriesForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v6 = WeakRetained;
   if (WeakRetained)
   {
-    [WeakRetained categoryRepositoryDidChangeCategoriesForBundleIdentifier:v4];
+    [WeakRetained categoryRepositoryDidChangeCategoriesForBundleIdentifier:identifierCopy];
   }
 
   else if (os_log_type_enabled(*MEMORY[0x1E69833B0], OS_LOG_TYPE_ERROR))
@@ -341,14 +321,14 @@ void __104__UNCNotificationSystemServiceConnection_willPresentNotification_forBu
   }
 }
 
-- (void)topicRepositoryDidChangeTopicsForBundleIdentifier:(id)a3
+- (void)topicRepositoryDidChangeTopicsForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v6 = WeakRetained;
   if (WeakRetained)
   {
-    [WeakRetained topicRepositoryDidChangeTopicsForBundleIdentifier:v4];
+    [WeakRetained topicRepositoryDidChangeTopicsForBundleIdentifier:identifierCopy];
   }
 
   else if (os_log_type_enabled(*MEMORY[0x1E69833B0], OS_LOG_TYPE_ERROR))
@@ -357,15 +337,15 @@ void __104__UNCNotificationSystemServiceConnection_willPresentNotification_forBu
   }
 }
 
-- (void)removeNotificationRecordsForIdentifiers:(id)a3 bundleIdentifier:(id)a4
+- (void)removeNotificationRecordsForIdentifiers:(id)identifiers bundleIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  identifiersCopy = identifiers;
+  identifierCopy = identifier;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v9 = WeakRetained;
   if (WeakRetained)
   {
-    [WeakRetained removeNotificationRecordsForIdentifiers:v6 bundleIdentifier:v7];
+    [WeakRetained removeNotificationRecordsForIdentifiers:identifiersCopy bundleIdentifier:identifierCopy];
   }
 
   else if (os_log_type_enabled(*MEMORY[0x1E69833B0], OS_LOG_TYPE_ERROR))
@@ -380,7 +360,7 @@ void __104__UNCNotificationSystemServiceConnection_willPresentNotification_forBu
   v3 = WeakRetained;
   if (WeakRetained)
   {
-    v4 = [WeakRetained allBundleIdentifiersForCategories];
+    allBundleIdentifiersForCategories = [WeakRetained allBundleIdentifiersForCategories];
   }
 
   else
@@ -390,21 +370,21 @@ void __104__UNCNotificationSystemServiceConnection_willPresentNotification_forBu
       [UNCNotificationSystemServiceConnection badgeNumberForBundleIdentifier:];
     }
 
-    v4 = MEMORY[0x1E695E0F0];
+    allBundleIdentifiersForCategories = MEMORY[0x1E695E0F0];
   }
 
-  return v4;
+  return allBundleIdentifiersForCategories;
 }
 
-- (id)categoryForIdentifier:(id)a3 bundleIdentifier:(id)a4
+- (id)categoryForIdentifier:(id)identifier bundleIdentifier:(id)bundleIdentifier
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  bundleIdentifierCopy = bundleIdentifier;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v9 = WeakRetained;
   if (WeakRetained)
   {
-    v10 = [WeakRetained categoryForIdentifier:v6 bundleIdentifier:v7];
+    v10 = [WeakRetained categoryForIdentifier:identifierCopy bundleIdentifier:bundleIdentifierCopy];
   }
 
   else
@@ -420,14 +400,14 @@ void __104__UNCNotificationSystemServiceConnection_willPresentNotification_forBu
   return v10;
 }
 
-- (id)categoriesForBundleIdentifier:(id)a3
+- (id)categoriesForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v6 = WeakRetained;
   if (WeakRetained)
   {
-    v7 = [WeakRetained categoriesForBundleIdentifier:v4];
+    v7 = [WeakRetained categoriesForBundleIdentifier:identifierCopy];
   }
 
   else
@@ -443,15 +423,15 @@ void __104__UNCNotificationSystemServiceConnection_willPresentNotification_forBu
   return v7;
 }
 
-- (void)setCategories:(id)a3 forBundleIdentifier:(id)a4
+- (void)setCategories:(id)categories forBundleIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  categoriesCopy = categories;
+  identifierCopy = identifier;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v9 = WeakRetained;
   if (WeakRetained)
   {
-    [WeakRetained setCategories:v6 forBundleIdentifier:v7];
+    [WeakRetained setCategories:categoriesCopy forBundleIdentifier:identifierCopy];
   }
 
   else if (os_log_type_enabled(*MEMORY[0x1E69833B0], OS_LOG_TYPE_ERROR))

@@ -1,6 +1,6 @@
 @interface DOCFilenameTransitionCoordinator
 - (_TtC26DocumentManagerExecutablesP33_AC938FE9F5E323A5ECA7FB68EBA24A1232DOCFilenameTransitionCoordinator)init;
-- (void)animateTransition:(id)a3;
+- (void)animateTransition:(id)transition;
 @end
 
 @implementation DOCFilenameTransitionCoordinator
@@ -23,11 +23,11 @@
   return [(DOCFilenameTransitionCoordinator *)&v8 init];
 }
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  DOCFilenameTransitionCoordinator.animateTransition(using:)(a3);
+  selfCopy = self;
+  DOCFilenameTransitionCoordinator.animateTransition(using:)(transition);
   swift_unknownObjectRelease();
 }
 

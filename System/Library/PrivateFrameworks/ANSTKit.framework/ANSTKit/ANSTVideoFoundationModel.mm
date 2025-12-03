@@ -1,24 +1,24 @@
 @interface ANSTVideoFoundationModel
-- (ANSTVideoFoundationModel)initWithConfiguration:(id)a3;
-- (BOOL)bindInputFrameBuffer:(__CVBuffer *)a3 error:(id *)a4;
-- (BOOL)executeInferenceWithError:(id *)a3;
-- (BOOL)prepareWithError:(id *)a3;
+- (ANSTVideoFoundationModel)initWithConfiguration:(id)configuration;
+- (BOOL)bindInputFrameBuffer:(__CVBuffer *)buffer error:(id *)error;
+- (BOOL)executeInferenceWithError:(id *)error;
+- (BOOL)prepareWithError:(id *)error;
 - (void)dealloc;
 @end
 
 @implementation ANSTVideoFoundationModel
 
-- (ANSTVideoFoundationModel)initWithConfiguration:(id)a3
+- (ANSTVideoFoundationModel)initWithConfiguration:(id)configuration
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  configurationCopy = configuration;
   v21.receiver = self;
   v21.super_class = ANSTVideoFoundationModel;
-  v6 = [(ANSTAlgorithm *)&v21 initWithConfiguration:v5];
+  v6 = [(ANSTAlgorithm *)&v21 initWithConfiguration:configurationCopy];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_config, a3);
+    objc_storeStrong(&v6->_config, configuration);
     if (objc_msgSend_version(v7->_config, v8, v9) == 0x10000)
     {
       v10 = 256;
@@ -47,7 +47,7 @@
   return v7;
 }
 
-- (BOOL)prepareWithError:(id *)a3
+- (BOOL)prepareWithError:(id *)error
 {
   v107[1] = *MEMORY[0x277D85DE8];
   if (!self->_prepared)
@@ -66,7 +66,7 @@
           sub_22E657EDC();
         }
 
-        if (!a3)
+        if (!error)
         {
           goto LABEL_59;
         }
@@ -76,7 +76,7 @@
         v107[0] = v15;
         objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v17, v107, &v106, 1);
         v75 = LABEL_58:;
-        *a3 = objc_msgSend_errorWithDomain_code_userInfo_(v18, v76, @"ANSTErrorDomain", 5, v75);
+        *error = objc_msgSend_errorWithDomain_code_userInfo_(v18, v76, @"ANSTErrorDomain", 5, v75);
 
 LABEL_59:
         goto LABEL_60;
@@ -101,7 +101,7 @@ LABEL_30:
             sub_22E657EDC();
           }
 
-          if (!a3)
+          if (!error)
           {
             goto LABEL_59;
           }
@@ -129,7 +129,7 @@ LABEL_30:
             sub_22E657EDC();
           }
 
-          if (!a3)
+          if (!error)
           {
             goto LABEL_59;
           }
@@ -157,7 +157,7 @@ LABEL_30:
             sub_22E657EDC();
           }
 
-          if (!a3)
+          if (!error)
           {
             goto LABEL_59;
           }
@@ -185,7 +185,7 @@ LABEL_30:
           sub_22E657EDC();
         }
 
-        if (!a3)
+        if (!error)
         {
           goto LABEL_59;
         }
@@ -216,7 +216,7 @@ LABEL_30:
           sub_22E657EDC();
         }
 
-        if (!a3)
+        if (!error)
         {
           goto LABEL_59;
         }
@@ -250,7 +250,7 @@ LABEL_30:
           sub_22E657FD0(&self->_config, v78, v79);
         }
 
-        if (a3)
+        if (error)
         {
           v82 = MEMORY[0x277CCACA8];
           v83 = objc_msgSend_version(self->_config, v80, v81);
@@ -259,7 +259,7 @@ LABEL_30:
           v104 = *MEMORY[0x277CCA068];
           v105 = v85;
           v88 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v87, &v105, &v104, 1);
-          *a3 = objc_msgSend_errorWithDomain_code_userInfo_(v86, v89, @"ANSTErrorDomain", 5, v88);
+          *error = objc_msgSend_errorWithDomain_code_userInfo_(v86, v89, @"ANSTErrorDomain", 5, v88);
         }
 
         goto LABEL_60;
@@ -282,7 +282,7 @@ LABEL_30:
         if (!precompiled_compute_operation_with_options)
         {
 LABEL_26:
-          if (a3 && *a3)
+          if (error && *error)
           {
 
 LABEL_60:
@@ -302,14 +302,14 @@ LABEL_60:
       sub_22E657F50(v26, v27, v28, v29, v30, v31, v32, v33);
     }
 
-    if (a3)
+    if (error)
     {
       v35 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v34, @"MIL compilation failed due to E5 error (%s)", v26);
       v36 = MEMORY[0x277CCA9B8];
       v102 = *MEMORY[0x277CCA068];
       v103 = v35;
       v38 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v37, &v103, &v102, 1);
-      *a3 = objc_msgSend_errorWithDomain_code_userInfo_(v36, v39, @"ANSTErrorDomain", 5, v38);
+      *error = objc_msgSend_errorWithDomain_code_userInfo_(v36, v39, @"ANSTErrorDomain", 5, v38);
     }
 
     goto LABEL_26;
@@ -409,7 +409,7 @@ LABEL_61:
   [(ANSTVideoFoundationModel *)&v29 dealloc];
 }
 
-- (BOOL)bindInputFrameBuffer:(__CVBuffer *)a3 error:(id *)a4
+- (BOOL)bindInputFrameBuffer:(__CVBuffer *)buffer error:(id *)error
 {
   v71[1] = *MEMORY[0x277D85DE8];
   stream = self->_stream;
@@ -425,7 +425,7 @@ LABEL_61:
       sub_22E658160();
     }
 
-    if (!a4)
+    if (!error)
     {
       goto LABEL_12;
     }
@@ -437,7 +437,7 @@ LABEL_61:
     goto LABEL_11;
   }
 
-  CVPixelBufferGetIOSurface(a3);
+  CVPixelBufferGetIOSurface(buffer);
   v16 = e5rt_surface_object_create_from_iosurface();
   if (v16)
   {
@@ -450,7 +450,7 @@ LABEL_61:
       sub_22E658160();
     }
 
-    if (!a4)
+    if (!error)
     {
       goto LABEL_12;
     }
@@ -460,7 +460,7 @@ LABEL_61:
     v69 = v12;
     objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v21, &v69, &v68, 1);
     v22 = LABEL_11:;
-    *a4 = objc_msgSend_errorWithDomain_code_userInfo_(v15, v23, @"ANSTErrorDomain", 5, v22);
+    *error = objc_msgSend_errorWithDomain_code_userInfo_(v15, v23, @"ANSTErrorDomain", 5, v22);
 
     goto LABEL_12;
   }
@@ -478,7 +478,7 @@ LABEL_61:
       sub_22E658160();
     }
 
-    if (!a4)
+    if (!error)
     {
       goto LABEL_12;
     }
@@ -502,7 +502,7 @@ LABEL_61:
       sub_22E658160();
     }
 
-    if (!a4)
+    if (!error)
     {
       goto LABEL_12;
     }
@@ -558,14 +558,14 @@ LABEL_61:
     sub_22E658160();
   }
 
-  if (a4)
+  if (error)
   {
     v33 = MEMORY[0x277CCA9B8];
     v62 = *MEMORY[0x277CCA068];
     v63 = v12;
     objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v59, &v63, &v62, 1);
     v60 = LABEL_37:;
-    *a4 = objc_msgSend_errorWithDomain_code_userInfo_(v33, v61, @"ANSTErrorDomain", 5, v60);
+    *error = objc_msgSend_errorWithDomain_code_userInfo_(v33, v61, @"ANSTErrorDomain", 5, v60);
   }
 
 LABEL_12:
@@ -576,7 +576,7 @@ LABEL_13:
   return result;
 }
 
-- (BOOL)executeInferenceWithError:(id *)a3
+- (BOOL)executeInferenceWithError:(id *)error
 {
   v22[1] = *MEMORY[0x277D85DE8];
   if (self->_prepared)
@@ -598,25 +598,25 @@ LABEL_13:
       sub_22E6581D4();
     }
 
-    if (a3)
+    if (error)
     {
       v12 = MEMORY[0x277CCA9B8];
       v19 = *MEMORY[0x277CCA068];
       v20 = v9;
       v13 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v11, &v20, &v19, 1);
-      *a3 = objc_msgSend_errorWithDomain_code_userInfo_(v12, v14, @"ANSTErrorDomain", 5, v13);
+      *error = objc_msgSend_errorWithDomain_code_userInfo_(v12, v14, @"ANSTErrorDomain", 5, v13);
     }
 
     goto LABEL_9;
   }
 
-  if (a3)
+  if (error)
   {
     v15 = MEMORY[0x277CCA9B8];
     v21 = *MEMORY[0x277CCA068];
     v22[0] = @"Model was not prepared.";
     v9 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], a2, v22, &v21, 1);
-    *a3 = objc_msgSend_errorWithDomain_code_userInfo_(v15, v16, @"ANSTErrorDomain", 3, v9);
+    *error = objc_msgSend_errorWithDomain_code_userInfo_(v15, v16, @"ANSTErrorDomain", 3, v9);
 LABEL_9:
   }
 

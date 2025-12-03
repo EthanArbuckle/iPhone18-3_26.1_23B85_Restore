@@ -1,32 +1,32 @@
 @interface TSPFileManager
-+ (BOOL)copyDataFromReadChannel:(id)a3 decryptionInfo:(id)a4 size:(unint64_t)a5 toWriteChannel:(id)a6 encryptionInfo:(id)a7 encodedLength:(unint64_t *)a8 error:(id *)a9;
-+ (BOOL)linkOrCloneItemAtURL:(id)a3 toURL:(id)a4 canLink:(BOOL)a5 canClone:(BOOL)a6 error:(id *)a7;
-+ (BOOL)linkOrCopyItemAtURL:(id)a3 decryptionInfo:(id)a4 toURL:(id)a5 encryptionInfo:(id)a6 canLink:(BOOL)a7 encodedLength:(unint64_t *)a8 error:(id *)a9;
-+ (id)errorWithDomain:(id)a3 code:(int64_t)a4 sourcePath:(id)a5 targetPath:(id)a6;
++ (BOOL)copyDataFromReadChannel:(id)channel decryptionInfo:(id)info size:(unint64_t)size toWriteChannel:(id)writeChannel encryptionInfo:(id)encryptionInfo encodedLength:(unint64_t *)length error:(id *)error;
++ (BOOL)linkOrCloneItemAtURL:(id)l toURL:(id)rL canLink:(BOOL)link canClone:(BOOL)clone error:(id *)error;
++ (BOOL)linkOrCopyItemAtURL:(id)l decryptionInfo:(id)info toURL:(id)rL encryptionInfo:(id)encryptionInfo canLink:(BOOL)link encodedLength:(unint64_t *)length error:(id *)error;
++ (id)errorWithDomain:(id)domain code:(int64_t)code sourcePath:(id)path targetPath:(id)targetPath;
 + (id)ioCompletionQueue;
-+ (void)copyDataFromReadChannel:(id)a3 size:(unint64_t)a4 toWriteChannel:(id)a5 synchronous:(BOOL)a6 completion:(id)a7;
++ (void)copyDataFromReadChannel:(id)channel size:(unint64_t)size toWriteChannel:(id)writeChannel synchronous:(BOOL)synchronous completion:(id)completion;
 @end
 
 @implementation TSPFileManager
 
-+ (id)errorWithDomain:(id)a3 code:(int64_t)a4 sourcePath:(id)a5 targetPath:(id)a6
++ (id)errorWithDomain:(id)domain code:(int64_t)code sourcePath:(id)path targetPath:(id)targetPath
 {
-  v9 = a3;
-  v10 = a5;
-  v13 = a6;
-  if (v10 | v13)
+  domainCopy = domain;
+  pathCopy = path;
+  targetPathCopy = targetPath;
+  if (pathCopy | targetPathCopy)
   {
     v14 = objc_alloc(MEMORY[0x277CBEB38]);
     v16 = objc_msgSend_initWithCapacity_(v14, v15, 2);
     v17 = v16;
-    if (v10)
+    if (pathCopy)
     {
-      objc_msgSend_setObject_forKeyedSubscript_(v16, v11, v10, *MEMORY[0x277CCA170]);
+      objc_msgSend_setObject_forKeyedSubscript_(v16, v11, pathCopy, *MEMORY[0x277CCA170]);
     }
 
-    if (v13)
+    if (targetPathCopy)
     {
-      objc_msgSend_setObject_forKeyedSubscript_(v17, v11, v13, @"TSPTargetFilePath");
+      objc_msgSend_setObject_forKeyedSubscript_(v17, v11, targetPathCopy, @"TSPTargetFilePath");
     }
   }
 
@@ -37,30 +37,30 @@
 
   v18 = MEMORY[0x277CCA9B8];
   v19 = objc_msgSend_copy(v17, v11, v12);
-  v21 = objc_msgSend_errorWithDomain_code_userInfo_(v18, v20, v9, a4, v19);
+  v21 = objc_msgSend_errorWithDomain_code_userInfo_(v18, v20, domainCopy, code, v19);
 
   return v21;
 }
 
-+ (BOOL)linkOrCloneItemAtURL:(id)a3 toURL:(id)a4 canLink:(BOOL)a5 canClone:(BOOL)a6 error:(id *)a7
++ (BOOL)linkOrCloneItemAtURL:(id)l toURL:(id)rL canLink:(BOOL)link canClone:(BOOL)clone error:(id *)error
 {
-  v8 = a6;
-  v9 = a5;
-  v12 = a3;
-  v15 = a4;
-  if (v8)
+  cloneCopy = clone;
+  linkCopy = link;
+  lCopy = l;
+  rLCopy = rL;
+  if (cloneCopy)
   {
     v16 = objc_msgSend_defaultManager(MEMORY[0x277CCAA00], v13, v14);
-    v18 = objc_msgSend_copyItemAtURL_toURL_error_(v16, v17, v12, v15, a7);
+    v18 = objc_msgSend_copyItemAtURL_toURL_error_(v16, v17, lCopy, rLCopy, error);
 LABEL_16:
 
     goto LABEL_17;
   }
 
-  if (v9)
+  if (linkCopy)
   {
-    v16 = objc_msgSend_path(v12, v13, v14);
-    v21 = objc_msgSend_path(v15, v19, v20);
+    v16 = objc_msgSend_path(lCopy, v13, v14);
+    v21 = objc_msgSend_path(rLCopy, v19, v20);
     v24 = sub_276AB6F50(v21, v22, v23);
     v27 = objc_msgSend_bundlePath(v24, v25, v26);
     v30 = objc_msgSend_stringByStandardizingPath(v27, v28, v29);
@@ -74,13 +74,13 @@ LABEL_16:
 
     if (v33)
     {
-      if (!a7)
+      if (!error)
       {
         v18 = 0;
         goto LABEL_15;
       }
 
-      objc_msgSend_errorWithDomain_code_sourcePath_targetPath_(a1, v43, *MEMORY[0x277CCA050], 257, v16, v21);
+      objc_msgSend_errorWithDomain_code_sourcePath_targetPath_(self, v43, *MEMORY[0x277CCA050], 257, v16, v21);
     }
 
     else
@@ -91,28 +91,28 @@ LABEL_16:
       v56 = objc_msgSend_fileSystemRepresentation(v53, v54, v55);
       v57 = link(v52, v56);
       v18 = v57 == 0;
-      if (!a7 || !v57)
+      if (!error || !v57)
       {
         goto LABEL_15;
       }
 
       v58 = *MEMORY[0x277CCA5B8];
       v59 = *__error();
-      objc_msgSend_errorWithDomain_code_sourcePath_targetPath_(a1, v60, v58, v59, v16, v21);
+      objc_msgSend_errorWithDomain_code_sourcePath_targetPath_(self, v60, v58, v59, v16, v21);
     }
 
-    *a7 = v18 = 0;
+    *error = v18 = 0;
 LABEL_15:
 
     goto LABEL_16;
   }
 
-  if (a7)
+  if (error)
   {
     v44 = *MEMORY[0x277CCA050];
-    v16 = objc_msgSend_path(v12, v13, v14);
-    v47 = objc_msgSend_path(v15, v45, v46);
-    *a7 = objc_msgSend_errorWithDomain_code_sourcePath_targetPath_(a1, v48, v44, 257, v16, v47);
+    v16 = objc_msgSend_path(lCopy, v13, v14);
+    v47 = objc_msgSend_path(rLCopy, v45, v46);
+    *error = objc_msgSend_errorWithDomain_code_sourcePath_targetPath_(self, v48, v44, 257, v16, v47);
 
     v18 = 0;
     goto LABEL_16;
@@ -124,13 +124,13 @@ LABEL_17:
   return v18;
 }
 
-+ (BOOL)linkOrCopyItemAtURL:(id)a3 decryptionInfo:(id)a4 toURL:(id)a5 encryptionInfo:(id)a6 canLink:(BOOL)a7 encodedLength:(unint64_t *)a8 error:(id *)a9
++ (BOOL)linkOrCopyItemAtURL:(id)l decryptionInfo:(id)info toURL:(id)rL encryptionInfo:(id)encryptionInfo canLink:(BOOL)link encodedLength:(unint64_t *)length error:(id *)error
 {
-  v10 = a7;
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v20 = a6;
+  linkCopy = link;
+  lCopy = l;
+  infoCopy = info;
+  rLCopy = rL;
+  encryptionInfoCopy = encryptionInfo;
   LOBYTE(v21) = 0;
   v78 = 0;
   v79 = &v78;
@@ -142,14 +142,14 @@ LABEL_17:
   v75 = sub_276AA3A3C;
   v76 = sub_276AA3A4C;
   v77 = 0;
-  if (v15 && v17)
+  if (lCopy && rLCopy)
   {
-    if (sub_276AB65D0(v16, v20))
+    if (sub_276AB65D0(infoCopy, encryptionInfoCopy))
     {
       v22 = objc_alloc(MEMORY[0x277D811D0]);
       v23 = (v73 + 5);
       obj = v73[5];
-      v25 = objc_msgSend_initForReadingURL_error_(v22, v24, v15, &obj);
+      v25 = objc_msgSend_initForReadingURL_error_(v22, v24, lCopy, &obj);
       objc_storeStrong(v23, obj);
       if (!v25)
       {
@@ -162,7 +162,7 @@ LABEL_26:
       v26 = objc_alloc(MEMORY[0x277D811D0]);
       v27 = (v73 + 5);
       v67 = v73[5];
-      v29 = objc_msgSend_initForStreamWritingURL_error_(v26, v28, v17, &v67);
+      v29 = objc_msgSend_initForStreamWritingURL_error_(v26, v28, rLCopy, &v67);
       objc_storeStrong(v27, v67);
       if (!v29)
       {
@@ -173,7 +173,7 @@ LABEL_26:
       v66 = 0;
       v32 = *MEMORY[0x277CBE838];
       v65 = 0;
-      ResourceValue_forKey_error = objc_msgSend_getResourceValue_forKey_error_(v15, v30, &v66, v32, &v65);
+      ResourceValue_forKey_error = objc_msgSend_getResourceValue_forKey_error_(lCopy, v30, &v66, v32, &v65);
       v34 = v66;
       v63 = v65;
       if ((ResourceValue_forKey_error & 1) == 0)
@@ -198,7 +198,7 @@ LABEL_10:
       v64[3] = &unk_27A6E65C0;
       v64[4] = &v78;
       v64[5] = &v72;
-      objc_msgSend_transcodeReadChannel_decryptionInfo_size_toWriteChannel_encryptionInfo_synchronous_completion_(a1, v38, v25, v16, v37, v29, v20, 1, v64);
+      objc_msgSend_transcodeReadChannel_decryptionInfo_size_toWriteChannel_encryptionInfo_synchronous_completion_(self, v38, v25, infoCopy, v37, v29, encryptionInfoCopy, 1, v64);
       v21 = v73[5];
       objc_msgSend_close(v29, v39, v40);
       LOBYTE(v21) = v21 == 0;
@@ -209,7 +209,7 @@ LABEL_25:
       goto LABEL_26;
     }
 
-    if (v10 && (objc_msgSend_defaultManager(MEMORY[0x277CCAA00], v18, v19), v41 = objc_claimAutoreleasedReturnValue(), canCloneItemAtURL_toURL = objc_msgSend_tsu_canCloneItemAtURL_toURL_(v41, v42, v15, v17), v41, (canCloneItemAtURL_toURL & 1) == 0) && (objc_msgSend_linkOrCloneItemAtURL_toURL_canLink_canClone_error_(a1, v18, v15, v17, 1, 0, 0) & 1) != 0)
+    if (linkCopy && (objc_msgSend_defaultManager(MEMORY[0x277CCAA00], v18, v19), v41 = objc_claimAutoreleasedReturnValue(), canCloneItemAtURL_toURL = objc_msgSend_tsu_canCloneItemAtURL_toURL_(v41, v42, lCopy, rLCopy), v41, (canCloneItemAtURL_toURL & 1) == 0) && (objc_msgSend_linkOrCloneItemAtURL_toURL_canLink_canClone_error_(self, v18, lCopy, rLCopy, 1, 0, 0) & 1) != 0)
     {
       LODWORD(v21) = 1;
     }
@@ -219,16 +219,16 @@ LABEL_25:
       v44 = objc_msgSend_defaultManager(MEMORY[0x277CCAA00], v18, v19);
       v45 = (v73 + 5);
       v71 = v73[5];
-      LODWORD(v21) = objc_msgSend_copyItemAtURL_toURL_error_(v44, v46, v15, v17, &v71);
+      LODWORD(v21) = objc_msgSend_copyItemAtURL_toURL_error_(v44, v46, lCopy, rLCopy, &v71);
       objc_storeStrong(v45, v71);
     }
 
-    if (a8 && v21)
+    if (length && v21)
     {
       v70 = 0;
       v47 = *MEMORY[0x277CBE838];
       v69 = 0;
-      v48 = objc_msgSend_getResourceValue_forKey_error_(v17, v18, &v70, v47, &v69);
+      v48 = objc_msgSend_getResourceValue_forKey_error_(rLCopy, v18, &v70, v47, &v69);
       v21 = v70;
       v51 = v69;
       if (v48)
@@ -248,26 +248,26 @@ LABEL_25:
   }
 
 LABEL_27:
-  if (a8)
+  if (length)
   {
 LABEL_28:
-    *a8 = v79[3];
+    *length = v79[3];
   }
 
-  if (a9 && (v21 & 1) == 0)
+  if (error && (v21 & 1) == 0)
   {
     v53 = v73[5];
     if (v53)
     {
-      *a9 = v53;
+      *error = v53;
     }
 
     else
     {
-      v54 = objc_msgSend_path(v15, v18, v19);
-      v57 = objc_msgSend_path(v17, v55, v56);
-      v59 = objc_msgSend_errorWithDomain_code_sourcePath_targetPath_(a1, v58, *MEMORY[0x277CCA050], 4, v54, v57);
-      *a9 = v59;
+      v54 = objc_msgSend_path(lCopy, v18, v19);
+      v57 = objc_msgSend_path(rLCopy, v55, v56);
+      v59 = objc_msgSend_errorWithDomain_code_sourcePath_targetPath_(self, v58, *MEMORY[0x277CCA050], 4, v54, v57);
+      *error = v59;
     }
   }
 
@@ -277,12 +277,12 @@ LABEL_28:
   return v21;
 }
 
-+ (BOOL)copyDataFromReadChannel:(id)a3 decryptionInfo:(id)a4 size:(unint64_t)a5 toWriteChannel:(id)a6 encryptionInfo:(id)a7 encodedLength:(unint64_t *)a8 error:(id *)a9
++ (BOOL)copyDataFromReadChannel:(id)channel decryptionInfo:(id)info size:(unint64_t)size toWriteChannel:(id)writeChannel encryptionInfo:(id)encryptionInfo encodedLength:(unint64_t *)length error:(id *)error
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a6;
-  v18 = a7;
+  channelCopy = channel;
+  infoCopy = info;
+  writeChannelCopy = writeChannel;
+  encryptionInfoCopy = encryptionInfo;
   v30 = 0;
   v31 = &v30;
   v32 = 0x2020000000;
@@ -299,16 +299,16 @@ LABEL_28:
   v23[3] = &unk_27A6E65C0;
   v23[4] = &v30;
   v23[5] = &v24;
-  objc_msgSend_copyDataFromReadChannel_decryptionInfo_size_toWriteChannel_encryptionInfo_synchronous_completion_(a1, v19, v15, v16, a5, v17, v18, 1, v23);
-  if (a8)
+  objc_msgSend_copyDataFromReadChannel_decryptionInfo_size_toWriteChannel_encryptionInfo_synchronous_completion_(self, v19, channelCopy, infoCopy, size, writeChannelCopy, encryptionInfoCopy, 1, v23);
+  if (length)
   {
-    *a8 = v31[3];
+    *length = v31[3];
   }
 
   v20 = v25[5];
-  if (a9 && v20)
+  if (error && v20)
   {
-    *a9 = v20;
+    *error = v20;
     v20 = v25[5];
   }
 
@@ -331,14 +331,14 @@ LABEL_28:
   return v3;
 }
 
-+ (void)copyDataFromReadChannel:(id)a3 size:(unint64_t)a4 toWriteChannel:(id)a5 synchronous:(BOOL)a6 completion:(id)a7
++ (void)copyDataFromReadChannel:(id)channel size:(unint64_t)size toWriteChannel:(id)writeChannel synchronous:(BOOL)synchronous completion:(id)completion
 {
-  v8 = a6;
-  v12 = a3;
-  v13 = a5;
-  v14 = a7;
-  v17 = v14;
-  if (v12 && v13)
+  synchronousCopy = synchronous;
+  channelCopy = channel;
+  writeChannelCopy = writeChannel;
+  completionCopy = completion;
+  v17 = completionCopy;
+  if (channelCopy && writeChannelCopy)
   {
     v47 = 0;
     v48 = &v47;
@@ -354,13 +354,13 @@ LABEL_28:
     v42 = &v41;
     v43 = 0x2020000000;
     v44 = 0;
-    if (v8)
+    if (synchronousCopy)
     {
       v18 = objc_msgSend_currentProgress(MEMORY[0x277CCAC48], v15, v16);
 
       if (v18)
       {
-        v18 = objc_msgSend_progressWithTotalUnitCount_(MEMORY[0x277CCAC48], v19, a4);
+        v18 = objc_msgSend_progressWithTotalUnitCount_(MEMORY[0x277CCAC48], v19, size);
         v40[0] = MEMORY[0x277D85DD0];
         v40[1] = 3221225472;
         v40[2] = sub_276AA43BC;
@@ -384,13 +384,13 @@ LABEL_28:
     v37 = &v47;
     v23 = v22;
     v34 = v23;
-    v35 = v13;
+    v35 = writeChannelCopy;
     v38 = &v41;
     v24 = v18;
     v36 = v24;
     v39 = v45;
-    objc_msgSend_readWithHandler_(v12, v25, v33);
-    if (v8)
+    objc_msgSend_readWithHandler_(channelCopy, v25, v33);
+    if (synchronousCopy)
     {
       dispatch_group_wait(v23, 0xFFFFFFFFFFFFFFFFLL);
       if (v17)
@@ -401,7 +401,7 @@ LABEL_28:
 
     else if (v17)
     {
-      v28 = objc_msgSend_ioCompletionQueue(a1, v26, v27);
+      v28 = objc_msgSend_ioCompletionQueue(self, v26, v27);
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = sub_276AA467C;
@@ -417,7 +417,7 @@ LABEL_28:
     _Block_object_dispose(&v47, 8);
   }
 
-  else if (v14)
+  else if (completionCopy)
   {
     v21 = objc_msgSend_tsp_unknownReadErrorWithUserInfo_(MEMORY[0x277CCA9B8], v15, 0);
     (v17)[2](v17, 0, v21);

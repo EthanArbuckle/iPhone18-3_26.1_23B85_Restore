@@ -1,9 +1,9 @@
 @interface _MSRemoteBalloonViewControllerManager
 + (id)sharedInstance;
 - (_MSRemoteBalloonViewControllerManager)init;
-- (void)getRemoteViewControllerForExtension:(id)a3 messageIdentifier:(id)a4 contextIdentifier:(id)a5 item:(id)a6 connectionHandler:(id)a7;
+- (void)getRemoteViewControllerForExtension:(id)extension messageIdentifier:(id)identifier contextIdentifier:(id)contextIdentifier item:(id)item connectionHandler:(id)handler;
 - (void)removeShelfBalloonViewController;
-- (void)removeViewControllerWithIdentifier:(id)a3;
+- (void)removeViewControllerWithIdentifier:(id)identifier;
 @end
 
 @implementation _MSRemoteBalloonViewControllerManager
@@ -39,12 +39,12 @@
   return v2;
 }
 
-- (void)removeViewControllerWithIdentifier:(id)a3
+- (void)removeViewControllerWithIdentifier:(id)identifier
 {
   remoteViewControllerIdentifiersLRU = self->_remoteViewControllerIdentifiersLRU;
-  v5 = a3;
-  [(NSMutableOrderedSet *)remoteViewControllerIdentifiersLRU removeObject:v5];
-  [(NSMutableDictionary *)self->_remoteViewControllersByMessageGUID removeObjectForKey:v5];
+  identifierCopy = identifier;
+  [(NSMutableOrderedSet *)remoteViewControllerIdentifiersLRU removeObject:identifierCopy];
+  [(NSMutableDictionary *)self->_remoteViewControllersByMessageGUID removeObjectForKey:identifierCopy];
 }
 
 - (void)removeShelfBalloonViewController
@@ -55,16 +55,16 @@
   [(NSMutableDictionary *)remoteViewControllersByMessageGUID removeObjectForKey:@"_MSRemoteBalloonViewControllerShelfIdentifier"];
 }
 
-- (void)getRemoteViewControllerForExtension:(id)a3 messageIdentifier:(id)a4 contextIdentifier:(id)a5 item:(id)a6 connectionHandler:(id)a7
+- (void)getRemoteViewControllerForExtension:(id)extension messageIdentifier:(id)identifier contextIdentifier:(id)contextIdentifier item:(id)item connectionHandler:(id)handler
 {
-  val = a3;
-  v12 = a4;
-  v13 = a5;
-  v40 = a6;
-  v41 = a7;
-  v38 = v13;
-  v39 = v12;
-  v44 = [_MSRemoteBalloonViewControllerManager viewControllerKeyForMessageIdentifier:v12 contextIdentifier:v13];
+  val = extension;
+  identifierCopy = identifier;
+  contextIdentifierCopy = contextIdentifier;
+  itemCopy = item;
+  handlerCopy = handler;
+  v38 = contextIdentifierCopy;
+  v39 = identifierCopy;
+  v44 = [_MSRemoteBalloonViewControllerManager viewControllerKeyForMessageIdentifier:identifierCopy contextIdentifier:contextIdentifierCopy];
   v43 = [(NSMutableDictionary *)self->_remoteViewControllersByMessageGUID objectForKeyedSubscript:v44];
   if (!val || v43)
   {
@@ -72,7 +72,7 @@
     v35 = v43;
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      (*(v41 + 2))(v41, 0, v43, 0);
+      (*(handlerCopy + 2))(handlerCopy, 0, v43, 0);
       goto LABEL_30;
     }
 
@@ -91,7 +91,7 @@
 
   else
   {
-    v14 = [v12 isEqualToString:@"_MSRemoteBalloonViewControllerShelfIdentifier"];
+    v14 = [identifierCopy isEqualToString:@"_MSRemoteBalloonViewControllerShelfIdentifier"];
     if ((v14 & 1) == 0)
     {
       v15 = +[NSNull null];
@@ -99,7 +99,7 @@
     }
 
     objc_initWeak(&location, val);
-    v63 = v40;
+    v63 = itemCopy;
     v16 = [NSArray arrayWithObjects:&v63 count:1];
     v50[0] = _NSConcreteStackBlock;
     v50[1] = 3221225472;
@@ -110,7 +110,7 @@
     v51 = v37;
     objc_copyWeak(&v53, &location);
     v54 = v14 ^ 1;
-    v52 = v41;
+    v52 = handlerCopy;
     [val instantiateViewControllerWithInputItems:v16 connectionHandler:v50];
 
     if ((v14 & 1) == 0)
@@ -118,7 +118,7 @@
       [(NSMutableOrderedSet *)self->_remoteViewControllerIdentifiersLRU removeObject:v37];
       [(NSMutableOrderedSet *)self->_remoteViewControllerIdentifiersLRU addObject:v37];
       v17 = +[CKUIBehavior sharedBehaviors];
-      v18 = [v17 maxNumExtensionRemoteViewControllers];
+      maxNumExtensionRemoteViewControllers = [v17 maxNumExtensionRemoteViewControllers];
 
       v19 = [(NSMutableOrderedSet *)self->_remoteViewControllerIdentifiersLRU count];
       v48 = 0u;
@@ -130,7 +130,7 @@
       obj = v20;
       if (v21)
       {
-        v22 = v19 - v18;
+        v22 = v19 - maxNumExtensionRemoteViewControllers;
         v23 = *v47;
 LABEL_8:
         v24 = 0;
@@ -153,9 +153,9 @@ LABEL_8:
 
           if ((v28 & 1) == 0)
           {
-            v29 = [v26 view];
-            v30 = [v29 superview];
-            v31 = v30 == 0;
+            view = [v26 view];
+            superview = [view superview];
+            v31 = superview == 0;
 
             if (v31 && ([v25 isEqualToString:v37] & 1) == 0)
             {

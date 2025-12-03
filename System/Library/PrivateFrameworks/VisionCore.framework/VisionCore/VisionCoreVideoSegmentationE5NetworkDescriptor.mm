@@ -1,46 +1,46 @@
 @interface VisionCoreVideoSegmentationE5NetworkDescriptor
-+ (id)_configurationForIdentifier:(id)a3;
-+ (id)descriptorForIdentifier:(id)a3 version:(id)a4 error:(id *)a5;
-- (BOOL)postProcessUpdateFrameForInferenceOutputKeyBuffer:(const void *)a3 inferenceOutputValueBuffer:(const void *)a4 postProcessingOutputKeyBuffer:(void *)a5 postProcessingOutputValueBuffer:(void *)a6 error:(id *)a7;
-- (VisionCoreVideoSegmentationE5NetworkDescriptor)initWithSpecifier:(id)a3 url:(id)a4;
-- (id)descriptorForConfig:(id)a3 identifier:(id)a4 error:(id *)a5;
-- (id)functionForIdentifier:(id)a3 error:(id *)a4;
-- (id)postProcessingOutputDescriptorsForFunction:(id)a3;
++ (id)_configurationForIdentifier:(id)identifier;
++ (id)descriptorForIdentifier:(id)identifier version:(id)version error:(id *)error;
+- (BOOL)postProcessUpdateFrameForInferenceOutputKeyBuffer:(const void *)buffer inferenceOutputValueBuffer:(const void *)valueBuffer postProcessingOutputKeyBuffer:(void *)keyBuffer postProcessingOutputValueBuffer:(void *)outputValueBuffer error:(id *)error;
+- (VisionCoreVideoSegmentationE5NetworkDescriptor)initWithSpecifier:(id)specifier url:(id)url;
+- (id)descriptorForConfig:(id)config identifier:(id)identifier error:(id *)error;
+- (id)functionForIdentifier:(id)identifier error:(id *)error;
+- (id)postProcessingOutputDescriptorsForFunction:(id)function;
 @end
 
 @implementation VisionCoreVideoSegmentationE5NetworkDescriptor
 
-- (id)descriptorForConfig:(id)a3 identifier:(id)a4 error:(id *)a5
+- (id)descriptorForConfig:(id)config identifier:(id)identifier error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  if (([v8 isEqualToString:@"VisionCoreVideoSegmentationInitialFrameInferenceNetworkIdentifier512x384"] & 1) != 0 || (objc_msgSend(v8, "isEqualToString:", @"VisionCoreVideoSegmentationInitialFrameInferenceNetworkIdentifier576x320") & 1) != 0 || (objc_msgSend(v8, "isEqualToString:", @"VisionCoreVideoSegmentationInitialFrameInferenceNetworkIdentifier384x512") & 1) != 0 || objc_msgSend(v8, "isEqualToString:", @"VisionCoreVideoSegmentationInitialFrameInferenceNetworkIdentifier320x576"))
+  configCopy = config;
+  identifierCopy = identifier;
+  if (([identifierCopy isEqualToString:@"VisionCoreVideoSegmentationInitialFrameInferenceNetworkIdentifier512x384"] & 1) != 0 || (objc_msgSend(identifierCopy, "isEqualToString:", @"VisionCoreVideoSegmentationInitialFrameInferenceNetworkIdentifier576x320") & 1) != 0 || (objc_msgSend(identifierCopy, "isEqualToString:", @"VisionCoreVideoSegmentationInitialFrameInferenceNetworkIdentifier384x512") & 1) != 0 || objc_msgSend(identifierCopy, "isEqualToString:", @"VisionCoreVideoSegmentationInitialFrameInferenceNetworkIdentifier320x576"))
   {
     ANSTViSegHQInitialFrameInferenceDescriptorClass = getANSTViSegHQInitialFrameInferenceDescriptorClass();
     goto LABEL_6;
   }
 
-  if (([v8 isEqualToString:@"VisionCoreVideoSegmentationRegularFrameInferenceNetworkIdentifier512x384"] & 1) != 0 || (objc_msgSend(v8, "isEqualToString:", @"VisionCoreVideoSegmentationRegularFrameInferenceNetworkIdentifier576x320") & 1) != 0 || (objc_msgSend(v8, "isEqualToString:", @"VisionCoreVideoSegmentationRegularFrameInferenceNetworkIdentifier384x512") & 1) != 0 || objc_msgSend(v8, "isEqualToString:", @"VisionCoreVideoSegmentationRegularFrameInferenceNetworkIdentifier320x576"))
+  if (([identifierCopy isEqualToString:@"VisionCoreVideoSegmentationRegularFrameInferenceNetworkIdentifier512x384"] & 1) != 0 || (objc_msgSend(identifierCopy, "isEqualToString:", @"VisionCoreVideoSegmentationRegularFrameInferenceNetworkIdentifier576x320") & 1) != 0 || (objc_msgSend(identifierCopy, "isEqualToString:", @"VisionCoreVideoSegmentationRegularFrameInferenceNetworkIdentifier384x512") & 1) != 0 || objc_msgSend(identifierCopy, "isEqualToString:", @"VisionCoreVideoSegmentationRegularFrameInferenceNetworkIdentifier320x576"))
   {
     ANSTViSegHQInitialFrameInferenceDescriptorClass = getANSTViSegHQRegularFrameInferenceDescriptorClass_2821();
     goto LABEL_6;
   }
 
-  if (([v8 isEqualToString:@"VisionCoreVideoSegmentationUpdateFrameInferenceNetworkIdentifier512x384"] & 1) != 0 || (objc_msgSend(v8, "isEqualToString:", @"VisionCoreVideoSegmentationUpdateFrameInferenceNetworkIdentifier576x320") & 1) != 0 || (objc_msgSend(v8, "isEqualToString:", @"VisionCoreVideoSegmentationUpdateFrameInferenceNetworkIdentifier384x512") & 1) != 0 || objc_msgSend(v8, "isEqualToString:", @"VisionCoreVideoSegmentationUpdateFrameInferenceNetworkIdentifier320x576"))
+  if (([identifierCopy isEqualToString:@"VisionCoreVideoSegmentationUpdateFrameInferenceNetworkIdentifier512x384"] & 1) != 0 || (objc_msgSend(identifierCopy, "isEqualToString:", @"VisionCoreVideoSegmentationUpdateFrameInferenceNetworkIdentifier576x320") & 1) != 0 || (objc_msgSend(identifierCopy, "isEqualToString:", @"VisionCoreVideoSegmentationUpdateFrameInferenceNetworkIdentifier384x512") & 1) != 0 || objc_msgSend(identifierCopy, "isEqualToString:", @"VisionCoreVideoSegmentationUpdateFrameInferenceNetworkIdentifier320x576"))
   {
     ANSTViSegHQInitialFrameInferenceDescriptorClass = getANSTViSegHQUpdateFrameInferenceDescriptorClass_2822();
 LABEL_6:
-    v10 = [ANSTViSegHQInitialFrameInferenceDescriptorClass descriptorWithConfiguration:v7 error:a5];
+    v10 = [ANSTViSegHQInitialFrameInferenceDescriptorClass descriptorWithConfiguration:configCopy error:error];
     if (v10)
     {
       goto LABEL_10;
     }
   }
 
-  if (a5)
+  if (error)
   {
     [MEMORY[0x1E696ABC0] VisionCoreErrorForInvalidArgumentWithLocalizedDescription:@"Unrecognized descriptorIdentifier"];
-    *a5 = v10 = 0;
+    *error = v10 = 0;
   }
 
   else
@@ -53,14 +53,14 @@ LABEL_10:
   return v10;
 }
 
-- (id)postProcessingOutputDescriptorsForFunction:(id)a3
+- (id)postProcessingOutputDescriptorsForFunction:(id)function
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_anstUpdateFramePostProcessor && [v4 requiresPostProcessing])
+  functionCopy = function;
+  v5 = functionCopy;
+  if (self->_anstUpdateFramePostProcessor && [functionCopy requiresPostProcessing])
   {
-    v6 = [(ANSTViSegHQUpdateFramePostProcessor *)self->_anstUpdateFramePostProcessor processedOutputDescriptors];
-    v7 = VisionCoreTensorDescriptorsFromANSTDescriptors(v6);
+    processedOutputDescriptors = [(ANSTViSegHQUpdateFramePostProcessor *)self->_anstUpdateFramePostProcessor processedOutputDescriptors];
+    v7 = VisionCoreTensorDescriptorsFromANSTDescriptors(processedOutputDescriptors);
   }
 
   else
@@ -71,60 +71,60 @@ LABEL_10:
   return v7;
 }
 
-- (BOOL)postProcessUpdateFrameForInferenceOutputKeyBuffer:(const void *)a3 inferenceOutputValueBuffer:(const void *)a4 postProcessingOutputKeyBuffer:(void *)a5 postProcessingOutputValueBuffer:(void *)a6 error:(id *)a7
+- (BOOL)postProcessUpdateFrameForInferenceOutputKeyBuffer:(const void *)buffer inferenceOutputValueBuffer:(const void *)valueBuffer postProcessingOutputKeyBuffer:(void *)keyBuffer postProcessingOutputValueBuffer:(void *)outputValueBuffer error:(id *)error
 {
   if (([(ANSTInferenceDescriptor *)self->_currentANSTDescriptor requiresPostprocessing]& 1) == 0)
   {
-    if (a7)
+    if (error)
     {
       v15 = objc_alloc(MEMORY[0x1E696AEC0]);
-      v16 = [(ANSTInferenceDescriptor *)self->_currentANSTDescriptor name];
-      v17 = [v15 initWithFormat:@"Requires update frame network configuration. %@ was specified", v16];
+      name = [(ANSTInferenceDescriptor *)self->_currentANSTDescriptor name];
+      v17 = [v15 initWithFormat:@"Requires update frame network configuration. %@ was specified", name];
 
-      *a7 = [MEMORY[0x1E696ABC0] VisionCoreErrorForInvalidOperationWithLocalizedDescription:v17];
+      *error = [MEMORY[0x1E696ABC0] VisionCoreErrorForInvalidOperationWithLocalizedDescription:v17];
     }
 
     return 0;
   }
 
-  if (!a6 || !a4 || !a3 || !a5)
+  if (!outputValueBuffer || !valueBuffer || !buffer || !keyBuffer)
   {
-    if (a7)
+    if (error)
     {
       v18 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid ptr to destination or source buffer"];
-      *a7 = [MEMORY[0x1E696ABC0] VisionCoreErrorForInvalidOperationWithLocalizedDescription:v18];
+      *error = [MEMORY[0x1E696ABC0] VisionCoreErrorForInvalidOperationWithLocalizedDescription:v18];
     }
 
     return 0;
   }
 
-  if (![(ANSTViSegHQUpdateFramePostProcessor *)self->_anstUpdateFramePostProcessor processKeyTensorWithSrcBaseAddress:a3 dstBaseAddress:a5 error:a7])
+  if (![(ANSTViSegHQUpdateFramePostProcessor *)self->_anstUpdateFramePostProcessor processKeyTensorWithSrcBaseAddress:buffer dstBaseAddress:keyBuffer error:error])
   {
     return 0;
   }
 
   anstUpdateFramePostProcessor = self->_anstUpdateFramePostProcessor;
 
-  return [(ANSTViSegHQUpdateFramePostProcessor *)anstUpdateFramePostProcessor processValueTensorWithSrcBaseAddress:a4 dstBaseAddress:a6 error:a7];
+  return [(ANSTViSegHQUpdateFramePostProcessor *)anstUpdateFramePostProcessor processValueTensorWithSrcBaseAddress:valueBuffer dstBaseAddress:outputValueBuffer error:error];
 }
 
-- (id)functionForIdentifier:(id)a3 error:(id *)a4
+- (id)functionForIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
-  v7 = [VisionCoreVideoSegmentationE5NetworkDescriptor _configurationForIdentifier:v6];
-  if (([v6 isEqualToString:@"VisionCoreVideoSegmentationInitialFrameInferenceNetworkIdentifier512x384"] & 1) != 0 || (objc_msgSend(v6, "isEqualToString:", @"VisionCoreVideoSegmentationInitialFrameInferenceNetworkIdentifier576x320") & 1) != 0 || (objc_msgSend(v6, "isEqualToString:", @"VisionCoreVideoSegmentationInitialFrameInferenceNetworkIdentifier384x512") & 1) != 0 || objc_msgSend(v6, "isEqualToString:", @"VisionCoreVideoSegmentationInitialFrameInferenceNetworkIdentifier320x576"))
+  identifierCopy = identifier;
+  v7 = [VisionCoreVideoSegmentationE5NetworkDescriptor _configurationForIdentifier:identifierCopy];
+  if (([identifierCopy isEqualToString:@"VisionCoreVideoSegmentationInitialFrameInferenceNetworkIdentifier512x384"] & 1) != 0 || (objc_msgSend(identifierCopy, "isEqualToString:", @"VisionCoreVideoSegmentationInitialFrameInferenceNetworkIdentifier576x320") & 1) != 0 || (objc_msgSend(identifierCopy, "isEqualToString:", @"VisionCoreVideoSegmentationInitialFrameInferenceNetworkIdentifier384x512") & 1) != 0 || objc_msgSend(identifierCopy, "isEqualToString:", @"VisionCoreVideoSegmentationInitialFrameInferenceNetworkIdentifier320x576"))
   {
     ANSTViSegHQInitialFrameInferenceDescriptorClass = getANSTViSegHQInitialFrameInferenceDescriptorClass();
   }
 
-  else if (([v6 isEqualToString:@"VisionCoreVideoSegmentationRegularFrameInferenceNetworkIdentifier512x384"] & 1) != 0 || (objc_msgSend(v6, "isEqualToString:", @"VisionCoreVideoSegmentationRegularFrameInferenceNetworkIdentifier576x320") & 1) != 0 || (objc_msgSend(v6, "isEqualToString:", @"VisionCoreVideoSegmentationRegularFrameInferenceNetworkIdentifier384x512") & 1) != 0 || objc_msgSend(v6, "isEqualToString:", @"VisionCoreVideoSegmentationRegularFrameInferenceNetworkIdentifier320x576"))
+  else if (([identifierCopy isEqualToString:@"VisionCoreVideoSegmentationRegularFrameInferenceNetworkIdentifier512x384"] & 1) != 0 || (objc_msgSend(identifierCopy, "isEqualToString:", @"VisionCoreVideoSegmentationRegularFrameInferenceNetworkIdentifier576x320") & 1) != 0 || (objc_msgSend(identifierCopy, "isEqualToString:", @"VisionCoreVideoSegmentationRegularFrameInferenceNetworkIdentifier384x512") & 1) != 0 || objc_msgSend(identifierCopy, "isEqualToString:", @"VisionCoreVideoSegmentationRegularFrameInferenceNetworkIdentifier320x576"))
   {
     ANSTViSegHQInitialFrameInferenceDescriptorClass = getANSTViSegHQRegularFrameInferenceDescriptorClass_2821();
   }
 
   else
   {
-    if (([v6 isEqualToString:@"VisionCoreVideoSegmentationUpdateFrameInferenceNetworkIdentifier512x384"] & 1) == 0 && (objc_msgSend(v6, "isEqualToString:", @"VisionCoreVideoSegmentationUpdateFrameInferenceNetworkIdentifier576x320") & 1) == 0 && (objc_msgSend(v6, "isEqualToString:", @"VisionCoreVideoSegmentationUpdateFrameInferenceNetworkIdentifier384x512") & 1) == 0 && !objc_msgSend(v6, "isEqualToString:", @"VisionCoreVideoSegmentationUpdateFrameInferenceNetworkIdentifier320x576"))
+    if (([identifierCopy isEqualToString:@"VisionCoreVideoSegmentationUpdateFrameInferenceNetworkIdentifier512x384"] & 1) == 0 && (objc_msgSend(identifierCopy, "isEqualToString:", @"VisionCoreVideoSegmentationUpdateFrameInferenceNetworkIdentifier576x320") & 1) == 0 && (objc_msgSend(identifierCopy, "isEqualToString:", @"VisionCoreVideoSegmentationUpdateFrameInferenceNetworkIdentifier384x512") & 1) == 0 && !objc_msgSend(identifierCopy, "isEqualToString:", @"VisionCoreVideoSegmentationUpdateFrameInferenceNetworkIdentifier320x576"))
     {
       goto LABEL_26;
     }
@@ -132,18 +132,18 @@ LABEL_10:
     ANSTViSegHQInitialFrameInferenceDescriptorClass = getANSTViSegHQUpdateFrameInferenceDescriptorClass_2822();
   }
 
-  v9 = [ANSTViSegHQInitialFrameInferenceDescriptorClass descriptorWithConfiguration:v7 error:a4];
+  v9 = [ANSTViSegHQInitialFrameInferenceDescriptorClass descriptorWithConfiguration:v7 error:error];
   if (v9)
   {
     v10 = v9;
     objc_storeStrong(&self->_currentANSTDescriptor, v9);
     programLibrary = self->_programLibrary;
-    v12 = [v10 e5FunctionName];
-    v13 = [(VisionCoreE5RTProgramLibrary *)programLibrary functionNamed:v12 error:a4];
+    e5FunctionName = [v10 e5FunctionName];
+    v13 = [(VisionCoreE5RTProgramLibrary *)programLibrary functionNamed:e5FunctionName error:error];
 
     if ([(ANSTInferenceDescriptor *)self->_currentANSTDescriptor requiresPostprocessing])
     {
-      v14 = [(ANSTInferenceDescriptor *)self->_currentANSTDescriptor newPostprocessorWithError:a4];
+      v14 = [(ANSTInferenceDescriptor *)self->_currentANSTDescriptor newPostprocessorWithError:error];
       if (!v14)
       {
         goto LABEL_14;
@@ -186,10 +186,10 @@ LABEL_15:
   }
 
 LABEL_26:
-  if (a4)
+  if (error)
   {
-    [MEMORY[0x1E696ABC0] VisionCoreErrorForUnknownProcessingDescriptorIdentifier:v6];
-    *a4 = v18 = 0;
+    [MEMORY[0x1E696ABC0] VisionCoreErrorForUnknownProcessingDescriptorIdentifier:identifierCopy];
+    *error = v18 = 0;
   }
 
   else
@@ -202,14 +202,14 @@ LABEL_29:
   return v18;
 }
 
-- (VisionCoreVideoSegmentationE5NetworkDescriptor)initWithSpecifier:(id)a3 url:(id)a4
+- (VisionCoreVideoSegmentationE5NetworkDescriptor)initWithSpecifier:(id)specifier url:(id)url
 {
-  v6 = a4;
+  urlCopy = url;
   v16.receiver = self;
   v16.super_class = VisionCoreVideoSegmentationE5NetworkDescriptor;
   v7 = [(VisionCoreVideoSegmentationE5NetworkDescriptor *)&v16 init];
   v8 = v7;
-  if (!v6)
+  if (!urlCopy)
   {
     goto LABEL_7;
   }
@@ -219,8 +219,8 @@ LABEL_29:
     goto LABEL_7;
   }
 
-  objc_storeStrong(&v7->_URL, a4);
-  v9 = [VisionCoreE5RTProgramLibrary programLibraryForURL:v6 error:0];
+  objc_storeStrong(&v7->_URL, url);
+  v9 = [VisionCoreE5RTProgramLibrary programLibraryForURL:urlCopy error:0];
   programLibrary = v8->_programLibrary;
   v8->_programLibrary = v9;
 
@@ -246,27 +246,27 @@ LABEL_7:
   return v11;
 }
 
-+ (id)_configurationForIdentifier:(id)a3
++ (id)_configurationForIdentifier:(id)identifier
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"VisionCoreVideoSegmentationInitialFrameInferenceNetworkIdentifier512x384"] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"VisionCoreVideoSegmentationRegularFrameInferenceNetworkIdentifier512x384") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"VisionCoreVideoSegmentationUpdateFrameInferenceNetworkIdentifier512x384"))
+  identifierCopy = identifier;
+  if ([identifierCopy isEqualToString:@"VisionCoreVideoSegmentationInitialFrameInferenceNetworkIdentifier512x384"] & 1) != 0 || (objc_msgSend(identifierCopy, "isEqualToString:", @"VisionCoreVideoSegmentationRegularFrameInferenceNetworkIdentifier512x384") & 1) != 0 || (objc_msgSend(identifierCopy, "isEqualToString:", @"VisionCoreVideoSegmentationUpdateFrameInferenceNetworkIdentifier512x384"))
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"VisionCoreVideoSegmentationInitialFrameInferenceNetworkIdentifier576x320"] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"VisionCoreVideoSegmentationRegularFrameInferenceNetworkIdentifier576x320") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"VisionCoreVideoSegmentationUpdateFrameInferenceNetworkIdentifier576x320"))
+  else if ([identifierCopy isEqualToString:@"VisionCoreVideoSegmentationInitialFrameInferenceNetworkIdentifier576x320"] & 1) != 0 || (objc_msgSend(identifierCopy, "isEqualToString:", @"VisionCoreVideoSegmentationRegularFrameInferenceNetworkIdentifier576x320") & 1) != 0 || (objc_msgSend(identifierCopy, "isEqualToString:", @"VisionCoreVideoSegmentationUpdateFrameInferenceNetworkIdentifier576x320"))
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"VisionCoreVideoSegmentationInitialFrameInferenceNetworkIdentifier384x512"] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"VisionCoreVideoSegmentationRegularFrameInferenceNetworkIdentifier384x512") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"VisionCoreVideoSegmentationUpdateFrameInferenceNetworkIdentifier384x512"))
+  else if ([identifierCopy isEqualToString:@"VisionCoreVideoSegmentationInitialFrameInferenceNetworkIdentifier384x512"] & 1) != 0 || (objc_msgSend(identifierCopy, "isEqualToString:", @"VisionCoreVideoSegmentationRegularFrameInferenceNetworkIdentifier384x512") & 1) != 0 || (objc_msgSend(identifierCopy, "isEqualToString:", @"VisionCoreVideoSegmentationUpdateFrameInferenceNetworkIdentifier384x512"))
   {
     v4 = 2;
   }
 
   else
   {
-    if (([v3 isEqualToString:@"VisionCoreVideoSegmentationInitialFrameInferenceNetworkIdentifier320x576"] & 1) == 0 && (objc_msgSend(v3, "isEqualToString:", @"VisionCoreVideoSegmentationRegularFrameInferenceNetworkIdentifier320x576") & 1) == 0 && !objc_msgSend(v3, "isEqualToString:", @"VisionCoreVideoSegmentationUpdateFrameInferenceNetworkIdentifier320x576"))
+    if (([identifierCopy isEqualToString:@"VisionCoreVideoSegmentationInitialFrameInferenceNetworkIdentifier320x576"] & 1) == 0 && (objc_msgSend(identifierCopy, "isEqualToString:", @"VisionCoreVideoSegmentationRegularFrameInferenceNetworkIdentifier320x576") & 1) == 0 && !objc_msgSend(identifierCopy, "isEqualToString:", @"VisionCoreVideoSegmentationUpdateFrameInferenceNetworkIdentifier320x576"))
     {
       v7 = 0;
       goto LABEL_8;
@@ -299,15 +299,15 @@ LABEL_8:
   return v7;
 }
 
-+ (id)descriptorForIdentifier:(id)a3 version:(id)a4 error:(id *)a5
++ (id)descriptorForIdentifier:(id)identifier version:(id)version error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  if ([v8 major] != 1 || (objc_msgSend(v7, "isEqualToString:", @"VisionCoreVideoSegmentationE5InferenceNetworkIdentifier") & 1) == 0)
+  identifierCopy = identifier;
+  versionCopy = version;
+  if ([versionCopy major] != 1 || (objc_msgSend(identifierCopy, "isEqualToString:", @"VisionCoreVideoSegmentationE5InferenceNetworkIdentifier") & 1) == 0)
   {
-    if (a5)
+    if (error)
     {
-      v9 = [MEMORY[0x1E696ABC0] VisionCoreErrorForUnavailableDescriptorIdentifier:v7 version:v8];
+      v9 = [MEMORY[0x1E696ABC0] VisionCoreErrorForUnavailableDescriptorIdentifier:identifierCopy version:versionCopy];
       goto LABEL_10;
     }
 
@@ -321,12 +321,12 @@ LABEL_8:
 
   if (VisionCoreCurrentANEGeneration_currentANEGeneration <= 0xC)
   {
-    if (a5)
+    if (error)
     {
       v9 = [MEMORY[0x1E696ABC0] VisionCoreErrorForInvalidOperationWithLocalizedDescription:@"Unsupported ANE Generation"];
 LABEL_10:
       v10 = 0;
-      *a5 = v9;
+      *error = v9;
       goto LABEL_13;
     }
 
@@ -335,12 +335,12 @@ LABEL_11:
     goto LABEL_13;
   }
 
-  v11 = [[VisionCoreProcessingDescriptorSpecifier alloc] initWithIdentifier:v7 version:v8];
+  v11 = [[VisionCoreProcessingDescriptorSpecifier alloc] initWithIdentifier:identifierCopy version:versionCopy];
   v12 = [VisionCoreVideoSegmentationE5NetworkDescriptor _configurationForIdentifier:@"VisionCoreVideoSegmentationInitialFrameInferenceNetworkIdentifier384x512"];
-  v13 = [getANSTViSegHQInitialFrameInferenceDescriptorClass() descriptorWithConfiguration:v12 error:a5];
+  v13 = [getANSTViSegHQInitialFrameInferenceDescriptorClass() descriptorWithConfiguration:v12 error:error];
   v14 = [VisionCoreVideoSegmentationE5NetworkDescriptor alloc];
-  v15 = [v13 assetURL];
-  v10 = [(VisionCoreVideoSegmentationE5NetworkDescriptor *)v14 initWithSpecifier:v11 url:v15];
+  assetURL = [v13 assetURL];
+  v10 = [(VisionCoreVideoSegmentationE5NetworkDescriptor *)v14 initWithSpecifier:v11 url:assetURL];
 
 LABEL_13:
 

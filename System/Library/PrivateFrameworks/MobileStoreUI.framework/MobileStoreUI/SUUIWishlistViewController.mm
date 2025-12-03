@@ -1,45 +1,45 @@
 @interface SUUIWishlistViewController
-+ (id)wishlistBarButtonItemWithClientContext:(id)a3;
++ (id)wishlistBarButtonItemWithClientContext:(id)context;
 - (BOOL)_isEditingEnabled;
 - (SUUIWishlistDelegate)delegate;
-- (SUUIWishlistViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (SUUIWishlistViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (id)_emptyWishlistView;
 - (id)_itemListViewController;
 - (id)_wishlist;
 - (id)contentScrollView;
 - (int64_t)_wishlistState;
-- (void)_deleteAction:(id)a3;
-- (void)_deleteItemsAtIndexPaths:(id)a3;
+- (void)_deleteAction:(id)action;
+- (void)_deleteItemsAtIndexPaths:(id)paths;
 - (void)_destroyEmptyWishlistView;
-- (void)_finishSignInWithResponse:(id)a3 error:(id)a4;
-- (void)_finishSyncWithResult:(BOOL)a3 didChange:(BOOL)a4 error:(id)a5;
+- (void)_finishSignInWithResponse:(id)response error:(id)error;
+- (void)_finishSyncWithResult:(BOOL)result didChange:(BOOL)change error:(id)error;
 - (void)_reloadChildView;
 - (void)_reloadForAccountsChanged;
-- (void)_reloadNavigationBarAnimated:(BOOL)a3;
+- (void)_reloadNavigationBarAnimated:(BOOL)animated;
 - (void)_reloadWishlist;
-- (void)_setEditing:(BOOL)a3 animated:(BOOL)a4;
-- (void)_signInAction:(id)a3;
+- (void)_setEditing:(BOOL)editing animated:(BOOL)animated;
+- (void)_signInAction:(id)action;
 - (void)_syncWishlist;
 - (void)_updateDeleteButton;
-- (void)_wishlistDidChangeNotification:(id)a3;
+- (void)_wishlistDidChangeNotification:(id)notification;
 - (void)dealloc;
-- (void)itemList:(id)a3 didDeselectItem:(id)a4 atIndexPath:(id)a5;
-- (void)itemList:(id)a3 didRemoveItemAtIndexPath:(id)a4;
-- (void)itemList:(id)a3 didSelectItem:(id)a4 atIndexPath:(id)a5;
+- (void)itemList:(id)list didDeselectItem:(id)item atIndexPath:(id)path;
+- (void)itemList:(id)list didRemoveItemAtIndexPath:(id)path;
+- (void)itemList:(id)list didSelectItem:(id)item atIndexPath:(id)path;
 - (void)loadView;
-- (void)setClientContext:(id)a3;
+- (void)setClientContext:(id)context;
 - (void)viewDidLayoutSubviews;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation SUUIWishlistViewController
 
-- (SUUIWishlistViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (SUUIWishlistViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v8.receiver = self;
   v8.super_class = SUUIWishlistViewController;
-  v4 = [(SUUIWishlistViewController *)&v8 initWithNibName:a3 bundle:a4];
+  v4 = [(SUUIWishlistViewController *)&v8 initWithNibName:name bundle:bundle];
   if (v4)
   {
     if (([MEMORY[0x277D75128] shouldMakeUIForDefaultPNG] & 1) == 0)
@@ -50,8 +50,8 @@
     v4->_wishlistState = 0;
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
     CFNotificationCenterAddObserver(DarwinNotifyCenter, v4, __AccountsChanged, *MEMORY[0x277D6A6C8], 0, CFNotificationSuspensionBehaviorCoalesce);
-    v6 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v6 addObserver:v4 selector:sel__wishlistDidChangeNotification_ name:0x286B01B60 object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v4 selector:sel__wishlistDidChangeNotification_ name:0x286B01B60 object:0];
   }
 
   return v4;
@@ -61,8 +61,8 @@
 {
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterRemoveObserver(DarwinNotifyCenter, self, *MEMORY[0x277D6A6C8], 0);
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 removeObserver:self name:0x286B01B60 object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:0x286B01B60 object:0];
   [(SUUIItemListTableViewController *)self->_itemListViewController setDelegate:0];
 
   v5.receiver = self;
@@ -70,13 +70,13 @@
   [(SUUIViewController *)&v5 dealloc];
 }
 
-+ (id)wishlistBarButtonItemWithClientContext:(id)a3
++ (id)wishlistBarButtonItemWithClientContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = objc_alloc_init(MEMORY[0x277D751E0]);
-  if (v3)
+  if (contextCopy)
   {
-    [v3 localizedStringForKey:@"WISH_LIST_BUTTON"];
+    [contextCopy localizedStringForKey:@"WISH_LIST_BUTTON"];
   }
 
   else
@@ -87,14 +87,14 @@
   [v4 setAccessibilityLabel:v5];
 
   v6 = [MEMORY[0x277D755B8] kitImageNamed:@"UIButtonBarListIcon.png"];
-  v7 = [v6 imageFlippedForRightToLeftLayoutDirection];
-  [v4 setImage:v7];
+  imageFlippedForRightToLeftLayoutDirection = [v6 imageFlippedForRightToLeftLayoutDirection];
+  [v4 setImage:imageFlippedForRightToLeftLayoutDirection];
 
-  v8 = [MEMORY[0x277D75418] currentDevice];
-  v9 = [v8 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
   v10 = 2.0;
-  if (v9 == 1)
+  if (userInterfaceIdiom == 1)
   {
     v10 = 3.0;
   }
@@ -104,14 +104,14 @@
   return v4;
 }
 
-- (void)setClientContext:(id)a3
+- (void)setClientContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   if (([MEMORY[0x277D75128] shouldMakeUIForDefaultPNG] & 1) == 0)
   {
-    if (v4)
+    if (contextCopy)
     {
-      [v4 localizedStringForKey:@"WISH_LIST_TAB_TITLE"];
+      [contextCopy localizedStringForKey:@"WISH_LIST_TAB_TITLE"];
     }
 
     else
@@ -124,29 +124,29 @@
 
   v6.receiver = self;
   v6.super_class = SUUIWishlistViewController;
-  [(SUUIViewController *)&v6 setClientContext:v4];
+  [(SUUIViewController *)&v6 setClientContext:contextCopy];
 }
 
 - (id)contentScrollView
 {
-  v2 = [(SUUIWishlistViewController *)self _itemListViewController];
-  v3 = [v2 tableView];
+  _itemListViewController = [(SUUIWishlistViewController *)self _itemListViewController];
+  tableView = [_itemListViewController tableView];
 
-  return v3;
+  return tableView;
 }
 
 - (void)loadView
 {
   v13 = objc_alloc_init(MEMORY[0x277D75D18]);
-  v3 = [MEMORY[0x277D75348] clearColor];
-  [v13 setBackgroundColor:v3];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [v13 setBackgroundColor:clearColor];
 
-  v4 = [MEMORY[0x277D75418] currentDevice];
-  if ([v4 userInterfaceIdiom])
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  if ([currentDevice userInterfaceIdiom])
   {
-    v5 = [MEMORY[0x277D75128] sharedApplication];
-    v6 = [v5 keyWindow];
-    [v6 bounds];
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    keyWindow = [mEMORY[0x277D75128] keyWindow];
+    [keyWindow bounds];
     v8 = v7;
     v9 = SUUICompactThreshold();
 
@@ -180,8 +180,8 @@ LABEL_8:
 {
   if (!self->_backdropView)
   {
-    v3 = [(SUUIWishlistViewController *)self view];
-    v4 = SUUIPopoverBackdropViewForView(v3);
+    view = [(SUUIWishlistViewController *)self view];
+    v4 = SUUIPopoverBackdropViewForView(view);
     backdropView = self->_backdropView;
     self->_backdropView = v4;
   }
@@ -191,9 +191,9 @@ LABEL_8:
   [(SUUIWishlistViewController *)&v6 viewDidLayoutSubviews];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   if (([(SUUIWishlistViewController *)self _wishlistState]- 3) <= 1)
   {
     [(SUUIWishlistViewController *)self _syncWishlist];
@@ -208,18 +208,18 @@ LABEL_8:
   [(SUUIWishlistViewController *)self _reloadNavigationBarAnimated:0];
   v5.receiver = self;
   v5.super_class = SUUIWishlistViewController;
-  [(SUUIViewController *)&v5 viewWillAppear:v3];
+  [(SUUIViewController *)&v5 viewWillAppear:appearCopy];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v7 = MEMORY[0x277D75348];
-  v8 = a4;
-  v9 = [v7 whiteColor];
-  v10 = [(SUUIWishlistViewController *)self view];
-  [v10 setBackgroundColor:v9];
+  coordinatorCopy = coordinator;
+  whiteColor = [v7 whiteColor];
+  view = [(SUUIWishlistViewController *)self view];
+  [view setBackgroundColor:whiteColor];
 
   [(_UIBackdropView *)self->_backdropView setHidden:1];
   v12[0] = MEMORY[0x277D85DD0];
@@ -227,10 +227,10 @@ LABEL_8:
   v12[2] = __81__SUUIWishlistViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke_2;
   v12[3] = &unk_2798F5A88;
   v12[4] = self;
-  [v8 animateAlongsideTransition:&__block_literal_global_68 completion:v12];
+  [coordinatorCopy animateAlongsideTransition:&__block_literal_global_68 completion:v12];
   v11.receiver = self;
   v11.super_class = SUUIWishlistViewController;
-  [(SUUIWishlistViewController *)&v11 viewWillTransitionToSize:v8 withTransitionCoordinator:width, height];
+  [(SUUIWishlistViewController *)&v11 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
 }
 
 void __81__SUUIWishlistViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke_2(uint64_t a1)
@@ -241,30 +241,30 @@ void __81__SUUIWishlistViewController_viewWillTransitionToSize_withTransitionCoo
   [v2 setBackgroundColor:v3];
 }
 
-- (void)itemList:(id)a3 didDeselectItem:(id)a4 atIndexPath:(id)a5
+- (void)itemList:(id)list didDeselectItem:(id)item atIndexPath:(id)path
 {
   if (self->_editing)
   {
-    [(SUUIWishlistViewController *)self _updateDeleteButton:a3];
+    [(SUUIWishlistViewController *)self _updateDeleteButton:list];
   }
 }
 
-- (void)itemList:(id)a3 didRemoveItemAtIndexPath:(id)a4
+- (void)itemList:(id)list didRemoveItemAtIndexPath:(id)path
 {
   v9 = *MEMORY[0x277D85DE8];
-  v8 = a4;
+  pathCopy = path;
   v5 = MEMORY[0x277CBEA60];
-  v6 = a4;
-  v7 = [v5 arrayWithObjects:&v8 count:1];
+  pathCopy2 = path;
+  v7 = [v5 arrayWithObjects:&pathCopy count:1];
 
-  [(SUUIWishlistViewController *)self _deleteItemsAtIndexPaths:v7, v8, v9];
+  [(SUUIWishlistViewController *)self _deleteItemsAtIndexPaths:v7, pathCopy, v9];
 }
 
-- (void)itemList:(id)a3 didSelectItem:(id)a4 atIndexPath:(id)a5
+- (void)itemList:(id)list didSelectItem:(id)item atIndexPath:(id)path
 {
-  v15 = a3;
-  v8 = a4;
-  v9 = a5;
+  listCopy = list;
+  itemCopy = item;
+  pathCopy = path;
   if (self->_editing)
   {
     [(SUUIWishlistViewController *)self _updateDeleteButton];
@@ -278,28 +278,28 @@ void __81__SUUIWishlistViewController_viewWillTransitionToSize_withTransitionCoo
     if (v11)
     {
       v12 = objc_loadWeakRetained(&self->_delegate);
-      [(SUUIViewController *)v12 wishlist:self didSelectItem:v8 atIndexPath:v9];
+      [(SUUIViewController *)v12 wishlist:self didSelectItem:itemCopy atIndexPath:pathCopy];
     }
 
     else
     {
-      v12 = [[SUUIIPhoneProductPageViewController alloc] initWithItem:v8];
-      v13 = [(SUUIViewController *)self clientContext];
-      [(SUUIViewController *)v12 setClientContext:v13];
+      v12 = [[SUUIIPhoneProductPageViewController alloc] initWithItem:itemCopy];
+      clientContext = [(SUUIViewController *)self clientContext];
+      [(SUUIViewController *)v12 setClientContext:clientContext];
 
-      v14 = [(SUUIWishlistViewController *)self navigationController];
-      [v14 pushViewController:v12 animated:1];
+      navigationController = [(SUUIWishlistViewController *)self navigationController];
+      [navigationController pushViewController:v12 animated:1];
     }
   }
 }
 
-- (void)_wishlistDidChangeNotification:(id)a3
+- (void)_wishlistDidChangeNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(SUUIWishlistViewController *)self _wishlist];
-  v6 = [v4 object];
+  notificationCopy = notification;
+  _wishlist = [(SUUIWishlistViewController *)self _wishlist];
+  object = [notificationCopy object];
 
-  if (v5 == v6)
+  if (_wishlist == object)
   {
     if (SUUIViewControllerIsVisible(self))
     {
@@ -311,36 +311,36 @@ void __81__SUUIWishlistViewController_viewWillTransitionToSize_withTransitionCoo
     {
       if (self->_reloadOnNextAppear)
       {
-        v7 = 1;
+        isViewLoaded = 1;
       }
 
       else
       {
-        v7 = [(SUUIWishlistViewController *)self isViewLoaded];
+        isViewLoaded = [(SUUIWishlistViewController *)self isViewLoaded];
       }
 
-      self->_reloadOnNextAppear = v7;
+      self->_reloadOnNextAppear = isViewLoaded;
     }
   }
 }
 
-- (void)_deleteAction:(id)a3
+- (void)_deleteAction:(id)action
 {
-  v4 = [(SUUIItemListTableViewController *)self->_itemListViewController tableView];
-  v5 = [v4 indexPathsForSelectedRows];
+  tableView = [(SUUIItemListTableViewController *)self->_itemListViewController tableView];
+  indexPathsForSelectedRows = [tableView indexPathsForSelectedRows];
 
-  [(SUUIWishlistViewController *)self _deleteItemsAtIndexPaths:v5];
+  [(SUUIWishlistViewController *)self _deleteItemsAtIndexPaths:indexPathsForSelectedRows];
   [(SUUIWishlistViewController *)self _setEditing:0 animated:1];
 }
 
-- (void)_signInAction:(id)a3
+- (void)_signInAction:(id)action
 {
-  v4 = a3;
-  [v4 setEnabled:0];
+  actionCopy = action;
+  [actionCopy setEnabled:0];
   v5 = objc_alloc(MEMORY[0x277D69BC8]);
-  v6 = [MEMORY[0x277D69A20] defaultStore];
-  v7 = [v6 activeAccount];
-  v8 = [v5 initWithAccount:v7];
+  defaultStore = [MEMORY[0x277D69A20] defaultStore];
+  activeAccount = [defaultStore activeAccount];
+  v8 = [v5 initWithAccount:activeAccount];
 
   [v8 setPromptStyle:1];
   objc_initWeak(&location, self);
@@ -380,19 +380,19 @@ void __44__SUUIWishlistViewController__signInAction___block_invoke_2(uint64_t a1
   [WeakRetained _finishSignInWithResponse:*(a1 + 32) error:*(a1 + 40)];
 }
 
-- (void)_deleteItemsAtIndexPaths:(id)a3
+- (void)_deleteItemsAtIndexPaths:(id)paths
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v18 = self;
-  v5 = [(SUUIWishlist *)self->_wishlist items];
+  pathsCopy = paths;
+  selfCopy = self;
+  items = [(SUUIWishlist *)self->_wishlist items];
   v6 = objc_alloc_init(MEMORY[0x277CCAB58]);
   v7 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v8 = v4;
+  v8 = pathsCopy;
   v9 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v9)
   {
@@ -409,7 +409,7 @@ void __44__SUUIWishlistViewController__signInAction___block_invoke_2(uint64_t a1
 
         v13 = [*(*(&v19 + 1) + 8 * i) row];
         [v6 addIndex:v13];
-        v14 = [v5 objectAtIndex:v13];
+        v14 = [items objectAtIndex:v13];
         v15 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v14, "itemIdentifier")}];
         [v7 addObject:v15];
       }
@@ -420,14 +420,14 @@ void __44__SUUIWishlistViewController__signInAction___block_invoke_2(uint64_t a1
     while (v10);
   }
 
-  [(SUUIWishlist *)v18->_wishlist removeItemsWithItemIdentifiers:v7];
-  [(SUUIItemListTableViewController *)v18->_itemListViewController deleteRowsAtIndexPaths:v8];
-  v16 = [(SUUIWishlist *)v18->_wishlist items];
-  v17 = [v16 count];
+  [(SUUIWishlist *)selfCopy->_wishlist removeItemsWithItemIdentifiers:v7];
+  [(SUUIItemListTableViewController *)selfCopy->_itemListViewController deleteRowsAtIndexPaths:v8];
+  items2 = [(SUUIWishlist *)selfCopy->_wishlist items];
+  v17 = [items2 count];
 
   if (!v17)
   {
-    [(SUUIWishlistViewController *)v18 _reloadChildView];
+    [(SUUIWishlistViewController *)selfCopy _reloadChildView];
   }
 }
 
@@ -470,9 +470,9 @@ void __48__SUUIWishlistViewController__emptyWishlistView__block_invoke(uint64_t 
   [WeakRetained _signInAction:0];
 }
 
-- (void)_finishSignInWithResponse:(id)a3 error:(id)a4
+- (void)_finishSignInWithResponse:(id)response error:(id)error
 {
-  if ([a3 authenticateResponseType] == 4)
+  if ([response authenticateResponseType] == 4)
   {
     self->_wishlistState = 4;
     [(SUUIWishlistViewController *)self _reloadChildView];
@@ -481,19 +481,19 @@ void __48__SUUIWishlistViewController__emptyWishlistView__block_invoke(uint64_t 
   }
 }
 
-- (void)_finishSyncWithResult:(BOOL)a3 didChange:(BOOL)a4 error:(id)a5
+- (void)_finishSyncWithResult:(BOOL)result didChange:(BOOL)change error:(id)error
 {
-  v5 = a4;
-  v6 = a3;
-  v11 = a5;
+  changeCopy = change;
+  resultCopy = result;
+  errorCopy = error;
   [(SUUISyncWishlistOperation *)self->_syncOperation setResultBlock:0];
   syncOperation = self->_syncOperation;
   self->_syncOperation = 0;
 
-  if (v6)
+  if (resultCopy)
   {
     self->_wishlistState = 2;
-    if (v5)
+    if (changeCopy)
     {
       [(SUUIWishlist *)self->_wishlist postChangeNotification];
     }
@@ -503,10 +503,10 @@ void __48__SUUIWishlistViewController__emptyWishlistView__block_invoke(uint64_t 
 
   if (self->_wishlistState == 4)
   {
-    if ([v11 code] == 1)
+    if ([errorCopy code] == 1)
     {
-      v9 = [v11 domain];
-      v10 = [v9 isEqualToString:*MEMORY[0x277D6A678]];
+      domain = [errorCopy domain];
+      v10 = [domain isEqualToString:*MEMORY[0x277D6A678]];
 
       if (v10)
       {
@@ -517,7 +517,7 @@ LABEL_4:
       }
     }
 
-    [(SUUIViewController *)self showError:v11];
+    [(SUUIViewController *)self showError:errorCopy];
   }
 
 LABEL_10:
@@ -525,9 +525,9 @@ LABEL_10:
 
 - (BOOL)_isEditingEnabled
 {
-  v2 = [(SUUIWishlistViewController *)self _wishlist];
-  v3 = [v2 items];
-  v4 = [v3 count] != 0;
+  _wishlist = [(SUUIWishlistViewController *)self _wishlist];
+  items = [_wishlist items];
+  v4 = [items count] != 0;
 
   return v4;
 }
@@ -542,8 +542,8 @@ LABEL_10:
     self->_itemListViewController = v4;
 
     v6 = self->_itemListViewController;
-    v7 = [(SUUIViewController *)self clientContext];
-    [(SUUIItemListTableViewController *)v6 setClientContext:v7];
+    clientContext = [(SUUIViewController *)self clientContext];
+    [(SUUIItemListTableViewController *)v6 setClientContext:clientContext];
 
     [(SUUIItemListTableViewController *)self->_itemListViewController setDelegate:self];
     [(SUUIItemListTableViewController *)self->_itemListViewController setRowHeight:84.0];
@@ -555,12 +555,12 @@ LABEL_10:
     [(SUUIItemListTableViewController *)v9 setImageBoundingSize:?];
     [(SUUIItemListTableViewController *)self->_itemListViewController setItemCellClass:objc_opt_class()];
     [(SUUIWishlistViewController *)self addChildViewController:self->_itemListViewController];
-    v10 = [(SUUIItemListTableViewController *)self->_itemListViewController tableView];
-    [v10 setAllowsMultipleSelectionDuringEditing:0];
-    v11 = [MEMORY[0x277D75348] clearColor];
-    [v10 setBackgroundColor:v11];
+    tableView = [(SUUIItemListTableViewController *)self->_itemListViewController tableView];
+    [tableView setAllowsMultipleSelectionDuringEditing:0];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [tableView setBackgroundColor:clearColor];
 
-    [v10 setSeparatorStyle:0];
+    [tableView setSeparatorStyle:0];
     itemListViewController = self->_itemListViewController;
   }
 
@@ -569,20 +569,20 @@ LABEL_10:
 
 - (void)_reloadChildView
 {
-  v3 = [(SUUIWishlistViewController *)self _wishlistState];
-  if ((v3 - 2) >= 2)
+  _wishlistState = [(SUUIWishlistViewController *)self _wishlistState];
+  if ((_wishlistState - 2) >= 2)
   {
-    if (v3 != 1)
+    if (_wishlistState != 1)
     {
       v9 = 0;
       goto LABEL_25;
     }
 
-    v5 = [(SUUIViewController *)self clientContext];
-    v20 = [(SUUIWishlistViewController *)self _emptyWishlistView];
-    if (v5)
+    clientContext = [(SUUIViewController *)self clientContext];
+    _emptyWishlistView = [(SUUIWishlistViewController *)self _emptyWishlistView];
+    if (clientContext)
     {
-      [v5 localizedStringForKey:@"EMPTY_WISHLIST_SIGN_IN_TITLE"];
+      [clientContext localizedStringForKey:@"EMPTY_WISHLIST_SIGN_IN_TITLE"];
     }
 
     else
@@ -590,11 +590,11 @@ LABEL_10:
       [SUUIClientContext localizedStringForKey:@"EMPTY_WISHLIST_SIGN_IN_TITLE" inBundles:0];
     }
     v12 = ;
-    [v20 setTitle:v12];
+    [_emptyWishlistView setTitle:v12];
 
-    if (v5)
+    if (clientContext)
     {
-      [v5 localizedStringForKey:@"EMPTY_WISHLIST_SIGN_IN_MESSAGE"];
+      [clientContext localizedStringForKey:@"EMPTY_WISHLIST_SIGN_IN_MESSAGE"];
     }
 
     else
@@ -602,34 +602,34 @@ LABEL_10:
       [SUUIClientContext localizedStringForKey:@"EMPTY_WISHLIST_SIGN_IN_MESSAGE" inBundles:0];
     }
     v13 = ;
-    [v20 setMessage:v13];
+    [_emptyWishlistView setMessage:v13];
 
-    if (v5)
+    if (clientContext)
     {
-      [v5 localizedStringForKey:@"EMPTY_WISHLIST_SIGN_IN_BUTTON"];
+      [clientContext localizedStringForKey:@"EMPTY_WISHLIST_SIGN_IN_BUTTON"];
     }
 
     else
     {
       [SUUIClientContext localizedStringForKey:@"EMPTY_WISHLIST_SIGN_IN_BUTTON" inBundles:0];
     }
-    v6 = ;
-    [v20 setButtonTitle:v6];
+    _itemListViewController = ;
+    [_emptyWishlistView setButtonTitle:_itemListViewController];
   }
 
   else
   {
-    v4 = [(SUUIWishlistViewController *)self _wishlist];
-    v5 = [v4 items];
+    _wishlist = [(SUUIWishlistViewController *)self _wishlist];
+    clientContext = [_wishlist items];
 
-    if (![v5 count])
+    if (![clientContext count])
     {
-      v20 = [(SUUIWishlistViewController *)self _emptyWishlistView];
-      v10 = [(SUUIViewController *)self clientContext];
-      v11 = v10;
-      if (v10)
+      _emptyWishlistView = [(SUUIWishlistViewController *)self _emptyWishlistView];
+      clientContext2 = [(SUUIViewController *)self clientContext];
+      v11 = clientContext2;
+      if (clientContext2)
       {
-        [v10 localizedStringForKey:@"EMPTY_WISHLIST_TITLE"];
+        [clientContext2 localizedStringForKey:@"EMPTY_WISHLIST_TITLE"];
       }
 
       else
@@ -637,13 +637,13 @@ LABEL_10:
         [SUUIClientContext localizedStringForKey:@"EMPTY_WISHLIST_TITLE" inBundles:0];
       }
       v14 = ;
-      [v20 setTitle:v14];
+      [_emptyWishlistView setTitle:v14];
 
-      v15 = [(SUUIViewController *)self clientContext];
-      v16 = v15;
-      if (v15)
+      clientContext3 = [(SUUIViewController *)self clientContext];
+      v16 = clientContext3;
+      if (clientContext3)
       {
-        [v15 localizedStringForKey:@"EMPTY_WISHLIST_MESSAGE"];
+        [clientContext3 localizedStringForKey:@"EMPTY_WISHLIST_MESSAGE"];
       }
 
       else
@@ -651,25 +651,25 @@ LABEL_10:
         [SUUIClientContext localizedStringForKey:@"EMPTY_WISHLIST_MESSAGE" inBundles:0];
       }
       v17 = ;
-      [v20 setMessage:v17];
+      [_emptyWishlistView setMessage:v17];
 
-      [v20 setButtonTitle:0];
+      [_emptyWishlistView setButtonTitle:0];
       goto LABEL_24;
     }
 
-    v6 = [(SUUIWishlistViewController *)self _itemListViewController];
+    _itemListViewController = [(SUUIWishlistViewController *)self _itemListViewController];
     v7 = objc_alloc_init(SUUIItemList);
-    [(SUUIItemList *)v7 setItems:v5];
-    v8 = [v6 artworkContext];
-    [v8 largestImageSizeForItems:v5];
-    [v6 setImageBoundingSize:?];
+    [(SUUIItemList *)v7 setItems:clientContext];
+    artworkContext = [_itemListViewController artworkContext];
+    [artworkContext largestImageSizeForItems:clientContext];
+    [_itemListViewController setImageBoundingSize:?];
 
-    [v6 setItemList:v7];
-    v20 = [v6 view];
+    [_itemListViewController setItemList:v7];
+    _emptyWishlistView = [_itemListViewController view];
   }
 
 LABEL_24:
-  v9 = v20;
+  v9 = _emptyWishlistView;
 LABEL_25:
   v21 = v9;
   if (v9 != self->_emptyWishlistView)
@@ -680,14 +680,14 @@ LABEL_25:
 
   if (v9)
   {
-    v18 = [(SUUIWishlistViewController *)self view];
+    view = [(SUUIWishlistViewController *)self view];
     [(_UIContentUnavailableView *)v21 setAutoresizingMask:18];
-    v19 = [v18 backgroundColor];
-    [(_UIContentUnavailableView *)v21 setBackgroundColor:v19];
+    backgroundColor = [view backgroundColor];
+    [(_UIContentUnavailableView *)v21 setBackgroundColor:backgroundColor];
 
-    [v18 bounds];
+    [view bounds];
     [(_UIContentUnavailableView *)v21 setFrame:?];
-    [v18 addSubview:v21];
+    [view addSubview:v21];
 
     v9 = v21;
   }
@@ -721,11 +721,11 @@ LABEL_25:
   MEMORY[0x2821F96F8](wishlist, v3);
 }
 
-- (void)_reloadNavigationBarAnimated:(BOOL)a3
+- (void)_reloadNavigationBarAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v33 = [(SUUIViewController *)self clientContext];
-  v5 = [(SUUIWishlistViewController *)self navigationItem];
+  animatedCopy = animated;
+  clientContext = [(SUUIViewController *)self clientContext];
+  navigationItem = [(SUUIWishlistViewController *)self navigationItem];
   if (([(SUUIWishlistViewController *)self _wishlistState]- 4) > 0xFFFFFFFFFFFFFFFDLL)
   {
     if (self->_editing)
@@ -740,9 +740,9 @@ LABEL_25:
         [(UIBarButtonItem *)self->_deleteButton setEnabled:0];
         [(UIBarButtonItem *)self->_deleteButton setTarget:self];
         v8 = self->_deleteButton;
-        if (v33)
+        if (clientContext)
         {
-          [v33 localizedStringForKey:@"WISH_LIST_DELETE_BUTTON"];
+          [clientContext localizedStringForKey:@"WISH_LIST_DELETE_BUTTON"];
         }
 
         else
@@ -753,14 +753,14 @@ LABEL_25:
         [(UIBarButtonItem *)v8 setTitle:v12];
 
         v13 = objc_alloc(MEMORY[0x277CBEAC0]);
-        v14 = [MEMORY[0x277D75348] systemRedColor];
+        systemRedColor = [MEMORY[0x277D75348] systemRedColor];
         v15 = *MEMORY[0x277D740C0];
-        v16 = [v13 initWithObjectsAndKeys:{v14, *MEMORY[0x277D740C0], 0}];
+        v16 = [v13 initWithObjectsAndKeys:{systemRedColor, *MEMORY[0x277D740C0], 0}];
 
         [(UIBarButtonItem *)self->_deleteButton setTitleTextAttributes:v16 forState:0];
         v17 = objc_alloc(MEMORY[0x277CBEAC0]);
-        v18 = [MEMORY[0x277D75348] systemGrayColor];
-        v19 = [v17 initWithObjectsAndKeys:{v18, v15, 0}];
+        systemGrayColor = [MEMORY[0x277D75348] systemGrayColor];
+        v19 = [v17 initWithObjectsAndKeys:{systemGrayColor, v15, 0}];
 
         [(UIBarButtonItem *)self->_deleteButton setTitleTextAttributes:v19 forState:2];
       }
@@ -769,9 +769,9 @@ LABEL_25:
       [v9 setAction:sel__toggleEditAction_];
       [v9 setStyle:2];
       [v9 setTarget:self];
-      if (v33)
+      if (clientContext)
       {
-        [v33 localizedStringForKey:@"WISH_LIST_CANCEL_BUTTON"];
+        [clientContext localizedStringForKey:@"WISH_LIST_CANCEL_BUTTON"];
       }
 
       else
@@ -781,8 +781,8 @@ LABEL_25:
       v20 = ;
       [v9 setTitle:v20];
 
-      [v5 setLeftBarButtonItem:self->_deleteButton animated:v3];
-      [v5 setRightBarButtonItem:v9 animated:v3];
+      [navigationItem setLeftBarButtonItem:self->_deleteButton animated:animatedCopy];
+      [navigationItem setRightBarButtonItem:v9 animated:animatedCopy];
     }
 
     else
@@ -791,9 +791,9 @@ LABEL_25:
       [v9 setAction:sel__toggleEditAction_];
       [v9 setEnabled:{-[SUUIWishlistViewController _isEditingEnabled](self, "_isEditingEnabled")}];
       [v9 setTarget:self];
-      if (v33)
+      if (clientContext)
       {
-        [v33 localizedStringForKey:@"WISH_LIST_EDIT_BUTTON"];
+        [clientContext localizedStringForKey:@"WISH_LIST_EDIT_BUTTON"];
       }
 
       else
@@ -803,8 +803,8 @@ LABEL_25:
       v10 = ;
       [v9 setTitle:v10];
 
-      [v5 setLeftBarButtonItem:v9 animated:v3];
-      [v5 setRightBarButtonItem:0 animated:v3];
+      [navigationItem setLeftBarButtonItem:v9 animated:animatedCopy];
+      [navigationItem setRightBarButtonItem:0 animated:animatedCopy];
       v11 = self->_deleteButton;
       self->_deleteButton = 0;
     }
@@ -812,18 +812,18 @@ LABEL_25:
 
   else
   {
-    [v5 setLeftBarButtonItem:0];
-    [v5 setRightBarButtonItem:0];
+    [navigationItem setLeftBarButtonItem:0];
+    [navigationItem setRightBarButtonItem:0];
   }
 
   if (!self->_editing)
   {
-    v21 = [MEMORY[0x277D75418] currentDevice];
-    if ([v21 userInterfaceIdiom])
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice userInterfaceIdiom])
     {
-      v22 = [MEMORY[0x277D75128] sharedApplication];
-      v23 = [v22 keyWindow];
-      [v23 bounds];
+      mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+      keyWindow = [mEMORY[0x277D75128] keyWindow];
+      [keyWindow bounds];
       v25 = v24;
       v26 = SUUICompactThreshold();
 
@@ -841,9 +841,9 @@ LABEL_25:
     [v27 setAction:sel__doneAction_];
     [v27 setStyle:2];
     [v27 setTarget:self];
-    if (v33)
+    if (clientContext)
     {
-      [v33 localizedStringForKey:@"WISH_LIST_DONE_BUTTON"];
+      [clientContext localizedStringForKey:@"WISH_LIST_DONE_BUTTON"];
     }
 
     else
@@ -853,17 +853,17 @@ LABEL_25:
     v28 = ;
     [v27 setTitle:v28];
 
-    [v5 setRightBarButtonItem:v27 animated:v3];
+    [navigationItem setRightBarButtonItem:v27 animated:animatedCopy];
   }
 
 LABEL_27:
-  v29 = [(SUUIWishlistViewController *)self navigationController];
-  v30 = [v29 view];
-  [v30 setSemanticContentAttribute:storeSemanticContentAttribute()];
+  navigationController = [(SUUIWishlistViewController *)self navigationController];
+  view = [navigationController view];
+  [view setSemanticContentAttribute:storeSemanticContentAttribute()];
 
-  v31 = [(SUUIWishlistViewController *)self navigationController];
-  v32 = [v31 navigationBar];
-  [v32 setSemanticContentAttribute:storeSemanticContentAttribute()];
+  navigationController2 = [(SUUIWishlistViewController *)self navigationController];
+  navigationBar = [navigationController2 navigationBar];
+  [navigationBar setSemanticContentAttribute:storeSemanticContentAttribute()];
 }
 
 - (void)_reloadWishlist
@@ -873,19 +873,19 @@ LABEL_27:
   [(SUUIWishlistViewController *)self _reloadNavigationBarAnimated:0];
 }
 
-- (void)_setEditing:(BOOL)a3 animated:(BOOL)a4
+- (void)_setEditing:(BOOL)editing animated:(BOOL)animated
 {
-  if (self->_editing != a3)
+  if (self->_editing != editing)
   {
-    v5 = a4;
-    v6 = a3;
-    self->_editing = a3;
-    v9 = [(SUUIWishlistViewController *)self _itemListViewController];
-    v8 = [v9 tableView];
-    [v8 setAllowsMultipleSelectionDuringEditing:v6];
+    animatedCopy = animated;
+    editingCopy = editing;
+    self->_editing = editing;
+    _itemListViewController = [(SUUIWishlistViewController *)self _itemListViewController];
+    tableView = [_itemListViewController tableView];
+    [tableView setAllowsMultipleSelectionDuringEditing:editingCopy];
 
-    [v9 setEditing:v6 animated:v5];
-    [(SUUIWishlistViewController *)self _reloadNavigationBarAnimated:v5];
+    [_itemListViewController setEditing:editingCopy animated:animatedCopy];
+    [(SUUIWishlistViewController *)self _reloadNavigationBarAnimated:animatedCopy];
   }
 }
 
@@ -894,8 +894,8 @@ LABEL_27:
   if (!self->_syncOperation)
   {
     v3 = [SUUISyncWishlistOperation alloc];
-    v4 = [(SUUIViewController *)self clientContext];
-    v5 = [(SUUISyncWishlistOperation *)v3 initWithClientContext:v4];
+    clientContext = [(SUUIViewController *)self clientContext];
+    v5 = [(SUUISyncWishlistOperation *)v3 initWithClientContext:clientContext];
     syncOperation = self->_syncOperation;
     self->_syncOperation = v5;
 
@@ -940,20 +940,20 @@ void __43__SUUIWishlistViewController__syncWishlist__block_invoke_2(uint64_t a1)
 
 - (void)_updateDeleteButton
 {
-  v3 = [(SUUIItemListTableViewController *)self->_itemListViewController tableView];
-  v4 = [v3 indexPathsForSelectedRows];
-  v5 = [v4 count];
+  tableView = [(SUUIItemListTableViewController *)self->_itemListViewController tableView];
+  indexPathsForSelectedRows = [tableView indexPathsForSelectedRows];
+  v5 = [indexPathsForSelectedRows count];
 
   [MEMORY[0x277D75D18] setAnimationsEnabled:0];
   if (v5)
   {
     v6 = objc_alloc_init(MEMORY[0x277CCABB8]);
     [v6 setNumberStyle:1];
-    v7 = [(SUUIViewController *)self clientContext];
-    v8 = v7;
-    if (v7)
+    clientContext = [(SUUIViewController *)self clientContext];
+    v8 = clientContext;
+    if (clientContext)
     {
-      [v7 localizedStringForKey:@"WISH_LIST_DELETE_BUTTON_SELECTED"];
+      [clientContext localizedStringForKey:@"WISH_LIST_DELETE_BUTTON_SELECTED"];
     }
 
     else
@@ -975,11 +975,11 @@ void __43__SUUIWishlistViewController__syncWishlist__block_invoke_2(uint64_t a1)
   {
     [(UIBarButtonItem *)self->_deleteButton setEnabled:0];
     v9 = self->_deleteButton;
-    v10 = [(SUUIViewController *)self clientContext];
-    v6 = v10;
-    if (v10)
+    clientContext2 = [(SUUIViewController *)self clientContext];
+    v6 = clientContext2;
+    if (clientContext2)
     {
-      [v10 localizedStringForKey:@"WISH_LIST_DELETE_BUTTON"];
+      [clientContext2 localizedStringForKey:@"WISH_LIST_DELETE_BUTTON"];
     }
 
     else
@@ -1015,21 +1015,21 @@ void __43__SUUIWishlistViewController__syncWishlist__block_invoke_2(uint64_t a1)
   result = self->_wishlistState;
   if (!result)
   {
-    v4 = [MEMORY[0x277D69A20] defaultStore];
-    v5 = [v4 activeAccount];
+    defaultStore = [MEMORY[0x277D69A20] defaultStore];
+    activeAccount = [defaultStore activeAccount];
 
-    if (v5)
+    if (activeAccount)
     {
-      v6 = [v5 uniqueIdentifier];
-      v7 = [v6 longLongValue];
+      uniqueIdentifier = [activeAccount uniqueIdentifier];
+      longLongValue = [uniqueIdentifier longLongValue];
 
-      if ([MEMORY[0x277D69D58] existsForAccountIdentifier:v7])
+      if ([MEMORY[0x277D69D58] existsForAccountIdentifier:longLongValue])
       {
-        v8 = [objc_alloc(MEMORY[0x277D69D58]) initWithAccountIdentifier:v7];
-        v9 = [v8 lastSyncTime];
+        v8 = [objc_alloc(MEMORY[0x277D69D58]) initWithAccountIdentifier:longLongValue];
+        lastSyncTime = [v8 lastSyncTime];
 
         v10 = 3;
-        if (!v9)
+        if (!lastSyncTime)
         {
           v10 = 4;
         }

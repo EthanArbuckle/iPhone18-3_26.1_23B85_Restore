@@ -1,26 +1,26 @@
 @interface BCSDataDetectionActionPickerItem
-- (BCSDataDetectionActionPickerItem)initWithAction:(id)a3 ddAction:(id)a4;
+- (BCSDataDetectionActionPickerItem)initWithAction:(id)action ddAction:(id)ddAction;
 - (BOOL)isCopyActionItem;
 - (NSString)icsString;
 - (id)icon;
-- (void)action:(id)a3 didDismissAlertController:(id)a4;
-- (void)performActionWithFBOptions:(id)a3;
+- (void)action:(id)action didDismissAlertController:(id)controller;
+- (void)performActionWithFBOptions:(id)options;
 @end
 
 @implementation BCSDataDetectionActionPickerItem
 
-- (BCSDataDetectionActionPickerItem)initWithAction:(id)a3 ddAction:(id)a4
+- (BCSDataDetectionActionPickerItem)initWithAction:(id)action ddAction:(id)ddAction
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [v7 localizedName];
+  ddActionCopy = ddAction;
+  actionCopy = action;
+  localizedName = [ddActionCopy localizedName];
   v13.receiver = self;
   v13.super_class = BCSDataDetectionActionPickerItem;
-  v10 = [(BCSActionPickerItem *)&v13 initWithLabel:v9 action:v8];
+  v10 = [(BCSActionPickerItem *)&v13 initWithLabel:localizedName action:actionCopy];
 
   if (v10)
   {
-    objc_storeStrong(&v10->_ddAction, a4);
+    objc_storeStrong(&v10->_ddAction, ddAction);
     v11 = v10;
   }
 
@@ -54,10 +54,10 @@
 
 - (id)icon
 {
-  v2 = [(DDAction *)self->_ddAction icon];
-  if ([v2 isSymbolImage])
+  icon = [(DDAction *)self->_ddAction icon];
+  if ([icon isSymbolImage])
   {
-    v3 = v2;
+    v3 = icon;
   }
 
   else
@@ -72,8 +72,8 @@
 
 - (NSString)icsString
 {
-  v2 = [(DDAction *)self->_ddAction context];
-  v3 = [v2 objectForKeyedSubscript:@"ICS"];
+  context = [(DDAction *)self->_ddAction context];
+  v3 = [context objectForKeyedSubscript:@"ICS"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -88,17 +88,17 @@
   return v4;
 }
 
-- (void)performActionWithFBOptions:(id)a3
+- (void)performActionWithFBOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     LOWORD(v10[0]) = 0;
     _os_log_impl(&dword_241993000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "BCSDataDetectionActionPickerItem: performing action", v10, 2u);
   }
 
-  v5 = [(BCSActionPickerItem *)self actionPickerItemDelegate];
-  v6 = [v5 actionPickerItemAlertController:self];
+  actionPickerItemDelegate = [(BCSActionPickerItem *)self actionPickerItemDelegate];
+  v6 = [actionPickerItemDelegate actionPickerItemAlertController:self];
 
   v11 = 0;
   v12 = &v11;
@@ -118,17 +118,17 @@
 
   v8 = v7;
   _Block_object_dispose(&v11, 8);
-  v9 = [v7 sharedController];
-  [v9 performAction:self->_ddAction fromAlertController:v6 interactionDelegate:self];
+  sharedController = [v7 sharedController];
+  [sharedController performAction:self->_ddAction fromAlertController:v6 interactionDelegate:self];
 
   [(BCSActionPickerItem *)self didPerformAction];
 }
 
-- (void)action:(id)a3 didDismissAlertController:(id)a4
+- (void)action:(id)action didDismissAlertController:(id)controller
 {
-  v5 = a4;
-  v6 = [(BCSActionPickerItem *)self actionPickerItemDelegate];
-  [v6 actionPickerItem:self didDismissAlertController:v5];
+  controllerCopy = controller;
+  actionPickerItemDelegate = [(BCSActionPickerItem *)self actionPickerItemDelegate];
+  [actionPickerItemDelegate actionPickerItem:self didDismissAlertController:controllerCopy];
 }
 
 @end

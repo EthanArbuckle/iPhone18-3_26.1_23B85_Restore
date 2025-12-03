@@ -1,39 +1,39 @@
 @interface TPSHeySiriEverUsedValidation
 - (BOOL)getCurrentState;
-- (void)getCurrentStateWithCompletion:(id)a3;
-- (void)validateWithCompletion:(id)a3;
+- (void)getCurrentStateWithCompletion:(id)completion;
+- (void)validateWithCompletion:(id)completion;
 @end
 
 @implementation TPSHeySiriEverUsedValidation
 
-- (void)validateWithCompletion:(id)a3
+- (void)validateWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(TPSHeySiriEverUsedValidation *)self getCurrentState];
-  v6 = v5 ^ [(TPSTargetingValidation *)self BOOLValue];
-  v7 = [MEMORY[0x277D71778] targeting];
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
+  completionCopy = completion;
+  getCurrentState = [(TPSHeySiriEverUsedValidation *)self getCurrentState];
+  v6 = getCurrentState ^ [(TPSTargetingValidation *)self BOOLValue];
+  targeting = [MEMORY[0x277D71778] targeting];
+  if (os_log_type_enabled(targeting, OS_LOG_TYPE_DEBUG))
   {
-    [(TPSDictationLanguageValidation *)self validateWithCompletion:v7];
+    [(TPSDictationLanguageValidation *)self validateWithCompletion:targeting];
   }
 
-  (*(v4 + 2))(v4, v6 ^ 1u, 0);
+  (*(completionCopy + 2))(completionCopy, v6 ^ 1u, 0);
 }
 
 - (BOOL)getCurrentState
 {
-  v2 = [MEMORY[0x277D7A8D0] sharedPreferences];
-  v3 = [v2 voiceTriggerWasEverUsed];
+  mEMORY[0x277D7A8D0] = [MEMORY[0x277D7A8D0] sharedPreferences];
+  voiceTriggerWasEverUsed = [mEMORY[0x277D7A8D0] voiceTriggerWasEverUsed];
 
-  return v3;
+  return voiceTriggerWasEverUsed;
 }
 
-- (void)getCurrentStateWithCompletion:(id)a3
+- (void)getCurrentStateWithCompletion:(id)completion
 {
   v5 = MEMORY[0x277CCABB0];
-  v6 = a3;
+  completionCopy = completion;
   v7 = [v5 numberWithBool:{-[TPSHeySiriEverUsedValidation getCurrentState](self, "getCurrentState")}];
-  (*(a3 + 2))(v6, v7, 0);
+  (*(completion + 2))(completionCopy, v7, 0);
 }
 
 @end

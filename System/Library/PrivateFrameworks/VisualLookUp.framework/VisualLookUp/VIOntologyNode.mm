@@ -1,26 +1,26 @@
 @interface VIOntologyNode
-- (BOOL)isEqual:(id)a3;
-- (VIOntologyNode)initWithCoder:(id)a3;
-- (VIOntologyNode)initWithKnowledgeGraphID:(id)a3 labelDebugDescription:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (VIOntologyNode)initWithCoder:(id)coder;
+- (VIOntologyNode)initWithKnowledgeGraphID:(id)d labelDebugDescription:(id)description;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation VIOntologyNode
 
-- (VIOntologyNode)initWithKnowledgeGraphID:(id)a3 labelDebugDescription:(id)a4
+- (VIOntologyNode)initWithKnowledgeGraphID:(id)d labelDebugDescription:(id)description
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  descriptionCopy = description;
   v14.receiver = self;
   v14.super_class = VIOntologyNode;
   v8 = [(VIOntologyNode *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [dCopy copy];
     knowledgeGraphID = v8->_knowledgeGraphID;
     v8->_knowledgeGraphID = v9;
 
-    v11 = [v7 copy];
+    v11 = [descriptionCopy copy];
     labelDebugDescription = v8->_labelDebugDescription;
     v8->_labelDebugDescription = v11;
   }
@@ -28,17 +28,17 @@
   return v8;
 }
 
-- (VIOntologyNode)initWithCoder:(id)a3
+- (VIOntologyNode)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(VIOntologyNode *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectForKey:@"knowledgeGraphID"];
+    v6 = [coderCopy decodeObjectForKey:@"knowledgeGraphID"];
     knowledgeGraphID = v5->_knowledgeGraphID;
     v5->_knowledgeGraphID = v6;
 
-    v8 = [v4 decodeObjectForKey:@"labelDebugDescription"];
+    v8 = [coderCopy decodeObjectForKey:@"labelDebugDescription"];
     labelDebugDescription = v5->_labelDebugDescription;
     v5->_labelDebugDescription = v8;
   }
@@ -46,18 +46,18 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   knowledgeGraphID = self->_knowledgeGraphID;
-  v5 = a3;
-  [v5 encodeObject:knowledgeGraphID forKey:@"knowledgeGraphID"];
-  [v5 encodeObject:self->_labelDebugDescription forKey:@"labelDebugDescription"];
+  coderCopy = coder;
+  [coderCopy encodeObject:knowledgeGraphID forKey:@"knowledgeGraphID"];
+  [coderCopy encodeObject:self->_labelDebugDescription forKey:@"labelDebugDescription"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     IsEqual = 1;
   }
@@ -67,7 +67,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -77,12 +77,12 @@
 
     v6 = v5;
     knowledgeGraphID = self->_knowledgeGraphID;
-    v8 = [(VIOntologyNode *)v6 knowledgeGraphID];
-    if (VIObjectIsEqual(knowledgeGraphID, v8))
+    knowledgeGraphID = [(VIOntologyNode *)v6 knowledgeGraphID];
+    if (VIObjectIsEqual(knowledgeGraphID, knowledgeGraphID))
     {
       labelDebugDescription = self->_labelDebugDescription;
-      v10 = [(VIOntologyNode *)v6 labelDebugDescription];
-      IsEqual = VIObjectIsEqual(labelDebugDescription, v10);
+      labelDebugDescription = [(VIOntologyNode *)v6 labelDebugDescription];
+      IsEqual = VIObjectIsEqual(labelDebugDescription, labelDebugDescription);
     }
 
     else

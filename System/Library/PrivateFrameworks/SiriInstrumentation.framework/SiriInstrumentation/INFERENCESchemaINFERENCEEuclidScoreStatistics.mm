@@ -1,28 +1,28 @@
 @interface INFERENCESchemaINFERENCEEuclidScoreStatistics
-- (BOOL)isEqual:(id)a3;
-- (INFERENCESchemaINFERENCEEuclidScoreStatistics)initWithDictionary:(id)a3;
-- (INFERENCESchemaINFERENCEEuclidScoreStatistics)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (INFERENCESchemaINFERENCEEuclidScoreStatistics)initWithDictionary:(id)dictionary;
+- (INFERENCESchemaINFERENCEEuclidScoreStatistics)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasMaxScore:(BOOL)a3;
-- (void)setHasMeanScore:(BOOL)a3;
-- (void)setHasMedianScore:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasMaxScore:(BOOL)score;
+- (void)setHasMeanScore:(BOOL)score;
+- (void)setHasMedianScore:(BOOL)score;
+- (void)writeTo:(id)to;
 @end
 
 @implementation INFERENCESchemaINFERENCEEuclidScoreStatistics
 
-- (INFERENCESchemaINFERENCEEuclidScoreStatistics)initWithDictionary:(id)a3
+- (INFERENCESchemaINFERENCEEuclidScoreStatistics)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = INFERENCESchemaINFERENCEEuclidScoreStatistics;
   v5 = [(INFERENCESchemaINFERENCEEuclidScoreStatistics *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"minScore"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"minScore"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -30,7 +30,7 @@
       [(INFERENCESchemaINFERENCEEuclidScoreStatistics *)v5 setMinScore:?];
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"maxScore"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"maxScore"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -38,7 +38,7 @@
       [(INFERENCESchemaINFERENCEEuclidScoreStatistics *)v5 setMaxScore:?];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"medianScore"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"medianScore"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -46,7 +46,7 @@
       [(INFERENCESchemaINFERENCEEuclidScoreStatistics *)v5 setMedianScore:?];
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"meanScore"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"meanScore"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -60,30 +60,30 @@
   return v5;
 }
 
-- (INFERENCESchemaINFERENCEEuclidScoreStatistics)initWithJSON:(id)a3
+- (INFERENCESchemaINFERENCEEuclidScoreStatistics)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(INFERENCESchemaINFERENCEEuclidScoreStatistics *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(INFERENCESchemaINFERENCEEuclidScoreStatistics *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(INFERENCESchemaINFERENCEEuclidScoreStatistics *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -96,14 +96,14 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 2) != 0)
   {
     v8 = MEMORY[0x1E696AD98];
     [(INFERENCESchemaINFERENCEEuclidScoreStatistics *)self maxScore];
     v9 = [v8 numberWithFloat:?];
-    [v3 setObject:v9 forKeyedSubscript:@"maxScore"];
+    [dictionary setObject:v9 forKeyedSubscript:@"maxScore"];
 
     has = self->_has;
     if ((has & 8) == 0)
@@ -126,7 +126,7 @@ LABEL_3:
   v10 = MEMORY[0x1E696AD98];
   [(INFERENCESchemaINFERENCEEuclidScoreStatistics *)self meanScore];
   v11 = [v10 numberWithFloat:?];
-  [v3 setObject:v11 forKeyedSubscript:@"meanScore"];
+  [dictionary setObject:v11 forKeyedSubscript:@"meanScore"];
 
   has = self->_has;
   if ((has & 4) == 0)
@@ -144,7 +144,7 @@ LABEL_11:
   v12 = MEMORY[0x1E696AD98];
   [(INFERENCESchemaINFERENCEEuclidScoreStatistics *)self medianScore];
   v13 = [v12 numberWithFloat:?];
-  [v3 setObject:v13 forKeyedSubscript:@"medianScore"];
+  [dictionary setObject:v13 forKeyedSubscript:@"medianScore"];
 
   if (*&self->_has)
   {
@@ -152,13 +152,13 @@ LABEL_5:
     v5 = MEMORY[0x1E696AD98];
     [(INFERENCESchemaINFERENCEEuclidScoreStatistics *)self minScore];
     v6 = [v5 numberWithFloat:?];
-    [v3 setObject:v6 forKeyedSubscript:@"minScore"];
+    [dictionary setObject:v6 forKeyedSubscript:@"minScore"];
   }
 
 LABEL_6:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -321,16 +321,16 @@ LABEL_6:
   return v9 ^ v4 ^ v14 ^ v19;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_17;
   }
 
   has = self->_has;
-  v6 = v4[24];
+  v6 = equalCopy[24];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_17;
@@ -339,14 +339,14 @@ LABEL_6:
   if (*&has)
   {
     minScore = self->_minScore;
-    [v4 minScore];
+    [equalCopy minScore];
     if (minScore != v8)
     {
       goto LABEL_17;
     }
 
     has = self->_has;
-    v6 = v4[24];
+    v6 = equalCopy[24];
   }
 
   v9 = (*&has >> 1) & 1;
@@ -355,14 +355,14 @@ LABEL_6:
     if (v9)
     {
       maxScore = self->_maxScore;
-      [v4 maxScore];
+      [equalCopy maxScore];
       if (maxScore != v11)
       {
         goto LABEL_17;
       }
 
       has = self->_has;
-      v6 = v4[24];
+      v6 = equalCopy[24];
     }
 
     v12 = (*&has >> 2) & 1;
@@ -371,20 +371,20 @@ LABEL_6:
       if (v12)
       {
         medianScore = self->_medianScore;
-        [v4 medianScore];
+        [equalCopy medianScore];
         if (medianScore != v14)
         {
           goto LABEL_17;
         }
 
         has = self->_has;
-        v6 = v4[24];
+        v6 = equalCopy[24];
       }
 
       v15 = (*&has >> 3) & 1;
       if (v15 == ((v6 >> 3) & 1))
       {
-        if (!v15 || (meanScore = self->_meanScore, [v4 meanScore], meanScore == v17))
+        if (!v15 || (meanScore = self->_meanScore, [equalCopy meanScore], meanScore == v17))
         {
           v18 = 1;
           goto LABEL_18;
@@ -400,9 +400,9 @@ LABEL_18:
   return v18;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -449,9 +449,9 @@ LABEL_5:
 LABEL_6:
 }
 
-- (void)setHasMeanScore:(BOOL)a3
+- (void)setHasMeanScore:(BOOL)score
 {
-  if (a3)
+  if (score)
   {
     v3 = 8;
   }
@@ -464,9 +464,9 @@ LABEL_6:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasMedianScore:(BOOL)a3
+- (void)setHasMedianScore:(BOOL)score
 {
-  if (a3)
+  if (score)
   {
     v3 = 4;
   }
@@ -479,9 +479,9 @@ LABEL_6:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasMaxScore:(BOOL)a3
+- (void)setHasMaxScore:(BOOL)score
 {
-  if (a3)
+  if (score)
   {
     v3 = 2;
   }

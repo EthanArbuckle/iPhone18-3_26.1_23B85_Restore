@@ -2,40 +2,40 @@
 + (id)logCategory;
 + (id)oversizeLogCategory;
 - (BOOL)preflightImport;
-- (JaliscoMediaUpdateOperation)initWithConfiguration:(id)a3 reason:(int64_t)a4 supportedMediaKindsHandler:(id)a5 clientIdentity:(id)a6;
+- (JaliscoMediaUpdateOperation)initWithConfiguration:(id)configuration reason:(int64_t)reason supportedMediaKindsHandler:(id)handler clientIdentity:(id)identity;
 - (id)newImporter;
 - (id)queryFilterPercentEscaped;
 - (int64_t)localDatabaseRevision;
-- (void)handleSuccess:(int64_t)a3;
+- (void)handleSuccess:(int64_t)success;
 @end
 
 @implementation JaliscoMediaUpdateOperation
 
 - (int64_t)localDatabaseRevision
 {
-  v2 = [(CloudLibraryOperation *)self musicLibrary];
-  v3 = [v2 jaliscoOnDiskDatabaseRevision];
+  musicLibrary = [(CloudLibraryOperation *)self musicLibrary];
+  jaliscoOnDiskDatabaseRevision = [musicLibrary jaliscoOnDiskDatabaseRevision];
 
-  return v3;
+  return jaliscoOnDiskDatabaseRevision;
 }
 
 - (BOOL)preflightImport
 {
-  v3 = [(CloudLibraryOperation *)self configuration];
-  v4 = [v3 userIdentity];
+  configuration = [(CloudLibraryOperation *)self configuration];
+  userIdentity = [configuration userIdentity];
 
-  v5 = [ICPrivacyInfo sharedPrivacyInfoForUserIdentity:v4];
-  v6 = [v5 shouldBlockPersonalizedNetworkRequestsForMedia];
+  v5 = [ICPrivacyInfo sharedPrivacyInfoForUserIdentity:userIdentity];
+  shouldBlockPersonalizedNetworkRequestsForMedia = [v5 shouldBlockPersonalizedNetworkRequestsForMedia];
 
-  v7 = os_log_create("com.apple.amp.itunescloudd", "PurchaseSync");
-  v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
-  if (v6)
+  connection3 = os_log_create("com.apple.amp.itunescloudd", "PurchaseSync");
+  v8 = os_log_type_enabled(connection3, OS_LOG_TYPE_DEFAULT);
+  if (shouldBlockPersonalizedNetworkRequestsForMedia)
   {
     if (v8)
     {
       v15 = 138543362;
-      v16 = self;
-      _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%{public}@ Skipping update because privacy acknowledgement is required", &v15, 0xCu);
+      selfCopy = self;
+      _os_log_impl(&_mh_execute_header, connection3, OS_LOG_TYPE_DEFAULT, "%{public}@ Skipping update because privacy acknowledgement is required", &v15, 0xCu);
     }
 
     v9 = 0;
@@ -45,19 +45,19 @@
   {
     if (v8)
     {
-      v10 = [(CloudLibraryOperation *)self connection];
+      connection = [(CloudLibraryOperation *)self connection];
       v11 = objc_opt_class();
       v12 = v11;
-      v13 = [(CloudLibraryOperation *)self connection];
+      connection2 = [(CloudLibraryOperation *)self connection];
       v15 = 138543618;
-      v16 = v11;
+      selfCopy = v11;
       v17 = 2048;
-      v18 = v13;
-      _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Updating using connection: <%{public}@ %p>", &v15, 0x16u);
+      v18 = connection2;
+      _os_log_impl(&_mh_execute_header, connection3, OS_LOG_TYPE_DEFAULT, "Updating using connection: <%{public}@ %p>", &v15, 0x16u);
     }
 
-    v7 = [(CloudLibraryOperation *)self connection];
-    v9 = v7 != 0;
+    connection3 = [(CloudLibraryOperation *)self connection];
+    v9 = connection3 != 0;
   }
 
   return v9;
@@ -66,10 +66,10 @@
 - (id)queryFilterPercentEscaped
 {
   v2 = [[ICDJaliscoMediaFilter alloc] initWithKindsToExclude:&__NSArray0__struct supportedMediaKindsHandler:self->_supportedMediaKindsHandler];
-  v3 = [(ICDJaliscoMediaFilter *)v2 daapQueryFilterString];
+  daapQueryFilterString = [(ICDJaliscoMediaFilter *)v2 daapQueryFilterString];
 
   v4 = +[NSCharacterSet URLQueryAllowedCharacterSet];
-  v5 = [v3 stringByAddingPercentEncodingWithAllowedCharacters:v4];
+  v5 = [daapQueryFilterString stringByAddingPercentEncodingWithAllowedCharacters:v4];
 
   return v5;
 }
@@ -81,13 +81,13 @@
   return v2;
 }
 
-- (void)handleSuccess:(int64_t)a3
+- (void)handleSuccess:(int64_t)success
 {
-  v5 = [(JaliscoMediaUpdateOperation *)self localDatabaseRevision];
-  v6 = [(CloudLibraryOperation *)self musicLibrary];
-  [v6 setJaliscoOnDiskDatabaseRevision:a3];
+  localDatabaseRevision = [(JaliscoMediaUpdateOperation *)self localDatabaseRevision];
+  musicLibrary = [(CloudLibraryOperation *)self musicLibrary];
+  [musicLibrary setJaliscoOnDiskDatabaseRevision:success];
 
-  if (!v5)
+  if (!localDatabaseRevision)
   {
     v7 = os_log_create("com.apple.amp.itunescloudd", "PurchaseSync");
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -97,8 +97,8 @@
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Setting initial user version: %lli", &v10, 0xCu);
     }
 
-    v8 = [(CloudLibraryOperation *)self musicLibrary];
-    [v8 icd_setSagaDatabaseUserVersion:710000];
+    musicLibrary2 = [(CloudLibraryOperation *)self musicLibrary];
+    [musicLibrary2 icd_setSagaDatabaseUserVersion:710000];
 
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
     CFNotificationCenterPostNotification(DarwinNotifyCenter, ICCloudClientInitialCloudLibraryImportCompletedNotification, 0, 0, 1u);
@@ -108,22 +108,22 @@
 - (id)newImporter
 {
   v3 = [JaliscoMediaImporter alloc];
-  v4 = [(CloudLibraryOperation *)self connection];
-  v5 = [(JaliscoMediaImporter *)v3 initWithConnection:v4 supportedMediaKindsHandler:self->_supportedMediaKindsHandler];
+  connection = [(CloudLibraryOperation *)self connection];
+  v5 = [(JaliscoMediaImporter *)v3 initWithConnection:connection supportedMediaKindsHandler:self->_supportedMediaKindsHandler];
 
   return v5;
 }
 
-- (JaliscoMediaUpdateOperation)initWithConfiguration:(id)a3 reason:(int64_t)a4 supportedMediaKindsHandler:(id)a5 clientIdentity:(id)a6
+- (JaliscoMediaUpdateOperation)initWithConfiguration:(id)configuration reason:(int64_t)reason supportedMediaKindsHandler:(id)handler clientIdentity:(id)identity
 {
-  v11 = a5;
+  handlerCopy = handler;
   v15.receiver = self;
   v15.super_class = JaliscoMediaUpdateOperation;
-  v12 = [(JaliscoUpdateOperation *)&v15 initWithConfiguration:a3 reason:a4 clientIdentity:a6];
+  v12 = [(JaliscoUpdateOperation *)&v15 initWithConfiguration:configuration reason:reason clientIdentity:identity];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_supportedMediaKindsHandler, a5);
+    objc_storeStrong(&v12->_supportedMediaKindsHandler, handler);
   }
 
   return v13;

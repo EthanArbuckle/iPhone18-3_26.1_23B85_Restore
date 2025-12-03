@@ -1,11 +1,11 @@
 @interface PreinstalledAppUpdateAuthorizationTask
 + (TaskQueue)taskQueue;
-+ (void)cleanupAfterUninstalledAppsWithBundleIDs:(id)a3;
++ (void)cleanupAfterUninstalledAppsWithBundleIDs:(id)ds;
 - (_TtC9appstored38PreinstalledAppUpdateAuthorizationTask)init;
-- (_TtC9appstored38PreinstalledAppUpdateAuthorizationTask)initWithBundleID:(id)a3 logKey:(id)a4 processHandle:(id)a5 completion:(id)a6;
-- (_TtC9appstored38PreinstalledAppUpdateAuthorizationTask)initWithLogKey:(id)a3;
+- (_TtC9appstored38PreinstalledAppUpdateAuthorizationTask)initWithBundleID:(id)d logKey:(id)key processHandle:(id)handle completion:(id)completion;
+- (_TtC9appstored38PreinstalledAppUpdateAuthorizationTask)initWithLogKey:(id)key;
 - (_TtC9appstored38PreinstalledAppUpdateAuthorizationTask)initWithoutKeepAlive;
-- (void)mainWithCompletionHandler:(id)a3;
+- (void)mainWithCompletionHandler:(id)handler;
 @end
 
 @implementation PreinstalledAppUpdateAuthorizationTask
@@ -22,26 +22,26 @@
   return v3;
 }
 
-- (_TtC9appstored38PreinstalledAppUpdateAuthorizationTask)initWithBundleID:(id)a3 logKey:(id)a4 processHandle:(id)a5 completion:(id)a6
+- (_TtC9appstored38PreinstalledAppUpdateAuthorizationTask)initWithBundleID:(id)d logKey:(id)key processHandle:(id)handle completion:(id)completion
 {
-  v8 = _Block_copy(a6);
+  v8 = _Block_copy(completion);
   v9 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v11 = v10;
   v12 = swift_allocObject();
   *(v12 + 16) = v8;
-  v13 = a4;
-  v14 = a5;
-  v15 = sub_1000FBD08(v9, v11, v13, v14, sub_1000F8678, v12);
+  keyCopy = key;
+  handleCopy = handle;
+  v15 = sub_1000FBD08(v9, v11, keyCopy, handleCopy, sub_1000F8678, v12);
 
   return v15;
 }
 
-- (void)mainWithCompletionHandler:(id)a3
+- (void)mainWithCompletionHandler:(id)handler
 {
   v5 = sub_100085D40(&qword_10059C3E0);
   __chkstk_darwin(v5 - 8);
   v7 = &v14 - v6;
-  v8 = _Block_copy(a3);
+  v8 = _Block_copy(handler);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
   *(v9 + 24) = self;
@@ -57,11 +57,11 @@
   v12[3] = 0;
   v12[4] = &unk_1004366D0;
   v12[5] = v11;
-  v13 = self;
+  selfCopy = self;
   sub_1001BD9B4(0, 0, v7, &unk_1004344E0, v12);
 }
 
-+ (void)cleanupAfterUninstalledAppsWithBundleIDs:(id)a3
++ (void)cleanupAfterUninstalledAppsWithBundleIDs:(id)ds
 {
   v3 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   sub_1000FC058(v3);
@@ -74,7 +74,7 @@
   return result;
 }
 
-- (_TtC9appstored38PreinstalledAppUpdateAuthorizationTask)initWithLogKey:(id)a3
+- (_TtC9appstored38PreinstalledAppUpdateAuthorizationTask)initWithLogKey:(id)key
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

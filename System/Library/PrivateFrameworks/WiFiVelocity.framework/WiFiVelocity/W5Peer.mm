@@ -1,35 +1,35 @@
 @interface W5Peer
-- (BOOL)_isOSVersionSupported:(id *)a3;
-- (BOOL)conformsToProtocol:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToPeer:(id)a3;
-- (W5Peer)initWithCoder:(id)a3;
-- (W5Peer)initWithCompanionLinkDevice:(id)a3;
+- (BOOL)_isOSVersionSupported:(id *)supported;
+- (BOOL)conformsToProtocol:(id)protocol;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToPeer:(id)peer;
+- (W5Peer)initWithCoder:(id)coder;
+- (W5Peer)initWithCompanionLinkDevice:(id)device;
 - (id)companionLinkDevice;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (int64_t)type;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation W5Peer
 
-- (W5Peer)initWithCompanionLinkDevice:(id)a3
+- (W5Peer)initWithCompanionLinkDevice:(id)device
 {
   v7.receiver = self;
   v7.super_class = W5Peer;
   v4 = [(W5Peer *)&v7 init];
   if (v4)
   {
-    v4->_peerID = [objc_msgSend(a3 "idsDeviceIdentifier")];
-    v4->_name = [objc_msgSend(a3 "name")];
-    v4->_model = [objc_msgSend(a3 "model")];
-    v4->_proximity = [a3 proximity];
+    v4->_peerID = [objc_msgSend(device "idsDeviceIdentifier")];
+    v4->_name = [objc_msgSend(device "name")];
+    v4->_model = [objc_msgSend(device "model")];
+    v4->_proximity = [device proximity];
     *&v4->_discoveryFlags = xmmword_27424F1F0;
-    if (a3)
+    if (device)
     {
-      [a3 operatingSystemVersion];
+      [device operatingSystemVersion];
     }
 
     else
@@ -37,7 +37,7 @@
       memset(v6, 0, sizeof(v6));
     }
 
-    if (-[W5Peer _isOSVersionSupported:](v4, "_isOSVersionSupported:", v6) && (([a3 statusFlags] & 2) != 0 || (objc_msgSend(a3, "statusFlags") & 4) != 0 && (objc_msgSend(objc_msgSend(a3, "serviceTypes"), "containsObject:", @"com.apple.wifivelocityd.rapportWake") & 1) != 0 || (objc_msgSend(a3, "statusFlags") & 4) != 0 && -[W5Peer type](v4, "type") == 1))
+    if (-[W5Peer _isOSVersionSupported:](v4, "_isOSVersionSupported:", v6) && (([device statusFlags] & 2) != 0 || (objc_msgSend(device, "statusFlags") & 4) != 0 && (objc_msgSend(objc_msgSend(device, "serviceTypes"), "containsObject:", @"com.apple.wifivelocityd.rapportWake") & 1) != 0 || (objc_msgSend(device, "statusFlags") & 4) != 0 && -[W5Peer type](v4, "type") == 1))
     {
       v4->_discoveryFlags |= 2uLL;
     }
@@ -46,13 +46,13 @@
   return v4;
 }
 
-- (BOOL)_isOSVersionSupported:(id *)a3
+- (BOOL)_isOSVersionSupported:(id *)supported
 {
-  var0 = a3->var0;
-  v4 = [(W5Peer *)self type];
-  if (v4 > 5)
+  var0 = supported->var0;
+  type = [(W5Peer *)self type];
+  if (type > 5)
   {
-    switch(v4)
+    switch(type)
     {
       case 6:
         v5 = var0 <= 10;
@@ -69,14 +69,14 @@
     return !v5;
   }
 
-  if ((v4 - 2) < 4)
+  if ((type - 2) < 4)
   {
 LABEL_3:
     v5 = var0 <= 17;
     return !v5;
   }
 
-  return v4 == 1 && var0 > 14;
+  return type == 1 && var0 > 14;
 }
 
 - (void)dealloc
@@ -88,44 +88,44 @@ LABEL_3:
 
 - (int64_t)type
 {
-  v2 = [(W5Peer *)self model];
+  model = [(W5Peer *)self model];
   v3 = 0x7FFFFFFFFFFFFFFFLL;
-  if ([(NSString *)v2 rangeOfString:@"iPod"]!= 0x7FFFFFFFFFFFFFFFLL)
+  if ([(NSString *)model rangeOfString:@"iPod"]!= 0x7FFFFFFFFFFFFFFFLL)
   {
     return 3;
   }
 
-  if ([(NSString *)v2 rangeOfString:@"iPad"]!= 0x7FFFFFFFFFFFFFFFLL)
+  if ([(NSString *)model rangeOfString:@"iPad"]!= 0x7FFFFFFFFFFFFFFFLL)
   {
     return 4;
   }
 
-  if ([(NSString *)v2 rangeOfString:@"iPhone"]!= 0x7FFFFFFFFFFFFFFFLL)
+  if ([(NSString *)model rangeOfString:@"iPhone"]!= 0x7FFFFFFFFFFFFFFFLL)
   {
     return 2;
   }
 
-  if ([(NSString *)v2 rangeOfString:@"Mac"]!= 0x7FFFFFFFFFFFFFFFLL)
+  if ([(NSString *)model rangeOfString:@"Mac"]!= 0x7FFFFFFFFFFFFFFFLL)
   {
     return 1;
   }
 
-  if ([(NSString *)v2 rangeOfString:@"AppleTV"]!= 0x7FFFFFFFFFFFFFFFLL)
+  if ([(NSString *)model rangeOfString:@"AppleTV"]!= 0x7FFFFFFFFFFFFFFFLL)
   {
     return 5;
   }
 
-  if ([(NSString *)v2 rangeOfString:@"Watch"]!= 0x7FFFFFFFFFFFFFFFLL)
+  if ([(NSString *)model rangeOfString:@"Watch"]!= 0x7FFFFFFFFFFFFFFFLL)
   {
     return 6;
   }
 
-  if ([(NSString *)v2 rangeOfString:@"HomePod"]!= 0x7FFFFFFFFFFFFFFFLL || [(NSString *)v2 rangeOfString:@"AudioAccessory"]!= 0x7FFFFFFFFFFFFFFFLL)
+  if ([(NSString *)model rangeOfString:@"HomePod"]!= 0x7FFFFFFFFFFFFFFFLL || [(NSString *)model rangeOfString:@"AudioAccessory"]!= 0x7FFFFFFFFFFFFFFFLL)
   {
     return 7;
   }
 
-  if ([(NSString *)v2 rangeOfString:@"rProd"]!= 0x7FFFFFFFFFFFFFFFLL || [(NSString *)v2 rangeOfString:@"RealityDevice"]!= 0x7FFFFFFFFFFFFFFFLL)
+  if ([(NSString *)model rangeOfString:@"rProd"]!= 0x7FFFFFFFFFFFFFFFLL || [(NSString *)model rangeOfString:@"RealityDevice"]!= 0x7FFFFFFFFFFFFFFFLL)
   {
     return 8;
   }
@@ -184,49 +184,49 @@ LABEL_3:
   return v6;
 }
 
-- (BOOL)conformsToProtocol:(id)a3
+- (BOOL)conformsToProtocol:(id)protocol
 {
   v4.receiver = self;
   v4.super_class = W5Peer;
-  return [(W5Peer *)&v4 conformsToProtocol:a3];
+  return [(W5Peer *)&v4 conformsToProtocol:protocol];
 }
 
-- (BOOL)isEqualToPeer:(id)a3
+- (BOOL)isEqualToPeer:(id)peer
 {
   peerID = self->_peerID;
-  if (peerID == [a3 peerID])
+  if (peerID == [peer peerID])
   {
-    LOBYTE(v6) = 1;
+    LOBYTE(peerID) = 1;
   }
 
   else if (self->_peerID)
   {
-    v6 = [a3 peerID];
-    if (v6)
+    peerID = [peer peerID];
+    if (peerID)
     {
       v7 = self->_peerID;
-      v8 = [a3 peerID];
+      peerID2 = [peer peerID];
 
-      LOBYTE(v6) = [(NSString *)v7 isEqual:v8];
+      LOBYTE(peerID) = [(NSString *)v7 isEqual:peerID2];
     }
   }
 
   else
   {
-    LOBYTE(v6) = 0;
+    LOBYTE(peerID) = 0;
   }
 
-  return v6;
+  return peerID;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
 
-  if (!a3)
+  if (!equal)
   {
     return 0;
   }
@@ -237,7 +237,7 @@ LABEL_3:
     return 0;
   }
 
-  return [(W5Peer *)self isEqualToPeer:a3];
+  return [(W5Peer *)self isEqualToPeer:equal];
 }
 
 - (id)companionLinkDevice
@@ -253,7 +253,7 @@ LABEL_3:
   return self->_device;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[W5Peer allocWithZone:?]];
   [(W5Peer *)v4 setName:self->_name];
@@ -270,41 +270,41 @@ LABEL_3:
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeObject:self->_name forKey:@"_name"];
-  [a3 encodeObject:self->_peerID forKey:@"_peerID"];
-  [a3 encodeObject:self->_model forKey:@"_model"];
-  [a3 encodeObject:self->_build forKey:@"_build"];
-  [a3 encodeObject:self->_version forKey:@"_version"];
-  [a3 encodeObject:self->_os forKey:@"_os"];
-  [a3 encodeBool:self->_nearby forKey:@"_nearby"];
-  [a3 encodeInteger:self->_proximity forKey:@"_proximity"];
-  [a3 encodeObject:self->_device forKey:@"_device"];
-  [a3 encodeInteger:self->_controlFlags forKey:@"_controlFlags"];
+  [coder encodeObject:self->_name forKey:@"_name"];
+  [coder encodeObject:self->_peerID forKey:@"_peerID"];
+  [coder encodeObject:self->_model forKey:@"_model"];
+  [coder encodeObject:self->_build forKey:@"_build"];
+  [coder encodeObject:self->_version forKey:@"_version"];
+  [coder encodeObject:self->_os forKey:@"_os"];
+  [coder encodeBool:self->_nearby forKey:@"_nearby"];
+  [coder encodeInteger:self->_proximity forKey:@"_proximity"];
+  [coder encodeObject:self->_device forKey:@"_device"];
+  [coder encodeInteger:self->_controlFlags forKey:@"_controlFlags"];
   discoveryFlags = self->_discoveryFlags;
 
-  [a3 encodeInteger:discoveryFlags forKey:@"_discoveryFlags"];
+  [coder encodeInteger:discoveryFlags forKey:@"_discoveryFlags"];
 }
 
-- (W5Peer)initWithCoder:(id)a3
+- (W5Peer)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = W5Peer;
   v4 = [(W5Peer *)&v6 init];
   if (v4)
   {
-    v4->_name = [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"_name", "copy"}];
-    v4->_peerID = [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"_peerID", "copy"}];
-    v4->_model = [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"_model", "copy"}];
-    v4->_build = [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"_build", "copy"}];
-    v4->_version = [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"_version", "copy"}];
-    v4->_os = [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"_os", "copy"}];
-    v4->_nearby = [a3 decodeBoolForKey:@"_nearby"];
-    v4->_proximity = [a3 decodeIntegerForKey:@"_proximity"];
-    v4->_device = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"_device"];
-    v4->_discoveryFlags = [a3 decodeIntegerForKey:@"_discoveryFlags"];
-    v4->_controlFlags = [a3 decodeIntegerForKey:@"_controlFlags"];
+    v4->_name = [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"_name", "copy"}];
+    v4->_peerID = [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"_peerID", "copy"}];
+    v4->_model = [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"_model", "copy"}];
+    v4->_build = [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"_build", "copy"}];
+    v4->_version = [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"_version", "copy"}];
+    v4->_os = [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"_os", "copy"}];
+    v4->_nearby = [coder decodeBoolForKey:@"_nearby"];
+    v4->_proximity = [coder decodeIntegerForKey:@"_proximity"];
+    v4->_device = [coder decodeObjectOfClass:objc_opt_class() forKey:@"_device"];
+    v4->_discoveryFlags = [coder decodeIntegerForKey:@"_discoveryFlags"];
+    v4->_controlFlags = [coder decodeIntegerForKey:@"_controlFlags"];
   }
 
   return v4;

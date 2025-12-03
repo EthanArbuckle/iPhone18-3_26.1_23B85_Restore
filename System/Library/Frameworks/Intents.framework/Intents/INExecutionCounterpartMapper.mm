@@ -1,20 +1,20 @@
 @interface INExecutionCounterpartMapper
 + (void)initialize;
 - (INExecutionCounterpartMapper)init;
-- (id)counterpartIdentifiersForLocalIdentifier:(id)a3;
-- (id)localIdentifiersForCounterpartIdentifier:(id)a3;
+- (id)counterpartIdentifiersForLocalIdentifier:(id)identifier;
+- (id)localIdentifiersForCounterpartIdentifier:(id)identifier;
 - (void)dealloc;
-- (void)installedApplicationsDidChange:(id)a3;
+- (void)installedApplicationsDidChange:(id)change;
 - (void)reset;
 @end
 
 @implementation INExecutionCounterpartMapper
 
-- (id)counterpartIdentifiersForLocalIdentifier:(id)a3
+- (id)counterpartIdentifiersForLocalIdentifier:(id)identifier
 {
   v3 = MEMORY[0x1E69635F8];
-  v4 = a3;
-  v5 = [[v3 alloc] initWithBundleIdentifier:v4 allowPlaceholder:1 error:0];
+  identifierCopy = identifier;
+  v5 = [[v3 alloc] initWithBundleIdentifier:identifierCopy allowPlaceholder:1 error:0];
 
   if (v5)
   {
@@ -29,21 +29,21 @@
   return v6;
 }
 
-- (id)localIdentifiersForCounterpartIdentifier:(id)a3
+- (id)localIdentifiersForCounterpartIdentifier:(id)identifier
 {
   v52 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = INSiriLogContextIntents;
   if (os_log_type_enabled(INSiriLogContextIntents, OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
     v47 = "[INExecutionCounterpartMapper localIdentifiersForCounterpartIdentifier:]";
     v48 = 2112;
-    v49 = v4;
+    v49 = identifierCopy;
     _os_log_impl(&dword_18E991000, v5, OS_LOG_TYPE_INFO, "%s [Counterpart Mapping] Starting counterpart mapping for bundle id: %@", buf, 0x16u);
   }
 
-  if (v4)
+  if (identifierCopy)
   {
     os_unfair_lock_lock(&self->_lock);
     v43[0] = MEMORY[0x1E69E9820];
@@ -52,7 +52,7 @@
     v43[3] = &unk_1E72882F8;
     v43[4] = self;
     v30 = MEMORY[0x193AD7780](v43);
-    v28 = [(NSMutableDictionary *)self->_mapping objectForKey:v4];
+    v28 = [(NSMutableDictionary *)self->_mapping objectForKey:identifierCopy];
     if (v28)
     {
       v6 = INSiriLogContextIntents;
@@ -61,7 +61,7 @@
         *buf = 136315650;
         v47 = "[INExecutionCounterpartMapper localIdentifiersForCounterpartIdentifier:]";
         v48 = 2112;
-        v49 = v4;
+        v49 = identifierCopy;
         v50 = 2112;
         v51 = v28;
         _os_log_impl(&dword_18E991000, v6, OS_LOG_TYPE_INFO, "%s [Counterpart Mapping] (%@) Found counterpart in local mapping: %@", buf, 0x20u);
@@ -81,7 +81,7 @@
           *buf = 136315394;
           v47 = "[INExecutionCounterpartMapper localIdentifiersForCounterpartIdentifier:]";
           v48 = 2112;
-          v49 = v4;
+          v49 = identifierCopy;
           _os_log_impl(&dword_18E991000, v9, OS_LOG_TYPE_INFO, "%s [Counterpart Mapping] (%@) Mapping is filled and a counterpart was not found, returning nil", buf, 0x16u);
         }
 
@@ -140,7 +140,7 @@
                       *buf = 136315650;
                       v47 = "[INExecutionCounterpartMapper localIdentifiersForCounterpartIdentifier:]";
                       v48 = 2112;
-                      v49 = v4;
+                      v49 = identifierCopy;
                       v50 = 2112;
                       v51 = v18;
                       _os_log_impl(&dword_18E991000, v19, OS_LOG_TYPE_INFO, "%s [Counterpart Mapping] (%@) Found counterpart: %@", buf, 0x20u);
@@ -153,10 +153,10 @@
                       [(NSMutableDictionary *)self->_mapping setObject:v20 forKey:v18];
                     }
 
-                    v21 = [v12 bundleIdentifier];
-                    [v20 addObject:v21];
+                    bundleIdentifier = [v12 bundleIdentifier];
+                    [v20 addObject:bundleIdentifier];
 
-                    if ([v18 isEqualToString:v4])
+                    if ([v18 isEqualToString:identifierCopy])
                     {
                       v23 = INSiriLogContextIntents;
                       if (os_log_type_enabled(INSiriLogContextIntents, OS_LOG_TYPE_INFO))
@@ -164,7 +164,7 @@
                         *buf = v27;
                         v47 = "[INExecutionCounterpartMapper localIdentifiersForCounterpartIdentifier:]";
                         v48 = 2112;
-                        v49 = v4;
+                        v49 = identifierCopy;
                         _os_log_impl(&dword_18E991000, v23, OS_LOG_TYPE_INFO, "%s [Counterpart Mapping] (%@) Counterpart and original match, stopping", buf, 0x16u);
                       }
 
@@ -211,7 +211,7 @@ LABEL_34:
 LABEL_39:
 
         self->_filled = v24;
-        v8 = [(NSMutableDictionary *)self->_mapping objectForKey:v4];
+        v8 = [(NSMutableDictionary *)self->_mapping objectForKey:identifierCopy];
       }
 
       v7 = 0;
@@ -247,10 +247,10 @@ LABEL_39:
   v3[2](v3);
 }
 
-- (void)installedApplicationsDidChange:(id)a3
+- (void)installedApplicationsDidChange:(id)change
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:@"isPlaceholder"];
+  userInfo = [change userInfo];
+  v5 = [userInfo objectForKey:@"isPlaceholder"];
 
   if (v5)
   {
@@ -273,8 +273,8 @@ LABEL_39:
 
   v7 = v6;
 
-  v8 = [v7 BOOLValue];
-  if ((v8 & 1) == 0)
+  bOOLValue = [v7 BOOLValue];
+  if ((bOOLValue & 1) == 0)
   {
 
     [(INExecutionCounterpartMapper *)self reset];
@@ -283,9 +283,9 @@ LABEL_39:
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696ABB0] defaultCenter];
-  [v3 removeObserver:self name:@"com.apple.LaunchServices.applicationRegistered" object:0];
-  [v3 removeObserver:self name:@"com.apple.LaunchServices.applicationUnregistered" object:0];
+  defaultCenter = [MEMORY[0x1E696ABB0] defaultCenter];
+  [defaultCenter removeObserver:self name:@"com.apple.LaunchServices.applicationRegistered" object:0];
+  [defaultCenter removeObserver:self name:@"com.apple.LaunchServices.applicationUnregistered" object:0];
 
   v4.receiver = self;
   v4.super_class = INExecutionCounterpartMapper;
@@ -301,9 +301,9 @@ LABEL_39:
   if (v2)
   {
     v2->_lock._os_unfair_lock_opaque = 0;
-    v4 = [MEMORY[0x1E696ABB0] defaultCenter];
-    [v4 addObserver:v3 selector:sel_installedApplicationsDidChange_ name:@"com.apple.LaunchServices.applicationRegistered" object:0];
-    [v4 addObserver:v3 selector:sel_installedApplicationsDidChange_ name:@"com.apple.LaunchServices.applicationUnregistered" object:0];
+    defaultCenter = [MEMORY[0x1E696ABB0] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel_installedApplicationsDidChange_ name:@"com.apple.LaunchServices.applicationRegistered" object:0];
+    [defaultCenter addObserver:v3 selector:sel_installedApplicationsDidChange_ name:@"com.apple.LaunchServices.applicationUnregistered" object:0];
     [(INExecutionCounterpartMapper *)v3 reset];
     v5 = v3;
   }
@@ -313,7 +313,7 @@ LABEL_39:
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1 && INLogInitIfNeeded_once != -1)
+  if (objc_opt_class() == self && INLogInitIfNeeded_once != -1)
   {
 
     dispatch_once(&INLogInitIfNeeded_once, &__block_literal_global_72043);

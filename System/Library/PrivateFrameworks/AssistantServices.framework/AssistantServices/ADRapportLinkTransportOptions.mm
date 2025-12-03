@@ -1,74 +1,74 @@
 @interface ADRapportLinkTransportOptions
-+ (id)newWithBuilder:(id)a3;
-- (ADRapportLinkTransportOptions)initWithAllowsAWDL:(int64_t)a3 allowsBLE:(int64_t)a4 allowsInfraWiFi:(int64_t)a5 allowsBTPipe:(int64_t)a6 allowsForceBLE:(int64_t)a7 allowsForceAWDL:(int64_t)a8 noL2Cap:(int64_t)a9;
-- (ADRapportLinkTransportOptions)initWithBuilder:(id)a3;
-- (ADRapportLinkTransportOptions)initWithCoder:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)_descriptionWithIndent:(unint64_t)a3;
-- (id)mutatedCopyWithMutator:(id)a3;
++ (id)newWithBuilder:(id)builder;
+- (ADRapportLinkTransportOptions)initWithAllowsAWDL:(int64_t)l allowsBLE:(int64_t)e allowsInfraWiFi:(int64_t)fi allowsBTPipe:(int64_t)pipe allowsForceBLE:(int64_t)lE allowsForceAWDL:(int64_t)dL noL2Cap:(int64_t)cap;
+- (ADRapportLinkTransportOptions)initWithBuilder:(id)builder;
+- (ADRapportLinkTransportOptions)initWithCoder:(id)coder;
+- (BOOL)isEqual:(id)equal;
+- (id)_descriptionWithIndent:(unint64_t)indent;
+- (id)mutatedCopyWithMutator:(id)mutator;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ADRapportLinkTransportOptions
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   allowsAWDL = self->_allowsAWDL;
-  v5 = a3;
+  coderCopy = coder;
   v6 = [NSNumber numberWithInteger:allowsAWDL];
-  [v5 encodeObject:v6 forKey:@"ADRapportLinkTransportOptions::allowsAWDL"];
+  [coderCopy encodeObject:v6 forKey:@"ADRapportLinkTransportOptions::allowsAWDL"];
 
   v7 = [NSNumber numberWithInteger:self->_allowsBLE];
-  [v5 encodeObject:v7 forKey:@"ADRapportLinkTransportOptions::allowsBLE"];
+  [coderCopy encodeObject:v7 forKey:@"ADRapportLinkTransportOptions::allowsBLE"];
 
   v8 = [NSNumber numberWithInteger:self->_allowsInfraWiFi];
-  [v5 encodeObject:v8 forKey:@"ADRapportLinkTransportOptions::allowsInfraWiFi"];
+  [coderCopy encodeObject:v8 forKey:@"ADRapportLinkTransportOptions::allowsInfraWiFi"];
 
   v9 = [NSNumber numberWithInteger:self->_allowsBTPipe];
-  [v5 encodeObject:v9 forKey:@"ADRapportLinkTransportOptions::allowsBTPipe"];
+  [coderCopy encodeObject:v9 forKey:@"ADRapportLinkTransportOptions::allowsBTPipe"];
 
   v10 = [NSNumber numberWithInteger:self->_allowsForceBLE];
-  [v5 encodeObject:v10 forKey:@"ADRapportLinkTransportOptions::allowsForceBLE"];
+  [coderCopy encodeObject:v10 forKey:@"ADRapportLinkTransportOptions::allowsForceBLE"];
 
   v11 = [NSNumber numberWithInteger:self->_allowsForceAWDL];
-  [v5 encodeObject:v11 forKey:@"ADRapportLinkTransportOptions::allowsForceAWDL"];
+  [coderCopy encodeObject:v11 forKey:@"ADRapportLinkTransportOptions::allowsForceAWDL"];
 
   v12 = [NSNumber numberWithInteger:self->_noL2Cap];
-  [v5 encodeObject:v12 forKey:@"ADRapportLinkTransportOptions::noL2Cap"];
+  [coderCopy encodeObject:v12 forKey:@"ADRapportLinkTransportOptions::noL2Cap"];
 }
 
-- (ADRapportLinkTransportOptions)initWithCoder:(id)a3
+- (ADRapportLinkTransportOptions)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ADRapportLinkTransportOptions::allowsAWDL"];
-  v6 = [v5 integerValue];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ADRapportLinkTransportOptions::allowsAWDL"];
+  integerValue = [v5 integerValue];
 
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ADRapportLinkTransportOptions::allowsBLE"];
-  v8 = [v7 integerValue];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ADRapportLinkTransportOptions::allowsBLE"];
+  integerValue2 = [v7 integerValue];
 
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ADRapportLinkTransportOptions::allowsInfraWiFi"];
-  v10 = [v9 integerValue];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ADRapportLinkTransportOptions::allowsInfraWiFi"];
+  integerValue3 = [v9 integerValue];
 
-  v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ADRapportLinkTransportOptions::allowsBTPipe"];
-  v12 = [v11 integerValue];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ADRapportLinkTransportOptions::allowsBTPipe"];
+  integerValue4 = [v11 integerValue];
 
-  v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ADRapportLinkTransportOptions::allowsForceBLE"];
-  v14 = [v13 integerValue];
+  v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ADRapportLinkTransportOptions::allowsForceBLE"];
+  integerValue5 = [v13 integerValue];
 
-  v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ADRapportLinkTransportOptions::allowsForceAWDL"];
-  v16 = [v15 integerValue];
+  v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ADRapportLinkTransportOptions::allowsForceAWDL"];
+  integerValue6 = [v15 integerValue];
 
-  v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ADRapportLinkTransportOptions::noL2Cap"];
+  v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ADRapportLinkTransportOptions::noL2Cap"];
 
-  v18 = [v17 integerValue];
-  return [(ADRapportLinkTransportOptions *)self initWithAllowsAWDL:v6 allowsBLE:v8 allowsInfraWiFi:v10 allowsBTPipe:v12 allowsForceBLE:v14 allowsForceAWDL:v16 noL2Cap:v18];
+  integerValue7 = [v17 integerValue];
+  return [(ADRapportLinkTransportOptions *)self initWithAllowsAWDL:integerValue allowsBLE:integerValue2 allowsInfraWiFi:integerValue3 allowsBTPipe:integerValue4 allowsForceBLE:integerValue5 allowsForceAWDL:integerValue6 noL2Cap:integerValue7];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v13 = 1;
   }
@@ -78,7 +78,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       allowsAWDL = self->_allowsAWDL;
       if (allowsAWDL == [(ADRapportLinkTransportOptions *)v5 allowsAWDL]&& (allowsBLE = self->_allowsBLE, allowsBLE == [(ADRapportLinkTransportOptions *)v5 allowsBLE]) && (allowsInfraWiFi = self->_allowsInfraWiFi, allowsInfraWiFi == [(ADRapportLinkTransportOptions *)v5 allowsInfraWiFi]) && (allowsBTPipe = self->_allowsBTPipe, allowsBTPipe == [(ADRapportLinkTransportOptions *)v5 allowsBTPipe]) && (allowsForceBLE = self->_allowsForceBLE, allowsForceBLE == [(ADRapportLinkTransportOptions *)v5 allowsForceBLE]) && (allowsForceAWDL = self->_allowsForceAWDL, allowsForceAWDL == [(ADRapportLinkTransportOptions *)v5 allowsForceAWDL]))
       {
@@ -121,7 +121,7 @@
   return v10 ^ v16;
 }
 
-- (id)_descriptionWithIndent:(unint64_t)a3
+- (id)_descriptionWithIndent:(unint64_t)indent
 {
   v4 = [NSString alloc];
   v8.receiver = self;
@@ -132,33 +132,33 @@
   return v6;
 }
 
-- (ADRapportLinkTransportOptions)initWithAllowsAWDL:(int64_t)a3 allowsBLE:(int64_t)a4 allowsInfraWiFi:(int64_t)a5 allowsBTPipe:(int64_t)a6 allowsForceBLE:(int64_t)a7 allowsForceAWDL:(int64_t)a8 noL2Cap:(int64_t)a9
+- (ADRapportLinkTransportOptions)initWithAllowsAWDL:(int64_t)l allowsBLE:(int64_t)e allowsInfraWiFi:(int64_t)fi allowsBTPipe:(int64_t)pipe allowsForceBLE:(int64_t)lE allowsForceAWDL:(int64_t)dL noL2Cap:(int64_t)cap
 {
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_1000726E0;
   v10[3] = &unk_10050F3C0;
-  v10[4] = a3;
-  v10[5] = a4;
-  v10[6] = a5;
-  v10[7] = a6;
-  v10[8] = a7;
-  v10[9] = a8;
-  v10[10] = a9;
+  v10[4] = l;
+  v10[5] = e;
+  v10[6] = fi;
+  v10[7] = pipe;
+  v10[8] = lE;
+  v10[9] = dL;
+  v10[10] = cap;
   return [(ADRapportLinkTransportOptions *)self initWithBuilder:v10];
 }
 
-- (ADRapportLinkTransportOptions)initWithBuilder:(id)a3
+- (ADRapportLinkTransportOptions)initWithBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v9.receiver = self;
   v9.super_class = ADRapportLinkTransportOptions;
   v5 = [(ADRapportLinkTransportOptions *)&v9 init];
   v6 = v5;
-  if (v4 && v5)
+  if (builderCopy && v5)
   {
     v7 = [[_ADRapportLinkTransportOptionsMutation alloc] initWithBase:0];
-    v4[2](v4, v7);
+    builderCopy[2](builderCopy, v7);
     if ([(_ADRapportLinkTransportOptionsMutation *)v7 isDirty])
     {
       v6->_allowsAWDL = [(_ADRapportLinkTransportOptionsMutation *)v7 getAllowsAWDL];
@@ -174,21 +174,21 @@
   return v6;
 }
 
-+ (id)newWithBuilder:(id)a3
++ (id)newWithBuilder:(id)builder
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:v3];
+  builderCopy = builder;
+  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:builderCopy];
 
   return v4;
 }
 
-- (id)mutatedCopyWithMutator:(id)a3
+- (id)mutatedCopyWithMutator:(id)mutator
 {
-  v4 = a3;
-  if (v4)
+  mutatorCopy = mutator;
+  if (mutatorCopy)
   {
     v5 = [[_ADRapportLinkTransportOptionsMutation alloc] initWithBase:self];
-    v4[2](v4, v5);
+    mutatorCopy[2](mutatorCopy, v5);
     if ([(_ADRapportLinkTransportOptionsMutation *)v5 isDirty])
     {
       v6 = objc_alloc_init(ADRapportLinkTransportOptions);

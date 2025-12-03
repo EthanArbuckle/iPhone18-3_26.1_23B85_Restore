@@ -1,24 +1,24 @@
 @interface SCMLTextSanitizer
-+ (unsigned)violationCategoryForAdapterLabel:(id)a3;
-- (SCMLTextSanitizer)initWithConfiguration:(id)a3 error:(id *)a4;
++ (unsigned)violationCategoryForAdapterLabel:(id)label;
+- (SCMLTextSanitizer)initWithConfiguration:(id)configuration error:(id *)error;
 - (id).cxx_construct;
 - (id)_sanitizeRequestAsynchronously:completionHandler:;
 - (uint64_t)_sanitizeRequestAsynchronously:completionHandler:;
 - (uint64_t)initWithConfiguration:error:;
-- (void)_sanitizeRequestAsynchronously:(id)a3 completionHandler:(id)a4;
+- (void)_sanitizeRequestAsynchronously:(id)asynchronously completionHandler:(id)handler;
 - (void)_sanitizeRequestAsynchronously:completionHandler:;
-- (void)doLLMBackend:(id)a3 withText:(id)a4 isChildPresent:(BOOL)a5 withResponder:(void *)a6;
+- (void)doLLMBackend:(id)backend withText:(id)text isChildPresent:(BOOL)present withResponder:(void *)responder;
 - (void)initWithConfiguration:error:;
-- (void)sanitizeRequestAsynchronously:(id)a3 completionHandler:(id)a4;
-- (void)sanitizeTextAsynchronously:(id)a3 completionHandler:(id)a4;
+- (void)sanitizeRequestAsynchronously:(id)asynchronously completionHandler:(id)handler;
+- (void)sanitizeTextAsynchronously:(id)asynchronously completionHandler:(id)handler;
 @end
 
 @implementation SCMLTextSanitizer
 
-- (SCMLTextSanitizer)initWithConfiguration:(id)a3 error:(id *)a4
+- (SCMLTextSanitizer)initWithConfiguration:(id)configuration error:(id *)error
 {
   v47 = *MEMORY[0x1E69E9840];
-  v25 = a3;
+  configurationCopy = configuration;
   scml::SignpostInterval::SignpostInterval(&v44);
   v4 = v44;
   v5 = v4;
@@ -37,27 +37,27 @@
   v7 = +[SCMLLog textAnalyzer];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v25 locale];
-    v9 = [v8 localeIdentifier];
-    v10 = [v25 mode];
-    v11 = [v25 region];
-    v12 = [v25 backends];
-    v13 = [v25 modelManagerServicesUseCaseID];
-    v14 = [v25 onBehalfOfProcessID];
+    locale = [configurationCopy locale];
+    localeIdentifier = [locale localeIdentifier];
+    mode = [configurationCopy mode];
+    region = [configurationCopy region];
+    backends = [configurationCopy backends];
+    modelManagerServicesUseCaseID = [configurationCopy modelManagerServicesUseCaseID];
+    onBehalfOfProcessID = [configurationCopy onBehalfOfProcessID];
     buf[0] = 134219523;
     *&buf[1] = self;
     v31 = 2114;
-    v32 = v9;
+    v32 = localeIdentifier;
     v33 = 1024;
-    v34 = v10;
+    v34 = mode;
     v35 = 1024;
-    v36 = v11;
+    v36 = region;
     v37 = 1024;
-    v38 = v12;
+    v38 = backends;
     v39 = 2113;
-    v40 = v13;
+    v40 = modelManagerServicesUseCaseID;
     v41 = 1024;
-    v42 = v14;
+    v42 = onBehalfOfProcessID;
     _os_log_impl(&dword_1B8A3C000, v7, OS_LOG_TYPE_DEFAULT, "Begin SCMLTextSanitizer init inst=%p loc=%{public}@ mode=%d region=%d backends=0x%x useCase=%{private}@ pid=%d", buf, 0x38u);
   }
 
@@ -66,16 +66,16 @@
   v27 = [(SCMLTextSanitizer *)&v29 init];
   if (v27)
   {
-    v15 = [v25 locale];
+    locale2 = [configurationCopy locale];
     v16 = *(v27 + 9);
-    *(v27 + 9) = v15;
+    *(v27 + 9) = locale2;
 
-    *(v27 + 20) = [v25 mode];
-    *(v27 + 21) = [v25 granularity];
-    v17 = [v25 mode];
-    v18 = [v25 backends];
-    [v25 region];
-    if (v17 == 2)
+    *(v27 + 20) = [configurationCopy mode];
+    *(v27 + 21) = [configurationCopy granularity];
+    mode2 = [configurationCopy mode];
+    backends2 = [configurationCopy backends];
+    [configurationCopy region];
+    if (mode2 == 2)
     {
       v19 = +[SCMLLog textAnalyzer];
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
@@ -83,15 +83,15 @@
         [SCMLTextSanitizer initWithConfiguration:v19 error:?];
       }
 
-      v18 = 37;
+      backends2 = 37;
     }
 
-    *(v27 + 11) = v18;
+    *(v27 + 11) = backends2;
     v20 = [MEMORY[0x1E695E0F0] mutableCopy];
     v21 = *(v27 + 16);
     *(v27 + 16) = v20;
 
-    *(v27 + 96) = [v25 throwInAdapterAsyncHandler];
+    *(v27 + 96) = [configurationCopy throwInAdapterAsyncHandler];
     objc_claimAutoreleasedReturnValue();
     operator new();
   }
@@ -110,22 +110,22 @@
   return v28;
 }
 
-- (void)sanitizeTextAsynchronously:(id)a3 completionHandler:(id)a4
+- (void)sanitizeTextAsynchronously:(id)asynchronously completionHandler:(id)handler
 {
-  v8 = a3;
-  v6 = a4;
+  asynchronouslyCopy = asynchronously;
+  handlerCopy = handler;
   v7 = objc_alloc_init(SCMLTextSanitizerRequest);
-  [(SCMLTextSanitizerRequest *)v7 setText:v8];
-  [(SCMLTextSanitizer *)self sanitizeRequestAsynchronously:v7 completionHandler:v6];
+  [(SCMLTextSanitizerRequest *)v7 setText:asynchronouslyCopy];
+  [(SCMLTextSanitizer *)self sanitizeRequestAsynchronously:v7 completionHandler:handlerCopy];
 }
 
-- (void)doLLMBackend:(id)a3 withText:(id)a4 isChildPresent:(BOOL)a5 withResponder:(void *)a6
+- (void)doLLMBackend:(id)backend withText:(id)text isChildPresent:(BOOL)present withResponder:(void *)responder
 {
   v17 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 bundleID];
-  scml::strFromNSString(v9, __p);
+  backendCopy = backend;
+  textCopy = text;
+  bundleID = [backendCopy bundleID];
+  scml::strFromNSString(bundleID, __p);
   scml::strCat<char const(&)[47],std::string const&>("model manager query for model ", __p, v13);
   if (v16 < 0)
   {
@@ -287,11 +287,11 @@ LABEL_30:
   v30 = *MEMORY[0x1E69E9840];
 }
 
-- (void)sanitizeRequestAsynchronously:(id)a3 completionHandler:(id)a4
+- (void)sanitizeRequestAsynchronously:(id)asynchronously completionHandler:(id)handler
 {
   v6 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  scml::SignpostInterval::createAsync(a4);
+  asynchronouslyCopy = asynchronously;
+  scml::SignpostInterval::createAsync(handler);
 }
 
 void __69__SCMLTextSanitizer_sanitizeRequestAsynchronously_completionHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -352,17 +352,17 @@ void __69__SCMLTextSanitizer_sanitizeRequestAsynchronously_completionHandler___b
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_sanitizeRequestAsynchronously:(id)a3 completionHandler:(id)a4
+- (void)_sanitizeRequestAsynchronously:(id)asynchronously completionHandler:(id)handler
 {
   v124 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v82 = a4;
-  v92 = self;
-  v86 = v6;
+  asynchronouslyCopy = asynchronously;
+  handlerCopy = handler;
+  selfCopy = self;
+  v86 = asynchronouslyCopy;
   std::mutex::lock((self + 8));
-  v7 = [v6 text];
+  text = [asynchronouslyCopy text];
   v8 = (*(self + 11) >> 4) & 1;
-  v9 = v7;
+  v9 = text;
   *buf = 0;
   v10 = [_TtC26SensitiveContentAnalysisML14SCMLNormalizer normalizeText:v9 lite:v8 error:buf];
   v11 = *buf;
@@ -374,7 +374,7 @@ void __69__SCMLTextSanitizer_sanitizeRequestAsynchronously_completionHandler___b
     scml::makeException("failed to normalize text", 0x18uLL, v12, exception);
   }
 
-  v90 = [v86 keepGoing];
+  keepGoing = [v86 keepGoing];
   v81 = [[SCMLTextSanitization alloc] initWithGranularOutput:*(self + 21) != 0];
   scml::SignpostInterval::SignpostInterval(&v118);
   v13 = v118;
@@ -392,8 +392,8 @@ void __69__SCMLTextSanitizer_sanitizeRequestAsynchronously_completionHandler___b
   std::__function::__value_func<void ()(void)>::operator=[abi:ne200100](v120, v117);
   std::__function::__value_func<void ()(void)>::~__value_func[abi:ne200100](v117);
   v16 = *(self + 15);
-  v85 = [v86 isPersonalized];
-  v84 = [v86 isChildPresent];
+  isPersonalized = [v86 isPersonalized];
+  isChildPresent = [v86 isChildPresent];
   v79 = v81;
   v18 = scml::strTokenizeWordsForNLP(v91, v17);
   v88 = v79;
@@ -402,7 +402,7 @@ void __69__SCMLTextSanitizer_sanitizeRequestAsynchronously_completionHandler___b
   if ([v19 length] > 0x3E8 || (scml::MultiwordGazetteer::fullMatchString(v16[9], v19, v20), v21 = objc_claimAutoreleasedReturnValue(), v22 = v21 == 0, v21, v22))
   {
 
-    if (((v90 & 1) != 0 || [(SCMLTextSanitization *)v88 safe]) && ((v16[12] & 0x20) != 0 || *v16))
+    if (((keepGoing & 1) != 0 || [(SCMLTextSanitization *)v88 safe]) && ((v16[12] & 0x20) != 0 || *v16))
     {
       v25 = v16[10];
       v26 = [v18 componentsJoinedByString:@" "];
@@ -410,9 +410,9 @@ void __69__SCMLTextSanitizer_sanitizeRequestAsynchronously_completionHandler___b
       v29 = v28 == 0;
 
       v30 = [(SCMLTextSanitization *)v88 updateSignal:kSCMLTextSanitizationSignalFullDisallow[0] withSafe:v29];
-      if ((v90 & 1) != 0 || [(SCMLTextSanitization *)v88 safe])
+      if ((keepGoing & 1) != 0 || [(SCMLTextSanitization *)v88 safe])
       {
-        if (!v85)
+        if (!isPersonalized)
         {
           goto LABEL_17;
         }
@@ -423,7 +423,7 @@ void __69__SCMLTextSanitizer_sanitizeRequestAsynchronously_completionHandler___b
         v35 = v34 == 0;
 
         v36 = [(SCMLTextSanitization *)v88 updateSignal:kSCMLTextSanitizationSignalFullPersonalization[0] withSafe:v35];
-        if ((v90 & 1) != 0 || [(SCMLTextSanitization *)v88 safe])
+        if ((keepGoing & 1) != 0 || [(SCMLTextSanitization *)v88 safe])
         {
 LABEL_17:
           language_modeling::v1::LinguisticContext::LinguisticContext(v97);
@@ -487,7 +487,7 @@ LABEL_21:
                   v102 = &v108;
                   v103 = v106;
                   v104 = v46;
-                  v105 = v90;
+                  v105 = keepGoing;
                   v48 = _Block_copy(aBlock);
                   v49 = *v16;
                   LXLexiconEnumerateEntriesForString();
@@ -498,7 +498,7 @@ LABEL_21:
                   _Block_object_dispose(&v108, 8);
                   _Block_object_dispose(&v112, 8);
 
-                  if ((v90 & 1) == 0 && ![(SCMLTextSanitization *)v47 safe])
+                  if ((keepGoing & 1) == 0 && ![(SCMLTextSanitization *)v47 safe])
                   {
 LABEL_59:
 
@@ -518,14 +518,14 @@ LABEL_59:
               v55 = v16[1];
               v56 = language_modeling::v1::LinguisticContext::tokenSpan(v97);
               v58 = [(SCMLTextSanitization *)v54 updateSignal:kSCMLTextSanitizationSignalCustomWords[0] withSafe:scml::MultiwordGazetteer::hasGazetteerMatch(v55, v53, v56, v57) ^ 1];
-              if (v85)
+              if (isPersonalized)
               {
                 v59 = v16[7];
                 v60 = language_modeling::v1::LinguisticContext::tokenSpan(v97);
                 v62 = [(SCMLTextSanitization *)v54 updateSignal:kSCMLTextSanitizationSignalPersonalizationBlocklist[0] withSafe:scml::MultiwordGazetteer::hasGazetteerMatch(v59, v53, v60, v61) ^ 1];
               }
 
-              if (v84)
+              if (isChildPresent)
               {
                 v63 = v16[2];
                 v64 = language_modeling::v1::LinguisticContext::tokenSpan(v97);
@@ -533,7 +533,7 @@ LABEL_59:
               }
 
               v38 = v52;
-              if ((v90 & 1) == 0 && ![(SCMLTextSanitization *)v54 safe])
+              if ((keepGoing & 1) == 0 && ![(SCMLTextSanitization *)v54 safe])
               {
                 goto LABEL_59;
               }
@@ -581,7 +581,7 @@ LABEL_45:
               if ((hasGazeteerMatch & v40) == 1)
               {
                 v68 = [(SCMLTextSanitization *)v54 updateSignal:kSCMLTextSanitizationSignalDesecration[0] withSafe:0];
-                if (!v90)
+                if (!keepGoing)
                 {
                   goto LABEL_59;
                 }
@@ -592,7 +592,7 @@ LABEL_45:
                 if (v41)
                 {
                   v69 = [(SCMLTextSanitization *)v54 updateSignal:kSCMLTextSanitizationSignalNationalityFlags[0] withSafe:0];
-                  if (!v90)
+                  if (!keepGoing)
                   {
                     goto LABEL_59;
                   }
@@ -678,25 +678,25 @@ LABEL_67:
   v116[3] = v116;
   std::__function::__value_func<void ()(void)>::operator=[abi:ne200100](v120, v116);
   std::__function::__value_func<void ()(void)>::~__value_func[abi:ne200100](v116);
-  if ((v24 & 1) == 0 && ((v90 & 1) != 0 || [(SCMLTextSanitization *)v88 safe]))
+  if ((v24 & 1) == 0 && ((keepGoing & 1) != 0 || [(SCMLTextSanitization *)v88 safe]))
   {
     v88;
-    v76 = v82;
+    v76 = handlerCopy;
     operator new();
   }
 
-  (*(v82 + 2))(v82, v88, 0);
+  (*(handlerCopy + 2))(handlerCopy, v88, 0);
   scml::SignpostInterval::~SignpostInterval(&v118);
 
-  std::mutex::unlock((v92 + 8));
+  std::mutex::unlock((selfCopy + 8));
   v77 = *MEMORY[0x1E69E9840];
 }
 
-+ (unsigned)violationCategoryForAdapterLabel:(id)a3
++ (unsigned)violationCategoryForAdapterLabel:(id)label
 {
   v12 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  scml::strFromNSString(v3, &__p);
+  labelCopy = label;
+  scml::strFromNSString(labelCopy, &__p);
   {
     operator new();
   }
@@ -757,7 +757,7 @@ LABEL_10:
 - (uint64_t)initWithConfiguration:error:
 {
   {
-    return a1 + 8;
+    return self + 8;
   }
 
   else
@@ -768,9 +768,9 @@ LABEL_10:
 
 - (void)initWithConfiguration:error:
 {
-  v2 = **(a1 + 8);
+  v2 = **(self + 8);
   v3 = v2;
-  v4 = *(*(a1 + 8) + 8);
+  v4 = *(*(self + 8) + 8);
   if (v4 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v2))
   {
     *v5 = 0;
@@ -781,7 +781,7 @@ LABEL_10:
 - (uint64_t)_sanitizeRequestAsynchronously:completionHandler:
 {
   {
-    return a1 + 8;
+    return self + 8;
   }
 
   else
@@ -793,17 +793,17 @@ LABEL_10:
 - (void)_sanitizeRequestAsynchronously:completionHandler:
 {
 
-  operator delete(a1);
+  operator delete(self);
 }
 
 - (id)_sanitizeRequestAsynchronously:completionHandler:
 {
   *a2 = &unk_1F3746830;
-  *(a2 + 8) = *(a1 + 8);
-  *(a2 + 16) = *(a1 + 16);
-  result = *(a1 + 24);
+  *(a2 + 8) = *(self + 8);
+  *(a2 + 16) = *(self + 16);
+  result = *(self + 24);
   *(a2 + 24) = result;
-  *(a2 + 32) = *(a1 + 32);
+  *(a2 + 32) = *(self + 32);
   *(a2 + 36) = 0;
   *(a2 + 33) = 0;
   return result;

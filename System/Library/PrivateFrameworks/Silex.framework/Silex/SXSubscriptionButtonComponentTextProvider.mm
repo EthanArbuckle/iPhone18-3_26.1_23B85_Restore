@@ -1,43 +1,43 @@
 @interface SXSubscriptionButtonComponentTextProvider
-- (SXSubscriptionButtonComponentTextProvider)initWithTextProvider:(id)a3;
-- (id)textForComponent:(id)a3;
+- (SXSubscriptionButtonComponentTextProvider)initWithTextProvider:(id)provider;
+- (id)textForComponent:(id)component;
 @end
 
 @implementation SXSubscriptionButtonComponentTextProvider
 
-- (SXSubscriptionButtonComponentTextProvider)initWithTextProvider:(id)a3
+- (SXSubscriptionButtonComponentTextProvider)initWithTextProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   v9.receiver = self;
   v9.super_class = SXSubscriptionButtonComponentTextProvider;
   v6 = [(SXSubscriptionButtonComponentTextProvider *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_textProvider, a3);
+    objc_storeStrong(&v6->_textProvider, provider);
   }
 
   return v7;
 }
 
-- (id)textForComponent:(id)a3
+- (id)textForComponent:(id)component
 {
-  v4 = [a3 text];
-  v5 = v4;
-  if (v4)
+  text = [component text];
+  v5 = text;
+  if (text)
   {
-    v6 = v4;
+    v6 = text;
   }
 
   else
   {
-    v7 = [(SXSubscriptionButtonComponentTextProvider *)self textProvider];
-    v8 = [v7 title];
-    v9 = v8;
+    textProvider = [(SXSubscriptionButtonComponentTextProvider *)self textProvider];
+    title = [textProvider title];
+    v9 = title;
     v10 = &stru_1F532F6C0;
-    if (v8)
+    if (title)
     {
-      v10 = v8;
+      v10 = title;
     }
 
     v6 = v10;

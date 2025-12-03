@@ -1,18 +1,18 @@
 @interface NSIndirectTaggedPointerString
-+ (id)allocWithZone:(_NSZone *)a3;
-- (BOOL)_getCString:(char *)a3 maxLength:(unint64_t)a4 encoding:(unsigned int)a5;
-- (BOOL)getBytes:(void *)a3 maxLength:(unint64_t)a4 usedLength:(unint64_t *)a5 encoding:(unint64_t)a6 options:(unint64_t)a7 range:(_NSRange)a8 remainingRange:(_NSRange *)a9;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToString:(id)a3;
++ (id)allocWithZone:(_NSZone *)zone;
+- (BOOL)_getCString:(char *)string maxLength:(unint64_t)length encoding:(unsigned int)encoding;
+- (BOOL)getBytes:(void *)bytes maxLength:(unint64_t)length usedLength:(unint64_t *)usedLength encoding:(unint64_t)encoding options:(unint64_t)options range:(_NSRange)range remainingRange:(_NSRange *)remainingRange;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToString:(id)string;
 - (const)UTF8String;
-- (const)_fastCStringContents:(BOOL)a3;
-- (const)cStringUsingEncoding:(unint64_t)a3;
-- (id)substringWithRange:(_NSRange)a3;
-- (int64_t)compare:(id)a3 options:(unint64_t)a4 range:(_NSRange)a5 locale:(id)a6;
+- (const)_fastCStringContents:(BOOL)contents;
+- (const)cStringUsingEncoding:(unint64_t)encoding;
+- (id)substringWithRange:(_NSRange)range;
+- (int64_t)compare:(id)compare options:(unint64_t)options range:(_NSRange)range locale:(id)locale;
 - (unint64_t)hash;
 - (unint64_t)length;
-- (unsigned)characterAtIndex:(unint64_t)a3;
-- (void)getCharacters:(unsigned __int16 *)a3 range:(_NSRange)a4;
+- (unsigned)characterAtIndex:(unint64_t)index;
+- (void)getCharacters:(unsigned __int16 *)characters range:(_NSRange)range;
 @end
 
 @implementation NSIndirectTaggedPointerString
@@ -64,7 +64,7 @@
   return (((v2 ^ self) >> 3) & 0x7FFFFFFFFFFFLL);
 }
 
-- (unsigned)characterAtIndex:(unint64_t)a3
+- (unsigned)characterAtIndex:(unint64_t)index
 {
   v3 = *MEMORY[0x1E69E5910];
   if ((~self & 0xC000000000000007) == 0)
@@ -80,17 +80,17 @@
   }
 
   v6 = *&v5 & (v4 >> 50);
-  if (v6 <= a3)
+  if (v6 <= index)
   {
     v9 = v6;
     v10 = __CFExceptionProem(self, a2);
-    _CFThrowFormattedException(@"NSInvalidArgumentException", @"%@: Index %lu out of bounds; string length %lu", v10, a3, v9);
+    _CFThrowFormattedException(@"NSInvalidArgumentException", @"%@: Index %lu out of bounds; string length %lu", v10, index, v9);
   }
 
-  return *(((v4 >> 3) & 0x7FFFFFFFFFFFLL) + a3);
+  return *(((v4 >> 3) & 0x7FFFFFFFFFFFLL) + index);
 }
 
-- (void)getCharacters:(unsigned __int16 *)a3 range:(_NSRange)a4
+- (void)getCharacters:(unsigned __int16 *)characters range:(_NSRange)range
 {
   if ((~self & 0xC000000000000007) != 0)
   {
@@ -110,10 +110,10 @@
   }
 
   v7 = *&v6 & (v5 >> 50);
-  if (v7 < a4.length || a4.location > v7 - a4.length)
+  if (v7 < range.length || range.location > v7 - range.length)
   {
-    length = a4.length;
-    location = a4.location;
+    length = range.length;
+    location = range.location;
     v13 = v7;
     v14 = __CFExceptionProem(self, a2);
     v15 = "";
@@ -125,21 +125,21 @@
     _CFThrowFormattedException(@"NSInvalidArgumentException", @"%@: Range {%lu, %lu} out of bounds; string length %lu%s", v14, location, length, v13, v15);
   }
 
-  if (a4.length)
+  if (range.length)
   {
-    v9 = (((v5 >> 3) & 0x7FFFFFFFFFFFLL) + a4.location);
+    v9 = (((v5 >> 3) & 0x7FFFFFFFFFFFLL) + range.location);
     do
     {
       v10 = *v9++;
-      *a3++ = v10;
-      --a4.length;
+      *characters++ = v10;
+      --range.length;
     }
 
-    while (a4.length);
+    while (range.length);
   }
 }
 
-- (const)_fastCStringContents:(BOOL)a3
+- (const)_fastCStringContents:(BOOL)contents
 {
   v3 = *MEMORY[0x1E69E5910];
   if ((~self & 0xC000000000000007) == 0)
@@ -150,7 +150,7 @@
   return (((v3 ^ self) >> 3) & 0x7FFFFFFFFFFFLL);
 }
 
-- (id)substringWithRange:(_NSRange)a3
+- (id)substringWithRange:(_NSRange)range
 {
   v17 = *MEMORY[0x1E69E9840];
   v3 = *MEMORY[0x1E69E5910];
@@ -167,10 +167,10 @@
   }
 
   v6 = *&v5 & (v4 >> 50);
-  if (v6 < a3.length || a3.location > v6 - a3.length)
+  if (v6 < range.length || range.location > v6 - range.length)
   {
-    length = a3.length;
-    location = a3.location;
+    length = range.length;
+    location = range.location;
     v13 = v6;
     v14 = __CFExceptionProem(self, a2);
     v15 = "";
@@ -182,11 +182,11 @@
     _CFThrowFormattedException(@"NSInvalidArgumentException", @"%@: Range {%lu, %lu} out of bounds; string length %lu%s", v14, location, length, v13, v15);
   }
 
-  if (a3.location + a3.length == v6)
+  if (range.location + range.length == v6)
   {
     v8 = *MEMORY[0x1E69E9840];
 
-    return _CFStringCreateIndirectASCIITaggedPointerString(((v4 >> 3) & 0x7FFFFFFFFFFFLL) + a3.location, a3.length);
+    return _CFStringCreateIndirectASCIITaggedPointerString(((v4 >> 3) & 0x7FFFFFFFFFFFLL) + range.location, range.length);
   }
 
   else
@@ -200,28 +200,28 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     LOBYTE(v5) = 1;
   }
 
-  else if (a3)
+  else if (equal)
   {
-    if ((a3 & 0x8000000000000000) != 0)
+    if ((equal & 0x8000000000000000) != 0)
     {
 
-      LOBYTE(v5) = isEqualToTaggedPointer_0(self, a3);
+      LOBYTE(v5) = isEqualToTaggedPointer_0(self, equal);
     }
 
     else
     {
-      v5 = _NSIsNSString(a3);
+      v5 = _NSIsNSString(equal);
       if (v5)
       {
 
-        LOBYTE(v5) = isEqualToString_0(self, a3, 0);
+        LOBYTE(v5) = isEqualToString_0(self, equal, 0);
       }
     }
   }
@@ -234,40 +234,40 @@
   return v5;
 }
 
-- (BOOL)isEqualToString:(id)a3
+- (BOOL)isEqualToString:(id)string
 {
-  if (self == a3)
+  if (self == string)
   {
     return 1;
   }
 
-  if (!a3)
+  if (!string)
   {
     return 0;
   }
 
-  if ((a3 & 0x8000000000000000) != 0)
+  if ((string & 0x8000000000000000) != 0)
   {
-    return isEqualToTaggedPointer_0(self, a3);
+    return isEqualToTaggedPointer_0(self, string);
   }
 
-  return isEqualToString_0(self, a3, 0);
+  return isEqualToString_0(self, string, 0);
 }
 
-- (int64_t)compare:(id)a3 options:(unint64_t)a4 range:(_NSRange)a5 locale:(id)a6
+- (int64_t)compare:(id)compare options:(unint64_t)options range:(_NSRange)range locale:(id)locale
 {
   v28 = *MEMORY[0x1E69E9840];
-  if (self == a3)
+  if (self == compare)
   {
     result = 0;
   }
 
   else
   {
-    length = a5.length;
-    location = a5.location;
-    v8 = a4;
-    if (a4 > 3 || !a3 || a6)
+    length = range.length;
+    location = range.location;
+    optionsCopy = options;
+    if (options > 3 || !compare || locale)
     {
       v27.receiver = self;
       v27.super_class = NSIndirectTaggedPointerString;
@@ -276,11 +276,11 @@
 
     else
     {
-      CStringPtr = CFStringGetCStringPtr(a3, 0x600u);
+      CStringPtr = CFStringGetCStringPtr(compare, 0x600u);
       if (CStringPtr)
       {
         v12 = CStringPtr;
-        v13 = [a3 length];
+        v13 = [compare length];
         v14 = v13;
         v15 = *MEMORY[0x1E69E5910];
         if ((~self & 0xC000000000000007) == 0)
@@ -300,7 +300,7 @@
         }
 
         v18 = (v16 + location);
-        if (v8)
+        if (optionsCopy)
         {
           v19 = _CFStringCompareASCIICaseInsensitive(v18, v12, v17);
         }
@@ -348,10 +348,10 @@
   return result;
 }
 
-- (const)cStringUsingEncoding:(unint64_t)a3
+- (const)cStringUsingEncoding:(unint64_t)encoding
 {
   v7 = *MEMORY[0x1E69E9840];
-  if (a3 <= 5 && ((1 << a3) & 0x32) != 0)
+  if (encoding <= 5 && ((1 << encoding) & 0x32) != 0)
   {
     v3 = *MEMORY[0x1E69E5910];
     if ((~self & 0xC000000000000007) == 0)
@@ -373,10 +373,10 @@
   return result;
 }
 
-- (BOOL)_getCString:(char *)a3 maxLength:(unint64_t)a4 encoding:(unsigned int)a5
+- (BOOL)_getCString:(char *)string maxLength:(unint64_t)length encoding:(unsigned int)encoding
 {
   v13 = *MEMORY[0x1E69E9840];
-  if (a5 == 513 || a5 == 134217984 || a5 == 1536)
+  if (encoding == 513 || encoding == 134217984 || encoding == 1536)
   {
     v6 = *MEMORY[0x1E69E5910];
     if ((~self & 0xC000000000000007) == 0)
@@ -392,17 +392,17 @@
     }
 
     v9 = *&v8 & (v7 >> 50);
-    if (v9 <= a4)
+    if (v9 <= length)
     {
-      memmove(a3, ((v7 >> 3) & 0x7FFFFFFFFFFFLL), *&v8 & (v7 >> 50));
-      a3[v9] = 0;
+      memmove(string, ((v7 >> 3) & 0x7FFFFFFFFFFFLL), *&v8 & (v7 >> 50));
+      string[v9] = 0;
       result = 1;
     }
 
     else
     {
       result = 0;
-      *a3 = 0;
+      *string = 0;
     }
   }
 
@@ -410,21 +410,21 @@
   {
     v12.receiver = self;
     v12.super_class = NSIndirectTaggedPointerString;
-    result = [(NSIndirectTaggedPointerString *)&v12 _getCString:a3 maxLength:a4 encoding:?];
+    result = [(NSIndirectTaggedPointerString *)&v12 _getCString:string maxLength:length encoding:?];
   }
 
   v11 = *MEMORY[0x1E69E9840];
   return result;
 }
 
-- (BOOL)getBytes:(void *)a3 maxLength:(unint64_t)a4 usedLength:(unint64_t *)a5 encoding:(unint64_t)a6 options:(unint64_t)a7 range:(_NSRange)a8 remainingRange:(_NSRange *)a9
+- (BOOL)getBytes:(void *)bytes maxLength:(unint64_t)length usedLength:(unint64_t *)usedLength encoding:(unint64_t)encoding options:(unint64_t)options range:(_NSRange)range remainingRange:(_NSRange *)remainingRange
 {
   v23 = *MEMORY[0x1E69E9840];
-  if (a7 || a6 > 5 || ((1 << a6) & 0x32) == 0)
+  if (options || encoding > 5 || ((1 << encoding) & 0x32) == 0)
   {
     v22.receiver = self;
     v22.super_class = NSIndirectTaggedPointerString;
-    result = [(NSIndirectTaggedPointerString *)&v22 getBytes:a3 maxLength:a4 usedLength:a5 encoding:a6 options:a8.location range:a8.length remainingRange:a9];
+    result = [(NSIndirectTaggedPointerString *)&v22 getBytes:bytes maxLength:length usedLength:usedLength encoding:encoding options:range.location range:range.length remainingRange:remainingRange];
     goto LABEL_22;
   }
 
@@ -441,13 +441,13 @@
     v13 = 31;
   }
 
-  if (!a3)
+  if (!bytes)
   {
     v14 = *&v13 & (v12 >> 50);
-    if (v14 >= a8.length && a8.location <= v14 - a8.length)
+    if (v14 >= range.length && range.location <= v14 - range.length)
     {
-      length = a8.length;
-      if (!a5)
+      length = range.length;
+      if (!usedLength)
       {
         goto LABEL_19;
       }
@@ -458,43 +458,43 @@
 LABEL_29:
     v20 = __CFExceptionProem(self, a2);
     v21 = "";
-    if (a8.length == 64)
+    if (range.length == 64)
     {
       v21 = " (Note that the indicated range may be smaller than the original range passed to the API)";
     }
 
-    _CFThrowFormattedException(@"NSInvalidArgumentException", @"%@: Range {%lu, %lu} out of bounds; string length %lu%s", v20, a8.location, a8.length, v14, v21);
+    _CFThrowFormattedException(@"NSInvalidArgumentException", @"%@: Range {%lu, %lu} out of bounds; string length %lu%s", v20, range.location, range.length, v14, v21);
   }
 
   v14 = *&v13 & (v12 >> 50);
-  if (v14 < a8.length || a8.location > v14 - a8.length)
+  if (v14 < range.length || range.location > v14 - range.length)
   {
     goto LABEL_29;
   }
 
   v16 = (v12 >> 3) & 0x7FFFFFFFFFFFLL;
-  if (a8.length >= a4)
+  if (range.length >= length)
   {
-    length = a4;
+    length = length;
   }
 
   else
   {
-    length = a8.length;
+    length = range.length;
   }
 
-  memmove(a3, (v16 + a8.location), length);
-  if (a5)
+  memmove(bytes, (v16 + range.location), length);
+  if (usedLength)
   {
 LABEL_18:
-    *a5 = length;
+    *usedLength = length;
   }
 
 LABEL_19:
-  if (a9)
+  if (remainingRange)
   {
-    a9->location = length + a8.location;
-    a9->length = a8.length - length;
+    remainingRange->location = length + range.location;
+    remainingRange->length = range.length - length;
   }
 
   result = 1;
@@ -503,7 +503,7 @@ LABEL_22:
   return result;
 }
 
-+ (id)allocWithZone:(_NSZone *)a3
++ (id)allocWithZone:(_NSZone *)zone
 {
   qword_1EA849A30 = "NSIndirectTaggedPointerString cannot be allocated";
   __break(1u);

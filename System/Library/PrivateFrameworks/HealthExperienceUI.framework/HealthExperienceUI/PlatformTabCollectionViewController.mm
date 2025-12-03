@@ -1,12 +1,12 @@
 @interface PlatformTabCollectionViewController
-- (_TtC18HealthExperienceUI35PlatformTabCollectionViewController)initWithCoder:(id)a3;
-- (_TtC18HealthExperienceUI35PlatformTabCollectionViewController)initWithCollectionViewLayout:(id)a3;
+- (_TtC18HealthExperienceUI35PlatformTabCollectionViewController)initWithCoder:(id)coder;
+- (_TtC18HealthExperienceUI35PlatformTabCollectionViewController)initWithCollectionViewLayout:(id)layout;
 - (void)viewDidLoad;
 @end
 
 @implementation PlatformTabCollectionViewController
 
-- (_TtC18HealthExperienceUI35PlatformTabCollectionViewController)initWithCoder:(id)a3
+- (_TtC18HealthExperienceUI35PlatformTabCollectionViewController)initWithCoder:(id)coder
 {
   result = sub_1BA4A8018();
   __break(1u);
@@ -16,18 +16,18 @@
 - (void)viewDidLoad
 {
   v2 = *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC18HealthExperienceUI35PlatformTabCollectionViewController_makeDataSource);
-  v3 = self;
+  selfCopy = self;
 
-  v4 = v2(v3);
+  v4 = v2(selfCopy);
 
-  *(&v3->super.super.super.super.super.isa + OBJC_IVAR____TtC18HealthExperienceUI42CompoundDataSourceCollectionViewController____lazy_storage___dataSource) = v4;
+  *(&selfCopy->super.super.super.super.super.isa + OBJC_IVAR____TtC18HealthExperienceUI42CompoundDataSourceCollectionViewController____lazy_storage___dataSource) = v4;
 
-  v5.receiver = v3;
+  v5.receiver = selfCopy;
   v5.super_class = type metadata accessor for PlatformTabCollectionViewController();
   [(CompoundDataSourceCollectionViewController *)&v5 viewDidLoad];
 }
 
-- (_TtC18HealthExperienceUI35PlatformTabCollectionViewController)initWithCollectionViewLayout:(id)a3
+- (_TtC18HealthExperienceUI35PlatformTabCollectionViewController)initWithCollectionViewLayout:(id)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

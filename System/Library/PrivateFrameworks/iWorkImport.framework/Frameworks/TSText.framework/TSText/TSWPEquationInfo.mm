@@ -1,61 +1,61 @@
 @interface TSWPEquationInfo
-+ (BOOL)archiveHasEquationSource:(id)a3;
-+ (Class)drawableInfoSubclassForClass:(Class)a3 unarchiver:(id)a4;
-+ (TSWPEquationInfo)equationInfoWithContext:(id)a3 equationInfo:(id)a4 textStorage:(id)a5 charIndex:(unint64_t)a6;
-+ (TSWPEquationInfo)equationInfoWithContext:(id)a3 string:(id)a4 textStorage:(id)a5 charIndex:(unint64_t)a6;
++ (BOOL)archiveHasEquationSource:(id)source;
++ (Class)drawableInfoSubclassForClass:(Class)class unarchiver:(id)unarchiver;
++ (TSWPEquationInfo)equationInfoWithContext:(id)context equationInfo:(id)info textStorage:(id)storage charIndex:(unint64_t)index;
++ (TSWPEquationInfo)equationInfoWithContext:(id)context string:(id)string textStorage:(id)storage charIndex:(unint64_t)index;
 + (id)defaultTextProperties;
-+ (id)eqKitEquationWithWithContext:(id)a3 source:(id)a4 error:(id *)a5;
-+ (id)filteredTextPropertiesFromTextProperties:(id)a3;
-+ (id)fontNameFromTextProperties:(id)a3;
-+ (id)pdfImageDataWithContext:(id)a3 equation:(id)a4 layout:(id)a5 layoutContext:(id)a6 sourceString:(id)a7;
-+ (id)propertiesForParagraphStyle:(id)a3 characterStyle:(id)a4;
-+ (id)propertiesForStorage:(id)a3 characterIndex:(unint64_t)a4;
-- (BOOL)needsUpdateForStyleChangeToStorage:(id)a3 charIndex:(unint64_t)a4 isAnchoredOrFloating:(BOOL)a5;
++ (id)eqKitEquationWithWithContext:(id)context source:(id)source error:(id *)error;
++ (id)filteredTextPropertiesFromTextProperties:(id)properties;
++ (id)fontNameFromTextProperties:(id)properties;
++ (id)pdfImageDataWithContext:(id)context equation:(id)equation layout:(id)layout layoutContext:(id)layoutContext sourceString:(id)string;
++ (id)propertiesForParagraphStyle:(id)style characterStyle:(id)characterStyle;
++ (id)propertiesForStorage:(id)storage characterIndex:(unint64_t)index;
+- (BOOL)needsUpdateForStyleChangeToStorage:(id)storage charIndex:(unint64_t)index isAnchoredOrFloating:(BOOL)floating;
 - (CGSize)defaultOriginalSize;
 - (Class)layoutClass;
 - (Class)repClass;
 - (NSString)debugDescription;
 - (NSString)description;
-- (TSWPEquationInfo)initWithContext:(id)a3 string:(id)a4;
-- (TSWPEquationInfo)initWithContext:(id)a3 string:(id)a4 filteredTextProperties:(id)a5 equation:(id)a6 pdfImageData:(id)a7 depth:(double)a8 geometry:(id)a9 style:(id)a10;
-- (TSWPEquationInfo)initWithContext:(id)a3 string:(id)a4 targetGeometry:(id)a5;
-- (TSWPEquationInfo)initWithContext:(id)a3 string:(id)a4 textProperties:(id)a5;
-- (id)descriptionForDrawableAttachment:(id)a3;
-- (id)promisedDataForType:(id)a3;
+- (TSWPEquationInfo)initWithContext:(id)context string:(id)string;
+- (TSWPEquationInfo)initWithContext:(id)context string:(id)string filteredTextProperties:(id)properties equation:(id)equation pdfImageData:(id)data depth:(double)depth geometry:(id)geometry style:(id)self0;
+- (TSWPEquationInfo)initWithContext:(id)context string:(id)string targetGeometry:(id)geometry;
+- (TSWPEquationInfo)initWithContext:(id)context string:(id)string textProperties:(id)properties;
+- (id)descriptionForDrawableAttachment:(id)attachment;
+- (id)promisedDataForType:(id)type;
 - (id)propertiesForParentAttachment;
 - (id)typeName;
 - (id)typesToPromiseWhenCopyingSingleDrawable;
 - (int)format;
-- (int64_t)mixingTypeWithObject:(id)a3 context:(id)a4;
-- (void)didFinalizeUnarchivingFromWPStorage:(id)a3;
-- (void)loadCharacterStylePropertiesIntoPropertyMap:(id)a3 fromArchive:(const void *)a4 unarchiver:(id)a5;
-- (void)loadFromArchive:(const void *)a3 unarchiver:(id)a4;
-- (void)rebuildEquationPDFIncludingGeometry:(BOOL)a3;
-- (void)replaceSourceWithNewSource:(id)a3;
-- (void)saveCharacterStylePropertiesFromPropertyMap:(id)a3 toArchive:(void *)a4 archiver:(id)a5;
-- (void)saveToArchive:(void *)a3 archiver:(id)a4;
-- (void)updateForStyleChangeToStorage:(id)a3 charIndex:(unint64_t)a4 isAnchoredOrFloating:(BOOL)a5;
-- (void)updateTextProperties:(id)a3;
-- (void)willChangeProperty:(int)a3;
+- (int64_t)mixingTypeWithObject:(id)object context:(id)context;
+- (void)didFinalizeUnarchivingFromWPStorage:(id)storage;
+- (void)loadCharacterStylePropertiesIntoPropertyMap:(id)map fromArchive:(const void *)archive unarchiver:(id)unarchiver;
+- (void)loadFromArchive:(const void *)archive unarchiver:(id)unarchiver;
+- (void)rebuildEquationPDFIncludingGeometry:(BOOL)geometry;
+- (void)replaceSourceWithNewSource:(id)source;
+- (void)saveCharacterStylePropertiesFromPropertyMap:(id)map toArchive:(void *)archive archiver:(id)archiver;
+- (void)saveToArchive:(void *)archive archiver:(id)archiver;
+- (void)updateForStyleChangeToStorage:(id)storage charIndex:(unint64_t)index isAnchoredOrFloating:(BOOL)floating;
+- (void)updateTextProperties:(id)properties;
+- (void)willChangeProperty:(int)property;
 @end
 
 @implementation TSWPEquationInfo
 
-+ (BOOL)archiveHasEquationSource:(id)a3
++ (BOOL)archiveHasEquationSource:(id)source
 {
-  v3 = a3;
+  sourceCopy = source;
   v4 = MEMORY[0x277D80558];
   google::protobuf::internal::AssignDescriptors();
-  v6 = objc_msgSend_messageWithDescriptor_(v3, v5, *(*(v4 + 88) + 672));
+  v6 = objc_msgSend_messageWithDescriptor_(sourceCopy, v5, *(*(v4 + 88) + 672));
 
   if (google::protobuf::internal::ExtensionSet::Has((v6 + 16)) & 1) != 0 || (google::protobuf::internal::ExtensionSet::Has((v6 + 16)))
   {
     LOBYTE(v9) = 1;
   }
 
-  else if ((objc_msgSend_sourceType(v3, v7, v8) == 2 || objc_msgSend_fileFormatVersion(v3, v11, v12) < *MEMORY[0x277D80998]) && (*(v6 + 41) & 2) != 0)
+  else if ((objc_msgSend_sourceType(sourceCopy, v7, v8) == 2 || objc_msgSend_fileFormatVersion(sourceCopy, v11, v12) < *MEMORY[0x277D80998]) && (*(v6 + 41) & 2) != 0)
   {
-    v13 = objc_msgSend_readDataReferenceMessage_(v3, v11, *(v6 + 120));
+    v13 = objc_msgSend_readDataReferenceMessage_(sourceCopy, v11, *(v6 + 120));
     v16 = objc_msgSend_type(v13, v14, v15);
     v19 = objc_msgSend_identifier(*MEMORY[0x277CE1E08], v17, v18);
     v21 = objc_msgSend_tsu_conformsToUTI_(v16, v20, v19);
@@ -85,51 +85,51 @@
   return v9;
 }
 
-+ (Class)drawableInfoSubclassForClass:(Class)a3 unarchiver:(id)a4
++ (Class)drawableInfoSubclassForClass:(Class)class unarchiver:(id)unarchiver
 {
-  v6 = a4;
-  if (objc_opt_class() == a3 && objc_msgSend_archiveHasEquationSource_(a1, v7, v6))
+  unarchiverCopy = unarchiver;
+  if (objc_opt_class() == class && objc_msgSend_archiveHasEquationSource_(self, v7, unarchiverCopy))
   {
-    a3 = objc_opt_class();
+    class = objc_opt_class();
   }
 
-  v8 = a3;
+  classCopy = class;
 
-  return a3;
+  return class;
 }
 
-+ (TSWPEquationInfo)equationInfoWithContext:(id)a3 equationInfo:(id)a4 textStorage:(id)a5 charIndex:(unint64_t)a6
++ (TSWPEquationInfo)equationInfoWithContext:(id)context equationInfo:(id)info textStorage:(id)storage charIndex:(unint64_t)index
 {
-  v10 = a3;
-  v11 = a5;
-  v14 = objc_msgSend_source(a4, v12, v13);
-  v16 = objc_msgSend_equationInfoWithContext_string_textStorage_charIndex_(a1, v15, v10, v14, v11, a6);
+  contextCopy = context;
+  storageCopy = storage;
+  v14 = objc_msgSend_source(info, v12, v13);
+  v16 = objc_msgSend_equationInfoWithContext_string_textStorage_charIndex_(self, v15, contextCopy, v14, storageCopy, index);
 
   return v16;
 }
 
-+ (TSWPEquationInfo)equationInfoWithContext:(id)a3 string:(id)a4 textStorage:(id)a5 charIndex:(unint64_t)a6
++ (TSWPEquationInfo)equationInfoWithContext:(id)context string:(id)string textStorage:(id)storage charIndex:(unint64_t)index
 {
-  v10 = a3;
-  v11 = a4;
-  v13 = objc_msgSend_propertiesForStorage_characterIndex_(a1, v12, a5, a6);
-  if (!v11)
+  contextCopy = context;
+  stringCopy = string;
+  v13 = objc_msgSend_propertiesForStorage_characterIndex_(self, v12, storage, index);
+  if (!stringCopy)
   {
-    v11 = &stru_28860A0F0;
+    stringCopy = &stru_28860A0F0;
   }
 
   v14 = [TSWPEquationInfo alloc];
-  v16 = objc_msgSend_initWithContext_string_textProperties_(v14, v15, v10, v11, v13);
+  v16 = objc_msgSend_initWithContext_string_textProperties_(v14, v15, contextCopy, stringCopy, v13);
 
   return v16;
 }
 
-+ (id)eqKitEquationWithWithContext:(id)a3 source:(id)a4 error:(id *)a5
++ (id)eqKitEquationWithWithContext:(id)context source:(id)source error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  contextCopy = context;
+  sourceCopy = source;
   objc_opt_class();
-  v11 = objc_msgSend_documentRoot(v7, v9, v10);
+  v11 = objc_msgSend_documentRoot(contextCopy, v9, v10);
   v12 = TSUDynamicCast();
 
   v16 = objc_msgSend_equationEnvironment(v12, v13, v14);
@@ -144,28 +144,28 @@
     v16 = objc_msgSend_defaultEnvironment(MEMORY[0x277D7FF68], v24, v25);
   }
 
-  v26 = objc_msgSend_formatFromString_(MEMORY[0x277D7FF70], v15, v8);
+  v26 = objc_msgSend_formatFromString_(MEMORY[0x277D7FF70], v15, sourceCopy);
   if (v26)
   {
-    objc_msgSend_equationWithString_format_environment_error_(MEMORY[0x277D7FF70], v27, v8, v26, v16, a5);
+    objc_msgSend_equationWithString_format_environment_error_(MEMORY[0x277D7FF70], v27, sourceCopy, v26, v16, error);
   }
 
   else
   {
-    objc_msgSend_equationWithString_format_environment_error_(MEMORY[0x277D7FF70], v27, v8, 2, v16, a5);
+    objc_msgSend_equationWithString_format_environment_error_(MEMORY[0x277D7FF70], v27, sourceCopy, 2, v16, error);
   }
   v28 = ;
 
   return v28;
 }
 
-+ (id)pdfImageDataWithContext:(id)a3 equation:(id)a4 layout:(id)a5 layoutContext:(id)a6 sourceString:(id)a7
++ (id)pdfImageDataWithContext:(id)context equation:(id)equation layout:(id)layout layoutContext:(id)layoutContext sourceString:(id)string
 {
-  v11 = a3;
-  v14 = objc_msgSend_pdfDataWithLayout_layoutContext_sourceString_tightFit_(a4, v12, a5, a6, a7, 1);
+  contextCopy = context;
+  v14 = objc_msgSend_pdfDataWithLayout_layoutContext_sourceString_tightFit_(equation, v12, layout, layoutContext, string, 1);
   if (v14)
   {
-    v15 = objc_msgSend_dataFromNSData_filename_context_(MEMORY[0x277D80828], v13, v14, @"equation.pdf", v11);
+    v15 = objc_msgSend_dataFromNSData_filename_context_(MEMORY[0x277D80828], v13, v14, @"equation.pdf", contextCopy);
   }
 
   else
@@ -176,25 +176,25 @@
   return v15;
 }
 
-- (TSWPEquationInfo)initWithContext:(id)a3 string:(id)a4
+- (TSWPEquationInfo)initWithContext:(id)context string:(id)string
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  stringCopy = string;
   v8 = objc_opt_class();
   v11 = objc_msgSend_defaultTextProperties(v8, v9, v10);
-  v13 = objc_msgSend_initWithContext_string_textProperties_(self, v12, v6, v7, v11);
+  v13 = objc_msgSend_initWithContext_string_textProperties_(self, v12, contextCopy, stringCopy, v11);
 
   return v13;
 }
 
-- (TSWPEquationInfo)initWithContext:(id)a3 string:(id)a4 textProperties:(id)a5
+- (TSWPEquationInfo)initWithContext:(id)context string:(id)string textProperties:(id)properties
 {
-  v94 = a3;
-  v8 = a4;
-  v10 = a5;
-  v93 = v8;
-  v92 = v10;
-  if (!v8)
+  contextCopy = context;
+  stringCopy = string;
+  propertiesCopy = properties;
+  v93 = stringCopy;
+  v92 = propertiesCopy;
+  if (!stringCopy)
   {
     v11 = MEMORY[0x277D81150];
     v12 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v9, "[TSWPEquationInfo initWithContext:string:textProperties:]");
@@ -205,10 +205,10 @@
   }
 
   v18 = objc_opt_class();
-  v20 = objc_msgSend_filteredTextPropertiesFromTextProperties_(v18, v19, v10);
+  v20 = objc_msgSend_filteredTextPropertiesFromTextProperties_(v18, v19, propertiesCopy);
   v21 = objc_opt_class();
   v95 = 0;
-  v23 = objc_msgSend_eqKitEquationWithWithContext_source_error_(v21, v22, v94, v93, &v95);
+  v23 = objc_msgSend_eqKitEquationWithWithContext_source_error_(v21, v22, contextCopy, v93, &v95);
   v91 = v95;
   v24 = [TSWPEquationLayoutContext alloc];
   v28 = objc_msgSend_initWithTextProperties_containerSize_(v24, v25, v20, *MEMORY[0x277CBF3A8], *(MEMORY[0x277CBF3A8] + 8));
@@ -245,7 +245,7 @@
             if (CGRectGetHeight(v97) > 0.0)
             {
               v49 = objc_opt_class();
-              v51 = objc_msgSend_pdfImageDataWithContext_equation_layout_layoutContext_sourceString_(v49, v50, v94, v23, v32, v28, v93);
+              v51 = objc_msgSend_pdfImageDataWithContext_equation_layout_layoutContext_sourceString_(v49, v50, contextCopy, v23, v32, v28, v93);
               v52 = objc_alloc(MEMORY[0x277D802E8]);
               v55 = objc_msgSend_initWithSize_(v52, v53, v54, v40, v42);
               v29 = v42 + v38;
@@ -273,7 +273,7 @@ LABEL_13:
   v55 = objc_msgSend_initWithSize_(v62, v63, v64, v57, v61);
 LABEL_14:
   objc_opt_class();
-  v67 = objc_msgSend_documentRoot(v94, v65, v66);
+  v67 = objc_msgSend_documentRoot(contextCopy, v65, v66);
   v68 = TSUDynamicCast();
 
   v71 = objc_msgSend_theme(v68, v69, v70);
@@ -281,7 +281,7 @@ LABEL_14:
 
   if (!v74)
   {
-    v74 = objc_msgSend_defaultStyleWithContext_(MEMORY[0x277D80340], v75, v94);
+    v74 = objc_msgSend_defaultStyleWithContext_(MEMORY[0x277D80340], v75, contextCopy);
     objc_msgSend_setStyleIdentifier_(v74, v77, @"equation-0-imageStyle");
   }
 
@@ -301,19 +301,19 @@ LABEL_14:
     v51 = objc_msgSend_null(MEMORY[0x277D80828], v78, v79);
   }
 
-  v88 = objc_msgSend_initWithContext_string_filteredTextProperties_equation_pdfImageData_depth_geometry_style_(self, v78, v94, v93, v20, v23, v51, v55, v29, v74);
+  v88 = objc_msgSend_initWithContext_string_filteredTextProperties_equation_pdfImageData_depth_geometry_style_(self, v78, contextCopy, v93, v20, v23, v51, v55, v29, v74);
 
   return v88;
 }
 
-- (TSWPEquationInfo)initWithContext:(id)a3 string:(id)a4 targetGeometry:(id)a5
+- (TSWPEquationInfo)initWithContext:(id)context string:(id)string targetGeometry:(id)geometry
 {
-  v8 = a3;
-  v9 = a4;
-  v12 = a5;
-  v141 = v12;
-  v142 = self;
-  if (!v8)
+  contextCopy = context;
+  stringCopy = string;
+  geometryCopy = geometry;
+  v141 = geometryCopy;
+  selfCopy = self;
+  if (!contextCopy)
   {
     v13 = MEMORY[0x277D81150];
     v14 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v10, "[TSWPEquationInfo initWithContext:string:targetGeometry:]");
@@ -323,7 +323,7 @@ LABEL_14:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v18, v19);
   }
 
-  if (!v9)
+  if (!stringCopy)
   {
     v20 = MEMORY[0x277D81150];
     v21 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v10, "[TSWPEquationInfo initWithContext:string:targetGeometry:]");
@@ -333,7 +333,7 @@ LABEL_14:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v25, v26);
   }
 
-  if (!v12)
+  if (!geometryCopy)
   {
     v27 = MEMORY[0x277D81150];
     v28 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v10, "[TSWPEquationInfo initWithContext:string:targetGeometry:]");
@@ -343,7 +343,7 @@ LABEL_14:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v32, v33);
   }
 
-  objc_msgSend_size(v12, v10, v11);
+  objc_msgSend_size(geometryCopy, v10, v11);
   if (v36 <= 0.0)
   {
     v37 = MEMORY[0x277D81150];
@@ -354,7 +354,7 @@ LABEL_14:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v42, v43);
   }
 
-  objc_msgSend_size(v12, v34, v35);
+  objc_msgSend_size(geometryCopy, v34, v35);
   v45 = v44;
   v46 = objc_opt_class();
   v49 = objc_msgSend_defaultTextProperties(v46, v47, v48);
@@ -362,7 +362,7 @@ LABEL_14:
   v52 = v51;
   v53 = objc_opt_class();
   v144 = 0;
-  v55 = objc_msgSend_eqKitEquationWithWithContext_source_error_(v53, v54, v8, v9, &v144);
+  v55 = objc_msgSend_eqKitEquationWithWithContext_source_error_(v53, v54, contextCopy, stringCopy, &v144);
   v140 = v144;
   v56 = [TSWPEquationLayoutContext alloc];
   v57 = MEMORY[0x277CBF3A8];
@@ -400,9 +400,9 @@ LABEL_24:
   }
 
   v87 = objc_opt_class();
-  v89 = objc_msgSend_pdfImageDataWithContext_equation_layout_layoutContext_sourceString_(v87, v88, v8, v55, v64, v143, v9);
+  v89 = objc_msgSend_pdfImageDataWithContext_equation_layout_layoutContext_sourceString_(v87, v88, contextCopy, v55, v64, v143, stringCopy);
   v90 = objc_alloc(MEMORY[0x277D802E8]);
-  objc_msgSend_position(v12, v91, v92);
+  objc_msgSend_position(geometryCopy, v91, v92);
   v95 = objc_msgSend_initWithPosition_size_(v90, v93, v94);
   objc_msgSend_size(v95, v96, v97);
   if (v98 <= 0.0)
@@ -443,7 +443,7 @@ LABEL_25:
   }
 
   objc_opt_class();
-  v127 = objc_msgSend_documentRoot(v8, v125, v126);
+  v127 = objc_msgSend_documentRoot(contextCopy, v125, v126);
   v128 = TSUDynamicCast();
 
   v131 = objc_msgSend_theme(v128, v129, v130);
@@ -451,25 +451,25 @@ LABEL_25:
 
   if (!v134)
   {
-    v134 = objc_msgSend_defaultStyleWithContext_(MEMORY[0x277D80340], v135, v8);
+    v134 = objc_msgSend_defaultStyleWithContext_(MEMORY[0x277D80340], v135, contextCopy);
     objc_msgSend_setStyleIdentifier_(v134, v136, @"equation-0-imageStyle");
   }
 
-  v137 = objc_msgSend_initWithContext_string_filteredTextProperties_equation_pdfImageData_depth_geometry_style_(v142, v135, v8, v9, v49, v55, v89, v95, v65, v134);
+  v137 = objc_msgSend_initWithContext_string_filteredTextProperties_equation_pdfImageData_depth_geometry_style_(selfCopy, v135, contextCopy, stringCopy, v49, v55, v89, v95, v65, v134);
 
   return v137;
 }
 
-- (TSWPEquationInfo)initWithContext:(id)a3 string:(id)a4 filteredTextProperties:(id)a5 equation:(id)a6 pdfImageData:(id)a7 depth:(double)a8 geometry:(id)a9 style:(id)a10
+- (TSWPEquationInfo)initWithContext:(id)context string:(id)string filteredTextProperties:(id)properties equation:(id)equation pdfImageData:(id)data depth:(double)depth geometry:(id)geometry style:(id)self0
 {
-  v77 = a3;
-  v17 = a4;
-  v76 = a5;
-  v18 = a6;
-  v75 = a7;
-  v19 = a9;
-  v74 = a10;
-  if (!v17)
+  contextCopy = context;
+  stringCopy = string;
+  propertiesCopy = properties;
+  equationCopy = equation;
+  dataCopy = data;
+  geometryCopy = geometry;
+  styleCopy = style;
+  if (!stringCopy)
   {
     v22 = MEMORY[0x277D81150];
     v23 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v20, "[TSWPEquationInfo initWithContext:string:filteredTextProperties:equation:pdfImageData:depth:geometry:style:]");
@@ -479,7 +479,7 @@ LABEL_25:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v27, v28);
   }
 
-  if (!v76)
+  if (!propertiesCopy)
   {
     v29 = MEMORY[0x277D81150];
     v30 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v20, "[TSWPEquationInfo initWithContext:string:filteredTextProperties:equation:pdfImageData:depth:geometry:style:]");
@@ -489,7 +489,7 @@ LABEL_25:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v34, v35);
   }
 
-  if (!v19)
+  if (!geometryCopy)
   {
     v36 = MEMORY[0x277D81150];
     v37 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v20, "[TSWPEquationInfo initWithContext:string:filteredTextProperties:equation:pdfImageData:depth:geometry:style:]");
@@ -499,7 +499,7 @@ LABEL_25:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v41, v42);
   }
 
-  objc_msgSend_size(v19, v20, v21);
+  objc_msgSend_size(geometryCopy, v20, v21);
   if (v44 <= 0.0)
   {
     v45 = MEMORY[0x277D81150];
@@ -510,13 +510,13 @@ LABEL_25:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v50, v51);
   }
 
-  if (!v18)
+  if (!equationCopy)
   {
     v52 = objc_opt_class();
     v79 = 0;
-    v18 = objc_msgSend_eqKitEquationWithWithContext_source_error_(v52, v53, v77, v17, &v79);
+    equationCopy = objc_msgSend_eqKitEquationWithWithContext_source_error_(v52, v53, contextCopy, stringCopy, &v79);
     v55 = v79;
-    if (v18)
+    if (equationCopy)
     {
       v56 = MEMORY[0x277D81150];
       v57 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v54, "[TSWPEquationInfo initWithContext:string:filteredTextProperties:equation:pdfImageData:depth:geometry:style:]");
@@ -529,18 +529,18 @@ LABEL_25:
 
   v78.receiver = self;
   v78.super_class = TSWPEquationInfo;
-  v63 = [(TSWPEquationInfo *)&v78 initWithContext:v77 geometry:v19 style:v74 imageData:v75 originalImageData:0];
+  v63 = [(TSWPEquationInfo *)&v78 initWithContext:contextCopy geometry:geometryCopy style:styleCopy imageData:dataCopy originalImageData:0];
   v64 = v63;
   if (v63)
   {
-    objc_storeStrong(v63 + 50, a5);
-    v67 = objc_msgSend_copy(v17, v65, v66);
+    objc_storeStrong(v63 + 50, properties);
+    v67 = objc_msgSend_copy(stringCopy, v65, v66);
     v68 = *(v64 + 48);
     *(v64 + 48) = v67;
 
-    objc_storeStrong(v64 + 47, v18);
-    *(v64 + 49) = a8;
-    objc_msgSend_size(v19, v69, v70);
+    objc_storeStrong(v64 + 47, equationCopy);
+    *(v64 + 49) = depth;
+    objc_msgSend_size(geometryCopy, v69, v70);
     objc_msgSend_setNaturalSize_(v64, v71, v72);
   }
 
@@ -581,18 +581,18 @@ LABEL_25:
   return result;
 }
 
-- (BOOL)needsUpdateForStyleChangeToStorage:(id)a3 charIndex:(unint64_t)a4 isAnchoredOrFloating:(BOOL)a5
+- (BOOL)needsUpdateForStyleChangeToStorage:(id)storage charIndex:(unint64_t)index isAnchoredOrFloating:(BOOL)floating
 {
-  v5 = a5;
-  v8 = a3;
-  if (objc_msgSend_isInInit(v8, v9, v10))
+  floatingCopy = floating;
+  storageCopy = storage;
+  if (objc_msgSend_isInInit(storageCopy, v9, v10))
   {
     LOBYTE(v12) = 0;
   }
 
   else
   {
-    if (v5)
+    if (floatingCopy)
     {
       v13 = objc_msgSend_objectForProperty_(*&self->_depth, v11, 40);
       if (v13)
@@ -611,7 +611,7 @@ LABEL_25:
     else
     {
       v15 = objc_opt_class();
-      v13 = objc_msgSend_propertiesForStorage_characterIndex_(v15, v16, v8, a4);
+      v13 = objc_msgSend_propertiesForStorage_characterIndex_(v15, v16, storageCopy, index);
       v12 = objc_msgSend_isEqualToPropertyMap_(*&self->_depth, v17, v13) ^ 1;
     }
   }
@@ -619,12 +619,12 @@ LABEL_25:
   return v12;
 }
 
-- (void)updateForStyleChangeToStorage:(id)a3 charIndex:(unint64_t)a4 isAnchoredOrFloating:(BOOL)a5
+- (void)updateForStyleChangeToStorage:(id)storage charIndex:(unint64_t)index isAnchoredOrFloating:(BOOL)floating
 {
-  v5 = a5;
-  v16 = a3;
+  floatingCopy = floating;
+  storageCopy = storage;
   objc_msgSend_willModify(self, v8, v9);
-  if (v5)
+  if (floatingCopy)
   {
     objc_msgSend_removeValueForProperty_(*&self->_depth, v10, 40);
   }
@@ -632,29 +632,29 @@ LABEL_25:
   else
   {
     v12 = objc_opt_class();
-    v14 = objc_msgSend_propertiesForStorage_characterIndex_(v12, v13, v16, a4);
+    v14 = objc_msgSend_propertiesForStorage_characterIndex_(v12, v13, storageCopy, index);
     objc_msgSend_setTextProperties_(self, v15, v14);
   }
 
   objc_msgSend_rebuildEquationPDFIncludingGeometry_(self, v11, 0);
 }
 
-- (void)updateTextProperties:(id)a3
+- (void)updateTextProperties:(id)properties
 {
-  v11 = a3;
+  propertiesCopy = properties;
   v4 = objc_opt_class();
-  v6 = objc_msgSend_filteredTextPropertiesFromTextProperties_(v4, v5, v11);
+  v6 = objc_msgSend_filteredTextPropertiesFromTextProperties_(v4, v5, propertiesCopy);
   objc_msgSend_willModify(self, v7, v8);
   objc_msgSend_setTextProperties_(self, v9, v6);
   objc_msgSend_rebuildEquationPDFIncludingGeometry_(self, v10, 0);
 }
 
-- (void)willChangeProperty:(int)a3
+- (void)willChangeProperty:(int)property
 {
   v10.receiver = self;
   v10.super_class = TSWPEquationInfo;
   [(TSWPEquationInfo *)&v10 willChangeProperty:?];
-  if (a3 == 513)
+  if (property == 513)
   {
     v7 = objc_msgSend_owningAttachment(self, v5, v6);
 
@@ -677,19 +677,19 @@ LABEL_25:
   return v3;
 }
 
-- (void)replaceSourceWithNewSource:(id)a3
+- (void)replaceSourceWithNewSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   v5 = objc_opt_class();
   v8 = objc_msgSend_context(self, v6, v7);
   v24 = 0;
-  v10 = objc_msgSend_eqKitEquationWithWithContext_source_error_(v5, v9, v8, v4, &v24);
+  v10 = objc_msgSend_eqKitEquationWithWithContext_source_error_(v5, v9, v8, sourceCopy, &v24);
   v11 = v24;
 
   if (v10)
   {
     objc_msgSend_willModify(self, v12, v13);
-    objc_msgSend_setSource_(self, v14, v4);
+    objc_msgSend_setSource_(self, v14, sourceCopy);
     objc_msgSend_setEquation_(self, v15, v10);
     objc_msgSend_rebuildEquationPDFIncludingGeometry_(self, v16, 0);
   }
@@ -705,9 +705,9 @@ LABEL_25:
   }
 }
 
-- (void)rebuildEquationPDFIncludingGeometry:(BOOL)a3
+- (void)rebuildEquationPDFIncludingGeometry:(BOOL)geometry
 {
-  v3 = a3;
+  geometryCopy = geometry;
   v5 = [TSWPEquationLayoutContext alloc];
   v52 = objc_msgSend_initWithTextProperties_containerSize_(v5, v6, *&self->_depth, *MEMORY[0x277CBF3A8], *(MEMORY[0x277CBF3A8] + 8));
   objc_msgSend_baseFontSize(v52, v7, v8);
@@ -760,7 +760,7 @@ LABEL_25:
     }
   }
 
-  if (v3)
+  if (geometryCopy)
   {
     v42 = objc_alloc(MEMORY[0x277D802E8]);
     v46 = objc_msgSend_initWithSize_(v42, v43, v44, v10, v14);
@@ -777,16 +777,16 @@ LABEL_25:
   objc_msgSend_setGeometry_(self, v45, v46);
 }
 
-- (void)loadCharacterStylePropertiesIntoPropertyMap:(id)a3 fromArchive:(const void *)a4 unarchiver:(id)a5
+- (void)loadCharacterStylePropertiesIntoPropertyMap:(id)map fromArchive:(const void *)archive unarchiver:(id)unarchiver
 {
-  v7 = a3;
-  v8 = a5;
+  mapCopy = map;
+  unarchiverCopy = unarchiver;
   v10 = objc_opt_class();
-  v11 = *(a4 + 4);
+  v11 = *(archive + 4);
   if (v11)
   {
     v12 = objc_alloc(MEMORY[0x277CCACA8]);
-    v14 = objc_msgSend_tsp_initWithProtobufString_(v12, v13, *(a4 + 7) & 0xFFFFFFFFFFFFFFFELL);
+    v14 = objc_msgSend_tsp_initWithProtobufString_(v12, v13, *(archive + 7) & 0xFFFFFFFFFFFFFFFELL);
     v44 = v14;
     v15 = objc_opt_class();
     v17 = objc_msgSend_validateObjectValue_withClass_forProperty_(v10, v16, &v44, v15, 16);
@@ -794,27 +794,27 @@ LABEL_25:
 
     if (v17)
     {
-      objc_msgSend_setObject_forProperty_(v7, v19, v18, 16);
+      objc_msgSend_setObject_forProperty_(mapCopy, v19, v18, 16);
     }
 
-    v11 = *(a4 + 4);
+    v11 = *(archive + 4);
   }
 
   if ((v11 & 0x1000) != 0)
   {
-    v43 = *(a4 + 38);
+    v43 = *(archive + 38);
     if (objc_msgSend_validateFloatValue_forProperty_(v10, v9, &v43, 17))
     {
       LODWORD(v20) = v43;
-      objc_msgSend_setFloatValue_forProperty_(v7, v9, 17, v20);
+      objc_msgSend_setFloatValue_forProperty_(mapCopy, v9, 17, v20);
     }
 
-    v11 = *(a4 + 4);
+    v11 = *(archive + 4);
   }
 
   if ((v11 & 0x10) != 0)
   {
-    v21 = objc_msgSend_instanceWithArchive_unarchiver_(MEMORY[0x277D81180], v9, *(a4 + 11), v8);
+    v21 = objc_msgSend_instanceWithArchive_unarchiver_(MEMORY[0x277D81180], v9, *(archive + 11), unarchiverCopy);
     v42 = v21;
     v22 = objc_opt_class();
     v24 = objc_msgSend_validateObjectValue_withClass_forProperty_(v10, v23, &v42, v22, 18);
@@ -822,15 +822,15 @@ LABEL_25:
 
     if (v24)
     {
-      objc_msgSend_setObject_forProperty_(v7, v26, v25, 18);
+      objc_msgSend_setObject_forProperty_(mapCopy, v26, v25, 18);
     }
 
-    v11 = *(a4 + 4);
+    v11 = *(archive + 4);
   }
 
   if ((v11 & 0x800) != 0)
   {
-    v27 = objc_msgSend_instanceWithArchive_unarchiver_(MEMORY[0x277D80248], v9, *(a4 + 18), v8);
+    v27 = objc_msgSend_instanceWithArchive_unarchiver_(MEMORY[0x277D80248], v9, *(archive + 18), unarchiverCopy);
     v41 = v27;
     v28 = objc_opt_class();
     v30 = objc_msgSend_validateObjectValue_withClass_forProperty_(v10, v29, &v41, v28, 48);
@@ -838,15 +838,15 @@ LABEL_25:
 
     if (v30)
     {
-      objc_msgSend_setObject_forProperty_(v7, v32, v31, 48);
+      objc_msgSend_setObject_forProperty_(mapCopy, v32, v31, 48);
     }
 
-    v11 = *(a4 + 4);
+    v11 = *(archive + 4);
   }
 
   if ((v11 & 0x40) != 0)
   {
-    v33 = objc_msgSend_instanceWithArchive_unarchiver_(MEMORY[0x277D803A8], v9, *(a4 + 13), v8);
+    v33 = objc_msgSend_instanceWithArchive_unarchiver_(MEMORY[0x277D803A8], v9, *(archive + 13), unarchiverCopy);
     v40 = v33;
     v34 = objc_opt_class();
     v36 = objc_msgSend_validateObjectValue_withClass_forProperty_(v10, v35, &v40, v34, 40);
@@ -854,42 +854,42 @@ LABEL_25:
 
     if (v36)
     {
-      objc_msgSend_setObject_forProperty_(v7, v38, v37, 40);
+      objc_msgSend_setObject_forProperty_(mapCopy, v38, v37, 40);
     }
 
-    v11 = *(a4 + 4);
+    v11 = *(archive + 4);
   }
 
   if ((v11 & 0x2000) != 0)
   {
-    v43 = *(a4 + 156);
+    v43 = *(archive + 156);
     if (objc_msgSend_validateIntValueAsBool_forProperty_(v10, v9, &v43, 19))
     {
-      objc_msgSend_setIntValue_forProperty_(v7, v9, v43 != 0, 19);
+      objc_msgSend_setIntValue_forProperty_(mapCopy, v9, v43 != 0, 19);
     }
 
-    v11 = *(a4 + 4);
+    v11 = *(archive + 4);
   }
 
   if ((v11 & 0x4000) != 0)
   {
-    v43 = *(a4 + 157);
+    v43 = *(archive + 157);
     if (objc_msgSend_validateIntValueAsBool_forProperty_(v10, v9, &v43, 20))
     {
-      objc_msgSend_setIntValue_forProperty_(v7, v39, v43 != 0, 20);
+      objc_msgSend_setIntValue_forProperty_(mapCopy, v39, v43 != 0, 20);
     }
   }
 }
 
-- (void)saveCharacterStylePropertiesFromPropertyMap:(id)a3 toArchive:(void *)a4 archiver:(id)a5
+- (void)saveCharacterStylePropertiesFromPropertyMap:(id)map toArchive:(void *)archive archiver:(id)archiver
 {
-  v8 = a3;
-  v9 = a5;
+  mapCopy = map;
+  archiverCopy = archiver;
   v10 = objc_opt_class();
   v13 = objc_msgSend_style(self, v11, v12);
   v14 = objc_opt_class();
   v17 = objc_msgSend_blackColor(MEMORY[0x277D81180], v15, v16);
-  v19 = objc_msgSend_adjustPropertyMapForFontColorArchiving_fallbackColor_(v14, v18, v8, v17);
+  v19 = objc_msgSend_adjustPropertyMapForFontColorArchiving_fallbackColor_(v14, v18, mapCopy, v17);
 
   if (objc_msgSend_containsProperty_(v19, v20, 16))
   {
@@ -901,7 +901,7 @@ LABEL_25:
 
     if (v25)
     {
-      *(a4 + 4) |= 1u;
+      *(archive + 4) |= 1u;
       v27 = google::protobuf::internal::ArenaStringPtr::Mutable();
       objc_msgSend_tsp_saveToProtobufString_(v26, v28, v27);
     }
@@ -914,8 +914,8 @@ LABEL_25:
     if (objc_msgSend_validateFloatValue_forProperty_(v10, v31, &v73, 17))
     {
       v32 = v73;
-      *(a4 + 4) |= 0x1000u;
-      *(a4 + 38) = v32;
+      *(archive + 4) |= 0x1000u;
+      *(archive + 38) = v32;
     }
   }
 
@@ -929,21 +929,21 @@ LABEL_25:
 
     if (v37)
     {
-      *(a4 + 4) |= 0x10u;
-      v40 = *(a4 + 11);
+      *(archive + 4) |= 0x10u;
+      v40 = *(archive + 11);
       if (!v40)
       {
-        v41 = *(a4 + 1);
+        v41 = *(archive + 1);
         if (v41)
         {
           v41 = *(v41 & 0xFFFFFFFFFFFFFFFELL);
         }
 
         v40 = MEMORY[0x277CA3210](v41);
-        *(a4 + 11) = v40;
+        *(archive + 11) = v40;
       }
 
-      objc_msgSend_saveToArchive_archiver_(v38, v39, v40, v9);
+      objc_msgSend_saveToArchive_archiver_(v38, v39, v40, archiverCopy);
     }
   }
 
@@ -957,21 +957,21 @@ LABEL_25:
 
     if (v46)
     {
-      *(a4 + 4) |= 0x800u;
-      v49 = *(a4 + 18);
+      *(archive + 4) |= 0x800u;
+      v49 = *(archive + 18);
       if (!v49)
       {
-        v50 = *(a4 + 1);
+        v50 = *(archive + 1);
         if (v50)
         {
           v50 = *(v50 & 0xFFFFFFFFFFFFFFFELL);
         }
 
         v49 = MEMORY[0x277CA3120](v50);
-        *(a4 + 18) = v49;
+        *(archive + 18) = v49;
       }
 
-      objc_msgSend_saveToArchive_archiver_(v47, v48, v49, v9);
+      objc_msgSend_saveToArchive_archiver_(v47, v48, v49, archiverCopy);
     }
   }
 
@@ -985,21 +985,21 @@ LABEL_25:
 
     if (v55)
     {
-      *(a4 + 4) |= 0x40u;
-      v58 = *(a4 + 13);
+      *(archive + 4) |= 0x40u;
+      v58 = *(archive + 13);
       if (!v58)
       {
-        v59 = *(a4 + 1);
+        v59 = *(archive + 1);
         if (v59)
         {
           v59 = *(v59 & 0xFFFFFFFFFFFFFFFELL);
         }
 
         v58 = MEMORY[0x277CA3140](v59);
-        *(a4 + 13) = v58;
+        *(archive + 13) = v58;
       }
 
-      objc_msgSend_saveToArchive_archiver_(v56, v57, v58, v9);
+      objc_msgSend_saveToArchive_archiver_(v56, v57, v58, archiverCopy);
     }
   }
 
@@ -1009,8 +1009,8 @@ LABEL_25:
     if (objc_msgSend_validateIntValueAsBool_forProperty_(v10, v61, &v73, 19))
     {
       v62 = v73 != 0;
-      *(a4 + 4) |= 0x2000u;
-      *(a4 + 156) = v62;
+      *(archive + 4) |= 0x2000u;
+      *(archive + 156) = v62;
     }
   }
 
@@ -1020,22 +1020,22 @@ LABEL_25:
     if (objc_msgSend_validateIntValueAsBool_forProperty_(v10, v65, &v73, 20))
     {
       v66 = v73 != 0;
-      *(a4 + 4) |= 0x4000u;
-      *(a4 + 157) = v66;
+      *(archive + 4) |= 0x4000u;
+      *(archive + 157) = v66;
     }
   }
 
   v67 = objc_msgSend_style(self, v63, v64);
   v68 = objc_opt_class();
-  objc_msgSend_addIgnoreAndPreserveRulesAndDocumentWarningsForPropertyMap_withArchiver_archive_(v68, v69, v19, v9, a4);
+  objc_msgSend_addIgnoreAndPreserveRulesAndDocumentWarningsForPropertyMap_withArchiver_archive_(v68, v69, v19, archiverCopy, archive);
 }
 
-+ (id)fontNameFromTextProperties:(id)a3
++ (id)fontNameFromTextProperties:(id)properties
 {
-  v3 = a3;
-  v5 = objc_msgSend_intValueForProperty_(v3, v4, 19);
-  v7 = objc_msgSend_intValueForProperty_(v3, v6, 20);
-  v9 = objc_msgSend_objectForProperty_(v3, v8, 16);
+  propertiesCopy = properties;
+  v5 = objc_msgSend_intValueForProperty_(propertiesCopy, v4, 19);
+  v7 = objc_msgSend_intValueForProperty_(propertiesCopy, v6, 20);
+  v9 = objc_msgSend_objectForProperty_(propertiesCopy, v8, 16);
   if (v9)
   {
     v10 = v9;
@@ -1047,7 +1047,7 @@ LABEL_25:
   }
 
   objc_opt_class();
-  v12 = objc_msgSend_objectForProperty_(v3, v11, 43);
+  v12 = objc_msgSend_objectForProperty_(propertiesCopy, v11, 43);
   v13 = TSUDynamicCast();
   v14 = v5 & 0x7FFFFFFF;
   v15 = (v7 & 0x7FFFFFFF) != 0;
@@ -1075,21 +1075,21 @@ LABEL_25:
   return v3;
 }
 
-+ (id)filteredTextPropertiesFromTextProperties:(id)a3
++ (id)filteredTextPropertiesFromTextProperties:(id)properties
 {
-  v3 = a3;
+  propertiesCopy = properties;
   v6 = objc_msgSend_propertyMap(MEMORY[0x277D80AB8], v4, v5);
-  if ((objc_msgSend_intValueForProperty_(v3, v7, 19) & 0x7FFFFFFF) != 0)
+  if ((objc_msgSend_intValueForProperty_(propertiesCopy, v7, 19) & 0x7FFFFFFF) != 0)
   {
     objc_msgSend_setBoolValue_forProperty_(v6, v8, 1, 19);
   }
 
-  if ((objc_msgSend_intValueForProperty_(v3, v8, 20) & 0x7FFFFFFF) != 0)
+  if ((objc_msgSend_intValueForProperty_(propertiesCopy, v8, 20) & 0x7FFFFFFF) != 0)
   {
     objc_msgSend_setBoolValue_forProperty_(v6, v9, 1, 20);
   }
 
-  v10 = objc_msgSend_objectForProperty_(v3, v9, 16);
+  v10 = objc_msgSend_objectForProperty_(propertiesCopy, v9, 16);
   if (v10)
   {
     v12 = v10;
@@ -1102,7 +1102,7 @@ LABEL_25:
     objc_msgSend_setObject_forProperty_(v6, v11, @"Helvetica", 16);
   }
 
-  objc_msgSend_CGFloatValueForProperty_(v3, v13, 17);
+  objc_msgSend_CGFloatValueForProperty_(propertiesCopy, v13, 17);
   v16 = v15;
   if (v15 == INFINITY)
   {
@@ -1129,7 +1129,7 @@ LABEL_25:
   }
 
   objc_msgSend_setCGFloatValue_forProperty_(v6, v14, 17, v24);
-  v28 = objc_msgSend_objectForProperty_(v3, v25, 48);
+  v28 = objc_msgSend_objectForProperty_(propertiesCopy, v25, 48);
   if (!v28 || (objc_opt_class(), TSUDynamicCast(), v29 = objc_claimAutoreleasedReturnValue(), v29, !v29))
   {
     v30 = objc_msgSend_blackColor(MEMORY[0x277D801F8], v26, v27);
@@ -1138,7 +1138,7 @@ LABEL_25:
   }
 
   objc_msgSend_setObject_forProperty_(v6, v26, v28, 48);
-  v32 = objc_msgSend_objectForProperty_(v3, v31, 40);
+  v32 = objc_msgSend_objectForProperty_(propertiesCopy, v31, 40);
   if (v32)
   {
     objc_opt_class();
@@ -1153,13 +1153,13 @@ LABEL_25:
   return v6;
 }
 
-+ (id)propertiesForParagraphStyle:(id)a3 characterStyle:(id)a4
++ (id)propertiesForParagraphStyle:(id)style characterStyle:(id)characterStyle
 {
-  v6 = a3;
-  v7 = a4;
+  styleCopy = style;
+  characterStyleCopy = characterStyle;
   v8 = objc_alloc_init(MEMORY[0x277D80AB8]);
   objc_opt_class();
-  v9 = TSWPResolvePropertyForStyles(v7, v6, 16);
+  v9 = TSWPResolvePropertyForStyles(characterStyleCopy, styleCopy, 16);
   v10 = TSUDynamicCast();
 
   if (v10)
@@ -1168,7 +1168,7 @@ LABEL_25:
   }
 
   objc_opt_class();
-  v12 = TSWPResolvePropertyForStyles(v7, v6, 48);
+  v12 = TSWPResolvePropertyForStyles(characterStyleCopy, styleCopy, 48);
   v13 = TSUDynamicCast();
 
   if (v13)
@@ -1176,7 +1176,7 @@ LABEL_25:
     objc_msgSend_setObject_forProperty_(v8, v14, v13, 48);
   }
 
-  v15 = TSWPResolvePropertyForStyles(v7, v6, 17);
+  v15 = TSWPResolvePropertyForStyles(characterStyleCopy, styleCopy, 17);
   v18 = v15;
   if (v15)
   {
@@ -1184,14 +1184,14 @@ LABEL_25:
     objc_msgSend_setCGFloatValue_forProperty_(v8, v19, 17);
   }
 
-  v20 = TSWPResolvePropertyForStyles(v7, v6, 19);
+  v20 = TSWPResolvePropertyForStyles(characterStyleCopy, styleCopy, 19);
   v23 = v20;
   if (v20 && objc_msgSend_BOOLValue(v20, v21, v22))
   {
     objc_msgSend_setBoolValue_forProperty_(v8, v24, 1, 19);
   }
 
-  v25 = TSWPResolvePropertyForStyles(v7, v6, 20);
+  v25 = TSWPResolvePropertyForStyles(characterStyleCopy, styleCopy, 20);
   v28 = v25;
   if (v25 && objc_msgSend_BOOLValue(v25, v26, v27))
   {
@@ -1199,7 +1199,7 @@ LABEL_25:
   }
 
   objc_opt_class();
-  v30 = TSWPResolvePropertyForStyles(v7, v6, 40);
+  v30 = TSWPResolvePropertyForStyles(characterStyleCopy, styleCopy, 40);
   v31 = TSUDynamicCast();
 
   if (v31)
@@ -1207,18 +1207,18 @@ LABEL_25:
     objc_msgSend_setObject_forProperty_(v8, v32, v31, 40);
   }
 
-  v34 = objc_msgSend_filteredTextPropertiesFromTextProperties_(a1, v33, v8);
+  v34 = objc_msgSend_filteredTextPropertiesFromTextProperties_(self, v33, v8);
 
   return v34;
 }
 
-+ (id)propertiesForStorage:(id)a3 characterIndex:(unint64_t)a4
++ (id)propertiesForStorage:(id)storage characterIndex:(unint64_t)index
 {
-  v6 = a3;
-  v8 = v6;
-  if (v6)
+  storageCopy = storage;
+  v8 = storageCopy;
+  if (storageCopy)
   {
-    if (a4 == 0x7FFFFFFFFFFFFFFFLL)
+    if (index == 0x7FFFFFFFFFFFFFFFLL)
     {
       v9 = MEMORY[0x277D81150];
       v10 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v7, "+[TSWPEquationInfo propertiesForStorage:characterIndex:]");
@@ -1230,9 +1230,9 @@ LABEL_25:
 
     else
     {
-      v16 = objc_msgSend_characterStyleAtCharIndex_left_effectiveRange_(v6, v7, a4, 0, 0);
-      v18 = objc_msgSend_paragraphStyleAtCharIndex_effectiveRange_(v8, v17, a4, 0);
-      v20 = objc_msgSend_propertiesForParagraphStyle_characterStyle_(a1, v19, v18, v16);
+      v16 = objc_msgSend_characterStyleAtCharIndex_left_effectiveRange_(storageCopy, v7, index, 0, 0);
+      v18 = objc_msgSend_paragraphStyleAtCharIndex_effectiveRange_(v8, v17, index, 0);
+      v20 = objc_msgSend_propertiesForParagraphStyle_characterStyle_(self, v19, v18, v16);
 
       if (v20)
       {
@@ -1243,7 +1243,7 @@ LABEL_25:
 
   v20 = objc_alloc_init(MEMORY[0x277D80AB8]);
 LABEL_6:
-  v22 = objc_msgSend_filteredTextPropertiesFromTextProperties_(a1, v21, v20);
+  v22 = objc_msgSend_filteredTextPropertiesFromTextProperties_(self, v21, v20);
 
   return v22;
 }
@@ -1297,11 +1297,11 @@ LABEL_9:
   return v35;
 }
 
-- (void)didFinalizeUnarchivingFromWPStorage:(id)a3
+- (void)didFinalizeUnarchivingFromWPStorage:(id)storage
 {
   if (!*&self->_depth)
   {
-    if ((objc_msgSend_isInlineWithText(self, a2, a3) & 1) == 0)
+    if ((objc_msgSend_isInlineWithText(self, a2, storage) & 1) == 0)
     {
       v6 = MEMORY[0x277D81150];
       v25 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v4, "[TSWPEquationInfo didFinalizeUnarchivingFromWPStorage:]");
@@ -1332,22 +1332,22 @@ LABEL_9:
   }
 }
 
-- (void)loadFromArchive:(const void *)a3 unarchiver:(id)a4
+- (void)loadFromArchive:(const void *)archive unarchiver:(id)unarchiver
 {
-  v6 = a4;
+  unarchiverCopy = unarchiver;
   v24.receiver = self;
   v24.super_class = TSWPEquationInfo;
-  [(TSWPEquationInfo *)&v24 loadFromArchive:a3 unarchiver:v6];
-  if (google::protobuf::internal::ExtensionSet::Has((a3 + 16)))
+  [(TSWPEquationInfo *)&v24 loadFromArchive:archive unarchiver:unarchiverCopy];
+  if (google::protobuf::internal::ExtensionSet::Has((archive + 16)))
   {
     v7 = objc_alloc_init(MEMORY[0x277D80AB8]);
     Message = google::protobuf::internal::ExtensionSet::GetMessage();
-    objc_msgSend_loadCharacterStylePropertiesIntoPropertyMap_fromArchive_unarchiver_(self, v9, v7, Message, v6);
+    objc_msgSend_loadCharacterStylePropertiesIntoPropertyMap_fromArchive_unarchiver_(self, v9, v7, Message, unarchiverCopy);
     depth = self->_depth;
     *&self->_depth = v7;
   }
 
-  if (google::protobuf::internal::ExtensionSet::Has((a3 + 16)) || google::protobuf::internal::ExtensionSet::Has((a3 + 16)))
+  if (google::protobuf::internal::ExtensionSet::Has((archive + 16)) || google::protobuf::internal::ExtensionSet::Has((archive + 16)))
   {
     v13 = MEMORY[0x277CCACA8];
     String = google::protobuf::internal::ExtensionSet::GetString();
@@ -1359,7 +1359,7 @@ LABEL_9:
     v16 = 0;
   }
 
-  v17 = objc_msgSend_fileFormatVersion(v6, v11, v12);
+  v17 = objc_msgSend_fileFormatVersion(unarchiverCopy, v11, v12);
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = sub_276E480E4;
@@ -1368,23 +1368,23 @@ LABEL_9:
   v21[4] = self;
   v18 = v16;
   v22 = v18;
-  objc_msgSend_addFinalizeHandler_(v6, v19, v21);
-  if (google::protobuf::internal::ExtensionSet::Has((a3 + 16)))
+  objc_msgSend_addFinalizeHandler_(unarchiverCopy, v19, v21);
+  if (google::protobuf::internal::ExtensionSet::Has((archive + 16)))
   {
-    google::protobuf::internal::ExtensionSet::GetFloat((a3 + 16), *(&TSWP::EquationInfoArchive::equation_depth + 1));
+    google::protobuf::internal::ExtensionSet::GetFloat((archive + 16), *(&TSWP::EquationInfoArchive::equation_depth + 1));
     *&self->_source = v20;
   }
 }
 
-- (void)saveToArchive:(void *)a3 archiver:(id)a4
+- (void)saveToArchive:(void *)archive archiver:(id)archiver
 {
-  v6 = a4;
+  archiverCopy = archiver;
   v55.receiver = self;
   v55.super_class = TSWPEquationInfo;
-  [(TSWPEquationInfo *)&v55 saveToArchive:a3 archiver:v6];
+  [(TSWPEquationInfo *)&v55 saveToArchive:archive archiver:archiverCopy];
   if (self->_equation || (v8 = MEMORY[0x277D81150], objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v7, "[TSWPEquationInfo saveToArchive:archiver:]"), v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v10, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/text/TSWPEquationInfo.mm"), v11 = objc_claimAutoreleasedReturnValue(), objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v8, v12, v9, v11, 902, 0, "invalid nil value for '%{public}s'", "_source"), v11, v9, objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v13, v14), self->_equation))
   {
-    objc_msgSend_setIgnoreAndPreserveRuleForField_message_(v6, v7, 103, a3);
+    objc_msgSend_setIgnoreAndPreserveRuleForField_message_(archiverCopy, v7, 103, archive);
     v17 = objc_msgSend_tsp_protobufString(self->_equation, v15, v16);
     sub_276DA9454(__p, v17);
     v18 = TSWP::EquationInfoArchive::equation_source_text;
@@ -1399,7 +1399,7 @@ LABEL_9:
       v57 = v54;
     }
 
-    v19 = google::protobuf::internal::ExtensionSet::MutableString((a3 + 16), v18, 9, 0);
+    v19 = google::protobuf::internal::ExtensionSet::MutableString((archive + 16), v18, 9, 0);
     v22 = v19;
     if (*(v19 + 23) < 0)
     {
@@ -1416,7 +1416,7 @@ LABEL_9:
 
     if (objc_msgSend_isInlineWithText(self, v20, v21))
     {
-      objc_msgSend_setIgnoreAndPreserveRuleForField_message_(v6, v24, 100, a3);
+      objc_msgSend_setIgnoreAndPreserveRuleForField_message_(archiverCopy, v24, 100, archive);
       v27 = objc_msgSend_tsp_protobufString(self->_equation, v25, v26);
       sub_276DA9454(__p, v27);
       v28 = TSWP::EquationInfoArchive::equation_source_old;
@@ -1431,7 +1431,7 @@ LABEL_9:
         v57 = v54;
       }
 
-      v29 = google::protobuf::internal::ExtensionSet::MutableString((a3 + 16), v28, 9, 0);
+      v29 = google::protobuf::internal::ExtensionSet::MutableString((archive + 16), v28, 9, 0);
       v31 = v29;
       if (*(v29 + 23) < 0)
       {
@@ -1446,26 +1446,26 @@ LABEL_9:
         operator delete(__p[0]);
       }
 
-      objc_msgSend_requiresDocumentReadVersion_writeVersion_featureIdentifier_(v6, v30, *MEMORY[0x277D80968], *MEMORY[0x277D80978], @"TSWPEquations");
+      objc_msgSend_requiresDocumentReadVersion_writeVersion_featureIdentifier_(archiverCopy, v30, *MEMORY[0x277D80968], *MEMORY[0x277D80978], @"TSWPEquations");
     }
 
     else
     {
-      objc_msgSend_requiresDocumentReadVersion_writeVersion_featureIdentifier_(v6, v24, *MEMORY[0x277D80968], *MEMORY[0x277D80998], @"TSWPFloatingEquations");
+      objc_msgSend_requiresDocumentReadVersion_writeVersion_featureIdentifier_(archiverCopy, v24, *MEMORY[0x277D80968], *MEMORY[0x277D80998], @"TSWPFloatingEquations");
     }
   }
 
   if (*&self->_depth)
   {
-    objc_msgSend_setIgnoreAndPreserveRuleForField_message_(v6, v7, 101, a3);
+    objc_msgSend_setIgnoreAndPreserveRuleForField_message_(archiverCopy, v7, 101, archive);
     v50[0] = MEMORY[0x277D85DD0];
     v50[1] = 3221225472;
     v50[2] = sub_276E48A08;
     v50[3] = &unk_27A6F3E30;
     v50[4] = self;
-    v52 = a3;
-    v51 = v6;
-    objc_msgSend_pushScopeForField_message_usingBlock_(v51, v33, 101, a3, v50);
+    archiveCopy = archive;
+    v51 = archiverCopy;
+    objc_msgSend_pushScopeForField_message_usingBlock_(v51, v33, 101, archive, v50);
   }
 
   else
@@ -1487,9 +1487,9 @@ LABEL_9:
 
   if (*&self->_source != 0.0)
   {
-    objc_msgSend_setIgnoreAndPreserveRuleForField_message_(v6, v34, 102, a3);
+    objc_msgSend_setIgnoreAndPreserveRuleForField_message_(archiverCopy, v34, 102, archive);
     v49 = *&self->_source;
-    google::protobuf::internal::ExtensionSet::SetFloat((a3 + 16), TSWP::EquationInfoArchive::equation_depth, 2, v49, 0);
+    google::protobuf::internal::ExtensionSet::SetFloat((archive + 16), TSWP::EquationInfoArchive::equation_depth, 2, v49, 0);
   }
 }
 
@@ -1506,23 +1506,23 @@ LABEL_9:
   v19[2] = *MEMORY[0x277D85DE8];
   v18.receiver = self;
   v18.super_class = TSWPEquationInfo;
-  v4 = [(TSWPEquationInfo *)&v18 typesToPromiseWhenCopyingSingleDrawable];
+  typesToPromiseWhenCopyingSingleDrawable = [(TSWPEquationInfo *)&v18 typesToPromiseWhenCopyingSingleDrawable];
   v5 = *MEMORY[0x277CE1E08];
-  if (v4)
+  if (typesToPromiseWhenCopyingSingleDrawable)
   {
     v6 = objc_msgSend_identifier(*MEMORY[0x277CE1E08], v2, v3);
-    v8 = objc_msgSend_containsObject_(v4, v7, v6);
+    v8 = objc_msgSend_containsObject_(typesToPromiseWhenCopyingSingleDrawable, v7, v6);
 
     if ((v8 & 1) == 0)
     {
       v11 = objc_msgSend_identifier(v5, v9, v10);
-      v13 = objc_msgSend_arrayByAddingObject_(v4, v12, v11);
+      v13 = objc_msgSend_arrayByAddingObject_(typesToPromiseWhenCopyingSingleDrawable, v12, v11);
 
-      v4 = v13;
+      typesToPromiseWhenCopyingSingleDrawable = v13;
     }
 
-    v14 = objc_msgSend_arrayByAddingObject_(v4, v9, @"public.mathml");
-    v15 = v4;
+    v14 = objc_msgSend_arrayByAddingObject_(typesToPromiseWhenCopyingSingleDrawable, v9, @"public.mathml");
+    v15 = typesToPromiseWhenCopyingSingleDrawable;
   }
 
   else
@@ -1536,10 +1536,10 @@ LABEL_9:
   return v14;
 }
 
-- (id)promisedDataForType:(id)a3
+- (id)promisedDataForType:(id)type
 {
-  v4 = a3;
-  if (objc_msgSend_tsu_conformsToUTI_(v4, v5, @"public.mathml"))
+  typeCopy = type;
+  if (objc_msgSend_tsu_conformsToUTI_(typeCopy, v5, @"public.mathml"))
   {
     v8 = objc_msgSend_source(self, v6, v7);
     if (objc_msgSend_formatFromString_(MEMORY[0x277D7FF70], v9, v8) != 1)
@@ -1580,16 +1580,16 @@ LABEL_9:
   {
     v36.receiver = self;
     v36.super_class = TSWPEquationInfo;
-    v27 = [(TSWPEquationInfo *)&v36 promisedDataForType:v4];
+    v27 = [(TSWPEquationInfo *)&v36 promisedDataForType:typeCopy];
   }
 
   return v27;
 }
 
-- (int64_t)mixingTypeWithObject:(id)a3 context:(id)a4
+- (int64_t)mixingTypeWithObject:(id)object context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  objectCopy = object;
+  contextCopy = context;
   objc_opt_class();
   v10 = TSUDynamicCast();
   if (!v10)
@@ -1654,16 +1654,16 @@ LABEL_9:
   return v45;
 }
 
-- (id)descriptionForDrawableAttachment:(id)a3
+- (id)descriptionForDrawableAttachment:(id)attachment
 {
-  v5 = a3;
+  attachmentCopy = attachment;
   v6 = MEMORY[0x277D811A8];
   v9 = objc_opt_class();
-  if (v5)
+  if (attachmentCopy)
   {
-    objc_msgSend_hOffset(v5, v7, v8);
+    objc_msgSend_hOffset(attachmentCopy, v7, v8);
     v11 = v10;
-    objc_msgSend_vOffset(v5, v12, v13);
+    objc_msgSend_vOffset(attachmentCopy, v12, v13);
     v15 = v14;
     v3 = objc_msgSend_geometry(self, v16, v17);
     objc_msgSend_size(v3, v18, v19);
@@ -1678,9 +1678,9 @@ LABEL_9:
   }
 
   v22 = NSStringFromCGSize(*&v20);
-  v24 = objc_msgSend_descriptionWithObject_class_format_(v6, v23, v5, v9, @" (h:%+g v:%+g) size=%@", v11, v15, v22);;
+  v24 = objc_msgSend_descriptionWithObject_class_format_(v6, v23, attachmentCopy, v9, @" (h:%+g v:%+g) size=%@", v11, v15, v22);;
 
-  if (v5)
+  if (attachmentCopy)
   {
   }
 

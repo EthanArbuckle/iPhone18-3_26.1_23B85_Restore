@@ -1,26 +1,26 @@
 @interface W5WiFiChannel
-- (BOOL)conformsToProtocol:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToChannel:(id)a3;
-- (W5WiFiChannel)initWithChannel:(int64_t)a3 flags:(unsigned int)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)conformsToProtocol:(id)protocol;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToChannel:(id)channel;
+- (W5WiFiChannel)initWithChannel:(int64_t)channel flags:(unsigned int)flags;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (int64_t)band;
 - (int64_t)channelWidth;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation W5WiFiChannel
 
-- (W5WiFiChannel)initWithChannel:(int64_t)a3 flags:(unsigned int)a4
+- (W5WiFiChannel)initWithChannel:(int64_t)channel flags:(unsigned int)flags
 {
   v7.receiver = self;
   v7.super_class = W5WiFiChannel;
   result = [(W5WiFiChannel *)&v7 init];
   if (result)
   {
-    result->_channel = a3;
-    result->_flags = a4;
+    result->_channel = channel;
+    result->_flags = flags;
   }
 
   return result;
@@ -98,41 +98,41 @@
   }
 }
 
-- (BOOL)conformsToProtocol:(id)a3
+- (BOOL)conformsToProtocol:(id)protocol
 {
   v5.receiver = self;
   v5.super_class = W5WiFiChannel;
-  if (-[W5WiFiChannel conformsToProtocol:](&v5, sel_conformsToProtocol_) || ([a3 isEqual:&unk_288343878] & 1) != 0)
+  if (-[W5WiFiChannel conformsToProtocol:](&v5, sel_conformsToProtocol_) || ([protocol isEqual:&unk_288343878] & 1) != 0)
   {
     return 1;
   }
 
   else
   {
-    return [a3 isEqual:&unk_2883436F0];
+    return [protocol isEqual:&unk_2883436F0];
   }
 }
 
-- (BOOL)isEqualToChannel:(id)a3
+- (BOOL)isEqualToChannel:(id)channel
 {
   channel = self->_channel;
-  if (channel != [a3 channel])
+  if (channel != [channel channel])
   {
     return 0;
   }
 
   flags = self->_flags;
-  return flags == [a3 flags];
+  return flags == [channel flags];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
 
-  if (!a3)
+  if (!equal)
   {
     return 0;
   }
@@ -143,24 +143,24 @@
     return 0;
   }
 
-  return [(W5WiFiChannel *)self isEqualToChannel:a3];
+  return [(W5WiFiChannel *)self isEqualToChannel:equal];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [W5WiFiChannel allocWithZone:a3];
+  v4 = [W5WiFiChannel allocWithZone:zone];
   channel = self->_channel;
   flags = self->_flags;
 
   return [(W5WiFiChannel *)v4 initWithChannel:channel flags:flags];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeInteger:self->_channel forKey:@"_channel"];
+  [coder encodeInteger:self->_channel forKey:@"_channel"];
   flags = self->_flags;
 
-  [a3 encodeInt:flags forKey:@"_flags"];
+  [coder encodeInt:flags forKey:@"_flags"];
 }
 
 @end

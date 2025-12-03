@@ -1,24 +1,24 @@
 @interface SCATOutlineLabel
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (void)drawTextInRect:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (void)drawTextInRect:(CGRect)rect;
 @end
 
 @implementation SCATOutlineLabel
 
-- (void)drawTextInRect:(CGRect)a3
+- (void)drawTextInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   CurrentContext = UIGraphicsGetCurrentContext();
   CGContextSaveGState(CurrentContext);
-  v9 = [(SCATOutlineLabel *)self outlineColor];
-  [v9 alphaComponent];
+  outlineColor = [(SCATOutlineLabel *)self outlineColor];
+  [outlineColor alphaComponent];
   CGContextSetAlpha(CurrentContext, v10);
 
-  v11 = [(SCATOutlineLabel *)self outlineColor];
-  v12 = [v11 colorWithAlphaComponent:1.0];
+  outlineColor2 = [(SCATOutlineLabel *)self outlineColor];
+  v12 = [outlineColor2 colorWithAlphaComponent:1.0];
 
   CGContextBeginTransparencyLayer(CurrentContext, 0);
   CGContextSetTextDrawingMode(CurrentContext, kCGTextStroke);
@@ -27,13 +27,13 @@
   CGContextSetLineCap(CurrentContext, kCGLineCapRound);
   if ([(SCATOutlineLabel *)self isHighlighted])
   {
-    v14 = [(SCATOutlineLabel *)self highlightedTextColor];
+    highlightedTextColor = [(SCATOutlineLabel *)self highlightedTextColor];
     [(SCATOutlineLabel *)self setHighlightedTextColor:v12];
   }
 
   else
   {
-    v14 = [(SCATOutlineLabel *)self textColor];
+    highlightedTextColor = [(SCATOutlineLabel *)self textColor];
     [(SCATOutlineLabel *)self setTextColor:v12];
   }
 
@@ -44,12 +44,12 @@
   CGContextRestoreGState(CurrentContext);
   if ([(SCATOutlineLabel *)self isHighlighted])
   {
-    [(SCATOutlineLabel *)self setHighlightedTextColor:v14];
+    [(SCATOutlineLabel *)self setHighlightedTextColor:highlightedTextColor];
   }
 
   else
   {
-    [(SCATOutlineLabel *)self setTextColor:v14];
+    [(SCATOutlineLabel *)self setTextColor:highlightedTextColor];
   }
 
   v15.receiver = self;
@@ -57,11 +57,11 @@
   [(SCATOutlineLabel *)&v15 drawTextInRect:x, y, width, height];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   v13.receiver = self;
   v13.super_class = SCATOutlineLabel;
-  [(SCATOutlineLabel *)&v13 sizeThatFits:a3.width, a3.height];
+  [(SCATOutlineLabel *)&v13 sizeThatFits:fits.width, fits.height];
   v5 = v4;
   v7 = v6;
   [(SCATOutlineLabel *)self outlineThickness];

@@ -1,45 +1,45 @@
 @interface _UIStatusBarStringView
 - (UIAccessibilityHUDItem)accessibilityHUDRepresentation;
 - (UIEdgeInsets)alignmentRectInsets;
-- (_UIStatusBarStringView)initWithFrame:(CGRect)a3;
+- (_UIStatusBarStringView)initWithFrame:(CGRect)frame;
 - (void)_updateAlternateTextTimer;
-- (void)applyStyleAttributes:(id)a3;
-- (void)setAlternateText:(id)a3;
-- (void)setShowsAlternateText:(BOOL)a3;
-- (void)setText:(id)a3;
+- (void)applyStyleAttributes:(id)attributes;
+- (void)setAlternateText:(id)text;
+- (void)setShowsAlternateText:(BOOL)text;
+- (void)setText:(id)text;
 @end
 
 @implementation _UIStatusBarStringView
 
-- (_UIStatusBarStringView)initWithFrame:(CGRect)a3
+- (_UIStatusBarStringView)initWithFrame:(CGRect)frame
 {
   v5.receiver = self;
   v5.super_class = _UIStatusBarStringView;
-  v3 = [(UILabel *)&v5 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UILabel *)&v5 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(UILabel *)v3 setAllowsDefaultTighteningForTruncation:1];
   return v3;
 }
 
-- (void)applyStyleAttributes:(id)a3
+- (void)applyStyleAttributes:(id)attributes
 {
   fontStyle = self->_fontStyle;
-  v5 = a3;
-  v6 = [v5 fontForStyle:fontStyle];
+  attributesCopy = attributes;
+  v6 = [attributesCopy fontForStyle:fontStyle];
   [(UILabel *)self setFont:v6];
 
-  v7 = [v5 textColor];
+  textColor = [attributesCopy textColor];
 
-  [(UILabel *)self setTextColor:v7];
+  [(UILabel *)self setTextColor:textColor];
 }
 
-- (void)setShowsAlternateText:(BOOL)a3
+- (void)setShowsAlternateText:(BOOL)text
 {
-  if (self->_showsAlternateText != a3)
+  if (self->_showsAlternateText != text)
   {
     v7 = v3;
     v8 = v4;
-    self->_showsAlternateText = a3;
-    if (a3)
+    self->_showsAlternateText = text;
+    if (text)
     {
       [(UILabel *)&v6 setText:self->_alternateText, v5.receiver, v5.super_class, self, _UIStatusBarStringView, v7, v8];
     }
@@ -51,24 +51,24 @@
   }
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
-  v4 = a3;
-  [(_UIStatusBarStringView *)self setOriginalText:v4];
+  textCopy = text;
+  [(_UIStatusBarStringView *)self setOriginalText:textCopy];
   v5.receiver = self;
   v5.super_class = _UIStatusBarStringView;
-  [(UILabel *)&v5 setText:v4];
+  [(UILabel *)&v5 setText:textCopy];
 }
 
-- (void)setAlternateText:(id)a3
+- (void)setAlternateText:(id)text
 {
-  v5 = a3;
-  if (self->_alternateText != v5)
+  textCopy = text;
+  if (self->_alternateText != textCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_alternateText, a3);
+    v6 = textCopy;
+    objc_storeStrong(&self->_alternateText, text);
     [(_UIStatusBarStringView *)self _updateAlternateTextTimer];
-    v5 = v6;
+    textCopy = v6;
   }
 }
 
@@ -76,13 +76,13 @@
 {
   if ([(NSString *)self->_alternateText length])
   {
-    v3 = [(UIView *)self window];
-    v4 = v3 != 0;
+    window = [(UIView *)self window];
+    v4 = window != 0;
 
     p_alternateTextTimer = &self->_alternateTextTimer;
     alternateTextTimer = self->_alternateTextTimer;
     v7 = alternateTextTimer == 0;
-    if (v3 && !alternateTextTimer)
+    if (window && !alternateTextTimer)
     {
       objc_initWeak(&location, self);
       v8 = MEMORY[0x1E695DFF0];
@@ -122,8 +122,8 @@
 - (UIAccessibilityHUDItem)accessibilityHUDRepresentation
 {
   v3 = [UIAccessibilityHUDItem alloc];
-  v4 = [(_UIStatusBarStringView *)self originalText];
-  v5 = [(UIAccessibilityHUDItem *)v3 initWithTitle:v4 image:0 imageInsets:0.0, 0.0, 0.0, 0.0];
+  originalText = [(_UIStatusBarStringView *)self originalText];
+  v5 = [(UIAccessibilityHUDItem *)v3 initWithTitle:originalText image:0 imageInsets:0.0, 0.0, 0.0, 0.0];
 
   return v5;
 }

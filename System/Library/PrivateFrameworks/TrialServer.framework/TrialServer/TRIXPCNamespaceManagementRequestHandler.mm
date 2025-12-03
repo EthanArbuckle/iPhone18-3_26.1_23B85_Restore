@@ -1,49 +1,49 @@
 @interface TRIXPCNamespaceManagementRequestHandler
-+ (id)_deploymentsWithUnexpectedExperimentDataInContainer:(id)a3 dynamicNamespaceName:(id)a4 serverContext:(id)a5;
-+ (id)_notificationKeyWithNamespace:(id)a3 assetIndexesByTreatment:(id)a4 assetIdsByFactorPack:(id)a5;
-+ (void)_immediateDownloadForNamespaceNames:(id)a3 usingEntitlementWitness:(id)a4 serverContext:(id)a5 taskQueue:(id)a6 allowExpensiveNetworking:(BOOL)a7 taskAttribution:(id)a8 completion:(id)a9;
-+ (void)_promoteFactorPackId:(id)a3 usingEntitlementWitness:(id)a4 serverContext:(id)a5 forNamespaceName:(id)a6 rolloutDeployment:(id)a7 completion:(id)a8;
-+ (void)_purgeMismatchedDataForDynamicNamespaceName:(id)a3 appContainer:(id)a4 serverContext:(id)a5;
-+ (void)_rejectFactorPackId:(id)a3 usingEntitlementWitness:(id)a4 serverContext:(id)a5 forNamespaceName:(id)a6 rolloutDeployment:(id)a7 completion:(id)a8;
-+ (void)_removeAssetFactors:(id)a3 usingEntitlementWitness:(id)a4 serverContext:(id)a5 taskQueue:(id)a6 namespace:(id)a7 factorsState:(id)a8 removeImmediately:(BOOL)a9 completion:(id)a10;
-+ (void)_reregisterOneShotXPCActivityWithDescriptor:(id)a3 resumingTaskQueue:(id)a4;
-+ (void)_resumeTaskQueueForDiscretionaryCellularWithQueue:(id)a3;
-+ (void)_resumeTaskQueueForDiscretionaryWifiWithQueue:(id)a3;
-+ (void)_setProvisionalFactorPackId:(id)a3 usingEntitlementWitness:(id)a4 serverContext:(id)a5 forNamespaceName:(id)a6 completion:(id)a7;
-+ (void)_startDownloadAssetIndexesByTreatment:(id)a3 usingEntitlementWitness:(id)a4 serverContext:(id)a5 taskQueue:(id)a6 experimentIds:(id)a7 assetIdsByFactorPack:(id)a8 rolloutFactorNames:(id)a9 rolloutDeployments:(id)a10 namespace:(id)a11 taskAttribution:(id)a12 factorsState:(id)a13 notificationKey:(id)a14;
-+ (void)resumeTaskQueue:(id)a3 forNetworkOptions:(id)a4;
-+ (void)usingServerContext:(id)a3 deregisterNamespaceWithName:(id)a4 teamId:(id)a5 taskQueue:(id)a6 completion:(id)a7;
-+ (void)usingServerContext:(id)a3 taskQueue:(id)a4 startDownloadNamespaceWithName:(id)a5 attribution:(id)a6 completion:(id)a7;
-- (BOOL)_validateNamespaceName:(id)a3 error:(id *)a4;
-- (BOOL)_validateSetPurgeabilityLevelRequestUsingFactorProviderChain:(id)a3 paths:(id)a4 purgeabilityLevelsForFactors:(id)a5 error:(id *)a6;
-- (TRIXPCNamespaceManagementRequestHandler)initWithServerContextPromise:(id)a3 auditToken:(id *)a4;
-- (id)_factorProviderChainForNamespace:(id)a3 paths:(id)a4;
-- (int)_namespacePurgeabilityLevelForNamespaceName:(id)a3 paths:(id)a4;
-- (void)_loadNamespaceMetadataForNamespace:(id)a3 usingEntitlementWitness:(id)a4 withPaths:(id)a5 completion:(id)a6;
-- (void)_setPurgeabilityLevelsForFactors:(id)a3 usingEntitlementWitness:(id)a4 namespace:(id)a5 paths:(id)a6 completion:(id)a7;
-- (void)deregisterNamespaceWithNamespaceName:(id)a3 completion:(id)a4;
-- (void)getSandboxExtensionTokensForIdentifierQueryWithCompletion:(id)a3;
-- (void)loadNamespaceMetadataForNamespaceName:(id)a3 completion:(id)a4;
-- (void)promoteFactorPackId:(id)a3 forNamespaceName:(id)a4 rolloutDeployment:(id)a5 completion:(id)a6;
-- (void)registerNamespaceWithNamespaceName:(id)a3 compatibilityVersion:(unsigned int)a4 defaultsFileURL:(id)a5 applicationGroup:(id)a6 cloudKitContainerId:(int)a7 completion:(id)a8;
-- (void)rejectFactorPackId:(id)a3 forNamespaceName:(id)a4 rolloutDeployment:(id)a5 completion:(id)a6;
-- (void)removeLevelsForFactors:(id)a3 withNamespace:(id)a4 factorsState:(id)a5 removeImmediately:(BOOL)a6 completion:(id)a7;
-- (void)setProvisionalFactorPackId:(id)a3 forNamespaceName:(id)a4 completion:(id)a5;
-- (void)setPurgeabilityLevelsForFactors:(id)a3 forNamespaceName:(id)a4 completion:(id)a5;
-- (void)startDownloadLevelsForFactors:(id)a3 withNamespace:(id)a4 factorsState:(id)a5 options:(id)a6 completion:(id)a7;
-- (void)startDownloadNamespaceWithName:(id)a3 options:(id)a4 completion:(id)a5;
-- (void)statusOfDownloadForFactors:(id)a3 withNamespace:(id)a4 factorsState:(id)a5 completion:(id)a6;
++ (id)_deploymentsWithUnexpectedExperimentDataInContainer:(id)container dynamicNamespaceName:(id)name serverContext:(id)context;
++ (id)_notificationKeyWithNamespace:(id)namespace assetIndexesByTreatment:(id)treatment assetIdsByFactorPack:(id)pack;
++ (void)_immediateDownloadForNamespaceNames:(id)names usingEntitlementWitness:(id)witness serverContext:(id)context taskQueue:(id)queue allowExpensiveNetworking:(BOOL)networking taskAttribution:(id)attribution completion:(id)completion;
++ (void)_promoteFactorPackId:(id)id usingEntitlementWitness:(id)witness serverContext:(id)context forNamespaceName:(id)name rolloutDeployment:(id)deployment completion:(id)completion;
++ (void)_purgeMismatchedDataForDynamicNamespaceName:(id)name appContainer:(id)container serverContext:(id)context;
++ (void)_rejectFactorPackId:(id)id usingEntitlementWitness:(id)witness serverContext:(id)context forNamespaceName:(id)name rolloutDeployment:(id)deployment completion:(id)completion;
++ (void)_removeAssetFactors:(id)factors usingEntitlementWitness:(id)witness serverContext:(id)context taskQueue:(id)queue namespace:(id)namespace factorsState:(id)state removeImmediately:(BOOL)immediately completion:(id)self0;
++ (void)_reregisterOneShotXPCActivityWithDescriptor:(id)descriptor resumingTaskQueue:(id)queue;
++ (void)_resumeTaskQueueForDiscretionaryCellularWithQueue:(id)queue;
++ (void)_resumeTaskQueueForDiscretionaryWifiWithQueue:(id)queue;
++ (void)_setProvisionalFactorPackId:(id)id usingEntitlementWitness:(id)witness serverContext:(id)context forNamespaceName:(id)name completion:(id)completion;
++ (void)_startDownloadAssetIndexesByTreatment:(id)treatment usingEntitlementWitness:(id)witness serverContext:(id)context taskQueue:(id)queue experimentIds:(id)ids assetIdsByFactorPack:(id)pack rolloutFactorNames:(id)names rolloutDeployments:(id)self0 namespace:(id)self1 taskAttribution:(id)self2 factorsState:(id)self3 notificationKey:(id)self4;
++ (void)resumeTaskQueue:(id)queue forNetworkOptions:(id)options;
++ (void)usingServerContext:(id)context deregisterNamespaceWithName:(id)name teamId:(id)id taskQueue:(id)queue completion:(id)completion;
++ (void)usingServerContext:(id)context taskQueue:(id)queue startDownloadNamespaceWithName:(id)name attribution:(id)attribution completion:(id)completion;
+- (BOOL)_validateNamespaceName:(id)name error:(id *)error;
+- (BOOL)_validateSetPurgeabilityLevelRequestUsingFactorProviderChain:(id)chain paths:(id)paths purgeabilityLevelsForFactors:(id)factors error:(id *)error;
+- (TRIXPCNamespaceManagementRequestHandler)initWithServerContextPromise:(id)promise auditToken:(id *)token;
+- (id)_factorProviderChainForNamespace:(id)namespace paths:(id)paths;
+- (int)_namespacePurgeabilityLevelForNamespaceName:(id)name paths:(id)paths;
+- (void)_loadNamespaceMetadataForNamespace:(id)namespace usingEntitlementWitness:(id)witness withPaths:(id)paths completion:(id)completion;
+- (void)_setPurgeabilityLevelsForFactors:(id)factors usingEntitlementWitness:(id)witness namespace:(id)namespace paths:(id)paths completion:(id)completion;
+- (void)deregisterNamespaceWithNamespaceName:(id)name completion:(id)completion;
+- (void)getSandboxExtensionTokensForIdentifierQueryWithCompletion:(id)completion;
+- (void)loadNamespaceMetadataForNamespaceName:(id)name completion:(id)completion;
+- (void)promoteFactorPackId:(id)id forNamespaceName:(id)name rolloutDeployment:(id)deployment completion:(id)completion;
+- (void)registerNamespaceWithNamespaceName:(id)name compatibilityVersion:(unsigned int)version defaultsFileURL:(id)l applicationGroup:(id)group cloudKitContainerId:(int)id completion:(id)completion;
+- (void)rejectFactorPackId:(id)id forNamespaceName:(id)name rolloutDeployment:(id)deployment completion:(id)completion;
+- (void)removeLevelsForFactors:(id)factors withNamespace:(id)namespace factorsState:(id)state removeImmediately:(BOOL)immediately completion:(id)completion;
+- (void)setProvisionalFactorPackId:(id)id forNamespaceName:(id)name completion:(id)completion;
+- (void)setPurgeabilityLevelsForFactors:(id)factors forNamespaceName:(id)name completion:(id)completion;
+- (void)startDownloadLevelsForFactors:(id)factors withNamespace:(id)namespace factorsState:(id)state options:(id)options completion:(id)completion;
+- (void)startDownloadNamespaceWithName:(id)name options:(id)options completion:(id)completion;
+- (void)statusOfDownloadForFactors:(id)factors withNamespace:(id)namespace factorsState:(id)state completion:(id)completion;
 @end
 
 @implementation TRIXPCNamespaceManagementRequestHandler
 
-- (TRIXPCNamespaceManagementRequestHandler)initWithServerContextPromise:(id)a3 auditToken:(id *)a4
+- (TRIXPCNamespaceManagementRequestHandler)initWithServerContextPromise:(id)promise auditToken:(id *)token
 {
-  v8 = a3;
-  if (!v8)
+  promiseCopy = promise;
+  if (!promiseCopy)
   {
-    v13 = [MEMORY[0x277CCA890] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"TRIXPCNamespaceManagementService.m" lineNumber:95 description:{@"Invalid parameter not satisfying: %@", @"serverContextPromise"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIXPCNamespaceManagementService.m" lineNumber:95 description:{@"Invalid parameter not satisfying: %@", @"serverContextPromise"}];
   }
 
   v14.receiver = self;
@@ -52,36 +52,36 @@
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_serverContextPromise, a3);
-    v11 = *&a4->var0[4];
-    *v10->_auditToken.val = *a4->var0;
+    objc_storeStrong(&v9->_serverContextPromise, promise);
+    v11 = *&token->var0[4];
+    *v10->_auditToken.val = *token->var0;
     *&v10->_auditToken.val[4] = v11;
   }
 
   return v10;
 }
 
-- (void)registerNamespaceWithNamespaceName:(id)a3 compatibilityVersion:(unsigned int)a4 defaultsFileURL:(id)a5 applicationGroup:(id)a6 cloudKitContainerId:(int)a7 completion:(id)a8
+- (void)registerNamespaceWithNamespaceName:(id)name compatibilityVersion:(unsigned int)version defaultsFileURL:(id)l applicationGroup:(id)group cloudKitContainerId:(int)id completion:(id)completion
 {
-  v14 = a3;
-  v15 = a5;
-  v16 = a6;
-  v17 = a8;
+  nameCopy = name;
+  lCopy = l;
+  groupCopy = group;
+  completionCopy = completion;
   v89[0] = MEMORY[0x277D85DD0];
   v89[1] = 3221225472;
   v89[2] = __163__TRIXPCNamespaceManagementRequestHandler_registerNamespaceWithNamespaceName_compatibilityVersion_defaultsFileURL_applicationGroup_cloudKitContainerId_completion___block_invoke;
   v89[3] = &unk_279DE0BF8;
   v89[4] = self;
-  v18 = v14;
+  v18 = nameCopy;
   v90 = v18;
-  v63 = a4;
-  v93 = a4;
-  v19 = v15;
+  versionCopy = version;
+  versionCopy2 = version;
+  v19 = lCopy;
   v91 = v19;
-  v20 = v16;
+  v20 = groupCopy;
   v92 = v20;
-  v64 = a7;
-  v94 = a7;
+  idCopy = id;
+  idCopy2 = id;
   v21 = MEMORY[0x2743948D0](v89);
   v21[2](v21, 0);
   v85 = 0;
@@ -100,7 +100,7 @@
   v79[1] = 3221225472;
   v79[2] = __163__TRIXPCNamespaceManagementRequestHandler_registerNamespaceWithNamespaceName_compatibilityVersion_defaultsFileURL_applicationGroup_cloudKitContainerId_completion___block_invoke_2;
   v79[3] = &unk_279DE0778;
-  v24 = v17;
+  v24 = completionCopy;
   v81 = v24;
   v25 = v18;
   v80 = v25;
@@ -142,43 +142,43 @@ LABEL_10:
         if (v33)
         {
           v56 = [MEMORY[0x277D73650] containerWithIdentifier:v33 type:1];
-          v55 = [v56 containerURL];
+          containerURL = [v56 containerURL];
         }
 
         else
         {
-          v55 = 0;
+          containerURL = 0;
           v56 = 0;
         }
 
-        v34 = [v19 relativePath];
-        v35 = [v34 isAbsolutePath];
+        relativePath = [v19 relativePath];
+        isAbsolutePath = [relativePath isAbsolutePath];
 
-        if (v35)
+        if (isAbsolutePath)
         {
-          v36 = [v55 relativePath];
-          if (!v36)
+          relativePath2 = [containerURL relativePath];
+          if (!relativePath2)
           {
             goto LABEL_27;
           }
 
-          v60 = [v19 relativePath];
-          v37 = [v55 relativePath];
-          v51 = [v60 hasPrefix:v37];
+          relativePath3 = [v19 relativePath];
+          relativePath4 = [containerURL relativePath];
+          v51 = [relativePath3 hasPrefix:relativePath4];
 
           if (!v51)
           {
             goto LABEL_27;
           }
 
-          v38 = [MEMORY[0x277CCAA00] defaultManager];
-          v52 = [v19 relativePath];
-          v39 = [v55 relativePath];
-          v61 = [v38 triPath:v52 relativeToParentPath:v39];
+          defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+          relativePath5 = [v19 relativePath];
+          relativePath6 = [containerURL relativePath];
+          v61 = [defaultManager triPath:relativePath5 relativeToParentPath:relativePath6];
 
           v40 = MEMORY[0x277CBEBC0];
-          v53 = [v56 identifier];
-          v41 = [v40 triContainerURLWithPath:v61 containerId:v53 containerType:{objc_msgSend(v56, "type")}];
+          identifier = [v56 identifier];
+          v41 = [v40 triContainerURLWithPath:v61 containerId:identifier containerType:{objc_msgSend(v56, "type")}];
 
           if (v41)
           {
@@ -207,14 +207,14 @@ LABEL_28:
             v73 = v24;
             v66[4] = self;
             v67 = v25;
-            v75 = v63;
+            v75 = versionCopy;
             v19 = v19;
             v68 = v19;
             v45 = v44;
             v69 = v45;
             v70 = v58;
             v74 = v57;
-            v76 = v64;
+            v76 = idCopy;
             v71 = v65;
             v46 = MEMORY[0x2743948D0](v66);
             [(TRIXPCNamespaceManagementRequestHandler *)self runBlockWhenServerAvailable:v46];
@@ -245,16 +245,16 @@ LABEL_41:
             goto LABEL_30;
           }
 
-          v38 = [v19 relativePath];
-          if (!v38)
+          defaultManager = [v19 relativePath];
+          if (!defaultManager)
           {
-            v50 = [MEMORY[0x277CCA890] currentHandler];
-            [v50 handleFailureInMethod:a2 object:self file:@"TRIXPCNamespaceManagementService.m" lineNumber:192 description:{@"Invalid parameter not satisfying: %@", @"relativePath"}];
+            currentHandler = [MEMORY[0x277CCA890] currentHandler];
+            [currentHandler handleFailureInMethod:a2 object:self file:@"TRIXPCNamespaceManagementService.m" lineNumber:192 description:{@"Invalid parameter not satisfying: %@", @"relativePath"}];
           }
 
           v42 = MEMORY[0x277CBEBC0];
-          v62 = [v56 identifier];
-          v41 = [v42 triContainerURLWithPath:v38 containerId:v62 containerType:{objc_msgSend(v56, "type")}];
+          identifier2 = [v56 identifier];
+          v41 = [v42 triContainerURLWithPath:defaultManager containerId:identifier2 containerType:{objc_msgSend(v56, "type")}];
 
           if (v41)
           {
@@ -428,16 +428,16 @@ void __163__TRIXPCNamespaceManagementRequestHandler_registerNamespaceWithNamespa
   }
 }
 
-- (void)deregisterNamespaceWithNamespaceName:(id)a3 completion:(id)a4
+- (void)deregisterNamespaceWithNamespaceName:(id)name completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  completionCopy = completion;
   v35[0] = MEMORY[0x277D85DD0];
   v35[1] = 3221225472;
   v35[2] = __91__TRIXPCNamespaceManagementRequestHandler_deregisterNamespaceWithNamespaceName_completion___block_invoke;
   v35[3] = &unk_279DE0208;
   v35[4] = self;
-  v8 = v6;
+  v8 = nameCopy;
   v36 = v8;
   v9 = MEMORY[0x2743948D0](v35);
   v9[2](v9, 0);
@@ -459,7 +459,7 @@ void __163__TRIXPCNamespaceManagementRequestHandler_registerNamespaceWithNamespa
   v25[3] = &unk_279DE0C70;
   v12 = v8;
   v26 = v12;
-  v13 = v7;
+  v13 = completionCopy;
   v27 = v13;
   v14 = MEMORY[0x2743948D0](v25);
   v15 = v14;
@@ -610,19 +610,19 @@ void __91__TRIXPCNamespaceManagementRequestHandler_deregisterNamespaceWithNamesp
   }
 }
 
-- (void)startDownloadNamespaceWithName:(id)a3 options:(id)a4 completion:(id)a5
+- (void)startDownloadNamespaceWithName:(id)name options:(id)options completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  nameCopy = name;
+  optionsCopy = options;
+  completionCopy = completion;
   v47[0] = MEMORY[0x277D85DD0];
   v47[1] = 3221225472;
   v47[2] = __93__TRIXPCNamespaceManagementRequestHandler_startDownloadNamespaceWithName_options_completion___block_invoke;
   v47[3] = &unk_279DE05E8;
   v47[4] = self;
-  v11 = v8;
+  v11 = nameCopy;
   v48 = v11;
-  v12 = v9;
+  v12 = optionsCopy;
   v49 = v12;
   v13 = MEMORY[0x2743948D0](v47);
   v13[2](v13, 0);
@@ -644,7 +644,7 @@ void __91__TRIXPCNamespaceManagementRequestHandler_deregisterNamespaceWithNamesp
   v37[3] = &unk_279DE0C70;
   v16 = v11;
   v38 = v16;
-  v17 = v10;
+  v17 = completionCopy;
   v39 = v17;
   v18 = MEMORY[0x2743948D0](v37);
   v19 = v18;
@@ -678,7 +678,7 @@ void __91__TRIXPCNamespaceManagementRequestHandler_deregisterNamespaceWithNamesp
             v28 = v24;
             v29 = v21;
             v30 = v12;
-            v31 = self;
+            selfCopy = self;
             v25 = MEMORY[0x2743948D0](v26);
             [(TRIXPCNamespaceManagementRequestHandler *)self runBlockWhenServerAvailable:v25];
             *(v44 + 24) = 1;
@@ -865,21 +865,21 @@ LABEL_13:
   }
 }
 
-+ (id)_notificationKeyWithNamespace:(id)a3 assetIndexesByTreatment:(id)a4 assetIdsByFactorPack:(id)a5
++ (id)_notificationKeyWithNamespace:(id)namespace assetIndexesByTreatment:(id)treatment assetIdsByFactorPack:(id)pack
 {
   v64 = *MEMORY[0x277D85DE8];
-  v43 = a3;
-  v7 = a4;
-  v46 = a5;
+  namespaceCopy = namespace;
+  treatmentCopy = treatment;
+  packCopy = pack;
   context = objc_autoreleasePoolPush();
   v8 = objc_opt_new();
   v57 = 0u;
   v58 = 0u;
   v59 = 0u;
   v60 = 0u;
-  v45 = v7;
-  v9 = [v7 allKeys];
-  v10 = [v9 sortedArrayUsingSelector:sel_compare_];
+  v45 = treatmentCopy;
+  allKeys = [treatmentCopy allKeys];
+  v10 = [allKeys sortedArrayUsingSelector:sel_compare_];
 
   v11 = [v10 countByEnumeratingWithState:&v57 objects:v63 count:16];
   if (v11)
@@ -916,8 +916,8 @@ LABEL_13:
   v54 = 0u;
   v51 = 0u;
   v52 = 0u;
-  v17 = [v46 allKeys];
-  v18 = [v17 sortedArrayUsingSelector:sel_compare_];
+  allKeys2 = [packCopy allKeys];
+  v18 = [allKeys2 sortedArrayUsingSelector:sel_compare_];
 
   obj = v18;
   v19 = [v18 countByEnumeratingWithState:&v51 objects:v62 count:16];
@@ -941,9 +941,9 @@ LABEL_13:
         v48 = 0u;
         v49 = 0u;
         v50 = 0u;
-        v25 = [v46 objectForKeyedSubscript:v23];
-        v26 = [v25 allObjects];
-        v27 = [v26 sortedArrayUsingComparator:&__block_literal_global_11];
+        v25 = [packCopy objectForKeyedSubscript:v23];
+        allObjects = [v25 allObjects];
+        v27 = [allObjects sortedArrayUsingComparator:&__block_literal_global_11];
 
         v28 = [v27 countByEnumeratingWithState:&v47 objects:v61 count:16];
         if (v28)
@@ -959,8 +959,8 @@ LABEL_13:
                 objc_enumerationMutation(v27);
               }
 
-              v32 = [*(*(&v47 + 1) + 8 * k) assetId];
-              [v8 addObject:v32];
+              assetId = [*(*(&v47 + 1) + 8 * k) assetId];
+              [v8 addObject:assetId];
             }
 
             v29 = [v27 countByEnumeratingWithState:&v47 objects:v61 count:16];
@@ -992,8 +992,8 @@ LABEL_13:
   }
 
   v37 = [v33 subdataWithRange:{0, v36}];
-  v38 = [v37 triHexlify];
-  v39 = [v34 initWithFormat:@"%@.%@", v43, v38];
+  triHexlify = [v37 triHexlify];
+  v39 = [v34 initWithFormat:@"%@.%@", namespaceCopy, triHexlify];
 
   objc_autoreleasePoolPop(context);
   v40 = *MEMORY[0x277D85DE8];
@@ -1018,26 +1018,26 @@ uint64_t __118__TRIXPCNamespaceManagementRequestHandler__notificationKeyWithName
   return v7;
 }
 
-- (void)startDownloadLevelsForFactors:(id)a3 withNamespace:(id)a4 factorsState:(id)a5 options:(id)a6 completion:(id)a7
+- (void)startDownloadLevelsForFactors:(id)factors withNamespace:(id)namespace factorsState:(id)state options:(id)options completion:(id)completion
 {
   v62 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  factorsCopy = factors;
+  namespaceCopy = namespace;
+  stateCopy = state;
+  optionsCopy = options;
+  completionCopy = completion;
   v56[0] = MEMORY[0x277D85DD0];
   v56[1] = 3221225472;
   v56[2] = __119__TRIXPCNamespaceManagementRequestHandler_startDownloadLevelsForFactors_withNamespace_factorsState_options_completion___block_invoke;
   v56[3] = &unk_279DE0410;
   v56[4] = self;
-  v36 = v12;
+  v36 = factorsCopy;
   v57 = v36;
-  v37 = v13;
+  v37 = namespaceCopy;
   v58 = v37;
-  v17 = v14;
+  v17 = stateCopy;
   v59 = v17;
-  v18 = v15;
+  v18 = optionsCopy;
   v60 = v18;
   v19 = MEMORY[0x2743948D0](v56);
   v19[2](v19, 0);
@@ -1057,7 +1057,7 @@ uint64_t __118__TRIXPCNamespaceManagementRequestHandler__notificationKeyWithName
   v47[1] = 3221225472;
   v47[2] = __119__TRIXPCNamespaceManagementRequestHandler_startDownloadLevelsForFactors_withNamespace_factorsState_options_completion___block_invoke_2;
   v47[3] = &unk_279DE0548;
-  v22 = v16;
+  v22 = completionCopy;
   v48 = v22;
   v23 = MEMORY[0x2743948D0](v47);
   v24 = MEMORY[0x277D425B0];
@@ -1079,7 +1079,7 @@ LABEL_4:
     v39 = v36;
     v40 = v37;
     v41 = v17;
-    v42 = self;
+    selfCopy = self;
     v46 = v23;
     v43 = v18;
     v32 = MEMORY[0x2743948D0](v38);
@@ -1544,23 +1544,23 @@ void __114__TRIXPCNamespaceManagementRequestHandler_immediateDownloadForNamespac
   }
 }
 
-- (void)removeLevelsForFactors:(id)a3 withNamespace:(id)a4 factorsState:(id)a5 removeImmediately:(BOOL)a6 completion:(id)a7
+- (void)removeLevelsForFactors:(id)factors withNamespace:(id)namespace factorsState:(id)state removeImmediately:(BOOL)immediately completion:(id)completion
 {
   v62 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a7;
+  factorsCopy = factors;
+  namespaceCopy = namespace;
+  stateCopy = state;
+  completionCopy = completion;
   v57[0] = MEMORY[0x277D85DD0];
   v57[1] = 3221225472;
   v57[2] = __122__TRIXPCNamespaceManagementRequestHandler_removeLevelsForFactors_withNamespace_factorsState_removeImmediately_completion___block_invoke;
   v57[3] = &unk_279DE0438;
   v57[4] = self;
-  v38 = v11;
+  v38 = factorsCopy;
   v58 = v38;
-  v15 = v12;
+  v15 = namespaceCopy;
   v59 = v15;
-  v16 = v13;
+  v16 = stateCopy;
   v60 = v16;
   v17 = MEMORY[0x2743948D0](v57);
   v17[2](v17, 0);
@@ -1582,7 +1582,7 @@ void __114__TRIXPCNamespaceManagementRequestHandler_immediateDownloadForNamespac
   v47[3] = &unk_279DE0C70;
   v20 = v15;
   v48 = v20;
-  v21 = v14;
+  v21 = completionCopy;
   v49 = v21;
   v22 = MEMORY[0x2743948D0](v47);
   v23 = v22;
@@ -1642,7 +1642,7 @@ void __114__TRIXPCNamespaceManagementRequestHandler_immediateDownloadForNamespac
   v41 = v33;
   v42 = v20;
   v43 = v16;
-  v46 = a6;
+  immediatelyCopy = immediately;
   v34 = MEMORY[0x2743948D0](v39);
   [(TRIXPCNamespaceManagementRequestHandler *)self runBlockWhenServerAvailable:v34];
   *(v54 + 24) = 1;
@@ -1773,19 +1773,19 @@ void __122__TRIXPCNamespaceManagementRequestHandler_removeLevelsForFactors_withN
   }
 }
 
-- (void)setPurgeabilityLevelsForFactors:(id)a3 forNamespaceName:(id)a4 completion:(id)a5
+- (void)setPurgeabilityLevelsForFactors:(id)factors forNamespaceName:(id)name completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  factorsCopy = factors;
+  nameCopy = name;
+  completionCopy = completion;
   v37[0] = MEMORY[0x277D85DD0];
   v37[1] = 3221225472;
   v37[2] = __103__TRIXPCNamespaceManagementRequestHandler_setPurgeabilityLevelsForFactors_forNamespaceName_completion___block_invoke;
   v37[3] = &unk_279DE05E8;
   v37[4] = self;
-  v11 = v8;
+  v11 = factorsCopy;
   v38 = v11;
-  v12 = v9;
+  v12 = nameCopy;
   v39 = v12;
   v13 = MEMORY[0x2743948D0](v37);
   v13[2](v13, 0);
@@ -1807,15 +1807,15 @@ void __122__TRIXPCNamespaceManagementRequestHandler_removeLevelsForFactors_withN
   v24 = &unk_279DE07C8;
   v16 = v14;
   v28 = v16;
-  v17 = v10;
+  v17 = completionCopy;
   v29 = v17;
-  v25 = self;
+  selfCopy = self;
   v18 = v12;
   v26 = v18;
   v19 = v11;
   v27 = v19;
   v20 = MEMORY[0x2743948D0](&v21);
-  [(TRIXPCNamespaceManagementRequestHandler *)self runBlockWhenServerAvailable:v20, v21, v22, v23, v24, v25];
+  [(TRIXPCNamespaceManagementRequestHandler *)self runBlockWhenServerAvailable:v20, v21, v22, v23, v24, selfCopy];
   *(v34 + 24) = 1;
 
   if (v15)
@@ -2006,17 +2006,17 @@ void __103__TRIXPCNamespaceManagementRequestHandler_setPurgeabilityLevelsForFact
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)loadNamespaceMetadataForNamespaceName:(id)a3 completion:(id)a4
+- (void)loadNamespaceMetadataForNamespaceName:(id)name completion:(id)completion
 {
   v45 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  completionCopy = completion;
   v42[0] = MEMORY[0x277D85DD0];
   v42[1] = 3221225472;
   v42[2] = __92__TRIXPCNamespaceManagementRequestHandler_loadNamespaceMetadataForNamespaceName_completion___block_invoke;
   v42[3] = &unk_279DE0208;
   v42[4] = self;
-  v8 = v6;
+  v8 = nameCopy;
   v43 = v8;
   v9 = MEMORY[0x2743948D0](v42);
   v9[2](v9, 0);
@@ -2036,7 +2036,7 @@ void __103__TRIXPCNamespaceManagementRequestHandler_setPurgeabilityLevelsForFact
   v35[1] = 3221225472;
   v35[2] = __92__TRIXPCNamespaceManagementRequestHandler_loadNamespaceMetadataForNamespaceName_completion___block_invoke_2;
   v35[3] = &unk_279DE0548;
-  v12 = v7;
+  v12 = completionCopy;
   v36 = v12;
   v13 = MEMORY[0x2743948D0](v35);
   v34 = 0;
@@ -2086,10 +2086,10 @@ void __103__TRIXPCNamespaceManagementRequestHandler_setPurgeabilityLevelsForFact
     v29 = &unk_279DE0610;
     v32 = v10;
     v33 = v12;
-    v30 = self;
+    selfCopy = self;
     v31 = v8;
     v22 = MEMORY[0x2743948D0](&v26);
-    [(TRIXPCNamespaceManagementRequestHandler *)self runBlockWhenServerAvailable:v22, v26, v27, v28, v29, v30];
+    [(TRIXPCNamespaceManagementRequestHandler *)self runBlockWhenServerAvailable:v22, v26, v27, v28, v29, selfCopy];
 
     v23 = v32;
 LABEL_8:
@@ -2223,20 +2223,20 @@ LABEL_9:
   }
 }
 
-- (void)setProvisionalFactorPackId:(id)a3 forNamespaceName:(id)a4 completion:(id)a5
+- (void)setProvisionalFactorPackId:(id)id forNamespaceName:(id)name completion:(id)completion
 {
   v55 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  idCopy = id;
+  nameCopy = name;
+  completionCopy = completion;
   v51[0] = MEMORY[0x277D85DD0];
   v51[1] = 3221225472;
   v51[2] = __98__TRIXPCNamespaceManagementRequestHandler_setProvisionalFactorPackId_forNamespaceName_completion___block_invoke;
   v51[3] = &unk_279DE05E8;
   v51[4] = self;
-  v11 = v8;
+  v11 = idCopy;
   v52 = v11;
-  v12 = v9;
+  v12 = nameCopy;
   v53 = v12;
   v13 = MEMORY[0x2743948D0](v51);
   v13[2](v13, 0);
@@ -2258,7 +2258,7 @@ LABEL_9:
   v41[3] = &unk_279DE0C70;
   v16 = v12;
   v42 = v16;
-  v17 = v10;
+  v17 = completionCopy;
   v43 = v17;
   v18 = MEMORY[0x2743948D0](v41);
   v19 = v18;
@@ -2311,11 +2311,11 @@ LABEL_9:
   v35 = &unk_279DE07C8;
   v39 = v14;
   v40 = v17;
-  v36 = self;
+  selfCopy = self;
   v37 = v11;
   v38 = v16;
   v28 = MEMORY[0x2743948D0](&v32);
-  [(TRIXPCNamespaceManagementRequestHandler *)self runBlockWhenServerAvailable:v28, v32, v33, v34, v35, v36];
+  [(TRIXPCNamespaceManagementRequestHandler *)self runBlockWhenServerAvailable:v28, v32, v33, v34, v35, selfCopy];
   *(v48 + 24) = 1;
 
   v29 = v39;
@@ -2449,21 +2449,21 @@ LABEL_7:
   }
 }
 
-- (void)rejectFactorPackId:(id)a3 forNamespaceName:(id)a4 rolloutDeployment:(id)a5 completion:(id)a6
+- (void)rejectFactorPackId:(id)id forNamespaceName:(id)name rolloutDeployment:(id)deployment completion:(id)completion
 {
   v57 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v35 = a5;
-  v12 = a6;
+  idCopy = id;
+  nameCopy = name;
+  deploymentCopy = deployment;
+  completionCopy = completion;
   v53[0] = MEMORY[0x277D85DD0];
   v53[1] = 3221225472;
   v53[2] = __108__TRIXPCNamespaceManagementRequestHandler_rejectFactorPackId_forNamespaceName_rolloutDeployment_completion___block_invoke;
   v53[3] = &unk_279DE05E8;
   v53[4] = self;
-  v13 = v10;
+  v13 = idCopy;
   v54 = v13;
-  v14 = v11;
+  v14 = nameCopy;
   v55 = v14;
   v15 = MEMORY[0x2743948D0](v53);
   v15[2](v15, 0);
@@ -2485,7 +2485,7 @@ LABEL_7:
   v43[3] = &unk_279DE0C70;
   v18 = v14;
   v44 = v18;
-  v19 = v12;
+  v19 = completionCopy;
   v45 = v19;
   v20 = MEMORY[0x2743948D0](v43);
   v21 = v20;
@@ -2544,7 +2544,7 @@ LABEL_7:
   v31 = v30;
   v38 = v31;
   v39 = v18;
-  v40 = v35;
+  v40 = deploymentCopy;
   v32 = MEMORY[0x2743948D0](v36);
   [(TRIXPCNamespaceManagementRequestHandler *)self runBlockWhenServerAvailable:v32];
   *(v50 + 24) = 1;
@@ -2670,21 +2670,21 @@ void __108__TRIXPCNamespaceManagementRequestHandler_rejectFactorPackId_forNamesp
   }
 }
 
-- (void)promoteFactorPackId:(id)a3 forNamespaceName:(id)a4 rolloutDeployment:(id)a5 completion:(id)a6
+- (void)promoteFactorPackId:(id)id forNamespaceName:(id)name rolloutDeployment:(id)deployment completion:(id)completion
 {
   v57 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v35 = a5;
-  v12 = a6;
+  idCopy = id;
+  nameCopy = name;
+  deploymentCopy = deployment;
+  completionCopy = completion;
   v53[0] = MEMORY[0x277D85DD0];
   v53[1] = 3221225472;
   v53[2] = __109__TRIXPCNamespaceManagementRequestHandler_promoteFactorPackId_forNamespaceName_rolloutDeployment_completion___block_invoke;
   v53[3] = &unk_279DE05E8;
   v53[4] = self;
-  v13 = v10;
+  v13 = idCopy;
   v54 = v13;
-  v14 = v11;
+  v14 = nameCopy;
   v55 = v14;
   v15 = MEMORY[0x2743948D0](v53);
   v15[2](v15, 0);
@@ -2706,7 +2706,7 @@ void __108__TRIXPCNamespaceManagementRequestHandler_rejectFactorPackId_forNamesp
   v43[3] = &unk_279DE0C70;
   v18 = v14;
   v44 = v18;
-  v19 = v12;
+  v19 = completionCopy;
   v45 = v19;
   v20 = MEMORY[0x2743948D0](v43);
   v21 = v20;
@@ -2765,7 +2765,7 @@ void __108__TRIXPCNamespaceManagementRequestHandler_rejectFactorPackId_forNamesp
   v31 = v30;
   v38 = v31;
   v39 = v18;
-  v40 = v35;
+  v40 = deploymentCopy;
   v32 = MEMORY[0x2743948D0](v36);
   [(TRIXPCNamespaceManagementRequestHandler *)self runBlockWhenServerAvailable:v32];
   *(v50 + 24) = 1;
@@ -2891,23 +2891,23 @@ void __109__TRIXPCNamespaceManagementRequestHandler_promoteFactorPackId_forNames
   }
 }
 
-- (void)statusOfDownloadForFactors:(id)a3 withNamespace:(id)a4 factorsState:(id)a5 completion:(id)a6
+- (void)statusOfDownloadForFactors:(id)factors withNamespace:(id)namespace factorsState:(id)state completion:(id)completion
 {
   v53 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  factorsCopy = factors;
+  namespaceCopy = namespace;
+  stateCopy = state;
+  completionCopy = completion;
   v47[0] = MEMORY[0x277D85DD0];
   v47[1] = 3221225472;
   v47[2] = __108__TRIXPCNamespaceManagementRequestHandler_statusOfDownloadForFactors_withNamespace_factorsState_completion___block_invoke;
   v47[3] = &unk_279DE0438;
   v47[4] = self;
-  v14 = v10;
+  v14 = factorsCopy;
   v48 = v14;
-  v15 = v11;
+  v15 = namespaceCopy;
   v49 = v15;
-  v16 = v12;
+  v16 = stateCopy;
   v50 = v16;
   v17 = MEMORY[0x2743948D0](v47);
   v17[2](v17, 0);
@@ -2929,7 +2929,7 @@ void __109__TRIXPCNamespaceManagementRequestHandler_promoteFactorPackId_forNames
     v38[1] = 3221225472;
     v38[2] = __108__TRIXPCNamespaceManagementRequestHandler_statusOfDownloadForFactors_withNamespace_factorsState_completion___block_invoke_247;
     v38[3] = &unk_279DE0548;
-    v20 = v13;
+    v20 = completionCopy;
     v39 = v20;
     v21 = MEMORY[0x2743948D0](v38);
     v27 = MEMORY[0x277D85DD0];
@@ -2938,14 +2938,14 @@ void __109__TRIXPCNamespaceManagementRequestHandler_promoteFactorPackId_forNames
     v30 = &unk_279DE0DD0;
     v35 = v18;
     v36 = v20;
-    v31 = self;
+    selfCopy = self;
     v22 = v21;
     v37 = v22;
     v32 = v14;
     v33 = v15;
     v34 = v16;
     v23 = MEMORY[0x2743948D0](&v27);
-    [(TRIXPCNamespaceManagementRequestHandler *)self runBlockWhenServerAvailable:v23, v27, v28, v29, v30, v31];
+    [(TRIXPCNamespaceManagementRequestHandler *)self runBlockWhenServerAvailable:v23, v27, v28, v29, v30, selfCopy];
     *(v44 + 24) = 1;
 
     v24 = v39;
@@ -2962,10 +2962,10 @@ LABEL_7:
     _os_log_impl(&dword_26F567000, v25, OS_LOG_TYPE_DEFAULT, "cannot determine download status of factors for %@", buf, 0xCu);
   }
 
-  if (v13)
+  if (completionCopy)
   {
     v24 = [MEMORY[0x277CCA9B8] errorWithDomain:@"TRIGeneralErrorDomain" code:5 userInfo:0];
-    (*(v13 + 2))(v13, 0, 0, v24);
+    (*(completionCopy + 2))(completionCopy, 0, 0, v24);
     goto LABEL_7;
   }
 
@@ -3238,9 +3238,9 @@ void __108__TRIXPCNamespaceManagementRequestHandler_statusOfDownloadForFactors_w
   *a3 = 1;
 }
 
-- (void)getSandboxExtensionTokensForIdentifierQueryWithCompletion:(id)a3
+- (void)getSandboxExtensionTokensForIdentifierQueryWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __101__TRIXPCNamespaceManagementRequestHandler_getSandboxExtensionTokensForIdentifierQueryWithCompletion___block_invoke;
@@ -3270,24 +3270,24 @@ void __108__TRIXPCNamespaceManagementRequestHandler_statusOfDownloadForFactors_w
     }
 
     v9 = [objc_alloc(MEMORY[0x277CCA9B8]) initWithDomain:@"TRIGeneralErrorDomain" code:5 userInfo:0];
-    v10 = objc_opt_new();
-    v4[2](v4, v10, v9);
+    mEMORY[0x277D737E0] = objc_opt_new();
+    completionCopy[2](completionCopy, mEMORY[0x277D737E0], v9);
   }
 
   else
   {
     v9 = objc_opt_new();
-    v10 = [MEMORY[0x277D737E0] sharedPaths];
-    v11 = [v10 treatmentsDir];
-    v12 = [TRISandboxExtensionFactory extensionTokenForPath:v11 extensionClass:0];
+    mEMORY[0x277D737E0] = [MEMORY[0x277D737E0] sharedPaths];
+    treatmentsDir = [mEMORY[0x277D737E0] treatmentsDir];
+    v12 = [TRISandboxExtensionFactory extensionTokenForPath:treatmentsDir extensionClass:0];
 
     if (v12)
     {
       [v9 addObject:v12];
     }
 
-    v13 = [v10 namespaceDescriptorsDir];
-    v14 = [TRISandboxExtensionFactory extensionTokenForPath:v13 extensionClass:0];
+    namespaceDescriptorsDir = [mEMORY[0x277D737E0] namespaceDescriptorsDir];
+    v14 = [TRISandboxExtensionFactory extensionTokenForPath:namespaceDescriptorsDir extensionClass:0];
 
     if (v14)
     {
@@ -3297,7 +3297,7 @@ void __108__TRIXPCNamespaceManagementRequestHandler_statusOfDownloadForFactors_w
     if ([v9 count] == 2)
     {
       v15 = [v9 copy];
-      v4[2](v4, v15, 0);
+      completionCopy[2](completionCopy, v15, 0);
     }
 
     else
@@ -3311,7 +3311,7 @@ void __108__TRIXPCNamespaceManagementRequestHandler_statusOfDownloadForFactors_w
 
       v15 = [objc_alloc(MEMORY[0x277CCA9B8]) initWithDomain:@"TRIGeneralErrorDomain" code:16 userInfo:0];
       v17 = objc_opt_new();
-      v4[2](v4, v17, v15);
+      completionCopy[2](completionCopy, v17, v15);
     }
 
     *(v23 + 24) = 1;
@@ -3366,46 +3366,46 @@ uint64_t __101__TRIXPCNamespaceManagementRequestHandler_getSandboxExtensionToken
   return result;
 }
 
-- (void)_setPurgeabilityLevelsForFactors:(id)a3 usingEntitlementWitness:(id)a4 namespace:(id)a5 paths:(id)a6 completion:(id)a7
+- (void)_setPurgeabilityLevelsForFactors:(id)factors usingEntitlementWitness:(id)witness namespace:(id)namespace paths:(id)paths completion:(id)completion
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  if (v14)
+  factorsCopy = factors;
+  witnessCopy = witness;
+  namespaceCopy = namespace;
+  pathsCopy = paths;
+  completionCopy = completion;
+  if (witnessCopy)
   {
-    if (v13)
+    if (factorsCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_6:
-    v24 = [MEMORY[0x277CCA890] currentHandler];
-    [v24 handleFailureInMethod:a2 object:self file:@"TRIXPCNamespaceManagementService.m" lineNumber:1286 description:{@"Invalid parameter not satisfying: %@", @"purgeabilityLevelsForFactors"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIXPCNamespaceManagementService.m" lineNumber:1286 description:{@"Invalid parameter not satisfying: %@", @"purgeabilityLevelsForFactors"}];
 
-    if (v15)
+    if (namespaceCopy)
     {
       goto LABEL_4;
     }
 
 LABEL_7:
-    v25 = [MEMORY[0x277CCA890] currentHandler];
-    [v25 handleFailureInMethod:a2 object:self file:@"TRIXPCNamespaceManagementService.m" lineNumber:1287 description:{@"Invalid parameter not satisfying: %@", @"namespaceName"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"TRIXPCNamespaceManagementService.m" lineNumber:1287 description:{@"Invalid parameter not satisfying: %@", @"namespaceName"}];
 
     goto LABEL_4;
   }
 
-  v23 = [MEMORY[0x277CCA890] currentHandler];
-  [v23 handleFailureInMethod:a2 object:self file:@"TRIXPCNamespaceManagementService.m" lineNumber:1285 description:{@"Invalid parameter not satisfying: %@", @"entitlementWitness"}];
+  currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"TRIXPCNamespaceManagementService.m" lineNumber:1285 description:{@"Invalid parameter not satisfying: %@", @"entitlementWitness"}];
 
-  if (!v13)
+  if (!factorsCopy)
   {
     goto LABEL_6;
   }
 
 LABEL_3:
-  if (!v15)
+  if (!namespaceCopy)
   {
     goto LABEL_7;
   }
@@ -3415,15 +3415,15 @@ LABEL_4:
   v26[1] = 3221225472;
   v26[2] = __127__TRIXPCNamespaceManagementRequestHandler__setPurgeabilityLevelsForFactors_usingEntitlementWitness_namespace_paths_completion___block_invoke;
   v26[3] = &unk_279DE0DF8;
-  v29 = v13;
-  v30 = v17;
+  v29 = factorsCopy;
+  v30 = completionCopy;
   v26[4] = self;
-  v27 = v15;
-  v28 = v16;
-  v18 = v13;
-  v19 = v16;
-  v20 = v15;
-  v21 = v17;
+  v27 = namespaceCopy;
+  v28 = pathsCopy;
+  v18 = factorsCopy;
+  v19 = pathsCopy;
+  v20 = namespaceCopy;
+  v21 = completionCopy;
   v22 = MEMORY[0x2743948D0](v26);
   [(TRIXPCNamespaceManagementRequestHandler *)self runBlockWhenServerAvailable:v22];
 }
@@ -3531,16 +3531,16 @@ LABEL_21:
   v30 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_validateSetPurgeabilityLevelRequestUsingFactorProviderChain:(id)a3 paths:(id)a4 purgeabilityLevelsForFactors:(id)a5 error:(id *)a6
+- (BOOL)_validateSetPurgeabilityLevelRequestUsingFactorProviderChain:(id)chain paths:(id)paths purgeabilityLevelsForFactors:(id)factors error:(id *)error
 {
   v37 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  chainCopy = chain;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v9 = a5;
-  v10 = [v9 countByEnumeratingWithState:&v30 objects:v34 count:16];
+  factorsCopy = factors;
+  v10 = [factorsCopy countByEnumeratingWithState:&v30 objects:v34 count:16];
   if (!v10)
   {
     v19 = 1;
@@ -3548,7 +3548,7 @@ LABEL_21:
   }
 
   v11 = v10;
-  v29 = a6;
+  errorCopy = error;
   v12 = *v31;
   while (2)
   {
@@ -3556,11 +3556,11 @@ LABEL_21:
     {
       if (*v31 != v12)
       {
-        objc_enumerationMutation(v9);
+        objc_enumerationMutation(factorsCopy);
       }
 
       v14 = *(*(&v30 + 1) + 8 * i);
-      v15 = [v8 levelForFactor:v14];
+      v15 = [chainCopy levelForFactor:v14];
       v16 = [v15 fileOrDirectoryLevelWithIsDir:0];
       if (!v16)
       {
@@ -3581,14 +3581,14 @@ LABEL_14:
         v24 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:buf forKeys:&v35 count:1];
         v25 = [v23 initWithDomain:@"TRIGeneralErrorDomain" code:2 userInfo:v24];
 
-        v26 = *v29;
-        *v29 = v25;
+        v26 = *errorCopy;
+        *errorCopy = v25;
 
         v19 = 0;
         goto LABEL_17;
       }
 
-      v17 = [v9 objectForKeyedSubscript:v14];
+      v17 = [factorsCopy objectForKeyedSubscript:v14];
       [v17 intValue];
       IsValidValue = TRIPurgeabilityLevel_IsValidValue();
 
@@ -3599,7 +3599,7 @@ LABEL_14:
       }
     }
 
-    v11 = [v9 countByEnumeratingWithState:&v30 objects:v34 count:16];
+    v11 = [factorsCopy countByEnumeratingWithState:&v30 objects:v34 count:16];
     v19 = 1;
     if (v11)
     {
@@ -3615,25 +3615,25 @@ LABEL_17:
   return v19;
 }
 
-- (int)_namespacePurgeabilityLevelForNamespaceName:(id)a3 paths:(id)a4
+- (int)_namespacePurgeabilityLevelForNamespaceName:(id)name paths:(id)paths
 {
-  v5 = a3;
-  v6 = [a4 namespaceDescriptorsDefaultDir];
-  v7 = [MEMORY[0x277D73750] loadWithNamespaceName:v5 fromDirectory:v6];
+  nameCopy = name;
+  namespaceDescriptorsDefaultDir = [paths namespaceDescriptorsDefaultDir];
+  v7 = [MEMORY[0x277D73750] loadWithNamespaceName:nameCopy fromDirectory:namespaceDescriptorsDefaultDir];
 
-  LODWORD(v5) = [v7 purgeabilityLevel];
-  return v5;
+  LODWORD(nameCopy) = [v7 purgeabilityLevel];
+  return nameCopy;
 }
 
-- (void)_loadNamespaceMetadataForNamespace:(id)a3 usingEntitlementWitness:(id)a4 withPaths:(id)a5 completion:(id)a6
+- (void)_loadNamespaceMetadataForNamespace:(id)namespace usingEntitlementWitness:(id)witness withPaths:(id)paths completion:(id)completion
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (v12)
+  namespaceCopy = namespace;
+  witnessCopy = witness;
+  pathsCopy = paths;
+  completionCopy = completion;
+  if (witnessCopy)
   {
-    if (v11)
+    if (namespaceCopy)
     {
       goto LABEL_3;
     }
@@ -3641,31 +3641,31 @@ LABEL_17:
 
   else
   {
-    v21 = [MEMORY[0x277CCA890] currentHandler];
-    [v21 handleFailureInMethod:a2 object:self file:@"TRIXPCNamespaceManagementService.m" lineNumber:1363 description:{@"Invalid parameter not satisfying: %@", @"entitlementWitness"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIXPCNamespaceManagementService.m" lineNumber:1363 description:{@"Invalid parameter not satisfying: %@", @"entitlementWitness"}];
 
-    if (v11)
+    if (namespaceCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v22 = [MEMORY[0x277CCA890] currentHandler];
-  [v22 handleFailureInMethod:a2 object:self file:@"TRIXPCNamespaceManagementService.m" lineNumber:1364 description:{@"Invalid parameter not satisfying: %@", @"namespaceName"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"TRIXPCNamespaceManagementService.m" lineNumber:1364 description:{@"Invalid parameter not satisfying: %@", @"namespaceName"}];
 
 LABEL_3:
-  v15 = [objc_alloc(MEMORY[0x277D73688]) initWithPaths:v13];
+  v15 = [objc_alloc(MEMORY[0x277D73688]) initWithPaths:pathsCopy];
   v23 = 0;
-  v16 = [v15 loadNamespaceMetadataForNamespaceName:v11 error:&v23];
+  v16 = [v15 loadNamespaceMetadataForNamespaceName:namespaceCopy error:&v23];
   v17 = v23;
   if (!v17)
   {
-    v18 = [(TRIXPCNamespaceManagementRequestHandler *)self _factorProviderChainForNamespace:v11 paths:v13];
-    v19 = [v16 compatibilityVersion];
-    if (v19 == [v18 namespaceCompatibilityVersion])
+    v18 = [(TRIXPCNamespaceManagementRequestHandler *)self _factorProviderChainForNamespace:namespaceCopy paths:pathsCopy];
+    compatibilityVersion = [v16 compatibilityVersion];
+    if (compatibilityVersion == [v18 namespaceCompatibilityVersion])
     {
       v20 = v16;
-      if (!v14)
+      if (!completionCopy)
       {
         goto LABEL_11;
       }
@@ -3674,7 +3674,7 @@ LABEL_3:
     else
     {
       v20 = 0;
-      if (!v14)
+      if (!completionCopy)
       {
 LABEL_11:
 
@@ -3682,25 +3682,25 @@ LABEL_11:
       }
     }
 
-    v14[2](v14, v20, 0);
+    completionCopy[2](completionCopy, v20, 0);
     goto LABEL_11;
   }
 
-  if (v14)
+  if (completionCopy)
   {
-    (v14)[2](v14, 0, v17);
+    (completionCopy)[2](completionCopy, 0, v17);
   }
 
 LABEL_12:
 }
 
-- (id)_factorProviderChainForNamespace:(id)a3 paths:(id)a4
+- (id)_factorProviderChainForNamespace:(id)namespace paths:(id)paths
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [objc_alloc(MEMORY[0x277D73778]) initWithPaths:v6];
+  namespaceCopy = namespace;
+  pathsCopy = paths;
+  v7 = [objc_alloc(MEMORY[0x277D73778]) initWithPaths:pathsCopy];
   v13 = 0;
-  v8 = [v7 resolveFactorProviderChainForNamespaceName:v5 faultOnMissingInstalledFactors:0 installedFactorsAccessible:&v13];
+  v8 = [v7 resolveFactorProviderChainForNamespaceName:namespaceCopy faultOnMissingInstalledFactors:0 installedFactorsAccessible:&v13];
   v9 = v8;
   if ((v13 & 1) == 0)
   {
@@ -3709,31 +3709,31 @@ LABEL_12:
     v9 = v10;
   }
 
-  v11 = [objc_alloc(MEMORY[0x277D73760]) initWithNamespaceName:v5 typedProviderChain:v9 paths:v6];
+  v11 = [objc_alloc(MEMORY[0x277D73760]) initWithNamespaceName:namespaceCopy typedProviderChain:v9 paths:pathsCopy];
 
   return v11;
 }
 
-- (BOOL)_validateNamespaceName:(id)a3 error:(id *)a4
+- (BOOL)_validateNamespaceName:(id)name error:(id *)error
 {
-  v5 = a3;
-  if (!v5)
+  nameCopy = name;
+  if (!nameCopy)
   {
     v7 = __72__TRIXPCNamespaceManagementRequestHandler__validateNamespaceName_error___block_invoke(@"namespaceName must be non-nil.");
-    v8 = *a4;
-    *a4 = v7;
+    nameCopy = *error;
+    *error = v7;
 LABEL_6:
 
     v6 = 0;
     goto LABEL_7;
   }
 
-  if (([MEMORY[0x277D73810] validateSafeASCIISubsetIdentifier:v5] & 1) == 0)
+  if (([MEMORY[0x277D73810] validateSafeASCIISubsetIdentifier:nameCopy] & 1) == 0)
   {
-    v8 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"namespaceName(%@) can only contain alphanumeric characters, underscore (_), hyphen (-) or period (.)", v5];
-    v9 = __72__TRIXPCNamespaceManagementRequestHandler__validateNamespaceName_error___block_invoke(v8);
-    v10 = *a4;
-    *a4 = v9;
+    nameCopy = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"namespaceName(%@) can only contain alphanumeric characters, underscore (_), hyphen (-) or period (.)", nameCopy];
+    v9 = __72__TRIXPCNamespaceManagementRequestHandler__validateNamespaceName_error___block_invoke(nameCopy);
+    v10 = *error;
+    *error = v9;
 
     goto LABEL_6;
   }
@@ -3760,14 +3760,14 @@ id __72__TRIXPCNamespaceManagementRequestHandler__validateNamespaceName_error___
   return v5;
 }
 
-+ (void)_purgeMismatchedDataForDynamicNamespaceName:(id)a3 appContainer:(id)a4 serverContext:(id)a5
++ (void)_purgeMismatchedDataForDynamicNamespaceName:(id)name appContainer:(id)container serverContext:(id)context
 {
   v41 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  nameCopy = name;
+  containerCopy = container;
+  contextCopy = context;
   v11 = objc_autoreleasePoolPush();
-  v12 = [a1 _deploymentsWithUnexpectedExperimentDataInContainer:v9 dynamicNamespaceName:v8 serverContext:v10];
+  v12 = [self _deploymentsWithUnexpectedExperimentDataInContainer:containerCopy dynamicNamespaceName:nameCopy serverContext:contextCopy];
   if ([v12 count])
   {
     v13 = [v12 _pas_mappedArrayWithTransform:&__block_literal_global_294];
@@ -3776,7 +3776,7 @@ id __72__TRIXPCNamespaceManagementRequestHandler__validateNamespaceName_error___
     {
       v15 = [v13 componentsJoinedByString:{@", "}];
       *buf = 138543618;
-      v38 = v8;
+      v38 = nameCopy;
       v39 = 2114;
       v40 = v15;
       _os_log_impl(&dword_26F567000, v14, OS_LOG_TYPE_DEFAULT, "Mismatch in experiments for dynamic namespace %{public}@: %{public}@", buf, 0x16u);
@@ -3812,8 +3812,8 @@ id __72__TRIXPCNamespaceManagementRequestHandler__validateNamespaceName_error___
           }
 
           v22 = *(*(&v32 + 1) + 8 * i);
-          v23 = [v10 experimentDatabase];
-          [v23 removeExperimentRecordWithExperimentDeployment:v22];
+          experimentDatabase = [contextCopy experimentDatabase];
+          [experimentDatabase removeExperimentRecordWithExperimentDeployment:v22];
         }
 
         v19 = [v17 countByEnumeratingWithState:&v32 objects:v36 count:16];
@@ -3822,12 +3822,12 @@ id __72__TRIXPCNamespaceManagementRequestHandler__validateNamespaceName_error___
       while (v19);
     }
 
-    v24 = [v10 paths];
-    if (v24)
+    paths = [contextCopy paths];
+    if (paths)
     {
-      v25 = [MEMORY[0x277CCAA00] defaultManager];
-      v26 = [v24 trialRootDir];
-      [v25 triForceRemoveItemAtPath:v26 error:0];
+      defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+      trialRootDir = [paths trialRootDir];
+      [defaultManager triForceRemoveItemAtPath:trialRootDir error:0];
 
       v27 = v30;
       v11 = v31;
@@ -3835,15 +3835,15 @@ id __72__TRIXPCNamespaceManagementRequestHandler__validateNamespaceName_error___
 
     else
     {
-      v25 = TRILogCategory_Server();
+      defaultManager = TRILogCategory_Server();
       v27 = v30;
       v11 = v31;
-      if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
+      if (os_log_type_enabled(defaultManager, OS_LOG_TYPE_DEFAULT))
       {
-        v28 = [v9 identifier];
+        identifier = [containerCopy identifier];
         *buf = 138543362;
-        v38 = v28;
-        _os_log_impl(&dword_26F567000, v25, OS_LOG_TYPE_DEFAULT, "Skipping purge of Trial data in missing container: %{public}@", buf, 0xCu);
+        v38 = identifier;
+        _os_log_impl(&dword_26F567000, defaultManager, OS_LOG_TYPE_DEFAULT, "Skipping purge of Trial data in missing container: %{public}@", buf, 0xCu);
       }
     }
   }
@@ -3852,13 +3852,13 @@ id __72__TRIXPCNamespaceManagementRequestHandler__validateNamespaceName_error___
   v29 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)_deploymentsWithUnexpectedExperimentDataInContainer:(id)a3 dynamicNamespaceName:(id)a4 serverContext:(id)a5
++ (id)_deploymentsWithUnexpectedExperimentDataInContainer:(id)container dynamicNamespaceName:(id)name serverContext:(id)context
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  containerCopy = container;
+  nameCopy = name;
+  contextCopy = context;
   v10 = objc_opt_new();
-  v11 = [v9 experimentDatabase];
+  experimentDatabase = [contextCopy experimentDatabase];
   v12 = objc_autoreleasePoolPush();
   v13 = [objc_alloc(MEMORY[0x277CBEB98]) initWithObjects:{&unk_287FC4720, 0}];
   objc_autoreleasePoolPop(v12);
@@ -3866,11 +3866,11 @@ id __72__TRIXPCNamespaceManagementRequestHandler__validateNamespaceName_error___
   v19[1] = 3221225472;
   v19[2] = __130__TRIXPCNamespaceManagementRequestHandler__deploymentsWithUnexpectedExperimentDataInContainer_dynamicNamespaceName_serverContext___block_invoke;
   v19[3] = &unk_279DE08A8;
-  v20 = v8;
+  v20 = nameCopy;
   v14 = v10;
   v21 = v14;
-  v15 = v8;
-  [v11 enumerateExperimentRecordsMatchingStatuses:v13 block:v19];
+  v15 = nameCopy;
+  [experimentDatabase enumerateExperimentRecordsMatchingStatuses:v13 block:v19];
 
   v16 = v21;
   v17 = v14;
@@ -3968,17 +3968,17 @@ void __213__TRIXPCNamespaceManagementRequestHandler_usingServerContext_registerN
   v10 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)usingServerContext:(id)a3 deregisterNamespaceWithName:(id)a4 teamId:(id)a5 taskQueue:(id)a6 completion:(id)a7
++ (void)usingServerContext:(id)context deregisterNamespaceWithName:(id)name teamId:(id)id taskQueue:(id)queue completion:(id)completion
 {
   v112 = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v14 = a4;
-  v79 = a5;
-  v15 = a6;
-  v16 = a7;
-  if (v13)
+  contextCopy = context;
+  nameCopy = name;
+  idCopy = id;
+  queueCopy = queue;
+  completionCopy = completion;
+  if (contextCopy)
   {
-    if (v14)
+    if (nameCopy)
     {
       goto LABEL_3;
     }
@@ -3986,30 +3986,30 @@ void __213__TRIXPCNamespaceManagementRequestHandler_usingServerContext_registerN
 
   else
   {
-    v74 = [MEMORY[0x277CCA890] currentHandler];
-    [v74 handleFailureInMethod:a2 object:a1 file:@"TRIXPCNamespaceManagementService.m" lineNumber:1579 description:{@"Invalid parameter not satisfying: %@", @"serverContext"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIXPCNamespaceManagementService.m" lineNumber:1579 description:{@"Invalid parameter not satisfying: %@", @"serverContext"}];
 
-    if (v14)
+    if (nameCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v75 = [MEMORY[0x277CCA890] currentHandler];
-  [v75 handleFailureInMethod:a2 object:a1 file:@"TRIXPCNamespaceManagementService.m" lineNumber:1580 description:{@"Invalid parameter not satisfying: %@", @"namespaceName"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"TRIXPCNamespaceManagementService.m" lineNumber:1580 description:{@"Invalid parameter not satisfying: %@", @"namespaceName"}];
 
 LABEL_3:
   v103[0] = MEMORY[0x277D85DD0];
   v103[1] = 3221225472;
   v103[2] = __118__TRIXPCNamespaceManagementRequestHandler_usingServerContext_deregisterNamespaceWithName_teamId_taskQueue_completion___block_invoke;
   v103[3] = &unk_279DE0C70;
-  v17 = v14;
+  v17 = nameCopy;
   v104 = v17;
-  v18 = v16;
+  v18 = completionCopy;
   v105 = v18;
   v19 = MEMORY[0x2743948D0](v103);
-  v20 = [v13 namespaceDatabase];
-  v21 = [v20 dynamicNamespaceRecordWithNamespaceName:v17];
+  namespaceDatabase = [contextCopy namespaceDatabase];
+  v21 = [namespaceDatabase dynamicNamespaceRecordWithNamespaceName:v17];
 
   v90 = v21;
   if (v21)
@@ -4017,7 +4017,7 @@ LABEL_3:
     v77 = v18;
     v78 = v19;
     v22 = objc_opt_new();
-    v23 = [v13 experimentDatabase];
+    experimentDatabase = [contextCopy experimentDatabase];
     v100[0] = MEMORY[0x277D85DD0];
     v100[1] = 3221225472;
     v100[2] = __118__TRIXPCNamespaceManagementRequestHandler_usingServerContext_deregisterNamespaceWithName_teamId_taskQueue_completion___block_invoke_325;
@@ -4026,13 +4026,13 @@ LABEL_3:
     v101 = v87;
     v24 = v22;
     v102 = v24;
-    LOBYTE(v22) = [v23 enumerateExperimentRecordsWithBlock:v100];
+    LOBYTE(v22) = [experimentDatabase enumerateExperimentRecordsWithBlock:v100];
 
     if ((v22 & 1) == 0)
     {
       v71 = v78;
       v78[2](v78, 1, @"Unable to check for pending updates");
-      v70 = v79;
+      v70 = idCopy;
       v18 = v77;
 LABEL_59:
 
@@ -4050,9 +4050,9 @@ LABEL_59:
     {
       v26 = v25;
       v27 = *v97;
-      v89 = v13;
+      v89 = contextCopy;
       v81 = v24;
-      v82 = v15;
+      v82 = queueCopy;
       v80 = *v97;
       do
       {
@@ -4067,9 +4067,9 @@ LABEL_59:
 
           v29 = *(*(&v96 + 1) + 8 * v28);
           context = objc_autoreleasePoolPush();
-          v30 = [v29 experimentDeployment];
-          v31 = [v30 taskTag];
-          [v15 cancelTasksWithTag:v31];
+          experimentDeployment = [v29 experimentDeployment];
+          taskTag = [experimentDeployment taskTag];
+          [queueCopy cancelTasksWithTag:taskTag];
 
           if ([v29 type] == 1)
           {
@@ -4078,8 +4078,8 @@ LABEL_59:
             v95 = 0u;
             v92 = 0u;
             v93 = 0u;
-            v88 = [v29 namespaces];
-            v32 = [v88 countByEnumeratingWithState:&v92 objects:v110 count:16];
+            namespaces = [v29 namespaces];
+            v32 = [namespaces countByEnumeratingWithState:&v92 objects:v110 count:16];
             if (v32)
             {
               v33 = v32;
@@ -4090,47 +4090,47 @@ LABEL_59:
                 {
                   if (*v93 != v34)
                   {
-                    objc_enumerationMutation(v88);
+                    objc_enumerationMutation(namespaces);
                   }
 
-                  v36 = [*(*(&v92 + 1) + 8 * i) name];
-                  v37 = [v21 name];
-                  if ([v36 isEqualToString:v37])
+                  name = [*(*(&v92 + 1) + 8 * i) name];
+                  name2 = [v21 name];
+                  if ([name isEqualToString:name2])
                   {
                     v38 = v21;
                   }
 
                   else
                   {
-                    v39 = [v13 namespaceDatabase];
-                    v38 = [v39 dynamicNamespaceRecordWithNamespaceName:v87];
+                    namespaceDatabase2 = [contextCopy namespaceDatabase];
+                    v38 = [namespaceDatabase2 dynamicNamespaceRecordWithNamespaceName:v87];
                   }
 
-                  v40 = [v13 paths];
-                  if (v40)
+                  paths = [contextCopy paths];
+                  if (paths)
                   {
                     v41 = v21;
                     v42 = MEMORY[0x277D73750];
-                    v43 = [v41 name];
-                    v44 = [v40 namespaceDescriptorsExperimentDir];
-                    v45 = [v42 loadWithNamespaceName:v43 fromDirectory:v44];
+                    name3 = [v41 name];
+                    namespaceDescriptorsExperimentDir = [paths namespaceDescriptorsExperimentDir];
+                    v45 = [v42 loadWithNamespaceName:name3 fromDirectory:namespaceDescriptorsExperimentDir];
 
                     if (v45)
                     {
-                      v46 = [v40 namespaceDescriptorsExperimentDir];
-                      [v45 removeFromDirectory:v46];
+                      namespaceDescriptorsExperimentDir2 = [paths namespaceDescriptorsExperimentDir];
+                      [v45 removeFromDirectory:namespaceDescriptorsExperimentDir2];
                     }
 
-                    v47 = [v29 treatmentId];
+                    treatmentId = [v29 treatmentId];
 
-                    if (v47)
+                    if (treatmentId)
                     {
-                      v48 = [[TRIClientTreatmentStorage alloc] initWithPaths:v40];
-                      v49 = [v29 treatmentId];
-                      [(TRIClientTreatmentStorage *)v48 removeTreatmentWithTreatmentId:v49];
+                      v48 = [[TRIClientTreatmentStorage alloc] initWithPaths:paths];
+                      treatmentId2 = [v29 treatmentId];
+                      [(TRIClientTreatmentStorage *)v48 removeTreatmentWithTreatmentId:treatmentId2];
                     }
 
-                    v13 = v89;
+                    contextCopy = v89;
                     v21 = v90;
                   }
 
@@ -4139,47 +4139,47 @@ LABEL_59:
                     v45 = TRILogCategory_Server();
                     if (os_log_type_enabled(v45, OS_LOG_TYPE_DEFAULT))
                     {
-                      v50 = [v38 appContainer];
-                      v51 = [v50 identifier];
-                      v52 = [v21 name];
+                      appContainer = [v38 appContainer];
+                      identifier = [appContainer identifier];
+                      name4 = [v21 name];
                       *buf = 138543618;
-                      v107 = v51;
+                      v107 = identifier;
                       v108 = 2114;
-                      v109 = v52;
+                      v109 = name4;
                       _os_log_impl(&dword_26F567000, v45, OS_LOG_TYPE_DEFAULT, "Missing container %{public}@ for namespace %{public}@.", buf, 0x16u);
 
                       v21 = v90;
-                      v13 = v89;
+                      contextCopy = v89;
                     }
                   }
                 }
 
-                v33 = [v88 countByEnumeratingWithState:&v92 objects:v110 count:16];
+                v33 = [namespaces countByEnumeratingWithState:&v92 objects:v110 count:16];
               }
 
               while (v33);
             }
 
             v24 = v81;
-            v15 = v82;
+            queueCopy = v82;
             v27 = v80;
             v26 = v83;
             v28 = v85;
           }
 
-          v53 = [v13 experimentDatabase];
-          v54 = [v29 experimentDeployment];
-          v55 = [v53 removeExperimentRecordWithExperimentDeployment:v54];
+          experimentDatabase2 = [contextCopy experimentDatabase];
+          experimentDeployment2 = [v29 experimentDeployment];
+          v55 = [experimentDatabase2 removeExperimentRecordWithExperimentDeployment:experimentDeployment2];
 
           if (!v55)
           {
             v56 = TRILogCategory_Server();
             if (os_log_type_enabled(v56, OS_LOG_TYPE_ERROR))
             {
-              v57 = [v29 experimentDeployment];
-              v58 = [v57 shortDesc];
+              experimentDeployment3 = [v29 experimentDeployment];
+              shortDesc = [experimentDeployment3 shortDesc];
               *buf = 138543362;
-              v107 = v58;
+              v107 = shortDesc;
               _os_log_error_impl(&dword_26F567000, v56, OS_LOG_TYPE_ERROR, "failed to remove experiment %{public}@ from database", buf, 0xCu);
             }
           }
@@ -4196,12 +4196,12 @@ LABEL_59:
       while (v26);
     }
 
-    v59 = [v13 paths];
-    v60 = v59;
-    if (!v59)
+    paths2 = [contextCopy paths];
+    v60 = paths2;
+    if (!paths2)
     {
       v78[2](v78, 1, @"Unable to resolve app container.");
-      v70 = v79;
+      v70 = idCopy;
       v17 = v76;
       v18 = v77;
 LABEL_58:
@@ -4212,11 +4212,11 @@ LABEL_58:
 
     v91 = 0;
     v17 = v76;
-    if ([v59 validateWithError:&v91])
+    if ([paths2 validateWithError:&v91])
     {
       v61 = MEMORY[0x277D73750];
-      v62 = [v60 namespaceDescriptorsDefaultDir];
-      LOBYTE(v61) = [v61 removeDescriptorWithNamespaceName:v87 fromDirectory:v62];
+      namespaceDescriptorsDefaultDir = [v60 namespaceDescriptorsDefaultDir];
+      LOBYTE(v61) = [v61 removeDescriptorWithNamespaceName:v87 fromDirectory:namespaceDescriptorsDefaultDir];
 
       if ((v61 & 1) == 0)
       {
@@ -4243,8 +4243,8 @@ LABEL_58:
         }
       }
 
-      v67 = [v13 namespaceDatabase];
-      v68 = [v67 removeDynamicNamespaceRecordWithNamespaceName:v87];
+      namespaceDatabase3 = [contextCopy namespaceDatabase];
+      v68 = [namespaceDatabase3 removeDynamicNamespaceRecordWithNamespaceName:v87];
 
       if (v68)
       {
@@ -4256,7 +4256,7 @@ LABEL_58:
           _os_log_debug_impl(&dword_26F567000, v69, OS_LOG_TYPE_DEBUG, "deregistered namespace %{public}@", buf, 0xCu);
         }
 
-        v70 = v79;
+        v70 = idCopy;
         v18 = v77;
         if (v77)
         {
@@ -4275,7 +4275,7 @@ LABEL_58:
       v78[2](v78, 1, v72);
     }
 
-    v70 = v79;
+    v70 = idCopy;
     v18 = v77;
 LABEL_57:
 
@@ -4283,7 +4283,7 @@ LABEL_57:
   }
 
   (*(v19 + 16))(v19, 2, @"namespace is not registered");
-  v70 = v79;
+  v70 = idCopy;
   v71 = v19;
 LABEL_60:
 
@@ -4346,17 +4346,17 @@ uint64_t __118__TRIXPCNamespaceManagementRequestHandler_usingServerContext_dereg
   return v4;
 }
 
-+ (void)usingServerContext:(id)a3 taskQueue:(id)a4 startDownloadNamespaceWithName:(id)a5 attribution:(id)a6 completion:(id)a7
++ (void)usingServerContext:(id)context taskQueue:(id)queue startDownloadNamespaceWithName:(id)name attribution:(id)attribution completion:(id)completion
 {
   v40 = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  if (v13)
+  contextCopy = context;
+  queueCopy = queue;
+  nameCopy = name;
+  attributionCopy = attribution;
+  completionCopy = completion;
+  if (contextCopy)
   {
-    if (v14)
+    if (queueCopy)
     {
       goto LABEL_3;
     }
@@ -4364,22 +4364,22 @@ uint64_t __118__TRIXPCNamespaceManagementRequestHandler_usingServerContext_dereg
 
   else
   {
-    v32 = [MEMORY[0x277CCA890] currentHandler];
-    [v32 handleFailureInMethod:a2 object:a1 file:@"TRIXPCNamespaceManagementService.m" lineNumber:1700 description:{@"Invalid parameter not satisfying: %@", @"serverContext"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIXPCNamespaceManagementService.m" lineNumber:1700 description:{@"Invalid parameter not satisfying: %@", @"serverContext"}];
 
-    if (v14)
+    if (queueCopy)
     {
 LABEL_3:
-      if (v15)
+      if (nameCopy)
       {
         goto LABEL_4;
       }
 
 LABEL_19:
-      v34 = [MEMORY[0x277CCA890] currentHandler];
-      [v34 handleFailureInMethod:a2 object:a1 file:@"TRIXPCNamespaceManagementService.m" lineNumber:1702 description:{@"Invalid parameter not satisfying: %@", @"namespaceName"}];
+      currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"TRIXPCNamespaceManagementService.m" lineNumber:1702 description:{@"Invalid parameter not satisfying: %@", @"namespaceName"}];
 
-      if (v16)
+      if (attributionCopy)
       {
         goto LABEL_5;
       }
@@ -4388,52 +4388,52 @@ LABEL_19:
     }
   }
 
-  v33 = [MEMORY[0x277CCA890] currentHandler];
-  [v33 handleFailureInMethod:a2 object:a1 file:@"TRIXPCNamespaceManagementService.m" lineNumber:1701 description:{@"Invalid parameter not satisfying: %@", @"taskQueue"}];
+  currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"TRIXPCNamespaceManagementService.m" lineNumber:1701 description:{@"Invalid parameter not satisfying: %@", @"taskQueue"}];
 
-  if (!v15)
+  if (!nameCopy)
   {
     goto LABEL_19;
   }
 
 LABEL_4:
-  if (v16)
+  if (attributionCopy)
   {
     goto LABEL_5;
   }
 
 LABEL_20:
-  v35 = [MEMORY[0x277CCA890] currentHandler];
-  [v35 handleFailureInMethod:a2 object:a1 file:@"TRIXPCNamespaceManagementService.m" lineNumber:1703 description:{@"Invalid parameter not satisfying: %@", @"attributing"}];
+  currentHandler4 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler4 handleFailureInMethod:a2 object:self file:@"TRIXPCNamespaceManagementService.m" lineNumber:1703 description:{@"Invalid parameter not satisfying: %@", @"attributing"}];
 
 LABEL_5:
-  if ([TRIUserAdjustableSettings getExperimentOptOut:v13])
+  if ([TRIUserAdjustableSettings getExperimentOptOut:contextCopy])
   {
     v18 = TRILogCategory_Server();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v39 = v15;
+      v39 = nameCopy;
       _os_log_impl(&dword_26F567000, v18, OS_LOG_TYPE_DEFAULT, "Skipping download for namespace: %{public}@ due to user opt-out of experiments", buf, 0xCu);
     }
 
     v19 = objc_opt_class();
-    v20 = [v16 networkOptions];
-    [v19 resumeTaskQueue:v14 forNetworkOptions:v20];
+    networkOptions = [attributionCopy networkOptions];
+    [v19 resumeTaskQueue:queueCopy forNetworkOptions:networkOptions];
 
-    if (v17)
+    if (completionCopy)
     {
-      v17[2](v17, 1, 0);
+      completionCopy[2](completionCopy, 1, 0);
     }
   }
 
   else
   {
-    v21 = [MEMORY[0x277CBEAA8] distantPast];
-    v22 = [MEMORY[0x277CBEB98] setWithObjects:{v15, 0}];
-    v23 = [TRIFetchMultipleExperimentNotificationsTask taskWithStartingFetchDateOverride:v21 namespaceNames:v22 taskAttributing:v16 rollbacksOnly:0 limitedCarryOnly:0];
+    distantPast = [MEMORY[0x277CBEAA8] distantPast];
+    v22 = [MEMORY[0x277CBEB98] setWithObjects:{nameCopy, 0}];
+    v23 = [TRIFetchMultipleExperimentNotificationsTask taskWithStartingFetchDateOverride:distantPast namespaceNames:v22 taskAttributing:attributionCopy rollbacksOnly:0 limitedCarryOnly:0];
     v24 = +[TRITaskQueuingOptions defaultOptionsWithIgnoreDuplicates];
-    v25 = [v14 addTask:v23 options:v24];
+    v25 = [queueCopy addTask:v23 options:v24];
 
     if (v25 == 2)
     {
@@ -4447,82 +4447,82 @@ LABEL_5:
     else
     {
       v29 = objc_opt_class();
-      v30 = [v16 networkOptions];
-      [v29 resumeTaskQueue:v14 forNetworkOptions:v30];
+      networkOptions2 = [attributionCopy networkOptions];
+      [v29 resumeTaskQueue:queueCopy forNetworkOptions:networkOptions2];
 
       v28 = 0;
     }
 
-    if (v17)
+    if (completionCopy)
     {
-      (v17)[2](v17, v25 != 2, v28);
+      (completionCopy)[2](completionCopy, v25 != 2, v28);
     }
   }
 
   v31 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)_startDownloadAssetIndexesByTreatment:(id)a3 usingEntitlementWitness:(id)a4 serverContext:(id)a5 taskQueue:(id)a6 experimentIds:(id)a7 assetIdsByFactorPack:(id)a8 rolloutFactorNames:(id)a9 rolloutDeployments:(id)a10 namespace:(id)a11 taskAttribution:(id)a12 factorsState:(id)a13 notificationKey:(id)a14
++ (void)_startDownloadAssetIndexesByTreatment:(id)treatment usingEntitlementWitness:(id)witness serverContext:(id)context taskQueue:(id)queue experimentIds:(id)ids assetIdsByFactorPack:(id)pack rolloutFactorNames:(id)names rolloutDeployments:(id)self0 namespace:(id)self1 taskAttribution:(id)self2 factorsState:(id)self3 notificationKey:(id)self4
 {
   v96 = *MEMORY[0x277D85DE8];
-  v72 = a3;
-  v19 = a4;
-  v20 = a5;
-  v71 = a6;
-  v67 = a7;
-  v73 = a8;
-  v65 = a9;
-  v66 = a10;
-  v70 = a11;
-  v69 = a12;
-  v64 = a13;
-  v21 = a14;
-  v63 = v19;
-  v68 = v21;
-  if (!v19)
+  treatmentCopy = treatment;
+  witnessCopy = witness;
+  contextCopy = context;
+  queueCopy = queue;
+  idsCopy = ids;
+  packCopy = pack;
+  namesCopy = names;
+  deploymentsCopy = deployments;
+  namespaceCopy = namespace;
+  attributionCopy = attribution;
+  stateCopy = state;
+  keyCopy = key;
+  v63 = witnessCopy;
+  v68 = keyCopy;
+  if (!witnessCopy)
   {
-    v52 = [MEMORY[0x277CCA890] currentHandler];
-    [v52 handleFailureInMethod:a2 object:a1 file:@"TRIXPCNamespaceManagementService.m" lineNumber:1746 description:{@"Invalid parameter not satisfying: %@", @"entitlementWitness"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIXPCNamespaceManagementService.m" lineNumber:1746 description:{@"Invalid parameter not satisfying: %@", @"entitlementWitness"}];
 
-    v21 = v68;
+    keyCopy = v68;
   }
 
-  v22 = v20;
-  if (!v20)
+  v22 = contextCopy;
+  if (!contextCopy)
   {
-    v53 = [MEMORY[0x277CCA890] currentHandler];
-    [v53 handleFailureInMethod:a2 object:a1 file:@"TRIXPCNamespaceManagementService.m" lineNumber:1747 description:{@"Invalid parameter not satisfying: %@", @"serverContext"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"TRIXPCNamespaceManagementService.m" lineNumber:1747 description:{@"Invalid parameter not satisfying: %@", @"serverContext"}];
 
-    v21 = v68;
+    keyCopy = v68;
   }
 
-  if (!v71)
+  if (!queueCopy)
   {
-    v54 = [MEMORY[0x277CCA890] currentHandler];
-    [v54 handleFailureInMethod:a2 object:a1 file:@"TRIXPCNamespaceManagementService.m" lineNumber:1748 description:{@"Invalid parameter not satisfying: %@", @"taskQueue"}];
+    currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"TRIXPCNamespaceManagementService.m" lineNumber:1748 description:{@"Invalid parameter not satisfying: %@", @"taskQueue"}];
 
-    v21 = v68;
+    keyCopy = v68;
   }
 
-  if (!v72)
+  if (!treatmentCopy)
   {
-    v55 = [MEMORY[0x277CCA890] currentHandler];
-    [v55 handleFailureInMethod:a2 object:a1 file:@"TRIXPCNamespaceManagementService.m" lineNumber:1749 description:{@"Invalid parameter not satisfying: %@", @"assetIndexesByTreatment"}];
+    currentHandler4 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler4 handleFailureInMethod:a2 object:self file:@"TRIXPCNamespaceManagementService.m" lineNumber:1749 description:{@"Invalid parameter not satisfying: %@", @"assetIndexesByTreatment"}];
 
-    v21 = v68;
+    keyCopy = v68;
   }
 
-  if (!v73)
+  if (!packCopy)
   {
-    v56 = [MEMORY[0x277CCA890] currentHandler];
-    [v56 handleFailureInMethod:a2 object:a1 file:@"TRIXPCNamespaceManagementService.m" lineNumber:1750 description:{@"Invalid parameter not satisfying: %@", @"assetIdsByFactorPack"}];
+    currentHandler5 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler5 handleFailureInMethod:a2 object:self file:@"TRIXPCNamespaceManagementService.m" lineNumber:1750 description:{@"Invalid parameter not satisfying: %@", @"assetIdsByFactorPack"}];
 
-    v21 = v68;
+    keyCopy = v68;
   }
 
-  if (v70)
+  if (namespaceCopy)
   {
-    if (v21)
+    if (keyCopy)
     {
       goto LABEL_13;
     }
@@ -4530,8 +4530,8 @@ LABEL_5:
 
   else
   {
-    v57 = [MEMORY[0x277CCA890] currentHandler];
-    [v57 handleFailureInMethod:a2 object:a1 file:@"TRIXPCNamespaceManagementService.m" lineNumber:1751 description:{@"Invalid parameter not satisfying: %@", @"namespaceName"}];
+    currentHandler6 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler6 handleFailureInMethod:a2 object:self file:@"TRIXPCNamespaceManagementService.m" lineNumber:1751 description:{@"Invalid parameter not satisfying: %@", @"namespaceName"}];
 
     if (v68)
     {
@@ -4539,14 +4539,14 @@ LABEL_5:
     }
   }
 
-  v58 = [MEMORY[0x277CCA890] currentHandler];
-  [v58 handleFailureInMethod:a2 object:a1 file:@"TRIXPCNamespaceManagementService.m" lineNumber:1752 description:{@"Invalid parameter not satisfying: %@", @"notificationKey"}];
+  currentHandler7 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler7 handleFailureInMethod:a2 object:self file:@"TRIXPCNamespaceManagementService.m" lineNumber:1752 description:{@"Invalid parameter not satisfying: %@", @"notificationKey"}];
 
 LABEL_13:
-  if (!v69)
+  if (!attributionCopy)
   {
-    v59 = [MEMORY[0x277CCA890] currentHandler];
-    [v59 handleFailureInMethod:a2 object:a1 file:@"TRIXPCNamespaceManagementService.m" lineNumber:1753 description:{@"Invalid parameter not satisfying: %@", @"taskAttribution"}];
+    currentHandler8 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler8 handleFailureInMethod:a2 object:self file:@"TRIXPCNamespaceManagementService.m" lineNumber:1753 description:{@"Invalid parameter not satisfying: %@", @"taskAttribution"}];
   }
 
   v88 = 0;
@@ -4558,20 +4558,20 @@ LABEL_13:
   v87[2] = __257__TRIXPCNamespaceManagementRequestHandler__startDownloadAssetIndexesByTreatment_usingEntitlementWitness_serverContext_taskQueue_experimentIds_assetIdsByFactorPack_rolloutFactorNames_rolloutDeployments_namespace_taskAttribution_factorsState_notificationKey___block_invoke;
   v87[3] = &unk_279DE0E88;
   v87[4] = &v88;
-  [v72 enumerateKeysAndObjectsUsingBlock:v87];
+  [treatmentCopy enumerateKeysAndObjectsUsingBlock:v87];
   v86[0] = MEMORY[0x277D85DD0];
   v86[1] = 3221225472;
   v86[2] = __257__TRIXPCNamespaceManagementRequestHandler__startDownloadAssetIndexesByTreatment_usingEntitlementWitness_serverContext_taskQueue_experimentIds_assetIdsByFactorPack_rolloutFactorNames_rolloutDeployments_namespace_taskAttribution_factorsState_notificationKey___block_invoke_2;
   v86[3] = &unk_279DE0EB0;
   v86[4] = &v88;
-  [v73 enumerateKeysAndObjectsUsingBlock:v86];
+  [packCopy enumerateKeysAndObjectsUsingBlock:v86];
   if (v89[3])
   {
     v84[0] = MEMORY[0x277D85DD0];
     v84[1] = 3221225472;
     v84[2] = __257__TRIXPCNamespaceManagementRequestHandler__startDownloadAssetIndexesByTreatment_usingEntitlementWitness_serverContext_taskQueue_experimentIds_assetIdsByFactorPack_rolloutFactorNames_rolloutDeployments_namespace_taskAttribution_factorsState_notificationKey___block_invoke_362;
     v84[3] = &unk_279DE0ED8;
-    v23 = v69;
+    v23 = attributionCopy;
     v85 = v23;
     v24 = MEMORY[0x2743948D0](v84);
     *buf = 0;
@@ -4590,14 +4590,14 @@ LABEL_13:
     v27 = v24;
     v76 = v27;
     v77 = buf;
-    [v71 enumerateTasksWithTagsIntersectingTagSet:v26 block:v75];
+    [queueCopy enumerateTasksWithTagsIntersectingTagSet:v26 block:v75];
 
-    if (v67)
+    if (idsCopy)
     {
-      v28 = [objc_alloc(MEMORY[0x277CBEB98]) initWithArray:v67];
+      v28 = [objc_alloc(MEMORY[0x277CBEB98]) initWithArray:idsCopy];
       if ([v28 count] == 1)
       {
-        v62 = [v28 anyObject];
+        anyObject = [v28 anyObject];
       }
 
       else
@@ -4610,21 +4610,21 @@ LABEL_13:
           _os_log_impl(&dword_26F567000, v31, OS_LOG_TYPE_DEFAULT, "Received != 1 experiment id for TRIFetchOnDemandFactorsTask, so none will be logged. Received %@", v92, 0xCu);
         }
 
-        v62 = 0;
+        anyObject = 0;
       }
     }
 
     else
     {
-      v62 = 0;
+      anyObject = 0;
     }
 
-    if (v66)
+    if (deploymentsCopy)
     {
-      v32 = [objc_alloc(MEMORY[0x277CBEB98]) initWithArray:v66];
+      v32 = [objc_alloc(MEMORY[0x277CBEB98]) initWithArray:deploymentsCopy];
       if ([v32 count] == 1)
       {
-        v33 = [v32 anyObject];
+        anyObject2 = [v32 anyObject];
       }
 
       else
@@ -4637,26 +4637,26 @@ LABEL_13:
           _os_log_impl(&dword_26F567000, v34, OS_LOG_TYPE_DEFAULT, "Received != 1 deployment for TRIFetchOnDemandFactorsTask, so none will be logged. Received %@", v92, 0xCu);
         }
 
-        v33 = 0;
+        anyObject2 = 0;
       }
     }
 
     else
     {
-      v33 = 0;
+      anyObject2 = 0;
     }
 
     v35 = objc_opt_new();
-    v36 = [v23 networkOptions];
-    v37 = [v36 allowsCellularAccess];
+    networkOptions = [v23 networkOptions];
+    allowsCellularAccess = [networkOptions allowsCellularAccess];
 
-    if (v37)
+    if (allowsCellularAccess)
     {
       v38 = objc_autoreleasePoolPush();
       v39 = MEMORY[0x277D73750];
-      v40 = [v22 paths];
-      v41 = [v40 namespaceDescriptorsDefaultDir];
-      v42 = [v39 loadWithNamespaceName:v70 fromDirectory:v41];
+      paths = [v22 paths];
+      namespaceDescriptorsDefaultDir = [paths namespaceDescriptorsDefaultDir];
+      v42 = [v39 loadWithNamespaceName:namespaceCopy fromDirectory:namespaceDescriptorsDefaultDir];
 
       if (([v42 expensiveNetworkingAllowed] & 1) == 0)
       {
@@ -4664,7 +4664,7 @@ LABEL_13:
         if (os_log_type_enabled(v43, OS_LOG_TYPE_DEFAULT))
         {
           *v92 = 138412290;
-          v93 = v70;
+          v93 = namespaceCopy;
           _os_log_impl(&dword_26F567000, v43, OS_LOG_TYPE_DEFAULT, "Changing TRIFetchOnDemandFactorsTask to require inexpensive networking since %@ does not support expensive networking", v92, 0xCu);
         }
 
@@ -4675,9 +4675,9 @@ LABEL_13:
       objc_autoreleasePoolPop(v38);
     }
 
-    v45 = [TRIFetchOnDemandFactorsTask taskWithAssetIndexesByTreatment:v72 experimentId:v62 assetIdsByFactorPack:v73 rolloutFactorNames:v65 rolloutDeployment:v33 namespaceName:v70 taskAttributing:v23 notificationKey:v68 capabilityModifier:v35];
+    v45 = [TRIFetchOnDemandFactorsTask taskWithAssetIndexesByTreatment:treatmentCopy experimentId:anyObject assetIdsByFactorPack:packCopy rolloutFactorNames:namesCopy rolloutDeployment:anyObject2 namespaceName:namespaceCopy taskAttributing:v23 notificationKey:v68 capabilityModifier:v35];
     v74 = 0;
-    v46 = [v71 addTask:v45 options:*(v79 + 5) taskId:&v74];
+    v46 = [queueCopy addTask:v45 options:*(v79 + 5) taskId:&v74];
     if (v46)
     {
       if (v46 != 1)
@@ -4697,14 +4697,14 @@ LABEL_13:
         goto LABEL_53;
       }
 
-      v48 = TRILogCategory_Server();
-      if (os_log_type_enabled(v48, OS_LOG_TYPE_DEFAULT))
+      networkOptions2 = TRILogCategory_Server();
+      if (os_log_type_enabled(networkOptions2, OS_LOG_TYPE_DEFAULT))
       {
         *v92 = 138543618;
         v93 = v68;
         v94 = 2112;
         v95 = v74;
-        _os_log_impl(&dword_26F567000, v48, OS_LOG_TYPE_DEFAULT, "Ignored duplicate TRIFetchOnDemandFactorsTask with notification key: %{public}@, duplicate of task [tid:%@]", v92, 0x16u);
+        _os_log_impl(&dword_26F567000, networkOptions2, OS_LOG_TYPE_DEFAULT, "Ignored duplicate TRIFetchOnDemandFactorsTask with notification key: %{public}@, duplicate of task [tid:%@]", v92, 0x16u);
       }
     }
 
@@ -4721,8 +4721,8 @@ LABEL_13:
       }
 
       v50 = objc_opt_class();
-      v48 = [v23 networkOptions];
-      [v50 resumeTaskQueue:v71 forNetworkOptions:v48];
+      networkOptions2 = [v23 networkOptions];
+      [v50 resumeTaskQueue:queueCopy forNetworkOptions:networkOptions2];
     }
 
 LABEL_53:
@@ -4838,19 +4838,19 @@ void __257__TRIXPCNamespaceManagementRequestHandler__startDownloadAssetIndexesBy
   v17 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)_immediateDownloadForNamespaceNames:(id)a3 usingEntitlementWitness:(id)a4 serverContext:(id)a5 taskQueue:(id)a6 allowExpensiveNetworking:(BOOL)a7 taskAttribution:(id)a8 completion:(id)a9
++ (void)_immediateDownloadForNamespaceNames:(id)names usingEntitlementWitness:(id)witness serverContext:(id)context taskQueue:(id)queue allowExpensiveNetworking:(BOOL)networking taskAttribution:(id)attribution completion:(id)completion
 {
   v76[1] = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a8;
-  v19 = a9;
-  v54 = v15;
-  if (v15)
+  namesCopy = names;
+  witnessCopy = witness;
+  contextCopy = context;
+  queueCopy = queue;
+  attributionCopy = attribution;
+  completionCopy = completion;
+  v54 = witnessCopy;
+  if (witnessCopy)
   {
-    if (v16)
+    if (contextCopy)
     {
       goto LABEL_3;
     }
@@ -4858,13 +4858,13 @@ void __257__TRIXPCNamespaceManagementRequestHandler__startDownloadAssetIndexesBy
 
   else
   {
-    v45 = [MEMORY[0x277CCA890] currentHandler];
-    [v45 handleFailureInMethod:a2 object:a1 file:@"TRIXPCNamespaceManagementService.m" lineNumber:1884 description:{@"Invalid parameter not satisfying: %@", @"entitlementWitness"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIXPCNamespaceManagementService.m" lineNumber:1884 description:{@"Invalid parameter not satisfying: %@", @"entitlementWitness"}];
 
-    if (v16)
+    if (contextCopy)
     {
 LABEL_3:
-      if (v17)
+      if (queueCopy)
       {
         goto LABEL_4;
       }
@@ -4873,22 +4873,22 @@ LABEL_3:
     }
   }
 
-  v46 = [MEMORY[0x277CCA890] currentHandler];
-  [v46 handleFailureInMethod:a2 object:a1 file:@"TRIXPCNamespaceManagementService.m" lineNumber:1885 description:{@"Invalid parameter not satisfying: %@", @"serverContext"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"TRIXPCNamespaceManagementService.m" lineNumber:1885 description:{@"Invalid parameter not satisfying: %@", @"serverContext"}];
 
-  if (v17)
+  if (queueCopy)
   {
 LABEL_4:
-    if (v14)
+    if (namesCopy)
     {
       goto LABEL_5;
     }
 
 LABEL_24:
-    v48 = [MEMORY[0x277CCA890] currentHandler];
-    [v48 handleFailureInMethod:a2 object:a1 file:@"TRIXPCNamespaceManagementService.m" lineNumber:1887 description:{@"Invalid parameter not satisfying: %@", @"namespaceNames"}];
+    currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"TRIXPCNamespaceManagementService.m" lineNumber:1887 description:{@"Invalid parameter not satisfying: %@", @"namespaceNames"}];
 
-    if (v18)
+    if (attributionCopy)
     {
       goto LABEL_6;
     }
@@ -4897,23 +4897,23 @@ LABEL_24:
   }
 
 LABEL_23:
-  v47 = [MEMORY[0x277CCA890] currentHandler];
-  [v47 handleFailureInMethod:a2 object:a1 file:@"TRIXPCNamespaceManagementService.m" lineNumber:1886 description:{@"Invalid parameter not satisfying: %@", @"taskQueue"}];
+  currentHandler4 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler4 handleFailureInMethod:a2 object:self file:@"TRIXPCNamespaceManagementService.m" lineNumber:1886 description:{@"Invalid parameter not satisfying: %@", @"taskQueue"}];
 
-  if (!v14)
+  if (!namesCopy)
   {
     goto LABEL_24;
   }
 
 LABEL_5:
-  if (v18)
+  if (attributionCopy)
   {
     goto LABEL_6;
   }
 
 LABEL_25:
-  v49 = [MEMORY[0x277CCA890] currentHandler];
-  [v49 handleFailureInMethod:a2 object:a1 file:@"TRIXPCNamespaceManagementService.m" lineNumber:1888 description:{@"Invalid parameter not satisfying: %@", @"taskAttribution"}];
+  currentHandler5 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler5 handleFailureInMethod:a2 object:self file:@"TRIXPCNamespaceManagementService.m" lineNumber:1888 description:{@"Invalid parameter not satisfying: %@", @"taskAttribution"}];
 
 LABEL_6:
   v65 = 0;
@@ -4923,8 +4923,8 @@ LABEL_6:
   v69 = __Block_byref_object_dispose__11;
   v70 = 0;
   v20 = MEMORY[0x277D73698];
-  v21 = [v14 allObjects];
-  v22 = [v20 immediateDownloadNotificationKeyForNamespaceNames:v21];
+  allObjects = [namesCopy allObjects];
+  v22 = [v20 immediateDownloadNotificationKeyForNamespaceNames:allObjects];
 
   if (v22)
   {
@@ -4936,10 +4936,10 @@ LABEL_6:
     v52 = MEMORY[0x2743948D0](v64);
     v23 = [MEMORY[0x277D73698] registerDownloadNotificationForKey:v22 queue:0 usingBlock:v52];
     v24 = [TRITaskQueuingOptions optionsWithDuplicateTaskResolution:1];
-    v51 = [TRISetupAssistantFetchUtils registerFinalizeBlockForDownloadLatencyTelemetryWithServerContext:v16];
-    v25 = [TRISelectRolloutNotificationListTask taskWithNamespaceNames:v14 taskAttribution:v18];
+    v51 = [TRISetupAssistantFetchUtils registerFinalizeBlockForDownloadLatencyTelemetryWithServerContext:contextCopy];
+    v25 = [TRISelectRolloutNotificationListTask taskWithNamespaceNames:namesCopy taskAttribution:attributionCopy];
     v63 = 0;
-    v26 = [v17 addTask:v25 options:v24 taskId:&v63];
+    v26 = [queueCopy addTask:v25 options:v24 taskId:&v63];
     v27 = TRILogCategory_Server();
     v28 = v27;
     if (v26 == 2)
@@ -4958,9 +4958,9 @@ LABEL_6:
       v32 = v66[5];
       v66[5] = v31;
 
-      if (v19)
+      if (completionCopy)
       {
-        v19[2](v19, v66[5]);
+        completionCopy[2](completionCopy, v66[5]);
       }
     }
 
@@ -4974,8 +4974,8 @@ LABEL_6:
       }
 
       v38 = objc_opt_class();
-      v39 = [v18 networkOptions];
-      [v38 resumeTaskQueue:v17 forNetworkOptions:v39];
+      networkOptions = [attributionCopy networkOptions];
+      [v38 resumeTaskQueue:queueCopy forNetworkOptions:networkOptions];
 
       v40 = objc_opt_class();
       v41 = NSStringFromClass(v40);
@@ -4988,11 +4988,11 @@ LABEL_6:
       handler[2] = __179__TRIXPCNamespaceManagementRequestHandler__immediateDownloadForNamespaceNames_usingEntitlementWitness_serverContext_taskQueue_allowExpensiveNetworking_taskAttribution_completion___block_invoke_379;
       handler[3] = &unk_279DE0F50;
       v56 = v51;
-      v57 = v16;
-      v59 = v19;
-      v61 = a1;
-      v62 = a7;
-      v58 = v14;
+      v57 = contextCopy;
+      v59 = completionCopy;
+      selfCopy = self;
+      networkingCopy = networking;
+      v58 = namesCopy;
       v60 = &v65;
       notify_register_dispatch("com.apple.trial.TaskQueueComplete", buf, v43, handler);
     }
@@ -5015,9 +5015,9 @@ LABEL_6:
     v37 = v66[5];
     v66[5] = v36;
 
-    if (v19)
+    if (completionCopy)
     {
-      v19[2](v19, v66[5]);
+      completionCopy[2](completionCopy, v66[5]);
     }
   }
 
@@ -5141,41 +5141,41 @@ void __179__TRIXPCNamespaceManagementRequestHandler__immediateDownloadForNamespa
   v22 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)resumeTaskQueue:(id)a3 forNetworkOptions:(id)a4
++ (void)resumeTaskQueue:(id)queue forNetworkOptions:(id)options
 {
-  v8 = a3;
-  v6 = a4;
-  if ([v6 discretionaryBehavior])
+  queueCopy = queue;
+  optionsCopy = options;
+  if ([optionsCopy discretionaryBehavior])
   {
-    if ([v6 allowsCellularAccess])
+    if ([optionsCopy allowsCellularAccess])
     {
-      [a1 _resumeTaskQueueForDiscretionaryCellularWithQueue:v8];
+      [self _resumeTaskQueueForDiscretionaryCellularWithQueue:queueCopy];
     }
 
     else
     {
-      [a1 _resumeTaskQueueForDiscretionaryWifiWithQueue:v8];
+      [self _resumeTaskQueueForDiscretionaryWifiWithQueue:queueCopy];
     }
   }
 
   else
   {
     v7 = [[TRIRunningXPCActivityDescriptor alloc] initForImmediateWorkWithCapabilities:11];
-    [v8 resumeWithXPCActivityDescriptor:v7 executeWhenSuspended:0];
+    [queueCopy resumeWithXPCActivityDescriptor:v7 executeWhenSuspended:0];
   }
 }
 
-+ (void)_reregisterOneShotXPCActivityWithDescriptor:(id)a3 resumingTaskQueue:(id)a4
++ (void)_reregisterOneShotXPCActivityWithDescriptor:(id)descriptor resumingTaskQueue:(id)queue
 {
   v15 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  descriptorCopy = descriptor;
+  queueCopy = queue;
   v7 = TRILogCategory_Server();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v5 name];
+    name = [descriptorCopy name];
     *buf = 138543362;
-    v14 = v8;
+    v14 = name;
     _os_log_impl(&dword_26F567000, v7, OS_LOG_TYPE_DEFAULT, "Re-registering one-shot XPC activity in hope of prompt execution: %{public}@", buf, 0xCu);
   }
 
@@ -5183,9 +5183,9 @@ void __179__TRIXPCNamespaceManagementRequestHandler__immediateDownloadForNamespa
   v11[1] = 3221225472;
   v11[2] = __105__TRIXPCNamespaceManagementRequestHandler__reregisterOneShotXPCActivityWithDescriptor_resumingTaskQueue___block_invoke_2;
   v11[3] = &unk_279DE0030;
-  v12 = v6;
-  v9 = v6;
-  [TRIXPCActivitySupport registerActivityWithLaunchDaemonDescriptor:v5 checkInBlock:&__block_literal_global_385 asyncHandler:v11];
+  v12 = queueCopy;
+  v9 = queueCopy;
+  [TRIXPCActivitySupport registerActivityWithLaunchDaemonDescriptor:descriptorCopy checkInBlock:&__block_literal_global_385 asyncHandler:v11];
 
   v10 = *MEMORY[0x277D85DE8];
 }
@@ -5206,16 +5206,16 @@ void __105__TRIXPCNamespaceManagementRequestHandler__reregisterOneShotXPCActivit
   xpc_activity_set_criteria(v2, xdict);
 }
 
-+ (void)_resumeTaskQueueForDiscretionaryWifiWithQueue:(id)a3
++ (void)_resumeTaskQueueForDiscretionaryWifiWithQueue:(id)queue
 {
-  v3 = a3;
+  queueCopy = queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __89__TRIXPCNamespaceManagementRequestHandler__resumeTaskQueueForDiscretionaryWifiWithQueue___block_invoke;
   block[3] = &unk_279DDEEE0;
-  v9 = v3;
+  v9 = queueCopy;
   v4 = qword_2815976F0;
-  v5 = v3;
+  v5 = queueCopy;
   if (v4 != -1)
   {
     dispatch_once(&qword_2815976F0, block);
@@ -5251,16 +5251,16 @@ void __89__TRIXPCNamespaceManagementRequestHandler__resumeTaskQueueForDiscretion
   [TRIXPCNamespaceManagementRequestHandler _reregisterOneShotXPCActivityWithDescriptor:v2 resumingTaskQueue:*(a1 + 32)];
 }
 
-+ (void)_resumeTaskQueueForDiscretionaryCellularWithQueue:(id)a3
++ (void)_resumeTaskQueueForDiscretionaryCellularWithQueue:(id)queue
 {
-  v3 = a3;
+  queueCopy = queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __93__TRIXPCNamespaceManagementRequestHandler__resumeTaskQueueForDiscretionaryCellularWithQueue___block_invoke;
   block[3] = &unk_279DDEEE0;
-  v9 = v3;
+  v9 = queueCopy;
   v4 = qword_281597700;
-  v5 = v3;
+  v5 = queueCopy;
   if (v4 != -1)
   {
     dispatch_once(&qword_281597700, block);
@@ -5296,20 +5296,20 @@ void __93__TRIXPCNamespaceManagementRequestHandler__resumeTaskQueueForDiscretion
   [TRIXPCNamespaceManagementRequestHandler _reregisterOneShotXPCActivityWithDescriptor:v2 resumingTaskQueue:*(a1 + 32)];
 }
 
-+ (void)_removeAssetFactors:(id)a3 usingEntitlementWitness:(id)a4 serverContext:(id)a5 taskQueue:(id)a6 namespace:(id)a7 factorsState:(id)a8 removeImmediately:(BOOL)a9 completion:(id)a10
++ (void)_removeAssetFactors:(id)factors usingEntitlementWitness:(id)witness serverContext:(id)context taskQueue:(id)queue namespace:(id)namespace factorsState:(id)state removeImmediately:(BOOL)immediately completion:(id)self0
 {
   v114[1] = *MEMORY[0x277D85DE8];
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v79 = a6;
-  v19 = a7;
-  v78 = a8;
-  v80 = a10;
-  v77 = v17;
-  if (v17)
+  factorsCopy = factors;
+  witnessCopy = witness;
+  contextCopy = context;
+  queueCopy = queue;
+  namespaceCopy = namespace;
+  stateCopy = state;
+  completionCopy = completion;
+  v77 = witnessCopy;
+  if (witnessCopy)
   {
-    if (v18)
+    if (contextCopy)
     {
       goto LABEL_3;
     }
@@ -5317,31 +5317,31 @@ void __93__TRIXPCNamespaceManagementRequestHandler__resumeTaskQueueForDiscretion
 
   else
   {
-    v65 = [MEMORY[0x277CCA890] currentHandler];
-    [v65 handleFailureInMethod:a2 object:a1 file:@"TRIXPCNamespaceManagementService.m" lineNumber:2044 description:{@"Invalid parameter not satisfying: %@", @"entitlementWitness"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIXPCNamespaceManagementService.m" lineNumber:2044 description:{@"Invalid parameter not satisfying: %@", @"entitlementWitness"}];
 
-    if (v18)
+    if (contextCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v66 = [MEMORY[0x277CCA890] currentHandler];
-  [v66 handleFailureInMethod:a2 object:a1 file:@"TRIXPCNamespaceManagementService.m" lineNumber:2045 description:{@"Invalid parameter not satisfying: %@", @"serverContext"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"TRIXPCNamespaceManagementService.m" lineNumber:2045 description:{@"Invalid parameter not satisfying: %@", @"serverContext"}];
 
 LABEL_3:
-  if (v79)
+  if (queueCopy)
   {
-    if (v16)
+    if (factorsCopy)
     {
       goto LABEL_5;
     }
 
 LABEL_42:
-    v68 = [MEMORY[0x277CCA890] currentHandler];
-    [v68 handleFailureInMethod:a2 object:a1 file:@"TRIXPCNamespaceManagementService.m" lineNumber:2047 description:{@"Invalid parameter not satisfying: %@", @"factorNames"}];
+    currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"TRIXPCNamespaceManagementService.m" lineNumber:2047 description:{@"Invalid parameter not satisfying: %@", @"factorNames"}];
 
-    if (v19)
+    if (namespaceCopy)
     {
       goto LABEL_6;
     }
@@ -5349,50 +5349,50 @@ LABEL_42:
     goto LABEL_43;
   }
 
-  v67 = [MEMORY[0x277CCA890] currentHandler];
-  [v67 handleFailureInMethod:a2 object:a1 file:@"TRIXPCNamespaceManagementService.m" lineNumber:2046 description:{@"Invalid parameter not satisfying: %@", @"taskQueue"}];
+  currentHandler4 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler4 handleFailureInMethod:a2 object:self file:@"TRIXPCNamespaceManagementService.m" lineNumber:2046 description:{@"Invalid parameter not satisfying: %@", @"taskQueue"}];
 
-  if (!v16)
+  if (!factorsCopy)
   {
     goto LABEL_42;
   }
 
 LABEL_5:
-  if (v19)
+  if (namespaceCopy)
   {
     goto LABEL_6;
   }
 
 LABEL_43:
-  v69 = [MEMORY[0x277CCA890] currentHandler];
-  [v69 handleFailureInMethod:a2 object:a1 file:@"TRIXPCNamespaceManagementService.m" lineNumber:2048 description:{@"Invalid parameter not satisfying: %@", @"namespaceName"}];
+  currentHandler5 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler5 handleFailureInMethod:a2 object:self file:@"TRIXPCNamespaceManagementService.m" lineNumber:2048 description:{@"Invalid parameter not satisfying: %@", @"namespaceName"}];
 
 LABEL_6:
   v20 = objc_autoreleasePoolPush();
-  v21 = [v18 keyValueStore];
-  v22 = [TRINamespaceFactorSubscriptionSettings settingsWithKeyValueStore:v21];
+  keyValueStore = [contextCopy keyValueStore];
+  v22 = [TRINamespaceFactorSubscriptionSettings settingsWithKeyValueStore:keyValueStore];
 
-  v23 = [v22 subscribedFactorsForNamespaceName:v19];
+  v23 = [v22 subscribedFactorsForNamespaceName:namespaceCopy];
   v24 = [v23 mutableCopy];
 
   v25 = [MEMORY[0x277CBEB58] setWithArray:v24];
-  v26 = [MEMORY[0x277CBEB98] setWithArray:v16];
+  v26 = [MEMORY[0x277CBEB98] setWithArray:factorsCopy];
   [v25 minusSet:v26];
 
   v27 = TRILogCategory_Server();
   if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    *&buf[4] = v16;
+    *&buf[4] = factorsCopy;
     *&buf[12] = 2114;
-    *&buf[14] = v19;
+    *&buf[14] = namespaceCopy;
     _os_log_impl(&dword_26F567000, v27, OS_LOG_TYPE_DEFAULT, "Unsubscribe factor %{public}@ in namespace '%{public}@'", buf, 0x16u);
   }
 
-  v28 = [v25 allObjects];
+  allObjects = [v25 allObjects];
 
   v108 = 0;
-  v29 = [v22 setSubscriptionWithFactorNames:v28 inNamespaceName:v19 error:&v108];
+  v29 = [v22 setSubscriptionWithFactorNames:allObjects inNamespaceName:namespaceCopy error:&v108];
   v30 = v108;
   if (v29)
   {
@@ -5401,12 +5401,12 @@ LABEL_6:
     *buf = 0;
     v100 = 0;
     v31 = MEMORY[0x277D73718];
-    v32 = [v18 paths];
-    LODWORD(v31) = [v31 validateDownloadForFactors:v16 withNamespace:v19 paths:v32 container:0 factorsState:v78 assetIndexesByTreatment:buf experimentIds:0 assetIdsByFactorPack:&v100 rolloutFactorNames:0 rolloutDeployments:0 error:0];
+    paths = [contextCopy paths];
+    LODWORD(v31) = [v31 validateDownloadForFactors:factorsCopy withNamespace:namespaceCopy paths:paths container:0 factorsState:stateCopy assetIndexesByTreatment:buf experimentIds:0 assetIdsByFactorPack:&v100 rolloutFactorNames:0 rolloutDeployments:0 error:0];
 
     if (v31)
     {
-      v76 = [objc_opt_class() _notificationKeyWithNamespace:v19 assetIndexesByTreatment:*buf assetIdsByFactorPack:v100];
+      v76 = [objc_opt_class() _notificationKeyWithNamespace:namespaceCopy assetIndexesByTreatment:*buf assetIdsByFactorPack:v100];
     }
 
     else
@@ -5414,7 +5414,7 @@ LABEL_6:
       v76 = 0;
     }
 
-    if (v76 && ([v79 cancelTasksWithTag:v76] & 1) == 0)
+    if (v76 && ([queueCopy cancelTasksWithTag:v76] & 1) == 0)
     {
       v34 = TRILogCategory_Server();
       if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
@@ -5426,14 +5426,14 @@ LABEL_6:
     }
 
     v35 = objc_alloc(MEMORY[0x277D73778]);
-    v36 = [v18 paths];
-    v74 = [v35 initWithPaths:v36 factorsState:v78];
+    paths2 = [contextCopy paths];
+    v74 = [v35 initWithPaths:paths2 factorsState:stateCopy];
 
     if (v74)
     {
       v37 = MEMORY[0x277D73760];
-      v38 = [v18 paths];
-      v73 = [v37 factorProviderWithPaths:v38 namespaceName:v19 resolver:v74 faultOnMissingInstalledFactors:1];
+      paths3 = [contextCopy paths];
+      v73 = [v37 factorProviderWithPaths:paths3 namespaceName:namespaceCopy resolver:v74 faultOnMissingInstalledFactors:1];
 
       v106 = 0;
       v107 = 0;
@@ -5441,19 +5441,19 @@ LABEL_6:
       v104[1] = 3221225472;
       v104[2] = __163__TRIXPCNamespaceManagementRequestHandler__removeAssetFactors_usingEntitlementWitness_serverContext_taskQueue_namespace_factorsState_removeImmediately_completion___block_invoke;
       v104[3] = &unk_279DE0F98;
-      v39 = v19;
+      v39 = namespaceCopy;
       v105 = v39;
-      [v73 computeTreatmentAssetIndexes:&v107 withAssociatedExperimentIds:0 andFactorPackAssetIds:&v106 withAssociatedRolloutDeployments:0 withExperimentFactorNames:0 andRolloutFactorNames:0 forFactors:v16 usingFilter:v104];
+      [v73 computeTreatmentAssetIndexes:&v107 withAssociatedExperimentIds:0 andFactorPackAssetIds:&v106 withAssociatedRolloutDeployments:0 withExperimentFactorNames:0 andRolloutFactorNames:0 forFactors:factorsCopy usingFilter:v104];
       v40 = [TRIClientTreatmentStorage alloc];
-      v41 = [v18 paths];
-      v42 = [(TRIClientTreatmentStorage *)v40 initWithPaths:v41];
+      paths4 = [contextCopy paths];
+      v42 = [(TRIClientTreatmentStorage *)v40 initWithPaths:paths4];
 
       v43 = [TRIFactorPackStorage alloc];
-      v44 = [v18 paths];
-      v71 = [(TRIFactorPackStorage *)v43 initWithPaths:v44];
+      paths5 = [contextCopy paths];
+      v71 = [(TRIFactorPackStorage *)v43 initWithPaths:paths5];
 
       v45 = objc_alloc(MEMORY[0x277CBEB98]);
-      v46 = [v73 factorNamesWithObfuscation:v16];
+      v46 = [v73 factorNamesWithObfuscation:factorsCopy];
       v47 = [v45 initWithArray:v46];
 
       *buf = 0;
@@ -5480,7 +5480,7 @@ LABEL_6:
       v97 = v50;
       v99 = buf;
       [v48 enumerateKeysAndObjectsUsingBlock:v94];
-      if (a9)
+      if (immediately)
       {
         v51 = 3;
       }
@@ -5491,8 +5491,8 @@ LABEL_6:
       }
 
       v52 = [TRIAssetStore alloc];
-      v53 = [v18 paths];
-      v54 = [(TRIAssetStore *)v52 initWithPaths:v53];
+      paths6 = [contextCopy paths];
+      v54 = [(TRIAssetStore *)v52 initWithPaths:paths6];
 
       v55 = v106;
       v82[0] = MEMORY[0x277D85DD0];
@@ -5508,11 +5508,11 @@ LABEL_6:
       v92 = v51;
       v85 = v57;
       v91 = buf;
-      v86 = v18;
-      v58 = v73;
-      v87 = v58;
-      v88 = v16;
-      v93 = a9;
+      v86 = contextCopy;
+      stateCopy = v73;
+      v87 = stateCopy;
+      v88 = factorsCopy;
+      immediatelyCopy = immediately;
       v59 = v54;
       v89 = v59;
       [v55 enumerateKeysAndObjectsUsingBlock:v82];
@@ -5531,9 +5531,9 @@ LABEL_6:
         }
       }
 
-      if (v80)
+      if (completionCopy)
       {
-        v80[2](v80, *(*&buf[8] + 40));
+        completionCopy[2](completionCopy, *(*&buf[8] + 40));
       }
 
       _Block_object_dispose(&v100, 8);
@@ -5542,16 +5542,16 @@ LABEL_6:
 
     else
     {
-      v58 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Unable to resolve namespaces for stale factorsState: %@", v78];
+      stateCopy = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Unable to resolve namespaces for stale factorsState: %@", stateCopy];
       v60 = objc_alloc(MEMORY[0x277CCA9B8]);
       v113 = *MEMORY[0x277CCA450];
-      v114[0] = v58;
+      v114[0] = stateCopy;
       v61 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v114 forKeys:&v113 count:1];
       v62 = [v60 initWithDomain:@"TRIGeneralErrorDomain" code:2 userInfo:v61];
 
-      if (v80)
+      if (completionCopy)
       {
-        (v80)[2](v80, v62);
+        (completionCopy)[2](completionCopy, v62);
       }
     }
   }
@@ -5566,9 +5566,9 @@ LABEL_6:
       _os_log_error_impl(&dword_26F567000, v33, OS_LOG_TYPE_ERROR, "Unable to update on-demand asset subscription, error: %{public}@", buf, 0xCu);
     }
 
-    if (v80)
+    if (completionCopy)
     {
-      (v80)[2](v80, v30);
+      (completionCopy)[2](completionCopy, v30);
     }
 
     objc_autoreleasePoolPop(v20);
@@ -5761,16 +5761,16 @@ void __163__TRIXPCNamespaceManagementRequestHandler__removeAssetFactors_usingEnt
   v8 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)_setProvisionalFactorPackId:(id)a3 usingEntitlementWitness:(id)a4 serverContext:(id)a5 forNamespaceName:(id)a6 completion:(id)a7
++ (void)_setProvisionalFactorPackId:(id)id usingEntitlementWitness:(id)witness serverContext:(id)context forNamespaceName:(id)name completion:(id)completion
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  if (v14)
+  idCopy = id;
+  witnessCopy = witness;
+  contextCopy = context;
+  nameCopy = name;
+  completionCopy = completion;
+  if (witnessCopy)
   {
-    if (v15)
+    if (contextCopy)
     {
       goto LABEL_3;
     }
@@ -5778,22 +5778,22 @@ void __163__TRIXPCNamespaceManagementRequestHandler__removeAssetFactors_usingEnt
 
   else
   {
-    v22 = [MEMORY[0x277CCA890] currentHandler];
-    [v22 handleFailureInMethod:a2 object:a1 file:@"TRIXPCNamespaceManagementService.m" lineNumber:2219 description:{@"Invalid parameter not satisfying: %@", @"entitlementWitness"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIXPCNamespaceManagementService.m" lineNumber:2219 description:{@"Invalid parameter not satisfying: %@", @"entitlementWitness"}];
 
-    if (v15)
+    if (contextCopy)
     {
 LABEL_3:
-      if (v13)
+      if (idCopy)
       {
         goto LABEL_4;
       }
 
 LABEL_10:
-      v24 = [MEMORY[0x277CCA890] currentHandler];
-      [v24 handleFailureInMethod:a2 object:a1 file:@"TRIXPCNamespaceManagementService.m" lineNumber:2221 description:{@"Invalid parameter not satisfying: %@", @"factorPackId"}];
+      currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"TRIXPCNamespaceManagementService.m" lineNumber:2221 description:{@"Invalid parameter not satisfying: %@", @"factorPackId"}];
 
-      if (v16)
+      if (nameCopy)
       {
         goto LABEL_5;
       }
@@ -5802,48 +5802,48 @@ LABEL_10:
     }
   }
 
-  v23 = [MEMORY[0x277CCA890] currentHandler];
-  [v23 handleFailureInMethod:a2 object:a1 file:@"TRIXPCNamespaceManagementService.m" lineNumber:2220 description:{@"Invalid parameter not satisfying: %@", @"serverContext"}];
+  currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"TRIXPCNamespaceManagementService.m" lineNumber:2220 description:{@"Invalid parameter not satisfying: %@", @"serverContext"}];
 
-  if (!v13)
+  if (!idCopy)
   {
     goto LABEL_10;
   }
 
 LABEL_4:
-  if (v16)
+  if (nameCopy)
   {
     goto LABEL_5;
   }
 
 LABEL_11:
-  v25 = [MEMORY[0x277CCA890] currentHandler];
-  [v25 handleFailureInMethod:a2 object:a1 file:@"TRIXPCNamespaceManagementService.m" lineNumber:2222 description:{@"Invalid parameter not satisfying: %@", @"namespaceName"}];
+  currentHandler4 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler4 handleFailureInMethod:a2 object:self file:@"TRIXPCNamespaceManagementService.m" lineNumber:2222 description:{@"Invalid parameter not satisfying: %@", @"namespaceName"}];
 
 LABEL_5:
   v18 = [TRINamespaceResolverStorage alloc];
-  v19 = [v15 paths];
-  v20 = [(TRINamespaceResolverStorage *)v18 initWithPaths:v19];
+  paths = [contextCopy paths];
+  v20 = [(TRINamespaceResolverStorage *)v18 initWithPaths:paths];
 
   v26 = 0;
-  v21 = [(TRINamespaceResolverStorage *)v20 setProvisionalFactorPackId:v13 forNamespaceName:v16 error:&v26];
-  if (v17)
+  v21 = [(TRINamespaceResolverStorage *)v20 setProvisionalFactorPackId:idCopy forNamespaceName:nameCopy error:&v26];
+  if (completionCopy)
   {
-    v17[2](v17, v21, v26);
+    completionCopy[2](completionCopy, v21, v26);
   }
 }
 
-+ (void)_rejectFactorPackId:(id)a3 usingEntitlementWitness:(id)a4 serverContext:(id)a5 forNamespaceName:(id)a6 rolloutDeployment:(id)a7 completion:(id)a8
++ (void)_rejectFactorPackId:(id)id usingEntitlementWitness:(id)witness serverContext:(id)context forNamespaceName:(id)name rolloutDeployment:(id)deployment completion:(id)completion
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  if (v16)
+  idCopy = id;
+  witnessCopy = witness;
+  contextCopy = context;
+  nameCopy = name;
+  deploymentCopy = deployment;
+  completionCopy = completion;
+  if (witnessCopy)
   {
-    if (v17)
+    if (contextCopy)
     {
       goto LABEL_3;
     }
@@ -5851,22 +5851,22 @@ LABEL_5:
 
   else
   {
-    v25 = [MEMORY[0x277CCA890] currentHandler];
-    [v25 handleFailureInMethod:a2 object:a1 file:@"TRIXPCNamespaceManagementService.m" lineNumber:2239 description:{@"Invalid parameter not satisfying: %@", @"entitlementWitness"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIXPCNamespaceManagementService.m" lineNumber:2239 description:{@"Invalid parameter not satisfying: %@", @"entitlementWitness"}];
 
-    if (v17)
+    if (contextCopy)
     {
 LABEL_3:
-      if (v15)
+      if (idCopy)
       {
         goto LABEL_4;
       }
 
 LABEL_10:
-      v27 = [MEMORY[0x277CCA890] currentHandler];
-      [v27 handleFailureInMethod:a2 object:a1 file:@"TRIXPCNamespaceManagementService.m" lineNumber:2241 description:{@"Invalid parameter not satisfying: %@", @"factorPackId"}];
+      currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"TRIXPCNamespaceManagementService.m" lineNumber:2241 description:{@"Invalid parameter not satisfying: %@", @"factorPackId"}];
 
-      if (v18)
+      if (nameCopy)
       {
         goto LABEL_5;
       }
@@ -5875,48 +5875,48 @@ LABEL_10:
     }
   }
 
-  v26 = [MEMORY[0x277CCA890] currentHandler];
-  [v26 handleFailureInMethod:a2 object:a1 file:@"TRIXPCNamespaceManagementService.m" lineNumber:2240 description:{@"Invalid parameter not satisfying: %@", @"serverContext"}];
+  currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"TRIXPCNamespaceManagementService.m" lineNumber:2240 description:{@"Invalid parameter not satisfying: %@", @"serverContext"}];
 
-  if (!v15)
+  if (!idCopy)
   {
     goto LABEL_10;
   }
 
 LABEL_4:
-  if (v18)
+  if (nameCopy)
   {
     goto LABEL_5;
   }
 
 LABEL_11:
-  v28 = [MEMORY[0x277CCA890] currentHandler];
-  [v28 handleFailureInMethod:a2 object:a1 file:@"TRIXPCNamespaceManagementService.m" lineNumber:2242 description:{@"Invalid parameter not satisfying: %@", @"namespaceName"}];
+  currentHandler4 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler4 handleFailureInMethod:a2 object:self file:@"TRIXPCNamespaceManagementService.m" lineNumber:2242 description:{@"Invalid parameter not satisfying: %@", @"namespaceName"}];
 
 LABEL_5:
   v21 = [TRINamespaceResolverStorage alloc];
-  v22 = [v17 paths];
-  v23 = [(TRINamespaceResolverStorage *)v21 initWithPaths:v22];
+  paths = [contextCopy paths];
+  v23 = [(TRINamespaceResolverStorage *)v21 initWithPaths:paths];
 
   v29 = 0;
-  v24 = [(TRINamespaceResolverStorage *)v23 rejectFactorPackId:v15 forNamespaceName:v18 rolloutDeployment:v19 error:&v29];
-  if (v20)
+  v24 = [(TRINamespaceResolverStorage *)v23 rejectFactorPackId:idCopy forNamespaceName:nameCopy rolloutDeployment:deploymentCopy error:&v29];
+  if (completionCopy)
   {
-    v20[2](v20, v24, v29);
+    completionCopy[2](completionCopy, v24, v29);
   }
 }
 
-+ (void)_promoteFactorPackId:(id)a3 usingEntitlementWitness:(id)a4 serverContext:(id)a5 forNamespaceName:(id)a6 rolloutDeployment:(id)a7 completion:(id)a8
++ (void)_promoteFactorPackId:(id)id usingEntitlementWitness:(id)witness serverContext:(id)context forNamespaceName:(id)name rolloutDeployment:(id)deployment completion:(id)completion
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  if (v16)
+  idCopy = id;
+  witnessCopy = witness;
+  contextCopy = context;
+  nameCopy = name;
+  deploymentCopy = deployment;
+  completionCopy = completion;
+  if (witnessCopy)
   {
-    if (v17)
+    if (contextCopy)
     {
       goto LABEL_3;
     }
@@ -5924,22 +5924,22 @@ LABEL_5:
 
   else
   {
-    v25 = [MEMORY[0x277CCA890] currentHandler];
-    [v25 handleFailureInMethod:a2 object:a1 file:@"TRIXPCNamespaceManagementService.m" lineNumber:2259 description:{@"Invalid parameter not satisfying: %@", @"entitlementWitness"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIXPCNamespaceManagementService.m" lineNumber:2259 description:{@"Invalid parameter not satisfying: %@", @"entitlementWitness"}];
 
-    if (v17)
+    if (contextCopy)
     {
 LABEL_3:
-      if (v15)
+      if (idCopy)
       {
         goto LABEL_4;
       }
 
 LABEL_10:
-      v27 = [MEMORY[0x277CCA890] currentHandler];
-      [v27 handleFailureInMethod:a2 object:a1 file:@"TRIXPCNamespaceManagementService.m" lineNumber:2261 description:{@"Invalid parameter not satisfying: %@", @"factorPackId"}];
+      currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"TRIXPCNamespaceManagementService.m" lineNumber:2261 description:{@"Invalid parameter not satisfying: %@", @"factorPackId"}];
 
-      if (v18)
+      if (nameCopy)
       {
         goto LABEL_5;
       }
@@ -5948,34 +5948,34 @@ LABEL_10:
     }
   }
 
-  v26 = [MEMORY[0x277CCA890] currentHandler];
-  [v26 handleFailureInMethod:a2 object:a1 file:@"TRIXPCNamespaceManagementService.m" lineNumber:2260 description:{@"Invalid parameter not satisfying: %@", @"serverContext"}];
+  currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"TRIXPCNamespaceManagementService.m" lineNumber:2260 description:{@"Invalid parameter not satisfying: %@", @"serverContext"}];
 
-  if (!v15)
+  if (!idCopy)
   {
     goto LABEL_10;
   }
 
 LABEL_4:
-  if (v18)
+  if (nameCopy)
   {
     goto LABEL_5;
   }
 
 LABEL_11:
-  v28 = [MEMORY[0x277CCA890] currentHandler];
-  [v28 handleFailureInMethod:a2 object:a1 file:@"TRIXPCNamespaceManagementService.m" lineNumber:2262 description:{@"Invalid parameter not satisfying: %@", @"namespaceName"}];
+  currentHandler4 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler4 handleFailureInMethod:a2 object:self file:@"TRIXPCNamespaceManagementService.m" lineNumber:2262 description:{@"Invalid parameter not satisfying: %@", @"namespaceName"}];
 
 LABEL_5:
   v21 = [TRINamespaceResolverStorage alloc];
-  v22 = [v17 paths];
-  v23 = [(TRINamespaceResolverStorage *)v21 initWithPaths:v22];
+  paths = [contextCopy paths];
+  v23 = [(TRINamespaceResolverStorage *)v21 initWithPaths:paths];
 
   v29 = 0;
-  v24 = [(TRINamespaceResolverStorage *)v23 promoteFactorPackId:v15 forNamespaceName:v18 rolloutDeployment:v19 error:&v29];
-  if (v20)
+  v24 = [(TRINamespaceResolverStorage *)v23 promoteFactorPackId:idCopy forNamespaceName:nameCopy rolloutDeployment:deploymentCopy error:&v29];
+  if (completionCopy)
   {
-    v20[2](v20, v24, v29);
+    completionCopy[2](completionCopy, v24, v29);
   }
 }
 

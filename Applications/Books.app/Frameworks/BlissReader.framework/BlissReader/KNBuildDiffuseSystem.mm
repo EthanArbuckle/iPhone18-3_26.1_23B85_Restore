@@ -1,16 +1,16 @@
 @interface KNBuildDiffuseSystem
-- ($94F468A8D4C62B317260615823C2B210)lifeSpanAtIndexPoint:(CGPoint)a3;
-- ($E2C29196C7A5C696474C6955C5A9CE06)rotationAtIndexPoint:(CGPoint)a3;
-- ($E2C29196C7A5C696474C6955C5A9CE06)speedAtIndexPoint:(CGPoint)a3;
+- ($94F468A8D4C62B317260615823C2B210)lifeSpanAtIndexPoint:(CGPoint)point;
+- ($E2C29196C7A5C696474C6955C5A9CE06)rotationAtIndexPoint:(CGPoint)point;
+- ($E2C29196C7A5C696474C6955C5A9CE06)speedAtIndexPoint:(CGPoint)point;
 - (double)speedMax;
 @end
 
 @implementation KNBuildDiffuseSystem
 
-- ($E2C29196C7A5C696474C6955C5A9CE06)speedAtIndexPoint:(CGPoint)a3
+- ($E2C29196C7A5C696474C6955C5A9CE06)speedAtIndexPoint:(CGPoint)point
 {
-  y = a3.y;
-  v5 = [(KNBuildDiffuseSystem *)self direction];
+  y = point.y;
+  direction = [(KNBuildDiffuseSystem *)self direction];
   TSURandomBetween();
   v7 = v6;
   TSURandomBetween();
@@ -21,7 +21,7 @@
   *&v7 = v7;
   v12 = v11 * *&v7;
   v13.f64[0] = 2.0 - fabs(v10);
-  if (v5 == &dword_8 + 3)
+  if (direction == &dword_8 + 3)
   {
     v13.f64[0] = -v13.f64[0];
   }
@@ -64,7 +64,7 @@
   return v4 / sqrt(v5);
 }
 
-- ($E2C29196C7A5C696474C6955C5A9CE06)rotationAtIndexPoint:(CGPoint)a3
+- ($E2C29196C7A5C696474C6955C5A9CE06)rotationAtIndexPoint:(CGPoint)point
 {
   TSURandomBetween();
   v4 = v3;
@@ -79,10 +79,10 @@
   return result;
 }
 
-- ($94F468A8D4C62B317260615823C2B210)lifeSpanAtIndexPoint:(CGPoint)a3
+- ($94F468A8D4C62B317260615823C2B210)lifeSpanAtIndexPoint:(CGPoint)point
 {
-  x = a3.x;
-  v5 = [(KNBuildDiffuseSystem *)self direction:a3.x];
+  x = point.x;
+  v5 = [(KNBuildDiffuseSystem *)self direction:point.x];
   [(KNBuildDiffuseSystem *)self duration];
   TSUClamp();
   v7 = v6;

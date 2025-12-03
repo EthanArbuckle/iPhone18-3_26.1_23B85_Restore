@@ -1,6 +1,6 @@
 @interface PLIOSurfaceData
-+ (id)dataWithIOSurface:(void *)a3;
-- (PLIOSurfaceData)initWithIOSurface:(void *)a3 length:(unint64_t)a4;
++ (id)dataWithIOSurface:(void *)surface;
+- (PLIOSurfaceData)initWithIOSurface:(void *)surface length:(unint64_t)length;
 - (const)bytes;
 - (void)dealloc;
 @end
@@ -41,38 +41,38 @@
   return result;
 }
 
-- (PLIOSurfaceData)initWithIOSurface:(void *)a3 length:(unint64_t)a4
+- (PLIOSurfaceData)initWithIOSurface:(void *)surface length:(unint64_t)length
 {
   v13.receiver = self;
   v13.super_class = PLIOSurfaceData;
   v6 = [(PLIOSurfaceData *)&v13 init];
   if (v6)
   {
-    if (!a3 || (v7 = CFGetTypeID(a3), v7 != IOSurfaceGetTypeID()))
+    if (!surface || (v7 = CFGetTypeID(surface), v7 != IOSurfaceGetTypeID()))
     {
       v11 = 0;
       goto LABEL_12;
     }
 
-    v8 = CFRetain(a3);
+    v8 = CFRetain(surface);
     v6->_surface = v8;
     AllocSize = IOSurfaceGetAllocSize(v8);
-    if (AllocSize >= a4)
+    if (AllocSize >= length)
     {
-      v10 = a4;
+      lengthCopy = length;
     }
 
     else
     {
-      v10 = AllocSize;
+      lengthCopy = AllocSize;
     }
 
-    if (!a4)
+    if (!length)
     {
-      v10 = AllocSize;
+      lengthCopy = AllocSize;
     }
 
-    v6->_length = v10;
+    v6->_length = lengthCopy;
   }
 
   v11 = v6;
@@ -81,9 +81,9 @@ LABEL_12:
   return v11;
 }
 
-+ (id)dataWithIOSurface:(void *)a3
++ (id)dataWithIOSurface:(void *)surface
 {
-  v3 = [[a1 alloc] initWithIOSurface:a3];
+  v3 = [[self alloc] initWithIOSurface:surface];
 
   return v3;
 }

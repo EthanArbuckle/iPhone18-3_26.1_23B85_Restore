@@ -1,32 +1,32 @@
 @interface HULayoutContainerView
 - (CGSize)intrinsicContentSize;
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5;
-- (HULayoutContainerView)initWithContentView:(id)a3 layoutBlock:(id)a4;
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority;
+- (HULayoutContainerView)initWithContentView:(id)view layoutBlock:(id)block;
 - (void)layoutSubviews;
 @end
 
 @implementation HULayoutContainerView
 
-- (HULayoutContainerView)initWithContentView:(id)a3 layoutBlock:(id)a4
+- (HULayoutContainerView)initWithContentView:(id)view layoutBlock:(id)block
 {
-  v7 = a3;
-  v8 = a4;
+  viewCopy = view;
+  blockCopy = block;
   v14.receiver = self;
   v14.super_class = HULayoutContainerView;
   v9 = [(HULayoutContainerView *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_contentView, a3);
-    if (v7)
+    objc_storeStrong(&v9->_contentView, view);
+    if (viewCopy)
     {
       [(HULayoutContainerView *)v10 bounds];
-      [v7 setFrame:?];
-      [v7 setAutoresizingMask:18];
-      [(HULayoutContainerView *)v10 addSubview:v7];
+      [viewCopy setFrame:?];
+      [viewCopy setAutoresizingMask:18];
+      [(HULayoutContainerView *)v10 addSubview:viewCopy];
     }
 
-    v11 = _Block_copy(v8);
+    v11 = _Block_copy(blockCopy);
     layoutBlock = v10->_layoutBlock;
     v10->_layoutBlock = v11;
   }
@@ -36,11 +36,11 @@
 
 - (CGSize)intrinsicContentSize
 {
-  v3 = [(HULayoutContainerView *)self contentView];
-  if (v3)
+  contentView = [(HULayoutContainerView *)self contentView];
+  if (contentView)
   {
-    v4 = [(HULayoutContainerView *)self contentView];
-    [v4 intrinsicContentSize];
+    contentView2 = [(HULayoutContainerView *)self contentView];
+    [contentView2 intrinsicContentSize];
     v6 = v5;
     v8 = v7;
   }
@@ -61,18 +61,18 @@
   return result;
 }
 
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority
 {
-  height = a3.height;
-  width = a3.width;
-  v10 = [(HULayoutContainerView *)self contentView];
+  height = size.height;
+  width = size.width;
+  contentView = [(HULayoutContainerView *)self contentView];
 
-  if (v10)
+  if (contentView)
   {
-    v13 = [(HULayoutContainerView *)self contentView];
-    *&v14 = a4;
-    *&v15 = a5;
-    [v13 systemLayoutSizeFittingSize:width withHorizontalFittingPriority:height verticalFittingPriority:{v14, v15}];
+    contentView2 = [(HULayoutContainerView *)self contentView];
+    *&v14 = priority;
+    *&v15 = fittingPriority;
+    [contentView2 systemLayoutSizeFittingSize:width withHorizontalFittingPriority:height verticalFittingPriority:{v14, v15}];
     v17 = v16;
     v19 = v18;
 
@@ -84,8 +84,8 @@
   {
     v22.receiver = self;
     v22.super_class = HULayoutContainerView;
-    *&v11 = a4;
-    *&v12 = a5;
+    *&v11 = priority;
+    *&v12 = fittingPriority;
     [(HULayoutContainerView *)&v22 systemLayoutSizeFittingSize:width withHorizontalFittingPriority:height verticalFittingPriority:v11, v12];
   }
 
@@ -99,9 +99,9 @@
   v5.receiver = self;
   v5.super_class = HULayoutContainerView;
   [(HULayoutContainerView *)&v5 layoutSubviews];
-  v3 = [(HULayoutContainerView *)self layoutBlock];
-  v4 = [(HULayoutContainerView *)self contentView];
-  (v3)[2](v3, v4);
+  layoutBlock = [(HULayoutContainerView *)self layoutBlock];
+  contentView = [(HULayoutContainerView *)self contentView];
+  (layoutBlock)[2](layoutBlock, contentView);
 }
 
 @end

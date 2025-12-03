@@ -1,14 +1,14 @@
 @interface LPLocalMetadataArchiverDelegate
-- (id)archiver:(id)a3 willEncodeObject:(id)a4;
+- (id)archiver:(id)archiver willEncodeObject:(id)object;
 @end
 
 @implementation LPLocalMetadataArchiverDelegate
 
-- (id)archiver:(id)a3 willEncodeObject:(id)a4
+- (id)archiver:(id)archiver willEncodeObject:(id)object
 {
-  v5 = a3;
-  v6 = a4;
-  if (([v5 _lp_coderOptions] & 1) != 0 && (objc_opt_respondsToSelector() & 1) != 0 && (objc_msgSend(v6, "_canEncodeWithoutComputation") & 1) == 0)
+  archiverCopy = archiver;
+  objectCopy = object;
+  if (([archiverCopy _lp_coderOptions] & 1) != 0 && (objc_opt_respondsToSelector() & 1) != 0 && (objc_msgSend(objectCopy, "_canEncodeWithoutComputation") & 1) == 0)
   {
     v12 = LPLogChannelSerialization();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -26,11 +26,11 @@
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
 LABEL_8:
-      v10 = v6;
+      v10 = objectCopy;
       goto LABEL_18;
     }
 
-    v7 = v6;
+    v7 = objectCopy;
     if ([v7 _encodedSize] <= 0x100000)
     {
       [v7 _pixelSize];
@@ -41,7 +41,7 @@ LABEL_8:
       }
     }
 
-    if ([v5 _lp_coderOptions])
+    if ([archiverCopy _lp_coderOptions])
     {
       v11 = LPLogChannelSerialization();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))

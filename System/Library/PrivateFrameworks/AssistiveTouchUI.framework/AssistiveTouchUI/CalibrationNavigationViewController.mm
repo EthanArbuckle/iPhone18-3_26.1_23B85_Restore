@@ -1,9 +1,9 @@
 @interface CalibrationNavigationViewController
-- (_TtC16AssistiveTouchUI35CalibrationNavigationViewController)initWithCoder:(id)a3;
-- (_TtC16AssistiveTouchUI35CalibrationNavigationViewController)initWithNavigationBarClass:(Class)a3 toolbarClass:(Class)a4;
-- (_TtC16AssistiveTouchUI35CalibrationNavigationViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (_TtC16AssistiveTouchUI35CalibrationNavigationViewController)initWithRootViewController:(id)a3;
-- (id)navigationController:(id)a3 animationControllerForOperation:(int64_t)a4 fromViewController:(id)a5 toViewController:(id)a6;
+- (_TtC16AssistiveTouchUI35CalibrationNavigationViewController)initWithCoder:(id)coder;
+- (_TtC16AssistiveTouchUI35CalibrationNavigationViewController)initWithNavigationBarClass:(Class)class toolbarClass:(Class)toolbarClass;
+- (_TtC16AssistiveTouchUI35CalibrationNavigationViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (_TtC16AssistiveTouchUI35CalibrationNavigationViewController)initWithRootViewController:(id)controller;
+- (id)navigationController:(id)controller animationControllerForOperation:(int64_t)operation fromViewController:(id)viewController toViewController:(id)toViewController;
 - (void)viewDidLoad;
 @end
 
@@ -19,48 +19,48 @@
   [v2 setNavigationBarHidden_];
 }
 
-- (_TtC16AssistiveTouchUI35CalibrationNavigationViewController)initWithNavigationBarClass:(Class)a3 toolbarClass:(Class)a4
+- (_TtC16AssistiveTouchUI35CalibrationNavigationViewController)initWithNavigationBarClass:(Class)class toolbarClass:(Class)toolbarClass
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for CalibrationNavigationViewController();
-  return [(CalibrationNavigationViewController *)&v7 initWithNavigationBarClass:a3 toolbarClass:a4];
+  return [(CalibrationNavigationViewController *)&v7 initWithNavigationBarClass:class toolbarClass:toolbarClass];
 }
 
-- (_TtC16AssistiveTouchUI35CalibrationNavigationViewController)initWithRootViewController:(id)a3
+- (_TtC16AssistiveTouchUI35CalibrationNavigationViewController)initWithRootViewController:(id)controller
 {
   v5.receiver = self;
   v5.super_class = type metadata accessor for CalibrationNavigationViewController();
-  return [(CalibrationNavigationViewController *)&v5 initWithRootViewController:a3];
+  return [(CalibrationNavigationViewController *)&v5 initWithRootViewController:controller];
 }
 
-- (_TtC16AssistiveTouchUI35CalibrationNavigationViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC16AssistiveTouchUI35CalibrationNavigationViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_2414E0CD0();
-    v6 = a4;
+    bundleCopy = bundle;
     v7 = sub_2414E0CC0();
   }
 
   else
   {
-    v8 = a4;
+    bundleCopy2 = bundle;
     v7 = 0;
   }
 
   v11.receiver = self;
   v11.super_class = type metadata accessor for CalibrationNavigationViewController();
-  v9 = [(CalibrationNavigationViewController *)&v11 initWithNibName:v7 bundle:a4];
+  v9 = [(CalibrationNavigationViewController *)&v11 initWithNibName:v7 bundle:bundle];
 
   return v9;
 }
 
-- (_TtC16AssistiveTouchUI35CalibrationNavigationViewController)initWithCoder:(id)a3
+- (_TtC16AssistiveTouchUI35CalibrationNavigationViewController)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for CalibrationNavigationViewController();
-  v4 = a3;
-  v5 = [(CalibrationNavigationViewController *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(CalibrationNavigationViewController *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {
@@ -69,9 +69,9 @@
   return v5;
 }
 
-- (id)navigationController:(id)a3 animationControllerForOperation:(int64_t)a4 fromViewController:(id)a5 toViewController:(id)a6
+- (id)navigationController:(id)controller animationControllerForOperation:(int64_t)operation fromViewController:(id)viewController toViewController:(id)toViewController
 {
-  if (a4 == 1)
+  if (operation == 1)
   {
     v8 = [objc_allocWithZone(type metadata accessor for PushTransition()) init];
   }

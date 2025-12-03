@@ -1,17 +1,17 @@
 @interface CRThemeAssetDataWriter
-- (BOOL)saveAdditionsData:(id)a3;
-- (BOOL)saveCertificateData:(id)a3 signatureData:(id)a4;
-- (CRThemeAssetDataWriter)initWithAssetURL:(id)a3 version:(id)a4 chunkCount:(id)a5;
+- (BOOL)saveAdditionsData:(id)data;
+- (BOOL)saveCertificateData:(id)data signatureData:(id)signatureData;
+- (CRThemeAssetDataWriter)initWithAssetURL:(id)l version:(id)version chunkCount:(id)count;
 - (id)_assetArchiveURL;
 @end
 
 @implementation CRThemeAssetDataWriter
 
-- (CRThemeAssetDataWriter)initWithAssetURL:(id)a3 version:(id)a4 chunkCount:(id)a5
+- (CRThemeAssetDataWriter)initWithAssetURL:(id)l version:(id)version chunkCount:(id)count
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  lCopy = l;
+  versionCopy = version;
+  countCopy = count;
   v19.receiver = self;
   v19.super_class = CRThemeAssetDataWriter;
   v12 = [(CRThemeAssetDataWriter *)&v19 init];
@@ -21,11 +21,11 @@
     goto LABEL_4;
   }
 
-  objc_storeStrong(&v12->_assetURL, a3);
-  objc_storeStrong(&v13->_version, a4);
+  objc_storeStrong(&v12->_assetURL, l);
+  objc_storeStrong(&v13->_version, version);
   v14 = [CRFileTransferDataWriter alloc];
-  v15 = [(CRThemeAssetDataWriter *)v13 _assetArchiveURL];
-  v16 = [(CRFileTransferDataWriter *)v14 initWithFileURL:v15 chunkCount:v11];
+  _assetArchiveURL = [(CRThemeAssetDataWriter *)v13 _assetArchiveURL];
+  v16 = [(CRFileTransferDataWriter *)v14 initWithFileURL:_assetArchiveURL chunkCount:countCopy];
 
   if (v16)
   {
@@ -41,21 +41,21 @@ LABEL_4:
 
 - (id)_assetArchiveURL
 {
-  v2 = [(CRThemeAssetDataWriter *)self assetURL];
-  v3 = [v2 URLByAppendingPathComponent:CARThemeAssetAccessoryFilename];
+  assetURL = [(CRThemeAssetDataWriter *)self assetURL];
+  v3 = [assetURL URLByAppendingPathComponent:CARThemeAssetAccessoryFilename];
 
   return v3;
 }
 
-- (BOOL)saveCertificateData:(id)a3 signatureData:(id)a4
+- (BOOL)saveCertificateData:(id)data signatureData:(id)signatureData
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CRThemeAssetDataWriter *)self assetURL];
-  v9 = [v8 URLByAppendingPathComponent:CARThemeAssetCertificateFilename];
+  signatureDataCopy = signatureData;
+  dataCopy = data;
+  assetURL = [(CRThemeAssetDataWriter *)self assetURL];
+  v9 = [assetURL URLByAppendingPathComponent:CARThemeAssetCertificateFilename];
 
   v21 = 0;
-  v10 = [v7 writeToURL:v9 options:0 error:&v21];
+  v10 = [dataCopy writeToURL:v9 options:0 error:&v21];
 
   v11 = v21;
   v12 = CarThemeAssetsLogging();
@@ -69,11 +69,11 @@ LABEL_4:
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "saved certificate to %@", buf, 0xCu);
     }
 
-    v14 = [(CRThemeAssetDataWriter *)self assetURL];
-    v13 = [v14 URLByAppendingPathComponent:CARThemeAssetSignatureFilename];
+    assetURL2 = [(CRThemeAssetDataWriter *)self assetURL];
+    v13 = [assetURL2 URLByAppendingPathComponent:CARThemeAssetSignatureFilename];
 
     v20 = 0;
-    v15 = [v6 writeToURL:v13 options:0 error:&v20];
+    v15 = [signatureDataCopy writeToURL:v13 options:0 error:&v20];
     v16 = v20;
     v17 = CarThemeAssetsLogging();
     v18 = v17;
@@ -106,14 +106,14 @@ LABEL_4:
   return v15;
 }
 
-- (BOOL)saveAdditionsData:(id)a3
+- (BOOL)saveAdditionsData:(id)data
 {
-  v4 = a3;
-  v5 = [(CRThemeAssetDataWriter *)self assetURL];
-  v6 = [v5 URLByAppendingPathComponent:CARThemeAssetAccessoryAdditionsFilename];
+  dataCopy = data;
+  assetURL = [(CRThemeAssetDataWriter *)self assetURL];
+  v6 = [assetURL URLByAppendingPathComponent:CARThemeAssetAccessoryAdditionsFilename];
 
   v12 = 0;
-  v7 = [v4 writeToURL:v6 options:0 error:&v12];
+  v7 = [dataCopy writeToURL:v6 options:0 error:&v12];
 
   v8 = v12;
   v9 = CarThemeAssetsLogging();

@@ -1,9 +1,9 @@
 @interface MFNanoServerMessageContentLoader2
 - (BOOL)highPriority;
-- (MFNanoServerMessageContentLoader2)initWithMessageId:(id)a3 highPriority:(BOOL)a4 mailMessageLibrary:(id)a5 maximumImageWidth:(double)a6 workQueue:(id)a7 delegate:(id)a8;
+- (MFNanoServerMessageContentLoader2)initWithMessageId:(id)id highPriority:(BOOL)priority mailMessageLibrary:(id)library maximumImageWidth:(double)width workQueue:(id)queue delegate:(id)delegate;
 - (NSString)messageId;
 - (void)cancel;
-- (void)setHighPriority:(BOOL)a3;
+- (void)setHighPriority:(BOOL)priority;
 - (void)start;
 @end
 
@@ -29,7 +29,7 @@
   return sub_1B0E43368() & 1;
 }
 
-- (void)setHighPriority:(BOOL)a3
+- (void)setHighPriority:(BOOL)priority
 {
   swift_getObjectType();
   MEMORY[0x1E69E5928](self);
@@ -38,18 +38,18 @@
   MEMORY[0x1E69E5920](self);
 }
 
-- (MFNanoServerMessageContentLoader2)initWithMessageId:(id)a3 highPriority:(BOOL)a4 mailMessageLibrary:(id)a5 maximumImageWidth:(double)a6 workQueue:(id)a7 delegate:(id)a8
+- (MFNanoServerMessageContentLoader2)initWithMessageId:(id)id highPriority:(BOOL)priority mailMessageLibrary:(id)library maximumImageWidth:(double)width workQueue:(id)queue delegate:(id)delegate
 {
   swift_getObjectType();
-  MEMORY[0x1E69E5928](a3);
-  MEMORY[0x1E69E5928](a5);
-  MEMORY[0x1E69E5928](a7);
+  MEMORY[0x1E69E5928](id);
+  MEMORY[0x1E69E5928](library);
+  MEMORY[0x1E69E5928](queue);
   swift_unknownObjectRetain();
   v16 = sub_1B0E44AD8();
   v11 = v8;
   v9 = sub_1B0E43378();
-  v18 = sub_1B08F6CE8(v16, v11, v9 & 1, a5, a7, a8, a6);
-  MEMORY[0x1E69E5920](a3);
+  v18 = sub_1B08F6CE8(v16, v11, v9 & 1, library, queue, delegate, width);
+  MEMORY[0x1E69E5920](id);
   return v18;
 }
 

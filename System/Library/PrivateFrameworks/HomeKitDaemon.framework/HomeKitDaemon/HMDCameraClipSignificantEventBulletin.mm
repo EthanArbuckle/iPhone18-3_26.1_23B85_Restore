@@ -1,71 +1,71 @@
 @interface HMDCameraClipSignificantEventBulletin
-+ (id)actionURLForHomeUUID:(id)a3 cameraUUID:(id)a4;
-+ (id)localizedMessageForSignificantEvents:(id)a3 cameraAccessory:(id)a4;
-+ (unint64_t)effectiveReasonForSignificantEvent:(id)a3;
-- (HMDCameraClipSignificantEventBulletin)initWithSignificantEvents:(id)a3 previewImageNotificationUUID:(id)a4 previewImageFilePathURL:(id)a5 dateOfOccurrence:(id)a6 camera:(id)a7 home:(id)a8 accessory:(id)a9 recordingService:(id)a10 clipUUID:(id)a11 shouldShowProvideFeedbackButton:(BOOL)a12;
-- (HMDCameraClipSignificantEventBulletin)initWithSignificantEvents:(id)a3 previewImageNotificationUUID:(id)a4 previewImageFilePathURL:(id)a5 dateOfOccurrence:(id)a6 camera:(id)a7 home:(id)a8 accessory:(id)a9 recordingService:(id)a10 requestIdentifier:(id)a11 clipUUID:(id)a12 shouldShowProvideFeedbackButton:(BOOL)a13;
-- (id)createUserInfoWithWithSignificantEvents:(id)a3 previewImageNotificationUUID:(id)a4 camera:(id)a5 home:(id)a6 accessory:(id)a7 recordingService:(id)a8 clipUUID:(id)a9;
++ (id)actionURLForHomeUUID:(id)d cameraUUID:(id)iD;
++ (id)localizedMessageForSignificantEvents:(id)events cameraAccessory:(id)accessory;
++ (unint64_t)effectiveReasonForSignificantEvent:(id)event;
+- (HMDCameraClipSignificantEventBulletin)initWithSignificantEvents:(id)events previewImageNotificationUUID:(id)d previewImageFilePathURL:(id)l dateOfOccurrence:(id)occurrence camera:(id)camera home:(id)home accessory:(id)accessory recordingService:(id)self0 clipUUID:(id)self1 shouldShowProvideFeedbackButton:(BOOL)self2;
+- (HMDCameraClipSignificantEventBulletin)initWithSignificantEvents:(id)events previewImageNotificationUUID:(id)d previewImageFilePathURL:(id)l dateOfOccurrence:(id)occurrence camera:(id)camera home:(id)home accessory:(id)accessory recordingService:(id)self0 requestIdentifier:(id)self1 clipUUID:(id)self2 shouldShowProvideFeedbackButton:(BOOL)self3;
+- (id)createUserInfoWithWithSignificantEvents:(id)events previewImageNotificationUUID:(id)d camera:(id)camera home:(id)home accessory:(id)accessory recordingService:(id)service clipUUID:(id)iD;
 @end
 
 @implementation HMDCameraClipSignificantEventBulletin
 
-- (id)createUserInfoWithWithSignificantEvents:(id)a3 previewImageNotificationUUID:(id)a4 camera:(id)a5 home:(id)a6 accessory:(id)a7 recordingService:(id)a8 clipUUID:(id)a9
+- (id)createUserInfoWithWithSignificantEvents:(id)events previewImageNotificationUUID:(id)d camera:(id)camera home:(id)home accessory:(id)accessory recordingService:(id)service clipUUID:(id)iD
 {
   v45[9] = *MEMORY[0x277D85DE8];
-  v43 = a9;
-  v15 = a8;
-  v16 = a7;
-  v17 = a6;
-  v18 = a4;
-  v19 = a3;
-  v20 = [a5 contextSPIUniqueIdentifier];
-  v21 = [v20 UUIDString];
+  iDCopy = iD;
+  serviceCopy = service;
+  accessoryCopy = accessory;
+  homeCopy = home;
+  dCopy = d;
+  eventsCopy = events;
+  contextSPIUniqueIdentifier = [camera contextSPIUniqueIdentifier];
+  uUIDString = [contextSPIUniqueIdentifier UUIDString];
 
-  v22 = [v17 contextSPIUniqueIdentifier];
-  v23 = [v22 UUIDString];
+  contextSPIUniqueIdentifier2 = [homeCopy contextSPIUniqueIdentifier];
+  uUIDString2 = [contextSPIUniqueIdentifier2 UUIDString];
 
-  v41 = [objc_opt_class() actionURLForHomeUUID:v23 cameraUUID:v21];
-  v24 = [v19 na_map:&__block_literal_global_66];
-  v42 = [v24 allObjects];
+  v41 = [objc_opt_class() actionURLForHomeUUID:uUIDString2 cameraUUID:uUIDString];
+  v24 = [eventsCopy na_map:&__block_literal_global_66];
+  allObjects = [v24 allObjects];
 
-  v25 = [v19 na_any:&__block_literal_global_68_243998];
+  v25 = [eventsCopy na_any:&__block_literal_global_68_243998];
   v26 = *MEMORY[0x277CCF308];
   v44[0] = *MEMORY[0x277CCF310];
   v44[1] = v26;
-  v45[0] = v42;
-  v45[1] = v21;
+  v45[0] = allObjects;
+  v45[1] = uUIDString;
   v44[2] = *MEMORY[0x277CCF300];
-  v27 = [v18 UUIDString];
+  uUIDString3 = [dCopy UUIDString];
 
   v28 = *MEMORY[0x277CCF328];
-  v45[2] = v27;
-  v45[3] = v23;
+  v45[2] = uUIDString3;
+  v45[3] = uUIDString2;
   v29 = *MEMORY[0x277CD13D8];
   v44[3] = v28;
   v44[4] = v29;
-  v30 = [v41 absoluteString];
-  v45[4] = v30;
+  absoluteString = [v41 absoluteString];
+  v45[4] = absoluteString;
   v44[5] = @"service";
-  v31 = [v15 contextID];
+  contextID = [serviceCopy contextID];
 
-  v45[5] = v31;
+  v45[5] = contextID;
   v44[6] = @"home";
-  v32 = [v17 contextID];
+  contextID2 = [homeCopy contextID];
 
-  v45[6] = v32;
+  v45[6] = contextID2;
   v44[7] = @"accessory";
-  v33 = [v16 contextID];
+  contextID3 = [accessoryCopy contextID];
 
-  v45[7] = v33;
+  v45[7] = contextID3;
   v44[8] = @"HMDBulletinContextDidDetectedPerson";
   v34 = [MEMORY[0x277CCABB0] numberWithBool:v25];
   v45[8] = v34;
   v35 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v45 forKeys:v44 count:9];
   v36 = [v35 mutableCopy];
 
-  v37 = [v43 UUIDString];
+  uUIDString4 = [iDCopy UUIDString];
 
-  [v36 setObject:v37 forKeyedSubscript:*MEMORY[0x277CCF2F8]];
+  [v36 setObject:uUIDString4 forKeyedSubscript:*MEMORY[0x277CCF2F8]];
   v38 = [v36 copy];
 
   v39 = *MEMORY[0x277D85DE8];
@@ -81,98 +81,98 @@ id __158__HMDCameraClipSignificantEventBulletin_createUserInfoWithWithSignifican
   return v3;
 }
 
-- (HMDCameraClipSignificantEventBulletin)initWithSignificantEvents:(id)a3 previewImageNotificationUUID:(id)a4 previewImageFilePathURL:(id)a5 dateOfOccurrence:(id)a6 camera:(id)a7 home:(id)a8 accessory:(id)a9 recordingService:(id)a10 clipUUID:(id)a11 shouldShowProvideFeedbackButton:(BOOL)a12
+- (HMDCameraClipSignificantEventBulletin)initWithSignificantEvents:(id)events previewImageNotificationUUID:(id)d previewImageFilePathURL:(id)l dateOfOccurrence:(id)occurrence camera:(id)camera home:(id)home accessory:(id)accessory recordingService:(id)self0 clipUUID:(id)self1 shouldShowProvideFeedbackButton:(BOOL)self2
 {
-  HIDWORD(v29) = a12;
-  v18 = a11;
-  v19 = a10;
-  v20 = a9;
-  v21 = a8;
-  v22 = a7;
-  v23 = a6;
-  v24 = a5;
-  v25 = a4;
-  v26 = a3;
-  v27 = [v18 UUIDString];
-  LOBYTE(v29) = a12;
-  v31 = [(HMDCameraClipSignificantEventBulletin *)self initWithSignificantEvents:v26 previewImageNotificationUUID:v25 previewImageFilePathURL:v24 dateOfOccurrence:v23 camera:v22 home:v21 accessory:v20 recordingService:v19 requestIdentifier:v27 clipUUID:v18 shouldShowProvideFeedbackButton:v29];
+  HIDWORD(v29) = button;
+  iDCopy = iD;
+  serviceCopy = service;
+  accessoryCopy = accessory;
+  homeCopy = home;
+  cameraCopy = camera;
+  occurrenceCopy = occurrence;
+  lCopy = l;
+  dCopy = d;
+  eventsCopy = events;
+  uUIDString = [iDCopy UUIDString];
+  LOBYTE(v29) = button;
+  v31 = [(HMDCameraClipSignificantEventBulletin *)self initWithSignificantEvents:eventsCopy previewImageNotificationUUID:dCopy previewImageFilePathURL:lCopy dateOfOccurrence:occurrenceCopy camera:cameraCopy home:homeCopy accessory:accessoryCopy recordingService:serviceCopy requestIdentifier:uUIDString clipUUID:iDCopy shouldShowProvideFeedbackButton:v29];
 
   return v31;
 }
 
-- (HMDCameraClipSignificantEventBulletin)initWithSignificantEvents:(id)a3 previewImageNotificationUUID:(id)a4 previewImageFilePathURL:(id)a5 dateOfOccurrence:(id)a6 camera:(id)a7 home:(id)a8 accessory:(id)a9 recordingService:(id)a10 requestIdentifier:(id)a11 clipUUID:(id)a12 shouldShowProvideFeedbackButton:(BOOL)a13
+- (HMDCameraClipSignificantEventBulletin)initWithSignificantEvents:(id)events previewImageNotificationUUID:(id)d previewImageFilePathURL:(id)l dateOfOccurrence:(id)occurrence camera:(id)camera home:(id)home accessory:(id)accessory recordingService:(id)self0 requestIdentifier:(id)self1 clipUUID:(id)self2 shouldShowProvideFeedbackButton:(BOOL)self3
 {
-  v18 = a3;
-  v19 = a4;
-  v54 = a5;
-  v57 = a5;
-  v55 = a6;
-  v20 = a6;
-  obj = a7;
-  v59 = a7;
-  v21 = a8;
-  v22 = a9;
-  v23 = a10;
-  v24 = a11;
-  v25 = a12;
-  if (!v18)
+  eventsCopy = events;
+  dCopy = d;
+  lCopy = l;
+  lCopy2 = l;
+  occurrenceCopy = occurrence;
+  occurrenceCopy2 = occurrence;
+  obj = camera;
+  cameraCopy = camera;
+  homeCopy = home;
+  accessoryCopy = accessory;
+  serviceCopy = service;
+  identifierCopy = identifier;
+  iDCopy = iD;
+  if (!eventsCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_13;
   }
 
-  if (!v19)
+  if (!dCopy)
   {
 LABEL_13:
     _HMFPreconditionFailure();
     goto LABEL_14;
   }
 
-  if (!v20)
+  if (!occurrenceCopy2)
   {
 LABEL_14:
     _HMFPreconditionFailure();
     goto LABEL_15;
   }
 
-  v26 = v20;
-  v27 = v59;
-  if (!v59)
+  v26 = occurrenceCopy2;
+  v27 = cameraCopy;
+  if (!cameraCopy)
   {
 LABEL_15:
     _HMFPreconditionFailure();
     goto LABEL_16;
   }
 
-  if (!v21)
+  if (!homeCopy)
   {
 LABEL_16:
     _HMFPreconditionFailure();
     goto LABEL_17;
   }
 
-  if (!v22)
+  if (!accessoryCopy)
   {
 LABEL_17:
     _HMFPreconditionFailure();
     goto LABEL_18;
   }
 
-  if (!v23)
+  if (!serviceCopy)
   {
 LABEL_18:
     _HMFPreconditionFailure();
     goto LABEL_19;
   }
 
-  if (!v24)
+  if (!identifierCopy)
   {
 LABEL_19:
     v49 = _HMFPreconditionFailure();
     return [(HMDCameraClipSignificantEventBulletin *)v49 actionURLForHomeUUID:v50 cameraUUID:v51, v52];
   }
 
-  v28 = v25;
+  v28 = iDCopy;
   v58 = v26;
   v60.receiver = self;
   v60.super_class = HMDCameraClipSignificantEventBulletin;
@@ -180,43 +180,43 @@ LABEL_19:
   v30 = v29;
   if (v29)
   {
-    v29->_shouldShowProvideFeedbackButton = a13;
-    v31 = [v24 copy];
+    v29->_shouldShowProvideFeedbackButton = button;
+    v31 = [identifierCopy copy];
     requestIdentifier = v30->_requestIdentifier;
     v30->_requestIdentifier = v31;
 
     objc_storeStrong(&v30->_camera, obj);
-    objc_storeStrong(&v30->_home, a8);
-    objc_storeStrong(&v30->_recordingService, a10);
-    objc_storeStrong(&v30->_accessory, a9);
-    objc_storeStrong(&v30->_previewImageFilePathURL, v54);
-    v33 = [v18 copy];
+    objc_storeStrong(&v30->_home, home);
+    objc_storeStrong(&v30->_recordingService, service);
+    objc_storeStrong(&v30->_accessory, accessory);
+    objc_storeStrong(&v30->_previewImageFilePathURL, lCopy);
+    v33 = [eventsCopy copy];
     significantEvents = v30->_significantEvents;
     v30->_significantEvents = v33;
 
-    v35 = [v19 copy];
+    v35 = [dCopy copy];
     previewImageNotificationUUID = v30->_previewImageNotificationUUID;
     v30->_previewImageNotificationUUID = v35;
 
-    v37 = [(HMDCameraClipSignificantEventBulletin *)v30 createUserInfoWithWithSignificantEvents:v18 previewImageNotificationUUID:v19 camera:v59 home:v21 accessory:v22 recordingService:v23 clipUUID:v28];
+    v37 = [(HMDCameraClipSignificantEventBulletin *)v30 createUserInfoWithWithSignificantEvents:eventsCopy previewImageNotificationUUID:dCopy camera:cameraCopy home:homeCopy accessory:accessoryCopy recordingService:serviceCopy clipUUID:v28];
     userInfo = v30->_userInfo;
     v30->_userInfo = v37;
 
-    v39 = [v21 name];
+    name = [homeCopy name];
     title = v30->_title;
-    v30->_title = v39;
+    v30->_title = name;
 
-    v41 = [objc_opt_class() localizedMessageForSignificantEvents:v18 cameraAccessory:v22];
+    v41 = [objc_opt_class() localizedMessageForSignificantEvents:eventsCopy cameraAccessory:accessoryCopy];
     body = v30->_body;
     v30->_body = v41;
 
-    v43 = [v21 uuid];
-    v44 = [v43 UUIDString];
+    uuid = [homeCopy uuid];
+    uUIDString = [uuid UUIDString];
     threadIdentifier = v30->_threadIdentifier;
-    v30->_threadIdentifier = v44;
+    v30->_threadIdentifier = uUIDString;
 
-    v27 = v59;
-    objc_storeStrong(&v30->_dateOfOccurrence, v55);
+    v27 = cameraCopy;
+    objc_storeStrong(&v30->_dateOfOccurrence, occurrenceCopy);
     v46 = [v28 copy];
     clipUUID = v30->_clipUUID;
     v30->_clipUUID = v46;
@@ -225,12 +225,12 @@ LABEL_19:
   return v30;
 }
 
-+ (id)actionURLForHomeUUID:(id)a3 cameraUUID:(id)a4
++ (id)actionURLForHomeUUID:(id)d cameraUUID:(id)iD
 {
   v5 = MEMORY[0x277CD1878];
-  v6 = a4;
-  v7 = [v5 tupleWithQueryType:0 uuidString:a3];
-  v8 = [MEMORY[0x277CD1878] tupleWithQueryType:5 uuidString:v6];
+  iDCopy = iD;
+  v7 = [v5 tupleWithQueryType:0 uuidString:d];
+  v8 = [MEMORY[0x277CD1878] tupleWithQueryType:5 uuidString:iDCopy];
 
   v9 = [MEMORY[0x277CBEB98] setWithObject:v7];
   v10 = generateURLForHomeKitObject();
@@ -238,21 +238,21 @@ LABEL_19:
   return v10;
 }
 
-+ (id)localizedMessageForSignificantEvents:(id)a3 cameraAccessory:(id)a4
++ (id)localizedMessageForSignificantEvents:(id)events cameraAccessory:(id)accessory
 {
   v53 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  eventsCopy = events;
+  accessoryCopy = accessory;
   v8 = [MEMORY[0x277CBEB18] arrayWithObject:@"CAMERA_RECORDING_SIGNIFICANT_EVENT_DETECTED_MESSAGE"];
   v44[0] = MEMORY[0x277D85DD0];
   v44[1] = 3221225472;
   v44[2] = __94__HMDCameraClipSignificantEventBulletin_localizedMessageForSignificantEvents_cameraAccessory___block_invoke;
   v44[3] = &__block_descriptor_40_e34_B16__0__HMCameraSignificantEvent_8l;
-  v44[4] = a1;
-  v9 = [v6 na_filter:v44];
+  v44[4] = self;
+  v9 = [eventsCopy na_filter:v44];
   v10 = [v9 na_map:&__block_literal_global_244041];
   v35 = v10;
-  v36 = v7;
+  v36 = accessoryCopy;
   if (![v10 count])
   {
     if ([v9 count] == 1)
@@ -265,7 +265,7 @@ LABEL_19:
       if ([v9 count] < 2)
       {
 LABEL_11:
-        v18 = 0;
+        name = 0;
         goto LABEL_12;
       }
 
@@ -276,21 +276,21 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  v11 = [v7 home];
-  v12 = [v11 currentUser];
-  v13 = [v12 personSettingsManager];
+  home = [accessoryCopy home];
+  currentUser = [home currentUser];
+  personSettingsManager = [currentUser personSettingsManager];
 
-  v14 = [v10 allObjects];
+  allObjects = [v10 allObjects];
   v42[0] = MEMORY[0x277D85DD0];
   v42[1] = 3221225472;
   v42[2] = __94__HMDCameraClipSignificantEventBulletin_localizedMessageForSignificantEvents_cameraAccessory___block_invoke_3;
   v42[3] = &unk_2786843A8;
-  v43 = v13;
-  v15 = v13;
-  v16 = [v14 sortedArrayUsingComparator:v42];
+  v43 = personSettingsManager;
+  v15 = personSettingsManager;
+  v16 = [allObjects sortedArrayUsingComparator:v42];
 
-  v17 = [v16 firstObject];
-  v18 = [v17 name];
+  firstObject = [v16 firstObject];
+  name = [firstObject name];
 
   if ([v9 count] == 1)
   {
@@ -309,8 +309,8 @@ LABEL_12:
   v41[1] = 3221225472;
   v41[2] = __94__HMDCameraClipSignificantEventBulletin_localizedMessageForSignificantEvents_cameraAccessory___block_invoke_4;
   v41[3] = &__block_descriptor_40_e34_B16__0__HMCameraSignificantEvent_8l;
-  v41[4] = a1;
-  if ([v6 na_any:v41])
+  v41[4] = self;
+  if ([eventsCopy na_any:v41])
   {
     [v8 addObject:@"ANIMAL"];
   }
@@ -319,8 +319,8 @@ LABEL_12:
   v40[1] = 3221225472;
   v40[2] = __94__HMDCameraClipSignificantEventBulletin_localizedMessageForSignificantEvents_cameraAccessory___block_invoke_5;
   v40[3] = &__block_descriptor_40_e34_B16__0__HMCameraSignificantEvent_8l;
-  v40[4] = a1;
-  if ([v6 na_any:v40])
+  v40[4] = self;
+  if ([eventsCopy na_any:v40])
   {
     [v8 addObject:@"VEHICLE"];
   }
@@ -329,8 +329,8 @@ LABEL_12:
   v39[1] = 3221225472;
   v39[2] = __94__HMDCameraClipSignificantEventBulletin_localizedMessageForSignificantEvents_cameraAccessory___block_invoke_6;
   v39[3] = &__block_descriptor_40_e34_B16__0__HMCameraSignificantEvent_8l;
-  v39[4] = a1;
-  if ([v6 na_any:v39])
+  v39[4] = self;
+  if ([eventsCopy na_any:v39])
   {
     [v8 addObject:@"PACKAGE"];
   }
@@ -343,11 +343,11 @@ LABEL_12:
   v21 = [v8 componentsJoinedByString:@"_"];
   v22 = MEMORY[0x277CCACA8];
   v23 = HMDLocalizedStringForKey(v21);
-  if (v18)
+  if (name)
   {
     v38 = 0;
-    v24 = [v36 name];
-    v25 = [v22 localizedStringWithValidatedFormat:v23 validFormatSpecifiers:@"%@ %@" error:&v38, v24, v18];
+    name2 = [v36 name];
+    v25 = [v22 localizedStringWithValidatedFormat:v23 validFormatSpecifiers:@"%@ %@" error:&v38, name2, name];
     v26 = v38;
 
     if (!v25)
@@ -378,8 +378,8 @@ LABEL_28:
   else
   {
     v37 = 0;
-    v30 = [v36 name];
-    v25 = [v22 localizedStringWithValidatedFormat:v23 validFormatSpecifiers:@"%@" error:&v37, v30];
+    name3 = [v36 name];
+    v25 = [v22 localizedStringWithValidatedFormat:v23 validFormatSpecifiers:@"%@" error:&v37, name3];
     v26 = v37;
 
     if (!v25)
@@ -470,20 +470,20 @@ void *__94__HMDCameraClipSignificantEventBulletin_localizedMessageForSignificant
   return v5;
 }
 
-+ (unint64_t)effectiveReasonForSignificantEvent:(id)a3
++ (unint64_t)effectiveReasonForSignificantEvent:(id)event
 {
-  v3 = a3;
-  if ([v3 confidenceLevel] == 100)
+  eventCopy = event;
+  if ([eventCopy confidenceLevel] == 100)
   {
-    v4 = [v3 reason];
+    reason = [eventCopy reason];
   }
 
   else
   {
-    v4 = 1;
+    reason = 1;
   }
 
-  return v4;
+  return reason;
 }
 
 @end

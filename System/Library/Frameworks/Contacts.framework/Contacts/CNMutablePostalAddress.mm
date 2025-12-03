@@ -1,11 +1,11 @@
 @interface CNMutablePostalAddress
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)freeze;
 @end
 
 @implementation CNMutablePostalAddress
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [CNPostalAddress alloc];
 

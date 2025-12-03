@@ -1,17 +1,17 @@
 @interface HMDAccessoryFirmwareUpdateManagerWingman
 - (HMDAccessoryFirmwareUpdateManagerWingman)init;
-- (id)newAccessoryFirmwareUpdateSessionWithHAPAccessory:(id)a3 uarpAccessory:(id)a4 accessoryFirmwareUpdateManager:(id)a5 logEventManager:(id)a6;
+- (id)newAccessoryFirmwareUpdateSessionWithHAPAccessory:(id)accessory uarpAccessory:(id)uarpAccessory accessoryFirmwareUpdateManager:(id)manager logEventManager:(id)eventManager;
 @end
 
 @implementation HMDAccessoryFirmwareUpdateManagerWingman
 
-- (id)newAccessoryFirmwareUpdateSessionWithHAPAccessory:(id)a3 uarpAccessory:(id)a4 accessoryFirmwareUpdateManager:(id)a5 logEventManager:(id)a6
+- (id)newAccessoryFirmwareUpdateSessionWithHAPAccessory:(id)accessory uarpAccessory:(id)uarpAccessory accessoryFirmwareUpdateManager:(id)manager logEventManager:(id)eventManager
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [[HMDAccessoryFirmwareUpdateSession alloc] initWithHAPAccessory:v12 uarpAccessory:v11 accessoryFirmwareUpdateManager:v10 logEventManager:v9];
+  eventManagerCopy = eventManager;
+  managerCopy = manager;
+  uarpAccessoryCopy = uarpAccessory;
+  accessoryCopy = accessory;
+  v13 = [[HMDAccessoryFirmwareUpdateSession alloc] initWithHAPAccessory:accessoryCopy uarpAccessory:uarpAccessoryCopy accessoryFirmwareUpdateManager:managerCopy logEventManager:eventManagerCopy];
 
   return v13;
 }

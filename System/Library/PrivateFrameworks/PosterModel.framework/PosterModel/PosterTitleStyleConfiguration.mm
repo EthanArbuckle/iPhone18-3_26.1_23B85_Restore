@@ -1,15 +1,15 @@
 @interface PosterTitleStyleConfiguration
 - (_TtC11PosterModel29PosterTitleStyleConfiguration)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PosterTitleStyleConfiguration
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_25EDB942C(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_25EDB942C(coderCopy);
 }
 
 - (_TtC11PosterModel29PosterTitleStyleConfiguration)init

@@ -1,59 +1,59 @@
 @interface PKPeerPaymentRecurringPaymentMemo
-- (BOOL)isEqual:(id)a3;
-- (PKPeerPaymentRecurringPaymentMemo)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (PKPeerPaymentRecurringPaymentMemo)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPeerPaymentRecurringPaymentMemo
 
-- (PKPeerPaymentRecurringPaymentMemo)initWithCoder:(id)a3
+- (PKPeerPaymentRecurringPaymentMemo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = PKPeerPaymentRecurringPaymentMemo;
   v5 = [(PKPeerPaymentRecurringPaymentMemo *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"text"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"text"];
     text = v5->_text;
     v5->_text = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"emoji"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"emoji"];
     emoji = v5->_emoji;
     v5->_emoji = v8;
 
-    v5->_color = [v4 decodeIntegerForKey:@"color"];
+    v5->_color = [coderCopy decodeIntegerForKey:@"color"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   text = self->_text;
-  v5 = a3;
-  [v5 encodeObject:text forKey:@"text"];
-  [v5 encodeObject:self->_emoji forKey:@"emoji"];
-  [v5 encodeInteger:self->_color forKey:@"color"];
+  coderCopy = coder;
+  [coderCopy encodeObject:text forKey:@"text"];
+  [coderCopy encodeObject:self->_emoji forKey:@"emoji"];
+  [coderCopy encodeInteger:self->_color forKey:@"color"];
 }
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  [v3 safelyAddObject:self->_text];
-  [v3 safelyAddObject:self->_emoji];
-  v4 = PKCombinedHash(17, v3);
+  array = [MEMORY[0x1E695DF70] array];
+  [array safelyAddObject:self->_text];
+  [array safelyAddObject:self->_emoji];
+  v4 = PKCombinedHash(17, array);
   v5 = self->_color - v4 + 32 * v4;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -61,7 +61,7 @@
   }
 
   emoji = self->_emoji;
-  v6 = v4[2];
+  v6 = equalCopy[2];
   if (emoji && v6)
   {
     if (([(NSString *)emoji isEqual:?]& 1) == 0)
@@ -76,7 +76,7 @@
   }
 
   text = self->_text;
-  v8 = v4[1];
+  v8 = equalCopy[1];
   if (!text || !v8)
   {
     if (text == v8)
@@ -95,7 +95,7 @@ LABEL_12:
   }
 
 LABEL_10:
-  v9 = self->_color == v4[3];
+  v9 = self->_color == equalCopy[3];
 LABEL_13:
 
   return v9;
@@ -114,15 +114,15 @@ LABEL_13:
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[PKPeerPaymentRecurringPaymentMemo allocWithZone:](PKPeerPaymentRecurringPaymentMemo init];
-  v6 = [(NSString *)self->_emoji copyWithZone:a3];
+  v6 = [(NSString *)self->_emoji copyWithZone:zone];
   emoji = v5->_emoji;
   v5->_emoji = v6;
 
   v5->_color = self->_color;
-  v8 = [(NSString *)self->_text copyWithZone:a3];
+  v8 = [(NSString *)self->_text copyWithZone:zone];
   text = v5->_text;
   v5->_text = v8;
 

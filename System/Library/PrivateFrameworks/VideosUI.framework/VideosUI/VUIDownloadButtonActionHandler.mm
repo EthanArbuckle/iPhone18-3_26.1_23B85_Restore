@@ -3,69 +3,69 @@
 - (BOOL)ignoreDownloadActionIfInRetailDemoMode;
 - (UIView)parentView;
 - (UIViewController)presentingViewController;
-- (VUIDownloadButtonActionHandler)initWithViewModel:(id)a3;
-- (id)_localize:(id)a3 token:(id)a4 value:(id)a5;
+- (VUIDownloadButtonActionHandler)initWithViewModel:(id)model;
+- (id)_localize:(id)_localize token:(id)token value:(id)value;
 - (id)_renewalAlertAction;
 - (id)topPresentedViewController;
 - (void)_askUserAndDeleteIfNeeded;
-- (void)_checkForAccountSignInWithCompletionHandler:(id)a3;
+- (void)_checkForAccountSignInWithCompletionHandler:(id)handler;
 - (void)_dismissConfirmationAlertController;
-- (void)_handleAppDidEnterBackgroundNotification:(id)a3;
+- (void)_handleAppDidEnterBackgroundNotification:(id)notification;
 - (void)_presentSeasonsDownloadList;
 - (void)_showDownloadingInfoDialog;
-- (void)_startDownloadIfPossibleRemovingFromUIOnCancellationOrFailure:(BOOL)a3 prefer3DOrImmersiveDownload:(BOOL)a4;
-- (void)performAction:(BOOL)a3 confirmBeforeStopDownloading:(BOOL)a4 prefer3DOrImmersiveDownload:(BOOL)a5;
+- (void)_startDownloadIfPossibleRemovingFromUIOnCancellationOrFailure:(BOOL)failure prefer3DOrImmersiveDownload:(BOOL)download;
+- (void)performAction:(BOOL)action confirmBeforeStopDownloading:(BOOL)downloading prefer3DOrImmersiveDownload:(BOOL)download;
 @end
 
 @implementation VUIDownloadButtonActionHandler
 
-- (VUIDownloadButtonActionHandler)initWithViewModel:(id)a3
+- (VUIDownloadButtonActionHandler)initWithViewModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   v9.receiver = self;
   v9.super_class = VUIDownloadButtonActionHandler;
   v6 = [(VUIDownloadButtonActionHandler *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_viewModel, a3);
+    objc_storeStrong(&v6->_viewModel, model);
   }
 
   return v7;
 }
 
-- (void)performAction:(BOOL)a3 confirmBeforeStopDownloading:(BOOL)a4 prefer3DOrImmersiveDownload:(BOOL)a5
+- (void)performAction:(BOOL)action confirmBeforeStopDownloading:(BOOL)downloading prefer3DOrImmersiveDownload:(BOOL)download
 {
-  v5 = a5;
-  v6 = a4;
+  downloadCopy = download;
+  downloadingCopy = downloading;
   v44[4] = *MEMORY[0x1E69E9840];
   if (![(VUIDownloadButtonActionHandler *)self ignoreDownloadActionIfInRetailDemoMode])
   {
-    if (a3)
+    if (action)
     {
       v9 = @"LibraryButton_Download";
     }
 
     else
     {
-      v10 = [(VUIDownloadButtonActionHandler *)self viewModel];
-      v11 = [v10 videosPlayable];
-      v12 = [v11 canonicalID];
-      v13 = v12;
-      if (v12)
+      viewModel = [(VUIDownloadButtonActionHandler *)self viewModel];
+      videosPlayable = [viewModel videosPlayable];
+      canonicalID = [videosPlayable canonicalID];
+      v13 = canonicalID;
+      if (canonicalID)
       {
-        v9 = v12;
+        v9 = canonicalID;
       }
 
       else
       {
-        v14 = [(VUIDownloadButtonActionHandler *)self viewModel];
-        v15 = [v14 canonicalId];
-        v16 = v15;
+        viewModel2 = [(VUIDownloadButtonActionHandler *)self viewModel];
+        canonicalId = [viewModel2 canonicalId];
+        v16 = canonicalId;
         v17 = @"BannerButton_Download";
-        if (v15)
+        if (canonicalId)
         {
-          v17 = v15;
+          v17 = canonicalId;
         }
 
         v9 = v17;
@@ -80,20 +80,20 @@
     v43[2] = @"targetId";
     v43[3] = @"actionDetails";
     v41 = @"CurrentState";
-    v18 = [(VUIDownloadButtonActionHandler *)self viewModel];
-    v19 = [v18 downloadStateStringValue];
-    v42 = v19;
+    viewModel3 = [(VUIDownloadButtonActionHandler *)self viewModel];
+    downloadStateStringValue = [viewModel3 downloadStateStringValue];
+    v42 = downloadStateStringValue;
     v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v42 forKeys:&v41 count:1];
     v44[3] = v20;
     v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v44 forKeys:v43 count:4];
 
-    v22 = [(VUIDownloadButtonActionHandler *)self viewModel];
-    v23 = [v22 locationPosition];
+    viewModel4 = [(VUIDownloadButtonActionHandler *)self viewModel];
+    locationPosition = [viewModel4 locationPosition];
 
-    if (v23)
+    if (locationPosition)
     {
       v24 = [v21 mutableCopy];
-      [v24 setObject:v23 forKeyedSubscript:@"locationPosition"];
+      [v24 setObject:locationPosition forKeyedSubscript:@"locationPosition"];
       v25 = [v24 copy];
 
       v21 = v25;
@@ -102,10 +102,10 @@
     v26 = +[VUIMetricsController sharedInstance];
     [v26 recordClick:v21];
 
-    v27 = [(VUIDownloadButtonActionHandler *)self viewModel];
-    v28 = [v27 downloadType];
+    viewModel5 = [(VUIDownloadButtonActionHandler *)self viewModel];
+    downloadType = [viewModel5 downloadType];
 
-    if (v28 == 1)
+    if (downloadType == 1)
     {
       v29 = VUIDefaultLogObject();
       if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
@@ -118,13 +118,13 @@
       goto LABEL_32;
     }
 
-    v30 = [(VUIDownloadButtonActionHandler *)self viewModel];
-    v31 = [v30 downloadType];
+    viewModel6 = [(VUIDownloadButtonActionHandler *)self viewModel];
+    downloadType2 = [viewModel6 downloadType];
 
-    if (v31 == 2)
+    if (downloadType2 == 2)
     {
-      v32 = VUIDefaultLogObject();
-      if (!os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
+      viewModel9 = VUIDefaultLogObject();
+      if (!os_log_type_enabled(viewModel9, OS_LOG_TYPE_DEFAULT))
       {
 LABEL_31:
 
@@ -134,30 +134,30 @@ LABEL_31:
       *v40 = 0;
       v33 = "Requested to show episode list but this is an error condition.";
 LABEL_19:
-      _os_log_impl(&dword_1E323F000, v32, OS_LOG_TYPE_DEFAULT, v33, v40, 2u);
+      _os_log_impl(&dword_1E323F000, viewModel9, OS_LOG_TYPE_DEFAULT, v33, v40, 2u);
       goto LABEL_31;
     }
 
-    v34 = [(VUIDownloadButtonActionHandler *)self viewModel];
-    v35 = [v34 downloadState];
+    viewModel7 = [(VUIDownloadButtonActionHandler *)self viewModel];
+    downloadState = [viewModel7 downloadState];
 
-    if (v35 <= 5)
+    if (downloadState <= 5)
     {
-      if (((1 << v35) & 0x26) == 0)
+      if (((1 << downloadState) & 0x26) == 0)
       {
-        if (((1 << v35) & 9) != 0)
+        if (((1 << downloadState) & 9) != 0)
         {
-          v36 = [(VUIDownloadButtonActionHandler *)self viewModel];
-          v37 = [v36 downloadExpirationDate];
+          viewModel8 = [(VUIDownloadButtonActionHandler *)self viewModel];
+          downloadExpirationDate = [viewModel8 downloadExpirationDate];
 
-          if (v37 && ([v37 vui_isInThePast] & 1) != 0)
+          if (downloadExpirationDate && ([downloadExpirationDate vui_isInThePast] & 1) != 0)
           {
             [(VUIDownloadButtonActionHandler *)self _askUserAndDeleteIfNeeded];
           }
 
           else
           {
-            [(VUIDownloadButtonActionHandler *)self _startDownloadIfPossibleRemovingFromUIOnCancellationOrFailure:1 prefer3DOrImmersiveDownload:v5];
+            [(VUIDownloadButtonActionHandler *)self _startDownloadIfPossibleRemovingFromUIOnCancellationOrFailure:1 prefer3DOrImmersiveDownload:downloadCopy];
           }
 
           goto LABEL_32;
@@ -169,8 +169,8 @@ LABEL_19:
           goto LABEL_32;
         }
 
-        v32 = VUIDefaultLogObject();
-        if (!os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
+        viewModel9 = VUIDefaultLogObject();
+        if (!os_log_type_enabled(viewModel9, OS_LOG_TYPE_DEFAULT))
         {
           goto LABEL_31;
         }
@@ -180,18 +180,18 @@ LABEL_19:
         goto LABEL_19;
       }
 
-      if (!v6)
+      if (!downloadingCopy)
       {
-        v38 = [(VUIDownloadButtonActionHandler *)self acknowledgementDownloadCancelledBlock];
+        acknowledgementDownloadCancelledBlock = [(VUIDownloadButtonActionHandler *)self acknowledgementDownloadCancelledBlock];
 
-        if (v38)
+        if (acknowledgementDownloadCancelledBlock)
         {
-          v39 = [(VUIDownloadButtonActionHandler *)self acknowledgementDownloadCancelledBlock];
-          v39[2]();
+          acknowledgementDownloadCancelledBlock2 = [(VUIDownloadButtonActionHandler *)self acknowledgementDownloadCancelledBlock];
+          acknowledgementDownloadCancelledBlock2[2]();
         }
 
-        v32 = [(VUIDownloadButtonActionHandler *)self viewModel];
-        [v32 stopDownload];
+        viewModel9 = [(VUIDownloadButtonActionHandler *)self viewModel];
+        [viewModel9 stopDownload];
         goto LABEL_31;
       }
 
@@ -206,26 +206,26 @@ LABEL_32:
 {
   if (+[VUIUtilities isInRetailDemoMode])
   {
-    v3 = [(VUIDownloadButtonActionHandler *)self viewModel];
-    v4 = [v3 videosPlayable];
+    viewModel = [(VUIDownloadButtonActionHandler *)self viewModel];
+    videosPlayable = [viewModel videosPlayable];
 
-    if (v4)
+    if (videosPlayable)
     {
-      v4 = [(VUIDownloadButtonActionHandler *)self viewModel];
-      v5 = [v4 videosPlayable];
-      v6 = [v5 channelName];
+      videosPlayable = [(VUIDownloadButtonActionHandler *)self viewModel];
+      v4VideosPlayable = [videosPlayable videosPlayable];
+      channelName = [v4VideosPlayable channelName];
 
-      v7 = [v6 length];
-      LOBYTE(v4) = v7 != 0;
+      v7 = [channelName length];
+      LOBYTE(videosPlayable) = v7 != 0;
       if (v7)
       {
         v8 = +[VUILocalizationManager sharedInstance];
         v9 = [v8 localizedStringForKey:@"TV.StoreDemo.DownloadAlertTitle"];
-        v10 = [(VUIDownloadButtonActionHandler *)self _localize:v9 token:@"channel" value:v6];
+        v10 = [(VUIDownloadButtonActionHandler *)self _localize:v9 token:@"channel" value:channelName];
 
         v11 = +[VUILocalizationManager sharedInstance];
         v12 = [v11 localizedStringForKey:@"TV.StoreDemo.DownloadAlertDescription"];
-        v13 = [(VUIDownloadButtonActionHandler *)self _localize:v12 token:@"channel" value:v6];
+        v13 = [(VUIDownloadButtonActionHandler *)self _localize:v12 token:@"channel" value:channelName];
 
         v14 = [VUIAlertController vui_alertControllerWithTitle:v10 message:v13 preferredStyle:1];
         v15 = +[VUILocalizationManager sharedInstance];
@@ -241,18 +241,18 @@ LABEL_32:
 
   else
   {
-    LOBYTE(v4) = 0;
+    LOBYTE(videosPlayable) = 0;
   }
 
-  return v4;
+  return videosPlayable;
 }
 
 - (void)_askUserAndDeleteIfNeeded
 {
   v3 = [VUIAlertController vui_alertControllerWithTitle:&stru_1F5DB25C0 message:&stru_1F5DB25C0 preferredStyle:0];
-  v4 = [MEMORY[0x1E69DF6F0] isPad];
+  isPad = [MEMORY[0x1E69DF6F0] isPad];
   v5 = @"REMOVE_DOWNLOAD_ALERT_TITLE_IPHONE";
-  if (v4)
+  if (isPad)
   {
     v5 = @"REMOVE_DOWNLOAD_ALERT_TITLE_IPAD";
   }
@@ -270,17 +270,17 @@ LABEL_32:
   objc_initWeak(&location, self);
   if ([(VUIDownloadButtonActionHandler *)self _shouldShowRenewalOption])
   {
-    v11 = [(VUIDownloadButtonActionHandler *)self viewModel];
-    v12 = [v11 downloadExpirationDate];
+    viewModel = [(VUIDownloadButtonActionHandler *)self viewModel];
+    downloadExpirationDate = [viewModel downloadExpirationDate];
 
-    if (!v12)
+    if (!downloadExpirationDate)
     {
 LABEL_22:
 
       goto LABEL_23;
     }
 
-    if ([v12 vui_isInThePast])
+    if ([downloadExpirationDate vui_isInThePast])
     {
       if ([MEMORY[0x1E69DF6F0] isVision])
       {
@@ -289,9 +289,9 @@ LABEL_22:
 
       else
       {
-        v20 = [MEMORY[0x1E69DF6F0] isPad];
+        isPad2 = [MEMORY[0x1E69DF6F0] isPad];
         v13 = @"DOWNLOAD_RENEW_TO_KEEP_THIS_DOWNLOAD_MESSAGE_IPHONE";
-        if (v20)
+        if (isPad2)
         {
           v13 = @"DOWNLOAD_RENEW_TO_KEEP_THIS_DOWNLOAD_MESSAGE_IPAD";
         }
@@ -299,26 +299,26 @@ LABEL_22:
 
       v19 = v13;
 
-      v21 = [(VUIDownloadButtonActionHandler *)self viewModel];
-      v22 = [v21 brandName];
+      viewModel2 = [(VUIDownloadButtonActionHandler *)self viewModel];
+      brandName = [viewModel2 brandName];
 
       v23 = MEMORY[0x1E696AEC0];
       v24 = +[VUILocalizationManager sharedInstance];
       v25 = [v24 localizedStringForKey:v19];
-      v26 = [v23 stringWithValidatedFormat:v25 validFormatSpecifiers:@"%@" error:0, v22];
+      v26 = [v23 stringWithValidatedFormat:v25 validFormatSpecifiers:@"%@" error:0, brandName];
 
-      v18 = [(VUIDownloadButtonActionHandler *)self _renewalAlertAction];
-      v15 = v22;
-      [v3 vui_addAction:v18];
+      _renewalAlertAction = [(VUIDownloadButtonActionHandler *)self _renewalAlertAction];
+      brandID = brandName;
+      [v3 vui_addAction:_renewalAlertAction];
       v55 = v26;
     }
 
     else
     {
-      v14 = [(VUIDownloadButtonActionHandler *)self viewModel];
-      v15 = [v14 brandID];
+      viewModel3 = [(VUIDownloadButtonActionHandler *)self viewModel];
+      brandID = [viewModel3 brandID];
 
-      if (![v15 length])
+      if (![brandID length])
       {
 LABEL_21:
 
@@ -326,10 +326,10 @@ LABEL_21:
       }
 
       v16 = +[VUIFeaturesConfiguration sharedInstance];
-      v17 = [v16 downloadConfig];
-      v18 = [v17 blacklistedEarlyRenewalBrands];
+      downloadConfig = [v16 downloadConfig];
+      _renewalAlertAction = [downloadConfig blacklistedEarlyRenewalBrands];
 
-      if (v18 && ([v18 containsObject:v15] & 1) != 0)
+      if (_renewalAlertAction && ([_renewalAlertAction containsObject:brandID] & 1) != 0)
       {
         v19 = v6;
       }
@@ -343,9 +343,9 @@ LABEL_21:
 
         else
         {
-          v28 = [MEMORY[0x1E69DF6F0] isPad];
+          isPad3 = [MEMORY[0x1E69DF6F0] isPad];
           v27 = @"DOWNLOAD_RENEW_TO_KEEP_THIS_DOWNLOAD_MESSAGE_IPHONE";
-          if (v28)
+          if (isPad3)
           {
             v27 = @"DOWNLOAD_RENEW_TO_KEEP_THIS_DOWNLOAD_MESSAGE_IPAD";
           }
@@ -353,16 +353,16 @@ LABEL_21:
 
         v19 = v27;
 
-        v29 = [(VUIDownloadButtonActionHandler *)self viewModel];
-        v30 = [v29 brandName];
+        viewModel4 = [(VUIDownloadButtonActionHandler *)self viewModel];
+        brandName2 = [viewModel4 brandName];
 
         v31 = MEMORY[0x1E696AEC0];
         v32 = +[VUILocalizationManager sharedInstance];
         v33 = [v32 localizedStringForKey:v19];
-        v53 = [v31 stringWithValidatedFormat:v33 validFormatSpecifiers:@"%@" error:0, v30];
+        v53 = [v31 stringWithValidatedFormat:v33 validFormatSpecifiers:@"%@" error:0, brandName2];
 
-        v34 = [(VUIDownloadButtonActionHandler *)self _renewalAlertAction];
-        [v3 vui_addAction:v34];
+        _renewalAlertAction2 = [(VUIDownloadButtonActionHandler *)self _renewalAlertAction];
+        [v3 vui_addAction:_renewalAlertAction2];
 
         v55 = v53;
       }
@@ -384,34 +384,34 @@ LABEL_23:
 
   [v3 vui_addAction:v37];
   [v3 setVuiTitle:v55];
-  v38 = [(VUIDownloadButtonActionHandler *)self parentView];
-  [v38 bounds];
+  parentView = [(VUIDownloadButtonActionHandler *)self parentView];
+  [parentView bounds];
   v40 = v39;
   v42 = v41;
   v44 = v43;
   v46 = v45;
-  v47 = [v3 popoverPresentationController];
-  [v47 setSourceView:v38];
-  [v47 setSourceRect:{v40, v42, v44, v46}];
+  popoverPresentationController = [v3 popoverPresentationController];
+  [popoverPresentationController setSourceView:parentView];
+  [popoverPresentationController setSourceRect:{v40, v42, v44, v46}];
   v48 = [MEMORY[0x1E69DC888] colorWithDynamicProvider:&__block_literal_global_153];
-  [v47 setBackgroundColor:v48];
-  [v47 setPermittedArrowDirections:15];
-  v49 = [(VUIDownloadButtonActionHandler *)self topPresentedViewController];
+  [popoverPresentationController setBackgroundColor:v48];
+  [popoverPresentationController setPermittedArrowDirections:15];
+  topPresentedViewController = [(VUIDownloadButtonActionHandler *)self topPresentedViewController];
   [(VUIDownloadButtonActionHandler *)self setDeleteConfirmationAlertController:v3];
-  v50 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v50 addObserver:self selector:sel__handleAppDidEnterBackgroundNotification_ name:*MEMORY[0x1E69DF7E0] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__handleAppDidEnterBackgroundNotification_ name:*MEMORY[0x1E69DF7E0] object:0];
 
-  v51 = [(VUIDownloadButtonActionHandler *)self presentAlertBlock];
+  presentAlertBlock = [(VUIDownloadButtonActionHandler *)self presentAlertBlock];
 
-  if (v51)
+  if (presentAlertBlock)
   {
-    v52 = [(VUIDownloadButtonActionHandler *)self presentAlertBlock];
-    (v52)[2](v52, v3);
+    presentAlertBlock2 = [(VUIDownloadButtonActionHandler *)self presentAlertBlock];
+    (presentAlertBlock2)[2](presentAlertBlock2, v3);
   }
 
   else
   {
-    [v3 vui_presentAlertFromPresentingController:v49 animated:1 completion:0];
+    [v3 vui_presentAlertFromPresentingController:topPresentedViewController animated:1 completion:0];
   }
 
   objc_destroyWeak(&v57);
@@ -477,18 +477,18 @@ id __59__VUIDownloadButtonActionHandler__askUserAndDeleteIfNeeded__block_invoke_
   v11 = [VUIAlertAction vui_actionWithTitle:v10 style:1 handler:0];
 
   [v5 vui_addAction:v11];
-  v12 = [(VUIDownloadButtonActionHandler *)self presentAlertBlock];
+  presentAlertBlock = [(VUIDownloadButtonActionHandler *)self presentAlertBlock];
 
-  if (v12)
+  if (presentAlertBlock)
   {
-    v13 = [(VUIDownloadButtonActionHandler *)self presentAlertBlock];
-    (v13)[2](v13, v5);
+    presentAlertBlock2 = [(VUIDownloadButtonActionHandler *)self presentAlertBlock];
+    (presentAlertBlock2)[2](presentAlertBlock2, v5);
   }
 
   else
   {
-    v13 = [(VUIDownloadButtonActionHandler *)self topPresentedViewController];
-    [v5 vui_presentAlertFromPresentingController:v13 animated:1 completion:0];
+    presentAlertBlock2 = [(VUIDownloadButtonActionHandler *)self topPresentedViewController];
+    [v5 vui_presentAlertFromPresentingController:presentAlertBlock2 animated:1 completion:0];
   }
 
   objc_destroyWeak(&v18);
@@ -518,12 +518,12 @@ void __60__VUIDownloadButtonActionHandler__showDownloadingInfoDialog__block_invo
 
 - (id)_renewalAlertAction
 {
-  v3 = [(VUIDownloadButtonActionHandler *)self viewModel];
-  v4 = [v3 allowsManualDownloadRenewal];
+  viewModel = [(VUIDownloadButtonActionHandler *)self viewModel];
+  allowsManualDownloadRenewal = [viewModel allowsManualDownloadRenewal];
 
   v5 = +[VUILocalizationManager sharedInstance];
   v6 = v5;
-  if (v4)
+  if (allowsManualDownloadRenewal)
   {
     v7 = @"RENEW_DOWNLOAD";
   }
@@ -541,7 +541,7 @@ void __60__VUIDownloadButtonActionHandler__showDownloadingInfoDialog__block_invo
   v11[2] = __53__VUIDownloadButtonActionHandler__renewalAlertAction__block_invoke;
   v11[3] = &unk_1E8736EF8;
   objc_copyWeak(&v12, &location);
-  v13 = v4;
+  v13 = allowsManualDownloadRenewal;
   v9 = [VUIAlertAction vui_actionWithTitle:v8 style:0 handler:v11];
   objc_destroyWeak(&v12);
   objc_destroyWeak(&location);
@@ -572,14 +572,14 @@ void __53__VUIDownloadButtonActionHandler__renewalAlertAction__block_invoke(uint
 
 - (BOOL)_shouldShowRenewalOption
 {
-  v2 = [(VUIDownloadButtonActionHandler *)self viewModel];
-  v3 = [v2 renewsOfflineKeysAutomatically];
-  v4 = [v2 downloadExpirationDate];
-  v5 = [v2 availabilityEndDate];
-  if (v4)
+  viewModel = [(VUIDownloadButtonActionHandler *)self viewModel];
+  renewsOfflineKeysAutomatically = [viewModel renewsOfflineKeysAutomatically];
+  downloadExpirationDate = [viewModel downloadExpirationDate];
+  availabilityEndDate = [viewModel availabilityEndDate];
+  if (downloadExpirationDate)
   {
-    v6 = [v4 vui_isInThePast];
-    if (!v3)
+    vui_isInThePast = [downloadExpirationDate vui_isInThePast];
+    if (!renewsOfflineKeysAutomatically)
     {
       goto LABEL_6;
     }
@@ -587,14 +587,14 @@ void __53__VUIDownloadButtonActionHandler__renewalAlertAction__block_invoke(uint
 
   else
   {
-    v6 = 0;
-    if (!v3)
+    vui_isInThePast = 0;
+    if (!renewsOfflineKeysAutomatically)
     {
       goto LABEL_6;
     }
   }
 
-  if (!v6)
+  if (!vui_isInThePast)
   {
 LABEL_9:
     v7 = 0;
@@ -602,7 +602,7 @@ LABEL_9:
   }
 
 LABEL_6:
-  if (v5 && ![v5 vui_isInTheFuture])
+  if (availabilityEndDate && ![availabilityEndDate vui_isInTheFuture])
   {
     goto LABEL_9;
   }
@@ -613,23 +613,23 @@ LABEL_10:
   return v7;
 }
 
-- (void)_startDownloadIfPossibleRemovingFromUIOnCancellationOrFailure:(BOOL)a3 prefer3DOrImmersiveDownload:(BOOL)a4
+- (void)_startDownloadIfPossibleRemovingFromUIOnCancellationOrFailure:(BOOL)failure prefer3DOrImmersiveDownload:(BOOL)download
 {
-  v7 = [(VUIDownloadButtonActionHandler *)self presentingViewController];
-  if (v7)
+  presentingViewController = [(VUIDownloadButtonActionHandler *)self presentingViewController];
+  if (presentingViewController)
   {
-    v8 = v7;
+    controllerPresenter = presentingViewController;
 LABEL_5:
     objc_initWeak(&location, self);
-    v12 = [(VUIDownloadButtonActionHandler *)self viewModel];
+    viewModel = [(VUIDownloadButtonActionHandler *)self viewModel];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __124__VUIDownloadButtonActionHandler__startDownloadIfPossibleRemovingFromUIOnCancellationOrFailure_prefer3DOrImmersiveDownload___block_invoke;
     v13[3] = &unk_1E8736F20;
     objc_copyWeak(&v14, &location);
-    v15 = a3;
-    v16 = a4;
-    [v12 preflightPresentingViewController:v8 completion:v13];
+    failureCopy = failure;
+    downloadCopy = download;
+    [viewModel preflightPresentingViewController:controllerPresenter completion:v13];
 
     objc_destroyWeak(&v14);
     objc_destroyWeak(&location);
@@ -638,19 +638,19 @@ LABEL_5:
   }
 
   v9 = +[VUIInterfaceFactory sharedInstance];
-  v8 = [v9 controllerPresenter];
+  controllerPresenter = [v9 controllerPresenter];
 
-  if (v8)
+  if (controllerPresenter)
   {
     goto LABEL_5;
   }
 
   v10 = +[VUITVAppLauncher sharedInstance];
-  v11 = [v10 appController];
+  appController = [v10 appController];
 
-  v8 = [v11 navigationController];
+  controllerPresenter = [appController navigationController];
 
-  if (v8)
+  if (controllerPresenter)
   {
     goto LABEL_5;
   }
@@ -669,12 +669,12 @@ void __124__VUIDownloadButtonActionHandler__startDownloadIfPossibleRemovingFromU
   }
 }
 
-- (void)_checkForAccountSignInWithCompletionHandler:(id)a3
+- (void)_checkForAccountSignInWithCompletionHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   if (+[VUIAuthenticationManager userHasActiveAccount])
   {
-    v3[2](v3, 1);
+    handlerCopy[2](handlerCopy, 1);
   }
 
   else
@@ -690,7 +690,7 @@ void __124__VUIDownloadButtonActionHandler__startDownloadIfPossibleRemovingFromU
     v5[1] = 3221225472;
     v5[2] = __78__VUIDownloadButtonActionHandler__checkForAccountSignInWithCompletionHandler___block_invoke;
     v5[3] = &unk_1E872E470;
-    v6 = v3;
+    v6 = handlerCopy;
     [VUIAuthenticationManager requestAuthenticationAlwaysPrompt:1 withCompletionHandler:v5];
   }
 }
@@ -715,11 +715,11 @@ void __78__VUIDownloadButtonActionHandler__checkForAccountSignInWithCompletionHa
 
 - (void)_presentSeasonsDownloadList
 {
-  v9 = [(VUIDownloadButtonActionHandler *)self parentView];
+  parentView = [(VUIDownloadButtonActionHandler *)self parentView];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v9;
+    v3 = parentView;
   }
 
   else
@@ -727,62 +727,62 @@ void __78__VUIDownloadButtonActionHandler__checkForAccountSignInWithCompletionHa
     v3 = 0;
   }
 
-  v4 = [v3 seasonDownloadDataSourceProvider];
+  seasonDownloadDataSourceProvider = [v3 seasonDownloadDataSourceProvider];
   v5 = +[VUIInterfaceFactory sharedInstance];
-  v6 = [v5 seasonsControllerCreator];
+  seasonsControllerCreator = [v5 seasonsControllerCreator];
 
-  if (v4 && v6)
+  if (seasonDownloadDataSourceProvider && seasonsControllerCreator)
   {
-    v7 = [v6 seasonsDownloadViewControllerWith:v4];
+    v7 = [seasonsControllerCreator seasonsDownloadViewControllerWith:seasonDownloadDataSourceProvider];
     if (v7)
     {
-      v8 = [(VUIDownloadButtonActionHandler *)self topPresentedViewController];
-      [v8 presentViewController:v7 animated:1 completion:0];
+      topPresentedViewController = [(VUIDownloadButtonActionHandler *)self topPresentedViewController];
+      [topPresentedViewController presentViewController:v7 animated:1 completion:0];
     }
   }
 }
 
-- (void)_handleAppDidEnterBackgroundNotification:(id)a3
+- (void)_handleAppDidEnterBackgroundNotification:(id)notification
 {
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 removeObserver:self name:*MEMORY[0x1E69DF7E0] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69DF7E0] object:0];
 
   [(VUIDownloadButtonActionHandler *)self _dismissConfirmationAlertController];
 }
 
 - (void)_dismissConfirmationAlertController
 {
-  v3 = [(VUIDownloadButtonActionHandler *)self deleteConfirmationAlertController];
+  deleteConfirmationAlertController = [(VUIDownloadButtonActionHandler *)self deleteConfirmationAlertController];
 
-  if (v3)
+  if (deleteConfirmationAlertController)
   {
-    v4 = [(VUIDownloadButtonActionHandler *)self deleteConfirmationAlertController];
-    [v4 vui_dismissViewControllerAnimated:1 completion:0];
+    deleteConfirmationAlertController2 = [(VUIDownloadButtonActionHandler *)self deleteConfirmationAlertController];
+    [deleteConfirmationAlertController2 vui_dismissViewControllerAnimated:1 completion:0];
 
     [(VUIDownloadButtonActionHandler *)self setDeleteConfirmationAlertController:0];
   }
 }
 
-- (id)_localize:(id)a3 token:(id)a4 value:(id)a5
+- (id)_localize:(id)_localize token:(id)token value:(id)value
 {
   v7 = MEMORY[0x1E696AEC0];
-  v8 = a5;
-  v9 = a3;
-  v10 = [v7 stringWithFormat:@"@@%@@@", a4];
-  v11 = [v9 stringByReplacingOccurrencesOfString:v10 withString:v8];
+  valueCopy = value;
+  _localizeCopy = _localize;
+  token = [v7 stringWithFormat:@"@@%@@@", token];
+  v11 = [_localizeCopy stringByReplacingOccurrencesOfString:token withString:valueCopy];
 
   return v11;
 }
 
 - (id)topPresentedViewController
 {
-  v2 = [(VUIDownloadButtonActionHandler *)self presentingViewController];
-  if (!v2)
+  presentingViewController = [(VUIDownloadButtonActionHandler *)self presentingViewController];
+  if (!presentingViewController)
   {
-    v2 = +[VUIApplicationRouter topPresentedViewController];
+    presentingViewController = +[VUIApplicationRouter topPresentedViewController];
   }
 
-  return v2;
+  return presentingViewController;
 }
 
 - (UIViewController)presentingViewController

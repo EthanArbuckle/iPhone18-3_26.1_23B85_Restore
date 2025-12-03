@@ -1,8 +1,8 @@
 @interface CMExerciseMinuteInternal
 - (CMExerciseMinuteInternal)init;
-- (void)_queryExerciseMinutesFromRecord:(id)a3 handler:(id)a4;
-- (void)_startUpdatesFromRecord:(id)a3 handler:(id)a4;
-- (void)_startUpdatesWithHandler:(id)a3;
+- (void)_queryExerciseMinutesFromRecord:(id)record handler:(id)handler;
+- (void)_startUpdatesFromRecord:(id)record handler:(id)handler;
+- (void)_startUpdatesWithHandler:(id)handler;
 - (void)_stopUpdates;
 - (void)_teardown;
 - (void)dealloc;
@@ -57,13 +57,13 @@
   self->fLocationdConnection = 0;
 }
 
-- (void)_startUpdatesFromRecord:(id)a3 handler:(id)a4
+- (void)_startUpdatesFromRecord:(id)record handler:(id)handler
 {
-  objc_msgSend__queryExerciseMinutesFromRecord_handler_(self, a2, a3);
-  objc_msgSend__startUpdatesWithHandler_(self, v7, a4);
+  objc_msgSend__queryExerciseMinutesFromRecord_handler_(self, a2, record);
+  objc_msgSend__startUpdatesWithHandler_(self, v7, handler);
 
   self->fMostRecentRecord = 0;
-  self->fMostRecentRecord = a3;
+  self->fMostRecentRecord = record;
 }
 
 - (void)_stopUpdates
@@ -77,7 +77,7 @@
   dispatch_sync(fInternalQueue, block);
 }
 
-- (void)_startUpdatesWithHandler:(id)a3
+- (void)_startUpdatesWithHandler:(id)handler
 {
   fInternalQueue = self->fInternalQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -85,19 +85,19 @@
   v4[2] = sub_19B6721BC;
   v4[3] = &unk_1E7532B68;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = handler;
   dispatch_async(fInternalQueue, v4);
 }
 
-- (void)_queryExerciseMinutesFromRecord:(id)a3 handler:(id)a4
+- (void)_queryExerciseMinutesFromRecord:(id)record handler:(id)handler
 {
   fInternalQueue = self->fInternalQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = sub_19B672984;
   block[3] = &unk_1E7532C80;
-  block[5] = a3;
-  block[6] = a4;
+  block[5] = record;
+  block[6] = handler;
   block[4] = self;
   dispatch_async(fInternalQueue, block);
 }

@@ -2,7 +2,7 @@
 - (DIPAmbientLightMonitor)init;
 - (int)luxLevel;
 - (void)dealloc;
-- (void)handleEvent:(__IOHIDEvent *)a3;
+- (void)handleEvent:(__IOHIDEvent *)event;
 @end
 
 @implementation DIPAmbientLightMonitor
@@ -44,7 +44,7 @@
       }
     }
 
-    v12 = self;
+    selfCopy = self;
   }
 
   else
@@ -55,10 +55,10 @@
       [(DIPAmbientLightMonitor *)v4 init];
     }
 
-    v12 = 0;
+    selfCopy = 0;
   }
 
-  return v12;
+  return selfCopy;
 }
 
 - (void)dealloc
@@ -80,9 +80,9 @@
   [(DIPAmbientLightMonitor *)&v4 dealloc];
 }
 
-- (void)handleEvent:(__IOHIDEvent *)a3
+- (void)handleEvent:(__IOHIDEvent *)event
 {
-  if (a3)
+  if (event)
   {
     if (IOHIDEventGetType() == 12)
     {

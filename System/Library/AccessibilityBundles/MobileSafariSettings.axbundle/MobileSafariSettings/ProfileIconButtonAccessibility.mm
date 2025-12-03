@@ -13,10 +13,10 @@
     v3 = __UIAccessibilityCastAsClass();
     if ([v3 isSelected])
     {
-      v4 = [v3 imageView];
-      v5 = [v4 accessibilityLabel];
+      imageView = [v3 imageView];
+      accessibilityLabel = [imageView accessibilityLabel];
 
-      v6 = profileSymbolAccessibilityLabel(v5);
+      v6 = profileSymbolAccessibilityLabel(accessibilityLabel);
       v9 = profileSymbolAccessibilityLabel(v2);
       v7 = __UIAXStringForVariables();
 

@@ -1,40 +1,40 @@
 @interface CCToolKitToolTypedValuePrimitiveValueDateComponentsCalendar
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4;
-- (CCToolKitToolTypedValuePrimitiveValueDateComponentsCalendar)initWithIdentifier:(unsigned int)a3 timeZoneIdentifier:(id)a4 localeIdentifier:(id)a5 firstWeekday:(id)a6 minimumDaysInFirstWeek:(id)a7 error:(id *)a8;
-- (CCToolKitToolTypedValuePrimitiveValueDateComponentsCalendar)initWithJSONDictionary:(id)a3 error:(id *)a4;
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error;
+- (CCToolKitToolTypedValuePrimitiveValueDateComponentsCalendar)initWithIdentifier:(unsigned int)identifier timeZoneIdentifier:(id)zoneIdentifier localeIdentifier:(id)localeIdentifier firstWeekday:(id)weekday minimumDaysInFirstWeek:(id)week error:(id *)error;
+- (CCToolKitToolTypedValuePrimitiveValueDateComponentsCalendar)initWithJSONDictionary:(id)dictionary error:(id *)error;
 - (NSString)localeIdentifier;
 - (NSString)timeZoneIdentifier;
 - (id)jsonDictionary;
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4;
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type;
 @end
 
 @implementation CCToolKitToolTypedValuePrimitiveValueDateComponentsCalendar
 
-- (CCToolKitToolTypedValuePrimitiveValueDateComponentsCalendar)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (CCToolKitToolTypedValuePrimitiveValueDateComponentsCalendar)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
   v8 = 0;
   if (IsInstanceOfExpectedClass)
   {
-    v9 = [v6 objectForKeyedSubscript:@"identifier"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"identifier"];
     v10 = v9;
     if (v9)
     {
-      v11 = [v9 unsignedIntegerValue];
+      unsignedIntegerValue = [v9 unsignedIntegerValue];
     }
 
     else
     {
-      v11 = 0;
+      unsignedIntegerValue = 0;
     }
 
-    v13 = [v6 objectForKeyedSubscript:@"timeZoneIdentifier"];
-    v14 = [v6 objectForKeyedSubscript:@"localeIdentifier"];
-    v15 = [v6 objectForKeyedSubscript:@"firstWeekday"];
-    v16 = [v6 objectForKeyedSubscript:@"minimumDaysInFirstWeek"];
-    v12 = [[CCToolKitToolTypedValuePrimitiveValueDateComponentsCalendar alloc] initWithIdentifier:v11 timeZoneIdentifier:v13 localeIdentifier:v14 firstWeekday:v15 minimumDaysInFirstWeek:v16 error:a4];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"timeZoneIdentifier"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"localeIdentifier"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"firstWeekday"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"minimumDaysInFirstWeek"];
+    v12 = [[CCToolKitToolTypedValuePrimitiveValueDateComponentsCalendar alloc] initWithIdentifier:unsignedIntegerValue timeZoneIdentifier:v13 localeIdentifier:v14 firstWeekday:v15 minimumDaysInFirstWeek:v16 error:error];
   }
 
   else
@@ -54,14 +54,14 @@
 
   if (self->_timeZoneIdentifier)
   {
-    v5 = [(CCToolKitToolTypedValuePrimitiveValueDateComponentsCalendar *)self timeZoneIdentifier];
-    [v3 setObject:v5 forKeyedSubscript:@"timeZoneIdentifier"];
+    timeZoneIdentifier = [(CCToolKitToolTypedValuePrimitiveValueDateComponentsCalendar *)self timeZoneIdentifier];
+    [v3 setObject:timeZoneIdentifier forKeyedSubscript:@"timeZoneIdentifier"];
   }
 
   if (self->_localeIdentifier)
   {
-    v6 = [(CCToolKitToolTypedValuePrimitiveValueDateComponentsCalendar *)self localeIdentifier];
-    [v3 setObject:v6 forKeyedSubscript:@"localeIdentifier"];
+    localeIdentifier = [(CCToolKitToolTypedValuePrimitiveValueDateComponentsCalendar *)self localeIdentifier];
+    [v3 setObject:localeIdentifier forKeyedSubscript:@"localeIdentifier"];
   }
 
   if (self->_hasFirstWeekday)
@@ -81,36 +81,36 @@
   return v9;
 }
 
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type
 {
-  v12 = a3;
+  blockCopy = block;
   v5 = objc_alloc(MEMORY[0x1E69939F0]);
   v6 = *MEMORY[0x1E69939A8];
   v7 = [v5 initWithFieldType:v6 enumValue:self->_identifier];
-  v12[2](v12, v7);
+  blockCopy[2](blockCopy, v7);
 
   if (self->_timeZoneIdentifier)
   {
     v8 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:v6 stringValue:self->_timeZoneIdentifier];
-    v12[2](v12, v8);
+    blockCopy[2](blockCopy, v8);
   }
 
   if (self->_localeIdentifier)
   {
     v9 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:v6 stringValue:self->_localeIdentifier];
-    v12[2](v12, v9);
+    blockCopy[2](blockCopy, v9);
   }
 
   if (self->_hasFirstWeekday)
   {
     v10 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:v6 int64Value:self->_firstWeekday];
-    v12[2](v12, v10);
+    blockCopy[2](blockCopy, v10);
   }
 
   if (self->_hasMinimumDaysInFirstWeek)
   {
     v11 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:v6 int64Value:self->_minimumDaysInFirstWeek];
-    v12[2](v12, v11);
+    blockCopy[2](blockCopy, v11);
   }
 }
 
@@ -128,10 +128,10 @@
   return v2;
 }
 
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error
 {
-  v6 = a3;
-  v7 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:v6];
+  dataCopy = data;
+  v7 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:dataCopy];
   v8 = MEMORY[0x1E6993AB8];
   v9 = MEMORY[0x1E6993AB0];
   v10 = MEMORY[0x1E6993AA8];
@@ -271,15 +271,15 @@ LABEL_52:
           {
             v49 = objc_opt_class();
             NSStringFromClass(v49);
-            v60 = self;
-            v50 = a4;
-            v52 = v51 = v6;
+            selfCopy = self;
+            errorCopy = error;
+            v52 = v51 = dataCopy;
             v53 = *&v7[*v10];
             v11 = CCSkipFieldErrorForMessage();
 
-            v6 = v51;
-            a4 = v50;
-            self = v60;
+            dataCopy = v51;
+            error = errorCopy;
+            self = selfCopy;
             goto LABEL_67;
           }
 
@@ -433,15 +433,15 @@ LABEL_74:
   return v58;
 }
 
-- (CCToolKitToolTypedValuePrimitiveValueDateComponentsCalendar)initWithIdentifier:(unsigned int)a3 timeZoneIdentifier:(id)a4 localeIdentifier:(id)a5 firstWeekday:(id)a6 minimumDaysInFirstWeek:(id)a7 error:(id *)a8
+- (CCToolKitToolTypedValuePrimitiveValueDateComponentsCalendar)initWithIdentifier:(unsigned int)identifier timeZoneIdentifier:(id)zoneIdentifier localeIdentifier:(id)localeIdentifier firstWeekday:(id)weekday minimumDaysInFirstWeek:(id)week error:(id *)error
 {
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  zoneIdentifierCopy = zoneIdentifier;
+  localeIdentifierCopy = localeIdentifier;
+  weekdayCopy = weekday;
+  weekCopy = week;
   v18 = objc_opt_new();
-  v38 = v14;
-  if (a3)
+  v38 = zoneIdentifierCopy;
+  if (identifier)
   {
     v19 = CCValidateEnumField();
     v20 = 0;
@@ -450,23 +450,23 @@ LABEL_74:
       goto LABEL_23;
     }
 
-    v37 = a8;
-    v21 = v16;
-    v22 = v17;
-    v23 = self;
+    errorCopy2 = error;
+    v21 = weekdayCopy;
+    v22 = weekCopy;
+    selfCopy2 = self;
     CCPBDataWriterWriteUint32Field();
   }
 
   else
   {
-    v37 = a8;
-    v21 = v16;
-    v22 = v17;
-    v23 = self;
+    errorCopy2 = error;
+    v21 = weekdayCopy;
+    v22 = weekCopy;
+    selfCopy2 = self;
     v20 = 0;
   }
 
-  if (v14)
+  if (zoneIdentifierCopy)
   {
     objc_opt_class();
     IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
@@ -475,42 +475,42 @@ LABEL_74:
     if (!IsInstanceOfExpectedClass)
     {
       CCSetError();
-      v32 = 0;
+      selfCopy3 = 0;
       v20 = v25;
       goto LABEL_18;
     }
 
     CCPBDataWriterWriteStringField();
-    if (!v15)
+    if (!localeIdentifierCopy)
     {
 LABEL_8:
-      v26 = v15;
+      v26 = localeIdentifierCopy;
       v20 = v25;
 LABEL_12:
-      self = v23;
+      self = selfCopy2;
       v28 = 0x1E696A000uLL;
-      v17 = v22;
-      v16 = v21;
+      weekCopy = v22;
+      weekdayCopy = v21;
       if (v21)
       {
         objc_opt_class();
         v29 = CCValidateIsInstanceOfExpectedClass();
         v30 = v20;
 
-        v15 = v26;
-        v31 = v37;
+        localeIdentifierCopy = v26;
+        v31 = errorCopy2;
         if (!v29)
         {
           CCSetError();
-          v32 = 0;
+          selfCopy3 = 0;
           v20 = v30;
           goto LABEL_25;
         }
 
-        [v16 longLongValue];
+        [weekdayCopy longLongValue];
         CCPBDataWriterWriteInt64Field();
         v28 = 0x1E696A000;
-        if (!v17)
+        if (!weekCopy)
         {
           goto LABEL_15;
         }
@@ -519,17 +519,17 @@ LABEL_12:
       else
       {
         v30 = v20;
-        v15 = v26;
-        v31 = v37;
-        if (!v17)
+        localeIdentifierCopy = v26;
+        v31 = errorCopy2;
+        if (!weekCopy)
         {
 LABEL_15:
           v20 = v30;
 LABEL_22:
-          v35 = [v18 immutableData];
-          self = [(CCItemMessage *)self initWithData:v35 error:v31];
+          immutableData = [v18 immutableData];
+          self = [(CCItemMessage *)self initWithData:immutableData error:v31];
 
-          v32 = self;
+          selfCopy3 = self;
           goto LABEL_25;
         }
       }
@@ -541,14 +541,14 @@ LABEL_22:
 
       if (v34)
       {
-        [v17 longLongValue];
+        [weekCopy longLongValue];
         CCPBDataWriterWriteInt64Field();
         goto LABEL_22;
       }
 
 LABEL_23:
       CCSetError();
-      v32 = 0;
+      selfCopy3 = 0;
       goto LABEL_25;
     }
   }
@@ -556,7 +556,7 @@ LABEL_23:
   else
   {
     v25 = v20;
-    if (!v15)
+    if (!localeIdentifierCopy)
     {
       goto LABEL_8;
     }
@@ -568,20 +568,20 @@ LABEL_23:
 
   if (v27)
   {
-    v26 = v15;
+    v26 = localeIdentifierCopy;
     CCPBDataWriterWriteStringField();
     goto LABEL_12;
   }
 
   CCSetError();
-  v32 = 0;
+  selfCopy3 = 0;
 LABEL_18:
-  self = v23;
-  v17 = v22;
-  v16 = v21;
+  self = selfCopy2;
+  weekCopy = v22;
+  weekdayCopy = v21;
 LABEL_25:
 
-  return v32;
+  return selfCopy3;
 }
 
 @end

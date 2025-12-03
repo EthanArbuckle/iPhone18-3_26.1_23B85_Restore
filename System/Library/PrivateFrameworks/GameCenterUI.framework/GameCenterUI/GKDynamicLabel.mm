@@ -1,5 +1,5 @@
 @interface GKDynamicLabel
-- (void)contentSizeCategoryDidChangeNotification:(id)a3;
+- (void)contentSizeCategoryDidChangeNotification:(id)notification;
 - (void)dealloc;
 - (void)didMoveToWindow;
 @end
@@ -8,8 +8,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = GKDynamicLabel;
@@ -18,26 +18,26 @@
 
 - (void)didMoveToWindow
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
-  v4 = [(GKDynamicLabel *)self window];
+  window = [(GKDynamicLabel *)self window];
 
-  if (v4)
+  if (window)
   {
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v5 addObserver:self selector:sel_contentSizeCategoryDidChangeNotification_ name:*MEMORY[0x277D76810] object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:self selector:sel_contentSizeCategoryDidChangeNotification_ name:*MEMORY[0x277D76810] object:0];
 
     [(GKDynamicLabel *)self contentSizeCategoryDidChangeNotification:0];
   }
 }
 
-- (void)contentSizeCategoryDidChangeNotification:(id)a3
+- (void)contentSizeCategoryDidChangeNotification:(id)notification
 {
-  v4 = [(GKDynamicLabel *)self font];
-  v5 = [v4 fontDescriptor];
-  v6 = [v5 fontAttributes];
-  v9 = [v6 objectForKeyedSubscript:*MEMORY[0x277D74378]];
+  font = [(GKDynamicLabel *)self font];
+  fontDescriptor = [font fontDescriptor];
+  fontAttributes = [fontDescriptor fontAttributes];
+  v9 = [fontAttributes objectForKeyedSubscript:*MEMORY[0x277D74378]];
 
   v7 = v9;
   if (v9)

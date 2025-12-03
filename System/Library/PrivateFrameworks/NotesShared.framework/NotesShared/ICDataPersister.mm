@@ -1,17 +1,17 @@
 @interface ICDataPersister
-+ (id)rootCacheDirectoryPathForPasteboard:(BOOL)a3;
++ (id)rootCacheDirectoryPathForPasteboard:(BOOL)pasteboard;
 + (void)deletePasteboardDataFiles;
 - (BOOL)makeSureCacheDirectoryExists;
-- (BOOL)saveData:(id)a3 identifier:(id)a4;
+- (BOOL)saveData:(id)data identifier:(id)identifier;
 - (BOOL)verifyDataFiles;
 - (ICDataPersister)init;
-- (ICDataPersister)initWithCoder:(id)a3;
-- (ICDataPersister)initWithObjectIdentifier:(id)a3 forPasteboard:(BOOL)a4;
+- (ICDataPersister)initWithCoder:(id)coder;
+- (ICDataPersister)initWithObjectIdentifier:(id)identifier forPasteboard:(BOOL)pasteboard;
 - (id)description;
-- (id)loadDataForIdentifier:(id)a3;
+- (id)loadDataForIdentifier:(id)identifier;
 - (void)createDataCryptorIfNecessary;
 - (void)deleteDataFiles;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)verifyDataFiles;
 @end
 
@@ -24,32 +24,32 @@
   return 0;
 }
 
-- (ICDataPersister)initWithObjectIdentifier:(id)a3 forPasteboard:(BOOL)a4
+- (ICDataPersister)initWithObjectIdentifier:(id)identifier forPasteboard:(BOOL)pasteboard
 {
-  v4 = a4;
-  v7 = a3;
+  pasteboardCopy = pasteboard;
+  identifierCopy = identifier;
   v20.receiver = self;
   v20.super_class = ICDataPersister;
   v8 = [(ICDataPersister *)&v20 init];
   if (v8)
   {
-    v9 = [objc_opt_class() rootCacheDirectoryPathForPasteboard:v4];
-    v10 = [MEMORY[0x277CCAD78] UUID];
-    v11 = [v10 UUIDString];
-    v12 = [v9 stringByAppendingPathComponent:v11];
+    v9 = [objc_opt_class() rootCacheDirectoryPathForPasteboard:pasteboardCopy];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    v12 = [v9 stringByAppendingPathComponent:uUIDString];
 
     v13 = [MEMORY[0x277CBEBC0] fileURLWithPath:v12];
     cacheDirectoryURL = v8->_cacheDirectoryURL;
     v8->_cacheDirectoryURL = v13;
 
-    objc_storeStrong(&v8->_objectIdentifier, a3);
-    v15 = [MEMORY[0x277CBEB18] array];
+    objc_storeStrong(&v8->_objectIdentifier, identifier);
+    array = [MEMORY[0x277CBEB18] array];
     allURLs = v8->_allURLs;
-    v8->_allURLs = v15;
+    v8->_allURLs = array;
 
-    v17 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     identifierToDataDictionary = v8->_identifierToDataDictionary;
-    v8->_identifierToDataDictionary = v17;
+    v8->_identifierToDataDictionary = dictionary;
 
     [(ICDataPersister *)v8 createDataCryptorIfNecessary];
   }
@@ -63,40 +63,40 @@
   v9.super_class = ICDataPersister;
   v3 = [(ICDataPersister *)&v9 description];
   v4 = MEMORY[0x277CCACA8];
-  v5 = [(ICDataPersister *)self cacheDirectoryURL];
-  v6 = [(ICDataPersister *)self objectIdentifier];
-  v7 = [v4 stringWithFormat:@"%@ <%@, %@>", v3, v5, v6];
+  cacheDirectoryURL = [(ICDataPersister *)self cacheDirectoryURL];
+  objectIdentifier = [(ICDataPersister *)self objectIdentifier];
+  v7 = [v4 stringWithFormat:@"%@ <%@, %@>", v3, cacheDirectoryURL, objectIdentifier];
 
   return v7;
 }
 
 - (void)createDataCryptorIfNecessary
 {
-  v3 = [(ICDataPersister *)self objectIdentifier];
+  objectIdentifier = [(ICDataPersister *)self objectIdentifier];
 
-  if (v3)
+  if (objectIdentifier)
   {
     v14 = 0;
     v15 = &v14;
     v16 = 0x2020000000;
     v17 = 0;
     v4 = +[ICNoteContext sharedContext];
-    v5 = [v4 snapshotManagedObjectContext];
+    snapshotManagedObjectContext = [v4 snapshotManagedObjectContext];
 
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __47__ICDataPersister_createDataCryptorIfNecessary__block_invoke;
     v11[3] = &unk_2781961E0;
     v11[4] = self;
-    v6 = v5;
+    v6 = snapshotManagedObjectContext;
     v12 = v6;
     v13 = &v14;
     [v6 performBlockAndWait:v11];
     if (*(v15 + 24) == 1)
     {
       v7 = [ICDataCryptor alloc];
-      v8 = [(ICDataPersister *)self objectIdentifier];
-      v9 = [(ICDataCryptor *)v7 initWithObjectIdentifier:v8];
+      objectIdentifier2 = [(ICDataPersister *)self objectIdentifier];
+      v9 = [(ICDataCryptor *)v7 initWithObjectIdentifier:objectIdentifier2];
       dataCryptor = self->_dataCryptor;
       self->_dataCryptor = v9;
     }
@@ -113,12 +113,12 @@ void __47__ICDataPersister_createDataCryptorIfNecessary__block_invoke(uint64_t a
   *(*(*(a1 + 48) + 8) + 24) = [v3 isPasswordProtected];
 }
 
-+ (id)rootCacheDirectoryPathForPasteboard:(BOOL)a3
++ (id)rootCacheDirectoryPathForPasteboard:(BOOL)pasteboard
 {
-  v3 = a3;
+  pasteboardCopy = pasteboard;
   v4 = NSTemporaryDirectory();
   v5 = v4;
-  if (v3)
+  if (pasteboardCopy)
   {
     v6 = @"pasteboardDataPersister";
   }
@@ -135,10 +135,10 @@ void __47__ICDataPersister_createDataCryptorIfNecessary__block_invoke(uint64_t a
 
 - (BOOL)makeSureCacheDirectoryExists
 {
-  v2 = [(ICDataPersister *)self cacheDirectoryURL];
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
+  cacheDirectoryURL = [(ICDataPersister *)self cacheDirectoryURL];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v8 = 0;
-  v4 = [v3 createDirectoryAtURL:v2 withIntermediateDirectories:1 attributes:0 error:&v8];
+  v4 = [defaultManager createDirectoryAtURL:cacheDirectoryURL withIntermediateDirectories:1 attributes:0 error:&v8];
   v5 = v8;
 
   if ((v4 & 1) == 0)
@@ -153,39 +153,39 @@ void __47__ICDataPersister_createDataCryptorIfNecessary__block_invoke(uint64_t a
   return v4;
 }
 
-- (BOOL)saveData:(id)a3 identifier:(id)a4
+- (BOOL)saveData:(id)data identifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  identifierCopy = identifier;
   if ([(ICDataPersister *)self makeSureCacheDirectoryExists])
   {
-    v8 = [(ICDataPersister *)self dataCryptor];
+    dataCryptor = [(ICDataPersister *)self dataCryptor];
 
-    if (v8)
+    if (dataCryptor)
     {
-      v9 = [(ICDataPersister *)self dataCryptor];
-      v10 = [v9 encryptData:v6];
+      dataCryptor2 = [(ICDataPersister *)self dataCryptor];
+      v10 = [dataCryptor2 encryptData:dataCopy];
 
-      v6 = v10;
+      dataCopy = v10;
     }
 
-    v11 = [(ICDataPersister *)self cacheDirectoryURL];
-    v12 = [v11 URLByAppendingPathComponent:v7 isDirectory:0];
+    cacheDirectoryURL = [(ICDataPersister *)self cacheDirectoryURL];
+    v12 = [cacheDirectoryURL URLByAppendingPathComponent:identifierCopy isDirectory:0];
 
-    v13 = [v12 path];
-    v14 = [v6 writeToFile:v13 atomically:1];
+    path = [v12 path];
+    v14 = [dataCopy writeToFile:path atomically:1];
 
     if (v14)
     {
-      -[ICDataPersister setAccumulatedDataSize:](self, "setAccumulatedDataSize:", -[ICDataPersister accumulatedDataSize](self, "accumulatedDataSize") + [v6 length]);
-      v15 = [(ICDataPersister *)self allURLs];
-      [v15 addObject:v12];
+      -[ICDataPersister setAccumulatedDataSize:](self, "setAccumulatedDataSize:", -[ICDataPersister accumulatedDataSize](self, "accumulatedDataSize") + [dataCopy length]);
+      allURLs = [(ICDataPersister *)self allURLs];
+      [allURLs addObject:v12];
     }
 
     else
     {
-      v15 = os_log_create("com.apple.notes", "Topotext");
-      if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+      allURLs = os_log_create("com.apple.notes", "Topotext");
+      if (os_log_type_enabled(allURLs, OS_LOG_TYPE_ERROR))
       {
         [ICDataPersister saveData:identifier:];
       }
@@ -200,31 +200,31 @@ void __47__ICDataPersister_createDataCryptorIfNecessary__block_invoke(uint64_t a
   return v14;
 }
 
-- (id)loadDataForIdentifier:(id)a3
+- (id)loadDataForIdentifier:(id)identifier
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ICDataPersister *)self identifierToDataDictionary];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  identifierCopy = identifier;
+  identifierToDataDictionary = [(ICDataPersister *)self identifierToDataDictionary];
+  v6 = [identifierToDataDictionary objectForKeyedSubscript:identifierCopy];
 
   if (!v6)
   {
-    v7 = [(ICDataPersister *)self cacheDirectoryURL];
-    v8 = [v7 URLByAppendingPathComponent:v4 isDirectory:0];
+    cacheDirectoryURL = [(ICDataPersister *)self cacheDirectoryURL];
+    v8 = [cacheDirectoryURL URLByAppendingPathComponent:identifierCopy isDirectory:0];
 
     v9 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:v8];
     if (v9)
     {
       v6 = v9;
-      v10 = [(ICDataPersister *)self dataCryptor];
+      dataCryptor = [(ICDataPersister *)self dataCryptor];
 
-      if (!v10)
+      if (!dataCryptor)
       {
         goto LABEL_10;
       }
 
-      v11 = [(ICDataPersister *)self dataCryptor];
-      v12 = [v11 decryptData:v6];
+      dataCryptor2 = [(ICDataPersister *)self dataCryptor];
+      v12 = [dataCryptor2 decryptData:v6];
 
       v6 = v12;
       if (v12)
@@ -259,10 +259,10 @@ LABEL_10:
 
 - (void)deleteDataFiles
 {
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
-  v4 = [(ICDataPersister *)self cacheDirectoryURL];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  cacheDirectoryURL = [(ICDataPersister *)self cacheDirectoryURL];
   v8 = 0;
-  v5 = [v3 removeItemAtURL:v4 error:&v8];
+  v5 = [defaultManager removeItemAtURL:cacheDirectoryURL error:&v8];
   v6 = v8;
 
   if ((v5 & 1) == 0 && [v6 code] != 4)
@@ -300,9 +300,9 @@ LABEL_10:
         }
 
         v8 = *(*(&v21 + 1) + 8 * i);
-        v9 = [v8 lastPathComponent];
-        v10 = [(ICDataPersister *)self identifierToDataDictionary];
-        v11 = [v10 objectForKeyedSubscript:v9];
+        lastPathComponent = [v8 lastPathComponent];
+        identifierToDataDictionary = [(ICDataPersister *)self identifierToDataDictionary];
+        v11 = [identifierToDataDictionary objectForKeyedSubscript:lastPathComponent];
         if (v11)
         {
 
@@ -368,43 +368,43 @@ LABEL_21:
 {
   v3 = *MEMORY[0x277D85DE8];
   v2[0] = 67109120;
-  v2[1] = a1 & 1;
+  v2[1] = self & 1;
   _os_log_debug_impl(&dword_214D51000, a2, OS_LOG_TYPE_DEBUG, "Deleted pasteboard data files: %d", v2, 8u);
 }
 
-- (ICDataPersister)initWithCoder:(id)a3
+- (ICDataPersister)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v24.receiver = self;
   v24.super_class = ICDataPersister;
   v5 = [(ICDataPersister *)&v24 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"cacheDirectoryURL"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"cacheDirectoryURL"];
     cacheDirectoryURL = v5->_cacheDirectoryURL;
     v5->_cacheDirectoryURL = v6;
 
     v8 = MEMORY[0x277CBEB98];
     v9 = objc_opt_class();
     v10 = [v8 setWithObjects:{v9, objc_opt_class(), 0}];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"allURLs"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"allURLs"];
     allURLs = v5->_allURLs;
     v5->_allURLs = v11;
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"objectIdentifier"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"objectIdentifier"];
     objectIdentifier = v5->_objectIdentifier;
     v5->_objectIdentifier = v13;
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dataCryptor"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dataCryptor"];
     dataCryptor = v5->_dataCryptor;
     v5->_dataCryptor = v15;
 
-    v5->_accumulatedDataSize = [v4 decodeIntegerForKey:@"accumulatedDataSize"];
+    v5->_accumulatedDataSize = [coderCopy decodeIntegerForKey:@"accumulatedDataSize"];
     v17 = MEMORY[0x277CBEB98];
     v18 = objc_opt_class();
     v19 = objc_opt_class();
     v20 = [v17 setWithObjects:{v18, v19, objc_opt_class(), 0}];
-    v21 = [v4 decodeObjectOfClasses:v20 forKey:@"identifierToDataDictionary"];
+    v21 = [coderCopy decodeObjectOfClasses:v20 forKey:@"identifierToDataDictionary"];
     identifierToDataDictionary = v5->_identifierToDataDictionary;
     v5->_identifierToDataDictionary = v21;
   }
@@ -412,37 +412,37 @@ LABEL_21:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v35 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  [v4 encodeInteger:-[ICDataPersister accumulatedDataSize](self forKey:{"accumulatedDataSize"), @"accumulatedDataSize"}];
-  v5 = [(ICDataPersister *)self cacheDirectoryURL];
-  [v4 encodeObject:v5 forKey:@"cacheDirectoryURL"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[ICDataPersister accumulatedDataSize](self forKey:{"accumulatedDataSize"), @"accumulatedDataSize"}];
+  cacheDirectoryURL = [(ICDataPersister *)self cacheDirectoryURL];
+  [coderCopy encodeObject:cacheDirectoryURL forKey:@"cacheDirectoryURL"];
 
-  v6 = [(ICDataPersister *)self allURLs];
-  [v4 encodeObject:v6 forKey:@"allURLs"];
+  allURLs = [(ICDataPersister *)self allURLs];
+  [coderCopy encodeObject:allURLs forKey:@"allURLs"];
 
-  v7 = [(ICDataPersister *)self objectIdentifier];
+  objectIdentifier = [(ICDataPersister *)self objectIdentifier];
 
-  if (v7)
+  if (objectIdentifier)
   {
-    v8 = [(ICDataPersister *)self objectIdentifier];
-    [v4 encodeObject:v8 forKey:@"objectIdentifier"];
+    objectIdentifier2 = [(ICDataPersister *)self objectIdentifier];
+    [coderCopy encodeObject:objectIdentifier2 forKey:@"objectIdentifier"];
   }
 
-  v9 = [(ICDataPersister *)self dataCryptor];
+  dataCryptor = [(ICDataPersister *)self dataCryptor];
 
-  if (v9)
+  if (dataCryptor)
   {
-    v10 = [(ICDataPersister *)self dataCryptor];
-    [v4 encodeObject:v10 forKey:@"dataCryptor"];
+    dataCryptor2 = [(ICDataPersister *)self dataCryptor];
+    [coderCopy encodeObject:dataCryptor2 forKey:@"dataCryptor"];
   }
 
-  v11 = [(ICDataPersister *)self accumulatedDataSize];
-  v12 = os_log_create("com.apple.notes", "Topotext");
-  v13 = os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG);
-  if (v11 >> 21 > 0x4A)
+  accumulatedDataSize = [(ICDataPersister *)self accumulatedDataSize];
+  identifierToDataDictionary3 = os_log_create("com.apple.notes", "Topotext");
+  v13 = os_log_type_enabled(identifierToDataDictionary3, OS_LOG_TYPE_DEBUG);
+  if (accumulatedDataSize >> 21 > 0x4A)
   {
     if (v13)
     {
@@ -452,7 +452,7 @@ LABEL_21:
 
   else
   {
-    v29 = v4;
+    v29 = coderCopy;
     if (v13)
     {
       [ICDataPersister encodeWithCoder:?];
@@ -462,8 +462,8 @@ LABEL_21:
     v33 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v14 = [(ICDataPersister *)self allURLs];
-    v15 = [v14 countByEnumeratingWithState:&v30 objects:v34 count:16];
+    allURLs2 = [(ICDataPersister *)self allURLs];
+    v15 = [allURLs2 countByEnumeratingWithState:&v30 objects:v34 count:16];
     if (v15)
     {
       v16 = v15;
@@ -474,13 +474,13 @@ LABEL_21:
         {
           if (*v31 != v17)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(allURLs2);
           }
 
           v19 = *(*(&v30 + 1) + 8 * i);
-          v20 = [v19 lastPathComponent];
-          v21 = [(ICDataPersister *)self identifierToDataDictionary];
-          v22 = [v21 objectForKeyedSubscript:v20];
+          lastPathComponent = [v19 lastPathComponent];
+          identifierToDataDictionary = [(ICDataPersister *)self identifierToDataDictionary];
+          v22 = [identifierToDataDictionary objectForKeyedSubscript:lastPathComponent];
 
           if (!v22)
           {
@@ -488,26 +488,26 @@ LABEL_21:
             if (v23)
             {
               v24 = v23;
-              v25 = [(ICDataPersister *)self dataCryptor];
+              dataCryptor3 = [(ICDataPersister *)self dataCryptor];
 
-              if (!v25 || (-[ICDataPersister dataCryptor](self, "dataCryptor"), v26 = objc_claimAutoreleasedReturnValue(), [v26 decryptData:v24], v27 = objc_claimAutoreleasedReturnValue(), v24, v26, (v24 = v27) != 0))
+              if (!dataCryptor3 || (-[ICDataPersister dataCryptor](self, "dataCryptor"), v26 = objc_claimAutoreleasedReturnValue(), [v26 decryptData:v24], v27 = objc_claimAutoreleasedReturnValue(), v24, v26, (v24 = v27) != 0))
               {
-                v28 = [(ICDataPersister *)self identifierToDataDictionary];
-                [v28 setObject:v24 forKeyedSubscript:v20];
+                identifierToDataDictionary2 = [(ICDataPersister *)self identifierToDataDictionary];
+                [identifierToDataDictionary2 setObject:v24 forKeyedSubscript:lastPathComponent];
               }
             }
           }
         }
 
-        v16 = [v14 countByEnumeratingWithState:&v30 objects:v34 count:16];
+        v16 = [allURLs2 countByEnumeratingWithState:&v30 objects:v34 count:16];
       }
 
       while (v16);
     }
 
-    v12 = [(ICDataPersister *)self identifierToDataDictionary];
-    v4 = v29;
-    [v29 encodeObject:v12 forKey:@"identifierToDataDictionary"];
+    identifierToDataDictionary3 = [(ICDataPersister *)self identifierToDataDictionary];
+    coderCopy = v29;
+    [v29 encodeObject:identifierToDataDictionary3 forKey:@"identifierToDataDictionary"];
   }
 }
 

@@ -1,13 +1,13 @@
 @interface PGMemoryQualityQuestionFactory
-- (id)generateQuestionsWithLimit:(unint64_t)a3 progressBlock:(id)a4;
+- (id)generateQuestionsWithLimit:(unint64_t)limit progressBlock:(id)block;
 @end
 
 @implementation PGMemoryQualityQuestionFactory
 
-- (id)generateQuestionsWithLimit:(unint64_t)a3 progressBlock:(id)a4
+- (id)generateQuestionsWithLimit:(unint64_t)limit progressBlock:(id)block
 {
   v73 = *MEMORY[0x277D85DE8];
-  v60 = _Block_copy(a4);
+  v60 = _Block_copy(block);
   if (v60)
   {
     Current = CFAbsoluteTimeGetCurrent();
@@ -22,7 +22,7 @@
         if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
         {
 LABEL_28:
-          v20 = MEMORY[0x277CBEBF8];
+          allObjects = MEMORY[0x277CBEBF8];
           goto LABEL_58;
         }
 
@@ -39,7 +39,7 @@ LABEL_27:
       v7 = v8;
     }
 
-    if (!a3)
+    if (!limit)
     {
       if (CFAbsoluteTimeGetCurrent() - v7 < 0.01)
       {
@@ -65,20 +65,20 @@ LABEL_27:
   else
   {
     v7 = 0.0;
-    if (!a3)
+    if (!limit)
     {
       goto LABEL_28;
     }
   }
 
   v10 = [MEMORY[0x277CBEB58] set];
-  v11 = [(PGSurveyQuestionFactory *)self fetchExistingQuestions];
-  v12 = [MEMORY[0x277CBEB18] array];
+  fetchExistingQuestions = [(PGSurveyQuestionFactory *)self fetchExistingQuestions];
+  array = [MEMORY[0x277CBEB18] array];
   v61 = 0u;
   v62 = 0u;
   v63 = 0u;
   v64 = 0u;
-  v13 = v11;
+  v13 = fetchExistingQuestions;
   v14 = [v13 countByEnumeratingWithState:&v61 objects:v68 count:16];
   if (v14)
   {
@@ -93,8 +93,8 @@ LABEL_27:
           objc_enumerationMutation(v13);
         }
 
-        v18 = [*(*(&v61 + 1) + 8 * i) entityIdentifier];
-        [v12 addObject:v18];
+        entityIdentifier = [*(*(&v61 + 1) + 8 * i) entityIdentifier];
+        [array addObject:entityIdentifier];
       }
 
       v15 = [v13 countByEnumeratingWithState:&v61 objects:v68 count:16];
@@ -121,7 +121,7 @@ LABEL_27:
           _os_log_impl(&dword_22F0FC000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "Cancelled at line %d in file %s", buf, 0x12u);
         }
 
-        v20 = MEMORY[0x277CBEBF8];
+        allObjects = MEMORY[0x277CBEBF8];
         goto LABEL_57;
       }
 
@@ -129,11 +129,11 @@ LABEL_27:
     }
   }
 
-  v57 = a3;
-  v21 = [MEMORY[0x277CBEAA8] date];
-  v22 = [v21 dateByAddingTimeInterval:-31557600.0];
+  limitCopy = limit;
+  date = [MEMORY[0x277CBEAA8] date];
+  v22 = [date dateByAddingTimeInterval:-31557600.0];
 
-  v23 = [MEMORY[0x277CCAC30] predicateWithFormat:@"NOT (uuid IN %@)", v12];
+  v23 = [MEMORY[0x277CCAC30] predicateWithFormat:@"NOT (uuid IN %@)", array];
   v67[0] = v23;
   v56 = v22;
   [MEMORY[0x277CCAC30] predicateWithFormat:@"creationDate >= %@", v22];
@@ -147,26 +147,26 @@ LABEL_27:
   v67[3] = v28;
   v29 = [MEMORY[0x277CBEA60] arrayWithObjects:v67 count:4];
 
-  v30 = [(PGSurveyQuestionFactory *)v58 workingContext];
-  v31 = [v30 photoLibrary];
-  v32 = [v31 librarySpecificFetchOptions];
+  workingContext = [(PGSurveyQuestionFactory *)v58 workingContext];
+  photoLibrary = [workingContext photoLibrary];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
   v55 = v29;
   v33 = [MEMORY[0x277CCA920] andPredicateWithSubpredicates:v29];
-  [v32 setInternalPredicate:v33];
+  [librarySpecificFetchOptions setInternalPredicate:v33];
 
   v34 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"score" ascending:1];
   v66[0] = v34;
   v35 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"creationDate" ascending:0];
   v66[1] = v35;
   v36 = [MEMORY[0x277CBEA60] arrayWithObjects:v66 count:2];
-  [v32 setSortDescriptors:v36];
+  [librarySpecificFetchOptions setSortDescriptors:v36];
 
-  v59 = [MEMORY[0x277CD97B8] fetchAssetCollectionsWithType:4 subtype:0x7FFFFFFFFFFFFFFFLL options:v32];
+  v59 = [MEMORY[0x277CD97B8] fetchAssetCollectionsWithType:4 subtype:0x7FFFFFFFFFFFFFFFLL options:librarySpecificFetchOptions];
   if (v60)
   {
     v37 = CFAbsoluteTimeGetCurrent();
-    v38 = v57;
+    v38 = limitCopy;
     if (v37 - v7 >= 0.01)
     {
       v65 = 0;
@@ -194,10 +194,10 @@ LABEL_53:
 
   else
   {
-    v38 = v57;
+    v38 = limitCopy;
   }
 
-  v54 = v32;
+  v54 = librarySpecificFetchOptions;
   v40 = [v59 count];
   v41 = v38;
   v42 = vcvtmd_u64_f64(v40 / v38);
@@ -214,10 +214,10 @@ LABEL_53:
   if (!v40)
   {
 LABEL_48:
-    v32 = v54;
+    librarySpecificFetchOptions = v54;
     if (!v60 || CFAbsoluteTimeGetCurrent() - v7 < 0.01 || (v65 = 0, v60[2](v60, &v65, 1.0), !v65))
     {
-      v20 = [v10 allObjects];
+      allObjects = [v10 allObjects];
       goto LABEL_56;
     }
 
@@ -232,7 +232,7 @@ LABEL_48:
     }
 
 LABEL_54:
-    v20 = MEMORY[0x277CBEBF8];
+    allObjects = MEMORY[0x277CBEBF8];
     goto LABEL_56;
   }
 
@@ -267,7 +267,7 @@ LABEL_46:
     [v10 addObject:v50];
     v51 = [v10 count];
 
-    if (v51 < v57)
+    if (v51 < limitCopy)
     {
       v45 += v43;
       if (v45 < v44)
@@ -288,8 +288,8 @@ LABEL_46:
     _os_log_impl(&dword_22F0FC000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "Cancelled at line %d in file %s", buf, 0x12u);
   }
 
-  v20 = MEMORY[0x277CBEBF8];
-  v32 = v54;
+  allObjects = MEMORY[0x277CBEBF8];
+  librarySpecificFetchOptions = v54;
 LABEL_56:
 
 LABEL_57:
@@ -297,7 +297,7 @@ LABEL_58:
 
   v52 = *MEMORY[0x277D85DE8];
 
-  return v20;
+  return allObjects;
 }
 
 @end

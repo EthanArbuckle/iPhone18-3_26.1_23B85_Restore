@@ -1,17 +1,17 @@
 @interface BMStoreConfig
-+ (id)newLibraryStoreConfigForStreamIdentifier:(id)a3 domain:(unint64_t)a4 segmentSize:(unint64_t)a5 protectionClass:(unint64_t)a6 pruningPolicy:(id)a7;
-+ (id)newPrivateStreamDefaultConfigurationWithStoreBasePath:(id)a3 protectionClass:(unint64_t)a4;
-+ (id)newRestrictedStreamWithSegmentSize:(unint64_t)a3 protectionClass:(unint64_t)a4 domain:(unint64_t)a5;
-+ (id)newStreamDefaultConfigurationForPublicStream:(BOOL)a3 protectionClass:(unint64_t)a4 segmentSize:(unint64_t)a5;
-+ (unint64_t)_streamTypeFromStorePath:(id)a3 domain:(unint64_t *)a4;
-- (BMStoreConfig)initWithStoreBasePath:(id)a3 segmentSize:(unint64_t)a4 protectionClass:(unint64_t)a5;
-- (BOOL)isEqual:(id)a3;
-- (id)_initWithStoreVersion:(unint64_t)a3 storeBasePath:(id)a4 segmentSize:(unint64_t)a5 protectionClass:(unint64_t)a6 storeLocationOption:(int64_t)a7 account:(id)a8 remoteName:(id)a9 pruningPolicy:(id)a10 streamType:(unint64_t)a11 domain:(unint64_t)a12 user:(unsigned int)a13 isManaged:(BOOL)a14 streamIdentifier:(id)a15 currentDevice:(id)a16;
-- (id)copyWithRemoteName:(id)a3;
-- (id)copyWithStoreBasePath:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)newLibraryStoreConfigForStreamIdentifier:(id)identifier domain:(unint64_t)domain segmentSize:(unint64_t)size protectionClass:(unint64_t)class pruningPolicy:(id)policy;
++ (id)newPrivateStreamDefaultConfigurationWithStoreBasePath:(id)path protectionClass:(unint64_t)class;
++ (id)newRestrictedStreamWithSegmentSize:(unint64_t)size protectionClass:(unint64_t)class domain:(unint64_t)domain;
++ (id)newStreamDefaultConfigurationForPublicStream:(BOOL)stream protectionClass:(unint64_t)class segmentSize:(unint64_t)size;
++ (unint64_t)_streamTypeFromStorePath:(id)path domain:(unint64_t *)domain;
+- (BMStoreConfig)initWithStoreBasePath:(id)path segmentSize:(unint64_t)size protectionClass:(unint64_t)class;
+- (BOOL)isEqual:(id)equal;
+- (id)_initWithStoreVersion:(unint64_t)version storeBasePath:(id)path segmentSize:(unint64_t)size protectionClass:(unint64_t)class storeLocationOption:(int64_t)option account:(id)account remoteName:(id)name pruningPolicy:(id)self0 streamType:(unint64_t)self1 domain:(unint64_t)self2 user:(unsigned int)self3 isManaged:(BOOL)self4 streamIdentifier:(id)self5 currentDevice:(id)self6;
+- (id)copyWithRemoteName:(id)name;
+- (id)copyWithStoreBasePath:(id)path;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)resolvedPathWithStreamIdentifier:(id)a3;
+- (id)resolvedPathWithStreamIdentifier:(id)identifier;
 - (id)subscriptionsConfig;
 - (id)tombstonesConfig;
 - (unint64_t)hash;
@@ -39,9 +39,9 @@
   return v12;
 }
 
-+ (id)newStreamDefaultConfigurationForPublicStream:(BOOL)a3 protectionClass:(unint64_t)a4 segmentSize:(unint64_t)a5
++ (id)newStreamDefaultConfigurationForPublicStream:(BOOL)stream protectionClass:(unint64_t)class segmentSize:(unint64_t)size
 {
-  if (a3)
+  if (stream)
   {
     v7 = 1;
   }
@@ -52,59 +52,59 @@
   }
 
   v8 = [MEMORY[0x1E698E9C8] pathForStreamType:v7 domain:0];
-  v9 = [[BMStoreConfig alloc] initWithStoreBasePath:v8 segmentSize:a5 protectionClass:a4];
+  v9 = [[BMStoreConfig alloc] initWithStoreBasePath:v8 segmentSize:size protectionClass:class];
 
   return v9;
 }
 
-+ (id)newRestrictedStreamWithSegmentSize:(unint64_t)a3 protectionClass:(unint64_t)a4 domain:(unint64_t)a5
++ (id)newRestrictedStreamWithSegmentSize:(unint64_t)size protectionClass:(unint64_t)class domain:(unint64_t)domain
 {
   v8 = [BMStoreConfig alloc];
-  v9 = [MEMORY[0x1E698E9C8] pathForStreamType:2 domain:a5];
-  v10 = [(BMStoreConfig *)v8 initWithStoreBasePath:v9 segmentSize:a3 protectionClass:a4];
+  v9 = [MEMORY[0x1E698E9C8] pathForStreamType:2 domain:domain];
+  v10 = [(BMStoreConfig *)v8 initWithStoreBasePath:v9 segmentSize:size protectionClass:class];
 
   return v10;
 }
 
-+ (id)newPrivateStreamDefaultConfigurationWithStoreBasePath:(id)a3 protectionClass:(unint64_t)a4
++ (id)newPrivateStreamDefaultConfigurationWithStoreBasePath:(id)path protectionClass:(unint64_t)class
 {
-  v6 = a3;
-  if (!v6)
+  pathCopy = path;
+  if (!pathCopy)
   {
-    v6 = [MEMORY[0x1E698E9C8] pathForStreamType:4 domain:0];
+    pathCopy = [MEMORY[0x1E698E9C8] pathForStreamType:4 domain:0];
   }
 
-  v7 = [[a1 alloc] initWithStoreBasePath:v6 segmentSize:0x100000 protectionClass:a4];
+  v7 = [[self alloc] initWithStoreBasePath:pathCopy segmentSize:0x100000 protectionClass:class];
 
   return v7;
 }
 
-+ (id)newLibraryStoreConfigForStreamIdentifier:(id)a3 domain:(unint64_t)a4 segmentSize:(unint64_t)a5 protectionClass:(unint64_t)a6 pruningPolicy:(id)a7
++ (id)newLibraryStoreConfigForStreamIdentifier:(id)identifier domain:(unint64_t)domain segmentSize:(unint64_t)size protectionClass:(unint64_t)class pruningPolicy:(id)policy
 {
-  v12 = a7;
-  v13 = a3;
+  policyCopy = policy;
+  identifierCopy = identifier;
   v14 = +[BMStoreConfig defaultStoreVersion];
-  v15 = [MEMORY[0x1E698E9C8] _pathForLibraryStreamWithDomain:a4];
-  v16 = [MEMORY[0x1E698E9C8] _pathForTesting];
-  if (v16)
+  v15 = [MEMORY[0x1E698E9C8] _pathForLibraryStreamWithDomain:domain];
+  _pathForTesting = [MEMORY[0x1E698E9C8] _pathForTesting];
+  if (_pathForTesting)
   {
-    v17 = v16;
+    v17 = _pathForTesting;
     [MEMORY[0x1E698E9C8] _pathForTesting];
     v33 = v14;
-    v18 = a4;
-    v19 = v13;
-    v20 = v12;
-    v21 = a1;
-    v22 = a5;
-    v24 = v23 = a6;
+    domainCopy = domain;
+    v19 = identifierCopy;
+    v20 = policyCopy;
+    selfCopy = self;
+    sizeCopy = size;
+    v24 = v23 = class;
     v25 = [v15 hasPrefix:v24];
 
-    a6 = v23;
-    a5 = v22;
-    a1 = v21;
-    v12 = v20;
-    v13 = v19;
-    a4 = v18;
+    class = v23;
+    size = sizeCopy;
+    self = selfCopy;
+    policyCopy = v20;
+    identifierCopy = v19;
+    domain = domainCopy;
     v14 = v33;
 
     v26 = v25 ^ 1;
@@ -116,24 +116,24 @@
   }
 
   v27 = v14;
-  v28 = [a1 alloc];
+  v28 = [self alloc];
   v29 = objc_opt_new();
   BYTE4(v32) = v26 & 1;
   LODWORD(v32) = 0;
-  v30 = [v28 _initWithStoreVersion:v27 storeBasePath:v15 segmentSize:a5 protectionClass:a6 storeLocationOption:0 account:0 remoteName:0 pruningPolicy:v12 streamType:2 domain:a4 user:v32 isManaged:v13 streamIdentifier:v29 currentDevice:?];
+  v30 = [v28 _initWithStoreVersion:v27 storeBasePath:v15 segmentSize:size protectionClass:class storeLocationOption:0 account:0 remoteName:0 pruningPolicy:policyCopy streamType:2 domain:domain user:v32 isManaged:identifierCopy streamIdentifier:v29 currentDevice:?];
 
   return v30;
 }
 
-- (id)_initWithStoreVersion:(unint64_t)a3 storeBasePath:(id)a4 segmentSize:(unint64_t)a5 protectionClass:(unint64_t)a6 storeLocationOption:(int64_t)a7 account:(id)a8 remoteName:(id)a9 pruningPolicy:(id)a10 streamType:(unint64_t)a11 domain:(unint64_t)a12 user:(unsigned int)a13 isManaged:(BOOL)a14 streamIdentifier:(id)a15 currentDevice:(id)a16
+- (id)_initWithStoreVersion:(unint64_t)version storeBasePath:(id)path segmentSize:(unint64_t)size protectionClass:(unint64_t)class storeLocationOption:(int64_t)option account:(id)account remoteName:(id)name pruningPolicy:(id)self0 streamType:(unint64_t)self1 domain:(unint64_t)self2 user:(unsigned int)self3 isManaged:(BOOL)self4 streamIdentifier:(id)self5 currentDevice:(id)self6
 {
-  v19 = a4;
-  v20 = a8;
-  v21 = a9;
-  v35 = a10;
-  v34 = a15;
-  v33 = a16;
-  if ([v19 hasPrefix:@"file://"])
+  pathCopy = path;
+  accountCopy = account;
+  nameCopy = name;
+  policyCopy = policy;
+  identifierCopy = identifier;
+  deviceCopy = device;
+  if ([pathCopy hasPrefix:@"file://"])
   {
     [BMStoreConfig _initWithStoreVersion:a2 storeBasePath:self segmentSize:? protectionClass:? storeLocationOption:? account:? remoteName:? pruningPolicy:? streamType:? domain:? user:? isManaged:? streamIdentifier:? currentDevice:?];
   }
@@ -144,64 +144,64 @@
   v23 = v22;
   if (v22)
   {
-    v27 = v21;
-    if (v21)
+    v27 = nameCopy;
+    if (nameCopy)
     {
-      v24 = (a7 & 0xFFFFFFFFFFFFFFFELL) + 1;
+      v24 = (option & 0xFFFFFFFFFFFFFFFELL) + 1;
     }
 
     else
     {
-      v24 = a7 & 0xFFFFFFFFFFFFFFFELL;
+      v24 = option & 0xFFFFFFFFFFFFFFFELL;
     }
 
-    v22->_configDatastoreVersion = a3;
-    objc_storeStrong(&v22->_datastorePath, a4);
-    v23->_segmentSize = a5;
+    v22->_configDatastoreVersion = version;
+    objc_storeStrong(&v22->_datastorePath, path);
+    v23->_segmentSize = size;
     v23->_storeLocationOption = v24;
-    objc_storeStrong(&v23->_account, a8);
-    objc_storeStrong(&v23->_remoteName, a9);
-    objc_storeStrong(&v23->_pruningPolicy, a10);
-    v23->_protectionClass = a6;
-    v23->_streamType = a11;
-    v23->_domain = a12;
-    if (a12 == 1)
+    objc_storeStrong(&v23->_account, account);
+    objc_storeStrong(&v23->_remoteName, name);
+    objc_storeStrong(&v23->_pruningPolicy, policy);
+    v23->_protectionClass = class;
+    v23->_streamType = type;
+    v23->_domain = domain;
+    if (domain == 1)
     {
-      v25 = 0;
+      userCopy = 0;
     }
 
     else
     {
-      v25 = a13;
-      if (!a13)
+      userCopy = user;
+      if (!user)
       {
-        v25 = geteuid();
+        userCopy = geteuid();
       }
     }
 
-    v23->_uid = v25;
-    v23->_isManaged = a14;
-    objc_storeStrong(&v23->_streamIdentifierForLogging, a15);
-    objc_storeStrong(&v23->_currentDevice, a16);
-    v21 = v27;
+    v23->_uid = userCopy;
+    v23->_isManaged = managed;
+    objc_storeStrong(&v23->_streamIdentifierForLogging, identifier);
+    objc_storeStrong(&v23->_currentDevice, device);
+    nameCopy = v27;
   }
 
   return v23;
 }
 
-- (BMStoreConfig)initWithStoreBasePath:(id)a3 segmentSize:(unint64_t)a4 protectionClass:(unint64_t)a5
+- (BMStoreConfig)initWithStoreBasePath:(id)path segmentSize:(unint64_t)size protectionClass:(unint64_t)class
 {
-  v8 = a3;
+  pathCopy = path;
   v9 = +[BMStoreConfig defaultStoreVersion];
   v22 = 0;
-  v10 = [objc_opt_class() _streamTypeFromStorePath:v8 domain:&v22];
+  v10 = [objc_opt_class() _streamTypeFromStorePath:pathCopy domain:&v22];
   v12 = v10 == 4 || (v10 - 1) < 2;
-  v13 = [MEMORY[0x1E698E9C8] _pathForTesting];
-  if (v13)
+  _pathForTesting = [MEMORY[0x1E698E9C8] _pathForTesting];
+  if (_pathForTesting)
   {
-    v14 = v13;
-    v15 = [MEMORY[0x1E698E9C8] _pathForTesting];
-    v16 = [v8 hasPrefix:v15];
+    v14 = _pathForTesting;
+    _pathForTesting2 = [MEMORY[0x1E698E9C8] _pathForTesting];
+    v16 = [pathCopy hasPrefix:_pathForTesting2];
 
     v12 &= v16 ^ 1;
   }
@@ -210,7 +210,7 @@
   v18 = objc_opt_new();
   BYTE4(v21) = v12 & 1;
   LODWORD(v21) = 0;
-  v19 = [(BMStoreConfig *)self _initWithStoreVersion:v9 storeBasePath:v8 segmentSize:a4 protectionClass:a5 storeLocationOption:0 account:0 remoteName:0 pruningPolicy:0 streamType:v10 domain:v17 user:v21 isManaged:0 streamIdentifier:v18 currentDevice:?];
+  v19 = [(BMStoreConfig *)self _initWithStoreVersion:v9 storeBasePath:pathCopy segmentSize:size protectionClass:class storeLocationOption:0 account:0 remoteName:0 pruningPolicy:0 streamType:v10 domain:v17 user:v21 isManaged:0 streamIdentifier:v18 currentDevice:?];
 
   return v19;
 }
@@ -232,44 +232,44 @@
   return v11;
 }
 
-- (id)copyWithRemoteName:(id)a3
+- (id)copyWithRemoteName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v5 = [BMStoreConfig alloc];
   streamType = self->_streamType;
   streamIdentifierForLogging = self->_streamIdentifierForLogging;
   BYTE4(v10) = self->_isManaged;
   LODWORD(v10) = self->_uid;
-  v8 = [(BMStoreConfig *)v5 _initWithStoreVersion:self->_configDatastoreVersion storeBasePath:self->_datastorePath segmentSize:self->_segmentSize protectionClass:self->_protectionClass storeLocationOption:self->_storeLocationOption account:self->_account remoteName:v4 pruningPolicy:self->_pruningPolicy streamType:streamType domain:self->_domain user:v10 isManaged:streamIdentifierForLogging streamIdentifier:self->_currentDevice currentDevice:?];
+  v8 = [(BMStoreConfig *)v5 _initWithStoreVersion:self->_configDatastoreVersion storeBasePath:self->_datastorePath segmentSize:self->_segmentSize protectionClass:self->_protectionClass storeLocationOption:self->_storeLocationOption account:self->_account remoteName:nameCopy pruningPolicy:self->_pruningPolicy streamType:streamType domain:self->_domain user:v10 isManaged:streamIdentifierForLogging streamIdentifier:self->_currentDevice currentDevice:?];
 
   return v8;
 }
 
-- (id)copyWithStoreBasePath:(id)a3
+- (id)copyWithStoreBasePath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v15 = 0;
-  v5 = [objc_opt_class() _streamTypeFromStorePath:v4 domain:&v15];
+  v5 = [objc_opt_class() _streamTypeFromStorePath:pathCopy domain:&v15];
   v7 = v5 == 4 || (v5 - 1) < 2;
-  v8 = [MEMORY[0x1E698E9C8] _pathForTesting];
-  if (v8)
+  _pathForTesting = [MEMORY[0x1E698E9C8] _pathForTesting];
+  if (_pathForTesting)
   {
-    v9 = v8;
-    v10 = [MEMORY[0x1E698E9C8] _pathForTesting];
-    v11 = [v4 hasPrefix:v10];
+    v9 = _pathForTesting;
+    _pathForTesting2 = [MEMORY[0x1E698E9C8] _pathForTesting];
+    v11 = [pathCopy hasPrefix:_pathForTesting2];
 
     v7 &= v11 ^ 1;
   }
 
   v12 = [(BMStoreConfig *)self copy];
   v13 = *(v12 + 16);
-  *(v12 + 16) = v4;
+  *(v12 + 16) = pathCopy;
 
   *(v12 + 32) = v7 & 1;
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [BMStoreConfig alloc];
   configDatastoreVersion = self->_configDatastoreVersion;
@@ -289,13 +289,13 @@
   return v15;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = [(NSString *)self->_datastorePath isEqualToString:v5[2]];
     v7 = self->_segmentSize == v5[5] && v6;
     v8 = self->_protectionClass == v5[6] && v7;
@@ -371,16 +371,16 @@
   return v5 ^ v7;
 }
 
-+ (unint64_t)_streamTypeFromStorePath:(id)a3 domain:(unint64_t *)a4
++ (unint64_t)_streamTypeFromStorePath:(id)path domain:(unint64_t *)domain
 {
   v18 = 0;
-  v4 = [MEMORY[0x1E698E9C8] getServiceDomain:a4 subpath:&v18 forPath:a3];
+  v4 = [MEMORY[0x1E698E9C8] getServiceDomain:domain subpath:&v18 forPath:path];
   v5 = v18;
   if (v4)
   {
-    v6 = [MEMORY[0x1E698EA08] streams];
-    v7 = [MEMORY[0x1E698EA08] public];
-    v8 = [v6 stringByAppendingPathComponent:v7];
+    streams = [MEMORY[0x1E698EA08] streams];
+    public = [MEMORY[0x1E698EA08] public];
+    v8 = [streams stringByAppendingPathComponent:public];
     v9 = [v5 hasPrefix:v8];
 
     if (v9)
@@ -390,8 +390,8 @@
 
     else
     {
-      v11 = [MEMORY[0x1E698EA08] restricted];
-      v12 = [v6 stringByAppendingPathComponent:v11];
+      restricted = [MEMORY[0x1E698EA08] restricted];
+      v12 = [streams stringByAppendingPathComponent:restricted];
       v13 = [v5 hasPrefix:v12];
 
       if (v13)
@@ -401,8 +401,8 @@
 
       else
       {
-        v14 = [MEMORY[0x1E698EA08] private];
-        v15 = [v6 stringByAppendingPathComponent:v14];
+        private = [MEMORY[0x1E698EA08] private];
+        v15 = [streams stringByAppendingPathComponent:private];
         v16 = [v5 hasPrefix:v15];
 
         if (v16)
@@ -435,14 +435,14 @@
   return v5;
 }
 
-- (id)resolvedPathWithStreamIdentifier:(id)a3
+- (id)resolvedPathWithStreamIdentifier:(id)identifier
 {
-  v4 = [(NSString *)self->_datastorePath stringByAppendingPathComponent:a3];
+  v4 = [(NSString *)self->_datastorePath stringByAppendingPathComponent:identifier];
   storeLocationOption = self->_storeLocationOption;
   if (storeLocationOption)
   {
-    v6 = [MEMORY[0x1E698EA08] remoteDevices];
-    v7 = [v4 stringByAppendingPathComponent:v6];
+    remoteDevices = [MEMORY[0x1E698EA08] remoteDevices];
+    v7 = [v4 stringByAppendingPathComponent:remoteDevices];
     v8 = [v7 stringByAppendingPathComponent:self->_remoteName];
 
     v4 = v7;
@@ -459,14 +459,14 @@
     {
       [MEMORY[0x1E698EA08] localDevice];
     }
-    v6 = ;
-    v8 = [v4 stringByAppendingPathComponent:v6];
+    remoteDevices = ;
+    v8 = [v4 stringByAppendingPathComponent:remoteDevices];
   }
 
   if ((self->_storeLocationOption & 2) != 0)
   {
-    v9 = [MEMORY[0x1E698EA08] tombstones];
-    v10 = [v8 stringByAppendingPathComponent:v9];
+    tombstones = [MEMORY[0x1E698EA08] tombstones];
+    v10 = [v8 stringByAppendingPathComponent:tombstones];
 
     v8 = v10;
   }

@@ -1,27 +1,27 @@
 @interface PSUIMyAccountSpecifier
 - (PSListController)hostController;
-- (PSUIMyAccountSpecifier)initWithContext:(id)a3 cbCache:(id)a4;
-- (void)launchMyAccountInSafari:(id)a3;
-- (void)launchMyAccountInWebView:(id)a3;
+- (PSUIMyAccountSpecifier)initWithContext:(id)context cbCache:(id)cache;
+- (void)launchMyAccountInSafari:(id)safari;
+- (void)launchMyAccountInWebView:(id)view;
 @end
 
 @implementation PSUIMyAccountSpecifier
 
-- (PSUIMyAccountSpecifier)initWithContext:(id)a3 cbCache:(id)a4
+- (PSUIMyAccountSpecifier)initWithContext:(id)context cbCache:(id)cache
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v8 carrierServicesWebViewAccountUrl:v7];
-  v10 = [v8 carrierServicesAccountUrl:v7];
+  contextCopy = context;
+  cacheCopy = cache;
+  v9 = [cacheCopy carrierServicesWebViewAccountUrl:contextCopy];
+  v10 = [cacheCopy carrierServicesAccountUrl:contextCopy];
   if (v9 && [v9 length] || v10 && objc_msgSend(v10, "length"))
   {
-    v11 = [v8 carrierServicesMyAccountUrlTitle:v7];
+    v11 = [cacheCopy carrierServicesMyAccountUrlTitle:contextCopy];
     v12 = [(PSUIMyAccountSpecifier *)self initWithName:v11 target:self set:0 get:0 detail:0 cell:13 edit:0];
 
     if (v12)
     {
       [(PSUIMyAccountSpecifier *)v12 setIdentifier:@"MY_ACCOUNT"];
-      objc_storeStrong(&v12->_context, a3);
+      objc_storeStrong(&v12->_context, context);
       if (v9 && [v9 length])
       {
         [(PSUIMyAccountSpecifier *)v12 setProperty:v9 forKey:@"MY_ACCOUNT_URL"];
@@ -38,27 +38,27 @@
     }
 
     self = v12;
-    v14 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v14 = 0;
+    selfCopy = 0;
   }
 
-  return v14;
+  return selfCopy;
 }
 
-- (void)launchMyAccountInWebView:(id)a3
+- (void)launchMyAccountInWebView:(id)view
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = [a3 propertyForKey:@"MY_ACCOUNT_URL"];
-  v5 = [(PSUIMyAccountSpecifier *)self getLogger];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  v4 = [view propertyForKey:@"MY_ACCOUNT_URL"];
+  getLogger = [(PSUIMyAccountSpecifier *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 138412290;
     v14 = v4;
-    _os_log_impl(&dword_2658DE000, v5, OS_LOG_TYPE_DEFAULT, "Launch my account in web view pressed: %@", &v13, 0xCu);
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "Launch my account in web view pressed: %@", &v13, 0xCu);
   }
 
   v6 = [[PSUICarrierSpaceMyAccountWebViewController alloc] initWithURLString:v4];
@@ -79,19 +79,19 @@
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)launchMyAccountInSafari:(id)a3
+- (void)launchMyAccountInSafari:(id)safari
 {
   v13 = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CBEBC0];
-  v5 = [a3 propertyForKey:@"MY_ACCOUNT_URL"];
+  v5 = [safari propertyForKey:@"MY_ACCOUNT_URL"];
   v6 = [v4 URLWithString:v5];
 
-  v7 = [(PSUIMyAccountSpecifier *)self getLogger];
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+  getLogger = [(PSUIMyAccountSpecifier *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412290;
     v12 = v6;
-    _os_log_impl(&dword_2658DE000, v7, OS_LOG_TYPE_DEFAULT, "Launch my account in safari pressed: %@", &v11, 0xCu);
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "Launch my account in safari pressed: %@", &v11, 0xCu);
   }
 
   v8 = *MEMORY[0x277D76620];

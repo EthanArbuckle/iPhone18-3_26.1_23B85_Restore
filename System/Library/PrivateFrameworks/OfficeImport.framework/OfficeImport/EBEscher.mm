@@ -1,16 +1,16 @@
 @interface EBEscher
-+ (id)readRootObjectWithType:(int)a3 state:(id)a4;
-+ (void)readChildrenOfObject:(EshObject *)a3 toArray:(id)a4 state:(id)a5;
++ (id)readRootObjectWithType:(int)type state:(id)state;
++ (void)readChildrenOfObject:(EshObject *)object toArray:(id)array state:(id)state;
 @end
 
 @implementation EBEscher
 
-+ (id)readRootObjectWithType:(int)a3 state:(id)a4
++ (id)readRootObjectWithType:(int)type state:(id)state
 {
-  v6 = a4;
+  stateCopy = state;
   v7 = objc_alloc_init(ESDRoot);
-  v8 = [(ESDObject *)v7 eshObject];
-  if (v8)
+  eshObject = [(ESDObject *)v7 eshObject];
+  if (eshObject)
   {
   }
 
@@ -19,13 +19,13 @@
     v9 = 0;
   }
 
-  v9[10] = a3;
-  v10 = [v6 xlReader];
-  (*(*v10 + 136))(v10, v9);
+  v9[10] = type;
+  xlReader = [stateCopy xlReader];
+  (*(*xlReader + 136))(xlReader, v9);
   if (v9[11])
   {
     v11 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    [a1 readChildrenOfObject:v9 toArray:v11 state:v6];
+    [self readChildrenOfObject:v9 toArray:v11 state:stateCopy];
     if ([v11 count])
     {
       [v11 count];
@@ -48,24 +48,24 @@
   return v12;
 }
 
-+ (void)readChildrenOfObject:(EshObject *)a3 toArray:(id)a4 state:(id)a5
++ (void)readChildrenOfObject:(EshObject *)object toArray:(id)array state:(id)state
 {
-  v13 = a4;
-  v7 = a5;
-  v8 = (*(a3->var0 + 5))(a3);
+  arrayCopy = array;
+  stateCopy = state;
+  v8 = (*(object->var0 + 5))(object);
   if (v8)
   {
     v9 = 0;
     do
     {
-      if (((*(a3->var0 + 8))(a3, v9) & 0x1000) == 0)
+      if (((*(object->var0 + 8))(object, v9) & 0x1000) == 0)
       {
-        v10 = (*(a3->var0 + 6))(a3, v9);
-        v11 = (*(a3->var0 + 7))(a3, v9);
-        v12 = [objc_alloc(objc_opt_class()) initForExcelBinaryWithType:v10 version:v11 state:v7];
+        v10 = (*(object->var0 + 6))(object, v9);
+        v11 = (*(object->var0 + 7))(object, v9);
+        v12 = [objc_alloc(objc_opt_class()) initForExcelBinaryWithType:v10 version:v11 state:stateCopy];
         if (v12)
         {
-          [v13 addObject:v12];
+          [arrayCopy addObject:v12];
         }
       }
 

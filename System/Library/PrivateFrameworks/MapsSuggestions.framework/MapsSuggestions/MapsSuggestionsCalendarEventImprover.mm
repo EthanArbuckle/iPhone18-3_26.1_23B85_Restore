@@ -1,15 +1,15 @@
 @interface MapsSuggestionsCalendarEventImprover
-- (BOOL)improveEntry:(id)a3;
+- (BOOL)improveEntry:(id)entry;
 @end
 
 @implementation MapsSuggestionsCalendarEventImprover
 
-- (BOOL)improveEntry:(id)a3
+- (BOOL)improveEntry:(id)entry
 {
   v40 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  entryCopy = entry;
+  v5 = entryCopy;
+  if (!entryCopy)
   {
     v7 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -28,7 +28,7 @@
     goto LABEL_8;
   }
 
-  if ([v4 type] != 3)
+  if ([entryCopy type] != 3)
   {
 LABEL_8:
     v8 = 0;
@@ -45,18 +45,18 @@ LABEL_8:
     v6 = 0;
   }
 
-  v9 = [v5 undecoratedSubtitle];
-  v10 = [v9 length];
+  undecoratedSubtitle = [v5 undecoratedSubtitle];
+  v10 = [undecoratedSubtitle length];
   v8 = v10 == 0;
 
   if (!v10)
   {
-    v11 = [v5 geoMapItem];
-    v12 = [v11 name];
-    [(MapsSuggestionsBaseImprover *)self improveMyUndecoratedSubtitle:v12 forEntry:v5];
+    geoMapItem = [v5 geoMapItem];
+    name = [geoMapItem name];
+    [(MapsSuggestionsBaseImprover *)self improveMyUndecoratedSubtitle:name forEntry:v5];
 
-    v13 = [v5 undecoratedSubtitle];
-    [v5 setString:v13 forKey:@"MapsSuggestionsEntryTitleNameKey"];
+    undecoratedSubtitle2 = [v5 undecoratedSubtitle];
+    [v5 setString:undecoratedSubtitle2 forKey:@"MapsSuggestionsEntryTitleNameKey"];
   }
 
   v14 = [v5 stringForKey:@"MapsSuggestionsEntryTitleNameKey"];
@@ -113,11 +113,11 @@ LABEL_26:
     v8 = 1;
   }
 
-  v21 = [v5 undecoratedTitle];
-  v22 = v21;
+  undecoratedTitle = [v5 undecoratedTitle];
+  v22 = undecoratedTitle;
   if (v6)
   {
-    v23 = MapsSuggestionsLocalizedCalendarEventPOIAdornmentAllDayString(v21);
+    v23 = MapsSuggestionsLocalizedCalendarEventPOIAdornmentAllDayString(undecoratedTitle);
   }
 
   else

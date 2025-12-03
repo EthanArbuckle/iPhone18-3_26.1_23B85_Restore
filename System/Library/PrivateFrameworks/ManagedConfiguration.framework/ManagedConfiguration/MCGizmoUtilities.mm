@@ -1,6 +1,6 @@
 @interface MCGizmoUtilities
 + (id)MCFirstPartyCompanionToWatchAppBundleIDs;
-+ (void)watchAppBundleIDsForBundleIDs:(id)a3 completion:(id)a4;
++ (void)watchAppBundleIDsForBundleIDs:(id)ds completion:(id)completion;
 @end
 
 @implementation MCGizmoUtilities
@@ -125,18 +125,18 @@ void __60__MCGizmoUtilities_MCFirstPartyCompanionToWatchAppBundleIDs__block_invo
   v12 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)watchAppBundleIDsForBundleIDs:(id)a3 completion:(id)a4
++ (void)watchAppBundleIDsForBundleIDs:(id)ds completion:(id)completion
 {
   v29 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v21 = a4;
+  dsCopy = ds;
+  completionCopy = completion;
   v6 = objc_opt_new();
   v7 = +[MCGizmoUtilities MCFirstPartyCompanionToWatchAppBundleIDs];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  obj = v5;
+  obj = dsCopy;
   v8 = [obj countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v8)
   {
@@ -162,12 +162,12 @@ void __60__MCGizmoUtilities_MCFirstPartyCompanionToWatchAppBundleIDs__block_invo
         v17 = [v16 initWithBundleIdentifier:v14 allowPlaceholder:1 error:&v23];
         v10 = v23;
 
-        v18 = [v17 counterpartIdentifiers];
+        counterpartIdentifiers = [v17 counterpartIdentifiers];
 
-        if (v18)
+        if (counterpartIdentifiers)
         {
-          v19 = [v17 counterpartIdentifiers];
-          [v6 addObjectsFromArray:v19];
+          counterpartIdentifiers2 = [v17 counterpartIdentifiers];
+          [v6 addObjectsFromArray:counterpartIdentifiers2];
         }
 
         ++v12;
@@ -186,7 +186,7 @@ void __60__MCGizmoUtilities_MCFirstPartyCompanionToWatchAppBundleIDs__block_invo
     v10 = 0;
   }
 
-  v21[2](v21, v6, v10);
+  completionCopy[2](completionCopy, v6, v10);
   v20 = *MEMORY[0x1E69E9840];
 }
 

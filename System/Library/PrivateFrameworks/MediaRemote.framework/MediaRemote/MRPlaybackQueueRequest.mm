@@ -1,36 +1,36 @@
 @interface MRPlaybackQueueRequest
-+ (MRPlaybackQueueRequest)requestWithCurrentState:(id)a3 range:(_NSRange)a4;
-+ (id)defaultPlaybackQueueRequestWithRange:(_NSRange)a3;
++ (MRPlaybackQueueRequest)requestWithCurrentState:(id)state range:(_NSRange)range;
++ (id)defaultPlaybackQueueRequestWithRange:(_NSRange)range;
 - (BOOL)containsNonDefaultAssets;
-- (BOOL)exactMatch:(id)a3;
+- (BOOL)exactMatch:(id)match;
 - (BOOL)hasRange;
 - (BOOL)includeArtwork;
 - (BOOL)includeRemoteArtwork;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)match:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)match:(id)match;
 - (BOOL)rangeContainsNowPlayingItem;
 - (BOOL)shouldRequestItem;
 - (BOOL)shouldRequestItemNotConsideringMetadata;
-- (MRPlaybackQueueRequest)initWithCoder:(id)a3;
-- (MRPlaybackQueueRequest)initWithData:(id)a3;
-- (MRPlaybackQueueRequest)initWithIdentifiers:(id)a3;
-- (MRPlaybackQueueRequest)initWithIdentifiers:(id)a3 range:(_NSRange)a4;
-- (MRPlaybackQueueRequest)initWithProtobuf:(id)a3;
-- (MRPlaybackQueueRequest)initWithRange:(_NSRange)a3;
+- (MRPlaybackQueueRequest)initWithCoder:(id)coder;
+- (MRPlaybackQueueRequest)initWithData:(id)data;
+- (MRPlaybackQueueRequest)initWithIdentifiers:(id)identifiers;
+- (MRPlaybackQueueRequest)initWithIdentifiers:(id)identifiers range:(_NSRange)range;
+- (MRPlaybackQueueRequest)initWithProtobuf:(id)protobuf;
+- (MRPlaybackQueueRequest)initWithRange:(_NSRange)range;
 - (MRPlaybackQueueRequest)skeleton;
 - (NSData)data;
 - (NSDictionary)dictionaryRepresentation;
 - (_MRPlaybackQueueRequestProtobuf)protobuf;
 - (_NSRange)range;
 - (id)_buildRequestedPropertiesDescription;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)initFromTransactionName:(unint64_t)a3;
+- (id)initFromTransactionName:(unint64_t)name;
 - (id)requestByRemovingArtwork;
-- (void)encodeWithCoder:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)performRequestForDestination:(id)a3 completion:(id)a4;
-- (void)setIncludeMetadata:(BOOL)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)mergeFrom:(id)from;
+- (void)performRequestForDestination:(id)destination completion:(id)completion;
+- (void)setIncludeMetadata:(BOOL)metadata;
 @end
 
 @implementation MRPlaybackQueueRequest
@@ -38,31 +38,31 @@
 - (id)description
 {
   v3 = objc_alloc_init(MEMORY[0x1E696AD60]);
-  v4 = [(MRPlaybackQueueRequest *)self requestIdentifier];
-  [v3 appendFormat:@"%@ ", v4];
+  requestIdentifier = [(MRPlaybackQueueRequest *)self requestIdentifier];
+  [v3 appendFormat:@"%@ ", requestIdentifier];
 
-  v5 = [(MRPlaybackQueueRequest *)self label];
-  [v3 appendFormat:@"%@ ", v5];
+  label = [(MRPlaybackQueueRequest *)self label];
+  [v3 appendFormat:@"%@ ", label];
 
-  v6 = [(MRPlaybackQueueRequest *)self _buildRequestedPropertiesDescription];
-  [v3 appendString:v6];
+  _buildRequestedPropertiesDescription = [(MRPlaybackQueueRequest *)self _buildRequestedPropertiesDescription];
+  [v3 appendString:_buildRequestedPropertiesDescription];
 
-  v7 = [(MRPlaybackQueueRequest *)self contentItemIdentifiers];
+  contentItemIdentifiers = [(MRPlaybackQueueRequest *)self contentItemIdentifiers];
 
-  if (v7)
+  if (contentItemIdentifiers)
   {
     v8 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:3];
     for (i = 0; ; ++i)
     {
-      v10 = [(MRPlaybackQueueRequest *)self contentItemIdentifiers];
-      if ([v10 count] > 3)
+      contentItemIdentifiers2 = [(MRPlaybackQueueRequest *)self contentItemIdentifiers];
+      if ([contentItemIdentifiers2 count] > 3)
       {
 
         if (i >= 3)
         {
 LABEL_8:
-          v15 = [(MRPlaybackQueueRequest *)self contentItemIdentifiers];
-          [v3 appendFormat:@"/IDs (%ld): %@", objc_msgSend(v15, "count"), v8];
+          contentItemIdentifiers3 = [(MRPlaybackQueueRequest *)self contentItemIdentifiers];
+          [v3 appendFormat:@"/IDs (%ld): %@", objc_msgSend(contentItemIdentifiers3, "count"), v8];
 
           break;
         }
@@ -70,8 +70,8 @@ LABEL_8:
 
       else
       {
-        v11 = [(MRPlaybackQueueRequest *)self contentItemIdentifiers];
-        v12 = [v11 count];
+        contentItemIdentifiers4 = [(MRPlaybackQueueRequest *)self contentItemIdentifiers];
+        v12 = [contentItemIdentifiers4 count];
 
         if (i >= v12)
         {
@@ -79,8 +79,8 @@ LABEL_8:
         }
       }
 
-      v13 = [(MRPlaybackQueueRequest *)self contentItemIdentifiers];
-      v14 = [v13 objectAtIndex:i];
+      contentItemIdentifiers5 = [(MRPlaybackQueueRequest *)self contentItemIdentifiers];
+      v14 = [contentItemIdentifiers5 objectAtIndex:i];
 
       [v8 addObject:v14];
     }
@@ -93,122 +93,122 @@ LABEL_8:
 
 - (id)_buildRequestedPropertiesDescription
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
     v2 = objc_alloc_init(MEMORY[0x1E696AD60]);
-    if ([v1 includeMetadata])
+    if ([selfCopy includeMetadata])
     {
       [v2 appendString:@"/M"];
     }
 
-    if ([v1 includeInfo])
+    if ([selfCopy includeInfo])
     {
       [v2 appendString:@"/I"];
     }
 
-    if ([v1 includeLanguageOptions])
+    if ([selfCopy includeLanguageOptions])
     {
       [v2 appendString:@"/L"];
     }
 
-    if ([v1 includeLyrics])
+    if ([selfCopy includeLyrics])
     {
       [v2 appendString:@"/Ly"];
     }
 
-    if ([v1 includeAlignments])
+    if ([selfCopy includeAlignments])
     {
       [v2 appendString:@"/Al"];
     }
 
-    if ([v1 includeSections])
+    if ([selfCopy includeSections])
     {
       [v2 appendString:@"/S"];
     }
 
-    if ([v1 includeAvailableArtworkFormats])
+    if ([selfCopy includeAvailableArtworkFormats])
     {
       [v2 appendString:@"/AF"];
     }
 
-    [v1 artworkWidth];
+    [selfCopy artworkWidth];
     if (v3 != 0.0)
     {
-      [v1 artworkHeight];
+      [selfCopy artworkHeight];
       if (v4 != 0.0)
       {
-        [v1 artworkWidth];
+        [selfCopy artworkWidth];
         v6 = v5;
-        [v1 artworkHeight];
+        [selfCopy artworkHeight];
         [v2 appendFormat:@"/A%lfx%lf", v6, v7];
       }
     }
 
-    v8 = [v1 requestedArtworkFormats];
-    v9 = [v8 count];
+    requestedArtworkFormats = [selfCopy requestedArtworkFormats];
+    v9 = [requestedArtworkFormats count];
 
     if (v9)
     {
-      v10 = [v1 requestedArtworkFormats];
-      [v2 appendFormat:@"/FA[%ld]", objc_msgSend(v10, "count")];
+      requestedArtworkFormats2 = [selfCopy requestedArtworkFormats];
+      [v2 appendFormat:@"/FA[%ld]", objc_msgSend(requestedArtworkFormats2, "count")];
     }
 
-    v11 = [v1 requestedRemoteArtworkFormats];
-    v12 = [v11 count];
+    requestedRemoteArtworkFormats = [selfCopy requestedRemoteArtworkFormats];
+    v12 = [requestedRemoteArtworkFormats count];
 
     if (v12)
     {
-      v13 = [v1 requestedRemoteArtworkFormats];
-      [v2 appendFormat:@"/RFA[%ld]", objc_msgSend(v13, "count")];
+      requestedRemoteArtworkFormats2 = [selfCopy requestedRemoteArtworkFormats];
+      [v2 appendFormat:@"/RFA[%ld]", objc_msgSend(requestedRemoteArtworkFormats2, "count")];
     }
 
-    v14 = [v1 requestedAnimatedArtworkPreviewFrameFormats];
-    v15 = [v14 count];
+    requestedAnimatedArtworkPreviewFrameFormats = [selfCopy requestedAnimatedArtworkPreviewFrameFormats];
+    v15 = [requestedAnimatedArtworkPreviewFrameFormats count];
 
     if (v15)
     {
-      v16 = [v1 requestedAnimatedArtworkPreviewFrameFormats];
-      [v2 appendFormat:@"/AAPF[%ld]", objc_msgSend(v16, "count")];
+      requestedAnimatedArtworkPreviewFrameFormats2 = [selfCopy requestedAnimatedArtworkPreviewFrameFormats];
+      [v2 appendFormat:@"/AAPF[%ld]", objc_msgSend(requestedAnimatedArtworkPreviewFrameFormats2, "count")];
     }
 
-    v17 = [v1 requestedAnimatedArtworkAssetURLFormats];
-    v18 = [v17 count];
+    requestedAnimatedArtworkAssetURLFormats = [selfCopy requestedAnimatedArtworkAssetURLFormats];
+    v18 = [requestedAnimatedArtworkAssetURLFormats count];
 
     if (v18)
     {
-      v19 = [v1 requestedAnimatedArtworkAssetURLFormats];
-      [v2 appendFormat:@"/AAU[%ld]", objc_msgSend(v19, "count")];
+      requestedAnimatedArtworkAssetURLFormats2 = [selfCopy requestedAnimatedArtworkAssetURLFormats];
+      [v2 appendFormat:@"/AAU[%ld]", objc_msgSend(requestedAnimatedArtworkAssetURLFormats2, "count")];
     }
 
-    if ([v1 hasLocation] && objc_msgSend(v1, "hasLength"))
+    if ([selfCopy hasLocation] && objc_msgSend(selfCopy, "hasLength"))
     {
-      [v2 appendFormat:@"/R[%ld:%ld]", objc_msgSend(v1, "location"), objc_msgSend(v1, "length")];
+      [v2 appendFormat:@"/R[%ld:%ld]", objc_msgSend(selfCopy, "location"), objc_msgSend(selfCopy, "length")];
     }
 
-    v1 = [v2 copy];
+    selfCopy = [v2 copy];
   }
 
-  return v1;
+  return selfCopy;
 }
 
 - (BOOL)hasRange
 {
-  v3 = [(MRPlaybackQueueRequest *)self hasLocation];
-  if (v3)
+  hasLocation = [(MRPlaybackQueueRequest *)self hasLocation];
+  if (hasLocation)
   {
 
-    LOBYTE(v3) = [(MRPlaybackQueueRequest *)self hasLength];
+    LOBYTE(hasLocation) = [(MRPlaybackQueueRequest *)self hasLength];
   }
 
-  return v3;
+  return hasLocation;
 }
 
 - (_NSRange)range
 {
-  v3 = [(MRPlaybackQueueRequest *)self location];
+  location = [(MRPlaybackQueueRequest *)self location];
   v4 = [(MRPlaybackQueueRequest *)self length];
-  v5 = v3;
+  v5 = location;
   result.length = v4;
   result.location = v5;
   return result;
@@ -216,10 +216,10 @@ LABEL_8:
 
 - (NSData)data
 {
-  v2 = [(MRPlaybackQueueRequest *)self protobuf];
-  v3 = [v2 data];
+  protobuf = [(MRPlaybackQueueRequest *)self protobuf];
+  data = [protobuf data];
 
-  return v3;
+  return data;
 }
 
 - (_MRPlaybackQueueRequestProtobuf)protobuf
@@ -255,36 +255,36 @@ LABEL_8:
   [(_MRPlaybackQueueRequestProtobuf *)v3 setHasIsLegacyNowPlayingInfoRequest:[(MRPlaybackQueueRequest *)self isLegacyNowPlayingInfoRequest]];
   [(_MRPlaybackQueueRequestProtobuf *)v3 setCachingPolicy:[(MRPlaybackQueueRequest *)self cachingPolicy]];
   [(_MRPlaybackQueueRequestProtobuf *)v3 setHasCachingPolicy:[(MRPlaybackQueueRequest *)self cachingPolicy]!= 0];
-  v4 = [(MRPlaybackQueueRequest *)self playerPath];
-  v5 = [v4 protobuf];
-  [(_MRPlaybackQueueRequestProtobuf *)v3 setPlayerPath:v5];
+  playerPath = [(MRPlaybackQueueRequest *)self playerPath];
+  protobuf = [playerPath protobuf];
+  [(_MRPlaybackQueueRequestProtobuf *)v3 setPlayerPath:protobuf];
 
-  v6 = [(MRPlaybackQueueRequest *)self requestIdentifier];
-  v7 = [v6 copy];
+  requestIdentifier = [(MRPlaybackQueueRequest *)self requestIdentifier];
+  v7 = [requestIdentifier copy];
   [(_MRPlaybackQueueRequestProtobuf *)v3 setRequestID:v7];
 
-  v8 = [(MRPlaybackQueueRequest *)self label];
-  v9 = [v8 copy];
+  label = [(MRPlaybackQueueRequest *)self label];
+  v9 = [label copy];
   [(_MRPlaybackQueueRequestProtobuf *)v3 setLabel:v9];
 
-  v10 = [(MRPlaybackQueueRequest *)self contentItemIdentifiers];
-  v11 = [v10 mutableCopy];
+  contentItemIdentifiers = [(MRPlaybackQueueRequest *)self contentItemIdentifiers];
+  v11 = [contentItemIdentifiers mutableCopy];
   [(_MRPlaybackQueueRequestProtobuf *)v3 setContentItemIdentifiers:v11];
 
-  v12 = [(MRPlaybackQueueRequest *)self requestedArtworkFormats];
-  v13 = [v12 mutableCopy];
+  requestedArtworkFormats = [(MRPlaybackQueueRequest *)self requestedArtworkFormats];
+  v13 = [requestedArtworkFormats mutableCopy];
   [(_MRPlaybackQueueRequestProtobuf *)v3 setRequestedArtworkFormats:v13];
 
-  v14 = [(MRPlaybackQueueRequest *)self requestedRemoteArtworkFormats];
-  v15 = [v14 mutableCopy];
+  requestedRemoteArtworkFormats = [(MRPlaybackQueueRequest *)self requestedRemoteArtworkFormats];
+  v15 = [requestedRemoteArtworkFormats mutableCopy];
   [(_MRPlaybackQueueRequestProtobuf *)v3 setRequestedRemoteArtworkFormats:v15];
 
-  v16 = [(MRPlaybackQueueRequest *)self requestedAnimatedArtworkPreviewFrameFormats];
-  v17 = [v16 mutableCopy];
+  requestedAnimatedArtworkPreviewFrameFormats = [(MRPlaybackQueueRequest *)self requestedAnimatedArtworkPreviewFrameFormats];
+  v17 = [requestedAnimatedArtworkPreviewFrameFormats mutableCopy];
   [(_MRPlaybackQueueRequestProtobuf *)v3 setRequestedAnimatedArtworkPreviewFrameFormats:v17];
 
-  v18 = [(MRPlaybackQueueRequest *)self requestedAnimatedArtworkAssetURLFormats];
-  v19 = [v18 mutableCopy];
+  requestedAnimatedArtworkAssetURLFormats = [(MRPlaybackQueueRequest *)self requestedAnimatedArtworkAssetURLFormats];
+  v19 = [requestedAnimatedArtworkAssetURLFormats mutableCopy];
   [(_MRPlaybackQueueRequestProtobuf *)v3 setRequestedAnimatedArtworkAssetURLFormats:v19];
 
   return v3;
@@ -301,8 +301,8 @@ LABEL_8:
 
 - (BOOL)includeRemoteArtwork
 {
-  v2 = [(MRPlaybackQueueRequest *)self requestedRemoteArtworkFormats];
-  v3 = [v2 count] != 0;
+  requestedRemoteArtworkFormats = [(MRPlaybackQueueRequest *)self requestedRemoteArtworkFormats];
+  v3 = [requestedRemoteArtworkFormats count] != 0;
 
   return v3;
 }
@@ -321,10 +321,10 @@ LABEL_8:
 
 - (BOOL)rangeContainsNowPlayingItem
 {
-  v3 = [(MRPlaybackQueueRequest *)self location];
-  v4 = [(MRPlaybackQueueRequest *)self location];
-  v5 = [(MRPlaybackQueueRequest *)self length]+ v4;
-  return v3 < 1 && v5 > 0;
+  location = [(MRPlaybackQueueRequest *)self location];
+  location2 = [(MRPlaybackQueueRequest *)self location];
+  v5 = [(MRPlaybackQueueRequest *)self length]+ location2;
+  return location < 1 && v5 > 0;
 }
 
 - (BOOL)shouldRequestItem
@@ -360,41 +360,41 @@ LABEL_8:
     [(MRPlaybackQueueRequest *)v3 setLegacyNowPlayingInfoRequest:[(MRPlaybackQueueRequest *)self isLegacyNowPlayingInfoRequest]];
   }
 
-  v4 = [(MRPlaybackQueueRequest *)self requestIdentifier];
-  [(MRPlaybackQueueRequest *)v3 setRequestIdentifier:v4];
+  requestIdentifier = [(MRPlaybackQueueRequest *)self requestIdentifier];
+  [(MRPlaybackQueueRequest *)v3 setRequestIdentifier:requestIdentifier];
 
-  v5 = [(MRPlaybackQueueRequest *)self label];
-  [(MRPlaybackQueueRequest *)v3 setLabel:v5];
+  label = [(MRPlaybackQueueRequest *)self label];
+  [(MRPlaybackQueueRequest *)v3 setLabel:label];
 
-  v6 = [(MRPlaybackQueueRequest *)self contentItemIdentifiers];
-  [(MRPlaybackQueueRequest *)v3 setContentItemIdentifiers:v6];
+  contentItemIdentifiers = [(MRPlaybackQueueRequest *)self contentItemIdentifiers];
+  [(MRPlaybackQueueRequest *)v3 setContentItemIdentifiers:contentItemIdentifiers];
 
   return v3;
 }
 
-+ (id)defaultPlaybackQueueRequestWithRange:(_NSRange)a3
++ (id)defaultPlaybackQueueRequestWithRange:(_NSRange)range
 {
-  v3 = [[MRPlaybackQueueRequest alloc] initWithRange:a3.location, a3.length];
+  v3 = [[MRPlaybackQueueRequest alloc] initWithRange:range.location, range.length];
   [(MRPlaybackQueueRequest *)v3 setIncludeMetadata:1];
   [(MRPlaybackQueueRequest *)v3 setIncludeLanguageOptions:1];
 
   return v3;
 }
 
-+ (MRPlaybackQueueRequest)requestWithCurrentState:(id)a3 range:(_NSRange)a4
++ (MRPlaybackQueueRequest)requestWithCurrentState:(id)state range:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v6 = a3;
-  v7 = [[MRPlaybackQueueRequest alloc] initWithIdentifiers:v6 range:location, length];
+  length = range.length;
+  location = range.location;
+  stateCopy = state;
+  v7 = [[MRPlaybackQueueRequest alloc] initWithIdentifiers:stateCopy range:location, length];
 
   return v7;
 }
 
-- (MRPlaybackQueueRequest)initWithRange:(_NSRange)a3
+- (MRPlaybackQueueRequest)initWithRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   result = [(MRPlaybackQueueRequest *)self init];
   if (result)
   {
@@ -406,15 +406,15 @@ LABEL_8:
   return result;
 }
 
-- (MRPlaybackQueueRequest)initWithIdentifiers:(id)a3
+- (MRPlaybackQueueRequest)initWithIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   v9.receiver = self;
   v9.super_class = MRPlaybackQueueRequest;
   v5 = [(MRPlaybackQueueRequest *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identifiersCopy copy];
     contentItemIdentifiers = v5->_contentItemIdentifiers;
     v5->_contentItemIdentifiers = v6;
   }
@@ -422,11 +422,11 @@ LABEL_8:
   return v5;
 }
 
-- (MRPlaybackQueueRequest)initWithIdentifiers:(id)a3 range:(_NSRange)a4
+- (MRPlaybackQueueRequest)initWithIdentifiers:(id)identifiers range:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  result = [(MRPlaybackQueueRequest *)self initWithIdentifiers:a3];
+  length = range.length;
+  location = range.location;
+  result = [(MRPlaybackQueueRequest *)self initWithIdentifiers:identifiers];
   if (result)
   {
     *&result->_hasLocation = 257;
@@ -437,14 +437,14 @@ LABEL_8:
   return result;
 }
 
-- (id)initFromTransactionName:(unint64_t)a3
+- (id)initFromTransactionName:(unint64_t)name
 {
   result = [(MRPlaybackQueueRequest *)self initWithRange:0, 0];
   if (result)
   {
-    if (a3 <= 4)
+    if (name <= 4)
     {
-      switch(a3)
+      switch(name)
       {
         case 2uLL:
           *(result + 8) = 1;
@@ -463,9 +463,9 @@ LABEL_8:
       }
     }
 
-    else if (a3 > 6)
+    else if (name > 6)
     {
-      if (a3 == 7)
+      if (name == 7)
       {
         *(result + 18) = 1;
         *(result + 40) = vdupq_n_s64(0x4082C00000000000uLL);
@@ -474,7 +474,7 @@ LABEL_8:
 
       else
       {
-        if (a3 != 8)
+        if (name != 8)
         {
           return result;
         }
@@ -484,7 +484,7 @@ LABEL_8:
       }
     }
 
-    else if (a3 == 5)
+    else if (name == 5)
     {
       *(result + 13) = 1;
       v5 = 24;
@@ -502,118 +502,118 @@ LABEL_8:
   return result;
 }
 
-- (MRPlaybackQueueRequest)initWithProtobuf:(id)a3
+- (MRPlaybackQueueRequest)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
-  if (v4)
+  protobufCopy = protobuf;
+  if (protobufCopy)
   {
     v35.receiver = self;
     v35.super_class = MRPlaybackQueueRequest;
     v5 = [(MRPlaybackQueueRequest *)&v35 init];
     if (v5)
     {
-      v5->_location = [v4 location];
-      v5->_hasLocation = [v4 hasLocation];
-      v5->_length = [v4 length];
-      v5->_hasLength = [v4 hasLength];
-      v5->_includeMetadata = [v4 includeMetadata];
-      v5->_hasIncludeMetadata = [v4 hasIncludeMetadata];
-      [v4 artworkWidth];
+      v5->_location = [protobufCopy location];
+      v5->_hasLocation = [protobufCopy hasLocation];
+      v5->_length = [protobufCopy length];
+      v5->_hasLength = [protobufCopy hasLength];
+      v5->_includeMetadata = [protobufCopy includeMetadata];
+      v5->_hasIncludeMetadata = [protobufCopy hasIncludeMetadata];
+      [protobufCopy artworkWidth];
       v5->_artworkWidth = v6;
-      v5->_hasArtworkWidth = [v4 hasArtworkWidth];
-      [v4 artworkHeight];
+      v5->_hasArtworkWidth = [protobufCopy hasArtworkWidth];
+      [protobufCopy artworkHeight];
       v5->_artworkHeight = v7;
-      v5->_hasArtworkHeight = [v4 hasArtworkHeight];
-      v5->_includeLyrics = [v4 includeLyrics];
-      v5->_hasIncludeLyrics = [v4 hasIncludeLyrics];
-      v5->_includeSections = [v4 includeSections];
-      v5->_hasIncludeSections = [v4 hasIncludeSections];
-      v5->_includeInfo = [v4 includeInfo];
-      v5->_hasIncludeInfo = [v4 hasIncludeInfo];
-      v5->_includeAlignments = [v4 includeAlignments];
-      v5->_hasIncludeAlignments = [v4 hasIncludeAlignments];
-      v5->_includeLanguageOptions = [v4 includeLanguageOptions];
-      v5->_hasIncludeLanguageOptions = [v4 hasIncludeLanguageOptions];
-      v5->_includeAvailableArtworkFormats = [v4 includeAvailableArtworkFormats];
-      v5->_hasIncludeAvailableArtworkFormats = [v4 hasIncludeAvailableArtworkFormats];
-      v5->_legacyNowPlayingInfoRequest = [v4 isLegacyNowPlayingInfoRequest];
-      v5->_hasLegacyNowPlayingInfoRequest = [v4 hasIsLegacyNowPlayingInfoRequest];
-      v5->_cachingPolicy = [v4 cachingPolicy];
-      v5->_hasCachingPolicy = [v4 hasCachingPolicy];
-      if ([v4 hasPlayerPath])
+      v5->_hasArtworkHeight = [protobufCopy hasArtworkHeight];
+      v5->_includeLyrics = [protobufCopy includeLyrics];
+      v5->_hasIncludeLyrics = [protobufCopy hasIncludeLyrics];
+      v5->_includeSections = [protobufCopy includeSections];
+      v5->_hasIncludeSections = [protobufCopy hasIncludeSections];
+      v5->_includeInfo = [protobufCopy includeInfo];
+      v5->_hasIncludeInfo = [protobufCopy hasIncludeInfo];
+      v5->_includeAlignments = [protobufCopy includeAlignments];
+      v5->_hasIncludeAlignments = [protobufCopy hasIncludeAlignments];
+      v5->_includeLanguageOptions = [protobufCopy includeLanguageOptions];
+      v5->_hasIncludeLanguageOptions = [protobufCopy hasIncludeLanguageOptions];
+      v5->_includeAvailableArtworkFormats = [protobufCopy includeAvailableArtworkFormats];
+      v5->_hasIncludeAvailableArtworkFormats = [protobufCopy hasIncludeAvailableArtworkFormats];
+      v5->_legacyNowPlayingInfoRequest = [protobufCopy isLegacyNowPlayingInfoRequest];
+      v5->_hasLegacyNowPlayingInfoRequest = [protobufCopy hasIsLegacyNowPlayingInfoRequest];
+      v5->_cachingPolicy = [protobufCopy cachingPolicy];
+      v5->_hasCachingPolicy = [protobufCopy hasCachingPolicy];
+      if ([protobufCopy hasPlayerPath])
       {
         v8 = [MRPlayerPath alloc];
-        v9 = [v4 playerPath];
-        v10 = [(MRPlayerPath *)v8 initWithProtobuf:v9];
+        playerPath = [protobufCopy playerPath];
+        v10 = [(MRPlayerPath *)v8 initWithProtobuf:playerPath];
         playerPath = v5->_playerPath;
         v5->_playerPath = v10;
       }
 
-      v12 = [v4 requestID];
-      v13 = [v12 copy];
+      requestID = [protobufCopy requestID];
+      v13 = [requestID copy];
       requestIdentifier = v5->_requestIdentifier;
       v5->_requestIdentifier = v13;
 
-      v15 = [v4 label];
-      v16 = [v15 copy];
+      label = [protobufCopy label];
+      v16 = [label copy];
       label = v5->_label;
       v5->_label = v16;
 
-      v18 = [v4 contentItemIdentifiers];
-      v19 = [v18 copy];
+      contentItemIdentifiers = [protobufCopy contentItemIdentifiers];
+      v19 = [contentItemIdentifiers copy];
       contentItemIdentifiers = v5->_contentItemIdentifiers;
       v5->_contentItemIdentifiers = v19;
 
-      v21 = [v4 requestedArtworkFormats];
-      v22 = [v21 copy];
+      requestedArtworkFormats = [protobufCopy requestedArtworkFormats];
+      v22 = [requestedArtworkFormats copy];
       requestedArtworkFormats = v5->_requestedArtworkFormats;
       v5->_requestedArtworkFormats = v22;
 
-      v24 = [v4 requestedRemoteArtworkFormats];
-      v25 = [v24 copy];
+      requestedRemoteArtworkFormats = [protobufCopy requestedRemoteArtworkFormats];
+      v25 = [requestedRemoteArtworkFormats copy];
       requestedRemoteArtworkFormats = v5->_requestedRemoteArtworkFormats;
       v5->_requestedRemoteArtworkFormats = v25;
 
-      v27 = [v4 requestedAnimatedArtworkPreviewFrameFormats];
-      v28 = [v27 copy];
+      requestedAnimatedArtworkPreviewFrameFormats = [protobufCopy requestedAnimatedArtworkPreviewFrameFormats];
+      v28 = [requestedAnimatedArtworkPreviewFrameFormats copy];
       requestedAnimatedArtworkPreviewFrameFormats = v5->_requestedAnimatedArtworkPreviewFrameFormats;
       v5->_requestedAnimatedArtworkPreviewFrameFormats = v28;
 
-      v30 = [v4 requestedAnimatedArtworkAssetURLFormats];
-      v31 = [v30 copy];
+      requestedAnimatedArtworkAssetURLFormats = [protobufCopy requestedAnimatedArtworkAssetURLFormats];
+      v31 = [requestedAnimatedArtworkAssetURLFormats copy];
       requestedAnimatedArtworkAssetURLFormats = v5->_requestedAnimatedArtworkAssetURLFormats;
       v5->_requestedAnimatedArtworkAssetURLFormats = v31;
     }
 
     self = v5;
-    v33 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v33 = 0;
+    selfCopy = 0;
   }
 
-  return v33;
+  return selfCopy;
 }
 
-- (MRPlaybackQueueRequest)initWithData:(id)a3
+- (MRPlaybackQueueRequest)initWithData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[_MRPlaybackQueueRequestProtobuf alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[_MRPlaybackQueueRequestProtobuf alloc] initWithData:dataCopy];
 
     self = [(MRPlaybackQueueRequest *)self initWithProtobuf:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (NSDictionary)dictionaryRepresentation
@@ -671,32 +671,32 @@ LABEL_8:
     return 1;
   }
 
-  v7 = [(MRPlaybackQueueRequest *)self requestedArtworkFormats];
-  if ([v7 count])
+  requestedArtworkFormats = [(MRPlaybackQueueRequest *)self requestedArtworkFormats];
+  if ([requestedArtworkFormats count])
   {
     v5 = 1;
   }
 
   else
   {
-    v8 = [(MRPlaybackQueueRequest *)self requestedRemoteArtworkFormats];
-    if ([v8 count])
+    requestedRemoteArtworkFormats = [(MRPlaybackQueueRequest *)self requestedRemoteArtworkFormats];
+    if ([requestedRemoteArtworkFormats count])
     {
       v5 = 1;
     }
 
     else
     {
-      v9 = [(MRPlaybackQueueRequest *)self requestedAnimatedArtworkPreviewFrameFormats];
-      if ([v9 count])
+      requestedAnimatedArtworkPreviewFrameFormats = [(MRPlaybackQueueRequest *)self requestedAnimatedArtworkPreviewFrameFormats];
+      if ([requestedAnimatedArtworkPreviewFrameFormats count])
       {
         v5 = 1;
       }
 
       else
       {
-        v10 = [(MRPlaybackQueueRequest *)self requestedAnimatedArtworkAssetURLFormats];
-        v5 = [v10 count] != 0;
+        requestedAnimatedArtworkAssetURLFormats = [(MRPlaybackQueueRequest *)self requestedAnimatedArtworkAssetURLFormats];
+        v5 = [requestedAnimatedArtworkAssetURLFormats count] != 0;
       }
     }
   }
@@ -712,10 +712,10 @@ LABEL_8:
   return self;
 }
 
-- (void)setIncludeMetadata:(BOOL)a3
+- (void)setIncludeMetadata:(BOOL)metadata
 {
-  self->_includeMetadata = a3;
-  if (a3)
+  self->_includeMetadata = metadata;
+  if (metadata)
   {
     [(MRPlaybackQueueRequest *)self setIncludeAvailableArtworkFormats:1];
   }
@@ -723,10 +723,10 @@ LABEL_8:
   self->_hasIncludeMetadata = 1;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v41 = 1;
   }
@@ -739,35 +739,35 @@ LABEL_8:
       goto LABEL_66;
     }
 
-    v5 = [(MRPlaybackQueueRequest *)v4 hasLocation];
-    if (v5 != [(MRPlaybackQueueRequest *)self hasLocation])
+    hasLocation = [(MRPlaybackQueueRequest *)equalCopy hasLocation];
+    if (hasLocation != [(MRPlaybackQueueRequest *)self hasLocation])
     {
       goto LABEL_66;
     }
 
-    if ([(MRPlaybackQueueRequest *)v4 hasLocation])
+    if ([(MRPlaybackQueueRequest *)equalCopy hasLocation])
     {
       if ([(MRPlaybackQueueRequest *)self hasLocation])
       {
-        v6 = [(MRPlaybackQueueRequest *)v4 location];
-        if (v6 != [(MRPlaybackQueueRequest *)self location])
+        location = [(MRPlaybackQueueRequest *)equalCopy location];
+        if (location != [(MRPlaybackQueueRequest *)self location])
         {
           goto LABEL_66;
         }
       }
     }
 
-    v7 = [(MRPlaybackQueueRequest *)v4 hasLength];
-    if (v7 != [(MRPlaybackQueueRequest *)self hasLength])
+    hasLength = [(MRPlaybackQueueRequest *)equalCopy hasLength];
+    if (hasLength != [(MRPlaybackQueueRequest *)self hasLength])
     {
       goto LABEL_66;
     }
 
-    if ([(MRPlaybackQueueRequest *)v4 hasLength])
+    if ([(MRPlaybackQueueRequest *)equalCopy hasLength])
     {
       if ([(MRPlaybackQueueRequest *)self hasLength])
       {
-        v8 = [(MRPlaybackQueueRequest *)v4 length];
+        v8 = [(MRPlaybackQueueRequest *)equalCopy length];
         if (v8 != [(MRPlaybackQueueRequest *)self length])
         {
           goto LABEL_66;
@@ -775,35 +775,35 @@ LABEL_8:
       }
     }
 
-    v9 = [(MRPlaybackQueueRequest *)v4 hasIncludeMetadata];
-    if (v9 != [(MRPlaybackQueueRequest *)self hasIncludeMetadata])
+    hasIncludeMetadata = [(MRPlaybackQueueRequest *)equalCopy hasIncludeMetadata];
+    if (hasIncludeMetadata != [(MRPlaybackQueueRequest *)self hasIncludeMetadata])
     {
       goto LABEL_66;
     }
 
-    if ([(MRPlaybackQueueRequest *)v4 hasIncludeMetadata])
+    if ([(MRPlaybackQueueRequest *)equalCopy hasIncludeMetadata])
     {
       if ([(MRPlaybackQueueRequest *)self hasIncludeMetadata])
       {
-        v10 = [(MRPlaybackQueueRequest *)v4 includeMetadata];
-        if (v10 != [(MRPlaybackQueueRequest *)self includeMetadata])
+        includeMetadata = [(MRPlaybackQueueRequest *)equalCopy includeMetadata];
+        if (includeMetadata != [(MRPlaybackQueueRequest *)self includeMetadata])
         {
           goto LABEL_66;
         }
       }
     }
 
-    v11 = [(MRPlaybackQueueRequest *)v4 hasArtworkWidth];
-    if (v11 != [(MRPlaybackQueueRequest *)self hasArtworkWidth])
+    hasArtworkWidth = [(MRPlaybackQueueRequest *)equalCopy hasArtworkWidth];
+    if (hasArtworkWidth != [(MRPlaybackQueueRequest *)self hasArtworkWidth])
     {
       goto LABEL_66;
     }
 
-    if ([(MRPlaybackQueueRequest *)v4 hasArtworkWidth])
+    if ([(MRPlaybackQueueRequest *)equalCopy hasArtworkWidth])
     {
       if ([(MRPlaybackQueueRequest *)self hasArtworkWidth])
       {
-        [(MRPlaybackQueueRequest *)v4 artworkWidth];
+        [(MRPlaybackQueueRequest *)equalCopy artworkWidth];
         v13 = v12;
         [(MRPlaybackQueueRequest *)self artworkWidth];
         if (v13 != v14)
@@ -813,17 +813,17 @@ LABEL_8:
       }
     }
 
-    v15 = [(MRPlaybackQueueRequest *)v4 hasArtworkHeight];
-    if (v15 != [(MRPlaybackQueueRequest *)self hasArtworkHeight])
+    hasArtworkHeight = [(MRPlaybackQueueRequest *)equalCopy hasArtworkHeight];
+    if (hasArtworkHeight != [(MRPlaybackQueueRequest *)self hasArtworkHeight])
     {
       goto LABEL_66;
     }
 
-    if ([(MRPlaybackQueueRequest *)v4 hasArtworkHeight])
+    if ([(MRPlaybackQueueRequest *)equalCopy hasArtworkHeight])
     {
       if ([(MRPlaybackQueueRequest *)self hasArtworkHeight])
       {
-        [(MRPlaybackQueueRequest *)v4 artworkHeight];
+        [(MRPlaybackQueueRequest *)equalCopy artworkHeight];
         v17 = v16;
         [(MRPlaybackQueueRequest *)self artworkHeight];
         if (v17 != v18)
@@ -833,162 +833,162 @@ LABEL_8:
       }
     }
 
-    v19 = [(MRPlaybackQueueRequest *)v4 hasIncludeLyrics];
-    if (v19 != [(MRPlaybackQueueRequest *)self hasIncludeLyrics])
+    hasIncludeLyrics = [(MRPlaybackQueueRequest *)equalCopy hasIncludeLyrics];
+    if (hasIncludeLyrics != [(MRPlaybackQueueRequest *)self hasIncludeLyrics])
     {
       goto LABEL_66;
     }
 
-    if ([(MRPlaybackQueueRequest *)v4 hasIncludeLyrics])
+    if ([(MRPlaybackQueueRequest *)equalCopy hasIncludeLyrics])
     {
       if ([(MRPlaybackQueueRequest *)self hasIncludeLyrics])
       {
-        v20 = [(MRPlaybackQueueRequest *)v4 includeLyrics];
-        if (v20 != [(MRPlaybackQueueRequest *)self includeLyrics])
+        includeLyrics = [(MRPlaybackQueueRequest *)equalCopy includeLyrics];
+        if (includeLyrics != [(MRPlaybackQueueRequest *)self includeLyrics])
         {
           goto LABEL_66;
         }
       }
     }
 
-    v21 = [(MRPlaybackQueueRequest *)v4 hasIncludeSections];
-    if (v21 != [(MRPlaybackQueueRequest *)self hasIncludeSections])
+    hasIncludeSections = [(MRPlaybackQueueRequest *)equalCopy hasIncludeSections];
+    if (hasIncludeSections != [(MRPlaybackQueueRequest *)self hasIncludeSections])
     {
       goto LABEL_66;
     }
 
-    if ([(MRPlaybackQueueRequest *)v4 hasIncludeSections])
+    if ([(MRPlaybackQueueRequest *)equalCopy hasIncludeSections])
     {
       if ([(MRPlaybackQueueRequest *)self hasIncludeSections])
       {
-        v22 = [(MRPlaybackQueueRequest *)v4 includeSections];
-        if (v22 != [(MRPlaybackQueueRequest *)self includeSections])
+        includeSections = [(MRPlaybackQueueRequest *)equalCopy includeSections];
+        if (includeSections != [(MRPlaybackQueueRequest *)self includeSections])
         {
           goto LABEL_66;
         }
       }
     }
 
-    v23 = [(MRPlaybackQueueRequest *)v4 hasIncludeInfo];
-    if (v23 != [(MRPlaybackQueueRequest *)self hasIncludeInfo])
+    hasIncludeInfo = [(MRPlaybackQueueRequest *)equalCopy hasIncludeInfo];
+    if (hasIncludeInfo != [(MRPlaybackQueueRequest *)self hasIncludeInfo])
     {
       goto LABEL_66;
     }
 
-    if ([(MRPlaybackQueueRequest *)v4 hasIncludeInfo])
+    if ([(MRPlaybackQueueRequest *)equalCopy hasIncludeInfo])
     {
       if ([(MRPlaybackQueueRequest *)self hasIncludeInfo])
       {
-        v24 = [(MRPlaybackQueueRequest *)v4 includeInfo];
-        if (v24 != [(MRPlaybackQueueRequest *)self includeInfo])
+        includeInfo = [(MRPlaybackQueueRequest *)equalCopy includeInfo];
+        if (includeInfo != [(MRPlaybackQueueRequest *)self includeInfo])
         {
           goto LABEL_66;
         }
       }
     }
 
-    v25 = [(MRPlaybackQueueRequest *)v4 hasIncludeAlignments];
-    if (v25 != [(MRPlaybackQueueRequest *)self hasIncludeAlignments])
+    hasIncludeAlignments = [(MRPlaybackQueueRequest *)equalCopy hasIncludeAlignments];
+    if (hasIncludeAlignments != [(MRPlaybackQueueRequest *)self hasIncludeAlignments])
     {
       goto LABEL_66;
     }
 
-    if ([(MRPlaybackQueueRequest *)v4 hasIncludeAlignments])
+    if ([(MRPlaybackQueueRequest *)equalCopy hasIncludeAlignments])
     {
       if ([(MRPlaybackQueueRequest *)self hasIncludeAlignments])
       {
-        v26 = [(MRPlaybackQueueRequest *)v4 includeAlignments];
-        if (v26 != [(MRPlaybackQueueRequest *)self includeAlignments])
+        includeAlignments = [(MRPlaybackQueueRequest *)equalCopy includeAlignments];
+        if (includeAlignments != [(MRPlaybackQueueRequest *)self includeAlignments])
         {
           goto LABEL_66;
         }
       }
     }
 
-    v27 = [(MRPlaybackQueueRequest *)v4 hasIncludeLanguageOptions];
-    if (v27 != [(MRPlaybackQueueRequest *)self hasIncludeLanguageOptions])
+    hasIncludeLanguageOptions = [(MRPlaybackQueueRequest *)equalCopy hasIncludeLanguageOptions];
+    if (hasIncludeLanguageOptions != [(MRPlaybackQueueRequest *)self hasIncludeLanguageOptions])
     {
       goto LABEL_66;
     }
 
-    if ([(MRPlaybackQueueRequest *)v4 hasIncludeLanguageOptions])
+    if ([(MRPlaybackQueueRequest *)equalCopy hasIncludeLanguageOptions])
     {
       if ([(MRPlaybackQueueRequest *)self hasIncludeLanguageOptions])
       {
-        v28 = [(MRPlaybackQueueRequest *)v4 includeLanguageOptions];
-        if (v28 != [(MRPlaybackQueueRequest *)self includeLanguageOptions])
+        includeLanguageOptions = [(MRPlaybackQueueRequest *)equalCopy includeLanguageOptions];
+        if (includeLanguageOptions != [(MRPlaybackQueueRequest *)self includeLanguageOptions])
         {
           goto LABEL_66;
         }
       }
     }
 
-    v29 = [(MRPlaybackQueueRequest *)v4 hasIncludeAvailableArtworkFormats];
-    if (v29 != [(MRPlaybackQueueRequest *)self hasIncludeAvailableArtworkFormats])
+    hasIncludeAvailableArtworkFormats = [(MRPlaybackQueueRequest *)equalCopy hasIncludeAvailableArtworkFormats];
+    if (hasIncludeAvailableArtworkFormats != [(MRPlaybackQueueRequest *)self hasIncludeAvailableArtworkFormats])
     {
       goto LABEL_66;
     }
 
-    if ([(MRPlaybackQueueRequest *)v4 hasIncludeAvailableArtworkFormats])
+    if ([(MRPlaybackQueueRequest *)equalCopy hasIncludeAvailableArtworkFormats])
     {
       if ([(MRPlaybackQueueRequest *)self hasIncludeAvailableArtworkFormats])
       {
-        v30 = [(MRPlaybackQueueRequest *)v4 includeAvailableArtworkFormats];
-        if (v30 != [(MRPlaybackQueueRequest *)self includeAvailableArtworkFormats])
+        includeAvailableArtworkFormats = [(MRPlaybackQueueRequest *)equalCopy includeAvailableArtworkFormats];
+        if (includeAvailableArtworkFormats != [(MRPlaybackQueueRequest *)self includeAvailableArtworkFormats])
         {
           goto LABEL_66;
         }
       }
     }
 
-    v31 = [(MRPlaybackQueueRequest *)v4 hasLegacyNowPlayingInfoRequest];
-    if (v31 != [(MRPlaybackQueueRequest *)self hasLegacyNowPlayingInfoRequest])
+    hasLegacyNowPlayingInfoRequest = [(MRPlaybackQueueRequest *)equalCopy hasLegacyNowPlayingInfoRequest];
+    if (hasLegacyNowPlayingInfoRequest != [(MRPlaybackQueueRequest *)self hasLegacyNowPlayingInfoRequest])
     {
       goto LABEL_66;
     }
 
-    if ([(MRPlaybackQueueRequest *)v4 hasLegacyNowPlayingInfoRequest])
+    if ([(MRPlaybackQueueRequest *)equalCopy hasLegacyNowPlayingInfoRequest])
     {
       if ([(MRPlaybackQueueRequest *)self hasLegacyNowPlayingInfoRequest])
       {
-        v32 = [(MRPlaybackQueueRequest *)v4 isLegacyNowPlayingInfoRequest];
-        if (v32 != [(MRPlaybackQueueRequest *)self isLegacyNowPlayingInfoRequest])
+        isLegacyNowPlayingInfoRequest = [(MRPlaybackQueueRequest *)equalCopy isLegacyNowPlayingInfoRequest];
+        if (isLegacyNowPlayingInfoRequest != [(MRPlaybackQueueRequest *)self isLegacyNowPlayingInfoRequest])
         {
           goto LABEL_66;
         }
       }
     }
 
-    v33 = [(MRPlaybackQueueRequest *)v4 hasCachingPolicy];
-    if (v33 != [(MRPlaybackQueueRequest *)self hasCachingPolicy])
+    hasCachingPolicy = [(MRPlaybackQueueRequest *)equalCopy hasCachingPolicy];
+    if (hasCachingPolicy != [(MRPlaybackQueueRequest *)self hasCachingPolicy])
     {
       goto LABEL_66;
     }
 
-    if ([(MRPlaybackQueueRequest *)v4 hasCachingPolicy])
+    if ([(MRPlaybackQueueRequest *)equalCopy hasCachingPolicy])
     {
       if ([(MRPlaybackQueueRequest *)self hasCachingPolicy])
       {
-        v34 = [(MRPlaybackQueueRequest *)v4 cachingPolicy];
-        if (v34 != [(MRPlaybackQueueRequest *)self cachingPolicy])
+        cachingPolicy = [(MRPlaybackQueueRequest *)equalCopy cachingPolicy];
+        if (cachingPolicy != [(MRPlaybackQueueRequest *)self cachingPolicy])
         {
           goto LABEL_66;
         }
       }
     }
 
-    v35 = [(MRPlaybackQueueRequest *)v4 playerPath];
-    v36 = [(MRPlaybackQueueRequest *)self playerPath];
-    v37 = v36;
-    if (v35 == v36)
+    playerPath = [(MRPlaybackQueueRequest *)equalCopy playerPath];
+    playerPath2 = [(MRPlaybackQueueRequest *)self playerPath];
+    v37 = playerPath2;
+    if (playerPath == playerPath2)
     {
     }
 
     else
     {
-      v38 = [(MRPlaybackQueueRequest *)v4 playerPath];
-      v39 = [(MRPlaybackQueueRequest *)self playerPath];
-      v40 = [v38 isEqual:v39];
+      playerPath3 = [(MRPlaybackQueueRequest *)equalCopy playerPath];
+      playerPath4 = [(MRPlaybackQueueRequest *)self playerPath];
+      v40 = [playerPath3 isEqual:playerPath4];
 
       if (!v40)
       {
@@ -996,18 +996,18 @@ LABEL_8:
       }
     }
 
-    v42 = [(MRPlaybackQueueRequest *)v4 requestIdentifier];
-    v43 = [(MRPlaybackQueueRequest *)self requestIdentifier];
-    v44 = v43;
-    if (v42 == v43)
+    requestIdentifier = [(MRPlaybackQueueRequest *)equalCopy requestIdentifier];
+    requestIdentifier2 = [(MRPlaybackQueueRequest *)self requestIdentifier];
+    v44 = requestIdentifier2;
+    if (requestIdentifier == requestIdentifier2)
     {
     }
 
     else
     {
-      v45 = [(MRPlaybackQueueRequest *)v4 requestIdentifier];
-      v46 = [(MRPlaybackQueueRequest *)self requestIdentifier];
-      v47 = [v45 isEqualToString:v46];
+      requestIdentifier3 = [(MRPlaybackQueueRequest *)equalCopy requestIdentifier];
+      requestIdentifier4 = [(MRPlaybackQueueRequest *)self requestIdentifier];
+      v47 = [requestIdentifier3 isEqualToString:requestIdentifier4];
 
       if (!v47)
       {
@@ -1015,18 +1015,18 @@ LABEL_8:
       }
     }
 
-    v48 = [(MRPlaybackQueueRequest *)v4 label];
-    v49 = [(MRPlaybackQueueRequest *)self label];
-    v50 = v49;
-    if (v48 == v49)
+    label = [(MRPlaybackQueueRequest *)equalCopy label];
+    label2 = [(MRPlaybackQueueRequest *)self label];
+    v50 = label2;
+    if (label == label2)
     {
     }
 
     else
     {
-      v51 = [(MRPlaybackQueueRequest *)v4 label];
-      v52 = [(MRPlaybackQueueRequest *)self label];
-      v53 = [v51 isEqualToString:v52];
+      label3 = [(MRPlaybackQueueRequest *)equalCopy label];
+      label4 = [(MRPlaybackQueueRequest *)self label];
+      v53 = [label3 isEqualToString:label4];
 
       if (!v53)
       {
@@ -1036,18 +1036,18 @@ LABEL_66:
       }
     }
 
-    v55 = [(MRPlaybackQueueRequest *)v4 contentItemIdentifiers];
-    v56 = [(MRPlaybackQueueRequest *)self contentItemIdentifiers];
-    if (v55 == v56)
+    contentItemIdentifiers = [(MRPlaybackQueueRequest *)equalCopy contentItemIdentifiers];
+    contentItemIdentifiers2 = [(MRPlaybackQueueRequest *)self contentItemIdentifiers];
+    if (contentItemIdentifiers == contentItemIdentifiers2)
     {
       v41 = 1;
     }
 
     else
     {
-      v57 = [(MRPlaybackQueueRequest *)v4 contentItemIdentifiers];
-      v58 = [(MRPlaybackQueueRequest *)self contentItemIdentifiers];
-      v41 = [v57 isEqualToArray:v58];
+      contentItemIdentifiers3 = [(MRPlaybackQueueRequest *)equalCopy contentItemIdentifiers];
+      contentItemIdentifiers4 = [(MRPlaybackQueueRequest *)self contentItemIdentifiers];
+      v41 = [contentItemIdentifiers3 isEqualToArray:contentItemIdentifiers4];
     }
   }
 
@@ -1056,9 +1056,9 @@ LABEL_67:
   return v41 & 1;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v5 setLocation:{-[MRPlaybackQueueRequest location](self, "location")}];
   [v5 setHasLocation:{-[MRPlaybackQueueRequest hasLocation](self, "hasLocation")}];
   [v5 setLength:{-[MRPlaybackQueueRequest length](self, "length")}];
@@ -1083,45 +1083,45 @@ LABEL_67:
   [v5 setHasIncludeLanguageOptions:{-[MRPlaybackQueueRequest hasIncludeLanguageOptions](self, "hasIncludeLanguageOptions")}];
   [v5 setIncludeAvailableArtworkFormats:{-[MRPlaybackQueueRequest includeAvailableArtworkFormats](self, "includeAvailableArtworkFormats")}];
   [v5 setHasIncludeAvailableArtworkFormats:{-[MRPlaybackQueueRequest hasIncludeAvailableArtworkFormats](self, "hasIncludeAvailableArtworkFormats")}];
-  v6 = [(MRPlaybackQueueRequest *)self requestedArtworkFormats];
-  [v5 setRequestedArtworkFormats:v6];
+  requestedArtworkFormats = [(MRPlaybackQueueRequest *)self requestedArtworkFormats];
+  [v5 setRequestedArtworkFormats:requestedArtworkFormats];
 
-  v7 = [(MRPlaybackQueueRequest *)self requestedRemoteArtworkFormats];
-  [v5 setRequestedRemoteArtworkFormats:v7];
+  requestedRemoteArtworkFormats = [(MRPlaybackQueueRequest *)self requestedRemoteArtworkFormats];
+  [v5 setRequestedRemoteArtworkFormats:requestedRemoteArtworkFormats];
 
-  v8 = [(MRPlaybackQueueRequest *)self requestedAnimatedArtworkPreviewFrameFormats];
-  [v5 setRequestedAnimatedArtworkPreviewFrameFormats:v8];
+  requestedAnimatedArtworkPreviewFrameFormats = [(MRPlaybackQueueRequest *)self requestedAnimatedArtworkPreviewFrameFormats];
+  [v5 setRequestedAnimatedArtworkPreviewFrameFormats:requestedAnimatedArtworkPreviewFrameFormats];
 
-  v9 = [(MRPlaybackQueueRequest *)self requestedAnimatedArtworkAssetURLFormats];
-  [v5 setRequestedAnimatedArtworkAssetURLFormats:v9];
+  requestedAnimatedArtworkAssetURLFormats = [(MRPlaybackQueueRequest *)self requestedAnimatedArtworkAssetURLFormats];
+  [v5 setRequestedAnimatedArtworkAssetURLFormats:requestedAnimatedArtworkAssetURLFormats];
 
   [v5 setLegacyNowPlayingInfoRequest:{-[MRPlaybackQueueRequest isLegacyNowPlayingInfoRequest](self, "isLegacyNowPlayingInfoRequest")}];
   [v5 setHasLegacyNowPlayingInfoRequest:{-[MRPlaybackQueueRequest isLegacyNowPlayingInfoRequest](self, "isLegacyNowPlayingInfoRequest")}];
   [v5 setCachingPolicy:{-[MRPlaybackQueueRequest cachingPolicy](self, "cachingPolicy")}];
   [v5 setHasCachingPolicy:{-[MRPlaybackQueueRequest cachingPolicy](self, "cachingPolicy") != 0}];
-  v10 = [(MRPlaybackQueueRequest *)self playerPath];
-  v11 = [v10 copyWithZone:a3];
+  playerPath = [(MRPlaybackQueueRequest *)self playerPath];
+  v11 = [playerPath copyWithZone:zone];
   [v5 setPlayerPath:v11];
 
-  v12 = [(MRPlaybackQueueRequest *)self requestIdentifier];
-  v13 = [v12 copyWithZone:a3];
+  requestIdentifier = [(MRPlaybackQueueRequest *)self requestIdentifier];
+  v13 = [requestIdentifier copyWithZone:zone];
   [v5 setRequestIdentifier:v13];
 
-  v14 = [(MRPlaybackQueueRequest *)self label];
-  v15 = [v14 copyWithZone:a3];
+  label = [(MRPlaybackQueueRequest *)self label];
+  v15 = [label copyWithZone:zone];
   [v5 setLabel:v15];
 
-  v16 = [(MRPlaybackQueueRequest *)self contentItemIdentifiers];
-  v17 = [v16 copyWithZone:a3];
+  contentItemIdentifiers = [(MRPlaybackQueueRequest *)self contentItemIdentifiers];
+  v17 = [contentItemIdentifiers copyWithZone:zone];
   [v5 setContentItemIdentifiers:v17];
 
   return v5;
 }
 
-- (MRPlaybackQueueRequest)initWithCoder:(id)a3
+- (MRPlaybackQueueRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"protobuf"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"protobuf"];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -1140,131 +1140,131 @@ LABEL_67:
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(MRPlaybackQueueRequest *)self protobuf];
-  [v4 encodeObject:v5 forKey:@"protobuf"];
+  coderCopy = coder;
+  protobuf = [(MRPlaybackQueueRequest *)self protobuf];
+  [coderCopy encodeObject:protobuf forKey:@"protobuf"];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v16 = a3;
-  if ([v16 includeMetadata])
+  fromCopy = from;
+  if ([fromCopy includeMetadata])
   {
-    -[MRPlaybackQueueRequest setIncludeMetadata:](self, "setIncludeMetadata:", [v16 includeMetadata]);
+    -[MRPlaybackQueueRequest setIncludeMetadata:](self, "setIncludeMetadata:", [fromCopy includeMetadata]);
   }
 
-  if ([v16 includeInfo])
+  if ([fromCopy includeInfo])
   {
-    -[MRPlaybackQueueRequest setIncludeInfo:](self, "setIncludeInfo:", [v16 includeInfo]);
+    -[MRPlaybackQueueRequest setIncludeInfo:](self, "setIncludeInfo:", [fromCopy includeInfo]);
   }
 
-  if ([v16 includeAlignments])
+  if ([fromCopy includeAlignments])
   {
-    -[MRPlaybackQueueRequest setIncludeAlignments:](self, "setIncludeAlignments:", [v16 includeAlignments]);
+    -[MRPlaybackQueueRequest setIncludeAlignments:](self, "setIncludeAlignments:", [fromCopy includeAlignments]);
   }
 
-  if ([v16 includeLyrics])
+  if ([fromCopy includeLyrics])
   {
-    -[MRPlaybackQueueRequest setIncludeLyrics:](self, "setIncludeLyrics:", [v16 includeLyrics]);
+    -[MRPlaybackQueueRequest setIncludeLyrics:](self, "setIncludeLyrics:", [fromCopy includeLyrics]);
   }
 
-  if ([v16 includeSections])
+  if ([fromCopy includeSections])
   {
-    -[MRPlaybackQueueRequest setIncludeSections:](self, "setIncludeSections:", [v16 includeSections]);
+    -[MRPlaybackQueueRequest setIncludeSections:](self, "setIncludeSections:", [fromCopy includeSections]);
   }
 
-  if ([v16 includeLanguageOptions])
+  if ([fromCopy includeLanguageOptions])
   {
-    -[MRPlaybackQueueRequest setIncludeLanguageOptions:](self, "setIncludeLanguageOptions:", [v16 includeLanguageOptions]);
+    -[MRPlaybackQueueRequest setIncludeLanguageOptions:](self, "setIncludeLanguageOptions:", [fromCopy includeLanguageOptions]);
   }
 
-  if ([v16 hasArtworkWidth])
+  if ([fromCopy hasArtworkWidth])
   {
-    [v16 artworkWidth];
+    [fromCopy artworkWidth];
     [(MRPlaybackQueueRequest *)self setArtworkWidth:?];
   }
 
-  if ([v16 hasArtworkHeight])
+  if ([fromCopy hasArtworkHeight])
   {
-    [v16 artworkHeight];
+    [fromCopy artworkHeight];
     [(MRPlaybackQueueRequest *)self setArtworkHeight:?];
   }
 
-  if ([v16 hasIncludeAvailableArtworkFormats])
+  if ([fromCopy hasIncludeAvailableArtworkFormats])
   {
-    -[MRPlaybackQueueRequest setIncludeAvailableArtworkFormats:](self, "setIncludeAvailableArtworkFormats:", [v16 includeAvailableArtworkFormats]);
+    -[MRPlaybackQueueRequest setIncludeAvailableArtworkFormats:](self, "setIncludeAvailableArtworkFormats:", [fromCopy includeAvailableArtworkFormats]);
   }
 
-  v4 = [v16 requestedArtworkFormats];
-  v5 = [v4 count];
+  requestedArtworkFormats = [fromCopy requestedArtworkFormats];
+  v5 = [requestedArtworkFormats count];
 
   if (v5)
   {
-    v6 = [v16 requestedArtworkFormats];
-    [(MRPlaybackQueueRequest *)self setRequestedArtworkFormats:v6];
+    requestedArtworkFormats2 = [fromCopy requestedArtworkFormats];
+    [(MRPlaybackQueueRequest *)self setRequestedArtworkFormats:requestedArtworkFormats2];
   }
 
-  v7 = [v16 requestedRemoteArtworkFormats];
-  v8 = [v7 count];
+  requestedRemoteArtworkFormats = [fromCopy requestedRemoteArtworkFormats];
+  v8 = [requestedRemoteArtworkFormats count];
 
   if (v8)
   {
-    v9 = [v16 requestedRemoteArtworkFormats];
-    [(MRPlaybackQueueRequest *)self setRequestedRemoteArtworkFormats:v9];
+    requestedRemoteArtworkFormats2 = [fromCopy requestedRemoteArtworkFormats];
+    [(MRPlaybackQueueRequest *)self setRequestedRemoteArtworkFormats:requestedRemoteArtworkFormats2];
   }
 
-  v10 = [v16 requestedAnimatedArtworkPreviewFrameFormats];
-  v11 = [v10 count];
+  requestedAnimatedArtworkPreviewFrameFormats = [fromCopy requestedAnimatedArtworkPreviewFrameFormats];
+  v11 = [requestedAnimatedArtworkPreviewFrameFormats count];
 
   if (v11)
   {
-    v12 = [v16 requestedAnimatedArtworkPreviewFrameFormats];
-    [(MRPlaybackQueueRequest *)self setRequestedAnimatedArtworkPreviewFrameFormats:v12];
+    requestedAnimatedArtworkPreviewFrameFormats2 = [fromCopy requestedAnimatedArtworkPreviewFrameFormats];
+    [(MRPlaybackQueueRequest *)self setRequestedAnimatedArtworkPreviewFrameFormats:requestedAnimatedArtworkPreviewFrameFormats2];
   }
 
-  v13 = [v16 requestedAnimatedArtworkAssetURLFormats];
-  v14 = [v13 count];
+  requestedAnimatedArtworkAssetURLFormats = [fromCopy requestedAnimatedArtworkAssetURLFormats];
+  v14 = [requestedAnimatedArtworkAssetURLFormats count];
 
   if (v14)
   {
-    v15 = [v16 requestedAnimatedArtworkAssetURLFormats];
-    [(MRPlaybackQueueRequest *)self setRequestedAnimatedArtworkAssetURLFormats:v15];
+    requestedAnimatedArtworkAssetURLFormats2 = [fromCopy requestedAnimatedArtworkAssetURLFormats];
+    [(MRPlaybackQueueRequest *)self setRequestedAnimatedArtworkAssetURLFormats:requestedAnimatedArtworkAssetURLFormats2];
   }
 }
 
-- (BOOL)match:(id)a3
+- (BOOL)match:(id)match
 {
-  v4 = a3;
-  v5 = [(MRPlaybackQueueRequest *)self includeMetadata];
-  if (v5 == [v4 includeMetadata] || (v6 = -[MRPlaybackQueueRequest includeInfo](self, "includeInfo"), v6 == objc_msgSend(v4, "includeInfo")) || (v7 = -[MRPlaybackQueueRequest includeAlignments](self, "includeAlignments"), v7 == objc_msgSend(v4, "includeAlignments")) || (v8 = -[MRPlaybackQueueRequest includeLyrics](self, "includeLyrics"), v8 == objc_msgSend(v4, "includeLyrics")) || (v9 = -[MRPlaybackQueueRequest includeLanguageOptions](self, "includeLanguageOptions"), v9 == objc_msgSend(v4, "includeLanguageOptions")) || (v10 = -[MRPlaybackQueueRequest includeSections](self, "includeSections"), v10 == objc_msgSend(v4, "includeSections")))
+  matchCopy = match;
+  includeMetadata = [(MRPlaybackQueueRequest *)self includeMetadata];
+  if (includeMetadata == [matchCopy includeMetadata] || (v6 = -[MRPlaybackQueueRequest includeInfo](self, "includeInfo"), v6 == objc_msgSend(matchCopy, "includeInfo")) || (v7 = -[MRPlaybackQueueRequest includeAlignments](self, "includeAlignments"), v7 == objc_msgSend(matchCopy, "includeAlignments")) || (v8 = -[MRPlaybackQueueRequest includeLyrics](self, "includeLyrics"), v8 == objc_msgSend(matchCopy, "includeLyrics")) || (v9 = -[MRPlaybackQueueRequest includeLanguageOptions](self, "includeLanguageOptions"), v9 == objc_msgSend(matchCopy, "includeLanguageOptions")) || (v10 = -[MRPlaybackQueueRequest includeSections](self, "includeSections"), v10 == objc_msgSend(matchCopy, "includeSections")))
   {
     LOBYTE(v12) = 1;
   }
 
   else
   {
-    v11 = [(MRPlaybackQueueRequest *)self includeArtwork];
-    v12 = v11 ^ [v4 includeArtwork] ^ 1;
+    includeArtwork = [(MRPlaybackQueueRequest *)self includeArtwork];
+    v12 = includeArtwork ^ [matchCopy includeArtwork] ^ 1;
   }
 
   return v12;
 }
 
-- (BOOL)exactMatch:(id)a3
+- (BOOL)exactMatch:(id)match
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  matchCopy = match;
+  v5 = matchCopy;
+  if (matchCopy == self)
   {
     LOBYTE(v12) = 1;
   }
 
-  else if (v4 && (v6 = [(MRPlaybackQueueRequest *)self includeMetadata], v6 == [(MRPlaybackQueueRequest *)v5 includeMetadata]) && (v7 = [(MRPlaybackQueueRequest *)self includeInfo], v7 == [(MRPlaybackQueueRequest *)v5 includeInfo]) && (v8 = [(MRPlaybackQueueRequest *)self includeAlignments], v8 == [(MRPlaybackQueueRequest *)v5 includeAlignments]) && (v9 = [(MRPlaybackQueueRequest *)self includeLyrics], v9 == [(MRPlaybackQueueRequest *)v5 includeLyrics]) && (v10 = [(MRPlaybackQueueRequest *)self includeLanguageOptions], v10 == [(MRPlaybackQueueRequest *)v5 includeLanguageOptions]) && (v11 = [(MRPlaybackQueueRequest *)self includeSections], v11 == [(MRPlaybackQueueRequest *)v5 includeSections]))
+  else if (matchCopy && (v6 = [(MRPlaybackQueueRequest *)self includeMetadata], v6 == [(MRPlaybackQueueRequest *)v5 includeMetadata]) && (v7 = [(MRPlaybackQueueRequest *)self includeInfo], v7 == [(MRPlaybackQueueRequest *)v5 includeInfo]) && (v8 = [(MRPlaybackQueueRequest *)self includeAlignments], v8 == [(MRPlaybackQueueRequest *)v5 includeAlignments]) && (v9 = [(MRPlaybackQueueRequest *)self includeLyrics], v9 == [(MRPlaybackQueueRequest *)v5 includeLyrics]) && (v10 = [(MRPlaybackQueueRequest *)self includeLanguageOptions], v10 == [(MRPlaybackQueueRequest *)v5 includeLanguageOptions]) && (v11 = [(MRPlaybackQueueRequest *)self includeSections], v11 == [(MRPlaybackQueueRequest *)v5 includeSections]))
   {
-    v14 = [(MRPlaybackQueueRequest *)self includeArtwork];
-    v12 = v14 ^ [(MRPlaybackQueueRequest *)v5 includeArtwork]^ 1;
+    includeArtwork = [(MRPlaybackQueueRequest *)self includeArtwork];
+    v12 = includeArtwork ^ [(MRPlaybackQueueRequest *)v5 includeArtwork]^ 1;
   }
 
   else
@@ -1275,11 +1275,11 @@ LABEL_67:
   return v12;
 }
 
-- (void)performRequestForDestination:(id)a3 completion:(id)a4
+- (void)performRequestForDestination:(id)destination completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[MRNowPlayingControllerConfiguration alloc] initWithDestination:v7];
+  completionCopy = completion;
+  destinationCopy = destination;
+  v8 = [[MRNowPlayingControllerConfiguration alloc] initWithDestination:destinationCopy];
 
   [(MRNowPlayingControllerConfiguration *)v8 setPlaybackQueueRequest:self];
   [(MRNowPlayingControllerConfiguration *)v8 setLabel:@"performPlaybackQueueRequest"];
@@ -1288,8 +1288,8 @@ LABEL_67:
   v11[1] = 3221225472;
   v11[2] = __66__MRPlaybackQueueRequest_performRequestForDestination_completion___block_invoke;
   v11[3] = &unk_1E769E230;
-  v12 = v6;
-  v10 = v6;
+  v12 = completionCopy;
+  v10 = completionCopy;
   [(MRNowPlayingController *)v9 performRequestWithCompletion:v11];
 }
 

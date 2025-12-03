@@ -13,8 +13,8 @@
 
 - (id)uniqueIdentifier
 {
-  v3 = [objc_opt_class() identifier];
-  v4 = [v3 stringByAppendingFormat:@".%@", self->_uuid];
+  identifier = [objc_opt_class() identifier];
+  v4 = [identifier stringByAppendingFormat:@".%@", self->_uuid];
 
   return v4;
 }
@@ -36,9 +36,9 @@
   v2 = [(CLSProfile *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCACA8] cls_generateUUID];
+    cls_generateUUID = [MEMORY[0x277CCACA8] cls_generateUUID];
     uuid = v2->_uuid;
-    v2->_uuid = v3;
+    v2->_uuid = cls_generateUUID;
   }
 
   return v2;
@@ -48,9 +48,9 @@
 {
   v13 = *MEMORY[0x277D85DE8];
   v3 = +[CLSLogging sharedLogging];
-  v4 = [v3 loggingConnection];
+  loggingConnection = [v3 loggingConnection];
 
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
+  if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
   {
     v6 = objc_opt_class();
     v7 = NSStringFromClass(v6);
@@ -59,7 +59,7 @@
     v10 = v7;
     v11 = 2112;
     v12 = v8;
-    _os_log_error_impl(&dword_22F907000, v4, OS_LOG_TYPE_ERROR, "%@ %@ MUST be subclassed", &v9, 0x16u);
+    _os_log_error_impl(&dword_22F907000, loggingConnection, OS_LOG_TYPE_ERROR, "%@ %@ MUST be subclassed", &v9, 0x16u);
   }
 
   return 0;
@@ -69,9 +69,9 @@
 {
   v13 = *MEMORY[0x277D85DE8];
   v3 = +[CLSLogging sharedLogging];
-  v4 = [v3 loggingConnection];
+  loggingConnection = [v3 loggingConnection];
 
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
+  if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
   {
     v6 = objc_opt_class();
     v7 = NSStringFromClass(v6);
@@ -80,7 +80,7 @@
     v10 = v7;
     v11 = 2112;
     v12 = v8;
-    _os_log_error_impl(&dword_22F907000, v4, OS_LOG_TYPE_ERROR, "%@ %@ MUST be subclassed", &v9, 0x16u);
+    _os_log_error_impl(&dword_22F907000, loggingConnection, OS_LOG_TYPE_ERROR, "%@ %@ MUST be subclassed", &v9, 0x16u);
   }
 
   return MEMORY[0x277CBEBF8];
@@ -90,9 +90,9 @@
 {
   v13 = *MEMORY[0x277D85DE8];
   v3 = +[CLSLogging sharedLogging];
-  v4 = [v3 loggingConnection];
+  loggingConnection = [v3 loggingConnection];
 
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
+  if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
   {
     v6 = objc_opt_class();
     v7 = NSStringFromClass(v6);
@@ -101,7 +101,7 @@
     v10 = v7;
     v11 = 2112;
     v12 = v8;
-    _os_log_error_impl(&dword_22F907000, v4, OS_LOG_TYPE_ERROR, "%@ %@ MUST be subclassed", &v9, 0x16u);
+    _os_log_error_impl(&dword_22F907000, loggingConnection, OS_LOG_TYPE_ERROR, "%@ %@ MUST be subclassed", &v9, 0x16u);
   }
 
   return MEMORY[0x277CBEBF8];
@@ -109,8 +109,8 @@
 
 + (id)identifier
 {
-  v2 = [objc_opt_class() classIdentifier];
-  v3 = [@"com.apple.mediaminingkit.profile" stringByAppendingFormat:@".%@", v2];
+  classIdentifier = [objc_opt_class() classIdentifier];
+  v3 = [@"com.apple.mediaminingkit.profile" stringByAppendingFormat:@".%@", classIdentifier];
 
   return v3;
 }
@@ -119,9 +119,9 @@
 {
   v13 = *MEMORY[0x277D85DE8];
   v3 = +[CLSLogging sharedLogging];
-  v4 = [v3 loggingConnection];
+  loggingConnection = [v3 loggingConnection];
 
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
+  if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
   {
     v6 = objc_opt_class();
     v7 = NSStringFromClass(v6);
@@ -130,7 +130,7 @@
     v10 = v7;
     v11 = 2112;
     v12 = v8;
-    _os_log_error_impl(&dword_22F907000, v4, OS_LOG_TYPE_ERROR, "%@ %@ MUST be subclassed", &v9, 0x16u);
+    _os_log_error_impl(&dword_22F907000, loggingConnection, OS_LOG_TYPE_ERROR, "%@ %@ MUST be subclassed", &v9, 0x16u);
   }
 
   return @"unknown";

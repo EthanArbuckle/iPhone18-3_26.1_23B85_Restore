@@ -1,58 +1,58 @@
 @interface EditShortcutViewController
 - (BOOL)_isMapUserShortcut;
 - (BOOL)_shouldAllowMeCardWriteback;
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
 - (BOOL)shouldAutoSaveEdit;
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4;
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5;
-- (BOOL)textFieldShouldReturn:(id)a3;
-- (EditShortcutViewController)initWithShortcutEditSession:(id)a3;
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path;
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string;
+- (BOOL)textFieldShouldReturn:(id)return;
+- (EditShortcutViewController)initWithShortcutEditSession:(id)session;
 - (ShortcutEditSessionController)sessionController;
 - (double)preferredWidth;
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4;
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section;
 - (id)_cellForAddress;
-- (id)_cellForContactsAtIndexPath:(id)a3;
+- (id)_cellForContactsAtIndexPath:(id)path;
 - (id)_cellForLabel;
 - (id)_cellForOpenMeCard;
-- (id)_cellForTypeAtIndexPath:(id)a3;
+- (id)_cellForTypeAtIndexPath:(id)path;
 - (id)_cellForWriteToMeCard;
-- (id)_configureCellForAddSharingContactAction:(id)a3;
-- (id)_editShortcutTypeForIndex:(unint64_t)a3;
-- (id)_footerStringForShortcutType:(int64_t)a3;
-- (id)_meCardTextForType:(int64_t)a3;
-- (id)_sectionForIndex:(unint64_t)a3;
+- (id)_configureCellForAddSharingContactAction:(id)action;
+- (id)_editShortcutTypeForIndex:(unint64_t)index;
+- (id)_footerStringForShortcutType:(int64_t)type;
+- (id)_meCardTextForType:(int64_t)type;
+- (id)_sectionForIndex:(unint64_t)index;
 - (id)_shortcutTypes;
-- (id)_titleForSection:(int64_t)a3;
+- (id)_titleForSection:(int64_t)section;
 - (id)keyCommands;
 - (id)preferredFocusEnvironments;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4;
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (unint64_t)_typeForIndex:(unint64_t)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section;
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (unint64_t)_typeForIndex:(unint64_t)index;
 - (void)_addPersonAction;
 - (void)_buildContent;
-- (void)_cancelAction:(id)a3;
+- (void)_cancelAction:(id)action;
 - (void)_close;
-- (void)_doneAction:(id)a3;
+- (void)_doneAction:(id)action;
 - (void)_openContact;
 - (void)_refineAction;
 - (void)_removeAction;
-- (void)_removeContact:(id)a3 fromSection:(int64_t)a4;
+- (void)_removeContact:(id)contact fromSection:(int64_t)section;
 - (void)_save;
-- (void)_updateWithType:(int64_t)a3;
+- (void)_updateWithType:(int64_t)type;
 - (void)didBecomeCurrent;
 - (void)didDismissByGesture;
-- (void)didEditContactWithAddressAdded:(BOOL)a3;
-- (void)meCardWritebackToggled:(id)a3;
-- (void)scrollViewDidScroll:(id)a3;
+- (void)didEditContactWithAddressAdded:(BOOL)added;
+- (void)meCardWritebackToggled:(id)toggled;
+- (void)scrollViewDidScroll:(id)scroll;
 - (void)setupSubviews;
 - (void)shoulDismissForVerticalSwipe_nonUIKitCardsOnly;
-- (void)tableView:(id)a3 accessoryButtonTappedForRowWithIndexPath:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view accessoryButtonTappedForRowWithIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation EditShortcutViewController
@@ -64,13 +64,13 @@
   return WeakRetained;
 }
 
-- (void)meCardWritebackToggled:(id)a3
+- (void)meCardWritebackToggled:(id)toggled
 {
-  v4 = a3;
-  v6 = [(EditShortcutViewController *)self shortcut];
-  v5 = [v4 isOn];
+  toggledCopy = toggled;
+  shortcut = [(EditShortcutViewController *)self shortcut];
+  isOn = [toggledCopy isOn];
 
-  [v6 setIsMeCardWritebackEnabled:v5];
+  [shortcut setIsMeCardWritebackEnabled:isOn];
 }
 
 - (void)didDismissByGesture
@@ -78,24 +78,24 @@
   v4.receiver = self;
   v4.super_class = EditShortcutViewController;
   [(ContaineeViewController *)&v4 didDismissByGesture];
-  v3 = [(EditShortcutViewController *)self sessionController];
-  [v3 presentedViewControllerWasDismissedBySwiping:self];
+  sessionController = [(EditShortcutViewController *)self sessionController];
+  [sessionController presentedViewControllerWasDismissedBySwiping:self];
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v4 = a3;
+  scrollCopy = scroll;
   v5.receiver = self;
   v5.super_class = EditShortcutViewController;
-  [(SimpleContaineeViewController *)&v5 scrollViewDidScroll:v4];
-  if (([v4 isDragging] & 1) != 0 || objc_msgSend(v4, "isDecelerating"))
+  [(SimpleContaineeViewController *)&v5 scrollViewDidScroll:scrollCopy];
+  if (([scrollCopy isDragging] & 1) != 0 || objc_msgSend(scrollCopy, "isDecelerating"))
   {
     [(ShortcutEditSession *)self->_shortcutEditSession setDidResignTitleFocus:1];
     [(EditShortcutTitleCell *)self->_editTitleCell resignResponder];
   }
 }
 
-- (BOOL)textFieldShouldReturn:(id)a3
+- (BOOL)textFieldShouldReturn:(id)return
 {
   [(EditShortcutTitleCell *)self->_editTitleCell resignResponder];
   if ([(EditShortcutViewController *)self shouldAutoSaveEdit])
@@ -112,14 +112,14 @@
   return 1;
 }
 
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string
 {
-  length = a4.length;
-  location = a4.location;
-  v9 = a3;
-  v10 = a5;
-  v11 = [v9 text];
-  v12 = [v11 stringByReplacingCharactersInRange:location withString:{length, v10}];
+  length = range.length;
+  location = range.location;
+  fieldCopy = field;
+  stringCopy = string;
+  text = [fieldCopy text];
+  v12 = [text stringByReplacingCharactersInRange:location withString:{length, stringCopy}];
 
   UInteger = GEOConfigGetUInteger();
   v14 = [v12 length];
@@ -127,15 +127,15 @@
   {
     v15 = [v12 substringWithRange:{0, UInteger}];
 
-    [v9 setText:v15];
+    [fieldCopy setText:v15];
     v12 = v15;
   }
 
   v16 = v14 <= UInteger;
   [(ShortcutEditSession *)self->_shortcutEditSession setName:v12];
   v17 = [v12 length] != 0;
-  v18 = [(ModalCardHeaderView *)self->_modalHeaderView trailingButton];
-  [v18 setEnabled:v17];
+  trailingButton = [(ModalCardHeaderView *)self->_modalHeaderView trailingButton];
+  [trailingButton setEnabled:v17];
 
   return v16;
 }
@@ -143,15 +143,15 @@
 - (id)_cellForWriteToMeCard
 {
   v3 = [UITableViewCell alloc];
-  v4 = [&off_1016E7688 stringValue];
-  v5 = [v3 initWithStyle:0 reuseIdentifier:v4];
+  stringValue = [&off_1016E7688 stringValue];
+  v5 = [v3 initWithStyle:0 reuseIdentifier:stringValue];
 
   v6 = +[AddressBookManager sharedManager];
-  v7 = [v6 meCard];
+  meCard = [v6 meCard];
 
   v8 = +[NSBundle mainBundle];
   v9 = v8;
-  if (v7)
+  if (meCard)
   {
     v10 = @"[Shortcut] Add to Contact Card";
   }
@@ -162,17 +162,17 @@
   }
 
   v11 = [v8 localizedStringForKey:v10 value:@"localized string not found" table:0];
-  v12 = [v5 textLabel];
-  [v12 setText:v11];
+  textLabel = [v5 textLabel];
+  [textLabel setText:v11];
 
   v13 = [[UISwitch alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
-  v14 = [(EditShortcutViewController *)self shortcut];
-  [v13 setOn:{objc_msgSend(v14, "isMeCardWritebackEnabled")}];
+  shortcut = [(EditShortcutViewController *)self shortcut];
+  [v13 setOn:{objc_msgSend(shortcut, "isMeCardWritebackEnabled")}];
   [v13 addTarget:self action:"meCardWritebackToggled:" forControlEvents:4096];
   [v5 setAccessoryView:v13];
   [v5 setAccessibilityIdentifier:@"EditShortcutSaveToMeCardCell"];
-  v15 = [v5 textLabel];
-  [v15 setAccessibilityIdentifier:@"EditShortcutSaveToMeCardCellLabel"];
+  textLabel2 = [v5 textLabel];
+  [textLabel2 setAccessibilityIdentifier:@"EditShortcutSaveToMeCardCellLabel"];
 
   return v5;
 }
@@ -180,11 +180,11 @@
 - (id)_cellForOpenMeCard
 {
   v3 = [EditShortcutMeCardCell alloc];
-  v4 = [&off_1016E7670 stringValue];
-  v5 = [(EditShortcutMeCardCell *)v3 initWithStyle:0 reuseIdentifier:v4];
+  stringValue = [&off_1016E7670 stringValue];
+  v5 = [(EditShortcutMeCardCell *)v3 initWithStyle:0 reuseIdentifier:stringValue];
 
-  v6 = [(EditShortcutViewController *)self shortcut];
-  v7 = -[EditShortcutViewController _meCardTextForType:](self, "_meCardTextForType:", [v6 type]);
+  shortcut = [(EditShortcutViewController *)self shortcut];
+  v7 = -[EditShortcutViewController _meCardTextForType:](self, "_meCardTextForType:", [shortcut type]);
   [(EditShortcutMeCardCell *)v5 setMeCardString:v7];
 
   objc_initWeak(&location, self);
@@ -205,28 +205,28 @@
   if (sub_10000FA08(self) == 5)
   {
     v3 = [[MacEditShortcutAddressCell alloc] initWithStyle:0 reuseIdentifier:0];
-    v4 = [(EditShortcutViewController *)self shortcut];
-    v5 = [v4 geoMapItem];
-    v6 = [v5 addressObject];
-    v7 = [v6 fullAddressWithMultiline:1];
+    shortcut = [(EditShortcutViewController *)self shortcut];
+    geoMapItem = [shortcut geoMapItem];
+    addressObject = [geoMapItem addressObject];
+    v7 = [addressObject fullAddressWithMultiline:1];
     [(MacEditShortcutAddressCell *)v3 setAddress:v7];
   }
 
   else
   {
     v8 = [UITableViewCell alloc];
-    v9 = [&off_1016E7658 stringValue];
-    v3 = [v8 initWithStyle:0 reuseIdentifier:v9];
+    stringValue = [&off_1016E7658 stringValue];
+    v3 = [v8 initWithStyle:0 reuseIdentifier:stringValue];
 
-    v10 = [(MacEditShortcutAddressCell *)v3 textLabel];
-    [v10 setNumberOfLines:0];
+    textLabel = [(MacEditShortcutAddressCell *)v3 textLabel];
+    [textLabel setNumberOfLines:0];
 
-    v11 = [(EditShortcutViewController *)self shortcut];
-    v12 = [v11 geoMapItem];
-    v13 = [v12 addressObject];
-    v14 = [v13 fullAddressWithMultiline:1];
-    v15 = [(MacEditShortcutAddressCell *)v3 textLabel];
-    [v15 setText:v14];
+    shortcut2 = [(EditShortcutViewController *)self shortcut];
+    geoMapItem2 = [shortcut2 geoMapItem];
+    addressObject2 = [geoMapItem2 addressObject];
+    v14 = [addressObject2 fullAddressWithMultiline:1];
+    textLabel2 = [(MacEditShortcutAddressCell *)v3 textLabel];
+    [textLabel2 setText:v14];
 
     if (sub_10000FA08(self) == 5)
     {
@@ -238,20 +238,20 @@
       +[UIColor secondaryLabelColor];
     }
     v16 = ;
-    v17 = [(MacEditShortcutAddressCell *)v3 textLabel];
-    [v17 setTextColor:v16];
+    textLabel3 = [(MacEditShortcutAddressCell *)v3 textLabel];
+    [textLabel3 setTextColor:v16];
 
     [(MacEditShortcutAddressCell *)v3 setAccessibilityIdentifier:@"EditShortcutAddressCell"];
-    v4 = [(MacEditShortcutAddressCell *)v3 textLabel];
-    [v4 setAccessibilityIdentifier:@"EditShortCutAddressCellLabel"];
+    shortcut = [(MacEditShortcutAddressCell *)v3 textLabel];
+    [shortcut setAccessibilityIdentifier:@"EditShortCutAddressCellLabel"];
   }
 
   return v3;
 }
 
-- (id)_configureCellForAddSharingContactAction:(id)a3
+- (id)_configureCellForAddSharingContactAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   v5 = objc_alloc_init(SimpleContaineeAction);
   v6 = +[NSBundle mainBundle];
   v7 = [v6 localizedStringForKey:@"[Shortcut] Add Person" value:@"localized string not found" table:0];
@@ -260,21 +260,21 @@
   [(SimpleContaineeAction *)v5 setGlyph:@"person.circle.fill"];
   [(SimpleContaineeAction *)v5 setGlyphStyle:2];
   v8 = [(SimpleContaineeViewController *)self configurationForAction:v5];
-  [v4 setContentConfiguration:v8];
+  [actionCopy setContentConfiguration:v8];
 
-  [v4 setAccessibilityIdentifier:@"EditShortcutAddPersonCell"];
-  v9 = [v4 textLabel];
-  [v9 setAccessibilityIdentifier:@"EditShortCutAddPersonCellLabel"];
+  [actionCopy setAccessibilityIdentifier:@"EditShortcutAddPersonCell"];
+  textLabel = [actionCopy textLabel];
+  [textLabel setAccessibilityIdentifier:@"EditShortCutAddPersonCellLabel"];
 
-  return v4;
+  return actionCopy;
 }
 
-- (id)_cellForContactsAtIndexPath:(id)a3
+- (id)_cellForContactsAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(ShortcutEditSession *)self->_shortcutEditSession contacts];
-  v6 = [v5 count];
-  v7 = [v4 row];
+  pathCopy = path;
+  contacts = [(ShortcutEditSession *)self->_shortcutEditSession contacts];
+  v6 = [contacts count];
+  v7 = [pathCopy row];
 
   if (v6 <= v7)
   {
@@ -283,8 +283,8 @@
 
   else
   {
-    v8 = [(ShortcutEditSession *)self->_shortcutEditSession contacts];
-    v9 = [v8 objectAtIndexedSubscript:{objc_msgSend(v4, "row")}];
+    contacts2 = [(ShortcutEditSession *)self->_shortcutEditSession contacts];
+    v9 = [contacts2 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
 
     v10 = [[EditShortcutContactCell alloc] initWithStyle:0 reuseIdentifier:0];
     [(EditShortcutContactCell *)v10 setContactValue:v9];
@@ -296,7 +296,7 @@
     objc_copyWeak(&v16, &location);
     v11 = v9;
     v14 = v11;
-    v15 = v4;
+    v15 = pathCopy;
     [(EditShortcutContactCell *)v10 setAction:v13];
 
     objc_destroyWeak(&v16);
@@ -306,15 +306,15 @@
   return v10;
 }
 
-- (id)_cellForTypeAtIndexPath:(id)a3
+- (id)_cellForTypeAtIndexPath:(id)path
 {
-  v4 = -[EditShortcutViewController _editShortcutTypeForIndex:](self, "_editShortcutTypeForIndex:", [a3 row]);
+  v4 = -[EditShortcutViewController _editShortcutTypeForIndex:](self, "_editShortcutTypeForIndex:", [path row]);
   v5 = [EditShortcutTypeCell alloc];
-  v6 = [(EditShortcutViewController *)self shortcut];
-  v7 = [(EditShortcutTypeCell *)v5 initWithShortcut:v6 shortcutType:v4];
+  shortcut = [(EditShortcutViewController *)self shortcut];
+  v7 = [(EditShortcutTypeCell *)v5 initWithShortcut:shortcut shortcutType:v4];
 
-  v8 = [(EditShortcutViewController *)self shortcut];
-  -[EditShortcutTypeCell setChecked:](v7, "setChecked:", [v8 type] == objc_msgSend(v4, "type"));
+  shortcut2 = [(EditShortcutViewController *)self shortcut];
+  -[EditShortcutTypeCell setChecked:](v7, "setChecked:", [shortcut2 type] == objc_msgSend(v4, "type"));
 
   return v7;
 }
@@ -331,8 +331,8 @@
   else
   {
     v5 = [EditShortcutTitleCell alloc];
-    v6 = [(EditShortcutViewController *)self shortcut];
-    v4 = [(EditShortcutTitleCell *)v5 initWithShortcut:v6 delegate:self];
+    shortcut = [(EditShortcutViewController *)self shortcut];
+    v4 = [(EditShortcutTitleCell *)v5 initWithShortcut:shortcut delegate:self];
 
     objc_storeStrong(&self->_editTitleCell, v4);
   }
@@ -340,22 +340,22 @@
   return v4;
 }
 
-- (void)tableView:(id)a3 accessoryButtonTappedForRowWithIndexPath:(id)a4
+- (void)tableView:(id)view accessoryButtonTappedForRowWithIndexPath:(id)path
 {
-  v5 = [a4 section];
+  section = [path section];
 
-  [(EditShortcutViewController *)self _typeForIndex:v5];
+  [(EditShortcutViewController *)self _typeForIndex:section];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = -[EditShortcutViewController _typeForIndex:](self, "_typeForIndex:", [v7 section]);
+  viewCopy = view;
+  pathCopy = path;
+  v8 = -[EditShortcutViewController _typeForIndex:](self, "_typeForIndex:", [pathCopy section]);
   if (![(EditShortcutViewController *)self _isMapUserShortcut]&& v8 == 2)
   {
-    v9 = [(EditShortcutViewController *)self sessionController];
-    [v9 showAddShortcut:self->_shortcutEditSession];
+    sessionController = [(EditShortcutViewController *)self sessionController];
+    [sessionController showAddShortcut:self->_shortcutEditSession];
 
     goto LABEL_4;
   }
@@ -364,7 +364,7 @@
   {
     v12.receiver = self;
     v12.super_class = EditShortcutViewController;
-    [(SimpleContaineeViewController *)&v12 tableView:v6 didSelectRowAtIndexPath:v7];
+    [(SimpleContaineeViewController *)&v12 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
     goto LABEL_4;
   }
 
@@ -377,14 +377,14 @@
   if (v8 != 3)
   {
 LABEL_4:
-    v10 = [(SimpleContaineeViewController *)self actionsTableView];
-    [v10 deselectRowAtIndexPath:v7 animated:1];
+    actionsTableView = [(SimpleContaineeViewController *)self actionsTableView];
+    [actionsTableView deselectRowAtIndexPath:pathCopy animated:1];
     goto LABEL_5;
   }
 
-  v10 = -[EditShortcutViewController _editShortcutTypeForIndex:](self, "_editShortcutTypeForIndex:", [v7 row]);
-  v11 = [v10 type];
-  if (v11 <= 5 && ((1 << v11) & 0x2C) != 0 && !+[_TtC4Maps18LibraryUIUtilities isMyPlacesEnabled])
+  actionsTableView = -[EditShortcutViewController _editShortcutTypeForIndex:](self, "_editShortcutTypeForIndex:", [pathCopy row]);
+  type = [actionsTableView type];
+  if (type <= 5 && ((1 << type) & 0x2C) != 0 && !+[_TtC4Maps18LibraryUIUtilities isMyPlacesEnabled])
   {
     objc_initWeak(&location, self);
     v13[0] = _NSConcreteStackBlock;
@@ -392,9 +392,9 @@ LABEL_4:
     v13[2] = sub_1008B18F4;
     v13[3] = &unk_10165F3F0;
     objc_copyWeak(&v16, &location);
-    v10 = v10;
-    v14 = v10;
-    v15 = v7;
+    actionsTableView = actionsTableView;
+    v14 = actionsTableView;
+    v15 = pathCopy;
     [CNContactStore promptForContactsAccessIfNeededBeforePerforming:v13];
 
     objc_destroyWeak(&v16);
@@ -403,42 +403,42 @@ LABEL_4:
 
   else
   {
-    -[EditShortcutViewController _updateWithType:](self, "_updateWithType:", [v10 type]);
+    -[EditShortcutViewController _updateWithType:](self, "_updateWithType:", [actionsTableView type]);
   }
 
 LABEL_5:
 }
 
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v11 = v6 == 3 || (v7 = v6, v6 == 4) && (v8 = [v5 row], -[ShortcutEditSession contacts](self->_shortcutEditSession, "contacts"), v9 = v6 = -[EditShortcutViewController _typeForIndex:](self, "_typeForIndex:", [v5 section]);
+  pathCopy = path;
+  v11 = v6 == 3 || (v7 = v6, v6 == 4) && (v8 = [pathCopy row], -[ShortcutEditSession contacts](self->_shortcutEditSession, "contacts"), v9 = v6 = -[EditShortcutViewController _typeForIndex:](self, "_typeForIndex:", [pathCopy section]);
 
   return v11;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = -[EditShortcutViewController _typeForIndex:](self, "_typeForIndex:", [v7 section]);
+  viewCopy = view;
+  pathCopy = path;
+  v8 = -[EditShortcutViewController _typeForIndex:](self, "_typeForIndex:", [pathCopy section]);
   if (v8 <= 3)
   {
     switch(v8)
     {
       case 1:
-        v9 = [(EditShortcutViewController *)self _cellForLabel];
+        _cellForLabel = [(EditShortcutViewController *)self _cellForLabel];
         goto LABEL_18;
       case 2:
-        v9 = [(EditShortcutViewController *)self _cellForAddress];
+        _cellForLabel = [(EditShortcutViewController *)self _cellForAddress];
         goto LABEL_18;
       case 3:
-        v9 = [(EditShortcutViewController *)self _cellForTypeAtIndexPath:v7];
+        _cellForLabel = [(EditShortcutViewController *)self _cellForTypeAtIndexPath:pathCopy];
         goto LABEL_18;
     }
 
 LABEL_13:
-    v9 = [[UITableViewCell alloc] initWithStyle:0 reuseIdentifier:0];
+    _cellForLabel = [[UITableViewCell alloc] initWithStyle:0 reuseIdentifier:0];
     goto LABEL_18;
   }
 
@@ -448,13 +448,13 @@ LABEL_13:
     {
       v16.receiver = self;
       v16.super_class = EditShortcutViewController;
-      v9 = [(SimpleContaineeViewController *)&v16 tableView:v6 cellForRowAtIndexPath:v7];
+      _cellForLabel = [(SimpleContaineeViewController *)&v16 tableView:viewCopy cellForRowAtIndexPath:pathCopy];
       goto LABEL_18;
     }
 
     if (v8 == 7)
     {
-      v9 = [(EditShortcutViewController *)self _cellForWriteToMeCard];
+      _cellForLabel = [(EditShortcutViewController *)self _cellForWriteToMeCard];
       goto LABEL_18;
     }
 
@@ -463,23 +463,23 @@ LABEL_13:
 
   if (v8 != 4)
   {
-    v9 = [(EditShortcutViewController *)self _cellForOpenMeCard];
+    _cellForLabel = [(EditShortcutViewController *)self _cellForOpenMeCard];
 LABEL_18:
-    v13 = v9;
+    v13 = _cellForLabel;
     goto LABEL_19;
   }
 
-  v10 = [(ShortcutEditSession *)self->_shortcutEditSession contacts];
-  v11 = [v10 count];
-  v12 = [v7 row];
+  contacts = [(ShortcutEditSession *)self->_shortcutEditSession contacts];
+  v11 = [contacts count];
+  v12 = [pathCopy row];
 
   if (v11 > v12)
   {
-    v9 = [(EditShortcutViewController *)self _cellForContactsAtIndexPath:v7];
+    _cellForLabel = [(EditShortcutViewController *)self _cellForContactsAtIndexPath:pathCopy];
     goto LABEL_18;
   }
 
-  v15 = [v6 dequeueReusableCellWithIdentifier:@"EditShortcutActionCell" forIndexPath:v7];
+  v15 = [viewCopy dequeueReusableCellWithIdentifier:@"EditShortcutActionCell" forIndexPath:pathCopy];
   v13 = [(EditShortcutViewController *)self _configureCellForAddSharingContactAction:v15];
 
 LABEL_19:
@@ -487,16 +487,16 @@ LABEL_19:
   return v13;
 }
 
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section
 {
-  v7 = a3;
+  viewCopy = view;
   if (sub_10000FA08(self) == 5)
   {
     goto LABEL_2;
   }
 
-  v9 = [(EditShortcutViewController *)self _typeForIndex:a4];
-  v10 = [v7 footerViewForSection:a4];
+  v9 = [(EditShortcutViewController *)self _typeForIndex:section];
+  v10 = [viewCopy footerViewForSection:section];
   if (v9 <= 7)
   {
     v4 = [@"EditShortcutSectionType" stringByAppendingString:*(&off_10162D2B0 + v9)];
@@ -509,8 +509,8 @@ LABEL_19:
   {
     if (!+[_TtC4Maps18LibraryUIUtilities isMyPlacesEnabled])
     {
-      v14 = [(EditShortcutViewController *)self shortcut];
-      v23 = -[EditShortcutViewController _meCardTextForType:](self, "_meCardTextForType:", [v14 type]);
+      shortcut = [(EditShortcutViewController *)self shortcut];
+      v23 = -[EditShortcutViewController _meCardTextForType:](self, "_meCardTextForType:", [shortcut type]);
 LABEL_16:
       v8 = v23;
       goto LABEL_17;
@@ -527,7 +527,7 @@ LABEL_2:
     {
       v12 = +[_TtC4Maps18LibraryUIUtilities isMyPlacesEnabled];
       v13 = +[NSBundle mainBundle];
-      v14 = v13;
+      shortcut = v13;
       if (v12)
       {
         v15 = @"[Pin] Share ETA Footer";
@@ -546,9 +546,9 @@ LABEL_2:
   }
 
   v16 = +[AddressBookManager sharedManager];
-  v17 = [v16 meCard];
+  meCard = [v16 meCard];
 
-  if (v17)
+  if (meCard)
   {
     goto LABEL_2;
   }
@@ -556,11 +556,11 @@ LABEL_2:
   v18 = [NSString alloc];
   v19 = +[NSBundle mainBundle];
   v20 = [v19 localizedStringForKey:@"[Shortcut] Contact Card privacy footer" value:@"localized string not found" table:0];
-  v14 = [v18 initWithString:v20];
+  shortcut = [v18 initWithString:v20];
 
-  v21 = [(EditShortcutViewController *)self shortcut];
-  v22 = -[EditShortcutViewController _footerStringForShortcutType:](self, "_footerStringForShortcutType:", [v21 type]);
-  v8 = [NSString stringWithFormat:v22, v14];
+  shortcut2 = [(EditShortcutViewController *)self shortcut];
+  v22 = -[EditShortcutViewController _footerStringForShortcutType:](self, "_footerStringForShortcutType:", [shortcut2 type]);
+  v8 = [NSString stringWithFormat:v22, shortcut];
 
 LABEL_17:
 LABEL_18:
@@ -568,9 +568,9 @@ LABEL_18:
   return v8;
 }
 
-- (id)_footerStringForShortcutType:(int64_t)a3
+- (id)_footerStringForShortcutType:(int64_t)type
 {
-  switch(a3)
+  switch(type)
   {
     case 2:
       v3 = @"[Shortcut] Add home to Contact Card footer";
@@ -593,9 +593,9 @@ LABEL_9:
   return v5;
 }
 
-- (id)_titleForSection:(int64_t)a3
+- (id)_titleForSection:(int64_t)section
 {
-  v4 = [(EditShortcutViewController *)self _typeForIndex:a3];
+  v4 = [(EditShortcutViewController *)self _typeForIndex:section];
   v5 = &stru_1016631F0;
   if (v4 > 2)
   {
@@ -643,10 +643,10 @@ LABEL_15:
 
     if (sub_10000FA08(self) != 5)
     {
-      v7 = [(EditShortcutViewController *)self shortcut];
-      v8 = [v7 type];
+      shortcut = [(EditShortcutViewController *)self shortcut];
+      type = [shortcut type];
 
-      if (v8 <= 5 && ((1 << v8) & 0x2C) != 0 && !+[_TtC4Maps18LibraryUIUtilities isMyPlacesEnabled])
+      if (type <= 5 && ((1 << type) & 0x2C) != 0 && !+[_TtC4Maps18LibraryUIUtilities isMyPlacesEnabled])
       {
         v9 = +[NSBundle mainBundle];
         v10 = [v9 localizedStringForKey:@"[Shortcut] Contact Card" value:@"localized string not found" table:0];
@@ -662,17 +662,17 @@ LABEL_17:
   return v5;
 }
 
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section
 {
   if (sub_10000FA08(self) != 5)
   {
     return UITableViewAutomaticDimension;
   }
 
-  v6 = [(EditShortcutViewController *)self _titleForSection:a4];
+  v6 = [(EditShortcutViewController *)self _titleForSection:section];
   if ([v6 isEqualToString:&stru_1016631F0])
   {
-    if ([(EditShortcutViewController *)self _typeForIndex:a4]== 1)
+    if ([(EditShortcutViewController *)self _typeForIndex:section]== 1)
     {
       v7 = 0.0;
     }
@@ -691,16 +691,16 @@ LABEL_17:
   return v7;
 }
 
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section
 {
-  v7 = a3;
+  viewCopy = view;
   if (sub_10000FA08(self) == 5)
   {
     goto LABEL_2;
   }
 
-  v9 = [(EditShortcutViewController *)self _typeForIndex:a4];
-  v10 = [v7 footerViewForSection:a4];
+  v9 = [(EditShortcutViewController *)self _typeForIndex:section];
+  v10 = [viewCopy footerViewForSection:section];
   if (v9 <= 7)
   {
     v4 = [@"EditShortcutSectionType" stringByAppendingString:*(&off_10162D2B0 + v9)];
@@ -709,13 +709,13 @@ LABEL_17:
   v11 = [v4 stringByAppendingString:@"Footer"];
   [v10 setAccessibilityIdentifier:v11];
 
-  v12 = [(EditShortcutViewController *)self tableView:v7 titleForFooterInSection:a4];
+  v12 = [(EditShortcutViewController *)self tableView:viewCopy titleForFooterInSection:section];
 
   if (v12)
   {
     v8 = objc_alloc_init(UITableViewHeaderFooterView);
     v13 = +[UIListContentConfiguration footerConfiguration];
-    v14 = [(EditShortcutViewController *)self tableView:v7 titleForFooterInSection:a4];
+    v14 = [(EditShortcutViewController *)self tableView:viewCopy titleForFooterInSection:section];
     [v13 setText:v14];
 
     [v8 setContentConfiguration:v13];
@@ -735,12 +735,12 @@ LABEL_2:
     v20 = [v19 localizedStringForKey:@"[Shortcut] Contact Card link" value:@"localized string not found" table:0];
     v13 = [v18 initWithString:v20];
 
-    v21 = [(EditShortcutViewController *)self shortcut];
-    v22 = -[EditShortcutViewController _footerStringForShortcutType:](self, "_footerStringForShortcutType:", [v21 type]);
+    shortcut = [(EditShortcutViewController *)self shortcut];
+    v22 = -[EditShortcutViewController _footerStringForShortcutType:](self, "_footerStringForShortcutType:", [shortcut type]);
 
     if (v22)
     {
-      v23 = [v7 _maps_footerViewWithTitle:v22 linkText:v13 target:self selector:"_openContact"];
+      v23 = [viewCopy _maps_footerViewWithTitle:v22 linkText:v13 target:self selector:"_openContact"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -766,11 +766,11 @@ LABEL_8:
   return v8;
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = [(EditShortcutViewController *)self _typeForIndex:a4];
-  v8 = [(EditShortcutViewController *)self _titleForSection:a4];
+  viewCopy = view;
+  v7 = [(EditShortcutViewController *)self _typeForIndex:section];
+  v8 = [(EditShortcutViewController *)self _titleForSection:section];
   if (sub_10000FA08(self) == 5)
   {
     if ([v8 isEqualToString:&stru_1016631F0])
@@ -790,9 +790,9 @@ LABEL_8:
   {
     if (v7 == 2)
     {
-      v10 = [(EditShortcutViewController *)self shortcut];
-      v11 = [v10 type];
-      if (v11 <= 5 && ((1 << v11) & 0x2C) != 0)
+      shortcut = [(EditShortcutViewController *)self shortcut];
+      type = [shortcut type];
+      if (type <= 5 && ((1 << type) & 0x2C) != 0)
       {
         v12 = +[_TtC4Maps18LibraryUIUtilities isMyPlacesEnabled];
 
@@ -801,7 +801,7 @@ LABEL_8:
           v13 = +[NSBundle mainBundle];
           v14 = [v13 localizedStringForKey:@"[Shortcut] Contact Card" value:@"localized string not found" table:0];
 
-          v15 = [v6 _maps_groupedHeaderViewWithTitle:v8 buttonTitle:v14 target:self selector:"_openContact"];
+          v15 = [viewCopy _maps_groupedHeaderViewWithTitle:v8 buttonTitle:v14 target:self selector:"_openContact"];
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
@@ -827,7 +827,7 @@ LABEL_8:
       }
     }
 
-    v19 = [v6 _maps_groupedHeaderViewWithTitle:v8];
+    v19 = [viewCopy _maps_groupedHeaderViewWithTitle:v8];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -854,23 +854,23 @@ LABEL_21:
   return v17;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = [(EditShortcutViewController *)self _typeForIndex:a4];
+  viewCopy = view;
+  v7 = [(EditShortcutViewController *)self _typeForIndex:section];
   if (v7 == 6)
   {
     v11.receiver = self;
     v11.super_class = EditShortcutViewController;
-    v9 = [(SimpleContaineeViewController *)&v11 tableView:v6 numberOfRowsInSection:a4];
+    v9 = [(SimpleContaineeViewController *)&v11 tableView:viewCopy numberOfRowsInSection:section];
   }
 
   else
   {
     if (v7 == 4)
     {
-      v8 = [(ShortcutEditSession *)self->_shortcutEditSession contacts];
-      v9 = [v8 count] + 1;
+      contacts = [(ShortcutEditSession *)self->_shortcutEditSession contacts];
+      v9 = [contacts count] + 1;
     }
 
     else
@@ -881,8 +881,8 @@ LABEL_21:
         goto LABEL_9;
       }
 
-      v8 = [(EditShortcutViewController *)self _shortcutTypes];
-      v9 = [v8 count];
+      contacts = [(EditShortcutViewController *)self _shortcutTypes];
+      v9 = [contacts count];
     }
   }
 
@@ -893,46 +893,46 @@ LABEL_9:
 
 - (void)_openContact
 {
-  v4 = [(AddressBookManager *)self->_sharedManager meCardPunchOutURL];
+  meCardPunchOutURL = [(AddressBookManager *)self->_sharedManager meCardPunchOutURL];
   v3 = +[UIApplication sharedApplication];
-  [v3 _maps_openURL:v4 options:0 completionHandler:0];
+  [v3 _maps_openURL:meCardPunchOutURL options:0 completionHandler:0];
 
   [(EditShortcutViewController *)self _close];
 }
 
 - (void)_addPersonAction
 {
-  v3 = [(EditShortcutViewController *)self sessionController];
-  [v3 showAddContact:self->_shortcutEditSession];
+  sessionController = [(EditShortcutViewController *)self sessionController];
+  [sessionController showAddContact:self->_shortcutEditSession];
 
   [GEOAPPortal captureUserAction:2078 target:253 value:0];
 }
 
 - (void)_refineAction
 {
-  v3 = [(EditShortcutViewController *)self sessionController];
-  [v3 showRefineLocation:self->_shortcutEditSession];
+  sessionController = [(EditShortcutViewController *)self sessionController];
+  [sessionController showRefineLocation:self->_shortcutEditSession];
 
   [GEOAPPortal captureUserAction:2063 target:253 value:0];
 }
 
 - (void)_removeAction
 {
-  v3 = [(EditShortcutViewController *)self sessionController];
-  [v3 removeShortcut:self->_shortcutEditSession];
+  sessionController = [(EditShortcutViewController *)self sessionController];
+  [sessionController removeShortcut:self->_shortcutEditSession];
 
   [GEOAPPortal captureUserAction:2060 target:253 value:0];
 }
 
-- (void)_doneAction:(id)a3
+- (void)_doneAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   if (+[_TtC4Maps18LibraryUIUtilities isMyPlacesEnabled])
   {
     objc_initWeak(&location, self);
     shortcutEditSession = self->_shortcutEditSession;
-    v6 = [(EditShortcutTitleCell *)self->_editTitleCell titleText];
-    [(ShortcutEditSession *)shortcutEditSession setName:v6];
+    titleText = [(EditShortcutTitleCell *)self->_editTitleCell titleText];
+    [(ShortcutEditSession *)shortcutEditSession setName:titleText];
 
     v7 = self->_shortcutEditSession;
     v8 = v14;
@@ -948,8 +948,8 @@ LABEL_9:
   {
     objc_initWeak(&location, self);
     v9 = self->_shortcutEditSession;
-    v10 = [(EditShortcutTitleCell *)self->_editTitleCell titleText];
-    [(ShortcutEditSession *)v9 setName:v10];
+    titleText2 = [(EditShortcutTitleCell *)self->_editTitleCell titleText];
+    [(ShortcutEditSession *)v9 setName:titleText2];
 
     v11 = self->_shortcutEditSession;
     v8 = v12;
@@ -966,7 +966,7 @@ LABEL_9:
   [GEOAPPortal captureUserAction:2053 target:0 value:0];
 }
 
-- (void)_cancelAction:(id)a3
+- (void)_cancelAction:(id)action
 {
   if ([(NSString *)self->_originalShortcutName length])
   {
@@ -981,13 +981,13 @@ LABEL_9:
 - (void)_close
 {
   self->_dismissed = 1;
-  v3 = [(EditShortcutViewController *)self sessionController];
-  [v3 closeViewController:self];
+  sessionController = [(EditShortcutViewController *)self sessionController];
+  [sessionController closeViewController:self];
 }
 
-- (id)_meCardTextForType:(int64_t)a3
+- (id)_meCardTextForType:(int64_t)type
 {
-  switch(a3)
+  switch(type)
   {
     case 2:
       v3 = @"[Shortcut] Home Address Footer";
@@ -1010,48 +1010,48 @@ LABEL_9:
   return v5;
 }
 
-- (void)_removeContact:(id)a3 fromSection:(int64_t)a4
+- (void)_removeContact:(id)contact fromSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = [(ShortcutEditSession *)self->_shortcutEditSession contacts];
-  v8 = [v7 indexOfObject:v6];
+  contactCopy = contact;
+  contacts = [(ShortcutEditSession *)self->_shortcutEditSession contacts];
+  v8 = [contacts indexOfObject:contactCopy];
 
   if (v8 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v9 = [NSIndexPath indexPathForRow:v8 inSection:a4];
-    [(ShortcutEditSession *)self->_shortcutEditSession removeSharing:v6];
-    v10 = [(SimpleContaineeViewController *)self actionsTableView];
+    v9 = [NSIndexPath indexPathForRow:v8 inSection:section];
+    [(ShortcutEditSession *)self->_shortcutEditSession removeSharing:contactCopy];
+    actionsTableView = [(SimpleContaineeViewController *)self actionsTableView];
     v12 = v9;
     v11 = [NSArray arrayWithObjects:&v12 count:1];
-    [v10 deleteRowsAtIndexPaths:v11 withRowAnimation:100];
+    [actionsTableView deleteRowsAtIndexPaths:v11 withRowAnimation:100];
 
     [GEOAPPortal captureUserAction:2079 target:253 value:0];
   }
 }
 
-- (unint64_t)_typeForIndex:(unint64_t)a3
+- (unint64_t)_typeForIndex:(unint64_t)index
 {
-  if ([(NSArray *)self->_sections count]<= a3)
+  if ([(NSArray *)self->_sections count]<= index)
   {
     return 0;
   }
 
-  v5 = [(NSArray *)self->_sections objectAtIndexedSubscript:a3];
-  v6 = [v5 type];
+  v5 = [(NSArray *)self->_sections objectAtIndexedSubscript:index];
+  type = [v5 type];
 
-  return v6;
+  return type;
 }
 
-- (id)_sectionForIndex:(unint64_t)a3
+- (id)_sectionForIndex:(unint64_t)index
 {
-  if ([(NSArray *)self->_sections count]<= a3)
+  if ([(NSArray *)self->_sections count]<= index)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = [(NSArray *)self->_sections objectAtIndexedSubscript:a3];
+    v5 = [(NSArray *)self->_sections objectAtIndexedSubscript:index];
   }
 
   return v5;
@@ -1065,8 +1065,8 @@ LABEL_9:
     return v4 & 1;
   }
 
-  v3 = [(EditShortcutViewController *)self shortcut];
-  if ([v3 isPersisted] && !self->_needsMeCardUpdate)
+  shortcut = [(EditShortcutViewController *)self shortcut];
+  if ([shortcut isPersisted] && !self->_needsMeCardUpdate)
   {
     goto LABEL_9;
   }
@@ -1077,17 +1077,17 @@ LABEL_9:
   }
 
   v4 = +[AddressBookManager sharedManager];
-  v5 = [v4 shouldAllowMeCardWrites];
+  shouldAllowMeCardWrites = [v4 shouldAllowMeCardWrites];
 
-  if (!v5)
+  if (!shouldAllowMeCardWrites)
   {
     goto LABEL_9;
   }
 
-  v6 = [v3 type];
-  if (v6 <= 6)
+  type = [shortcut type];
+  if (type <= 6)
   {
-    if (((1 << v6) & 0x2C) != 0)
+    if (((1 << type) & 0x2C) != 0)
     {
       if (!self->_needsMeCardUpdate)
       {
@@ -1100,13 +1100,13 @@ LABEL_9:
       goto LABEL_10;
     }
 
-    if (((1 << v6) & 0x43) != 0)
+    if (((1 << type) & 0x43) != 0)
     {
 LABEL_9:
       BOOL = 0;
       LOBYTE(v4) = 0;
 LABEL_10:
-      [v3 setIsMeCardWritebackEnabled:BOOL];
+      [shortcut setIsMeCardWritebackEnabled:BOOL];
     }
   }
 
@@ -1140,10 +1140,10 @@ LABEL_11:
     goto LABEL_9;
   }
 
-  v10 = [(EditShortcutViewController *)self shortcutEditSession];
-  v11 = [v10 canChangeType];
+  shortcutEditSession = [(EditShortcutViewController *)self shortcutEditSession];
+  canChangeType = [shortcutEditSession canChangeType];
 
-  if (v11)
+  if (canChangeType)
   {
 LABEL_9:
     v12 = [EditShortcutSection sectionWithType:3];
@@ -1197,16 +1197,16 @@ LABEL_10:
 
   if ([(ShortcutEditSession *)self->_shortcutEditSession alreadySaved])
   {
-    v18 = [(ShortcutEditSession *)self->_shortcutEditSession shortcut];
+    shortcut = [(ShortcutEditSession *)self->_shortcutEditSession shortcut];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v20 = [(ShortcutEditSession *)self->_shortcutEditSession shortcut];
-      v21 = [v20 isHomeWorkOrSchool];
+      shortcut2 = [(ShortcutEditSession *)self->_shortcutEditSession shortcut];
+      isHomeWorkOrSchool = [shortcut2 isHomeWorkOrSchool];
 
-      if (v21)
+      if (isHomeWorkOrSchool)
       {
 LABEL_24:
         v22 = objc_alloc_init(SimpleContaineeAction);
@@ -1280,29 +1280,29 @@ LABEL_25:
   sections = self->_sections;
   self->_sections = v32;
 
-  v34 = [(SimpleContaineeViewController *)self actionsTableView];
-  [v34 reloadData];
+  actionsTableView = [(SimpleContaineeViewController *)self actionsTableView];
+  [actionsTableView reloadData];
 }
 
 - (BOOL)_isMapUserShortcut
 {
-  v2 = [(EditShortcutViewController *)self shortcut];
-  v3 = [v2 type] == 1;
+  shortcut = [(EditShortcutViewController *)self shortcut];
+  v3 = [shortcut type] == 1;
 
   return v3;
 }
 
-- (id)_editShortcutTypeForIndex:(unint64_t)a3
+- (id)_editShortcutTypeForIndex:(unint64_t)index
 {
-  v4 = [(EditShortcutViewController *)self _shortcutTypes];
-  if ([v4 count] <= a3)
+  _shortcutTypes = [(EditShortcutViewController *)self _shortcutTypes];
+  if ([_shortcutTypes count] <= index)
   {
     [EditShortcutType shortcutWithType:0];
   }
 
   else
   {
-    [v4 objectAtIndexedSubscript:a3];
+    [_shortcutTypes objectAtIndexedSubscript:index];
   }
   v5 = ;
 
@@ -1362,21 +1362,21 @@ LABEL_25:
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = EditShortcutViewController;
-  [(SimpleContaineeViewController *)&v4 viewWillDisappear:a3];
+  [(SimpleContaineeViewController *)&v4 viewWillDisappear:disappear];
   if ([(EditShortcutViewController *)self shouldAutoSaveEdit])
   {
     [(EditShortcutViewController *)self _save];
   }
 }
 
-- (void)_updateWithType:(int64_t)a3
+- (void)_updateWithType:(int64_t)type
 {
   [(ShortcutEditSession *)self->_shortcutEditSession setType:?];
-  if (a3 > 5 || ((1 << a3) & 0x2C) == 0 || +[_TtC4Maps18LibraryUIUtilities isMyPlacesEnabled])
+  if (type > 5 || ((1 << type) & 0x2C) == 0 || +[_TtC4Maps18LibraryUIUtilities isMyPlacesEnabled])
   {
     self->_needsMeCardUpdate = 1;
 
@@ -1384,15 +1384,15 @@ LABEL_25:
     return;
   }
 
-  v5 = [(EditShortcutViewController *)self shortcut];
-  v6 = [v5 geoMapItem];
-  v7 = [v6 addressObject];
-  v14 = [v7 cnPostalAddress];
+  shortcut = [(EditShortcutViewController *)self shortcut];
+  geoMapItem = [shortcut geoMapItem];
+  addressObject = [geoMapItem addressObject];
+  cnPostalAddress = [addressObject cnPostalAddress];
 
-  v8 = v14;
-  if (v14)
+  v8 = cnPostalAddress;
+  if (cnPostalAddress)
   {
-    switch(a3)
+    switch(type)
     {
       case 2:
         v9 = &CNLabelHome;
@@ -1410,26 +1410,26 @@ LABEL_25:
 
     v10 = *v9;
 LABEL_16:
-    v11 = [CNLabeledValue labeledValueWithLabel:v10 value:v14];
-    v12 = [(EditShortcutViewController *)self sessionController];
-    v13 = [(SimpleContaineeViewController *)self actionsTableView];
-    [v12 showMeCardWithAddress:v11 from:v13];
+    v11 = [CNLabeledValue labeledValueWithLabel:v10 value:cnPostalAddress];
+    sessionController = [(EditShortcutViewController *)self sessionController];
+    actionsTableView = [(SimpleContaineeViewController *)self actionsTableView];
+    [sessionController showMeCardWithAddress:v11 from:actionsTableView];
 
-    v8 = v14;
+    v8 = cnPostalAddress;
   }
 }
 
-- (void)didEditContactWithAddressAdded:(BOOL)a3
+- (void)didEditContactWithAddressAdded:(BOOL)added
 {
-  if (!a3)
+  if (!added)
   {
     [(EditShortcutViewController *)self resetToMapItemType];
   }
 
   [(EditShortcutViewController *)self _buildContent];
   y = CGPointZero.y;
-  v5 = [(SimpleContaineeViewController *)self actionsTableView];
-  [v5 setContentOffset:{CGPointZero.x, y}];
+  actionsTableView = [(SimpleContaineeViewController *)self actionsTableView];
+  [actionsTableView setContentOffset:{CGPointZero.x, y}];
 }
 
 - (void)didBecomeCurrent
@@ -1460,7 +1460,7 @@ LABEL_16:
   v48.receiver = self;
   v48.super_class = EditShortcutViewController;
   [(SimpleContaineeViewController *)&v48 setupSubviews];
-  v3 = [(ContaineeViewController *)self headerView];
+  headerView = [(ContaineeViewController *)self headerView];
   if ((_UISolariumEnabled() & 1) != 0 || sub_10000FA08(self) != 5)
   {
     v21 = [[_TtC4Maps19ModalCardHeaderView alloc] initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
@@ -1475,30 +1475,30 @@ LABEL_16:
     v10 = [MapsThemeButton buttonWithType:1];
     [v10 addTarget:self action:"_doneAction:" forControlEvents:64];
     [(ModalCardHeaderView *)v21 setTrailingButton:v10];
-    [v3 addSubview:v21];
+    [headerView addSubview:v21];
     modalHeaderView = self->_modalHeaderView;
     self->_modalHeaderView = v21;
     v25 = v21;
 
-    v26 = [(ModalCardHeaderView *)v25 topAnchor];
-    v45 = [v3 topAnchor];
-    v46 = v26;
-    v44 = [v26 constraintEqualToAnchor:?];
+    topAnchor = [(ModalCardHeaderView *)v25 topAnchor];
+    topAnchor2 = [headerView topAnchor];
+    v46 = topAnchor;
+    v44 = [topAnchor constraintEqualToAnchor:?];
     v50[0] = v44;
-    v27 = [(ModalCardHeaderView *)v25 leadingAnchor];
-    v42 = [v3 leadingAnchor];
-    v43 = v27;
-    v41 = [v27 constraintEqualToAnchor:?];
+    leadingAnchor = [(ModalCardHeaderView *)v25 leadingAnchor];
+    leadingAnchor2 = [headerView leadingAnchor];
+    v43 = leadingAnchor;
+    v41 = [leadingAnchor constraintEqualToAnchor:?];
     v50[1] = v41;
-    v28 = [(ModalCardHeaderView *)v25 trailingAnchor];
-    v15 = [v3 trailingAnchor];
-    v40 = v28;
-    v16 = [v28 constraintEqualToAnchor:v15];
+    trailingAnchor = [(ModalCardHeaderView *)v25 trailingAnchor];
+    trailingAnchor2 = [headerView trailingAnchor];
+    v40 = trailingAnchor;
+    v16 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v50[2] = v16;
-    v17 = [(ModalCardHeaderView *)v25 bottomAnchor];
-    v47 = v3;
-    v18 = [v3 bottomAnchor];
-    v19 = [v17 constraintEqualToAnchor:v18];
+    bottomAnchor = [(ModalCardHeaderView *)v25 bottomAnchor];
+    v47 = headerView;
+    bottomAnchor2 = [headerView bottomAnchor];
+    v19 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v50[3] = v19;
     v20 = [NSArray arrayWithObjects:v50 count:4];
     [NSLayoutConstraint activateConstraints:v20];
@@ -1525,64 +1525,64 @@ LABEL_16:
     v10 = objc_alloc_init(UINavigationBar);
     [v10 setTranslatesAutoresizingMaskIntoConstraints:0];
     [v10 pushNavigationItem:v7 animated:0];
-    v11 = [(ContaineeViewController *)self headerView];
-    [v11 addSubview:v10];
+    headerView2 = [(ContaineeViewController *)self headerView];
+    [headerView2 addSubview:v10];
 
-    v12 = [v10 topAnchor];
-    v45 = [v3 topAnchor];
-    v46 = v12;
-    v44 = [v12 constraintEqualToAnchor:?];
+    topAnchor3 = [v10 topAnchor];
+    topAnchor2 = [headerView topAnchor];
+    v46 = topAnchor3;
+    v44 = [topAnchor3 constraintEqualToAnchor:?];
     v49[0] = v44;
-    v13 = [v10 leadingAnchor];
-    v42 = [v3 leadingAnchor];
-    v43 = v13;
-    v41 = [v13 constraintEqualToAnchor:?];
+    leadingAnchor3 = [v10 leadingAnchor];
+    leadingAnchor2 = [headerView leadingAnchor];
+    v43 = leadingAnchor3;
+    v41 = [leadingAnchor3 constraintEqualToAnchor:?];
     v49[1] = v41;
-    v14 = [v10 trailingAnchor];
-    v15 = [v3 trailingAnchor];
-    v40 = v14;
-    v16 = [v14 constraintEqualToAnchor:v15];
+    trailingAnchor3 = [v10 trailingAnchor];
+    trailingAnchor2 = [headerView trailingAnchor];
+    v40 = trailingAnchor3;
+    v16 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor2];
     v49[2] = v16;
-    v17 = [v10 bottomAnchor];
-    v47 = v3;
-    v18 = [v3 bottomAnchor];
-    v19 = [v17 constraintEqualToAnchor:v18];
+    bottomAnchor = [v10 bottomAnchor];
+    v47 = headerView;
+    bottomAnchor2 = [headerView bottomAnchor];
+    v19 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v49[3] = v19;
     v20 = [NSArray arrayWithObjects:v49 count:4];
     [NSLayoutConstraint activateConstraints:v20];
   }
 
-  v3 = v47;
+  headerView = v47;
 LABEL_7:
-  v29 = [(SimpleContaineeViewController *)self actionsTableView];
-  [v29 setAccessibilityIdentifier:@"EditShortcutActionsTable"];
+  actionsTableView = [(SimpleContaineeViewController *)self actionsTableView];
+  [actionsTableView setAccessibilityIdentifier:@"EditShortcutActionsTable"];
 
-  v30 = [(SimpleContaineeViewController *)self actionsTableView];
-  [v30 _setHeaderAndFooterViewsFloat:0];
+  actionsTableView2 = [(SimpleContaineeViewController *)self actionsTableView];
+  [actionsTableView2 _setHeaderAndFooterViewsFloat:0];
 
-  v31 = [(SimpleContaineeViewController *)self actionsTableView];
-  [v31 registerClass:objc_opt_class() forCellReuseIdentifier:@"EditShortcutActionCell"];
+  actionsTableView3 = [(SimpleContaineeViewController *)self actionsTableView];
+  [actionsTableView3 registerClass:objc_opt_class() forCellReuseIdentifier:@"EditShortcutActionCell"];
 
   if (sub_10000FA08(self) == 5)
   {
-    v32 = [(SimpleContaineeViewController *)self actionsTableView];
-    [v32 setSeparatorStyle:0];
+    actionsTableView4 = [(SimpleContaineeViewController *)self actionsTableView];
+    [actionsTableView4 setSeparatorStyle:0];
 
-    v33 = [(EditShortcutViewController *)self view];
-    v34 = [v33 widthAnchor];
+    view = [(EditShortcutViewController *)self view];
+    widthAnchor = [view widthAnchor];
     LODWORD(v35) = 1144733696;
-    v36 = [v34 constraintEqualToConstant:290.0 priority:v35];
+    v36 = [widthAnchor constraintEqualToConstant:290.0 priority:v35];
     [v36 setActive:1];
   }
 
-  v37 = [(SimpleContaineeViewController *)self actionsTableView];
-  [v37 _maps_registerGroupedHeaderView];
+  actionsTableView5 = [(SimpleContaineeViewController *)self actionsTableView];
+  [actionsTableView5 _maps_registerGroupedHeaderView];
 
-  v38 = [(SimpleContaineeViewController *)self actionsTableView];
-  [v38 _maps_registerSelectableFooterView];
+  actionsTableView6 = [(SimpleContaineeViewController *)self actionsTableView];
+  [actionsTableView6 _maps_registerSelectableFooterView];
 
-  v39 = [(SimpleContaineeViewController *)self actionsTableView];
-  [v39 registerClass:objc_opt_class() forHeaderFooterViewReuseIdentifier:@"kMacEditShortcutHeaderFooterIdentifier"];
+  actionsTableView7 = [(SimpleContaineeViewController *)self actionsTableView];
+  [actionsTableView7 registerClass:objc_opt_class() forHeaderFooterViewReuseIdentifier:@"kMacEditShortcutHeaderFooterIdentifier"];
 }
 
 - (void)viewDidLoad
@@ -1590,18 +1590,18 @@ LABEL_7:
   v6.receiver = self;
   v6.super_class = EditShortcutViewController;
   [(SimpleContaineeViewController *)&v6 viewDidLoad];
-  v3 = [(EditShortcutViewController *)self view];
-  [v3 setAccessibilityIdentifier:@"EditShortcutView"];
+  view = [(EditShortcutViewController *)self view];
+  [view setAccessibilityIdentifier:@"EditShortcutView"];
 
   v4 = +[UIColor clearColor];
-  v5 = [(EditShortcutViewController *)self view];
-  [v5 setBackgroundColor:v4];
+  view2 = [(EditShortcutViewController *)self view];
+  [view2 setBackgroundColor:v4];
 }
 
 - (id)preferredFocusEnvironments
 {
-  v2 = [(SimpleContaineeViewController *)self actionsTableView];
-  v5 = v2;
+  actionsTableView = [(SimpleContaineeViewController *)self actionsTableView];
+  v5 = actionsTableView;
   v3 = [NSArray arrayWithObjects:&v5 count:1];
 
   return v3;
@@ -1626,7 +1626,7 @@ LABEL_7:
 
   v22.receiver = self;
   v22.super_class = EditShortcutViewController;
-  v8 = [(ContaineeViewController *)&v22 keyCommands];
+  keyCommands = [(ContaineeViewController *)&v22 keyCommands];
   v21 = +[NSBundle mainBundle];
   v20 = [v21 localizedStringForKey:@"[Shortcut KeyCmd] Done" value:@"localized string not found" table:0];
   v19 = [UIKeyCommand commandWithTitle:v20 image:0 action:"_doneAction:" input:@"\r" modifierFlags:0x100000 propertyList:0];
@@ -1642,45 +1642,45 @@ LABEL_7:
   v14 = [UIKeyCommand commandWithTitle:v7 image:0 action:"_removeAction" input:@"\b" modifierFlags:0x100000 propertyList:0];
   v23[3] = v14;
   v15 = [NSArray arrayWithObjects:v23 count:4];
-  v16 = [v8 arrayByAddingObjectsFromArray:v15];
+  v16 = [keyCommands arrayByAddingObjectsFromArray:v15];
 
   return v16;
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  v6 = a4;
-  if ("_doneAction:" == a3)
+  senderCopy = sender;
+  if ("_doneAction:" == action)
   {
-    v8 = [(EditShortcutTitleCell *)self->_editTitleCell titleText];
-    v9 = [v8 length] != 0;
+    titleText = [(EditShortcutTitleCell *)self->_editTitleCell titleText];
+    v9 = [titleText length] != 0;
   }
 
   else
   {
-    if ("_addPersonAction" == a3)
+    if ("_addPersonAction" == action)
     {
-      v7 = [(EditShortcutViewController *)self allowsAddPersonAction];
+      allowsAddPersonAction = [(EditShortcutViewController *)self allowsAddPersonAction];
     }
 
-    else if ("_refineAction" == a3)
+    else if ("_refineAction" == action)
     {
-      v7 = [(EditShortcutViewController *)self allowsRefineAction];
+      allowsAddPersonAction = [(EditShortcutViewController *)self allowsRefineAction];
     }
 
-    else if ("_removeAction" == a3)
+    else if ("_removeAction" == action)
     {
-      v7 = [(EditShortcutViewController *)self allowsRemoveAction];
+      allowsAddPersonAction = [(EditShortcutViewController *)self allowsRemoveAction];
     }
 
     else
     {
       v11.receiver = self;
       v11.super_class = EditShortcutViewController;
-      v7 = [(EditShortcutViewController *)&v11 canPerformAction:a3 withSender:v6];
+      allowsAddPersonAction = [(EditShortcutViewController *)&v11 canPerformAction:action withSender:senderCopy];
     }
 
-    v9 = v7;
+    v9 = allowsAddPersonAction;
   }
 
   return v9;
@@ -1699,29 +1699,29 @@ LABEL_7:
   }
 }
 
-- (EditShortcutViewController)initWithShortcutEditSession:(id)a3
+- (EditShortcutViewController)initWithShortcutEditSession:(id)session
 {
-  v5 = a3;
+  sessionCopy = session;
   v17.receiver = self;
   v17.super_class = EditShortcutViewController;
   v6 = [(EditShortcutViewController *)&v17 initWithNibName:0 bundle:0];
   v7 = v6;
   if (v6)
   {
-    v8 = [(ContaineeViewController *)v6 cardPresentationController];
-    [v8 setPresentedModally:1];
+    cardPresentationController = [(ContaineeViewController *)v6 cardPresentationController];
+    [cardPresentationController setPresentedModally:1];
 
-    v9 = [(ContaineeViewController *)v7 cardPresentationController];
-    [v9 setTakesAvailableHeight:1];
+    cardPresentationController2 = [(ContaineeViewController *)v7 cardPresentationController];
+    [cardPresentationController2 setTakesAvailableHeight:1];
 
-    objc_storeStrong(&v7->_shortcutEditSession, a3);
-    v10 = [(ShortcutEditSession *)v7->_shortcutEditSession shortcut];
-    v11 = [v10 customName];
+    objc_storeStrong(&v7->_shortcutEditSession, session);
+    shortcut = [(ShortcutEditSession *)v7->_shortcutEditSession shortcut];
+    customName = [shortcut customName];
     originalShortcutName = v7->_originalShortcutName;
-    v7->_originalShortcutName = v11;
+    v7->_originalShortcutName = customName;
 
-    v13 = [(ShortcutEditSession *)v7->_shortcutEditSession shortcut];
-    v7->_originalShortcutType = [v13 type];
+    shortcut2 = [(ShortcutEditSession *)v7->_shortcutEditSession shortcut];
+    v7->_originalShortcutType = [shortcut2 type];
 
     [(EditShortcutViewController *)v7 _buildContent];
     v14 = +[AddressBookManager sharedManager];

@@ -1,33 +1,33 @@
 @interface IMDRelayGroupDisplayNameMutationMessage
-- (IMDRelayGroupDisplayNameMutationMessage)initWithName:(id)a3 sender:(id)a4 service:(id)a5 groupID:(id)a6 originalGroupID:(id)a7 guid:(id)a8 destinationCallerID:(id)a9 failed:(BOOL)a10 fromMe:(BOOL)a11;
-- (id)_initWithBlastDoorMessage:(id)a3;
+- (IMDRelayGroupDisplayNameMutationMessage)initWithName:(id)name sender:(id)sender service:(id)service groupID:(id)d originalGroupID:(id)iD guid:(id)guid destinationCallerID:(id)callerID failed:(BOOL)self0 fromMe:(BOOL)self1;
+- (id)_initWithBlastDoorMessage:(id)message;
 - (id)createDictionary;
 @end
 
 @implementation IMDRelayGroupDisplayNameMutationMessage
 
-- (id)_initWithBlastDoorMessage:(id)a3
+- (id)_initWithBlastDoorMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v11.receiver = self;
   v11.super_class = IMDRelayGroupDisplayNameMutationMessage;
-  v5 = [(IMDRelayGroupMutationMessage *)&v11 _initWithBlastDoorMessage:v4];
+  v5 = [(IMDRelayGroupMutationMessage *)&v11 _initWithBlastDoorMessage:messageCopy];
   if (v5)
   {
-    v6 = [v4 mutation];
-    v7 = [v6 displayName];
-    v8 = [v7 updatedName];
-    v9 = [v8 displayName];
-    [v5 setUpdatedName:v9];
+    mutation = [messageCopy mutation];
+    displayName = [mutation displayName];
+    updatedName = [displayName updatedName];
+    displayName2 = [updatedName displayName];
+    [v5 setUpdatedName:displayName2];
   }
 
   return v5;
 }
 
-- (IMDRelayGroupDisplayNameMutationMessage)initWithName:(id)a3 sender:(id)a4 service:(id)a5 groupID:(id)a6 originalGroupID:(id)a7 guid:(id)a8 destinationCallerID:(id)a9 failed:(BOOL)a10 fromMe:(BOOL)a11
+- (IMDRelayGroupDisplayNameMutationMessage)initWithName:(id)name sender:(id)sender service:(id)service groupID:(id)d originalGroupID:(id)iD guid:(id)guid destinationCallerID:(id)callerID failed:(BOOL)self0 fromMe:(BOOL)self1
 {
-  v17 = a3;
-  if (a10)
+  nameCopy = name;
+  if (failed)
   {
     v18 = 2;
   }
@@ -39,11 +39,11 @@
 
   v22.receiver = self;
   v22.super_class = IMDRelayGroupDisplayNameMutationMessage;
-  v19 = [(IMDRelayGroupMutationMessage *)&v22 _initWithType:v18 sender:a4 service:a5 groupID:a6 originalGroupID:a7 guid:a8 destinationCallerID:a9 fromMe:a11];
+  v19 = [(IMDRelayGroupMutationMessage *)&v22 _initWithType:v18 sender:sender service:service groupID:d originalGroupID:iD guid:guid destinationCallerID:callerID fromMe:me];
   v20 = v19;
   if (v19)
   {
-    [(IMDRelayGroupDisplayNameMutationMessage *)v19 setUpdatedName:v17];
+    [(IMDRelayGroupDisplayNameMutationMessage *)v19 setUpdatedName:nameCopy];
   }
 
   return v20;
@@ -53,15 +53,15 @@
 {
   v9.receiver = self;
   v9.super_class = IMDRelayGroupDisplayNameMutationMessage;
-  v3 = [(IMDRelayGroupMutationMessage *)&v9 createDictionary];
-  v4 = [v3 mutableCopy];
+  createDictionary = [(IMDRelayGroupMutationMessage *)&v9 createDictionary];
+  v4 = [createDictionary mutableCopy];
 
-  v5 = [(IMDRelayGroupDisplayNameMutationMessage *)self updatedName];
+  updatedName = [(IMDRelayGroupDisplayNameMutationMessage *)self updatedName];
 
-  if (v5)
+  if (updatedName)
   {
-    v6 = [(IMDRelayGroupDisplayNameMutationMessage *)self updatedName];
-    [v4 setObject:v6 forKeyedSubscript:@"n"];
+    updatedName2 = [(IMDRelayGroupDisplayNameMutationMessage *)self updatedName];
+    [v4 setObject:updatedName2 forKeyedSubscript:@"n"];
   }
 
   v7 = [v4 copy];

@@ -1,7 +1,7 @@
 @interface ACMExternalAppleConnectImpl
 + (void)initialize;
 - (ACC2SVControllerProtocol)twoSVController;
-- (ACMExternalAppleConnectImpl)initWithMasterObject:(id)a3;
+- (ACMExternalAppleConnectImpl)initWithMasterObject:(id)object;
 - (ACMExternalAuthenticationController)authenticationController;
 - (ACMExternalUIControllerProtocol)uiController;
 - (BOOL)canHideSignInDialog;
@@ -10,37 +10,37 @@
 - (id)hideAppleConnectSignInDialog;
 - (id)parentViewController;
 - (unint64_t)signInDialogContentStyle;
-- (void)applicationDidEnterBackground:(id)a3;
-- (void)authenticateRunningOnMainThreadWithRequest:(id)a3;
-- (void)authenticateWithRequest:(id)a3 password:(id)a4;
-- (void)authenticationController:(id)a3 perform2StepVerificationWithRequest:(id)a4 completion:(id)a5;
+- (void)applicationDidEnterBackground:(id)background;
+- (void)authenticateRunningOnMainThreadWithRequest:(id)request;
+- (void)authenticateWithRequest:(id)request password:(id)password;
+- (void)authenticationController:(id)controller perform2StepVerificationWithRequest:(id)request completion:(id)completion;
 - (void)cancelRequests;
 - (void)dealloc;
 - (void)hideSignIn;
-- (void)onManageAppleIDForRealm:(id)a3;
-- (void)reportError:(id)a3;
-- (void)returnError:(id)a3 withSelector:(SEL)a4 withResponseClass:(Class)a5;
-- (void)returnResponse:(id)a3 withSelector:(SEL)a4;
-- (void)setDelegate:(id)a3;
-- (void)setLogLevel:(int64_t)a3;
+- (void)onManageAppleIDForRealm:(id)realm;
+- (void)reportError:(id)error;
+- (void)returnError:(id)error withSelector:(SEL)selector withResponseClass:(Class)class;
+- (void)returnResponse:(id)response withSelector:(SEL)selector;
+- (void)setDelegate:(id)delegate;
+- (void)setLogLevel:(int64_t)level;
 - (void)showSignInDialog;
-- (void)showSignInWithRequest:(id)a3;
+- (void)showSignInWithRequest:(id)request;
 - (void)signInDialogDidHide;
 - (void)signInDialogWillHide;
-- (void)twoSVController:(id)a3 prepareUIWithCompletion:(id)a4;
-- (void)twoSVControllerEnterCredentials:(id)a3;
-- (void)twoSVControllerWillClose:(id)a3;
-- (void)twoSVTransportController:(id)a3 fetchImageWithHandler:(id)a4 completion:(id)a5;
-- (void)twoSVTransportController:(id)a3 scheduleHandler:(id)a4 withCompletion:(id)a5;
-- (void)twoSVTransportControllerCancelFetchingImages:(id)a3;
-- (void)uiControllerDidDisableSignInDialog:(id)a3;
-- (void)uiControllerDidEnableSignInDialog:(id)a3;
-- (void)uiControllerOnSignIForgot:(id)a3;
-- (void)uiControllerOnSignIn:(id)a3 withPassword:(id)a4;
-- (void)uiControllerOnSignInCancel:(id)a3;
-- (void)uiControllerWillDisableSignInDialog:(id)a3;
-- (void)uiControllerWillEnableSignInDialog:(id)a3;
-- (void)verifyServiceTicket:(id)a3;
+- (void)twoSVController:(id)controller prepareUIWithCompletion:(id)completion;
+- (void)twoSVControllerEnterCredentials:(id)credentials;
+- (void)twoSVControllerWillClose:(id)close;
+- (void)twoSVTransportController:(id)controller fetchImageWithHandler:(id)handler completion:(id)completion;
+- (void)twoSVTransportController:(id)controller scheduleHandler:(id)handler withCompletion:(id)completion;
+- (void)twoSVTransportControllerCancelFetchingImages:(id)images;
+- (void)uiControllerDidDisableSignInDialog:(id)dialog;
+- (void)uiControllerDidEnableSignInDialog:(id)dialog;
+- (void)uiControllerOnSignIForgot:(id)forgot;
+- (void)uiControllerOnSignIn:(id)in withPassword:(id)password;
+- (void)uiControllerOnSignInCancel:(id)cancel;
+- (void)uiControllerWillDisableSignInDialog:(id)dialog;
+- (void)uiControllerWillEnableSignInDialog:(id)dialog;
+- (void)verifyServiceTicket:(id)ticket;
 @end
 
 @implementation ACMExternalAppleConnectImpl
@@ -52,7 +52,7 @@
   +[ACMExternalTicketManager initialize];
 }
 
-- (ACMExternalAppleConnectImpl)initWithMasterObject:(id)a3
+- (ACMExternalAppleConnectImpl)initWithMasterObject:(id)object
 {
   v9.receiver = self;
   v9.super_class = ACMExternalAppleConnectImpl;
@@ -60,7 +60,7 @@
   v5 = v4;
   if (v4)
   {
-    [(ACMExternalAppleConnectImpl *)v4 setMasterObject:a3];
+    [(ACMExternalAppleConnectImpl *)v4 setMasterObject:object];
     if (qword_2A1EB8ED8 && (ACFLogSettingsGetLevelMask() & 0x40) != 0)
     {
       ACFLog(6, "[ACMExternalAppleConnectImpl initWithMasterObject:]", "/Library/Caches/com.apple.xbs/Sources/AppleConnectClients/Mobile/External/Sources/ACMExternalAppleConnectImpl.m", 79, 0, "Creating instance...");
@@ -69,8 +69,8 @@
     [objc_msgSend(objc_msgSend(MEMORY[0x29EDC7A58] "currentDevice")];
     if (v6 >= 4.0)
     {
-      v7 = [MEMORY[0x29EDBA068] defaultCenter];
-      [v7 addObserver:v5 selector:sel_applicationDidEnterBackground_ name:*MEMORY[0x29EDC8018] object:0];
+      defaultCenter = [MEMORY[0x29EDBA068] defaultCenter];
+      [defaultCenter addObserver:v5 selector:sel_applicationDidEnterBackground_ name:*MEMORY[0x29EDC8018] object:0];
     }
 
     [(ACMExternalAppleConnectImpl *)v5 setAppleConnectState:0];
@@ -84,9 +84,9 @@
   result = self->_twoSVController;
   if (!result)
   {
-    v4 = [(ACMAppleConnectImplComponents *)[(ACMExternalAppleConnectImpl *)self components] twoSVController];
-    self->_twoSVController = v4;
-    [(ACC2SVControllerProtocol *)v4 setDelegate:self];
+    twoSVController = [(ACMAppleConnectImplComponents *)[(ACMExternalAppleConnectImpl *)self components] twoSVController];
+    self->_twoSVController = twoSVController;
+    [(ACC2SVControllerProtocol *)twoSVController setDelegate:self];
     [(ACC2SVControllerProtocol *)self->_twoSVController setSecondFactorAuthUIController:[[ACM2SVAuthenticationUIController alloc] initWithParentViewController:[(ACMExternalAppleConnectImpl *)self parentViewController]]];
     v5 = objc_opt_new();
     [v5 setDelegate:self];
@@ -103,8 +103,8 @@
   [objc_msgSend(objc_msgSend(MEMORY[0x29EDC7A58] "currentDevice")];
   if (v3 >= 4.0)
   {
-    v4 = [MEMORY[0x29EDBA068] defaultCenter];
-    [v4 removeObserver:self name:*MEMORY[0x29EDC8018] object:0];
+    defaultCenter = [MEMORY[0x29EDBA068] defaultCenter];
+    [defaultCenter removeObserver:self name:*MEMORY[0x29EDC8018] object:0];
   }
 
   [(ACMExternalAuthenticationController *)[(ACMExternalAppleConnectImpl *)self authenticationController] setDelegate:0];
@@ -116,9 +116,9 @@
 
 - (ACMExternalUIControllerProtocol)uiController
 {
-  v2 = [(ACMExternalAppleConnectImpl *)self components];
+  components = [(ACMExternalAppleConnectImpl *)self components];
 
-  return [(ACMAppleConnectImplComponents *)v2 uiController];
+  return [(ACMAppleConnectImplComponents *)components uiController];
 }
 
 - (ACMExternalAuthenticationController)authenticationController
@@ -137,25 +137,25 @@
 
 - (BOOL)isWidgetShown
 {
-  v3 = [(ACMAppleConnectImplComponents *)[(ACMExternalAppleConnectImpl *)self components] uiControllerLoaded];
-  if (v3)
+  uiControllerLoaded = [(ACMAppleConnectImplComponents *)[(ACMExternalAppleConnectImpl *)self components] uiControllerLoaded];
+  if (uiControllerLoaded)
   {
-    v4 = [(ACMExternalAppleConnectImpl *)self uiController];
+    uiController = [(ACMExternalAppleConnectImpl *)self uiController];
 
-    LOBYTE(v3) = [(ACMExternalUIControllerProtocol *)v4 isWidgetShown];
+    LOBYTE(uiControllerLoaded) = [(ACMExternalUIControllerProtocol *)uiController isWidgetShown];
   }
 
-  return v3;
+  return uiControllerLoaded;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  if (a3 && ![a3 conformsToProtocol:&unk_2A1EE4A80])
+  if (delegate && ![delegate conformsToProtocol:&unk_2A1EE4A80])
   {
     objc_exception_throw([MEMORY[0x29EDB8DD0] exceptionWithName:@"InvalidDelegateException" reason:@"Delegate does not conform to ACMExternalAppleConnectDelegate protocol" userInfo:0]);
   }
 
-  self->_delegate = a3;
+  self->_delegate = delegate;
 }
 
 - (BOOL)signInAnimated
@@ -166,18 +166,18 @@
     return 1;
   }
 
-  v3 = [(ACMExternalAppleConnectImpl *)self delegate];
-  v4 = [(ACMExternalAppleConnectImpl *)self masterObject];
+  delegate = [(ACMExternalAppleConnectImpl *)self delegate];
+  masterObject = [(ACMExternalAppleConnectImpl *)self masterObject];
 
-  return [(ACMExternalAppleConnectDelegate *)v3 appleConnectSignInAnimated:v4];
+  return [(ACMExternalAppleConnectDelegate *)delegate appleConnectSignInAnimated:masterObject];
 }
 
 - (id)parentViewController
 {
-  v3 = [(ACMExternalAppleConnectImpl *)self delegate];
-  v4 = [(ACMExternalAppleConnectImpl *)self masterObject];
+  delegate = [(ACMExternalAppleConnectImpl *)self delegate];
+  masterObject = [(ACMExternalAppleConnectImpl *)self masterObject];
 
-  return [(ACMExternalAppleConnectDelegate *)v3 appleConnectParentViewController:v4];
+  return [(ACMExternalAppleConnectDelegate *)delegate appleConnectParentViewController:masterObject];
 }
 
 - (id)hideAppleConnectSignInDialog
@@ -189,9 +189,9 @@
       ACFLog(7, "[ACMExternalAppleConnectImpl hideAppleConnectSignInDialog]", "/Library/Caches/com.apple.xbs/Sources/AppleConnectClients/Mobile/External/Sources/ACMExternalAppleConnectImpl.m", 173, 0, "Client application tries hide AppleConnect SignIn dialog manually");
     }
 
-    v3 = [(ACMExternalAppleConnectImpl *)self appleConnectState];
+    appleConnectState = [(ACMExternalAppleConnectImpl *)self appleConnectState];
     LevelMask = ACFLogSettingsGetLevelMask();
-    if (v3 == 1)
+    if (appleConnectState == 1)
     {
       if (LevelMask < 0)
       {
@@ -223,7 +223,7 @@ LABEL_8:
   return [v6 errorWithDomain:@"ACCAppleConnectErrorDomain" code:-600181 userInfo:v9];
 }
 
-- (void)showSignInWithRequest:(id)a3
+- (void)showSignInWithRequest:(id)request
 {
   if ([(ACMExternalAppleConnectImpl *)self appleConnectState]== 1 && [(ACMExternalAppleConnectImpl *)self isWidgetShown])
   {
@@ -245,9 +245,9 @@ LABEL_8:
       [(ACMExternalAppleConnectDelegate *)[(ACMExternalAppleConnectImpl *)self delegate] appleConnectWillShowSignInDialog:[(ACMExternalAppleConnectImpl *)self masterObject]];
     }
 
-    [(ACMExternalAppleConnectImpl *)self setCurrentRequest:a3];
+    [(ACMExternalAppleConnectImpl *)self setCurrentRequest:request];
     [(ACMExternalUIControllerProtocol *)[(ACMExternalAppleConnectImpl *)self uiController] setRequest:[(ACMExternalAppleConnectImpl *)self currentRequest]];
-    if ([a3 useAlertView])
+    if ([request useAlertView])
     {
       v5 = 0;
     }
@@ -321,15 +321,15 @@ LABEL_8:
     }
 
     [(ACMExternalUIControllerProtocol *)[(ACMExternalAppleConnectImpl *)self uiController] setSignInStyle:v5];
-    v8 = [(ACMExternalAppleConnectImpl *)self uiController];
-    v9 = [(ACMExternalAppleConnectImpl *)self parentViewController];
-    v10 = [(ACMExternalAppleConnectImpl *)self signInAnimated];
+    uiController = [(ACMExternalAppleConnectImpl *)self uiController];
+    parentViewController = [(ACMExternalAppleConnectImpl *)self parentViewController];
+    signInAnimated = [(ACMExternalAppleConnectImpl *)self signInAnimated];
     v11[0] = MEMORY[0x29EDCA5F8];
     v11[1] = 3221225472;
     v11[2] = __53__ACMExternalAppleConnectImpl_showSignInWithRequest___block_invoke;
     v11[3] = &unk_29EE91778;
     v11[4] = self;
-    [(ACMExternalUIControllerProtocol *)v8 showSignInWidgetWithParentViewController:v9 animated:v10 completion:v11];
+    [(ACMExternalUIControllerProtocol *)uiController showSignInWidgetWithParentViewController:parentViewController animated:signInAnimated completion:v11];
   }
 }
 
@@ -358,15 +358,15 @@ uint64_t __53__ACMExternalAppleConnectImpl_showSignInWithRequest___block_invoke(
   if ([(ACMExternalAppleConnectImpl *)self isWidgetShown])
   {
     [(ACMExternalAppleConnectImpl *)self signInDialogWillHide];
-    v3 = [(ACMExternalAppleConnectImpl *)self uiController];
-    v4 = [(ACMExternalAppleConnectImpl *)self parentViewController];
-    v5 = [(ACMExternalAppleConnectImpl *)self signInAnimated];
+    uiController = [(ACMExternalAppleConnectImpl *)self uiController];
+    parentViewController = [(ACMExternalAppleConnectImpl *)self parentViewController];
+    signInAnimated = [(ACMExternalAppleConnectImpl *)self signInAnimated];
     v6[0] = MEMORY[0x29EDCA5F8];
     v6[1] = 3221225472;
     v6[2] = __41__ACMExternalAppleConnectImpl_hideSignIn__block_invoke;
     v6[3] = &unk_29EE91778;
     v6[4] = self;
-    [(ACMExternalUIControllerProtocol *)v3 hideSignInWidgetWithParentViewController:v4 animated:v5 completion:v6];
+    [(ACMExternalUIControllerProtocol *)uiController hideSignInWidgetWithParentViewController:parentViewController animated:signInAnimated completion:v6];
   }
 }
 
@@ -378,15 +378,15 @@ uint64_t __41__ACMExternalAppleConnectImpl_hideSignIn__block_invoke(uint64_t a1)
   return [v2 signInDialogDidHide];
 }
 
-- (void)authenticateRunningOnMainThreadWithRequest:(id)a3
+- (void)authenticateRunningOnMainThreadWithRequest:(id)request
 {
-  v5 = [a3 copy];
+  v5 = [request copy];
   if ([objc_msgSend(v5 "realm")] && objc_msgSend(objc_msgSend(v5, "appID"), "unsignedLongLongValue") && objc_msgSend(objc_msgSend(v5, "appIDKey"), "length") || (v6 = +[ACMBaseLocale localizedString:](ACMBaseLocale, "localizedString:", @"Invalid Parameters. Some of input parameters are set incorrectly.")) == 0)
   {
     [(ACMExternalAppleConnectImpl *)self delegate];
     if ((objc_opt_respondsToSelector() & 1) != 0 && [(ACMExternalAppleConnectDelegate *)[(ACMExternalAppleConnectImpl *)self delegate] appleConnectUseCustomAppearance:[(ACMExternalAppleConnectImpl *)self masterObject]])
     {
-      [(ACMExternalAppleConnectImpl *)self showSignInWithRequest:a3];
+      [(ACMExternalAppleConnectImpl *)self showSignInWithRequest:request];
       v9 = 1;
     }
 
@@ -395,16 +395,16 @@ uint64_t __41__ACMExternalAppleConnectImpl_hideSignIn__block_invoke(uint64_t a1)
       v9 = 0;
     }
 
-    v10 = [(ACMExternalAppleConnectImpl *)self authenticationController];
+    authenticationController = [(ACMExternalAppleConnectImpl *)self authenticationController];
     v11[0] = MEMORY[0x29EDCA5F8];
     v11[1] = 3221225472;
     v11[2] = __74__ACMExternalAppleConnectImpl_authenticateRunningOnMainThreadWithRequest___block_invoke;
     v11[3] = &unk_29EE917C8;
     v11[4] = self;
-    v11[5] = a3;
+    v11[5] = request;
     v11[6] = v5;
     v12 = v9;
-    [(ACMExternalAuthenticationController *)v10 evaluateSSOWithRequest:v5 completion:v11];
+    [(ACMExternalAuthenticationController *)authenticationController evaluateSSOWithRequest:v5 completion:v11];
   }
 
   else
@@ -467,17 +467,17 @@ uint64_t __74__ACMExternalAppleConnectImpl_authenticateRunningOnMainThreadWithRe
   return result;
 }
 
-- (void)authenticateWithRequest:(id)a3 password:(id)a4
+- (void)authenticateWithRequest:(id)request password:(id)password
 {
-  [a3 setUserName:{objc_msgSend(objc_msgSend(a3, "userName"), "lowercaseString")}];
-  v7 = [(ACMExternalAppleConnectImpl *)self authenticationController];
+  [request setUserName:{objc_msgSend(objc_msgSend(request, "userName"), "lowercaseString")}];
+  authenticationController = [(ACMExternalAppleConnectImpl *)self authenticationController];
   v8[0] = MEMORY[0x29EDCA5F8];
   v8[1] = 3221225472;
   v8[2] = __64__ACMExternalAppleConnectImpl_authenticateWithRequest_password___block_invoke;
   v8[3] = &unk_29EE917F0;
   v8[4] = self;
-  v8[5] = a3;
-  [(ACMExternalAuthenticationController *)v7 authenticateWithRequest:a3 password:a4 completion:v8];
+  v8[5] = request;
+  [(ACMExternalAuthenticationController *)authenticationController authenticateWithRequest:request password:password completion:v8];
 }
 
 uint64_t __64__ACMExternalAppleConnectImpl_authenticateWithRequest_password___block_invoke(uint64_t result, uint64_t a2, void *a3)
@@ -504,7 +504,7 @@ uint64_t __64__ACMExternalAppleConnectImpl_authenticateWithRequest_password___bl
   return result;
 }
 
-- (void)verifyServiceTicket:(id)a3
+- (void)verifyServiceTicket:(id)ticket
 {
   if (qword_2A1EB8ED8 && (ACFLogSettingsGetLevelMask() & 0x80) != 0)
   {
@@ -512,13 +512,13 @@ uint64_t __64__ACMExternalAppleConnectImpl_authenticateWithRequest_password___bl
   }
 
   v5 = objc_opt_new();
-  v6 = [(ACMExternalAppleConnectImpl *)self authenticationController];
+  authenticationController = [(ACMExternalAppleConnectImpl *)self authenticationController];
   v7[0] = MEMORY[0x29EDCA5F8];
   v7[1] = 3221225472;
   v7[2] = __51__ACMExternalAppleConnectImpl_verifyServiceTicket___block_invoke;
   v7[3] = &unk_29EE91818;
   v7[4] = self;
-  [(ACMExternalAuthenticationController *)v6 verifyServiceTicketWithRequest:a3 completion:v7];
+  [(ACMExternalAuthenticationController *)authenticationController verifyServiceTicketWithRequest:ticket completion:v7];
   [v5 drain];
 }
 
@@ -540,11 +540,11 @@ uint64_t __51__ACMExternalAppleConnectImpl_verifyServiceTicket___block_invoke(ui
   }
 }
 
-- (void)setLogLevel:(int64_t)a3
+- (void)setLogLevel:(int64_t)level
 {
-  v4 = [(ACMAppleConnectImplComponents *)[(ACMExternalAppleConnectImpl *)self components] preferences];
+  preferences = [(ACMAppleConnectImplComponents *)[(ACMExternalAppleConnectImpl *)self components] preferences];
 
-  [(ACMAppleConnectPreferences *)v4 setLogLevel:a3];
+  [(ACMAppleConnectPreferences *)preferences setLogLevel:level];
 }
 
 - (void)cancelRequests
@@ -554,13 +554,13 @@ uint64_t __51__ACMExternalAppleConnectImpl_verifyServiceTicket___block_invoke(ui
     ACFLog(7, "[ACMExternalAppleConnectImpl cancelRequests]", "/Library/Caches/com.apple.xbs/Sources/AppleConnectClients/Mobile/External/Sources/ACMExternalAppleConnectImpl.m", 414, 0, "Sign in cancelled");
   }
 
-  v3 = [MEMORY[0x29EDBA068] defaultCenter];
-  [v3 postNotification:{objc_msgSend(MEMORY[0x29EDBA060], "notificationWithName:object:", @"CancelRequests", self)}];
+  defaultCenter = [MEMORY[0x29EDBA068] defaultCenter];
+  [defaultCenter postNotification:{objc_msgSend(MEMORY[0x29EDBA060], "notificationWithName:object:", @"CancelRequests", self)}];
   v4[0] = MEMORY[0x29EDCA5F8];
   v4[1] = 3221225472;
   v5 = __45__ACMExternalAppleConnectImpl_cancelRequests__block_invoke;
   v6 = &unk_29EE91778;
-  v7 = self;
+  selfCopy = self;
   if ([(ACMExternalAppleConnectImpl *)self isWidgetShown])
   {
     [(ACMExternalUIControllerProtocol *)[(ACMExternalAppleConnectImpl *)self uiController] cancelSignInWidget];
@@ -586,17 +586,17 @@ uint64_t __45__ACMExternalAppleConnectImpl_cancelRequests__block_invoke(uint64_t
   return [v1 returnError:v5 withSelector:sel_appleConnect_authenticationDidEndWithResponse_ withResponseClass:v6];
 }
 
-- (void)reportError:(id)a3
+- (void)reportError:(id)error
 {
   if (qword_2A1EB8ED8 && (ACFLogSettingsGetLevelMask() & 0x80) != 0)
   {
-    ACFLog(7, "[ACMExternalAppleConnectImpl reportError:]", "/Library/Caches/com.apple.xbs/Sources/AppleConnectClients/Mobile/External/Sources/ACMExternalAppleConnectImpl.m", 438, 0, "Reporting about error %@", a3);
+    ACFLog(7, "[ACMExternalAppleConnectImpl reportError:]", "/Library/Caches/com.apple.xbs/Sources/AppleConnectClients/Mobile/External/Sources/ACMExternalAppleConnectImpl.m", 438, 0, "Reporting about error %@", error);
   }
 
-  v5 = [a3 code];
-  if (a3)
+  code = [error code];
+  if (error)
   {
-    v6 = v5;
+    v6 = code;
     if ([(ACMExternalAppleConnectImpl *)self isWidgetShown])
     {
       v7 = [ACMBaseLocale localizedString:@"OK"];
@@ -606,7 +606,7 @@ uint64_t __45__ACMExternalAppleConnectImpl_cancelRequests__block_invoke(uint64_t
         {
           if (v6 == -100118 || v6 == -100102 || v6 == -100104)
           {
-            v8 = [MEMORY[0x29EDBA0F8] stringWithFormat:@"%@", objc_msgSend(a3, "localizedDescription")];
+            v8 = [MEMORY[0x29EDBA0F8] stringWithFormat:@"%@", objc_msgSend(error, "localizedDescription")];
             v7 = [ACMBaseLocale localizedString:@"iForgot…"];
             v9 = [ACMBaseLocale localizedString:@"OK"];
             v6 = -100102;
@@ -616,9 +616,9 @@ uint64_t __45__ACMExternalAppleConnectImpl_cancelRequests__block_invoke(uint64_t
             }
 
 LABEL_32:
-            v18 = [(ACMExternalAppleConnectImpl *)self uiController];
+            uiController = [(ACMExternalAppleConnectImpl *)self uiController];
 
-            [(ACMExternalUIControllerProtocol *)v18 showAlertWithAlertMessage:v8 buttonTitle:v9 cancelButtonTitle:v7 errorTag:v6];
+            [(ACMExternalUIControllerProtocol *)uiController showAlertWithAlertMessage:v8 buttonTitle:v9 cancelButtonTitle:v7 errorTag:v6];
             return;
           }
 
@@ -628,7 +628,7 @@ LABEL_32:
         if (v6 == -100400 || v6 == -100125)
         {
 LABEL_29:
-          v17 = [MEMORY[0x29EDBA0F8] stringWithFormat:@"%@", objc_msgSend(a3, "localizedDescription")];
+          v17 = [MEMORY[0x29EDBA0F8] stringWithFormat:@"%@", objc_msgSend(error, "localizedDescription")];
           goto LABEL_31;
         }
 
@@ -652,7 +652,7 @@ LABEL_31:
 LABEL_24:
           v16 = objc_opt_class();
 
-          [(ACMExternalAppleConnectImpl *)self returnError:a3 withSelector:sel_appleConnect_authenticationDidEndWithResponse_ withResponseClass:v16];
+          [(ACMExternalAppleConnectImpl *)self returnError:error withSelector:sel_appleConnect_authenticationDidEndWithResponse_ withResponseClass:v16];
           return;
         }
 
@@ -683,23 +683,23 @@ LABEL_24:
       v11 = MEMORY[0x29EDB8DC0];
       v12 = *MEMORY[0x29EDB9F18];
       v13 = [ACMBaseLocale localizedString:@"Oops, an error occurred. Thanks for your patience, please try again later."];
-      a3 = [v10 errorWithDomain:@"ACCAppleConnectErrorDomain" code:-200200 userInfo:{objc_msgSend(v11, "dictionaryWithObjectsAndKeys:", a3, v12, v13, *MEMORY[0x29EDB9ED8], 0)}];
+      error = [v10 errorWithDomain:@"ACCAppleConnectErrorDomain" code:-200200 userInfo:{objc_msgSend(v11, "dictionaryWithObjectsAndKeys:", error, v12, v13, *MEMORY[0x29EDB9ED8], 0)}];
     }
   }
 
   v14 = +[ACMAuthenticationResponseImpl authenticationResponse];
-  [v14 setError:a3];
+  [v14 setError:error];
 
   [(ACMExternalAppleConnectImpl *)self returnResponse:v14 withSelector:sel_appleConnect_authenticationDidEndWithResponse_];
 }
 
-- (void)returnError:(id)a3 withSelector:(SEL)a4 withResponseClass:(Class)a5
+- (void)returnError:(id)error withSelector:(SEL)selector withResponseClass:(Class)class
 {
   objc_opt_class();
   v8 = objc_opt_new();
-  [v8 setError:a3];
+  [v8 setError:error];
 
-  [(ACMExternalAppleConnectImpl *)self returnResponse:v8 withSelector:a4];
+  [(ACMExternalAppleConnectImpl *)self returnResponse:v8 withSelector:selector];
 }
 
 - (BOOL)canHideSignInDialog
@@ -727,7 +727,7 @@ LABEL_24:
   return v3;
 }
 
-- (void)returnResponse:(id)a3 withSelector:(SEL)a4
+- (void)returnResponse:(id)response withSelector:(SEL)selector
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -740,15 +740,15 @@ LABEL_24:
     ACFLog(7, "[ACMExternalAppleConnectImpl returnResponse:withSelector:]", "/Library/Caches/com.apple.xbs/Sources/AppleConnectClients/Mobile/External/Sources/ACMExternalAppleConnectImpl.m", 519, 0, "Try ask delegate for permission to hide SignIn dialog");
   }
 
-  if ([a3 error])
+  if ([response error])
   {
     [(ACMExternalAppleConnectImpl *)self setAppleConnectState:0];
     goto LABEL_8;
   }
 
-  v7 = [(ACMExternalAppleConnectImpl *)self canHideSignInDialog];
-  v8 = v7;
-  [(ACMExternalAppleConnectImpl *)self setAppleConnectState:!v7];
+  canHideSignInDialog = [(ACMExternalAppleConnectImpl *)self canHideSignInDialog];
+  v8 = canHideSignInDialog;
+  [(ACMExternalAppleConnectImpl *)self setAppleConnectState:!canHideSignInDialog];
   if (v8)
   {
 LABEL_8:
@@ -789,14 +789,14 @@ LABEL_12:
       ACFLog(7, "[ACMExternalAppleConnectImpl returnResponse:withSelector:]", "/Library/Caches/com.apple.xbs/Sources/AppleConnectClients/Mobile/External/Sources/ACMExternalAppleConnectImpl.m", 545, 0, "Inform delegate about result");
     }
 
-    v9 = [(ACMExternalAppleConnectImpl *)self delegate];
-    v10 = [(ACMExternalAppleConnectImpl *)self masterObject];
+    delegate = [(ACMExternalAppleConnectImpl *)self delegate];
+    masterObject = [(ACMExternalAppleConnectImpl *)self masterObject];
 
-    [(ACMExternalAppleConnectDelegate *)v9 performSelector:a4 withObject:v10 withObject:a3];
+    [(ACMExternalAppleConnectDelegate *)delegate performSelector:selector withObject:masterObject withObject:response];
   }
 }
 
-- (void)applicationDidEnterBackground:(id)a3
+- (void)applicationDidEnterBackground:(id)background
 {
   if ([(ACMExternalAppleConnectImpl *)self isWidgetShown]&& [(ACMMessage *)[(ACMExternalAppleConnectImpl *)self currentRequest] automaticallyCancelWhenSwitchingToBackground])
   {
@@ -818,26 +818,26 @@ LABEL_12:
 {
   [(ACMExternalUIControllerProtocol *)[(ACMExternalAppleConnectImpl *)self uiController] setPassword:0];
   [(ACMExternalUIControllerProtocol *)[(ACMExternalAppleConnectImpl *)self uiController] setWidgetEnabled:1];
-  v3 = [(ACMExternalAppleConnectImpl *)self uiController];
-  v4 = [(ACMExternalAppleConnectImpl *)self parentViewController];
-  v5 = [(ACMExternalAppleConnectImpl *)self signInAnimated];
+  uiController = [(ACMExternalAppleConnectImpl *)self uiController];
+  parentViewController = [(ACMExternalAppleConnectImpl *)self parentViewController];
+  signInAnimated = [(ACMExternalAppleConnectImpl *)self signInAnimated];
 
-  [(ACMExternalUIControllerProtocol *)v3 showSignInWidgetWithParentViewController:v4 animated:v5 completion:&__block_literal_global];
+  [(ACMExternalUIControllerProtocol *)uiController showSignInWidgetWithParentViewController:parentViewController animated:signInAnimated completion:&__block_literal_global];
 }
 
-- (void)onManageAppleIDForRealm:(id)a3
+- (void)onManageAppleIDForRealm:(id)realm
 {
-  v5 = [MEMORY[0x29EDC7938] sharedApplication];
-  v6 = [MEMORY[0x29EDB8E70] URLWithString:{objc_msgSend(-[ACMAppleConnectPreferences environmentPreferencesWithRealm:](-[ACMAppleConnectImplComponents preferences](-[ACMExternalAppleConnectImpl components](self, "components"), "preferences"), "environmentPreferencesWithRealm:", a3), "myAppleIDURL")}];
+  mEMORY[0x29EDC7938] = [MEMORY[0x29EDC7938] sharedApplication];
+  v6 = [MEMORY[0x29EDB8E70] URLWithString:{objc_msgSend(-[ACMAppleConnectPreferences environmentPreferencesWithRealm:](-[ACMAppleConnectImplComponents preferences](-[ACMExternalAppleConnectImpl components](self, "components"), "preferences"), "environmentPreferencesWithRealm:", realm), "myAppleIDURL")}];
 
-  [v5 openURL:v6];
+  [mEMORY[0x29EDC7938] openURL:v6];
 }
 
-- (void)uiControllerOnSignIn:(id)a3 withPassword:(id)a4
+- (void)uiControllerOnSignIn:(id)in withPassword:(id)password
 {
   if ([-[ACMMessage userName](-[ACMExternalAppleConnectImpl currentRequest](self currentRequest])
   {
-    if ([a4 length])
+    if ([password length])
     {
       goto LABEL_9;
     }
@@ -862,13 +862,13 @@ LABEL_12:
   }
 
 LABEL_9:
-  [(ACMExternalAppleConnectImpl *)self authenticateWithRequest:[(ACMExternalAppleConnectImpl *)self currentRequest] password:a4];
-  v11 = [(ACMExternalAppleConnectImpl *)self uiController];
+  [(ACMExternalAppleConnectImpl *)self authenticateWithRequest:[(ACMExternalAppleConnectImpl *)self currentRequest] password:password];
+  uiController = [(ACMExternalAppleConnectImpl *)self uiController];
 
-  [(ACMExternalUIControllerProtocol *)v11 setWidgetEnabled:0];
+  [(ACMExternalUIControllerProtocol *)uiController setWidgetEnabled:0];
 }
 
-- (void)uiControllerOnSignInCancel:(id)a3
+- (void)uiControllerOnSignInCancel:(id)cancel
 {
   if (qword_2A1EB8ED8 && (ACFLogSettingsGetLevelMask() & 0x80) != 0)
   {
@@ -884,15 +884,15 @@ LABEL_9:
   [(ACMExternalAppleConnectImpl *)self returnError:v7 withSelector:sel_appleConnect_authenticationDidEndWithResponse_ withResponseClass:v8];
 }
 
-- (void)uiControllerOnSignIForgot:(id)a3
+- (void)uiControllerOnSignIForgot:(id)forgot
 {
-  v4 = [MEMORY[0x29EDC7938] sharedApplication];
+  mEMORY[0x29EDC7938] = [MEMORY[0x29EDC7938] sharedApplication];
   v5 = [MEMORY[0x29EDB8E70] URLWithString:{objc_msgSend(-[ACMAppleConnectPreferences environmentPreferencesWithRealm:](-[ACMAppleConnectImplComponents preferences](-[ACMExternalAppleConnectImpl components](self, "components"), "preferences"), "environmentPreferencesWithRealm:", -[ACMMessage realm](-[ACMExternalAppleConnectImpl currentRequest](self, "currentRequest"), "realm")), "iForgotURL")}];
 
-  [v4 openURL:v5];
+  [mEMORY[0x29EDC7938] openURL:v5];
 }
 
-- (void)uiControllerWillEnableSignInDialog:(id)a3
+- (void)uiControllerWillEnableSignInDialog:(id)dialog
 {
   if (qword_2A1EB8ED8 && (ACFLogSettingsGetLevelMask() & 0x80) != 0)
   {
@@ -907,14 +907,14 @@ LABEL_9:
       ACFLog(7, "[ACMExternalAppleConnectImpl uiControllerWillEnableSignInDialog:]", "/Library/Caches/com.apple.xbs/Sources/AppleConnectClients/Mobile/External/Sources/ACMExternalAppleConnectImpl.m", 627, 0, "Inform delegate that SignIn will become enabled");
     }
 
-    v4 = [(ACMExternalAppleConnectImpl *)self delegate];
-    v5 = [(ACMExternalAppleConnectImpl *)self masterObject];
+    delegate = [(ACMExternalAppleConnectImpl *)self delegate];
+    masterObject = [(ACMExternalAppleConnectImpl *)self masterObject];
 
-    [(ACMExternalAppleConnectDelegate *)v4 appleConnectSignInDialogWillBecomeEnabled:v5];
+    [(ACMExternalAppleConnectDelegate *)delegate appleConnectSignInDialogWillBecomeEnabled:masterObject];
   }
 }
 
-- (void)uiControllerDidEnableSignInDialog:(id)a3
+- (void)uiControllerDidEnableSignInDialog:(id)dialog
 {
   if (qword_2A1EB8ED8 && (ACFLogSettingsGetLevelMask() & 0x80) != 0)
   {
@@ -929,14 +929,14 @@ LABEL_9:
       ACFLog(7, "[ACMExternalAppleConnectImpl uiControllerDidEnableSignInDialog:]", "/Library/Caches/com.apple.xbs/Sources/AppleConnectClients/Mobile/External/Sources/ACMExternalAppleConnectImpl.m", 637, 0, "Inform delegate that SignIn did become enabled");
     }
 
-    v4 = [(ACMExternalAppleConnectImpl *)self delegate];
-    v5 = [(ACMExternalAppleConnectImpl *)self masterObject];
+    delegate = [(ACMExternalAppleConnectImpl *)self delegate];
+    masterObject = [(ACMExternalAppleConnectImpl *)self masterObject];
 
-    [(ACMExternalAppleConnectDelegate *)v4 appleConnectSignInDialogDidBecomeEnabled:v5];
+    [(ACMExternalAppleConnectDelegate *)delegate appleConnectSignInDialogDidBecomeEnabled:masterObject];
   }
 }
 
-- (void)uiControllerWillDisableSignInDialog:(id)a3
+- (void)uiControllerWillDisableSignInDialog:(id)dialog
 {
   if (qword_2A1EB8ED8 && (ACFLogSettingsGetLevelMask() & 0x80) != 0)
   {
@@ -951,14 +951,14 @@ LABEL_9:
       ACFLog(7, "[ACMExternalAppleConnectImpl uiControllerWillDisableSignInDialog:]", "/Library/Caches/com.apple.xbs/Sources/AppleConnectClients/Mobile/External/Sources/ACMExternalAppleConnectImpl.m", 647, 0, "Inform delegate that SignIn will become disabled");
     }
 
-    v4 = [(ACMExternalAppleConnectImpl *)self delegate];
-    v5 = [(ACMExternalAppleConnectImpl *)self masterObject];
+    delegate = [(ACMExternalAppleConnectImpl *)self delegate];
+    masterObject = [(ACMExternalAppleConnectImpl *)self masterObject];
 
-    [(ACMExternalAppleConnectDelegate *)v4 appleConnectSignInDialogWillBecomeDisabled:v5];
+    [(ACMExternalAppleConnectDelegate *)delegate appleConnectSignInDialogWillBecomeDisabled:masterObject];
   }
 }
 
-- (void)uiControllerDidDisableSignInDialog:(id)a3
+- (void)uiControllerDidDisableSignInDialog:(id)dialog
 {
   if (qword_2A1EB8ED8 && (ACFLogSettingsGetLevelMask() & 0x80) != 0)
   {
@@ -973,10 +973,10 @@ LABEL_9:
       ACFLog(7, "[ACMExternalAppleConnectImpl uiControllerDidDisableSignInDialog:]", "/Library/Caches/com.apple.xbs/Sources/AppleConnectClients/Mobile/External/Sources/ACMExternalAppleConnectImpl.m", 657, 0, "Inform delegate that SignIn did become disabled");
     }
 
-    v4 = [(ACMExternalAppleConnectImpl *)self delegate];
-    v5 = [(ACMExternalAppleConnectImpl *)self masterObject];
+    delegate = [(ACMExternalAppleConnectImpl *)self delegate];
+    masterObject = [(ACMExternalAppleConnectImpl *)self masterObject];
 
-    [(ACMExternalAppleConnectDelegate *)v4 appleConnectSignInDialogDidBecomeDisabled:v5];
+    [(ACMExternalAppleConnectDelegate *)delegate appleConnectSignInDialogDidBecomeDisabled:masterObject];
   }
 }
 
@@ -985,19 +985,19 @@ LABEL_9:
   [(ACMExternalAppleConnectImpl *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [(ACMExternalAppleConnectImpl *)self delegate];
-    v4 = [(ACMExternalAppleConnectImpl *)self masterObject];
-    if (v4)
+    delegate = [(ACMExternalAppleConnectImpl *)self delegate];
+    masterObject = [(ACMExternalAppleConnectImpl *)self masterObject];
+    if (masterObject)
     {
-      v5 = v4;
+      selfCopy = masterObject;
     }
 
     else
     {
-      v5 = self;
+      selfCopy = self;
     }
 
-    return [(ACMExternalAppleConnectDelegate *)v3 appleConnectSignInDialogContentStyle:v5];
+    return [(ACMExternalAppleConnectDelegate *)delegate appleConnectSignInDialogContentStyle:selfCopy];
   }
 
   else
@@ -1018,10 +1018,10 @@ LABEL_9:
   [(ACMExternalAppleConnectImpl *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [(ACMExternalAppleConnectImpl *)self delegate];
-    v4 = [(ACMExternalAppleConnectImpl *)self masterObject];
+    delegate = [(ACMExternalAppleConnectImpl *)self delegate];
+    masterObject = [(ACMExternalAppleConnectImpl *)self masterObject];
 
-    [(ACMExternalAppleConnectDelegate *)v3 appleConnectWillHideSignInDialog:v4];
+    [(ACMExternalAppleConnectDelegate *)delegate appleConnectWillHideSignInDialog:masterObject];
   }
 }
 
@@ -1035,27 +1035,27 @@ LABEL_9:
   [(ACMExternalAppleConnectImpl *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [(ACMExternalAppleConnectImpl *)self delegate];
-    v4 = [(ACMExternalAppleConnectImpl *)self masterObject];
+    delegate = [(ACMExternalAppleConnectImpl *)self delegate];
+    masterObject = [(ACMExternalAppleConnectImpl *)self masterObject];
 
-    [(ACMExternalAppleConnectDelegate *)v3 appleConnectDidHideSignInDialog:v4];
+    [(ACMExternalAppleConnectDelegate *)delegate appleConnectDidHideSignInDialog:masterObject];
   }
 }
 
-- (void)twoSVControllerEnterCredentials:(id)a3
+- (void)twoSVControllerEnterCredentials:(id)credentials
 {
-  v4 = [(ACMExternalAppleConnectImpl *)self twoSVController];
+  twoSVController = [(ACMExternalAppleConnectImpl *)self twoSVController];
   v5[0] = MEMORY[0x29EDCA5F8];
   v5[1] = 3221225472;
   v5[2] = __63__ACMExternalAppleConnectImpl_twoSVControllerEnterCredentials___block_invoke;
   v5[3] = &unk_29EE91778;
   v5[4] = self;
-  [(ACC2SVControllerProtocol *)v4 cancelWithCompletion:v5];
+  [(ACC2SVControllerProtocol *)twoSVController cancelWithCompletion:v5];
 }
 
-- (void)twoSVController:(id)a3 prepareUIWithCompletion:(id)a4
+- (void)twoSVController:(id)controller prepareUIWithCompletion:(id)completion
 {
-  v5 = [a4 copy];
+  v5 = [completion copy];
   if ([(ACMExternalUIControllerProtocol *)[(ACMExternalAppleConnectImpl *)self uiController] signInStyle]== 2)
   {
     if (v5)
@@ -1068,16 +1068,16 @@ LABEL_9:
 
   else
   {
-    v7 = [(ACMExternalAppleConnectImpl *)self uiController];
-    v8 = [(ACMExternalAppleConnectImpl *)self parentViewController];
-    v9 = [(ACMExternalAppleConnectImpl *)self signInAnimated];
+    uiController = [(ACMExternalAppleConnectImpl *)self uiController];
+    parentViewController = [(ACMExternalAppleConnectImpl *)self parentViewController];
+    signInAnimated = [(ACMExternalAppleConnectImpl *)self signInAnimated];
     v10[0] = MEMORY[0x29EDCA5F8];
     v10[1] = 3221225472;
     v10[2] = __71__ACMExternalAppleConnectImpl_twoSVController_prepareUIWithCompletion___block_invoke;
     v10[3] = &unk_29EE91860;
     v10[4] = self;
     v10[5] = v5;
-    [(ACMExternalUIControllerProtocol *)v7 hideSignInWidgetWithParentViewController:v8 animated:v9 completion:v10];
+    [(ACMExternalUIControllerProtocol *)uiController hideSignInWidgetWithParentViewController:parentViewController animated:signInAnimated completion:v10];
   }
 }
 
@@ -1109,7 +1109,7 @@ uint64_t __71__ACMExternalAppleConnectImpl_twoSVController_prepareUIWithCompleti
   return result;
 }
 
-- (void)twoSVControllerWillClose:(id)a3
+- (void)twoSVControllerWillClose:(id)close
 {
   if ([(ACMExternalUIControllerProtocol *)[(ACMExternalAppleConnectImpl *)self uiController] signInStyle]!= 2)
   {
@@ -1118,15 +1118,15 @@ uint64_t __71__ACMExternalAppleConnectImpl_twoSVController_prepareUIWithCompleti
   }
 }
 
-- (void)twoSVTransportController:(id)a3 scheduleHandler:(id)a4 withCompletion:(id)a5
+- (void)twoSVTransportController:(id)controller scheduleHandler:(id)handler withCompletion:(id)completion
 {
-  v7 = [a5 copy];
+  v7 = [completion copy];
   v8[0] = MEMORY[0x29EDCA5F8];
   v8[1] = 3221225472;
   v8[2] = __87__ACMExternalAppleConnectImpl_twoSVTransportController_scheduleHandler_withCompletion___block_invoke;
   v8[3] = &unk_29EE91888;
   v8[4] = v7;
-  [(ACMAppleConnectImpl *)self scheduleHandler:a4 withCompletionBlock:v8];
+  [(ACMAppleConnectImpl *)self scheduleHandler:handler withCompletionBlock:v8];
 }
 
 uint64_t __87__ACMExternalAppleConnectImpl_twoSVTransportController_scheduleHandler_withCompletion___block_invoke(uint64_t a1)
@@ -1140,17 +1140,17 @@ uint64_t __87__ACMExternalAppleConnectImpl_twoSVTransportController_scheduleHand
   return result;
 }
 
-- (void)twoSVTransportController:(id)a3 fetchImageWithHandler:(id)a4 completion:(id)a5
+- (void)twoSVTransportController:(id)controller fetchImageWithHandler:(id)handler completion:(id)completion
 {
   if (qword_2A1EB8ED8)
   {
     if ((ACFLogSettingsGetLevelMask() & 0x80) != 0)
     {
-      ACFLog(7, "-[ACMExternalAppleConnectImpl twoSVTransportController:fetchImageWithHandler:completion:]", "/Library/Caches/com.apple.xbs/Sources/AppleConnectClients/Mobile/External/Sources/ACMExternalAppleConnectImpl.m", 765, 0, "Scheduling image download HTTP handler %p for address %@", a4, [objc_msgSend(a4 "transport")]);
+      ACFLog(7, "-[ACMExternalAppleConnectImpl twoSVTransportController:fetchImageWithHandler:completion:]", "/Library/Caches/com.apple.xbs/Sources/AppleConnectClients/Mobile/External/Sources/ACMExternalAppleConnectImpl.m", 765, 0, "Scheduling image download HTTP handler %p for address %@", handler, [objc_msgSend(handler "transport")]);
     }
 
     objc_sync_enter(self);
-    if (!a4)
+    if (!handler)
     {
       if ((ACFLogSettingsGetLevelMask() & 8) != 0)
       {
@@ -1164,7 +1164,7 @@ uint64_t __87__ACMExternalAppleConnectImpl_twoSVTransportController_scheduleHand
   else
   {
     objc_sync_enter(self);
-    if (!a4)
+    if (!handler)
     {
       goto LABEL_11;
     }
@@ -1175,20 +1175,20 @@ uint64_t __87__ACMExternalAppleConnectImpl_twoSVTransportController_scheduleHand
     [objc_msgSend(MEMORY[0x29EDC7938] "sharedApplication")];
   }
 
-  [(NSMutableSet *)[(ACMAppleConnectImpl *)self handlers] addObject:a4];
-  [a4 downloadImageWithCompletionBlock:a5];
+  [(NSMutableSet *)[(ACMAppleConnectImpl *)self handlers] addObject:handler];
+  [handler downloadImageWithCompletionBlock:completion];
   v8[0] = MEMORY[0x29EDCA5F8];
   v8[1] = 3221225472;
   v8[2] = __89__ACMExternalAppleConnectImpl_twoSVTransportController_fetchImageWithHandler_completion___block_invoke;
   v8[3] = &unk_29EE918B0;
   v8[4] = self;
-  v8[5] = a4;
-  [a4 setFinalizeBlock:v8];
+  v8[5] = handler;
+  [handler setFinalizeBlock:v8];
 LABEL_11:
   objc_sync_exit(self);
 }
 
-- (void)twoSVTransportControllerCancelFetchingImages:(id)a3
+- (void)twoSVTransportControllerCancelFetchingImages:(id)images
 {
   v15 = *MEMORY[0x29EDCA608];
   v4 = [(NSMutableSet *)[(ACMAppleConnectImpl *)self handlers] objectsPassingTest:&__block_literal_global_207];
@@ -1222,9 +1222,9 @@ LABEL_11:
   }
 }
 
-- (void)authenticationController:(id)a3 perform2StepVerificationWithRequest:(id)a4 completion:(id)a5
+- (void)authenticationController:(id)controller perform2StepVerificationWithRequest:(id)request completion:(id)completion
 {
-  if (!a5)
+  if (!completion)
   {
     [ACMExternalAppleConnectImpl authenticationController:a2 perform2StepVerificationWithRequest:self completion:?];
   }
@@ -1239,15 +1239,15 @@ LABEL_11:
       }
     }
 
-    v8 = [a5 copy];
-    v9 = [(ACMExternalAppleConnectImpl *)self twoSVController];
+    v8 = [completion copy];
+    twoSVController = [(ACMExternalAppleConnectImpl *)self twoSVController];
     v15[0] = MEMORY[0x29EDCA5F8];
     v15[1] = 3221225472;
     v15[2] = __103__ACMExternalAppleConnectImpl_authenticationController_perform2StepVerificationWithRequest_completion___block_invoke;
     v15[3] = &unk_29EE918F8;
     v15[4] = self;
     v15[5] = v8;
-    [(ACC2SVControllerProtocol *)v9 perform2StepVerificationWithRequest:a4 completion:v15];
+    [(ACC2SVControllerProtocol *)twoSVController perform2StepVerificationWithRequest:request completion:v15];
   }
 
   else
@@ -1261,9 +1261,9 @@ LABEL_11:
     v11 = MEMORY[0x29EDB8DC0];
     v12 = [ACMBaseLocale localizedString:@"Two-step verification required, but user interaction is not allowed."];
     v13 = [v10 errorWithDomain:@"ACCAppleConnectErrorDomain" code:-200320 userInfo:{objc_msgSend(v11, "dictionaryWithObject:forKey:", v12, *MEMORY[0x29EDB9ED8])}];
-    v14 = *(a5 + 2);
+    v14 = *(completion + 2);
 
-    v14(a5, v13, 0);
+    v14(completion, v13, 0);
   }
 }
 

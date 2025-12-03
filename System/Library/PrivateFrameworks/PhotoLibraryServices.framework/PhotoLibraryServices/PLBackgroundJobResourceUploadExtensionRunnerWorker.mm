@@ -1,45 +1,45 @@
 @interface PLBackgroundJobResourceUploadExtensionRunnerWorker
-+ (BOOL)checkServerFeatureVersionForLibraryServicesManager:(id)a3;
-+ (BOOL)isBackgroundAppRefreshEnabledWithBundleIdentifiers:(id)a3 libraryServicesManager:(id)a4;
-+ (BOOL)isEnabledForBundle:(id)a3;
++ (BOOL)checkServerFeatureVersionForLibraryServicesManager:(id)manager;
++ (BOOL)isBackgroundAppRefreshEnabledWithBundleIdentifiers:(id)identifiers libraryServicesManager:(id)manager;
++ (BOOL)isEnabledForBundle:(id)bundle;
 + (id)_enabledEventMonitorJobConfigurationRequest;
 + (id)_enabledJobConfigurationRequest;
-+ (id)fetchConfigurationEnabledBundleIdentifiersForLibraryServicesManager:(id)a3;
-- (BOOL)_confirmProcessingCompletionResultsForConfiguration:(id)a3 library:(id)a4;
++ (id)fetchConfigurationEnabledBundleIdentifiersForLibraryServicesManager:(id)manager;
+- (BOOL)_confirmProcessingCompletionResultsForConfiguration:(id)configuration library:(id)library;
 - (BOOL)_isJobCancelled;
-- (BOOL)_validateConfiguration:(id)a3 delay:(double *)a4;
-- (PLBackgroundJobResourceUploadExtensionRunnerWorker)initWithLibraryBundle:(id)a3;
-- (double)_isConfigurationDelayedWithConfiguration:(id)a3;
-- (id)_enabledEventMonitorJobConfigurationsForProcessingInLibrary:(id)a3;
-- (id)_enabledJobConfigurationsForProcessingInLibrary:(id)a3 delay:(double *)a4;
-- (id)_errorFromProcessingResult:(unint64_t)a3;
-- (id)_workItemIdentifiersInLibrary:(id)a3;
-- (id)workItemsNeedingProcessingInLibrary:(id)a3 validCriterias:(id)a4;
-- (void)_bumpAttemptCountForConfiguration:(id)a3;
-- (void)_checkInitialProcessingIsCompletedForConfigurations:(id)a3 inLibrary:(id)a4;
-- (void)_handleProcessingResult:(unint64_t)a3 bundleIdentifier:(id)a4 library:(id)a5 completionBlock:(id)a6;
-- (void)_removeWorkItemForConfigurationIdentifier:(id)a3 library:(id)a4;
-- (void)_resetAttemptCountForConfiguration:(id)a3;
-- (void)_switchConfiguration:(id)a3 toState:(signed __int16)a4;
-- (void)_switchEventMonitorConfigurationWithConfigurations:(id)a3 inLibrary:(id)a4;
-- (void)_updateConfigurationStateWithWorkItemIdentifiers:(id)a3 configurations:(id)a4 inLibrary:(id)a5;
-- (void)performWorkOnItem:(id)a3 inLibrary:(id)a4 completion:(id)a5;
-- (void)stopWorkingOnItem:(id)a3;
+- (BOOL)_validateConfiguration:(id)configuration delay:(double *)delay;
+- (PLBackgroundJobResourceUploadExtensionRunnerWorker)initWithLibraryBundle:(id)bundle;
+- (double)_isConfigurationDelayedWithConfiguration:(id)configuration;
+- (id)_enabledEventMonitorJobConfigurationsForProcessingInLibrary:(id)library;
+- (id)_enabledJobConfigurationsForProcessingInLibrary:(id)library delay:(double *)delay;
+- (id)_errorFromProcessingResult:(unint64_t)result;
+- (id)_workItemIdentifiersInLibrary:(id)library;
+- (id)workItemsNeedingProcessingInLibrary:(id)library validCriterias:(id)criterias;
+- (void)_bumpAttemptCountForConfiguration:(id)configuration;
+- (void)_checkInitialProcessingIsCompletedForConfigurations:(id)configurations inLibrary:(id)library;
+- (void)_handleProcessingResult:(unint64_t)result bundleIdentifier:(id)identifier library:(id)library completionBlock:(id)block;
+- (void)_removeWorkItemForConfigurationIdentifier:(id)identifier library:(id)library;
+- (void)_resetAttemptCountForConfiguration:(id)configuration;
+- (void)_switchConfiguration:(id)configuration toState:(signed __int16)state;
+- (void)_switchEventMonitorConfigurationWithConfigurations:(id)configurations inLibrary:(id)library;
+- (void)_updateConfigurationStateWithWorkItemIdentifiers:(id)identifiers configurations:(id)configurations inLibrary:(id)library;
+- (void)performWorkOnItem:(id)item inLibrary:(id)library completion:(id)completion;
+- (void)stopWorkingOnItem:(id)item;
 @end
 
 @implementation PLBackgroundJobResourceUploadExtensionRunnerWorker
 
-- (double)_isConfigurationDelayedWithConfiguration:(id)a3
+- (double)_isConfigurationDelayedWithConfiguration:(id)configuration
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 attemptCount];
-  v6 = v5;
-  if (v5 < 49)
+  configurationCopy = configuration;
+  attemptCount = [configurationCopy attemptCount];
+  v6 = attemptCount;
+  if (attemptCount < 49)
   {
-    v10 = [v4 completionDate];
+    completionDate = [configurationCopy completionDate];
     v11 = [MEMORY[0x1E695DF00] now];
-    [v11 timeIntervalSinceDate:v10];
+    [v11 timeIntervalSinceDate:completionDate];
     v13 = v12;
     v14 = PLExtensionRunnerWorkerDelaySchedule();
     if (self->_reducedConfigurationDelay)
@@ -108,29 +108,29 @@ LABEL_17:
   v7 = PLBackgroundJobServiceGetLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v4 uuid];
+    uuid = [configurationCopy uuid];
     *buf = 134218242;
     *&buf[4] = v6;
     *&buf[12] = 2114;
-    *&buf[14] = v8;
+    *&buf[14] = uuid;
     _os_log_impl(&dword_19BF1F000, v7, OS_LOG_TYPE_DEFAULT, "UploadExtensionRunnerWorker: Exceeded max attempt count %td. Reseting to incremental for configuration: <%{public}@>", buf, 0x16u);
   }
 
-  [(PLBackgroundJobResourceUploadExtensionRunnerWorker *)self _switchConfiguration:v4 toState:2];
+  [(PLBackgroundJobResourceUploadExtensionRunnerWorker *)self _switchConfiguration:configurationCopy toState:2];
   v9 = 0.0;
 LABEL_18:
 
   return v9;
 }
 
-- (BOOL)_validateConfiguration:(id)a3 delay:(double *)a4
+- (BOOL)_validateConfiguration:(id)configuration delay:(double *)delay
 {
   v30 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 photoLibrary];
-  v8 = [v7 libraryServicesManager];
-  v9 = [v6 bundleIdentifier];
-  v10 = [v8 isBackgroundAppRefreshEnabledForBundleIdentifier:v9];
+  configurationCopy = configuration;
+  photoLibrary = [configurationCopy photoLibrary];
+  libraryServicesManager = [photoLibrary libraryServicesManager];
+  bundleIdentifier = [configurationCopy bundleIdentifier];
+  v10 = [libraryServicesManager isBackgroundAppRefreshEnabledForBundleIdentifier:bundleIdentifier];
 
   if (!v10)
   {
@@ -139,7 +139,7 @@ LABEL_18:
   }
 
   v25 = 0;
-  v11 = [PLAssetResourceUploadJob countOfUploadJobsWithConfiguration:v6 states:&unk_1F0FBFAA8 inPhotoLibrary:v7 error:&v25];
+  v11 = [PLAssetResourceUploadJob countOfUploadJobsWithConfiguration:configurationCopy states:&unk_1F0FBFAA8 inPhotoLibrary:photoLibrary error:&v25];
   v12 = v25;
   if (v11 >= 1)
   {
@@ -151,9 +151,9 @@ LABEL_6:
       goto LABEL_7;
     }
 
-    v14 = [v6 uuid];
+    uuid = [configurationCopy uuid];
     *buf = 138543362;
-    v27 = v14;
+    v27 = uuid;
     v15 = "UploadExtensionRunnerWorker: Skipping configuration: <%{public}@> due to unprocessed pending/registered jobs";
     v16 = v13;
     v17 = OS_LOG_TYPE_INFO;
@@ -165,25 +165,25 @@ LABEL_5:
 
   if (!self->_disableConfigurationDelay)
   {
-    [(PLBackgroundJobResourceUploadExtensionRunnerWorker *)self _isConfigurationDelayedWithConfiguration:v6];
+    [(PLBackgroundJobResourceUploadExtensionRunnerWorker *)self _isConfigurationDelayedWithConfiguration:configurationCopy];
     v21 = v20;
     if (v20 > 10.0)
     {
       v23 = PLBackgroundJobServiceGetLog();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
       {
-        v24 = [v6 uuid];
+        uuid2 = [configurationCopy uuid];
         *buf = 138543618;
-        v27 = v24;
+        v27 = uuid2;
         v28 = 2050;
         v29 = v21;
         _os_log_impl(&dword_19BF1F000, v23, OS_LOG_TYPE_DEFAULT, "UploadExtensionRunnerWorker: Delaying due to failed attempts for configuration: <%{public}@> - skipping until %{public}f seconds have elapsed", buf, 0x16u);
       }
 
-      if (a4)
+      if (delay)
       {
         v18 = 0;
-        *a4 = v21;
+        *delay = v21;
         goto LABEL_8;
       }
 
@@ -191,8 +191,8 @@ LABEL_5:
     }
   }
 
-  v22 = [v6 state];
-  if (v22 < 2)
+  state = [configurationCopy state];
+  if (state < 2)
   {
     v13 = PLBackgroundJobServiceGetLog();
     if (!os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -200,16 +200,16 @@ LABEL_5:
       goto LABEL_6;
     }
 
-    v14 = [v6 uuid];
+    uuid = [configurationCopy uuid];
     *buf = 138543362;
-    v27 = v14;
+    v27 = uuid;
     v15 = "UploadExtensionRunnerWorker: Unexpected configuration state for configuration: <%{public}@> - skipping";
     v16 = v13;
     v17 = OS_LOG_TYPE_ERROR;
     goto LABEL_5;
   }
 
-  if (v22 == 2)
+  if (state == 2)
   {
     v13 = PLBackgroundJobServiceGetLog();
     if (!os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
@@ -217,16 +217,16 @@ LABEL_5:
       goto LABEL_6;
     }
 
-    v14 = [v6 uuid];
+    uuid = [configurationCopy uuid];
     *buf = 138543362;
-    v27 = v14;
+    v27 = uuid;
     v15 = "UploadExtensionRunnerWorker: Event monitoring only for configuration: <%{public}@> - skipping";
     v16 = v13;
     v17 = OS_LOG_TYPE_DEBUG;
     goto LABEL_5;
   }
 
-  if (v22 == 3)
+  if (state == 3)
   {
     v18 = 1;
     goto LABEL_8;
@@ -240,10 +240,10 @@ LABEL_10:
   return v18;
 }
 
-- (id)_enabledJobConfigurationsForProcessingInLibrary:(id)a3 delay:(double *)a4
+- (id)_enabledJobConfigurationsForProcessingInLibrary:(id)library delay:(double *)delay
 {
-  v6 = a3;
-  v7 = [objc_opt_class() _enabledJobConfigurationRequest];
+  libraryCopy = library;
+  _enabledJobConfigurationRequest = [objc_opt_class() _enabledJobConfigurationRequest];
   v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v21 = 0;
   v22 = &v21;
@@ -253,18 +253,18 @@ LABEL_10:
   v15[1] = 3221225472;
   v15[2] = __108__PLBackgroundJobResourceUploadExtensionRunnerWorker__enabledJobConfigurationsForProcessingInLibrary_delay___block_invoke;
   v15[3] = &unk_1E75780D8;
-  v9 = v6;
+  v9 = libraryCopy;
   v16 = v9;
-  v10 = v7;
+  v10 = _enabledJobConfigurationRequest;
   v17 = v10;
-  v18 = self;
+  selfCopy = self;
   v11 = v8;
   v19 = v11;
   v20 = &v21;
   [v9 performTransactionAndWait:v15];
-  if (a4)
+  if (delay)
   {
-    *a4 = v22[3];
+    *delay = v22[3];
   }
 
   v12 = v19;
@@ -346,9 +346,9 @@ void __108__PLBackgroundJobResourceUploadExtensionRunnerWorker__enabledJobConfig
   }
 }
 
-- (id)_enabledEventMonitorJobConfigurationsForProcessingInLibrary:(id)a3
+- (id)_enabledEventMonitorJobConfigurationsForProcessingInLibrary:(id)library
 {
-  v4 = a3;
+  libraryCopy = library;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -360,7 +360,7 @@ void __108__PLBackgroundJobResourceUploadExtensionRunnerWorker__enabledJobConfig
   v8[2] = __114__PLBackgroundJobResourceUploadExtensionRunnerWorker__enabledEventMonitorJobConfigurationsForProcessingInLibrary___block_invoke;
   v8[3] = &unk_1E7578820;
   v8[4] = self;
-  v5 = v4;
+  v5 = libraryCopy;
   v9 = v5;
   v10 = &v11;
   [v5 performTransactionAndWait:v8];
@@ -400,18 +400,18 @@ void __114__PLBackgroundJobResourceUploadExtensionRunnerWorker__enabledEventMoni
   }
 }
 
-- (void)_removeWorkItemForConfigurationIdentifier:(id)a3 library:(id)a4
+- (void)_removeWorkItemForConfigurationIdentifier:(id)identifier library:(id)library
 {
-  v5 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  libraryCopy = library;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __104__PLBackgroundJobResourceUploadExtensionRunnerWorker__removeWorkItemForConfigurationIdentifier_library___block_invoke;
   v9[3] = &unk_1E7578848;
-  v10 = v6;
-  v11 = v5;
-  v7 = v5;
-  v8 = v6;
+  v10 = libraryCopy;
+  v11 = identifierCopy;
+  v7 = identifierCopy;
+  v8 = libraryCopy;
   [v8 performTransactionAndWait:v9];
 }
 
@@ -454,20 +454,20 @@ void __104__PLBackgroundJobResourceUploadExtensionRunnerWorker__removeWorkItemFo
   }
 }
 
-- (void)_updateConfigurationStateWithWorkItemIdentifiers:(id)a3 configurations:(id)a4 inLibrary:(id)a5
+- (void)_updateConfigurationStateWithWorkItemIdentifiers:(id)identifiers configurations:(id)configurations inLibrary:(id)library
 {
-  v8 = a3;
-  v9 = a4;
+  identifiersCopy = identifiers;
+  configurationsCopy = configurations;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __128__PLBackgroundJobResourceUploadExtensionRunnerWorker__updateConfigurationStateWithWorkItemIdentifiers_configurations_inLibrary___block_invoke;
   v12[3] = &unk_1E75761B8;
-  v13 = v9;
-  v14 = v8;
-  v15 = self;
-  v10 = v8;
-  v11 = v9;
-  [a5 performTransactionAndWait:v12];
+  v13 = configurationsCopy;
+  v14 = identifiersCopy;
+  selfCopy = self;
+  v10 = identifiersCopy;
+  v11 = configurationsCopy;
+  [library performTransactionAndWait:v12];
 }
 
 void __128__PLBackgroundJobResourceUploadExtensionRunnerWorker__updateConfigurationStateWithWorkItemIdentifiers_configurations_inLibrary___block_invoke(uint64_t a1)
@@ -510,11 +510,11 @@ void __128__PLBackgroundJobResourceUploadExtensionRunnerWorker__updateConfigurat
   }
 }
 
-- (void)_checkInitialProcessingIsCompletedForConfigurations:(id)a3 inLibrary:(id)a4
+- (void)_checkInitialProcessingIsCompletedForConfigurations:(id)configurations inLibrary:(id)library
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  configurationsCopy = configurations;
+  libraryCopy = library;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -522,7 +522,7 @@ void __128__PLBackgroundJobResourceUploadExtensionRunnerWorker__updateConfigurat
   v21 = __Block_byref_object_dispose__35899;
   v22 = 0;
   obj = 0;
-  v8 = [PLAssetResourceUploadJob countOfAcknowledgedUploadJobsWithConfiguration:0 inPhotoLibrary:v7 error:&obj];
+  v8 = [PLAssetResourceUploadJob countOfAcknowledgedUploadJobsWithConfiguration:0 inPhotoLibrary:libraryCopy error:&obj];
   objc_storeStrong(&v22, obj);
   if (v8)
   {
@@ -544,10 +544,10 @@ void __128__PLBackgroundJobResourceUploadExtensionRunnerWorker__updateConfigurat
       v11[1] = 3221225472;
       v11[2] = __116__PLBackgroundJobResourceUploadExtensionRunnerWorker__checkInitialProcessingIsCompletedForConfigurations_inLibrary___block_invoke;
       v11[3] = &unk_1E75778C0;
-      v12 = v6;
-      v14 = self;
+      v12 = configurationsCopy;
+      selfCopy = self;
       v15 = &v17;
-      v13 = v7;
+      v13 = libraryCopy;
       [v13 performTransactionAndWait:v11];
 
       v9 = v12;
@@ -622,9 +622,9 @@ void __116__PLBackgroundJobResourceUploadExtensionRunnerWorker__checkInitialProc
   }
 }
 
-- (id)_workItemIdentifiersInLibrary:(id)a3
+- (id)_workItemIdentifiersInLibrary:(id)library
 {
-  v3 = a3;
+  libraryCopy = library;
   v10 = 0;
   v11 = &v10;
   v12 = 0x3032000000;
@@ -635,7 +635,7 @@ void __116__PLBackgroundJobResourceUploadExtensionRunnerWorker__checkInitialProc
   v7[1] = 3221225472;
   v7[2] = __84__PLBackgroundJobResourceUploadExtensionRunnerWorker__workItemIdentifiersInLibrary___block_invoke;
   v7[3] = &unk_1E7578910;
-  v4 = v3;
+  v4 = libraryCopy;
   v8 = v4;
   v9 = &v10;
   [v4 performBlockAndWait:v7];
@@ -692,17 +692,17 @@ void __84__PLBackgroundJobResourceUploadExtensionRunnerWorker__workItemIdentifie
   }
 }
 
-- (void)_switchEventMonitorConfigurationWithConfigurations:(id)a3 inLibrary:(id)a4
+- (void)_switchEventMonitorConfigurationWithConfigurations:(id)configurations inLibrary:(id)library
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  configurationsCopy = configurations;
+  libraryCopy = library;
+  if ([configurationsCopy count])
   {
-    v8 = [(PLBackgroundJobResourceUploadExtensionRunnerWorker *)self _workItemIdentifiersInLibrary:v7];
+    v8 = [(PLBackgroundJobResourceUploadExtensionRunnerWorker *)self _workItemIdentifiersInLibrary:libraryCopy];
     if ([v8 count])
     {
-      [(PLBackgroundJobResourceUploadExtensionRunnerWorker *)self _updateConfigurationStateWithWorkItemIdentifiers:v8 configurations:v6 inLibrary:v7];
+      [(PLBackgroundJobResourceUploadExtensionRunnerWorker *)self _updateConfigurationStateWithWorkItemIdentifiers:v8 configurations:configurationsCopy inLibrary:libraryCopy];
       v16 = 0u;
       v17 = 0u;
       v14 = 0u;
@@ -723,7 +723,7 @@ void __84__PLBackgroundJobResourceUploadExtensionRunnerWorker__workItemIdentifie
               objc_enumerationMutation(v9);
             }
 
-            [(PLBackgroundJobResourceUploadExtensionRunnerWorker *)self _removeWorkItemForConfigurationIdentifier:*(*(&v14 + 1) + 8 * v13++) library:v7, v14];
+            [(PLBackgroundJobResourceUploadExtensionRunnerWorker *)self _removeWorkItemForConfigurationIdentifier:*(*(&v14 + 1) + 8 * v13++) library:libraryCopy, v14];
           }
 
           while (v11 != v13);
@@ -736,31 +736,31 @@ void __84__PLBackgroundJobResourceUploadExtensionRunnerWorker__workItemIdentifie
 
     else
     {
-      [(PLBackgroundJobResourceUploadExtensionRunnerWorker *)self _checkInitialProcessingIsCompletedForConfigurations:v6 inLibrary:v7];
+      [(PLBackgroundJobResourceUploadExtensionRunnerWorker *)self _checkInitialProcessingIsCompletedForConfigurations:configurationsCopy inLibrary:libraryCopy];
     }
   }
 }
 
-- (void)_switchConfiguration:(id)a3 toState:(signed __int16)a4
+- (void)_switchConfiguration:(id)configuration toState:(signed __int16)state
 {
-  v4 = a4;
-  v7 = a3;
-  v6 = [v7 state];
-  if ((v4 & 0xFFFFFFFE) == 2 && v6 != v4)
+  stateCopy = state;
+  configurationCopy = configuration;
+  state = [configurationCopy state];
+  if ((stateCopy & 0xFFFFFFFE) == 2 && state != stateCopy)
   {
-    [v7 setState:v4];
-    [(PLBackgroundJobResourceUploadExtensionRunnerWorker *)self _resetAttemptCountForConfiguration:v7];
+    [configurationCopy setState:stateCopy];
+    [(PLBackgroundJobResourceUploadExtensionRunnerWorker *)self _resetAttemptCountForConfiguration:configurationCopy];
   }
 }
 
-- (BOOL)_confirmProcessingCompletionResultsForConfiguration:(id)a3 library:(id)a4
+- (BOOL)_confirmProcessingCompletionResultsForConfiguration:(id)configuration library:(id)library
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  libraryCopy = library;
   v19 = 0;
   v8 = 1;
-  v9 = [PLAssetResourceUploadJob countOfUploadJobsWithConfiguration:v6 state:1 inPhotoLibrary:v7 error:&v19];
+  v9 = [PLAssetResourceUploadJob countOfUploadJobsWithConfiguration:configurationCopy state:1 inPhotoLibrary:libraryCopy error:&v19];
   v10 = v19;
   v11 = v10;
   if (v9)
@@ -787,7 +787,7 @@ LABEL_16:
   else
   {
     v18 = v10;
-    v14 = [PLAssetResourceUploadJob countOfAcknowledgedUploadJobsWithConfiguration:v6 inPhotoLibrary:v7 error:&v18];
+    v14 = [PLAssetResourceUploadJob countOfAcknowledgedUploadJobsWithConfiguration:configurationCopy inPhotoLibrary:libraryCopy error:&v18];
     v13 = v18;
 
     if (v14 == 0x7FFFFFFFFFFFFFFFLL)
@@ -824,13 +824,13 @@ LABEL_17:
   return v8;
 }
 
-- (id)_errorFromProcessingResult:(unint64_t)a3
+- (id)_errorFromProcessingResult:(unint64_t)result
 {
   v3 = 0;
   v29[1] = *MEMORY[0x1E69E9840];
-  if (a3 <= 1)
+  if (result <= 1)
   {
-    if (!a3)
+    if (!result)
     {
       v4 = MEMORY[0x1E696ABC0];
       v5 = *MEMORY[0x1E69BFF48];
@@ -847,7 +847,7 @@ LABEL_12:
       goto LABEL_13;
     }
 
-    if (a3 != 1)
+    if (result != 1)
     {
       goto LABEL_14;
     }
@@ -864,7 +864,7 @@ LABEL_12:
 
   else
   {
-    switch(a3)
+    switch(result)
     {
       case 2uLL:
         v15 = MEMORY[0x1E696ABC0];
@@ -908,19 +908,19 @@ LABEL_14:
   return v3;
 }
 
-- (void)_resetAttemptCountForConfiguration:(id)a3
+- (void)_resetAttemptCountForConfiguration:(id)configuration
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
+  configurationCopy = configuration;
+  v5 = configurationCopy;
   if (self->_disableConfigurationDelay)
   {
     v6 = PLBackgroundJobServiceGetLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
-      v7 = [v5 uuid];
+      uuid = [v5 uuid];
       v9 = 138543362;
-      v10 = v7;
+      v10 = uuid;
       v8 = "UploadExtensionRunnerWorker: Attempt count reset is disabled for configuration: <%{public}@>";
 LABEL_6:
       _os_log_impl(&dword_19BF1F000, v6, OS_LOG_TYPE_INFO, v8, &v9, 0xCu);
@@ -929,32 +929,32 @@ LABEL_6:
 
   else
   {
-    [v4 setAttemptCount:0];
+    [configurationCopy setAttemptCount:0];
     [v5 setCompletionDate:0];
     v6 = PLBackgroundJobServiceGetLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
-      v7 = [v5 uuid];
+      uuid = [v5 uuid];
       v9 = 138543362;
-      v10 = v7;
+      v10 = uuid;
       v8 = "UploadExtensionRunnerWorker: Attempt count was reset for configuration: <%{public}@>";
       goto LABEL_6;
     }
   }
 }
 
-- (void)_bumpAttemptCountForConfiguration:(id)a3
+- (void)_bumpAttemptCountForConfiguration:(id)configuration
 {
   *&v11[5] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  configurationCopy = configuration;
   if (self->_disableConfigurationDelay)
   {
     v5 = PLBackgroundJobServiceGetLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
-      v6 = [v4 uuid];
+      uuid = [configurationCopy uuid];
       v10 = 138543362;
-      *v11 = v6;
+      *v11 = uuid;
       _os_log_impl(&dword_19BF1F000, v5, OS_LOG_TYPE_INFO, "UploadExtensionRunnerWorker: Attempt count update is disabled for configuration: <%{public}@>", &v10, 0xCu);
     }
   }
@@ -962,34 +962,34 @@ LABEL_6:
   else
   {
     v7 = [MEMORY[0x1E695DF00] now];
-    [v4 setCompletionDate:v7];
+    [configurationCopy setCompletionDate:v7];
 
-    [v4 setAttemptCount:{(objc_msgSend(v4, "attemptCount") + 1)}];
+    [configurationCopy setAttemptCount:{(objc_msgSend(configurationCopy, "attemptCount") + 1)}];
     v5 = PLBackgroundJobServiceGetLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
-      v8 = [v4 attemptCount];
-      v9 = [v4 uuid];
+      attemptCount = [configurationCopy attemptCount];
+      uuid2 = [configurationCopy uuid];
       v10 = 67109378;
-      v11[0] = v8;
+      v11[0] = attemptCount;
       LOWORD(v11[1]) = 2114;
-      *(&v11[1] + 2) = v9;
+      *(&v11[1] + 2) = uuid2;
       _os_log_impl(&dword_19BF1F000, v5, OS_LOG_TYPE_INFO, "UploadExtensionRunnerWorker: Updating attempt count (%d) after completion for configuration: <%{public}@>", &v10, 0x12u);
     }
   }
 }
 
-- (void)_handleProcessingResult:(unint64_t)a3 bundleIdentifier:(id)a4 library:(id)a5 completionBlock:(id)a6
+- (void)_handleProcessingResult:(unint64_t)result bundleIdentifier:(id)identifier library:(id)library completionBlock:(id)block
 {
   v34 = *MEMORY[0x1E69E9840];
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  identifierCopy = identifier;
+  libraryCopy = library;
+  blockCopy = block;
   v13 = PLBackgroundJobServiceGetLog();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
     LODWORD(buf) = 134217984;
-    *(&buf + 4) = a3;
+    *(&buf + 4) = result;
     _os_log_impl(&dword_19BF1F000, v13, OS_LOG_TYPE_DEBUG, "UploadExtensionRunnerWorker: Completed with result: %tu", &buf, 0xCu);
   }
 
@@ -999,10 +999,10 @@ LABEL_6:
   v31 = __Block_byref_object_copy__35898;
   v32 = __Block_byref_object_dispose__35899;
   v33 = 0;
-  v14 = [v11 managedObjectContext];
+  managedObjectContext = [libraryCopy managedObjectContext];
   v15 = (*(&buf + 1) + 40);
   obj = *(*(&buf + 1) + 40);
-  v16 = [PLAssetResourceUploadJobConfiguration configurationWithBundleIdentifier:v10 managedObjectContext:v14 error:&obj];
+  v16 = [PLAssetResourceUploadJobConfiguration configurationWithBundleIdentifier:identifierCopy managedObjectContext:managedObjectContext error:&obj];
   objc_storeStrong(v15, obj);
 
   if (v16)
@@ -1012,12 +1012,12 @@ LABEL_6:
     v19[2] = __119__PLBackgroundJobResourceUploadExtensionRunnerWorker__handleProcessingResult_bundleIdentifier_library_completionBlock___block_invoke;
     v19[3] = &unk_1E7576B70;
     p_buf = &buf;
-    v23 = a3;
+    resultCopy = result;
     v19[4] = self;
     v20 = v16;
-    v21 = v11;
+    v21 = libraryCopy;
     [v21 performTransactionAndWait:v19];
-    v12[2](v12, *(*(&buf + 1) + 40));
+    blockCopy[2](blockCopy, *(*(&buf + 1) + 40));
   }
 
   else
@@ -1027,7 +1027,7 @@ LABEL_6:
     {
       v18 = *(*(&buf + 1) + 40);
       *v25 = 138543618;
-      v26 = v10;
+      v26 = identifierCopy;
       v27 = 2112;
       v28 = v18;
       _os_log_impl(&dword_19BF1F000, v17, OS_LOG_TYPE_ERROR, "UploadExtensionRunnerWorker: Failed to fetch configuration during completion validation for identifier: %{public}@. Error: %@", v25, 0x16u);
@@ -1100,10 +1100,10 @@ LABEL_8:
   return v2;
 }
 
-- (void)stopWorkingOnItem:(id)a3
+- (void)stopWorkingOnItem:(id)item
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  itemCopy = item;
   v5 = PLBackgroundJobServiceGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -1112,26 +1112,26 @@ LABEL_8:
     *buf = 138543618;
     v12 = v7;
     v13 = 2048;
-    v14 = v4;
+    v14 = itemCopy;
     _os_log_impl(&dword_19BF1F000, v5, OS_LOG_TYPE_INFO, "UploadExtensionRunnerWorker: %{public}@ stopWorkingOnItem: %p", buf, 0x16u);
   }
 
   v9 = MEMORY[0x1E69E9820];
-  v10 = v4;
-  v8 = v4;
+  v10 = itemCopy;
+  v8 = itemCopy;
   PLSafeRunWithUnfairLock();
   [(PLBackgroundResourceUploadExtensionHost *)self->_host cancel:v9];
 }
 
-- (void)performWorkOnItem:(id)a3 inLibrary:(id)a4 completion:(id)a5
+- (void)performWorkOnItem:(id)item inLibrary:(id)library completion:(id)completion
 {
   v46 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v9)
+  itemCopy = item;
+  libraryCopy = library;
+  completionCopy = completion;
+  if (itemCopy)
   {
-    if (v10)
+    if (libraryCopy)
     {
       goto LABEL_3;
     }
@@ -1139,17 +1139,17 @@ LABEL_8:
 
   else
   {
-    v30 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v30 handleFailureInMethod:a2 object:self file:@"PLBackgroundJobResourceUploadExtensionRunnerWorker.m" lineNumber:248 description:{@"Invalid parameter not satisfying: %@", @"item"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLBackgroundJobResourceUploadExtensionRunnerWorker.m" lineNumber:248 description:{@"Invalid parameter not satisfying: %@", @"item"}];
 
-    if (v10)
+    if (libraryCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v31 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v31 handleFailureInMethod:a2 object:self file:@"PLBackgroundJobResourceUploadExtensionRunnerWorker.m" lineNumber:249 description:{@"Invalid parameter not satisfying: %@", @"library"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLBackgroundJobResourceUploadExtensionRunnerWorker.m" lineNumber:249 description:{@"Invalid parameter not satisfying: %@", @"library"}];
 
 LABEL_3:
   objc_opt_class();
@@ -1158,22 +1158,22 @@ LABEL_3:
     if ([(PLBackgroundJobResourceUploadExtensionRunnerWorker *)self _isJobCancelled])
     {
       v12 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E69BFF48] code:50005 userInfo:0];
-      v11[2](v11, v12);
+      completionCopy[2](completionCopy, v12);
     }
 
     else
     {
       objc_initWeak(&location, self);
-      v17 = v9;
-      v18 = [v10 managedObjectContext];
+      v17 = itemCopy;
+      managedObjectContext = [libraryCopy managedObjectContext];
       v40 = 0;
-      v19 = [PLAssetResourceUploadJobConfiguration configurationWithBundleIdentifier:v17 managedObjectContext:v18 error:&v40];
+      v19 = [PLAssetResourceUploadJobConfiguration configurationWithBundleIdentifier:v17 managedObjectContext:managedObjectContext error:&v40];
       v20 = v40;
 
       if (v19)
       {
         v39 = v20;
-        v21 = [PLAssetResourceUploadJob countOfAcknowledgedUploadJobsWithConfiguration:v19 inPhotoLibrary:v10 error:&v39];
+        v21 = [PLAssetResourceUploadJob countOfAcknowledgedUploadJobsWithConfiguration:v19 inPhotoLibrary:libraryCopy error:&v39];
         v22 = v39;
 
         if (v21 == 0x7FFFFFFFFFFFFFFFLL)
@@ -1232,11 +1232,11 @@ LABEL_3:
       v32[1] = 3221225472;
       v32[2] = __93__PLBackgroundJobResourceUploadExtensionRunnerWorker_performWorkOnItem_inLibrary_completion___block_invoke_2;
       v32[3] = &unk_1E756B7B0;
-      v33 = v10;
+      v33 = libraryCopy;
       objc_copyWeak(&v36, &location);
       v29 = v17;
       v34 = v29;
-      v35 = v11;
+      v35 = completionCopy;
       [(PLBackgroundResourceUploadExtensionHost *)v28 processWithContinuationHandler:v37 completionHandler:v32];
 
       objc_destroyWeak(&v36);
@@ -1259,7 +1259,7 @@ LABEL_3:
     }
 
     v16 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E69BFF48] code:50007 userInfo:0];
-    v11[2](v11, v16);
+    completionCopy[2](completionCopy, v16);
   }
 }
 
@@ -1281,29 +1281,29 @@ void __93__PLBackgroundJobResourceUploadExtensionRunnerWorker_performWorkOnItem_
   [WeakRetained _handleProcessingResult:a2 bundleIdentifier:*(a1 + 40) library:v7 completionBlock:*(a1 + 48)];
 }
 
-- (id)workItemsNeedingProcessingInLibrary:(id)a3 validCriterias:(id)a4
+- (id)workItemsNeedingProcessingInLibrary:(id)library validCriterias:(id)criterias
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  libraryCopy = library;
+  criteriasCopy = criterias;
+  if (!libraryCopy)
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"PLBackgroundJobResourceUploadExtensionRunnerWorker.m" lineNumber:210 description:{@"Invalid parameter not satisfying: %@", @"library"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLBackgroundJobResourceUploadExtensionRunnerWorker.m" lineNumber:210 description:{@"Invalid parameter not satisfying: %@", @"library"}];
   }
 
   v9 = +[PLBackgroundJobCriteria criteriaForAssetResourceUploadExtensionRunnerWorker];
-  v10 = [v8 containsObject:v9];
+  v10 = [criteriasCopy containsObject:v9];
 
   if ((v10 & 1) == 0)
   {
-    v17 = [[PLBackgroundJobWorkerPendingWorkItems alloc] initWithZeroWorkItemsForValidCriteria];
+    initWithZeroWorkItemsForValidCriteria = [[PLBackgroundJobWorkerPendingWorkItems alloc] initWithZeroWorkItemsForValidCriteria];
     goto LABEL_11;
   }
 
-  v11 = [(PLBackgroundJobResourceUploadExtensionRunnerWorker *)self _enabledEventMonitorJobConfigurationsForProcessingInLibrary:v7];
-  [(PLBackgroundJobResourceUploadExtensionRunnerWorker *)self _switchEventMonitorConfigurationWithConfigurations:v11 inLibrary:v7];
+  v11 = [(PLBackgroundJobResourceUploadExtensionRunnerWorker *)self _enabledEventMonitorJobConfigurationsForProcessingInLibrary:libraryCopy];
+  [(PLBackgroundJobResourceUploadExtensionRunnerWorker *)self _switchEventMonitorConfigurationWithConfigurations:v11 inLibrary:libraryCopy];
   v23 = -1.0;
-  v12 = [(PLBackgroundJobResourceUploadExtensionRunnerWorker *)self _enabledJobConfigurationsForProcessingInLibrary:v7 delay:&v23];
+  v12 = [(PLBackgroundJobResourceUploadExtensionRunnerWorker *)self _enabledJobConfigurationsForProcessingInLibrary:libraryCopy delay:&v23];
   if ([v12 count])
   {
     v13 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -1314,28 +1314,28 @@ void __93__PLBackgroundJobResourceUploadExtensionRunnerWorker_performWorkOnItem_
     v21 = v12;
     v22 = v13;
     v14 = v13;
-    [v7 performBlockAndWait:v20];
+    [libraryCopy performBlockAndWait:v20];
     v15 = [PLBackgroundJobWorkerPendingWorkItems alloc];
     v16 = +[PLBackgroundJobCriteria criteriaForAssetResourceUploadExtensionRunnerWorker];
-    v17 = [(PLBackgroundJobWorkerPendingWorkItems *)v15 initWithCriteria:v16 workItemsNeedingProcessing:v14];
+    initWithZeroWorkItemsForValidCriteria = [(PLBackgroundJobWorkerPendingWorkItems *)v15 initWithCriteria:v16 workItemsNeedingProcessing:v14];
   }
 
   else
   {
     if (v23 <= 0.0)
     {
-      v17 = [[PLBackgroundJobWorkerPendingWorkItems alloc] initWithZeroWorkItems];
+      initWithZeroWorkItemsForValidCriteria = [[PLBackgroundJobWorkerPendingWorkItems alloc] initWithZeroWorkItems];
       goto LABEL_10;
     }
 
     v14 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:v23];
-    v17 = [[PLBackgroundJobWorkerPendingWorkItems alloc] initWithSignalAgainDate:v14];
+    initWithZeroWorkItemsForValidCriteria = [[PLBackgroundJobWorkerPendingWorkItems alloc] initWithSignalAgainDate:v14];
   }
 
 LABEL_10:
 LABEL_11:
 
-  return v17;
+  return initWithZeroWorkItemsForValidCriteria;
 }
 
 void __105__PLBackgroundJobResourceUploadExtensionRunnerWorker_workItemsNeedingProcessingInLibrary_validCriterias___block_invoke(uint64_t a1)
@@ -1379,17 +1379,17 @@ void __105__PLBackgroundJobResourceUploadExtensionRunnerWorker_workItemsNeedingP
   }
 }
 
-- (PLBackgroundJobResourceUploadExtensionRunnerWorker)initWithLibraryBundle:(id)a3
+- (PLBackgroundJobResourceUploadExtensionRunnerWorker)initWithLibraryBundle:(id)bundle
 {
   v10.receiver = self;
   v10.super_class = PLBackgroundJobResourceUploadExtensionRunnerWorker;
-  v3 = [(PLBackgroundJobWorker *)&v10 initWithLibraryBundle:a3];
+  v3 = [(PLBackgroundJobWorker *)&v10 initWithLibraryBundle:bundle];
   if (v3)
   {
     if (MEMORY[0x19EAEE230]())
     {
-      v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-      v3->_disableConfigurationDelay = [v4 BOOLForKey:@"DisableBackgroundUploadJobDelay"];
+      standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+      v3->_disableConfigurationDelay = [standardUserDefaults BOOLForKey:@"DisableBackgroundUploadJobDelay"];
 
       if (v3->_disableConfigurationDelay)
       {
@@ -1401,8 +1401,8 @@ void __105__PLBackgroundJobResourceUploadExtensionRunnerWorker_workItemsNeedingP
         }
       }
 
-      v6 = [MEMORY[0x1E695E000] standardUserDefaults];
-      v3->_reducedConfigurationDelay = [v6 BOOLForKey:@"ReduceBackgroundUploadJobDelay"];
+      standardUserDefaults2 = [MEMORY[0x1E695E000] standardUserDefaults];
+      v3->_reducedConfigurationDelay = [standardUserDefaults2 BOOLForKey:@"ReduceBackgroundUploadJobDelay"];
 
       if (v3->_reducedConfigurationDelay)
       {
@@ -1457,11 +1457,11 @@ void __105__PLBackgroundJobResourceUploadExtensionRunnerWorker_workItemsNeedingP
   return v4;
 }
 
-+ (BOOL)isBackgroundAppRefreshEnabledWithBundleIdentifiers:(id)a3 libraryServicesManager:(id)a4
++ (BOOL)isBackgroundAppRefreshEnabledWithBundleIdentifiers:(id)identifiers libraryServicesManager:(id)manager
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v6 isBackgroundAppRefreshEnabled])
+  identifiersCopy = identifiers;
+  managerCopy = manager;
+  if ([managerCopy isBackgroundAppRefreshEnabled])
   {
     *buf = 0;
     v14 = buf;
@@ -1471,9 +1471,9 @@ void __105__PLBackgroundJobResourceUploadExtensionRunnerWorker_workItemsNeedingP
     v10[1] = 3221225472;
     v10[2] = __128__PLBackgroundJobResourceUploadExtensionRunnerWorker_isBackgroundAppRefreshEnabledWithBundleIdentifiers_libraryServicesManager___block_invoke;
     v10[3] = &unk_1E7574E48;
-    v11 = v6;
+    v11 = managerCopy;
     v12 = buf;
-    [v5 enumerateObjectsUsingBlock:v10];
+    [identifiersCopy enumerateObjectsUsingBlock:v10];
     v7 = v14[24];
 
     _Block_object_dispose(buf, 8);
@@ -1506,10 +1506,10 @@ uint64_t __128__PLBackgroundJobResourceUploadExtensionRunnerWorker_isBackgroundA
   return result;
 }
 
-+ (id)fetchConfigurationEnabledBundleIdentifiersForLibraryServicesManager:(id)a3
++ (id)fetchConfigurationEnabledBundleIdentifiersForLibraryServicesManager:(id)manager
 {
   v25[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  managerCopy = manager;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -1528,8 +1528,8 @@ uint64_t __128__PLBackgroundJobResourceUploadExtensionRunnerWorker_isBackgroundA
   [v6 setPropertiesToFetch:v8];
 
   [v6 setResultType:2];
-  v9 = [v3 databaseContext];
-  v10 = [v9 newShortLivedLibraryWithName:"+[PLBackgroundJobResourceUploadExtensionRunnerWorker fetchConfigurationEnabledBundleIdentifiersForLibraryServicesManager:]"];
+  databaseContext = [managerCopy databaseContext];
+  v10 = [databaseContext newShortLivedLibraryWithName:"+[PLBackgroundJobResourceUploadExtensionRunnerWorker fetchConfigurationEnabledBundleIdentifiersForLibraryServicesManager:]"];
 
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
@@ -1577,20 +1577,20 @@ void __122__PLBackgroundJobResourceUploadExtensionRunnerWorker_fetchConfiguratio
   }
 }
 
-+ (BOOL)checkServerFeatureVersionForLibraryServicesManager:(id)a3
++ (BOOL)checkServerFeatureVersionForLibraryServicesManager:(id)manager
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = [a3 directServerConfiguration];
-  [v3 check];
-  v4 = [v3 valueForKey:@"feature.version.backgroundresourceupload"];
+  directServerConfiguration = [manager directServerConfiguration];
+  [directServerConfiguration check];
+  v4 = [directServerConfiguration valueForKey:@"feature.version.backgroundresourceupload"];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 integerValue];
-    v7 = v6 < 1;
+    integerValue = [v4 integerValue];
+    v7 = integerValue < 1;
     v8 = PLBackgroundJobServiceGetLog();
     v9 = os_log_type_enabled(v8, OS_LOG_TYPE_INFO);
-    if (v6 <= 0)
+    if (integerValue <= 0)
     {
       if (v9)
       {
@@ -1623,24 +1623,24 @@ LABEL_10:
   return v7;
 }
 
-+ (BOOL)isEnabledForBundle:(id)a3
++ (BOOL)isEnabledForBundle:(id)bundle
 {
-  v5 = a3;
+  bundleCopy = bundle;
   if (_os_feature_enabled_impl())
   {
-    if (!v5)
+    if (!bundleCopy)
     {
-      v13 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v13 handleFailureInMethod:a2 object:a1 file:@"PLBackgroundJobResourceUploadExtensionRunnerWorker.m" lineNumber:95 description:{@"Invalid parameter not satisfying: %@", @"bundle"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PLBackgroundJobResourceUploadExtensionRunnerWorker.m" lineNumber:95 description:{@"Invalid parameter not satisfying: %@", @"bundle"}];
     }
 
-    v6 = [v5 libraryServicesManager];
-    v7 = [a1 fetchConfigurationEnabledBundleIdentifiersForLibraryServicesManager:v6];
+    libraryServicesManager = [bundleCopy libraryServicesManager];
+    v7 = [self fetchConfigurationEnabledBundleIdentifiersForLibraryServicesManager:libraryServicesManager];
     if ([v7 count])
     {
-      if ([a1 isBackgroundAppRefreshEnabledWithBundleIdentifiers:v7 libraryServicesManager:v6])
+      if ([self isBackgroundAppRefreshEnabledWithBundleIdentifiers:v7 libraryServicesManager:libraryServicesManager])
       {
-        v8 = [a1 checkServerFeatureVersionForLibraryServicesManager:v6];
+        v8 = [self checkServerFeatureVersionForLibraryServicesManager:libraryServicesManager];
 LABEL_14:
 
         goto LABEL_15;

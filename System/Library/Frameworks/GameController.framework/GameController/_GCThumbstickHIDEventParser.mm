@@ -1,39 +1,39 @@
 @interface _GCThumbstickHIDEventParser
-- (_GCThumbstickHIDEventParser)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)parse:(__IOHIDEvent *)a3 into:(id)a4;
+- (_GCThumbstickHIDEventParser)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
+- (void)parse:(__IOHIDEvent *)parse into:(id)into;
 @end
 
 @implementation _GCThumbstickHIDEventParser
 
-- (_GCThumbstickHIDEventParser)initWithCoder:(id)a3
+- (_GCThumbstickHIDEventParser)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = _GCThumbstickHIDEventParser;
-  v3 = a3;
-  v4 = [(_GCHIDEventParser *)&v7 initWithCoder:v3];
-  v4->_requiredOrdinal = [v3 decodeIntegerForKey:{@"requiredOrdinal", v7.receiver, v7.super_class}];
-  v4->_xAxisKey = [v3 decodeInt64ForKey:@"xAxisKey"];
-  v5 = [v3 decodeInt64ForKey:@"yAxisKey"];
+  coderCopy = coder;
+  v4 = [(_GCHIDEventParser *)&v7 initWithCoder:coderCopy];
+  v4->_requiredOrdinal = [coderCopy decodeIntegerForKey:{@"requiredOrdinal", v7.receiver, v7.super_class}];
+  v4->_xAxisKey = [coderCopy decodeInt64ForKey:@"xAxisKey"];
+  v5 = [coderCopy decodeInt64ForKey:@"yAxisKey"];
 
   v4->_yAxisKey = v5;
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = _GCThumbstickHIDEventParser;
-  v4 = a3;
-  [(_GCHIDEventParser *)&v5 encodeWithCoder:v4];
-  [v4 encodeInteger:self->_requiredOrdinal forKey:{@"requiredOrdinal", v5.receiver, v5.super_class}];
-  [v4 encodeInt64:self->_xAxisKey forKey:@"xAxisKey"];
-  [v4 encodeInt64:self->_yAxisKey forKey:@"yAxisKey"];
+  coderCopy = coder;
+  [(_GCHIDEventParser *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInteger:self->_requiredOrdinal forKey:{@"requiredOrdinal", v5.receiver, v5.super_class}];
+  [coderCopy encodeInt64:self->_xAxisKey forKey:@"xAxisKey"];
+  [coderCopy encodeInt64:self->_yAxisKey forKey:@"yAxisKey"];
 }
 
-- (void)parse:(__IOHIDEvent *)a3 into:(id)a4
+- (void)parse:(__IOHIDEvent *)parse into:(id)into
 {
-  v6 = a4;
+  intoCopy = into;
   if (IOHIDEventGetType() == 19)
   {
     if (self->_requiredOrdinal)
@@ -64,19 +64,19 @@
       {
         IOHIDEventGetDoubleValue();
         *&v9 = v9;
-        [v6 setFloatValue:self->_xAxisKey forKey:v9];
+        [intoCopy setFloatValue:self->_xAxisKey forKey:v9];
       }
 
       if (self->_yAxisKey)
       {
         IOHIDEventGetDoubleValue();
         *&v10 = v10;
-        [v6 setFloatValue:self->_yAxisKey forKey:v10];
+        [intoCopy setFloatValue:self->_yAxisKey forKey:v10];
       }
 
       v11.receiver = self;
       v11.super_class = _GCThumbstickHIDEventParser;
-      [(_GCHIDEventParser *)&v11 parse:a3 into:v6];
+      [(_GCHIDEventParser *)&v11 parse:parse into:intoCopy];
     }
   }
 }

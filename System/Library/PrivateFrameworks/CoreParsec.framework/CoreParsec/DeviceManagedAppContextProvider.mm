@@ -1,13 +1,13 @@
 @interface DeviceManagedAppContextProvider
-- (void)onAppDistUpdateWithNotification:(id)a3;
+- (void)onAppDistUpdateWithNotification:(id)notification;
 @end
 
 @implementation DeviceManagedAppContextProvider
 
-- (void)onAppDistUpdateWithNotification:(id)a3
+- (void)onAppDistUpdateWithNotification:(id)notification
 {
-  v4 = a3;
-  v5 = self;
+  notificationCopy = notification;
+  selfCopy = self;
   sub_10004FF5C();
 }
 

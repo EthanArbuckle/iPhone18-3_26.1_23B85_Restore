@@ -2,7 +2,7 @@
 - (NSString)previewItemTitle;
 - (NSURL)previewItemURL;
 - (_TtC8Freeform22CRLImageRepPlaceHolder)init;
-- (void)setPreviewItemURL:(id)a3;
+- (void)setPreviewItemURL:(id)l;
 @end
 
 @implementation CRLImageRepPlaceHolder
@@ -30,12 +30,12 @@
   return v10;
 }
 
-- (void)setPreviewItemURL:(id)a3
+- (void)setPreviewItemURL:(id)l
 {
   v5 = sub_1005B981C(&unk_1019F33C0);
   __chkstk_darwin(v5 - 8);
   v7 = &v12 - v6;
-  if (a3)
+  if (l)
   {
     static URL._unconditionallyBridgeFromObjectiveC(_:)();
     v8 = type metadata accessor for URL();
@@ -50,7 +50,7 @@
 
   v10 = OBJC_IVAR____TtC8Freeform22CRLImageRepPlaceHolder_previewItemURL;
   swift_beginAccess();
-  v11 = self;
+  selfCopy = self;
   sub_10084E778(v7, self + v10);
   swift_endAccess();
 }

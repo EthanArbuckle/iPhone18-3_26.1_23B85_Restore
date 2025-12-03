@@ -6,7 +6,7 @@
 
 - (void)didTap
 {
-  v2 = self;
+  selfCopy = self;
   sub_24E027F10();
 }
 

@@ -1,16 +1,16 @@
 @interface _TVAppNavigationControllerStatusBlur
-- (_TVAppNavigationControllerStatusBlur)initWithCoder:(id)a3;
-- (_TVAppNavigationControllerStatusBlur)initWithFrame:(CGRect)a3;
+- (_TVAppNavigationControllerStatusBlur)initWithCoder:(id)coder;
+- (_TVAppNavigationControllerStatusBlur)initWithFrame:(CGRect)frame;
 - (void)_commonInit;
 @end
 
 @implementation _TVAppNavigationControllerStatusBlur
 
-- (_TVAppNavigationControllerStatusBlur)initWithCoder:(id)a3
+- (_TVAppNavigationControllerStatusBlur)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = _TVAppNavigationControllerStatusBlur;
-  v3 = [(_TVAppNavigationControllerStatusBlur *)&v6 initWithCoder:a3];
+  v3 = [(_TVAppNavigationControllerStatusBlur *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -20,11 +20,11 @@
   return v4;
 }
 
-- (_TVAppNavigationControllerStatusBlur)initWithFrame:(CGRect)a3
+- (_TVAppNavigationControllerStatusBlur)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = _TVAppNavigationControllerStatusBlur;
-  v3 = [(_TVAppNavigationControllerStatusBlur *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(_TVAppNavigationControllerStatusBlur *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -43,8 +43,8 @@
   self->_dimmingView = v4;
 
   v6 = self->_dimmingView;
-  v7 = [MEMORY[0x277D75348] clearColor];
-  [(UIView *)v6 setBackgroundColor:v7];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [(UIView *)v6 setBackgroundColor:clearColor];
 
   [(UIView *)self->_dimmingView setAutoresizingMask:18];
   [(_TVAppNavigationControllerStatusBlur *)self addSubview:self->_dimmingView];

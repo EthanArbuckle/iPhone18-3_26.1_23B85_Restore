@@ -1,21 +1,21 @@
 @interface HMDUserActivityStateDetectorManager
-+ (BOOL)shouldRunManagerForHome:(id)a3;
++ (BOOL)shouldRunManagerForHome:(id)home;
 + (id)logCategory;
-- (HMDUserActivityStateDetectorManager)initWithDataSource:(id)a3;
+- (HMDUserActivityStateDetectorManager)initWithDataSource:(id)source;
 - (HMDUserPresenceFeeder)presenceFeeder;
-- (id)dumpStateWithPrivacyLevel:(unint64_t)a3;
-- (id)filterEnabledContributors:(id)a3;
+- (id)dumpStateWithPrivacyLevel:(unint64_t)level;
+- (id)filterEnabledContributors:(id)contributors;
 - (id)logIdentifier;
-- (id)makeUserActivityStateDetectorsWithContributorTypes:(id)a3;
-- (void)_updateConfigurationWithCompletionHandler:(id)a3;
-- (void)_updateConfigurationWithEnabledContributors:(id)a3 completionHandler:(id)a4;
+- (id)makeUserActivityStateDetectorsWithContributorTypes:(id)types;
+- (void)_updateConfigurationWithCompletionHandler:(id)handler;
+- (void)_updateConfigurationWithEnabledContributors:(id)contributors completionHandler:(id)handler;
 - (void)configure;
 - (void)configurePresenceFeeder;
-- (void)handleLocationAuthorizationChanged:(id)a3;
-- (void)handlePrimaryResidentDidChangeNotification:(id)a3;
+- (void)handleLocationAuthorizationChanged:(id)changed;
+- (void)handlePrimaryResidentDidChangeNotification:(id)notification;
 - (void)registerForNotifications;
-- (void)setPresenceFeeder:(id)a3;
-- (void)storageDidUpdateEnabledContributors:(id)a3;
+- (void)setPresenceFeeder:(id)feeder;
+- (void)storageDidUpdateEnabledContributors:(id)contributors;
 - (void)unconfigure;
 - (void)updateConfiguration;
 @end
@@ -24,24 +24,24 @@
 
 - (id)logIdentifier
 {
-  v2 = [(HMDUserActivityStateDetectorManager *)self dataSource];
-  v3 = [v2 logIdentifier];
+  dataSource = [(HMDUserActivityStateDetectorManager *)self dataSource];
+  logIdentifier = [dataSource logIdentifier];
 
-  return v3;
+  return logIdentifier;
 }
 
-- (id)dumpStateWithPrivacyLevel:(unint64_t)a3
+- (id)dumpStateWithPrivacyLevel:(unint64_t)level
 {
-  v5 = [MEMORY[0x277CBEB38] dictionary];
-  v6 = [(HMDUserActivityStateDetectorManager *)self detectors];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  detectors = [(HMDUserActivityStateDetectorManager *)self detectors];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __65__HMDUserActivityStateDetectorManager_dumpStateWithPrivacyLevel___block_invoke;
   v9[3] = &unk_27868A0F8;
-  v7 = v5;
+  v7 = dictionary;
   v10 = v7;
-  v11 = a3;
-  [v6 hmf_enumerateWithAutoreleasePoolUsingBlock:v9];
+  levelCopy = level;
+  [detectors hmf_enumerateWithAutoreleasePoolUsingBlock:v9];
 
   return v7;
 }
@@ -56,110 +56,110 @@ void __65__HMDUserActivityStateDetectorManager_dumpStateWithPrivacyLevel___block
   [*(a1 + 32) setObject:v5 forKeyedSubscript:v6];
 }
 
-- (void)storageDidUpdateEnabledContributors:(id)a3
+- (void)storageDidUpdateEnabledContributors:(id)contributors
 {
-  v4 = a3;
-  v5 = [(HMDUserActivityStateDetectorManager *)self dataSource];
-  v6 = [v5 queue];
+  contributorsCopy = contributors;
+  dataSource = [(HMDUserActivityStateDetectorManager *)self dataSource];
+  queue = [dataSource queue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __75__HMDUserActivityStateDetectorManager_storageDidUpdateEnabledContributors___block_invoke;
   v8[3] = &unk_27868A750;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  dispatch_async(v6, v8);
+  v9 = contributorsCopy;
+  v7 = contributorsCopy;
+  dispatch_async(queue, v8);
 }
 
-- (void)handlePrimaryResidentDidChangeNotification:(id)a3
+- (void)handlePrimaryResidentDidChangeNotification:(id)notification
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDUserActivityStateDetectorManager *)self dataSource];
-  v6 = [v5 currentPrimaryResident];
+  notificationCopy = notification;
+  dataSource = [(HMDUserActivityStateDetectorManager *)self dataSource];
+  currentPrimaryResident = [dataSource currentPrimaryResident];
 
-  if (v6)
+  if (currentPrimaryResident)
   {
-    if ([v6 supportsHomeActivityState])
+    if ([currentPrimaryResident supportsHomeActivityState])
     {
-      v7 = [(HMDUserActivityStateDetectorManager *)self presenceFeeder];
+      presenceFeeder = [(HMDUserActivityStateDetectorManager *)self presenceFeeder];
 
-      if (v7)
+      if (presenceFeeder)
       {
         v8 = objc_autoreleasePoolPush();
-        v9 = self;
+        selfCopy = self;
         v10 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
         {
           v11 = HMFGetLogIdentifier();
-          v12 = [v4 name];
+          name = [notificationCopy name];
           v25 = 138543618;
           v26 = v11;
           v27 = 2112;
-          v28 = v12;
+          v28 = name;
           _os_log_impl(&dword_229538000, v10, OS_LOG_TYPE_DEBUG, "%{public}@Handling %@, removing presenceFeeder", &v25, 0x16u);
         }
 
         objc_autoreleasePoolPop(v8);
-        [(HMDUserActivityStateDetectorManager *)v9 setPresenceFeeder:0];
+        [(HMDUserActivityStateDetectorManager *)selfCopy setPresenceFeeder:0];
       }
     }
 
     else
     {
       v13 = objc_autoreleasePoolPush();
-      v14 = self;
+      selfCopy2 = self;
       v15 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
       {
         v16 = HMFGetLogIdentifier();
-        v17 = [v4 name];
+        name2 = [notificationCopy name];
         v25 = 138543618;
         v26 = v16;
         v27 = 2112;
-        v28 = v17;
+        v28 = name2;
         _os_log_impl(&dword_229538000, v15, OS_LOG_TYPE_DEBUG, "%{public}@Handling %@, configuring presenceFeeder", &v25, 0x16u);
       }
 
       objc_autoreleasePoolPop(v13);
-      [(HMDUserActivityStateDetectorManager *)v14 configurePresenceFeeder];
+      [(HMDUserActivityStateDetectorManager *)selfCopy2 configurePresenceFeeder];
     }
   }
 
   v18 = objc_autoreleasePoolPush();
-  v19 = self;
+  selfCopy3 = self;
   v20 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
   {
     v21 = HMFGetLogIdentifier();
-    v22 = [v4 name];
+    name3 = [notificationCopy name];
     v25 = 138543618;
     v26 = v21;
     v27 = 2112;
-    v28 = v22;
+    v28 = name3;
     _os_log_impl(&dword_229538000, v20, OS_LOG_TYPE_INFO, "%{public}@Handling %@, sending reports", &v25, 0x16u);
   }
 
   objc_autoreleasePoolPop(v18);
-  v23 = [(HMDUserActivityStateDetectorManager *)v19 userActivityReportCoordinator];
-  [v23 sendCoordinatedReportsForReason:7];
+  userActivityReportCoordinator = [(HMDUserActivityStateDetectorManager *)selfCopy3 userActivityReportCoordinator];
+  [userActivityReportCoordinator sendCoordinatedReportsForReason:7];
 
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleLocationAuthorizationChanged:(id)a3
+- (void)handleLocationAuthorizationChanged:(id)changed
 {
-  v4 = a3;
-  v5 = [(HMDUserActivityStateDetectorManager *)self dataSource];
-  v6 = [v5 queue];
+  changedCopy = changed;
+  dataSource = [(HMDUserActivityStateDetectorManager *)self dataSource];
+  queue = [dataSource queue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __74__HMDUserActivityStateDetectorManager_handleLocationAuthorizationChanged___block_invoke;
   v8[3] = &unk_27868A750;
-  v9 = v4;
-  v10 = self;
-  v7 = v4;
-  dispatch_async(v6, v8);
+  v9 = changedCopy;
+  selfCopy = self;
+  v7 = changedCopy;
+  dispatch_async(queue, v8);
 }
 
 void __74__HMDUserActivityStateDetectorManager_handleLocationAuthorizationChanged___block_invoke(uint64_t a1)
@@ -299,44 +299,44 @@ void __74__HMDUserActivityStateDetectorManager_handleLocationAuthorizationChange
 
 - (void)registerForNotifications
 {
-  v3 = [(HMDUserActivityStateDetectorManager *)self dataSource];
-  v4 = [v3 notificationCenter];
-  [v4 addObserver:self selector:sel_handlePrimaryResidentDidChangeNotification_ name:@"HMDResidentDeviceManagerUpdatePrimaryResidentGenerationIDNotification" object:0];
+  dataSource = [(HMDUserActivityStateDetectorManager *)self dataSource];
+  notificationCenter = [dataSource notificationCenter];
+  [notificationCenter addObserver:self selector:sel_handlePrimaryResidentDidChangeNotification_ name:@"HMDResidentDeviceManagerUpdatePrimaryResidentGenerationIDNotification" object:0];
 
-  v6 = [(HMDUserActivityStateDetectorManager *)self dataSource];
-  v5 = [v6 notificationCenter];
-  [v5 addObserver:self selector:sel_handleLocationAuthorizationChanged_ name:@"HMLocationAuthorizationChangedNotification" object:0];
+  dataSource2 = [(HMDUserActivityStateDetectorManager *)self dataSource];
+  notificationCenter2 = [dataSource2 notificationCenter];
+  [notificationCenter2 addObserver:self selector:sel_handleLocationAuthorizationChanged_ name:@"HMLocationAuthorizationChangedNotification" object:0];
 }
 
 - (void)configurePresenceFeeder
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDUserActivityStateDetectorManager *)self presenceFeeder];
+  presenceFeeder = [(HMDUserActivityStateDetectorManager *)self presenceFeeder];
 
-  if (!v3)
+  if (!presenceFeeder)
   {
-    v4 = [(HMDUserActivityStateDetectorManager *)self dataSource];
-    v5 = [v4 createPresenceFeeder];
-    [(HMDUserActivityStateDetectorManager *)self setPresenceFeeder:v5];
+    dataSource = [(HMDUserActivityStateDetectorManager *)self dataSource];
+    createPresenceFeeder = [dataSource createPresenceFeeder];
+    [(HMDUserActivityStateDetectorManager *)self setPresenceFeeder:createPresenceFeeder];
 
-    v6 = [(HMDUserActivityStateDetectorManager *)self presenceFeeder];
-    v7 = [(HMDUserActivityStateDetectorManager *)self dataSource];
-    v8 = [v7 home];
-    v9 = [(HMDUserActivityStateDetectorManager *)self dataSource];
-    v10 = [v9 messageDispatcher];
-    [v6 configure:v8 messageDispatcher:v10];
+    presenceFeeder2 = [(HMDUserActivityStateDetectorManager *)self presenceFeeder];
+    dataSource2 = [(HMDUserActivityStateDetectorManager *)self dataSource];
+    home = [dataSource2 home];
+    dataSource3 = [(HMDUserActivityStateDetectorManager *)self dataSource];
+    messageDispatcher = [dataSource3 messageDispatcher];
+    [presenceFeeder2 configure:home messageDispatcher:messageDispatcher];
 
     v11 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy = self;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
       v14 = HMFGetLogIdentifier();
-      v15 = [(HMDUserActivityStateDetectorManager *)v12 presenceFeeder];
+      presenceFeeder3 = [(HMDUserActivityStateDetectorManager *)selfCopy presenceFeeder];
       v17 = 138543618;
       v18 = v14;
       v19 = 2112;
-      v20 = v15;
+      v20 = presenceFeeder3;
       _os_log_impl(&dword_229538000, v13, OS_LOG_TYPE_INFO, "%{public}@Configured presenceFeeder: %@", &v17, 0x16u);
     }
 
@@ -346,12 +346,12 @@ void __74__HMDUserActivityStateDetectorManager_handleLocationAuthorizationChange
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setPresenceFeeder:(id)a3
+- (void)setPresenceFeeder:(id)feeder
 {
-  v4 = a3;
+  feederCopy = feeder;
   os_unfair_lock_lock_with_options();
   presenceFeeder = self->_presenceFeeder;
-  self->_presenceFeeder = v4;
+  self->_presenceFeeder = feederCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -365,14 +365,14 @@ void __74__HMDUserActivityStateDetectorManager_handleLocationAuthorizationChange
   return v3;
 }
 
-- (id)makeUserActivityStateDetectorsWithContributorTypes:(id)a3
+- (id)makeUserActivityStateDetectorsWithContributorTypes:(id)types
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __90__HMDUserActivityStateDetectorManager_makeUserActivityStateDetectorsWithContributorTypes___block_invoke;
   v5[3] = &unk_27868A088;
   v5[4] = self;
-  v3 = [a3 na_map:v5];
+  v3 = [types na_map:v5];
 
   return v3;
 }
@@ -423,31 +423,31 @@ LABEL_11:
   return v7;
 }
 
-- (id)filterEnabledContributors:(id)a3
+- (id)filterEnabledContributors:(id)contributors
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDUserActivityStateDetectorManager *)self dataSource];
-  v6 = [v5 currentUser];
+  contributorsCopy = contributors;
+  dataSource = [(HMDUserActivityStateDetectorManager *)self dataSource];
+  currentUser = [dataSource currentUser];
 
-  if (v6)
+  if (currentUser)
   {
-    v7 = [v6 privilege];
-    if (v7 >= 5)
+    privilege = [currentUser privilege];
+    if (privilege >= 5)
     {
       v8 = 0;
     }
 
     else
     {
-      v8 = 0x1Bu >> v7;
+      v8 = 0x1Bu >> privilege;
     }
   }
 
   else
   {
     v9 = objc_autoreleasePoolPush();
-    v10 = self;
+    selfCopy = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
@@ -461,13 +461,13 @@ LABEL_11:
     v8 = 0;
   }
 
-  if ([v4 count])
+  if ([contributorsCopy count])
   {
     goto LABEL_13;
   }
 
   v13 = objc_autoreleasePoolPush();
-  v14 = self;
+  selfCopy2 = self;
   v15 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
   {
@@ -478,13 +478,13 @@ LABEL_11:
   }
 
   objc_autoreleasePoolPop(v13);
-  v17 = [(HMDUserActivityStateDetectorManager *)v14 dataSource];
-  v18 = [v17 supportsAdaptiveTemperatureAutomations];
+  dataSource2 = [(HMDUserActivityStateDetectorManager *)selfCopy2 dataSource];
+  supportsAdaptiveTemperatureAutomations = [dataSource2 supportsAdaptiveTemperatureAutomations];
 
-  if (v18)
+  if (supportsAdaptiveTemperatureAutomations)
   {
 
-    v4 = &unk_283E75DE8;
+    contributorsCopy = &unk_283E75DE8;
 LABEL_13:
     v22[0] = MEMORY[0x277D85DD0];
     v22[1] = 3221225472;
@@ -492,7 +492,7 @@ LABEL_13:
     v22[3] = &unk_27868A060;
     v22[4] = self;
     v23 = v8 & 1;
-    v19 = [v4 na_filter:v22];
+    v19 = [contributorsCopy na_filter:v22];
     goto LABEL_14;
   }
 
@@ -556,17 +556,17 @@ LABEL_13:
   return v8 & 1;
 }
 
-- (void)_updateConfigurationWithEnabledContributors:(id)a3 completionHandler:(id)a4
+- (void)_updateConfigurationWithEnabledContributors:(id)contributors completionHandler:(id)handler
 {
   v71 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  aBlock = a4;
-  v7 = [(HMDUserActivityStateDetectorManager *)self dataSource];
-  v8 = [v7 queue];
-  dispatch_assert_queue_V2(v8);
+  contributorsCopy = contributors;
+  aBlock = handler;
+  dataSource = [(HMDUserActivityStateDetectorManager *)self dataSource];
+  queue = [dataSource queue];
+  dispatch_assert_queue_V2(queue);
 
-  v49 = v6;
-  v9 = [(HMDUserActivityStateDetectorManager *)self filterEnabledContributors:v6];
+  v49 = contributorsCopy;
+  v9 = [(HMDUserActivityStateDetectorManager *)self filterEnabledContributors:contributorsCopy];
   v52 = [MEMORY[0x277CBEB58] setWithArray:v9];
   v51 = [MEMORY[0x277CBEB58] set];
   v10 = [MEMORY[0x277CBEB58] set];
@@ -574,8 +574,8 @@ LABEL_13:
   v61 = 0u;
   v62 = 0u;
   v63 = 0u;
-  v11 = [(HMDUserActivityStateDetectorManager *)self detectors];
-  v12 = [v11 countByEnumeratingWithState:&v60 objects:v70 count:16];
+  detectors = [(HMDUserActivityStateDetectorManager *)self detectors];
+  v12 = [detectors countByEnumeratingWithState:&v60 objects:v70 count:16];
   if (v12)
   {
     v13 = v12;
@@ -586,7 +586,7 @@ LABEL_13:
       {
         if (*v61 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(detectors);
         }
 
         v16 = *(*(&v60 + 1) + 8 * i);
@@ -606,7 +606,7 @@ LABEL_13:
         }
       }
 
-      v13 = [v11 countByEnumeratingWithState:&v60 objects:v70 count:16];
+      v13 = [detectors countByEnumeratingWithState:&v60 objects:v70 count:16];
     }
 
     while (v13);
@@ -615,7 +615,7 @@ LABEL_13:
   if ([v52 count] || objc_msgSend(v10, "count"))
   {
     v20 = objc_autoreleasePoolPush();
-    v21 = self;
+    selfCopy = self;
     v22 = HMFGetOSLogHandle();
     v23 = v49;
     if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
@@ -633,18 +633,18 @@ LABEL_13:
     }
 
     objc_autoreleasePoolPop(v20);
-    v27 = [(HMDUserActivityStateDetectorManager *)v21 makeUserActivityStateDetectorsWithContributorTypes:v52];
-    v28 = [v27 allObjects];
-    [v51 addObjectsFromArray:v28];
+    v27 = [(HMDUserActivityStateDetectorManager *)selfCopy makeUserActivityStateDetectorsWithContributorTypes:v52];
+    allObjects = [v27 allObjects];
+    [v51 addObjectsFromArray:allObjects];
 
-    v29 = [v51 allObjects];
-    [(HMDUserActivityStateDetectorManager *)v21 setDetectors:v29];
+    allObjects2 = [v51 allObjects];
+    [(HMDUserActivityStateDetectorManager *)selfCopy setDetectors:allObjects2];
 
     v30 = aBlock;
     if ([v10 count])
     {
       v31 = objc_autoreleasePoolPush();
-      v32 = v21;
+      v32 = selfCopy;
       v33 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v33, OS_LOG_TYPE_INFO))
       {
@@ -669,7 +669,7 @@ LABEL_13:
     if ([v27 count])
     {
       v36 = objc_autoreleasePoolPush();
-      v37 = v21;
+      v37 = selfCopy;
       v38 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v38, OS_LOG_TYPE_INFO))
       {
@@ -696,22 +696,22 @@ LABEL_13:
       [v27 hmf_enumerateWithAutoreleasePoolUsingBlock:v56];
     }
 
-    v41 = [(HMDUserActivityStateDetectorManager *)v21 dataSource];
-    v42 = [v41 queue];
+    dataSource2 = [(HMDUserActivityStateDetectorManager *)selfCopy dataSource];
+    queue2 = [dataSource2 queue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __101__HMDUserActivityStateDetectorManager__updateConfigurationWithEnabledContributors_completionHandler___block_invoke_7;
     block[3] = &unk_278689F98;
-    block[4] = v21;
+    block[4] = selfCopy;
     v54 = v10;
     v55 = v30;
-    dispatch_group_notify(v35, v42, block);
+    dispatch_group_notify(v35, queue2, block);
   }
 
   else
   {
     v44 = objc_autoreleasePoolPush();
-    v45 = self;
+    selfCopy2 = self;
     v46 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v46, OS_LOG_TYPE_DEBUG))
     {
@@ -829,18 +829,18 @@ void __101__HMDUserActivityStateDetectorManager__updateConfigurationWithEnabledC
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateConfigurationWithCompletionHandler:(id)a3
+- (void)_updateConfigurationWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(HMDUserActivityStateDetectorManager *)self storage];
+  handlerCopy = handler;
+  storage = [(HMDUserActivityStateDetectorManager *)self storage];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __81__HMDUserActivityStateDetectorManager__updateConfigurationWithCompletionHandler___block_invoke;
   v7[3] = &unk_278689FC0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 fetchEnabledContributors:v7];
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  [storage fetchEnabledContributors:v7];
 }
 
 void __81__HMDUserActivityStateDetectorManager__updateConfigurationWithCompletionHandler___block_invoke(uint64_t a1, void *a2)
@@ -862,25 +862,25 @@ void __81__HMDUserActivityStateDetectorManager__updateConfigurationWithCompletio
 
 - (void)updateConfiguration
 {
-  v3 = [(HMDUserActivityStateDetectorManager *)self dataSource];
-  v4 = [v3 queue];
+  dataSource = [(HMDUserActivityStateDetectorManager *)self dataSource];
+  queue = [dataSource queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __58__HMDUserActivityStateDetectorManager_updateConfiguration__block_invoke;
   block[3] = &unk_27868A728;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(queue, block);
 }
 
 - (void)unconfigure
 {
-  v3 = [(HMDUserActivityStateDetectorManager *)self detectors];
+  detectors = [(HMDUserActivityStateDetectorManager *)self detectors];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __50__HMDUserActivityStateDetectorManager_unconfigure__block_invoke;
   v4[3] = &unk_278689F70;
   v4[4] = self;
-  [v3 hmf_enumerateWithAutoreleasePoolUsingBlock:v4];
+  [detectors hmf_enumerateWithAutoreleasePoolUsingBlock:v4];
 }
 
 void __50__HMDUserActivityStateDetectorManager_unconfigure__block_invoke(uint64_t a1, void *a2)
@@ -908,14 +908,14 @@ void __50__HMDUserActivityStateDetectorManager_unconfigure__block_invoke(uint64_
 
 - (void)configure
 {
-  v3 = [(HMDUserActivityStateDetectorManager *)self dataSource];
-  v4 = [v3 queue];
+  dataSource = [(HMDUserActivityStateDetectorManager *)self dataSource];
+  queue = [dataSource queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __48__HMDUserActivityStateDetectorManager_configure__block_invoke;
   block[3] = &unk_27868A728;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(queue, block);
 }
 
 void __48__HMDUserActivityStateDetectorManager_configure__block_invoke(uint64_t a1)
@@ -967,23 +967,23 @@ void __48__HMDUserActivityStateDetectorManager_configure__block_invoke(uint64_t 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDUserActivityStateDetectorManager)initWithDataSource:(id)a3
+- (HMDUserActivityStateDetectorManager)initWithDataSource:(id)source
 {
-  v5 = a3;
+  sourceCopy = source;
   v14.receiver = self;
   v14.super_class = HMDUserActivityStateDetectorManager;
   v6 = [(HMDUserActivityStateDetectorManager *)&v14 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_dataSource, a3);
-    v8 = [v5 makeUserActivityReportCoordinator];
+    objc_storeStrong(&v6->_dataSource, source);
+    makeUserActivityReportCoordinator = [sourceCopy makeUserActivityReportCoordinator];
     userActivityReportCoordinator = v7->_userActivityReportCoordinator;
-    v7->_userActivityReportCoordinator = v8;
+    v7->_userActivityReportCoordinator = makeUserActivityReportCoordinator;
 
-    v10 = [v5 makeHomeActivityStateManagerStorage];
+    makeHomeActivityStateManagerStorage = [sourceCopy makeHomeActivityStateManagerStorage];
     storage = v7->_storage;
-    v7->_storage = v10;
+    v7->_storage = makeHomeActivityStateManagerStorage;
 
     detectors = v7->_detectors;
     v7->_detectors = MEMORY[0x277CBEBF8];
@@ -1012,25 +1012,25 @@ void __50__HMDUserActivityStateDetectorManager_logCategory__block_invoke()
   logCategory__hmf_once_v29_282666 = v1;
 }
 
-+ (BOOL)shouldRunManagerForHome:(id)a3
++ (BOOL)shouldRunManagerForHome:(id)home
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 currentUser];
-  v6 = v5;
-  if (!v5 || ([v5 isAllowedToContributeActivityStates] & 1) == 0)
+  homeCopy = home;
+  currentUser = [homeCopy currentUser];
+  v6 = currentUser;
+  if (!currentUser || ([currentUser isAllowedToContributeActivityStates] & 1) == 0)
   {
     v9 = objc_autoreleasePoolPush();
-    v10 = a1;
+    selfCopy = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
       v12 = HMFGetLogIdentifier();
-      v13 = [v4 uuid];
+      uuid = [homeCopy uuid];
       v21 = 138543874;
       v22 = v12;
       v23 = 2112;
-      v24 = v13;
+      v24 = uuid;
       v25 = 2112;
       v26 = v6;
       v14 = "%{public}@[%@] HMDUserActivityStateDetectorManager is not allowed because currentUser is nil or the user is not allowed to contribute to activity states: %@";
@@ -1045,21 +1045,21 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v7 = [v4 primaryResident];
+  primaryResident = [homeCopy primaryResident];
 
-  if (!v7)
+  if (!primaryResident)
   {
     v9 = objc_autoreleasePoolPush();
-    v17 = a1;
+    selfCopy2 = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
       v12 = HMFGetLogIdentifier();
-      v13 = [v4 uuid];
+      uuid = [homeCopy uuid];
       v21 = 138543618;
       v22 = v12;
       v23 = 2112;
-      v24 = v13;
+      v24 = uuid;
       v14 = "%{public}@[%@] HMDUserActivityStateDetectorManager is not allowed because there's no known primary resident";
 LABEL_12:
       v15 = v11;
@@ -1077,16 +1077,16 @@ LABEL_14:
   if ((isThisDeviceDesignatedFMFDevice() & 1) == 0)
   {
     v9 = objc_autoreleasePoolPush();
-    v18 = a1;
+    selfCopy3 = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
       v12 = HMFGetLogIdentifier();
-      v13 = [v4 uuid];
+      uuid = [homeCopy uuid];
       v21 = 138543618;
       v22 = v12;
       v23 = 2112;
-      v24 = v13;
+      v24 = uuid;
       v14 = "%{public}@[%@] HMDUserActivityStateDetectorManager is not allowed because this device is not the designated FMF device";
       goto LABEL_12;
     }

@@ -1,13 +1,13 @@
 @interface CSDDualSIMRingtoneHelper
 - (CSDDualSIMRingtoneHelper)init;
-- (CSDDualSIMRingtoneHelper)initWithQueue:(id)a3;
+- (CSDDualSIMRingtoneHelper)initWithQueue:(id)queue;
 - (void)activeSubscriptionsDidChange;
 - (void)dealloc;
 - (void)handleActiveSubscriptionsDidChange;
 - (void)handleTLTonePreferencesDidChangeNotification;
 - (void)refreshSubscriptionsInUse;
 - (void)refreshToneForDefaultSIM;
-- (void)refreshToneForSIMIdentifier:(id)a3;
+- (void)refreshToneForSIMIdentifier:(id)identifier;
 - (void)sendDualSIMRingtoneMetrics;
 @end
 
@@ -20,9 +20,9 @@
   return 0;
 }
 
-- (CSDDualSIMRingtoneHelper)initWithQueue:(id)a3
+- (CSDDualSIMRingtoneHelper)initWithQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v21.receiver = self;
   v21.super_class = CSDDualSIMRingtoneHelper;
   v5 = [(CSDDualSIMRingtoneHelper *)&v21 init];
@@ -32,10 +32,10 @@
     featureFlags = v5->_featureFlags;
     v5->_featureFlags = v6;
 
-    v8 = [(CSDDualSIMRingtoneHelper *)v5 featureFlags];
-    v9 = [v8 dualSIMRingtoneEnabled];
+    featureFlags = [(CSDDualSIMRingtoneHelper *)v5 featureFlags];
+    dualSIMRingtoneEnabled = [featureFlags dualSIMRingtoneEnabled];
 
-    if (v9)
+    if (dualSIMRingtoneEnabled)
     {
       v10 = sub_100004778();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -45,9 +45,9 @@
       }
 
       v5->_alertType = TLAlertTypeFromString();
-      if (v4)
+      if (queueCopy)
       {
-        v11 = v4;
+        v11 = queueCopy;
         queue = v5->_queue;
         v5->_queue = v11;
       }
@@ -92,10 +92,10 @@
 
 - (void)handleTLTonePreferencesDidChangeNotification
 {
-  v3 = [(CSDDualSIMRingtoneHelper *)self featureFlags];
-  v4 = [v3 dualSIMRingtoneEnabled];
+  featureFlags = [(CSDDualSIMRingtoneHelper *)self featureFlags];
+  dualSIMRingtoneEnabled = [featureFlags dualSIMRingtoneEnabled];
 
-  if (v4)
+  if (dualSIMRingtoneEnabled)
   {
     v5 = +[TLToneManager sharedToneManager];
     v6 = [v5 currentToneIdentifierForAlertType:self->_alertType topic:0];
@@ -103,35 +103,35 @@
     v7 = sub_100004778();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [(CSDDualSIMRingtoneHelper *)self cachedDefaultToneIdentifier];
+      cachedDefaultToneIdentifier = [(CSDDualSIMRingtoneHelper *)self cachedDefaultToneIdentifier];
       v27 = 136315650;
       v28 = "[CSDDualSIMRingtoneHelper handleTLTonePreferencesDidChangeNotification]";
       v29 = 2112;
       v30 = v6;
       v31 = 2112;
-      v32 = v8;
+      v32 = cachedDefaultToneIdentifier;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%s: Received defaultToneIdentifier: %@. Cached value is: %@", &v27, 0x20u);
     }
 
     if (v6)
     {
-      v9 = [(CSDDualSIMRingtoneHelper *)self cachedDefaultToneIdentifier];
-      if (v9 && (v10 = v9, -[CSDDualSIMRingtoneHelper cachedDefaultToneIdentifier](self, "cachedDefaultToneIdentifier"), v11 = objc_claimAutoreleasedReturnValue(), v12 = [v11 isEqualToString:v6], v11, v10, v12))
+      cachedDefaultToneIdentifier2 = [(CSDDualSIMRingtoneHelper *)self cachedDefaultToneIdentifier];
+      if (cachedDefaultToneIdentifier2 && (v10 = cachedDefaultToneIdentifier2, -[CSDDualSIMRingtoneHelper cachedDefaultToneIdentifier](self, "cachedDefaultToneIdentifier"), v11 = objc_claimAutoreleasedReturnValue(), v12 = [v11 isEqualToString:v6], v11, v10, v12))
       {
-        v13 = sub_100004778();
-        if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+        labelID = sub_100004778();
+        if (os_log_type_enabled(labelID, OS_LOG_TYPE_DEFAULT))
         {
           v27 = 136315138;
           v28 = "[CSDDualSIMRingtoneHelper handleTLTonePreferencesDidChangeNotification]";
-          _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "%s: Default ringtone identifier was not changed. No update required.", &v27, 0xCu);
+          _os_log_impl(&_mh_execute_header, labelID, OS_LOG_TYPE_DEFAULT, "%s: Default ringtone identifier was not changed. No update required.", &v27, 0xCu);
         }
       }
 
       else
       {
         [(CSDDualSIMRingtoneHelper *)self setCachedDefaultToneIdentifier:v6];
-        v14 = [(CSDDualSIMRingtoneHelper *)self subscriptionsInUse];
-        if (!v14 || (v15 = v14, -[CSDDualSIMRingtoneHelper subscriptionsInUse](self, "subscriptionsInUse"), v16 = objc_claimAutoreleasedReturnValue(), v17 = [v16 count], v16, v15, !v17))
+        subscriptionsInUse = [(CSDDualSIMRingtoneHelper *)self subscriptionsInUse];
+        if (!subscriptionsInUse || (v15 = subscriptionsInUse, -[CSDDualSIMRingtoneHelper subscriptionsInUse](self, "subscriptionsInUse"), v16 = objc_claimAutoreleasedReturnValue(), v17 = [v16 count], v16, v15, !v17))
         {
           v18 = sub_100004778();
           if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
@@ -144,19 +144,19 @@
           [(CSDDualSIMRingtoneHelper *)self refreshSubscriptionsInUse];
         }
 
-        v19 = [(CSDDualSIMRingtoneHelper *)self defaultSIMLineSubscriptionContext];
-        v13 = [v19 labelID];
+        defaultSIMLineSubscriptionContext = [(CSDDualSIMRingtoneHelper *)self defaultSIMLineSubscriptionContext];
+        labelID = [defaultSIMLineSubscriptionContext labelID];
 
-        if (v13)
+        if (labelID)
         {
-          v20 = [@"TLAlertTopicIncomingCall" stringByAppendingString:v13];
+          v20 = [@"TLAlertTopicIncomingCall" stringByAppendingString:labelID];
           v21 = sub_100004778();
           if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
           {
             v27 = 136315650;
             v28 = "[CSDDualSIMRingtoneHelper handleTLTonePreferencesDidChangeNotification]";
             v29 = 2112;
-            v30 = v13;
+            v30 = labelID;
             v31 = 2112;
             v32 = v20;
             _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "%s: Checking for changes for default SIM with identifier: %@, topic: %@", &v27, 0x20u);
@@ -200,8 +200,8 @@
 
     else
     {
-      v13 = sub_100004778();
-      if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+      labelID = sub_100004778();
+      if (os_log_type_enabled(labelID, OS_LOG_TYPE_ERROR))
       {
         sub_100471028();
       }
@@ -211,26 +211,26 @@
 
 - (void)refreshSubscriptionsInUse
 {
-  v3 = [(CSDDualSIMRingtoneHelper *)self featureFlags];
-  v4 = [v3 dualSIMRingtoneEnabled];
+  featureFlags = [(CSDDualSIMRingtoneHelper *)self featureFlags];
+  dualSIMRingtoneEnabled = [featureFlags dualSIMRingtoneEnabled];
 
-  if (v4)
+  if (dualSIMRingtoneEnabled)
   {
     [(CSDDualSIMRingtoneHelper *)self setSubscriptionsInUse:0];
     [(CSDDualSIMRingtoneHelper *)self setDefaultSIMLineSubscriptionContext:0];
-    v5 = [(CSDDualSIMRingtoneHelper *)self coreTelephonyClient];
+    coreTelephonyClient = [(CSDDualSIMRingtoneHelper *)self coreTelephonyClient];
     v24 = 0;
-    v6 = [v5 getSubscriptionInfoWithError:&v24];
+    v6 = [coreTelephonyClient getSubscriptionInfoWithError:&v24];
     v7 = v24;
 
     if (!v7)
     {
-      v8 = [v6 subscriptionsInUse];
-      [(CSDDualSIMRingtoneHelper *)self setSubscriptionsInUse:v8];
+      subscriptionsInUse = [v6 subscriptionsInUse];
+      [(CSDDualSIMRingtoneHelper *)self setSubscriptionsInUse:subscriptionsInUse];
     }
 
-    v9 = [(CSDDualSIMRingtoneHelper *)self subscriptionsInUse];
-    v10 = [v9 count];
+    subscriptionsInUse2 = [(CSDDualSIMRingtoneHelper *)self subscriptionsInUse];
+    v10 = [subscriptionsInUse2 count];
 
     if (v10)
     {
@@ -238,8 +238,8 @@
       v23 = 0u;
       v20 = 0u;
       v21 = 0u;
-      v11 = [(CSDDualSIMRingtoneHelper *)self subscriptionsInUse];
-      v12 = [v11 countByEnumeratingWithState:&v20 objects:v25 count:16];
+      subscriptionsInUse3 = [(CSDDualSIMRingtoneHelper *)self subscriptionsInUse];
+      v12 = [subscriptionsInUse3 countByEnumeratingWithState:&v20 objects:v25 count:16];
       if (v12)
       {
         v13 = v12;
@@ -251,16 +251,16 @@
           {
             if (*v21 != v14)
             {
-              objc_enumerationMutation(v11);
+              objc_enumerationMutation(subscriptionsInUse3);
             }
 
             v16 = *(*(&v20 + 1) + 8 * v15);
-            v17 = [v16 userDefaultVoice];
-            if ([v17 BOOLValue] && (objc_msgSend(v16, "isSimHidden") & 1) == 0)
+            userDefaultVoice = [v16 userDefaultVoice];
+            if ([userDefaultVoice BOOLValue] && (objc_msgSend(v16, "isSimHidden") & 1) == 0)
             {
-              v18 = [v16 isSimDataOnly];
+              isSimDataOnly = [v16 isSimDataOnly];
 
-              if ((v18 & 1) == 0)
+              if ((isSimDataOnly & 1) == 0)
               {
                 [(CSDDualSIMRingtoneHelper *)self setDefaultSIMLineSubscriptionContext:v16];
               }
@@ -274,7 +274,7 @@
           }
 
           while (v13 != v15);
-          v19 = [v11 countByEnumeratingWithState:&v20 objects:v25 count:16];
+          v19 = [subscriptionsInUse3 countByEnumeratingWithState:&v20 objects:v25 count:16];
           v13 = v19;
         }
 
@@ -286,22 +286,22 @@
 
 - (void)refreshToneForDefaultSIM
 {
-  v3 = [(CSDDualSIMRingtoneHelper *)self featureFlags];
-  v4 = [v3 dualSIMRingtoneEnabled];
+  featureFlags = [(CSDDualSIMRingtoneHelper *)self featureFlags];
+  dualSIMRingtoneEnabled = [featureFlags dualSIMRingtoneEnabled];
 
-  if (v4)
+  if (dualSIMRingtoneEnabled)
   {
-    v5 = [(CSDDualSIMRingtoneHelper *)self defaultSIMLineSubscriptionContext];
-    v6 = [v5 labelID];
+    defaultSIMLineSubscriptionContext = [(CSDDualSIMRingtoneHelper *)self defaultSIMLineSubscriptionContext];
+    labelID = [defaultSIMLineSubscriptionContext labelID];
 
-    if (v6)
+    if (labelID)
     {
-      v7 = [@"TLAlertTopicIncomingCall" stringByAppendingString:v6];
+      v7 = [@"TLAlertTopicIncomingCall" stringByAppendingString:labelID];
       v8 = sub_100004778();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
         v18 = 138412546;
-        v19 = v6;
+        v19 = labelID;
         v20 = 2112;
         v21 = v7;
         _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Checking for changes for default SIM with identifier: %@, topic: %@", &v18, 0x16u);
@@ -365,20 +365,20 @@
   }
 }
 
-- (void)refreshToneForSIMIdentifier:(id)a3
+- (void)refreshToneForSIMIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(CSDDualSIMRingtoneHelper *)self featureFlags];
-  v6 = [v5 dualSIMRingtoneEnabled];
+  identifierCopy = identifier;
+  featureFlags = [(CSDDualSIMRingtoneHelper *)self featureFlags];
+  dualSIMRingtoneEnabled = [featureFlags dualSIMRingtoneEnabled];
 
-  if (v6)
+  if (dualSIMRingtoneEnabled)
   {
-    v7 = [@"TLAlertTopicIncomingCall" stringByAppendingString:v4];
+    v7 = [@"TLAlertTopicIncomingCall" stringByAppendingString:identifierCopy];
     v8 = sub_100004778();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v15 = 138412546;
-      v16 = v4;
+      v16 = identifierCopy;
       v17 = 2112;
       v18 = v7;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Checking for changes for non-default SIM with identifier: %@, topic: %@", &v15, 0x16u);
@@ -427,15 +427,15 @@ LABEL_14:
 
 - (void)handleActiveSubscriptionsDidChange
 {
-  v3 = [(CSDDualSIMRingtoneHelper *)self featureFlags];
-  v4 = [v3 dualSIMRingtoneEnabled];
+  featureFlags = [(CSDDualSIMRingtoneHelper *)self featureFlags];
+  dualSIMRingtoneEnabled = [featureFlags dualSIMRingtoneEnabled];
 
-  if (v4)
+  if (dualSIMRingtoneEnabled)
   {
     [(CSDDualSIMRingtoneHelper *)self refreshSubscriptionsInUse];
-    v5 = [(CSDDualSIMRingtoneHelper *)self subscriptionsInUse];
+    subscriptionsInUse = [(CSDDualSIMRingtoneHelper *)self subscriptionsInUse];
 
-    if (!v5)
+    if (!subscriptionsInUse)
     {
       v6 = sub_100004778();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -450,8 +450,8 @@ LABEL_14:
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v7 = [(CSDDualSIMRingtoneHelper *)self subscriptionsInUse];
-    v8 = [v7 countByEnumeratingWithState:&v15 objects:v20 count:16];
+    subscriptionsInUse2 = [(CSDDualSIMRingtoneHelper *)self subscriptionsInUse];
+    v8 = [subscriptionsInUse2 countByEnumeratingWithState:&v15 objects:v20 count:16];
     if (v8)
     {
       v9 = v8;
@@ -462,26 +462,26 @@ LABEL_14:
         {
           if (*v16 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(subscriptionsInUse2);
           }
 
           v12 = *(*(&v15 + 1) + 8 * i);
-          v13 = [v12 userDefaultVoice];
-          if (([v13 BOOLValue] & 1) == 0 && (objc_msgSend(v12, "isSimHidden") & 1) == 0)
+          userDefaultVoice = [v12 userDefaultVoice];
+          if (([userDefaultVoice BOOLValue] & 1) == 0 && (objc_msgSend(v12, "isSimHidden") & 1) == 0)
           {
-            v14 = [v12 isSimDataOnly];
+            isSimDataOnly = [v12 isSimDataOnly];
 
-            if (v14)
+            if (isSimDataOnly)
             {
               continue;
             }
 
-            v13 = [v12 labelID];
-            [(CSDDualSIMRingtoneHelper *)self refreshToneForSIMIdentifier:v13];
+            userDefaultVoice = [v12 labelID];
+            [(CSDDualSIMRingtoneHelper *)self refreshToneForSIMIdentifier:userDefaultVoice];
           }
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v15 objects:v20 count:16];
+        v9 = [subscriptionsInUse2 countByEnumeratingWithState:&v15 objects:v20 count:16];
       }
 
       while (v9);
@@ -491,10 +491,10 @@ LABEL_14:
 
 - (void)activeSubscriptionsDidChange
 {
-  v3 = [(CSDDualSIMRingtoneHelper *)self featureFlags];
-  v4 = [v3 dualSIMRingtoneEnabled];
+  featureFlags = [(CSDDualSIMRingtoneHelper *)self featureFlags];
+  dualSIMRingtoneEnabled = [featureFlags dualSIMRingtoneEnabled];
 
-  if (v4)
+  if (dualSIMRingtoneEnabled)
   {
 
     [(CSDDualSIMRingtoneHelper *)self handleActiveSubscriptionsDidChange];

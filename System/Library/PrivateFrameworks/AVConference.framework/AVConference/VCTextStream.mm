@@ -1,14 +1,14 @@
 @interface VCTextStream
-- (BOOL)onConfigureStreamWithConfiguration:(id)a3 error:(id *)a4;
-- (BOOL)setupTextReceiverWithError:(id *)a3;
+- (BOOL)onConfigureStreamWithConfiguration:(id)configuration error:(id *)error;
+- (BOOL)setupTextReceiverWithError:(id *)error;
 - (VCTextStream)init;
 - (void)dealloc;
-- (void)didReceiveCharacter:(unsigned __int16)a3;
-- (void)didReceiveText:(id)a3;
-- (void)onStartWithCompletionHandler:(id)a3;
-- (void)onStopWithCompletionHandler:(id)a3;
-- (void)sendCharacter:(unsigned __int16)a3;
-- (void)sendText:(id)a3;
+- (void)didReceiveCharacter:(unsigned __int16)character;
+- (void)didReceiveText:(id)text;
+- (void)onStartWithCompletionHandler:(id)handler;
+- (void)onStopWithCompletionHandler:(id)handler;
+- (void)sendCharacter:(unsigned __int16)character;
+- (void)sendText:(id)text;
 - (void)setupTextTransmitter;
 @end
 
@@ -96,7 +96,7 @@ LABEL_11:
         v18 = 2112;
         v19 = v3;
         v20 = 2048;
-        v21 = self;
+        selfCopy = self;
         v6 = "VCTextStream [%s] %s:%d %@(%p) ";
         v7 = v10;
         v8 = 48;
@@ -111,9 +111,9 @@ LABEL_11:
   [(VCMediaStream *)&v11 dealloc];
 }
 
-- (void)sendCharacter:(unsigned __int16)a3
+- (void)sendCharacter:(unsigned __int16)character
 {
-  v3 = a3;
+  characterCopy = character;
   v19 = *MEMORY[0x1E69E9840];
   if (objc_opt_class() == self)
   {
@@ -133,7 +133,7 @@ LABEL_11:
           *&v15[22] = 1024;
           LODWORD(v16) = 71;
           WORD2(v16) = 1024;
-          *(&v16 + 6) = v3;
+          *(&v16 + 6) = characterCopy;
           v9 = "VCTextStream [%s] %s:%d Sending text:'%C'";
           v10 = v7;
           v11 = 34;
@@ -144,7 +144,7 @@ LABEL_13:
 
       else if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
       {
-        [(VCTextStream *)v6 sendCharacter:v3, v7];
+        [(VCTextStream *)v6 sendCharacter:characterCopy, v7];
       }
     }
   }
@@ -179,9 +179,9 @@ LABEL_13:
           WORD2(v16) = 2112;
           *(&v16 + 6) = v5;
           HIWORD(v16) = 2048;
-          v17 = self;
+          selfCopy2 = self;
           LOWORD(v18) = 1024;
-          *(&v18 + 2) = v3;
+          *(&v18 + 2) = characterCopy;
           v9 = "VCTextStream [%s] %s:%d %@(%p) Sending text:'%C'";
           v10 = v13;
           v11 = 54;
@@ -200,18 +200,18 @@ LABEL_13:
         WORD2(v16) = 2112;
         *(&v16 + 6) = v5;
         HIWORD(v16) = 2048;
-        v17 = self;
+        selfCopy2 = self;
         LOWORD(v18) = 1024;
-        *(&v18 + 2) = v3;
+        *(&v18 + 2) = characterCopy;
         _os_log_debug_impl(&dword_1DB56E000, v13, OS_LOG_TYPE_DEBUG, "VCTextStream [%s] %s:%d %@(%p) Sending text:'%C'", v15, 0x36u);
       }
     }
   }
 
-  [(VCTextTransmitter *)self->_textTransmitter sendCharacter:v3, *v15, *&v15[16], v16, v17, v18, v19];
+  [(VCTextTransmitter *)self->_textTransmitter sendCharacter:characterCopy, *v15, *&v15[16], v16, selfCopy2, v18, v19];
 }
 
-- (void)sendText:(id)a3
+- (void)sendText:(id)text
 {
   v19 = *MEMORY[0x1E69E9840];
   if (objc_opt_class() == self)
@@ -232,7 +232,7 @@ LABEL_13:
           *&v15[22] = 1024;
           LODWORD(v16) = 76;
           WORD2(v16) = 2112;
-          *(&v16 + 6) = a3;
+          *(&v16 + 6) = text;
           v9 = "VCTextStream [%s] %s:%d Sending text:%@";
           v10 = v7;
           v11 = 38;
@@ -278,9 +278,9 @@ LABEL_13:
           WORD2(v16) = 2112;
           *(&v16 + 6) = v5;
           HIWORD(v16) = 2048;
-          v17 = self;
+          selfCopy2 = self;
           LOWORD(v18) = 2112;
-          *(&v18 + 2) = a3;
+          *(&v18 + 2) = text;
           v9 = "VCTextStream [%s] %s:%d %@(%p) Sending text:%@";
           v10 = v13;
           v11 = 58;
@@ -299,18 +299,18 @@ LABEL_13:
         WORD2(v16) = 2112;
         *(&v16 + 6) = v5;
         HIWORD(v16) = 2048;
-        v17 = self;
+        selfCopy2 = self;
         LOWORD(v18) = 2112;
-        *(&v18 + 2) = a3;
+        *(&v18 + 2) = text;
         _os_log_debug_impl(&dword_1DB56E000, v13, OS_LOG_TYPE_DEBUG, "VCTextStream [%s] %s:%d %@(%p) Sending text:%@", v15, 0x3Au);
       }
     }
   }
 
-  [(VCTextTransmitter *)self->_textTransmitter sendText:a3, *v15, *&v15[16], v16, v17, v18];
+  [(VCTextTransmitter *)self->_textTransmitter sendText:text, *v15, *&v15[16], v16, selfCopy2, v18];
 }
 
-- (void)didReceiveCharacter:(unsigned __int16)a3
+- (void)didReceiveCharacter:(unsigned __int16)character
 {
   v17 = *MEMORY[0x1E69E9840];
   if (objc_opt_class() == self)
@@ -352,44 +352,44 @@ LABEL_13:
         v13 = 2112;
         v14 = v4;
         v15 = 2048;
-        v16 = self;
+        selfCopy = self;
         _os_log_error_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_ERROR, "VCTextStream [%s] %s:%d %@(%p) Error: -didReceiveText: should be called instead of this method.", &v7, 0x30u);
       }
     }
   }
 }
 
-- (void)didReceiveText:(id)a3
+- (void)didReceiveText:(id)text
 {
-  v4 = [(VCTextStream *)self receiveDelegate];
+  receiveDelegate = [(VCTextStream *)self receiveDelegate];
 
-  [(VCTextReceiverDelegate *)v4 didReceiveText:a3];
+  [(VCTextReceiverDelegate *)receiveDelegate didReceiveText:text];
 }
 
 - (void)setupTextTransmitter
 {
   v9 = *MEMORY[0x1E69E9840];
 
-  v3 = [(VCMediaStream *)self defaultStreamConfig];
-  HIDWORD(v6) = [(VCMediaStreamConfig *)v3 isRedEnabled:[(VCMediaStreamTransport *)[(VCMediaStream *)self defaultTransport] rtpHandle]];
-  v7 = [(VCMediaStreamConfig *)v3 numRedundantPayloads];
-  [(VCMediaStreamConfig *)v3 txIntervalMin];
+  defaultStreamConfig = [(VCMediaStream *)self defaultStreamConfig];
+  HIDWORD(v6) = [(VCMediaStreamConfig *)defaultStreamConfig isRedEnabled:[(VCMediaStreamTransport *)[(VCMediaStream *)self defaultTransport] rtpHandle]];
+  numRedundantPayloads = [(VCMediaStreamConfig *)defaultStreamConfig numRedundantPayloads];
+  [(VCMediaStreamConfig *)defaultStreamConfig txIntervalMin];
   v8 = v4;
   self->_textTransmitter = [[VCTextTransmitter alloc] initWithConfiguration:&v5];
 }
 
-- (BOOL)setupTextReceiverWithError:(id *)a3
+- (BOOL)setupTextReceiverWithError:(id *)error
 {
   v10 = *MEMORY[0x1E69E9840];
 
-  v8 = [(VCMediaStreamTransport *)[(VCMediaStream *)self defaultTransport] rtpHandle];
+  rtpHandle = [(VCMediaStreamTransport *)[(VCMediaStream *)self defaultTransport] rtpHandle];
   v9 = 1000;
   if (self->super._transportSetupInfo.setupType == 5)
   {
     BYTE4(v9) = 1;
   }
 
-  v5 = [[VCTextReceiver alloc] initWithConfiguration:&v8];
+  v5 = [[VCTextReceiver alloc] initWithConfiguration:&rtpHandle];
   v6 = v5;
   self->_textReceiver = v5;
   if (v5)
@@ -398,20 +398,20 @@ LABEL_13:
     [(VCTextReceiver *)self->_textReceiver setSupportedPayloads:[(NSDictionary *)[(VCMediaStreamConfig *)[(VCMediaStream *)self defaultStreamConfig] rxPayloadMap] allKeys]];
   }
 
-  else if (a3)
+  else if (error)
   {
-    *a3 = [MEMORY[0x1E696ABC0] AVConferenceServiceError:32000 detailCode:0 description:@"Failed to allocate the text receiver"];
+    *error = [MEMORY[0x1E696ABC0] AVConferenceServiceError:32000 detailCode:0 description:@"Failed to allocate the text receiver"];
   }
 
   return v6 != 0;
 }
 
-- (BOOL)onConfigureStreamWithConfiguration:(id)a3 error:(id *)a4
+- (BOOL)onConfigureStreamWithConfiguration:(id)configuration error:(id *)error
 {
   v34 = *MEMORY[0x1E69E9840];
-  if (!a3 || [a3 count] != 1)
+  if (!configuration || [configuration count] != 1)
   {
-    +[GKVoiceChatError getNSError:code:detailedCode:filePath:description:reason:](GKVoiceChatError, "getNSError:code:detailedCode:filePath:description:reason:", a4, 32016, 105, [MEMORY[0x1E696AEC0] stringWithFormat:@"%s:%d", "/Library/Caches/com.apple.xbs/Sources/AVConference/AVConference.subproj/Sources/VCTextStream.m", 144], @"Invalid Parameter", @"Called with an invalid parameter");
+    +[GKVoiceChatError getNSError:code:detailedCode:filePath:description:reason:](GKVoiceChatError, "getNSError:code:detailedCode:filePath:description:reason:", error, 32016, 105, [MEMORY[0x1E696AEC0] stringWithFormat:@"%s:%d", "/Library/Caches/com.apple.xbs/Sources/AVConference/AVConference.subproj/Sources/VCTextStream.m", 144], @"Invalid Parameter", @"Called with an invalid parameter");
     if (objc_opt_class() == self)
     {
       if (VRTraceGetErrorLogLevelForModule() >= 2)
@@ -423,13 +423,13 @@ LABEL_13:
         {
           if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_ERROR))
           {
-            [(VCTextStream *)v11 onConfigureStreamWithConfiguration:a4 error:v13];
+            [(VCTextStream *)v11 onConfigureStreamWithConfiguration:error error:v13];
           }
         }
 
         else if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_FAULT))
         {
-          [(VCTextStream *)v11 onConfigureStreamWithConfiguration:a4 error:v13];
+          [(VCTextStream *)v11 onConfigureStreamWithConfiguration:error error:v13];
         }
       }
     }
@@ -455,9 +455,9 @@ LABEL_13:
         {
           if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_ERROR))
           {
-            if (*a4)
+            if (*error)
             {
-              v17 = [objc_msgSend(*a4 "description")];
+              v17 = [objc_msgSend(*error "description")];
             }
 
             else
@@ -474,7 +474,7 @@ LABEL_13:
             v28 = 2112;
             v29 = v10;
             v30 = 2048;
-            v31 = self;
+            selfCopy3 = self;
             v32 = 2080;
             v33 = v17;
             _os_log_error_impl(&dword_1DB56E000, v16, OS_LOG_TYPE_ERROR, "VCTextStream [%s] %s:%d %@(%p) error[%s]", buf, 0x3Au);
@@ -483,9 +483,9 @@ LABEL_13:
 
         else if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_FAULT))
         {
-          if (*a4)
+          if (*error)
           {
-            v19 = [objc_msgSend(*a4 "description")];
+            v19 = [objc_msgSend(*error "description")];
           }
 
           else
@@ -502,7 +502,7 @@ LABEL_13:
           v28 = 2112;
           v29 = v10;
           v30 = 2048;
-          v31 = self;
+          selfCopy3 = self;
           v32 = 2080;
           v33 = v19;
           _os_log_fault_impl(&dword_1DB56E000, v16, OS_LOG_TYPE_FAULT, "VCTextStream [%s] %s:%d %@(%p) error[%s]", buf, 0x3Au);
@@ -513,11 +513,11 @@ LABEL_13:
     return 0;
   }
 
-  v7 = [a3 objectAtIndexedSubscript:0];
+  v7 = [configuration objectAtIndexedSubscript:0];
   if ([(NSMutableArray *)self->super._transportArray count])
   {
-    v8 = [(VCMediaStream *)self defaultTransport];
-    if (v8)
+    defaultTransport = [(VCMediaStream *)self defaultTransport];
+    if (defaultTransport)
     {
       goto LABEL_5;
     }
@@ -562,18 +562,18 @@ LABEL_25:
           v28 = 2112;
           v29 = v18;
           v30 = 2048;
-          v31 = self;
+          selfCopy3 = self;
           _os_log_error_impl(&dword_1DB56E000, v21, OS_LOG_TYPE_ERROR, "VCTextStream [%s] %s:%d %@(%p) Failed to create transport", buf, 0x30u);
         }
       }
     }
 
-    +[GKVoiceChatError getNSError:code:detailedCode:filePath:description:reason:](GKVoiceChatError, "getNSError:code:detailedCode:filePath:description:reason:", a4, 32016, 105, [MEMORY[0x1E696AEC0] stringWithFormat:@"%s:%d", "/Library/Caches/com.apple.xbs/Sources/AVConference/AVConference.subproj/Sources/VCTextStream.m", 158], @"Failed to create transport", @"Create transport failed");
+    +[GKVoiceChatError getNSError:code:detailedCode:filePath:description:reason:](GKVoiceChatError, "getNSError:code:detailedCode:filePath:description:reason:", error, 32016, 105, [MEMORY[0x1E696AEC0] stringWithFormat:@"%s:%d", "/Library/Caches/com.apple.xbs/Sources/AVConference/AVConference.subproj/Sources/VCTextStream.m", 158], @"Failed to create transport", @"Create transport failed");
     return 0;
   }
 
-  v8 = [(VCMediaStream *)self createTransportWithStreamConfig:v7 ssrc:self->super._localSSRC];
-  if (!v8)
+  defaultTransport = [(VCMediaStream *)self createTransportWithStreamConfig:v7 ssrc:self->super._localSSRC];
+  if (!defaultTransport)
   {
     goto LABEL_25;
   }
@@ -585,32 +585,32 @@ LABEL_5:
     self->super._transportSetupInfo.var0.ipInfo.srcIPPORT.szIfName[12] = 1;
   }
 
-  if (![VCMediaStreamTransport configureWithStreamConfig:v8 setupInfo:"configureWithStreamConfig:setupInfo:reducedSizeRTCPPackets:hopByHopEncryptRTCPPackets:statisticsCollector:basebandCongestionDetector:error:" reducedSizeRTCPPackets:v7 hopByHopEncryptRTCPPackets:a4 statisticsCollector:? basebandCongestionDetector:? error:?])
+  if (![VCMediaStreamTransport configureWithStreamConfig:defaultTransport setupInfo:"configureWithStreamConfig:setupInfo:reducedSizeRTCPPackets:hopByHopEncryptRTCPPackets:statisticsCollector:basebandCongestionDetector:error:" reducedSizeRTCPPackets:v7 hopByHopEncryptRTCPPackets:error statisticsCollector:? basebandCongestionDetector:? error:?])
   {
     return 0;
   }
 
   [(VCTextStream *)self setupTextTransmitter];
 
-  return [(VCTextStream *)self setupTextReceiverWithError:a4];
+  return [(VCTextStream *)self setupTextReceiverWithError:error];
 }
 
-- (void)onStartWithCompletionHandler:(id)a3
+- (void)onStartWithCompletionHandler:(id)handler
 {
   [(VCTextTransmitter *)self->_textTransmitter start];
   [(VCTextReceiver *)self->_textReceiver start];
-  v5 = *(a3 + 2);
+  v5 = *(handler + 2);
 
-  v5(a3, 1, 0);
+  v5(handler, 1, 0);
 }
 
-- (void)onStopWithCompletionHandler:(id)a3
+- (void)onStopWithCompletionHandler:(id)handler
 {
   [(VCTextTransmitter *)self->_textTransmitter stop];
   [(VCTextReceiver *)self->_textReceiver stop];
-  v5 = *(a3 + 2);
+  v5 = *(handler + 2);
 
-  v5(a3, 1, 0);
+  v5(handler, 1, 0);
 }
 
 - (void)sendCharacter:(os_log_t)log .cold.1(uint64_t a1, unsigned __int16 a2, os_log_t log)

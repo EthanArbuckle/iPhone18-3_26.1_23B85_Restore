@@ -1,5 +1,5 @@
 @interface CKComposeNavbarManagerContentView
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (void)layoutSubviews;
 @end
 
@@ -15,22 +15,22 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(CKComposeNavbarManagerContentView *)self canvasView];
-  [v11 setFrame:{v4, v6, v8, v10}];
+  canvasView = [(CKComposeNavbarManagerContentView *)self canvasView];
+  [canvasView setFrame:{v4, v6, v8, v10}];
 
-  v12 = [(CKComposeNavbarManagerContentView *)self canvasView];
-  [v12 setNeedsLayout];
+  canvasView2 = [(CKComposeNavbarManagerContentView *)self canvasView];
+  [canvasView2 setNeedsLayout];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   v13.receiver = self;
   v13.super_class = CKComposeNavbarManagerContentView;
-  [(CKComposeNavbarManagerContentView *)&v13 sizeThatFits:a3.width, a3.height];
+  [(CKComposeNavbarManagerContentView *)&v13 sizeThatFits:fits.width, fits.height];
   v5 = v4;
   v7 = v6;
-  v8 = [(CKComposeNavbarManagerContentView *)self canvasView];
-  [v8 sizeThatFits:{v5, v7}];
+  canvasView = [(CKComposeNavbarManagerContentView *)self canvasView];
+  [canvasView sizeThatFits:{v5, v7}];
   v10 = v9;
 
   v11 = v5;

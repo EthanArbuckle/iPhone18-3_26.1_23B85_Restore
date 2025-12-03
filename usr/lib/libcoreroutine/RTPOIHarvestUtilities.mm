@@ -1,22 +1,22 @@
 @interface RTPOIHarvestUtilities
-+ (BOOL)harvestCuration:(id)a3 mapItem:(id)a4 referenceLocations:(id)a5 poiHarvester:(id)a6 error:(id *)a7;
-+ (BOOL)harvestVisits:(id)a3 mapItem:(id)a4 harvestType:(unint64_t)a5 poiHarvester:(id)a6 error:(id *)a7;
-+ (id)accessPointsForFingerprint:(id)a3 endDate:(id)a4 fingerprintManager:(id)a5 error:(id *)a6;
-+ (id)determineFingerprintFallbackDateIntervalFromStartDate:(id)a3 endDate:(id)a4 error:(id *)a5;
-+ (id)fingerprintsBetweenStartDate:(id)a3 endDate:(id)a4 isTimeWindowFallback:(BOOL *)a5 settledState:(unint64_t)a6 fingerprintManager:(id)a7 error:(id *)a8;
-+ (id)locationsForAccessPoints:(id)a3 harvestParameters:(id)a4 locationManager:(id)a5 error:(id *)a6;
-+ (id)locationsInDateInterval:(id)a3 harvestParameters:(id)a4 locationManager:(id)a5 error:(id *)a6;
++ (BOOL)harvestCuration:(id)curation mapItem:(id)item referenceLocations:(id)locations poiHarvester:(id)harvester error:(id *)error;
++ (BOOL)harvestVisits:(id)visits mapItem:(id)item harvestType:(unint64_t)type poiHarvester:(id)harvester error:(id *)error;
++ (id)accessPointsForFingerprint:(id)fingerprint endDate:(id)date fingerprintManager:(id)manager error:(id *)error;
++ (id)determineFingerprintFallbackDateIntervalFromStartDate:(id)date endDate:(id)endDate error:(id *)error;
++ (id)fingerprintsBetweenStartDate:(id)date endDate:(id)endDate isTimeWindowFallback:(BOOL *)fallback settledState:(unint64_t)state fingerprintManager:(id)manager error:(id *)error;
++ (id)locationsForAccessPoints:(id)points harvestParameters:(id)parameters locationManager:(id)manager error:(id *)error;
++ (id)locationsInDateInterval:(id)interval harvestParameters:(id)parameters locationManager:(id)manager error:(id *)error;
 @end
 
 @implementation RTPOIHarvestUtilities
 
-+ (id)fingerprintsBetweenStartDate:(id)a3 endDate:(id)a4 isTimeWindowFallback:(BOOL *)a5 settledState:(unint64_t)a6 fingerprintManager:(id)a7 error:(id *)a8
++ (id)fingerprintsBetweenStartDate:(id)date endDate:(id)endDate isTimeWindowFallback:(BOOL *)fallback settledState:(unint64_t)state fingerprintManager:(id)manager error:(id *)error
 {
   v121[1] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v84 = a7;
-  if (!v10)
+  dateCopy = date;
+  endDateCopy = endDate;
+  managerCopy = manager;
+  if (!dateCopy)
   {
     v31 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
@@ -25,12 +25,12 @@
       _os_log_error_impl(&dword_2304B3000, v31, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: startDate", buf, 2u);
     }
 
-    if (a8)
+    if (error)
     {
       v32 = _RTErrorInvalidParameterCreate(@"startDate");
 LABEL_16:
       v34 = 0;
-      *a8 = v32;
+      *error = v32;
       goto LABEL_56;
     }
 
@@ -39,7 +39,7 @@ LABEL_17:
     goto LABEL_56;
   }
 
-  if (!v11)
+  if (!endDateCopy)
   {
     v33 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
@@ -48,7 +48,7 @@ LABEL_17:
       _os_log_error_impl(&dword_2304B3000, v33, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: endDate", buf, 2u);
     }
 
-    if (a8)
+    if (error)
     {
       v32 = _RTErrorInvalidParameterCreate(@"endDate");
       goto LABEL_16;
@@ -78,7 +78,7 @@ LABEL_17:
   v94 = &v95;
   v13 = v12;
   v92 = v13;
-  [v84 fetchFingerprintsBetweenStartDate:v10 endDate:v11 filteredBySettledState:a6 handler:v91];
+  [managerCopy fetchFingerprintsBetweenStartDate:dateCopy endDate:endDateCopy filteredBySettledState:state handler:v91];
   v14 = v13;
   v15 = [MEMORY[0x277CBEAA8] now];
   v16 = dispatch_time(0, 3600000000000);
@@ -95,11 +95,11 @@ LABEL_19:
   v19 = v18;
   v20 = objc_opt_new();
   v21 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_49];
-  v22 = [MEMORY[0x277CCACC8] callStackSymbols];
-  v23 = [v22 filteredArrayUsingPredicate:v21];
-  v24 = [v23 firstObject];
+  callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+  v23 = [callStackSymbols filteredArrayUsingPredicate:v21];
+  firstObject = [v23 firstObject];
 
-  [v20 submitToCoreAnalytics:v24 type:1 duration:v19];
+  [v20 submitToCoreAnalytics:firstObject type:1 duration:v19];
   v25 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
   if (os_log_type_enabled(v25, OS_LOG_TYPE_FAULT))
   {
@@ -129,9 +129,9 @@ LABEL_20:
     objc_storeStrong(v96 + 5, v28);
   }
 
-  if (a6 == 2 && !v96[5] && ![v102[5] count])
+  if (state == 2 && !v96[5] && ![v102[5] count])
   {
-    *a5 = 1;
+    *fallback = 1;
     *buf = 0;
     *&buf[8] = buf;
     *&buf[16] = 0x3032000000;
@@ -139,7 +139,7 @@ LABEL_20:
     *v109 = __Block_byref_object_dispose__84;
     *&v109[8] = 0;
     v90 = 0;
-    v80 = [RTPOIHarvestUtilities determineFingerprintFallbackDateIntervalFromStartDate:v10 endDate:v11 error:&v90];
+    v80 = [RTPOIHarvestUtilities determineFingerprintFallbackDateIntervalFromStartDate:dateCopy endDate:endDateCopy error:&v90];
     v36 = v90;
     if (v36)
     {
@@ -148,12 +148,12 @@ LABEL_20:
         v37 = _rt_log_facility_get_os_log(RTLogFacilityLearnedLocation);
         if (os_log_type_enabled(v37, OS_LOG_TYPE_DEBUG))
         {
-          v73 = [v10 stringFromDate];
-          v74 = [v11 stringFromDate];
+          stringFromDate = [dateCopy stringFromDate];
+          stringFromDate2 = [endDateCopy stringFromDate];
           *v114 = 138412802;
-          *&v114[4] = v73;
+          *&v114[4] = stringFromDate;
           v115 = 2112;
-          v116 = v74;
+          v116 = stringFromDate2;
           v117 = 2112;
           v118 = v36;
           _os_log_debug_impl(&dword_2304B3000, v37, OS_LOG_TYPE_DEBUG, "Zero fingerprints found between startDate %@, endDate, %@, fallback query date interval could not be constructed due to error, %@", v114, 0x20u);
@@ -173,26 +173,26 @@ LABEL_20:
         v41 = _rt_log_facility_get_os_log(RTLogFacilityLearnedLocation);
         if (os_log_type_enabled(v41, OS_LOG_TYPE_INFO))
         {
-          v76 = [v10 stringFromDate];
-          dsemaa = [v11 stringFromDate];
-          v42 = [v80 startDate];
-          v43 = [v42 stringFromDate];
-          v44 = [v80 endDate];
-          v45 = [v44 stringFromDate];
+          stringFromDate3 = [dateCopy stringFromDate];
+          dsemaa = [endDateCopy stringFromDate];
+          startDate = [v80 startDate];
+          stringFromDate4 = [startDate stringFromDate];
+          endDate = [v80 endDate];
+          stringFromDate5 = [endDate stringFromDate];
           *v114 = 138413058;
-          *&v114[4] = v76;
+          *&v114[4] = stringFromDate3;
           v115 = 2112;
           v116 = dsemaa;
           v117 = 2112;
-          v118 = v43;
+          v118 = stringFromDate4;
           v119 = 2112;
-          v120 = v45;
+          v120 = stringFromDate5;
           _os_log_impl(&dword_2304B3000, v41, OS_LOG_TYPE_INFO, "Zero fingerprints found between startDate %@, endDate, %@, fallback query between fallbackStartDate %@ and fallbackEndDate %@", v114, 0x2Au);
         }
       }
 
-      v46 = [v80 startDate];
-      v47 = [v80 endDate];
+      startDate2 = [v80 startDate];
+      endDate2 = [v80 endDate];
       v86[0] = MEMORY[0x277D85DD0];
       v86[1] = 3221225472;
       v86[2] = __121__RTPOIHarvestUtilities_fingerprintsBetweenStartDate_endDate_isTimeWindowFallback_settledState_fingerprintManager_error___block_invoke_5;
@@ -201,7 +201,7 @@ LABEL_20:
       v89 = &v95;
       v48 = v14;
       v87 = v48;
-      [v84 fetchFingerprintsBetweenStartDate:v46 endDate:v47 filteredBySettledState:2 handler:v86];
+      [managerCopy fetchFingerprintsBetweenStartDate:startDate2 endDate:endDate2 filteredBySettledState:2 handler:v86];
 
       dsema = v48;
       v77 = [MEMORY[0x277CBEAA8] now];
@@ -216,11 +216,11 @@ LABEL_20:
       v51 = v50;
       v52 = objc_opt_new();
       v53 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_49];
-      v54 = [MEMORY[0x277CCACC8] callStackSymbols];
-      v55 = [v54 filteredArrayUsingPredicate:v53];
-      v56 = [v55 firstObject];
+      callStackSymbols2 = [MEMORY[0x277CCACC8] callStackSymbols];
+      v55 = [callStackSymbols2 filteredArrayUsingPredicate:v53];
+      firstObject2 = [v55 firstObject];
 
-      [v52 submitToCoreAnalytics:v56 type:1 duration:v51];
+      [v52 submitToCoreAnalytics:firstObject2 type:1 duration:v51];
       v57 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
       if (os_log_type_enabled(v57, OS_LOG_TYPE_FAULT))
       {
@@ -273,12 +273,12 @@ LABEL_40:
     {
       v65 = NSStringFromSelector(a2);
       v66 = [v102[5] count];
-      v67 = [v10 stringFromDate];
-      v68 = [v11 stringFromDate];
-      v69 = v68;
+      stringFromDate6 = [dateCopy stringFromDate];
+      stringFromDate7 = [endDateCopy stringFromDate];
+      v69 = stringFromDate7;
       v70 = @"NO";
       v71 = v96[5];
-      if (*a5)
+      if (*fallback)
       {
         v70 = @"YES";
       }
@@ -288,11 +288,11 @@ LABEL_40:
       *&buf[12] = 2048;
       *&buf[14] = v66;
       *&buf[22] = 2112;
-      v108 = v67;
+      v108 = stringFromDate6;
       *v109 = 2112;
-      *&v109[2] = v68;
+      *&v109[2] = stringFromDate7;
       *&v109[10] = 2048;
-      *&v109[12] = a6;
+      *&v109[12] = state;
       v110 = 2112;
       v111 = v70;
       v112 = 2112;
@@ -301,9 +301,9 @@ LABEL_40:
     }
   }
 
-  if (a8)
+  if (error)
   {
-    *a8 = v96[5];
+    *error = v96[5];
   }
 
   v34 = v102[5];
@@ -350,16 +350,16 @@ void __121__RTPOIHarvestUtilities_fingerprintsBetweenStartDate_endDate_isTimeWin
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-+ (id)determineFingerprintFallbackDateIntervalFromStartDate:(id)a3 endDate:(id)a4 error:(id *)a5
++ (id)determineFingerprintFallbackDateIntervalFromStartDate:(id)date endDate:(id)endDate error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  dateCopy = date;
+  endDateCopy = endDate;
+  v9 = endDateCopy;
+  if (dateCopy)
   {
-    if (v8)
+    if (endDateCopy)
     {
-      v10 = [MEMORY[0x277CBEAA8] dateWithTimeInterval:v7 sinceDate:-300.0];
+      v10 = [MEMORY[0x277CBEAA8] dateWithTimeInterval:dateCopy sinceDate:-300.0];
       v11 = [MEMORY[0x277CBEAA8] dateWithTimeInterval:v9 sinceDate:300.0];
       v12 = objc_alloc(MEMORY[0x277CCA970]);
       v21 = 0;
@@ -368,11 +368,11 @@ void __121__RTPOIHarvestUtilities_fingerprintsBetweenStartDate_endDate_isTimeWin
 
       if (v14)
       {
-        if (a5)
+        if (error)
         {
           v15 = v14;
           v16 = 0;
-          *a5 = v14;
+          *error = v14;
         }
 
         else
@@ -396,7 +396,7 @@ void __121__RTPOIHarvestUtilities_fingerprintsBetweenStartDate_endDate_isTimeWin
       _os_log_error_impl(&dword_2304B3000, v19, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: endDate", v22, 2u);
     }
 
-    if (a5)
+    if (error)
     {
       v18 = @"endDate";
       goto LABEL_14;
@@ -412,12 +412,12 @@ void __121__RTPOIHarvestUtilities_fingerprintsBetweenStartDate_endDate_isTimeWin
       _os_log_error_impl(&dword_2304B3000, v17, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: startDate", buf, 2u);
     }
 
-    if (a5)
+    if (error)
     {
       v18 = @"startDate";
 LABEL_14:
       _RTErrorInvalidParameterCreate(v18);
-      *a5 = v16 = 0;
+      *error = v16 = 0;
       goto LABEL_19;
     }
   }
@@ -428,13 +428,13 @@ LABEL_19:
   return v16;
 }
 
-+ (id)accessPointsForFingerprint:(id)a3 endDate:(id)a4 fingerprintManager:(id)a5 error:(id *)a6
++ (id)accessPointsForFingerprint:(id)fingerprint endDate:(id)date fingerprintManager:(id)manager error:(id *)error
 {
   v56 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v9)
+  fingerprintCopy = fingerprint;
+  dateCopy = date;
+  managerCopy = manager;
+  if (!fingerprintCopy)
   {
     v29 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
@@ -443,12 +443,12 @@ LABEL_19:
       _os_log_error_impl(&dword_2304B3000, v29, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: fingerprint", buf, 2u);
     }
 
-    if (a6)
+    if (error)
     {
       v30 = _RTErrorInvalidParameterCreate(@"fingerprint");
 LABEL_16:
       v32 = 0;
-      *a6 = v30;
+      *error = v30;
       goto LABEL_25;
     }
 
@@ -457,7 +457,7 @@ LABEL_17:
     goto LABEL_25;
   }
 
-  if (!v10)
+  if (!dateCopy)
   {
     v31 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
@@ -466,7 +466,7 @@ LABEL_17:
       _os_log_error_impl(&dword_2304B3000, v31, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: endDate", buf, 2u);
     }
 
-    if (a6)
+    if (error)
     {
       v30 = _RTErrorInvalidParameterCreate(@"endDate");
       goto LABEL_16;
@@ -496,7 +496,7 @@ LABEL_17:
   v41 = &v42;
   v13 = v12;
   v39 = v13;
-  [v11 fetchWifiAccessPointsForFingerprint:v9 handler:v38];
+  [managerCopy fetchWifiAccessPointsForFingerprint:fingerprintCopy handler:v38];
   v14 = v13;
   v37 = [MEMORY[0x277CBEAA8] now];
   v15 = dispatch_time(0, 3600000000000);
@@ -513,11 +513,11 @@ LABEL_19:
   v17 = v16;
   v18 = objc_opt_new();
   v19 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_49];
-  v20 = [MEMORY[0x277CCACC8] callStackSymbols];
-  v21 = [v20 filteredArrayUsingPredicate:v19];
-  v22 = [v21 firstObject];
+  callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+  v21 = [callStackSymbols filteredArrayUsingPredicate:v19];
+  firstObject = [v21 firstObject];
 
-  [v18 submitToCoreAnalytics:v22 type:1 duration:v17];
+  [v18 submitToCoreAnalytics:firstObject type:1 duration:v17];
   v23 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
   if (os_log_type_enabled(v23, OS_LOG_TYPE_FAULT))
   {
@@ -547,13 +547,13 @@ LABEL_20:
     objc_storeStrong(v43 + 5, v26);
   }
 
-  if (a6)
+  if (error)
   {
-    *a6 = v43[5];
+    *error = v43[5];
   }
 
-  v34 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K <= %@", @"date", v10];
-  v32 = [*(v49 + 5) filteredArrayUsingPredicate:v34];
+  dateCopy = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K <= %@", @"date", dateCopy];
+  v32 = [*(v49 + 5) filteredArrayUsingPredicate:dateCopy];
 
   _Block_object_dispose(&v42, 8);
   _Block_object_dispose(buf, 8);
@@ -580,48 +580,48 @@ void __85__RTPOIHarvestUtilities_accessPointsForFingerprint_endDate_fingerprintM
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-+ (id)locationsForAccessPoints:(id)a3 harvestParameters:(id)a4 locationManager:(id)a5 error:(id *)a6
++ (id)locationsForAccessPoints:(id)points harvestParameters:(id)parameters locationManager:(id)manager error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v9)
+  pointsCopy = points;
+  parametersCopy = parameters;
+  managerCopy = manager;
+  if (pointsCopy)
   {
-    v12 = [v9 firstObject];
-    v13 = [v12 date];
+    firstObject = [pointsCopy firstObject];
+    date = [firstObject date];
 
-    v14 = [v9 lastObject];
-    v15 = [v14 date];
+    lastObject = [pointsCopy lastObject];
+    date2 = [lastObject date];
 
     v16 = 0;
-    if (!v13 || !v15)
+    if (!date || !date2)
     {
 LABEL_20:
 
       goto LABEL_21;
     }
 
-    [v15 timeIntervalSinceDate:v13];
+    [date2 timeIntervalSinceDate:date];
     v18 = v17 / 60.0;
-    [v10 locationLookupWindowMinMinutes];
+    [parametersCopy locationLookupWindowMinMinutes];
     if (v18 >= v19)
     {
-      [v10 locationLookupWindowMaxMinutes];
+      [parametersCopy locationLookupWindowMaxMinutes];
       if (v18 <= v22)
       {
 LABEL_13:
         v24 = objc_alloc(MEMORY[0x277CCA970]);
         v29 = 0;
-        v25 = [v24 rt_initWithStartDate:v13 endDate:v15 error:&v29];
+        v25 = [v24 rt_initWithStartDate:date endDate:date2 error:&v29];
         v26 = v29;
 
         if (v26)
         {
-          if (a6)
+          if (error)
           {
             v27 = v26;
             v16 = 0;
-            *a6 = v26;
+            *error = v26;
           }
 
           else
@@ -632,23 +632,23 @@ LABEL_13:
 
         else
         {
-          v16 = [RTPOIHarvestUtilities locationsInDateInterval:v25 harvestParameters:v10 locationManager:v11 error:a6];
+          v16 = [RTPOIHarvestUtilities locationsInDateInterval:v25 harvestParameters:parametersCopy locationManager:managerCopy error:error];
         }
 
         goto LABEL_20;
       }
 
-      [v10 locationLookupWindowMaxMinutes];
+      [parametersCopy locationLookupWindowMaxMinutes];
     }
 
     else
     {
-      [v10 locationLookupWindowMinMinutes];
+      [parametersCopy locationLookupWindowMinMinutes];
     }
 
-    v23 = [v13 dateByAddingTimeInterval:v20 * 60.0];
+    v23 = [date dateByAddingTimeInterval:v20 * 60.0];
 
-    v15 = v23;
+    date2 = v23;
     goto LABEL_13;
   }
 
@@ -659,10 +659,10 @@ LABEL_13:
     _os_log_error_impl(&dword_2304B3000, v21, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: accessPoints", buf, 2u);
   }
 
-  if (a6)
+  if (error)
   {
     _RTErrorInvalidParameterCreate(@"accessPoints");
-    *a6 = v16 = 0;
+    *error = v16 = 0;
   }
 
   else
@@ -675,13 +675,13 @@ LABEL_21:
   return v16;
 }
 
-+ (id)locationsInDateInterval:(id)a3 harvestParameters:(id)a4 locationManager:(id)a5 error:(id *)a6
++ (id)locationsInDateInterval:(id)interval harvestParameters:(id)parameters locationManager:(id)manager error:(id *)error
 {
   v59 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v40 = a5;
-  if (v8)
+  intervalCopy = interval;
+  parametersCopy = parameters;
+  managerCopy = manager;
+  if (intervalCopy)
   {
     *v51 = 0;
     v52 = v51;
@@ -697,8 +697,8 @@ LABEL_21:
     v50 = 0;
     v10 = dispatch_semaphore_create(0);
     v11 = objc_alloc(MEMORY[0x277D01320]);
-    [v9 locationUncertaintyThreshold];
-    v38 = [v11 initWithDateInterval:v8 horizontalAccuracy:objc_msgSend(v9 batchSize:"maxLocationsPerFingerprint") - 1 boundingBoxLocation:{0, v12}];
+    [parametersCopy locationUncertaintyThreshold];
+    v38 = [v11 initWithDateInterval:intervalCopy horizontalAccuracy:objc_msgSend(parametersCopy batchSize:"maxLocationsPerFingerprint") - 1 boundingBoxLocation:{0, v12}];
     v41[0] = MEMORY[0x277D85DD0];
     v41[1] = 3221225472;
     v41[2] = __89__RTPOIHarvestUtilities_locationsInDateInterval_harvestParameters_locationManager_error___block_invoke;
@@ -707,7 +707,7 @@ LABEL_21:
     v44 = &v45;
     v13 = v10;
     v42 = v13;
-    [v40 fetchStoredLocationsWithOptions:v38 handler:v41];
+    [managerCopy fetchStoredLocationsWithOptions:v38 handler:v41];
     v14 = v13;
     v15 = [MEMORY[0x277CBEAA8] now];
     v16 = dispatch_time(0, 3600000000000);
@@ -718,11 +718,11 @@ LABEL_21:
       v19 = v18;
       v20 = objc_opt_new();
       v21 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_49];
-      v22 = [MEMORY[0x277CCACC8] callStackSymbols];
-      v23 = [v22 filteredArrayUsingPredicate:v21];
-      v24 = [v23 firstObject];
+      callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+      v23 = [callStackSymbols filteredArrayUsingPredicate:v21];
+      firstObject = [v23 firstObject];
 
-      [v20 submitToCoreAnalytics:v24 type:1 duration:v19];
+      [v20 submitToCoreAnalytics:firstObject type:1 duration:v19];
       v25 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
       if (os_log_type_enabled(v25, OS_LOG_TYPE_FAULT))
       {
@@ -753,9 +753,9 @@ LABEL_13:
         if (v34)
         {
           v32 = 0;
-          if (a6)
+          if (error)
           {
-            *a6 = v34;
+            *error = v34;
           }
         }
 
@@ -789,10 +789,10 @@ LABEL_13:
     _os_log_error_impl(&dword_2304B3000, v31, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: dateInterval", v51, 2u);
   }
 
-  if (a6)
+  if (error)
   {
     _RTErrorInvalidParameterCreate(@"dateInterval");
-    *a6 = v32 = 0;
+    *error = v32 = 0;
   }
 
   else
@@ -827,14 +827,14 @@ id __89__RTPOIHarvestUtilities_locationsInDateInterval_harvestParameters_locatio
   return v4;
 }
 
-+ (BOOL)harvestCuration:(id)a3 mapItem:(id)a4 referenceLocations:(id)a5 poiHarvester:(id)a6 error:(id *)a7
++ (BOOL)harvestCuration:(id)curation mapItem:(id)item referenceLocations:(id)locations poiHarvester:(id)harvester error:(id *)error
 {
   v27 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (!v11)
+  curationCopy = curation;
+  itemCopy = item;
+  locationsCopy = locations;
+  harvesterCopy = harvester;
+  if (!curationCopy)
   {
     v15 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -847,39 +847,39 @@ id __89__RTPOIHarvestUtilities_locationsInDateInterval_harvestParameters_locatio
     }
   }
 
-  v16 = [v11 visitEntryDate];
-  v17 = [v11 visitExitDate];
+  visitEntryDate = [curationCopy visitEntryDate];
+  visitExitDate = [curationCopy visitExitDate];
   v22 = 0;
-  v18 = [v14 harvestPOI:v12 mapItemSource:8 referenceLocations:v13 startDate:v16 endDate:v17 harvestType:2 error:&v22];
+  v18 = [harvesterCopy harvestPOI:itemCopy mapItemSource:8 referenceLocations:locationsCopy startDate:visitEntryDate endDate:visitExitDate harvestType:2 error:&v22];
   v19 = v22;
 
-  if (a7 && (v18 & 1) == 0)
+  if (error && (v18 & 1) == 0)
   {
     v20 = v19;
-    *a7 = v19;
+    *error = v19;
   }
 
   return v18;
 }
 
-+ (BOOL)harvestVisits:(id)a3 mapItem:(id)a4 harvestType:(unint64_t)a5 poiHarvester:(id)a6 error:(id *)a7
++ (BOOL)harvestVisits:(id)visits mapItem:(id)item harvestType:(unint64_t)type poiHarvester:(id)harvester error:(id *)error
 {
   v58 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v46 = a6;
-  if ([v11 count] && objc_msgSend(v12, "validMUID"))
+  visitsCopy = visits;
+  itemCopy = item;
+  harvesterCopy = harvester;
+  if ([visitsCopy count] && objc_msgSend(itemCopy, "validMUID"))
   {
     v54 = 0u;
     v55 = 0u;
     v52 = 0u;
     v53 = 0u;
-    obj = v11;
+    obj = visitsCopy;
     v45 = [obj countByEnumeratingWithState:&v52 objects:v57 count:16];
     if (v45)
     {
-      v41 = a7;
-      v42 = v11;
+      errorCopy = error;
+      v42 = visitsCopy;
       v44 = *v53;
       while (2)
       {
@@ -891,13 +891,13 @@ id __89__RTPOIHarvestUtilities_locationsInDateInterval_harvestParameters_locatio
           }
 
           v14 = *(*(&v52 + 1) + 8 * i);
-          if (a5 == 1)
+          if (type == 1)
           {
             if ([*(*(&v52 + 1) + 8 * i) placeSource])
             {
-              v15 = [v14 placeSource];
-              v16 = [v46 parameters];
-              v17 = [v16 harvestMask] & v15;
+              placeSource = [v14 placeSource];
+              parameters = [harvesterCopy parameters];
+              v17 = [parameters harvestMask] & placeSource;
 
               if (!v17)
               {
@@ -907,43 +907,43 @@ id __89__RTPOIHarvestUtilities_locationsInDateInterval_harvestParameters_locatio
           }
 
           v18 = objc_alloc(MEMORY[0x277D01160]);
-          v50 = [v14 location];
-          v49 = [v50 location];
-          [v49 latitude];
+          location = [v14 location];
+          v50Location = [location location];
+          [v50Location latitude];
           v20 = v19;
-          v48 = [v14 location];
-          v47 = [v48 location];
-          [v47 longitude];
+          location2 = [v14 location];
+          v48Location = [location2 location];
+          [v48Location longitude];
           v22 = v21;
-          v23 = [v14 location];
-          v24 = [v23 location];
-          [v24 horizontalUncertainty];
+          location3 = [v14 location];
+          v23Location = [location3 location];
+          [v23Location horizontalUncertainty];
           v26 = v25;
           [v14 entryDate];
-          v28 = v27 = v12;
-          v29 = [v14 location];
-          [v29 location];
-          v31 = v30 = a5;
+          v28 = v27 = itemCopy;
+          location4 = [v14 location];
+          [location4 location];
+          v31 = v30 = type;
           v32 = [v18 initWithLatitude:v28 longitude:objc_msgSend(v31 horizontalUncertainty:"referenceFrame") date:v20 referenceFrame:{v22, v26}];
 
-          a5 = v30;
-          v12 = v27;
+          type = v30;
+          itemCopy = v27;
 
-          v33 = [v14 placeSource];
+          placeSource2 = [v14 placeSource];
           v56 = v32;
           v34 = [MEMORY[0x277CBEA60] arrayWithObjects:&v56 count:1];
-          v35 = [v14 entryDate];
-          v36 = [v14 exitDate];
+          entryDate = [v14 entryDate];
+          exitDate = [v14 exitDate];
           v51 = 0;
-          LOBYTE(v29) = [v46 harvestPOI:v12 mapItemSource:v33 referenceLocations:v34 startDate:v35 endDate:v36 harvestType:a5 error:&v51];
+          LOBYTE(location4) = [harvesterCopy harvestPOI:itemCopy mapItemSource:placeSource2 referenceLocations:v34 startDate:entryDate endDate:exitDate harvestType:type error:&v51];
           v37 = v51;
 
-          if ((v29 & 1) == 0)
+          if ((location4 & 1) == 0)
           {
-            if (v41)
+            if (errorCopy)
             {
               v39 = v37;
-              *v41 = v37;
+              *errorCopy = v37;
             }
 
             v38 = 0;
@@ -962,7 +962,7 @@ id __89__RTPOIHarvestUtilities_locationsInDateInterval_harvestParameters_locatio
 
       v38 = 1;
 LABEL_20:
-      v11 = v42;
+      visitsCopy = v42;
     }
 
     else

@@ -1,21 +1,21 @@
 @interface VCClientRelay
 - (BOOL)relayIDSPacket;
 - (BOOL)relayVTPPacket;
-- (VCClientRelay)initWithIDSSocket:(int)a3;
+- (VCClientRelay)initWithIDSSocket:(int)socket;
 - (int)setupVTPSocket;
 - (int)startRelay;
 - (int)stopRelay;
 - (void)dealloc;
 - (void)relayIDSPacket;
 - (void)relayVTPPacket;
-- (void)setConnectionResult:(tagCONNRESULT *)a3;
+- (void)setConnectionResult:(tagCONNRESULT *)result;
 - (void)setupVTPSocket;
 - (void)startRelay;
 @end
 
 @implementation VCClientRelay
 
-- (VCClientRelay)initWithIDSSocket:(int)a3
+- (VCClientRelay)initWithIDSSocket:(int)socket
 {
   v6 = *MEMORY[0x1E69E9840];
   v5.receiver = self;
@@ -25,16 +25,16 @@
   {
     result->_vtpSocket = -1;
     result->_vtpReceiveTID = 0;
-    if (a3 != -1)
+    if (socket != -1)
     {
-      result->_idsSocket = a3;
+      result->_idsSocket = socket;
       return result;
     }
   }
 
   else
   {
-    close(a3);
+    close(socket);
   }
 
   return 0;
@@ -54,11 +54,11 @@
   [(VCClientRelay *)&v4 dealloc];
 }
 
-- (void)setConnectionResult:(tagCONNRESULT *)a3
+- (void)setConnectionResult:(tagCONNRESULT *)result
 {
-  if (a3)
+  if (result)
   {
-    memcpy(&self->_connectionResult, a3, sizeof(self->_connectionResult));
+    memcpy(&self->_connectionResult, result, sizeof(self->_connectionResult));
     self->_isConnectionResultSet = 1;
   }
 }
@@ -388,7 +388,7 @@ LABEL_11:
         v27 = 2112;
         v28 = v3;
         v29 = 2048;
-        v30 = self;
+        selfCopy = self;
         v6 = " [%s] %s:%d %@(%p) ";
         v7 = v10;
         v8 = 48;
@@ -397,10 +397,10 @@ LABEL_11:
     }
   }
 
-  v11 = [(VCClientRelay *)self setupVTPSocket];
-  if (v11 < 0)
+  setupVTPSocket = [(VCClientRelay *)self setupVTPSocket];
+  if (setupVTPSocket < 0)
   {
-    v14 = v11;
+    v14 = setupVTPSocket;
     if (VRTraceGetErrorLogLevelForModule() >= 3)
     {
       VRTraceErrorLogLevelToCSTR();
@@ -557,7 +557,7 @@ LABEL_11:
         v21 = 2112;
         v22 = v3;
         v23 = 2048;
-        v24 = self;
+        selfCopy = self;
         v6 = " [%s] %s:%d %@(%p) ";
         v7 = v10;
         v8 = 48;
@@ -676,9 +676,9 @@ LABEL_11:
         *v36 = idsSocket;
         *&v36[4] = 1024;
         *&v36[6] = v3;
-        LOWORD(v37) = 1024;
-        *(&v37 + 2) = vtpSocket;
-        HIWORD(v37) = 1024;
+        LOWORD(selfCopy2) = 1024;
+        *(&selfCopy2 + 2) = vtpSocket;
+        HIWORD(selfCopy2) = 1024;
         *v38 = v3;
         v13 = " [%s] %s:%d recv(%d) = %d, sent(%d) = (%d)";
         v14 = v9;
@@ -705,9 +705,9 @@ LABEL_23:
       *v36 = v27;
       *&v36[4] = 1024;
       *&v36[6] = v3;
-      LOWORD(v37) = 1024;
-      *(&v37 + 2) = v28;
-      HIWORD(v37) = 1024;
+      LOWORD(selfCopy2) = 1024;
+      *(&selfCopy2 + 2) = v28;
+      HIWORD(selfCopy2) = 1024;
       *v38 = v3;
       v23 = " [%s] %s:%d recv(%d) = %d, sent(%d) = (%d)";
       v24 = v9;
@@ -750,7 +750,7 @@ LABEL_29:
         v35 = 2112;
         *v36 = v6;
         *&v36[8] = 2048;
-        v37 = self;
+        selfCopy2 = self;
         *v38 = 1024;
         *&v38[2] = v19;
         v39 = 1024;
@@ -781,7 +781,7 @@ LABEL_29:
       v35 = 2112;
       *v36 = v6;
       *&v36[8] = 2048;
-      v37 = self;
+      selfCopy2 = self;
       *v38 = 1024;
       *&v38[2] = v21;
       v39 = 1024;
@@ -866,9 +866,9 @@ LABEL_29:
           *v41 = v12;
           *&v41[4] = 1024;
           *&v41[6] = v11;
-          LOWORD(v42) = 1024;
-          *(&v42 + 2) = idsSocket;
-          HIWORD(v42) = 1024;
+          LOWORD(selfCopy2) = 1024;
+          *(&selfCopy2 + 2) = idsSocket;
+          HIWORD(selfCopy2) = 1024;
           *v43 = v6;
           v14 = " [%s] %s:%d recv(%d) = %d, sent(%d) = (%d)";
           v15 = v9;
@@ -900,9 +900,9 @@ LABEL_31:
       *v41 = v31;
       *&v41[4] = 1024;
       *&v41[6] = v30;
-      LOWORD(v42) = 1024;
-      *(&v42 + 2) = v32;
-      HIWORD(v42) = 1024;
+      LOWORD(selfCopy2) = 1024;
+      *(&selfCopy2 + 2) = v32;
+      HIWORD(selfCopy2) = 1024;
       *v43 = v6;
       v26 = " [%s] %s:%d recv(%d) = %d, sent(%d) = (%d)";
       v27 = v9;
@@ -945,7 +945,7 @@ LABEL_31:
           v40 = 2112;
           *v41 = v7;
           *&v41[8] = 2048;
-          v42 = self;
+          selfCopy2 = self;
           *v43 = 1024;
           *&v43[2] = v21;
           v44 = 1024;
@@ -980,7 +980,7 @@ LABEL_31:
       v40 = 2112;
       *v41 = v7;
       *&v41[8] = 2048;
-      v42 = self;
+      selfCopy2 = self;
       *v43 = 1024;
       *&v43[2] = v24;
       v44 = 1024;

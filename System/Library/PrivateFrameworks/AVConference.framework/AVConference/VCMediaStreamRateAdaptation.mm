@@ -1,20 +1,20 @@
 @interface VCMediaStreamRateAdaptation
-- (BOOL)manageRemoteEndpointForEndpointWithSSRC:(unsigned int)a3 actionType:(unsigned __int8)a4;
+- (BOOL)manageRemoteEndpointForEndpointWithSSRC:(unsigned int)c actionType:(unsigned __int8)type;
 - (BOOL)start;
 - (BOOL)stop;
-- (VCMediaStreamRateAdaptation)initWithDelegate:(id)a3 params:(const tagVCMediaStreamRateAdaptationParams *)a4;
-- (void)configureRateControllerWithConfig:(const tagVCMediaStreamRateAdaptationConfig *)a3;
+- (VCMediaStreamRateAdaptation)initWithDelegate:(id)delegate params:(const tagVCMediaStreamRateAdaptationParams *)params;
+- (void)configureRateControllerWithConfig:(const tagVCMediaStreamRateAdaptationConfig *)config;
 - (void)dealloc;
-- (void)manageRemoteEndpointForEndpointsWithSSRC:(id)a3 actionType:(unsigned __int8)a4;
-- (void)notifyRateControllerForRemoteEndPointActivity:(unsigned int)a3 actionType:(unsigned __int8)a4;
-- (void)rateController:(id)a3 targetBitrateDidChange:(unsigned int)a4 rateChangeCounter:(unsigned int)a5;
-- (void)rateController:(id)a3 targetBitrateUnchangedForRemoteSSRC:(unsigned int)a4 targetBitrate:(unsigned int)a5;
+- (void)manageRemoteEndpointForEndpointsWithSSRC:(id)c actionType:(unsigned __int8)type;
+- (void)notifyRateControllerForRemoteEndPointActivity:(unsigned int)activity actionType:(unsigned __int8)type;
+- (void)rateController:(id)controller targetBitrateDidChange:(unsigned int)change rateChangeCounter:(unsigned int)counter;
+- (void)rateController:(id)controller targetBitrateUnchangedForRemoteSSRC:(unsigned int)c targetBitrate:(unsigned int)bitrate;
 - (void)start;
 @end
 
 @implementation VCMediaStreamRateAdaptation
 
-- (VCMediaStreamRateAdaptation)initWithDelegate:(id)a3 params:(const tagVCMediaStreamRateAdaptationParams *)a4
+- (VCMediaStreamRateAdaptation)initWithDelegate:(id)delegate params:(const tagVCMediaStreamRateAdaptationParams *)params
 {
   v19 = *MEMORY[0x1E69E9840];
   v18.receiver = self;
@@ -23,20 +23,20 @@
   if (v5)
   {
     FigCFWeakReferenceStore();
-    v5->_mode = a4->var3;
-    v5->_multiLinkRateAdaptation = a4->var10;
+    v5->_mode = params->var3;
+    v5->_multiLinkRateAdaptation = params->var10;
     *&v6 = 0xAAAAAAAAAAAAAAAALL;
     *(&v6 + 1) = 0xAAAAAAAAAAAAAAAALL;
     v12 = v6;
     v13 = v6;
     v14 = v6;
     v15 = v6;
-    var0 = a4->var0;
+    var0 = params->var0;
     LOWORD(v12) = 256;
-    var2 = a4->var2;
+    var2 = params->var2;
     BYTE8(v13) = 1;
     BYTE8(v14) = 0;
-    *&v15 = [[VCRateControllerManager getRateControllerSharingGroupWithConnection:var0 usePolicy:v12 sharedInstance:var2], "getRateControllerSharingGroupWithConnection:usePolicy:", a4->var9, [VCMediaStreamRateAdaptation resolvePolicyForCurrentConnection:a4->var9]];
+    *&v15 = [[VCRateControllerManager getRateControllerSharingGroupWithConnection:var0 usePolicy:v12 sharedInstance:var2], "getRateControllerSharingGroupWithConnection:usePolicy:", params->var9, [VCMediaStreamRateAdaptation resolvePolicyForCurrentConnection:params->var9]];
     DWORD2(v15) = 0;
     v16 = 0;
     v17 = 0;
@@ -44,7 +44,7 @@
     v5->_vcrcRateController = v8;
     if (v8)
     {
-      [(VCMediaStreamRateAdaptation *)v5 configureRateControllerWithConfig:&a4->var4];
+      [(VCMediaStreamRateAdaptation *)v5 configureRateControllerWithConfig:&params->var4];
     }
 
     else
@@ -75,15 +75,15 @@
   [(VCMediaStreamRateAdaptation *)&v3 dealloc];
 }
 
-- (void)configureRateControllerWithConfig:(const tagVCMediaStreamRateAdaptationConfig *)a3
+- (void)configureRateControllerWithConfig:(const tagVCMediaStreamRateAdaptationConfig *)config
 {
   v38 = *MEMORY[0x1E69E9840];
   p_mode = &self->_mode;
   mode = self->_mode;
   if (mode == 3)
   {
-    var2 = a3->var1.var0.var2;
-    if (a3->var1.var0.var3 == 2)
+    var2 = config->var1.var0.var2;
+    if (config->var1.var0.var3 == 2)
     {
       v13 = 9;
     }
@@ -93,10 +93,10 @@
       v13 = 8;
     }
 
-    v14 = (a3->var1.var0.var3 == 2) << 13;
-    if (a3->var1.var1.var4)
+    v14 = (config->var1.var0.var3 == 2) << 13;
+    if (config->var1.var1.var4)
     {
-      v14 = ((a3->var1.var0.var3 == 2) << 13) | 0x20000;
+      v14 = ((config->var1.var0.var3 == 2) << 13) | 0x20000;
     }
 
     if (self->_multiLinkRateAdaptation)
@@ -115,7 +115,7 @@
     v25[1] = 0;
     v25[2] = 0;
     v25[0] = v15;
-    v26 = *&a3->var1.var0.var0;
+    v26 = *&config->var1.var0.var0;
     v27 = var2;
     v28 = 0;
     v31 = 0;
@@ -127,10 +127,10 @@
 
   if (mode == 1)
   {
-    var1 = a3->var1.var0.var1;
-    var3 = a3->var1.var0.var3;
-    LODWORD(v3) = a3->var1.var0.var0;
-    LODWORD(v4) = a3->var1.var0.var2;
+    var1 = config->var1.var0.var1;
+    var3 = config->var1.var0.var3;
+    LODWORD(v3) = config->var1.var0.var0;
+    LODWORD(v4) = config->var1.var0.var2;
     bzero(v25, 0x400uLL);
     v34 = var1;
     v35 = var3;
@@ -201,12 +201,12 @@ LABEL_13:
   return [(AVCRateController *)vcrcRateController stop];
 }
 
-- (void)notifyRateControllerForRemoteEndPointActivity:(unsigned int)a3 actionType:(unsigned __int8)a4
+- (void)notifyRateControllerForRemoteEndPointActivity:(unsigned int)activity actionType:(unsigned __int8)type
 {
   v18 = *MEMORY[0x1E69E9840];
-  if (a4 >= 2u)
+  if (type >= 2u)
   {
-    [VCMediaStreamRateAdaptation notifyRateControllerForRemoteEndPointActivity:a4 actionType:?];
+    [VCMediaStreamRateAdaptation notifyRateControllerForRemoteEndPointActivity:type actionType:?];
   }
 
   else
@@ -225,27 +225,27 @@ LABEL_13:
     v5 = 0u;
     v6 = 0u;
     LODWORD(v5) = 16;
-    BYTE12(v6) = a4 ^ 1;
-    DWORD2(v6) = a3;
+    BYTE12(v6) = type ^ 1;
+    DWORD2(v6) = activity;
     v4 = [(AVCRateController *)self->_vcrcRateController statisticsCollector:v5];
     AVCStatisticsCollector_SetVCStatistics(v4, &v5);
   }
 }
 
-- (void)manageRemoteEndpointForEndpointsWithSSRC:(id)a3 actionType:(unsigned __int8)a4
+- (void)manageRemoteEndpointForEndpointsWithSSRC:(id)c actionType:(unsigned __int8)type
 {
-  if (a3)
+  if (c)
   {
-    v5 = a4;
-    if ([a3 count])
+    typeCopy = type;
+    if ([c count])
     {
       v7 = 0;
       do
       {
-        -[VCMediaStreamRateAdaptation notifyRateControllerForRemoteEndPointActivity:actionType:](self, "notifyRateControllerForRemoteEndPointActivity:actionType:", [objc_msgSend(a3 objectAtIndexedSubscript:{v7++), "unsignedIntValue"}], v5);
+        -[VCMediaStreamRateAdaptation notifyRateControllerForRemoteEndPointActivity:actionType:](self, "notifyRateControllerForRemoteEndPointActivity:actionType:", [objc_msgSend(c objectAtIndexedSubscript:{v7++), "unsignedIntValue"}], typeCopy);
       }
 
-      while (v7 < [a3 count]);
+      while (v7 < [c count]);
     }
   }
 
@@ -255,19 +255,19 @@ LABEL_13:
   }
 }
 
-- (void)rateController:(id)a3 targetBitrateDidChange:(unsigned int)a4 rateChangeCounter:(unsigned int)a5
+- (void)rateController:(id)controller targetBitrateDidChange:(unsigned int)change rateChangeCounter:(unsigned int)counter
 {
-  if (self->_vcrcRateController == a3)
+  if (self->_vcrcRateController == controller)
   {
-    [(VCMediaStreamRateAdaptationDelegate *)self->_delegate rateAdaptation:self targetBitrateDidChange:*&a4 rateChangeCounter:*&a5];
+    [(VCMediaStreamRateAdaptationDelegate *)self->_delegate rateAdaptation:self targetBitrateDidChange:*&change rateChangeCounter:*&counter];
   }
 }
 
-- (void)rateController:(id)a3 targetBitrateUnchangedForRemoteSSRC:(unsigned int)a4 targetBitrate:(unsigned int)a5
+- (void)rateController:(id)controller targetBitrateUnchangedForRemoteSSRC:(unsigned int)c targetBitrate:(unsigned int)bitrate
 {
-  v5 = *&a5;
-  v6 = *&a4;
-  if ((objc_opt_respondsToSelector() & 1) != 0 && self->_vcrcRateController == a3)
+  v5 = *&bitrate;
+  v6 = *&c;
+  if ((objc_opt_respondsToSelector() & 1) != 0 && self->_vcrcRateController == controller)
   {
     delegate = self->_delegate;
 
@@ -275,13 +275,13 @@ LABEL_13:
   }
 }
 
-- (BOOL)manageRemoteEndpointForEndpointWithSSRC:(unsigned int)a3 actionType:(unsigned __int8)a4
+- (BOOL)manageRemoteEndpointForEndpointWithSSRC:(unsigned int)c actionType:(unsigned __int8)type
 {
   if (self->_multiLinkRateAdaptation)
   {
-    if (a3)
+    if (c)
     {
-      [(VCMediaStreamRateAdaptation *)self notifyRateControllerForRemoteEndPointActivity:*&a3 actionType:a4];
+      [(VCMediaStreamRateAdaptation *)self notifyRateControllerForRemoteEndPointActivity:*&c actionType:type];
       LOBYTE(v4) = 1;
       return v4;
     }
@@ -334,7 +334,7 @@ LABEL_13:
 {
   v5 = *MEMORY[0x1E69E9840];
   v2 = 136315650;
-  v3 = a1;
+  selfCopy = self;
   OUTLINED_FUNCTION_0();
   v4 = 121;
   _os_log_error_impl(&dword_1DB56E000, v1, OS_LOG_TYPE_ERROR, " [%s] %s:%d Cannot load and retain delegate successfully!", &v2, 0x1Cu);

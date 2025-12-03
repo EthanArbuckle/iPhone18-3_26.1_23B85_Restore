@@ -1,14 +1,14 @@
 @interface CNAutocompleteQueryResponsePreparer
 - (CNAutocompleteFetchDelegate)delegate;
-- (CNAutocompleteQueryResponsePreparer)initWithDelegate:(id)a3 fetchRequest:(id)a4;
-- (id)addDiagnosticLog:(id)a3;
-- (id)applyPriorityResultsOrder:(id)a3;
+- (CNAutocompleteQueryResponsePreparer)initWithDelegate:(id)delegate fetchRequest:(id)request;
+- (id)addDiagnosticLog:(id)log;
+- (id)applyPriorityResultsOrder:(id)order;
 - (id)askDelegateToAdjustResults;
-- (id)prepareResults:(id)a3 forFetch:(id)a4;
+- (id)prepareResults:(id)results forFetch:(id)fetch;
 - (id)removeResultsWithBlockedHandles;
-- (id)resultsNotPreviouslyReturned:(id)a3;
+- (id)resultsNotPreviouslyReturned:(id)returned;
 - (id)sortResults;
-- (id)suppressResultsWithAddresses:(id)a3;
+- (id)suppressResultsWithAddresses:(id)addresses;
 @end
 
 @implementation CNAutocompleteQueryResponsePreparer
@@ -23,8 +23,8 @@
 - (id)askDelegateToAdjustResults
 {
   v3 = [_CNDelegateAdjustingResponsePreparer alloc];
-  v4 = [(CNAutocompleteQueryResponsePreparer *)self delegate];
-  v5 = [(_CNAutocompleteResponsePreparerDecorator *)v3 initWithResponsePreparer:self delegate:v4];
+  delegate = [(CNAutocompleteQueryResponsePreparer *)self delegate];
+  v5 = [(_CNAutocompleteResponsePreparerDecorator *)v3 initWithResponsePreparer:self delegate:delegate];
 
   return v5;
 }
@@ -32,16 +32,16 @@
 - (id)removeResultsWithBlockedHandles
 {
   v3 = [_CNHandleBlockingResponsePreparer alloc];
-  v4 = [(CNAutocompleteQueryResponsePreparer *)self delegate];
-  v5 = [(_CNAutocompleteResponsePreparerDecorator *)v3 initWithResponsePreparer:self delegate:v4];
+  delegate = [(CNAutocompleteQueryResponsePreparer *)self delegate];
+  v5 = [(_CNAutocompleteResponsePreparerDecorator *)v3 initWithResponsePreparer:self delegate:delegate];
 
   return v5;
 }
 
-- (CNAutocompleteQueryResponsePreparer)initWithDelegate:(id)a3 fetchRequest:(id)a4
+- (CNAutocompleteQueryResponsePreparer)initWithDelegate:(id)delegate fetchRequest:(id)request
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  requestCopy = request;
   v13.receiver = self;
   v13.super_class = CNAutocompleteQueryResponsePreparer;
   v8 = [(CNAutocompleteQueryResponsePreparer *)&v13 init];
@@ -51,22 +51,22 @@
     previouslyReturnedResults = v8->_previouslyReturnedResults;
     v8->_previouslyReturnedResults = v9;
 
-    objc_storeWeak(&v8->_delegate, v6);
-    objc_storeStrong(&v8->_fetchRequest, a4);
+    objc_storeWeak(&v8->_delegate, delegateCopy);
+    objc_storeStrong(&v8->_fetchRequest, request);
     v11 = v8;
   }
 
   return v8;
 }
 
-- (id)prepareResults:(id)a3 forFetch:(id)a4
+- (id)prepareResults:(id)results forFetch:(id)fetch
 {
   v48 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  resultsCopy = results;
   v6 = CNALoggingContextDebug();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v5 count];
+    v7 = [resultsCopy count];
     if (v7 < 0x1F5)
     {
       [MEMORY[0x277CCACA8] stringWithFormat:@"%lu", v7, v43];
@@ -82,7 +82,7 @@
     _os_log_impl(&dword_2155FE000, v6, OS_LOG_TYPE_DEFAULT, "Calling prepareResults: (%{public}@)", buf, 0xCu);
   }
 
-  v9 = [(CNAutocompleteQueryResponsePreparer *)self findUniqueResults:v5];
+  v9 = [(CNAutocompleteQueryResponsePreparer *)self findUniqueResults:resultsCopy];
   v10 = CNALoggingContextDebug();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
@@ -141,9 +141,9 @@
     _os_log_impl(&dword_2155FE000, v17, OS_LOG_TYPE_DEFAULT, "Found unique new results not previously returned: (%{public}@)", buf, 0xCu);
   }
 
-  v20 = [(CNAutocompleteQueryResponsePreparer *)self fetchRequest];
-  v21 = [v20 searchString];
-  v22 = [v21 length];
+  fetchRequest = [(CNAutocompleteQueryResponsePreparer *)self fetchRequest];
+  searchString = [fetchRequest searchString];
+  v22 = [searchString length];
 
   v23 = CNALoggingContextDebug();
   v24 = os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT);
@@ -218,7 +218,7 @@
 
   if (CNAutocompleteIsDebugLoggingEnabled())
   {
-    v35 = [v5 mutableCopy];
+    v35 = [resultsCopy mutableCopy];
     [v35 removeObjectsInArray:v13];
     v36 = CNALoggingContextDebug();
     if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
@@ -256,40 +256,40 @@
   return v30;
 }
 
-- (id)resultsNotPreviouslyReturned:(id)a3
+- (id)resultsNotPreviouslyReturned:(id)returned
 {
   previouslyReturnedResults = self->_previouslyReturnedResults;
-  v5 = a3;
+  returnedCopy = returned;
   v6 = [(NSMutableOrderedSet *)previouslyReturnedResults count];
-  [(NSMutableOrderedSet *)self->_previouslyReturnedResults addObjectsFromArray:v5];
+  [(NSMutableOrderedSet *)self->_previouslyReturnedResults addObjectsFromArray:returnedCopy];
 
   v7 = [(NSMutableOrderedSet *)self->_previouslyReturnedResults count]- v6;
-  v8 = [(NSMutableOrderedSet *)self->_previouslyReturnedResults array];
-  v9 = [v8 subarrayWithRange:{v6, v7}];
+  array = [(NSMutableOrderedSet *)self->_previouslyReturnedResults array];
+  v9 = [array subarrayWithRange:{v6, v7}];
 
   return v9;
 }
 
-- (id)applyPriorityResultsOrder:(id)a3
+- (id)applyPriorityResultsOrder:(id)order
 {
   v4 = MEMORY[0x277CFBE10];
-  v5 = a3;
-  v6 = [v4 currentEnvironment];
-  v7 = [v6 suggestedResultPrioritization];
+  orderCopy = order;
+  currentEnvironment = [v4 currentEnvironment];
+  suggestedResultPrioritization = [currentEnvironment suggestedResultPrioritization];
 
-  v8 = [(CNAutocompleteQueryResponsePreparer *)self fetchRequest];
-  v9 = [(CNAutocompleteQueryResponsePreparer *)self matchingPriorityResultsPromise];
-  v10 = [v7 applyPriorityOrderToResults:v5 fetchRequest:v8 andCompletePriorityResultsPromise:v9];
+  fetchRequest = [(CNAutocompleteQueryResponsePreparer *)self fetchRequest];
+  matchingPriorityResultsPromise = [(CNAutocompleteQueryResponsePreparer *)self matchingPriorityResultsPromise];
+  v10 = [suggestedResultPrioritization applyPriorityOrderToResults:orderCopy fetchRequest:fetchRequest andCompletePriorityResultsPromise:matchingPriorityResultsPromise];
 
   return v10;
 }
 
-- (id)addDiagnosticLog:(id)a3
+- (id)addDiagnosticLog:(id)log
 {
-  v4 = a3;
+  logCopy = log;
   v5 = [_CNDiagnosticResponsePreparer alloc];
-  v6 = [(CNAutocompleteQueryResponsePreparer *)self delegate];
-  v7 = [(_CNDiagnosticResponsePreparer *)v5 initWithResponsePreparer:self delegate:v6 log:v4];
+  delegate = [(CNAutocompleteQueryResponsePreparer *)self delegate];
+  v7 = [(_CNDiagnosticResponsePreparer *)v5 initWithResponsePreparer:self delegate:delegate log:logCopy];
 
   return v7;
 }
@@ -297,27 +297,27 @@
 - (id)sortResults
 {
   v3 = [_CNSortingResponsePreparer alloc];
-  v4 = [(CNAutocompleteQueryResponsePreparer *)self delegate];
-  v5 = [(_CNAutocompleteResponsePreparerDecorator *)v3 initWithResponsePreparer:self delegate:v4];
+  delegate = [(CNAutocompleteQueryResponsePreparer *)self delegate];
+  v5 = [(_CNAutocompleteResponsePreparerDecorator *)v3 initWithResponsePreparer:self delegate:delegate];
 
   return v5;
 }
 
-- (id)suppressResultsWithAddresses:(id)a3
+- (id)suppressResultsWithAddresses:(id)addresses
 {
   v4 = MEMORY[0x277CBEB98];
-  v5 = [a3 _cn_map:CNAutocompleteResultAddressStringForHashingTransform];
+  v5 = [addresses _cn_map:CNAutocompleteResultAddressStringForHashingTransform];
   v6 = [v4 setWithArray:v5];
 
   v7 = [_CNFilteringResponsePreparer alloc];
-  v8 = [(CNAutocompleteQueryResponsePreparer *)self delegate];
+  delegate = [(CNAutocompleteQueryResponsePreparer *)self delegate];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __68__CNAutocompleteQueryResponsePreparer_suppressResultsWithAddresses___block_invoke;
   v12[3] = &unk_2781C4AB0;
   v13 = v6;
   v9 = v6;
-  v10 = [(_CNFilteringResponsePreparer *)v7 initWithResponsePreparer:self delegate:v8 filter:v12];
+  v10 = [(_CNFilteringResponsePreparer *)v7 initWithResponsePreparer:self delegate:delegate filter:v12];
 
   return v10;
 }

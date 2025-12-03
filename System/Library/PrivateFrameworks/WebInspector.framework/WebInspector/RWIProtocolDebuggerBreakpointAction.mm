@@ -1,16 +1,16 @@
 @interface RWIProtocolDebuggerBreakpointAction
 - (BOOL)emulateUserGesture;
 - (NSString)data;
-- (RWIProtocolDebuggerBreakpointAction)initWithType:(int64_t)a3;
+- (RWIProtocolDebuggerBreakpointAction)initWithType:(int64_t)type;
 - (int)identifier;
 - (int64_t)type;
-- (void)setData:(id)a3;
-- (void)setType:(int64_t)a3;
+- (void)setData:(id)data;
+- (void)setType:(int64_t)type;
 @end
 
 @implementation RWIProtocolDebuggerBreakpointAction
 
-- (RWIProtocolDebuggerBreakpointAction)initWithType:(int64_t)a3
+- (RWIProtocolDebuggerBreakpointAction)initWithType:(int64_t)type
 {
   v8.receiver = self;
   v8.super_class = RWIProtocolDebuggerBreakpointAction;
@@ -18,14 +18,14 @@
   v5 = v4;
   if (v4)
   {
-    [(RWIProtocolDebuggerBreakpointAction *)v4 setType:a3];
+    [(RWIProtocolDebuggerBreakpointAction *)v4 setType:type];
     v6 = v5;
   }
 
   return v5;
 }
 
-- (void)setType:(int64_t)a3
+- (void)setType:(int64_t)type
 {
   WTF::StringImpl::createWithoutCopyingNonEmpty();
   if (v6)
@@ -93,11 +93,11 @@ LABEL_8:
   return v10;
 }
 
-- (void)setData:(id)a3
+- (void)setData:(id)data
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolDebuggerBreakpointAction;
-  [(RWIProtocolJSONObject *)&v3 setString:a3 forKey:@"data"];
+  [(RWIProtocolJSONObject *)&v3 setString:data forKey:@"data"];
 }
 
 - (NSString)data

@@ -1,49 +1,49 @@
 @interface FilterNodeWrapper
-+ (id)wrapperWithFilterNode:(void *)a3;
-- (FilterNodeWrapper)initWithCoder:(id)a3;
-- (FilterNodeWrapper)initWithFilterNode:(void *)a3;
++ (id)wrapperWithFilterNode:(void *)node;
+- (FilterNodeWrapper)initWithCoder:(id)coder;
+- (FilterNodeWrapper)initWithFilterNode:(void *)node;
 - (id)debugDescription;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation FilterNodeWrapper
 
-+ (id)wrapperWithFilterNode:(void *)a3
++ (id)wrapperWithFilterNode:(void *)node
 {
   v4 = [FilterNodeWrapper alloc];
-  v11 = objc_msgSend_initWithFilterNode_(v4, v5, a3, v6, v7, v8, v9, v10);
+  v11 = objc_msgSend_initWithFilterNode_(v4, v5, node, v6, v7, v8, v9, v10);
 
   return v11;
 }
 
-- (FilterNodeWrapper)initWithFilterNode:(void *)a3
+- (FilterNodeWrapper)initWithFilterNode:(void *)node
 {
   v5.receiver = self;
   v5.super_class = FilterNodeWrapper;
   result = [(FilterNodeWrapper *)&v5 init];
   if (result)
   {
-    result->node = a3;
+    result->node = node;
   }
 
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v23 = 0;
   v5 = (*(*self->node + 248))(self->node, &v23);
-  objc_msgSend_encodeBytes_length_forKey_(a3, v6, v5, v23, @"Data", v7, v8, v9);
+  objc_msgSend_encodeBytes_length_forKey_(coder, v6, v5, v23, @"Data", v7, v8, v9);
   free(v5);
   node = self->node;
   v11 = objc_opt_class();
   v12 = NSStringFromClass(v11);
-  objc_msgSend_encodeObject_forKey_(a3, v13, v12, @"ot", v14, v15, v16, v17);
-  objc_msgSend_encodeObject_forKey_(a3, v18, node[13], @"oo", v19, v20, v21, v22);
+  objc_msgSend_encodeObject_forKey_(coder, v13, v12, @"ot", v14, v15, v16, v17);
+  objc_msgSend_encodeObject_forKey_(coder, v18, node[13], @"oo", v19, v20, v21, v22);
 }
 
-- (FilterNodeWrapper)initWithCoder:(id)a3
+- (FilterNodeWrapper)initWithCoder:(id)coder
 {
   v36.receiver = self;
   v36.super_class = FilterNodeWrapper;
@@ -54,7 +54,7 @@
   }
 
   v35 = 0;
-  v10 = objc_msgSend_decodeBytesForKey_returnedLength_(a3, v4, @"Data", &v35, v5, v6, v7, v8);
+  v10 = objc_msgSend_decodeBytesForKey_returnedLength_(coder, v4, @"Data", &v35, v5, v6, v7, v8);
   if (!v10)
   {
     goto LABEL_10;
@@ -62,7 +62,7 @@
 
   v11 = v10;
   v12 = objc_opt_class();
-  v18 = objc_msgSend_decodeObjectOfClass_forKey_(a3, v13, v12, @"ot", v14, v15, v16, v17);
+  v18 = objc_msgSend_decodeObjectOfClass_forKey_(coder, v13, v12, @"ot", v14, v15, v16, v17);
   if (v18)
   {
     v18 = NSClassFromString(v18);
@@ -82,7 +82,7 @@
         goto LABEL_10;
       }
 
-      v18 = objc_msgSend_decodeObjectOfClass_forKey_(a3, v27, v19, @"oo", v28, v29, v30, v31);
+      v18 = objc_msgSend_decodeObjectOfClass_forKey_(coder, v27, v19, @"oo", v28, v29, v30, v31);
     }
   }
 

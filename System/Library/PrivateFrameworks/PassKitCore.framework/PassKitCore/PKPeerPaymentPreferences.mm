@@ -1,55 +1,55 @@
 @interface PKPeerPaymentPreferences
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToPreferences:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToPreferences:(id)preferences;
 - (BOOL)isOutOfDate;
-- (PKPeerPaymentPreferences)initWithCoder:(id)a3;
-- (PKPeerPaymentPreferences)initWithDictionary:(id)a3;
-- (PKPeerPaymentPreferences)initWithDictionary:(id)a3 lastUpdated:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PKPeerPaymentPreferences)initWithCoder:(id)coder;
+- (PKPeerPaymentPreferences)initWithDictionary:(id)dictionary;
+- (PKPeerPaymentPreferences)initWithDictionary:(id)dictionary lastUpdated:(id)updated;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)notificationWithType:(unint64_t)a3 altDSID:(id)a4;
-- (id)restrictionsForAltDSID:(id)a3;
-- (id)sendRestrictionWithType:(unint64_t)a3 altDSID:(id)a4;
+- (id)notificationWithType:(unint64_t)type altDSID:(id)d;
+- (id)restrictionsForAltDSID:(id)d;
+- (id)sendRestrictionWithType:(unint64_t)type altDSID:(id)d;
 - (unint64_t)hash;
-- (void)addReceiveRestrictionType:(unint64_t)a3 altDSID:(id)a4;
-- (void)addSendRestrictionType:(unint64_t)a3 altDSID:(id)a4;
-- (void)didUpdateNotification:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)addReceiveRestrictionType:(unint64_t)type altDSID:(id)d;
+- (void)addSendRestrictionType:(unint64_t)type altDSID:(id)d;
+- (void)didUpdateNotification:(id)notification;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPeerPaymentPreferences
 
-- (PKPeerPaymentPreferences)initWithDictionary:(id)a3
+- (PKPeerPaymentPreferences)initWithDictionary:(id)dictionary
 {
   v4 = MEMORY[0x1E695DF00];
-  v5 = a3;
-  v6 = [v4 date];
-  v7 = [(PKPeerPaymentPreferences *)self initWithDictionary:v5 lastUpdated:v6];
+  dictionaryCopy = dictionary;
+  date = [v4 date];
+  v7 = [(PKPeerPaymentPreferences *)self initWithDictionary:dictionaryCopy lastUpdated:date];
 
   return v7;
 }
 
-- (PKPeerPaymentPreferences)initWithDictionary:(id)a3 lastUpdated:(id)a4
+- (PKPeerPaymentPreferences)initWithDictionary:(id)dictionary lastUpdated:(id)updated
 {
   v44 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  updatedCopy = updated;
   v41.receiver = self;
   v41.super_class = PKPeerPaymentPreferences;
   v8 = [(PKPeerPaymentPreferences *)&v41 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_lastUpdated, a4);
-    v9->_requiresConfirmation = [v6 PKBoolForKey:@"requiresConfirmation"];
-    v9->_canReceiveFormalPaymentRequests = [v6 PKBoolForKey:@"canReceiveFormalPaymentRequests"];
+    objc_storeStrong(&v8->_lastUpdated, updated);
+    v9->_requiresConfirmation = [dictionaryCopy PKBoolForKey:@"requiresConfirmation"];
+    v9->_canReceiveFormalPaymentRequests = [dictionaryCopy PKBoolForKey:@"canReceiveFormalPaymentRequests"];
     v10 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     v37 = 0u;
     v38 = 0u;
     v39 = 0u;
     v40 = 0u;
-    v11 = [v6 PKArrayContaining:objc_opt_class() forKey:@"notifications"];
+    v11 = [dictionaryCopy PKArrayContaining:objc_opt_class() forKey:@"notifications"];
     v12 = [v11 countByEnumeratingWithState:&v37 objects:v43 count:16];
     if (v12)
     {
@@ -86,7 +86,7 @@
     v34 = 0u;
     v35 = 0u;
     v36 = 0u;
-    v20 = [v6 PKArrayContaining:objc_opt_class() forKey:@"restrictions"];
+    v20 = [dictionaryCopy PKArrayContaining:objc_opt_class() forKey:@"restrictions"];
     v21 = [v20 countByEnumeratingWithState:&v33 objects:v42 count:16];
     if (v21)
     {
@@ -118,7 +118,7 @@
     restrictions = v9->_restrictions;
     v9->_restrictions = v26;
 
-    v28 = [v6 PKDictionaryForKey:@"profileAppearance"];
+    v28 = [dictionaryCopy PKDictionaryForKey:@"profileAppearance"];
     if (v28)
     {
       v29 = [[PKPeerPaymentPreferencesProfileAppearance alloc] initWithDictionary:v28];
@@ -126,7 +126,7 @@
       v9->_profileAppearance = v29;
     }
 
-    [v6 PKDoubleForKey:@"proactivePreferencesFetchPeriod"];
+    [dictionaryCopy PKDoubleForKey:@"proactivePreferencesFetchPeriod"];
     v9->_proactiveFetchPeriod = v31;
   }
 
@@ -136,12 +136,12 @@
 - (id)dictionaryRepresentation
 {
   v34 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v4 = [MEMORY[0x1E696AD98] numberWithBool:self->_requiresConfirmation];
-  [v3 setObject:v4 forKey:@"requiresConfirmation"];
+  [dictionary setObject:v4 forKey:@"requiresConfirmation"];
 
   v5 = [MEMORY[0x1E696AD98] numberWithBool:self->_canReceiveFormalPaymentRequests];
-  [v3 setObject:v5 forKey:@"canReceiveFormalPaymentRequests"];
+  [dictionary setObject:v5 forKey:@"canReceiveFormalPaymentRequests"];
 
   v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v28 = 0u;
@@ -163,8 +163,8 @@
           objc_enumerationMutation(v7);
         }
 
-        v12 = [*(*(&v28 + 1) + 8 * i) dictionaryRepresentation];
-        [v6 safelyAddObject:v12];
+        dictionaryRepresentation = [*(*(&v28 + 1) + 8 * i) dictionaryRepresentation];
+        [v6 safelyAddObject:dictionaryRepresentation];
       }
 
       v9 = [(NSSet *)v7 countByEnumeratingWithState:&v28 objects:v33 count:16];
@@ -173,7 +173,7 @@
     while (v9);
   }
 
-  [v3 setObject:v6 forKey:@"notifications"];
+  [dictionary setObject:v6 forKey:@"notifications"];
   v13 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v24 = 0u;
   v25 = 0u;
@@ -194,8 +194,8 @@
           objc_enumerationMutation(v14);
         }
 
-        v19 = [*(*(&v24 + 1) + 8 * j) dictionaryRepresentation];
-        [v13 safelyAddObject:v19];
+        dictionaryRepresentation2 = [*(*(&v24 + 1) + 8 * j) dictionaryRepresentation];
+        [v13 safelyAddObject:dictionaryRepresentation2];
       }
 
       v16 = [(NSSet *)v14 countByEnumeratingWithState:&v24 objects:v32 count:16];
@@ -204,17 +204,17 @@
     while (v16);
   }
 
-  [v3 setObject:v13 forKey:@"restrictions"];
-  v20 = [(PKPeerPaymentPreferencesProfileAppearance *)self->_profileAppearance dictionaryRepresentation];
-  if (v20)
+  [dictionary setObject:v13 forKey:@"restrictions"];
+  dictionaryRepresentation3 = [(PKPeerPaymentPreferencesProfileAppearance *)self->_profileAppearance dictionaryRepresentation];
+  if (dictionaryRepresentation3)
   {
-    [v3 setObject:v20 forKey:@"profileAppearance"];
+    [dictionary setObject:dictionaryRepresentation3 forKey:@"profileAppearance"];
   }
 
   v21 = [MEMORY[0x1E696AD98] numberWithDouble:{self->_proactiveFetchPeriod, v24}];
-  [v3 setObject:v21 forKey:@"proactivePreferencesFetchPeriod"];
+  [dictionary setObject:v21 forKey:@"proactivePreferencesFetchPeriod"];
 
-  v22 = [v3 copy];
+  v22 = [dictionary copy];
 
   return v22;
 }
@@ -236,17 +236,17 @@
     proactiveFetchPeriod = self->_proactiveFetchPeriod;
   }
 
-  v4 = [MEMORY[0x1E695DF00] date];
-  [v4 timeIntervalSinceDate:self->_lastUpdated];
+  date = [MEMORY[0x1E695DF00] date];
+  [date timeIntervalSinceDate:self->_lastUpdated];
   v6 = v5 >= proactiveFetchPeriod;
 
   return v6;
 }
 
-- (id)sendRestrictionWithType:(unint64_t)a3 altDSID:(id)a4
+- (id)sendRestrictionWithType:(unint64_t)type altDSID:(id)d
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  dCopy = d;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -267,12 +267,12 @@
         }
 
         v12 = *(*(&v19 + 1) + 8 * i);
-        if ([v12 sendRestrictionType] == a3)
+        if ([v12 sendRestrictionType] == type)
         {
-          v13 = [v12 altDSID];
-          v14 = v6;
+          altDSID = [v12 altDSID];
+          v14 = dCopy;
           v15 = v14;
-          if (v13 == v14)
+          if (altDSID == v14)
           {
 
 LABEL_17:
@@ -280,9 +280,9 @@ LABEL_17:
             goto LABEL_18;
           }
 
-          if (v6 && v13)
+          if (dCopy && altDSID)
           {
-            v16 = [v13 isEqualToString:v14];
+            v16 = [altDSID isEqualToString:v14];
 
             if (v16)
             {
@@ -312,10 +312,10 @@ LABEL_18:
   return v17;
 }
 
-- (id)restrictionsForAltDSID:(id)a3
+- (id)restrictionsForAltDSID:(id)d
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dCopy = d;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -335,10 +335,10 @@ LABEL_18:
         }
 
         v9 = *(*(&v15 + 1) + 8 * i);
-        v10 = [v9 altDSID];
-        v11 = v4;
+        altDSID = [v9 altDSID];
+        v11 = dCopy;
         v12 = v11;
-        if (v10 == v11)
+        if (altDSID == v11)
         {
 
 LABEL_16:
@@ -346,9 +346,9 @@ LABEL_16:
           goto LABEL_17;
         }
 
-        if (v4 && v10)
+        if (dCopy && altDSID)
         {
-          v13 = [v10 isEqualToString:v11];
+          v13 = [altDSID isEqualToString:v11];
 
           if (v13)
           {
@@ -376,10 +376,10 @@ LABEL_17:
   return v6;
 }
 
-- (id)notificationWithType:(unint64_t)a3 altDSID:(id)a4
+- (id)notificationWithType:(unint64_t)type altDSID:(id)d
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  dCopy = d;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -405,22 +405,22 @@ LABEL_3:
     }
 
     v12 = *(*(&v19 + 1) + 8 * v11);
-    if ([v12 notificationType] != a3)
+    if ([v12 notificationType] != type)
     {
       goto LABEL_13;
     }
 
-    v13 = [v12 altDSID];
-    v14 = v6;
+    altDSID = [v12 altDSID];
+    v14 = dCopy;
     v15 = v14;
-    if (v13 == v14)
+    if (altDSID == v14)
     {
       break;
     }
 
-    if (v6 && v13)
+    if (dCopy && altDSID)
     {
-      v16 = [v13 isEqualToString:v14];
+      v16 = [altDSID isEqualToString:v14];
 
       if (v16)
       {
@@ -455,28 +455,28 @@ LABEL_17:
 
 LABEL_18:
   v17 = objc_alloc_init(PKPeerPaymentPreferencesNotification);
-  [(PKPeerPaymentPreferencesNotification *)v17 setAltDSID:v6];
-  [(PKPeerPaymentPreferencesNotification *)v17 setNotificationType:a3];
+  [(PKPeerPaymentPreferencesNotification *)v17 setAltDSID:dCopy];
+  [(PKPeerPaymentPreferencesNotification *)v17 setNotificationType:type];
 LABEL_19:
 
   return v17;
 }
 
-- (void)addSendRestrictionType:(unint64_t)a3 altDSID:(id)a4
+- (void)addSendRestrictionType:(unint64_t)type altDSID:(id)d
 {
-  v12 = a4;
+  dCopy = d;
   v6 = [(PKPeerPaymentPreferences *)self restrictionsForAltDSID:?];
   v7 = v6;
   if (v6)
   {
-    [v6 setSendRestrictionType:a3];
+    [v6 setSendRestrictionType:type];
   }
 
   else
   {
     v8 = objc_alloc_init(PKPeerPaymentPreferencesRestriction);
-    [(PKPeerPaymentPreferencesRestriction *)v8 setSendRestrictionType:a3];
-    [(PKPeerPaymentPreferencesRestriction *)v8 setAltDSID:v12];
+    [(PKPeerPaymentPreferencesRestriction *)v8 setSendRestrictionType:type];
+    [(PKPeerPaymentPreferencesRestriction *)v8 setAltDSID:dCopy];
     v9 = [(NSSet *)self->_restrictions mutableCopy];
     [v9 addObject:v8];
     v10 = [v9 copy];
@@ -485,21 +485,21 @@ LABEL_19:
   }
 }
 
-- (void)addReceiveRestrictionType:(unint64_t)a3 altDSID:(id)a4
+- (void)addReceiveRestrictionType:(unint64_t)type altDSID:(id)d
 {
-  v12 = a4;
+  dCopy = d;
   v6 = [(PKPeerPaymentPreferences *)self restrictionsForAltDSID:?];
   v7 = v6;
   if (v6)
   {
-    [v6 setReceiveRestrictionType:a3];
+    [v6 setReceiveRestrictionType:type];
   }
 
   else
   {
     v8 = objc_alloc_init(PKPeerPaymentPreferencesRestriction);
-    [(PKPeerPaymentPreferencesRestriction *)v8 setReceiveRestrictionType:a3];
-    [(PKPeerPaymentPreferencesRestriction *)v8 setAltDSID:v12];
+    [(PKPeerPaymentPreferencesRestriction *)v8 setReceiveRestrictionType:type];
+    [(PKPeerPaymentPreferencesRestriction *)v8 setAltDSID:dCopy];
     v9 = [(NSSet *)self->_restrictions mutableCopy];
     [v9 addObject:v8];
     v10 = [v9 copy];
@@ -508,15 +508,15 @@ LABEL_19:
   }
 }
 
-- (void)didUpdateNotification:(id)a3
+- (void)didUpdateNotification:(id)notification
 {
-  v4 = a3;
-  if (v4)
+  notificationCopy = notification;
+  if (notificationCopy)
   {
-    v12 = v4;
-    v5 = [v4 notificationType];
-    v6 = [v12 altDSID];
-    v7 = [(PKPeerPaymentPreferences *)self notificationWithType:v5 altDSID:v6];
+    v12 = notificationCopy;
+    notificationType = [notificationCopy notificationType];
+    altDSID = [v12 altDSID];
+    v7 = [(PKPeerPaymentPreferences *)self notificationWithType:notificationType altDSID:altDSID];
 
     v8 = [(NSSet *)self->_notifications mutableCopy];
     v9 = v8;
@@ -530,83 +530,83 @@ LABEL_19:
     notifications = self->_notifications;
     self->_notifications = v10;
 
-    v4 = v12;
+    notificationCopy = v12;
   }
 }
 
-- (PKPeerPaymentPreferences)initWithCoder:(id)a3
+- (PKPeerPaymentPreferences)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v22.receiver = self;
   v22.super_class = PKPeerPaymentPreferences;
   v5 = [(PKPeerPaymentPreferences *)&v22 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lastUpdated"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lastUpdated"];
     lastUpdated = v5->_lastUpdated;
     v5->_lastUpdated = v6;
 
-    v5->_dirty = [v4 decodeBoolForKey:@"dirty"];
-    v5->_requiresConfirmation = [v4 decodeBoolForKey:@"requiresConfirmation"];
-    v5->_canReceiveFormalPaymentRequests = [v4 decodeBoolForKey:@"canReceiveFormalPaymentRequests"];
+    v5->_dirty = [coderCopy decodeBoolForKey:@"dirty"];
+    v5->_requiresConfirmation = [coderCopy decodeBoolForKey:@"requiresConfirmation"];
+    v5->_canReceiveFormalPaymentRequests = [coderCopy decodeBoolForKey:@"canReceiveFormalPaymentRequests"];
     v8 = MEMORY[0x1E695DFD8];
     v9 = objc_opt_class();
     v10 = [v8 setWithObjects:{v9, objc_opt_class(), 0}];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"restrictions"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"restrictions"];
     restrictions = v5->_restrictions;
     v5->_restrictions = v11;
 
     v13 = MEMORY[0x1E695DFD8];
     v14 = objc_opt_class();
     v15 = [v13 setWithObjects:{v14, objc_opt_class(), 0}];
-    v16 = [v4 decodeObjectOfClasses:v15 forKey:@"notifications"];
+    v16 = [coderCopy decodeObjectOfClasses:v15 forKey:@"notifications"];
     notifications = v5->_notifications;
     v5->_notifications = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"profileAppearance"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"profileAppearance"];
     profileAppearance = v5->_profileAppearance;
     v5->_profileAppearance = v18;
 
-    [v4 decodeDoubleForKey:@"proactivePreferencesFetchPeriod"];
+    [coderCopy decodeDoubleForKey:@"proactivePreferencesFetchPeriod"];
     v5->_proactiveFetchPeriod = v20;
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   lastUpdated = self->_lastUpdated;
-  v5 = a3;
-  [v5 encodeObject:lastUpdated forKey:@"lastUpdated"];
-  [v5 encodeBool:self->_dirty forKey:@"dirty"];
-  [v5 encodeBool:self->_requiresConfirmation forKey:@"requiresConfirmation"];
-  [v5 encodeBool:self->_canReceiveFormalPaymentRequests forKey:@"canReceiveFormalPaymentRequests"];
-  [v5 encodeObject:self->_notifications forKey:@"notifications"];
-  [v5 encodeObject:self->_restrictions forKey:@"restrictions"];
-  [v5 encodeObject:self->_profileAppearance forKey:@"profileAppearance"];
-  [v5 encodeDouble:@"proactivePreferencesFetchPeriod" forKey:self->_proactiveFetchPeriod];
+  coderCopy = coder;
+  [coderCopy encodeObject:lastUpdated forKey:@"lastUpdated"];
+  [coderCopy encodeBool:self->_dirty forKey:@"dirty"];
+  [coderCopy encodeBool:self->_requiresConfirmation forKey:@"requiresConfirmation"];
+  [coderCopy encodeBool:self->_canReceiveFormalPaymentRequests forKey:@"canReceiveFormalPaymentRequests"];
+  [coderCopy encodeObject:self->_notifications forKey:@"notifications"];
+  [coderCopy encodeObject:self->_restrictions forKey:@"restrictions"];
+  [coderCopy encodeObject:self->_profileAppearance forKey:@"profileAppearance"];
+  [coderCopy encodeDouble:@"proactivePreferencesFetchPeriod" forKey:self->_proactiveFetchPeriod];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[PKPeerPaymentPreferences allocWithZone:](PKPeerPaymentPreferences init];
-  v6 = [(NSDate *)self->_lastUpdated copyWithZone:a3];
+  v6 = [(NSDate *)self->_lastUpdated copyWithZone:zone];
   lastUpdated = v5->_lastUpdated;
   v5->_lastUpdated = v6;
 
   v5->_dirty = self->_dirty;
   v5->_requiresConfirmation = self->_requiresConfirmation;
   v5->_canReceiveFormalPaymentRequests = self->_canReceiveFormalPaymentRequests;
-  v8 = [(NSSet *)self->_notifications copyWithZone:a3];
+  v8 = [(NSSet *)self->_notifications copyWithZone:zone];
   notifications = v5->_notifications;
   v5->_notifications = v8;
 
-  v10 = [(NSSet *)self->_restrictions copyWithZone:a3];
+  v10 = [(NSSet *)self->_restrictions copyWithZone:zone];
   restrictions = v5->_restrictions;
   v5->_restrictions = v10;
 
-  v12 = [(PKPeerPaymentPreferencesProfileAppearance *)self->_profileAppearance copyWithZone:a3];
+  v12 = [(PKPeerPaymentPreferencesProfileAppearance *)self->_profileAppearance copyWithZone:zone];
   profileAppearance = v5->_profileAppearance;
   v5->_profileAppearance = v12;
 
@@ -614,28 +614,28 @@ LABEL_19:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKPeerPaymentPreferences *)self isEqualToPreferences:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKPeerPaymentPreferences *)self isEqualToPreferences:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToPreferences:(id)a3
+- (BOOL)isEqualToPreferences:(id)preferences
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4 || self->_requiresConfirmation != *(v4 + 8) || self->_canReceiveFormalPaymentRequests != *(v4 + 9) || self->_proactiveFetchPeriod != *(v4 + 6))
+  preferencesCopy = preferences;
+  v5 = preferencesCopy;
+  if (!preferencesCopy || self->_requiresConfirmation != *(preferencesCopy + 8) || self->_canReceiveFormalPaymentRequests != *(preferencesCopy + 9) || self->_proactiveFetchPeriod != *(preferencesCopy + 6))
   {
     goto LABEL_17;
   }
@@ -694,12 +694,12 @@ LABEL_18:
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  [v3 safelyAddObject:self->_notifications];
-  [v3 safelyAddObject:self->_restrictions];
-  [v3 safelyAddObject:self->_profileAppearance];
-  [v3 safelyAddObject:self->_lastUpdated];
-  v4 = PKCombinedHash(17, v3);
+  array = [MEMORY[0x1E695DF70] array];
+  [array safelyAddObject:self->_notifications];
+  [array safelyAddObject:self->_restrictions];
+  [array safelyAddObject:self->_profileAppearance];
+  [array safelyAddObject:self->_lastUpdated];
+  v4 = PKCombinedHash(17, array);
   v5 = self->_dirty - v4 + 32 * v4;
   v6 = self->_requiresConfirmation - v5 + 32 * v5;
   v7 = self->_canReceiveFormalPaymentRequests - v6 + 32 * v6;

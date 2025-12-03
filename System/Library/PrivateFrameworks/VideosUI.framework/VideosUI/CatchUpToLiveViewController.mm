@@ -1,65 +1,65 @@
 @interface CatchUpToLiveViewController
-- (_TtC8VideosUI27CatchUpToLiveViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)axViewTappedWithGesture:(id)a3;
-- (void)vui_didMoveToParentViewController:(id)a3;
-- (void)vui_viewDidAppear:(BOOL)a3;
-- (void)vui_viewDidDisappear:(BOOL)a3;
+- (_TtC8VideosUI27CatchUpToLiveViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)axViewTappedWithGesture:(id)gesture;
+- (void)vui_didMoveToParentViewController:(id)controller;
+- (void)vui_viewDidAppear:(BOOL)appear;
+- (void)vui_viewDidDisappear:(BOOL)disappear;
 - (void)vui_viewDidLayoutSubviews;
 - (void)vui_viewDidLoad;
 @end
 
 @implementation CatchUpToLiveViewController
 
-- (void)vui_didMoveToParentViewController:(id)a3
+- (void)vui_didMoveToParentViewController:(id)controller
 {
-  v5 = a3;
-  v6 = self;
+  controllerCopy = controller;
+  selfCopy = self;
   OUTLINED_FUNCTION_37_3();
-  sub_1E4152888(a3);
+  sub_1E4152888(controller);
 }
 
 - (void)vui_viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1E4152948();
 }
 
-- (void)vui_viewDidAppear:(BOOL)a3
+- (void)vui_viewDidAppear:(BOOL)appear
 {
-  v4 = self;
+  selfCopy = self;
   OUTLINED_FUNCTION_37_3();
-  sub_1E4153990(a3);
+  sub_1E4153990(appear);
 }
 
-- (void)vui_viewDidDisappear:(BOOL)a3
+- (void)vui_viewDidDisappear:(BOOL)disappear
 {
-  v4 = self;
+  selfCopy = self;
   OUTLINED_FUNCTION_37_3();
-  sub_1E4153B10(a3);
+  sub_1E4153B10(disappear);
 }
 
 - (void)vui_viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1E4157CC8();
 }
 
-- (void)axViewTappedWithGesture:(id)a3
+- (void)axViewTappedWithGesture:(id)gesture
 {
-  v4 = a3;
-  v5 = self;
+  gestureCopy = gesture;
+  selfCopy = self;
   OUTLINED_FUNCTION_37_3();
-  sub_1E4158828(v4);
+  sub_1E4158828(gestureCopy);
 }
 
-- (_TtC8VideosUI27CatchUpToLiveViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC8VideosUI27CatchUpToLiveViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_1E4205F14();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   sub_1E415BCE0();
 }
 

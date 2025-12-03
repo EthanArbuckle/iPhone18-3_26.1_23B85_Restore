@@ -1,22 +1,22 @@
 @interface NTKOlympusAnalogBackgroundPalette
-- (NTKOlympusAnalogBackgroundPalette)initWithOlympusColorPalette:(id)a3 alternatePalette:(id)a4;
+- (NTKOlympusAnalogBackgroundPalette)initWithOlympusColorPalette:(id)palette alternatePalette:(id)alternatePalette;
 - (id)tritiumLogoColor;
 @end
 
 @implementation NTKOlympusAnalogBackgroundPalette
 
-- (NTKOlympusAnalogBackgroundPalette)initWithOlympusColorPalette:(id)a3 alternatePalette:(id)a4
+- (NTKOlympusAnalogBackgroundPalette)initWithOlympusColorPalette:(id)palette alternatePalette:(id)alternatePalette
 {
-  v7 = a3;
-  v8 = a4;
+  paletteCopy = palette;
+  alternatePaletteCopy = alternatePalette;
   v12.receiver = self;
   v12.super_class = NTKOlympusAnalogBackgroundPalette;
   v9 = [(NTKOlympusAnalogBackgroundPalette *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_olympusPalette, a3);
-    objc_storeStrong(&v10->_tritiumPalette, a4);
+    objc_storeStrong(&v9->_olympusPalette, palette);
+    objc_storeStrong(&v10->_tritiumPalette, alternatePalette);
   }
 
   return v10;
@@ -24,9 +24,9 @@
 
 - (id)tritiumLogoColor
 {
-  v3 = [(NTKFaceColorPalette *)self->_olympusPalette pigmentEditOption];
-  v4 = [v3 fullname];
-  v5 = [v4 isEqualToString:@"victory.fall2025.voltSplash"];
+  pigmentEditOption = [(NTKFaceColorPalette *)self->_olympusPalette pigmentEditOption];
+  fullname = [pigmentEditOption fullname];
+  v5 = [fullname isEqualToString:@"victory.fall2025.voltSplash"];
 
   if (v5)
   {

@@ -1,201 +1,201 @@
 @interface IMNickname
-+ (id)nameHashWithFirstName:(id)a3 lastName:(id)a4;
-+ (id)processSetOfUnknownSenderRecords:(id)a3;
++ (id)nameHashWithFirstName:(id)name lastName:(id)lastName;
++ (id)processSetOfUnknownSenderRecords:(id)records;
 + (id)uniqueFilePathForWritingImageData;
 + (id)uniqueFilePathForWritingWallpaperData;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isUpdateFromNickname:(id)a3 withOptions:(unint64_t)a4;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isUpdateFromNickname:(id)nickname withOptions:(unint64_t)options;
 - (IMNickname)init;
-- (IMNickname)initWithCoder:(id)a3;
-- (IMNickname)initWithDictionaryRepresentation:(id)a3;
-- (IMNickname)initWithFirstName:(id)a3 lastName:(id)a4 avatar:(id)a5 pronouns:(id)a6 wallpaper:(id)a7 avatarRecipe:(id)a8;
-- (IMNickname)initWithMeContact:(id)a3;
-- (IMNickname)initWithPublicDictionaryRepresentationWithoutAvatar:(id)a3;
+- (IMNickname)initWithCoder:(id)coder;
+- (IMNickname)initWithDictionaryRepresentation:(id)representation;
+- (IMNickname)initWithFirstName:(id)name lastName:(id)lastName avatar:(id)avatar pronouns:(id)pronouns wallpaper:(id)wallpaper avatarRecipe:(id)recipe;
+- (IMNickname)initWithMeContact:(id)contact;
+- (IMNickname)initWithPublicDictionaryRepresentationWithoutAvatar:(id)avatar;
 - (NSData)imageHash;
 - (NSData)wallpaperImageHash;
 - (NSData)wallpaperLowResImageHash;
 - (NSString)concatenatedImageHash;
 - (NSString)nameHash;
-- (id)_imageHashCreatedInChunks:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_imageHashCreatedInChunks:(id)chunks;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dataRepresentation;
 - (id)dictionaryRepresentation;
 - (id)persistedDictionaryRepresentation;
 - (id)publicDictionaryRepresentation;
 - (id)publicDictionaryRepresentationWithoutAvatar;
-- (void)encodeWithCoder:(id)a3;
-- (void)setAvatar:(id)a3;
-- (void)setFirstName:(id)a3;
-- (void)setLastName:(id)a3;
-- (void)setWallpaper:(id)a3;
-- (void)updateNameFromContact:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setAvatar:(id)avatar;
+- (void)setFirstName:(id)name;
+- (void)setLastName:(id)name;
+- (void)setWallpaper:(id)wallpaper;
+- (void)updateNameFromContact:(id)contact;
 @end
 
 @implementation IMNickname
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [(IMNickname *)self firstName];
-  v6 = [v4 firstName];
-  if ([v5 isEqual:v6])
+  equalCopy = equal;
+  firstName = [(IMNickname *)self firstName];
+  firstName2 = [equalCopy firstName];
+  if ([firstName isEqual:firstName2])
   {
     v47 = 0;
   }
 
   else
   {
-    v7 = [(IMNickname *)self firstName];
-    if (v7)
+    firstName3 = [(IMNickname *)self firstName];
+    if (firstName3)
     {
       v47 = 1;
     }
 
     else
     {
-      v8 = [v4 firstName];
-      v47 = v8 != 0;
+      firstName4 = [equalCopy firstName];
+      v47 = firstName4 != 0;
     }
   }
 
-  v9 = [(IMNickname *)self lastName];
-  v10 = [v4 lastName];
-  if ([v9 isEqual:v10])
+  lastName = [(IMNickname *)self lastName];
+  lastName2 = [equalCopy lastName];
+  if ([lastName isEqual:lastName2])
   {
     v46 = 0;
   }
 
   else
   {
-    v11 = [(IMNickname *)self lastName];
-    if (v11)
+    lastName3 = [(IMNickname *)self lastName];
+    if (lastName3)
     {
       v46 = 1;
     }
 
     else
     {
-      v12 = [v4 lastName];
-      v46 = v12 != 0;
+      lastName4 = [equalCopy lastName];
+      v46 = lastName4 != 0;
     }
   }
 
-  v13 = [(IMNickname *)self avatar];
-  v14 = [v13 imageFilePath];
-  v15 = [v4 avatar];
-  v16 = [v15 imageFilePath];
-  if ([v14 isEqual:v16])
+  avatar = [(IMNickname *)self avatar];
+  imageFilePath = [avatar imageFilePath];
+  avatar2 = [equalCopy avatar];
+  imageFilePath2 = [avatar2 imageFilePath];
+  if ([imageFilePath isEqual:imageFilePath2])
   {
     v17 = 0;
   }
 
   else
   {
-    v18 = [(IMNickname *)self avatar];
-    v19 = [v18 imageFilePath];
-    if (v19)
+    avatar3 = [(IMNickname *)self avatar];
+    imageFilePath3 = [avatar3 imageFilePath];
+    if (imageFilePath3)
     {
       v17 = 1;
     }
 
     else
     {
-      v20 = [v4 avatar];
-      v21 = [v20 imageFilePath];
-      v17 = v21 != 0;
+      avatar4 = [equalCopy avatar];
+      imageFilePath4 = [avatar4 imageFilePath];
+      v17 = imageFilePath4 != 0;
     }
   }
 
-  v22 = [(IMNickname *)self handle];
-  v23 = [v4 handle];
-  if ([v22 isEqual:v23])
+  handle = [(IMNickname *)self handle];
+  handle2 = [equalCopy handle];
+  if ([handle isEqual:handle2])
   {
     v24 = 0;
   }
 
   else
   {
-    v25 = [(IMNickname *)self handle];
-    if (v25)
+    handle3 = [(IMNickname *)self handle];
+    if (handle3)
     {
       v24 = 1;
     }
 
     else
     {
-      v26 = [v4 handle];
-      v24 = v26 != 0;
+      handle4 = [equalCopy handle];
+      v24 = handle4 != 0;
     }
   }
 
-  v27 = [(IMNickname *)self recordID];
-  v28 = [v4 recordID];
-  if ([v27 isEqual:v28])
+  recordID = [(IMNickname *)self recordID];
+  recordID2 = [equalCopy recordID];
+  if ([recordID isEqual:recordID2])
   {
     v29 = 0;
   }
 
   else
   {
-    v30 = [(IMNickname *)self recordID];
-    if (v30)
+    recordID3 = [(IMNickname *)self recordID];
+    if (recordID3)
     {
       v29 = 1;
     }
 
     else
     {
-      v31 = [v4 recordID];
-      v29 = v31 != 0;
+      recordID4 = [equalCopy recordID];
+      v29 = recordID4 != 0;
     }
   }
 
-  v32 = [(IMNickname *)self wallpaper];
-  v33 = [v4 wallpaper];
-  if ([v32 isEqual:v33])
+  wallpaper = [(IMNickname *)self wallpaper];
+  wallpaper2 = [equalCopy wallpaper];
+  if ([wallpaper isEqual:wallpaper2])
   {
     v34 = 0;
   }
 
   else
   {
-    v35 = [(IMNickname *)self wallpaper];
-    if (v35)
+    wallpaper3 = [(IMNickname *)self wallpaper];
+    if (wallpaper3)
     {
       v34 = 1;
     }
 
     else
     {
-      v36 = [v4 wallpaper];
-      v34 = v36 != 0;
+      wallpaper4 = [equalCopy wallpaper];
+      v34 = wallpaper4 != 0;
     }
   }
 
-  v37 = [(IMNickname *)self pronouns];
-  v38 = [v4 pronouns];
-  if ([v37 isEqual:v38])
+  pronouns = [(IMNickname *)self pronouns];
+  pronouns2 = [equalCopy pronouns];
+  if ([pronouns isEqual:pronouns2])
   {
     v39 = 1;
   }
 
   else
   {
-    v40 = [(IMNickname *)self pronouns];
-    if (v40)
+    pronouns3 = [(IMNickname *)self pronouns];
+    if (pronouns3)
     {
       v39 = 0;
     }
 
     else
     {
-      v41 = [v4 pronouns];
-      v39 = v41 == 0;
+      pronouns4 = [equalCopy pronouns];
+      v39 = pronouns4 == 0;
     }
   }
 
-  v42 = [(IMNickname *)self avatarRecipe];
-  v43 = [v4 avatarRecipe];
+  avatarRecipe = [(IMNickname *)self avatarRecipe];
+  avatarRecipe2 = [equalCopy avatarRecipe];
   v44 = IMAreObjectsLogicallySame();
 
   return v39 & ~(v47 || v46 || v17 || v24 || v29 || v34) & v44 & 1;
@@ -216,29 +216,29 @@
   return 0;
 }
 
-- (IMNickname)initWithFirstName:(id)a3 lastName:(id)a4 avatar:(id)a5 pronouns:(id)a6 wallpaper:(id)a7 avatarRecipe:(id)a8
+- (IMNickname)initWithFirstName:(id)name lastName:(id)lastName avatar:(id)avatar pronouns:(id)pronouns wallpaper:(id)wallpaper avatarRecipe:(id)recipe
 {
-  v14 = a3;
-  v15 = a4;
-  v27 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
+  nameCopy = name;
+  lastNameCopy = lastName;
+  avatarCopy = avatar;
+  pronounsCopy = pronouns;
+  wallpaperCopy = wallpaper;
+  recipeCopy = recipe;
   v28.receiver = self;
   v28.super_class = IMNickname;
   v19 = [(IMNickname *)&v28 init];
   if (v19)
   {
-    v20 = [v14 copy];
+    v20 = [nameCopy copy];
     firstName = v19->_firstName;
     v19->_firstName = v20;
 
-    objc_storeStrong(&v19->_avatar, a5);
-    v22 = [v15 copy];
+    objc_storeStrong(&v19->_avatar, avatar);
+    v22 = [lastNameCopy copy];
     lastName = v19->_lastName;
     v19->_lastName = v22;
 
-    objc_storeStrong(&v19->_pronouns, a6);
+    objc_storeStrong(&v19->_pronouns, pronouns);
     if ([(NSString *)v19->_firstName length]&& [(NSString *)v19->_lastName length])
     {
       v24 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@ %@", v19->_firstName, v19->_lastName];
@@ -249,12 +249,12 @@
       if (![(NSString *)v19->_firstName length])
       {
 LABEL_8:
-        objc_storeStrong(&v19->_wallpaper, a7);
-        objc_storeStrong(&v19->_avatarRecipe, a8);
+        objc_storeStrong(&v19->_wallpaper, wallpaper);
+        objc_storeStrong(&v19->_avatarRecipe, recipe);
         goto LABEL_9;
       }
 
-      v24 = [v14 copy];
+      v24 = [nameCopy copy];
     }
 
     displayName = v19->_displayName;
@@ -268,26 +268,26 @@ LABEL_9:
   return v19;
 }
 
-- (IMNickname)initWithMeContact:(id)a3
+- (IMNickname)initWithMeContact:(id)contact
 {
   v47 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v40 = [v3 imageData];
-  if (v40)
+  contactCopy = contact;
+  imageData = [contactCopy imageData];
+  if (imageData)
   {
-    v4 = [objc_opt_class() uniqueFilePathForWritingImageData];
+    uniqueFilePathForWritingImageData = [objc_opt_class() uniqueFilePathForWritingImageData];
     if (IMOSLoggingEnabled())
     {
       v5 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v44 = v4;
+        v44 = uniqueFilePathForWritingImageData;
         _os_log_impl(&dword_1A85E5000, v5, OS_LOG_TYPE_INFO, "Writing nickname image to path: %@", buf, 0xCu);
       }
     }
 
-    v39 = [[IMNicknameAvatarImage alloc] initWithImageName:@"NickNameImage" imageData:v40 imageFilePath:v4 contentIsSensitive:0];
+    v39 = [[IMNicknameAvatarImage alloc] initWithImageName:@"NickNameImage" imageData:imageData imageFilePath:uniqueFilePathForWritingImageData contentIsSensitive:0];
   }
 
   else
@@ -296,14 +296,14 @@ LABEL_9:
   }
 
   v6 = +[IMFeatureFlags sharedFeatureFlags];
-  v7 = [v6 isSwiftUIAvatarRenderingEnabled];
+  isSwiftUIAvatarRenderingEnabled = [v6 isSwiftUIAvatarRenderingEnabled];
 
-  if (v7 && (objc_opt_respondsToSelector() & 1) != 0)
+  if (isSwiftUIAvatarRenderingEnabled && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v8 = [v3 avatarRecipeData];
-    if (v8)
+    avatarRecipeData = [contactCopy avatarRecipeData];
+    if (avatarRecipeData)
     {
-      v38 = [[IMNicknameAvatarRecipe alloc] initWithData:v8];
+      v38 = [[IMNicknameAvatarRecipe alloc] initWithData:avatarRecipeData];
     }
 
     else
@@ -317,31 +317,31 @@ LABEL_9:
     v38 = 0;
   }
 
-  v9 = [v3 wallpaper];
-  if (v9)
+  wallpaper = [contactCopy wallpaper];
+  if (wallpaper)
   {
-    v37 = [objc_opt_class() uniqueFilePathForWritingWallpaperData];
-    v35 = [objc_opt_class() uniqueFilePathForWritingWallpaperData];
-    v36 = [v9 posterArchiveData];
-    v34 = [v3 watchWallpaperImageData];
+    uniqueFilePathForWritingWallpaperData = [objc_opt_class() uniqueFilePathForWritingWallpaperData];
+    uniqueFilePathForWritingWallpaperData2 = [objc_opt_class() uniqueFilePathForWritingWallpaperData];
+    posterArchiveData = [wallpaper posterArchiveData];
+    watchWallpaperImageData = [contactCopy watchWallpaperImageData];
     if (objc_opt_respondsToSelector())
     {
       v31 = [IMWallpaperMetadata alloc];
-      v33 = [v9 fontDescription];
-      v32 = [v33 objectForKeyedSubscript:@"name"];
-      v10 = [v9 fontDescription];
-      v11 = [v10 objectForKeyedSubscript:@"point-size"];
+      fontDescription = [wallpaper fontDescription];
+      v32 = [fontDescription objectForKeyedSubscript:@"name"];
+      fontDescription2 = [wallpaper fontDescription];
+      v11 = [fontDescription2 objectForKeyedSubscript:@"point-size"];
       [v11 floatValue];
       v13 = v12;
-      v14 = [v9 fontDescription];
-      v15 = [v14 objectForKeyedSubscript:@"weight"];
+      fontDescription3 = [wallpaper fontDescription];
+      v15 = [fontDescription3 objectForKeyedSubscript:@"weight"];
       [v15 floatValue];
       v17 = v16;
-      v18 = [v9 fontColorDescription];
-      v19 = [v9 isVertical];
-      v20 = [v9 extensionBundleID];
-      v21 = [v9 backgroundColorDescription];
-      v22 = [(IMWallpaperMetadata *)v31 initWithFontName:v32 fontSize:v18 fontWeight:v19 fontColor:v20 isVertical:v21 type:v13 backgroundColor:v17];
+      fontColorDescription = [wallpaper fontColorDescription];
+      isVertical = [wallpaper isVertical];
+      extensionBundleID = [wallpaper extensionBundleID];
+      backgroundColorDescription = [wallpaper backgroundColorDescription];
+      v22 = [(IMWallpaperMetadata *)v31 initWithFontName:v32 fontSize:fontColorDescription fontWeight:isVertical fontColor:extensionBundleID isVertical:backgroundColorDescription type:v13 backgroundColor:v17];
     }
 
     else
@@ -351,7 +351,7 @@ LABEL_9:
 
     v42 = 0;
     LOBYTE(v30) = 0;
-    v23 = [[IMWallpaper alloc] initWithFileName:@"Wallpaper" filePath:v37 data:v36 lowResFileName:@"Wallpaper" lowResFilePath:v35 lowResData:v34 metadata:v22 contentIsSensitive:v30 error:&v42];
+    v23 = [[IMWallpaper alloc] initWithFileName:@"Wallpaper" filePath:uniqueFilePathForWritingWallpaperData data:posterArchiveData lowResFileName:@"Wallpaper" lowResFilePath:uniqueFilePathForWritingWallpaperData2 lowResData:watchWallpaperImageData metadata:v22 contentIsSensitive:v30 error:&v42];
     v24 = v42;
     if (IMOSLoggingEnabled())
     {
@@ -372,9 +372,9 @@ LABEL_9:
     v23 = 0;
   }
 
-  v26 = [v3 givenName];
-  v27 = [v3 familyName];
-  v28 = [(IMNickname *)self initWithFirstName:v26 lastName:v27 avatar:v39 pronouns:0 wallpaper:v23 avatarRecipe:v38];
+  givenName = [contactCopy givenName];
+  familyName = [contactCopy familyName];
+  v28 = [(IMNickname *)self initWithFirstName:givenName lastName:familyName avatar:v39 pronouns:0 wallpaper:v23 avatarRecipe:v38];
 
   return v28;
 }
@@ -383,11 +383,11 @@ LABEL_9:
 {
   v2 = IMSafeTemporaryDirectory();
   v3 = [v2 URLByAppendingPathComponent:@"com.apple.messages"];
-  v4 = [v3 path];
+  path = [v3 path];
 
-  v5 = [MEMORY[0x1E696AC08] defaultManager];
-  v6 = [MEMORY[0x1E696AEC0] stringGUID];
-  v7 = [v5 createUniqueDirectoryWithName:v6 atPath:v4 ofType:0];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  stringGUID = [MEMORY[0x1E696AEC0] stringGUID];
+  v7 = [defaultManager createUniqueDirectoryWithName:stringGUID atPath:path ofType:0];
 
   v8 = [v7 stringByAppendingPathComponent:@"NickNameImage"];
 
@@ -398,21 +398,21 @@ LABEL_9:
 {
   v2 = IMSafeTemporaryDirectory();
   v3 = [v2 URLByAppendingPathComponent:@"com.apple.messages"];
-  v4 = [v3 path];
+  path = [v3 path];
 
-  v5 = [MEMORY[0x1E696AC08] defaultManager];
-  v6 = [MEMORY[0x1E696AEC0] stringGUID];
-  v7 = [v5 createUniqueDirectoryWithName:v6 atPath:v4 ofType:0];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  stringGUID = [MEMORY[0x1E696AEC0] stringGUID];
+  v7 = [defaultManager createUniqueDirectoryWithName:stringGUID atPath:path ofType:0];
 
   v8 = [v7 stringByAppendingPathComponent:@"Wallpaper"];
 
   return v8;
 }
 
-- (IMNickname)initWithDictionaryRepresentation:(id)a3
+- (IMNickname)initWithDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
-  if (![v4 count])
+  representationCopy = representation;
+  if (![representationCopy count])
   {
 
     self = 0;
@@ -420,15 +420,15 @@ LABEL_9:
   }
 
   v5 = [IMNicknameAvatarImage alloc];
-  v6 = [v4 objectForKey:@"ai"];
+  v6 = [representationCopy objectForKey:@"ai"];
   v35 = [(IMNicknameAvatarImage *)v5 initWithDictionaryRepresentation:v6];
 
-  v7 = [v4 objectForKey:@"rid"];
-  v8 = [v4 objectForKey:@"hid"];
-  v9 = [v4 objectForKey:@"fn"];
-  v10 = [v4 objectForKey:@"ln"];
-  v11 = [v4 objectForKey:@"pb"];
-  v12 = [v4 objectForKey:@"wp"];
+  v7 = [representationCopy objectForKey:@"rid"];
+  v8 = [representationCopy objectForKey:@"hid"];
+  v9 = [representationCopy objectForKey:@"fn"];
+  v10 = [representationCopy objectForKey:@"ln"];
+  v11 = [representationCopy objectForKey:@"pb"];
+  v12 = [representationCopy objectForKey:@"wp"];
   v33 = v12;
   if (v12)
   {
@@ -440,8 +440,8 @@ LABEL_9:
     v13 = 0;
   }
 
-  v32 = [v4 objectForKey:@"ad"];
-  v14 = [v4 objectForKey:@"ard"];
+  v32 = [representationCopy objectForKey:@"ad"];
+  v14 = [representationCopy objectForKey:@"ard"];
   v15 = v8;
   v31 = v14;
   if (v14)
@@ -454,7 +454,7 @@ LABEL_9:
     v30 = 0;
   }
 
-  v16 = [v4 objectForKey:@"pn"];
+  v16 = [representationCopy objectForKey:@"pn"];
 
   v34 = v7;
   if (!v16)
@@ -464,7 +464,7 @@ LABEL_9:
 
   v28 = v9;
   v17 = objc_alloc(MEMORY[0x1E696B0E8]);
-  v18 = [v4 objectForKey:@"pn"];
+  v18 = [representationCopy objectForKey:@"pn"];
   v36 = 0;
   v16 = [v17 initWithExternalRepresentationDictionary:v18 error:&v36];
   v19 = v36;
@@ -506,26 +506,26 @@ LABEL_16:
 
   if ((v29 & 1) == 0)
   {
-    v25 = 0;
+    selfCopy = 0;
     goto LABEL_19;
   }
 
 LABEL_17:
   self = self;
-  v25 = self;
+  selfCopy = self;
 LABEL_19:
 
-  return v25;
+  return selfCopy;
 }
 
-- (IMNickname)initWithPublicDictionaryRepresentationWithoutAvatar:(id)a3
+- (IMNickname)initWithPublicDictionaryRepresentationWithoutAvatar:(id)avatar
 {
-  v4 = a3;
-  v5 = [v4 objectForKey:@"fn"];
-  v6 = [v4 objectForKey:@"ln"];
-  v7 = [v4 objectForKey:@"pn"];
+  avatarCopy = avatar;
+  v5 = [avatarCopy objectForKey:@"fn"];
+  v6 = [avatarCopy objectForKey:@"ln"];
+  v7 = [avatarCopy objectForKey:@"pn"];
 
-  if (v7 && (v8 = objc_alloc(MEMORY[0x1E696B0E8]), [v4 objectForKey:@"pn"], v9 = objc_claimAutoreleasedReturnValue(), v12 = 0, v7 = objc_msgSend(v8, "initWithExternalRepresentationDictionary:error:", v9, &v12), v9, !v7))
+  if (v7 && (v8 = objc_alloc(MEMORY[0x1E696B0E8]), [avatarCopy objectForKey:@"pn"], v9 = objc_claimAutoreleasedReturnValue(), v12 = 0, v7 = objc_msgSend(v8, "initWithExternalRepresentationDictionary:error:", v9, &v12), v9, !v7))
   {
     v7 = IMLogHandleForCategory("Nicknames");
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -533,69 +533,69 @@ LABEL_19:
       sub_1A88C0C84(v7);
     }
 
-    v10 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(IMNickname *)self initWithFirstName:v5 lastName:v6 avatar:0 pronouns:v7];
-    v10 = self;
+    selfCopy = self;
   }
 
-  return v10;
+  return selfCopy;
 }
 
 - (id)persistedDictionaryRepresentation
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v4 = [(IMNickname *)self displayName];
-  if (v4)
+  displayName = [(IMNickname *)self displayName];
+  if (displayName)
   {
-    CFDictionarySetValue(v3, @"dn", v4);
+    CFDictionarySetValue(v3, @"dn", displayName);
   }
 
-  v5 = [(IMNicknameAvatarImage *)self->_avatar dictionaryRepresentation];
-  if (v5)
+  dictionaryRepresentation = [(IMNicknameAvatarImage *)self->_avatar dictionaryRepresentation];
+  if (dictionaryRepresentation)
   {
-    CFDictionarySetValue(v3, @"ai", v5);
+    CFDictionarySetValue(v3, @"ai", dictionaryRepresentation);
   }
 
-  v6 = [(IMNickname *)self recordID];
-  if (v6)
+  recordID = [(IMNickname *)self recordID];
+  if (recordID)
   {
-    CFDictionarySetValue(v3, @"rid", v6);
+    CFDictionarySetValue(v3, @"rid", recordID);
   }
 
-  v7 = [(IMNickname *)self handle];
-  if (v7)
+  handle = [(IMNickname *)self handle];
+  if (handle)
   {
-    CFDictionarySetValue(v3, @"hid", v7);
+    CFDictionarySetValue(v3, @"hid", handle);
   }
 
-  v8 = [(IMNickname *)self firstName];
-  if (v8)
+  firstName = [(IMNickname *)self firstName];
+  if (firstName)
   {
-    CFDictionarySetValue(v3, @"fn", v8);
+    CFDictionarySetValue(v3, @"fn", firstName);
   }
 
-  v9 = [(IMNickname *)self lastName];
-  if (v9)
+  lastName = [(IMNickname *)self lastName];
+  if (lastName)
   {
-    CFDictionarySetValue(v3, @"ln", v9);
+    CFDictionarySetValue(v3, @"ln", lastName);
   }
 
-  v10 = [(IMNickname *)self wallpaper];
-  v11 = [v10 dictionaryRepresentation];
+  wallpaper = [(IMNickname *)self wallpaper];
+  dictionaryRepresentation2 = [wallpaper dictionaryRepresentation];
 
-  if (v11)
+  if (dictionaryRepresentation2)
   {
-    CFDictionarySetValue(v3, @"wp", v11);
+    CFDictionarySetValue(v3, @"wp", dictionaryRepresentation2);
   }
 
-  v12 = [(_NSAttributedStringGrammarInflection *)self->_pronouns externalRepresentationDictionary];
-  if (v12)
+  externalRepresentationDictionary = [(_NSAttributedStringGrammarInflection *)self->_pronouns externalRepresentationDictionary];
+  if (externalRepresentationDictionary)
   {
-    CFDictionarySetValue(v3, @"pn", v12);
+    CFDictionarySetValue(v3, @"pn", externalRepresentationDictionary);
   }
 
   archivedDate = self->_archivedDate;
@@ -604,12 +604,12 @@ LABEL_19:
     CFDictionarySetValue(v3, @"ad", archivedDate);
   }
 
-  v14 = [(IMNickname *)self avatarRecipe];
-  v15 = [v14 dictionaryRepresentation];
+  avatarRecipe = [(IMNickname *)self avatarRecipe];
+  dictionaryRepresentation3 = [avatarRecipe dictionaryRepresentation];
 
-  if (v15)
+  if (dictionaryRepresentation3)
   {
-    CFDictionarySetValue(v3, @"ard", v15);
+    CFDictionarySetValue(v3, @"ard", dictionaryRepresentation3);
   }
 
   return v3;
@@ -617,13 +617,13 @@ LABEL_19:
 
 - (id)dictionaryRepresentation
 {
-  v3 = [(IMNickname *)self persistedDictionaryRepresentation];
-  v4 = [v3 mutableCopy];
+  persistedDictionaryRepresentation = [(IMNickname *)self persistedDictionaryRepresentation];
+  v4 = [persistedDictionaryRepresentation mutableCopy];
 
-  v5 = [(IMNickname *)self preBlastDoorPayloadData];
-  if (v5)
+  preBlastDoorPayloadData = [(IMNickname *)self preBlastDoorPayloadData];
+  if (preBlastDoorPayloadData)
   {
-    CFDictionarySetValue(v4, @"pb", v5);
+    CFDictionarySetValue(v4, @"pb", preBlastDoorPayloadData);
   }
 
   return v4;
@@ -639,10 +639,10 @@ LABEL_19:
     CFDictionarySetValue(v3, @"dn", displayName);
   }
 
-  v6 = [(IMNicknameAvatarImage *)self->_avatar publicDictionaryRepresentation];
-  if (v6)
+  publicDictionaryRepresentation = [(IMNicknameAvatarImage *)self->_avatar publicDictionaryRepresentation];
+  if (publicDictionaryRepresentation)
   {
-    CFDictionarySetValue(v4, @"ai", v6);
+    CFDictionarySetValue(v4, @"ai", publicDictionaryRepresentation);
   }
 
   firstName = self->_firstName;
@@ -657,16 +657,16 @@ LABEL_19:
     CFDictionarySetValue(v4, @"ln", lastName);
   }
 
-  v9 = [(IMWallpaper *)self->_wallpaper publicDictionaryRepresentation];
-  if (v9)
+  publicDictionaryRepresentation2 = [(IMWallpaper *)self->_wallpaper publicDictionaryRepresentation];
+  if (publicDictionaryRepresentation2)
   {
-    CFDictionarySetValue(v4, @"wp", v9);
+    CFDictionarySetValue(v4, @"wp", publicDictionaryRepresentation2);
   }
 
-  v10 = [(_NSAttributedStringGrammarInflection *)self->_pronouns externalRepresentationDictionary];
-  if (v10)
+  externalRepresentationDictionary = [(_NSAttributedStringGrammarInflection *)self->_pronouns externalRepresentationDictionary];
+  if (externalRepresentationDictionary)
   {
-    CFDictionarySetValue(v4, @"pn", v10);
+    CFDictionarySetValue(v4, @"pn", externalRepresentationDictionary);
   }
 
   archivedDate = self->_archivedDate;
@@ -675,12 +675,12 @@ LABEL_19:
     CFDictionarySetValue(v4, @"ad", archivedDate);
   }
 
-  v12 = [(IMNickname *)self avatarRecipe];
-  v13 = [v12 dictionaryRepresentation];
+  avatarRecipe = [(IMNickname *)self avatarRecipe];
+  dictionaryRepresentation = [avatarRecipe dictionaryRepresentation];
 
-  if (v13)
+  if (dictionaryRepresentation)
   {
-    CFDictionarySetValue(v4, @"ard", v13);
+    CFDictionarySetValue(v4, @"ard", dictionaryRepresentation);
   }
 
   return v4;
@@ -708,10 +708,10 @@ LABEL_19:
     CFDictionarySetValue(v4, @"ln", lastName);
   }
 
-  v8 = [(_NSAttributedStringGrammarInflection *)self->_pronouns externalRepresentationDictionary];
-  if (v8)
+  externalRepresentationDictionary = [(_NSAttributedStringGrammarInflection *)self->_pronouns externalRepresentationDictionary];
+  if (externalRepresentationDictionary)
   {
-    CFDictionarySetValue(v4, @"pn", v8);
+    CFDictionarySetValue(v4, @"pn", externalRepresentationDictionary);
   }
 
   archivedDate = self->_archivedDate;
@@ -723,11 +723,11 @@ LABEL_19:
   return v4;
 }
 
-- (void)setFirstName:(id)a3
+- (void)setFirstName:(id)name
 {
-  if (self->_firstName != a3)
+  if (self->_firstName != name)
   {
-    v5 = [a3 copy];
+    v5 = [name copy];
     firstName = self->_firstName;
     self->_firstName = v5;
 
@@ -736,11 +736,11 @@ LABEL_19:
   }
 }
 
-- (void)setLastName:(id)a3
+- (void)setLastName:(id)name
 {
-  if (self->_lastName != a3)
+  if (self->_lastName != name)
   {
-    v5 = [a3 copy];
+    v5 = [name copy];
     lastName = self->_lastName;
     self->_lastName = v5;
 
@@ -749,13 +749,13 @@ LABEL_19:
   }
 }
 
-- (void)setAvatar:(id)a3
+- (void)setAvatar:(id)avatar
 {
-  v5 = a3;
+  avatarCopy = avatar;
   p_avatar = &self->_avatar;
-  if (self->_avatar != v5)
+  if (self->_avatar != avatarCopy)
   {
-    objc_storeStrong(p_avatar, a3);
+    objc_storeStrong(p_avatar, avatar);
     imageHash = self->_imageHash;
     self->_imageHash = 0;
 
@@ -766,13 +766,13 @@ LABEL_19:
   MEMORY[0x1EEE66BB8](p_avatar);
 }
 
-- (void)setWallpaper:(id)a3
+- (void)setWallpaper:(id)wallpaper
 {
-  v5 = a3;
+  wallpaperCopy = wallpaper;
   p_wallpaper = &self->_wallpaper;
-  if (self->_wallpaper != v5)
+  if (self->_wallpaper != wallpaperCopy)
   {
-    objc_storeStrong(p_wallpaper, a3);
+    objc_storeStrong(p_wallpaper, wallpaper);
     wallpaperImageHash = self->_wallpaperImageHash;
     self->_wallpaperImageHash = 0;
 
@@ -786,53 +786,53 @@ LABEL_19:
   MEMORY[0x1EEE66BB8](p_wallpaper);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [IMNickname alloc];
-  v5 = [(IMNickname *)self firstName];
-  v6 = [(IMNickname *)self lastName];
-  v7 = [(IMNickname *)self avatar];
-  v8 = [(IMNickname *)self pronouns];
-  v9 = [(IMNickname *)v4 initWithFirstName:v5 lastName:v6 avatar:v7 pronouns:v8];
+  firstName = [(IMNickname *)self firstName];
+  lastName = [(IMNickname *)self lastName];
+  avatar = [(IMNickname *)self avatar];
+  pronouns = [(IMNickname *)self pronouns];
+  v9 = [(IMNickname *)v4 initWithFirstName:firstName lastName:lastName avatar:avatar pronouns:pronouns];
 
-  v10 = [(IMNickname *)self recordID];
-  [(IMNickname *)v9 setRecordID:v10];
+  recordID = [(IMNickname *)self recordID];
+  [(IMNickname *)v9 setRecordID:recordID];
 
-  v11 = [(IMNickname *)self handle];
-  [(IMNickname *)v9 setHandle:v11];
+  handle = [(IMNickname *)self handle];
+  [(IMNickname *)v9 setHandle:handle];
 
-  v12 = [(IMNickname *)self wallpaper];
-  [(IMNickname *)v9 setWallpaper:v12];
+  wallpaper = [(IMNickname *)self wallpaper];
+  [(IMNickname *)v9 setWallpaper:wallpaper];
 
-  v13 = [(IMNickname *)self archivedDate];
-  [(IMNickname *)v9 setArchivedDate:v13];
+  archivedDate = [(IMNickname *)self archivedDate];
+  [(IMNickname *)v9 setArchivedDate:archivedDate];
 
-  v14 = [(IMNickname *)self preBlastDoorPayloadData];
-  [(IMNickname *)v9 setPreBlastDoorPayloadData:v14];
+  preBlastDoorPayloadData = [(IMNickname *)self preBlastDoorPayloadData];
+  [(IMNickname *)v9 setPreBlastDoorPayloadData:preBlastDoorPayloadData];
 
-  v15 = [(IMNickname *)self avatarRecipe];
-  [(IMNickname *)v9 setAvatarRecipe:v15];
+  avatarRecipe = [(IMNickname *)self avatarRecipe];
+  [(IMNickname *)v9 setAvatarRecipe:avatarRecipe];
 
   return v9;
 }
 
-- (IMNickname)initWithCoder:(id)a3
+- (IMNickname)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v4 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"avatar"];
-  v19 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"recordID"];
-  v21 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"handleID"];
-  v5 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"firstName"];
-  v6 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"lastName"];
-  v7 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"avatarRecipeData"];
+  coderCopy = coder;
+  v4 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"avatar"];
+  v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"recordID"];
+  v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"handleID"];
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"firstName"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lastName"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"avatarRecipeData"];
   v8 = MEMORY[0x1E695DFD8];
   v9 = objc_opt_class();
   v10 = objc_opt_class();
   v11 = [v8 setWithObjects:{v9, v10, objc_opt_class(), 0}];
-  v12 = [v3 decodeObjectOfClasses:v11 forKey:@"preBlastdoorData"];
-  v13 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"wallpaper"];
-  v14 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"archivedDate"];
-  v15 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"pronouns"];
+  v12 = [coderCopy decodeObjectOfClasses:v11 forKey:@"preBlastdoorData"];
+  v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"wallpaper"];
+  v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"archivedDate"];
+  v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pronouns"];
 
   v16 = [(IMNickname *)self initWithFirstName:v5 lastName:v6 avatar:v4 pronouns:v15];
   v17 = v16;
@@ -869,41 +869,41 @@ LABEL_19:
   return v17;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(IMNickname *)self displayName];
-  [v4 encodeObject:v5 forKey:@"displayName"];
+  coderCopy = coder;
+  displayName = [(IMNickname *)self displayName];
+  [coderCopy encodeObject:displayName forKey:@"displayName"];
 
-  v6 = [(IMNickname *)self avatar];
-  [v4 encodeObject:v6 forKey:@"avatar"];
+  avatar = [(IMNickname *)self avatar];
+  [coderCopy encodeObject:avatar forKey:@"avatar"];
 
-  v7 = [(IMNickname *)self recordID];
-  [v4 encodeObject:v7 forKey:@"recordID"];
+  recordID = [(IMNickname *)self recordID];
+  [coderCopy encodeObject:recordID forKey:@"recordID"];
 
-  v8 = [(IMNickname *)self handle];
-  [v4 encodeObject:v8 forKey:@"handleID"];
+  handle = [(IMNickname *)self handle];
+  [coderCopy encodeObject:handle forKey:@"handleID"];
 
-  v9 = [(IMNickname *)self firstName];
-  [v4 encodeObject:v9 forKey:@"firstName"];
+  firstName = [(IMNickname *)self firstName];
+  [coderCopy encodeObject:firstName forKey:@"firstName"];
 
-  v10 = [(IMNickname *)self lastName];
-  [v4 encodeObject:v10 forKey:@"lastName"];
+  lastName = [(IMNickname *)self lastName];
+  [coderCopy encodeObject:lastName forKey:@"lastName"];
 
-  v11 = [(IMNickname *)self wallpaper];
-  [v4 encodeObject:v11 forKey:@"wallpaper"];
+  wallpaper = [(IMNickname *)self wallpaper];
+  [coderCopy encodeObject:wallpaper forKey:@"wallpaper"];
 
-  v12 = [(IMNickname *)self pronouns];
-  [v4 encodeObject:v12 forKey:@"pronouns"];
+  pronouns = [(IMNickname *)self pronouns];
+  [coderCopy encodeObject:pronouns forKey:@"pronouns"];
 
-  v13 = [(IMNickname *)self archivedDate];
-  [v4 encodeObject:v13 forKey:@"archivedDate"];
+  archivedDate = [(IMNickname *)self archivedDate];
+  [coderCopy encodeObject:archivedDate forKey:@"archivedDate"];
 
-  v14 = [(IMNickname *)self preBlastDoorPayloadData];
-  [v4 encodeObject:v14 forKey:@"preBlastdoorData"];
+  preBlastDoorPayloadData = [(IMNickname *)self preBlastDoorPayloadData];
+  [coderCopy encodeObject:preBlastDoorPayloadData forKey:@"preBlastdoorData"];
 
-  v15 = [(IMNickname *)self avatarRecipe];
-  [v4 encodeObject:v15 forKey:@"avatarRecipeData"];
+  avatarRecipe = [(IMNickname *)self avatarRecipe];
+  [coderCopy encodeObject:avatarRecipe forKey:@"avatarRecipeData"];
 }
 
 - (id)dataRepresentation
@@ -926,16 +926,16 @@ LABEL_19:
   return v2;
 }
 
-+ (id)nameHashWithFirstName:(id)a3 lastName:(id)a4
++ (id)nameHashWithFirstName:(id)name lastName:(id)lastName
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 length] || objc_msgSend(v6, "length"))
+  nameCopy = name;
+  lastNameCopy = lastName;
+  if ([nameCopy length] || objc_msgSend(lastNameCopy, "length"))
   {
     v7 = MEMORY[0x1E696AEC0];
-    v8 = [v5 lowercaseString];
-    v9 = [v6 lowercaseString];
-    v10 = [v7 stringWithFormat:@"%@+%@", v8, v9];
+    lowercaseString = [nameCopy lowercaseString];
+    lowercaseString2 = [lastNameCopy lowercaseString];
+    v10 = [v7 stringWithFormat:@"%@+%@", lowercaseString, lowercaseString2];
 
     v11 = [v10 dataUsingEncoding:10];
     v12 = IMSharedHelperMD5OfData(v11);
@@ -955,9 +955,9 @@ LABEL_19:
   if (!nameHash)
   {
     v4 = objc_opt_class();
-    v5 = [(IMNickname *)self firstName];
-    v6 = [(IMNickname *)self lastName];
-    v7 = [v4 nameHashWithFirstName:v5 lastName:v6];
+    firstName = [(IMNickname *)self firstName];
+    lastName = [(IMNickname *)self lastName];
+    v7 = [v4 nameHashWithFirstName:firstName lastName:lastName];
     v8 = self->_nameHash;
     self->_nameHash = v7;
 
@@ -972,9 +972,9 @@ LABEL_19:
   imageHash = self->_imageHash;
   if (!imageHash)
   {
-    v4 = [(IMNickname *)self avatar];
-    v5 = [v4 imageFilePath];
-    v6 = [(IMNickname *)self _imageHashCreatedInChunks:v5];
+    avatar = [(IMNickname *)self avatar];
+    imageFilePath = [avatar imageFilePath];
+    v6 = [(IMNickname *)self _imageHashCreatedInChunks:imageFilePath];
     v7 = self->_imageHash;
     self->_imageHash = v6;
 
@@ -989,9 +989,9 @@ LABEL_19:
   wallpaperImageHash = self->_wallpaperImageHash;
   if (!wallpaperImageHash)
   {
-    v4 = [(IMNickname *)self wallpaper];
-    v5 = [v4 filePath];
-    v6 = [(IMNickname *)self _imageHashCreatedInChunks:v5];
+    wallpaper = [(IMNickname *)self wallpaper];
+    filePath = [wallpaper filePath];
+    v6 = [(IMNickname *)self _imageHashCreatedInChunks:filePath];
     v7 = self->_wallpaperImageHash;
     self->_wallpaperImageHash = v6;
 
@@ -1006,9 +1006,9 @@ LABEL_19:
   wallpaperLowResImageHash = self->_wallpaperLowResImageHash;
   if (!wallpaperLowResImageHash)
   {
-    v4 = [(IMNickname *)self wallpaper];
-    v5 = [v4 lowResFilePath];
-    v6 = [(IMNickname *)self _imageHashCreatedInChunks:v5];
+    wallpaper = [(IMNickname *)self wallpaper];
+    lowResFilePath = [wallpaper lowResFilePath];
+    v6 = [(IMNickname *)self _imageHashCreatedInChunks:lowResFilePath];
     v7 = self->_wallpaperLowResImageHash;
     self->_wallpaperLowResImageHash = v6;
 
@@ -1023,12 +1023,12 @@ LABEL_19:
   concatenatedImageHash = self->_concatenatedImageHash;
   if (!concatenatedImageHash)
   {
-    v4 = [(IMNickname *)self imageHash];
+    imageHash = [(IMNickname *)self imageHash];
 
-    if (v4)
+    if (imageHash)
     {
-      v5 = [(IMNickname *)self imageHash];
-      v6 = IMSharedHelperMd5ToString([v5 bytes]);
+      imageHash2 = [(IMNickname *)self imageHash];
+      v6 = IMSharedHelperMd5ToString([imageHash2 bytes]);
     }
 
     else
@@ -1036,12 +1036,12 @@ LABEL_19:
       v6 = &stru_1F1BB91F0;
     }
 
-    v7 = [(IMNickname *)self wallpaperImageHash];
+    wallpaperImageHash = [(IMNickname *)self wallpaperImageHash];
 
-    if (v7)
+    if (wallpaperImageHash)
     {
-      v8 = [(IMNickname *)self wallpaperImageHash];
-      v9 = IMSharedHelperMd5ToString([v8 bytes]);
+      wallpaperImageHash2 = [(IMNickname *)self wallpaperImageHash];
+      v9 = IMSharedHelperMd5ToString([wallpaperImageHash2 bytes]);
     }
 
     else
@@ -1059,12 +1059,12 @@ LABEL_19:
   return concatenatedImageHash;
 }
 
-- (id)_imageHashCreatedInChunks:(id)a3
+- (id)_imageHashCreatedInChunks:(id)chunks
 {
-  v3 = a3;
-  if ([v3 length])
+  chunksCopy = chunks;
+  if ([chunksCopy length])
   {
-    v4 = IMSharedHelperMD5DataHashOfFileAtPath(v3);
+    v4 = IMSharedHelperMD5DataHashOfFileAtPath(chunksCopy);
   }
 
   else
@@ -1075,12 +1075,12 @@ LABEL_19:
   return v4;
 }
 
-- (BOOL)isUpdateFromNickname:(id)a3 withOptions:(unint64_t)a4
+- (BOOL)isUpdateFromNickname:(id)nickname withOptions:(unint64_t)options
 {
-  v4 = a4;
+  optionsCopy = options;
   v90 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (!v6)
+  nicknameCopy = nickname;
+  if (!nicknameCopy)
   {
     if (IMOSLoggingEnabled())
     {
@@ -1095,28 +1095,28 @@ LABEL_19:
     goto LABEL_56;
   }
 
-  if ((v4 & 0xC) == 0)
+  if ((optionsCopy & 0xC) == 0)
   {
     goto LABEL_8;
   }
 
-  v7 = [(IMNickname *)self nameHash];
-  v8 = [v6 nameHash];
-  v9 = [v7 isEqualToString:v8];
+  nameHash = [(IMNickname *)self nameHash];
+  nameHash2 = [nicknameCopy nameHash];
+  v9 = [nameHash isEqualToString:nameHash2];
 
-  v10 = [(IMNickname *)self firstName];
-  v11 = [v6 firstName];
-  v12 = [v10 isEqualToString:v11];
+  firstName = [(IMNickname *)self firstName];
+  firstName2 = [nicknameCopy firstName];
+  v12 = [firstName isEqualToString:firstName2];
 
-  v13 = [(IMNickname *)self lastName];
-  v14 = [v6 lastName];
-  v15 = [v13 isEqualToString:v14];
+  lastName = [(IMNickname *)self lastName];
+  lastName2 = [nicknameCopy lastName];
+  v15 = [lastName isEqualToString:lastName2];
 
-  v16 = [(IMNickname *)self firstName];
-  v17 = [v16 length];
+  firstName3 = [(IMNickname *)self firstName];
+  v17 = [firstName3 length];
 
-  v18 = [(IMNickname *)self lastName];
-  v19 = [v18 length];
+  lastName3 = [(IMNickname *)self lastName];
+  v19 = [lastName3 length];
 
   if (IMOSLoggingEnabled())
   {
@@ -1140,27 +1140,27 @@ LABEL_19:
   if (v9)
   {
 LABEL_8:
-    if ((v4 & 0xA) == 0)
+    if ((optionsCopy & 0xA) == 0)
     {
       goto LABEL_17;
     }
 
-    v21 = [(IMNickname *)self avatar];
-    v22 = [v21 imageExists];
+    avatar = [(IMNickname *)self avatar];
+    imageExists = [avatar imageExists];
 
-    v23 = [v6 avatar];
-    v81 = [v23 imageExists];
+    avatar2 = [nicknameCopy avatar];
+    imageExists2 = [avatar2 imageExists];
 
-    v24 = [(IMNickname *)self imageHash];
-    v25 = v24;
-    v26 = IMSharedHelperMd5ToString([v24 bytes]);
+    imageHash = [(IMNickname *)self imageHash];
+    v25 = imageHash;
+    v26 = IMSharedHelperMd5ToString([imageHash bytes]);
 
-    v27 = [v6 imageHash];
-    v28 = v27;
-    v29 = IMSharedHelperMd5ToString([v27 bytes]);
+    imageHash2 = [nicknameCopy imageHash];
+    v28 = imageHash2;
+    v29 = IMSharedHelperMd5ToString([imageHash2 bytes]);
 
-    v30 = [(IMNickname *)self avatarRecipe];
-    v31 = [v6 avatarRecipe];
+    avatarRecipe = [(IMNickname *)self avatarRecipe];
+    avatarRecipe2 = [nicknameCopy avatarRecipe];
     v32 = IMAreObjectsLogicallySame();
 
     if (IMOSLoggingEnabled())
@@ -1168,12 +1168,12 @@ LABEL_8:
       v33 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v33, OS_LOG_TYPE_INFO))
       {
-        v34 = [(IMNickname *)self avatarRecipe];
-        v35 = [v6 avatarRecipe];
+        avatarRecipe3 = [(IMNickname *)self avatarRecipe];
+        avatarRecipe4 = [nicknameCopy avatarRecipe];
         *buf = 67110658;
-        *v85 = v22;
+        *v85 = imageExists;
         *&v85[4] = 1024;
-        *&v85[6] = v81;
+        *&v85[6] = imageExists2;
         *v86 = 2112;
         *&v86[2] = v26;
         *&v86[10] = 2112;
@@ -1181,14 +1181,14 @@ LABEL_8:
         LOWORD(v87) = 1024;
         *(&v87 + 2) = v32 ^ 1;
         HIWORD(v87) = 2112;
-        *v88 = v34;
+        *v88 = avatarRecipe3;
         *&v88[8] = 2112;
-        v89 = v35;
+        v89 = avatarRecipe4;
         _os_log_impl(&dword_1A85E5000, v33, OS_LOG_TYPE_INFO, "Photo (LE: %d) (OE: %d) (LH: %@) (OH: %@) (RecipeChanged: %d, OR: %@ NR: %@)", buf, 0x3Cu);
       }
     }
 
-    if (v22 && ([v26 isEqualToString:v29] & 1) == 0)
+    if (imageExists && ([v26 isEqualToString:v29] & 1) == 0)
     {
       if (IMOSLoggingEnabled())
       {
@@ -1210,20 +1210,20 @@ LABEL_8:
       {
 
 LABEL_17:
-        if ((v4 & 0x18) != 0)
+        if ((optionsCopy & 0x18) != 0)
         {
-          v36 = [(IMNickname *)self pronouns];
-          v37 = [v6 pronouns];
-          v38 = v37;
-          if (v36 == v37)
+          pronouns = [(IMNickname *)self pronouns];
+          pronouns2 = [nicknameCopy pronouns];
+          v38 = pronouns2;
+          if (pronouns == pronouns2)
           {
           }
 
           else
           {
-            v39 = [(IMNickname *)self pronouns];
-            v40 = [v6 pronouns];
-            v41 = [v39 isEqual:v40];
+            pronouns3 = [(IMNickname *)self pronouns];
+            pronouns4 = [nicknameCopy pronouns];
+            v41 = [pronouns3 isEqual:pronouns4];
 
             if ((v41 & 1) == 0)
             {
@@ -1243,44 +1243,44 @@ LABEL_17:
           }
         }
 
-        if ((v4 & 0x28) != 0)
+        if ((optionsCopy & 0x28) != 0)
         {
-          v45 = [(IMNickname *)self wallpaper];
-          v79 = [v45 wallpaperExists];
+          wallpaper = [(IMNickname *)self wallpaper];
+          wallpaperExists = [wallpaper wallpaperExists];
 
-          v46 = [v6 wallpaper];
-          v77 = [v46 wallpaperExists];
+          wallpaper2 = [nicknameCopy wallpaper];
+          wallpaperExists2 = [wallpaper2 wallpaperExists];
 
-          v47 = [(IMNickname *)self wallpaperImageHash];
-          v48 = v47;
-          v82 = IMSharedHelperMd5ToString([v47 bytes]);
+          wallpaperImageHash = [(IMNickname *)self wallpaperImageHash];
+          v48 = wallpaperImageHash;
+          v82 = IMSharedHelperMd5ToString([wallpaperImageHash bytes]);
 
-          v49 = [v6 wallpaperImageHash];
-          v50 = v49;
-          v51 = IMSharedHelperMd5ToString([v49 bytes]);
+          wallpaperImageHash2 = [nicknameCopy wallpaperImageHash];
+          v50 = wallpaperImageHash2;
+          v51 = IMSharedHelperMd5ToString([wallpaperImageHash2 bytes]);
 
-          v52 = [(IMNickname *)self wallpaper];
-          v78 = [v52 lowResWallpaperExists];
+          wallpaper3 = [(IMNickname *)self wallpaper];
+          lowResWallpaperExists = [wallpaper3 lowResWallpaperExists];
 
-          v53 = [v6 wallpaper];
-          v76 = [v53 lowResWallpaperExists];
+          wallpaper4 = [nicknameCopy wallpaper];
+          lowResWallpaperExists2 = [wallpaper4 lowResWallpaperExists];
 
-          v54 = [(IMNickname *)self wallpaperLowResImageHash];
-          v55 = v54;
-          v80 = IMSharedHelperMd5ToString([v54 bytes]);
+          wallpaperLowResImageHash = [(IMNickname *)self wallpaperLowResImageHash];
+          v55 = wallpaperLowResImageHash;
+          v80 = IMSharedHelperMd5ToString([wallpaperLowResImageHash bytes]);
 
-          v56 = [v6 wallpaperLowResImageHash];
-          v57 = v56;
-          v58 = IMSharedHelperMd5ToString([v56 bytes]);
+          wallpaperLowResImageHash2 = [nicknameCopy wallpaperLowResImageHash];
+          v57 = wallpaperLowResImageHash2;
+          v58 = IMSharedHelperMd5ToString([wallpaperLowResImageHash2 bytes]);
 
-          v59 = [(IMNickname *)self wallpaper];
-          v60 = [v59 metadata];
+          wallpaper5 = [(IMNickname *)self wallpaper];
+          metadata = [wallpaper5 metadata];
 
-          v61 = [(IMNickname *)self wallpaper];
-          v62 = [v61 metadata];
-          v63 = [v6 wallpaper];
-          v64 = [v63 metadata];
-          v65 = [v62 isEqual:v64];
+          wallpaper6 = [(IMNickname *)self wallpaper];
+          metadata2 = [wallpaper6 metadata];
+          wallpaper7 = [nicknameCopy wallpaper];
+          metadata3 = [wallpaper7 metadata];
+          v65 = [metadata2 isEqual:metadata3];
 
           if (IMOSLoggingEnabled())
           {
@@ -1288,9 +1288,9 @@ LABEL_17:
             if (os_log_type_enabled(v66, OS_LOG_TYPE_INFO))
             {
               *buf = 67109890;
-              *v85 = v79;
+              *v85 = wallpaperExists;
               *&v85[4] = 1024;
-              *&v85[6] = v77;
+              *&v85[6] = wallpaperExists2;
               *v86 = 2112;
               *&v86[2] = v82;
               *&v86[10] = 2112;
@@ -1305,9 +1305,9 @@ LABEL_17:
             if (os_log_type_enabled(v67, OS_LOG_TYPE_INFO))
             {
               *buf = 67109890;
-              *v85 = v78;
+              *v85 = lowResWallpaperExists;
               *&v85[4] = 1024;
-              *&v85[6] = v76;
+              *&v85[6] = lowResWallpaperExists2;
               *v86 = 2112;
               *&v86[2] = v82;
               *&v86[10] = 2112;
@@ -1316,14 +1316,14 @@ LABEL_17:
             }
           }
 
-          if (v79 && ![v82 isEqualToString:v51])
+          if (wallpaperExists && ![v82 isEqualToString:v51])
           {
             goto LABEL_51;
           }
 
-          if (v78)
+          if (lowResWallpaperExists)
           {
-            if (([v80 isEqualToString:v58] & ((v60 == 0) | v65) & 1) == 0)
+            if (([v80 isEqualToString:v58] & ((metadata == 0) | v65) & 1) == 0)
             {
 LABEL_51:
               if (IMOSLoggingEnabled())
@@ -1341,7 +1341,7 @@ LABEL_51:
             }
           }
 
-          else if (!((v60 == 0) | v65 & 1))
+          else if (!((metadata == 0) | v65 & 1))
           {
             goto LABEL_51;
           }
@@ -1375,20 +1375,20 @@ LABEL_56:
     v70 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v70, OS_LOG_TYPE_INFO))
     {
-      v83 = [(IMNickname *)self firstName];
-      v71 = [v6 firstName];
-      v72 = [(IMNickname *)self lastName];
-      v73 = [v6 lastName];
+      firstName4 = [(IMNickname *)self firstName];
+      firstName5 = [nicknameCopy firstName];
+      lastName4 = [(IMNickname *)self lastName];
+      lastName5 = [nicknameCopy lastName];
       *buf = 138413314;
       *v85 = self;
       *&v85[8] = 2112;
-      *v86 = v83;
+      *v86 = firstName4;
       *&v86[8] = 2112;
-      *&v86[10] = v71;
+      *&v86[10] = firstName5;
       *&v86[18] = 2112;
-      v87 = v72;
+      v87 = lastName4;
       *v88 = 2112;
-      *&v88[2] = v73;
+      *&v88[2] = lastName5;
       _os_log_impl(&dword_1A85E5000, v70, OS_LOG_TYPE_INFO, "Name has changed for nickname: %@. Self first name: %@, other first name name: %@, self last name: %@, other last name: %@", buf, 0x34u);
     }
   }
@@ -1414,38 +1414,38 @@ LABEL_72:
   return v69;
 }
 
-- (void)updateNameFromContact:(id)a3
+- (void)updateNameFromContact:(id)contact
 {
-  v10 = a3;
-  v4 = [(IMNickname *)self firstName];
-  v5 = [v4 length];
+  contactCopy = contact;
+  firstName = [(IMNickname *)self firstName];
+  v5 = [firstName length];
 
   if (!v5)
   {
-    v6 = [v10 givenName];
-    [(IMNickname *)self setFirstName:v6];
+    givenName = [contactCopy givenName];
+    [(IMNickname *)self setFirstName:givenName];
   }
 
-  v7 = [(IMNickname *)self lastName];
-  v8 = [v7 length];
+  lastName = [(IMNickname *)self lastName];
+  v8 = [lastName length];
 
   if (!v8)
   {
-    v9 = [v10 familyName];
-    [(IMNickname *)self setLastName:v9];
+    familyName = [contactCopy familyName];
+    [(IMNickname *)self setLastName:familyName];
   }
 }
 
-+ (id)processSetOfUnknownSenderRecords:(id)a3
++ (id)processSetOfUnknownSenderRecords:(id)records
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v3, "count")}];
+  recordsCopy = records;
+  v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(recordsCopy, "count")}];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = v3;
+  v5 = recordsCopy;
   v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {

@@ -1,16 +1,16 @@
 @interface SKUIRedeemResultsViewController
-+ (BOOL)canShowResultsForRedeem:(id)a3;
-+ (id)redeemResultsControllerForRedeem:(id)a3;
-- (SKUIRedeemResultsViewController)initWithCoder:(id)a3;
-- (SKUIRedeemResultsViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (SKUIRedeemResultsViewController)initWithRedeem:(id)a3;
-- (void)_doneAction:(id)a3;
++ (BOOL)canShowResultsForRedeem:(id)redeem;
++ (id)redeemResultsControllerForRedeem:(id)redeem;
+- (SKUIRedeemResultsViewController)initWithCoder:(id)coder;
+- (SKUIRedeemResultsViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (SKUIRedeemResultsViewController)initWithRedeem:(id)redeem;
+- (void)_doneAction:(id)action;
 - (void)viewDidLoad;
 @end
 
 @implementation SKUIRedeemResultsViewController
 
-+ (BOOL)canShowResultsForRedeem:(id)a3
++ (BOOL)canShowResultsForRedeem:(id)redeem
 {
   if (os_variant_has_internal_content())
   {
@@ -34,10 +34,10 @@
   return 0;
 }
 
-+ (id)redeemResultsControllerForRedeem:(id)a3
++ (id)redeemResultsControllerForRedeem:(id)redeem
 {
   v25[2] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  redeemCopy = redeem;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -72,7 +72,7 @@ LABEL_7:
       }
 
       v17 = *(*(&v20 + 1) + 8 * v16);
-      if ([v17 canShowResultsForRedeem:{v3, v20}])
+      if ([v17 canShowResultsForRedeem:{redeemCopy, v20}])
       {
         break;
       }
@@ -96,14 +96,14 @@ LABEL_13:
     v17 = 0;
   }
 
-  v18 = [[v17 alloc] initWithRedeem:v3];
+  v18 = [[v17 alloc] initWithRedeem:redeemCopy];
 
   return v18;
 }
 
-- (SKUIRedeemResultsViewController)initWithRedeem:(id)a3
+- (SKUIRedeemResultsViewController)initWithRedeem:(id)redeem
 {
-  v5 = a3;
+  redeemCopy = redeem;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -118,7 +118,7 @@ LABEL_13:
 
   if ([(SKUIRedeemResultsViewController *)self isMemberOfClass:objc_opt_class()])
   {
-    v14 = [SKUIRedeemResultsViewController redeemResultsControllerForRedeem:v5];
+    v14 = [SKUIRedeemResultsViewController redeemResultsControllerForRedeem:redeemCopy];
   }
 
   else
@@ -129,7 +129,7 @@ LABEL_13:
     v16 = v15;
     if (v15)
     {
-      objc_storeStrong(&v15->_redeem, a3);
+      objc_storeStrong(&v15->_redeem, redeem);
     }
 
     v14 = v16;
@@ -141,7 +141,7 @@ LABEL_13:
   return v17;
 }
 
-- (SKUIRedeemResultsViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (SKUIRedeemResultsViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   if (os_variant_has_internal_content())
   {
@@ -158,7 +158,7 @@ LABEL_13:
   return 0;
 }
 
-- (SKUIRedeemResultsViewController)initWithCoder:(id)a3
+- (SKUIRedeemResultsViewController)initWithCoder:(id)coder
 {
   if (os_variant_has_internal_content())
   {
@@ -180,15 +180,15 @@ LABEL_13:
   v7.receiver = self;
   v7.super_class = SKUIRedeemResultsViewController;
   [(SKUIRedeemResultsViewController *)&v7 viewDidLoad];
-  v3 = [(SKUIRedeemStepViewController *)self clientContext];
-  v4 = [(SKUIRedeemResultsViewController *)self navigationItem];
-  [v4 setHidesBackButton:1];
+  clientContext = [(SKUIRedeemStepViewController *)self clientContext];
+  navigationItem = [(SKUIRedeemResultsViewController *)self navigationItem];
+  [navigationItem setHidesBackButton:1];
   v5 = objc_alloc_init(MEMORY[0x277D751E0]);
   [v5 setAction:sel__doneAction_];
   [v5 setTarget:self];
-  if (v3)
+  if (clientContext)
   {
-    [v3 localizedStringForKey:@"REDEEM_SUCCESS_DONE_BUTTON" inTable:@"Redeem"];
+    [clientContext localizedStringForKey:@"REDEEM_SUCCESS_DONE_BUTTON" inTable:@"Redeem"];
   }
 
   else
@@ -199,20 +199,20 @@ LABEL_13:
   [v5 setTitle:v6];
 
   [v5 setStyle:2];
-  [v4 setRightBarButtonItem:v5];
+  [navigationItem setRightBarButtonItem:v5];
 }
 
-- (void)_doneAction:(id)a3
+- (void)_doneAction:(id)action
 {
   if ([(SKUIRedeemStepViewController *)self shouldShowPassbookLearnMore]&& ([(SKUIRedeemResultsViewController *)self redeem], v4 = objc_claimAutoreleasedReturnValue(), [(SKUIRedeemStepViewController *)self configuration], v5 = objc_claimAutoreleasedReturnValue(), v6 = [SKUIITunesPassLearnMoreAlertDelegate shouldShowAlertForRedeem:v4 configuration:v5], v5, v4, v6))
   {
     v7 = [SKUIITunesPassLearnMoreAlertDelegate alloc];
-    v8 = [(SKUIRedeemStepViewController *)self configuration];
-    v9 = [(SKUIRedeemStepViewController *)self clientContext];
-    v10 = [(SKUIITunesPassLearnMoreAlertDelegate *)v7 initWithRedeemConfiguration:v8 clientContext:v9];
+    configuration = [(SKUIRedeemStepViewController *)self configuration];
+    clientContext = [(SKUIRedeemStepViewController *)self clientContext];
+    v10 = [(SKUIITunesPassLearnMoreAlertDelegate *)v7 initWithRedeemConfiguration:configuration clientContext:clientContext];
 
-    v11 = [(SKUIRedeemResultsViewController *)self presentingViewController];
-    [(SKUIITunesPassLearnMoreAlertDelegate *)v10 setPresentingViewController:v11];
+    presentingViewController = [(SKUIRedeemResultsViewController *)self presentingViewController];
+    [(SKUIITunesPassLearnMoreAlertDelegate *)v10 setPresentingViewController:presentingViewController];
   }
 
   else
@@ -220,31 +220,31 @@ LABEL_13:
     v10 = 0;
   }
 
-  v12 = [(SKUIRedeemResultsViewController *)self redeem];
-  v13 = [v12 redirectURL];
+  redeem = [(SKUIRedeemResultsViewController *)self redeem];
+  redirectURL = [redeem redirectURL];
 
-  v14 = [(SKUIRedeemResultsViewController *)self parentViewController];
-  v15 = v14;
-  if (v14)
+  parentViewController = [(SKUIRedeemResultsViewController *)self parentViewController];
+  v15 = parentViewController;
+  if (parentViewController)
   {
-    v16 = v14;
+    selfCopy = parentViewController;
   }
 
   else
   {
-    v16 = self;
+    selfCopy = self;
   }
 
-  v17 = v16;
+  v17 = selfCopy;
 
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __47__SKUIRedeemResultsViewController__doneAction___block_invoke;
   v20[3] = &unk_2781F80C8;
-  v21 = v13;
+  v21 = redirectURL;
   v22 = v10;
   v18 = v10;
-  v19 = v13;
+  v19 = redirectURL;
   [(SKUIRedeemResultsViewController *)v17 dismissViewControllerAnimated:1 completion:v20];
 }
 

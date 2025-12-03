@@ -1,11 +1,11 @@
 @interface NSPointerFunctions
-+ (NSPointerFunctions)allocWithZone:(_NSZone *)a3;
++ (NSPointerFunctions)allocWithZone:(_NSZone *)zone;
 + (NSPointerFunctions)pointerFunctionsWithOptions:(NSPointerFunctionsOptions)options;
 @end
 
 @implementation NSPointerFunctions
 
-+ (NSPointerFunctions)allocWithZone:(_NSZone *)a3
++ (NSPointerFunctions)allocWithZone:(_NSZone *)zone
 {
   v3 = objc_opt_self();
 

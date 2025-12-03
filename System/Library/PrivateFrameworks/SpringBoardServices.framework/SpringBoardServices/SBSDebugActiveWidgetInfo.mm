@@ -1,18 +1,18 @@
 @interface SBSDebugActiveWidgetInfo
-- (BOOL)isEqual:(id)a3;
-- (SBSDebugActiveWidgetInfo)initWithBSXPCCoder:(id)a3;
-- (SBSDebugActiveWidgetInfo)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (SBSDebugActiveWidgetInfo)initWithBSXPCCoder:(id)coder;
+- (SBSDebugActiveWidgetInfo)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
-- (void)encodeWithBSXPCCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithBSXPCCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SBSDebugActiveWidgetInfo
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   v5 = v4;
@@ -27,60 +27,60 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   liveWidgetCount = self->_liveWidgetCount;
-  v5 = a3;
-  [v5 encodeInteger:liveWidgetCount forKey:@"liveWidgetCount"];
-  [v5 encodeInteger:self->_staticWidgetCount forKey:@"staticWidgetCount"];
-  [v5 encodeInteger:self->_fakeWidgetCount forKey:@"fakeWidgetCount"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:liveWidgetCount forKey:@"liveWidgetCount"];
+  [coderCopy encodeInteger:self->_staticWidgetCount forKey:@"staticWidgetCount"];
+  [coderCopy encodeInteger:self->_fakeWidgetCount forKey:@"fakeWidgetCount"];
 }
 
-- (SBSDebugActiveWidgetInfo)initWithCoder:(id)a3
+- (SBSDebugActiveWidgetInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = SBSDebugActiveWidgetInfo;
   v5 = [(SBSDebugActiveWidgetInfo *)&v7 init];
   if (v5)
   {
-    v5->_liveWidgetCount = [v4 decodeIntegerForKey:@"liveWidgetCount"];
-    v5->_staticWidgetCount = [v4 decodeIntegerForKey:@"staticWidgetCount"];
-    v5->_fakeWidgetCount = [v4 decodeIntegerForKey:@"fakeWidgetCount"];
+    v5->_liveWidgetCount = [coderCopy decodeIntegerForKey:@"liveWidgetCount"];
+    v5->_staticWidgetCount = [coderCopy decodeIntegerForKey:@"staticWidgetCount"];
+    v5->_fakeWidgetCount = [coderCopy decodeIntegerForKey:@"fakeWidgetCount"];
   }
 
   return v5;
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
   liveWidgetCount = self->_liveWidgetCount;
-  v5 = a3;
-  [v5 encodeUInt64:liveWidgetCount forKey:@"liveWidgetCount"];
-  [v5 encodeUInt64:self->_staticWidgetCount forKey:@"staticWidgetCount"];
-  [v5 encodeUInt64:self->_fakeWidgetCount forKey:@"fakeWidgetCount"];
+  coderCopy = coder;
+  [coderCopy encodeUInt64:liveWidgetCount forKey:@"liveWidgetCount"];
+  [coderCopy encodeUInt64:self->_staticWidgetCount forKey:@"staticWidgetCount"];
+  [coderCopy encodeUInt64:self->_fakeWidgetCount forKey:@"fakeWidgetCount"];
 }
 
-- (SBSDebugActiveWidgetInfo)initWithBSXPCCoder:(id)a3
+- (SBSDebugActiveWidgetInfo)initWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = SBSDebugActiveWidgetInfo;
   v5 = [(SBSDebugActiveWidgetInfo *)&v7 init];
   if (v5)
   {
-    v5->_liveWidgetCount = [v4 decodeUInt64ForKey:@"liveWidgetCount"];
-    v5->_staticWidgetCount = [v4 decodeUInt64ForKey:@"staticWidgetCount"];
-    v5->_fakeWidgetCount = [v4 decodeUInt64ForKey:@"fakeWidgetCount"];
+    v5->_liveWidgetCount = [coderCopy decodeUInt64ForKey:@"liveWidgetCount"];
+    v5->_staticWidgetCount = [coderCopy decodeUInt64ForKey:@"staticWidgetCount"];
+    v5->_fakeWidgetCount = [coderCopy decodeUInt64ForKey:@"fakeWidgetCount"];
   }
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -92,7 +92,7 @@
 
     if (isKindOfClass)
     {
-      v7 = v4;
+      v7 = equalCopy;
       v8 = self->_liveWidgetCount == v7->_liveWidgetCount && self->_staticWidgetCount == v7->_staticWidgetCount && self->_fakeWidgetCount == v7->_fakeWidgetCount;
     }
 
@@ -105,15 +105,15 @@
   return v8;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBSDebugActiveWidgetInfo *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBSDebugActiveWidgetInfo *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v4 = [MEMORY[0x1E698E680] builderWithObject:self];
   v5 = [v4 appendUnsignedInteger:-[SBSDebugActiveWidgetInfo liveWidgetCount](self withName:{"liveWidgetCount"), @"liveWidgetCount"}];
@@ -125,10 +125,10 @@
 
 - (id)succinctDescription
 {
-  v2 = [(SBSDebugActiveWidgetInfo *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBSDebugActiveWidgetInfo *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 @end

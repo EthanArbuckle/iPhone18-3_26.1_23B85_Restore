@@ -1,17 +1,17 @@
 @interface PKPeerPaymentDynamicFraudPageBodyBulletedListLine
-- (BOOL)isEqual:(id)a3;
-- (PKPeerPaymentDynamicFraudPageBodyBulletedListLine)initWithArray:(id)a3;
-- (PKPeerPaymentDynamicFraudPageBodyBulletedListLine)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (PKPeerPaymentDynamicFraudPageBodyBulletedListLine)initWithArray:(id)array;
+- (PKPeerPaymentDynamicFraudPageBodyBulletedListLine)initWithCoder:(id)coder;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation PKPeerPaymentDynamicFraudPageBodyBulletedListLine
 
-- (PKPeerPaymentDynamicFraudPageBodyBulletedListLine)initWithArray:(id)a3
+- (PKPeerPaymentDynamicFraudPageBodyBulletedListLine)initWithArray:(id)array
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  arrayCopy = array;
   v20.receiver = self;
   v20.super_class = PKPeerPaymentDynamicFraudPageBodyBulletedListLine;
   v5 = [(PKPeerPaymentDynamicFraudPageBodyBulletedListLine *)&v20 init];
@@ -22,7 +22,7 @@
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v7 = v4;
+    v7 = arrayCopy;
     v8 = [v7 countByEnumeratingWithState:&v16 objects:v21 count:16];
     if (v8)
     {
@@ -59,9 +59,9 @@
   return v5;
 }
 
-- (PKPeerPaymentDynamicFraudPageBodyBulletedListLine)initWithCoder:(id)a3
+- (PKPeerPaymentDynamicFraudPageBodyBulletedListLine)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = PKPeerPaymentDynamicFraudPageBodyBulletedListLine;
   v5 = [(PKPeerPaymentDynamicFraudPageBodyBulletedListLine *)&v12 init];
@@ -70,7 +70,7 @@
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"contents"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"contents"];
     contents = v5->_contents;
     v5->_contents = v9;
   }
@@ -87,14 +87,14 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     contents = self->_contents;
-    v6 = v4[1];
+    v6 = equalCopy[1];
     if (contents && v6)
     {
       v7 = [(NSArray *)contents isEqual:?];
@@ -116,9 +116,9 @@
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  [v3 safelyAddObject:self->_contents];
-  v4 = PKCombinedHash(17, v3);
+  array = [MEMORY[0x1E695DF70] array];
+  [array safelyAddObject:self->_contents];
+  v4 = PKCombinedHash(17, array);
   v7.receiver = self;
   v7.super_class = PKPeerPaymentDynamicFraudPageBodyBulletedListLine;
   v5 = [(PKPeerPaymentDynamicFraudPageBodyBulletedListLine *)&v7 hash]+ 32 * v4 - v4;

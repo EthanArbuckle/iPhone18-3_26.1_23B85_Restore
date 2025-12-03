@@ -11,8 +11,8 @@
   v2 = v13.receiver;
   [(PlayerIndeterminateActivityIndicator *)&v13 layoutSubviews];
   v3 = *&v2[OBJC_IVAR____TtC12NowPlayingUI36PlayerIndeterminateActivityIndicator_patternLayer];
-  v4 = [v2 layer];
-  [v4 bounds];
+  layer = [v2 layer];
+  [layer bounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;

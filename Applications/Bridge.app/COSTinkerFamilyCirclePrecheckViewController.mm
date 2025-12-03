@@ -3,8 +3,8 @@
 - (id)localizedWaitScreenDescription;
 - (void)_fetchFamilyCircle;
 - (void)didPushWaitScreen;
-- (void)failPrecheckWithTitle:(id)a3 body:(id)a4 withPresentingController:(id)a5;
-- (void)handleRepairFailureWithError:(id)a3;
+- (void)failPrecheckWithTitle:(id)title body:(id)body withPresentingController:(id)controller;
+- (void)handleRepairFailureWithError:(id)error;
 @end
 
 @implementation COSTinkerFamilyCirclePrecheckViewController
@@ -17,27 +17,27 @@
   return v3;
 }
 
-- (void)failPrecheckWithTitle:(id)a3 body:(id)a4 withPresentingController:(id)a5
+- (void)failPrecheckWithTitle:(id)title body:(id)body withPresentingController:(id)controller
 {
-  v7 = a5;
-  v11 = [UIAlertController alertControllerWithTitle:a3 message:a4 preferredStyle:1];
+  controllerCopy = controller;
+  v11 = [UIAlertController alertControllerWithTitle:title message:body preferredStyle:1];
   v8 = +[NSBundle mainBundle];
   v9 = [v8 localizedStringForKey:@"OK" value:&stru_10026E598 table:@"Localizable"];
   v10 = [UIAlertAction actionWithTitle:v9 style:0 handler:&stru_10026C508];
   [v11 addAction:v10];
 
-  [v7 presentViewController:v11 animated:1 completion:0];
+  [controllerCopy presentViewController:v11 animated:1 completion:0];
 }
 
-- (void)handleRepairFailureWithError:(id)a3
+- (void)handleRepairFailureWithError:(id)error
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_1001199E8;
   v5[3] = &unk_100268358;
-  v6 = a3;
-  v7 = self;
-  v4 = v6;
+  errorCopy = error;
+  selfCopy = self;
+  v4 = errorCopy;
   dispatch_async(&_dispatch_main_q, v5);
 }
 
@@ -53,22 +53,22 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Performing FamilyCircle Pre-Check", buf, 2u);
   }
 
-  v6 = [UIApp setupController];
-  v7 = [v6 tinkerAuthenticationController];
+  setupController = [UIApp setupController];
+  tinkerAuthenticationController = [setupController tinkerAuthenticationController];
 
   objc_initWeak(buf, self);
   v8 = +[UIApplication sharedApplication];
-  v9 = [v8 bridgeController];
+  bridgeController = [v8 bridgeController];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_100119D14;
   v12[3] = &unk_10026C580;
-  v10 = v7;
+  v10 = tinkerAuthenticationController;
   v13 = v10;
   objc_copyWeak(&v15, buf);
   v11 = v4;
   v14 = v11;
-  [v9 requestProxiedDeviceForWatchWithCompletion:v12];
+  [bridgeController requestProxiedDeviceForWatchWithCompletion:v12];
 
   objc_destroyWeak(&v15);
   objc_destroyWeak(buf);

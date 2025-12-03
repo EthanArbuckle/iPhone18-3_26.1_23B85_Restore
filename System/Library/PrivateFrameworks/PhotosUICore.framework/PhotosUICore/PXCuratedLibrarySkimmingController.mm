@@ -1,29 +1,29 @@
 @interface PXCuratedLibrarySkimmingController
 + (PXCuratedLibrarySkimmingController)new;
 - (BOOL)canStartSkimming;
-- (BOOL)endTouchingGestureEnded:(BOOL)a3;
+- (BOOL)endTouchingGestureEnded:(BOOL)ended;
 - (PXCuratedLibrarySkimmingController)init;
-- (PXCuratedLibrarySkimmingController)initWithSkimmingModel:(id)a3;
+- (PXCuratedLibrarySkimmingController)initWithSkimmingModel:(id)model;
 - (PXCuratedLibrarySkimmingControllerDelegate)delegate;
 - (void)_adoptIndexesFromSkimmingModel;
 - (void)_cancelEnteringTouchingState;
 - (void)_cleanupFeedbackGenerator;
 - (void)_ensureFeedbackGenerator;
-- (void)_enterIdleStatePersistSkimmingState:(BOOL)a3;
-- (void)_enterSlideshowStateForAssetCollectionReference:(id)a3;
-- (void)_enterTouchingStateForAssetCollectionReference:(id)a3;
+- (void)_enterIdleStatePersistSkimmingState:(BOOL)state;
+- (void)_enterSlideshowStateForAssetCollectionReference:(id)reference;
+- (void)_enterTouchingStateForAssetCollectionReference:(id)reference;
 - (void)_generateFeedbackForSkimmingGesture;
-- (void)_slideshowTimerTick:(id)a3;
-- (void)_startOrResumeSlideshowTouchesEnded:(BOOL)a3;
+- (void)_slideshowTimerTick:(id)tick;
+- (void)_startOrResumeSlideshowTouchesEnded:(BOOL)ended;
 - (void)_stopSlideshow;
 - (void)_updateSlideshow;
 - (void)endPanning;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)setSkimmingSlideshowEnabled:(BOOL)a3;
-- (void)setState:(int64_t)a3;
-- (void)startPanningForAssetCollectionReference:(id)a3;
-- (void)startTouchingForAssetCollectionReference:(id)a3;
-- (void)updatePanningWithTranslation:(CGPoint)a3;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)setSkimmingSlideshowEnabled:(BOOL)enabled;
+- (void)setState:(int64_t)state;
+- (void)startPanningForAssetCollectionReference:(id)reference;
+- (void)startTouchingForAssetCollectionReference:(id)reference;
+- (void)updatePanningWithTranslation:(CGPoint)translation;
 @end
 
 @implementation PXCuratedLibrarySkimmingController
@@ -32,10 +32,10 @@
 {
   if ([(PXCuratedLibrarySkimmingController *)self skimmingSlideshowEnabled])
   {
-    v3 = [(PXCuratedLibrarySkimmingController *)self skimmingModel];
-    v4 = [v3 canStartSkimming];
+    skimmingModel = [(PXCuratedLibrarySkimmingController *)self skimmingModel];
+    canStartSkimming = [skimmingModel canStartSkimming];
 
-    if (v4)
+    if (canStartSkimming)
     {
 
       [(PXCuratedLibrarySkimmingController *)self _startOrResumeSlideshowTouchesEnded:0];
@@ -60,13 +60,13 @@
 
 - (void)_cancelEnteringTouchingState
 {
-  v3 = [(PXCuratedLibrarySkimmingController *)self preSkimmedAssetCollectionReference];
+  preSkimmedAssetCollectionReference = [(PXCuratedLibrarySkimmingController *)self preSkimmedAssetCollectionReference];
 
-  if (v3)
+  if (preSkimmedAssetCollectionReference)
   {
     v4 = MEMORY[0x1E69E58C0];
-    v5 = [(PXCuratedLibrarySkimmingController *)self preSkimmedAssetCollectionReference];
-    [v4 cancelPreviousPerformRequestsWithTarget:self selector:sel__enterTouchingStateForAssetCollectionReference_ object:v5];
+    preSkimmedAssetCollectionReference2 = [(PXCuratedLibrarySkimmingController *)self preSkimmedAssetCollectionReference];
+    [v4 cancelPreviousPerformRequestsWithTarget:self selector:sel__enterTouchingStateForAssetCollectionReference_ object:preSkimmedAssetCollectionReference2];
 
     [(PXCuratedLibrarySkimmingController *)self setPreSkimmedAssetCollectionReference:0];
   }
@@ -79,12 +79,12 @@
   return WeakRetained;
 }
 
-- (void)setState:(int64_t)a3
+- (void)setState:(int64_t)state
 {
   state = self->_state;
-  if (state != a3)
+  if (state != state)
   {
-    self->_state = a3;
+    self->_state = state;
     if (state == 2)
     {
       v6 = 0.5;
@@ -106,7 +106,7 @@
     }
 
     v8 = state != 3 && state != 2;
-    if ((a3 - 2) < 2)
+    if ((state - 2) < 2)
     {
       v9 = 1;
       v10 = 0.2;
@@ -115,7 +115,7 @@
     else
     {
       v9 = 0;
-      if (a3 <= 1)
+      if (state <= 1)
       {
         v10 = 0.5;
       }
@@ -128,28 +128,28 @@
 
     if ([(PXCuratedLibrarySkimmingController *)self skimmingSlideshowEnabled:0.0])
     {
-      v11 = [(PXCuratedLibrarySkimmingController *)self slideshowTimer];
-      [v11 invalidate];
+      slideshowTimer = [(PXCuratedLibrarySkimmingController *)self slideshowTimer];
+      [slideshowTimer invalidate];
 
       [(PXCuratedLibrarySkimmingController *)self setSlideshowTimer:0];
-      if (a3 == 1)
+      if (state == 1)
       {
         v12 = objc_alloc(MEMORY[0x1E695DFF0]);
         v13 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:self->_slideshowTriggerDelay];
         v14 = [v12 initWithFireDate:v13 interval:self target:sel__slideshowTimerTick_ selector:0 userInfo:1 repeats:self->_slideshowIntervalDelay];
 
         [(PXCuratedLibrarySkimmingController *)self setSlideshowTimer:v14];
-        v15 = [MEMORY[0x1E695DFD0] currentRunLoop];
-        [v15 addTimer:v14 forMode:*MEMORY[0x1E695D918]];
+        currentRunLoop = [MEMORY[0x1E695DFD0] currentRunLoop];
+        [currentRunLoop addTimer:v14 forMode:*MEMORY[0x1E695D918]];
       }
     }
 
     if ((v8 & v9) == 1)
     {
-      v18 = [(PXCuratedLibrarySkimmingController *)self delegate];
-      v16 = [(PXCuratedLibrarySkimmingController *)self skimmingModel];
-      v17 = [v16 containingAssetCollectionReference];
-      [v18 skimmingController:self willStartSkimmingAssetCollectionReference:v17 animationDuration:v10];
+      delegate = [(PXCuratedLibrarySkimmingController *)self delegate];
+      skimmingModel = [(PXCuratedLibrarySkimmingController *)self skimmingModel];
+      containingAssetCollectionReference = [skimmingModel containingAssetCollectionReference];
+      [delegate skimmingController:self willStartSkimmingAssetCollectionReference:containingAssetCollectionReference animationDuration:v10];
     }
 
     else
@@ -159,19 +159,19 @@
         return;
       }
 
-      v18 = [(PXCuratedLibrarySkimmingController *)self delegate];
-      [v18 skimmingControllerDidStopSkimming:self animationDuration:v7];
+      delegate = [(PXCuratedLibrarySkimmingController *)self delegate];
+      [delegate skimmingControllerDidStopSkimming:self animationDuration:v7];
     }
   }
 }
 
-- (void)_enterIdleStatePersistSkimmingState:(BOOL)a3
+- (void)_enterIdleStatePersistSkimmingState:(BOOL)state
 {
-  v3 = a3;
+  stateCopy = state;
   if ([(PXCuratedLibrarySkimmingController *)self state])
   {
-    v5 = [(PXCuratedLibrarySkimmingController *)self skimmingModel];
-    [v5 tearDownAfterSkimmingShowHints:0 persistState:v3];
+    skimmingModel = [(PXCuratedLibrarySkimmingController *)self skimmingModel];
+    [skimmingModel tearDownAfterSkimmingShowHints:0 persistState:stateCopy];
 
     [(PXCuratedLibrarySkimmingController *)self _cancelEnteringTouchingState];
     [(PXCuratedLibrarySkimmingController *)self setSkimmingIndexes:0];
@@ -184,18 +184,18 @@
 
 - (void)_adoptIndexesFromSkimmingModel
 {
-  v3 = [(PXCuratedLibrarySkimmingController *)self skimmingModel];
-  v4 = [v3 indexPathSetForSkimming];
+  skimmingModel = [(PXCuratedLibrarySkimmingController *)self skimmingModel];
+  indexPathSetForSkimming = [skimmingModel indexPathSetForSkimming];
   v14 = 0u;
   v15 = 0u;
-  if (v3)
+  if (skimmingModel)
   {
-    [v3 initialIndexPath];
+    [skimmingModel initialIndexPath];
   }
 
-  if (v4)
+  if (indexPathSetForSkimming)
   {
-    [v4 anySectionIndexPath];
+    [indexPathSetForSkimming anySectionIndexPath];
     v5 = v12;
   }
 
@@ -207,7 +207,7 @@
   }
 
   v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v7 = [v4 sectionIndexSetForDataSourceIdentifier:v5];
+  v7 = [indexPathSetForSkimming sectionIndexSetForDataSourceIdentifier:v5];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __68__PXCuratedLibrarySkimmingController__adoptIndexesFromSkimmingModel__block_invoke;
@@ -229,13 +229,13 @@ void __68__PXCuratedLibrarySkimmingController__adoptIndexesFromSkimmingModel__bl
   [v2 addObject:v3];
 }
 
-- (void)_enterTouchingStateForAssetCollectionReference:(id)a3
+- (void)_enterTouchingStateForAssetCollectionReference:(id)reference
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  referenceCopy = reference;
+  v5 = referenceCopy;
+  if (referenceCopy)
   {
-    [v4 indexPath];
+    [referenceCopy indexPath];
   }
 
   else
@@ -243,12 +243,12 @@ void __68__PXCuratedLibrarySkimmingController__adoptIndexesFromSkimmingModel__bl
     memset(&v12[2], 0, 32);
   }
 
-  v6 = [(PXCuratedLibrarySkimmingController *)self skimmingModel];
-  v7 = [v6 containingAssetCollectionReference];
-  v8 = v7;
-  if (v7)
+  skimmingModel = [(PXCuratedLibrarySkimmingController *)self skimmingModel];
+  containingAssetCollectionReference = [skimmingModel containingAssetCollectionReference];
+  v8 = containingAssetCollectionReference;
+  if (containingAssetCollectionReference)
   {
-    [v7 indexPath];
+    [containingAssetCollectionReference indexPath];
     v9 = *&v12[0];
   }
 
@@ -264,8 +264,8 @@ void __68__PXCuratedLibrarySkimmingController__adoptIndexesFromSkimmingModel__bl
     if (*(&v12[3] + 1) == *(&v12[1] + 1))
     {
       [(PXCuratedLibrarySkimmingController *)self setState:2];
-      v10 = [(PXCuratedLibrarySkimmingController *)self skimmingModel];
-      [v10 transitionToSkimming];
+      skimmingModel2 = [(PXCuratedLibrarySkimmingController *)self skimmingModel];
+      [skimmingModel2 transitionToSkimming];
 
       goto LABEL_14;
     }
@@ -277,8 +277,8 @@ void __68__PXCuratedLibrarySkimmingController__adoptIndexesFromSkimmingModel__bl
 
   if ([(PXCuratedLibrarySkimmingController *)self state]<= 2)
   {
-    v11 = [(PXCuratedLibrarySkimmingController *)self skimmingModel];
-    [v11 prepareForSkimmingInAssetCollectionReference:v5];
+    skimmingModel3 = [(PXCuratedLibrarySkimmingController *)self skimmingModel];
+    [skimmingModel3 prepareForSkimmingInAssetCollectionReference:v5];
 
     [(PXCuratedLibrarySkimmingController *)self _adoptIndexesFromSkimmingModel];
     [(PXCuratedLibrarySkimmingController *)self setState:2];
@@ -287,13 +287,13 @@ void __68__PXCuratedLibrarySkimmingController__adoptIndexesFromSkimmingModel__bl
 LABEL_14:
 }
 
-- (void)_enterSlideshowStateForAssetCollectionReference:(id)a3
+- (void)_enterSlideshowStateForAssetCollectionReference:(id)reference
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  referenceCopy = reference;
+  v5 = referenceCopy;
+  if (referenceCopy)
   {
-    [v4 indexPath];
+    [referenceCopy indexPath];
   }
 
   else
@@ -301,12 +301,12 @@ LABEL_14:
     memset(v22, 0, sizeof(v22));
   }
 
-  v6 = [(PXCuratedLibrarySkimmingController *)self skimmingModel];
-  v7 = [v6 containingAssetCollectionReference];
-  v8 = v7;
-  if (v7)
+  skimmingModel = [(PXCuratedLibrarySkimmingController *)self skimmingModel];
+  containingAssetCollectionReference = [skimmingModel containingAssetCollectionReference];
+  v8 = containingAssetCollectionReference;
+  if (containingAssetCollectionReference)
   {
-    [v7 indexPath];
+    [containingAssetCollectionReference indexPath];
     v9 = *&v21[0];
   }
 
@@ -321,12 +321,12 @@ LABEL_14:
 
     if (*(&v22[1] + 1) == *(&v21[1] + 1))
     {
-      v10 = [(PXCuratedLibrarySkimmingController *)self state];
-      if (v10 <= 3 && v10 != 1)
+      state = [(PXCuratedLibrarySkimmingController *)self state];
+      if (state <= 3 && state != 1)
       {
         [(PXCuratedLibrarySkimmingController *)self setState:1];
-        v11 = [(PXCuratedLibrarySkimmingController *)self skimmingModel];
-        [v11 transitionToSlideshow];
+        skimmingModel2 = [(PXCuratedLibrarySkimmingController *)self skimmingModel];
+        [skimmingModel2 transitionToSlideshow];
       }
 
       goto LABEL_27;
@@ -337,11 +337,11 @@ LABEL_14:
   {
   }
 
-  v12 = [(PXCuratedLibrarySkimmingController *)self skimmingModel];
-  v13 = v12;
-  if (v12)
+  skimmingModel3 = [(PXCuratedLibrarySkimmingController *)self skimmingModel];
+  v13 = skimmingModel3;
+  if (skimmingModel3)
   {
-    [v12 skimmedIndexPath];
+    [skimmingModel3 skimmedIndexPath];
   }
 
   else
@@ -349,11 +349,11 @@ LABEL_14:
     memset(v22, 0, sizeof(v22));
   }
 
-  v14 = [(PXCuratedLibrarySkimmingController *)self skimmingModel];
-  v15 = v14;
-  if (v14)
+  skimmingModel4 = [(PXCuratedLibrarySkimmingController *)self skimmingModel];
+  v15 = skimmingModel4;
+  if (skimmingModel4)
   {
-    [v14 initialIndexPath];
+    [skimmingModel4 initialIndexPath];
     v16 = *&v21[0];
   }
 
@@ -366,13 +366,13 @@ LABEL_14:
   v17 = *&v22[0] != v16 || *(v22 + 8) != *(v21 + 8) || *(&v22[1] + 1) != *(&v21[1] + 1);
   [(PXCuratedLibrarySkimmingController *)self _enterIdleStatePersistSkimmingState:v17, *&v21[0]];
 
-  v18 = [v5 assetCollection];
-  v19 = [v18 px_highlightKind];
+  assetCollection = [v5 assetCollection];
+  px_highlightKind = [assetCollection px_highlightKind];
 
-  if (v19 == 2 && [(PXCuratedLibrarySkimmingController *)self state]<= 1)
+  if (px_highlightKind == 2 && [(PXCuratedLibrarySkimmingController *)self state]<= 1)
   {
-    v20 = [(PXCuratedLibrarySkimmingController *)self skimmingModel];
-    [v20 prepareForSlideshowForAssetCollectionReference:v5];
+    skimmingModel5 = [(PXCuratedLibrarySkimmingController *)self skimmingModel];
+    [skimmingModel5 prepareForSlideshowForAssetCollectionReference:v5];
 
     [(PXCuratedLibrarySkimmingController *)self _adoptIndexesFromSkimmingModel];
     [(PXCuratedLibrarySkimmingController *)self setState:1];
@@ -425,13 +425,13 @@ LABEL_27:
   }
 }
 
-- (void)updatePanningWithTranslation:(CGPoint)a3
+- (void)updatePanningWithTranslation:(CGPoint)translation
 {
-  x = a3.x;
-  if ([(PXCuratedLibrarySkimmingController *)self state:a3.x]== 3)
+  x = translation.x;
+  if ([(PXCuratedLibrarySkimmingController *)self state:translation.x]== 3)
   {
-    v5 = [(PXCuratedLibrarySkimmingController *)self skimmingModel];
-    [v5 transitionToSkimming];
+    skimmingModel = [(PXCuratedLibrarySkimmingController *)self skimmingModel];
+    [skimmingModel transitionToSkimming];
 
     [(PXCuratedLibrarySkimmingController *)self lastPanningTranslation];
     if (vabdd_f64(x, v6) >= 15.0)
@@ -445,16 +445,16 @@ LABEL_27:
   }
 }
 
-- (void)startPanningForAssetCollectionReference:(id)a3
+- (void)startPanningForAssetCollectionReference:(id)reference
 {
-  v4 = a3;
-  v5 = [(PXCuratedLibrarySkimmingController *)self skimmingModel];
-  v6 = [v5 canStartSkimming];
+  referenceCopy = reference;
+  skimmingModel = [(PXCuratedLibrarySkimmingController *)self skimmingModel];
+  canStartSkimming = [skimmingModel canStartSkimming];
 
-  if (v6)
+  if (canStartSkimming)
   {
-    v7 = [(PXCuratedLibrarySkimmingController *)self skimmingModel];
-    v9 = [v7 validatedAssetCollectionReference:v4];
+    skimmingModel2 = [(PXCuratedLibrarySkimmingController *)self skimmingModel];
+    v9 = [skimmingModel2 validatedAssetCollectionReference:referenceCopy];
 
     if ([(PXCuratedLibrarySkimmingController *)self state]!= 2)
     {
@@ -470,19 +470,19 @@ LABEL_27:
 
   else
   {
-    v8 = v4;
+    v8 = referenceCopy;
   }
 }
 
-- (BOOL)endTouchingGestureEnded:(BOOL)a3
+- (BOOL)endTouchingGestureEnded:(BOOL)ended
 {
-  v3 = a3;
+  endedCopy = ended;
   [(PXCuratedLibrarySkimmingController *)self _cancelEnteringTouchingState];
-  if (v3)
+  if (endedCopy)
   {
     if ([(PXCuratedLibrarySkimmingController *)self state]== 2)
     {
-      LOBYTE(v3) = 1;
+      LOBYTE(endedCopy) = 1;
       if ([(PXCuratedLibrarySkimmingController *)self skimmingSlideshowEnabled])
       {
         [(PXCuratedLibrarySkimmingController *)self _startOrResumeSlideshowTouchesEnded:1];
@@ -496,48 +496,48 @@ LABEL_27:
 
     else
     {
-      LOBYTE(v3) = 0;
+      LOBYTE(endedCopy) = 0;
     }
   }
 
-  return v3;
+  return endedCopy;
 }
 
-- (void)startTouchingForAssetCollectionReference:(id)a3
+- (void)startTouchingForAssetCollectionReference:(id)reference
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PXCuratedLibrarySkimmingController *)self skimmingModel];
-  v6 = [v5 canStartSkimming];
+  referenceCopy = reference;
+  skimmingModel = [(PXCuratedLibrarySkimmingController *)self skimmingModel];
+  canStartSkimming = [skimmingModel canStartSkimming];
 
-  if (v6)
+  if (canStartSkimming)
   {
-    v7 = [(PXCuratedLibrarySkimmingController *)self skimmingModel];
-    v8 = [v7 validatedAssetCollectionReference:v4];
+    skimmingModel2 = [(PXCuratedLibrarySkimmingController *)self skimmingModel];
+    v8 = [skimmingModel2 validatedAssetCollectionReference:referenceCopy];
 
     [(PXCuratedLibrarySkimmingController *)self setPreSkimmedAssetCollectionReference:v8];
     v10[0] = *MEMORY[0x1E695DA28];
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
     [(PXCuratedLibrarySkimmingController *)self performSelector:sel__enterTouchingStateForAssetCollectionReference_ withObject:v8 afterDelay:v9 inModes:0.15];
 
-    v4 = v8;
+    referenceCopy = v8;
   }
 }
 
 - (BOOL)canStartSkimming
 {
-  v2 = [(PXCuratedLibrarySkimmingController *)self skimmingModel];
-  v3 = [v2 canStartSkimming];
+  skimmingModel = [(PXCuratedLibrarySkimmingController *)self skimmingModel];
+  canStartSkimming = [skimmingModel canStartSkimming];
 
-  return v3;
+  return canStartSkimming;
 }
 
-- (void)setSkimmingSlideshowEnabled:(BOOL)a3
+- (void)setSkimmingSlideshowEnabled:(BOOL)enabled
 {
-  if (self->_skimmingSlideshowEnabled != a3)
+  if (self->_skimmingSlideshowEnabled != enabled)
   {
-    self->_skimmingSlideshowEnabled = a3;
-    if (a3)
+    self->_skimmingSlideshowEnabled = enabled;
+    if (enabled)
     {
       [(PXCuratedLibrarySkimmingController *)self _updateSlideshow];
     }
@@ -549,29 +549,29 @@ LABEL_27:
   }
 }
 
-- (void)_slideshowTimerTick:(id)a3
+- (void)_slideshowTimerTick:(id)tick
 {
   if ([(PXCuratedLibrarySkimmingController *)self state]== 1)
   {
-    v4 = [(PXCuratedLibrarySkimmingController *)self skimmingModel];
-    v5 = [v4 viewModel];
-    v6 = [v5 scrollRegime];
+    skimmingModel = [(PXCuratedLibrarySkimmingController *)self skimmingModel];
+    viewModel = [skimmingModel viewModel];
+    scrollRegime = [viewModel scrollRegime];
 
-    if (!v6)
+    if (!scrollRegime)
     {
-      v7 = [(PXCuratedLibrarySkimmingController *)self skimmingModel];
-      [v7 transitionToSlideshow];
+      skimmingModel2 = [(PXCuratedLibrarySkimmingController *)self skimmingModel];
+      [skimmingModel2 transitionToSlideshow];
 
-      v8 = [(PXCuratedLibrarySkimmingController *)self skimmingIndexes];
-      v9 = [v8 count];
+      skimmingIndexes = [(PXCuratedLibrarySkimmingController *)self skimmingIndexes];
+      v9 = [skimmingIndexes count];
 
       if (v9 >= 2)
       {
-        v10 = [(PXCuratedLibrarySkimmingController *)self skimmingIndexes];
-        v11 = [(PXCuratedLibrarySkimmingController *)self currentSkimmingIndex];
-        if (v11 + 1 < [v10 count])
+        skimmingIndexes2 = [(PXCuratedLibrarySkimmingController *)self skimmingIndexes];
+        currentSkimmingIndex = [(PXCuratedLibrarySkimmingController *)self currentSkimmingIndex];
+        if (currentSkimmingIndex + 1 < [skimmingIndexes2 count])
         {
-          v12 = v11 + 1;
+          v12 = currentSkimmingIndex + 1;
         }
 
         else
@@ -579,16 +579,16 @@ LABEL_27:
           v12 = 0;
         }
 
-        if (v12 < [v10 count])
+        if (v12 < [skimmingIndexes2 count])
         {
           [(PXCuratedLibrarySkimmingController *)self setCurrentSkimmingIndex:v12];
           v23 = 0u;
           v24 = 0u;
-          v13 = [(PXCuratedLibrarySkimmingController *)self skimmingModel];
-          v14 = v13;
-          if (v13)
+          skimmingModel3 = [(PXCuratedLibrarySkimmingController *)self skimmingModel];
+          v14 = skimmingModel3;
+          if (skimmingModel3)
           {
-            [v13 skimmedIndexPath];
+            [skimmingModel3 skimmedIndexPath];
           }
 
           else
@@ -597,21 +597,21 @@ LABEL_27:
             v24 = 0u;
           }
 
-          v15 = [(PXCuratedLibrarySkimmingController *)self skimmingDataSourceIdentifier];
-          v16 = [v10 objectAtIndexedSubscript:v12];
-          v17 = [v16 integerValue];
-          v18 = [(PXCuratedLibrarySkimmingController *)self skimmingModel];
-          *&v21 = v15;
-          *(&v21 + 1) = v17;
+          skimmingDataSourceIdentifier = [(PXCuratedLibrarySkimmingController *)self skimmingDataSourceIdentifier];
+          v16 = [skimmingIndexes2 objectAtIndexedSubscript:v12];
+          integerValue = [v16 integerValue];
+          skimmingModel4 = [(PXCuratedLibrarySkimmingController *)self skimmingModel];
+          *&v21 = skimmingDataSourceIdentifier;
+          *(&v21 + 1) = integerValue;
           v19.f64[0] = NAN;
           v19.f64[1] = NAN;
           v22 = vnegq_f64(v19);
-          [v18 setSkimmedIndexPath:&v21];
+          [skimmingModel4 setSkimmedIndexPath:&v21];
 
-          v20 = [(PXCuratedLibrarySkimmingController *)self skimmingModel];
-          if (v20)
+          skimmingModel5 = [(PXCuratedLibrarySkimmingController *)self skimmingModel];
+          if (skimmingModel5)
           {
-            [v20 skimmedIndexPath];
+            [skimmingModel5 skimmedIndexPath];
           }
 
           else
@@ -627,21 +627,21 @@ LABEL_27:
   }
 }
 
-- (void)_startOrResumeSlideshowTouchesEnded:(BOOL)a3
+- (void)_startOrResumeSlideshowTouchesEnded:(BOOL)ended
 {
-  v3 = a3;
-  v5 = [(PXCuratedLibrarySkimmingController *)self delegate];
-  v6 = [v5 assetCollectionReferenceForSkimmingSlideshow:self];
+  endedCopy = ended;
+  delegate = [(PXCuratedLibrarySkimmingController *)self delegate];
+  v6 = [delegate assetCollectionReferenceForSkimmingSlideshow:self];
 
   if (v6)
   {
-    v7 = [(PXCuratedLibrarySkimmingController *)self skimmingModel];
-    v10 = [v7 validatedAssetCollectionReference:v6];
+    skimmingModel = [(PXCuratedLibrarySkimmingController *)self skimmingModel];
+    v10 = [skimmingModel validatedAssetCollectionReference:v6];
 
     if (v10)
     {
-      v8 = [(PXCuratedLibrarySkimmingController *)self state];
-      if (v8 < 2 || v8 - 2 <= 1 && (-[PXCuratedLibrarySkimmingController skimmingModel](self, "skimmingModel"), v9 = objc_claimAutoreleasedReturnValue(), [v9 persistSkimmingState], v9, v3))
+      state = [(PXCuratedLibrarySkimmingController *)self state];
+      if (state < 2 || state - 2 <= 1 && (-[PXCuratedLibrarySkimmingController skimmingModel](self, "skimmingModel"), v9 = objc_claimAutoreleasedReturnValue(), [v9 persistSkimmingState], v9, endedCopy))
       {
         [(PXCuratedLibrarySkimmingController *)self _enterSlideshowStateForAssetCollectionReference:v10];
       }
@@ -654,25 +654,25 @@ LABEL_27:
   }
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v6 = a4;
-  v9 = a3;
-  if (PXCuratedLibraryViewModelObserverContext != a5)
+  changeCopy = change;
+  observableCopy = observable;
+  if (PXCuratedLibraryViewModelObserverContext != context)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"PXCuratedLibrarySkimmingController.m" lineNumber:85 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXCuratedLibrarySkimmingController.m" lineNumber:85 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 
-  if ((v6 & 0x2804) != 0)
+  if ((changeCopy & 0x2804) != 0)
   {
-    v13 = v9;
-    v10 = [(PXCuratedLibrarySkimmingController *)self skimmingModel];
-    v11 = [v10 viewModel];
+    v13 = observableCopy;
+    skimmingModel = [(PXCuratedLibrarySkimmingController *)self skimmingModel];
+    viewModel = [skimmingModel viewModel];
 
-    if (![v11 zoomLevelTransitionPhase] && objc_msgSend(v11, "scrollRegime") <= 1)
+    if (![viewModel zoomLevelTransitionPhase] && objc_msgSend(viewModel, "scrollRegime") <= 1)
     {
       if ([(PXCuratedLibrarySkimmingController *)self skimmingSlideshowEnabled])
       {
@@ -685,30 +685,30 @@ LABEL_27:
       }
     }
 
-    v9 = v13;
+    observableCopy = v13;
   }
 }
 
 - (PXCuratedLibrarySkimmingController)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXCuratedLibrarySkimmingController.m" lineNumber:62 description:{@"%s is not available as initializer", "-[PXCuratedLibrarySkimmingController init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXCuratedLibrarySkimmingController.m" lineNumber:62 description:{@"%s is not available as initializer", "-[PXCuratedLibrarySkimmingController init]"}];
 
   abort();
 }
 
-- (PXCuratedLibrarySkimmingController)initWithSkimmingModel:(id)a3
+- (PXCuratedLibrarySkimmingController)initWithSkimmingModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   v13.receiver = self;
   v13.super_class = PXCuratedLibrarySkimmingController;
   v6 = [(PXCuratedLibrarySkimmingController *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_skimmingModel, a3);
-    v8 = [v5 viewModel];
-    [v8 registerChangeObserver:v7 context:PXCuratedLibraryViewModelObserverContext];
+    objc_storeStrong(&v6->_skimmingModel, model);
+    viewModel = [modelCopy viewModel];
+    [viewModel registerChangeObserver:v7 context:PXCuratedLibraryViewModelObserverContext];
 
     v9 = +[PXCuratedLibrarySettings sharedInstance];
     -[PXCuratedLibrarySkimmingController setSkimmingSlideshowEnabled:](v7, "setSkimmingSlideshowEnabled:", [v9 enableSlideshowInYears]);
@@ -723,8 +723,8 @@ LABEL_27:
 
 + (PXCuratedLibrarySkimmingController)new
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"PXCuratedLibrarySkimmingController.m" lineNumber:66 description:{@"%s is not available as initializer", "+[PXCuratedLibrarySkimmingController new]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXCuratedLibrarySkimmingController.m" lineNumber:66 description:{@"%s is not available as initializer", "+[PXCuratedLibrarySkimmingController new]"}];
 
   abort();
 }

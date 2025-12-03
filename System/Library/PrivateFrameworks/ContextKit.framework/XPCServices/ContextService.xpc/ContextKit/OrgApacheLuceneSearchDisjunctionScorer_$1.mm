@@ -1,6 +1,6 @@
 @interface OrgApacheLuceneSearchDisjunctionScorer_$1
 - (BOOL)matches;
-- (OrgApacheLuceneSearchDisjunctionScorer_$1)initWithOrgApacheLuceneSearchDisjunctionScorer:(id)a3 withOrgApacheLuceneSearchDocIdSetIterator:(id)a4;
+- (OrgApacheLuceneSearchDisjunctionScorer_$1)initWithOrgApacheLuceneSearchDisjunctionScorer:(id)scorer withOrgApacheLuceneSearchDocIdSetIterator:(id)iterator;
 - (void)dealloc;
 @end
 
@@ -15,22 +15,22 @@ LABEL_18:
     JreThrowNullPointerException();
   }
 
-  v4 = [(OrgApacheLuceneSearchDisiPriorityQueue *)subScorers topList];
+  topList = [(OrgApacheLuceneSearchDisiPriorityQueue *)subScorers topList];
   while (1)
   {
-    if (!v4)
+    if (!topList)
     {
       goto LABEL_18;
     }
 
-    v5 = *(v4 + 6);
+    v5 = *(topList + 6);
     if (!v5 || ([v5 matches] & 1) != 0)
     {
       break;
     }
 
-    v4 = *(v4 + 4);
-    if (!v4)
+    topList = *(topList + 4);
+    if (!topList)
     {
       return 0;
     }
@@ -38,19 +38,19 @@ LABEL_18:
 
   if (self->this$0_->needsScores_)
   {
-    v7 = *(v4 + 4);
+    v7 = *(topList + 4);
     if (v7)
     {
-      v8 = v4;
+      v8 = topList;
       do
       {
         v9 = *(v7 + 48);
         v10 = v7;
         if (v9)
         {
-          v11 = [v9 matches];
+          matches = [v9 matches];
           v10 = v7;
-          if ((v11 & 1) == 0)
+          if ((matches & 1) == 0)
           {
             JreStrongAssign(v8 + 4, *(v7 + 32));
             v10 = v8;
@@ -67,17 +67,17 @@ LABEL_18:
 
   else
   {
-    JreStrongAssign(v4 + 4, 0);
+    JreStrongAssign(topList + 4, 0);
   }
 
-  JreStrongAssign(&self->this$0_->topScorers_, v4);
+  JreStrongAssign(&self->this$0_->topScorers_, topList);
   return 1;
 }
 
-- (OrgApacheLuceneSearchDisjunctionScorer_$1)initWithOrgApacheLuceneSearchDisjunctionScorer:(id)a3 withOrgApacheLuceneSearchDocIdSetIterator:(id)a4
+- (OrgApacheLuceneSearchDisjunctionScorer_$1)initWithOrgApacheLuceneSearchDisjunctionScorer:(id)scorer withOrgApacheLuceneSearchDocIdSetIterator:(id)iterator
 {
-  JreStrongAssign(&self->this$0_, a3);
-  OrgApacheLuceneSearchTwoPhaseIterator_initWithOrgApacheLuceneSearchDocIdSetIterator_(self, a4);
+  JreStrongAssign(&self->this$0_, scorer);
+  OrgApacheLuceneSearchTwoPhaseIterator_initWithOrgApacheLuceneSearchDocIdSetIterator_(self, iterator);
   return self;
 }
 

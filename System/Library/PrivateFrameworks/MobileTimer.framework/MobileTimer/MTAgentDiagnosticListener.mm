@@ -1,39 +1,39 @@
 @interface MTAgentDiagnosticListener
 - (MTAgentDiagnosticDelegate)delegate;
-- (MTAgentDiagnosticListener)initWithDelegate:(id)a3;
+- (MTAgentDiagnosticListener)initWithDelegate:(id)delegate;
 - (void)_addStateHandler;
-- (void)handleNotification:(id)a3 ofType:(int64_t)a4 completion:(id)a5;
+- (void)handleNotification:(id)notification ofType:(int64_t)type completion:(id)completion;
 @end
 
 @implementation MTAgentDiagnosticListener
 
-- (MTAgentDiagnosticListener)initWithDelegate:(id)a3
+- (MTAgentDiagnosticListener)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v8.receiver = self;
   v8.super_class = MTAgentDiagnosticListener;
   v5 = [(MTAgentDiagnosticListener *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
     [(MTAgentDiagnosticListener *)v6 _addStateHandler];
   }
 
   return v6;
 }
 
-- (void)handleNotification:(id)a3 ofType:(int64_t)a4 completion:(id)a5
+- (void)handleNotification:(id)notification ofType:(int64_t)type completion:(id)completion
 {
-  v8 = a5;
-  v6 = [(MTAgentDiagnosticListener *)self delegate];
-  [v6 printDiagnostics];
+  completionCopy = completion;
+  delegate = [(MTAgentDiagnosticListener *)self delegate];
+  [delegate printDiagnostics];
 
-  v7 = v8;
-  if (v8)
+  v7 = completionCopy;
+  if (completionCopy)
   {
-    (*(v8 + 2))(v8);
-    v7 = v8;
+    (*(completionCopy + 2))(completionCopy);
+    v7 = completionCopy;
   }
 }
 

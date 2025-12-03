@@ -1,23 +1,23 @@
 @interface _UIBackgroundColorViewEntry
 - (id)description;
-- (void)applyIdentityEffectToView:(id)a3;
-- (void)removeEffectFromView:(id)a3;
+- (void)applyIdentityEffectToView:(id)view;
+- (void)removeEffectFromView:(id)view;
 @end
 
 @implementation _UIBackgroundColorViewEntry
 
-- (void)applyIdentityEffectToView:(id)a3
+- (void)applyIdentityEffectToView:(id)view
 {
-  v3 = a3;
-  v4 = [v3 _nilBackgroundColor];
-  [v3 setBackgroundColor:v4];
+  viewCopy = view;
+  _nilBackgroundColor = [viewCopy _nilBackgroundColor];
+  [viewCopy setBackgroundColor:_nilBackgroundColor];
 }
 
-- (void)removeEffectFromView:(id)a3
+- (void)removeEffectFromView:(id)view
 {
-  v3 = a3;
-  v4 = [v3 _nilBackgroundColor];
-  [v3 setBackgroundColor:v4];
+  viewCopy = view;
+  _nilBackgroundColor = [viewCopy _nilBackgroundColor];
+  [viewCopy setBackgroundColor:_nilBackgroundColor];
 }
 
 - (id)description

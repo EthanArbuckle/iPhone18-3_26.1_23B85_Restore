@@ -1,53 +1,53 @@
 @interface VUIDownloadDataSource
-- (BOOL)_doesEpisodeSet:(id)a3 containMediaEntity:(id)a4;
-- (BOOL)_downloadsDidChange:(id)a3;
-- (VUIDownloadDataSource)initWithMediaLibrary:(id)a3 fetchRequest:(id)a4;
+- (BOOL)_doesEpisodeSet:(id)set containMediaEntity:(id)entity;
+- (BOOL)_downloadsDidChange:(id)change;
+- (VUIDownloadDataSource)initWithMediaLibrary:(id)library fetchRequest:(id)request;
 - (VUIDownloadDataSourceDelegate)downloadDelegate;
 - (id)_coalesceActiveDownloadEntitiesAndDownloadedEntities;
-- (id)_createDownloadEntitiesFromLatestDownloads:(id)a3;
-- (id)_createGroupingByShowIdentifierWithLatestMediaEntityGroups:(id)a3;
-- (id)_deDupedMediaEntities:(id)a3;
-- (id)_getDownloadEntityInDownloadEntities:(id)a3 containingMediaEntity:(id)a4;
-- (id)_mediaEntitiesForAdamIDs:(id)a3;
-- (id)_sortDownloadEntities:(id)a3;
-- (id)_upsertDownloadEntities:(id)a3 withEpisodesDownloadingForShow:(id)a4;
-- (void)_downloadedMediaEntitiesDidUpdate:(id)a3 grouping:(id)a4;
-- (void)_downloadingMediaEntitiesDidUpdate:(id)a3;
-- (void)_getActivelyDownloadingAdamIDsWithCompletion:(id)a3;
+- (id)_createDownloadEntitiesFromLatestDownloads:(id)downloads;
+- (id)_createGroupingByShowIdentifierWithLatestMediaEntityGroups:(id)groups;
+- (id)_deDupedMediaEntities:(id)entities;
+- (id)_getDownloadEntityInDownloadEntities:(id)entities containingMediaEntity:(id)entity;
+- (id)_mediaEntitiesForAdamIDs:(id)ds;
+- (id)_sortDownloadEntities:(id)entities;
+- (id)_upsertDownloadEntities:(id)entities withEpisodesDownloadingForShow:(id)show;
+- (void)_downloadedMediaEntitiesDidUpdate:(id)update grouping:(id)grouping;
+- (void)_downloadingMediaEntitiesDidUpdate:(id)update;
+- (void)_getActivelyDownloadingAdamIDsWithCompletion:(id)completion;
 - (void)_handleDownloadingStateDidChange;
-- (void)_handleMediaLibraryContentsDidChangeNotification:(id)a3;
+- (void)_handleMediaLibraryContentsDidChangeNotification:(id)notification;
 - (void)_loadActiveDownloads;
 - (void)_loadDownloadedEntities;
-- (void)_notifyDelegatesDownloadsFetchCompletedWithChanges:(BOOL)a3;
-- (void)_rentalsDidExpire:(id)a3;
-- (void)_upsertEpisodesDownloadingForShowWithMediaEntity:(id)a3;
+- (void)_notifyDelegatesDownloadsFetchCompletedWithChanges:(BOOL)changes;
+- (void)_rentalsDidExpire:(id)expire;
+- (void)_upsertEpisodesDownloadingForShowWithMediaEntity:(id)entity;
 - (void)dealloc;
-- (void)downloadManager:(id)a3 downloadStatesDidChange:(id)a4;
-- (void)downloadManagerDownloadsDidChange:(id)a3;
+- (void)downloadManager:(id)manager downloadStatesDidChange:(id)change;
+- (void)downloadManagerDownloadsDidChange:(id)change;
 - (void)loadDownloadData;
-- (void)setDownloadEntities:(id)a3;
+- (void)setDownloadEntities:(id)entities;
 - (void)startFetch;
 @end
 
 @implementation VUIDownloadDataSource
 
-- (VUIDownloadDataSource)initWithMediaLibrary:(id)a3 fetchRequest:(id)a4
+- (VUIDownloadDataSource)initWithMediaLibrary:(id)library fetchRequest:(id)request
 {
   v33[2] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  libraryCopy = library;
+  requestCopy = request;
+  if (!libraryCopy)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"The %@ parameter must not be nil.", @"mediaLibrary"}];
   }
 
   v31.receiver = self;
   v31.super_class = VUIDownloadDataSource;
-  v9 = [(VUIMediaEntitiesDataSource *)&v31 initWithFetchRequest:v8];
+  v9 = [(VUIMediaEntitiesDataSource *)&v31 initWithFetchRequest:requestCopy];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_mediaLibrary, a3);
+    objc_storeStrong(&v9->_mediaLibrary, library);
     v10->_hasFetchedAllDownloadEntities = 0;
     v10->_hasFetchedAllDownloadedEntities = 0;
     v11 = objc_opt_new();
@@ -61,7 +61,7 @@
     v15 = *MEMORY[0x1E69D4B00];
     v33[0] = *MEMORY[0x1E69D4AE0];
     v33[1] = v15;
-    v30 = v7;
+    v30 = libraryCopy;
     v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v33 count:2];
     [v14 setDownloadKinds:v16];
 
@@ -78,19 +78,19 @@
     v10->_sDownloadManager = v19;
     v29 = v19;
 
-    v21 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v21 addObserver:v10 selector:sel__rentalsDidExpire_ name:@"VUIRentalExpirationMonitorRentalDidExpireNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v10 selector:sel__rentalsDidExpire_ name:@"VUIRentalExpirationMonitorRentalDidExpireNotification" object:0];
 
-    v22 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
     v23 = +[VUIMediaLibraryManager defaultManager];
-    v24 = [v23 deviceMediaLibrary];
-    [v22 addObserver:v10 selector:sel__handleMediaLibraryContentsDidChangeNotification_ name:@"VUIMediaLibraryContentsDidChangeNotification" object:v24];
+    deviceMediaLibrary = [v23 deviceMediaLibrary];
+    [defaultCenter2 addObserver:v10 selector:sel__handleMediaLibraryContentsDidChangeNotification_ name:@"VUIMediaLibraryContentsDidChangeNotification" object:deviceMediaLibrary];
 
-    v7 = v30;
-    v25 = [MEMORY[0x1E696AD88] defaultCenter];
+    libraryCopy = v30;
+    defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
     v26 = +[VUIMediaLibraryManager defaultManager];
-    v27 = [v26 sidebandMediaLibrary];
-    [v25 addObserver:v10 selector:sel__handleMediaLibraryContentsDidChangeNotification_ name:@"VUIMediaLibraryContentsDidChangeNotification" object:v27];
+    sidebandMediaLibrary = [v26 sidebandMediaLibrary];
+    [defaultCenter3 addObserver:v10 selector:sel__handleMediaLibraryContentsDidChangeNotification_ name:@"VUIMediaLibraryContentsDidChangeNotification" object:sidebandMediaLibrary];
 
     [(VUIDownloadDataSource *)v10 _loadDownloadedEntities];
     [(VUIDownloadDataSource *)v10 _loadActiveDownloads];
@@ -108,14 +108,14 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
-  v4 = [(VUIDownloadDataSource *)self libraryContentsChangeDebounceTimer];
-  [v4 invalidate];
+  libraryContentsChangeDebounceTimer = [(VUIDownloadDataSource *)self libraryContentsChangeDebounceTimer];
+  [libraryContentsChangeDebounceTimer invalidate];
 
-  v5 = [(VUIDownloadDataSource *)self sDownloadManager];
-  [v5 removeObserver:self];
+  sDownloadManager = [(VUIDownloadDataSource *)self sDownloadManager];
+  [sDownloadManager removeObserver:self];
 
   v6 = +[VUIDownloadManager sharedInstance];
   [v6 removeDelegate:self];
@@ -140,9 +140,9 @@
   [(VUIDownloadDataSource *)self _loadActiveDownloads];
 }
 
-- (void)setDownloadEntities:(id)a3
+- (void)setDownloadEntities:(id)entities
 {
-  v4 = [(VUIDownloadDataSource *)self _sortDownloadEntities:a3];
+  v4 = [(VUIDownloadDataSource *)self _sortDownloadEntities:entities];
   if (self->_downloadEntities != v4)
   {
     v5 = v4;
@@ -151,10 +151,10 @@
   }
 }
 
-- (void)downloadManager:(id)a3 downloadStatesDidChange:(id)a4
+- (void)downloadManager:(id)manager downloadStatesDidChange:(id)change
 {
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  changeCopy = change;
   objc_initWeak(&location, self);
   v9 = MEMORY[0x1E69E9820];
   v10 = 3221225472;
@@ -182,9 +182,9 @@ void __65__VUIDownloadDataSource_downloadManager_downloadStatesDidChange___block
   [WeakRetained _handleDownloadingStateDidChange];
 }
 
-- (void)downloadManagerDownloadsDidChange:(id)a3
+- (void)downloadManagerDownloadsDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   objc_initWeak(&location, self);
   v6 = MEMORY[0x1E69E9820];
   v7 = 3221225472;
@@ -212,44 +212,44 @@ void __59__VUIDownloadDataSource_downloadManagerDownloadsDidChange___block_invok
   [WeakRetained _handleDownloadingStateDidChange];
 }
 
-- (void)_downloadingMediaEntitiesDidUpdate:(id)a3
+- (void)_downloadingMediaEntitiesDidUpdate:(id)update
 {
-  v4 = a3;
-  v5 = [(VUIDownloadDataSource *)self episodesDownloadingForShow];
-  [v5 removeAllObjects];
+  updateCopy = update;
+  episodesDownloadingForShow = [(VUIDownloadDataSource *)self episodesDownloadingForShow];
+  [episodesDownloadingForShow removeAllObjects];
 
   [(VUIDownloadDataSource *)self setHasFetchedAllDownloadEntities:1];
-  v6 = [(VUIDownloadDataSource *)self _deDupedMediaEntities:v4];
+  v6 = [(VUIDownloadDataSource *)self _deDupedMediaEntities:updateCopy];
 
   [(VUIDownloadDataSource *)self setActivelyDownloadingMediaItems:v6];
-  v8 = [(VUIDownloadDataSource *)self _coalesceActiveDownloadEntitiesAndDownloadedEntities];
-  v7 = [(VUIDownloadDataSource *)self _downloadsDidChange:v8];
-  [(VUIDownloadDataSource *)self setDownloadEntities:v8];
+  _coalesceActiveDownloadEntitiesAndDownloadedEntities = [(VUIDownloadDataSource *)self _coalesceActiveDownloadEntitiesAndDownloadedEntities];
+  v7 = [(VUIDownloadDataSource *)self _downloadsDidChange:_coalesceActiveDownloadEntitiesAndDownloadedEntities];
+  [(VUIDownloadDataSource *)self setDownloadEntities:_coalesceActiveDownloadEntitiesAndDownloadedEntities];
   [(VUIDownloadDataSource *)self _notifyDelegatesDownloadsFetchCompletedWithChanges:v7];
 }
 
-- (void)_downloadedMediaEntitiesDidUpdate:(id)a3 grouping:(id)a4
+- (void)_downloadedMediaEntitiesDidUpdate:(id)update grouping:(id)grouping
 {
-  v6 = a4;
-  v7 = a3;
+  groupingCopy = grouping;
+  updateCopy = update;
   [(VUIDownloadDataSource *)self setHasFetchedAllDownloadedEntities:1];
-  v8 = [(VUIDownloadDataSource *)self _deDupedMediaEntities:v7];
+  v8 = [(VUIDownloadDataSource *)self _deDupedMediaEntities:updateCopy];
 
   [(VUIDownloadDataSource *)self setLocalMediaItems:v8];
-  v9 = [(VUIDownloadDataSource *)self _createGroupingByShowIdentifierWithLatestMediaEntityGroups:v6];
+  v9 = [(VUIDownloadDataSource *)self _createGroupingByShowIdentifierWithLatestMediaEntityGroups:groupingCopy];
 
   [(VUIDownloadDataSource *)self setGroupingByShowIdentifier:v9];
-  v11 = [(VUIDownloadDataSource *)self _coalesceActiveDownloadEntitiesAndDownloadedEntities];
-  v10 = [(VUIDownloadDataSource *)self _downloadsDidChange:v11];
-  [(VUIDownloadDataSource *)self setDownloadEntities:v11];
+  _coalesceActiveDownloadEntitiesAndDownloadedEntities = [(VUIDownloadDataSource *)self _coalesceActiveDownloadEntitiesAndDownloadedEntities];
+  v10 = [(VUIDownloadDataSource *)self _downloadsDidChange:_coalesceActiveDownloadEntitiesAndDownloadedEntities];
+  [(VUIDownloadDataSource *)self setDownloadEntities:_coalesceActiveDownloadEntitiesAndDownloadedEntities];
   [(VUIDownloadDataSource *)self _notifyDelegatesDownloadsFetchCompletedWithChanges:v10];
 }
 
-- (id)_sortDownloadEntities:(id)a3
+- (id)_sortDownloadEntities:(id)entities
 {
   v3 = MEMORY[0x1E696AB08];
-  v4 = a3;
-  v5 = [v3 punctuationCharacterSet];
+  entitiesCopy = entities;
+  punctuationCharacterSet = [v3 punctuationCharacterSet];
   v6 = +[VUILocalizationManager sharedInstance];
   v7 = [v6 localizedStringForKey:@"TV.Library.Sorting.Prefix.Articles"];
   v8 = [v7 componentsSeparatedByString:@"|"];
@@ -263,12 +263,12 @@ void __59__VUIDownloadDataSource_downloadManagerDownloadsDidChange___block_invok
 
   v11 = MEMORY[0x1E695DF70];
   v12 = v10;
-  v13 = [v11 array];
+  array = [v11 array];
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __47__VUIDownloadDataSource__sortDownloadEntities___block_invoke;
   v26[3] = &unk_1E87334C0;
-  v14 = v13;
+  v14 = array;
   v27 = v14;
   [v12 enumerateObjectsUsingBlock:v26];
 
@@ -276,10 +276,10 @@ void __59__VUIDownloadDataSource_downloadManagerDownloadsDidChange___block_invok
   aBlock[1] = 3221225472;
   aBlock[2] = __47__VUIDownloadDataSource__sortDownloadEntities___block_invoke_2;
   aBlock[3] = &unk_1E87334E8;
-  v24 = v5;
+  v24 = punctuationCharacterSet;
   v25 = v14;
   v15 = v14;
-  v16 = v5;
+  v16 = punctuationCharacterSet;
   v17 = _Block_copy(aBlock);
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
@@ -287,7 +287,7 @@ void __59__VUIDownloadDataSource_downloadManagerDownloadsDidChange___block_invok
   v21[3] = &unk_1E8733510;
   v22 = v17;
   v18 = v17;
-  v19 = [v4 sortedArrayUsingComparator:v21];
+  v19 = [entitiesCopy sortedArrayUsingComparator:v21];
 
   return v19;
 }
@@ -408,12 +408,12 @@ uint64_t __47__VUIDownloadDataSource__sortDownloadEntities___block_invoke_3(uint
   return v18;
 }
 
-- (void)_handleMediaLibraryContentsDidChangeNotification:(id)a3
+- (void)_handleMediaLibraryContentsDidChangeNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(VUIDownloadDataSource *)self libraryContentsChangeDebounceTimer];
+  notificationCopy = notification;
+  libraryContentsChangeDebounceTimer = [(VUIDownloadDataSource *)self libraryContentsChangeDebounceTimer];
 
-  if (!v5)
+  if (!libraryContentsChangeDebounceTimer)
   {
     objc_initWeak(&location, self);
     v6 = MEMORY[0x1E695DFF0];
@@ -449,9 +449,9 @@ void __74__VUIDownloadDataSource__handleMediaLibraryContentsDidChangeNotificatio
   v75 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v68 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v2 = +[VUIMediaLibraryManager defaultManager];
-  v3 = [v2 sidebandMediaLibrary];
+  sidebandMediaLibrary = [v2 sidebandMediaLibrary];
   v4 = [MEMORY[0x1E695DFD8] setWithObjects:{&unk_1F5E5D800, &unk_1F5E5D818, 0}];
-  v5 = [v3 videosWithDownloadStates:v4 entitlementTypes:0 sortDescriptors:0 useMainThreadContext:1];
+  v5 = [sidebandMediaLibrary videosWithDownloadStates:v4 entitlementTypes:0 sortDescriptors:0 useMainThreadContext:1];
 
   v86 = 0u;
   v87 = 0u;
@@ -475,15 +475,15 @@ void __74__VUIDownloadDataSource__handleMediaLibraryContentsDidChangeNotificatio
         v11 = *(*(&v84 + 1) + 8 * i);
         if (([v11 markedAsDeleted] & 1) == 0)
         {
-          v12 = [v11 entitlementType];
-          v13 = [v12 integerValue];
+          entitlementType = [v11 entitlementType];
+          integerValue = [entitlementType integerValue];
 
-          if ((v13 & 0xFFFFFFFFFFFFFFFELL) == 2)
+          if ((integerValue & 0xFFFFFFFFFFFFFFFELL) == 2)
           {
-            v14 = [v11 adamID];
-            if ([(VUISidebandMediaItem *)v14 length])
+            adamID = [v11 adamID];
+            if ([(VUISidebandMediaItem *)adamID length])
             {
-              v15 = [MEMORY[0x1E696AD98] numberWithLongLong:{-[VUISidebandMediaItem longLongValue](v14, "longLongValue")}];
+              v15 = [MEMORY[0x1E696AD98] numberWithLongLong:{-[VUISidebandMediaItem longLongValue](adamID, "longLongValue")}];
               if (v15)
               {
                 [v68 addObject:v15];
@@ -495,13 +495,13 @@ void __74__VUIDownloadDataSource__handleMediaLibraryContentsDidChangeNotificatio
           {
             v16 = [VUISidebandMediaItem alloc];
             v17 = +[VUIMediaLibraryManager defaultManager];
-            v18 = [v17 sidebandMediaLibrary];
+            sidebandMediaLibrary2 = [v17 sidebandMediaLibrary];
             v19 = VUIMediaEntityFetchRequestAllPropertiesSet();
-            v14 = [(VUISidebandMediaItem *)v16 initWithMediaLibrary:v18 videoManagedObject:v11 requestedProperties:v19];
+            adamID = [(VUISidebandMediaItem *)v16 initWithMediaLibrary:sidebandMediaLibrary2 videoManagedObject:v11 requestedProperties:v19];
 
-            if (v14)
+            if (adamID)
             {
-              [v75 addObject:v14];
+              [v75 addObject:adamID];
             }
           }
         }
@@ -520,20 +520,20 @@ void __74__VUIDownloadDataSource__handleMediaLibraryContentsDidChangeNotificatio
   v80 = 0u;
   v81 = 0u;
   v20 = MEMORY[0x1E6970618];
-  v21 = [MEMORY[0x1E69705E8] defaultMediaLibrary];
-  v22 = [v20 vui_moviesQueryWithMediaLibrary:v21];
+  defaultMediaLibrary = [MEMORY[0x1E69705E8] defaultMediaLibrary];
+  v22 = [v20 vui_moviesQueryWithMediaLibrary:defaultMediaLibrary];
   v92[0] = v22;
   v23 = MEMORY[0x1E6970618];
-  v24 = [MEMORY[0x1E69705E8] defaultMediaLibrary];
-  v25 = [v23 vui_movieRentalsQueryWithMediaLibrary:v24];
+  defaultMediaLibrary2 = [MEMORY[0x1E69705E8] defaultMediaLibrary];
+  v25 = [v23 vui_movieRentalsQueryWithMediaLibrary:defaultMediaLibrary2];
   v92[1] = v25;
   v26 = MEMORY[0x1E6970618];
-  v27 = [MEMORY[0x1E69705E8] defaultMediaLibrary];
-  v28 = [v26 vui_episodesQueryWithMediaLibrary:v27];
+  defaultMediaLibrary3 = [MEMORY[0x1E69705E8] defaultMediaLibrary];
+  v28 = [v26 vui_episodesQueryWithMediaLibrary:defaultMediaLibrary3];
   v92[2] = v28;
   v29 = MEMORY[0x1E6970618];
-  v30 = [MEMORY[0x1E69705E8] defaultMediaLibrary];
-  v31 = [v29 vui_homeVideosQueryWithMediaLibrary:v30];
+  defaultMediaLibrary4 = [MEMORY[0x1E69705E8] defaultMediaLibrary];
+  v31 = [v29 vui_homeVideosQueryWithMediaLibrary:defaultMediaLibrary4];
   v92[3] = v31;
   v32 = [MEMORY[0x1E695DEC8] arrayWithObjects:v92 count:4];
 
@@ -582,12 +582,12 @@ void __74__VUIDownloadDataSource__handleMediaLibraryContentsDidChangeNotificatio
         v69 = v45;
         [v34 addFilterPredicate:v45];
         [v34 setIgnoreSystemFilterPredicates:1];
-        v46 = [v34 items];
+        items = [v34 items];
         v76 = 0u;
         v77 = 0u;
         v78 = 0u;
         v79 = 0u;
-        v47 = [v46 countByEnumeratingWithState:&v76 objects:v89 count:16];
+        v47 = [items countByEnumeratingWithState:&v76 objects:v89 count:16];
         if (v47)
         {
           v48 = v47;
@@ -598,15 +598,15 @@ void __74__VUIDownloadDataSource__handleMediaLibraryContentsDidChangeNotificatio
             {
               if (*v77 != v49)
               {
-                objc_enumerationMutation(v46);
+                objc_enumerationMutation(items);
               }
 
               v51 = *(*(&v76 + 1) + 8 * j);
               v52 = [VUIMPMediaItem alloc];
               v53 = +[VUIMediaLibraryManager defaultManager];
-              v54 = [v53 deviceMediaLibrary];
+              deviceMediaLibrary = [v53 deviceMediaLibrary];
               v55 = VUIMediaEntityFetchRequestAllPropertiesSet();
-              v56 = [(VUIMPMediaItem *)v52 initWithMediaLibrary:v54 mediaItem:v51 requestedProperties:v55];
+              v56 = [(VUIMPMediaItem *)v52 initWithMediaLibrary:deviceMediaLibrary mediaItem:v51 requestedProperties:v55];
 
               if (v56)
               {
@@ -614,7 +614,7 @@ void __74__VUIDownloadDataSource__handleMediaLibraryContentsDidChangeNotificatio
               }
             }
 
-            v48 = [v46 countByEnumeratingWithState:&v76 objects:v89 count:16];
+            v48 = [items countByEnumeratingWithState:&v76 objects:v89 count:16];
           }
 
           while (v48);
@@ -663,19 +663,19 @@ void __45__VUIDownloadDataSource__loadActiveDownloads__block_invoke(uint64_t a1,
   [WeakRetained _downloadingMediaEntitiesDidUpdate:v5];
 }
 
-- (id)_mediaEntitiesForAdamIDs:(id)a3
+- (id)_mediaEntitiesForAdamIDs:(id)ds
 {
   v56 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  dsCopy = ds;
   v45 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  if ([v3 count])
+  if ([dsCopy count])
   {
-    v43 = v3;
-    v4 = [v3 valueForKeyPath:@"stringValue"];
+    v43 = dsCopy;
+    v4 = [dsCopy valueForKeyPath:@"stringValue"];
     v5 = +[VUIMediaLibraryManager defaultManager];
-    v6 = [v5 sidebandMediaLibrary];
+    sidebandMediaLibrary = [v5 sidebandMediaLibrary];
     v42 = v4;
-    v7 = [v6 videosForAdamIDs:v4 useMainThreadContext:1];
+    v7 = [sidebandMediaLibrary videosForAdamIDs:v4 useMainThreadContext:1];
 
     v52 = 0u;
     v53 = 0u;
@@ -697,16 +697,16 @@ void __45__VUIDownloadDataSource__loadActiveDownloads__block_invoke(uint64_t a1,
           }
 
           v12 = *(*(&v50 + 1) + 8 * i);
-          v13 = [v12 entitlementType];
-          v14 = [v13 integerValue];
+          entitlementType = [v12 entitlementType];
+          integerValue = [entitlementType integerValue];
 
-          if (v14 <= 4 && ((1 << v14) & 0x13) != 0)
+          if (integerValue <= 4 && ((1 << integerValue) & 0x13) != 0)
           {
             v16 = [VUISidebandMediaItem alloc];
             v17 = +[VUIMediaLibraryManager defaultManager];
-            v18 = [v17 sidebandMediaLibrary];
+            sidebandMediaLibrary2 = [v17 sidebandMediaLibrary];
             v19 = VUIMediaEntityFetchRequestAllPropertiesSet();
-            v20 = [(VUISidebandMediaItem *)v16 initWithMediaLibrary:v18 videoManagedObject:v12 requestedProperties:v19];
+            v20 = [(VUISidebandMediaItem *)v16 initWithMediaLibrary:sidebandMediaLibrary2 videoManagedObject:v12 requestedProperties:v19];
 
             if (v20)
             {
@@ -733,12 +733,12 @@ void __45__VUIDownloadDataSource__loadActiveDownloads__block_invoke(uint64_t a1,
 
     [v27 setIgnoreSystemFilterPredicates:1];
     v40 = v27;
-    v28 = [v27 items];
+    items = [v27 items];
     v46 = 0u;
     v47 = 0u;
     v48 = 0u;
     v49 = 0u;
-    v29 = [v28 countByEnumeratingWithState:&v46 objects:v54 count:16];
+    v29 = [items countByEnumeratingWithState:&v46 objects:v54 count:16];
     if (v29)
     {
       v30 = v29;
@@ -749,15 +749,15 @@ void __45__VUIDownloadDataSource__loadActiveDownloads__block_invoke(uint64_t a1,
         {
           if (*v47 != v31)
           {
-            objc_enumerationMutation(v28);
+            objc_enumerationMutation(items);
           }
 
           v33 = *(*(&v46 + 1) + 8 * j);
           v34 = [VUIMPMediaItem alloc];
           v35 = +[VUIMediaLibraryManager defaultManager];
-          v36 = [v35 deviceMediaLibrary];
+          deviceMediaLibrary = [v35 deviceMediaLibrary];
           v37 = VUIMediaEntityFetchRequestAllPropertiesSet();
-          v38 = [(VUIMPMediaItem *)v34 initWithMediaLibrary:v36 mediaItem:v33 requestedProperties:v37];
+          v38 = [(VUIMPMediaItem *)v34 initWithMediaLibrary:deviceMediaLibrary mediaItem:v33 requestedProperties:v37];
 
           if (v38)
           {
@@ -765,21 +765,21 @@ void __45__VUIDownloadDataSource__loadActiveDownloads__block_invoke(uint64_t a1,
           }
         }
 
-        v30 = [v28 countByEnumeratingWithState:&v46 objects:v54 count:16];
+        v30 = [items countByEnumeratingWithState:&v46 objects:v54 count:16];
       }
 
       while (v30);
     }
 
-    v3 = v43;
+    dsCopy = v43;
   }
 
   return v45;
 }
 
-- (void)_rentalsDidExpire:(id)a3
+- (void)_rentalsDidExpire:(id)expire
 {
-  v4 = a3;
+  expireCopy = expire;
   objc_initWeak(&location, self);
   v6 = MEMORY[0x1E69E9820];
   v7 = 3221225472;
@@ -809,16 +809,16 @@ void __43__VUIDownloadDataSource__rentalsDidExpire___block_invoke(uint64_t a1)
   [WeakRetained _loadActiveDownloads];
 }
 
-- (void)_getActivelyDownloadingAdamIDsWithCompletion:(id)a3
+- (void)_getActivelyDownloadingAdamIDsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v8 = __70__VUIDownloadDataSource__getActivelyDownloadingAdamIDsWithCompletion___block_invoke;
   v9 = &unk_1E872E828;
   objc_copyWeak(&v11, &location);
-  v5 = v4;
+  v5 = completionCopy;
   v10 = v5;
   v6 = v7;
   if ([MEMORY[0x1E696AF00] isMainThread])
@@ -995,22 +995,22 @@ void __57__VUIDownloadDataSource__handleDownloadingStateDidChange__block_invoke(
   }
 }
 
-- (id)_getDownloadEntityInDownloadEntities:(id)a3 containingMediaEntity:(id)a4
+- (id)_getDownloadEntityInDownloadEntities:(id)entities containingMediaEntity:(id)entity
 {
   v27 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 showIdentifier];
-  v8 = [v6 identifier];
+  entitiesCopy = entities;
+  entityCopy = entity;
+  showIdentifier = [entityCopy showIdentifier];
+  identifier = [entityCopy identifier];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v9 = v5;
+  v9 = entitiesCopy;
   v10 = [v9 countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v10)
   {
-    v21 = v6;
+    v21 = entityCopy;
     v11 = *v23;
     while (2)
     {
@@ -1022,13 +1022,13 @@ void __57__VUIDownloadDataSource__handleDownloadingStateDidChange__block_invoke(
         }
 
         v13 = *(*(&v22 + 1) + 8 * i);
-        v14 = [v13 mediaEntities];
-        v15 = [v14 firstObject];
+        mediaEntities = [v13 mediaEntities];
+        firstObject = [mediaEntities firstObject];
 
-        if (v7)
+        if (showIdentifier)
         {
-          v16 = [v15 showIdentifier];
-          v17 = [v16 isEqual:v7];
+          showIdentifier2 = [firstObject showIdentifier];
+          v17 = [showIdentifier2 isEqual:showIdentifier];
 
           if (v17)
           {
@@ -1038,8 +1038,8 @@ void __57__VUIDownloadDataSource__handleDownloadingStateDidChange__block_invoke(
 
         else
         {
-          v18 = [v15 identifier];
-          v19 = [v18 isEqual:v8];
+          identifier2 = [firstObject identifier];
+          v19 = [identifier2 isEqual:identifier];
 
           if (v19)
           {
@@ -1061,37 +1061,37 @@ LABEL_13:
     }
 
 LABEL_14:
-    v6 = v21;
+    entityCopy = v21;
   }
 
   return v10;
 }
 
-- (void)_upsertEpisodesDownloadingForShowWithMediaEntity:(id)a3
+- (void)_upsertEpisodesDownloadingForShowWithMediaEntity:(id)entity
 {
-  v4 = a3;
-  v5 = [v4 showIdentifier];
-  if (v5)
+  entityCopy = entity;
+  showIdentifier = [entityCopy showIdentifier];
+  if (showIdentifier)
   {
-    v6 = [(VUIDownloadDataSource *)self episodesDownloadingForShow];
-    v7 = [v6 objectForKey:v5];
+    episodesDownloadingForShow = [(VUIDownloadDataSource *)self episodesDownloadingForShow];
+    v7 = [episodesDownloadingForShow objectForKey:showIdentifier];
 
     if (v7)
     {
-      v8 = [(VUIDownloadDataSource *)self episodesDownloadingForShow];
-      v9 = [v8 objectForKey:v5];
+      episodesDownloadingForShow2 = [(VUIDownloadDataSource *)self episodesDownloadingForShow];
+      v9 = [episodesDownloadingForShow2 objectForKey:showIdentifier];
 
-      if (![(VUIDownloadDataSource *)self _doesEpisodeSet:v9 containMediaEntity:v4])
+      if (![(VUIDownloadDataSource *)self _doesEpisodeSet:v9 containMediaEntity:entityCopy])
       {
-        [v9 addObject:v4];
+        [v9 addObject:entityCopy];
       }
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFA8] setWithObject:v4];
-      v11 = [(VUIDownloadDataSource *)self episodesDownloadingForShow];
-      [v11 setObject:v9 forKey:v5];
+      v9 = [MEMORY[0x1E695DFA8] setWithObject:entityCopy];
+      episodesDownloadingForShow3 = [(VUIDownloadDataSource *)self episodesDownloadingForShow];
+      [episodesDownloadingForShow3 setObject:v9 forKey:showIdentifier];
     }
   }
 
@@ -1100,23 +1100,23 @@ LABEL_14:
     v10 = VUIDefaultLogObject();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      [(VUIDownloadDataSource *)v4 _upsertEpisodesDownloadingForShowWithMediaEntity:v10];
+      [(VUIDownloadDataSource *)entityCopy _upsertEpisodesDownloadingForShowWithMediaEntity:v10];
     }
   }
 }
 
-- (id)_upsertDownloadEntities:(id)a3 withEpisodesDownloadingForShow:(id)a4
+- (id)_upsertDownloadEntities:(id)entities withEpisodesDownloadingForShow:(id)show
 {
   v57 = *MEMORY[0x1E69E9840];
-  v26 = a3;
-  v29 = a4;
-  v5 = [v29 allKeys];
-  v31 = [v26 mutableCopy];
+  entitiesCopy = entities;
+  showCopy = show;
+  allKeys = [showCopy allKeys];
+  v31 = [entitiesCopy mutableCopy];
   v50 = 0u;
   v51 = 0u;
   v52 = 0u;
   v53 = 0u;
-  obj = v5;
+  obj = allKeys;
   v30 = [obj countByEnumeratingWithState:&v50 objects:v56 count:16];
   if (v30)
   {
@@ -1143,13 +1143,13 @@ LABEL_14:
         v43[3] = &unk_1E87335A8;
         v43[4] = v6;
         v43[5] = &v44;
-        [v31 enumerateObjectsUsingBlock:{v43, v26}];
+        [v31 enumerateObjectsUsingBlock:{v43, entitiesCopy}];
         if (v45[5])
         {
-          v7 = [v29 objectForKey:v6];
+          v7 = [showCopy objectForKey:v6];
           v8 = MEMORY[0x1E695DF70];
-          v9 = [v45[5] mediaEntities];
-          v33 = [v8 arrayWithArray:v9];
+          mediaEntities = [v45[5] mediaEntities];
+          v33 = [v8 arrayWithArray:mediaEntities];
 
           v41 = 0u;
           v42 = 0u;
@@ -1170,13 +1170,13 @@ LABEL_14:
                 }
 
                 v13 = *(*(&v39 + 1) + 8 * j);
-                v14 = [v13 identifier];
+                identifier = [v13 identifier];
                 v37 = 0u;
                 v38 = 0u;
                 v35 = 0u;
                 v36 = 0u;
-                v15 = [v45[5] mediaEntities];
-                v16 = [v15 countByEnumeratingWithState:&v35 objects:v54 count:16];
+                mediaEntities2 = [v45[5] mediaEntities];
+                v16 = [mediaEntities2 countByEnumeratingWithState:&v35 objects:v54 count:16];
                 if (v16)
                 {
                   v17 = *v36;
@@ -1186,18 +1186,18 @@ LABEL_14:
                     {
                       if (*v36 != v17)
                       {
-                        objc_enumerationMutation(v15);
+                        objc_enumerationMutation(mediaEntities2);
                       }
 
-                      v19 = [*(*(&v35 + 1) + 8 * k) identifier];
-                      if (v19 && ([v14 isEqual:v19] & 1) != 0)
+                      identifier2 = [*(*(&v35 + 1) + 8 * k) identifier];
+                      if (identifier2 && ([identifier isEqual:identifier2] & 1) != 0)
                       {
 
                         goto LABEL_23;
                       }
                     }
 
-                    v16 = [v15 countByEnumeratingWithState:&v35 objects:v54 count:16];
+                    v16 = [mediaEntities2 countByEnumeratingWithState:&v35 objects:v54 count:16];
                     if (v16)
                     {
                       continue;
@@ -1225,11 +1225,11 @@ LABEL_23:
 
         else
         {
-          v22 = [v29 objectForKey:v6];
+          v22 = [showCopy objectForKey:v6];
           v23 = MEMORY[0x1E695DEC8];
           v34 = v22;
-          v24 = [v22 allObjects];
-          v33 = [v23 arrayWithArray:v24];
+          allObjects = [v22 allObjects];
+          v33 = [v23 arrayWithArray:allObjects];
 
           v21 = [[VUIDownloadEntity alloc] initWithMediaEntities:v33 withDownloadType:2];
           [v31 addObject:v21];
@@ -1264,16 +1264,16 @@ void __80__VUIDownloadDataSource__upsertDownloadEntities_withEpisodesDownloading
   }
 }
 
-- (id)_createGroupingByShowIdentifierWithLatestMediaEntityGroups:(id)a3
+- (id)_createGroupingByShowIdentifierWithLatestMediaEntityGroups:(id)groups
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  groupsCopy = groups;
   v4 = objc_opt_new();
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = v3;
+  v5 = groupsCopy;
   v6 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v6)
   {
@@ -1289,15 +1289,15 @@ void __80__VUIDownloadDataSource__upsertDownloadEntities_withEpisodesDownloading
         }
 
         v10 = *(*(&v17 + 1) + 8 * i);
-        v11 = [v10 identifier];
-        v12 = [v11 description];
+        identifier = [v10 identifier];
+        v12 = [identifier description];
         v13 = [v12 length];
 
         if (v13)
         {
-          v14 = [v10 mediaEntities];
-          v15 = [v10 identifier];
-          [v4 setObject:v14 forKey:v15];
+          mediaEntities = [v10 mediaEntities];
+          identifier2 = [v10 identifier];
+          [v4 setObject:mediaEntities forKey:identifier2];
         }
       }
 
@@ -1310,21 +1310,21 @@ void __80__VUIDownloadDataSource__upsertDownloadEntities_withEpisodesDownloading
   return v4;
 }
 
-- (id)_createDownloadEntitiesFromLatestDownloads:(id)a3
+- (id)_createDownloadEntitiesFromLatestDownloads:(id)downloads
 {
   v82 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  downloadsCopy = downloads;
   v54 = objc_opt_new();
   v5 = objc_alloc(MEMORY[0x1E695DF90]);
-  v53 = self;
-  v6 = [(VUIDownloadDataSource *)self groupingByShowIdentifier];
-  v52 = [v5 initWithDictionary:v6];
+  selfCopy = self;
+  groupingByShowIdentifier = [(VUIDownloadDataSource *)self groupingByShowIdentifier];
+  v52 = [v5 initWithDictionary:groupingByShowIdentifier];
 
   v76 = 0u;
   v77 = 0u;
   v74 = 0u;
   v75 = 0u;
-  obj = v4;
+  obj = downloadsCopy;
   v56 = [obj countByEnumeratingWithState:&v74 objects:v81 count:16];
   if (v56)
   {
@@ -1342,13 +1342,13 @@ void __80__VUIDownloadDataSource__upsertDownloadEntities_withEpisodesDownloading
 
         v57 = v8;
         v9 = *(*(&v74 + 1) + 8 * v8);
-        v10 = [v9 showTitle];
-        v11 = [v9 type];
-        v12 = [*(v7 + 1048) episode];
-        v13 = v12;
-        if (v11 == v12)
+        showTitle = [v9 showTitle];
+        type = [v9 type];
+        episode = [*(v7 + 1048) episode];
+        v13 = episode;
+        if (type == episode)
         {
-          v24 = [v52 objectForKey:v10];
+          v24 = [v52 objectForKey:showTitle];
 
           if (v24)
           {
@@ -1356,13 +1356,13 @@ void __80__VUIDownloadDataSource__upsertDownloadEntities_withEpisodesDownloading
             v73 = 0u;
             v70 = 0u;
             v71 = 0u;
-            v25 = [(VUIDownloadDataSource *)v53 downloadEntities];
-            v60 = [v25 countByEnumeratingWithState:&v70 objects:v80 count:16];
+            downloadEntities = [(VUIDownloadDataSource *)selfCopy downloadEntities];
+            v60 = [downloadEntities countByEnumeratingWithState:&v70 objects:v80 count:16];
             if (v60)
             {
-              v50 = v10;
+              v50 = showTitle;
               v61 = 0;
-              v58 = v25;
+              v58 = downloadEntities;
               v59 = *v71;
               do
               {
@@ -1378,8 +1378,8 @@ void __80__VUIDownloadDataSource__upsertDownloadEntities_withEpisodesDownloading
                   v67 = 0u;
                   v68 = 0u;
                   v69 = 0u;
-                  v28 = [v27 mediaEntities];
-                  v29 = [v28 countByEnumeratingWithState:&v66 objects:v79 count:16];
+                  mediaEntities = [v27 mediaEntities];
+                  v29 = [mediaEntities countByEnumeratingWithState:&v66 objects:v79 count:16];
                   if (v29)
                   {
                     v30 = v29;
@@ -1390,12 +1390,12 @@ void __80__VUIDownloadDataSource__upsertDownloadEntities_withEpisodesDownloading
                       {
                         if (*v67 != v31)
                         {
-                          objc_enumerationMutation(v28);
+                          objc_enumerationMutation(mediaEntities);
                         }
 
-                        v33 = [*(*(&v66 + 1) + 8 * j) identifier];
-                        v34 = [v9 identifier];
-                        v35 = [v33 isEqual:v34];
+                        identifier = [*(*(&v66 + 1) + 8 * j) identifier];
+                        identifier2 = [v9 identifier];
+                        v35 = [identifier isEqual:identifier2];
 
                         if (v35)
                         {
@@ -1406,7 +1406,7 @@ void __80__VUIDownloadDataSource__upsertDownloadEntities_withEpisodesDownloading
                         }
                       }
 
-                      v30 = [v28 countByEnumeratingWithState:&v66 objects:v79 count:16];
+                      v30 = [mediaEntities countByEnumeratingWithState:&v66 objects:v79 count:16];
                       if (v30)
                       {
                         continue;
@@ -1426,17 +1426,17 @@ LABEL_29:
 
               v37 = v52;
               v7 = 0x1E8728000;
-              v10 = v50;
+              showTitle = v50;
               v38 = v61;
               if (!v61)
               {
 LABEL_48:
-                v48 = [v37 objectForKey:v10];
+                v48 = [v37 objectForKey:showTitle];
                 v38 = [[VUIDownloadEntity alloc] initWithMediaEntities:v48 withDownloadType:1];
               }
 
               [v54 addObject:v38];
-              [v37 removeObjectForKey:v10];
+              [v37 removeObjectForKey:showTitle];
               goto LABEL_50;
             }
 
@@ -1449,29 +1449,29 @@ LABEL_48:
         {
         }
 
-        v14 = [v9 type];
-        v15 = [*(v7 + 1048) movie];
-        if (v14 == v15)
+        type2 = [v9 type];
+        movie = [*(v7 + 1048) movie];
+        if (type2 == movie)
         {
           goto LABEL_34;
         }
 
-        v16 = v10;
-        v17 = [v9 type];
-        v18 = [*(v7 + 1048) movieRental];
-        v19 = v18;
-        if (v17 == v18)
+        v16 = showTitle;
+        type3 = [v9 type];
+        movieRental = [*(v7 + 1048) movieRental];
+        v19 = movieRental;
+        if (type3 == movieRental)
         {
 
 LABEL_34:
 LABEL_35:
-          v39 = v10;
+          v39 = showTitle;
           v64 = 0u;
           v65 = 0u;
           v62 = 0u;
           v63 = 0u;
-          v40 = [(VUIDownloadDataSource *)v53 downloadEntities];
-          v41 = [v40 countByEnumeratingWithState:&v62 objects:v78 count:16];
+          downloadEntities2 = [(VUIDownloadDataSource *)selfCopy downloadEntities];
+          v41 = [downloadEntities2 countByEnumeratingWithState:&v62 objects:v78 count:16];
           if (v41)
           {
             v42 = v41;
@@ -1482,21 +1482,21 @@ LABEL_37:
             {
               if (*v63 != v43)
               {
-                objc_enumerationMutation(v40);
+                objc_enumerationMutation(downloadEntities2);
               }
 
               v45 = *(*(&v62 + 1) + 8 * v44);
-              v46 = [v45 mediaEntities];
-              v47 = [v46 firstObject];
+              mediaEntities2 = [v45 mediaEntities];
+              firstObject = [mediaEntities2 firstObject];
 
-              if (v47 == v9)
+              if (firstObject == v9)
               {
                 break;
               }
 
               if (v42 == ++v44)
               {
-                v42 = [v40 countByEnumeratingWithState:&v62 objects:v78 count:16];
+                v42 = [downloadEntities2 countByEnumeratingWithState:&v62 objects:v78 count:16];
                 if (v42)
                 {
                   goto LABEL_37;
@@ -1523,19 +1523,19 @@ LABEL_43:
 LABEL_46:
           [v54 addObject:v38];
           v7 = 0x1E8728000;
-          v10 = v39;
+          showTitle = v39;
 LABEL_50:
 
           goto LABEL_51;
         }
 
         v20 = v7;
-        v21 = [v9 type];
-        v22 = [*(v7 + 1048) homeVideo];
+        type4 = [v9 type];
+        homeVideo = [*(v7 + 1048) homeVideo];
 
-        v23 = v21 == v22;
+        v23 = type4 == homeVideo;
         v7 = v20;
-        v10 = v16;
+        showTitle = v16;
         if (v23)
         {
           goto LABEL_35;
@@ -1556,16 +1556,16 @@ LABEL_51:
   return v54;
 }
 
-- (void)_notifyDelegatesDownloadsFetchCompletedWithChanges:(BOOL)a3
+- (void)_notifyDelegatesDownloadsFetchCompletedWithChanges:(BOOL)changes
 {
-  v3 = a3;
-  v5 = [(VUIDownloadDataSource *)self downloadEntities];
-  v6 = [v5 copy];
+  changesCopy = changes;
+  downloadEntities = [(VUIDownloadDataSource *)self downloadEntities];
+  v6 = [downloadEntities copy];
 
-  v7 = [(VUIDownloadDataSource *)self performingRentalExpirationFetch];
-  v8 = [(VUIDownloadDataSource *)self hasFetchedAllDownloadEntities];
-  v9 = [(VUIDownloadDataSource *)self hasFetchedAllDownloadedEntities];
-  if (![(VUILibraryDataSource *)self hasCompletedInitialFetch]&& v8 && v9 && !v7)
+  performingRentalExpirationFetch = [(VUIDownloadDataSource *)self performingRentalExpirationFetch];
+  hasFetchedAllDownloadEntities = [(VUIDownloadDataSource *)self hasFetchedAllDownloadEntities];
+  hasFetchedAllDownloadedEntities = [(VUIDownloadDataSource *)self hasFetchedAllDownloadedEntities];
+  if (![(VUILibraryDataSource *)self hasCompletedInitialFetch]&& hasFetchedAllDownloadEntities && hasFetchedAllDownloadedEntities && !performingRentalExpirationFetch)
   {
     [(VUILibraryDataSource *)self setHasCompletedInitialFetch:1];
     objc_initWeak(&location, self);
@@ -1595,9 +1595,9 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  if ([(VUILibraryDataSource *)self hasCompletedInitialFetch]&& (v3 || v7))
+  if ([(VUILibraryDataSource *)self hasCompletedInitialFetch]&& (changesCopy || performingRentalExpirationFetch))
   {
-    if (v7)
+    if (performingRentalExpirationFetch)
     {
       [(VUIDownloadDataSource *)self setPerformingRentalExpirationFetch:0];
     }
@@ -1648,16 +1648,16 @@ void __76__VUIDownloadDataSource__notifyDelegatesDownloadsFetchCompletedWithChan
   }
 }
 
-- (BOOL)_doesEpisodeSet:(id)a3 containMediaEntity:(id)a4
+- (BOOL)_doesEpisodeSet:(id)set containMediaEntity:(id)entity
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [a4 identifier];
+  setCopy = set;
+  identifier = [entity identifier];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v7 = v5;
+  v7 = setCopy;
   v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
   {
@@ -1671,8 +1671,8 @@ void __76__VUIDownloadDataSource__notifyDelegatesDownloadsFetchCompletedWithChan
           objc_enumerationMutation(v7);
         }
 
-        v11 = [*(*(&v13 + 1) + 8 * i) identifier];
-        if (v11 && [v6 isEqual:v11])
+        identifier2 = [*(*(&v13 + 1) + 8 * i) identifier];
+        if (identifier2 && [identifier isEqual:identifier2])
         {
 
           LOBYTE(v8) = 1;
@@ -1698,16 +1698,16 @@ LABEL_12:
 - (id)_coalesceActiveDownloadEntitiesAndDownloadedEntities
 {
   v27 = *MEMORY[0x1E69E9840];
-  v3 = [(VUIDownloadDataSource *)self localMediaItems];
-  v4 = [(VUIDownloadDataSource *)self _createDownloadEntitiesFromLatestDownloads:v3];
+  localMediaItems = [(VUIDownloadDataSource *)self localMediaItems];
+  v4 = [(VUIDownloadDataSource *)self _createDownloadEntitiesFromLatestDownloads:localMediaItems];
 
   v20 = objc_opt_new();
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v5 = [(VUIDownloadDataSource *)self activelyDownloadingMediaItems];
-  v6 = [v5 countByEnumeratingWithState:&v21 objects:v26 count:16];
+  activelyDownloadingMediaItems = [(VUIDownloadDataSource *)self activelyDownloadingMediaItems];
+  v6 = [activelyDownloadingMediaItems countByEnumeratingWithState:&v21 objects:v26 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1718,14 +1718,14 @@ LABEL_12:
       {
         if (*v22 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(activelyDownloadingMediaItems);
         }
 
         v10 = *(*(&v21 + 1) + 8 * i);
-        v11 = [v10 type];
+        type = [v10 type];
         v12 = +[VUIMediaEntityType episode];
 
-        if (v11 == v12)
+        if (type == v12)
         {
           [(VUIDownloadDataSource *)self _upsertEpisodesDownloadingForShowWithMediaEntity:v10];
         }
@@ -1741,14 +1741,14 @@ LABEL_12:
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v21 objects:v26 count:16];
+      v7 = [activelyDownloadingMediaItems countByEnumeratingWithState:&v21 objects:v26 count:16];
     }
 
     while (v7);
   }
 
-  v14 = [(VUIDownloadDataSource *)self episodesDownloadingForShow];
-  v15 = [(VUIDownloadDataSource *)self _upsertDownloadEntities:v4 withEpisodesDownloadingForShow:v14];
+  episodesDownloadingForShow = [(VUIDownloadDataSource *)self episodesDownloadingForShow];
+  v15 = [(VUIDownloadDataSource *)self _upsertDownloadEntities:v4 withEpisodesDownloadingForShow:episodesDownloadingForShow];
 
   [v15 addObjectsFromArray:v20];
   v16 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"title" ascending:1];
@@ -1761,35 +1761,35 @@ LABEL_12:
   return v18;
 }
 
-- (BOOL)_downloadsDidChange:(id)a3
+- (BOOL)_downloadsDidChange:(id)change
 {
-  v4 = a3;
-  v5 = [(VUIDownloadDataSource *)self downloadEntities];
-  if (v5 == v4)
+  changeCopy = change;
+  downloadEntities = [(VUIDownloadDataSource *)self downloadEntities];
+  if (downloadEntities == changeCopy)
   {
     LOBYTE(v7) = 0;
   }
 
   else
   {
-    v6 = [(VUIDownloadDataSource *)self downloadEntities];
-    v7 = [v6 isEqualToArray:v4] ^ 1;
+    downloadEntities2 = [(VUIDownloadDataSource *)self downloadEntities];
+    v7 = [downloadEntities2 isEqualToArray:changeCopy] ^ 1;
   }
 
   return v7;
 }
 
-- (id)_deDupedMediaEntities:(id)a3
+- (id)_deDupedMediaEntities:(id)entities
 {
   v31 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  entitiesCopy = entities;
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v5 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v6 = v3;
+  v6 = entitiesCopy;
   v7 = [v6 countByEnumeratingWithState:&v25 objects:v30 count:16];
   if (v7)
   {
@@ -1808,10 +1808,10 @@ LABEL_12:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) != 0 && [v11 isFamilySharingContent])
         {
-          v12 = [v11 storeID];
-          if (v12)
+          storeID = [v11 storeID];
+          if (storeID)
           {
-            [v5 addObject:v12];
+            [v5 addObject:storeID];
           }
         }
       }
@@ -1852,8 +1852,8 @@ LABEL_12:
 
           else
           {
-            v19 = [v18 storeID];
-            if (!v19 || ([v5 containsObject:v19] & 1) == 0)
+            storeID2 = [v18 storeID];
+            if (!storeID2 || ([v5 containsObject:storeID2] & 1) == 0)
             {
               [v4 addObject:v18];
             }

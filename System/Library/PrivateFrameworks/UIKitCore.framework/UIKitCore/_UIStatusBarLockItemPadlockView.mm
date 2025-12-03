@@ -1,25 +1,25 @@
 @interface _UIStatusBarLockItemPadlockView
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (UIStatusBarLockItemView)owner;
-- (_UIStatusBarLockItemPadlockView)initWithFrame:(CGRect)a3 owner:(id)a4;
-- (void)animateUnlockCompletionBlock:(id)a3;
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4;
-- (void)jiggleCompletionBlock:(id)a3;
+- (_UIStatusBarLockItemPadlockView)initWithFrame:(CGRect)frame owner:(id)owner;
+- (void)animateUnlockCompletionBlock:(id)block;
+- (void)animationDidStop:(id)stop finished:(BOOL)finished;
+- (void)jiggleCompletionBlock:(id)block;
 - (void)reset;
 @end
 
 @implementation _UIStatusBarLockItemPadlockView
 
-- (_UIStatusBarLockItemPadlockView)initWithFrame:(CGRect)a3 owner:(id)a4
+- (_UIStatusBarLockItemPadlockView)initWithFrame:(CGRect)frame owner:(id)owner
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  ownerCopy = owner;
   if (os_variant_has_internal_diagnostics())
   {
-    if (!v9)
+    if (!ownerCopy)
     {
       v23 = __UIFaultDebugAssertLog();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_FAULT))
@@ -30,7 +30,7 @@
     }
   }
 
-  else if (!v9)
+  else if (!ownerCopy)
   {
     v24 = *(__UILogGetCategoryCachedImpl("Assert", &initWithFrame_owner____s_category) + 8);
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
@@ -42,38 +42,38 @@
 
   v25.receiver = self;
   v25.super_class = _UIStatusBarLockItemPadlockView;
-  v10 = [(UIView *)&v25 initWithFrame:x, y, width, height];
-  v11 = v10;
-  if (v10)
+  height = [(UIView *)&v25 initWithFrame:x, y, width, height];
+  v11 = height;
+  if (height)
   {
-    objc_storeWeak(&v10->_owner, v9);
-    v12 = [v9 imageWithShadowNamed:@"LockShackle"];
-    v13 = [v12 image];
+    objc_storeWeak(&height->_owner, ownerCopy);
+    v12 = [ownerCopy imageWithShadowNamed:@"LockShackle"];
+    image = [v12 image];
 
-    if ([v9 _shouldReverseLayoutDirection])
+    if ([ownerCopy _shouldReverseLayoutDirection])
     {
-      v14 = [v13 imageWithHorizontallyFlippedOrientation];
+      imageWithHorizontallyFlippedOrientation = [image imageWithHorizontallyFlippedOrientation];
 
-      v13 = v14;
+      image = imageWithHorizontallyFlippedOrientation;
     }
 
-    v15 = [[UIImageView alloc] initWithImage:v13];
+    v15 = [[UIImageView alloc] initWithImage:image];
     shackleView = v11->_shackleView;
     v11->_shackleView = v15;
 
     [(UIImageView *)v11->_shackleView setFrame:1.0, 2.0, 6.0, 7.0];
     [(UIView *)v11 addSubview:v11->_shackleView];
-    v17 = [v9 imageWithShadowNamed:@"LockBody"];
-    v18 = [v17 image];
+    v17 = [ownerCopy imageWithShadowNamed:@"LockBody"];
+    image2 = [v17 image];
 
-    if ([v9 _shouldReverseLayoutDirection])
+    if ([ownerCopy _shouldReverseLayoutDirection])
     {
-      v19 = [v18 imageWithHorizontallyFlippedOrientation];
+      imageWithHorizontallyFlippedOrientation2 = [image2 imageWithHorizontallyFlippedOrientation];
 
-      v18 = v19;
+      image2 = imageWithHorizontallyFlippedOrientation2;
     }
 
-    v20 = [[UIImageView alloc] initWithImage:v18];
+    v20 = [[UIImageView alloc] initWithImage:image2];
     bodyView = v11->_bodyView;
     v11->_bodyView = v20;
 
@@ -92,7 +92,7 @@
   [(UIImageView *)shackleView setFrame:1.0, 2.0, 6.0, 7.0];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   v3 = 8.0;
   v4 = 12.0;
@@ -101,15 +101,15 @@
   return result;
 }
 
-- (void)animateUnlockCompletionBlock:(id)a3
+- (void)animateUnlockCompletionBlock:(id)block
 {
-  v4 = a3;
-  v5 = v4;
+  blockCopy = block;
+  v5 = blockCopy;
   if (self->_completionBlock)
   {
-    if (v4)
+    if (blockCopy)
     {
-      dispatch_async(MEMORY[0x1E69E96A0], v4);
+      dispatch_async(MEMORY[0x1E69E96A0], blockCopy);
     }
   }
 
@@ -144,8 +144,8 @@
     v13 = *MEMORY[0x1E69797E0];
     [v9 setFillMode:*MEMORY[0x1E69797E0]];
     [(UIImageView *)self->_shackleView setFrame:1.0, 0.0, 6.0, 7.0];
-    v14 = [(UIView *)self->_shackleView layer];
-    [v14 addAnimation:v9 forKey:@"unlock"];
+    layer = [(UIView *)self->_shackleView layer];
+    [layer addAnimation:v9 forKey:@"unlock"];
 
     v15 = [MEMORY[0x1E69794A8] animationWithKeyPath:@"opacity"];
     setDefaultLockAnimationParameters(v15);
@@ -158,8 +158,8 @@
     v17 = [_UIViewWeakCAAnimationDelegate weakAnimationDelegate:self];
     [v15 setDelegate:v17];
 
-    v18 = [(UIView *)self layer];
-    [v18 addAnimation:v15 forKey:@"fadeOut"];
+    layer2 = [(UIView *)self layer];
+    [layer2 addAnimation:v15 forKey:@"fadeOut"];
 
     [MEMORY[0x1E6979518] setDisableActions:1];
     [(UIView *)self setAlpha:0.0];
@@ -167,16 +167,16 @@
   }
 }
 
-- (void)jiggleCompletionBlock:(id)a3
+- (void)jiggleCompletionBlock:(id)block
 {
   v34[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(UIView *)self layer];
+  blockCopy = block;
+  layer = [(UIView *)self layer];
   if (self->_completionBlock)
   {
-    if (v4)
+    if (blockCopy)
     {
-      dispatch_async(MEMORY[0x1E69E96A0], v4);
+      dispatch_async(MEMORY[0x1E69E96A0], blockCopy);
     }
   }
 
@@ -195,14 +195,14 @@
 
     v7 = [MEMORY[0x1E69794A8] animationWithKeyPath:@"position"];
     v8 = MEMORY[0x1E696B098];
-    [v5 position];
+    [layer position];
     v9 = [v8 valueWithCGPoint:?];
     [v7 setFromValue:v9];
 
     v10 = MEMORY[0x1E696B098];
-    [v5 position];
+    [layer position];
     v12 = v11 + -20.0;
-    [v5 position];
+    [layer position];
     v13 = [v10 valueWithCGPoint:v12];
     [v7 setToValue:v13];
 
@@ -242,23 +242,23 @@
     [v19 setTimingFunction:v27];
 
     [v19 setFillMode:*MEMORY[0x1E69797E8]];
-    v28 = [MEMORY[0x1E6979308] animation];
-    [v28 setDuration:0.6679];
+    animation = [MEMORY[0x1E6979308] animation];
+    [animation setDuration:0.6679];
     v34[0] = v7;
     v34[1] = v19;
     v29 = [MEMORY[0x1E695DEC8] arrayWithObjects:v34 count:2];
-    [v28 setAnimations:v29];
+    [animation setAnimations:v29];
 
     v30 = [_UIViewWeakCAAnimationDelegate weakAnimationDelegate:self];
-    [v28 setDelegate:v30];
+    [animation setDelegate:v30];
 
-    [(_UIStatusBarLockItemPadlockView *)self setCompletionBlock:v4];
-    v31 = [(UIView *)self layer];
-    [v31 addAnimation:v28 forKey:@"jiggle"];
+    [(_UIStatusBarLockItemPadlockView *)self setCompletionBlock:blockCopy];
+    layer2 = [(UIView *)self layer];
+    [layer2 addAnimation:animation forKey:@"jiggle"];
   }
 }
 
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4
+- (void)animationDidStop:(id)stop finished:(BOOL)finished
 {
   v7 = _Block_copy(self->_completionBlock);
   completionBlock = self->_completionBlock;

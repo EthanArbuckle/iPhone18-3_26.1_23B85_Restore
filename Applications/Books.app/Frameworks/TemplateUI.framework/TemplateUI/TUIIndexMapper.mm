@@ -1,16 +1,16 @@
 @interface TUIIndexMapper
-- (TUIIndexMapper)initWithCount:(unint64_t)a3;
+- (TUIIndexMapper)initWithCount:(unint64_t)count;
 - (unint64_t)count;
 - (unint64_t)oldCount;
 - (void)dealloc;
-- (void)deleteAtIndex:(unint64_t)a3;
-- (void)insertAtIndex:(unint64_t)a3;
-- (void)trimWithStart:(int64_t)a3 end:(int64_t)a4;
+- (void)deleteAtIndex:(unint64_t)index;
+- (void)insertAtIndex:(unint64_t)index;
+- (void)trimWithStart:(int64_t)start end:(int64_t)end;
 @end
 
 @implementation TUIIndexMapper
 
-- (TUIIndexMapper)initWithCount:(unint64_t)a3
+- (TUIIndexMapper)initWithCount:(unint64_t)count
 {
   v4.receiver = self;
   v4.super_class = TUIIndexMapper;
@@ -104,28 +104,28 @@
   }
 }
 
-- (void)deleteAtIndex:(unint64_t)a3
+- (void)deleteAtIndex:(unint64_t)index
 {
   mapper = self->_mapper;
-  sub_9F040(mapper, a3, 1, 0);
+  sub_9F040(mapper, index, 1, 0);
   --mapper[6];
 }
 
-- (void)insertAtIndex:(unint64_t)a3
+- (void)insertAtIndex:(unint64_t)index
 {
   mapper = self->_mapper;
-  sub_9FDD0(mapper, a3, 1);
+  sub_9FDD0(mapper, index, 1);
   ++mapper[6];
 }
 
-- (void)trimWithStart:(int64_t)a3 end:(int64_t)a4
+- (void)trimWithStart:(int64_t)start end:(int64_t)end
 {
   mapper = self->_mapper;
-  mapper[9] = a3;
-  mapper[10] = a4;
-  sub_A0240(mapper, a3, a4);
+  mapper[9] = start;
+  mapper[10] = end;
+  sub_A0240(mapper, start, end);
 
-  sub_A03DC(mapper, a3, a4);
+  sub_A03DC(mapper, start, end);
 }
 
 @end

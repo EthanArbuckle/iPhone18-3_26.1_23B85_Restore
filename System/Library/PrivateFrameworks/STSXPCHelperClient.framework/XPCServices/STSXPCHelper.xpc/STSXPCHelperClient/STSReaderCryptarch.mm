@@ -1,31 +1,31 @@
 @interface STSReaderCryptarch
-- (STSReaderCryptarch)initWithCoder:(id)a3;
-- (STSReaderCryptarch)initWithCurve:(unint64_t)a3 variant:(unint64_t)a4 privateKey:(id)a5;
-- (void)encodeWithCoder:(id)a3;
+- (STSReaderCryptarch)initWithCoder:(id)coder;
+- (STSReaderCryptarch)initWithCurve:(unint64_t)curve variant:(unint64_t)variant privateKey:(id)key;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation STSReaderCryptarch
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   curve = self->_curve;
-  v5 = a3;
-  [v5 encodeInteger:curve forKey:@"curve"];
-  [v5 encodeInteger:self->_variant forKey:@"variant"];
-  [v5 encodeObject:self->_privateKey forKey:@"privateKey"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:curve forKey:@"curve"];
+  [coderCopy encodeInteger:self->_variant forKey:@"variant"];
+  [coderCopy encodeObject:self->_privateKey forKey:@"privateKey"];
 }
 
-- (STSReaderCryptarch)initWithCoder:(id)a3
+- (STSReaderCryptarch)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = STSReaderCryptarch;
   v5 = [(STSReaderCryptarch *)&v9 init];
   if (v5)
   {
-    v5->_curve = [v4 decodeIntegerForKey:@"curve"];
-    v5->_variant = [v4 decodeIntegerForKey:@"variant"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"privateKey"];
+    v5->_curve = [coderCopy decodeIntegerForKey:@"curve"];
+    v5->_variant = [coderCopy decodeIntegerForKey:@"variant"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"privateKey"];
     privateKey = v5->_privateKey;
     v5->_privateKey = v6;
   }
@@ -33,18 +33,18 @@
   return v5;
 }
 
-- (STSReaderCryptarch)initWithCurve:(unint64_t)a3 variant:(unint64_t)a4 privateKey:(id)a5
+- (STSReaderCryptarch)initWithCurve:(unint64_t)curve variant:(unint64_t)variant privateKey:(id)key
 {
-  v9 = a5;
+  keyCopy = key;
   v13.receiver = self;
   v13.super_class = STSReaderCryptarch;
   v10 = [(STSReaderCryptarch *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    v10->_curve = a3;
-    v10->_variant = a4;
-    objc_storeStrong(&v10->_privateKey, a5);
+    v10->_curve = curve;
+    v10->_variant = variant;
+    objc_storeStrong(&v10->_privateKey, key);
   }
 
   return v11;

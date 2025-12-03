@@ -7,7 +7,7 @@
 - (id)tri_setContextValueWithName:()TRIFunctions value:
 {
   v6 = a4;
-  [a1 setObject:v6 forKeyedSubscript:a3];
+  [self setObject:v6 forKeyedSubscript:a3];
 
   return v6;
 }

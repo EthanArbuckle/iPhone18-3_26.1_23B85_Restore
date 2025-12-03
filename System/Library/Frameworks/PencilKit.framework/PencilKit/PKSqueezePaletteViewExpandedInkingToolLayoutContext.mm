@@ -1,28 +1,28 @@
 @interface PKSqueezePaletteViewExpandedInkingToolLayoutContext
-- (id)initWithDrawingTool:(void *)a3 toolAngle:(double)a4 previousLayout:;
+- (id)initWithDrawingTool:(void *)tool toolAngle:(double)angle previousLayout:;
 @end
 
 @implementation PKSqueezePaletteViewExpandedInkingToolLayoutContext
 
-- (id)initWithDrawingTool:(void *)a3 toolAngle:(double)a4 previousLayout:
+- (id)initWithDrawingTool:(void *)tool toolAngle:(double)angle previousLayout:
 {
   v8 = a2;
-  v9 = a3;
-  if (a1)
+  toolCopy = tool;
+  if (self)
   {
-    v12.receiver = a1;
+    v12.receiver = self;
     v12.super_class = PKSqueezePaletteViewExpandedInkingToolLayoutContext;
     v10 = objc_msgSendSuper2(&v12, sel_init);
-    a1 = v10;
+    self = v10;
     if (v10)
     {
       objc_storeStrong(v10 + 3, a2);
-      *(a1 + 1) = a4;
-      objc_storeStrong(a1 + 2, a3);
+      *(self + 1) = angle;
+      objc_storeStrong(self + 2, tool);
     }
   }
 
-  return a1;
+  return self;
 }
 
 @end

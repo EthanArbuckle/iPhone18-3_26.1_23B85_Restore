@@ -1,51 +1,51 @@
 @interface PRPosterRootViewController
-- (PRPosterRootViewController)initWithDynamicRotationEnabled:(BOOL)a3;
+- (PRPosterRootViewController)initWithDynamicRotationEnabled:(BOOL)enabled;
 - (void)_updateCounterRotationLayout;
-- (void)didMoveToParentViewController:(id)a3;
-- (void)setRenderingView:(id)a3;
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)didMoveToParentViewController:(id)controller;
+- (void)setRenderingView:(id)view;
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)viewWillLayoutSubviews;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation PRPosterRootViewController
 
-- (PRPosterRootViewController)initWithDynamicRotationEnabled:(BOOL)a3
+- (PRPosterRootViewController)initWithDynamicRotationEnabled:(BOOL)enabled
 {
   v5.receiver = self;
   v5.super_class = PRPosterRootViewController;
   result = [(PRPosterRootViewController *)&v5 init];
   if (result)
   {
-    result->_dynamicRotationEnabled = a3;
+    result->_dynamicRotationEnabled = enabled;
   }
 
   return result;
 }
 
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = PRPosterRootViewController;
-  [(PRPosterRootViewController *)&v4 viewDidMoveToWindow:a3 shouldAppearOrDisappear:a4];
+  [(PRPosterRootViewController *)&v4 viewDidMoveToWindow:window shouldAppearOrDisappear:disappear];
 }
 
-- (void)didMoveToParentViewController:(id)a3
+- (void)didMoveToParentViewController:(id)controller
 {
   v3.receiver = self;
   v3.super_class = PRPosterRootViewController;
-  [(PRPosterRootViewController *)&v3 didMoveToParentViewController:a3];
+  [(PRPosterRootViewController *)&v3 didMoveToParentViewController:controller];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = PRPosterRootViewController;
-  [(PRPosterRootViewController *)&v5 viewWillAppear:a3];
-  v4 = [(PRRenderingView *)self->_renderingView transformView];
+  [(PRPosterRootViewController *)&v5 viewWillAppear:appear];
+  transformView = [(PRRenderingView *)self->_renderingView transformView];
 
-  if (v4)
+  if (transformView)
   {
     [(PRPosterRootViewController *)self _updateCounterRotationLayout];
   }
@@ -53,9 +53,9 @@
 
 - (void)viewWillLayoutSubviews
 {
-  v3 = [(PRRenderingView *)self->_renderingView transformView];
+  transformView = [(PRRenderingView *)self->_renderingView transformView];
 
-  if (v3)
+  if (transformView)
   {
     [(PRPosterRootViewController *)self _updateCounterRotationLayout];
     v4.receiver = self;
@@ -64,61 +64,61 @@
   }
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
-  v8 = [(PRRenderingView *)self->_renderingView transformView];
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
+  transformView = [(PRRenderingView *)self->_renderingView transformView];
 
-  if (v8)
+  if (transformView)
   {
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __81__PRPosterRootViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke;
     v10[3] = &unk_1E78442B8;
     v10[4] = self;
-    [v7 animateAlongsideTransition:v10 completion:&__block_literal_global_55];
+    [coordinatorCopy animateAlongsideTransition:v10 completion:&__block_literal_global_55];
     v9.receiver = self;
     v9.super_class = PRPosterRootViewController;
-    [(PRPosterRootViewController *)&v9 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+    [(PRPosterRootViewController *)&v9 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   }
 }
 
-- (void)setRenderingView:(id)a3
+- (void)setRenderingView:(id)view
 {
-  v5 = a3;
-  if (self->_renderingView != v5)
+  viewCopy = view;
+  if (self->_renderingView != viewCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_renderingView, a3);
+    v6 = viewCopy;
+    objc_storeStrong(&self->_renderingView, view);
     [(PRPosterRootViewController *)self setView:v6];
-    v5 = v6;
+    viewCopy = v6;
   }
 }
 
 - (void)_updateCounterRotationLayout
 {
-  v3 = [(PRRenderingView *)self->_renderingView transformView];
-  if (v3)
+  transformView = [(PRRenderingView *)self->_renderingView transformView];
+  if (transformView)
   {
-    v17 = v3;
-    v4 = [(PRPosterRootViewController *)self view];
-    v5 = [v4 window];
+    v17 = transformView;
+    view = [(PRPosterRootViewController *)self view];
+    window = [view window];
 
-    if (v5)
+    if (window)
     {
-      v6 = [v5 _windowInterfaceOrientation];
+      _windowInterfaceOrientation = [window _windowInterfaceOrientation];
     }
 
     else
     {
-      v6 = 1;
+      _windowInterfaceOrientation = 1;
     }
 
     if (self->_dynamicRotationEnabled)
     {
-      v7 = v6;
+      v7 = _windowInterfaceOrientation;
     }
 
     else
@@ -126,8 +126,8 @@
       v7 = 1;
     }
 
-    v8 = [(PRPosterRootViewController *)self view];
-    [v8 bounds];
+    view2 = [(PRPosterRootViewController *)self view];
+    [view2 bounds];
     v10 = v9;
     v12 = v11;
     v14 = v13;
@@ -137,7 +137,7 @@
     [v17 setContentOrientation:1];
     [v17 setContainerOrientation:v7];
 
-    v3 = v17;
+    transformView = v17;
   }
 }
 

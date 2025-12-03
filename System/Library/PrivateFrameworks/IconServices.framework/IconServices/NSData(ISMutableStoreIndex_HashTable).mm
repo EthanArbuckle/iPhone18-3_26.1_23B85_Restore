@@ -38,12 +38,12 @@
     v7 = [v10 initWithBytesNoCopy:v8 length:v5 deallocator:*MEMORY[0x1E696A268]];
   }
 
-  v11 = [v7 _ISStoreIndex_hashTableHeader];
-  if (v11)
+  _ISStoreIndex_hashTableHeader = [v7 _ISStoreIndex_hashTableHeader];
+  if (_ISStoreIndex_hashTableHeader)
   {
-    *v11 = 11;
-    *(v11 + 4) = 1;
-    *(v11 + 12) = v4;
+    *_ISStoreIndex_hashTableHeader = 11;
+    *(_ISStoreIndex_hashTableHeader + 4) = 1;
+    *(_ISStoreIndex_hashTableHeader + 12) = v4;
   }
 
   return v7;
@@ -51,17 +51,17 @@
 
 - (uint64_t)_ISStoreIndex_addNodeWithSize:()ISMutableStoreIndex_HashTable
 {
-  result = [a1 _ISStoreIndex_hashTableHeader];
+  result = [self _ISStoreIndex_hashTableHeader];
   if (result)
   {
     v6 = a3 + 36;
     v7 = *(result + 16);
     *(result + 16) = v7 + a3 + 36;
-    v8 = [a1 length];
-    v9 = [a1 bytes];
-    v10 = [a1 _ISStoreIndex_nodesOffset];
-    v11 = (v10 + v7 + v9);
-    if (v10 + v7 + v6 < v8 && v11 != 0)
+    v8 = [self length];
+    bytes = [self bytes];
+    _ISStoreIndex_nodesOffset = [self _ISStoreIndex_nodesOffset];
+    v11 = (_ISStoreIndex_nodesOffset + v7 + bytes);
+    if (_ISStoreIndex_nodesOffset + v7 + v6 < v8 && v11 != 0)
     {
       *v11 = v7 | (v6 << 32);
     }
@@ -74,12 +74,12 @@
 
 - (uint64_t)_ISMutableStoreIndex_addValue:()ISMutableStoreIndex_HashTable size:forUUID:
 {
-  result = [a1 _ISStoreIndex_hashTableHeader];
+  result = [self _ISStoreIndex_hashTableHeader];
   if (result)
   {
     v10 = result;
-    v11 = [a1 _ISStoreIndex_addNodeWithSize:a4];
-    result = [a1 _ISStoreIndex_nodeForRef:v11];
+    v11 = [self _ISStoreIndex_addNodeWithSize:a4];
+    result = [self _ISStoreIndex_nodeForRef:v11];
     if (result)
     {
       v12 = result;
@@ -90,11 +90,11 @@
       memcpy((v12 + 36), a3, a4);
       v13 = *a5;
       v14 = *(a5 + 1);
-      v15 = [a1 _ISStoreIndex_nodeRefForKey:v14 ^ *a5];
+      v15 = [self _ISStoreIndex_nodeRefForKey:v14 ^ *a5];
       if (v15)
       {
         v16 = v15;
-        result = [a1 _ISStoreIndex_nodeForRef:v15];
+        result = [self _ISStoreIndex_nodeForRef:v15];
         if (!result)
         {
           return result;
@@ -115,7 +115,7 @@
             break;
           }
 
-          result = [a1 _ISStoreIndex_nodeForRef:v18];
+          result = [self _ISStoreIndex_nodeForRef:v18];
           HIDWORD(v16) = HIDWORD(v18);
           v17 = v18;
           if (!result)
@@ -138,7 +138,7 @@ LABEL_17:
         *v19 = v11;
       }
 
-      else if (([a1 _ISStoreIndex_setNodeRef:v11 forKey:v14 ^ v13] & 1) == 0)
+      else if (([self _ISStoreIndex_setNodeRef:v11 forKey:v14 ^ v13] & 1) == 0)
       {
         return 0;
       }

@@ -1,18 +1,18 @@
 @interface PGChildMemoryNodeFeatureExtractor
-- (PGChildMemoryNodeFeatureExtractor)initWithError:(id *)a3;
+- (PGChildMemoryNodeFeatureExtractor)initWithError:(id *)error;
 @end
 
 @implementation PGChildMemoryNodeFeatureExtractor
 
-- (PGChildMemoryNodeFeatureExtractor)initWithError:(id *)a3
+- (PGChildMemoryNodeFeatureExtractor)initWithError:(id *)error
 {
   v15[1] = *MEMORY[0x277D85DE8];
   v15[0] = @"Child";
   v4 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:1];
   v5 = MEMORY[0x277D22C90];
   v6 = [PGGraphPersonNode filterForAgeCategories:&unk_284485808 includingMe:0];
-  v7 = [v6 relation];
-  v14 = v7;
+  relation = [v6 relation];
+  v14 = relation;
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:&v14 count:1];
   v9 = [v5 chain:v8];
 

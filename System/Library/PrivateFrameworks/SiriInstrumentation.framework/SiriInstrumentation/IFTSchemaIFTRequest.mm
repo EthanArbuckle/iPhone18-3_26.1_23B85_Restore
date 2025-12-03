@@ -1,34 +1,34 @@
 @interface IFTSchemaIFTRequest
-- (BOOL)isEqual:(id)a3;
-- (IFTSchemaIFTRequest)initWithDictionary:(id)a3;
-- (IFTSchemaIFTRequest)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (IFTSchemaIFTRequest)initWithDictionary:(id)dictionary;
+- (IFTSchemaIFTRequest)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasIsSafetyMode:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasIsSafetyMode:(BOOL)mode;
+- (void)writeTo:(id)to;
 @end
 
 @implementation IFTSchemaIFTRequest
 
-- (IFTSchemaIFTRequest)initWithDictionary:(id)a3
+- (IFTSchemaIFTRequest)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v14.receiver = self;
   v14.super_class = IFTSchemaIFTRequest;
   v5 = [(IFTSchemaIFTRequest *)&v14 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"exists"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"exists"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[IFTSchemaIFTRequest setExists:](v5, "setExists:", [v6 BOOLValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"content"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"content"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -36,14 +36,14 @@
       [(IFTSchemaIFTRequest *)v5 setContent:v8];
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"isSafetyMode"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"isSafetyMode"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[IFTSchemaIFTRequest setIsSafetyMode:](v5, "setIsSafetyMode:", [v9 BOOLValue]);
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"prescribedPlan"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"prescribedPlan"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -57,30 +57,30 @@
   return v5;
 }
 
-- (IFTSchemaIFTRequest)initWithJSON:(id)a3
+- (IFTSchemaIFTRequest)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(IFTSchemaIFTRequest *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(IFTSchemaIFTRequest *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(IFTSchemaIFTRequest *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -93,20 +93,20 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_content)
   {
-    v4 = [(IFTSchemaIFTRequest *)self content];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    content = [(IFTSchemaIFTRequest *)self content];
+    dictionaryRepresentation = [content dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"content"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"content"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"content"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"content"];
     }
   }
 
@@ -114,7 +114,7 @@
   if (has)
   {
     v8 = [MEMORY[0x1E696AD98] numberWithBool:{-[IFTSchemaIFTRequest exists](self, "exists")}];
-    [v3 setObject:v8 forKeyedSubscript:@"exists"];
+    [dictionary setObject:v8 forKeyedSubscript:@"exists"];
 
     has = self->_has;
   }
@@ -122,28 +122,28 @@
   if ((has & 2) != 0)
   {
     v9 = [MEMORY[0x1E696AD98] numberWithBool:{-[IFTSchemaIFTRequest isSafetyMode](self, "isSafetyMode")}];
-    [v3 setObject:v9 forKeyedSubscript:@"isSafetyMode"];
+    [dictionary setObject:v9 forKeyedSubscript:@"isSafetyMode"];
   }
 
   if (self->_prescribedPlan)
   {
-    v10 = [(IFTSchemaIFTRequest *)self prescribedPlan];
-    v11 = [v10 dictionaryRepresentation];
-    if (v11)
+    prescribedPlan = [(IFTSchemaIFTRequest *)self prescribedPlan];
+    dictionaryRepresentation2 = [prescribedPlan dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v11 forKeyedSubscript:@"prescribedPlan"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"prescribedPlan"];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v12 forKeyedSubscript:@"prescribedPlan"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"prescribedPlan"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -172,15 +172,15 @@
   return v4 ^ v3 ^ v5 ^ [(IFTSchemaIFTRequestPrescribedPlan *)self->_prescribedPlan hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_18;
   }
 
-  if ((*&self->_has & 1) != (v4[40] & 1))
+  if ((*&self->_has & 1) != (equalCopy[40] & 1))
   {
     goto LABEL_18;
   }
@@ -188,26 +188,26 @@
   if (*&self->_has)
   {
     exists = self->_exists;
-    if (exists != [v4 exists])
+    if (exists != [equalCopy exists])
     {
       goto LABEL_18;
     }
   }
 
-  v6 = [(IFTSchemaIFTRequest *)self content];
-  v7 = [v4 content];
-  if ((v6 != 0) == (v7 == 0))
+  content = [(IFTSchemaIFTRequest *)self content];
+  content2 = [equalCopy content];
+  if ((content != 0) == (content2 == 0))
   {
     goto LABEL_17;
   }
 
-  v8 = [(IFTSchemaIFTRequest *)self content];
-  if (v8)
+  content3 = [(IFTSchemaIFTRequest *)self content];
+  if (content3)
   {
-    v9 = v8;
-    v10 = [(IFTSchemaIFTRequest *)self content];
-    v11 = [v4 content];
-    v12 = [v10 isEqual:v11];
+    v9 = content3;
+    content4 = [(IFTSchemaIFTRequest *)self content];
+    content5 = [equalCopy content];
+    v12 = [content4 isEqual:content5];
 
     if (!v12)
     {
@@ -220,7 +220,7 @@
   }
 
   v13 = (*&self->_has >> 1) & 1;
-  if (v13 != ((v4[40] >> 1) & 1))
+  if (v13 != ((equalCopy[40] >> 1) & 1))
   {
     goto LABEL_18;
   }
@@ -228,18 +228,18 @@
   if (v13)
   {
     isSafetyMode = self->_isSafetyMode;
-    if (isSafetyMode != [v4 isSafetyMode])
+    if (isSafetyMode != [equalCopy isSafetyMode])
     {
       goto LABEL_18;
     }
   }
 
-  v6 = [(IFTSchemaIFTRequest *)self prescribedPlan];
-  v7 = [v4 prescribedPlan];
-  if ((v6 != 0) != (v7 == 0))
+  content = [(IFTSchemaIFTRequest *)self prescribedPlan];
+  content2 = [equalCopy prescribedPlan];
+  if ((content != 0) != (content2 == 0))
   {
-    v15 = [(IFTSchemaIFTRequest *)self prescribedPlan];
-    if (!v15)
+    prescribedPlan = [(IFTSchemaIFTRequest *)self prescribedPlan];
+    if (!prescribedPlan)
     {
 
 LABEL_21:
@@ -247,10 +247,10 @@ LABEL_21:
       goto LABEL_19;
     }
 
-    v16 = v15;
-    v17 = [(IFTSchemaIFTRequest *)self prescribedPlan];
-    v18 = [v4 prescribedPlan];
-    v19 = [v17 isEqual:v18];
+    v16 = prescribedPlan;
+    prescribedPlan2 = [(IFTSchemaIFTRequest *)self prescribedPlan];
+    prescribedPlan3 = [equalCopy prescribedPlan];
+    v19 = [prescribedPlan2 isEqual:prescribedPlan3];
 
     if (v19)
     {
@@ -270,19 +270,19 @@ LABEL_19:
   return v20;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v9 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     PBDataWriterWriteBOOLField();
   }
 
-  v4 = [(IFTSchemaIFTRequest *)self content];
+  content = [(IFTSchemaIFTRequest *)self content];
 
-  if (v4)
+  if (content)
   {
-    v5 = [(IFTSchemaIFTRequest *)self content];
+    content2 = [(IFTSchemaIFTRequest *)self content];
     PBDataWriterWriteSubmessage();
   }
 
@@ -291,21 +291,21 @@ LABEL_19:
     PBDataWriterWriteBOOLField();
   }
 
-  v6 = [(IFTSchemaIFTRequest *)self prescribedPlan];
+  prescribedPlan = [(IFTSchemaIFTRequest *)self prescribedPlan];
 
-  v7 = v9;
-  if (v6)
+  v7 = toCopy;
+  if (prescribedPlan)
   {
-    v8 = [(IFTSchemaIFTRequest *)self prescribedPlan];
+    prescribedPlan2 = [(IFTSchemaIFTRequest *)self prescribedPlan];
     PBDataWriterWriteSubmessage();
 
-    v7 = v9;
+    v7 = toCopy;
   }
 }
 
-- (void)setHasIsSafetyMode:(BOOL)a3
+- (void)setHasIsSafetyMode:(BOOL)mode
 {
-  if (a3)
+  if (mode)
   {
     v3 = 2;
   }
@@ -318,26 +318,26 @@ LABEL_19:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v13.receiver = self;
   v13.super_class = IFTSchemaIFTRequest;
-  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:v4];
-  v6 = [(IFTSchemaIFTRequest *)self content];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:policyCopy];
+  content = [(IFTSchemaIFTRequest *)self content];
+  v7 = [content applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(IFTSchemaIFTRequest *)self deleteContent];
   }
 
-  v9 = [(IFTSchemaIFTRequest *)self prescribedPlan];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  prescribedPlan = [(IFTSchemaIFTRequest *)self prescribedPlan];
+  v10 = [prescribedPlan applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(IFTSchemaIFTRequest *)self deletePrescribedPlan];
   }

@@ -1,18 +1,18 @@
 @interface HMDRecordOperationLogEvent
-- (HMDRecordOperationLogEvent)initWithSize:(unint64_t)a3 isLegacy:(BOOL)a4;
+- (HMDRecordOperationLogEvent)initWithSize:(unint64_t)size isLegacy:(BOOL)legacy;
 @end
 
 @implementation HMDRecordOperationLogEvent
 
-- (HMDRecordOperationLogEvent)initWithSize:(unint64_t)a3 isLegacy:(BOOL)a4
+- (HMDRecordOperationLogEvent)initWithSize:(unint64_t)size isLegacy:(BOOL)legacy
 {
   v7.receiver = self;
   v7.super_class = HMDRecordOperationLogEvent;
   result = [(HMMLogEvent *)&v7 init];
   if (result)
   {
-    result->_size = a3;
-    result->_legacy = a4;
+    result->_size = size;
+    result->_legacy = legacy;
   }
 
   return result;

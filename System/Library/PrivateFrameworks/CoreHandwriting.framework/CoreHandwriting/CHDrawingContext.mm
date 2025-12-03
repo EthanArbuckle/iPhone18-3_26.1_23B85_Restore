@@ -1,24 +1,24 @@
 @interface CHDrawingContext
-- (CHDrawingContext)initWithEdgeIndex:(unint64_t)a3 numberOfSubstrokes:(int64_t)a4 numberOfSegments:(int64_t)a5 classifiableDrawing:(id)a6 strokeGroup:()set<long;
+- (CHDrawingContext)initWithEdgeIndex:(unint64_t)index numberOfSubstrokes:(int64_t)substrokes numberOfSegments:(int64_t)segments classifiableDrawing:(id)drawing strokeGroup:()set<long;
 - (id).cxx_construct;
 - (set<long,)strokeGroup;
 @end
 
 @implementation CHDrawingContext
 
-- (CHDrawingContext)initWithEdgeIndex:(unint64_t)a3 numberOfSubstrokes:(int64_t)a4 numberOfSegments:(int64_t)a5 classifiableDrawing:(id)a6 strokeGroup:()set<long
+- (CHDrawingContext)initWithEdgeIndex:(unint64_t)index numberOfSubstrokes:(int64_t)substrokes numberOfSegments:(int64_t)segments classifiableDrawing:(id)drawing strokeGroup:()set<long
 {
-  v13 = a6;
+  drawingCopy = drawing;
   v17.receiver = self;
   v17.super_class = CHDrawingContext;
   v14 = [(CHDrawingContext *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    v14->_edgeIndex = a3;
-    v14->_numberOfSubstrokes = a4;
-    v14->_numberOfSegments = a5;
-    objc_storeStrong(&v14->_classifiableDrawing, a6);
+    v14->_edgeIndex = index;
+    v14->_numberOfSubstrokes = substrokes;
+    v14->_numberOfSegments = segments;
+    objc_storeStrong(&v14->_classifiableDrawing, drawing);
     if (&v15->_strokeGroup != a7)
     {
       sub_1836DDAE4(&v15->_strokeGroup, a7->__tree_.__begin_node_, &a7->__tree_.__end_node_.__left_);

@@ -1,5 +1,5 @@
 @interface _SASPresentationAggregateStateMutation
-- (_SASPresentationAggregateStateMutation)initWithBaseModel:(id)a3;
+- (_SASPresentationAggregateStateMutation)initWithBaseModel:(id)model;
 - (id)generate;
 @end
 
@@ -72,16 +72,16 @@ LABEL_14:
   return v5;
 }
 
-- (_SASPresentationAggregateStateMutation)initWithBaseModel:(id)a3
+- (_SASPresentationAggregateStateMutation)initWithBaseModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   v9.receiver = self;
   v9.super_class = _SASPresentationAggregateStateMutation;
   v6 = [(_SASPresentationAggregateStateMutation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_baseModel, a3);
+    objc_storeStrong(&v6->_baseModel, model);
   }
 
   return v7;

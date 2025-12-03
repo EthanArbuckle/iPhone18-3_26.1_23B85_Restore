@@ -1,25 +1,25 @@
 @interface AutocompleteClientSource
-+ (BOOL)itemIsFromMail:(id)a3;
-+ (BOOL)itemIsFromMessages:(id)a3;
-+ (BOOL)itemIsMarkedLocation:(id)a3;
-+ (BOOL)itemIsRecentPlace:(id)a3;
-+ (BOOL)itemIsRecentSearch:(id)a3;
-+ (id)autocompleteClientSourceAppIconWithType:(int64_t)a3;
-+ (id)autocompleteClientSourceTitleWithType:(int64_t)a3 contactName:(id)a4;
-+ (int64_t)autocompleteClientSourceTypeWithItem:(id)a3;
++ (BOOL)itemIsFromMail:(id)mail;
++ (BOOL)itemIsFromMessages:(id)messages;
++ (BOOL)itemIsMarkedLocation:(id)location;
++ (BOOL)itemIsRecentPlace:(id)place;
++ (BOOL)itemIsRecentSearch:(id)search;
++ (id)autocompleteClientSourceAppIconWithType:(int64_t)type;
++ (id)autocompleteClientSourceTitleWithType:(int64_t)type contactName:(id)name;
++ (int64_t)autocompleteClientSourceTypeWithItem:(id)item;
 @end
 
 @implementation AutocompleteClientSource
 
-+ (id)autocompleteClientSourceAppIconWithType:(int64_t)a3
++ (id)autocompleteClientSourceAppIconWithType:(int64_t)type
 {
   v3 = @"com.apple.MobileSMS";
-  if (a3 != 4)
+  if (type != 4)
   {
     v3 = 0;
   }
 
-  if (a3 == 3)
+  if (type == 3)
   {
     v4 = @"com.apple.mobilemail";
   }
@@ -44,14 +44,14 @@
   return v6;
 }
 
-+ (id)autocompleteClientSourceTitleWithType:(int64_t)a3 contactName:(id)a4
++ (id)autocompleteClientSourceTitleWithType:(int64_t)type contactName:(id)name
 {
-  v5 = a4;
-  v6 = v5;
+  nameCopy = name;
+  v6 = nameCopy;
   v7 = 0;
-  if (a3 <= 2)
+  if (type <= 2)
   {
-    if (a3 == 1)
+    if (type == 1)
     {
       v9 = +[NSBundle mainBundle];
       v10 = v9;
@@ -60,7 +60,7 @@
 
     else
     {
-      if (a3 != 2)
+      if (type != 2)
       {
         goto LABEL_21;
       }
@@ -73,11 +73,11 @@
     goto LABEL_19;
   }
 
-  if (a3 != 3)
+  if (type != 3)
   {
-    if (a3 != 4)
+    if (type != 4)
     {
-      if (a3 != 5)
+      if (type != 5)
       {
         goto LABEL_21;
       }
@@ -98,7 +98,7 @@
       goto LABEL_19;
     }
 
-    if ([v5 length])
+    if ([nameCopy length])
     {
       v12 = +[NSBundle mainBundle];
       v10 = v12;
@@ -114,7 +114,7 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  if (![v5 length])
+  if (![nameCopy length])
   {
     v9 = +[NSBundle mainBundle];
     v10 = v9;
@@ -135,21 +135,21 @@ LABEL_21:
   return v7;
 }
 
-+ (BOOL)itemIsMarkedLocation:(id)a3
++ (BOOL)itemIsMarkedLocation:(id)location
 {
-  v3 = [a3 autocompleteObject];
+  autocompleteObject = [location autocompleteObject];
   objc_opt_class();
-  v4 = (objc_opt_isKindOfClass() & 1) != 0 && [v3 type] == 3;
+  v4 = (objc_opt_isKindOfClass() & 1) != 0 && [autocompleteObject type] == 3;
 
   return v4;
 }
 
-+ (BOOL)itemIsFromMessages:(id)a3
++ (BOOL)itemIsFromMessages:(id)messages
 {
-  v3 = a3;
-  if ([v3 containsPossiblePersonalizedItemSourceType:5])
+  messagesCopy = messages;
+  if ([messagesCopy containsPossiblePersonalizedItemSourceType:5])
   {
-    v4 = [v3 containsPossiblePersonalizedItemSourceSubtype:6];
+    v4 = [messagesCopy containsPossiblePersonalizedItemSourceSubtype:6];
   }
 
   else
@@ -160,12 +160,12 @@ LABEL_21:
   return v4;
 }
 
-+ (BOOL)itemIsFromMail:(id)a3
++ (BOOL)itemIsFromMail:(id)mail
 {
-  v3 = a3;
-  if ([v3 containsPossiblePersonalizedItemSourceType:5])
+  mailCopy = mail;
+  if ([mailCopy containsPossiblePersonalizedItemSourceType:5])
   {
-    v4 = [v3 containsPossiblePersonalizedItemSourceSubtype:5];
+    v4 = [mailCopy containsPossiblePersonalizedItemSourceSubtype:5];
   }
 
   else
@@ -176,17 +176,17 @@ LABEL_21:
   return v4;
 }
 
-+ (BOOL)itemIsRecentPlace:(id)a3
++ (BOOL)itemIsRecentPlace:(id)place
 {
-  v3 = a3;
-  if ([v3 containsPossiblePersonalizedItemSourceType:7] && (objc_msgSend(v3, "containsPossiblePersonalizedItemSourceSubtype:", 11) & 1) != 0)
+  placeCopy = place;
+  if ([placeCopy containsPossiblePersonalizedItemSourceType:7] && (objc_msgSend(placeCopy, "containsPossiblePersonalizedItemSourceSubtype:", 11) & 1) != 0)
   {
     v4 = 1;
   }
 
-  else if ([v3 containsPossiblePersonalizedItemSourceType:9])
+  else if ([placeCopy containsPossiblePersonalizedItemSourceType:9])
   {
-    v4 = [v3 containsPossiblePersonalizedItemSourceSubtype:18];
+    v4 = [placeCopy containsPossiblePersonalizedItemSourceSubtype:18];
   }
 
   else
@@ -197,12 +197,12 @@ LABEL_21:
   return v4;
 }
 
-+ (BOOL)itemIsRecentSearch:(id)a3
++ (BOOL)itemIsRecentSearch:(id)search
 {
-  v3 = a3;
-  if ([v3 containsPossiblePersonalizedItemSourceType:7])
+  searchCopy = search;
+  if ([searchCopy containsPossiblePersonalizedItemSourceType:7])
   {
-    v4 = [v3 containsPossiblePersonalizedItemSourceSubtype:12];
+    v4 = [searchCopy containsPossiblePersonalizedItemSourceSubtype:12];
   }
 
   else
@@ -213,30 +213,30 @@ LABEL_21:
   return v4;
 }
 
-+ (int64_t)autocompleteClientSourceTypeWithItem:(id)a3
++ (int64_t)autocompleteClientSourceTypeWithItem:(id)item
 {
-  v4 = a3;
-  if ([a1 itemIsRecentSearch:v4])
+  itemCopy = item;
+  if ([self itemIsRecentSearch:itemCopy])
   {
     v5 = 1;
   }
 
-  else if ([a1 itemIsRecentPlace:v4])
+  else if ([self itemIsRecentPlace:itemCopy])
   {
     v5 = 2;
   }
 
-  else if ([a1 itemIsFromMail:v4])
+  else if ([self itemIsFromMail:itemCopy])
   {
     v5 = 3;
   }
 
-  else if ([a1 itemIsFromMessages:v4])
+  else if ([self itemIsFromMessages:itemCopy])
   {
     v5 = 4;
   }
 
-  else if ([a1 itemIsMarkedLocation:v4])
+  else if ([self itemIsMarkedLocation:itemCopy])
   {
     v5 = 5;
   }

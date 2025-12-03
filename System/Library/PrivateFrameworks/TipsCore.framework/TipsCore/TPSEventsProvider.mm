@@ -1,15 +1,15 @@
 @interface TPSEventsProvider
 - (TPSEventsProviderDelegate)delegate;
 - (void)deregisterAllEventsForCallback;
-- (void)deregisterEventsForCallback:(id)a3;
-- (void)queryEvents:(id)a3;
-- (void)registerEventsForCallback:(id)a3;
-- (void)registerEventsForWakingCallback:(id)a3 clientIdentifier:(id)a4;
+- (void)deregisterEventsForCallback:(id)callback;
+- (void)queryEvents:(id)events;
+- (void)registerEventsForCallback:(id)callback;
+- (void)registerEventsForWakingCallback:(id)callback clientIdentifier:(id)identifier;
 @end
 
 @implementation TPSEventsProvider
 
-- (void)queryEvents:(id)a3
+- (void)queryEvents:(id)events
 {
   v9 = *MEMORY[0x1E69E9840];
   v3 = +[TPSLogger default];
@@ -25,7 +25,7 @@
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)registerEventsForCallback:(id)a3
+- (void)registerEventsForCallback:(id)callback
 {
   v9 = *MEMORY[0x1E69E9840];
   v3 = +[TPSLogger default];
@@ -41,10 +41,10 @@
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)registerEventsForWakingCallback:(id)a3 clientIdentifier:(id)a4
+- (void)registerEventsForWakingCallback:(id)callback clientIdentifier:(id)identifier
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = [TPSLogger default:a3];
+  v4 = [TPSLogger default:callback];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v5 = objc_opt_class();
@@ -57,7 +57,7 @@
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)deregisterEventsForCallback:(id)a3
+- (void)deregisterEventsForCallback:(id)callback
 {
   v9 = *MEMORY[0x1E69E9840];
   v3 = +[TPSLogger default];

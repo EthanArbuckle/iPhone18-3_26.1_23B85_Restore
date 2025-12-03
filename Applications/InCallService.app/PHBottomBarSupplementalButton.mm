@@ -1,51 +1,51 @@
 @interface PHBottomBarSupplementalButton
-- (CGRect)imageRectForContentRect:(CGRect)a3;
-- (CGRect)titleRectForContentRect:(CGRect)a3;
+- (CGRect)imageRectForContentRect:(CGRect)rect;
+- (CGRect)titleRectForContentRect:(CGRect)rect;
 - (CGSize)intrinsicContentSize;
-- (PHBottomBarSupplementalButton)initWithAction:(int64_t)a3;
-- (PHBottomBarSupplementalButton)initWithText:(id)a3 image:(id)a4;
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4;
-- (void)setEnabled:(BOOL)a3;
-- (void)setHighlighted:(BOOL)a3;
+- (PHBottomBarSupplementalButton)initWithAction:(int64_t)action;
+- (PHBottomBarSupplementalButton)initWithText:(id)text image:(id)image;
+- (void)animationDidStop:(id)stop finished:(BOOL)finished;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setHighlighted:(BOOL)highlighted;
 @end
 
 @implementation PHBottomBarSupplementalButton
 
-- (PHBottomBarSupplementalButton)initWithText:(id)a3 image:(id)a4
+- (PHBottomBarSupplementalButton)initWithText:(id)text image:(id)image
 {
-  v6 = a3;
-  v7 = a4;
+  textCopy = text;
+  imageCopy = image;
   v8 = [(PHBottomBarSupplementalButton *)self initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
   v9 = v8;
   if (v8)
   {
-    [(PHBottomBarSupplementalButton *)v8 setTitle:v6 forState:0];
-    [(PHBottomBarSupplementalButton *)v9 setImage:v7 forState:0];
+    [(PHBottomBarSupplementalButton *)v8 setTitle:textCopy forState:0];
+    [(PHBottomBarSupplementalButton *)v9 setImage:imageCopy forState:0];
     v10 = +[UIColor whiteColor];
     [(PHBottomBarSupplementalButton *)v9 setTintColor:v10];
 
-    v11 = [(PHBottomBarSupplementalButton *)v9 titleLabel];
-    [v11 setTextAlignment:1];
+    titleLabel = [(PHBottomBarSupplementalButton *)v9 titleLabel];
+    [titleLabel setTextAlignment:1];
 
     v12 = +[PHBottomBarButton defaultFont];
-    v13 = [(PHBottomBarSupplementalButton *)v9 titleLabel];
-    [v13 setFont:v12];
+    titleLabel2 = [(PHBottomBarSupplementalButton *)v9 titleLabel];
+    [titleLabel2 setFont:v12];
 
-    v14 = [(PHBottomBarSupplementalButton *)v9 titleLabel];
-    [v14 setLineBreakMode:4];
+    titleLabel3 = [(PHBottomBarSupplementalButton *)v9 titleLabel];
+    [titleLabel3 setLineBreakMode:4];
 
-    v15 = [(PHBottomBarSupplementalButton *)v9 titleLabel];
-    [v15 setNumberOfLines:2];
+    titleLabel4 = [(PHBottomBarSupplementalButton *)v9 titleLabel];
+    [titleLabel4 setNumberOfLines:2];
   }
 
   return v9;
 }
 
-- (PHBottomBarSupplementalButton)initWithAction:(int64_t)a3
+- (PHBottomBarSupplementalButton)initWithAction:(int64_t)action
 {
-  if (a3 > 10)
+  if (action > 10)
   {
-    if (a3 == 11)
+    if (action == 11)
     {
       v5 = [UIImage tpImageForSymbolType:14 textStyle:UIFontTextStyleTitle3 scale:-1 isStaticSize:1];
       v6 = [NSBundle bundleForClass:objc_opt_class()];
@@ -54,7 +54,7 @@
       goto LABEL_12;
     }
 
-    if (a3 == 13)
+    if (action == 13)
     {
       v5 = [UIImage tpImageForSymbolType:39 textStyle:UIFontTextStyleTitle3 scale:-1 isStaticSize:1];
       v6 = [NSBundle bundleForClass:objc_opt_class()];
@@ -63,7 +63,7 @@
       goto LABEL_12;
     }
 
-    if (a3 != 30)
+    if (action != 30)
     {
       goto LABEL_14;
     }
@@ -71,7 +71,7 @@
     goto LABEL_9;
   }
 
-  if (a3 == 9)
+  if (action == 9)
   {
 LABEL_9:
     v5 = [UIImage tpImageForSymbolType:14 textStyle:UIFontTextStyleTitle3 scale:-1 isStaticSize:1];
@@ -81,7 +81,7 @@ LABEL_9:
     goto LABEL_12;
   }
 
-  if (a3 == 10)
+  if (action == 10)
   {
     v5 = [UIImage tpImageForSymbolType:14 textStyle:UIFontTextStyleTitle3 scale:-1 isStaticSize:1];
     v6 = [NSBundle bundleForClass:objc_opt_class()];
@@ -90,7 +90,7 @@ LABEL_9:
 LABEL_12:
     self = v8;
 
-    v9 = self;
+    selfCopy = self;
     goto LABEL_13;
   }
 
@@ -98,25 +98,25 @@ LABEL_14:
   v11 = sub_100004F84();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
   {
-    sub_1002571E4(a3, v11);
+    sub_1002571E4(action, v11);
   }
 
-  v9 = 0;
+  selfCopy = 0;
 LABEL_13:
 
-  return v9;
+  return selfCopy;
 }
 
 - (CGSize)intrinsicContentSize
 {
   +[PHBottomBarButtonConfiguration defaultHeight];
   v4 = v3;
-  v5 = [(PHBottomBarSupplementalButton *)self image];
-  [v5 size];
+  image = [(PHBottomBarSupplementalButton *)self image];
+  [image size];
   v7 = v6;
 
-  v8 = [(PHBottomBarSupplementalButton *)self titleLabel];
-  [v8 intrinsicContentSize];
+  titleLabel = [(PHBottomBarSupplementalButton *)self titleLabel];
+  [titleLabel intrinsicContentSize];
   v10 = v9;
 
   if (v7 >= v10)
@@ -153,12 +153,12 @@ LABEL_13:
   return result;
 }
 
-- (CGRect)imageRectForContentRect:(CGRect)a3
+- (CGRect)imageRectForContentRect:(CGRect)rect
 {
-  width = a3.size.width;
+  width = rect.size.width;
   v8.receiver = self;
   v8.super_class = PHBottomBarSupplementalButton;
-  [(PHBottomBarSupplementalButton *)&v8 imageRectForContentRect:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(PHBottomBarSupplementalButton *)&v8 imageRectForContentRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   v6 = width * 0.5 - v4 * 0.5;
   v7 = 2.0;
   result.size.height = v5;
@@ -168,24 +168,24 @@ LABEL_13:
   return result;
 }
 
-- (CGRect)titleRectForContentRect:(CGRect)a3
+- (CGRect)titleRectForContentRect:(CGRect)rect
 {
-  width = a3.size.width;
+  width = rect.size.width;
   v19.receiver = self;
   v19.super_class = PHBottomBarSupplementalButton;
-  [(PHBottomBarSupplementalButton *)&v19 titleRectForContentRect:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(PHBottomBarSupplementalButton *)&v19 titleRectForContentRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   v5 = [(PHBottomBarSupplementalButton *)self imageForState:0];
   [v5 size];
   v7 = v6 + 10.0;
 
   +[PHBottomBarButtonConfiguration defaultHeight];
   v9 = v8 - v7;
-  v10 = [(PHBottomBarSupplementalButton *)self currentTitle];
+  currentTitle = [(PHBottomBarSupplementalButton *)self currentTitle];
   v20 = NSFontAttributeName;
   v11 = +[PHBottomBarButton defaultFont];
   v21 = v11;
   v12 = [NSDictionary dictionaryWithObjects:&v21 forKeys:&v20 count:1];
-  [v10 boundingRectWithSize:1 options:v12 attributes:0 context:{width, 3.40282347e38}];
+  [currentTitle boundingRectWithSize:1 options:v12 attributes:0 context:{width, 3.40282347e38}];
   v14 = v13;
 
   if (v9 >= v14)
@@ -208,45 +208,45 @@ LABEL_13:
   return result;
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
-  v5 = [(PHBottomBarSupplementalButton *)self isHighlighted];
+  highlightedCopy = highlighted;
+  isHighlighted = [(PHBottomBarSupplementalButton *)self isHighlighted];
   v11.receiver = self;
   v11.super_class = PHBottomBarSupplementalButton;
-  [(PHBottomBarSupplementalButton *)&v11 setHighlighted:v3];
-  if (v5 != v3)
+  [(PHBottomBarSupplementalButton *)&v11 setHighlighted:highlightedCopy];
+  if (isHighlighted != highlightedCopy)
   {
-    if (v3)
+    if (highlightedCopy)
     {
-      v6 = [(PHBottomBarSupplementalButton *)self layer];
-      [v6 removeAllAnimations];
+      layer = [(PHBottomBarSupplementalButton *)self layer];
+      [layer removeAllAnimations];
 
-      v7 = [(PHBottomBarSupplementalButton *)self layer];
+      layer2 = [(PHBottomBarSupplementalButton *)self layer];
       LODWORD(v8) = 1045220557;
-      [v7 setOpacity:v8];
+      [layer2 setOpacity:v8];
     }
 
     else
     {
-      v7 = [CABasicAnimation animationWithKeyPath:@"opacity"];
+      layer2 = [CABasicAnimation animationWithKeyPath:@"opacity"];
       v9 = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionDefault];
-      [v7 setTimingFunction:v9];
+      [layer2 setTimingFunction:v9];
 
-      [v7 setToValue:&off_10036B010];
-      [v7 setDuration:0.5];
-      [v7 setFillMode:kCAFillModeForwards];
-      [v7 setDelegate:self];
-      [v7 setRemovedOnCompletion:0];
-      v10 = [(PHBottomBarSupplementalButton *)self layer];
-      [v10 addAnimation:v7 forKey:@"opacityAnimation"];
+      [layer2 setToValue:&off_10036B010];
+      [layer2 setDuration:0.5];
+      [layer2 setFillMode:kCAFillModeForwards];
+      [layer2 setDelegate:self];
+      [layer2 setRemovedOnCompletion:0];
+      layer3 = [(PHBottomBarSupplementalButton *)self layer];
+      [layer3 addAnimation:layer2 forKey:@"opacityAnimation"];
     }
   }
 }
 
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4
+- (void)animationDidStop:(id)stop finished:(BOOL)finished
 {
-  v5 = [(PHBottomBarSupplementalButton *)self layer:a3];
+  v5 = [(PHBottomBarSupplementalButton *)self layer:stop];
   v6 = [v5 animationForKey:@"opacityAnimation"];
 
   if (v6)
@@ -261,43 +261,43 @@ LABEL_13:
       v7 = 1.0;
     }
 
-    v8 = [(PHBottomBarSupplementalButton *)self layer];
+    layer = [(PHBottomBarSupplementalButton *)self layer];
     *&v9 = v7;
-    [v8 setOpacity:v9];
+    [layer setOpacity:v9];
 
-    v10 = [(PHBottomBarSupplementalButton *)self layer];
-    [v10 removeAnimationForKey:@"opacityAnimation"];
+    layer2 = [(PHBottomBarSupplementalButton *)self layer];
+    [layer2 removeAnimationForKey:@"opacityAnimation"];
   }
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v5 = [(PHBottomBarSupplementalButton *)self isEnabled];
+  enabledCopy = enabled;
+  isEnabled = [(PHBottomBarSupplementalButton *)self isEnabled];
   v10.receiver = self;
   v10.super_class = PHBottomBarSupplementalButton;
-  [(PHBottomBarSupplementalButton *)&v10 setEnabled:v3];
-  if (v5 != v3)
+  [(PHBottomBarSupplementalButton *)&v10 setEnabled:enabledCopy];
+  if (isEnabled != enabledCopy)
   {
-    if (v3)
+    if (enabledCopy)
     {
       [(PHBottomBarSupplementalButton *)self setAlpha:1.0];
-      v6 = [(PHBottomBarSupplementalButton *)self layer];
-      [v6 setCompositingFilter:0];
+      layer = [(PHBottomBarSupplementalButton *)self layer];
+      [layer setCompositingFilter:0];
     }
 
     else
     {
       [(PHBottomBarSupplementalButton *)self setAlpha:0.0500000007];
-      v7 = [(PHBottomBarSupplementalButton *)self layer];
-      [v7 setAllowsGroupBlending:0];
+      layer2 = [(PHBottomBarSupplementalButton *)self layer];
+      [layer2 setAllowsGroupBlending:0];
 
-      v8 = [(PHBottomBarSupplementalButton *)self layer];
-      [v8 setAllowsGroupOpacity:0];
+      layer3 = [(PHBottomBarSupplementalButton *)self layer];
+      [layer3 setAllowsGroupOpacity:0];
 
-      v6 = [CAFilter filterWithType:kCAFilterOverlayBlendMode];
-      v9 = [(PHBottomBarSupplementalButton *)self layer];
-      [v9 setCompositingFilter:v6];
+      layer = [CAFilter filterWithType:kCAFilterOverlayBlendMode];
+      layer4 = [(PHBottomBarSupplementalButton *)self layer];
+      [layer4 setCompositingFilter:layer];
     }
   }
 }

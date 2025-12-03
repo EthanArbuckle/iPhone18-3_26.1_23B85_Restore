@@ -1,60 +1,60 @@
 @interface RPControlCenterMenuModuleViewController
 - (BOOL)shouldBeginTransitionToExpandedContentModule;
-- (RPControlCenterMenuModuleViewController)initWithClient:(id)a3 forBroadcastPicker:(BOOL)a4;
+- (RPControlCenterMenuModuleViewController)initWithClient:(id)client forBroadcastPicker:(BOOL)picker;
 - (double)_maxVisibleMenuItems;
 - (double)preferredExpandedContentHeight;
-- (id)leadingImageForMenuItem:(id)a3;
-- (void)acquireProcessAssertionWithHandler:(id)a3;
-- (void)authenticateWithCompletionHandler:(id)a3;
-- (void)buttonTapped:(id)a3 forEvent:(id)a4;
+- (id)leadingImageForMenuItem:(id)item;
+- (void)acquireProcessAssertionWithHandler:(id)handler;
+- (void)authenticateWithCompletionHandler:(id)handler;
+- (void)buttonTapped:(id)tapped forEvent:(id)event;
 - (void)cancelPreviousCountdownRequest;
 - (void)cancelRecordingCountdown;
 - (void)dealloc;
-- (void)didChangeAvailability:(BOOL)a3;
+- (void)didChangeAvailability:(BOOL)availability;
 - (void)didStartRecordingOrBroadcast;
 - (void)didStopRecordingOrBroadcast;
-- (void)didUpdateClientStateWithAvailableExtensions:(id)a3 completionHandler:(id)a4;
+- (void)didUpdateClientStateWithAvailableExtensions:(id)extensions completionHandler:(id)handler;
 - (void)invalidateProcessAssertion;
 - (void)performButtonAction;
-- (void)presentAlertWithTitle:(id)a3 message:(id)a4 completion:(id)a5;
-- (void)presentRecordingAlertWithHandler:(id)a3;
+- (void)presentAlertWithTitle:(id)title message:(id)message completion:(id)completion;
+- (void)presentRecordingAlertWithHandler:(id)handler;
 - (void)recordButtonTapped;
 - (void)sessionDidFailToStart;
 - (void)sessionIsStarting;
-- (void)setAvailableExtensions:(id)a3;
-- (void)setContentModuleContext:(id)a3;
-- (void)setContentRenderingMode:(unint64_t)a3;
+- (void)setAvailableExtensions:(id)extensions;
+- (void)setContentModuleContext:(id)context;
+- (void)setContentRenderingMode:(unint64_t)mode;
 - (void)setupLockScreenNotifications;
 - (void)startBroadcast;
 - (void)startRecord;
 - (void)startRecordingCountdown;
-- (void)startSystemRecordingOrBroadcastWithDelay:(double)a3;
+- (void)startSystemRecordingOrBroadcastWithDelay:(double)delay;
 - (void)transitionToCountdownState;
 - (void)updateGlyphPackageDescription;
 - (void)updateGlyphState;
 - (void)updateRPCCModuleMenuItems;
 - (void)updateRecordButtonLabel;
 - (void)updateStateAndUI;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation RPControlCenterMenuModuleViewController
 
-- (RPControlCenterMenuModuleViewController)initWithClient:(id)a3 forBroadcastPicker:(BOOL)a4
+- (RPControlCenterMenuModuleViewController)initWithClient:(id)client forBroadcastPicker:(BOOL)picker
 {
-  v4 = a4;
-  v6 = a3;
+  pickerCopy = picker;
+  clientCopy = client;
   v16.receiver = self;
   v16.super_class = RPControlCenterMenuModuleViewController;
   v7 = [(RPControlCenterMenuModuleViewController *)&v16 init];
   v8 = v7;
   if (v7)
   {
-    objc_storeWeak(&v7->_client, v6);
+    objc_storeWeak(&v7->_client, clientCopy);
     if (__RPLogLevel <= 1u && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
     {
       WeakRetained = objc_loadWeakRetained(&v8->_client);
@@ -67,19 +67,19 @@
       v23 = 2048;
       v24 = WeakRetained;
       v25 = 1024;
-      v26 = v4;
+      v26 = pickerCopy;
       _os_log_impl(&dword_0, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %p client=%p isBroadcast=%i ", buf, 0x2Cu);
     }
 
     v10 = objc_loadWeakRetained(&v8->_client);
     [v10 addDegate:v8];
 
-    v8->_isBroadcastPicker = v4;
+    v8->_isBroadcastPicker = pickerCopy;
     v8->_bpStartedFromAnotherView = 0;
     v11 = objc_loadWeakRetained(&v8->_client);
-    v12 = [v11 extensionBundleID];
+    extensionBundleID = [v11 extensionBundleID];
     currentSelectedExtension = v8->_currentSelectedExtension;
-    v8->_currentSelectedExtension = v12;
+    v8->_currentSelectedExtension = extensionBundleID;
 
     [(RPControlCenterMenuModuleViewController *)v8 setGlyphState:@"Base State"];
     [(RPControlCenterMenuModuleViewController *)v8 updateGlyphState];
@@ -101,7 +101,7 @@
     v9 = 1024;
     v10 = 96;
     v11 = 2048;
-    v12 = self;
+    selfCopy = self;
     _os_log_impl(&dword_0, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %p", buf, 0x1Cu);
   }
 
@@ -122,10 +122,10 @@
 
 - (void)updateGlyphPackageDescription
 {
-  v3 = [(RPControlCenterMenuModuleViewController *)self traitCollection];
-  v4 = [v3 accessibilityContrast];
+  traitCollection = [(RPControlCenterMenuModuleViewController *)self traitCollection];
+  accessibilityContrast = [traitCollection accessibilityContrast];
   v5 = @"replaykit-v2";
-  if (v4 == &dword_0 + 1)
+  if (accessibilityContrast == &dword_0 + 1)
   {
     v5 = @"replaykit-v2_IC";
   }
@@ -146,9 +146,9 @@
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_client);
-  v4 = [WeakRetained recordingOn];
+  recordingOn = [WeakRetained recordingOn];
 
-  if (v4)
+  if (recordingOn)
   {
     v5 = @"recording";
     goto LABEL_11;
@@ -162,9 +162,9 @@
   }
 
   v7 = objc_loadWeakRetained(&self->_client);
-  v8 = [v7 systemCountdownStarted];
+  systemCountdownStarted = [v7 systemCountdownStarted];
 
-  if (!v8)
+  if (!systemCountdownStarted)
   {
 LABEL_9:
     v11 = objc_loadWeakRetained(&self->_client);
@@ -177,9 +177,9 @@ LABEL_10:
 
   [(RPControlCenterMenuModuleViewController *)self setGlyphState:@"countdown"];
   v9 = +[RPFeatureFlagUtility sharedInstance];
-  v10 = [v9 systemBannerEnabled];
+  systemBannerEnabled = [v9 systemBannerEnabled];
 
-  if ((v10 & 1) == 0)
+  if ((systemBannerEnabled & 1) == 0)
   {
     goto LABEL_12;
   }
@@ -190,28 +190,28 @@ LABEL_11:
 LABEL_12:
   if (__RPLogLevel <= 1u && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [(RPControlCenterMenuModuleViewController *)self glyphState];
+    glyphState = [(RPControlCenterMenuModuleViewController *)self glyphState];
     v13 = 136446978;
     v14 = "[RPControlCenterMenuModuleViewController updateGlyphState]";
     v15 = 1024;
     v16 = 126;
     v17 = 2048;
-    v18 = self;
+    selfCopy = self;
     v19 = 2112;
-    v20 = v12;
+    v20 = glyphState;
     _os_log_impl(&dword_0, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %p updated glyph state: %@", &v13, 0x26u);
   }
 }
 
 - (double)_maxVisibleMenuItems
 {
-  v2 = [(RPControlCenterMenuModuleViewController *)self traitCollection];
-  v3 = [v2 preferredContentSizeCategory];
+  traitCollection = [(RPControlCenterMenuModuleViewController *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
 
   v4 = 2.5;
-  if (UIContentSizeCategoryCompareToCategory(v3, UIContentSizeCategoryAccessibilityLarge) == NSOrderedDescending)
+  if (UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, UIContentSizeCategoryAccessibilityLarge) == NSOrderedDescending)
   {
-    if (UIContentSizeCategoryCompareToCategory(v3, UIContentSizeCategoryAccessibilityExtraLarge) == NSOrderedDescending)
+    if (UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, UIContentSizeCategoryAccessibilityExtraLarge) == NSOrderedDescending)
     {
       v4 = 1.5;
     }
@@ -225,10 +225,10 @@ LABEL_12:
   return v4;
 }
 
-- (void)setAvailableExtensions:(id)a3
+- (void)setAvailableExtensions:(id)extensions
 {
   v4 = buf;
-  v5 = a3;
+  extensionsCopy = extensions;
   if (__RPLogLevel <= 1u && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446466;
@@ -244,17 +244,17 @@ LABEL_12:
     availableExtensions = self->_availableExtensions;
     self->_availableExtensions = v6;
 
-    v48 = self;
+    selfCopy = self;
     if (!self->_isBroadcastPicker)
     {
       v51 = 0;
-      if (!v5)
+      if (!extensionsCopy)
       {
         goto LABEL_39;
       }
 
 LABEL_22:
-      if ([v5 count])
+      if ([extensionsCopy count])
       {
         currentSelectedExtension = +[NSMutableArray array];
         v47 = +[NSMutableArray array];
@@ -262,8 +262,8 @@ LABEL_22:
         v53 = 0u;
         v54 = 0u;
         v55 = 0u;
-        v46 = v5;
-        obj = v5;
+        v46 = extensionsCopy;
+        obj = extensionsCopy;
         v17 = [obj countByEnumeratingWithState:&v52 objects:v64 count:16];
         if (v17)
         {
@@ -317,11 +317,11 @@ LABEL_22:
                 v32 = [v31 isEqualToString:v22];
 
                 currentSelectedExtension = v30;
-                self = v48;
+                self = selfCopy;
                 if (v32)
                 {
                   [v47 addObject:v28];
-                  objc_storeStrong(&v48->_currentSelectedExtension, v22);
+                  objc_storeStrong(&selfCopy->_currentSelectedExtension, v22);
                 }
               }
             }
@@ -338,7 +338,7 @@ LABEL_22:
           {
             [(NSMutableArray *)self->_availableExtensions addObjectsFromArray:v47];
 LABEL_48:
-            v5 = v46;
+            extensionsCopy = v46;
             [(RPControlCenterMenuModuleViewController *)self setVisibleMenuItems:0.0];
             if ([(NSMutableArray *)self->_availableExtensions count]>= 3)
             {
@@ -349,9 +349,9 @@ LABEL_48:
             if (self->_bpStartedFromAnotherView)
             {
               v44 = objc_loadWeakRetained(&self->_client);
-              v45 = [v44 preferredExtension];
+              preferredExtension = [v44 preferredExtension];
 
-              if (v45)
+              if (preferredExtension)
               {
                 [(RPControlCenterMenuModuleViewController *)self setVisibleMenuItems:1.0];
               }
@@ -423,33 +423,33 @@ LABEL_54:
     }
 
     v8 = objc_loadWeakRetained(&self->_client);
-    v9 = [v8 lockUIControls];
-    if ((v9 & 1) != 0 || (v4 = objc_loadWeakRetained(&self->_client), [v4 preferredExtension], (v10 = objc_claimAutoreleasedReturnValue()) == 0))
+    lockUIControls = [v8 lockUIControls];
+    if ((lockUIControls & 1) != 0 || (v4 = objc_loadWeakRetained(&self->_client), [v4 preferredExtension], (v10 = objc_claimAutoreleasedReturnValue()) == 0))
     {
       v11 = objc_loadWeakRetained(&self->_client);
       if ([v11 lockUIControls])
       {
         v12 = objc_loadWeakRetained(&self->_client);
-        v13 = [v12 preferredExtension];
+        preferredExtension2 = [v12 preferredExtension];
         v14 = objc_loadWeakRetained(&self->_client);
-        v15 = [v14 extensionBundleID];
-        v51 = [v13 isEqualToString:v15];
+        extensionBundleID = [v14 extensionBundleID];
+        v51 = [preferredExtension2 isEqualToString:extensionBundleID];
 
-        if (v9)
+        if (lockUIControls)
         {
-          self = v48;
+          self = selfCopy;
           goto LABEL_21;
         }
 
         v10 = 0;
-        self = v48;
+        self = selfCopy;
       }
 
       else
       {
 
         v51 = 0;
-        if (v9)
+        if (lockUIControls)
         {
           goto LABEL_21;
         }
@@ -464,7 +464,7 @@ LABEL_54:
     }
 
 LABEL_21:
-    if (!v5)
+    if (!extensionsCopy)
     {
       goto LABEL_39;
     }
@@ -489,38 +489,38 @@ LABEL_55:
   if (__RPLogLevel <= 1u && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     WeakRetained = objc_loadWeakRetained(&self->_client);
-    v4 = [WeakRetained recordingOn];
+    recordingOn = [WeakRetained recordingOn];
     v5 = objc_loadWeakRetained(&self->_client);
-    v6 = [v5 isCountingDown];
+    isCountingDown = [v5 isCountingDown];
     v7 = objc_loadWeakRetained(&self->_client);
-    v8 = [v7 lockUIControls];
+    lockUIControls = [v7 lockUIControls];
     v9 = objc_loadWeakRetained(&self->_client);
     v16 = 136447746;
     v17 = "[RPControlCenterMenuModuleViewController updateStateAndUI]";
     v18 = 1024;
     v19 = 229;
     v20 = 2048;
-    v21 = self;
+    selfCopy = self;
     v22 = 1024;
-    v23 = v4;
+    v23 = recordingOn;
     v24 = 1024;
-    v25 = v6;
+    v25 = isCountingDown;
     v26 = 1024;
-    v27 = v8;
+    v27 = lockUIControls;
     v28 = 2048;
     v29 = v9;
     _os_log_impl(&dword_0, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %p recording is %i, counting down is %i, locked ui is %i, from client %p", &v16, 0x38u);
   }
 
   v10 = objc_loadWeakRetained(&self->_client);
-  v11 = [v10 recordingOn];
+  recordingOn2 = [v10 recordingOn];
 
-  if (v11)
+  if (recordingOn2)
   {
     v12 = objc_loadWeakRetained(&self->_client);
-    v13 = [v12 extensionBundleID];
+    extensionBundleID = [v12 extensionBundleID];
     currentSelectedExtension = self->_currentSelectedExtension;
-    self->_currentSelectedExtension = v13;
+    self->_currentSelectedExtension = extensionBundleID;
   }
 
   if ([(RPControlCenterMenuModuleViewController *)self isExpanded])
@@ -539,15 +539,15 @@ LABEL_55:
   [(RPControlCenterMenuModuleViewController *)self updateRPCCModuleMenuItems];
 }
 
-- (void)presentAlertWithTitle:(id)a3 message:(id)a4 completion:(id)a5
+- (void)presentAlertWithTitle:(id)title message:(id)message completion:(id)completion
 {
-  v8 = a5;
-  v11 = [UIAlertController alertControllerWithTitle:a3 message:a4 preferredStyle:1];
+  completionCopy = completion;
+  v11 = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:1];
   v9 = [NSBundle _rpLocalizedStringFromFrameworkBundleWithKey:@"BROADCAST_FAILED_ALERT_OK_BUTTON"];
   v10 = [UIAlertAction actionWithTitle:v9 style:0 handler:0];
   [v11 addAction:v10];
 
-  [(RPControlCenterMenuModuleViewController *)self presentViewController:v11 animated:1 completion:v8];
+  [(RPControlCenterMenuModuleViewController *)self presentViewController:v11 animated:1 completion:completionCopy];
 }
 
 - (void)viewDidLoad
@@ -560,7 +560,7 @@ LABEL_55:
     v20 = 1024;
     v21 = 266;
     v22 = 2048;
-    v23 = self;
+    selfCopy = self;
     v24 = 2048;
     v25 = WeakRetained;
     _os_log_impl(&dword_0, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %p client=%p", buf, 0x26u);
@@ -624,9 +624,9 @@ LABEL_55:
   objc_destroyWeak(&location);
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   if (__RPLogLevel <= 1u && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     WeakRetained = objc_loadWeakRetained(&self->_client);
@@ -635,7 +635,7 @@ LABEL_55:
     v10 = 1024;
     v11 = 315;
     v12 = 2048;
-    v13 = self;
+    selfCopy = self;
     v14 = 2048;
     v15 = WeakRetained;
     _os_log_impl(&dword_0, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %p client=%p", buf, 0x26u);
@@ -646,12 +646,12 @@ LABEL_55:
 
   v7.receiver = self;
   v7.super_class = RPControlCenterMenuModuleViewController;
-  [(RPControlCenterMenuModuleViewController *)&v7 viewWillAppear:v3];
+  [(RPControlCenterMenuModuleViewController *)&v7 viewWillAppear:appearCopy];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   if (__RPLogLevel <= 1u && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     WeakRetained = objc_loadWeakRetained(&self->_client);
@@ -660,7 +660,7 @@ LABEL_55:
     v9 = 1024;
     v10 = 321;
     v11 = 2048;
-    v12 = self;
+    selfCopy = self;
     v13 = 2048;
     v14 = WeakRetained;
     _os_log_impl(&dword_0, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %p client=%p", buf, 0x26u);
@@ -668,12 +668,12 @@ LABEL_55:
 
   v6.receiver = self;
   v6.super_class = RPControlCenterMenuModuleViewController;
-  [(RPControlCenterMenuModuleViewController *)&v6 viewDidAppear:v3];
+  [(RPControlCenterMenuModuleViewController *)&v6 viewDidAppear:appearCopy];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   if (__RPLogLevel <= 1u && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     WeakRetained = objc_loadWeakRetained(&self->_client);
@@ -682,7 +682,7 @@ LABEL_55:
     v9 = 1024;
     v10 = 326;
     v11 = 2048;
-    v12 = self;
+    selfCopy = self;
     v13 = 2048;
     v14 = WeakRetained;
     _os_log_impl(&dword_0, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %p client=%p", buf, 0x26u);
@@ -690,20 +690,20 @@ LABEL_55:
 
   v6.receiver = self;
   v6.super_class = RPControlCenterMenuModuleViewController;
-  [(RPControlCenterMenuModuleViewController *)&v6 viewWillDisappear:v3];
+  [(RPControlCenterMenuModuleViewController *)&v6 viewWillDisappear:disappearCopy];
 }
 
-- (void)acquireProcessAssertionWithHandler:(id)a3
+- (void)acquireProcessAssertionWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = [BKSProcessAssertion alloc];
   v6 = getpid();
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_3618;
   v10[3] = &unk_14498;
-  v11 = v4;
-  v7 = v4;
+  v11 = handlerCopy;
+  v7 = handlerCopy;
   v8 = [v5 initWithPID:v6 flags:1 reason:4 name:@"HomeNFCStopAssertion" withHandler:v10];
   backgroundProcessAssertion = self->_backgroundProcessAssertion;
   self->_backgroundProcessAssertion = v8;
@@ -716,9 +716,9 @@ LABEL_55:
   self->_backgroundProcessAssertion = 0;
 }
 
-- (void)authenticateWithCompletionHandler:(id)a3
+- (void)authenticateWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (__RPLogLevel <= 1u && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     WeakRetained = objc_loadWeakRetained(&self->_client);
@@ -727,7 +727,7 @@ LABEL_55:
     v12 = 1024;
     v13 = 357;
     v14 = 2048;
-    v15 = self;
+    selfCopy = self;
     v16 = 2048;
     v17 = WeakRetained;
     _os_log_impl(&dword_0, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %p client=%p", buf, 0x26u);
@@ -738,8 +738,8 @@ LABEL_55:
   block[1] = 3221225472;
   block[2] = sub_3984;
   block[3] = &unk_14470;
-  v9 = v4;
-  v7 = v4;
+  v9 = handlerCopy;
+  v7 = handlerCopy;
   dispatch_async(lockStateQueue, block);
 }
 
@@ -753,7 +753,7 @@ LABEL_55:
     v8 = 1024;
     v9 = 368;
     v10 = 2048;
-    v11 = self;
+    selfCopy = self;
     v12 = 2048;
     v13 = WeakRetained;
     _os_log_impl(&dword_0, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %p client=%p", buf, 0x26u);
@@ -770,19 +770,19 @@ LABEL_55:
   [(RPControlCenterMenuModuleViewController *)self acquireProcessAssertionWithHandler:v5];
 }
 
-- (void)startSystemRecordingOrBroadcastWithDelay:(double)a3
+- (void)startSystemRecordingOrBroadcastWithDelay:(double)delay
 {
-  v5 = [(RPControlCenterMenuModuleViewController *)self currentSelectedExtensionIsSystemRecording];
+  currentSelectedExtensionIsSystemRecording = [(RPControlCenterMenuModuleViewController *)self currentSelectedExtensionIsSystemRecording];
   WeakRetained = objc_loadWeakRetained(&self->_client);
   v7 = WeakRetained;
-  if (v5)
+  if (currentSelectedExtensionIsSystemRecording)
   {
     [WeakRetained setRecordingType:2];
 
     v8 = +[RPFeatureFlagUtility sharedInstance];
-    v9 = [v8 systemBannerEnabled];
+    systemBannerEnabled = [v8 systemBannerEnabled];
 
-    if (v9)
+    if (systemBannerEnabled)
     {
       [(RPControlCenterMenuModuleViewController *)self updateStateAndUI];
 
@@ -801,12 +801,12 @@ LABEL_55:
   }
 
   v11 = [NSArray arrayWithObject:NSRunLoopCommonModes];
-  [(RPControlCenterMenuModuleViewController *)self performSelector:v10 withObject:self afterDelay:v11 inModes:a3];
+  [(RPControlCenterMenuModuleViewController *)self performSelector:v10 withObject:self afterDelay:v11 inModes:delay];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  v5 = a4;
+  coordinatorCopy = coordinator;
   if (__RPLogLevel <= 1u && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     WeakRetained = objc_loadWeakRetained(&self->_client);
@@ -815,7 +815,7 @@ LABEL_55:
     v10 = 1024;
     v11 = 413;
     v12 = 2048;
-    v13 = self;
+    selfCopy = self;
     v14 = 2048;
     v15 = WeakRetained;
     _os_log_impl(&dword_0, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %p client=%p", buf, 0x26u);
@@ -826,7 +826,7 @@ LABEL_55:
   v7[2] = sub_3F28;
   v7[3] = &unk_144E8;
   v7[4] = self;
-  [v5 animateAlongsideTransition:v7 completion:&stru_14528];
+  [coordinatorCopy animateAlongsideTransition:v7 completion:&stru_14528];
 }
 
 - (void)startRecord
@@ -839,7 +839,7 @@ LABEL_55:
     v8 = 1024;
     v9 = 432;
     v10 = 2048;
-    v11 = self;
+    selfCopy = self;
     v12 = 2048;
     v13 = WeakRetained;
     _os_log_impl(&dword_0, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %p client=%p", buf, 0x26u);
@@ -864,7 +864,7 @@ LABEL_55:
     v8 = 1024;
     v9 = 441;
     v10 = 2048;
-    v11 = self;
+    selfCopy = self;
     v12 = 2048;
     v13 = WeakRetained;
     _os_log_impl(&dword_0, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %p client=%p", buf, 0x26u);
@@ -889,7 +889,7 @@ LABEL_55:
     v7 = 1024;
     v8 = 450;
     v9 = 2048;
-    v10 = self;
+    selfCopy = self;
     v11 = 2048;
     v12 = WeakRetained;
     _os_log_impl(&dword_0, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %p client=%p", &v5, 0x26u);
@@ -909,7 +909,7 @@ LABEL_55:
     v7 = 1024;
     v8 = 455;
     v9 = 2048;
-    v10 = self;
+    selfCopy = self;
     v11 = 2048;
     v12 = WeakRetained;
     _os_log_impl(&dword_0, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %p client=%p", &v5, 0x26u);
@@ -919,18 +919,18 @@ LABEL_55:
   [v4 cancelRecordingCountdown];
 }
 
-- (id)leadingImageForMenuItem:(id)a3
+- (id)leadingImageForMenuItem:(id)item
 {
-  v4 = a3;
-  v5 = [v4 identifier];
-  v6 = [v4 identifier];
-  v7 = [v6 isEqualToString:@"Current"];
+  itemCopy = item;
+  identifier = [itemCopy identifier];
+  identifier2 = [itemCopy identifier];
+  v7 = [identifier2 isEqualToString:@"Current"];
 
   if (v7)
   {
     v8 = self->_currentSelectedExtension;
 
-    v5 = v8;
+    identifier = v8;
   }
 
   v24 = 0u;
@@ -942,7 +942,7 @@ LABEL_55:
   if (v10)
   {
     v11 = v10;
-    v21 = self;
+    selfCopy = self;
     v12 = *v23;
     while (2)
     {
@@ -955,7 +955,7 @@ LABEL_55:
 
         v14 = *(*(&v22 + 1) + 8 * i);
         v15 = [v14 objectForKey:@"extBundleID"];
-        v16 = [v5 isEqualToString:v15];
+        v16 = [identifier isEqualToString:v15];
 
         if (v16)
         {
@@ -975,7 +975,7 @@ LABEL_55:
 
     v17 = 0;
 LABEL_13:
-    self = v21;
+    self = selfCopy;
   }
 
   else
@@ -984,20 +984,20 @@ LABEL_13:
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_client);
-  v19 = [WeakRetained imageForBundleID:v5 extensionInfo:v17];
+  v19 = [WeakRetained imageForBundleID:identifier extensionInfo:v17];
 
   return v19;
 }
 
-- (void)setContentRenderingMode:(unint64_t)a3
+- (void)setContentRenderingMode:(unint64_t)mode
 {
   v6.receiver = self;
   v6.super_class = RPControlCenterMenuModuleViewController;
-  if ([(RPControlCenterMenuModuleViewController *)&v6 contentRenderingMode]!= a3)
+  if ([(RPControlCenterMenuModuleViewController *)&v6 contentRenderingMode]!= mode)
   {
     v5.receiver = self;
     v5.super_class = RPControlCenterMenuModuleViewController;
-    [(RPControlCenterMenuModuleViewController *)&v5 setContentRenderingMode:a3];
+    [(RPControlCenterMenuModuleViewController *)&v5 setContentRenderingMode:mode];
     [(RPControlCenterMenuModuleViewController *)self updateGlyphState];
   }
 }
@@ -1005,8 +1005,8 @@ LABEL_13:
 - (void)updateRecordButtonLabel
 {
   WeakRetained = objc_loadWeakRetained(&self->_client);
-  v5 = [WeakRetained lockUIControls];
-  if ((v5 & 1) == 0)
+  lockUIControls = [WeakRetained lockUIControls];
+  if ((lockUIControls & 1) == 0)
   {
     v2 = objc_loadWeakRetained(&self->_client);
     if (([v2 isCountingDown] & 1) == 0)
@@ -1017,12 +1017,12 @@ LABEL_13:
   }
 
   v6 = objc_loadWeakRetained(&self->_client);
-  v7 = [v6 isClientRecordingTypeSystemRecording];
+  isClientRecordingTypeSystemRecording = [v6 isClientRecordingTypeSystemRecording];
 
-  if (v5)
+  if (lockUIControls)
   {
 
-    if (!v7)
+    if (!isClientRecordingTypeSystemRecording)
     {
 LABEL_10:
       if ([(NSString *)self->_currentSelectedExtension isEqualToString:@"com.apple.replaykit.recordToCameraRoll"])
@@ -1042,7 +1042,7 @@ LABEL_10:
   else
   {
 
-    if ((v7 & 1) == 0)
+    if ((isClientRecordingTypeSystemRecording & 1) == 0)
     {
       goto LABEL_10;
     }
@@ -1079,7 +1079,7 @@ LABEL_14:
     v37 = 1024;
     v38 = 515;
     v39 = 2048;
-    v40 = self;
+    selfCopy = self;
     v41 = 2048;
     v42 = WeakRetained;
     _os_log_impl(&dword_0, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %p client=%p", buf, 0x26u);
@@ -1129,14 +1129,14 @@ LABEL_14:
         if ([v11 isEqualToString:self->_currentSelectedExtension])
         {
           v13 = objc_loadWeakRetained(&self->_client);
-          v14 = [v13 recordingOn];
+          recordingOn = [v13 recordingOn];
 
-          if (v14)
+          if (recordingOn)
           {
             [v12 setBusy:1];
             v15 = objc_loadWeakRetained(&self->_client);
-            v16 = [v15 currentTimerString];
-            [v12 setSubtitle:v16];
+            currentTimerString = [v15 currentTimerString];
+            [v12 setSubtitle:currentTimerString];
           }
 
           [v12 setSelected:1];
@@ -1165,8 +1165,8 @@ LABEL_14:
   }
 
   v18 = objc_loadWeakRetained(&self->_client);
-  v19 = [v18 currentTimerString];
-  v20 = [v19 isEqualToString:@"00:00"];
+  currentTimerString2 = [v18 currentTimerString];
+  v20 = [currentTimerString2 isEqualToString:@"00:00"];
 
   if (v20)
   {
@@ -1198,7 +1198,7 @@ LABEL_23:
     v7 = 1024;
     v8 = 574;
     v9 = 2048;
-    v10 = self;
+    selfCopy = self;
     v11 = 2048;
     v12 = WeakRetained;
     _os_log_impl(&dword_0, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %p client=%p", &v5, 0x26u);
@@ -1220,16 +1220,16 @@ LABEL_23:
     v12 = 1024;
     v13 = 581;
     v14 = 2048;
-    v15 = self;
+    selfCopy = self;
     v16 = 2048;
     v17 = WeakRetained;
     _os_log_impl(&dword_0, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %p client=%p", buf, 0x26u);
   }
 
   v4 = objc_loadWeakRetained(&self->_client);
-  v5 = [v4 isAvailableAndInitialized];
+  isAvailableAndInitialized = [v4 isAvailableAndInitialized];
 
-  if (v5)
+  if (isAvailableAndInitialized)
   {
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
@@ -1250,8 +1250,8 @@ LABEL_23:
       _os_log_impl(&dword_0, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d Recording not available due to AirPlay, Restriction, or screen mirroring active", buf, 0x12u);
     }
 
-    v6 = [(RPControlCenterMenuModuleViewController *)self title];
-    v7 = [NSBundle _rpLocalizedStringFromFrameworkBundleWithKey:v6];
+    title = [(RPControlCenterMenuModuleViewController *)self title];
+    v7 = [NSBundle _rpLocalizedStringFromFrameworkBundleWithKey:title];
     v8 = [NSBundle _rpLocalizedStringFromFrameworkBundleWithKey:@"RECORDING_ERROR_NOT_AVAILABLE"];
     [(RPControlCenterMenuModuleViewController *)self presentAlertWithTitle:v7 message:v8 completion:&stru_14608];
   }
@@ -1263,15 +1263,15 @@ LABEL_23:
   [WeakRetained setCurrentTimerString:0];
 
   v4 = objc_loadWeakRetained(&self->_client);
-  v5 = [v4 isCountingDown];
+  isCountingDown = [v4 isCountingDown];
 
   v6 = objc_loadWeakRetained(&self->_client);
   v7 = v6;
-  if (v5)
+  if (isCountingDown)
   {
-    v8 = [v6 systemCountdownStarted];
+    systemCountdownStarted = [v6 systemCountdownStarted];
 
-    if (v8)
+    if (systemCountdownStarted)
     {
 
       [(RPControlCenterMenuModuleViewController *)self cancelPreviousCountdownRequest];
@@ -1280,17 +1280,17 @@ LABEL_23:
 
   else
   {
-    v9 = [v6 recordingOn];
+    recordingOn = [v6 recordingOn];
 
-    if (v9)
+    if (recordingOn)
     {
       if (self->_isBroadcastPicker)
       {
         v10 = objc_loadWeakRetained(&self->_client);
-        v11 = [v10 extensionBundleID];
+        extensionBundleID = [v10 extensionBundleID];
         v12 = objc_loadWeakRetained(&self->_client);
-        v13 = [v12 preferredExtension];
-        v14 = [v11 isEqualToString:v13];
+        preferredExtension = [v12 preferredExtension];
+        v14 = [extensionBundleID isEqualToString:preferredExtension];
 
         if ((v14 & 1) == 0)
         {
@@ -1315,9 +1315,9 @@ LABEL_23:
   }
 }
 
-- (void)presentRecordingAlertWithHandler:(id)a3
+- (void)presentRecordingAlertWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = [NSBundle _rpLocalizedStringFromFrameworkBundleWithKey:@"CONTROL_CENTER_HQLR_ALERT_TITLE"];
   v6 = [NSBundle _rpLocalizedStringFromFrameworkBundleWithKey:@"CONTROL_CENTER_HQLR_ALERT_DESCRIPTION"];
   v7 = [UIAlertController alertControllerWithTitle:v5 message:v6 preferredStyle:1];
@@ -1329,12 +1329,12 @@ LABEL_23:
   v14 = 3221225472;
   v15 = sub_5C54;
   v16 = &unk_14698;
-  v17 = self;
-  v18 = v4;
-  v11 = v4;
+  selfCopy = self;
+  v18 = handlerCopy;
+  v11 = handlerCopy;
   v12 = [UIAlertAction actionWithTitle:v10 style:0 handler:&v13];
 
-  [v7 addAction:{v9, v13, v14, v15, v16, v17}];
+  [v7 addAction:{v9, v13, v14, v15, v16, selfCopy}];
   [v7 addAction:v12];
   [(RPControlCenterMenuModuleViewController *)self presentViewController:v7 animated:1 completion:0];
 }
@@ -1349,7 +1349,7 @@ LABEL_23:
     v7 = 1024;
     v8 = 675;
     v9 = 2048;
-    v10 = self;
+    selfCopy = self;
     v11 = 2048;
     v12 = WeakRetained;
     _os_log_impl(&dword_0, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %p client=%p", &v5, 0x26u);
@@ -1381,9 +1381,9 @@ LABEL_23:
     }
   }
 
-  v7 = [(RPControlCenterMenuModuleViewController *)self traitCollection];
-  v8 = [v7 preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v8);
+  traitCollection = [(RPControlCenterMenuModuleViewController *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   if (!IsAccessibilityCategory)
   {
@@ -1413,10 +1413,10 @@ LABEL_23:
   }
 }
 
-- (void)buttonTapped:(id)a3 forEvent:(id)a4
+- (void)buttonTapped:(id)tapped forEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
+  tappedCopy = tapped;
+  eventCopy = event;
   if (__RPLogLevel <= 1u && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446466;
@@ -1446,11 +1446,11 @@ LABEL_23:
   }
 }
 
-- (void)didChangeAvailability:(BOOL)a3
+- (void)didChangeAvailability:(BOOL)availability
 {
   if (__RPLogLevel <= 1u)
   {
-    v4 = a3;
+    availabilityCopy = availability;
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
     {
       WeakRetained = objc_loadWeakRetained(&self->_client);
@@ -1459,11 +1459,11 @@ LABEL_23:
       v8 = 1024;
       v9 = 715;
       v10 = 2048;
-      v11 = self;
+      selfCopy = self;
       v12 = 2048;
       v13 = WeakRetained;
       v14 = 1024;
-      v15 = v4;
+      v15 = availabilityCopy;
       _os_log_impl(&dword_0, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %p client=%p isAvailable:%i", &v6, 0x2Cu);
     }
   }
@@ -1481,7 +1481,7 @@ LABEL_23:
     v6 = 1024;
     v7 = 721;
     v8 = 2048;
-    v9 = self;
+    selfCopy = self;
     v10 = 2048;
     v11 = WeakRetained;
     _os_log_impl(&dword_0, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %p client=%p", &v4, 0x26u);
@@ -1501,7 +1501,7 @@ LABEL_23:
     v6 = 1024;
     v7 = 728;
     v8 = 2048;
-    v9 = self;
+    selfCopy = self;
     v10 = 2048;
     v11 = WeakRetained;
     _os_log_impl(&dword_0, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %p client=%p", &v4, 0x26u);
@@ -1523,7 +1523,7 @@ LABEL_23:
     v6 = 1024;
     v7 = 741;
     v8 = 2048;
-    v9 = self;
+    selfCopy = self;
     v10 = 2048;
     v11 = WeakRetained;
     _os_log_impl(&dword_0, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %p client=%p", &v4, 0x26u);
@@ -1542,7 +1542,7 @@ LABEL_23:
     v9 = 1024;
     v10 = 752;
     v11 = 2048;
-    v12 = self;
+    selfCopy = self;
     v13 = 2048;
     v14 = WeakRetained;
     _os_log_impl(&dword_0, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %p client=%p", &v7, 0x26u);
@@ -1550,9 +1550,9 @@ LABEL_23:
 
   [(RPControlCenterMenuModuleViewController *)self updateStateAndUI];
   v4 = +[RPFeatureFlagUtility sharedInstance];
-  v5 = [v4 systemBannerEnabled];
+  systemBannerEnabled = [v4 systemBannerEnabled];
 
-  if (v5)
+  if (systemBannerEnabled)
   {
     [(RPControlCenterMenuModuleViewController *)self invalidateProcessAssertion];
   }
@@ -1564,10 +1564,10 @@ LABEL_23:
   }
 }
 
-- (void)didUpdateClientStateWithAvailableExtensions:(id)a3 completionHandler:(id)a4
+- (void)didUpdateClientStateWithAvailableExtensions:(id)extensions completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  extensionsCopy = extensions;
+  handlerCopy = handler;
   if (__RPLogLevel <= 1u && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     WeakRetained = objc_loadWeakRetained(&self->_client);
@@ -1576,20 +1576,20 @@ LABEL_23:
     v11 = 1024;
     v12 = 764;
     v13 = 2048;
-    v14 = self;
+    selfCopy = self;
     v15 = 2048;
     v16 = WeakRetained;
     _os_log_impl(&dword_0, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %p client=%p", &v9, 0x26u);
   }
 
-  [(RPControlCenterMenuModuleViewController *)self setAvailableExtensions:v6];
+  [(RPControlCenterMenuModuleViewController *)self setAvailableExtensions:extensionsCopy];
   [(RPControlCenterMenuModuleViewController *)self updateStateAndUI];
-  v7[2](v7);
+  handlerCopy[2](handlerCopy);
 }
 
-- (void)setContentModuleContext:(id)a3
+- (void)setContentModuleContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   if (__RPLogLevel <= 1u && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 136446722;
@@ -1597,12 +1597,12 @@ LABEL_23:
     v8 = 1024;
     v9 = 780;
     v10 = 2048;
-    v11 = self;
+    selfCopy = self;
     _os_log_impl(&dword_0, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %p", &v6, 0x1Cu);
   }
 
   contentModuleContext = self->_contentModuleContext;
-  self->_contentModuleContext = v4;
+  self->_contentModuleContext = contextCopy;
 }
 
 @end

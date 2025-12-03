@@ -1,34 +1,34 @@
 @interface PKDigitalIssuanceServiceProviderProduct
-- (PKDigitalIssuanceServiceProviderProduct)initWithDictionary:(id)a3;
+- (PKDigitalIssuanceServiceProviderProduct)initWithDictionary:(id)dictionary;
 @end
 
 @implementation PKDigitalIssuanceServiceProviderProduct
 
-- (PKDigitalIssuanceServiceProviderProduct)initWithDictionary:(id)a3
+- (PKDigitalIssuanceServiceProviderProduct)initWithDictionary:(id)dictionary
 {
   v33 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  dictionaryCopy = dictionary;
+  if (dictionaryCopy)
   {
     v31.receiver = self;
     v31.super_class = PKDigitalIssuanceServiceProviderProduct;
     v5 = [(PKDigitalIssuanceServiceProviderProduct *)&v31 init];
     if (v5)
     {
-      v6 = [MEMORY[0x1E696AFB0] UUID];
-      v7 = [v6 UUIDString];
+      uUID = [MEMORY[0x1E696AFB0] UUID];
+      uUIDString = [uUID UUIDString];
       identifier = v5->_identifier;
-      v5->_identifier = v7;
+      v5->_identifier = uUIDString;
 
-      v9 = [v4 PKStringForKey:@"localizedDisplayName"];
+      v9 = [dictionaryCopy PKStringForKey:@"localizedDisplayName"];
       localizedDisplayName = v5->_localizedDisplayName;
       v5->_localizedDisplayName = v9;
 
-      v11 = [v4 PKStringForKey:@"localizedDescription"];
+      v11 = [dictionaryCopy PKStringForKey:@"localizedDescription"];
       localizedDescription = v5->_localizedDescription;
       v5->_localizedDescription = v11;
 
-      v13 = [v4 PKArrayContaining:objc_opt_class() forKey:@"items"];
+      v13 = [dictionaryCopy PKArrayContaining:objc_opt_class() forKey:@"items"];
       v14 = objc_alloc_init(MEMORY[0x1E695DF70]);
       v27 = 0u;
       v28 = 0u;
@@ -67,15 +67,15 @@
     }
 
     self = v5;
-    v25 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v25 = 0;
+    selfCopy = 0;
   }
 
-  return v25;
+  return selfCopy;
 }
 
 @end

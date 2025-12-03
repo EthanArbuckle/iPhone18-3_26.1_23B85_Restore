@@ -1,7 +1,7 @@
 @interface SDAirDropHandleriCloudDrive
 - (BOOL)canHandleTransfer;
 - (BOOL)iCloudDriveIsAccessible;
-- (SDAirDropHandleriCloudDrive)initWithTransfer:(id)a3;
+- (SDAirDropHandleriCloudDrive)initWithTransfer:(id)transfer;
 - (SFAirDropAction)action;
 - (int64_t)transferTypes;
 - (void)openCompletedItemsWithFilesApp;
@@ -11,11 +11,11 @@
 
 @implementation SDAirDropHandleriCloudDrive
 
-- (SDAirDropHandleriCloudDrive)initWithTransfer:(id)a3
+- (SDAirDropHandleriCloudDrive)initWithTransfer:(id)transfer
 {
   v9.receiver = self;
   v9.super_class = SDAirDropHandleriCloudDrive;
-  v3 = [(SDAirDropHandler *)&v9 initWithTransfer:a3];
+  v3 = [(SDAirDropHandler *)&v9 initWithTransfer:transfer];
   if (v3)
   {
     v4 = +[NSFileManager defaultManager];
@@ -79,11 +79,11 @@
   v6.receiver = self;
   v6.super_class = SDAirDropHandleriCloudDrive;
   [(SDAirDropHandler *)&v6 updatePossibleActions];
-  v3 = [(SDAirDropHandleriCloudDrive *)self action];
-  v7 = v3;
+  action = [(SDAirDropHandleriCloudDrive *)self action];
+  v7 = action;
   v4 = [NSArray arrayWithObjects:&v7 count:1];
-  v5 = [(SDAirDropHandler *)self transfer];
-  [v5 setPossibleActions:v4];
+  transfer = [(SDAirDropHandler *)self transfer];
+  [transfer setPossibleActions:v4];
 }
 
 - (SFAirDropAction)action
@@ -100,12 +100,12 @@
 
     v6 = SFLocalizedStringForKey();
     v7 = [SFAirDropAction alloc];
-    v8 = [(SDAirDropHandler *)self transfer];
-    v9 = [v8 identifier];
+    transfer = [(SDAirDropHandler *)self transfer];
+    identifier = [transfer identifier];
     v10 = objc_opt_class();
     v11 = NSStringFromClass(v10);
-    v12 = [(SDAirDropHandler *)self singleItemActionTitle];
-    v13 = [v7 initWithTransferIdentifier:v9 actionIdentifier:v11 title:v6 singleItemTitle:v12 type:1];
+    singleItemActionTitle = [(SDAirDropHandler *)self singleItemActionTitle];
+    v13 = [v7 initWithTransferIdentifier:identifier actionIdentifier:v11 title:v6 singleItemTitle:singleItemActionTitle type:1];
     v14 = self->_action;
     self->_action = v13;
 
@@ -131,21 +131,21 @@
   v3 = airdrop_log();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(SDAirDropHandler *)self transfer];
+    transfer = [(SDAirDropHandler *)self transfer];
     *buf = 138412290;
-    v39 = v4;
+    v39 = transfer;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Opening files with Files App for transfer %@", buf, 0xCu);
   }
 
-  v5 = [(SDAirDropHandler *)self transfer];
-  v6 = [v5 completedURLs];
-  v7 = [v6 count];
+  transfer2 = [(SDAirDropHandler *)self transfer];
+  completedURLs = [transfer2 completedURLs];
+  v7 = [completedURLs count];
 
   if (v7)
   {
-    v8 = [(SDAirDropHandler *)self transfer];
-    v9 = [v8 completedURLs];
-    v10 = [v9 count];
+    transfer3 = [(SDAirDropHandler *)self transfer];
+    completedURLs2 = [transfer3 completedURLs];
+    v10 = [completedURLs2 count];
 
     if (v10)
     {
@@ -155,13 +155,13 @@
       v30 = v11;
       do
       {
-        v14 = [(SDAirDropHandler *)self transfer];
-        v15 = [v14 completedURLs];
-        v16 = v12 == [v15 count] - 1;
+        transfer4 = [(SDAirDropHandler *)self transfer];
+        completedURLs3 = [transfer4 completedURLs];
+        v16 = v12 == [completedURLs3 count] - 1;
 
-        v17 = [(SDAirDropHandler *)self transfer];
-        v18 = [v17 completedURLs];
-        v19 = [v18 objectAtIndexedSubscript:v12];
+        transfer5 = [(SDAirDropHandler *)self transfer];
+        completedURLs4 = [transfer5 completedURLs];
+        v19 = [completedURLs4 objectAtIndexedSubscript:v12];
 
         v20 = airdrop_log();
         if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
@@ -183,16 +183,16 @@
         v31[3] = &unk_1008CFBD8;
         v34 = v16;
         v32 = v19;
-        v33 = self;
+        selfCopy = self;
         v35 = 1;
         v24 = v19;
         [v23 setCompletionBlock:v31];
         [v23 start];
 
         ++v12;
-        v25 = [(SDAirDropHandler *)self transfer];
-        v26 = [v25 completedURLs];
-        v27 = [v26 count];
+        transfer6 = [(SDAirDropHandler *)self transfer];
+        completedURLs5 = [transfer6 completedURLs];
+        v27 = [completedURLs5 count];
       }
 
       while (v12 < v27);
@@ -207,8 +207,8 @@
       sub_1000D0E18(v28);
     }
 
-    v29 = [(SDAirDropHandler *)self completionHandler];
-    v29[2](v29, 0, 0, 1);
+    completionHandler = [(SDAirDropHandler *)self completionHandler];
+    completionHandler[2](completionHandler, 0, 0, 1);
   }
 }
 
@@ -222,17 +222,17 @@
   {
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [(SDAirDropHandler *)self transfer];
+      transfer = [(SDAirDropHandler *)self transfer];
       *buf = 138412290;
-      v16 = v6;
+      v16 = transfer;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Saving files to iCloud Drive for transfer %@", buf, 0xCu);
     }
 
-    v7 = [(SDAirDropHandler *)self transfer];
-    v8 = [v7 completedURLs];
+    transfer2 = [(SDAirDropHandler *)self transfer];
+    completedURLs = [transfer2 completedURLs];
     v9 = self->_iCloudDriveURL;
     v13 = 0;
-    v10 = sub_1001F1DAC(v8, v9, &v14, &v13);
+    v10 = sub_1001F1DAC(completedURLs, v9, &v14, &v13);
     v5 = v13;
 
     if ((v14 & 1) == 0)
@@ -250,8 +250,8 @@
     sub_1000D0F0C(v5);
   }
 
-  v12 = [(SDAirDropHandler *)self completionHandler];
-  v12[2](v12, v14, 0, 1);
+  completionHandler = [(SDAirDropHandler *)self completionHandler];
+  completionHandler[2](completionHandler, v14, 0, 1);
 }
 
 - (BOOL)iCloudDriveIsAccessible

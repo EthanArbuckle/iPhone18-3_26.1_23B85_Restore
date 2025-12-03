@@ -3,7 +3,7 @@
 - (PVCameraPreviewRenderer)init;
 - (id).cxx_construct;
 - (void)dealloc;
-- (void)enqueueRenderRequest:(id)a3 completion:(id)a4;
+- (void)enqueueRenderRequest:(id)request completion:(id)completion;
 @end
 
 @implementation PVCameraPreviewRenderer
@@ -73,11 +73,11 @@
   return m_Obj;
 }
 
-- (void)enqueueRenderRequest:(id)a3 completion:(id)a4
+- (void)enqueueRenderRequest:(id)request completion:(id)completion
 {
-  v9 = a3;
-  v6 = a4;
-  if (v9 && v6)
+  requestCopy = request;
+  completionCopy = completion;
+  if (requestCopy && completionCopy)
   {
     if (self->_currentRenderJob.m_Obj)
     {
@@ -92,7 +92,7 @@
       (*(*m_Obj + 16))(m_Obj);
     }
 
-    PVCameraPreviewGraphBuildJob::PVCameraPreviewGraphBuildJob(v7, &v10, v9, self->_compositingContext, v6);
+    PVCameraPreviewGraphBuildJob::PVCameraPreviewGraphBuildJob(v7, &v10, requestCopy, self->_compositingContext, completionCopy);
   }
 }
 

@@ -1,38 +1,38 @@
 @interface NPKButtonListener
-- (NPKButtonListener)initWithHandlerQueue:(id)a3;
+- (NPKButtonListener)initWithHandlerQueue:(id)queue;
 - (id)_handlerQueue_buttonHandler;
-- (void)setButtonHandler:(id)a3;
+- (void)setButtonHandler:(id)handler;
 @end
 
 @implementation NPKButtonListener
 
-- (NPKButtonListener)initWithHandlerQueue:(id)a3
+- (NPKButtonListener)initWithHandlerQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v9.receiver = self;
   v9.super_class = NPKButtonListener;
   v6 = [(NPKButtonListener *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_handlerQueue, a3);
+    objc_storeStrong(&v6->_handlerQueue, queue);
   }
 
   return v7;
 }
 
-- (void)setButtonHandler:(id)a3
+- (void)setButtonHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(NPKButtonListener *)self handlerQueue];
+  handlerCopy = handler;
+  handlerQueue = [(NPKButtonListener *)self handlerQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __38__NPKButtonListener_setButtonHandler___block_invoke;
   v7[3] = &unk_279945530;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  dispatch_async(handlerQueue, v7);
 }
 
 void __38__NPKButtonListener_setButtonHandler___block_invoke(uint64_t a1)

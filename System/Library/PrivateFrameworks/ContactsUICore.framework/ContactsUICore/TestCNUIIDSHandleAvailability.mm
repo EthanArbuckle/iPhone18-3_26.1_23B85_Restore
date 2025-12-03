@@ -1,47 +1,47 @@
 @interface TestCNUIIDSHandleAvailability
-- (BOOL)isEqual:(id)a3;
-- (TestCNUIIDSHandleAvailability)initWithHandle:(id)a3 availability:(BOOL)a4;
+- (BOOL)isEqual:(id)equal;
+- (TestCNUIIDSHandleAvailability)initWithHandle:(id)handle availability:(BOOL)availability;
 - (unint64_t)hash;
 @end
 
 @implementation TestCNUIIDSHandleAvailability
 
-- (TestCNUIIDSHandleAvailability)initWithHandle:(id)a3 availability:(BOOL)a4
+- (TestCNUIIDSHandleAvailability)initWithHandle:(id)handle availability:(BOOL)availability
 {
-  v7 = a3;
+  handleCopy = handle;
   v12.receiver = self;
   v12.super_class = TestCNUIIDSHandleAvailability;
   v8 = [(TestCNUIIDSHandleAvailability *)&v12 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_handle, a3);
-    v9->_available = a4;
+    objc_storeStrong(&v8->_handle, handle);
+    v9->_available = availability;
     v10 = v9;
   }
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = MEMORY[0x1E69966F0];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __41__TestCNUIIDSHandleAvailability_isEqual___block_invoke;
   v15[3] = &unk_1E76E7A88;
   v15[4] = self;
-  v16 = v4;
+  v16 = equalCopy;
   aBlock = MEMORY[0x1E69E9820];
   v10 = 3221225472;
   v11 = __41__TestCNUIIDSHandleAvailability_isEqual___block_invoke_2;
   v12 = &unk_1E76E7A88;
-  v13 = self;
+  selfCopy = self;
   v14 = v16;
   v6 = v16;
   v7 = _Block_copy(&aBlock);
-  LOBYTE(self) = [v5 isObject:self equalToOther:v6 withBlocks:{v15, v7, 0, aBlock, v10, v11, v12, v13}];
+  LOBYTE(self) = [v5 isObject:self equalToOther:v6 withBlocks:{v15, v7, 0, aBlock, v10, v11, v12, selfCopy}];
 
   return self;
 }

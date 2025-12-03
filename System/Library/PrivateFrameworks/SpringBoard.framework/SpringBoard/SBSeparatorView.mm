@@ -1,22 +1,22 @@
 @interface SBSeparatorView
 + (CGSize)nubHitTestSize;
 - (CGRect)nubRect;
-- (SBSeparatorView)initWithFrame:(CGRect)a3;
+- (SBSeparatorView)initWithFrame:(CGRect)frame;
 - (void)_updateNubViewFrame;
 - (void)layoutSubviews;
-- (void)setBounds:(CGRect)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setKeyboardHeight:(double)a3;
-- (void)setNubStyle:(unint64_t)a3;
+- (void)setBounds:(CGRect)bounds;
+- (void)setFrame:(CGRect)frame;
+- (void)setKeyboardHeight:(double)height;
+- (void)setNubStyle:(unint64_t)style;
 @end
 
 @implementation SBSeparatorView
 
-- (SBSeparatorView)initWithFrame:(CGRect)a3
+- (SBSeparatorView)initWithFrame:(CGRect)frame
 {
   v11.receiver = self;
   v11.super_class = SBSeparatorView;
-  v3 = [(SBSeparatorView *)&v11 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SBSeparatorView *)&v11 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -29,8 +29,8 @@
     [(SBSeparatorNubView *)v4->_nubView _setCornerRadius:2.0];
     [(SBSeparatorNubView *)v4->_nubView setAlpha:1.0];
     v8 = v4->_nubView;
-    v9 = [MEMORY[0x277D75348] secondaryLabelColor];
-    [(SBSeparatorNubView *)v8 setBackgroundColor:v9];
+    secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+    [(SBSeparatorNubView *)v8 setBackgroundColor:secondaryLabelColor];
 
     [(SBSeparatorNubView *)v4->_nubView setUserInteractionEnabled:0];
     [(SBSeparatorView *)v4 addSubview:v4->_nubView];
@@ -48,36 +48,36 @@
   [(SBSeparatorView *)self _updateNubViewFrame];
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
   v4.receiver = self;
   v4.super_class = SBSeparatorView;
-  [(SBSeparatorView *)&v4 setBounds:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(SBSeparatorView *)&v4 setBounds:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
   [(SBSeparatorView *)self _updateNubViewFrame];
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = SBSeparatorView;
-  [(SBSeparatorView *)&v4 setFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(SBSeparatorView *)&v4 setFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(SBSeparatorView *)self _updateNubViewFrame];
 }
 
-- (void)setNubStyle:(unint64_t)a3
+- (void)setNubStyle:(unint64_t)style
 {
-  if (self->_nubStyle != a3)
+  if (self->_nubStyle != style)
   {
-    self->_nubStyle = a3;
-    if (a3 == 2)
+    self->_nubStyle = style;
+    if (style == 2)
     {
-      v6 = [MEMORY[0x277D75348] whiteColor];
+      whiteColor = [MEMORY[0x277D75348] whiteColor];
       v5 = 0.0;
     }
 
     else
     {
-      if (a3 == 1)
+      if (style == 1)
       {
         [MEMORY[0x277D75348] whiteColor];
       }
@@ -86,20 +86,20 @@
       {
         [MEMORY[0x277D75348] secondaryLabelColor];
       }
-      v6 = ;
+      whiteColor = ;
       v5 = 1.0;
     }
 
     [(SBSeparatorNubView *)self->_nubView setAlpha:v5];
-    [(SBSeparatorNubView *)self->_nubView setBackgroundColor:v6];
+    [(SBSeparatorNubView *)self->_nubView setBackgroundColor:whiteColor];
   }
 }
 
-- (void)setKeyboardHeight:(double)a3
+- (void)setKeyboardHeight:(double)height
 {
-  if (self->_keyboardHeight != a3)
+  if (self->_keyboardHeight != height)
   {
-    self->_keyboardHeight = a3;
+    self->_keyboardHeight = height;
     [(SBSeparatorView *)self _updateNubViewFrame];
   }
 }

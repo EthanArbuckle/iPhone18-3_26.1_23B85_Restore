@@ -1,29 +1,29 @@
 @interface AXAuditDevicesAppRemoteServer
-- (AXAuditDevicesAppRemoteServer)initWithTransport:(id)a3;
-- (void)accessibilityTranslationTransportSendData:(id)a3 completionHandler:(id)a4;
+- (AXAuditDevicesAppRemoteServer)initWithTransport:(id)transport;
+- (void)accessibilityTranslationTransportSendData:(id)data completionHandler:(id)handler;
 - (void)cancel;
-- (void)clientNeedsAccessibility:(id)a3;
+- (void)clientNeedsAccessibility:(id)accessibility;
 - (void)connectionInterrupted;
 - (void)dealloc;
-- (void)processDataFromHost:(id)a3;
+- (void)processDataFromHost:(id)host;
 - (void)requestHostAPIVersion;
 - (void)resume;
-- (void)setMaxConnectionEnqueue:(unint64_t)a3;
+- (void)setMaxConnectionEnqueue:(unint64_t)enqueue;
 @end
 
 @implementation AXAuditDevicesAppRemoteServer
 
-- (AXAuditDevicesAppRemoteServer)initWithTransport:(id)a3
+- (AXAuditDevicesAppRemoteServer)initWithTransport:(id)transport
 {
-  v4 = a3;
+  transportCopy = transport;
   v18.receiver = self;
   v18.super_class = AXAuditDevicesAppRemoteServer;
   v5 = [(AXAuditDevicesAppRemoteServer *)&v18 init];
   if (v5)
   {
-    if (v4)
+    if (transportCopy)
     {
-      v6 = [objc_alloc(MEMORY[0x277D03650]) initWithTransport:v4];
+      v6 = [objc_alloc(MEMORY[0x277D03650]) initWithTransport:transportCopy];
       [v6 setMaximumEnqueueSize:0x800000];
       [v6 setDispatchTarget:v5];
       v7 = os_transaction_create();
@@ -123,8 +123,8 @@ void __51__AXAuditDevicesAppRemoteServer_initWithTransport___block_invoke_2(uint
     _os_log_impl(&dword_23D6FE000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%s", &v5, 0xCu);
   }
 
-  v3 = [(AXAuditDevicesAppRemoteServer *)self connection];
-  [v3 cancel];
+  connection = [(AXAuditDevicesAppRemoteServer *)self connection];
+  [connection cancel];
 
   v4 = *MEMORY[0x277D85DE8];
 }
@@ -139,17 +139,17 @@ void __51__AXAuditDevicesAppRemoteServer_initWithTransport___block_invoke_2(uint
     _os_log_impl(&dword_23D6FE000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%s", &v5, 0xCu);
   }
 
-  v3 = [(AXAuditDevicesAppRemoteServer *)self connection];
-  [v3 resume];
+  connection = [(AXAuditDevicesAppRemoteServer *)self connection];
+  [connection resume];
 
   [(AXAuditDevicesAppRemoteServer *)self requestHostAPIVersion];
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setMaxConnectionEnqueue:(unint64_t)a3
+- (void)setMaxConnectionEnqueue:(unint64_t)enqueue
 {
-  v4 = [(AXAuditDevicesAppRemoteServer *)self connection];
-  [v4 setMaximumEnqueueSize:a3];
+  connection = [(AXAuditDevicesAppRemoteServer *)self connection];
+  [connection setMaximumEnqueueSize:enqueue];
 }
 
 - (void)connectionInterrupted
@@ -176,8 +176,8 @@ void __51__AXAuditDevicesAppRemoteServer_initWithTransport___block_invoke_2(uint
   v4 = [MEMORY[0x277D03668] messageWithSelector:sel_hostAPIVersion objectArguments:0];
   if ([(AXAuditDevicesAppRemoteServer *)self hostAPIVersion]<= 0)
   {
-    v5 = [(AXAuditDevicesAppRemoteServer *)self connection];
-    [v5 sendControlAsync:v4 replyHandler:v3];
+    connection = [(AXAuditDevicesAppRemoteServer *)self connection];
+    [connection sendControlAsync:v4 replyHandler:v3];
   }
 }
 
@@ -208,18 +208,18 @@ void __54__AXAuditDevicesAppRemoteServer_requestHostAPIVersion__block_invoke_2(u
   }
 }
 
-- (void)accessibilityTranslationTransportSendData:(id)a3 completionHandler:(id)a4
+- (void)accessibilityTranslationTransportSendData:(id)data completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = [MEMORY[0x277D03668] messageWithSelector:sel_processDataFromRemoteDevice_ objectArguments:{a3, 0}];
-  v8 = [(AXAuditDevicesAppRemoteServer *)self connection];
+  handlerCopy = handler;
+  v7 = [MEMORY[0x277D03668] messageWithSelector:sel_processDataFromRemoteDevice_ objectArguments:{data, 0}];
+  connection = [(AXAuditDevicesAppRemoteServer *)self connection];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __93__AXAuditDevicesAppRemoteServer_accessibilityTranslationTransportSendData_completionHandler___block_invoke;
   v10[3] = &unk_278BE3298;
-  v11 = v6;
-  v9 = v6;
-  [v8 sendControlAsync:v7 replyHandler:v10];
+  v11 = handlerCopy;
+  v9 = handlerCopy;
+  [connection sendControlAsync:v7 replyHandler:v10];
 }
 
 void __93__AXAuditDevicesAppRemoteServer_accessibilityTranslationTransportSendData_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -251,21 +251,21 @@ void __93__AXAuditDevicesAppRemoteServer_accessibilityTranslationTransportSendDa
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)clientNeedsAccessibility:(id)a3
+- (void)clientNeedsAccessibility:(id)accessibility
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 BOOLValue];
+  accessibilityCopy = accessibility;
+  bOOLValue = [accessibilityCopy BOOLValue];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v13 = 136315394;
     v14 = "[AXAuditDevicesAppRemoteServer clientNeedsAccessibility:]";
     v15 = 2112;
-    v16 = v4;
+    v16 = accessibilityCopy;
     _os_log_impl(&dword_23D6FE000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%s, needsAX: %@", &v13, 0x16u);
   }
 
-  if (v5)
+  if (bOOLValue)
   {
     v6 = objc_alloc(MEMORY[0x277CE7180]);
     v7 = objc_opt_respondsToSelector();
@@ -275,11 +275,11 @@ void __93__AXAuditDevicesAppRemoteServer_accessibilityTranslationTransportSendDa
       v8 = [objc_alloc(MEMORY[0x277CE7180]) initWithCachedTreeClientType:2];
       [(AXAuditDevicesAppRemoteServer *)self setRemoteCacheManager:v8];
 
-      v9 = [(AXAuditDevicesAppRemoteServer *)self remoteCacheManager];
-      [v9 setTransportDelegate:self];
+      remoteCacheManager = [(AXAuditDevicesAppRemoteServer *)self remoteCacheManager];
+      [remoteCacheManager setTransportDelegate:self];
 
-      v10 = [(AXAuditDevicesAppRemoteServer *)self remoteCacheManager];
-      [v10 start];
+      remoteCacheManager2 = [(AXAuditDevicesAppRemoteServer *)self remoteCacheManager];
+      [remoteCacheManager2 start];
     }
 
     else if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
@@ -290,8 +290,8 @@ void __93__AXAuditDevicesAppRemoteServer_accessibilityTranslationTransportSendDa
 
   else
   {
-    v11 = [(AXAuditDevicesAppRemoteServer *)self remoteCacheManager];
-    [v11 setTransportDelegate:0];
+    remoteCacheManager3 = [(AXAuditDevicesAppRemoteServer *)self remoteCacheManager];
+    [remoteCacheManager3 setTransportDelegate:0];
 
     [(AXAuditDevicesAppRemoteServer *)self setRemoteCacheManager:0];
     [(AXAuditDevicesAppRemoteServer *)self cancel];
@@ -300,19 +300,19 @@ void __93__AXAuditDevicesAppRemoteServer_accessibilityTranslationTransportSendDa
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)processDataFromHost:(id)a3
+- (void)processDataFromHost:(id)host
 {
-  v4 = a3;
-  v5 = [(AXAuditDevicesAppRemoteServer *)self axpTransportDataHandler];
+  hostCopy = host;
+  axpTransportDataHandler = [(AXAuditDevicesAppRemoteServer *)self axpTransportDataHandler];
 
-  if (v5)
+  if (axpTransportDataHandler)
   {
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __53__AXAuditDevicesAppRemoteServer_processDataFromHost___block_invoke;
     v6[3] = &unk_278BE2CA8;
     v6[4] = self;
-    v7 = v4;
+    v7 = hostCopy;
     dispatch_async(MEMORY[0x277D85CD0], v6);
   }
 

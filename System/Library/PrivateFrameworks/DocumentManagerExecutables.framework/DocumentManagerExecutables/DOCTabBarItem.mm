@@ -1,14 +1,14 @@
 @interface DOCTabBarItem
-+ (id)itemWithTab:(unint64_t)a3;
-+ (id)tabIdentifierForTab:(unint64_t)a3;
++ (id)itemWithTab:(unint64_t)tab;
++ (id)tabIdentifierForTab:(unint64_t)tab;
 - (NSString)description;
 - (NSString)displayTitle;
 - (NSString)tabIdentifier;
 - (_TtC26DocumentManagerExecutables13DOCTabBarItem)init;
-- (_TtC26DocumentManagerExecutables13DOCTabBarItem)initWithCoder:(id)a3;
-- (id)floatingSwitcherActionRepresentationWithHandler:(id)a3;
+- (_TtC26DocumentManagerExecutables13DOCTabBarItem)initWithCoder:(id)coder;
+- (id)floatingSwitcherActionRepresentationWithHandler:(id)handler;
 - (unint64_t)tab;
-- (void)setTab:(unint64_t)a3;
+- (void)setTab:(unint64_t)tab;
 @end
 
 @implementation DOCTabBarItem
@@ -20,17 +20,17 @@
   return *(&self->super.super.super.isa + v3);
 }
 
-- (void)setTab:(unint64_t)a3
+- (void)setTab:(unint64_t)tab
 {
   v5 = OBJC_IVAR____TtC26DocumentManagerExecutables13DOCTabBarItem_tab;
   swift_beginAccess();
-  *(&self->super.super.super.isa + v5) = a3;
+  *(&self->super.super.super.isa + v5) = tab;
 }
 
 - (NSString)tabIdentifier
 {
   v2 = *((*MEMORY[0x277D85000] & self->super.super.super.isa) + 0x58);
-  v3 = self;
+  selfCopy = self;
   v4 = v2();
   if (v4)
   {
@@ -66,11 +66,11 @@
   return v7;
 }
 
-+ (id)tabIdentifierForTab:(unint64_t)a3
++ (id)tabIdentifierForTab:(unint64_t)tab
 {
-  if (a3)
+  if (tab)
   {
-    if (a3 == 2)
+    if (tab == 2)
     {
       v3 = 0xE600000000000000;
       v4 = 0x6573776F7262;
@@ -78,7 +78,7 @@
 
     else
     {
-      if (a3 != 1)
+      if (tab != 1)
       {
         type metadata accessor for DOCTab(0);
         result = _diagnoseUnexpectedEnumCaseValue<A, B>(type:rawValue:)();
@@ -102,20 +102,20 @@
   return v5;
 }
 
-+ (id)itemWithTab:(unint64_t)a3
++ (id)itemWithTab:(unint64_t)tab
 {
-  v3 = specialized static DOCTabBarItem._item(tab:)(a3);
+  v3 = specialized static DOCTabBarItem._item(tab:)(tab);
 
   return v3;
 }
 
-- (id)floatingSwitcherActionRepresentationWithHandler:(id)a3
+- (id)floatingSwitcherActionRepresentationWithHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
-  v6 = self;
-  result = [(DOCTabBarItem *)v6 _internalTitle];
+  selfCopy = self;
+  result = [(DOCTabBarItem *)selfCopy _internalTitle];
   if (result)
   {
     v8 = result;
@@ -140,7 +140,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   v3 = DOCTabBarItem.description.getter();
   v5 = v4;
 
@@ -151,11 +151,11 @@
 
 - (NSString)displayTitle
 {
-  v2 = self;
-  v3 = [(DOCTabBarItem *)v2 _internalTitle];
-  if (v3)
+  selfCopy = self;
+  _internalTitle = [(DOCTabBarItem *)selfCopy _internalTitle];
+  if (_internalTitle)
   {
-    v4 = v3;
+    v4 = _internalTitle;
     v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v7 = v6;
 
@@ -179,7 +179,7 @@
   return [(DOCTabBarItem *)&v3 init];
 }
 
-- (_TtC26DocumentManagerExecutables13DOCTabBarItem)initWithCoder:(id)a3
+- (_TtC26DocumentManagerExecutables13DOCTabBarItem)initWithCoder:(id)coder
 {
   result = _assertionFailure(_:_:file:line:flags:)();
   __break(1u);

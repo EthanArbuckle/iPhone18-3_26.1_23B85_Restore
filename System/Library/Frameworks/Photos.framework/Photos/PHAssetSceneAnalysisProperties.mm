@@ -1,40 +1,40 @@
 @interface PHAssetSceneAnalysisProperties
 + (id)propertiesToFetch;
-- (PHAssetSceneAnalysisProperties)initWithFetchDictionary:(id)a3 asset:(id)a4 prefetched:(BOOL)a5;
+- (PHAssetSceneAnalysisProperties)initWithFetchDictionary:(id)dictionary asset:(id)asset prefetched:(BOOL)prefetched;
 @end
 
 @implementation PHAssetSceneAnalysisProperties
 
-- (PHAssetSceneAnalysisProperties)initWithFetchDictionary:(id)a3 asset:(id)a4 prefetched:(BOOL)a5
+- (PHAssetSceneAnalysisProperties)initWithFetchDictionary:(id)dictionary asset:(id)asset prefetched:(BOOL)prefetched
 {
-  v7 = a3;
-  v8 = a4;
+  dictionaryCopy = dictionary;
+  assetCopy = asset;
   v21.receiver = self;
   v21.super_class = PHAssetSceneAnalysisProperties;
   v9 = [(PHAssetSceneAnalysisProperties *)&v21 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeWeak(&v9->super._asset, v8);
-    v11 = [v7 objectForKeyedSubscript:@"additionalAttributes.sceneAnalysisVersion"];
+    objc_storeWeak(&v9->super._asset, assetCopy);
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"additionalAttributes.sceneAnalysisVersion"];
     v10->_sceneAnalysisVersion = [v11 shortValue];
 
-    v12 = [v7 objectForKeyedSubscript:@"additionalAttributes.sceneAnalysisTimestamp"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"additionalAttributes.sceneAnalysisTimestamp"];
     sceneAnalysisTimestamp = v10->_sceneAnalysisTimestamp;
     v10->_sceneAnalysisTimestamp = v12;
 
-    v14 = [v7 objectForKeyedSubscript:@"additionalAttributes.distanceIdentity"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"additionalAttributes.distanceIdentity"];
     distanceIdentity = v10->_distanceIdentity;
     v10->_distanceIdentity = v14;
 
-    v16 = [v7 objectForKeyedSubscript:@"mediaAnalysisAttributes.vaAnalysisVersion"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"mediaAnalysisAttributes.vaAnalysisVersion"];
     v10->_privateEncryptedComputeAnalysisVersion = [v16 shortValue];
 
-    v17 = [v7 objectForKeyedSubscript:@"mediaAnalysisAttributes.vaAnalysisTimestamp"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"mediaAnalysisAttributes.vaAnalysisTimestamp"];
     privateEncryptedComputeAnalysisTimestamp = v10->_privateEncryptedComputeAnalysisTimestamp;
     v10->_privateEncryptedComputeAnalysisTimestamp = v17;
 
-    v19 = [v7 objectForKeyedSubscript:@"mediaAnalysisAttributes.vaLocationAnalysisVersion"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"mediaAnalysisAttributes.vaLocationAnalysisVersion"];
     v10->_privateEncryptedComputeLocationAnalysisVersion = [v19 shortValue];
   }
 

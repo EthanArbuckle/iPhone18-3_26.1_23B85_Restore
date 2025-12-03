@@ -1,8 +1,8 @@
 @interface SDLocalCellularStatusManager
-- (BOOL)getCellularSlicingStateForDevice:(id)a3;
+- (BOOL)getCellularSlicingStateForDevice:(id)device;
 - (id)statusUpdated;
-- (void)publishCellularSlicingEnabledAs:(BOOL)a3;
-- (void)setStatusUpdated:(id)a3;
+- (void)publishCellularSlicingEnabledAs:(BOOL)as;
+- (void)setStatusUpdated:(id)updated;
 - (void)subscribeForCellularSlicingAvailability;
 @end
 
@@ -30,9 +30,9 @@
   return v3;
 }
 
-- (void)setStatusUpdated:(id)a3
+- (void)setStatusUpdated:(id)updated
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(updated);
   if (v4)
   {
     v5 = v4;
@@ -51,11 +51,11 @@
   v9 = *(self + OBJC_IVAR____TtC16DaemoniOSLibrary28SDLocalCellularStatusManager_statusUpdated + 8);
   *v7 = v6;
   v7[1] = v4;
-  v10 = self;
+  selfCopy = self;
   sub_100015D04(v8);
 }
 
-- (void)publishCellularSlicingEnabledAs:(BOOL)a3
+- (void)publishCellularSlicingEnabledAs:(BOOL)as
 {
   v5 = sub_10028088C(&qword_100976160, &qword_1007F8770);
   v6 = *(*(v5 - 8) + 64);
@@ -66,7 +66,7 @@
   v11 = *(v10 + 64);
   __chkstk_darwin(v9);
   v13 = &v18 - ((v12 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v14 = self;
+  selfCopy = self;
   static SFPlatform.iOS.getter();
   v15 = static SFPlatform.isPlatform(_:)();
   (*(v10 + 8))(v13, v9);
@@ -77,8 +77,8 @@
     v17 = swift_allocObject();
     *(v17 + 16) = 0;
     *(v17 + 24) = 0;
-    *(v17 + 32) = v14;
-    *(v17 + 40) = a3;
+    *(v17 + 32) = selfCopy;
+    *(v17 + 40) = as;
     sub_1002B3098(0, 0, v8, &unk_10080C7C8, v17);
   }
 
@@ -98,7 +98,7 @@
   v9 = *(v8 + 64);
   __chkstk_darwin(v7);
   v11 = &v16 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v12 = self;
+  selfCopy = self;
   static SFPlatform.visionOS.getter();
   v13 = static SFPlatform.isPlatform(_:)();
   (*(v8 + 8))(v11, v7);
@@ -109,7 +109,7 @@
     v15 = swift_allocObject();
     v15[2] = 0;
     v15[3] = 0;
-    v15[4] = v12;
+    v15[4] = selfCopy;
     sub_1002B3098(0, 0, v6, &unk_10080C7A0, v15);
   }
 
@@ -118,9 +118,9 @@
   }
 }
 
-- (BOOL)getCellularSlicingStateForDevice:(id)a3
+- (BOOL)getCellularSlicingStateForDevice:(id)device
 {
-  if (a3)
+  if (device)
   {
     v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v6 = v5;
@@ -132,7 +132,7 @@
     v6 = 0;
   }
 
-  v7 = self;
+  selfCopy = self;
   v8 = sub_1005CB4D4(v4, v6);
 
   return v8 & 1;

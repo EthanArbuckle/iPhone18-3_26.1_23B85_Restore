@@ -1,17 +1,17 @@
 @interface MTFWrappedSpeechElement
-+ (id)fromCPPElement:(void *)a3;
++ (id)fromCPPElement:(void *)element;
 - (MTFWrappedSpeechElement)FirstChild;
 - (MTFWrappedSpeechElement)LastChild;
 - (MTFWrappedSpeechElement)NextSibling;
 - (MTFWrappedSpeechElement)Parent;
 - (MTFWrappedSpeechElement)PrevSibling;
-- (MTFWrappedSpeechElement)initWithCppElement:(void *)a3;
+- (MTFWrappedSpeechElement)initWithCppElement:(void *)element;
 - (void)dealloc;
 @end
 
 @implementation MTFWrappedSpeechElement
 
-- (MTFWrappedSpeechElement)initWithCppElement:(void *)a3
+- (MTFWrappedSpeechElement)initWithCppElement:(void *)element
 {
   v7.receiver = self;
   v7.super_class = MTFWrappedSpeechElement;
@@ -19,7 +19,7 @@
   v5 = v4;
   if (v4)
   {
-    [(MTFWrappedSpeechElement *)v4 setWrapped:a3];
+    [(MTFWrappedSpeechElement *)v4 setWrapped:element];
   }
 
   return v5;
@@ -65,15 +65,15 @@
   return v2;
 }
 
-+ (id)fromCPPElement:(void *)a3
++ (id)fromCPPElement:(void *)element
 {
-  if (a3)
+  if (element)
   {
-    v5 = *a3;
-    v6 = **a3;
+    v5 = *element;
+    v6 = **element;
     if (v7)
     {
-      v8 = v7;
+      elementCopy = v7;
       v9 = off_279851430;
     }
 
@@ -82,7 +82,7 @@
       v12 = *v5;
       if (v13)
       {
-        v8 = v13;
+        elementCopy = v13;
         v9 = off_279851420;
       }
 
@@ -91,7 +91,7 @@
         v14 = *v5;
         if (v15)
         {
-          v8 = v15;
+          elementCopy = v15;
           v9 = off_279851418;
         }
 
@@ -100,7 +100,7 @@
           v16 = *v5;
           if (v17)
           {
-            v8 = v17;
+            elementCopy = v17;
             v9 = off_279851448;
           }
 
@@ -109,7 +109,7 @@
             v18 = *v5;
             if (v19)
             {
-              v8 = v19;
+              elementCopy = v19;
               v9 = off_279851410;
             }
 
@@ -118,7 +118,7 @@
               v20 = *v5;
               if (v21)
               {
-                v8 = v21;
+                elementCopy = v21;
                 v9 = off_279851440;
               }
 
@@ -127,7 +127,7 @@
                 v22 = *v5;
                 if (v23)
                 {
-                  v8 = v23;
+                  elementCopy = v23;
                   v9 = off_279851428;
                 }
 
@@ -137,13 +137,13 @@
                   v9 = off_279851408;
                   if (v25)
                   {
-                    v8 = v25;
+                    elementCopy = v25;
                   }
 
                   else
                   {
                     v9 = off_279851438;
-                    v8 = a3;
+                    elementCopy = element;
                   }
                 }
               }
@@ -153,7 +153,7 @@
       }
     }
 
-    v10 = [objc_alloc(*v9) initWithCppElement:v8];
+    v10 = [objc_alloc(*v9) initWithCppElement:elementCopy];
   }
 
   else
@@ -168,10 +168,10 @@
 {
   if (![(MTFWrappedSpeechElement *)self unOwned])
   {
-    v3 = [(MTFWrappedSpeechElement *)self elem];
-    if (v3)
+    elem = [(MTFWrappedSpeechElement *)self elem];
+    if (elem)
     {
-      (*(v3->var0 + 2))(v3);
+      (*(elem->var0 + 2))(elem);
     }
   }
 

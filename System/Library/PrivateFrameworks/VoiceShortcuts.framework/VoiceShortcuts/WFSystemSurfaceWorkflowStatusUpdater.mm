@@ -1,23 +1,23 @@
 @interface WFSystemSurfaceWorkflowStatusUpdater
-- (WFSystemSurfaceWorkflowStatusUpdater)initWithDatabaseProvider:(id)a3;
-- (id)shareSheetStateForWorkflows:(id)a3 database:(id)a4;
-- (void)updateFromDatabase:(id)a3;
+- (WFSystemSurfaceWorkflowStatusUpdater)initWithDatabaseProvider:(id)provider;
+- (id)shareSheetStateForWorkflows:(id)workflows database:(id)database;
+- (void)updateFromDatabase:(id)database;
 - (void)updateIfPossible;
 @end
 
 @implementation WFSystemSurfaceWorkflowStatusUpdater
 
-- (id)shareSheetStateForWorkflows:(id)a3 database:(id)a4
+- (id)shareSheetStateForWorkflows:(id)workflows database:(id)database
 {
   v28 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  workflowsCopy = workflows;
+  databaseCopy = database;
   v7 = objc_opt_new();
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  obj = v5;
+  obj = workflowsCopy;
   v8 = [obj countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v8)
   {
@@ -35,13 +35,13 @@
         v12 = *(*(&v23 + 1) + 8 * i);
         v13 = objc_autoreleasePoolPush();
         v14 = [MEMORY[0x277CBEB98] setWithObject:@"inputClasses"];
-        v15 = [v6 recordWithDescriptor:v12 properties:v14 error:0];
+        v15 = [databaseCopy recordWithDescriptor:v12 properties:v14 error:0];
 
-        v16 = [v15 inputClasses];
-        v17 = v16;
-        if (v16)
+        inputClasses = [v15 inputClasses];
+        v17 = inputClasses;
+        if (inputClasses)
         {
-          v18 = v16;
+          v18 = inputClasses;
         }
 
         else
@@ -49,8 +49,8 @@
           v18 = MEMORY[0x277CBEBF8];
         }
 
-        v19 = [v12 identifier];
-        [v7 setObject:v18 forKey:v19];
+        identifier = [v12 identifier];
+        [v7 setObject:v18 forKey:identifier];
 
         objc_autoreleasePoolPop(v13);
       }
@@ -66,11 +66,11 @@
   return v7;
 }
 
-- (void)updateFromDatabase:(id)a3
+- (void)updateFromDatabase:(id)database
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 sortedVisibleWorkflowsWithType:*MEMORY[0x277D7A898]];
+  databaseCopy = database;
+  v5 = [databaseCopy sortedVisibleWorkflowsWithType:*MEMORY[0x277D7A898]];
   v6 = [v5 count];
   v7 = getWFGeneralLogObject();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
@@ -88,8 +88,8 @@
     _os_log_impl(&dword_23103C000, v7, OS_LOG_TYPE_INFO, "%s Setting share sheet shortcuts present to %{public}@", &v17, 0x16u);
   }
 
-  v9 = [(WFSystemSurfaceWorkflowStatusUpdater *)self registry];
-  v10 = v9;
+  registry = [(WFSystemSurfaceWorkflowStatusUpdater *)self registry];
+  v10 = registry;
   if (v6)
   {
     v11 = 2;
@@ -100,23 +100,23 @@
     v11 = 1;
   }
 
-  [v9 setStatus:v11 forSystemSurface:0];
+  [registry setStatus:v11 forSystemSurface:0];
 
   v12 = +[WFShareSheetState shareSheetShortcuts];
   if (v6)
   {
-    v13 = [v5 descriptors];
-    v14 = [(WFSystemSurfaceWorkflowStatusUpdater *)self shareSheetStateForWorkflows:v13 database:v4];
+    descriptors = [v5 descriptors];
+    defaultCenter = [(WFSystemSurfaceWorkflowStatusUpdater *)self shareSheetStateForWorkflows:descriptors database:databaseCopy];
 
-    if (v12 && ([v14 isEqualToDictionary:v12] & 1) != 0)
+    if (v12 && ([defaultCenter isEqualToDictionary:v12] & 1) != 0)
     {
-      [WFShareSheetState setShareSheetShortcuts:v14];
+      [WFShareSheetState setShareSheetShortcuts:defaultCenter];
 LABEL_17:
 
       goto LABEL_18;
     }
 
-    [WFShareSheetState setShareSheetShortcuts:v14];
+    [WFShareSheetState setShareSheetShortcuts:defaultCenter];
 
 LABEL_14:
     v15 = getWFGeneralLogObject();
@@ -127,8 +127,8 @@ LABEL_14:
       _os_log_impl(&dword_23103C000, v15, OS_LOG_TYPE_INFO, "%s Posting share sheet workflows change notification", &v17, 0xCu);
     }
 
-    v14 = [MEMORY[0x277CCA9A0] defaultCenter];
-    [v14 postNotificationName:*MEMORY[0x277D7A580] object:0];
+    defaultCenter = [MEMORY[0x277CCA9A0] defaultCenter];
+    [defaultCenter postNotificationName:*MEMORY[0x277D7A580] object:0];
     goto LABEL_17;
   }
 
@@ -146,9 +146,9 @@ LABEL_18:
 - (void)updateIfPossible
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = [(WFSystemSurfaceWorkflowStatusUpdater *)self databaseProvider];
+  databaseProvider = [(WFSystemSurfaceWorkflowStatusUpdater *)self databaseProvider];
   v9 = 0;
-  v4 = [v3 databaseWithError:&v9];
+  v4 = [databaseProvider databaseWithError:&v9];
   v5 = v9;
 
   if (v4)
@@ -168,20 +168,20 @@ LABEL_18:
       _os_log_impl(&dword_23103C000, v6, OS_LOG_TYPE_DEFAULT, "%s Failed to load database, assuming no shortcuts are present to show in system surfaces: %{public}@", buf, 0x16u);
     }
 
-    v7 = [(WFSystemSurfaceWorkflowStatusUpdater *)self registry];
-    [v7 setStatus:1 forSystemSurface:0];
+    registry = [(WFSystemSurfaceWorkflowStatusUpdater *)self registry];
+    [registry setStatus:1 forSystemSurface:0];
   }
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (WFSystemSurfaceWorkflowStatusUpdater)initWithDatabaseProvider:(id)a3
+- (WFSystemSurfaceWorkflowStatusUpdater)initWithDatabaseProvider:(id)provider
 {
-  v6 = a3;
-  if (!v6)
+  providerCopy = provider;
+  if (!providerCopy)
   {
-    v12 = [MEMORY[0x277CCA890] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"WFSystemSurfaceWorkflowStatusUpdater.m" lineNumber:31 description:{@"Invalid parameter not satisfying: %@", @"databaseProvider"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFSystemSurfaceWorkflowStatusUpdater.m" lineNumber:31 description:{@"Invalid parameter not satisfying: %@", @"databaseProvider"}];
   }
 
   v13.receiver = self;
@@ -193,7 +193,7 @@ LABEL_18:
     registry = v7->_registry;
     v7->_registry = v8;
 
-    objc_storeStrong(&v7->_databaseProvider, a3);
+    objc_storeStrong(&v7->_databaseProvider, provider);
     v10 = v7;
   }
 

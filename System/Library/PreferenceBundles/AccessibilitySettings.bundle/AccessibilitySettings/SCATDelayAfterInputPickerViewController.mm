@@ -1,8 +1,8 @@
 @interface SCATDelayAfterInputPickerViewController
 - (BOOL)numericalPreferenceEnabled;
 - (double)numericalPreferenceValue;
-- (void)setNumericalPreferenceEnabledFromUser:(BOOL)a3;
-- (void)setNumericalPreferenceValueFromUser:(double)a3;
+- (void)setNumericalPreferenceEnabledFromUser:(BOOL)user;
+- (void)setNumericalPreferenceValueFromUser:(double)user;
 @end
 
 @implementation SCATDelayAfterInputPickerViewController
@@ -16,25 +16,25 @@
   return v4;
 }
 
-- (void)setNumericalPreferenceValueFromUser:(double)a3
+- (void)setNumericalPreferenceValueFromUser:(double)user
 {
   v4 = +[AXSettings sharedInstance];
-  [v4 setAssistiveTouchDelayAfterInput:a3];
+  [v4 setAssistiveTouchDelayAfterInput:user];
 }
 
 - (BOOL)numericalPreferenceEnabled
 {
   v2 = +[AXSettings sharedInstance];
-  v3 = [v2 assistiveTouchDelayAfterInputEnabled];
+  assistiveTouchDelayAfterInputEnabled = [v2 assistiveTouchDelayAfterInputEnabled];
 
-  return v3;
+  return assistiveTouchDelayAfterInputEnabled;
 }
 
-- (void)setNumericalPreferenceEnabledFromUser:(BOOL)a3
+- (void)setNumericalPreferenceEnabledFromUser:(BOOL)user
 {
-  v3 = a3;
+  userCopy = user;
   v4 = +[AXSettings sharedInstance];
-  [v4 setAssistiveTouchDelayAfterInputEnabled:v3];
+  [v4 setAssistiveTouchDelayAfterInputEnabled:userCopy];
 }
 
 @end

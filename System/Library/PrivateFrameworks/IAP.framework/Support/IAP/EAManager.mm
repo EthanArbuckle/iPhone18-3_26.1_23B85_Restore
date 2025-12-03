@@ -1,59 +1,59 @@
 @interface EAManager
-+ (id)newPlistForAccessory:(id)a3;
++ (id)newPlistForAccessory:(id)accessory;
 + (id)sharedManager;
-+ (void)_updatePlistWithAccessoryProtocolsInternal:(id)a3;
-- (BOOL)_isProtocolContainedInWhitelist:(id)a3;
++ (void)_updatePlistWithAccessoryProtocolsInternal:(id)internal;
+- (BOOL)_isProtocolContainedInWhitelist:(id)whitelist;
 - (BOOL)fakedLocationDeviceFilteringSupport;
 - (BOOL)isFakedLocationDeviceEnabled;
-- (BOOL)sessionsOpenForDisplayIdentifer:(const char *)a3;
+- (BOOL)sessionsOpenForDisplayIdentifer:(const char *)identifer;
 - (EAManager)init;
 - (id).cxx_construct;
-- (id)accessoryForConnectionID:(id)a3;
+- (id)accessoryForConnectionID:(id)d;
 - (id)connectedAccessories;
-- (id)connectedAccessoriesForEAClient:(unsigned int)a3;
-- (id)connectionIDObjectForConnectionID:(unsigned int)a3;
-- (id)valueForProperty:(id)a3 forAccessory:(unsigned int)a4;
-- (unsigned)addClient:(unsigned int)a3 withAuditToken:(id *)a4 currentClientID:(unsigned int)a5 xpcConnection:(id)a6 eaProtocols:(id)a7 notifyOfAlreadyConnectedAccessories:(BOOL)a8 andBundleId:(id)a9;
-- (unsigned)clientIDForDisplayIdentifier:(const char *)a3;
+- (id)connectedAccessoriesForEAClient:(unsigned int)client;
+- (id)connectionIDObjectForConnectionID:(unsigned int)d;
+- (id)valueForProperty:(id)property forAccessory:(unsigned int)accessory;
+- (unsigned)addClient:(unsigned int)client withAuditToken:(id *)token currentClientID:(unsigned int)d xpcConnection:(id)connection eaProtocols:(id)protocols notifyOfAlreadyConnectedAccessories:(BOOL)accessories andBundleId:(id)id;
+- (unsigned)clientIDForDisplayIdentifier:(const char *)identifier;
 - (unsigned)generateClientID;
-- (void)_dpServiceWithFirmwareVersionFound:(id)a3;
-- (void)_shouldPostNoAppAlert:(id)a3;
+- (void)_dpServiceWithFirmwareVersionFound:(id)found;
+- (void)_shouldPostNoAppAlert:(id)alert;
 - (void)_takeClientAssertionsForAccessoryConnection;
 - (void)_takeClientAssertionsForAccessoryDisconnection;
-- (void)_unregisteredClientAssertionTimerFired:(id)a3;
-- (void)applicationStateChanged:(id)a3;
-- (void)attachAccessory:(const IPodAccessoryDetails *)a3 forTransport:(void *)a4;
+- (void)_unregisteredClientAssertionTimerFired:(id)fired;
+- (void)applicationStateChanged:(id)changed;
+- (void)attachAccessory:(const IPodAccessoryDetails *)accessory forTransport:(void *)transport;
 - (void)dealloc;
-- (void)detachAccessory:(unsigned int)a3;
+- (void)detachAccessory:(unsigned int)accessory;
 - (void)fakedLocationDeviceEphemerisMaxIntervalAvailable;
 - (void)fakedLocationDeviceEphemerisRefreshIntervalAvailable;
 - (void)fakedLocationDeviceEphemerisURLAvailable;
 - (void)fakedLocationDeviceNMEAAvailable;
 - (void)fakedLocationDevicePointDataAvailable;
-- (void)fakedLocationDeviceSetFilter:(id)a3;
+- (void)fakedLocationDeviceSetFilter:(id)filter;
 - (void)fakedLocationRequestGPSTime;
-- (void)logAccessoryAttach:(id)a3 reason:(id)a4;
-- (void)logAccessoryDetach:(id)a3 reason:(id)a4;
-- (void)notifyEAClient:(id)a3 ofAccessoryEvent:(const char *)a4 accessory:(id)a5;
-- (void)notifyEAClient:(id)a3 ofNotificationName:(const char *)a4 withPayload:(id)a5;
-- (void)notifyEAClientsOfAccessoryEvent:(const char *)a3 accessory:(id)a4;
-- (void)notifyEALocationClientsOfIAPLocationAccessoryNMEASentenceFilteringSupportChangedNotification:(id)a3;
-- (void)notifyEALocationClientsOfIAPLocationDidReceiveEphemerisMaxIntervalNotification:(id)a3;
-- (void)notifyEALocationClientsOfIAPLocationDidReceiveEphemerisRecommendedRefreshNotification:(id)a3;
-- (void)notifyEALocationClientsOfIAPLocationDidReceiveEphemerisURLNotification:(id)a3;
-- (void)notifyEALocationClientsOfIAPLocationDidReceiveLocationPointDataNotification:(id)a3;
-- (void)notifyEALocationClientsOfIAPLocationDidReceiveNMEASentenceNotification:(id)a3;
-- (void)notifyEALocationClientsOfIAPLocationDidRequestGPSTimeNotification:(id)a3;
+- (void)logAccessoryAttach:(id)attach reason:(id)reason;
+- (void)logAccessoryDetach:(id)detach reason:(id)reason;
+- (void)notifyEAClient:(id)client ofAccessoryEvent:(const char *)event accessory:(id)accessory;
+- (void)notifyEAClient:(id)client ofNotificationName:(const char *)name withPayload:(id)payload;
+- (void)notifyEAClientsOfAccessoryEvent:(const char *)event accessory:(id)accessory;
+- (void)notifyEALocationClientsOfIAPLocationAccessoryNMEASentenceFilteringSupportChangedNotification:(id)notification;
+- (void)notifyEALocationClientsOfIAPLocationDidReceiveEphemerisMaxIntervalNotification:(id)notification;
+- (void)notifyEALocationClientsOfIAPLocationDidReceiveEphemerisRecommendedRefreshNotification:(id)notification;
+- (void)notifyEALocationClientsOfIAPLocationDidReceiveEphemerisURLNotification:(id)notification;
+- (void)notifyEALocationClientsOfIAPLocationDidReceiveLocationPointDataNotification:(id)notification;
+- (void)notifyEALocationClientsOfIAPLocationDidReceiveNMEASentenceNotification:(id)notification;
+- (void)notifyEALocationClientsOfIAPLocationDidRequestGPSTimeNotification:(id)notification;
 - (void)removeAllClients;
-- (void)removeClientForXPCConnection:(id)a3;
+- (void)removeClientForXPCConnection:(id)connection;
 - (void)reset;
-- (void)sendToEALocationClientsNotification:(const char *)a3 withPayload:(id)a4;
-- (void)takeProcessAssertionForBundleID:(id)a3;
-- (void)updateAccessoryInfo:(const IPodAccessoryDetails *)a3;
-- (void)updateAccessoryProtocols:(const IPodAccessoryDetails *)a3;
-- (void)updateLocationSupport:(unsigned int)a3 isReady:(BOOL)a4;
-- (void)updatePlistWithProtocolsForAccessory:(id)a3;
-- (void)updateValueFromApp:(id)a3;
+- (void)sendToEALocationClientsNotification:(const char *)notification withPayload:(id)payload;
+- (void)takeProcessAssertionForBundleID:(id)d;
+- (void)updateAccessoryInfo:(const IPodAccessoryDetails *)info;
+- (void)updateAccessoryProtocols:(const IPodAccessoryDetails *)protocols;
+- (void)updateLocationSupport:(unsigned int)support isReady:(BOOL)ready;
+- (void)updatePlistWithProtocolsForAccessory:(id)accessory;
+- (void)updateValueFromApp:(id)app;
 @end
 
 @implementation EAManager
@@ -221,9 +221,9 @@ LABEL_14:
   return result;
 }
 
-+ (id)newPlistForAccessory:(id)a3
++ (id)newPlistForAccessory:(id)accessory
 {
-  v3 = [[NSMutableDictionary alloc] initWithDictionary:a3];
+  v3 = [[NSMutableDictionary alloc] initWithDictionary:accessory];
   [v3 removeObjectForKey:@"EAManagerAccessorySessions"];
   [v3 removeObjectForKey:@"OptionalSDKProtocolsShownKey"];
   [v3 removeObjectForKey:IAPAppAccessoryConnectionTimeInSecKey];
@@ -256,27 +256,27 @@ LABEL_14:
   return v4;
 }
 
-- (void)logAccessoryAttach:(id)a3 reason:(id)a4
+- (void)logAccessoryAttach:(id)attach reason:(id)reason
 {
-  sub_1000DDE90(3u, @"%@", a4);
+  sub_1000DDE90(3u, @"%@", reason);
   v5 = IAPAppAccessoryManufacturerKey;
   v6 = IAPAppAccessoryModelNumberKey;
-  [IAPEventLogger LogMsg:2 WithDictionary:a3 andKeys:[NSArray arrayWithObjects:IAPAppAccessoryNameKey, IAPAppAccessoryManufacturerKey, IAPAppAccessoryModelNumberKey, IAPAppAccessoryFirmwareRevisionKey, IAPAppAccessoryHardwareRevisionKey, 0]];
-  [IAPDataLogger PowerlogAccAttach:a3];
+  [IAPEventLogger LogMsg:2 WithDictionary:attach andKeys:[NSArray arrayWithObjects:IAPAppAccessoryNameKey, IAPAppAccessoryManufacturerKey, IAPAppAccessoryModelNumberKey, IAPAppAccessoryFirmwareRevisionKey, IAPAppAccessoryHardwareRevisionKey, 0]];
+  [IAPDataLogger PowerlogAccAttach:attach];
   if (sub_1000E1660())
   {
-    v7 = [a3 valueForKey:v6];
-    v8 = [a3 valueForKey:v5];
+    v7 = [attach valueForKey:v6];
+    v8 = [attach valueForKey:v5];
 
     [IAPDataLogger AggAccAttach:v7 WithManufacturer:v8];
   }
 }
 
-- (void)logAccessoryDetach:(id)a3 reason:(id)a4
+- (void)logAccessoryDetach:(id)detach reason:(id)reason
 {
-  sub_1000DDE90(3u, @"%@", a4);
-  v5 = [a3 objectForKey:IAPAppAccessoryConnectionTimeInSecKey];
-  +[IAPDataLogger PowerlogAccDetach:AndConnectionTime:](IAPDataLogger, "PowerlogAccDetach:AndConnectionTime:", a3, [v5 unsignedLongValue]);
+  sub_1000DDE90(3u, @"%@", reason);
+  v5 = [detach objectForKey:IAPAppAccessoryConnectionTimeInSecKey];
+  +[IAPDataLogger PowerlogAccDetach:AndConnectionTime:](IAPDataLogger, "PowerlogAccDetach:AndConnectionTime:", detach, [v5 unsignedLongValue]);
   v6 = sub_1000E1660();
   if (v5)
   {
@@ -290,17 +290,17 @@ LABEL_14:
 
   if (!v7)
   {
-    v8 = [a3 valueForKey:IAPAppAccessoryModelNumberKey];
-    v9 = [a3 valueForKey:IAPAppAccessoryManufacturerKey];
-    v10 = [v5 unsignedLongValue];
+    v8 = [detach valueForKey:IAPAppAccessoryModelNumberKey];
+    v9 = [detach valueForKey:IAPAppAccessoryManufacturerKey];
+    unsignedLongValue = [v5 unsignedLongValue];
 
-    [IAPDataLogger AggAccDetach:v8 WithManufacturer:v9 AndConnectionTime:v10];
+    [IAPDataLogger AggAccDetach:v8 WithManufacturer:v9 AndConnectionTime:unsignedLongValue];
   }
 }
 
-- (id)connectionIDObjectForConnectionID:(unsigned int)a3
+- (id)connectionIDObjectForConnectionID:(unsigned int)d
 {
-  v5 = a3;
+  dCopy = d;
   result = &self->_connectionIDMap;
   if ((result & 7) != 0)
   {
@@ -309,7 +309,7 @@ LABEL_8:
     return result;
   }
 
-  result = sub_100007E88(result, &v5);
+  result = sub_100007E88(result, &dCopy);
   if (&self->_connectionIDMap.__tree_.__end_node_ != result)
   {
     if (result && (result & 7) == 0)
@@ -323,9 +323,9 @@ LABEL_8:
   return 0;
 }
 
-- (unsigned)addClient:(unsigned int)a3 withAuditToken:(id *)a4 currentClientID:(unsigned int)a5 xpcConnection:(id)a6 eaProtocols:(id)a7 notifyOfAlreadyConnectedAccessories:(BOOL)a8 andBundleId:(id)a9
+- (unsigned)addClient:(unsigned int)client withAuditToken:(id *)token currentClientID:(unsigned int)d xpcConnection:(id)connection eaProtocols:(id)protocols notifyOfAlreadyConnectedAccessories:(BOOL)accessories andBundleId:(id)id
 {
-  v46 = a8;
+  accessoriesCopy = accessories;
   p_clientLock = &self->_clientLock;
   if ((&self->_clientLock & 7) != 0)
   {
@@ -343,8 +343,8 @@ LABEL_8:
     goto LABEL_46;
   }
 
-  v47 = self;
-  v49 = a5;
+  selfCopy = self;
+  dCopy = d;
   v15 = *p_clients;
   v16 = [*p_clients countByEnumeratingWithState:&v60 objects:v66 count:16];
   if (!v16)
@@ -365,26 +365,26 @@ LABEL_8:
 
       v20 = [*p_clients objectForKey:*(*(&v60 + 1) + 8 * i)];
       v21 = v20;
-      if (a9)
+      if (id)
       {
         if ([objc_msgSend(v20 "bundleId")])
         {
-          sub_1000DDE90(3u, @"Found client by bundleID %@", a9);
+          sub_1000DDE90(3u, @"Found client by bundleID %@", id);
 LABEL_16:
           if (!v21)
           {
             goto LABEL_18;
           }
 
-          NSLog(@"ERROR - %s:%s - %d already have client for mach port bundleID %@ and xpc connection %@", "/Library/Caches/com.apple.xbs/Sources/iapd/iapd/EAManager.mm", "[EAManager addClient:withAuditToken:currentClientID:xpcConnection:eaProtocols:notifyOfAlreadyConnectedAccessories:andBundleId:]", 357, a9, a6);
+          NSLog(@"ERROR - %s:%s - %d already have client for mach port bundleID %@ and xpc connection %@", "/Library/Caches/com.apple.xbs/Sources/iapd/iapd/EAManager.mm", "[EAManager addClient:withAuditToken:currentClientID:xpcConnection:eaProtocols:notifyOfAlreadyConnectedAccessories:andBundleId:]", 357, id, connection);
           LODWORD(v22) = 0;
           goto LABEL_45;
         }
       }
 
-      else if ([v20 xpcConnection] == a6)
+      else if ([v20 xpcConnection] == connection)
       {
-        sub_1000DDE90(3u, @"Found client by xpcConnection %@, bundleID is %@", a6, 0);
+        sub_1000DDE90(3u, @"Found client by xpcConnection %@, bundleID is %@", connection, 0);
         goto LABEL_16;
       }
     }
@@ -400,11 +400,11 @@ LABEL_16:
 
 LABEL_18:
   v23 = [IAPEAClient alloc];
-  v24 = *&a4->var0[4];
-  v59[0] = *a4->var0;
+  v24 = *&token->var0[4];
+  v59[0] = *token->var0;
   v59[1] = v24;
-  v25 = a3;
-  v26 = [(IAPEAClient *)v23 initWithCapabilities:a3 auditToken:v59 xpcConnection:a6 eaProtocols:a7 andBundleId:a9];
+  clientCopy2 = client;
+  v26 = [(IAPEAClient *)v23 initWithCapabilities:client auditToken:v59 xpcConnection:connection eaProtocols:protocols andBundleId:id];
   v27 = *p_clients;
   if (!*p_clients)
   {
@@ -412,28 +412,28 @@ LABEL_18:
     *p_clients = v27;
   }
 
-  v22 = v49;
-  v28 = [v27 objectForKey:{+[EAManager stringForClientID:](EAManager, "stringForClientID:", v49)}];
-  if (!v49 || v28)
+  v22 = dCopy;
+  v28 = [v27 objectForKey:{+[EAManager stringForClientID:](EAManager, "stringForClientID:", dCopy)}];
+  if (!dCopy || v28)
   {
     v22 = [+[EAManager sharedManager](EAManager "sharedManager")];
   }
 
   [(IAPEAClient *)v26 setClientID:v22];
   [*p_clients setObject:v26 forKey:{+[EAManager stringForClientID:](EAManager, "stringForClientID:", -[IAPEAClient clientID](v26, "clientID"))}];
-  if (v46)
+  if (accessoriesCopy)
   {
     v29 = objc_alloc_init(NSMutableArray);
-    if ((&v47->_connectedAccessoriesLock & 7) == 0)
+    if ((&selfCopy->_connectedAccessoriesLock & 7) == 0)
     {
       v30 = v29;
-      [(NSLock *)v47->_connectedAccessoriesLock lock];
+      [(NSLock *)selfCopy->_connectedAccessoriesLock lock];
       v57 = 0u;
       v58 = 0u;
       v55 = 0u;
       v56 = 0u;
-      p_connectedAccessories = &v47->_connectedAccessories;
-      if ((&v47->_connectedAccessories & 7) == 0)
+      p_connectedAccessories = &selfCopy->_connectedAccessories;
+      if ((&selfCopy->_connectedAccessories & 7) == 0)
       {
         v50 = v22;
         v45 = p_clientLock;
@@ -462,7 +462,7 @@ LABEL_18:
           while (v34);
         }
 
-        [(NSLock *)v47->_connectedAccessoriesLock unlock];
+        [(NSLock *)selfCopy->_connectedAccessoriesLock unlock];
         v53 = 0u;
         v54 = 0u;
         v51 = 0u;
@@ -481,7 +481,7 @@ LABEL_18:
                 objc_enumerationMutation(v30);
               }
 
-              [(EAManager *)v47 notifyEAClient:v26 ofAccessoryEvent:"EAProtocolAccessoryConnected" accessory:*(*(&v51 + 1) + 8 * k)];
+              [(EAManager *)selfCopy notifyEAClient:v26 ofAccessoryEvent:"EAProtocolAccessoryConnected" accessory:*(*(&v51 + 1) + 8 * k)];
             }
 
             v39 = [v30 countByEnumeratingWithState:&v51 objects:v64 count:16];
@@ -491,7 +491,7 @@ LABEL_18:
         }
 
         p_clientLock = v45;
-        v25 = a3;
+        clientCopy2 = client;
         LODWORD(v22) = v50;
         goto LABEL_41;
       }
@@ -503,7 +503,7 @@ LABEL_46:
 
 LABEL_41:
 
-  if ((v25 & 4) != 0)
+  if ((clientCopy2 & 4) != 0)
   {
     v42 = sub_1000D5ED0();
     if (!v42 || (v42 & 7) != 0)
@@ -519,7 +519,7 @@ LABEL_45:
   return v22;
 }
 
-- (void)removeClientForXPCConnection:(id)a3
+- (void)removeClientForXPCConnection:(id)connection
 {
   p_clientLock = &self->_clientLock;
   if ((&self->_clientLock & 7) != 0)
@@ -557,7 +557,7 @@ LABEL_5:
     }
 
     v12 = [*p_clients objectForKey:*(*(&v36 + 1) + 8 * v11)];
-    if ([v12 xpcConnection] == a3)
+    if ([v12 xpcConnection] == connection)
     {
       break;
     }
@@ -569,7 +569,7 @@ LABEL_5:
       {
 LABEL_36:
         NSLog(@"Didn't find client to remove");
-        NSLog(@"ERROR - %s:%s - %d couldn't find client for xpc client %hhx", "/Library/Caches/com.apple.xbs/Sources/iapd/iapd/EAManager.mm", "[EAManager removeClientForXPCConnection:]", 418, a3);
+        NSLog(@"ERROR - %s:%s - %d couldn't find client for xpc client %hhx", "/Library/Caches/com.apple.xbs/Sources/iapd/iapd/EAManager.mm", "[EAManager removeClientForXPCConnection:]", 418, connection);
         goto LABEL_37;
       }
 
@@ -583,7 +583,7 @@ LABEL_36:
     goto LABEL_36;
   }
 
-  v27 = [v12 clientID];
+  clientID = [v12 clientID];
   if ([v12 locationSupportedByClient])
   {
     [v12 setLocationSupportedByClient:0];
@@ -631,7 +631,7 @@ LABEL_19:
         }
 
         v18 = p_connectedAccessories;
-        v19 = [objc_msgSend(objc_msgSend(*p_connectedAccessories objectForKey:{*(*(&v32 + 1) + 8 * i)), "objectForKey:", @"EAManagerAccessorySessions", "copySessionsForClientID:", v27}];
+        v19 = [objc_msgSend(objc_msgSend(*p_connectedAccessories objectForKey:{*(*(&v32 + 1) + 8 * i)), "objectForKey:", @"EAManagerAccessorySessions", "copySessionsForClientID:", clientID}];
         v28 = 0u;
         v29 = 0u;
         v30 = 0u;
@@ -668,7 +668,7 @@ LABEL_19:
     while (v16);
   }
 
-  [(NSMutableDictionary *)*v24 removeObjectForKey:[EAManager stringForClientID:v27]];
+  [(NSMutableDictionary *)*v24 removeObjectForKey:[EAManager stringForClientID:clientID]];
   if (![(NSMutableDictionary *)*v24 count])
   {
 
@@ -705,14 +705,14 @@ LABEL_35:
         }
 
         v4 = [*p_clients objectForKey:*(*(&v36 + 1) + 8 * v3)];
-        v25 = [v4 clientID];
-        v5 = [v4 xpcConnection];
-        if (!v5)
+        clientID = [v4 clientID];
+        xpcConnection = [v4 xpcConnection];
+        if (!xpcConnection)
         {
           goto LABEL_34;
         }
 
-        xpc_connection_set_event_handler(v5, &stru_100111AE8);
+        xpc_connection_set_event_handler(xpcConnection, &stru_100111AE8);
         if ([v4 locationSupportedByClient])
         {
           [v4 setLocationSupportedByClient:0];
@@ -755,7 +755,7 @@ LABEL_35:
                 objc_enumerationMutation(v23);
               }
 
-              v11 = [objc_msgSend(objc_msgSend(*p_connectedAccessories objectForKey:{*(*(&v32 + 1) + 8 * i)), "objectForKey:", @"EAManagerAccessorySessions", "copySessionsForClientID:", v25}];
+              v11 = [objc_msgSend(objc_msgSend(*p_connectedAccessories objectForKey:{*(*(&v32 + 1) + 8 * i)), "objectForKey:", @"EAManagerAccessorySessions", "copySessionsForClientID:", clientID}];
               v28 = 0u;
               v29 = 0u;
               v30 = 0u;
@@ -803,7 +803,7 @@ LABEL_34:
         block[2] = sub_100002C68;
         block[3] = &unk_100111B10;
         block[4] = self;
-        v27 = v25;
+        v27 = clientID;
         dispatch_async(global_queue, block);
         ++v3;
       }
@@ -818,9 +818,9 @@ LABEL_34:
   [(NSLock *)*p_clientLock unlock];
 }
 
-- (unsigned)clientIDForDisplayIdentifier:(const char *)a3
+- (unsigned)clientIDForDisplayIdentifier:(const char *)identifier
 {
-  v4 = [[NSString alloc] initWithCString:a3 encoding:4];
+  v4 = [[NSString alloc] initWithCString:identifier encoding:4];
   p_clientLock = &self->_clientLock;
   if ((&self->_clientLock & 7) != 0 || (v6 = v4, [(NSLock *)self->_clientLock lock], v18 = 0u, v19 = 0u, v16 = 0u, v17 = 0u, p_clients = &self->_clients, (&self->_clients & 7) != 0))
   {
@@ -845,7 +845,7 @@ LABEL_34:
         v13 = [*p_clients objectForKey:{*(*(&v16 + 1) + 8 * i), v16}];
         if (![objc_msgSend(v13 "bundleId")])
         {
-          v14 = [v13 clientID];
+          clientID = [v13 clientID];
           goto LABEL_13;
         }
       }
@@ -860,16 +860,16 @@ LABEL_34:
     }
   }
 
-  v14 = 0;
+  clientID = 0;
 LABEL_13:
   [(NSLock *)*p_clientLock unlock];
 
-  return v14;
+  return clientID;
 }
 
-- (BOOL)sessionsOpenForDisplayIdentifer:(const char *)a3
+- (BOOL)sessionsOpenForDisplayIdentifer:(const char *)identifer
 {
-  v17 = [[NSString alloc] initWithCString:a3 encoding:4];
+  v17 = [[NSString alloc] initWithCString:identifer encoding:4];
   if ((&self->_clientLock & 7) != 0 || ([(NSLock *)self->_clientLock lock], v26 = 0u, v27 = 0u, v24 = 0u, v25 = 0u, p_clients = &self->_clients, (&self->_clients & 7) != 0))
   {
 LABEL_20:
@@ -941,21 +941,21 @@ LABEL_20:
   return v4 & 1;
 }
 
-- (void)attachAccessory:(const IPodAccessoryDetails *)a3 forTransport:(void *)a4
+- (void)attachAccessory:(const IPodAccessoryDetails *)accessory forTransport:(void *)transport
 {
-  if (!a3 || !a4)
+  if (!accessory || !transport)
   {
     return;
   }
 
-  if ((a3 & 7) != 0)
+  if ((accessory & 7) != 0)
   {
     goto LABEL_182;
   }
 
-  if (((*(a3->var0 + 6))(a3, a2) & 0x200) != 0)
+  if (((*(accessory->var0 + 6))(accessory, a2) & 0x200) != 0)
   {
-    v5 = (*(a3->var0 + 19))(a3);
+    v5 = (*(accessory->var0 + 19))(accessory);
     if (*(v5 + 16))
     {
       v6 = v5;
@@ -1140,11 +1140,11 @@ LABEL_41:
       v21 = [LSApplicationProxy applicationProxyForIdentifier:v15];
       if (v21)
       {
-        v22 = [v21 UIBackgroundModes];
+        uIBackgroundModes = [v21 UIBackgroundModes];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v23 = [v22 containsObject:@"external-accessory"];
+          v23 = [uIBackgroundModes containsObject:@"external-accessory"];
           v24 = v23;
           sub_1000DDE90(3u, @"client '%@' supports background EA = %d, if true needs a process assertion\n", v15, v23);
           if (v24)
@@ -1168,8 +1168,8 @@ LABEL_41:
 LABEL_54:
 
   v26 = objc_alloc_init(NSMutableDictionary);
-  v107 = (*(a3->var0 + 2))(a3);
-  v114 = [NSNumber numberWithUnsignedInteger:(*(a3->var0 + 5))(a3)];
+  v107 = (*(accessory->var0 + 2))(accessory);
+  v114 = [NSNumber numberWithUnsignedInteger:(*(accessory->var0 + 5))(accessory)];
   p_connectedAccessoriesLock = &self->_connectedAccessoriesLock;
   if ((&self->_connectedAccessoriesLock & 7) != 0)
   {
@@ -1221,7 +1221,7 @@ LABEL_54:
   v119 = 0;
   v120 = 0;
   sub_1000CC7A0();
-  v33 = (*(a3->var0 + 5))(a3);
+  v33 = (*(accessory->var0 + 5))(accessory);
   sub_1000CE0E4(v33, 9u, &v118);
   if ((v118 & 7) != 0 || (v119 & 7) != 0)
   {
@@ -1251,8 +1251,8 @@ LABEL_54:
     [v26 setObject:v35 forKey:IAPAppAccessoryClassKey];
   }
 
-  v36 = (*(a3->var0 + 6))(a3) >> 16;
-  v37 = (*(a3->var0 + 13))(a3);
+  v36 = (*(accessory->var0 + 6))(accessory) >> 16;
+  v37 = (*(accessory->var0 + 13))(accessory);
   if (!v37 || (v37 & 3) != 0)
   {
     goto LABEL_182;
@@ -1267,13 +1267,13 @@ LABEL_54:
 
   v38 = +[NSMutableDictionary dictionary];
   v39 = +[NSMutableDictionary dictionary];
-  if ((a4 & 7) != 0)
+  if ((transport & 7) != 0)
   {
     goto LABEL_182;
   }
 
   v40 = v39;
-  if (!(*(*a4 + 208))(a4) || (*(*a4 + 208))(a4) == 1)
+  if (!(*(*transport + 208))(transport) || (*(*transport + 208))(transport) == 1)
   {
     v41 = +[NSMutableDictionary dictionary];
     v42 = sub_100045A94();
@@ -1283,17 +1283,17 @@ LABEL_54:
       goto LABEL_182;
     }
 
-    [v41 setObject:+[NSNumber numberWithInt:](NSNumber forKey:{"numberWithInt:", (*(*v42 + 184))(v42, a4)), kCFAccessoryPortPropertyIsConnected}];
+    [v41 setObject:+[NSNumber numberWithInt:](NSNumber forKey:{"numberWithInt:", (*(*v42 + 184))(v42, transport)), kCFAccessoryPortPropertyIsConnected}];
     v44 = [NSNumber numberWithInt:0];
     [v41 setObject:v44 forKey:kCFAccessoryPortPropertyIsActive];
-    if ((*(*v43 + 152))(v43, a4, 0))
+    if ((*(*v43 + 152))(v43, transport, 0))
     {
       v45 = 1;
     }
 
     else
     {
-      v45 = (*(*v43 + 168))(v43, a4);
+      v45 = (*(*v43 + 168))(v43, transport);
     }
 
     v46 = [NSNumber numberWithInt:v45];
@@ -1306,7 +1306,7 @@ LABEL_54:
         goto LABEL_182;
       }
 
-      *&v48 = (*(*v47 + 104))(v47, a4) / 255.0;
+      *&v48 = (*(*v47 + 104))(v47, transport) / 255.0;
       v49 = [NSNumber numberWithFloat:v48];
       [v41 setObject:v49 forKey:kCFAccessoryPortPropertyVolumeScalar];
     }
@@ -1314,7 +1314,7 @@ LABEL_54:
     [v40 setObject:v41 forKey:kCFAccessoryPortLineOut];
   }
 
-  if (!(*(*a4 + 208))(a4) || (*(*a4 + 208))(a4) == 1)
+  if (!(*(*transport + 208))(transport) || (*(*transport + 208))(transport) == 1)
   {
     v50 = +[NSMutableDictionary dictionary];
     v51 = sub_1000CE5B4();
@@ -1328,7 +1328,7 @@ LABEL_54:
       goto LABEL_182;
     }
 
-    [v50 setObject:+[NSNumber numberWithInt:](NSNumber forKey:{"numberWithInt:", (*(*v51 + 136))(v51, a4)), kCFAccessoryPortPropertyIsConnected}];
+    [v50 setObject:+[NSNumber numberWithInt:](NSNumber forKey:{"numberWithInt:", (*(*v51 + 136))(v51, transport)), kCFAccessoryPortPropertyIsConnected}];
     LODWORD(v116.tv_sec) = 0;
     v52 = sub_1000CE5B4();
     if (!v52 || (v52 & 7) != 0)
@@ -1336,7 +1336,7 @@ LABEL_54:
       goto LABEL_182;
     }
 
-    v53 = (*(*v52 + 120))(v52, a4, &v116);
+    v53 = (*(*v52 + 120))(v52, transport, &v116);
     v54 = +[NSMutableArray array];
     if (LODWORD(v116.tv_sec))
     {
@@ -1375,7 +1375,7 @@ LABEL_108:
     [v40 setObject:v50 forKey:kCFAccessoryPortUSBOut];
   }
 
-  if ((*(*a4 + 208))(a4) && (*(*a4 + 208))(a4) != 1)
+  if ((*(*transport + 208))(transport) && (*(*transport + 208))(transport) != 1)
   {
     goto LABEL_120;
   }
@@ -1407,21 +1407,21 @@ LABEL_185:
     goto LABEL_182;
   }
 
-  [v60 setObject:+[NSNumber numberWithInt:](NSNumber forKey:{"numberWithInt:", (*(*v63 + 168))(v63, a4)), kCFAccessoryPortPropertyFullDuplexIsSupported}];
+  [v60 setObject:+[NSNumber numberWithInt:](NSNumber forKey:{"numberWithInt:", (*(*v63 + 168))(v63, transport)), kCFAccessoryPortPropertyFullDuplexIsSupported}];
   v64 = sub_1000D4754();
   if (!v64 || (v64 & 7) != 0)
   {
     goto LABEL_182;
   }
 
-  [v60 setObject:+[NSNumber numberWithInt:](NSNumber forKey:{"numberWithInt:", (*(*v64 + 176))(v64, a4)), kCFAccessoryPortPropertyIsVoiceSignalProcessingSupported}];
+  [v60 setObject:+[NSNumber numberWithInt:](NSNumber forKey:{"numberWithInt:", (*(*v64 + 176))(v64, transport)), kCFAccessoryPortPropertyIsVoiceSignalProcessingSupported}];
   v65 = [NSNumber numberWithInt:0];
   [v60 setObject:v65 forKey:kCFAccessoryPortPropertyIsActive];
   [v40 setObject:v60 forKey:kCFAccessoryPortLineIn];
 LABEL_120:
   if ([v40 count])
   {
-    [v38 setObject:v40 forKey:{+[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%X", (*(a3->var0 + 5))(a3))}];
+    [v38 setObject:v40 forKey:{+[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%X", (*(accessory->var0 + 5))(accessory))}];
   }
 
   if ([v38 count])
@@ -1429,10 +1429,10 @@ LABEL_120:
     [v26 setObject:v38 forKey:IAPAppAccessoryPortsKey];
   }
 
-  v66 = (*(a3->var0 + 13))(a3);
+  v66 = (*(accessory->var0 + 13))(accessory);
   if (v66)
   {
-    (*(*a4 + 344))(a4, v66);
+    (*(*transport + 344))(transport, v66);
     if ((v66 & 3) != 0)
     {
       goto LABEL_182;
@@ -1585,7 +1585,7 @@ LABEL_120:
     [v26 setObject:&stru_100119FF8 forKey:IAPAppAccessoryHardwareRevisionKey];
   }
 
-  if ((*(a3->var0 + 4))(a3) == 15)
+  if ((*(accessory->var0 + 4))(accessory) == 15)
   {
     [v26 setObject:@"iPod Hi-Fi" forKey:v106];
     [v26 setObject:@"Apple" forKey:v104];
@@ -1593,7 +1593,7 @@ LABEL_120:
 
   [v26 setObject:v114 forKey:IAPAppConnectionIDKey];
   [v26 setObject:objc_alloc_init(IAPSessionList) forKey:@"EAManagerAccessorySessions"];
-  v87 = (*(a3->var0 + 7))(a3);
+  v87 = (*(accessory->var0 + 7))(accessory);
   if (v87)
   {
     v88 = [NSString stringWithUTF8String:v87];
@@ -1614,7 +1614,7 @@ LABEL_120:
   [v26 setObject:v90 forKey:IAPAppAccessoryCapabilitiesKey];
   WORD2(v117) = -21846;
   LODWORD(v117) = -1431655766;
-  (*(*a4 + 184))(&v117);
+  (*(*transport + 184))(&v117);
   if (&v117 == -1 || &v117 + 5 < 4)
   {
     goto LABEL_183;
@@ -1631,11 +1631,11 @@ LABEL_182:
     goto LABEL_183;
   }
 
-  LODWORD(v116.tv_sec) = (*(a3->var0 + 5))(a3);
+  LODWORD(v116.tv_sec) = (*(accessory->var0 + 5))(accessory);
   if (&self->_connectionIDMap.__tree_.__end_node_ == sub_100007E88(p_connectionIDMap, &v116))
   {
     v93 = v114;
-    LODWORD(v116.tv_sec) = (*(a3->var0 + 5))(a3);
+    LODWORD(v116.tv_sec) = (*(accessory->var0 + 5))(accessory);
     *sub_1000047CC(p_connectionIDMap, &v116) = v93;
   }
 
@@ -1650,7 +1650,7 @@ LABEL_182:
   gettimeofday(&v116, 0);
   v95 = [NSNumber numberWithLong:v116.tv_sec];
   [v26 setObject:v95 forKey:IAPAppAccessoryConnectionTimeInSecKey];
-  if (v26 && ((*(a3->var0 + 6))(a3) & 0x200) == 0 && (*(a3->var0 + 21))(a3, a4))
+  if (v26 && ((*(accessory->var0 + 6))(accessory) & 0x200) == 0 && (*(accessory->var0 + 21))(accessory, transport))
   {
     [(EAManager *)self logAccessoryAttach:v26 reason:@"Accessory attached"];
   }
@@ -1659,22 +1659,22 @@ LABEL_182:
   sub_100007F60(&v116.tv_sec);
 }
 
-- (void)updateAccessoryProtocols:(const IPodAccessoryDetails *)a3
+- (void)updateAccessoryProtocols:(const IPodAccessoryDetails *)protocols
 {
   p_connectedAccessoriesLock = &self->_connectedAccessoriesLock;
   if ((&self->_connectedAccessoriesLock & 7) == 0)
   {
     [(NSLock *)*p_connectedAccessoriesLock lock];
-    if (a3)
+    if (protocols)
     {
-      if ((a3 & 7) == 0)
+      if ((protocols & 7) == 0)
       {
-        v6 = [NSNumber numberWithUnsignedInteger:(*(a3->var0 + 5))(a3)];
-        dword_10012B8A0 = (*(a3->var0 + 5))(a3);
+        v6 = [NSNumber numberWithUnsignedInteger:(*(protocols->var0 + 5))(protocols)];
+        dword_10012B8A0 = (*(protocols->var0 + 5))(protocols);
         if ((&self->_connectedAccessories & 7) == 0)
         {
           v7 = [(NSMutableDictionary *)self->_connectedAccessories objectForKey:v6];
-          if (!v7 || (v8 = v7, ((*(a3->var0 + 6))(a3) & 0x200) == 0))
+          if (!v7 || (v8 = v7, ((*(protocols->var0 + 6))(protocols) & 0x200) == 0))
           {
             v9 = *p_connectedAccessoriesLock;
 
@@ -1682,7 +1682,7 @@ LABEL_182:
             return;
           }
 
-          v10 = (*(a3->var0 + 19))(a3);
+          v10 = (*(protocols->var0 + 19))(protocols);
           if (*(v10 + 16))
           {
             v11 = v10;
@@ -1795,20 +1795,20 @@ LABEL_37:
   __break(0x550Au);
 }
 
-- (void)updateAccessoryInfo:(const IPodAccessoryDetails *)a3
+- (void)updateAccessoryInfo:(const IPodAccessoryDetails *)info
 {
   v29 = objc_alloc_init(NSAutoreleasePool);
-  if (!a3)
+  if (!info)
   {
     goto LABEL_37;
   }
 
-  if ((a3 & 7) != 0)
+  if ((info & 7) != 0)
   {
     goto LABEL_37;
   }
 
-  v5 = (*(a3->var0 + 13))(a3);
+  v5 = (*(info->var0 + 13))(info);
   if ((&self->_connectedAccessoriesLock & 7) != 0)
   {
     goto LABEL_37;
@@ -1816,7 +1816,7 @@ LABEL_37:
 
   v6 = v5;
   [(NSLock *)self->_connectedAccessoriesLock lock];
-  v7 = [NSNumber numberWithUnsignedInteger:(*(a3->var0 + 5))(a3)];
+  v7 = [NSNumber numberWithUnsignedInteger:(*(info->var0 + 5))(info)];
   if ((&self->_connectedAccessories & 7) != 0)
   {
     goto LABEL_37;
@@ -1943,17 +1943,17 @@ LABEL_32:
   [(NSLock *)self->_connectedAccessoriesLock unlock];
 }
 
-- (void)updateLocationSupport:(unsigned int)a3 isReady:(BOOL)a4
+- (void)updateLocationSupport:(unsigned int)support isReady:(BOOL)ready
 {
   p_connectedAccessoriesLock = &self->_connectedAccessoriesLock;
-  if ((&self->_connectedAccessoriesLock & 7) != 0 || (v5 = a4, [(NSLock *)self->_connectedAccessoriesLock lock], (&self->_connectedAccessories & 7) != 0))
+  if ((&self->_connectedAccessoriesLock & 7) != 0 || (v5 = ready, [(NSLock *)self->_connectedAccessoriesLock lock], (&self->_connectedAccessories & 7) != 0))
   {
     __break(0x5516u);
   }
 
   else
   {
-    v8 = [(NSMutableDictionary *)self->_connectedAccessories objectForKey:[NSNumber numberWithUnsignedInteger:a3]];
+    v8 = [(NSMutableDictionary *)self->_connectedAccessories objectForKey:[NSNumber numberWithUnsignedInteger:support]];
     if (v8 && ((v9 = v8, v10 = IAPAppAccessoryCapabilitiesKey, v11 = [objc_msgSend(v8 objectForKey:{IAPAppAccessoryCapabilitiesKey), "unsignedIntValue"}] & 0xFFFFFFF7, !v5) ? (v12 = 0) : (v12 = 8), objc_msgSend(v9, "setObject:forKey:", +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", v11 | v12), v10), v5))
     {
       v14 = [EAManager newPlistForAccessory:v9];
@@ -1973,14 +1973,14 @@ LABEL_32:
   }
 }
 
-- (void)updateValueFromApp:(id)a3
+- (void)updateValueFromApp:(id)app
 {
   v29 = objc_alloc_init(NSAutoreleasePool);
-  if ([objc_msgSend(a3 objectForKey:{IAPAppConnectionIDKey), "intValue"}])
+  if ([objc_msgSend(app objectForKey:{IAPAppConnectionIDKey), "intValue"}])
   {
-    v4 = [a3 objectForKey:IAPAppAccessoryPortKey];
-    v5 = [a3 objectForKey:IAPAppAccessoryPortPropertyKey];
-    v6 = [a3 objectForKey:IAPAppAccessoryPortPropertyValueKey];
+    v4 = [app objectForKey:IAPAppAccessoryPortKey];
+    v5 = [app objectForKey:IAPAppAccessoryPortPropertyKey];
+    v6 = [app objectForKey:IAPAppAccessoryPortPropertyValueKey];
     if ([v5 compare:kCFAccessoryPortPropertyCurrentSampleRate options:1])
     {
       if ([v5 compare:kCFAccessoryPortPropertyIsActive options:1])
@@ -2040,10 +2040,10 @@ LABEL_57:
             goto LABEL_53;
           }
 
-          v19 = [v6 intValue];
+          intValue = [v6 intValue];
           v20 = sub_1000D4754();
           v22 = (v20 & 7) == 0 && v20 != 0;
-          if (v19)
+          if (intValue)
           {
             if (v22)
             {
@@ -2071,10 +2071,10 @@ LABEL_57:
             goto LABEL_53;
           }
 
-          v25 = [v6 intValue];
+          intValue2 = [v6 intValue];
           v26 = sub_1000D4754();
           v28 = (v26 & 7) == 0 && v26 != 0;
-          if (v25)
+          if (intValue2)
           {
             if (v28)
             {
@@ -2129,17 +2129,17 @@ LABEL_57:
 LABEL_53:
 }
 
-- (id)valueForProperty:(id)a3 forAccessory:(unsigned int)a4
+- (id)valueForProperty:(id)property forAccessory:(unsigned int)accessory
 {
   v4 = (self + 40);
-  if (((self + 40) & 7) != 0 || (v7 = self, [*(self + 5) lock], self = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", a4), ((v7 + 1) & 7) != 0))
+  if (((self + 40) & 7) != 0 || (v7 = self, [*(self + 5) lock], self = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", accessory), ((v7 + 1) & 7) != 0))
   {
     __break(0x5516u);
   }
 
   else
   {
-    v8 = [objc_msgSend(v7[1] objectForKey:{self), "objectForKey:", a3}];
+    v8 = [objc_msgSend(v7[1] objectForKey:{self), "objectForKey:", property}];
     [*v4 unlock];
     return v8;
   }
@@ -2147,9 +2147,9 @@ LABEL_53:
   return self;
 }
 
-- (void)detachAccessory:(unsigned int)a3
+- (void)detachAccessory:(unsigned int)accessory
 {
-  v23 = a3;
+  accessoryCopy = accessory;
   v5 = objc_alloc_init(NSAutoreleasePool);
   if ((&self->_connectedAccessoriesLock & 7) != 0)
   {
@@ -2158,7 +2158,7 @@ LABEL_53:
 
   v6 = v5;
   [(NSLock *)self->_connectedAccessoriesLock lock];
-  v7 = [NSNumber numberWithUnsignedInteger:a3];
+  v7 = [NSNumber numberWithUnsignedInteger:accessory];
   if ((&self->_connectedAccessories & 7) != 0)
   {
     goto LABEL_18;
@@ -2212,7 +2212,7 @@ LABEL_53:
     p_connectionIDMap = &self->_connectionIDMap;
     if ((p_connectionIDMap & 7) == 0)
     {
-      v17 = sub_100007E88(p_connectionIDMap, &v23);
+      v17 = sub_100007E88(p_connectionIDMap, &accessoryCopy);
       if (v17)
       {
         v18 = v17;
@@ -2241,12 +2241,12 @@ LABEL_17:
   }
 
   v4 = v3;
-  v5 = [(NSMutableDictionary *)self->_connectedAccessories allKeys];
+  allKeys = [(NSMutableDictionary *)self->_connectedAccessories allKeys];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v6 = [allKeys countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = v6;
@@ -2257,24 +2257,24 @@ LABEL_17:
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allKeys);
         }
 
         -[EAManager detachAccessory:](self, "detachAccessory:", [*(*(&v10 + 1) + 8 * i) unsignedIntValue]);
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [allKeys countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);
   }
 }
 
-- (id)accessoryForConnectionID:(id)a3
+- (id)accessoryForConnectionID:(id)d
 {
   if (((self + 8) & 7) == 0)
   {
-    return [*(self + 1) objectForKey:a3];
+    return [*(self + 1) objectForKey:d];
   }
 
   __break(0x5516u);
@@ -2300,9 +2300,9 @@ LABEL_17:
   return result;
 }
 
-- (id)connectedAccessoriesForEAClient:(unsigned int)a3
+- (id)connectedAccessoriesForEAClient:(unsigned int)client
 {
-  v5 = [(EAManager *)self connectedAccessories];
+  connectedAccessories = [(EAManager *)self connectedAccessories];
   v6 = objc_alloc_init(NSMutableArray);
   p_clientLock = &self->_clientLock;
   if ((&self->_clientLock & 7) != 0 || (v8 = v6, [(NSLock *)self->_clientLock lock], v28 = 0u, v29 = 0u, v26 = 0u, v27 = 0u, p_clients = &self->_clients, (&self->_clients & 7) != 0))
@@ -2326,7 +2326,7 @@ LABEL_5:
       }
 
       v15 = [*p_clients objectForKey:*(*(&v26 + 1) + 8 * v14)];
-      if ([v15 clientID] == a3)
+      if ([v15 clientID] == client)
       {
         break;
       }
@@ -2355,7 +2355,7 @@ LABEL_11:
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v16 = [v5 countByEnumeratingWithState:&v22 objects:v30 count:16];
+  v16 = [connectedAccessories countByEnumeratingWithState:&v22 objects:v30 count:16];
   if (v16)
   {
     v17 = v16;
@@ -2366,7 +2366,7 @@ LABEL_11:
       {
         if (*v23 != v18)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(connectedAccessories);
         }
 
         v20 = *(*(&v22 + 1) + 8 * i);
@@ -2376,7 +2376,7 @@ LABEL_11:
         }
       }
 
-      v17 = [v5 countByEnumeratingWithState:&v22 objects:v30 count:16];
+      v17 = [connectedAccessories countByEnumeratingWithState:&v22 objects:v30 count:16];
     }
 
     while (v17);
@@ -2476,9 +2476,9 @@ LABEL_11:
   }
 }
 
-- (void)fakedLocationDeviceSetFilter:(id)a3
+- (void)fakedLocationDeviceSetFilter:(id)filter
 {
-  v4 = [a3 objectAtIndex:0];
+  v4 = [filter objectAtIndex:0];
   v5 = sub_1000D2164([v4 unsignedIntValue], 0);
   v13 = objc_alloc_init(NSAutoreleasePool);
   if (!v5)
@@ -2496,19 +2496,19 @@ LABEL_19:
   if ((*(*v5 + 176))(v5))
   {
     v6 = +[NSString string];
-    if ([a3 count] >= 2)
+    if ([filter count] >= 2)
     {
       v7 = 1;
       while (1)
       {
-        v8 = [a3 count];
+        v8 = [filter count];
         v9 = v8 - 1;
         if (!v8)
         {
           break;
         }
 
-        v10 = [a3 objectAtIndex:v7];
+        v10 = [filter objectAtIndex:v7];
         if (v9 == v7)
         {
           v11 = [(NSString *)v6 stringByAppendingString:v10];
@@ -2527,7 +2527,7 @@ LABEL_19:
           goto LABEL_18;
         }
 
-        if ([a3 count] <= v7)
+        if ([filter count] <= v7)
         {
           goto LABEL_12;
         }
@@ -2566,7 +2566,7 @@ LABEL_13:
   return self;
 }
 
-- (void)_shouldPostNoAppAlert:(id)a3
+- (void)_shouldPostNoAppAlert:(id)alert
 {
   if (!sub_1000E1434("com.apple.AppStore"))
   {
@@ -2580,7 +2580,7 @@ LABEL_13:
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v8 = [a3 countByEnumeratingWithState:&v34 objects:v39 count:16];
+  v8 = [alert countByEnumeratingWithState:&v34 objects:v39 count:16];
   if (!v8)
   {
     goto LABEL_41;
@@ -2596,13 +2596,13 @@ LABEL_13:
     {
       if (*v35 != v10)
       {
-        objc_enumerationMutation(a3);
+        objc_enumerationMutation(alert);
       }
 
       v12 = *(*(&v34 + 1) + 8 * i);
       if (![(EAManager *)self _isProtocolContainedInWhitelist:v12])
       {
-        v13 = [objc_msgSend(a3 objectForKey:{v12), "unsignedIntValue"}];
+        v13 = [objc_msgSend(alert objectForKey:{v12), "unsignedIntValue"}];
         if (v13 >= 8)
         {
           __break(0x550Au);
@@ -2610,7 +2610,7 @@ LABEL_13:
 
         if (v13 - 3 >= 0xFFFFFFFE)
         {
-          v14 = [v12 lowercaseString];
+          lowercaseString = [v12 lowercaseString];
           if (v6 && (v15 = CFGetTypeID(v6), v15 != CFArrayGetTypeID()))
           {
             v16 = CFGetTypeID(v6);
@@ -2619,12 +2619,12 @@ LABEL_13:
 
           else
           {
-            if ([v6 containsObject:v14] & 1) != 0 || (objc_msgSend(v7, "containsObject:", v14))
+            if ([v6 containsObject:lowercaseString] & 1) != 0 || (objc_msgSend(v7, "containsObject:", lowercaseString))
             {
               continue;
             }
 
-            [v7 addObject:v14];
+            [v7 addObject:lowercaseString];
             LOBYTE(v29) = 1;
           }
 
@@ -2638,7 +2638,7 @@ LABEL_13:
       }
     }
 
-    v9 = [a3 countByEnumeratingWithState:&v34 objects:v39 count:16];
+    v9 = [alert countByEnumeratingWithState:&v34 objects:v39 count:16];
   }
 
   while (v9);
@@ -2726,11 +2726,11 @@ LABEL_46:
   __break(0x5516u);
 }
 
-- (void)applicationStateChanged:(id)a3
+- (void)applicationStateChanged:(id)changed
 {
-  v5 = [objc_msgSend(a3 objectForKey:{BKSApplicationStateKey), "intValue"}];
-  v6 = [a3 objectForKey:BKSApplicationStateDisplayIDKey];
-  v7 = [objc_msgSend(a3 objectForKey:{BKSApplicationStateProcessIDKey), "intValue"}];
+  v5 = [objc_msgSend(changed objectForKey:{BKSApplicationStateKey), "intValue"}];
+  v6 = [changed objectForKey:BKSApplicationStateDisplayIDKey];
+  v7 = [objc_msgSend(changed objectForKey:{BKSApplicationStateProcessIDKey), "intValue"}];
   v8 = v7;
   v9 = @"running in the background";
   v10 = @"running the foreground";
@@ -3023,9 +3023,9 @@ LABEL_23:
   [(NSLock *)self->_clientLock unlock];
 }
 
-- (void)takeProcessAssertionForBundleID:(id)a3
+- (void)takeProcessAssertionForBundleID:(id)d
 {
-  v4 = [[IAPEAUnregisteredClient alloc] initWithBundleId:a3];
+  v4 = [[IAPEAUnregisteredClient alloc] initWithBundleId:d];
   if (v4)
   {
     v6 = v4;
@@ -3035,10 +3035,10 @@ LABEL_23:
   }
 }
 
-- (void)_dpServiceWithFirmwareVersionFound:(id)a3
+- (void)_dpServiceWithFirmwareVersionFound:(id)found
 {
-  v15 = [+[IAPServer sharedIAPServer](IAPServer sharedIAPServer];
-  if (v15)
+  sharedIAPServer = [+[IAPServer sharedIAPServer](IAPServer sharedIAPServer];
+  if (sharedIAPServer)
   {
     p_connectedAccessoriesLock = &self->_connectedAccessoriesLock;
     if ((&self->_connectedAccessoriesLock & 7) != 0 || ([(NSLock *)self->_connectedAccessoriesLock lock], v18 = 0u, v19 = 0u, v16 = 0u, v17 = 0u, p_connectedAccessories = &self->_connectedAccessories, (&self->_connectedAccessories & 7) != 0))
@@ -3067,7 +3067,7 @@ LABEL_23:
           v13 = [v12 objectForKey:v9];
           if (![objc_msgSend(v12 objectForKey:{v10), "compare:", @"Apple"}] && objc_msgSend(v13, "rangeOfString:", @" (") == 0x7FFFFFFFFFFFFFFFLL)
           {
-            [v12 setObject:objc_msgSend(v13 forKey:{"stringByAppendingFormat:", @" (%@)", v15), v9}];
+            [v12 setObject:objc_msgSend(v13 forKey:{"stringByAppendingFormat:", @" (%@)", sharedIAPServer), v9}];
           }
         }
 
@@ -3155,43 +3155,43 @@ LABEL_23:
   [(NSLock *)*p_clientLock unlock];
 }
 
-- (void)_unregisteredClientAssertionTimerFired:(id)a3
+- (void)_unregisteredClientAssertionTimerFired:(id)fired
 {
-  v3 = [a3 userInfo];
-  [v3 releaseProcessAssertion];
-  sub_1000DDE90(3u, @"%s::%s process assertion for unregistered client %@ should be released", "/Library/Caches/com.apple.xbs/Sources/iapd/iapd/EAManager.mm", "-[EAManager _unregisteredClientAssertionTimerFired:]", [v3 bundleId]);
+  userInfo = [fired userInfo];
+  [userInfo releaseProcessAssertion];
+  sub_1000DDE90(3u, @"%s::%s process assertion for unregistered client %@ should be released", "/Library/Caches/com.apple.xbs/Sources/iapd/iapd/EAManager.mm", "-[EAManager _unregisteredClientAssertionTimerFired:]", [userInfo bundleId]);
 }
 
-- (BOOL)_isProtocolContainedInWhitelist:(id)a3
+- (BOOL)_isProtocolContainedInWhitelist:(id)whitelist
 {
-  if (![a3 caseInsensitiveCompare:@"com.apple.iPodOut"])
+  if (![whitelist caseInsensitiveCompare:@"com.apple.iPodOut"])
   {
     return 1;
   }
 
   v7 = 0;
-  v4 = -[NSRegularExpression numberOfMatchesInString:options:range:](+[NSRegularExpression regularExpressionWithPattern:options:error:](NSRegularExpression, "regularExpressionWithPattern:options:error:", IAPEAWhitelistedProtocolRegex, 1, &v7), "numberOfMatchesInString:options:range:", a3, 0, 0, [a3 length]);
+  v4 = -[NSRegularExpression numberOfMatchesInString:options:range:](+[NSRegularExpression regularExpressionWithPattern:options:error:](NSRegularExpression, "regularExpressionWithPattern:options:error:", IAPEAWhitelistedProtocolRegex, 1, &v7), "numberOfMatchesInString:options:range:", whitelist, 0, 0, [whitelist length]);
   v5 = v4 != 0;
   if (v4)
   {
-    sub_1000DDE90(3u, @"%s:%s found whitelisted protocol %@", "/Library/Caches/com.apple.xbs/Sources/iapd/iapd/EAManager.mm", "[EAManager _isProtocolContainedInWhitelist:]", a3);
+    sub_1000DDE90(3u, @"%s:%s found whitelisted protocol %@", "/Library/Caches/com.apple.xbs/Sources/iapd/iapd/EAManager.mm", "[EAManager _isProtocolContainedInWhitelist:]", whitelist);
   }
 
   return v5;
 }
 
-- (void)updatePlistWithProtocolsForAccessory:(id)a3
+- (void)updatePlistWithProtocolsForAccessory:(id)accessory
 {
-  v3 = [a3 objectForKey:@"OptionalSDKProtocolsShownKey"];
+  v3 = [accessory objectForKey:@"OptionalSDKProtocolsShownKey"];
 
   [EAManager _updatePlistWithAccessoryProtocolsInternal:v3];
 }
 
-+ (void)_updatePlistWithAccessoryProtocolsInternal:(id)a3
++ (void)_updatePlistWithAccessoryProtocolsInternal:(id)internal
 {
-  if (a3)
+  if (internal)
   {
-    CFPreferencesSetAppValue(@"OptionalSDKProtocolsShownKey", a3, @"com.apple.iapd");
+    CFPreferencesSetAppValue(@"OptionalSDKProtocolsShownKey", internal, @"com.apple.iapd");
 
     CFPreferencesSynchronize(@"com.apple.iapd", kCFPreferencesCurrentUser, kCFPreferencesAnyHost);
   }
@@ -3229,15 +3229,15 @@ LABEL_23:
   return self;
 }
 
-- (void)notifyEAClient:(id)a3 ofAccessoryEvent:(const char *)a4 accessory:(id)a5
+- (void)notifyEAClient:(id)client ofAccessoryEvent:(const char *)event accessory:(id)accessory
 {
-  v8 = [a3 canSendConnectionEventForAccessory:a5];
-  sub_1000DDE90(3u, @"eaClientToNotify bundle = %@, request = %s, canSendConnectionEvent = %d", [a3 bundleId], a4, v8);
+  v8 = [client canSendConnectionEventForAccessory:accessory];
+  sub_1000DDE90(3u, @"eaClientToNotify bundle = %@, request = %s, canSendConnectionEvent = %d", [client bundleId], event, v8);
   if (v8)
   {
-    v9 = [NSPropertyListSerialization dataWithPropertyList:a5 format:200 options:0 error:0];
+    v9 = [NSPropertyListSerialization dataWithPropertyList:accessory format:200 options:0 error:0];
     v10 = xpc_dictionary_create(0, 0, 0);
-    if (a4 && (v11 = v10) != 0 && (xpc_dictionary_set_string(v10, "requestType", a4), (v12 = -[NSData bytes](v9, "bytes")) != 0) && (xpc_dictionary_set_data(v11, "EAProtocolAccessoryPlistData", v12, -[NSData length](v9, "length")), (v13 = [a3 xpcConnection]) != 0))
+    if (event && (v11 = v10) != 0 && (xpc_dictionary_set_string(v10, "requestType", event), (v12 = -[NSData bytes](v9, "bytes")) != 0) && (xpc_dictionary_set_data(v11, "EAProtocolAccessoryPlistData", v12, -[NSData length](v9, "length")), (v13 = [client xpcConnection]) != 0))
     {
       xpc_connection_send_message(v13, v11);
 
@@ -3251,24 +3251,24 @@ LABEL_23:
   }
 }
 
-- (void)notifyEAClient:(id)a3 ofNotificationName:(const char *)a4 withPayload:(id)a5
+- (void)notifyEAClient:(id)client ofNotificationName:(const char *)name withPayload:(id)payload
 {
-  if (!a3 || !a4)
+  if (!client || !name)
   {
-    sub_1000DDE90(3u, @"%s: Received nil param. eaClientToNotify %@ notificationName %s", "[EAManager(EAManagerClientExtensions) notifyEAClient:ofNotificationName:withPayload:]", a3, a4);
+    sub_1000DDE90(3u, @"%s: Received nil param. eaClientToNotify %@ notificationName %s", "[EAManager(EAManagerClientExtensions) notifyEAClient:ofNotificationName:withPayload:]", client, name);
     return;
   }
 
-  v8 = [a3 canSendConnectionEventForAccessory:a5];
-  sub_1000DDE90(3u, @"eaClientToNotify bundle = %@, request = %s, canSendConnectionEvent = %d", [a3 bundleId], a4, v8);
+  v8 = [client canSendConnectionEventForAccessory:payload];
+  sub_1000DDE90(3u, @"eaClientToNotify bundle = %@, request = %s, canSendConnectionEvent = %d", [client bundleId], name, v8);
   if (!v8)
   {
     return;
   }
 
-  if (a5)
+  if (payload)
   {
-    v9 = [NSPropertyListSerialization dataWithPropertyList:a5 format:200 options:0 error:0];
+    v9 = [NSPropertyListSerialization dataWithPropertyList:payload format:200 options:0 error:0];
   }
 
   else
@@ -3276,7 +3276,7 @@ LABEL_23:
     v9 = 0;
   }
 
-  sub_1000DDE90(3u, @"eaClientToNotify bundle = %@, request = %s, notificationName = %s, notificationPayload=%@", [a3 bundleId], "kXPCACCNotificationKey", a4, a5);
+  sub_1000DDE90(3u, @"eaClientToNotify bundle = %@, request = %s, notificationName = %s, notificationPayload=%@", [client bundleId], "kXPCACCNotificationKey", name, payload);
   v10 = xpc_dictionary_create(0, 0, 0);
   if (!v10)
   {
@@ -3285,34 +3285,34 @@ LABEL_23:
 
   v11 = v10;
   xpc_dictionary_set_string(v10, "requestType", "kXPCACCNotificationKey");
-  xpc_dictionary_set_string(v11, "kXPCACCNotificationNameKey", a4);
+  xpc_dictionary_set_string(v11, "kXPCACCNotificationNameKey", name);
   if (!v9)
   {
     goto LABEL_13;
   }
 
-  v12 = [(NSData *)v9 bytes];
-  if (!v12)
+  bytes = [(NSData *)v9 bytes];
+  if (!bytes)
   {
 LABEL_17:
     __break(0x5510u);
     return;
   }
 
-  xpc_dictionary_set_data(v11, "kXPCACCNotificationPlistData", v12, [(NSData *)v9 length]);
+  xpc_dictionary_set_data(v11, "kXPCACCNotificationPlistData", bytes, [(NSData *)v9 length]);
 LABEL_13:
-  v13 = [a3 xpcConnection];
-  if (!v13)
+  xpcConnection = [client xpcConnection];
+  if (!xpcConnection)
   {
     goto LABEL_17;
   }
 
-  xpc_connection_send_message(v13, v11);
+  xpc_connection_send_message(xpcConnection, v11);
 
   xpc_release(v11);
 }
 
-- (void)notifyEAClientsOfAccessoryEvent:(const char *)a3 accessory:(id)a4
+- (void)notifyEAClientsOfAccessoryEvent:(const char *)event accessory:(id)accessory
 {
   if (!self || (p_clientLock = &self->_clientLock, (&self->_clientLock & 7) != 0) || ([(NSLock *)*p_clientLock lock], v16 = 0u, v17 = 0u, v14 = 0u, v15 = 0u, p_clients = &self->_clients, (&self->_clients & 7) != 0))
   {
@@ -3334,7 +3334,7 @@ LABEL_13:
           objc_enumerationMutation(v9);
         }
 
-        -[EAManager notifyEAClient:ofAccessoryEvent:accessory:](self, "notifyEAClient:ofAccessoryEvent:accessory:", [*p_clients objectForKey:{*(*(&v14 + 1) + 8 * i), v14}], a3, a4);
+        -[EAManager notifyEAClient:ofAccessoryEvent:accessory:](self, "notifyEAClient:ofAccessoryEvent:accessory:", [*p_clients objectForKey:{*(*(&v14 + 1) + 8 * i), v14}], event, accessory);
       }
 
       v11 = [v9 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -3346,7 +3346,7 @@ LABEL_13:
   [(NSLock *)*p_clientLock unlock];
 }
 
-- (void)sendToEALocationClientsNotification:(const char *)a3 withPayload:(id)a4
+- (void)sendToEALocationClientsNotification:(const char *)notification withPayload:(id)payload
 {
   if (!self || (p_clientLock = &self->_clientLock, (&self->_clientLock & 7) != 0) || ([(NSLock *)*p_clientLock lock], v17 = 0u, v18 = 0u, v15 = 0u, v16 = 0u, p_clients = &self->_clients, (&self->_clients & 7) != 0))
   {
@@ -3371,7 +3371,7 @@ LABEL_13:
         v14 = [*p_clients objectForKey:{*(*(&v15 + 1) + 8 * i), v15}];
         if ([v14 locationSupportedByClient])
         {
-          [(EAManager *)self notifyEAClient:v14 ofNotificationName:a3 withPayload:a4];
+          [(EAManager *)self notifyEAClient:v14 ofNotificationName:notification withPayload:payload];
         }
       }
 
@@ -3384,53 +3384,53 @@ LABEL_13:
   [(NSLock *)*p_clientLock unlock];
 }
 
-- (void)notifyEALocationClientsOfIAPLocationDidReceiveNMEASentenceNotification:(id)a3
+- (void)notifyEALocationClientsOfIAPLocationDidReceiveNMEASentenceNotification:(id)notification
 {
-  v5 = [IAPLocationDidReceiveNMEASentenceNotification UTF8String];
+  uTF8String = [IAPLocationDidReceiveNMEASentenceNotification UTF8String];
 
-  [(EAManager *)self sendToEALocationClientsNotification:v5 withPayload:a3];
+  [(EAManager *)self sendToEALocationClientsNotification:uTF8String withPayload:notification];
 }
 
-- (void)notifyEALocationClientsOfIAPLocationDidReceiveLocationPointDataNotification:(id)a3
+- (void)notifyEALocationClientsOfIAPLocationDidReceiveLocationPointDataNotification:(id)notification
 {
-  v5 = [IAPLocationDidReceiveLocationPointDataNotification UTF8String];
+  uTF8String = [IAPLocationDidReceiveLocationPointDataNotification UTF8String];
 
-  [(EAManager *)self sendToEALocationClientsNotification:v5 withPayload:a3];
+  [(EAManager *)self sendToEALocationClientsNotification:uTF8String withPayload:notification];
 }
 
-- (void)notifyEALocationClientsOfIAPLocationDidReceiveEphemerisURLNotification:(id)a3
+- (void)notifyEALocationClientsOfIAPLocationDidReceiveEphemerisURLNotification:(id)notification
 {
-  v5 = [IAPLocationDidReceiveEphemerisURLNotification UTF8String];
+  uTF8String = [IAPLocationDidReceiveEphemerisURLNotification UTF8String];
 
-  [(EAManager *)self sendToEALocationClientsNotification:v5 withPayload:a3];
+  [(EAManager *)self sendToEALocationClientsNotification:uTF8String withPayload:notification];
 }
 
-- (void)notifyEALocationClientsOfIAPLocationDidReceiveEphemerisMaxIntervalNotification:(id)a3
+- (void)notifyEALocationClientsOfIAPLocationDidReceiveEphemerisMaxIntervalNotification:(id)notification
 {
-  v5 = [IAPLocationDidReceiveEphemerisMaxIntervalNotification UTF8String];
+  uTF8String = [IAPLocationDidReceiveEphemerisMaxIntervalNotification UTF8String];
 
-  [(EAManager *)self sendToEALocationClientsNotification:v5 withPayload:a3];
+  [(EAManager *)self sendToEALocationClientsNotification:uTF8String withPayload:notification];
 }
 
-- (void)notifyEALocationClientsOfIAPLocationDidReceiveEphemerisRecommendedRefreshNotification:(id)a3
+- (void)notifyEALocationClientsOfIAPLocationDidReceiveEphemerisRecommendedRefreshNotification:(id)notification
 {
-  v5 = [IAPLocationDidReceiveEphemerisRecommendedRefreshNotification UTF8String];
+  uTF8String = [IAPLocationDidReceiveEphemerisRecommendedRefreshNotification UTF8String];
 
-  [(EAManager *)self sendToEALocationClientsNotification:v5 withPayload:a3];
+  [(EAManager *)self sendToEALocationClientsNotification:uTF8String withPayload:notification];
 }
 
-- (void)notifyEALocationClientsOfIAPLocationDidRequestGPSTimeNotification:(id)a3
+- (void)notifyEALocationClientsOfIAPLocationDidRequestGPSTimeNotification:(id)notification
 {
-  v5 = [IAPLocationDidRequestGPSTimeNotification UTF8String];
+  uTF8String = [IAPLocationDidRequestGPSTimeNotification UTF8String];
 
-  [(EAManager *)self sendToEALocationClientsNotification:v5 withPayload:a3];
+  [(EAManager *)self sendToEALocationClientsNotification:uTF8String withPayload:notification];
 }
 
-- (void)notifyEALocationClientsOfIAPLocationAccessoryNMEASentenceFilteringSupportChangedNotification:(id)a3
+- (void)notifyEALocationClientsOfIAPLocationAccessoryNMEASentenceFilteringSupportChangedNotification:(id)notification
 {
-  v5 = [IAPLocationAccessoryNMEASentenceFilteringSupportChangedNotification UTF8String];
+  uTF8String = [IAPLocationAccessoryNMEASentenceFilteringSupportChangedNotification UTF8String];
 
-  [(EAManager *)self sendToEALocationClientsNotification:v5 withPayload:a3];
+  [(EAManager *)self sendToEALocationClientsNotification:uTF8String withPayload:notification];
 }
 
 @end

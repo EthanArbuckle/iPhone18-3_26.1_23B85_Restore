@@ -1,31 +1,31 @@
 @interface OspreyGRPCStreamingContext
-- (OspreyGRPCStreamingContext)initWithQueue:(id)a3 responseHandler:(id)a4 completion:(id)a5;
-- (void)_writeFrame:(id)a3 compressed:(BOOL)a4 error:(id *)a5;
-- (void)bindToUrlRequest:(id)a3;
-- (void)completeWithError:(id)a3;
+- (OspreyGRPCStreamingContext)initWithQueue:(id)queue responseHandler:(id)handler completion:(id)completion;
+- (void)_writeFrame:(id)frame compressed:(BOOL)compressed error:(id *)error;
+- (void)bindToUrlRequest:(id)request;
+- (void)completeWithError:(id)error;
 - (void)finishWriting;
-- (void)handleResponseData:(id)a3;
+- (void)handleResponseData:(id)data;
 @end
 
 @implementation OspreyGRPCStreamingContext
 
-- (OspreyGRPCStreamingContext)initWithQueue:(id)a3 responseHandler:(id)a4 completion:(id)a5
+- (OspreyGRPCStreamingContext)initWithQueue:(id)queue responseHandler:(id)handler completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  queueCopy = queue;
+  handlerCopy = handler;
+  completionCopy = completion;
   v33.receiver = self;
   v33.super_class = OspreyGRPCStreamingContext;
   v12 = [(OspreyGRPCStreamingContext *)&v33 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_queue, a3);
-    v14 = MEMORY[0x25F8A5BA0](v11);
+    objc_storeStrong(&v12->_queue, queue);
+    v14 = MEMORY[0x25F8A5BA0](completionCopy);
     completion = v13->_completion;
     v13->_completion = v14;
 
-    v16 = [[OspreyMessageReader alloc] initWithMessageHandler:v10];
+    v16 = [[OspreyMessageReader alloc] initWithMessageHandler:handlerCopy];
     messageReader = v13->_messageReader;
     v13->_messageReader = v16;
 
@@ -49,7 +49,7 @@
     block[3] = &unk_2799F1D08;
     v28 = v13;
     v29 = v21;
-    v30 = v9;
+    v30 = queueCopy;
     v25 = v21;
     dispatch_async(queue, block);
   }
@@ -80,24 +80,24 @@ uint64_t __71__OspreyGRPCStreamingContext_initWithQueue_responseHandler_completi
   dispatch_async(queue, block);
 }
 
-- (void)bindToUrlRequest:(id)a3
+- (void)bindToUrlRequest:(id)request
 {
   if (!self->_closed)
   {
-    [a3 setHTTPBodyStream:self->_inputStream];
+    [request setHTTPBodyStream:self->_inputStream];
   }
 }
 
-- (void)completeWithError:(id)a3
+- (void)completeWithError:(id)error
 {
-  v4 = a3;
-  if (v4)
+  errorCopy = error;
+  if (errorCopy)
   {
     OspreyLoggingInit();
     v5 = OspreyLogContextGRPC;
     if (os_log_type_enabled(OspreyLogContextGRPC, OS_LOG_TYPE_DEBUG))
     {
-      [(OspreyGRPCStreamingContext *)v5 completeWithError:v4];
+      [(OspreyGRPCStreamingContext *)v5 completeWithError:errorCopy];
     }
   }
 
@@ -119,15 +119,15 @@ uint64_t __71__OspreyGRPCStreamingContext_initWithQueue_responseHandler_completi
   completion = self->_completion;
   if (completion)
   {
-    completion[2](completion, v4);
+    completion[2](completion, errorCopy);
     v11 = self->_completion;
     self->_completion = 0;
   }
 }
 
-- (void)handleResponseData:(id)a3
+- (void)handleResponseData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   messageReader = self->_messageReader;
   OspreyLoggingInit();
   v6 = OspreyLogContextGRPC;
@@ -139,7 +139,7 @@ uint64_t __71__OspreyGRPCStreamingContext_initWithQueue_responseHandler_completi
     }
 
     dispatch_assert_queue_V2(self->_queue);
-    [(OspreyMessageReader *)self->_messageReader readData:v4];
+    [(OspreyMessageReader *)self->_messageReader readData:dataCopy];
   }
 
   else if (os_log_type_enabled(OspreyLogContextGRPC, OS_LOG_TYPE_ERROR))
@@ -148,10 +148,10 @@ uint64_t __71__OspreyGRPCStreamingContext_initWithQueue_responseHandler_completi
   }
 }
 
-- (void)_writeFrame:(id)a3 compressed:(BOOL)a4 error:(id *)a5
+- (void)_writeFrame:(id)frame compressed:(BOOL)compressed error:(id *)error
 {
-  v6 = a4;
-  v8 = a3;
+  compressedCopy = compressed;
+  frameCopy = frame;
   if (self->_closed)
   {
     OspreyLoggingInit();
@@ -164,7 +164,7 @@ uint64_t __71__OspreyGRPCStreamingContext_initWithQueue_responseHandler_completi
 
   else
   {
-    if (v6 && !self->_compressionEnabled)
+    if (compressedCopy && !self->_compressionEnabled)
     {
       OspreyLoggingInit();
       v17 = OspreyLogContextGRPC;
@@ -173,7 +173,7 @@ uint64_t __71__OspreyGRPCStreamingContext_initWithQueue_responseHandler_completi
         [(OspreyGRPCStreamingContext *)v17 _writeFrame:v18 compressed:v19 error:v20, v21, v22, v23, v24];
       }
 
-      LOBYTE(v6) = 0;
+      LOBYTE(compressedCopy) = 0;
     }
 
     queue = self->_queue;
@@ -182,10 +182,10 @@ uint64_t __71__OspreyGRPCStreamingContext_initWithQueue_responseHandler_completi
     v28[1] = 3221225472;
     v28[2] = __59__OspreyGRPCStreamingContext__writeFrame_compressed_error___block_invoke;
     v28[3] = &unk_2799F1D58;
-    v29 = v8;
-    v30 = self;
-    v32 = v6;
-    v31 = a5;
+    v29 = frameCopy;
+    selfCopy = self;
+    v32 = compressedCopy;
+    errorCopy = error;
     v27 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, v26, 0, v28);
     dispatch_async(queue, v27);
   }

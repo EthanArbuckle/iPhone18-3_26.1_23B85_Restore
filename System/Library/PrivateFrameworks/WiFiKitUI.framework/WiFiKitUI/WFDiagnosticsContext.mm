@@ -1,16 +1,16 @@
 @interface WFDiagnosticsContext
-- (WFDiagnosticsContext)initWithNetwork:(id)a3 profile:(id)a4 detailsContext:(id)a5;
+- (WFDiagnosticsContext)initWithNetwork:(id)network profile:(id)profile detailsContext:(id)context;
 - (void)cancel;
-- (void)updateInfo:(id)a3;
+- (void)updateInfo:(id)info;
 @end
 
 @implementation WFDiagnosticsContext
 
-- (WFDiagnosticsContext)initWithNetwork:(id)a3 profile:(id)a4 detailsContext:(id)a5
+- (WFDiagnosticsContext)initWithNetwork:(id)network profile:(id)profile detailsContext:(id)context
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  networkCopy = network;
+  profileCopy = profile;
+  contextCopy = context;
   v31.receiver = self;
   v31.super_class = WFDiagnosticsContext;
   v12 = [(WFDiagnosticsContext *)&v31 init];
@@ -21,7 +21,7 @@
     goto LABEL_46;
   }
 
-  if (!v9)
+  if (!networkCopy)
   {
     [WFDiagnosticsContext initWithNetwork:profile:detailsContext:];
     v30 = v13;
@@ -29,28 +29,28 @@
     goto LABEL_46;
   }
 
-  objc_storeStrong(&v12->_network, a3);
-  objc_storeStrong((v13 + 248), a5);
-  v14 = [*(v13 + 232) bssid];
+  objc_storeStrong(&v12->_network, network);
+  objc_storeStrong((v13 + 248), context);
+  bssid = [*(v13 + 232) bssid];
   v15 = *(v13 + 16);
-  *(v13 + 16) = v14;
+  *(v13 + 16) = bssid;
 
-  v16 = [v9 securityMode];
+  securityMode = [networkCopy securityMode];
   v17 = @"kWFLocDiagnosticsSecurityOpen";
-  if (v16 <= 63)
+  if (securityMode <= 63)
   {
-    if (v16 <= 3)
+    if (securityMode <= 3)
     {
-      if (v16)
+      if (securityMode)
       {
-        if (v16 == 1)
+        if (securityMode == 1)
         {
           v17 = @"kWFLocDiagnosticsSecurityWEP";
         }
 
         else
         {
-          if (v16 != 2)
+          if (securityMode != 2)
           {
             goto LABEL_39;
           }
@@ -60,16 +60,16 @@
       }
     }
 
-    else if (v16 > 15)
+    else if (securityMode > 15)
     {
-      if (v16 == 16)
+      if (securityMode == 16)
       {
         v17 = @"kWFLocDiagnosticsSecurityWPAEnterprise";
       }
 
       else
       {
-        if (v16 != 32)
+        if (securityMode != 32)
         {
           goto LABEL_39;
         }
@@ -78,14 +78,14 @@
       }
     }
 
-    else if (v16 == 4)
+    else if (securityMode == 4)
     {
       v17 = @"kWFLocDiagnosticsSecurityWPAPersonal";
     }
 
     else
     {
-      if (v16 != 8)
+      if (securityMode != 8)
       {
         goto LABEL_39;
       }
@@ -96,18 +96,18 @@
     goto LABEL_38;
   }
 
-  if (v16 <= 519)
+  if (securityMode <= 519)
   {
-    if (v16 > 255)
+    if (securityMode > 255)
     {
-      if (v16 == 256)
+      if (securityMode == 256)
       {
         v17 = @"kWFLocDiagnosticsSecurityWEP40_128";
       }
 
       else
       {
-        if (v16 != 512)
+        if (securityMode != 512)
         {
           goto LABEL_39;
         }
@@ -116,14 +116,14 @@
       }
     }
 
-    else if (v16 == 64)
+    else if (securityMode == 64)
     {
       v17 = @"kWFLocDiagnosticsSecurityWAPIPersonal";
     }
 
     else
     {
-      if (v16 != 128)
+      if (securityMode != 128)
       {
         goto LABEL_39;
       }
@@ -134,16 +134,16 @@
     goto LABEL_38;
   }
 
-  if (v16 <= 1074)
+  if (securityMode <= 1074)
   {
-    if (v16 == 520)
+    if (securityMode == 520)
     {
       v17 = @"kWFLocDiagnosticsSecurityWPA3Transition";
     }
 
     else
     {
-      if (v16 != 1024)
+      if (securityMode != 1024)
       {
         goto LABEL_39;
       }
@@ -154,13 +154,13 @@
     goto LABEL_38;
   }
 
-  if (v16 == 1075)
+  if (securityMode == 1075)
   {
     v17 = @"kWFLocDiagnosticsSecurityAnyEAPEncryption";
     goto LABEL_38;
   }
 
-  if (v16 == 2048)
+  if (securityMode == 2048)
   {
 LABEL_38:
     v18 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -170,13 +170,13 @@ LABEL_38:
   }
 
 LABEL_39:
-  *(v13 + 8) = [v10 isCaptive];
-  v21 = [v10 networkQualityDate];
-  v22 = [v21 copy];
+  *(v13 + 8) = [profileCopy isCaptive];
+  networkQualityDate = [profileCopy networkQualityDate];
+  v22 = [networkQualityDate copy];
   v23 = *(v13 + 216);
   *(v13 + 216) = v22;
 
-  [v10 networkQualityResponsiveness];
+  [profileCopy networkQualityResponsiveness];
   *(v13 + 224) = v24;
   v25 = *MEMORY[0x277CBECE8];
   v26 = WiFiManagerClientCreate();
@@ -201,12 +201,12 @@ LABEL_46:
   return v13;
 }
 
-- (void)updateInfo:(id)a3
+- (void)updateInfo:(id)info
 {
-  v103 = a3;
+  infoCopy = info;
   device = self->_device;
   v5 = WiFiDeviceClientCopyCurrentNetwork();
-  if (!v103 || !v5)
+  if (!infoCopy || !v5)
   {
     goto LABEL_55;
   }
@@ -224,24 +224,24 @@ LABEL_46:
   self->_channelString = v10;
 
   v12 = WiFiNetworkGetAPEnv();
-  v13 = [v12 intValue];
+  intValue = [v12 intValue];
   v14 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v15 = v14;
-  if ((v13 - 1) > 3)
+  if ((intValue - 1) > 3)
   {
     v16 = @"kWFLocDiagnosticsUnspecifiedEnv";
   }
 
   else
   {
-    v16 = off_279EC5280[v13 - 1];
+    v16 = off_279EC5280[intValue - 1];
   }
 
   v17 = [v14 localizedStringForKey:v16 value:&stru_288308678 table:@"WiFiKitLocalizableStrings"];
   deployment = self->_deployment;
   self->_deployment = v17;
 
-  v19 = [v103 objectForKey:*MEMORY[0x277D297B8]];
+  v19 = [infoCopy objectForKey:*MEMORY[0x277D297B8]];
   if (![v19 isEqualToString:@"Stationary"])
   {
     if ([v19 isEqualToString:@"Walking"])
@@ -295,7 +295,7 @@ LABEL_14:
   motion = self->_motion;
   self->_motion = v23;
 
-  v102 = [v103 objectForKey:*MEMORY[0x277D297B0]];
+  v102 = [infoCopy objectForKey:*MEMORY[0x277D297B0]];
   if (v102)
   {
     v25 = v19;
@@ -305,10 +305,10 @@ LABEL_14:
     v29 = [v102 objectForKey:@"CCA"];
     if ([v28 intValue] < -59)
     {
-      v33 = [v28 intValue];
+      intValue2 = [v28 intValue];
       v30 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v31 = v30;
-      if (v33 < -74)
+      if (intValue2 < -74)
       {
         v32 = @"kWFLocDiagnosticsRSSIWeak";
       }
@@ -336,10 +336,10 @@ LABEL_14:
 
     if ([v29 intValue] > 49)
     {
-      v41 = [v29 intValue];
+      intValue3 = [v29 intValue];
       v38 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v39 = v38;
-      if (v41 > 69)
+      if (intValue3 > 69)
       {
         v40 = @"kWFLocDiagnosticsCCAWeak";
       }
@@ -366,7 +366,7 @@ LABEL_14:
     v19 = v25;
   }
 
-  v44 = [v103 objectForKey:*MEMORY[0x277D297C0]];
+  v44 = [infoCopy objectForKey:*MEMORY[0x277D297C0]];
   v45 = [v44 objectAtIndexedSubscript:0];
 
   if (v45)
@@ -389,7 +389,7 @@ LABEL_14:
     }
   }
 
-  v52 = [v103 objectForKey:*MEMORY[0x277D297C8]];
+  v52 = [infoCopy objectForKey:*MEMORY[0x277D297C8]];
   v53 = [v52 objectAtIndexedSubscript:0];
 
   if (v53)
@@ -416,16 +416,16 @@ LABEL_14:
   }
 
   v101 = v45;
-  v61 = [v103 objectForKey:*MEMORY[0x277D297A0]];
+  v61 = [infoCopy objectForKey:*MEMORY[0x277D297A0]];
   v62 = v61;
   if (v61)
   {
     v63 = [v61 objectForKey:@"LINK_CHANGED_IS_LINKDOWN"];
-    v64 = [v63 BOOLValue];
+    bOOLValue = [v63 BOOLValue];
 
     v65 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v66 = v65;
-    if (v64)
+    if (bOOLValue)
     {
       v67 = @"kWFLocDiagnosticsAWDLInactive";
     }
@@ -441,21 +441,21 @@ LABEL_14:
   }
 
   v100 = v62;
-  v70 = [v103 objectForKey:*MEMORY[0x277D297A8]];
+  v70 = [infoCopy objectForKey:*MEMORY[0x277D297A8]];
   v71 = v70;
   if (v70)
   {
-    v72 = [v70 intValue];
+    intValue4 = [v70 intValue];
     v73 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v74 = v73;
-    if (v72 > 8)
+    if (intValue4 > 8)
     {
       v75 = @"kWFLocDiagnosticsBTUnnkown";
     }
 
     else
     {
-      v75 = off_279EC52A0[v72];
+      v75 = off_279EC52A0[intValue4];
     }
 
     v76 = [v73 localizedStringForKey:v75 value:&stru_288308678 table:@"WiFiKitLocalizableStrings"];
@@ -463,7 +463,7 @@ LABEL_14:
     self->_bluetooth = v76;
   }
 
-  v78 = [v103 objectForKey:*MEMORY[0x277D297D8]];
+  v78 = [infoCopy objectForKey:*MEMORY[0x277D297D8]];
   if ([v78 intValue])
   {
     v79 = @"kWFLocDiagnosticsScanInactive";
@@ -479,7 +479,7 @@ LABEL_14:
   scan = self->_scan;
   self->_scan = v81;
 
-  v83 = [v103 objectForKey:*MEMORY[0x277D297D0]];
+  v83 = [infoCopy objectForKey:*MEMORY[0x277D297D0]];
   v84 = v83;
   if (v83)
   {
@@ -509,8 +509,8 @@ LABEL_14:
     v53 = v99;
   }
 
-  v94 = [(WFDiagnosticsContext *)self refreshHandler];
-  v94[2]();
+  refreshHandler = [(WFDiagnosticsContext *)self refreshHandler];
+  refreshHandler[2]();
 
   CFRelease(v5);
 LABEL_55:
@@ -525,8 +525,8 @@ LABEL_55:
 
   if (self->_manager)
   {
-    v4 = [MEMORY[0x277CBEB88] mainRunLoop];
-    [v4 getCFRunLoop];
+    mainRunLoop = [MEMORY[0x277CBEB88] mainRunLoop];
+    [mainRunLoop getCFRunLoop];
     v3 = *MEMORY[0x277CBF058];
     WiFiManagerClientUnscheduleFromRunLoop();
   }

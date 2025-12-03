@@ -18,7 +18,7 @@
 {
   if (a3)
   {
-    v4 = [a1 dnds_numberWithDate:?];
+    v4 = [self dnds_numberWithDate:?];
   }
 
   else
@@ -32,7 +32,7 @@
 - (uint64_t)dnds_dateValue
 {
   v1 = MEMORY[0x277CBEAA8];
-  [a1 doubleValue];
+  [self doubleValue];
 
   return [v1 dateWithTimeIntervalSinceReferenceDate:?];
 }

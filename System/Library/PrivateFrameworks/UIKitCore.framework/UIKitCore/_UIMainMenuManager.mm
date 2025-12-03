@@ -1,40 +1,40 @@
 @interface _UIMainMenuManager
-+ (id)_sharedManagerCreatingIfNeeded:(uint64_t)a1;
-- (BOOL)_isCachedDeferredElementExpansionOfMainMenu:(id)a3 forSession:(id)a4;
-- (BOOL)_isElement:(id)a3 directlyVisibleInTopLevelCategoryMenuForSession:(id)a4;
++ (id)_sharedManagerCreatingIfNeeded:(uint64_t)needed;
+- (BOOL)_isCachedDeferredElementExpansionOfMainMenu:(id)menu forSession:(id)session;
+- (BOOL)_isElement:(id)element directlyVisibleInTopLevelCategoryMenuForSession:(id)session;
 - (_UIMainMenuManager)init;
 - (id)_beginSession;
-- (id)_categoryMenuIdentifierForCommand:(id)a3 commandState:(id)a4 session:(id)a5;
-- (id)_categoryMenuIdentifierForInvokedKeyboardShortcutMenuLeaf:(id)a3 session:(id)a4;
-- (id)_currentResponderKeyboardShortcutLeavesForSession:(id)a3;
-- (id)_fastXPCCodingImageForImage:(void *)a1;
-- (id)_firstResponderForSession:(id)a3;
-- (id)_mainMenuFromUIMenu:(id)a3 fromDeferredElement:(BOOL)a4;
-- (id)_menuElementFromUIMenuElement:(id)a3 fromDeferredElement:(BOOL)a4;
-- (id)_menuElementsFromUIMenuElements:(id)a3 fromDeferredElement:(BOOL)a4;
-- (id)_parentGroupStateForElementIdentifier:(id)a3 session:(id)a4;
-- (id)_stateForCommand:(id)a3 session:(id)a4;
-- (id)_stateForMenu:(id)a3 session:(id)a4;
-- (id)_visibleCommandKeyboardShortcutsForSession:(id)a3;
-- (id)performBaseMenuRequest:(id)a3;
-- (id)performMainMenuStateRequest:(id)a3;
-- (id)performSessionRequest:(id)a3;
-- (void)_fulfillDeferredElementIfNecessary:(id)a3 forSession:(id)a4 fulfillmentHandler:(id)a5;
-- (void)_mainMenuSystemDidSetNeedsRebuild:(id)a3;
-- (void)_populateState:(id)a3 forElements:(id)a4 session:(id)a5;
-- (void)_updateBookkeeping:(id)a3 forElement:(id)a4;
+- (id)_categoryMenuIdentifierForCommand:(id)command commandState:(id)state session:(id)session;
+- (id)_categoryMenuIdentifierForInvokedKeyboardShortcutMenuLeaf:(id)leaf session:(id)session;
+- (id)_currentResponderKeyboardShortcutLeavesForSession:(id)session;
+- (id)_fastXPCCodingImageForImage:(void *)image;
+- (id)_firstResponderForSession:(id)session;
+- (id)_mainMenuFromUIMenu:(id)menu fromDeferredElement:(BOOL)element;
+- (id)_menuElementFromUIMenuElement:(id)element fromDeferredElement:(BOOL)deferredElement;
+- (id)_menuElementsFromUIMenuElements:(id)elements fromDeferredElement:(BOOL)element;
+- (id)_parentGroupStateForElementIdentifier:(id)identifier session:(id)session;
+- (id)_stateForCommand:(id)command session:(id)session;
+- (id)_stateForMenu:(id)menu session:(id)session;
+- (id)_visibleCommandKeyboardShortcutsForSession:(id)session;
+- (id)performBaseMenuRequest:(id)request;
+- (id)performMainMenuStateRequest:(id)request;
+- (id)performSessionRequest:(id)request;
+- (void)_fulfillDeferredElementIfNecessary:(id)necessary forSession:(id)session fulfillmentHandler:(id)handler;
+- (void)_mainMenuSystemDidSetNeedsRebuild:(id)rebuild;
+- (void)_populateState:(id)state forElements:(id)elements session:(id)session;
+- (void)_updateBookkeeping:(id)bookkeeping forElement:(id)element;
 - (void)_updateCachedBaseMainMenuIfNeeded;
-- (void)addMainMenuObserver:(id)a3;
-- (void)deferredMenuElementWasFulfilled:(id)a3;
-- (void)performDeferredElementRequest:(id)a3 responseHandler:(id)a4;
-- (void)performMainMenuCommandInvocationRequest:(id)a3 responseHandler:(id)a4;
-- (void)removeMainMenuObserver:(id)a3;
-- (void)userDidInvokeKeyboardShortcut:(id)a3;
+- (void)addMainMenuObserver:(id)observer;
+- (void)deferredMenuElementWasFulfilled:(id)fulfilled;
+- (void)performDeferredElementRequest:(id)request responseHandler:(id)handler;
+- (void)performMainMenuCommandInvocationRequest:(id)request responseHandler:(id)handler;
+- (void)removeMainMenuObserver:(id)observer;
+- (void)userDidInvokeKeyboardShortcut:(id)shortcut;
 @end
 
 @implementation _UIMainMenuManager
 
-+ (id)_sharedManagerCreatingIfNeeded:(uint64_t)a1
++ (id)_sharedManagerCreatingIfNeeded:(uint64_t)needed
 {
   objc_opt_self();
   v3 = _MergedGlobals_1378;
@@ -76,9 +76,9 @@
     observers = v2->_observers;
     v2->_observers = v5;
 
-    v7 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     sessions = v2->_sessions;
-    v2->_sessions = v7;
+    v2->_sessions = dictionary;
 
     v9 = objc_opt_new();
     leafValidator = v2->_leafValidator;
@@ -90,40 +90,40 @@
   return v2;
 }
 
-- (id)performSessionRequest:(id)a3
+- (id)performSessionRequest:(id)request
 {
   v41 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 beginNewSession])
+  requestCopy = request;
+  if ([requestCopy beginNewSession])
   {
-    v5 = [(_UIMainMenuManager *)self _beginSession];
-    v6 = [v4 initialMenuStateIdentifiers];
+    _beginSession = [(_UIMainMenuManager *)self _beginSession];
+    initialMenuStateIdentifiers = [requestCopy initialMenuStateIdentifiers];
 
-    if (v6)
+    if (initialMenuStateIdentifiers)
     {
       v7 = [_UIMainMenuStateRequest alloc];
-      v8 = [v4 initialMenuStateIdentifiers];
-      v9 = [(_UIMainMenuStateRequest *)v7 initWithMenuIdentifiers:v8 session:v5];
+      initialMenuStateIdentifiers2 = [requestCopy initialMenuStateIdentifiers];
+      v9 = [(_UIMainMenuStateRequest *)v7 initWithMenuIdentifiers:initialMenuStateIdentifiers2 session:_beginSession];
 
-      -[_UIMainMenuStateRequest setIncludeUncategorizedMenuState:](v9, "setIncludeUncategorizedMenuState:", [v4 includeUncategorizedMenuState]);
-      v6 = [(_UIMainMenuManager *)self performMainMenuStateRequest:v9];
+      -[_UIMainMenuStateRequest setIncludeUncategorizedMenuState:](v9, "setIncludeUncategorizedMenuState:", [requestCopy includeUncategorizedMenuState]);
+      initialMenuStateIdentifiers = [(_UIMainMenuManager *)self performMainMenuStateRequest:v9];
     }
 
-    if ([v4 requiresHostSideInvokableKeyboardShortcuts])
+    if ([requestCopy requiresHostSideInvokableKeyboardShortcuts])
     {
-      v32 = v6;
-      v33 = v4;
-      v10 = self;
-      v34 = [MEMORY[0x1E695DF90] dictionary];
+      v32 = initialMenuStateIdentifiers;
+      v33 = requestCopy;
+      selfCopy = self;
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
       v36 = 0u;
       v37 = 0u;
       v38 = 0u;
       v39 = 0u;
-      v11 = [v5 _visibleCommandKeyboardShortcuts];
-      v12 = [v11 keyEnumerator];
+      _visibleCommandKeyboardShortcuts = [_beginSession _visibleCommandKeyboardShortcuts];
+      keyEnumerator = [_visibleCommandKeyboardShortcuts keyEnumerator];
 
-      obj = v12;
-      v13 = [v12 countByEnumeratingWithState:&v36 objects:v40 count:16];
+      obj = keyEnumerator;
+      v13 = [keyEnumerator countByEnumeratingWithState:&v36 objects:v40 count:16];
       if (v13)
       {
         v14 = v13;
@@ -138,22 +138,22 @@
             }
 
             v17 = *(*(&v36 + 1) + 8 * i);
-            v18 = [v5 _localCache];
-            v19 = [v18 elementBookkeeping];
-            v20 = [v19 commandsForIdentifiers];
-            v21 = [v20 objectForKeyedSubscript:v17];
+            _localCache = [_beginSession _localCache];
+            elementBookkeeping = [_localCache elementBookkeeping];
+            commandsForIdentifiers = [elementBookkeeping commandsForIdentifiers];
+            v21 = [commandsForIdentifiers objectForKeyedSubscript:v17];
 
-            v22 = [v21 _keyboardShortcut];
-            v23 = [v22 modifierFlags];
+            _keyboardShortcut = [v21 _keyboardShortcut];
+            modifierFlags = [_keyboardShortcut modifierFlags];
 
-            if (v23)
+            if (modifierFlags)
             {
-              v24 = [(_UIMainMenuManager *)v10 _stateForCommand:v21 session:v5];
+              v24 = [(_UIMainMenuManager *)selfCopy _stateForCommand:v21 session:_beginSession];
               if ([v24 _isPerformable])
               {
-                v25 = [(_UIMainMenuManager *)v10 _categoryMenuIdentifierForCommand:v21 commandState:v24 session:v5];
+                v25 = [(_UIMainMenuManager *)selfCopy _categoryMenuIdentifierForCommand:v21 commandState:v24 session:_beginSession];
                 v26 = [[_UIMainMenuPerformableKeyboardShortcutCommand alloc] _initWithCommand:v21 state:v24 categoryMenuIdentifier:v25];
-                [v34 setObject:v26 forKeyedSubscript:v17];
+                [dictionary setObject:v26 forKeyedSubscript:v17];
               }
             }
           }
@@ -164,30 +164,30 @@
         while (v14);
       }
 
-      v27 = [v34 copy];
-      [v5 set_performableKeyboardShortcutCommands:v27];
+      v27 = [dictionary copy];
+      [_beginSession set_performableKeyboardShortcutCommands:v27];
 
-      v6 = v32;
-      v4 = v33;
-      self = v10;
+      initialMenuStateIdentifiers = v32;
+      requestCopy = v33;
+      self = selfCopy;
     }
   }
 
   else
   {
-    v6 = 0;
-    v5 = 0;
+    initialMenuStateIdentifiers = 0;
+    _beginSession = 0;
   }
 
-  v28 = [v4 _sessionIdentifierToEnd];
+  _sessionIdentifierToEnd = [requestCopy _sessionIdentifierToEnd];
 
-  if (v28)
+  if (_sessionIdentifierToEnd)
   {
-    v29 = [v4 _sessionIdentifierToEnd];
-    [(_UIMainMenuManager *)self _endSessionWithIdentifier:v29];
+    _sessionIdentifierToEnd2 = [requestCopy _sessionIdentifierToEnd];
+    [(_UIMainMenuManager *)self _endSessionWithIdentifier:_sessionIdentifierToEnd2];
   }
 
-  v30 = [[_UIMainMenuSessionResponse alloc] _initWithSession:v5 menuStateResponse:v6];
+  v30 = [[_UIMainMenuSessionResponse alloc] _initWithSession:_beginSession menuStateResponse:initialMenuStateIdentifiers];
 
   return v30;
 }
@@ -198,16 +198,16 @@
   v3 = [[_UIMainMenuSessionLocalCache alloc] initWithBaseMenuBookkeeping:self->_baseMenuBookkeeping];
   v4 = [[_UIMainMenuSession alloc] _initWithLocalCache:v3];
   sessions = self->_sessions;
-  v6 = [v4 identifier];
-  [(NSMutableDictionary *)sessions setObject:v4 forKeyedSubscript:v6];
+  identifier = [v4 identifier];
+  [(NSMutableDictionary *)sessions setObject:v4 forKeyedSubscript:identifier];
 
   v7 = [(_UIMainMenuManager *)self _currentResponderKeyboardShortcutLeavesForSession:v4];
   v8 = [UIMenu menuWithTitle:&stru_1EFB14550 image:0 identifier:@"com.apple.menu.private-main-menu-uncategorized-commands" options:0 children:v7];
   v9 = [(_UIMainMenuManager *)self _mainMenuFromUIMenu:v8 fromDeferredElement:0];
   [v4 setUncategorizedMenu:v9];
-  v10 = [v4 _localCache];
-  v11 = [v10 elementBookkeeping];
-  [(_UIMainMenuManager *)self _updateBookkeeping:v11 forElement:v9];
+  _localCache = [v4 _localCache];
+  elementBookkeeping = [_localCache elementBookkeeping];
+  [(_UIMainMenuManager *)self _updateBookkeeping:elementBookkeeping forElement:v9];
 
   v12 = [(_UIMainMenuManager *)self _visibleCommandKeyboardShortcutsForSession:v4];
   [v4 set_visibleCommandKeyboardShortcuts:v12];
@@ -215,25 +215,25 @@
   return v4;
 }
 
-- (id)_firstResponderForSession:(id)a3
+- (id)_firstResponderForSession:(id)session
 {
-  v3 = a3;
-  v4 = [v3 _localCache];
-  v5 = [v4 firstResponder];
+  sessionCopy = session;
+  _localCache = [sessionCopy _localCache];
+  firstResponder = [_localCache firstResponder];
 
-  if (!v5)
+  if (!firstResponder)
   {
-    v5 = [UIApp _responderForKeyEvents];
-    v6 = [v3 _localCache];
-    [v6 setFirstResponder:v5];
+    firstResponder = [UIApp _responderForKeyEvents];
+    _localCache2 = [sessionCopy _localCache];
+    [_localCache2 setFirstResponder:firstResponder];
   }
 
-  return v5;
+  return firstResponder;
 }
 
-- (id)_currentResponderKeyboardShortcutLeavesForSession:(id)a3
+- (id)_currentResponderKeyboardShortcutLeavesForSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   responderKeyboardShortcutsProvider = self->_responderKeyboardShortcutsProvider;
   if (responderKeyboardShortcutsProvider)
   {
@@ -242,14 +242,14 @@
 
   else
   {
-    v7 = [MEMORY[0x1E695DF70] array];
-    v8 = [(_UIMainMenuManager *)self _firstResponderForSession:v4];
+    array = [MEMORY[0x1E695DF70] array];
+    v8 = [(_UIMainMenuManager *)self _firstResponderForSession:sessionCopy];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __72___UIMainMenuManager__currentResponderKeyboardShortcutLeavesForSession___block_invoke;
     v11[3] = &unk_1E710E068;
-    v12 = v7;
-    v9 = v7;
+    v12 = array;
+    v9 = array;
     [v8 _enumerateKeyboardShortcutsInChainWithOptions:3 usingBlock:v11];
 
     v6 = [v9 copy];
@@ -258,19 +258,19 @@
   return v6;
 }
 
-- (id)_visibleCommandKeyboardShortcutsForSession:(id)a3
+- (id)_visibleCommandKeyboardShortcutsForSession:(id)session
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF90] dictionary];
-  v6 = [MEMORY[0x1E695DF90] dictionary];
+  sessionCopy = session;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  dictionary2 = [MEMORY[0x1E695DF90] dictionary];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __65___UIMainMenuManager__visibleCommandKeyboardShortcutsForSession___block_invoke;
   aBlock[3] = &unk_1E7129AE8;
-  v26 = v6;
-  v7 = v6;
+  v26 = dictionary2;
+  v7 = dictionary2;
   v8 = _Block_copy(aBlock);
-  v9 = [v4 uncategorizedMenu];
+  uncategorizedMenu = [sessionCopy uncategorizedMenu];
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __65___UIMainMenuManager__visibleCommandKeyboardShortcutsForSession___block_invoke_2;
@@ -278,7 +278,7 @@
   v10 = v8;
   v24 = v10;
   v27 = 0;
-  _UIMainMenuElementEnumerateElementTypesHelper(v9, 0, &v27, 0, v23, 0);
+  _UIMainMenuElementEnumerateElementTypesHelper(uncategorizedMenu, 0, &v27, 0, v23, 0);
 
   cachedBaseMainMenu = self->_cachedBaseMainMenu;
   v21[0] = MEMORY[0x1E69E9820];
@@ -293,36 +293,36 @@
   v17[1] = 3221225472;
   v17[2] = __65___UIMainMenuManager__visibleCommandKeyboardShortcutsForSession___block_invoke_4;
   v17[3] = &unk_1E7129B10;
-  v18 = v4;
-  v19 = self;
-  v20 = v5;
-  v13 = v5;
-  v14 = v4;
+  v18 = sessionCopy;
+  selfCopy = self;
+  v20 = dictionary;
+  v13 = dictionary;
+  v14 = sessionCopy;
   [v7 bs_each:v17];
   v15 = [v13 copy];
 
   return v15;
 }
 
-- (void)addMainMenuObserver:(id)a3
+- (void)addMainMenuObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   if (![(NSHashTable *)self->_observers containsObject:?])
   {
-    [(NSHashTable *)self->_observers addObject:v4];
+    [(NSHashTable *)self->_observers addObject:observerCopy];
   }
 }
 
-- (void)removeMainMenuObserver:(id)a3
+- (void)removeMainMenuObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   if ([(NSHashTable *)self->_observers containsObject:?])
   {
-    [(NSHashTable *)self->_observers removeObject:v4];
+    [(NSHashTable *)self->_observers removeObject:observerCopy];
   }
 }
 
-- (void)_mainMenuSystemDidSetNeedsRebuild:(id)a3
+- (void)_mainMenuSystemDidSetNeedsRebuild:(id)rebuild
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -332,16 +332,16 @@
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
-- (id)performBaseMenuRequest:(id)a3
+- (id)performBaseMenuRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   [(_UIMainMenuManager *)self _updateCachedBaseMainMenuIfNeeded];
   v5 = self->_cachedBaseMainMenu;
   v6 = +[UIApplication _applicationNameForMenus];
-  if (v5 && ([v4 sessionRequest], v7 = objc_claimAutoreleasedReturnValue(), v7, v7))
+  if (v5 && ([requestCopy sessionRequest], v7 = objc_claimAutoreleasedReturnValue(), v7, v7))
   {
-    v8 = [v4 sessionRequest];
-    v9 = [(_UIMainMenuManager *)self performSessionRequest:v8];
+    sessionRequest = [requestCopy sessionRequest];
+    v9 = [(_UIMainMenuManager *)self performSessionRequest:sessionRequest];
   }
 
   else
@@ -389,9 +389,9 @@
 
   v14 = v6;
   v8 = +[UIMainMenuSystem sharedSystem];
-  v9 = [v8 _rootMenu];
+  _rootMenu = [v8 _rootMenu];
 
-  v6 = v9;
+  v6 = _rootMenu;
 LABEL_10:
   v15 = v6;
   v10 = [_UIMainMenuManager _mainMenuFromUIMenu:"_mainMenuFromUIMenu:fromDeferredElement:" fromDeferredElement:?];
@@ -401,74 +401,74 @@ LABEL_10:
   [(_UIMainMenuManager *)self _updateBookkeeping:self->_baseMenuBookkeeping forElement:self->_cachedBaseMainMenu];
   if (!self->_isObservingMainMenuRebuilds)
   {
-    v12 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     v13 = +[UIMenuSystem mainSystem];
-    [v12 addObserver:self selector:sel__mainMenuSystemDidSetNeedsRebuild_ name:@"_UIMenuSystemShouldRebuildNotification" object:v13];
+    [defaultCenter addObserver:self selector:sel__mainMenuSystemDidSetNeedsRebuild_ name:@"_UIMenuSystemShouldRebuildNotification" object:v13];
 
     self->_isObservingMainMenuRebuilds = 1;
   }
 }
 
-- (id)_mainMenuFromUIMenu:(id)a3 fromDeferredElement:(BOOL)a4
+- (id)_mainMenuFromUIMenu:(id)menu fromDeferredElement:(BOOL)element
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [v6 children];
-  v8 = [(_UIMainMenuManager *)self _menuElementsFromUIMenuElements:v7 fromDeferredElement:v4];
+  elementCopy = element;
+  menuCopy = menu;
+  children = [menuCopy children];
+  v8 = [(_UIMainMenuManager *)self _menuElementsFromUIMenuElements:children fromDeferredElement:elementCopy];
 
-  v9 = [v6 menuByReplacingChildren:MEMORY[0x1E695E0F0]];
+  v9 = [menuCopy menuByReplacingChildren:MEMORY[0x1E695E0F0]];
 
-  v10 = [v9 image];
-  v11 = [(_UIMainMenuManager *)self _fastXPCCodingImageForImage:v10];
+  image = [v9 image];
+  v11 = [(_UIMainMenuManager *)self _fastXPCCodingImageForImage:image];
   [v9 _setImage:v11];
 
-  v12 = [[_UIMainMenu alloc] _initWithUIMenu:v9 children:v8 isPartOfBaseMenu:v4 ^ 1];
+  v12 = [[_UIMainMenu alloc] _initWithUIMenu:v9 children:v8 isPartOfBaseMenu:elementCopy ^ 1];
 
   return v12;
 }
 
-- (id)_fastXPCCodingImageForImage:(void *)a1
+- (id)_fastXPCCodingImageForImage:(void *)image
 {
   v3 = a2;
-  v4 = v3;
-  if (a1)
+  _rasterizedCustomSymbolImageForFastXPCCoding = v3;
+  if (image)
   {
     if (_UIImageIsCustomSymbol(v3))
     {
       v5 = objc_opt_new();
       v6 = [off_1E70ECC18 preferredFontForTextStyle:@"UICTFontTextStyleSubhead"];
-      v7 = [v6 _fontAdjustedForCurrentContentSizeCategory];
+      _fontAdjustedForCurrentContentSizeCategory = [v6 _fontAdjustedForCurrentContentSizeCategory];
 
-      v8 = [v5 traitCollection];
-      v9 = [v8 preferredContentSizeCategory];
-      IsAccessibilityContentSizeCategory = _UIContentSizeCategoryIsAccessibilityContentSizeCategory(v9, v10);
+      traitCollection = [v5 traitCollection];
+      preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+      IsAccessibilityContentSizeCategory = _UIContentSizeCategoryIsAccessibilityContentSizeCategory(preferredContentSizeCategory, v10);
 
-      v12 = [UIImageSymbolConfiguration configurationWithFont:v7 scale:IsAccessibilityContentSizeCategory];
+      v12 = [UIImageSymbolConfiguration configurationWithFont:_fontAdjustedForCurrentContentSizeCategory scale:IsAccessibilityContentSizeCategory];
       [v5 setPreferredSymbolConfiguration:v12];
 
-      v13 = [v5 _resolvedImageFromImage:v4];
+      v13 = [v5 _resolvedImageFromImage:_rasterizedCustomSymbolImageForFastXPCCoding];
 
-      v4 = [(UIImage *)v13 _rasterizedCustomSymbolImageForFastXPCCoding];
+      _rasterizedCustomSymbolImageForFastXPCCoding = [(UIImage *)v13 _rasterizedCustomSymbolImageForFastXPCCoding];
     }
 
-    v4 = v4;
-    a1 = v4;
+    _rasterizedCustomSymbolImageForFastXPCCoding = _rasterizedCustomSymbolImageForFastXPCCoding;
+    image = _rasterizedCustomSymbolImageForFastXPCCoding;
   }
 
-  return a1;
+  return image;
 }
 
-- (id)_menuElementsFromUIMenuElements:(id)a3 fromDeferredElement:(BOOL)a4
+- (id)_menuElementsFromUIMenuElements:(id)elements fromDeferredElement:(BOOL)element
 {
-  v4 = a4;
+  elementCopy = element;
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v6, "count")}];
+  elementsCopy = elements;
+  v7 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(elementsCopy, "count")}];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v8 = v6;
+  v8 = elementsCopy;
   v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v9)
   {
@@ -483,7 +483,7 @@ LABEL_10:
           objc_enumerationMutation(v8);
         }
 
-        v13 = [(_UIMainMenuManager *)self _menuElementFromUIMenuElement:*(*(&v16 + 1) + 8 * i) fromDeferredElement:v4, v16];
+        v13 = [(_UIMainMenuManager *)self _menuElementFromUIMenuElement:*(*(&v16 + 1) + 8 * i) fromDeferredElement:elementCopy, v16];
         if (v13)
         {
           [v7 addObject:v13];
@@ -501,17 +501,17 @@ LABEL_10:
   return v14;
 }
 
-- (id)_menuElementFromUIMenuElement:(id)a3 fromDeferredElement:(BOOL)a4
+- (id)_menuElementFromUIMenuElement:(id)element fromDeferredElement:(BOOL)deferredElement
 {
-  v4 = a4;
+  deferredElementCopy = deferredElement;
   v32 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  elementCopy = element;
   v7 = objc_opt_self();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v9 = [(_UIMainMenuManager *)self _mainMenuFromUIMenu:v6 fromDeferredElement:v4];
+    v9 = [(_UIMainMenuManager *)self _mainMenuFromUIMenu:elementCopy fromDeferredElement:deferredElementCopy];
     goto LABEL_16;
   }
 
@@ -520,7 +520,7 @@ LABEL_10:
   {
 
 LABEL_6:
-    v13 = v6;
+    v13 = elementCopy;
     v14 = objc_opt_class();
     v15 = v13;
     if (v14)
@@ -550,7 +550,7 @@ LABEL_6:
 
     else
     {
-      v9 = [[_UIMainMenuCommand alloc] _initWithUIMenuLeaf:v15 allowingKeyboardShortcuts:v4 ^ 1];
+      v9 = [[_UIMainMenuCommand alloc] _initWithUIMenuLeaf:v15 allowingKeyboardShortcuts:deferredElementCopy ^ 1];
     }
 
     goto LABEL_16;
@@ -569,11 +569,11 @@ LABEL_6:
 
   if (v20)
   {
-    v21 = v6;
+    v21 = elementCopy;
     if ([v21 cachesItems] && (objc_msgSend(v21, "fulfilledElements"), v22 = objc_claimAutoreleasedReturnValue(), v22, v22))
     {
-      v23 = [v21 fulfilledElements];
-      v24 = [(_UIMainMenuManager *)self _menuElementsFromUIMenuElements:v23 fromDeferredElement:1];
+      fulfilledElements = [v21 fulfilledElements];
+      v24 = [(_UIMainMenuManager *)self _menuElementsFromUIMenuElements:fulfilledElements fromDeferredElement:1];
     }
 
     else
@@ -595,7 +595,7 @@ LABEL_6:
       v28 = 138543618;
       v29 = v27;
       v30 = 2050;
-      v31 = v6;
+      v31 = elementCopy;
       _os_log_error_impl(&dword_188A29000, v25, OS_LOG_TYPE_ERROR, "Ignoring incompatible menu element in main menu: <%{public}@: %{public}p>", &v28, 0x16u);
     }
 
@@ -607,14 +607,14 @@ LABEL_16:
   return v9;
 }
 
-- (void)_updateBookkeeping:(id)a3 forElement:(id)a4
+- (void)_updateBookkeeping:(id)bookkeeping forElement:(id)element
 {
-  v6 = a3;
+  bookkeepingCopy = bookkeeping;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __52___UIMainMenuManager__updateBookkeeping_forElement___block_invoke;
   v16[3] = &unk_1E7106258;
-  v17 = v6;
+  v17 = bookkeepingCopy;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __52___UIMainMenuManager__updateBookkeeping_forElement___block_invoke_2;
@@ -627,7 +627,7 @@ LABEL_16:
   v7 = v15;
   v13 = v7;
   v18 = 0;
-  _UIMainMenuElementEnumerateElementTypesHelper(a4, 0, &v18, v16, v14, v12);
+  _UIMainMenuElementEnumerateElementTypesHelper(element, 0, &v18, v16, v14, v12);
   cachedBaseMainMenu = self->_cachedBaseMainMenu;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
@@ -638,25 +638,25 @@ LABEL_16:
   _UIMainMenuElementEnumerateElements(cachedBaseMainMenu, v10);
 }
 
-- (id)performMainMenuStateRequest:(id)a3
+- (id)performMainMenuStateRequest:(id)request
 {
   v40 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v32 = self;
+  requestCopy = request;
+  selfCopy = self;
   sessions = self->_sessions;
-  v6 = [v4 _sessionIdentifier];
-  v7 = [(NSMutableDictionary *)sessions objectForKeyedSubscript:v6];
+  _sessionIdentifier = [requestCopy _sessionIdentifier];
+  v7 = [(NSMutableDictionary *)sessions objectForKeyedSubscript:_sessionIdentifier];
 
   if (v7)
   {
     [MEMORY[0x1E695DF90] dictionary];
-    v31 = v30 = v4;
+    v31 = v30 = requestCopy;
     v33 = 0u;
     v34 = 0u;
     v35 = 0u;
     v36 = 0u;
-    v8 = [v4 menuIdentifiers];
-    v9 = [v8 countByEnumeratingWithState:&v33 objects:v37 count:16];
+    menuIdentifiers = [requestCopy menuIdentifiers];
+    v9 = [menuIdentifiers countByEnumeratingWithState:&v33 objects:v37 count:16];
     if (v9)
     {
       v11 = v9;
@@ -670,18 +670,18 @@ LABEL_16:
         {
           if (*v34 != v12)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(menuIdentifiers);
           }
 
           v14 = *(*(&v33 + 1) + 8 * v13);
-          v15 = [v7 _localCache];
-          v16 = [v15 elementBookkeeping];
-          v17 = [v16 menusForIdentifiers];
-          v18 = [v17 objectForKeyedSubscript:v14];
+          _localCache = [v7 _localCache];
+          elementBookkeeping = [_localCache elementBookkeeping];
+          menusForIdentifiers = [elementBookkeeping menusForIdentifiers];
+          v18 = [menusForIdentifiers objectForKeyedSubscript:v14];
 
           if (v18)
           {
-            v19 = [(_UIMainMenuManager *)v32 _stateForMenu:v18 session:v7];
+            v19 = [(_UIMainMenuManager *)selfCopy _stateForMenu:v18 session:v7];
             [v31 setObject:v19 forKeyedSubscript:v14];
           }
 
@@ -690,9 +690,9 @@ LABEL_16:
             v19 = _UIMainMenuManagerLog();
             if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
             {
-              v20 = [v30 menuIdentifier];
+              menuIdentifier = [v30 menuIdentifier];
               *buf = v29;
-              v39 = v20;
+              v39 = menuIdentifier;
               _os_log_error_impl(&dword_188A29000, v19, OS_LOG_TYPE_ERROR, "Ignoring menu state request for invalid menu identifier: %{public}@", buf, 0xCu);
             }
           }
@@ -701,17 +701,17 @@ LABEL_16:
         }
 
         while (v11 != v13);
-        v11 = [v8 countByEnumeratingWithState:&v33 objects:v37 count:16];
+        v11 = [menuIdentifiers countByEnumeratingWithState:&v33 objects:v37 count:16];
       }
 
       while (v11);
     }
 
-    v4 = v30;
+    requestCopy = v30;
     if ([v30 includeUncategorizedMenuState])
     {
-      v21 = [v7 uncategorizedMenu];
-      v22 = [(_UIMainMenuManager *)v32 _stateForMenu:v21 session:v7];
+      uncategorizedMenu = [v7 uncategorizedMenu];
+      v22 = [(_UIMainMenuManager *)selfCopy _stateForMenu:uncategorizedMenu session:v7];
     }
 
     else
@@ -730,9 +730,9 @@ LABEL_16:
     v23 = _UIMainMenuManagerLog();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
     {
-      v28 = [v4 _sessionIdentifier];
+      _sessionIdentifier2 = [requestCopy _sessionIdentifier];
       *buf = 138543362;
-      v39 = v28;
+      v39 = _sessionIdentifier2;
       _os_log_error_impl(&dword_188A29000, v23, OS_LOG_TYPE_ERROR, "Ignoring menu state request for invalid sessionIdentifier: %{public}@", buf, 0xCu);
     }
 
@@ -742,49 +742,49 @@ LABEL_16:
   return v24;
 }
 
-- (id)_stateForMenu:(id)a3 session:(id)a4
+- (id)_stateForMenu:(id)menu session:(id)session
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 _localCache];
-  v9 = [v8 menuStates];
-  v10 = [v6 identifier];
-  v11 = [v9 objectForKeyedSubscript:v10];
+  menuCopy = menu;
+  sessionCopy = session;
+  _localCache = [sessionCopy _localCache];
+  menuStates = [_localCache menuStates];
+  identifier = [menuCopy identifier];
+  v11 = [menuStates objectForKeyedSubscript:identifier];
 
   if (v11)
   {
-    v12 = v11;
+    _init = v11;
   }
 
   else
   {
-    v12 = [[_UIMainMenuState alloc] _init];
-    v13 = [v6 children];
-    [(_UIMainMenuManager *)self _populateState:v12 forElements:v13 session:v7];
+    _init = [[_UIMainMenuState alloc] _init];
+    children = [menuCopy children];
+    [(_UIMainMenuManager *)self _populateState:_init forElements:children session:sessionCopy];
 
-    v14 = [v7 _localCache];
-    v15 = [v14 menuStates];
-    v16 = [v6 identifier];
-    [v15 setObject:v12 forKeyedSubscript:v16];
+    _localCache2 = [sessionCopy _localCache];
+    menuStates2 = [_localCache2 menuStates];
+    identifier2 = [menuCopy identifier];
+    [menuStates2 setObject:_init forKeyedSubscript:identifier2];
   }
 
-  return v12;
+  return _init;
 }
 
-- (void)_populateState:(id)a3 forElements:(id)a4 session:(id)a5
+- (void)_populateState:(id)state forElements:(id)elements session:(id)session
 {
   v52 = *MEMORY[0x1E69E9840];
-  v32 = a3;
-  v8 = a4;
-  v9 = a5;
-  v35 = [MEMORY[0x1E695DF90] dictionary];
-  v33 = [MEMORY[0x1E695DF90] dictionary];
-  v34 = [MEMORY[0x1E695DF90] dictionary];
+  stateCopy = state;
+  elementsCopy = elements;
+  sessionCopy = session;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary3 = [MEMORY[0x1E695DF90] dictionary];
   v49 = 0u;
   v50 = 0u;
   v47 = 0u;
   v48 = 0u;
-  obj = v8;
+  obj = elementsCopy;
   v10 = [obj countByEnumeratingWithState:&v47 objects:v51 count:16];
   if (v10)
   {
@@ -806,10 +806,10 @@ LABEL_16:
         if (isKindOfClass)
         {
           v16 = v13;
-          v17 = [(_UIMainMenuManager *)self _stateForMenu:v16 session:v9];
-          v18 = [v16 identifier];
+          v17 = [(_UIMainMenuManager *)self _stateForMenu:v16 session:sessionCopy];
+          identifier = [v16 identifier];
 
-          [v35 setObject:v17 forKeyedSubscript:v18];
+          [dictionary setObject:v17 forKeyedSubscript:identifier];
         }
 
         else
@@ -820,12 +820,12 @@ LABEL_16:
           if (v20)
           {
             v17 = v13;
-            v21 = [v17 _uiDeferredMenuElement];
-            if ([v21 cachesItems])
+            _uiDeferredMenuElement = [v17 _uiDeferredMenuElement];
+            if ([_uiDeferredMenuElement cachesItems])
             {
-              v22 = [v17 _uiDeferredMenuElement];
-              v23 = [v22 fulfilledElements];
-              v24 = v23 == 0;
+              _uiDeferredMenuElement2 = [v17 _uiDeferredMenuElement];
+              fulfilledElements = [_uiDeferredMenuElement2 fulfilledElements];
+              v24 = fulfilledElements == 0;
 
               if (!v24)
               {
@@ -837,12 +837,12 @@ LABEL_16:
             {
             }
 
-            if ([(_UIMainMenuManager *)self _isElement:v17 directlyVisibleInTopLevelCategoryMenuForSession:v9, v32])
+            if ([(_UIMainMenuManager *)self _isElement:v17 directlyVisibleInTopLevelCategoryMenuForSession:sessionCopy, stateCopy])
             {
 LABEL_16:
               v27 = [_UIMainMenuDeferredElementRequest alloc];
-              v28 = [v17 identifier];
-              v29 = [(_UIMainMenuDeferredElementRequest *)v27 initWithDeferredElementIdentifier:v28 session:v9];
+              identifier2 = [v17 identifier];
+              v29 = [(_UIMainMenuDeferredElementRequest *)v27 initWithDeferredElementIdentifier:identifier2 session:sessionCopy];
 
               v41 = 0;
               v42 = &v41;
@@ -859,8 +859,8 @@ LABEL_16:
               v30 = v42[5];
               if (v30)
               {
-                v31 = [v17 identifier];
-                [v33 setObject:v30 forKeyedSubscript:v31];
+                identifier3 = [v17 identifier];
+                [dictionary2 setObject:v30 forKeyedSubscript:identifier3];
               }
 
               _Block_object_dispose(&v41, 8);
@@ -882,8 +882,8 @@ LABEL_16:
             v37[2] = __57___UIMainMenuManager__populateState_forElements_session___block_invoke_2;
             v37[3] = &unk_1E7129BD8;
             v37[4] = self;
-            v38 = v9;
-            v39 = v34;
+            v38 = sessionCopy;
+            v39 = dictionary3;
             v17 = v13;
             LOBYTE(v41) = 0;
             _UIMainMenuElementEnumerateElementTypesHelper(v17, 0, &v41, 0, v37, 0);
@@ -901,40 +901,40 @@ LABEL_20:
     while (v10);
   }
 
-  [v32 setChildMenuStates:v35];
-  [v32 setFulfilledDeferredElementStates:v33];
-  [v32 setCommandStates:v34];
+  [stateCopy setChildMenuStates:dictionary];
+  [stateCopy setFulfilledDeferredElementStates:dictionary2];
+  [stateCopy setCommandStates:dictionary3];
 }
 
-- (BOOL)_isElement:(id)a3 directlyVisibleInTopLevelCategoryMenuForSession:(id)a4
+- (BOOL)_isElement:(id)element directlyVisibleInTopLevelCategoryMenuForSession:(id)session
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 identifier];
-  v9 = [v7 _localCache];
-  v10 = [v9 elementBookkeeping];
-  v11 = [v10 parentIdentifiersForIdentifiers];
-  v12 = [v11 objectForKeyedSubscript:v8];
+  elementCopy = element;
+  sessionCopy = session;
+  identifier = [elementCopy identifier];
+  _localCache = [sessionCopy _localCache];
+  elementBookkeeping = [_localCache elementBookkeeping];
+  parentIdentifiersForIdentifiers = [elementBookkeeping parentIdentifiersForIdentifiers];
+  v12 = [parentIdentifiersForIdentifiers objectForKeyedSubscript:identifier];
 
-  v13 = [(_UIMainMenu *)self->_cachedBaseMainMenu identifier];
-  v14 = v8;
-  v15 = v13;
+  identifier2 = [(_UIMainMenu *)self->_cachedBaseMainMenu identifier];
+  _localCache2 = identifier;
+  v15 = identifier2;
   v16 = v15;
-  if (v14 == v15)
+  if (_localCache2 == v15)
   {
     v18 = 0;
     v19 = v15;
-    v43 = v14;
+    v43 = _localCache2;
 LABEL_30:
 
 LABEL_31:
-    v14 = v43;
+    _localCache2 = v43;
     goto LABEL_32;
   }
 
-  if (v14 && v15)
+  if (_localCache2 && v15)
   {
-    v17 = [v14 isEqual:v15];
+    v17 = [_localCache2 isEqual:v15];
 
     if (v17)
     {
@@ -951,9 +951,9 @@ LABEL_31:
   v19 = v20;
   if (v12 == v20)
   {
-    v43 = v14;
+    v43 = _localCache2;
     v18 = 0;
-    v14 = v12;
+    _localCache2 = v12;
     goto LABEL_30;
   }
 
@@ -973,22 +973,22 @@ LABEL_31:
   if ((v21 & 1) == 0)
   {
 LABEL_15:
-    v42 = v6;
-    v43 = v14;
+    v42 = elementCopy;
+    v43 = _localCache2;
     while (1)
     {
-      v14 = [v7 _localCache];
-      v22 = [v14 elementBookkeeping];
-      v23 = [v22 parentIdentifiersForIdentifiers];
-      v24 = [v23 objectForKeyedSubscript:v12];
+      _localCache2 = [sessionCopy _localCache];
+      elementBookkeeping2 = [_localCache2 elementBookkeeping];
+      parentIdentifiersForIdentifiers2 = [elementBookkeeping2 parentIdentifiersForIdentifiers];
+      v24 = [parentIdentifiersForIdentifiers2 objectForKeyedSubscript:v12];
       v25 = v19;
       v26 = v25;
       if (v24 == v25)
       {
 
         v18 = 1;
-        v19 = v22;
-        v6 = v42;
+        v19 = elementBookkeeping2;
+        elementCopy = v42;
         goto LABEL_30;
       }
 
@@ -1012,15 +1012,15 @@ LABEL_15:
 
       if (isKindOfClass)
       {
-        v30 = [v7 _localCache];
-        v31 = [v30 elementBookkeeping];
-        v32 = [v31 menusForIdentifiers];
-        v33 = [v32 objectForKeyedSubscript:v12];
+        _localCache3 = [sessionCopy _localCache];
+        elementBookkeeping3 = [_localCache3 elementBookkeeping];
+        menusForIdentifiers = [elementBookkeeping3 menusForIdentifiers];
+        v33 = [menusForIdentifiers objectForKeyedSubscript:v12];
 
-        v34 = [v33 uiMenu];
-        LOBYTE(v31) = [v34 options];
+        uiMenu = [v33 uiMenu];
+        LOBYTE(elementBookkeeping3) = [uiMenu options];
 
-        if ((v31 & 1) == 0)
+        if ((elementBookkeeping3 & 1) == 0)
         {
           break;
         }
@@ -1037,10 +1037,10 @@ LABEL_15:
         }
       }
 
-      v37 = [v7 _localCache];
-      v38 = [v37 elementBookkeeping];
-      v39 = [v38 parentIdentifiersForIdentifiers];
-      v40 = [v39 objectForKeyedSubscript:v12];
+      _localCache4 = [sessionCopy _localCache];
+      elementBookkeeping4 = [_localCache4 elementBookkeeping];
+      parentIdentifiersForIdentifiers3 = [elementBookkeeping4 parentIdentifiersForIdentifiers];
+      v40 = [parentIdentifiersForIdentifiers3 objectForKeyedSubscript:v12];
 
       if (!v40)
       {
@@ -1052,7 +1052,7 @@ LABEL_15:
 
     v18 = 0;
 LABEL_33:
-    v6 = v42;
+    elementCopy = v42;
     goto LABEL_31;
   }
 
@@ -1063,14 +1063,14 @@ LABEL_32:
   return v18;
 }
 
-- (id)_stateForCommand:(id)a3 session:(id)a4
+- (id)_stateForCommand:(id)command session:(id)session
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 _localCache];
-  v9 = [v8 commandStates];
-  v10 = [v6 identifier];
-  v11 = [v9 objectForKeyedSubscript:v10];
+  commandCopy = command;
+  sessionCopy = session;
+  _localCache = [sessionCopy _localCache];
+  commandStates = [_localCache commandStates];
+  identifier = [commandCopy identifier];
+  v11 = [commandStates objectForKeyedSubscript:identifier];
 
   if (v11)
   {
@@ -1079,14 +1079,14 @@ LABEL_32:
 
   else
   {
-    v13 = [v6 _localClientMenuLeaf];
+    _localClientMenuLeaf = [commandCopy _localClientMenuLeaf];
     v14 = objc_opt_self();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v16 = v13;
-      v17 = [UIApp _hardwareKeyboard];
+      v16 = _localClientMenuLeaf;
+      _hardwareKeyboard = [UIApp _hardwareKeyboard];
       if (_UIInternalPreferencesRevisionOnce != -1)
       {
         dispatch_once(&_UIInternalPreferencesRevisionOnce, &__block_literal_global_5_11);
@@ -1125,29 +1125,29 @@ LABEL_32:
         v20 = 0;
       }
 
-      [v16 _localizeWithGSKeyboard:v17 automatically:v20 force:0];
+      [v16 _localizeWithGSKeyboard:_hardwareKeyboard automatically:v20 force:0];
     }
 
-    v21 = [v13 copy];
-    v22 = [(_UIMainMenuManager *)self _firstResponderForSession:v7];
-    v23 = [v13 _resolvedTargetFromFirstTarget:v22 sender:0];
+    v21 = [_localClientMenuLeaf copy];
+    v22 = [(_UIMainMenuManager *)self _firstResponderForSession:sessionCopy];
+    v23 = [_localClientMenuLeaf _resolvedTargetFromFirstTarget:v22 sender:0];
 
     v47 = v23;
-    v24 = [v13 _validatedLeafWithTarget:v23 validator:self->_leafValidator];
+    v24 = [_localClientMenuLeaf _validatedLeafWithTarget:v23 validator:self->_leafValidator];
     v25 = v24;
-    if (v24 && v13 != v24)
+    if (v24 && _localClientMenuLeaf != v24)
     {
       _UIMenuLeafCopyValidatablePropertiesFromValidatedLeaf(v21, v24);
     }
 
     v46 = v25;
-    v26 = [v21 _safeCopy];
-    v27 = [v21 _keyboardShortcut];
-    v45 = [v27 currentLocalizedKeyCombination];
+    _safeCopy = [v21 _safeCopy];
+    _keyboardShortcut = [v21 _keyboardShortcut];
+    currentLocalizedKeyCombination = [_keyboardShortcut currentLocalizedKeyCombination];
 
-    v28 = [v26 attributes];
-    v29 = v28 ^ 1;
-    if ((v28 & 1) == 0)
+    attributes = [_safeCopy attributes];
+    v29 = attributes ^ 1;
+    if ((attributes & 1) == 0)
     {
       v30 = objc_opt_self();
       v31 = objc_opt_isKindOfClass();
@@ -1158,45 +1158,45 @@ LABEL_32:
       }
     }
 
-    v32 = [v26 image];
-    v33 = [(_UIMainMenuManager *)self _fastXPCCodingImageForImage:v32];
-    [v26 setImage:v33];
+    image = [_safeCopy image];
+    v33 = [(_UIMainMenuManager *)self _fastXPCCodingImageForImage:image];
+    [_safeCopy setImage:v33];
 
-    v34 = [v26 selectedImage];
-    v35 = [(_UIMainMenuManager *)self _fastXPCCodingImageForImage:v34];
-    [v26 setSelectedImage:v35];
+    selectedImage = [_safeCopy selectedImage];
+    v35 = [(_UIMainMenuManager *)self _fastXPCCodingImageForImage:selectedImage];
+    [_safeCopy setSelectedImage:v35];
 
-    v12 = [[_UIMainMenuCommandState alloc] _initWithValidatedMenuLeaf:v26 localizedKeyCombination:v45 isPerformable:v29 & 1];
-    v36 = [v7 _localCache];
-    v37 = [v36 commandStates];
-    v38 = [v6 identifier];
-    [v37 setObject:v12 forKeyedSubscript:v38];
+    v12 = [[_UIMainMenuCommandState alloc] _initWithValidatedMenuLeaf:_safeCopy localizedKeyCombination:currentLocalizedKeyCombination isPerformable:v29 & 1];
+    _localCache2 = [sessionCopy _localCache];
+    commandStates2 = [_localCache2 commandStates];
+    identifier2 = [commandCopy identifier];
+    [commandStates2 setObject:v12 forKeyedSubscript:identifier2];
 
-    v39 = [v7 _localCache];
-    v40 = [v39 validatedMenuLeavesForIdentifiers];
-    v41 = [v6 identifier];
-    [v40 setObject:v21 forKeyedSubscript:v41];
+    _localCache3 = [sessionCopy _localCache];
+    validatedMenuLeavesForIdentifiers = [_localCache3 validatedMenuLeavesForIdentifiers];
+    identifier3 = [commandCopy identifier];
+    [validatedMenuLeavesForIdentifiers setObject:v21 forKeyedSubscript:identifier3];
   }
 
   return v12;
 }
 
-- (id)_parentGroupStateForElementIdentifier:(id)a3 session:(id)a4
+- (id)_parentGroupStateForElementIdentifier:(id)identifier session:(id)session
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v5 _localCache];
-  v8 = [v7 elementBookkeeping];
-  v9 = [v8 parentIdentifiersForIdentifiers];
-  v10 = [v9 objectForKeyedSubscript:v6];
+  sessionCopy = session;
+  identifierCopy = identifier;
+  _localCache = [sessionCopy _localCache];
+  elementBookkeeping = [_localCache elementBookkeeping];
+  parentIdentifiersForIdentifiers = [elementBookkeeping parentIdentifiersForIdentifiers];
+  v10 = [parentIdentifiersForIdentifiers objectForKeyedSubscript:identifierCopy];
 
   v11 = objc_opt_self();
-  LOBYTE(v7) = objc_opt_isKindOfClass();
+  LOBYTE(_localCache) = objc_opt_isKindOfClass();
 
-  if (v7)
+  if (_localCache)
   {
-    v12 = [v5 _localCache];
-    v13 = [v12 menuStates];
+    _localCache2 = [sessionCopy _localCache];
+    menuStates = [_localCache2 menuStates];
   }
 
   else
@@ -1210,66 +1210,66 @@ LABEL_32:
       goto LABEL_6;
     }
 
-    v12 = [v5 _localCache];
-    v13 = [v12 deferredElementStates];
+    _localCache2 = [sessionCopy _localCache];
+    menuStates = [_localCache2 deferredElementStates];
   }
 
-  v17 = v13;
-  v16 = [v13 objectForKeyedSubscript:v10];
+  v17 = menuStates;
+  v16 = [menuStates objectForKeyedSubscript:v10];
 
 LABEL_6:
 
   return v16;
 }
 
-- (void)performDeferredElementRequest:(id)a3 responseHandler:(id)a4
+- (void)performDeferredElementRequest:(id)request responseHandler:(id)handler
 {
   location[3] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 _sessionIdentifier];
-  v9 = [(NSMutableDictionary *)self->_sessions objectForKeyedSubscript:v8];
+  requestCopy = request;
+  handlerCopy = handler;
+  _sessionIdentifier = [requestCopy _sessionIdentifier];
+  v9 = [(NSMutableDictionary *)self->_sessions objectForKeyedSubscript:_sessionIdentifier];
   if (v9)
   {
-    v10 = [v6 deferredElementIdentifier];
-    v11 = [v9 _localCache];
-    v12 = [v11 elementBookkeeping];
-    v13 = [v12 deferredElementsForIdentifiers];
-    v14 = [v13 objectForKeyedSubscript:v10];
+    deferredElementIdentifier = [requestCopy deferredElementIdentifier];
+    _localCache = [v9 _localCache];
+    elementBookkeeping = [_localCache elementBookkeeping];
+    deferredElementsForIdentifiers = [elementBookkeeping deferredElementsForIdentifiers];
+    v14 = [deferredElementsForIdentifiers objectForKeyedSubscript:deferredElementIdentifier];
 
     if (v14)
     {
-      v15 = [v9 _localCache];
-      v16 = [v15 deferredElementStates];
-      v17 = [v16 objectForKeyedSubscript:v10];
+      _localCache2 = [v9 _localCache];
+      deferredElementStates = [_localCache2 deferredElementStates];
+      v17 = [deferredElementStates objectForKeyedSubscript:deferredElementIdentifier];
 
       if (v17)
       {
         v18 = [[_UIMainMenuDeferredElementResponse alloc] _initWithDeferredElementState:v17];
-        v7[2](v7, v18);
+        handlerCopy[2](handlerCopy, v18);
       }
 
       else
       {
-        v21 = [v9 _localCache];
-        v22 = [v21 pendingDeferredElementRequestHandlers];
-        v34 = [v22 objectForKeyedSubscript:v10];
+        _localCache3 = [v9 _localCache];
+        pendingDeferredElementRequestHandlers = [_localCache3 pendingDeferredElementRequestHandlers];
+        v34 = [pendingDeferredElementRequestHandlers objectForKeyedSubscript:deferredElementIdentifier];
 
         v23 = v34;
         if (v34)
         {
-          v24 = _Block_copy(v7);
+          v24 = _Block_copy(handlerCopy);
           [v34 addObject:v24];
         }
 
         else
         {
           v25 = MEMORY[0x1E695DF70];
-          v32 = _Block_copy(v7);
+          v32 = _Block_copy(handlerCopy);
           v31 = [v25 arrayWithObject:?];
-          v26 = [v9 _localCache];
-          v27 = [v26 pendingDeferredElementRequestHandlers];
-          [v27 setObject:v31 forKeyedSubscript:v10];
+          _localCache4 = [v9 _localCache];
+          pendingDeferredElementRequestHandlers2 = [_localCache4 pendingDeferredElementRequestHandlers];
+          [pendingDeferredElementRequestHandlers2 setObject:v31 forKeyedSubscript:deferredElementIdentifier];
 
           aBlock[0] = MEMORY[0x1E69E9820];
           aBlock[1] = 3221225472;
@@ -1277,7 +1277,7 @@ LABEL_6:
           aBlock[3] = &unk_1E7129C00;
           v28 = v9;
           v43 = v28;
-          v29 = v10;
+          v29 = deferredElementIdentifier;
           v44 = v29;
           v33 = _Block_copy(aBlock);
           objc_initWeak(location, v28);
@@ -1286,12 +1286,12 @@ LABEL_6:
           v35[2] = __68___UIMainMenuManager_performDeferredElementRequest_responseHandler___block_invoke_2;
           v35[3] = &unk_1E7129C28;
           objc_copyWeak(&v41, location);
-          v36 = v8;
+          v36 = _sessionIdentifier;
           v37 = v29;
           v30 = v33;
           v40 = v30;
           v38 = v14;
-          v39 = self;
+          selfCopy = self;
           [(_UIMainMenuManager *)self _fulfillDeferredElementIfNecessary:v38 forSession:v28 fulfillmentHandler:v35];
 
           objc_destroyWeak(&v41);
@@ -1308,11 +1308,11 @@ LABEL_6:
       if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
       {
         LODWORD(location[0]) = 138543362;
-        *(location + 4) = v10;
+        *(location + 4) = deferredElementIdentifier;
         _os_log_error_impl(&dword_188A29000, v20, OS_LOG_TYPE_ERROR, "Ignoring deferred element state request for invalid deferred element identifier: %{public}@", location, 0xCu);
       }
 
-      v7[2](v7, 0);
+      handlerCopy[2](handlerCopy, 0);
     }
   }
 
@@ -1322,22 +1322,22 @@ LABEL_6:
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
       LODWORD(location[0]) = 138543362;
-      *(location + 4) = v8;
+      *(location + 4) = _sessionIdentifier;
       _os_log_error_impl(&dword_188A29000, v19, OS_LOG_TYPE_ERROR, "Ignoring deferred element state request for invalid sessionIdentifier: %{public}@", location, 0xCu);
     }
 
-    v7[2](v7, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 }
 
-- (BOOL)_isCachedDeferredElementExpansionOfMainMenu:(id)a3 forSession:(id)a4
+- (BOOL)_isCachedDeferredElementExpansionOfMainMenu:(id)menu forSession:(id)session
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
-  v9 = [(_UIMainMenu *)self->_cachedBaseMainMenu identifier];
+  menuCopy = menu;
+  sessionCopy = session;
+  v8 = menuCopy;
+  identifier = [(_UIMainMenu *)self->_cachedBaseMainMenu identifier];
   v10 = v8;
-  v11 = v9;
+  v11 = identifier;
   v29 = v10;
   if (v11 == v10)
   {
@@ -1367,10 +1367,10 @@ LABEL_17:
       {
       }
 
-      v14 = [v7 _localCache];
-      v15 = [v14 elementBookkeeping];
-      v16 = [v15 parentIdentifiersForIdentifiers];
-      v17 = [v16 objectForKeyedSubscript:v12];
+      _localCache = [sessionCopy _localCache];
+      elementBookkeeping = [_localCache elementBookkeeping];
+      parentIdentifiersForIdentifiers = [elementBookkeeping parentIdentifiersForIdentifiers];
+      v17 = [parentIdentifiersForIdentifiers objectForKeyedSubscript:v12];
 
       if (!v17)
       {
@@ -1383,17 +1383,17 @@ LABEL_17:
       if (isKindOfClass)
       {
         v11 = v17;
-        v20 = [v7 _localCache];
-        v21 = [v20 elementBookkeeping];
-        v22 = [v21 deferredElementsForIdentifiers];
-        v23 = [v22 objectForKeyedSubscript:v11];
+        _localCache2 = [sessionCopy _localCache];
+        elementBookkeeping2 = [_localCache2 elementBookkeeping];
+        deferredElementsForIdentifiers = [elementBookkeeping2 deferredElementsForIdentifiers];
+        v23 = [deferredElementsForIdentifiers objectForKeyedSubscript:v11];
 
         if (v23)
         {
-          v24 = [v23 _uiDeferredMenuElement];
-          v25 = [v24 cachesItems];
+          _uiDeferredMenuElement = [v23 _uiDeferredMenuElement];
+          cachesItems = [_uiDeferredMenuElement cachesItems];
 
-          if (!v25)
+          if (!cachesItems)
           {
             goto LABEL_19;
           }
@@ -1404,9 +1404,9 @@ LABEL_17:
         }
       }
 
-      v26 = [(_UIMainMenu *)self->_cachedBaseMainMenu identifier];
+      identifier2 = [(_UIMainMenu *)self->_cachedBaseMainMenu identifier];
       v12 = v17;
-      v11 = v26;
+      v11 = identifier2;
       if (v12 == v11)
       {
         goto LABEL_17;
@@ -1422,83 +1422,83 @@ LABEL_21:
   return v28;
 }
 
-- (void)_fulfillDeferredElementIfNecessary:(id)a3 forSession:(id)a4 fulfillmentHandler:(id)a5
+- (void)_fulfillDeferredElementIfNecessary:(id)necessary forSession:(id)session fulfillmentHandler:(id)handler
 {
-  v16 = a4;
-  v8 = a5;
-  v9 = a3;
-  v10 = [v9 _localProvidedElements];
+  sessionCopy = session;
+  handlerCopy = handler;
+  necessaryCopy = necessary;
+  _localProvidedElements = [necessaryCopy _localProvidedElements];
 
-  if (v10)
+  if (_localProvidedElements)
   {
-    v11 = [v9 _localProvidedElements];
+    _localProvidedElements2 = [necessaryCopy _localProvidedElements];
 
-    v8[2](v8, v11);
+    handlerCopy[2](handlerCopy, _localProvidedElements2);
   }
 
   else
   {
-    v11 = [v9 _uiDeferredMenuElement];
+    _localProvidedElements2 = [necessaryCopy _uiDeferredMenuElement];
 
-    if ([v11 cachesItems] && (objc_msgSend(v11, "fulfilledElements"), v12 = objc_claimAutoreleasedReturnValue(), v12, v12))
+    if ([_localProvidedElements2 cachesItems] && (objc_msgSend(_localProvidedElements2, "fulfilledElements"), v12 = objc_claimAutoreleasedReturnValue(), v12, v12))
     {
-      v13 = [v11 fulfilledElements];
-      v14 = [(_UIMainMenuManager *)self _menuElementsFromUIMenuElements:v13 fromDeferredElement:1];
+      fulfilledElements = [_localProvidedElements2 fulfilledElements];
+      v14 = [(_UIMainMenuManager *)self _menuElementsFromUIMenuElements:fulfilledElements fromDeferredElement:1];
 
-      v8[2](v8, v14);
+      handlerCopy[2](handlerCopy, v14);
     }
 
     else
     {
-      [v11 setDelegate:self];
-      v15 = _Block_copy(v8);
-      [v11 setMetadata:v15];
+      [_localProvidedElements2 setDelegate:self];
+      v15 = _Block_copy(handlerCopy);
+      [_localProvidedElements2 setMetadata:v15];
 
-      v14 = [(_UIMainMenuManager *)self _firstResponderForSession:v16];
-      [v11 _fulfillIfNecessaryWithInitialResponder:v14];
+      v14 = [(_UIMainMenuManager *)self _firstResponderForSession:sessionCopy];
+      [_localProvidedElements2 _fulfillIfNecessaryWithInitialResponder:v14];
     }
   }
 }
 
-- (void)deferredMenuElementWasFulfilled:(id)a3
+- (void)deferredMenuElementWasFulfilled:(id)fulfilled
 {
-  v4 = a3;
-  v7 = [v4 fulfilledElements];
-  v5 = [(_UIMainMenuManager *)self _menuElementsFromUIMenuElements:v7 fromDeferredElement:1];
-  v6 = [v4 metadata];
+  fulfilledCopy = fulfilled;
+  fulfilledElements = [fulfilledCopy fulfilledElements];
+  v5 = [(_UIMainMenuManager *)self _menuElementsFromUIMenuElements:fulfilledElements fromDeferredElement:1];
+  metadata = [fulfilledCopy metadata];
 
-  (v6)[2](v6, v5);
+  (metadata)[2](metadata, v5);
 }
 
-- (void)performMainMenuCommandInvocationRequest:(id)a3 responseHandler:(id)a4
+- (void)performMainMenuCommandInvocationRequest:(id)request responseHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
   v8 = +[_UIMainMenuCommandInvocationResponse _response];
-  v33 = [v6 authenticationMessage];
+  authenticationMessage = [requestCopy authenticationMessage];
   [UIPasteboard _attemptAuthenticationWithMessage:?];
   sessions = self->_sessions;
-  v10 = [v6 _sessionIdentifier];
-  v11 = [(NSMutableDictionary *)sessions objectForKeyedSubscript:v10];
+  _sessionIdentifier = [requestCopy _sessionIdentifier];
+  v11 = [(NSMutableDictionary *)sessions objectForKeyedSubscript:_sessionIdentifier];
 
-  LODWORD(v10) = dyld_program_sdk_at_least();
-  v12 = [v11 _localCache];
-  v13 = v12;
-  if (v10)
+  LODWORD(_sessionIdentifier) = dyld_program_sdk_at_least();
+  _localCache = [v11 _localCache];
+  v13 = _localCache;
+  if (_sessionIdentifier)
   {
-    v14 = [v12 validatedMenuLeavesForIdentifiers];
-    v15 = [v6 _commandIdentifier];
-    v16 = [v14 objectForKeyedSubscript:v15];
+    validatedMenuLeavesForIdentifiers = [_localCache validatedMenuLeavesForIdentifiers];
+    _commandIdentifier = [requestCopy _commandIdentifier];
+    _localClientMenuLeaf = [validatedMenuLeavesForIdentifiers objectForKeyedSubscript:_commandIdentifier];
   }
 
   else
   {
-    v17 = [v12 elementBookkeeping];
-    v18 = [v17 commandsForIdentifiers];
-    v19 = [v6 _commandIdentifier];
-    v20 = [v18 objectForKeyedSubscript:v19];
+    elementBookkeeping = [_localCache elementBookkeeping];
+    commandsForIdentifiers = [elementBookkeeping commandsForIdentifiers];
+    _commandIdentifier2 = [requestCopy _commandIdentifier];
+    v20 = [commandsForIdentifiers objectForKeyedSubscript:_commandIdentifier2];
 
-    v16 = [v20 _localClientMenuLeaf];
+    _localClientMenuLeaf = [v20 _localClientMenuLeaf];
     v13 = v20;
   }
 
@@ -1507,7 +1507,7 @@ LABEL_21:
 
   if (isKindOfClass)
   {
-    v23 = v16;
+    v23 = _localClientMenuLeaf;
     v24 = [(_UIMainMenuManager *)self _firstResponderForSession:v11];
     v25 = [v23 _resolvedTargetFromFirstTarget:v24 sender:0];
 
@@ -1524,16 +1524,16 @@ LABEL_21:
 
     if (v27)
     {
-      [v16 performWithSender:0 target:0];
+      [_localClientMenuLeaf performWithSender:0 target:0];
     }
   }
 
-  v28 = [v6 sessionRequest];
+  sessionRequest = [requestCopy sessionRequest];
 
-  if (v28)
+  if (sessionRequest)
   {
-    v29 = [v6 sessionRequest];
-    v30 = [(_UIMainMenuManager *)self performSessionRequest:v29];
+    sessionRequest2 = [requestCopy sessionRequest];
+    v30 = [(_UIMainMenuManager *)self performSessionRequest:sessionRequest2];
     [v8 setSessionResponse:v30];
   }
 
@@ -1542,43 +1542,43 @@ LABEL_21:
   block[2] = __78___UIMainMenuManager_performMainMenuCommandInvocationRequest_responseHandler___block_invoke;
   block[3] = &unk_1E70F4A50;
   v35 = v8;
-  v36 = v7;
+  v36 = handlerCopy;
   v31 = v8;
-  v32 = v7;
+  v32 = handlerCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
-- (void)userDidInvokeKeyboardShortcut:(id)a3
+- (void)userDidInvokeKeyboardShortcut:(id)shortcut
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  shortcutCopy = shortcut;
   if (self->_cachedBaseMainMenu && [(NSHashTable *)self->_observers count])
   {
-    v5 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     sessions = self->_sessions;
     v31[0] = MEMORY[0x1E69E9820];
     v31[1] = 3221225472;
     v31[2] = __52___UIMainMenuManager_userDidInvokeKeyboardShortcut___block_invoke;
     v31[3] = &unk_1E7129C50;
     v31[4] = self;
-    v7 = v4;
+    v7 = shortcutCopy;
     v32 = v7;
-    v8 = v5;
+    v8 = dictionary;
     v33 = v8;
     [(NSMutableDictionary *)sessions bs_each:v31];
     v9 = objc_opt_new();
     [v9 setBeginNewSession:1];
     v10 = [(_UIMainMenuManager *)self performSessionRequest:v9];
-    v11 = [v10 session];
-    v12 = [(_UIMainMenuManager *)self _categoryMenuIdentifierForInvokedKeyboardShortcutMenuLeaf:v7 session:v11];
+    session = [v10 session];
+    v12 = [(_UIMainMenuManager *)self _categoryMenuIdentifierForInvokedKeyboardShortcutMenuLeaf:v7 session:session];
     v13 = objc_opt_new();
-    [v13 setSessionToEnd:v11];
+    [v13 setSessionToEnd:session];
     v14 = [(_UIMainMenuManager *)self performSessionRequest:v13];
     if ([v8 count] || v12)
     {
-      v23 = v11;
+      v23 = session;
       v24 = v9;
-      v26 = v4;
+      v26 = shortcutCopy;
       v25 = v8;
       v22 = v12;
       v15 = [[_UIMainMenuCommandInvocationNotification alloc] _initWithCategoryMenuSessionMap:v8 fallbackMenuIdentifier:v12];
@@ -1615,18 +1615,18 @@ LABEL_21:
       }
 
       v8 = v25;
-      v4 = v26;
+      shortcutCopy = v26;
       v9 = v24;
       v12 = v22;
-      v11 = v23;
+      session = v23;
     }
   }
 }
 
-- (id)_categoryMenuIdentifierForInvokedKeyboardShortcutMenuLeaf:(id)a3 session:(id)a4
+- (id)_categoryMenuIdentifierForInvokedKeyboardShortcutMenuLeaf:(id)leaf session:(id)session
 {
-  v6 = a3;
-  v7 = a4;
+  leafCopy = leaf;
+  sessionCopy = session;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
@@ -1637,15 +1637,15 @@ LABEL_21:
   v18 = 3221225472;
   v19 = __88___UIMainMenuManager__categoryMenuIdentifierForInvokedKeyboardShortcutMenuLeaf_session___block_invoke;
   v20 = &unk_1E7129C78;
-  v8 = v6;
+  v8 = leafCopy;
   v21 = v8;
-  v9 = v7;
+  v9 = sessionCopy;
   v22 = v9;
   v23 = &v24;
   v10 = _Block_copy(&v17);
-  v11 = [v9 uncategorizedMenu];
+  uncategorizedMenu = [v9 uncategorizedMenu];
   v30 = 0;
-  _UIMainMenuElementEnumerateElementTypesHelper(v11, 0, &v30, 0, v10, 0);
+  _UIMainMenuElementEnumerateElementTypesHelper(uncategorizedMenu, 0, &v30, 0, v10, 0);
 
   v12 = v25[5];
   if (v12 || (cachedBaseMainMenu = self->_cachedBaseMainMenu, v30 = 0, _UIMainMenuElementEnumerateElementTypesHelper(cachedBaseMainMenu, 0, &v30, 0, v10, 0), (v12 = v25[5]) != 0))
@@ -1664,44 +1664,44 @@ LABEL_21:
   return v15;
 }
 
-- (id)_categoryMenuIdentifierForCommand:(id)a3 commandState:(id)a4 session:(id)a5
+- (id)_categoryMenuIdentifierForCommand:(id)command commandState:(id)state session:(id)session
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (([v8 _isHiddenForState:v9] & 1) != 0 || (objc_msgSend(v8, "identifier"), (v11 = objc_claimAutoreleasedReturnValue()) == 0))
+  commandCopy = command;
+  stateCopy = state;
+  sessionCopy = session;
+  if (([commandCopy _isHiddenForState:stateCopy] & 1) != 0 || (objc_msgSend(commandCopy, "identifier"), (v11 = objc_claimAutoreleasedReturnValue()) == 0))
   {
     v18 = 0;
   }
 
   else
   {
-    for (i = v11; ; i = v16)
+    for (i = v11; ; i = uncategorizedMenu)
     {
-      v13 = [v10 _localCache];
-      v14 = [v13 elementBookkeeping];
-      v15 = [v14 parentIdentifiersForIdentifiers];
-      v16 = [v15 objectForKeyedSubscript:i];
+      _localCache = [sessionCopy _localCache];
+      elementBookkeeping = [_localCache elementBookkeeping];
+      parentIdentifiersForIdentifiers = [elementBookkeeping parentIdentifiersForIdentifiers];
+      uncategorizedMenu = [parentIdentifiersForIdentifiers objectForKeyedSubscript:i];
 
-      v17 = [(_UIMainMenu *)self->_cachedBaseMainMenu identifier];
-      LODWORD(v14) = [v16 isEqual:v17];
+      identifier = [(_UIMainMenu *)self->_cachedBaseMainMenu identifier];
+      LODWORD(elementBookkeeping) = [uncategorizedMenu isEqual:identifier];
 
-      if (v14)
+      if (elementBookkeeping)
       {
-        v19 = i;
+        identifier2 = i;
         goto LABEL_10;
       }
 
-      if (!v16)
+      if (!uncategorizedMenu)
       {
         break;
       }
     }
 
-    v16 = [v10 uncategorizedMenu];
-    v19 = [v16 identifier];
+    uncategorizedMenu = [sessionCopy uncategorizedMenu];
+    identifier2 = [uncategorizedMenu identifier];
 LABEL_10:
-    v18 = v19;
+    v18 = identifier2;
   }
 
   return v18;

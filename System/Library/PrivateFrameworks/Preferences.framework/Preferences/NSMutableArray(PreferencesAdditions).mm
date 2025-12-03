@@ -10,24 +10,24 @@
 - (void)ps_insertObject:()PreferencesAdditions afterObject:
 {
   v7 = a3;
-  v6 = [a1 indexOfObject:a4];
+  v6 = [self indexOfObject:a4];
   if (v6 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    [a1 insertObject:v7 atIndex:v6 + 1];
+    [self insertObject:v7 atIndex:v6 + 1];
   }
 }
 
 - (void)ps_insertObjectsFromArray:()PreferencesAdditions afterObject:
 {
   v9 = a3;
-  v6 = [a1 indexOfObject:a4];
+  v6 = [self indexOfObject:a4];
   if (v6 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v7 = v6;
     if ([v9 count])
     {
       v8 = [MEMORY[0x1E696AC90] indexSetWithIndexesInRange:{v7 + 1, objc_msgSend(v9, "count")}];
-      [a1 insertObjects:v9 atIndexes:v8];
+      [self insertObjects:v9 atIndexes:v8];
     }
   }
 }
@@ -41,13 +41,13 @@
   v8 = a3;
   v9 = [v6 arrayWithObjects:&v10 count:1];
 
-  [a1 ps_addSpecifiers:v9 toGroup:{v7, v10, v11}];
+  [self ps_addSpecifiers:v9 toGroup:{v7, v10, v11}];
 }
 
 - (void)ps_addSpecifiers:()PreferencesAdditions toGroup:
 {
   v13 = a3;
-  v6 = [a1 indexOfObject:a4];
+  v6 = [self indexOfObject:a4];
   if (v6 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v7 = v6;
@@ -57,20 +57,20 @@
       do
       {
         v9 = v8;
-        if (v8 >= [a1 count])
+        if (v8 >= [self count])
         {
           break;
         }
 
-        v10 = [a1 objectAtIndexedSubscript:v9];
-        v11 = [v10 cellType];
+        v10 = [self objectAtIndexedSubscript:v9];
+        cellType = [v10 cellType];
 
         v8 = v9 + 1;
       }
 
-      while (v11);
+      while (cellType);
       v12 = [MEMORY[0x1E696AC90] indexSetWithIndexesInRange:{v9, objc_msgSend(v13, "count")}];
-      [a1 insertObjects:v13 atIndexes:v12];
+      [self insertObjects:v13 atIndexes:v12];
     }
   }
 }

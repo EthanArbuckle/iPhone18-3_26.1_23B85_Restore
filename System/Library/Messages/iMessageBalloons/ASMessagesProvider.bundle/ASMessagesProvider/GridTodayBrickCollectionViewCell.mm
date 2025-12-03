@@ -1,24 +1,24 @@
 @interface GridTodayBrickCollectionViewCell
-- (_TtC18ASMessagesProvider32GridTodayBrickCollectionViewCell)initWithFrame:(CGRect)a3;
+- (_TtC18ASMessagesProvider32GridTodayBrickCollectionViewCell)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation GridTodayBrickCollectionViewCell
 
-- (_TtC18ASMessagesProvider32GridTodayBrickCollectionViewCell)initWithFrame:(CGRect)a3
+- (_TtC18ASMessagesProvider32GridTodayBrickCollectionViewCell)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   ObjectType = swift_getObjectType();
   v9 = OBJC_IVAR____TtC18ASMessagesProvider32GridTodayBrickCollectionViewCell_grid;
   *(&self->super.super.super.super.super.super.isa + v9) = [objc_allocWithZone(type metadata accessor for ArtworkGrid()) initWithFrame:{0.0, 0.0, 0.0, 0.0}];
   v12.receiver = self;
   v12.super_class = ObjectType;
-  v10 = [(BaseTodayBrickCollectionViewCell *)&v12 initWithFrame:x, y, width, height];
-  [*(&v10->super.super.super.super.super.super.isa + OBJC_IVAR____TtC18ASMessagesProvider32BaseTodayBrickCollectionViewCell_mainContentView) addSubview:*(&v10->super.super.super.super.super.super.isa + OBJC_IVAR____TtC18ASMessagesProvider32GridTodayBrickCollectionViewCell_grid)];
-  return v10;
+  height = [(BaseTodayBrickCollectionViewCell *)&v12 initWithFrame:x, y, width, height];
+  [*(&height->super.super.super.super.super.super.isa + OBJC_IVAR____TtC18ASMessagesProvider32BaseTodayBrickCollectionViewCell_mainContentView) addSubview:*(&height->super.super.super.super.super.super.isa + OBJC_IVAR____TtC18ASMessagesProvider32GridTodayBrickCollectionViewCell_grid)];
+  return height;
 }
 
 - (void)layoutSubviews

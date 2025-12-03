@@ -1,23 +1,23 @@
 @interface OSInactivityPredictionServiceXPCProxy
 - (NSObject)target;
-- (OSInactivityPredictionServiceXPCProxy)initWithObserver:(id)a3;
-- (id)forwardingTargetForSelector:(SEL)a3;
+- (OSInactivityPredictionServiceXPCProxy)initWithObserver:(id)observer;
+- (id)forwardingTargetForSelector:(SEL)selector;
 @end
 
 @implementation OSInactivityPredictionServiceXPCProxy
 
-- (OSInactivityPredictionServiceXPCProxy)initWithObserver:(id)a3
+- (OSInactivityPredictionServiceXPCProxy)initWithObserver:(id)observer
 {
   v6.receiver = self;
   v6.super_class = OSInactivityPredictionServiceXPCProxy;
-  v3 = a3;
+  observerCopy = observer;
   v4 = [(OSInactivityPredictionServiceXPCProxy *)&v6 init];
-  objc_storeWeak(&v4->_target, v3);
+  objc_storeWeak(&v4->_target, observerCopy);
 
   return v4;
 }
 
-- (id)forwardingTargetForSelector:(SEL)a3
+- (id)forwardingTargetForSelector:(SEL)selector
 {
   WeakRetained = objc_loadWeakRetained(&self->_target);
 

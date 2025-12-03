@@ -1,25 +1,25 @@
 @interface ATXActionPredictionBlacklist
 + (id)sharedInstanceWithAppPredictionBlacklist;
 + (id)sharedInstanceWithoutAppPredictionBlacklist;
-- (ATXActionPredictionBlacklist)initWithAppPredictionBlacklist:(id)a3;
-- (BOOL)isBundleIdBlacklisted:(id)a3;
-- (BOOL)shouldPredictBundleId:(id)a3 action:(id)a4;
-- (BOOL)shouldPredictBundleIdForShortcuts:(id)a3 action:(id)a4 forPrimaryShortcuts:(BOOL)a5;
+- (ATXActionPredictionBlacklist)initWithAppPredictionBlacklist:(id)blacklist;
+- (BOOL)isBundleIdBlacklisted:(id)blacklisted;
+- (BOOL)shouldPredictBundleId:(id)id action:(id)action;
+- (BOOL)shouldPredictBundleIdForShortcuts:(id)shortcuts action:(id)action forPrimaryShortcuts:(BOOL)primaryShortcuts;
 - (id)_prefsDisabledApps;
 - (id)disabledBundlesInSettings;
 - (id)homeScreenDisabledShortcutsInSettings;
-- (id)shouldPredictBundleIdHelper:(id)a3 action:(id)a4;
+- (id)shouldPredictBundleIdHelper:(id)helper action:(id)action;
 - (void)_handlePrefsChange;
-- (void)addToBlacklists:(id)a3 blacklistAppList:(id)a4 blacklistActionList:(id)a5 blacklistAppAndActionList:(id)a6;
+- (void)addToBlacklists:(id)blacklists blacklistAppList:(id)list blacklistActionList:(id)actionList blacklistAppAndActionList:(id)andActionList;
 - (void)dealloc;
-- (void)setBlacklistFromAssetData:(id)a3 predictionBlacklist:(id)a4 shortcutBlacklist:(id)a5 primaryShortcutBlacklist:(id)a6;
+- (void)setBlacklistFromAssetData:(id)data predictionBlacklist:(id)blacklist shortcutBlacklist:(id)shortcutBlacklist primaryShortcutBlacklist:(id)primaryShortcutBlacklist;
 @end
 
 @implementation ATXActionPredictionBlacklist
 
-- (ATXActionPredictionBlacklist)initWithAppPredictionBlacklist:(id)a3
+- (ATXActionPredictionBlacklist)initWithAppPredictionBlacklist:(id)blacklist
 {
-  v4 = a3;
+  blacklistCopy = blacklist;
   v19.receiver = self;
   v19.super_class = ATXActionPredictionBlacklist;
   v5 = [(ATXActionPredictionBlacklist *)&v19 init];
@@ -31,13 +31,13 @@
     lock = v5->_lock;
     v5->_lock = v8;
 
-    objc_storeWeak(&v5->_appPredictionBlacklist, v4);
+    objc_storeWeak(&v5->_appPredictionBlacklist, blacklistCopy);
     v10 = +[_ATXGlobals sharedInstance];
-    v11 = [v10 blacklistedAppActions];
-    v12 = [v10 blacklistedAppActionsForPredictions];
-    v13 = [v10 blacklistedAppActionsForShortcuts];
-    v14 = [v10 blacklistedAppActionsForPrimaryShortcuts];
-    [(ATXActionPredictionBlacklist *)v5 setBlacklistFromAssetData:v11 predictionBlacklist:v12 shortcutBlacklist:v13 primaryShortcutBlacklist:v14];
+    blacklistedAppActions = [v10 blacklistedAppActions];
+    blacklistedAppActionsForPredictions = [v10 blacklistedAppActionsForPredictions];
+    blacklistedAppActionsForShortcuts = [v10 blacklistedAppActionsForShortcuts];
+    blacklistedAppActionsForPrimaryShortcuts = [v10 blacklistedAppActionsForPrimaryShortcuts];
+    [(ATXActionPredictionBlacklist *)v5 setBlacklistFromAssetData:blacklistedAppActions predictionBlacklist:blacklistedAppActionsForPredictions shortcutBlacklist:blacklistedAppActionsForShortcuts primaryShortcutBlacklist:blacklistedAppActionsForPrimaryShortcuts];
 
     [(ATXActionPredictionBlacklist *)v5 _handlePrefsChange];
     objc_initWeak(&location, v5);
@@ -46,7 +46,7 @@
     v16[2] = __63__ATXActionPredictionBlacklist_initWithAppPredictionBlacklist___block_invoke;
     v16[3] = &unk_2785977B0;
     objc_copyWeak(&v17, &location);
-    v5->_prefsChangeNotificationToken = [v4 registerPrefsChangeHandler:v16];
+    v5->_prefsChangeNotificationToken = [blacklistCopy registerPrefsChangeHandler:v16];
     objc_destroyWeak(&v17);
     objc_destroyWeak(&location);
   }
@@ -112,13 +112,13 @@ void __72__ATXActionPredictionBlacklist_sharedInstanceWithAppPredictionBlacklist
   [(ATXActionPredictionBlacklist *)&v4 dealloc];
 }
 
-- (void)setBlacklistFromAssetData:(id)a3 predictionBlacklist:(id)a4 shortcutBlacklist:(id)a5 primaryShortcutBlacklist:(id)a6
+- (void)setBlacklistFromAssetData:(id)data predictionBlacklist:(id)blacklist shortcutBlacklist:(id)shortcutBlacklist primaryShortcutBlacklist:(id)primaryShortcutBlacklist
 {
   v68[2] = *MEMORY[0x277D85DE8];
-  v45 = a6;
-  v44 = a5;
-  v39 = a4;
-  v37 = a3;
+  primaryShortcutBlacklistCopy = primaryShortcutBlacklist;
+  shortcutBlacklistCopy = shortcutBlacklist;
+  blacklistCopy = blacklist;
+  dataCopy = data;
   v10 = objc_opt_new();
   v11 = objc_opt_new();
   v12 = objc_opt_new();
@@ -138,7 +138,7 @@ void __72__ATXActionPredictionBlacklist_sharedInstanceWithAppPredictionBlacklist
   v66[0] = v12;
   v66[1] = v14;
   v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v66 count:2];
-  [(ATXActionPredictionBlacklist *)self addToBlacklists:v37 blacklistAppList:v15 blacklistActionList:v16 blacklistAppAndActionList:v17];
+  [(ATXActionPredictionBlacklist *)self addToBlacklists:dataCopy blacklistAppList:v15 blacklistActionList:v16 blacklistAppAndActionList:v17];
 
   v65 = v10;
   v18 = [MEMORY[0x277CBEA60] arrayWithObjects:&v65 count:1];
@@ -146,7 +146,7 @@ void __72__ATXActionPredictionBlacklist_sharedInstanceWithAppPredictionBlacklist
   v19 = [MEMORY[0x277CBEA60] arrayWithObjects:&v64 count:1];
   v63 = v12;
   v20 = [MEMORY[0x277CBEA60] arrayWithObjects:&v63 count:1];
-  [(ATXActionPredictionBlacklist *)self addToBlacklists:v39 blacklistAppList:v18 blacklistActionList:v19 blacklistAppAndActionList:v20];
+  [(ATXActionPredictionBlacklist *)self addToBlacklists:blacklistCopy blacklistAppList:v18 blacklistActionList:v19 blacklistAppAndActionList:v20];
 
   v62 = v38;
   v21 = [MEMORY[0x277CBEA60] arrayWithObjects:&v62 count:1];
@@ -154,7 +154,7 @@ void __72__ATXActionPredictionBlacklist_sharedInstanceWithAppPredictionBlacklist
   v22 = [MEMORY[0x277CBEA60] arrayWithObjects:&v61 count:1];
   v60 = v14;
   v23 = [MEMORY[0x277CBEA60] arrayWithObjects:&v60 count:1];
-  [(ATXActionPredictionBlacklist *)self addToBlacklists:v44 blacklistAppList:v21 blacklistActionList:v22 blacklistAppAndActionList:v23];
+  [(ATXActionPredictionBlacklist *)self addToBlacklists:shortcutBlacklistCopy blacklistAppList:v21 blacklistActionList:v22 blacklistAppAndActionList:v23];
 
   v59 = v41;
   v24 = [MEMORY[0x277CBEA60] arrayWithObjects:&v59 count:1];
@@ -162,7 +162,7 @@ void __72__ATXActionPredictionBlacklist_sharedInstanceWithAppPredictionBlacklist
   v25 = [MEMORY[0x277CBEA60] arrayWithObjects:&v58 count:1];
   v57 = v43;
   v26 = [MEMORY[0x277CBEA60] arrayWithObjects:&v57 count:1];
-  [(ATXActionPredictionBlacklist *)self addToBlacklists:v45 blacklistAppList:v24 blacklistActionList:v25 blacklistAppAndActionList:v26];
+  [(ATXActionPredictionBlacklist *)self addToBlacklists:primaryShortcutBlacklistCopy blacklistAppList:v24 blacklistActionList:v25 blacklistAppAndActionList:v26];
 
   lock = self->_lock;
   v47[0] = MEMORY[0x277D85DD0];
@@ -233,19 +233,19 @@ void __121__ATXActionPredictionBlacklist_setBlacklistFromAssetData_predictionBla
   v4[9] = v21;
 }
 
-- (void)addToBlacklists:(id)a3 blacklistAppList:(id)a4 blacklistActionList:(id)a5 blacklistAppAndActionList:(id)a6
+- (void)addToBlacklists:(id)blacklists blacklistAppList:(id)list blacklistActionList:(id)actionList blacklistAppAndActionList:(id)andActionList
 {
   v65 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v43 = a4;
-  v42 = a5;
-  v41 = a6;
+  blacklistsCopy = blacklists;
+  listCopy = list;
+  actionListCopy = actionList;
+  andActionListCopy = andActionList;
   v57 = 0u;
   v58 = 0u;
   v59 = 0u;
   v60 = 0u;
-  obj = v9;
-  v10 = [v9 countByEnumeratingWithState:&v57 objects:v64 count:16];
+  obj = blacklistsCopy;
+  v10 = [blacklistsCopy countByEnumeratingWithState:&v57 objects:v64 count:16];
   if (v10)
   {
     v11 = v10;
@@ -260,8 +260,8 @@ void __121__ATXActionPredictionBlacklist_setBlacklistFromAssetData_predictionBla
         }
 
         v14 = *(*(&v57 + 1) + 8 * i);
-        v15 = [v14 second];
-        v16 = [v15 isEqualToString:@"_"];
+        second = [v14 second];
+        v16 = [second isEqualToString:@"_"];
 
         if (v16)
         {
@@ -269,7 +269,7 @@ void __121__ATXActionPredictionBlacklist_setBlacklistFromAssetData_predictionBla
           v56 = 0u;
           v53 = 0u;
           v54 = 0u;
-          v17 = v43;
+          v17 = listCopy;
           v18 = [v17 countByEnumeratingWithState:&v53 objects:v63 count:16];
           if (v18)
           {
@@ -285,8 +285,8 @@ void __121__ATXActionPredictionBlacklist_setBlacklistFromAssetData_predictionBla
                 }
 
                 v22 = *(*(&v53 + 1) + 8 * j);
-                v23 = [v14 first];
-                [v22 addObject:v23];
+                first = [v14 first];
+                [v22 addObject:first];
               }
 
               v19 = [v17 countByEnumeratingWithState:&v53 objects:v63 count:16];
@@ -298,8 +298,8 @@ void __121__ATXActionPredictionBlacklist_setBlacklistFromAssetData_predictionBla
 
         else
         {
-          v24 = [v14 first];
-          v25 = [v24 isEqualToString:@"_"];
+          first2 = [v14 first];
+          v25 = [first2 isEqualToString:@"_"];
 
           if (v25)
           {
@@ -307,7 +307,7 @@ void __121__ATXActionPredictionBlacklist_setBlacklistFromAssetData_predictionBla
             v52 = 0u;
             v49 = 0u;
             v50 = 0u;
-            v17 = v42;
+            v17 = actionListCopy;
             v26 = [v17 countByEnumeratingWithState:&v49 objects:v62 count:16];
             if (v26)
             {
@@ -323,8 +323,8 @@ void __121__ATXActionPredictionBlacklist_setBlacklistFromAssetData_predictionBla
                   }
 
                   v30 = *(*(&v49 + 1) + 8 * k);
-                  v31 = [v14 second];
-                  [v30 addObject:v31];
+                  second2 = [v14 second];
+                  [v30 addObject:second2];
                 }
 
                 v27 = [v17 countByEnumeratingWithState:&v49 objects:v62 count:16];
@@ -337,15 +337,15 @@ void __121__ATXActionPredictionBlacklist_setBlacklistFromAssetData_predictionBla
           else
           {
             v32 = objc_alloc(MEMORY[0x277D42648]);
-            v33 = [v14 first];
-            v34 = [v14 second];
-            v17 = [v32 initWithFirst:v33 second:v34];
+            first3 = [v14 first];
+            second3 = [v14 second];
+            v17 = [v32 initWithFirst:first3 second:second3];
 
             v47 = 0u;
             v48 = 0u;
             v45 = 0u;
             v46 = 0u;
-            v35 = v41;
+            v35 = andActionListCopy;
             v36 = [v35 countByEnumeratingWithState:&v45 objects:v61 count:16];
             if (v36)
             {
@@ -384,23 +384,23 @@ void __121__ATXActionPredictionBlacklist_setBlacklistFromAssetData_predictionBla
 - (id)disabledBundlesInSettings
 {
   WeakRetained = objc_loadWeakRetained(&self->_appPredictionBlacklist);
-  v3 = [WeakRetained disabledBundleIds];
+  disabledBundleIds = [WeakRetained disabledBundleIds];
 
-  return v3;
+  return disabledBundleIds;
 }
 
 - (id)_prefsDisabledApps
 {
-  v3 = [(ATXActionPredictionBlacklist *)self disabledBundlesInSettings];
-  v4 = [(ATXActionPredictionBlacklist *)self homeScreenDisabledShortcutsInSettings];
-  if (v4)
+  disabledBundlesInSettings = [(ATXActionPredictionBlacklist *)self disabledBundlesInSettings];
+  homeScreenDisabledShortcutsInSettings = [(ATXActionPredictionBlacklist *)self homeScreenDisabledShortcutsInSettings];
+  if (homeScreenDisabledShortcutsInSettings)
   {
-    v5 = [v3 setByAddingObjectsFromArray:v4];
+    v5 = [disabledBundlesInSettings setByAddingObjectsFromArray:homeScreenDisabledShortcutsInSettings];
   }
 
   else
   {
-    v5 = v3;
+    v5 = disabledBundlesInSettings;
   }
 
   v6 = v5;
@@ -463,11 +463,11 @@ void __50__ATXActionPredictionBlacklist__handlePrefsChange__block_invoke(uint64_
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)isBundleIdBlacklisted:(id)a3
+- (BOOL)isBundleIdBlacklisted:(id)blacklisted
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  blacklistedCopy = blacklisted;
+  v5 = blacklistedCopy;
+  if (blacklistedCopy)
   {
     v12 = 0;
     v13 = &v12;
@@ -479,7 +479,7 @@ void __50__ATXActionPredictionBlacklist__handlePrefsChange__block_invoke(uint64_
     v9[2] = __54__ATXActionPredictionBlacklist_isBundleIdBlacklisted___block_invoke;
     v9[3] = &unk_27859E450;
     v11 = &v12;
-    v10 = v4;
+    v10 = blacklistedCopy;
     [(_PASLock *)lock runWithLockAcquired:v9];
     v7 = *(v13 + 24);
 
@@ -510,15 +510,15 @@ void __54__ATXActionPredictionBlacklist_isBundleIdBlacklisted___block_invoke(uin
   *(*(*(a1 + 40) + 8) + 24) = v3;
 }
 
-- (BOOL)shouldPredictBundleId:(id)a3 action:(id)a4
+- (BOOL)shouldPredictBundleId:(id)id action:(id)action
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  idCopy = id;
+  actionCopy = action;
+  v8 = actionCopy;
   v9 = 0;
-  if (v6 && v7)
+  if (idCopy && actionCopy)
   {
-    v10 = [(ATXActionPredictionBlacklist *)self shouldPredictBundleIdHelper:v6 action:v7];
+    v10 = [(ATXActionPredictionBlacklist *)self shouldPredictBundleIdHelper:idCopy action:actionCopy];
     v17 = 0;
     v18 = &v17;
     v19 = 0x2020000000;
@@ -576,15 +576,15 @@ void __61__ATXActionPredictionBlacklist_shouldPredictBundleId_action___block_inv
   }
 }
 
-- (BOOL)shouldPredictBundleIdForShortcuts:(id)a3 action:(id)a4 forPrimaryShortcuts:(BOOL)a5
+- (BOOL)shouldPredictBundleIdForShortcuts:(id)shortcuts action:(id)action forPrimaryShortcuts:(BOOL)primaryShortcuts
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
+  shortcutsCopy = shortcuts;
+  actionCopy = action;
+  v10 = actionCopy;
   v11 = 0;
-  if (v8 && v9)
+  if (shortcutsCopy && actionCopy)
   {
-    v12 = [(ATXActionPredictionBlacklist *)self shouldPredictBundleIdHelper:v8 action:v9];
+    v12 = [(ATXActionPredictionBlacklist *)self shouldPredictBundleIdHelper:shortcutsCopy action:actionCopy];
     v25 = 0;
     v26 = &v25;
     v27 = 0x2020000000;
@@ -600,7 +600,7 @@ void __61__ATXActionPredictionBlacklist_shouldPredictBundleId_action___block_inv
     v16[3] = &unk_27859E478;
     v18 = &v25;
     v14 = v12;
-    v20 = a5;
+    primaryShortcutsCopy = primaryShortcuts;
     v17 = v14;
     v19 = &v21;
     [(_PASLock *)lock runWithLockAcquired:v16];
@@ -695,21 +695,21 @@ void __93__ATXActionPredictionBlacklist_shouldPredictBundleIdForShortcuts_action
   }
 }
 
-- (id)shouldPredictBundleIdHelper:(id)a3 action:(id)a4
+- (id)shouldPredictBundleIdHelper:(id)helper action:(id)action
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v5 lowercaseString];
-  v8 = [v7 containsString:@"nsua"];
+  actionCopy = action;
+  helperCopy = helper;
+  lowercaseString = [actionCopy lowercaseString];
+  v8 = [lowercaseString containsString:@"nsua"];
 
   if (v8)
   {
-    v9 = [v5 substringFromIndex:5];
+    v9 = [actionCopy substringFromIndex:5];
 
-    v5 = v9;
+    actionCopy = v9;
   }
 
-  v10 = [objc_alloc(MEMORY[0x277D42648]) initWithFirst:v6 second:v5];
+  v10 = [objc_alloc(MEMORY[0x277D42648]) initWithFirst:helperCopy second:actionCopy];
 
   return v10;
 }

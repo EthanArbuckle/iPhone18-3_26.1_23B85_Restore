@@ -1,51 +1,51 @@
 @interface CBStopsBasedBrightnessRamp
-- (CBStopsBasedBrightnessRamp)initWithStartingBrightness:(float)a3 targetBrightness:(float)a4 rampSpeed:(float)a5 andCurrentTime:(float)a6;
-- (int)updateRampWithProgress:(float)a3;
+- (CBStopsBasedBrightnessRamp)initWithStartingBrightness:(float)brightness targetBrightness:(float)targetBrightness rampSpeed:(float)speed andCurrentTime:(float)time;
+- (int)updateRampWithProgress:(float)progress;
 @end
 
 @implementation CBStopsBasedBrightnessRamp
 
-- (CBStopsBasedBrightnessRamp)initWithStartingBrightness:(float)a3 targetBrightness:(float)a4 rampSpeed:(float)a5 andCurrentTime:(float)a6
+- (CBStopsBasedBrightnessRamp)initWithStartingBrightness:(float)brightness targetBrightness:(float)targetBrightness rampSpeed:(float)speed andCurrentTime:(float)time
 {
-  v15 = self;
+  selfCopy = self;
   v14 = a2;
-  v13 = a3;
-  v12 = a4;
-  v11 = a5;
-  v10 = a6;
+  brightnessCopy = brightness;
+  targetBrightnessCopy = targetBrightness;
+  speedCopy = speed;
+  timeCopy = time;
   v9.receiver = self;
   v9.super_class = CBStopsBasedBrightnessRamp;
-  v15 = [(CBStopsBasedBrightnessRamp *)&v9 init];
-  if (!v15)
+  selfCopy = [(CBStopsBasedBrightnessRamp *)&v9 init];
+  if (!selfCopy)
   {
     return 0;
   }
 
-  if (v13 == 0.0 || v11 == 0.0 || v13 == v12)
+  if (brightnessCopy == 0.0 || speedCopy == 0.0 || brightnessCopy == targetBrightnessCopy)
   {
-    MEMORY[0x1E69E5920](v15);
-    v15 = 0;
+    MEMORY[0x1E69E5920](selfCopy);
+    selfCopy = 0;
     return 0;
   }
 
   else
   {
-    v15->_start = v13;
-    v15->_target = v12;
-    v15->_current = v13;
-    v15->_rampSpeed = v11;
-    v6 = log2f(v15->_target / v15->_start);
-    v7 = fabs(v6) * v15->_rampSpeed;
-    v15->_rampTime = v7;
-    v15->_startTime = v10;
-    v15->_timeOfLastUpdate = v10;
-    return v15;
+    selfCopy->_start = brightnessCopy;
+    selfCopy->_target = targetBrightnessCopy;
+    selfCopy->_current = brightnessCopy;
+    selfCopy->_rampSpeed = speedCopy;
+    v6 = log2f(selfCopy->_target / selfCopy->_start);
+    v7 = fabs(v6) * selfCopy->_rampSpeed;
+    selfCopy->_rampTime = v7;
+    selfCopy->_startTime = timeCopy;
+    selfCopy->_timeOfLastUpdate = timeCopy;
+    return selfCopy;
   }
 }
 
-- (int)updateRampWithProgress:(float)a3
+- (int)updateRampWithProgress:(float)progress
 {
-  if (a3 >= 1.0)
+  if (progress >= 1.0)
   {
     self->_current = self->_target;
     return 1;
@@ -53,7 +53,7 @@
 
   else
   {
-    v6 = a3 * self->_rampTime;
+    v6 = progress * self->_rampTime;
     self->_timeOfLastUpdate = self->_startTime + v6;
     v5 = 2.0;
     if (self->_start > self->_target)

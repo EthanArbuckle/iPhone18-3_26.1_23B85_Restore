@@ -1,28 +1,28 @@
 @interface _MFDAMessageHeaderFetchConsumer
-- (void)handleResponse:(id)a3 error:(id)a4;
+- (void)handleResponse:(id)response error:(id)error;
 @end
 
 @implementation _MFDAMessageHeaderFetchConsumer
 
-- (void)handleResponse:(id)a3 error:(id)a4
+- (void)handleResponse:(id)response error:(id)error
 {
-  v12 = a3;
-  v6 = a4;
-  if (v6)
+  responseCopy = response;
+  errorCopy = error;
+  if (errorCopy)
   {
-    objc_storeStrong(&self->_error, a4);
+    objc_storeStrong(&self->_error, error);
     self->_succeeded = 0;
   }
 
   else
   {
-    v7 = [v12 changedItem];
-    v8 = [[MFDAMessage alloc] initWithDAMailMessage:v7 mailbox:0];
+    changedItem = [responseCopy changedItem];
+    v8 = [[MFDAMessage alloc] initWithDAMailMessage:changedItem mailbox:0];
     [(MFDAMessage *)v8 setMessageStore:self->_store];
-    v9 = [(MFDAMessage *)v8 headers];
-    v10 = [v9 data];
+    headers = [(MFDAMessage *)v8 headers];
+    data = [headers data];
     data = self->_data;
-    self->_data = v10;
+    self->_data = data;
 
     self->_succeeded = 1;
   }

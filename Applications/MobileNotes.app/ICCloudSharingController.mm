@@ -1,28 +1,28 @@
 @interface ICCloudSharingController
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation ICCloudSharingController
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = ICCloudSharingController;
-  [(ICCloudSharingController *)&v5 viewWillAppear:a3];
-  v4 = [(ICCloudSharingController *)self share];
-  [(ICCloudSharingController *)self setCanDeferDismissal:v4 == 0];
+  [(ICCloudSharingController *)&v5 viewWillAppear:appear];
+  share = [(ICCloudSharingController *)self share];
+  [(ICCloudSharingController *)self setCanDeferDismissal:share == 0];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
-  v5 = [(ICCloudSharingController *)self share];
-  if (v5 && ![(ICCloudSharingController *)self deferDismissal])
+  disappearCopy = disappear;
+  share = [(ICCloudSharingController *)self share];
+  if (share && ![(ICCloudSharingController *)self deferDismissal])
   {
-    v8 = [(ICCloudSharingController *)self canDeferDismissal];
+    canDeferDismissal = [(ICCloudSharingController *)self canDeferDismissal];
 
-    if (v8)
+    if (canDeferDismissal)
     {
       [(ICCloudSharingController *)self setDeferDismissal:1];
     }
@@ -39,12 +39,12 @@
 
   else
   {
-    v6 = [(ICCloudSharingController *)self dismissed];
+    dismissed = [(ICCloudSharingController *)self dismissed];
 
-    if (v6)
+    if (dismissed)
     {
-      v7 = [(ICCloudSharingController *)self dismissed];
-      v7[2]();
+      dismissed2 = [(ICCloudSharingController *)self dismissed];
+      dismissed2[2]();
     }
 
     [(ICCloudSharingController *)self setDismissed:0];
@@ -52,7 +52,7 @@
 
   v9.receiver = self;
   v9.super_class = ICCloudSharingController;
-  [(ICCloudSharingController *)&v9 viewDidDisappear:v3];
+  [(ICCloudSharingController *)&v9 viewDidDisappear:disappearCopy];
 }
 
 @end

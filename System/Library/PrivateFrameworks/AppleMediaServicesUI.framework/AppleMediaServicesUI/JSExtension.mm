@@ -1,17 +1,17 @@
 @interface JSExtension
-- (id)request:(id)a3 :(id)a4 :(id)a5;
-- (id)requestSync:(id)a3 :(id)a4 :(id)a5;
-- (void)requestAsyncEvent:(id)a3 :(id)a4 :(id)a5;
+- (id)request:(id)request :(id)a4 :(id)a5;
+- (id)requestSync:(id)sync :(id)a4 :(id)a5;
+- (void)requestAsyncEvent:(id)event :(id)a4 :(id)a5;
 @end
 
 @implementation JSExtension
 
-- (id)request:(id)a3 :(id)a4 :(id)a5
+- (id)request:(id)request :(id)a4 :(id)a5
 {
   static String._unconditionallyBridgeFromObjectiveC(_:)();
   swift_unknownObjectRetain();
   v7 = a5;
-  v8 = self;
+  selfCopy = self;
   _bridgeAnyObjectToAny(_:)();
   swift_unknownObjectRelease();
   static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
@@ -24,12 +24,12 @@
   return v10;
 }
 
-- (id)requestSync:(id)a3 :(id)a4 :(id)a5
+- (id)requestSync:(id)sync :(id)a4 :(id)a5
 {
   static String._unconditionallyBridgeFromObjectiveC(_:)();
   swift_unknownObjectRetain();
   v7 = a5;
-  v8 = self;
+  selfCopy = self;
   _bridgeAnyObjectToAny(_:)();
   swift_unknownObjectRelease();
   static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
@@ -51,12 +51,12 @@
   return v11.super.isa;
 }
 
-- (void)requestAsyncEvent:(id)a3 :(id)a4 :(id)a5
+- (void)requestAsyncEvent:(id)event :(id)a4 :(id)a5
 {
   static String._unconditionallyBridgeFromObjectiveC(_:)();
   static String._unconditionallyBridgeFromObjectiveC(_:)();
   swift_unknownObjectRetain();
-  v6 = self;
+  selfCopy = self;
   _bridgeAnyObjectToAny(_:)();
   swift_unknownObjectRelease();
   sub_100110F70();

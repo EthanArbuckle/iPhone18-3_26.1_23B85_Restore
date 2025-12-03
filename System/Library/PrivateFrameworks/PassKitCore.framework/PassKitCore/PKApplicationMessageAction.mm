@@ -1,11 +1,11 @@
 @interface PKApplicationMessageAction
-+ (void)_createForType:(uint64_t)a1;
-- (PKApplicationMessageAction)initWithCoder:(id)a3;
++ (void)_createForType:(uint64_t)type;
+- (PKApplicationMessageAction)initWithCoder:(id)coder;
 @end
 
 @implementation PKApplicationMessageAction
 
-+ (void)_createForType:(uint64_t)a1
++ (void)_createForType:(uint64_t)type
 {
   objc_opt_self();
   v3 = [PKApplicationMessageActionURL alloc];
@@ -30,10 +30,10 @@
   return v6;
 }
 
-- (PKApplicationMessageAction)initWithCoder:(id)a3
+- (PKApplicationMessageAction)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"type"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"type"];
   if (v5 <= 1 && (v6 = v5, objc_opt_class()) && (objc_opt_isKindOfClass() & 1) != 0)
   {
     if (self)
@@ -53,18 +53,18 @@
     }
 
     self = v7;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
     v9 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"PKApplicationMessageAction" code:0 userInfo:0];
-    [v4 failWithError:v9];
+    [coderCopy failWithError:v9];
 
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
 @end

@@ -1,23 +1,23 @@
 @interface MCInstallationConsentViewController
 - (MCInstallationConsentDelegate)consentDelegate;
-- (MCInstallationConsentViewController)initWithStyle:(int64_t)a3;
-- (double)tableView:(id)a3 estimatedHeightForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
+- (MCInstallationConsentViewController)initWithStyle:(int64_t)style;
+- (double)tableView:(id)view estimatedHeightForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
 - (void)_cancelInstallProfile;
 - (void)_installProfile;
 - (void)_setup;
-- (void)setProfile:(id)a3;
-- (void)setShowInstall:(BOOL)a3;
+- (void)setProfile:(id)profile;
+- (void)setShowInstall:(BOOL)install;
 @end
 
 @implementation MCInstallationConsentViewController
 
-- (MCInstallationConsentViewController)initWithStyle:(int64_t)a3
+- (MCInstallationConsentViewController)initWithStyle:(int64_t)style
 {
   v6.receiver = self;
   v6.super_class = MCInstallationConsentViewController;
-  v3 = [(MCUITableViewController *)&v6 initWithStyle:a3];
+  v3 = [(MCUITableViewController *)&v6 initWithStyle:style];
   v4 = v3;
   if (v3)
   {
@@ -32,10 +32,10 @@
   v14.receiver = self;
   v14.super_class = MCInstallationConsentViewController;
   [(MCUITableViewController *)&v14 updateExtendedLayoutIncludesOpaqueBars];
-  v3 = [(MCInstallationConsentViewController *)self tableView];
+  tableView = [(MCInstallationConsentViewController *)self tableView];
   v4 = objc_opt_class();
   v5 = +[MCInstallationWarningCell reuseIdentifier];
-  [v3 registerClass:v4 forCellReuseIdentifier:v5];
+  [tableView registerClass:v4 forCellReuseIdentifier:v5];
 
   if (self->_showInstall)
   {
@@ -49,50 +49,50 @@
 
   v7 = MCUILocalizedString(v6);
   v8 = MCUILocalizedString(@"INSTALL_CONSENT_TITLE");
-  v9 = [(MCInstallationConsentViewController *)self navigationItem];
-  [v9 setTitle:v8];
+  navigationItem = [(MCInstallationConsentViewController *)self navigationItem];
+  [navigationItem setTitle:v8];
 
   v10 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:1 target:self action:sel__cancelInstallProfile];
-  v11 = [(MCInstallationConsentViewController *)self navigationItem];
-  [v11 setLeftBarButtonItem:v10];
+  navigationItem2 = [(MCInstallationConsentViewController *)self navigationItem];
+  [navigationItem2 setLeftBarButtonItem:v10];
 
   v12 = [objc_alloc(MEMORY[0x277D751E0]) initWithTitle:v7 style:2 target:self action:sel__installProfile];
-  v13 = [(MCInstallationConsentViewController *)self navigationItem];
-  [v13 setRightBarButtonItem:v12];
+  navigationItem3 = [(MCInstallationConsentViewController *)self navigationItem];
+  [navigationItem3 setRightBarButtonItem:v12];
 }
 
 - (void)_cancelInstallProfile
 {
-  v3 = [(MCInstallationConsentViewController *)self consentDelegate];
-  [v3 installationConsentViewController:self finishedWithUserContinueResponse:0];
+  consentDelegate = [(MCInstallationConsentViewController *)self consentDelegate];
+  [consentDelegate installationConsentViewController:self finishedWithUserContinueResponse:0];
 }
 
 - (void)_installProfile
 {
-  v3 = [(MCInstallationConsentViewController *)self consentDelegate];
-  [v3 installationConsentViewController:self finishedWithUserContinueResponse:1];
+  consentDelegate = [(MCInstallationConsentViewController *)self consentDelegate];
+  [consentDelegate installationConsentViewController:self finishedWithUserContinueResponse:1];
 }
 
-- (void)setProfile:(id)a3
+- (void)setProfile:(id)profile
 {
-  v5 = a3;
-  if (self->_profile != v5)
+  profileCopy = profile;
+  if (self->_profile != profileCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_profile, a3);
-    v6 = [(MCInstallationConsentViewController *)self tableView];
-    [v6 reloadData];
+    v7 = profileCopy;
+    objc_storeStrong(&self->_profile, profile);
+    tableView = [(MCInstallationConsentViewController *)self tableView];
+    [tableView reloadData];
 
-    v5 = v7;
+    profileCopy = v7;
   }
 }
 
-- (void)setShowInstall:(BOOL)a3
+- (void)setShowInstall:(BOOL)install
 {
-  if (self->_showInstall != a3)
+  if (self->_showInstall != install)
   {
-    self->_showInstall = a3;
-    if (a3)
+    self->_showInstall = install;
+    if (install)
     {
       v5 = @"INSTALL";
     }
@@ -104,43 +104,43 @@
 
     v9 = MCUILocalizedString(v5);
     v6 = [objc_alloc(MEMORY[0x277D751E0]) initWithTitle:v9 style:2 target:self action:sel__installProfile];
-    v7 = [(MCInstallationConsentViewController *)self navigationItem];
-    [v7 setRightBarButtonItem:v6];
+    navigationItem = [(MCInstallationConsentViewController *)self navigationItem];
+    [navigationItem setRightBarButtonItem:v6];
 
-    v8 = [(MCInstallationConsentViewController *)self navigationItem];
+    navigationItem2 = [(MCInstallationConsentViewController *)self navigationItem];
     DMCSendNavUIUpdatedNotification();
   }
 }
 
-- (double)tableView:(id)a3 estimatedHeightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view estimatedHeightForRowAtIndexPath:(id)path
 {
-  v4 = [(MCInstallationConsentViewController *)self tableView:a3];
+  v4 = [(MCInstallationConsentViewController *)self tableView:view];
   [v4 rowHeight];
   v6 = v5;
 
   return v6;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  v6 = [(MCInstallationConsentViewController *)self profile];
-  v7 = [v6 localizedConsentText];
+  profile = [(MCInstallationConsentViewController *)self profile];
+  localizedConsentText = [profile localizedConsentText];
 
   v8 = 0;
-  if (!a4 && v7)
+  if (!section && localizedConsentText)
   {
-    v9 = [(MCInstallationConsentViewController *)self profile];
-    v10 = [v9 organization];
-    v11 = [(MCInstallationConsentViewController *)self profile];
-    v12 = v11;
-    if (v10)
+    profile2 = [(MCInstallationConsentViewController *)self profile];
+    organization = [profile2 organization];
+    profile3 = [(MCInstallationConsentViewController *)self profile];
+    v12 = profile3;
+    if (organization)
     {
-      [v11 organization];
+      [profile3 organization];
     }
 
     else
     {
-      [v11 friendlyName];
+      [profile3 friendlyName];
     }
     v13 = ;
 
@@ -152,16 +152,16 @@
   return v8;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
+  pathCopy = path;
+  viewCopy = view;
   v8 = +[MCInstallationWarningCell reuseIdentifier];
-  v9 = [v7 dequeueReusableCellWithIdentifier:v8 forIndexPath:v6];
+  v9 = [viewCopy dequeueReusableCellWithIdentifier:v8 forIndexPath:pathCopy];
 
-  v10 = [(MCInstallationConsentViewController *)self profile];
-  v11 = [v10 localizedConsentText];
-  [v9 setWarningLabelText:v11];
+  profile = [(MCInstallationConsentViewController *)self profile];
+  localizedConsentText = [profile localizedConsentText];
+  [v9 setWarningLabelText:localizedConsentText];
 
   return v9;
 }

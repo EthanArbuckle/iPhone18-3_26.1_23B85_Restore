@@ -1,36 +1,36 @@
 @interface VUIPlaybackUtilities
-+ (BOOL)isDownloadLimitError:(id)a3;
-+ (BOOL)isMPMediaLibraryAssociationError:(id)a3;
-+ (BOOL)isOutOfSpaceError:(id)a3;
-+ (double)playedThresholdTimeForDuration:(double)a3;
-+ (double)suggestedBookmarkTimeForElapsedTime:(double)a3 duration:(double)a4;
-+ (id)updatedHLSURL:(id)a3 forPlaybackContext:(unint64_t)a4;
-+ (int64_t)playedStateForDuration:(double)a3 elapsedTime:(double)a4 hasBeenPlayed:(BOOL)a5 playCount:(unint64_t)a6 respectPlayCount:(BOOL)a7;
-+ (void)updateReportingForStartOfPreloadedPlayer:(id)a3;
++ (BOOL)isDownloadLimitError:(id)error;
++ (BOOL)isMPMediaLibraryAssociationError:(id)error;
++ (BOOL)isOutOfSpaceError:(id)error;
++ (double)playedThresholdTimeForDuration:(double)duration;
++ (double)suggestedBookmarkTimeForElapsedTime:(double)time duration:(double)duration;
++ (id)updatedHLSURL:(id)l forPlaybackContext:(unint64_t)context;
++ (int64_t)playedStateForDuration:(double)duration elapsedTime:(double)time hasBeenPlayed:(BOOL)played playCount:(unint64_t)count respectPlayCount:(BOOL)playCount;
++ (void)updateReportingForStartOfPreloadedPlayer:(id)player;
 @end
 
 @implementation VUIPlaybackUtilities
 
-+ (double)playedThresholdTimeForDuration:(double)a3
++ (double)playedThresholdTimeForDuration:(double)duration
 {
   v3 = 0.0;
-  if (a3 > 0.0 && a3 != 3.40282347e38)
+  if (duration > 0.0 && duration != 3.40282347e38)
   {
-    if (a3 < 10.0)
+    if (duration < 10.0)
     {
-      return a3;
+      return duration;
     }
 
-    if (a3 >= 900.0)
+    if (duration >= 900.0)
     {
-      if (a3 >= 1800.0)
+      if (duration >= 1800.0)
       {
-        if (a3 >= 3900.0)
+        if (duration >= 3900.0)
         {
-          if (a3 >= 6000.0)
+          if (duration >= 6000.0)
           {
             v4 = -660.0;
-            return a3 + v4;
+            return duration + v4;
           }
 
           v5 = 0xC07E000000000000;
@@ -55,59 +55,59 @@
       v4 = -10.0;
     }
 
-    return a3 + v4;
+    return duration + v4;
   }
 
   return v3;
 }
 
-+ (double)suggestedBookmarkTimeForElapsedTime:(double)a3 duration:(double)a4
++ (double)suggestedBookmarkTimeForElapsedTime:(double)time duration:(double)duration
 {
   result = 0.0;
-  if (a3 >= 15.0 && a4 > 0.0 && a4 != 3.40282347e38)
+  if (time >= 15.0 && duration > 0.0 && duration != 3.40282347e38)
   {
-    [a1 playedThresholdTimeForDuration:a4];
-    v7 = v6 <= a3;
+    [self playedThresholdTimeForDuration:duration];
+    v7 = v6 <= time;
     result = 0.0;
     if (!v7)
     {
-      return a3;
+      return time;
     }
   }
 
   return result;
 }
 
-+ (int64_t)playedStateForDuration:(double)a3 elapsedTime:(double)a4 hasBeenPlayed:(BOOL)a5 playCount:(unint64_t)a6 respectPlayCount:(BOOL)a7
++ (int64_t)playedStateForDuration:(double)duration elapsedTime:(double)time hasBeenPlayed:(BOOL)played playCount:(unint64_t)count respectPlayCount:(BOOL)playCount
 {
-  if (!a6 || a7)
+  if (!count || playCount)
   {
     v8 = 3;
-    if (a6)
+    if (count)
     {
       return v8;
     }
 
     v8 = 1;
-    if (!a5)
+    if (!played)
     {
       return v8;
     }
 
-    if (a4 < 15.0)
+    if (time < 15.0)
     {
       return 1;
     }
   }
 
-  else if (a4 < 15.0)
+  else if (time < 15.0)
   {
     return 3;
   }
 
-  [a1 playedThresholdTimeForDuration:{a5, a3}];
+  [self playedThresholdTimeForDuration:{played, duration}];
   v8 = 3;
-  if (v9 > a4)
+  if (v9 > time)
   {
     return 2;
   }
@@ -115,13 +115,13 @@
   return v8;
 }
 
-+ (BOOL)isOutOfSpaceError:(id)a3
++ (BOOL)isOutOfSpaceError:(id)error
 {
-  v3 = a3;
-  v4 = [v3 domain];
-  if ([v4 isEqualToString:@"CoreMediaErrorDomain"])
+  errorCopy = error;
+  domain = [errorCopy domain];
+  if ([domain isEqualToString:@"CoreMediaErrorDomain"])
   {
-    v5 = [v3 code] == 28;
+    v5 = [errorCopy code] == 28;
   }
 
   else
@@ -132,16 +132,16 @@
   return v5;
 }
 
-+ (BOOL)isMPMediaLibraryAssociationError:(id)a3
++ (BOOL)isMPMediaLibraryAssociationError:(id)error
 {
-  v3 = [a3 userInfo];
-  v4 = [v3 vui_numberForKey:*MEMORY[0x1E698C558]];
+  userInfo = [error userInfo];
+  v4 = [userInfo vui_numberForKey:*MEMORY[0x1E698C558]];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 integerValue];
-    v7 = v5 == 3047 || v5 == 3050;
+    integerValue = [v4 integerValue];
+    v7 = integerValue == 3047 || integerValue == 3050;
   }
 
   else
@@ -152,18 +152,18 @@
   return v7;
 }
 
-+ (BOOL)isDownloadLimitError:(id)a3
++ (BOOL)isDownloadLimitError:(id)error
 {
-  v3 = a3;
-  v4 = [v3 domain];
-  v5 = [v4 isEqualToString:*MEMORY[0x1E69D60E8]];
+  errorCopy = error;
+  domain = [errorCopy domain];
+  v5 = [domain isEqualToString:*MEMORY[0x1E69D60E8]];
 
   if (v5)
   {
-    v6 = [v3 code];
-    v7 = [v3 code];
-    v8 = [v3 code];
-    v11 = v6 == -345025 || v7 == -345026 || v8 == -345027;
+    code = [errorCopy code];
+    code2 = [errorCopy code];
+    code3 = [errorCopy code];
+    v11 = code == -345025 || code2 == -345026 || code3 == -345027;
   }
 
   else
@@ -174,19 +174,19 @@
   return v11;
 }
 
-+ (id)updatedHLSURL:(id)a3 forPlaybackContext:(unint64_t)a4
++ (id)updatedHLSURL:(id)l forPlaybackContext:(unint64_t)context
 {
   v27 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = v5;
-  if (!v5)
+  lCopy = l;
+  v6 = lCopy;
+  if (!lCopy)
   {
     v9 = 0;
     goto LABEL_30;
   }
 
-  v7 = [v5 pathExtension];
-  v8 = [v7 isEqualToString:@"m3u8"];
+  pathExtension = [lCopy pathExtension];
+  v8 = [pathExtension isEqualToString:@"m3u8"];
 
   v9 = v6;
   if (!v8)
@@ -196,12 +196,12 @@
 
   v10 = +[VUIGroupActivitiesManagerObjC isSessionActive];
   v11 = +[VUIFeaturesConfiguration sharedInstance];
-  v12 = [v11 playbackUpNextConfig];
-  v13 = [v12 disablePostPlayTypeHLSQueryParam];
+  playbackUpNextConfig = [v11 playbackUpNextConfig];
+  disablePostPlayTypeHLSQueryParam = [playbackUpNextConfig disablePostPlayTypeHLSQueryParam];
 
-  if (a4 == 12)
+  if (context == 12)
   {
-    if (v10 || (v13 & 1) != 0)
+    if (v10 || (disablePostPlayTypeHLSQueryParam & 1) != 0)
     {
       goto LABEL_15;
     }
@@ -226,9 +226,9 @@ LABEL_19:
     goto LABEL_29;
   }
 
-  if (a4 == 11)
+  if (context == 11)
   {
-    if ((v10 | v13))
+    if ((v10 | disablePostPlayTypeHLSQueryParam))
     {
       goto LABEL_10;
     }
@@ -237,7 +237,7 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  if (a4 != 10)
+  if (context != 10)
   {
 LABEL_15:
     v18 = 0;
@@ -248,7 +248,7 @@ LABEL_15:
     goto LABEL_29;
   }
 
-  if (((v10 | v13) & 1) == 0)
+  if (((v10 | disablePostPlayTypeHLSQueryParam) & 1) == 0)
   {
     v14 = VUIURLQueryParamValueNextEpisodeSameSeason;
     goto LABEL_19;
@@ -297,12 +297,12 @@ LABEL_30:
   return v9;
 }
 
-+ (void)updateReportingForStartOfPreloadedPlayer:(id)a3
++ (void)updateReportingForStartOfPreloadedPlayer:(id)player
 {
-  v3 = a3;
-  if (v3)
+  playerCopy = player;
+  if (playerCopy)
   {
-    v9 = v3;
+    v9 = playerCopy;
     v4 = *MEMORY[0x1E69D6080];
     v5 = [v9 loadingSubstate] - 1;
     if (v5 <= 2)
@@ -312,14 +312,14 @@ LABEL_30:
       v4 = v6;
     }
 
-    v7 = [v9 currentMediaItem];
-    v8 = [v7 mediaItemMetadataForProperty:*MEMORY[0x1E69D5CA8]];
+    currentMediaItem = [v9 currentMediaItem];
+    v8 = [currentMediaItem mediaItemMetadataForProperty:*MEMORY[0x1E69D5CA8]];
 
     [v8 addOrReplaceStartEventWithName:*MEMORY[0x1E69D6040] date:0];
     [v8 addOrReplaceStartEventWithName:*MEMORY[0x1E69D6058] date:0];
     [v8 addSingleShotEventWithName:*MEMORY[0x1E69D5FF8] value:v4];
 
-    v3 = v9;
+    playerCopy = v9;
   }
 }
 

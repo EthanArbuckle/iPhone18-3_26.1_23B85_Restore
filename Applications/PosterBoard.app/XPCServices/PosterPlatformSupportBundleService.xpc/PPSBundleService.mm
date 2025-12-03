@@ -1,21 +1,21 @@
 @interface PPSBundleService
 - (_TtC34PosterPlatformSupportBundleService16PPSBundleService)init;
-- (void)hostConfigurationForBundleAtURL:(NSURL *)a3 currentSwitcherConfiguration:(PRSHostConfiguration *)a4 forRole:(NSString *)a5 completion:(id)a6;
-- (void)switcherConfigurationForBundleAtURL:(NSURL *)a3 currentSwitcherConfiguration:(PRSHostConfiguration *)a4 forRole:(NSString *)a5 completion:(id)a6;
+- (void)hostConfigurationForBundleAtURL:(NSURL *)l currentSwitcherConfiguration:(PRSHostConfiguration *)configuration forRole:(NSString *)role completion:(id)completion;
+- (void)switcherConfigurationForBundleAtURL:(NSURL *)l currentSwitcherConfiguration:(PRSHostConfiguration *)configuration forRole:(NSString *)role completion:(id)completion;
 @end
 
 @implementation PPSBundleService
 
-- (void)hostConfigurationForBundleAtURL:(NSURL *)a3 currentSwitcherConfiguration:(PRSHostConfiguration *)a4 forRole:(NSString *)a5 completion:(id)a6
+- (void)hostConfigurationForBundleAtURL:(NSURL *)l currentSwitcherConfiguration:(PRSHostConfiguration *)configuration forRole:(NSString *)role completion:(id)completion
 {
   v11 = (*(*(sub_100001F80(&qword_10000C9C0, &qword_100007268) - 8) + 64) + 15) & 0xFFFFFFFFFFFFFFF0;
   __chkstk_darwin();
   v13 = &v23 - v12;
-  v14 = _Block_copy(a6);
+  v14 = _Block_copy(completion);
   v15 = swift_allocObject();
-  v15[2] = a3;
-  v15[3] = a4;
-  v15[4] = a5;
+  v15[2] = l;
+  v15[3] = configuration;
+  v15[4] = role;
   v15[5] = v14;
   v15[6] = self;
   v16 = sub_1000064A0();
@@ -30,23 +30,23 @@
   v18[3] = 0;
   v18[4] = &unk_1000072E8;
   v18[5] = v17;
-  v19 = a3;
-  v20 = a4;
-  v21 = a5;
-  v22 = self;
+  lCopy = l;
+  configurationCopy = configuration;
+  roleCopy = role;
+  selfCopy = self;
   sub_1000024E8(0, 0, v13, &unk_1000072F0, v18);
 }
 
-- (void)switcherConfigurationForBundleAtURL:(NSURL *)a3 currentSwitcherConfiguration:(PRSHostConfiguration *)a4 forRole:(NSString *)a5 completion:(id)a6
+- (void)switcherConfigurationForBundleAtURL:(NSURL *)l currentSwitcherConfiguration:(PRSHostConfiguration *)configuration forRole:(NSString *)role completion:(id)completion
 {
   v11 = (*(*(sub_100001F80(&qword_10000C9C0, &qword_100007268) - 8) + 64) + 15) & 0xFFFFFFFFFFFFFFF0;
   __chkstk_darwin();
   v13 = &v23 - v12;
-  v14 = _Block_copy(a6);
+  v14 = _Block_copy(completion);
   v15 = swift_allocObject();
-  v15[2] = a3;
-  v15[3] = a4;
-  v15[4] = a5;
+  v15[2] = l;
+  v15[3] = configuration;
+  v15[4] = role;
   v15[5] = v14;
   v15[6] = self;
   v16 = sub_1000064A0();
@@ -61,10 +61,10 @@
   v18[3] = 0;
   v18[4] = &unk_100007288;
   v18[5] = v17;
-  v19 = a3;
-  v20 = a4;
-  v21 = a5;
-  v22 = self;
+  lCopy = l;
+  configurationCopy = configuration;
+  roleCopy = role;
+  selfCopy = self;
   sub_1000024E8(0, 0, v13, &unk_100007298, v18);
 }
 

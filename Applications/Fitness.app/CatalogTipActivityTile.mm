@@ -1,15 +1,15 @@
 @interface CatalogTipActivityTile
-- (_TtC10FitnessApp22CatalogTipActivityTile)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (_TtC10FitnessApp22CatalogTipActivityTile)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)prepareForReuse;
 @end
 
 @implementation CatalogTipActivityTile
 
-- (_TtC10FitnessApp22CatalogTipActivityTile)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC10FitnessApp22CatalogTipActivityTile)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
-    a4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
+    identifier = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v6 = v5;
   }
 
@@ -18,7 +18,7 @@
     v6 = 0;
   }
 
-  return sub_100320E14(a3, a4, v6);
+  return sub_100320E14(style, identifier, v6);
 }
 
 - (void)prepareForReuse
@@ -29,13 +29,13 @@
   v6 = type metadata accessor for CatalogTipActivityTile();
   v11.receiver = self;
   v11.super_class = v6;
-  v7 = self;
+  selfCopy = self;
   [(CatalogTipActivityTile *)&v11 prepareForReuse];
   v8 = type metadata accessor for CatalogTipSectionItem();
   (*(*(v8 - 8) + 56))(v5, 1, 1, v8);
   v9 = OBJC_IVAR____TtC10FitnessApp22CatalogTipActivityTile_tipSectionItem;
   swift_beginAccess();
-  sub_100282DB8(v5, v7 + v9);
+  sub_100282DB8(v5, selfCopy + v9);
   swift_endAccess();
   dispatch thunk of CatalogTipPlainView.prepareForReuse()();
 }

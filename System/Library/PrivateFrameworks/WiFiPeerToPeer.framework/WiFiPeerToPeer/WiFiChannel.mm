@@ -1,56 +1,56 @@
 @interface WiFiChannel
-- (BOOL)isEqual:(id)a3;
-- (WiFiChannel)initWithChannelNumber:(unsigned int)a3 bandwidth:(int64_t)a4 is2_4GHz:(BOOL)a5 is5GHz:(BOOL)a6 is6GHz:(BOOL)a7 isDFS:(BOOL)a8 extensionChannelAbove:(BOOL)a9;
-- (WiFiChannel)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (WiFiChannel)initWithChannelNumber:(unsigned int)number bandwidth:(int64_t)bandwidth is2_4GHz:(BOOL)hz is5GHz:(BOOL)gHz is6GHz:(BOOL)is6GHz isDFS:(BOOL)s extensionChannelAbove:(BOOL)above;
+- (WiFiChannel)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WiFiChannel
 
-- (WiFiChannel)initWithCoder:(id)a3
+- (WiFiChannel)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeInt32ForKey:@"WiFiChannel.channelNumberKey"];
-  v6 = [v4 decodeIntegerForKey:@"WiFiChannel.bandwidthKey"];
-  v7 = [v4 decodeBoolForKey:@"WiFiChannel.is2_4GHzKey"];
-  v8 = [v4 decodeBoolForKey:@"WiFiChannel.is5GHzKey"];
-  v9 = [v4 decodeBoolForKey:@"WiFiChannel.is6GHzKey"];
-  v10 = [v4 decodeBoolForKey:@"WiFiChannel.isDFSKey"];
-  v11 = [v4 decodeBoolForKey:@"WiFiChannel.extensionChannelAboveKey"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeInt32ForKey:@"WiFiChannel.channelNumberKey"];
+  v6 = [coderCopy decodeIntegerForKey:@"WiFiChannel.bandwidthKey"];
+  v7 = [coderCopy decodeBoolForKey:@"WiFiChannel.is2_4GHzKey"];
+  v8 = [coderCopy decodeBoolForKey:@"WiFiChannel.is5GHzKey"];
+  v9 = [coderCopy decodeBoolForKey:@"WiFiChannel.is6GHzKey"];
+  v10 = [coderCopy decodeBoolForKey:@"WiFiChannel.isDFSKey"];
+  v11 = [coderCopy decodeBoolForKey:@"WiFiChannel.extensionChannelAboveKey"];
 
   LOBYTE(v13) = v11;
   return [(WiFiChannel *)self initWithChannelNumber:v5 bandwidth:v6 is2_4GHz:v7 is5GHz:v8 is6GHz:v9 isDFS:v10 extensionChannelAbove:v13];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInt32:-[WiFiChannel channelNumber](self forKey:{"channelNumber"), @"WiFiChannel.channelNumberKey"}];
-  [v4 encodeInteger:-[WiFiChannel bandwidth](self forKey:{"bandwidth"), @"WiFiChannel.bandwidthKey"}];
-  [v4 encodeBool:-[WiFiChannel is2_4GHz](self forKey:{"is2_4GHz"), @"WiFiChannel.is2_4GHzKey"}];
-  [v4 encodeBool:-[WiFiChannel is5GHz](self forKey:{"is5GHz"), @"WiFiChannel.is5GHzKey"}];
-  [v4 encodeBool:self->_is6GHz forKey:@"WiFiChannel.is6GHzKey"];
-  [v4 encodeBool:-[WiFiChannel isDFS](self forKey:{"isDFS"), @"WiFiChannel.isDFSKey"}];
-  [v4 encodeBool:-[WiFiChannel extensionChannelAbove](self forKey:{"extensionChannelAbove"), @"WiFiChannel.extensionChannelAboveKey"}];
+  coderCopy = coder;
+  [coderCopy encodeInt32:-[WiFiChannel channelNumber](self forKey:{"channelNumber"), @"WiFiChannel.channelNumberKey"}];
+  [coderCopy encodeInteger:-[WiFiChannel bandwidth](self forKey:{"bandwidth"), @"WiFiChannel.bandwidthKey"}];
+  [coderCopy encodeBool:-[WiFiChannel is2_4GHz](self forKey:{"is2_4GHz"), @"WiFiChannel.is2_4GHzKey"}];
+  [coderCopy encodeBool:-[WiFiChannel is5GHz](self forKey:{"is5GHz"), @"WiFiChannel.is5GHzKey"}];
+  [coderCopy encodeBool:self->_is6GHz forKey:@"WiFiChannel.is6GHzKey"];
+  [coderCopy encodeBool:-[WiFiChannel isDFS](self forKey:{"isDFS"), @"WiFiChannel.isDFSKey"}];
+  [coderCopy encodeBool:-[WiFiChannel extensionChannelAbove](self forKey:{"extensionChannelAbove"), @"WiFiChannel.extensionChannelAboveKey"}];
 }
 
-- (WiFiChannel)initWithChannelNumber:(unsigned int)a3 bandwidth:(int64_t)a4 is2_4GHz:(BOOL)a5 is5GHz:(BOOL)a6 is6GHz:(BOOL)a7 isDFS:(BOOL)a8 extensionChannelAbove:(BOOL)a9
+- (WiFiChannel)initWithChannelNumber:(unsigned int)number bandwidth:(int64_t)bandwidth is2_4GHz:(BOOL)hz is5GHz:(BOOL)gHz is6GHz:(BOOL)is6GHz isDFS:(BOOL)s extensionChannelAbove:(BOOL)above
 {
   v16.receiver = self;
   v16.super_class = WiFiChannel;
   result = [(WiFiChannel *)&v16 init];
   if (result)
   {
-    result->_channelNumber = a3;
-    result->_bandwidth = a4;
-    result->_is2_4GHz = a5;
-    result->_is5GHz = a6;
-    result->_is6GHz = a7;
-    result->_isDFS = a8;
-    result->_extensionChannelAbove = a9;
+    result->_channelNumber = number;
+    result->_bandwidth = bandwidth;
+    result->_is2_4GHz = hz;
+    result->_is5GHz = gHz;
+    result->_is6GHz = is6GHz;
+    result->_isDFS = s;
+    result->_extensionChannelAbove = above;
   }
 
   return result;
@@ -64,10 +64,10 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 0;
 LABEL_12:
@@ -83,24 +83,24 @@ LABEL_12:
     goto LABEL_14;
   }
 
-  v5 = v4;
-  v6 = [(WiFiChannel *)self channelNumber];
-  if (v6 == [v5 channelNumber])
+  v5 = equalCopy;
+  channelNumber = [(WiFiChannel *)self channelNumber];
+  if (channelNumber == [v5 channelNumber])
   {
-    v7 = [(WiFiChannel *)self bandwidth];
-    if (v7 == [v5 bandwidth])
+    bandwidth = [(WiFiChannel *)self bandwidth];
+    if (bandwidth == [v5 bandwidth])
     {
-      v8 = [(WiFiChannel *)self is2_4GHz];
-      if (v8 == [v5 is2_4GHz])
+      is2_4GHz = [(WiFiChannel *)self is2_4GHz];
+      if (is2_4GHz == [v5 is2_4GHz])
       {
-        v9 = [(WiFiChannel *)self is5GHz];
-        if (v9 == [v5 is5GHz] && self->_is6GHz == v5[10])
+        is5GHz = [(WiFiChannel *)self is5GHz];
+        if (is5GHz == [v5 is5GHz] && self->_is6GHz == v5[10])
         {
-          v10 = [(WiFiChannel *)self isDFS];
-          if (v10 == [v5 isDFS])
+          isDFS = [(WiFiChannel *)self isDFS];
+          if (isDFS == [v5 isDFS])
           {
-            v11 = [(WiFiChannel *)self extensionChannelAbove];
-            if (v11 == [v5 extensionChannelAbove])
+            extensionChannelAbove = [(WiFiChannel *)self extensionChannelAbove];
+            if (extensionChannelAbove == [v5 extensionChannelAbove])
             {
               goto LABEL_12;
             }
@@ -118,10 +118,10 @@ LABEL_14:
 
 - (id)description
 {
-  v3 = [(WiFiChannel *)self bandwidth];
-  if ((v3 - 3) >= 3)
+  bandwidth = [(WiFiChannel *)self bandwidth];
+  if ((bandwidth - 3) >= 3)
   {
-    if (v3 == 2)
+    if (bandwidth == 2)
     {
       if ([(WiFiChannel *)self extensionChannelAbove])
       {
@@ -148,17 +148,17 @@ LABEL_14:
   return [MEMORY[0x277CCACA8] stringWithFormat:@"%u%@", -[WiFiChannel channelNumber](self, "channelNumber"), v4];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [WiFiChannel alloc];
-  v5 = [(WiFiChannel *)self channelNumber];
-  v6 = [(WiFiChannel *)self bandwidth];
-  v7 = [(WiFiChannel *)self is2_4GHz];
-  v8 = [(WiFiChannel *)self is5GHz];
+  channelNumber = [(WiFiChannel *)self channelNumber];
+  bandwidth = [(WiFiChannel *)self bandwidth];
+  is2_4GHz = [(WiFiChannel *)self is2_4GHz];
+  is5GHz = [(WiFiChannel *)self is5GHz];
   is6GHz = self->_is6GHz;
-  v10 = [(WiFiChannel *)self isDFS];
+  isDFS = [(WiFiChannel *)self isDFS];
   LOBYTE(v12) = [(WiFiChannel *)self extensionChannelAbove];
-  return [(WiFiChannel *)v4 initWithChannelNumber:v5 bandwidth:v6 is2_4GHz:v7 is5GHz:v8 is6GHz:is6GHz isDFS:v10 extensionChannelAbove:v12];
+  return [(WiFiChannel *)v4 initWithChannelNumber:channelNumber bandwidth:bandwidth is2_4GHz:is2_4GHz is5GHz:is5GHz is6GHz:is6GHz isDFS:isDFS extensionChannelAbove:v12];
 }
 
 @end

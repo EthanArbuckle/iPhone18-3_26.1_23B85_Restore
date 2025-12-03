@@ -9,8 +9,8 @@
 
 - (double)_accessibilityActivationAnimationStartDelay
 {
-  v3 = [getZoomServicesClass() sharedInstance];
-  [v3 appActivationAnimationStartDelay];
+  sharedInstance = [getZoomServicesClass() sharedInstance];
+  [sharedInstance appActivationAnimationStartDelay];
   v5 = v4;
 
   if (v5 < 0.0)
@@ -26,8 +26,8 @@
 
 - (double)_accessibilityDeactivationAnimationStartDelay
 {
-  v3 = [getZoomServicesClass() sharedInstance];
-  [v3 appDeactivationAnimationStartDelay];
+  sharedInstance = [getZoomServicesClass() sharedInstance];
+  [sharedInstance appDeactivationAnimationStartDelay];
   v5 = v4;
 
   if (v5 < 0.0)
@@ -46,8 +46,8 @@
   v3.receiver = self;
   v3.super_class = ZoomUI_SpringBoardOverride;
   [(ZoomUI_SpringBoardOverride *)&v3 _accessibilityActivationAnimationWillBegin];
-  v2 = [getZoomServicesClass() sharedInstance];
-  [v2 notifyZoomAppActivationAnimationWillBegin];
+  sharedInstance = [getZoomServicesClass() sharedInstance];
+  [sharedInstance notifyZoomAppActivationAnimationWillBegin];
 }
 
 - (void)_accessibilityDeactivationAnimationWillBegin
@@ -55,8 +55,8 @@
   v3.receiver = self;
   v3.super_class = ZoomUI_SpringBoardOverride;
   [(ZoomUI_SpringBoardOverride *)&v3 _accessibilityDeactivationAnimationWillBegin];
-  v2 = [getZoomServicesClass() sharedInstance];
-  [v2 notifyZoomAppDeactivationAnimationWillBegin];
+  sharedInstance = [getZoomServicesClass() sharedInstance];
+  [sharedInstance notifyZoomAppDeactivationAnimationWillBegin];
 }
 
 @end

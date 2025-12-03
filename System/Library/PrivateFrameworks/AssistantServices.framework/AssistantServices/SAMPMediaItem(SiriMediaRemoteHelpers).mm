@@ -9,45 +9,45 @@
 {
   if (a3)
   {
-    v3 = [a3 metadata];
+    metadata = [a3 metadata];
     v4 = objc_alloc_init(MEMORY[0x1E69C78D8]);
     v5 = objc_alloc_init(MEMORY[0x1E69C78F0]);
-    [v3 duration];
+    [metadata duration];
     [v5 setDurationMillis:(v6 * 1000.0)];
-    [v3 calculatedPlaybackPosition];
+    [metadata calculatedPlaybackPosition];
     if (v7 == 0.0)
     {
-      [v3 elapsedTime];
+      [metadata elapsedTime];
     }
 
     [v5 setPlaybackPositionMillis:(v7 * 1000.0)];
-    [v5 setPlays:{objc_msgSend(v3, "playCount")}];
+    [v5 setPlays:{objc_msgSend(metadata, "playCount")}];
     [v4 setPlaybackInfo:v5];
-    v8 = [v3 title];
-    [v4 setTitle:v8];
+    title = [metadata title];
+    [v4 setTitle:title];
 
-    v9 = [v3 albumName];
-    [v4 setAlbum:v9];
+    albumName = [metadata albumName];
+    [v4 setAlbum:albumName];
 
-    v10 = [v3 trackArtistName];
-    if (![v10 length])
+    trackArtistName = [metadata trackArtistName];
+    if (![trackArtistName length])
     {
-      v11 = [v3 albumArtistName];
+      albumArtistName = [metadata albumArtistName];
 
-      v10 = v11;
+      trackArtistName = albumArtistName;
     }
 
-    [v4 setArtist:v10];
-    v12 = [v3 releaseDate];
-    v13 = [MEMORY[0x1E69C7900] _af_releaseInfoWithReleaseDate:v12];
+    [v4 setArtist:trackArtistName];
+    releaseDate = [metadata releaseDate];
+    v13 = [MEMORY[0x1E69C7900] _af_releaseInfoWithReleaseDate:releaseDate];
     [v4 setReleaseInfo:v13];
 
-    v14 = [v3 iTunesStoreIdentifier];
-    if (v14 > 0 || (v14 = [v3 iTunesStoreSubscriptionIdentifier], v14 >= 1))
+    iTunesStoreIdentifier = [metadata iTunesStoreIdentifier];
+    if (iTunesStoreIdentifier > 0 || (iTunesStoreIdentifier = [metadata iTunesStoreSubscriptionIdentifier], iTunesStoreIdentifier >= 1))
     {
-      v15 = [MEMORY[0x1E696AD98] numberWithLongLong:v14];
-      v16 = [v15 stringValue];
-      v17 = _AFMediaIdURLFromHostAndIdentifier(@"store", v16);
+      v15 = [MEMORY[0x1E696AD98] numberWithLongLong:iTunesStoreIdentifier];
+      stringValue = [v15 stringValue];
+      v17 = _AFMediaIdURLFromHostAndIdentifier(@"store", stringValue);
       [v4 setIdentifier:v17];
     }
   }
@@ -96,8 +96,8 @@
     if (ITunesStoreIdentifier > 0 || (ITunesStoreIdentifier = MRContentItemGetITunesStoreSubscriptionIdentifier(), ITunesStoreIdentifier >= 1))
     {
       v12 = [MEMORY[0x1E696AD98] numberWithLongLong:ITunesStoreIdentifier];
-      v13 = [v12 stringValue];
-      v14 = _AFMediaIdURLFromHostAndIdentifier(@"store", v13);
+      stringValue = [v12 stringValue];
+      v14 = _AFMediaIdURLFromHostAndIdentifier(@"store", stringValue);
       [v3 setIdentifier:v14];
     }
   }

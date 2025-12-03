@@ -1,15 +1,15 @@
 @interface VMUtilities
-+ (BOOL)writeDataToFile:(id)a3 fileData:(id)a4;
-+ (id)readDataFromFile:(id)a3 customClassSet:(id)a4;
++ (BOOL)writeDataToFile:(id)file fileData:(id)data;
++ (id)readDataFromFile:(id)file customClassSet:(id)set;
 @end
 
 @implementation VMUtilities
 
-+ (id)readDataFromFile:(id)a3 customClassSet:(id)a4
++ (id)readDataFromFile:(id)file customClassSet:(id)set
 {
-  v5 = a3;
-  v6 = a4;
-  if (![v5 length])
+  fileCopy = file;
+  setCopy = set;
+  if (![fileCopy length])
   {
     v7 = vm_vmd_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -20,7 +20,7 @@
     goto LABEL_15;
   }
 
-  v7 = [NSURL fileURLWithPath:v5 isDirectory:0];
+  v7 = [NSURL fileURLWithPath:fileCopy isDirectory:0];
   v24 = 0;
   v8 = [NSData dataWithContentsOfURL:v7 options:1 error:&v24];
   v9 = v24;
@@ -40,7 +40,7 @@ LABEL_15:
   v10 = objc_opt_class();
   v11 = objc_opt_class();
   v12 = [NSMutableSet setWithObjects:v10, v11, objc_opt_class(), 0];
-  v13 = [v12 setByAddingObjectsFromSet:v6];
+  v13 = [v12 setByAddingObjectsFromSet:setCopy];
   v23 = v9;
   v14 = [NSKeyedUnarchiver unarchivedObjectOfClasses:v13 fromData:v8 error:&v23];
   v15 = v23;
@@ -59,7 +59,7 @@ LABEL_15:
   {
     v18 = objc_opt_class();
     *buf = 138412546;
-    v26 = v5;
+    v26 = fileCopy;
     v27 = 2112;
     v28 = v18;
     v19 = v18;
@@ -73,19 +73,19 @@ LABEL_16:
   return v20;
 }
 
-+ (BOOL)writeDataToFile:(id)a3 fileData:(id)a4
++ (BOOL)writeDataToFile:(id)file fileData:(id)data
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 length])
+  fileCopy = file;
+  dataCopy = data;
+  if ([fileCopy length])
   {
-    v7 = [NSURL fileURLWithPath:v5 isDirectory:0];
+    v7 = [NSURL fileURLWithPath:fileCopy isDirectory:0];
     if (!v7)
     {
       v11 = vm_vmd_log();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
-        sub_10009BF24(v5, v11);
+        sub_10009BF24(fileCopy, v11);
       }
 
       v12 = 0;
@@ -93,7 +93,7 @@ LABEL_16:
     }
 
     v17 = 0;
-    v8 = [NSKeyedArchiver archivedDataWithRootObject:v6 requiringSecureCoding:1 error:&v17];
+    v8 = [NSKeyedArchiver archivedDataWithRootObject:dataCopy requiringSecureCoding:1 error:&v17];
     v9 = v17;
     if (v9)
     {
@@ -118,7 +118,7 @@ LABEL_16:
         if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412546;
-          v19 = v6;
+          v19 = dataCopy;
           v20 = 2112;
           v21 = v7;
           _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "File data %@ written to location: %@", buf, 0x16u);

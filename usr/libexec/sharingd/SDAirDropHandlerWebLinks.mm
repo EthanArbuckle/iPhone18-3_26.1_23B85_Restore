@@ -1,19 +1,19 @@
 @interface SDAirDropHandlerWebLinks
 - (BOOL)canHandleTransfer;
-- (SDAirDropHandlerWebLinks)initWithTransfer:(id)a3;
+- (SDAirDropHandlerWebLinks)initWithTransfer:(id)transfer;
 - (id)suitableContentsDescription;
 - (int64_t)transferTypes;
 @end
 
 @implementation SDAirDropHandlerWebLinks
 
-- (SDAirDropHandlerWebLinks)initWithTransfer:(id)a3
+- (SDAirDropHandlerWebLinks)initWithTransfer:(id)transfer
 {
-  v4 = a3;
+  transferCopy = transfer;
   v5 = +[SDAirDropHandlerWebLinks safariBundleID];
   v8.receiver = self;
   v8.super_class = SDAirDropHandlerWebLinks;
-  v6 = [(SDAirDropHandler *)&v8 initWithTransfer:v4 bundleIdentifier:v5];
+  v6 = [(SDAirDropHandler *)&v8 initWithTransfer:transferCopy bundleIdentifier:v5];
 
   return v6;
 }
@@ -29,10 +29,10 @@
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v3 = [(SDAirDropHandler *)self transfer];
-  v4 = [v3 completedURLs];
+  transfer = [(SDAirDropHandler *)self transfer];
+  completedURLs = [transfer completedURLs];
 
-  v5 = [v4 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  v5 = [completedURLs countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v5)
   {
     v6 = v5;
@@ -43,21 +43,21 @@
       {
         if (*v18 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(completedURLs);
         }
 
         v9 = *(*(&v17 + 1) + 8 * i);
-        v10 = [v9 scheme];
-        v11 = [v10 lowercaseString];
-        if ([v11 isEqual:@"http"])
+        scheme = [v9 scheme];
+        lowercaseString = [scheme lowercaseString];
+        if ([lowercaseString isEqual:@"http"])
         {
         }
 
         else
         {
-          v12 = [v9 scheme];
-          v13 = [v12 lowercaseString];
-          v14 = [v13 isEqual:@"https"];
+          scheme2 = [v9 scheme];
+          lowercaseString2 = [scheme2 lowercaseString];
+          v14 = [lowercaseString2 isEqual:@"https"];
 
           if (!v14)
           {
@@ -67,7 +67,7 @@
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v6 = [completedURLs countByEnumeratingWithState:&v17 objects:v21 count:16];
       if (v6)
       {
         continue;
@@ -92,23 +92,23 @@ LABEL_15:
 
 - (id)suitableContentsDescription
 {
-  v3 = [(SDAirDropHandler *)self senderName];
-  v4 = [(SDAirDropHandler *)self totalSharedItemsCount];
-  v5 = [(SDAirDropHandler *)self transfer];
-  v6 = [v5 metaData];
-  v7 = [v6 itemsDescription];
+  senderName = [(SDAirDropHandler *)self senderName];
+  totalSharedItemsCount = [(SDAirDropHandler *)self totalSharedItemsCount];
+  transfer = [(SDAirDropHandler *)self transfer];
+  metaData = [transfer metaData];
+  itemsDescription = [metaData itemsDescription];
 
   if (qword_100989A70 != -1)
   {
     sub_10008D918();
   }
 
-  if (v4 != 1)
+  if (totalSharedItemsCount != 1)
   {
     v16 = 0;
 LABEL_10:
     v25 = @"WEBSITE";
-    v19 = [NSNumber numberWithUnsignedInteger:v4];
+    v19 = [NSNumber numberWithUnsignedInteger:totalSharedItemsCount];
     v26 = v19;
     v20 = [NSDictionary dictionaryWithObjects:&v26 forKeys:&v25 count:1];
     v27 = v20;
@@ -116,30 +116,30 @@ LABEL_10:
     v22 = [(SDAirDropHandler *)self alertMessageLocalizedKeyForTypeDicts:v21];
 
     v23 = SFLocalizedStringForKey();
-    v18 = [NSString localizedStringWithFormat:v23, v3, v4];
+    v18 = [NSString localizedStringWithFormat:v23, senderName, totalSharedItemsCount];
 
     v16 = v22;
     goto LABEL_11;
   }
 
   v8 = +[SDAirDropHandlerWebLinks safariBundleID];
-  v9 = [v5 metaData];
-  v10 = [v9 senderBundleID];
-  v11 = [v10 isEqual:v8];
+  metaData2 = [transfer metaData];
+  senderBundleID = [metaData2 senderBundleID];
+  v11 = [senderBundleID isEqual:v8];
 
-  if (!v11 || !v7)
+  if (!v11 || !itemsDescription)
   {
-    v12 = [(SDAirDropHandler *)self transfer];
-    v13 = [v12 completedURLs];
-    v14 = [v13 firstObject];
-    v15 = [v14 _lp_simplifiedDisplayString];
+    transfer2 = [(SDAirDropHandler *)self transfer];
+    completedURLs = [transfer2 completedURLs];
+    firstObject = [completedURLs firstObject];
+    _lp_simplifiedDisplayString = [firstObject _lp_simplifiedDisplayString];
 
-    v7 = v15;
+    itemsDescription = _lp_simplifiedDisplayString;
   }
 
   v16 = [(SDAirDropHandler *)self alertMessageLocalizedKeyForTypeDicts:&off_10090FF20];
   v17 = SFLocalizedStringForKey();
-  v18 = [NSString localizedStringWithFormat:v17, v3, v7];
+  v18 = [NSString localizedStringWithFormat:v17, senderName, itemsDescription];
 
   if (!v18)
   {

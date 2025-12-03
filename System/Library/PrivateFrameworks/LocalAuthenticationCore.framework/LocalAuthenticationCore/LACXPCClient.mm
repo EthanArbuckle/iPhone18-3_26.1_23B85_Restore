@@ -1,40 +1,40 @@
 @interface LACXPCClient
 - ($115C4C562B26FF47E01F9F4EA65B5887)auditToken;
-- (BOOL)checkEntitlement:(id)a3;
+- (BOOL)checkEntitlement:(id)entitlement;
 - (BOOL)isFirstPartyClient;
-- (LACXPCClient)initWithConnection:(id)a3;
-- (LACXPCClient)initWithProcessId:(int)a3 auditToken:(id *)a4 userId:(unsigned int)a5;
+- (LACXPCClient)initWithConnection:(id)connection;
+- (LACXPCClient)initWithProcessId:(int)id auditToken:(id *)token userId:(unsigned int)userId;
 - (NSString)signingID;
 - (NSXPCConnection)connection;
 @end
 
 @implementation LACXPCClient
 
-- (LACXPCClient)initWithConnection:(id)a3
+- (LACXPCClient)initWithConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v14.receiver = self;
   v14.super_class = LACXPCClient;
   v5 = [(LACXPCClient *)&v14 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_connection, v4);
-    if (v4)
+    objc_storeWeak(&v5->_connection, connectionCopy);
+    if (connectionCopy)
     {
-      v7 = [v4 processIdentifier];
+      processIdentifier = [connectionCopy processIdentifier];
     }
 
     else
     {
-      v7 = getpid();
+      processIdentifier = getpid();
     }
 
-    v6->_processId = v7;
+    v6->_processId = processIdentifier;
     v8 = [LACAuditToken alloc];
-    if (v4)
+    if (connectionCopy)
     {
-      [v4 auditToken];
+      [connectionCopy auditToken];
     }
 
     else
@@ -46,23 +46,23 @@
     auditToken = v6->_auditToken;
     v6->_auditToken = v9;
 
-    if (v4)
+    if (connectionCopy)
     {
-      v11 = [v4 effectiveUserIdentifier];
+      effectiveUserIdentifier = [connectionCopy effectiveUserIdentifier];
     }
 
     else
     {
-      v11 = geteuid();
+      effectiveUserIdentifier = geteuid();
     }
 
-    v6->_userId = v11;
+    v6->_userId = effectiveUserIdentifier;
   }
 
   return v6;
 }
 
-- (LACXPCClient)initWithProcessId:(int)a3 auditToken:(id *)a4 userId:(unsigned int)a5
+- (LACXPCClient)initWithProcessId:(int)id auditToken:(id *)token userId:(unsigned int)userId
 {
   v16.receiver = self;
   v16.super_class = LACXPCClient;
@@ -70,16 +70,16 @@
   v9 = v8;
   if (v8)
   {
-    v8->_processId = a3;
+    v8->_processId = id;
     v10 = [LACAuditToken alloc];
-    v11 = *&a4->var0[4];
-    v15[0] = *a4->var0;
+    v11 = *&token->var0[4];
+    v15[0] = *token->var0;
     v15[1] = v11;
     v12 = [(LACAuditToken *)v10 initWithRawValue:v15];
     auditToken = v9->_auditToken;
     v9->_auditToken = v12;
 
-    v9->_userId = a5;
+    v9->_userId = userId;
   }
 
   return v9;
@@ -98,23 +98,23 @@
   return result;
 }
 
-- (BOOL)checkEntitlement:(id)a3
+- (BOOL)checkEntitlement:(id)entitlement
 {
-  v4 = a3;
-  v5 = [(LACXPCClient *)self connection];
-  if (v5)
+  entitlementCopy = entitlement;
+  connection = [(LACXPCClient *)self connection];
+  if (connection)
   {
-    v6 = [(LACXPCClient *)self connection];
-    v7 = [v6 valueForEntitlement:v4];
-    v8 = [v7 BOOLValue];
+    connection2 = [(LACXPCClient *)self connection];
+    v7 = [connection2 valueForEntitlement:entitlementCopy];
+    bOOLValue = [v7 BOOLValue];
   }
 
   else
   {
-    v8 = 0;
+    bOOLValue = 0;
   }
 
-  return v8;
+  return bOOLValue;
 }
 
 - (NSString)signingID
@@ -139,9 +139,9 @@
 - (BOOL)isFirstPartyClient
 {
   v2 = [(LACAuditToken *)self->_auditToken belongsToPlatformBinary:0];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (NSXPCConnection)connection

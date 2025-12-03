@@ -1,7 +1,7 @@
 @interface AsyncTask
 - (BOOL)isExecuting;
 - (BOOL)isFinished;
-- (void)completeWithError:(id)a3;
+- (void)completeWithError:(id)error;
 - (void)completeWithSuccess;
 - (void)main;
 - (void)start;
@@ -49,11 +49,11 @@
   [(AsyncTask *)self mainWithCompletionHandler:v2];
 }
 
-- (void)completeWithError:(id)a3
+- (void)completeWithError:(id)error
 {
   v4.receiver = self;
   v4.super_class = AsyncTask;
-  [(Task *)&v4 completeWithError:a3];
+  [(Task *)&v4 completeWithError:error];
   sub_1002394D0(self);
 }
 

@@ -1,15 +1,15 @@
 @interface CNFRegSettingsTravelPhoneCell
-- (CNFRegSettingsTravelPhoneCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
+- (CNFRegSettingsTravelPhoneCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 @end
 
 @implementation CNFRegSettingsTravelPhoneCell
 
-- (CNFRegSettingsTravelPhoneCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (CNFRegSettingsTravelPhoneCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v47.receiver = self;
   v47.super_class = CNFRegSettingsTravelPhoneCell;
-  v4 = [(PSTableCell *)&v47 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(PSTableCell *)&v47 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = objc_alloc_init(MEMORY[0x277D756B8]);
@@ -17,15 +17,15 @@
     v4->_phoneNumberLabel = v5;
 
     [(UILabel *)v4->_phoneNumberLabel setText:&stru_2856D3978];
-    v7 = [MEMORY[0x277D75348] labelColor];
-    [(UILabel *)v4->_phoneNumberLabel setTextColor:v7];
+    labelColor = [MEMORY[0x277D75348] labelColor];
+    [(UILabel *)v4->_phoneNumberLabel setTextColor:labelColor];
 
     v8 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76918]];
     [(UILabel *)v4->_phoneNumberLabel setFont:v8];
 
     [(UILabel *)v4->_phoneNumberLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-    v9 = [(CNFRegSettingsTravelPhoneCell *)v4 contentView];
-    [v9 addSubview:v4->_phoneNumberLabel];
+    contentView = [(CNFRegSettingsTravelPhoneCell *)v4 contentView];
+    [contentView addSubview:v4->_phoneNumberLabel];
 
     v10 = objc_alloc_init(MEMORY[0x277D756B8]);
     descriptionLabel = v4->_descriptionLabel;
@@ -37,77 +37,77 @@
     [(UILabel *)v4->_descriptionLabel setText:v14];
 
     [(UILabel *)v4->_descriptionLabel setNumberOfLines:0];
-    v15 = [MEMORY[0x277D75348] secondaryLabelColor];
-    [(UILabel *)v4->_descriptionLabel setTextColor:v15];
+    secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+    [(UILabel *)v4->_descriptionLabel setTextColor:secondaryLabelColor];
 
     v16 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D769D0]];
     [(UILabel *)v4->_descriptionLabel setFont:v16];
 
     [(UILabel *)v4->_descriptionLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-    v17 = [(CNFRegSettingsTravelPhoneCell *)v4 contentView];
-    [v17 addSubview:v4->_descriptionLabel];
+    contentView2 = [(CNFRegSettingsTravelPhoneCell *)v4 contentView];
+    [contentView2 addSubview:v4->_descriptionLabel];
 
-    v18 = [(UILabel *)v4->_phoneNumberLabel topAnchor];
-    v19 = [(CNFRegSettingsTravelPhoneCell *)v4 contentView];
-    v20 = [v19 layoutMarginsGuide];
-    v21 = [v20 topAnchor];
-    v22 = [v18 constraintEqualToAnchor:v21];
+    topAnchor = [(UILabel *)v4->_phoneNumberLabel topAnchor];
+    contentView3 = [(CNFRegSettingsTravelPhoneCell *)v4 contentView];
+    layoutMarginsGuide = [contentView3 layoutMarginsGuide];
+    topAnchor2 = [layoutMarginsGuide topAnchor];
+    v22 = [topAnchor constraintEqualToAnchor:topAnchor2];
     [v22 setActive:1];
 
-    v23 = [(UILabel *)v4->_phoneNumberLabel leadingAnchor];
-    v24 = [(CNFRegSettingsTravelPhoneCell *)v4 contentView];
-    v25 = [v24 layoutMarginsGuide];
-    v26 = [v25 leadingAnchor];
-    v27 = [v23 constraintEqualToAnchor:v26];
+    leadingAnchor = [(UILabel *)v4->_phoneNumberLabel leadingAnchor];
+    contentView4 = [(CNFRegSettingsTravelPhoneCell *)v4 contentView];
+    layoutMarginsGuide2 = [contentView4 layoutMarginsGuide];
+    leadingAnchor2 = [layoutMarginsGuide2 leadingAnchor];
+    v27 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     [v27 setActive:1];
 
-    v28 = [(UILabel *)v4->_descriptionLabel topAnchor];
-    v29 = [(UILabel *)v4->_phoneNumberLabel bottomAnchor];
-    v30 = [v28 constraintEqualToAnchor:v29 constant:8.0];
+    topAnchor3 = [(UILabel *)v4->_descriptionLabel topAnchor];
+    bottomAnchor = [(UILabel *)v4->_phoneNumberLabel bottomAnchor];
+    v30 = [topAnchor3 constraintEqualToAnchor:bottomAnchor constant:8.0];
     [v30 setActive:1];
 
-    v31 = [(UILabel *)v4->_descriptionLabel leadingAnchor];
-    v32 = [(CNFRegSettingsTravelPhoneCell *)v4 contentView];
-    v33 = [v32 layoutMarginsGuide];
-    v34 = [v33 leadingAnchor];
-    v35 = [v31 constraintEqualToAnchor:v34];
+    leadingAnchor3 = [(UILabel *)v4->_descriptionLabel leadingAnchor];
+    contentView5 = [(CNFRegSettingsTravelPhoneCell *)v4 contentView];
+    layoutMarginsGuide3 = [contentView5 layoutMarginsGuide];
+    leadingAnchor4 = [layoutMarginsGuide3 leadingAnchor];
+    v35 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
     [v35 setActive:1];
 
-    v36 = [(UILabel *)v4->_descriptionLabel trailingAnchor];
-    v37 = [(CNFRegSettingsTravelPhoneCell *)v4 contentView];
-    v38 = [v37 layoutMarginsGuide];
-    v39 = [v38 trailingAnchor];
-    v40 = [v36 constraintEqualToAnchor:v39];
+    trailingAnchor = [(UILabel *)v4->_descriptionLabel trailingAnchor];
+    contentView6 = [(CNFRegSettingsTravelPhoneCell *)v4 contentView];
+    layoutMarginsGuide4 = [contentView6 layoutMarginsGuide];
+    trailingAnchor2 = [layoutMarginsGuide4 trailingAnchor];
+    v40 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     [v40 setActive:1];
 
-    v41 = [(UILabel *)v4->_descriptionLabel bottomAnchor];
-    v42 = [(CNFRegSettingsTravelPhoneCell *)v4 contentView];
-    v43 = [v42 layoutMarginsGuide];
-    v44 = [v43 bottomAnchor];
-    v45 = [v41 constraintEqualToAnchor:v44];
+    bottomAnchor2 = [(UILabel *)v4->_descriptionLabel bottomAnchor];
+    contentView7 = [(CNFRegSettingsTravelPhoneCell *)v4 contentView];
+    layoutMarginsGuide5 = [contentView7 layoutMarginsGuide];
+    bottomAnchor3 = [layoutMarginsGuide5 bottomAnchor];
+    v45 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
     [v45 setActive:1];
   }
 
   return v4;
 }
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
   v13.receiver = self;
   v13.super_class = CNFRegSettingsTravelPhoneCell;
-  v4 = a3;
-  [(PSTableCell *)&v13 refreshCellContentsWithSpecifier:v4];
-  v5 = [v4 propertyForKey:@"cnfreg-travel-sim"];
+  specifierCopy = specifier;
+  [(PSTableCell *)&v13 refreshCellContentsWithSpecifier:specifierCopy];
+  v5 = [specifierCopy propertyForKey:@"cnfreg-travel-sim"];
 
   v6 = CommunicationsSetupUIBundle();
   v7 = CNFRegStringTableName();
   v8 = [v6 localizedStringForKey:@"FACETIME_SETTINGS_TRAVEL_PHONE_TITLE" value:&stru_2856D3978 table:v7];
 
   v9 = MEMORY[0x277CCACA8];
-  v10 = [v5 displayName];
-  v11 = [v9 localizedStringWithFormat:v8, v10];
-  v12 = [(CNFRegSettingsTravelPhoneCell *)self phoneNumberLabel];
-  [v12 setText:v11];
+  displayName = [v5 displayName];
+  v11 = [v9 localizedStringWithFormat:v8, displayName];
+  phoneNumberLabel = [(CNFRegSettingsTravelPhoneCell *)self phoneNumberLabel];
+  [phoneNumberLabel setText:v11];
 }
 
 @end

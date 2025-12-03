@@ -17,10 +17,10 @@
 
 - (uint64_t)triIsPathSafePlausibleUniqueId
 {
-  result = [a1 triIsPathSafe];
+  result = [self triIsPathSafe];
   if (result)
   {
-    return [a1 length] > 5;
+    return [self length] > 5;
   }
 
   return result;
@@ -28,10 +28,10 @@
 
 - (uint64_t)triIsPathSafe
 {
-  result = [a1 length];
+  result = [self length];
   if (result)
   {
-    return ([a1 containsString:@"/"] & 1) == 0 && (objc_msgSend(a1, "containsString:", &stru_2843623F8) & 1) == 0 && objc_msgSend(a1, "UTF8String") != 0;
+    return ([self containsString:@"/"] & 1) == 0 && (objc_msgSend(self, "containsString:", &stru_2843623F8) & 1) == 0 && objc_msgSend(self, "UTF8String") != 0;
   }
 
   return result;
@@ -40,40 +40,40 @@
 - (id)triStringByResolvingSymlinksInPath
 {
   v11[3] = *MEMORY[0x277D85DE8];
-  v1 = [a1 stringByResolvingSymlinksInPath];
-  if ([v1 hasPrefix:@"/var/"])
+  stringByResolvingSymlinksInPath = [self stringByResolvingSymlinksInPath];
+  if ([stringByResolvingSymlinksInPath hasPrefix:@"/var/"])
   {
-    v2 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
     v10 = 0;
-    v3 = [v2 destinationOfSymbolicLinkAtPath:@"/var" error:&v10];
+    v3 = [defaultManager destinationOfSymbolicLinkAtPath:@"/var" error:&v10];
     v4 = v10;
 
     if (v3)
     {
-      v5 = [v1 substringFromIndex:{objc_msgSend(@"/var/", "length")}];
+      v5 = [stringByResolvingSymlinksInPath substringFromIndex:{objc_msgSend(@"/var/", "length")}];
 
       v6 = MEMORY[0x277CCACA8];
       v11[0] = @"/";
       v11[1] = v3;
       v11[2] = v5;
       v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:3];
-      v1 = [v6 pathWithComponents:v7];
+      stringByResolvingSymlinksInPath = [v6 pathWithComponents:v7];
     }
   }
 
   v8 = *MEMORY[0x277D85DE8];
 
-  return v1;
+  return stringByResolvingSymlinksInPath;
 }
 
 - (id)triFilenameForFactorName
 {
   v7 = 0;
-  v4 = [a1 triSanitizedPathComponentWithMaxLength:50 addHash:1 error:&v7];
+  v4 = [self triSanitizedPathComponentWithMaxLength:50 addHash:1 error:&v7];
   if (!v4)
   {
-    v6 = [MEMORY[0x277CCA890] currentHandler];
-    [v6 handleFailureInMethod:a2 object:a1 file:@"NSString+TRI.m" lineNumber:136 description:{@"Failed to sanitize factor name %@: %@", a1, v7}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"NSString+TRI.m" lineNumber:136 description:{@"Failed to sanitize factor name %@: %@", self, v7}];
   }
 
   return v4;
@@ -81,15 +81,15 @@
 
 - (id)triTrim
 {
-  v2 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-  v3 = [a1 stringByTrimmingCharactersInSet:v2];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+  v3 = [self stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
   return v3;
 }
 
 - (uint64_t)triJavaHash
 {
-  if (![a1 length])
+  if (![self length])
   {
     return 0;
   }
@@ -98,10 +98,10 @@
   LODWORD(v3) = 0;
   do
   {
-    v3 = [a1 characterAtIndex:v2++] - v3 + 32 * v3;
+    v3 = [self characterAtIndex:v2++] - v3 + 32 * v3;
   }
 
-  while (v2 < [a1 length]);
+  while (v2 < [self length]);
   return v3;
 }
 
@@ -109,7 +109,7 @@
 {
   v7 = a3;
   v4 = [MEMORY[0x277CBEA90] dataWithBytes:&v7 length:8];
-  v5 = [a1 triHashWithDataSalt:v4];
+  v5 = [self triHashWithDataSalt:v4];
 
   return v5;
 }
@@ -117,7 +117,7 @@
 - (id)triHashWithDataSalt:()TRI
 {
   v4 = a3;
-  v5 = [a1 dataUsingEncoding:4];
+  v5 = [self dataUsingEncoding:4];
   v6 = [MEMORY[0x277CBEB28] dataWithCapacity:{objc_msgSend(v5, "length") + objc_msgSend(v4, "length")}];
   [v6 appendData:v4];
 
@@ -136,8 +136,8 @@
   v8 = a4;
   if (!v7)
   {
-    v22 = [MEMORY[0x277CCA890] currentHandler];
-    [v22 handleFailureInMethod:a2 object:a1 file:@"NSString+TRI.m" lineNumber:38 description:{@"Invalid parameter not satisfying: %@", @"strings"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"NSString+TRI.m" lineNumber:38 description:{@"Invalid parameter not satisfying: %@", @"strings"}];
   }
 
   v9 = objc_autoreleasePoolPush();
@@ -204,7 +204,7 @@
 {
   v45[1] = *MEMORY[0x277D85DE8];
   v10 = objc_autoreleasePoolPush();
-  v11 = [a1 dataUsingEncoding:1 allowLossyConversion:1];
+  v11 = [self dataUsingEncoding:1 allowLossyConversion:1];
   if (v11)
   {
     v12 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v11 encoding:1];
@@ -217,20 +217,20 @@
       }
 
       v14 = [v13 componentsSeparatedByCharactersInSet:_MergedGlobals_8];
-      v15 = [v14 componentsJoinedByString:&stru_28435FC98];
+      0xFFFFFFF = [v14 componentsJoinedByString:&stru_28435FC98];
 
-      if (!a4 || [a1 isEqualToString:v15])
+      if (!a4 || [self isEqualToString:0xFFFFFFF])
       {
         if (!a3)
         {
 LABEL_32:
-          v25 = v15;
+          v25 = 0xFFFFFFF;
 
           v28 = v25;
           goto LABEL_33;
         }
 
-        if ([v15 length] > a3)
+        if ([0xFFFFFFF length] > a3)
         {
           if (a4)
           {
@@ -239,15 +239,15 @@ LABEL_32:
 
           v41 = a2;
           v29 = MEMORY[0x277CCACA8];
-          v30 = [v15 substringToIndex:a3 - 1];
+          v30 = [0xFFFFFFF substringToIndex:a3 - 1];
           v31 = [v29 stringWithFormat:@"%@#", v30];
 
-          v15 = v31;
+          0xFFFFFFF = v31;
           a2 = v41;
         }
 
 LABEL_26:
-        v32 = [v15 length];
+        v32 = [0xFFFFFFF length];
         v33 = 8;
         if (!a4)
         {
@@ -261,10 +261,10 @@ LABEL_26:
 
         if (v32 > v33)
         {
-          v36 = [MEMORY[0x277CCA890] currentHandler];
+          currentHandler = [MEMORY[0x277CCA890] currentHandler];
           v37 = a2;
-          v38 = v36;
-          [v36 handleFailureInMethod:v37 object:a1 file:@"NSString+TRI.m" lineNumber:125 description:@"sanitized string is longer than expected"];
+          v38 = currentHandler;
+          [currentHandler handleFailureInMethod:v37 object:self file:@"NSString+TRI.m" lineNumber:125 description:@"sanitized string is longer than expected"];
         }
 
         goto LABEL_32;
@@ -272,8 +272,8 @@ LABEL_26:
 
 LABEL_10:
       v40 = a2;
-      v39 = [a1 triJavaHash];
-      v16 = v15;
+      triJavaHash = [self triJavaHash];
+      v16 = 0xFFFFFFF;
       v17 = v16;
       v18 = v16;
       if (a3)
@@ -300,7 +300,7 @@ LABEL_10:
         }
       }
 
-      v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@#%07x", v18, v39 & 0xFFFFFFF];
+      0xFFFFFFF = [MEMORY[0x277CCACA8] stringWithFormat:@"%@#%07x", v18, triJavaHash & 0xFFFFFFF];
 
       a2 = v40;
       if (!a3)
@@ -356,11 +356,11 @@ LABEL_34:
 
 - (id)triParseJson
 {
-  v4 = [a1 dataUsingEncoding:4];
+  v4 = [self dataUsingEncoding:4];
   if (!v4)
   {
-    v8 = [MEMORY[0x277CCA890] currentHandler];
-    [v8 handleFailureInMethod:a2 object:a1 file:@"NSString+TRI.m" lineNumber:175 description:@"String output with from trialtool was not a valid UTF-8 string"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"NSString+TRI.m" lineNumber:175 description:@"String output with from trialtool was not a valid UTF-8 string"];
   }
 
   v10 = 0;
@@ -368,8 +368,8 @@ LABEL_34:
   v6 = v10;
   if (!v5)
   {
-    v9 = [MEMORY[0x277CCA890] currentHandler];
-    [v9 handleFailureInMethod:a2 object:a1 file:@"NSString+TRI.m" lineNumber:181 description:{@"JSON from trialtool with --json flag was not a valid json object: %@", v6}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"NSString+TRI.m" lineNumber:181 description:{@"JSON from trialtool with --json flag was not a valid json object: %@", v6}];
   }
 
   return v5;

@@ -1,5 +1,5 @@
 @interface FMCardContainerViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityManageFMMapOptionsView;
 - (void)handleCloseAction;
 - (void)viewDidLayoutSubviews;
@@ -7,14 +7,14 @@
 
 @implementation FMCardContainerViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"FindMy.FMCardContainerViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"FindMy.FMCardContainerViewController" hasInstanceMethod:@"handleCloseAction" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"FindMy.FMCardContainerViewController" hasSwiftFieldOfAnyClass:@"passthroughView"];
-  [v3 validateClass:@"FindMy.FMMapOptionsView"];
-  [v3 validateClass:@"MKMapView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"FindMy.FMCardContainerViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"FindMy.FMCardContainerViewController" hasInstanceMethod:@"handleCloseAction" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"FindMy.FMCardContainerViewController" hasSwiftFieldOfAnyClass:@"passthroughView"];
+  [validationsCopy validateClass:@"FindMy.FMMapOptionsView"];
+  [validationsCopy validateClass:@"MKMapView"];
 }
 
 - (void)viewDidLayoutSubviews

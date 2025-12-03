@@ -1,11 +1,11 @@
 @interface AKMediaServicesController
 + (id)sharedInstance;
 - (AKMediaServicesController)init;
-- (BOOL)_isRequestCancelledForBundleID:(id)a3;
-- (void)_appMetadataForBundleID:(id)a3 completion:(id)a4;
-- (void)appIconForBundleID:(id)a3 size:(id)a4 completion:(id)a5;
-- (void)appMetadataForBundleIDs:(id)a3 completion:(id)a4;
-- (void)cancelAppIconRequestForBundleID:(id)a3 completion:(id)a4;
+- (BOOL)_isRequestCancelledForBundleID:(id)d;
+- (void)_appMetadataForBundleID:(id)d completion:(id)completion;
+- (void)appIconForBundleID:(id)d size:(id)size completion:(id)completion;
+- (void)appMetadataForBundleIDs:(id)ds completion:(id)completion;
+- (void)cancelAppIconRequestForBundleID:(id)d completion:(id)completion;
 @end
 
 @implementation AKMediaServicesController
@@ -22,9 +22,9 @@
   if (v12)
   {
     v15->_activeLockupGroupLock._os_unfair_lock_opaque = 0;
-    v2 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     activeLockupGroupForBundleID = v15->_activeLockupGroupForBundleID;
-    v15->_activeLockupGroupForBundleID = v2;
+    v15->_activeLockupGroupForBundleID = dictionary;
     MEMORY[0x1E69E5920](activeLockupGroupForBundleID);
     v11 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v4 = dispatch_queue_create("com.apple.authkit.AKMediaServicesController.imagedownloadqueue", v11);
@@ -77,17 +77,17 @@ uint64_t __43__AKMediaServicesController_sharedInstance__block_invoke()
   return MEMORY[0x1E69E5920](v1);
 }
 
-- (void)appIconForBundleID:(id)a3 size:(id)a4 completion:(id)a5
+- (void)appIconForBundleID:(id)d size:(id)size completion:(id)completion
 {
   v31 = *MEMORY[0x1E69E9840];
-  v29 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v27 = 0;
-  objc_storeStrong(&v27, a4);
+  objc_storeStrong(&v27, size);
   v26 = 0;
-  objc_storeStrong(&v26, a5);
+  objc_storeStrong(&v26, completion);
   v25 = _AKLogSystem();
   v24 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
@@ -97,7 +97,7 @@ uint64_t __43__AKMediaServicesController_sharedInstance__block_invoke()
   }
 
   objc_storeStrong(&v25, 0);
-  v23 = MEMORY[0x1E69E5928](v29->_group);
+  v23 = MEMORY[0x1E69E5928](selfCopy->_group);
   v22 = 0uLL;
   if (v27)
   {
@@ -111,9 +111,9 @@ uint64_t __43__AKMediaServicesController_sharedInstance__block_invoke()
     v22 = AKIconDefaultSize;
   }
 
-  os_unfair_lock_lock(&v29->_activeLockupGroupLock);
-  [(NSMutableDictionary *)v29->_activeLockupGroupForBundleID setObject:v23 forKey:location[0]];
-  os_unfair_lock_unlock(&v29->_activeLockupGroupLock);
+  os_unfair_lock_lock(&selfCopy->_activeLockupGroupLock);
+  [(NSMutableDictionary *)selfCopy->_activeLockupGroupForBundleID setObject:v23 forKey:location[0]];
+  os_unfair_lock_unlock(&selfCopy->_activeLockupGroupLock);
   v8 = MEMORY[0x1E69E96A0];
   v7 = MEMORY[0x1E69E96A0];
   queue = v8;
@@ -124,7 +124,7 @@ uint64_t __43__AKMediaServicesController_sharedInstance__block_invoke()
   v16 = &unk_1E73D65A0;
   v17 = MEMORY[0x1E69E5928](v23);
   v18 = MEMORY[0x1E69E5928](location[0]);
-  v19 = MEMORY[0x1E69E5928](v29);
+  v19 = MEMORY[0x1E69E5928](selfCopy);
   v20 = MEMORY[0x1E69E5928](v26);
   v21 = v22;
   dispatch_async(queue, &v12);
@@ -833,16 +833,16 @@ void *__64__AKMediaServicesController_appIconForBundleID_size_completion___block
   return result;
 }
 
-- (void)cancelAppIconRequestForBundleID:(id)a3 completion:(id)a4
+- (void)cancelAppIconRequestForBundleID:(id)d completion:(id)completion
 {
   v12 = *MEMORY[0x1E69E9840];
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v8 = 0;
-  objc_storeStrong(&v8, a4);
-  if ([(AKMediaServicesController *)v10 _isRequestCancelledForBundleID:location[0]])
+  objc_storeStrong(&v8, completion);
+  if ([(AKMediaServicesController *)selfCopy _isRequestCancelledForBundleID:location[0]])
   {
     v7 = _AKLogSystem();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -863,9 +863,9 @@ void *__64__AKMediaServicesController_appIconForBundleID_size_completion___block
 
   else
   {
-    os_unfair_lock_lock(&v10->_activeLockupGroupLock);
-    [(NSMutableDictionary *)v10->_activeLockupGroupForBundleID removeObjectForKey:location[0]];
-    os_unfair_lock_unlock(&v10->_activeLockupGroupLock);
+    os_unfair_lock_lock(&selfCopy->_activeLockupGroupLock);
+    [(NSMutableDictionary *)selfCopy->_activeLockupGroupForBundleID removeObjectForKey:location[0]];
+    os_unfair_lock_unlock(&selfCopy->_activeLockupGroupLock);
     if (v8)
     {
       (*(v8 + 2))(v8, 1, 0);
@@ -877,30 +877,30 @@ void *__64__AKMediaServicesController_appIconForBundleID_size_completion___block
   *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)_isRequestCancelledForBundleID:(id)a3
+- (BOOL)_isRequestCancelledForBundleID:(id)d
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  os_unfair_lock_lock(&v7->_activeLockupGroupLock);
-  v3 = [(NSMutableDictionary *)v7->_activeLockupGroupForBundleID objectForKey:location[0]];
+  objc_storeStrong(location, d);
+  os_unfair_lock_lock(&selfCopy->_activeLockupGroupLock);
+  v3 = [(NSMutableDictionary *)selfCopy->_activeLockupGroupForBundleID objectForKey:location[0]];
   v5 = v3 == 0;
   MEMORY[0x1E69E5920](v3);
-  os_unfair_lock_unlock(&v7->_activeLockupGroupLock);
+  os_unfair_lock_unlock(&selfCopy->_activeLockupGroupLock);
   objc_storeStrong(location, 0);
   return v5;
 }
 
-- (void)appMetadataForBundleIDs:(id)a3 completion:(id)a4
+- (void)appMetadataForBundleIDs:(id)ds completion:(id)completion
 {
   v51 = *MEMORY[0x1E69E9840];
-  v49 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, ds);
   v47 = 0;
-  objc_storeStrong(&v47, a4);
+  objc_storeStrong(&v47, completion);
   v46 = dispatch_group_create();
   v41[0] = 0;
   v41[1] = v41;
@@ -940,7 +940,7 @@ void *__64__AKMediaServicesController_appIconForBundleID_size_completion___block
 
       v28 = *(__b[1] + 8 * v10);
       dispatch_group_enter(v46);
-      v7 = v49;
+      v7 = selfCopy;
       v6 = v28;
       v21 = MEMORY[0x1E69E9820];
       v22 = -1073741824;
@@ -1030,15 +1030,15 @@ uint64_t __64__AKMediaServicesController_appMetadataForBundleIDs_completion___bl
   }
 }
 
-- (void)_appMetadataForBundleID:(id)a3 completion:(id)a4
+- (void)_appMetadataForBundleID:(id)d completion:(id)completion
 {
-  v19 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v17 = 0;
-  objc_storeStrong(&v17, a4);
-  v16 = MEMORY[0x1E69E5928](v19->_group);
+  objc_storeStrong(&v17, completion);
+  v16 = MEMORY[0x1E69E5928](selfCopy->_group);
   v6 = MEMORY[0x1E69E96A0];
   v4 = MEMORY[0x1E69E96A0];
   queue = v6;

@@ -1,38 +1,38 @@
 @interface SLSheetPreviewImageSource
-- (void)_generatePreviewImageForAttachment:(id)a3 queueToBlockWhileDownsampling:(id)a4 resultBlock:(id)a5;
-- (void)_generatePreviewImageForVideoFileURL:(id)a3 resultBlock:(id)a4;
-- (void)previewImageForAttachment:(id)a3 queueToBlockWhileDownsampling:(id)a4 resultBlock:(id)a5;
+- (void)_generatePreviewImageForAttachment:(id)attachment queueToBlockWhileDownsampling:(id)downsampling resultBlock:(id)block;
+- (void)_generatePreviewImageForVideoFileURL:(id)l resultBlock:(id)block;
+- (void)previewImageForAttachment:(id)attachment queueToBlockWhileDownsampling:(id)downsampling resultBlock:(id)block;
 @end
 
 @implementation SLSheetPreviewImageSource
 
-- (void)previewImageForAttachment:(id)a3 queueToBlockWhileDownsampling:(id)a4 resultBlock:(id)a5
+- (void)previewImageForAttachment:(id)attachment queueToBlockWhileDownsampling:(id)downsampling resultBlock:(id)block
 {
-  v28 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v28 previewImage];
+  attachmentCopy = attachment;
+  downsamplingCopy = downsampling;
+  blockCopy = block;
+  previewImage = [attachmentCopy previewImage];
 
-  if (v11)
+  if (previewImage)
   {
     _SLLog(v5, 6, @"previewImageForAttachment: previewImage for attachment is not nil so returning");
-    v12 = [v28 previewImage];
+    previewImage2 = [attachmentCopy previewImage];
 LABEL_3:
-    v13 = v12;
-    v10[2](v10, v12, 0.0);
+    v13 = previewImage2;
+    blockCopy[2](blockCopy, previewImage2, 0.0);
 
     goto LABEL_4;
   }
 
-  if (![v28 type])
+  if (![attachmentCopy type])
   {
-    v17 = [v28 payload];
+    payload = [attachmentCopy payload];
 
-    if (v17)
+    if (payload)
     {
       v18 = MEMORY[0x1E69DCAB8];
-      v19 = [v28 payload];
-      v20 = [v18 imageWithData:v19];
+      payload2 = [attachmentCopy payload];
+      v20 = [v18 imageWithData:payload2];
 
       [v20 size];
       v22 = v21;
@@ -40,59 +40,59 @@ LABEL_3:
       if (v22 * v23 >= 262144.0)
       {
         _SLLog(v5, 6, @"previewImageForAttachment: Generating preview from downsampled payload");
-        [(SLSheetPreviewImageSource *)self _generatePreviewImageForAttachment:v28 queueToBlockWhileDownsampling:v9 resultBlock:v10];
+        [(SLSheetPreviewImageSource *)self _generatePreviewImageForAttachment:attachmentCopy queueToBlockWhileDownsampling:downsamplingCopy resultBlock:blockCopy];
       }
 
       else
       {
         _SLLog(v5, 6, @"previewImageForAttachment: Using payload as preview");
-        v10[2](v10, v20, 0.0);
+        blockCopy[2](blockCopy, v20, 0.0);
       }
     }
 
     else
     {
       _SLLog(v5, 6, @"previewImageForAttachment: No payload. Guess we need to wait until it loads.");
-      v10[2](v10, 0, 0.0);
+      blockCopy[2](blockCopy, 0, 0.0);
     }
 
     goto LABEL_4;
   }
 
-  if (!SLAttachmentPayloadIsAssetLibraryURL(v28))
+  if (!SLAttachmentPayloadIsAssetLibraryURL(attachmentCopy))
   {
-    if ((SLAttachmentPayloadIsVideoFileURL(v28) & 1) != 0 || [v28 type] == 8 && (objc_msgSend(v28, "payloadSourceFileURL"), v24 = objc_claimAutoreleasedReturnValue(), v25 = objc_msgSend(v24, "isFileURL"), v24, v25))
+    if ((SLAttachmentPayloadIsVideoFileURL(attachmentCopy) & 1) != 0 || [attachmentCopy type] == 8 && (objc_msgSend(attachmentCopy, "payloadSourceFileURL"), v24 = objc_claimAutoreleasedReturnValue(), v25 = objc_msgSend(v24, "isFileURL"), v24, v25))
     {
       _SLLog(v5, 6, @"previewImageForAttachment: creating preview for video file URL");
-      if (SLAttachmentPayloadIsVideoFileURL(v28))
+      if (SLAttachmentPayloadIsVideoFileURL(attachmentCopy))
       {
-        [v28 payload];
+        [attachmentCopy payload];
       }
 
       else
       {
-        [v28 payloadSourceFileURL];
+        [attachmentCopy payloadSourceFileURL];
       }
       v26 = ;
-      [(SLSheetPreviewImageSource *)self _generatePreviewImageForVideoFileURL:v26 resultBlock:v10];
+      [(SLSheetPreviewImageSource *)self _generatePreviewImageForVideoFileURL:v26 resultBlock:blockCopy];
 
       goto LABEL_4;
     }
 
-    v27 = [v28 type];
+    type = [attachmentCopy type];
     _SLLog(v5, 3, @"previewImageForAttachment: Cannot create preview for attachment of type %i,returning fallback preview");
     goto LABEL_20;
   }
 
   _SLLog(v5, 6, @"previewImageForAttachment: creating preview for asset URL");
-  v14 = [v28 payload];
-  v15 = [v14 scheme];
-  v16 = [v15 isEqualToString:@"assets-library"];
+  payload3 = [attachmentCopy payload];
+  scheme = [payload3 scheme];
+  v16 = [scheme isEqualToString:@"assets-library"];
 
   if (!v16)
   {
 LABEL_20:
-    v12 = +[SLSheetImagePreviewView fallbackPreviewImage];
+    previewImage2 = +[SLSheetImagePreviewView fallbackPreviewImage];
     goto LABEL_3;
   }
 
@@ -100,30 +100,30 @@ LABEL_20:
 LABEL_4:
 }
 
-- (void)_generatePreviewImageForAttachment:(id)a3 queueToBlockWhileDownsampling:(id)a4 resultBlock:(id)a5
+- (void)_generatePreviewImageForAttachment:(id)attachment queueToBlockWhileDownsampling:(id)downsampling resultBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  attachmentCopy = attachment;
+  downsamplingCopy = downsampling;
+  blockCopy = block;
   _SLLog(v5, 6, @"SLComposeServiceViewController-_generatePreviewImageForAttachment:%@");
-  if ([v8 type] || (objc_msgSend(v8, "previewImage"), v11 = objc_claimAutoreleasedReturnValue(), v11, v11))
+  if ([attachmentCopy type] || (objc_msgSend(attachmentCopy, "previewImage"), v11 = objc_claimAutoreleasedReturnValue(), v11, v11))
   {
     _SLLog(v5, 3, @"_generatePreviewImageForAttachment called for non-image payload attachment");
-    v10[2](v10, 0, 0.0);
+    blockCopy[2](blockCopy, 0, 0.0);
   }
 
   else
   {
     _SLLog(v5, 6, @"Image attachment with nil preview - triggering thumbnail generation");
-    v12 = [v8 payload];
+    payload = [attachmentCopy payload];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __106__SLSheetPreviewImageSource__generatePreviewImageForAttachment_queueToBlockWhileDownsampling_resultBlock___block_invoke;
     block[3] = &unk_1E81759A0;
-    v15 = v12;
-    v16 = v10;
-    v13 = v12;
-    dispatch_async(v9, block);
+    v15 = payload;
+    v16 = blockCopy;
+    v13 = payload;
+    dispatch_async(downsamplingCopy, block);
   }
 }
 
@@ -174,11 +174,11 @@ void __106__SLSheetPreviewImageSource__generatePreviewImageForAttachment_queueTo
   dispatch_semaphore_signal(*(a1 + 40));
 }
 
-- (void)_generatePreviewImageForVideoFileURL:(id)a3 resultBlock:(id)a4
+- (void)_generatePreviewImageForVideoFileURL:(id)l resultBlock:(id)block
 {
   v26[2] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  lCopy = l;
+  blockCopy = block;
   _SLLog(v4, 7, @"SLSheetPreviewImageSource _generatePreviewImageForVideoFileURL: %@");
   v9 = objc_alloc(MEMORY[0x1E6988168]);
   v10 = *MEMORY[0x1E6987BB8];
@@ -186,8 +186,8 @@ void __106__SLSheetPreviewImageSource__generatePreviewImageForAttachment_queueTo
   v25[1] = v10;
   v26[0] = &unk_1F4202A60;
   v26[1] = MEMORY[0x1E695E110];
-  v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v26 forKeys:v25 count:{2, v7}];
-  v12 = [v9 initWithURL:v7 options:v11];
+  v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v26 forKeys:v25 count:{2, lCopy}];
+  v12 = [v9 initWithURL:lCopy options:v11];
 
   _SLLog(v4, 7, @"SLSheetPreviewImageSource _generatePreviewImageForVideoFileURL: got asset %@");
   if (v12)
@@ -213,15 +213,15 @@ void __106__SLSheetPreviewImageSource__generatePreviewImageForAttachment_queueTo
     v19[2] = __78__SLSheetPreviewImageSource__generatePreviewImageForVideoFileURL_resultBlock___block_invoke;
     v19[3] = &unk_1E8175B20;
     v20 = v12;
-    v22 = v8;
-    v21 = v7;
+    v22 = blockCopy;
+    v21 = lCopy;
     [(AVAssetImageGenerator *)assetImageGenerator generateCGImagesAsynchronouslyForTimes:v18 completionHandler:v19];
   }
 
   else
   {
     _SLLog(v4, 3, @"Could not create AVAsset from %@");
-    (*(v8 + 2))(v8, 0, 0.0);
+    (*(blockCopy + 2))(blockCopy, 0, 0.0);
   }
 }
 

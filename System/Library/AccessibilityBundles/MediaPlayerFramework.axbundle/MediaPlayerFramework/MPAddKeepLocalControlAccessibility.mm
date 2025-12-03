@@ -1,9 +1,9 @@
 @interface MPAddKeepLocalControlAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)isAccessibilityElement;
-- (id)_accessibilityCustomActionLabelForControlStatus:(int64_t)a3;
-- (id)_accessibilityLabelForStatusType:(int64_t)a3;
-- (id)_accessibilityValueForStatusType:(int64_t)a3 andDownloadProgress:(double)a4;
+- (id)_accessibilityCustomActionLabelForControlStatus:(int64_t)status;
+- (id)_accessibilityLabelForStatusType:(int64_t)type;
+- (id)_accessibilityValueForStatusType:(int64_t)type andDownloadProgress:(double)progress;
 - (id)accessibilityLabel;
 - (id)accessibilityValue;
 - (unint64_t)accessibilityTraits;
@@ -11,25 +11,25 @@
 
 @implementation MPAddKeepLocalControlAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MPAddKeepLocalControl" hasInstanceMethod:@"controlStatus" withFullSignature:{"{MPAddKeepLocalControlStatus=qd}", 0}];
-  [v3 validateClass:@"MPAddKeepLocalControl" hasInstanceMethod:@"setControlStatus:animated:" withFullSignature:{"v", "{MPAddKeepLocalControlStatus=qd}", "B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MPAddKeepLocalControl" hasInstanceMethod:@"controlStatus" withFullSignature:{"{MPAddKeepLocalControlStatus=qd}", 0}];
+  [validationsCopy validateClass:@"MPAddKeepLocalControl" hasInstanceMethod:@"setControlStatus:animated:" withFullSignature:{"v", "{MPAddKeepLocalControlStatus=qd}", "B", 0}];
 }
 
 - (BOOL)isAccessibilityElement
 {
-  v3 = [(MPAddKeepLocalControlAccessibility *)self accessibilityValue];
-  if ([v3 length])
+  accessibilityValue = [(MPAddKeepLocalControlAccessibility *)self accessibilityValue];
+  if ([accessibilityValue length])
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(MPAddKeepLocalControlAccessibility *)self accessibilityLabel];
-    v4 = [v5 length] != 0;
+    accessibilityLabel = [(MPAddKeepLocalControlAccessibility *)self accessibilityLabel];
+    v4 = [accessibilityLabel length] != 0;
   }
 
   return v4;
@@ -37,21 +37,21 @@
 
 - (id)accessibilityLabel
 {
-  v3 = [(MPAddKeepLocalControlAccessibility *)self controlStatus];
+  controlStatus = [(MPAddKeepLocalControlAccessibility *)self controlStatus];
 
-  return [(MPAddKeepLocalControlAccessibility *)self _accessibilityLabelForStatusType:v3];
+  return [(MPAddKeepLocalControlAccessibility *)self _accessibilityLabelForStatusType:controlStatus];
 }
 
 - (id)accessibilityValue
 {
-  v4 = [(MPAddKeepLocalControlAccessibility *)self controlStatus];
+  controlStatus = [(MPAddKeepLocalControlAccessibility *)self controlStatus];
 
-  return [(MPAddKeepLocalControlAccessibility *)self _accessibilityValueForStatusType:v4 andDownloadProgress:v3];
+  return [(MPAddKeepLocalControlAccessibility *)self _accessibilityValueForStatusType:controlStatus andDownloadProgress:v3];
 }
 
-- (id)_accessibilityLabelForStatusType:(int64_t)a3
+- (id)_accessibilityLabelForStatusType:(int64_t)type
 {
-  if (a3 == 1)
+  if (type == 1)
   {
     v4 = @"add.button";
 LABEL_5:
@@ -60,7 +60,7 @@ LABEL_5:
     return v5;
   }
 
-  if (a3 == 2)
+  if (type == 2)
   {
     v4 = @"download.button";
     goto LABEL_5;
@@ -71,14 +71,14 @@ LABEL_5:
   return v5;
 }
 
-- (id)_accessibilityValueForStatusType:(int64_t)a3 andDownloadProgress:(double)a4
+- (id)_accessibilityValueForStatusType:(int64_t)type andDownloadProgress:(double)progress
 {
-  if (a3 == 3)
+  if (type == 3)
   {
     v7 = accessibilityMPLocalizedString(@"waiting.download");
   }
 
-  else if (a3 == 4)
+  else if (type == 4)
   {
     v4 = MEMORY[0x29EDBA0F8];
     v5 = accessibilityMPLocalizedString(@"downloading");
@@ -94,16 +94,16 @@ LABEL_5:
   return v7;
 }
 
-- (id)_accessibilityCustomActionLabelForControlStatus:(int64_t)a3
+- (id)_accessibilityCustomActionLabelForControlStatus:(int64_t)status
 {
-  if ((a3 - 1) > 3)
+  if ((status - 1) > 3)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = accessibilityMPLocalizedString(off_29F2CFE98[a3 - 1]);
+    v4 = accessibilityMPLocalizedString(off_29F2CFE98[status - 1]);
   }
 
   return v4;
@@ -114,9 +114,9 @@ LABEL_5:
   v7.receiver = self;
   v7.super_class = MPAddKeepLocalControlAccessibility;
   v3 = *MEMORY[0x29EDC7F70] | [(MPAddKeepLocalControlAccessibility *)&v7 accessibilityTraits];
-  v4 = [(MPAddKeepLocalControlAccessibility *)self controlStatus];
+  controlStatus = [(MPAddKeepLocalControlAccessibility *)self controlStatus];
   v5 = *MEMORY[0x29EDC7FF0];
-  if (v4 != 4)
+  if (controlStatus != 4)
   {
     v5 = 0;
   }

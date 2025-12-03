@@ -1,5 +1,5 @@
 @interface _UIActionSliderAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)accessibilityActivate;
 - (CGPoint)accessibilityActivationPoint;
 - (CGRect)accessibilityFrame;
@@ -10,14 +10,14 @@
 
 @implementation _UIActionSliderAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v6 = location;
   obj = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   v4 = @"_UIActionSlider";
   v3 = "@";
   [location[0] validateClass:0 hasInstanceMethod:? withFullSignature:?];
@@ -29,42 +29,42 @@
 
 - (id)accessibilityLabel
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
-  v5 = [(_UIActionSliderAccessibility *)self accessibilityUserDefinedLabel];
-  *&v2 = MEMORY[0x29EDC9740](v5).n128_u64[0];
-  if (v5)
+  accessibilityUserDefinedLabel = [(_UIActionSliderAccessibility *)self accessibilityUserDefinedLabel];
+  *&v2 = MEMORY[0x29EDC9740](accessibilityUserDefinedLabel).n128_u64[0];
+  if (accessibilityUserDefinedLabel)
   {
-    v10 = [(_UIActionSliderAccessibility *)v9 accessibilityUserDefinedLabel];
+    accessibilityUserDefinedLabel2 = [(_UIActionSliderAccessibility *)selfCopy accessibilityUserDefinedLabel];
   }
 
   else
   {
-    location[0] = [(_UIActionSliderAccessibility *)v9 safeValueForKey:@"trackText", v2];
+    location[0] = [(_UIActionSliderAccessibility *)selfCopy safeValueForKey:@"trackText", v2];
     if ([location[0] length])
     {
-      v10 = MEMORY[0x29EDC9748](location[0]);
+      accessibilityUserDefinedLabel2 = MEMORY[0x29EDC9748](location[0]);
     }
 
     else
     {
-      v6.receiver = v9;
+      v6.receiver = selfCopy;
       v6.super_class = _UIActionSliderAccessibility;
-      v10 = [(_UIActionSliderAccessibility *)&v6 accessibilityLabel];
+      accessibilityUserDefinedLabel2 = [(_UIActionSliderAccessibility *)&v6 accessibilityLabel];
     }
 
     v7 = 1;
     objc_storeStrong(location, 0);
   }
 
-  v3 = v10;
+  v3 = accessibilityUserDefinedLabel2;
 
   return v3;
 }
 
 - (BOOL)accessibilityActivate
 {
-  v11 = self;
+  selfCopy = self;
   v10[1] = a2;
   v10[0] = [(_UIActionSliderAccessibility *)self safeValueForKey:@"delegate"];
   v3 = MEMORY[0x29EDCA5F8];
@@ -73,7 +73,7 @@
   v6 = __53___UIActionSliderAccessibility_accessibilityActivate__block_invoke;
   v7 = &unk_29F30C888;
   v8 = MEMORY[0x29EDC9748](v10[0]);
-  v9 = MEMORY[0x29EDC9748](v11);
+  v9 = MEMORY[0x29EDC9748](selfCopy);
   AXPerformSafeBlock();
   objc_storeStrong(&v9, 0);
   objc_storeStrong(&v8, 0);
@@ -83,7 +83,7 @@
 
 - (id)accessibilityPath
 {
-  v10 = self;
+  selfCopy = self;
   v9[1] = a2;
   v8 = 0;
   v5 = [(_UIActionSliderAccessibility *)self safeValueForKey:@"trackMaskPath"];
@@ -92,7 +92,7 @@
   v6 = MEMORY[0x29EDC9748](v7);
   objc_storeStrong(&v7, 0);
   v9[0] = v6;
-  v3 = [(_UIActionSliderAccessibility *)v10 safeUIViewForKey:@"_trackBackgroundView"];
+  v3 = [(_UIActionSliderAccessibility *)selfCopy safeUIViewForKey:@"_trackBackgroundView"];
   v4 = UIAccessibilityConvertPathToScreenCoordinates(v6, v3);
   MEMORY[0x29EDC9740](v3);
   objc_storeStrong(v9, 0);
@@ -102,7 +102,7 @@
 
 - (CGRect)accessibilityFrame
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = [(_UIActionSliderAccessibility *)self accessibilityPath];
   if (location[0])
@@ -113,7 +113,7 @@
 
   else
   {
-    v11.receiver = v13;
+    v11.receiver = selfCopy;
     v11.super_class = _UIActionSliderAccessibility;
     [(_UIActionSliderAccessibility *)&v11 accessibilityFrame];
   }
@@ -150,14 +150,14 @@
 
 - (id)accessibilityHint
 {
-  v4 = [(_UIActionSliderAccessibility *)self accessibilityUserDefinedHint];
+  accessibilityUserDefinedHint = [(_UIActionSliderAccessibility *)self accessibilityUserDefinedHint];
   v7 = 0;
   v5 = 0;
-  if (v4)
+  if (accessibilityUserDefinedHint)
   {
-    v6 = [(_UIActionSliderAccessibility *)self accessibilityUserDefinedHint];
+    accessibilityUserDefinedHint2 = [(_UIActionSliderAccessibility *)self accessibilityUserDefinedHint];
     v5 = 1;
-    v2 = MEMORY[0x29EDC9748](v6);
+    v2 = MEMORY[0x29EDC9748](accessibilityUserDefinedHint2);
   }
 
   else
@@ -170,7 +170,7 @@
   v10 = v2;
   if (v5)
   {
-    MEMORY[0x29EDC9740](v6);
+    MEMORY[0x29EDC9740](accessibilityUserDefinedHint2);
   }
 
   if (v7)
@@ -178,7 +178,7 @@
     MEMORY[0x29EDC9740](v8);
   }
 
-  MEMORY[0x29EDC9740](v4);
+  MEMORY[0x29EDC9740](accessibilityUserDefinedHint);
 
   return v10;
 }

@@ -1,16 +1,16 @@
 @interface INSetRadioStationIntentResponse
-+ (int)_errorCodeFromCode:(int64_t)a3;
-+ (int)_typeFromCode:(int64_t)a3;
-+ (int64_t)_codeFromType:(int)a3 errorCode:(int)a4 appLaunchRequested:(BOOL)a5;
-- (INSetRadioStationIntentResponse)initWithBackingStore:(id)a3;
++ (int)_errorCodeFromCode:(int64_t)code;
++ (int)_typeFromCode:(int64_t)code;
++ (int64_t)_codeFromType:(int)type errorCode:(int)code appLaunchRequested:(BOOL)requested;
+- (INSetRadioStationIntentResponse)initWithBackingStore:(id)store;
 - (INSetRadioStationIntentResponse)initWithCode:(INSetRadioStationIntentResponseCode)code userActivity:(NSUserActivity *)userActivity;
-- (INSetRadioStationIntentResponse)initWithCoder:(id)a3;
+- (INSetRadioStationIntentResponse)initWithCoder:(id)coder;
 - (INSetRadioStationIntentResponseCode)code;
 - (id)_dictionaryRepresentation;
-- (id)_initWithCode:(int64_t)a3 userActivity:(id)a4;
-- (int64_t)_codeWithName:(id)a3;
+- (id)_initWithCode:(int64_t)code userActivity:(id)activity;
+- (int64_t)_codeWithName:(id)name;
 - (int64_t)_intentResponseCode;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation INSetRadioStationIntentResponse
@@ -19,21 +19,21 @@
 {
   v10[1] = *MEMORY[0x1E69E9840];
   v9 = @"code";
-  v2 = [(INSetRadioStationIntentResponse *)self code];
-  v3 = v2;
-  if (v2 < (INSetRadioStationIntentResponseCodeFailureNotSubscribed|INSetRadioStationIntentResponseCodeReady))
+  code = [(INSetRadioStationIntentResponse *)self code];
+  v3 = code;
+  if (code < (INSetRadioStationIntentResponseCodeFailureNotSubscribed|INSetRadioStationIntentResponseCodeReady))
   {
-    v4 = off_1E727E218[v2];
-    v5 = v4;
+    null = off_1E727E218[code];
+    v5 = null;
   }
 
   else
   {
-    v4 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
     v5 = 0;
   }
 
-  v10[0] = v4;
+  v10[0] = null;
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v10 forKeys:&v9 count:1];
   if (v3 >= 7)
   {
@@ -44,27 +44,27 @@
   return v6;
 }
 
-- (int64_t)_codeWithName:(id)a3
+- (int64_t)_codeWithName:(id)name
 {
-  v3 = a3;
-  [v3 isEqualToString:@"INSetRadioStationIntentResponseCodeUnspecified"];
-  v4 = [v3 isEqualToString:@"INSetRadioStationIntentResponseCodeReady"];
-  if ([v3 isEqualToString:@"INSetRadioStationIntentResponseCodeInProgress"])
+  nameCopy = name;
+  [nameCopy isEqualToString:@"INSetRadioStationIntentResponseCodeUnspecified"];
+  v4 = [nameCopy isEqualToString:@"INSetRadioStationIntentResponseCodeReady"];
+  if ([nameCopy isEqualToString:@"INSetRadioStationIntentResponseCodeInProgress"])
   {
     v4 = 2;
   }
 
-  if ([v3 isEqualToString:@"INSetRadioStationIntentResponseCodeSuccess"])
+  if ([nameCopy isEqualToString:@"INSetRadioStationIntentResponseCodeSuccess"])
   {
     v4 = 3;
   }
 
-  if ([v3 isEqualToString:@"INSetRadioStationIntentResponseCodeFailure"])
+  if ([nameCopy isEqualToString:@"INSetRadioStationIntentResponseCodeFailure"])
   {
     v4 = 4;
   }
 
-  if ([v3 isEqualToString:@"INSetRadioStationIntentResponseCodeFailureRequiringAppLaunch"])
+  if ([nameCopy isEqualToString:@"INSetRadioStationIntentResponseCodeFailureRequiringAppLaunch"])
   {
     v5 = 5;
   }
@@ -74,7 +74,7 @@
     v5 = v4;
   }
 
-  v6 = [v3 isEqualToString:@"INSetRadioStationIntentResponseCodeFailureNotSubscribed"];
+  v6 = [nameCopy isEqualToString:@"INSetRadioStationIntentResponseCodeFailureNotSubscribed"];
 
   if (v6)
   {
@@ -89,30 +89,30 @@
 
 - (int64_t)_intentResponseCode
 {
-  v2 = [(INSetRadioStationIntentResponse *)self code];
-  if ((v2 - 1) > 5)
+  code = [(INSetRadioStationIntentResponse *)self code];
+  if ((code - 1) > 5)
   {
     return 0;
   }
 
   else
   {
-    return qword_18EE5F580[v2 - 1];
+    return qword_18EE5F580[code - 1];
   }
 }
 
-- (INSetRadioStationIntentResponse)initWithCoder:(id)a3
+- (INSetRadioStationIntentResponse)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = INSetRadioStationIntentResponse;
-  return [(INIntentResponse *)&v4 initWithCoder:a3];
+  return [(INIntentResponse *)&v4 initWithCoder:coder];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = INSetRadioStationIntentResponse;
-  [(INIntentResponse *)&v3 encodeWithCoder:a3];
+  [(INIntentResponse *)&v3 encodeWithCoder:coder];
 }
 
 - (INSetRadioStationIntentResponseCode)code
@@ -122,18 +122,18 @@
   return [(INIntentResponse *)&v3 code];
 }
 
-- (INSetRadioStationIntentResponse)initWithBackingStore:(id)a3
+- (INSetRadioStationIntentResponse)initWithBackingStore:(id)store
 {
   v4.receiver = self;
   v4.super_class = INSetRadioStationIntentResponse;
-  return [(INIntentResponse *)&v4 initWithBackingStore:a3];
+  return [(INIntentResponse *)&v4 initWithBackingStore:store];
 }
 
-- (id)_initWithCode:(int64_t)a3 userActivity:(id)a4
+- (id)_initWithCode:(int64_t)code userActivity:(id)activity
 {
   v5.receiver = self;
   v5.super_class = INSetRadioStationIntentResponse;
-  return [(INIntentResponse *)&v5 _initWithCode:a3 userActivity:a4];
+  return [(INIntentResponse *)&v5 _initWithCode:code userActivity:activity];
 }
 
 - (INSetRadioStationIntentResponse)initWithCode:(INSetRadioStationIntentResponseCode)code userActivity:(NSUserActivity *)userActivity
@@ -174,9 +174,9 @@
   return v11;
 }
 
-+ (int)_errorCodeFromCode:(int64_t)a3
++ (int)_errorCodeFromCode:(int64_t)code
 {
-  if (a3 == 6)
+  if (code == 6)
   {
     return 1;
   }
@@ -187,50 +187,50 @@
   }
 }
 
-+ (int)_typeFromCode:(int64_t)a3
++ (int)_typeFromCode:(int64_t)code
 {
-  if ((a3 - 1) > 5)
+  if ((code - 1) > 5)
   {
     return 3;
   }
 
   else
   {
-    return dword_18EE5F568[a3 - 1];
+    return dword_18EE5F568[code - 1];
   }
 }
 
-+ (int64_t)_codeFromType:(int)a3 errorCode:(int)a4 appLaunchRequested:(BOOL)a5
++ (int64_t)_codeFromType:(int)type errorCode:(int)code appLaunchRequested:(BOOL)requested
 {
   v5 = 2;
-  if (a3 != 2)
+  if (type != 2)
   {
-    v5 = a3 == 5;
+    v5 = type == 5;
   }
 
   v6 = 3;
   v7 = 4;
-  if (a5)
+  if (requested)
   {
     v7 = 5;
   }
 
-  if (a4 == 1)
+  if (code == 1)
   {
     v7 = 6;
   }
 
-  if (a3 != 1)
+  if (type != 1)
   {
     v7 = 0;
   }
 
-  if (a3)
+  if (type)
   {
     v6 = v7;
   }
 
-  if (a3 <= 1)
+  if (type <= 1)
   {
     return v6;
   }

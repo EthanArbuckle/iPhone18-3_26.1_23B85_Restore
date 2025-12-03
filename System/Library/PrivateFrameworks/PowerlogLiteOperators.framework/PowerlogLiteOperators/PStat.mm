@@ -1,23 +1,23 @@
 @interface PStat
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasIdent:(BOOL)a3;
-- (void)setHasInactiveDurMs:(BOOL)a3;
-- (void)setHasSleepBlockCount:(BOOL)a3;
-- (void)setHasToActiveCount:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasIdent:(BOOL)ident;
+- (void)setHasInactiveDurMs:(BOOL)ms;
+- (void)setHasSleepBlockCount:(BOOL)count;
+- (void)setHasToActiveCount:(BOOL)count;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PStat
 
-- (void)setHasIdent:(BOOL)a3
+- (void)setHasIdent:(BOOL)ident
 {
-  if (a3)
+  if (ident)
   {
     v3 = 2;
   }
@@ -30,9 +30,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasInactiveDurMs:(BOOL)a3
+- (void)setHasInactiveDurMs:(BOOL)ms
 {
-  if (a3)
+  if (ms)
   {
     v3 = 4;
   }
@@ -45,9 +45,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasToActiveCount:(BOOL)a3
+- (void)setHasToActiveCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 16;
   }
@@ -60,9 +60,9 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasSleepBlockCount:(BOOL)a3
+- (void)setHasSleepBlockCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 8;
   }
@@ -81,20 +81,20 @@
   v8.receiver = self;
   v8.super_class = PStat;
   v4 = [(PStat *)&v8 description];
-  v5 = [(PStat *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(PStat *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   has = self->_has;
   if ((has & 2) != 0)
   {
     v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_ident];
-    [v3 setObject:v7 forKey:@"ident"];
+    [dictionary setObject:v7 forKey:@"ident"];
 
     has = self->_has;
     if ((has & 1) == 0)
@@ -115,7 +115,7 @@ LABEL_3:
   }
 
   v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_activeDurMs];
-  [v3 setObject:v8 forKey:@"active_dur_ms"];
+  [dictionary setObject:v8 forKey:@"active_dur_ms"];
 
   has = self->_has;
   if ((has & 4) == 0)
@@ -131,7 +131,7 @@ LABEL_4:
 
 LABEL_12:
   v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_inactiveDurMs];
-  [v3 setObject:v9 forKey:@"inactive_dur_ms"];
+  [dictionary setObject:v9 forKey:@"inactive_dur_ms"];
 
   has = self->_has;
   if ((has & 0x10) == 0)
@@ -147,23 +147,23 @@ LABEL_5:
 
 LABEL_13:
   v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_toActiveCount];
-  [v3 setObject:v10 forKey:@"to_active_count"];
+  [dictionary setObject:v10 forKey:@"to_active_count"];
 
   if ((*&self->_has & 8) != 0)
   {
 LABEL_6:
     v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_sleepBlockCount];
-    [v3 setObject:v5 forKey:@"sleep_block_count"];
+    [dictionary setObject:v5 forKey:@"sleep_block_count"];
   }
 
 LABEL_7:
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v10 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -229,14 +229,14 @@ LABEL_6:
 LABEL_7:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 2) != 0)
   {
-    v4[3] = self->_ident;
-    *(v4 + 28) |= 2u;
+    toCopy[3] = self->_ident;
+    *(toCopy + 28) |= 2u;
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -255,8 +255,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[2] = self->_activeDurMs;
-  *(v4 + 28) |= 1u;
+  toCopy[2] = self->_activeDurMs;
+  *(toCopy + 28) |= 1u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -270,8 +270,8 @@ LABEL_4:
   }
 
 LABEL_12:
-  v4[4] = self->_inactiveDurMs;
-  *(v4 + 28) |= 4u;
+  toCopy[4] = self->_inactiveDurMs;
+  *(toCopy + 28) |= 4u;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -285,21 +285,21 @@ LABEL_5:
   }
 
 LABEL_13:
-  v4[6] = self->_toActiveCount;
-  *(v4 + 28) |= 0x10u;
+  toCopy[6] = self->_toActiveCount;
+  *(toCopy + 28) |= 0x10u;
   if ((*&self->_has & 8) != 0)
   {
 LABEL_6:
-    v4[5] = self->_sleepBlockCount;
-    *(v4 + 28) |= 8u;
+    toCopy[5] = self->_sleepBlockCount;
+    *(toCopy + 28) |= 8u;
   }
 
 LABEL_7:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -366,23 +366,23 @@ LABEL_6:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_26;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 28) & 2) == 0 || self->_ident != *(v4 + 3))
+    if ((*(equalCopy + 28) & 2) == 0 || self->_ident != *(equalCopy + 3))
     {
       goto LABEL_26;
     }
   }
 
-  else if ((*(v4 + 28) & 2) != 0)
+  else if ((*(equalCopy + 28) & 2) != 0)
   {
 LABEL_26:
     v5 = 0;
@@ -391,47 +391,47 @@ LABEL_26:
 
   if (*&self->_has)
   {
-    if ((*(v4 + 28) & 1) == 0 || self->_activeDurMs != *(v4 + 2))
+    if ((*(equalCopy + 28) & 1) == 0 || self->_activeDurMs != *(equalCopy + 2))
     {
       goto LABEL_26;
     }
   }
 
-  else if (*(v4 + 28))
+  else if (*(equalCopy + 28))
   {
     goto LABEL_26;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 28) & 4) == 0 || self->_inactiveDurMs != *(v4 + 4))
+    if ((*(equalCopy + 28) & 4) == 0 || self->_inactiveDurMs != *(equalCopy + 4))
     {
       goto LABEL_26;
     }
   }
 
-  else if ((*(v4 + 28) & 4) != 0)
+  else if ((*(equalCopy + 28) & 4) != 0)
   {
     goto LABEL_26;
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((*(v4 + 28) & 0x10) == 0 || self->_toActiveCount != *(v4 + 6))
+    if ((*(equalCopy + 28) & 0x10) == 0 || self->_toActiveCount != *(equalCopy + 6))
     {
       goto LABEL_26;
     }
   }
 
-  else if ((*(v4 + 28) & 0x10) != 0)
+  else if ((*(equalCopy + 28) & 0x10) != 0)
   {
     goto LABEL_26;
   }
 
-  v5 = (*(v4 + 28) & 8) == 0;
+  v5 = (*(equalCopy + 28) & 8) == 0;
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 28) & 8) == 0 || self->_sleepBlockCount != *(v4 + 5))
+    if ((*(equalCopy + 28) & 8) == 0 || self->_sleepBlockCount != *(equalCopy + 5))
     {
       goto LABEL_26;
     }
@@ -512,15 +512,15 @@ LABEL_6:
   return v3 ^ v2 ^ v4 ^ v5 ^ v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 28);
+  fromCopy = from;
+  v5 = *(fromCopy + 28);
   if ((v5 & 2) != 0)
   {
-    self->_ident = *(v4 + 3);
+    self->_ident = *(fromCopy + 3);
     *&self->_has |= 2u;
-    v5 = *(v4 + 28);
+    v5 = *(fromCopy + 28);
     if ((v5 & 1) == 0)
     {
 LABEL_3:
@@ -533,14 +533,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 28) & 1) == 0)
+  else if ((*(fromCopy + 28) & 1) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_activeDurMs = *(v4 + 2);
+  self->_activeDurMs = *(fromCopy + 2);
   *&self->_has |= 1u;
-  v5 = *(v4 + 28);
+  v5 = *(fromCopy + 28);
   if ((v5 & 4) == 0)
   {
 LABEL_4:
@@ -553,9 +553,9 @@ LABEL_4:
   }
 
 LABEL_12:
-  self->_inactiveDurMs = *(v4 + 4);
+  self->_inactiveDurMs = *(fromCopy + 4);
   *&self->_has |= 4u;
-  v5 = *(v4 + 28);
+  v5 = *(fromCopy + 28);
   if ((v5 & 0x10) == 0)
   {
 LABEL_5:
@@ -568,12 +568,12 @@ LABEL_5:
   }
 
 LABEL_13:
-  self->_toActiveCount = *(v4 + 6);
+  self->_toActiveCount = *(fromCopy + 6);
   *&self->_has |= 0x10u;
-  if ((*(v4 + 28) & 8) != 0)
+  if ((*(fromCopy + 28) & 8) != 0)
   {
 LABEL_6:
-    self->_sleepBlockCount = *(v4 + 5);
+    self->_sleepBlockCount = *(fromCopy + 5);
     *&self->_has |= 8u;
   }
 

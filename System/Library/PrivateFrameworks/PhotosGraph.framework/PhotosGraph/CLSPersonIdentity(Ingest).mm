@@ -7,22 +7,22 @@
 - (id)locationsByAddressTypes
 {
   v14[2] = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __52__CLSPersonIdentity_Ingest__locationsByAddressTypes__block_invoke;
   v11[3] = &unk_278884D88;
-  v12 = v2;
-  v3 = v2;
-  [a1 enumerateAddressesOfType:0 asCLLocationsWithBlock:v11];
-  v4 = [MEMORY[0x277CBEB18] array];
+  v12 = array;
+  v3 = array;
+  [self enumerateAddressesOfType:0 asCLLocationsWithBlock:v11];
+  array2 = [MEMORY[0x277CBEB18] array];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __52__CLSPersonIdentity_Ingest__locationsByAddressTypes__block_invoke_2;
   v9[3] = &unk_278884D88;
-  v10 = v4;
-  v5 = v4;
-  [a1 enumerateAddressesOfType:1 asCLLocationsWithBlock:v9];
+  v10 = array2;
+  v5 = array2;
+  [self enumerateAddressesOfType:1 asCLLocationsWithBlock:v9];
   v13[0] = &unk_284482A48;
   v13[1] = &unk_284482A60;
   v14[0] = v3;

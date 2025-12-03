@@ -1,6 +1,6 @@
 @interface AVPlaybackContentContainerView
-- (AVPlaybackContentContainerView)initWithFrame:(CGRect)a3 activeContentView:(id)a4;
-- (AVPlaybackContentContainerView)initWithFrame:(CGRect)a3 playerLayerView:(id)a4 contentOverlayView:(id)a5;
+- (AVPlaybackContentContainerView)initWithFrame:(CGRect)frame activeContentView:(id)view;
+- (AVPlaybackContentContainerView)initWithFrame:(CGRect)frame playerLayerView:(id)view contentOverlayView:(id)overlayView;
 - (CGRect)videoContentFrame;
 - (double)_frameForStatusBarBackgroundGradientView;
 - (void)_updateStatusBarBackgroundGradientViewAlpha;
@@ -10,12 +10,12 @@
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
 - (void)removeAllSublayerTransformAnimations;
-- (void)setCanShowStatusBarBackgroundGradientWhenStatusBarVisible:(BOOL)a3;
-- (void)setContentOverlayViewSubview:(id)a3;
-- (void)setPlayerLayerView:(id)a3;
-- (void)setVideoContentFrame:(CGRect)a3;
-- (void)setVideoGravity:(int64_t)a3 removingAllSublayerTransformAnimations:(BOOL)a4;
-- (void)setVisualAnalysisView:(id)a3;
+- (void)setCanShowStatusBarBackgroundGradientWhenStatusBarVisible:(BOOL)visible;
+- (void)setContentOverlayViewSubview:(id)subview;
+- (void)setPlayerLayerView:(id)view;
+- (void)setVideoContentFrame:(CGRect)frame;
+- (void)setVideoGravity:(int64_t)gravity removingAllSublayerTransformAnimations:(BOOL)animations;
+- (void)setVisualAnalysisView:(id)view;
 @end
 
 @implementation AVPlaybackContentContainerView
@@ -46,11 +46,11 @@
   v36[3] = &unk_1E720A090;
   v36[4] = self;
   [MEMORY[0x1E69DD250] performWithoutAnimation:v36];
-  v4 = [MEMORY[0x1E69DCEB0] avkit_mainScreen];
-  [v4 nativeBounds];
+  avkit_mainScreen = [MEMORY[0x1E69DCEB0] avkit_mainScreen];
+  [avkit_mainScreen nativeBounds];
   v6 = v5;
   v8 = v7;
-  [v4 bounds];
+  [avkit_mainScreen bounds];
   if (v6 >= v8)
   {
     v11 = v6;
@@ -71,8 +71,8 @@
     v12 = v10;
   }
 
-  v13 = [v4 traitCollection];
-  [v13 displayScale];
+  traitCollection = [avkit_mainScreen traitCollection];
+  [traitCollection displayScale];
   v15 = v14;
 
   v16 = MEMORY[0x1E69DDA98];
@@ -89,16 +89,16 @@
   v18 = 0.0;
   if ([(AVPlaybackContentContainerView *)self canShowStatusBarBackgroundGradientWhenStatusBarVisible])
   {
-    v19 = [(AVPlaybackContentContainerView *)self window];
-    v20 = [v19 windowScene];
-    v21 = [v20 statusBarManager];
-    if (![v21 isStatusBarHidden])
+    window = [(AVPlaybackContentContainerView *)self window];
+    windowScene = [window windowScene];
+    statusBarManager = [windowScene statusBarManager];
+    if (![statusBarManager isStatusBarHidden])
     {
       v22 = v15 * v12;
       if (v17)
       {
-        v2 = [(AVPlaybackContentContainerView *)self traitCollection];
-        [v2 displayCornerRadius];
+        traitCollection2 = [(AVPlaybackContentContainerView *)self traitCollection];
+        [traitCollection2 displayCornerRadius];
         if (v23 != 0.0 || v11 != v22)
         {
 LABEL_28:
@@ -107,24 +107,24 @@ LABEL_28:
         }
 
 LABEL_19:
-        v24 = [(AVPlaybackContentContainerView *)self window];
-        v25 = [v24 screen];
-        if (v25 == v4)
+        window2 = [(AVPlaybackContentContainerView *)self window];
+        screen = [window2 screen];
+        if (screen == avkit_mainScreen)
         {
-          v35 = [(AVPlaybackContentContainerView *)self window];
-          [v35 windowLevel];
+          window3 = [(AVPlaybackContentContainerView *)self window];
+          [window3 windowLevel];
           if (v26 < *MEMORY[0x1E69DE7E8])
           {
-            v33 = [(AVPlaybackContentContainerView *)self window];
-            v32 = [v33 windowScene];
-            v31 = [v32 statusBarManager];
-            v34 = [v31 statusBarStyle];
+            window4 = [(AVPlaybackContentContainerView *)self window];
+            windowScene2 = [window4 windowScene];
+            statusBarManager2 = [windowScene2 statusBarManager];
+            statusBarStyle = [statusBarManager2 statusBarStyle];
 
             if (v17)
             {
             }
 
-            if (v34 == 1)
+            if (statusBarStyle == 1)
             {
               if (self->_statusBarBackgroundGradientView)
               {
@@ -170,13 +170,13 @@ LABEL_30:
     if (![(AVPlaybackContentContainerView *)self isObservingStatusBarHidden])
     {
       [(AVPlaybackContentContainerView *)self setObservingStatusBarHidden:1];
-      v27 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v27 addObserver:self selector:sel__updateStatusBarBackgroundGradientViewAlpha name:*MEMORY[0x1E69DE850] object:*v16];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter addObserver:self selector:sel__updateStatusBarBackgroundGradientViewAlpha name:*MEMORY[0x1E69DE850] object:*v16];
     }
   }
 
-  v28 = [(AVPlaybackContentContainerView *)self statusBarBackgroundGradientView];
-  [v28 setAlpha:v18];
+  statusBarBackgroundGradientView = [(AVPlaybackContentContainerView *)self statusBarBackgroundGradientView];
+  [statusBarBackgroundGradientView setAlpha:v18];
 }
 
 void __77__AVPlaybackContentContainerView__updateStatusBarBackgroundGradientViewAlpha__block_invoke(uint64_t a1)
@@ -187,44 +187,44 @@ void __77__AVPlaybackContentContainerView__updateStatusBarBackgroundGradientView
 
 - (double)_frameForStatusBarBackgroundGradientView
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  if ([a1 isPlayingOnSecondScreen])
+  if ([self isPlayingOnSecondScreen])
   {
-    [a1 bounds];
+    [self bounds];
   }
 
   else
   {
-    [a1 videoContentFrame];
+    [self videoContentFrame];
   }
 
   v6 = v2;
   v7 = v3;
   v8 = v4;
   v30 = v5;
-  v9 = [a1 window];
-  v10 = [v9 windowScene];
-  v11 = [v10 statusBarManager];
-  [v11 statusBarFrame];
+  window = [self window];
+  windowScene = [window windowScene];
+  statusBarManager = [windowScene statusBarManager];
+  [statusBarManager statusBarFrame];
   v13 = v12;
   v15 = v14;
   v17 = v16;
   v19 = v18;
 
-  v20 = [a1 window];
-  [v20 convertRect:a1 toView:{v13, v15, v17, v19}];
+  window2 = [self window];
+  [window2 convertRect:self toView:{v13, v15, v17, v19}];
   v22 = v21;
   v24 = v23;
   v26 = v25;
   v28 = v27;
 
-  if (([a1 isPlayingOnSecondScreen] & 1) == 0)
+  if (([self isPlayingOnSecondScreen] & 1) == 0)
   {
-    if ([a1 canShowStatusBarBackgroundGradientWhenStatusBarVisible])
+    if ([self canShowStatusBarBackgroundGradientWhenStatusBarVisible])
     {
       v31.origin.x = v22;
       v31.origin.y = v24;
@@ -269,14 +269,14 @@ void __77__AVPlaybackContentContainerView__updateStatusBarBackgroundGradientView
   v28.receiver = self;
   v28.super_class = AVPlaybackContentContainerView;
   [(AVPlaybackContentContainerView *)&v28 layoutSubviews];
-  v3 = [(AVPlaybackContentContainerView *)self playerLayerView];
-  v4 = [v3 window];
-  if (v4)
+  playerLayerView = [(AVPlaybackContentContainerView *)self playerLayerView];
+  window = [playerLayerView window];
+  if (window)
   {
-    v5 = [(AVPlaybackContentContainerView *)self window];
-    v6 = [(AVPlaybackContentContainerView *)self playerLayerView];
-    v7 = [v6 window];
-    v8 = v5 == v7;
+    window2 = [(AVPlaybackContentContainerView *)self window];
+    playerLayerView2 = [(AVPlaybackContentContainerView *)self playerLayerView];
+    window3 = [playerLayerView2 window];
+    v8 = window2 == window3;
   }
 
   else
@@ -287,13 +287,13 @@ void __77__AVPlaybackContentContainerView__updateStatusBarBackgroundGradientView
   v9 = self->_statusBarBackgroundGradientView;
   if (v8)
   {
-    v10 = [(AVPlaybackContentContainerView *)self playerLayerView];
-    [v10 setAutoresizingMask:0];
+    playerLayerView3 = [(AVPlaybackContentContainerView *)self playerLayerView];
+    [playerLayerView3 setAutoresizingMask:0];
 
-    v11 = [(AVPlaybackContentContainerView *)self playerLayerView];
-    [v11 setTranslatesAutoresizingMaskIntoConstraints:1];
+    playerLayerView4 = [(AVPlaybackContentContainerView *)self playerLayerView];
+    [playerLayerView4 setTranslatesAutoresizingMaskIntoConstraints:1];
 
-    v12 = [(AVPlaybackContentContainerView *)self playerLayerView];
+    playerLayerView5 = [(AVPlaybackContentContainerView *)self playerLayerView];
     if ([(AVPlaybackContentContainerView *)self isPlayingOnSecondScreen])
     {
       [(AVPlaybackContentContainerView *)self bounds];
@@ -304,28 +304,28 @@ void __77__AVPlaybackContentContainerView__updateStatusBarBackgroundGradientView
       [(AVPlaybackContentContainerView *)self videoContentFrame];
     }
 
-    [v12 setFrame:?];
+    [playerLayerView5 setFrame:?];
   }
 
-  v13 = [(AVPlaybackContentContainerView *)self contentOverlayView];
-  [v13 setAutoresizingMask:0];
+  contentOverlayView = [(AVPlaybackContentContainerView *)self contentOverlayView];
+  [contentOverlayView setAutoresizingMask:0];
 
-  v14 = [(AVPlaybackContentContainerView *)self contentOverlayView];
-  [v14 setTranslatesAutoresizingMaskIntoConstraints:1];
+  contentOverlayView2 = [(AVPlaybackContentContainerView *)self contentOverlayView];
+  [contentOverlayView2 setTranslatesAutoresizingMaskIntoConstraints:1];
 
-  v15 = [(AVPlaybackContentContainerView *)self contentOverlayView];
+  contentOverlayView3 = [(AVPlaybackContentContainerView *)self contentOverlayView];
   [(AVPlaybackContentContainerView *)self bounds];
-  [v15 setFrame:?];
+  [contentOverlayView3 setFrame:?];
 
-  v16 = [(AVPlaybackContentContainerView *)self contentOverlayViewSubview];
-  [v16 setAutoresizingMask:0];
+  contentOverlayViewSubview = [(AVPlaybackContentContainerView *)self contentOverlayViewSubview];
+  [contentOverlayViewSubview setAutoresizingMask:0];
 
-  v17 = [(AVPlaybackContentContainerView *)self contentOverlayViewSubview];
-  [v17 setTranslatesAutoresizingMaskIntoConstraints:1];
+  contentOverlayViewSubview2 = [(AVPlaybackContentContainerView *)self contentOverlayViewSubview];
+  [contentOverlayViewSubview2 setTranslatesAutoresizingMaskIntoConstraints:1];
 
-  v18 = [(AVPlaybackContentContainerView *)self contentOverlayViewSubview];
+  contentOverlayViewSubview3 = [(AVPlaybackContentContainerView *)self contentOverlayViewSubview];
   [(AVPlaybackContentContainerView *)self bounds];
-  [v18 setFrame:?];
+  [contentOverlayViewSubview3 setFrame:?];
 
   if (v9)
   {
@@ -336,34 +336,34 @@ void __77__AVPlaybackContentContainerView__updateStatusBarBackgroundGradientView
 
   if (v8)
   {
-    v19 = [(AVPlaybackContentContainerView *)self playerLayerView];
-    v20 = [v19 superview];
+    playerLayerView6 = [(AVPlaybackContentContainerView *)self playerLayerView];
+    superview = [playerLayerView6 superview];
 
-    if (v20 != self)
+    if (superview != self)
     {
-      v21 = [(AVPlaybackContentContainerView *)self playerLayerView];
-      [(AVPlaybackContentContainerView *)self insertSubview:v21 atIndex:0];
+      playerLayerView7 = [(AVPlaybackContentContainerView *)self playerLayerView];
+      [(AVPlaybackContentContainerView *)self insertSubview:playerLayerView7 atIndex:0];
     }
   }
 
-  v22 = [(AVPlaybackContentContainerView *)self contentOverlayView];
-  v23 = [v22 superview];
+  contentOverlayView4 = [(AVPlaybackContentContainerView *)self contentOverlayView];
+  superview2 = [contentOverlayView4 superview];
 
-  if (v23 != self)
+  if (superview2 != self)
   {
-    v24 = [(AVPlaybackContentContainerView *)self contentOverlayView];
-    v25 = [(AVPlaybackContentContainerView *)self subviews];
-    -[AVPlaybackContentContainerView insertSubview:atIndex:](self, "insertSubview:atIndex:", v24, [v25 count]);
+    contentOverlayView5 = [(AVPlaybackContentContainerView *)self contentOverlayView];
+    subviews = [(AVPlaybackContentContainerView *)self subviews];
+    -[AVPlaybackContentContainerView insertSubview:atIndex:](self, "insertSubview:atIndex:", contentOverlayView5, [subviews count]);
   }
 
   if (v9)
   {
-    v26 = [(AVStatusBarBackgroundGradientView *)v9 superview];
+    superview3 = [(AVStatusBarBackgroundGradientView *)v9 superview];
 
-    if (v26 != self)
+    if (superview3 != self)
     {
-      v27 = [(AVPlaybackContentContainerView *)self subviews];
-      -[AVPlaybackContentContainerView insertSubview:atIndex:](self, "insertSubview:atIndex:", v9, [v27 count]);
+      subviews2 = [(AVPlaybackContentContainerView *)self subviews];
+      -[AVPlaybackContentContainerView insertSubview:atIndex:](self, "insertSubview:atIndex:", v9, [subviews2 count]);
     }
   }
 
@@ -372,25 +372,25 @@ void __77__AVPlaybackContentContainerView__updateStatusBarBackgroundGradientView
 
 - (void)_updateVisualAnalysisViewFrameIfNeeded
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1[52];
+    v2 = self[52];
     if (v2)
     {
       v25 = v2;
-      v3 = [a1 playerLayerView];
-      v4 = [v3 playerController];
-      [v4 contentDimensions];
+      playerLayerView = [self playerLayerView];
+      playerController = [playerLayerView playerController];
+      [playerController contentDimensions];
       v6 = v5;
       v8 = v7;
 
-      [a1 bounds];
+      [self bounds];
       v23 = v9;
       v24 = v10;
       v12 = v11;
       v14 = v13;
-      v15 = [a1 playerLayerView];
-      v16 = [v15 isVideoScaled];
+      playerLayerView2 = [self playerLayerView];
+      isVideoScaled = [playerLayerView2 isVideoScaled];
       v17 = *MEMORY[0x1E695F058];
       v18 = *(MEMORY[0x1E695F058] + 8);
       v19 = *(MEMORY[0x1E695F058] + 16);
@@ -398,7 +398,7 @@ void __77__AVPlaybackContentContainerView__updateStatusBarBackgroundGradientView
       if (v8 != 0.0 && v6 != 0.0)
       {
         v21 = v12 / v6;
-        if (v16 == v12 / v6 < v14 / v8)
+        if (isVideoScaled == v12 / v6 < v14 / v8)
         {
           v21 = v14 / v8;
         }
@@ -410,8 +410,8 @@ void __77__AVPlaybackContentContainerView__updateStatusBarBackgroundGradientView
         v18 = v24 - (v20 - v14) * 0.5;
       }
 
-      v22 = [a1 subviews];
-      [a1 insertSubview:v25 atIndex:{objc_msgSend(v22, "count")}];
+      subviews = [self subviews];
+      [self insertSubview:v25 atIndex:{objc_msgSend(subviews, "count")}];
 
       [v25 setFrame:{v17, v18, v19, v20}];
     }
@@ -420,95 +420,95 @@ void __77__AVPlaybackContentContainerView__updateStatusBarBackgroundGradientView
 
 - (void)removeAllSublayerTransformAnimations
 {
-  v3 = [(AVPlaybackContentContainerView *)self playerLayerView];
-  v2 = [v3 layer];
-  [v2 avkit_removeAllSublayerTransformAnimations];
+  playerLayerView = [(AVPlaybackContentContainerView *)self playerLayerView];
+  layer = [playerLayerView layer];
+  [layer avkit_removeAllSublayerTransformAnimations];
 }
 
-- (void)setVideoGravity:(int64_t)a3 removingAllSublayerTransformAnimations:(BOOL)a4
+- (void)setVideoGravity:(int64_t)gravity removingAllSublayerTransformAnimations:(BOOL)animations
 {
-  v4 = a4;
-  v7 = [(AVPlaybackContentContainerView *)self playerLayerView];
-  [v7 setVideoGravity:a3];
+  animationsCopy = animations;
+  playerLayerView = [(AVPlaybackContentContainerView *)self playerLayerView];
+  [playerLayerView setVideoGravity:gravity];
 
-  if (v4)
+  if (animationsCopy)
   {
-    v8 = [(AVPlaybackContentContainerView *)self playerLayerView];
-    v9 = [v8 layer];
-    [v9 avkit_removeAllSublayerTransformAnimations];
+    playerLayerView2 = [(AVPlaybackContentContainerView *)self playerLayerView];
+    layer = [playerLayerView2 layer];
+    [layer avkit_removeAllSublayerTransformAnimations];
   }
 
   [(AVPlaybackContentContainerView *)self _updateVisualAnalysisViewFrameIfNeeded];
 }
 
-- (void)setContentOverlayViewSubview:(id)a3
+- (void)setContentOverlayViewSubview:(id)subview
 {
-  v5 = a3;
+  subviewCopy = subview;
   contentOverlayViewSubview = self->_contentOverlayViewSubview;
-  if (contentOverlayViewSubview != v5)
+  if (contentOverlayViewSubview != subviewCopy)
   {
-    v9 = v5;
+    v9 = subviewCopy;
     [(UIView *)contentOverlayViewSubview removeFromSuperview];
-    objc_storeStrong(&self->_contentOverlayViewSubview, a3);
-    v5 = v9;
+    objc_storeStrong(&self->_contentOverlayViewSubview, subview);
+    subviewCopy = v9;
     if (v9)
     {
-      v7 = [(AVPlaybackContentContainerView *)self contentOverlayView];
+      contentOverlayView = [(AVPlaybackContentContainerView *)self contentOverlayView];
 
-      v5 = v9;
-      if (v7 != v9)
+      subviewCopy = v9;
+      if (contentOverlayView != v9)
       {
-        v8 = [(AVPlaybackContentContainerView *)self contentOverlayView];
-        [v8 addSubview:v9];
+        contentOverlayView2 = [(AVPlaybackContentContainerView *)self contentOverlayView];
+        [contentOverlayView2 addSubview:v9];
 
         [(AVPlaybackContentContainerView *)self setNeedsLayout];
         contentOverlayViewSubview = [(AVPlaybackContentContainerView *)self layoutIfNeeded];
-        v5 = v9;
+        subviewCopy = v9;
       }
     }
   }
 
-  MEMORY[0x1EEE66BB8](contentOverlayViewSubview, v5);
+  MEMORY[0x1EEE66BB8](contentOverlayViewSubview, subviewCopy);
 }
 
-- (void)setCanShowStatusBarBackgroundGradientWhenStatusBarVisible:(BOOL)a3
+- (void)setCanShowStatusBarBackgroundGradientWhenStatusBarVisible:(BOOL)visible
 {
-  if (self->_canShowStatusBarBackgroundGradientWhenStatusBarVisible != a3)
+  if (self->_canShowStatusBarBackgroundGradientWhenStatusBarVisible != visible)
   {
-    self->_canShowStatusBarBackgroundGradientWhenStatusBarVisible = a3;
-    if (a3)
+    self->_canShowStatusBarBackgroundGradientWhenStatusBarVisible = visible;
+    if (visible)
     {
-      v5 = [(AVPlaybackContentContainerView *)self statusBarBackgroundGradientView];
-      [v5 setFrame:-[AVPlaybackContentContainerView _frameForStatusBarBackgroundGradientView](self)];
+      statusBarBackgroundGradientView = [(AVPlaybackContentContainerView *)self statusBarBackgroundGradientView];
+      [statusBarBackgroundGradientView setFrame:-[AVPlaybackContentContainerView _frameForStatusBarBackgroundGradientView](self)];
     }
 
     [(AVPlaybackContentContainerView *)self _updateStatusBarBackgroundGradientViewAlpha];
   }
 }
 
-- (void)setVideoContentFrame:(CGRect)a3
+- (void)setVideoContentFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   p_videoContentFrame = &self->_videoContentFrame;
-  if (!CGRectEqualToRect(self->_videoContentFrame, a3))
+  if (!CGRectEqualToRect(self->_videoContentFrame, frame))
   {
     p_videoContentFrame->origin.x = x;
     p_videoContentFrame->origin.y = y;
     p_videoContentFrame->size.width = width;
     p_videoContentFrame->size.height = height;
-    v9 = [(AVPlaybackContentContainerView *)self playerLayerView];
-    v10 = [v9 window];
-    if (v10)
+    playerLayerView = [(AVPlaybackContentContainerView *)self playerLayerView];
+    window = [playerLayerView window];
+    if (window)
     {
-      v11 = v10;
-      v12 = [(AVPlaybackContentContainerView *)self window];
-      v13 = [(AVPlaybackContentContainerView *)self playerLayerView];
-      v14 = [v13 window];
+      v11 = window;
+      window2 = [(AVPlaybackContentContainerView *)self window];
+      playerLayerView2 = [(AVPlaybackContentContainerView *)self playerLayerView];
+      window3 = [playerLayerView2 window];
 
-      if (v12 != v14)
+      if (window2 != window3)
       {
         return;
       }
@@ -518,93 +518,93 @@ void __77__AVPlaybackContentContainerView__updateStatusBarBackgroundGradientView
     {
     }
 
-    v15 = [(AVPlaybackContentContainerView *)self playerLayerView];
-    [v15 setFrame:{x, y, width, height}];
+    playerLayerView3 = [(AVPlaybackContentContainerView *)self playerLayerView];
+    [playerLayerView3 setFrame:{x, y, width, height}];
 
-    v16 = [(AVPlaybackContentContainerView *)self contentOverlayView];
+    contentOverlayView = [(AVPlaybackContentContainerView *)self contentOverlayView];
     [(AVPlaybackContentContainerView *)self bounds];
-    [v16 setFrame:?];
+    [contentOverlayView setFrame:?];
 
     if (self->_statusBarBackgroundGradientView)
     {
-      v17 = [(AVPlaybackContentContainerView *)self _frameForStatusBarBackgroundGradientView];
+      _frameForStatusBarBackgroundGradientView = [(AVPlaybackContentContainerView *)self _frameForStatusBarBackgroundGradientView];
       statusBarBackgroundGradientView = self->_statusBarBackgroundGradientView;
 
-      [(AVStatusBarBackgroundGradientView *)statusBarBackgroundGradientView setFrame:v17];
+      [(AVStatusBarBackgroundGradientView *)statusBarBackgroundGradientView setFrame:_frameForStatusBarBackgroundGradientView];
     }
   }
 }
 
-- (void)setVisualAnalysisView:(id)a3
+- (void)setVisualAnalysisView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   visualAnalysisView = self->_visualAnalysisView;
-  if (visualAnalysisView != v5)
+  if (visualAnalysisView != viewCopy)
   {
-    v7 = v5;
+    v7 = viewCopy;
     [(AVVisualAnalysisView *)visualAnalysisView removeFromSuperview];
-    objc_storeStrong(&self->_visualAnalysisView, a3);
+    objc_storeStrong(&self->_visualAnalysisView, view);
     [(AVPlaybackContentContainerView *)self _updateVisualAnalysisViewFrameIfNeeded];
-    v5 = v7;
+    viewCopy = v7;
   }
 
-  MEMORY[0x1EEE66BB8](visualAnalysisView, v5);
+  MEMORY[0x1EEE66BB8](visualAnalysisView, viewCopy);
 }
 
-- (void)setPlayerLayerView:(id)a3
+- (void)setPlayerLayerView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   playerLayerView = self->_playerLayerView;
-  if (playerLayerView != v5)
+  if (playerLayerView != viewCopy)
   {
-    v8 = v5;
+    v8 = viewCopy;
     if (playerLayerView)
     {
-      v7 = [(__AVPlayerLayerView *)playerLayerView superview];
+      superview = [(__AVPlayerLayerView *)playerLayerView superview];
 
-      if (v7)
+      if (superview)
       {
         [(__AVPlayerLayerView *)self->_playerLayerView removeFromSuperview];
       }
     }
 
-    objc_storeStrong(&self->_playerLayerView, a3);
+    objc_storeStrong(&self->_playerLayerView, view);
     playerLayerView = [(AVPlaybackContentContainerView *)self setNeedsLayout];
-    v5 = v8;
+    viewCopy = v8;
   }
 
-  MEMORY[0x1EEE66BB8](playerLayerView, v5);
+  MEMORY[0x1EEE66BB8](playerLayerView, viewCopy);
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x1E69DE850] object:*MEMORY[0x1E69DDA98]];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69DE850] object:*MEMORY[0x1E69DDA98]];
 
   v4.receiver = self;
   v4.super_class = AVPlaybackContentContainerView;
   [(AVPlaybackContentContainerView *)&v4 dealloc];
 }
 
-- (AVPlaybackContentContainerView)initWithFrame:(CGRect)a3 playerLayerView:(id)a4 contentOverlayView:(id)a5
+- (AVPlaybackContentContainerView)initWithFrame:(CGRect)frame playerLayerView:(id)view contentOverlayView:(id)overlayView
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v12 = a4;
-  v13 = a5;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  viewCopy = view;
+  overlayViewCopy = overlayView;
   v19.receiver = self;
   v19.super_class = AVPlaybackContentContainerView;
-  v14 = [(AVPlaybackContentContainerView *)&v19 initWithFrame:x, y, width, height];
-  v15 = v14;
-  if (v14)
+  height = [(AVPlaybackContentContainerView *)&v19 initWithFrame:x, y, width, height];
+  v15 = height;
+  if (height)
   {
-    [(AVPlaybackContentContainerView *)v14 setInsetsLayoutMarginsFromSafeArea:0];
+    [(AVPlaybackContentContainerView *)height setInsetsLayoutMarginsFromSafeArea:0];
     v15->_videoContentFrame.origin = *MEMORY[0x1E695EFF8];
     v15->_videoContentFrame.size.width = width;
     v15->_videoContentFrame.size.height = height;
-    objc_storeStrong(&v15->_playerLayerView, a4);
+    objc_storeStrong(&v15->_playerLayerView, view);
     if ([(AVPlaybackContentContainerView *)v15 isPlayingOnSecondScreen])
     {
       [(AVPlaybackContentContainerView *)v15 bounds];
@@ -615,9 +615,9 @@ void __77__AVPlaybackContentContainerView__updateStatusBarBackgroundGradientView
       [(AVPlaybackContentContainerView *)v15 videoContentFrame];
     }
 
-    [v12 setFrame:?];
-    v16 = v13;
-    if (!v13)
+    [viewCopy setFrame:?];
+    v16 = overlayViewCopy;
+    if (!overlayViewCopy)
     {
       v17 = objc_alloc(MEMORY[0x1E69DD250]);
       if ([(AVPlaybackContentContainerView *)v15 isPlayingOnSecondScreen])
@@ -634,7 +634,7 @@ void __77__AVPlaybackContentContainerView__updateStatusBarBackgroundGradientView
     }
 
     objc_storeStrong(&v15->_contentOverlayView, v16);
-    if (!v13)
+    if (!overlayViewCopy)
     {
     }
   }
@@ -642,18 +642,18 @@ void __77__AVPlaybackContentContainerView__updateStatusBarBackgroundGradientView
   return v15;
 }
 
-- (AVPlaybackContentContainerView)initWithFrame:(CGRect)a3 activeContentView:(id)a4
+- (AVPlaybackContentContainerView)initWithFrame:(CGRect)frame activeContentView:(id)view
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
-  v10 = [v9 playerLayerView];
-  v11 = [v9 contentOverlayView];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  viewCopy = view;
+  playerLayerView = [viewCopy playerLayerView];
+  contentOverlayView = [viewCopy contentOverlayView];
 
-  v12 = [(AVPlaybackContentContainerView *)self initWithFrame:v10 playerLayerView:v11 contentOverlayView:x, y, width, height];
-  return v12;
+  height = [(AVPlaybackContentContainerView *)self initWithFrame:playerLayerView playerLayerView:contentOverlayView contentOverlayView:x, y, width, height];
+  return height;
 }
 
 @end

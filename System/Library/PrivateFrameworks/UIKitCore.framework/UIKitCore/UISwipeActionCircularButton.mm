@@ -1,36 +1,36 @@
 @interface UISwipeActionCircularButton
-- (UISwipeActionCircularButton)initWithFrame:(CGRect)a3;
+- (UISwipeActionCircularButton)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setBackgroundColor:(id)a3;
+- (void)setBackgroundColor:(id)color;
 @end
 
 @implementation UISwipeActionCircularButton
 
-- (UISwipeActionCircularButton)initWithFrame:(CGRect)a3
+- (UISwipeActionCircularButton)initWithFrame:(CGRect)frame
 {
   v14.receiver = self;
   v14.super_class = UISwipeActionCircularButton;
-  v3 = [(UISwipeActionButton *)&v14 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UISwipeActionButton *)&v14 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [[UIView alloc] initWithFrame:0.0, 0.0, 48.0, 48.0];
     [(UISwipeActionButton *)v3 setBackgroundView:v4];
 
-    v5 = [(UISwipeActionButton *)v3 visualStyle];
-    v6 = [v5 defaultButtonBackgroundColor];
-    v7 = [(UISwipeActionButton *)v3 backgroundView];
-    [v7 setBackgroundColor:v6];
+    visualStyle = [(UISwipeActionButton *)v3 visualStyle];
+    defaultButtonBackgroundColor = [visualStyle defaultButtonBackgroundColor];
+    backgroundView = [(UISwipeActionButton *)v3 backgroundView];
+    [backgroundView setBackgroundColor:defaultButtonBackgroundColor];
 
-    v8 = [(UISwipeActionButton *)v3 backgroundView];
-    v9 = [v8 layer];
-    [v9 setCornerRadius:24.0];
+    backgroundView2 = [(UISwipeActionButton *)v3 backgroundView];
+    layer = [backgroundView2 layer];
+    [layer setCornerRadius:24.0];
 
-    v10 = [(UISwipeActionButton *)v3 backgroundView];
-    v11 = [v10 layer];
-    [v11 setAllowsEdgeAntialiasing:1];
+    backgroundView3 = [(UISwipeActionButton *)v3 backgroundView];
+    layer2 = [backgroundView3 layer];
+    [layer2 setAllowsEdgeAntialiasing:1];
 
-    v12 = [(UISwipeActionButton *)v3 backgroundView];
-    [(UIView *)v3 addSubview:v12];
+    backgroundView4 = [(UISwipeActionButton *)v3 backgroundView];
+    [(UIView *)v3 addSubview:backgroundView4];
   }
 
   return v3;
@@ -47,8 +47,8 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(UISwipeActionButton *)self backgroundView];
-  [v11 frame];
+  backgroundView = [(UISwipeActionButton *)self backgroundView];
+  [backgroundView frame];
   v13 = v12;
   v15 = v14;
   v17 = v16;
@@ -58,17 +58,17 @@
   v22 = v21;
   v24 = v23;
   v26 = v25;
-  v27 = [(UISwipeActionButton *)self backgroundView];
-  [v27 setFrame:{v20, v22, v24, v26}];
+  backgroundView2 = [(UISwipeActionButton *)self backgroundView];
+  [backgroundView2 setFrame:{v20, v22, v24, v26}];
 
-  v28 = [(UISwipeActionButton *)self backgroundView];
-  [(UIView *)self sendSubviewToBack:v28];
+  backgroundView3 = [(UISwipeActionButton *)self backgroundView];
+  [(UIView *)self sendSubviewToBack:backgroundView3];
 
-  v29 = [(UIButton *)self imageView];
-  [v29 sizeToFit];
+  imageView = [(UIButton *)self imageView];
+  [imageView sizeToFit];
 
-  v30 = [(UIButton *)self imageView];
-  [v30 frame];
+  imageView2 = [(UIButton *)self imageView];
+  [imageView2 frame];
   v32 = v31;
   v34 = v33;
   v36 = v35;
@@ -90,11 +90,11 @@
     v50 = v49;
     v52 = v51;
     v54 = v53;
-    v55 = [(UIButton *)self imageView];
-    [v55 setFrame:{v48, v50, v52, v54}];
+    imageView3 = [(UIButton *)self imageView];
+    [imageView3 setFrame:{v48, v50, v52, v54}];
 
-    v46 = [(UIButton *)self imageView];
-    [v46 setContentMode:1];
+    imageView4 = [(UIButton *)self imageView];
+    [imageView4 setContentMode:1];
   }
 
   else
@@ -103,18 +103,18 @@
     v41 = v40;
     v43 = v42;
     v45 = v44;
-    v46 = [(UIButton *)self imageView];
-    [v46 setFrame:{v39, v41, v43, v45}];
+    imageView4 = [(UIButton *)self imageView];
+    [imageView4 setFrame:{v39, v41, v43, v45}];
   }
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   v5.receiver = self;
   v5.super_class = UISwipeActionCircularButton;
-  v4 = a3;
-  [(UISwipeActionButton *)&v5 setBackgroundColor:v4];
-  [(UIButton *)self setTitleColor:v4 forState:0, v5.receiver, v5.super_class];
+  colorCopy = color;
+  [(UISwipeActionButton *)&v5 setBackgroundColor:colorCopy];
+  [(UIButton *)self setTitleColor:colorCopy forState:0, v5.receiver, v5.super_class];
 }
 
 @end

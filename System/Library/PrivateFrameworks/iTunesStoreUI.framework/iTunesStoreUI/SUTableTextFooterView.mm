@@ -1,11 +1,11 @@
 @interface SUTableTextFooterView
 - (void)dealloc;
-- (void)drawRect:(CGRect)a3;
-- (void)setFont:(id)a3;
-- (void)setShadowColor:(id)a3;
-- (void)setTextAlignment:(int64_t)a3;
-- (void)setTextColor:(id)a3;
-- (void)setTextLines:(id)a3;
+- (void)drawRect:(CGRect)rect;
+- (void)setFont:(id)font;
+- (void)setShadowColor:(id)color;
+- (void)setTextAlignment:(int64_t)alignment;
+- (void)setTextColor:(id)color;
+- (void)setTextLines:(id)lines;
 - (void)sizeToFit;
 @end
 
@@ -24,10 +24,10 @@
   [(SUTableTextFooterView *)&v3 dealloc];
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
   v24 = *MEMORY[0x1E69E9840];
-  [(SUTableTextFooterView *)self bounds:a3.origin.x];
+  [(SUTableTextFooterView *)self bounds:rect.origin.x];
   v26 = CGRectInset(v25, 10.0, 0.0);
   x = v26.origin.x;
   y = v26.origin.y;
@@ -120,58 +120,58 @@
   [(SUTableTextFooterView *)self setFrame:v4, v6, v8, v9];
 }
 
-- (void)setFont:(id)a3
+- (void)setFont:(id)font
 {
   font = self->_font;
-  if (font != a3)
+  if (font != font)
   {
 
-    self->_font = a3;
+    self->_font = font;
 
     [(SUTableTextFooterView *)self setNeedsDisplay];
   }
 }
 
-- (void)setShadowColor:(id)a3
+- (void)setShadowColor:(id)color
 {
   shadowColor = self->_shadowColor;
-  if (shadowColor != a3)
+  if (shadowColor != color)
   {
 
-    self->_shadowColor = a3;
+    self->_shadowColor = color;
 
     [(SUTableTextFooterView *)self setNeedsDisplay];
   }
 }
 
-- (void)setTextAlignment:(int64_t)a3
+- (void)setTextAlignment:(int64_t)alignment
 {
-  if (self->_textAlignment != a3)
+  if (self->_textAlignment != alignment)
   {
-    self->_textAlignment = a3;
+    self->_textAlignment = alignment;
     [(SUTableTextFooterView *)self setNeedsDisplay];
   }
 }
 
-- (void)setTextColor:(id)a3
+- (void)setTextColor:(id)color
 {
   textColor = self->_textColor;
-  if (textColor != a3)
+  if (textColor != color)
   {
 
-    self->_textColor = a3;
+    self->_textColor = color;
 
     [(SUTableTextFooterView *)self setNeedsDisplay];
   }
 }
 
-- (void)setTextLines:(id)a3
+- (void)setTextLines:(id)lines
 {
   textLines = self->_textLines;
-  if (textLines != a3)
+  if (textLines != lines)
   {
 
-    self->_textLines = a3;
+    self->_textLines = lines;
 
     [(SUTableTextFooterView *)self setNeedsDisplay];
   }

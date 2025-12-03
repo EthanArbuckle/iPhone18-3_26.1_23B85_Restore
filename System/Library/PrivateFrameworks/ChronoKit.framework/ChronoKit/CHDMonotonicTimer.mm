@@ -1,5 +1,5 @@
 @interface CHDMonotonicTimer
-- (void)activateWithTime:(unint64_t)a3 repeat:(int64_t)a4 block:(id)a5;
+- (void)activateWithTime:(unint64_t)time repeat:(int64_t)repeat block:(id)block;
 - (void)invalidate;
 @end
 
@@ -8,26 +8,26 @@
 - (void)invalidate
 {
   OUTLINED_FUNCTION_1();
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:v3 object:v2 file:@"CHDMonotonicTimer.m" lineNumber:65 description:@"must have called activate"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:v3 object:v2 file:@"CHDMonotonicTimer.m" lineNumber:65 description:@"must have called activate"];
 
   *v0 = *v1;
 }
 
-- (void)activateWithTime:(unint64_t)a3 repeat:(int64_t)a4 block:(id)a5
+- (void)activateWithTime:(unint64_t)time repeat:(int64_t)repeat block:(id)block
 {
-  v8 = a5;
-  _CHDMonotonicNSEC(a3);
-  if (a4 < 0)
+  blockCopy = block;
+  _CHDMonotonicNSEC(time);
+  if (repeat < 0)
   {
     [CHDMonotonicTimer activateWithTime:repeat:block:];
-    if (v8)
+    if (blockCopy)
     {
       goto LABEL_3;
     }
   }
 
-  else if (v8)
+  else if (blockCopy)
   {
     goto LABEL_3;
   }
@@ -44,18 +44,18 @@ LABEL_3:
   timer = self->_timer;
   self->_timer = v10;
 
-  if (a4 <= 0)
+  if (repeat <= 0)
   {
-    v12 = -1;
+    repeatCopy = -1;
   }
 
   else
   {
-    v12 = a4;
+    repeatCopy = repeat;
   }
 
-  dispatch_source_set_timer(self->_timer, a3, v12, 0);
-  dispatch_source_set_event_handler(self->_timer, v8);
+  dispatch_source_set_timer(self->_timer, time, repeatCopy, 0);
+  dispatch_source_set_event_handler(self->_timer, blockCopy);
 
   v13 = self->_timer;
 

@@ -1,27 +1,27 @@
 @interface CHPCategoryAndSeriesReordering
-- (BOOL)isObjectSupported:(id)a3;
-- (BOOL)isObjectSupportedForSeriesReorderingPreprocessor:(id)a3 isCategoryOrderReversed:(BOOL)a4;
-- (int64_t)reorderDataValues:(id)a3 dataPointCount:(unint64_t)a4;
-- (void)applyCategoryReorderingPreprocessor:(id)a3;
-- (void)applySeriesReorderingPreprocessor:(id)a3;
-- (void)reorderCategoryAndSeries:(id)a3 sheet:(id)a4 clearAxisReversedFlag:(BOOL)a5;
-- (void)reorderData:(id)a3 dataPointCount:(unint64_t)a4 byRow:(BOOL)a5;
-- (void)reorderDataFormula:(id)a3 dataPointCount:(unint64_t)a4 byRow:(BOOL)a5;
-- (void)reorderSeriesCategory:(id)a3 dataPointCount:(unint64_t)a4 byRow:(BOOL)a5;
-- (void)reorderValueProperties:(id)a3 dataPointCount:(unint64_t)a4;
+- (BOOL)isObjectSupported:(id)supported;
+- (BOOL)isObjectSupportedForSeriesReorderingPreprocessor:(id)preprocessor isCategoryOrderReversed:(BOOL)reversed;
+- (int64_t)reorderDataValues:(id)values dataPointCount:(unint64_t)count;
+- (void)applyCategoryReorderingPreprocessor:(id)preprocessor;
+- (void)applySeriesReorderingPreprocessor:(id)preprocessor;
+- (void)reorderCategoryAndSeries:(id)series sheet:(id)sheet clearAxisReversedFlag:(BOOL)flag;
+- (void)reorderData:(id)data dataPointCount:(unint64_t)count byRow:(BOOL)row;
+- (void)reorderDataFormula:(id)formula dataPointCount:(unint64_t)count byRow:(BOOL)row;
+- (void)reorderSeriesCategory:(id)category dataPointCount:(unint64_t)count byRow:(BOOL)row;
+- (void)reorderValueProperties:(id)properties dataPointCount:(unint64_t)count;
 @end
 
 @implementation CHPCategoryAndSeriesReordering
 
-- (BOOL)isObjectSupported:(id)a3
+- (BOOL)isObjectSupported:(id)supported
 {
-  v3 = a3;
-  if (v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  supportedCopy = supported;
+  if (supportedCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v4 = v3;
-    v5 = [v4 seriesCollection];
-    v6 = v5;
-    if (v5 && [v5 count])
+    v4 = supportedCopy;
+    seriesCollection = [v4 seriesCollection];
+    v6 = seriesCollection;
+    if (seriesCollection && [seriesCollection count])
     {
       objc_opt_class();
       v7 = objc_opt_isKindOfClass() ^ 1;
@@ -41,13 +41,13 @@
   return v7 & 1;
 }
 
-- (void)reorderCategoryAndSeries:(id)a3 sheet:(id)a4 clearAxisReversedFlag:(BOOL)a5
+- (void)reorderCategoryAndSeries:(id)series sheet:(id)sheet clearAxisReversedFlag:(BOOL)flag
 {
-  v5 = a5;
-  v10 = a3;
-  v7 = [v10 chart];
-  v8 = [v7 plotArea];
-  v9 = [v8 isCategoryAxesReversed:v5];
+  flagCopy = flag;
+  seriesCopy = series;
+  chart = [seriesCopy chart];
+  plotArea = [chart plotArea];
+  v9 = [plotArea isCategoryAxesReversed:flagCopy];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -60,32 +60,32 @@
     goto LABEL_5;
   }
 
-  if (v9 == [v10 isColumn])
+  if (v9 == [seriesCopy isColumn])
   {
 LABEL_5:
-    [(CHPCategoryAndSeriesReordering *)self applyCategoryReorderingPreprocessor:v10];
+    [(CHPCategoryAndSeriesReordering *)self applyCategoryReorderingPreprocessor:seriesCopy];
   }
 
 LABEL_6:
-  if ([(CHPCategoryAndSeriesReordering *)self isObjectSupportedForSeriesReorderingPreprocessor:v10 isCategoryOrderReversed:v9])
+  if ([(CHPCategoryAndSeriesReordering *)self isObjectSupportedForSeriesReorderingPreprocessor:seriesCopy isCategoryOrderReversed:v9])
   {
-    [(CHPCategoryAndSeriesReordering *)self applySeriesReorderingPreprocessor:v10];
+    [(CHPCategoryAndSeriesReordering *)self applySeriesReorderingPreprocessor:seriesCopy];
   }
 }
 
-- (BOOL)isObjectSupportedForSeriesReorderingPreprocessor:(id)a3 isCategoryOrderReversed:(BOOL)a4
+- (BOOL)isObjectSupportedForSeriesReorderingPreprocessor:(id)preprocessor isCategoryOrderReversed:(BOOL)reversed
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = [v5 seriesCollection];
-  v7 = [v6 count];
+  reversedCopy = reversed;
+  preprocessorCopy = preprocessor;
+  seriesCollection = [preprocessorCopy seriesCollection];
+  v7 = [seriesCollection count];
 
   if (v7 < 2)
   {
     goto LABEL_2;
   }
 
-  if (v4)
+  if (reversedCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass() & 1) == 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
@@ -97,7 +97,7 @@ LABEL_6:
       }
 
       objc_opt_class();
-      if (objc_opt_isKindOfClass() & 1) != 0 && ![v5 isColumn] || (objc_msgSend(objc_opt_class(), "is3DType"))
+      if (objc_opt_isKindOfClass() & 1) != 0 && ![preprocessorCopy isColumn] || (objc_msgSend(objc_opt_class(), "is3DType"))
       {
         goto LABEL_2;
       }
@@ -107,10 +107,10 @@ LABEL_19:
       goto LABEL_24;
     }
 
-    if ([v5 isColumn])
+    if ([preprocessorCopy isColumn])
     {
 LABEL_23:
-      v8 = [v5 isGroupingStacked] ^ 1;
+      v8 = [preprocessorCopy isGroupingStacked] ^ 1;
       goto LABEL_24;
     }
 
@@ -141,7 +141,7 @@ LABEL_2:
     goto LABEL_2;
   }
 
-  v9 = v5;
+  v9 = preprocessorCopy;
   if ([v9 isColumn])
   {
     LOBYTE(v8) = 0;
@@ -156,24 +156,24 @@ LABEL_24:
   return v8;
 }
 
-- (void)applySeriesReorderingPreprocessor:(id)a3
+- (void)applySeriesReorderingPreprocessor:(id)preprocessor
 {
-  v19 = a3;
-  v3 = [v19 seriesCollection];
-  v4 = [v19 chart];
-  v5 = [CHDSeriesCollection seriesCollectionWithChart:v4];
+  preprocessorCopy = preprocessor;
+  seriesCollection = [preprocessorCopy seriesCollection];
+  chart = [preprocessorCopy chart];
+  v5 = [CHDSeriesCollection seriesCollectionWithChart:chart];
 
-  v6 = [v3 count];
+  v6 = [seriesCollection count];
   v7 = v6 - 1;
   if (v6)
   {
     v8 = v6 - 1;
     do
     {
-      v9 = [v3 objectAtIndex:v8];
+      v9 = [seriesCollection objectAtIndex:v8];
       [v9 setOrder:{v7 - objc_msgSend(v9, "order")}];
       [v5 addObject:v9];
-      [v3 removeObjectAtIndex:v8];
+      [seriesCollection removeObjectAtIndex:v8];
 
       --v8;
     }
@@ -188,25 +188,25 @@ LABEL_24:
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
       v10 = [v5 objectAtIndex:0];
-      v11 = [v10 categoryData];
-      if (v11)
+      categoryData = [v10 categoryData];
+      if (categoryData)
       {
-        v12 = [v10 categoryData];
-        v13 = [v12 formula];
+        categoryData2 = [v10 categoryData];
+        formula = [categoryData2 formula];
 
-        if (!v13)
+        if (!formula)
         {
           v14 = [v5 objectAtIndex:v7];
-          v15 = [v14 categoryData];
-          if (v15)
+          categoryData3 = [v14 categoryData];
+          if (categoryData3)
           {
-            v16 = [v14 categoryData];
-            v17 = [v16 formula];
+            categoryData4 = [v14 categoryData];
+            formula2 = [categoryData4 formula];
 
-            if (v17)
+            if (formula2)
             {
-              v18 = [v14 categoryData];
-              [v10 setCategoryData:v18];
+              categoryData5 = [v14 categoryData];
+              [v10 setCategoryData:categoryData5];
 
               [v14 setCategoryData:0];
             }
@@ -216,32 +216,32 @@ LABEL_24:
     }
   }
 
-  [v19 setSeriesCollection:v5];
+  [preprocessorCopy setSeriesCollection:v5];
 }
 
-- (void)applyCategoryReorderingPreprocessor:(id)a3
+- (void)applyCategoryReorderingPreprocessor:(id)preprocessor
 {
-  v17 = a3;
-  v4 = [v17 seriesCollection];
+  preprocessorCopy = preprocessor;
+  seriesCollection = [preprocessorCopy seriesCollection];
   v5 = 0;
-  v6 = [v4 count];
+  v6 = [seriesCollection count];
   if (v6)
   {
     for (i = 0; i != v6; ++i)
     {
-      v8 = [v4 objectAtIndex:i];
-      v9 = [v8 valueData];
-      v10 = [v9 countOfCellsBeingReferenced];
+      v8 = [seriesCollection objectAtIndex:i];
+      valueData = [v8 valueData];
+      countOfCellsBeingReferenced = [valueData countOfCellsBeingReferenced];
 
-      if (v10 > v5)
+      if (countOfCellsBeingReferenced > v5)
       {
-        v5 = v10;
+        v5 = countOfCellsBeingReferenced;
       }
     }
   }
 
-  v11 = [v17 chart];
-  v12 = [v11 direction];
+  chart = [preprocessorCopy chart];
+  direction = [chart direction];
 
   if (v6)
   {
@@ -249,8 +249,8 @@ LABEL_24:
     v14 = 1;
     do
     {
-      v15 = [v4 objectAtIndex:v13];
-      [(CHPCategoryAndSeriesReordering *)self reorderSeriesCategory:v15 dataPointCount:v5 byRow:v12 != 2];
+      v15 = [seriesCollection objectAtIndex:v13];
+      [(CHPCategoryAndSeriesReordering *)self reorderSeriesCategory:v15 dataPointCount:v5 byRow:direction != 2];
 
       v13 = v14;
     }
@@ -259,37 +259,37 @@ LABEL_24:
   }
 }
 
-- (void)reorderSeriesCategory:(id)a3 dataPointCount:(unint64_t)a4 byRow:(BOOL)a5
+- (void)reorderSeriesCategory:(id)category dataPointCount:(unint64_t)count byRow:(BOOL)row
 {
-  v5 = a5;
-  v10 = a3;
-  if (a4 >= 2)
+  rowCopy = row;
+  categoryCopy = category;
+  if (count >= 2)
   {
-    v8 = [v10 valueData];
-    [(CHPCategoryAndSeriesReordering *)self reorderData:v8 dataPointCount:a4 byRow:v5];
+    valueData = [categoryCopy valueData];
+    [(CHPCategoryAndSeriesReordering *)self reorderData:valueData dataPointCount:count byRow:rowCopy];
 
-    v9 = [v10 categoryData];
-    [(CHPCategoryAndSeriesReordering *)self reorderData:v9 dataPointCount:a4 byRow:v5];
+    categoryData = [categoryCopy categoryData];
+    [(CHPCategoryAndSeriesReordering *)self reorderData:categoryData dataPointCount:count byRow:rowCopy];
 
-    [(CHPCategoryAndSeriesReordering *)self reorderValueProperties:v10 dataPointCount:a4];
+    [(CHPCategoryAndSeriesReordering *)self reorderValueProperties:categoryCopy dataPointCount:count];
   }
 }
 
-- (void)reorderValueProperties:(id)a3 dataPointCount:(unint64_t)a4
+- (void)reorderValueProperties:(id)properties dataPointCount:(unint64_t)count
 {
-  v10 = a3;
-  v5 = [v10 dataValuePropertiesCollection];
+  propertiesCopy = properties;
+  dataValuePropertiesCollection = [propertiesCopy dataValuePropertiesCollection];
   v6 = +[(EDCollection *)EDKeyedCollection];
-  v7 = [v5 count];
+  v7 = [dataValuePropertiesCollection count];
   if (v7)
   {
     v8 = v7 - 1;
     do
     {
-      v9 = [v5 objectAtIndex:v8];
-      [v9 setDataValueIndex:{~objc_msgSend(v9, "dataValueIndex") + a4}];
+      v9 = [dataValuePropertiesCollection objectAtIndex:v8];
+      [v9 setDataValueIndex:{~objc_msgSend(v9, "dataValueIndex") + count}];
       [v6 addObject:v9];
-      [v5 removeObjectAtIndex:v8];
+      [dataValuePropertiesCollection removeObjectAtIndex:v8];
 
       --v8;
     }
@@ -297,35 +297,35 @@ LABEL_24:
     while (v8 != -1);
   }
 
-  [v10 setDataValuePropertiesCollection:v6];
+  [propertiesCopy setDataValuePropertiesCollection:v6];
 }
 
-- (void)reorderData:(id)a3 dataPointCount:(unint64_t)a4 byRow:(BOOL)a5
+- (void)reorderData:(id)data dataPointCount:(unint64_t)count byRow:(BOOL)row
 {
-  v5 = a5;
-  v11 = a3;
-  if (([v11 isEmpty] & 1) == 0)
+  rowCopy = row;
+  dataCopy = data;
+  if (([dataCopy isEmpty] & 1) == 0)
   {
-    v8 = [v11 dataValueIndexCount];
-    v9 = [v11 dataValues];
-    v10 = [(CHPCategoryAndSeriesReordering *)self reorderDataValues:v9 dataPointCount:a4];
+    dataValueIndexCount = [dataCopy dataValueIndexCount];
+    dataValues = [dataCopy dataValues];
+    v10 = [(CHPCategoryAndSeriesReordering *)self reorderDataValues:dataValues dataPointCount:count];
 
-    if (v8 <= v10)
+    if (dataValueIndexCount <= v10)
     {
-      [v11 setDataValueIndexCount:v10 + 1];
+      [dataCopy setDataValueIndexCount:v10 + 1];
     }
 
-    [(CHPCategoryAndSeriesReordering *)self reorderDataFormula:v11 dataPointCount:a4 byRow:v5];
+    [(CHPCategoryAndSeriesReordering *)self reorderDataFormula:dataCopy dataPointCount:count byRow:rowCopy];
   }
 }
 
-- (int64_t)reorderDataValues:(id)a3 dataPointCount:(unint64_t)a4
+- (int64_t)reorderDataValues:(id)values dataPointCount:(unint64_t)count
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  valuesCopy = values;
+  v6 = valuesCopy;
+  if (valuesCopy)
   {
-    v7 = [v5 count];
+    v7 = [valuesCopy count];
     if (v7)
     {
       v8 = 0;
@@ -335,10 +335,10 @@ LABEL_24:
         v10 = [v6 dataPointAtIndex:v8];
         if (v10)
         {
-          v11 = ~*v10 + a4;
+          v11 = ~*v10 + count;
           if (v11 > v9)
           {
-            v9 = ~*v10 + a4;
+            v9 = ~*v10 + count;
           }
 
           *v10 = v11;
@@ -366,17 +366,17 @@ LABEL_24:
   return v9;
 }
 
-- (void)reorderDataFormula:(id)a3 dataPointCount:(unint64_t)a4 byRow:(BOOL)a5
+- (void)reorderDataFormula:(id)formula dataPointCount:(unint64_t)count byRow:(BOOL)row
 {
-  v5 = a5;
-  v13 = a3;
-  v8 = [v13 formula];
-  v9 = [v8 references];
-  v10 = [v9 reverseReferencesByRow:v5];
+  rowCopy = row;
+  formulaCopy = formula;
+  formula = [formulaCopy formula];
+  references = [formula references];
+  v10 = [references reverseReferencesByRow:rowCopy];
 
   if (v10)
   {
-    while ([v10 count] > a4)
+    while ([v10 count] > count)
     {
       [v10 removeObjectAtIndex:0];
     }
@@ -387,7 +387,7 @@ LABEL_24:
 
     [v11 prepareTokens];
     [v11 setCleaned:1];
-    [v13 setFormula:v11 chart:0];
+    [formulaCopy setFormula:v11 chart:0];
   }
 }
 

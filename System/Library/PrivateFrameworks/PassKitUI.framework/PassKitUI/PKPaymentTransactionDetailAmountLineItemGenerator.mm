@@ -1,67 +1,67 @@
 @interface PKPaymentTransactionDetailAmountLineItemGenerator
-- (id)_feeLineItemsForFees:(id)a3;
-- (id)_foreignExchangeLineItemsForExchangeInfo:(id)a3;
-- (id)_lineItemsForPeerPaymentTransaction:(id)a3 transactionSourceCollection:(id)a4;
-- (id)_lineItemsForPurchaseTransaction:(id)a3 transactionSourceCollection:(id)a4 associatedReceipt:(id)a5;
-- (id)_lineItemsForWithdrawalTransaction:(id)a3 transactionSourceCollection:(id)a4;
-- (id)_primaryFundingSourceLineItemForTransaction:(id)a3 transactionSourceCollection:(id)a4;
-- (id)_rewardsLineItemsForRewards:(id)a3 currencyCode:(id)a4;
-- (id)_secondaryFundingSourceLineItemForTransaction:(id)a3;
-- (id)_subtotalLineItemForTransaction:(id)a3;
-- (id)_totalPaidLineItemForTransaction:(id)a3 isUnqualified:(BOOL)a4;
-- (id)_totalReceivedLineItemForTransaction:(id)a3;
-- (id)_totalRequestedLineItemForTransaction:(id)a3;
-- (id)_totalSentLineItemForTransaction:(id)a3;
-- (id)_totalTransferredItemForTransaction:(id)a3;
-- (id)lineItemsForInstallmentPlan:(id)a3;
-- (id)lineItemsForTransaction:(id)a3 transactionSourceCollection:(id)a4 associatedTransaction:(id)a5 associatedReceipt:(id)a6;
+- (id)_feeLineItemsForFees:(id)fees;
+- (id)_foreignExchangeLineItemsForExchangeInfo:(id)info;
+- (id)_lineItemsForPeerPaymentTransaction:(id)transaction transactionSourceCollection:(id)collection;
+- (id)_lineItemsForPurchaseTransaction:(id)transaction transactionSourceCollection:(id)collection associatedReceipt:(id)receipt;
+- (id)_lineItemsForWithdrawalTransaction:(id)transaction transactionSourceCollection:(id)collection;
+- (id)_primaryFundingSourceLineItemForTransaction:(id)transaction transactionSourceCollection:(id)collection;
+- (id)_rewardsLineItemsForRewards:(id)rewards currencyCode:(id)code;
+- (id)_secondaryFundingSourceLineItemForTransaction:(id)transaction;
+- (id)_subtotalLineItemForTransaction:(id)transaction;
+- (id)_totalPaidLineItemForTransaction:(id)transaction isUnqualified:(BOOL)unqualified;
+- (id)_totalReceivedLineItemForTransaction:(id)transaction;
+- (id)_totalRequestedLineItemForTransaction:(id)transaction;
+- (id)_totalSentLineItemForTransaction:(id)transaction;
+- (id)_totalTransferredItemForTransaction:(id)transaction;
+- (id)lineItemsForInstallmentPlan:(id)plan;
+- (id)lineItemsForTransaction:(id)transaction transactionSourceCollection:(id)collection associatedTransaction:(id)associatedTransaction associatedReceipt:(id)receipt;
 @end
 
 @implementation PKPaymentTransactionDetailAmountLineItemGenerator
 
-- (id)lineItemsForTransaction:(id)a3 transactionSourceCollection:(id)a4 associatedTransaction:(id)a5 associatedReceipt:(id)a6
+- (id)lineItemsForTransaction:(id)transaction transactionSourceCollection:(id)collection associatedTransaction:(id)associatedTransaction associatedReceipt:(id)receipt
 {
   v133 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [v10 transactionType];
-  v15 = v14;
+  transactionCopy = transaction;
+  collectionCopy = collection;
+  associatedTransactionCopy = associatedTransaction;
+  receiptCopy = receipt;
+  transactionType = [transactionCopy transactionType];
+  v15 = transactionType;
   v16 = 0;
-  if (v14 > 2)
+  if (transactionType > 2)
   {
-    if (v14 > 0x16)
+    if (transactionType > 0x16)
     {
 LABEL_75:
-      if (v14 != 3)
+      if (transactionType != 3)
       {
         goto LABEL_17;
       }
 
-      v92 = [(PKPaymentTransactionDetailAmountLineItemGenerator *)self _lineItemsForPeerPaymentTransaction:v10 transactionSourceCollection:v11];
+      v92 = [(PKPaymentTransactionDetailAmountLineItemGenerator *)self _lineItemsForPeerPaymentTransaction:transactionCopy transactionSourceCollection:collectionCopy];
       goto LABEL_81;
     }
 
-    if (((1 << v14) & 0x7F7BD0) != 0)
+    if (((1 << transactionType) & 0x7F7BD0) != 0)
     {
-      v17 = v13;
-      v18 = [v10 transfers];
-      v19 = [v18 firstObject];
+      v17 = receiptCopy;
+      transfers = [transactionCopy transfers];
+      firstObject = [transfers firstObject];
 
-      if (v19 && [v10 transactionStatus] != 2)
+      if (firstObject && [transactionCopy transactionStatus] != 2)
       {
-        v29 = [v19 fundsAreAvailable];
-        v30 = [v19 expectedCompletionDate];
-        v21 = v30;
-        if ((v29 & 1) != 0 || !v30)
+        fundsAreAvailable = [firstObject fundsAreAvailable];
+        expectedCompletionDate = [firstObject expectedCompletionDate];
+        v21 = expectedCompletionDate;
+        if ((fundsAreAvailable & 1) != 0 || !expectedCompletionDate)
         {
-          v31 = [v10 transactionStatusChangedDate];
+          transactionStatusChangedDate = [transactionCopy transactionStatusChangedDate];
 
-          v21 = v31;
+          v21 = transactionStatusChangedDate;
         }
 
-        v27 = [[PKPaymentTransactionDetailAmountLineCompletionDate alloc] initWithDate:v21 completed:v29];
+        v27 = [[PKPaymentTransactionDetailAmountLineCompletionDate alloc] initWithDate:v21 completed:fundsAreAvailable];
         [(PKPaymentTransactionDetailAmountLineCompletionDate *)v27 setHasTrailingLineSeperator:1];
         v127 = v27;
         v28 = &v127;
@@ -69,22 +69,22 @@ LABEL_75:
 
       else
       {
-        v20 = [v10 amount];
-        v21 = v20;
-        if (v20)
+        amount = [transactionCopy amount];
+        v21 = amount;
+        if (amount)
         {
-          v22 = [(NSDecimalNumber *)v20 pk_isNegativeNumber];
-          if (v15 == 11 && (v22 & 1) == 0 && [v10 featureIdentifier] == 5)
+          pk_isNegativeNumber = [(NSDecimalNumber *)amount pk_isNegativeNumber];
+          if (v15 == 11 && (pk_isNegativeNumber & 1) == 0 && [transactionCopy featureIdentifier] == 5)
           {
-            v23 = [(NSDecimalNumber *)v21 pk_negativeValue];
+            pk_negativeValue = [(NSDecimalNumber *)v21 pk_negativeValue];
 
-            v21 = v23;
+            v21 = pk_negativeValue;
           }
         }
 
         v24 = [PKPaymentTransactionDetailAmountLineItemTotal alloc];
-        v25 = [v10 currencyCode];
-        v26 = PKCurrencyAmountCreate(v21, v25);
+        currencyCode = [transactionCopy currencyCode];
+        v26 = PKCurrencyAmountCreate(v21, currencyCode);
         v27 = [(PKPaymentTransactionDetailAmountLineItemTotal *)v24 initWithAmount:v26 totalType:4];
 
         [(PKPaymentTransactionDetailAmountLineCompletionDate *)v27 setHasTrailingLineSeperator:1];
@@ -94,17 +94,17 @@ LABEL_75:
 
       v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v28 count:1];
 
-      v13 = v17;
+      receiptCopy = v17;
       goto LABEL_17;
     }
 
-    if (v14 != 5)
+    if (transactionType != 5)
     {
-      if (v14 == 10)
+      if (transactionType == 10)
       {
         v89 = [PKPaymentTransactionDetailAmountLineItemPaymentTotal alloc];
-        v90 = [v10 currencyAmount];
-        v91 = [(PKPaymentTransactionDetailAmountLineItemPaymentTotal *)v89 initWithAmount:v90];
+        currencyAmount = [transactionCopy currencyAmount];
+        v91 = [(PKPaymentTransactionDetailAmountLineItemPaymentTotal *)v89 initWithAmount:currencyAmount];
 
         [(PKPaymentTransactionDetailAmountLineItemPaymentTotal *)v91 setHasTrailingLineSeperator:1];
         v125 = v91;
@@ -116,27 +116,27 @@ LABEL_75:
       goto LABEL_75;
     }
 
-    v92 = [(PKPaymentTransactionDetailAmountLineItemGenerator *)self _lineItemsForWithdrawalTransaction:v10 transactionSourceCollection:v11];
+    v92 = [(PKPaymentTransactionDetailAmountLineItemGenerator *)self _lineItemsForWithdrawalTransaction:transactionCopy transactionSourceCollection:collectionCopy];
 LABEL_81:
     v16 = v92;
     goto LABEL_17;
   }
 
-  switch(v14)
+  switch(transactionType)
   {
     case 0:
-      v92 = [(PKPaymentTransactionDetailAmountLineItemGenerator *)self _lineItemsForPurchaseTransaction:v10 transactionSourceCollection:v11 associatedReceipt:v13];
+      v92 = [(PKPaymentTransactionDetailAmountLineItemGenerator *)self _lineItemsForPurchaseTransaction:transactionCopy transactionSourceCollection:collectionCopy associatedReceipt:receiptCopy];
       goto LABEL_81;
     case 1:
       v93 = [PKPaymentTransactionDetailAmountLineItemTotal alloc];
-      v94 = [v10 amount];
-      v95 = [v10 currencyCode];
-      v96 = PKCurrencyAmountCreate(v94, v95);
+      amount2 = [transactionCopy amount];
+      currencyCode2 = [transactionCopy currencyCode];
+      v96 = PKCurrencyAmountCreate(amount2, currencyCode2);
       v97 = [(PKPaymentTransactionDetailAmountLineItemTotal *)v93 initWithAmount:v96 totalType:4];
 
-      if (v12)
+      if (associatedTransactionCopy)
       {
-        v98 = [[PKPaymentTransactionDetailAmountLineItemDailyCashAdjustment alloc] initWithAssociatedTransaction:v12];
+        v98 = [[PKPaymentTransactionDetailAmountLineItemDailyCashAdjustment alloc] initWithAssociatedTransaction:associatedTransactionCopy];
         [(PKPaymentTransactionDetailAmountLineItemDailyCashAdjustment *)v98 setHasTrailingLineSeperator:1];
         v129[0] = v97;
         v129[1] = v98;
@@ -152,36 +152,36 @@ LABEL_81:
 
       break;
     case 2:
-      v101 = v13;
-      v33 = [v10 amount];
-      v108 = [v33 pk_absoluteValue];
-      v100 = v33;
-      v99 = [v33 pk_isNegativeNumber];
-      v112 = [v11 paymentPass];
-      v109 = [v10 currencyCode];
-      if (!v109)
+      v101 = receiptCopy;
+      amount3 = [transactionCopy amount];
+      pk_absoluteValue = [amount3 pk_absoluteValue];
+      v100 = amount3;
+      pk_isNegativeNumber2 = [amount3 pk_isNegativeNumber];
+      paymentPass = [collectionCopy paymentPass];
+      currencyCode3 = [transactionCopy currencyCode];
+      if (!currencyCode3)
       {
-        v34 = [v112 devicePrimaryContactlessPaymentApplication];
-        v109 = [v34 appletCurrencyCode];
+        devicePrimaryContactlessPaymentApplication = [paymentPass devicePrimaryContactlessPaymentApplication];
+        currencyCode3 = [devicePrimaryContactlessPaymentApplication appletCurrencyCode];
       }
 
-      v35 = [v10 amounts];
-      v36 = [v10 plans];
-      v37 = [v10 transitType];
+      amounts = [transactionCopy amounts];
+      plans = [transactionCopy plans];
+      transitType = [transactionCopy transitType];
       v38 = objc_alloc_init(MEMORY[0x1E695DF70]);
-      v106 = v10;
-      v107 = v36;
-      v104 = v12;
-      v105 = v11;
-      v102 = v37;
-      v103 = v35;
-      if (v35)
+      v106 = transactionCopy;
+      v107 = plans;
+      v104 = associatedTransactionCopy;
+      v105 = collectionCopy;
+      v102 = transitType;
+      v103 = amounts;
+      if (amounts)
       {
         v123 = 0u;
         v124 = 0u;
         v121 = 0u;
         v122 = 0u;
-        obj = v35;
+        obj = amounts;
         v39 = [obj countByEnumeratingWithState:&v121 objects:v132 count:16];
         if (v39)
         {
@@ -197,19 +197,19 @@ LABEL_81:
               }
 
               v43 = *(*(&v121 + 1) + 8 * i);
-              v44 = [v43 amount];
-              v45 = [v44 absoluteValue];
-              v46 = [v45 formattedStringValue];
+              amount4 = [v43 amount];
+              absoluteValue = [amount4 absoluteValue];
+              formattedStringValue = [absoluteValue formattedStringValue];
 
-              v47 = [v44 amount];
-              v48 = [v47 pk_isNegativeNumber];
+              v44Amount = [amount4 amount];
+              pk_isNegativeNumber3 = [v44Amount pk_isNegativeNumber];
 
-              if (v48)
+              if (pk_isNegativeNumber3)
               {
-                v49 = PKLocalizedPaymentString(&cfstr_AmountFormatRe.isa, &stru_1F3BD5BF0.isa, v46);
+                v49 = PKLocalizedPaymentString(&cfstr_AmountFormatRe.isa, &stru_1F3BD5BF0.isa, formattedStringValue);
 
                 v50 = @"TRANSACTION_DEFAULT_CREDIT";
-                v46 = v49;
+                formattedStringValue = v49;
               }
 
               else
@@ -218,11 +218,11 @@ LABEL_81:
               }
 
               v51 = PKLocalizedPaymentString(&v50->isa);
-              v52 = [v43 label];
-              v53 = v52;
-              if (v52)
+              label = [v43 label];
+              v53 = label;
+              if (label)
               {
-                v54 = v52;
+                v54 = label;
               }
 
               else
@@ -232,7 +232,7 @@ LABEL_81:
 
               v55 = v54;
 
-              v56 = [[PKPaymentTransactionDetailAmountLineItemGeneric alloc] initWithLabel:v55 value:v46];
+              v56 = [[PKPaymentTransactionDetailAmountLineItemGeneric alloc] initWithLabel:v55 value:formattedStringValue];
               [(PKPaymentTransactionDetailAmountLineItemGeneric *)v56 setHasTrailingLineSeperator:1];
               [(PKPaymentTransactionDetailAmountLineItemGeneric *)v56 setIsEmphasized:0];
               [v38 addObject:v56];
@@ -244,20 +244,20 @@ LABEL_81:
           while (v40);
         }
 
-        v11 = v105;
-        v35 = v103;
-        v12 = v104;
-        v36 = v107;
-        v37 = v102;
+        collectionCopy = v105;
+        amounts = v103;
+        associatedTransactionCopy = v104;
+        plans = v107;
+        transitType = v102;
       }
 
-      if (v36)
+      if (plans)
       {
         v119 = 0u;
         v120 = 0u;
         v117 = 0u;
         v118 = 0u;
-        v57 = v36;
+        v57 = plans;
         v58 = [v57 countByEnumeratingWithState:&v117 objects:v131 count:16];
         if (v58)
         {
@@ -274,9 +274,9 @@ LABEL_81:
 
               v62 = *(*(&v117 + 1) + 8 * j);
               v63 = [PKPaymentTransactionDetailAmountLineItemGeneric alloc];
-              v64 = [v62 label];
+              label2 = [v62 label];
               v65 = PKPassLocalizedStringWithFormat();
-              v66 = [(PKPaymentTransactionDetailAmountLineItemGeneric *)v63 initWithLabel:v64 value:v65, 0];
+              v66 = [(PKPaymentTransactionDetailAmountLineItemGeneric *)v63 initWithLabel:label2 value:v65, 0];
 
               [(PKPaymentTransactionDetailAmountLineItemGeneric *)v66 setHasTrailingLineSeperator:1];
               [(PKPaymentTransactionDetailAmountLineItemGeneric *)v66 setIsEmphasized:0];
@@ -289,20 +289,20 @@ LABEL_81:
           while (v59);
         }
 
-        v11 = v105;
-        v10 = v106;
-        v35 = v103;
-        v12 = v104;
-        v36 = v107;
-        v37 = v102;
+        collectionCopy = v105;
+        transactionCopy = v106;
+        amounts = v103;
+        associatedTransactionCopy = v104;
+        plans = v107;
+        transitType = v102;
       }
 
-      if (v37 == 517 && ([v112 shouldSuppressNoChargeAmount] & 1) == 0)
+      if (transitType == 517 && ([paymentPass shouldSuppressNoChargeAmount] & 1) == 0)
       {
-        v67 = [v112 devicePrimaryPaymentApplication];
-        v68 = [v67 paymentNetworkIdentifier];
+        devicePrimaryPaymentApplication = [paymentPass devicePrimaryPaymentApplication];
+        paymentNetworkIdentifier = [devicePrimaryPaymentApplication paymentNetworkIdentifier];
 
-        if (v68 == 131)
+        if (paymentNetworkIdentifier == 131)
         {
           v69 = [PKPaymentTransactionDetailAmountLineItemGeneric alloc];
           v70 = PKLocalizedPaymentString(&cfstr_TransactionDet_90.isa);
@@ -314,14 +314,14 @@ LABEL_81:
         }
       }
 
-      if (([v10 enRoute] & 1) == 0 && v37 != 1025 && v108 && v109)
+      if (([transactionCopy enRoute] & 1) == 0 && transitType != 1025 && pk_absoluteValue && currencyCode3)
       {
-        v72 = PKCurrencyAmountCreate(v108, v109);
-        v73 = [v72 formattedStringValue];
-        v74 = v73;
-        if (v99)
+        v72 = PKCurrencyAmountCreate(pk_absoluteValue, currencyCode3);
+        formattedStringValue2 = [v72 formattedStringValue];
+        v74 = formattedStringValue2;
+        if (pk_isNegativeNumber2)
         {
-          v75 = PKLocalizedPaymentString(&cfstr_AmountFormatRe.isa, &stru_1F3BD5BF0.isa, v73);
+          v75 = PKLocalizedPaymentString(&cfstr_AmountFormatRe.isa, &stru_1F3BD5BF0.isa, formattedStringValue2);
 
           v74 = v75;
         }
@@ -334,17 +334,17 @@ LABEL_81:
         [(PKPaymentTransactionDetailAmountLineItemGeneric *)v78 setIsEmphasized:1];
         [v38 addObject:v78];
 
-        v36 = v107;
+        plans = v107;
       }
 
-      if (([v10 enRoute] & 1) == 0 && v37 != 1025 && objc_msgSend(v35, "count") >= 2)
+      if (([transactionCopy enRoute] & 1) == 0 && transitType != 1025 && objc_msgSend(amounts, "count") >= 2)
       {
-        v79 = [v10 dictionaryOfFormattedMultipleAmountTotalsByRealCurrency];
+        dictionaryOfFormattedMultipleAmountTotalsByRealCurrency = [transactionCopy dictionaryOfFormattedMultipleAmountTotalsByRealCurrency];
         v113 = 0u;
         v114 = 0u;
         v115 = 0u;
         v116 = 0u;
-        obja = [v79 keyEnumerator];
+        obja = [dictionaryOfFormattedMultipleAmountTotalsByRealCurrency keyEnumerator];
         v80 = [obja countByEnumeratingWithState:&v113 objects:v130 count:16];
         if (v80)
         {
@@ -362,7 +362,7 @@ LABEL_81:
               v84 = *(*(&v113 + 1) + 8 * k);
               v85 = PKLocalizedPaymentString(&cfstr_TransactionTot.isa, &stru_1F3BD5BF0.isa, v84);
               v86 = [PKPaymentTransactionDetailAmountLineItemGeneric alloc];
-              v87 = [v79 objectForKeyedSubscript:v84];
+              v87 = [dictionaryOfFormattedMultipleAmountTotalsByRealCurrency objectForKeyedSubscript:v84];
               v88 = [(PKPaymentTransactionDetailAmountLineItemGeneric *)v86 initWithLabel:v85 value:v87];
 
               [(PKPaymentTransactionDetailAmountLineItemGeneric *)v88 setHasTrailingLineSeperator:1];
@@ -376,16 +376,16 @@ LABEL_81:
           while (v81);
         }
 
-        v11 = v105;
-        v10 = v106;
-        v35 = v103;
-        v12 = v104;
-        v36 = v107;
+        collectionCopy = v105;
+        transactionCopy = v106;
+        amounts = v103;
+        associatedTransactionCopy = v104;
+        plans = v107;
       }
 
       v16 = [v38 copy];
 
-      v13 = v101;
+      receiptCopy = v101;
       break;
   }
 
@@ -394,21 +394,21 @@ LABEL_17:
   return v16;
 }
 
-- (id)lineItemsForInstallmentPlan:(id)a3
+- (id)lineItemsForInstallmentPlan:(id)plan
 {
   v100 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  planCopy = plan;
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v5 = [v3 lineItems];
-  v69 = v3;
-  v71 = [v3 currencyCode];
+  lineItems = [planCopy lineItems];
+  v69 = planCopy;
+  currencyCode = [planCopy currencyCode];
   v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v93 = 0u;
   v94 = 0u;
   v95 = 0u;
   v96 = 0u;
-  v8 = v5;
+  v8 = lineItems;
   v9 = [v8 countByEnumeratingWithState:&v93 objects:v99 count:16];
   if (v9)
   {
@@ -424,13 +424,13 @@ LABEL_17:
         }
 
         v13 = *(*(&v93 + 1) + 8 * i);
-        v14 = [v13 type];
+        type = [v13 type];
         v15 = v6;
-        if (v14 != 1)
+        if (type != 1)
         {
-          v16 = [v13 type];
+          type2 = [v13 type];
           v15 = v7;
-          if (v16 != 5)
+          if (type2 != 5)
           {
             continue;
           }
@@ -462,7 +462,7 @@ LABEL_17:
     v88[1] = 3221225472;
     v88[2] = __81__PKPaymentTransactionDetailAmountLineItemGenerator_lineItemsForInstallmentPlan___block_invoke;
     v88[3] = &unk_1E80270A0;
-    v89 = v71;
+    v89 = currencyCode;
     v92 = v18 != 0;
     v90 = v20;
     v91 = v21;
@@ -485,7 +485,7 @@ LABEL_17:
     v83[1] = 3221225472;
     v83[2] = __81__PKPaymentTransactionDetailAmountLineItemGenerator_lineItemsForInstallmentPlan___block_invoke_2;
     v83[3] = &unk_1E80270A0;
-    v24 = v71;
+    v24 = currencyCode;
     v84 = v24;
     v25 = v70;
     v26 = v70;
@@ -498,7 +498,7 @@ LABEL_17:
     {
       v63 = v24;
       v67 = v26;
-      v27 = [MEMORY[0x1E696AB90] zero];
+      zero = [MEMORY[0x1E696AB90] zero];
       v79 = 0u;
       v80 = 0u;
       v81 = 0u;
@@ -519,14 +519,14 @@ LABEL_17:
             }
 
             v33 = *(*(&v79 + 1) + 8 * j);
-            v34 = [v33 amount];
+            amount = [v33 amount];
 
-            if (v34)
+            if (amount)
             {
-              v35 = [v33 amount];
-              v36 = [(NSDecimalNumber *)v27 decimalNumberByAdding:v35];
+              amount2 = [v33 amount];
+              v36 = [(NSDecimalNumber *)zero decimalNumberByAdding:amount2];
 
-              v27 = v36;
+              zero = v36;
             }
           }
 
@@ -556,14 +556,14 @@ LABEL_17:
             }
 
             v42 = *(*(&v75 + 1) + 8 * k);
-            v43 = [v42 amount];
+            amount3 = [v42 amount];
 
-            if (v43)
+            if (amount3)
             {
-              v44 = [v42 amount];
-              v45 = [(NSDecimalNumber *)v27 decimalNumberBySubtracting:v44];
+              amount4 = [v42 amount];
+              v45 = [(NSDecimalNumber *)zero decimalNumberBySubtracting:amount4];
 
-              v27 = v45;
+              zero = v45;
             }
           }
 
@@ -574,13 +574,13 @@ LABEL_17:
       }
 
       v46 = 0;
-      if (v27)
+      if (zero)
       {
         v25 = v70;
         v22 = &unk_1BE0FC000;
         if (v63)
         {
-          v46 = PKCurrencyAmountCreate(v27, v63);
+          v46 = PKCurrencyAmountCreate(zero, v63);
         }
       }
 
@@ -610,36 +610,36 @@ LABEL_17:
   v72[1] = v22[509];
   v72[2] = __81__PKPaymentTransactionDetailAmountLineItemGenerator_lineItemsForInstallmentPlan___block_invoke_3;
   v72[3] = &unk_1E80270C8;
-  v50 = v71;
+  v50 = currencyCode;
   v73 = v50;
   v51 = v49;
   v74 = v51;
   [v47 enumerateObjectsUsingBlock:v72];
-  v52 = [v51 lastObject];
-  [v52 setHasTrailingLineSeperator:1];
+  lastObject = [v51 lastObject];
+  [lastObject setHasTrailingLineSeperator:1];
 
   [v68 addObjectsFromArray:v51];
   v53 = v69;
   if (v50)
   {
-    v54 = [v69 totalAmount];
+    totalAmount = [v69 totalAmount];
 
-    if (v54)
+    if (totalAmount)
     {
-      v55 = [v69 totalAmount];
-      v56 = PKCurrencyAmountCreate(v55, v50);
+      totalAmount2 = [v69 totalAmount];
+      v56 = PKCurrencyAmountCreate(totalAmount2, v50);
 
-      v54 = [[PKPaymentTransactionDetailAmountLineItemTotal alloc] initWithAmount:v56 totalType:6];
-      [v68 addObject:v54];
+      totalAmount = [[PKPaymentTransactionDetailAmountLineItemTotal alloc] initWithAmount:v56 totalType:6];
+      [v68 addObject:totalAmount];
     }
 
-    v57 = [v69 rewards];
-    if (v57)
+    rewards = [v69 rewards];
+    if (rewards)
     {
-      [(PKPaymentTransactionDetailAmountLineItemGenerator *)self _rewardsLineItemsForRewards:v57 currencyCode:v50];
+      [(PKPaymentTransactionDetailAmountLineItemGenerator *)self _rewardsLineItemsForRewards:rewards currencyCode:v50];
       v59 = v58 = v47;
-      v60 = [v59 lastObject];
-      [v60 setHasTrailingLineSeperator:1];
+      lastObject2 = [v59 lastObject];
+      [lastObject2 setHasTrailingLineSeperator:1];
 
       v25 = v70;
       [v68 addObjectsFromArray:v59];
@@ -650,7 +650,7 @@ LABEL_17:
 
     else
     {
-      [(PKPaymentTransactionDetailAmountLineItemTotal *)v54 setHasTrailingLineSeperator:1];
+      [(PKPaymentTransactionDetailAmountLineItemTotal *)totalAmount setHasTrailingLineSeperator:1];
     }
   }
 
@@ -691,44 +691,44 @@ void __81__PKPaymentTransactionDetailAmountLineItemGenerator_lineItemsForInstall
   [*(a1 + 40) addObject:v4];
 }
 
-- (id)_lineItemsForWithdrawalTransaction:(id)a3 transactionSourceCollection:(id)a4
+- (id)_lineItemsForWithdrawalTransaction:(id)transaction transactionSourceCollection:(id)collection
 {
-  v5 = a3;
+  transactionCopy = transaction;
   v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v7 = [v5 fees];
-  v8 = [v7 fees];
-  v9 = [v8 allObjects];
+  fees = [transactionCopy fees];
+  v7Fees = [fees fees];
+  allObjects = [v7Fees allObjects];
 
-  if ([v9 count])
+  if ([allObjects count])
   {
-    v10 = [(PKPaymentTransactionDetailAmountLineItemGenerator *)self _totalTransferredItemForTransaction:v5];
+    v10 = [(PKPaymentTransactionDetailAmountLineItemGenerator *)self _totalTransferredItemForTransaction:transactionCopy];
     [v6 addObject:v10];
-    v11 = [(PKPaymentTransactionDetailAmountLineItemGenerator *)self _feeLineItemsForFees:v9];
-    v12 = [v11 lastObject];
-    [v12 setHasTrailingLineSeperator:1];
+    v11 = [(PKPaymentTransactionDetailAmountLineItemGenerator *)self _feeLineItemsForFees:allObjects];
+    lastObject = [v11 lastObject];
+    [lastObject setHasTrailingLineSeperator:1];
 
     [v6 addObjectsFromArray:v11];
-    v13 = [(PKPaymentTransactionDetailAmountLineItemGenerator *)self _totalPaidLineItemForTransaction:v5 isUnqualified:1];
+    v13 = [(PKPaymentTransactionDetailAmountLineItemGenerator *)self _totalPaidLineItemForTransaction:transactionCopy isUnqualified:1];
     [v13 setHasTrailingLineSeperator:1];
     [v6 addObject:v13];
   }
 
-  v14 = [v5 transfers];
-  v15 = [v14 firstObject];
+  transfers = [transactionCopy transfers];
+  firstObject = [transfers firstObject];
 
-  if (v15 && [v5 transactionStatus] != 2)
+  if (firstObject && [transactionCopy transactionStatus] != 2)
   {
-    v16 = [v15 fundsAreAvailable];
-    v17 = [v15 expectedCompletionDate];
-    v18 = v17;
-    if ((v16 & 1) != 0 || !v17)
+    fundsAreAvailable = [firstObject fundsAreAvailable];
+    expectedCompletionDate = [firstObject expectedCompletionDate];
+    v18 = expectedCompletionDate;
+    if ((fundsAreAvailable & 1) != 0 || !expectedCompletionDate)
     {
-      v19 = [v5 transactionStatusChangedDate];
+      transactionStatusChangedDate = [transactionCopy transactionStatusChangedDate];
 
-      v18 = v19;
+      v18 = transactionStatusChangedDate;
     }
 
-    if (v16)
+    if (fundsAreAvailable)
     {
       v20 = [[PKPaymentTransactionDetailAmountLineCompletionDate alloc] initWithDate:v18 completed:1];
       [(PKPaymentTransactionDetailAmountLineCompletionDate *)v20 setHasTrailingLineSeperator:1];
@@ -749,24 +749,24 @@ void __81__PKPaymentTransactionDetailAmountLineItemGenerator_lineItemsForInstall
   return v21;
 }
 
-- (id)_lineItemsForPurchaseTransaction:(id)a3 transactionSourceCollection:(id)a4 associatedReceipt:(id)a5
+- (id)_lineItemsForPurchaseTransaction:(id)transaction transactionSourceCollection:(id)collection associatedReceipt:(id)receipt
 {
   v100 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v91 = a5;
+  transactionCopy = transaction;
+  receiptCopy = receipt;
   v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v9 = [v7 foreignExchangeInformation];
-  v10 = v9;
-  if (!v9)
+  foreignExchangeInformation = [transactionCopy foreignExchangeInformation];
+  v10 = foreignExchangeInformation;
+  if (!foreignExchangeInformation)
   {
     goto LABEL_15;
   }
 
-  v11 = [v9 destinationCurrencyAmount];
-  v12 = [v11 currency];
-  v13 = [v7 currencyCode];
-  v14 = v12;
-  v15 = v13;
+  destinationCurrencyAmount = [foreignExchangeInformation destinationCurrencyAmount];
+  currency = [destinationCurrencyAmount currency];
+  currencyCode = [transactionCopy currencyCode];
+  v14 = currency;
+  v15 = currencyCode;
   v16 = v15;
   if (v14 == v15)
   {
@@ -784,8 +784,8 @@ void __81__PKPaymentTransactionDetailAmountLineItemGenerator_lineItemsForInstall
     }
 
 LABEL_8:
-    v18 = [v10 exchangeRate];
-    [v18 doubleValue];
+    exchangeRate = [v10 exchangeRate];
+    [exchangeRate doubleValue];
     v20 = v19;
 
     if (v20 == 1.0)
@@ -798,11 +798,11 @@ LABEL_8:
 
 LABEL_11:
 LABEL_12:
-  v21 = [v7 foreignExchangeInformation];
-  v22 = [(PKPaymentTransactionDetailAmountLineItemGenerator *)self _foreignExchangeLineItemsForExchangeInfo:v21];
+  foreignExchangeInformation2 = [transactionCopy foreignExchangeInformation];
+  v22 = [(PKPaymentTransactionDetailAmountLineItemGenerator *)self _foreignExchangeLineItemsForExchangeInfo:foreignExchangeInformation2];
 
-  v23 = [v22 lastObject];
-  [v23 setHasTrailingLineSeperator:1];
+  lastObject = [v22 lastObject];
+  [lastObject setHasTrailingLineSeperator:1];
 
   if ([v22 count])
   {
@@ -810,36 +810,36 @@ LABEL_12:
   }
 
 LABEL_15:
-  if (v91)
+  if (receiptCopy)
   {
-    v24 = [v91 lineItems];
-    v25 = [v24 pk_arrayByApplyingBlock:&__block_literal_global_259];
+    lineItems = [receiptCopy lineItems];
+    v25 = [lineItems pk_arrayByApplyingBlock:&__block_literal_global_259];
 
-    v26 = [v25 lastObject];
-    [v26 setHasTrailingLineSeperator:1];
+    lastObject2 = [v25 lastObject];
+    [lastObject2 setHasTrailingLineSeperator:1];
 
     [v8 addObjectsFromArray:v25];
     v27 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v89 = [v91 summaryItems];
-    v28 = [v91 subtotalCurrencyAmount];
-    v29 = [v91 totalCurrencyAmount];
-    v90 = v28;
-    v88 = v29;
-    if (v28)
+    summaryItems = [receiptCopy summaryItems];
+    subtotalCurrencyAmount = [receiptCopy subtotalCurrencyAmount];
+    totalCurrencyAmount = [receiptCopy totalCurrencyAmount];
+    v90 = subtotalCurrencyAmount;
+    v88 = totalCurrencyAmount;
+    if (subtotalCurrencyAmount)
     {
-      v30 = v29;
-      if (v29)
+      v30 = totalCurrencyAmount;
+      if (totalCurrencyAmount)
       {
-        v31 = [v28 amount];
-        v32 = [v30 amount];
-        v33 = [v31 compare:v32];
+        amount = [subtotalCurrencyAmount amount];
+        amount2 = [v30 amount];
+        v33 = [amount compare:amount2];
 
         if (v33)
         {
           v34 = [PKPaymentTransactionDetailAmountLineItemGeneric alloc];
           v35 = PKLocalizedPaymentString(&cfstr_Subtotal_0.isa);
-          v36 = [v90 formattedStringValue];
-          v37 = [(PKPaymentTransactionDetailAmountLineItemGeneric *)v34 initWithLabel:v35 value:v36];
+          formattedStringValue = [v90 formattedStringValue];
+          v37 = [(PKPaymentTransactionDetailAmountLineItemGeneric *)v34 initWithLabel:v35 value:formattedStringValue];
 
           [(PKPaymentTransactionDetailAmountLineItemGeneric *)v37 setIsEmphasized:1];
           [v27 addObject:v37];
@@ -847,18 +847,18 @@ LABEL_15:
       }
     }
 
-    v38 = v89;
-    if (v89)
+    v38 = summaryItems;
+    if (summaryItems)
     {
       v84 = v25;
-      v85 = self;
+      selfCopy = self;
       v86 = v10;
       v87 = v8;
       v97 = 0u;
       v98 = 0u;
       v95 = 0u;
       v96 = 0u;
-      v39 = v89;
+      v39 = summaryItems;
       v40 = [v39 countByEnumeratingWithState:&v95 objects:v99 count:16];
       if (!v40)
       {
@@ -877,20 +877,20 @@ LABEL_15:
           }
 
           v44 = *(*(&v95 + 1) + 8 * i);
-          v45 = [v44 currencyAmount];
-          v46 = [v45 formattedStringValue];
+          currencyAmount = [v44 currencyAmount];
+          formattedStringValue2 = [currencyAmount formattedStringValue];
 
-          v47 = [v44 type];
+          type = [v44 type];
           v48 = 0;
-          if (v47 <= 1)
+          if (type <= 1)
           {
-            if (!v47)
+            if (!type)
             {
-              v54 = [v44 label];
-              if (v54)
+              label = [v44 label];
+              if (label)
               {
 LABEL_42:
-                v56 = v54;
+                v56 = label;
 LABEL_45:
                 v48 = v56;
 
@@ -903,12 +903,12 @@ LABEL_44:
               goto LABEL_45;
             }
 
-            if (v47 == 1)
+            if (type == 1)
             {
-              v52 = [v44 label];
-              if (!v52)
+              label2 = [v44 label];
+              if (!label2)
               {
-                if ([v91 state] == 2)
+                if ([receiptCopy state] == 2)
                 {
                   v53 = @"TRANSACTION_RECEIPT_TAX";
                 }
@@ -918,20 +918,20 @@ LABEL_44:
                   v53 = @"TRANSACTION_RECEIPT_ESTIMATED_TAX";
                 }
 
-                v52 = PKLocalizedPaymentString(&v53->isa);
+                label2 = PKLocalizedPaymentString(&v53->isa);
               }
 
-              v48 = v52;
+              v48 = label2;
             }
           }
 
           else
           {
-            switch(v47)
+            switch(type)
             {
               case 2:
-                v54 = [v44 label];
-                if (v54)
+                label = [v44 label];
+                if (label)
                 {
                   goto LABEL_42;
                 }
@@ -939,8 +939,8 @@ LABEL_44:
                 v55 = @"TRANSACTION_RECEIPT_SHIPPING";
                 goto LABEL_44;
               case 3:
-                v54 = [v44 label];
-                if (v54)
+                label = [v44 label];
+                if (label)
                 {
                   goto LABEL_42;
                 }
@@ -948,11 +948,11 @@ LABEL_44:
                 v55 = @"TRANSACTION_RECEIPT_FEE";
                 goto LABEL_44;
               case 4:
-                v49 = [v44 label];
-                v50 = v49;
-                if (v49)
+                label3 = [v44 label];
+                v50 = label3;
+                if (label3)
                 {
-                  v51 = v49;
+                  v51 = label3;
                 }
 
                 else
@@ -962,15 +962,15 @@ LABEL_44:
 
                 v48 = v51;
 
-                v57 = PKLocalizedPaymentString(&cfstr_AmountFormatRe.isa, &stru_1F3BD5BF0.isa, v46);
+                v57 = PKLocalizedPaymentString(&cfstr_AmountFormatRe.isa, &stru_1F3BD5BF0.isa, formattedStringValue2);
 
-                v46 = v57;
+                formattedStringValue2 = v57;
                 break;
             }
           }
 
 LABEL_51:
-          v58 = [[PKPaymentTransactionDetailAmountLineItemGeneric alloc] initWithLabel:v48 value:v46];
+          v58 = [[PKPaymentTransactionDetailAmountLineItemGeneric alloc] initWithLabel:v48 value:formattedStringValue2];
           [v27 addObject:v58];
         }
 
@@ -980,17 +980,17 @@ LABEL_51:
 LABEL_53:
 
           v8 = v87;
-          self = v85;
+          self = selfCopy;
           v10 = v86;
           v25 = v84;
-          v38 = v89;
+          v38 = summaryItems;
           break;
         }
       }
     }
 
-    v59 = [v27 lastObject];
-    [v59 setHasTrailingLineSeperator:1];
+    lastObject3 = [v27 lastObject];
+    [lastObject3 setHasTrailingLineSeperator:1];
 
     if ([v27 count])
     {
@@ -999,25 +999,25 @@ LABEL_53:
   }
 
   v60 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v61 = [v7 nominalAmount];
-  if (v61)
+  nominalAmount = [transactionCopy nominalAmount];
+  if (nominalAmount)
   {
-    v62 = v61;
-    v63 = [v7 amountModifiers];
-    v64 = [v63 count];
+    v62 = nominalAmount;
+    amountModifiers = [transactionCopy amountModifiers];
+    v64 = [amountModifiers count];
 
     if (v64)
     {
       v65 = [PKPaymentTransactionDetailAmountLineItemGeneric alloc];
       v66 = PKLocalizedPaymentString(&cfstr_Subtotal_0.isa);
-      v67 = [v7 nominalCurrencyAmount];
-      v68 = [v67 formattedStringValue];
-      v69 = [(PKPaymentTransactionDetailAmountLineItemGeneric *)v65 initWithLabel:v66 value:v68];
+      nominalCurrencyAmount = [transactionCopy nominalCurrencyAmount];
+      formattedStringValue3 = [nominalCurrencyAmount formattedStringValue];
+      v69 = [(PKPaymentTransactionDetailAmountLineItemGeneric *)v65 initWithLabel:v66 value:formattedStringValue3];
 
       [(PKPaymentTransactionDetailAmountLineItemGeneric *)v69 setIsEmphasized:0];
       [v60 addObject:v69];
-      v70 = [v7 amountModifiers];
-      v71 = [v70 count];
+      amountModifiers2 = [transactionCopy amountModifiers];
+      v71 = [amountModifiers2 count];
       v92[0] = MEMORY[0x1E69E9820];
       v92[1] = 3221225472;
       v92[2] = __132__PKPaymentTransactionDetailAmountLineItemGenerator__lineItemsForPurchaseTransaction_transactionSourceCollection_associatedReceipt___block_invoke_2;
@@ -1025,7 +1025,7 @@ LABEL_53:
       v94 = v71 - 1;
       v72 = v60;
       v93 = v72;
-      [v70 enumerateObjectsUsingBlock:v92];
+      [amountModifiers2 enumerateObjectsUsingBlock:v92];
       if ([v72 count])
       {
         [v8 addObjectsFromArray:v72];
@@ -1033,29 +1033,29 @@ LABEL_53:
     }
   }
 
-  v73 = [(PKPaymentTransactionDetailAmountLineItemGenerator *)self _totalPaidLineItemForTransaction:v7 isUnqualified:1];
+  v73 = [(PKPaymentTransactionDetailAmountLineItemGenerator *)self _totalPaidLineItemForTransaction:transactionCopy isUnqualified:1];
   [v8 addObject:v73];
-  v74 = [v7 rewards];
+  rewards = [transactionCopy rewards];
 
-  if (v74)
+  if (rewards)
   {
-    v75 = [v7 rewards];
-    v76 = [v7 rewardsTotalCurrencyCode];
-    if (v76)
+    rewards2 = [transactionCopy rewards];
+    rewardsTotalCurrencyCode = [transactionCopy rewardsTotalCurrencyCode];
+    if (rewardsTotalCurrencyCode)
     {
-      v77 = [(PKPaymentTransactionDetailAmountLineItemGenerator *)self _rewardsLineItemsForRewards:v75 currencyCode:v76];
+      v77 = [(PKPaymentTransactionDetailAmountLineItemGenerator *)self _rewardsLineItemsForRewards:rewards2 currencyCode:rewardsTotalCurrencyCode];
     }
 
     else
     {
-      v78 = [v7 currencyCode];
-      v79 = self;
-      v80 = v78;
-      v77 = [(PKPaymentTransactionDetailAmountLineItemGenerator *)v79 _rewardsLineItemsForRewards:v75 currencyCode:v78];
+      currencyCode2 = [transactionCopy currencyCode];
+      selfCopy2 = self;
+      v80 = currencyCode2;
+      v77 = [(PKPaymentTransactionDetailAmountLineItemGenerator *)selfCopy2 _rewardsLineItemsForRewards:rewards2 currencyCode:currencyCode2];
     }
 
-    v81 = [v77 lastObject];
-    [v81 setHasTrailingLineSeperator:1];
+    lastObject4 = [v77 lastObject];
+    [lastObject4 setHasTrailingLineSeperator:1];
 
     if ([v77 count])
     {
@@ -1105,65 +1105,65 @@ void __132__PKPaymentTransactionDetailAmountLineItemGenerator__lineItemsForPurch
   [*(a1 + 32) addObject:v11];
 }
 
-- (id)_lineItemsForPeerPaymentTransaction:(id)a3 transactionSourceCollection:(id)a4
+- (id)_lineItemsForPeerPaymentTransaction:(id)transaction transactionSourceCollection:(id)collection
 {
-  v6 = a3;
-  v7 = a4;
+  transactionCopy = transaction;
+  collectionCopy = collection;
   v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v9 = [v6 fees];
-  v10 = [v9 fees];
-  v11 = [v10 allObjects];
+  fees = [transactionCopy fees];
+  v9Fees = [fees fees];
+  allObjects = [v9Fees allObjects];
 
-  v12 = [v6 peerPaymentType];
-  v13 = [v11 count];
-  v14 = [v6 secondaryFundingSourceAmount];
-  if (v14)
+  peerPaymentType = [transactionCopy peerPaymentType];
+  v13 = [allObjects count];
+  secondaryFundingSourceAmount = [transactionCopy secondaryFundingSourceAmount];
+  if (secondaryFundingSourceAmount)
   {
-    v15 = v14;
-    v16 = [v6 secondaryFundingSourceCurrencyCode];
+    v15 = secondaryFundingSourceAmount;
+    secondaryFundingSourceCurrencyCode = [transactionCopy secondaryFundingSourceCurrencyCode];
 
-    if (v16)
+    if (secondaryFundingSourceCurrencyCode)
     {
-      v17 = [(PKPaymentTransactionDetailAmountLineItemGenerator *)self _primaryFundingSourceLineItemForTransaction:v6 transactionSourceCollection:v7];
+      v17 = [(PKPaymentTransactionDetailAmountLineItemGenerator *)self _primaryFundingSourceLineItemForTransaction:transactionCopy transactionSourceCollection:collectionCopy];
       [v8 addObject:v17];
-      v18 = [(PKPaymentTransactionDetailAmountLineItemGenerator *)self _secondaryFundingSourceLineItemForTransaction:v6];
+      v18 = [(PKPaymentTransactionDetailAmountLineItemGenerator *)self _secondaryFundingSourceLineItemForTransaction:transactionCopy];
       [v18 setHasTrailingLineSeperator:1];
       [v8 addObject:v18];
     }
   }
 
   v19 = 0;
-  if (v12 > 1)
+  if (peerPaymentType > 1)
   {
-    if (v12 == 2)
+    if (peerPaymentType == 2)
     {
-      v20 = [(PKPaymentTransactionDetailAmountLineItemGenerator *)self _totalReceivedLineItemForTransaction:v6];
+      v20 = [(PKPaymentTransactionDetailAmountLineItemGenerator *)self _totalReceivedLineItemForTransaction:transactionCopy];
     }
 
     else
     {
-      if (v12 != 3)
+      if (peerPaymentType != 3)
       {
         goto LABEL_15;
       }
 
-      v20 = [(PKPaymentTransactionDetailAmountLineItemGenerator *)self _totalRequestedLineItemForTransaction:v6];
+      v20 = [(PKPaymentTransactionDetailAmountLineItemGenerator *)self _totalRequestedLineItemForTransaction:transactionCopy];
     }
   }
 
-  else if (v12)
+  else if (peerPaymentType)
   {
-    if (v12 != 1)
+    if (peerPaymentType != 1)
     {
       goto LABEL_15;
     }
 
-    v20 = [(PKPaymentTransactionDetailAmountLineItemGenerator *)self _totalSentLineItemForTransaction:v6];
+    v20 = [(PKPaymentTransactionDetailAmountLineItemGenerator *)self _totalSentLineItemForTransaction:transactionCopy];
   }
 
   else
   {
-    v20 = [(PKPaymentTransactionDetailAmountLineItemGenerator *)self _subtotalLineItemForTransaction:v6];
+    v20 = [(PKPaymentTransactionDetailAmountLineItemGenerator *)self _subtotalLineItemForTransaction:transactionCopy];
   }
 
   v19 = v20;
@@ -1175,12 +1175,12 @@ void __132__PKPaymentTransactionDetailAmountLineItemGenerator__lineItemsForPurch
 LABEL_15:
   if (v13)
   {
-    v21 = [(PKPaymentTransactionDetailAmountLineItemGenerator *)self _feeLineItemsForFees:v11];
-    v22 = [v21 lastObject];
-    [v22 setHasTrailingLineSeperator:1];
+    v21 = [(PKPaymentTransactionDetailAmountLineItemGenerator *)self _feeLineItemsForFees:allObjects];
+    lastObject = [v21 lastObject];
+    [lastObject setHasTrailingLineSeperator:1];
 
     [v8 addObjectsFromArray:v21];
-    v23 = [(PKPaymentTransactionDetailAmountLineItemGenerator *)self _totalPaidLineItemForTransaction:v6 isUnqualified:0];
+    v23 = [(PKPaymentTransactionDetailAmountLineItemGenerator *)self _totalPaidLineItemForTransaction:transactionCopy isUnqualified:0];
     [v23 setHasTrailingLineSeperator:1];
     [v8 addObject:v23];
   }
@@ -1195,23 +1195,23 @@ LABEL_15:
   return v24;
 }
 
-- (id)_secondaryFundingSourceLineItemForTransaction:(id)a3
+- (id)_secondaryFundingSourceLineItemForTransaction:(id)transaction
 {
-  v3 = a3;
-  v4 = [v3 secondaryFundingSourceAmount];
-  v5 = [v3 secondaryFundingSourceCurrencyCode];
-  v6 = v5;
+  transactionCopy = transaction;
+  secondaryFundingSourceAmount = [transactionCopy secondaryFundingSourceAmount];
+  secondaryFundingSourceCurrencyCode = [transactionCopy secondaryFundingSourceCurrencyCode];
+  v6 = secondaryFundingSourceCurrencyCode;
   v7 = 0;
-  if (v4 && v5)
+  if (secondaryFundingSourceAmount && secondaryFundingSourceCurrencyCode)
   {
-    v7 = [objc_alloc(MEMORY[0x1E69B8780]) initWithAmount:v4 currency:v5 exponent:0];
+    v7 = [objc_alloc(MEMORY[0x1E69B8780]) initWithAmount:secondaryFundingSourceAmount currency:secondaryFundingSourceCurrencyCode exponent:0];
   }
 
-  v8 = [v3 secondaryFundingSourceFPANIdentifier];
-  if ([v8 length])
+  secondaryFundingSourceFPANIdentifier = [transactionCopy secondaryFundingSourceFPANIdentifier];
+  if ([secondaryFundingSourceFPANIdentifier length])
   {
-    v9 = [MEMORY[0x1E69B8A58] sharedInstance];
-    v10 = [v9 passWithFPANIdentifier:v8];
+    mEMORY[0x1E69B8A58] = [MEMORY[0x1E69B8A58] sharedInstance];
+    v10 = [mEMORY[0x1E69B8A58] passWithFPANIdentifier:secondaryFundingSourceFPANIdentifier];
 
     if (v10)
     {
@@ -1247,48 +1247,48 @@ LABEL_11:
   }
 
   v18 = [PKPaymentTransactionDetailAmountLineItemFundingSource alloc];
-  v19 = [v3 secondaryFundingSourceNetwork];
-  v20 = [v3 secondaryFundingSourceDPANSuffix];
-  v21 = [v3 secondaryFundingSourceDescription];
-  v14 = [(PKPaymentTransactionDetailAmountLineItemFundingSource *)v18 initWithAmount:v7 credentialType:v19 dpanSuffix:v20 cardDescription:v21];
+  secondaryFundingSourceNetwork = [transactionCopy secondaryFundingSourceNetwork];
+  secondaryFundingSourceDPANSuffix = [transactionCopy secondaryFundingSourceDPANSuffix];
+  secondaryFundingSourceDescription = [transactionCopy secondaryFundingSourceDescription];
+  v14 = [(PKPaymentTransactionDetailAmountLineItemFundingSource *)v18 initWithAmount:v7 credentialType:secondaryFundingSourceNetwork dpanSuffix:secondaryFundingSourceDPANSuffix cardDescription:secondaryFundingSourceDescription];
 
 LABEL_13:
 
   return v14;
 }
 
-- (id)_primaryFundingSourceLineItemForTransaction:(id)a3 transactionSourceCollection:(id)a4
+- (id)_primaryFundingSourceLineItemForTransaction:(id)transaction transactionSourceCollection:(id)collection
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v6 primaryFundingSourceAmount];
-  v8 = [v6 primaryFundingSourceCurrencyCode];
+  collectionCopy = collection;
+  transactionCopy = transaction;
+  primaryFundingSourceAmount = [transactionCopy primaryFundingSourceAmount];
+  primaryFundingSourceCurrencyCode = [transactionCopy primaryFundingSourceCurrencyCode];
 
   v9 = 0;
-  if (v7 && v8)
+  if (primaryFundingSourceAmount && primaryFundingSourceCurrencyCode)
   {
-    v9 = [objc_alloc(MEMORY[0x1E69B8780]) initWithAmount:v7 currency:v8 exponent:0];
+    v9 = [objc_alloc(MEMORY[0x1E69B8780]) initWithAmount:primaryFundingSourceAmount currency:primaryFundingSourceCurrencyCode exponent:0];
   }
 
-  v10 = [[PKPaymentTransactionDetailAmountLineItemFundingSource alloc] initWithAmount:v9 transactionSourceCollection:v5];
+  v10 = [[PKPaymentTransactionDetailAmountLineItemFundingSource alloc] initWithAmount:v9 transactionSourceCollection:collectionCopy];
 
   return v10;
 }
 
-- (id)_totalPaidLineItemForTransaction:(id)a3 isUnqualified:(BOOL)a4
+- (id)_totalPaidLineItemForTransaction:(id)transaction isUnqualified:(BOOL)unqualified
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = [v5 amount];
-  v7 = [v5 currencyCode];
+  unqualifiedCopy = unqualified;
+  transactionCopy = transaction;
+  amount = [transactionCopy amount];
+  currencyCode = [transactionCopy currencyCode];
 
   v8 = 0;
-  if (v6 && v7)
+  if (amount && currencyCode)
   {
-    v8 = [objc_alloc(MEMORY[0x1E69B8780]) initWithAmount:v6 currency:v7 exponent:0];
+    v8 = [objc_alloc(MEMORY[0x1E69B8780]) initWithAmount:amount currency:currencyCode exponent:0];
   }
 
-  if (v4)
+  if (unqualifiedCopy)
   {
     v9 = 4;
   }
@@ -1303,23 +1303,23 @@ LABEL_13:
   return v10;
 }
 
-- (id)_totalTransferredItemForTransaction:(id)a3
+- (id)_totalTransferredItemForTransaction:(id)transaction
 {
-  v3 = a3;
-  v4 = [v3 subtotalAmount];
-  v5 = [v3 currencyCode];
-  v6 = v5;
+  transactionCopy = transaction;
+  subtotalAmount = [transactionCopy subtotalAmount];
+  currencyCode = [transactionCopy currencyCode];
+  v6 = currencyCode;
   v7 = 0;
-  if (v4 && v5)
+  if (subtotalAmount && currencyCode)
   {
-    v7 = [objc_alloc(MEMORY[0x1E69B8780]) initWithAmount:v4 currency:v5 exponent:0];
+    v7 = [objc_alloc(MEMORY[0x1E69B8780]) initWithAmount:subtotalAmount currency:currencyCode exponent:0];
   }
 
-  v8 = [v3 secondaryFundingSourceFPANIdentifier];
-  if ([v8 length])
+  secondaryFundingSourceFPANIdentifier = [transactionCopy secondaryFundingSourceFPANIdentifier];
+  if ([secondaryFundingSourceFPANIdentifier length])
   {
-    v9 = [MEMORY[0x1E69B8A58] sharedInstance];
-    v10 = [v9 passWithFPANIdentifier:v8];
+    mEMORY[0x1E69B8A58] = [MEMORY[0x1E69B8A58] sharedInstance];
+    v10 = [mEMORY[0x1E69B8A58] passWithFPANIdentifier:secondaryFundingSourceFPANIdentifier];
 
     v11 = objc_alloc(MEMORY[0x1E69B9300]);
     v12 = [objc_alloc(MEMORY[0x1E69B92F8]) initWithPaymentPass:v10];
@@ -1336,16 +1336,16 @@ LABEL_13:
   return v14;
 }
 
-- (id)_totalSentLineItemForTransaction:(id)a3
+- (id)_totalSentLineItemForTransaction:(id)transaction
 {
-  v3 = a3;
-  v4 = [v3 subtotalAmount];
-  v5 = [v3 currencyCode];
+  transactionCopy = transaction;
+  subtotalAmount = [transactionCopy subtotalAmount];
+  currencyCode = [transactionCopy currencyCode];
 
   v6 = 0;
-  if (v4 && v5)
+  if (subtotalAmount && currencyCode)
   {
-    v6 = [objc_alloc(MEMORY[0x1E69B8780]) initWithAmount:v4 currency:v5 exponent:0];
+    v6 = [objc_alloc(MEMORY[0x1E69B8780]) initWithAmount:subtotalAmount currency:currencyCode exponent:0];
   }
 
   v7 = [[PKPaymentTransactionDetailAmountLineItemTotal alloc] initWithAmount:v6 totalType:1];
@@ -1353,19 +1353,19 @@ LABEL_13:
   return v7;
 }
 
-- (id)_totalReceivedLineItemForTransaction:(id)a3
+- (id)_totalReceivedLineItemForTransaction:(id)transaction
 {
-  v3 = a3;
-  v4 = [v3 amount];
-  v5 = [v3 currencyCode];
-  v6 = v5;
+  transactionCopy = transaction;
+  amount = [transactionCopy amount];
+  currencyCode = [transactionCopy currencyCode];
+  v6 = currencyCode;
   v7 = 0;
-  if (v4 && v5)
+  if (amount && currencyCode)
   {
-    v7 = [objc_alloc(MEMORY[0x1E69B8780]) initWithAmount:v4 currency:v5 exponent:0];
+    v7 = [objc_alloc(MEMORY[0x1E69B8780]) initWithAmount:amount currency:currencyCode exponent:0];
   }
 
-  if (([v3 transactionStatus] & 0xFFFFFFFFFFFFFFFELL) == 6)
+  if (([transactionCopy transactionStatus] & 0xFFFFFFFFFFFFFFFELL) == 6)
   {
     v8 = 3;
   }
@@ -1380,16 +1380,16 @@ LABEL_13:
   return v9;
 }
 
-- (id)_totalRequestedLineItemForTransaction:(id)a3
+- (id)_totalRequestedLineItemForTransaction:(id)transaction
 {
-  v3 = a3;
-  v4 = [v3 amount];
-  v5 = [v3 currencyCode];
+  transactionCopy = transaction;
+  amount = [transactionCopy amount];
+  currencyCode = [transactionCopy currencyCode];
 
   v6 = 0;
-  if (v4 && v5)
+  if (amount && currencyCode)
   {
-    v6 = [objc_alloc(MEMORY[0x1E69B8780]) initWithAmount:v4 currency:v5 exponent:0];
+    v6 = [objc_alloc(MEMORY[0x1E69B8780]) initWithAmount:amount currency:currencyCode exponent:0];
   }
 
   v7 = [[PKPaymentTransactionDetailAmountLineItemTotal alloc] initWithAmount:v6 totalType:7];
@@ -1397,16 +1397,16 @@ LABEL_13:
   return v7;
 }
 
-- (id)_subtotalLineItemForTransaction:(id)a3
+- (id)_subtotalLineItemForTransaction:(id)transaction
 {
-  v3 = a3;
-  v4 = [v3 subtotalAmount];
-  v5 = [v3 currencyCode];
+  transactionCopy = transaction;
+  subtotalAmount = [transactionCopy subtotalAmount];
+  currencyCode = [transactionCopy currencyCode];
 
   v6 = 0;
-  if (v4 && v5)
+  if (subtotalAmount && currencyCode)
   {
-    v6 = [objc_alloc(MEMORY[0x1E69B8780]) initWithAmount:v4 currency:v5 exponent:0];
+    v6 = [objc_alloc(MEMORY[0x1E69B8780]) initWithAmount:subtotalAmount currency:currencyCode exponent:0];
   }
 
   v7 = [[PKPaymentTransactionDetailAmountLineItemTotal alloc] initWithAmount:v6 totalType:4];
@@ -1414,16 +1414,16 @@ LABEL_13:
   return v7;
 }
 
-- (id)_feeLineItemsForFees:(id)a3
+- (id)_feeLineItemsForFees:(id)fees
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  feesCopy = fees;
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = v3;
+  v5 = feesCopy;
   v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
@@ -1465,23 +1465,23 @@ uint64_t __74__PKPaymentTransactionDetailAmountLineItemGenerator__feeLineItemsFo
   return v7;
 }
 
-- (id)_rewardsLineItemsForRewards:(id)a3 currencyCode:(id)a4
+- (id)_rewardsLineItemsForRewards:(id)rewards currencyCode:(id)code
 {
   v58 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v47 = a4;
+  rewardsCopy = rewards;
+  codeCopy = code;
   v46 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v43 = [v5 totalEligibleValueForUnit:1];
-  v44 = [MEMORY[0x1E696AB90] zero];
-  v45 = [v5 promotionalRewardsItems];
-  v41 = [v45 pk_hasObjectPassingTest:&__block_literal_global_379];
+  v43 = [rewardsCopy totalEligibleValueForUnit:1];
+  zero = [MEMORY[0x1E696AB90] zero];
+  promotionalRewardsItems = [rewardsCopy promotionalRewardsItems];
+  v41 = [promotionalRewardsItems pk_hasObjectPassingTest:&__block_literal_global_379];
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
   v55 = 0u;
-  v42 = v5;
-  v6 = [v5 rewardsItems];
-  v7 = [v6 countByEnumeratingWithState:&v52 objects:v57 count:16];
+  v42 = rewardsCopy;
+  rewardsItems = [rewardsCopy rewardsItems];
+  v7 = [rewardsItems countByEnumeratingWithState:&v52 objects:v57 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1493,25 +1493,25 @@ uint64_t __74__PKPaymentTransactionDetailAmountLineItemGenerator__feeLineItemsFo
       {
         if (*v53 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(rewardsItems);
         }
 
         v12 = *(*(&v52 + 1) + 8 * i);
-        v13 = [v12 state];
-        if (v13 != 3)
+        state = [v12 state];
+        if (state != 3)
         {
-          v14 = v13;
+          v14 = state;
           if ([v12 eligibleValueUnit] == 1)
           {
-            v15 = [v12 currencyAmount];
+            currencyAmount = [v12 currencyAmount];
 
-            if (v15)
+            if (currencyAmount)
             {
-              v16 = [v12 currencyAmount];
-              v17 = [v16 amount];
-              v18 = [(NSDecimalNumber *)v44 decimalNumberByAdding:v17];
+              currencyAmount2 = [v12 currencyAmount];
+              amount = [currencyAmount2 amount];
+              v18 = [(NSDecimalNumber *)zero decimalNumberByAdding:amount];
 
-              v44 = v18;
+              zero = v18;
             }
           }
 
@@ -1519,7 +1519,7 @@ uint64_t __74__PKPaymentTransactionDetailAmountLineItemGenerator__feeLineItemsFo
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v52 objects:v57 count:16];
+      v8 = [rewardsItems countByEnumeratingWithState:&v52 objects:v57 count:16];
     }
 
     while (v8);
@@ -1530,18 +1530,18 @@ uint64_t __74__PKPaymentTransactionDetailAmountLineItemGenerator__feeLineItemsFo
     v9 = 0;
   }
 
-  v19 = [MEMORY[0x1E696AB90] zero];
-  v20 = [v43 isEqualToNumber:v19];
+  zero2 = [MEMORY[0x1E696AB90] zero];
+  v20 = [v43 isEqualToNumber:zero2];
 
   if ((v20 & 1) == 0)
   {
-    v21 = [MEMORY[0x1E696AB90] zero];
-    v22 = [(NSDecimalNumber *)v44 isEqualToNumber:v21];
+    zero3 = [MEMORY[0x1E696AB90] zero];
+    v22 = [(NSDecimalNumber *)zero isEqualToNumber:zero3];
 
     v23 = 0;
-    if (v47 && (v22 & 1) == 0)
+    if (codeCopy && (v22 & 1) == 0)
     {
-      v23 = PKCurrencyAmountCreate(v44, v47);
+      v23 = PKCurrencyAmountCreate(zero, codeCopy);
     }
 
     v24 = [[PKPaymentTransactionDetailAmountLineItemRewards alloc] initWithRewardsValueUnit:1 eligibleValue:v43 isEligible:v9 & 1 totalAmount:v23 hasPromotionalReward:v41 promotionName:0];
@@ -1552,8 +1552,8 @@ uint64_t __74__PKPaymentTransactionDetailAmountLineItemGenerator__feeLineItemsFo
   v51 = 0u;
   v48 = 0u;
   v49 = 0u;
-  v25 = [v42 rewardsItems];
-  v26 = [v25 countByEnumeratingWithState:&v48 objects:v56 count:16];
+  rewardsItems2 = [v42 rewardsItems];
+  v26 = [rewardsItems2 countByEnumeratingWithState:&v48 objects:v56 count:16];
   if (v26)
   {
     v27 = v26;
@@ -1564,26 +1564,26 @@ uint64_t __74__PKPaymentTransactionDetailAmountLineItemGenerator__feeLineItemsFo
       {
         if (*v49 != v28)
         {
-          objc_enumerationMutation(v25);
+          objc_enumerationMutation(rewardsItems2);
         }
 
         v30 = *(*(&v48 + 1) + 8 * j);
         if ([v30 eligibleValueUnit] == 2)
         {
-          v31 = [v30 state];
-          v32 = [v30 eligibleValue];
-          v33 = PKCurrencyAmountCreate(v32, v47);
+          state2 = [v30 state];
+          eligibleValue = [v30 eligibleValue];
+          v33 = PKCurrencyAmountCreate(eligibleValue, codeCopy);
 
           v34 = [PKPaymentTransactionDetailAmountLineItemRewards alloc];
-          v35 = [v30 eligibleValue];
-          v36 = [v45 containsObject:v30];
-          v37 = [v30 promotionName];
-          v38 = [(PKPaymentTransactionDetailAmountLineItemRewards *)v34 initWithRewardsValueUnit:2 eligibleValue:v35 isEligible:v31 == 1 totalAmount:v33 hasPromotionalReward:v36 promotionName:v37];
+          eligibleValue2 = [v30 eligibleValue];
+          v36 = [promotionalRewardsItems containsObject:v30];
+          promotionName = [v30 promotionName];
+          v38 = [(PKPaymentTransactionDetailAmountLineItemRewards *)v34 initWithRewardsValueUnit:2 eligibleValue:eligibleValue2 isEligible:state2 == 1 totalAmount:v33 hasPromotionalReward:v36 promotionName:promotionName];
           [v46 addObject:v38];
         }
       }
 
-      v27 = [v25 countByEnumeratingWithState:&v48 objects:v56 count:16];
+      v27 = [rewardsItems2 countByEnumeratingWithState:&v48 objects:v56 count:16];
     }
 
     while (v27);
@@ -1594,12 +1594,12 @@ uint64_t __74__PKPaymentTransactionDetailAmountLineItemGenerator__feeLineItemsFo
   return v39;
 }
 
-- (id)_foreignExchangeLineItemsForExchangeInfo:(id)a3
+- (id)_foreignExchangeLineItemsForExchangeInfo:(id)info
 {
   v8[2] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [[PKPaymentTransactionDetailAmountLineItemForeignExchange alloc] initWithForeignExchangeInformation:v3 type:0];
-  v5 = [[PKPaymentTransactionDetailAmountLineItemForeignExchange alloc] initWithForeignExchangeInformation:v3 type:1];
+  infoCopy = info;
+  v4 = [[PKPaymentTransactionDetailAmountLineItemForeignExchange alloc] initWithForeignExchangeInformation:infoCopy type:0];
+  v5 = [[PKPaymentTransactionDetailAmountLineItemForeignExchange alloc] initWithForeignExchangeInformation:infoCopy type:1];
 
   v8[0] = v4;
   v8[1] = v5;

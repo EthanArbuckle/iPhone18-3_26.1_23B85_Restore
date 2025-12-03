@@ -5,9 +5,9 @@
 - (UIBezierPath)accessibilityPath;
 - (unint64_t)accessibilityTraits;
 - (void)layoutSubviews;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setIsAccessibilityElement:(BOOL)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setIsAccessibilityElement:(BOOL)element;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation LyricsSelectionViewController.LineCell
@@ -19,46 +19,46 @@
   return [(LyricsSelectionViewController.LineCell *)&v3 isHighlighted];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v5 = _s8LineCellCMa();
   v9.receiver = self;
   v9.super_class = v5;
-  v6 = self;
-  v7 = [(LyricsSelectionViewController.LineCell *)&v9 isHighlighted];
-  v8.receiver = v6;
+  selfCopy = self;
+  isHighlighted = [(LyricsSelectionViewController.LineCell *)&v9 isHighlighted];
+  v8.receiver = selfCopy;
   v8.super_class = v5;
-  [(LyricsSelectionViewController.LineCell *)&v8 setHighlighted:v3];
-  sub_1007F1910(v7);
+  [(LyricsSelectionViewController.LineCell *)&v8 setHighlighted:highlightedCopy];
+  sub_1007F1910(isHighlighted);
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1007F3124();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_1007F37B8(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_1007F37B8(change);
 }
 
-- (void)setIsAccessibilityElement:(BOOL)a3
+- (void)setIsAccessibilityElement:(BOOL)element
 {
-  v3 = a3;
+  elementCopy = element;
   v4.receiver = self;
   v4.super_class = _s8LineCellCMa();
-  [(LyricsSelectionViewController.LineCell *)&v4 setIsAccessibilityElement:v3];
+  [(LyricsSelectionViewController.LineCell *)&v4 setIsAccessibilityElement:elementCopy];
 }
 
 - (UIBezierPath)accessibilityPath
 {
-  v2 = [*(&self->super.super.super.super.super.isa + OBJC_IVAR____TtCC5Music29LyricsSelectionViewController8LineCell_containerView) accessibilityPath];
+  accessibilityPath = [*(&self->super.super.super.super.super.isa + OBJC_IVAR____TtCC5Music29LyricsSelectionViewController8LineCell_containerView) accessibilityPath];
 
-  return v2;
+  return accessibilityPath;
 }
 
 - (NSString)accessibilityLabel
@@ -71,7 +71,7 @@
 
 - (NSString)accessibilityHint
 {
-  v2 = self;
+  selfCopy = self;
   sub_1007F4410();
   v4 = v3;
 
@@ -90,7 +90,7 @@
 
 - (unint64_t)accessibilityTraits
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1007F4640();
 
   return v3;

@@ -1,9 +1,9 @@
 @interface HDSPMobileTimerBridge
-+ (BOOL)sleepAlarm:(id)a3 matchesSleepScheduleModel:(id)a4;
-+ (id)sleepScheduleModelFromSleepAlarm:(id)a3;
++ (BOOL)sleepAlarm:(id)alarm matchesSleepScheduleModel:(id)model;
++ (id)sleepScheduleModelFromSleepAlarm:(id)alarm;
 - (HDSPMobileTimerBridge)init;
-- (HDSPMobileTimerBridge)initWithAlarmManager:(id)a3;
-- (id)sleepAlarmsFutureIgnoringCache:(BOOL)a3;
+- (HDSPMobileTimerBridge)initWithAlarmManager:(id)manager;
+- (id)sleepAlarmsFutureIgnoringCache:(BOOL)cache;
 - (void)_alarmServerReady;
 - (void)_checkAlarmServer;
 - (void)resetSleepAlarmSnoozeState;
@@ -20,16 +20,16 @@
   return v4;
 }
 
-- (HDSPMobileTimerBridge)initWithAlarmManager:(id)a3
+- (HDSPMobileTimerBridge)initWithAlarmManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v10.receiver = self;
   v10.super_class = HDSPMobileTimerBridge;
   v6 = [(HDSPMobileTimerBridge *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_alarmManager, a3);
+    objc_storeStrong(&v6->_alarmManager, manager);
     [(HDSPMobileTimerBridge *)v7 _checkAlarmServer];
     v8 = v7;
   }
@@ -51,8 +51,8 @@
   alarmServerReady = self->_alarmServerReady;
   self->_alarmServerReady = v4;
 
-  v6 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v6 addObserver:self selector:sel__alarmServerReady name:*MEMORY[0x277D295D8] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__alarmServerReady name:*MEMORY[0x277D295D8] object:0];
 
   objc_destroyWeak(&v8);
   objc_destroyWeak(&location);
@@ -145,20 +145,20 @@ LABEL_9:
   }
 
   [(NAFuture *)self->_alarmServerReady finishWithNoResult];
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 removeObserver:self name:*MEMORY[0x277D295D8] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D295D8] object:0];
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (id)sleepAlarmsFutureIgnoringCache:(BOOL)a3
+- (id)sleepAlarmsFutureIgnoringCache:(BOOL)cache
 {
   alarmServerReady = self->_alarmServerReady;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __56__HDSPMobileTimerBridge_sleepAlarmsFutureIgnoringCache___block_invoke;
   v6[3] = &unk_279C7D4E0;
-  v7 = a3;
+  cacheCopy = cache;
   v6[4] = self;
   v4 = [(NAFuture *)alarmServerReady flatMap:v6];
 
@@ -192,13 +192,13 @@ id __56__HDSPMobileTimerBridge_sleepAlarmsFutureIgnoringCache___block_invoke(uin
 
 - (void)updateSleepAlarms
 {
-  v3 = [(MTAlarmManager *)self->_alarmManager updateSleepAlarms];
+  updateSleepAlarms = [(MTAlarmManager *)self->_alarmManager updateSleepAlarms];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __42__HDSPMobileTimerBridge_updateSleepAlarms__block_invoke;
   v5[3] = &unk_279C7BFB0;
   v5[4] = self;
-  v4 = [v3 addFailureBlock:v5];
+  v4 = [updateSleepAlarms addFailureBlock:v5];
 }
 
 void __42__HDSPMobileTimerBridge_updateSleepAlarms__block_invoke(uint64_t a1, void *a2)
@@ -221,13 +221,13 @@ void __42__HDSPMobileTimerBridge_updateSleepAlarms__block_invoke(uint64_t a1, vo
 
 - (void)resetSleepAlarmSnoozeState
 {
-  v3 = [(MTAlarmManager *)self->_alarmManager resetSleepAlarmSnoozeState];
+  resetSleepAlarmSnoozeState = [(MTAlarmManager *)self->_alarmManager resetSleepAlarmSnoozeState];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __51__HDSPMobileTimerBridge_resetSleepAlarmSnoozeState__block_invoke;
   v5[3] = &unk_279C7BFB0;
   v5[4] = self;
-  v4 = [v3 addFailureBlock:v5];
+  v4 = [resetSleepAlarmSnoozeState addFailureBlock:v5];
 }
 
 void __51__HDSPMobileTimerBridge_resetSleepAlarmSnoozeState__block_invoke(uint64_t a1, void *a2)
@@ -248,56 +248,56 @@ void __51__HDSPMobileTimerBridge_resetSleepAlarmSnoozeState__block_invoke(uint64
   v5 = *MEMORY[0x277D85DE8];
 }
 
-+ (BOOL)sleepAlarm:(id)a3 matchesSleepScheduleModel:(id)a4
++ (BOOL)sleepAlarm:(id)alarm matchesSleepScheduleModel:(id)model
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 sleepSchedule];
-  v8 = v7;
-  if (v5 | v7)
+  alarmCopy = alarm;
+  modelCopy = model;
+  sleepSchedule = [modelCopy sleepSchedule];
+  v8 = sleepSchedule;
+  if (alarmCopy | sleepSchedule)
   {
     v9 = 0;
-    if (v5 && v7)
+    if (alarmCopy && sleepSchedule)
     {
-      v10 = [v7 occurrences];
-      v11 = [v10 firstObject];
+      occurrences = [sleepSchedule occurrences];
+      firstObject = [occurrences firstObject];
 
-      v12 = [v11 alarmConfiguration];
-      v13 = [v6 sleepSettings];
-      v14 = [v5 hour];
-      v15 = [v11 wakeUpComponents];
-      if (v14 == [v15 hour])
+      alarmConfiguration = [firstObject alarmConfiguration];
+      sleepSettings = [modelCopy sleepSettings];
+      hour = [alarmCopy hour];
+      wakeUpComponents = [firstObject wakeUpComponents];
+      if (hour == [wakeUpComponents hour])
       {
-        v16 = [v5 minute];
-        v17 = [v11 wakeUpComponents];
-        if (v16 == [v17 minute])
+        minute = [alarmCopy minute];
+        wakeUpComponents2 = [firstObject wakeUpComponents];
+        if (minute == [wakeUpComponents2 minute])
         {
-          v18 = [v5 bedtimeHour];
-          v19 = [v11 bedtimeComponents];
-          if (v18 == [v19 hour])
+          bedtimeHour = [alarmCopy bedtimeHour];
+          bedtimeComponents = [firstObject bedtimeComponents];
+          if (bedtimeHour == [bedtimeComponents hour])
           {
-            v20 = [v5 bedtimeMinute];
-            v39 = [v11 bedtimeComponents];
-            if (v20 == [v39 minute] && (v21 = objc_msgSend(v5, "repeatSchedule"), v21 == objc_msgSend(v11, "weekdays")) && (v22 = objc_msgSend(v5, "sleepMode"), v22 == objc_msgSend(v13, "scheduledSleepMode")))
+            bedtimeMinute = [alarmCopy bedtimeMinute];
+            bedtimeComponents2 = [firstObject bedtimeComponents];
+            if (bedtimeMinute == [bedtimeComponents2 minute] && (v21 = objc_msgSend(alarmCopy, "repeatSchedule"), v21 == objc_msgSend(firstObject, "weekdays")) && (v22 = objc_msgSend(alarmCopy, "sleepMode"), v22 == objc_msgSend(sleepSettings, "scheduledSleepMode")))
             {
-              v38 = [v5 bedtimeReminder];
-              if ((v38 == 0) != [v13 bedtimeReminders] && (v24 = objc_msgSend(v5, "bedtimeReminderMinutes"), v24 == objc_msgSend(v8, "windDownMinutes")) && (v25 = objc_msgSend(v5, "sleepSchedule"), v25 == objc_msgSend(v8, "isEnabled")) && (v26 = objc_msgSend(v5, "isEnabled"), v26 == objc_msgSend(v12, "isEnabled")))
+              bedtimeReminder = [alarmCopy bedtimeReminder];
+              if ((bedtimeReminder == 0) != [sleepSettings bedtimeReminders] && (v24 = objc_msgSend(alarmCopy, "bedtimeReminderMinutes"), v24 == objc_msgSend(v8, "windDownMinutes")) && (v25 = objc_msgSend(alarmCopy, "sleepSchedule"), v25 == objc_msgSend(v8, "isEnabled")) && (v26 = objc_msgSend(alarmCopy, "isEnabled"), v26 == objc_msgSend(alarmConfiguration, "isEnabled")))
               {
-                v37 = [v5 sound];
-                v27 = [v37 soundVolume];
-                v35 = [v12 soundVolume];
-                v36 = v27;
+                sound = [alarmCopy sound];
+                soundVolume = [sound soundVolume];
+                soundVolume2 = [alarmConfiguration soundVolume];
+                v36 = soundVolume;
                 if (NAEqualObjects())
                 {
-                  v34 = [v5 sound];
-                  v28 = [v34 toneIdentifier];
-                  v32 = [v12 toneIdentifier];
-                  v33 = v28;
+                  sound2 = [alarmCopy sound];
+                  toneIdentifier = [sound2 toneIdentifier];
+                  toneIdentifier2 = [alarmConfiguration toneIdentifier];
+                  v33 = toneIdentifier;
                   if (NAEqualObjects())
                   {
-                    v31 = [v5 sound];
-                    v30 = [v31 vibrationIdentifier];
-                    v29 = [v12 vibrationIdentifier];
+                    sound3 = [alarmCopy sound];
+                    vibrationIdentifier = [sound3 vibrationIdentifier];
+                    vibrationIdentifier2 = [alarmConfiguration vibrationIdentifier];
                     v9 = NAEqualObjects();
                   }
 
@@ -352,82 +352,82 @@ void __51__HDSPMobileTimerBridge_resetSleepAlarmSnoozeState__block_invoke(uint64
   return v9;
 }
 
-+ (id)sleepScheduleModelFromSleepAlarm:(id)a3
++ (id)sleepScheduleModelFromSleepAlarm:(id)alarm
 {
-  v3 = a3;
-  if (v3)
+  alarmCopy = alarm;
+  if (alarmCopy)
   {
     v4 = objc_alloc_init(MEMORY[0x277D62488]);
-    [v4 setEnabled:{objc_msgSend(v3, "sleepSchedule")}];
-    [v4 setWindDownMinutes:{objc_msgSend(v3, "bedtimeReminderMinutes")}];
+    [v4 setEnabled:{objc_msgSend(alarmCopy, "sleepSchedule")}];
+    [v4 setWindDownMinutes:{objc_msgSend(alarmCopy, "bedtimeReminderMinutes")}];
     v5 = objc_alloc_init(MEMORY[0x277D62490]);
     v6 = objc_alloc_init(MEMORY[0x277CBEAB8]);
-    [v6 setHour:{objc_msgSend(v3, "bedtimeHour")}];
-    [v6 setMinute:{objc_msgSend(v3, "bedtimeMinute")}];
+    [v6 setHour:{objc_msgSend(alarmCopy, "bedtimeHour")}];
+    [v6 setMinute:{objc_msgSend(alarmCopy, "bedtimeMinute")}];
     [v5 setBedtimeComponents:v6];
     v7 = objc_alloc_init(MEMORY[0x277CBEAB8]);
-    [v7 setHour:{objc_msgSend(v3, "hour")}];
-    [v7 setMinute:{objc_msgSend(v3, "minute")}];
+    [v7 setHour:{objc_msgSend(alarmCopy, "hour")}];
+    [v7 setMinute:{objc_msgSend(alarmCopy, "minute")}];
     [v5 setWakeUpComponents:v7];
-    [v5 setWeekdays:{objc_msgSend(v3, "repeatSchedule")}];
+    [v5 setWeekdays:{objc_msgSend(alarmCopy, "repeatSchedule")}];
     v8 = objc_alloc_init(MEMORY[0x277D62478]);
-    [v8 setEnabled:{objc_msgSend(v3, "isEnabled")}];
-    v9 = [v3 sound];
-    v10 = [v9 soundVolume];
-    [v8 setSoundVolume:v10];
+    [v8 setEnabled:{objc_msgSend(alarmCopy, "isEnabled")}];
+    sound = [alarmCopy sound];
+    soundVolume = [sound soundVolume];
+    [v8 setSoundVolume:soundVolume];
 
-    v11 = [v3 sound];
-    v12 = [v11 toneIdentifier];
-    [v8 setToneIdentifier:v12];
+    sound2 = [alarmCopy sound];
+    toneIdentifier = [sound2 toneIdentifier];
+    [v8 setToneIdentifier:toneIdentifier];
 
-    v13 = [v3 sound];
-    v14 = [v13 vibrationIdentifier];
-    [v8 setVibrationIdentifier:v14];
+    sound3 = [alarmCopy sound];
+    vibrationIdentifier = [sound3 vibrationIdentifier];
+    [v8 setVibrationIdentifier:vibrationIdentifier];
 
     [v5 setAlarmConfiguration:v8];
     [v4 saveOccurrence:v5];
-    v15 = [v3 lastModifiedDate];
-    [v4 setLastModifiedDate:v15];
+    lastModifiedDate = [alarmCopy lastModifiedDate];
+    [v4 setLastModifiedDate:lastModifiedDate];
 
     v16 = objc_alloc_init(MEMORY[0x277D62498]);
-    [v16 setScheduledSleepMode:{objc_msgSend(v3, "sleepMode")}];
-    v17 = [v3 bedtimeReminder];
+    [v16 setScheduledSleepMode:{objc_msgSend(alarmCopy, "sleepMode")}];
+    bedtimeReminder = [alarmCopy bedtimeReminder];
 
-    if (!v17)
+    if (!bedtimeReminder)
     {
       [v16 setBedtimeReminders:0];
     }
 
-    v18 = [v3 lastModifiedDate];
-    [v16 setLastModifiedDate:v18];
+    lastModifiedDate2 = [alarmCopy lastModifiedDate];
+    [v16 setLastModifiedDate:lastModifiedDate2];
 
     v19 = objc_alloc_init(MEMORY[0x277D62480]);
-    v20 = [v3 dismissedDate];
-    if (v20)
+    dismissedDate = [alarmCopy dismissedDate];
+    if (dismissedDate)
     {
-      [v19 setWakeUpAlarmDismissedDate:v20];
+      [v19 setWakeUpAlarmDismissedDate:dismissedDate];
     }
 
     else
     {
-      v23 = [MEMORY[0x277CBEAA8] distantPast];
-      [v19 setWakeUpAlarmDismissedDate:v23];
+      distantPast = [MEMORY[0x277CBEAA8] distantPast];
+      [v19 setWakeUpAlarmDismissedDate:distantPast];
     }
 
-    v24 = [v3 snoozeFireDate];
-    if (v24)
+    snoozeFireDate = [alarmCopy snoozeFireDate];
+    if (snoozeFireDate)
     {
-      [v19 setWakeUpAlarmSnoozedUntilDate:v24];
+      [v19 setWakeUpAlarmSnoozedUntilDate:snoozeFireDate];
     }
 
     else
     {
-      v25 = [MEMORY[0x277CBEAA8] distantPast];
-      [v19 setWakeUpAlarmSnoozedUntilDate:v25];
+      distantPast2 = [MEMORY[0x277CBEAA8] distantPast];
+      [v19 setWakeUpAlarmSnoozedUntilDate:distantPast2];
     }
 
-    v26 = [v3 lastModifiedDate];
-    [v19 setLastModifiedDate:v26];
+    lastModifiedDate3 = [alarmCopy lastModifiedDate];
+    [v19 setLastModifiedDate:lastModifiedDate3];
 
     v22 = [MEMORY[0x277D62500] sleepScheduleModelWithSleepSchedule:v4 sleepSettings:v16 sleepEventRecord:v19];
   }

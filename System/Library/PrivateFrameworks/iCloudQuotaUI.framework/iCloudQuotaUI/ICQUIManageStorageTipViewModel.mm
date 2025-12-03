@@ -1,14 +1,14 @@
 @interface ICQUIManageStorageTipViewModel
 - (AMSUIMessageRequest)request;
-- (ICQUIManageStorageTipViewModel)initWithSectionAttributes:(id)a3 rows:(id)a4;
-- (ICQUIManageStorageTipViewModel)initWithTipInfo:(id)a3;
+- (ICQUIManageStorageTipViewModel)initWithSectionAttributes:(id)attributes rows:(id)rows;
+- (ICQUIManageStorageTipViewModel)initWithTipInfo:(id)info;
 @end
 
 @implementation ICQUIManageStorageTipViewModel
 
-- (ICQUIManageStorageTipViewModel)initWithTipInfo:(id)a3
+- (ICQUIManageStorageTipViewModel)initWithTipInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v5 = objc_alloc_init(MEMORY[0x277D7F368]);
   v28.receiver = self;
   v28.super_class = ICQUIManageStorageTipViewModel;
@@ -19,27 +19,27 @@
     goto LABEL_11;
   }
 
-  v7 = [v4 title];
+  title = [infoCopy title];
   title = v6->_title;
-  v6->_title = v7;
+  v6->_title = title;
 
-  v9 = [v4 subtitle];
+  subtitle = [infoCopy subtitle];
   subTitle = v6->_subTitle;
-  v6->_subTitle = v9;
+  v6->_subTitle = subtitle;
 
-  v11 = [v4 icon];
+  icon = [infoCopy icon];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
-  v13 = [v4 icon];
-  v14 = v13;
+  icon2 = [infoCopy icon];
+  icon3 = icon2;
   if (isKindOfClass)
   {
-    v15 = [v13 path];
+    path = [icon2 path];
     systemIconName = v6->_systemIconName;
-    v6->_systemIconName = v15;
+    v6->_systemIconName = path;
 
-    v17 = [v14 systemColorName];
+    systemColorName = [icon3 systemColorName];
     v18 = &OBJC_IVAR___ICQUIManageStorageTipViewModel__systemColor;
   }
 
@@ -53,18 +53,18 @@
       goto LABEL_7;
     }
 
-    v14 = [v4 icon];
-    v17 = [v14 imageURL];
+    icon3 = [infoCopy icon];
+    systemColorName = [icon3 imageURL];
     v18 = &OBJC_IVAR___ICQUIManageStorageTipViewModel__iconURL;
   }
 
   v20 = *v18;
   v21 = *(&v6->super.super.isa + v20);
-  *(&v6->super.super.isa + v20) = v17;
+  *(&v6->super.super.isa + v20) = systemColorName;
 
 LABEL_7:
-  v22 = [v4 actions];
-  v23 = [ICQUIManageStorageTipAction actionsFromActionInfos:v22];
+  actions = [infoCopy actions];
+  v23 = [ICQUIManageStorageTipAction actionsFromActionInfos:actions];
   actions = v6->_actions;
   v6->_actions = v23;
 
@@ -85,10 +85,10 @@ LABEL_11:
   return v6;
 }
 
-- (ICQUIManageStorageTipViewModel)initWithSectionAttributes:(id)a3 rows:(id)a4
+- (ICQUIManageStorageTipViewModel)initWithSectionAttributes:(id)attributes rows:(id)rows
 {
-  v6 = a3;
-  v7 = a4;
+  attributesCopy = attributes;
+  rowsCopy = rows;
   v8 = objc_alloc_init(MEMORY[0x277D7F368]);
   v29.receiver = self;
   v29.super_class = ICQUIManageStorageTipViewModel;
@@ -96,34 +96,34 @@ LABEL_11:
 
   if (v9)
   {
-    v10 = [v6 objectForKeyedSubscript:@"title"];
+    v10 = [attributesCopy objectForKeyedSubscript:@"title"];
     title = v9->_title;
     v9->_title = v10;
 
-    v12 = [v6 objectForKeyedSubscript:@"subTitle"];
+    v12 = [attributesCopy objectForKeyedSubscript:@"subTitle"];
     subTitle = v9->_subTitle;
     v9->_subTitle = v12;
 
-    v14 = [v6 objectForKeyedSubscript:@"systemIcon"];
+    v14 = [attributesCopy objectForKeyedSubscript:@"systemIcon"];
     systemIconName = v9->_systemIconName;
     v9->_systemIconName = v14;
 
-    v16 = [v6 objectForKeyedSubscript:@"id"];
+    v16 = [attributesCopy objectForKeyedSubscript:@"id"];
     sectionID = v9->_sectionID;
     v9->_sectionID = v16;
 
-    v18 = [v6 objectForKeyedSubscript:@"systemColor"];
+    v18 = [attributesCopy objectForKeyedSubscript:@"systemColor"];
     systemColor = v9->_systemColor;
     v9->_systemColor = v18;
 
-    v20 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v7, "count")}];
+    v20 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(rowsCopy, "count")}];
     v27[0] = MEMORY[0x277D85DD0];
     v27[1] = 3221225472;
     v27[2] = __65__ICQUIManageStorageTipViewModel_initWithSectionAttributes_rows___block_invoke;
     v27[3] = &unk_27A65B608;
     v21 = v20;
     v28 = v21;
-    [v7 enumerateObjectsUsingBlock:v27];
+    [rowsCopy enumerateObjectsUsingBlock:v27];
     v22 = [v21 copy];
     actions = v9->_actions;
     v9->_actions = v22;

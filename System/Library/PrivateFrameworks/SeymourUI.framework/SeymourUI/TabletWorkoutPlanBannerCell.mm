@@ -12,13 +12,13 @@
   v6 = &v10 - v5;
   v11.receiver = self;
   v11.super_class = ObjectType;
-  v7 = self;
+  selfCopy = self;
   [(TabletWorkoutPlanBannerCell *)&v11 prepareForReuse];
   v8 = type metadata accessor for ShelfCellItemInfo();
   (*(*(v8 - 8) + 56))(v6, 1, 1, v8);
   v9 = OBJC_IVAR____TtC9SeymourUI27TabletWorkoutPlanBannerCell_itemInfo;
   swift_beginAccess();
-  sub_20B5E267C(v6, v7 + v9);
+  sub_20B5E267C(v6, selfCopy + v9);
   swift_endAccess();
 }
 

@@ -1,9 +1,9 @@
 @interface FormatButton
 - (BOOL)isAccessibilityElement;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (NSArray)accessibilityCustomActions;
 - (NSArray)accessibilityElements;
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4;
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location;
 - (int64_t)accessibilityContainerType;
 - (unint64_t)accessibilityTraits;
 - (void)layoutSubviews;
@@ -21,12 +21,12 @@
   sub_1D726344C();
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = self;
-  [(FormatButton *)v6 bounds];
+  y = inside.y;
+  x = inside.x;
+  selfCopy = self;
+  [(FormatButton *)selfCopy bounds];
   v11.origin.x = UIEdgeInsetsInsetRect_3(v7);
   v10.x = x;
   v10.y = y;
@@ -37,7 +37,7 @@
 
 - (int64_t)accessibilityContainerType
 {
-  v2 = self;
+  selfCopy = self;
   v3 = FormatButton.accessibilityContainerType.getter();
 
   return v3;
@@ -50,7 +50,7 @@
     return 0;
   }
 
-  v2 = self;
+  selfCopy = self;
 
   v3 = sub_1D6A5E96C();
   v5 = v4;
@@ -90,7 +90,7 @@
     return 0;
   }
 
-  v2 = self;
+  selfCopy = self;
 
   v3 = sub_1D6A6082C();
 
@@ -99,7 +99,7 @@
 
 - (NSArray)accessibilityCustomActions
 {
-  v2 = self;
+  selfCopy = self;
   v3 = FormatButton.accessibilityCustomActions.getter();
 
   if (v3)
@@ -116,10 +116,10 @@
   return v4;
 }
 
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location
 {
-  v5 = a3;
-  v6 = self;
+  interactionCopy = interaction;
+  selfCopy = self;
   v7 = _s8NewsFeed12FormatButtonC22contextMenuInteraction_016configurationForF10AtLocationSo09UIContextF13ConfigurationCSgSo0lfG0C_So7CGPointVtF_0();
 
   return v7;

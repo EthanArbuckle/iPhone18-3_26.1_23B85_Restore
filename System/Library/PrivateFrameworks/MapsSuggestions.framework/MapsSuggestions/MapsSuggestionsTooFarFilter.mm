@@ -1,32 +1,32 @@
 @interface MapsSuggestionsTooFarFilter
-- (BOOL)shouldKeepEntry:(id)a3;
+- (BOOL)shouldKeepEntry:(id)entry;
 @end
 
 @implementation MapsSuggestionsTooFarFilter
 
-- (BOOL)shouldKeepEntry:(id)a3
+- (BOOL)shouldKeepEntry:(id)entry
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  entryCopy = entry;
+  v4 = entryCopy;
+  if (entryCopy)
   {
-    if (MapsSuggestionsIsShortcutEntry(v3))
+    if (MapsSuggestionsIsShortcutEntry(entryCopy))
     {
 LABEL_3:
       v5 = 1;
       goto LABEL_13;
     }
 
-    v7 = [v4 type];
-    if (v7 > 0x19)
+    type = [v4 type];
+    if (type > 0x19)
     {
       v9 = 0.0;
     }
 
     else
     {
-      if (((1 << v7) & 0x1FFF7FF) == 0)
+      if (((1 << type) & 0x1FFF7FF) == 0)
       {
         goto LABEL_3;
       }

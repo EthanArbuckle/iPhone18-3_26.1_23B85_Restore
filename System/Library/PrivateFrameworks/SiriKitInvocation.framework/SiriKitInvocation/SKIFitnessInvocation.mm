@@ -1,43 +1,43 @@
 @interface SKIFitnessInvocation
-+ (id)announcePayloadFromUserData:(id)a3;
-+ (id)announceWorkoutReminder:(id)a3 announcePayload:(id)a4;
-+ (id)announceWorkoutVoiceFeedback:(id)a3 announcePayload:(id)a4;
-+ (id)updateStartLocalRequest:(id)a3 withNewAnnouncePayload:(id)a4;
-+ (id)workoutReminderFromPayload:(id)a3;
-+ (id)workoutVoiceFeedbackFromPayload:(id)a3;
-+ (void)updateDict:(id)a3 withAnnouncePayload:(id)a4;
++ (id)announcePayloadFromUserData:(id)data;
++ (id)announceWorkoutReminder:(id)reminder announcePayload:(id)payload;
++ (id)announceWorkoutVoiceFeedback:(id)feedback announcePayload:(id)payload;
++ (id)updateStartLocalRequest:(id)request withNewAnnouncePayload:(id)payload;
++ (id)workoutReminderFromPayload:(id)payload;
++ (id)workoutVoiceFeedbackFromPayload:(id)payload;
++ (void)updateDict:(id)dict withAnnouncePayload:(id)payload;
 @end
 
 @implementation SKIFitnessInvocation
 
-+ (id)announceWorkoutReminder:(id)a3 announcePayload:(id)a4
++ (id)announceWorkoutReminder:(id)reminder announcePayload:(id)payload
 {
   v6 = MEMORY[0x277CBEB38];
-  v7 = a4;
-  v8 = a3;
+  payloadCopy = payload;
+  reminderCopy = reminder;
   v9 = [[v6 alloc] initWithCapacity:8];
-  v10 = [v8 predictionIdentifier];
-  [v9 setValue:v10 forKey:@"predictionIdentifier"];
+  predictionIdentifier = [reminderCopy predictionIdentifier];
+  [v9 setValue:predictionIdentifier forKey:@"predictionIdentifier"];
 
-  v11 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v8, "workoutType")}];
+  v11 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(reminderCopy, "workoutType")}];
   [v9 setValue:v11 forKey:@"workoutType"];
 
-  v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v8, "workoutActivityType")}];
+  v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(reminderCopy, "workoutActivityType")}];
   [v9 setValue:v12 forKey:@"workoutActivityType"];
 
-  v13 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v8, "workoutLocationType")}];
+  v13 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(reminderCopy, "workoutLocationType")}];
   [v9 setValue:v13 forKey:@"workoutLocationType"];
 
-  v14 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v8, "workoutSwimmingLocationType")}];
+  v14 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(reminderCopy, "workoutSwimmingLocationType")}];
   [v9 setValue:v14 forKey:@"workoutSwimmingLocationType"];
 
   v15 = MEMORY[0x277CCABB0];
-  v16 = [v8 predictionType];
+  predictionType = [reminderCopy predictionType];
 
-  v17 = [v15 numberWithInteger:v16];
+  v17 = [v15 numberWithInteger:predictionType];
   [v9 setValue:v17 forKey:@"predictionType"];
 
-  [a1 updateDict:v9 withAnnouncePayload:v7];
+  [self updateDict:v9 withAnnouncePayload:payloadCopy];
   v18 = +[SKIDirectInvocationContext contextForAnnounceNotifications];
   v19 = [[SKIDirectInvocationPayload alloc] initWithIdentifier:@"com.apple.siri.directInvocation.fitness.announceWorkoutReminder"];
   [(SKIDirectInvocationPayload *)v19 setUserData:v9];
@@ -47,45 +47,45 @@
   return v21;
 }
 
-+ (id)workoutReminderFromPayload:(id)a3
++ (id)workoutReminderFromPayload:(id)payload
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"predictionIdentifier"];
-  v5 = [v4 stringValue];
+  payloadCopy = payload;
+  v4 = [payloadCopy objectForKeyedSubscript:@"predictionIdentifier"];
+  stringValue = [v4 stringValue];
 
-  v6 = [v3 objectForKeyedSubscript:@"predictionType"];
-  v7 = [v6 integerValue];
+  v6 = [payloadCopy objectForKeyedSubscript:@"predictionType"];
+  integerValue = [v6 integerValue];
 
-  v8 = [v3 objectForKeyedSubscript:@"workoutType"];
-  v9 = [v8 integerValue];
+  v8 = [payloadCopy objectForKeyedSubscript:@"workoutType"];
+  integerValue2 = [v8 integerValue];
 
-  v10 = [v3 objectForKeyedSubscript:@"workoutActivityType"];
-  v11 = [v10 integerValue];
+  v10 = [payloadCopy objectForKeyedSubscript:@"workoutActivityType"];
+  integerValue3 = [v10 integerValue];
 
-  v12 = [v3 objectForKeyedSubscript:@"workoutLocationType"];
-  v13 = [v12 integerValue];
+  v12 = [payloadCopy objectForKeyedSubscript:@"workoutLocationType"];
+  integerValue4 = [v12 integerValue];
 
-  v14 = [v3 objectForKeyedSubscript:@"workoutSwimmingLocationType"];
+  v14 = [payloadCopy objectForKeyedSubscript:@"workoutSwimmingLocationType"];
 
-  v15 = [v14 integerValue];
-  v16 = [objc_alloc(MEMORY[0x277CEF420]) initWithPredictionIdentifier:v5 predictionType:v7 workoutType:v9 workoutActivityType:v11 locationType:v13 swimmingLocationType:v15];
+  integerValue5 = [v14 integerValue];
+  v16 = [objc_alloc(MEMORY[0x277CEF420]) initWithPredictionIdentifier:stringValue predictionType:integerValue workoutType:integerValue2 workoutActivityType:integerValue3 locationType:integerValue4 swimmingLocationType:integerValue5];
 
   return v16;
 }
 
-+ (id)announceWorkoutVoiceFeedback:(id)a3 announcePayload:(id)a4
++ (id)announceWorkoutVoiceFeedback:(id)feedback announcePayload:(id)payload
 {
   v6 = MEMORY[0x277CBEB38];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 dictionary];
+  payloadCopy = payload;
+  feedbackCopy = feedback;
+  dictionary = [v6 dictionary];
   v18 = 0;
-  v10 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v8 requiringSecureCoding:1 error:&v18];
+  v10 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:feedbackCopy requiringSecureCoding:1 error:&v18];
 
   v11 = v18;
   if (v10)
   {
-    [v9 setObject:v10 forKey:@"voiceFeedbackData"];
+    [dictionary setObject:v10 forKey:@"voiceFeedbackData"];
   }
 
   else
@@ -97,20 +97,20 @@
     }
   }
 
-  [a1 updateDict:v9 withAnnouncePayload:v7];
+  [self updateDict:dictionary withAnnouncePayload:payloadCopy];
 
   v13 = +[SKIDirectInvocationContext contextForAnnounceNotifications];
   v14 = [[SKIDirectInvocationPayload alloc] initWithIdentifier:@"com.apple.siri.directInvocation.fitness.announceWorkoutVoiceFeedback"];
-  [(SKIDirectInvocationPayload *)v14 setUserData:v9];
+  [(SKIDirectInvocationPayload *)v14 setUserData:dictionary];
   v15 = [SKIDirectInvocation runSiriKitExecutorCommandWithContext:v13 payload:v14];
   v16 = [SKIDirectInvocation wrapCommandInStartLocalRequest:v15];
 
   return v16;
 }
 
-+ (id)workoutVoiceFeedbackFromPayload:(id)a3
++ (id)workoutVoiceFeedbackFromPayload:(id)payload
 {
-  v3 = [a3 objectForKeyedSubscript:@"voiceFeedbackData"];
+  v3 = [payload objectForKeyedSubscript:@"voiceFeedbackData"];
   if (v3)
   {
     v8 = 0;
@@ -140,30 +140,30 @@
   return v4;
 }
 
-+ (id)updateStartLocalRequest:(id)a3 withNewAnnouncePayload:(id)a4
++ (id)updateStartLocalRequest:(id)request withNewAnnouncePayload:(id)payload
 {
-  v6 = a4;
-  v7 = [a3 clientBoundCommands];
-  v8 = [v7 firstObject];
+  payloadCopy = payload;
+  clientBoundCommands = [request clientBoundCommands];
+  firstObject = [clientBoundCommands firstObject];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [v8 parse];
-    v10 = [v9 directInvocation];
+    parse = [firstObject parse];
+    directInvocation = [parse directInvocation];
 
-    v11 = [v10 invocationIdentifier];
-    if ([v11 isEqualToString:@"com.apple.siri.directInvocation.fitness.announceWorkoutReminder"] & 1) != 0 || (objc_msgSend(v11, "isEqualToString:", @"com.apple.siri.directInvocation.fitness.announceWorkoutVoiceFeedback"))
+    invocationIdentifier = [directInvocation invocationIdentifier];
+    if ([invocationIdentifier isEqualToString:@"com.apple.siri.directInvocation.fitness.announceWorkoutReminder"] & 1) != 0 || (objc_msgSend(invocationIdentifier, "isEqualToString:", @"com.apple.siri.directInvocation.fitness.announceWorkoutVoiceFeedback"))
     {
-      v12 = [[SKIDirectInvocationPayload alloc] initWithIdentifier:v11];
-      v13 = [v10 data];
+      v12 = [[SKIDirectInvocationPayload alloc] initWithIdentifier:invocationIdentifier];
+      data = [directInvocation data];
 
-      if (v13)
+      if (data)
       {
         v14 = MEMORY[0x277CCAC58];
-        v15 = [v10 data];
+        data2 = [directInvocation data];
         v24 = 0;
-        v16 = [v14 propertyListWithData:v15 options:0 format:0 error:&v24];
+        v16 = [v14 propertyListWithData:data2 options:0 format:0 error:&v24];
         v17 = v24;
         [(SKIDirectInvocationPayload *)v12 setUserData:v16];
 
@@ -180,10 +180,10 @@
 
         else
         {
-          v20 = [(SKIDirectInvocationPayload *)v12 userData];
-          v18 = [v20 mutableCopy];
+          userData = [(SKIDirectInvocationPayload *)v12 userData];
+          v18 = [userData mutableCopy];
 
-          [a1 updateDict:v18 withAnnouncePayload:v6];
+          [self updateDict:v18 withAnnouncePayload:payloadCopy];
           [(SKIDirectInvocationPayload *)v12 setUserData:v18];
           v21 = +[SKIDirectInvocationContext contextForAnnounceNotifications];
           v22 = [SKIDirectInvocation runSiriKitExecutorCommandWithContext:v21 payload:v12];
@@ -217,8 +217,8 @@
 
   else
   {
-    v10 = SKIDefaultLog();
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    directInvocation = SKIDefaultLog();
+    if (os_log_type_enabled(directInvocation, OS_LOG_TYPE_ERROR))
     {
       +[SKIFitnessInvocation updateStartLocalRequest:withNewAnnouncePayload:];
     }
@@ -229,44 +229,44 @@
   return v19;
 }
 
-+ (void)updateDict:(id)a3 withAnnouncePayload:(id)a4
++ (void)updateDict:(id)dict withAnnouncePayload:(id)payload
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 appBundleIdOfLastAnnouncement];
-  v8 = [v7 length];
+  dictCopy = dict;
+  payloadCopy = payload;
+  appBundleIdOfLastAnnouncement = [payloadCopy appBundleIdOfLastAnnouncement];
+  v8 = [appBundleIdOfLastAnnouncement length];
 
   if (v8)
   {
-    v9 = [v6 appBundleIdOfLastAnnouncement];
-    [v5 setValue:v9 forKey:@"appBundleIdOfLastAnnouncement"];
+    appBundleIdOfLastAnnouncement2 = [payloadCopy appBundleIdOfLastAnnouncement];
+    [dictCopy setValue:appBundleIdOfLastAnnouncement2 forKey:@"appBundleIdOfLastAnnouncement"];
   }
 
   else
   {
-    [v5 removeObjectForKey:@"appBundleIdOfLastAnnouncement"];
+    [dictCopy removeObjectForKey:@"appBundleIdOfLastAnnouncement"];
   }
 
-  v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v6, "synchronousBurstIndex")}];
-  [v5 setValue:v10 forKey:@"synchronousBurstIndex"];
+  v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(payloadCopy, "synchronousBurstIndex")}];
+  [dictCopy setValue:v10 forKey:@"synchronousBurstIndex"];
 
-  v11 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v6, "isSameTypeAsLastAnnouncement")}];
-  [v5 setValue:v11 forKey:@"isSameTypeAsLastAnnouncement"];
+  v11 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(payloadCopy, "isSameTypeAsLastAnnouncement")}];
+  [dictCopy setValue:v11 forKey:@"isSameTypeAsLastAnnouncement"];
 
   v12 = MEMORY[0x277CCABB0];
-  [v6 timeSinceLastAnnouncement];
+  [payloadCopy timeSinceLastAnnouncement];
   v13 = [v12 numberWithDouble:?];
-  [v5 setValue:v13 forKey:@"timeSinceLastAnnouncement"];
+  [dictCopy setValue:v13 forKey:@"timeSinceLastAnnouncement"];
 
-  v14 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v6, "announcementPlatform")}];
-  [v5 setValue:v14 forKey:@"announcePlatform"];
+  v14 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(payloadCopy, "announcementPlatform")}];
+  [dictCopy setValue:v14 forKey:@"announcePlatform"];
 
   v18 = 0;
-  v15 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v6 requiringSecureCoding:1 error:&v18];
+  v15 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:payloadCopy requiringSecureCoding:1 error:&v18];
   v16 = v18;
   if (v15)
   {
-    [v5 setValue:v15 forKey:@"announcePayload"];
+    [dictCopy setValue:v15 forKey:@"announcePayload"];
   }
 
   else
@@ -279,9 +279,9 @@
   }
 }
 
-+ (id)announcePayloadFromUserData:(id)a3
++ (id)announcePayloadFromUserData:(id)data
 {
-  v3 = [a3 objectForKeyedSubscript:@"announcePayload"];
+  v3 = [data objectForKeyedSubscript:@"announcePayload"];
   v8 = 0;
   v4 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:objc_opt_class() fromData:v3 error:&v8];
   v5 = v8;

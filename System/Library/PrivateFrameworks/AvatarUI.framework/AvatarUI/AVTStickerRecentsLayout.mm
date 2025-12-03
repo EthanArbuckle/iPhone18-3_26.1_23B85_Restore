@@ -1,51 +1,51 @@
 @interface AVTStickerRecentsLayout
-+ (CGSize)buttonSizeForContainerSize:(CGSize)a3 imageSize:(CGSize)a4;
-- (AVTStickerRecentsLayout)initWithNumberOfItemsPerRow:(int64_t)a3 numberOfItemsPerColumn:(int64_t)a4 interitemPadding:(double)a5 appButtonIndex:(int64_t)a6 laysOutVertically:(BOOL)a7;
-- (BOOL)isEqual:(id)a3;
++ (CGSize)buttonSizeForContainerSize:(CGSize)size imageSize:(CGSize)imageSize;
+- (AVTStickerRecentsLayout)initWithNumberOfItemsPerRow:(int64_t)row numberOfItemsPerColumn:(int64_t)column interitemPadding:(double)padding appButtonIndex:(int64_t)index laysOutVertically:(BOOL)vertically;
+- (BOOL)isEqual:(id)equal;
 - (unint64_t)hash;
 @end
 
 @implementation AVTStickerRecentsLayout
 
-+ (CGSize)buttonSizeForContainerSize:(CGSize)a3 imageSize:(CGSize)a4
++ (CGSize)buttonSizeForContainerSize:(CGSize)size imageSize:(CGSize)imageSize
 {
-  v4 = a3.height * 0.3;
-  v5 = v4 * a4.width / a4.height;
+  v4 = size.height * 0.3;
+  v5 = v4 * imageSize.width / imageSize.height;
   result.height = v4;
   result.width = v5;
   return result;
 }
 
-- (AVTStickerRecentsLayout)initWithNumberOfItemsPerRow:(int64_t)a3 numberOfItemsPerColumn:(int64_t)a4 interitemPadding:(double)a5 appButtonIndex:(int64_t)a6 laysOutVertically:(BOOL)a7
+- (AVTStickerRecentsLayout)initWithNumberOfItemsPerRow:(int64_t)row numberOfItemsPerColumn:(int64_t)column interitemPadding:(double)padding appButtonIndex:(int64_t)index laysOutVertically:(BOOL)vertically
 {
   v13.receiver = self;
   v13.super_class = AVTStickerRecentsLayout;
   result = [(AVTStickerRecentsLayout *)&v13 init];
   if (result)
   {
-    result->_numberOfItems = a4 * a3;
-    result->_numberOfItemsPerRow = a3;
-    result->_numberOfItemsPerColumn = a4;
-    result->_interitemPadding = a5;
-    result->_appButtonIndex = a6;
-    result->_laysOutVertically = a7;
+    result->_numberOfItems = column * row;
+    result->_numberOfItemsPerRow = row;
+    result->_numberOfItemsPerColumn = column;
+    result->_interitemPadding = padding;
+    result->_appButtonIndex = index;
+    result->_laysOutVertically = vertically;
   }
 
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(AVTStickerRecentsLayout *)self numberOfItemsPerRow];
-    if (v6 == [v5 numberOfItemsPerRow] && (v7 = -[AVTStickerRecentsLayout numberOfItemsPerColumn](self, "numberOfItemsPerColumn"), v7 == objc_msgSend(v5, "numberOfItemsPerColumn")) && (v8 = -[AVTStickerRecentsLayout interitemPadding](self, "interitemPadding"), v8 == objc_msgSend(v5, "interitemPadding")) && (v9 = -[AVTStickerRecentsLayout appButtonIndex](self, "appButtonIndex"), v9 == objc_msgSend(v5, "appButtonIndex")))
+    v5 = equalCopy;
+    numberOfItemsPerRow = [(AVTStickerRecentsLayout *)self numberOfItemsPerRow];
+    if (numberOfItemsPerRow == [v5 numberOfItemsPerRow] && (v7 = -[AVTStickerRecentsLayout numberOfItemsPerColumn](self, "numberOfItemsPerColumn"), v7 == objc_msgSend(v5, "numberOfItemsPerColumn")) && (v8 = -[AVTStickerRecentsLayout interitemPadding](self, "interitemPadding"), v8 == objc_msgSend(v5, "interitemPadding")) && (v9 = -[AVTStickerRecentsLayout appButtonIndex](self, "appButtonIndex"), v9 == objc_msgSend(v5, "appButtonIndex")))
     {
-      v10 = [(AVTStickerRecentsLayout *)self laysOutVertically];
-      v11 = v10 ^ [v5 laysOutVertically] ^ 1;
+      laysOutVertically = [(AVTStickerRecentsLayout *)self laysOutVertically];
+      v11 = laysOutVertically ^ [v5 laysOutVertically] ^ 1;
     }
 
     else

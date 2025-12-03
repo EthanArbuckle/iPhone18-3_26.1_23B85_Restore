@@ -1,5 +1,5 @@
 @interface _MFMessageContentResizeWrapperView
-- (_MFMessageContentResizeWrapperView)initWithFrame:(CGRect)a3 snapshotView:(id)a4;
+- (_MFMessageContentResizeWrapperView)initWithFrame:(CGRect)frame snapshotView:(id)view;
 - (void)dealloc;
 - (void)layoutSubviews;
 @end
@@ -14,28 +14,28 @@
   [(_MFMessageContentResizeWrapperView *)&v3 dealloc];
 }
 
-- (_MFMessageContentResizeWrapperView)initWithFrame:(CGRect)a3 snapshotView:(id)a4
+- (_MFMessageContentResizeWrapperView)initWithFrame:(CGRect)frame snapshotView:(id)view
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  viewCopy = view;
   v14.receiver = self;
   v14.super_class = _MFMessageContentResizeWrapperView;
-  v11 = [(_MFMessageContentResizeWrapperView *)&v14 initWithFrame:x, y, width, height];
-  if (v11)
+  height = [(_MFMessageContentResizeWrapperView *)&v14 initWithFrame:x, y, width, height];
+  if (height)
   {
-    [v10 frame];
-    v11->_snapshotViewYOrigin = v12;
-    objc_storeStrong(&v11->_snapshotView, a4);
-    [(UIView *)v11->_snapshotView setTranslatesAutoresizingMaskIntoConstraints:0];
-    [(UIView *)v11->_snapshotView setAutoresizingMask:0];
-    [(_MFMessageContentResizeWrapperView *)v11 setAutoresizingMask:18];
-    [(_MFMessageContentResizeWrapperView *)v11 addSubview:v11->_snapshotView];
+    [viewCopy frame];
+    height->_snapshotViewYOrigin = v12;
+    objc_storeStrong(&height->_snapshotView, view);
+    [(UIView *)height->_snapshotView setTranslatesAutoresizingMaskIntoConstraints:0];
+    [(UIView *)height->_snapshotView setAutoresizingMask:0];
+    [(_MFMessageContentResizeWrapperView *)height setAutoresizingMask:18];
+    [(_MFMessageContentResizeWrapperView *)height addSubview:height->_snapshotView];
   }
 
-  return v11;
+  return height;
 }
 
 - (void)layoutSubviews

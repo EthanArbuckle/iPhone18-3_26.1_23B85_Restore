@@ -1,61 +1,61 @@
 @interface BRCShareAcceptationDirectoryFault
-- (BOOL)_updateInDB:(id)a3 diffs:(unint64_t)a4;
-- (BRCShareAcceptationDirectoryFault)initWithFilename:(id)a3 itemID:(id)a4 parentIDWhenSubitem:(id)a5 appLibrary:(id)a6 clientZone:(id)a7 sharingOptions:(unint64_t)a8;
+- (BOOL)_updateInDB:(id)b diffs:(unint64_t)diffs;
+- (BRCShareAcceptationDirectoryFault)initWithFilename:(id)filename itemID:(id)d parentIDWhenSubitem:(id)subitem appLibrary:(id)library clientZone:(id)zone sharingOptions:(unint64_t)options;
 - (void)deleteShareAcceptationFault;
 @end
 
 @implementation BRCShareAcceptationDirectoryFault
 
-- (BRCShareAcceptationDirectoryFault)initWithFilename:(id)a3 itemID:(id)a4 parentIDWhenSubitem:(id)a5 appLibrary:(id)a6 clientZone:(id)a7 sharingOptions:(unint64_t)a8
+- (BRCShareAcceptationDirectoryFault)initWithFilename:(id)filename itemID:(id)d parentIDWhenSubitem:(id)subitem appLibrary:(id)library clientZone:(id)zone sharingOptions:(unint64_t)options
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
+  filenameCopy = filename;
+  dCopy = d;
+  subitemCopy = subitem;
+  libraryCopy = library;
+  zoneCopy = zone;
   v39.receiver = self;
   v39.super_class = BRCShareAcceptationDirectoryFault;
   v19 = [(BRCShareAcceptationDirectoryFault *)&v39 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->super.super._itemID, a4);
-    v21 = [[BRCLocalStatInfo alloc] initAsShareAcceptFaultWithName:v14 mode:(a8 & 0x20) == 0 isDirectory:1];
+    objc_storeStrong(&v19->super.super._itemID, d);
+    v21 = [[BRCLocalStatInfo alloc] initAsShareAcceptFaultWithName:filenameCopy mode:(options & 0x20) == 0 isDirectory:1];
     st = v20->super.super._st;
     v20->super.super._st = v21;
 
-    if (v16)
+    if (subitemCopy)
     {
-      v23 = v16;
-      [(BRCStatInfo *)v20->super.super._st setParentID:v23, 0];
+      documentsFolderItemID = subitemCopy;
+      [(BRCStatInfo *)v20->super.super._st setParentID:documentsFolderItemID, 0];
     }
 
     else
     {
-      v23 = [v17 documentsFolderItemID];
-      [(BRCStatInfo *)v20->super.super._st setParentID:v23, 4];
+      documentsFolderItemID = [libraryCopy documentsFolderItemID];
+      [(BRCStatInfo *)v20->super.super._st setParentID:documentsFolderItemID, 4];
     }
 
-    v24 = [v17 defaultClientZone];
-    v25 = [v24 dbRowID];
+    defaultClientZone = [libraryCopy defaultClientZone];
+    dbRowID = [defaultClientZone dbRowID];
     parentZoneRowID = v20->super.super._parentZoneRowID;
-    v20->super.super._parentZoneRowID = v25;
+    v20->super.super._parentZoneRowID = dbRowID;
 
-    [(BRCLocalItem *)v20 setAppLibrary:v17];
-    objc_storeStrong(&v20->super.super._clientZone, a7);
+    [(BRCLocalItem *)v20 setAppLibrary:libraryCopy];
+    objc_storeStrong(&v20->super.super._clientZone, zone);
     v20->super.super._serverZone = [(BRCClientZone *)v20->super.super._clientZone serverZone];
     v27 = [(BRCClientZone *)v20->super.super._clientZone db];
     db = v20->super.super._db;
     v20->super.super._db = v27;
 
-    v29 = [v18 dbFacade];
+    dbFacade = [zoneCopy dbFacade];
     dbFacade = v20->super.super._dbFacade;
-    v20->super.super._dbFacade = v29;
+    v20->super.super._dbFacade = dbFacade;
 
-    v20->super.super._session = [v17 session];
-    v31 = [(BRCClientZone *)v20->super.super._clientZone dbFacade];
-    v32 = [v18 ownerName];
-    v33 = [v31 userKeyForOwnerName:v32];
+    v20->super.super._session = [libraryCopy session];
+    dbFacade2 = [(BRCClientZone *)v20->super.super._clientZone dbFacade];
+    ownerName = [zoneCopy ownerName];
+    v33 = [dbFacade2 userKeyForOwnerName:ownerName];
     ownerKey = v20->super.super._ownerKey;
     v20->super.super._ownerKey = v33;
 
@@ -63,12 +63,12 @@
     [(BRCLocalStatInfo *)v20->super.super._st setItemScope:2];
     [(BRCStatInfo *)v20->super.super._st setState:0];
     [(BRCStatInfo *)v20->super.super._st setHiddenExt:1];
-    v35 = [MEMORY[0x277CBEAA8] date];
-    [v35 timeIntervalSince1970];
+    date = [MEMORY[0x277CBEAA8] date];
+    [date timeIntervalSince1970];
     [(BRCStatInfo *)v20->super.super._st setLastUsedTime:v36];
 
     [(BRCDirectoryItem *)v20 setMtime:[(BRCStatInfo *)v20->super.super._st lastUsedTime]];
-    v20->super.super._sharingOptions = v38 | a8;
+    v20->super.super._sharingOptions = v38 | options;
     v20->super.super._isUserVisible = 1;
   }
 
@@ -95,19 +95,19 @@
   }
 }
 
-- (BOOL)_updateInDB:(id)a3 diffs:(unint64_t)a4
+- (BOOL)_updateInDB:(id)b diffs:(unint64_t)diffs
 {
-  v6 = a3;
+  bCopy = b;
   v13.receiver = self;
   v13.super_class = BRCShareAcceptationDirectoryFault;
-  v7 = [(BRCDirectoryItem *)&v13 _updateInDB:v6 diffs:a4];
-  v8 = [(BRCStatInfo *)self->super.super._st type];
-  v9 = (v8 != 9) & v7;
-  if (v8 == 9 && (v7 & 1) != 0)
+  v7 = [(BRCDirectoryItem *)&v13 _updateInDB:bCopy diffs:diffs];
+  type = [(BRCStatInfo *)self->super.super._st type];
+  v9 = (type != 9) & v7;
+  if (type == 9 && (v7 & 1) != 0)
   {
     itemID = self->super.super._itemID;
-    v11 = [(BRCClientZone *)self->super.super._clientZone dbRowID];
-    v9 = [v6 execute:{@"UPDATE client_items SET item_type = 9 WHERE item_id = %@ AND zone_rowid = %@ AND item_type = 10", itemID, v11}];
+    dbRowID = [(BRCClientZone *)self->super.super._clientZone dbRowID];
+    v9 = [bCopy execute:{@"UPDATE client_items SET item_type = 9 WHERE item_id = %@ AND zone_rowid = %@ AND item_type = 10", itemID, dbRowID}];
   }
 
   return v9;

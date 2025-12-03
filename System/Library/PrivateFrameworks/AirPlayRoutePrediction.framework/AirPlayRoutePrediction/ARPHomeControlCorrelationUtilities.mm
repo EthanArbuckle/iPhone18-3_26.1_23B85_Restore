@@ -1,35 +1,35 @@
 @interface ARPHomeControlCorrelationUtilities
-- (ARPHomeControlCorrelationUtilities)initWithKnowledgeStore:(id)a3;
-- (BOOL)writeArchive:(id)a3 toFilePath:(id)a4;
+- (ARPHomeControlCorrelationUtilities)initWithKnowledgeStore:(id)store;
+- (BOOL)writeArchive:(id)archive toFilePath:(id)path;
 @end
 
 @implementation ARPHomeControlCorrelationUtilities
 
-- (ARPHomeControlCorrelationUtilities)initWithKnowledgeStore:(id)a3
+- (ARPHomeControlCorrelationUtilities)initWithKnowledgeStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v9.receiver = self;
   v9.super_class = ARPHomeControlCorrelationUtilities;
   v6 = [(ARPHomeControlCorrelationUtilities *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_knowledgeStore, a3);
+    objc_storeStrong(&v6->_knowledgeStore, store);
   }
 
   return v7;
 }
 
-- (BOOL)writeArchive:(id)a3 toFilePath:(id)a4
+- (BOOL)writeArchive:(id)archive toFilePath:(id)path
 {
   v29 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5 && v6)
+  archiveCopy = archive;
+  pathCopy = path;
+  v7 = pathCopy;
+  if (archiveCopy && pathCopy)
   {
     v26 = 0;
-    v8 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v5 requiringSecureCoding:1 error:&v26];
+    v8 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:archiveCopy requiringSecureCoding:1 error:&v26];
     v9 = v26;
     if (v9)
     {
@@ -40,10 +40,10 @@ LABEL_15:
       goto LABEL_16;
     }
 
-    v12 = [v7 stringByDeletingLastPathComponent];
-    v13 = [MEMORY[0x277CCAA00] defaultManager];
+    stringByDeletingLastPathComponent = [v7 stringByDeletingLastPathComponent];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
     v25 = 0;
-    [v13 createDirectoryAtPath:v12 withIntermediateDirectories:1 attributes:0 error:&v25];
+    [defaultManager createDirectoryAtPath:stringByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:&v25];
     v10 = v25;
 
     if (!v10)

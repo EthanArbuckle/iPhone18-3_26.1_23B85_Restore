@@ -1,36 +1,36 @@
 @interface CKDFetchRecordZoneChangesURLRequest
 - (BOOL)requestGETPreAuth;
-- (CKDFetchRecordZoneChangesURLRequest)initWithOperation:(id)a3 recordZoneIDs:(id)a4 configurationsByRecordZoneID:(id)a5;
+- (CKDFetchRecordZoneChangesURLRequest)initWithOperation:(id)operation recordZoneIDs:(id)ds configurationsByRecordZoneID:(id)d;
 - (NSDictionary)resultsByRecordZoneID;
 - (NSDictionary)zoneErrorsByZoneID;
-- (id)_handleRecordChanges:(id)a3 deltaChanges:(id)a4 zoneAttributesChange:(id)a5 forZoneID:(id)a6;
+- (id)_handleRecordChanges:(id)changes deltaChanges:(id)deltaChanges zoneAttributesChange:(id)change forZoneID:(id)d;
 - (id)generateRequestOperations;
-- (id)requestDidParseProtobufObject:(id)a3;
+- (id)requestDidParseProtobufObject:(id)object;
 - (id)requestOperationClasses;
-- (void)fillOutEquivalencyPropertiesBuilder:(id)a3;
-- (void)fillOutRequestProperties:(id)a3;
-- (void)noteUsageForDeletedRecordID:(id)a3 at:(id)a4;
-- (void)noteUsageForRecordID:(id)a3 at:(id)a4;
+- (void)fillOutEquivalencyPropertiesBuilder:(id)builder;
+- (void)fillOutRequestProperties:(id)properties;
+- (void)noteUsageForDeletedRecordID:(id)d at:(id)at;
+- (void)noteUsageForRecordID:(id)d at:(id)at;
 - (void)requestDidComplete;
-- (void)requestDidParseNodeFailure:(id)a3;
+- (void)requestDidParseNodeFailure:(id)failure;
 @end
 
 @implementation CKDFetchRecordZoneChangesURLRequest
 
-- (CKDFetchRecordZoneChangesURLRequest)initWithOperation:(id)a3 recordZoneIDs:(id)a4 configurationsByRecordZoneID:(id)a5
+- (CKDFetchRecordZoneChangesURLRequest)initWithOperation:(id)operation recordZoneIDs:(id)ds configurationsByRecordZoneID:(id)d
 {
-  v8 = a4;
-  v9 = a5;
+  dsCopy = ds;
+  dCopy = d;
   v26.receiver = self;
   v26.super_class = CKDFetchRecordZoneChangesURLRequest;
-  v12 = [(CKDURLRequest *)&v26 initWithOperation:a3];
+  v12 = [(CKDURLRequest *)&v26 initWithOperation:operation];
   if (v12)
   {
-    v13 = objc_msgSend_copy(v8, v10, v11);
+    v13 = objc_msgSend_copy(dsCopy, v10, v11);
     recordZoneIDs = v12->_recordZoneIDs;
     v12->_recordZoneIDs = v13;
 
-    objc_storeStrong(&v12->_configurationsByRecordZoneID, a5);
+    objc_storeStrong(&v12->_configurationsByRecordZoneID, d);
     v15 = objc_opt_new();
     zoneIDsByRequestOperationUUID = v12->_zoneIDsByRequestOperationUUID;
     v12->_zoneIDsByRequestOperationUUID = v15;
@@ -68,10 +68,10 @@
   return v6;
 }
 
-- (void)fillOutEquivalencyPropertiesBuilder:(id)a3
+- (void)fillOutEquivalencyPropertiesBuilder:(id)builder
 {
   v38 = *MEMORY[0x277D85DE8];
-  v30 = a3;
+  builderCopy = builder;
   v4 = objc_opt_new();
   v33 = 0u;
   v34 = 0u;
@@ -94,7 +94,7 @@
         }
 
         v14 = *(*(&v33 + 1) + 8 * v13);
-        v15 = objc_msgSend_configurationsByRecordZoneID(self, v9, v10, v30);
+        v15 = objc_msgSend_configurationsByRecordZoneID(self, v9, v10, builderCopy);
         v17 = objc_msgSend_objectForKeyedSubscript_(v15, v16, v14);
         v20 = objc_msgSend_previousServerChangeToken(v17, v18, v19);
         v23 = objc_msgSend_data(v20, v21, v22);
@@ -119,21 +119,21 @@
 
   v32.receiver = self;
   v32.super_class = CKDFetchRecordZoneChangesURLRequest;
-  [(CKDURLRequest *)&v32 fillOutEquivalencyPropertiesBuilder:v30];
-  objc_msgSend_setObject_forKeyedSubscript_(v30, v28, v4, @"zid->token");
+  [(CKDURLRequest *)&v32 fillOutEquivalencyPropertiesBuilder:builderCopy];
+  objc_msgSend_setObject_forKeyedSubscript_(builderCopy, v28, v4, @"zid->token");
 
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fillOutRequestProperties:(id)a3
+- (void)fillOutRequestProperties:(id)properties
 {
-  v4 = a3;
+  propertiesCopy = properties;
   v7 = objc_msgSend_recordZoneIDs(self, v5, v6);
-  objc_msgSend_setFetchRecordZoneIDs_(v4, v8, v7);
+  objc_msgSend_setFetchRecordZoneIDs_(propertiesCopy, v8, v7);
 
   v9.receiver = self;
   v9.super_class = CKDFetchRecordZoneChangesURLRequest;
-  [(CKDURLRequest *)&v9 fillOutRequestProperties:v4];
+  [(CKDURLRequest *)&v9 fillOutRequestProperties:propertiesCopy];
 }
 
 - (id)requestOperationClasses
@@ -472,54 +472,54 @@ LABEL_46:
   return v224;
 }
 
-- (void)noteUsageForDeletedRecordID:(id)a3 at:(id)a4
+- (void)noteUsageForDeletedRecordID:(id)d at:(id)at
 {
-  v19 = a3;
-  v6 = a4;
+  dCopy = d;
+  atCopy = at;
   if (objc_msgSend_databaseScope(self, v7, v8) == 3)
   {
     v11 = objc_msgSend_sharedManager(CKDDeviceCapabilityManager, v9, v10);
     v14 = objc_msgSend_container(self, v12, v13);
     v17 = objc_msgSend_operation(self, v15, v16);
-    objc_msgSend_noteShareUsageForDeletedRecordID_at_container_operation_(v11, v18, v19, v6, v14, v17);
+    objc_msgSend_noteShareUsageForDeletedRecordID_at_container_operation_(v11, v18, dCopy, atCopy, v14, v17);
   }
 }
 
-- (void)noteUsageForRecordID:(id)a3 at:(id)a4
+- (void)noteUsageForRecordID:(id)d at:(id)at
 {
-  v19 = a3;
-  v6 = a4;
+  dCopy = d;
+  atCopy = at;
   if (objc_msgSend_databaseScope(self, v7, v8) == 3)
   {
     v11 = objc_msgSend_sharedManager(CKDDeviceCapabilityManager, v9, v10);
     v14 = objc_msgSend_container(self, v12, v13);
     v17 = objc_msgSend_operation(self, v15, v16);
-    objc_msgSend_noteShareUsageForRecordID_at_container_operation_(v11, v18, v19, v6, v14, v17);
+    objc_msgSend_noteShareUsageForRecordID_at_container_operation_(v11, v18, dCopy, atCopy, v14, v17);
   }
 }
 
-- (id)_handleRecordChanges:(id)a3 deltaChanges:(id)a4 zoneAttributesChange:(id)a5 forZoneID:(id)a6
+- (id)_handleRecordChanges:(id)changes deltaChanges:(id)deltaChanges zoneAttributesChange:(id)change forZoneID:(id)d
 {
   v351 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v299 = a4;
-  v11 = a5;
-  v321 = a6;
-  v298 = v11;
-  if (!v11)
+  changesCopy = changes;
+  deltaChangesCopy = deltaChanges;
+  changeCopy = change;
+  dCopy = d;
+  v298 = changeCopy;
+  if (!changeCopy)
   {
     goto LABEL_20;
   }
 
-  if (objc_msgSend_hasRecordZone(v11, v12, v13))
+  if (objc_msgSend_hasRecordZone(changeCopy, v12, v13))
   {
     v14 = objc_autoreleasePoolPush();
     v17 = objc_msgSend_translator(self, v15, v16);
-    v20 = objc_msgSend_recordZone(v11, v18, v19);
+    v20 = objc_msgSend_recordZone(changeCopy, v18, v19);
     v342 = 0;
     v343 = 0;
     v22 = objc_msgSend_recordZoneFromPRecordZone_error_requiredFeaturesValidationFailureType_(v17, v21, v20, &v343, &v342);
-    v11 = v343;
+    changeCopy = v343;
     v23 = v342;
 
     if (v23)
@@ -583,8 +583,8 @@ LABEL_46:
         _os_log_error_impl(&dword_22506F000, v291, OS_LOG_TYPE_ERROR, "req: %{public}@, Failed to parse record zone for record zone attributes change: %@", buf, 0x16u);
       }
 
-      objc_msgSend_errorWithDomain_code_error_format_(MEMORY[0x277CBC560], v38, *MEMORY[0x277CBBF50], 1005, v11, @"Failed to parse record zone attributes change");
-      v11 = v36 = v11;
+      objc_msgSend_errorWithDomain_code_error_format_(MEMORY[0x277CBC560], v38, *MEMORY[0x277CBBF50], 1005, changeCopy, @"Failed to parse record zone attributes change");
+      changeCopy = v36 = changeCopy;
     }
 
 LABEL_19:
@@ -592,7 +592,7 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  v11 = 0;
+  changeCopy = 0;
 LABEL_20:
   v301 = objc_opt_new();
   v306 = objc_msgSend_now(MEMORY[0x277CBEAA8], v39, v40);
@@ -600,8 +600,8 @@ LABEL_20:
   v337 = 0u;
   v338 = 0u;
   v339 = 0u;
-  v41 = v10;
-  v322 = self;
+  v41 = changesCopy;
+  selfCopy = self;
   v307 = v41;
   v319 = objc_msgSend_countByEnumeratingWithState_objects_count_(v41, v42, &v336, v346, 16);
   if (!v319)
@@ -630,8 +630,8 @@ LABEL_20:
         {
           v80 = objc_msgSend_translator(self, v78, v79);
           v83 = objc_msgSend_record(v44, v81, v82);
-          v86 = objc_msgSend_anonymousCKUserID(v321, v84, v85);
-          v334 = v11;
+          v86 = objc_msgSend_anonymousCKUserID(dCopy, v84, v85);
+          v334 = changeCopy;
           v71 = objc_msgSend_recordFromPRecord_asAnonymousCKUserID_error_(v80, v87, v83, v86, &v334);
           v88 = v334;
 
@@ -641,17 +641,17 @@ LABEL_20:
             v92 = objc_msgSend_recordID(v71, v90, v91);
             objc_msgSend_noteUsageForRecordID_at_(self, v93, v92, v306);
 
-            v11 = v88;
+            changeCopy = v88;
             v45 = v315;
             goto LABEL_34;
           }
 
-          v11 = objc_msgSend_errorWithDomain_code_error_format_(MEMORY[0x277CBC560], v89, v311, 2006, v88, @"Invalid data received from server");
+          changeCopy = objc_msgSend_errorWithDomain_code_error_format_(MEMORY[0x277CBC560], v89, v311, 2006, v88, @"Invalid data received from server");
 
           if (!objc_msgSend_hasRecordIdentifier(v44, v115, v116))
           {
             v62 = 0;
-            v63 = v11;
+            v63 = changeCopy;
             v45 = v315;
             goto LABEL_49;
           }
@@ -660,9 +660,9 @@ LABEL_20:
 LABEL_36:
           v96 = objc_msgSend_translator(self, v94, v95);
           v99 = objc_msgSend_recordIdentifier(v44, v97, v98);
-          objc_msgSend_anonymousCKUserID(v321, v100, v101);
+          objc_msgSend_anonymousCKUserID(dCopy, v100, v101);
           v103 = v102 = self;
-          v333 = v11;
+          v333 = changeCopy;
           v62 = objc_msgSend_recordIDFromPRecordIdentifier_asAnonymousCKUserID_error_(v96, v104, v99, v103, &v333);
           v63 = v333;
 
@@ -698,7 +698,7 @@ LABEL_34:
           }
 
           v62 = 0;
-          v63 = v11;
+          v63 = changeCopy;
 LABEL_40:
           v106 = objc_msgSend_recordsChangedBlock(self, v94, v95);
 
@@ -711,8 +711,8 @@ LABEL_40:
           v110 = objc_msgSend_etag(v44, v108, v109);
           v112 = objc_msgSend_initWithRecordID_record_etag_(v107, v111, v62, v71, v110);
 
-          self = v322;
-          objc_msgSend_addObject_(v322->_recordResponses, v113, v112);
+          self = selfCopy;
+          objc_msgSend_addObject_(selfCopy->_recordResponses, v113, v112);
           if (v62)
           {
             objc_msgSend_setObject_forKeyedSubscript_(v301, v114, v112, v62);
@@ -732,8 +732,8 @@ LABEL_40:
       v53 = v45;
       v54 = objc_msgSend_translator(self, v51, v52);
       v57 = objc_msgSend_recordIdentifier(v44, v55, v56);
-      v60 = objc_msgSend_anonymousCKUserID(v321, v58, v59);
-      v335 = v11;
+      v60 = objc_msgSend_anonymousCKUserID(dCopy, v58, v59);
+      v335 = changeCopy;
       v62 = objc_msgSend_recordIDFromPRecordIdentifier_asAnonymousCKUserID_error_(v54, v61, v57, v60, &v335);
       v63 = v335;
 
@@ -767,7 +767,7 @@ LABEL_40:
 LABEL_49:
 
 LABEL_50:
-      v11 = v63;
+      changeCopy = v63;
 LABEL_51:
       objc_autoreleasePoolPop(v45);
       ++v43;
@@ -789,7 +789,7 @@ LABEL_56:
     v330 = 0u;
     v331 = 0u;
     v329 = 0u;
-    obj = v299;
+    obj = deltaChangesCopy;
     v312 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v122, &v329, v345, 16);
     if (!v312)
     {
@@ -825,8 +825,8 @@ LABEL_56:
         v318 = objc_autoreleasePoolPush();
         v138 = objc_msgSend_translator(self, v136, v137);
         v141 = objc_msgSend_recordIdentifier(v126, v139, v140);
-        v144 = objc_msgSend_anonymousCKUserID(v321, v142, v143);
-        v328 = v11;
+        v144 = objc_msgSend_anonymousCKUserID(dCopy, v142, v143);
+        v328 = changeCopy;
         v146 = objc_msgSend_recordIDFromPRecordIdentifier_asAnonymousCKUserID_error_(v138, v145, v141, v144, &v328);
         v147 = v328;
 
@@ -841,7 +841,7 @@ LABEL_56:
             v156 = objc_msgSend_fieldIdentifier(v126, v154, v155);
             v159 = objc_msgSend_name(v156, v157, v158);
 
-            self = v322;
+            self = selfCopy;
             v309 = v159;
             if (v159)
             {
@@ -878,7 +878,7 @@ LABEL_56:
                   {
                     v194 = v191;
                     v195 = *v325;
-                    self = v322;
+                    self = selfCopy;
 LABEL_72:
                     v196 = 0;
                     while (1)
@@ -918,21 +918,21 @@ LABEL_72:
                           dispatch_once(MEMORY[0x277CBC880], *MEMORY[0x277CBC878]);
                         }
 
-                        self = v322;
+                        self = selfCopy;
                         v219 = v318;
                         v153 = v300;
                         v230 = *MEMORY[0x277CBC860];
                         if (os_log_type_enabled(*MEMORY[0x277CBC860], OS_LOG_TYPE_ERROR))
                         {
                           v280 = v230;
-                          v283 = objc_msgSend_requestUUID(v322, v281, v282);
+                          v283 = objc_msgSend_requestUUID(selfCopy, v281, v282);
                           *buf = 138543618;
                           v348 = v283;
                           v349 = 2112;
                           v350 = v204;
                           _os_log_error_impl(&dword_22506F000, v280, OS_LOG_TYPE_ERROR, "req: %{public}@, Failed to load delta when fetching changes: %@", buf, 0x16u);
 
-                          self = v322;
+                          self = selfCopy;
                         }
 
                         v147 = objc_msgSend_errorWithDomain_code_error_format_(MEMORY[0x277CBC560], v231, v308, 2006, v204, @"Failed to parse mergeable delta");
@@ -945,19 +945,19 @@ LABEL_72:
                         dispatch_once(MEMORY[0x277CBC880], *MEMORY[0x277CBC878]);
                       }
 
-                      self = v322;
+                      self = selfCopy;
                       v207 = *MEMORY[0x277CBC860];
                       if (os_log_type_enabled(*MEMORY[0x277CBC860], OS_LOG_TYPE_DEBUG))
                       {
                         v213 = v207;
-                        v216 = objc_msgSend_requestUUID(v322, v214, v215);
+                        v216 = objc_msgSend_requestUUID(selfCopy, v214, v215);
                         *buf = 138543618;
                         v348 = v216;
                         v349 = 2112;
                         v350 = v203;
                         _os_log_debug_impl(&dword_22506F000, v213, OS_LOG_TYPE_DEBUG, "req: %{public}@, Received mergeable delta: %@", buf, 0x16u);
 
-                        self = v322;
+                        self = selfCopy;
                       }
 
                       objc_msgSend_addObject_(v179, v208, v203);
@@ -989,7 +989,7 @@ LABEL_123:
                     goto LABEL_124;
                   }
 
-                  self = v322;
+                  self = selfCopy;
                   v219 = v318;
 LABEL_124:
 
@@ -1017,7 +1017,7 @@ LABEL_125:
                         v248 = objc_msgSend_encryptedValues(v244, v245, v246);
                         v250 = objc_msgSend_objectForKeyedSubscript_(v248, v249, v309);
 
-                        self = v322;
+                        self = selfCopy;
                         if (!v250)
                         {
                           goto LABEL_132;
@@ -1066,7 +1066,7 @@ LABEL_132:
                   if (os_log_type_enabled(*MEMORY[0x277CBC860], OS_LOG_TYPE_ERROR))
                   {
                     v276 = v228;
-                    v279 = objc_msgSend_requestUUID(v322, v277, v278);
+                    v279 = objc_msgSend_requestUUID(selfCopy, v277, v278);
                     *buf = 138543618;
                     v348 = v279;
                     v349 = 2112;
@@ -1079,7 +1079,7 @@ LABEL_132:
                   v219 = v318;
                 }
 
-                v11 = v147;
+                changeCopy = v147;
 
                 v147 = v316;
                 v130 = v302;
@@ -1096,7 +1096,7 @@ LABEL_132:
                 if (os_log_type_enabled(*MEMORY[0x277CBC860], OS_LOG_TYPE_ERROR))
                 {
                   v270 = v226;
-                  v273 = objc_msgSend_requestUUID(v322, v271, v272);
+                  v273 = objc_msgSend_requestUUID(selfCopy, v271, v272);
                   *buf = 138543618;
                   v348 = v273;
                   v349 = 2112;
@@ -1104,7 +1104,7 @@ LABEL_132:
                   _os_log_error_impl(&dword_22506F000, v270, OS_LOG_TYPE_ERROR, "req: %{public}@, Failed to get location name from mergeable delta change %@", buf, 0x16u);
                 }
 
-                v11 = objc_msgSend_errorWithDomain_code_error_format_(MEMORY[0x277CBC560], v227, v308, 2006, v147, @"Failed to get mergeable ID from mergeable delta");
+                changeCopy = objc_msgSend_errorWithDomain_code_error_format_(MEMORY[0x277CBC560], v227, v308, 2006, v147, @"Failed to get mergeable ID from mergeable delta");
                 v219 = v318;
               }
 
@@ -1122,7 +1122,7 @@ LABEL_132:
               if (os_log_type_enabled(*MEMORY[0x277CBC860], OS_LOG_TYPE_ERROR))
               {
                 v266 = v224;
-                v269 = objc_msgSend_requestUUID(v322, v267, v268);
+                v269 = objc_msgSend_requestUUID(selfCopy, v267, v268);
                 *buf = 138543618;
                 v348 = v269;
                 v349 = 2112;
@@ -1130,7 +1130,7 @@ LABEL_132:
                 _os_log_error_impl(&dword_22506F000, v266, OS_LOG_TYPE_ERROR, "req: %{public}@, Failed to get record field key for %@", buf, 0x16u);
               }
 
-              v11 = objc_msgSend_errorWithDomain_code_error_format_(MEMORY[0x277CBC560], v225, v308, 2006, v147, @"Failed to get record field key");
+              changeCopy = objc_msgSend_errorWithDomain_code_error_format_(MEMORY[0x277CBC560], v225, v308, 2006, v147, @"Failed to get record field key");
               v219 = v318;
             }
 
@@ -1139,7 +1139,7 @@ LABEL_132:
 
           else
           {
-            self = v322;
+            self = selfCopy;
             if (*MEMORY[0x277CBC880] != -1)
             {
               dispatch_once(MEMORY[0x277CBC880], *MEMORY[0x277CBC878]);
@@ -1149,7 +1149,7 @@ LABEL_132:
             if (os_log_type_enabled(*MEMORY[0x277CBC860], OS_LOG_TYPE_ERROR))
             {
               v256 = v222;
-              v259 = objc_msgSend_requestUUID(v322, v257, v258);
+              v259 = objc_msgSend_requestUUID(selfCopy, v257, v258);
               *buf = 138543618;
               v348 = v259;
               v349 = 2112;
@@ -1157,7 +1157,7 @@ LABEL_132:
               _os_log_error_impl(&dword_22506F000, v256, OS_LOG_TYPE_ERROR, "req: %{public}@, Failed to get record type for mergeable delta change %@", buf, 0x16u);
             }
 
-            v11 = objc_msgSend_errorWithDomain_code_error_format_(MEMORY[0x277CBC560], v223, v308, 2006, v147, @"Failed to parse record type");
+            changeCopy = objc_msgSend_errorWithDomain_code_error_format_(MEMORY[0x277CBC560], v223, v308, 2006, v147, @"Failed to parse record type");
             v219 = v318;
           }
 
@@ -1170,12 +1170,12 @@ LABEL_132:
           dispatch_once(MEMORY[0x277CBC880], *MEMORY[0x277CBC878]);
         }
 
-        self = v322;
+        self = selfCopy;
         v220 = *MEMORY[0x277CBC860];
         if (os_log_type_enabled(*MEMORY[0x277CBC860], OS_LOG_TYPE_ERROR))
         {
           v252 = v220;
-          v255 = objc_msgSend_requestUUID(v322, v253, v254);
+          v255 = objc_msgSend_requestUUID(selfCopy, v253, v254);
           *buf = 138543618;
           v348 = v255;
           v349 = 2112;
@@ -1183,7 +1183,7 @@ LABEL_132:
           _os_log_error_impl(&dword_22506F000, v252, OS_LOG_TYPE_ERROR, "req: %{public}@, Failed to get record ID for mergeable delta change %@", buf, 0x16u);
         }
 
-        v11 = objc_msgSend_errorWithDomain_code_error_format_(MEMORY[0x277CBC560], v221, v308, 2006, v147, @"Failed to parse record ID");
+        changeCopy = objc_msgSend_errorWithDomain_code_error_format_(MEMORY[0x277CBC560], v221, v308, 2006, v147, @"Failed to parse record ID");
         v219 = v318;
 LABEL_142:
 
@@ -1203,31 +1203,31 @@ LABEL_144:
     }
   }
 
-  v284 = v11;
+  v284 = changeCopy;
 
   v285 = *MEMORY[0x277D85DE8];
-  return v11;
+  return changeCopy;
 }
 
-- (id)requestDidParseProtobufObject:(id)a3
+- (id)requestDidParseProtobufObject:(id)object
 {
   v144 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!objc_msgSend_hasRecordRetrieveChangesResponse(v5, v6, v7))
+  objectCopy = object;
+  if (!objc_msgSend_hasRecordRetrieveChangesResponse(objectCopy, v6, v7))
   {
     v46 = 0;
     goto LABEL_26;
   }
 
   v10 = objc_msgSend_zoneIDsByRequestOperationUUID(self, v8, v9);
-  v13 = objc_msgSend_response(v5, v11, v12);
+  v13 = objc_msgSend_response(objectCopy, v11, v12);
   v16 = objc_msgSend_operationUUID(v13, v14, v15);
   v18 = objc_msgSend_objectForKeyedSubscript_(v10, v17, v16);
 
   if (!v18)
   {
     v120 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], v19, v20);
-    v123 = objc_msgSend_response(v5, v121, v122);
+    v123 = objc_msgSend_response(objectCopy, v121, v122);
     v126 = objc_msgSend_operationUUID(v123, v124, v125);
     v129 = objc_msgSend_zoneIDsByRequestOperationUUID(self, v127, v128);
     v132 = objc_msgSend_allKeys(v129, v130, v131);
@@ -1235,17 +1235,17 @@ LABEL_144:
   }
 
   v21 = objc_msgSend_recordsChangedBlock(self, v19, v20);
-  v137 = self;
+  selfCopy = self;
   if (v21 || (objc_msgSend_recordDeletedBlock(self, v22, v23), (v21 = objc_claimAutoreleasedReturnValue()) != 0))
   {
 
 LABEL_7:
-    v28 = objc_msgSend_recordRetrieveChangesResponse(v5, v26, v27);
+    v28 = objc_msgSend_recordRetrieveChangesResponse(objectCopy, v26, v27);
     v31 = objc_msgSend_changedRecords(v28, v29, v30);
-    v34 = objc_msgSend_recordRetrieveChangesResponse(v5, v32, v33);
+    v34 = objc_msgSend_recordRetrieveChangesResponse(objectCopy, v32, v33);
     v37 = objc_msgSend_changedDeltas(v34, v35, v36);
-    v38 = v5;
-    v41 = objc_msgSend_recordRetrieveChangesResponse(v5, v39, v40);
+    v38 = objectCopy;
+    v41 = objc_msgSend_recordRetrieveChangesResponse(objectCopy, v39, v40);
     v44 = objc_msgSend_zoneAttributesChange(v41, v42, v43);
     v46 = objc_msgSend__handleRecordChanges_deltaChanges_zoneAttributesChange_forZoneID_(self, v45, v31, v37, v44, v18);
 
@@ -1254,7 +1254,7 @@ LABEL_7:
       v47 = v46;
     }
 
-    v5 = v38;
+    objectCopy = v38;
     goto LABEL_10;
   }
 
@@ -1268,19 +1268,19 @@ LABEL_7:
   v46 = 0;
 LABEL_10:
   v48 = objc_opt_new();
-  v51 = objc_msgSend_recordRetrieveChangesResponse(v5, v49, v50);
+  v51 = objc_msgSend_recordRetrieveChangesResponse(objectCopy, v49, v50);
   v54 = objc_msgSend_syncContinuationToken(v51, v52, v53);
   objc_msgSend_setResultServerChangeTokenData_(v48, v55, v54);
 
-  v58 = objc_msgSend_recordRetrieveChangesResponse(v5, v56, v57);
+  v58 = objc_msgSend_recordRetrieveChangesResponse(objectCopy, v56, v57);
   v61 = objc_msgSend_clientChangeToken(v58, v59, v60);
   objc_msgSend_setResultClientChangeTokenData_(v48, v62, v61);
 
-  v65 = objc_msgSend_recordRetrieveChangesResponse(v5, v63, v64);
+  v65 = objc_msgSend_recordRetrieveChangesResponse(objectCopy, v63, v64);
   v68 = objc_msgSend_pendingArchivedRecords(v65, v66, v67);
   objc_msgSend_setHasPendingArchivedRecords_(v48, v69, v68);
 
-  v72 = objc_msgSend_recordRetrieveChangesResponse(v5, v70, v71);
+  v72 = objc_msgSend_recordRetrieveChangesResponse(objectCopy, v70, v71);
   v75 = objc_msgSend_syncObligationsCount(v72, v73, v74);
 
   v136 = v18;
@@ -1292,8 +1292,8 @@ LABEL_10:
     v140 = 0u;
     v141 = 0u;
     v142 = 0u;
-    v135 = v5;
-    v81 = objc_msgSend_recordRetrieveChangesResponse(v5, v79, v80);
+    v135 = objectCopy;
+    v81 = objc_msgSend_recordRetrieveChangesResponse(objectCopy, v79, v80);
     v84 = objc_msgSend_syncObligations(v81, v82, v83);
 
     v86 = objc_msgSend_countByEnumeratingWithState_objects_count_(v84, v85, &v139, v143, 16);
@@ -1313,7 +1313,7 @@ LABEL_10:
           }
 
           v93 = *(*(&v139 + 1) + 8 * v91);
-          v94 = objc_msgSend_translator(v137, v87, v88);
+          v94 = objc_msgSend_translator(selfCopy, v87, v88);
           v97 = objc_msgSend_zoneIdentifier(v93, v95, v96);
           v138 = v92;
           v99 = objc_msgSend_recordZoneIDFromPRecordZoneIdentifier_error_(v94, v98, v97, &v138);
@@ -1334,15 +1334,15 @@ LABEL_10:
     v48 = v134;
     objc_msgSend_setSyncObligationZoneIDs_(v134, v101, v78);
 
-    v5 = v135;
+    objectCopy = v135;
   }
 
-  v102 = objc_msgSend_recordRetrieveChangesResponse(v5, v76, v77);
+  v102 = objc_msgSend_recordRetrieveChangesResponse(objectCopy, v76, v77);
   hasStatus = objc_msgSend_hasStatus(v102, v103, v104);
 
   if (hasStatus)
   {
-    v108 = objc_msgSend_recordRetrieveChangesResponse(v5, v106, v107);
+    v108 = objc_msgSend_recordRetrieveChangesResponse(objectCopy, v106, v107);
     v111 = objc_msgSend_status(v108, v109, v110);
 
     if (v111 - 1 >= 3)
@@ -1362,7 +1362,7 @@ LABEL_10:
   }
 
   objc_msgSend_setStatus_(v48, v106, v112);
-  v115 = objc_msgSend_requestResultsByRecordZoneID(v137, v113, v114);
+  v115 = objc_msgSend_requestResultsByRecordZoneID(selfCopy, v113, v114);
   objc_msgSend_setObject_forKeyedSubscript_(v115, v116, v48, v136);
 
 LABEL_26:
@@ -1371,16 +1371,16 @@ LABEL_26:
   return v46;
 }
 
-- (void)requestDidParseNodeFailure:(id)a3
+- (void)requestDidParseNodeFailure:(id)failure
 {
   v68 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  failureCopy = failure;
   v7 = objc_msgSend_zoneIDsByRequestOperationUUID(self, v5, v6);
-  v10 = objc_msgSend_response(v4, v8, v9);
+  v10 = objc_msgSend_response(failureCopy, v8, v9);
   v13 = objc_msgSend_operationUUID(v10, v11, v12);
   v15 = objc_msgSend_objectForKeyedSubscript_(v7, v14, v13);
 
-  v18 = objc_msgSend_result(v4, v16, v17);
+  v18 = objc_msgSend_result(failureCopy, v16, v17);
   if (objc_msgSend_code(v18, v19, v20) != 1)
   {
     if (*MEMORY[0x277CBC880] != -1)

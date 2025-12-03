@@ -1,5 +1,5 @@
 @interface AVMobileChromelessControlsStyleSheet
-- (AVMobileChromelessControlsStyleSheet)initWithTraitCollection:(id)a3;
+- (AVMobileChromelessControlsStyleSheet)initWithTraitCollection:(id)collection;
 - (UIEdgeInsets)embeddedInlineInsets;
 - (UIEdgeInsets)landscapeFullscreenInsets;
 - (UIEdgeInsets)portraitFullscreenInsets;
@@ -75,8 +75,8 @@
       v2 = MEMORY[0x1E69DB878];
       v3 = *MEMORY[0x1E69DDD10];
       v4 = *MEMORY[0x1E69DB970];
-      v5 = [result traitCollection];
-      v6 = [v2 avkit_monospacedDigitFontWithTextStyle:v3 fontWeight:v5 traitCollection:v4];
+      traitCollection = [result traitCollection];
+      v6 = [v2 avkit_monospacedDigitFontWithTextStyle:v3 fontWeight:traitCollection traitCollection:v4];
       v7 = v1[21];
       v1[21] = v6;
 
@@ -198,18 +198,18 @@
   return contentTagFont;
 }
 
-- (AVMobileChromelessControlsStyleSheet)initWithTraitCollection:(id)a3
+- (AVMobileChromelessControlsStyleSheet)initWithTraitCollection:(id)collection
 {
-  v4 = a3;
+  collectionCopy = collection;
   v12.receiver = self;
   v12.super_class = AVMobileChromelessControlsStyleSheet;
-  v5 = [(AVMobileControlsStyleSheet *)&v12 initWithTraitCollection:v4];
+  v5 = [(AVMobileControlsStyleSheet *)&v12 initWithTraitCollection:collectionCopy];
   if (v5)
   {
-    v6 = [v4 userInterfaceIdiom];
+    userInterfaceIdiom = [collectionCopy userInterfaceIdiom];
     *(v5 + 19) = 0x4020000000000000;
     *(v5 + 20) = 0x4018000000000000;
-    if (v6)
+    if (userInterfaceIdiom)
     {
       v7 = xmmword_18B6EC590;
       v8 = 0x4047000000000000;

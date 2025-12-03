@@ -3,19 +3,19 @@
 - (CGRect)imageRect;
 - (id)description;
 - (void)dealloc;
-- (void)setDecodedSurface:(__IOSurface *)a3;
+- (void)setDecodedSurface:(__IOSurface *)surface;
 @end
 
 @implementation CMPhotoTile
 
-- (void)setDecodedSurface:(__IOSurface *)a3
+- (void)setDecodedSurface:(__IOSurface *)surface
 {
   decodedSurface = self->_decodedSurface;
-  if (decodedSurface != a3)
+  if (decodedSurface != surface)
   {
-    if (a3)
+    if (surface)
     {
-      CFRetain(a3);
+      CFRetain(surface);
       decodedSurface = self->_decodedSurface;
     }
 
@@ -29,7 +29,7 @@
       }
     }
 
-    self->_decodedSurface = a3;
+    self->_decodedSurface = surface;
   }
 }
 
@@ -50,9 +50,9 @@
   v9 = _NSStringFromCGRect(v5, v6, v7, v8);
   [(CMPhotoTile *)self contentsRect];
   v14 = _NSStringFromCGRect(v10, v11, v12, v13);
-  v15 = [(CMPhotoTile *)self visible];
+  visible = [(CMPhotoTile *)self visible];
   v16 = @"NO";
-  if (v15)
+  if (visible)
   {
     v16 = @"YES";
   }

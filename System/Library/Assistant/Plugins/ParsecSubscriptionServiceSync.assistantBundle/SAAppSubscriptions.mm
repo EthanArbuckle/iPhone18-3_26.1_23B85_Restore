@@ -12,8 +12,8 @@
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v3 = [(SAAppSubscriptions *)self activeSubscriptions];
-  v4 = [v3 countByEnumeratingWithState:&v29 objects:v38 count:16];
+  activeSubscriptions = [(SAAppSubscriptions *)self activeSubscriptions];
+  v4 = [activeSubscriptions countByEnumeratingWithState:&v29 objects:v38 count:16];
   if (v4)
   {
     v5 = v4;
@@ -24,19 +24,19 @@
       {
         if (*v30 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(activeSubscriptions);
         }
 
         v8 = *(*(&v29 + 1) + 8 * i);
-        v9 = [v8 bundleId];
-        v10 = v9;
-        if (v9)
+        bundleId = [v8 bundleId];
+        v10 = bundleId;
+        if (bundleId)
         {
-          v11 = [v9 UTF8String];
-          if (v11)
+          uTF8String = [bundleId UTF8String];
+          if (uTF8String)
           {
-            v12 = v11;
-            v13 = strlen(v11);
+            v12 = uTF8String;
+            v13 = strlen(uTF8String);
             CC_SHA1_Update(&c, v12, v13);
           }
         }
@@ -45,8 +45,8 @@
         v28 = 0u;
         v25 = 0u;
         v26 = 0u;
-        v14 = [v8 subscriptionTiers];
-        v15 = [v14 countByEnumeratingWithState:&v25 objects:v37 count:16];
+        subscriptionTiers = [v8 subscriptionTiers];
+        v15 = [subscriptionTiers countByEnumeratingWithState:&v25 objects:v37 count:16];
         if (v15)
         {
           v16 = v15;
@@ -57,30 +57,30 @@
             {
               if (*v26 != v17)
               {
-                objc_enumerationMutation(v14);
+                objc_enumerationMutation(subscriptionTiers);
               }
 
               v19 = *(*(&v25 + 1) + 8 * j);
               if (v19)
               {
-                v20 = [v19 UTF8String];
-                if (v20)
+                uTF8String2 = [v19 UTF8String];
+                if (uTF8String2)
                 {
-                  v21 = v20;
-                  v22 = strlen(v20);
+                  v21 = uTF8String2;
+                  v22 = strlen(uTF8String2);
                   CC_SHA1_Update(&c, v21, v22);
                 }
               }
             }
 
-            v16 = [v14 countByEnumeratingWithState:&v25 objects:v37 count:16];
+            v16 = [subscriptionTiers countByEnumeratingWithState:&v25 objects:v37 count:16];
           }
 
           while (v16);
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v29 objects:v38 count:16];
+      v5 = [activeSubscriptions countByEnumeratingWithState:&v29 objects:v38 count:16];
     }
 
     while (v5);

@@ -1,25 +1,25 @@
 @interface _SFPBRFOptionalBool
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBRFOptionalBool)initWithDictionary:(id)a3;
-- (_SFPBRFOptionalBool)initWithFacade:(id)a3;
-- (_SFPBRFOptionalBool)initWithJSON:(id)a3;
+- (_SFPBRFOptionalBool)initWithDictionary:(id)dictionary;
+- (_SFPBRFOptionalBool)initWithFacade:(id)facade;
+- (_SFPBRFOptionalBool)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBRFOptionalBool
 
-- (_SFPBRFOptionalBool)initWithFacade:(id)a3
+- (_SFPBRFOptionalBool)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBRFOptionalBool *)self init];
   if (v5)
   {
-    if ([v4 hasValue])
+    if ([facadeCopy hasValue])
     {
-      -[_SFPBRFOptionalBool setValue:](v5, "setValue:", [v4 value]);
+      -[_SFPBRFOptionalBool setValue:](v5, "setValue:", [facadeCopy value]);
     }
 
     v6 = v5;
@@ -28,15 +28,15 @@
   return v5;
 }
 
-- (_SFPBRFOptionalBool)initWithDictionary:(id)a3
+- (_SFPBRFOptionalBool)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = _SFPBRFOptionalBool;
   v5 = [(_SFPBRFOptionalBool *)&v9 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"value"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"value"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -49,30 +49,30 @@
   return v5;
 }
 
-- (_SFPBRFOptionalBool)initWithJSON:(id)a3
+- (_SFPBRFOptionalBool)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBRFOptionalBool *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBRFOptionalBool *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBRFOptionalBool *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -85,14 +85,14 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_value)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithBool:{-[_SFPBRFOptionalBool value](self, "value")}];
-    [v3 setObject:v4 forKeyedSubscript:@"value"];
+    [dictionary setObject:v4 forKeyedSubscript:@"value"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -108,13 +108,13 @@
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
     value = self->_value;
-    v6 = value == [v4 value];
+    v6 = value == [equalCopy value];
   }
 
   else
@@ -125,9 +125,9 @@
   return v6;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if ([(_SFPBRFOptionalBool *)self value])
   {
     PBDataWriterWriteBOOLField();

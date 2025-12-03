@@ -1,49 +1,49 @@
 @interface POMMESSchemaPOMMESPegasusKitNetworkTimingData
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (POMMESSchemaPOMMESPegasusKitNetworkTimingData)initWithDictionary:(id)a3;
-- (POMMESSchemaPOMMESPegasusKitNetworkTimingData)initWithJSON:(id)a3;
+- (POMMESSchemaPOMMESPegasusKitNetworkTimingData)initWithDictionary:(id)dictionary;
+- (POMMESSchemaPOMMESPegasusKitNetworkTimingData)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasRequestEndOffsetInMS:(BOOL)a3;
-- (void)setHasResponseEndOffsetInMS:(BOOL)a3;
-- (void)setHasResponseStartOffsetInMS:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasRequestEndOffsetInMS:(BOOL)s;
+- (void)setHasResponseEndOffsetInMS:(BOOL)s;
+- (void)setHasResponseStartOffsetInMS:(BOOL)s;
+- (void)writeTo:(id)to;
 @end
 
 @implementation POMMESSchemaPOMMESPegasusKitNetworkTimingData
 
-- (POMMESSchemaPOMMESPegasusKitNetworkTimingData)initWithDictionary:(id)a3
+- (POMMESSchemaPOMMESPegasusKitNetworkTimingData)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = POMMESSchemaPOMMESPegasusKitNetworkTimingData;
   v5 = [(POMMESSchemaPOMMESPegasusKitNetworkTimingData *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"requestStartOffsetInMS"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"requestStartOffsetInMS"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[POMMESSchemaPOMMESPegasusKitNetworkTimingData setRequestStartOffsetInMS:](v5, "setRequestStartOffsetInMS:", [v6 unsignedIntValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"requestEndOffsetInMS"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"requestEndOffsetInMS"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[POMMESSchemaPOMMESPegasusKitNetworkTimingData setRequestEndOffsetInMS:](v5, "setRequestEndOffsetInMS:", [v7 unsignedIntValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"responseStartOffsetInMS"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"responseStartOffsetInMS"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[POMMESSchemaPOMMESPegasusKitNetworkTimingData setResponseStartOffsetInMS:](v5, "setResponseStartOffsetInMS:", [v8 unsignedIntValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"responseEndOffsetInMS"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"responseEndOffsetInMS"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -56,30 +56,30 @@
   return v5;
 }
 
-- (POMMESSchemaPOMMESPegasusKitNetworkTimingData)initWithJSON:(id)a3
+- (POMMESSchemaPOMMESPegasusKitNetworkTimingData)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(POMMESSchemaPOMMESPegasusKitNetworkTimingData *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(POMMESSchemaPOMMESPegasusKitNetworkTimingData *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(POMMESSchemaPOMMESPegasusKitNetworkTimingData *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -92,12 +92,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 2) != 0)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[POMMESSchemaPOMMESPegasusKitNetworkTimingData requestEndOffsetInMS](self, "requestEndOffsetInMS")}];
-    [v3 setObject:v7 forKeyedSubscript:@"requestEndOffsetInMS"];
+    [dictionary setObject:v7 forKeyedSubscript:@"requestEndOffsetInMS"];
 
     has = self->_has;
     if ((has & 1) == 0)
@@ -118,7 +118,7 @@ LABEL_3:
   }
 
   v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[POMMESSchemaPOMMESPegasusKitNetworkTimingData requestStartOffsetInMS](self, "requestStartOffsetInMS")}];
-  [v3 setObject:v8 forKeyedSubscript:@"requestStartOffsetInMS"];
+  [dictionary setObject:v8 forKeyedSubscript:@"requestStartOffsetInMS"];
 
   has = self->_has;
   if ((has & 8) == 0)
@@ -134,19 +134,19 @@ LABEL_4:
 
 LABEL_11:
   v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[POMMESSchemaPOMMESPegasusKitNetworkTimingData responseEndOffsetInMS](self, "responseEndOffsetInMS")}];
-  [v3 setObject:v9 forKeyedSubscript:@"responseEndOffsetInMS"];
+  [dictionary setObject:v9 forKeyedSubscript:@"responseEndOffsetInMS"];
 
   if ((*&self->_has & 4) != 0)
   {
 LABEL_5:
     v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[POMMESSchemaPOMMESPegasusKitNetworkTimingData responseStartOffsetInMS](self, "responseStartOffsetInMS")}];
-    [v3 setObject:v5 forKeyedSubscript:@"responseStartOffsetInMS"];
+    [dictionary setObject:v5 forKeyedSubscript:@"responseStartOffsetInMS"];
   }
 
 LABEL_6:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -203,16 +203,16 @@ LABEL_5:
   return v3 ^ v2 ^ v4 ^ v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_18;
   }
 
   has = self->_has;
-  v6 = v4[24];
+  v6 = equalCopy[24];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_18;
@@ -221,13 +221,13 @@ LABEL_5:
   if (*&has)
   {
     requestStartOffsetInMS = self->_requestStartOffsetInMS;
-    if (requestStartOffsetInMS != [v4 requestStartOffsetInMS])
+    if (requestStartOffsetInMS != [equalCopy requestStartOffsetInMS])
     {
       goto LABEL_18;
     }
 
     has = self->_has;
-    v6 = v4[24];
+    v6 = equalCopy[24];
   }
 
   v8 = (*&has >> 1) & 1;
@@ -239,13 +239,13 @@ LABEL_5:
   if (v8)
   {
     requestEndOffsetInMS = self->_requestEndOffsetInMS;
-    if (requestEndOffsetInMS != [v4 requestEndOffsetInMS])
+    if (requestEndOffsetInMS != [equalCopy requestEndOffsetInMS])
     {
       goto LABEL_18;
     }
 
     has = self->_has;
-    v6 = v4[24];
+    v6 = equalCopy[24];
   }
 
   v10 = (*&has >> 2) & 1;
@@ -257,10 +257,10 @@ LABEL_5:
   if (v10)
   {
     responseStartOffsetInMS = self->_responseStartOffsetInMS;
-    if (responseStartOffsetInMS == [v4 responseStartOffsetInMS])
+    if (responseStartOffsetInMS == [equalCopy responseStartOffsetInMS])
     {
       has = self->_has;
-      v6 = v4[24];
+      v6 = equalCopy[24];
       goto LABEL_14;
     }
 
@@ -279,7 +279,7 @@ LABEL_14:
   if (v12)
   {
     responseEndOffsetInMS = self->_responseEndOffsetInMS;
-    if (responseEndOffsetInMS != [v4 responseEndOffsetInMS])
+    if (responseEndOffsetInMS != [equalCopy responseEndOffsetInMS])
     {
       goto LABEL_18;
     }
@@ -291,9 +291,9 @@ LABEL_19:
   return v14;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -340,9 +340,9 @@ LABEL_5:
 LABEL_6:
 }
 
-- (void)setHasResponseEndOffsetInMS:(BOOL)a3
+- (void)setHasResponseEndOffsetInMS:(BOOL)s
 {
-  if (a3)
+  if (s)
   {
     v3 = 8;
   }
@@ -355,9 +355,9 @@ LABEL_6:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasResponseStartOffsetInMS:(BOOL)a3
+- (void)setHasResponseStartOffsetInMS:(BOOL)s
 {
-  if (a3)
+  if (s)
   {
     v3 = 4;
   }
@@ -370,9 +370,9 @@ LABEL_6:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasRequestEndOffsetInMS:(BOOL)a3
+- (void)setHasRequestEndOffsetInMS:(BOOL)s
 {
-  if (a3)
+  if (s)
   {
     v3 = 2;
   }

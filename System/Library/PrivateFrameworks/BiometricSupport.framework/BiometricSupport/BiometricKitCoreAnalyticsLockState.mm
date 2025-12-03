@@ -1,17 +1,17 @@
 @interface BiometricKitCoreAnalyticsLockState
-- (BiometricKitCoreAnalyticsLockState)initWithName:(id)a3;
+- (BiometricKitCoreAnalyticsLockState)initWithName:(id)name;
 - (void)reset;
-- (void)serviceMatchWithServer:(id)a3;
+- (void)serviceMatchWithServer:(id)server;
 @end
 
 @implementation BiometricKitCoreAnalyticsLockState
 
-- (BiometricKitCoreAnalyticsLockState)initWithName:(id)a3
+- (BiometricKitCoreAnalyticsLockState)initWithName:(id)name
 {
   v15[8] = *MEMORY[0x277D85DE8];
   v14.receiver = self;
   v14.super_class = BiometricKitCoreAnalyticsLockState;
-  v3 = [(BiometricKitCoreAnalyticsEvent *)&v14 initWithName:a3];
+  v3 = [(BiometricKitCoreAnalyticsEvent *)&v14 initWithName:name];
   if (v3)
   {
     v15[0] = @"eventCanceled";
@@ -26,17 +26,17 @@
     privateProperties = v3->super._privateProperties;
     v3->super._privateProperties = v4;
 
-    v6 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v7 = _currentLockStateForUser;
-    _currentLockStateForUser = v6;
+    _currentLockStateForUser = dictionary;
 
-    v8 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     v9 = _previousLockStateForUser;
-    _previousLockStateForUser = v8;
+    _previousLockStateForUser = dictionary2;
 
-    v10 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary3 = [MEMORY[0x277CBEB38] dictionary];
     v11 = _unlockTokenForUser;
-    _unlockTokenForUser = v10;
+    _unlockTokenForUser = dictionary3;
   }
 
   v12 = *MEMORY[0x277D85DE8];
@@ -97,19 +97,19 @@
   self->_passcodeAuthenticatedBiometryUnavailable = &unk_28374C4B0;
 }
 
-- (void)serviceMatchWithServer:(id)a3
+- (void)serviceMatchWithServer:(id)server
 {
-  v5 = a3;
-  if (v5)
+  serverCopy = server;
+  if (serverCopy)
   {
-    objc_storeStrong(&_server, a3);
+    objc_storeStrong(&_server, server);
     v6 = dispatch_get_global_queue(21, 0);
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __61__BiometricKitCoreAnalyticsLockState_serviceMatchWithServer___block_invoke;
     v7[3] = &unk_2784FA3F0;
     v7[4] = self;
-    v8 = v5;
+    v8 = serverCopy;
     dispatch_async(v6, v7);
   }
 

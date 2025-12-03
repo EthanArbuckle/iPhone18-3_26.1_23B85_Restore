@@ -1,27 +1,27 @@
 @interface VTPhraseDetectorConfig
-- (VTPhraseDetectorConfig)initWithResourcePath:(id)a3 configPathNDAPI:(id)a4 useRecognizerCombination:(BOOL)a5 configPathRecognizer:(id)a6 useKeywordSpotting:(BOOL)a7 phraseConfigs:(id)a8;
+- (VTPhraseDetectorConfig)initWithResourcePath:(id)path configPathNDAPI:(id)i useRecognizerCombination:(BOOL)combination configPathRecognizer:(id)recognizer useKeywordSpotting:(BOOL)spotting phraseConfigs:(id)configs;
 @end
 
 @implementation VTPhraseDetectorConfig
 
-- (VTPhraseDetectorConfig)initWithResourcePath:(id)a3 configPathNDAPI:(id)a4 useRecognizerCombination:(BOOL)a5 configPathRecognizer:(id)a6 useKeywordSpotting:(BOOL)a7 phraseConfigs:(id)a8
+- (VTPhraseDetectorConfig)initWithResourcePath:(id)path configPathNDAPI:(id)i useRecognizerCombination:(BOOL)combination configPathRecognizer:(id)recognizer useKeywordSpotting:(BOOL)spotting phraseConfigs:(id)configs
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a6;
-  v17 = a8;
+  pathCopy = path;
+  iCopy = i;
+  recognizerCopy = recognizer;
+  configsCopy = configs;
   v22.receiver = self;
   v22.super_class = VTPhraseDetectorConfig;
   v18 = [(VTPhraseDetectorConfig *)&v22 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_resourcePath, a3);
-    objc_storeStrong(&v19->_configPathNDAPI, a4);
-    v19->_useRecognizerCombination = a5;
-    objc_storeStrong(&v19->_configPathRecognizer, a6);
-    v19->_useKeywordSpotting = a7;
-    objc_storeStrong(&v19->_phraseConfigs, a8);
+    objc_storeStrong(&v18->_resourcePath, path);
+    objc_storeStrong(&v19->_configPathNDAPI, i);
+    v19->_useRecognizerCombination = combination;
+    objc_storeStrong(&v19->_configPathRecognizer, recognizer);
+    v19->_useKeywordSpotting = spotting;
+    objc_storeStrong(&v19->_phraseConfigs, configs);
   }
 
   return v19;

@@ -1,5 +1,5 @@
 @interface ECDKIMCryptoUtil
-+ (BOOL)verifySignedData:(id)a3 withSignatureData:(id)a4 publicKeyData:(id)a5 hashingAlgorithm:(unint64_t)a6 error:(id *)a7;
++ (BOOL)verifySignedData:(id)data withSignatureData:(id)signatureData publicKeyData:(id)keyData hashingAlgorithm:(unint64_t)algorithm error:(id *)error;
 @end
 
 @implementation ECDKIMCryptoUtil
@@ -11,13 +11,13 @@ uint64_t ___ef_log_ECDKIMCryptoUtil_block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-+ (BOOL)verifySignedData:(id)a3 withSignatureData:(id)a4 publicKeyData:(id)a5 hashingAlgorithm:(unint64_t)a6 error:(id *)a7
++ (BOOL)verifySignedData:(id)data withSignatureData:(id)signatureData publicKeyData:(id)keyData hashingAlgorithm:(unint64_t)algorithm error:(id *)error
 {
   v50 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  if (v12)
+  dataCopy = data;
+  signatureDataCopy = signatureData;
+  keyDataCopy = keyData;
+  if (signatureDataCopy)
   {
     error = 0;
     Mutable = CFDictionaryCreateMutable(*MEMORY[0x277CBECE8], 3, MEMORY[0x277CBF138], MEMORY[0x277CBF150]);
@@ -28,10 +28,10 @@ uint64_t ___ef_log_ECDKIMCryptoUtil_block_invoke()
 LABEL_28:
       if (error)
       {
-        if (a7)
+        if (error)
         {
-          v45 = error;
-          *a7 = v45;
+          errorCopy = error;
+          *error = errorCopy;
         }
 
         else
@@ -47,19 +47,19 @@ LABEL_28:
     CFDictionaryAddValue(Mutable, *MEMORY[0x277CDC028], *MEMORY[0x277CDC060]);
     CFDictionaryAddValue(v15, *MEMORY[0x277CDBFE0], *MEMORY[0x277CDC000]);
     CFDictionaryAddValue(v15, *MEMORY[0x277CDC560], *MEMORY[0x277CBED28]);
-    v16 = SecKeyCreateWithData(v13, v15, &error);
+    v16 = SecKeyCreateWithData(keyDataCopy, v15, &error);
     if (v16)
     {
-      if (a6 == 1)
+      if (algorithm == 1)
       {
         *&v36 = 0xAAAAAAAAAAAAAAAALL;
         *(&v36 + 1) = 0xAAAAAAAAAAAAAAAALL;
         *md = v36;
         *&md[16] = v36;
-        v37 = v11;
-        CC_SHA256([v11 bytes], objc_msgSend(v11, "length"), md);
+        v37 = dataCopy;
+        CC_SHA256([dataCopy bytes], objc_msgSend(dataCopy, "length"), md);
         v18 = CFDataCreate(0, md, 32);
-        v19 = SecKeyVerifySignature(v16, *MEMORY[0x277CDC388], v18, v12, &error);
+        v19 = SecKeyVerifySignature(v16, *MEMORY[0x277CDC388], v18, signatureDataCopy, &error);
         if (!v19)
         {
           v38 = _ef_log_ECDKIMCryptoUtil();
@@ -72,13 +72,13 @@ LABEL_28:
         goto LABEL_25;
       }
 
-      if (!a6)
+      if (!algorithm)
       {
         memset(md, 170, 20);
-        v17 = v11;
-        CC_SHA1([v11 bytes], objc_msgSend(v11, "length"), md);
+        v17 = dataCopy;
+        CC_SHA1([dataCopy bytes], objc_msgSend(dataCopy, "length"), md);
         v18 = CFDataCreate(0, md, 20);
-        v19 = SecKeyVerifySignature(v16, *MEMORY[0x277CDC378], v18, v12, &error);
+        v19 = SecKeyVerifySignature(v16, *MEMORY[0x277CDC378], v18, signatureDataCopy, &error);
         if (!v19)
         {
           v20 = _ef_log_ECDKIMCryptoUtil();
@@ -120,10 +120,10 @@ LABEL_26:
     [ECDKIMCryptoUtil verifySignedData:v27 withSignatureData:? publicKeyData:? hashingAlgorithm:? error:?];
   }
 
-  if (a7)
+  if (error)
   {
     [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:-67688 userInfo:0];
-    *a7 = v28 = 0;
+    *error = v28 = 0;
   }
 
   else

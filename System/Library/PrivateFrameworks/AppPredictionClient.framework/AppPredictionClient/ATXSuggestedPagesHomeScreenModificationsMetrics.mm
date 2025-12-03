@@ -1,7 +1,7 @@
 @interface ATXSuggestedPagesHomeScreenModificationsMetrics
 - (id)coreAnalyticsDictionary;
 - (id)description;
-- (id)metricsSourceToStringWithSource:(int)a3;
+- (id)metricsSourceToStringWithSource:(int)source;
 - (void)logToCoreAnalytics;
 @end
 
@@ -11,83 +11,83 @@
 {
   v28[8] = *MEMORY[0x1E69E9840];
   v27[0] = @"suggestedPageType";
-  v3 = [(ATXSuggestedPagesHomeScreenModificationsMetrics *)self suggestedPageType];
-  v4 = v3;
-  if (!v3)
+  suggestedPageType = [(ATXSuggestedPagesHomeScreenModificationsMetrics *)self suggestedPageType];
+  v4 = suggestedPageType;
+  if (!suggestedPageType)
   {
-    v3 = [MEMORY[0x1E695DFB0] null];
+    suggestedPageType = [MEMORY[0x1E695DFB0] null];
   }
 
-  v24 = v3;
-  v28[0] = v3;
+  v24 = suggestedPageType;
+  v28[0] = suggestedPageType;
   v27[1] = @"eventType";
-  v5 = [(ATXSuggestedPagesHomeScreenModificationsMetrics *)self eventType];
-  v6 = v5;
-  if (!v5)
+  eventType = [(ATXSuggestedPagesHomeScreenModificationsMetrics *)self eventType];
+  v6 = eventType;
+  if (!eventType)
   {
-    v5 = [MEMORY[0x1E695DFB0] null];
+    eventType = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23 = v5;
-  v28[1] = v5;
+  v23 = eventType;
+  v28[1] = eventType;
   v27[2] = @"widgetBundleId";
-  v7 = [(ATXSuggestedPagesHomeScreenModificationsMetrics *)self widgetBundleId];
-  v8 = v7;
-  if (!v7)
+  widgetBundleId = [(ATXSuggestedPagesHomeScreenModificationsMetrics *)self widgetBundleId];
+  v8 = widgetBundleId;
+  if (!widgetBundleId)
   {
-    v7 = [MEMORY[0x1E695DFB0] null];
+    widgetBundleId = [MEMORY[0x1E695DFB0] null];
   }
 
-  v22 = v7;
-  v28[2] = v7;
+  v22 = widgetBundleId;
+  v28[2] = widgetBundleId;
   v27[3] = @"widgetKind";
-  v9 = [(ATXSuggestedPagesHomeScreenModificationsMetrics *)self widgetKind];
-  v10 = v9;
-  if (!v9)
+  widgetKind = [(ATXSuggestedPagesHomeScreenModificationsMetrics *)self widgetKind];
+  v10 = widgetKind;
+  if (!widgetKind)
   {
-    v9 = [MEMORY[0x1E695DFB0] null];
+    widgetKind = [MEMORY[0x1E695DFB0] null];
   }
 
-  v21 = v9;
-  v28[3] = v9;
+  v21 = widgetKind;
+  v28[3] = widgetKind;
   v27[4] = @"appBundleId";
-  v11 = [(ATXSuggestedPagesHomeScreenModificationsMetrics *)self appBundleId];
-  v12 = v11;
-  if (!v11)
+  appBundleId = [(ATXSuggestedPagesHomeScreenModificationsMetrics *)self appBundleId];
+  v12 = appBundleId;
+  if (!appBundleId)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    appBundleId = [MEMORY[0x1E695DFB0] null];
   }
 
   v26 = v4;
-  v20 = v11;
-  v28[4] = v11;
+  v20 = appBundleId;
+  v28[4] = appBundleId;
   v27[5] = @"widgetSize";
-  v13 = [(ATXSuggestedPagesHomeScreenModificationsMetrics *)self widgetSize];
-  v14 = v13;
-  if (!v13)
+  widgetSize = [(ATXSuggestedPagesHomeScreenModificationsMetrics *)self widgetSize];
+  null = widgetSize;
+  if (!widgetSize)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v28[5] = v14;
+  v28[5] = null;
   v27[6] = @"isSuggestedWidget";
   v15 = [MEMORY[0x1E696AD98] numberWithBool:{-[ATXSuggestedPagesHomeScreenModificationsMetrics isSuggestedWidget](self, "isSuggestedWidget")}];
-  v16 = v15;
+  null2 = v15;
   if (!v15)
   {
-    v16 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v28[6] = v16;
+  v28[6] = null2;
   v27[7] = @"source";
   v17 = [(ATXSuggestedPagesHomeScreenModificationsMetrics *)self metricsSourceToStringWithSource:[(ATXSuggestedPagesHomeScreenModificationsMetrics *)self source]];
-  v18 = v17;
+  null3 = v17;
   if (!v17)
   {
-    v18 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v28[7] = v18;
+  v28[7] = null3;
   v25 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v28 forKeys:v27 count:8];
   if (!v17)
   {
@@ -97,7 +97,7 @@
   {
   }
 
-  if (!v13)
+  if (!widgetSize)
   {
   }
 
@@ -127,20 +127,20 @@
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(ATXSuggestedPagesHomeScreenModificationsMetrics *)self suggestedPageType];
-  v5 = [(ATXSuggestedPagesHomeScreenModificationsMetrics *)self eventType];
-  v6 = [(ATXSuggestedPagesHomeScreenModificationsMetrics *)self widgetBundleId];
-  v7 = [(ATXSuggestedPagesHomeScreenModificationsMetrics *)self widgetKind];
-  v8 = [(ATXSuggestedPagesHomeScreenModificationsMetrics *)self appBundleId];
-  v9 = [(ATXSuggestedPagesHomeScreenModificationsMetrics *)self widgetSize];
-  v10 = [v3 stringWithFormat:@"ATXSuggestedPagesHomeScreenModificationsMetrics\nsuggestedPageType:%@\neventType:%@\nwidgetBundleId%@\nwidgetKind:%@\nappBundleId:%@\nwidgetSize:%@\nisSuggestedWidget:%d", v4, v5, v6, v7, v8, v9, -[ATXSuggestedPagesHomeScreenModificationsMetrics isSuggestedWidget](self, "isSuggestedWidget")];
+  suggestedPageType = [(ATXSuggestedPagesHomeScreenModificationsMetrics *)self suggestedPageType];
+  eventType = [(ATXSuggestedPagesHomeScreenModificationsMetrics *)self eventType];
+  widgetBundleId = [(ATXSuggestedPagesHomeScreenModificationsMetrics *)self widgetBundleId];
+  widgetKind = [(ATXSuggestedPagesHomeScreenModificationsMetrics *)self widgetKind];
+  appBundleId = [(ATXSuggestedPagesHomeScreenModificationsMetrics *)self appBundleId];
+  widgetSize = [(ATXSuggestedPagesHomeScreenModificationsMetrics *)self widgetSize];
+  v10 = [v3 stringWithFormat:@"ATXSuggestedPagesHomeScreenModificationsMetrics\nsuggestedPageType:%@\neventType:%@\nwidgetBundleId%@\nwidgetKind:%@\nappBundleId:%@\nwidgetSize:%@\nisSuggestedWidget:%d", suggestedPageType, eventType, widgetBundleId, widgetKind, appBundleId, widgetSize, -[ATXSuggestedPagesHomeScreenModificationsMetrics isSuggestedWidget](self, "isSuggestedWidget")];
 
   return v10;
 }
 
-- (id)metricsSourceToStringWithSource:(int)a3
+- (id)metricsSourceToStringWithSource:(int)source
 {
-  if (a3 == 1)
+  if (source == 1)
   {
     return @"HomeScreen";
   }
@@ -153,8 +153,8 @@
 
 - (void)logToCoreAnalytics
 {
-  v4 = [(ATXSuggestedPagesHomeScreenModificationsMetrics *)self metricName];
-  v3 = [(ATXSuggestedPagesHomeScreenModificationsMetrics *)self coreAnalyticsDictionary];
+  metricName = [(ATXSuggestedPagesHomeScreenModificationsMetrics *)self metricName];
+  coreAnalyticsDictionary = [(ATXSuggestedPagesHomeScreenModificationsMetrics *)self coreAnalyticsDictionary];
   AnalyticsSendEvent();
 }
 

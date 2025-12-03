@@ -1,16 +1,16 @@
 @interface TSCH3DChartBarSceneObject
-+ (id)partWithEnumerator:(id)a3 layoutSettings:(id *)a4;
-+ (void)addHorizontalTransformToProperties:(id)a3;
-+ (void)updateLightingEffectsState:(id)a3 scene:(id)a4;
-- (tvec2<float>)labelObjectSpacePosition:(unsigned int)a3 axisValue:(double)a4 intercept:(double)a5;
-- (void)updateLightingEffectsState:(id)a3 scene:(id)a4;
++ (id)partWithEnumerator:(id)enumerator layoutSettings:(id *)settings;
++ (void)addHorizontalTransformToProperties:(id)properties;
++ (void)updateLightingEffectsState:(id)state scene:(id)scene;
+- (tvec2<float>)labelObjectSpacePosition:(unsigned int)position axisValue:(double)value intercept:(double)intercept;
+- (void)updateLightingEffectsState:(id)state scene:(id)scene;
 @end
 
 @implementation TSCH3DChartBarSceneObject
 
-+ (void)addHorizontalTransformToProperties:(id)a3
++ (void)addHorizontalTransformToProperties:(id)properties
 {
-  v3 = a3;
+  propertiesCopy = properties;
   v8 = objc_msgSend_transform(TSCH3DTransform, v4, v5, v6, v7);
   v19 = 0x3F0000003F000000;
   v20 = 0;
@@ -18,14 +18,14 @@
   LODWORD(v12) = -1087044365;
   LODWORD(v13) = 1060439283;
   objc_msgSend_setRotation_(v8, v14, COERCE_DOUBLE(0x8000000080000000), COERCE_DOUBLE(0x8000000080000000), v12, v13);
-  objc_msgSend_setElementsTransform_(v3, v15, v16, v17, v18, v8);
+  objc_msgSend_setElementsTransform_(propertiesCopy, v15, v16, v17, v18, v8);
 }
 
-+ (void)updateLightingEffectsState:(id)a3 scene:(id)a4
++ (void)updateLightingEffectsState:(id)state scene:(id)scene
 {
-  v5 = a3;
-  v6 = a4;
-  v11 = objc_msgSend_camera(v6, v7, v8, v9, v10);
+  stateCopy = state;
+  sceneCopy = scene;
+  v11 = objc_msgSend_camera(sceneCopy, v7, v8, v9, v10);
   v16 = v11;
   if (v11)
   {
@@ -37,7 +37,7 @@
     memset(v57, 0, sizeof(v57));
   }
 
-  v21 = objc_msgSend_nonNilAccessorWithScene_(TSCH3DChartScenePropertyAccessor, v17, v18, v19, v20, v6);
+  v21 = objc_msgSend_nonNilAccessorWithScene_(TSCH3DChartScenePropertyAccessor, v17, v18, v19, v20, sceneCopy);
   v27 = v21;
   if (v21)
   {
@@ -98,9 +98,9 @@
   *&v52[16] = v44;
   v53 = v45;
   v54 = *v46;
-  if (v6)
+  if (sceneCopy)
   {
-    objc_msgSend_transform(v6, v35, *&v45, v46[0], v36);
+    objc_msgSend_transform(sceneCopy, v35, *&v45, v46[0], v36);
   }
 
   else
@@ -111,53 +111,53 @@
   sub_2761558A0(v57, v41, v42);
   sub_2761558A0(v42, v52, v47);
   *&v37 = sub_27617F7E4(&v43, v57, v47);
-  objc_msgSend_setLightingPackageEffectState_effectsStates_(TSCH3DLightingPackageShaderEffect, v38, v37, v39, v40, &v43, v5);
+  objc_msgSend_setLightingPackageEffectState_effectsStates_(TSCH3DLightingPackageShaderEffect, v38, v37, v39, v40, &v43, stateCopy);
 }
 
-+ (id)partWithEnumerator:(id)a3 layoutSettings:(id *)a4
++ (id)partWithEnumerator:(id)enumerator layoutSettings:(id *)settings
 {
-  v6 = a3;
-  v24 = *a4;
-  v23.receiver = a1;
+  enumeratorCopy = enumerator;
+  v24 = *settings;
+  v23.receiver = self;
   v23.super_class = &OBJC_METACLASS___TSCH3DChartBarSceneObject;
-  v7 = objc_msgSendSuper2(&v23, sel_partWithEnumerator_layoutSettings_, v6, &v24);
+  v7 = objc_msgSendSuper2(&v23, sel_partWithEnumerator_layoutSettings_, enumeratorCopy, &v24);
   v12 = objc_msgSend_properties(v7, v8, v9, v10, v11);
 
-  objc_msgSend_addHorizontalTransformToProperties_(a1, v13, v14, v15, v16, v12);
-  v21 = objc_msgSend_scenePartWithEnumerator_properties_(TSCH3DScenePart, v17, v18, v19, v20, v6, v12);
+  objc_msgSend_addHorizontalTransformToProperties_(self, v13, v14, v15, v16, v12);
+  v21 = objc_msgSend_scenePartWithEnumerator_properties_(TSCH3DScenePart, v17, v18, v19, v20, enumeratorCopy, v12);
 
   return v21;
 }
 
-- (tvec2<float>)labelObjectSpacePosition:(unsigned int)a3 axisValue:(double)a4 intercept:(double)a5
+- (tvec2<float>)labelObjectSpacePosition:(unsigned int)position axisValue:(double)value intercept:(double)intercept
 {
-  v5 = a3;
-  if ((a3 & 0x10) != 0)
+  positionCopy = position;
+  if ((position & 0x10) != 0)
   {
-    v5 = a3 & 0xFFFFFFE7 | 8;
+    positionCopy = position & 0xFFFFFFE7 | 8;
   }
 
-  if ((v5 & 0x20) != 0)
+  if ((positionCopy & 0x20) != 0)
   {
-    v6 = v5 & 0xFFFFFFCB | 4;
+    v6 = positionCopy & 0xFFFFFFCB | 4;
   }
 
   else
   {
-    v6 = v5;
+    v6 = positionCopy;
   }
 
   v8.receiver = self;
   v8.super_class = TSCH3DChartBarSceneObject;
-  return [(TSCH3DChartElementSceneObject *)&v8 labelObjectSpacePosition:v6 axisValue:a4 intercept:a5];
+  return [(TSCH3DChartElementSceneObject *)&v8 labelObjectSpacePosition:v6 axisValue:value intercept:intercept];
 }
 
-- (void)updateLightingEffectsState:(id)a3 scene:(id)a4
+- (void)updateLightingEffectsState:(id)state scene:(id)scene
 {
-  v11 = a3;
-  v5 = a4;
+  stateCopy = state;
+  sceneCopy = scene;
   v6 = objc_opt_class();
-  objc_msgSend_updateLightingEffectsState_scene_(v6, v7, v8, v9, v10, v11, v5);
+  objc_msgSend_updateLightingEffectsState_scene_(v6, v7, v8, v9, v10, stateCopy, sceneCopy);
 }
 
 @end

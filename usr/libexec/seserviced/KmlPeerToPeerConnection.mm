@@ -1,10 +1,10 @@
 @interface KmlPeerToPeerConnection
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7;
-- (void)service:(id)a3 account:(id)a4 incomingData:(id)a5 fromID:(id)a6 context:(id)a7;
-- (void)service:(id)a3 account:(id)a4 incomingMessage:(id)a5 fromID:(id)a6 context:(id)a7;
-- (void)service:(id)a3 activeAccountsChanged:(id)a4;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error;
+- (void)service:(id)service account:(id)account incomingData:(id)data fromID:(id)d context:(id)context;
+- (void)service:(id)service account:(id)account incomingMessage:(id)message fromID:(id)d context:(id)context;
+- (void)service:(id)service activeAccountsChanged:(id)changed;
 @end
 
 @implementation KmlPeerToPeerConnection
@@ -21,79 +21,79 @@
   [(KmlPeerToPeerConnection *)&v4 dealloc];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v7 = a3;
+  pathCopy = path;
   p2pConnectionQueue = self->_p2pConnectionQueue;
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_1003A8AB4;
   v10[3] = &unk_1004C22F0;
-  v11 = v7;
-  v12 = self;
-  v9 = v7;
+  v11 = pathCopy;
+  selfCopy = self;
+  v9 = pathCopy;
   dispatch_async(p2pConnectionQueue, v10);
 }
 
-- (void)service:(id)a3 account:(id)a4 incomingData:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)service:(id)service account:(id)account incomingData:(id)data fromID:(id)d context:(id)context
 {
-  v10 = a5;
-  v11 = a6;
-  v12 = a7;
+  dataCopy = data;
+  dCopy = d;
+  contextCopy = context;
   p2pConnectionQueue = self->_p2pConnectionQueue;
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_1003A91B8;
   v17[3] = &unk_1004D1B40;
-  v18 = v11;
-  v19 = v12;
-  v20 = v10;
-  v21 = self;
-  v14 = v10;
-  v15 = v12;
-  v16 = v11;
+  v18 = dCopy;
+  v19 = contextCopy;
+  v20 = dataCopy;
+  selfCopy = self;
+  v14 = dataCopy;
+  v15 = contextCopy;
+  v16 = dCopy;
   dispatch_async(p2pConnectionQueue, v17);
 }
 
-- (void)service:(id)a3 account:(id)a4 incomingMessage:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)service:(id)service account:(id)account incomingMessage:(id)message fromID:(id)d context:(id)context
 {
-  v10 = a5;
-  v11 = a6;
-  v12 = a7;
+  messageCopy = message;
+  dCopy = d;
+  contextCopy = context;
   p2pConnectionQueue = self->_p2pConnectionQueue;
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_1003A93C4;
   v17[3] = &unk_1004D1B40;
   v17[4] = self;
-  v18 = v11;
-  v19 = v10;
-  v20 = v12;
-  v14 = v12;
-  v15 = v10;
-  v16 = v11;
+  v18 = dCopy;
+  v19 = messageCopy;
+  v20 = contextCopy;
+  v14 = contextCopy;
+  v15 = messageCopy;
+  v16 = dCopy;
   dispatch_async(p2pConnectionQueue, v17);
 }
 
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error
 {
-  v10 = a5;
-  v11 = a7;
+  identifierCopy = identifier;
+  errorCopy = error;
   p2pConnectionQueue = self->_p2pConnectionQueue;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_1003A963C;
   v15[3] = &unk_1004D1AD8;
-  v19 = a6;
-  v16 = v10;
-  v17 = self;
-  v18 = v11;
-  v13 = v11;
-  v14 = v10;
+  successCopy = success;
+  v16 = identifierCopy;
+  selfCopy = self;
+  v18 = errorCopy;
+  v13 = errorCopy;
+  v14 = identifierCopy;
   dispatch_async(p2pConnectionQueue, v15);
 }
 
-- (void)service:(id)a3 activeAccountsChanged:(id)a4
+- (void)service:(id)service activeAccountsChanged:(id)changed
 {
   p2pConnectionQueue = self->_p2pConnectionQueue;
   block[0] = _NSConcreteStackBlock;

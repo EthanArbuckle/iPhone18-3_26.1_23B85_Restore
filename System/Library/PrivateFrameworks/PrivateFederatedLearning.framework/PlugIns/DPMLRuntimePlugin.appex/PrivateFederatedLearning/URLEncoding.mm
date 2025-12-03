@@ -1,34 +1,34 @@
 @interface URLEncoding
-+ (id)bitStringFromURL:(id)a3 encodingOption:(id)a4 urlEncodingParameters:(id)a5 encodingClient:(id)a6 error:(id *)a7;
++ (id)bitStringFromURL:(id)l encodingOption:(id)option urlEncodingParameters:(id)parameters encodingClient:(id)client error:(id *)error;
 @end
 
 @implementation URLEncoding
 
-+ (id)bitStringFromURL:(id)a3 encodingOption:(id)a4 urlEncodingParameters:(id)a5 encodingClient:(id)a6 error:(id *)a7
++ (id)bitStringFromURL:(id)l encodingOption:(id)option urlEncodingParameters:(id)parameters encodingClient:(id)client error:(id *)error
 {
-  v11 = a4;
-  v12 = a6;
-  v13 = a5;
-  v14 = a3;
-  v15 = [v13 objectForKeyedSubscript:@"pathElementsBits"];
-  v16 = [v15 intValue];
+  optionCopy = option;
+  clientCopy = client;
+  parametersCopy = parameters;
+  lCopy = l;
+  v15 = [parametersCopy objectForKeyedSubscript:@"pathElementsBits"];
+  intValue = [v15 intValue];
 
-  v17 = [v13 objectForKeyedSubscript:@"hostNameBits"];
-  v18 = [v17 intValue];
+  v17 = [parametersCopy objectForKeyedSubscript:@"hostNameBits"];
+  intValue2 = [v17 intValue];
 
-  v19 = [v13 objectForKeyedSubscript:@"pathLengthBits"];
+  v19 = [parametersCopy objectForKeyedSubscript:@"pathLengthBits"];
 
-  v20 = [v19 intValue];
-  v21 = [NSURL URLWithString:v14];
+  intValue3 = [v19 intValue];
+  v21 = [NSURL URLWithString:lCopy];
 
-  v22 = [v21 host];
-  v23 = [v21 path];
-  v24 = v23;
-  if (v22 && v23)
+  host = [v21 host];
+  path = [v21 path];
+  v24 = path;
+  if (host && path)
   {
-    v50 = a7;
-    v51 = v12;
-    if ([v23 length] < 2)
+    errorCopy = error;
+    v51 = clientCopy;
+    if ([path length] < 2)
     {
       v33 = 0;
       v34 = &stru_10002D560;
@@ -37,41 +37,41 @@
     else
     {
       v25 = [v24 componentsSeparatedByString:@"/"];
-      v26 = v20;
-      v27 = v16;
-      v28 = v18;
+      v26 = intValue3;
+      v27 = intValue;
+      v28 = intValue2;
       v29 = v21;
-      v30 = v22;
-      v31 = v11;
+      v30 = host;
+      v31 = optionCopy;
       v32 = [v25 count];
       v33 = v32 - [v24 hasPrefix:@"/"];
-      v11 = v31;
-      v22 = v30;
+      optionCopy = v31;
+      host = v30;
       v21 = v29;
-      v18 = v28;
-      v16 = v27;
-      v20 = v26;
+      intValue2 = v28;
+      intValue = v27;
+      intValue3 = v26;
 
       v34 = [FedStatsUtil sha1:v24];
     }
 
-    v36 = [FedStatsUtil intToBitString:v33 length:v16];
-    v37 = +[FedStatsUtil intToBitString:length:](FedStatsUtil, "intToBitString:length:", [v24 length], v20);
-    v38 = [FedStatsUtil sha1:v22];
-    v39 = [v38 substringToIndex:v18];
+    v36 = [FedStatsUtil intToBitString:v33 length:intValue];
+    v37 = +[FedStatsUtil intToBitString:length:](FedStatsUtil, "intToBitString:length:", [v24 length], intValue3);
+    v38 = [FedStatsUtil sha1:host];
+    v39 = [v38 substringToIndex:intValue2];
 
-    if ([v11 isEqualToString:@"url_hash_hash"])
+    if ([optionCopy isEqualToString:@"url_hash_hash"])
     {
       v40 = v37;
       v35 = [NSString stringWithFormat:@"%@%@", v39, v34];
-      v12 = v51;
+      clientCopy = v51;
 LABEL_29:
 
       goto LABEL_30;
     }
 
-    v12 = v51;
-    if ([v11 isEqualToString:@"url_hash_elements_hash"])
+    clientCopy = v51;
+    if ([optionCopy isEqualToString:@"url_hash_elements_hash"])
     {
       v40 = v37;
       [NSString stringWithFormat:@"%@%@%@", v39, v36, v34];
@@ -79,7 +79,7 @@ LABEL_29:
       goto LABEL_29;
     }
 
-    if ([v11 isEqualToString:@"url_hash_elements_length"])
+    if ([optionCopy isEqualToString:@"url_hash_elements_length"])
     {
       v40 = v37;
       [NSString stringWithFormat:@"%@%@%@", v39, v36, v37];
@@ -87,19 +87,19 @@ LABEL_29:
     }
 
     v40 = v37;
-    v35 = v50;
-    v41 = [v51 huffmanCode:v22 error:v50];
+    v35 = errorCopy;
+    v41 = [v51 huffmanCode:host error:errorCopy];
     if (!v41)
     {
-      if (v50)
+      if (errorCopy)
       {
-        [NSString stringWithFormat:@"Host %@ is not in the Huffman database.", v22];
-        v42 = v47 = v11;
-        *v50 = [_DPMLRuntimeError errorWithCode:300 description:v42];
+        [NSString stringWithFormat:@"Host %@ is not in the Huffman database.", host];
+        v42 = v47 = optionCopy;
+        *errorCopy = [_DPMLRuntimeError errorWithCode:300 description:v42];
 
-        v11 = v47;
+        optionCopy = v47;
         v41 = 0;
-        v12 = v51;
+        clientCopy = v51;
         v35 = 0;
       }
 
@@ -107,31 +107,31 @@ LABEL_29:
     }
 
     v49 = v41;
-    if ([v11 isEqualToString:@"url_huffman_hash"])
+    if ([optionCopy isEqualToString:@"url_huffman_hash"])
     {
       [NSString stringWithFormat:@"%@%@", v49, v34, v45];
     }
 
     else
     {
-      if ([v11 isEqualToString:@"url_huffman_emements_hash"])
+      if ([optionCopy isEqualToString:@"url_huffman_emements_hash"])
       {
         v46 = v34;
       }
 
       else
       {
-        if (![v11 isEqualToString:@"url_huffman_emements_length"])
+        if (![optionCopy isEqualToString:@"url_huffman_emements_length"])
         {
-          v35 = v50;
-          if (v50)
+          v35 = errorCopy;
+          if (errorCopy)
           {
-            [NSString stringWithFormat:@"Unknown URL encoding option: %@.", v11];
-            v44 = v48 = v11;
-            *v50 = [_DPMLRuntimeError errorWithCode:300 description:v44];
+            [NSString stringWithFormat:@"Unknown URL encoding option: %@.", optionCopy];
+            v44 = v48 = optionCopy;
+            *errorCopy = [_DPMLRuntimeError errorWithCode:300 description:v44];
 
-            v11 = v48;
-            v12 = v51;
+            optionCopy = v48;
+            clientCopy = v51;
             v35 = 0;
           }
 
@@ -151,10 +151,10 @@ LABEL_28:
     goto LABEL_29;
   }
 
-  if (a7)
+  if (error)
   {
     [_DPMLRuntimeError errorWithCode:300 description:@"Host or path of URL is nil: %@."];
-    *a7 = v35 = 0;
+    *error = v35 = 0;
   }
 
   else

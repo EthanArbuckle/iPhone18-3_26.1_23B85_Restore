@@ -1,21 +1,21 @@
 @interface DIController2IO_XPCHandlerBase
-- (DIController2IO_XPCHandlerBase)initWithParams:(id)a3;
+- (DIController2IO_XPCHandlerBase)initWithParams:(id)params;
 - (id)serviceName;
 - (void)setConnectionMode;
 @end
 
 @implementation DIController2IO_XPCHandlerBase
 
-- (DIController2IO_XPCHandlerBase)initWithParams:(id)a3
+- (DIController2IO_XPCHandlerBase)initWithParams:(id)params
 {
-  v5 = a3;
+  paramsCopy = params;
   v9.receiver = self;
   v9.super_class = DIController2IO_XPCHandlerBase;
   v6 = [(DIBaseXPCHandler *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_params, a3);
+    objc_storeStrong(&v6->_params, params);
     [(DIBaseXPCHandler *)v7 setIsPrivileged:1];
   }
 
@@ -24,18 +24,18 @@
 
 - (id)serviceName
 {
-  v3 = [(DIController2IO_XPCHandlerBase *)self params];
-  v4 = [v3 requiresRootDaemon];
+  params = [(DIController2IO_XPCHandlerBase *)self params];
+  requiresRootDaemon = [params requiresRootDaemon];
 
-  if (v4)
+  if (requiresRootDaemon)
   {
     return @"com.apple.diskimagesiod.spb";
   }
 
-  v6 = [(DIController2IO_XPCHandlerBase *)self params];
-  v7 = [v6 RAMdisk];
+  params2 = [(DIController2IO_XPCHandlerBase *)self params];
+  rAMdisk = [params2 RAMdisk];
 
-  if (v7)
+  if (rAMdisk)
   {
     return @"com.apple.diskimagesiod.ram";
   }
@@ -80,14 +80,14 @@
   }
 
   *__error() = v3;
-  v7 = [(DIBaseXPCHandler *)self connection];
-  v8 = [v7 _xpcConnection];
+  connection = [(DIBaseXPCHandler *)self connection];
+  _xpcConnection = [connection _xpcConnection];
 
   *buf = 0;
   v12[0] = 0;
-  v9 = [(DIController2IO_XPCHandlerBase *)self params];
-  v10 = [v9 instanceID];
-  [v10 getUUIDBytes:buf];
+  params = [(DIController2IO_XPCHandlerBase *)self params];
+  instanceID = [params instanceID];
+  [instanceID getUUIDBytes:buf];
 
   xpc_connection_set_oneshot_instance();
 }

@@ -1,28 +1,28 @@
 @interface DODMLASRSchemaDODMLASRResultInfo
-- (BOOL)isEqual:(id)a3;
-- (DODMLASRSchemaDODMLASRResultInfo)initWithDictionary:(id)a3;
-- (DODMLASRSchemaDODMLASRResultInfo)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (DODMLASRSchemaDODMLASRResultInfo)initWithDictionary:(id)dictionary;
+- (DODMLASRSchemaDODMLASRResultInfo)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addChoices:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addChoices:(id)choices;
+- (void)writeTo:(id)to;
 @end
 
 @implementation DODMLASRSchemaDODMLASRResultInfo
 
-- (DODMLASRSchemaDODMLASRResultInfo)initWithDictionary:(id)a3
+- (DODMLASRSchemaDODMLASRResultInfo)initWithDictionary:(id)dictionary
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v24.receiver = self;
   v24.super_class = DODMLASRSchemaDODMLASRResultInfo;
   v5 = [(DODMLASRSchemaDODMLASRResultInfo *)&v24 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"stageName"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"stageName"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -30,14 +30,14 @@
       [(DODMLASRSchemaDODMLASRResultInfo *)v5 setStageName:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"isAligned"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"isAligned"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[DODMLASRSchemaDODMLASRResultInfo setIsAligned:](v5, "setIsAligned:", [v8 BOOLValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"choices"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"choices"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -85,30 +85,30 @@
   return v5;
 }
 
-- (DODMLASRSchemaDODMLASRResultInfo)initWithJSON:(id)a3
+- (DODMLASRSchemaDODMLASRResultInfo)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(DODMLASRSchemaDODMLASRResultInfo *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(DODMLASRSchemaDODMLASRResultInfo *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(DODMLASRSchemaDODMLASRResultInfo *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -122,10 +122,10 @@
 - (id)dictionaryRepresentation
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSArray *)self->_choices count])
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
@@ -145,16 +145,16 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v16 + 1) + 8 * i) dictionaryRepresentation];
-          if (v10)
+          dictionaryRepresentation = [*(*(&v16 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation)
           {
-            [v4 addObject:v10];
+            [array addObject:dictionaryRepresentation];
           }
 
           else
           {
-            v11 = [MEMORY[0x1E695DFB0] null];
-            [v4 addObject:v11];
+            null = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null];
           }
         }
 
@@ -164,25 +164,25 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKeyedSubscript:@"choices"];
+    [dictionary setObject:array forKeyedSubscript:@"choices"];
   }
 
   if (*&self->_has)
   {
     v12 = [MEMORY[0x1E696AD98] numberWithBool:{-[DODMLASRSchemaDODMLASRResultInfo isAligned](self, "isAligned")}];
-    [v3 setObject:v12 forKeyedSubscript:@"isAligned"];
+    [dictionary setObject:v12 forKeyedSubscript:@"isAligned"];
   }
 
   if (self->_stageName)
   {
-    v13 = [(DODMLASRSchemaDODMLASRResultInfo *)self stageName];
-    v14 = [v13 copy];
-    [v3 setObject:v14 forKeyedSubscript:@"stageName"];
+    stageName = [(DODMLASRSchemaDODMLASRResultInfo *)self stageName];
+    v14 = [stageName copy];
+    [dictionary setObject:v14 forKeyedSubscript:@"stageName"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3, v16];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary, v16];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -201,28 +201,28 @@
   return v4 ^ v3 ^ [(NSArray *)self->_choices hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_15;
   }
 
-  v5 = [(DODMLASRSchemaDODMLASRResultInfo *)self stageName];
-  v6 = [v4 stageName];
-  if ((v5 != 0) == (v6 == 0))
+  stageName = [(DODMLASRSchemaDODMLASRResultInfo *)self stageName];
+  stageName2 = [equalCopy stageName];
+  if ((stageName != 0) == (stageName2 == 0))
   {
     goto LABEL_14;
   }
 
-  v7 = [(DODMLASRSchemaDODMLASRResultInfo *)self stageName];
-  if (v7)
+  stageName3 = [(DODMLASRSchemaDODMLASRResultInfo *)self stageName];
+  if (stageName3)
   {
-    v8 = v7;
-    v9 = [(DODMLASRSchemaDODMLASRResultInfo *)self stageName];
-    v10 = [v4 stageName];
-    v11 = [v9 isEqual:v10];
+    v8 = stageName3;
+    stageName4 = [(DODMLASRSchemaDODMLASRResultInfo *)self stageName];
+    stageName5 = [equalCopy stageName];
+    v11 = [stageName4 isEqual:stageName5];
 
     if (!v11)
     {
@@ -234,7 +234,7 @@
   {
   }
 
-  if ((*&self->_has & 1) != (v4[32] & 1))
+  if ((*&self->_has & 1) != (equalCopy[32] & 1))
   {
     goto LABEL_15;
   }
@@ -242,18 +242,18 @@
   if (*&self->_has)
   {
     isAligned = self->_isAligned;
-    if (isAligned != [v4 isAligned])
+    if (isAligned != [equalCopy isAligned])
     {
       goto LABEL_15;
     }
   }
 
-  v5 = [(DODMLASRSchemaDODMLASRResultInfo *)self choices];
-  v6 = [v4 choices];
-  if ((v5 != 0) != (v6 == 0))
+  stageName = [(DODMLASRSchemaDODMLASRResultInfo *)self choices];
+  stageName2 = [equalCopy choices];
+  if ((stageName != 0) != (stageName2 == 0))
   {
-    v13 = [(DODMLASRSchemaDODMLASRResultInfo *)self choices];
-    if (!v13)
+    choices = [(DODMLASRSchemaDODMLASRResultInfo *)self choices];
+    if (!choices)
     {
 
 LABEL_18:
@@ -261,10 +261,10 @@ LABEL_18:
       goto LABEL_16;
     }
 
-    v14 = v13;
-    v15 = [(DODMLASRSchemaDODMLASRResultInfo *)self choices];
-    v16 = [v4 choices];
-    v17 = [v15 isEqual:v16];
+    v14 = choices;
+    choices2 = [(DODMLASRSchemaDODMLASRResultInfo *)self choices];
+    choices3 = [equalCopy choices];
+    v17 = [choices2 isEqual:choices3];
 
     if (v17)
     {
@@ -284,13 +284,13 @@ LABEL_16:
   return v18;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(DODMLASRSchemaDODMLASRResultInfo *)self stageName];
+  toCopy = to;
+  stageName = [(DODMLASRSchemaDODMLASRResultInfo *)self stageName];
 
-  if (v5)
+  if (stageName)
   {
     PBDataWriterWriteStringField();
   }
@@ -332,32 +332,32 @@ LABEL_16:
   }
 }
 
-- (void)addChoices:(id)a3
+- (void)addChoices:(id)choices
 {
-  v4 = a3;
+  choicesCopy = choices;
   choices = self->_choices;
-  v8 = v4;
+  v8 = choicesCopy;
   if (!choices)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_choices;
-    self->_choices = v6;
+    self->_choices = array;
 
-    v4 = v8;
+    choicesCopy = v8;
     choices = self->_choices;
   }
 
-  [(NSArray *)choices addObject:v4];
+  [(NSArray *)choices addObject:choicesCopy];
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = DODMLASRSchemaDODMLASRResultInfo;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(DODMLASRSchemaDODMLASRResultInfo *)self choices:v9.receiver];
-  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:v4];
+  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:policyCopy];
 
   [(DODMLASRSchemaDODMLASRResultInfo *)self setChoices:v7];
 

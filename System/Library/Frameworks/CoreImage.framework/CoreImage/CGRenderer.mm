@@ -1,15 +1,15 @@
 @interface CGRenderer
-- (CGColor)_colorForNodeColor:(int)a3;
+- (CGColor)_colorForNodeColor:(int)color;
 - (CGRenderer)init;
 - (CGSize)separation;
-- (void)_drawCubicSpline:(id)a3;
+- (void)_drawCubicSpline:(id)spline;
 - (void)_drawNodeBadge:(id)x2_0;
 - (void)_drawNodeContent:(id)x2_0;
-- (void)_drawPolyline:(id)a3;
+- (void)_drawPolyline:(id)polyline;
 - (void)dealloc;
-- (void)drawEdge:(id)a3 withPath:(id)a4;
-- (void)drawNode:(id)a3;
-- (void)hyperlinkEdge:(id)a3 from:(CGPoint)a4 to:(CGPoint)a5;
+- (void)drawEdge:(id)edge withPath:(id)path;
+- (void)drawNode:(id)node;
+- (void)hyperlinkEdge:(id)edge from:(CGPoint)from to:(CGPoint)to;
 @end
 
 @implementation CGRenderer
@@ -42,19 +42,19 @@
   [(CGRenderer *)&v4 dealloc];
 }
 
-- (CGColor)_colorForNodeColor:(int)a3
+- (CGColor)_colorForNodeColor:(int)color
 {
   if ([CGRenderer _colorForNodeColor:]::onceToken != -1)
   {
     [CGRenderer _colorForNodeColor:];
   }
 
-  if (a3 >= 0x10)
+  if (color >= 0x10)
   {
     [CGRenderer _colorForNodeColor:];
   }
 
-  return *off_1E75C2B60[a3];
+  return *off_1E75C2B60[color];
 }
 
 CGColorRef __33__CGRenderer__colorForNodeColor___block_invoke()
@@ -82,17 +82,17 @@ CGColorRef __33__CGRenderer__colorForNodeColor___block_invoke()
 - (void)_drawNodeContent:(id)x2_0
 {
   v120 = *MEMORY[0x1E69E9840];
-  v5 = [x2_0 shape];
-  v6 = [x2_0 color];
+  shape = [x2_0 shape];
+  color = [x2_0 color];
   [x2_0 contentCornerSize];
   v8 = v7;
   v10 = v9;
-  CGContextSetFillColorWithColor(self->context, [(CGRenderer *)self _colorForNodeColor:v6]);
-  if (v5 > 1)
+  CGContextSetFillColorWithColor(self->context, [(CGRenderer *)self _colorForNodeColor:color]);
+  if (shape > 1)
   {
-    if (v5 != 2)
+    if (shape != 2)
     {
-      if (v5 == 3)
+      if (shape == 3)
       {
         [x2_0 contentFrame];
         v35 = v31;
@@ -150,14 +150,14 @@ LABEL_15:
     goto LABEL_18;
   }
 
-  if (!v5)
+  if (!shape)
   {
     [x2_0 contentFrame];
     v36 = CGPathCreateWithRect(v125, 0);
     goto LABEL_15;
   }
 
-  if (v5 != 1)
+  if (shape != 1)
   {
     goto LABEL_47;
   }
@@ -221,15 +221,15 @@ LABEL_18:
   {
     if (CFArrayGetCount([x2_0 images]))
     {
-      v48 = [x2_0 images];
+      images = [x2_0 images];
       [x2_0 imagesFrame];
       v50 = v49;
       v112 = 0u;
       v113 = 0u;
       v114 = 0u;
       v115 = 0u;
-      obj = v48;
-      v51 = [v48 countByEnumeratingWithState:&v112 objects:v119 count:16];
+      obj = images;
+      v51 = [images countByEnumeratingWithState:&v112 objects:v119 count:16];
       if (v51)
       {
         v52 = v51;
@@ -300,7 +300,7 @@ LABEL_18:
     [x2_0 roisFrame];
     v71 = v70;
     v73 = v72;
-    v74 = [x2_0 rois];
+    rois = [x2_0 rois];
     [x2_0 extent];
     x = v75;
     y = v77;
@@ -310,7 +310,7 @@ LABEL_18:
     v108 = 0u;
     v109 = 0u;
     v110 = 0u;
-    v83 = [v74 countByEnumeratingWithState:&v107 objects:v117 count:16];
+    v83 = [rois countByEnumeratingWithState:&v107 objects:v117 count:16];
     if (v83)
     {
       v84 = v83;
@@ -321,7 +321,7 @@ LABEL_18:
         {
           if (*v108 != v85)
           {
-            objc_enumerationMutation(v74);
+            objc_enumerationMutation(rois);
           }
 
           v142.origin.x = rectFromValue(*(*(&v107 + 1) + 8 * j));
@@ -339,7 +339,7 @@ LABEL_18:
           height = v135.size.height;
         }
 
-        v84 = [v74 countByEnumeratingWithState:&v107 objects:v117 count:16];
+        v84 = [rois countByEnumeratingWithState:&v107 objects:v117 count:16];
       }
 
       while (v84);
@@ -368,7 +368,7 @@ LABEL_18:
     v106 = 0u;
     v103 = 0u;
     v104 = 0u;
-    v93 = [v74 countByEnumeratingWithState:&v103 objects:v116 count:16];
+    v93 = [rois countByEnumeratingWithState:&v103 objects:v116 count:16];
     if (v93)
     {
       v94 = v93;
@@ -379,7 +379,7 @@ LABEL_18:
         {
           if (*v104 != v95)
           {
-            objc_enumerationMutation(v74);
+            objc_enumerationMutation(rois);
           }
 
           v140.origin.x = rectFromValue(*(*(&v103 + 1) + 8 * k));
@@ -388,7 +388,7 @@ LABEL_18:
           CGContextStrokeRect(v97, v141);
         }
 
-        v94 = [v74 countByEnumeratingWithState:&v103 objects:v116 count:16];
+        v94 = [rois countByEnumeratingWithState:&v103 objects:v116 count:16];
       }
 
       while (v94);
@@ -398,7 +398,7 @@ LABEL_18:
 
 - (void)_drawNodeBadge:(id)x2_0
 {
-  v5 = [x2_0 color];
+  color = [x2_0 color];
   [x2_0 badgeFrame];
   v9 = v8;
   v11 = v10;
@@ -415,7 +415,7 @@ LABEL_18:
   }
 
   v15 = v14 * 0.5;
-  CGContextSetFillColorWithColor(self->context, [(CGRenderer *)self _colorForNodeColor:v5]);
+  CGContextSetFillColorWithColor(self->context, [(CGRenderer *)self _colorForNodeColor:color]);
   v20.origin.x = v9;
   v20.origin.y = v11;
   v20.size.width = v12;
@@ -432,37 +432,37 @@ LABEL_18:
   CFRelease(v17);
 }
 
-- (void)drawNode:(id)a3
+- (void)drawNode:(id)node
 {
   [(CGRenderer *)self _drawNodeContent:?];
-  if ([a3 title])
+  if ([node title])
   {
 
-    [(CGRenderer *)self _drawNodeBadge:a3];
+    [(CGRenderer *)self _drawNodeBadge:node];
   }
 }
 
-- (void)_drawPolyline:(id)a3
+- (void)_drawPolyline:(id)polyline
 {
-  v5 = [a3 count];
-  v6 = pointFromValue([a3 objectAtIndexedSubscript:0]);
+  v5 = [polyline count];
+  v6 = pointFromValue([polyline objectAtIndexedSubscript:0]);
   v8 = v7;
   CGContextMoveToPoint(self->context, v6, v7);
-  if (([a3 count] - 3) <= 0xFFFFFFFFFFFFFFFDLL)
+  if (([polyline count] - 3) <= 0xFFFFFFFFFFFFFFFDLL)
   {
     v9 = 1;
     do
     {
-      v6 = pointFromValue([a3 objectAtIndexedSubscript:v9]);
+      v6 = pointFromValue([polyline objectAtIndexedSubscript:v9]);
       v8 = v10;
       CGContextAddLineToPoint(self->context, v6, v10);
       ++v9;
     }
 
-    while (v9 < [a3 count] - 1);
+    while (v9 < [polyline count] - 1);
   }
 
-  v11 = pointFromValue([a3 objectAtIndexedSubscript:v5 - 1]);
+  v11 = pointFromValue([polyline objectAtIndexedSubscript:v5 - 1]);
   v12 = v6 - v11;
   v13 = v11;
   v33 = v14;
@@ -494,14 +494,14 @@ LABEL_18:
   CGContextFillPath(context);
 }
 
-- (void)_drawCubicSpline:(id)a3
+- (void)_drawCubicSpline:(id)spline
 {
-  v5 = [a3 count];
-  v6 = pointFromValue([a3 objectAtIndexedSubscript:0]);
+  v5 = [spline count];
+  v6 = pointFromValue([spline objectAtIndexedSubscript:0]);
   CGContextMoveToPoint(self->context, v6, v7);
-  v8 = pointFromValue([a3 objectAtIndexedSubscript:0]);
+  v8 = pointFromValue([spline objectAtIndexedSubscript:0]);
   v10 = v9;
-  v11 = pointFromValue([a3 objectAtIndexedSubscript:1]);
+  v11 = pointFromValue([spline objectAtIndexedSubscript:1]);
   v13 = v12;
   if (v5 == 2)
   {
@@ -546,7 +546,7 @@ LABEL_18:
 
   else
   {
-    v57 = pointFromValue([a3 objectAtIndexedSubscript:2]);
+    v57 = pointFromValue([spline objectAtIndexedSubscript:2]);
     v29 = v28;
     if (v10 <= v13)
     {
@@ -577,14 +577,14 @@ LABEL_18:
       v34 = 2;
       do
       {
-        v35 = pointFromValue([a3 objectAtIndexedSubscript:{v33 - 3, *&v57}]);
+        v35 = pointFromValue([spline objectAtIndexedSubscript:{v33 - 3, *&v57}]);
         v37 = v36;
-        v38 = pointFromValue([a3 objectAtIndexedSubscript:v33 - 2]);
+        v38 = pointFromValue([spline objectAtIndexedSubscript:v33 - 2]);
         v40 = v39;
-        v41 = pointFromValue([a3 objectAtIndexedSubscript:v34]);
+        v41 = pointFromValue([spline objectAtIndexedSubscript:v34]);
         v43 = v42;
         v34 = v33;
-        v75.x = pointFromValue([a3 objectAtIndexedSubscript:v33]);
+        v75.x = pointFromValue([spline objectAtIndexedSubscript:v33]);
         v75.y = v44;
         v64.x = v35;
         v64.y = v37;
@@ -599,11 +599,11 @@ LABEL_18:
       while (v5 - 1 > v33++);
     }
 
-    v46 = pointFromValue([a3 objectAtIndexedSubscript:{v5 - 3, *&v57}]);
+    v46 = pointFromValue([spline objectAtIndexedSubscript:{v5 - 3, *&v57}]);
     v48 = v47;
-    v49 = pointFromValue([a3 objectAtIndexedSubscript:v5 - 2]);
+    v49 = pointFromValue([spline objectAtIndexedSubscript:v5 - 2]);
     v51 = v50;
-    v53 = pointFromValue([a3 objectAtIndexedSubscript:v5 - 1]);
+    v53 = pointFromValue([spline objectAtIndexedSubscript:v5 - 1]);
     v54 = v52;
     v55 = -1.0;
     if (v51 <= v52)
@@ -627,15 +627,15 @@ LABEL_18:
   }
 }
 
-- (void)hyperlinkEdge:(id)a3 from:(CGPoint)a4 to:(CGPoint)a5
+- (void)hyperlinkEdge:(id)edge from:(CGPoint)from to:(CGPoint)to
 {
-  y = a5.y;
-  x = a5.x;
-  v7 = a4.y;
-  v8 = a4.x;
-  v11 = [a3 from];
-  v12 = [a3 to];
-  v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%p to %p", v11, v12];
+  y = to.y;
+  x = to.x;
+  v7 = from.y;
+  v8 = from.x;
+  from = [edge from];
+  v12 = [edge to];
+  v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%p to %p", from, v12];
   v21.x = x;
   v21.y = y;
   CGPDFContextAddDestinationAtPoint(self->context, v13, v21);
@@ -644,7 +644,7 @@ LABEL_18:
   v23.size.width = 20.0;
   v23.size.height = 20.0;
   CGPDFContextSetDestinationForRect(self->context, v13, v23);
-  v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%p to %p", v12, v11];
+  v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%p to %p", v12, from];
   v22.x = v8;
   v22.y = v7;
   CGPDFContextAddDestinationAtPoint(self->context, v14, v22);
@@ -657,12 +657,12 @@ LABEL_18:
   CGPDFContextSetDestinationForRect(context, v14, *(&v18 - 2));
 }
 
-- (void)drawEdge:(id)a3 withPath:(id)a4
+- (void)drawEdge:(id)edge withPath:(id)path
 {
-  v32 = [a4 mutableCopy];
+  v32 = [path mutableCopy];
   v6 = pointFromValue([v32 objectAtIndexedSubscript:1]);
   v30 = v7;
-  [objc_msgSend(a3 "from")];
+  [objc_msgSend(edge "from")];
   x = v34.origin.x;
   y = v34.origin.y;
   width = v34.size.width;
@@ -687,7 +687,7 @@ LABEL_18:
   v31 = MidX + (v6 - MidX) * v15;
   v27 = pointFromValue([v32 objectAtIndexedSubscript:{objc_msgSend(v32, "count") - 2}]);
   v28 = v16;
-  [objc_msgSend(a3 "to")];
+  [objc_msgSend(edge "to")];
   v17 = v38.origin.x;
   v18 = v38.origin.y;
   v19 = v38.size.width;
@@ -711,7 +711,7 @@ LABEL_18:
   v25 = v21 + (v27 - v21) * v24;
   v26 = v22 + (v28 - v22) * v24;
   [v32 setObject:valueWithPoint(v25 atIndexedSubscript:{v26), objc_msgSend(v32, "count") - 1}];
-  [(CGRenderer *)self hyperlinkEdge:a3 from:v31 to:v29, v25, v26];
+  [(CGRenderer *)self hyperlinkEdge:edge from:v31 to:v29, v25, v26];
   {
     [CGRenderer drawEdge:withPath:]::deviceGray = CGColorSpaceCreateDeviceGray();
   }

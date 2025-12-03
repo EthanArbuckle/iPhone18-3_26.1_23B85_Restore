@@ -1,36 +1,36 @@
 @interface BPSWindower
-+ (id)publisherWithPublisher:(id)a3 upstreams:(id)a4 bookmarkState:(id)a5;
++ (id)publisherWithPublisher:(id)publisher upstreams:(id)upstreams bookmarkState:(id)state;
 - (BOOL)completed;
-- (BPSWindower)initWithUpstream:(id)a3 key:(id)a4 assigner:(id)a5;
+- (BPSWindower)initWithUpstream:(id)upstream key:(id)key assigner:(id)assigner;
 - (NSArray)bookmarkableUpstreams;
-- (id)firstCompletedWindowShouldRemove:(BOOL)a3;
+- (id)firstCompletedWindowShouldRemove:(BOOL)remove;
 - (id)nextEvent;
 - (id)upstreamPublishers;
-- (id)validateBookmark:(id)a3;
+- (id)validateBookmark:(id)bookmark;
 - (void)reset;
-- (void)subscribe:(id)a3;
-- (void)updateWindowsWithEvent:(id)a3;
+- (void)subscribe:(id)subscribe;
+- (void)updateWindowsWithEvent:(id)event;
 @end
 
 @implementation BPSWindower
 
-- (BPSWindower)initWithUpstream:(id)a3 key:(id)a4 assigner:(id)a5
+- (BPSWindower)initWithUpstream:(id)upstream key:(id)key assigner:(id)assigner
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  upstreamCopy = upstream;
+  keyCopy = key;
+  assignerCopy = assigner;
   v19.receiver = self;
   v19.super_class = BPSWindower;
   v12 = [(BPSWindower *)&v19 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_upstream, a3);
-    v14 = [v10 copy];
+    objc_storeStrong(&v12->_upstream, upstream);
+    v14 = [keyCopy copy];
     key = v13->_key;
     v13->_key = v14;
 
-    objc_storeStrong(&v13->_assigner, a5);
+    objc_storeStrong(&v13->_assigner, assigner);
     v16 = objc_opt_new();
     windows = v13->_windows;
     v13->_windows = v16;
@@ -39,20 +39,20 @@
   return v13;
 }
 
-- (void)subscribe:(id)a3
+- (void)subscribe:(id)subscribe
 {
-  v4 = a3;
-  v6 = [[_BPSWindowerInner alloc] initWithDownstream:v4 key:self->_key assigner:self->_assigner];
+  subscribeCopy = subscribe;
+  v6 = [[_BPSWindowerInner alloc] initWithDownstream:subscribeCopy key:self->_key assigner:self->_assigner];
 
-  v5 = [(BPSWindower *)self upstream];
-  [v5 subscribe:v6];
+  upstream = [(BPSWindower *)self upstream];
+  [upstream subscribe:v6];
 }
 
 - (id)upstreamPublishers
 {
   v6[1] = *MEMORY[0x1E69E9840];
-  v2 = [(BPSWindower *)self upstream];
-  v6[0] = v2;
+  upstream = [(BPSWindower *)self upstream];
+  v6[0] = upstream;
   v3 = [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:1];
 
   v4 = *MEMORY[0x1E69E9840];
@@ -60,34 +60,34 @@
   return v3;
 }
 
-- (void)updateWindowsWithEvent:(id)a3
+- (void)updateWindowsWithEvent:(id)event
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  eventCopy = event;
   v5 = (*(self->_key + 2))();
   v6 = [v5 copyWithZone:0];
 
-  v7 = [(BPSWindower *)self windows];
-  v8 = [v7 objectForKeyedSubscript:v6];
+  windows = [(BPSWindower *)self windows];
+  v8 = [windows objectForKeyedSubscript:v6];
 
   if (v8)
   {
-    v9 = [(BPSWindower *)self windows];
-    v10 = [v9 objectForKeyedSubscript:v6];
+    windows2 = [(BPSWindower *)self windows];
+    v10 = [windows2 objectForKeyedSubscript:v6];
   }
 
   else
   {
-    v9 = objc_opt_new();
-    v11 = [(BPSWindower *)self windows];
-    [v11 setObject:v9 forKeyedSubscript:v6];
+    windows2 = objc_opt_new();
+    windows3 = [(BPSWindower *)self windows];
+    [windows3 setObject:windows2 forKeyedSubscript:v6];
 
     v10 = MEMORY[0x1E695E0F0];
   }
 
-  v12 = [(BPSWindower *)self assigner];
-  v23 = v4;
-  v13 = [v12 updateAndReturnNewWindowStates:v10 input:v4];
+  assigner = [(BPSWindower *)self assigner];
+  v23 = eventCopy;
+  v13 = [assigner updateAndReturnNewWindowStates:v10 input:eventCopy];
 
   v26 = 0u;
   v27 = 0u;
@@ -111,8 +111,8 @@
         v19 = *(*(&v24 + 1) + 8 * i);
         if (([v10 containsObject:v19] & 1) == 0)
         {
-          v20 = [(BPSWindower *)self windows];
-          v21 = [v20 objectForKeyedSubscript:v6];
+          windows4 = [(BPSWindower *)self windows];
+          v21 = [windows4 objectForKeyedSubscript:v6];
           [v21 addObject:v19];
         }
       }
@@ -126,7 +126,7 @@
   v22 = *MEMORY[0x1E69E9840];
 }
 
-- (id)firstCompletedWindowShouldRemove:(BOOL)a3
+- (id)firstCompletedWindowShouldRemove:(BOOL)remove
 {
   v20 = 0;
   v21 = &v20;
@@ -140,7 +140,7 @@
   v17 = __Block_byref_object_copy__2;
   v18 = __Block_byref_object_dispose__2;
   v19 = 0;
-  v5 = [(BPSWindower *)self windows];
+  windows = [(BPSWindower *)self windows];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __48__BPSWindower_firstCompletedWindowShouldRemove___block_invoke;
@@ -148,16 +148,16 @@
   v12[4] = self;
   v12[5] = &v14;
   v12[6] = &v20;
-  v13 = a3;
-  [v5 enumerateKeysAndObjectsUsingBlock:v12];
+  removeCopy = remove;
+  [windows enumerateKeysAndObjectsUsingBlock:v12];
 
   if (v15[5] && v21[5])
   {
     v6 = [BPSWindowerInput alloc];
-    v7 = [v15[5] aggregate];
+    aggregate = [v15[5] aggregate];
     v8 = v21[5];
-    v9 = [v15[5] metadata];
-    v10 = [(BPSWindowerInput *)v6 initWithAggregate:v7 key:v8 metadata:v9];
+    metadata = [v15[5] metadata];
+    v10 = [(BPSWindowerInput *)v6 initWithAggregate:aggregate key:v8 metadata:metadata];
   }
 
   else
@@ -224,52 +224,52 @@ void __48__BPSWindower_firstCompletedWindowShouldRemove___block_invoke_2(uint64_
 
 - (id)nextEvent
 {
-  v3 = [(BPSWindower *)self firstCompletedWindow];
-  if (v3)
+  firstCompletedWindow = [(BPSWindower *)self firstCompletedWindow];
+  if (firstCompletedWindow)
   {
     goto LABEL_2;
   }
 
-  v6 = [(BPSWindower *)self upstream];
-  v7 = [v6 nextEvent];
+  upstream = [(BPSWindower *)self upstream];
+  nextEvent = [upstream nextEvent];
 
-  if (v7)
+  if (nextEvent)
   {
     while (1)
     {
-      [(BPSWindower *)self updateWindowsWithEvent:v7];
-      v8 = [(BPSWindower *)self firstCompletedWindow];
-      if (v8)
+      [(BPSWindower *)self updateWindowsWithEvent:nextEvent];
+      firstCompletedWindow2 = [(BPSWindower *)self firstCompletedWindow];
+      if (firstCompletedWindow2)
       {
         break;
       }
 
-      v9 = [(BPSWindower *)self upstream];
-      v10 = [v9 nextEvent];
+      upstream2 = [(BPSWindower *)self upstream];
+      nextEvent2 = [upstream2 nextEvent];
 
-      v7 = v10;
-      if (!v10)
+      nextEvent = nextEvent2;
+      if (!nextEvent2)
       {
         goto LABEL_9;
       }
     }
 
-    v4 = v8;
+    v4 = firstCompletedWindow2;
   }
 
   else
   {
 LABEL_9:
-    v11 = [(BPSWindower *)self upstream];
-    v12 = [v11 completed];
+    upstream3 = [(BPSWindower *)self upstream];
+    completed = [upstream3 completed];
 
-    if (v12)
+    if (completed)
     {
-      v3 = [(BPSWindower *)self firstCompletedWindow];
-      if (v3)
+      firstCompletedWindow = [(BPSWindower *)self firstCompletedWindow];
+      if (firstCompletedWindow)
       {
 LABEL_2:
-        v4 = v3;
+        v4 = firstCompletedWindow;
         goto LABEL_3;
       }
     }
@@ -307,10 +307,10 @@ LABEL_3:
   [(BPSPublisher *)&v4 reset];
 }
 
-- (id)validateBookmark:(id)a3
+- (id)validateBookmark:(id)bookmark
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  bookmarkCopy = bookmark;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -321,10 +321,10 @@ LABEL_3:
   {
     v5 = objc_alloc(MEMORY[0x1E696AEC0]);
     v6 = objc_opt_class();
-    v7 = [v5 initWithFormat:@"%@ expected bookmark of class %@, but received %@", v6, objc_opt_class(), v3];
+    bookmarkCopy = [v5 initWithFormat:@"%@ expected bookmark of class %@, but received %@", v6, objc_opt_class(), bookmarkCopy];
     v8 = MEMORY[0x1E696ABC0];
     v12 = *MEMORY[0x1E696A578];
-    v13[0] = v7;
+    v13[0] = bookmarkCopy;
     v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:&v12 count:1];
     v4 = [v8 errorWithDomain:@"BiomePubSubError" code:2 userInfo:v9];
   }
@@ -334,16 +334,16 @@ LABEL_3:
   return v4;
 }
 
-+ (id)publisherWithPublisher:(id)a3 upstreams:(id)a4 bookmarkState:(id)a5
++ (id)publisherWithPublisher:(id)publisher upstreams:(id)upstreams bookmarkState:(id)state
 {
-  v6 = a3;
-  v7 = a4;
+  publisherCopy = publisher;
+  upstreamsCopy = upstreams;
   v8 = [BPSWindower alloc];
-  v9 = [v7 objectAtIndexedSubscript:0];
+  v9 = [upstreamsCopy objectAtIndexedSubscript:0];
 
-  v10 = [v6 key];
-  v11 = [v6 assigner];
-  v12 = [(BPSWindower *)v8 initWithUpstream:v9 key:v10 assigner:v11];
+  v10 = [publisherCopy key];
+  assigner = [publisherCopy assigner];
+  v12 = [(BPSWindower *)v8 initWithUpstream:v9 key:v10 assigner:assigner];
 
   return v12;
 }
@@ -351,21 +351,21 @@ LABEL_3:
 - (NSArray)bookmarkableUpstreams
 {
   v8[1] = *MEMORY[0x1E69E9840];
-  v3 = [(BPSWindower *)self upstream];
+  upstream = [(BPSWindower *)self upstream];
 
-  if (v3)
+  if (upstream)
   {
-    v4 = [(BPSWindower *)self upstream];
-    v8[0] = v4;
+    upstream2 = [(BPSWindower *)self upstream];
+    v8[0] = upstream2;
     v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:1];
   }
 
   else
   {
-    v4 = __biome_log_for_category();
-    if (os_log_type_enabled(v4, OS_LOG_TYPE_FAULT))
+    upstream2 = __biome_log_for_category();
+    if (os_log_type_enabled(upstream2, OS_LOG_TYPE_FAULT))
     {
-      [(BPSWindower(BMBookmarkOperators) *)v4 bookmarkableUpstreams];
+      [(BPSWindower(BMBookmarkOperators) *)upstream2 bookmarkableUpstreams];
     }
 
     v5 = MEMORY[0x1E695E0F0];

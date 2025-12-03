@@ -1,7 +1,7 @@
 @interface GKLeaderboardChallengeDetailsInternal
-+ (id)initWithServerFragment:(id)a3;
++ (id)initWithServerFragment:(id)fragment;
 + (id)secureCodedPropertyKeys;
-- (void)updateWithServerFragment:(id)a3;
+- (void)updateWithServerFragment:(id)fragment;
 @end
 
 @implementation GKLeaderboardChallengeDetailsInternal
@@ -12,7 +12,7 @@
   block[1] = 3221225472;
   block[2] = __64__GKLeaderboardChallengeDetailsInternal_secureCodedPropertyKeys__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (secureCodedPropertyKeys_onceToken_386 != -1)
   {
     dispatch_once(&secureCodedPropertyKeys_onceToken_386, block);
@@ -55,32 +55,32 @@ void __64__GKLeaderboardChallengeDetailsInternal_secureCodedPropertyKeys__block_
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateWithServerFragment:(id)a3
+- (void)updateWithServerFragment:(id)fragment
 {
   v10.receiver = self;
   v10.super_class = GKLeaderboardChallengeDetailsInternal;
-  v4 = a3;
-  [(GKBaseLeaderboardChallengeInternal *)&v10 updateWithServerResponse:v4];
-  v5 = [v4 objectForKeyedSubscript:{@"participants-summary", v10.receiver, v10.super_class}];
+  fragmentCopy = fragment;
+  [(GKBaseLeaderboardChallengeInternal *)&v10 updateWithServerResponse:fragmentCopy];
+  v5 = [fragmentCopy objectForKeyedSubscript:{@"participants-summary", v10.receiver, v10.super_class}];
   v6 = [v5 _gkMapWithBlock:&__block_literal_global_400];
   [(GKLeaderboardChallengeDetailsInternal *)self setParticipants:v6];
 
-  v7 = [v4 objectForKeyedSubscript:@"participants-count"];
+  v7 = [fragmentCopy objectForKeyedSubscript:@"participants-count"];
   [(GKLeaderboardChallengeDetailsInternal *)self setParticipantCount:v7];
 
-  v8 = [v4 objectForKeyedSubscript:@"rank"];
+  v8 = [fragmentCopy objectForKeyedSubscript:@"rank"];
   [(GKLeaderboardChallengeDetailsInternal *)self setRank:v8];
 
-  v9 = [v4 objectForKeyedSubscript:@"remaining-attempts"];
+  v9 = [fragmentCopy objectForKeyedSubscript:@"remaining-attempts"];
 
   [(GKLeaderboardChallengeDetailsInternal *)self setRemainingAttempts:v9];
 }
 
-+ (id)initWithServerFragment:(id)a3
++ (id)initWithServerFragment:(id)fragment
 {
-  v3 = a3;
+  fragmentCopy = fragment;
   v4 = objc_alloc_init(GKLeaderboardChallengeDetailsInternal);
-  [(GKLeaderboardChallengeDetailsInternal *)v4 updateWithServerFragment:v3];
+  [(GKLeaderboardChallengeDetailsInternal *)v4 updateWithServerFragment:fragmentCopy];
 
   return v4;
 }

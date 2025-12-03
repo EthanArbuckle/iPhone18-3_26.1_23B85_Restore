@@ -13,7 +13,7 @@
 - (void)mergeWith:()CRDT_Additions
 {
   v5 = a3;
-  if (([a1 isEqual:?] & 1) == 0)
+  if (([self isEqual:?] & 1) == 0)
   {
     v4 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D920] reason:@"Cannot merge NSUUID with different value." userInfo:0];
     objc_exception_throw(v4);
@@ -51,7 +51,7 @@
   *uu2 = 0;
   v8 = 0;
   v4 = a3;
-  [a1 getUUIDBytes:uu1];
+  [self getUUIDBytes:uu1];
   [v4 getUUIDBytes:uu2];
 
   LODWORD(result) = uuid_compare(uu1, uu2);
@@ -64,7 +64,7 @@
   v4[2] = *MEMORY[0x1E69E9840];
   v4[0] = 0;
   v4[1] = 0;
-  [a1 getUUIDBytes:v4];
+  [self getUUIDBytes:v4];
   v1 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%02X%02X", LOBYTE(v4[0]), BYTE1(v4[0])];
   v2 = *MEMORY[0x1E69E9840];
 
@@ -80,7 +80,7 @@
   v9[0] = 0;
   v9[1] = 0;
   [v5 getUUIDBytes:v9];
-  v6 = [a1 initWithUUIDBytes:v9];
+  v6 = [self initWithUUIDBytes:v9];
 
   v7 = *MEMORY[0x1E69E9840];
   return v6;
@@ -89,7 +89,7 @@
 - (void)encodeWithCRCoder:()CRDT_Additions
 {
   v4 = a3;
-  [v4 encodeUInt64:objc_msgSend(v4 forKey:{"encodeUUIDIndexFromUUID:", a1), @"UUIDIndex"}];
+  [v4 encodeUInt64:objc_msgSend(v4 forKey:{"encodeUUIDIndexFromUUID:", self), @"UUIDIndex"}];
 }
 
 @end

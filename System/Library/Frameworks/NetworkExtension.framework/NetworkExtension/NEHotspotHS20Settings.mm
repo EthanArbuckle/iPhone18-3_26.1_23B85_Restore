@@ -1,59 +1,59 @@
 @interface NEHotspotHS20Settings
-- (NEHotspotHS20Settings)initWithCoder:(id)a3;
+- (NEHotspotHS20Settings)initWithCoder:(id)coder;
 - (NEHotspotHS20Settings)initWithDomainName:(NSString *)domainName roamingEnabled:(BOOL)roamingEnabled;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NEHotspotHS20Settings
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(NEHotspotHS20Settings *)self domainName];
-  [v4 encodeObject:v5 forKey:@"DomainName"];
+  coderCopy = coder;
+  domainName = [(NEHotspotHS20Settings *)self domainName];
+  [coderCopy encodeObject:domainName forKey:@"DomainName"];
 
-  [v4 encodeBool:-[NEHotspotHS20Settings isRoamingEnabled](self forKey:{"isRoamingEnabled"), @"IsRoamingEnabled"}];
-  v6 = [(NEHotspotHS20Settings *)self roamingConsortiumOIs];
-  [v4 encodeObject:v6 forKey:@"RoamingConsortiumOIs"];
+  [coderCopy encodeBool:-[NEHotspotHS20Settings isRoamingEnabled](self forKey:{"isRoamingEnabled"), @"IsRoamingEnabled"}];
+  roamingConsortiumOIs = [(NEHotspotHS20Settings *)self roamingConsortiumOIs];
+  [coderCopy encodeObject:roamingConsortiumOIs forKey:@"RoamingConsortiumOIs"];
 
-  v7 = [(NEHotspotHS20Settings *)self naiRealmNames];
-  [v4 encodeObject:v7 forKey:@"NAIRealmNames"];
+  naiRealmNames = [(NEHotspotHS20Settings *)self naiRealmNames];
+  [coderCopy encodeObject:naiRealmNames forKey:@"NAIRealmNames"];
 
-  v8 = [(NEHotspotHS20Settings *)self MCCAndMNCs];
-  [v4 encodeObject:v8 forKey:@"MCCAndMNCs"];
+  mCCAndMNCs = [(NEHotspotHS20Settings *)self MCCAndMNCs];
+  [coderCopy encodeObject:mCCAndMNCs forKey:@"MCCAndMNCs"];
 }
 
-- (NEHotspotHS20Settings)initWithCoder:(id)a3
+- (NEHotspotHS20Settings)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(NEHotspotHS20Settings *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"DomainName"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"DomainName"];
     domainName = v5->_domainName;
     v5->_domainName = v6;
 
-    v5->_roamingEnabled = [v4 decodeBoolForKey:@"IsRoamingEnabled"];
+    v5->_roamingEnabled = [coderCopy decodeBoolForKey:@"IsRoamingEnabled"];
     v8 = MEMORY[0x1E695DFD8];
     v9 = objc_opt_class();
     v10 = [v8 setWithObjects:{v9, objc_opt_class(), 0}];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"RoamingConsortiumOIs"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"RoamingConsortiumOIs"];
     roamingConsortiumOIs = v5->_roamingConsortiumOIs;
     v5->_roamingConsortiumOIs = v11;
 
     v13 = MEMORY[0x1E695DFD8];
     v14 = objc_opt_class();
     v15 = [v13 setWithObjects:{v14, objc_opt_class(), 0}];
-    v16 = [v4 decodeObjectOfClasses:v15 forKey:@"NAIRealmNames"];
+    v16 = [coderCopy decodeObjectOfClasses:v15 forKey:@"NAIRealmNames"];
     naiRealmNames = v5->_naiRealmNames;
     v5->_naiRealmNames = v16;
 
     v18 = MEMORY[0x1E695DFD8];
     v19 = objc_opt_class();
     v20 = [v18 setWithObjects:{v19, objc_opt_class(), 0}];
-    v21 = [v4 decodeObjectOfClasses:v20 forKey:@"MCCAndMNCs"];
+    v21 = [coderCopy decodeObjectOfClasses:v20 forKey:@"MCCAndMNCs"];
     MCCAndMNCs = v5->_MCCAndMNCs;
     v5->_MCCAndMNCs = v21;
   }
@@ -61,11 +61,11 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [NEHotspotHS20Settings allocWithZone:a3];
-  v5 = [(NEHotspotHS20Settings *)self domainName];
-  v6 = [(NEHotspotHS20Settings *)v4 initWithDomainName:v5 roamingEnabled:[(NEHotspotHS20Settings *)self isRoamingEnabled]];
+  v4 = [NEHotspotHS20Settings allocWithZone:zone];
+  domainName = [(NEHotspotHS20Settings *)self domainName];
+  v6 = [(NEHotspotHS20Settings *)v4 initWithDomainName:domainName roamingEnabled:[(NEHotspotHS20Settings *)self isRoamingEnabled]];
 
   [(NEHotspotHS20Settings *)v6 setRoamingConsortiumOIs:self->_roamingConsortiumOIs];
   [(NEHotspotHS20Settings *)v6 setNaiRealmNames:self->_naiRealmNames];
@@ -94,8 +94,8 @@
 - (id)description
 {
   v3 = objc_alloc_init(MEMORY[0x1E696AD60]);
-  v4 = [(NEHotspotHS20Settings *)self domainName];
-  [v3 appendPrettyObject:v4 withName:@"Hotspot 2.0 Domain Name" andIndent:0 options:0];
+  domainName = [(NEHotspotHS20Settings *)self domainName];
+  [v3 appendPrettyObject:domainName withName:@"Hotspot 2.0 Domain Name" andIndent:0 options:0];
 
   return v3;
 }

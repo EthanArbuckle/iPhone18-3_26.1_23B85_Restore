@@ -2,13 +2,13 @@
 + (id)sharedInstance;
 - (SPPersonalMetricManager)init;
 - (void)_clearState;
-- (void)_populateMetricWithFirstResult:(id)a3;
+- (void)_populateMetricWithFirstResult:(id)result;
 - (void)_sendCAMetrics;
 - (void)_updateTrialInfo;
-- (void)didEngageResult:(id)a3;
-- (void)didRankSections:(id)a3;
-- (void)resultsDidBecomeVisible:(id)a3;
-- (void)searchViewDidDisappear:(id)a3;
+- (void)didEngageResult:(id)result;
+- (void)didRankSections:(id)sections;
+- (void)resultsDidBecomeVisible:(id)visible;
+- (void)searchViewDidDisappear:(id)disappear;
 @end
 
 @implementation SPPersonalMetricManager
@@ -73,55 +73,55 @@ uint64_t __41__SPPersonalMetricManager_sharedInstance__block_invoke()
 - (void)_updateTrialInfo
 {
   v5 = SSDefaultsGetResources();
-  v3 = [v5 getTrialTreatmentId];
-  [(SPGeoPersonalizationEngagementMetric *)self->_metric setTrialTreatmentId:v3];
+  getTrialTreatmentId = [v5 getTrialTreatmentId];
+  [(SPGeoPersonalizationEngagementMetric *)self->_metric setTrialTreatmentId:getTrialTreatmentId];
 
-  v4 = [v5 getTrialExperimentId];
-  [(SPGeoPersonalizationEngagementMetric *)self->_metric setTrialExperimentId:v4];
+  getTrialExperimentId = [v5 getTrialExperimentId];
+  [(SPGeoPersonalizationEngagementMetric *)self->_metric setTrialExperimentId:getTrialExperimentId];
 }
 
-- (void)_populateMetricWithFirstResult:(id)a3
+- (void)_populateMetricWithFirstResult:(id)result
 {
-  v34 = a3;
-  if ([v34 containsPersonalResult] && (objc_msgSend(v34, "mapsPersonalizationResult"), v4 = objc_claimAutoreleasedReturnValue(), v4, v4))
+  resultCopy = result;
+  if ([resultCopy containsPersonalResult] && (objc_msgSend(resultCopy, "mapsPersonalizationResult"), v4 = objc_claimAutoreleasedReturnValue(), v4, v4))
   {
-    v5 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v34, "didRerankPersonalResult")}];
+    v5 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(resultCopy, "didRerankPersonalResult")}];
     [(SPGeoPersonalizationEngagementMetric *)self->_metric setFirstGeoResultWasReranked:v5];
 
     v6 = MEMORY[0x1E696AD98];
-    v7 = [v34 mapsPersonalizationResult];
-    v8 = [v6 numberWithUnsignedInteger:{objc_msgSend(v7, "resultType")}];
+    mapsPersonalizationResult = [resultCopy mapsPersonalizationResult];
+    v8 = [v6 numberWithUnsignedInteger:{objc_msgSend(mapsPersonalizationResult, "resultType")}];
     [(SPGeoPersonalizationEngagementMetric *)self->_metric setFirstGeoResultPersonalizationType:v8];
 
-    v9 = [v34 mapsPersonalizationResult];
-    v10 = [v9 entityRelevanceScore];
-    [(SPGeoPersonalizationEngagementMetric *)self->_metric setFirstGeoResultEntityRelevanceScore:v10];
+    mapsPersonalizationResult2 = [resultCopy mapsPersonalizationResult];
+    entityRelevanceScore = [mapsPersonalizationResult2 entityRelevanceScore];
+    [(SPGeoPersonalizationEngagementMetric *)self->_metric setFirstGeoResultEntityRelevanceScore:entityRelevanceScore];
 
     parsecRanker = self->_parsecRanker;
     if (parsecRanker)
     {
       v12 = MEMORY[0x1E696AD98];
-      v13 = [v34 mapsPersonalizationResult];
-      v14 = [v12 numberWithBool:{-[PRSMapsParsecRanker isResultCandidateForPromotion:](parsecRanker, "isResultCandidateForPromotion:", v13)}];
+      mapsPersonalizationResult3 = [resultCopy mapsPersonalizationResult];
+      v14 = [v12 numberWithBool:{-[PRSMapsParsecRanker isResultCandidateForPromotion:](parsecRanker, "isResultCandidateForPromotion:", mapsPersonalizationResult3)}];
       [(SPGeoPersonalizationEngagementMetric *)self->_metric setFirstGeoResultIsCandidateForPromotion:v14];
     }
 
-    v15 = [v34 mapsPersonalizationResult];
-    v16 = [v15 numberOfVisits];
-    [(SPGeoPersonalizationEngagementMetric *)self->_metric setFirstGeoResultNumberOfVisits:v16];
+    mapsPersonalizationResult4 = [resultCopy mapsPersonalizationResult];
+    numberOfVisits = [mapsPersonalizationResult4 numberOfVisits];
+    [(SPGeoPersonalizationEngagementMetric *)self->_metric setFirstGeoResultNumberOfVisits:numberOfVisits];
 
-    v17 = [v34 mapsPersonalizationResult];
-    v18 = [v17 numberOfVisitsGivenLocation];
-    [(SPGeoPersonalizationEngagementMetric *)self->_metric setFirstGeoResultNumberOfVisitsGivenLocation:v18];
+    mapsPersonalizationResult5 = [resultCopy mapsPersonalizationResult];
+    numberOfVisitsGivenLocation = [mapsPersonalizationResult5 numberOfVisitsGivenLocation];
+    [(SPGeoPersonalizationEngagementMetric *)self->_metric setFirstGeoResultNumberOfVisitsGivenLocation:numberOfVisitsGivenLocation];
 
-    v19 = [v34 mapsPersonalizationResult];
-    v20 = [v19 dateOfLastVisit];
-    if (v20)
+    mapsPersonalizationResult6 = [resultCopy mapsPersonalizationResult];
+    dateOfLastVisit = [mapsPersonalizationResult6 dateOfLastVisit];
+    if (dateOfLastVisit)
     {
       v21 = MEMORY[0x1E696AD98];
-      v22 = [v34 mapsPersonalizationResult];
-      v23 = [v22 dateOfLastVisit];
-      [v23 timeIntervalSinceNow];
+      mapsPersonalizationResult7 = [resultCopy mapsPersonalizationResult];
+      dateOfLastVisit2 = [mapsPersonalizationResult7 dateOfLastVisit];
+      [dateOfLastVisit2 timeIntervalSinceNow];
       v25 = [v21 numberWithDouble:v24 / -3600.0];
       [(SPGeoPersonalizationEngagementMetric *)self->_metric setFirstGeoResultTimeSinceLastVisit:v25];
     }
@@ -131,14 +131,14 @@ uint64_t __41__SPPersonalMetricManager_sharedInstance__block_invoke()
       [(SPGeoPersonalizationEngagementMetric *)self->_metric setFirstGeoResultTimeSinceLastVisit:0];
     }
 
-    v27 = [v34 mapsPersonalizationResult];
-    v28 = [v27 startEventDate];
-    if (v28)
+    mapsPersonalizationResult8 = [resultCopy mapsPersonalizationResult];
+    startEventDate = [mapsPersonalizationResult8 startEventDate];
+    if (startEventDate)
     {
       v29 = MEMORY[0x1E696AD98];
-      v30 = [v34 mapsPersonalizationResult];
-      v31 = [v30 startEventDate];
-      [v31 timeIntervalSinceNow];
+      mapsPersonalizationResult9 = [resultCopy mapsPersonalizationResult];
+      startEventDate2 = [mapsPersonalizationResult9 startEventDate];
+      [startEventDate2 timeIntervalSinceNow];
       v33 = [v29 numberWithDouble:v32 / 3600.0];
       [(SPGeoPersonalizationEngagementMetric *)self->_metric setFirstGeoResultTimeUntilUpcomingEvent:v33];
     }
@@ -157,9 +157,9 @@ uint64_t __41__SPPersonalMetricManager_sharedInstance__block_invoke()
   }
 }
 
-- (void)didRankSections:(id)a3
+- (void)didRankSections:(id)sections
 {
-  v4 = a3;
+  sectionsCopy = sections;
   v5 = SPPersonalMetricManagerTransactionCreate(@"didRank");
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
@@ -167,10 +167,10 @@ uint64_t __41__SPPersonalMetricManager_sharedInstance__block_invoke()
   block[2] = __43__SPPersonalMetricManager_didRankSections___block_invoke;
   block[3] = &unk_1E82F9018;
   block[4] = self;
-  v10 = v4;
+  v10 = sectionsCopy;
   v11 = v5;
   v7 = v5;
-  v8 = v4;
+  v8 = sectionsCopy;
   dispatch_async(queue, block);
 }
 
@@ -364,7 +364,7 @@ LABEL_37:
   return result;
 }
 
-- (void)resultsDidBecomeVisible:(id)a3
+- (void)resultsDidBecomeVisible:(id)visible
 {
   v4 = SPPersonalMetricManagerTransactionCreate(@"didBecomeVisible");
   queue = self->_queue;
@@ -396,9 +396,9 @@ id __51__SPPersonalMetricManager_resultsDidBecomeVisible___block_invoke(uint64_t
   return result;
 }
 
-- (void)didEngageResult:(id)a3
+- (void)didEngageResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   v5 = SPPersonalMetricManagerTransactionCreate(@"didEngageResult");
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
@@ -407,8 +407,8 @@ id __51__SPPersonalMetricManager_resultsDidBecomeVisible___block_invoke(uint64_t
   block[3] = &unk_1E82F9018;
   block[4] = self;
   v10 = v5;
-  v11 = v4;
-  v7 = v4;
+  v11 = resultCopy;
+  v7 = resultCopy;
   v8 = v5;
   dispatch_async(queue, block);
 }
@@ -569,7 +569,7 @@ LABEL_24:
   }
 }
 
-- (void)searchViewDidDisappear:(id)a3
+- (void)searchViewDidDisappear:(id)disappear
 {
   v4 = SPPersonalMetricManagerTransactionCreate(@"didDisappear");
   queue = self->_queue;
@@ -638,16 +638,16 @@ id __50__SPPersonalMetricManager_searchViewDidDisappear___block_invoke(uint64_t 
   v4 = gSPLogInfoAsDefault;
   if (os_log_type_enabled(v3, ((gSPLogInfoAsDefault & 1) == 0)))
   {
-    v5 = [(SPGeoPersonalizationEngagementMetric *)self->_metric serializedMetric];
+    serializedMetric = [(SPGeoPersonalizationEngagementMetric *)self->_metric serializedMetric];
     v9 = 138412290;
-    v10 = v5;
+    v10 = serializedMetric;
     _os_log_impl(&dword_1C81BF000, v3, ((v4 & 1) == 0), "SPPersonalMetricManager: _sendCAMetrics: %@", &v9, 0xCu);
   }
 
   metric = self->_metric;
   if (metric)
   {
-    v7 = [(SPGeoPersonalizationEngagementMetric *)metric serializedMetric];
+    serializedMetric2 = [(SPGeoPersonalizationEngagementMetric *)metric serializedMetric];
     AnalyticsSendEvent();
   }
 

@@ -1,73 +1,73 @@
 @interface SLHighlightDisambiguationPillView
-- (SLHighlightDisambiguationPillView)initWithAttribution:(id)a3;
+- (SLHighlightDisambiguationPillView)initWithAttribution:(id)attribution;
 - (id)_contentProviderForCurrentConfiguration;
 - (id)_layoutConstraintsForIndividualContact;
-- (id)_loadButtonWithImageName:(id)a3;
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5;
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4;
+- (id)_loadButtonWithImageName:(id)name;
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region;
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region;
 - (void)_loadBlurView;
 - (void)_loadDisambiguationPillSlotView;
 - (void)_loadTranscriptButton;
 - (void)_macroPillTapped;
 - (void)_presentTranscript;
-- (void)_transcriptButtonTapped:(id)a3;
+- (void)_transcriptButtonTapped:(id)tapped;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)serviceProxyDidConnect:(id)a3;
-- (void)serviceProxyDidDisconnect:(id)a3;
-- (void)setFrame:(CGRect)a3;
+- (void)serviceProxyDidConnect:(id)connect;
+- (void)serviceProxyDidDisconnect:(id)disconnect;
+- (void)setFrame:(CGRect)frame;
 @end
 
 @implementation SLHighlightDisambiguationPillView
 
-- (SLHighlightDisambiguationPillView)initWithAttribution:(id)a3
+- (SLHighlightDisambiguationPillView)initWithAttribution:(id)attribution
 {
-  v5 = a3;
+  attributionCopy = attribution;
   v20.receiver = self;
   v20.super_class = SLHighlightDisambiguationPillView;
   v6 = [(SLHighlightDisambiguationPillView *)&v20 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_attribution, a3);
+    objc_storeStrong(&v6->_attribution, attribution);
     v8 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:v7 action:sel__macroPillTapped];
     [(SLHighlightDisambiguationPillView *)v7 addGestureRecognizer:v8];
 
     [(SLHighlightDisambiguationPillView *)v7 _loadDisambiguationPillSlotView];
     [(SLHighlightDisambiguationPillView *)v7 _loadTranscriptButton];
-    v9 = [(UIButton *)v7->_transcriptButton trailingAnchor];
-    v10 = [(SLHighlightDisambiguationPillView *)v7 trailingAnchor];
-    v11 = [v9 constraintEqualToAnchor:v10 constant:-15.0];
+    trailingAnchor = [(UIButton *)v7->_transcriptButton trailingAnchor];
+    trailingAnchor2 = [(SLHighlightDisambiguationPillView *)v7 trailingAnchor];
+    v11 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-15.0];
     transcriptButtonConstraint = v7->_transcriptButtonConstraint;
     v7->_transcriptButtonConstraint = v11;
 
     v13 = MEMORY[0x277CCAAD0];
-    v14 = [(SLHighlightDisambiguationPillView *)v7 _layoutConstraintsForIndividualContact];
-    [v13 activateConstraints:v14];
+    _layoutConstraintsForIndividualContact = [(SLHighlightDisambiguationPillView *)v7 _layoutConstraintsForIndividualContact];
+    [v13 activateConstraints:_layoutConstraintsForIndividualContact];
 
     [(SLHighlightDisambiguationPillView *)v7 _loadBlurView];
-    v15 = [MEMORY[0x277D75418] currentDevice];
-    v16 = [v15 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if (v16 == 1)
+    if (userInterfaceIdiom == 1)
     {
       v17 = [objc_alloc(MEMORY[0x277D75870]) initWithDelegate:v7];
       [(SLHighlightDisambiguationPillView *)v7 setPointerInteraction:v17];
 
-      v18 = [(SLHighlightDisambiguationPillView *)v7 pointerInteraction];
-      [(SLHighlightDisambiguationPillView *)v7 addInteraction:v18];
+      pointerInteraction = [(SLHighlightDisambiguationPillView *)v7 pointerInteraction];
+      [(SLHighlightDisambiguationPillView *)v7 addInteraction:pointerInteraction];
     }
   }
 
   return v7;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(SLHighlightDisambiguationPillView *)self frame];
   v9 = v8;
   v21.receiver = self;
@@ -119,29 +119,29 @@ void __46__SLHighlightDisambiguationPillView_setFrame___block_invoke(uint64_t a1
 - (id)_layoutConstraintsForIndividualContact
 {
   v25[7] = *MEMORY[0x277D85DE8];
-  v24 = [(_UISlotView *)self->_pillSlotView leadingAnchor];
-  v23 = [(SLHighlightDisambiguationPillView *)self leadingAnchor];
-  v22 = [v24 constraintEqualToAnchor:v23];
+  leadingAnchor = [(_UISlotView *)self->_pillSlotView leadingAnchor];
+  leadingAnchor2 = [(SLHighlightDisambiguationPillView *)self leadingAnchor];
+  v22 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v25[0] = v22;
-  v21 = [(_UISlotView *)self->_pillSlotView topAnchor];
-  v20 = [(SLHighlightDisambiguationPillView *)self topAnchor];
-  v19 = [v21 constraintEqualToAnchor:v20];
+  topAnchor = [(_UISlotView *)self->_pillSlotView topAnchor];
+  topAnchor2 = [(SLHighlightDisambiguationPillView *)self topAnchor];
+  v19 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v25[1] = v19;
-  v18 = [(_UISlotView *)self->_pillSlotView centerYAnchor];
-  v17 = [(SLHighlightDisambiguationPillView *)self centerYAnchor];
-  v16 = [v18 constraintEqualToAnchor:v17];
+  centerYAnchor = [(_UISlotView *)self->_pillSlotView centerYAnchor];
+  centerYAnchor2 = [(SLHighlightDisambiguationPillView *)self centerYAnchor];
+  v16 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v25[2] = v16;
-  v3 = [(UIButton *)self->_transcriptButton centerYAnchor];
-  v4 = [(SLHighlightDisambiguationPillView *)self centerYAnchor];
-  v5 = [v3 constraintEqualToAnchor:v4];
+  centerYAnchor3 = [(UIButton *)self->_transcriptButton centerYAnchor];
+  centerYAnchor4 = [(SLHighlightDisambiguationPillView *)self centerYAnchor];
+  v5 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
   v25[3] = v5;
-  v6 = [(UIButton *)self->_transcriptButton heightAnchor];
-  v7 = [(SLHighlightDisambiguationPillView *)self heightAnchor];
-  v8 = [v6 constraintEqualToAnchor:v7 multiplier:0.53125];
+  heightAnchor = [(UIButton *)self->_transcriptButton heightAnchor];
+  heightAnchor2 = [(SLHighlightDisambiguationPillView *)self heightAnchor];
+  v8 = [heightAnchor constraintEqualToAnchor:heightAnchor2 multiplier:0.53125];
   v25[4] = v8;
-  v9 = [(UIButton *)self->_transcriptButton widthAnchor];
-  v10 = [(UIButton *)self->_transcriptButton heightAnchor];
-  v11 = [v9 constraintEqualToAnchor:v10];
+  widthAnchor = [(UIButton *)self->_transcriptButton widthAnchor];
+  heightAnchor3 = [(UIButton *)self->_transcriptButton heightAnchor];
+  v11 = [widthAnchor constraintEqualToAnchor:heightAnchor3];
   transcriptButtonConstraint = self->_transcriptButtonConstraint;
   v25[5] = v11;
   v25[6] = transcriptButtonConstraint;
@@ -157,31 +157,31 @@ void __46__SLHighlightDisambiguationPillView_setFrame___block_invoke(uint64_t a1
   v3 = objc_alloc_init(MEMORY[0x277D76260]);
   [(SLHighlightDisambiguationPillView *)self setPillSlotView:v3];
 
-  v4 = [(SLHighlightDisambiguationPillView *)self pillSlotView];
-  [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
+  pillSlotView = [(SLHighlightDisambiguationPillView *)self pillSlotView];
+  [pillSlotView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v5 = [(SLHighlightDisambiguationPillView *)self pillSlotView];
-  [v5 setContentMode:1];
+  pillSlotView2 = [(SLHighlightDisambiguationPillView *)self pillSlotView];
+  [pillSlotView2 setContentMode:1];
 
-  v6 = [(SLHighlightDisambiguationPillView *)self pillSlotView];
-  [(SLHighlightDisambiguationPillView *)self addSubview:v6];
+  pillSlotView3 = [(SLHighlightDisambiguationPillView *)self pillSlotView];
+  [(SLHighlightDisambiguationPillView *)self addSubview:pillSlotView3];
 }
 
-- (id)_loadButtonWithImageName:(id)a3
+- (id)_loadButtonWithImageName:(id)name
 {
   v4 = MEMORY[0x277D75220];
-  v5 = a3;
+  nameCopy = name;
   v6 = [v4 buttonWithType:0];
-  v7 = [MEMORY[0x277D755B8] systemImageNamed:v5];
+  v7 = [MEMORY[0x277D755B8] systemImageNamed:nameCopy];
 
   [v6 addTarget:self action:sel__transcriptButtonTapped_ forControlEvents:64];
   [v6 setImage:v7 forState:0];
   [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v8 = [MEMORY[0x277D75348] systemBlueColor];
-  [v6 setTintColor:v8];
+  systemBlueColor = [MEMORY[0x277D75348] systemBlueColor];
+  [v6 setTintColor:systemBlueColor];
 
-  v9 = [MEMORY[0x277D75348] tertiarySystemFillColor];
-  [v6 setBackgroundColor:v9];
+  tertiarySystemFillColor = [MEMORY[0x277D75348] tertiarySystemFillColor];
+  [v6 setBackgroundColor:tertiarySystemFillColor];
 
   [v6 setClipsToBounds:1];
 
@@ -199,23 +199,23 @@ void __46__SLHighlightDisambiguationPillView_setFrame___block_invoke(uint64_t a1
   v6 = [objc_alloc(MEMORY[0x277D75D68]) initWithEffect:v5];
   [(SLHighlightDisambiguationPillView *)self setButtonEffectView:v6];
 
-  v7 = [(SLHighlightDisambiguationPillView *)self buttonEffectView];
-  [v7 setClipsToBounds:1];
+  buttonEffectView = [(SLHighlightDisambiguationPillView *)self buttonEffectView];
+  [buttonEffectView setClipsToBounds:1];
 
-  v8 = [(SLHighlightDisambiguationPillView *)self buttonEffectView];
-  [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
+  buttonEffectView2 = [(SLHighlightDisambiguationPillView *)self buttonEffectView];
+  [buttonEffectView2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
   [(UIButton *)self->_transcriptButton bounds];
   v10 = v9;
   v12 = v11;
   v14 = v13;
   v16 = v15;
-  v17 = [(SLHighlightDisambiguationPillView *)self buttonEffectView];
-  [v17 setFrame:{v10, v12, v14, v16}];
+  buttonEffectView3 = [(SLHighlightDisambiguationPillView *)self buttonEffectView];
+  [buttonEffectView3 setFrame:{v10, v12, v14, v16}];
 
   v18 = self->_transcriptButton;
-  v19 = [(SLHighlightDisambiguationPillView *)self buttonEffectView];
-  [(UIButton *)v18 addSubview:v19];
+  buttonEffectView4 = [(SLHighlightDisambiguationPillView *)self buttonEffectView];
+  [(UIButton *)v18 addSubview:buttonEffectView4];
 
   [(SLHighlightDisambiguationPillView *)self addSubview:self->_transcriptButton];
 }
@@ -233,21 +233,21 @@ void __46__SLHighlightDisambiguationPillView_setFrame___block_invoke(uint64_t a1
   [(SLHighlightDisambiguationPillView *)self addSubview:self->_blurView];
   [(SLHighlightDisambiguationPillView *)self sendSubviewToBack:self->_blurView];
   v18 = MEMORY[0x277CCAAD0];
-  v21 = [(UIVisualEffectView *)self->_blurView widthAnchor];
-  v20 = [(SLHighlightDisambiguationPillView *)self widthAnchor];
-  v19 = [v21 constraintEqualToAnchor:v20];
+  widthAnchor = [(UIVisualEffectView *)self->_blurView widthAnchor];
+  widthAnchor2 = [(SLHighlightDisambiguationPillView *)self widthAnchor];
+  v19 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
   v22[0] = v19;
-  v7 = [(UIVisualEffectView *)self->_blurView heightAnchor];
-  v8 = [(SLHighlightDisambiguationPillView *)self heightAnchor];
-  v9 = [v7 constraintEqualToAnchor:v8];
+  heightAnchor = [(UIVisualEffectView *)self->_blurView heightAnchor];
+  heightAnchor2 = [(SLHighlightDisambiguationPillView *)self heightAnchor];
+  v9 = [heightAnchor constraintEqualToAnchor:heightAnchor2];
   v22[1] = v9;
-  v10 = [(UIVisualEffectView *)self->_blurView centerXAnchor];
-  v11 = [(SLHighlightDisambiguationPillView *)self centerXAnchor];
-  v12 = [v10 constraintEqualToAnchor:v11];
+  centerXAnchor = [(UIVisualEffectView *)self->_blurView centerXAnchor];
+  centerXAnchor2 = [(SLHighlightDisambiguationPillView *)self centerXAnchor];
+  v12 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v22[2] = v12;
-  v13 = [(UIVisualEffectView *)self->_blurView centerYAnchor];
-  v14 = [(SLHighlightDisambiguationPillView *)self centerYAnchor];
-  v15 = [v13 constraintEqualToAnchor:v14];
+  centerYAnchor = [(UIVisualEffectView *)self->_blurView centerYAnchor];
+  centerYAnchor2 = [(SLHighlightDisambiguationPillView *)self centerYAnchor];
+  v15 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v22[3] = v15;
   v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v22 count:4];
   [v18 activateConstraints:v16];
@@ -266,18 +266,18 @@ void __46__SLHighlightDisambiguationPillView_setFrame___block_invoke(uint64_t a1
   [(UIVisualEffectView *)self->_blurView _setContinuousCornerRadius:v4];
   [(UIButton *)self->_transcriptButton frame];
   v6 = v5 * 0.5;
-  v7 = [(UIButton *)self->_transcriptButton layer];
-  [v7 setCornerRadius:v6];
+  layer = [(UIButton *)self->_transcriptButton layer];
+  [layer setCornerRadius:v6];
 }
 
-- (void)_transcriptButtonTapped:(id)a3
+- (void)_transcriptButtonTapped:(id)tapped
 {
   v8 = *MEMORY[0x277D85DE8];
   v4 = SLFrameworkLogHandle();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     v6 = 134217984;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_231772000, v4, OS_LOG_TYPE_INFO, "[SLHighlightDisambiguationPillView %p] _transcriptButtonTapped", &v6, 0xCu);
   }
 
@@ -292,7 +292,7 @@ void __46__SLHighlightDisambiguationPillView_setFrame___block_invoke(uint64_t a1
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     v5 = 134217984;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&dword_231772000, v3, OS_LOG_TYPE_INFO, "[SLHighlightDisambiguationPillView %p] _macroPillTapped", &v5, 0xCu);
   }
 
@@ -307,21 +307,21 @@ void __46__SLHighlightDisambiguationPillView_setFrame___block_invoke(uint64_t a1
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     v9 = 134217984;
-    v10 = self;
+    selfCopy = self;
     _os_log_impl(&dword_231772000, v3, OS_LOG_TYPE_INFO, "[SLHighlightDisambiguationPillView %p] _presentTranscript", &v9, 0xCu);
   }
 
   v4 = objc_alloc_init(SLTranscriptController);
-  v5 = [(SLAttribution *)self->_attribution uniqueIdentifier];
-  v6 = [(SLAttribution *)self->_attribution attachmentGUID];
-  v7 = [(SLHighlightDisambiguationPillView *)self _viewControllerForAncestor];
-  [(SLTranscriptController *)v4 presentTranscriptForMessageGUID:v5 attachmentGUID:v6 presentingViewController:v7];
+  uniqueIdentifier = [(SLAttribution *)self->_attribution uniqueIdentifier];
+  attachmentGUID = [(SLAttribution *)self->_attribution attachmentGUID];
+  _viewControllerForAncestor = [(SLHighlightDisambiguationPillView *)self _viewControllerForAncestor];
+  [(SLTranscriptController *)v4 presentTranscriptForMessageGUID:uniqueIdentifier attachmentGUID:attachmentGUID presentingViewController:_viewControllerForAncestor];
   SLSendPortraitFeedbackTypeAppButtonForAttribution(self->_attribution);
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)serviceProxyDidConnect:(id)a3
+- (void)serviceProxyDidConnect:(id)connect
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -491,7 +491,7 @@ void __76__SLHighlightDisambiguationPillView__contentProviderForCurrentConfigura
   }
 }
 
-- (void)serviceProxyDidDisconnect:(id)a3
+- (void)serviceProxyDidDisconnect:(id)disconnect
 {
   [(SLHighlightDisambiguationPillView *)self setLastRenderedSlotStyle:0];
 
@@ -510,15 +510,15 @@ void __76__SLHighlightDisambiguationPillView__contentProviderForCurrentConfigura
   [(SLHighlightDisambiguationPillView *)&v4 dealloc];
 }
 
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region
 {
-  v7 = a5;
-  v8 = a3;
-  v9 = [(SLHighlightDisambiguationPillView *)self pointerInteraction];
+  regionCopy = region;
+  interactionCopy = interaction;
+  pointerInteraction = [(SLHighlightDisambiguationPillView *)self pointerInteraction];
 
-  if (v9 == v8)
+  if (pointerInteraction == interactionCopy)
   {
-    v10 = v7;
+    v10 = regionCopy;
   }
 
   else
@@ -529,12 +529,12 @@ void __76__SLHighlightDisambiguationPillView__contentProviderForCurrentConfigura
   return v10;
 }
 
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region
 {
-  v5 = a3;
-  v6 = [(SLHighlightDisambiguationPillView *)self pointerInteraction];
+  interactionCopy = interaction;
+  pointerInteraction = [(SLHighlightDisambiguationPillView *)self pointerInteraction];
 
-  if (v6 == v5)
+  if (pointerInteraction == interactionCopy)
   {
     v8 = objc_alloc_init(MEMORY[0x277D758D8]);
     [(SLHighlightDisambiguationPillView *)self _continuousCornerRadius];

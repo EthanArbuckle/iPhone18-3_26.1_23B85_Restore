@@ -1,20 +1,20 @@
 @interface MADServiceTextPrewarmingTask
 - (BOOL)run:(id *)p_isa;
-- (MADServiceTextPrewarmingTask)initWithRequests:(id)a3 cancelBlock:(id)a4 completionHandler:(id)a5;
+- (MADServiceTextPrewarmingTask)initWithRequests:(id)requests cancelBlock:(id)block completionHandler:(id)handler;
 @end
 
 @implementation MADServiceTextPrewarmingTask
 
-- (MADServiceTextPrewarmingTask)initWithRequests:(id)a3 cancelBlock:(id)a4 completionHandler:(id)a5
+- (MADServiceTextPrewarmingTask)initWithRequests:(id)requests cancelBlock:(id)block completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  requestsCopy = requests;
+  blockCopy = block;
+  handlerCopy = handler;
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __79__MADServiceTextPrewarmingTask_initWithRequests_cancelBlock_completionHandler___block_invoke;
   v20[3] = &unk_1E834CF90;
-  v12 = v11;
+  v12 = handlerCopy;
   v21 = v12;
   v19.receiver = self;
   v19.super_class = MADServiceTextPrewarmingTask;
@@ -22,11 +22,11 @@
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_requests, a3);
+    objc_storeStrong(&v13->_requests, requests);
     signpostPayload = v14->_signpostPayload;
     v14->_signpostPayload = &stru_1F496CB30;
 
-    [(VCPMABaseTask *)v14 setCancelBlock:v10];
+    [(VCPMABaseTask *)v14 setCancelBlock:blockCopy];
     v16 = dispatch_queue_create("MADServiceTextProcessingTask", 0);
     cancelQueue = v14->_cancelQueue;
     v14->_cancelQueue = v16;
@@ -98,7 +98,7 @@ LABEL_6:
           _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "%@ does not support prewarming", buf, 0xCu);
         }
 
-        v27 = obj;
+        completionHandler = obj;
         if (p_isa)
         {
           v33 = MEMORY[0x1E696ABC0];
@@ -134,7 +134,7 @@ LABEL_34:
       if (!v20)
       {
         LOBYTE(p_isa) = 0;
-        v27 = obj;
+        completionHandler = obj;
         goto LABEL_37;
       }
 
@@ -159,7 +159,7 @@ LABEL_34:
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "Request canceled", buf, 2u);
     }
 
-    v27 = obj;
+    completionHandler = obj;
     if (p_isa)
     {
       v28 = MEMORY[0x1E696ABC0];
@@ -189,8 +189,8 @@ LABEL_20:
       _os_signpost_emit_with_name_impl(&dword_1C9B70000, p_isa, OS_SIGNPOST_INTERVAL_END, v6, "MADServiceTextPrewarmingTask_Run", "%@", buf, 0xCu);
     }
 
-    v27 = [(VCPMABaseTask *)self completionHandler];
-    v27[2](v27, 0, 0);
+    completionHandler = [(VCPMABaseTask *)self completionHandler];
+    completionHandler[2](completionHandler, 0, 0);
     LOBYTE(p_isa) = 1;
   }
 

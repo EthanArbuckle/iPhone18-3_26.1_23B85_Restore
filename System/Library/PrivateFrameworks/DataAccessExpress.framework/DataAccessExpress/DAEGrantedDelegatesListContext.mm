@@ -1,19 +1,19 @@
 @interface DAEGrantedDelegatesListContext
-- (DAEGrantedDelegatesListContext)initWithResultsBlock:(id)a3;
-- (void)finishedWithResults:(id)a3 error:(id)a4;
+- (DAEGrantedDelegatesListContext)initWithResultsBlock:(id)block;
+- (void)finishedWithResults:(id)results error:(id)error;
 @end
 
 @implementation DAEGrantedDelegatesListContext
 
-- (DAEGrantedDelegatesListContext)initWithResultsBlock:(id)a3
+- (DAEGrantedDelegatesListContext)initWithResultsBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v9.receiver = self;
   v9.super_class = DAEGrantedDelegatesListContext;
   v5 = [(DAEGrantedDelegatesListContext *)&v9 init];
   if (v5)
   {
-    v6 = _Block_copy(v4);
+    v6 = _Block_copy(blockCopy);
     resultsBlock = v5->_resultsBlock;
     v5->_resultsBlock = v6;
   }
@@ -21,21 +21,21 @@
   return v5;
 }
 
-- (void)finishedWithResults:(id)a3 error:(id)a4
+- (void)finishedWithResults:(id)results error:(id)error
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = self;
-  objc_sync_enter(v7);
-  resultsBlock = v7->_resultsBlock;
+  resultsCopy = results;
+  errorCopy = error;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  resultsBlock = selfCopy->_resultsBlock;
   if (resultsBlock)
   {
-    resultsBlock[2](resultsBlock, v10, v6);
-    v9 = v7->_resultsBlock;
-    v7->_resultsBlock = 0;
+    resultsBlock[2](resultsBlock, resultsCopy, errorCopy);
+    v9 = selfCopy->_resultsBlock;
+    selfCopy->_resultsBlock = 0;
   }
 
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
 }
 
 @end

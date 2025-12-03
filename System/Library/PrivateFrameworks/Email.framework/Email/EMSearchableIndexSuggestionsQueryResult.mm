@@ -1,18 +1,18 @@
 @interface EMSearchableIndexSuggestionsQueryResult
-- (EMSearchableIndexSuggestionsQueryResult)initWithSuggestions:(id)a3;
+- (EMSearchableIndexSuggestionsQueryResult)initWithSuggestions:(id)suggestions;
 @end
 
 @implementation EMSearchableIndexSuggestionsQueryResult
 
-- (EMSearchableIndexSuggestionsQueryResult)initWithSuggestions:(id)a3
+- (EMSearchableIndexSuggestionsQueryResult)initWithSuggestions:(id)suggestions
 {
-  v4 = a3;
+  suggestionsCopy = suggestions;
   v9.receiver = self;
   v9.super_class = EMSearchableIndexSuggestionsQueryResult;
   v5 = [(EMSearchableIndexSuggestionsQueryResult *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [suggestionsCopy copy];
     suggestions = v5->_suggestions;
     v5->_suggestions = v6;
   }

@@ -1,32 +1,32 @@
 @interface THWReviewImageWithTargetsLayout
-- (CGPoint)draggablePlacardLayout:(id)a3 originForSize:(CGSize)a4;
-- (CGPoint)p_drawerPositionForImagePlacard:(id)a3 withSize:(CGSize)a4;
-- (CGPoint)p_drawerPositionForPlacard:(id)a3 withSize:(CGSize)a4;
-- (CGPoint)p_drawerPositionForTextPlacard:(id)a3 withSize:(CGSize)a4;
-- (CGPoint)p_positionForTargetAtIndex:(unint64_t)a3;
+- (CGPoint)draggablePlacardLayout:(id)layout originForSize:(CGSize)size;
+- (CGPoint)p_drawerPositionForImagePlacard:(id)placard withSize:(CGSize)size;
+- (CGPoint)p_drawerPositionForPlacard:(id)placard withSize:(CGSize)size;
+- (CGPoint)p_drawerPositionForTextPlacard:(id)placard withSize:(CGSize)size;
+- (CGPoint)p_positionForTargetAtIndex:(unint64_t)index;
 - (CGRect)drawerFrame;
 - (CGRect)imageFrame;
 - (CGSize)p_drawerFrameSize;
 - (CGSize)p_placardImageSize;
 - (CGSize)placardTextSize;
-- (THWReviewImageWithTargetsLayout)initWithQuestion:(id)a3 index:(unint64_t)a4 delegate:(id)a5;
-- (UIEdgeInsets)draggablePlacardLayoutInsets:(id)a3;
-- (UIEdgeInsets)draggablePlacardLayoutTextInsets:(id)a3;
-- (double)draggablePlacardLayoutTextMaxWidth:(id)a3;
+- (THWReviewImageWithTargetsLayout)initWithQuestion:(id)question index:(unint64_t)index delegate:(id)delegate;
+- (UIEdgeInsets)draggablePlacardLayoutInsets:(id)insets;
+- (UIEdgeInsets)draggablePlacardLayoutTextInsets:(id)insets;
+- (double)draggablePlacardLayoutTextMaxWidth:(id)width;
 - (double)p_placardHorzPadding;
 - (double)p_placardImagePadding;
 - (double)p_placardVertPadding;
 - (id)additionalLayouts;
 - (id)childInfosForLayout;
 - (id)dependentLayouts;
-- (id)layoutForChoiceIndex:(unint64_t)a3;
-- (id)layoutForTargetIndex:(unint64_t)a3;
-- (id)layoutGeometryForLayout:(id)a3;
+- (id)layoutForChoiceIndex:(unint64_t)index;
+- (id)layoutForTargetIndex:(unint64_t)index;
+- (id)layoutGeometryForLayout:(id)layout;
 - (id)p_responseController;
-- (int)placardArrowPlacementforTarget:(unint64_t)a3;
+- (int)placardArrowPlacementforTarget:(unint64_t)target;
 - (void)dealloc;
 - (void)invalidateSize;
-- (void)p_calculateTextPlacardNumRows:(unint64_t *)a3 numCols:(unint64_t *)a4 rowHeight:(double *)a5 colWidth:(double *)a6 lasRowNeedsCentering:(BOOL *)a7;
+- (void)p_calculateTextPlacardNumRows:(unint64_t *)rows numCols:(unint64_t *)cols rowHeight:(double *)height colWidth:(double *)width lasRowNeedsCentering:(BOOL *)centering;
 - (void)p_setupFrames;
 - (void)p_setupPlacardLayouts;
 - (void)updateChildrenFromInfo;
@@ -35,7 +35,7 @@
 
 @implementation THWReviewImageWithTargetsLayout
 
-- (THWReviewImageWithTargetsLayout)initWithQuestion:(id)a3 index:(unint64_t)a4 delegate:(id)a5
+- (THWReviewImageWithTargetsLayout)initWithQuestion:(id)question index:(unint64_t)index delegate:(id)delegate
 {
   v13.receiver = self;
   v13.super_class = THWReviewImageWithTargetsLayout;
@@ -50,9 +50,9 @@
     v8->_drawerFrame.origin = origin;
     v8->_drawerFrame.size = size;
     v8->_placardTextSize = CGSizeZero;
-    v8->_questionIndex = a4;
-    v8->_question = a3;
-    v9->_delegate = a5;
+    v8->_questionIndex = index;
+    v8->_question = question;
+    v9->_delegate = delegate;
   }
 
   return v9;
@@ -208,10 +208,10 @@
     self->_drawerFrame.origin.y = 0.0;
     self->_drawerFrame.size.width = v12;
     self->_drawerFrame.size.height = v14;
-    v15 = [(THWReviewImageWithTargetsLayout *)self question];
-    if (v15)
+    question = [(THWReviewImageWithTargetsLayout *)self question];
+    if (question)
     {
-      [(THWReviewQuestion *)v15 imageSize];
+      [(THWReviewQuestion *)question imageSize];
     }
 
     v16 = [(THWReviewQuestionLayoutDelegate *)self->_delegate questionLayoutMode:self];
@@ -308,17 +308,17 @@
   return result;
 }
 
-- (CGPoint)p_positionForTargetAtIndex:(unint64_t)a3
+- (CGPoint)p_positionForTargetAtIndex:(unint64_t)index
 {
-  v4 = [(THWReviewQuestion *)[(THWReviewImageWithTargetsLayout *)self question] choiceAtIndex:a3];
+  v4 = [(THWReviewQuestion *)[(THWReviewImageWithTargetsLayout *)self question] choiceAtIndex:index];
   if (v4)
   {
     v5 = v4;
     [(THWReviewImageWithTargetsLayout *)self imageFrame];
     [objc_msgSend(v5 "targetRegion")];
     TSDCenterOfRect();
-    v6 = [(THWReviewImageWithTargetsLayout *)self question];
-    if (!v6 || ([(THWReviewQuestion *)v6 imageSize], v7 == 0.0))
+    question = [(THWReviewImageWithTargetsLayout *)self question];
+    if (!question || ([(THWReviewQuestion *)question imageSize], v7 == 0.0))
     {
       [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
     }
@@ -342,7 +342,7 @@
   return result;
 }
 
-- (int)placardArrowPlacementforTarget:(unint64_t)a3
+- (int)placardArrowPlacementforTarget:(unint64_t)target
 {
   v3 = [-[THWReviewQuestion choiceAtIndex:](-[THWReviewImageWithTargetsLayout question](self "question")] - 1;
   if (v3 > 3)
@@ -358,9 +358,9 @@
 
 - (void)updatePlacardLayouts
 {
-  v3 = [(THWReviewImageWithTargetsLayout *)self p_responseController];
-  v4 = [v3 newTemporateReviewResponseMOC];
-  v5 = [v3 responseForQuestionID:-[THWReviewQuestion questionID](-[THWReviewImageWithTargetsLayout question](self temporaryMOC:{"question"), "questionID"), v4}];
+  p_responseController = [(THWReviewImageWithTargetsLayout *)self p_responseController];
+  newTemporateReviewResponseMOC = [p_responseController newTemporateReviewResponseMOC];
+  v5 = [p_responseController responseForQuestionID:-[THWReviewQuestion questionID](-[THWReviewImageWithTargetsLayout question](self temporaryMOC:{"question"), "questionID"), newTemporateReviewResponseMOC}];
   objc_opt_class();
   [v5 answerState];
   v6 = TSUDynamicCast();
@@ -408,7 +408,7 @@
   }
 }
 
-- (id)layoutGeometryForLayout:(id)a3
+- (id)layoutGeometryForLayout:(id)layout
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -425,7 +425,7 @@
       return 0;
     }
 
-    -[THWReviewImageWithTargetsLayout p_positionForTargetAtIndex:](self, "p_positionForTargetAtIndex:", [a3 index]);
+    -[THWReviewImageWithTargetsLayout p_positionForTargetAtIndex:](self, "p_positionForTargetAtIndex:", [layout index]);
     v5 = [TSDLayoutGeometry alloc];
     TSDRectWithOriginAndSize();
   }
@@ -435,31 +435,31 @@
   return v6;
 }
 
-- (id)layoutForChoiceIndex:(unint64_t)a3
+- (id)layoutForChoiceIndex:(unint64_t)index
 {
-  if ([(NSMutableArray *)self->_placardLayouts count]<= a3)
+  if ([(NSMutableArray *)self->_placardLayouts count]<= index)
   {
     return 0;
   }
 
   placardLayouts = self->_placardLayouts;
 
-  return [(NSMutableArray *)placardLayouts objectAtIndex:a3];
+  return [(NSMutableArray *)placardLayouts objectAtIndex:index];
 }
 
-- (id)layoutForTargetIndex:(unint64_t)a3
+- (id)layoutForTargetIndex:(unint64_t)index
 {
-  if ([(NSMutableArray *)self->_targetLayouts count]<= a3)
+  if ([(NSMutableArray *)self->_targetLayouts count]<= index)
   {
     return 0;
   }
 
   targetLayouts = self->_targetLayouts;
 
-  return [(NSMutableArray *)targetLayouts objectAtIndex:a3];
+  return [(NSMutableArray *)targetLayouts objectAtIndex:index];
 }
 
-- (void)p_calculateTextPlacardNumRows:(unint64_t *)a3 numCols:(unint64_t *)a4 rowHeight:(double *)a5 colWidth:(double *)a6 lasRowNeedsCentering:(BOOL *)a7
+- (void)p_calculateTextPlacardNumRows:(unint64_t *)rows numCols:(unint64_t *)cols rowHeight:(double *)height colWidth:(double *)width lasRowNeedsCentering:(BOOL *)centering
 {
   v13 = [(THWReviewQuestionLayoutDelegate *)self->_delegate questionLayoutMode:self];
   [(THWReviewImageWithTargetsLayout *)self drawerFrame];
@@ -563,7 +563,7 @@
   if (v13 != &dword_0 + 2)
   {
     TSDFloorForMainScreen();
-    if (!a3)
+    if (!rows)
     {
       goto LABEL_31;
     }
@@ -572,31 +572,31 @@
   }
 
   v30 = 0x4041000000000000;
-  if (a3)
+  if (rows)
   {
 LABEL_30:
-    *a3 = v24;
+    *rows = v24;
   }
 
 LABEL_31:
-  if (a4)
+  if (cols)
   {
-    *a4 = v18;
+    *cols = v18;
   }
 
-  if (a5)
+  if (height)
   {
-    *a5 = v30;
+    *height = v30;
   }
 
-  if (a6)
+  if (width)
   {
-    *a6 = v29;
+    *width = v29;
   }
 
-  if (a7)
+  if (centering)
   {
-    *a7 = v23 & 1;
+    *centering = v23 & 1;
   }
 }
 
@@ -654,7 +654,7 @@ LABEL_31:
   return result;
 }
 
-- (CGPoint)p_drawerPositionForTextPlacard:(id)a3 withSize:(CGSize)a4
+- (CGPoint)p_drawerPositionForTextPlacard:(id)placard withSize:(CGSize)size
 {
   [(THWReviewImageWithTargetsLayout *)self drawerFrame];
   v7 = v6;
@@ -679,7 +679,7 @@ LABEL_31:
       v22 = 0;
       [(THWReviewImageWithTargetsLayout *)self p_calculateTextPlacardNumRows:&v25 numCols:&v24 rowHeight:&v21 colWidth:&v22 lasRowNeedsCentering:&v23];
       [(THWReviewImageWithTargetsLayout *)self p_placardHorzPadding];
-      [a3 index];
+      [placard index];
       [(THWReviewImageWithTargetsLayout *)self p_placardVertPadding];
       [(THWReviewImageWithTargetsLayout *)self p_placardHorzPadding];
       v27.origin.x = v7;
@@ -706,27 +706,27 @@ LABEL_31:
   return result;
 }
 
-- (CGPoint)p_drawerPositionForImagePlacard:(id)a3 withSize:(CGSize)a4
+- (CGPoint)p_drawerPositionForImagePlacard:(id)placard withSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v8 = [(NSArray *)[(THWReviewQuestion *)[(THWReviewImageWithTargetsLayout *)self question] choices] count];
   [(THWReviewImageWithTargetsLayout *)self drawerFrame];
   v10 = v9;
   v12 = v11;
   v14 = v13;
   v16 = v15;
-  v17 = [a3 index];
+  index = [placard index];
   [(THWReviewImageWithTargetsLayout *)self p_placardImagePadding];
   v19 = v18;
   if ([(THWReviewQuestionLayoutDelegate *)self->_delegate questionLayoutMode:self])
   {
     v20 = (v8 + 2) / 3;
     v21 = vcvtpd_u64_f64(v8 / v20);
-    v22 = (v17 % v21);
+    v22 = (index % v21);
     if (v21)
     {
-      v23 = v17 / v21;
+      v23 = index / v21;
     }
 
     else
@@ -810,7 +810,7 @@ LABEL_31:
     v40 = 0.0;
     if (v8)
     {
-      v40 = (v17 % v8);
+      v40 = (index % v8);
     }
 
     v33 = v37 + v39 * v40;
@@ -821,18 +821,18 @@ LABEL_31:
   return result;
 }
 
-- (CGPoint)p_drawerPositionForPlacard:(id)a3 withSize:(CGSize)a4
+- (CGPoint)p_drawerPositionForPlacard:(id)placard withSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  if ([a3 contentStorage])
+  height = size.height;
+  width = size.width;
+  if ([placard contentStorage])
   {
-    [(THWReviewImageWithTargetsLayout *)self p_drawerPositionForTextPlacard:a3 withSize:width, height];
+    [(THWReviewImageWithTargetsLayout *)self p_drawerPositionForTextPlacard:placard withSize:width, height];
   }
 
-  else if ([a3 contentImage])
+  else if ([placard contentImage])
   {
-    [(THWReviewImageWithTargetsLayout *)self p_drawerPositionForImagePlacard:a3 withSize:width, height];
+    [(THWReviewImageWithTargetsLayout *)self p_drawerPositionForImagePlacard:placard withSize:width, height];
   }
 
   else
@@ -854,20 +854,20 @@ LABEL_31:
   return TSUDynamicCast();
 }
 
-- (CGPoint)draggablePlacardLayout:(id)a3 originForSize:(CGSize)a4
+- (CGPoint)draggablePlacardLayout:(id)layout originForSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v8 = [(THWReviewImageWithTargetsLayout *)self question];
-  v9 = [(THWReviewImageWithTargetsLayout *)self p_responseController];
-  v10 = [v9 newTemporateReviewResponseMOC];
-  v11 = [v9 responseForQuestionID:-[THWReviewQuestion questionID](v8 temporaryMOC:{"questionID"), v10}];
+  height = size.height;
+  width = size.width;
+  question = [(THWReviewImageWithTargetsLayout *)self question];
+  p_responseController = [(THWReviewImageWithTargetsLayout *)self p_responseController];
+  newTemporateReviewResponseMOC = [p_responseController newTemporateReviewResponseMOC];
+  v11 = [p_responseController responseForQuestionID:-[THWReviewQuestion questionID](question temporaryMOC:{"questionID"), newTemporateReviewResponseMOC}];
   objc_opt_class();
   [v11 answerState];
   v12 = TSUDynamicCast();
-  if (!v12 || (v13 = [v12 targetForPlacard:{objc_msgSend(a3, "index")}], v13 == 0x7FFFFFFFFFFFFFFFLL))
+  if (!v12 || (v13 = [v12 targetForPlacard:{objc_msgSend(layout, "index")}], v13 == 0x7FFFFFFFFFFFFFFFLL))
   {
-    [(THWReviewImageWithTargetsLayout *)self p_drawerPositionForPlacard:a3 withSize:width, height];
+    [(THWReviewImageWithTargetsLayout *)self p_drawerPositionForPlacard:layout withSize:width, height];
     x = v14;
     y = v16;
     goto LABEL_4;
@@ -880,10 +880,10 @@ LABEL_31:
   v22 = v21;
   v24 = v23;
   v25 = [(THWReviewQuestion *)[(THWReviewImageWithTargetsLayout *)self question] choiceAtIndex:v20];
-  v26 = [v25 placardPlacement];
-  if (v26 > 1)
+  placardPlacement = [v25 placardPlacement];
+  if (placardPlacement > 1)
   {
-    switch(v26)
+    switch(placardPlacement)
     {
       case 2:
         x = v22 + 33.0;
@@ -905,9 +905,9 @@ LABEL_16:
     goto LABEL_4;
   }
 
-  if (v26)
+  if (placardPlacement)
   {
-    if (v26 == 1)
+    if (placardPlacement == 1)
     {
       x = v22 + width * -0.5;
       y = v24 - height + -33.0;
@@ -928,7 +928,7 @@ LABEL_4:
   return result;
 }
 
-- (UIEdgeInsets)draggablePlacardLayoutInsets:(id)a3
+- (UIEdgeInsets)draggablePlacardLayoutInsets:(id)insets
 {
   v3 = 5.0;
   v4 = 5.0;
@@ -941,7 +941,7 @@ LABEL_4:
   return result;
 }
 
-- (UIEdgeInsets)draggablePlacardLayoutTextInsets:(id)a3
+- (UIEdgeInsets)draggablePlacardLayoutTextInsets:(id)insets
 {
   v3 = 5.0;
   v4 = 15.0;
@@ -954,13 +954,13 @@ LABEL_4:
   return result;
 }
 
-- (double)draggablePlacardLayoutTextMaxWidth:(id)a3
+- (double)draggablePlacardLayoutTextMaxWidth:(id)width
 {
   v5 = [(THWReviewQuestionLayoutDelegate *)self->_delegate questionLayoutMode:self];
-  v6 = [a3 placement];
-  if (v6)
+  placement = [width placement];
+  if (placement)
   {
-    v7 = v6 == 2 || v5 == 0;
+    v7 = placement == 2 || v5 == 0;
     result = 80.0;
     if (v7)
     {
@@ -1044,8 +1044,8 @@ LABEL_4:
 {
   if (!self->_placardLayouts || !self->_targetLayouts)
   {
-    v3 = [(THWReviewQuestion *)[(THWReviewImageWithTargetsLayout *)self question] choices];
-    v4 = [(NSArray *)v3 count];
+    choices = [(THWReviewQuestion *)[(THWReviewImageWithTargetsLayout *)self question] choices];
+    v4 = [(NSArray *)choices count];
 
     self->_placardLayouts = [[NSMutableArray alloc] initWithCapacity:v4];
     self->_targetLayouts = [[NSMutableArray alloc] initWithCapacity:v4];
@@ -1053,15 +1053,15 @@ LABEL_4:
     {
       for (i = 0; i != v4; ++i)
       {
-        v6 = [(NSArray *)v3 objectAtIndex:i];
+        v6 = [(NSArray *)choices objectAtIndex:i];
         v7 = [[THWReviewDraggablePlacardLayout alloc] initWithIndex:i choice:v6 delegate:self];
-        v8 = [v6 contentType];
-        if ([v8 isEqualToString:TSWReviewChoiceDescriptionContentTypeTextValue])
+        contentType = [v6 contentType];
+        if ([contentType isEqualToString:TSWReviewChoiceDescriptionContentTypeTextValue])
         {
           -[THWReviewDraggablePlacardLayout setContentStorage:](v7, "setContentStorage:", [v6 contentStorage]);
         }
 
-        else if ([v8 isEqualToString:TSWReviewChoiceDescriptionContentTypeImageValue])
+        else if ([contentType isEqualToString:TSWReviewChoiceDescriptionContentTypeImageValue])
         {
           -[THWReviewDraggablePlacardLayout setContentImage:](v7, "setContentImage:", [v6 contentImage]);
         }

@@ -1,6 +1,6 @@
 @interface JavaUtilAbstractMap_1AbstractMapValuesCollection
-- (BOOL)containsWithId:(id)a3;
-- (JavaUtilAbstractMap_1AbstractMapValuesCollection)initWithJavaUtilAbstractMap:(id)a3;
+- (BOOL)containsWithId:(id)id;
+- (JavaUtilAbstractMap_1AbstractMapValuesCollection)initWithJavaUtilAbstractMap:(id)map;
 - (id)iterator;
 - (int)size;
 - (void)__javaClone;
@@ -15,11 +15,11 @@
   return [Weak size];
 }
 
-- (BOOL)containsWithId:(id)a3
+- (BOOL)containsWithId:(id)id
 {
   Weak = objc_loadWeak(&self->this$0_);
 
-  return [Weak containsValueWithId:a3];
+  return [Weak containsValueWithId:id];
 }
 
 - (id)iterator
@@ -30,9 +30,9 @@
   return v3;
 }
 
-- (JavaUtilAbstractMap_1AbstractMapValuesCollection)initWithJavaUtilAbstractMap:(id)a3
+- (JavaUtilAbstractMap_1AbstractMapValuesCollection)initWithJavaUtilAbstractMap:(id)map
 {
-  objc_storeWeak(&self->this$0_, a3);
+  objc_storeWeak(&self->this$0_, map);
   JavaUtilAbstractCollection_init(self, v4);
   return self;
 }

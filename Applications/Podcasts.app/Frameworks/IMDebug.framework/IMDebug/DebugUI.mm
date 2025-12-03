@@ -1,29 +1,29 @@
 @interface DebugUI
-+ (BOOL)isDebugUrl:(id)a3;
-+ (id)createScreenShotOfPresentedViewController:(id)a3;
++ (BOOL)isDebugUrl:(id)url;
++ (id)createScreenShotOfPresentedViewController:(id)controller;
 + (id)debugViewController;
-+ (void)initializeDebugUI:(id)a3;
++ (void)initializeDebugUI:(id)i;
 + (void)showDebugUI;
 @end
 
 @implementation DebugUI
 
-+ (BOOL)isDebugUrl:(id)a3
++ (BOOL)isDebugUrl:(id)url
 {
-  v3 = [a3 host];
-  v4 = [v3 isEqualToString:@"debug"];
+  host = [url host];
+  v4 = [host isEqualToString:@"debug"];
 
   return v4;
 }
 
-+ (void)initializeDebugUI:(id)a3
++ (void)initializeDebugUI:(id)i
 {
-  v4 = a3;
-  v5 = [[UITapGestureRecognizer alloc] initWithTarget:a1 action:"showDebugUI"];
+  iCopy = i;
+  v5 = [[UITapGestureRecognizer alloc] initWithTarget:self action:"showDebugUI"];
   [v5 _setRequiresSystemGesturesToFail:0];
   [v5 setNumberOfTouchesRequired:2];
   [v5 setNumberOfTapsRequired:2];
-  [v4 addGestureRecognizer:v5];
+  [iCopy addGestureRecognizer:v5];
 }
 
 + (void)showDebugUI
@@ -43,47 +43,47 @@
       showDebugUI_navController = v6;
 
       v8 = +[UIDevice currentDevice];
-      v9 = [v8 userInterfaceIdiom];
-      [showDebugUI_navController setModalPresentationStyle:2 * (v9 == &dword_0 + 1)];
+      userInterfaceIdiom = [v8 userInterfaceIdiom];
+      [showDebugUI_navController setModalPresentationStyle:2 * (userInterfaceIdiom == &dword_0 + 1)];
 
       v3 = showDebugUI_navController;
     }
 
-    v10 = [v3 presentingViewController];
+    presentingViewController = [v3 presentingViewController];
 
     v2 = v19;
-    if (!v10)
+    if (!presentingViewController)
     {
-      v11 = [v19 delegate];
-      v12 = [v11 window];
-      v13 = [v12 rootViewController];
+      delegate = [v19 delegate];
+      window = [delegate window];
+      rootViewController = [window rootViewController];
 
-      v14 = [v13 presentedViewController];
+      presentedViewController = [rootViewController presentedViewController];
 
-      if (v14)
+      if (presentedViewController)
       {
         do
         {
-          v15 = [v13 presentedViewController];
+          presentedViewController2 = [rootViewController presentedViewController];
 
-          v16 = [v15 presentedViewController];
+          v15PresentedViewController = [presentedViewController2 presentedViewController];
 
-          v13 = v15;
+          rootViewController = presentedViewController2;
         }
 
-        while (v16);
+        while (v15PresentedViewController);
       }
 
       else
       {
-        v15 = v13;
+        presentedViewController2 = rootViewController;
       }
 
-      v17 = [DebugUI createScreenShotOfPresentedViewController:v15];
+      v17 = [DebugUI createScreenShotOfPresentedViewController:presentedViewController2];
       v18 = +[DebugUI debugViewController];
       [v18 setScreenShotImage:v17];
 
-      [v15 presentViewController:showDebugUI_navController animated:1 completion:0];
+      [presentedViewController2 presentViewController:showDebugUI_navController animated:1 completion:0];
       v2 = v19;
     }
   }
@@ -104,10 +104,10 @@
   return v2;
 }
 
-+ (id)createScreenShotOfPresentedViewController:(id)a3
++ (id)createScreenShotOfPresentedViewController:(id)controller
 {
-  v3 = [a3 view];
-  [v3 bounds];
+  view = [controller view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v8 = +[UIScreen mainScreen];
@@ -117,8 +117,8 @@
   v14.height = v7;
   UIGraphicsBeginImageContextWithOptions(v14, 0, v10);
 
-  [v3 bounds];
-  [v3 drawViewHierarchyInRect:1 afterScreenUpdates:?];
+  [view bounds];
+  [view drawViewHierarchyInRect:1 afterScreenUpdates:?];
   v11 = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();
 

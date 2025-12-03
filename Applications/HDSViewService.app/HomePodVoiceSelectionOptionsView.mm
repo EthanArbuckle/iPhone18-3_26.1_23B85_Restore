@@ -1,14 +1,14 @@
 @interface HomePodVoiceSelectionOptionsView
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (HomePodVoiceSelectionOptionsView)init;
 - (SUICVoiceSelectionEventHandling)voiceSelectionEventHandler;
 - (SUICVoiceSelectionViewModelProviding)voiceSelectionViewModelProvider;
 - (id)_diffableTableDataSource;
-- (id)_tableCellForVoiceViewModel:(id)a3 indexPath:(id)a4;
-- (void)_createAndApplySnapshotForViewModel:(id)a3;
+- (id)_tableCellForVoiceViewModel:(id)model indexPath:(id)path;
+- (void)_createAndApplySnapshotForViewModel:(id)model;
 - (void)_setupVoicesTableView;
-- (void)setSemanticContentAttribute:(int64_t)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)setSemanticContentAttribute:(int64_t)attribute;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)voiceSelectionViewModelDidChange;
 @end
 
@@ -34,9 +34,9 @@
   voicesTableView = self->_voicesTableView;
   self->_voicesTableView = v3;
 
-  v5 = [(HomePodVoiceSelectionOptionsView *)self _diffableTableDataSource];
+  _diffableTableDataSource = [(HomePodVoiceSelectionOptionsView *)self _diffableTableDataSource];
   tableViewDataSource = self->_tableViewDataSource;
-  self->_tableViewDataSource = v5;
+  self->_tableViewDataSource = _diffableTableDataSource;
 
   [(UITableViewDiffableDataSource *)self->_tableViewDataSource setDefaultRowAnimation:0];
   [(UITableView *)self->_voicesTableView setDelegate:self];
@@ -46,27 +46,27 @@
   v7 = +[UIColor systemBackgroundColor];
   [(UITableView *)self->_voicesTableView setBackgroundColor:v7];
 
-  v8 = [(UITableView *)self->_voicesTableView layer];
-  [v8 setCornerRadius:8.0];
+  layer = [(UITableView *)self->_voicesTableView layer];
+  [layer setCornerRadius:8.0];
 
   [(UITableView *)self->_voicesTableView registerClass:objc_opt_class() forCellReuseIdentifier:@"VoiceCell"];
   [(HomePodVoiceSelectionOptionsView *)self addSubview:self->_voicesTableView];
   [(UITableView *)self->_voicesTableView setTranslatesAutoresizingMaskIntoConstraints:0];
-  v21 = [(UITableView *)self->_voicesTableView topAnchor];
-  v20 = [(HomePodVoiceSelectionOptionsView *)self topAnchor];
-  v19 = [v21 constraintEqualToAnchor:v20];
+  topAnchor = [(UITableView *)self->_voicesTableView topAnchor];
+  topAnchor2 = [(HomePodVoiceSelectionOptionsView *)self topAnchor];
+  v19 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v22[0] = v19;
-  v9 = [(UITableView *)self->_voicesTableView leftAnchor];
-  v10 = [(HomePodVoiceSelectionOptionsView *)self leftAnchor];
-  v11 = [v9 constraintEqualToAnchor:v10];
+  leftAnchor = [(UITableView *)self->_voicesTableView leftAnchor];
+  leftAnchor2 = [(HomePodVoiceSelectionOptionsView *)self leftAnchor];
+  v11 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
   v22[1] = v11;
-  v12 = [(UITableView *)self->_voicesTableView rightAnchor];
-  v13 = [(HomePodVoiceSelectionOptionsView *)self rightAnchor];
-  v14 = [v12 constraintEqualToAnchor:v13];
+  rightAnchor = [(UITableView *)self->_voicesTableView rightAnchor];
+  rightAnchor2 = [(HomePodVoiceSelectionOptionsView *)self rightAnchor];
+  v14 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
   v22[2] = v14;
-  v15 = [(UITableView *)self->_voicesTableView bottomAnchor];
-  v16 = [(HomePodVoiceSelectionOptionsView *)self bottomAnchor];
-  v17 = [v15 constraintEqualToAnchor:v16];
+  bottomAnchor = [(UITableView *)self->_voicesTableView bottomAnchor];
+  bottomAnchor2 = [(HomePodVoiceSelectionOptionsView *)self bottomAnchor];
+  v17 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v22[3] = v17;
   v18 = [NSArray arrayWithObjects:v22 count:4];
   [NSLayoutConstraint activateConstraints:v18];
@@ -90,26 +90,26 @@
   return v5;
 }
 
-- (id)_tableCellForVoiceViewModel:(id)a3 indexPath:(id)a4
+- (id)_tableCellForVoiceViewModel:(id)model indexPath:(id)path
 {
   voicesTableView = self->_voicesTableView;
-  v7 = a3;
-  v8 = [(UITableView *)voicesTableView dequeueReusableCellWithIdentifier:@"VoiceCell" forIndexPath:a4];
-  v9 = [v7 associatedCGColor];
-  v10 = [UIColor colorWithCGColor:v9];
-  CGColorRelease(v9);
+  modelCopy = model;
+  v8 = [(UITableView *)voicesTableView dequeueReusableCellWithIdentifier:@"VoiceCell" forIndexPath:path];
+  associatedCGColor = [modelCopy associatedCGColor];
+  v10 = [UIColor colorWithCGColor:associatedCGColor];
+  CGColorRelease(associatedCGColor);
   v11 = +[UIListContentConfiguration cellConfiguration];
-  v12 = [v7 localizedDisplayName];
-  [v11 setText:v12];
+  localizedDisplayName = [modelCopy localizedDisplayName];
+  [v11 setText:localizedDisplayName];
 
-  v13 = [v11 imageProperties];
-  [v13 setTintColor:v10];
+  imageProperties = [v11 imageProperties];
+  [imageProperties setTintColor:v10];
 
   [v8 setContentConfiguration:v11];
   v14 = +[UIColor secondarySystemBackgroundColor];
   [v8 setBackgroundColor:v14];
 
-  LODWORD(v14) = [v7 isCurrentSiriVoice];
+  LODWORD(v14) = [modelCopy isCurrentSiriVoice];
   if (v14)
   {
     v15 = 3;
@@ -126,33 +126,33 @@
   return v8;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v9 = [(HomePodVoiceSelectionOptionsView *)self voiceSelectionEventHandler];
-  v6 = [(SUICVoiceSelectionViewModel *)self->_viewModel voices];
-  v7 = [v5 row];
+  pathCopy = path;
+  voiceSelectionEventHandler = [(HomePodVoiceSelectionOptionsView *)self voiceSelectionEventHandler];
+  voices = [(SUICVoiceSelectionViewModel *)self->_viewModel voices];
+  v7 = [pathCopy row];
 
-  v8 = [v6 objectAtIndexedSubscript:v7];
-  [v9 voiceSelectionView:self receivedRequestToSelectVoice:v8];
+  v8 = [voices objectAtIndexedSubscript:v7];
+  [voiceSelectionEventHandler voiceSelectionView:self receivedRequestToSelectVoice:v8];
 }
 
 - (void)voiceSelectionViewModelDidChange
 {
-  v3 = [(HomePodVoiceSelectionOptionsView *)self voiceSelectionViewModelProvider];
-  v4 = [v3 voiceSelectionViewModel];
+  voiceSelectionViewModelProvider = [(HomePodVoiceSelectionOptionsView *)self voiceSelectionViewModelProvider];
+  voiceSelectionViewModel = [voiceSelectionViewModelProvider voiceSelectionViewModel];
   viewModel = self->_viewModel;
-  self->_viewModel = v4;
+  self->_viewModel = voiceSelectionViewModel;
 
   v6 = self->_viewModel;
 
   [(HomePodVoiceSelectionOptionsView *)self _createAndApplySnapshotForViewModel:v6];
 }
 
-- (void)_createAndApplySnapshotForViewModel:(id)a3
+- (void)_createAndApplySnapshotForViewModel:(id)model
 {
-  v16 = self;
-  v3 = a3;
+  selfCopy = self;
+  modelCopy = model;
   v4 = objc_alloc_init(NSDiffableDataSourceSnapshot);
   v25 = @"Voice";
   v5 = [NSArray arrayWithObjects:&v25 count:1];
@@ -162,9 +162,9 @@
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v17 = v3;
-  v6 = [v3 voices];
-  v7 = [v6 countByEnumeratingWithState:&v18 objects:v24 count:16];
+  v17 = modelCopy;
+  voices = [modelCopy voices];
+  v7 = [voices countByEnumeratingWithState:&v18 objects:v24 count:16];
   if (v7)
   {
     v8 = v7;
@@ -175,42 +175,42 @@
       {
         if (*v19 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(voices);
         }
 
         v11 = *(*(&v18 + 1) + 8 * i);
-        v12 = [v11 localizedDisplayName];
-        v23 = v12;
+        localizedDisplayName = [v11 localizedDisplayName];
+        v23 = localizedDisplayName;
         v13 = [NSArray arrayWithObjects:&v23 count:1];
         [v4 appendItemsWithIdentifiers:v13 intoSectionWithIdentifier:@"Voice"];
 
-        v14 = [v11 localizedDisplayName];
-        v22 = v14;
+        localizedDisplayName2 = [v11 localizedDisplayName];
+        v22 = localizedDisplayName2;
         v15 = [NSArray arrayWithObjects:&v22 count:1];
         [v4 reloadItemsWithIdentifiers:v15];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v18 objects:v24 count:16];
+      v8 = [voices countByEnumeratingWithState:&v18 objects:v24 count:16];
     }
 
     while (v8);
   }
 
-  [(UITableViewDiffableDataSource *)v16->_tableViewDataSource applySnapshot:v4 animatingDifferences:1];
+  [(UITableViewDiffableDataSource *)selfCopy->_tableViewDataSource applySnapshot:v4 animatingDifferences:1];
 }
 
-- (void)setSemanticContentAttribute:(int64_t)a3
+- (void)setSemanticContentAttribute:(int64_t)attribute
 {
   v5.receiver = self;
   v5.super_class = HomePodVoiceSelectionOptionsView;
   [(HomePodVoiceSelectionOptionsView *)&v5 setSemanticContentAttribute:?];
-  [(UITableView *)self->_voicesTableView setSemanticContentAttribute:a3];
+  [(UITableView *)self->_voicesTableView setSemanticContentAttribute:attribute];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  v4 = [(SUICVoiceSelectionViewModel *)self->_viewModel voices:a3.width];
+  width = fits.width;
+  v4 = [(SUICVoiceSelectionViewModel *)self->_viewModel voices:fits.width];
   v5 = ([v4 count] * 45.0);
 
   v6 = width;

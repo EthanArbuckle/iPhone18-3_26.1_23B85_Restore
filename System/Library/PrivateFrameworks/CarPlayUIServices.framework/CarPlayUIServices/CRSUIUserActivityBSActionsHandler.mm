@@ -1,20 +1,20 @@
 @interface CRSUIUserActivityBSActionsHandler
-- (id)_respondToActions:(id)a3 forFBSScene:(id)a4 inUIScene:(id)a5 fromTransitionContext:(id)a6;
+- (id)_respondToActions:(id)actions forFBSScene:(id)scene inUIScene:(id)iScene fromTransitionContext:(id)context;
 @end
 
 @implementation CRSUIUserActivityBSActionsHandler
 
-- (id)_respondToActions:(id)a3 forFBSScene:(id)a4 inUIScene:(id)a5 fromTransitionContext:(id)a6
+- (id)_respondToActions:(id)actions forFBSScene:(id)scene inUIScene:(id)iScene fromTransitionContext:(id)context
 {
   v26 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a5;
-  v20 = [v7 mutableCopy];
+  actionsCopy = actions;
+  iSceneCopy = iScene;
+  v20 = [actionsCopy mutableCopy];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v9 = v7;
+  v9 = actionsCopy;
   v10 = [v9 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v10)
   {
@@ -34,13 +34,13 @@
         if (objc_opt_isKindOfClass())
         {
           [v20 removeObject:v14];
-          v15 = [v8 delegate];
+          delegate = [iSceneCopy delegate];
           v16 = objc_opt_respondsToSelector();
 
           if (v16)
           {
-            v17 = [v8 delegate];
-            [v17 forwardActivityContinuationAction:v14 fromScene:v8];
+            delegate2 = [iSceneCopy delegate];
+            [delegate2 forwardActivityContinuationAction:v14 fromScene:iSceneCopy];
           }
         }
       }

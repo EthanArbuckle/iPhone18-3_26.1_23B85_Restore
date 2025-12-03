@@ -1,16 +1,16 @@
 @interface _MDQueryTokenVariation
 - (NSString)variation;
-- (_MDQueryTokenVariation)initWithVariation:(id)a3 type:(int64_t)a4 confidence:(float)a5;
+- (_MDQueryTokenVariation)initWithVariation:(id)variation type:(int64_t)type confidence:(float)confidence;
 - (float)confidence;
 - (int64_t)type;
 - (void)dealloc;
-- (void)setConfidence:(float)a3;
-- (void)setType:(int64_t)a3;
+- (void)setConfidence:(float)confidence;
+- (void)setType:(int64_t)type;
 @end
 
 @implementation _MDQueryTokenVariation
 
-- (_MDQueryTokenVariation)initWithVariation:(id)a3 type:(int64_t)a4 confidence:(float)a5
+- (_MDQueryTokenVariation)initWithVariation:(id)variation type:(int64_t)type confidence:(float)confidence
 {
   v12 = *MEMORY[0x1E69E9840];
   v11.receiver = self;
@@ -18,9 +18,9 @@
   v8 = [(_MDQueryTokenVariation *)&v11 init];
   if (v8)
   {
-    v8->_variation = [a3 copy];
-    v8->_type = a4;
-    v8->_confidence = a5;
+    v8->_variation = [variation copy];
+    v8->_type = type;
+    v8->_confidence = confidence;
   }
 
   v9 = *MEMORY[0x1E69E9840];
@@ -53,10 +53,10 @@
   return result;
 }
 
-- (void)setConfidence:(float)a3
+- (void)setConfidence:(float)confidence
 {
   v4 = *MEMORY[0x1E69E9840];
-  self->_confidence = a3;
+  self->_confidence = confidence;
   v3 = *MEMORY[0x1E69E9840];
 }
 
@@ -68,10 +68,10 @@
   return result;
 }
 
-- (void)setType:(int64_t)a3
+- (void)setType:(int64_t)type
 {
   v4 = *MEMORY[0x1E69E9840];
-  self->_type = a3;
+  self->_type = type;
   v3 = *MEMORY[0x1E69E9840];
 }
 

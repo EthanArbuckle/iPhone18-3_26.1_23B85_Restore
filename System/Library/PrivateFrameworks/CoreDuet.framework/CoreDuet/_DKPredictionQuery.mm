@@ -1,110 +1,110 @@
 @interface _DKPredictionQuery
-+ (id)predictionQueryForStream:(id)a3 withPredicate:(id)a4 withPredictionType:(unint64_t)a5;
-+ (id)predictionQueryForStreams:(id)a3 withPredicate:(id)a4 withPredictionType:(unint64_t)a5;
-+ (id)topNPredictionQueryForStream:(id)a3 withPredicate:(id)a4 withTopN:(int64_t)a5 withMinLikelihood:(double)a6;
-+ (uint64_t)calendar:(void *)a3 isWeekendWithIntervalToWeekdayWeekendTransition:(void *)a4 containingOrAfterDate:;
-- (BOOL)both:(void *)a3 and:(void *)a4 areSameDayOfWeekWith:;
-- (_DKPredictionQuery)initWithCoder:(id)a3;
-- (id)constructTimelineWithObservations:(void *)a3 withFirstEventDate:(void *)a4 withHistogramInterval:(void *)a5 withPredictionStartDate:(double)a6 durationSinceFirstEvent:;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)executeUsingCoreDataStorage:(id)a3 error:(id *)a4;
-- (id)handleResults:(id)a3 error:(id)a4;
-- (id)likelihoodForTopN:(void *)a3 withMinLikelihood:(double)a4 withData:;
-- (id)predictionOfType:(void *)a3 withData:;
-- (uint64_t)both:(void *)a3 and:(void *)a4 areWeekendOrWeekdayWithCalendar:;
-- (uint64_t)shouldIncludeEventWithStartDate:(void *)a3 eventSlot:(void *)a4 withPredictionStartDate:(uint64_t)a5 withPartitionType:(void *)a6 andCalendar:;
-- (void)addEventsToObservations:(void *)a3 startingHistogram:(void *)a4 endingHistogram:(void *)a5 withPredictionDate:;
-- (void)encodeWithCoder:(id)a3;
-- (void)handleEventPredictionWithEventStartDate:(void *)a3 eventEndDate:(void *)a4 predictionStartDate:(void *)a5 durationSinceFirstEvent:(void *)a6 calendar:(int)a7 observations:(double)a8 useWeights:;
-- (void)handleImpulsePredictionWithEventStartDate:(void *)a3 predictionStartDate:(void *)a4 durationSinceFirstEvent:(void *)a5 calendar:(void *)a6 observations:(_DWORD *)a7 lastDate:(double)a8 lastSlot:;
-- (void)setSlotDuration:(int)a3;
-- (void)setValueForIndex:(void *)a3 forObservations:(double)a4 withDenominator:;
++ (id)predictionQueryForStream:(id)stream withPredicate:(id)predicate withPredictionType:(unint64_t)type;
++ (id)predictionQueryForStreams:(id)streams withPredicate:(id)predicate withPredictionType:(unint64_t)type;
++ (id)topNPredictionQueryForStream:(id)stream withPredicate:(id)predicate withTopN:(int64_t)n withMinLikelihood:(double)likelihood;
++ (uint64_t)calendar:(void *)calendar isWeekendWithIntervalToWeekdayWeekendTransition:(void *)transition containingOrAfterDate:;
+- (BOOL)both:(void *)both and:(void *)and areSameDayOfWeekWith:;
+- (_DKPredictionQuery)initWithCoder:(id)coder;
+- (id)constructTimelineWithObservations:(void *)observations withFirstEventDate:(void *)date withHistogramInterval:(void *)interval withPredictionStartDate:(double)startDate durationSinceFirstEvent:;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)executeUsingCoreDataStorage:(id)storage error:(id *)error;
+- (id)handleResults:(id)results error:(id)error;
+- (id)likelihoodForTopN:(void *)n withMinLikelihood:(double)likelihood withData:;
+- (id)predictionOfType:(void *)type withData:;
+- (uint64_t)both:(void *)both and:(void *)and areWeekendOrWeekdayWithCalendar:;
+- (uint64_t)shouldIncludeEventWithStartDate:(void *)date eventSlot:(void *)slot withPredictionStartDate:(uint64_t)startDate withPartitionType:(void *)type andCalendar:;
+- (void)addEventsToObservations:(void *)observations startingHistogram:(void *)histogram endingHistogram:(void *)endingHistogram withPredictionDate:;
+- (void)encodeWithCoder:(id)coder;
+- (void)handleEventPredictionWithEventStartDate:(void *)date eventEndDate:(void *)endDate predictionStartDate:(void *)startDate durationSinceFirstEvent:(void *)event calendar:(int)calendar observations:(double)observations useWeights:;
+- (void)handleImpulsePredictionWithEventStartDate:(void *)date predictionStartDate:(void *)startDate durationSinceFirstEvent:(void *)event calendar:(void *)calendar observations:(_DWORD *)observations lastDate:(double)lastDate lastSlot:;
+- (void)setSlotDuration:(int)duration;
+- (void)setValueForIndex:(void *)index forObservations:(double)observations withDenominator:;
 @end
 
 @implementation _DKPredictionQuery
 
-- (void)setSlotDuration:(int)a3
+- (void)setSlotDuration:(int)duration
 {
-  if (!a3 || 86400 % a3)
+  if (!duration || 86400 % duration)
   {
-    a3 = 900;
+    duration = 900;
   }
 
-  self->_slotDuration = a3;
-  self->_totalSlotsInDay = 86400 / a3;
+  self->_slotDuration = duration;
+  self->_totalSlotsInDay = 86400 / duration;
   asOfDate = self->_asOfDate;
   if (asOfDate)
   {
-    v5 = asOfDate;
+    date = asOfDate;
   }
 
   else
   {
-    v5 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
   }
 
   v6 = self->_asOfDate;
-  self->_asOfDate = v5;
+  self->_asOfDate = date;
 
-  MEMORY[0x1EEE66BB8](v5, v6);
+  MEMORY[0x1EEE66BB8](date, v6);
 }
 
-+ (id)predictionQueryForStream:(id)a3 withPredicate:(id)a4 withPredictionType:(unint64_t)a5
++ (id)predictionQueryForStream:(id)stream withPredicate:(id)predicate withPredictionType:(unint64_t)type
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = a3;
+  predicateCopy = predicate;
+  streamCopy = stream;
   v9 = objc_opt_class();
-  v14[0] = v8;
+  v14[0] = streamCopy;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
 
-  v11 = [v9 predictionQueryForStreams:v10 withPredicate:v7 withPredictionType:a5];
+  v11 = [v9 predictionQueryForStreams:v10 withPredicate:predicateCopy withPredictionType:type];
 
   v12 = *MEMORY[0x1E69E9840];
 
   return v11;
 }
 
-+ (id)predictionQueryForStreams:(id)a3 withPredicate:(id)a4 withPredictionType:(unint64_t)a5
++ (id)predictionQueryForStreams:(id)streams withPredicate:(id)predicate withPredictionType:(unint64_t)type
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = a3;
+  predicateCopy = predicate;
+  streamsCopy = streams;
   v9 = objc_opt_class();
   v10 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"startDate" ascending:1];
   v16[0] = v10;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:1];
-  v12 = [v9 eventQueryWithPredicate:v7 eventStreams:v8 offset:0 limit:0 sortDescriptors:v11];
+  v12 = [v9 eventQueryWithPredicate:predicateCopy eventStreams:streamsCopy offset:0 limit:0 sortDescriptors:v11];
 
-  [v12 setType:a5];
+  [v12 setType:type];
   [v12 setSlotDuration:900];
   [v12 setReadMetadata:0];
   [v12 setDeduplicateValues:1];
-  v13 = [MEMORY[0x1E695DF00] date];
-  [v12 setAsOfDate:v13];
+  date = [MEMORY[0x1E695DF00] date];
+  [v12 setAsOfDate:date];
 
   v14 = *MEMORY[0x1E69E9840];
 
   return v12;
 }
 
-+ (uint64_t)calendar:(void *)a3 isWeekendWithIntervalToWeekdayWeekendTransition:(void *)a4 containingOrAfterDate:
++ (uint64_t)calendar:(void *)calendar isWeekendWithIntervalToWeekdayWeekendTransition:(void *)transition containingOrAfterDate:
 {
   v6 = a2;
-  v7 = a4;
+  transitionCopy = transition;
   objc_opt_self();
   v18 = 0;
   v19 = 0.0;
-  v8 = [v6 rangeOfWeekendStartDate:&v18 interval:&v19 containingDate:v7];
+  v8 = [v6 rangeOfWeekendStartDate:&v18 interval:&v19 containingDate:transitionCopy];
   v9 = v18;
   v10 = v9;
   if (v8)
   {
     v11 = [v9 dateByAddingTimeInterval:v19];
-    [v11 timeIntervalSinceDate:v7];
+    [v11 timeIntervalSinceDate:transitionCopy];
     v13 = v12;
 
-    if (!a3)
+    if (!calendar)
     {
       goto LABEL_6;
     }
@@ -113,16 +113,16 @@
   }
 
   v17 = 0;
-  [v6 nextWeekendStartDate:&v17 interval:0 options:4096 afterDate:v7];
+  [v6 nextWeekendStartDate:&v17 interval:0 options:4096 afterDate:transitionCopy];
   v14 = v17;
 
-  [v14 timeIntervalSinceDate:v7];
+  [v14 timeIntervalSinceDate:transitionCopy];
   v13 = v15;
   v10 = v14;
-  if (a3)
+  if (calendar)
   {
 LABEL_5:
-    *a3 = v13;
+    *calendar = v13;
   }
 
 LABEL_6:
@@ -130,18 +130,18 @@ LABEL_6:
   return v8;
 }
 
-- (id)executeUsingCoreDataStorage:(id)a3 error:(id *)a4
+- (id)executeUsingCoreDataStorage:(id)storage error:(id *)error
 {
   if (self->_isTopNPrediction)
   {
     v20.receiver = self;
     v20.super_class = _DKPredictionQuery;
-    v6 = a3;
-    v7 = [(_DKEventQuery *)&v20 executeUsingCoreDataStorage:v6 error:a4];
+    storageCopy = storage;
+    v7 = [(_DKEventQuery *)&v20 executeUsingCoreDataStorage:storageCopy error:error];
 
-    if (a4)
+    if (error)
     {
-      v8 = *a4;
+      v8 = *error;
     }
 
     else
@@ -157,23 +157,23 @@ LABEL_6:
 
   else
   {
-    v9 = a3;
+    storageCopy2 = storage;
     [(_DKEventQuery *)self setResultType:3];
     [(_DKEventQuery *)self setGroupByProperties:&unk_1F05EF470];
     v17.receiver = self;
     v17.super_class = _DKPredictionQuery;
     v18 = 0;
-    v10 = [(_DKEventQuery *)&v17 executeUsingCoreDataStorage:v9 error:&v18];
+    v10 = [(_DKEventQuery *)&v17 executeUsingCoreDataStorage:storageCopy2 error:&v18];
 
     v11 = v18;
     v16.receiver = self;
     v16.super_class = _DKPredictionQuery;
     v7 = [(_DKEventQuery *)&v16 handleResults:v10 error:v11];
 
-    if (a4 && v11)
+    if (error && v11)
     {
       v12 = v11;
-      *a4 = v11;
+      *error = v11;
     }
 
     v13 = [(_DKPredictionQuery *)self predictionOfType:v7 withData:?];
@@ -184,24 +184,24 @@ LABEL_6:
   return v14;
 }
 
-- (id)handleResults:(id)a3 error:(id)a4
+- (id)handleResults:(id)results error:(id)error
 {
-  v6 = a3;
+  resultsCopy = results;
   predictionHandler = self->_predictionHandler;
   if (predictionHandler)
   {
-    predictionHandler[2](predictionHandler, self, v6, a4);
+    predictionHandler[2](predictionHandler, self, resultsCopy, error);
   }
 
-  return v6;
+  return resultsCopy;
 }
 
-- (_DKPredictionQuery)initWithCoder:(id)a3
+- (_DKPredictionQuery)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = _DKPredictionQuery;
-  v5 = [(_DKEventQuery *)&v13 initWithCoder:v4];
+  v5 = [(_DKEventQuery *)&v13 initWithCoder:coderCopy];
   if (!v5)
   {
 LABEL_9:
@@ -209,7 +209,7 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v6 = [v4 decodeIntForKey:@"slotDuration"];
+  v6 = [coderCopy decodeIntForKey:@"slotDuration"];
   if (!v6)
   {
     v11 = +[_CDLogging knowledgeChannel];
@@ -222,19 +222,19 @@ LABEL_9:
   }
 
   [(_DKPredictionQuery *)v5 setSlotDuration:v6];
-  -[_DKPredictionQuery setType:](v5, "setType:", [v4 decodeIntegerForKey:@"type"]);
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"asOfDate"];
+  -[_DKPredictionQuery setType:](v5, "setType:", [coderCopy decodeIntegerForKey:@"type"]);
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"asOfDate"];
   asOfDate = v5->_asOfDate;
   v5->_asOfDate = v7;
 
-  v5->_partitionType = [v4 decodeIntegerForKey:@"partitionType"];
-  v5->_useHistoricalHistogram = [v4 decodeBoolForKey:@"useHist"];
-  v5->_minimumDaysOfHistory = [v4 decodeIntForKey:@"minDays"];
-  if ([v4 containsValueForKey:@"isTopN"])
+  v5->_partitionType = [coderCopy decodeIntegerForKey:@"partitionType"];
+  v5->_useHistoricalHistogram = [coderCopy decodeBoolForKey:@"useHist"];
+  v5->_minimumDaysOfHistory = [coderCopy decodeIntForKey:@"minDays"];
+  if ([coderCopy containsValueForKey:@"isTopN"])
   {
     v5->_isTopNPrediction = 1;
-    v5->_topN = [v4 decodeIntegerForKey:@"topN"];
-    [v4 decodeDoubleForKey:@"minLikelihood"];
+    v5->_topN = [coderCopy decodeIntegerForKey:@"topN"];
+    [coderCopy decodeDoubleForKey:@"minLikelihood"];
     v5->_minLikelihood = v9;
   }
 
@@ -244,55 +244,55 @@ LABEL_10:
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5.receiver = self;
   v5.super_class = _DKPredictionQuery;
-  [(_DKEventQuery *)&v5 encodeWithCoder:v4];
-  [v4 encodeInt:self->_slotDuration forKey:@"slotDuration"];
-  [v4 encodeInteger:self->_type forKey:@"type"];
-  [v4 encodeObject:self->_asOfDate forKey:@"asOfDate"];
-  [v4 encodeInteger:self->_partitionType forKey:@"partitionType"];
-  [v4 encodeBool:self->_useHistoricalHistogram forKey:@"useHist"];
-  [v4 encodeInteger:self->_minimumDaysOfHistory forKey:@"minDays"];
+  [(_DKEventQuery *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInt:self->_slotDuration forKey:@"slotDuration"];
+  [coderCopy encodeInteger:self->_type forKey:@"type"];
+  [coderCopy encodeObject:self->_asOfDate forKey:@"asOfDate"];
+  [coderCopy encodeInteger:self->_partitionType forKey:@"partitionType"];
+  [coderCopy encodeBool:self->_useHistoricalHistogram forKey:@"useHist"];
+  [coderCopy encodeInteger:self->_minimumDaysOfHistory forKey:@"minDays"];
   if (self->_isTopNPrediction)
   {
-    [v4 encodeBool:1 forKey:@"isTopN"];
-    [v4 encodeInteger:self->_topN forKey:@"topN"];
-    [v4 encodeDouble:@"minLikelihood" forKey:self->_minLikelihood];
+    [coderCopy encodeBool:1 forKey:@"isTopN"];
+    [coderCopy encodeInteger:self->_topN forKey:@"topN"];
+    [coderCopy encodeDouble:@"minLikelihood" forKey:self->_minLikelihood];
   }
 }
 
-+ (id)topNPredictionQueryForStream:(id)a3 withPredicate:(id)a4 withTopN:(int64_t)a5 withMinLikelihood:(double)a6
++ (id)topNPredictionQueryForStream:(id)stream withPredicate:(id)predicate withTopN:(int64_t)n withMinLikelihood:(double)likelihood
 {
-  v9 = a4;
-  v10 = a3;
-  v11 = [objc_opt_class() predictionQueryForStream:v10 withPredicate:v9 withPredictionType:0];
+  predicateCopy = predicate;
+  streamCopy = stream;
+  v11 = [objc_opt_class() predictionQueryForStream:streamCopy withPredicate:predicateCopy withPredictionType:0];
 
   if (v11)
   {
     *(v11 + 129) = 1;
-    *(v11 + 184) = a5;
-    *(v11 + 192) = a6;
+    *(v11 + 184) = n;
+    *(v11 + 192) = likelihood;
   }
 
   [v11 setReadMetadata:0];
   [v11 setDeduplicateValues:1];
-  v12 = [MEMORY[0x1E695DF00] date];
-  [v11 setAsOfDate:v12];
+  date = [MEMORY[0x1E695DF00] date];
+  [v11 setAsOfDate:date];
 
   return v11;
 }
 
-- (uint64_t)both:(void *)a3 and:(void *)a4 areWeekendOrWeekdayWithCalendar:
+- (uint64_t)both:(void *)both and:(void *)and areWeekendOrWeekdayWithCalendar:
 {
   if (result)
   {
-    v6 = a4;
-    v7 = a3;
-    LODWORD(a2) = [v6 isDateInWeekend:a2];
-    v8 = [v6 isDateInWeekend:v7];
+    andCopy = and;
+    bothCopy = both;
+    LODWORD(a2) = [andCopy isDateInWeekend:a2];
+    v8 = [andCopy isDateInWeekend:bothCopy];
 
     return a2 ^ v8 ^ 1;
   }
@@ -300,32 +300,32 @@ LABEL_10:
   return result;
 }
 
-- (BOOL)both:(void *)a3 and:(void *)a4 areSameDayOfWeekWith:
+- (BOOL)both:(void *)both and:(void *)and areSameDayOfWeekWith:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v6 = a4;
-  v7 = a3;
-  v8 = [v6 components:512 fromDate:a2];
-  v9 = [v6 components:512 fromDate:v7];
+  andCopy = and;
+  bothCopy = both;
+  v8 = [andCopy components:512 fromDate:a2];
+  v9 = [andCopy components:512 fromDate:bothCopy];
 
-  v10 = [v8 weekday];
-  v11 = v10 == [v9 weekday];
+  weekday = [v8 weekday];
+  v11 = weekday == [v9 weekday];
 
   return v11;
 }
 
-- (uint64_t)shouldIncludeEventWithStartDate:(void *)a3 eventSlot:(void *)a4 withPredictionStartDate:(uint64_t)a5 withPartitionType:(void *)a6 andCalendar:
+- (uint64_t)shouldIncludeEventWithStartDate:(void *)date eventSlot:(void *)slot withPredictionStartDate:(uint64_t)startDate withPartitionType:(void *)type andCalendar:
 {
   v11 = a2;
-  v12 = a4;
-  v13 = a6;
-  if (a1)
+  slotCopy = slot;
+  typeCopy = type;
+  if (self)
   {
-    if (a5 == 2)
+    if (startDate == 2)
     {
       [OUTLINED_FUNCTION_6_11(132) dateByAddingTimeInterval:?];
       objc_claimAutoreleasedReturnValue();
@@ -335,9 +335,9 @@ LABEL_10:
 
     else
     {
-      if (a5 != 1)
+      if (startDate != 1)
       {
-        a1 = 1;
+        self = 1;
         goto LABEL_5;
       }
 
@@ -347,25 +347,25 @@ LABEL_10:
       v19 = [(_DKPredictionQuery *)v15 both:v16 and:v17 areWeekendOrWeekdayWithCalendar:v18];
     }
 
-    a1 = v19;
+    self = v19;
   }
 
 LABEL_5:
 
-  return a1;
+  return self;
 }
 
-- (void)setValueForIndex:(void *)a3 forObservations:(double)a4 withDenominator:
+- (void)setValueForIndex:(void *)index forObservations:(double)observations withDenominator:
 {
-  if (a1)
+  if (self)
   {
     v6 = a2;
-    v7 = a3;
-    v8 = [v7 objectAtIndexedSubscript:v6];
+    indexCopy = index;
+    v8 = [indexCopy objectAtIndexedSubscript:v6];
     [v8 doubleValue];
-    v10 = v9 / a4;
+    v10 = v9 / observations;
 
-    if (*(a1 + 144) == 1)
+    if (*(self + 144) == 1)
     {
       v10 = 1.0 / (pow(2.71828183, (v10 + -0.5) * -12.0) + 1.0);
     }
@@ -381,58 +381,58 @@ LABEL_5:
     }
 
     v13 = [MEMORY[0x1E696AD98] numberWithDouble:v11];
-    v12 = [v13 dk_dedup];
-    [v7 setObject:v12 atIndexedSubscript:v6];
+    dk_dedup = [v13 dk_dedup];
+    [indexCopy setObject:dk_dedup atIndexedSubscript:v6];
   }
 }
 
-- (id)constructTimelineWithObservations:(void *)a3 withFirstEventDate:(void *)a4 withHistogramInterval:(void *)a5 withPredictionStartDate:(double)a6 durationSinceFirstEvent:
+- (id)constructTimelineWithObservations:(void *)observations withFirstEventDate:(void *)date withHistogramInterval:(void *)interval withPredictionStartDate:(double)startDate durationSinceFirstEvent:
 {
   v85[1] = *MEMORY[0x1E69E9840];
   v11 = a2;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = v14;
-  v82 = v13;
-  if (a1)
+  observationsCopy = observations;
+  dateCopy = date;
+  intervalCopy = interval;
+  v15 = intervalCopy;
+  v82 = dateCopy;
+  if (self)
   {
-    v16 = *(a1 + 152);
-    if (a6 < 1209600.0)
+    v16 = *(self + 152);
+    if (startDate < 1209600.0)
     {
       v16 = 0;
     }
 
-    v83 = v14;
+    v83 = intervalCopy;
     if (v16 == 2)
     {
-      v45 = v12;
+      v45 = observationsCopy;
       [v45 timeIntervalSinceDate:v15];
       v46 = 0.0;
       if (v47 >= 0.0)
       {
-        v29 = v45;
+        currentCalendar = v45;
       }
 
       else
       {
         do
         {
-          v29 = [v45 dateByAddingTimeInterval:604800.0];
+          currentCalendar = [v45 dateByAddingTimeInterval:604800.0];
 
           v46 = v46 + 1.0;
-          [v29 timeIntervalSinceDate:v15];
-          v45 = v29;
+          [currentCalendar timeIntervalSinceDate:v15];
+          v45 = currentCalendar;
         }
 
         while (v48 < 0.0);
       }
 
       v49 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:-2419200.0];
-      if (v13)
+      if (dateCopy)
       {
-        v50 = [v13 startDate];
-        [v50 timeIntervalSinceDate:v49];
+        startDate = [dateCopy startDate];
+        [startDate timeIntervalSinceDate:v49];
         v52 = v51;
 
         if (v52 >= -4233600.0)
@@ -463,12 +463,12 @@ LABEL_5:
       }
 
       v57 = [v15 dateByAddingTimeInterval:86400.0];
-      [v29 timeIntervalSinceDate:v57];
+      [currentCalendar timeIntervalSinceDate:v57];
       v59 = v58;
 
       if (v59 >= 0.0)
       {
-        if (*(a1 + 140) >= 1)
+        if (*(self + 140) >= 1)
         {
           v70 = 0;
           do
@@ -478,24 +478,24 @@ LABEL_5:
             ++v70;
           }
 
-          while (v70 < *(a1 + 140));
+          while (v70 < *(self + 140));
         }
       }
 
       else
       {
-        [v29 timeIntervalSinceDate:v15];
+        [currentCalendar timeIntervalSinceDate:v15];
         if (v60 < 0.0)
         {
           OUTLINED_FUNCTION_4_11();
           v60 = v61 + v62 * 86400.0;
         }
 
-        v63 = *(a1 + 140);
+        v63 = *(self + 140);
         if (v63 >= 1)
         {
           v64 = 0;
-          v65 = v60 / *(a1 + 132) % v63;
+          v65 = v60 / *(self + 132) % v63;
           do
           {
             v66 = OUTLINED_FUNCTION_2_11();
@@ -503,7 +503,7 @@ LABEL_5:
             ++v64;
           }
 
-          while (v64 < *(a1 + 140));
+          while (v64 < *(self + 140));
         }
       }
     }
@@ -514,17 +514,17 @@ LABEL_5:
       {
         if (!v16)
         {
-          [v12 timeIntervalSinceDate:v83];
+          [observationsCopy timeIntervalSinceDate:v83];
           v18 = v17;
           if (v17 < 0.0)
           {
             v18 = v17 + ceil(v17 / -86400.0) * 86400.0;
           }
 
-          v19 = *(a1 + 132);
-          v20 = *(a1 + 140);
-          [v12 timeIntervalSinceDate:v83];
-          if (*(a1 + 140) >= 1)
+          v19 = *(self + 132);
+          v20 = *(self + 140);
+          [observationsCopy timeIntervalSinceDate:v83];
+          if (*(self + 140) >= 1)
           {
             v22 = 0;
             v23 = -(v21 / 86400.0);
@@ -550,23 +550,23 @@ LABEL_5:
               ++v22;
             }
 
-            while (v22 < *(a1 + 140));
+            while (v22 < *(self + 140));
           }
         }
 
         goto LABEL_65;
       }
 
-      v29 = [MEMORY[0x1E695DEE8] currentCalendar];
+      currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
       v84 = 0.0;
       v85[0] = 0.0;
-      v30 = [_DKPredictionQuery calendar:v29 isWeekendWithIntervalToWeekdayWeekendTransition:v85 containingOrAfterDate:v12];
-      v81 = [_DKPredictionQuery calendar:v29 isWeekendWithIntervalToWeekdayWeekendTransition:&v84 containingOrAfterDate:v15];
+      v30 = [_DKPredictionQuery calendar:currentCalendar isWeekendWithIntervalToWeekdayWeekendTransition:v85 containingOrAfterDate:observationsCopy];
+      v81 = [_DKPredictionQuery calendar:currentCalendar isWeekendWithIntervalToWeekdayWeekendTransition:&v84 containingOrAfterDate:v15];
       v79 = &v79;
-      v31 = &v79 - ((4 * *(a1 + 140) + 15) & 0x7FFFFFFF0);
-      bzero(v31, 4 * *(a1 + 140));
-      v80 = v12;
-      v32 = v12;
+      v31 = &v79 - ((4 * *(self + 140) + 15) & 0x7FFFFFFF0);
+      bzero(v31, 4 * *(self + 140));
+      v80 = observationsCopy;
+      v32 = observationsCopy;
       [v15 timeIntervalSinceDate:v32];
       v34 = v33;
       [v32 timeIntervalSinceDate:v15];
@@ -576,8 +576,8 @@ LABEL_5:
         v35 = v36 + v37 * 86400.0;
       }
 
-      v38 = *(a1 + 132);
-      v39 = *(a1 + 140);
+      v38 = *(self + 132);
+      v39 = *(self + 140);
       v40 = v35 / v38 % v39;
       v41 = v84 - (v38 * v40);
       v42 = v81;
@@ -591,7 +591,7 @@ LABEL_5:
       {
         v43 = v32;
 LABEL_39:
-        v12 = v80;
+        observationsCopy = v80;
       }
 
       else
@@ -603,9 +603,9 @@ LABEL_39:
             ++*&v31[4 * v40];
           }
 
-          v43 = [v32 dateByAddingTimeInterval:*(a1 + 132)];
+          v43 = [v32 dateByAddingTimeInterval:*(self + 132)];
 
-          v44 = *(a1 + 132);
+          v44 = *(self + 132);
           v34 = v34 - v44;
           if (v34 <= 0.0)
           {
@@ -616,11 +616,11 @@ LABEL_39:
           if (v85[0] <= 0.0)
           {
             v30 ^= 1u;
-            [_DKPredictionQuery calendar:v29 isWeekendWithIntervalToWeekdayWeekendTransition:v85 containingOrAfterDate:v43];
+            [_DKPredictionQuery calendar:currentCalendar isWeekendWithIntervalToWeekdayWeekendTransition:v85 containingOrAfterDate:v43];
           }
 
           ++v40;
-          LODWORD(v39) = *(a1 + 140);
+          LODWORD(v39) = *(self + 140);
           if (v40 == v39)
           {
             v40 = 0;
@@ -628,9 +628,9 @@ LABEL_39:
             v42 = v81;
           }
 
-          else if (v41 - *(a1 + 132) > 0.0)
+          else if (v41 - *(self + 132) > 0.0)
           {
-            v41 = v41 - *(a1 + 132);
+            v41 = v41 - *(self + 132);
           }
 
           else
@@ -646,8 +646,8 @@ LABEL_39:
           }
         }
 
-        LODWORD(v39) = *(a1 + 140);
-        v12 = v80;
+        LODWORD(v39) = *(self + 140);
+        observationsCopy = v80;
       }
 
       if (v39 >= 1)
@@ -655,18 +655,18 @@ LABEL_39:
         v74 = 0;
         do
         {
-          [(_DKPredictionQuery *)a1 setValueForIndex:v74 forObservations:v11 withDenominator:*&v31[4 * v74]];
+          [(_DKPredictionQuery *)self setValueForIndex:v74 forObservations:v11 withDenominator:*&v31[4 * v74]];
           ++v74;
         }
 
-        while (v74 < *(a1 + 140));
+        while (v74 < *(self + 140));
       }
     }
 
 LABEL_65:
     v75 = [MEMORY[0x1E695DEC8] arrayWithArray:v11];
     v15 = v83;
-    v76 = [_DKPredictionTimeline timelineWithValues:v75 eachWithDuration:v83 startingAt:*(a1 + 132)];
+    v76 = [_DKPredictionTimeline timelineWithValues:v75 eachWithDuration:v83 startingAt:*(self + 132)];
 
     goto LABEL_66;
   }
@@ -679,26 +679,26 @@ LABEL_66:
   return v76;
 }
 
-- (void)handleImpulsePredictionWithEventStartDate:(void *)a3 predictionStartDate:(void *)a4 durationSinceFirstEvent:(void *)a5 calendar:(void *)a6 observations:(_DWORD *)a7 lastDate:(double)a8 lastSlot:
+- (void)handleImpulsePredictionWithEventStartDate:(void *)date predictionStartDate:(void *)startDate durationSinceFirstEvent:(void *)event calendar:(void *)calendar observations:(_DWORD *)observations lastDate:(double)lastDate lastSlot:
 {
   v28 = a2;
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  if (a1)
+  dateCopy = date;
+  startDateCopy = startDate;
+  eventCopy = event;
+  if (self)
   {
-    [v28 timeIntervalSinceDate:v15];
+    [v28 timeIntervalSinceDate:dateCopy];
     if (v18 < 0.0)
     {
       OUTLINED_FUNCTION_4_11();
       v18 = v19 + v20 * 86400.0;
     }
 
-    v21 = v18 / *(a1 + 132) % *(a1 + 140);
-    v22 = *(a1 + 152);
-    if (a8 >= 1209600.0)
+    v21 = v18 / *(self + 132) % *(self + 140);
+    v22 = *(self + 152);
+    if (lastDate >= 1209600.0)
     {
-      v23 = *(a1 + 152);
+      v23 = *(self + 152);
     }
 
     else
@@ -706,48 +706,48 @@ LABEL_66:
       v23 = 0;
     }
 
-    if ([(_DKPredictionQuery *)a1 shouldIncludeEventWithStartDate:v28 eventSlot:v21 withPredictionStartDate:v15 withPartitionType:v23 andCalendar:v16])
+    if ([(_DKPredictionQuery *)self shouldIncludeEventWithStartDate:v28 eventSlot:v21 withPredictionStartDate:dateCopy withPartitionType:v23 andCalendar:startDateCopy])
     {
-      if (*a7 != v21 || ([v28 timeIntervalSinceDate:*a6], v24 >= *(a1 + 132)))
+      if (*observations != v21 || ([v28 timeIntervalSinceDate:*calendar], v24 >= *(self + 132)))
       {
         v25 = MEMORY[0x1E696AD98];
-        v26 = [v17 objectAtIndexedSubscript:v21];
+        v26 = [eventCopy objectAtIndexedSubscript:v21];
         v27 = [v25 numberWithInteger:{objc_msgSend(v26, "integerValue") + 1}];
-        [v17 setObject:v27 atIndexedSubscript:v21];
+        [eventCopy setObject:v27 atIndexedSubscript:v21];
 
-        *a7 = v21;
-        *a6 = v28;
+        *observations = v21;
+        *calendar = v28;
       }
     }
   }
 }
 
-- (void)handleEventPredictionWithEventStartDate:(void *)a3 eventEndDate:(void *)a4 predictionStartDate:(void *)a5 durationSinceFirstEvent:(void *)a6 calendar:(int)a7 observations:(double)a8 useWeights:
+- (void)handleEventPredictionWithEventStartDate:(void *)date eventEndDate:(void *)endDate predictionStartDate:(void *)startDate durationSinceFirstEvent:(void *)event calendar:(int)calendar observations:(double)observations useWeights:
 {
-  HIDWORD(v70) = a7;
+  HIDWORD(v70) = calendar;
   v72 = a2;
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v71 = a6;
-  if (a1)
+  dateCopy = date;
+  endDateCopy = endDate;
+  startDateCopy = startDate;
+  eventCopy = event;
+  if (self)
   {
-    [v14 timeIntervalSinceDate:v72];
-    [v72 timeIntervalSinceDate:v15];
-    v18 = [v15 dateByAddingTimeInterval:(*(a1 + 132) * (v17 / *(a1 + 132)))];
-    [v72 timeIntervalSinceDate:v15];
+    [dateCopy timeIntervalSinceDate:v72];
+    [v72 timeIntervalSinceDate:endDateCopy];
+    v18 = [endDateCopy dateByAddingTimeInterval:(*(self + 132) * (v17 / *(self + 132)))];
+    [v72 timeIntervalSinceDate:endDateCopy];
     if (v19 < 0.0)
     {
       OUTLINED_FUNCTION_4_11();
       v19 = v20 + v21 * 86400.0;
     }
 
-    v22 = v19 / *(a1 + 132) % *(a1 + 140);
+    v22 = v19 / *(self + 132) % *(self + 140);
     LODWORD(v23) = v22;
-    v24 = *(a1 + 152);
-    if (a8 >= 1209600.0)
+    v24 = *(self + 152);
+    if (observations >= 1209600.0)
     {
-      v25 = *(a1 + 152);
+      v25 = *(self + 152);
     }
 
     else
@@ -755,9 +755,9 @@ LABEL_66:
       v25 = 0;
     }
 
-    [v14 timeIntervalSinceDate:v18];
+    [dateCopy timeIntervalSinceDate:v18];
     v27 = v26;
-    v28 = [(_DKPredictionQuery *)a1 shouldIncludeEventWithStartDate:v72 eventSlot:v22 withPredictionStartDate:v15 withPartitionType:v25 andCalendar:v16];
+    v28 = [(_DKPredictionQuery *)self shouldIncludeEventWithStartDate:v72 eventSlot:v22 withPredictionStartDate:endDateCopy withPartitionType:v25 andCalendar:startDateCopy];
     if (v27 <= 0.0)
     {
       if (!v28)
@@ -768,7 +768,7 @@ LABEL_29:
       }
 
       v36 = MEMORY[0x1E696AD98];
-      v37 = [v71 objectAtIndexedSubscript:v22];
+      v37 = [eventCopy objectAtIndexedSubscript:v22];
       v38 = v37;
       if (HIDWORD(v70))
       {
@@ -782,7 +782,7 @@ LABEL_29:
         [v36 numberWithInteger:{objc_msgSend(v37, "integerValue") + 1}];
       }
       v41 = ;
-      OUTLINED_FUNCTION_7_4(v41, v58, v59, v60, v61, v62, v63, v64, v65, v66, v68, v70, v71);
+      OUTLINED_FUNCTION_7_4(v41, v58, v59, v60, v61, v62, v63, v64, v65, v66, v68, v70, eventCopy);
     }
 
     else
@@ -790,14 +790,14 @@ LABEL_29:
       if (v28)
       {
         v29 = MEMORY[0x1E696AD98];
-        v30 = [v71 objectAtIndexedSubscript:v22];
+        v30 = [eventCopy objectAtIndexedSubscript:v22];
         v31 = v30;
         if (HIDWORD(v70))
         {
           [v30 doubleValue];
           v33 = v32;
           [v18 timeIntervalSinceDate:v72];
-          [v29 numberWithDouble:v33 + v34 / *(a1 + 132)];
+          [v29 numberWithDouble:v33 + v34 / *(self + 132)];
         }
 
         else
@@ -805,11 +805,11 @@ LABEL_29:
           [v29 numberWithInteger:{objc_msgSend(v30, "integerValue") + 1}];
         }
         v35 = ;
-        OUTLINED_FUNCTION_7_4(v35, v42, v43, v44, v45, v46, v47, v48, v65, v66, v68, v70, v71);
+        OUTLINED_FUNCTION_7_4(v35, v42, v43, v44, v45, v46, v47, v48, v65, v66, v68, v70, eventCopy);
       }
 
       v49 = v18;
-      [v14 timeIntervalSinceDate:v49];
+      [dateCopy timeIntervalSinceDate:v49];
       if (v50 <= 0.0)
       {
         v38 = v49;
@@ -818,14 +818,14 @@ LABEL_29:
       else
       {
         v67 = v18;
-        v69 = v16;
+        v69 = startDateCopy;
         do
         {
-          v23 = ((v23 + 1) % *(a1 + 140));
-          if ([(_DKPredictionQuery *)a1 shouldIncludeEventWithStartDate:v49 eventSlot:v23 withPredictionStartDate:v15 withPartitionType:v25 andCalendar:v16])
+          v23 = ((v23 + 1) % *(self + 140));
+          if ([(_DKPredictionQuery *)self shouldIncludeEventWithStartDate:v49 eventSlot:v23 withPredictionStartDate:endDateCopy withPartitionType:v25 andCalendar:startDateCopy])
           {
             v51 = MEMORY[0x1E696AD98];
-            v52 = [v71 objectAtIndexedSubscript:v23];
+            v52 = [eventCopy objectAtIndexedSubscript:v23];
             v53 = v52;
             if (HIDWORD(v70))
             {
@@ -839,15 +839,15 @@ LABEL_29:
               [v51 numberWithInteger:{objc_msgSend(v52, "integerValue") + 1}];
             }
             v56 = ;
-            [v71 setObject:v56 atIndexedSubscript:v23];
+            [eventCopy setObject:v56 atIndexedSubscript:v23];
 
             v18 = v67;
-            v16 = v69;
+            startDateCopy = v69;
           }
 
-          v38 = [v49 dateByAddingTimeInterval:*(a1 + 132)];
+          v38 = [v49 dateByAddingTimeInterval:*(self + 132)];
 
-          [v14 timeIntervalSinceDate:v38];
+          [dateCopy timeIntervalSinceDate:v38];
           v49 = v38;
         }
 
@@ -861,16 +861,16 @@ LABEL_29:
 LABEL_30:
 }
 
-- (void)addEventsToObservations:(void *)a3 startingHistogram:(void *)a4 endingHistogram:(void *)a5 withPredictionDate:
+- (void)addEventsToObservations:(void *)observations startingHistogram:(void *)histogram endingHistogram:(void *)endingHistogram withPredictionDate:
 {
   v30 = a2;
-  v9 = a3;
-  v10 = a4;
-  v29 = a5;
-  if (a1 && v9 | v10)
+  observationsCopy = observations;
+  histogramCopy = histogram;
+  endingHistogramCopy = endingHistogram;
+  if (self && observationsCopy | histogramCopy)
   {
-    v28 = [v29 slotFromMidnightWithTotalSlotsInDay:*(a1 + 140)];
-    if (v9 && v28 < *(a1 + 140))
+    v28 = [endingHistogramCopy slotFromMidnightWithTotalSlotsInDay:*(self + 140)];
+    if (observationsCopy && v28 < *(self + 140))
     {
       v11 = 0;
       v12 = v28;
@@ -883,7 +883,7 @@ LABEL_30:
           [v14 doubleValue];
           v16 = v15;
           v17 = [MEMORY[0x1E696AD98] numberWithInt:v12];
-          v18 = [v13 numberWithDouble:{v16 + objc_msgSend(v9, "countForValue:", v17)}];
+          v18 = [v13 numberWithDouble:{v16 + objc_msgSend(observationsCopy, "countForValue:", v17)}];
           [v30 setObject:v18 atIndexedSubscript:v11];
         }
 
@@ -891,13 +891,13 @@ LABEL_30:
         ++v11;
       }
 
-      while (v12 < *(a1 + 140));
+      while (v12 < *(self + 140));
     }
 
-    if (v10 && v28 >= 1)
+    if (histogramCopy && v28 >= 1)
     {
       v19 = 0;
-      v20 = *(a1 + 140) - v28;
+      v20 = *(self + 140) - v28;
       do
       {
         v21 = v20 + v19;
@@ -908,7 +908,7 @@ LABEL_30:
           [v23 doubleValue];
           v25 = v24;
           v26 = [MEMORY[0x1E696AD98] numberWithInt:v19];
-          v27 = [v22 numberWithDouble:{v25 + objc_msgSend(v10, "countForValue:", v26)}];
+          v27 = [v22 numberWithDouble:{v25 + objc_msgSend(histogramCopy, "countForValue:", v26)}];
           [v30 setObject:v27 atIndexedSubscript:v21];
         }
 
@@ -920,18 +920,18 @@ LABEL_30:
   }
 }
 
-- (id)predictionOfType:(void *)a3 withData:
+- (id)predictionOfType:(void *)type withData:
 {
   v126 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = v5;
-  if (a1)
+  typeCopy = type;
+  v6 = typeCopy;
+  if (self)
   {
-    if ([v5 count])
+    if ([typeCopy count])
     {
-      v101 = *(a1 + 160);
-      v7 = [MEMORY[0x1E695DF70] arrayWithCapacity:*(a1 + 140)];
-      if (*(a1 + 140) >= 1)
+      v101 = *(self + 160);
+      v7 = [MEMORY[0x1E695DF70] arrayWithCapacity:*(self + 140)];
+      if (*(self + 140) >= 1)
       {
         v8 = 0;
         do
@@ -939,15 +939,15 @@ LABEL_30:
           [v7 setObject:&unk_1F05EEA30 atIndexedSubscript:v8++];
         }
 
-        while (v8 < *(a1 + 140));
+        while (v8 < *(self + 140));
       }
 
-      v103 = a1;
+      selfCopy = self;
       v104 = v7;
-      v102 = [MEMORY[0x1E695DEE8] currentCalendar];
-      v106 = [MEMORY[0x1E695DF70] array];
-      v9 = [MEMORY[0x1E695DFE8] localTimeZone];
-      v10 = [v9 secondsFromGMT];
+      currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+      array = [MEMORY[0x1E695DF70] array];
+      localTimeZone = [MEMORY[0x1E695DFE8] localTimeZone];
+      secondsFromGMT = [localTimeZone secondsFromGMT];
 
       v114 = 0u;
       v115 = 0u;
@@ -959,7 +959,7 @@ LABEL_30:
       if (v12)
       {
         v13 = v12;
-        v14 = v10;
+        v14 = secondsFromGMT;
         v15 = *v113;
         do
         {
@@ -977,7 +977,7 @@ LABEL_30:
 
             if (v20 == v14)
             {
-              [v106 addObject:v17];
+              [array addObject:v17];
             }
 
             else
@@ -994,7 +994,7 @@ LABEL_30:
               v124[0] = v24;
               v124[1] = v25;
               v26 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v124 forKeys:v123 count:2];
-              [v106 addObject:v26];
+              [array addObject:v26];
             }
           }
 
@@ -1004,14 +1004,14 @@ LABEL_30:
         while (v13);
       }
 
-      [v106 sortUsingComparator:&__block_literal_global_44];
-      v27 = [v106 firstObject];
-      v28 = [v27 objectForKeyedSubscript:@"startDate"];
+      [array sortUsingComparator:&__block_literal_global_44];
+      firstObject = [array firstObject];
+      v28 = [firstObject objectForKeyedSubscript:@"startDate"];
       v29 = v101;
       [v101 timeIntervalSinceDate:v28];
       v31 = v30;
 
-      v32 = (86400 * *(v103 + 136));
+      v32 = (86400 * *(selfCopy + 136));
       v33 = +[_CDLogging knowledgeChannel];
       v34 = v33;
       if (v31 < v32)
@@ -1020,7 +1020,7 @@ LABEL_30:
         {
           v72 = [MEMORY[0x1E696AD98] numberWithDouble:v31];
           v29 = v101;
-          v73 = [MEMORY[0x1E696AD98] numberWithInt:(86400 * *(v103 + 136))];
+          v73 = [MEMORY[0x1E696AD98] numberWithInt:(86400 * *(selfCopy + 136))];
           *buf = 138412546;
           v118 = v72;
           v119 = 2112;
@@ -1038,8 +1038,8 @@ LABEL_54:
 
       if (os_log_type_enabled(v33, OS_LOG_TYPE_DEBUG))
       {
-        v79 = [v106 firstObject];
-        v80 = [v79 objectForKeyedSubscript:@"startDate"];
+        firstObject2 = [array firstObject];
+        v80 = [firstObject2 objectForKeyedSubscript:@"startDate"];
         *buf = 138412802;
         v118 = v101;
         v119 = 2112;
@@ -1049,12 +1049,12 @@ LABEL_54:
         _os_log_debug_impl(&dword_191750000, v34, OS_LOG_TYPE_DEBUG, "Prediction Start Date %@, First Object Start: %@, Duration: %lf", buf, 0x20u);
       }
 
-      if (*(v103 + 128) != 1)
+      if (*(selfCopy + 128) != 1)
       {
         goto LABEL_29;
       }
 
-      v37 = *(v103 + 152);
+      v37 = *(selfCopy + 152);
       if (v37)
       {
         if (v37 != 1)
@@ -1067,12 +1067,12 @@ LABEL_29:
             v99 = 0;
 LABEL_35:
             *buf = -1;
-            v43 = [MEMORY[0x1E695DF00] distantPast];
+            distantPast = [MEMORY[0x1E695DF00] distantPast];
             v108 = 0u;
             v109 = 0u;
             v110 = 0u;
             v111 = 0u;
-            v44 = v106;
+            v44 = array;
             v45 = [v44 countByEnumeratingWithState:&v108 objects:v116 count:16];
             if (!v45)
             {
@@ -1080,7 +1080,7 @@ LABEL_35:
 LABEL_59:
 
               v62 = v99;
-              v35 = [(_DKPredictionQuery *)v103 constructTimelineWithObservations:v104 withFirstEventDate:v47 withHistogramInterval:v99 withPredictionStartDate:v101 durationSinceFirstEvent:v31];
+              v35 = [(_DKPredictionQuery *)selfCopy constructTimelineWithObservations:v104 withFirstEventDate:v47 withHistogramInterval:v99 withPredictionStartDate:v101 durationSinceFirstEvent:v31];
               v63 = v98;
               [v35 setStartHistogram:v98];
               v64 = v97;
@@ -1093,7 +1093,7 @@ LABEL_53:
             v46 = v45;
             v47 = 0;
             v48 = *v109;
-            v96 = v43;
+            v96 = distantPast;
 LABEL_37:
             v49 = 0;
             while (1)
@@ -1127,16 +1127,16 @@ LABEL_37:
                     v35 = 0;
                     v63 = v98;
                     v62 = v99;
-                    v43 = v96;
+                    distantPast = v96;
                     v64 = v97;
                     goto LABEL_53;
                   }
 
-                  v107 = v43;
-                  [(_DKPredictionQuery *)v103 handleImpulsePredictionWithEventStartDate:v51 predictionStartDate:v101 durationSinceFirstEvent:v102 calendar:v104 observations:&v107 lastDate:buf lastSlot:v31];
+                  v107 = distantPast;
+                  [(_DKPredictionQuery *)selfCopy handleImpulsePredictionWithEventStartDate:v51 predictionStartDate:v101 durationSinceFirstEvent:currentCalendar calendar:v104 observations:&v107 lastDate:buf lastSlot:v31];
                   v53 = v107;
 
-                  v43 = v53;
+                  distantPast = v53;
                   goto LABEL_49;
                 }
 
@@ -1160,11 +1160,11 @@ LABEL_49:
             }
           }
 
-          v81 = [v103 storage];
-          v82 = v81;
-          if (v81)
+          storage = [selfCopy storage];
+          v82 = storage;
+          if (storage)
           {
-            v83 = v81;
+            v83 = storage;
           }
 
           else
@@ -1175,9 +1175,9 @@ LABEL_49:
           v38 = v83;
 
           v84 = objc_alloc_init(_DKDeviceActivityStandingQuery);
-          v85 = [v102 component:512 fromDate:v101];
+          v85 = [currentCalendar component:512 fromDate:v101];
           v86 = [v101 dateByAddingTimeInterval:86399.0];
-          v87 = [v102 component:512 fromDate:v86];
+          v87 = [currentCalendar component:512 fromDate:v86];
 
           v88 = [(_DKDeviceActivityStandingQuery *)v84 fetchResultForDayOfWeek:v85 withStorage:v38];
           if (v85 == v87)
@@ -1190,14 +1190,14 @@ LABEL_49:
             v89 = [(_DKDeviceActivityStandingQuery *)v84 fetchResultForDayOfWeek:v87 withStorage:v38];
           }
 
-          [(_DKPredictionQuery *)v103 addEventsToObservations:v104 startingHistogram:v88 endingHistogram:v89 withPredictionDate:v101];
+          [(_DKPredictionQuery *)selfCopy addEventsToObservations:v104 startingHistogram:v88 endingHistogram:v89 withPredictionDate:v101];
           if (v88 && v89)
           {
-            v90 = [v88 interval];
-            v91 = [v90 startDate];
-            v92 = [v89 interval];
-            v93 = [v92 startDate];
-            [v91 timeIntervalSinceDate:v93];
+            interval = [v88 interval];
+            startDate = [interval startDate];
+            interval2 = [v89 interval];
+            startDate2 = [interval2 startDate];
+            [startDate timeIntervalSinceDate:startDate2];
             if (v94 > 0.0)
             {
               v95 = v89;
@@ -1208,7 +1208,7 @@ LABEL_49:
               v95 = v88;
             }
 
-            v42 = [v95 interval];
+            interval3 = [v95 interval];
 
             v41 = v88;
             v40 = v89;
@@ -1216,14 +1216,14 @@ LABEL_49:
 
           else if (v88)
           {
-            v42 = [v88 interval];
+            interval3 = [v88 interval];
             v41 = v88;
             v40 = 0;
           }
 
           else
           {
-            v42 = [v89 interval];
+            interval3 = [v89 interval];
             v40 = v89;
             v41 = 0;
           }
@@ -1231,7 +1231,7 @@ LABEL_49:
 LABEL_34:
           v97 = v40;
           v98 = v41;
-          v99 = v42;
+          v99 = interval3;
 
           goto LABEL_35;
         }
@@ -1242,7 +1242,7 @@ LABEL_34:
 LABEL_33:
           v40 = 0;
           v41 = 0;
-          v42 = 0;
+          interval3 = 0;
           goto LABEL_34;
         }
 
@@ -1289,20 +1289,20 @@ LABEL_55:
   return v35;
 }
 
-- (id)likelihoodForTopN:(void *)a3 withMinLikelihood:(double)a4 withData:
+- (id)likelihoodForTopN:(void *)n withMinLikelihood:(double)likelihood withData:
 {
   v129 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = v7;
-  if (a1)
+  nCopy = n;
+  v8 = nCopy;
+  if (self)
   {
-    if ([v7 count])
+    if ([nCopy count])
     {
       v96 = a2;
-      v105 = a1;
-      v9 = [MEMORY[0x1E695DF70] array];
-      v10 = [MEMORY[0x1E695DFE8] localTimeZone];
-      v11 = [v10 secondsFromGMT];
+      selfCopy = self;
+      array = [MEMORY[0x1E695DF70] array];
+      localTimeZone = [MEMORY[0x1E695DFE8] localTimeZone];
+      secondsFromGMT = [localTimeZone secondsFromGMT];
 
       v117 = 0u;
       v118 = 0u;
@@ -1314,7 +1314,7 @@ LABEL_55:
       if (v13)
       {
         v14 = v13;
-        v15 = v11;
+        v15 = secondsFromGMT;
         v16 = *v116;
         do
         {
@@ -1326,19 +1326,19 @@ LABEL_55:
             }
 
             v18 = *(*(&v115 + 1) + 8 * i);
-            v19 = [v18 value];
-            v20 = [v19 stringValue];
+            value = [v18 value];
+            stringValue = [value stringValue];
 
-            if (v20)
+            if (stringValue)
             {
-              v21 = [v18 timeZone];
-              v22 = [v21 secondsFromGMT];
+              timeZone = [v18 timeZone];
+              secondsFromGMT2 = [timeZone secondsFromGMT];
 
               v23 = [v18 valueForKey:@"startDate"];
               v24 = v23;
-              if (v22 != v15)
+              if (secondsFromGMT2 != v15)
               {
-                v25 = [v23 dateByAddingTimeInterval:v22 - v15];
+                v25 = [v23 dateByAddingTimeInterval:secondsFromGMT2 - v15];
 
                 v24 = v25;
               }
@@ -1346,9 +1346,9 @@ LABEL_55:
               v126[0] = @"startDate";
               v126[1] = @"bundleID";
               v127[0] = v24;
-              v127[1] = v20;
+              v127[1] = stringValue;
               v26 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v127 forKeys:v126 count:2];
-              [v9 addObject:v26];
+              [array addObject:v26];
             }
           }
 
@@ -1358,15 +1358,15 @@ LABEL_55:
         while (v14);
       }
 
-      [v9 sortUsingComparator:&__block_literal_global_25];
-      v27 = v105[20];
-      v28 = [v9 firstObject];
-      v29 = [v28 valueForKey:@"startDate"];
+      [array sortUsingComparator:&__block_literal_global_25];
+      v27 = selfCopy[20];
+      firstObject = [array firstObject];
+      v29 = [firstObject valueForKey:@"startDate"];
 
       v102 = v27;
       [v27 timeIntervalSinceDate:v29];
       v31 = v30;
-      if (v30 >= (86400 * *(v105 + 34)))
+      if (v30 >= (86400 * *(selfCopy + 34)))
       {
         v94 = v29;
         v35 = MEMORY[0x1E695E0F8];
@@ -1377,8 +1377,8 @@ LABEL_55:
         v112 = 0u;
         v113 = 0u;
         v114 = 0u;
-        v97 = v9;
-        obj = v9;
+        v97 = array;
+        obj = array;
         v103 = [obj countByEnumeratingWithState:&v111 objects:v125 count:16];
         if (v103)
         {
@@ -1400,15 +1400,15 @@ LABEL_55:
               v42 = [v107 objectForKeyedSubscript:v39];
               if (v41)
               {
-                v43 = [v41 intValue];
+                intValue = [v41 intValue];
               }
 
               else
               {
-                v44 = [MEMORY[0x1E695DF00] distantPast];
+                distantPast = [MEMORY[0x1E695DF00] distantPast];
 
-                v43 = -1;
-                v42 = v44;
+                intValue = -1;
+                v42 = distantPast;
               }
 
               [v40 timeIntervalSinceDate:v102];
@@ -1417,8 +1417,8 @@ LABEL_55:
                 v45 = v45 + ceil(v45 / -86400.0) * 86400.0;
               }
 
-              v46 = (v45 / *(v105 + 33) % *(v105 + 35));
-              if (v43 != v46 || ([v40 timeIntervalSinceDate:v42], v47 >= *(v105 + 33)))
+              v46 = (v45 / *(selfCopy + 33) % *(selfCopy + 35));
+              if (intValue != v46 || ([v40 timeIntervalSinceDate:v42], v47 >= *(selfCopy + 33)))
               {
                 v48 = [v99 objectForKeyedSubscript:v39];
                 if (!v48)
@@ -1450,27 +1450,27 @@ LABEL_55:
           v51 = v50 + ceil(v50 / -86400.0) * 86400.0;
         }
 
-        v52 = v105;
-        v53 = *(v105 + 33);
-        v54 = *(v105 + 35);
+        v52 = selfCopy;
+        v53 = *(selfCopy + 33);
+        v54 = *(selfCopy + 35);
         [v94 timeIntervalSinceDate:v102];
         v56 = (v55 / 86400.0);
         v57 = -v56;
-        v9 = v97;
+        array = v97;
         v58 = v99;
         if (v56 < 1)
         {
-          v104 = [MEMORY[0x1E695DF70] arrayWithCapacity:*(v105 + 35)];
-          v60 = [v99 allKeys];
-          v61 = [v60 mutableCopy];
+          v104 = [MEMORY[0x1E695DF70] arrayWithCapacity:*(selfCopy + 35)];
+          allKeys = [v99 allKeys];
+          v61 = [allKeys mutableCopy];
 
-          if (*(v105 + 35) >= 1)
+          if (*(selfCopy + 35) >= 1)
           {
             v62 = 0;
             v101 = v51 / v53 % v54;
             do
             {
-              v63 = [MEMORY[0x1E695DF90] dictionary];
+              dictionary = [MEMORY[0x1E695DF90] dictionary];
               if (v62 == v101)
               {
                 LODWORD(v57) = v57 + 1;
@@ -1503,19 +1503,19 @@ LABEL_55:
                   v69 = [MEMORY[0x1E696AD98] numberWithInt:v62];
                   v70 = [v68 countForObject:v69] / v57;
 
-                  if (v70 >= a4)
+                  if (v70 >= likelihood)
                   {
                     v71 = [MEMORY[0x1E696AD98] numberWithDouble:v70];
-                    v72 = [v71 dk_dedup];
-                    [v63 setObject:v72 forKeyedSubscript:v67];
+                    dk_dedup = [v71 dk_dedup];
+                    [dictionary setObject:dk_dedup forKeyedSubscript:v67];
                   }
                 }
 
-                v73 = [MEMORY[0x1E695DF20] dictionaryWithDictionary:v63];
+                v73 = [MEMORY[0x1E695DF20] dictionaryWithDictionary:dictionary];
                 [v104 addObject:v73];
 
-                v9 = v97;
-                v52 = v105;
+                array = v97;
+                v52 = selfCopy;
               }
 
               else
@@ -1563,7 +1563,7 @@ LABEL_55:
         if (OUTLINED_FUNCTION_60(v32))
         {
           v81 = [MEMORY[0x1E696AD98] numberWithDouble:v31];
-          v82 = [MEMORY[0x1E696AD98] numberWithInt:(86400 * *(v105 + 34))];
+          v82 = [MEMORY[0x1E696AD98] numberWithInt:(86400 * *(selfCopy + 34))];
           v119 = 138412546;
           v120 = v81;
           v121 = 2112;
@@ -1601,11 +1601,11 @@ LABEL_55:
   return v33;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = _DKPredictionQuery;
-  v4 = [(_DKEventQuery *)&v6 copyWithZone:a3];
+  v4 = [(_DKEventQuery *)&v6 copyWithZone:zone];
   [v4 setSlotDuration:self->_slotDuration];
   [v4 setType:self->_type];
   [v4 setAsOfDate:self->_asOfDate];

@@ -2,23 +2,23 @@
 + (id)cellNibForActions;
 + (id)cellNibForContacts;
 - (void)_updateFonts;
-- (void)_updateHighlightAnimated:(BOOL)a3;
+- (void)_updateHighlightAnimated:(BOOL)animated;
 - (void)awakeFromNib;
 - (void)prepareForReuse;
 - (void)reloadData;
-- (void)setHighlighted:(BOOL)a3 animated:(BOOL)a4;
-- (void)startTrackingWithGestureRecognizer:(id)a3;
-- (void)trackHighlight:(id)a3;
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated;
+- (void)startTrackingWithGestureRecognizer:(id)recognizer;
+- (void)trackHighlight:(id)highlight;
 @end
 
 @implementation CNAvatarCardActionCell
 
-- (void)trackHighlight:(id)a3
+- (void)trackHighlight:(id)highlight
 {
-  v11 = a3;
-  if ([v11 state] == 1 || objc_msgSend(v11, "state") == 2)
+  highlightCopy = highlight;
+  if ([highlightCopy state] == 1 || objc_msgSend(highlightCopy, "state") == 2)
   {
-    [v11 locationInView:self];
+    [highlightCopy locationInView:self];
     v5 = v4;
     v7 = v6;
     [(CNAvatarCardActionCell *)self bounds];
@@ -39,11 +39,11 @@
   }
 }
 
-- (void)startTrackingWithGestureRecognizer:(id)a3
+- (void)startTrackingWithGestureRecognizer:(id)recognizer
 {
-  v4 = a3;
-  [v4 addTarget:self action:sel_trackHighlight_];
-  [(CNAvatarCardActionCell *)self trackHighlight:v4];
+  recognizerCopy = recognizer;
+  [recognizerCopy addTarget:self action:sel_trackHighlight_];
+  [(CNAvatarCardActionCell *)self trackHighlight:recognizerCopy];
 
   [(CNAvatarCardActionCell *)self reloadData];
 }
@@ -53,51 +53,51 @@
   v56[2] = *MEMORY[0x1E69E9840];
   if ([(CNAvatarCardActionCell *)self context]== 3)
   {
-    v3 = [(CNAvatarCardActionCell *)self actionImageView];
-    [v3 setImage:0];
+    actionImageView = [(CNAvatarCardActionCell *)self actionImageView];
+    [actionImageView setImage:0];
   }
 
   else
   {
-    v4 = [(CNAvatarCardActionCell *)self action];
-    v5 = [v4 image];
-    v6 = [(CNAvatarCardActionCell *)self actionImageView];
-    [v6 setImage:v5];
+    action = [(CNAvatarCardActionCell *)self action];
+    image = [action image];
+    actionImageView2 = [(CNAvatarCardActionCell *)self actionImageView];
+    [actionImageView2 setImage:image];
 
-    v3 = +[CNUIColorRepository navigationListActionIconFillColorRegular];
-    v7 = [(CNAvatarCardActionCell *)self actionImageView];
-    [v7 setTintColor:v3];
+    actionImageView = +[CNUIColorRepository navigationListActionIconFillColorRegular];
+    actionImageView3 = [(CNAvatarCardActionCell *)self actionImageView];
+    [actionImageView3 setTintColor:actionImageView];
   }
 
   if (-[CNAvatarCardActionCell context](self, "context") == 3 && (-[CNAvatarCardActionCell action](self, "action"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 isBackAction], v8, !v9))
   {
-    v31 = [(CNAvatarCardActionCell *)self action];
-    v32 = [v31 titleForContext:{-[CNAvatarCardActionCell context](self, "context")}];
-    v33 = [(CNAvatarCardActionCell *)self titleLabel];
-    [v33 setText:v32];
+    action2 = [(CNAvatarCardActionCell *)self action];
+    v32 = [action2 titleForContext:{-[CNAvatarCardActionCell context](self, "context")}];
+    titleLabel = [(CNAvatarCardActionCell *)self titleLabel];
+    [titleLabel setText:v32];
 
-    v34 = [(CNAvatarCardActionCell *)self action];
-    v35 = [v34 subtitleForContext:{-[CNAvatarCardActionCell context](self, "context")}];
+    action3 = [(CNAvatarCardActionCell *)self action];
+    v35 = [action3 subtitleForContext:{-[CNAvatarCardActionCell context](self, "context")}];
   }
 
   else
   {
     v55[0] = *MEMORY[0x1E69DB648];
-    v10 = [(CNAvatarCardActionCell *)self titleLabel];
-    v11 = [v10 font];
-    v56[0] = v11;
+    titleLabel2 = [(CNAvatarCardActionCell *)self titleLabel];
+    font = [titleLabel2 font];
+    v56[0] = font;
     v12 = *MEMORY[0x1E69DB650];
     v55[1] = *MEMORY[0x1E69DB650];
-    v13 = [(CNAvatarCardActionCell *)self titleLabel];
-    v14 = [v13 textColor];
-    v56[1] = v14;
+    titleLabel3 = [(CNAvatarCardActionCell *)self titleLabel];
+    textColor = [titleLabel3 textColor];
+    v56[1] = textColor;
     v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v56 forKeys:v55 count:2];
 
-    v16 = [(CNAvatarCardActionCell *)self action];
-    v17 = [v16 titleForContext:{-[CNAvatarCardActionCell context](self, "context")}];
+    action4 = [(CNAvatarCardActionCell *)self action];
+    v17 = [action4 titleForContext:{-[CNAvatarCardActionCell context](self, "context")}];
 
-    v18 = [(CNAvatarCardActionCell *)self action];
-    v19 = [v18 subtitleForContext:{-[CNAvatarCardActionCell context](self, "context")}];
+    action5 = [(CNAvatarCardActionCell *)self action];
+    v19 = [action5 subtitleForContext:{-[CNAvatarCardActionCell context](self, "context")}];
 
     v20 = v17;
     v54 = v15;
@@ -106,9 +106,9 @@
       v21 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@  %@", v20, v19, v15];
 
       v22 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:v21 attributes:v15];
-      v23 = [(CNAvatarCardActionCell *)self subtitleLabel];
-      v24 = [v23 textColor];
-      [v22 addAttribute:v12 value:v24 range:{objc_msgSend(v20, "length") + objc_msgSend(@"%@  %@", "length") - 4, objc_msgSend(v19, "length")}];
+      subtitleLabel = [(CNAvatarCardActionCell *)self subtitleLabel];
+      textColor2 = [subtitleLabel textColor];
+      [v22 addAttribute:v12 value:textColor2 range:{objc_msgSend(v20, "length") + objc_msgSend(@"%@  %@", "length") - 4, objc_msgSend(v19, "length")}];
     }
 
     else
@@ -119,49 +119,49 @@
 
     [MEMORY[0x1E69DD250] inheritedAnimationDuration];
     v26 = v25;
-    v27 = [(CNAvatarCardActionCell *)self titleLabel];
-    v28 = [v27 layer];
+    titleLabel4 = [(CNAvatarCardActionCell *)self titleLabel];
+    layer = [titleLabel4 layer];
 
-    if (v26 <= 0.0 || ([v28 animationForKey:@"kCATransitionFade"], v29 = objc_claimAutoreleasedReturnValue(), v29, v29))
+    if (v26 <= 0.0 || ([layer animationForKey:@"kCATransitionFade"], v29 = objc_claimAutoreleasedReturnValue(), v29, v29))
     {
       if (v26 == 0.0)
       {
-        v30 = [v28 animationForKey:@"kCATransitionFade"];
+        v30 = [layer animationForKey:@"kCATransitionFade"];
 
         if (v30)
         {
-          [v28 removeAnimationForKey:@"kCATransitionFade"];
+          [layer removeAnimationForKey:@"kCATransitionFade"];
         }
       }
     }
 
     else
     {
-      v36 = [MEMORY[0x1E6979538] animation];
+      animation = [MEMORY[0x1E6979538] animation];
       v37 = [MEMORY[0x1E69793D0] functionWithName:*MEMORY[0x1E6979EB8]];
-      [v36 setTimingFunction:v37];
+      [animation setTimingFunction:v37];
 
-      [v36 setType:*MEMORY[0x1E697A030]];
-      [v36 setDuration:v26];
-      [v28 addAnimation:v36 forKey:@"kCATransitionFade"];
+      [animation setType:*MEMORY[0x1E697A030]];
+      [animation setDuration:v26];
+      [layer addAnimation:animation forKey:@"kCATransitionFade"];
     }
 
-    v38 = [(CNAvatarCardActionCell *)self titleLabel];
-    [v38 setAttributedText:v22];
+    titleLabel5 = [(CNAvatarCardActionCell *)self titleLabel];
+    [titleLabel5 setAttributedText:v22];
 
     v35 = 0;
   }
 
-  v39 = [(CNAvatarCardActionCell *)self subtitleLabel];
-  [v39 setText:v35];
+  subtitleLabel2 = [(CNAvatarCardActionCell *)self subtitleLabel];
+  [subtitleLabel2 setText:v35];
 
-  v40 = [(CNAvatarCardActionCell *)self pageControl];
-  [v40 setNumberOfPages:1];
+  pageControl = [(CNAvatarCardActionCell *)self pageControl];
+  [pageControl setNumberOfPages:1];
 
-  v41 = [(CNAvatarCardActionCell *)self action];
-  v42 = [v41 isBackAction];
+  action6 = [(CNAvatarCardActionCell *)self action];
+  isBackAction = [action6 isBackAction];
 
-  if (v42)
+  if (isBackAction)
   {
     v43 = +[CNUIColorRepository orbActionCellBackgroundColor];
     [(CNAvatarCardActionCell *)self setBackgroundColor:v43];
@@ -172,11 +172,11 @@
     [(CNAvatarCardActionCell *)self setBackgroundColor:0];
   }
 
-  v44 = objc_opt_class();
-  v45 = [(CNAvatarCardActionCell *)self action];
+  action8 = objc_opt_class();
+  action7 = [(CNAvatarCardActionCell *)self action];
   if (objc_opt_isKindOfClass())
   {
-    v46 = v45;
+    v46 = action7;
   }
 
   else
@@ -191,49 +191,49 @@
 
   else
   {
-    v44 = [(CNAvatarCardActionCell *)self action];
-    v47 = [v44 isBackAction] ^ 1;
+    action8 = [(CNAvatarCardActionCell *)self action];
+    v47 = [action8 isBackAction] ^ 1;
   }
 
-  v48 = [(CNAvatarCardActionCell *)self expandButton];
-  [v48 setHidden:v47];
+  expandButton = [(CNAvatarCardActionCell *)self expandButton];
+  [expandButton setHidden:v47];
 
   if (!v46)
   {
   }
 
-  v49 = [(CNAvatarCardActionCell *)self expandButton];
-  v50 = [v49 isHidden];
+  expandButton2 = [(CNAvatarCardActionCell *)self expandButton];
+  isHidden = [expandButton2 isHidden];
 
-  v51 = [(CNAvatarCardActionCell *)self expandButtonWidthConstraint];
-  v52 = v51;
+  expandButtonWidthConstraint = [(CNAvatarCardActionCell *)self expandButtonWidthConstraint];
+  v52 = expandButtonWidthConstraint;
   v53 = 66.0;
-  if (v50)
+  if (isHidden)
   {
     v53 = 20.0;
   }
 
-  [v51 setConstant:v53];
+  [expandButtonWidthConstraint setConstant:v53];
 }
 
-- (void)_updateHighlightAnimated:(BOOL)a3
+- (void)_updateHighlightAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(CNAvatarCardActionCell *)self defaultHighlightView];
-  [v5 setHighlighted:-[CNAvatarCardActionCell isHighlighted](self animated:{"isHighlighted"), v3}];
+  animatedCopy = animated;
+  defaultHighlightView = [(CNAvatarCardActionCell *)self defaultHighlightView];
+  [defaultHighlightView setHighlighted:-[CNAvatarCardActionCell isHighlighted](self animated:{"isHighlighted"), animatedCopy}];
 
-  v6 = [(CNAvatarCardActionCell *)self action];
-  v7 = [v6 isBackAction];
+  action = [(CNAvatarCardActionCell *)self action];
+  isBackAction = [action isBackAction];
 
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __51__CNAvatarCardActionCell__updateHighlightAnimated___block_invoke;
   v12[3] = &unk_1E74E4768;
-  v13 = v7;
+  v13 = isBackAction;
   v12[4] = self;
   v8 = _Block_copy(v12);
   v9 = v8;
-  if (v3)
+  if (animatedCopy)
   {
     [MEMORY[0x1E69DD250] animateWithDuration:v8 animations:0.2];
   }
@@ -245,7 +245,7 @@
 
   if ([(CNAvatarCardActionCell *)self isHighlighted])
   {
-    v10 = [(CNAvatarCardActionCell *)self moreHighlighted]| v7;
+    v10 = [(CNAvatarCardActionCell *)self moreHighlighted]| isBackAction;
   }
 
   else
@@ -253,8 +253,8 @@
     v10 = 0;
   }
 
-  v11 = [(CNAvatarCardActionCell *)self expandButton];
-  [v11 setHighlighted:v10 & 1];
+  expandButton = [(CNAvatarCardActionCell *)self expandButton];
+  [expandButton setHighlighted:v10 & 1];
 }
 
 void __51__CNAvatarCardActionCell__updateHighlightAnimated___block_invoke(uint64_t a1)
@@ -304,13 +304,13 @@ void __51__CNAvatarCardActionCell__updateHighlightAnimated___block_invoke(uint64
   [MEMORY[0x1E69DD250] performWithoutAnimation:v3];
 }
 
-- (void)setHighlighted:(BOOL)a3 animated:(BOOL)a4
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v6.receiver = self;
   v6.super_class = CNAvatarCardActionCell;
-  [(CNAvatarCardActionCell *)&v6 setHighlighted:a3 animated:?];
-  [(CNAvatarCardActionCell *)self _updateHighlightAnimated:v4];
+  [(CNAvatarCardActionCell *)&v6 setHighlighted:highlighted animated:?];
+  [(CNAvatarCardActionCell *)self _updateHighlightAnimated:animatedCopy];
 }
 
 - (void)awakeFromNib
@@ -319,8 +319,8 @@ void __51__CNAvatarCardActionCell__updateHighlightAnimated___block_invoke(uint64
   v12.super_class = CNAvatarCardActionCell;
   [(CNAvatarCardActionCell *)&v12 awakeFromNib];
   [(CNAvatarCardActionCell *)self setSelectionStyle:0];
-  v3 = [(CNAvatarCardActionCell *)self translatingViewLeadingConstraint];
-  [v3 constant];
+  translatingViewLeadingConstraint = [(CNAvatarCardActionCell *)self translatingViewLeadingConstraint];
+  [translatingViewLeadingConstraint constant];
   [(CNAvatarCardActionCell *)self setInitialTranslatingViewLeadingConstraintConstant:?];
 
   [(CNAvatarCardActionCell *)self setPreservesSuperviewLayoutMargins:0];
@@ -340,8 +340,8 @@ void __51__CNAvatarCardActionCell__updateHighlightAnimated___block_invoke(uint64
   expandButton = self->_expandButton;
   if (expandButton)
   {
-    v11 = [MEMORY[0x1E69DCAB8] cnui_symbolImageForNavigationListChevron];
-    [(UIButton *)expandButton setImage:v11 forState:0];
+    cnui_symbolImageForNavigationListChevron = [MEMORY[0x1E69DCAB8] cnui_symbolImageForNavigationListChevron];
+    [(UIButton *)expandButton setImage:cnui_symbolImageForNavigationListChevron forState:0];
   }
 }
 
@@ -350,14 +350,14 @@ void __51__CNAvatarCardActionCell__updateHighlightAnimated___block_invoke(uint64
   v3 = MEMORY[0x1E69DB878];
   v4 = [MEMORY[0x1E69DB880] preferredFontDescriptorWithTextStyle:*MEMORY[0x1E69DDCF8] addingSymbolicTraits:0 options:2];
   v5 = [v3 fontWithDescriptor:v4 size:0.0];
-  v6 = [(CNAvatarCardActionCell *)self titleLabel];
-  [v6 setFont:v5];
+  titleLabel = [(CNAvatarCardActionCell *)self titleLabel];
+  [titleLabel setFont:v5];
 
   v7 = MEMORY[0x1E69DB878];
   v10 = [MEMORY[0x1E69DB880] preferredFontDescriptorWithTextStyle:*MEMORY[0x1E69DDD80] addingSymbolicTraits:0 options:2];
   v8 = [v7 fontWithDescriptor:v10 size:0.0];
-  v9 = [(CNAvatarCardActionCell *)self subtitleLabel];
-  [v9 setFont:v8];
+  subtitleLabel = [(CNAvatarCardActionCell *)self subtitleLabel];
+  [subtitleLabel setFont:v8];
 }
 
 + (id)cellNibForContacts
@@ -366,7 +366,7 @@ void __51__CNAvatarCardActionCell__updateHighlightAnimated___block_invoke(uint64
   block[1] = 3221225472;
   block[2] = __44__CNAvatarCardActionCell_cellNibForContacts__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (cellNibForContacts_onceToken != -1)
   {
     dispatch_once(&cellNibForContacts_onceToken, block);
@@ -392,7 +392,7 @@ void __44__CNAvatarCardActionCell_cellNibForContacts__block_invoke()
   block[1] = 3221225472;
   block[2] = __43__CNAvatarCardActionCell_cellNibForActions__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (cellNibForActions_onceToken != -1)
   {
     dispatch_once(&cellNibForActions_onceToken, block);

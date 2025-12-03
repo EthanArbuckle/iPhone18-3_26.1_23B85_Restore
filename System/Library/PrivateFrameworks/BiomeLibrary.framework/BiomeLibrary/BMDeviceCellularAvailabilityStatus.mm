@@ -1,17 +1,17 @@
 @interface BMDeviceCellularAvailabilityStatus
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMDeviceCellularAvailabilityStatus)initWithJSONDictionary:(id)a3 error:(id *)p_isa;
-- (BMDeviceCellularAvailabilityStatus)initWithTimeStamp:(id)a3 deviceType:(int)a4 deviceRegistrationStatus:(int)a5 previousDeviceRegistrationStatus:(int)a6 aboveThreshold:(id)a7 latestStrongTimeStamp:(id)a8;
-- (BOOL)isEqual:(id)a3;
+- (BMDeviceCellularAvailabilityStatus)initWithJSONDictionary:(id)dictionary error:(id *)p_isa;
+- (BMDeviceCellularAvailabilityStatus)initWithTimeStamp:(id)stamp deviceType:(int)type deviceRegistrationStatus:(int)status previousDeviceRegistrationStatus:(int)registrationStatus aboveThreshold:(id)threshold latestStrongTimeStamp:(id)timeStamp;
+- (BOOL)isEqual:(id)equal;
 - (NSDate)latestStrongTimeStamp;
 - (NSDate)timeStamp;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMDeviceCellularAvailabilityStatus
@@ -38,25 +38,25 @@
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMDeviceCellularAvailabilityStatus *)self timeStamp];
-    v7 = [v5 timeStamp];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    timeStamp = [(BMDeviceCellularAvailabilityStatus *)self timeStamp];
+    timeStamp2 = [v5 timeStamp];
+    v8 = timeStamp2;
+    if (timeStamp == timeStamp2)
     {
     }
 
     else
     {
-      v9 = [(BMDeviceCellularAvailabilityStatus *)self timeStamp];
-      v10 = [v5 timeStamp];
-      v11 = [v9 isEqual:v10];
+      timeStamp3 = [(BMDeviceCellularAvailabilityStatus *)self timeStamp];
+      timeStamp4 = [v5 timeStamp];
+      v11 = [timeStamp3 isEqual:timeStamp4];
 
       if (!v11)
       {
@@ -64,29 +64,29 @@
       }
     }
 
-    v13 = [(BMDeviceCellularAvailabilityStatus *)self deviceType];
-    if (v13 == [v5 deviceType])
+    deviceType = [(BMDeviceCellularAvailabilityStatus *)self deviceType];
+    if (deviceType == [v5 deviceType])
     {
-      v14 = [(BMDeviceCellularAvailabilityStatus *)self deviceRegistrationStatus];
-      if (v14 == [v5 deviceRegistrationStatus])
+      deviceRegistrationStatus = [(BMDeviceCellularAvailabilityStatus *)self deviceRegistrationStatus];
+      if (deviceRegistrationStatus == [v5 deviceRegistrationStatus])
       {
-        v15 = [(BMDeviceCellularAvailabilityStatus *)self previousDeviceRegistrationStatus];
-        if (v15 == [v5 previousDeviceRegistrationStatus])
+        previousDeviceRegistrationStatus = [(BMDeviceCellularAvailabilityStatus *)self previousDeviceRegistrationStatus];
+        if (previousDeviceRegistrationStatus == [v5 previousDeviceRegistrationStatus])
         {
           if (!-[BMDeviceCellularAvailabilityStatus hasAboveThreshold](self, "hasAboveThreshold") && ![v5 hasAboveThreshold] || -[BMDeviceCellularAvailabilityStatus hasAboveThreshold](self, "hasAboveThreshold") && objc_msgSend(v5, "hasAboveThreshold") && (v16 = -[BMDeviceCellularAvailabilityStatus aboveThreshold](self, "aboveThreshold"), v16 == objc_msgSend(v5, "aboveThreshold")))
           {
-            v18 = [(BMDeviceCellularAvailabilityStatus *)self latestStrongTimeStamp];
-            v19 = [v5 latestStrongTimeStamp];
-            if (v18 == v19)
+            latestStrongTimeStamp = [(BMDeviceCellularAvailabilityStatus *)self latestStrongTimeStamp];
+            latestStrongTimeStamp2 = [v5 latestStrongTimeStamp];
+            if (latestStrongTimeStamp == latestStrongTimeStamp2)
             {
               v12 = 1;
             }
 
             else
             {
-              v20 = [(BMDeviceCellularAvailabilityStatus *)self latestStrongTimeStamp];
-              v21 = [v5 latestStrongTimeStamp];
-              v12 = [v20 isEqual:v21];
+              latestStrongTimeStamp3 = [(BMDeviceCellularAvailabilityStatus *)self latestStrongTimeStamp];
+              latestStrongTimeStamp4 = [v5 latestStrongTimeStamp];
+              v12 = [latestStrongTimeStamp3 isEqual:latestStrongTimeStamp4];
             }
 
             goto LABEL_16;
@@ -145,12 +145,12 @@ LABEL_17:
 - (id)jsonDictionary
 {
   v29[6] = *MEMORY[0x1E69E9840];
-  v3 = [(BMDeviceCellularAvailabilityStatus *)self timeStamp];
-  if (v3)
+  timeStamp = [(BMDeviceCellularAvailabilityStatus *)self timeStamp];
+  if (timeStamp)
   {
     v4 = MEMORY[0x1E696AD98];
-    v5 = [(BMDeviceCellularAvailabilityStatus *)self timeStamp];
-    [v5 timeIntervalSince1970];
+    timeStamp2 = [(BMDeviceCellularAvailabilityStatus *)self timeStamp];
+    [timeStamp2 timeIntervalSince1970];
     v6 = [v4 numberWithDouble:?];
   }
 
@@ -172,12 +172,12 @@ LABEL_17:
     v10 = 0;
   }
 
-  v11 = [(BMDeviceCellularAvailabilityStatus *)self latestStrongTimeStamp];
-  if (v11)
+  latestStrongTimeStamp = [(BMDeviceCellularAvailabilityStatus *)self latestStrongTimeStamp];
+  if (latestStrongTimeStamp)
   {
     v12 = MEMORY[0x1E696AD98];
-    v13 = [(BMDeviceCellularAvailabilityStatus *)self latestStrongTimeStamp];
-    [v13 timeIntervalSince1970];
+    latestStrongTimeStamp2 = [(BMDeviceCellularAvailabilityStatus *)self latestStrongTimeStamp];
+    [latestStrongTimeStamp2 timeIntervalSince1970];
     v14 = [v12 numberWithDouble:?];
   }
 
@@ -188,55 +188,55 @@ LABEL_17:
 
   v27 = v6;
   v28[0] = @"timeStamp";
-  v15 = v6;
+  null = v6;
   if (!v6)
   {
-    v15 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v24 = v15;
+  v24 = null;
   v26 = v7;
-  v29[0] = v15;
+  v29[0] = null;
   v28[1] = @"deviceType";
-  v16 = v7;
+  null2 = v7;
   if (!v7)
   {
-    v16 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v29[1] = v16;
+  v29[1] = null2;
   v28[2] = @"deviceRegistrationStatus";
-  v17 = v8;
+  null3 = v8;
   if (!v8)
   {
-    v17 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v29[2] = v17;
+  v29[2] = null3;
   v28[3] = @"previousDeviceRegistrationStatus";
-  v18 = v9;
+  null4 = v9;
   if (!v9)
   {
-    v18 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v29[3] = v18;
+  v29[3] = null4;
   v28[4] = @"aboveThreshold";
-  v19 = v10;
+  null5 = v10;
   if (!v10)
   {
-    v19 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v29[4] = v19;
+  v29[4] = null5;
   v28[5] = @"latestStrongTimeStamp";
-  v20 = v14;
+  null6 = v14;
   if (!v14)
   {
-    v20 = [MEMORY[0x1E695DFB0] null];
+    null6 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v29[5] = v20;
+  v29[5] = null6;
   v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v29 forKeys:v28 count:{6, v24}];
   if (v14)
   {
@@ -295,11 +295,11 @@ LABEL_26:
   return v21;
 }
 
-- (BMDeviceCellularAvailabilityStatus)initWithJSONDictionary:(id)a3 error:(id *)p_isa
+- (BMDeviceCellularAvailabilityStatus)initWithJSONDictionary:(id)dictionary error:(id *)p_isa
 {
   v77[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 objectForKeyedSubscript:@"timeStamp"];
+  dictionaryCopy = dictionary;
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"timeStamp"];
   if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
@@ -331,7 +331,7 @@ LABEL_26:
         if (!p_isa)
         {
           v65 = 0;
-          v35 = self;
+          selfCopy6 = self;
           goto LABEL_55;
         }
 
@@ -361,7 +361,7 @@ LABEL_26:
   }
 
 LABEL_9:
-  v14 = [v5 objectForKeyedSubscript:@"deviceType"];
+  v14 = [dictionaryCopy objectForKeyedSubscript:@"deviceType"];
   if (v14)
   {
     objc_opt_class();
@@ -401,14 +401,14 @@ LABEL_16:
 
       v64 = 0;
 LABEL_71:
-      v35 = self;
+      selfCopy6 = self;
       goto LABEL_54;
     }
   }
 
   v64 = 0;
 LABEL_17:
-  v16 = [v5 objectForKeyedSubscript:@"deviceRegistrationStatus"];
+  v16 = [dictionaryCopy objectForKeyedSubscript:@"deviceRegistrationStatus"];
   v61 = v14;
   if (v16)
   {
@@ -449,14 +449,14 @@ LABEL_24:
 
       v63 = 0;
 LABEL_73:
-      v35 = self;
+      selfCopy6 = self;
       goto LABEL_53;
     }
   }
 
   v63 = 0;
 LABEL_25:
-  v18 = [v5 objectForKeyedSubscript:@"previousDeviceRegistrationStatus"];
+  v18 = [dictionaryCopy objectForKeyedSubscript:@"previousDeviceRegistrationStatus"];
   v60 = v6;
   if (v18)
   {
@@ -497,14 +497,14 @@ LABEL_32:
 
       v19 = 0;
 LABEL_77:
-      v35 = self;
+      selfCopy6 = self;
       goto LABEL_52;
     }
   }
 
   v19 = 0;
 LABEL_33:
-  v21 = [v5 objectForKeyedSubscript:@"aboveThreshold"];
+  v21 = [dictionaryCopy objectForKeyedSubscript:@"aboveThreshold"];
   if (!v21 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v22 = 0;
@@ -532,19 +532,19 @@ LABEL_33:
 
     v22 = 0;
 LABEL_67:
-    v35 = self;
+    selfCopy6 = self;
     goto LABEL_51;
   }
 
   v22 = v21;
 LABEL_36:
-  v23 = [v5 objectForKeyedSubscript:@"latestStrongTimeStamp"];
+  v23 = [dictionaryCopy objectForKeyedSubscript:@"latestStrongTimeStamp"];
   if (!v23 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v24 = 0;
 LABEL_49:
-    v35 = -[BMDeviceCellularAvailabilityStatus initWithTimeStamp:deviceType:deviceRegistrationStatus:previousDeviceRegistrationStatus:aboveThreshold:latestStrongTimeStamp:](self, "initWithTimeStamp:deviceType:deviceRegistrationStatus:previousDeviceRegistrationStatus:aboveThreshold:latestStrongTimeStamp:", v65, [v64 intValue], objc_msgSend(v63, "intValue"), objc_msgSend(v19, "intValue"), v22, v24);
-    p_isa = &v35->super.super.isa;
+    selfCopy6 = -[BMDeviceCellularAvailabilityStatus initWithTimeStamp:deviceType:deviceRegistrationStatus:previousDeviceRegistrationStatus:aboveThreshold:latestStrongTimeStamp:](self, "initWithTimeStamp:deviceType:deviceRegistrationStatus:previousDeviceRegistrationStatus:aboveThreshold:latestStrongTimeStamp:", v65, [v64 intValue], objc_msgSend(v63, "intValue"), objc_msgSend(v19, "intValue"), v22, v24);
+    p_isa = &selfCopy6->super.super.isa;
     goto LABEL_50;
   }
 
@@ -600,7 +600,7 @@ LABEL_43:
   }
 
 LABEL_46:
-  v35 = self;
+  selfCopy6 = self;
 LABEL_50:
 
 LABEL_51:
@@ -621,14 +621,14 @@ LABEL_55:
 {
   v3 = objc_opt_new();
   [(BMDeviceCellularAvailabilityStatus *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v10 = a3;
+  toCopy = to;
   if (self->_hasRaw_timeStamp)
   {
     raw_timeStamp = self->_raw_timeStamp;
@@ -654,9 +654,9 @@ LABEL_55:
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v52.receiver = self;
   v52.super_class = BMDeviceCellularAvailabilityStatus;
   v5 = [(BMEventBase *)&v52 init];
@@ -665,12 +665,12 @@ LABEL_55:
     goto LABEL_92;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -681,18 +681,18 @@ LABEL_55:
       while (1)
       {
         LOBYTE(v53) = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v53 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v53 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (v53 & 0x7F) << v7;
@@ -710,9 +710,9 @@ LABEL_55:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         break;
       }
@@ -724,18 +724,18 @@ LABEL_16:
         {
           v5->_hasRaw_latestStrongTimeStamp = 1;
           v53 = 0;
-          v30 = [v4 position] + 8;
-          if (v30 >= [v4 position] && (v31 = objc_msgSend(v4, "position") + 8, v31 <= objc_msgSend(v4, "length")))
+          v30 = [fromCopy position] + 8;
+          if (v30 >= [fromCopy position] && (v31 = objc_msgSend(fromCopy, "position") + 8, v31 <= objc_msgSend(fromCopy, "length")))
           {
-            v48 = [v4 data];
-            [v48 getBytes:&v53 range:{objc_msgSend(v4, "position"), 8}];
+            data2 = [fromCopy data];
+            [data2 getBytes:&v53 range:{objc_msgSend(fromCopy, "position"), 8}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 8}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 8}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v46 = v53;
@@ -752,18 +752,18 @@ LABEL_16:
           while (1)
           {
             LOBYTE(v53) = 0;
-            v40 = [v4 position] + 1;
-            if (v40 >= [v4 position] && (v41 = objc_msgSend(v4, "position") + 1, v41 <= objc_msgSend(v4, "length")))
+            v40 = [fromCopy position] + 1;
+            if (v40 >= [fromCopy position] && (v41 = objc_msgSend(fromCopy, "position") + 1, v41 <= objc_msgSend(fromCopy, "length")))
             {
-              v42 = [v4 data];
-              [v42 getBytes:&v53 range:{objc_msgSend(v4, "position"), 1}];
+              data3 = [fromCopy data];
+              [data3 getBytes:&v53 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v39 |= (v53 & 0x7F) << v37;
@@ -781,7 +781,7 @@ LABEL_16:
             }
           }
 
-          v43 = (v39 != 0) & ~[v4 hasError];
+          v43 = (v39 != 0) & ~[fromCopy hasError];
 LABEL_83:
           v5->_aboveThreshold = v43;
           goto LABEL_89;
@@ -804,18 +804,18 @@ LABEL_49:
         while (1)
         {
           LOBYTE(v53) = 0;
-          v25 = [v4 position] + 1;
-          if (v25 >= [v4 position] && (v26 = objc_msgSend(v4, "position") + 1, v26 <= objc_msgSend(v4, "length")))
+          v25 = [fromCopy position] + 1;
+          if (v25 >= [fromCopy position] && (v26 = objc_msgSend(fromCopy, "position") + 1, v26 <= objc_msgSend(fromCopy, "length")))
           {
-            v27 = [v4 data];
-            [v27 getBytes:&v53 range:{objc_msgSend(v4, "position"), 1}];
+            data4 = [fromCopy data];
+            [data4 getBytes:&v53 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v18 |= (v53 & 0x7F) << v23;
@@ -832,7 +832,7 @@ LABEL_49:
           }
         }
 
-        if (([v4 hasError] & 1) != 0 || v18 > 4)
+        if (([fromCopy hasError] & 1) != 0 || v18 > 4)
         {
 LABEL_75:
           LODWORD(v18) = 0;
@@ -848,18 +848,18 @@ LABEL_75:
           case 1:
             v5->_hasRaw_timeStamp = 1;
             v53 = 0;
-            v28 = [v4 position] + 8;
-            if (v28 >= [v4 position] && (v29 = objc_msgSend(v4, "position") + 8, v29 <= objc_msgSend(v4, "length")))
+            v28 = [fromCopy position] + 8;
+            if (v28 >= [fromCopy position] && (v29 = objc_msgSend(fromCopy, "position") + 8, v29 <= objc_msgSend(fromCopy, "length")))
             {
-              v45 = [v4 data];
-              [v45 getBytes:&v53 range:{objc_msgSend(v4, "position"), 8}];
+              data5 = [fromCopy data];
+              [data5 getBytes:&v53 range:{objc_msgSend(fromCopy, "position"), 8}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 8}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 8}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v46 = v53;
@@ -874,18 +874,18 @@ LABEL_88:
             while (1)
             {
               LOBYTE(v53) = 0;
-              v34 = [v4 position] + 1;
-              if (v34 >= [v4 position] && (v35 = objc_msgSend(v4, "position") + 1, v35 <= objc_msgSend(v4, "length")))
+              v34 = [fromCopy position] + 1;
+              if (v34 >= [fromCopy position] && (v35 = objc_msgSend(fromCopy, "position") + 1, v35 <= objc_msgSend(fromCopy, "length")))
               {
-                v36 = [v4 data];
-                [v36 getBytes:&v53 range:{objc_msgSend(v4, "position"), 1}];
+                data6 = [fromCopy data];
+                [data6 getBytes:&v53 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-                [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+                [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
               }
 
               else
               {
-                [v4 _setError];
+                [fromCopy _setError];
               }
 
               v18 |= (v53 & 0x7F) << v32;
@@ -902,7 +902,7 @@ LABEL_88:
               }
             }
 
-            if (([v4 hasError] & 1) != 0 || v18 > 2)
+            if (([fromCopy hasError] & 1) != 0 || v18 > 2)
             {
 LABEL_79:
               LODWORD(v18) = 0;
@@ -917,18 +917,18 @@ LABEL_79:
             while (1)
             {
               LOBYTE(v53) = 0;
-              v19 = [v4 position] + 1;
-              if (v19 >= [v4 position] && (v20 = objc_msgSend(v4, "position") + 1, v20 <= objc_msgSend(v4, "length")))
+              v19 = [fromCopy position] + 1;
+              if (v19 >= [fromCopy position] && (v20 = objc_msgSend(fromCopy, "position") + 1, v20 <= objc_msgSend(fromCopy, "length")))
               {
-                v21 = [v4 data];
-                [v21 getBytes:&v53 range:{objc_msgSend(v4, "position"), 1}];
+                data7 = [fromCopy data];
+                [data7 getBytes:&v53 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-                [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+                [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
               }
 
               else
               {
-                [v4 _setError];
+                [fromCopy _setError];
               }
 
               v18 |= (v53 & 0x7F) << v16;
@@ -945,7 +945,7 @@ LABEL_79:
               }
             }
 
-            if (([v4 hasError] & 1) != 0 || v18 > 4)
+            if (([fromCopy hasError] & 1) != 0 || v18 > 4)
             {
 LABEL_71:
               LODWORD(v18) = 0;
@@ -960,13 +960,13 @@ LABEL_71:
 
       *(&v5->super.super.isa + v44) = v18;
 LABEL_89:
-      v49 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v49 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_91:
     v50 = 0;
@@ -984,32 +984,32 @@ LABEL_92:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMDeviceCellularAvailabilityStatus *)self timeStamp];
+  timeStamp = [(BMDeviceCellularAvailabilityStatus *)self timeStamp];
   v5 = BMDeviceCellularAvailabilityStatusDeviceTypeAsString([(BMDeviceCellularAvailabilityStatus *)self deviceType]);
   v6 = BMDeviceCellularAvailabilityStatusStateAsString([(BMDeviceCellularAvailabilityStatus *)self deviceRegistrationStatus]);
   v7 = BMDeviceCellularAvailabilityStatusStateAsString([(BMDeviceCellularAvailabilityStatus *)self previousDeviceRegistrationStatus]);
   v8 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMDeviceCellularAvailabilityStatus aboveThreshold](self, "aboveThreshold")}];
-  v9 = [(BMDeviceCellularAvailabilityStatus *)self latestStrongTimeStamp];
-  v10 = [v3 initWithFormat:@"BMDeviceCellularAvailabilityStatus with timeStamp: %@, deviceType: %@, deviceRegistrationStatus: %@, previousDeviceRegistrationStatus: %@, aboveThreshold: %@, latestStrongTimeStamp: %@", v4, v5, v6, v7, v8, v9];
+  latestStrongTimeStamp = [(BMDeviceCellularAvailabilityStatus *)self latestStrongTimeStamp];
+  v10 = [v3 initWithFormat:@"BMDeviceCellularAvailabilityStatus with timeStamp: %@, deviceType: %@, deviceRegistrationStatus: %@, previousDeviceRegistrationStatus: %@, aboveThreshold: %@, latestStrongTimeStamp: %@", timeStamp, v5, v6, v7, v8, latestStrongTimeStamp];
 
   return v10;
 }
 
-- (BMDeviceCellularAvailabilityStatus)initWithTimeStamp:(id)a3 deviceType:(int)a4 deviceRegistrationStatus:(int)a5 previousDeviceRegistrationStatus:(int)a6 aboveThreshold:(id)a7 latestStrongTimeStamp:(id)a8
+- (BMDeviceCellularAvailabilityStatus)initWithTimeStamp:(id)stamp deviceType:(int)type deviceRegistrationStatus:(int)status previousDeviceRegistrationStatus:(int)registrationStatus aboveThreshold:(id)threshold latestStrongTimeStamp:(id)timeStamp
 {
-  v14 = a3;
-  v15 = a7;
-  v16 = a8;
+  stampCopy = stamp;
+  thresholdCopy = threshold;
+  timeStampCopy = timeStamp;
   v21.receiver = self;
   v21.super_class = BMDeviceCellularAvailabilityStatus;
   v17 = [(BMEventBase *)&v21 init];
   if (v17)
   {
     v17->_dataVersion = [objc_opt_class() latestDataVersion];
-    if (v14)
+    if (stampCopy)
     {
       v17->_hasRaw_timeStamp = 1;
-      [v14 timeIntervalSince1970];
+      [stampCopy timeIntervalSince1970];
     }
 
     else
@@ -1019,13 +1019,13 @@ LABEL_92:
     }
 
     v17->_raw_timeStamp = v18;
-    v17->_deviceType = a4;
-    v17->_deviceRegistrationStatus = a5;
-    v17->_previousDeviceRegistrationStatus = a6;
-    if (v15)
+    v17->_deviceType = type;
+    v17->_deviceRegistrationStatus = status;
+    v17->_previousDeviceRegistrationStatus = registrationStatus;
+    if (thresholdCopy)
     {
       v17->_hasAboveThreshold = 1;
-      v17->_aboveThreshold = [v15 BOOLValue];
+      v17->_aboveThreshold = [thresholdCopy BOOLValue];
     }
 
     else
@@ -1034,10 +1034,10 @@ LABEL_92:
       v17->_aboveThreshold = 0;
     }
 
-    if (v16)
+    if (timeStampCopy)
     {
       v17->_hasRaw_latestStrongTimeStamp = 1;
-      [v16 timeIntervalSince1970];
+      [timeStampCopy timeIntervalSince1970];
     }
 
     else
@@ -1074,9 +1074,9 @@ LABEL_92:
   return v8;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -1084,8 +1084,8 @@ LABEL_92:
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMDeviceCellularAvailabilityStatus alloc] initByReadFrom:v7];
     v4 = v8;

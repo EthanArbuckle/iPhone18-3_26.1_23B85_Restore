@@ -15,9 +15,9 @@
   v8 = *MEMORY[0x277CBE7A8];
   v35[0] = *MEMORY[0x277CBE7A8];
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v35 count:1];
-  v23 = a1;
+  selfCopy = self;
   v22 = v7;
-  v10 = [a1 contentsOfDirectoryAtURL:v7 includingPropertiesForKeys:v9 options:5 error:0];
+  v10 = [self contentsOfDirectoryAtURL:v7 includingPropertiesForKeys:v9 options:5 error:0];
 
   v28 = 0u;
   v29 = 0u;
@@ -47,7 +47,7 @@
         if (v18 <= 0.0)
         {
           v24 = 0;
-          [v23 removeItemAtURL:v16 error:&v24];
+          [selfCopy removeItemAtURL:v16 error:&v24];
           v19 = v24;
           if (v19)
           {
@@ -84,7 +84,7 @@
   v8 = [MEMORY[0x277CBEBC0] fileURLWithPath:v6];
   v38[0] = *MEMORY[0x277CBE7A8];
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v38 count:1];
-  v10 = [a1 contentsOfDirectoryAtURL:v8 includingPropertiesForKeys:v9 options:5 error:0];
+  v10 = [self contentsOfDirectoryAtURL:v8 includingPropertiesForKeys:v9 options:5 error:0];
 
   if ([v10 count] >= a4)
   {
@@ -115,7 +115,7 @@
 
           v16 = *(*(&v29 + 1) + 8 * i);
           v28 = 0;
-          [a1 removeItemAtURL:v16 error:&v28];
+          [self removeItemAtURL:v16 error:&v28];
           v17 = v28;
           if (v17)
           {
@@ -166,7 +166,7 @@
 {
   v15 = *MEMORY[0x277D85DE8];
   v2 = [MEMORY[0x277CBEBC0] fileURLWithPath:?];
-  v3 = [a1 contentsOfDirectoryAtURL:v2 includingPropertiesForKeys:0 options:4 error:0];
+  v3 = [self contentsOfDirectoryAtURL:v2 includingPropertiesForKeys:0 options:4 error:0];
 
   v12 = 0u;
   v13 = 0u;
@@ -188,7 +188,7 @@
           objc_enumerationMutation(v4);
         }
 
-        [a1 removeItemAtURL:*(*(&v10 + 1) + 8 * v8++) error:{0, v10}];
+        [self removeItemAtURL:*(*(&v10 + 1) + 8 * v8++) error:{0, v10}];
       }
 
       while (v6 != v8);
@@ -211,15 +211,15 @@
   v7 = 0x277CBE000uLL;
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v44 count:1];
   v37 = 0;
-  v9 = [a1 contentsOfDirectoryAtURL:v5 includingPropertiesForKeys:v8 options:4 error:&v37];
+  v9 = [self contentsOfDirectoryAtURL:v5 includingPropertiesForKeys:v8 options:4 error:&v37];
   v10 = v37;
 
   if (v10)
   {
-    v11 = [v10 code];
+    code = [v10 code];
     v12 = VSGetLogDefault();
     v13 = v12;
-    if (v11 == 260)
+    if (code == 260)
     {
       if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
       {
@@ -285,9 +285,9 @@ LABEL_20:
         v23 = VSGetLogDefault();
         if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
         {
-          v24 = [v19 path];
+          path = [v19 path];
           *buf = 138412546;
-          v41 = v24;
+          v41 = path;
           v42 = 2112;
           v43 = v10;
           _os_log_error_impl(&dword_272850000, v23, OS_LOG_TYPE_ERROR, "Unable to get URL: %@, URL resources: %@", buf, 0x16u);

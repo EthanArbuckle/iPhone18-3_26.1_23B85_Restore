@@ -1,5 +1,5 @@
 @interface _NSMetadataQueryResultGroupArray
-- (id)objectAtIndex:(unint64_t)a3;
+- (id)objectAtIndex:(unint64_t)index;
 - (void)dealloc;
 @end
 
@@ -15,17 +15,17 @@
   [(_NSMetadataQueryResultGroupArray *)&v3 dealloc];
 }
 
-- (id)objectAtIndex:(unint64_t)a3
+- (id)objectAtIndex:(unint64_t)index
 {
-  if ([self->_group resultCount] <= a3)
+  if ([self->_group resultCount] <= index)
   {
-    v8 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: index (%ld) out of bounds (%ld)", _NSMethodExceptionProem(self, a2), a3, objc_msgSend(self->_group, "resultCount")), 0}];
+    v8 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: index (%ld) out of bounds (%ld)", _NSMethodExceptionProem(self, a2), index, objc_msgSend(self->_group, "resultCount")), 0}];
     objc_exception_throw(v8);
   }
 
   group = self->_group;
 
-  return [group resultAtIndex:a3];
+  return [group resultAtIndex:index];
 }
 
 @end

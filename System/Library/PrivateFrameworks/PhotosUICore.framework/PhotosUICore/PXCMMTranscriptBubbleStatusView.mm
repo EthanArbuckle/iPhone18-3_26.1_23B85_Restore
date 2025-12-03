@@ -1,14 +1,14 @@
 @interface PXCMMTranscriptBubbleStatusView
-- (CGSize)_performLayoutInSize:(CGSize)a3 minimizingSize:(BOOL)a4 updateSubviewFrames:(BOOL)a5;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PXCMMTranscriptBubbleStatusView)initWithCoder:(id)a3;
-- (PXCMMTranscriptBubbleStatusView)initWithFrame:(CGRect)a3;
+- (CGSize)_performLayoutInSize:(CGSize)size minimizingSize:(BOOL)minimizingSize updateSubviewFrames:(BOOL)frames;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PXCMMTranscriptBubbleStatusView)initWithCoder:(id)coder;
+- (PXCMMTranscriptBubbleStatusView)initWithFrame:(CGRect)frame;
 - (UIEdgeInsets)bubbleSafeAreaInsets;
 - (void)_updateActivityIndicator;
 - (void)_updateRoundedCornerOverlayView;
 - (void)layoutSubviews;
-- (void)setShowsActivityIndicator:(BOOL)a3;
-- (void)setSpec:(id)a3;
+- (void)setShowsActivityIndicator:(BOOL)indicator;
+- (void)setSpec:(id)spec;
 @end
 
 @implementation PXCMMTranscriptBubbleStatusView
@@ -87,7 +87,7 @@ void __66__PXCMMTranscriptBubbleStatusView__updateRoundedCornerOverlayView__bloc
   }
 }
 
-- (CGSize)_performLayoutInSize:(CGSize)a3 minimizingSize:(BOOL)a4 updateSubviewFrames:(BOOL)a5
+- (CGSize)_performLayoutInSize:(CGSize)size minimizingSize:(BOOL)minimizingSize updateSubviewFrames:(BOOL)frames
 {
   [(PXUpdater *)self->_updater updateIfNeeded];
   [(PXCMMTranscriptBubbleStatusView *)self bubbleSafeAreaInsets];
@@ -104,10 +104,10 @@ void __66__PXCMMTranscriptBubbleStatusView__updateRoundedCornerOverlayView__bloc
   [(PXCMMTranscriptBubbleStatusView *)self _performLayoutInSize:1 minimizingSize:1 updateSubviewFrames:v3, v4];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  [(PXCMMTranscriptBubbleStatusView *)self _performLayoutInSize:0 minimizingSize:0 updateSubviewFrames:a3.width, a3.height];
+  width = fits.width;
+  [(PXCMMTranscriptBubbleStatusView *)self _performLayoutInSize:0 minimizingSize:0 updateSubviewFrames:fits.width, fits.height];
   v6 = v5;
   spec = self->_spec;
   if (spec)
@@ -128,36 +128,36 @@ void __66__PXCMMTranscriptBubbleStatusView__updateRoundedCornerOverlayView__bloc
   return result;
 }
 
-- (void)setShowsActivityIndicator:(BOOL)a3
+- (void)setShowsActivityIndicator:(BOOL)indicator
 {
-  if (self->_showsActivityIndicator != a3)
+  if (self->_showsActivityIndicator != indicator)
   {
-    self->_showsActivityIndicator = a3;
+    self->_showsActivityIndicator = indicator;
     [(PXUpdater *)self->_updater setNeedsUpdateOf:sel__updateActivityIndicator];
   }
 }
 
-- (void)setSpec:(id)a3
+- (void)setSpec:(id)spec
 {
-  v5 = a3;
-  if (self->_spec != v5)
+  specCopy = spec;
+  if (self->_spec != specCopy)
   {
-    v8 = v5;
-    objc_storeStrong(&self->_spec, a3);
-    v6 = [(PXCMMTranscriptBubbleStatusView *)self spec];
-    v7 = [v6 bubbleBackgroundColor];
-    [(PXCMMTranscriptBubbleStatusView *)self setBackgroundColor:v7];
+    v8 = specCopy;
+    objc_storeStrong(&self->_spec, spec);
+    spec = [(PXCMMTranscriptBubbleStatusView *)self spec];
+    bubbleBackgroundColor = [spec bubbleBackgroundColor];
+    [(PXCMMTranscriptBubbleStatusView *)self setBackgroundColor:bubbleBackgroundColor];
 
     [(PXUpdater *)self->_updater setNeedsUpdateOf:sel__updateRoundedCornerOverlayView];
-    v5 = v8;
+    specCopy = v8;
   }
 }
 
-- (PXCMMTranscriptBubbleStatusView)initWithFrame:(CGRect)a3
+- (PXCMMTranscriptBubbleStatusView)initWithFrame:(CGRect)frame
 {
   v13.receiver = self;
   v13.super_class = PXCMMTranscriptBubbleStatusView;
-  v3 = [(PXCMMTranscriptBubbleStatusView *)&v13 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PXCMMTranscriptBubbleStatusView *)&v13 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [[off_1E7721940 alloc] initWithTarget:v3 needsUpdateSelector:sel_setNeedsLayout];
@@ -185,11 +185,11 @@ void __66__PXCMMTranscriptBubbleStatusView__updateRoundedCornerOverlayView__bloc
   return v3;
 }
 
-- (PXCMMTranscriptBubbleStatusView)initWithCoder:(id)a3
+- (PXCMMTranscriptBubbleStatusView)initWithCoder:(id)coder
 {
-  v5 = a3;
-  v6 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v6 handleFailureInMethod:a2 object:self file:@"PXCMMTranscriptBubbleStatusView.m" lineNumber:37 description:{@"%s is not available as initializer", "-[PXCMMTranscriptBubbleStatusView initWithCoder:]"}];
+  coderCopy = coder;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXCMMTranscriptBubbleStatusView.m" lineNumber:37 description:{@"%s is not available as initializer", "-[PXCMMTranscriptBubbleStatusView initWithCoder:]"}];
 
   abort();
 }

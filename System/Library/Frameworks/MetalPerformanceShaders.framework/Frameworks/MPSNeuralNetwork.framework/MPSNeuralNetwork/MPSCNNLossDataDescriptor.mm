@@ -1,6 +1,6 @@
 @interface MPSCNNLossDataDescriptor
 + (MPSCNNLossDataDescriptor)cnnLossDataDescriptorWithData:(NSData *)data layout:(MPSDataLayout)layout size:(MTLSize *)size;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
 - (void)dealloc;
 @end
@@ -49,14 +49,14 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  result = objc_msgSend_allocWithZone_(v5, v6, a3, v7, v8, v9, v10, v11);
+  result = objc_msgSend_allocWithZone_(v5, v6, zone, v7, v8, v9, v10, v11);
   if (result)
   {
     v19 = result;
-    v20 = objc_msgSend_copyWithZone_(self->_data, v13, a3, v14, v15, v16, v17, v18);
+    v20 = objc_msgSend_copyWithZone_(self->_data, v13, zone, v14, v15, v16, v17, v18);
     result = v19;
     *(v19 + 1) = v20;
     *(v19 + 2) = self->_layout;

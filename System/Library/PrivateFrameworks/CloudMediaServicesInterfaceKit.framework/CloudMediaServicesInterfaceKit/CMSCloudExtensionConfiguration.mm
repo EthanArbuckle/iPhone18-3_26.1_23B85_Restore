@@ -1,42 +1,42 @@
 @interface CMSCloudExtensionConfiguration
-+ (id)_configurationFromJWS:(id)a3 URL:(id)a4 parentNetworkActivity:(id)a5 keyID:(id)a6 publicKey:(id)a7 languageCode:(id)a8 error:(id *)a9;
-+ (void)configurationFromURL:(id)a3 forSession:(id)a4 usingAuth:(id)a5 authProvider:(id)a6 parentNetworkActivity:(id)a7 keyID:(id)a8 publicKey:(id)a9 URLSessionConfiguration:(id)a10 languageCode:(id)a11 completion:(id)a12;
++ (id)_configurationFromJWS:(id)s URL:(id)l parentNetworkActivity:(id)activity keyID:(id)d publicKey:(id)key languageCode:(id)code error:(id *)error;
++ (void)configurationFromURL:(id)l forSession:(id)session usingAuth:(id)auth authProvider:(id)provider parentNetworkActivity:(id)activity keyID:(id)d publicKey:(id)key URLSessionConfiguration:(id)self0 languageCode:(id)self1 completion:(id)self2;
 - (BOOL)isExpiringSoon;
 - (CMSCloudExtensionConfiguration)init;
-- (CMSCloudExtensionConfiguration)initWithDictionary:(id)a3 fromURL:(id)a4 parentNetworkActivity:(id)a5 languageCode:(id)a6;
-- (id)configForEndpoint:(id)a3;
-- (void)_configureEndpoint:(id)a3 withDictionary:(id)a4 headers:(id)a5;
+- (CMSCloudExtensionConfiguration)initWithDictionary:(id)dictionary fromURL:(id)l parentNetworkActivity:(id)activity languageCode:(id)code;
+- (id)configForEndpoint:(id)endpoint;
+- (void)_configureEndpoint:(id)endpoint withDictionary:(id)dictionary headers:(id)headers;
 @end
 
 @implementation CMSCloudExtensionConfiguration
 
-+ (id)_configurationFromJWS:(id)a3 URL:(id)a4 parentNetworkActivity:(id)a5 keyID:(id)a6 publicKey:(id)a7 languageCode:(id)a8 error:(id *)a9
++ (id)_configurationFromJWS:(id)s URL:(id)l parentNetworkActivity:(id)activity keyID:(id)d publicKey:(id)key languageCode:(id)code error:(id *)error
 {
-  v14 = a4;
-  v15 = a5;
-  v16 = a8;
-  v17 = a7;
-  v18 = a6;
-  v19 = a3;
-  v20 = [[CMSJSONWebSignature alloc] initWithJWSCompactEncodedString:v19 keyID:v18 publicKey:v17];
+  lCopy = l;
+  activityCopy = activity;
+  codeCopy = code;
+  keyCopy = key;
+  dCopy = d;
+  sCopy = s;
+  v20 = [[CMSJSONWebSignature alloc] initWithJWSCompactEncodedString:sCopy keyID:dCopy publicKey:keyCopy];
 
-  v21 = [(CMSJSONWebSignature *)v20 verificationError];
-  if (!v21)
+  verificationError = [(CMSJSONWebSignature *)v20 verificationError];
+  if (!verificationError)
   {
     v22 = MEMORY[0x277CCAAA0];
-    v23 = [(CMSJSONWebSignature *)v20 payload];
+    payload = [(CMSJSONWebSignature *)v20 payload];
     v28 = 0;
-    v24 = [v22 JSONObjectWithData:v23 options:0 error:&v28];
-    v21 = v28;
+    v24 = [v22 JSONObjectWithData:payload options:0 error:&v28];
+    verificationError = v28;
 
-    if (!v21)
+    if (!verificationError)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v25 = [[CMSCloudExtensionConfiguration alloc] initWithDictionary:v24 fromURL:v14 parentNetworkActivity:v15 languageCode:v16];
-        v21 = [(CMSCloudExtensionConfiguration *)v25 parsingError];
-        if (!v21)
+        v25 = [[CMSCloudExtensionConfiguration alloc] initWithDictionary:v24 fromURL:lCopy parentNetworkActivity:activityCopy languageCode:codeCopy];
+        verificationError = [(CMSCloudExtensionConfiguration *)v25 parsingError];
+        if (!verificationError)
         {
 
           goto LABEL_11;
@@ -45,17 +45,17 @@
 
       else
       {
-        v21 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.cloudextension.errors.configuration" code:0 userInfo:0];
+        verificationError = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.cloudextension.errors.configuration" code:0 userInfo:0];
       }
     }
   }
 
   v25 = 0;
-  if (a9 && v21)
+  if (error && verificationError)
   {
-    v26 = v21;
+    v26 = verificationError;
     v25 = 0;
-    *a9 = v21;
+    *error = verificationError;
   }
 
 LABEL_11:
@@ -63,22 +63,22 @@ LABEL_11:
   return v25;
 }
 
-+ (void)configurationFromURL:(id)a3 forSession:(id)a4 usingAuth:(id)a5 authProvider:(id)a6 parentNetworkActivity:(id)a7 keyID:(id)a8 publicKey:(id)a9 URLSessionConfiguration:(id)a10 languageCode:(id)a11 completion:(id)a12
++ (void)configurationFromURL:(id)l forSession:(id)session usingAuth:(id)auth authProvider:(id)provider parentNetworkActivity:(id)activity keyID:(id)d publicKey:(id)key URLSessionConfiguration:(id)self0 languageCode:(id)self1 completion:(id)self2
 {
   v76 = *MEMORY[0x277D85DE8];
-  v46 = a3;
-  v17 = a4;
-  v45 = a5;
-  v42 = a6;
-  v18 = a7;
-  v19 = a8;
-  v43 = a9;
-  v20 = a10;
-  v21 = a11;
-  v22 = a12;
-  if (v20)
+  lCopy = l;
+  sessionCopy = session;
+  authCopy = auth;
+  providerCopy = provider;
+  activityCopy = activity;
+  dCopy = d;
+  keyCopy = key;
+  configurationCopy = configuration;
+  codeCopy = code;
+  completionCopy = completion;
+  if (configurationCopy)
   {
-    [MEMORY[0x277CCAD30] sessionWithConfiguration:v20];
+    [MEMORY[0x277CCAD30] sessionWithConfiguration:configurationCopy];
   }
 
   else
@@ -86,14 +86,14 @@ LABEL_11:
     [MEMORY[0x277CCAD30] sharedSession];
   }
   v23 = ;
-  v24 = v17;
+  v24 = sessionCopy;
   v66 = 0;
   v67 = &v66;
   v68 = 0x3032000000;
   v69 = __Block_byref_object_copy_;
   v70 = __Block_byref_object_dispose_;
-  v71 = [[CMSNetworkActivity alloc] initWithLabel:3 parentActivity:v18];
-  v25 = CMSCreateCloudExtensionHTTPRequest(v46, v45, 0, v17);
+  v71 = [[CMSNetworkActivity alloc] initWithLabel:3 parentActivity:activityCopy];
+  v25 = CMSCreateCloudExtensionHTTPRequest(lCopy, authCopy, 0, sessionCopy);
   [v25 setValue:@"application/json" forHTTPHeaderField:@"Content-type"];
   [v25 setValue:@"application/jose" forHTTPHeaderField:@"Accept"];
   [v25 setCachePolicy:3];
@@ -101,20 +101,20 @@ LABEL_11:
   v56[1] = 3221225472;
   v56[2] = __175__CMSCloudExtensionConfiguration_configurationFromURL_forSession_usingAuth_authProvider_parentNetworkActivity_keyID_publicKey_URLSessionConfiguration_languageCode_completion___block_invoke;
   v56[3] = &unk_278DDC978;
-  v41 = v22;
+  v41 = completionCopy;
   v64 = v41;
   v65 = &v66;
-  v26 = v46;
+  v26 = lCopy;
   v57 = v26;
-  v39 = v18;
+  v39 = activityCopy;
   v58 = v39;
-  v40 = v19;
+  v40 = dCopy;
   v59 = v40;
-  v44 = v43;
+  v44 = keyCopy;
   v60 = v44;
-  v27 = v21;
+  v27 = codeCopy;
   v61 = v27;
-  v47 = v20;
+  v47 = configurationCopy;
   v62 = v47;
   v28 = v23;
   v63 = v28;
@@ -131,7 +131,7 @@ LABEL_11:
   v50 = v32;
   v33 = v28;
   v51 = v33;
-  v34 = v42;
+  v34 = providerCopy;
   v52 = v34;
   v35 = v24;
   v53 = v35;
@@ -551,14 +551,14 @@ void __175__CMSCloudExtensionConfiguration_configurationFromURL_forSession_using
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_configureEndpoint:(id)a3 withDictionary:(id)a4 headers:(id)a5
+- (void)_configureEndpoint:(id)endpoint withDictionary:(id)dictionary headers:(id)headers
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
-  v11 = [v8 componentsSeparatedByString:@"/"];
-  v12 = [v11 lastObject];
-  v13 = [v10 cmsOptionalDictionaryForKey:v12];
+  endpointCopy = endpoint;
+  headersCopy = headers;
+  dictionaryCopy = dictionary;
+  v11 = [endpointCopy componentsSeparatedByString:@"/"];
+  lastObject = [v11 lastObject];
+  v13 = [dictionaryCopy cmsOptionalDictionaryForKey:lastObject];
 
   if (v13)
   {
@@ -566,7 +566,7 @@ void __175__CMSCloudExtensionConfiguration_configurationFromURL_forSession_using
     if (!v14)
     {
       v15 = [v13 mutableCopy];
-      [v15 setObject:v8 forKeyedSubscript:@"url"];
+      [v15 setObject:endpointCopy forKeyedSubscript:@"url"];
       v16 = [v15 copy];
 
       v13 = v16;
@@ -587,18 +587,18 @@ void __175__CMSCloudExtensionConfiguration_configurationFromURL_forSession_using
       v18 = objc_opt_class();
     }
 
-    if ([v8 isEqualToString:@"queues/contentProtectionKey"])
+    if ([endpointCopy isEqualToString:@"queues/contentProtectionKey"])
     {
       v18 = objc_opt_class();
     }
 
     v21 = [v18 alloc];
-    v22 = [(CMSCloudExtensionConfiguration *)self baseURL];
-    v23 = [v21 initWithDictionary:v13 endpoint:v8 baseURL:v22 groupHeaders:v9];
+    baseURL = [(CMSCloudExtensionConfiguration *)self baseURL];
+    v23 = [v21 initWithDictionary:v13 endpoint:endpointCopy baseURL:baseURL groupHeaders:headersCopy];
 
     if (v23)
     {
-      [(NSMutableDictionary *)self->_endpointConfigs setObject:v23 forKey:v8];
+      [(NSMutableDictionary *)self->_endpointConfigs setObject:v23 forKey:endpointCopy];
     }
   }
 }
@@ -611,33 +611,33 @@ void __175__CMSCloudExtensionConfiguration_configurationFromURL_forSession_using
   return v4;
 }
 
-- (CMSCloudExtensionConfiguration)initWithDictionary:(id)a3 fromURL:(id)a4 parentNetworkActivity:(id)a5 languageCode:(id)a6
+- (CMSCloudExtensionConfiguration)initWithDictionary:(id)dictionary fromURL:(id)l parentNetworkActivity:(id)activity languageCode:(id)code
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  dictionaryCopy = dictionary;
+  lCopy = l;
+  activityCopy = activity;
+  codeCopy = code;
   v51.receiver = self;
   v51.super_class = CMSCloudExtensionConfiguration;
   v15 = [(CMSCloudExtensionConfiguration *)&v51 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_configDictionary, a3);
-    objc_storeStrong(&v16->_configUrl, a4);
-    v17 = [v11 cmsOptionalStringForKey:@"version"];
+    objc_storeStrong(&v15->_configDictionary, dictionary);
+    objc_storeStrong(&v16->_configUrl, l);
+    v17 = [dictionaryCopy cmsOptionalStringForKey:@"version"];
     version = v16->_version;
     v16->_version = v17;
 
-    objc_storeStrong(&v16->_parentNetworkActivity, a5);
-    objc_storeStrong(&v16->_languageCode, a6);
+    objc_storeStrong(&v16->_parentNetworkActivity, activity);
+    objc_storeStrong(&v16->_languageCode, code);
     v19 = [(NSString *)v16->_version componentsSeparatedByString:@"."];
     if ([v19 count])
     {
       v20 = [v19 objectAtIndexedSubscript:0];
-      v21 = [v20 integerValue];
+      integerValue = [v20 integerValue];
 
-      if (v21 >= 2)
+      if (integerValue >= 2)
       {
         v22 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.cloudextension.errors.configuration" code:1 userInfo:0];
         parsingError = v16->_parsingError;
@@ -661,15 +661,15 @@ LABEL_19:
     endpointConfigs = v16->_endpointConfigs;
     v16->_endpointConfigs = v27;
 
-    v29 = [v11 cmsOptionalURLForKey:@"url" relativeToURL:0];
+    v29 = [dictionaryCopy cmsOptionalURLForKey:@"url" relativeToURL:0];
     v30 = v29;
     if (v29)
     {
-      v31 = [v29 baseURL];
+      baseURL = [v29 baseURL];
 
-      if (!v31)
+      if (!baseURL)
       {
-        v32 = [v11 cmsOptionalURLForKey:@"url" relativeToURL:v12];
+        v32 = [dictionaryCopy cmsOptionalURLForKey:@"url" relativeToURL:lCopy];
 
         v30 = v32;
       }
@@ -679,9 +679,9 @@ LABEL_19:
 
     if (!v16->_baseURL)
     {
-      v33 = [v12 baseURL];
+      baseURL2 = [lCopy baseURL];
       baseURL = v16->_baseURL;
-      v16->_baseURL = v33;
+      v16->_baseURL = baseURL2;
 
       if (!v16->_baseURL)
       {
@@ -694,11 +694,11 @@ LABEL_19:
       }
     }
 
-    v35 = [v11 cmsOptionalDictionaryForKey:{@"hdr", v14, v13}];
+    v35 = [dictionaryCopy cmsOptionalDictionaryForKey:{@"hdr", codeCopy, activityCopy}];
     globalHeaders = v16->_globalHeaders;
     v16->_globalHeaders = v35;
 
-    v37 = [v11 cmsOptionalDictionaryForKey:@"intent"];
+    v37 = [dictionaryCopy cmsOptionalDictionaryForKey:@"intent"];
     v38 = _CMSILogingFacility();
     if (os_log_type_enabled(v38, OS_LOG_TYPE_DEBUG))
     {
@@ -709,7 +709,7 @@ LABEL_19:
     [(CMSCloudExtensionConfiguration *)v16 _configureEndpoint:@"intent/playMedia" withDictionary:v37 headers:v39];
     [(CMSCloudExtensionConfiguration *)v16 _configureEndpoint:@"intent/addMedia" withDictionary:v37 headers:v39];
     [(CMSCloudExtensionConfiguration *)v16 _configureEndpoint:@"intent/updateMediaAffinity" withDictionary:v37 headers:v39];
-    v40 = [v11 cmsOptionalDictionaryForKey:@"media"];
+    v40 = [dictionaryCopy cmsOptionalDictionaryForKey:@"media"];
     v41 = [v40 cmsOptionalDictionaryForKey:@"queues"];
     v42 = _CMSILogingFacility();
     if (os_log_type_enabled(v42, OS_LOG_TYPE_DEBUG))
@@ -723,8 +723,8 @@ LABEL_19:
     [(CMSCloudExtensionConfiguration *)v16 _configureEndpoint:@"queues/contentProtectionKey" withDictionary:v41 headers:v43];
     [(CMSCloudExtensionConfiguration *)v16 _configureEndpoint:@"queues/contentPlaybackFailure" withDictionary:v41 headers:v43];
 
-    v14 = v49;
-    v13 = v50;
+    codeCopy = v49;
+    activityCopy = v50;
   }
 
   v44 = v16;
@@ -733,62 +733,62 @@ LABEL_20:
   return v16;
 }
 
-- (id)configForEndpoint:(id)a3
+- (id)configForEndpoint:(id)endpoint
 {
-  v4 = [(NSMutableDictionary *)self->_endpointConfigs objectForKey:a3];
+  v4 = [(NSMutableDictionary *)self->_endpointConfigs objectForKey:endpoint];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 request];
+    request = [v4 request];
 
-    if (!v6)
+    if (!request)
     {
-      v7 = [v5 endpointURL];
+      endpointURL = [v5 endpointURL];
 
-      if (!v7)
+      if (!endpointURL)
       {
         goto LABEL_9;
       }
 
-      v8 = [v5 endpointURL];
-      v9 = CMSCreateCloudExtensionHTTPRequest(v8, 0, 4, 0);
+      endpointURL2 = [v5 endpointURL];
+      v9 = CMSCreateCloudExtensionHTTPRequest(endpointURL2, 0, 4, 0);
 
-      v10 = [(CMSCloudExtensionConfiguration *)self languageCode];
-      if (!v10)
+      languageCode = [(CMSCloudExtensionConfiguration *)self languageCode];
+      if (!languageCode)
       {
-        v10 = CMSCloudExtensionLanguageCode();
+        languageCode = CMSCloudExtensionLanguageCode();
       }
 
-      [v9 setValue:v10 forHTTPHeaderField:@"Accept-Language"];
-      v11 = [(CMSCloudExtensionConfiguration *)self baseURL];
-      [v9 setMainDocumentURL:v11];
+      [v9 setValue:languageCode forHTTPHeaderField:@"Accept-Language"];
+      baseURL = [(CMSCloudExtensionConfiguration *)self baseURL];
+      [v9 setMainDocumentURL:baseURL];
 
       [v9 setNetworkServiceType:6];
       [v9 setHTTPShouldUsePipelining:1];
       [v9 setHTTPShouldHandleCookies:1];
-      v12 = [(CMSCloudExtensionConfiguration *)self globalHeaders];
-      applyHeaderOverrides(v12, v9);
+      globalHeaders = [(CMSCloudExtensionConfiguration *)self globalHeaders];
+      applyHeaderOverrides(globalHeaders, v9);
 
-      v13 = [v5 groupHeaders];
-      applyHeaderOverrides(v13, v9);
+      groupHeaders = [v5 groupHeaders];
+      applyHeaderOverrides(groupHeaders, v9);
 
-      v14 = [v5 headers];
-      applyHeaderOverrides(v14, v9);
+      headers = [v5 headers];
+      applyHeaderOverrides(headers, v9);
 
       [v5 setRequest:v9];
     }
 
-    v7 = v5;
+    endpointURL = v5;
   }
 
   else
   {
-    v7 = 0;
+    endpointURL = 0;
   }
 
 LABEL_9:
 
-  return v7;
+  return endpointURL;
 }
 
 - (BOOL)isExpiringSoon
@@ -796,8 +796,8 @@ LABEL_9:
   configExpiry = self->_configExpiry;
   if (configExpiry)
   {
-    v3 = [MEMORY[0x277CBEAA8] date];
-    [(NSDate *)configExpiry timeIntervalSinceDate:v3];
+    date = [MEMORY[0x277CBEAA8] date];
+    [(NSDate *)configExpiry timeIntervalSinceDate:date];
     LOBYTE(configExpiry) = v4 > -1800.0;
   }
 

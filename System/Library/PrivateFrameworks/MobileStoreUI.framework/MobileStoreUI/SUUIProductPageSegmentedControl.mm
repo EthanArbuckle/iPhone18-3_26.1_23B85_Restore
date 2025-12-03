@@ -1,14 +1,14 @@
 @interface SUUIProductPageSegmentedControl
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 @end
 
 @implementation SUUIProductPageSegmentedControl
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
   if ([(SUUIProductPageSegmentedControl *)self isEnabled]&& ![(SUUIProductPageSegmentedControl *)self isHidden])
   {
     [(SUUIProductPageSegmentedControl *)self bounds];
@@ -20,22 +20,22 @@
     v18.y = y;
     if (CGRectContainsPoint(v19, v18))
     {
-      v13 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v13 = 0;
+      selfCopy = 0;
     }
 
-    v8 = v13;
+    v8 = selfCopy;
   }
 
   else
   {
     v16.receiver = self;
     v16.super_class = SUUIProductPageSegmentedControl;
-    v8 = [(SUUIProductPageSegmentedControl *)&v16 hitTest:v7 withEvent:x, y];
+    v8 = [(SUUIProductPageSegmentedControl *)&v16 hitTest:eventCopy withEvent:x, y];
   }
 
   v14 = v8;

@@ -1,20 +1,20 @@
 @interface _INPBActivateCarSignalIntentResponse
-- (BOOL)isEqual:(id)a3;
-- (_INPBActivateCarSignalIntentResponse)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBActivateCarSignalIntentResponse)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (int)StringAsSignals:(id)a3;
-- (void)addSignals:(int)a3;
+- (int)StringAsSignals:(id)signals;
+- (void)addSignals:(int)signals;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBActivateCarSignalIntentResponse
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_signals.count)
   {
     v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:{-[_INPBActivateCarSignalIntentResponse signalsCount](self, "signalsCount")}];
@@ -47,16 +47,16 @@
       while (v5 < [(_INPBActivateCarSignalIntentResponse *)self signalsCount]);
     }
 
-    [v3 setObject:v4 forKeyedSubscript:@"signals"];
+    [dictionary setObject:v4 forKeyedSubscript:@"signals"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v3 = a3;
-  if ([v3 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
     IsEqual = PBRepeatedInt32IsEqual();
   }
@@ -69,35 +69,35 @@
   return IsEqual;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v3 = [[_INPBActivateCarSignalIntentResponse allocWithZone:?]];
   PBRepeatedInt32Copy();
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBActivateCarSignalIntentResponse *)self data];
+  coderCopy = coder;
+  data = [(_INPBActivateCarSignalIntentResponse *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBActivateCarSignalIntentResponse)initWithCoder:(id)a3
+- (_INPBActivateCarSignalIntentResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBActivateCarSignalIntentResponse *)self initWithData:v6];
+    self = [(_INPBActivateCarSignalIntentResponse *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (void)dealloc
@@ -108,7 +108,7 @@
   [(_INPBActivateCarSignalIntentResponse *)&v3 dealloc];
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   p_signals = &self->_signals;
   if (self->_signals.count)
@@ -125,13 +125,13 @@
   }
 }
 
-- (int)StringAsSignals:(id)a3
+- (int)StringAsSignals:(id)signals
 {
-  v3 = a3;
+  signalsCopy = signals;
   v4 = 1;
-  if (([v3 isEqualToString:@"AUDIBLE"] & 1) == 0)
+  if (([signalsCopy isEqualToString:@"AUDIBLE"] & 1) == 0)
   {
-    if ([v3 isEqualToString:@"VISIBLE"])
+    if ([signalsCopy isEqualToString:@"VISIBLE"])
     {
       v4 = 2;
     }
@@ -145,9 +145,9 @@
   return v4;
 }
 
-- (void)addSignals:(int)a3
+- (void)addSignals:(int)signals
 {
-  if (a3 != 0x7FFFFFFF)
+  if (signals != 0x7FFFFFFF)
   {
     PBRepeatedInt32Add();
   }

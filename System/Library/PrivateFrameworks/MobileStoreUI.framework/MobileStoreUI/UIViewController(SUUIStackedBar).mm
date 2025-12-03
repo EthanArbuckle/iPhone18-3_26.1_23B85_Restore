@@ -7,7 +7,7 @@
 
 - (double)SUUIStackedBarSplit
 {
-  v1 = objc_getAssociatedObject(a1, "com.apple.iTunesStoreUI.stackedBarSplit");
+  v1 = objc_getAssociatedObject(self, "com.apple.iTunesStoreUI.stackedBarSplit");
   [v1 floatValue];
   v3 = v2;
 
@@ -17,7 +17,7 @@
 - (void)setSUUIStackedBarSplit:()SUUIStackedBar
 {
   v2 = [MEMORY[0x277CCABB0] numberWithDouble:?];
-  objc_setAssociatedObject(a1, "com.apple.iTunesStoreUI.stackedBarSplit", v2, 1);
+  objc_setAssociatedObject(self, "com.apple.iTunesStoreUI.stackedBarSplit", v2, 1);
 }
 
 @end

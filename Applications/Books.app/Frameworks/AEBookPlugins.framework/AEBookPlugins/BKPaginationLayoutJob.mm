@@ -1,8 +1,8 @@
 @interface BKPaginationLayoutJob
 - (BKPaginationLayoutJob)init;
 - (CGSize)contentLayoutSize;
-- (void)copyBatchState:(id)a3;
-- (void)copyState:(id)a3;
+- (void)copyBatchState:(id)state;
+- (void)copyState:(id)state;
 @end
 
 @implementation BKPaginationLayoutJob
@@ -21,50 +21,50 @@
   return v2;
 }
 
-- (void)copyState:(id)a3
+- (void)copyState:(id)state
 {
   v14.receiver = self;
   v14.super_class = BKPaginationLayoutJob;
-  v4 = a3;
-  [(BKPaginationBatchJob *)&v14 copyState:v4];
-  v5 = [v4 href];
-  [(BKPaginationLayoutJob *)self setHref:v5];
+  stateCopy = state;
+  [(BKPaginationBatchJob *)&v14 copyState:stateCopy];
+  href = [stateCopy href];
+  [(BKPaginationLayoutJob *)self setHref:href];
 
-  v6 = [v4 url];
+  v6 = [stateCopy url];
   [(BKPaginationLayoutJob *)self setUrl:v6];
 
-  v7 = [v4 bookmarks];
-  [(BKPaginationLayoutJob *)self setBookmarks:v7];
+  bookmarks = [stateCopy bookmarks];
+  [(BKPaginationLayoutJob *)self setBookmarks:bookmarks];
 
-  v8 = [v4 navigationInfoAnchors];
-  [(BKPaginationLayoutJob *)self setNavigationInfoAnchors:v8];
+  navigationInfoAnchors = [stateCopy navigationInfoAnchors];
+  [(BKPaginationLayoutJob *)self setNavigationInfoAnchors:navigationInfoAnchors];
 
-  v9 = [v4 landmarkAnchors];
-  [(BKPaginationLayoutJob *)self setLandmarkAnchors:v9];
+  landmarkAnchors = [stateCopy landmarkAnchors];
+  [(BKPaginationLayoutJob *)self setLandmarkAnchors:landmarkAnchors];
 
-  v10 = [v4 physicalPageAnchors];
-  [(BKPaginationLayoutJob *)self setPhysicalPageAnchors:v10];
+  physicalPageAnchors = [stateCopy physicalPageAnchors];
+  [(BKPaginationLayoutJob *)self setPhysicalPageAnchors:physicalPageAnchors];
 
-  -[BKPaginationLayoutJob setDocumentOrdinal:](self, "setDocumentOrdinal:", [v4 documentOrdinal]);
-  [v4 contentLayoutSize];
+  -[BKPaginationLayoutJob setDocumentOrdinal:](self, "setDocumentOrdinal:", [stateCopy documentOrdinal]);
+  [stateCopy contentLayoutSize];
   [(BKPaginationLayoutJob *)self setContentLayoutSize:?];
-  v11 = [v4 bookSnapshot];
-  [(BKPaginationLayoutJob *)self setBookSnapshot:v11];
+  bookSnapshot = [stateCopy bookSnapshot];
+  [(BKPaginationLayoutJob *)self setBookSnapshot:bookSnapshot];
 
-  v12 = [v4 annotationsToUpgrade];
-  [(BKPaginationLayoutJob *)self setAnnotationsToUpgrade:v12];
+  annotationsToUpgrade = [stateCopy annotationsToUpgrade];
+  [(BKPaginationLayoutJob *)self setAnnotationsToUpgrade:annotationsToUpgrade];
 
-  v13 = [v4 annotationCFIStrings];
+  annotationCFIStrings = [stateCopy annotationCFIStrings];
 
-  [(BKPaginationLayoutJob *)self setAnnotationCFIStrings:v13];
+  [(BKPaginationLayoutJob *)self setAnnotationCFIStrings:annotationCFIStrings];
 }
 
-- (void)copyBatchState:(id)a3
+- (void)copyBatchState:(id)state
 {
   v10.receiver = self;
   v10.super_class = BKPaginationLayoutJob;
-  v4 = a3;
-  [(BKPaginationBatchJob *)&v10 copyState:v4];
+  stateCopy = state;
+  [(BKPaginationBatchJob *)&v10 copyState:stateCopy];
   [(BKPaginationLayoutJob *)self setHref:0, v10.receiver, v10.super_class];
   [(BKPaginationLayoutJob *)self setUrl:0];
   [(BKPaginationLayoutJob *)self setBookmarks:0];
@@ -72,10 +72,10 @@
   [(BKPaginationLayoutJob *)self setLandmarkAnchors:0];
   [(BKPaginationLayoutJob *)self setPhysicalPageAnchors:0];
   [(BKPaginationLayoutJob *)self setDocumentOrdinal:0];
-  v5 = [v4 configuration];
-  [(BKPaginationBatchJob *)self setConfiguration:v5];
+  configuration = [stateCopy configuration];
+  [(BKPaginationBatchJob *)self setConfiguration:configuration];
 
-  [v4 pageSize];
+  [stateCopy pageSize];
   v7 = v6;
   v9 = v8;
 

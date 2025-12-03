@@ -1,97 +1,97 @@
 @interface _ASPasswordManagerDeleteAlertConfiguration
 + (BOOL)_isKeychainSyncEnabled;
-+ (BOOL)_isPermanentlyDeletingSavedAccount:(id)a3;
-+ (BOOL)_isPermanentlyDeletingSavedAccounts:(id)a3;
-+ (id)_buttonTitleStringForAlertToDeleteWithAccountsSelectionInfo:(id)a3 isPermanentlyDeleting:(BOOL)a4;
-+ (id)_buttonTitleStringForAlertToStopUsingSignInWithAppleForSavedAccount:(id)a3;
-+ (id)_cancelButtonTitleStringForAlertToStopUsingSignInWithAppleForSavedAccount:(id)a3;
-+ (id)_configurationForAlertToDeleteFileVaultRecoveryKeyWithSavedAccount:(id)a3;
-+ (id)_configurationForAlertToDeletePasswordAndPasskeyFromSavedAccount:(id)a3;
-+ (id)_configurationForAlertToStopUsingSignInWithAppleFromSavedAccount:(id)a3;
-+ (id)_credentialDeletionStringForAlertToDeleteNumberOfFileVaultRecoveryKeys:(unint64_t)a3;
-+ (id)_credentialDeletionStringForAlertToDeleteNumberOfSiwaAccounts:(unint64_t)a3;
-+ (id)_deletionStringForAlertToDeleteWithAccountsSelectionInfo:(id)a3 isPermanentlyDeleting:(BOOL)a4;
-+ (id)_originalContributorDisplayNameForSavedAccount:(id)a3;
-+ (id)_subtitleForDeletingNumberOfPasswordsWithVerificationCodes:(unint64_t)a3;
-+ (id)_subtitleStringForAlertToDeleteFileVaultRecoveryKeyWithSavedAccount:(id)a3;
-+ (id)_subtitleStringForAlertToDeletePasskeyFromSavedAccount:(id)a3 isUndoable:(BOOL)a4;
-+ (id)_subtitleStringForAlertToDeletePasswordFromSavedAccount:(id)a3 isUndoable:(BOOL)a4;
-+ (id)_subtitleStringForAlertToDeleteVerificationCodeFromSavedAccount:(id)a3 isUndoable:(BOOL)a4;
-+ (id)_subtitleStringForAlertToPermanentlyDeletePasskeyFromSavedAccount:(id)a3;
-+ (id)_subtitleStringForAlertToPermanentlyDeletePasswordFromSavedAccount:(id)a3;
-+ (id)_subtitleStringForAlertToSoftDeletePasskeyFromSavedAccount:(id)a3;
-+ (id)_subtitleStringForAlertToSoftDeletePasswordFromSavedAccount:(id)a3;
-+ (id)_subtitleStringForAlertToStopUsingSignInWithAppleForSavedAccount:(id)a3;
-+ (id)_titleStringForAlertToDeleteFileVaultRecoveryKeyWithSavedAccount:(id)a3;
-+ (id)_titleStringForAlertToDeletePasskeyFromSavedAccount:(id)a3;
-+ (id)_titleStringForAlertToDeletePasswordFromSavedAccount:(id)a3;
-+ (id)_titleStringForAlertToDeleteVerificationCodeFromSavedAccount:(id)a3;
-+ (id)_titleStringForAlertToDeleteWithAccountsSelectionInfo:(id)a3 isPermanentlyDeleting:(BOOL)a4;
-+ (id)_titleStringForAlertToStopUsingSignInWithAppleForSavedAccount:(id)a3;
-+ (id)configurationForDeletingSavedAccounts:(id)a3;
++ (BOOL)_isPermanentlyDeletingSavedAccount:(id)account;
++ (BOOL)_isPermanentlyDeletingSavedAccounts:(id)accounts;
++ (id)_buttonTitleStringForAlertToDeleteWithAccountsSelectionInfo:(id)info isPermanentlyDeleting:(BOOL)deleting;
++ (id)_buttonTitleStringForAlertToStopUsingSignInWithAppleForSavedAccount:(id)account;
++ (id)_cancelButtonTitleStringForAlertToStopUsingSignInWithAppleForSavedAccount:(id)account;
++ (id)_configurationForAlertToDeleteFileVaultRecoveryKeyWithSavedAccount:(id)account;
++ (id)_configurationForAlertToDeletePasswordAndPasskeyFromSavedAccount:(id)account;
++ (id)_configurationForAlertToStopUsingSignInWithAppleFromSavedAccount:(id)account;
++ (id)_credentialDeletionStringForAlertToDeleteNumberOfFileVaultRecoveryKeys:(unint64_t)keys;
++ (id)_credentialDeletionStringForAlertToDeleteNumberOfSiwaAccounts:(unint64_t)accounts;
++ (id)_deletionStringForAlertToDeleteWithAccountsSelectionInfo:(id)info isPermanentlyDeleting:(BOOL)deleting;
++ (id)_originalContributorDisplayNameForSavedAccount:(id)account;
++ (id)_subtitleForDeletingNumberOfPasswordsWithVerificationCodes:(unint64_t)codes;
++ (id)_subtitleStringForAlertToDeleteFileVaultRecoveryKeyWithSavedAccount:(id)account;
++ (id)_subtitleStringForAlertToDeletePasskeyFromSavedAccount:(id)account isUndoable:(BOOL)undoable;
++ (id)_subtitleStringForAlertToDeletePasswordFromSavedAccount:(id)account isUndoable:(BOOL)undoable;
++ (id)_subtitleStringForAlertToDeleteVerificationCodeFromSavedAccount:(id)account isUndoable:(BOOL)undoable;
++ (id)_subtitleStringForAlertToPermanentlyDeletePasskeyFromSavedAccount:(id)account;
++ (id)_subtitleStringForAlertToPermanentlyDeletePasswordFromSavedAccount:(id)account;
++ (id)_subtitleStringForAlertToSoftDeletePasskeyFromSavedAccount:(id)account;
++ (id)_subtitleStringForAlertToSoftDeletePasswordFromSavedAccount:(id)account;
++ (id)_subtitleStringForAlertToStopUsingSignInWithAppleForSavedAccount:(id)account;
++ (id)_titleStringForAlertToDeleteFileVaultRecoveryKeyWithSavedAccount:(id)account;
++ (id)_titleStringForAlertToDeletePasskeyFromSavedAccount:(id)account;
++ (id)_titleStringForAlertToDeletePasswordFromSavedAccount:(id)account;
++ (id)_titleStringForAlertToDeleteVerificationCodeFromSavedAccount:(id)account;
++ (id)_titleStringForAlertToDeleteWithAccountsSelectionInfo:(id)info isPermanentlyDeleting:(BOOL)deleting;
++ (id)_titleStringForAlertToStopUsingSignInWithAppleForSavedAccount:(id)account;
++ (id)configurationForDeletingSavedAccounts:(id)accounts;
 + (id)formattedRecentlyDeletedExpirationDays;
-- (id)_initWithTitle:(id)a3 subtitle:(id)a4 buttonTitle:(id)a5 cancelButtonTitle:(id)a6 isPermanentlyRemovingFromRecentlyDeleted:(BOOL)a7;
+- (id)_initWithTitle:(id)title subtitle:(id)subtitle buttonTitle:(id)buttonTitle cancelButtonTitle:(id)cancelButtonTitle isPermanentlyRemovingFromRecentlyDeleted:(BOOL)deleted;
 @end
 
 @implementation _ASPasswordManagerDeleteAlertConfiguration
 
-- (id)_initWithTitle:(id)a3 subtitle:(id)a4 buttonTitle:(id)a5 cancelButtonTitle:(id)a6 isPermanentlyRemovingFromRecentlyDeleted:(BOOL)a7
+- (id)_initWithTitle:(id)title subtitle:(id)subtitle buttonTitle:(id)buttonTitle cancelButtonTitle:(id)cancelButtonTitle isPermanentlyRemovingFromRecentlyDeleted:(BOOL)deleted
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  titleCopy = title;
+  subtitleCopy = subtitle;
+  buttonTitleCopy = buttonTitle;
+  cancelButtonTitleCopy = cancelButtonTitle;
   v27.receiver = self;
   v27.super_class = _ASPasswordManagerDeleteAlertConfiguration;
   v16 = [(_ASPasswordManagerDeleteAlertConfiguration *)&v27 init];
   if (v16)
   {
-    v17 = [v12 copy];
+    v17 = [titleCopy copy];
     title = v16->_title;
     v16->_title = v17;
 
-    v19 = [v13 copy];
+    v19 = [subtitleCopy copy];
     subtitle = v16->_subtitle;
     v16->_subtitle = v19;
 
-    v21 = [v14 copy];
+    v21 = [buttonTitleCopy copy];
     buttonTitle = v16->_buttonTitle;
     v16->_buttonTitle = v21;
 
-    v23 = [v15 copy];
+    v23 = [cancelButtonTitleCopy copy];
     cancelButtonTitle = v16->_cancelButtonTitle;
     v16->_cancelButtonTitle = v23;
 
-    v16->_isPermanentlyRemovingFromRecentlyDeleted = a7;
+    v16->_isPermanentlyRemovingFromRecentlyDeleted = deleted;
     v25 = v16;
   }
 
   return v16;
 }
 
-+ (id)_configurationForAlertToStopUsingSignInWithAppleFromSavedAccount:(id)a3
++ (id)_configurationForAlertToStopUsingSignInWithAppleFromSavedAccount:(id)account
 {
-  v4 = a3;
-  v5 = [a1 _titleStringForAlertToStopUsingSignInWithAppleForSavedAccount:v4];
-  v6 = [a1 _subtitleStringForAlertToStopUsingSignInWithAppleForSavedAccount:v4];
-  v7 = [a1 _buttonTitleStringForAlertToStopUsingSignInWithAppleForSavedAccount:v4];
-  v8 = [a1 _cancelButtonTitleStringForAlertToStopUsingSignInWithAppleForSavedAccount:v4];
+  accountCopy = account;
+  v5 = [self _titleStringForAlertToStopUsingSignInWithAppleForSavedAccount:accountCopy];
+  v6 = [self _subtitleStringForAlertToStopUsingSignInWithAppleForSavedAccount:accountCopy];
+  v7 = [self _buttonTitleStringForAlertToStopUsingSignInWithAppleForSavedAccount:accountCopy];
+  v8 = [self _cancelButtonTitleStringForAlertToStopUsingSignInWithAppleForSavedAccount:accountCopy];
 
-  v9 = [[a1 alloc] _initWithTitle:v5 subtitle:v6 buttonTitle:v7 cancelButtonTitle:v8 isPermanentlyRemovingFromRecentlyDeleted:1];
+  v9 = [[self alloc] _initWithTitle:v5 subtitle:v6 buttonTitle:v7 cancelButtonTitle:v8 isPermanentlyRemovingFromRecentlyDeleted:1];
 
   return v9;
 }
 
-+ (id)_titleStringForAlertToStopUsingSignInWithAppleForSavedAccount:(id)a3
++ (id)_titleStringForAlertToStopUsingSignInWithAppleForSavedAccount:(id)account
 {
-  v3 = a3;
-  if ([v3 isCurrentUserOriginalContributor])
+  accountCopy = account;
+  if ([accountCopy isCurrentUserOriginalContributor])
   {
     v4 = MEMORY[0x1E696AEC0];
     v5 = _WBSLocalizedString();
-    v6 = [v3 signInWithAppleAccount];
-    v7 = [v6 localizedAppName];
-    v8 = [v4 localizedStringWithFormat:v5, v7];
+    signInWithAppleAccount = [accountCopy signInWithAppleAccount];
+    localizedAppName = [signInWithAppleAccount localizedAppName];
+    v8 = [v4 localizedStringWithFormat:v5, localizedAppName];
   }
 
   else
@@ -102,10 +102,10 @@
   return v8;
 }
 
-+ (id)_subtitleStringForAlertToStopUsingSignInWithAppleForSavedAccount:(id)a3
++ (id)_subtitleStringForAlertToStopUsingSignInWithAppleForSavedAccount:(id)account
 {
-  v4 = a3;
-  if ([v4 isCurrentUserOriginalContributor])
+  accountCopy = account;
+  if ([accountCopy isCurrentUserOriginalContributor])
   {
     v5 = _WBSLocalizedString();
   }
@@ -114,165 +114,165 @@
   {
     v6 = MEMORY[0x1E696AEC0];
     v7 = _WBSLocalizedString();
-    v8 = [a1 _originalContributorDisplayNameForSavedAccount:v4];
+    v8 = [self _originalContributorDisplayNameForSavedAccount:accountCopy];
     v5 = [v6 localizedStringWithFormat:v7, v8];
   }
 
   return v5;
 }
 
-+ (id)_originalContributorDisplayNameForSavedAccount:(id)a3
++ (id)_originalContributorDisplayNameForSavedAccount:(id)account
 {
-  v3 = a3;
+  accountCopy = account;
   v4 = +[_ASAccountSharingGroupMemberDataManager sharedManager];
-  v5 = [v3 originalContributorParticipantID];
-  v6 = [v3 sharedGroupID];
+  originalContributorParticipantID = [accountCopy originalContributorParticipantID];
+  sharedGroupID = [accountCopy sharedGroupID];
 
-  v7 = [v4 displayNameForOriginalContributorParticipantID:v5 inGroupID:v6];
+  v7 = [v4 displayNameForOriginalContributorParticipantID:originalContributorParticipantID inGroupID:sharedGroupID];
 
   return v7;
 }
 
-+ (id)_buttonTitleStringForAlertToStopUsingSignInWithAppleForSavedAccount:(id)a3
++ (id)_buttonTitleStringForAlertToStopUsingSignInWithAppleForSavedAccount:(id)account
 {
-  [a3 isCurrentUserOriginalContributor];
+  [account isCurrentUserOriginalContributor];
   v3 = _WBSLocalizedString();
 
   return v3;
 }
 
-+ (id)_cancelButtonTitleStringForAlertToStopUsingSignInWithAppleForSavedAccount:(id)a3
++ (id)_cancelButtonTitleStringForAlertToStopUsingSignInWithAppleForSavedAccount:(id)account
 {
-  [a3 isCurrentUserOriginalContributor];
+  [account isCurrentUserOriginalContributor];
   v3 = _WBSLocalizedString();
 
   return v3;
 }
 
-+ (id)_configurationForAlertToDeletePasswordAndPasskeyFromSavedAccount:(id)a3
++ (id)_configurationForAlertToDeletePasswordAndPasskeyFromSavedAccount:(id)account
 {
   v11 = *MEMORY[0x1E69E9840];
-  v10 = a3;
+  accountCopy = account;
   v4 = MEMORY[0x1E695DEC8];
-  v5 = a3;
-  v6 = [v4 arrayWithObjects:&v10 count:1];
+  accountCopy2 = account;
+  v6 = [v4 arrayWithObjects:&accountCopy count:1];
 
-  v7 = [a1 configurationForDeletingSavedAccounts:{v6, v10, v11}];
+  v7 = [self configurationForDeletingSavedAccounts:{v6, accountCopy, v11}];
 
   v8 = *MEMORY[0x1E69E9840];
 
   return v7;
 }
 
-+ (id)configurationForDeletingSavedAccounts:(id)a3
++ (id)configurationForDeletingSavedAccounts:(id)accounts
 {
-  v4 = a3;
-  v5 = [a1 _isPermanentlyDeletingSavedAccounts:v4];
-  v6 = [[_ASPasswordManagerAccountsSelectionInfo alloc] initWithSavedAccounts:v4];
+  accountsCopy = accounts;
+  v5 = [self _isPermanentlyDeletingSavedAccounts:accountsCopy];
+  v6 = [[_ASPasswordManagerAccountsSelectionInfo alloc] initWithSavedAccounts:accountsCopy];
   if ([(_ASPasswordManagerAccountsSelectionInfo *)v6 isSelectedAccountSingleSignInWithApple])
   {
-    v7 = [v4 objectAtIndexedSubscript:0];
-    v8 = a1;
+    v7 = [accountsCopy objectAtIndexedSubscript:0];
+    selfCopy2 = self;
     v9 = 3;
 LABEL_5:
-    v10 = [v8 configurationForDeleting:v9 fromSavedAccount:v7];
+    v10 = [selfCopy2 configurationForDeleting:v9 fromSavedAccount:v7];
     goto LABEL_7;
   }
 
   if ([(_ASPasswordManagerAccountsSelectionInfo *)v6 isSelectedAccountSingleFileVaultRecoveryKey])
   {
-    v7 = [v4 objectAtIndexedSubscript:0];
-    v8 = a1;
+    v7 = [accountsCopy objectAtIndexedSubscript:0];
+    selfCopy2 = self;
     v9 = 5;
     goto LABEL_5;
   }
 
-  v7 = [a1 _titleStringForAlertToDeleteWithAccountsSelectionInfo:v6 isPermanentlyDeleting:v5];
-  v11 = [a1 _subtitleStringForAlertToDeleteWithAccountsSelectionInfo:v6 isPermanentlyDeleting:v5];
-  v12 = [a1 _buttonTitleStringForAlertToDeleteWithAccountsSelectionInfo:v6 isPermanentlyDeleting:v5];
-  v13 = [a1 alloc];
-  v14 = [a1 _cancelButtonTitleStringForAlertToDeleteAccount];
-  v10 = [v13 _initWithTitle:v7 subtitle:v11 buttonTitle:v12 cancelButtonTitle:v14 isPermanentlyRemovingFromRecentlyDeleted:v5];
+  v7 = [self _titleStringForAlertToDeleteWithAccountsSelectionInfo:v6 isPermanentlyDeleting:v5];
+  v11 = [self _subtitleStringForAlertToDeleteWithAccountsSelectionInfo:v6 isPermanentlyDeleting:v5];
+  v12 = [self _buttonTitleStringForAlertToDeleteWithAccountsSelectionInfo:v6 isPermanentlyDeleting:v5];
+  v13 = [self alloc];
+  _cancelButtonTitleStringForAlertToDeleteAccount = [self _cancelButtonTitleStringForAlertToDeleteAccount];
+  v10 = [v13 _initWithTitle:v7 subtitle:v11 buttonTitle:v12 cancelButtonTitle:_cancelButtonTitleStringForAlertToDeleteAccount isPermanentlyRemovingFromRecentlyDeleted:v5];
 
 LABEL_7:
 
   return v10;
 }
 
-+ (BOOL)_isPermanentlyDeletingSavedAccounts:(id)a3
++ (BOOL)_isPermanentlyDeletingSavedAccounts:(id)accounts
 {
-  v4 = a3;
-  v5 = [v4 safari_filterObjectsUsingBlock:&__block_literal_global_10];
+  accountsCopy = accounts;
+  v5 = [accountsCopy safari_filterObjectsUsingBlock:&__block_literal_global_10];
   v6 = [v5 count];
-  if (v6 == [v4 count])
+  if (v6 == [accountsCopy count])
   {
     v7 = v6 == 1;
   }
 
   else
   {
-    v8 = [v4 safari_firstObjectPassingTest:&__block_literal_global_54];
-    v7 = [a1 _isPermanentlyDeletingSavedAccount:v8];
+    v8 = [accountsCopy safari_firstObjectPassingTest:&__block_literal_global_54];
+    v7 = [self _isPermanentlyDeletingSavedAccount:v8];
   }
 
   return v7;
 }
 
-+ (BOOL)_isPermanentlyDeletingSavedAccount:(id)a3
++ (BOOL)_isPermanentlyDeletingSavedAccount:(id)account
 {
-  v3 = a3;
-  v4 = ([v3 isRecentlyDeleted] & 1) != 0 || (objc_msgSend(v3, "userIsNeverSaveMarker") & 1) != 0 || objc_msgSend(v3, "credentialTypes") == 4;
+  accountCopy = account;
+  v4 = ([accountCopy isRecentlyDeleted] & 1) != 0 || (objc_msgSend(accountCopy, "userIsNeverSaveMarker") & 1) != 0 || objc_msgSend(accountCopy, "credentialTypes") == 4;
 
   return v4;
 }
 
-+ (id)_titleStringForAlertToDeletePasswordFromSavedAccount:(id)a3
++ (id)_titleStringForAlertToDeletePasswordFromSavedAccount:(id)account
 {
-  [a3 isSavedInSharedGroup];
+  [account isSavedInSharedGroup];
   v3 = _WBSLocalizedString();
 
   return v3;
 }
 
-+ (id)_titleStringForAlertToDeleteVerificationCodeFromSavedAccount:(id)a3
++ (id)_titleStringForAlertToDeleteVerificationCodeFromSavedAccount:(id)account
 {
-  [a3 isSavedInSharedGroup];
+  [account isSavedInSharedGroup];
   v3 = _WBSLocalizedString();
 
   return v3;
 }
 
-+ (id)_titleStringForAlertToDeletePasskeyFromSavedAccount:(id)a3
++ (id)_titleStringForAlertToDeletePasskeyFromSavedAccount:(id)account
 {
-  [a3 isSavedInSharedGroup];
+  [account isSavedInSharedGroup];
   v3 = _WBSLocalizedString();
 
   return v3;
 }
 
-+ (id)_subtitleStringForAlertToDeletePasswordFromSavedAccount:(id)a3 isUndoable:(BOOL)a4
++ (id)_subtitleStringForAlertToDeletePasswordFromSavedAccount:(id)account isUndoable:(BOOL)undoable
 {
-  v5 = a3;
-  if ([v5 isRecentlyDeleted])
+  accountCopy = account;
+  if ([accountCopy isRecentlyDeleted])
   {
-    [a1 _subtitleStringForAlertToPermanentlyDeletePasswordFromSavedAccount:v5];
+    [self _subtitleStringForAlertToPermanentlyDeletePasswordFromSavedAccount:accountCopy];
   }
 
   else
   {
-    [a1 _subtitleStringForAlertToSoftDeletePasswordFromSavedAccount:v5];
+    [self _subtitleStringForAlertToSoftDeletePasswordFromSavedAccount:accountCopy];
   }
   v6 = ;
 
   return v6;
 }
 
-+ (id)_subtitleStringForAlertToPermanentlyDeletePasswordFromSavedAccount:(id)a3
++ (id)_subtitleStringForAlertToPermanentlyDeletePasswordFromSavedAccount:(id)account
 {
-  v4 = a3;
-  if ([a1 _isKeychainSyncEnabled])
+  accountCopy = account;
+  if ([self _isKeychainSyncEnabled])
   {
-    [v4 isSavedInSharedGroup];
+    [accountCopy isSavedInSharedGroup];
   }
 
   v5 = _WBSLocalizedString();
@@ -280,32 +280,32 @@ LABEL_7:
   return v5;
 }
 
-+ (id)_subtitleStringForAlertToSoftDeletePasswordFromSavedAccount:(id)a3
++ (id)_subtitleStringForAlertToSoftDeletePasswordFromSavedAccount:(id)account
 {
-  v4 = a3;
+  accountCopy = account;
   v5 = MEMORY[0x1E696AEC0];
   v6 = _WBSLocalizedString();
-  v7 = [a1 formattedRecentlyDeletedExpirationDays];
-  v8 = [v5 localizedStringWithFormat:v6, v7];
+  formattedRecentlyDeletedExpirationDays = [self formattedRecentlyDeletedExpirationDays];
+  v8 = [v5 localizedStringWithFormat:v6, formattedRecentlyDeletedExpirationDays];
 
-  v9 = [v4 totpGenerators];
-  v10 = [v9 count];
+  totpGenerators = [accountCopy totpGenerators];
+  v10 = [totpGenerators count];
 
   if (v10)
   {
-    if ([v4 hasValidWebsite])
+    if ([accountCopy hasValidWebsite])
     {
-      [v4 highLevelDomain];
+      [accountCopy highLevelDomain];
     }
 
     else
     {
-      [v4 effectiveTitle];
+      [accountCopy effectiveTitle];
     }
     v12 = ;
-    v13 = [v4 isSavedInSharedGroup];
+    isSavedInSharedGroup = [accountCopy isSavedInSharedGroup];
     v14 = MEMORY[0x1E696AEC0];
-    if (v13)
+    if (isSavedInSharedGroup)
     {
       v15 = _WBSLocalizedString();
       [v14 stringWithFormat:v15, v12];
@@ -329,39 +329,39 @@ LABEL_7:
   return v11;
 }
 
-+ (id)_subtitleStringForAlertToDeleteVerificationCodeFromSavedAccount:(id)a3 isUndoable:(BOOL)a4
++ (id)_subtitleStringForAlertToDeleteVerificationCodeFromSavedAccount:(id)account isUndoable:(BOOL)undoable
 {
-  v5 = a3;
-  v6 = [v5 customTitle];
-  v7 = v6;
-  if (v6)
+  accountCopy = account;
+  customTitle = [accountCopy customTitle];
+  v7 = customTitle;
+  if (customTitle)
   {
-    v8 = v6;
+    v8 = customTitle;
   }
 
   else
   {
-    v9 = [v5 serviceName];
-    v10 = v9;
-    if (v9)
+    serviceName = [accountCopy serviceName];
+    v10 = serviceName;
+    if (serviceName)
     {
-      v11 = v9;
+      highLevelDomain = serviceName;
     }
 
     else
     {
-      v11 = [v5 highLevelDomain];
+      highLevelDomain = [accountCopy highLevelDomain];
     }
 
-    v8 = v11;
+    v8 = highLevelDomain;
   }
 
-  if ([a1 _isKeychainSyncEnabled])
+  if ([self _isKeychainSyncEnabled])
   {
-    [v5 isSavedInSharedGroup];
+    [accountCopy isSavedInSharedGroup];
   }
 
-  [v5 hasValidWebsite];
+  [accountCopy hasValidWebsite];
   v12 = MEMORY[0x1E696AEC0];
   v13 = _WBSLocalizedString();
   v14 = [v12 localizedStringWithFormat:v13, v8];
@@ -369,29 +369,29 @@ LABEL_7:
   return v14;
 }
 
-+ (id)_subtitleStringForAlertToDeletePasskeyFromSavedAccount:(id)a3 isUndoable:(BOOL)a4
++ (id)_subtitleStringForAlertToDeletePasskeyFromSavedAccount:(id)account isUndoable:(BOOL)undoable
 {
-  v5 = a3;
-  if ([v5 isRecentlyDeleted])
+  accountCopy = account;
+  if ([accountCopy isRecentlyDeleted])
   {
-    [a1 _subtitleStringForAlertToPermanentlyDeletePasskeyFromSavedAccount:v5];
+    [self _subtitleStringForAlertToPermanentlyDeletePasskeyFromSavedAccount:accountCopy];
   }
 
   else
   {
-    [a1 _subtitleStringForAlertToSoftDeletePasskeyFromSavedAccount:v5];
+    [self _subtitleStringForAlertToSoftDeletePasskeyFromSavedAccount:accountCopy];
   }
   v6 = ;
 
   return v6;
 }
 
-+ (id)_subtitleStringForAlertToPermanentlyDeletePasskeyFromSavedAccount:(id)a3
++ (id)_subtitleStringForAlertToPermanentlyDeletePasskeyFromSavedAccount:(id)account
 {
-  v4 = a3;
-  if ([a1 _isKeychainSyncEnabled])
+  accountCopy = account;
+  if ([self _isKeychainSyncEnabled])
   {
-    [v4 isSavedInSharedGroup];
+    [accountCopy isSavedInSharedGroup];
   }
 
   v5 = _WBSLocalizedString();
@@ -399,45 +399,45 @@ LABEL_7:
   return v5;
 }
 
-+ (id)_subtitleStringForAlertToSoftDeletePasskeyFromSavedAccount:(id)a3
++ (id)_subtitleStringForAlertToSoftDeletePasskeyFromSavedAccount:(id)account
 {
   v4 = MEMORY[0x1E696AEC0];
   v5 = _WBSLocalizedString();
-  v6 = [a1 formattedRecentlyDeletedExpirationDays];
-  v7 = [v4 localizedStringWithFormat:v5, v6];
+  formattedRecentlyDeletedExpirationDays = [self formattedRecentlyDeletedExpirationDays];
+  v7 = [v4 localizedStringWithFormat:v5, formattedRecentlyDeletedExpirationDays];
 
   return v7;
 }
 
-+ (id)_titleStringForAlertToDeleteWithAccountsSelectionInfo:(id)a3 isPermanentlyDeleting:(BOOL)a4
++ (id)_titleStringForAlertToDeleteWithAccountsSelectionInfo:(id)info isPermanentlyDeleting:(BOOL)deleting
 {
-  v4 = a3;
-  if ([v4 hasOnlySignInWithAppleAccounts])
+  infoCopy = info;
+  if ([infoCopy hasOnlySignInWithAppleAccounts])
   {
-    [v4 numberOfSignInWithAppleAccounts];
+    [infoCopy numberOfSignInWithAppleAccounts];
   }
 
-  else if ([v4 hasOnlyFileVaultRecoveryKeys])
+  else if ([infoCopy hasOnlyFileVaultRecoveryKeys])
   {
-    [v4 numberOfFileVaultRecoveryKeys];
+    [infoCopy numberOfFileVaultRecoveryKeys];
   }
 
-  else if (![v4 hasOnlyFileVaultRecoveryKeysAndSignInWithAppleAccounts])
+  else if (![infoCopy hasOnlyFileVaultRecoveryKeysAndSignInWithAppleAccounts])
   {
-    if ([v4 numberOfPasswords] && objc_msgSend(v4, "numberOfPasskeys"))
+    if ([infoCopy numberOfPasswords] && objc_msgSend(infoCopy, "numberOfPasskeys"))
     {
-      if (([v4 numberOfPasswords] != 1 || objc_msgSend(v4, "numberOfPasskeys") != 1) && objc_msgSend(v4, "numberOfPasswords") != 1)
+      if (([infoCopy numberOfPasswords] != 1 || objc_msgSend(infoCopy, "numberOfPasskeys") != 1) && objc_msgSend(infoCopy, "numberOfPasswords") != 1)
       {
-        [v4 numberOfPasskeys];
+        [infoCopy numberOfPasskeys];
       }
     }
 
-    else if ([v4 numberOfPasskeys] != 1 && !objc_msgSend(v4, "numberOfPasskeys"))
+    else if ([infoCopy numberOfPasskeys] != 1 && !objc_msgSend(infoCopy, "numberOfPasskeys"))
     {
-      [v4 numberOfPasswords];
+      [infoCopy numberOfPasswords];
     }
 
-    [v4 hasOnlySharedAccounts];
+    [infoCopy hasOnlySharedAccounts];
   }
 
   v5 = _WBSLocalizedString();
@@ -445,32 +445,32 @@ LABEL_7:
   return v5;
 }
 
-+ (id)_credentialDeletionStringForAlertToDeleteNumberOfSiwaAccounts:(unint64_t)a3
++ (id)_credentialDeletionStringForAlertToDeleteNumberOfSiwaAccounts:(unint64_t)accounts
 {
   v4 = _WBSLocalizedString();
 
   return v4;
 }
 
-+ (id)_credentialDeletionStringForAlertToDeleteNumberOfFileVaultRecoveryKeys:(unint64_t)a3
++ (id)_credentialDeletionStringForAlertToDeleteNumberOfFileVaultRecoveryKeys:(unint64_t)keys
 {
   v4 = _WBSLocalizedString();
 
   return v4;
 }
 
-+ (id)_deletionStringForAlertToDeleteWithAccountsSelectionInfo:(id)a3 isPermanentlyDeleting:(BOOL)a4
++ (id)_deletionStringForAlertToDeleteWithAccountsSelectionInfo:(id)info isPermanentlyDeleting:(BOOL)deleting
 {
-  v6 = a3;
-  v7 = [a1 _isKeychainSyncEnabled];
-  v8 = [v6 numberOfPasswords];
-  if (v7)
+  infoCopy = info;
+  _isKeychainSyncEnabled = [self _isKeychainSyncEnabled];
+  numberOfPasswords = [infoCopy numberOfPasswords];
+  if (_isKeychainSyncEnabled)
   {
-    if (v8 == 1 && [v6 numberOfPasskeys] == 1)
+    if (numberOfPasswords == 1 && [infoCopy numberOfPasskeys] == 1)
     {
-      if (a4)
+      if (deleting)
       {
-        [v6 hasOnlySharedAccounts];
+        [infoCopy hasOnlySharedAccounts];
 LABEL_42:
         v19 = _WBSLocalizedString();
         goto LABEL_47;
@@ -480,39 +480,39 @@ LABEL_42:
       goto LABEL_36;
     }
 
-    if ([v6 numberOfPasswords] && objc_msgSend(v6, "numberOfPasskeys"))
+    if ([infoCopy numberOfPasswords] && objc_msgSend(infoCopy, "numberOfPasskeys"))
     {
-      if (!a4)
+      if (!deleting)
       {
         v14 = MEMORY[0x1E696AEC0];
         v15 = _WBSLocalizedString();
-        v16 = [v6 numberOfPasskeys];
-        v17 = [v6 numberOfPasswords];
-        v18 = [a1 formattedRecentlyDeletedExpirationDays];
-        v19 = [v14 localizedStringWithFormat:v15, v16, v17, v18];
+        numberOfPasskeys = [infoCopy numberOfPasskeys];
+        numberOfPasswords2 = [infoCopy numberOfPasswords];
+        formattedRecentlyDeletedExpirationDays = [self formattedRecentlyDeletedExpirationDays];
+        v19 = [v14 localizedStringWithFormat:v15, numberOfPasskeys, numberOfPasswords2, formattedRecentlyDeletedExpirationDays];
 
 LABEL_39:
         goto LABEL_47;
       }
 
-      [v6 hasOnlySharedAccounts];
+      [infoCopy hasOnlySharedAccounts];
       v9 = MEMORY[0x1E696AEC0];
       v32 = _WBSLocalizedString();
-      v35 = [v6 numberOfPasskeys];
-      v36 = [v6 numberOfPasswords];
+      numberOfPasskeys2 = [infoCopy numberOfPasskeys];
+      numberOfPasswords3 = [infoCopy numberOfPasswords];
       goto LABEL_44;
     }
 
-    if ([v6 numberOfPasskeys])
+    if ([infoCopy numberOfPasskeys])
     {
-      if (a4)
+      if (deleting)
       {
-        [v6 hasOnlySharedAccounts];
+        [infoCopy hasOnlySharedAccounts];
         v9 = MEMORY[0x1E696AEC0];
         v32 = _WBSLocalizedString();
-        v33 = [v6 numberOfPasskeys];
+        numberOfPasskeys3 = [infoCopy numberOfPasskeys];
 LABEL_43:
-        v35 = v33;
+        numberOfPasskeys2 = numberOfPasskeys3;
 LABEL_44:
         v13 = v9;
         goto LABEL_45;
@@ -520,35 +520,35 @@ LABEL_44:
 
       v23 = MEMORY[0x1E696AEC0];
       v15 = _WBSLocalizedString();
-      v24 = [v6 numberOfPasskeys];
+      numberOfPasskeys4 = [infoCopy numberOfPasskeys];
     }
 
     else
     {
-      if (a4)
+      if (deleting)
       {
-        [v6 hasOnlySharedAccounts];
+        [infoCopy hasOnlySharedAccounts];
         v9 = MEMORY[0x1E696AEC0];
         v32 = _WBSLocalizedString();
-        v33 = [v6 numberOfPasswords];
+        numberOfPasskeys3 = [infoCopy numberOfPasswords];
         goto LABEL_43;
       }
 
       v23 = MEMORY[0x1E696AEC0];
       v15 = _WBSLocalizedString();
-      v24 = [v6 numberOfPasswords];
+      numberOfPasskeys4 = [infoCopy numberOfPasswords];
     }
 
-    v28 = v24;
-    v29 = [a1 formattedRecentlyDeletedExpirationDays];
-    v19 = [v23 localizedStringWithFormat:v15, v28, v29];
+    v28 = numberOfPasskeys4;
+    formattedRecentlyDeletedExpirationDays2 = [self formattedRecentlyDeletedExpirationDays];
+    v19 = [v23 localizedStringWithFormat:v15, v28, formattedRecentlyDeletedExpirationDays2];
 
     goto LABEL_39;
   }
 
-  if (v8 == 1 && [v6 numberOfPasskeys] == 1)
+  if (numberOfPasswords == 1 && [infoCopy numberOfPasskeys] == 1)
   {
-    if (a4)
+    if (deleting)
     {
       goto LABEL_42;
     }
@@ -556,69 +556,69 @@ LABEL_44:
     v26 = MEMORY[0x1E696AEC0];
 LABEL_36:
     v15 = _WBSLocalizedString();
-    v27 = [a1 formattedRecentlyDeletedExpirationDays];
-    v19 = [v26 localizedStringWithFormat:v15, v27];
+    formattedRecentlyDeletedExpirationDays3 = [self formattedRecentlyDeletedExpirationDays];
+    v19 = [v26 localizedStringWithFormat:v15, formattedRecentlyDeletedExpirationDays3];
 
     goto LABEL_39;
   }
 
-  if (![v6 numberOfPasswords] || !objc_msgSend(v6, "numberOfPasskeys"))
+  if (![infoCopy numberOfPasswords] || !objc_msgSend(infoCopy, "numberOfPasskeys"))
   {
-    v11 = [v6 numberOfPasskeys];
+    numberOfPasskeys5 = [infoCopy numberOfPasskeys];
     v10 = MEMORY[0x1E696AEC0];
-    if (v11)
+    if (numberOfPasskeys5)
     {
-      if (a4)
+      if (deleting)
       {
         v32 = _WBSLocalizedString();
-        v12 = [v6 numberOfPasskeys];
+        numberOfPasskeys6 = [infoCopy numberOfPasskeys];
 LABEL_28:
-        v35 = v12;
+        numberOfPasskeys2 = numberOfPasskeys6;
         goto LABEL_29;
       }
 
       v32 = _WBSLocalizedString();
-      v25 = [v6 numberOfPasskeys];
+      numberOfPasskeys7 = [infoCopy numberOfPasskeys];
     }
 
     else
     {
-      if (a4)
+      if (deleting)
       {
         v32 = _WBSLocalizedString();
-        v12 = [v6 numberOfPasswords];
+        numberOfPasskeys6 = [infoCopy numberOfPasswords];
         goto LABEL_28;
       }
 
       v32 = _WBSLocalizedString();
-      v25 = [v6 numberOfPasswords];
+      numberOfPasskeys7 = [infoCopy numberOfPasswords];
     }
 
-    v30 = v25;
-    v31 = [a1 formattedRecentlyDeletedExpirationDays];
-    v19 = [v10 localizedStringWithFormat:v32, v30, v31];
+    v30 = numberOfPasskeys7;
+    formattedRecentlyDeletedExpirationDays4 = [self formattedRecentlyDeletedExpirationDays];
+    v19 = [v10 localizedStringWithFormat:v32, v30, formattedRecentlyDeletedExpirationDays4];
 
     goto LABEL_46;
   }
 
   v10 = MEMORY[0x1E696AEC0];
-  if (a4)
+  if (deleting)
   {
     v32 = _WBSLocalizedString();
-    v35 = [v6 numberOfPasskeys];
-    v36 = [v6 numberOfPasswords];
+    numberOfPasskeys2 = [infoCopy numberOfPasskeys];
+    numberOfPasswords3 = [infoCopy numberOfPasswords];
 LABEL_29:
     v13 = v10;
 LABEL_45:
-    v19 = [v13 localizedStringWithFormat:v32, v35, v36];
+    v19 = [v13 localizedStringWithFormat:v32, numberOfPasskeys2, numberOfPasswords3];
     goto LABEL_46;
   }
 
   v32 = _WBSLocalizedString();
-  v20 = [v6 numberOfPasskeys];
-  v21 = [v6 numberOfPasswords];
-  v22 = [a1 formattedRecentlyDeletedExpirationDays];
-  v19 = [v10 localizedStringWithFormat:v32, v20, v21, v22];
+  numberOfPasskeys8 = [infoCopy numberOfPasskeys];
+  numberOfPasswords4 = [infoCopy numberOfPasswords];
+  formattedRecentlyDeletedExpirationDays5 = [self formattedRecentlyDeletedExpirationDays];
+  v19 = [v10 localizedStringWithFormat:v32, numberOfPasskeys8, numberOfPasswords4, formattedRecentlyDeletedExpirationDays5];
 
 LABEL_46:
 LABEL_47:
@@ -626,60 +626,60 @@ LABEL_47:
   return v19;
 }
 
-+ (id)_subtitleForDeletingNumberOfPasswordsWithVerificationCodes:(unint64_t)a3
++ (id)_subtitleForDeletingNumberOfPasswordsWithVerificationCodes:(unint64_t)codes
 {
   v4 = MEMORY[0x1E696AEC0];
   v5 = _WBSLocalizedString();
-  v6 = [v4 localizedStringWithFormat:v5, a3];
+  codes = [v4 localizedStringWithFormat:v5, codes];
 
-  return v6;
+  return codes;
 }
 
-+ (id)_buttonTitleStringForAlertToDeleteWithAccountsSelectionInfo:(id)a3 isPermanentlyDeleting:(BOOL)a4
++ (id)_buttonTitleStringForAlertToDeleteWithAccountsSelectionInfo:(id)info isPermanentlyDeleting:(BOOL)deleting
 {
-  v4 = a3;
-  if ([v4 hasOnlySignInWithAppleAccounts] & 1) != 0 || (objc_msgSend(v4, "hasOnlyFileVaultRecoveryKeys") & 1) != 0 || (objc_msgSend(v4, "hasOnlyFileVaultRecoveryKeysAndSignInWithAppleAccounts"))
+  infoCopy = info;
+  if ([infoCopy hasOnlySignInWithAppleAccounts] & 1) != 0 || (objc_msgSend(infoCopy, "hasOnlyFileVaultRecoveryKeys") & 1) != 0 || (objc_msgSend(infoCopy, "hasOnlyFileVaultRecoveryKeysAndSignInWithAppleAccounts"))
   {
     v5 = 0;
     goto LABEL_5;
   }
 
-  if ([v4 numberOfPasswords] && objc_msgSend(v4, "numberOfPasskeys"))
+  if ([infoCopy numberOfPasswords] && objc_msgSend(infoCopy, "numberOfPasskeys"))
   {
     goto LABEL_14;
   }
 
-  if ([v4 numberOfPasskeys] == 1)
+  if ([infoCopy numberOfPasskeys] == 1)
   {
-    [v4 hasOnlySharedAccounts];
+    [infoCopy hasOnlySharedAccounts];
 LABEL_14:
     v5 = _WBSLocalizedString();
     goto LABEL_5;
   }
 
-  if ([v4 numberOfPasskeys])
+  if ([infoCopy numberOfPasskeys])
   {
-    [v4 hasOnlySharedAccounts];
+    [infoCopy hasOnlySharedAccounts];
     v7 = MEMORY[0x1E696AEC0];
     v9 = _WBSLocalizedString();
-    v10 = [v4 numberOfPasskeys];
+    numberOfPasskeys = [infoCopy numberOfPasskeys];
   }
 
   else
   {
-    v8 = [v4 numberOfPasswords];
-    [v4 hasOnlySharedAccounts];
-    if (v8 == 1)
+    numberOfPasswords = [infoCopy numberOfPasswords];
+    [infoCopy hasOnlySharedAccounts];
+    if (numberOfPasswords == 1)
     {
       goto LABEL_14;
     }
 
     v7 = MEMORY[0x1E696AEC0];
     v9 = _WBSLocalizedString();
-    v10 = [v4 numberOfPasswords];
+    numberOfPasskeys = [infoCopy numberOfPasswords];
   }
 
-  v5 = [v7 localizedStringWithFormat:v9, v10];
+  v5 = [v7 localizedStringWithFormat:v9, numberOfPasskeys];
 
 LABEL_5:
 
@@ -688,41 +688,41 @@ LABEL_5:
 
 + (BOOL)_isKeychainSyncEnabled
 {
-  v2 = [MEMORY[0x1E69C88B8] sharedMonitor];
-  v3 = [v2 keychainSyncSettingValue] == 2;
+  mEMORY[0x1E69C88B8] = [MEMORY[0x1E69C88B8] sharedMonitor];
+  v3 = [mEMORY[0x1E69C88B8] keychainSyncSettingValue] == 2;
 
   return v3;
 }
 
-+ (id)_configurationForAlertToDeleteFileVaultRecoveryKeyWithSavedAccount:(id)a3
++ (id)_configurationForAlertToDeleteFileVaultRecoveryKeyWithSavedAccount:(id)account
 {
-  v4 = a3;
-  v5 = [a1 _titleStringForAlertToDeleteFileVaultRecoveryKeyWithSavedAccount:v4];
-  v6 = [a1 _subtitleStringForAlertToDeleteFileVaultRecoveryKeyWithSavedAccount:v4];
+  accountCopy = account;
+  v5 = [self _titleStringForAlertToDeleteFileVaultRecoveryKeyWithSavedAccount:accountCopy];
+  v6 = [self _subtitleStringForAlertToDeleteFileVaultRecoveryKeyWithSavedAccount:accountCopy];
   v7 = _WBSLocalizedString();
-  v8 = [a1 _isPermanentlyDeletingSavedAccount:v4];
+  v8 = [self _isPermanentlyDeletingSavedAccount:accountCopy];
 
-  v9 = [a1 alloc];
-  v10 = [a1 _cancelButtonTitleStringForAlertToDeleteAccount];
-  v11 = [v9 _initWithTitle:v5 subtitle:v6 buttonTitle:v7 cancelButtonTitle:v10 isPermanentlyRemovingFromRecentlyDeleted:v8];
+  v9 = [self alloc];
+  _cancelButtonTitleStringForAlertToDeleteAccount = [self _cancelButtonTitleStringForAlertToDeleteAccount];
+  v11 = [v9 _initWithTitle:v5 subtitle:v6 buttonTitle:v7 cancelButtonTitle:_cancelButtonTitleStringForAlertToDeleteAccount isPermanentlyRemovingFromRecentlyDeleted:v8];
 
   return v11;
 }
 
-+ (id)_titleStringForAlertToDeleteFileVaultRecoveryKeyWithSavedAccount:(id)a3
++ (id)_titleStringForAlertToDeleteFileVaultRecoveryKeyWithSavedAccount:(id)account
 {
-  [a3 isSavedInSharedGroup];
+  [account isSavedInSharedGroup];
   v3 = _WBSLocalizedString();
 
   return v3;
 }
 
-+ (id)_subtitleStringForAlertToDeleteFileVaultRecoveryKeyWithSavedAccount:(id)a3
++ (id)_subtitleStringForAlertToDeleteFileVaultRecoveryKeyWithSavedAccount:(id)account
 {
-  v4 = a3;
-  if ([v4 isRecentlyDeleted])
+  accountCopy = account;
+  if ([accountCopy isRecentlyDeleted])
   {
-    [v4 isSavedInSharedGroup];
+    [accountCopy isSavedInSharedGroup];
     v10 = _WBSLocalizedString();
   }
 
@@ -730,10 +730,10 @@ LABEL_5:
   {
     v5 = MEMORY[0x1E696AEC0];
     v6 = _WBSLocalizedString();
-    v7 = [a1 formattedRecentlyDeletedExpirationDays];
-    v8 = [v5 localizedStringWithFormat:v6, v7];
+    formattedRecentlyDeletedExpirationDays = [self formattedRecentlyDeletedExpirationDays];
+    v8 = [v5 localizedStringWithFormat:v6, formattedRecentlyDeletedExpirationDays];
 
-    if ([v4 isSavedInSharedGroup] && (objc_msgSend(v4, "isCurrentUserOriginalContributor") & 1) == 0)
+    if ([accountCopy isSavedInSharedGroup] && (objc_msgSend(accountCopy, "isCurrentUserOriginalContributor") & 1) == 0)
     {
       v10 = v8;
     }
@@ -750,9 +750,9 @@ LABEL_5:
 
 + (id)formattedRecentlyDeletedExpirationDays
 {
-  v2 = [MEMORY[0x1E69C8A38] recentlyDeletedExpirationTimeInDays];
+  recentlyDeletedExpirationTimeInDays = [MEMORY[0x1E69C8A38] recentlyDeletedExpirationTimeInDays];
   v3 = MEMORY[0x1E696ADA0];
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v2];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:recentlyDeletedExpirationTimeInDays];
   v5 = [v3 localizedStringFromNumber:v4 numberStyle:1];
 
   return v5;

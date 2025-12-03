@@ -1,16 +1,16 @@
 @interface ETTapMessage
-- (CGPoint)pointAtIndex:(unint64_t)a3;
+- (CGPoint)pointAtIndex:(unint64_t)index;
 - (ETTapMessage)init;
-- (ETTapMessage)initWithArchiveData:(id)a3;
+- (ETTapMessage)initWithArchiveData:(id)data;
 - (double)messageDuration;
-- (double)timeDeltaAtIndex:(unint64_t)a3;
+- (double)timeDeltaAtIndex:(unint64_t)index;
 - (id).cxx_construct;
-- (id)_animateCircleInner0:(double)a3 inner1:(double)a4 outer0:(double)a5 outer1:(double)a6 duration:(double)a7;
+- (id)_animateCircleInner0:(double)inner0 inner1:(double)inner1 outer0:(double)outer0 outer1:(double)outer1 duration:(double)duration;
 - (id)archiveData;
 - (unint64_t)tapCount;
-- (void)_displayInScene:(id)a3 point:(CGPoint)a4 color:(id)a5 filled:(BOOL)a6 withWisp:(BOOL)a7;
-- (void)addTapAtPoint:(CGPoint)a3 time:(double)a4 color:(id)a5;
-- (void)displayInScene:(id)a3;
+- (void)_displayInScene:(id)scene point:(CGPoint)point color:(id)color filled:(BOOL)filled withWisp:(BOOL)wisp;
+- (void)addTapAtPoint:(CGPoint)point time:(double)time color:(id)color;
+- (void)displayInScene:(id)scene;
 @end
 
 @implementation ETTapMessage
@@ -29,19 +29,19 @@
     v3->_baseTime = -1.0;
   }
 
-  v5 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   colors = v3->_colors;
-  v3->_colors = v5;
+  v3->_colors = array;
 
   return v3;
 }
 
-- (ETTapMessage)initWithArchiveData:(id)a3
+- (ETTapMessage)initWithArchiveData:(id)data
 {
   v67 = *MEMORY[0x277D85DE8];
   v64.receiver = self;
   v64.super_class = ETTapMessage;
-  v61 = a3;
+  dataCopy = data;
   v3 = [(ETMessage *)&v64 initWithArchiveData:?];
   v4 = v3;
   if (!v3)
@@ -50,7 +50,7 @@
   }
 
   v3->_noiseFieldLock._os_unfair_lock_opaque = 0;
-  v5 = [[ETPTap alloc] initWithData:v61];
+  v5 = [[ETPTap alloc] initWithData:dataCopy];
   v6 = v5;
   if (!v5)
   {
@@ -58,18 +58,18 @@
   }
 
   v55 = v5;
-  v57 = [(ETPTap *)v5 timeDeltas];
-  v58 = [(ETPTap *)v6 points];
-  v59 = [(ETPTap *)v6 colors];
-  v7 = [v57 length];
-  v8 = [v58 length];
-  v63 = [v59 length];
-  v9 = v57;
-  v62 = [v57 bytes];
-  v10 = v58;
-  v11 = [v58 bytes];
-  v12 = v59;
-  v60 = [v59 bytes];
+  timeDeltas = [(ETPTap *)v5 timeDeltas];
+  points = [(ETPTap *)v6 points];
+  colors = [(ETPTap *)v6 colors];
+  v7 = [timeDeltas length];
+  v8 = [points length];
+  v63 = [colors length];
+  v9 = timeDeltas;
+  bytes = [timeDeltas bytes];
+  v10 = points;
+  bytes2 = [points bytes];
+  v12 = colors;
+  bytes3 = [colors bytes];
   v56 = v7 >> 1;
   v54 = v8 >> 2;
   if (v7 >> 1 == v8 >> 2)
@@ -97,20 +97,20 @@
 
     if (v63 >= 8 && !v4->_colors)
     {
-      v17 = [MEMORY[0x277CBEB18] array];
+      array = [MEMORY[0x277CBEB18] array];
       colors = v4->_colors;
-      v4->_colors = v17;
+      v4->_colors = array;
     }
 
     if (v15)
     {
       v19 = 0;
       p_begin = &v4->_times.__begin_;
-      v21 = (v11 + 2);
+      v21 = (bytes2 + 2);
       do
       {
         v22 = *(v21 - 1);
-        LOWORD(v13) = *(v62 + 2 * v19);
+        LOWORD(v13) = *(bytes + 2 * v19);
         v23 = *v21;
         end = v4->_times.__end_;
         cap = v4->_times.__cap_;
@@ -225,7 +225,7 @@
         if (v63 >= 8 && v19 < v63 >> 2)
         {
           v50 = v4->_colors;
-          v51 = [MEMORY[0x277D75348] colorWithRed:*(v60 + 4 * v19) / 255.0 green:BYTE1(*(v60 + 4 * v19)) / 255.0 blue:BYTE2(*(v60 + 4 * v19)) / 255.0 alpha:HIBYTE(*(v60 + 4 * v19)) / 255.0];
+          v51 = [MEMORY[0x277D75348] colorWithRed:*(bytes3 + 4 * v19) / 255.0 green:BYTE1(*(bytes3 + 4 * v19)) / 255.0 blue:BYTE2(*(bytes3 + 4 * v19)) / 255.0 alpha:HIBYTE(*(bytes3 + 4 * v19)) / 255.0];
           [(NSMutableArray *)v50 addObject:v51];
         }
 
@@ -265,26 +265,26 @@ LABEL_48:
 - (id)archiveData
 {
   v24 = objc_alloc_init(ETPTap);
-  v26 = [(ETTapMessage *)self tapCount];
-  v23 = [MEMORY[0x277CBEB28] data];
-  v22 = [MEMORY[0x277CBEB28] data];
-  v21 = [MEMORY[0x277CBEB28] data];
-  [v23 setLength:2 * v26];
-  [v22 setLength:4 * v26];
-  [v21 setLength:4 * v26];
-  v3 = [v23 mutableBytes];
-  v4 = [v22 mutableBytes];
-  v5 = [v21 mutableBytes];
-  if (v26)
+  tapCount = [(ETTapMessage *)self tapCount];
+  data = [MEMORY[0x277CBEB28] data];
+  data2 = [MEMORY[0x277CBEB28] data];
+  data3 = [MEMORY[0x277CBEB28] data];
+  [data setLength:2 * tapCount];
+  [data2 setLength:4 * tapCount];
+  [data3 setLength:4 * tapCount];
+  mutableBytes = [data mutableBytes];
+  mutableBytes2 = [data2 mutableBytes];
+  mutableBytes3 = [data3 mutableBytes];
+  if (tapCount)
   {
-    v6 = v5;
+    v6 = mutableBytes3;
     v7 = 0;
     v8 = 0;
-    v9 = (v4 + 2);
+    v9 = (mutableBytes2 + 2);
     v25 = vdupq_n_s64(0x406FE00000000000uLL);
     do
     {
-      *(v3 + 2 * v8) = llround(self->_times.__begin_[v8] * 1000.0);
+      *(mutableBytes + 2 * v8) = llround(self->_times.__begin_[v8] * 1000.0);
       v10 = &self->_points.__begin_[v7];
       y = v10->y;
       v12 = (v10->x + 1.0) * 32767.0;
@@ -312,15 +312,15 @@ LABEL_48:
       ++v7;
     }
 
-    while (v26 != v8);
+    while (tapCount != v8);
   }
 
-  [(ETPTap *)v24 setTimeDeltas:v23];
-  [(ETPTap *)v24 setPoints:v22];
-  [(ETPTap *)v24 setColors:v21];
-  v19 = [(ETPTap *)v24 data];
+  [(ETPTap *)v24 setTimeDeltas:data];
+  [(ETPTap *)v24 setPoints:data2];
+  [(ETPTap *)v24 setColors:data3];
+  data4 = [(ETPTap *)v24 data];
 
-  return v19;
+  return data4;
 }
 
 - (unint64_t)tapCount
@@ -338,15 +338,15 @@ LABEL_48:
   }
 }
 
-- (CGPoint)pointAtIndex:(unint64_t)a3
+- (CGPoint)pointAtIndex:(unint64_t)index
 {
-  if ([(ETTapMessage *)self tapCount]< a3)
+  if ([(ETTapMessage *)self tapCount]< index)
   {
     v8 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE660] reason:@"tapIndex > number of taps" userInfo:0];
     objc_exception_throw(v8);
   }
 
-  v5 = &self->_points.__begin_[a3];
+  v5 = &self->_points.__begin_[index];
   x = v5->x;
   y = v5->y;
   result.y = y;
@@ -354,28 +354,28 @@ LABEL_48:
   return result;
 }
 
-- (double)timeDeltaAtIndex:(unint64_t)a3
+- (double)timeDeltaAtIndex:(unint64_t)index
 {
-  if ([(ETTapMessage *)self tapCount]< a3)
+  if ([(ETTapMessage *)self tapCount]< index)
   {
     v6 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE660] reason:@"tapIndex > number of taps" userInfo:0];
     objc_exception_throw(v6);
   }
 
-  return self->_times.__begin_[a3];
+  return self->_times.__begin_[index];
 }
 
-- (void)addTapAtPoint:(CGPoint)a3 time:(double)a4 color:(id)a5
+- (void)addTapAtPoint:(CGPoint)point time:(double)time color:(id)color
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v41 = *MEMORY[0x277D85DE8];
-  v9 = a5;
-  [(ETMessage *)self setColor:v9];
+  colorCopy = color;
+  [(ETMessage *)self setColor:colorCopy];
   baseTime = self->_baseTime;
   if (baseTime >= 0.0)
   {
-    v11 = a4 - baseTime;
+    v11 = time - baseTime;
   }
 
   else
@@ -383,7 +383,7 @@ LABEL_48:
     v11 = 0.0;
   }
 
-  self->_baseTime = a4;
+  self->_baseTime = time;
   p_points = &self->_points;
   end = self->_points.__end_;
   cap = self->_points.__cap_;
@@ -491,7 +491,7 @@ LABEL_48:
   }
 
   self->_times.__end_ = v28;
-  [(NSMutableArray *)self->_colors addObject:v9];
+  [(NSMutableArray *)self->_colors addObject:colorCopy];
   if (self->_preVisualizeScene)
   {
     if (IMOSLoggingEnabled())
@@ -499,33 +499,33 @@ LABEL_48:
       v36 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v36, OS_LOG_TYPE_INFO))
       {
-        v37 = [MEMORY[0x277CBEAA8] date];
-        v38 = [ETUtility dateFormatWithMilliseconds:v37];
+        date = [MEMORY[0x277CBEAA8] date];
+        v38 = [ETUtility dateFormatWithMilliseconds:date];
         v39 = 138412290;
         v40 = v38;
         _os_log_impl(&dword_248D00000, v36, OS_LOG_TYPE_INFO, "(%@) ETTapMessage playing tap haptic", &v39, 0xCu);
       }
     }
 
-    [(ETTapMessage *)self _displayInScene:self->_preVisualizeScene point:v9 color:0 filled:1 withWisp:x, y];
+    [(ETTapMessage *)self _displayInScene:self->_preVisualizeScene point:colorCopy color:0 filled:1 withWisp:x, y];
   }
 }
 
-- (void)displayInScene:(id)a3
+- (void)displayInScene:(id)scene
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] array];
-  v29 = v4;
-  objc_initWeak(location, v4);
+  sceneCopy = scene;
+  array = [MEMORY[0x277CBEB18] array];
+  v29 = sceneCopy;
+  objc_initWeak(location, sceneCopy);
   v6 = [(NSMutableArray *)self->_colors count];
   if (v6)
   {
-    v7 = 0;
+    color = 0;
   }
 
   else
   {
-    v7 = [(ETMessage *)self color];
+    color = [(ETMessage *)self color];
   }
 
   for (i = 0; [(ETTapMessage *)self tapCount]> i; ++i)
@@ -549,20 +549,20 @@ LABEL_48:
       }
       v16 = ;
 
-      v7 = v16;
+      color = v16;
     }
 
     if ([(ETMessage *)self isRenderingOffscreen])
     {
       WeakRetained = objc_loadWeakRetained(location);
       v18 = *&v14 > 0.5 || i == [(ETTapMessage *)self tapCount]- 1;
-      [(ETTapMessage *)self _displayInScene:WeakRetained point:v7 color:1 filled:v18 withWisp:*&v10, *&v12];
+      [(ETTapMessage *)self _displayInScene:WeakRetained point:color color:1 filled:v18 withWisp:*&v10, *&v12];
     }
 
     else
     {
       v19 = [getSKActionClass() waitForDuration:*&v14];
-      [v5 addObject:v19];
+      [array addObject:v19];
 
       SKActionClass = getSKActionClass();
       v35[0] = MEMORY[0x277D85DD0];
@@ -573,11 +573,11 @@ LABEL_48:
       objc_copyWeak(v37, location);
       v37[1] = v10;
       v37[2] = v12;
-      v36 = v7;
+      v36 = color;
       v37[3] = v14;
       v38 = i;
       v21 = [SKActionClass runBlock:v35];
-      [v5 addObject:v21];
+      [array addObject:v21];
 
       objc_destroyWeak(v37);
     }
@@ -587,7 +587,7 @@ LABEL_48:
   {
     objc_initWeak(&from, self);
     v22 = [getSKActionClass() waitForDuration:1.0];
-    [v5 addObject:v22];
+    [array addObject:v22];
 
     v23 = getSKActionClass();
     v32[0] = MEMORY[0x277D85DD0];
@@ -596,10 +596,10 @@ LABEL_48:
     v32[3] = &unk_278F7A398;
     objc_copyWeak(&v33, &from);
     v24 = [v23 runBlock:v32 queue:MEMORY[0x277D85CD0]];
-    [v5 addObject:v24];
+    [array addObject:v24];
 
     v25 = [getSKActionClass() waitForDuration:1.0];
-    [v5 addObject:v25];
+    [array addObject:v25];
 
     v26 = getSKActionClass();
     v30[0] = MEMORY[0x277D85DD0];
@@ -608,9 +608,9 @@ LABEL_48:
     v30[3] = &unk_278F7A398;
     objc_copyWeak(&v31, &from);
     v27 = [v26 runBlock:v30 queue:MEMORY[0x277D85CD0]];
-    [v5 addObject:v27];
+    [array addObject:v27];
 
-    v28 = [getSKActionClass() sequence:v5];
+    v28 = [getSKActionClass() sequence:array];
     [v29 runAction:v28];
 
     objc_destroyWeak(&v31);
@@ -672,21 +672,21 @@ void __31__ETTapMessage_displayInScene___block_invoke_2(uint64_t a1)
   [v2 messageDidStopPlaying:v3];
 }
 
-- (id)_animateCircleInner0:(double)a3 inner1:(double)a4 outer0:(double)a5 outer1:(double)a6 duration:(double)a7
+- (id)_animateCircleInner0:(double)inner0 inner1:(double)inner1 outer0:(double)outer0 outer1:(double)outer1 duration:(double)duration
 {
-  v10 = a4 - a3;
-  v11 = a6 - a5;
+  v10 = inner1 - inner0;
+  v11 = outer1 - outer0;
   SKActionClass = getSKActionClass();
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __67__ETTapMessage__animateCircleInner0_inner1_outer0_outer1_duration___block_invoke;
   v15[3] = &__block_descriptor_64_e19_v24__0__SKNode_8d16l;
-  *&v15[4] = a7;
-  *&v15[5] = a5;
+  *&v15[4] = duration;
+  *&v15[5] = outer0;
   v16 = v11;
   v17 = v10;
-  *&v15[6] = a3;
-  v13 = [SKActionClass customActionWithDuration:v15 actionBlock:a7];
+  *&v15[6] = inner0;
+  v13 = [SKActionClass customActionWithDuration:v15 actionBlock:duration];
 
   return v13;
 }
@@ -701,14 +701,14 @@ void __67__ETTapMessage__animateCircleInner0_inner1_outer0_outer1_duration___blo
   CGPathRelease(CirclePath);
 }
 
-- (void)_displayInScene:(id)a3 point:(CGPoint)a4 color:(id)a5 filled:(BOOL)a6 withWisp:(BOOL)a7
+- (void)_displayInScene:(id)scene point:(CGPoint)point color:(id)color filled:(BOOL)filled withWisp:(BOOL)wisp
 {
-  v132 = a6;
-  y = a4.y;
-  x = a4.x;
+  filledCopy = filled;
+  y = point.y;
+  x = point.x;
   v174 = *MEMORY[0x277D85DE8];
-  v137 = a3;
-  v136 = a5;
+  sceneCopy = scene;
+  colorCopy = color;
   v142[0] = 0;
   v142[1] = v142;
   baseTime = self->_baseTime;
@@ -719,8 +719,8 @@ void __67__ETTapMessage__animateCircleInner0_inner1_outer0_outer1_duration___blo
     v13 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
-      v14 = [MEMORY[0x277CBEAA8] date];
-      v15 = [ETUtility dateFormatWithMilliseconds:v14];
+      date = [MEMORY[0x277CBEAA8] date];
+      v15 = [ETUtility dateFormatWithMilliseconds:date];
       LODWORD(buf) = 138412290;
       *(&buf + 4) = v15;
       _os_log_impl(&dword_248D00000, v13, OS_LOG_TYPE_INFO, "(%@) ETTapMessage displaying tap in scene", &buf, 0xCu);
@@ -759,30 +759,30 @@ void __67__ETTapMessage__animateCircleInner0_inner1_outer0_outer1_duration___blo
     noiseField = self->_noiseField;
   }
 
-  v22 = [(SKFieldNode *)noiseField parent];
-  v23 = v22 == 0;
+  parent = [(SKFieldNode *)noiseField parent];
+  v23 = parent == 0;
 
   if (v23)
   {
-    [v137 addChild:self->_noiseField];
+    [sceneCopy addChild:self->_noiseField];
   }
 
-  v130 = [(ETMessage *)self isRenderingOffscreen];
-  if (!v130)
+  isRenderingOffscreen = [(ETMessage *)self isRenderingOffscreen];
+  if (!isRenderingOffscreen)
   {
     v24 = self->_noiseField;
     SKActionClass = getSKActionClass();
     v26 = [getSKActionClass() waitForDuration:3.0];
     v169[0] = v26;
-    v27 = [getSKActionClass() removeFromParent];
-    v169[1] = v27;
+    removeFromParent = [getSKActionClass() removeFromParent];
+    v169[1] = removeFromParent;
     v28 = [MEMORY[0x277CBEA60] arrayWithObjects:v169 count:2];
     v29 = [SKActionClass sequence:v28];
     [(SKFieldNode *)v24 runAction:v29 withKey:@"removal"];
   }
 
   os_unfair_lock_unlock(&self->_noiseFieldLock);
-  [v137 size];
+  [sceneCopy size];
   v31 = fmax(v30 / 156.0, 1.0);
   if (v31 <= 3.0)
   {
@@ -794,15 +794,15 @@ void __67__ETTapMessage__animateCircleInner0_inner1_outer0_outer1_duration___blo
     v32 = 3.0;
   }
 
-  v139 = [getSKNodeClass() node];
-  [v137 frame];
+  node = [getSKNodeClass() node];
+  [sceneCopy frame];
   v34 = v33;
-  [v137 frame];
-  [v139 setPosition:{x * v34 * 0.5, y * v35 * 0.5}];
-  [v139 setScale:v32];
-  [v137 addChild:v139];
-  v135 = [getSKNodeClass() node];
-  [v139 addChild:v135];
+  [sceneCopy frame];
+  [node setPosition:{x * v34 * 0.5, y * v35 * 0.5}];
+  [node setScale:v32];
+  [sceneCopy addChild:node];
+  node2 = [getSKNodeClass() node];
+  [node addChild:node2];
   v143 = 0.0;
   v144 = &v143;
   v145 = 0x2050000000;
@@ -821,11 +821,11 @@ void __67__ETTapMessage__animateCircleInner0_inner1_outer0_outer1_duration___blo
 
   v37 = v36;
   _Block_object_dispose(&v143, 8);
-  v38 = [v36 node];
-  [v38 setFillColor:v136];
-  [v38 setStrokeColor:v136];
-  [v38 setZPosition:1.0];
-  [v139 addChild:v38];
+  node3 = [v36 node];
+  [node3 setFillColor:colorCopy];
+  [node3 setStrokeColor:colorCopy];
+  [node3 setZPosition:1.0];
+  [node addChild:node3];
   *&buf = 0;
   *(&buf + 1) = &buf;
   v171 = 0x2020000000;
@@ -837,7 +837,7 @@ void __67__ETTapMessage__animateCircleInner0_inner1_outer0_outer1_duration___blo
   v140[3] = &unk_278F7A3E0;
   v140[4] = self;
   v140[5] = v142;
-  v141 = a7;
+  wispCopy = wisp;
   v140[6] = &buf;
   v128 = [v39 customActionWithDuration:v140 actionBlock:0.200000003];
   v129 = [getSKActionClass() customActionWithDuration:&__block_literal_global_5 actionBlock:0.0];
@@ -878,19 +878,19 @@ void __67__ETTapMessage__animateCircleInner0_inner1_outer0_outer1_duration___blo
   }
 
   v46 = [v40 copy];
-  v47 = v136;
+  v47 = colorCopy;
   v143 = 0.0;
   v156 = 0.0;
   v157 = 0.0;
   v155 = 0.0;
   v138 = v46;
   [v47 getRed:&v143 green:&v157 blue:&v156 alpha:&v155];
-  v48 = [v46 particleColorSequence];
-  if (v48)
+  particleColorSequence = [v46 particleColorSequence];
+  if (particleColorSequence)
   {
-    for (i = 0; [v48 count] > i; ++i)
+    for (i = 0; [particleColorSequence count] > i; ++i)
     {
-      v50 = [v48 getKeyframeValueForIndex:i];
+      v50 = [particleColorSequence getKeyframeValueForIndex:i];
       v153 = 0.0;
       v154 = 0.0;
       v151 = 0.0;
@@ -919,10 +919,10 @@ void __67__ETTapMessage__animateCircleInner0_inner1_outer0_outer1_duration___blo
       }
 
       v56 = v55;
-      [v48 setKeyframeValue:v55 forIndex:i];
+      [particleColorSequence setKeyframeValue:v55 forIndex:i];
     }
 
-    [v138 setParticleColorSequence:v48];
+    [v138 setParticleColorSequence:particleColorSequence];
   }
 
   else
@@ -930,8 +930,8 @@ void __67__ETTapMessage__animateCircleInner0_inner1_outer0_outer1_duration___blo
     [v46 setParticleColor:v47];
   }
 
-  [v138 setTargetNode:v135];
-  [v139 addChild:v138];
+  [v138 setTargetNode:node2];
+  [node addChild:v138];
   v57 = _smoke;
   if (!_smoke)
   {
@@ -970,11 +970,11 @@ void __67__ETTapMessage__animateCircleInner0_inner1_outer0_outer1_duration___blo
 
   v63 = [v57 copy];
   v134 = v47;
-  v64 = [v63 particleColorSequence];
-  v65 = v64;
-  if (v64)
+  particleColorSequence2 = [v63 particleColorSequence];
+  v65 = particleColorSequence2;
+  if (particleColorSequence2)
   {
-    v66 = [v64 count];
+    v66 = [particleColorSequence2 count];
     v143 = 0.0;
     v156 = 0.0;
     v157 = 0.0;
@@ -990,9 +990,9 @@ void __67__ETTapMessage__animateCircleInner0_inner1_outer0_outer1_duration___blo
         v151 = 0.0;
         v152 = 0.0;
         [v68 getHue:&v154 saturation:&v153 brightness:&v152 alpha:&v151];
-        v69 = [MEMORY[0x277D75348] colorWithHue:v143 saturation:v157 brightness:v152 alpha:v151 * v155];
+        v155 = [MEMORY[0x277D75348] colorWithHue:v143 saturation:v157 brightness:v152 alpha:v151 * v155];
 
-        [v65 setKeyframeValue:v69 forIndex:j];
+        [v65 setKeyframeValue:v155 forIndex:j];
       }
     }
 
@@ -1004,26 +1004,26 @@ void __67__ETTapMessage__animateCircleInner0_inner1_outer0_outer1_duration___blo
     [v63 setParticleColor:v134];
   }
 
-  [v63 setTargetNode:v135];
-  [v139 addChild:v63];
-  if (v132)
+  [v63 setTargetNode:node2];
+  [node addChild:v63];
+  if (filledCopy)
   {
     CirclePath = createCirclePath(32.5, 37.5);
-    [v38 setPath:CirclePath];
+    [node3 setPath:CirclePath];
     CGPathRelease(CirclePath);
     v133 = [(ETTapMessage *)self _animateCircleInner0:0.0 inner1:35.0 outer0:35.0 outer1:35.0 duration:0.649999976];
     [v133 setTimingMode:1];
-    [v38 runAction:v133];
-    [v38 setScale:0.0];
+    [node3 runAction:v133];
+    [node3 setScale:0.0];
     v131 = [getSKActionClass() scaleTo:1.0 duration:0.649999976];
     [v131 setTimingMode:3];
     v71 = getSKActionClass();
     v168 = v131;
     v72 = [MEMORY[0x277CBEA60] arrayWithObjects:&v168 count:1];
     v73 = [v71 sequence:v72];
-    [v38 runAction:v73];
+    [node3 runAction:v73];
 
-    if (v130)
+    if (isRenderingOffscreen)
     {
       goto LABEL_45;
     }
@@ -1035,9 +1035,9 @@ void __67__ETTapMessage__animateCircleInner0_inner1_outer0_outer1_duration___blo
     v167[1] = v76;
     v77 = [MEMORY[0x277CBEA60] arrayWithObjects:v167 count:2];
     v78 = [v74 sequence:v77];
-    [v38 runAction:v78];
+    [node3 runAction:v78];
 
-    [v139 setAlpha:0.0];
+    [node setAlpha:0.0];
     v79 = getSKActionClass();
     v80 = [getSKActionClass() fadeInWithDuration:0.3];
     v166[0] = v80;
@@ -1045,11 +1045,11 @@ void __67__ETTapMessage__animateCircleInner0_inner1_outer0_outer1_duration___blo
     v166[1] = v81;
     v82 = [getSKActionClass() fadeOutWithDuration:0.5];
     v166[2] = v82;
-    v83 = [getSKActionClass() removeFromParent];
-    v166[3] = v83;
+    removeFromParent2 = [getSKActionClass() removeFromParent];
+    v166[3] = removeFromParent2;
     v84 = [MEMORY[0x277CBEA60] arrayWithObjects:v166 count:4];
     v85 = [v79 sequence:v84];
-    [v139 runAction:v85];
+    [node runAction:v85];
 
     *(*(&buf + 1) + 24) = 1065353216;
     v86 = getSKActionClass();
@@ -1073,7 +1073,7 @@ void __67__ETTapMessage__animateCircleInner0_inner1_outer0_outer1_duration___blo
   }
 
   v94 = createCirclePath(32.5, 37.5);
-  [v38 setPath:v94];
+  [node3 setPath:v94];
   CGPathRelease(v94);
   v133 = [(ETTapMessage *)self _animateCircleInner0:51.0 inner1:32.5 outer0:54.0 outer1:37.5 duration:0.324999988];
   v131 = [(ETTapMessage *)self _animateCircleInner0:32.5 inner1:35.0 outer0:37.5 outer1:35.0 duration:0.649999976];
@@ -1084,9 +1084,9 @@ void __67__ETTapMessage__animateCircleInner0_inner1_outer0_outer1_duration___blo
   v163[1] = v131;
   v96 = [MEMORY[0x277CBEA60] arrayWithObjects:v163 count:2];
   v97 = [v95 sequence:v96];
-  [v38 runAction:v97];
+  [node3 runAction:v97];
 
-  [v38 setScale:1.0];
+  [node3 setScale:1.0];
   v91 = [getSKActionClass() scaleTo:0.8 duration:0.649999976];
   [v91 setTimingMode:3];
   v98 = getSKActionClass();
@@ -1095,9 +1095,9 @@ void __67__ETTapMessage__animateCircleInner0_inner1_outer0_outer1_duration___blo
   v162[1] = v91;
   v100 = [MEMORY[0x277CBEA60] arrayWithObjects:v162 count:2];
   v101 = [v98 sequence:v100];
-  [v38 runAction:v101];
+  [node3 runAction:v101];
 
-  if (!v130)
+  if (!isRenderingOffscreen)
   {
     v102 = getSKActionClass();
     v103 = [getSKActionClass() waitForDuration:0.649999976];
@@ -1106,9 +1106,9 @@ void __67__ETTapMessage__animateCircleInner0_inner1_outer0_outer1_duration___blo
     v161[1] = v104;
     v105 = [MEMORY[0x277CBEA60] arrayWithObjects:v161 count:2];
     v106 = [v102 sequence:v105];
-    [v38 runAction:v106];
+    [node3 runAction:v106];
 
-    [v139 setAlpha:0.0];
+    [node setAlpha:0.0];
     v107 = getSKActionClass();
     v108 = [getSKActionClass() fadeInWithDuration:0.3];
     v160[0] = v108;
@@ -1116,11 +1116,11 @@ void __67__ETTapMessage__animateCircleInner0_inner1_outer0_outer1_duration___blo
     v160[1] = v109;
     v110 = [getSKActionClass() fadeOutWithDuration:0.5];
     v160[2] = v110;
-    v111 = [getSKActionClass() removeFromParent];
-    v160[3] = v111;
+    removeFromParent3 = [getSKActionClass() removeFromParent];
+    v160[3] = removeFromParent3;
     v112 = [MEMORY[0x277CBEA60] arrayWithObjects:v160 count:4];
     v113 = [v107 sequence:v112];
-    [v139 runAction:v113];
+    [node runAction:v113];
 
     *(*(&buf + 1) + 24) = -1082130432;
     v114 = getSKActionClass();
@@ -1145,19 +1145,19 @@ LABEL_43:
   }
 
 LABEL_45:
-  v120 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v121 = [v120 persistentDomainForName:@"com.apple.ET"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v121 = [standardUserDefaults persistentDomainForName:@"com.apple.ET"];
   v122 = [v121 objectForKey:@"ETSceneLoggingEnabled"];
-  v123 = [v122 BOOLValue];
+  bOOLValue = [v122 BOOLValue];
 
-  if (v123)
+  if (bOOLValue)
   {
     v124 = MEMORY[0x277CCACA8];
-    v125 = [MEMORY[0x277CBEAA8] date];
-    v126 = [v124 stringWithFormat:@"/tmp/ETTapMessage-%@.sks", v125];
+    date2 = [MEMORY[0x277CBEAA8] date];
+    v125 = [v124 stringWithFormat:@"/tmp/ETTapMessage-%@.sks", date2];
 
-    v127 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v137 requiringSecureCoding:1 error:0];
-    [v127 writeToFile:v126 atomically:1];
+    v127 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:sceneCopy requiringSecureCoding:1 error:0];
+    [v127 writeToFile:v125 atomically:1];
   }
 
   _Block_object_dispose(&buf, 8);

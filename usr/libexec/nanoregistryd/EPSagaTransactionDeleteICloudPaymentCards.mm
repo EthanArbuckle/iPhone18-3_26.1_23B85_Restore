@@ -1,14 +1,14 @@
 @interface EPSagaTransactionDeleteICloudPaymentCards
 - (EPTransactionDelegate)delegate;
-- (void)beginTransactionWithRoutingSlipEntry:(id)a3 serviceRegistry:(id)a4;
+- (void)beginTransactionWithRoutingSlipEntry:(id)entry serviceRegistry:(id)registry;
 @end
 
 @implementation EPSagaTransactionDeleteICloudPaymentCards
 
-- (void)beginTransactionWithRoutingSlipEntry:(id)a3 serviceRegistry:(id)a4
+- (void)beginTransactionWithRoutingSlipEntry:(id)entry serviceRegistry:(id)registry
 {
-  v6 = a3;
-  v7 = a4;
+  entryCopy = entry;
+  registryCopy = registry;
   v18 = 0;
   v19 = &v18;
   v20 = 0x2050000000;
@@ -36,9 +36,9 @@
   v14[1] = 3221225472;
   v14[2] = sub_100011174;
   v14[3] = &unk_100175598;
-  v15 = v7;
-  v16 = self;
-  v13 = v7;
+  v15 = registryCopy;
+  selfCopy = self;
+  v13 = registryCopy;
   [(NPKCompanionAgentConnection *)v12 handlePendingUnpairingWithCompletion:v14];
 }
 

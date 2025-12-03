@@ -1,16 +1,16 @@
 @interface SBUIButton
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
-- (SBUIButton)initWithFrame:(CGRect)a3;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
+- (SBUIButton)initWithFrame:(CGRect)frame;
 - (UIEdgeInsets)hitAreaAdjustments;
 @end
 
 @implementation SBUIButton
 
-- (SBUIButton)initWithFrame:(CGRect)a3
+- (SBUIButton)initWithFrame:(CGRect)frame
 {
   v5.receiver = self;
   v5.super_class = SBUIButton;
-  result = [(SBUIButton *)&v5 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  result = [(SBUIButton *)&v5 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (result)
   {
     v4 = *(MEMORY[0x1E69DDCE0] + 16);
@@ -21,11 +21,11 @@
   return result;
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = inside.y;
+  x = inside.x;
+  eventCopy = event;
   [(SBUIButton *)self bounds];
   top = self->_hitAreaAdjustments.top;
   left = self->_hitAreaAdjustments.left;
@@ -44,7 +44,7 @@
   {
     v16.receiver = self;
     v16.super_class = SBUIButton;
-    v14 = [(SBUIButton *)&v16 pointInside:v7 withEvent:x, y];
+    v14 = [(SBUIButton *)&v16 pointInside:eventCopy withEvent:x, y];
   }
 
   return v14;

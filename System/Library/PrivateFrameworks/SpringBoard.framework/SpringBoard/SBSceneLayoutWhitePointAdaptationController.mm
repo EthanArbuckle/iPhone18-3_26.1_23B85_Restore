@@ -6,18 +6,18 @@
 + (id)sharedInstance;
 - (SBSceneLayoutWhitePointAdaptationController)init;
 - (SBWindowScene)windowScene;
-- (id)_applicationSceneHandleForLayoutElement:(id)a3;
-- (id)_deviceSceneHandlesFromEntities:(id)a3;
+- (id)_applicationSceneHandleForLayoutElement:(id)element;
+- (id)_deviceSceneHandlesFromEntities:(id)entities;
 - (id)_whitePointAdaptivityStylesForLayoutState;
-- (int64_t)_whitePointAdaptivityStyleForLayoutElement:(id)a3;
-- (int64_t)_whitePointAdaptivityStyleForSceneHandle:(id)a3;
-- (void)_updateWhitePointAdaptationStrengthWithAnimationSettings:(id)a3;
-- (void)_updateWhitePointAdaptationStrengthWithFromApplicationScenes:(id)a3 toApplicationScenes:(id)a4 fromPercentage:(double)a5 toPercentage:(double)a6 animationSettings:(id)a7 interactive:(BOOL)a8;
-- (void)_updateWhitePointAdaptationStrengthWithWorkspaceTransitionRequest:(id)a3 fromPercentage:(double)a4 toPercentage:(double)a5 animationSettings:(id)a6 cancelled:(BOOL)a7 interactive:(BOOL)a8;
+- (int64_t)_whitePointAdaptivityStyleForLayoutElement:(id)element;
+- (int64_t)_whitePointAdaptivityStyleForSceneHandle:(id)handle;
+- (void)_updateWhitePointAdaptationStrengthWithAnimationSettings:(id)settings;
+- (void)_updateWhitePointAdaptationStrengthWithFromApplicationScenes:(id)scenes toApplicationScenes:(id)applicationScenes fromPercentage:(double)percentage toPercentage:(double)toPercentage animationSettings:(id)settings interactive:(BOOL)interactive;
+- (void)_updateWhitePointAdaptationStrengthWithWorkspaceTransitionRequest:(id)request fromPercentage:(double)percentage toPercentage:(double)toPercentage animationSettings:(id)settings cancelled:(BOOL)cancelled interactive:(BOOL)interactive;
 - (void)updateWhitePointAdaptationStrength;
-- (void)updateWhitePointAdaptationStrengthWithAnimationSettings:(id)a3;
-- (void)updateWhitePointAdaptationStrengthWithFromApplicationSceneEntities:(id)a3 toApplicationSceneEntities:(id)a4 fromPercentage:(double)a5 toPercentage:(double)a6 animationSettings:(id)a7 interactive:(BOOL)a8;
-- (void)updateWhitePointAdaptationStrengthWithWorkspaceTransitionRequest:(id)a3 animationTransitionContext:(id)a4;
+- (void)updateWhitePointAdaptationStrengthWithAnimationSettings:(id)settings;
+- (void)updateWhitePointAdaptationStrengthWithFromApplicationSceneEntities:(id)entities toApplicationSceneEntities:(id)sceneEntities fromPercentage:(double)percentage toPercentage:(double)toPercentage animationSettings:(id)settings interactive:(BOOL)interactive;
+- (void)updateWhitePointAdaptationStrengthWithWorkspaceTransitionRequest:(id)request animationTransitionContext:(id)context;
 @end
 
 @implementation SBSceneLayoutWhitePointAdaptationController
@@ -61,15 +61,15 @@
 + (id)_defaultAnimationSettings
 {
   v2 = MEMORY[0x277CF0B70];
-  [a1 _defaultAnimationDuration];
+  [self _defaultAnimationDuration];
 
   return [v2 settingsWithDuration:?];
 }
 
 + (double)_defaultAnimationDuration
 {
-  v2 = [a1 _harmonySettings];
-  [v2 whitePointAdaptationUpdateDefaultDuration];
+  _harmonySettings = [self _harmonySettings];
+  [_harmonySettings whitePointAdaptationUpdateDefaultDuration];
   v4 = v3;
 
   return v4;
@@ -78,26 +78,26 @@
 + (id)_harmonySettings
 {
   v2 = +[SBHarmonyController sharedInstance];
-  v3 = [v2 harmonySettings];
+  harmonySettings = [v2 harmonySettings];
 
-  return v3;
+  return harmonySettings;
 }
 
 - (id)_whitePointAdaptivityStylesForLayoutState
 {
   v16[1] = *MEMORY[0x277D85DE8];
   WeakRetained = objc_loadWeakRetained(&self->_windowScene);
-  v4 = [WeakRetained switcherController];
+  switcherController = [WeakRetained switcherController];
 
-  if ([v4 unlockedEnvironmentMode] == 2)
+  if ([switcherController unlockedEnvironmentMode] == 2)
   {
     v5 = 0;
   }
 
   else
   {
-    v6 = [v4 sceneHandleForWhitePointAdaptivityStyle];
-    v7 = [(SBSceneLayoutWhitePointAdaptationController *)self _whitePointAdaptivityStyleForSceneHandle:v6];
+    sceneHandleForWhitePointAdaptivityStyle = [switcherController sceneHandleForWhitePointAdaptivityStyle];
+    v7 = [(SBSceneLayoutWhitePointAdaptationController *)self _whitePointAdaptivityStyleForSceneHandle:sceneHandleForWhitePointAdaptivityStyle];
     if (v7 > 4)
     {
       v5 = 0;
@@ -110,11 +110,11 @@
       v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:1];
     }
 
-    v9 = [v6 sceneIdentifier];
-    v10 = v9;
-    if (v9)
+    sceneIdentifier = [sceneHandleForWhitePointAdaptivityStyle sceneIdentifier];
+    v10 = sceneIdentifier;
+    if (sceneIdentifier)
     {
-      v11 = v9;
+      v11 = sceneIdentifier;
     }
 
     else
@@ -152,27 +152,27 @@ void __61__SBSceneLayoutWhitePointAdaptationController_sharedInstance__block_inv
 - (SBSceneLayoutWhitePointAdaptationController)init
 {
   v3 = +[SBHarmonyController sharedInstance];
-  v4 = [v3 supportsWhitePointAdaptation];
+  supportsWhitePointAdaptation = [v3 supportsWhitePointAdaptation];
 
-  if (v4)
+  if (supportsWhitePointAdaptation)
   {
     v7.receiver = self;
     v7.super_class = SBSceneLayoutWhitePointAdaptationController;
     self = [(SBSceneLayoutWhitePointAdaptationController *)&v7 init];
-    v5 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
-  return v5;
+  return selfCopy;
 }
 
-- (void)updateWhitePointAdaptationStrengthWithAnimationSettings:(id)a3
+- (void)updateWhitePointAdaptationStrengthWithAnimationSettings:(id)settings
 {
-  v4 = a3;
+  settingsCopy = settings;
   v5 = SBLogCommon();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG);
 
@@ -191,9 +191,9 @@ void __61__SBSceneLayoutWhitePointAdaptationController_sharedInstance__block_inv
     }
   }
 
-  if (v4)
+  if (settingsCopy)
   {
-    [(SBSceneLayoutWhitePointAdaptationController *)self _updateWhitePointAdaptationStrengthWithAnimationSettings:v4];
+    [(SBSceneLayoutWhitePointAdaptationController *)self _updateWhitePointAdaptationStrengthWithAnimationSettings:settingsCopy];
   }
 
   else
@@ -203,34 +203,34 @@ void __61__SBSceneLayoutWhitePointAdaptationController_sharedInstance__block_inv
   }
 }
 
-- (void)updateWhitePointAdaptationStrengthWithFromApplicationSceneEntities:(id)a3 toApplicationSceneEntities:(id)a4 fromPercentage:(double)a5 toPercentage:(double)a6 animationSettings:(id)a7 interactive:(BOOL)a8
+- (void)updateWhitePointAdaptationStrengthWithFromApplicationSceneEntities:(id)entities toApplicationSceneEntities:(id)sceneEntities fromPercentage:(double)percentage toPercentage:(double)toPercentage animationSettings:(id)settings interactive:(BOOL)interactive
 {
-  v8 = a8;
-  v14 = a7;
-  v15 = a4;
-  v17 = [(SBSceneLayoutWhitePointAdaptationController *)self _deviceSceneHandlesFromEntities:a3];
-  v16 = [(SBSceneLayoutWhitePointAdaptationController *)self _deviceSceneHandlesFromEntities:v15];
+  interactiveCopy = interactive;
+  settingsCopy = settings;
+  sceneEntitiesCopy = sceneEntities;
+  v17 = [(SBSceneLayoutWhitePointAdaptationController *)self _deviceSceneHandlesFromEntities:entities];
+  v16 = [(SBSceneLayoutWhitePointAdaptationController *)self _deviceSceneHandlesFromEntities:sceneEntitiesCopy];
 
-  [(SBSceneLayoutWhitePointAdaptationController *)self _updateWhitePointAdaptationStrengthWithFromApplicationScenes:v17 toApplicationScenes:v16 fromPercentage:v14 toPercentage:v8 animationSettings:a5 interactive:a6];
+  [(SBSceneLayoutWhitePointAdaptationController *)self _updateWhitePointAdaptationStrengthWithFromApplicationScenes:v17 toApplicationScenes:v16 fromPercentage:settingsCopy toPercentage:interactiveCopy animationSettings:percentage interactive:toPercentage];
 }
 
-- (void)updateWhitePointAdaptationStrengthWithWorkspaceTransitionRequest:(id)a3 animationTransitionContext:(id)a4
+- (void)updateWhitePointAdaptationStrengthWithWorkspaceTransitionRequest:(id)request animationTransitionContext:(id)context
 {
-  v15 = a4;
-  v6 = a3;
-  v7 = [v15 isInteractive];
-  v8 = [v15 isCancelled];
-  v9 = v8;
-  if (v7)
+  contextCopy = context;
+  requestCopy = request;
+  isInteractive = [contextCopy isInteractive];
+  isCancelled = [contextCopy isCancelled];
+  v9 = isCancelled;
+  if (isInteractive)
   {
-    [v15 percentComplete];
+    [contextCopy percentComplete];
     v11 = v10;
     v12 = v10;
   }
 
   else
   {
-    if (v8)
+    if (isCancelled)
     {
       v11 = 1.0;
     }
@@ -240,7 +240,7 @@ void __61__SBSceneLayoutWhitePointAdaptationController_sharedInstance__block_inv
       v11 = 0.0;
     }
 
-    if (v8)
+    if (isCancelled)
     {
       v12 = 0.0;
     }
@@ -251,36 +251,36 @@ void __61__SBSceneLayoutWhitePointAdaptationController_sharedInstance__block_inv
     }
   }
 
-  v13 = [v15 transitionAnimationFactory];
-  v14 = [v13 settings];
-  [(SBSceneLayoutWhitePointAdaptationController *)self _updateWhitePointAdaptationStrengthWithWorkspaceTransitionRequest:v6 fromPercentage:v14 toPercentage:v9 animationSettings:v7 cancelled:v11 interactive:v12];
+  transitionAnimationFactory = [contextCopy transitionAnimationFactory];
+  settings = [transitionAnimationFactory settings];
+  [(SBSceneLayoutWhitePointAdaptationController *)self _updateWhitePointAdaptationStrengthWithWorkspaceTransitionRequest:requestCopy fromPercentage:settings toPercentage:v9 animationSettings:isInteractive cancelled:v11 interactive:v12];
 }
 
-- (void)_updateWhitePointAdaptationStrengthWithAnimationSettings:(id)a3
+- (void)_updateWhitePointAdaptationStrengthWithAnimationSettings:(id)settings
 {
   v35[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  settingsCopy = settings;
   WeakRetained = objc_loadWeakRetained(&self->_windowScene);
-  v6 = [WeakRetained transientOverlayPresenter];
-  v7 = [v6 preferredWhitePointAdaptivityStyleValue];
+  transientOverlayPresenter = [WeakRetained transientOverlayPresenter];
+  preferredWhitePointAdaptivityStyleValue = [transientOverlayPresenter preferredWhitePointAdaptivityStyleValue];
 
-  if (v7)
+  if (preferredWhitePointAdaptivityStyleValue)
   {
-    v8 = [v7 integerValue];
-    if (v8 > 4)
+    integerValue = [preferredWhitePointAdaptivityStyleValue integerValue];
+    if (integerValue > 4)
     {
       v10 = &unk_28336E1D8;
     }
 
     else
     {
-      v9 = [MEMORY[0x277CCABB0] numberWithInteger:v8];
+      v9 = [MEMORY[0x277CCABB0] numberWithInteger:integerValue];
       v35[0] = v9;
       v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v35 count:1];
     }
 
     v12 = _UIStringFromWhitePointAdaptivityStyle();
-    v11 = v12;
+    _whitePointAdaptivityStylesForLayoutState = v12;
     if (v12)
     {
       v13 = v12;
@@ -296,10 +296,10 @@ void __61__SBSceneLayoutWhitePointAdaptationController_sharedInstance__block_inv
 
   else
   {
-    v11 = [(SBSceneLayoutWhitePointAdaptationController *)self _whitePointAdaptivityStylesForLayoutState];
-    if ([v11 count])
+    _whitePointAdaptivityStylesForLayoutState = [(SBSceneLayoutWhitePointAdaptationController *)self _whitePointAdaptivityStylesForLayoutState];
+    if ([_whitePointAdaptivityStylesForLayoutState count])
     {
-      v10 = v11;
+      v10 = _whitePointAdaptivityStylesForLayoutState;
     }
 
     else
@@ -313,7 +313,7 @@ void __61__SBSceneLayoutWhitePointAdaptationController_sharedInstance__block_inv
 
   if (v15)
   {
-    v16 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
@@ -346,7 +346,7 @@ void __61__SBSceneLayoutWhitePointAdaptationController_sharedInstance__block_inv
             v24 = @"NONE";
           }
 
-          [v16 addObject:v24];
+          [array addObject:v24];
         }
 
         v19 = [v17 countByEnumeratingWithState:&v30 objects:v34 count:16];
@@ -355,12 +355,12 @@ void __61__SBSceneLayoutWhitePointAdaptationController_sharedInstance__block_inv
       while (v19);
     }
 
-    v25 = [v16 componentsJoinedByString:{@", "}];
+    v25 = [array componentsJoinedByString:{@", "}];
     SBKeyValueLog(@"SET WHITE POINT ADAPTIVITY STYLE", v25, 0);
 
-    [v4 duration];
+    [settingsCopy duration];
     SBKeyDoubleValueLog(@"ANIMATION DURATION", 1, v26);
-    [v4 delay];
+    [settingsCopy delay];
     SBKeyDoubleValueLog(@"ANIMATION DELAY", 1, v27);
     v28 = SBLogCommon();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_DEBUG))
@@ -370,64 +370,64 @@ void __61__SBSceneLayoutWhitePointAdaptationController_sharedInstance__block_inv
   }
 
   v29 = +[SBHarmonyController sharedInstance];
-  [v29 setWhitePointAdaptivityStyleWithStyles:v10 animationSettings:v4];
+  [v29 setWhitePointAdaptivityStyleWithStyles:v10 animationSettings:settingsCopy];
 }
 
-- (void)_updateWhitePointAdaptationStrengthWithWorkspaceTransitionRequest:(id)a3 fromPercentage:(double)a4 toPercentage:(double)a5 animationSettings:(id)a6 cancelled:(BOOL)a7 interactive:(BOOL)a8
+- (void)_updateWhitePointAdaptationStrengthWithWorkspaceTransitionRequest:(id)request fromPercentage:(double)percentage toPercentage:(double)toPercentage animationSettings:(id)settings cancelled:(BOOL)cancelled interactive:(BOOL)interactive
 {
-  v8 = a8;
-  v9 = a7;
-  v14 = a6;
-  if (a3)
+  interactiveCopy = interactive;
+  cancelledCopy = cancelled;
+  settingsCopy = settings;
+  if (request)
   {
-    v32 = v14;
-    v15 = [a3 applicationContext];
-    v16 = v15;
-    if (!v15)
+    v32 = settingsCopy;
+    applicationContext = [request applicationContext];
+    v16 = applicationContext;
+    if (!applicationContext)
     {
       v19 = 0;
       v20 = 0;
-      if (!v9)
+      if (!cancelledCopy)
       {
         goto LABEL_18;
       }
 
 LABEL_16:
-      if (!v8)
+      if (!interactiveCopy)
       {
-        v25 = self;
+        selfCopy2 = self;
         v26 = v19;
         v27 = v20;
-        v28 = a4;
-        v29 = a5;
+        percentageCopy2 = percentage;
+        toPercentageCopy2 = toPercentage;
         v30 = v32;
         v31 = 0;
 LABEL_19:
-        [(SBSceneLayoutWhitePointAdaptationController *)v25 _updateWhitePointAdaptationStrengthWithFromApplicationScenes:v26 toApplicationScenes:v27 fromPercentage:v30 toPercentage:v31 animationSettings:v28 interactive:v29];
+        [(SBSceneLayoutWhitePointAdaptationController *)selfCopy2 _updateWhitePointAdaptationStrengthWithFromApplicationScenes:v26 toApplicationScenes:v27 fromPercentage:v30 toPercentage:v31 animationSettings:percentageCopy2 interactive:toPercentageCopy2];
 
-        v14 = v32;
+        settingsCopy = v32;
         goto LABEL_20;
       }
 
 LABEL_18:
-      v25 = self;
+      selfCopy2 = self;
       v26 = v20;
       v27 = v19;
-      v28 = a4;
-      v29 = a5;
+      percentageCopy2 = percentage;
+      toPercentageCopy2 = toPercentage;
       v30 = v32;
-      v31 = v8;
+      v31 = interactiveCopy;
       goto LABEL_19;
     }
 
-    v17 = [v15 previousLayoutState];
+    previousLayoutState = [applicationContext previousLayoutState];
     objc_opt_class();
-    v18 = (objc_opt_isKindOfClass() & 1) != 0 && [v17 unlockedEnvironmentMode] == 2;
-    v21 = [v16 layoutState];
+    v18 = (objc_opt_isKindOfClass() & 1) != 0 && [previousLayoutState unlockedEnvironmentMode] == 2;
+    layoutState = [v16 layoutState];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v22 = [v21 unlockedEnvironmentMode] == 2;
+      v22 = [layoutState unlockedEnvironmentMode] == 2;
       if (!v18)
       {
         goto LABEL_10;
@@ -440,14 +440,14 @@ LABEL_18:
       if (!v18)
       {
 LABEL_10:
-        v23 = [v16 previousApplicationSceneEntities];
-        v20 = [(SBSceneLayoutWhitePointAdaptationController *)self _deviceSceneHandlesFromEntities:v23];
+        previousApplicationSceneEntities = [v16 previousApplicationSceneEntities];
+        v20 = [(SBSceneLayoutWhitePointAdaptationController *)self _deviceSceneHandlesFromEntities:previousApplicationSceneEntities];
 
         if (!v22)
         {
 LABEL_11:
-          v24 = [v16 applicationSceneEntities];
-          v19 = [(SBSceneLayoutWhitePointAdaptationController *)self _deviceSceneHandlesFromEntities:v24];
+          applicationSceneEntities = [v16 applicationSceneEntities];
+          v19 = [(SBSceneLayoutWhitePointAdaptationController *)self _deviceSceneHandlesFromEntities:applicationSceneEntities];
 
           goto LABEL_15;
         }
@@ -456,7 +456,7 @@ LABEL_14:
         v19 = 0;
 LABEL_15:
 
-        if (!v9)
+        if (!cancelledCopy)
         {
           goto LABEL_18;
         }
@@ -477,12 +477,12 @@ LABEL_15:
 LABEL_20:
 }
 
-- (id)_deviceSceneHandlesFromEntities:(id)a3
+- (id)_deviceSceneHandlesFromEntities:(id)entities
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  entitiesCopy = entities;
   v4 = [MEMORY[0x277CBEB58] set];
-  if ([v3 count])
+  if ([entitiesCopy count])
   {
     v16 = v4;
     v5 = [MEMORY[0x277CBEB58] set];
@@ -490,7 +490,7 @@ LABEL_20:
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v6 = v3;
+    v6 = entitiesCopy;
     v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v7)
     {
@@ -507,8 +507,8 @@ LABEL_20:
 
           v11 = *(*(&v17 + 1) + 8 * i);
           v12 = objc_opt_class();
-          v13 = [v11 sceneHandle];
-          v14 = SBSafeCast(v12, v13);
+          sceneHandle = [v11 sceneHandle];
+          v14 = SBSafeCast(v12, sceneHandle);
 
           if (v14)
           {
@@ -528,13 +528,13 @@ LABEL_20:
   return v4;
 }
 
-- (void)_updateWhitePointAdaptationStrengthWithFromApplicationScenes:(id)a3 toApplicationScenes:(id)a4 fromPercentage:(double)a5 toPercentage:(double)a6 animationSettings:(id)a7 interactive:(BOOL)a8
+- (void)_updateWhitePointAdaptationStrengthWithFromApplicationScenes:(id)scenes toApplicationScenes:(id)applicationScenes fromPercentage:(double)percentage toPercentage:(double)toPercentage animationSettings:(id)settings interactive:(BOOL)interactive
 {
-  v8 = a8;
-  v13 = a3;
-  v14 = a4;
-  v15 = a7;
-  if (!v8 || +[SBSceneLayoutWhitePointAdaptationController _isInteractiveUpdateEnabled])
+  interactiveCopy = interactive;
+  scenesCopy = scenes;
+  applicationScenesCopy = applicationScenes;
+  settingsCopy = settings;
+  if (!interactiveCopy || +[SBSceneLayoutWhitePointAdaptationController _isInteractiveUpdateEnabled])
   {
     v16 = SBLogCommon();
     v17 = os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG);
@@ -553,7 +553,7 @@ LABEL_20:
         [SBSceneLayoutWhitePointAdaptationController _updateWhitePointAdaptationStrengthWithFromApplicationScenes:toApplicationScenes:fromPercentage:toPercentage:animationSettings:interactive:];
       }
 
-      v21 = __186__SBSceneLayoutWhitePointAdaptationController__updateWhitePointAdaptationStrengthWithFromApplicationScenes_toApplicationScenes_fromPercentage_toPercentage_animationSettings_interactive___block_invoke(v20, v13);
+      v21 = __186__SBSceneLayoutWhitePointAdaptationController__updateWhitePointAdaptationStrengthWithFromApplicationScenes_toApplicationScenes_fromPercentage_toPercentage_animationSettings_interactive___block_invoke(v20, scenesCopy);
       v22 = [v21 componentsJoinedByString:{@", "}];
       v23 = v22;
       if (v22)
@@ -568,7 +568,7 @@ LABEL_20:
 
       SBKeyValueLog(@"FROM APPLICATIONS", v24, 0);
 
-      v26 = __186__SBSceneLayoutWhitePointAdaptationController__updateWhitePointAdaptationStrengthWithFromApplicationScenes_toApplicationScenes_fromPercentage_toPercentage_animationSettings_interactive___block_invoke_2(v25, v13);
+      v26 = __186__SBSceneLayoutWhitePointAdaptationController__updateWhitePointAdaptationStrengthWithFromApplicationScenes_toApplicationScenes_fromPercentage_toPercentage_animationSettings_interactive___block_invoke_2(v25, scenesCopy);
       v27 = [v26 componentsJoinedByString:{@", "}];
       v28 = v27;
       if (v27)
@@ -583,7 +583,7 @@ LABEL_20:
 
       SBKeyValueLog(@"WHITE POINT ADAPTIVITY STYLE", v29, 1);
 
-      v31 = __186__SBSceneLayoutWhitePointAdaptationController__updateWhitePointAdaptationStrengthWithFromApplicationScenes_toApplicationScenes_fromPercentage_toPercentage_animationSettings_interactive___block_invoke(v30, v14);
+      v31 = __186__SBSceneLayoutWhitePointAdaptationController__updateWhitePointAdaptationStrengthWithFromApplicationScenes_toApplicationScenes_fromPercentage_toPercentage_animationSettings_interactive___block_invoke(v30, applicationScenesCopy);
       v32 = [v31 componentsJoinedByString:{@", "}];
       v33 = v32;
       if (v32)
@@ -598,7 +598,7 @@ LABEL_20:
 
       SBKeyValueLog(@"TO APPLICATIONS", v34, 0);
 
-      v36 = __186__SBSceneLayoutWhitePointAdaptationController__updateWhitePointAdaptationStrengthWithFromApplicationScenes_toApplicationScenes_fromPercentage_toPercentage_animationSettings_interactive___block_invoke_2(v35, v14);
+      v36 = __186__SBSceneLayoutWhitePointAdaptationController__updateWhitePointAdaptationStrengthWithFromApplicationScenes_toApplicationScenes_fromPercentage_toPercentage_animationSettings_interactive___block_invoke_2(v35, applicationScenesCopy);
       v37 = [v36 componentsJoinedByString:{@", "}];
       v38 = v37;
       if (v37)
@@ -614,10 +614,10 @@ LABEL_20:
       SBKeyValueLog(@"WHITE POINT ADAPTIVITY STYLE", v39, 1);
     }
 
-    v40 = [v13 count];
+    v40 = [scenesCopy count];
     if (v40)
     {
-      v41 = __186__SBSceneLayoutWhitePointAdaptationController__updateWhitePointAdaptationStrengthWithFromApplicationScenes_toApplicationScenes_fromPercentage_toPercentage_animationSettings_interactive___block_invoke_3(v40, v13);
+      v41 = __186__SBSceneLayoutWhitePointAdaptationController__updateWhitePointAdaptationStrengthWithFromApplicationScenes_toApplicationScenes_fromPercentage_toPercentage_animationSettings_interactive___block_invoke_3(v40, scenesCopy);
     }
 
     else
@@ -625,10 +625,10 @@ LABEL_20:
       v41 = &unk_28336E1F0;
     }
 
-    v42 = [v14 count];
+    v42 = [applicationScenesCopy count];
     if (v42)
     {
-      v43 = __186__SBSceneLayoutWhitePointAdaptationController__updateWhitePointAdaptationStrengthWithFromApplicationScenes_toApplicationScenes_fromPercentage_toPercentage_animationSettings_interactive___block_invoke_3(v42, v14);
+      v43 = __186__SBSceneLayoutWhitePointAdaptationController__updateWhitePointAdaptationStrengthWithFromApplicationScenes_toApplicationScenes_fromPercentage_toPercentage_animationSettings_interactive___block_invoke_3(v42, applicationScenesCopy);
     }
 
     else
@@ -647,7 +647,7 @@ LABEL_20:
         [SBSceneLayoutWhitePointAdaptationController _updateWhitePointAdaptationStrengthWithFromApplicationScenes:toApplicationScenes:fromPercentage:toPercentage:animationSettings:interactive:];
       }
 
-      if (v8)
+      if (interactiveCopy)
       {
         v47 = @"INTERACTIVE";
       }
@@ -673,7 +673,7 @@ LABEL_20:
 
       SBKeyValueLog(@"FROM", v52, 1);
 
-      SBKeyDoubleValueLog(@"PERCENTAGE", 2, a5);
+      SBKeyDoubleValueLog(@"PERCENTAGE", 2, percentage);
       v54 = __186__SBSceneLayoutWhitePointAdaptationController__updateWhitePointAdaptationStrengthWithFromApplicationScenes_toApplicationScenes_fromPercentage_toPercentage_animationSettings_interactive___block_invoke_4(v53, v43);
       v55 = [v54 componentsJoinedByString:{@", "}];
       v56 = v55;
@@ -689,10 +689,10 @@ LABEL_20:
 
       SBKeyValueLog(@"TO", v57, 1);
 
-      SBKeyDoubleValueLog(@"PERCENTAGE", 2, a6);
-      [v15 duration];
+      SBKeyDoubleValueLog(@"PERCENTAGE", 2, toPercentage);
+      [settingsCopy duration];
       SBKeyDoubleValueLog(@"ANIMATION DURATION", 1, v58);
-      [v15 delay];
+      [settingsCopy delay];
       SBKeyDoubleValueLog(@"ANIMATION DELAY", 1, v59);
       v60 = SBLogCommon();
       if (os_log_type_enabled(v60, OS_LOG_TYPE_DEBUG))
@@ -702,7 +702,7 @@ LABEL_20:
     }
 
     v61 = +[SBHarmonyController sharedInstance];
-    [v61 transitionFromWhitePointAdaptivityStyleWithStyles:v41 toWhitePointAdaptivityStyleWithStyles:v43 fromPercentage:v15 toPercentage:a5 animationSettings:a6];
+    [v61 transitionFromWhitePointAdaptivityStyleWithStyles:v41 toWhitePointAdaptivityStyleWithStyles:v43 fromPercentage:settingsCopy toPercentage:percentage animationSettings:toPercentage];
   }
 }
 
@@ -899,9 +899,9 @@ id __186__SBSceneLayoutWhitePointAdaptationController__updateWhitePointAdaptatio
   return v12;
 }
 
-- (int64_t)_whitePointAdaptivityStyleForLayoutElement:(id)a3
+- (int64_t)_whitePointAdaptivityStyleForLayoutElement:(id)element
 {
-  if (!a3)
+  if (!element)
   {
     return -1;
   }
@@ -912,11 +912,11 @@ id __186__SBSceneLayoutWhitePointAdaptationController__updateWhitePointAdaptatio
   return v5;
 }
 
-- (int64_t)_whitePointAdaptivityStyleForSceneHandle:(id)a3
+- (int64_t)_whitePointAdaptivityStyleForSceneHandle:(id)handle
 {
-  if (a3)
+  if (handle)
   {
-    return [a3 whitePointAdaptivityStyle];
+    return [handle whitePointAdaptivityStyle];
   }
 
   else
@@ -925,29 +925,29 @@ id __186__SBSceneLayoutWhitePointAdaptationController__updateWhitePointAdaptatio
   }
 }
 
-- (id)_applicationSceneHandleForLayoutElement:(id)a3
+- (id)_applicationSceneHandleForLayoutElement:(id)element
 {
-  if (a3)
+  if (element)
   {
-    v3 = [a3 workspaceEntity];
-    v4 = [v3 deviceApplicationSceneEntity];
-    v5 = [v4 sceneHandle];
+    workspaceEntity = [element workspaceEntity];
+    deviceApplicationSceneEntity = [workspaceEntity deviceApplicationSceneEntity];
+    sceneHandle = [deviceApplicationSceneEntity sceneHandle];
   }
 
   else
   {
-    v5 = 0;
+    sceneHandle = 0;
   }
 
-  return v5;
+  return sceneHandle;
 }
 
 + (BOOL)_isInteractiveUpdateEnabled
 {
-  v2 = [a1 _harmonySettings];
-  v3 = [v2 whitePointAdaptationInteractiveUpdateEnabled];
+  _harmonySettings = [self _harmonySettings];
+  whitePointAdaptationInteractiveUpdateEnabled = [_harmonySettings whitePointAdaptationInteractiveUpdateEnabled];
 
-  return v3;
+  return whitePointAdaptationInteractiveUpdateEnabled;
 }
 
 - (SBWindowScene)windowScene

@@ -1,19 +1,19 @@
 @interface HMDCoreDataTransformerHMDAccountHandle
-- (id)reverseTransformedValue:(id)a3;
-- (id)transformedValue:(id)a3;
+- (id)reverseTransformedValue:(id)value;
+- (id)transformedValue:(id)value;
 @end
 
 @implementation HMDCoreDataTransformerHMDAccountHandle
 
-- (id)reverseTransformedValue:(id)a3
+- (id)reverseTransformedValue:(id)value
 {
-  v3 = a3;
-  if (v3)
+  valueCopy = value;
+  if (valueCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v4 = v3;
+      v4 = valueCopy;
     }
 
     else
@@ -34,13 +34,13 @@
   return v7;
 }
 
-- (id)transformedValue:(id)a3
+- (id)transformedValue:(id)value
 {
-  if (a3)
+  if (value)
   {
-    v3 = a3;
+    valueCopy = value;
     v4 = +[HMDAccountHandleFormatter defaultFormatter];
-    v5 = [v4 stringForObjectValue:v3];
+    v5 = [v4 stringForObjectValue:valueCopy];
   }
 
   else

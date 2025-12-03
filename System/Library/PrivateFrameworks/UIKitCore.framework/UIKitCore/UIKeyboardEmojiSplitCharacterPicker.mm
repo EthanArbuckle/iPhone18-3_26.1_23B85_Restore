@@ -1,96 +1,96 @@
 @interface UIKeyboardEmojiSplitCharacterPicker
-- (UIEdgeInsets)collectionView:(id)a3 layout:(id)a4 insetForSectionAtIndex:(int64_t)a5;
-- (UIKeyboardEmojiSplitCharacterPicker)initWithFrame:(CGRect)a3 keyplane:(id)a4 key:(id)a5;
-- (double)snappedYOffsetForOffset:(double)a3;
+- (UIEdgeInsets)collectionView:(id)view layout:(id)layout insetForSectionAtIndex:(int64_t)index;
+- (UIKeyboardEmojiSplitCharacterPicker)initWithFrame:(CGRect)frame keyplane:(id)keyplane key:(id)key;
+- (double)snappedYOffsetForOffset:(double)offset;
 - (id)category;
 - (void)dealloc;
 - (void)didMoveToWindow;
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5;
-- (void)updateToCategory:(int64_t)a3;
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset;
+- (void)updateToCategory:(int64_t)category;
 @end
 
 @implementation UIKeyboardEmojiSplitCharacterPicker
 
-- (UIKeyboardEmojiSplitCharacterPicker)initWithFrame:(CGRect)a3 keyplane:(id)a4 key:(id)a5
+- (UIKeyboardEmojiSplitCharacterPicker)initWithFrame:(CGRect)frame keyplane:(id)keyplane key:(id)key
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v11 = a4;
-  v12 = a5;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  keyplaneCopy = keyplane;
+  keyCopy = key;
   v43.receiver = self;
   v43.super_class = UIKeyboardEmojiSplitCharacterPicker;
-  v13 = [(UIView *)&v43 initWithFrame:x, y, width, height];
-  if (v13)
+  height = [(UIView *)&v43 initWithFrame:x, y, width, height];
+  if (height)
   {
     v14 = +[UIKeyboardImpl keyboardScreen];
     v15 = +[UIKeyboard activeKeyboard];
     v16 = +[UIKBScreenTraits traitsWithScreen:orientation:](UIKBScreenTraits, "traitsWithScreen:orientation:", v14, [v15 interfaceOrientation]);
 
     v17 = [UIKeyboardEmojiGraphicsTraits emojiGraphicsTraitsWithScreenTraits:v16];
-    emojiGraphicsTraits = v13->super._emojiGraphicsTraits;
-    v13->super._emojiGraphicsTraits = v17;
+    emojiGraphicsTraits = height->super._emojiGraphicsTraits;
+    height->super._emojiGraphicsTraits = v17;
 
     v19 = +[UIColor clearColor];
-    [(UIView *)v13 setBackgroundColor:v19];
+    [(UIView *)height setBackgroundColor:v19];
 
-    [(UIView *)v13 setOpaque:0];
-    [(UIKBKeyView *)v13 updateForKeyplane:v11 key:v12];
-    v13->super._isDraggingInputView = 0;
-    v20 = [(UIKeyboardEmojiKeyView *)v13 emojiKeyManager];
-    v21 = [v20 lastViewedCategory];
-    objc_storeWeak(&v13->_category, v21);
+    [(UIView *)height setOpaque:0];
+    [(UIKBKeyView *)height updateForKeyplane:keyplaneCopy key:keyCopy];
+    height->super._isDraggingInputView = 0;
+    emojiKeyManager = [(UIKeyboardEmojiKeyView *)height emojiKeyManager];
+    lastViewedCategory = [emojiKeyManager lastViewedCategory];
+    objc_storeWeak(&height->_category, lastViewedCategory);
 
     v22 = +[UIKeyboardEmojiCategory enabledCategoryIndexes];
     v23 = MEMORY[0x1E696AD98];
-    WeakRetained = objc_loadWeakRetained(&v13->_category);
+    WeakRetained = objc_loadWeakRetained(&height->_category);
     v25 = [v23 numberWithInteger:{objc_msgSend(WeakRetained, "categoryType")}];
     v26 = [v22 containsObject:v25];
 
     if ((v26 & 1) == 0)
     {
       v27 = +[UIKeyboardEmojiCategory enabledCategoryIndexes];
-      v28 = [v27 firstObject];
-      v29 = [v28 integerValue];
+      firstObject = [v27 firstObject];
+      integerValue = [firstObject integerValue];
 
-      v30 = [UIKeyboardEmojiCategory categoryForType:v29];
-      objc_storeWeak(&v13->_category, v30);
+      v30 = [UIKeyboardEmojiCategory categoryForType:integerValue];
+      objc_storeWeak(&height->_category, v30);
     }
 
     v31 = objc_alloc_init(UICollectionViewFlowLayout);
-    flowLayout = v13->super._flowLayout;
-    v13->super._flowLayout = v31;
+    flowLayout = height->super._flowLayout;
+    height->super._flowLayout = v31;
 
-    [(UICollectionViewFlowLayout *)v13->super._flowLayout setScrollDirection:0];
-    v33 = v13->super._flowLayout;
-    [(UIKeyboardEmojiGraphicsTraits *)v13->super._emojiGraphicsTraits emojiKeyWidth];
+    [(UICollectionViewFlowLayout *)height->super._flowLayout setScrollDirection:0];
+    v33 = height->super._flowLayout;
+    [(UIKeyboardEmojiGraphicsTraits *)height->super._emojiGraphicsTraits emojiKeyWidth];
     v35 = v34;
-    [(UIKeyboardEmojiGraphicsTraits *)v13->super._emojiGraphicsTraits emojiKeyWidth];
+    [(UIKeyboardEmojiGraphicsTraits *)height->super._emojiGraphicsTraits emojiKeyWidth];
     [(UICollectionViewFlowLayout *)v33 setItemSize:v35, v36];
-    [(UICollectionViewFlowLayout *)v13->super._flowLayout setMinimumInteritemSpacing:0.0];
-    [(UICollectionViewFlowLayout *)v13->super._flowLayout setMinimumLineSpacing:0.0];
+    [(UICollectionViewFlowLayout *)height->super._flowLayout setMinimumInteritemSpacing:0.0];
+    [(UICollectionViewFlowLayout *)height->super._flowLayout setMinimumLineSpacing:0.0];
     v37 = [UIKeyboardEmojiCollectionView alloc];
-    [(UIView *)v13 bounds];
-    v38 = [(UIKeyboardEmojiCollectionView *)v37 initWithFrame:v13->super._flowLayout collectionViewLayout:v13->super._emojiGraphicsTraits emojiGraphicsTraits:?];
-    collectionView = v13->super._collectionView;
-    v13->super._collectionView = v38;
+    [(UIView *)height bounds];
+    v38 = [(UIKeyboardEmojiCollectionView *)v37 initWithFrame:height->super._flowLayout collectionViewLayout:height->super._emojiGraphicsTraits emojiGraphicsTraits:?];
+    collectionView = height->super._collectionView;
+    height->super._collectionView = v38;
 
-    v40 = v13->super._collectionView;
+    v40 = height->super._collectionView;
     v41 = +[UIColor clearColor];
     [(UICollectionView *)v40 setBackgroundColor:v41];
 
-    [(UIView *)v13->super._collectionView setAutoresizingMask:18];
-    [(UICollectionView *)v13->super._collectionView setDelegate:v13];
-    [(UICollectionView *)v13->super._collectionView setDataSource:v13];
-    [(UIScrollView *)v13->super._collectionView setShowsHorizontalScrollIndicator:0];
-    [(UIScrollView *)v13->super._collectionView setShowsVerticalScrollIndicator:0];
-    [(UICollectionView *)v13->super._collectionView registerClass:objc_opt_class() forSupplementaryViewOfKind:@"UICollectionElementKindSectionHeader" withReuseIdentifier:@"kEmojiCategoryTitleIdentifier"];
-    [(UICollectionView *)v13->super._collectionView registerClass:objc_opt_class() forCellWithReuseIdentifier:@"kEmojiCellIdentifier"];
-    [(UIView *)v13 addSubview:v13->super._collectionView];
+    [(UIView *)height->super._collectionView setAutoresizingMask:18];
+    [(UICollectionView *)height->super._collectionView setDelegate:height];
+    [(UICollectionView *)height->super._collectionView setDataSource:height];
+    [(UIScrollView *)height->super._collectionView setShowsHorizontalScrollIndicator:0];
+    [(UIScrollView *)height->super._collectionView setShowsVerticalScrollIndicator:0];
+    [(UICollectionView *)height->super._collectionView registerClass:objc_opt_class() forSupplementaryViewOfKind:@"UICollectionElementKindSectionHeader" withReuseIdentifier:@"kEmojiCategoryTitleIdentifier"];
+    [(UICollectionView *)height->super._collectionView registerClass:objc_opt_class() forCellWithReuseIdentifier:@"kEmojiCellIdentifier"];
+    [(UIView *)height addSubview:height->super._collectionView];
   }
 
-  return v13;
+  return height;
 }
 
 - (void)dealloc
@@ -101,14 +101,14 @@
   [(UIKeyboardEmojiCollectionInputView *)&v2 dealloc];
 }
 
-- (UIEdgeInsets)collectionView:(id)a3 layout:(id)a4 insetForSectionAtIndex:(int64_t)a5
+- (UIEdgeInsets)collectionView:(id)view layout:(id)layout insetForSectionAtIndex:(int64_t)index
 {
-  v7 = [(UICollectionView *)self->super._collectionView numberOfItemsInSection:0, a4];
-  if ((a5 || v7 <= 0) && (a5 != 1 || v7))
+  layout = [(UICollectionView *)self->super._collectionView numberOfItemsInSection:0, layout];
+  if ((index || layout <= 0) && (index != 1 || layout))
   {
     v12 = [(UICollectionView *)self->super._collectionView numberOfSections]- 1;
     emojiGraphicsTraits = self->super._emojiGraphicsTraits;
-    if (v12 == a5)
+    if (v12 == index)
     {
       [(UIKeyboardEmojiGraphicsTraits *)emojiGraphicsTraits inputViewRightMostPadding];
     }
@@ -140,31 +140,31 @@
   return result;
 }
 
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset
 {
   self->super._isDraggingInputView = 1;
-  [(UIKeyboardEmojiSplitCharacterPicker *)self snappedYOffsetForOffset:a3, a5->y, a4.y];
-  a5->y = v6;
+  [(UIKeyboardEmojiSplitCharacterPicker *)self snappedYOffsetForOffset:dragging, offset->y, velocity.y];
+  offset->y = v6;
 }
 
-- (double)snappedYOffsetForOffset:(double)a3
+- (double)snappedYOffsetForOffset:(double)offset
 {
   [(UIScrollView *)self->super._collectionView contentSize];
   v6 = v5;
   [(UIView *)self->super._collectionView bounds];
   v8 = v6 - v7;
-  v9 = [(UIKeyboardEmojiCollectionView *)self->super._collectionView emojiGraphicsTraits];
-  [v9 inputViewRightMostPadding];
+  emojiGraphicsTraits = [(UIKeyboardEmojiCollectionView *)self->super._collectionView emojiGraphicsTraits];
+  [emojiGraphicsTraits inputViewRightMostPadding];
   v11 = v8 - v10;
 
   collectionView = self->super._collectionView;
-  if (v11 >= a3)
+  if (v11 >= offset)
   {
-    v20 = [(UIKeyboardEmojiCollectionView *)collectionView emojiGraphicsTraits];
-    [v20 inputViewLeftMostPadding];
+    emojiGraphicsTraits2 = [(UIKeyboardEmojiCollectionView *)collectionView emojiGraphicsTraits];
+    [emojiGraphicsTraits2 inputViewLeftMostPadding];
     v22 = v21;
 
-    if (v22 <= a3)
+    if (v22 <= offset)
     {
       v40 = 0;
       v41 = &v40;
@@ -174,15 +174,15 @@
       v45 = 0;
       [(UIView *)self->super._collectionView bounds];
       v25 = v24;
-      v26 = [(UIKeyboardEmojiCollectionView *)self->super._collectionView emojiGraphicsTraits];
-      [v26 emojiKeyWidth];
+      emojiGraphicsTraits3 = [(UIKeyboardEmojiCollectionView *)self->super._collectionView emojiGraphicsTraits];
+      [emojiGraphicsTraits3 emojiKeyWidth];
       v28 = v27;
-      v29 = [(UIKeyboardEmojiCollectionView *)self->super._collectionView emojiGraphicsTraits];
-      [v29 columnOffset];
+      emojiGraphicsTraits4 = [(UIKeyboardEmojiCollectionView *)self->super._collectionView emojiGraphicsTraits];
+      [emojiGraphicsTraits4 columnOffset];
       v31 = v30;
 
-      v32 = [(UICollectionView *)self->super._collectionView collectionViewLayout];
-      v33 = [v32 layoutAttributesForElementsInRect:{0.0, a3, v25, v28 + v31}];
+      collectionViewLayout = [(UICollectionView *)self->super._collectionView collectionViewLayout];
+      v33 = [collectionViewLayout layoutAttributesForElementsInRect:{0.0, offset, v25, v28 + v31}];
       v39[0] = MEMORY[0x1E69E9820];
       v39[1] = 3221225472;
       v39[2] = __63__UIKeyboardEmojiSplitCharacterPicker_snappedYOffsetForOffset___block_invoke;
@@ -200,8 +200,8 @@
       return v19;
     }
 
-    v17 = [(UIKeyboardEmojiCollectionView *)self->super._collectionView emojiGraphicsTraits];
-    [v17 inputViewLeftMostPadding];
+    emojiGraphicsTraits5 = [(UIKeyboardEmojiCollectionView *)self->super._collectionView emojiGraphicsTraits];
+    [emojiGraphicsTraits5 inputViewLeftMostPadding];
     v19 = -v23;
   }
 
@@ -211,8 +211,8 @@
     v14 = v13;
     [(UIView *)self->super._collectionView bounds];
     v16 = v14 - v15;
-    v17 = [(UIKeyboardEmojiCollectionView *)self->super._collectionView emojiGraphicsTraits];
-    [v17 inputViewRightMostPadding];
+    emojiGraphicsTraits5 = [(UIKeyboardEmojiCollectionView *)self->super._collectionView emojiGraphicsTraits];
+    [emojiGraphicsTraits5 inputViewRightMostPadding];
     v19 = v16 + v18;
   }
 
@@ -258,24 +258,24 @@ void __63__UIKeyboardEmojiSplitCharacterPicker_snappedYOffsetForOffset___block_i
   v23.size.width = v15;
   v23.size.height = v17;
   MinY = CGRectGetMinY(v23);
-  v20 = [(UIKeyboardEmojiCollectionView *)self->super._collectionView emojiGraphicsTraits];
-  [v20 inputViewLeftMostPadding];
+  emojiGraphicsTraits = [(UIKeyboardEmojiCollectionView *)self->super._collectionView emojiGraphicsTraits];
+  [emojiGraphicsTraits inputViewLeftMostPadding];
   [(UICollectionView *)v18 setContentOffset:0 animated:0.0, MinY - v21];
 
   [(UIView *)self->super._collectionView layoutIfNeeded];
 }
 
-- (void)updateToCategory:(int64_t)a3
+- (void)updateToCategory:(int64_t)category
 {
-  v5 = [(UIKeyboardEmojiCollectionInputView *)self hitTestResponder];
-  [v5 deactivateActiveKey];
+  hitTestResponder = [(UIKeyboardEmojiCollectionInputView *)self hitTestResponder];
+  [hitTestResponder deactivateActiveKey];
 
-  if ([(UICollectionView *)self->super._collectionView numberOfItemsInSection:[UIKeyboardEmojiCategory categoryIndexForCategoryType:a3]]>= 1)
+  if ([(UICollectionView *)self->super._collectionView numberOfItemsInSection:[UIKeyboardEmojiCategory categoryIndexForCategoryType:category]]>= 1)
   {
     WeakRetained = objc_loadWeakRetained(&self->_category);
-    v7 = [WeakRetained categoryType];
+    categoryType = [WeakRetained categoryType];
 
-    if (v7 == a3)
+    if (categoryType == category)
     {
       v8 = objc_loadWeakRetained(&self->_category);
       [v8 setLastVisibleFirstEmojiIndex:0];
@@ -286,9 +286,9 @@ void __63__UIKeyboardEmojiSplitCharacterPicker_snappedYOffsetForOffset___block_i
 
     else
     {
-      obj = [UIKeyboardEmojiCategory categoryForType:a3];
-      v10 = [(UIKeyboardEmojiKeyView *)self emojiKeyManager];
-      [obj setLastVisibleFirstEmojiIndex:{objc_msgSend(v10, "lastVisibleFirstEmojiIndexforCategory:", obj)}];
+      obj = [UIKeyboardEmojiCategory categoryForType:category];
+      emojiKeyManager = [(UIKeyboardEmojiKeyView *)self emojiKeyManager];
+      [obj setLastVisibleFirstEmojiIndex:{objc_msgSend(emojiKeyManager, "lastVisibleFirstEmojiIndexforCategory:", obj)}];
 
       v11 = objc_storeWeak(&self->_category, obj);
       v9 = [(UIKeyboardEmojiCollectionInputView *)self indexForPrettyCategoryDisplay:obj];
@@ -314,12 +314,12 @@ void __63__UIKeyboardEmojiSplitCharacterPicker_snappedYOffsetForOffset___block_i
     v34.size.width = v22;
     v34.size.height = v24;
     MinY = CGRectGetMinY(v34);
-    v29 = [(UIKeyboardEmojiCollectionView *)self->super._collectionView emojiGraphicsTraits];
-    [v29 inputViewLeftMostPadding];
+    emojiGraphicsTraits = [(UIKeyboardEmojiCollectionView *)self->super._collectionView emojiGraphicsTraits];
+    [emojiGraphicsTraits inputViewLeftMostPadding];
     [(UICollectionView *)v25 setContentOffset:0 animated:v27, MinY - v30];
 
-    v31 = [(UIKeyboardEmojiKeyView *)self emojiKeyManager];
-    [v31 setLastViewedCategory:obj];
+    emojiKeyManager2 = [(UIKeyboardEmojiKeyView *)self emojiKeyManager];
+    [emojiKeyManager2 setLastViewedCategory:obj];
   }
 }
 

@@ -1,25 +1,25 @@
 @interface SISchemaCarBluetoothHeadUnit
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (SISchemaCarBluetoothHeadUnit)initWithDictionary:(id)a3;
-- (SISchemaCarBluetoothHeadUnit)initWithJSON:(id)a3;
+- (SISchemaCarBluetoothHeadUnit)initWithDictionary:(id)dictionary;
+- (SISchemaCarBluetoothHeadUnit)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SISchemaCarBluetoothHeadUnit
 
-- (SISchemaCarBluetoothHeadUnit)initWithDictionary:(id)a3
+- (SISchemaCarBluetoothHeadUnit)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v19.receiver = self;
   v19.super_class = SISchemaCarBluetoothHeadUnit;
   v5 = [(SISchemaCarBluetoothHeadUnit *)&v19 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"headUnitVendorId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"headUnitVendorId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -27,7 +27,7 @@
       [(SISchemaCarBluetoothHeadUnit *)v5 setHeadUnitVendorId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"headUnitProductId"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"headUnitProductId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -35,7 +35,7 @@
       [(SISchemaCarBluetoothHeadUnit *)v5 setHeadUnitProductId:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"carMake"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"carMake"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -43,7 +43,7 @@
       [(SISchemaCarBluetoothHeadUnit *)v5 setCarMake:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"carModel"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"carModel"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -51,14 +51,14 @@
       [(SISchemaCarBluetoothHeadUnit *)v5 setCarModel:v13];
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"carYear"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"carYear"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SISchemaCarBluetoothHeadUnit setCarYear:](v5, "setCarYear:", [v14 unsignedIntValue]);
     }
 
-    v15 = [v4 objectForKeyedSubscript:@"organizationallyUniqueId"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"organizationallyUniqueId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -72,30 +72,30 @@
   return v5;
 }
 
-- (SISchemaCarBluetoothHeadUnit)initWithJSON:(id)a3
+- (SISchemaCarBluetoothHeadUnit)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(SISchemaCarBluetoothHeadUnit *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(SISchemaCarBluetoothHeadUnit *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(SISchemaCarBluetoothHeadUnit *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -108,51 +108,51 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_carMake)
   {
-    v4 = [(SISchemaCarBluetoothHeadUnit *)self carMake];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"carMake"];
+    carMake = [(SISchemaCarBluetoothHeadUnit *)self carMake];
+    v5 = [carMake copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"carMake"];
   }
 
   if (self->_carModel)
   {
-    v6 = [(SISchemaCarBluetoothHeadUnit *)self carModel];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"carModel"];
+    carModel = [(SISchemaCarBluetoothHeadUnit *)self carModel];
+    v7 = [carModel copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"carModel"];
   }
 
   if (*&self->_has)
   {
     v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[SISchemaCarBluetoothHeadUnit carYear](self, "carYear")}];
-    [v3 setObject:v8 forKeyedSubscript:@"carYear"];
+    [dictionary setObject:v8 forKeyedSubscript:@"carYear"];
   }
 
   if (self->_headUnitProductId)
   {
-    v9 = [(SISchemaCarBluetoothHeadUnit *)self headUnitProductId];
-    v10 = [v9 copy];
-    [v3 setObject:v10 forKeyedSubscript:@"headUnitProductId"];
+    headUnitProductId = [(SISchemaCarBluetoothHeadUnit *)self headUnitProductId];
+    v10 = [headUnitProductId copy];
+    [dictionary setObject:v10 forKeyedSubscript:@"headUnitProductId"];
   }
 
   if (self->_headUnitVendorId)
   {
-    v11 = [(SISchemaCarBluetoothHeadUnit *)self headUnitVendorId];
-    v12 = [v11 copy];
-    [v3 setObject:v12 forKeyedSubscript:@"headUnitVendorId"];
+    headUnitVendorId = [(SISchemaCarBluetoothHeadUnit *)self headUnitVendorId];
+    v12 = [headUnitVendorId copy];
+    [dictionary setObject:v12 forKeyedSubscript:@"headUnitVendorId"];
   }
 
   if (self->_organizationallyUniqueId)
   {
-    v13 = [(SISchemaCarBluetoothHeadUnit *)self organizationallyUniqueId];
-    v14 = [v13 copy];
-    [v3 setObject:v14 forKeyedSubscript:@"organizationallyUniqueId"];
+    organizationallyUniqueId = [(SISchemaCarBluetoothHeadUnit *)self organizationallyUniqueId];
+    v14 = [organizationallyUniqueId copy];
+    [dictionary setObject:v14 forKeyedSubscript:@"organizationallyUniqueId"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -174,28 +174,28 @@
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ [(NSString *)self->_organizationallyUniqueId hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_30;
   }
 
-  v5 = [(SISchemaCarBluetoothHeadUnit *)self headUnitVendorId];
-  v6 = [v4 headUnitVendorId];
-  if ((v5 != 0) == (v6 == 0))
+  headUnitVendorId = [(SISchemaCarBluetoothHeadUnit *)self headUnitVendorId];
+  headUnitVendorId2 = [equalCopy headUnitVendorId];
+  if ((headUnitVendorId != 0) == (headUnitVendorId2 == 0))
   {
     goto LABEL_29;
   }
 
-  v7 = [(SISchemaCarBluetoothHeadUnit *)self headUnitVendorId];
-  if (v7)
+  headUnitVendorId3 = [(SISchemaCarBluetoothHeadUnit *)self headUnitVendorId];
+  if (headUnitVendorId3)
   {
-    v8 = v7;
-    v9 = [(SISchemaCarBluetoothHeadUnit *)self headUnitVendorId];
-    v10 = [v4 headUnitVendorId];
-    v11 = [v9 isEqual:v10];
+    v8 = headUnitVendorId3;
+    headUnitVendorId4 = [(SISchemaCarBluetoothHeadUnit *)self headUnitVendorId];
+    headUnitVendorId5 = [equalCopy headUnitVendorId];
+    v11 = [headUnitVendorId4 isEqual:headUnitVendorId5];
 
     if (!v11)
     {
@@ -207,20 +207,20 @@
   {
   }
 
-  v5 = [(SISchemaCarBluetoothHeadUnit *)self headUnitProductId];
-  v6 = [v4 headUnitProductId];
-  if ((v5 != 0) == (v6 == 0))
+  headUnitVendorId = [(SISchemaCarBluetoothHeadUnit *)self headUnitProductId];
+  headUnitVendorId2 = [equalCopy headUnitProductId];
+  if ((headUnitVendorId != 0) == (headUnitVendorId2 == 0))
   {
     goto LABEL_29;
   }
 
-  v12 = [(SISchemaCarBluetoothHeadUnit *)self headUnitProductId];
-  if (v12)
+  headUnitProductId = [(SISchemaCarBluetoothHeadUnit *)self headUnitProductId];
+  if (headUnitProductId)
   {
-    v13 = v12;
-    v14 = [(SISchemaCarBluetoothHeadUnit *)self headUnitProductId];
-    v15 = [v4 headUnitProductId];
-    v16 = [v14 isEqual:v15];
+    v13 = headUnitProductId;
+    headUnitProductId2 = [(SISchemaCarBluetoothHeadUnit *)self headUnitProductId];
+    headUnitProductId3 = [equalCopy headUnitProductId];
+    v16 = [headUnitProductId2 isEqual:headUnitProductId3];
 
     if (!v16)
     {
@@ -232,20 +232,20 @@
   {
   }
 
-  v5 = [(SISchemaCarBluetoothHeadUnit *)self carMake];
-  v6 = [v4 carMake];
-  if ((v5 != 0) == (v6 == 0))
+  headUnitVendorId = [(SISchemaCarBluetoothHeadUnit *)self carMake];
+  headUnitVendorId2 = [equalCopy carMake];
+  if ((headUnitVendorId != 0) == (headUnitVendorId2 == 0))
   {
     goto LABEL_29;
   }
 
-  v17 = [(SISchemaCarBluetoothHeadUnit *)self carMake];
-  if (v17)
+  carMake = [(SISchemaCarBluetoothHeadUnit *)self carMake];
+  if (carMake)
   {
-    v18 = v17;
-    v19 = [(SISchemaCarBluetoothHeadUnit *)self carMake];
-    v20 = [v4 carMake];
-    v21 = [v19 isEqual:v20];
+    v18 = carMake;
+    carMake2 = [(SISchemaCarBluetoothHeadUnit *)self carMake];
+    carMake3 = [equalCopy carMake];
+    v21 = [carMake2 isEqual:carMake3];
 
     if (!v21)
     {
@@ -257,20 +257,20 @@
   {
   }
 
-  v5 = [(SISchemaCarBluetoothHeadUnit *)self carModel];
-  v6 = [v4 carModel];
-  if ((v5 != 0) == (v6 == 0))
+  headUnitVendorId = [(SISchemaCarBluetoothHeadUnit *)self carModel];
+  headUnitVendorId2 = [equalCopy carModel];
+  if ((headUnitVendorId != 0) == (headUnitVendorId2 == 0))
   {
     goto LABEL_29;
   }
 
-  v22 = [(SISchemaCarBluetoothHeadUnit *)self carModel];
-  if (v22)
+  carModel = [(SISchemaCarBluetoothHeadUnit *)self carModel];
+  if (carModel)
   {
-    v23 = v22;
-    v24 = [(SISchemaCarBluetoothHeadUnit *)self carModel];
-    v25 = [v4 carModel];
-    v26 = [v24 isEqual:v25];
+    v23 = carModel;
+    carModel2 = [(SISchemaCarBluetoothHeadUnit *)self carModel];
+    carModel3 = [equalCopy carModel];
+    v26 = [carModel2 isEqual:carModel3];
 
     if (!v26)
     {
@@ -282,7 +282,7 @@
   {
   }
 
-  if ((*&self->_has & 1) != (v4[56] & 1))
+  if ((*&self->_has & 1) != (equalCopy[56] & 1))
   {
     goto LABEL_30;
   }
@@ -290,18 +290,18 @@
   if (*&self->_has)
   {
     carYear = self->_carYear;
-    if (carYear != [v4 carYear])
+    if (carYear != [equalCopy carYear])
     {
       goto LABEL_30;
     }
   }
 
-  v5 = [(SISchemaCarBluetoothHeadUnit *)self organizationallyUniqueId];
-  v6 = [v4 organizationallyUniqueId];
-  if ((v5 != 0) != (v6 == 0))
+  headUnitVendorId = [(SISchemaCarBluetoothHeadUnit *)self organizationallyUniqueId];
+  headUnitVendorId2 = [equalCopy organizationallyUniqueId];
+  if ((headUnitVendorId != 0) != (headUnitVendorId2 == 0))
   {
-    v28 = [(SISchemaCarBluetoothHeadUnit *)self organizationallyUniqueId];
-    if (!v28)
+    organizationallyUniqueId = [(SISchemaCarBluetoothHeadUnit *)self organizationallyUniqueId];
+    if (!organizationallyUniqueId)
     {
 
 LABEL_33:
@@ -309,10 +309,10 @@ LABEL_33:
       goto LABEL_31;
     }
 
-    v29 = v28;
-    v30 = [(SISchemaCarBluetoothHeadUnit *)self organizationallyUniqueId];
-    v31 = [v4 organizationallyUniqueId];
-    v32 = [v30 isEqual:v31];
+    v29 = organizationallyUniqueId;
+    organizationallyUniqueId2 = [(SISchemaCarBluetoothHeadUnit *)self organizationallyUniqueId];
+    organizationallyUniqueId3 = [equalCopy organizationallyUniqueId];
+    v32 = [organizationallyUniqueId2 isEqual:organizationallyUniqueId3];
 
     if (v32)
     {
@@ -332,33 +332,33 @@ LABEL_31:
   return v33;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v10 = a3;
-  v4 = [(SISchemaCarBluetoothHeadUnit *)self headUnitVendorId];
+  toCopy = to;
+  headUnitVendorId = [(SISchemaCarBluetoothHeadUnit *)self headUnitVendorId];
 
-  if (v4)
+  if (headUnitVendorId)
   {
     PBDataWriterWriteStringField();
   }
 
-  v5 = [(SISchemaCarBluetoothHeadUnit *)self headUnitProductId];
+  headUnitProductId = [(SISchemaCarBluetoothHeadUnit *)self headUnitProductId];
 
-  if (v5)
+  if (headUnitProductId)
   {
     PBDataWriterWriteStringField();
   }
 
-  v6 = [(SISchemaCarBluetoothHeadUnit *)self carMake];
+  carMake = [(SISchemaCarBluetoothHeadUnit *)self carMake];
 
-  if (v6)
+  if (carMake)
   {
     PBDataWriterWriteStringField();
   }
 
-  v7 = [(SISchemaCarBluetoothHeadUnit *)self carModel];
+  carModel = [(SISchemaCarBluetoothHeadUnit *)self carModel];
 
-  if (v7)
+  if (carModel)
   {
     PBDataWriterWriteStringField();
   }
@@ -368,13 +368,13 @@ LABEL_31:
     PBDataWriterWriteUint32Field();
   }
 
-  v8 = [(SISchemaCarBluetoothHeadUnit *)self organizationallyUniqueId];
+  organizationallyUniqueId = [(SISchemaCarBluetoothHeadUnit *)self organizationallyUniqueId];
 
-  v9 = v10;
-  if (v8)
+  v9 = toCopy;
+  if (organizationallyUniqueId)
   {
     PBDataWriterWriteStringField();
-    v9 = v10;
+    v9 = toCopy;
   }
 }
 

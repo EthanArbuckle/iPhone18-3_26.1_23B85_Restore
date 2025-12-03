@@ -18,7 +18,7 @@
 
 + (NSURL)containerURL
 {
-  if ([a1 isUnitTesting])
+  if ([self isUnitTesting])
   {
     if (qword_100274A08 != -1)
     {
@@ -38,8 +38,8 @@
 
 + (NSURL)documentsURL
 {
-  v2 = [objc_opt_class() containerURL];
-  v3 = [v2 URLByAppendingPathComponent:@"Documents"];
+  containerURL = [objc_opt_class() containerURL];
+  v3 = [containerURL URLByAppendingPathComponent:@"Documents"];
 
   return v3;
 }

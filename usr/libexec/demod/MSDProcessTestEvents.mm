@@ -1,7 +1,7 @@
 @interface MSDProcessTestEvents
 + (id)sharedInstance;
-- (BOOL)establishConnection:(id)a3;
-- (void)pushTestLog:(id)a3;
+- (BOOL)establishConnection:(id)connection;
+- (void)pushTestLog:(id)log;
 @end
 
 @implementation MSDProcessTestEvents
@@ -18,9 +18,9 @@
   return v3;
 }
 
-- (BOOL)establishConnection:(id)a3
+- (BOOL)establishConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   NSLog(@"going to establish connection.\n");
   v5 = [[NSXPCConnection alloc] initWithMachServiceName:@"com.apple.msdtest.service" options:4096];
   NSLog(@"established connection:%@", v5);
@@ -31,25 +31,25 @@
 
   [v5 setExportedObject:self];
   [v5 resume];
-  NSLog(@"sending following commands to demod: %@", v4);
-  v8 = [v5 remoteObjectProxy];
-  [v8 sendCommandsToDemod:v4 replyFromDemod:&stru_10016B400];
+  NSLog(@"sending following commands to demod: %@", connectionCopy);
+  remoteObjectProxy = [v5 remoteObjectProxy];
+  [remoteObjectProxy sendCommandsToDemod:connectionCopy replyFromDemod:&stru_10016B400];
 
   return 1;
 }
 
-- (void)pushTestLog:(id)a3
+- (void)pushTestLog:(id)log
 {
-  v14 = a3;
+  logCopy = log;
   v4 = +[NSFileManager defaultManager];
   v5 = [@"/var/mnt/com.apple.mobilestoredemo.storage/com.apple.mobilestoredemo.blob/" stringByAppendingPathComponent:@"testLogs.plist"];
   [(MSDProcessTestEvents *)self setLogsToWrite:[(MSDProcessTestEvents *)self logsToWrite]+ 1];
-  NSLog(@"testLog:%@", v14);
+  NSLog(@"testLog:%@", logCopy);
   if ([v4 fileExistsAtPath:@"/var/mnt/com.apple.mobilestoredemo.storage/com.apple.mobilestoredemo.blob/"])
   {
-    v6 = [(MSDProcessTestEvents *)self logCache];
+    logCache = [(MSDProcessTestEvents *)self logCache];
 
-    if (!v6)
+    if (!logCache)
     {
       if (![v4 fileExistsAtPath:v5])
       {
@@ -58,12 +58,12 @@
 
       v7 = +[NSFileManager defaultManager];
       v8 = [v7 attributesOfItemAtPath:v5 error:0];
-      v9 = [v8 fileSize];
+      fileSize = [v8 fileSize];
 
       v10 = [NSMutableArray arrayWithContentsOfFile:v5];
       [(MSDProcessTestEvents *)self setLogCache:v10];
 
-      if (v9 > 0xA00000)
+      if (fileSize > 0xA00000)
       {
 LABEL_5:
         v11 = objc_alloc_init(NSMutableArray);
@@ -71,13 +71,13 @@ LABEL_5:
       }
     }
 
-    v12 = [(MSDProcessTestEvents *)self logCache];
-    [v12 addObject:v14];
+    logCache2 = [(MSDProcessTestEvents *)self logCache];
+    [logCache2 addObject:logCopy];
 
     if ([(MSDProcessTestEvents *)self logsToWrite]== 10)
     {
-      v13 = [(MSDProcessTestEvents *)self logCache];
-      [v13 writeToFile:v5 atomically:1];
+      logCache3 = [(MSDProcessTestEvents *)self logCache];
+      [logCache3 writeToFile:v5 atomically:1];
 
       [(MSDProcessTestEvents *)self setLogsToWrite:0];
     }

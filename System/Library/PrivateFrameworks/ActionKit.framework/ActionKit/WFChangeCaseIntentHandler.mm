@@ -1,36 +1,36 @@
 @interface WFChangeCaseIntentHandler
-- (id)stringByApplyingAlternatingCaseToString:(id)a3;
-- (id)stringByApplyingSentenceCaseToString:(id)a3 withLocale:(id)a4;
-- (id)stringByApplyingTitleCaseToString:(id)a3;
-- (void)handleChangeCase:(id)a3 completion:(id)a4;
-- (void)resolveTextForChangeCase:(id)a3 withCompletion:(id)a4;
-- (void)resolveTypeForChangeCase:(id)a3 withCompletion:(id)a4;
+- (id)stringByApplyingAlternatingCaseToString:(id)string;
+- (id)stringByApplyingSentenceCaseToString:(id)string withLocale:(id)locale;
+- (id)stringByApplyingTitleCaseToString:(id)string;
+- (void)handleChangeCase:(id)case completion:(id)completion;
+- (void)resolveTextForChangeCase:(id)case withCompletion:(id)completion;
+- (void)resolveTypeForChangeCase:(id)case withCompletion:(id)completion;
 @end
 
 @implementation WFChangeCaseIntentHandler
 
-- (id)stringByApplyingAlternatingCaseToString:(id)a3
+- (id)stringByApplyingAlternatingCaseToString:(id)string
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CCAB68] stringWithCapacity:{objc_msgSend(v3, "length")}];
-  if ([v3 length])
+  stringCopy = string;
+  v4 = [MEMORY[0x277CCAB68] stringWithCapacity:{objc_msgSend(stringCopy, "length")}];
+  if ([stringCopy length])
   {
     v5 = 0;
     v6 = 0;
     do
     {
-      v7 = [v3 substringWithRange:{v6, 1}];
-      v8 = [v7 uppercaseString];
-      v9 = [v7 lowercaseString];
-      v10 = v9;
+      v7 = [stringCopy substringWithRange:{v6, 1}];
+      uppercaseString = [v7 uppercaseString];
+      lowercaseString = [v7 lowercaseString];
+      v10 = lowercaseString;
       if (v5)
       {
-        v11 = v8;
+        v11 = uppercaseString;
       }
 
       else
       {
-        v11 = v9;
+        v11 = lowercaseString;
       }
 
       v12 = v11;
@@ -38,7 +38,7 @@
       if (v13 == [v7 length])
       {
         [v4 appendString:v12];
-        v5 ^= [v8 isEqualToString:v10] ^ 1;
+        v5 ^= [uppercaseString isEqualToString:v10] ^ 1;
       }
 
       else
@@ -49,18 +49,18 @@
       ++v6;
     }
 
-    while (v6 < [v3 length]);
+    while (v6 < [stringCopy length]);
   }
 
   return v4;
 }
 
-- (id)stringByApplyingTitleCaseToString:(id)a3
+- (id)stringByApplyingTitleCaseToString:(id)string
 {
   v3 = MEMORY[0x277CCA900];
-  v4 = a3;
-  v5 = [v3 newlineCharacterSet];
-  v6 = [v4 componentsSeparatedByCharactersInSet:v5];
+  stringCopy = string;
+  newlineCharacterSet = [v3 newlineCharacterSet];
+  v6 = [stringCopy componentsSeparatedByCharactersInSet:newlineCharacterSet];
 
   v7 = [v6 if_map:&__block_literal_global_178_8562];
   v8 = [v7 componentsJoinedByString:@"\n"];
@@ -68,17 +68,17 @@
   return v8;
 }
 
-- (id)stringByApplyingSentenceCaseToString:(id)a3 withLocale:(id)a4
+- (id)stringByApplyingSentenceCaseToString:(id)string withLocale:(id)locale
 {
   v44 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5)
+  stringCopy = string;
+  localeCopy = locale;
+  v7 = localeCopy;
+  if (stringCopy)
   {
-    v24 = v6;
-    v25 = v5;
-    v8 = [objc_alloc(MEMORY[0x277CBEB18]) initWithObjects:{v5, 0}];
+    v24 = localeCopy;
+    v25 = stringCopy;
+    v8 = [objc_alloc(MEMORY[0x277CBEB18]) initWithObjects:{stringCopy, 0}];
     v38 = 0u;
     v39 = 0u;
     v40 = 0u;
@@ -156,7 +156,7 @@
     v20 = [v8 if_map:v29];
     v21 = [v20 componentsJoinedByString:&stru_2850323E8];
 
-    v5 = v25;
+    stringCopy = v25;
   }
 
   else
@@ -206,23 +206,23 @@ id __77__WFChangeCaseIntentHandler_stringByApplyingSentenceCaseToString_withLoca
   return v6;
 }
 
-- (void)handleChangeCase:(id)a3 completion:(id)a4
+- (void)handleChangeCase:(id)case completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 text];
-  v9 = [v7 type];
+  completionCopy = completion;
+  caseCopy = case;
+  text = [caseCopy text];
+  type = [caseCopy type];
 
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __57__WFChangeCaseIntentHandler_handleChangeCase_completion___block_invoke;
   v12[3] = &unk_278C1A1C8;
   v12[4] = self;
-  v12[5] = v9;
-  v10 = [v8 if_compactMap:v12];
+  v12[5] = type;
+  v10 = [text if_compactMap:v12];
   v11 = [[WFChangeCaseIntentResponse alloc] initWithCode:4 userActivity:0];
   [(WFChangeCaseIntentResponse *)v11 setText:v10];
-  v6[2](v6, v11);
+  completionCopy[2](completionCopy, v11);
 }
 
 id __57__WFChangeCaseIntentHandler_handleChangeCase_completion___block_invoke(uint64_t a1, void *a2)
@@ -283,13 +283,13 @@ LABEL_16:
   return v4;
 }
 
-- (void)resolveTypeForChangeCase:(id)a3 withCompletion:(id)a4
+- (void)resolveTypeForChangeCase:(id)case withCompletion:(id)completion
 {
-  v7 = a3;
-  v5 = a4;
-  if ([v7 type])
+  caseCopy = case;
+  completionCopy = completion;
+  if ([caseCopy type])
   {
-    +[WFChangeCaseTypeResolutionResult successWithResolvedChangeCaseType:](WFChangeCaseTypeResolutionResult, "successWithResolvedChangeCaseType:", [v7 type]);
+    +[WFChangeCaseTypeResolutionResult successWithResolvedChangeCaseType:](WFChangeCaseTypeResolutionResult, "successWithResolvedChangeCaseType:", [caseCopy type]);
   }
 
   else
@@ -297,15 +297,15 @@ LABEL_16:
     +[WFChangeCaseTypeResolutionResult needsValue];
   }
   v6 = ;
-  v5[2](v5, v6);
+  completionCopy[2](completionCopy, v6);
 }
 
-- (void)resolveTextForChangeCase:(id)a3 withCompletion:(id)a4
+- (void)resolveTextForChangeCase:(id)case withCompletion:(id)completion
 {
-  v6 = a4;
-  v8 = [a3 text];
-  v7 = [v8 if_map:&__block_literal_global_8585];
-  (*(a4 + 2))(v6, v7);
+  completionCopy = completion;
+  text = [case text];
+  v7 = [text if_map:&__block_literal_global_8585];
+  (*(completion + 2))(completionCopy, v7);
 }
 
 @end

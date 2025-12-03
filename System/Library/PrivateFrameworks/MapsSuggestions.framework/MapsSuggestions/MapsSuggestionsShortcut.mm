@@ -1,26 +1,26 @@
 @interface MapsSuggestionsShortcut
-+ (id)shortcutWithData:(id)a3;
++ (id)shortcutWithData:(id)data;
 - (BOOL)isBackedPlaceholder;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToShortcut:(id)a3;
-- (MapsSuggestionsShortcut)initWithCoder:(id)a3;
-- (MapsSuggestionsShortcut)initWithFavoriteItem:(id)a3;
-- (MapsSuggestionsShortcut)initWithType:(int64_t)a3 identifier:(id)a4 geoMapItem:(id)a5 customName:(id)a6 contacts:(id)a7 isHidden:(BOOL)a8 originatingAddress:(id)a9;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToShortcut:(id)shortcut;
+- (MapsSuggestionsShortcut)initWithCoder:(id)coder;
+- (MapsSuggestionsShortcut)initWithFavoriteItem:(id)item;
+- (MapsSuggestionsShortcut)initWithType:(int64_t)type identifier:(id)identifier geoMapItem:(id)item customName:(id)name contacts:(id)contacts isHidden:(BOOL)hidden originatingAddress:(id)address;
 - (NSArray)stringContacts;
 - (NSString)identifier;
 - (NSString)subtitle;
 - (NSString)title;
 - (id)_name;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)data;
 - (id)description;
 - (uint64_t)_originalName;
-- (void)addContact:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)removeContact:(id)a3;
-- (void)setCustomName:(id)a3;
-- (void)setGeoMapItem:(id)a3;
-- (void)setIdentifier:(id)a3;
+- (void)addContact:(id)contact;
+- (void)encodeWithCoder:(id)coder;
+- (void)removeContact:(id)contact;
+- (void)setCustomName:(id)name;
+- (void)setGeoMapItem:(id)item;
+- (void)setIdentifier:(id)identifier;
 - (void)subtitle;
 @end
 
@@ -39,24 +39,24 @@
     if (!customName)
     {
 LABEL_2:
-      v3 = MapsSuggestionsLocalizedTitleForShortcutType(self->_type);
+      _name = MapsSuggestionsLocalizedTitleForShortcutType(self->_type);
       goto LABEL_9;
     }
 
-    v3 = customName;
+    _name = customName;
   }
 
   else
   {
-    v5 = self;
-    if ([(MapsSuggestionsShortcut *)v5 type]== 6)
+    selfCopy = self;
+    if ([(MapsSuggestionsShortcut *)selfCopy type]== 6)
     {
-      v6 = [(MapsSuggestionsShortcut *)v5 identifier];
-      v7 = [v6 isEqualToString:@"NearbyTransit"];
+      identifier = [(MapsSuggestionsShortcut *)selfCopy identifier];
+      v7 = [identifier isEqualToString:@"NearbyTransit"];
 
       if (v7)
       {
-        v3 = MapsSuggestionsLocalizedNearbyTransitShortString();
+        _name = MapsSuggestionsLocalizedNearbyTransitShortString();
         goto LABEL_9;
       }
     }
@@ -65,12 +65,12 @@ LABEL_2:
     {
     }
 
-    v3 = [(MapsSuggestionsShortcut *)v5 _name];
+    _name = [(MapsSuggestionsShortcut *)selfCopy _name];
   }
 
 LABEL_9:
 
-  return v3;
+  return _name;
 }
 
 - (BOOL)isBackedPlaceholder
@@ -84,8 +84,8 @@ LABEL_9:
 
   if (((1 << type) & 0x2C) != 0)
   {
-    v6 = [(MapsSuggestionsShortcut *)self identifier];
-    v5 = v6 != 0;
+    identifier = [(MapsSuggestionsShortcut *)self identifier];
+    v5 = identifier != 0;
 
     return v5;
   }
@@ -134,10 +134,10 @@ LABEL_9:
 
 - (NSString)identifier
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  identifier = v2->_identifier;
-  if (identifier || (MapsSuggestionsShortcutUniqueIdentifier(v2), v4 = objc_claimAutoreleasedReturnValue(), v5 = v2->_identifier, v2->_identifier = v4, v5, (identifier = v2->_identifier) != 0))
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  identifier = selfCopy->_identifier;
+  if (identifier || (MapsSuggestionsShortcutUniqueIdentifier(selfCopy), v4 = objc_claimAutoreleasedReturnValue(), v5 = selfCopy->_identifier, selfCopy->_identifier = v4, v5, (identifier = selfCopy->_identifier) != 0))
   {
     v6 = [(NSString *)identifier copy];
   }
@@ -147,7 +147,7 @@ LABEL_9:
     v6 = 0;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
@@ -162,11 +162,11 @@ LABEL_3:
     goto LABEL_17;
   }
 
-  v5 = self;
-  if ([(MapsSuggestionsShortcut *)v5 type]== 6)
+  selfCopy = self;
+  if ([(MapsSuggestionsShortcut *)selfCopy type]== 6)
   {
-    v6 = [(MapsSuggestionsShortcut *)v5 identifier];
-    v7 = [v6 isEqualToString:@"NearbyTransit"];
+    identifier = [(MapsSuggestionsShortcut *)selfCopy identifier];
+    v7 = [identifier isEqualToString:@"NearbyTransit"];
 
     if (v7)
     {
@@ -179,11 +179,11 @@ LABEL_3:
   {
   }
 
-  v8 = [(MapsSuggestionsShortcut *)v5 geoMapItem];
-  v9 = MapsSuggestionsMapItemCityName(v8);
-  if (v5->_customName)
+  geoMapItem = [(MapsSuggestionsShortcut *)selfCopy geoMapItem];
+  v9 = MapsSuggestionsMapItemCityName(geoMapItem);
+  if (selfCopy->_customName)
   {
-    type = v5->_type;
+    type = selfCopy->_type;
     if (type > 6)
     {
       goto LABEL_21;
@@ -200,16 +200,16 @@ LABEL_21:
       [MapsSuggestionsShortcut subtitle];
     }
 
-    v11 = [(MapsSuggestionsShortcut *)v5 _originalName];
-    if (v11)
+    _originalName = [(MapsSuggestionsShortcut *)selfCopy _originalName];
+    if (_originalName)
     {
       goto LABEL_12;
     }
   }
 
 LABEL_11:
-  v11 = MapsSuggestionsMapItemStreetWithNumber(v8);
-  if (!v11)
+  _originalName = MapsSuggestionsMapItemStreetWithNumber(geoMapItem);
+  if (!_originalName)
   {
     v13 = &stru_1F444C108;
     if (v9)
@@ -222,8 +222,8 @@ LABEL_11:
   }
 
 LABEL_12:
-  v12 = v11;
-  v4 = MapsSuggestionsLocalizedShortcutSubString(v11, v9);
+  v12 = _originalName;
+  v4 = MapsSuggestionsLocalizedShortcutSubString(_originalName, v9);
 
 LABEL_16:
 LABEL_17:
@@ -231,14 +231,14 @@ LABEL_17:
   return v4;
 }
 
-- (MapsSuggestionsShortcut)initWithFavoriteItem:(id)a3
+- (MapsSuggestionsShortcut)initWithFavoriteItem:(id)item
 {
   v30 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 fetchContactHandles];
-  v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v4, "count")}];
-  v24 = v4;
-  v6 = [v4 sortedArrayUsingSelector:sel_compare_];
+  itemCopy = item;
+  fetchContactHandles = [itemCopy fetchContactHandles];
+  v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(fetchContactHandles, "count")}];
+  v24 = fetchContactHandles;
+  v6 = [fetchContactHandles sortedArrayUsingSelector:sel_compare_];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
@@ -271,38 +271,38 @@ LABEL_17:
     while (v8);
   }
 
-  v12 = [v3 type];
-  v13 = [v3 shortcutIdentifier];
-  v14 = [v3 mapItemStorage];
-  v15 = [v3 customName];
+  type = [itemCopy type];
+  shortcutIdentifier = [itemCopy shortcutIdentifier];
+  mapItemStorage = [itemCopy mapItemStorage];
+  customName = [itemCopy customName];
   v16 = [v5 copy];
-  v17 = [v3 hidden];
-  v18 = [v3 originatingAddressString];
-  v19 = [(MapsSuggestionsShortcut *)self initWithType:v12 identifier:v13 geoMapItem:v14 customName:v15 contacts:v16 isHidden:v17 originatingAddress:v18];
+  hidden = [itemCopy hidden];
+  originatingAddressString = [itemCopy originatingAddressString];
+  v19 = [(MapsSuggestionsShortcut *)self initWithType:type identifier:shortcutIdentifier geoMapItem:mapItemStorage customName:customName contacts:v16 isHidden:hidden originatingAddress:originatingAddressString];
 
-  v20 = [v3 identifier];
-  [(MapsSuggestionsShortcut *)v19 setStorageIdentifier:v20];
+  identifier = [itemCopy identifier];
+  [(MapsSuggestionsShortcut *)v19 setStorageIdentifier:identifier];
 
-  -[MapsSuggestionsShortcut setSource:](v19, "setSource:", [v3 source]);
-  v21 = [v3 createTime];
-  [(MapsSuggestionsShortcut *)v19 setMapsSyncCreateTime:v21];
+  -[MapsSuggestionsShortcut setSource:](v19, "setSource:", [itemCopy source]);
+  createTime = [itemCopy createTime];
+  [(MapsSuggestionsShortcut *)v19 setMapsSyncCreateTime:createTime];
 
   return v19;
 }
 
-- (MapsSuggestionsShortcut)initWithType:(int64_t)a3 identifier:(id)a4 geoMapItem:(id)a5 customName:(id)a6 contacts:(id)a7 isHidden:(BOOL)a8 originatingAddress:(id)a9
+- (MapsSuggestionsShortcut)initWithType:(int64_t)type identifier:(id)identifier geoMapItem:(id)item customName:(id)name contacts:(id)contacts isHidden:(BOOL)hidden originatingAddress:(id)address
 {
   v45 = *MEMORY[0x1E69E9840];
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a9;
+  identifierCopy = identifier;
+  itemCopy = item;
+  nameCopy = name;
+  contactsCopy = contacts;
+  addressCopy = address;
   v36.receiver = self;
   v36.super_class = MapsSuggestionsShortcut;
   v21 = [(MapsSuggestionsShortcut *)&v36 init];
   v22 = v21;
-  if (a3 == 6 && !v18)
+  if (type == 6 && !nameCopy)
   {
     originatingAddressString = GEOFindOrCreateLog();
     if (os_log_type_enabled(originatingAddressString, OS_LOG_TYPE_ERROR))
@@ -323,18 +323,18 @@ LABEL_17:
 
   if (v21)
   {
-    v21->_type = a3;
-    v24 = [v16 copy];
+    v21->_type = type;
+    v24 = [identifierCopy copy];
     identifier = v22->_identifier;
     v22->_identifier = v24;
 
-    v26 = [v17 copy];
+    v26 = [itemCopy copy];
     geoMapItem = v22->_geoMapItem;
     v22->_geoMapItem = v26;
 
-    if (v19)
+    if (contactsCopy)
     {
-      v28 = [v19 copy];
+      v28 = [contactsCopy copy];
     }
 
     else
@@ -345,8 +345,8 @@ LABEL_17:
     contacts = v22->_contacts;
     v22->_contacts = v28;
 
-    v30 = [v17 name];
-    if (v30 && ([v17 name], v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v18, "isEqualToString:", v9)))
+    name = [itemCopy name];
+    if (name && ([itemCopy name], v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(nameCopy, "isEqualToString:", v9)))
     {
       customName = v22->_customName;
       v22->_customName = 0;
@@ -354,16 +354,16 @@ LABEL_17:
 
     else
     {
-      v32 = [v18 copy];
+      v32 = [nameCopy copy];
       v33 = v22->_customName;
       v22->_customName = v32;
 
-      if (!v30)
+      if (!name)
       {
 LABEL_14:
 
-        v22->_isHidden = a8;
-        v34 = [v20 copy];
+        v22->_isHidden = hidden;
+        v34 = [addressCopy copy];
         originatingAddressString = v22->_originatingAddressString;
         v22->_originatingAddressString = v34;
 LABEL_15:
@@ -380,70 +380,70 @@ LABEL_16:
   return v22;
 }
 
-- (void)setIdentifier:(id)a3
+- (void)setIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   obj = self;
   objc_sync_enter(obj);
   identifier = obj->_identifier;
-  obj->_identifier = v4;
+  obj->_identifier = identifierCopy;
 
   objc_sync_exit(obj);
 }
 
-- (void)setCustomName:(id)a3
+- (void)setCustomName:(id)name
 {
-  v7 = a3;
-  v4 = [(MapsSuggestionsShortcut *)self _originalName];
-  if ([v7 isEqualToString:v4])
+  nameCopy = name;
+  _originalName = [(MapsSuggestionsShortcut *)self _originalName];
+  if ([nameCopy isEqualToString:_originalName])
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = [v7 copy];
+    v5 = [nameCopy copy];
   }
 
   customName = self->_customName;
   self->_customName = v5;
 }
 
-- (void)setGeoMapItem:(id)a3
+- (void)setGeoMapItem:(id)item
 {
-  v11 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [v11 copy];
-  geoMapItem = v4->_geoMapItem;
-  v4->_geoMapItem = v5;
+  itemCopy = item;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = [itemCopy copy];
+  geoMapItem = selfCopy->_geoMapItem;
+  selfCopy->_geoMapItem = v5;
 
-  customName = v4->_customName;
-  v8 = [(GEOMapItemStorage *)v4->_geoMapItem name];
-  LODWORD(customName) = [(NSString *)customName isEqualToString:v8];
+  customName = selfCopy->_customName;
+  name = [(GEOMapItemStorage *)selfCopy->_geoMapItem name];
+  LODWORD(customName) = [(NSString *)customName isEqualToString:name];
 
   if (customName)
   {
-    v9 = v4->_customName;
-    v4->_customName = 0;
+    v9 = selfCopy->_customName;
+    selfCopy->_customName = 0;
   }
 
-  identifier = v4->_identifier;
-  v4->_identifier = 0;
+  identifier = selfCopy->_identifier;
+  selfCopy->_identifier = 0;
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)addContact:(id)a3
+- (void)addContact:(id)contact
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  contactCopy = contact;
+  if (contactCopy)
   {
-    if (![(NSArray *)self->_contacts containsObject:v4])
+    if (![(NSArray *)self->_contacts containsObject:contactCopy])
     {
       v5 = [(NSArray *)self->_contacts mutableCopy];
-      [v5 addObject:v4];
+      [v5 addObject:contactCopy];
       v6 = [v5 copy];
       contacts = self->_contacts;
       self->_contacts = v6;
@@ -468,16 +468,16 @@ LABEL_16:
   }
 }
 
-- (void)removeContact:(id)a3
+- (void)removeContact:(id)contact
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  contactCopy = contact;
+  if (contactCopy)
   {
-    if ([(NSArray *)self->_contacts containsObject:v4])
+    if ([(NSArray *)self->_contacts containsObject:contactCopy])
     {
       v5 = [(NSArray *)self->_contacts mutableCopy];
-      [v5 removeObject:v4];
+      [v5 removeObject:contactCopy];
       v6 = [v5 copy];
       contacts = self->_contacts;
       self->_contacts = v6;
@@ -525,8 +525,8 @@ LABEL_16:
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v11 + 1) + 8 * i) handleValue];
-        [v3 addObject:v9];
+        handleValue = [*(*(&v11 + 1) + 8 * i) handleValue];
+        [v3 addObject:handleValue];
       }
 
       v6 = [(NSArray *)v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
@@ -538,57 +538,57 @@ LABEL_16:
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(MapsSuggestionsShortcut *)self type];
-  v6 = [(MapsSuggestionsShortcut *)self identifier];
-  v7 = [(MapsSuggestionsShortcut *)self geoMapItem];
-  v8 = [(MapsSuggestionsShortcut *)self customName];
-  v9 = [(MapsSuggestionsShortcut *)self contacts];
-  v10 = [(MapsSuggestionsShortcut *)self isHidden];
-  v11 = [(MapsSuggestionsShortcut *)self originatingAddressString];
-  v12 = [v4 initWithType:v5 identifier:v6 geoMapItem:v7 customName:v8 contacts:v9 isHidden:v10 originatingAddress:v11];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  type = [(MapsSuggestionsShortcut *)self type];
+  identifier = [(MapsSuggestionsShortcut *)self identifier];
+  geoMapItem = [(MapsSuggestionsShortcut *)self geoMapItem];
+  customName = [(MapsSuggestionsShortcut *)self customName];
+  contacts = [(MapsSuggestionsShortcut *)self contacts];
+  isHidden = [(MapsSuggestionsShortcut *)self isHidden];
+  originatingAddressString = [(MapsSuggestionsShortcut *)self originatingAddressString];
+  v12 = [v4 initWithType:type identifier:identifier geoMapItem:geoMapItem customName:customName contacts:contacts isHidden:isHidden originatingAddress:originatingAddressString];
 
-  v13 = [(MapsSuggestionsShortcut *)self storageIdentifier];
-  [v12 setStorageIdentifier:v13];
+  storageIdentifier = [(MapsSuggestionsShortcut *)self storageIdentifier];
+  [v12 setStorageIdentifier:storageIdentifier];
 
   [v12 setDerivedFromMeCard:{-[MapsSuggestionsShortcut derivedFromMeCard](self, "derivedFromMeCard")}];
-  v14 = [(MapsSuggestionsShortcut *)self mapsSyncCreateTime];
-  [v12 setMapsSyncCreateTime:v14];
+  mapsSyncCreateTime = [(MapsSuggestionsShortcut *)self mapsSyncCreateTime];
+  [v12 setMapsSyncCreateTime:mapsSyncCreateTime];
 
   return v12;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   type = self->_type;
-  v6 = a3;
-  [v6 encodeInteger:type forKey:@"MapsSuggestionsShortcutTypeKey"];
-  v5 = [(MapsSuggestionsShortcut *)self identifier];
-  [v6 encodeObject:v5 forKey:@"MapsSuggestionsShortcutIdentifierKey"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:type forKey:@"MapsSuggestionsShortcutTypeKey"];
+  identifier = [(MapsSuggestionsShortcut *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"MapsSuggestionsShortcutIdentifierKey"];
 
-  [v6 encodeObject:self->_customName forKey:@"MapsSuggestionsShortcutNameKey"];
-  [v6 encodeObject:self->_geoMapItem forKey:@"MapsSuggestionsShortcutMapItemKey"];
-  [v6 encodeObject:self->_contacts forKey:@"MapsSuggestionsShortcutETAContactsKey"];
-  [v6 encodeBool:self->_isHidden forKey:@"MapsSuggestionsShortcutIsHiddenKey"];
-  [v6 encodeObject:self->_originatingAddressString forKey:@"MapsSuggestionsShortcutOriginatingAddressKey"];
+  [coderCopy encodeObject:self->_customName forKey:@"MapsSuggestionsShortcutNameKey"];
+  [coderCopy encodeObject:self->_geoMapItem forKey:@"MapsSuggestionsShortcutMapItemKey"];
+  [coderCopy encodeObject:self->_contacts forKey:@"MapsSuggestionsShortcutETAContactsKey"];
+  [coderCopy encodeBool:self->_isHidden forKey:@"MapsSuggestionsShortcutIsHiddenKey"];
+  [coderCopy encodeObject:self->_originatingAddressString forKey:@"MapsSuggestionsShortcutOriginatingAddressKey"];
 }
 
-- (MapsSuggestionsShortcut)initWithCoder:(id)a3
+- (MapsSuggestionsShortcut)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"MapsSuggestionsShortcutTypeKey"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MapsSuggestionsShortcutNameKey"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"MapsSuggestionsShortcutTypeKey"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MapsSuggestionsShortcutNameKey"];
   v7 = objc_alloc(MEMORY[0x1E695DFD8]);
   v8 = objc_opt_class();
   v9 = [v7 initWithObjects:{v8, objc_opt_class(), 0}];
-  v10 = [v4 decodeObjectOfClasses:v9 forKey:@"MapsSuggestionsShortcutETAContactsKey"];
+  v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"MapsSuggestionsShortcutETAContactsKey"];
 
-  v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MapsSuggestionsShortcutIdentifierKey"];
-  v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MapsSuggestionsShortcutMapItemKey"];
-  v13 = [v4 decodeBoolForKey:@"MapsSuggestionsShortcutIsHiddenKey"];
-  v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MapsSuggestionsShortcutOriginatingAddressKey"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MapsSuggestionsShortcutIdentifierKey"];
+  v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MapsSuggestionsShortcutMapItemKey"];
+  v13 = [coderCopy decodeBoolForKey:@"MapsSuggestionsShortcutIsHiddenKey"];
+  v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MapsSuggestionsShortcutOriginatingAddressKey"];
 
   v15 = [(MapsSuggestionsShortcut *)self initWithType:v5 identifier:v11 geoMapItem:v12 customName:v6 contacts:v10 isHidden:v13 originatingAddress:v14];
   return v15;
@@ -599,25 +599,25 @@ LABEL_16:
   v3 = [objc_alloc(MEMORY[0x1E696ACC8]) initRequiringSecureCoding:1];
   [v3 encodeObject:self forKey:*MEMORY[0x1E696A508]];
   [v3 finishEncoding];
-  v4 = [v3 encodedData];
+  encodedData = [v3 encodedData];
 
-  return v4;
+  return encodedData;
 }
 
-+ (id)shortcutWithData:(id)a3
++ (id)shortcutWithData:(id)data
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (v3)
+  dataCopy = data;
+  if (dataCopy)
   {
     v12 = 0;
-    v4 = [objc_alloc(MEMORY[0x1E696ACD0]) initForReadingFromData:v3 error:&v12];
+    v4 = [objc_alloc(MEMORY[0x1E696ACD0]) initForReadingFromData:dataCopy error:&v12];
     v5 = v12;
     [v4 setDecodingFailurePolicy:1];
     v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:*MEMORY[0x1E696A508]];
     [v4 finishDecoding];
-    v7 = [v4 error];
-    if (v7 | v5)
+    error = [v4 error];
+    if (error | v5)
     {
     }
 
@@ -632,14 +632,14 @@ LABEL_15:
     v9 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      v10 = v5;
+      error2 = v5;
       if (!v5)
       {
-        v10 = [v4 error];
+        error2 = [v4 error];
       }
 
       *buf = 138412290;
-      v14 = v10;
+      v14 = error2;
       _os_log_impl(&dword_1C5126000, v9, OS_LOG_TYPE_ERROR, "Could not deserialize MapsSuggestionsShortcut, error: %@", buf, 0xCu);
       if (!v5)
       {
@@ -670,22 +670,22 @@ LABEL_16:
   return v8;
 }
 
-- (BOOL)isEqualToShortcut:(id)a3
+- (BOOL)isEqualToShortcut:(id)shortcut
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  shortcutCopy = shortcut;
+  v5 = shortcutCopy;
+  if (!shortcutCopy)
   {
     goto LABEL_14;
   }
 
-  if (self == v4)
+  if (self == shortcutCopy)
   {
     v15 = 1;
     goto LABEL_16;
   }
 
-  if (self->_type == v4->_type && self->_isHidden == v4->_isHidden && ((-[MapsSuggestionsShortcut identifier](self, "identifier"), v6 = objc_claimAutoreleasedReturnValue(), -[MapsSuggestionsShortcut identifier](v5, "identifier"), v7 = objc_claimAutoreleasedReturnValue(), v7, v6, v6 == v7) || (-[MapsSuggestionsShortcut identifier](self, "identifier"), v8 = objc_claimAutoreleasedReturnValue(), -[MapsSuggestionsShortcut identifier](v5, "identifier"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v8 isEqualToString:v9], v9, v8, v10)) && ((customName = self->_customName, customName == v5->_customName) || -[NSString isEqualToString:](customName, "isEqualToString:")) && ((originatingAddressString = self->_originatingAddressString, originatingAddressString == v5->_originatingAddressString) || -[NSString isEqualToString:](originatingAddressString, "isEqualToString:")) && ((geoMapItem = self->_geoMapItem, v14 = v5->_geoMapItem, geoMapItem == v14) || MapsSuggestionsMapItemsAreEqual(geoMapItem, v14, 1, 1, 1)))
+  if (self->_type == shortcutCopy->_type && self->_isHidden == shortcutCopy->_isHidden && ((-[MapsSuggestionsShortcut identifier](self, "identifier"), v6 = objc_claimAutoreleasedReturnValue(), -[MapsSuggestionsShortcut identifier](v5, "identifier"), v7 = objc_claimAutoreleasedReturnValue(), v7, v6, v6 == v7) || (-[MapsSuggestionsShortcut identifier](self, "identifier"), v8 = objc_claimAutoreleasedReturnValue(), -[MapsSuggestionsShortcut identifier](v5, "identifier"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v8 isEqualToString:v9], v9, v8, v10)) && ((customName = self->_customName, customName == v5->_customName) || -[NSString isEqualToString:](customName, "isEqualToString:")) && ((originatingAddressString = self->_originatingAddressString, originatingAddressString == v5->_originatingAddressString) || -[NSString isEqualToString:](originatingAddressString, "isEqualToString:")) && ((geoMapItem = self->_geoMapItem, v14 = v5->_geoMapItem, geoMapItem == v14) || MapsSuggestionsMapItemsAreEqual(geoMapItem, v14, 1, 1, 1)))
   {
     v15 = [(NSArray *)self->_contacts isEqualToArray:v5->_contacts];
   }
@@ -701,10 +701,10 @@ LABEL_16:
   return v15;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -712,7 +712,7 @@ LABEL_16:
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(MapsSuggestionsShortcut *)self isEqualToShortcut:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(MapsSuggestionsShortcut *)self isEqualToShortcut:equalCopy];
   }
 
   return v5;
@@ -720,43 +720,43 @@ LABEL_16:
 
 - (uint64_t)_originalName
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    if ([a1 isBackedPlaceholder])
+    if ([self isBackedPlaceholder])
     {
-      v1 = MapsSuggestionsLocalizedTitleForShortcutType(v1[3]);
+      selfCopy = MapsSuggestionsLocalizedTitleForShortcutType(selfCopy[3]);
     }
 
     else
     {
-      v2 = [v1 geoMapItem];
-      v1 = [v2 name];
+      geoMapItem = [selfCopy geoMapItem];
+      selfCopy = [geoMapItem name];
     }
   }
 
-  return v1;
+  return selfCopy;
 }
 
 - (id)_name
 {
-  if (!a1)
+  if (!self)
   {
 LABEL_12:
-    v3 = 0;
+    _originalName = 0;
     goto LABEL_4;
   }
 
-  v2 = a1[5];
+  v2 = self[5];
   if (v2)
   {
-    v3 = v2;
-    [a1 isSetupPlaceholder];
+    _originalName = v2;
+    [self isSetupPlaceholder];
     goto LABEL_4;
   }
 
-  v3 = [(MapsSuggestionsShortcut *)a1 _originalName];
-  if (([a1 isSetupPlaceholder] & 1) == 0 && !v3)
+  _originalName = [(MapsSuggestionsShortcut *)self _originalName];
+  if (([self isSetupPlaceholder] & 1) == 0 && !_originalName)
   {
     v5 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -769,28 +769,28 @@ LABEL_12:
 
 LABEL_4:
 
-  return v3;
+  return _originalName;
 }
 
 - (id)description
 {
   if (self)
   {
-    v3 = [(MapsSuggestionsShortcut *)self isBackedPlaceholder]|| [(MapsSuggestionsShortcut *)self isSetupPlaceholder];
+    isSetupPlaceholder = [(MapsSuggestionsShortcut *)self isBackedPlaceholder]|| [(MapsSuggestionsShortcut *)self isSetupPlaceholder];
   }
 
   else
   {
-    v3 = 0;
+    isSetupPlaceholder = 0;
   }
 
   v28 = objc_alloc(MEMORY[0x1E696AEC0]);
   v29 = NSStringFromMapsSuggestionsShortcutType(self->_type);
-  v4 = [(MapsSuggestionsShortcut *)self title];
-  v5 = v4;
-  if (v4)
+  title = [(MapsSuggestionsShortcut *)self title];
+  v5 = title;
+  if (title)
   {
-    v6 = v4;
+    v6 = title;
   }
 
   else
@@ -799,11 +799,11 @@ LABEL_4:
   }
 
   v27 = v6;
-  v7 = [(MapsSuggestionsShortcut *)self subtitle];
-  v8 = v7;
-  if (v7)
+  subtitle = [(MapsSuggestionsShortcut *)self subtitle];
+  v8 = subtitle;
+  if (subtitle)
   {
-    v9 = v7;
+    v9 = subtitle;
   }
 
   else
@@ -812,8 +812,8 @@ LABEL_4:
   }
 
   v26 = v9;
-  v10 = [(MapsSuggestionsShortcut *)self geoMapItem];
-  if (v10)
+  geoMapItem = [(MapsSuggestionsShortcut *)self geoMapItem];
+  if (geoMapItem)
   {
     v11 = 89;
   }
@@ -825,23 +825,23 @@ LABEL_4:
 
   v25 = v11;
   v12 = "id";
-  if (v3)
+  if (isSetupPlaceholder)
   {
     v12 = "placeholder";
   }
 
-  v23 = v10;
+  v23 = geoMapItem;
   v24 = v12;
-  v13 = [(MapsSuggestionsShortcut *)self identifier];
+  identifier = [(MapsSuggestionsShortcut *)self identifier];
   v14 = @"Y";
-  if (v13)
+  if (identifier)
   {
     v15 = objc_alloc(MEMORY[0x1E696AEC0]);
-    v22 = [(MapsSuggestionsShortcut *)self identifier];
-    v16 = [v15 initWithFormat:@"'%@'", v22];
+    identifier2 = [(MapsSuggestionsShortcut *)self identifier];
+    v16 = [v15 initWithFormat:@"'%@'", identifier2];
   }
 
-  else if (v3)
+  else if (isSetupPlaceholder)
   {
     v16 = @"Y";
   }
@@ -882,7 +882,7 @@ LABEL_4:
   {
   }
 
-  if (v13)
+  if (identifier)
   {
   }
 

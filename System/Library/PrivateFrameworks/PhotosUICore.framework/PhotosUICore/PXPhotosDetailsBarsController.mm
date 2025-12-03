@@ -1,49 +1,49 @@
 @interface PXPhotosDetailsBarsController
-- (BOOL)_dismissViewControllerIfSafeAnimated:(BOOL)a3;
-- (BOOL)_shouldAddBarItemForBarItemIdentifier:(id)a3;
-- (BOOL)_shouldEnableActionWithBarItemIdentifier:(id)a3;
-- (BOOL)actionMenu:(id)a3 actionPerformer:(id)a4 dismissViewController:(id)a5 completionHandler:(id)a6;
-- (BOOL)actionMenu:(id)a3 actionPerformer:(id)a4 presentViewController:(id)a5;
-- (BOOL)actionPerformer:(id)a3 dismissViewController:(id)a4 completionHandler:(id)a5;
-- (BOOL)actionPerformer:(id)a3 presentViewController:(id)a4;
+- (BOOL)_dismissViewControllerIfSafeAnimated:(BOOL)animated;
+- (BOOL)_shouldAddBarItemForBarItemIdentifier:(id)identifier;
+- (BOOL)_shouldEnableActionWithBarItemIdentifier:(id)identifier;
+- (BOOL)actionMenu:(id)menu actionPerformer:(id)performer dismissViewController:(id)controller completionHandler:(id)handler;
+- (BOOL)actionMenu:(id)menu actionPerformer:(id)performer presentViewController:(id)controller;
+- (BOOL)actionPerformer:(id)performer dismissViewController:(id)controller completionHandler:(id)handler;
+- (BOOL)actionPerformer:(id)performer presentViewController:(id)controller;
 - (PXActionPerformer)_lastActionPerformer;
 - (PXAssetActionManager)_assetActionManager;
 - (PXAssetCollectionActionManager)_assetCollectionActionManager;
 - (PXPhotosDetailsBarsController)init;
-- (PXPhotosDetailsBarsController)initWithContext:(id)a3 viewModel:(id)a4 extendedTraitCollection:(id)a5;
+- (PXPhotosDetailsBarsController)initWithContext:(id)context viewModel:(id)model extendedTraitCollection:(id)collection;
 - (id)_actionMenu;
 - (id)_assetCollection;
-- (id)_barButtonItemForBarItemIdentifier:(id)a3;
-- (id)_barButtonItemsForBarItems:(id)a3 placement:(unint64_t)a4;
+- (id)_barButtonItemForBarItemIdentifier:(id)identifier;
+- (id)_barButtonItemsForBarItems:(id)items placement:(unint64_t)placement;
 - (id)_createActionMenuButton;
 - (id)_createActionMenuController;
 - (id)_flexibleSpaceBarButtonItem;
 - (id)_localizedSelectionTitle;
-- (id)_sourceBarButtonItemForActionType:(id)a3;
+- (id)_sourceBarButtonItemForActionType:(id)type;
 - (id)createAssetActionManager;
 - (id)createAssetCollectionActionManager;
 - (id)createTitleView;
-- (id)presentationEnvironmentForActionPerformer:(id)a3;
-- (id)undoManagerForActionMenuController:(id)a3;
-- (id)undoManagerForActionPerformer:(id)a3;
-- (int64_t)_titleViewVerticalSizeClassForExtendedTraitCollection:(id)a3;
+- (id)presentationEnvironmentForActionPerformer:(id)performer;
+- (id)undoManagerForActionMenuController:(id)controller;
+- (id)undoManagerForActionPerformer:(id)performer;
+- (int64_t)_titleViewVerticalSizeClassForExtendedTraitCollection:(id)collection;
 - (void)_invalidateAssetActionManager;
-- (void)_setSelectionManager:(id)a3;
+- (void)_setSelectionManager:(id)manager;
 - (void)_setupBlockActionManager;
-- (void)_toggleFaceMode:(id)a3;
+- (void)_toggleFaceMode:(id)mode;
 - (void)_updateTitleViewAlpha;
-- (void)actionMenu:(id)a3 actionPerformer:(id)a4 didChangeState:(unint64_t)a5;
-- (void)actionMenu:(id)a3 assetCollectionActionPerformer:(id)a4 playMovieForAssetCollection:(id)a5;
-- (void)actionMenuButtonItemTapped:(id)a3;
-- (void)actionPerformer:(id)a3 didChangeState:(unint64_t)a4;
-- (void)cancelBarButtonItemTapped:(id)a3;
-- (void)doneBarButtonItemTapped:(id)a3;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)photosDataSource:(id)a3 didChange:(id)a4;
-- (void)prepareForPopoverPresentation:(id)a3;
+- (void)actionMenu:(id)menu actionPerformer:(id)performer didChangeState:(unint64_t)state;
+- (void)actionMenu:(id)menu assetCollectionActionPerformer:(id)performer playMovieForAssetCollection:(id)collection;
+- (void)actionMenuButtonItemTapped:(id)tapped;
+- (void)actionPerformer:(id)performer didChangeState:(unint64_t)state;
+- (void)cancelBarButtonItemTapped:(id)tapped;
+- (void)doneBarButtonItemTapped:(id)tapped;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)photosDataSource:(id)source didChange:(id)change;
+- (void)prepareForPopoverPresentation:(id)presentation;
 - (void)removeActionButton;
-- (void)selectBarButtonItemTapped:(id)a3;
-- (void)shouldShowTitleView:(BOOL)a3 animated:(BOOL)a4;
+- (void)selectBarButtonItemTapped:(id)tapped;
+- (void)shouldShowTitleView:(BOOL)view animated:(BOOL)animated;
 - (void)updateBars;
 @end
 
@@ -56,19 +56,19 @@
   return WeakRetained;
 }
 
-- (BOOL)_dismissViewControllerIfSafeAnimated:(BOOL)a3
+- (BOOL)_dismissViewControllerIfSafeAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v4 = [(PXBarsController *)self viewController];
-  v5 = [v4 navigationController];
-  v6 = v5;
-  if (v5)
+  animatedCopy = animated;
+  viewController = [(PXBarsController *)self viewController];
+  navigationController = [viewController navigationController];
+  v6 = navigationController;
+  if (navigationController)
   {
-    v7 = [v5 visibleViewController];
+    visibleViewController = [navigationController visibleViewController];
 
-    if (v7 == v4)
+    if (visibleViewController == viewController)
     {
-      v8 = [v6 popViewControllerAnimated:v3];
+      v8 = [v6 popViewControllerAnimated:animatedCopy];
 LABEL_7:
       v10 = 1;
       goto LABEL_8;
@@ -77,11 +77,11 @@ LABEL_7:
 
   else
   {
-    v9 = [v4 presentedViewController];
+    presentedViewController = [viewController presentedViewController];
 
-    if (!v9)
+    if (!presentedViewController)
     {
-      [v4 dismissViewControllerAnimated:v3 completion:0];
+      [viewController dismissViewControllerAnimated:animatedCopy completion:0];
       goto LABEL_7;
     }
   }
@@ -92,17 +92,17 @@ LABEL_8:
   return v10;
 }
 
-- (id)undoManagerForActionMenuController:(id)a3
+- (id)undoManagerForActionMenuController:(id)controller
 {
-  v3 = [(PXBarsController *)self viewController];
-  v4 = [v3 undoManager];
+  viewController = [(PXBarsController *)self viewController];
+  undoManager = [viewController undoManager];
 
-  return v4;
+  return undoManager;
 }
 
-- (void)actionMenu:(id)a3 assetCollectionActionPerformer:(id)a4 playMovieForAssetCollection:(id)a5
+- (void)actionMenu:(id)menu assetCollectionActionPerformer:(id)performer playMovieForAssetCollection:(id)collection
 {
-  v5 = [(PXBarsController *)self viewController:a3];
+  v5 = [(PXBarsController *)self viewController:menu];
   [v5 playMovieWithCompletionHandler:&__block_literal_global_335_102783];
 }
 
@@ -125,128 +125,128 @@ void __103__PXPhotosDetailsBarsController_actionMenu_assetCollectionActionPerfor
   }
 }
 
-- (void)actionMenu:(id)a3 actionPerformer:(id)a4 didChangeState:(unint64_t)a5
+- (void)actionMenu:(id)menu actionPerformer:(id)performer didChangeState:(unint64_t)state
 {
-  v7 = a4;
-  v8 = [v7 actionType];
-  v9 = v8;
-  if (a5 == 20)
+  performerCopy = performer;
+  actionType = [performerCopy actionType];
+  v9 = actionType;
+  if (state == 20)
   {
-    if (([v8 isEqualToString:*off_1E7721CF8] & 1) != 0 || (objc_msgSend(v9, "isEqualToString:", *off_1E7721C48) & 1) != 0 || (objc_msgSend(v9, "isEqualToString:", *off_1E7721C68) & 1) != 0 || (objc_msgSend(v9, "isEqualToString:", *off_1E7721C70) & 1) != 0 || (objc_msgSend(v9, "isEqualToString:", *off_1E7721C50) & 1) != 0 || (objc_msgSend(v9, "isEqualToString:", *off_1E7721C60) & 1) != 0 || objc_msgSend(v9, "isEqualToString:", *off_1E7721C58))
+    if (([actionType isEqualToString:*off_1E7721CF8] & 1) != 0 || (objc_msgSend(v9, "isEqualToString:", *off_1E7721C48) & 1) != 0 || (objc_msgSend(v9, "isEqualToString:", *off_1E7721C68) & 1) != 0 || (objc_msgSend(v9, "isEqualToString:", *off_1E7721C70) & 1) != 0 || (objc_msgSend(v9, "isEqualToString:", *off_1E7721C50) & 1) != 0 || (objc_msgSend(v9, "isEqualToString:", *off_1E7721C60) & 1) != 0 || objc_msgSend(v9, "isEqualToString:", *off_1E7721C58))
     {
       [(PXPhotosDetailsBarsController *)self _dismissViewControllerIfSafeAnimated:1];
     }
 
-    v10 = [v7 actionType];
+    actionType2 = [performerCopy actionType];
     v11 = *off_1E7721CC0;
-    v12 = [v10 isEqualToString:*off_1E7721CC0];
+    v12 = [actionType2 isEqualToString:*off_1E7721CC0];
 
     if (v12)
     {
       v13 = MEMORY[0x1E695DFA8];
-      v14 = [(PXPhotosDetailsBarsController *)self _viewModel];
-      v15 = [v14 disabledActionTypes];
-      v16 = [v13 setWithSet:v15];
+      _viewModel = [(PXPhotosDetailsBarsController *)self _viewModel];
+      disabledActionTypes = [_viewModel disabledActionTypes];
+      v16 = [v13 setWithSet:disabledActionTypes];
 
       [v16 addObject:v11];
-      v17 = [(PXPhotosDetailsBarsController *)self _viewModel];
+      _viewModel2 = [(PXPhotosDetailsBarsController *)self _viewModel];
       v22[0] = MEMORY[0x1E69E9820];
       v22[1] = 3221225472;
       v22[2] = __75__PXPhotosDetailsBarsController_actionMenu_actionPerformer_didChangeState___block_invoke;
       v22[3] = &unk_1E773D0E0;
       v23 = v16;
       v18 = v16;
-      [v17 performChanges:v22];
+      [_viewModel2 performChanges:v22];
     }
   }
 
-  v19 = [(PXBarsController *)self actionPerformerDelegate];
+  actionPerformerDelegate = [(PXBarsController *)self actionPerformerDelegate];
   v20 = objc_opt_respondsToSelector();
 
   if (v20)
   {
-    v21 = [(PXBarsController *)self actionPerformerDelegate];
-    [v21 actionPerformer:v7 didChangeState:a5];
+    actionPerformerDelegate2 = [(PXBarsController *)self actionPerformerDelegate];
+    [actionPerformerDelegate2 actionPerformer:performerCopy didChangeState:state];
   }
 }
 
-- (BOOL)actionMenu:(id)a3 actionPerformer:(id)a4 dismissViewController:(id)a5 completionHandler:(id)a6
+- (BOOL)actionMenu:(id)menu actionPerformer:(id)performer dismissViewController:(id)controller completionHandler:(id)handler
 {
-  v7 = a6;
-  v8 = [(PXBarsController *)self viewController];
-  v9 = [v8 presentedViewController];
+  handlerCopy = handler;
+  viewController = [(PXBarsController *)self viewController];
+  presentedViewController = [viewController presentedViewController];
 
-  if (v9)
+  if (presentedViewController)
   {
-    [v8 dismissViewControllerAnimated:1 completion:v7];
+    [viewController dismissViewControllerAnimated:1 completion:handlerCopy];
   }
 
-  return v9 != 0;
+  return presentedViewController != 0;
 }
 
-- (BOOL)actionMenu:(id)a3 actionPerformer:(id)a4 presentViewController:(id)a5
+- (BOOL)actionMenu:(id)menu actionPerformer:(id)performer presentViewController:(id)controller
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [(PXBarsController *)self viewController];
-  if (v9)
+  performerCopy = performer;
+  controllerCopy = controller;
+  viewController = [(PXBarsController *)self viewController];
+  if (viewController)
   {
-    v10 = [v8 popoverPresentationController];
-    if (v10)
+    popoverPresentationController = [controllerCopy popoverPresentationController];
+    if (popoverPresentationController)
     {
-      v11 = [(PXPhotosDetailsBarsController *)self _barButtonItemCacheByBarItemIdentifier];
-      v12 = [v11 objectForKeyedSubscript:*off_1E7721E00];
+      _barButtonItemCacheByBarItemIdentifier = [(PXPhotosDetailsBarsController *)self _barButtonItemCacheByBarItemIdentifier];
+      v12 = [_barButtonItemCacheByBarItemIdentifier objectForKeyedSubscript:*off_1E7721E00];
 
       if (v12)
       {
-        [v10 setBarButtonItem:v12];
+        [popoverPresentationController setBarButtonItem:v12];
       }
 
-      [v10 setDelegate:self];
+      [popoverPresentationController setDelegate:self];
     }
 
-    v13 = [v7 actionType];
-    v14 = [v13 isEqualToString:*off_1E7721D18];
+    actionType = [performerCopy actionType];
+    v14 = [actionType isEqualToString:*off_1E7721D18];
 
     if (v14)
     {
-      [v9 px_presentViewControllerInNavigationController:v8 animated:1 dimissButtonLocation:0 completion:0];
+      [viewController px_presentViewControllerInNavigationController:controllerCopy animated:1 dimissButtonLocation:0 completion:0];
     }
 
     else
     {
-      [v9 presentViewController:v8 animated:1 completion:0];
+      [viewController presentViewController:controllerCopy animated:1 completion:0];
     }
   }
 
-  return v9 != 0;
+  return viewController != 0;
 }
 
-- (void)prepareForPopoverPresentation:(id)a3
+- (void)prepareForPopoverPresentation:(id)presentation
 {
-  v9 = a3;
-  v4 = [v9 presentedViewController];
-  v5 = [(PXPhotosDetailsBarsController *)self _activePerformer];
-  v6 = [v5 presentedViewController];
-  if (v4 == v6)
+  presentationCopy = presentation;
+  presentedViewController = [presentationCopy presentedViewController];
+  _activePerformer = [(PXPhotosDetailsBarsController *)self _activePerformer];
+  presentedViewController2 = [_activePerformer presentedViewController];
+  if (presentedViewController == presentedViewController2)
   {
-    v7 = [v5 actionType];
+    actionType = [_activePerformer actionType];
 
-    if (!v7)
+    if (!actionType)
     {
       goto LABEL_5;
     }
 
-    v8 = [v5 actionType];
-    v6 = [(PXPhotosDetailsBarsController *)self _sourceBarButtonItemForActionType:v8];
+    actionType2 = [_activePerformer actionType];
+    presentedViewController2 = [(PXPhotosDetailsBarsController *)self _sourceBarButtonItemForActionType:actionType2];
 
-    [v9 setBarButtonItem:v6];
+    [presentationCopy setBarButtonItem:presentedViewController2];
   }
 
 LABEL_5:
 }
 
-- (id)presentationEnvironmentForActionPerformer:(id)a3
+- (id)presentationEnvironmentForActionPerformer:(id)performer
 {
   [(PXBarsController *)self viewController];
   if (objc_claimAutoreleasedReturnValue())
@@ -257,61 +257,61 @@ LABEL_5:
   return 0;
 }
 
-- (id)undoManagerForActionPerformer:(id)a3
+- (id)undoManagerForActionPerformer:(id)performer
 {
-  v3 = [(PXBarsController *)self viewController];
-  v4 = [v3 undoManager];
+  viewController = [(PXBarsController *)self viewController];
+  undoManager = [viewController undoManager];
 
-  return v4;
+  return undoManager;
 }
 
-- (BOOL)actionPerformer:(id)a3 dismissViewController:(id)a4 completionHandler:(id)a5
+- (BOOL)actionPerformer:(id)performer dismissViewController:(id)controller completionHandler:(id)handler
 {
-  v6 = a5;
-  v7 = [(PXBarsController *)self viewController];
-  v8 = [v7 presentedViewController];
+  handlerCopy = handler;
+  viewController = [(PXBarsController *)self viewController];
+  presentedViewController = [viewController presentedViewController];
 
-  if (v8)
+  if (presentedViewController)
   {
-    [v7 dismissViewControllerAnimated:1 completion:v6];
+    [viewController dismissViewControllerAnimated:1 completion:handlerCopy];
   }
 
-  return v8 != 0;
+  return presentedViewController != 0;
 }
 
-- (BOOL)actionPerformer:(id)a3 presentViewController:(id)a4
+- (BOOL)actionPerformer:(id)performer presentViewController:(id)controller
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PXBarsController *)self viewController];
-  if (v8)
+  performerCopy = performer;
+  controllerCopy = controller;
+  viewController = [(PXBarsController *)self viewController];
+  if (viewController)
   {
-    v9 = [v7 popoverPresentationController];
-    if (v9)
+    popoverPresentationController = [controllerCopy popoverPresentationController];
+    if (popoverPresentationController)
     {
-      v10 = [v6 actionType];
-      v11 = [(PXPhotosDetailsBarsController *)self _sourceBarButtonItemForActionType:v10];
+      actionType = [performerCopy actionType];
+      v11 = [(PXPhotosDetailsBarsController *)self _sourceBarButtonItemForActionType:actionType];
 
       if (v11)
       {
-        [v9 setBarButtonItem:v11];
+        [popoverPresentationController setBarButtonItem:v11];
       }
 
-      [v9 setDelegate:self];
+      [popoverPresentationController setDelegate:self];
     }
 
-    [v8 presentViewController:v7 animated:1 completion:0];
+    [viewController presentViewController:controllerCopy animated:1 completion:0];
   }
 
-  return v8 != 0;
+  return viewController != 0;
 }
 
-- (id)_sourceBarButtonItemForActionType:(id)a3
+- (id)_sourceBarButtonItemForActionType:(id)type
 {
-  v4 = a3;
-  if (!v4 || (-[PXPhotosDetailsBarsController _barButtonItemByActionType](self, "_barButtonItemByActionType"), v5 = objc_claimAutoreleasedReturnValue(), [v5 objectForKeyedSubscript:v4], v6 = objc_claimAutoreleasedReturnValue(), v5, !v6))
+  typeCopy = type;
+  if (!typeCopy || (-[PXPhotosDetailsBarsController _barButtonItemByActionType](self, "_barButtonItemByActionType"), v5 = objc_claimAutoreleasedReturnValue(), [v5 objectForKeyedSubscript:typeCopy], v6 = objc_claimAutoreleasedReturnValue(), v5, !v6))
   {
-    if (([v4 isEqualToString:*off_1E7721A98] & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", *off_1E7721A68) & 1) != 0 || objc_msgSend(v4, "isEqualToString:", *off_1E7721BA0))
+    if (([typeCopy isEqualToString:*off_1E7721A98] & 1) != 0 || (objc_msgSend(typeCopy, "isEqualToString:", *off_1E7721A68) & 1) != 0 || objc_msgSend(typeCopy, "isEqualToString:", *off_1E7721BA0))
     {
       v7 = [(PXPhotosDetailsBarsController *)self _sourceBarButtonItemForActionType:*off_1E7721B88];
       if (v7)
@@ -320,7 +320,7 @@ LABEL_5:
       }
     }
 
-    if (([v4 isEqualToString:*off_1E7721BE8] & 1) != 0 || objc_msgSend(v4, "isEqualToString:", *off_1E7721B50))
+    if (([typeCopy isEqualToString:*off_1E7721BE8] & 1) != 0 || objc_msgSend(typeCopy, "isEqualToString:", *off_1E7721B50))
     {
       v7 = [(PXPhotosDetailsBarsController *)self _sourceBarButtonItemForActionType:*off_1E7721BF8];
 LABEL_10:
@@ -336,28 +336,28 @@ LABEL_11:
   return v6;
 }
 
-- (void)actionPerformer:(id)a3 didChangeState:(unint64_t)a4
+- (void)actionPerformer:(id)performer didChangeState:(unint64_t)state
 {
-  v6 = a3;
-  v15 = v6;
-  if (a4 == 10)
+  performerCopy = performer;
+  v15 = performerCopy;
+  if (state == 10)
   {
-    [(PXPhotosDetailsBarsController *)self _setActivePerformer:v6];
+    [(PXPhotosDetailsBarsController *)self _setActivePerformer:performerCopy];
     [(PXPhotosDetailsBarsController *)self _setLastActionPerformer:v15];
     goto LABEL_11;
   }
 
-  v7 = [(PXPhotosDetailsBarsController *)self _activePerformer];
+  _activePerformer = [(PXPhotosDetailsBarsController *)self _activePerformer];
 
-  if (v7 == v15)
+  if (_activePerformer == v15)
   {
     [(PXPhotosDetailsBarsController *)self _setActivePerformer:0];
   }
 
-  if (a4 == 30 && [v15 success])
+  if (state == 30 && [v15 success])
   {
-    v8 = [(PXPhotosDetailsBarsController *)self _lastActionPerformer];
-    if (v8 != v15)
+    _lastActionPerformer = [(PXPhotosDetailsBarsController *)self _lastActionPerformer];
+    if (_lastActionPerformer != v15)
     {
 LABEL_8:
 
@@ -369,92 +369,92 @@ LABEL_8:
 
     if (isKindOfClass)
     {
-      v10 = [v15 actionType];
-      v11 = [v10 isEqual:*off_1E7721BA0];
+      actionType = [v15 actionType];
+      v11 = [actionType isEqual:*off_1E7721BA0];
 
       if ((v11 & 1) == 0)
       {
-        v8 = [(PXPhotosDetailsBarsController *)self _viewModel];
-        [v8 performChanges:&__block_literal_global_329];
+        _lastActionPerformer = [(PXPhotosDetailsBarsController *)self _viewModel];
+        [_lastActionPerformer performChanges:&__block_literal_global_329];
         goto LABEL_8;
       }
     }
   }
 
 LABEL_11:
-  v12 = [(PXBarsController *)self actionPerformerDelegate];
+  actionPerformerDelegate = [(PXBarsController *)self actionPerformerDelegate];
   v13 = objc_opt_respondsToSelector();
 
   if (v13)
   {
-    v14 = [(PXBarsController *)self actionPerformerDelegate];
-    [v14 actionPerformer:v15 didChangeState:a4];
+    actionPerformerDelegate2 = [(PXBarsController *)self actionPerformerDelegate];
+    [actionPerformerDelegate2 actionPerformer:v15 didChangeState:state];
   }
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v6 = a4;
-  v8 = a3;
-  if (PXViewModelObservationContext_102795 == a5)
+  changeCopy = change;
+  observableCopy = observable;
+  if (PXViewModelObservationContext_102795 == context)
   {
-    v11 = v8;
-    if (v6)
+    v11 = observableCopy;
+    if (changeCopy)
     {
       [(PXBarsController *)self invalidateBars];
       [(PXBarsController *)self setWantsAnimatedBarsUpdate:1];
     }
 
-    if ((v6 & 0x12) != 0)
+    if ((changeCopy & 0x12) != 0)
     {
       [(PXBarsController *)self invalidateBars];
     }
 
-    if ((v6 & 4) != 0)
+    if ((changeCopy & 4) != 0)
     {
-      v9 = [(PXPhotosDetailsBarsController *)self _viewModel];
-      v10 = [v9 selectionManager];
+      _viewModel = [(PXPhotosDetailsBarsController *)self _viewModel];
+      selectionManager = [_viewModel selectionManager];
 
-      [(PXPhotosDetailsBarsController *)self _setSelectionManager:v10];
+      [(PXPhotosDetailsBarsController *)self _setSelectionManager:selectionManager];
       [(PXBarsController *)self invalidateBars];
     }
 
     goto LABEL_15;
   }
 
-  if (PXExtendedTraitCollectionObservationContext_102796 == a5)
+  if (PXExtendedTraitCollectionObservationContext_102796 == context)
   {
-    if ((v6 & 0xA) == 0)
+    if ((changeCopy & 0xA) == 0)
     {
       goto LABEL_16;
     }
 
-    v11 = v8;
+    v11 = observableCopy;
     goto LABEL_14;
   }
 
-  if ((v6 & 1) != 0 && PXSelectionManagerObservationContext_102797 == a5)
+  if ((changeCopy & 1) != 0 && PXSelectionManagerObservationContext_102797 == context)
   {
-    v11 = v8;
+    v11 = observableCopy;
     [(PXPhotosDetailsBarsController *)self _invalidateAssetActionManager];
 LABEL_14:
     [(PXBarsController *)self invalidateBars];
 LABEL_15:
     [(PXBarsController *)self updateIfNeeded];
-    v8 = v11;
+    observableCopy = v11;
   }
 
 LABEL_16:
 }
 
-- (void)photosDataSource:(id)a3 didChange:(id)a4
+- (void)photosDataSource:(id)source didChange:(id)change
 {
-  v8 = [(PXPhotosDetailsBarsController *)self _assetCollection:a3];
-  v5 = [(PXPhotosDetailsBarsController *)self _assetCollectionActionManager];
-  v6 = [v5 assetCollectionReference];
-  v7 = [v6 assetCollection];
+  v8 = [(PXPhotosDetailsBarsController *)self _assetCollection:source];
+  _assetCollectionActionManager = [(PXPhotosDetailsBarsController *)self _assetCollectionActionManager];
+  assetCollectionReference = [_assetCollectionActionManager assetCollectionReference];
+  assetCollection = [assetCollectionReference assetCollection];
 
-  if (v8 != v7)
+  if (v8 != assetCollection)
   {
     [(PXPhotosDetailsBarsController *)self _invalidateAssetCollectionActionManager];
     [(PXBarsController *)self updateIfNeeded];
@@ -464,31 +464,31 @@ LABEL_16:
 - (void)removeActionButton
 {
   [(PXPhotosDetailsBarsController *)self setShouldAddActionButton:0];
-  v3 = [(PXPhotosDetailsBarsController *)self _barButtonItemCacheByBarItemIdentifier];
+  _barButtonItemCacheByBarItemIdentifier = [(PXPhotosDetailsBarsController *)self _barButtonItemCacheByBarItemIdentifier];
   v4 = *off_1E7721E00;
-  v11 = [v3 objectForKeyedSubscript:*off_1E7721E00];
+  v11 = [_barButtonItemCacheByBarItemIdentifier objectForKeyedSubscript:*off_1E7721E00];
 
   if (v11)
   {
-    v5 = [(PXBarsController *)self viewController];
-    v6 = [v5 navigationItem];
+    viewController = [(PXBarsController *)self viewController];
+    navigationItem = [viewController navigationItem];
 
     v7 = MEMORY[0x1E695DF70];
-    v8 = [v6 rightBarButtonItems];
-    v9 = [v7 arrayWithArray:v8];
+    rightBarButtonItems = [navigationItem rightBarButtonItems];
+    v9 = [v7 arrayWithArray:rightBarButtonItems];
 
     [v9 removeObject:v11];
-    [v6 setRightBarButtonItems:v9];
-    v10 = [(PXPhotosDetailsBarsController *)self _barButtonItemCacheByBarItemIdentifier];
-    [v10 removeObjectForKey:v4];
+    [navigationItem setRightBarButtonItems:v9];
+    _barButtonItemCacheByBarItemIdentifier2 = [(PXPhotosDetailsBarsController *)self _barButtonItemCacheByBarItemIdentifier];
+    [_barButtonItemCacheByBarItemIdentifier2 removeObjectForKey:v4];
   }
 }
 
 - (void)_setupBlockActionManager
 {
   objc_initWeak(location, self);
-  v3 = [(PXPhotosDetailsBarsController *)self _context];
-  v4 = [v3 people];
+  _context = [(PXPhotosDetailsBarsController *)self _context];
+  people = [_context people];
 
   v5 = [off_1E77214E8 alloc];
   v24[0] = MEMORY[0x1E69E9820];
@@ -503,14 +503,14 @@ LABEL_16:
   v22[3] = &unk_1E7738890;
   objc_copyWeak(&v23, location);
   [v6 setCanPerformBlock:v22];
-  v7 = PXLocalizedStringForPeople(v4, @"PXPhotosDetailsMenuFaceModeAction");
+  v7 = PXLocalizedStringForPeople(people, @"PXPhotosDetailsMenuFaceModeAction");
   [v6 setActionName:v7];
 
   v8 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"face.smiling"];
   [v6 setImage:v8];
 
-  v9 = [(PXPhotosDetailsBarsController *)self blockActionManager];
-  [v9 registerActionWithConfiguration:v6 forType:@"PXPhotosDetailsShowFaceAction"];
+  blockActionManager = [(PXPhotosDetailsBarsController *)self blockActionManager];
+  [blockActionManager registerActionWithConfiguration:v6 forType:@"PXPhotosDetailsShowFaceAction"];
 
   v10 = [off_1E77214E8 alloc];
   v20[0] = MEMORY[0x1E69E9820];
@@ -525,15 +525,15 @@ LABEL_16:
   v18 = &unk_1E7738890;
   objc_copyWeak(&v19, location);
   [v11 setCanPerformBlock:&v15];
-  v12 = PXLocalizedStringForPeople(v4, @"PXPhotosDetailsMenuFaceModeAction");
+  v12 = PXLocalizedStringForPeople(people, @"PXPhotosDetailsMenuFaceModeAction");
   [v11 setActionName:{v12, v15, v16, v17, v18}];
 
   v13 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"face.smiling"];
   [v11 setImage:v13];
 
   [v11 setSelected:1];
-  v14 = [(PXPhotosDetailsBarsController *)self blockActionManager];
-  [v14 registerActionWithConfiguration:v11 forType:@"PXPhotosDetailsShowAssetAction"];
+  blockActionManager2 = [(PXPhotosDetailsBarsController *)self blockActionManager];
+  [blockActionManager2 registerActionWithConfiguration:v11 forType:@"PXPhotosDetailsShowAssetAction"];
 
   objc_destroyWeak(&v19);
   objc_destroyWeak(&v21);
@@ -583,9 +583,9 @@ uint64_t __57__PXPhotosDetailsBarsController__setupBlockActionManager__block_inv
 
 - (id)_actionMenu
 {
-  v2 = [(PXPhotosDetailsBarsController *)self _createActionMenuController];
-  v3 = [v2 actions];
-  v4 = [MEMORY[0x1E69DCC60] menuWithTitle:&stru_1F1741150 children:v3];
+  _createActionMenuController = [(PXPhotosDetailsBarsController *)self _createActionMenuController];
+  actions = [_createActionMenuController actions];
+  v4 = [MEMORY[0x1E69DCC60] menuWithTitle:&stru_1F1741150 children:actions];
 
   return v4;
 }
@@ -593,22 +593,22 @@ uint64_t __57__PXPhotosDetailsBarsController__setupBlockActionManager__block_inv
 - (id)_createActionMenuController
 {
   v3 = [PXPhotoDetailsActionMenuController alloc];
-  v4 = [(PXPhotosDetailsBarsController *)self _selectionManager];
-  v5 = [(PXPhotosDetailsBarsController *)self _context];
-  v6 = [v5 displayTitleInfo];
-  v7 = [(PXPhotosDetailsBarsController *)self blockActionManager];
-  v8 = [(PXPhotoDetailsActionMenuController *)v3 initWithSelectionManager:v4 displayTitleInfo:v6 blockActionManager:v7];
+  _selectionManager = [(PXPhotosDetailsBarsController *)self _selectionManager];
+  _context = [(PXPhotosDetailsBarsController *)self _context];
+  displayTitleInfo = [_context displayTitleInfo];
+  blockActionManager = [(PXPhotosDetailsBarsController *)self blockActionManager];
+  v8 = [(PXPhotoDetailsActionMenuController *)v3 initWithSelectionManager:_selectionManager displayTitleInfo:displayTitleInfo blockActionManager:blockActionManager];
 
-  v9 = [(PXPhotosDetailsBarsController *)self _context];
-  v10 = [v9 people];
-  [(PXPhotoDetailsActionMenuController *)v8 setPeople:v10];
+  _context2 = [(PXPhotosDetailsBarsController *)self _context];
+  people = [_context2 people];
+  [(PXPhotoDetailsActionMenuController *)v8 setPeople:people];
 
-  v11 = [(PXPhotosDetailsBarsController *)self _viewModel];
-  v12 = [v11 disabledActionTypes];
-  [(PXActionMenuController *)v8 setDisabledActionTypes:v12];
+  _viewModel = [(PXPhotosDetailsBarsController *)self _viewModel];
+  disabledActionTypes = [_viewModel disabledActionTypes];
+  [(PXActionMenuController *)v8 setDisabledActionTypes:disabledActionTypes];
 
-  v13 = [(PXPhotosDetailsBarsController *)self _dataSource];
-  if ([PXPhotosDetailsHeaderTileWidget canShowMovieHeaderForDataSource:v13])
+  _dataSource = [(PXPhotosDetailsBarsController *)self _dataSource];
+  if ([PXPhotosDetailsHeaderTileWidget canShowMovieHeaderForDataSource:_dataSource])
   {
     [(PXActionMenuController *)v8 setExcludedActionTypes:0];
   }
@@ -625,25 +625,25 @@ uint64_t __57__PXPhotosDetailsBarsController__setupBlockActionManager__block_inv
   return v8;
 }
 
-- (void)actionMenuButtonItemTapped:(id)a3
+- (void)actionMenuButtonItemTapped:(id)tapped
 {
-  v5 = a3;
-  v6 = [(PXPhotosDetailsBarsController *)self _selectionManager];
-  v7 = [v6 dataSourceManager];
-  v8 = [v7 dataSource];
+  tappedCopy = tapped;
+  _selectionManager = [(PXPhotosDetailsBarsController *)self _selectionManager];
+  dataSourceManager = [_selectionManager dataSourceManager];
+  dataSource = [dataSourceManager dataSource];
 
-  if (![v8 numberOfSections])
+  if (![dataSource numberOfSections])
   {
     PXAssertGetLog();
   }
 
-  v9 = v5;
+  v9 = tappedCopy;
   if (!v9)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v12 = objc_opt_class();
     v13 = NSStringFromClass(v12);
-    [v11 handleFailureInMethod:a2 object:self file:@"PXPhotosDetailsBarsController.m" lineNumber:548 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"sender", v13}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotosDetailsBarsController.m" lineNumber:548 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"sender", v13}];
 LABEL_8:
 
     goto LABEL_4;
@@ -652,29 +652,29 @@ LABEL_8:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v14 = objc_opt_class();
     v13 = NSStringFromClass(v14);
-    v15 = [v9 px_descriptionForAssertionMessage];
-    [v11 handleFailureInMethod:a2 object:self file:@"PXPhotosDetailsBarsController.m" lineNumber:548 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"sender", v13, v15}];
+    px_descriptionForAssertionMessage = [v9 px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotosDetailsBarsController.m" lineNumber:548 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"sender", v13, px_descriptionForAssertionMessage}];
 
     goto LABEL_8;
   }
 
 LABEL_4:
-  v10 = [(PXPhotosDetailsBarsController *)self _actionMenu];
-  [v9 setMenu:v10];
+  _actionMenu = [(PXPhotosDetailsBarsController *)self _actionMenu];
+  [v9 setMenu:_actionMenu];
 }
 
-- (void)_toggleFaceMode:(id)a3
+- (void)_toggleFaceMode:(id)mode
 {
-  v3 = [(PXPhotosDetailsBarsController *)self _viewModel];
-  if (([v3 isFaceModeEnabled] & 1) == 0)
+  _viewModel = [(PXPhotosDetailsBarsController *)self _viewModel];
+  if (([_viewModel isFaceModeEnabled] & 1) == 0)
   {
     [MEMORY[0x1E6991F28] sendEvent:@"com.apple.photos.CPAnalytics.people.detailView.showFaces" withPayload:MEMORY[0x1E695E0F8]];
   }
 
-  [v3 performChanges:&__block_literal_global_304];
+  [_viewModel performChanges:&__block_literal_global_304];
 }
 
 void __49__PXPhotosDetailsBarsController__toggleFaceMode___block_invoke(uint64_t a1, void *a2)
@@ -683,15 +683,15 @@ void __49__PXPhotosDetailsBarsController__toggleFaceMode___block_invoke(uint64_t
   [v2 setFaceModeEnabled:{objc_msgSend(v2, "isFaceModeEnabled") ^ 1}];
 }
 
-- (void)doneBarButtonItemTapped:(id)a3
+- (void)doneBarButtonItemTapped:(id)tapped
 {
-  v3 = [(PXBarsController *)self viewController];
-  [v3 dismissViewControllerAnimated:1 completion:0];
+  viewController = [(PXBarsController *)self viewController];
+  [viewController dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)cancelBarButtonItemTapped:(id)a3
+- (void)cancelBarButtonItemTapped:(id)tapped
 {
-  v4 = a3;
+  tappedCopy = tapped;
   objc_initWeak(&location, self);
   v8 = MEMORY[0x1E69E9820];
   v9 = 3221225472;
@@ -725,31 +725,31 @@ void __59__PXPhotosDetailsBarsController_cancelBarButtonItemTapped___block_invok
   [v1 performChanges:&__block_literal_global_298];
 }
 
-- (void)selectBarButtonItemTapped:(id)a3
+- (void)selectBarButtonItemTapped:(id)tapped
 {
-  v3 = [(PXPhotosDetailsBarsController *)self _viewModel];
-  [v3 performChanges:&__block_literal_global_102835];
+  _viewModel = [(PXPhotosDetailsBarsController *)self _viewModel];
+  [_viewModel performChanges:&__block_literal_global_102835];
 }
 
 - (void)updateBars
 {
   v63[8] = *MEMORY[0x1E69E9840];
-  v3 = [(PXPhotosDetailsBarsController *)self _titleView];
+  _titleView = [(PXPhotosDetailsBarsController *)self _titleView];
 
-  if (!v3)
+  if (!_titleView)
   {
-    v4 = [(PXPhotosDetailsBarsController *)self createTitleView];
+    createTitleView = [(PXPhotosDetailsBarsController *)self createTitleView];
     titleView = self->__titleView;
-    self->__titleView = v4;
+    self->__titleView = createTitleView;
   }
 
   [(PXPhotosDetailsBarsController *)self _updateTitleViewAlpha];
-  v6 = [(PXPhotosDetailsBarsController *)self _barButtonItemByActionType];
-  [v6 removeAllObjects];
+  _barButtonItemByActionType = [(PXPhotosDetailsBarsController *)self _barButtonItemByActionType];
+  [_barButtonItemByActionType removeAllObjects];
 
-  v7 = [(PXBarsController *)self viewController];
-  v8 = [v7 px_barAppearance];
-  [(PXPhotosDetailsBarsController *)self _setBarAppearance:v8];
+  viewController = [(PXBarsController *)self viewController];
+  px_barAppearance = [viewController px_barAppearance];
+  [(PXPhotosDetailsBarsController *)self _setBarAppearance:px_barAppearance];
 
   v9 = *off_1E7721EE8;
   v63[0] = *off_1E7721E00;
@@ -798,28 +798,28 @@ void __59__PXPhotosDetailsBarsController_cancelBarButtonItemTapped___block_invok
     while (v17);
   }
 
-  v22 = [(PXBarsController *)self barSpec];
-  v23 = [v22 sortedBarItemsByPlacement:v14];
+  barSpec = [(PXBarsController *)self barSpec];
+  v23 = [barSpec sortedBarItemsByPlacement:v14];
 
-  v24 = [v7 navigationItem];
-  v25 = [(PXPhotosDetailsBarsController *)self _viewModel];
-  v26 = [v25 isSelecting];
+  navigationItem = [viewController navigationItem];
+  _viewModel = [(PXPhotosDetailsBarsController *)self _viewModel];
+  isSelecting = [_viewModel isSelecting];
 
-  if (v26)
+  if (isSelecting)
   {
-    v27 = [(PXPhotosDetailsBarsController *)self _localizedSelectionTitle];
-    v28 = 0;
+    _localizedSelectionTitle = [(PXPhotosDetailsBarsController *)self _localizedSelectionTitle];
+    _titleView2 = 0;
   }
 
   else
   {
-    v28 = [(PXPhotosDetailsBarsController *)self _titleView];
-    v29 = [v7 px_extendedTraitCollection];
-    v50 = [(PXPhotosDetailsBarsController *)self _titleViewVerticalSizeClassForExtendedTraitCollection:v29];
+    _titleView2 = [(PXPhotosDetailsBarsController *)self _titleView];
+    px_extendedTraitCollection = [viewController px_extendedTraitCollection];
+    v50 = [(PXPhotosDetailsBarsController *)self _titleViewVerticalSizeClassForExtendedTraitCollection:px_extendedTraitCollection];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v30 = v28;
+      v30 = _titleView2;
     }
 
     else
@@ -833,43 +833,43 @@ void __59__PXPhotosDetailsBarsController_cancelBarButtonItemTapped___block_invok
     v54[2] = __43__PXPhotosDetailsBarsController_updateBars__block_invoke;
     v54[3] = &unk_1E7749FF8;
     v55 = v31;
-    v56 = v7;
+    v56 = viewController;
     v57 = v50;
     v32 = v31;
     [v32 performChanges:v54];
 
-    v27 = 0;
+    _localizedSelectionTitle = 0;
   }
 
-  [v24 setTitle:{v27, v27}];
-  v48 = v28;
-  [v24 setTitleView:v28];
-  v33 = [(PXBarsController *)self wantsAnimatedBarsUpdate];
-  [v24 px_setBackButtonDisplayMode:2];
-  v51 = v7;
-  v34 = [v7 title];
-  [v24 setBackButtonTitle:v34];
+  [navigationItem setTitle:{_localizedSelectionTitle, _localizedSelectionTitle}];
+  v48 = _titleView2;
+  [navigationItem setTitleView:_titleView2];
+  wantsAnimatedBarsUpdate = [(PXBarsController *)self wantsAnimatedBarsUpdate];
+  [navigationItem px_setBackButtonDisplayMode:2];
+  v51 = viewController;
+  title = [viewController title];
+  [navigationItem setBackButtonTitle:title];
 
   v35 = [v23 objectForKeyedSubscript:&unk_1F190BFB0];
   v36 = [(PXPhotosDetailsBarsController *)self _barButtonItemsForBarItems:v35 placement:2];
-  [v24 setLeftBarButtonItems:v36 animated:v33];
+  [navigationItem setLeftBarButtonItems:v36 animated:wantsAnimatedBarsUpdate];
 
   v37 = [v23 objectForKeyedSubscript:&unk_1F190BFC8];
   v38 = [(PXPhotosDetailsBarsController *)self _barButtonItemsForBarItems:v37 placement:4];
-  [v24 setRightBarButtonItems:v38 animated:v33];
+  [navigationItem setRightBarButtonItems:v38 animated:wantsAnimatedBarsUpdate];
 
-  v39 = [(PXPhotosDetailsBarsController *)self _viewModel];
-  v40 = [v39 isSelecting];
+  _viewModel2 = [(PXPhotosDetailsBarsController *)self _viewModel];
+  isSelecting2 = [_viewModel2 isSelecting];
 
-  [v24 setHidesBackButton:v40 animated:0];
+  [navigationItem setHidesBackButton:isSelecting2 animated:0];
   v49 = v23;
   v41 = [v23 objectForKeyedSubscript:&unk_1F190BFE0];
-  v42 = [(PXBarsController *)self viewController];
+  viewController2 = [(PXBarsController *)self viewController];
   v43 = [(PXPhotosDetailsBarsController *)self _barButtonItemsForBarItems:v41 placement:6];
-  [v42 setToolbarItems:v43];
+  [viewController2 setToolbarItems:v43];
 
-  v44 = [(PXPhotosDetailsBarsController *)self _barAppearance];
-  if (v33)
+  _barAppearance = [(PXPhotosDetailsBarsController *)self _barAppearance];
+  if (wantsAnimatedBarsUpdate)
   {
     v45 = [[PXBarAnimationOptions alloc] initWithType:1];
   }
@@ -885,7 +885,7 @@ void __59__PXPhotosDetailsBarsController_cancelBarButtonItemTapped___block_invok
   v52[3] = &unk_1E7738840;
   v53 = v41;
   v46 = v41;
-  [v44 performChangesWithAnimationOptions:v45 changes:v52];
+  [_barAppearance performChangesWithAnimationOptions:v45 changes:v52];
 }
 
 uint64_t __43__PXPhotosDetailsBarsController_updateBars__block_invoke(uint64_t a1)
@@ -927,25 +927,25 @@ void __43__PXPhotosDetailsBarsController_updateBars__block_invoke_294(uint64_t a
     v3 = 0.0;
   }
 
-  v4 = [(PXPhotosDetailsBarsController *)self _titleView];
-  if ([v4 conformsToProtocol:&unk_1F19AE6B0])
+  _titleView = [(PXPhotosDetailsBarsController *)self _titleView];
+  if ([_titleView conformsToProtocol:&unk_1F19AE6B0])
   {
-    [v4 setSubviewsAlpha:v3];
+    [_titleView setSubviewsAlpha:v3];
   }
 
   else
   {
-    [v4 setAlpha:v3];
+    [_titleView setAlpha:v3];
   }
 }
 
-- (void)shouldShowTitleView:(BOOL)a3 animated:(BOOL)a4
+- (void)shouldShowTitleView:(BOOL)view animated:(BOOL)animated
 {
-  if (self->__showTitleView != a3)
+  if (self->__showTitleView != view)
   {
-    v4 = a4;
+    animatedCopy = animated;
     [(PXPhotosDetailsBarsController *)self _setShowTitleView:?];
-    if (v4)
+    if (animatedCopy)
     {
       v6[0] = MEMORY[0x1E69E9820];
       v6[1] = 3221225472;
@@ -966,10 +966,10 @@ void __43__PXPhotosDetailsBarsController_updateBars__block_invoke_294(uint64_t a
 - (id)createAssetCollectionActionManager
 {
   v11 = *MEMORY[0x1E69E9840];
-  v3 = [(PXPhotosDetailsBarsController *)self _assetCollection];
-  if (v3)
+  _assetCollection = [(PXPhotosDetailsBarsController *)self _assetCollection];
+  if (_assetCollection)
   {
-    v4 = [[PXPhotoKitAssetCollectionActionManager alloc] initWithAssetCollection:v3 displayTitleInfo:0];
+    v4 = [[PXPhotoKitAssetCollectionActionManager alloc] initWithAssetCollection:_assetCollection displayTitleInfo:0];
   }
 
   else
@@ -977,10 +977,10 @@ void __43__PXPhotosDetailsBarsController_updateBars__block_invoke_294(uint64_t a
     v5 = PLUIGetLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [(PXPhotosDetailsBarsController *)self _dataSource];
-      v7 = [v6 collectionListFetchResult];
+      _dataSource = [(PXPhotosDetailsBarsController *)self _dataSource];
+      collectionListFetchResult = [_dataSource collectionListFetchResult];
       v9 = 138412290;
-      v10 = v7;
+      v10 = collectionListFetchResult;
       _os_log_impl(&dword_1A3C1C000, v5, OS_LOG_TYPE_DEFAULT, "Unexpected number of asset collections: %@", &v9, 0xCu);
     }
 
@@ -992,8 +992,8 @@ void __43__PXPhotosDetailsBarsController_updateBars__block_invoke_294(uint64_t a
 
 - (id)createAssetActionManager
 {
-  v2 = [(PXPhotosDetailsBarsController *)self _selectionManager];
-  v3 = [[PXPhotoKitAssetActionManager alloc] initWithSelectionManager:v2];
+  _selectionManager = [(PXPhotosDetailsBarsController *)self _selectionManager];
+  v3 = [[PXPhotoKitAssetActionManager alloc] initWithSelectionManager:_selectionManager];
 
   return v3;
 }
@@ -1006,22 +1006,22 @@ void __43__PXPhotosDetailsBarsController_updateBars__block_invoke_294(uint64_t a
   return v3;
 }
 
-- (BOOL)_shouldEnableActionWithBarItemIdentifier:(id)a3
+- (BOOL)_shouldEnableActionWithBarItemIdentifier:(id)identifier
 {
-  v4 = a3;
-  if ([v4 isEqualToString:*off_1E7721F08])
+  identifierCopy = identifier;
+  if ([identifierCopy isEqualToString:*off_1E7721F08])
   {
     v5 = off_1E7721B88;
   }
 
-  else if ([v4 isEqualToString:*off_1E7721F00])
+  else if ([identifierCopy isEqualToString:*off_1E7721F00])
   {
     v5 = off_1E7721B90;
   }
 
   else
   {
-    if (![v4 isEqualToString:*off_1E7721F50])
+    if (![identifierCopy isEqualToString:*off_1E7721F50])
     {
       v7 = 1;
       goto LABEL_8;
@@ -1030,43 +1030,43 @@ void __43__PXPhotosDetailsBarsController_updateBars__block_invoke_294(uint64_t a
     v5 = off_1E7721BF8;
   }
 
-  v6 = [(PXPhotosDetailsBarsController *)self _assetActionManager];
-  v7 = [v6 canPerformActionType:*v5];
+  _assetActionManager = [(PXPhotosDetailsBarsController *)self _assetActionManager];
+  v7 = [_assetActionManager canPerformActionType:*v5];
 
 LABEL_8:
   return v7;
 }
 
-- (BOOL)_shouldAddBarItemForBarItemIdentifier:(id)a3
+- (BOOL)_shouldAddBarItemForBarItemIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(PXPhotosDetailsBarsController *)self _viewModel];
-  if ([v5 isSelecting])
+  identifierCopy = identifier;
+  _viewModel = [(PXPhotosDetailsBarsController *)self _viewModel];
+  if ([_viewModel isSelecting])
   {
-    if ([v4 isEqualToString:*off_1E7721F08] & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", *off_1E7721F00) & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", *off_1E7721F50))
+    if ([identifierCopy isEqualToString:*off_1E7721F08] & 1) != 0 || (objc_msgSend(identifierCopy, "isEqualToString:", *off_1E7721F00) & 1) != 0 || (objc_msgSend(identifierCopy, "isEqualToString:", *off_1E7721F50))
     {
       v6 = 1;
     }
 
     else
     {
-      v6 = [v4 isEqualToString:*off_1E7721E28];
+      v6 = [identifierCopy isEqualToString:*off_1E7721E28];
     }
   }
 
   else
   {
-    if ([v4 isEqualToString:*off_1E7721E60])
+    if ([identifierCopy isEqualToString:*off_1E7721E60])
     {
       v6 = 1;
     }
 
     else
     {
-      v6 = [v4 isEqualToString:*off_1E7721EE8];
+      v6 = [identifierCopy isEqualToString:*off_1E7721EE8];
     }
 
-    if ([v4 isEqualToString:*off_1E7721E00])
+    if ([identifierCopy isEqualToString:*off_1E7721E00])
     {
       v6 |= [(PXPhotosDetailsBarsController *)self shouldAddActionButton];
     }
@@ -1077,26 +1077,26 @@ LABEL_8:
 
 - (id)_createActionMenuButton
 {
-  v3 = [(PXPhotosDetailsBarsController *)self barButtonItemsController];
-  v4 = [v3 createBarButtonItemWithSystemItem:1 target:self action:0 menuAction:sel_actionMenuButtonItemTapped_ accessibilityIdentifier:*off_1E7721E00];
+  barButtonItemsController = [(PXPhotosDetailsBarsController *)self barButtonItemsController];
+  v4 = [barButtonItemsController createBarButtonItemWithSystemItem:1 target:self action:0 menuAction:sel_actionMenuButtonItemTapped_ accessibilityIdentifier:*off_1E7721E00];
 
   return v4;
 }
 
-- (id)_barButtonItemForBarItemIdentifier:(id)a3
+- (id)_barButtonItemForBarItemIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(PXPhotosDetailsBarsController *)self _barButtonItemCacheByBarItemIdentifier];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  identifierCopy = identifier;
+  _barButtonItemCacheByBarItemIdentifier = [(PXPhotosDetailsBarsController *)self _barButtonItemCacheByBarItemIdentifier];
+  v6 = [_barButtonItemCacheByBarItemIdentifier objectForKeyedSubscript:identifierCopy];
 
-  if ([v4 isEqualToString:*off_1E7721F08])
+  if ([identifierCopy isEqualToString:*off_1E7721F08])
   {
     v7 = off_1E7721B88;
   }
 
   else
   {
-    if (![v4 isEqualToString:*off_1E7721F50])
+    if (![identifierCopy isEqualToString:*off_1E7721F50])
     {
       if (v6)
       {
@@ -1104,7 +1104,7 @@ LABEL_8:
         goto LABEL_27;
       }
 
-      v13 = v4;
+      v13 = identifierCopy;
       goto LABEL_12;
     }
 
@@ -1118,25 +1118,25 @@ LABEL_8:
     goto LABEL_22;
   }
 
-  v10 = v4;
+  v10 = identifierCopy;
   if (v8)
   {
     v11 = v10;
-    v12 = [(PXPhotosDetailsBarsController *)self _assetActionManager];
-    v9 = [v12 barButtonItemForActionType:v8];
+    _assetActionManager = [(PXPhotosDetailsBarsController *)self _assetActionManager];
+    v9 = [_assetActionManager barButtonItemForActionType:v8];
 
     [v9 setAccessibilityIdentifier:v11];
     goto LABEL_21;
   }
 
 LABEL_12:
-  if ([v4 isEqualToString:*off_1E7721EE8])
+  if ([identifierCopy isEqualToString:*off_1E7721EE8])
   {
-    v14 = [(PXPhotosDetailsBarsController *)self barButtonItemsController];
+    barButtonItemsController = [(PXPhotosDetailsBarsController *)self barButtonItemsController];
     v15 = PXLocalizedStringFromTable(@"PXPhotosDetailsBarSelectButton", @"PhotosUICore");
     v16 = sel_selectBarButtonItemTapped_;
 LABEL_18:
-    v9 = [v14 createBarButtonItemWithTitle:v15 target:self action:v16 menuAction:0 accessibilityIdentifier:v4];
+    v9 = [barButtonItemsController createBarButtonItemWithTitle:v15 target:self action:v16 menuAction:0 accessibilityIdentifier:identifierCopy];
 LABEL_19:
 
 LABEL_20:
@@ -1144,46 +1144,46 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  if ([v4 isEqualToString:*off_1E7721E60])
+  if ([identifierCopy isEqualToString:*off_1E7721E60])
   {
-    v14 = [(PXPhotosDetailsBarsController *)self barButtonItemsController];
+    barButtonItemsController = [(PXPhotosDetailsBarsController *)self barButtonItemsController];
     v15 = PXLocalizedStringFromTable(@"PXPhotosDetailsBarDoneButton", @"PhotosUICore");
     v16 = sel_doneBarButtonItemTapped_;
     goto LABEL_18;
   }
 
-  if ([v4 isEqualToString:*off_1E7721E28])
+  if ([identifierCopy isEqualToString:*off_1E7721E28])
   {
-    v14 = [(PXPhotosDetailsBarsController *)self barButtonItemsController];
+    barButtonItemsController = [(PXPhotosDetailsBarsController *)self barButtonItemsController];
     v15 = PXLocalizedStringFromTable(@"PXPhotosDetailsBarCancelButton", @"PhotosUICore");
     v16 = sel_cancelBarButtonItemTapped_;
     goto LABEL_18;
   }
 
-  if ([v4 isEqualToString:*off_1E7721E00])
+  if ([identifierCopy isEqualToString:*off_1E7721E00])
   {
-    v20 = [(PXPhotosDetailsBarsController *)self _createActionMenuButton];
+    _createActionMenuButton = [(PXPhotosDetailsBarsController *)self _createActionMenuButton];
 LABEL_32:
-    v9 = v20;
+    v9 = _createActionMenuButton;
     goto LABEL_20;
   }
 
-  if ([v4 isEqualToString:*off_1E7721F00])
+  if ([identifierCopy isEqualToString:*off_1E7721F00])
   {
-    v14 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"ellipsis.circle"];
-    v21 = [(PXBarsController *)self delegate];
-    v15 = [v21 barsControllerActionsForSelectionContextMenu:self];
+    barButtonItemsController = [MEMORY[0x1E69DCAB8] systemImageNamed:@"ellipsis.circle"];
+    delegate = [(PXBarsController *)self delegate];
+    v15 = [delegate barsControllerActionsForSelectionContextMenu:self];
 
     v22 = [MEMORY[0x1E69DCC60] menuWithTitle:&stru_1F1741150 children:v15];
-    v9 = [objc_alloc(MEMORY[0x1E69DC708]) initWithImage:v14 menu:v22];
-    [v9 setAccessibilityIdentifier:v4];
+    v9 = [objc_alloc(MEMORY[0x1E69DC708]) initWithImage:barButtonItemsController menu:v22];
+    [v9 setAccessibilityIdentifier:identifierCopy];
 
     goto LABEL_19;
   }
 
-  if ([v4 isEqualToString:*off_1E7721E90])
+  if ([identifierCopy isEqualToString:*off_1E7721E90])
   {
-    v20 = [MEMORY[0x1E69DC708] fixedSpaceItemOfWidth:8.0];
+    _createActionMenuButton = [MEMORY[0x1E69DC708] fixedSpaceItemOfWidth:8.0];
     goto LABEL_32;
   }
 
@@ -1196,15 +1196,15 @@ LABEL_21:
 LABEL_22:
     if (v8)
     {
-      v17 = [(PXPhotosDetailsBarsController *)self _barButtonItemByActionType];
-      [v17 setObject:v9 forKeyedSubscript:v8];
+      _barButtonItemByActionType = [(PXPhotosDetailsBarsController *)self _barButtonItemByActionType];
+      [_barButtonItemByActionType setObject:v9 forKeyedSubscript:v8];
     }
   }
 
   if (!v6)
   {
-    v18 = [(PXPhotosDetailsBarsController *)self _barButtonItemCacheByBarItemIdentifier];
-    [v18 setObject:v9 forKeyedSubscript:v4];
+    _barButtonItemCacheByBarItemIdentifier2 = [(PXPhotosDetailsBarsController *)self _barButtonItemCacheByBarItemIdentifier];
+    [_barButtonItemCacheByBarItemIdentifier2 setObject:v9 forKeyedSubscript:identifierCopy];
   }
 
   v6 = v9;
@@ -1220,36 +1220,36 @@ LABEL_27:
   return v2;
 }
 
-- (id)_barButtonItemsForBarItems:(id)a3 placement:(unint64_t)a4
+- (id)_barButtonItemsForBarItems:(id)items placement:(unint64_t)placement
 {
   v22 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  if (v7)
+  itemsCopy = items;
+  if (itemsCopy)
   {
-    v8 = [MEMORY[0x1E695DF70] array];
-    if ([v7 count] == 1)
+    array = [MEMORY[0x1E695DF70] array];
+    if ([itemsCopy count] == 1)
     {
-      v9 = [v7 objectAtIndexedSubscript:0];
-      v10 = [v9 identifier];
-      v11 = [(PXPhotosDetailsBarsController *)self _barButtonItemForBarItemIdentifier:v10];
+      v9 = [itemsCopy objectAtIndexedSubscript:0];
+      identifier = [v9 identifier];
+      v11 = [(PXPhotosDetailsBarsController *)self _barButtonItemForBarItemIdentifier:identifier];
 
       if (!v11)
       {
         PXAssertGetLog();
       }
 
-      v12 = [v9 identifier];
-      v13 = [(PXPhotosDetailsBarsController *)self _shouldEnableActionWithBarItemIdentifier:v12];
+      identifier2 = [v9 identifier];
+      v13 = [(PXPhotosDetailsBarsController *)self _shouldEnableActionWithBarItemIdentifier:identifier2];
 
       [v11 setEnabled:v13];
-      [v8 addObject:v11];
-      if (a4 == 6)
+      [array addObject:v11];
+      if (placement == 6)
       {
-        v14 = [(PXPhotosDetailsBarsController *)self _flexibleSpaceBarButtonItem];
-        [v8 insertObject:v14 atIndex:0];
+        _flexibleSpaceBarButtonItem = [(PXPhotosDetailsBarsController *)self _flexibleSpaceBarButtonItem];
+        [array insertObject:_flexibleSpaceBarButtonItem atIndex:0];
 
-        v15 = [(PXPhotosDetailsBarsController *)self _flexibleSpaceBarButtonItem];
-        [v8 addObject:v15];
+        _flexibleSpaceBarButtonItem2 = [(PXPhotosDetailsBarsController *)self _flexibleSpaceBarButtonItem];
+        [array addObject:_flexibleSpaceBarButtonItem2];
       }
     }
 
@@ -1260,10 +1260,10 @@ LABEL_27:
       v17[2] = __70__PXPhotosDetailsBarsController__barButtonItemsForBarItems_placement___block_invoke;
       v17[3] = &unk_1E7738818;
       v17[4] = self;
-      v8 = v8;
-      v18 = v8;
-      v19 = v7;
-      v20 = a4;
+      array = array;
+      v18 = array;
+      v19 = itemsCopy;
+      placementCopy = placement;
       v21 = a2;
       [v19 enumerateObjectsUsingBlock:v17];
     }
@@ -1271,10 +1271,10 @@ LABEL_27:
 
   else
   {
-    v8 = 0;
+    array = 0;
   }
 
-  return v8;
+  return array;
 }
 
 void __70__PXPhotosDetailsBarsController__barButtonItemsForBarItems_placement___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -1306,28 +1306,28 @@ void __70__PXPhotosDetailsBarsController__barButtonItemsForBarItems_placement___
 
 - (id)_localizedSelectionTitle
 {
-  v2 = [(PXPhotosDetailsBarsController *)self _viewModel];
-  v3 = [v2 selectionManager];
-  v4 = [v3 selectionSnapshot];
+  _viewModel = [(PXPhotosDetailsBarsController *)self _viewModel];
+  selectionManager = [_viewModel selectionManager];
+  selectionSnapshot = [selectionManager selectionSnapshot];
 
-  v5 = [v4 dataSource];
+  dataSource = [selectionSnapshot dataSource];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v4 dataSource];
-    v7 = [v6 photosDataSource];
+    dataSource2 = [selectionSnapshot dataSource];
+    photosDataSource = [dataSource2 photosDataSource];
   }
 
   else
   {
-    v7 = 0;
+    photosDataSource = 0;
   }
 
-  v8 = [v4 selectedIndexPaths];
-  v9 = v8;
-  if (v7 && [v8 count] >= 1)
+  selectedIndexPaths = [selectionSnapshot selectedIndexPaths];
+  v9 = selectedIndexPaths;
+  if (photosDataSource && [selectedIndexPaths count] >= 1)
   {
-    v10 = [v7 assetsAtIndexPaths:v9];
+    v10 = [photosDataSource assetsAtIndexPaths:v9];
     PXLocalizedSelectionMessageForAssets(v10);
   }
 
@@ -1336,29 +1336,29 @@ void __70__PXPhotosDetailsBarsController__barButtonItemsForBarItems_placement___
   return v11;
 }
 
-- (int64_t)_titleViewVerticalSizeClassForExtendedTraitCollection:(id)a3
+- (int64_t)_titleViewVerticalSizeClassForExtendedTraitCollection:(id)collection
 {
-  v3 = a3;
-  v4 = [v3 layoutSizeClass] == 1 && objc_msgSend(v3, "layoutOrientation") == 2;
+  collectionCopy = collection;
+  v4 = [collectionCopy layoutSizeClass] == 1 && objc_msgSend(collectionCopy, "layoutOrientation") == 2;
 
   return v4;
 }
 
-- (void)_setSelectionManager:(id)a3
+- (void)_setSelectionManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   selectionManager = self->__selectionManager;
-  if (selectionManager != v5)
+  if (selectionManager != managerCopy)
   {
-    v7 = v5;
+    v7 = managerCopy;
     if (selectionManager)
     {
       [(PXSectionedSelectionManager *)selectionManager unregisterChangeObserver:self context:PXSelectionManagerObservationContext_102797];
     }
 
-    objc_storeStrong(&self->__selectionManager, a3);
+    objc_storeStrong(&self->__selectionManager, manager);
     [(PXSectionedSelectionManager *)v7 registerChangeObserver:self context:PXSelectionManagerObservationContext_102797];
-    v5 = v7;
+    managerCopy = v7;
   }
 }
 
@@ -1367,9 +1367,9 @@ void __70__PXPhotosDetailsBarsController__barButtonItemsForBarItems_placement___
   if (self->_needsUpdateFlags.assetActionManager)
   {
     self->_needsUpdateFlags.assetActionManager = 0;
-    v3 = [(PXPhotosDetailsBarsController *)self createAssetActionManager];
+    createAssetActionManager = [(PXPhotosDetailsBarsController *)self createAssetActionManager];
     assetActionManager = self->__assetActionManager;
-    self->__assetActionManager = v3;
+    self->__assetActionManager = createAssetActionManager;
 
     [(PXAssetActionManager *)self->__assetActionManager setPerformerDelegate:self];
   }
@@ -1382,8 +1382,8 @@ void __70__PXPhotosDetailsBarsController__barButtonItemsForBarItems_placement___
 - (void)_invalidateAssetActionManager
 {
   self->_needsUpdateFlags.assetActionManager = 1;
-  v3 = [(PXPhotosDetailsBarsController *)self _barButtonItemCacheByBarItemIdentifier];
-  [v3 removeAllObjects];
+  _barButtonItemCacheByBarItemIdentifier = [(PXPhotosDetailsBarsController *)self _barButtonItemCacheByBarItemIdentifier];
+  [_barButtonItemCacheByBarItemIdentifier removeAllObjects];
 
   [(PXBarsController *)self invalidateBars];
 }
@@ -1393,9 +1393,9 @@ void __70__PXPhotosDetailsBarsController__barButtonItemsForBarItems_placement___
   if (self->_needsUpdateFlags.assetCollectionActionManager)
   {
     self->_needsUpdateFlags.assetCollectionActionManager = 0;
-    v3 = [(PXPhotosDetailsBarsController *)self createAssetCollectionActionManager];
+    createAssetCollectionActionManager = [(PXPhotosDetailsBarsController *)self createAssetCollectionActionManager];
     assetCollectionActionManager = self->__assetCollectionActionManager;
-    self->__assetCollectionActionManager = v3;
+    self->__assetCollectionActionManager = createAssetCollectionActionManager;
 
     [(PXAssetCollectionActionManager *)self->__assetCollectionActionManager setPerformerDelegate:self];
   }
@@ -1407,22 +1407,22 @@ void __70__PXPhotosDetailsBarsController__barButtonItemsForBarItems_placement___
 
 - (id)_assetCollection
 {
-  v2 = [(PXPhotosDetailsBarsController *)self _dataSource];
-  v3 = [v2 collectionListFetchResult];
-  v4 = [v3 firstObject];
+  _dataSource = [(PXPhotosDetailsBarsController *)self _dataSource];
+  collectionListFetchResult = [_dataSource collectionListFetchResult];
+  firstObject = [collectionListFetchResult firstObject];
 
-  return v4;
+  return firstObject;
 }
 
-- (PXPhotosDetailsBarsController)initWithContext:(id)a3 viewModel:(id)a4 extendedTraitCollection:(id)a5
+- (PXPhotosDetailsBarsController)initWithContext:(id)context viewModel:(id)model extendedTraitCollection:(id)collection
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (!v10)
+  contextCopy = context;
+  modelCopy = model;
+  collectionCopy = collection;
+  if (!contextCopy)
   {
-    v26 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v26 handleFailureInMethod:a2 object:self file:@"PXPhotosDetailsBarsController.m" lineNumber:105 description:{@"Invalid parameter not satisfying: %@", @"photosDetailsContext"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotosDetailsBarsController.m" lineNumber:105 description:{@"Invalid parameter not satisfying: %@", @"photosDetailsContext"}];
   }
 
   v27.receiver = self;
@@ -1432,27 +1432,27 @@ void __70__PXPhotosDetailsBarsController__barButtonItemsForBarItems_placement___
   if (v13)
   {
     v13->_needsUpdateFlags = 257;
-    objc_storeStrong(&v13->__context, a3);
-    v15 = [v10 photosDataSource];
+    objc_storeStrong(&v13->__context, context);
+    photosDataSource = [contextCopy photosDataSource];
     dataSource = v14->__dataSource;
-    v14->__dataSource = v15;
+    v14->__dataSource = photosDataSource;
 
     [(PXPhotosDataSource *)v14->__dataSource registerChangeObserver:v14];
-    objc_storeStrong(&v14->__extendedTraitCollection, a5);
+    objc_storeStrong(&v14->__extendedTraitCollection, collection);
     [(PXExtendedTraitCollection *)v14->__extendedTraitCollection registerChangeObserver:v14 context:PXExtendedTraitCollectionObservationContext_102796];
-    objc_storeStrong(&v14->__viewModel, a4);
+    objc_storeStrong(&v14->__viewModel, model);
     [(PXPhotosDetailsViewModel *)v14->__viewModel registerChangeObserver:v14 context:PXViewModelObservationContext_102795];
-    v17 = [[PXPhotosBarButtonItemsController alloc] initWithExtendedTraitCollection:v12 viewModel:0];
+    v17 = [[PXPhotosBarButtonItemsController alloc] initWithExtendedTraitCollection:collectionCopy viewModel:0];
     barButtonItemsController = v14->_barButtonItemsController;
     v14->_barButtonItemsController = v17;
 
-    v19 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     barButtonItemByActionType = v14->__barButtonItemByActionType;
-    v14->__barButtonItemByActionType = v19;
+    v14->__barButtonItemByActionType = dictionary;
 
-    v21 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
     barButtonItemCacheByBarItemIdentifier = v14->__barButtonItemCacheByBarItemIdentifier;
-    v14->__barButtonItemCacheByBarItemIdentifier = v21;
+    v14->__barButtonItemCacheByBarItemIdentifier = dictionary2;
 
     v14->_shouldAddActionButton = 1;
     v23 = objc_alloc_init(off_1E77214F0);
@@ -1468,8 +1468,8 @@ void __70__PXPhotosDetailsBarsController__barButtonItemsForBarItems_placement___
 
 - (PXPhotosDetailsBarsController)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXPhotosDetailsBarsController.m" lineNumber:101 description:{@"%s is not available as initializer", "-[PXPhotosDetailsBarsController init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotosDetailsBarsController.m" lineNumber:101 description:{@"%s is not available as initializer", "-[PXPhotosDetailsBarsController init]"}];
 
   abort();
 }

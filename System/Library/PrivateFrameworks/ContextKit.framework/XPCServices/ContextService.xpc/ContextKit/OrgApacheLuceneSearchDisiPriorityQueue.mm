@@ -1,13 +1,13 @@
 @interface OrgApacheLuceneSearchDisiPriorityQueue
-- (id)addWithOrgApacheLuceneSearchDisiWrapper:(id)a3;
+- (id)addWithOrgApacheLuceneSearchDisiWrapper:(id)wrapper;
 - (id)iterator;
 - (id)pop;
-- (id)prependWithOrgApacheLuceneSearchDisiWrapper:(id)a3 withOrgApacheLuceneSearchDisiWrapper:(id)a4;
+- (id)prependWithOrgApacheLuceneSearchDisiWrapper:(id)wrapper withOrgApacheLuceneSearchDisiWrapper:(id)disiWrapper;
 - (id)topList;
 - (id)updateTop;
-- (id)updateTopWithOrgApacheLuceneSearchDisiWrapper:(id)a3;
+- (id)updateTopWithOrgApacheLuceneSearchDisiWrapper:(id)wrapper;
 - (void)dealloc;
-- (void)downHeapWithInt:(int)a3;
+- (void)downHeapWithInt:(int)int;
 @end
 
 @implementation OrgApacheLuceneSearchDisiPriorityQueue
@@ -66,22 +66,22 @@ LABEL_12:
   return sub_10005E1E4(self, v6, size, 2);
 }
 
-- (id)prependWithOrgApacheLuceneSearchDisiWrapper:(id)a3 withOrgApacheLuceneSearchDisiWrapper:(id)a4
+- (id)prependWithOrgApacheLuceneSearchDisiWrapper:(id)wrapper withOrgApacheLuceneSearchDisiWrapper:(id)disiWrapper
 {
-  if (!a3)
+  if (!wrapper)
   {
     JreThrowNullPointerException();
   }
 
-  JreStrongAssign(a3 + 4, a4);
-  return a3;
+  JreStrongAssign(wrapper + 4, disiWrapper);
+  return wrapper;
 }
 
-- (id)addWithOrgApacheLuceneSearchDisiWrapper:(id)a3
+- (id)addWithOrgApacheLuceneSearchDisiWrapper:(id)wrapper
 {
-  v5 = a3;
+  wrapperCopy = wrapper;
   size = self->size_;
-  [(OrgApacheLuceneSearchDisiPriorityQueue *)self setHeapWithInt:size withOrgApacheLuceneSearchDisiWrapper:a3];
+  [(OrgApacheLuceneSearchDisiPriorityQueue *)self setHeapWithInt:size withOrgApacheLuceneSearchDisiWrapper:wrapper];
   [(OrgApacheLuceneSearchDisiPriorityQueue *)self upHeapWithInt:size];
   self->size_ = size + 1;
 
@@ -105,23 +105,23 @@ LABEL_12:
   return [(OrgApacheLuceneSearchDisiPriorityQueue *)self top];
 }
 
-- (id)updateTopWithOrgApacheLuceneSearchDisiWrapper:(id)a3
+- (id)updateTopWithOrgApacheLuceneSearchDisiWrapper:(id)wrapper
 {
-  [(OrgApacheLuceneSearchDisiPriorityQueue *)self setHeapWithInt:0 withOrgApacheLuceneSearchDisiWrapper:a3];
+  [(OrgApacheLuceneSearchDisiPriorityQueue *)self setHeapWithInt:0 withOrgApacheLuceneSearchDisiWrapper:wrapper];
 
   return [(OrgApacheLuceneSearchDisiPriorityQueue *)self updateTop];
 }
 
-- (void)downHeapWithInt:(int)a3
+- (void)downHeapWithInt:(int)int
 {
   v5 = [(OrgApacheLuceneSearchDisiPriorityQueue *)self top];
-  if (a3 < 2)
+  if (int < 2)
   {
     return;
   }
 
   v6 = v5;
-  if (a3 == 2)
+  if (int == 2)
   {
     v7 = 1;
   }
@@ -162,7 +162,7 @@ LABEL_27:
       v14 = 2 * v7;
       v7 = (2 * v7) | 1u;
       v15 = v14 + 2;
-      if (v14 + 2 < a3)
+      if (v14 + 2 < int)
       {
         v16 = [(OrgApacheLuceneSearchDisiPriorityQueue *)self getHeapWithInt:(v14 + 2)];
         if (!v16)
@@ -188,7 +188,7 @@ LABEL_27:
         }
       }
 
-      if (v7 >= a3)
+      if (v7 >= int)
       {
         break;
       }

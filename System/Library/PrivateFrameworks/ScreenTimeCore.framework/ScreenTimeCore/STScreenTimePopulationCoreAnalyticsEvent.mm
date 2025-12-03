@@ -1,17 +1,17 @@
 @interface STScreenTimePopulationCoreAnalyticsEvent
 - (NSDictionary)payload;
-- (STScreenTimePopulationCoreAnalyticsEvent)initWithIsScreenTimeEnabled:(BOOL)a3 isShareAcrossDevicesEnabled:(BOOL)a4;
+- (STScreenTimePopulationCoreAnalyticsEvent)initWithIsScreenTimeEnabled:(BOOL)enabled isShareAcrossDevicesEnabled:(BOOL)devicesEnabled;
 @end
 
 @implementation STScreenTimePopulationCoreAnalyticsEvent
 
-- (STScreenTimePopulationCoreAnalyticsEvent)initWithIsScreenTimeEnabled:(BOOL)a3 isShareAcrossDevicesEnabled:(BOOL)a4
+- (STScreenTimePopulationCoreAnalyticsEvent)initWithIsScreenTimeEnabled:(BOOL)enabled isShareAcrossDevicesEnabled:(BOOL)devicesEnabled
 {
   v7.receiver = self;
   v7.super_class = STScreenTimePopulationCoreAnalyticsEvent;
   result = [(STScreenTimePopulationCoreAnalyticsEvent *)&v7 init];
-  result->_isScreenTimeEnabled = a3;
-  result->_isShareAcrossDevicesEnabled = a4;
+  result->_isScreenTimeEnabled = enabled;
+  result->_isShareAcrossDevicesEnabled = devicesEnabled;
   return result;
 }
 

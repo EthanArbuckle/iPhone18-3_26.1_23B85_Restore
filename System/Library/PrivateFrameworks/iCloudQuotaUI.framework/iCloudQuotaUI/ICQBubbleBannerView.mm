@@ -1,6 +1,6 @@
 @interface ICQBubbleBannerView
-- (_TtC13iCloudQuotaUI19ICQBubbleBannerView)initWithCoder:(id)a3;
-- (_TtC13iCloudQuotaUI19ICQBubbleBannerView)initWithFrame:(CGRect)a3;
+- (_TtC13iCloudQuotaUI19ICQBubbleBannerView)initWithCoder:(id)coder;
+- (_TtC13iCloudQuotaUI19ICQBubbleBannerView)initWithFrame:(CGRect)frame;
 - (_TtP13iCloudQuotaUI27ICQBubbleBannerViewDelegate_)delegate;
 - (void)updateBannerView;
 @end
@@ -15,7 +15,7 @@
   return Strong;
 }
 
-- (_TtC13iCloudQuotaUI19ICQBubbleBannerView)initWithCoder:(id)a3
+- (_TtC13iCloudQuotaUI19ICQBubbleBannerView)initWithCoder:(id)coder
 {
   *(self + OBJC_IVAR____TtC13iCloudQuotaUI19ICQBubbleBannerView_actionButtons) = 0;
   v4 = OBJC_IVAR____TtC13iCloudQuotaUI19ICQBubbleBannerView_delegate;
@@ -29,11 +29,11 @@
 
 - (void)updateBannerView
 {
-  v2 = self;
+  selfCopy = self;
   sub_275781D90();
 }
 
-- (_TtC13iCloudQuotaUI19ICQBubbleBannerView)initWithFrame:(CGRect)a3
+- (_TtC13iCloudQuotaUI19ICQBubbleBannerView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

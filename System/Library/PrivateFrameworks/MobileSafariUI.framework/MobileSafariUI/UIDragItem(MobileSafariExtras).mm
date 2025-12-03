@@ -18,7 +18,7 @@
   v10 = a4;
   v11 = a3;
   v12 = [v8 safari_itemProviderForTab:v11 browserController:v9];
-  v13 = [[a1 alloc] initWithItemProvider:v12];
+  v13 = [[self alloc] initWithItemProvider:v12];
   v14 = objc_alloc_init(TabDragMetadata);
   [(TabDragMetadata *)v14 setTab:v11];
 
@@ -32,10 +32,10 @@
 
 - (uint64_t)safari_localTabIsPinnable
 {
-  v2 = [a1 safari_localBrowserController];
-  v3 = [v2 tabController];
-  v4 = [a1 safari_localWBTab];
-  v5 = [v3 isTabPinnable:v4];
+  safari_localBrowserController = [self safari_localBrowserController];
+  tabController = [safari_localBrowserController tabController];
+  safari_localWBTab = [self safari_localWBTab];
+  v5 = [tabController isTabPinnable:safari_localWBTab];
 
   return v5;
 }
@@ -43,25 +43,25 @@
 - (id)safari_localTab
 {
   v2 = objc_alloc(MEMORY[0x277CCAD78]);
-  v3 = [a1 safari_localWBTab];
-  v4 = [v3 uuid];
-  v5 = [v2 initWithUUIDString:v4];
+  safari_localWBTab = [self safari_localWBTab];
+  uuid = [safari_localWBTab uuid];
+  v5 = [v2 initWithUUIDString:uuid];
 
-  v6 = [a1 safari_localBrowserController];
-  v7 = [v6 tabController];
-  v8 = [v7 tabWithUUID:v5];
+  safari_localBrowserController = [self safari_localBrowserController];
+  tabController = [safari_localBrowserController tabController];
+  v8 = [tabController tabWithUUID:v5];
 
   return v8;
 }
 
 - (id)safari_localSourceTabView
 {
-  v2 = [a1 safari_localTabItem];
-  if (v2)
+  safari_localTabItem = [self safari_localTabItem];
+  if (safari_localTabItem)
   {
-    v3 = [a1 safari_localBrowserController];
-    v4 = [v3 tabCollectionViewProvider];
-    v5 = [v4 tabCollectionViewForItem:v2];
+    safari_localBrowserController = [self safari_localBrowserController];
+    tabCollectionViewProvider = [safari_localBrowserController tabCollectionViewProvider];
+    v5 = [tabCollectionViewProvider tabCollectionViewForItem:safari_localTabItem];
   }
 
   else
@@ -74,51 +74,51 @@
 
 - (id)safari_localWBTab
 {
-  v1 = [(UIDragItem *)a1 _safari_localTabDragMetadata];
-  v2 = [v1 tab];
+  _safari_localTabDragMetadata = [(UIDragItem *)self _safari_localTabDragMetadata];
+  v2 = [_safari_localTabDragMetadata tab];
 
   return v2;
 }
 
 - (id)safari_localTabItem
 {
-  v1 = [(UIDragItem *)a1 _safari_localTabDragMetadata];
-  v2 = [v1 tabItem];
+  _safari_localTabDragMetadata = [(UIDragItem *)self _safari_localTabDragMetadata];
+  tabItem = [_safari_localTabDragMetadata tabItem];
 
-  return v2;
+  return tabItem;
 }
 
 - (id)safari_localBrowserController
 {
-  v1 = [(UIDragItem *)a1 _safari_localTabDragMetadata];
-  v2 = [v1 browserController];
+  _safari_localTabDragMetadata = [(UIDragItem *)self _safari_localTabDragMetadata];
+  browserController = [_safari_localTabDragMetadata browserController];
 
-  return v2;
+  return browserController;
 }
 
 - (uint64_t)safari_dragPreviewRequiresUpdateForTabView:()MobileSafariExtras pinned:
 {
   v6 = a3;
-  v7 = [(UIDragItem *)a1 _safari_localTabDragMetadata];
-  v8 = [v7 targetTabViewForDragPreview];
-  v9 = v8;
-  if (v8)
+  _safari_localTabDragMetadata = [(UIDragItem *)self _safari_localTabDragMetadata];
+  targetTabViewForDragPreview = [_safari_localTabDragMetadata targetTabViewForDragPreview];
+  v9 = targetTabViewForDragPreview;
+  if (targetTabViewForDragPreview)
   {
-    v10 = v8;
+    safari_localSourceTabView = targetTabViewForDragPreview;
   }
 
   else
   {
-    v10 = [a1 safari_localSourceTabView];
+    safari_localSourceTabView = [self safari_localSourceTabView];
   }
 
-  v11 = v10;
+  v11 = safari_localSourceTabView;
 
-  [v7 setTargetTabViewForDragPreview:v6];
-  v12 = [v7 dragPreviewPinned];
-  [v7 setDragPreviewPinned:a4];
+  [_safari_localTabDragMetadata setTargetTabViewForDragPreview:v6];
+  dragPreviewPinned = [_safari_localTabDragMetadata dragPreviewPinned];
+  [_safari_localTabDragMetadata setDragPreviewPinned:a4];
 
-  return (v11 != v6) | ((v12 ^ a4) & 1);
+  return (v11 != v6) | ((dragPreviewPinned ^ a4) & 1);
 }
 
 @end

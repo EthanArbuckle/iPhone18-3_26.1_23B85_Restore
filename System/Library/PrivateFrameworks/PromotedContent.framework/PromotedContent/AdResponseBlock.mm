@@ -1,8 +1,8 @@
 @interface AdResponseBlock
 - (_TtC15PromotedContentP33_E3331A4917F70526BBCA8EA71ED6884515AdResponseBlock)init;
 - (id)requesterID;
-- (void)connectionSeveredWithError:(id)a3;
-- (void)contentResponses:(id)a3;
+- (void)connectionSeveredWithError:(id)error;
+- (void)contentResponses:(id)responses;
 @end
 
 @implementation AdResponseBlock
@@ -21,9 +21,9 @@
   return v8;
 }
 
-- (void)contentResponses:(id)a3
+- (void)contentResponses:(id)responses
 {
-  if (a3)
+  if (responses)
   {
     sub_1C1AA576C(0, qword_1EDE6CA20, 0x1E698A028);
     v4 = sub_1C1B94EC8();
@@ -34,14 +34,14 @@
     v4 = 0;
   }
 
-  v5 = self;
+  selfCopy = self;
   sub_1C1B47368(v4);
 }
 
-- (void)connectionSeveredWithError:(id)a3
+- (void)connectionSeveredWithError:(id)error
 {
-  v5 = a3;
-  v4 = self;
+  errorCopy = error;
+  selfCopy = self;
   sub_1C1B47D40();
 }
 

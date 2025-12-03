@@ -1,11 +1,11 @@
 @interface _MFMessageObserver
 + (id)sharedObserver;
-+ (void)invokeCompletionForMessageGUID:(id)a3 didSend:(BOOL)a4;
-+ (void)observeMessageGUID:(id)a3 completion:(id)a4;
-+ (void)removeCompletionForMessageGUID:(id)a3;
++ (void)invokeCompletionForMessageGUID:(id)d didSend:(BOOL)send;
++ (void)observeMessageGUID:(id)d completion:(id)completion;
++ (void)removeCompletionForMessageGUID:(id)d;
 - (_MFMessageObserver)init;
-- (void)invokeCompletionForMessageGUID:(id)a3 didSend:(BOOL)a4;
-- (void)observeMessageGUID:(id)a3 completion:(id)a4;
+- (void)invokeCompletionForMessageGUID:(id)d didSend:(BOOL)send;
+- (void)observeMessageGUID:(id)d completion:(id)completion;
 @end
 
 @implementation _MFMessageObserver
@@ -63,58 +63,58 @@
     return v2;
   }
 
-  v10 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v11 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getIMMessageSentDistributedNotification(void)"];
-  [v10 handleFailureInFunction:v11 file:@"MFMessageComposeViewController.m" lineNumber:87 description:{@"%s", dlerror()}];
+  [currentHandler handleFailureInFunction:v11 file:@"MFMessageComposeViewController.m" lineNumber:87 description:{@"%s", dlerror()}];
 
   __break(1u);
   return result;
 }
 
-+ (void)observeMessageGUID:(id)a3 completion:(id)a4
++ (void)observeMessageGUID:(id)d completion:(id)completion
 {
   v12 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   v8 = +[MFMessageComposeViewController log];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412290;
-    v11 = v6;
+    v11 = dCopy;
     _os_log_impl(&dword_1BE819000, v8, OS_LOG_TYPE_DEFAULT, "UPISupport observeMessageGUID %@", &v10, 0xCu);
   }
 
-  v9 = [a1 sharedObserver];
-  [v9 observeMessageGUID:v6 completion:v7];
+  sharedObserver = [self sharedObserver];
+  [sharedObserver observeMessageGUID:dCopy completion:completionCopy];
 }
 
-- (void)observeMessageGUID:(id)a3 completion:(id)a4
+- (void)observeMessageGUID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = _Block_copy(a4);
+  dCopy = d;
+  v7 = _Block_copy(completion);
   [NSMutableDictionary setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
 }
 
-+ (void)invokeCompletionForMessageGUID:(id)a3 didSend:(BOOL)a4
++ (void)invokeCompletionForMessageGUID:(id)d didSend:(BOOL)send
 {
-  v4 = a4;
-  v7 = a3;
-  v6 = [a1 sharedObserver];
-  [v6 invokeCompletionForMessageGUID:v7 didSend:v4];
+  sendCopy = send;
+  dCopy = d;
+  sharedObserver = [self sharedObserver];
+  [sharedObserver invokeCompletionForMessageGUID:dCopy didSend:sendCopy];
 }
 
-- (void)invokeCompletionForMessageGUID:(id)a3 didSend:(BOOL)a4
+- (void)invokeCompletionForMessageGUID:(id)d didSend:(BOOL)send
 {
-  v4 = a4;
+  sendCopy = send;
   v14 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(NSMutableDictionary *)self->_completionMap objectForKeyedSubscript:v6];
+  dCopy = d;
+  v7 = [(NSMutableDictionary *)self->_completionMap objectForKeyedSubscript:dCopy];
   v8 = +[MFMessageComposeViewController log];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v9 = _Block_copy(v7);
     v10 = 138412546;
-    v11 = v6;
+    v11 = dCopy;
     v12 = 2112;
     v13 = v9;
     _os_log_impl(&dword_1BE819000, v8, OS_LOG_TYPE_DEFAULT, "UPISupport invokeCompletionForMessageGUID %@ %@", &v10, 0x16u);
@@ -122,16 +122,16 @@
 
   if (v7)
   {
-    v7[2](v7, v4);
-    [(_MFMessageObserver *)self removeCompletionForMessageGUID:v6];
+    v7[2](v7, sendCopy);
+    [(_MFMessageObserver *)self removeCompletionForMessageGUID:dCopy];
   }
 }
 
-+ (void)removeCompletionForMessageGUID:(id)a3
++ (void)removeCompletionForMessageGUID:(id)d
 {
-  v5 = a3;
-  v4 = [a1 sharedObserver];
-  [v4 removeCompletionForMessageGUID:v5];
+  dCopy = d;
+  sharedObserver = [self sharedObserver];
+  [sharedObserver removeCompletionForMessageGUID:dCopy];
 }
 
 @end

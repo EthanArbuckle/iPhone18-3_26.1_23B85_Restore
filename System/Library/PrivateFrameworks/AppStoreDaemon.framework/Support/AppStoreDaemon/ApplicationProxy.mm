@@ -1,41 +1,41 @@
 @interface ApplicationProxy
-+ (id)proxyForBundle:(id)a3;
-+ (id)proxyForBundleID:(id)a3;
-+ (id)proxyForBundleURL:(id)a3;
-+ (id)proxyForItemID:(id)a3;
-+ (id)proxyMatchingBundleID:(id)a3 orItemID:(id)a4;
-- (ApplicationProxy)initWithBundle:(id)a3;
-- (ApplicationProxy)initWithBundleID:(id)a3;
-- (ApplicationProxy)initWithBundleID:(id)a3 allowPlaceholder:(BOOL)a4 error:(id *)a5;
-- (ApplicationProxy)initWithBundlePath:(id)a3;
-- (ApplicationProxy)initWithBundleURL:(id)a3;
-- (ApplicationProxy)initWithBundleURL:(id)a3 allowPlaceholder:(BOOL)a4 error:(id *)a5;
-- (ApplicationProxy)initWithItemID:(id)a3 error:(id *)a4;
++ (id)proxyForBundle:(id)bundle;
++ (id)proxyForBundleID:(id)d;
++ (id)proxyForBundleURL:(id)l;
++ (id)proxyForItemID:(id)d;
++ (id)proxyMatchingBundleID:(id)d orItemID:(id)iD;
+- (ApplicationProxy)initWithBundle:(id)bundle;
+- (ApplicationProxy)initWithBundleID:(id)d;
+- (ApplicationProxy)initWithBundleID:(id)d allowPlaceholder:(BOOL)placeholder error:(id *)error;
+- (ApplicationProxy)initWithBundlePath:(id)path;
+- (ApplicationProxy)initWithBundleURL:(id)l;
+- (ApplicationProxy)initWithBundleURL:(id)l allowPlaceholder:(BOOL)placeholder error:(id *)error;
+- (ApplicationProxy)initWithItemID:(id)d error:(id *)error;
 - (id)description;
 @end
 
 @implementation ApplicationProxy
 
-+ (id)proxyMatchingBundleID:(id)a3 orItemID:(id)a4
++ (id)proxyMatchingBundleID:(id)d orItemID:(id)iD
 {
-  v5 = a3;
-  v6 = a4;
-  if (!v5)
+  dCopy = d;
+  iDCopy = iD;
+  if (!dCopy)
   {
     goto LABEL_17;
   }
 
-  v7 = [[ApplicationProxy alloc] initWithBundleID:v5 allowPlaceholder:0 error:0];
+  v7 = [[ApplicationProxy alloc] initWithBundleID:dCopy allowPlaceholder:0 error:0];
   v8 = v7;
   if (v7)
   {
     v9 = v7;
   }
 
-  if (v6)
+  if (iDCopy)
   {
     v10 = sub_1003D0F1C(&v8->super.isa);
-    if (v10 != [v6 longLongValue])
+    if (v10 != [iDCopy longLongValue])
     {
       p_isa = &v8->super.isa;
       goto LABEL_16;
@@ -51,7 +51,7 @@ LABEL_18:
       goto LABEL_19;
     }
 
-    v11 = [[ApplicationProxy alloc] initWithItemID:v6 error:0];
+    v11 = [[ApplicationProxy alloc] initWithItemID:iDCopy error:0];
     p_isa = &v11->super.isa;
     if (v11)
     {
@@ -59,7 +59,7 @@ LABEL_18:
     }
 
     v14 = sub_1003D0F60(p_isa);
-    v15 = [v14 isEqualToString:v5];
+    v15 = [v14 isEqualToString:dCopy];
 
     if (!v15)
     {
@@ -84,25 +84,25 @@ LABEL_19:
   return p_isa;
 }
 
-- (ApplicationProxy)initWithBundleID:(id)a3 allowPlaceholder:(BOOL)a4 error:(id *)a5
+- (ApplicationProxy)initWithBundleID:(id)d allowPlaceholder:(BOOL)placeholder error:(id *)error
 {
-  v6 = a4;
-  v8 = a3;
+  placeholderCopy = placeholder;
+  dCopy = d;
   v16 = 0;
-  v9 = [[LSApplicationRecord alloc] initWithBundleIdentifier:v8 allowPlaceholder:v6 error:&v16];
+  v9 = [[LSApplicationRecord alloc] initWithBundleIdentifier:dCopy allowPlaceholder:placeholderCopy error:&v16];
   v10 = v16;
   v11 = v10;
   if (v9)
   {
     self = sub_1003D1118(&self->super.isa, v9);
-    v12 = self;
+    selfCopy = self;
   }
 
-  else if (a5)
+  else if (error)
   {
     v13 = v10;
-    v12 = 0;
-    *a5 = v11;
+    selfCopy = 0;
+    *error = v11;
   }
 
   else
@@ -111,37 +111,37 @@ LABEL_19:
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v18 = v8;
+      v18 = dCopy;
       v19 = 2114;
       v20 = v11;
       _os_log_error_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "No record found for %{public}@: %{public}@", buf, 0x16u);
     }
 
-    v12 = 0;
+    selfCopy = 0;
   }
 
-  return v12;
+  return selfCopy;
 }
 
-- (ApplicationProxy)initWithBundleURL:(id)a3 allowPlaceholder:(BOOL)a4 error:(id *)a5
+- (ApplicationProxy)initWithBundleURL:(id)l allowPlaceholder:(BOOL)placeholder error:(id *)error
 {
-  v6 = a4;
-  v8 = a3;
+  placeholderCopy = placeholder;
+  lCopy = l;
   v17 = 0;
-  v9 = [[LSApplicationRecord alloc] initWithURL:v8 allowPlaceholder:v6 error:&v17];
+  v9 = [[LSApplicationRecord alloc] initWithURL:lCopy allowPlaceholder:placeholderCopy error:&v17];
   v10 = v17;
   v11 = v10;
   if (v9)
   {
     self = sub_1003D1118(&self->super.isa, v9);
-    v12 = self;
+    selfCopy = self;
   }
 
-  else if (a5)
+  else if (error)
   {
     v13 = v10;
-    v12 = 0;
-    *a5 = v11;
+    selfCopy = 0;
+    *error = v11;
   }
 
   else
@@ -149,38 +149,38 @@ LABEL_19:
     v14 = ASDLogHandleForCategory();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
-      v16 = [v8 path];
+      path = [lCopy path];
       *buf = 138543618;
-      v19 = v16;
+      v19 = path;
       v20 = 2114;
       v21 = v11;
       _os_log_error_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "No record found at %{public}@: %{public}@", buf, 0x16u);
     }
 
-    v12 = 0;
+    selfCopy = 0;
   }
 
-  return v12;
+  return selfCopy;
 }
 
-- (ApplicationProxy)initWithItemID:(id)a3 error:(id *)a4
+- (ApplicationProxy)initWithItemID:(id)d error:(id *)error
 {
-  v6 = a3;
+  dCopy = d;
   v14 = 0;
-  v7 = [[LSApplicationRecord alloc] initWithStoreItemIdentifier:objc_msgSend(v6 error:{"unsignedLongLongValue"), &v14}];
+  v7 = [[LSApplicationRecord alloc] initWithStoreItemIdentifier:objc_msgSend(dCopy error:{"unsignedLongLongValue"), &v14}];
   v8 = v14;
   v9 = v8;
   if (v7)
   {
     self = sub_1003D1118(&self->super.isa, v7);
-    v10 = self;
+    selfCopy = self;
   }
 
-  else if (a4)
+  else if (error)
   {
     v11 = v8;
-    v10 = 0;
-    *a4 = v9;
+    selfCopy = 0;
+    *error = v9;
   }
 
   else
@@ -189,39 +189,39 @@ LABEL_19:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v16 = v6;
+      v16 = dCopy;
       v17 = 2114;
       v18 = v9;
       _os_log_error_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "No record found for %{public}@: %{public}@", buf, 0x16u);
     }
 
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-+ (id)proxyForBundle:(id)a3
++ (id)proxyForBundle:(id)bundle
 {
-  v3 = a3;
-  v4 = [[ApplicationProxy alloc] initWithBundle:v3];
+  bundleCopy = bundle;
+  v4 = [[ApplicationProxy alloc] initWithBundle:bundleCopy];
 
   return v4;
 }
 
-+ (id)proxyForBundleID:(id)a3
++ (id)proxyForBundleID:(id)d
 {
-  v3 = a3;
-  v4 = [[ApplicationProxy alloc] initWithBundleID:v3];
+  dCopy = d;
+  v4 = [[ApplicationProxy alloc] initWithBundleID:dCopy];
 
   return v4;
 }
 
-+ (id)proxyForItemID:(id)a3
++ (id)proxyForItemID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v12 = 0;
-  v4 = [[LSApplicationRecord alloc] initWithStoreItemIdentifier:objc_msgSend(v3 error:{"unsignedLongLongValue"), &v12}];
+  v4 = [[LSApplicationRecord alloc] initWithStoreItemIdentifier:objc_msgSend(dCopy error:{"unsignedLongLongValue"), &v12}];
   v5 = v12;
   v6 = v5;
   if (v5)
@@ -232,7 +232,7 @@ LABEL_19:
       if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
       {
         *buf = 138543362;
-        v14 = v3;
+        v14 = dCopy;
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "No record found for %{public}@", buf, 0xCu);
       }
     }
@@ -243,7 +243,7 @@ LABEL_19:
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543618;
-        v14 = v3;
+        v14 = dCopy;
         v15 = 2114;
         v16 = v6;
         _os_log_error_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "No record found for %{public}@: %{public}@", buf, 0x16u);
@@ -261,11 +261,11 @@ LABEL_19:
   return v10;
 }
 
-+ (id)proxyForBundleURL:(id)a3
++ (id)proxyForBundleURL:(id)l
 {
-  v3 = a3;
+  lCopy = l;
   v12 = 0;
-  v4 = [[LSApplicationRecord alloc] initWithURL:v3 allowPlaceholder:1 error:&v12];
+  v4 = [[LSApplicationRecord alloc] initWithURL:lCopy allowPlaceholder:1 error:&v12];
   v5 = v12;
   v6 = v5;
   if (v5)
@@ -276,7 +276,7 @@ LABEL_19:
       if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
       {
         *buf = 138543362;
-        v14 = v3;
+        v14 = lCopy;
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "No record found for %{public}@", buf, 0xCu);
       }
     }
@@ -287,7 +287,7 @@ LABEL_19:
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543618;
-        v14 = v3;
+        v14 = lCopy;
         v15 = 2114;
         v16 = v6;
         _os_log_error_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "No record found for %{public}@: %{public}@", buf, 0x16u);
@@ -305,19 +305,19 @@ LABEL_19:
   return v10;
 }
 
-- (ApplicationProxy)initWithBundle:(id)a3
+- (ApplicationProxy)initWithBundle:(id)bundle
 {
-  v4 = [a3 identifier];
-  v5 = [(ApplicationProxy *)self initWithBundleID:v4];
+  identifier = [bundle identifier];
+  v5 = [(ApplicationProxy *)self initWithBundleID:identifier];
 
   return v5;
 }
 
-- (ApplicationProxy)initWithBundleID:(id)a3
+- (ApplicationProxy)initWithBundleID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v13 = 0;
-  v5 = [[LSApplicationRecord alloc] initWithBundleIdentifier:v4 allowPlaceholder:1 error:&v13];
+  v5 = [[LSApplicationRecord alloc] initWithBundleIdentifier:dCopy allowPlaceholder:1 error:&v13];
   v6 = v13;
   v7 = v6;
   if (v6)
@@ -328,7 +328,7 @@ LABEL_19:
       if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
       {
         *buf = 138543362;
-        v15 = v4;
+        v15 = dCopy;
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "No record found for %{public}@", buf, 0xCu);
       }
     }
@@ -339,38 +339,38 @@ LABEL_19:
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543618;
-        v15 = v4;
+        v15 = dCopy;
         v16 = 2114;
         v17 = v7;
         _os_log_error_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "No record found for %{public}@: %{public}@", buf, 0x16u);
       }
     }
 
-    v11 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = sub_1003D1118(&self->super.isa, v5);
-    v11 = self;
+    selfCopy = self;
   }
 
-  return v11;
+  return selfCopy;
 }
 
-- (ApplicationProxy)initWithBundlePath:(id)a3
+- (ApplicationProxy)initWithBundlePath:(id)path
 {
-  v4 = [NSURL fileURLWithPath:a3];
+  v4 = [NSURL fileURLWithPath:path];
   v5 = [(ApplicationProxy *)self initWithBundleURL:v4];
 
   return v5;
 }
 
-- (ApplicationProxy)initWithBundleURL:(id)a3
+- (ApplicationProxy)initWithBundleURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v20 = 0;
-  v5 = [[LSApplicationRecord alloc] initWithURL:v4 allowPlaceholder:1 error:&v20];
+  containingBundleRecord3 = [[LSApplicationRecord alloc] initWithURL:lCopy allowPlaceholder:1 error:&v20];
   v6 = v20;
   if (v6)
   {
@@ -379,31 +379,31 @@ LABEL_19:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       *buf = 138543618;
-      v22 = v4;
+      v22 = lCopy;
       v23 = 2114;
       v24 = v7;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "No record found for %{public}@: %{public}@. Checking for extensions.", buf, 0x16u);
     }
   }
 
-  if (v5)
+  if (containingBundleRecord3)
   {
     goto LABEL_6;
   }
 
   v19 = 0;
-  v10 = [[LSApplicationExtensionRecord alloc] initWithURL:v4 error:&v19];
+  v10 = [[LSApplicationExtensionRecord alloc] initWithURL:lCopy error:&v19];
   v11 = v19;
-  v5 = v11;
+  containingBundleRecord3 = v11;
   if (v11)
   {
-    if ([v11 code] == -10814 && (objc_msgSend(v5, "domain"), v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "isEqualToString:", NSOSStatusErrorDomain), v12, v13))
+    if ([v11 code] == -10814 && (objc_msgSend(containingBundleRecord3, "domain"), v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "isEqualToString:", NSOSStatusErrorDomain), v12, v13))
     {
       v14 = ASDLogHandleForCategory();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
       {
         *buf = 138543362;
-        v22 = v4;
+        v22 = lCopy;
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "No extension record found for %{public}@", buf, 0xCu);
       }
     }
@@ -414,20 +414,20 @@ LABEL_19:
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543618;
-        v22 = v4;
+        v22 = lCopy;
         v23 = 2114;
-        v24 = v5;
+        v24 = containingBundleRecord3;
         _os_log_error_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "No extension record found for %{public}@: %{public}@", buf, 0x16u);
       }
     }
 
 LABEL_18:
 
-    v9 = 0;
+    selfCopy = 0;
     goto LABEL_19;
   }
 
-  v15 = [v10 containingBundleRecord];
+  containingBundleRecord = [v10 containingBundleRecord];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -436,23 +436,23 @@ LABEL_18:
     v14 = ASDLogHandleForCategory();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
-      v18 = [v10 containingBundleRecord];
+      containingBundleRecord2 = [v10 containingBundleRecord];
       *buf = 138543362;
-      v22 = v18;
+      v22 = containingBundleRecord2;
       _os_log_error_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "Extension record's containing bundle record not expected type: %{public}@", buf, 0xCu);
     }
 
     goto LABEL_18;
   }
 
-  v5 = [v10 containingBundleRecord];
+  containingBundleRecord3 = [v10 containingBundleRecord];
 
 LABEL_6:
-  self = sub_1003D1118(&self->super.isa, v5);
-  v9 = self;
+  self = sub_1003D1118(&self->super.isa, containingBundleRecord3);
+  selfCopy = self;
 LABEL_19:
 
-  return v9;
+  return selfCopy;
 }
 
 - (id)description

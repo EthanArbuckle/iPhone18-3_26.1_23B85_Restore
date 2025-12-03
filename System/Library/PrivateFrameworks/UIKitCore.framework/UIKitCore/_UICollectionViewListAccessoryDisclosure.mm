@@ -1,19 +1,19 @@
 @interface _UICollectionViewListAccessoryDisclosure
 - (CGSize)_minimumSizeForHitTesting;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_UICollectionViewListAccessoryDisclosure)initWithConstants:(id)a3 handlesOwnAction:(BOOL)a4;
-- (double)_enforcedWidthForWidth:(double)a3;
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_UICollectionViewListAccessoryDisclosure)initWithConstants:(id)constants handlesOwnAction:(BOOL)action;
+- (double)_enforcedWidthForWidth:(double)width;
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location;
 - (void)_executeActionHandler;
 - (void)_updateRotation;
-- (void)forcedSelectionOfMenu:(id)a3 willChangeTo:(id)a4;
+- (void)forcedSelectionOfMenu:(id)menu willChangeTo:(id)to;
 - (void)layoutSubviews;
-- (void)setAccessoryTintColor:(id)a3;
-- (void)setAccessoryUsesMonochromaticTreatment:(BOOL)a3;
-- (void)setActionHandler:(id)a3;
-- (void)setBounds:(CGRect)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setMenu:(id)a3;
+- (void)setAccessoryTintColor:(id)color;
+- (void)setAccessoryUsesMonochromaticTreatment:(BOOL)treatment;
+- (void)setActionHandler:(id)handler;
+- (void)setBounds:(CGRect)bounds;
+- (void)setFrame:(CGRect)frame;
+- (void)setMenu:(id)menu;
 @end
 
 @implementation _UICollectionViewListAccessoryDisclosure
@@ -23,8 +23,8 @@
   v21.receiver = self;
   v21.super_class = _UICollectionViewListAccessoryDisclosure;
   [(UIView *)&v21 layoutSubviews];
-  v3 = [(UIImageView *)self->_imageView _currentImage];
-  [v3 size];
+  _currentImage = [(UIImageView *)self->_imageView _currentImage];
+  [_currentImage size];
   v5 = v4;
   v7 = v6;
 
@@ -41,10 +41,10 @@
 
 - (CGSize)_minimumSizeForHitTesting
 {
-  v2 = [(UIView *)self isUserInteractionEnabled];
+  isUserInteractionEnabled = [(UIView *)self isUserInteractionEnabled];
   v3 = 44.0;
   v4 = *(MEMORY[0x1E695F060] + 8);
-  if (v2)
+  if (isUserInteractionEnabled)
   {
     v4 = 44.0;
   }
@@ -61,9 +61,9 @@
 
 - (void)_updateRotation
 {
-  v3 = [(UIView *)self _shouldReverseLayoutDirection];
+  _shouldReverseLayoutDirection = [(UIView *)self _shouldReverseLayoutDirection];
   rotationAngle = self->_rotationAngle;
-  if (v3)
+  if (_shouldReverseLayoutDirection)
   {
     rotationAngle = -rotationAngle;
   }
@@ -79,9 +79,9 @@
   [(UIView *)imageView setTransform:&v6];
 }
 
-- (_UICollectionViewListAccessoryDisclosure)initWithConstants:(id)a3 handlesOwnAction:(BOOL)a4
+- (_UICollectionViewListAccessoryDisclosure)initWithConstants:(id)constants handlesOwnAction:(BOOL)action
 {
-  v6 = a3;
+  constantsCopy = constants;
   v12.receiver = self;
   v12.super_class = _UICollectionViewListAccessoryDisclosure;
   v7 = [(UIControl *)&v12 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
@@ -89,7 +89,7 @@
   if (v7)
   {
     [(UIView *)v7 setOpaque:0];
-    objc_storeStrong(&v8->_constants, a3);
+    objc_storeStrong(&v8->_constants, constants);
     v9 = objc_alloc_init(UIImageView);
     imageView = v8->_imageView;
     v8->_imageView = v9;
@@ -100,16 +100,16 @@
   return v8;
 }
 
-- (void)setActionHandler:(id)a3
+- (void)setActionHandler:(id)handler
 {
   actionHandler = self->_actionHandler;
-  v6 = [a3 copy];
+  v6 = [handler copy];
   v7 = self->_actionHandler;
   self->_actionHandler = v6;
 
-  if (!a3 || actionHandler)
+  if (!handler || actionHandler)
   {
-    if (!a3 && actionHandler)
+    if (!handler && actionHandler)
     {
 
       [(UIControl *)self removeTarget:self action:sel__executeActionHandler forControlEvents:0x2000];
@@ -132,32 +132,32 @@
   }
 }
 
-- (void)setAccessoryTintColor:(id)a3
+- (void)setAccessoryTintColor:(id)color
 {
-  objc_storeStrong(&self->_accessoryTintColor, a3);
-  v5 = a3;
-  [(UIView *)self->_imageView setTintColor:v5];
+  objc_storeStrong(&self->_accessoryTintColor, color);
+  colorCopy = color;
+  [(UIView *)self->_imageView setTintColor:colorCopy];
 }
 
-- (void)setAccessoryUsesMonochromaticTreatment:(BOOL)a3
+- (void)setAccessoryUsesMonochromaticTreatment:(BOOL)treatment
 {
-  if (self->_accessoryUsesMonochromaticTreatment != a3)
+  if (self->_accessoryUsesMonochromaticTreatment != treatment)
   {
-    v4 = a3;
-    self->_accessoryUsesMonochromaticTreatment = a3;
-    if (a3)
+    treatmentCopy = treatment;
+    self->_accessoryUsesMonochromaticTreatment = treatment;
+    if (treatment)
     {
       [(UIView *)self _setMonochromaticTreatment:1];
     }
 
-    [(UIView *)self _setEnableMonochromaticTreatment:v4];
+    [(UIView *)self _setEnableMonochromaticTreatment:treatmentCopy];
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  [(UITableConstants *)self->_constants defaultDisclosureLayoutWidthForView:self, a3.width];
+  height = fits.height;
+  [(UITableConstants *)self->_constants defaultDisclosureLayoutWidthForView:self, fits.width];
   v6 = v5;
   [(_UICollectionViewListAccessoryDisclosure *)self _minimumSizeForHitTesting];
   if (height >= v7)
@@ -186,26 +186,26 @@
   return result;
 }
 
-- (double)_enforcedWidthForWidth:(double)a3
+- (double)_enforcedWidthForWidth:(double)width
 {
   [(_UICollectionViewListAccessoryDisclosure *)self _minimumSizeForHitTesting];
-  if (result <= a3)
+  if (result <= width)
   {
-    return a3;
+    return width;
   }
 
   return result;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if (a3.size.width > 0.0)
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  if (frame.size.width > 0.0)
   {
-    [(_UICollectionViewListAccessoryDisclosure *)self _enforcedWidthForWidth:a3.size.width];
+    [(_UICollectionViewListAccessoryDisclosure *)self _enforcedWidthForWidth:frame.size.width];
     v9 = v8;
     v10 = x + (width - v8) * 0.5;
     [(UIView *)self _currentScreenScale];
@@ -220,41 +220,41 @@
   [(UIView *)&v15 setFrame:x, y, width, height];
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  [(_UICollectionViewListAccessoryDisclosure *)self _enforcedWidthForWidth:a3.size.width];
+  height = bounds.size.height;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  [(_UICollectionViewListAccessoryDisclosure *)self _enforcedWidthForWidth:bounds.size.width];
   v8.receiver = self;
   v8.super_class = _UICollectionViewListAccessoryDisclosure;
   [(UIView *)&v8 setBounds:x, y, v7, height];
 }
 
-- (void)setMenu:(id)a3
+- (void)setMenu:(id)menu
 {
-  v4 = a3;
+  menuCopy = menu;
   menu = self->_menu;
-  if (menu != v4)
+  if (menu != menuCopy)
   {
-    v10 = v4;
-    v6 = v4;
+    v10 = menuCopy;
+    v6 = menuCopy;
     v7 = self->_menu;
     self->_menu = v6;
-    v8 = menu;
+    menuCopy2 = menu;
 
-    v9 = [(UIControl *)self contextMenuInteraction];
-    _UIControlMenuUpdateVisibleMenu(v9, v8, v6);
+    contextMenuInteraction = [(UIControl *)self contextMenuInteraction];
+    _UIControlMenuUpdateVisibleMenu(contextMenuInteraction, menuCopy2, v6);
 
     [(UIMenu *)v6 setForcedAutomaticSelectionDelegate:self];
     [(UIMenu *)v6 setForceAutomaticSelection:1];
 
     [(UIControl *)self setContextMenuInteractionEnabled:v6 != 0];
-    v4 = v10;
+    menuCopy = v10;
   }
 }
 
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location
 {
   v4 = self->_menu;
   v8[0] = MEMORY[0x1E69E9820];
@@ -268,12 +268,12 @@
   return v6;
 }
 
-- (void)forcedSelectionOfMenu:(id)a3 willChangeTo:(id)a4
+- (void)forcedSelectionOfMenu:(id)menu willChangeTo:(id)to
 {
   selectedElementDidChangeHandler = self->_selectedElementDidChangeHandler;
   if (selectedElementDidChangeHandler)
   {
-    v5 = [a3 copy];
+    v5 = [menu copy];
     selectedElementDidChangeHandler[2](selectedElementDidChangeHandler, v5);
   }
 }

@@ -1,32 +1,32 @@
 @interface TRSetupNetworkResponse
-- (TRSetupNetworkResponse)initWithCoder:(id)a3;
+- (TRSetupNetworkResponse)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TRSetupNetworkResponse
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5.receiver = self;
   v5.super_class = TRSetupNetworkResponse;
-  [(TRMessage *)&v5 encodeWithCoder:v4];
+  [(TRMessage *)&v5 encodeWithCoder:coderCopy];
   if (self->_hasNetwork)
   {
-    [v4 encodeBool:1 forKey:@"TRSetupNetworkMessages_hN"];
+    [coderCopy encodeBool:1 forKey:@"TRSetupNetworkMessages_hN"];
   }
 }
 
-- (TRSetupNetworkResponse)initWithCoder:(id)a3
+- (TRSetupNetworkResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = TRSetupNetworkResponse;
-  v5 = [(TRMessage *)&v7 initWithCoder:v4];
+  v5 = [(TRMessage *)&v7 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_hasNetwork = [v4 decodeBoolForKey:@"TRSetupNetworkMessages_hN"];
+    v5->_hasNetwork = [coderCopy decodeBoolForKey:@"TRSetupNetworkMessages_hN"];
   }
 
   return v5;

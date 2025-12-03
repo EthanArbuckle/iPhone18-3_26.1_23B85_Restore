@@ -21,7 +21,7 @@
 - (BOOL)isSADMessagesEnabled;
 - (BOOL)isSystemApertureEnabled;
 - (BOOL)isUIFluidTransitionsEnabled;
-- (BOOL)isiPadPostersEnabledForCall:(id)a3;
+- (BOOL)isiPadPostersEnabledForCall:(id)call;
 - (BOOL)lvmEverywhereEnabled;
 - (BOOL)lvm_endCallImmediately;
 - (BOOL)lvm_stopEnabled;
@@ -59,216 +59,216 @@ void __29__CNKFeatures_sharedInstance__block_invoke()
 - (BOOL)isFaceTimeLaunchPageEnabled
 {
   v2 = +[_CNKFeatures sharedInstance];
-  v3 = [v2 isFaceTimeLaunchPageEnabled];
+  isFaceTimeLaunchPageEnabled = [v2 isFaceTimeLaunchPageEnabled];
 
-  return v3;
+  return isFaceTimeLaunchPageEnabled;
 }
 
 - (BOOL)isUIFluidTransitionsEnabled
 {
   v2 = +[_CNKFeatures sharedInstance];
-  v3 = [v2 isUIFluidTransitionsEnabled];
+  isUIFluidTransitionsEnabled = [v2 isUIFluidTransitionsEnabled];
 
-  return v3;
+  return isUIFluidTransitionsEnabled;
 }
 
 - (BOOL)callManagerEnabled
 {
   v2 = +[_CNKFeatures sharedInstance];
-  v3 = [v2 callManagerEnabled];
+  callManagerEnabled = [v2 callManagerEnabled];
 
-  return v3;
+  return callManagerEnabled;
 }
 
 - (BOOL)isIncomingCallBannerEnabled
 {
   v2 = +[_CNKFeatures sharedInstance];
-  v3 = [v2 isIncomingCallBannerEnabled];
+  isIncomingCallBannerEnabled = [v2 isIncomingCallBannerEnabled];
 
-  return v3;
+  return isIncomingCallBannerEnabled;
 }
 
 - (BOOL)shouldEmbedSwapBanner
 {
   v2 = +[_CNKFeatures sharedInstance];
-  v3 = [v2 shouldEmbedSwapBanner];
+  shouldEmbedSwapBanner = [v2 shouldEmbedSwapBanner];
 
-  return v3;
+  return shouldEmbedSwapBanner;
 }
 
 - (BOOL)isHeroImageEnabled
 {
   v2 = +[_CNKFeatures sharedInstance];
-  v3 = [v2 isHeroImageEnabled];
+  isHeroImageEnabled = [v2 isHeroImageEnabled];
 
-  return v3;
+  return isHeroImageEnabled;
 }
 
 - (BOOL)isMoreMenuEnabled
 {
   v2 = +[_CNKFeatures sharedInstance];
-  v3 = [v2 isMoreMenuEnabled];
+  isMoreMenuEnabled = [v2 isMoreMenuEnabled];
 
-  return v3;
+  return isMoreMenuEnabled;
 }
 
 - (BOOL)lvm_stopEnabled
 {
   v2 = +[_CNKFeatures sharedInstance];
-  v3 = [v2 lvm_stopEnabled];
+  lvm_stopEnabled = [v2 lvm_stopEnabled];
 
-  return v3;
+  return lvm_stopEnabled;
 }
 
 - (BOOL)shouldShowFullScreenCallWaiting
 {
   v2 = +[_CNKFeatures sharedInstance];
-  v3 = [v2 shouldShowFullScreenCallWaiting];
+  shouldShowFullScreenCallWaiting = [v2 shouldShowFullScreenCallWaiting];
 
-  return v3;
+  return shouldShowFullScreenCallWaiting;
 }
 
 - (BOOL)isNameAndPhotoC3Enabled
 {
   v2 = +[_CNKFeatures sharedInstance];
-  v3 = [v2 isNameAndPhotoC3Enabled];
+  isNameAndPhotoC3Enabled = [v2 isNameAndPhotoC3Enabled];
 
-  return v3;
+  return isNameAndPhotoC3Enabled;
 }
 
 - (BOOL)isEnhancedEmergencyEnabled
 {
   v2 = +[_CNKFeatures sharedInstance];
-  v3 = [v2 isEnhancedEmergencyEnabled];
+  isEnhancedEmergencyEnabled = [v2 isEnhancedEmergencyEnabled];
 
-  return v3;
+  return isEnhancedEmergencyEnabled;
 }
 
 - (BOOL)callRecordingEnabled
 {
   v2 = +[_CNKFeatures sharedInstance];
-  v3 = [v2 callRecordingEnabled];
+  callRecordingEnabled = [v2 callRecordingEnabled];
 
-  return v3;
+  return callRecordingEnabled;
 }
 
 - (BOOL)waitOnHoldEnabled
 {
   v2 = +[_CNKFeatures sharedInstance];
-  v3 = [v2 waitOnHoldEnabled];
+  waitOnHoldEnabled = [v2 waitOnHoldEnabled];
 
-  return v3;
+  return waitOnHoldEnabled;
 }
 
 - (BOOL)isDialPadEnabled
 {
   v2 = +[_CNKFeatures sharedInstance];
-  v3 = [v2 isDialPadEnabled];
+  isDialPadEnabled = [v2 isDialPadEnabled];
 
-  return v3;
+  return isDialPadEnabled;
 }
 
 - (BOOL)lvmEverywhereEnabled
 {
   v2 = +[_CNKFeatures sharedInstance];
-  v3 = [v2 lvmEverywhereEnabled];
+  lvmEverywhereEnabled = [v2 lvmEverywhereEnabled];
 
-  return v3;
+  return lvmEverywhereEnabled;
 }
 
 - (BOOL)isSystemApertureEnabled
 {
   v2 = +[_CNKFeatures sharedInstance];
-  v3 = [v2 isSystemApertureEnabled];
+  isSystemApertureEnabled = [v2 isSystemApertureEnabled];
 
-  return v3;
+  return isSystemApertureEnabled;
 }
 
 - (BOOL)isSADMessagesEnabled
 {
   v2 = +[_CNKFeatures sharedInstance];
-  v3 = [v2 isSADMessagesEnabled];
+  isSADMessagesEnabled = [v2 isSADMessagesEnabled];
 
-  return v3;
+  return isSADMessagesEnabled;
 }
 
 - (BOOL)isDominoEnabled
 {
   v2 = +[_CNKFeatures sharedInstance];
-  v3 = [v2 isDominoEnabled];
+  isDominoEnabled = [v2 isDominoEnabled];
 
-  return v3;
+  return isDominoEnabled;
 }
 
 - (BOOL)buttonRemoteControlEnabled
 {
   v2 = +[_CNKFeatures sharedInstance];
-  v3 = [v2 buttonRemoteControlEnabled];
+  buttonRemoteControlEnabled = [v2 buttonRemoteControlEnabled];
 
-  return v3;
+  return buttonRemoteControlEnabled;
 }
 
 - (BOOL)tapToTrackEnabled
 {
   v2 = +[_CNKFeatures sharedInstance];
-  v3 = [v2 tapToTrackEnabled];
+  tapToTrackEnabled = [v2 tapToTrackEnabled];
 
-  return v3;
+  return tapToTrackEnabled;
 }
 
 - (BOOL)iPadCallRecordingEnabled
 {
   v2 = +[_CNKFeatures sharedInstance];
-  v3 = [v2 iPadCallRecordingEnabled];
+  iPadCallRecordingEnabled = [v2 iPadCallRecordingEnabled];
 
-  return v3;
+  return iPadCallRecordingEnabled;
 }
 
 - (BOOL)callRecordingDominoEnabled
 {
   v2 = +[_CNKFeatures sharedInstance];
-  v3 = [v2 callRecordingDominoEnabled];
+  callRecordingDominoEnabled = [v2 callRecordingDominoEnabled];
 
-  return v3;
+  return callRecordingDominoEnabled;
 }
 
 - (BOOL)smartHoldingRelayEnabled
 {
   v2 = +[_CNKFeatures sharedInstance];
-  v3 = [v2 smartHoldingRelayEnabled];
+  smartHoldingRelayEnabled = [v2 smartHoldingRelayEnabled];
 
-  return v3;
+  return smartHoldingRelayEnabled;
 }
 
 - (BOOL)requestToScreenShareEnabled
 {
   v2 = +[_CNKFeatures sharedInstance];
-  v3 = [v2 requestToScreenShareEnabled];
+  requestToScreenShareEnabled = [v2 requestToScreenShareEnabled];
 
-  return v3;
+  return requestToScreenShareEnabled;
 }
 
 - (BOOL)lvm_endCallImmediately
 {
   v2 = +[_CNKFeatures sharedInstance];
-  v3 = [v2 lvm_endCallImmediately];
+  lvm_endCallImmediately = [v2 lvm_endCallImmediately];
 
-  return v3;
+  return lvm_endCallImmediately;
 }
 
 - (BOOL)isModernBannerSystemEnabled
 {
   v2 = +[_CNKFeatures sharedInstance];
-  v3 = [v2 isModernBannerSystemEnabled];
+  isModernBannerSystemEnabled = [v2 isModernBannerSystemEnabled];
 
-  return v3;
+  return isModernBannerSystemEnabled;
 }
 
-- (BOOL)isiPadPostersEnabledForCall:(id)a3
+- (BOOL)isiPadPostersEnabledForCall:(id)call
 {
-  if (a3)
+  if (call)
   {
-    v3 = [a3 isSOS] ^ 1;
+    v3 = [call isSOS] ^ 1;
   }
 
   else
@@ -277,57 +277,57 @@ void __29__CNKFeatures_sharedInstance__block_invoke()
   }
 
   v4 = +[_CNKFeatures sharedInstance];
-  v5 = [v4 isiPadPostersEnabled];
+  isiPadPostersEnabled = [v4 isiPadPostersEnabled];
 
-  return v5 & v3;
+  return isiPadPostersEnabled & v3;
 }
 
 - (BOOL)isNewCallSwapNonJindoEnabled
 {
   v2 = +[_CNKFeatures sharedInstance];
-  v3 = [v2 isNewCallSwapNonJindoEnabled];
+  isNewCallSwapNonJindoEnabled = [v2 isNewCallSwapNonJindoEnabled];
 
-  return v3;
+  return isNewCallSwapNonJindoEnabled;
 }
 
 - (BOOL)isModernAudioBottomButtonsEnabled
 {
   v2 = +[_CNKFeatures sharedInstance];
-  v3 = [v2 isModernAudioBottomButtonsEnabled];
+  isModernAudioBottomButtonsEnabled = [v2 isModernAudioBottomButtonsEnabled];
 
-  return v3;
+  return isModernAudioBottomButtonsEnabled;
 }
 
 - (BOOL)isDualSimParityEnabled
 {
   v2 = +[_CNKFeatures sharedInstance];
-  v3 = [v2 isDualSimParityEnabled];
+  isDualSimParityEnabled = [v2 isDualSimParityEnabled];
 
-  return v3;
+  return isDualSimParityEnabled;
 }
 
 - (BOOL)isICUIRedesignEnabled
 {
   v2 = +[_CNKFeatures sharedInstance];
-  v3 = [v2 isICUIRedesignEnabled];
+  isICUIRedesignEnabled = [v2 isICUIRedesignEnabled];
 
-  return v3;
+  return isICUIRedesignEnabled;
 }
 
 - (BOOL)sharePlayInCallsEnabled
 {
   v2 = +[_CNKFeatures sharedInstance];
-  v3 = [v2 sharePlayInCallsEnabled];
+  sharePlayInCallsEnabled = [v2 sharePlayInCallsEnabled];
 
-  return v3;
+  return sharePlayInCallsEnabled;
 }
 
 - (BOOL)receptionistEnabled
 {
   v2 = +[_CNKFeatures sharedInstance];
-  v3 = [v2 receptionistEnabled];
+  receptionistEnabled = [v2 receptionistEnabled];
 
-  return v3;
+  return receptionistEnabled;
 }
 
 @end

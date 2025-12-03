@@ -1,18 +1,18 @@
 @interface WebPresentmentSession
-- (void)connectToViewServiceWith:(NSXPCListenerEndpoint *)a3 completionHandler:(id)a4;
-- (void)releaseRequestWithCompletionHandler:(id)a3;
+- (void)connectToViewServiceWith:(NSXPCListenerEndpoint *)with completionHandler:(id)handler;
+- (void)releaseRequestWithCompletionHandler:(id)handler;
 @end
 
 @implementation WebPresentmentSession
 
-- (void)connectToViewServiceWith:(NSXPCListenerEndpoint *)a3 completionHandler:(id)a4
+- (void)connectToViewServiceWith:(NSXPCListenerEndpoint *)with completionHandler:(id)handler
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27D73FE00);
   MEMORY[0x28223BE20](v7 - 8, v8);
   v10 = &v17 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(handler);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = with;
   v12[3] = v11;
   v12[4] = self;
   v13 = sub_225CCE994();
@@ -27,17 +27,17 @@
   v15[3] = 0;
   v15[4] = &unk_225D02048;
   v15[5] = v14;
-  v16 = a3;
+  withCopy = with;
 
   sub_225CBCC70(0, 0, v10, &unk_225D02050, v15);
 }
 
-- (void)releaseRequestWithCompletionHandler:(id)a3
+- (void)releaseRequestWithCompletionHandler:(id)handler
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27D73FE00);
   MEMORY[0x28223BE20](v5 - 8, v6);
   v8 = &v14 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;

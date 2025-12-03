@@ -1,13 +1,13 @@
 @interface IDSReportiMessageSpamDaemonResponseListener
-- (IDSReportiMessageSpamDaemonResponseListener)initWithRequestTimer:(id)a3;
-- (void)iMessageReportSpamCheckUnknownResponseForRequestID:(id)a3 status:(int64_t)a4 abusive:(BOOL)a5 delay:(double)a6 withError:(id)a7;
+- (IDSReportiMessageSpamDaemonResponseListener)initWithRequestTimer:(id)timer;
+- (void)iMessageReportSpamCheckUnknownResponseForRequestID:(id)d status:(int64_t)status abusive:(BOOL)abusive delay:(double)delay withError:(id)error;
 @end
 
 @implementation IDSReportiMessageSpamDaemonResponseListener
 
-- (IDSReportiMessageSpamDaemonResponseListener)initWithRequestTimer:(id)a3
+- (IDSReportiMessageSpamDaemonResponseListener)initWithRequestTimer:(id)timer
 {
-  v5 = a3;
+  timerCopy = timer;
   if (_IDSRunningInDaemon())
   {
     v6 = +[IDSTransportLog IDSReportSpam];
@@ -16,7 +16,7 @@
       sub_195B268D8(self, v6);
     }
 
-    v7 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -27,26 +27,26 @@
     v9 = v8;
     if (v8)
     {
-      objc_storeStrong(&v8->_requestTimer, a3);
+      objc_storeStrong(&v8->_requestTimer, timer);
     }
 
     self = v9;
-    v7 = self;
+    selfCopy = self;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (void)iMessageReportSpamCheckUnknownResponseForRequestID:(id)a3 status:(int64_t)a4 abusive:(BOOL)a5 delay:(double)a6 withError:(id)a7
+- (void)iMessageReportSpamCheckUnknownResponseForRequestID:(id)d status:(int64_t)status abusive:(BOOL)abusive delay:(double)delay withError:(id)error
 {
-  v11 = a7;
-  v12 = [(IDSDaemonRequestTimer *)self->_requestTimer invalidateTimeoutAndReturnHandlerForRequestID:a3];
-  v13 = [v12 block];
-  v14 = [v12 queue];
-  v15 = v14;
-  if (v13)
+  errorCopy = error;
+  v12 = [(IDSDaemonRequestTimer *)self->_requestTimer invalidateTimeoutAndReturnHandlerForRequestID:d];
+  block = [v12 block];
+  queue = [v12 queue];
+  v15 = queue;
+  if (block)
   {
-    v16 = v14 == 0;
+    v16 = queue == 0;
   }
 
   else
@@ -60,10 +60,10 @@
     v17[1] = 3221225472;
     v17[2] = sub_195A9C460;
     v17[3] = &unk_1E7441598;
-    v18 = v11;
-    v19 = v13;
-    v21 = a5;
-    v20 = a6;
+    v18 = errorCopy;
+    v19 = block;
+    abusiveCopy = abusive;
+    delayCopy = delay;
     dispatch_async(v15, v17);
   }
 }

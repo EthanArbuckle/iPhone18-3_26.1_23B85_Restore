@@ -1,31 +1,31 @@
 @interface SGGeoPoi
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SGGeoPoi
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v8 = a3;
-  if (v8[4])
+  fromCopy = from;
+  if (fromCopy[4])
   {
     [(SGGeoPoi *)self setUrl:?];
   }
 
-  if (v8[3])
+  if (fromCopy[3])
   {
     [(SGGeoPoi *)self setTitle:?];
   }
 
   prefGeocode = self->_prefGeocode;
-  v5 = v8[2];
+  v5 = fromCopy[2];
   if (prefGeocode)
   {
     if (v5)
@@ -40,7 +40,7 @@
   }
 
   address = self->_address;
-  v7 = v8[1];
+  v7 = fromCopy[1];
   if (address)
   {
     if (v7)
@@ -63,13 +63,13 @@
   return v4 ^ v5 ^ [(SGStructuredAddress *)self->_address hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((url = self->_url, !(url | v4[4])) || -[NSString isEqual:](url, "isEqual:")) && ((title = self->_title, !(title | v4[3])) || -[NSString isEqual:](title, "isEqual:")) && ((prefGeocode = self->_prefGeocode, !(prefGeocode | v4[2])) || -[SGPoint isEqual:](prefGeocode, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((url = self->_url, !(url | equalCopy[4])) || -[NSString isEqual:](url, "isEqual:")) && ((title = self->_title, !(title | equalCopy[3])) || -[NSString isEqual:](title, "isEqual:")) && ((prefGeocode = self->_prefGeocode, !(prefGeocode | equalCopy[2])) || -[SGPoint isEqual:](prefGeocode, "isEqual:")))
   {
     address = self->_address;
-    if (address | v4[1])
+    if (address | equalCopy[1])
     {
       v9 = [(SGStructuredAddress *)address isEqual:?];
     }
@@ -88,94 +88,94 @@
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_url copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_url copyWithZone:zone];
   v7 = v5[4];
   v5[4] = v6;
 
-  v8 = [(NSString *)self->_title copyWithZone:a3];
+  v8 = [(NSString *)self->_title copyWithZone:zone];
   v9 = v5[3];
   v5[3] = v8;
 
-  v10 = [(SGPoint *)self->_prefGeocode copyWithZone:a3];
+  v10 = [(SGPoint *)self->_prefGeocode copyWithZone:zone];
   v11 = v5[2];
   v5[2] = v10;
 
-  v12 = [(SGStructuredAddress *)self->_address copyWithZone:a3];
+  v12 = [(SGStructuredAddress *)self->_address copyWithZone:zone];
   v13 = v5[1];
   v5[1] = v12;
 
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_url)
   {
-    [v4 setUrl:?];
-    v4 = v5;
+    [toCopy setUrl:?];
+    toCopy = v5;
   }
 
   if (self->_title)
   {
     [v5 setTitle:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_prefGeocode)
   {
     [v5 setPrefGeocode:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_address)
   {
     [v5 setAddress:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_url)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_title)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_prefGeocode)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_address)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   url = self->_url;
   if (url)
   {
-    [v3 setObject:url forKey:@"url"];
+    [dictionary setObject:url forKey:@"url"];
   }
 
   title = self->_title;
@@ -187,15 +187,15 @@
   prefGeocode = self->_prefGeocode;
   if (prefGeocode)
   {
-    v8 = [(SGPoint *)prefGeocode dictionaryRepresentation];
-    [v4 setObject:v8 forKey:@"pref_geocode"];
+    dictionaryRepresentation = [(SGPoint *)prefGeocode dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"pref_geocode"];
   }
 
   address = self->_address;
   if (address)
   {
-    v10 = [(SGStructuredAddress *)address dictionaryRepresentation];
-    [v4 setObject:v10 forKey:@"address"];
+    dictionaryRepresentation2 = [(SGStructuredAddress *)address dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation2 forKey:@"address"];
   }
 
   return v4;
@@ -207,8 +207,8 @@
   v8.receiver = self;
   v8.super_class = SGGeoPoi;
   v4 = [(SGGeoPoi *)&v8 description];
-  v5 = [(SGGeoPoi *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SGGeoPoi *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }

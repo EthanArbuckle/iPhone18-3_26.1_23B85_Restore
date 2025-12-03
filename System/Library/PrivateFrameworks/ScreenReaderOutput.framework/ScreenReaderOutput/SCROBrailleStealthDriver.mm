@@ -1,7 +1,7 @@
 @interface SCROBrailleStealthDriver
 - (BOOL)unloadDriver;
 - (SCROBrailleStealthDriver)init;
-- (int)loadDriverWithIOElement:(id)a3;
+- (int)loadDriverWithIOElement:(id)element;
 - (void)dealloc;
 @end
 
@@ -28,7 +28,7 @@
   [(SCROBrailleStealthDriver *)&v3 dealloc];
 }
 
-- (int)loadDriverWithIOElement:(id)a3
+- (int)loadDriverWithIOElement:(id)element
 {
   if (self->_isDriverLoaded)
   {

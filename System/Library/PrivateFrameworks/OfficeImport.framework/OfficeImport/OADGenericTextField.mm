@@ -1,24 +1,24 @@
 @interface OADGenericTextField
-- (BOOL)isSimilarToTextRun:(id)a3;
-- (OADGenericTextField)initWithGuid:(id)a3 type:(id)a4;
+- (BOOL)isSimilarToTextRun:(id)run;
+- (OADGenericTextField)initWithGuid:(id)guid type:(id)type;
 @end
 
 @implementation OADGenericTextField
 
-- (OADGenericTextField)initWithGuid:(id)a3 type:(id)a4
+- (OADGenericTextField)initWithGuid:(id)guid type:(id)type
 {
-  v6 = a3;
-  v7 = a4;
+  guidCopy = guid;
+  typeCopy = type;
   v14.receiver = self;
   v14.super_class = OADGenericTextField;
   v8 = [(OADTextField *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [guidCopy copy];
     guid = v8->_guid;
     v8->_guid = v9;
 
-    v11 = [v7 copy];
+    v11 = [typeCopy copy];
     type = v8->_type;
     v8->_type = v11;
   }
@@ -26,20 +26,20 @@
   return v8;
 }
 
-- (BOOL)isSimilarToTextRun:(id)a3
+- (BOOL)isSimilarToTextRun:(id)run
 {
-  v4 = a3;
+  runCopy = run;
   v11.receiver = self;
   v11.super_class = OADGenericTextField;
-  if ([(OADTextRun *)&v11 isSimilarToTextRun:v4])
+  if ([(OADTextRun *)&v11 isSimilarToTextRun:runCopy])
   {
-    v5 = [(OADGenericTextField *)self guid];
-    v6 = [v4 guid];
-    if ([v5 isEqualToString:v6])
+    guid = [(OADGenericTextField *)self guid];
+    guid2 = [runCopy guid];
+    if ([guid isEqualToString:guid2])
     {
-      v7 = [(OADGenericTextField *)self type];
-      v8 = [v4 type];
-      v9 = [v7 isEqualToString:v8];
+      type = [(OADGenericTextField *)self type];
+      type2 = [runCopy type];
+      v9 = [type isEqualToString:type2];
     }
 
     else

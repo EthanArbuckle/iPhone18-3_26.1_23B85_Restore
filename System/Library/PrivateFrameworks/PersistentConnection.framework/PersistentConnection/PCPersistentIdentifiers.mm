@@ -1,7 +1,7 @@
 @interface PCPersistentIdentifiers
 + (id)_processNamePrefix;
-+ (id)processNamePidAndStringIdentifier:(id)a3;
-+ (int)pidFromMatchingIdentifer:(id)a3;
++ (id)processNamePidAndStringIdentifier:(id)identifier;
++ (int)pidFromMatchingIdentifer:(id)identifer;
 + (unint64_t)hostUniqueIdentifier;
 @end
 
@@ -26,7 +26,7 @@
   v3[2] = __47__PCPersistentIdentifiers_hostUniqueIdentifier__block_invoke;
   v3[3] = &__block_descriptor_48_e5_v8__0l;
   v3[4] = a2;
-  v3[5] = a1;
+  v3[5] = self;
   if (hostUniqueIdentifier_pred != -1)
   {
     dispatch_once(&hostUniqueIdentifier_pred, v3);
@@ -62,56 +62,56 @@ void __45__PCPersistentIdentifiers__processNamePrefix__block_invoke()
   _processNamePrefix_prefix = v2;
 }
 
-+ (id)processNamePidAndStringIdentifier:(id)a3
++ (id)processNamePidAndStringIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    v5 = v4;
-    if (([v4 canBeConvertedToEncoding:30] & 1) == 0)
+    _processNamePrefix2 = identifierCopy;
+    if (([identifierCopy canBeConvertedToEncoding:30] & 1) == 0)
     {
-      v6 = [v5 dataUsingEncoding:30 allowLossyConversion:1];
+      v6 = [_processNamePrefix2 dataUsingEncoding:30 allowLossyConversion:1];
       v7 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v6 encoding:30];
 
-      v5 = v7;
+      _processNamePrefix2 = v7;
     }
 
-    if ([v5 length] >= 0x65)
+    if ([_processNamePrefix2 length] >= 0x65)
     {
-      v8 = [v5 substringToIndex:100];
+      v8 = [_processNamePrefix2 substringToIndex:100];
       v9 = [v8 stringByAppendingString:@"..."];
 
-      v5 = v9;
+      _processNamePrefix2 = v9;
     }
 
-    v10 = [a1 _processNamePrefix];
-    v11 = [v10 stringByAppendingFormat:@"%i, %@]", getpid(), v5];
+    _processNamePrefix = [self _processNamePrefix];
+    v11 = [_processNamePrefix stringByAppendingFormat:@"%i, %@]", getpid(), _processNamePrefix2];
   }
 
   else
   {
-    v5 = [a1 _processNamePrefix];
-    v11 = [v5 stringByAppendingFormat:@"%i]", getpid()];
+    _processNamePrefix2 = [self _processNamePrefix];
+    v11 = [_processNamePrefix2 stringByAppendingFormat:@"%i]", getpid()];
   }
 
   return v11;
 }
 
-+ (int)pidFromMatchingIdentifer:(id)a3
++ (int)pidFromMatchingIdentifer:(id)identifer
 {
-  v4 = a3;
-  v5 = [a1 _processNamePrefix];
-  v6 = [v4 rangeOfString:v5 options:8];
+  identiferCopy = identifer;
+  _processNamePrefix = [self _processNamePrefix];
+  v6 = [identiferCopy rangeOfString:_processNamePrefix options:8];
   v8 = v7;
 
-  v9 = -1;
+  intValue = -1;
   if (!v6 && v8)
   {
-    v10 = [v4 substringFromIndex:v8];
-    v9 = [v10 intValue];
+    v10 = [identiferCopy substringFromIndex:v8];
+    intValue = [v10 intValue];
   }
 
-  return v9;
+  return intValue;
 }
 
 void __47__PCPersistentIdentifiers_hostUniqueIdentifier__block_invoke_cold_1(uint64_t a1)

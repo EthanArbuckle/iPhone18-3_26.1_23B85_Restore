@@ -1,31 +1,31 @@
 @interface OAVWordArt
-+ (unsigned)readTextAlign:(id)a3;
-+ (void)readFromManager:(id)a3 toShape:(id)a4 state:(id)a5;
-+ (void)readFromStyle:(id)a3 manager:(id)a4 toCharacterProperties:(id)a5 state:(id)a6;
++ (unsigned)readTextAlign:(id)align;
++ (void)readFromManager:(id)manager toShape:(id)shape state:(id)state;
++ (void)readFromStyle:(id)style manager:(id)manager toCharacterProperties:(id)properties state:(id)state;
 @end
 
 @implementation OAVWordArt
 
-+ (void)readFromManager:(id)a3 toShape:(id)a4 state:(id)a5
++ (void)readFromManager:(id)manager toShape:(id)shape state:(id)state
 {
-  v37 = a3;
-  v34 = a4;
-  v36 = a5;
+  managerCopy = manager;
+  shapeCopy = shape;
+  stateCopy = state;
   v8 = objc_alloc_init(OADPresetShapeGeometry);
   [(OADShapeGeometry *)v8 setIsEscher:1];
   [(OADPresetShapeGeometry *)v8 setType:1];
-  [v34 setGeometry:v8];
+  [shapeCopy setGeometry:v8];
 
-  v9 = [v34 textBody];
-  v32 = [v9 properties];
+  textBody = [shapeCopy textBody];
+  properties = [textBody properties];
   v10 = +[OADTextBodyProperties defaultEscherWordArtProperties];
-  [v32 setParent:v10];
+  [properties setParent:v10];
 
   v31 = objc_alloc_init(OADPresetTextWarp);
   [(OADPresetTextWarp *)v31 setPresetTextWarpType:29];
-  [v32 setTextWarp:v31];
-  v11 = [v37 shape];
-  v12 = OCXFindChild(v11, OAVOfficeMainNamespace, "textpath");
+  [properties setTextWarp:v31];
+  shape = [managerCopy shape];
+  v12 = OCXFindChild(shape, OAVOfficeMainNamespace, "textpath");
   v30 = CXDefaultStringAttribute(v12, CXNoNamespace, "style", 0);
   v35 = OAVReadComposite(v30);
   v13 = [v35 objectForKey:@"v-text-align"];
@@ -40,7 +40,7 @@
   }
 
   v29 = v14;
-  v33 = [a1 readTextAlign:?];
+  v33 = [self readTextAlign:?];
   v28 = CXDefaultStringAttribute(v12, CXNoNamespace, "string", 0);
   v27 = [v28 mutableCopy];
   [v27 tc_replaceAllSubstr:@"\r\n" with:@"\r"];
@@ -49,38 +49,38 @@
   for (i = 0; [v15 count] > i; ++i)
   {
     v17 = [v15 objectAtIndex:i];
-    v18 = v9;
-    v19 = [v9 addParagraph];
-    v20 = [v19 properties];
-    [v20 setAlign:v33];
+    v18 = textBody;
+    addParagraph = [textBody addParagraph];
+    properties2 = [addParagraph properties];
+    [properties2 setAlign:v33];
     if ([v17 length])
     {
-      v21 = [v19 addRegularTextRun];
-      v22 = [v21 text];
-      [v22 setString:v17];
+      addRegularTextRun = [addParagraph addRegularTextRun];
+      text = [addRegularTextRun text];
+      [text setString:v17];
 
-      v23 = [v21 properties];
-      [a1 readFromStyle:v35 manager:v37 toCharacterProperties:v23 state:v36];
+      properties3 = [addRegularTextRun properties];
+      [self readFromStyle:v35 manager:managerCopy toCharacterProperties:properties3 state:stateCopy];
     }
 
-    v24 = [v19 paragraphEndCharacterProperties];
-    [a1 readFromStyle:v35 manager:v37 toCharacterProperties:v24 state:v36];
-    v25 = [v34 graphicProperties];
-    if ([v25 hasFill])
+    paragraphEndCharacterProperties = [addParagraph paragraphEndCharacterProperties];
+    [self readFromStyle:v35 manager:managerCopy toCharacterProperties:paragraphEndCharacterProperties state:stateCopy];
+    graphicProperties = [shapeCopy graphicProperties];
+    if ([graphicProperties hasFill])
     {
-      v26 = [v25 fill];
-      [v24 setFill:v26];
+      fill = [graphicProperties fill];
+      [paragraphEndCharacterProperties setFill:fill];
 
-      [v25 setFill:0];
+      [graphicProperties setFill:0];
     }
 
-    v9 = v18;
+    textBody = v18;
   }
 }
 
-+ (unsigned)readTextAlign:(id)a3
++ (unsigned)readTextAlign:(id)align
 {
-  v3 = a3;
+  alignCopy = align;
   v4 = +[OAVWordArt(Private) readTextAlign:]::enumMap;
   if (!+[OAVWordArt(Private) readTextAlign:]::enumMap)
   {
@@ -98,26 +98,26 @@
     v4 = +[OAVWordArt(Private) readTextAlign:]::enumMap;
   }
 
-  v14 = [v4 objectForKey:v3];
-  v15 = [v14 intValue];
+  v14 = [v4 objectForKey:alignCopy];
+  intValue = [v14 intValue];
 
-  return v15;
+  return intValue;
 }
 
-+ (void)readFromStyle:(id)a3 manager:(id)a4 toCharacterProperties:(id)a5 state:(id)a6
++ (void)readFromStyle:(id)style manager:(id)manager toCharacterProperties:(id)properties state:(id)state
 {
-  v24 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
-  v12 = [v24 objectForKey:@"font-family"];
+  styleCopy = style;
+  managerCopy = manager;
+  propertiesCopy = properties;
+  stateCopy = state;
+  v12 = [styleCopy objectForKey:@"font-family"];
   v23 = v12;
   if (v12)
   {
-    [v10 setLatinFont:v12];
+    [propertiesCopy setLatinFont:v12];
   }
 
-  v13 = [v24 objectForKey:@"font-size"];
+  v13 = [styleCopy objectForKey:@"font-size"];
   if (v13)
   {
     v14 = v13;
@@ -129,25 +129,25 @@
   }
 
   *&v15 = OAVReadLength(v14);
-  [v10 setSize:v15];
-  v16 = [v24 objectForKey:@"font-weight"];
-  [v10 setIsBold:{objc_msgSend(v16, "isEqualToString:", @"bold"}];
-  v17 = [v24 objectForKey:@"font-style"];
-  [v10 setIsItalic:{objc_msgSend(v17, "isEqualToString:", @"italic"}];
-  v18 = [v24 objectForKey:@"text-decoration"];
+  [propertiesCopy setSize:v15];
+  v16 = [styleCopy objectForKey:@"font-weight"];
+  [propertiesCopy setIsBold:{objc_msgSend(v16, "isEqualToString:", @"bold"}];
+  v17 = [styleCopy objectForKey:@"font-style"];
+  [propertiesCopy setIsItalic:{objc_msgSend(v17, "isEqualToString:", @"italic"}];
+  v18 = [styleCopy objectForKey:@"text-decoration"];
   if ([v18 isEqualToString:@"underline"])
   {
-    [v10 setUnderlineType:2];
+    [propertiesCopy setUnderlineType:2];
   }
 
-  [v10 setStrikeThroughType:{objc_msgSend(v18, "isEqualToString:", @"line-through"}];
-  v19 = [v24 objectForKey:@"font-variant"];
+  [propertiesCopy setStrikeThroughType:{objc_msgSend(v18, "isEqualToString:", @"line-through"}];
+  v19 = [styleCopy objectForKey:@"font-variant"];
   [v19 isEqualToString:@"small-caps"];
-  v20 = v9;
-  v21 = [OAVFill readFromManager:v9 state:v11];
-  [v10 setFill:v21];
+  v20 = managerCopy;
+  v21 = [OAVFill readFromManager:managerCopy state:stateCopy];
+  [propertiesCopy setFill:v21];
   v22 = [OAVStroke readFromManager:v20];
-  [v10 setStroke:v22];
+  [propertiesCopy setStroke:v22];
 }
 
 @end

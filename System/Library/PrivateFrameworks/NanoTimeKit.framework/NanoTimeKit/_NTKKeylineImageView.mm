@@ -1,19 +1,19 @@
 @interface _NTKKeylineImageView
-- (void)setColor:(id)a3;
+- (void)setColor:(id)color;
 @end
 
 @implementation _NTKKeylineImageView
 
-- (void)setColor:(id)a3
+- (void)setColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   v6.receiver = self;
   v6.super_class = _NTKKeylineImageView;
-  [(CLKUIColoringImageView *)&v6 setColor:v4];
+  [(CLKUIColoringImageView *)&v6 setColor:colorCopy];
   colorizationBlock = self->_colorizationBlock;
   if (colorizationBlock)
   {
-    colorizationBlock[2](colorizationBlock, v4);
+    colorizationBlock[2](colorizationBlock, colorCopy);
   }
 }
 

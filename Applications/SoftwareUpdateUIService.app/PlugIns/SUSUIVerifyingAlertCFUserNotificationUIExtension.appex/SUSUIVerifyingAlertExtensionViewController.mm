@@ -8,28 +8,28 @@
 - (void)loadView
 {
   NSLog(@"Loading Verify View", a2);
-  v3 = [(SUSUIVerifyingAlertExtensionViewController *)self viewForAlert];
-  [(SUSUIVerifyingAlertExtensionViewController *)self setView:v3];
+  viewForAlert = [(SUSUIVerifyingAlertExtensionViewController *)self viewForAlert];
+  [(SUSUIVerifyingAlertExtensionViewController *)self setView:viewForAlert];
 }
 
 - (id)viewForAlert
 {
-  v2 = [(SUSUIVerifyingAlertExtensionViewController *)self extensionContext];
-  v3 = [v2 inputItems];
+  extensionContext = [(SUSUIVerifyingAlertExtensionViewController *)self extensionContext];
+  inputItems = [extensionContext inputItems];
 
-  if (v3)
+  if (inputItems)
   {
-    if ([v3 count])
+    if ([inputItems count])
     {
-      v4 = [v3 objectAtIndexedSubscript:0];
+      v4 = [inputItems objectAtIndexedSubscript:0];
       if (v4)
       {
         v5 = v4;
-        v6 = [v4 userInfo];
-        if (v6)
+        userInfo = [v4 userInfo];
+        if (userInfo)
         {
-          v7 = v6;
-          v8 = [v6 objectForKeyedSubscript:@"ExtensionAlertKeyVerifyingText"];
+          v7 = userInfo;
+          v8 = [userInfo objectForKeyedSubscript:@"ExtensionAlertKeyVerifyingText"];
 
           if (v8)
           {

@@ -2,15 +2,15 @@
 + (id)assetColorMap;
 - (NSDictionary)assetPathToColorMap;
 - (TSUAssetColorMap)init;
-- (id)TSUColorFromColorArray:(id)a3;
-- (void)addEntriesFromPlistBasename:(id)a3 transformKeyBlock:(id)a4;
+- (id)TSUColorFromColorArray:(id)array;
+- (void)addEntriesFromPlistBasename:(id)basename transformKeyBlock:(id)block;
 @end
 
 @implementation TSUAssetColorMap
 
 + (id)assetColorMap
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
@@ -38,10 +38,10 @@
   return v3;
 }
 
-- (id)TSUColorFromColorArray:(id)a3
+- (id)TSUColorFromColorArray:(id)array
 {
-  v3 = a3;
-  v4 = [v3 count];
+  arrayCopy = array;
+  v4 = [arrayCopy count];
   if (v4 > 4)
   {
     v15 = 0;
@@ -50,27 +50,27 @@
   else
   {
     v5 = v4;
-    v6 = [v3 objectAtIndexedSubscript:0];
-    v7 = [v6 intValue];
+    v6 = [arrayCopy objectAtIndexedSubscript:0];
+    intValue = [v6 intValue];
 
     if (v5 < 3)
     {
       v14 = 255.0;
-      v11 = v7;
-      v9 = v7;
+      intValue3 = intValue;
+      intValue2 = intValue;
     }
 
     else
     {
-      v8 = [v3 objectAtIndexedSubscript:1];
-      v9 = [v8 intValue];
+      v8 = [arrayCopy objectAtIndexedSubscript:1];
+      intValue2 = [v8 intValue];
 
-      v10 = [v3 objectAtIndexedSubscript:2];
-      v11 = [v10 intValue];
+      v10 = [arrayCopy objectAtIndexedSubscript:2];
+      intValue3 = [v10 intValue];
 
       if (v5 == 4)
       {
-        v12 = [v3 objectAtIndexedSubscript:3];
+        v12 = [arrayCopy objectAtIndexedSubscript:3];
         [v12 floatValue];
         v14 = v13;
       }
@@ -81,18 +81,18 @@
       }
     }
 
-    v15 = [TSUColor colorWithRed:(v7 / 255.0) green:(v9 / 255.0) blue:(v11 / 255.0) alpha:(v14 / 255.0)];
+    v15 = [TSUColor colorWithRed:(intValue / 255.0) green:(intValue2 / 255.0) blue:(intValue3 / 255.0) alpha:(v14 / 255.0)];
   }
 
   return v15;
 }
 
-- (void)addEntriesFromPlistBasename:(id)a3 transformKeyBlock:(id)a4
+- (void)addEntriesFromPlistBasename:(id)basename transformKeyBlock:(id)block
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [MEMORY[0x277CCA8D8] tsu_resourcesBundle];
-  if (!v9)
+  basenameCopy = basename;
+  blockCopy = block;
+  tsu_resourcesBundle = [MEMORY[0x277CCA8D8] tsu_resourcesBundle];
+  if (!tsu_resourcesBundle)
   {
     v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSUAssetColorMap addEntriesFromPlistBasename:transformKeyBlock:]"];
     v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/utility/TSUAssetColorMap.m"];
@@ -101,26 +101,26 @@
     +[TSUAssertionHandler logBacktraceThrottled];
   }
 
-  v12 = [v9 pathForResource:v7 ofType:@"plist"];
+  v12 = [tsu_resourcesBundle pathForResource:basenameCopy ofType:@"plist"];
   if (v12)
   {
-    v32 = v7;
+    v32 = basenameCopy;
     v13 = [objc_alloc(MEMORY[0x277CBEAC0]) initWithContentsOfFile:v12];
     v14 = objc_alloc_init(MEMORY[0x277CBEB38]);
     v33[0] = MEMORY[0x277D85DD0];
     v33[1] = 3221225472;
     v33[2] = sub_2770FC344;
     v33[3] = &unk_27A703B68;
-    v31 = v8;
-    v35 = v8;
+    v31 = blockCopy;
+    v35 = blockCopy;
     v33[4] = self;
     v15 = v14;
     v34 = v15;
     v36 = a2;
     [v13 enumerateKeysAndObjectsUsingBlock:v33];
-    v16 = [v15 tsu_allKeysAsSet];
-    v17 = [(NSMutableDictionary *)self->mAssetPathToColorMap tsu_allKeysAsSet];
-    v18 = [v16 intersectsSet:v17];
+    tsu_allKeysAsSet = [v15 tsu_allKeysAsSet];
+    tsu_allKeysAsSet2 = [(NSMutableDictionary *)self->mAssetPathToColorMap tsu_allKeysAsSet];
+    v18 = [tsu_allKeysAsSet intersectsSet:tsu_allKeysAsSet2];
 
     if (v18)
     {
@@ -128,9 +128,9 @@
       v19 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSUAssetColorMap addEntriesFromPlistBasename:transformKeyBlock:]"];
       v20 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/utility/TSUAssetColorMap.m"];
       v21 = MEMORY[0x277CBEB98];
-      v22 = [v15 tsu_allKeysAsSet];
-      v23 = [(NSMutableDictionary *)self->mAssetPathToColorMap tsu_allKeysAsSet];
-      v24 = [v21 setWithObjects:{v22, v23, 0}];
+      tsu_allKeysAsSet3 = [v15 tsu_allKeysAsSet];
+      tsu_allKeysAsSet4 = [(NSMutableDictionary *)self->mAssetPathToColorMap tsu_allKeysAsSet];
+      v24 = [v21 setWithObjects:{tsu_allKeysAsSet3, tsu_allKeysAsSet4, 0}];
       v25 = [v21 tsu_intersectionOfSets:v24];
       [TSUAssertionHandler handleFailureInFunction:v19 file:v20 lineNumber:97 isFatal:0 description:"Overwriting duplicated entries %@", v25];
 
@@ -151,14 +151,14 @@
 
     [(NSMutableDictionary *)mAssetPathToColorMap addEntriesFromDictionary:v15];
 
-    v8 = v31;
-    v7 = v32;
+    blockCopy = v31;
+    basenameCopy = v32;
   }
 
   else
   {
-    v29 = [MEMORY[0x277CCA890] currentHandler];
-    [v29 handleFailureInMethod:a2 object:self file:@"TSUAssetColorMap.m" lineNumber:102 description:{@"No plist found for name %@", v7}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TSUAssetColorMap.m" lineNumber:102 description:{@"No plist found for name %@", basenameCopy}];
   }
 }
 

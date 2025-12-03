@@ -1,21 +1,21 @@
 @interface HUActivityLoadingView
 + (id)watchedKeyPaths;
 - (CGSize)intrinsicContentSize;
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5;
-- (HUActivityLoadingView)initWithFrame:(CGRect)a3 activityIndicatorStyle:(int64_t)a4;
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority;
+- (HUActivityLoadingView)initWithFrame:(CGRect)frame activityIndicatorStyle:(int64_t)style;
 - (void)_watchLabelsForContentAndResizeIfNecessary;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation HUActivityLoadingView
 
-- (HUActivityLoadingView)initWithFrame:(CGRect)a3 activityIndicatorStyle:(int64_t)a4
+- (HUActivityLoadingView)initWithFrame:(CGRect)frame activityIndicatorStyle:(int64_t)style
 {
   v45[2] = *MEMORY[0x277D85DE8];
   v43.receiver = self;
   v43.super_class = HUActivityLoadingView;
-  v5 = [(HUActivityLoadingView *)&v43 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v5 = [(HUActivityLoadingView *)&v43 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v5)
   {
     v6 = objc_alloc_init(MEMORY[0x277D756B8]);
@@ -27,12 +27,12 @@
     [(UILabel *)v8 setFont:v9];
 
     v10 = v5->_textLabel;
-    v11 = [MEMORY[0x277D75348] clearColor];
-    [(UILabel *)v10 setBackgroundColor:v11];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(UILabel *)v10 setBackgroundColor:clearColor];
 
     v12 = v5->_textLabel;
-    v13 = [MEMORY[0x277D75348] systemGrayColor];
-    [(UILabel *)v12 setTextColor:v13];
+    systemGrayColor = [MEMORY[0x277D75348] systemGrayColor];
+    [(UILabel *)v12 setTextColor:systemGrayColor];
 
     [(UILabel *)v5->_textLabel setLineBreakMode:0];
     v14 = objc_alloc_init(MEMORY[0x277D756B8]);
@@ -44,16 +44,16 @@
     [(UILabel *)v16 setFont:v17];
 
     v18 = v5->_detailTextLabel;
-    v19 = [MEMORY[0x277D75348] clearColor];
-    [(UILabel *)v18 setBackgroundColor:v19];
+    clearColor2 = [MEMORY[0x277D75348] clearColor];
+    [(UILabel *)v18 setBackgroundColor:clearColor2];
 
     v20 = v5->_detailTextLabel;
-    v21 = [MEMORY[0x277D75348] systemGrayColor];
-    [(UILabel *)v20 setTextColor:v21];
+    systemGrayColor2 = [MEMORY[0x277D75348] systemGrayColor];
+    [(UILabel *)v20 setTextColor:systemGrayColor2];
 
     [(UILabel *)v5->_detailTextLabel setNumberOfLines:0];
     [(UILabel *)v5->_detailTextLabel setLineBreakMode:0];
-    v22 = [objc_alloc(MEMORY[0x277D750E8]) initWithActivityIndicatorStyle:a4];
+    v22 = [objc_alloc(MEMORY[0x277D750E8]) initWithActivityIndicatorStyle:style];
     activityIndicatorView = v5->_activityIndicatorView;
     v5->_activityIndicatorView = v22;
 
@@ -82,18 +82,18 @@
     [(UIStackView *)v5->_mainStackView setSpacing:4.0];
     [(UIStackView *)v5->_mainStackView setAutoresizingMask:18];
     [(HUActivityLoadingView *)v5 addSubview:v5->_mainStackView];
-    v32 = [(HUActivityLoadingView *)v5 mainStackView];
-    v33 = [v32 heightAnchor];
-    v34 = [(HUActivityLoadingView *)v5 activityIndicatorView];
-    v35 = [v34 heightAnchor];
-    v36 = [v33 constraintGreaterThanOrEqualToAnchor:v35];
+    mainStackView = [(HUActivityLoadingView *)v5 mainStackView];
+    heightAnchor = [mainStackView heightAnchor];
+    activityIndicatorView = [(HUActivityLoadingView *)v5 activityIndicatorView];
+    heightAnchor2 = [activityIndicatorView heightAnchor];
+    v36 = [heightAnchor constraintGreaterThanOrEqualToAnchor:heightAnchor2];
     [v36 setActive:1];
 
-    v37 = [(HUActivityLoadingView *)v5 mainStackView];
-    v38 = [v37 widthAnchor];
-    v39 = [(HUActivityLoadingView *)v5 activityIndicatorView];
-    v40 = [v39 widthAnchor];
-    v41 = [v38 constraintGreaterThanOrEqualToAnchor:v40];
+    mainStackView2 = [(HUActivityLoadingView *)v5 mainStackView];
+    widthAnchor = [mainStackView2 widthAnchor];
+    activityIndicatorView2 = [(HUActivityLoadingView *)v5 activityIndicatorView];
+    widthAnchor2 = [activityIndicatorView2 widthAnchor];
+    v41 = [widthAnchor constraintGreaterThanOrEqualToAnchor:widthAnchor2];
     [v41 setActive:1];
 
     [(HUActivityLoadingView *)v5 bounds];
@@ -111,10 +111,10 @@
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v3 = [(HUActivityLoadingView *)self textLabel];
-  v26[0] = v3;
-  v4 = [(HUActivityLoadingView *)self detailTextLabel];
-  v26[1] = v4;
+  textLabel = [(HUActivityLoadingView *)self textLabel];
+  v26[0] = textLabel;
+  detailTextLabel = [(HUActivityLoadingView *)self detailTextLabel];
+  v26[1] = detailTextLabel;
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v26 count:2];
 
   v6 = [v5 countByEnumeratingWithState:&v21 objects:v27 count:16];
@@ -137,8 +137,8 @@
         v18 = 0u;
         v19 = 0u;
         v20 = 0u;
-        v11 = [objc_opt_class() watchedKeyPaths];
-        v12 = [v11 countByEnumeratingWithState:&v17 objects:v25 count:16];
+        watchedKeyPaths = [objc_opt_class() watchedKeyPaths];
+        v12 = [watchedKeyPaths countByEnumeratingWithState:&v17 objects:v25 count:16];
         if (v12)
         {
           v13 = v12;
@@ -150,14 +150,14 @@
             {
               if (*v18 != v14)
               {
-                objc_enumerationMutation(v11);
+                objc_enumerationMutation(watchedKeyPaths);
               }
 
               [v10 removeObserver:self forKeyPath:*(*(&v17 + 1) + 8 * v15++)];
             }
 
             while (v13 != v15);
-            v13 = [v11 countByEnumeratingWithState:&v17 objects:v25 count:16];
+            v13 = [watchedKeyPaths countByEnumeratingWithState:&v17 objects:v25 count:16];
           }
 
           while (v13);
@@ -178,14 +178,14 @@
   [(HUActivityLoadingView *)&v16 dealloc];
 }
 
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority
 {
-  height = a3.height;
-  width = a3.width;
-  v9 = [(HUActivityLoadingView *)self mainStackView];
-  *&v10 = a4;
-  *&v11 = a5;
-  [v9 systemLayoutSizeFittingSize:width withHorizontalFittingPriority:height verticalFittingPriority:{v10, v11}];
+  height = size.height;
+  width = size.width;
+  mainStackView = [(HUActivityLoadingView *)self mainStackView];
+  *&v10 = priority;
+  *&v11 = fittingPriority;
+  [mainStackView systemLayoutSizeFittingSize:width withHorizontalFittingPriority:height verticalFittingPriority:{v10, v11}];
   v13 = v12;
   v15 = v14;
 
@@ -198,8 +198,8 @@
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = [(HUActivityLoadingView *)self mainStackView];
-  [v2 systemLayoutSizeFittingSize:{*(MEMORY[0x277CBF390] + 16), *(MEMORY[0x277CBF390] + 24)}];
+  mainStackView = [(HUActivityLoadingView *)self mainStackView];
+  [mainStackView systemLayoutSizeFittingSize:{*(MEMORY[0x277CBF390] + 16), *(MEMORY[0x277CBF390] + 24)}];
   v4 = v3;
   v6 = v5;
 
@@ -217,10 +217,10 @@
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v3 = [(HUActivityLoadingView *)self textLabel];
-  v25[0] = v3;
-  v4 = [(HUActivityLoadingView *)self detailTextLabel];
-  v25[1] = v4;
+  textLabel = [(HUActivityLoadingView *)self textLabel];
+  v25[0] = textLabel;
+  detailTextLabel = [(HUActivityLoadingView *)self detailTextLabel];
+  v25[1] = detailTextLabel;
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v25 count:2];
 
   v6 = [v5 countByEnumeratingWithState:&v20 objects:v26 count:16];
@@ -243,8 +243,8 @@
         v17 = 0u;
         v18 = 0u;
         v19 = 0u;
-        v11 = [objc_opt_class() watchedKeyPaths];
-        v12 = [v11 countByEnumeratingWithState:&v16 objects:v24 count:16];
+        watchedKeyPaths = [objc_opt_class() watchedKeyPaths];
+        v12 = [watchedKeyPaths countByEnumeratingWithState:&v16 objects:v24 count:16];
         if (v12)
         {
           v13 = v12;
@@ -256,14 +256,14 @@
             {
               if (*v17 != v14)
               {
-                objc_enumerationMutation(v11);
+                objc_enumerationMutation(watchedKeyPaths);
               }
 
               [v10 addObserver:self forKeyPath:*(*(&v16 + 1) + 8 * v15++) options:1 context:0];
             }
 
             while (v13 != v15);
-            v13 = [v11 countByEnumeratingWithState:&v16 objects:v24 count:16];
+            v13 = [watchedKeyPaths countByEnumeratingWithState:&v16 objects:v24 count:16];
           }
 
           while (v13);
@@ -280,31 +280,31 @@
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = [(HUActivityLoadingView *)self textLabel];
-  if (v14 != v12)
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  textLabel = [(HUActivityLoadingView *)self textLabel];
+  if (textLabel != objectCopy)
   {
-    v15 = [(HUActivityLoadingView *)self detailTextLabel];
-    v6 = v15;
-    if (v15 != v12)
+    detailTextLabel = [(HUActivityLoadingView *)self detailTextLabel];
+    v6 = detailTextLabel;
+    if (detailTextLabel != objectCopy)
     {
 
 LABEL_8:
       v18.receiver = self;
       v18.super_class = HUActivityLoadingView;
-      [(HUActivityLoadingView *)&v18 observeValueForKeyPath:v11 ofObject:v12 change:v13 context:a6];
+      [(HUActivityLoadingView *)&v18 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
       goto LABEL_9;
     }
   }
 
-  v16 = [objc_opt_class() watchedKeyPaths];
-  v17 = [v16 containsObject:v11];
+  watchedKeyPaths = [objc_opt_class() watchedKeyPaths];
+  v17 = [watchedKeyPaths containsObject:pathCopy];
 
-  if (v14 == v12)
+  if (textLabel == objectCopy)
   {
 
     if (!v17)
@@ -322,7 +322,7 @@ LABEL_8:
     }
   }
 
-  [v12 invalidateIntrinsicContentSize];
+  [objectCopy invalidateIntrinsicContentSize];
   [(HUActivityLoadingView *)self invalidateIntrinsicContentSize];
   [(HUActivityLoadingView *)self setNeedsUpdateConstraints];
 LABEL_9:

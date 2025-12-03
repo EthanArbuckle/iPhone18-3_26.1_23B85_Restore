@@ -1,29 +1,29 @@
 @interface AXCaptioningThemeStyleController
-- (id)_nameForColor:(CGColor *)a3 colorType:(int)a4;
-- (id)_nameForTransparency:(__CFNumber *)a3 transparencyType:(int)a4;
-- (id)backgroundColor:(id)a3;
-- (id)backgroundTransparency:(id)a3;
-- (id)captionSize:(id)a3;
-- (id)captioningEnabled:(id)a3;
-- (id)profileName:(id)a3;
+- (id)_nameForColor:(CGColor *)color colorType:(int)type;
+- (id)_nameForTransparency:(__CFNumber *)transparency transparencyType:(int)type;
+- (id)backgroundColor:(id)color;
+- (id)backgroundTransparency:(id)transparency;
+- (id)captionSize:(id)size;
+- (id)captioningEnabled:(id)enabled;
+- (id)profileName:(id)name;
 - (id)specifiers;
-- (id)textColor:(id)a3;
-- (id)textEdgeStyle:(id)a3;
-- (id)textFont:(id)a3;
-- (id)textTransparency:(id)a3;
-- (id)windowColor:(id)a3;
-- (id)windowTransparency:(id)a3;
-- (void)_savePressed:(id)a3;
-- (void)_settingsChanged:(id)a3;
+- (id)textColor:(id)color;
+- (id)textEdgeStyle:(id)style;
+- (id)textFont:(id)font;
+- (id)textTransparency:(id)transparency;
+- (id)windowColor:(id)color;
+- (id)windowTransparency:(id)transparency;
+- (void)_savePressed:(id)pressed;
+- (void)_settingsChanged:(id)changed;
 - (void)_updateTitle;
 - (void)dealloc;
-- (void)setCaptioningEnabled:(id)a3 specifier:(id)a4;
-- (void)setProfileName:(id)a3 specifier:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
-- (void)textFieldDidEndEditing:(id)a3;
+- (void)setCaptioningEnabled:(id)enabled specifier:(id)specifier;
+- (void)setProfileName:(id)name specifier:(id)specifier;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
+- (void)textFieldDidEndEditing:(id)editing;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)willBecomeActive;
 @end
 
@@ -55,18 +55,18 @@
   return v4;
 }
 
-- (void)_savePressed:(id)a3
+- (void)_savePressed:(id)pressed
 {
   self->_shouldSaveProfile = 1;
-  v4 = [(AXCaptioningThemeStyleController *)self navigationController];
-  v3 = [v4 popViewControllerAnimated:1];
+  navigationController = [(AXCaptioningThemeStyleController *)self navigationController];
+  v3 = [navigationController popViewControllerAnimated:1];
 }
 
-- (void)_settingsChanged:(id)a3
+- (void)_settingsChanged:(id)changed
 {
   self->_shouldSaveProfile = 1;
-  v3 = [(AXCaptioningThemeStyleController *)self navigationItem];
-  [v3 setRightBarButtonItem:0];
+  navigationItem = [(AXCaptioningThemeStyleController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:0];
 }
 
 - (void)viewDidLoad
@@ -74,17 +74,17 @@
   v6.receiver = self;
   v6.super_class = AXCaptioningThemeStyleController;
   [(AXCaptionStyleChooserController *)&v6 viewDidLoad];
-  v3 = [(AXCaptioningThemeStyleController *)self table];
+  table = [(AXCaptioningThemeStyleController *)self table];
   v4 = objc_opt_class();
   v5 = +[AXCaptionPreviewCell cellReuseIdentifier];
-  [v3 registerClass:v4 forCellReuseIdentifier:v5];
+  [table registerClass:v4 forCellReuseIdentifier:v5];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v10.receiver = self;
   v10.super_class = AXCaptioningThemeStyleController;
-  [(AXCaptioningThemeStyleController *)&v10 viewWillDisappear:a3];
+  [(AXCaptioningThemeStyleController *)&v10 viewWillDisappear:disappear];
   if (([(AXCaptioningThemeStyleController *)self isBeingDismissed]& 1) != 0 || [(AXCaptioningThemeStyleController *)self isMovingFromParentViewController])
   {
     shouldSaveProfile = self->_shouldSaveProfile;
@@ -97,7 +97,7 @@
       if (![v5 length])
       {
         [(AXCaptioningThemeStyleController *)self profileId];
-        v6 = [(AXCaptioningThemeStyleController *)self originalName];
+        originalName = [(AXCaptioningThemeStyleController *)self originalName];
         MACaptionAppearancePrefSetProfileName();
       }
 
@@ -128,11 +128,11 @@
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v36.receiver = self;
   v36.super_class = AXCaptioningThemeStyleController;
-  [(AXCaptioningThemeStyleController *)&v36 viewWillAppear:a3];
+  [(AXCaptioningThemeStyleController *)&v36 viewWillAppear:appear];
   if (![(AXCaptioningThemeStyleController *)self profileId])
   {
     previousActiveProfile = self->_previousActiveProfile;
@@ -144,9 +144,9 @@
 
     self->_previousActiveProfile = MACaptionAppearancePrefCopyActiveProfileID();
     v5 = [objc_allocWithZone(UIBarButtonItem) initWithBarButtonSystemItem:3 target:self action:"_savePressed:"];
-    v6 = [(AXCaptioningThemeStyleController *)self navigationItem];
+    navigationItem = [(AXCaptioningThemeStyleController *)self navigationItem];
     v29 = v5;
-    [v6 setRightBarButtonItem:v5];
+    [navigationItem setRightBarButtonItem:v5];
 
     NewProfileFromProfile = MACaptionAppearancePrefCreateNewProfileFromProfile();
     v8 = NewProfileFromProfile;
@@ -184,21 +184,21 @@
             {
               [v18 substringFromIndex:{objc_msgSend(v11, "length")}];
               v20 = v19 = v16;
-              v21 = [v20 integerValue];
+              integerValue = [v20 integerValue];
 
               v16 = v19;
               v15 = v30;
-              if (v21 + 1 > v16)
+              if (integerValue + 1 > v16)
               {
-                v16 = v21 + 1;
+                v16 = integerValue + 1;
               }
             }
 
             v22 = MACaptionAppearancePrefCopyProfileOrder();
-            v23 = [v22 integerValue];
-            if (v14 <= v23)
+            integerValue2 = [v22 integerValue];
+            if (v14 <= integerValue2)
             {
-              v14 = v23;
+              v14 = integerValue2;
             }
           }
         }
@@ -221,7 +221,7 @@
     [(AXCaptioningThemeStyleController *)self setOriginalName:v27];
 
     [(AXCaptioningThemeStyleController *)self profileId];
-    v28 = [(AXCaptioningThemeStyleController *)self originalName];
+    originalName = [(AXCaptioningThemeStyleController *)self originalName];
     MACaptionAppearancePrefSetProfileName();
 
     [(AXCaptioningThemeStyleController *)self profileId];
@@ -246,7 +246,7 @@ void __51__AXCaptioningThemeStyleController_viewWillAppear___block_invoke(uint64
   [v3 addObserver:*(a1 + 32) selector:"_settingsChanged:" name:kMACaptionAppearanceSettingsChangedNotification object:0];
 }
 
-- (id)profileName:(id)a3
+- (id)profileName:(id)name
 {
   [(AXCaptioningThemeStyleController *)self profileId];
   v3 = MACaptionAppearancePrefCopyProfileName();
@@ -269,9 +269,9 @@ void __51__AXCaptioningThemeStyleController_viewWillAppear___block_invoke(uint64
   [(AXCaptioningThemeStyleController *)self setTitle:v3];
 }
 
-- (void)setProfileName:(id)a3 specifier:(id)a4
+- (void)setProfileName:(id)name specifier:(id)specifier
 {
-  v5 = a3;
+  nameCopy = name;
   [(AXCaptioningThemeStyleController *)self profileId];
   MACaptionAppearancePrefSetProfileName();
 
@@ -280,7 +280,7 @@ void __51__AXCaptioningThemeStyleController_viewWillAppear___block_invoke(uint64
   [v6 postNotificationName:@"AXThemeCountChangedNotification" object:0];
 }
 
-- (id)textFont:(id)a3
+- (id)textFont:(id)font
 {
   v21 = -1;
   [(AXCaptioningThemeStyleController *)self profileId];
@@ -345,9 +345,9 @@ LABEL_12:
   return v15;
 }
 
-- (id)captionSize:(id)a3
+- (id)captionSize:(id)size
 {
-  v4 = a3;
+  sizeCopy = size;
   [(AXCaptioningThemeStyleController *)self profileId];
   RelativeCharSize = MACaptionAppearancePrefGetRelativeCharSize();
   AXCaptionTextSizes();
@@ -365,7 +365,7 @@ LABEL_14:
   }
 
   v7 = v6;
-  v22 = v4;
+  v22 = sizeCopy;
   v23 = 0;
   v8 = 0;
   v9 = *v26;
@@ -394,9 +394,9 @@ LABEL_14:
       else
       {
         v18 = [v11 objectForKeyedSubscript:@"default"];
-        v19 = [v18 BOOLValue];
+        bOOLValue = [v18 BOOLValue];
 
-        if (!v19)
+        if (!bOOLValue)
         {
           continue;
         }
@@ -412,7 +412,7 @@ LABEL_14:
   }
 
   while (v7);
-  v4 = v22;
+  sizeCopy = v22;
   v6 = v23;
   if (!v8)
   {
@@ -424,27 +424,27 @@ LABEL_15:
   return v8;
 }
 
-- (void)setCaptioningEnabled:(id)a3 specifier:(id)a4
+- (void)setCaptioningEnabled:(id)enabled specifier:(id)specifier
 {
-  [a3 BOOLValue];
+  [enabled BOOLValue];
 
   _AXSClosedCaptionsSetEnabled();
 }
 
-- (id)captioningEnabled:(id)a3
+- (id)captioningEnabled:(id)enabled
 {
   v3 = _AXSClosedCaptionsEnabled();
 
   return [NSNumber numberWithUnsignedChar:v3];
 }
 
-- (id)_nameForTransparency:(__CFNumber *)a3 transparencyType:(int)a4
+- (id)_nameForTransparency:(__CFNumber *)transparency transparencyType:(int)type
 {
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v5 = AXCaptionTransparency(a4);
+  v5 = AXCaptionTransparency(type);
   v6 = [v5 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v6)
   {
@@ -463,7 +463,7 @@ LABEL_15:
         v11 = [v10 objectForKeyedSubscript:{@"alpha", v19}];
         [v11 floatValue];
         v13 = v12;
-        [(__CFNumber *)a3 floatValue];
+        [(__CFNumber *)transparency floatValue];
         v15 = vabds_f32(v13, v14);
 
         if (v15 < 0.001)
@@ -491,7 +491,7 @@ LABEL_11:
   return v16;
 }
 
-- (id)textTransparency:(id)a3
+- (id)textTransparency:(id)transparency
 {
   [(AXCaptioningThemeStyleController *)self profileId];
   v4 = MACaptionAppearancePrefCopyForegroundOpacity();
@@ -504,7 +504,7 @@ LABEL_11:
   return v5;
 }
 
-- (id)textEdgeStyle:(id)a3
+- (id)textEdgeStyle:(id)style
 {
   [(AXCaptioningThemeStyleController *)self profileId];
   v3 = MACaptionAppearancePrefCopyTextEdgeStyle();
@@ -562,12 +562,12 @@ LABEL_13:
   return v13;
 }
 
-- (id)_nameForColor:(CGColor *)a3 colorType:(int)a4
+- (id)_nameForColor:(CGColor *)color colorType:(int)type
 {
-  if (a3)
+  if (color)
   {
-    NumberOfComponents = CGColorGetNumberOfComponents(a3);
-    Components = CGColorGetComponents(a3);
+    NumberOfComponents = CGColorGetNumberOfComponents(color);
+    Components = CGColorGetComponents(color);
     for (i = +[NSMutableArray array];
     {
       v9 = *Components++;
@@ -578,14 +578,14 @@ LABEL_13:
 
   else
   {
-    i = AXCaptionColorDefault(a4);
+    i = AXCaptionColorDefault(type);
   }
 
   v30 = 0u;
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v11 = AXCaptionColors(a4);
+  v11 = AXCaptionColors(type);
   v12 = [v11 countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v12)
   {
@@ -645,7 +645,7 @@ LABEL_19:
   return v26;
 }
 
-- (id)textColor:(id)a3
+- (id)textColor:(id)color
 {
   [(AXCaptioningThemeStyleController *)self profileId];
   v4 = MACaptionAppearancePrefCopyForegroundColor();
@@ -658,7 +658,7 @@ LABEL_19:
   return v5;
 }
 
-- (id)backgroundColor:(id)a3
+- (id)backgroundColor:(id)color
 {
   [(AXCaptioningThemeStyleController *)self profileId];
   v4 = MACaptionAppearancePrefCopyBackgroundColor();
@@ -671,7 +671,7 @@ LABEL_19:
   return v5;
 }
 
-- (id)windowColor:(id)a3
+- (id)windowColor:(id)color
 {
   [(AXCaptioningThemeStyleController *)self profileId];
   v4 = MACaptionAppearancePrefCopyWindowColor();
@@ -684,7 +684,7 @@ LABEL_19:
   return v5;
 }
 
-- (id)backgroundTransparency:(id)a3
+- (id)backgroundTransparency:(id)transparency
 {
   [(AXCaptioningThemeStyleController *)self profileId];
   v4 = MACaptionAppearancePrefCopyBackgroundOpacity();
@@ -697,7 +697,7 @@ LABEL_19:
   return v5;
 }
 
-- (id)windowTransparency:(id)a3
+- (id)windowTransparency:(id)transparency
 {
   [(AXCaptioningThemeStyleController *)self profileId];
   v4 = MACaptionAppearancePrefCopyWindowOpacity();
@@ -710,29 +710,29 @@ LABEL_19:
   return v5;
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v8 = a4;
+  cellCopy = cell;
   v12.receiver = self;
   v12.super_class = AXCaptioningThemeStyleController;
-  [(AXCaptionStyleChooserController *)&v12 tableView:a3 willDisplayCell:v8 forRowAtIndexPath:a5];
+  [(AXCaptionStyleChooserController *)&v12 tableView:view willDisplayCell:cellCopy forRowAtIndexPath:path];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [v8 textField];
-    [v9 setDelegate:self];
-    [v9 setAutocapitalizationType:1];
-    [v9 setReturnKeyType:9];
-    v10 = [v8 specifier];
-    v11 = [(AXCaptioningThemeStyleController *)self profileName:v10];
-    [v9 setText:v11];
+    textField = [cellCopy textField];
+    [textField setDelegate:self];
+    [textField setAutocapitalizationType:1];
+    [textField setReturnKeyType:9];
+    specifier = [cellCopy specifier];
+    v11 = [(AXCaptioningThemeStyleController *)self profileName:specifier];
+    [textField setText:v11];
   }
 }
 
-- (void)textFieldDidEndEditing:(id)a3
+- (void)textFieldDidEndEditing:(id)editing
 {
-  v4 = [a3 text];
-  [(AXCaptioningThemeStyleController *)self setProfileName:v4 specifier:0];
+  text = [editing text];
+  [(AXCaptioningThemeStyleController *)self setProfileName:text specifier:0];
 }
 
 @end

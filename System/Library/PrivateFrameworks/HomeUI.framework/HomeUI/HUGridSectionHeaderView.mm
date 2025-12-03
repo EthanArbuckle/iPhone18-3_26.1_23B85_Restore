@@ -1,38 +1,38 @@
 @interface HUGridSectionHeaderView
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
-- (HUGridSectionHeaderView)initWithFrame:(CGRect)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (void)_didRecognizeLongPressGesture:(id)a3;
-- (void)_didRecognizeTapGesture:(id)a3;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
+- (HUGridSectionHeaderView)initWithFrame:(CGRect)frame;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (void)_didRecognizeLongPressGesture:(id)gesture;
+- (void)_didRecognizeTapGesture:(id)gesture;
 - (void)_installGestureRecognizers;
 - (void)_uninstallGestureRecognizers;
 - (void)dealloc;
 - (void)prepareForReuse;
-- (void)setActionHandler:(id)a3;
-- (void)setContentConfiguration:(id)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setShowsDisclosureIndicator:(BOOL)a3;
+- (void)setActionHandler:(id)handler;
+- (void)setContentConfiguration:(id)configuration;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setShowsDisclosureIndicator:(BOOL)indicator;
 - (void)updateConstraints;
 @end
 
 @implementation HUGridSectionHeaderView
 
-- (HUGridSectionHeaderView)initWithFrame:(CGRect)a3
+- (HUGridSectionHeaderView)initWithFrame:(CGRect)frame
 {
   v21.receiver = self;
   v21.super_class = HUGridSectionHeaderView;
-  v3 = [(HUGridSectionHeaderView *)&v21 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(HUGridSectionHeaderView *)&v21 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x277D756E0] groupedHeaderConfiguration];
-    [v4 setText:&stru_2823E0EE8];
-    v5 = [objc_alloc(MEMORY[0x277D756E8]) initWithConfiguration:v4];
+    groupedHeaderConfiguration = [MEMORY[0x277D756E0] groupedHeaderConfiguration];
+    [groupedHeaderConfiguration setText:&stru_2823E0EE8];
+    v5 = [objc_alloc(MEMORY[0x277D756E8]) initWithConfiguration:groupedHeaderConfiguration];
     listContentView = v3->_listContentView;
     v3->_listContentView = v5;
 
     [(UIListContentView *)v3->_listContentView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v7 = [(HUGridSectionHeaderView *)v3 contentView];
-    [v7 addSubview:v3->_listContentView];
+    contentView = [(HUGridSectionHeaderView *)v3 contentView];
+    [contentView addSubview:v3->_listContentView];
 
     v8 = [MEMORY[0x277D755D0] configurationWithTextStyle:*MEMORY[0x277D76918]];
     v9 = [MEMORY[0x277D755D0] configurationWithWeight:6];
@@ -48,14 +48,14 @@
     [(UIImageView *)v3->_chevronView setTintColor:v15];
 
     v16 = [MEMORY[0x277CD9EA0] filterWithType:*MEMORY[0x277CDA5E8]];
-    v17 = [(UIImageView *)v3->_chevronView layer];
-    [v17 setCompositingFilter:v16];
+    layer = [(UIImageView *)v3->_chevronView layer];
+    [layer setCompositingFilter:v16];
 
     [(UIImageView *)v3->_chevronView setHidden:[(HUGridSectionHeaderView *)v3 showsDisclosureIndicator]^ 1];
     LODWORD(v18) = 1148846080;
     [(UIImageView *)v3->_chevronView setContentCompressionResistancePriority:0 forAxis:v18];
-    v19 = [(HUGridSectionHeaderView *)v3 contentView];
-    [v19 addSubview:v3->_chevronView];
+    contentView2 = [(HUGridSectionHeaderView *)v3 contentView];
+    [contentView2 addSubview:v3->_chevronView];
   }
 
   return v3;
@@ -78,15 +78,15 @@
   [(HUGridSectionHeaderView *)self setShowsDisclosureIndicator:0];
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
   v9.receiver = self;
   v9.super_class = HUGridSectionHeaderView;
-  v5 = [(HUGridSectionHeaderView *)&v9 hitTest:a4 withEvent:a3.x, a3.y];
+  v5 = [(HUGridSectionHeaderView *)&v9 hitTest:event withEvent:test.x, test.y];
   if ([v5 isDescendantOfView:self])
   {
-    v6 = [(HUGridSectionHeaderView *)self actionHandler];
-    if (v6)
+    actionHandler = [(HUGridSectionHeaderView *)self actionHandler];
+    if (actionHandler)
     {
       v7 = v5;
     }
@@ -108,59 +108,59 @@
 - (void)updateConstraints
 {
   v39[6] = *MEMORY[0x277D85DE8];
-  v3 = [(HUGridSectionHeaderView *)self layoutConstraints];
-  if (v3)
+  layoutConstraints = [(HUGridSectionHeaderView *)self layoutConstraints];
+  if (layoutConstraints)
   {
   }
 
   else
   {
-    v4 = [(HUGridSectionHeaderView *)self listContentView];
-    v5 = [v4 textLayoutGuide];
+    listContentView = [(HUGridSectionHeaderView *)self listContentView];
+    textLayoutGuide = [listContentView textLayoutGuide];
 
-    if (v5)
+    if (textLayoutGuide)
     {
-      v6 = [(HUGridSectionHeaderView *)self contentView];
-      v37 = [(HUGridSectionHeaderView *)self listContentView];
-      v36 = [v37 topAnchor];
-      v35 = [v6 topAnchor];
-      v34 = [v36 constraintEqualToAnchor:v35];
+      contentView = [(HUGridSectionHeaderView *)self contentView];
+      listContentView2 = [(HUGridSectionHeaderView *)self listContentView];
+      topAnchor = [listContentView2 topAnchor];
+      topAnchor2 = [contentView topAnchor];
+      v34 = [topAnchor constraintEqualToAnchor:topAnchor2];
       v39[0] = v34;
-      v33 = [(HUGridSectionHeaderView *)self listContentView];
-      v32 = [v33 bottomAnchor];
-      v31 = [v6 bottomAnchor];
-      v30 = [v32 constraintEqualToAnchor:v31];
+      listContentView3 = [(HUGridSectionHeaderView *)self listContentView];
+      bottomAnchor = [listContentView3 bottomAnchor];
+      bottomAnchor2 = [contentView bottomAnchor];
+      v30 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
       v39[1] = v30;
-      v29 = [(HUGridSectionHeaderView *)self listContentView];
-      v27 = [v29 leadingAnchor];
-      v28 = v6;
-      v26 = [v6 leadingAnchor];
-      v25 = [v27 constraintEqualToAnchor:v26];
+      listContentView4 = [(HUGridSectionHeaderView *)self listContentView];
+      leadingAnchor = [listContentView4 leadingAnchor];
+      v28 = contentView;
+      leadingAnchor2 = [contentView leadingAnchor];
+      v25 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
       v39[2] = v25;
-      v24 = [(HUGridSectionHeaderView *)self chevronView];
-      v22 = [v24 leadingAnchor];
-      v23 = [(HUGridSectionHeaderView *)self listContentView];
-      v21 = [v23 trailingAnchor];
-      v20 = [v22 constraintEqualToAnchor:v21 constant:6.0];
+      chevronView = [(HUGridSectionHeaderView *)self chevronView];
+      leadingAnchor3 = [chevronView leadingAnchor];
+      listContentView5 = [(HUGridSectionHeaderView *)self listContentView];
+      trailingAnchor = [listContentView5 trailingAnchor];
+      v20 = [leadingAnchor3 constraintEqualToAnchor:trailingAnchor constant:6.0];
       v39[3] = v20;
-      v19 = [(HUGridSectionHeaderView *)self chevronView];
-      v18 = [v19 trailingAnchor];
-      v7 = [v6 trailingAnchor];
-      v8 = [v18 constraintLessThanOrEqualToAnchor:v7];
+      chevronView2 = [(HUGridSectionHeaderView *)self chevronView];
+      trailingAnchor2 = [chevronView2 trailingAnchor];
+      trailingAnchor3 = [contentView trailingAnchor];
+      v8 = [trailingAnchor2 constraintLessThanOrEqualToAnchor:trailingAnchor3];
       v39[4] = v8;
-      v9 = [(HUGridSectionHeaderView *)self chevronView];
-      v10 = [v9 centerYAnchor];
-      v11 = [(HUGridSectionHeaderView *)self listContentView];
-      v12 = [v11 textLayoutGuide];
-      v13 = [v12 centerYAnchor];
-      v14 = [v10 constraintEqualToAnchor:v13];
+      chevronView3 = [(HUGridSectionHeaderView *)self chevronView];
+      centerYAnchor = [chevronView3 centerYAnchor];
+      listContentView6 = [(HUGridSectionHeaderView *)self listContentView];
+      textLayoutGuide2 = [listContentView6 textLayoutGuide];
+      centerYAnchor2 = [textLayoutGuide2 centerYAnchor];
+      v14 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
       v39[5] = v14;
       v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v39 count:6];
       [(HUGridSectionHeaderView *)self setLayoutConstraints:v15];
 
       v16 = MEMORY[0x277CCAAD0];
-      v17 = [(HUGridSectionHeaderView *)self layoutConstraints];
-      [v16 activateConstraints:v17];
+      layoutConstraints2 = [(HUGridSectionHeaderView *)self layoutConstraints];
+      [v16 activateConstraints:layoutConstraints2];
     }
   }
 
@@ -169,13 +169,13 @@
   [(HUGridSectionHeaderView *)&v38 updateConstraints];
 }
 
-- (void)setActionHandler:(id)a3
+- (void)setActionHandler:(id)handler
 {
-  v4 = a3;
-  if (self->_actionHandler != v4)
+  handlerCopy = handler;
+  if (self->_actionHandler != handlerCopy)
   {
-    v7 = v4;
-    v5 = _Block_copy(v4);
+    v7 = handlerCopy;
+    v5 = _Block_copy(handlerCopy);
     actionHandler = self->_actionHandler;
     self->_actionHandler = v5;
 
@@ -189,15 +189,15 @@
       [(HUGridSectionHeaderView *)self _uninstallGestureRecognizers];
     }
 
-    v4 = v7;
+    handlerCopy = v7;
   }
 }
 
-- (void)setContentConfiguration:(id)a3
+- (void)setContentConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   objc_opt_class();
-  v9 = v4;
+  v9 = configurationCopy;
   if (objc_opt_isKindOfClass())
   {
     v5 = v9;
@@ -212,26 +212,26 @@
 
   if (v6)
   {
-    v7 = [v6 image];
+    image = [v6 image];
 
-    if (!v7)
+    if (!image)
     {
       [v6 setImageToTextPadding:0.0];
     }
 
     [v6 setAxesPreservingSuperviewLayoutMargins:0];
-    v8 = [(HUGridSectionHeaderView *)self listContentView];
-    [v8 setConfiguration:v6];
+    listContentView = [(HUGridSectionHeaderView *)self listContentView];
+    [listContentView setConfiguration:v6];
   }
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v7.receiver = self;
   v7.super_class = HUGridSectionHeaderView;
   [(HUGridSectionHeaderView *)&v7 setHighlighted:?];
-  if (v3)
+  if (highlightedCopy)
   {
     v5 = 0.5;
   }
@@ -241,18 +241,18 @@
     v5 = 1.0;
   }
 
-  v6 = [(HUGridSectionHeaderView *)self contentView];
-  [v6 setAlpha:v5];
+  contentView = [(HUGridSectionHeaderView *)self contentView];
+  [contentView setAlpha:v5];
 }
 
-- (void)setShowsDisclosureIndicator:(BOOL)a3
+- (void)setShowsDisclosureIndicator:(BOOL)indicator
 {
-  if (self->_showsDisclosureIndicator != a3)
+  if (self->_showsDisclosureIndicator != indicator)
   {
-    v4 = a3;
-    self->_showsDisclosureIndicator = a3;
-    v5 = [(HUGridSectionHeaderView *)self chevronView];
-    [v5 setHidden:!v4];
+    indicatorCopy = indicator;
+    self->_showsDisclosureIndicator = indicator;
+    chevronView = [(HUGridSectionHeaderView *)self chevronView];
+    [chevronView setHidden:!indicatorCopy];
   }
 }
 
@@ -261,66 +261,66 @@
   v3 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:self action:sel__didRecognizeTapGesture_];
   [(HUGridSectionHeaderView *)self setTapGestureRecognizer:v3];
 
-  v4 = [(HUGridSectionHeaderView *)self contentView];
-  v5 = [(HUGridSectionHeaderView *)self tapGestureRecognizer];
-  [v4 addGestureRecognizer:v5];
+  contentView = [(HUGridSectionHeaderView *)self contentView];
+  tapGestureRecognizer = [(HUGridSectionHeaderView *)self tapGestureRecognizer];
+  [contentView addGestureRecognizer:tapGestureRecognizer];
 
   v6 = [objc_alloc(MEMORY[0x277D75708]) initWithTarget:self action:sel__didRecognizeLongPressGesture_];
   [(HUGridSectionHeaderView *)self setLongPressGestureRecognizer:v6];
 
-  v7 = [(HUGridSectionHeaderView *)self longPressGestureRecognizer];
-  [v7 setMinimumPressDuration:0.0];
+  longPressGestureRecognizer = [(HUGridSectionHeaderView *)self longPressGestureRecognizer];
+  [longPressGestureRecognizer setMinimumPressDuration:0.0];
 
-  v8 = [(HUGridSectionHeaderView *)self longPressGestureRecognizer];
-  [v8 setDelegate:self];
+  longPressGestureRecognizer2 = [(HUGridSectionHeaderView *)self longPressGestureRecognizer];
+  [longPressGestureRecognizer2 setDelegate:self];
 
-  v10 = [(HUGridSectionHeaderView *)self contentView];
-  v9 = [(HUGridSectionHeaderView *)self longPressGestureRecognizer];
-  [v10 addGestureRecognizer:v9];
+  contentView2 = [(HUGridSectionHeaderView *)self contentView];
+  longPressGestureRecognizer3 = [(HUGridSectionHeaderView *)self longPressGestureRecognizer];
+  [contentView2 addGestureRecognizer:longPressGestureRecognizer3];
 }
 
 - (void)_uninstallGestureRecognizers
 {
-  v3 = [(HUGridSectionHeaderView *)self tapGestureRecognizer];
+  tapGestureRecognizer = [(HUGridSectionHeaderView *)self tapGestureRecognizer];
 
-  if (v3)
+  if (tapGestureRecognizer)
   {
-    v4 = [(HUGridSectionHeaderView *)self contentView];
-    v5 = [(HUGridSectionHeaderView *)self tapGestureRecognizer];
-    [v4 removeGestureRecognizer:v5];
+    contentView = [(HUGridSectionHeaderView *)self contentView];
+    tapGestureRecognizer2 = [(HUGridSectionHeaderView *)self tapGestureRecognizer];
+    [contentView removeGestureRecognizer:tapGestureRecognizer2];
   }
 
-  v6 = [(HUGridSectionHeaderView *)self longPressGestureRecognizer];
+  longPressGestureRecognizer = [(HUGridSectionHeaderView *)self longPressGestureRecognizer];
 
-  if (v6)
+  if (longPressGestureRecognizer)
   {
-    v8 = [(HUGridSectionHeaderView *)self contentView];
-    v7 = [(HUGridSectionHeaderView *)self longPressGestureRecognizer];
-    [v8 removeGestureRecognizer:v7];
+    contentView2 = [(HUGridSectionHeaderView *)self contentView];
+    longPressGestureRecognizer2 = [(HUGridSectionHeaderView *)self longPressGestureRecognizer];
+    [contentView2 removeGestureRecognizer:longPressGestureRecognizer2];
   }
 }
 
-- (void)_didRecognizeTapGesture:(id)a3
+- (void)_didRecognizeTapGesture:(id)gesture
 {
   v8 = *MEMORY[0x277D85DE8];
-  if ([a3 state] == 3)
+  if ([gesture state] == 3)
   {
-    v4 = [(HUGridSectionHeaderView *)self actionHandler];
+    actionHandler = [(HUGridSectionHeaderView *)self actionHandler];
 
-    if (v4)
+    if (actionHandler)
     {
-      v5 = [(HUGridSectionHeaderView *)self actionHandler];
-      (*(v5 + 16))();
+      actionHandler2 = [(HUGridSectionHeaderView *)self actionHandler];
+      (*(actionHandler2 + 16))();
     }
 
     else
     {
-      v5 = HFLogForCategory();
-      if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+      actionHandler2 = HFLogForCategory();
+      if (os_log_type_enabled(actionHandler2, OS_LOG_TYPE_ERROR))
       {
         v6 = 138412290;
-        v7 = self;
-        _os_log_error_impl(&dword_20CEB6000, v5, OS_LOG_TYPE_ERROR, "%@ Section header view tapped with no tap action set", &v6, 0xCu);
+        selfCopy = self;
+        _os_log_error_impl(&dword_20CEB6000, actionHandler2, OS_LOG_TYPE_ERROR, "%@ Section header view tapped with no tap action set", &v6, 0xCu);
       }
     }
   }
@@ -328,9 +328,9 @@
   [(HUGridSectionHeaderView *)self setHighlighted:0];
 }
 
-- (void)_didRecognizeLongPressGesture:(id)a3
+- (void)_didRecognizeLongPressGesture:(id)gesture
 {
-  v4 = [a3 state] - 1;
+  v4 = [gesture state] - 1;
   if (v4 <= 4)
   {
 
@@ -338,21 +338,21 @@
   }
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HUGridSectionHeaderView *)self longPressGestureRecognizer];
+  gestureRecognizerCopy = gestureRecognizer;
+  recognizerCopy = recognizer;
+  longPressGestureRecognizer = [(HUGridSectionHeaderView *)self longPressGestureRecognizer];
 
-  if (v8 == v7)
+  if (longPressGestureRecognizer == recognizerCopy)
   {
     v10 = 1;
   }
 
   else
   {
-    v9 = [(HUGridSectionHeaderView *)self longPressGestureRecognizer];
-    v10 = v9 == v6;
+    longPressGestureRecognizer2 = [(HUGridSectionHeaderView *)self longPressGestureRecognizer];
+    v10 = longPressGestureRecognizer2 == gestureRecognizerCopy;
   }
 
   return v10;

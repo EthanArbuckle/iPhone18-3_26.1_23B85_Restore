@@ -1,25 +1,25 @@
 @interface POMMESSchemaPOMMESKnowledgeFallbackTurnOffAlwaysPromptConfirmationShown
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (POMMESSchemaPOMMESKnowledgeFallbackTurnOffAlwaysPromptConfirmationShown)initWithDictionary:(id)a3;
-- (POMMESSchemaPOMMESKnowledgeFallbackTurnOffAlwaysPromptConfirmationShown)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (POMMESSchemaPOMMESKnowledgeFallbackTurnOffAlwaysPromptConfirmationShown)initWithDictionary:(id)dictionary;
+- (POMMESSchemaPOMMESKnowledgeFallbackTurnOffAlwaysPromptConfirmationShown)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation POMMESSchemaPOMMESKnowledgeFallbackTurnOffAlwaysPromptConfirmationShown
 
-- (POMMESSchemaPOMMESKnowledgeFallbackTurnOffAlwaysPromptConfirmationShown)initWithDictionary:(id)a3
+- (POMMESSchemaPOMMESKnowledgeFallbackTurnOffAlwaysPromptConfirmationShown)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v10.receiver = self;
   v10.super_class = POMMESSchemaPOMMESKnowledgeFallbackTurnOffAlwaysPromptConfirmationShown;
   v5 = [(POMMESSchemaPOMMESKnowledgeFallbackTurnOffAlwaysPromptConfirmationShown *)&v10 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"pommesSessionId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"pommesSessionId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -33,30 +33,30 @@
   return v5;
 }
 
-- (POMMESSchemaPOMMESKnowledgeFallbackTurnOffAlwaysPromptConfirmationShown)initWithJSON:(id)a3
+- (POMMESSchemaPOMMESKnowledgeFallbackTurnOffAlwaysPromptConfirmationShown)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(POMMESSchemaPOMMESKnowledgeFallbackTurnOffAlwaysPromptConfirmationShown *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(POMMESSchemaPOMMESKnowledgeFallbackTurnOffAlwaysPromptConfirmationShown *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(POMMESSchemaPOMMESKnowledgeFallbackTurnOffAlwaysPromptConfirmationShown *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -69,40 +69,40 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_pommesSessionId)
   {
-    v4 = [(POMMESSchemaPOMMESKnowledgeFallbackTurnOffAlwaysPromptConfirmationShown *)self pommesSessionId];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    pommesSessionId = [(POMMESSchemaPOMMESKnowledgeFallbackTurnOffAlwaysPromptConfirmationShown *)self pommesSessionId];
+    dictionaryRepresentation = [pommesSessionId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"pommesSessionId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"pommesSessionId"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"pommesSessionId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"pommesSessionId"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(POMMESSchemaPOMMESKnowledgeFallbackTurnOffAlwaysPromptConfirmationShown *)self pommesSessionId];
-    v6 = [v4 pommesSessionId];
-    v7 = v6;
-    if ((v5 != 0) != (v6 == 0))
+    pommesSessionId = [(POMMESSchemaPOMMESKnowledgeFallbackTurnOffAlwaysPromptConfirmationShown *)self pommesSessionId];
+    pommesSessionId2 = [equalCopy pommesSessionId];
+    v7 = pommesSessionId2;
+    if ((pommesSessionId != 0) != (pommesSessionId2 == 0))
     {
-      v8 = [(POMMESSchemaPOMMESKnowledgeFallbackTurnOffAlwaysPromptConfirmationShown *)self pommesSessionId];
-      if (!v8)
+      pommesSessionId3 = [(POMMESSchemaPOMMESKnowledgeFallbackTurnOffAlwaysPromptConfirmationShown *)self pommesSessionId];
+      if (!pommesSessionId3)
       {
 
 LABEL_10:
@@ -110,10 +110,10 @@ LABEL_10:
         goto LABEL_8;
       }
 
-      v9 = v8;
-      v10 = [(POMMESSchemaPOMMESKnowledgeFallbackTurnOffAlwaysPromptConfirmationShown *)self pommesSessionId];
-      v11 = [v4 pommesSessionId];
-      v12 = [v10 isEqual:v11];
+      v9 = pommesSessionId3;
+      pommesSessionId4 = [(POMMESSchemaPOMMESKnowledgeFallbackTurnOffAlwaysPromptConfirmationShown *)self pommesSessionId];
+      pommesSessionId5 = [equalCopy pommesSessionId];
+      v12 = [pommesSessionId4 isEqual:pommesSessionId5];
 
       if (v12)
       {
@@ -132,29 +132,29 @@ LABEL_8:
   return v13;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
-  v4 = [(POMMESSchemaPOMMESKnowledgeFallbackTurnOffAlwaysPromptConfirmationShown *)self pommesSessionId];
+  toCopy = to;
+  pommesSessionId = [(POMMESSchemaPOMMESKnowledgeFallbackTurnOffAlwaysPromptConfirmationShown *)self pommesSessionId];
 
-  if (v4)
+  if (pommesSessionId)
   {
-    v5 = [(POMMESSchemaPOMMESKnowledgeFallbackTurnOffAlwaysPromptConfirmationShown *)self pommesSessionId];
+    pommesSessionId2 = [(POMMESSchemaPOMMESKnowledgeFallbackTurnOffAlwaysPromptConfirmationShown *)self pommesSessionId];
     PBDataWriterWriteSubmessage();
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = POMMESSchemaPOMMESKnowledgeFallbackTurnOffAlwaysPromptConfirmationShown;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(POMMESSchemaPOMMESKnowledgeFallbackTurnOffAlwaysPromptConfirmationShown *)self pommesSessionId:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(POMMESSchemaPOMMESKnowledgeFallbackTurnOffAlwaysPromptConfirmationShown *)self deletePommesSessionId];
   }

@@ -1,9 +1,9 @@
 @interface CalAssistantEventDelete
-- (id)_deleteEvent:(id)a3;
-- (id)_validateEvent:(id)a3;
+- (id)_deleteEvent:(id)event;
+- (id)_validateEvent:(id)event;
 - (id)eventStore;
-- (void)performWithCompletion:(id)a3;
-- (void)setEventStore:(id)a3;
+- (void)performWithCompletion:(id)completion;
+- (void)setEventStore:(id)store;
 @end
 
 @implementation CalAssistantEventDelete
@@ -23,20 +23,20 @@
   return eventStore;
 }
 
-- (void)setEventStore:(id)a3
+- (void)setEventStore:(id)store
 {
-  v5 = a3;
-  if (self->_eventStore != v5)
+  storeCopy = store;
+  if (self->_eventStore != storeCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_eventStore, a3);
-    v5 = v6;
+    v6 = storeCopy;
+    objc_storeStrong(&self->_eventStore, store);
+    storeCopy = v6;
   }
 }
 
-- (void)performWithCompletion:(id)a3
+- (void)performWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   sub_2334B11EC();
   sub_2334B11EC();
   v5 = qword_27DE0DD38;
@@ -59,16 +59,16 @@
   }
 
   v17 = objc_msgSend_dictionary(v16, v13, v14, v15);
-  v4[2](v4, v17);
+  completionCopy[2](completionCopy, v17);
 }
 
-- (id)_validateEvent:(id)a3
+- (id)_validateEvent:(id)event
 {
-  v3 = a3;
+  eventCopy = event;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = objc_msgSend_identifier(v3, v4, v5, v6);
+    v7 = objc_msgSend_identifier(eventCopy, v4, v5, v6);
 
     if (v7)
     {
@@ -117,10 +117,10 @@ LABEL_15:
   return v8;
 }
 
-- (id)_deleteEvent:(id)a3
+- (id)_deleteEvent:(id)event
 {
-  v4 = a3;
-  v8 = objc_msgSend_identifier(v4, v5, v6, v7);
+  eventCopy = event;
+  v8 = objc_msgSend_identifier(eventCopy, v5, v6, v7);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -174,7 +174,7 @@ LABEL_21:
     goto LABEL_24;
   }
 
-  v22 = objc_msgSend_includeRecurrences(v4, v19, v20, v21);
+  v22 = objc_msgSend_includeRecurrences(eventCopy, v19, v20, v21);
   v26 = objc_msgSend_BOOLValue(v22, v23, v24, v25);
 
   v30 = objc_msgSend_eventStore(self, v27, v28, v29);

@@ -1,10 +1,10 @@
 @interface PXSuggestersDebugViewController
-- (PXSuggestersDebugViewController)initWithOptions:(id)a3;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (PXSuggestersDebugViewController)initWithOptions:(id)options;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (void)_fetchSuggesters;
-- (void)configureCell:(id)a3 withItem:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)configureCell:(id)cell withItem:(id)item;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -15,14 +15,14 @@
   v26[1] = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E6978AE8];
   options = self->_options;
-  v5 = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
-  v6 = [v3 availableSuggestionTypeInfosWithOptions:options photoLibrary:v5];
+  px_deprecated_appPhotoLibrary = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
+  v6 = [v3 availableSuggestionTypeInfosWithOptions:options photoLibrary:px_deprecated_appPhotoLibrary];
 
-  v7 = [v6 allValues];
+  allValues = [v6 allValues];
   v8 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"uuid" ascending:1];
   v26[0] = v8;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:1];
-  v10 = [v7 sortedArrayUsingDescriptors:v9];
+  v10 = [allValues sortedArrayUsingDescriptors:v9];
 
   v11 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v10, "count")}];
   v21 = 0u;
@@ -64,52 +64,52 @@
   self->_items = v11;
 }
 
-- (void)configureCell:(id)a3 withItem:(id)a4
+- (void)configureCell:(id)cell withItem:(id)item
 {
-  v5 = a4;
-  v6 = a3;
-  v13 = [v6 textLabel];
-  v7 = [v5 name];
-  v8 = [v7 stringByReplacingOccurrencesOfString:@"\n" withString:&stru_1F1741150];
+  itemCopy = item;
+  cellCopy = cell;
+  textLabel = [cellCopy textLabel];
+  name = [itemCopy name];
+  v8 = [name stringByReplacingOccurrencesOfString:@"\n" withString:&stru_1F1741150];
 
-  [v13 setText:v8];
-  v9 = [MEMORY[0x1E69DC888] labelColor];
-  [v13 setTextColor:v9];
+  [textLabel setText:v8];
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  [textLabel setTextColor:labelColor];
 
-  v10 = [v6 detailTextLabel];
+  detailTextLabel = [cellCopy detailTextLabel];
 
-  v11 = [v5 description];
+  v11 = [itemCopy description];
 
-  [v10 setText:v11];
-  v12 = [MEMORY[0x1E69DC888] labelColor];
-  [v10 setTextColor:v12];
+  [detailTextLabel setText:v11];
+  labelColor2 = [MEMORY[0x1E69DC888] labelColor];
+  [detailTextLabel setTextColor:labelColor2];
 
-  [v10 sizeToFit];
+  [detailTextLabel sizeToFit];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"SuggestersDebugTableViewCellIdentifier"];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"SuggestersDebugTableViewCellIdentifier"];
   if (!v7)
   {
     v7 = [objc_alloc(MEMORY[0x1E69DD028]) initWithStyle:3 reuseIdentifier:@"SuggestersDebugTableViewCellIdentifier"];
-    v8 = [v7 detailTextLabel];
-    [v8 setNumberOfLines:2];
+    detailTextLabel = [v7 detailTextLabel];
+    [detailTextLabel setNumberOfLines:2];
 
-    v9 = [v7 detailTextLabel];
-    [v9 setLineBreakMode:0];
+    detailTextLabel2 = [v7 detailTextLabel];
+    [detailTextLabel2 setLineBreakMode:0];
   }
 
-  v10 = -[NSArray objectAtIndexedSubscript:](self->_items, "objectAtIndexedSubscript:", [v6 row]);
+  v10 = -[NSArray objectAtIndexedSubscript:](self->_items, "objectAtIndexedSubscript:", [pathCopy row]);
   [(PXSuggestersDebugViewController *)self configureCell:v7 withItem:v10];
 
   return v7;
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
-  v4 = -[NSArray objectAtIndexedSubscript:](self->_items, "objectAtIndexedSubscript:", [a4 row]);
+  v4 = -[NSArray objectAtIndexedSubscript:](self->_items, "objectAtIndexedSubscript:", [path row]);
   v5 = [v4 description];
   v6 = [v5 rangeOfString:@"\n"];
 
@@ -126,16 +126,16 @@
   return v7;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v10 = -[NSArray objectAtIndexedSubscript:](self->_items, "objectAtIndexedSubscript:", [a4 row]);
+  v10 = -[NSArray objectAtIndexedSubscript:](self->_items, "objectAtIndexedSubscript:", [path row]);
   v5 = [PXSuggesterDebugViewController alloc];
-  v6 = [v10 name];
-  v7 = [v10 info];
-  v8 = [(PXSuggesterDebugViewController *)v5 initWithName:v6 options:v7];
+  name = [v10 name];
+  info = [v10 info];
+  v8 = [(PXSuggesterDebugViewController *)v5 initWithName:name options:info];
 
-  v9 = [(PXSuggestersDebugViewController *)self navigationController];
-  [v9 pushViewController:v8 animated:1];
+  navigationController = [(PXSuggestersDebugViewController *)self navigationController];
+  [navigationController pushViewController:v8 animated:1];
 }
 
 - (void)viewDidLoad
@@ -143,28 +143,28 @@
   v6.receiver = self;
   v6.super_class = PXSuggestersDebugViewController;
   [(PXSuggestersDebugViewController *)&v6 viewDidLoad];
-  v3 = [(PXSuggestersDebugViewController *)self navigationItem];
-  [v3 setTitle:@"Suggesters"];
+  navigationItem = [(PXSuggestersDebugViewController *)self navigationItem];
+  [navigationItem setTitle:@"Suggesters"];
 
-  v4 = [(PXSuggestersDebugViewController *)self navigationController];
-  [v4 setToolbarHidden:0 animated:1];
+  navigationController = [(PXSuggestersDebugViewController *)self navigationController];
+  [navigationController setToolbarHidden:0 animated:1];
 
-  v5 = [(PXSuggestersDebugViewController *)self tableView];
-  [v5 setEstimatedRowHeight:44.0];
+  tableView = [(PXSuggestersDebugViewController *)self tableView];
+  [tableView setEstimatedRowHeight:44.0];
 
   [(PXSuggestersDebugViewController *)self _fetchSuggesters];
 }
 
-- (PXSuggestersDebugViewController)initWithOptions:(id)a3
+- (PXSuggestersDebugViewController)initWithOptions:(id)options
 {
-  v5 = a3;
+  optionsCopy = options;
   v9.receiver = self;
   v9.super_class = PXSuggestersDebugViewController;
   v6 = [(PXSuggestersDebugViewController *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_options, a3);
+    objc_storeStrong(&v6->_options, options);
   }
 
   return v7;

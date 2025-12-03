@@ -1,31 +1,31 @@
 @interface STIntroWelcomeViewController
-- (STIntroWelcomeViewController)initWithChildName:(id)a3 forceParentalControls:(BOOL)a4 continueHandler:(id)a5 endHandler:(id)a6;
-- (void)_turnOnScreenTime:(id)a3;
+- (STIntroWelcomeViewController)initWithChildName:(id)name forceParentalControls:(BOOL)controls continueHandler:(id)handler endHandler:(id)endHandler;
+- (void)_turnOnScreenTime:(id)time;
 - (void)loadView;
 @end
 
 @implementation STIntroWelcomeViewController
 
-- (STIntroWelcomeViewController)initWithChildName:(id)a3 forceParentalControls:(BOOL)a4 continueHandler:(id)a5 endHandler:(id)a6
+- (STIntroWelcomeViewController)initWithChildName:(id)name forceParentalControls:(BOOL)controls continueHandler:(id)handler endHandler:(id)endHandler
 {
-  v8 = a4;
-  v10 = a3;
-  v11 = a6;
-  v12 = a5;
+  controlsCopy = controls;
+  nameCopy = name;
+  endHandlerCopy = endHandler;
+  handlerCopy = handler;
   v13 = +[STScreenTimeSettingsUIBundle bundle];
   v14 = v13;
-  if (!v8)
+  if (!controlsCopy)
   {
     v15 = [v13 localizedStringForKey:@"IntroWelcomeTitle" value:&stru_28766E5A8 table:0];
     v18 = @"AADC_IntroWelcomeDetail";
     v19 = v14;
 LABEL_6:
-    v17 = [v19 localizedStringForKey:v18 value:&stru_28766E5A8 table:0];
+    nameCopy = [v19 localizedStringForKey:v18 value:&stru_28766E5A8 table:0];
     goto LABEL_7;
   }
 
   v15 = [v13 localizedStringForKey:@"IntroWelcomeTitleChild" value:&stru_28766E5A8 table:0];
-  if (![v10 length])
+  if (![nameCopy length])
   {
     v18 = @"AADC_IntroWelcomeDetailGenericChild";
     v19 = v14;
@@ -33,23 +33,23 @@ LABEL_6:
   }
 
   v16 = [v14 localizedStringForKey:@"AADC_IntroWelcomeDetailChild" value:&stru_28766E5A8 table:0];
-  v17 = [MEMORY[0x277CCACA8] localizedStringWithValidatedFormat:v16 validFormatSpecifiers:@"%@ %@" error:0, v10, v10];
+  nameCopy = [MEMORY[0x277CCACA8] localizedStringWithValidatedFormat:v16 validFormatSpecifiers:@"%@ %@" error:0, nameCopy, nameCopy];
 
 LABEL_7:
   v28.receiver = self;
   v28.super_class = STIntroWelcomeViewController;
-  v20 = [(STIntroWelcomeViewController *)&v28 initWithTitle:v15 detailText:v17 symbolName:@"hourglass" contentLayout:2];
-  v21 = [v10 copy];
+  v20 = [(STIntroWelcomeViewController *)&v28 initWithTitle:v15 detailText:nameCopy symbolName:@"hourglass" contentLayout:2];
+  v21 = [nameCopy copy];
   childName = v20->_childName;
   v20->_childName = v21;
 
-  v20->_forceParentalControls = v8;
-  v23 = [v12 copy];
+  v20->_forceParentalControls = controlsCopy;
+  v23 = [handlerCopy copy];
 
   continueHandler = v20->_continueHandler;
   v20->_continueHandler = v23;
 
-  v25 = [v11 copy];
+  v25 = [endHandlerCopy copy];
   endHandler = v20->_endHandler;
   v20->_endHandler = v25;
 
@@ -75,8 +75,8 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v7 = [(STIntroWelcomeViewController *)self childName];
-  v8 = [v7 length];
+  childName = [(STIntroWelcomeViewController *)self childName];
+  v8 = [childName length];
 
   if (!v8)
   {
@@ -86,28 +86,28 @@ LABEL_6:
 
   v9 = [v3 localizedStringForKey:@"IntroWelcomeWeeklyReportsDetailChild" value:&stru_28766E5A8 table:0];
   v10 = objc_alloc(MEMORY[0x277CCACA8]);
-  v11 = [MEMORY[0x277CBEAF8] currentLocale];
-  v12 = [(STIntroWelcomeViewController *)self childName];
-  v13 = [v10 initWithFormat:v9 locale:v11, v12];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  childName2 = [(STIntroWelcomeViewController *)self childName];
+  v13 = [v10 initWithFormat:v9 locale:currentLocale, childName2];
 
 LABEL_7:
   [(STIntroWelcomeViewController *)self addBulletedListItemWithTitle:v6 description:v13 symbolName:@"chart.bar.xaxis"];
   v15 = [v3 localizedStringForKey:@"IntroWelcomeDowntimeTitle" value:&stru_28766E5A8 table:0];
   v16 = [v3 localizedStringForKey:@"IntroWelcomeDowntimeDetail" value:&stru_28766E5A8 table:0];
   [(STIntroWelcomeViewController *)self addBulletedListItemWithTitle:v15 description:v16 symbolName:@"downtime"];
-  v17 = [MEMORY[0x277D37618] boldButton];
+  boldButton = [MEMORY[0x277D37618] boldButton];
   v18 = [v3 localizedStringForKey:@"IntroButtonTurnOnScreenTime" value:&stru_28766E5A8 table:0];
-  [v17 setAccessibilityIdentifier:@"IntroButtonTurnOnScreenTime"];
-  [v17 setTitle:v18 forState:0];
-  [v17 addTarget:self action:sel__turnOnScreenTime_ forControlEvents:0x2000];
-  v19 = [(STIntroWelcomeViewController *)self buttonTray];
-  [v19 addButton:v17];
+  [boldButton setAccessibilityIdentifier:@"IntroButtonTurnOnScreenTime"];
+  [boldButton setTitle:v18 forState:0];
+  [boldButton addTarget:self action:sel__turnOnScreenTime_ forControlEvents:0x2000];
+  buttonTray = [(STIntroWelcomeViewController *)self buttonTray];
+  [buttonTray addButton:boldButton];
 }
 
-- (void)_turnOnScreenTime:(id)a3
+- (void)_turnOnScreenTime:(id)time
 {
-  v3 = [(STIntroWelcomeViewController *)self continueHandler];
-  v3[2]();
+  continueHandler = [(STIntroWelcomeViewController *)self continueHandler];
+  continueHandler[2]();
 }
 
 @end

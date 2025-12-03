@@ -1,43 +1,43 @@
 @interface _INPBRunVoiceCommandIntent
-- (BOOL)isEqual:(id)a3;
-- (_INPBRunVoiceCommandIntent)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBRunVoiceCommandIntent)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setPreviousIntentIdentifier:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setPreviousIntentIdentifier:(id)identifier;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBRunVoiceCommandIntent
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(_INPBRunVoiceCommandIntent *)self executionResult];
-  v5 = [v4 dictionaryRepresentation];
-  [v3 setObject:v5 forKeyedSubscript:@"executionResult"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  executionResult = [(_INPBRunVoiceCommandIntent *)self executionResult];
+  dictionaryRepresentation = [executionResult dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"executionResult"];
 
-  v6 = [(_INPBRunVoiceCommandIntent *)self intentMetadata];
-  v7 = [v6 dictionaryRepresentation];
-  [v3 setObject:v7 forKeyedSubscript:@"intentMetadata"];
+  intentMetadata = [(_INPBRunVoiceCommandIntent *)self intentMetadata];
+  dictionaryRepresentation2 = [intentMetadata dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"intentMetadata"];
 
-  v8 = [(_INPBRunVoiceCommandIntent *)self originDevice];
-  v9 = [v8 dictionaryRepresentation];
-  [v3 setObject:v9 forKeyedSubscript:@"originDevice"];
+  originDevice = [(_INPBRunVoiceCommandIntent *)self originDevice];
+  dictionaryRepresentation3 = [originDevice dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"originDevice"];
 
   if (self->_previousIntentIdentifier)
   {
-    v10 = [(_INPBRunVoiceCommandIntent *)self previousIntentIdentifier];
-    v11 = [v10 copy];
-    [v3 setObject:v11 forKeyedSubscript:@"previousIntentIdentifier"];
+    previousIntentIdentifier = [(_INPBRunVoiceCommandIntent *)self previousIntentIdentifier];
+    v11 = [previousIntentIdentifier copy];
+    [dictionary setObject:v11 forKeyedSubscript:@"previousIntentIdentifier"];
   }
 
-  v12 = [(_INPBRunVoiceCommandIntent *)self voiceCommand];
-  v13 = [v12 dictionaryRepresentation];
-  [v3 setObject:v13 forKeyedSubscript:@"voiceCommand"];
+  voiceCommand = [(_INPBRunVoiceCommandIntent *)self voiceCommand];
+  dictionaryRepresentation4 = [voiceCommand dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"voiceCommand"];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -49,28 +49,28 @@
   return v6 ^ [(_INPBDataString *)self->_voiceCommand hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_27;
   }
 
-  v5 = [(_INPBRunVoiceCommandIntent *)self executionResult];
-  v6 = [v4 executionResult];
-  if ((v5 != 0) == (v6 == 0))
+  executionResult = [(_INPBRunVoiceCommandIntent *)self executionResult];
+  executionResult2 = [equalCopy executionResult];
+  if ((executionResult != 0) == (executionResult2 == 0))
   {
     goto LABEL_26;
   }
 
-  v7 = [(_INPBRunVoiceCommandIntent *)self executionResult];
-  if (v7)
+  executionResult3 = [(_INPBRunVoiceCommandIntent *)self executionResult];
+  if (executionResult3)
   {
-    v8 = v7;
-    v9 = [(_INPBRunVoiceCommandIntent *)self executionResult];
-    v10 = [v4 executionResult];
-    v11 = [v9 isEqual:v10];
+    v8 = executionResult3;
+    executionResult4 = [(_INPBRunVoiceCommandIntent *)self executionResult];
+    executionResult5 = [equalCopy executionResult];
+    v11 = [executionResult4 isEqual:executionResult5];
 
     if (!v11)
     {
@@ -82,20 +82,20 @@
   {
   }
 
-  v5 = [(_INPBRunVoiceCommandIntent *)self intentMetadata];
-  v6 = [v4 intentMetadata];
-  if ((v5 != 0) == (v6 == 0))
+  executionResult = [(_INPBRunVoiceCommandIntent *)self intentMetadata];
+  executionResult2 = [equalCopy intentMetadata];
+  if ((executionResult != 0) == (executionResult2 == 0))
   {
     goto LABEL_26;
   }
 
-  v12 = [(_INPBRunVoiceCommandIntent *)self intentMetadata];
-  if (v12)
+  intentMetadata = [(_INPBRunVoiceCommandIntent *)self intentMetadata];
+  if (intentMetadata)
   {
-    v13 = v12;
-    v14 = [(_INPBRunVoiceCommandIntent *)self intentMetadata];
-    v15 = [v4 intentMetadata];
-    v16 = [v14 isEqual:v15];
+    v13 = intentMetadata;
+    intentMetadata2 = [(_INPBRunVoiceCommandIntent *)self intentMetadata];
+    intentMetadata3 = [equalCopy intentMetadata];
+    v16 = [intentMetadata2 isEqual:intentMetadata3];
 
     if (!v16)
     {
@@ -107,20 +107,20 @@
   {
   }
 
-  v5 = [(_INPBRunVoiceCommandIntent *)self originDevice];
-  v6 = [v4 originDevice];
-  if ((v5 != 0) == (v6 == 0))
+  executionResult = [(_INPBRunVoiceCommandIntent *)self originDevice];
+  executionResult2 = [equalCopy originDevice];
+  if ((executionResult != 0) == (executionResult2 == 0))
   {
     goto LABEL_26;
   }
 
-  v17 = [(_INPBRunVoiceCommandIntent *)self originDevice];
-  if (v17)
+  originDevice = [(_INPBRunVoiceCommandIntent *)self originDevice];
+  if (originDevice)
   {
-    v18 = v17;
-    v19 = [(_INPBRunVoiceCommandIntent *)self originDevice];
-    v20 = [v4 originDevice];
-    v21 = [v19 isEqual:v20];
+    v18 = originDevice;
+    originDevice2 = [(_INPBRunVoiceCommandIntent *)self originDevice];
+    originDevice3 = [equalCopy originDevice];
+    v21 = [originDevice2 isEqual:originDevice3];
 
     if (!v21)
     {
@@ -132,20 +132,20 @@
   {
   }
 
-  v5 = [(_INPBRunVoiceCommandIntent *)self previousIntentIdentifier];
-  v6 = [v4 previousIntentIdentifier];
-  if ((v5 != 0) == (v6 == 0))
+  executionResult = [(_INPBRunVoiceCommandIntent *)self previousIntentIdentifier];
+  executionResult2 = [equalCopy previousIntentIdentifier];
+  if ((executionResult != 0) == (executionResult2 == 0))
   {
     goto LABEL_26;
   }
 
-  v22 = [(_INPBRunVoiceCommandIntent *)self previousIntentIdentifier];
-  if (v22)
+  previousIntentIdentifier = [(_INPBRunVoiceCommandIntent *)self previousIntentIdentifier];
+  if (previousIntentIdentifier)
   {
-    v23 = v22;
-    v24 = [(_INPBRunVoiceCommandIntent *)self previousIntentIdentifier];
-    v25 = [v4 previousIntentIdentifier];
-    v26 = [v24 isEqual:v25];
+    v23 = previousIntentIdentifier;
+    previousIntentIdentifier2 = [(_INPBRunVoiceCommandIntent *)self previousIntentIdentifier];
+    previousIntentIdentifier3 = [equalCopy previousIntentIdentifier];
+    v26 = [previousIntentIdentifier2 isEqual:previousIntentIdentifier3];
 
     if (!v26)
     {
@@ -157,12 +157,12 @@
   {
   }
 
-  v5 = [(_INPBRunVoiceCommandIntent *)self voiceCommand];
-  v6 = [v4 voiceCommand];
-  if ((v5 != 0) != (v6 == 0))
+  executionResult = [(_INPBRunVoiceCommandIntent *)self voiceCommand];
+  executionResult2 = [equalCopy voiceCommand];
+  if ((executionResult != 0) != (executionResult2 == 0))
   {
-    v27 = [(_INPBRunVoiceCommandIntent *)self voiceCommand];
-    if (!v27)
+    voiceCommand = [(_INPBRunVoiceCommandIntent *)self voiceCommand];
+    if (!voiceCommand)
     {
 
 LABEL_30:
@@ -170,10 +170,10 @@ LABEL_30:
       goto LABEL_28;
     }
 
-    v28 = v27;
-    v29 = [(_INPBRunVoiceCommandIntent *)self voiceCommand];
-    v30 = [v4 voiceCommand];
-    v31 = [v29 isEqual:v30];
+    v28 = voiceCommand;
+    voiceCommand2 = [(_INPBRunVoiceCommandIntent *)self voiceCommand];
+    voiceCommand3 = [equalCopy voiceCommand];
+    v31 = [voiceCommand2 isEqual:voiceCommand3];
 
     if (v31)
     {
@@ -193,101 +193,101 @@ LABEL_28:
   return v32;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBRunVoiceCommandIntent allocWithZone:](_INPBRunVoiceCommandIntent init];
-  v6 = [(_INPBIntentExecutionResult *)self->_executionResult copyWithZone:a3];
+  v6 = [(_INPBIntentExecutionResult *)self->_executionResult copyWithZone:zone];
   [(_INPBRunVoiceCommandIntent *)v5 setExecutionResult:v6];
 
-  v7 = [(_INPBIntentMetadata *)self->_intentMetadata copyWithZone:a3];
+  v7 = [(_INPBIntentMetadata *)self->_intentMetadata copyWithZone:zone];
   [(_INPBRunVoiceCommandIntent *)v5 setIntentMetadata:v7];
 
-  v8 = [(_INPBVoiceCommandDeviceInformation *)self->_originDevice copyWithZone:a3];
+  v8 = [(_INPBVoiceCommandDeviceInformation *)self->_originDevice copyWithZone:zone];
   [(_INPBRunVoiceCommandIntent *)v5 setOriginDevice:v8];
 
-  v9 = [(NSString *)self->_previousIntentIdentifier copyWithZone:a3];
+  v9 = [(NSString *)self->_previousIntentIdentifier copyWithZone:zone];
   [(_INPBRunVoiceCommandIntent *)v5 setPreviousIntentIdentifier:v9];
 
-  v10 = [(_INPBDataString *)self->_voiceCommand copyWithZone:a3];
+  v10 = [(_INPBDataString *)self->_voiceCommand copyWithZone:zone];
   [(_INPBRunVoiceCommandIntent *)v5 setVoiceCommand:v10];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBRunVoiceCommandIntent *)self data];
+  coderCopy = coder;
+  data = [(_INPBRunVoiceCommandIntent *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBRunVoiceCommandIntent)initWithCoder:(id)a3
+- (_INPBRunVoiceCommandIntent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBRunVoiceCommandIntent *)self initWithData:v6];
+    self = [(_INPBRunVoiceCommandIntent *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v15 = a3;
-  v4 = [(_INPBRunVoiceCommandIntent *)self executionResult];
+  toCopy = to;
+  executionResult = [(_INPBRunVoiceCommandIntent *)self executionResult];
 
-  if (v4)
+  if (executionResult)
   {
-    v5 = [(_INPBRunVoiceCommandIntent *)self executionResult];
+    executionResult2 = [(_INPBRunVoiceCommandIntent *)self executionResult];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(_INPBRunVoiceCommandIntent *)self intentMetadata];
+  intentMetadata = [(_INPBRunVoiceCommandIntent *)self intentMetadata];
 
-  if (v6)
+  if (intentMetadata)
   {
-    v7 = [(_INPBRunVoiceCommandIntent *)self intentMetadata];
+    intentMetadata2 = [(_INPBRunVoiceCommandIntent *)self intentMetadata];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(_INPBRunVoiceCommandIntent *)self originDevice];
+  originDevice = [(_INPBRunVoiceCommandIntent *)self originDevice];
 
-  if (v8)
+  if (originDevice)
   {
-    v9 = [(_INPBRunVoiceCommandIntent *)self originDevice];
+    originDevice2 = [(_INPBRunVoiceCommandIntent *)self originDevice];
     PBDataWriterWriteSubmessage();
   }
 
-  v10 = [(_INPBRunVoiceCommandIntent *)self previousIntentIdentifier];
+  previousIntentIdentifier = [(_INPBRunVoiceCommandIntent *)self previousIntentIdentifier];
 
-  if (v10)
+  if (previousIntentIdentifier)
   {
     previousIntentIdentifier = self->_previousIntentIdentifier;
     PBDataWriterWriteStringField();
   }
 
-  v12 = [(_INPBRunVoiceCommandIntent *)self voiceCommand];
+  voiceCommand = [(_INPBRunVoiceCommandIntent *)self voiceCommand];
 
-  v13 = v15;
-  if (v12)
+  v13 = toCopy;
+  if (voiceCommand)
   {
-    v14 = [(_INPBRunVoiceCommandIntent *)self voiceCommand];
+    voiceCommand2 = [(_INPBRunVoiceCommandIntent *)self voiceCommand];
     PBDataWriterWriteSubmessage();
 
-    v13 = v15;
+    v13 = toCopy;
   }
 }
 
-- (void)setPreviousIntentIdentifier:(id)a3
+- (void)setPreviousIntentIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   previousIntentIdentifier = self->_previousIntentIdentifier;
   self->_previousIntentIdentifier = v4;
 

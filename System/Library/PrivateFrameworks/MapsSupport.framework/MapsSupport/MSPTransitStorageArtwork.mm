@@ -1,66 +1,66 @@
 @interface MSPTransitStorageArtwork
-- (BOOL)isEqual:(id)a3;
-- (MSPTransitStorageArtwork)initWithArtwork:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (MSPTransitStorageArtwork)initWithArtwork:(id)artwork;
 - (NSString)description;
-- (id)artworkSourceTypeAsString:(int)a3;
-- (id)artworkUseTypeAsString:(int)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)artworkSourceTypeAsString:(int)string;
+- (id)artworkUseTypeAsString:(int)string;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (int)StringAsArtworkSourceType:(id)a3;
-- (int)StringAsArtworkUseType:(id)a3;
+- (int)StringAsArtworkSourceType:(id)type;
+- (int)StringAsArtworkUseType:(id)type;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasArtworkUseType:(BOOL)a3;
-- (void)setHasHasRoutingIncidentBadge:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasArtworkUseType:(BOOL)type;
+- (void)setHasHasRoutingIncidentBadge:(BOOL)badge;
+- (void)writeTo:(id)to;
 @end
 
 @implementation MSPTransitStorageArtwork
 
-- (MSPTransitStorageArtwork)initWithArtwork:(id)a3
+- (MSPTransitStorageArtwork)initWithArtwork:(id)artwork
 {
-  v4 = a3;
+  artworkCopy = artwork;
   v21.receiver = self;
   v21.super_class = MSPTransitStorageArtwork;
   v5 = [(MSPTransitStorageArtwork *)&v21 init];
   if (v5)
   {
-    -[MSPTransitStorageArtwork setArtworkSourceType:](v5, "setArtworkSourceType:", [v4 artworkSourceType]);
-    -[MSPTransitStorageArtwork setArtworkUseType:](v5, "setArtworkUseType:", [v4 artworkUseType]);
-    v6 = [v4 shieldDataSource];
+    -[MSPTransitStorageArtwork setArtworkSourceType:](v5, "setArtworkSourceType:", [artworkCopy artworkSourceType]);
+    -[MSPTransitStorageArtwork setArtworkUseType:](v5, "setArtworkUseType:", [artworkCopy artworkUseType]);
+    shieldDataSource = [artworkCopy shieldDataSource];
 
-    if (v6)
+    if (shieldDataSource)
     {
       v7 = [MSPTransitStorageShield alloc];
-      v8 = [v4 shieldDataSource];
-      v9 = [(MSPTransitStorageShield *)v7 initWithShield:v8];
+      shieldDataSource2 = [artworkCopy shieldDataSource];
+      v9 = [(MSPTransitStorageShield *)v7 initWithShield:shieldDataSource2];
       [(MSPTransitStorageArtwork *)v5 setShield:v9];
     }
 
-    v10 = [v4 iconDataSource];
+    iconDataSource = [artworkCopy iconDataSource];
 
-    if (v10)
+    if (iconDataSource)
     {
       v11 = [MSPTransitStorageIcon alloc];
-      v12 = [v4 iconDataSource];
-      v13 = [(MSPTransitStorageIcon *)v11 initWithIcon:v12];
+      iconDataSource2 = [artworkCopy iconDataSource];
+      v13 = [(MSPTransitStorageIcon *)v11 initWithIcon:iconDataSource2];
       [(MSPTransitStorageArtwork *)v5 setIcon:v13];
     }
 
-    v14 = [v4 iconFallbackShieldDataSource];
+    iconFallbackShieldDataSource = [artworkCopy iconFallbackShieldDataSource];
 
-    if (v14)
+    if (iconFallbackShieldDataSource)
     {
       v15 = [MSPTransitStorageShield alloc];
-      v16 = [v4 iconFallbackShieldDataSource];
-      v17 = [(MSPTransitStorageShield *)v15 initWithShield:v16];
+      iconFallbackShieldDataSource2 = [artworkCopy iconFallbackShieldDataSource];
+      v17 = [(MSPTransitStorageShield *)v15 initWithShield:iconFallbackShieldDataSource2];
       [(MSPTransitStorageArtwork *)v5 setIconFallbackShield:v17];
     }
 
-    -[MSPTransitStorageArtwork setHasRoutingIncidentBadge:](v5, "setHasRoutingIncidentBadge:", [v4 hasRoutingIncidentBadge]);
-    v18 = [v4 accessibilityText];
-    [(MSPTransitStorageArtwork *)v5 setAccessibilityText:v18];
+    -[MSPTransitStorageArtwork setHasRoutingIncidentBadge:](v5, "setHasRoutingIncidentBadge:", [artworkCopy hasRoutingIncidentBadge]);
+    accessibilityText = [artworkCopy accessibilityText];
+    [(MSPTransitStorageArtwork *)v5 setAccessibilityText:accessibilityText];
 
     v19 = v5;
   }
@@ -68,45 +68,45 @@
   return v5;
 }
 
-- (id)artworkSourceTypeAsString:(int)a3
+- (id)artworkSourceTypeAsString:(int)string
 {
-  if (a3 >= 5)
+  if (string >= 5)
   {
-    v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"(unknown: %ld)", a3];
+    string = [MEMORY[0x277CCACA8] stringWithFormat:@"(unknown: %ld)", string];
   }
 
   else
   {
-    v4 = off_279866640[a3];
+    string = off_279866640[string];
   }
 
-  return v4;
+  return string;
 }
 
-- (int)StringAsArtworkSourceType:(id)a3
+- (int)StringAsArtworkSourceType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"GEOTransitArtworkSourceTypeNone"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"GEOTransitArtworkSourceTypeNone"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"GEOTransitArtworkSourceTypeShield"])
+  else if ([typeCopy isEqualToString:@"GEOTransitArtworkSourceTypeShield"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"GEOTransitArtworkSourceTypeIcon"])
+  else if ([typeCopy isEqualToString:@"GEOTransitArtworkSourceTypeIcon"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"GEOTransitArtworkSourceTypeText"])
+  else if ([typeCopy isEqualToString:@"GEOTransitArtworkSourceTypeText"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"GEOTransitArtworkSourceTypeSFSymbol"])
+  else if ([typeCopy isEqualToString:@"GEOTransitArtworkSourceTypeSFSymbol"])
   {
     v4 = 4;
   }
@@ -119,9 +119,9 @@
   return v4;
 }
 
-- (void)setHasArtworkUseType:(BOOL)a3
+- (void)setHasArtworkUseType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }
@@ -134,85 +134,85 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)artworkUseTypeAsString:(int)a3
+- (id)artworkUseTypeAsString:(int)string
 {
-  if (a3 >= 0xD)
+  if (string >= 0xD)
   {
-    v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"(unknown: %ld)", a3];
+    string = [MEMORY[0x277CCACA8] stringWithFormat:@"(unknown: %ld)", string];
   }
 
   else
   {
-    v4 = off_279866668[a3];
+    string = off_279866668[string];
   }
 
-  return v4;
+  return string;
 }
 
-- (int)StringAsArtworkUseType:(id)a3
+- (int)StringAsArtworkUseType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"GEOTransitArtworkUseTypeNone"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"GEOTransitArtworkUseTypeNone"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"GEOTransitArtworkUseTypeLine"])
+  else if ([typeCopy isEqualToString:@"GEOTransitArtworkUseTypeLine"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"GEOTransitArtworkUseTypeBrand"])
+  else if ([typeCopy isEqualToString:@"GEOTransitArtworkUseTypeBrand"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"GEOTransitArtworkUseTypeMode"])
+  else if ([typeCopy isEqualToString:@"GEOTransitArtworkUseTypeMode"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"GEOTransitArtworkUseTypeSystem"])
+  else if ([typeCopy isEqualToString:@"GEOTransitArtworkUseTypeSystem"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"GEOTransitArtworkUseTypeTrip"])
+  else if ([typeCopy isEqualToString:@"GEOTransitArtworkUseTypeTrip"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"GEOTransitArtworkUseTypeAccessPoint"])
+  else if ([typeCopy isEqualToString:@"GEOTransitArtworkUseTypeAccessPoint"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"GEOTransitArtworkUseTypeStation"])
+  else if ([typeCopy isEqualToString:@"GEOTransitArtworkUseTypeStation"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"GEOTransitArtworkUseTypeTripRoutePlanning"])
+  else if ([typeCopy isEqualToString:@"GEOTransitArtworkUseTypeTripRoutePlanning"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"GEOTransitArtworkUseTypeManeuver"])
+  else if ([typeCopy isEqualToString:@"GEOTransitArtworkUseTypeManeuver"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"GEOTransitArtworkUseTypeHall"])
+  else if ([typeCopy isEqualToString:@"GEOTransitArtworkUseTypeHall"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"GEOTransitArtworkUseTypeStationLine"])
+  else if ([typeCopy isEqualToString:@"GEOTransitArtworkUseTypeStationLine"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"GEOTransitArtworkUseTypeVehiclePosition"])
+  else if ([typeCopy isEqualToString:@"GEOTransitArtworkUseTypeVehiclePosition"])
   {
     v4 = 12;
   }
@@ -225,9 +225,9 @@
   return v4;
 }
 
-- (void)setHasHasRoutingIncidentBadge:(BOOL)a3
+- (void)setHasHasRoutingIncidentBadge:(BOOL)badge
 {
-  if (a3)
+  if (badge)
   {
     v3 = 4;
   }
@@ -246,15 +246,15 @@
   v8.receiver = self;
   v8.super_class = MSPTransitStorageArtwork;
   v4 = [(MSPTransitStorageArtwork *)&v8 description];
-  v5 = [(MSPTransitStorageArtwork *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(MSPTransitStorageArtwork *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   has = self->_has;
   if (has)
   {
@@ -269,7 +269,7 @@
       v6 = off_279866640[artworkSourceType];
     }
 
-    [v3 setObject:v6 forKey:@"artwork_source_type"];
+    [dictionary setObject:v6 forKey:@"artwork_source_type"];
 
     has = self->_has;
   }
@@ -287,62 +287,62 @@
       v8 = off_279866668[artworkUseType];
     }
 
-    [v3 setObject:v8 forKey:@"artwork_use_type"];
+    [dictionary setObject:v8 forKey:@"artwork_use_type"];
   }
 
   shield = self->_shield;
   if (shield)
   {
-    v10 = [(MSPTransitStorageShield *)shield dictionaryRepresentation];
-    [v3 setObject:v10 forKey:@"shield"];
+    dictionaryRepresentation = [(MSPTransitStorageShield *)shield dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"shield"];
   }
 
   icon = self->_icon;
   if (icon)
   {
-    v12 = [(MSPTransitStorageIcon *)icon dictionaryRepresentation];
-    [v3 setObject:v12 forKey:@"icon"];
+    dictionaryRepresentation2 = [(MSPTransitStorageIcon *)icon dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"icon"];
   }
 
   iconFallbackShield = self->_iconFallbackShield;
   if (iconFallbackShield)
   {
-    v14 = [(MSPTransitStorageShield *)iconFallbackShield dictionaryRepresentation];
-    [v3 setObject:v14 forKey:@"icon_fallback_shield"];
+    dictionaryRepresentation3 = [(MSPTransitStorageShield *)iconFallbackShield dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation3 forKey:@"icon_fallback_shield"];
   }
 
   if ((*&self->_has & 4) != 0)
   {
     v15 = [MEMORY[0x277CCABB0] numberWithBool:self->_hasRoutingIncidentBadge];
-    [v3 setObject:v15 forKey:@"has_routing_incident_badge"];
+    [dictionary setObject:v15 forKey:@"has_routing_incident_badge"];
   }
 
   accessibilityText = self->_accessibilityText;
   if (accessibilityText)
   {
-    [v3 setObject:accessibilityText forKey:@"accessibility_text"];
+    [dictionary setObject:accessibilityText forKey:@"accessibility_text"];
   }
 
   unknownFields = self->_unknownFields;
   if (unknownFields)
   {
-    v18 = [(PBUnknownFields *)unknownFields dictionaryRepresentation];
-    [v3 setObject:v18 forKey:@"Unknown Fields"];
+    dictionaryRepresentation4 = [(PBUnknownFields *)unknownFields dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation4 forKey:@"Unknown Fields"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v9 = v4;
+  v9 = toCopy;
   if (has)
   {
     artworkSourceType = self->_artworkSourceType;
     PBDataWriterWriteInt32Field();
-    v4 = v9;
+    toCopy = v9;
     has = self->_has;
   }
 
@@ -350,95 +350,95 @@
   {
     artworkUseType = self->_artworkUseType;
     PBDataWriterWriteInt32Field();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_shield)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_icon)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_iconFallbackShield)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if ((*&self->_has & 4) != 0)
   {
     hasRoutingIncidentBadge = self->_hasRoutingIncidentBadge;
     PBDataWriterWriteBOOLField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_accessibilityText)
   {
     PBDataWriterWriteStringField();
-    v4 = v9;
+    toCopy = v9;
   }
 
-  [(PBUnknownFields *)self->_unknownFields writeTo:v4];
+  [(PBUnknownFields *)self->_unknownFields writeTo:toCopy];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
-    v4[6] = self->_artworkSourceType;
-    *(v4 + 60) |= 1u;
+    toCopy[6] = self->_artworkSourceType;
+    *(toCopy + 60) |= 1u;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    v4[7] = self->_artworkUseType;
-    *(v4 + 60) |= 2u;
+    toCopy[7] = self->_artworkUseType;
+    *(toCopy + 60) |= 2u;
   }
 
-  v6 = v4;
+  v6 = toCopy;
   if (self->_shield)
   {
-    [v4 setShield:?];
-    v4 = v6;
+    [toCopy setShield:?];
+    toCopy = v6;
   }
 
   if (self->_icon)
   {
     [v6 setIcon:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_iconFallbackShield)
   {
     [v6 setIconFallbackShield:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    *(v4 + 56) = self->_hasRoutingIncidentBadge;
-    *(v4 + 60) |= 4u;
+    *(toCopy + 56) = self->_hasRoutingIncidentBadge;
+    *(toCopy + 60) |= 4u;
   }
 
   if (self->_accessibilityText)
   {
     [v6 setAccessibilityText:?];
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if (has)
@@ -454,15 +454,15 @@
     *(v5 + 60) |= 2u;
   }
 
-  v8 = [(MSPTransitStorageShield *)self->_shield copyWithZone:a3];
+  v8 = [(MSPTransitStorageShield *)self->_shield copyWithZone:zone];
   v9 = *(v6 + 48);
   *(v6 + 48) = v8;
 
-  v10 = [(MSPTransitStorageIcon *)self->_icon copyWithZone:a3];
+  v10 = [(MSPTransitStorageIcon *)self->_icon copyWithZone:zone];
   v11 = *(v6 + 32);
   *(v6 + 32) = v10;
 
-  v12 = [(MSPTransitStorageShield *)self->_iconFallbackShield copyWithZone:a3];
+  v12 = [(MSPTransitStorageShield *)self->_iconFallbackShield copyWithZone:zone];
   v13 = *(v6 + 40);
   *(v6 + 40) = v12;
 
@@ -472,7 +472,7 @@
     *(v6 + 60) |= 4u;
   }
 
-  v14 = [(NSString *)self->_accessibilityText copyWithZone:a3];
+  v14 = [(NSString *)self->_accessibilityText copyWithZone:zone];
   v15 = *(v6 + 16);
   *(v6 + 16) = v14;
 
@@ -480,49 +480,49 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_23;
   }
 
-  v5 = *(v4 + 60);
+  v5 = *(equalCopy + 60);
   if (*&self->_has)
   {
-    if ((*(v4 + 60) & 1) == 0 || self->_artworkSourceType != *(v4 + 6))
+    if ((*(equalCopy + 60) & 1) == 0 || self->_artworkSourceType != *(equalCopy + 6))
     {
       goto LABEL_23;
     }
   }
 
-  else if (*(v4 + 60))
+  else if (*(equalCopy + 60))
   {
     goto LABEL_23;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 60) & 2) == 0 || self->_artworkUseType != *(v4 + 7))
+    if ((*(equalCopy + 60) & 2) == 0 || self->_artworkUseType != *(equalCopy + 7))
     {
       goto LABEL_23;
     }
   }
 
-  else if ((*(v4 + 60) & 2) != 0)
+  else if ((*(equalCopy + 60) & 2) != 0)
   {
     goto LABEL_23;
   }
 
   shield = self->_shield;
-  if (shield | *(v4 + 6) && ![(MSPTransitStorageShield *)shield isEqual:?])
+  if (shield | *(equalCopy + 6) && ![(MSPTransitStorageShield *)shield isEqual:?])
   {
     goto LABEL_23;
   }
 
   icon = self->_icon;
-  if (icon | *(v4 + 4))
+  if (icon | *(equalCopy + 4))
   {
     if (![(MSPTransitStorageIcon *)icon isEqual:?])
     {
@@ -531,7 +531,7 @@
   }
 
   iconFallbackShield = self->_iconFallbackShield;
-  if (iconFallbackShield | *(v4 + 5))
+  if (iconFallbackShield | *(equalCopy + 5))
   {
     if (![(MSPTransitStorageShield *)iconFallbackShield isEqual:?])
     {
@@ -539,10 +539,10 @@
     }
   }
 
-  v9 = *(v4 + 60);
+  v9 = *(equalCopy + 60);
   if ((*&self->_has & 4) == 0)
   {
-    if ((*(v4 + 60) & 4) == 0)
+    if ((*(equalCopy + 60) & 4) == 0)
     {
       goto LABEL_20;
     }
@@ -552,28 +552,28 @@ LABEL_23:
     goto LABEL_24;
   }
 
-  if ((*(v4 + 60) & 4) == 0)
+  if ((*(equalCopy + 60) & 4) == 0)
   {
     goto LABEL_23;
   }
 
-  v13 = *(v4 + 56);
+  v13 = *(equalCopy + 56);
   if (self->_hasRoutingIncidentBadge)
   {
-    if ((*(v4 + 56) & 1) == 0)
+    if ((*(equalCopy + 56) & 1) == 0)
     {
       goto LABEL_23;
     }
   }
 
-  else if (*(v4 + 56))
+  else if (*(equalCopy + 56))
   {
     goto LABEL_23;
   }
 
 LABEL_20:
   accessibilityText = self->_accessibilityText;
-  if (accessibilityText | *(v4 + 2))
+  if (accessibilityText | *(equalCopy + 2))
   {
     v11 = [(NSString *)accessibilityText isEqual:?];
   }
@@ -628,21 +628,21 @@ LABEL_6:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ [(NSString *)self->_accessibilityText hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  v6 = *(v4 + 60);
+  fromCopy = from;
+  v5 = fromCopy;
+  v6 = *(fromCopy + 60);
   if (v6)
   {
-    self->_artworkSourceType = v4[6];
+    self->_artworkSourceType = fromCopy[6];
     *&self->_has |= 1u;
-    v6 = *(v4 + 60);
+    v6 = *(fromCopy + 60);
   }
 
   if ((v6 & 2) != 0)
   {
-    self->_artworkUseType = v4[7];
+    self->_artworkUseType = fromCopy[7];
     *&self->_has |= 2u;
   }
 

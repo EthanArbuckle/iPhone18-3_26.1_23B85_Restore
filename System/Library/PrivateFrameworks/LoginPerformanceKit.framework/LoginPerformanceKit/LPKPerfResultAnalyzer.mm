@@ -1,16 +1,16 @@
 @interface LPKPerfResultAnalyzer
-+ (id)_abstractUserSwitchsFromTheEnd:(int64_t)a3 userSwitches:(id)a4;
-+ (id)_perfResultsFromUserSwitches:(id)a3;
-+ (id)analyzePerformanceTestResult:(id)a3 type:(unint64_t)a4 count:(int64_t)a5;
-+ (void)_populateMigratorsData:(id)a3;
++ (id)_abstractUserSwitchsFromTheEnd:(int64_t)end userSwitches:(id)switches;
++ (id)_perfResultsFromUserSwitches:(id)switches;
++ (id)analyzePerformanceTestResult:(id)result type:(unint64_t)type count:(int64_t)count;
++ (void)_populateMigratorsData:(id)data;
 @end
 
 @implementation LPKPerfResultAnalyzer
 
-+ (id)analyzePerformanceTestResult:(id)a3 type:(unint64_t)a4 count:(int64_t)a5
++ (id)analyzePerformanceTestResult:(id)result type:(unint64_t)type count:(int64_t)count
 {
   v60 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  resultCopy = result;
   v6 = objc_opt_new();
   v7 = objc_opt_new();
   v56[0] = 0;
@@ -32,8 +32,8 @@
   v55 = v56;
   v10 = v7;
   v54 = v10;
-  [v5 enumerateObjectsUsingBlock:v51];
-  v40 = v5;
+  [resultCopy enumerateObjectsUsingBlock:v51];
+  v40 = resultCopy;
   v11 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v9, "count")}];
   v12 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v10, "count")}];
   v49 = 0u;
@@ -55,11 +55,11 @@
         }
 
         v17 = *(*(&v47 + 1) + 8 * i);
-        v18 = [v17 startDate];
-        if (v18)
+        startDate = [v17 startDate];
+        if (startDate)
         {
-          v19 = [v17 endDate];
-          v20 = v19 == 0;
+          endDate = [v17 endDate];
+          v20 = endDate == 0;
 
           if (!v20)
           {
@@ -93,11 +93,11 @@
         }
 
         v25 = *(*(&v43 + 1) + 8 * j);
-        v26 = [v25 startDate];
-        if (v26)
+        startDate2 = [v25 startDate];
+        if (startDate2)
         {
-          v27 = [v25 endDate];
-          v28 = v27 == 0;
+          endDate2 = [v25 endDate];
+          v28 = endDate2 == 0;
 
           if (!v28)
           {
@@ -115,33 +115,33 @@
   v29 = v11;
   v30 = v12;
 
-  if (a4 - 2 < 2)
+  if (type - 2 < 2)
   {
     v32 = [v30 count];
-    if (v32 >= a5)
+    if (v32 >= count)
     {
-      v33 = a5;
+      countCopy = count;
     }
 
     else
     {
-      v33 = v32;
+      countCopy = v32;
     }
 
-    v31 = [v30 subarrayWithRange:{0, v33}];
+    v31 = [v30 subarrayWithRange:{0, countCopy}];
     goto LABEL_30;
   }
 
-  if (a4 == 1)
+  if (type == 1)
   {
 LABEL_25:
-    v31 = [a1 _abstractUserSwitchsFromTheEnd:a5 userSwitches:v29];
+    v31 = [self _abstractUserSwitchsFromTheEnd:count userSwitches:v29];
 LABEL_30:
     v34 = v31;
     goto LABEL_32;
   }
 
-  if (!a4)
+  if (!type)
   {
     [LPKPerfResultAnalyzer _populateMigratorsData:v29];
     goto LABEL_25;
@@ -264,32 +264,32 @@ LABEL_12:
 LABEL_19:
 }
 
-+ (id)_perfResultsFromUserSwitches:(id)a3
++ (id)_perfResultsFromUserSwitches:(id)switches
 {
-  v3 = a3;
+  switchesCopy = switches;
   v4 = objc_opt_new();
-  if ([v3 count])
+  if ([switchesCopy count])
   {
     v5 = 0;
     do
     {
-      v6 = [v3 objectAtIndexedSubscript:v5];
-      v7 = [v6 signposts];
+      v6 = [switchesCopy objectAtIndexedSubscript:v5];
+      signposts = [v6 signposts];
       v11[0] = MEMORY[0x277D85DD0];
       v11[1] = 3221225472;
       v11[2] = __54__LPKPerfResultAnalyzer__perfResultsFromUserSwitches___block_invoke;
       v11[3] = &unk_279827A88;
       v12 = v4;
-      [v7 enumerateKeysAndObjectsUsingBlock:v11];
+      [signposts enumerateKeysAndObjectsUsingBlock:v11];
 
       ++v5;
     }
 
-    while ([v3 count] > v5);
+    while ([switchesCopy count] > v5);
   }
 
-  v8 = [v4 allValues];
-  v9 = [v8 sortedArrayUsingComparator:&__block_literal_global_93];
+  allValues = [v4 allValues];
+  v9 = [allValues sortedArrayUsingComparator:&__block_literal_global_93];
 
   return v9;
 }
@@ -359,10 +359,10 @@ uint64_t __54__LPKPerfResultAnalyzer__perfResultsFromUserSwitches___block_invoke
   return v9;
 }
 
-+ (void)_populateMigratorsData:(id)a3
++ (void)_populateMigratorsData:(id)data
 {
-  v3 = a3;
-  if ([v3 count])
+  dataCopy = data;
+  if ([dataCopy count])
   {
     NSLog(&cfstr_AnalyzingMigra.isa);
     v42[0] = 0;
@@ -373,12 +373,12 @@ uint64_t __54__LPKPerfResultAnalyzer__perfResultsFromUserSwitches___block_invoke
     v40[2] = 0x3032000000;
     v40[3] = __Block_byref_object_copy_;
     v40[4] = __Block_byref_object_dispose_;
-    v41 = [v3 firstObject];
+    firstObject = [dataCopy firstObject];
     v39[0] = 0;
     v39[1] = v39;
     v39[2] = 0x2020000000;
     v39[3] = 0;
-    v6 = [MEMORY[0x277D24438] localStore];
+    localStore = [MEMORY[0x277D24438] localStore];
     v33 = 0;
     v34 = &v33;
     v35 = 0x3032000000;
@@ -390,7 +390,7 @@ uint64_t __54__LPKPerfResultAnalyzer__perfResultsFromUserSwitches___block_invoke
     v32[2] = __48__LPKPerfResultAnalyzer__populateMigratorsData___block_invoke;
     v32[3] = &unk_279827AD0;
     v32[4] = &v33;
-    [v6 prepareWithCompletionHandler:v32];
+    [localStore prepareWithCompletionHandler:v32];
     v7 = dispatch_semaphore_create(0);
     v8 = objc_alloc(MEMORY[0x277D24440]);
     v9 = [v8 initWithSource:v34[5]];
@@ -406,7 +406,7 @@ uint64_t __54__LPKPerfResultAnalyzer__perfResultsFromUserSwitches___block_invoke
     v27[2] = __48__LPKPerfResultAnalyzer__populateMigratorsData___block_invoke_2;
     v27[3] = &unk_279827B20;
     v30 = v39;
-    v13 = v3;
+    v13 = dataCopy;
     v28 = v13;
     v31 = v40;
     v14 = v4;
@@ -420,16 +420,16 @@ uint64_t __54__LPKPerfResultAnalyzer__perfResultsFromUserSwitches___block_invoke
     v16 = v7;
     v26 = v16;
     [v15 setInvalidationHandler:v25];
-    v17 = [v13 firstObject];
-    v18 = [v17 startDate];
+    firstObject2 = [v13 firstObject];
+    startDate = [firstObject2 startDate];
 
-    if (v18)
+    if (startDate)
     {
       v19 = _populateMigratorsData__stream;
       v20 = MEMORY[0x277CBEAA8];
-      v21 = [v13 firstObject];
-      v22 = [v21 startDate];
-      [v22 timeIntervalSince1970];
+      firstObject3 = [v13 firstObject];
+      startDate2 = [firstObject3 startDate];
+      [startDate2 timeIntervalSince1970];
       v24 = [v20 dateWithTimeIntervalSince1970:v23 + -1.0];
       [v19 activateStreamFromDate:v24];
 
@@ -567,22 +567,22 @@ void __48__LPKPerfResultAnalyzer__populateMigratorsData___block_invoke_3(uint64_
   }
 }
 
-+ (id)_abstractUserSwitchsFromTheEnd:(int64_t)a3 userSwitches:(id)a4
++ (id)_abstractUserSwitchsFromTheEnd:(int64_t)end userSwitches:(id)switches
 {
-  v5 = a4;
-  v6 = [v5 count];
-  if (v6 >= a3)
+  switchesCopy = switches;
+  v6 = [switchesCopy count];
+  if (v6 >= end)
   {
-    v7 = a3;
+    endCopy = end;
   }
 
   else
   {
-    v7 = v6;
+    endCopy = v6;
   }
 
-  v8 = [v5 count];
-  v9 = [v5 subarrayWithRange:{(v8 - a3) & ~((v8 - a3) >> 63), v7}];
+  v8 = [switchesCopy count];
+  v9 = [switchesCopy subarrayWithRange:{(v8 - end) & ~((v8 - end) >> 63), endCopy}];
 
   return v9;
 }

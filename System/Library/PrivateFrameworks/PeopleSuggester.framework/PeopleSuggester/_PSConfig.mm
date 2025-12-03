@@ -1,5 +1,5 @@
 @interface _PSConfig
-+ (id)_loadPlistNamed:(int)a3 abortOnFailure:;
++ (id)_loadPlistNamed:(int)named abortOnFailure:;
 + (id)contactEmbeddingConfig;
 + (id)defaultConfig;
 + (id)messagesPinningConfig;
@@ -33,24 +33,24 @@
   return &_configs_configs;
 }
 
-+ (id)_loadPlistNamed:(int)a3 abortOnFailure:
++ (id)_loadPlistNamed:(int)named abortOnFailure:
 {
   v4 = a2;
   objc_opt_self();
   v5 = objc_autoreleasePoolPush();
   v6 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
   v7 = [v6 URLForResource:v4 withExtension:@"plist"];
-  v8 = [v7 path];
+  path = [v7 path];
 
   memset(&v15, 0, sizeof(v15));
-  if (stat([v8 fileSystemRepresentation], &v15))
+  if (stat([path fileSystemRepresentation], &v15))
   {
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_FAULT))
     {
       [_PSConfig _loadPlistNamed:v4 abortOnFailure:?];
     }
 
-    if (!_PASEvaluateLogFaultAndProbCrashCriteria() && !a3)
+    if (!_PASEvaluateLogFaultAndProbCrashCriteria() && !named)
     {
 LABEL_6:
       v9 = 0;
@@ -61,9 +61,9 @@ LABEL_24:
     abort();
   }
 
-  if (v15.st_size < 4096 || ([MEMORY[0x1E69C5D48] dictionaryWithPath:v8 error:0], (v9 = objc_claimAutoreleasedReturnValue()) == 0))
+  if (v15.st_size < 4096 || ([MEMORY[0x1E69C5D48] dictionaryWithPath:path error:0], (v9 = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v11 = [objc_alloc(MEMORY[0x1E695DFF8]) initFileURLWithPath:v8];
+    v11 = [objc_alloc(MEMORY[0x1E695DFF8]) initFileURLWithPath:path];
     if (!v11)
     {
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_FAULT))
@@ -71,7 +71,7 @@ LABEL_24:
         [_PSConfig _loadPlistNamed:v4 abortOnFailure:?];
       }
 
-      if (!_PASEvaluateLogFaultAndProbCrashCriteria() && !a3)
+      if (!_PASEvaluateLogFaultAndProbCrashCriteria() && !named)
       {
         goto LABEL_6;
       }
@@ -90,7 +90,7 @@ LABEL_24:
         [_PSConfig _loadPlistNamed:v4 abortOnFailure:v13];
       }
 
-      if (_PASEvaluateLogFaultAndProbCrashCriteria() || a3)
+      if (_PASEvaluateLogFaultAndProbCrashCriteria() || named)
       {
         goto LABEL_24;
       }

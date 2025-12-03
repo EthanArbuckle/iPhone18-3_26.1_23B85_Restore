@@ -1,62 +1,62 @@
 @interface DAEventDevicesPresent
-- (DAEventDevicesPresent)initWithMigration:(BOOL)a3;
-- (DAEventDevicesPresent)initWithPresent:(BOOL)a3;
-- (DAEventDevicesPresent)initWithXPCObject:(id)a3 error:(id *)a4;
-- (id)descriptionWithLevel:(int)a3;
-- (void)encodeWithXPCObject:(id)a3;
+- (DAEventDevicesPresent)initWithMigration:(BOOL)migration;
+- (DAEventDevicesPresent)initWithPresent:(BOOL)present;
+- (DAEventDevicesPresent)initWithXPCObject:(id)object error:(id *)error;
+- (id)descriptionWithLevel:(int)level;
+- (void)encodeWithXPCObject:(id)object;
 @end
 
 @implementation DAEventDevicesPresent
 
-- (DAEventDevicesPresent)initWithPresent:(BOOL)a3
+- (DAEventDevicesPresent)initWithPresent:(BOOL)present
 {
   v4 = [(DAEvent *)self initWithEventType:50];
   v5 = v4;
   if (v4)
   {
-    v4->_devicesPresent = a3;
+    v4->_devicesPresent = present;
     v6 = v4;
   }
 
   return v5;
 }
 
-- (DAEventDevicesPresent)initWithMigration:(BOOL)a3
+- (DAEventDevicesPresent)initWithMigration:(BOOL)migration
 {
   v4 = [(DAEvent *)self initWithEventType:15];
   v5 = v4;
   if (v4)
   {
-    v4->_devicesMigrated = a3;
+    v4->_devicesMigrated = migration;
     v6 = v4;
   }
 
   return v5;
 }
 
-- (void)encodeWithXPCObject:(id)a3
+- (void)encodeWithXPCObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v6.receiver = self;
   v6.super_class = DAEventDevicesPresent;
-  [(DAEvent *)&v6 encodeWithXPCObject:v4];
+  [(DAEvent *)&v6 encodeWithXPCObject:objectCopy];
   if (self->_devicesPresent)
   {
-    xpc_dictionary_set_BOOL(v4, "dvPr", 1);
+    xpc_dictionary_set_BOOL(objectCopy, "dvPr", 1);
   }
 
   if (self->_devicesMigrated)
   {
-    xpc_dictionary_set_BOOL(v4, "dvMg", 1);
+    xpc_dictionary_set_BOOL(objectCopy, "dvMg", 1);
   }
 
   devices = self->_devices;
   CUXPCEncodeNSArrayOfObjects();
 }
 
-- (id)descriptionWithLevel:(int)a3
+- (id)descriptionWithLevel:(int)level
 {
-  if ((a3 & 0x8000000) != 0)
+  if ((level & 0x8000000) != 0)
   {
     v4 = 0;
   }
@@ -97,9 +97,9 @@
   return v10;
 }
 
-- (DAEventDevicesPresent)initWithXPCObject:(id)a3 error:(id *)a4
+- (DAEventDevicesPresent)initWithXPCObject:(id)object error:(id *)error
 {
-  v5 = OUTLINED_FUNCTION_4_0(self, a2, a3);
+  v5 = OUTLINED_FUNCTION_4_0(self, a2, object);
   v15.receiver = v4;
   v15.super_class = DAEventDevicesPresent;
   v12 = OUTLINED_FUNCTION_1_1(v5, sel_initWithXPCObject_error_, v6, v7, v8, v9, v10, v11, v15);

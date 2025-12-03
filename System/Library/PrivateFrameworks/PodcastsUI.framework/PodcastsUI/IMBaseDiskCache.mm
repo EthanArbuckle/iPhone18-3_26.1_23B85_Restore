@@ -1,33 +1,33 @@
 @interface IMBaseDiskCache
-- (BOOL)hasItemForKey:(id)a3;
+- (BOOL)hasItemForKey:(id)key;
 - (BOOL)isEmpty;
 - (IMBaseDiskCache)init;
-- (IMBaseDiskCache)initWithBasePath:(id)a3;
+- (IMBaseDiskCache)initWithBasePath:(id)path;
 - (id)_allFiles;
-- (id)pathForKey:(id)a3;
+- (id)pathForKey:(id)key;
 - (void)clearCache;
 - (void)initialize;
-- (void)removeItemForKey:(id)a3;
-- (void)removeItemsWithPrefx:(id)a3;
+- (void)removeItemForKey:(id)key;
+- (void)removeItemsWithPrefx:(id)prefx;
 @end
 
 @implementation IMBaseDiskCache
 
 - (void)initialize
 {
-  v5 = [MEMORY[0x277CCAA00] defaultManager];
-  v3 = [(IMBaseDiskCache *)self basePath];
-  if (([v5 fileExistsAtPath:v3] & 1) == 0)
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  basePath = [(IMBaseDiskCache *)self basePath];
+  if (([defaultManager fileExistsAtPath:basePath] & 1) == 0)
   {
-    v4 = [MEMORY[0x277D3DB60] supportsImageStore];
+    supportsImageStore = [MEMORY[0x277D3DB60] supportsImageStore];
 
-    if (!v4)
+    if (!supportsImageStore)
     {
       goto LABEL_5;
     }
 
-    v3 = [(IMBaseDiskCache *)self basePath];
-    [v5 createDirectoryAtPath:v3 withIntermediateDirectories:1 attributes:0 error:0];
+    basePath = [(IMBaseDiskCache *)self basePath];
+    [defaultManager createDirectoryAtPath:basePath withIntermediateDirectories:1 attributes:0 error:0];
   }
 
 LABEL_5:
@@ -35,25 +35,25 @@ LABEL_5:
 
 - (IMBaseDiskCache)init
 {
-  v3 = [MEMORY[0x277D75128] applicationCacheDirectory];
+  applicationCacheDirectory = [MEMORY[0x277D75128] applicationCacheDirectory];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [v3 stringByAppendingPathComponent:v5];
+  v6 = [applicationCacheDirectory stringByAppendingPathComponent:v5];
 
   v7 = [(IMBaseDiskCache *)self initWithBasePath:v6];
   return v7;
 }
 
-- (IMBaseDiskCache)initWithBasePath:(id)a3
+- (IMBaseDiskCache)initWithBasePath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v8.receiver = self;
   v8.super_class = IMBaseDiskCache;
   v5 = [(IMBaseDiskCache *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(IMBaseDiskCache *)v5 setBasePath:v4];
+    [(IMBaseDiskCache *)v5 setBasePath:pathCopy];
     [(IMBaseDiskCache *)v6 initialize];
   }
 
@@ -62,26 +62,26 @@ LABEL_5:
 
 - (void)clearCache
 {
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
-  v4 = [(IMBaseDiskCache *)self basePath];
-  [v3 removeItemAtPath:v4 error:0];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  basePath = [(IMBaseDiskCache *)self basePath];
+  [defaultManager removeItemAtPath:basePath error:0];
 
   [(IMBaseDiskCache *)self initialize];
 }
 
-- (void)removeItemsWithPrefx:(id)a3
+- (void)removeItemsWithPrefx:(id)prefx
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 length])
+  prefxCopy = prefx;
+  if ([prefxCopy length])
   {
-    v5 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v6 = [(IMBaseDiskCache *)self _allFiles];
-    v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    _allFiles = [(IMBaseDiskCache *)self _allFiles];
+    v7 = [_allFiles countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v7)
     {
       v8 = v7;
@@ -92,20 +92,20 @@ LABEL_5:
         {
           if (*v15 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(_allFiles);
           }
 
           v11 = *(*(&v14 + 1) + 8 * i);
-          if ([v11 hasPrefix:v4])
+          if ([v11 hasPrefix:prefxCopy])
           {
-            v12 = [(IMBaseDiskCache *)self basePath];
-            v13 = [v12 stringByAppendingPathComponent:v11];
+            basePath = [(IMBaseDiskCache *)self basePath];
+            v13 = [basePath stringByAppendingPathComponent:v11];
 
-            [v5 removeItemAtPath:v13 error:0];
+            [defaultManager removeItemAtPath:v13 error:0];
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v8 = [_allFiles countByEnumeratingWithState:&v14 objects:v18 count:16];
       }
 
       while (v8);
@@ -113,23 +113,23 @@ LABEL_5:
   }
 }
 
-- (void)removeItemForKey:(id)a3
+- (void)removeItemForKey:(id)key
 {
-  v4 = [(IMBaseDiskCache *)self pathForKey:a3];
+  v4 = [(IMBaseDiskCache *)self pathForKey:key];
   if ([v4 length])
   {
-    v3 = [MEMORY[0x277CCAA00] defaultManager];
-    [v3 removeItemAtPath:v4 error:0];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    [defaultManager removeItemAtPath:v4 error:0];
   }
 }
 
-- (BOOL)hasItemForKey:(id)a3
+- (BOOL)hasItemForKey:(id)key
 {
-  v3 = [(IMBaseDiskCache *)self pathForKey:a3];
+  v3 = [(IMBaseDiskCache *)self pathForKey:key];
   if ([v3 length])
   {
-    v4 = [MEMORY[0x277CCAA00] defaultManager];
-    v5 = [v4 fileExistsAtPath:v3];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    v5 = [defaultManager fileExistsAtPath:v3];
   }
 
   else
@@ -142,35 +142,35 @@ LABEL_5:
 
 - (BOOL)isEmpty
 {
-  v2 = [(IMBaseDiskCache *)self _allFiles];
-  v3 = [v2 count] == 0;
+  _allFiles = [(IMBaseDiskCache *)self _allFiles];
+  v3 = [_allFiles count] == 0;
 
   return v3;
 }
 
-- (id)pathForKey:(id)a3
+- (id)pathForKey:(id)key
 {
   v22[3] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 length])
+  keyCopy = key;
+  if ([keyCopy length])
   {
-    v5 = [v4 pf_stringWithPercentEscape];
-    v6 = v5;
-    if ([v5 length] >= 0x100)
+    pf_stringWithPercentEscape = [keyCopy pf_stringWithPercentEscape];
+    v6 = pf_stringWithPercentEscape;
+    if ([pf_stringWithPercentEscape length] >= 0x100)
     {
-      v7 = [v4 pathExtension];
-      v8 = [v4 stringByDeletingPathExtension];
-      v9 = [v8 UTF8String];
-      v6 = v5;
-      if (v9)
+      pathExtension = [keyCopy pathExtension];
+      stringByDeletingPathExtension = [keyCopy stringByDeletingPathExtension];
+      uTF8String = [stringByDeletingPathExtension UTF8String];
+      v6 = pf_stringWithPercentEscape;
+      if (uTF8String)
       {
-        v10 = v9;
+        v10 = uTF8String;
         v11 = [objc_alloc(MEMORY[0x277CBEB28]) initWithLength:32];
-        CC_SHA256(v10, [v8 length], objc_msgSend(v11, "mutableBytes"));
+        CC_SHA256(v10, [stringByDeletingPathExtension length], objc_msgSend(v11, "mutableBytes"));
         v12 = [v11 base64EncodedStringWithOptions:0];
         v22[0] = @"shortened-";
         v22[1] = v12;
-        v22[2] = v7;
+        v22[2] = pathExtension;
         v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v22 count:3];
         v6 = [v13 componentsJoinedByString:&stru_282CBB070];
       }
@@ -179,15 +179,15 @@ LABEL_5:
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
         v18 = 138412546;
-        v19 = v5;
+        v19 = pf_stringWithPercentEscape;
         v20 = 2112;
         v21 = v6;
         _os_log_impl(&dword_21B365000, v14, OS_LOG_TYPE_DEFAULT, "Image name exceeds 255 characters. Shortening %@ to %@", &v18, 0x16u);
       }
     }
 
-    v15 = [(IMBaseDiskCache *)self basePath];
-    v16 = [v15 stringByAppendingPathComponent:v6];
+    basePath = [(IMBaseDiskCache *)self basePath];
+    v16 = [basePath stringByAppendingPathComponent:v6];
   }
 
   else
@@ -200,9 +200,9 @@ LABEL_5:
 
 - (id)_allFiles
 {
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
-  v4 = [(IMBaseDiskCache *)self basePath];
-  v5 = [v3 contentsOfDirectoryAtPath:v4 error:0];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  basePath = [(IMBaseDiskCache *)self basePath];
+  v5 = [defaultManager contentsOfDirectoryAtPath:basePath error:0];
 
   return v5;
 }

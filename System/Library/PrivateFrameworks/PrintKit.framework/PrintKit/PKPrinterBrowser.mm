@@ -1,51 +1,51 @@
 @interface PKPrinterBrowser
-+ (id)browserWithDelegate:(id)a3;
-+ (id)browserWithDelegate:(id)a3 infoDictionary:(id)a4;
-+ (id)browserWithDelegate:(id)a3 infoDictionary:(id)a4 provenance:(unint64_t)a5;
-- (PKPrinterBrowser)initWithDelegate:(id)a3 infoDictionary:(id)a4 provenance:(unint64_t)a5;
-- (void)browserAdded:(id)a3 removed:(id)a4;
-- (void)btlePrinterFound:(id)a3;
-- (void)btleRssiUpdated:(id)a3 rssi:(id)a4;
++ (id)browserWithDelegate:(id)delegate;
++ (id)browserWithDelegate:(id)delegate infoDictionary:(id)dictionary;
++ (id)browserWithDelegate:(id)delegate infoDictionary:(id)dictionary provenance:(unint64_t)provenance;
+- (PKPrinterBrowser)initWithDelegate:(id)delegate infoDictionary:(id)dictionary provenance:(unint64_t)provenance;
+- (void)browserAdded:(id)added removed:(id)removed;
+- (void)btlePrinterFound:(id)found;
+- (void)btleRssiUpdated:(id)updated rssi:(id)rssi;
 - (void)dealloc;
-- (void)printerAdded:(id)a3 more:(BOOL)a4;
-- (void)printerRemoved:(id)a3 more:(BOOL)a4;
-- (void)setDelegate:(id)a3;
+- (void)printerAdded:(id)added more:(BOOL)more;
+- (void)printerRemoved:(id)removed more:(BOOL)more;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation PKPrinterBrowser
 
-+ (id)browserWithDelegate:(id)a3
++ (id)browserWithDelegate:(id)delegate
 {
-  v3 = a3;
+  delegateCopy = delegate;
   v4 = [PKPrinterBrowser alloc];
-  v5 = [(PKPrinterBrowser *)v4 initWithDelegate:v3 infoDictionary:MEMORY[0x277CBEC10] provenance:0];
+  v5 = [(PKPrinterBrowser *)v4 initWithDelegate:delegateCopy infoDictionary:MEMORY[0x277CBEC10] provenance:0];
 
   return v5;
 }
 
-+ (id)browserWithDelegate:(id)a3 infoDictionary:(id)a4
++ (id)browserWithDelegate:(id)delegate infoDictionary:(id)dictionary
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [[PKPrinterBrowser alloc] initWithDelegate:v5 infoDictionary:v6 provenance:0];
+  delegateCopy = delegate;
+  dictionaryCopy = dictionary;
+  v7 = [[PKPrinterBrowser alloc] initWithDelegate:delegateCopy infoDictionary:dictionaryCopy provenance:0];
 
   return v7;
 }
 
-+ (id)browserWithDelegate:(id)a3 infoDictionary:(id)a4 provenance:(unint64_t)a5
++ (id)browserWithDelegate:(id)delegate infoDictionary:(id)dictionary provenance:(unint64_t)provenance
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [[PKPrinterBrowser alloc] initWithDelegate:v7 infoDictionary:v8 provenance:a5];
+  delegateCopy = delegate;
+  dictionaryCopy = dictionary;
+  v9 = [[PKPrinterBrowser alloc] initWithDelegate:delegateCopy infoDictionary:dictionaryCopy provenance:provenance];
 
   return v9;
 }
 
-- (PKPrinterBrowser)initWithDelegate:(id)a3 infoDictionary:(id)a4 provenance:(unint64_t)a5
+- (PKPrinterBrowser)initWithDelegate:(id)delegate infoDictionary:(id)dictionary provenance:(unint64_t)provenance
 {
   v24 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  delegateCopy = delegate;
+  dictionaryCopy = dictionary;
   v21.receiver = self;
   v21.super_class = PKPrinterBrowser;
   v10 = [(PKPrinterBrowser *)&v21 init];
@@ -57,13 +57,13 @@
     MEMORY[0x25F8E3F40](v12, v10->_originalCellFlag, 2);
     v13 = SBSSpringBoardServerPort();
     MEMORY[0x25F8E3F50](v13, 0);
-    v14 = [MEMORY[0x277CBEB38] dictionary];
-    [(PKPrinterBrowser *)v10 setPrinters:v14];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    [(PKPrinterBrowser *)v10 setPrinters:dictionary];
 
-    v15 = [MEMORY[0x277CBEB38] dictionary];
-    [(PKPrinterBrowser *)v10 setBtDevices:v15];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
+    [(PKPrinterBrowser *)v10 setBtDevices:dictionary2];
 
-    [(PKPrinterBrowser *)v10 setDelegate:v8];
+    [(PKPrinterBrowser *)v10 setDelegate:delegateCopy];
     v10->_delegateRespondsToProximityUpdate = objc_opt_respondsToSelector() & 1;
     v16 = +[PKPrinterBrowseInfo rollCacheGeneration];
     v17 = _PKLogCategory(PKLogCategoryDiscovery[0]);
@@ -74,7 +74,7 @@
       _os_log_impl(&dword_25F5FC000, v17, OS_LOG_TYPE_DEFAULT, "Starting browse, flush cache from gen %d", buf, 8u);
     }
 
-    v18 = [[PKPrintdRPC_BrowseClient alloc] initWithInfo:v9 provenance:a5 delegate:v10];
+    v18 = [[PKPrintdRPC_BrowseClient alloc] initWithInfo:dictionaryCopy provenance:provenance delegate:v10];
     browserClient = v10->_browserClient;
     v10->_browserClient = v18;
 
@@ -86,8 +86,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4 = SBSSpringBoardServerPort();
   MEMORY[0x25F8E3F40](v4, self->_originalCellFlag, self->_originalWifiFlag);
@@ -107,10 +107,10 @@
   [(PKPrinterBrowser *)&v7 dealloc];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v6 = a3;
-  if (!v6)
+  delegateCopy = delegate;
+  if (!delegateCopy)
   {
     browserClient = self->_browserClient;
     if (browserClient)
@@ -123,29 +123,29 @@
     }
   }
 
-  self->_delegate = v6;
+  self->_delegate = delegateCopy;
   self->_delegateRespondsToProximityUpdate = objc_opt_respondsToSelector() & 1;
 }
 
-- (void)btleRssiUpdated:(id)a3 rssi:(id)a4
+- (void)btleRssiUpdated:(id)updated rssi:(id)rssi
 {
   v31 = *MEMORY[0x277D85DE8];
-  v24 = a3;
-  v6 = a4;
+  updatedCopy = updated;
+  rssiCopy = rssi;
   if (self->_delegateRespondsToProximityUpdate)
   {
-    v23 = v6;
+    v23 = rssiCopy;
     obj = [(PKPrinterBrowser *)self printers];
     objc_sync_enter(obj);
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v7 = self;
-    v8 = [(PKPrinterBrowser *)self printers];
-    v9 = [v8 allValues];
+    selfCopy = self;
+    printers = [(PKPrinterBrowser *)self printers];
+    allValues = [printers allValues];
 
-    v10 = [v9 countByEnumeratingWithState:&v26 objects:v30 count:16];
+    v10 = [allValues countByEnumeratingWithState:&v26 objects:v30 count:16];
     if (v10)
     {
       v11 = *v27;
@@ -155,15 +155,15 @@
         {
           if (*v27 != v11)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(allValues);
           }
 
           v13 = *(*(&v26 + 1) + 8 * i);
-          v14 = [v13 btleUUID];
-          if (v14)
+          btleUUID = [v13 btleUUID];
+          if (btleUUID)
           {
-            v15 = [v13 btleUUID];
-            v16 = [v15 isEqual:v24];
+            btleUUID2 = [v13 btleUUID];
+            v16 = [btleUUID2 isEqual:updatedCopy];
 
             if (v16)
             {
@@ -172,23 +172,23 @@
               v25[1] = 3221225472;
               v25[2] = __41__PKPrinterBrowser_btleRssiUpdated_rssi___block_invoke;
               v25[3] = &unk_279A92FB8;
-              v25[4] = v7;
+              v25[4] = selfCopy;
               [v13 resolveOnMainQueue:v25];
             }
           }
         }
 
-        v10 = [v9 countByEnumeratingWithState:&v26 objects:v30 count:16];
+        v10 = [allValues countByEnumeratingWithState:&v26 objects:v30 count:16];
       }
 
       while (v10);
     }
 
     objc_sync_exit(obj);
-    v17 = [(PKPrinterBrowser *)v7 btDevices];
-    objc_sync_enter(v17);
-    v18 = [(PKPrinterBrowser *)v7 btDevices];
-    v19 = [v18 objectForKey:v24];
+    btDevices = [(PKPrinterBrowser *)selfCopy btDevices];
+    objc_sync_enter(btDevices);
+    btDevices2 = [(PKPrinterBrowser *)selfCopy btDevices];
+    v19 = [btDevices2 objectForKey:updatedCopy];
 
     if (v19)
     {
@@ -202,14 +202,14 @@
     else
     {
       v20 = [MEMORY[0x277CBEB18] arrayWithObject:v23];
-      v21 = [(PKPrinterBrowser *)v7 btDevices];
-      [v21 setObject:v20 forKey:v24];
+      btDevices3 = [(PKPrinterBrowser *)selfCopy btDevices];
+      [btDevices3 setObject:v20 forKey:updatedCopy];
 
       v19 = v20;
     }
 
-    objc_sync_exit(v17);
-    v6 = v23;
+    objc_sync_exit(btDevices);
+    rssiCopy = v23;
   }
 }
 
@@ -220,15 +220,15 @@ void __41__PKPrinterBrowser_btleRssiUpdated_rssi___block_invoke(uint64_t a1, voi
   [v3 proximityUpdatedForPrinter:v4];
 }
 
-- (void)browserAdded:(id)a3 removed:(id)a4
+- (void)browserAdded:(id)added removed:(id)removed
 {
-  v6 = a3;
-  v7 = a4;
+  addedCopy = added;
+  removedCopy = removed;
   v14[0] = 0;
   v14[1] = v14;
   v14[2] = 0x2020000000;
-  v8 = [v6 count];
-  v14[3] = [v7 count] + v8;
+  v8 = [addedCopy count];
+  v14[3] = [removedCopy count] + v8;
   objc_initWeak(&location, self);
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
@@ -236,14 +236,14 @@ void __41__PKPrinterBrowser_btleRssiUpdated_rssi___block_invoke(uint64_t a1, voi
   v11[3] = &unk_279A92FE0;
   objc_copyWeak(&v12, &location);
   v11[4] = v14;
-  [v6 enumerateObjectsUsingBlock:v11];
+  [addedCopy enumerateObjectsUsingBlock:v11];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __41__PKPrinterBrowser_browserAdded_removed___block_invoke_2;
   v9[3] = &unk_279A92FE0;
   objc_copyWeak(&v10, &location);
   v9[4] = v14;
-  [v7 enumerateObjectsUsingBlock:v9];
+  [removedCopy enumerateObjectsUsingBlock:v9];
   objc_destroyWeak(&v10);
   objc_destroyWeak(&v12);
   objc_destroyWeak(&location);
@@ -272,47 +272,47 @@ void __41__PKPrinterBrowser_browserAdded_removed___block_invoke_2(uint64_t a1, v
   [WeakRetained printerRemoved:v3 more:v6 != 0];
 }
 
-- (void)printerAdded:(id)a3 more:(BOOL)a4
+- (void)printerAdded:(id)added more:(BOOL)more
 {
   v53 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  addedCopy = added;
   obj = [(PKPrinterBrowser *)self printers];
   objc_sync_enter(obj);
-  v6 = [(PKPrinterBrowser *)self printers];
-  v7 = [v5 bonjourName];
-  v8 = [v6 objectForKeyedSubscript:v7];
+  printers = [(PKPrinterBrowser *)self printers];
+  bonjourName = [addedCopy bonjourName];
+  v8 = [printers objectForKeyedSubscript:bonjourName];
 
   if (v8)
   {
-    v9 = [v5 btleUUID];
+    btleUUID = [addedCopy btleUUID];
 
-    if (v9)
+    if (btleUUID)
     {
-      v10 = [v5 btleUUID];
-      [v8 setBtleUUID:v10];
+      btleUUID2 = [addedCopy btleUUID];
+      [v8 setBtleUUID:btleUUID2];
 
-      [v8 setBtleMeasuredPower:{objc_msgSend(v5, "btleMeasuredPower")}];
+      [v8 setBtleMeasuredPower:{objc_msgSend(addedCopy, "btleMeasuredPower")}];
     }
 
     v11 = v8;
 
-    v5 = v11;
+    addedCopy = v11;
   }
 
   else
   {
-    v12 = [v5 btleUUID];
+    btleUUID3 = [addedCopy btleUUID];
 
-    if (v12)
+    if (btleUUID3)
     {
       v49 = 0u;
       v50 = 0u;
       v48 = 0u;
       v47 = 0u;
-      v13 = [(PKPrinterBrowser *)self printers];
-      v14 = [v13 allValues];
+      printers2 = [(PKPrinterBrowser *)self printers];
+      allValues = [printers2 allValues];
 
-      v15 = [v14 countByEnumeratingWithState:&v47 objects:v52 count:16];
+      v15 = [allValues countByEnumeratingWithState:&v47 objects:v52 count:16];
       if (v15)
       {
         v16 = *v48;
@@ -322,40 +322,40 @@ void __41__PKPrinterBrowser_browserAdded_removed___block_invoke_2(uint64_t a1, v
           {
             if (*v48 != v16)
             {
-              objc_enumerationMutation(v14);
+              objc_enumerationMutation(allValues);
             }
 
             v18 = *(*(&v47 + 1) + 8 * i);
-            v19 = [v5 uuid];
-            v20 = [v18 uuid];
-            v21 = [v19 compare:v20] == 0;
+            uuid = [addedCopy uuid];
+            uuid2 = [v18 uuid];
+            v21 = [uuid compare:uuid2] == 0;
 
             if (v21)
             {
-              v22 = [v5 btleUUID];
-              [v18 setBtleUUID:v22];
+              btleUUID4 = [addedCopy btleUUID];
+              [v18 setBtleUUID:btleUUID4];
 
-              [v18 setBtleMeasuredPower:{objc_msgSend(v5, "btleMeasuredPower")}];
+              [v18 setBtleMeasuredPower:{objc_msgSend(addedCopy, "btleMeasuredPower")}];
             }
           }
 
-          v15 = [v14 countByEnumeratingWithState:&v47 objects:v52 count:16];
+          v15 = [allValues countByEnumeratingWithState:&v47 objects:v52 count:16];
         }
 
         while (v15);
       }
     }
 
-    v23 = [(PKPrinterBrowser *)self printers];
-    v24 = [v5 bonjourName];
-    [v23 setObject:v5 forKey:v24];
+    printers3 = [(PKPrinterBrowser *)self printers];
+    bonjourName2 = [addedCopy bonjourName];
+    [printers3 setObject:addedCopy forKey:bonjourName2];
 
     v8 = 0;
   }
 
   objc_sync_exit(obj);
-  v25 = [v5 btleUUID];
-  v26 = v25 == 0;
+  btleUUID5 = [addedCopy btleUUID];
+  v26 = btleUUID5 == 0;
 
   if (v26)
   {
@@ -364,11 +364,11 @@ void __41__PKPrinterBrowser_browserAdded_removed___block_invoke_2(uint64_t a1, v
 
   else
   {
-    v27 = [(PKPrinterBrowser *)self btDevices];
-    objc_sync_enter(v27);
-    v28 = [(PKPrinterBrowser *)self btDevices];
-    v29 = [v5 btleUUID];
-    v30 = [v28 objectForKey:v29];
+    btDevices = [(PKPrinterBrowser *)self btDevices];
+    objc_sync_enter(btDevices);
+    btDevices2 = [(PKPrinterBrowser *)self btDevices];
+    btleUUID6 = [addedCopy btleUUID];
+    v30 = [btDevices2 objectForKey:btleUUID6];
 
     v45 = 0u;
     v46 = 0u;
@@ -389,7 +389,7 @@ void __41__PKPrinterBrowser_browserAdded_removed___block_invoke_2(uint64_t a1, v
             objc_enumerationMutation(v31);
           }
 
-          [v5 addRSSIValue:*(*(&v43 + 1) + 8 * j)];
+          [addedCopy addRSSIValue:*(*(&v43 + 1) + 8 * j)];
         }
 
         v32 = [v31 countByEnumeratingWithState:&v43 objects:v51 count:16];
@@ -398,7 +398,7 @@ void __41__PKPrinterBrowser_browserAdded_removed___block_invoke_2(uint64_t a1, v
       while (v32);
     }
 
-    objc_sync_exit(v27);
+    objc_sync_exit(btDevices);
   }
 
   objc_initWeak(&location, self);
@@ -407,9 +407,9 @@ void __41__PKPrinterBrowser_browserAdded_removed___block_invoke_2(uint64_t a1, v
   v38[2] = __38__PKPrinterBrowser_printerAdded_more___block_invoke;
   v38[3] = &unk_279A93008;
   objc_copyWeak(&v39, &location);
-  v40 = a4;
+  moreCopy = more;
   v41 = v33;
-  [v5 resolveOnMainQueue:v38];
+  [addedCopy resolveOnMainQueue:v38];
   objc_destroyWeak(&v39);
   objc_destroyWeak(&location);
 }
@@ -440,37 +440,37 @@ void __38__PKPrinterBrowser_printerAdded_more___block_invoke(uint64_t a1, void *
   }
 }
 
-- (void)printerRemoved:(id)a3 more:(BOOL)a4
+- (void)printerRemoved:(id)removed more:(BOOL)more
 {
-  v6 = a3;
-  v7 = [(PKPrinterBrowser *)self printers];
-  objc_sync_enter(v7);
-  v8 = [(PKPrinterBrowser *)self printers];
-  v9 = [v6 bonjourName];
-  v10 = [v8 objectForKeyedSubscript:v9];
+  removedCopy = removed;
+  printers = [(PKPrinterBrowser *)self printers];
+  objc_sync_enter(printers);
+  printers2 = [(PKPrinterBrowser *)self printers];
+  bonjourName = [removedCopy bonjourName];
+  v10 = [printers2 objectForKeyedSubscript:bonjourName];
 
   if (v10)
   {
     v11 = v10;
 
-    v12 = [(PKPrinterBrowser *)self printers];
-    v13 = [v11 bonjourName];
-    [v12 removeObjectForKey:v13];
+    printers3 = [(PKPrinterBrowser *)self printers];
+    bonjourName2 = [v11 bonjourName];
+    [printers3 removeObjectForKey:bonjourName2];
   }
 
   else
   {
-    v11 = v6;
+    v11 = removedCopy;
   }
 
-  objc_sync_exit(v7);
+  objc_sync_exit(printers);
   objc_initWeak(&location, self);
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __40__PKPrinterBrowser_printerRemoved_more___block_invoke;
   v14[3] = &unk_279A93030;
   objc_copyWeak(&v15, &location);
-  v16 = a4;
+  moreCopy = more;
   [v11 resolveOnMainQueue:v14];
   objc_destroyWeak(&v15);
   objc_destroyWeak(&location);
@@ -489,19 +489,19 @@ void __40__PKPrinterBrowser_printerRemoved_more___block_invoke(uint64_t a1, void
   }
 }
 
-- (void)btlePrinterFound:(id)a3
+- (void)btlePrinterFound:(id)found
 {
   v45 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  foundCopy = found;
+  v4 = foundCopy;
+  if (foundCopy)
   {
-    v5 = [v3 uuid];
-    if (v5)
+    uuid = [foundCopy uuid];
+    if (uuid)
     {
-      v6 = [v4 btleUUID];
+      btleUUID = [v4 btleUUID];
 
-      if (v6)
+      if (btleUUID)
       {
         v31 = v4;
         obj = [(PKPrinterBrowser *)self printers];
@@ -510,12 +510,12 @@ void __40__PKPrinterBrowser_printerRemoved_more___block_invoke(uint64_t a1, void
         v40 = 0u;
         v41 = 0u;
         v42 = 0u;
-        v7 = [(PKPrinterBrowser *)self printers];
-        v8 = [v7 allValues];
+        printers = [(PKPrinterBrowser *)self printers];
+        allValues = [printers allValues];
 
-        v9 = v8;
+        v9 = allValues;
         v10 = 0;
-        v11 = [v8 countByEnumeratingWithState:&v39 objects:v44 count:16];
+        v11 = [allValues countByEnumeratingWithState:&v39 objects:v44 count:16];
         if (v11)
         {
           v12 = *v40;
@@ -529,19 +529,19 @@ void __40__PKPrinterBrowser_printerRemoved_more___block_invoke(uint64_t a1, void
               }
 
               v14 = *(*(&v39 + 1) + 8 * i);
-              v15 = [v14 uuid];
-              if (v15)
+              uuid2 = [v14 uuid];
+              if (uuid2)
               {
-                v16 = [v14 uuid];
-                v17 = [v31 uuid];
-                v18 = [v16 isEqual:v17];
+                uuid3 = [v14 uuid];
+                uuid4 = [v31 uuid];
+                v18 = [uuid3 isEqual:uuid4];
 
                 if (v18)
                 {
                   v19 = v14;
 
-                  v20 = [v31 btleUUID];
-                  [v19 setBtleUUID:v20];
+                  btleUUID2 = [v31 btleUUID];
+                  [v19 setBtleUUID:btleUUID2];
 
                   v10 = v19;
                   [v19 setBtleMeasuredPower:{objc_msgSend(v31, "btleMeasuredPower")}];
@@ -549,7 +549,7 @@ void __40__PKPrinterBrowser_printerRemoved_more___block_invoke(uint64_t a1, void
               }
             }
 
-            v8 = v9;
+            allValues = v9;
             v11 = [v9 countByEnumeratingWithState:&v39 objects:v44 count:16];
           }
 
@@ -559,11 +559,11 @@ void __40__PKPrinterBrowser_printerRemoved_more___block_invoke(uint64_t a1, void
         objc_sync_exit(obj);
         if (v10 && self->_delegateRespondsToProximityUpdate)
         {
-          v21 = [(PKPrinterBrowser *)self btDevices];
-          objc_sync_enter(v21);
-          v22 = [(PKPrinterBrowser *)self btDevices];
-          v23 = [v10 btleUUID];
-          v24 = [v22 objectForKey:v23];
+          btDevices = [(PKPrinterBrowser *)self btDevices];
+          objc_sync_enter(btDevices);
+          btDevices2 = [(PKPrinterBrowser *)self btDevices];
+          btleUUID3 = [v10 btleUUID];
+          v24 = [btDevices2 objectForKey:btleUUID3];
 
           v37 = 0u;
           v38 = 0u;
@@ -591,7 +591,7 @@ void __40__PKPrinterBrowser_printerRemoved_more___block_invoke(uint64_t a1, void
 
             while (v26);
 
-            objc_sync_exit(v21);
+            objc_sync_exit(btDevices);
             objc_initWeak(&location, self);
             v32[0] = MEMORY[0x277D85DD0];
             v32[1] = 3221225472;
@@ -606,7 +606,7 @@ void __40__PKPrinterBrowser_printerRemoved_more___block_invoke(uint64_t a1, void
           else
           {
 
-            objc_sync_exit(v21);
+            objc_sync_exit(btDevices);
           }
         }
 

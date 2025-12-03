@@ -1,11 +1,11 @@
 @interface LSApplicationIdentityEnumerator
-- (LSApplicationIdentityEnumerator)initWithAppEnumerationOptions:(unint64_t)a3;
+- (LSApplicationIdentityEnumerator)initWithAppEnumerationOptions:(unint64_t)options;
 - (id)nextObject;
 @end
 
 @implementation LSApplicationIdentityEnumerator
 
-- (LSApplicationIdentityEnumerator)initWithAppEnumerationOptions:(unint64_t)a3
+- (LSApplicationIdentityEnumerator)initWithAppEnumerationOptions:(unint64_t)options
 {
   CurrentContext = _LSDatabaseContextGetCurrentContext(self);
   v25 = 0;
@@ -21,7 +21,7 @@
   {
     if (v6)
     {
-      v8 = [[_LSApplicationRecordEnumerator alloc] initWithContext:v6 volumeURL:0 options:a3];
+      v8 = [[_LSApplicationRecordEnumerator alloc] initWithContext:v6 volumeURL:0 options:options];
       v9 = v7[5];
       v7[5] = v8;
 
@@ -101,26 +101,26 @@ void __65__LSApplicationIdentityEnumerator_initWithAppEnumerationOptions___block
     do
     {
       currentRecordIdentitiesEnumerator = self->_currentRecordIdentitiesEnumerator;
-      if (!currentRecordIdentitiesEnumerator || ([(NSEnumerator *)currentRecordIdentitiesEnumerator nextObject], (v5 = objc_claimAutoreleasedReturnValue()) == 0))
+      if (!currentRecordIdentitiesEnumerator || ([(NSEnumerator *)currentRecordIdentitiesEnumerator nextObject], (nextObject = objc_claimAutoreleasedReturnValue()) == 0))
       {
         NextObject = _LSDBEnumeratorGetNextObject(self->_recordEnumerator);
         currentRecord = self->_currentRecord;
         self->_currentRecord = NextObject;
 
-        v8 = [(LSApplicationRecord *)self->_currentRecord identities];
-        v9 = [v8 objectEnumerator];
+        identities = [(LSApplicationRecord *)self->_currentRecord identities];
+        objectEnumerator = [identities objectEnumerator];
         v10 = self->_currentRecordIdentitiesEnumerator;
-        self->_currentRecordIdentitiesEnumerator = v9;
+        self->_currentRecordIdentitiesEnumerator = objectEnumerator;
 
-        v5 = [(NSEnumerator *)self->_currentRecordIdentitiesEnumerator nextObject];
-        if (!v5)
+        nextObject = [(NSEnumerator *)self->_currentRecordIdentitiesEnumerator nextObject];
+        if (!nextObject)
         {
           continue;
         }
       }
 
-      v11 = [(LSEnumerator *)self filter];
-      v12 = (v11)[2](v11, v5);
+      filter = [(LSEnumerator *)self filter];
+      v12 = (filter)[2](filter, nextObject);
 
       if (v12)
       {
@@ -131,10 +131,10 @@ void __65__LSApplicationIdentityEnumerator_initWithAppEnumerationOptions___block
     while (self->_currentRecord);
   }
 
-  v5 = 0;
+  nextObject = 0;
 LABEL_10:
 
-  return v5;
+  return nextObject;
 }
 
 @end

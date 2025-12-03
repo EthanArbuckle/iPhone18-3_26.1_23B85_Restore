@@ -1,7 +1,7 @@
 @interface _HDECGSampleEntityEncoder
-- (BOOL)applyPropertiesToObject:(id)a3 persistentID:(int64_t)a4 row:(HDSQLiteRow *)a5 error:(id *)a6;
-- (id)codableRepresentationForPersistentID:(int64_t)a3 row:(HDSQLiteRow *)a4 error:(id *)a5;
-- (id)createBareObjectWithRow:(HDSQLiteRow *)a3;
+- (BOOL)applyPropertiesToObject:(id)object persistentID:(int64_t)d row:(HDSQLiteRow *)row error:(id *)error;
+- (id)codableRepresentationForPersistentID:(int64_t)d row:(HDSQLiteRow *)row error:(id *)error;
+- (id)createBareObjectWithRow:(HDSQLiteRow *)row;
 - (id)orderedProperties;
 @end
 
@@ -15,19 +15,19 @@
   v9[2] = @"voltage_payload";
   v9[3] = @"symptoms_status";
   v3 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:4];
-  v4 = [(HDEntityEncoder *)self superclassEncoder];
-  v5 = [v4 orderedProperties];
-  v6 = [v3 arrayByAddingObjectsFromArray:v5];
+  superclassEncoder = [(HDEntityEncoder *)self superclassEncoder];
+  orderedProperties = [superclassEncoder orderedProperties];
+  v6 = [v3 arrayByAddingObjectsFromArray:orderedProperties];
 
   v7 = *MEMORY[0x277D85DE8];
 
   return v6;
 }
 
-- (id)codableRepresentationForPersistentID:(int64_t)a3 row:(HDSQLiteRow *)a4 error:(id *)a5
+- (id)codableRepresentationForPersistentID:(int64_t)d row:(HDSQLiteRow *)row error:(id *)error
 {
-  v8 = [(HDEntityEncoder *)self superclassEncoder];
-  v9 = [v8 codableRepresentationForPersistentID:a3 row:a4 error:a5];
+  superclassEncoder = [(HDEntityEncoder *)self superclassEncoder];
+  v9 = [superclassEncoder codableRepresentationForPersistentID:d row:row error:error];
 
   if (v9)
   {
@@ -39,9 +39,9 @@
 
     [(HDCodableECGSample *)v10 setSymptomsStatus:HDSQLiteColumnWithNameAsInt64()];
     v12 = HDSQLiteColumnWithName();
-    if ((MEMORY[0x22AAC6CD0](a4, v12) & 1) == 0)
+    if ((MEMORY[0x22AAC6CD0](row, v12) & 1) == 0)
     {
-      MEMORY[0x22AAC6C50](a4, v12);
+      MEMORY[0x22AAC6C50](row, v12);
       [(HDCodableECGSample *)v10 setAverageHeartRateInBPM:?];
     }
   }
@@ -54,33 +54,33 @@
   return v10;
 }
 
-- (id)createBareObjectWithRow:(HDSQLiteRow *)a3
+- (id)createBareObjectWithRow:(HDSQLiteRow *)row
 {
-  v3 = [objc_alloc(MEMORY[0x277CCD378]) _init];
+  _init = [objc_alloc(MEMORY[0x277CCD378]) _init];
 
-  return v3;
+  return _init;
 }
 
-- (BOOL)applyPropertiesToObject:(id)a3 persistentID:(int64_t)a4 row:(HDSQLiteRow *)a5 error:(id *)a6
+- (BOOL)applyPropertiesToObject:(id)object persistentID:(int64_t)d row:(HDSQLiteRow *)row error:(id *)error
 {
-  v10 = a3;
-  v11 = [(HDEntityEncoder *)self superclassEncoder];
-  v12 = [v11 applyPropertiesToObject:v10 persistentID:a4 row:a5 error:a6];
+  objectCopy = object;
+  superclassEncoder = [(HDEntityEncoder *)self superclassEncoder];
+  v12 = [superclassEncoder applyPropertiesToObject:objectCopy persistentID:d row:row error:error];
 
   if (v12)
   {
-    [v10 _setPrivateClassification:HDSQLiteColumnWithNameAsInt64()];
+    [objectCopy _setPrivateClassification:HDSQLiteColumnWithNameAsInt64()];
     v13 = HDSQLiteColumnWithNameAsData();
-    [v10 _setPayload:v13];
+    [objectCopy _setPayload:v13];
 
-    [v10 _setSymptomsStatus:HDSQLiteColumnWithNameAsInt64()];
+    [objectCopy _setSymptomsStatus:HDSQLiteColumnWithNameAsInt64()];
     if ((HDSQLiteColumnWithNameIsNull() & 1) == 0)
     {
       v14 = MEMORY[0x277CCD7E8];
-      v15 = [MEMORY[0x277CCDAB0] _countPerMinuteUnit];
+      _countPerMinuteUnit = [MEMORY[0x277CCDAB0] _countPerMinuteUnit];
       HDSQLiteColumnWithNameAsDouble();
-      v16 = [v14 quantityWithUnit:v15 doubleValue:?];
-      [v10 _setAverageHeartRate:v16];
+      v16 = [v14 quantityWithUnit:_countPerMinuteUnit doubleValue:?];
+      [objectCopy _setAverageHeartRate:v16];
     }
   }
 

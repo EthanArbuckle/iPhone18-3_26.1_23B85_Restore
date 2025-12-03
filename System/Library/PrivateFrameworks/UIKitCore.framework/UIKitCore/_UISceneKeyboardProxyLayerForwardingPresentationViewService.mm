@@ -1,47 +1,47 @@
 @interface _UISceneKeyboardProxyLayerForwardingPresentationViewService
 - (FBSSceneIdentityToken)keyboardOwnerIdentityToken;
 - (NSString)description;
-- (id)initWithRemoteViewController:(id *)a1;
+- (id)initWithRemoteViewController:(id *)controller;
 - (id)keyboardLayers;
-- (void)addObserver:(id)a3;
+- (void)addObserver:(id)observer;
 - (void)invalidate;
 - (void)keyboardLayersDidChange;
-- (void)removeObserver:(id)a3;
-- (void)sizeTrackingViewDidMoveToWindow:(uint64_t)a1;
+- (void)removeObserver:(id)observer;
+- (void)sizeTrackingViewDidMoveToWindow:(uint64_t)window;
 @end
 
 @implementation _UISceneKeyboardProxyLayerForwardingPresentationViewService
 
-- (id)initWithRemoteViewController:(id *)a1
+- (id)initWithRemoteViewController:(id *)controller
 {
   v3 = a2;
-  if (a1)
+  if (controller)
   {
-    v6.receiver = a1;
+    v6.receiver = controller;
     v6.super_class = _UISceneKeyboardProxyLayerForwardingPresentationViewService;
     v4 = objc_msgSendSuper2(&v6, sel_init);
-    a1 = v4;
+    controller = v4;
     if (v4)
     {
       objc_storeWeak(v4 + 2, v3);
     }
   }
 
-  return a1;
+  return controller;
 }
 
 - (void)invalidate
 {
   v20 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     v2 = *(__UILogGetCategoryCachedImpl("KBProxyForwarding", &invalidate___s_category) + 8);
     if (os_log_type_enabled(v2, OS_LOG_TYPE_DEFAULT))
     {
       v3 = v2;
-      WeakRetained = objc_loadWeakRetained((a1 + 16));
+      WeakRetained = objc_loadWeakRetained((self + 16));
       *buf = 134218242;
-      v17 = a1;
+      selfCopy = self;
       v18 = 2112;
       v19 = WeakRetained;
       _os_log_impl(&dword_188A29000, v3, OS_LOG_TYPE_DEFAULT, "<ForwardingPresentationViewService:%p> Remote view controller invalidated: %@.", buf, 0x16u);
@@ -51,7 +51,7 @@
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v5 = [*(a1 + 8) copy];
+    v5 = [*(self + 8) copy];
     v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v6)
     {
@@ -70,7 +70,7 @@
           v10 = *(*(&v11 + 1) + 8 * v9);
           if (objc_opt_respondsToSelector())
           {
-            [v10 presentationEnvironmentDidInvalidate:a1];
+            [v10 presentationEnvironmentDidInvalidate:self];
           }
 
           ++v9;
@@ -85,17 +85,17 @@
   }
 }
 
-- (void)sizeTrackingViewDidMoveToWindow:(uint64_t)a1
+- (void)sizeTrackingViewDidMoveToWindow:(uint64_t)window
 {
   v20 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (a1)
+  if (window)
   {
     v4 = *(__UILogGetCategoryCachedImpl("KBProxyForwarding", &sizeTrackingViewDidMoveToWindow____s_category) + 8);
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218242;
-      v17 = a1;
+      windowCopy = window;
       v18 = 2112;
       v19 = v3;
       _os_log_impl(&dword_188A29000, v4, OS_LOG_TYPE_DEFAULT, "<ForwardingPresentationViewService:%p> Size tracking view moved to window: %@.", buf, 0x16u);
@@ -105,7 +105,7 @@
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v5 = [*(a1 + 8) copy];
+    v5 = [*(window + 8) copy];
     v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v6)
     {
@@ -124,7 +124,7 @@
           v10 = *(*(&v11 + 1) + 8 * v9);
           if (objc_opt_respondsToSelector())
           {
-            [v10 presentationEnvironment:a1 didMoveToWindow:v3];
+            [v10 presentationEnvironment:window didMoveToWindow:v3];
           }
 
           ++v9;
@@ -142,15 +142,15 @@
 - (void)keyboardLayersDidChange
 {
   v20 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     v2 = *(__UILogGetCategoryCachedImpl("KBProxyForwarding", &keyboardLayersDidChange___s_category) + 8);
     if (os_log_type_enabled(v2, OS_LOG_TYPE_DEFAULT))
     {
       v3 = v2;
-      WeakRetained = objc_loadWeakRetained((a1 + 16));
+      WeakRetained = objc_loadWeakRetained((self + 16));
       *buf = 134218242;
-      v17 = a1;
+      selfCopy = self;
       v18 = 2112;
       v19 = WeakRetained;
       _os_log_impl(&dword_188A29000, v3, OS_LOG_TYPE_DEFAULT, "<ForwardingPresentationViewService:%p> Remote view controller keyboard layers changed: %@.", buf, 0x16u);
@@ -160,7 +160,7 @@
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v5 = [*(a1 + 8) copy];
+    v5 = [*(self + 8) copy];
     v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v6)
     {
@@ -179,7 +179,7 @@
           v10 = *(*(&v11 + 1) + 8 * v9);
           if (objc_opt_respondsToSelector())
           {
-            [v10 presentationEnvironmentDidUpdateKeyboardLayers:a1];
+            [v10 presentationEnvironmentDidUpdateKeyboardLayers:self];
           }
 
           ++v9;
@@ -196,8 +196,8 @@
 
 - (FBSSceneIdentityToken)keyboardOwnerIdentityToken
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"_UISceneKeyboardProxyLayerForwardingPresentationViewService.m" lineNumber:57 description:@"View services should never create keyboard proxy layers - they should only forward them"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"_UISceneKeyboardProxyLayerForwardingPresentationViewService.m" lineNumber:57 description:@"View services should never create keyboard proxy layers - they should only forward them"];
 
   return 0;
 }
@@ -205,50 +205,50 @@
 - (id)keyboardLayers
 {
   WeakRetained = objc_loadWeakRetained(&self->_remoteViewController);
-  v3 = [WeakRetained _keyboardSceneLayers];
+  _keyboardSceneLayers = [WeakRetained _keyboardSceneLayers];
 
-  return v3;
+  return _keyboardSceneLayers;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v9 = a3;
-  if (!v9)
+  observerCopy = observer;
+  if (!observerCopy)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"_UISceneKeyboardProxyLayerForwardingPresentationViewService.m" lineNumber:69 description:{@"Invalid parameter not satisfying: %@", @"observer"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UISceneKeyboardProxyLayerForwardingPresentationViewService.m" lineNumber:69 description:{@"Invalid parameter not satisfying: %@", @"observer"}];
   }
 
   BSDispatchQueueAssertMain();
   observers = self->_observers;
   if (!observers)
   {
-    v6 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     v7 = self->_observers;
-    self->_observers = v6;
+    self->_observers = weakObjectsHashTable;
 
     observers = self->_observers;
   }
 
-  [(NSHashTable *)observers addObject:v9];
+  [(NSHashTable *)observers addObject:observerCopy];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v7 = a3;
+  observerCopy = observer;
   BSDispatchQueueAssertMain();
-  v4 = v7;
-  if (v7)
+  v4 = observerCopy;
+  if (observerCopy)
   {
-    [(NSHashTable *)self->_observers removeObject:v7];
+    [(NSHashTable *)self->_observers removeObject:observerCopy];
     v5 = [(NSHashTable *)self->_observers count];
-    v4 = v7;
+    v4 = observerCopy;
     if (!v5)
     {
       observers = self->_observers;
       self->_observers = 0;
 
-      v4 = v7;
+      v4 = observerCopy;
     }
   }
 }
@@ -258,9 +258,9 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   WeakRetained = objc_loadWeakRetained(&self->_remoteViewController);
-  v6 = [v3 stringWithFormat:@"<%@: %p> Tracking remote view controller: %@", v4, self, WeakRetained];
+  weakRetained = [v3 stringWithFormat:@"<%@: %p> Tracking remote view controller: %@", v4, self, WeakRetained];
 
-  return v6;
+  return weakRetained;
 }
 
 @end

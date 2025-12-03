@@ -57,7 +57,7 @@
 
 - (_NSRange)associatedMessageRange
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_21457CB44();
   v5 = v4;
 

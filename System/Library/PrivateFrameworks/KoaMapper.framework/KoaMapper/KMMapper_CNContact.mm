@@ -1,27 +1,27 @@
 @interface KMMapper_CNContact
 - (KMMapper_CNContact)init;
-- (id)itemsFromExternalObject:(id)a3 additionalFields:(id)a4 error:(id *)a5;
+- (id)itemsFromExternalObject:(id)object additionalFields:(id)fields error:(id *)error;
 @end
 
 @implementation KMMapper_CNContact
 
-- (id)itemsFromExternalObject:(id)a3 additionalFields:(id)a4 error:(id *)a5
+- (id)itemsFromExternalObject:(id)object additionalFields:(id)fields error:(id *)error
 {
   v115[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = [a4 objectForKey:self->_alternativeItemIdKey];
+  objectCopy = object;
+  v9 = [fields objectForKey:self->_alternativeItemIdKey];
   v10 = v9;
   if (v9)
   {
-    v11 = v9;
+    identifier = v9;
   }
 
   else
   {
-    v11 = [v8 identifier];
+    identifier = [objectCopy identifier];
   }
 
-  v12 = v11;
+  v12 = identifier;
   builder = self->_builder;
   v114 = 0;
   v14 = [(KVItemBuilder *)builder setItemType:2 itemId:v12 error:&v114];
@@ -34,16 +34,16 @@ LABEL_61:
   }
 
   v16 = self->_builder;
-  v17 = [v8 namePrefix];
+  namePrefix = [objectCopy namePrefix];
   v113 = v15;
-  v18 = [(KVItemBuilder *)v16 addFieldWithType:55 value:v17 error:&v113];
+  v18 = [(KVItemBuilder *)v16 addFieldWithType:55 value:namePrefix error:&v113];
   v19 = v113;
 
   if (v18)
   {
-    v110 = a5;
+    errorCopy = error;
     v20 = self->_builder;
-    [v8 givenName];
+    [objectCopy givenName];
     v108 = v112[19] = v19;
     v21 = [KVItemBuilder addFieldWithType:v20 value:"addFieldWithType:value:error:" error:50];
     v15 = v19;
@@ -53,7 +53,7 @@ LABEL_61:
     if (v21)
     {
       v22 = self->_builder;
-      [v8 middleName];
+      [objectCopy middleName];
       v106 = v112[18] = v15;
       v23 = [KVItemBuilder addFieldWithType:v22 value:"addFieldWithType:value:error:" error:51];
       v24 = v15;
@@ -62,7 +62,7 @@ LABEL_61:
       if (v23)
       {
         v25 = self->_builder;
-        [v8 familyName];
+        [objectCopy familyName];
         v104 = v112[17] = v24;
         v26 = [KVItemBuilder addFieldWithType:v25 value:"addFieldWithType:value:error:" error:52];
         v27 = v24;
@@ -71,7 +71,7 @@ LABEL_61:
         if (v26)
         {
           v28 = self->_builder;
-          [v8 previousFamilyName];
+          [objectCopy previousFamilyName];
           v102 = v112[16] = v27;
           v29 = [KVItemBuilder addFieldWithType:v28 value:"addFieldWithType:value:error:" error:53];
           v30 = v27;
@@ -80,7 +80,7 @@ LABEL_61:
           if (v29)
           {
             v31 = self->_builder;
-            [v8 nameSuffix];
+            [objectCopy nameSuffix];
             v100 = v112[15] = v30;
             v32 = [KVItemBuilder addFieldWithType:v31 value:"addFieldWithType:value:error:" error:56];
             v33 = v30;
@@ -89,7 +89,7 @@ LABEL_61:
             if (v32)
             {
               v34 = self->_builder;
-              [v8 nickname];
+              [objectCopy nickname];
               v98 = v112[14] = v33;
               v35 = [KVItemBuilder addFieldWithType:v34 value:"addFieldWithType:value:error:" error:54];
               v36 = v33;
@@ -98,7 +98,7 @@ LABEL_61:
               if (v35)
               {
                 v37 = self->_builder;
-                [v8 organizationName];
+                [objectCopy organizationName];
                 v96 = v112[13] = v36;
                 v38 = [KVItemBuilder addFieldWithType:v37 value:"addFieldWithType:value:error:" error:64];
                 v39 = v36;
@@ -107,7 +107,7 @@ LABEL_61:
                 if (v38)
                 {
                   v40 = self->_builder;
-                  [v8 departmentName];
+                  [objectCopy departmentName];
                   v94 = v112[12] = v39;
                   v41 = [KVItemBuilder addFieldWithType:v40 value:"addFieldWithType:value:error:" error:65];
                   v42 = v39;
@@ -116,7 +116,7 @@ LABEL_61:
                   if (v41)
                   {
                     v43 = self->_builder;
-                    [v8 jobTitle];
+                    [objectCopy jobTitle];
                     v92 = v112[11] = v42;
                     v44 = [KVItemBuilder addFieldWithType:v43 value:"addFieldWithType:value:error:" error:66];
                     v45 = v42;
@@ -125,7 +125,7 @@ LABEL_61:
                     if (v44)
                     {
                       v46 = self->_builder;
-                      [v8 phoneticGivenName];
+                      [objectCopy phoneticGivenName];
                       v90 = v112[10] = v45;
                       v47 = [KVItemBuilder addFieldWithType:v46 value:"addFieldWithType:value:error:" error:67];
                       v48 = v45;
@@ -134,7 +134,7 @@ LABEL_61:
                       if (v47)
                       {
                         v49 = self->_builder;
-                        [v8 phoneticMiddleName];
+                        [objectCopy phoneticMiddleName];
                         v88 = v112[9] = v48;
                         v50 = [KVItemBuilder addFieldWithType:v49 value:"addFieldWithType:value:error:" error:68];
                         v51 = v48;
@@ -143,7 +143,7 @@ LABEL_61:
                         if (v50)
                         {
                           v52 = self->_builder;
-                          [v8 phoneticFamilyName];
+                          [objectCopy phoneticFamilyName];
                           v86 = v112[8] = v51;
                           v53 = [KVItemBuilder addFieldWithType:v52 value:"addFieldWithType:value:error:" error:69];
                           v54 = v51;
@@ -152,7 +152,7 @@ LABEL_61:
                           if (v53)
                           {
                             v55 = self->_builder;
-                            [v8 phoneticOrganizationName];
+                            [objectCopy phoneticOrganizationName];
                             v84 = v112[7] = v54;
                             v56 = [KVItemBuilder addFieldWithType:v55 value:"addFieldWithType:value:error:" error:70];
                             v57 = v54;
@@ -160,7 +160,7 @@ LABEL_61:
                             v83 = v56;
                             if (v56)
                             {
-                              [v8 phoneNumbers];
+                              [objectCopy phoneNumbers];
                               v112[6] = v57;
                               v82 = v58 = 1;
                               v59 = [KMMapper_CNContact _addLabeledFieldsOfType:"_addLabeledFieldsOfType:labeledValues:labelOnly:excludeDefault:error:" labeledValues:57 labelOnly:? excludeDefault:? error:?];
@@ -168,45 +168,45 @@ LABEL_61:
 
                               if (v59)
                               {
-                                [v8 emailAddresses];
+                                [objectCopy emailAddresses];
                                 v81 = v112[5] = v60;
                                 v61 = [KMMapper_CNContact _addLabeledFieldsOfType:"_addLabeledFieldsOfType:labeledValues:labelOnly:excludeDefault:error:" labeledValues:58 labelOnly:? excludeDefault:? error:?];
                                 v57 = v60;
 
-                                a5 = v110;
+                                error = errorCopy;
                                 if (v61)
                                 {
-                                  [v8 postalAddresses];
+                                  [objectCopy postalAddresses];
                                   v80 = v112[4] = v57;
                                   v62 = [KMMapper_CNContact _addLabeledFieldsOfType:"_addLabeledFieldsOfType:labeledValues:labelOnly:excludeDefault:error:" labeledValues:59 labelOnly:? excludeDefault:? error:?];
                                   v78 = v57;
 
                                   if (v62)
                                   {
-                                    [v8 urlAddresses];
+                                    [objectCopy urlAddresses];
                                     v77 = v112[3] = v78;
                                     v63 = [KMMapper_CNContact _addLabeledFieldsOfType:"_addLabeledFieldsOfType:labeledValues:labelOnly:excludeDefault:error:" labeledValues:60 labelOnly:? excludeDefault:? error:?];
                                     v57 = v78;
 
                                     if (v63)
                                     {
-                                      [v8 socialProfiles];
+                                      [objectCopy socialProfiles];
                                       v79 = v112[2] = v57;
                                       v64 = [KMMapper_CNContact _addLabeledFieldsOfType:"_addLabeledFieldsOfType:labeledValues:labelOnly:excludeDefault:error:" labeledValues:61 labelOnly:? excludeDefault:? error:?];
                                       v65 = v57;
 
                                       if (v64)
                                       {
-                                        [v8 instantMessageAddresses];
+                                        [objectCopy instantMessageAddresses];
                                         v76 = v112[1] = v65;
                                         v66 = [KMMapper_CNContact _addLabeledFieldsOfType:"_addLabeledFieldsOfType:labeledValues:labelOnly:excludeDefault:error:" labeledValues:62 labelOnly:? excludeDefault:? error:?];
                                         v67 = v65;
 
                                         if (v66)
                                         {
-                                          v68 = [v8 contactRelations];
+                                          contactRelations = [objectCopy contactRelations];
                                           v112[0] = v67;
-                                          v69 = [(KMMapper_CNContact *)self _addLabeledFieldsOfType:63 labeledValues:v68 labelOnly:0 excludeDefault:0 error:v112];
+                                          v69 = [(KMMapper_CNContact *)self _addLabeledFieldsOfType:63 labeledValues:contactRelations labelOnly:0 excludeDefault:0 error:v112];
                                           v75 = v112[0];
 
                                           v58 = !v69;
@@ -219,7 +219,7 @@ LABEL_61:
                                       v57 = v65;
                                     }
 
-                                    a5 = v110;
+                                    error = errorCopy;
                                   }
 
                                   else
@@ -232,14 +232,14 @@ LABEL_61:
                               else
                               {
                                 v57 = v60;
-                                a5 = v110;
+                                error = errorCopy;
                               }
                             }
 
                             else
                             {
                               v58 = 1;
-                              a5 = v110;
+                              error = errorCopy;
                             }
 
                             v54 = v57;
@@ -248,7 +248,7 @@ LABEL_61:
                           else
                           {
                             v58 = 1;
-                            a5 = v110;
+                            error = errorCopy;
                           }
 
                           v51 = v54;
@@ -257,7 +257,7 @@ LABEL_61:
                         else
                         {
                           v58 = 1;
-                          a5 = v110;
+                          error = errorCopy;
                         }
 
                         v48 = v51;
@@ -266,7 +266,7 @@ LABEL_61:
                       else
                       {
                         v58 = 1;
-                        a5 = v110;
+                        error = errorCopy;
                       }
 
                       v45 = v48;
@@ -275,7 +275,7 @@ LABEL_61:
                     else
                     {
                       v58 = 1;
-                      a5 = v110;
+                      error = errorCopy;
                     }
 
                     v42 = v45;
@@ -284,7 +284,7 @@ LABEL_61:
                   else
                   {
                     v58 = 1;
-                    a5 = v110;
+                    error = errorCopy;
                   }
 
                   v39 = v42;
@@ -293,7 +293,7 @@ LABEL_61:
                 else
                 {
                   v58 = 1;
-                  a5 = v110;
+                  error = errorCopy;
                 }
 
                 v36 = v39;
@@ -302,7 +302,7 @@ LABEL_61:
               else
               {
                 v58 = 1;
-                a5 = v110;
+                error = errorCopy;
               }
 
               v33 = v36;
@@ -311,7 +311,7 @@ LABEL_61:
             else
             {
               v58 = 1;
-              a5 = v110;
+              error = errorCopy;
             }
 
             v30 = v33;
@@ -320,7 +320,7 @@ LABEL_61:
           else
           {
             v58 = 1;
-            a5 = v110;
+            error = errorCopy;
           }
 
           v27 = v30;
@@ -329,7 +329,7 @@ LABEL_61:
         else
         {
           v58 = 1;
-          a5 = v110;
+          error = errorCopy;
         }
 
         v24 = v27;
@@ -338,7 +338,7 @@ LABEL_61:
       else
       {
         v58 = 1;
-        a5 = v110;
+        error = errorCopy;
       }
 
       v15 = v24;
@@ -347,7 +347,7 @@ LABEL_61:
     else
     {
       v58 = 1;
-      a5 = v110;
+      error = errorCopy;
     }
 
     if (!v58)
@@ -365,7 +365,7 @@ LABEL_61:
 
       else
       {
-        KMMapperSetBuilderError(a5, v19);
+        KMMapperSetBuilderError(error, v19);
         v70 = 0;
       }
 
@@ -376,7 +376,7 @@ LABEL_61:
   }
 
 LABEL_62:
-  KMMapperSetBuilderError(a5, v19);
+  KMMapperSetBuilderError(error, v19);
   v70 = 0;
 LABEL_63:
 

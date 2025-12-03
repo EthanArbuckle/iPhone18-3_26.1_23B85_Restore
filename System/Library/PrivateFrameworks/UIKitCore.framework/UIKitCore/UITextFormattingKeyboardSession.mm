@@ -1,16 +1,16 @@
 @interface UITextFormattingKeyboardSession
 - (UITextFormattingKeyboardSession)init;
 - (id)_textFormattingResponder;
-- (void)setFormattingDescriptor:(id)a3;
+- (void)setFormattingDescriptor:(id)descriptor;
 @end
 
 @implementation UITextFormattingKeyboardSession
 
-- (void)setFormattingDescriptor:(id)a3
+- (void)setFormattingDescriptor:(id)descriptor
 {
-  if (a3)
+  if (descriptor)
   {
-    static UITextFormattingViewController.FormattingDescriptor._unconditionallyBridgeFromObjectiveC(_:)(a3, &v16);
+    static UITextFormattingViewController.FormattingDescriptor._unconditionallyBridgeFromObjectiveC(_:)(descriptor, &v16);
     signpost_c2_entryLock_start(v4, v5);
     v31 = v22;
     v32 = v23;
@@ -37,7 +37,7 @@
   v12 = v30;
   v7 = v25;
   v8 = v26;
-  v6 = self;
+  selfCopy = self;
   sub_189037110(&v7);
 
   v22 = v13;

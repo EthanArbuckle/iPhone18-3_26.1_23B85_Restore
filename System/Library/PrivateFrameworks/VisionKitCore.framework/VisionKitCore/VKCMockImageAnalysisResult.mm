@@ -1,29 +1,29 @@
 @interface VKCMockImageAnalysisResult
-+ (id)mockImageAnalysisResultFromDictionary:(id)a3;
-- (CGRect)caretRectForPosition:(id)a3;
-- (CGRect)firstRectForRange:(id)a3 documentView:(id)a4 contentRect:(CGRect)a5;
++ (id)mockImageAnalysisResultFromDictionary:(id)dictionary;
+- (CGRect)caretRectForPosition:(id)position;
+- (CGRect)firstRectForRange:(id)range documentView:(id)view contentRect:(CGRect)rect;
 - (CGSize)imageSize;
-- (id)adjustTextRangeToSelectableRange:(id)a3;
+- (id)adjustTextRangeToSelectableRange:(id)range;
 - (id)allLineQuads;
-- (id)characterRangeAtPoint:(CGPoint)a3;
-- (id)closestPositionToPoint:(CGPoint)a3 withinRange:(id)a4;
-- (id)rangeOfLineForPosition:(id)a3;
-- (id)rangeOfWordForPosition:(id)a3;
-- (id)selectionRectsForRange:(id)a3 documentView:(id)a4 contentRect:(CGRect)a5;
-- (id)smallestSelectableRangeForPosition:(id)a3;
-- (id)stringForLine:(id)a3;
-- (void)addMockDataDetectorElementsFromArray:(id)a3;
+- (id)characterRangeAtPoint:(CGPoint)point;
+- (id)closestPositionToPoint:(CGPoint)point withinRange:(id)range;
+- (id)rangeOfLineForPosition:(id)position;
+- (id)rangeOfWordForPosition:(id)position;
+- (id)selectionRectsForRange:(id)range documentView:(id)view contentRect:(CGRect)rect;
+- (id)smallestSelectableRangeForPosition:(id)position;
+- (id)stringForLine:(id)line;
+- (void)addMockDataDetectorElementsFromArray:(id)array;
 - (void)generateText;
-- (void)setIsRunningTest:(BOOL)a3;
+- (void)setIsRunningTest:(BOOL)test;
 @end
 
 @implementation VKCMockImageAnalysisResult
 
-+ (id)mockImageAnalysisResultFromDictionary:(id)a3
++ (id)mockImageAnalysisResultFromDictionary:(id)dictionary
 {
-  v3 = a3;
+  dictionaryCopy = dictionary;
   v4 = objc_alloc_init(VKCMockImageAnalysisResult);
-  v5 = [v3 objectForKeyedSubscript:VKCMockResultRecognitionResultKey];
+  v5 = [dictionaryCopy objectForKeyedSubscript:VKCMockResultRecognitionResultKey];
 
   [(VKCMockImageAnalysisResult *)v4 setSourceDict:v5];
   [(VKCMockImageAnalysisResult *)v4 generateText];
@@ -40,18 +40,18 @@
   return v4;
 }
 
-- (void)setIsRunningTest:(BOOL)a3
+- (void)setIsRunningTest:(BOOL)test
 {
-  v3 = a3;
-  self->_isRunningTest = a3;
-  v4 = [(VKCMockImageAnalysisResult *)self textProvider];
-  [v4 setIsRunningTest:v3];
+  testCopy = test;
+  self->_isRunningTest = test;
+  textProvider = [(VKCMockImageAnalysisResult *)self textProvider];
+  [textProvider setIsRunningTest:testCopy];
 }
 
-- (void)addMockDataDetectorElementsFromArray:(id)a3
+- (void)addMockDataDetectorElementsFromArray:(id)array
 {
   v4 = MEMORY[0x1E695DF70];
-  v5 = a3;
+  arrayCopy = array;
   v6 = objc_alloc_init(v4);
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
@@ -59,7 +59,7 @@
   v10[3] = &unk_1E7BE60C8;
   v11 = v6;
   v7 = v6;
-  [v5 enumerateObjectsUsingBlock:v10];
+  [arrayCopy enumerateObjectsUsingBlock:v10];
 
   v8 = [v7 copy];
   dataDetectors = self->_dataDetectors;
@@ -78,8 +78,8 @@ void __67__VKCMockImageAnalysisResult_addMockDataDetectorElementsFromArray___blo
 - (void)generateText
 {
   v3 = objc_alloc_init(MEMORY[0x1E696AD60]);
-  v4 = [(VKCMockImageAnalysisResult *)self sourceDict];
-  v5 = [v4 objectForKeyedSubscript:VKCMockResultLinesKey];
+  sourceDict = [(VKCMockImageAnalysisResult *)self sourceDict];
+  v5 = [sourceDict objectForKeyedSubscript:VKCMockResultLinesKey];
 
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
@@ -104,9 +104,9 @@ void __42__VKCMockImageAnalysisResult_generateText__block_invoke(id *a1, uint64_
   }
 }
 
-- (id)stringForLine:(id)a3
+- (id)stringForLine:(id)line
 {
-  v3 = a3;
+  lineCopy = line;
   v4 = objc_alloc_init(MEMORY[0x1E696AD60]);
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
@@ -114,8 +114,8 @@ void __42__VKCMockImageAnalysisResult_generateText__block_invoke(id *a1, uint64_
   v10[3] = &unk_1E7BE4B50;
   v5 = v4;
   v11 = v5;
-  v12 = v3;
-  v6 = v3;
+  v12 = lineCopy;
+  v6 = lineCopy;
   [v6 enumerateObjectsUsingBlock:v10];
   v7 = v12;
   v8 = v5;
@@ -138,10 +138,10 @@ void __44__VKCMockImageAnalysisResult_stringForLine___block_invoke(uint64_t a1, 
   allLineQuads = self->_allLineQuads;
   if (!allLineQuads)
   {
-    v4 = [(VKCMockImageAnalysisResult *)self textProvider];
-    v5 = [v4 allLineQuads];
+    textProvider = [(VKCMockImageAnalysisResult *)self textProvider];
+    allLineQuads = [textProvider allLineQuads];
     v6 = self->_allLineQuads;
-    self->_allLineQuads = v5;
+    self->_allLineQuads = allLineQuads;
 
     allLineQuads = self->_allLineQuads;
   }
@@ -149,11 +149,11 @@ void __44__VKCMockImageAnalysisResult_stringForLine___block_invoke(uint64_t a1, 
   return allLineQuads;
 }
 
-- (CGRect)caretRectForPosition:(id)a3
+- (CGRect)caretRectForPosition:(id)position
 {
-  v4 = a3;
-  v5 = [(VKCMockImageAnalysisResult *)self textProvider];
-  [v5 caretRectForPosition:v4];
+  positionCopy = position;
+  textProvider = [(VKCMockImageAnalysisResult *)self textProvider];
+  [textProvider caretRectForPosition:positionCopy];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -170,37 +170,37 @@ void __44__VKCMockImageAnalysisResult_stringForLine___block_invoke(uint64_t a1, 
   return result;
 }
 
-- (id)characterRangeAtPoint:(CGPoint)a3
+- (id)characterRangeAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = [(VKCMockImageAnalysisResult *)self textProvider];
-  v6 = [v5 characterRangeAtPoint:{x, y}];
+  y = point.y;
+  x = point.x;
+  textProvider = [(VKCMockImageAnalysisResult *)self textProvider];
+  v6 = [textProvider characterRangeAtPoint:{x, y}];
 
   return v6;
 }
 
-- (id)closestPositionToPoint:(CGPoint)a3 withinRange:(id)a4
+- (id)closestPositionToPoint:(CGPoint)point withinRange:(id)range
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = [(VKCMockImageAnalysisResult *)self textProvider];
-  v9 = [v8 closestPositionToPoint:v7 withinRange:{x, y}];
+  y = point.y;
+  x = point.x;
+  rangeCopy = range;
+  textProvider = [(VKCMockImageAnalysisResult *)self textProvider];
+  v9 = [textProvider closestPositionToPoint:rangeCopy withinRange:{x, y}];
 
   return v9;
 }
 
-- (CGRect)firstRectForRange:(id)a3 documentView:(id)a4 contentRect:(CGRect)a5
+- (CGRect)firstRectForRange:(id)range documentView:(id)view contentRect:(CGRect)rect
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v11 = a4;
-  v12 = a3;
-  v13 = [(VKCMockImageAnalysisResult *)self textProvider];
-  [v13 firstRectForRange:v12 documentView:v11 contentRect:{x, y, width, height}];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  viewCopy = view;
+  rangeCopy = range;
+  textProvider = [(VKCMockImageAnalysisResult *)self textProvider];
+  [textProvider firstRectForRange:rangeCopy documentView:viewCopy contentRect:{x, y, width, height}];
   v15 = v14;
   v17 = v16;
   v19 = v18;
@@ -217,52 +217,52 @@ void __44__VKCMockImageAnalysisResult_stringForLine___block_invoke(uint64_t a1, 
   return result;
 }
 
-- (id)selectionRectsForRange:(id)a3 documentView:(id)a4 contentRect:(CGRect)a5
+- (id)selectionRectsForRange:(id)range documentView:(id)view contentRect:(CGRect)rect
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v11 = a4;
-  v12 = a3;
-  v13 = [(VKCMockImageAnalysisResult *)self textProvider];
-  v14 = [v13 selectionRectsForRange:v12 documentView:v11 contentRect:{x, y, width, height}];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  viewCopy = view;
+  rangeCopy = range;
+  textProvider = [(VKCMockImageAnalysisResult *)self textProvider];
+  v14 = [textProvider selectionRectsForRange:rangeCopy documentView:viewCopy contentRect:{x, y, width, height}];
 
   return v14;
 }
 
-- (id)rangeOfLineForPosition:(id)a3
+- (id)rangeOfLineForPosition:(id)position
 {
-  v4 = a3;
-  v5 = [(VKCMockImageAnalysisResult *)self textProvider];
-  v6 = [v5 rangeOfLineForPosition:v4];
+  positionCopy = position;
+  textProvider = [(VKCMockImageAnalysisResult *)self textProvider];
+  v6 = [textProvider rangeOfLineForPosition:positionCopy];
 
   return v6;
 }
 
-- (id)rangeOfWordForPosition:(id)a3
+- (id)rangeOfWordForPosition:(id)position
 {
-  v4 = a3;
-  v5 = [(VKCMockImageAnalysisResult *)self textProvider];
-  v6 = [v5 rangeOfWordForPosition:v4];
+  positionCopy = position;
+  textProvider = [(VKCMockImageAnalysisResult *)self textProvider];
+  v6 = [textProvider rangeOfWordForPosition:positionCopy];
 
   return v6;
 }
 
-- (id)smallestSelectableRangeForPosition:(id)a3
+- (id)smallestSelectableRangeForPosition:(id)position
 {
-  v4 = a3;
-  v5 = [(VKCMockImageAnalysisResult *)self textProvider];
-  v6 = [v5 smallestSelectableRangeForPosition:v4];
+  positionCopy = position;
+  textProvider = [(VKCMockImageAnalysisResult *)self textProvider];
+  v6 = [textProvider smallestSelectableRangeForPosition:positionCopy];
 
   return v6;
 }
 
-- (id)adjustTextRangeToSelectableRange:(id)a3
+- (id)adjustTextRangeToSelectableRange:(id)range
 {
-  v4 = a3;
-  v5 = [(VKCMockImageAnalysisResult *)self textProvider];
-  v6 = [v5 adjustTextRangeToSelectableRange:v4];
+  rangeCopy = range;
+  textProvider = [(VKCMockImageAnalysisResult *)self textProvider];
+  v6 = [textProvider adjustTextRangeToSelectableRange:rangeCopy];
 
   return v6;
 }

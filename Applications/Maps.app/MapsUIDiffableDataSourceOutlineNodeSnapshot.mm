@@ -1,18 +1,18 @@
 @interface MapsUIDiffableDataSourceOutlineNodeSnapshot
-- (BOOL)isEqual:(id)a3;
-- (BOOL)needsReloadFromPreviousItemSnapshot:(id)a3;
-- (MapsUIDiffableDataSourceOutlineNodeSnapshot)initWithIdentifierPath:(id)a3 viewModel:(id)a4 childSnapshots:(id)a5 expanded:(BOOL)a6;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)needsReloadFromPreviousItemSnapshot:(id)snapshot;
+- (MapsUIDiffableDataSourceOutlineNodeSnapshot)initWithIdentifierPath:(id)path viewModel:(id)model childSnapshots:(id)snapshots expanded:(BOOL)expanded;
 - (NSString)description;
 - (NSString)recursiveDescription;
-- (id)childSnapshotWithIdentifier:(id)a3;
-- (id)nodeSnapshotAtIdentifierPath:(id)a3;
+- (id)childSnapshotWithIdentifier:(id)identifier;
+- (id)nodeSnapshotAtIdentifierPath:(id)path;
 @end
 
 @implementation MapsUIDiffableDataSourceOutlineNodeSnapshot
 
-- (id)childSnapshotWithIdentifier:(id)a3
+- (id)childSnapshotWithIdentifier:(id)identifier
 {
-  v4 = [(NSDictionary *)self->_childMap objectForKeyedSubscript:a3];
+  v4 = [(NSDictionary *)self->_childMap objectForKeyedSubscript:identifier];
   v5 = v4;
   if (v4)
   {
@@ -27,44 +27,44 @@
   return v6;
 }
 
-- (id)nodeSnapshotAtIdentifierPath:(id)a3
+- (id)nodeSnapshotAtIdentifierPath:(id)path
 {
-  v4 = a3;
-  if ([v4 length])
+  pathCopy = path;
+  if ([pathCopy length])
   {
-    v5 = [v4 firstIdentifier];
-    v6 = [(MapsUIDiffableDataSourceOutlineNodeSnapshot *)self childSnapshotWithIdentifier:v5];
-    v7 = [v4 identifierPathByRemovingFirstIdentifier];
-    v8 = [v6 nodeSnapshotAtIdentifierPath:v7];
+    firstIdentifier = [pathCopy firstIdentifier];
+    v6 = [(MapsUIDiffableDataSourceOutlineNodeSnapshot *)self childSnapshotWithIdentifier:firstIdentifier];
+    identifierPathByRemovingFirstIdentifier = [pathCopy identifierPathByRemovingFirstIdentifier];
+    selfCopy = [v6 nodeSnapshotAtIdentifierPath:identifierPathByRemovingFirstIdentifier];
   }
 
   else
   {
-    v8 = self;
+    selfCopy = self;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (BOOL)needsReloadFromPreviousItemSnapshot:(id)a3
+- (BOOL)needsReloadFromPreviousItemSnapshot:(id)snapshot
 {
-  v4 = a3;
-  v5 = [v4 identifierPath];
-  v6 = v5;
-  if (v5 == self->_identifierPath)
+  snapshotCopy = snapshot;
+  identifierPath = [snapshotCopy identifierPath];
+  v6 = identifierPath;
+  if (identifierPath == self->_identifierPath)
   {
 
     goto LABEL_5;
   }
 
-  v7 = [(IdentifierPath *)v5 isEqual:?];
+  v7 = [(IdentifierPath *)identifierPath isEqual:?];
 
   if (v7)
   {
 LABEL_5:
     viewModel = self->_viewModel;
-    v10 = [v4 viewModel];
-    v8 = [(MapsUIDiffableDataSourceViewModel *)viewModel needsReloadFromPreviousViewModel:v10];
+    viewModel = [snapshotCopy viewModel];
+    v8 = [(MapsUIDiffableDataSourceViewModel *)viewModel needsReloadFromPreviousViewModel:viewModel];
 
     goto LABEL_6;
   }
@@ -99,8 +99,8 @@ LABEL_6:
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v13 + 1) + 8 * i) recursiveDescription];
-        v11 = [v10 stringByReplacingOccurrencesOfString:@"\n" withString:@"\n |  "];
+        recursiveDescription = [*(*(&v13 + 1) + 8 * i) recursiveDescription];
+        v11 = [recursiveDescription stringByReplacingOccurrencesOfString:@"\n" withString:@"\n |  "];
         [v4 appendFormat:@"\n +-- %@", v11];
       }
 
@@ -117,7 +117,7 @@ LABEL_6:
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(IdentifierPath *)self->_identifierPath visualDescription];
+  visualDescription = [(IdentifierPath *)self->_identifierPath visualDescription];
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
   viewModel = self->_viewModel;
@@ -132,34 +132,34 @@ LABEL_6:
   }
 
   v10 = v9;
-  v11 = [NSString stringWithFormat:@"<%@: %p identifierPath = %@, viewModel = <%@: %p>, expanded = %@>", v4, self, v5, v7, viewModel, v10];;
+  v11 = [NSString stringWithFormat:@"<%@: %p identifierPath = %@, viewModel = <%@: %p>, expanded = %@>", v4, self, visualDescription, v7, viewModel, v10];;
 
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v13 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = v5;
-    v7 = [(MapsUIDiffableDataSourceOutlineNodeSnapshot *)v6 identifierPath];
-    v8 = v7;
-    if (v7 == self->_identifierPath || [(IdentifierPath *)v7 isEqual:?])
+    identifierPath = [(MapsUIDiffableDataSourceOutlineNodeSnapshot *)v6 identifierPath];
+    v8 = identifierPath;
+    if (identifierPath == self->_identifierPath || [(IdentifierPath *)identifierPath isEqual:?])
     {
-      v9 = [(MapsUIDiffableDataSourceOutlineNodeSnapshot *)v6 viewModel];
-      v10 = v9;
-      if (v9 == self->_viewModel || [(MapsUIDiffableDataSourceViewModel *)v9 isEqual:?])
+      viewModel = [(MapsUIDiffableDataSourceOutlineNodeSnapshot *)v6 viewModel];
+      v10 = viewModel;
+      if (viewModel == self->_viewModel || [(MapsUIDiffableDataSourceViewModel *)viewModel isEqual:?])
       {
-        v11 = [(MapsUIDiffableDataSourceOutlineNodeSnapshot *)v6 childSnapshots];
-        v12 = v11;
-        v13 = (v11 == self->_childSnapshots || [(NSArray *)v11 isEqual:?]) && self->_expanded == [(MapsUIDiffableDataSourceOutlineNodeSnapshot *)v6 expanded];
+        childSnapshots = [(MapsUIDiffableDataSourceOutlineNodeSnapshot *)v6 childSnapshots];
+        v12 = childSnapshots;
+        v13 = (childSnapshots == self->_childSnapshots || [(NSArray *)childSnapshots isEqual:?]) && self->_expanded == [(MapsUIDiffableDataSourceOutlineNodeSnapshot *)v6 expanded];
       }
 
       else
@@ -182,30 +182,30 @@ LABEL_6:
   return v13;
 }
 
-- (MapsUIDiffableDataSourceOutlineNodeSnapshot)initWithIdentifierPath:(id)a3 viewModel:(id)a4 childSnapshots:(id)a5 expanded:(BOOL)a6
+- (MapsUIDiffableDataSourceOutlineNodeSnapshot)initWithIdentifierPath:(id)path viewModel:(id)model childSnapshots:(id)snapshots expanded:(BOOL)expanded
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = v12;
-  v14 = 0;
-  if (v10 && v11 && v12)
+  pathCopy = path;
+  modelCopy = model;
+  snapshotsCopy = snapshots;
+  v13 = snapshotsCopy;
+  selfCopy = 0;
+  if (pathCopy && modelCopy && snapshotsCopy)
   {
     v34.receiver = self;
     v34.super_class = MapsUIDiffableDataSourceOutlineNodeSnapshot;
     self = [(MapsUIDiffableDataSourceOutlineNodeSnapshot *)&v34 init];
     if (self)
     {
-      v15 = [v10 copy];
+      v15 = [pathCopy copy];
       identifierPath = self->_identifierPath;
       self->_identifierPath = v15;
 
-      objc_storeStrong(&self->_viewModel, a4);
+      objc_storeStrong(&self->_viewModel, model);
       v17 = [v13 copy];
       childSnapshots = self->_childSnapshots;
       self->_childSnapshots = v17;
 
-      self->_expanded = a6;
+      self->_expanded = expanded;
       if ([(NSArray *)self->_childSnapshots count])
       {
         v19 = [(IdentifierPath *)self->_identifierPath length];
@@ -223,7 +223,7 @@ LABEL_6:
         if (v23 != [(NSArray *)self->_childSnapshots count])
         {
 
-          v14 = 0;
+          selfCopy = 0;
           goto LABEL_11;
         }
 
@@ -243,12 +243,12 @@ LABEL_6:
     }
 
     self = self;
-    v14 = self;
+    selfCopy = self;
   }
 
 LABEL_11:
 
-  return v14;
+  return selfCopy;
 }
 
 @end

@@ -1,5 +1,5 @@
 @interface CRLGradientFillAccessibility
-+ (id)crlaxCastFrom:(id)a3;
++ (id)crlaxCastFrom:(id)from;
 - (NSArray)_crlaxGradientStops;
 - (NSArray)crlaxApproximateColorStopNames;
 - (NSString)crlaxGradientTypeDescription;
@@ -9,25 +9,25 @@
 
 @implementation CRLGradientFillAccessibility
 
-+ (id)crlaxCastFrom:(id)a3
++ (id)crlaxCastFrom:(id)from
 {
-  v3 = a3;
+  fromCopy = from;
   v4 = objc_opt_class();
-  v5 = __CRLAccessibilityCastAsSafeCategory(v4, v3, 0, 0);
+  v5 = __CRLAccessibilityCastAsSafeCategory(v4, fromCopy, 0, 0);
 
   return v5;
 }
 
 - (NSString)crlaxGradientTypeDescription
 {
-  v2 = [(CRLGradientFillAccessibility *)self _crlaxGradientType];
-  if (!v2)
+  _crlaxGradientType = [(CRLGradientFillAccessibility *)self _crlaxGradientType];
+  if (!_crlaxGradientType)
   {
     v3 = @"Linear gradient";
     goto LABEL_5;
   }
 
-  if (v2 == 1)
+  if (_crlaxGradientType == 1)
   {
     v3 = @"Radial gradient";
 LABEL_5:
@@ -50,8 +50,8 @@ LABEL_7:
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v4 = [(CRLGradientFillAccessibility *)self _crlaxGradientStops];
-  v5 = [v4 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  _crlaxGradientStops = [(CRLGradientFillAccessibility *)self _crlaxGradientStops];
+  v5 = [_crlaxGradientStops countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v5)
   {
     v6 = v5;
@@ -62,7 +62,7 @@ LABEL_7:
       {
         if (*v19 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(_crlaxGradientStops);
         }
 
         v9 = *(*(&v18 + 1) + 8 * i);
@@ -77,16 +77,16 @@ LABEL_7:
 
         v13 = v12;
 
-        v14 = [v13 crlaxColor];
-        v15 = [v14 crlaxStyleInfoDescription];
+        crlaxColor = [v13 crlaxColor];
+        crlaxStyleInfoDescription = [crlaxColor crlaxStyleInfoDescription];
 
-        if ([v15 length])
+        if ([crlaxStyleInfoDescription length])
         {
-          [v3 addObject:v15];
+          [v3 addObject:crlaxStyleInfoDescription];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v6 = [_crlaxGradientStops countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v6);
@@ -100,30 +100,30 @@ LABEL_7:
   v3 = +[NSBundle mainBundle];
   v4 = [v3 localizedStringForKey:@"to" value:0 table:0];
 
-  v5 = [(CRLGradientFillAccessibility *)self crlaxApproximateColorStopNames];
+  crlaxApproximateColorStopNames = [(CRLGradientFillAccessibility *)self crlaxApproximateColorStopNames];
   v6 = [NSString stringWithFormat:@" %@ ", v4];
-  v7 = [v5 componentsJoinedByString:v6];
+  v7 = [crlaxApproximateColorStopNames componentsJoinedByString:v6];
 
-  v8 = [(CRLGradientFillAccessibility *)self crlaxGradientTypeDescription];
-  v15 = __CRLAccessibilityStringForVariables(1, v8, v9, v10, v11, v12, v13, v14, v7);
+  crlaxGradientTypeDescription = [(CRLGradientFillAccessibility *)self crlaxGradientTypeDescription];
+  v15 = __CRLAccessibilityStringForVariables(1, crlaxGradientTypeDescription, v9, v10, v11, v12, v13, v14, v7);
 
   return v15;
 }
 
 - (NSArray)_crlaxGradientStops
 {
-  v2 = [(CRLGradientFillAccessibility *)self crlaxTarget];
-  v3 = [v2 gradientStops];
+  crlaxTarget = [(CRLGradientFillAccessibility *)self crlaxTarget];
+  gradientStops = [crlaxTarget gradientStops];
 
-  return v3;
+  return gradientStops;
 }
 
 - (unint64_t)_crlaxGradientType
 {
-  v2 = [(CRLGradientFillAccessibility *)self crlaxTarget];
-  v3 = [v2 gradientType];
+  crlaxTarget = [(CRLGradientFillAccessibility *)self crlaxTarget];
+  gradientType = [crlaxTarget gradientType];
 
-  return v3;
+  return gradientType;
 }
 
 @end

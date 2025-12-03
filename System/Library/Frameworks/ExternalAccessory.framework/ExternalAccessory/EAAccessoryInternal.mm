@@ -1,8 +1,8 @@
 @interface EAAccessoryInternal
 - (EAAccessoryInternal)init;
-- (void)addSession:(id)a3;
+- (void)addSession:(id)session;
 - (void)dealloc;
-- (void)removeSession:(id)a3;
+- (void)removeSession:(id)session;
 @end
 
 @implementation EAAccessoryInternal
@@ -54,7 +54,7 @@ id __27__EAAccessoryInternal_init__block_invoke()
   [(EAAccessoryInternal *)&v3 dealloc];
 }
 
-- (void)addSession:(id)a3
+- (void)addSession:(id)session
 {
   sessionsList = self->_sessionsList;
   if (!sessionsList)
@@ -63,12 +63,12 @@ id __27__EAAccessoryInternal_init__block_invoke()
     self->_sessionsList = sessionsList;
   }
 
-  [(NSMutableArray *)sessionsList addObject:a3];
+  [(NSMutableArray *)sessionsList addObject:session];
 }
 
-- (void)removeSession:(id)a3
+- (void)removeSession:(id)session
 {
-  [(NSMutableArray *)self->_sessionsList removeObject:a3];
+  [(NSMutableArray *)self->_sessionsList removeObject:session];
   if (![(NSMutableArray *)self->_sessionsList count])
   {
 

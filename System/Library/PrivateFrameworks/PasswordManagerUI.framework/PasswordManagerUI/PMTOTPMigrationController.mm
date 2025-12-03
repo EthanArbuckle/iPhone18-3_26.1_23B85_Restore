@@ -1,20 +1,20 @@
 @interface PMTOTPMigrationController
-- (PMTOTPMigrationController)initWithMigrationURL:(id)a3;
+- (PMTOTPMigrationController)initWithMigrationURL:(id)l;
 - (PMTOTPMigrationControllerDelegate)delegate;
-- (void)totpMigrationController:(id)a3 presentDetailsForSavedAccount:(id)a4;
-- (void)totpMigrationController:(id)a3 presentPickerForGenerator:(id)a4;
-- (void)totpMigrationControllerFinishedImport:(id)a3;
+- (void)totpMigrationController:(id)controller presentDetailsForSavedAccount:(id)account;
+- (void)totpMigrationController:(id)controller presentPickerForGenerator:(id)generator;
+- (void)totpMigrationControllerFinishedImport:(id)import;
 @end
 
 @implementation PMTOTPMigrationController
 
-- (PMTOTPMigrationController)initWithMigrationURL:(id)a3
+- (PMTOTPMigrationController)initWithMigrationURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v10.receiver = self;
   v10.super_class = PMTOTPMigrationController;
   v5 = [(PMTOTPMigrationController *)&v10 init];
-  if (v5 && (v6 = [[_TtC17PasswordManagerUI26_PMTOTPMigrationController alloc] initWithMigrationURL:v4 delegate:v5], controller = v5->_controller, v5->_controller = v6, controller, v5->_controller))
+  if (v5 && (v6 = [[_TtC17PasswordManagerUI26_PMTOTPMigrationController alloc] initWithMigrationURL:lCopy delegate:v5], controller = v5->_controller, v5->_controller = v6, controller, v5->_controller))
   {
     v8 = v5;
   }
@@ -27,7 +27,7 @@
   return v8;
 }
 
-- (void)totpMigrationControllerFinishedImport:(id)a3
+- (void)totpMigrationControllerFinishedImport:(id)import
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
@@ -36,23 +36,23 @@
   }
 }
 
-- (void)totpMigrationController:(id)a3 presentDetailsForSavedAccount:(id)a4
+- (void)totpMigrationController:(id)controller presentDetailsForSavedAccount:(id)account
 {
-  v6 = a4;
+  accountCopy = account;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained totpMigrationController:self presentDetailsForSavedAccount:v6];
+    [WeakRetained totpMigrationController:self presentDetailsForSavedAccount:accountCopy];
   }
 }
 
-- (void)totpMigrationController:(id)a3 presentPickerForGenerator:(id)a4
+- (void)totpMigrationController:(id)controller presentPickerForGenerator:(id)generator
 {
-  v6 = a4;
+  generatorCopy = generator;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained totpMigrationController:self presentPickerForGenerator:v6];
+    [WeakRetained totpMigrationController:self presentPickerForGenerator:generatorCopy];
   }
 }
 

@@ -1,18 +1,18 @@
 @interface PLTimedDispatchGroup
-- (PLTimedDispatchGroup)initWithQueue:(id)a3 name:(id)a4 defaultTimeout:(double)a5;
+- (PLTimedDispatchGroup)initWithQueue:(id)queue name:(id)name defaultTimeout:(double)timeout;
 - (id)defaultPreferredResult;
 - (id)description;
-- (id)enterWithTimeout:(double)a3 name:(id)a4;
-- (void)notify:(id)a3;
+- (id)enterWithTimeout:(double)timeout name:(id)name;
+- (void)notify:(id)notify;
 @end
 
 @implementation PLTimedDispatchGroup
 
-- (void)notify:(id)a3
+- (void)notify:(id)notify
 {
-  v4 = a3;
+  notifyCopy = notify;
   v5 = +[PLConcurrencyLimiter sharedLimiter];
-  [v5 groupNotify:self->_group queue:self->_queue block:v4];
+  [v5 groupNotify:self->_group queue:self->_queue block:notifyCopy];
 }
 
 - (id)defaultPreferredResult
@@ -22,7 +22,7 @@
   v23 = 3221225472;
   v24 = __46__PLTimedDispatchGroup_defaultPreferredResult__block_invoke;
   v25 = &unk_1E75787F8;
-  v26 = self;
+  selfCopy = self;
   v2 = PLSafeResultWithUnfairLock();
   v18 = 0u;
   v19 = 0u;
@@ -35,8 +35,8 @@
   }
 
   v4 = v3;
-  v5 = 0;
-  v6 = 0;
+  result3 = 0;
+  result = 0;
   v7 = *v19;
   do
   {
@@ -50,20 +50,20 @@
       v9 = *(*(&v18 + 1) + 8 * i);
       if ([v9 didTimeout])
       {
-        if (!v6)
+        if (!result)
         {
-          v6 = [v9 result];
+          result = [v9 result];
         }
       }
 
       else
       {
-        v10 = [v9 result];
-        v11 = [v10 isFailure];
+        result2 = [v9 result];
+        isFailure = [result2 isFailure];
 
-        if (v11)
+        if (isFailure)
         {
-          v12 = v5 == 0;
+          v12 = result3 == 0;
         }
 
         else
@@ -73,7 +73,7 @@
 
         if (v12)
         {
-          v5 = [v9 result];
+          result3 = [v9 result];
         }
       }
     }
@@ -82,8 +82,8 @@
   }
 
   while (v4);
-  v13 = v5;
-  if (v5 || (v13 = v6) != 0)
+  v13 = result3;
+  if (result3 || (v13 = result) != 0)
   {
     v14 = v13;
   }
@@ -92,20 +92,20 @@
   {
 LABEL_20:
     v15 = MEMORY[0x1E69BF2D0];
-    v16 = [MEMORY[0x1E695DFB0] null];
-    v14 = [v15 successWithResult:v16];
+    null = [MEMORY[0x1E695DFB0] null];
+    v14 = [v15 successWithResult:null];
 
-    v5 = 0;
-    v6 = 0;
+    result3 = 0;
+    result = 0;
   }
 
   return v14;
 }
 
-- (id)enterWithTimeout:(double)a3 name:(id)a4
+- (id)enterWithTimeout:(double)timeout name:(id)name
 {
-  v6 = a4;
-  v7 = [[PLTimedDispatchGroupEnterSession alloc] initWithGroup:self->_group queue:self->_queue timeout:v6 name:a3];
+  nameCopy = name;
+  v7 = [[PLTimedDispatchGroupEnterSession alloc] initWithGroup:self->_group queue:self->_queue timeout:nameCopy name:timeout];
 
   [(PLTimedDispatchGroupEnterSession *)v7 enter];
   v10 = v7;
@@ -125,10 +125,10 @@ LABEL_20:
   return v6;
 }
 
-- (PLTimedDispatchGroup)initWithQueue:(id)a3 name:(id)a4 defaultTimeout:(double)a5
+- (PLTimedDispatchGroup)initWithQueue:(id)queue name:(id)name defaultTimeout:(double)timeout
 {
-  v9 = a3;
-  v10 = a4;
+  queueCopy = queue;
+  nameCopy = name;
   v19.receiver = self;
   v19.super_class = PLTimedDispatchGroup;
   v11 = [(PLTimedDispatchGroup *)&v19 init];
@@ -138,17 +138,17 @@ LABEL_20:
     group = v11->_group;
     v11->_group = v12;
 
-    objc_storeStrong(&v11->_queue, a3);
+    objc_storeStrong(&v11->_queue, queue);
     v11->_lock._os_unfair_lock_opaque = 0;
     v14 = objc_alloc_init(MEMORY[0x1E695DF70]);
     lock_sessions = v11->_lock_sessions;
     v11->_lock_sessions = v14;
 
-    v16 = [v10 copy];
+    v16 = [nameCopy copy];
     name = v11->_name;
     v11->_name = v16;
 
-    v11->_defaultTimeout = a5;
+    v11->_defaultTimeout = timeout;
   }
 
   return v11;

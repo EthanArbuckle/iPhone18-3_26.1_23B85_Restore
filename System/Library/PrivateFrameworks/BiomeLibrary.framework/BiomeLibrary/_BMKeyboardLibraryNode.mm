@@ -2,7 +2,7 @@
 + (id)TokenFrequency;
 + (id)configurationForTokenFrequency;
 + (id)storeConfigurationForTokenFrequency;
-+ (id)streamWithName:(id)a3;
++ (id)streamWithName:(id)name;
 + (id)validKeyPaths;
 @end
 
@@ -11,7 +11,7 @@
 + (id)TokenFrequency
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForTokenFrequency];
+  configurationForTokenFrequency = [self configurationForTokenFrequency];
   v3 = +[BMKeyboardTokenFrequency columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -23,7 +23,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"Keyboard.TokenFrequency" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Keyboard.TokenFrequency" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Keyboard.TokenFrequency" schema:v9 configuration:configurationForTokenFrequency];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -41,8 +41,8 @@
 + (id)configurationForTokenFrequency
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v3 = [a1 storeConfigurationForTokenFrequency];
-  v4 = [a1 syncPolicyForTokenFrequency];
+  storeConfigurationForTokenFrequency = [self storeConfigurationForTokenFrequency];
+  syncPolicyForTokenFrequency = [self syncPolicyForTokenFrequency];
   v5 = objc_alloc(MEMORY[0x1E698F330]);
   v6 = [MEMORY[0x1E696AE18] predicateWithFormat:@"TRUEPREDICATE" argumentArray:0];
   v7 = [v5 initWithIdentifier:@"reset-keyboard-dictionary" predicate:v6];
@@ -53,26 +53,26 @@
   v10 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"BEABFE23-3CF1-4646-BD17-7437ED3ABF9B"];
   BYTE2(v14) = 1;
   LOWORD(v14) = 1;
-  v11 = [v9 _libraryStreamConfigurationWithUUID:v10 streamIdentifier:@"Keyboard.TokenFrequency" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v14 enableSubscriptionSubstream:0 enableTombstoneSubstream:v8 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v11 = [v9 _libraryStreamConfigurationWithUUID:v10 streamIdentifier:@"Keyboard.TokenFrequency" eventClass:objc_opt_class() storeConfig:storeConfigurationForTokenFrequency syncPolicy:syncPolicyForTokenFrequency legacyNames:0 internalMetadata:0 enableSubscriptions:v14 enableSubscriptionSubstream:0 enableTombstoneSubstream:v8 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   v12 = *MEMORY[0x1E69E9840];
 
   return v11;
 }
 
-+ (id)streamWithName:(id)a3
++ (id)streamWithName:(id)name
 {
-  if ([a3 isEqualToString:@"TokenFrequency"])
+  if ([name isEqualToString:@"TokenFrequency"])
   {
-    v4 = [a1 TokenFrequency];
+    tokenFrequency = [self TokenFrequency];
   }
 
   else
   {
-    v4 = 0;
+    tokenFrequency = 0;
   }
 
-  return v4;
+  return tokenFrequency;
 }
 
 + (id)validKeyPaths

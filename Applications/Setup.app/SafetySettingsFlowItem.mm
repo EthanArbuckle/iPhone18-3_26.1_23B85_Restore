@@ -2,11 +2,11 @@
 + (id)cloudConfigSkipKey;
 - (BYRunState)runState;
 - (BuddySafetySettingsUIProvider)safetySettingsUIProvider;
-- (void)navigationController:(id)a3 willShowViewController:(id)a4 operation:(int64_t)a5 animated:(BOOL)a6;
-- (void)performExtendedInitializationWithCompletion:(id)a3;
-- (void)safetySettingsPresenterSessionDidFinishWithViewControllersToRemove:(id)a3;
-- (void)setNavigationController:(id)a3;
-- (void)startFlowItem:(BOOL)a3;
+- (void)navigationController:(id)controller willShowViewController:(id)viewController operation:(int64_t)operation animated:(BOOL)animated;
+- (void)performExtendedInitializationWithCompletion:(id)completion;
+- (void)safetySettingsPresenterSessionDidFinishWithViewControllersToRemove:(id)remove;
+- (void)setNavigationController:(id)controller;
+- (void)startFlowItem:(BOOL)item;
 @end
 
 @implementation SafetySettingsFlowItem
@@ -33,19 +33,19 @@
   return v2;
 }
 
-- (void)setNavigationController:(id)a3
+- (void)setNavigationController:(id)controller
 {
   v4 = *(&self->super.isa + OBJC_IVAR____TtC5Setup22SafetySettingsFlowItem_navigationController);
-  *(&self->super.isa + OBJC_IVAR____TtC5Setup22SafetySettingsFlowItem_navigationController) = a3;
-  v3 = a3;
+  *(&self->super.isa + OBJC_IVAR____TtC5Setup22SafetySettingsFlowItem_navigationController) = controller;
+  controllerCopy = controller;
 }
 
-- (void)performExtendedInitializationWithCompletion:(id)a3
+- (void)performExtendedInitializationWithCompletion:(id)completion
 {
   v5 = sub_100006410(&qword_1003A0110);
   __chkstk_darwin(v5 - 8);
   v7 = &v14 - v6;
-  v8 = _Block_copy(a3);
+  v8 = _Block_copy(completion);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
   *(v9 + 24) = self;
@@ -61,19 +61,19 @@
   v12[3] = 0;
   v12[4] = &unk_100297310;
   v12[5] = v11;
-  v13 = self;
+  selfCopy = self;
   sub_100063A28(0, 0, v7, &unk_1002979A0, v12);
 }
 
-- (void)startFlowItem:(BOOL)a3
+- (void)startFlowItem:(BOOL)item
 {
-  v3 = self;
+  selfCopy = self;
   sub_10005B3A0();
 }
 
-- (void)safetySettingsPresenterSessionDidFinishWithViewControllersToRemove:(id)a3
+- (void)safetySettingsPresenterSessionDidFinishWithViewControllersToRemove:(id)remove
 {
-  if (a3)
+  if (remove)
   {
     sub_10005AE0C();
     v4 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
@@ -84,15 +84,15 @@
     v4 = 0;
   }
 
-  v5 = self;
+  selfCopy = self;
   sub_10005A9EC(v4);
 }
 
-- (void)navigationController:(id)a3 willShowViewController:(id)a4 operation:(int64_t)a5 animated:(BOOL)a6
+- (void)navigationController:(id)controller willShowViewController:(id)viewController operation:(int64_t)operation animated:(BOOL)animated
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = self;
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  selfCopy = self;
   sub_10005B650();
 }
 

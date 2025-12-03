@@ -1,13 +1,13 @@
 @interface EKFoundInAppsEventTracker
-+ (void)trackPseudoEventsExpired:(int)a3;
++ (void)trackPseudoEventsExpired:(int)expired;
 @end
 
 @implementation EKFoundInAppsEventTracker
 
-+ (void)trackPseudoEventsExpired:(int)a3
++ (void)trackPseudoEventsExpired:(int)expired
 {
   v7[1] = *MEMORY[0x1E69E9840];
-  if (a3 >= 1)
+  if (expired >= 1)
   {
     v6 = @"count";
     v3 = [MEMORY[0x1E696AD98] numberWithInt:?];

@@ -1,24 +1,24 @@
 @interface IEEvent
-+ (id)normalizeUtterance:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (IEEvent)initWithId:(id)a3;
-- (IEEvent)initWithId:(id)a3 withName:(id)a4;
-- (IEEvent)initWithName:(id)a3;
-- (IEEvent)initWithName:(id)a3 withId:(id)a4;
++ (id)normalizeUtterance:(id)utterance;
+- (BOOL)isEqual:(id)equal;
+- (IEEvent)initWithId:(id)id;
+- (IEEvent)initWithId:(id)id withName:(id)name;
+- (IEEvent)initWithName:(id)name;
+- (IEEvent)initWithName:(id)name withId:(id)id;
 @end
 
 @implementation IEEvent
 
-- (IEEvent)initWithName:(id)a3
+- (IEEvent)initWithName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   v11.receiver = self;
   v11.super_class = IEEvent;
   v6 = [(IEEvent *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_name, a3);
+    objc_storeStrong(&v6->_name, name);
     eventId = v7->_eventId;
     v7->_eventId = &stru_28671CC40;
 
@@ -29,18 +29,18 @@
   return v7;
 }
 
-- (IEEvent)initWithName:(id)a3 withId:(id)a4
+- (IEEvent)initWithName:(id)name withId:(id)id
 {
-  v7 = a3;
-  v8 = a4;
+  nameCopy = name;
+  idCopy = id;
   v13.receiver = self;
   v13.super_class = IEEvent;
   v9 = [(IEEvent *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_name, a3);
-    objc_storeStrong(&v10->_eventId, a4);
+    objc_storeStrong(&v9->_name, name);
+    objc_storeStrong(&v10->_eventId, id);
     slots = v10->_slots;
     v10->_slots = MEMORY[0x277CBEC10];
   }
@@ -48,9 +48,9 @@
   return v10;
 }
 
-- (IEEvent)initWithId:(id)a3
+- (IEEvent)initWithId:(id)id
 {
-  v5 = a3;
+  idCopy = id;
   v11.receiver = self;
   v11.super_class = IEEvent;
   v6 = [(IEEvent *)&v11 init];
@@ -60,7 +60,7 @@
     name = v6->_name;
     v6->_name = &stru_28671CC40;
 
-    objc_storeStrong(&v7->_eventId, a3);
+    objc_storeStrong(&v7->_eventId, id);
     slots = v7->_slots;
     v7->_slots = MEMORY[0x277CBEC10];
   }
@@ -68,18 +68,18 @@
   return v7;
 }
 
-- (IEEvent)initWithId:(id)a3 withName:(id)a4
+- (IEEvent)initWithId:(id)id withName:(id)name
 {
-  v7 = a3;
-  v8 = a4;
+  idCopy = id;
+  nameCopy = name;
   v13.receiver = self;
   v13.super_class = IEEvent;
   v9 = [(IEEvent *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_name, a4);
-    objc_storeStrong(&v10->_eventId, a3);
+    objc_storeStrong(&v9->_name, name);
+    objc_storeStrong(&v10->_eventId, id);
     slots = v10->_slots;
     v10->_slots = MEMORY[0x277CBEC10];
   }
@@ -87,14 +87,14 @@
   return v10;
 }
 
-+ (id)normalizeUtterance:(id)a3
++ (id)normalizeUtterance:(id)utterance
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  utteranceCopy = utterance;
+  v4 = utteranceCopy;
+  if (utteranceCopy)
   {
-    v5 = [v3 UTF8String];
-    v6 = strlen(v5);
+    uTF8String = [utteranceCopy UTF8String];
+    v6 = strlen(uTF8String);
     if (v6 >= 0x7FFFFFFFFFFFFFF8)
     {
       std::string::__throw_length_error[abi:ne200100]();
@@ -109,7 +109,7 @@
     *(&__dst.__r_.__value_.__s + 23) = v6;
     if (v6)
     {
-      memmove(&__dst, v5, v6);
+      memmove(&__dst, uTF8String, v6);
     }
 
     __dst.__r_.__value_.__s.__data_[v7] = 0;
@@ -144,67 +144,67 @@
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  equalCopy = equal;
+  if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    if (self == v4)
+    if (self == equalCopy)
     {
       v25 = 1;
     }
 
     else
     {
-      v5 = v4;
-      v6 = [(IEEvent *)self name];
-      v7 = [(IEEvent *)v5 name];
-      v8 = [v6 isEqualToString:v7];
+      v5 = equalCopy;
+      name = [(IEEvent *)self name];
+      name2 = [(IEEvent *)v5 name];
+      v8 = [name isEqualToString:name2];
 
       if ((v8 & 1) == 0)
       {
         goto LABEL_14;
       }
 
-      v9 = [(IEEvent *)self eventId];
-      v10 = [(IEEvent *)v5 eventId];
-      v11 = [v9 isEqualToString:v10];
+      eventId = [(IEEvent *)self eventId];
+      eventId2 = [(IEEvent *)v5 eventId];
+      v11 = [eventId isEqualToString:eventId2];
 
       if ((v11 & 1) == 0)
       {
         goto LABEL_14;
       }
 
-      v12 = [(IEEvent *)self slots];
-      v13 = [(IEEvent *)v5 slots];
-      v14 = [v12 isEqualToDictionary:v13];
+      slots = [(IEEvent *)self slots];
+      slots2 = [(IEEvent *)v5 slots];
+      v14 = [slots isEqualToDictionary:slots2];
 
       if ((v14 & 1) == 0)
       {
         goto LABEL_14;
       }
 
-      v15 = [(IEEvent *)self producer];
-      v16 = [(IEEvent *)v5 producer];
-      v17 = [v15 isEqual:v16];
+      producer = [(IEEvent *)self producer];
+      producer2 = [(IEEvent *)v5 producer];
+      v17 = [producer isEqual:producer2];
 
       if ((v17 & 1) == 0)
       {
         goto LABEL_14;
       }
 
-      v18 = [(IEEvent *)self parsers];
-      v19 = [v18 count];
-      v20 = [(IEEvent *)v5 parsers];
-      v21 = [v20 count];
+      parsers = [(IEEvent *)self parsers];
+      v19 = [parsers count];
+      parsers2 = [(IEEvent *)v5 parsers];
+      v21 = [parsers2 count];
 
       if (v19 == v21)
       {
         v22 = 0;
         do
         {
-          v23 = [(IEEvent *)self parsers];
-          v24 = [v23 count];
+          parsers3 = [(IEEvent *)self parsers];
+          v24 = [parsers3 count];
 
           v25 = v24 <= v22;
           if (v24 <= v22)
@@ -212,10 +212,10 @@
             break;
           }
 
-          v26 = [(IEEvent *)self parsers];
-          v27 = [v26 objectAtIndex:v22];
-          v28 = [(IEEvent *)v5 parsers];
-          v29 = [v28 objectAtIndex:v22];
+          parsers4 = [(IEEvent *)self parsers];
+          v27 = [parsers4 objectAtIndex:v22];
+          parsers5 = [(IEEvent *)v5 parsers];
+          v29 = [parsers5 objectAtIndex:v22];
           v30 = [v27 isEqual:v29];
 
           ++v22;

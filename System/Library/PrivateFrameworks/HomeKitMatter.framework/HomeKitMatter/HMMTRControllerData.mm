@@ -1,6 +1,6 @@
 @interface HMMTRControllerData
 + (id)logCategory;
-- (HMMTRControllerData)initWithFabric:(id)a3;
+- (HMMTRControllerData)initWithFabric:(id)fabric;
 - (HMMTRDeviceControllerStorageDataSource)privateDataSource;
 - (HMMTRFabric)fabric;
 - (id)attributeDescriptions;
@@ -18,13 +18,13 @@
 
 - (id)attributeDescriptions
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v4 = objc_alloc(MEMORY[0x277D0F778]);
-  v5 = [(HMMTRControllerData *)self nodeID];
-  v6 = [v4 initWithName:@"Controller Node ID" value:v5];
-  [v3 addObject:v6];
+  nodeID = [(HMMTRControllerData *)self nodeID];
+  v6 = [v4 initWithName:@"Controller Node ID" value:nodeID];
+  [array addObject:v6];
 
-  v7 = [v3 copy];
+  v7 = [array copy];
 
   return v7;
 }
@@ -32,8 +32,8 @@
 - (id)logIdentifier
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(HMMTRControllerData *)self nodeID];
-  v4 = [v2 stringWithFormat:@"%@", v3];
+  nodeID = [(HMMTRControllerData *)self nodeID];
+  v4 = [v2 stringWithFormat:@"%@", nodeID];
 
   return v4;
 }
@@ -44,10 +44,10 @@
   privateDataSource = self->_privateDataSource;
   if (!privateDataSource)
   {
-    v4 = [(HMMTRControllerData *)self fabric];
-    v5 = [v4 delegate];
-    v6 = [(HMMTRControllerData *)self nodeID];
-    v7 = [v5 privateDataSourceForNode:v6];
+    fabric = [(HMMTRControllerData *)self fabric];
+    delegate = [fabric delegate];
+    nodeID = [(HMMTRControllerData *)self nodeID];
+    v7 = [delegate privateDataSourceForNode:nodeID];
     v8 = self->_privateDataSource;
     self->_privateDataSource = v7;
 
@@ -60,9 +60,9 @@
   return v9;
 }
 
-- (HMMTRControllerData)initWithFabric:(id)a3
+- (HMMTRControllerData)initWithFabric:(id)fabric
 {
-  v4 = a3;
+  fabricCopy = fabric;
   v9.receiver = self;
   v9.super_class = HMMTRControllerData;
   v5 = [(HMMTRControllerData *)&v9 init];
@@ -70,7 +70,7 @@
   if (v5)
   {
     v5->_lock._os_unfair_lock_opaque = 0;
-    objc_storeWeak(&v5->_fabric, v4);
+    objc_storeWeak(&v5->_fabric, fabricCopy);
     privateDataSource = v6->_privateDataSource;
     v6->_privateDataSource = 0;
   }

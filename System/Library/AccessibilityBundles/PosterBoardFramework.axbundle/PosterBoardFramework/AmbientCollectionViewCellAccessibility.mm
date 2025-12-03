@@ -1,24 +1,24 @@
 @interface AmbientCollectionViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (id)axSetHideOrDeleteButtonLabel:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (id)axSetHideOrDeleteButtonLabel:(id)label;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)layoutSubviews;
 @end
 
 @implementation AmbientCollectionViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PosterBoard.AmbientCollectionViewCell" isKindOfClass:@"UIView"];
-  [v3 validateClass:@"PREditingHideButton"];
-  [v3 validateClass:@"PosterBoard.AmbientCollectionViewCell" hasSwiftField:@"hideOrDeleteButton" withSwiftType:"Optional<PREditingCloseBoxButton>"];
-  [v3 validateClass:@"PosterBoard.AmbientCollectionViewCell" hasSwiftField:@"editingButton" withSwiftType:"Optional<UIButton>"];
-  [v3 validateClass:@"PREditingHideButton"];
-  [v3 validateClass:@"PREditingHideButton" isKindOfClass:@"UIButton"];
-  [v3 validateClass:@"PosterBoard.AmbientCollectionViewCell" hasSwiftField:@"ambientPosterViewController" withSwiftType:"Optional<PRUISAmbientPosterViewController>"];
-  [v3 validateClass:@"PRUISAmbientPosterViewController" hasInstanceVariable:@"_configuration" withType:"PRSPosterConfiguration"];
-  [v3 validateClass:@"PRSPosterConfiguration" hasInstanceMethod:@"providerBundleIdentifier" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PosterBoard.AmbientCollectionViewCell" isKindOfClass:@"UIView"];
+  [validationsCopy validateClass:@"PREditingHideButton"];
+  [validationsCopy validateClass:@"PosterBoard.AmbientCollectionViewCell" hasSwiftField:@"hideOrDeleteButton" withSwiftType:"Optional<PREditingCloseBoxButton>"];
+  [validationsCopy validateClass:@"PosterBoard.AmbientCollectionViewCell" hasSwiftField:@"editingButton" withSwiftType:"Optional<UIButton>"];
+  [validationsCopy validateClass:@"PREditingHideButton"];
+  [validationsCopy validateClass:@"PREditingHideButton" isKindOfClass:@"UIButton"];
+  [validationsCopy validateClass:@"PosterBoard.AmbientCollectionViewCell" hasSwiftField:@"ambientPosterViewController" withSwiftType:"Optional<PRUISAmbientPosterViewController>"];
+  [validationsCopy validateClass:@"PRUISAmbientPosterViewController" hasInstanceVariable:@"_configuration" withType:"PRSPosterConfiguration"];
+  [validationsCopy validateClass:@"PRSPosterConfiguration" hasInstanceMethod:@"providerBundleIdentifier" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -107,9 +107,9 @@ id __84__AmbientCollectionViewCellAccessibility__accessibilityLoadAccessibilityI
   return v2;
 }
 
-- (id)axSetHideOrDeleteButtonLabel:(id)a3
+- (id)axSetHideOrDeleteButtonLabel:(id)label
 {
-  v4 = a3;
+  labelCopy = label;
   v5 = [(AmbientCollectionViewCellAccessibility *)self safeSwiftValueForKey:@"posterModel"];
   v6 = [v5 safeSwiftStringForKey:@"localizedTitle"];
 
@@ -127,7 +127,7 @@ id __84__AmbientCollectionViewCellAccessibility__accessibilityLoadAccessibilityI
 
   if (isKindOfClass)
   {
-    v9 = [v4 safeBoolForKey:@"isSelected"];
+    v9 = [labelCopy safeBoolForKey:@"isSelected"];
     v10 = MEMORY[0x29EDBA0F8];
     if (v9)
     {

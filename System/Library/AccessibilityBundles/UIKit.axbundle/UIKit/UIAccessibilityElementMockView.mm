@@ -2,86 +2,86 @@
 - (BOOL)_accessibilityCanPerformEscapeAction;
 - (BOOL)_accessibilityScrollToVisible;
 - (BOOL)accessibilityRespondsToUserInteraction;
-- (BOOL)accessibilityScroll:(int64_t)a3;
+- (BOOL)accessibilityScroll:(int64_t)scroll;
 - (BOOL)becomeFirstResponder;
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
 - (CGPoint)_accessibilityMaxScrubberPosition;
 - (CGPoint)_accessibilityMinScrubberPosition;
 - (CGPoint)accessibilityActivationPoint;
-- (CGRect)_accessibilityBoundsForRange:(_NSRange)a3;
+- (CGRect)_accessibilityBoundsForRange:(_NSRange)range;
 - (CGRect)accessibilityFrame;
-- (_NSRange)_accessibilityCharacterRangeForPosition:(unint64_t)a3;
-- (_NSRange)_accessibilityLineRangeForPosition:(unint64_t)a3;
-- (_NSRange)_accessibilityRangeForLineNumberAndColumn:(id)a3;
+- (_NSRange)_accessibilityCharacterRangeForPosition:(unint64_t)position;
+- (_NSRange)_accessibilityLineRangeForPosition:(unint64_t)position;
+- (_NSRange)_accessibilityRangeForLineNumberAndColumn:(id)column;
 - (_NSRange)_accessibilitySelectedTextRange;
 - (_NSRange)_accessibilityVisibleTextRange;
 - (_NSRange)accessibilityRowRange;
 - (double)_accessibilityMaxValue;
 - (double)_accessibilityMinValue;
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event;
 - (id)description;
 - (id)setDelegate:(id *)result;
-- (int64_t)accessibilityCompareGeometry:(id)a3;
-- (int64_t)indexOfAccessibilityElement:(id)a3;
+- (int64_t)accessibilityCompareGeometry:(id)geometry;
+- (int64_t)indexOfAccessibilityElement:(id)element;
 - (uint64_t)setSubviewIndex:(uint64_t)result;
 - (uint64_t)subviewIndex;
 - (uint64_t)view;
 - (unint64_t)accessibilityTraits;
-- (void)_accessibilitySetValue:(id)a3;
+- (void)_accessibilitySetValue:(id)value;
 - (void)dealloc;
 - (void)revalidate;
-- (void)setAccessibilityContainer:(id)a3;
-- (void)setView:(id *)a1;
+- (void)setAccessibilityContainer:(id)container;
+- (void)setView:(id *)view;
 @end
 
 @implementation UIAccessibilityElementMockView
 
-- (void)setView:(id *)a1
+- (void)setView:(id *)view
 {
-  v5 = a1;
+  viewCopy = view;
   location = 0;
   objc_storeStrong(&location, a2);
-  if (v5)
+  if (viewCopy)
   {
-    [v5[8] setAccessibilityContainer:?];
+    [viewCopy[8] setAccessibilityContainer:?];
     [location setAccessibilityContainer:0];
-    objc_storeStrong(v5 + 8, location);
-    v2 = v5[8];
-    v3 = [v5 accessibilityContainer];
+    objc_storeStrong(viewCopy + 8, location);
+    v2 = viewCopy[8];
+    accessibilityContainer = [viewCopy accessibilityContainer];
     [v2 setAccessibilityContainer:?];
-    MEMORY[0x29EDC9740](v3);
+    MEMORY[0x29EDC9740](accessibilityContainer);
   }
 
   objc_storeStrong(&location, 0);
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  v9 = self;
+  selfCopy = self;
   v8 = a2;
-  v7 = a3;
+  actionCopy = action;
   location = 0;
-  objc_storeStrong(&location, a4);
-  v5 = [(UIView *)v9->_view canPerformAction:v7 withSender:location];
+  objc_storeStrong(&location, sender);
+  v5 = [(UIView *)selfCopy->_view canPerformAction:actionCopy withSender:location];
   objc_storeStrong(&location, 0);
   return v5;
 }
 
-- (void)_accessibilitySetValue:(id)a3
+- (void)_accessibilitySetValue:(id)value
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(UIView *)v4->_view _accessibilitySetValue:location[0]];
+  objc_storeStrong(location, value);
+  [(UIView *)selfCopy->_view _accessibilitySetValue:location[0]];
   objc_storeStrong(location, 0);
 }
 
-- (BOOL)accessibilityScroll:(int64_t)a3
+- (BOOL)accessibilityScroll:(int64_t)scroll
 {
-  v13 = self;
+  selfCopy = self;
   v12 = a2;
-  v11 = a3;
+  scrollCopy = scroll;
   v10 = 0;
   location = MEMORY[0x29EDC9748](self->_view);
   while (1)
@@ -102,30 +102,30 @@
       break;
     }
 
-    v10 = [location accessibilityScroll:v11];
+    v10 = [location accessibilityScroll:scrollCopy];
     if (v10 & 1) == 0 && (objc_opt_respondsToSelector())
     {
-      if (v11 == 1)
+      if (scrollCopy == 1)
       {
         v8 = 3;
       }
 
-      else if (v11 == 2)
+      else if (scrollCopy == 2)
       {
         v8 = 2;
       }
 
       else
       {
-        v8 = v11 == 4;
+        v8 = scrollCopy == 4;
       }
 
       v10 = [location _accessibilityScrollPageInDirection:v8];
     }
 
-    v3 = [location superview];
+    superview = [location superview];
     v4 = location;
-    location = v3;
+    location = superview;
     MEMORY[0x29EDC9740](v4);
   }
 
@@ -139,14 +139,14 @@
   return v6 & 1;
 }
 
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event
 {
-  v8 = a3;
-  v7 = self;
+  testCopy = test;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a4);
-  v5 = [(UIView *)v7->_view _accessibilityHitTest:location[0] withEvent:v8.x, v8.y];
+  objc_storeStrong(location, event);
+  v5 = [(UIView *)selfCopy->_view _accessibilityHitTest:location[0] withEvent:testCopy.x, testCopy.y];
   objc_storeStrong(location, 0);
 
   return v5;
@@ -154,24 +154,24 @@
 
 - (void)revalidate
 {
-  v7 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
     v1 = AXRetainAutorelease();
-    WeakRetained = objc_loadWeakRetained((v7 + 48));
+    WeakRetained = objc_loadWeakRetained((selfCopy + 48));
     MEMORY[0x29EDC9740](WeakRetained);
     if (WeakRetained)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        location = [*(v7 + 64) superview];
-        if (!location || ([*(v7 + 64) isHiddenOrHasHiddenAncestor] & 1) != 0)
+        location = [*(selfCopy + 64) superview];
+        if (!location || ([*(selfCopy + 64) isHiddenOrHasHiddenAncestor] & 1) != 0)
         {
-          [*(v7 + 64) setAccessibilityContainer:{0x2A1792000uLL, 0}];
-          objc_storeStrong((v7 + *(v2 + 3184)), obj);
-          v4 = objc_loadWeakRetained((v7 + 48));
-          [v4 updateMockView:v7];
+          [*(selfCopy + 64) setAccessibilityContainer:{0x2A1792000uLL, 0}];
+          objc_storeStrong((selfCopy + *(v2 + 3184)), obj);
+          v4 = objc_loadWeakRetained((selfCopy + 48));
+          [v4 updateMockView:selfCopy];
           MEMORY[0x29EDC9740](v4);
         }
 
@@ -180,7 +180,7 @@
 
       else
       {
-        objc_storeStrong((v7 + 64), 0);
+        objc_storeStrong((selfCopy + 64), 0);
       }
     }
   }
@@ -189,9 +189,9 @@
 - (_NSRange)accessibilityRowRange
 {
   [(UIAccessibilityElementMockView *)self revalidate];
-  v2 = [(UIView *)self->_view accessibilityRowRange];
+  accessibilityRowRange = [(UIView *)self->_view accessibilityRowRange];
   result.length = v3;
-  result.location = v2;
+  result.location = accessibilityRowRange;
   return result;
 }
 
@@ -215,20 +215,20 @@
   [(UIView *)self->_view accessibilityActivationPoint];
   *&v11 = v2;
   *(&v11 + 1) = v3;
-  v10 = [(UIView *)self->_view superview];
-  *&v4 = MEMORY[0x29EDC9740](v10).n128_u64[0];
-  if (v10)
+  superview = [(UIView *)self->_view superview];
+  *&v4 = MEMORY[0x29EDC9740](superview).n128_u64[0];
+  if (superview)
   {
     v13 = v11;
   }
 
   else
   {
-    v9 = [(UIAccessibilityElementMockView *)self accessibilityContainer];
-    [v9 accessibilityActivationPoint];
+    accessibilityContainer = [(UIAccessibilityElementMockView *)self accessibilityContainer];
+    [accessibilityContainer accessibilityActivationPoint];
     *&v13 = v5;
     *(&v13 + 1) = v6;
-    MEMORY[0x29EDC9740](v9);
+    MEMORY[0x29EDC9740](accessibilityContainer);
   }
 
   v8 = *(&v13 + 1);
@@ -248,15 +248,15 @@
   *(&v15 + 1) = *&v16.size.height;
   if (CGRectIsEmpty(v16))
   {
-    v10 = [(UIAccessibilityElementMockView *)self accessibilityContainer];
-    [v10 accessibilityFrame];
+    accessibilityContainer = [(UIAccessibilityElementMockView *)self accessibilityContainer];
+    [accessibilityContainer accessibilityFrame];
     *&v11 = v2;
     *(&v11 + 1) = v3;
     *&v12 = v4;
     *(&v12 + 1) = v5;
     v14 = v11;
     v15 = v12;
-    MEMORY[0x29EDC9740](v10);
+    MEMORY[0x29EDC9740](accessibilityContainer);
   }
 
   v7 = *(&v14 + 1);
@@ -272,28 +272,28 @@
 
 - (unint64_t)accessibilityTraits
 {
-  v7 = self;
+  selfCopy = self;
   v6 = a2;
   [(UIAccessibilityElementMockView *)self revalidate];
-  v4.receiver = v7;
+  v4.receiver = selfCopy;
   v4.super_class = UIAccessibilityElementMockView;
-  v5 = [(UIAccessibilityElementMockView *)&v4 accessibilityTraits];
-  v3 = v5;
-  return v3 | [(UIView *)v7->_view accessibilityTraits];
+  accessibilityTraits = [(UIAccessibilityElementMockView *)&v4 accessibilityTraits];
+  v3 = accessibilityTraits;
+  return v3 | [(UIView *)selfCopy->_view accessibilityTraits];
 }
 
 - (BOOL)_accessibilityScrollToVisible
 {
-  v7 = self;
+  selfCopy = self;
   v6 = a2;
   v4 = [(UIAccessibilityElementMockView *)self _accessibilityAncestorIsKindOf:objc_opt_class()];
   *&v2 = MEMORY[0x29EDC9740](v4).n128_u64[0];
   if (!v4)
   {
-    return [(UIView *)v7->_view _accessibilityScrollToVisible]& 1;
+    return [(UIView *)selfCopy->_view _accessibilityScrollToVisible]& 1;
   }
 
-  v5.receiver = v7;
+  v5.receiver = selfCopy;
   v5.super_class = UIAccessibilityElementMockView;
   return [(UIAccessibilityElementMockView *)&v5 _accessibilityScrollToVisible];
 }
@@ -360,47 +360,47 @@
   }
 }
 
-- (void)setAccessibilityContainer:(id)a3
+- (void)setAccessibilityContainer:(id)container
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3.receiver = v5;
+  objc_storeStrong(location, container);
+  v3.receiver = selfCopy;
   v3.super_class = UIAccessibilityElementMockView;
   [(UIAccessibilityElementMockView *)&v3 setAccessibilityContainer:location[0]];
-  [(UIView *)v5->_view setAccessibilityContainer:location[0]];
+  [(UIView *)selfCopy->_view setAccessibilityContainer:location[0]];
   objc_storeStrong(location, 0);
 }
 
 - (void)dealloc
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   [(UIView *)self->_view setAccessibilityContainer:0];
-  v2.receiver = v4;
+  v2.receiver = selfCopy;
   v2.super_class = UIAccessibilityElementMockView;
   [(UIAccessibilityElementMockView *)&v2 dealloc];
 }
 
-- (int64_t)accessibilityCompareGeometry:(id)a3
+- (int64_t)accessibilityCompareGeometry:(id)geometry
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v4 = [(UIView *)v6->_view accessibilityCompareGeometry:location[0]];
+  objc_storeStrong(location, geometry);
+  v4 = [(UIView *)selfCopy->_view accessibilityCompareGeometry:location[0]];
   objc_storeStrong(location, 0);
   return v4;
 }
 
 - (id)description
 {
-  v11 = self;
+  selfCopy = self;
   v10[1] = a2;
   v10[0] = MEMORY[0x29EDC9748](self->_view);
   v9 = [MEMORY[0x29EDBA0F8] stringWithFormat:@"$%@$", v10[0]];
-  v7.receiver = v11;
+  v7.receiver = selfCopy;
   v7.super_class = UIAccessibilityElementMockView;
   location = [(UIAccessibilityElementMockView *)&v7 description];
   v5 = MEMORY[0x29EDBA0F8];
@@ -424,14 +424,14 @@
   return v3;
 }
 
-- (int64_t)indexOfAccessibilityElement:(id)a3
+- (int64_t)indexOfAccessibilityElement:(id)element
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(UIAccessibilityElementMockView *)v6 revalidate];
-  v4 = [(UIView *)v6->_view indexOfAccessibilityElement:location[0]];
+  objc_storeStrong(location, element);
+  [(UIAccessibilityElementMockView *)selfCopy revalidate];
+  v4 = [(UIView *)selfCopy->_view indexOfAccessibilityElement:location[0]];
   objc_storeStrong(location, 0);
   return v4;
 }
@@ -439,19 +439,19 @@
 - (BOOL)accessibilityRespondsToUserInteraction
 {
   [(UIAccessibilityElementMockView *)self revalidate];
-  v4 = 0;
-  v2 = [(UIAccessibilityElementMockView *)self accessibilityTraits];
-  if ((v2 & *MEMORY[0x29EDC7578]) == 0)
+  accessibilityRespondsToUserInteraction = 0;
+  accessibilityTraits = [(UIAccessibilityElementMockView *)self accessibilityTraits];
+  if ((accessibilityTraits & *MEMORY[0x29EDC7578]) == 0)
   {
-    v4 = [(UIView *)self->_view accessibilityRespondsToUserInteraction];
+    accessibilityRespondsToUserInteraction = [(UIView *)self->_view accessibilityRespondsToUserInteraction];
   }
 
-  return v4 & 1;
+  return accessibilityRespondsToUserInteraction & 1;
 }
 
-- (CGRect)_accessibilityBoundsForRange:(_NSRange)a3
+- (CGRect)_accessibilityBoundsForRange:(_NSRange)range
 {
-  [(UIView *)self->_view _accessibilityBoundsForRange:a3.location, a3.length, a2, self, a3.location, a3.length];
+  [(UIView *)self->_view _accessibilityBoundsForRange:range.location, range.length, a2, self, range.location, range.length];
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -459,29 +459,29 @@
   return result;
 }
 
-- (_NSRange)_accessibilityCharacterRangeForPosition:(unint64_t)a3
+- (_NSRange)_accessibilityCharacterRangeForPosition:(unint64_t)position
 {
-  v3 = [(UIView *)self->_view _accessibilityCharacterRangeForPosition:a3];
+  v3 = [(UIView *)self->_view _accessibilityCharacterRangeForPosition:position];
   result.length = v4;
   result.location = v3;
   return result;
 }
 
-- (_NSRange)_accessibilityLineRangeForPosition:(unint64_t)a3
+- (_NSRange)_accessibilityLineRangeForPosition:(unint64_t)position
 {
-  v3 = [(UIView *)self->_view _accessibilityLineRangeForPosition:a3];
+  v3 = [(UIView *)self->_view _accessibilityLineRangeForPosition:position];
   result.length = v4;
   result.location = v3;
   return result;
 }
 
-- (_NSRange)_accessibilityRangeForLineNumberAndColumn:(id)a3
+- (_NSRange)_accessibilityRangeForLineNumberAndColumn:(id)column
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v8 = [(UIView *)v7->_view _accessibilityRangeForLineNumberAndColumn:location[0]];
+  objc_storeStrong(location, column);
+  v8 = [(UIView *)selfCopy->_view _accessibilityRangeForLineNumberAndColumn:location[0]];
   v9 = v3;
   objc_storeStrong(location, 0);
   v4 = v8;
@@ -503,9 +503,9 @@
 
 - (uint64_t)subviewIndex
 {
-  if (a1)
+  if (self)
   {
-    return *(a1 + 56);
+    return *(self + 56);
   }
 
   else
@@ -526,9 +526,9 @@
 
 - (uint64_t)view
 {
-  if (a1)
+  if (self)
   {
-    return *(a1 + 64);
+    return *(self + 64);
   }
 
   else

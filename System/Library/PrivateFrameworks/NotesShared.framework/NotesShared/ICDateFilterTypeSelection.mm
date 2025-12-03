@@ -1,14 +1,14 @@
 @interface ICDateFilterTypeSelection
 + (NSDateFormatter)shortDateFormatter;
 + (id)keyPathsForValuesAffectingIsEmpty;
-+ (id)relativeRangeStringComponentsForSelectionType:(unint64_t)a3 number:(id)a4;
-+ (id)relativeRangeSummaryForSelectionType:(unint64_t)a3 amount:(unint64_t)a4;
-+ (id)relativeRangeSummaryForSelectionType:(unint64_t)a3 number:(id)a4;
++ (id)relativeRangeStringComponentsForSelectionType:(unint64_t)type number:(id)number;
++ (id)relativeRangeSummaryForSelectionType:(unint64_t)type amount:(unint64_t)amount;
++ (id)relativeRangeSummaryForSelectionType:(unint64_t)type number:(id)number;
 - (BOOL)isEmpty;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToDateFilterSelection:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToDateFilterSelection:(id)selection;
 - (BOOL)isValid;
-- (ICDateFilterTypeSelection)initWithSelectionType:(unint64_t)a3;
+- (ICDateFilterTypeSelection)initWithSelectionType:(unint64_t)type;
 - (NSDate)primaryDate;
 - (NSDate)secondaryDate;
 - (NSDictionary)relativeRangeTimeIntervalOptions;
@@ -17,27 +17,27 @@
 - (NSString)relativeRangeAmountAndTimeInterval;
 - (NSString)relativeRangeLabel;
 - (NSString)secondaryDateSummary;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
 - (id)rawFilterValue;
 - (id)relativeRangeTimeIntervalString;
 - (unint64_t)hash;
 - (unint64_t)relativeRangeSelectionType;
-- (void)setPrimaryDate:(id)a3;
-- (void)setRelativeRangeTimeInterval:(double)a3;
-- (void)setSecondaryDate:(id)a3;
-- (void)setSelectionType:(unint64_t)a3;
-- (void)setSpecificDateRangeFrom:(id)a3 to:(id)a4;
+- (void)setPrimaryDate:(id)date;
+- (void)setRelativeRangeTimeInterval:(double)interval;
+- (void)setSecondaryDate:(id)date;
+- (void)setSelectionType:(unint64_t)type;
+- (void)setSpecificDateRangeFrom:(id)from to:(id)to;
 - (void)updateDatesForCurrentSelectionType;
 @end
 
 @implementation ICDateFilterTypeSelection
 
-+ (id)relativeRangeSummaryForSelectionType:(unint64_t)a3 amount:(unint64_t)a4
++ (id)relativeRangeSummaryForSelectionType:(unint64_t)type amount:(unint64_t)amount
 {
-  if (a3 > 2)
+  if (type > 2)
   {
-    switch(a3)
+    switch(type)
     {
       case 3uLL:
         v6 = MEMORY[0x277CCACA8];
@@ -58,10 +58,10 @@
 
   else
   {
-    switch(a3)
+    switch(type)
     {
       case 0uLL:
-        v4 = __ICLocalizedFrameworkString_impl(@"Unknown", @"Unknown", 0, 1);
+        amount = __ICLocalizedFrameworkString_impl(@"Unknown", @"Unknown", 0, 1);
         goto LABEL_15;
       case 1uLL:
         v6 = MEMORY[0x277CCACA8];
@@ -77,19 +77,19 @@
   }
 
   v8 = __ICLocalizedFrameworkString_impl(v7, v7, 0, 1);
-  v4 = [v6 localizedStringWithFormat:v8, a4];
+  amount = [v6 localizedStringWithFormat:v8, amount];
 
 LABEL_15:
 
-  return v4;
+  return amount;
 }
 
-+ (id)relativeRangeSummaryForSelectionType:(unint64_t)a3 number:(id)a4
++ (id)relativeRangeSummaryForSelectionType:(unint64_t)type number:(id)number
 {
-  v6 = [a4 longValue];
-  if (a3 > 2)
+  longValue = [number longValue];
+  if (type > 2)
   {
-    switch(a3)
+    switch(type)
     {
       case 3uLL:
         v7 = MEMORY[0x277CCACA8];
@@ -110,7 +110,7 @@ LABEL_15:
 
   else
   {
-    switch(a3)
+    switch(type)
     {
       case 0uLL:
         v4 = __ICLocalizedFrameworkString_impl(@"Unknown", @"Unknown", 0, 1);
@@ -129,21 +129,21 @@ LABEL_15:
   }
 
   v9 = __ICLocalizedFrameworkString_impl(v8, v8, 0, 1);
-  v4 = [v7 localizedStringWithFormat:v9, v6];
+  v4 = [v7 localizedStringWithFormat:v9, longValue];
 
 LABEL_15:
 
   return v4;
 }
 
-+ (id)relativeRangeStringComponentsForSelectionType:(unint64_t)a3 number:(id)a4
++ (id)relativeRangeStringComponentsForSelectionType:(unint64_t)type number:(id)number
 {
-  v5 = a4;
-  v6 = [ICDateFilterTypeSelection relativeRangeSummaryForSelectionType:a3 number:v5];
+  numberCopy = number;
+  v6 = [ICDateFilterTypeSelection relativeRangeSummaryForSelectionType:type number:numberCopy];
   v7 = MEMORY[0x277CCACA8];
-  v8 = [v5 unsignedIntegerValue];
+  unsignedIntegerValue = [numberCopy unsignedIntegerValue];
 
-  v9 = [v7 localizedStringWithFormat:@"%lu", v8];
+  v9 = [v7 localizedStringWithFormat:@"%lu", unsignedIntegerValue];
   v10 = [v6 componentsSeparatedByString:v9];
 
   return v10;
@@ -173,31 +173,31 @@ uint64_t __47__ICDateFilterTypeSelection_shortDateFormatter__block_invoke()
   return [v2 setTimeStyle:0];
 }
 
-- (ICDateFilterTypeSelection)initWithSelectionType:(unint64_t)a3
+- (ICDateFilterTypeSelection)initWithSelectionType:(unint64_t)type
 {
   v5.receiver = self;
   v5.super_class = ICDateFilterTypeSelection;
   result = [(ICDateFilterTypeSelection *)&v5 init];
   if (result)
   {
-    result->_selectionType = a3;
+    result->_selectionType = type;
   }
 
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[ICDateFilterTypeSelection allocWithZone:](ICDateFilterTypeSelection initWithSelectionType:"initWithSelectionType:", [(ICDateFilterTypeSelection *)self selectionType]];
-  v6 = [(ICDateFilterTypeSelection *)self primaryDate];
-  [(ICDateFilterTypeSelection *)v5 setPrimaryDate:v6];
+  primaryDate = [(ICDateFilterTypeSelection *)self primaryDate];
+  [(ICDateFilterTypeSelection *)v5 setPrimaryDate:primaryDate];
 
-  v7 = [(ICDateFilterTypeSelection *)self secondaryDate];
-  [(ICDateFilterTypeSelection *)v5 setSecondaryDate:v7];
+  secondaryDate = [(ICDateFilterTypeSelection *)self secondaryDate];
+  [(ICDateFilterTypeSelection *)v5 setSecondaryDate:secondaryDate];
 
   [(ICDateFilterTypeSelection *)v5 setRelativeRangeSelectionType:[(ICDateFilterTypeSelection *)self relativeRangeSelectionType]];
-  v8 = [(ICDateFilterTypeSelection *)self relativeRangeAmount];
-  v9 = [v8 copyWithZone:a3];
+  relativeRangeAmount = [(ICDateFilterTypeSelection *)self relativeRangeAmount];
+  v9 = [relativeRangeAmount copyWithZone:zone];
   [(ICDateFilterTypeSelection *)v5 setRelativeRangeAmount:v9];
 
   return v5;
@@ -205,9 +205,9 @@ uint64_t __47__ICDateFilterTypeSelection_shortDateFormatter__block_invoke()
 
 - (NSDate)primaryDate
 {
-  v3 = [(ICDateFilterTypeSelection *)self selectionType];
+  selectionType = [(ICDateFilterTypeSelection *)self selectionType];
   v4 = 0;
-  if (v3 <= 0xA && ((1 << v3) & 0x740) != 0)
+  if (selectionType <= 0xA && ((1 << selectionType) & 0x740) != 0)
   {
     v4 = self->_primaryDate;
   }
@@ -215,19 +215,19 @@ uint64_t __47__ICDateFilterTypeSelection_shortDateFormatter__block_invoke()
   return v4;
 }
 
-- (void)setPrimaryDate:(id)a3
+- (void)setPrimaryDate:(id)date
 {
-  objc_storeStrong(&self->_primaryDate, a3);
+  objc_storeStrong(&self->_primaryDate, date);
 
   [(ICDateFilterTypeSelection *)self updateDatesForCurrentSelectionType];
 }
 
-- (void)setRelativeRangeTimeInterval:(double)a3
+- (void)setRelativeRangeTimeInterval:(double)interval
 {
   [(ICDateFilterTypeSelection *)self setSelectionType:7];
-  if (__ROR8__(0xEEEEEEEEEEEEEEEFLL * a3, 2) <= 0x444444444444444uLL)
+  if (__ROR8__(0xEEEEEEEEEEEEEEEFLL * interval, 2) <= 0x444444444444444uLL)
   {
-    v5 = (a3 / 60.0);
+    v5 = (interval / 60.0);
   }
 
   else
@@ -279,19 +279,19 @@ uint64_t __47__ICDateFilterTypeSelection_shortDateFormatter__block_invoke()
   if (v7 >= 0x16D && !(v7 % 0x16D))
   {
     [(ICDateFilterTypeSelection *)self setRelativeRangeSelectionType:5];
-    v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v7 / 0x16D];
-    [(ICDateFilterTypeSelection *)self setRelativeRangeAmount:v11];
+    0x16D = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v7 / 0x16D];
+    [(ICDateFilterTypeSelection *)self setRelativeRangeAmount:0x16D];
 
     if (v10 > 0x16C)
     {
       return;
     }
 
-    v12 = self;
+    selfCopy6 = self;
     v13 = 5;
 LABEL_28:
 
-    [(ICDateFilterTypeSelection *)v12 setSelectionType:v13];
+    [(ICDateFilterTypeSelection *)selfCopy6 setSelectionType:v13];
     return;
   }
 
@@ -303,7 +303,7 @@ LABEL_28:
 
     if (v9 == 3)
     {
-      v12 = self;
+      selfCopy6 = self;
       v13 = 4;
     }
 
@@ -314,7 +314,7 @@ LABEL_28:
         return;
       }
 
-      v12 = self;
+      selfCopy6 = self;
       v13 = 3;
     }
 
@@ -332,7 +332,7 @@ LABEL_28:
       return;
     }
 
-    v12 = self;
+    selfCopy6 = self;
     v13 = 2;
     goto LABEL_28;
   }
@@ -345,7 +345,7 @@ LABEL_28:
 
     if (v7 == 2)
     {
-      v12 = self;
+      selfCopy6 = self;
       v13 = 1;
     }
 
@@ -356,7 +356,7 @@ LABEL_28:
         return;
       }
 
-      v12 = self;
+      selfCopy6 = self;
       v13 = 0;
     }
 
@@ -368,49 +368,49 @@ LABEL_28:
   [(ICDateFilterTypeSelection *)self setRelativeRangeAmount:v17];
 }
 
-- (void)setSpecificDateRangeFrom:(id)a3 to:(id)a4
+- (void)setSpecificDateRangeFrom:(id)from to:(id)to
 {
-  v17 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277CBEAA8] distantPast];
-  [v17 timeIntervalSinceDate:v7];
+  fromCopy = from;
+  toCopy = to;
+  distantPast = [MEMORY[0x277CBEAA8] distantPast];
+  [fromCopy timeIntervalSinceDate:distantPast];
   v9 = v8;
 
   if (v9 == 0.0)
   {
-    v10 = self;
+    selfCopy4 = self;
     v11 = 9;
 LABEL_3:
-    [(ICDateFilterTypeSelection *)v10 setSelectionType:v11];
-    v12 = self;
-    v13 = v6;
+    [(ICDateFilterTypeSelection *)selfCopy4 setSelectionType:v11];
+    selfCopy3 = self;
+    v13 = toCopy;
 LABEL_6:
-    [(ICDateFilterTypeSelection *)v12 setPrimaryDate:v13];
+    [(ICDateFilterTypeSelection *)selfCopy3 setPrimaryDate:v13];
     goto LABEL_7;
   }
 
-  v14 = [MEMORY[0x277CBEAA8] distantFuture];
-  [v6 timeIntervalSinceDate:v14];
+  distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
+  [toCopy timeIntervalSinceDate:distantFuture];
   v16 = v15;
 
   if (v16 == 0.0)
   {
     [(ICDateFilterTypeSelection *)self setSelectionType:10];
-    v12 = self;
-    v13 = v17;
+    selfCopy3 = self;
+    v13 = fromCopy;
     goto LABEL_6;
   }
 
-  if ([v17 ic_isSameDayAsDate:v6])
+  if ([fromCopy ic_isSameDayAsDate:toCopy])
   {
-    v10 = self;
+    selfCopy4 = self;
     v11 = 8;
     goto LABEL_3;
   }
 
   [(ICDateFilterTypeSelection *)self setSelectionType:6];
-  [(ICDateFilterTypeSelection *)self setPrimaryDate:v17];
-  [(ICDateFilterTypeSelection *)self setSecondaryDate:v6];
+  [(ICDateFilterTypeSelection *)self setPrimaryDate:fromCopy];
+  [(ICDateFilterTypeSelection *)self setSecondaryDate:toCopy];
 LABEL_7:
 }
 
@@ -422,26 +422,26 @@ LABEL_7:
   return secondaryDate;
 }
 
-- (void)setSecondaryDate:(id)a3
+- (void)setSecondaryDate:(id)date
 {
-  v7 = a3;
-  objc_storeStrong(&self->_secondaryDate, a3);
+  dateCopy = date;
+  objc_storeStrong(&self->_secondaryDate, date);
   if ([(ICDateFilterTypeSelection *)self selectionType]== 6)
   {
-    v5 = [(ICDateFilterTypeSelection *)self primaryDate];
-    v6 = [v7 ic_isEarlierThanDate:v5];
+    primaryDate = [(ICDateFilterTypeSelection *)self primaryDate];
+    v6 = [dateCopy ic_isEarlierThanDate:primaryDate];
 
     if (v6)
     {
-      [(ICDateFilterTypeSelection *)self setPrimaryDate:v7];
+      [(ICDateFilterTypeSelection *)self setPrimaryDate:dateCopy];
     }
   }
 }
 
-- (void)setSelectionType:(unint64_t)a3
+- (void)setSelectionType:(unint64_t)type
 {
-  self->_selectionType = a3;
-  if (a3 < 6)
+  self->_selectionType = type;
+  if (type < 6)
   {
     [(ICDateFilterTypeSelection *)self setPrimaryDate:0];
 LABEL_4:
@@ -449,12 +449,12 @@ LABEL_4:
     goto LABEL_5;
   }
 
-  if (a3 - 9 < 2)
+  if (type - 9 < 2)
   {
     goto LABEL_4;
   }
 
-  if (a3 == 7 && ![(ICDateFilterTypeSelection *)self relativeRangeSelectionType])
+  if (type == 7 && ![(ICDateFilterTypeSelection *)self relativeRangeSelectionType])
   {
     self->_relativeRangeSelectionType = 1;
   }
@@ -466,10 +466,10 @@ LABEL_5:
 
 - (NSNumber)relativeRangeAmount
 {
-  v3 = [(ICDateFilterTypeSelection *)self selectionType];
-  if (v3 > 3)
+  selectionType = [(ICDateFilterTypeSelection *)self selectionType];
+  if (selectionType > 3)
   {
-    switch(v3)
+    switch(selectionType)
     {
       case 4:
         v6 = &unk_282747B80;
@@ -490,17 +490,17 @@ LABEL_5:
   {
     v4 = &unk_282747B50;
     v5 = &unk_282747B68;
-    if (v3 != 3)
+    if (selectionType != 3)
     {
       v5 = 0;
     }
 
-    if (v3 != 2)
+    if (selectionType != 2)
     {
       v4 = v5;
     }
 
-    if (v3)
+    if (selectionType)
     {
       v6 = v4;
     }
@@ -529,34 +529,34 @@ LABEL_5:
 
 - (NSString)primaryDateSummary
 {
-  v3 = [(ICDateFilterTypeSelection *)self selectionType];
+  selectionType = [(ICDateFilterTypeSelection *)self selectionType];
   v4 = 0;
-  if (v3 > 5)
+  if (selectionType > 5)
   {
-    if (v3 <= 7)
+    if (selectionType <= 7)
     {
-      if (v3 != 6)
+      if (selectionType != 6)
       {
-        v11 = [(ICDateFilterTypeSelection *)self relativeRangeSelectionType];
-        v12 = [(ICDateFilterTypeSelection *)self relativeRangeAmount];
-        v4 = +[ICDateFilterTypeSelection relativeRangeSummaryForSelectionType:amount:](ICDateFilterTypeSelection, "relativeRangeSummaryForSelectionType:amount:", v11, [v12 intValue]);
+        relativeRangeSelectionType = [(ICDateFilterTypeSelection *)self relativeRangeSelectionType];
+        relativeRangeAmount = [(ICDateFilterTypeSelection *)self relativeRangeAmount];
+        v4 = +[ICDateFilterTypeSelection relativeRangeSummaryForSelectionType:amount:](ICDateFilterTypeSelection, "relativeRangeSummaryForSelectionType:amount:", relativeRangeSelectionType, [relativeRangeAmount intValue]);
 
         goto LABEL_22;
       }
 
-      v7 = [objc_opt_class() shortDateFormatter];
-      v13 = [(ICDateFilterTypeSelection *)self primaryDate];
-      v4 = [v7 stringFromDate:v13];
+      shortDateFormatter = [objc_opt_class() shortDateFormatter];
+      primaryDate = [(ICDateFilterTypeSelection *)self primaryDate];
+      v4 = [shortDateFormatter stringFromDate:primaryDate];
     }
 
     else
     {
-      switch(v3)
+      switch(selectionType)
       {
         case 8:
-          v17 = [objc_opt_class() shortDateFormatter];
-          v18 = [(ICDateFilterTypeSelection *)self primaryDate];
-          v7 = [v17 stringFromDate:v18];
+          shortDateFormatter2 = [objc_opt_class() shortDateFormatter];
+          primaryDate2 = [(ICDateFilterTypeSelection *)self primaryDate];
+          shortDateFormatter = [shortDateFormatter2 stringFromDate:primaryDate2];
 
           objc_opt_class();
           isKindOfClass = objc_opt_isKindOfClass();
@@ -573,9 +573,9 @@ LABEL_5:
 
           break;
         case 9:
-          v14 = [objc_opt_class() shortDateFormatter];
-          v15 = [(ICDateFilterTypeSelection *)self primaryDate];
-          v7 = [v14 stringFromDate:v15];
+          shortDateFormatter3 = [objc_opt_class() shortDateFormatter];
+          primaryDate3 = [(ICDateFilterTypeSelection *)self primaryDate];
+          shortDateFormatter = [shortDateFormatter3 stringFromDate:primaryDate3];
 
           objc_opt_class();
           v16 = objc_opt_isKindOfClass();
@@ -592,9 +592,9 @@ LABEL_5:
 
           break;
         case 10:
-          v5 = [objc_opt_class() shortDateFormatter];
-          v6 = [(ICDateFilterTypeSelection *)self primaryDate];
-          v7 = [v5 stringFromDate:v6];
+          shortDateFormatter4 = [objc_opt_class() shortDateFormatter];
+          primaryDate4 = [(ICDateFilterTypeSelection *)self primaryDate];
+          shortDateFormatter = [shortDateFormatter4 stringFromDate:primaryDate4];
 
           objc_opt_class();
           v8 = objc_opt_isKindOfClass();
@@ -615,11 +615,11 @@ LABEL_5:
       }
 
       v20 = __ICLocalizedFrameworkString_impl(v10, v10, 0, 1);
-      v4 = [v9 localizedStringWithFormat:v20, v7];
+      v4 = [v9 localizedStringWithFormat:v20, shortDateFormatter];
     }
   }
 
-  else if (v3 < 6)
+  else if (selectionType < 6)
   {
     v4 = ICLocalizedStringFromICDateFilterSelectionType([(ICDateFilterTypeSelection *)self selectionType]);
   }
@@ -631,12 +631,12 @@ LABEL_22:
 
 - (NSString)secondaryDateSummary
 {
-  v3 = [(ICDateFilterTypeSelection *)self secondaryDate];
-  if (v3)
+  secondaryDate = [(ICDateFilterTypeSelection *)self secondaryDate];
+  if (secondaryDate)
   {
-    v4 = [objc_opt_class() shortDateFormatter];
-    v5 = [(ICDateFilterTypeSelection *)self secondaryDate];
-    v6 = [v4 stringFromDate:v5];
+    shortDateFormatter = [objc_opt_class() shortDateFormatter];
+    secondaryDate2 = [(ICDateFilterTypeSelection *)self secondaryDate];
+    v6 = [shortDateFormatter stringFromDate:secondaryDate2];
   }
 
   else
@@ -647,18 +647,18 @@ LABEL_22:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ICDateFilterTypeSelection *)self isEqualToDateFilterSelection:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ICDateFilterTypeSelection *)self isEqualToDateFilterSelection:v5];
   }
 
   return v6;
@@ -668,29 +668,29 @@ LABEL_22:
 {
   v3 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[ICDateFilterTypeSelection selectionType](self, "selectionType")}];
   v22 = [v3 hash];
-  v4 = [(ICDateFilterTypeSelection *)self primaryDate];
-  v5 = [v4 hash];
+  primaryDate = [(ICDateFilterTypeSelection *)self primaryDate];
+  v5 = [primaryDate hash];
   LOBYTE(v6) = v5;
   if (!v5)
   {
-    v7 = [MEMORY[0x277CBEB68] null];
-    v6 = [v7 hash];
+    null = [MEMORY[0x277CBEB68] null];
+    v6 = [null hash];
   }
 
-  v8 = [(ICDateFilterTypeSelection *)self secondaryDate];
-  if (![v8 hash])
+  secondaryDate = [(ICDateFilterTypeSelection *)self secondaryDate];
+  if (![secondaryDate hash])
   {
-    v9 = [MEMORY[0x277CBEB68] null];
-    [v9 hash];
+    null2 = [MEMORY[0x277CBEB68] null];
+    [null2 hash];
   }
 
   v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[ICDateFilterTypeSelection relativeRangeSelectionType](self, "relativeRangeSelectionType")}];
   [v10 hash];
-  v11 = [(ICDateFilterTypeSelection *)self relativeRangeAmount];
-  if (![v11 hash])
+  relativeRangeAmount = [(ICDateFilterTypeSelection *)self relativeRangeAmount];
+  if (![relativeRangeAmount hash])
   {
-    v19 = [MEMORY[0x277CBEB68] null];
-    [v19 hash];
+    null3 = [MEMORY[0x277CBEB68] null];
+    [null3 hash];
   }
 
   v20 = ICHashWithHashKeys(v22, v12, v13, v14, v15, v16, v17, v18, v6);
@@ -702,33 +702,33 @@ LABEL_22:
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = NSStringFromICDateFilterSelectionType([(ICDateFilterTypeSelection *)self selectionType]);
-  v5 = [(ICDateFilterTypeSelection *)self primaryDate];
-  v6 = [(ICDateFilterTypeSelection *)self secondaryDate];
-  v7 = [(ICDateFilterTypeSelection *)self relativeRangeAmount];
-  v8 = [(ICDateFilterTypeSelection *)self relativeRangeSelectionType];
-  if (v8 - 1 > 4)
+  primaryDate = [(ICDateFilterTypeSelection *)self primaryDate];
+  secondaryDate = [(ICDateFilterTypeSelection *)self secondaryDate];
+  relativeRangeAmount = [(ICDateFilterTypeSelection *)self relativeRangeAmount];
+  relativeRangeSelectionType = [(ICDateFilterTypeSelection *)self relativeRangeSelectionType];
+  if (relativeRangeSelectionType - 1 > 4)
   {
     v9 = @"Unknown";
   }
 
   else
   {
-    v9 = off_278196078[v8 - 1];
+    v9 = off_278196078[relativeRangeSelectionType - 1];
   }
 
-  v10 = [v3 stringWithFormat:@"%@\n%@ - %@\n%@ %@", v4, v5, v6, v7, v9];
+  v10 = [v3 stringWithFormat:@"%@\n%@ - %@\n%@ %@", v4, primaryDate, secondaryDate, relativeRangeAmount, v9];
 
   return v10;
 }
 
 - (NSString)relativeRangeLabel
 {
-  v3 = [(ICDateFilterTypeSelection *)self relativeDateSummary];
-  v4 = [(ICDateFilterTypeSelection *)self relativeRangeAmountString];
-  v5 = [v3 componentsSeparatedByString:v4];
+  relativeDateSummary = [(ICDateFilterTypeSelection *)self relativeDateSummary];
+  relativeRangeAmountString = [(ICDateFilterTypeSelection *)self relativeRangeAmountString];
+  v5 = [relativeDateSummary componentsSeparatedByString:relativeRangeAmountString];
 
-  v6 = [MEMORY[0x277CBEAF8] autoupdatingCurrentLocale];
-  if ([v6 ic_localeIsArabic])
+  autoupdatingCurrentLocale = [MEMORY[0x277CBEAF8] autoupdatingCurrentLocale];
+  if ([autoupdatingCurrentLocale ic_localeIsArabic])
   {
     [v5 lastObject];
   }
@@ -738,19 +738,19 @@ LABEL_22:
     [v5 firstObject];
   }
   v7 = ;
-  v8 = [v7 ic_trimmedString];
+  ic_trimmedString = [v7 ic_trimmedString];
 
-  return v8;
+  return ic_trimmedString;
 }
 
 - (id)relativeRangeTimeIntervalString
 {
-  v3 = [(ICDateFilterTypeSelection *)self relativeDateSummary];
-  v4 = [(ICDateFilterTypeSelection *)self relativeRangeAmountString];
-  v5 = [v3 componentsSeparatedByString:v4];
+  relativeDateSummary = [(ICDateFilterTypeSelection *)self relativeDateSummary];
+  relativeRangeAmountString = [(ICDateFilterTypeSelection *)self relativeRangeAmountString];
+  v5 = [relativeDateSummary componentsSeparatedByString:relativeRangeAmountString];
 
-  v6 = [MEMORY[0x277CBEAF8] autoupdatingCurrentLocale];
-  if ([v6 ic_localeIsArabic])
+  autoupdatingCurrentLocale = [MEMORY[0x277CBEAF8] autoupdatingCurrentLocale];
+  if ([autoupdatingCurrentLocale ic_localeIsArabic])
   {
     [v5 firstObject];
   }
@@ -760,22 +760,22 @@ LABEL_22:
     [v5 lastObject];
   }
   v7 = ;
-  v8 = [v7 ic_trimmedString];
+  ic_trimmedString = [v7 ic_trimmedString];
 
-  return v8;
+  return ic_trimmedString;
 }
 
 - (NSString)relativeRangeAmountAndTimeInterval
 {
-  v3 = [(ICDateFilterTypeSelection *)self relativeRangeAmount];
-  v4 = [v3 intValue];
+  relativeRangeAmount = [(ICDateFilterTypeSelection *)self relativeRangeAmount];
+  intValue = [relativeRangeAmount intValue];
 
-  v5 = [(ICDateFilterTypeSelection *)self relativeRangeSelectionType];
-  if (v4 == 1)
+  relativeRangeSelectionType = [(ICDateFilterTypeSelection *)self relativeRangeSelectionType];
+  if (intValue == 1)
   {
-    if (v5 > 2)
+    if (relativeRangeSelectionType > 2)
     {
-      switch(v5)
+      switch(relativeRangeSelectionType)
       {
         case 3:
           v6 = @"WEEK_SUMMARY_SINGLE";
@@ -796,9 +796,9 @@ LABEL_22:
       goto LABEL_26;
     }
 
-    if (v5)
+    if (relativeRangeSelectionType)
     {
-      if (v5 == 1)
+      if (relativeRangeSelectionType == 1)
       {
         v6 = @"HOUR_SUMMARY_SINGLE";
         v7 = @"Hour";
@@ -806,7 +806,7 @@ LABEL_22:
 
       else
       {
-        if (v5 != 2)
+        if (relativeRangeSelectionType != 2)
         {
           goto LABEL_30;
         }
@@ -823,13 +823,13 @@ LABEL_26:
 LABEL_20:
     v10 = __ICLocalizedFrameworkString_impl(@"Unknown", @"Unknown", 0, 1);
 LABEL_27:
-    v3 = v10;
+    relativeRangeAmount = v10;
     goto LABEL_30;
   }
 
-  if (v5 > 2)
+  if (relativeRangeSelectionType > 2)
   {
-    switch(v5)
+    switch(relativeRangeSelectionType)
     {
       case 3:
         v8 = MEMORY[0x277CCACA8];
@@ -850,7 +850,7 @@ LABEL_27:
 
   else
   {
-    switch(v5)
+    switch(relativeRangeSelectionType)
     {
       case 0:
         goto LABEL_20;
@@ -868,12 +868,12 @@ LABEL_27:
   }
 
   v11 = __ICLocalizedFrameworkString_impl(v9, v9, 0, 1);
-  v12 = [(ICDateFilterTypeSelection *)self relativeRangeAmount];
-  v3 = [v8 localizedStringWithFormat:v11, objc_msgSend(v12, "intValue")];
+  relativeRangeAmount2 = [(ICDateFilterTypeSelection *)self relativeRangeAmount];
+  relativeRangeAmount = [v8 localizedStringWithFormat:v11, objc_msgSend(relativeRangeAmount2, "intValue")];
 
 LABEL_30:
 
-  return v3;
+  return relativeRangeAmount;
 }
 
 - (NSDictionary)relativeRangeTimeIntervalOptions
@@ -881,11 +881,11 @@ LABEL_30:
   v3 = objc_alloc_init(MEMORY[0x277CBEB38]);
   for (i = 1; i != 6; ++i)
   {
-    v5 = [(ICDateFilterTypeSelection *)self relativeRangeAmount];
-    v6 = [ICDateFilterTypeSelection relativeRangeStringComponentsForSelectionType:i number:v5];
+    relativeRangeAmount = [(ICDateFilterTypeSelection *)self relativeRangeAmount];
+    v6 = [ICDateFilterTypeSelection relativeRangeStringComponentsForSelectionType:i number:relativeRangeAmount];
 
-    v7 = [MEMORY[0x277CBEAF8] autoupdatingCurrentLocale];
-    if ([v7 ic_localeIsArabic])
+    autoupdatingCurrentLocale = [MEMORY[0x277CBEAF8] autoupdatingCurrentLocale];
+    if ([autoupdatingCurrentLocale ic_localeIsArabic])
     {
       [v6 firstObject];
     }
@@ -895,10 +895,10 @@ LABEL_30:
       [v6 lastObject];
     }
     v8 = ;
-    v9 = [v8 ic_trimmedString];
+    ic_trimmedString = [v8 ic_trimmedString];
 
     v10 = [MEMORY[0x277CCABB0] numberWithInt:i];
-    [v3 setObject:v9 forKeyedSubscript:v10];
+    [v3 setObject:ic_trimmedString forKeyedSubscript:v10];
   }
 
   return v3;
@@ -906,43 +906,43 @@ LABEL_30:
 
 - (id)rawFilterValue
 {
-  v2 = [(ICDateFilterTypeSelection *)self selectionType];
+  selectionType = [(ICDateFilterTypeSelection *)self selectionType];
 
-  return NSStringFromICDateFilterSelectionType(v2);
+  return NSStringFromICDateFilterSelectionType(selectionType);
 }
 
 - (BOOL)isValid
 {
-  v3 = [(ICDateFilterTypeSelection *)self selectionType];
+  selectionType = [(ICDateFilterTypeSelection *)self selectionType];
   v4 = 1;
-  if (v3 > 8)
+  if (selectionType > 8)
   {
-    if ((v3 - 9) < 2)
+    if ((selectionType - 9) < 2)
     {
-      v5 = [(ICDateFilterTypeSelection *)self primaryDate];
-      v4 = v5 != 0;
+      primaryDate = [(ICDateFilterTypeSelection *)self primaryDate];
+      v4 = primaryDate != 0;
       goto LABEL_19;
     }
   }
 
   else
   {
-    switch(v3)
+    switch(selectionType)
     {
       case 6:
-        v5 = [(ICDateFilterTypeSelection *)self primaryDate];
-        if (v5)
+        primaryDate = [(ICDateFilterTypeSelection *)self primaryDate];
+        if (primaryDate)
         {
-          v7 = [(ICDateFilterTypeSelection *)self secondaryDate];
-          if (v7)
+          secondaryDate = [(ICDateFilterTypeSelection *)self secondaryDate];
+          if (secondaryDate)
           {
-            v8 = [(ICDateFilterTypeSelection *)self primaryDate];
-            v9 = [(ICDateFilterTypeSelection *)self secondaryDate];
-            if (([v8 ic_isEarlierThanDate:v9] & 1) == 0)
+            primaryDate2 = [(ICDateFilterTypeSelection *)self primaryDate];
+            secondaryDate2 = [(ICDateFilterTypeSelection *)self secondaryDate];
+            if (([primaryDate2 ic_isEarlierThanDate:secondaryDate2] & 1) == 0)
             {
-              v10 = [(ICDateFilterTypeSelection *)self primaryDate];
-              v11 = [(ICDateFilterTypeSelection *)self secondaryDate];
-              v4 = [v10 isEqualToDate:v11];
+              primaryDate3 = [(ICDateFilterTypeSelection *)self primaryDate];
+              secondaryDate3 = [(ICDateFilterTypeSelection *)self secondaryDate];
+              v4 = [primaryDate3 isEqualToDate:secondaryDate3];
             }
           }
 
@@ -956,22 +956,22 @@ LABEL_30:
 
         goto LABEL_16;
       case 7:
-        v5 = [(ICDateFilterTypeSelection *)self relativeRangeAmount];
-        if (v5)
+        primaryDate = [(ICDateFilterTypeSelection *)self relativeRangeAmount];
+        if (primaryDate)
         {
-          v12 = [(ICDateFilterTypeSelection *)self relativeRangeAmount];
-          v4 = [v12 integerValue] > 0;
+          relativeRangeAmount = [(ICDateFilterTypeSelection *)self relativeRangeAmount];
+          v4 = [relativeRangeAmount integerValue] > 0;
 
           goto LABEL_19;
         }
 
         goto LABEL_16;
       case 8:
-        v5 = [(ICDateFilterTypeSelection *)self primaryDate];
-        if (v5)
+        primaryDate = [(ICDateFilterTypeSelection *)self primaryDate];
+        if (primaryDate)
         {
-          v6 = [(ICDateFilterTypeSelection *)self secondaryDate];
-          v4 = v6 != 0;
+          secondaryDate4 = [(ICDateFilterTypeSelection *)self secondaryDate];
+          v4 = secondaryDate4 != 0;
 
 LABEL_19:
           return v4;
@@ -988,38 +988,38 @@ LABEL_16:
 
 - (BOOL)isEmpty
 {
-  v3 = [(ICDateFilterTypeSelection *)self selectionType];
+  selectionType = [(ICDateFilterTypeSelection *)self selectionType];
   v4 = 0;
-  if (v3 > 8)
+  if (selectionType > 8)
   {
-    if ((v3 - 9) >= 2)
+    if ((selectionType - 9) >= 2)
     {
       return v4;
     }
 
-    v7 = [(ICDateFilterTypeSelection *)self primaryDate];
+    primaryDate = [(ICDateFilterTypeSelection *)self primaryDate];
 LABEL_10:
-    v5 = v7;
-    v4 = v7 == 0;
+    primaryDate2 = primaryDate;
+    v4 = primaryDate == 0;
 LABEL_11:
 
     return v4;
   }
 
-  switch(v3)
+  switch(selectionType)
   {
     case 6:
       goto LABEL_5;
     case 7:
-      v7 = [(ICDateFilterTypeSelection *)self relativeRangeAmount];
+      primaryDate = [(ICDateFilterTypeSelection *)self relativeRangeAmount];
       goto LABEL_10;
     case 8:
 LABEL_5:
-      v5 = [(ICDateFilterTypeSelection *)self primaryDate];
-      if (v5)
+      primaryDate2 = [(ICDateFilterTypeSelection *)self primaryDate];
+      if (primaryDate2)
       {
-        v6 = [(ICDateFilterTypeSelection *)self secondaryDate];
-        v4 = v6 == 0;
+        secondaryDate = [(ICDateFilterTypeSelection *)self secondaryDate];
+        v4 = secondaryDate == 0;
       }
 
       else
@@ -1045,41 +1045,41 @@ LABEL_5:
   return v7;
 }
 
-- (BOOL)isEqualToDateFilterSelection:(id)a3
+- (BOOL)isEqualToDateFilterSelection:(id)selection
 {
-  v4 = a3;
-  v5 = [(ICDateFilterTypeSelection *)self selectionType];
-  if (v5 == [v4 selectionType])
+  selectionCopy = selection;
+  selectionType = [(ICDateFilterTypeSelection *)self selectionType];
+  if (selectionType == [selectionCopy selectionType])
   {
-    v6 = [(ICDateFilterTypeSelection *)self primaryDate];
-    v7 = [v4 primaryDate];
+    primaryDate = [(ICDateFilterTypeSelection *)self primaryDate];
+    primaryDate2 = [selectionCopy primaryDate];
     v8 = *MEMORY[0x277CBEEE8];
-    if (*MEMORY[0x277CBEEE8] == v6)
+    if (*MEMORY[0x277CBEEE8] == primaryDate)
     {
       v9 = 0;
     }
 
     else
     {
-      v9 = v6;
+      v9 = primaryDate;
     }
 
-    v10 = v9;
-    if (v8 == v7)
+    secondaryDate = v9;
+    if (v8 == primaryDate2)
     {
       v11 = 0;
     }
 
     else
     {
-      v11 = v7;
+      v11 = primaryDate2;
     }
 
     v12 = v11;
-    if (v10 | v12)
+    if (secondaryDate | v12)
     {
-      v13 = v12;
-      if (v10)
+      secondaryDate2 = v12;
+      if (secondaryDate)
       {
         v14 = v12 == 0;
       }
@@ -1094,7 +1094,7 @@ LABEL_5:
         goto LABEL_40;
       }
 
-      v15 = [v10 isEqual:v12];
+      v15 = [secondaryDate isEqual:v12];
 
       if (!v15)
       {
@@ -1105,37 +1105,37 @@ LABEL_46:
       }
     }
 
-    v10 = [(ICDateFilterTypeSelection *)self secondaryDate];
-    v13 = [v4 secondaryDate];
-    if (v8 == v10)
+    secondaryDate = [(ICDateFilterTypeSelection *)self secondaryDate];
+    secondaryDate2 = [selectionCopy secondaryDate];
+    if (v8 == secondaryDate)
     {
       v16 = 0;
     }
 
     else
     {
-      v16 = v10;
+      v16 = secondaryDate;
     }
 
-    v17 = v16;
-    if (v8 == v13)
+    relativeRangeAmount = v16;
+    if (v8 == secondaryDate2)
     {
       v18 = 0;
     }
 
     else
     {
-      v18 = v13;
+      v18 = secondaryDate2;
     }
 
     v19 = v18;
-    if (!(v17 | v19))
+    if (!(relativeRangeAmount | v19))
     {
       goto LABEL_29;
     }
 
-    v20 = v19;
-    if (v17)
+    relativeRangeAmount2 = v19;
+    if (relativeRangeAmount)
     {
       v21 = v19 == 0;
     }
@@ -1153,35 +1153,35 @@ LABEL_44:
       goto LABEL_45;
     }
 
-    v23 = [v17 isEqual:v19];
+    v23 = [relativeRangeAmount isEqual:v19];
 
     if (v23)
     {
 LABEL_29:
-      v24 = [(ICDateFilterTypeSelection *)self relativeRangeSelectionType];
-      if (v24 == [v4 relativeRangeSelectionType])
+      relativeRangeSelectionType = [(ICDateFilterTypeSelection *)self relativeRangeSelectionType];
+      if (relativeRangeSelectionType == [selectionCopy relativeRangeSelectionType])
       {
-        v17 = [(ICDateFilterTypeSelection *)self relativeRangeAmount];
-        v20 = [v4 relativeRangeAmount];
-        if (v8 == v17)
+        relativeRangeAmount = [(ICDateFilterTypeSelection *)self relativeRangeAmount];
+        relativeRangeAmount2 = [selectionCopy relativeRangeAmount];
+        if (v8 == relativeRangeAmount)
         {
           v25 = 0;
         }
 
         else
         {
-          v25 = v17;
+          v25 = relativeRangeAmount;
         }
 
         v26 = v25;
-        if (v8 == v20)
+        if (v8 == relativeRangeAmount2)
         {
           v27 = 0;
         }
 
         else
         {
-          v27 = v20;
+          v27 = relativeRangeAmount2;
         }
 
         v28 = v27;
@@ -1219,65 +1219,65 @@ LABEL_47:
 
 - (void)updateDatesForCurrentSelectionType
 {
-  v3 = [(ICDateFilterTypeSelection *)self selectionType];
-  if (v3 > 8)
+  selectionType = [(ICDateFilterTypeSelection *)self selectionType];
+  if (selectionType > 8)
   {
-    if (v3 == 9)
+    if (selectionType == 9)
     {
-      v15 = [(ICDateFilterTypeSelection *)self primaryDate];
-      v7 = [(NSDate *)v15 ic_startOfDay];
+      primaryDate = [(ICDateFilterTypeSelection *)self primaryDate];
+      ic_startOfDay = [(NSDate *)primaryDate ic_startOfDay];
     }
 
     else
     {
-      if (v3 != 10)
+      if (selectionType != 10)
       {
         return;
       }
 
-      v15 = [(ICDateFilterTypeSelection *)self primaryDate];
-      v7 = [(NSDate *)v15 ic_endOfDay];
+      primaryDate = [(ICDateFilterTypeSelection *)self primaryDate];
+      ic_startOfDay = [(NSDate *)primaryDate ic_endOfDay];
     }
 
     v8 = 24;
     goto LABEL_13;
   }
 
-  if (v3 != 6)
+  if (selectionType != 6)
   {
-    if (v3 != 8)
+    if (selectionType != 8)
     {
       return;
     }
 
-    v4 = [(ICDateFilterTypeSelection *)self primaryDate];
-    v5 = [v4 ic_startOfDay];
+    primaryDate2 = [(ICDateFilterTypeSelection *)self primaryDate];
+    ic_startOfDay2 = [primaryDate2 ic_startOfDay];
     primaryDate = self->_primaryDate;
-    self->_primaryDate = v5;
+    self->_primaryDate = ic_startOfDay2;
 
-    v15 = [(ICDateFilterTypeSelection *)self primaryDate];
-    v7 = [(NSDate *)v15 ic_endOfDay];
+    primaryDate = [(ICDateFilterTypeSelection *)self primaryDate];
+    ic_startOfDay = [(NSDate *)primaryDate ic_endOfDay];
     v8 = 32;
 LABEL_13:
     v14 = *(&self->super.super.isa + v8);
-    *(&self->super.super.isa + v8) = v7;
+    *(&self->super.super.isa + v8) = ic_startOfDay;
 
-    secondaryDate = v15;
+    secondaryDate = primaryDate;
     goto LABEL_14;
   }
 
-  v9 = [(ICDateFilterTypeSelection *)self primaryDate];
-  v10 = [(ICDateFilterTypeSelection *)self secondaryDate];
-  v11 = [v9 ic_isLaterThanDate:v10];
+  primaryDate3 = [(ICDateFilterTypeSelection *)self primaryDate];
+  secondaryDate = [(ICDateFilterTypeSelection *)self secondaryDate];
+  v11 = [primaryDate3 ic_isLaterThanDate:secondaryDate];
 
   if (!v11)
   {
     return;
   }
 
-  v12 = [(ICDateFilterTypeSelection *)self primaryDate];
+  primaryDate4 = [(ICDateFilterTypeSelection *)self primaryDate];
   secondaryDate = self->_secondaryDate;
-  self->_secondaryDate = v12;
+  self->_secondaryDate = primaryDate4;
 LABEL_14:
 }
 

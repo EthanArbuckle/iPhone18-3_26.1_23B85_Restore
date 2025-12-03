@@ -1,21 +1,21 @@
 @interface CoreTelephonyCellInfoContext
-- (CoreTelephonyCellInfoContext)initWithCompletion:(id)a3 queue:(id)a4;
+- (CoreTelephonyCellInfoContext)initWithCompletion:(id)completion queue:(id)queue;
 @end
 
 @implementation CoreTelephonyCellInfoContext
 
-- (CoreTelephonyCellInfoContext)initWithCompletion:(id)a3 queue:(id)a4
+- (CoreTelephonyCellInfoContext)initWithCompletion:(id)completion queue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  completionCopy = completion;
+  queueCopy = queue;
   v12.receiver = self;
   v12.super_class = CoreTelephonyCellInfoContext;
   v8 = [(CoreTelephonyCellInfoContext *)&v12 init];
   v9 = v8;
   if (v8)
   {
-    [(CoreTelephonyCellInfoContext *)v8 setCompletion:v6];
-    [(CoreTelephonyCellInfoContext *)v9 setQueue:v7];
+    [(CoreTelephonyCellInfoContext *)v8 setCompletion:completionCopy];
+    [(CoreTelephonyCellInfoContext *)v9 setQueue:queueCopy];
     v10 = v9;
   }
 

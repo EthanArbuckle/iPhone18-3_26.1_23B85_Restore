@@ -1,23 +1,23 @@
 @interface WFRecordAudioActionUIKitUserInterface
-- (void)cancelPresentationWithCompletionHandler:(id)a3;
-- (void)finishWithFileRepresentation:(id)a3 error:(id)a4;
-- (void)showWithOutputFormat:(int64_t)a3 startImmediately:(BOOL)a4 recordingDuration:(double)a5 completionHandler:(id)a6;
+- (void)cancelPresentationWithCompletionHandler:(id)handler;
+- (void)finishWithFileRepresentation:(id)representation error:(id)error;
+- (void)showWithOutputFormat:(int64_t)format startImmediately:(BOOL)immediately recordingDuration:(double)duration completionHandler:(id)handler;
 @end
 
 @implementation WFRecordAudioActionUIKitUserInterface
 
-- (void)cancelPresentationWithCompletionHandler:(id)a3
+- (void)cancelPresentationWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __81__WFRecordAudioActionUIKitUserInterface_cancelPresentationWithCompletionHandler___block_invoke;
   v7[3] = &unk_278C375C8;
   v7[4] = self;
-  v8 = v4;
+  v8 = handlerCopy;
   v6.receiver = self;
   v6.super_class = WFRecordAudioActionUIKitUserInterface;
-  v5 = v4;
+  v5 = handlerCopy;
   [(WFEmbeddableActionUserInterface *)&v6 cancelPresentationWithCompletionHandler:v7];
 }
 
@@ -32,39 +32,39 @@ uint64_t __81__WFRecordAudioActionUIKitUserInterface_cancelPresentationWithCompl
   return v4();
 }
 
-- (void)finishWithFileRepresentation:(id)a3 error:(id)a4
+- (void)finishWithFileRepresentation:(id)representation error:(id)error
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(WFRecordAudioActionUIKitUserInterface *)self completionHandler];
+  representationCopy = representation;
+  errorCopy = error;
+  completionHandler = [(WFRecordAudioActionUIKitUserInterface *)self completionHandler];
 
-  if (v7)
+  if (completionHandler)
   {
-    v8 = [(WFRecordAudioActionUIKitUserInterface *)self completionHandler];
-    (v8)[2](v8, v9, v6);
+    completionHandler2 = [(WFRecordAudioActionUIKitUserInterface *)self completionHandler];
+    (completionHandler2)[2](completionHandler2, representationCopy, errorCopy);
   }
 
   [(WFRecordAudioActionUIKitUserInterface *)self setCompletionHandler:0];
 }
 
-- (void)showWithOutputFormat:(int64_t)a3 startImmediately:(BOOL)a4 recordingDuration:(double)a5 completionHandler:(id)a6
+- (void)showWithOutputFormat:(int64_t)format startImmediately:(BOOL)immediately recordingDuration:(double)duration completionHandler:(id)handler
 {
-  v11 = a6;
-  if (!v11)
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
-    v12 = [MEMORY[0x277CCA890] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"WFRecordAudioActionUIKitUserInterface.m" lineNumber:25 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFRecordAudioActionUIKitUserInterface.m" lineNumber:25 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
   }
 
-  [(WFRecordAudioActionUIKitUserInterface *)self setCompletionHandler:v11];
+  [(WFRecordAudioActionUIKitUserInterface *)self setCompletionHandler:handlerCopy];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __115__WFRecordAudioActionUIKitUserInterface_showWithOutputFormat_startImmediately_recordingDuration_completionHandler___block_invoke;
   block[3] = &unk_278C366C8;
-  v14 = a4;
-  *&block[6] = a5;
+  immediatelyCopy = immediately;
+  *&block[6] = duration;
   block[4] = self;
-  block[5] = a3;
+  block[5] = format;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 

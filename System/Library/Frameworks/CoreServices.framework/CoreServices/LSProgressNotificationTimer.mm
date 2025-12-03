@@ -1,21 +1,21 @@
 @interface LSProgressNotificationTimer
-- (LSProgressNotificationTimer)initWithQueue:(id)a3;
+- (LSProgressNotificationTimer)initWithQueue:(id)queue;
 - (SEL)appObserverSelector;
 - (id)description;
-- (void)addApplication:(id)a3;
+- (void)addApplication:(id)application;
 - (void)dealloc;
-- (void)notifyObservers:(id)a3 withApplications:(id)a4;
-- (void)removeApplication:(id)a3;
-- (void)sendMessage:(id)a3;
-- (void)setAppObserverSelector:(SEL)a3;
+- (void)notifyObservers:(id)observers withApplications:(id)applications;
+- (void)removeApplication:(id)application;
+- (void)sendMessage:(id)message;
+- (void)setAppObserverSelector:(SEL)selector;
 - (void)stopTimer;
 @end
 
 @implementation LSProgressNotificationTimer
 
-- (LSProgressNotificationTimer)initWithQueue:(id)a3
+- (LSProgressNotificationTimer)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v14.receiver = self;
   v14.super_class = LSProgressNotificationTimer;
   v6 = [(LSProgressNotificationTimer *)&v14 init];
@@ -34,7 +34,7 @@
     v7->_lastFiredDate = v11;
 
     *&v7->_minInterval = xmmword_1817E9190;
-    objc_storeStrong(&v7->_queue, a3);
+    objc_storeStrong(&v7->_queue, queue);
   }
 
   return v7;
@@ -50,14 +50,14 @@
 
 - (void)stopTimer
 {
-  v3 = [(LSProgressNotificationTimer *)self timer];
-  if (v3)
+  timer = [(LSProgressNotificationTimer *)self timer];
+  if (timer)
   {
-    v4 = v3;
-    v5 = [(LSProgressNotificationTimer *)self timer];
-    v6 = [v5 isValid];
+    v4 = timer;
+    timer2 = [(LSProgressNotificationTimer *)self timer];
+    isValid = [timer2 isValid];
 
-    if (v6)
+    if (isValid)
     {
       [(NSTimer *)self->_timer invalidate];
 
@@ -66,58 +66,58 @@
   }
 }
 
-- (void)addApplication:(id)a3
+- (void)addApplication:(id)application
 {
   applications = self->_applications;
-  v4 = [a3 bundleIdentifier];
-  [(NSMutableSet *)applications addObject:v4];
+  bundleIdentifier = [application bundleIdentifier];
+  [(NSMutableSet *)applications addObject:bundleIdentifier];
 }
 
-- (void)removeApplication:(id)a3
+- (void)removeApplication:(id)application
 {
-  v13 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  applications = v4->_applications;
-  v6 = [v13 bundleIdentifier];
-  LODWORD(applications) = [(NSMutableSet *)applications containsObject:v6];
+  applicationCopy = application;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  applications = selfCopy->_applications;
+  bundleIdentifier = [applicationCopy bundleIdentifier];
+  LODWORD(applications) = [(NSMutableSet *)applications containsObject:bundleIdentifier];
 
   if (applications)
   {
-    v7 = v4->_applications;
-    v8 = [v13 bundleIdentifier];
-    [(NSMutableSet *)v7 removeObject:v8];
+    v7 = selfCopy->_applications;
+    bundleIdentifier2 = [applicationCopy bundleIdentifier];
+    [(NSMutableSet *)v7 removeObject:bundleIdentifier2];
 
-    v9 = [(LSProgressNotificationTimer *)v4 applications];
-    if ([v9 count] || (-[LSProgressNotificationTimer timer](v4, "timer"), (v10 = objc_claimAutoreleasedReturnValue()) == 0))
+    applications = [(LSProgressNotificationTimer *)selfCopy applications];
+    if ([applications count] || (-[LSProgressNotificationTimer timer](selfCopy, "timer"), (v10 = objc_claimAutoreleasedReturnValue()) == 0))
     {
     }
 
     else
     {
-      v11 = [(LSProgressNotificationTimer *)v4 timer];
-      v12 = [v11 isValid];
+      timer = [(LSProgressNotificationTimer *)selfCopy timer];
+      isValid = [timer isValid];
 
-      if (v12)
+      if (isValid)
       {
-        MEMORY[0x1865D7C50]([(LSProgressNotificationTimer *)v4 stopTimer]);
+        MEMORY[0x1865D7C50]([(LSProgressNotificationTimer *)selfCopy stopTimer]);
       }
     }
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)notifyObservers:(id)a3 withApplications:(id)a4
+- (void)notifyObservers:(id)observers withApplications:(id)applications
 {
   v31 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7 && [v7 count])
+  observersCopy = observers;
+  applicationsCopy = applications;
+  v8 = applicationsCopy;
+  if (applicationsCopy && [applicationsCopy count])
   {
-    v9 = self;
-    objc_sync_enter(v9);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
@@ -137,7 +137,7 @@
             objc_enumerationMutation(v10);
           }
 
-          [(LSProgressNotificationTimer *)v9 addApplication:*(*(&v26 + 1) + 8 * v13++), v26];
+          [(LSProgressNotificationTimer *)selfCopy addApplication:*(*(&v26 + 1) + 8 * v13++), v26];
         }
 
         while (v11 != v13);
@@ -147,8 +147,8 @@
       while (v11);
     }
 
-    v14 = [(LSProgressNotificationTimer *)v9 timer];
-    v15 = v14 == 0;
+    timer = [(LSProgressNotificationTimer *)selfCopy timer];
+    v15 = timer == 0;
 
     if (!v15)
     {
@@ -156,14 +156,14 @@
     }
 
     MEMORY[0x1865D7C40]();
-    v16 = [MEMORY[0x1E695DF00] date];
-    v17 = [(LSProgressNotificationTimer *)v9 lastFiredDate];
-    [(LSProgressNotificationTimer *)v9 minInterval];
-    v18 = [v17 dateByAddingTimeInterval:?];
+    date = [MEMORY[0x1E695DF00] date];
+    lastFiredDate = [(LSProgressNotificationTimer *)selfCopy lastFiredDate];
+    [(LSProgressNotificationTimer *)selfCopy minInterval];
+    v18 = [lastFiredDate dateByAddingTimeInterval:?];
 
-    [(LSProgressNotificationTimer *)v9 minInterval];
-    v19 = [v16 dateByAddingTimeInterval:?];
-    v20 = [v16 compare:v18];
+    [(LSProgressNotificationTimer *)selfCopy minInterval];
+    v19 = [date dateByAddingTimeInterval:?];
+    v20 = [date compare:v18];
     if (v20 == -1)
     {
       if ([v19 compare:v18] == -1)
@@ -175,8 +175,8 @@
 
     else if (v20 == 1)
     {
-      [(LSProgressNotificationTimer *)v9 latency];
-      v21 = [v16 dateByAddingTimeInterval:?];
+      [(LSProgressNotificationTimer *)selfCopy latency];
+      v21 = [date dateByAddingTimeInterval:?];
 LABEL_17:
       v22 = v21;
 
@@ -185,39 +185,39 @@ LABEL_17:
 
     v22 = v18;
 LABEL_18:
-    v23 = [objc_alloc(MEMORY[0x1E695DFF0]) initWithFireDate:v22 interval:v9 target:sel_sendMessage_ selector:v6 userInfo:0 repeats:0.0];
-    [(LSProgressNotificationTimer *)v9 setTimer:v23];
-    v24 = [MEMORY[0x1E695DFD0] mainRunLoop];
-    [v24 addTimer:v23 forMode:*MEMORY[0x1E695D918]];
+    v23 = [objc_alloc(MEMORY[0x1E695DFF0]) initWithFireDate:v22 interval:selfCopy target:sel_sendMessage_ selector:observersCopy userInfo:0 repeats:0.0];
+    [(LSProgressNotificationTimer *)selfCopy setTimer:v23];
+    mainRunLoop = [MEMORY[0x1E695DFD0] mainRunLoop];
+    [mainRunLoop addTimer:v23 forMode:*MEMORY[0x1E695D918]];
 
 LABEL_19:
-    objc_sync_exit(v9);
+    objc_sync_exit(selfCopy);
   }
 
   v25 = *MEMORY[0x1E69E9840];
 }
 
-- (void)sendMessage:(id)a3
+- (void)sendMessage:(id)message
 {
   v27 = *MEMORY[0x1E69E9840];
-  v19 = a3;
+  messageCopy = message;
   v4 = _LSProgressLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
     [LSProgressNotificationTimer sendMessage:?];
   }
 
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(LSProgressNotificationTimer *)v5 timer];
-  v7 = v6 == 0;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  timer = [(LSProgressNotificationTimer *)selfCopy timer];
+  v7 = timer == 0;
 
   if (!v7)
   {
-    v8 = [MEMORY[0x1E695DF00] date];
-    [(LSProgressNotificationTimer *)v5 setLastFiredDate:v8];
+    date = [MEMORY[0x1E695DF00] date];
+    [(LSProgressNotificationTimer *)selfCopy setLastFiredDate:date];
 
-    [v19 userInfo];
+    [messageCopy userInfo];
     v24 = 0u;
     v25 = 0u;
     v22 = 0u;
@@ -238,17 +238,17 @@ LABEL_19:
 
           v12 = *(*(&v22 + 1) + 8 * v11);
           v13 = objc_autoreleasePoolPush();
-          v14 = [v12 connection];
+          connection = [v12 connection];
           v21[0] = MEMORY[0x1E69E9820];
           v21[1] = 3221225472;
           v21[2] = __43__LSProgressNotificationTimer_sendMessage___block_invoke;
           v21[3] = &unk_1E6A19AC0;
           v21[4] = v12;
-          v15 = [v14 remoteObjectProxyWithErrorHandler:v21];
+          v15 = [connection remoteObjectProxyWithErrorHandler:v21];
 
-          v16 = [(LSProgressNotificationTimer *)v5 applications];
-          v17 = [v16 allObjects];
-          [v15 applicationInstallsDidChange:v17];
+          applications = [(LSProgressNotificationTimer *)selfCopy applications];
+          allObjects = [applications allObjects];
+          [v15 applicationInstallsDidChange:allObjects];
 
           objc_autoreleasePoolPop(v13);
           ++v11;
@@ -261,11 +261,11 @@ LABEL_19:
       while (v9);
     }
 
-    [(LSProgressNotificationTimer *)v5 clear];
-    MEMORY[0x1865D7C50]([(LSProgressNotificationTimer *)v5 setTimer:0]);
+    [(LSProgressNotificationTimer *)selfCopy clear];
+    MEMORY[0x1865D7C50]([(LSProgressNotificationTimer *)selfCopy setTimer:0]);
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   v18 = *MEMORY[0x1E69E9840];
 }
@@ -312,19 +312,19 @@ void __43__LSProgressNotificationTimer_sendMessage___block_invoke(uint64_t a1, v
   }
 }
 
-- (void)setAppObserverSelector:(SEL)a3
+- (void)setAppObserverSelector:(SEL)selector
 {
-  if (a3)
+  if (selector)
   {
-    v3 = a3;
+    selectorCopy = selector;
   }
 
   else
   {
-    v3 = 0;
+    selectorCopy = 0;
   }
 
-  self->_appObserverSelector = v3;
+  self->_appObserverSelector = selectorCopy;
 }
 
 - (void)sendMessage:(void *)a1 .cold.1(void *a1)

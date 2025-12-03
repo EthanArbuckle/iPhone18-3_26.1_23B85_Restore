@@ -1,15 +1,15 @@
 @interface MFCaptionLabelAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 @end
 
 @implementation MFCaptionLabelAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MFCaptionLabel" isKindOfClass:@"UILabel"];
-  [v3 validateClass:@"MFCaptionLabel" hasInstanceMethod:@"_chevronAttributedString" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MFCaptionLabel" isKindOfClass:@"UILabel"];
+  [validationsCopy validateClass:@"MFCaptionLabel" hasInstanceMethod:@"_chevronAttributedString" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel
@@ -23,16 +23,16 @@
   v16 = __Block_byref_object_dispose_;
   v17 = 0;
   v10 = MEMORY[0x29EDCA5F8];
-  v11 = self;
+  selfCopy = self;
   AXPerformSafeBlock();
   v4 = v13[5];
   _Block_object_dispose(&v12, 8);
 
-  v5 = [v3 attributedText];
-  v6 = [v5 string];
-  v7 = [v4 string];
+  attributedText = [v3 attributedText];
+  string = [attributedText string];
+  string2 = [v4 string];
 
-  v8 = [v6 stringByReplacingOccurrencesOfString:v7 withString:&stru_2A2207348];
+  v8 = [string stringByReplacingOccurrencesOfString:string2 withString:&stru_2A2207348];
 
   return v8;
 }

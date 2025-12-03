@@ -1,27 +1,27 @@
 @interface VNFaceAnalyzerCompoundRequest
-+ (id)compoundRequestsForOriginalRequests:(id)a3 withPerformingContext:(id)a4 error:(id *)a5;
-+ (unint64_t)applicableRevisionForDependentRequestOfClass:(Class)a3 beingPerformedByRevision:(unint64_t)a4;
-- (BOOL)internalPerformRevision:(unint64_t)a3 inContext:(id)a4 error:(id *)a5;
-- (VNFaceAnalyzerCompoundRequest)initWithDetectorType:(id)a3 configuration:(id)a4;
++ (id)compoundRequestsForOriginalRequests:(id)requests withPerformingContext:(id)context error:(id *)error;
++ (unint64_t)applicableRevisionForDependentRequestOfClass:(Class)class beingPerformedByRevision:(unint64_t)revision;
+- (BOOL)internalPerformRevision:(unint64_t)revision inContext:(id)context error:(id *)error;
+- (VNFaceAnalyzerCompoundRequest)initWithDetectorType:(id)type configuration:(id)configuration;
 - (unint64_t)detectionLevel;
-- (void)assignOriginalRequestsResultsFromObservations:(id)a3 obtainedInPerformingContext:(id)a4;
+- (void)assignOriginalRequestsResultsFromObservations:(id)observations obtainedInPerformingContext:(id)context;
 @end
 
 @implementation VNFaceAnalyzerCompoundRequest
 
-- (void)assignOriginalRequestsResultsFromObservations:(id)a3 obtainedInPerformingContext:(id)a4
+- (void)assignOriginalRequestsResultsFromObservations:(id)observations obtainedInPerformingContext:(id)context
 {
   v48 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v31 = v5;
+  observationsCopy = observations;
+  contextCopy = context;
+  v31 = observationsCopy;
   v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v43 = 0u;
   v44 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v9 = v5;
+  v9 = observationsCopy;
   v10 = [v9 countByEnumeratingWithState:&v41 objects:v47 count:{16, v31}];
   if (v10)
   {
@@ -40,16 +40,16 @@
         if (v14 == objc_opt_class())
         {
           v15 = v13;
-          v16 = [v15 faceprint];
-          v17 = v16 == 0;
+          faceprint = [v15 faceprint];
+          v17 = faceprint == 0;
 
           if (!v17)
           {
             [v7 addObject:v15];
           }
 
-          v18 = [v15 faceAttributes];
-          v19 = v18 == 0;
+          faceAttributes = [v15 faceAttributes];
+          v19 = faceAttributes == 0;
 
           if (!v19)
           {
@@ -84,7 +84,7 @@
 
         v24 = *(*(&v37 + 1) + 8 * j);
         [v24 setResults:v7];
-        [v6 cacheObservationsOfRequest:v24];
+        [contextCopy cacheObservationsOfRequest:v24];
       }
 
       v21 = [v20 countByEnumeratingWithState:&v37 objects:v46 count:16];
@@ -115,7 +115,7 @@
 
         v30 = *(*(&v33 + 1) + 8 * k);
         [v30 setResults:v8];
-        [v6 cacheObservationsOfRequest:v30];
+        [contextCopy cacheObservationsOfRequest:v30];
       }
 
       v27 = [v26 countByEnumeratingWithState:&v33 objects:v45 count:16];
@@ -127,29 +127,29 @@
 
 - (unint64_t)detectionLevel
 {
-  v2 = [(VNCompoundRequest *)self originalRequests];
-  v3 = [v2 firstObject];
-  v4 = [v3 detectionLevel];
+  originalRequests = [(VNCompoundRequest *)self originalRequests];
+  firstObject = [originalRequests firstObject];
+  detectionLevel = [firstObject detectionLevel];
 
-  return v4;
+  return detectionLevel;
 }
 
-- (BOOL)internalPerformRevision:(unint64_t)a3 inContext:(id)a4 error:(id *)a5
+- (BOOL)internalPerformRevision:(unint64_t)revision inContext:(id)context error:(id *)error
 {
-  v8 = a4;
-  v9 = [(VNRequest *)self configuration];
-  v10 = [v8 session];
-  v11 = [(VNRequest *)self newDefaultDetectorOptionsForRequestRevision:a3 session:v10];
-  v12 = [v9 detectorConfigurationOptions];
-  [v11 addEntriesFromDictionary:v12];
+  contextCopy = context;
+  configuration = [(VNRequest *)self configuration];
+  session = [contextCopy session];
+  v11 = [(VNRequest *)self newDefaultDetectorOptionsForRequestRevision:revision session:session];
+  detectorConfigurationOptions = [configuration detectorConfigurationOptions];
+  [v11 addEntriesFromDictionary:detectorConfigurationOptions];
 
   v32 = 0;
-  LOBYTE(v12) = [VNValidationUtilities getOptionalFaceObservations:&v32 inOptions:v11 error:a5];
+  LOBYTE(detectorConfigurationOptions) = [VNValidationUtilities getOptionalFaceObservations:&v32 inOptions:v11 error:error];
   v13 = v32;
   v14 = v13;
-  if ((v12 & 1) != 0 && (v13 || ([(VNRequest *)self detectFacesInContext:v8 error:a5], (v14 = objc_claimAutoreleasedReturnValue()) != 0)))
+  if ((detectorConfigurationOptions & 1) != 0 && (v13 || ([(VNRequest *)self detectFacesInContext:contextCopy error:error], (v14 = objc_claimAutoreleasedReturnValue()) != 0)))
   {
-    v29 = v10;
+    v29 = session;
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __73__VNFaceAnalyzerCompoundRequest_internalPerformRevision_inContext_error___block_invoke_2;
@@ -162,17 +162,17 @@
     v20 = v19;
     v22 = v21;
     v24 = v23;
-    v25 = [v9 detectorType];
-    v26 = [(VNRequest *)self processFaceObservations:v14 revision:a3 regionOfInterest:v25 detectorType:v15 detectorOptions:&__block_literal_global_4475 shouldAlignFaceBBox:v16 shouldRunDetectorBlock:v18 context:v20 error:v22, v24, v8, a5];
+    detectorType = [configuration detectorType];
+    error = [(VNRequest *)self processFaceObservations:v14 revision:revision regionOfInterest:detectorType detectorType:v15 detectorOptions:&__block_literal_global_4475 shouldAlignFaceBBox:v16 shouldRunDetectorBlock:v18 context:v20 error:v22, v24, contextCopy, error];
 
-    v27 = v26 != 0;
-    if (v26)
+    v27 = error != 0;
+    if (error)
     {
       [(VNCompoundRequest *)self recordWarningsInOriginalRequests];
-      [(VNFaceAnalyzerCompoundRequest *)self assignOriginalRequestsResultsFromObservations:v26 obtainedInPerformingContext:v8];
+      [(VNFaceAnalyzerCompoundRequest *)self assignOriginalRequestsResultsFromObservations:error obtainedInPerformingContext:contextCopy];
     }
 
-    v10 = v29;
+    session = v29;
   }
 
   else
@@ -223,21 +223,21 @@ LABEL_9:
   return v10;
 }
 
-- (VNFaceAnalyzerCompoundRequest)initWithDetectorType:(id)a3 configuration:(id)a4
+- (VNFaceAnalyzerCompoundRequest)initWithDetectorType:(id)type configuration:(id)configuration
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 originalRequests];
+  typeCopy = type;
+  configurationCopy = configuration;
+  originalRequests = [configurationCopy originalRequests];
   v15.receiver = self;
   v15.super_class = VNFaceAnalyzerCompoundRequest;
-  v9 = [(VNHomologousObservationClassCompoundRequest *)&v15 initWithSubrequests:v8];
+  v9 = [(VNHomologousObservationClassCompoundRequest *)&v15 initWithSubrequests:originalRequests];
   v10 = v9;
   if (v9)
   {
-    v11 = [(VNRequest *)v9 configuration];
-    [v11 setDetectorType:v6];
-    v12 = [v7 detectorConfigurationOptions];
-    [v11 setDetectorConfigurationOptions:v12];
+    configuration = [(VNRequest *)v9 configuration];
+    [configuration setDetectorType:typeCopy];
+    detectorConfigurationOptions = [configurationCopy detectorConfigurationOptions];
+    [configuration setDetectorConfigurationOptions:detectorConfigurationOptions];
 
     v13 = v10;
   }
@@ -245,46 +245,46 @@ LABEL_9:
   return v10;
 }
 
-+ (unint64_t)applicableRevisionForDependentRequestOfClass:(Class)a3 beingPerformedByRevision:(unint64_t)a4
++ (unint64_t)applicableRevisionForDependentRequestOfClass:(Class)class beingPerformedByRevision:(unint64_t)revision
 {
-  if (![(objc_class *)a3 isSubclassOfClass:objc_opt_class()])
+  if (![(objc_class *)class isSubclassOfClass:objc_opt_class()])
   {
     goto LABEL_10;
   }
 
   v7 = 3737841664;
-  if (a4 <= 6)
+  if (revision <= 6)
   {
-    if (a4 == 5)
+    if (revision == 5)
     {
       goto LABEL_13;
     }
 
-    if (a4 == 6)
+    if (revision == 6)
     {
       v7 = 3737841666;
       goto LABEL_13;
     }
 
 LABEL_10:
-    v9.receiver = a1;
+    v9.receiver = self;
     v9.super_class = &OBJC_METACLASS___VNFaceAnalyzerCompoundRequest;
-    return objc_msgSendSuper2(&v9, sel_applicableRevisionForDependentRequestOfClass_beingPerformedByRevision_, a3, a4);
+    return objc_msgSendSuper2(&v9, sel_applicableRevisionForDependentRequestOfClass_beingPerformedByRevision_, class, revision);
   }
 
-  if (a4 == 7)
+  if (revision == 7)
   {
     v7 = 3737841669;
     goto LABEL_13;
   }
 
-  if (a4 == 100)
+  if (revision == 100)
   {
     v7 = 3737841667;
     goto LABEL_13;
   }
 
-  if (a4 != 101)
+  if (revision != 101)
   {
     goto LABEL_10;
   }
@@ -292,20 +292,20 @@ LABEL_10:
   v7 = 3737841670;
 LABEL_13:
 
-  return [(VNRequest *)VNClassifyFaceAttributesRequest applicableRevisionForDependentRequestOfClass:a3 beingPerformedByRevision:v7];
+  return [(VNRequest *)VNClassifyFaceAttributesRequest applicableRevisionForDependentRequestOfClass:class beingPerformedByRevision:v7];
 }
 
-+ (id)compoundRequestsForOriginalRequests:(id)a3 withPerformingContext:(id)a4 error:(id *)a5
++ (id)compoundRequestsForOriginalRequests:(id)requests withPerformingContext:(id)context error:(id *)error
 {
   v68 = *MEMORY[0x1E69E9840];
-  v27 = a3;
+  requestsCopy = requests;
   v31 = objc_alloc_init(VNFaceAnalyzerCompoundRequestConfigurationGroups);
   v30 = objc_alloc_init(VNFaceAnalyzerFaceObservationGrouping);
   v64 = 0u;
   v65 = 0u;
   v62 = 0u;
   v63 = 0u;
-  obj = v27;
+  obj = requestsCopy;
   v6 = [obj countByEnumeratingWithState:&v62 objects:v67 count:16];
   if (v6)
   {
@@ -331,7 +331,7 @@ LABEL_13:
           v10 = v9;
           v11 = (v57 + 5);
           v55 = v57[5];
-          v12 = [v10 getOptionalValidatedInputFaceObservations:&v55 clippedToRegionOfInterest:1 error:a5];
+          v12 = [v10 getOptionalValidatedInputFaceObservations:&v55 clippedToRegionOfInterest:1 error:error];
           objc_storeStrong(v11, v55);
 
           if ((v12 & 1) == 0)
@@ -367,7 +367,7 @@ LABEL_30:
           v15 = [v13 resolvedRevision] - 3737841666;
           if (v15 < 5 && ((0x1Bu >> v15) & 1) != 0)
           {
-            v16 = v14[2](v14, qword_1A6039AF0[v15], v13, a5);
+            v16 = v14[2](v14, qword_1A6039AF0[v15], v13, error);
 
             _Block_object_dispose(&v49, 8);
             if ((v16 & 1) == 0)
@@ -410,10 +410,10 @@ LABEL_30:
             v41 = v42;
             v38 = v31;
             v17 = _Block_copy(v36);
-            v18 = [v50[5] resolvedRevision];
-            if (v18 - 3737841664) < 7 && ((0x6Du >> v18))
+            resolvedRevision = [v50[5] resolvedRevision];
+            if (resolvedRevision - 3737841664) < 7 && ((0x6Du >> resolvedRevision))
             {
-              v19 = v17[2](v17, *(&unk_1A6039B18 + v18 - 3737841664), v50[5], a5);
+              v19 = v17[2](v17, *(&unk_1A6039B18 + resolvedRevision - 3737841664), v50[5], error);
             }
 
             else
@@ -463,7 +463,7 @@ LABEL_30:
           objc_enumerationMutation(v21);
         }
 
-        v25 = [[a1 alloc] initWithDetectorType:@"VNFaceAnalyzerMultiDetectorType" configuration:*(*(&v32 + 1) + 8 * j)];
+        v25 = [[self alloc] initWithDetectorType:@"VNFaceAnalyzerMultiDetectorType" configuration:*(*(&v32 + 1) + 8 * j)];
         [v20 addObject:v25];
       }
 

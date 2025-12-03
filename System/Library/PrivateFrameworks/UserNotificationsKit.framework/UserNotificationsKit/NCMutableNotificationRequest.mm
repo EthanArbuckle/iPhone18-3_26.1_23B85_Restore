@@ -1,152 +1,152 @@
 @interface NCMutableNotificationRequest
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setAlertOptions:(id)a3;
-- (void)setCategoryIdentifier:(id)a3;
-- (void)setContext:(id)a3;
-- (void)setEventBehavior:(id)a3;
-- (void)setFilterCriteria:(id)a3;
-- (void)setHighestPrioritySubSectionIdentifier:(id)a3;
-- (void)setIntentIdentifiers:(id)a3;
-- (void)setNotificationIdentifier:(id)a3;
-- (void)setParentSectionIdentifier:(id)a3;
-- (void)setPeopleIdentifiers:(id)a3;
-- (void)setRequestDestinations:(id)a3;
-- (void)setSectionIdentifier:(id)a3;
-- (void)setSettingsSections:(id)a3;
-- (void)setSourceInfo:(id)a3;
-- (void)setSubSectionIdentifiers:(id)a3;
-- (void)setSupplementaryActions:(id)a3;
-- (void)setThreadIdentifier:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setAlertOptions:(id)options;
+- (void)setCategoryIdentifier:(id)identifier;
+- (void)setContext:(id)context;
+- (void)setEventBehavior:(id)behavior;
+- (void)setFilterCriteria:(id)criteria;
+- (void)setHighestPrioritySubSectionIdentifier:(id)identifier;
+- (void)setIntentIdentifiers:(id)identifiers;
+- (void)setNotificationIdentifier:(id)identifier;
+- (void)setParentSectionIdentifier:(id)identifier;
+- (void)setPeopleIdentifiers:(id)identifiers;
+- (void)setRequestDestinations:(id)destinations;
+- (void)setSectionIdentifier:(id)identifier;
+- (void)setSettingsSections:(id)sections;
+- (void)setSourceInfo:(id)info;
+- (void)setSubSectionIdentifiers:(id)identifiers;
+- (void)setSupplementaryActions:(id)actions;
+- (void)setThreadIdentifier:(id)identifier;
 @end
 
 @implementation NCMutableNotificationRequest
 
-- (void)setSectionIdentifier:(id)a3
+- (void)setSectionIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   sectionIdentifier = self->super._sectionIdentifier;
   self->super._sectionIdentifier = v4;
 
   [(NCNotificationRequest *)self _updateIdentifiersString];
 }
 
-- (void)setNotificationIdentifier:(id)a3
+- (void)setNotificationIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   notificationIdentifier = self->super._notificationIdentifier;
   self->super._notificationIdentifier = v4;
 
   [(NCNotificationRequest *)self _updateIdentifiersString];
 }
 
-- (void)setThreadIdentifier:(id)a3
+- (void)setThreadIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   threadIdentifier = self->super._threadIdentifier;
   self->super._threadIdentifier = v4;
 
   [(NCNotificationRequest *)self _updateIdentifiersString];
 }
 
-- (void)setCategoryIdentifier:(id)a3
+- (void)setCategoryIdentifier:(id)identifier
 {
-  self->super._categoryIdentifier = [a3 copy];
+  self->super._categoryIdentifier = [identifier copy];
 
   MEMORY[0x2821F96F8]();
 }
 
-- (void)setSubSectionIdentifiers:(id)a3
+- (void)setSubSectionIdentifiers:(id)identifiers
 {
-  self->super._subSectionIdentifiers = [a3 copy];
+  self->super._subSectionIdentifiers = [identifiers copy];
 
   MEMORY[0x2821F96F8]();
 }
 
-- (void)setHighestPrioritySubSectionIdentifier:(id)a3
+- (void)setHighestPrioritySubSectionIdentifier:(id)identifier
 {
-  self->super._highestPrioritySubSectionIdentifier = [a3 copy];
+  self->super._highestPrioritySubSectionIdentifier = [identifier copy];
 
   MEMORY[0x2821F96F8]();
 }
 
-- (void)setIntentIdentifiers:(id)a3
+- (void)setIntentIdentifiers:(id)identifiers
 {
-  self->super._intentIdentifiers = [a3 copy];
+  self->super._intentIdentifiers = [identifiers copy];
 
   MEMORY[0x2821F96F8]();
 }
 
-- (void)setPeopleIdentifiers:(id)a3
+- (void)setPeopleIdentifiers:(id)identifiers
 {
-  self->super._peopleIdentifiers = [a3 copy];
+  self->super._peopleIdentifiers = [identifiers copy];
 
   MEMORY[0x2821F96F8]();
 }
 
-- (void)setParentSectionIdentifier:(id)a3
+- (void)setParentSectionIdentifier:(id)identifier
 {
-  self->super._parentSectionIdentifier = [a3 copy];
+  self->super._parentSectionIdentifier = [identifier copy];
 
   MEMORY[0x2821F96F8]();
 }
 
-- (void)setEventBehavior:(id)a3
+- (void)setEventBehavior:(id)behavior
 {
-  self->super._eventBehavior = [a3 copy];
+  self->super._eventBehavior = [behavior copy];
 
   MEMORY[0x2821F96F8]();
 }
 
-- (void)setRequestDestinations:(id)a3
+- (void)setRequestDestinations:(id)destinations
 {
-  self->super._requestDestinations = [a3 copy];
+  self->super._requestDestinations = [destinations copy];
 
   MEMORY[0x2821F96F8]();
 }
 
-- (void)setAlertOptions:(id)a3
+- (void)setAlertOptions:(id)options
 {
-  self->super._alertOptions = [a3 copy];
+  self->super._alertOptions = [options copy];
 
   MEMORY[0x2821F96F8]();
 }
 
-- (void)setContext:(id)a3
+- (void)setContext:(id)context
 {
-  self->super._context = [a3 copy];
+  self->super._context = [context copy];
 
   MEMORY[0x2821F96F8]();
 }
 
-- (void)setSettingsSections:(id)a3
+- (void)setSettingsSections:(id)sections
 {
-  self->super._settingsSections = [a3 copy];
+  self->super._settingsSections = [sections copy];
 
   MEMORY[0x2821F96F8]();
 }
 
-- (void)setSupplementaryActions:(id)a3
+- (void)setSupplementaryActions:(id)actions
 {
-  self->super._supplementaryActions = [a3 copy];
+  self->super._supplementaryActions = [actions copy];
 
   MEMORY[0x2821F96F8]();
 }
 
-- (void)setSourceInfo:(id)a3
+- (void)setSourceInfo:(id)info
 {
-  self->super._sourceInfo = [a3 copy];
+  self->super._sourceInfo = [info copy];
 
   MEMORY[0x2821F96F8]();
 }
 
-- (void)setFilterCriteria:(id)a3
+- (void)setFilterCriteria:(id)criteria
 {
-  self->super._filterCriteria = [a3 copy];
+  self->super._filterCriteria = [criteria copy];
 
   MEMORY[0x2821F96F8]();
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [NCNotificationRequest alloc];
 

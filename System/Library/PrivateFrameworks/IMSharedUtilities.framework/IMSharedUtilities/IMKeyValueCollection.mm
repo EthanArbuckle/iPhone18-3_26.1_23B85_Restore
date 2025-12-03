@@ -1,32 +1,32 @@
 @interface IMKeyValueCollection
-- (BOOL)BOOLForKey:(id)a3 withDefault:(BOOL)a4;
+- (BOOL)BOOLForKey:(id)key withDefault:(BOOL)default;
 - (IMKeyValueCollection)init;
-- (IMKeyValueCollection)initWithKeyValueStorage:(id)a3;
+- (IMKeyValueCollection)initWithKeyValueStorage:(id)storage;
 - (IMKeyValueCollectionDelegate)delegate;
 - (NSString)description;
-- (double)doubleForKey:(id)a3 withDefault:(double)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)errorArrayForKey:(id)a3;
-- (id)errorForKey:(id)a3;
-- (id)objectForKey:(id)a3;
-- (id)objectForKey:(id)a3 withDefault:(id)a4;
-- (int64_t)int64ForKey:(id)a3 withDefault:(int64_t)a4;
-- (int64_t)integerForKey:(id)a3 withDefault:(int64_t)a4;
-- (unint64_t)uint64ForKey:(id)a3 withDefault:(unint64_t)a4;
+- (double)doubleForKey:(id)key withDefault:(double)default;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)errorArrayForKey:(id)key;
+- (id)errorForKey:(id)key;
+- (id)objectForKey:(id)key;
+- (id)objectForKey:(id)key withDefault:(id)default;
+- (int64_t)int64ForKey:(id)key withDefault:(int64_t)default;
+- (int64_t)integerForKey:(id)key withDefault:(int64_t)default;
+- (unint64_t)uint64ForKey:(id)key withDefault:(unint64_t)default;
 - (void)_broadcastIfNeeded;
 - (void)_commitBatchWrite;
 - (void)_notifyListeners;
-- (void)_recordChange:(id)a3 forKey:(id)a4;
-- (void)_setObject:(id)a3 forKey:(id)a4;
+- (void)_recordChange:(id)change forKey:(id)key;
+- (void)_setObject:(id)object forKey:(id)key;
 - (void)_startBatchWrite;
-- (void)addErrorToArray:(id)a3 forKey:(id)a4;
-- (void)setBool:(BOOL)a3 forKey:(id)a4;
-- (void)setDouble:(double)a3 forKey:(id)a4;
-- (void)setError:(id)a3 forKey:(id)a4;
-- (void)setInt64:(int64_t)a3 forKey:(id)a4;
-- (void)setInteger:(int64_t)a3 forKey:(id)a4;
-- (void)setObject:(id)a3 forKey:(id)a4;
-- (void)setUint64:(int64_t)a3 forKey:(id)a4;
+- (void)addErrorToArray:(id)array forKey:(id)key;
+- (void)setBool:(BOOL)bool forKey:(id)key;
+- (void)setDouble:(double)double forKey:(id)key;
+- (void)setError:(id)error forKey:(id)key;
+- (void)setInt64:(int64_t)int64 forKey:(id)key;
+- (void)setInteger:(int64_t)integer forKey:(id)key;
+- (void)setObject:(id)object forKey:(id)key;
+- (void)setUint64:(int64_t)uint64 forKey:(id)key;
 @end
 
 @implementation IMKeyValueCollection
@@ -75,16 +75,16 @@
   }
 }
 
-- (void)setError:(id)a3 forKey:(id)a4
+- (void)setError:(id)error forKey:(id)key
 {
-  v6 = a4;
-  v7 = [a3 serializedError_im];
-  [(IMKeyValueCollection *)self setObject:v7 forKey:v6];
+  keyCopy = key;
+  serializedError_im = [error serializedError_im];
+  [(IMKeyValueCollection *)self setObject:serializedError_im forKey:keyCopy];
 }
 
-- (id)errorForKey:(id)a3
+- (id)errorForKey:(id)key
 {
-  v3 = [(IMKeyValueCollection *)self objectForKey:a3];
+  v3 = [(IMKeyValueCollection *)self objectForKey:key];
   if (v3)
   {
     v4 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithSerializedError_im:v3];
@@ -98,23 +98,23 @@
   return v4;
 }
 
-- (void)addErrorToArray:(id)a3 forKey:(id)a4
+- (void)addErrorToArray:(id)array forKey:(id)key
 {
   v38 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  arrayCopy = array;
+  keyCopy = key;
+  if (arrayCopy)
   {
-    v8 = [(IMKeyValueCollection *)self objectForKey:v7];
+    v8 = [(IMKeyValueCollection *)self objectForKey:keyCopy];
     v9 = v8;
     if (!v8)
     {
       goto LABEL_16;
     }
 
-    v29 = self;
+    selfCopy = self;
     v30 = v8;
-    v31 = v7;
+    v31 = keyCopy;
     v35 = 0u;
     v36 = 0u;
     v33 = 0u;
@@ -138,27 +138,27 @@
           }
 
           v16 = *(*(&v33 + 1) + 8 * v15);
-          v17 = [v6 domain];
+          domain = [arrayCopy domain];
           v18 = [v16 objectForKeyedSubscript:v14];
-          if ([v17 isEqualToString:v18])
+          if ([domain isEqualToString:v18])
           {
-            v19 = [v6 code];
-            v20 = v6;
+            code = [arrayCopy code];
+            v20 = arrayCopy;
             v21 = v14;
-            v22 = v19;
+            v22 = code;
             v23 = [v16 objectForKeyedSubscript:@"IMSerializedErrorCodeKey"];
             v24 = v10;
-            v25 = [v23 integerValue];
+            integerValue = [v23 integerValue];
 
-            v26 = v22 == v25;
+            v26 = v22 == integerValue;
             v14 = v21;
-            v6 = v20;
+            arrayCopy = v20;
             v12 = v32;
             v10 = v24;
             if (v26)
             {
               v9 = v30;
-              v7 = v31;
+              keyCopy = v31;
               goto LABEL_18;
             }
           }
@@ -177,28 +177,28 @@
       while (v12);
     }
 
-    v27 = [v10 mutableCopy];
+    array = [v10 mutableCopy];
     v9 = v30;
-    v7 = v31;
-    self = v29;
-    if (!v27)
+    keyCopy = v31;
+    self = selfCopy;
+    if (!array)
     {
 LABEL_16:
-      v27 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
     }
 
-    v28 = [v6 serializedError_im];
-    [v27 addObject:v28];
+    serializedError_im = [arrayCopy serializedError_im];
+    [array addObject:serializedError_im];
 
-    v10 = v27;
-    [(IMKeyValueCollection *)self setObject:v27 forKey:v7];
+    v10 = array;
+    [(IMKeyValueCollection *)self setObject:array forKey:keyCopy];
 LABEL_18:
   }
 }
 
-- (id)errorArrayForKey:(id)a3
+- (id)errorArrayForKey:(id)key
 {
-  v3 = [(IMKeyValueCollection *)self objectForKey:a3];
+  v3 = [(IMKeyValueCollection *)self objectForKey:key];
   if (v3)
   {
     v4 = [MEMORY[0x1E696ABC0] errorArrayFromSerializedErrorArray_im:v3];
@@ -219,26 +219,26 @@ LABEL_18:
   return 0;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(IMKeyValueCollection *)self keyValueStorage];
-  v6 = [v5 copy];
+  keyValueStorage = [(IMKeyValueCollection *)self keyValueStorage];
+  v6 = [keyValueStorage copy];
   v7 = [v4 initWithKeyValueStorage:v6];
 
   return v7;
 }
 
-- (IMKeyValueCollection)initWithKeyValueStorage:(id)a3
+- (IMKeyValueCollection)initWithKeyValueStorage:(id)storage
 {
-  v5 = a3;
+  storageCopy = storage;
   v9.receiver = self;
   v9.super_class = IMKeyValueCollection;
   v6 = [(IMKeyValueCollection *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_keyValueStorage, a3);
+    objc_storeStrong(&v6->_keyValueStorage, storage);
   }
 
   return v7;
@@ -246,37 +246,37 @@ LABEL_18:
 
 - (void)_notifyListeners
 {
-  v5 = [(IMKeyValueCollection *)self delegate];
+  delegate = [(IMKeyValueCollection *)self delegate];
   if (objc_opt_respondsToSelector())
   {
     v3 = [(NSMutableDictionary *)self->_recordedChanges copy];
-    [v5 keyValueCollection:self willUpdateValues:v3];
+    [delegate keyValueCollection:self willUpdateValues:v3];
   }
 
   if (objc_opt_respondsToSelector())
   {
     v4 = [(NSMutableDictionary *)self->_recordedChanges copy];
-    [v5 keyValueCollection:self didUpdateValues:v4];
+    [delegate keyValueCollection:self didUpdateValues:v4];
   }
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(IMKeyValueCollection *)v5 keyValueStorage];
-  v7 = [v6 objectForKey:v4];
+  keyCopy = key;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  keyValueStorage = [(IMKeyValueCollection *)selfCopy keyValueStorage];
+  v7 = [keyValueStorage objectForKey:keyCopy];
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return v7;
 }
 
-- (id)objectForKey:(id)a3 withDefault:(id)a4
+- (id)objectForKey:(id)key withDefault:(id)default
 {
-  v6 = a4;
-  v7 = [(IMKeyValueCollection *)self objectForKey:a3];
+  defaultCopy = default;
+  v7 = [(IMKeyValueCollection *)self objectForKey:key];
   v8 = v7;
   if (v7)
   {
@@ -285,7 +285,7 @@ LABEL_18:
 
   else
   {
-    v9 = v6;
+    v9 = defaultCopy;
   }
 
   v10 = v9;
@@ -293,153 +293,153 @@ LABEL_18:
   return v9;
 }
 
-- (void)_setObject:(id)a3 forKey:(id)a4
+- (void)_setObject:(id)object forKey:(id)key
 {
-  v8 = a3;
-  v6 = a4;
-  if (v8 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  objectCopy = object;
+  keyCopy = key;
+  if (objectCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v7 = [(IMKeyValueCollection *)self keyValueStorage];
-    [v7 setObject:v8 forKey:v6];
+    keyValueStorage = [(IMKeyValueCollection *)self keyValueStorage];
+    [keyValueStorage setObject:objectCopy forKey:keyCopy];
   }
 
   else
   {
-    v7 = [(IMKeyValueCollection *)self keyValueStorage];
-    [v7 removeObjectForKey:v6];
+    keyValueStorage = [(IMKeyValueCollection *)self keyValueStorage];
+    [keyValueStorage removeObjectForKey:keyCopy];
   }
 }
 
-- (void)_recordChange:(id)a3 forKey:(id)a4
+- (void)_recordChange:(id)change forKey:(id)key
 {
-  v11 = a3;
-  v6 = a4;
+  changeCopy = change;
+  keyCopy = key;
   if (!self->_recordedChanges)
   {
-    v7 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     recordedChanges = self->_recordedChanges;
-    self->_recordedChanges = v7;
+    self->_recordedChanges = dictionary;
   }
 
   v9 = self->_recordedChanges;
-  if (v11)
+  if (changeCopy)
   {
-    [(NSMutableDictionary *)v9 setObject:v11 forKey:v6];
+    [(NSMutableDictionary *)v9 setObject:changeCopy forKey:keyCopy];
   }
 
   else
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
-    [(NSMutableDictionary *)v9 setObject:v10 forKey:v6];
+    null = [MEMORY[0x1E695DFB0] null];
+    [(NSMutableDictionary *)v9 setObject:null forKey:keyCopy];
   }
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = self;
-  objc_sync_enter(v7);
-  v8 = [(IMKeyValueCollection *)v7 keyValueStorage];
-  v9 = [v8 objectForKey:v6];
+  objectCopy = object;
+  keyCopy = key;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  keyValueStorage = [(IMKeyValueCollection *)selfCopy keyValueStorage];
+  v9 = [keyValueStorage objectForKey:keyCopy];
 
-  if (v10 | v9 && (!v10 && v9 || v10 && !v9 || v10 && v9 && ([v10 isEqual:v9] & 1) == 0))
+  if (objectCopy | v9 && (!objectCopy && v9 || objectCopy && !v9 || objectCopy && v9 && ([objectCopy isEqual:v9] & 1) == 0))
   {
-    [(IMKeyValueCollection *)v7 _setObject:v10 forKey:v6];
-    [(IMKeyValueCollection *)v7 _recordChange:v10 forKey:v6];
-    if (!v7->_batchCount)
+    [(IMKeyValueCollection *)selfCopy _setObject:objectCopy forKey:keyCopy];
+    [(IMKeyValueCollection *)selfCopy _recordChange:objectCopy forKey:keyCopy];
+    if (!selfCopy->_batchCount)
     {
-      [(IMKeyValueCollection *)v7 _broadcastIfNeeded];
+      [(IMKeyValueCollection *)selfCopy _broadcastIfNeeded];
     }
   }
 
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
 }
 
-- (BOOL)BOOLForKey:(id)a3 withDefault:(BOOL)a4
+- (BOOL)BOOLForKey:(id)key withDefault:(BOOL)default
 {
-  v4 = a4;
+  defaultCopy = default;
   v6 = MEMORY[0x1E696AD98];
-  v7 = a3;
-  v8 = [v6 numberWithBool:v4];
-  v9 = [(IMKeyValueCollection *)self objectForKey:v7 withDefault:v8];
+  keyCopy = key;
+  v8 = [v6 numberWithBool:defaultCopy];
+  v9 = [(IMKeyValueCollection *)self objectForKey:keyCopy withDefault:v8];
 
   LOBYTE(v6) = [v9 BOOLValue];
   return v6;
 }
 
-- (void)setBool:(BOOL)a3 forKey:(id)a4
+- (void)setBool:(BOOL)bool forKey:(id)key
 {
-  v4 = a3;
+  boolCopy = bool;
   v6 = MEMORY[0x1E696AD98];
-  v7 = a4;
-  v8 = [v6 numberWithBool:v4];
-  [(IMKeyValueCollection *)self setObject:v8 forKey:v7];
+  keyCopy = key;
+  v8 = [v6 numberWithBool:boolCopy];
+  [(IMKeyValueCollection *)self setObject:v8 forKey:keyCopy];
 }
 
-- (int64_t)integerForKey:(id)a3 withDefault:(int64_t)a4
+- (int64_t)integerForKey:(id)key withDefault:(int64_t)default
 {
   v6 = MEMORY[0x1E696AD98];
-  v7 = a3;
-  v8 = [v6 numberWithInteger:a4];
-  v9 = [(IMKeyValueCollection *)self objectForKey:v7 withDefault:v8];
+  keyCopy = key;
+  v8 = [v6 numberWithInteger:default];
+  v9 = [(IMKeyValueCollection *)self objectForKey:keyCopy withDefault:v8];
 
-  v10 = [v9 integerValue];
-  return v10;
+  integerValue = [v9 integerValue];
+  return integerValue;
 }
 
-- (void)setInteger:(int64_t)a3 forKey:(id)a4
+- (void)setInteger:(int64_t)integer forKey:(id)key
 {
   v6 = MEMORY[0x1E696AD98];
-  v7 = a4;
-  v8 = [v6 numberWithInteger:a3];
-  [(IMKeyValueCollection *)self setObject:v8 forKey:v7];
+  keyCopy = key;
+  v8 = [v6 numberWithInteger:integer];
+  [(IMKeyValueCollection *)self setObject:v8 forKey:keyCopy];
 }
 
-- (int64_t)int64ForKey:(id)a3 withDefault:(int64_t)a4
+- (int64_t)int64ForKey:(id)key withDefault:(int64_t)default
 {
   v6 = MEMORY[0x1E696AD98];
-  v7 = a3;
-  v8 = [v6 numberWithLongLong:a4];
-  v9 = [(IMKeyValueCollection *)self objectForKey:v7 withDefault:v8];
+  keyCopy = key;
+  v8 = [v6 numberWithLongLong:default];
+  v9 = [(IMKeyValueCollection *)self objectForKey:keyCopy withDefault:v8];
 
-  v10 = [v9 longValue];
-  return v10;
+  longValue = [v9 longValue];
+  return longValue;
 }
 
-- (void)setInt64:(int64_t)a3 forKey:(id)a4
+- (void)setInt64:(int64_t)int64 forKey:(id)key
 {
   v6 = MEMORY[0x1E696AD98];
-  v7 = a4;
-  v8 = [v6 numberWithLongLong:a3];
-  [(IMKeyValueCollection *)self setObject:v8 forKey:v7];
+  keyCopy = key;
+  v8 = [v6 numberWithLongLong:int64];
+  [(IMKeyValueCollection *)self setObject:v8 forKey:keyCopy];
 }
 
-- (unint64_t)uint64ForKey:(id)a3 withDefault:(unint64_t)a4
+- (unint64_t)uint64ForKey:(id)key withDefault:(unint64_t)default
 {
   v6 = MEMORY[0x1E696AD98];
-  v7 = a3;
-  v8 = [v6 numberWithUnsignedLongLong:a4];
-  v9 = [(IMKeyValueCollection *)self objectForKey:v7 withDefault:v8];
+  keyCopy = key;
+  v8 = [v6 numberWithUnsignedLongLong:default];
+  v9 = [(IMKeyValueCollection *)self objectForKey:keyCopy withDefault:v8];
 
-  v10 = [v9 unsignedLongValue];
-  return v10;
+  unsignedLongValue = [v9 unsignedLongValue];
+  return unsignedLongValue;
 }
 
-- (void)setUint64:(int64_t)a3 forKey:(id)a4
+- (void)setUint64:(int64_t)uint64 forKey:(id)key
 {
   v6 = MEMORY[0x1E696AD98];
-  v7 = a4;
-  v8 = [v6 numberWithLongLong:a3];
-  [(IMKeyValueCollection *)self setObject:v8 forKey:v7];
+  keyCopy = key;
+  v8 = [v6 numberWithLongLong:uint64];
+  [(IMKeyValueCollection *)self setObject:v8 forKey:keyCopy];
 }
 
-- (double)doubleForKey:(id)a3 withDefault:(double)a4
+- (double)doubleForKey:(id)key withDefault:(double)default
 {
   v6 = MEMORY[0x1E696AD98];
-  v7 = a3;
-  v8 = [v6 numberWithDouble:a4];
-  v9 = [(IMKeyValueCollection *)self objectForKey:v7 withDefault:v8];
+  keyCopy = key;
+  v8 = [v6 numberWithDouble:default];
+  v9 = [(IMKeyValueCollection *)self objectForKey:keyCopy withDefault:v8];
 
   [v9 doubleValue];
   v11 = v10;
@@ -447,12 +447,12 @@ LABEL_18:
   return v11;
 }
 
-- (void)setDouble:(double)a3 forKey:(id)a4
+- (void)setDouble:(double)double forKey:(id)key
 {
   v6 = MEMORY[0x1E696AD98];
-  v7 = a4;
-  v8 = [v6 numberWithDouble:a3];
-  [(IMKeyValueCollection *)self setObject:v8 forKey:v7];
+  keyCopy = key;
+  v8 = [v6 numberWithDouble:double];
+  [(IMKeyValueCollection *)self setObject:v8 forKey:keyCopy];
 }
 
 - (NSString)description
@@ -461,8 +461,8 @@ LABEL_18:
   v8.receiver = self;
   v8.super_class = IMKeyValueCollection;
   v4 = [(IMKeyValueCollection *)&v8 description];
-  v5 = [(IMKeyValueCollection *)self keyValueStorage];
-  v6 = [v3 stringWithFormat:@"%@ storage:%@, recorded changes: %@, batch count: %zd]", v4, v5, self->_recordedChanges, self->_batchCount];
+  keyValueStorage = [(IMKeyValueCollection *)self keyValueStorage];
+  v6 = [v3 stringWithFormat:@"%@ storage:%@, recorded changes: %@, batch count: %zd]", v4, keyValueStorage, self->_recordedChanges, self->_batchCount];
 
   return v6;
 }

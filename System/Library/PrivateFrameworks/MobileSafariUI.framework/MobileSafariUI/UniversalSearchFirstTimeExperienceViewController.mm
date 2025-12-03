@@ -1,12 +1,12 @@
 @interface UniversalSearchFirstTimeExperienceViewController
 + (BOOL)hasShownParsecFirstTimeUserExperience;
 + (void)userDidInteractWithParsecFirstTimeUserExperience;
-- (UniversalSearchFirstTimeExperienceViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (UniversalSearchFirstTimeExperienceViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (UniversalSearchFirstTimeExperienceViewControllerDelegate)delegate;
 - (void)firstTimeExperienceContinueButtonPressed;
 - (void)loadView;
 - (void)unifiedFieldDidChange;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
 @end
@@ -15,26 +15,26 @@
 
 + (BOOL)hasShownParsecFirstTimeUserExperience
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"WBSParsecHasShownFirstTimeUserExperience"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"WBSParsecHasShownFirstTimeUserExperience"];
 
   return v3;
 }
 
 + (void)userDidInteractWithParsecFirstTimeUserExperience
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v2 setBool:1 forKey:@"WBSParsecHasShownFirstTimeUserExperience"];
-  [v2 synchronize];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults setBool:1 forKey:@"WBSParsecHasShownFirstTimeUserExperience"];
+  [standardUserDefaults synchronize];
 }
 
-- (UniversalSearchFirstTimeExperienceViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (UniversalSearchFirstTimeExperienceViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  bundleCopy = bundle;
   v26.receiver = self;
   v26.super_class = UniversalSearchFirstTimeExperienceViewController;
-  v8 = [(UniversalSearchFirstTimeExperienceViewController *)&v26 initWithNibName:v6 bundle:v7];
+  v8 = [(UniversalSearchFirstTimeExperienceViewController *)&v26 initWithNibName:nameCopy bundle:bundleCopy];
   if (v8)
   {
     v9 = +[(WBSParsecDSession *)UniversalSearchSession];
@@ -59,29 +59,29 @@
     v12 = v11;
     _Block_object_dispose(&v28, 8);
     v25 = [v11 alloc];
-    v13 = [v10 enabledDomains];
-    v14 = [v13 containsObject:*MEMORY[0x277D4A2D8]];
-    if ([v13 containsObject:*MEMORY[0x277D4A2D0]])
+    enabledDomains = [v10 enabledDomains];
+    v14 = [enabledDomains containsObject:*MEMORY[0x277D4A2D8]];
+    if ([enabledDomains containsObject:*MEMORY[0x277D4A2D0]])
     {
       v14 |= 8uLL;
     }
 
-    if ([v13 containsObject:*MEMORY[0x277D4A2C8]])
+    if ([enabledDomains containsObject:*MEMORY[0x277D4A2C8]])
     {
       v14 |= 0x20uLL;
     }
 
-    if ([v13 containsObject:@"itunes"])
+    if ([enabledDomains containsObject:@"itunes"])
     {
       v14 |= 2uLL;
     }
 
-    if ([v13 containsObject:@"app_store"])
+    if ([enabledDomains containsObject:@"app_store"])
     {
       v14 |= 4uLL;
     }
 
-    if ([v13 containsObject:@"restaurants"])
+    if ([enabledDomains containsObject:@"restaurants"])
     {
       v15 = v14 | 0x10;
     }
@@ -92,11 +92,11 @@
     }
 
     v16 = MEMORY[0x277CCACA8];
-    v17 = [v10 firstUseDescriptionText];
-    v18 = [v16 stringWithFormat:@"%@ ", v17];
-    v19 = [v10 firstUseLearnMoreText];
+    firstUseDescriptionText = [v10 firstUseDescriptionText];
+    v18 = [v16 stringWithFormat:@"%@ ", firstUseDescriptionText];
+    firstUseLearnMoreText = [v10 firstUseLearnMoreText];
     v20 = _WBSLocalizedString();
-    v21 = [v25 initWithSupportedDomains:v15 explanationText:v18 learnMoreText:v19 continueButtonTitle:v20];
+    v21 = [v25 initWithSupportedDomains:v15 explanationText:v18 learnMoreText:firstUseLearnMoreText continueButtonTitle:v20];
     firstTimeExperienceViewController = v8->_firstTimeExperienceViewController;
     v8->_firstTimeExperienceViewController = v21;
 
@@ -127,19 +127,19 @@
   [(UniversalSearchFirstTimeExperienceViewController *)self addChildViewController:self->_firstTimeExperienceViewController];
   [(SearchUIFirstTimeExperienceViewController *)self->_firstTimeExperienceViewController didMoveToParentViewController:self];
   [(SearchUIFirstTimeExperienceViewController *)self->_firstTimeExperienceViewController setDelegate:self];
-  v3 = [(SearchUIFirstTimeExperienceViewController *)self->_firstTimeExperienceViewController view];
-  [v3 setAutoresizingMask:0];
+  view = [(SearchUIFirstTimeExperienceViewController *)self->_firstTimeExperienceViewController view];
+  [view setAutoresizingMask:0];
 
-  v4 = [(UniversalSearchFirstTimeExperienceViewController *)self view];
-  v5 = [(SearchUIFirstTimeExperienceViewController *)self->_firstTimeExperienceViewController view];
-  [v4 addSubview:v5];
+  view2 = [(UniversalSearchFirstTimeExperienceViewController *)self view];
+  view3 = [(SearchUIFirstTimeExperienceViewController *)self->_firstTimeExperienceViewController view];
+  [view2 addSubview:view3];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = UniversalSearchFirstTimeExperienceViewController;
-  [(UniversalSearchFirstTimeExperienceViewController *)&v4 viewDidAppear:a3];
+  [(UniversalSearchFirstTimeExperienceViewController *)&v4 viewDidAppear:appear];
   [(UIScrollView *)self->_scrollView flashScrollIndicators];
 }
 
@@ -148,16 +148,16 @@
   v12.receiver = self;
   v12.super_class = UniversalSearchFirstTimeExperienceViewController;
   [(UniversalSearchFirstTimeExperienceViewController *)&v12 viewWillLayoutSubviews];
-  v3 = [(SearchUIFirstTimeExperienceViewController *)self->_firstTimeExperienceViewController view];
-  [v3 systemLayoutSizeFittingSize:{*MEMORY[0x277D76C78], *(MEMORY[0x277D76C78] + 8)}];
+  view = [(SearchUIFirstTimeExperienceViewController *)self->_firstTimeExperienceViewController view];
+  [view systemLayoutSizeFittingSize:{*MEMORY[0x277D76C78], *(MEMORY[0x277D76C78] + 8)}];
   v5 = v4;
-  v6 = [(UniversalSearchFirstTimeExperienceViewController *)self view];
-  [v6 bounds];
+  view2 = [(UniversalSearchFirstTimeExperienceViewController *)self view];
+  [view2 bounds];
   v8 = v7;
   v10 = v9;
 
   v11 = fmax(v5, v10);
-  [v3 setFrame:{0.0, 0.0, v8, v11}];
+  [view setFrame:{0.0, 0.0, v8, v11}];
   [(UIScrollView *)self->_scrollView setContentSize:v8, v11];
 }
 

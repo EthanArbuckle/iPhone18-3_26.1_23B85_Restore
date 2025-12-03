@@ -1,12 +1,12 @@
 @interface _UIButtonBarButton
 + (BOOL)shouldUseMonochromeTreatmentWithCustomTintColor;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
-- (BOOL)pointMostlyInside:(CGPoint)a3 withEvent:(id)a4;
-- (BOOL)updatePresentedMenuFrom:(id)a3;
-- (CGPoint)menuAttachmentPointForConfiguration:(id)a3;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
+- (BOOL)pointMostlyInside:(CGPoint)inside withEvent:(id)event;
+- (BOOL)updatePresentedMenuFrom:(id)from;
+- (CGPoint)menuAttachmentPointForConfiguration:(id)configuration;
 - (CGRect)_buttonBarHitRect;
 - (CGRect)accessoryViewAlignmentRect;
-- (CGSize)backButtonSystemLayoutSizeFittingSize:(CGSize)a3 horizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5;
+- (CGSize)backButtonSystemLayoutSizeFittingSize:(CGSize)size horizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority;
 - (CGSize)backgroundSize;
 - (CGSize)imageViewSize;
 - (CGSize)intrinsicContentSize;
@@ -15,63 +15,63 @@
 - (NSString)description;
 - (UIEdgeInsets)alignmentRectInsets;
 - (_UIButtonBarButton)init;
-- (_UIButtonBarButton)initWithCoder:(id)a3;
-- (_UIButtonBarButton)initWithFrame:(CGRect)a3;
-- (_UIButtonBarButton)initWithVisualProvider:(id)a3;
-- (id)_contextMenuInteraction:(id)a3 styleForMenuWithConfiguration:(id)a4;
+- (_UIButtonBarButton)initWithCoder:(id)coder;
+- (_UIButtonBarButton)initWithFrame:(CGRect)frame;
+- (_UIButtonBarButton)initWithVisualProvider:(id)provider;
+- (id)_contextMenuInteraction:(id)interaction styleForMenuWithConfiguration:(id)configuration;
 - (id)_preferredSender;
-- (id)_targetedPreviewForInteraction:(id)a3;
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4;
-- (id)contextMenuInteraction:(id)a3 previewForDismissingMenuWithConfiguration:(id)a4;
-- (id)contextMenuInteraction:(id)a3 previewForHighlightingMenuWithConfiguration:(id)a4;
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5;
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4;
-- (void)_accessibilitySettingsChanged:(id)a3;
+- (id)_targetedPreviewForInteraction:(id)interaction;
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location;
+- (id)contextMenuInteraction:(id)interaction previewForDismissingMenuWithConfiguration:(id)configuration;
+- (id)contextMenuInteraction:(id)interaction previewForHighlightingMenuWithConfiguration:(id)configuration;
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region;
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region;
+- (void)_accessibilitySettingsChanged:(id)changed;
 - (void)_applyDeferredSymbolEffects;
-- (void)_configureFromBarItem:(id)a3 appearanceDelegate:(id)a4 isBackButton:(BOOL)a5 useBreadcrumbStyle:(BOOL)a6;
-- (void)_intrinsicContentSizeInvalidatedForChildView:(id)a3;
+- (void)_configureFromBarItem:(id)item appearanceDelegate:(id)delegate isBackButton:(BOOL)button useBreadcrumbStyle:(BOOL)style;
+- (void)_intrinsicContentSizeInvalidatedForChildView:(id)view;
 - (void)_is_setNeedsLayout;
-- (void)_selectionInteractionDidBeginHinting:(id)a3;
-- (void)_selectionInteractionDidCancelHinting:(id)a3;
-- (void)_selectionInteractionDidSelect:(id)a3;
-- (void)_setHasActiveMenuPresentation:(BOOL)a3;
-- (void)_setTouchHasHighlighted:(BOOL)a3;
-- (void)addSymbolEffect:(id)a3 options:(id)a4 animated:(BOOL)a5;
-- (void)applyContentTransition:(id)a3 options:(id)a4;
-- (void)configureBackButtonFromBarItem:(id)a3 withAppearanceDelegate:(id)a4;
-- (void)configureBreadcrumbBackButtonFromBarItem:(id)a3 withAppearanceDelegate:(id)a4;
-- (void)configureFromBarItem:(id)a3 withAppearanceDelegate:(id)a4;
+- (void)_selectionInteractionDidBeginHinting:(id)hinting;
+- (void)_selectionInteractionDidCancelHinting:(id)hinting;
+- (void)_selectionInteractionDidSelect:(id)select;
+- (void)_setHasActiveMenuPresentation:(BOOL)presentation;
+- (void)_setTouchHasHighlighted:(BOOL)highlighted;
+- (void)addSymbolEffect:(id)effect options:(id)options animated:(BOOL)animated;
+- (void)applyContentTransition:(id)transition options:(id)options;
+- (void)configureBackButtonFromBarItem:(id)item withAppearanceDelegate:(id)delegate;
+- (void)configureBreadcrumbBackButtonFromBarItem:(id)item withAppearanceDelegate:(id)delegate;
+- (void)configureFromBarItem:(id)item withAppearanceDelegate:(id)delegate;
 - (void)dealloc;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
 - (void)layoutSubviews;
-- (void)removeAllSymbolEffectsWithOptions:(id)a3 animated:(BOOL)a4;
-- (void)removeSymbolEffectOfType:(id)a3 options:(id)a4 animated:(BOOL)a5;
-- (void)setAppearanceData:(id)a3;
-- (void)setBounds:(CGRect)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setHighlighted:(BOOL)a3;
+- (void)removeAllSymbolEffectsWithOptions:(id)options animated:(BOOL)animated;
+- (void)removeSymbolEffectOfType:(id)type options:(id)options animated:(BOOL)animated;
+- (void)setAppearanceData:(id)data;
+- (void)setBounds:(CGRect)bounds;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setFrame:(CGRect)frame;
+- (void)setHighlighted:(BOOL)highlighted;
 - (void)setNeedsAppearanceUpdate;
-- (void)setSelected:(BOOL)a3;
-- (void)setShouldUseButtonPlatters:(BOOL)a3;
-- (void)setSpringLoaded:(BOOL)a3;
-- (void)willMoveToSuperview:(id)a3;
-- (void)willMoveToWindow:(id)a3;
+- (void)setSelected:(BOOL)selected;
+- (void)setShouldUseButtonPlatters:(BOOL)platters;
+- (void)setSpringLoaded:(BOOL)loaded;
+- (void)willMoveToSuperview:(id)superview;
+- (void)willMoveToWindow:(id)window;
 @end
 
 @implementation _UIButtonBarButton
 
 - (void)_applyDeferredSymbolEffects
 {
-  v3 = [(_UIButtonBarButtonVisualProvider *)self->_visualProvider symbolImageView];
-  v4 = v3;
-  if (v3)
+  symbolImageView = [(_UIButtonBarButtonVisualProvider *)self->_visualProvider symbolImageView];
+  v4 = symbolImageView;
+  if (symbolImageView)
   {
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __49___UIButtonBarButton__applyDeferredSymbolEffects__block_invoke;
     aBlock[3] = &unk_1E70F7368;
-    v8 = v3;
+    v8 = symbolImageView;
     v5 = _Block_copy(aBlock);
   }
 
@@ -146,8 +146,8 @@
   widthMinimizingConstraint = self->_widthMinimizingConstraint;
   if (!widthMinimizingConstraint)
   {
-    v4 = [(UIView *)self widthAnchor];
-    v5 = [v4 constraintEqualToConstant:0.0];
+    widthAnchor = [(UIView *)self widthAnchor];
+    v5 = [widthAnchor constraintEqualToConstant:0.0];
     v6 = self->_widthMinimizingConstraint;
     self->_widthMinimizingConstraint = v5;
 
@@ -210,23 +210,23 @@
 {
   self->_visualProvider->_button = 0;
   objc_storeWeak(&self->_visualProvider->_barButtonItem, 0);
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:@"UIAccessibilityButtonShapesEnabledStatusDidChangeNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:@"UIAccessibilityButtonShapesEnabledStatusDidChangeNotification" object:0];
 
   v4.receiver = self;
   v4.super_class = _UIButtonBarButton;
   [(UIView *)&v4 dealloc];
 }
 
-- (_UIButtonBarButton)initWithVisualProvider:(id)a3
+- (_UIButtonBarButton)initWithVisualProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v11.receiver = self;
   v11.super_class = _UIButtonBarButton;
   v5 = [(UIControl *)&v11 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [providerCopy copy];
     visualProvider = v5->_visualProvider;
     v5->_visualProvider = v6;
 
@@ -236,8 +236,8 @@
     [(UIView *)v5 addInteraction:v8];
     [(_UIButtonBarButton *)v5 set_selectionInteraction:v8];
     [(UIControl *)v5 setShowsMenuFromSource:1];
-    v9 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v9 addObserver:v5 selector:sel__accessibilitySettingsChanged_ name:@"UIAccessibilityButtonShapesEnabledStatusDidChangeNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v5 selector:sel__accessibilitySettingsChanged_ name:@"UIAccessibilityButtonShapesEnabledStatusDidChangeNotification" object:0];
   }
 
   return v5;
@@ -250,104 +250,104 @@
   return 0;
 }
 
-- (_UIButtonBarButton)initWithFrame:(CGRect)a3
+- (_UIButtonBarButton)initWithFrame:(CGRect)frame
 {
-  [(UIResponder *)self doesNotRecognizeSelector:a2, a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(UIResponder *)self doesNotRecognizeSelector:a2, frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
 
   return 0;
 }
 
-- (_UIButtonBarButton)initWithCoder:(id)a3
+- (_UIButtonBarButton)initWithCoder:(id)coder
 {
   [(UIResponder *)self doesNotRecognizeSelector:a2];
 
   return 0;
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  v4 = [(_UIButtonBarButtonVisualProvider *)self->_visualProvider buttonSelectionState:self forRequestedState:a3];
+  v4 = [(_UIButtonBarButtonVisualProvider *)self->_visualProvider buttonSelectionState:self forRequestedState:selected];
   v5.receiver = self;
   v5.super_class = _UIButtonBarButton;
   [(UIControl *)&v5 setSelected:v4];
   [(_UIButtonBarButtonVisualProvider *)self->_visualProvider updateButton:self forSelectedState:[(UIControl *)self isSelected]];
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v4 = [(_UIButtonBarButtonVisualProvider *)self->_visualProvider buttonEnabledState:self forRequestedState:a3];
+  v4 = [(_UIButtonBarButtonVisualProvider *)self->_visualProvider buttonEnabledState:self forRequestedState:enabled];
   v5.receiver = self;
   v5.super_class = _UIButtonBarButton;
   [(UIControl *)&v5 setEnabled:v4];
   [(_UIButtonBarButtonVisualProvider *)self->_visualProvider updateButton:self forEnabledState:[(UIControl *)self isEnabled]];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v4 = [(_UIButtonBarButtonVisualProvider *)self->_visualProvider buttonHighlitedState:self forRequestedState:a3];
+  v4 = [(_UIButtonBarButtonVisualProvider *)self->_visualProvider buttonHighlitedState:self forRequestedState:highlighted];
   v5.receiver = self;
   v5.super_class = _UIButtonBarButton;
   [(UIControl *)&v5 setHighlighted:v4];
   [(_UIButtonBarButtonVisualProvider *)self->_visualProvider updateButton:self forHighlightedState:[(UIControl *)self isHighlighted]];
 }
 
-- (void)_setHasActiveMenuPresentation:(BOOL)a3
+- (void)_setHasActiveMenuPresentation:(BOOL)presentation
 {
-  v4 = [(_UIButtonBarButtonVisualProvider *)self->_visualProvider buttonHeldState:self forRequestedState:a3];
+  v4 = [(_UIButtonBarButtonVisualProvider *)self->_visualProvider buttonHeldState:self forRequestedState:presentation];
   v5.receiver = self;
   v5.super_class = _UIButtonBarButton;
   [(UIControl *)&v5 _setHasActiveMenuPresentation:v4];
   [(_UIButtonBarButtonVisualProvider *)self->_visualProvider updateButton:self forHeldState:[(UIControl *)self _hasActiveMenuPresentation]];
 }
 
-- (void)_setTouchHasHighlighted:(BOOL)a3
+- (void)_setTouchHasHighlighted:(BOOL)highlighted
 {
   v5.receiver = self;
   v5.super_class = _UIButtonBarButton;
   [(UIControl *)&v5 _setTouchHasHighlighted:?];
-  if (!a3)
+  if (!highlighted)
   {
     [(_UIButtonBarButtonVisualProvider *)self->_visualProvider resetButtonHasHighlighted];
   }
 }
 
-- (void)configureFromBarItem:(id)a3 withAppearanceDelegate:(id)a4
+- (void)configureFromBarItem:(id)item withAppearanceDelegate:(id)delegate
 {
   visualProvider = self->_visualProvider;
-  v7 = a4;
-  v8 = a3;
-  objc_storeWeak(&visualProvider->_barButtonItem, v8);
-  [(_UIButtonBarButton *)self _configureFromBarItem:v8 appearanceDelegate:v7 isBackButton:0 useBreadcrumbStyle:0];
+  delegateCopy = delegate;
+  itemCopy = item;
+  objc_storeWeak(&visualProvider->_barButtonItem, itemCopy);
+  [(_UIButtonBarButton *)self _configureFromBarItem:itemCopy appearanceDelegate:delegateCopy isBackButton:0 useBreadcrumbStyle:0];
 }
 
-- (void)configureBackButtonFromBarItem:(id)a3 withAppearanceDelegate:(id)a4
+- (void)configureBackButtonFromBarItem:(id)item withAppearanceDelegate:(id)delegate
 {
   visualProvider = self->_visualProvider;
-  v8 = a4;
-  obj = a3;
+  delegateCopy = delegate;
+  obj = item;
   if (![(_UIButtonBarButtonVisualProvider *)visualProvider supportsBackButtons])
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"_UIButtonBarButton.m" lineNumber:521 description:{@"Attempt to create a back-button styled bar button from a visual style that does not support back buttons (button=%p, visual style=%@)", self, self->_visualProvider}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIButtonBarButton.m" lineNumber:521 description:{@"Attempt to create a back-button styled bar button from a visual style that does not support back buttons (button=%p, visual style=%@)", self, self->_visualProvider}];
   }
 
   objc_storeWeak(&self->_visualProvider->_barButtonItem, obj);
-  [(_UIButtonBarButton *)self _configureFromBarItem:obj appearanceDelegate:v8 isBackButton:1 useBreadcrumbStyle:0];
+  [(_UIButtonBarButton *)self _configureFromBarItem:obj appearanceDelegate:delegateCopy isBackButton:1 useBreadcrumbStyle:0];
 }
 
-- (void)configureBreadcrumbBackButtonFromBarItem:(id)a3 withAppearanceDelegate:(id)a4
+- (void)configureBreadcrumbBackButtonFromBarItem:(id)item withAppearanceDelegate:(id)delegate
 {
   visualProvider = self->_visualProvider;
-  v8 = a4;
-  obj = a3;
+  delegateCopy = delegate;
+  obj = item;
   if (![(_UIButtonBarButtonVisualProvider *)visualProvider supportsBackButtons])
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"_UIButtonBarButton.m" lineNumber:528 description:{@"Attempt to create a back-button styled bar button from a visual style that does not support back buttons (button=%p, visual style=%@)", self, self->_visualProvider}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIButtonBarButton.m" lineNumber:528 description:{@"Attempt to create a back-button styled bar button from a visual style that does not support back buttons (button=%p, visual style=%@)", self, self->_visualProvider}];
   }
 
   objc_storeWeak(&self->_visualProvider->_barButtonItem, obj);
-  [(_UIButtonBarButton *)self _configureFromBarItem:obj appearanceDelegate:v8 isBackButton:1 useBreadcrumbStyle:1];
+  [(_UIButtonBarButton *)self _configureFromBarItem:obj appearanceDelegate:delegateCopy isBackButton:1 useBreadcrumbStyle:1];
 }
 
 - (CGRect)accessoryViewAlignmentRect
@@ -360,11 +360,11 @@
   return result;
 }
 
-- (void)setAppearanceData:(id)a3
+- (void)setAppearanceData:(id)data
 {
-  v5 = a3;
+  dataCopy = data;
   v6 = self->_appearanceData;
-  v7 = v5;
+  v7 = dataCopy;
   v9 = v7;
   if (v6 == v7)
   {
@@ -383,7 +383,7 @@
   if (!v8)
   {
 LABEL_8:
-    objc_storeStrong(&self->_appearanceData, a3);
+    objc_storeStrong(&self->_appearanceData, data);
     [(_UIButtonBarButton *)self setNeedsAppearanceUpdate];
   }
 
@@ -395,8 +395,8 @@ LABEL_9:
   heightMinimizingConstraint = self->_heightMinimizingConstraint;
   if (!heightMinimizingConstraint)
   {
-    v4 = [(UIView *)self heightAnchor];
-    v5 = [v4 constraintEqualToConstant:0.0];
+    heightAnchor = [(UIView *)self heightAnchor];
+    v5 = [heightAnchor constraintEqualToConstant:0.0];
     v6 = self->_heightMinimizingConstraint;
     self->_heightMinimizingConstraint = v5;
 
@@ -409,17 +409,17 @@ LABEL_9:
   return heightMinimizingConstraint;
 }
 
-- (void)_configureFromBarItem:(id)a3 appearanceDelegate:(id)a4 isBackButton:(BOOL)a5 useBreadcrumbStyle:(BOOL)a6
+- (void)_configureFromBarItem:(id)item appearanceDelegate:(id)delegate isBackButton:(BOOL)button useBreadcrumbStyle:(BOOL)style
 {
-  v16 = a3;
-  v10 = a4;
+  itemCopy = item;
+  delegateCopy = delegate;
   self->_hasPerformedPostConfigurationLayout = 0;
-  self->_backButton = a5;
-  self->_breadcrumb = a5 && a6;
-  if ([v16 isSystemItem])
+  self->_backButton = button;
+  self->_breadcrumb = button && style;
+  if ([itemCopy isSystemItem])
   {
-    v11 = [v16 systemItem];
-    v13 = v11 == 1 || v11 == 24;
+    systemItem = [itemCopy systemItem];
+    v13 = systemItem == 1 || systemItem == 24;
     self->_acceptsInauthenticTouches = v13;
   }
 
@@ -428,11 +428,11 @@ LABEL_9:
     self->_acceptsInauthenticTouches = 0;
   }
 
-  [(_UIButtonBarButtonVisualProvider *)self->_visualProvider configureButton:self withAppearanceDelegate:v10 fromBarItem:v16];
+  [(_UIButtonBarButtonVisualProvider *)self->_visualProvider configureButton:self withAppearanceDelegate:delegateCopy fromBarItem:itemCopy];
   [(_UIButtonBarButtonVisualProvider *)self->_visualProvider updateButton:self toUseButtonShapes:_AXSButtonShapesEnabled() != 0];
-  -[_UIButtonBarButton setEnabled:](self, "setEnabled:", [v16 isEnabled]);
-  -[_UIButtonBarButton setSelected:](self, "setSelected:", [v16 isSelected]);
-  if ([v16 action] == sel_assistantPaste_forEvent_)
+  -[_UIButtonBarButton setEnabled:](self, "setEnabled:", [itemCopy isEnabled]);
+  -[_UIButtonBarButton setSelected:](self, "setSelected:", [itemCopy isSelected]);
+  if ([itemCopy action] == sel_assistantPaste_forEvent_)
   {
     [(UIControl *)self addTarget:self action:sel_pasteTouchDown forControlEvents:1];
     v14 = [MEMORY[0x1E695DF00] now];
@@ -459,15 +459,15 @@ LABEL_9:
   return result;
 }
 
-- (void)setShouldUseButtonPlatters:(BOOL)a3
+- (void)setShouldUseButtonPlatters:(BOOL)platters
 {
-  if (self->_shouldUseButtonPlatters != a3)
+  if (self->_shouldUseButtonPlatters != platters)
   {
-    self->_shouldUseButtonPlatters = a3;
-    v6 = [(_UIButtonBarButtonVisualProvider *)self->_visualProvider contentView];
-    if ([v6 conformsToProtocol:&unk_1EFE79E90])
+    self->_shouldUseButtonPlatters = platters;
+    contentView = [(_UIButtonBarButtonVisualProvider *)self->_visualProvider contentView];
+    if ([contentView conformsToProtocol:&unk_1EFE79E90])
     {
-      v4 = [(_UIButtonBarButtonVisualProvider *)self->_visualProvider contentView];
+      contentView2 = [(_UIButtonBarButtonVisualProvider *)self->_visualProvider contentView];
       v5 = objc_opt_respondsToSelector();
 
       if ((v5 & 1) == 0)
@@ -475,15 +475,15 @@ LABEL_9:
         return;
       }
 
-      v6 = [(_UIButtonBarButtonVisualProvider *)self->_visualProvider contentView];
-      [v6 setShouldUseButtonPlatters:self->_shouldUseButtonPlatters];
+      contentView = [(_UIButtonBarButtonVisualProvider *)self->_visualProvider contentView];
+      [contentView setShouldUseButtonPlatters:self->_shouldUseButtonPlatters];
     }
   }
 }
 
-- (void)setSpringLoaded:(BOOL)a3
+- (void)setSpringLoaded:(BOOL)loaded
 {
-  v3 = a3;
+  loadedCopy = loaded;
   v5 = self->_visualProvider;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
@@ -491,71 +491,71 @@ LABEL_9:
   v7[3] = &unk_1E70F7320;
   v8 = v5;
   v6 = v5;
-  [(UIView *)self _setSpringLoaded:v3 interactionInitializer:v7];
+  [(UIView *)self _setSpringLoaded:loadedCopy interactionInitializer:v7];
 }
 
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location
 {
-  v5 = [(_UIButtonBarButtonVisualProvider *)self->_visualProvider buttonContextMenuInteractionConfiguration:a3];
+  v5 = [(_UIButtonBarButtonVisualProvider *)self->_visualProvider buttonContextMenuInteractionConfiguration:interaction];
   [v5 setPreferredMenuElementOrder:{-[_UIButtonBarButton preferredMenuElementOrder](self, "preferredMenuElementOrder")}];
   if (dyld_program_sdk_at_least())
   {
-    v6 = [(UIView *)self nextResponder];
-    v7 = _UITreeFindFirstAncestorMatchingCondition(v6, sel_nextResponder, &__block_literal_global_191);
+    nextResponder = [(UIView *)self nextResponder];
+    v7 = _UITreeFindFirstAncestorMatchingCondition(nextResponder, sel_nextResponder, &__block_literal_global_191);
 
-    v8 = [v7 topViewController];
-    [v5 setFirstResponderTarget:v8];
+    topViewController = [v7 topViewController];
+    [v5 setFirstResponderTarget:topViewController];
   }
 
   return v5;
 }
 
-- (id)contextMenuInteraction:(id)a3 previewForHighlightingMenuWithConfiguration:(id)a4
+- (id)contextMenuInteraction:(id)interaction previewForHighlightingMenuWithConfiguration:(id)configuration
 {
-  v5 = [(UIView *)self window:a3];
+  v5 = [(UIView *)self window:interaction];
 
   if (v5)
   {
-    v6 = [(_UIButtonBarButtonVisualProvider *)self->_visualProvider buttonContextMenuTargetedPreview];
+    buttonContextMenuTargetedPreview = [(_UIButtonBarButtonVisualProvider *)self->_visualProvider buttonContextMenuTargetedPreview];
   }
 
   else
   {
-    v6 = 0;
+    buttonContextMenuTargetedPreview = 0;
   }
 
-  return v6;
+  return buttonContextMenuTargetedPreview;
 }
 
-- (id)contextMenuInteraction:(id)a3 previewForDismissingMenuWithConfiguration:(id)a4
+- (id)contextMenuInteraction:(id)interaction previewForDismissingMenuWithConfiguration:(id)configuration
 {
-  v5 = [(UIView *)self window:a3];
+  v5 = [(UIView *)self window:interaction];
 
   if (v5)
   {
-    v6 = [(_UIButtonBarButtonVisualProvider *)self->_visualProvider buttonContextMenuTargetedPreview];
+    buttonContextMenuTargetedPreview = [(_UIButtonBarButtonVisualProvider *)self->_visualProvider buttonContextMenuTargetedPreview];
   }
 
   else
   {
-    v6 = 0;
+    buttonContextMenuTargetedPreview = 0;
   }
 
-  return v6;
+  return buttonContextMenuTargetedPreview;
 }
 
-- (id)_contextMenuInteraction:(id)a3 styleForMenuWithConfiguration:(id)a4
+- (id)_contextMenuInteraction:(id)interaction styleForMenuWithConfiguration:(id)configuration
 {
   visualProvider = self->_visualProvider;
   v8.receiver = self;
   v8.super_class = _UIButtonBarButton;
-  v5 = [(UIControl *)&v8 _contextMenuInteraction:a3 styleForMenuWithConfiguration:a4];
+  v5 = [(UIControl *)&v8 _contextMenuInteraction:interaction styleForMenuWithConfiguration:configuration];
   v6 = [(_UIButtonBarButtonVisualProvider *)visualProvider buttonContextMenuStyleFromDefaultStyle:v5];
 
   return v6;
 }
 
-- (CGPoint)menuAttachmentPointForConfiguration:(id)a3
+- (CGPoint)menuAttachmentPointForConfiguration:(id)configuration
 {
   [(_UIButtonBarButtonVisualProvider *)self->_visualProvider menuAnchorPoint];
   result.y = v4;
@@ -563,72 +563,72 @@ LABEL_9:
   return result;
 }
 
-- (BOOL)updatePresentedMenuFrom:(id)a3
+- (BOOL)updatePresentedMenuFrom:(id)from
 {
-  v4 = a3;
-  v5 = [(_UIButtonBarButtonVisualProvider *)self->_visualProvider canUpdateMenuInPlace];
-  if (v5)
+  fromCopy = from;
+  canUpdateMenuInPlace = [(_UIButtonBarButtonVisualProvider *)self->_visualProvider canUpdateMenuInPlace];
+  if (canUpdateMenuInPlace)
   {
-    v6 = [(UIControl *)self contextMenuInteraction];
+    contextMenuInteraction = [(UIControl *)self contextMenuInteraction];
     WeakRetained = objc_loadWeakRetained(&self->_visualProvider->_barButtonItem);
-    v8 = [WeakRetained menu];
-    _UIControlMenuUpdateVisibleMenu(v6, v4, v8);
+    menu = [WeakRetained menu];
+    _UIControlMenuUpdateVisibleMenu(contextMenuInteraction, fromCopy, menu);
 
     [(_UIButtonBarButtonVisualProvider *)self->_visualProvider updateMenu];
   }
 
-  return v5;
+  return canUpdateMenuInPlace;
 }
 
-- (void)addSymbolEffect:(id)a3 options:(id)a4 animated:(BOOL)a5
+- (void)addSymbolEffect:(id)effect options:(id)options animated:(BOOL)animated
 {
-  v5 = a5;
-  v11 = a3;
-  v8 = a4;
-  v9 = [(_UIButtonBarButtonVisualProvider *)self->_visualProvider symbolImageView];
-  v10 = v9;
-  if (v9)
+  animatedCopy = animated;
+  effectCopy = effect;
+  optionsCopy = options;
+  symbolImageView = [(_UIButtonBarButtonVisualProvider *)self->_visualProvider symbolImageView];
+  v10 = symbolImageView;
+  if (symbolImageView)
   {
-    [v9 addSymbolEffect:v11 options:v8 animated:v5];
+    [symbolImageView addSymbolEffect:effectCopy options:optionsCopy animated:animatedCopy];
   }
 }
 
-- (void)removeSymbolEffectOfType:(id)a3 options:(id)a4 animated:(BOOL)a5
+- (void)removeSymbolEffectOfType:(id)type options:(id)options animated:(BOOL)animated
 {
-  v5 = a5;
-  v11 = a3;
-  v8 = a4;
-  v9 = [(_UIButtonBarButtonVisualProvider *)self->_visualProvider symbolImageView];
-  v10 = v9;
-  if (v9)
+  animatedCopy = animated;
+  typeCopy = type;
+  optionsCopy = options;
+  symbolImageView = [(_UIButtonBarButtonVisualProvider *)self->_visualProvider symbolImageView];
+  v10 = symbolImageView;
+  if (symbolImageView)
   {
-    [v9 removeSymbolEffectOfType:v11 options:v8 animated:v5];
+    [symbolImageView removeSymbolEffectOfType:typeCopy options:optionsCopy animated:animatedCopy];
   }
 }
 
-- (void)removeAllSymbolEffectsWithOptions:(id)a3 animated:(BOOL)a4
+- (void)removeAllSymbolEffectsWithOptions:(id)options animated:(BOOL)animated
 {
-  v4 = a4;
-  v8 = a3;
-  v6 = [(_UIButtonBarButtonVisualProvider *)self->_visualProvider symbolImageView];
-  v7 = v6;
-  if (v6)
+  animatedCopy = animated;
+  optionsCopy = options;
+  symbolImageView = [(_UIButtonBarButtonVisualProvider *)self->_visualProvider symbolImageView];
+  v7 = symbolImageView;
+  if (symbolImageView)
   {
-    [v6 removeAllSymbolEffectsWithOptions:v8 animated:v4];
+    [symbolImageView removeAllSymbolEffectsWithOptions:optionsCopy animated:animatedCopy];
   }
 }
 
-- (void)applyContentTransition:(id)a3 options:(id)a4
+- (void)applyContentTransition:(id)transition options:(id)options
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = [(_UIButtonBarButtonVisualProvider *)self->_visualProvider symbolImageView];
+  transitionCopy = transition;
+  optionsCopy = options;
+  symbolImageView = [(_UIButtonBarButtonVisualProvider *)self->_visualProvider symbolImageView];
   visualProvider = self->_visualProvider;
-  if (v7)
+  if (symbolImageView)
   {
     WeakRetained = objc_loadWeakRetained(&visualProvider->_barButtonItem);
-    v10 = [WeakRetained image];
-    [v7 setSymbolImage:v10 withContentTransition:v11 options:v6];
+    image = [WeakRetained image];
+    [symbolImageView setSymbolImage:image withContentTransition:transitionCopy options:optionsCopy];
 
     [(_UIButtonBarButtonVisualProvider *)self->_visualProvider updateImage];
   }
@@ -646,9 +646,9 @@ LABEL_9:
   return WeakRetained;
 }
 
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region
 {
-  v6 = a3;
+  interactionCopy = interaction;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   [(_UIButtonBarButton *)self _buttonBarHitRect];
@@ -658,13 +658,13 @@ LABEL_9:
   v15 = v11;
   if (isKindOfClass)
   {
-    [v6 createRegionFromRect:self targetView:@"com.apple.UIKit._UIButtonBarButton" identifier:-[UIControl isSelected](self selected:{"isSelected"), v8, v9, v10, v11}];
+    [interactionCopy createRegionFromRect:self targetView:@"com.apple.UIKit._UIButtonBarButton" identifier:-[UIControl isSelected](self selected:{"isSelected"), v8, v9, v10, v11}];
   }
 
   else
   {
-    v16 = [v6 view];
-    [(UIView *)self convertRect:v16 toView:v12, v13, v14, v15];
+    view = [interactionCopy view];
+    [(UIView *)self convertRect:view toView:v12, v13, v14, v15];
     v18 = v17;
     v20 = v19;
     v22 = v21;
@@ -677,49 +677,49 @@ LABEL_9:
   return v25;
 }
 
-- (id)_targetedPreviewForInteraction:(id)a3
+- (id)_targetedPreviewForInteraction:(id)interaction
 {
-  v4 = a3;
-  v5 = [(_UIButtonBarButtonVisualProvider *)self->_visualProvider pointerPreviewParameters];
+  interactionCopy = interaction;
+  pointerPreviewParameters = [(_UIButtonBarButtonVisualProvider *)self->_visualProvider pointerPreviewParameters];
   [(_UIButtonBarButtonVisualProvider *)self->_visualProvider pointerPreviewCenter];
   v7 = v6;
   v9 = v8;
-  v10 = [(UIView *)self superview];
-  [(UIView *)self convertPoint:v10 toView:v7, v9];
+  superview = [(UIView *)self superview];
+  [(UIView *)self convertPoint:superview toView:v7, v9];
   v12 = v11;
   v14 = v13;
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v15 = [v4 createPreviewTargetForView:self center:{v12, v14}];
+    v15 = [interactionCopy createPreviewTargetForView:self center:{v12, v14}];
   }
 
   else
   {
     v16 = [UIPreviewTarget alloc];
-    v17 = [(UIView *)self superview];
-    v15 = [(UIPreviewTarget *)v16 initWithContainer:v17 center:v12, v14];
+    superview2 = [(UIView *)self superview];
+    v15 = [(UIPreviewTarget *)v16 initWithContainer:superview2 center:v12, v14];
   }
 
-  v18 = [[UITargetedPreview alloc] initWithView:self parameters:v5 target:v15];
+  v18 = [[UITargetedPreview alloc] initWithView:self parameters:pointerPreviewParameters target:v15];
 
   return v18;
 }
 
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region
 {
-  v5 = [(_UIButtonBarButton *)self _targetedPreviewForInteraction:a3, a4];
+  region = [(_UIButtonBarButton *)self _targetedPreviewForInteraction:interaction, region];
   visualProvider = self->_visualProvider;
-  v7 = [v5 target];
-  v8 = [v7 container];
-  v9 = [(_UIButtonBarButtonVisualProvider *)visualProvider pointerShapeInContainer:v8];
+  target = [region target];
+  container = [target container];
+  v9 = [(_UIButtonBarButtonVisualProvider *)visualProvider pointerShapeInContainer:container];
 
   if ([(_UIButtonBarButtonVisualProvider *)self->_visualProvider shouldLift])
   {
     v10 = +[UIColor clearColor];
-    v11 = [v5 parameters];
-    [v11 setBackgroundColor:v10];
+    parameters = [region parameters];
+    [parameters setBackgroundColor:v10];
 
     v12 = off_1E70EA410;
   }
@@ -729,7 +729,7 @@ LABEL_9:
     v12 = off_1E70EA3F8;
   }
 
-  v13 = [(__objc2_class *)*v12 effectWithPreview:v5];
+  v13 = [(__objc2_class *)*v12 effectWithPreview:region];
   v14 = [UIPointerStyle styleWithEffect:v13 shape:v9];
   if ([(_UIButtonBarButtonVisualProvider *)self->_visualProvider shouldSuppressPointerSpecularFilter])
   {
@@ -739,12 +739,12 @@ LABEL_9:
   return v14;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(UIView *)self frame];
   v9 = v8;
   v11 = v10;
@@ -757,13 +757,13 @@ LABEL_9:
   }
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if ([(UIView *)self _willForceLayoutForBoundsChangeToNewBounds:a3.origin.y, a3.size.width, a3.size.height]&& (*(&self->super.super._viewFlags + 7) & 1) != 0)
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  if ([(UIView *)self _willForceLayoutForBoundsChangeToNewBounds:bounds.origin.y, bounds.size.width, bounds.size.height]&& (*(&self->super.super._viewFlags + 7) & 1) != 0)
   {
     v8 = 1;
     self->_autolayoutIsCleanForBoundsChange = 1;
@@ -798,31 +798,31 @@ LABEL_9:
   }
 }
 
-- (void)willMoveToSuperview:(id)a3
+- (void)willMoveToSuperview:(id)superview
 {
   visualProvider = self->_visualProvider;
-  v5 = a3;
-  [(_UIButtonBarButtonVisualProvider *)visualProvider buttonWillMoveToSuperview:v5];
+  superviewCopy = superview;
+  [(_UIButtonBarButtonVisualProvider *)visualProvider buttonWillMoveToSuperview:superviewCopy];
   v6.receiver = self;
   v6.super_class = _UIButtonBarButton;
-  [(UIView *)&v6 willMoveToSuperview:v5];
+  [(UIView *)&v6 willMoveToSuperview:superviewCopy];
 }
 
-- (void)willMoveToWindow:(id)a3
+- (void)willMoveToWindow:(id)window
 {
   visualProvider = self->_visualProvider;
-  v5 = a3;
-  [(_UIButtonBarButtonVisualProvider *)visualProvider buttonWillMoveToWindow:v5];
+  windowCopy = window;
+  [(_UIButtonBarButtonVisualProvider *)visualProvider buttonWillMoveToWindow:windowCopy];
   v6.receiver = self;
   v6.super_class = _UIButtonBarButton;
-  [(UIView *)&v6 willMoveToWindow:v5];
+  [(UIView *)&v6 willMoveToWindow:windowCopy];
 }
 
-- (void)_intrinsicContentSizeInvalidatedForChildView:(id)a3
+- (void)_intrinsicContentSizeInvalidatedForChildView:(id)view
 {
   v4.receiver = self;
   v4.super_class = _UIButtonBarButton;
-  [(UIView *)&v4 _intrinsicContentSizeInvalidatedForChildView:a3];
+  [(UIView *)&v4 _intrinsicContentSizeInvalidatedForChildView:view];
   if ([(_UIButtonBarButton *)self _allowsFittingSizeCachingWithNilLayoutEngine])
   {
     [(_UIButtonBarButton *)self _invalidateSystemLayoutSizeFittingSize];
@@ -850,10 +850,10 @@ LABEL_9:
   return result;
 }
 
-- (BOOL)pointMostlyInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointMostlyInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   [(_UIButtonBarButton *)self _buttonBarHitRect];
   v11 = CGRectInset(v10, -15.0, -15.0);
   v6 = x;
@@ -862,7 +862,7 @@ LABEL_9:
   return CGRectContainsPoint(v11, *&v6);
 }
 
-- (void)_accessibilitySettingsChanged:(id)a3
+- (void)_accessibilitySettingsChanged:(id)changed
 {
   visualProvider = self->_visualProvider;
   v5 = _AXSButtonShapesEnabled() != 0;
@@ -870,37 +870,37 @@ LABEL_9:
   [(_UIButtonBarButtonVisualProvider *)visualProvider updateButton:self toUseButtonShapes:v5];
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = [v4 view];
-  v6 = v5 == self || ![v4 _isGestureType:0] || objc_msgSend(v4, "numberOfTouchesRequired") != 1 || objc_msgSend(v4, "numberOfTapsRequired") != 1;
+  beginCopy = begin;
+  view = [beginCopy view];
+  v6 = view == self || ![beginCopy _isGestureType:0] || objc_msgSend(beginCopy, "numberOfTouchesRequired") != 1 || objc_msgSend(beginCopy, "numberOfTapsRequired") != 1;
 
   return v6;
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
-  v6 = a3;
+  contextCopy = context;
   v12.receiver = self;
   v12.super_class = _UIButtonBarButton;
-  [(UIView *)&v12 didUpdateFocusInContext:v6 withAnimationCoordinator:a4];
-  v7 = [v6 nextFocusedView];
-  v8 = v7;
-  if (v7 == self)
+  [(UIView *)&v12 didUpdateFocusInContext:contextCopy withAnimationCoordinator:coordinator];
+  nextFocusedView = [contextCopy nextFocusedView];
+  v8 = nextFocusedView;
+  if (nextFocusedView == self)
   {
 
 LABEL_5:
     visualProvider = self->_visualProvider;
-    v11 = [v6 nextFocusedView];
-    [(_UIButtonBarButtonVisualProvider *)visualProvider updateButton:self forFocusedState:v11 == self];
+    nextFocusedView2 = [contextCopy nextFocusedView];
+    [(_UIButtonBarButtonVisualProvider *)visualProvider updateButton:self forFocusedState:nextFocusedView2 == self];
 
     goto LABEL_6;
   }
 
-  v9 = [v6 previouslyFocusedView];
+  previouslyFocusedView = [contextCopy previouslyFocusedView];
 
-  if (v9 == self)
+  if (previouslyFocusedView == self)
   {
     goto LABEL_5;
   }
@@ -908,49 +908,49 @@ LABEL_5:
 LABEL_6:
 }
 
-- (void)_selectionInteractionDidBeginHinting:(id)a3
+- (void)_selectionInteractionDidBeginHinting:(id)hinting
 {
-  v5 = self;
-  v3 = [(UIView *)v5 _focusBehavior];
-  v4 = [v3 buttonSelectionMode];
+  selfCopy = self;
+  _focusBehavior = [(UIView *)selfCopy _focusBehavior];
+  buttonSelectionMode = [_focusBehavior buttonSelectionMode];
 
-  if ((v4 & 2) != 0 && [(UIControl *)v5 isEnabled])
+  if ((buttonSelectionMode & 2) != 0 && [(UIControl *)selfCopy isEnabled])
   {
-    [(_UIButtonBarButton *)v5 setHighlighted:1];
+    [(_UIButtonBarButton *)selfCopy setHighlighted:1];
   }
 }
 
-- (void)_selectionInteractionDidCancelHinting:(id)a3
+- (void)_selectionInteractionDidCancelHinting:(id)hinting
 {
-  v5 = self;
-  v3 = [(UIView *)v5 _focusBehavior];
-  v4 = [v3 buttonSelectionMode];
+  selfCopy = self;
+  _focusBehavior = [(UIView *)selfCopy _focusBehavior];
+  buttonSelectionMode = [_focusBehavior buttonSelectionMode];
 
-  if ((v4 & 2) != 0 && [(UIControl *)v5 isHighlighted])
+  if ((buttonSelectionMode & 2) != 0 && [(UIControl *)selfCopy isHighlighted])
   {
-    [(_UIButtonBarButton *)v5 setHighlighted:0];
-    [(_UIButtonBarButton *)v5 _setTouchHasHighlighted:0];
+    [(_UIButtonBarButton *)selfCopy setHighlighted:0];
+    [(_UIButtonBarButton *)selfCopy _setTouchHasHighlighted:0];
   }
 }
 
-- (void)_selectionInteractionDidSelect:(id)a3
+- (void)_selectionInteractionDidSelect:(id)select
 {
-  v3 = self;
-  v4 = [(UIView *)v3 _focusBehavior];
-  v5 = [v4 buttonSelectionMode];
+  selfCopy = self;
+  _focusBehavior = [(UIView *)selfCopy _focusBehavior];
+  buttonSelectionMode = [_focusBehavior buttonSelectionMode];
 
-  if ((v5 & 2) != 0 && [(UIControl *)v3 isHighlighted])
+  if ((buttonSelectionMode & 2) != 0 && [(UIControl *)selfCopy isHighlighted])
   {
-    [(_UIButtonBarButton *)v3 setHighlighted:0];
-    [(_UIButtonBarButton *)v3 _setTouchHasHighlighted:0];
+    [(_UIButtonBarButton *)selfCopy setHighlighted:0];
+    [(_UIButtonBarButton *)selfCopy _setTouchHasHighlighted:0];
   }
 
-  v6 = [(UIView *)v3 _focusBehavior];
-  v7 = [v6 buttonSelectionMode];
+  _focusBehavior2 = [(UIView *)selfCopy _focusBehavior];
+  buttonSelectionMode2 = [_focusBehavior2 buttonSelectionMode];
 
-  if (v7)
+  if (buttonSelectionMode2)
   {
-    [(UIControl *)v3 sendActionsForControlEvents:1];
+    [(UIControl *)selfCopy sendActionsForControlEvents:1];
     v8 = 64;
   }
 
@@ -959,12 +959,12 @@ LABEL_6:
     v8 = 0x2000;
   }
 
-  [(UIControl *)v3 sendActionsForControlEvents:v8];
+  [(UIControl *)selfCopy sendActionsForControlEvents:v8];
 }
 
-- (CGSize)backButtonSystemLayoutSizeFittingSize:(CGSize)a3 horizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5
+- (CGSize)backButtonSystemLayoutSizeFittingSize:(CGSize)size horizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority
 {
-  [(_UIButtonBarButtonVisualProvider *)self->_visualProvider backButtonSystemLayoutSizeFittingSize:a3.width horizontalFittingPriority:a3.height verticalFittingPriority:?];
+  [(_UIButtonBarButtonVisualProvider *)self->_visualProvider backButtonSystemLayoutSizeFittingSize:size.width horizontalFittingPriority:size.height verticalFittingPriority:?];
   result.height = v6;
   result.width = v5;
   return result;
@@ -987,9 +987,9 @@ LABEL_6:
   v6 = objc_opt_class();
   [(UIView *)self frame];
   v7 = NSStringFromCGRect(v11);
-  v8 = [v5 stringWithFormat:@"<%@ %p frame: %@; barButtonItem: %@>", v6, self, v7, WeakRetained];;
+  weakRetained = [v5 stringWithFormat:@"<%@ %p frame: %@; barButtonItem: %@>", v6, self, v7, WeakRetained];;
 
-  return v8;
+  return weakRetained;
 }
 
 @end

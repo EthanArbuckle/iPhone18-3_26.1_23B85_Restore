@@ -1,15 +1,15 @@
 @interface RTManagedObjectLocationProperties
-- (RTManagedObjectLocationProperties)initWithLatitudePropertyPath:(id)a3 longitudePropertyPath:(id)a4 referenceFramePropertyPath:(id)a5;
+- (RTManagedObjectLocationProperties)initWithLatitudePropertyPath:(id)path longitudePropertyPath:(id)propertyPath referenceFramePropertyPath:(id)framePropertyPath;
 @end
 
 @implementation RTManagedObjectLocationProperties
 
-- (RTManagedObjectLocationProperties)initWithLatitudePropertyPath:(id)a3 longitudePropertyPath:(id)a4 referenceFramePropertyPath:(id)a5
+- (RTManagedObjectLocationProperties)initWithLatitudePropertyPath:(id)path longitudePropertyPath:(id)propertyPath referenceFramePropertyPath:(id)framePropertyPath
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v9)
+  pathCopy = path;
+  propertyPathCopy = propertyPath;
+  framePropertyPathCopy = framePropertyPath;
+  if (!pathCopy)
   {
     v17 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -24,7 +24,7 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  if (!v10)
+  if (!propertyPathCopy)
   {
     v17 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -37,8 +37,8 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  v12 = [v9 count];
-  if (v12 != [v10 count])
+  v12 = [pathCopy count];
+  if (v12 != [propertyPathCopy count])
   {
     v17 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -51,10 +51,10 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  if (v11)
+  if (framePropertyPathCopy)
   {
-    v13 = [v9 count];
-    if (v13 != [v11 count])
+    v13 = [pathCopy count];
+    if (v13 != [framePropertyPathCopy count])
     {
       v17 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
       if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -66,7 +66,7 @@ LABEL_17:
 
 LABEL_18:
 
-      v16 = 0;
+      selfCopy = 0;
       goto LABEL_19;
     }
   }
@@ -77,16 +77,16 @@ LABEL_18:
   p_isa = &v14->super.isa;
   if (v14)
   {
-    objc_storeStrong(&v14->_latitudePropertyPath, a3);
-    objc_storeStrong(p_isa + 2, a4);
-    objc_storeStrong(p_isa + 3, a5);
+    objc_storeStrong(&v14->_latitudePropertyPath, path);
+    objc_storeStrong(p_isa + 2, propertyPath);
+    objc_storeStrong(p_isa + 3, framePropertyPath);
   }
 
   self = p_isa;
-  v16 = self;
+  selfCopy = self;
 LABEL_19:
 
-  return v16;
+  return selfCopy;
 }
 
 @end

@@ -1,6 +1,6 @@
 @interface GQDChart
 - (void)dealloc;
-- (void)setLegend:(id)a3;
+- (void)setLegend:(id)legend;
 @end
 
 @implementation GQDChart
@@ -16,7 +16,7 @@
   [(GQDGraphic *)&v3 dealloc];
 }
 
-- (void)setLegend:(id)a3
+- (void)setLegend:(id)legend
 {
   mLegend = self->mLegend;
   if (mLegend && self->mIsLegendRetained)
@@ -24,7 +24,7 @@
   }
 
   self->mIsLegendRetained = 0;
-  self->mLegend = a3;
+  self->mLegend = legend;
 }
 
 @end

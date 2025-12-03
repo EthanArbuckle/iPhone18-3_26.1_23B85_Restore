@@ -1,37 +1,37 @@
 @interface UBThreadInfo
-- (UBThreadInfo)initWithCoder:(id)a3;
-- (UBThreadInfo)initWithTid:(unint64_t)a3 threadName:(id)a4 dqid:(unint64_t)a5 dqLabel:(id)a6;
+- (UBThreadInfo)initWithCoder:(id)coder;
+- (UBThreadInfo)initWithTid:(unint64_t)tid threadName:(id)name dqid:(unint64_t)dqid dqLabel:(id)label;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation UBThreadInfo
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   tid = self->_tid;
-  v5 = a3;
-  [v5 encodeInt64:tid forKey:@"_tid"];
-  [v5 encodeObject:self->_threadName forKey:@"_threadName"];
-  [v5 encodeInt64:self->_dqid forKey:@"_dqid"];
-  [v5 encodeObject:self->_dqLabel forKey:@"_dqLabel"];
+  coderCopy = coder;
+  [coderCopy encodeInt64:tid forKey:@"_tid"];
+  [coderCopy encodeObject:self->_threadName forKey:@"_threadName"];
+  [coderCopy encodeInt64:self->_dqid forKey:@"_dqid"];
+  [coderCopy encodeObject:self->_dqLabel forKey:@"_dqLabel"];
 }
 
-- (UBThreadInfo)initWithCoder:(id)a3
+- (UBThreadInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = UBThreadInfo;
   v5 = [(UBThreadInfo *)&v12 init];
   if (v5)
   {
-    v5->_tid = [v4 decodeInt64ForKey:@"_tid"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_threadName"];
+    v5->_tid = [coderCopy decodeInt64ForKey:@"_tid"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_threadName"];
     threadName = v5->_threadName;
     v5->_threadName = v6;
 
-    v5->_dqid = [v4 decodeInt64ForKey:@"_dqid"];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_dqLabel"];
+    v5->_dqid = [coderCopy decodeInt64ForKey:@"_dqid"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_dqLabel"];
     dqLabel = v5->_dqLabel;
     v5->_dqLabel = v8;
 
@@ -41,20 +41,20 @@
   return v5;
 }
 
-- (UBThreadInfo)initWithTid:(unint64_t)a3 threadName:(id)a4 dqid:(unint64_t)a5 dqLabel:(id)a6
+- (UBThreadInfo)initWithTid:(unint64_t)tid threadName:(id)name dqid:(unint64_t)dqid dqLabel:(id)label
 {
-  v11 = a4;
-  v12 = a6;
+  nameCopy = name;
+  labelCopy = label;
   v17.receiver = self;
   v17.super_class = UBThreadInfo;
   v13 = [(UBThreadInfo *)&v17 init];
   v14 = v13;
   if (v13)
   {
-    v13->_tid = a3;
-    objc_storeStrong(&v13->_threadName, a4);
-    v14->_dqid = a5;
-    objc_storeStrong(&v14->_dqLabel, a6);
+    v13->_tid = tid;
+    objc_storeStrong(&v13->_threadName, name);
+    v14->_dqid = dqid;
+    objc_storeStrong(&v14->_dqLabel, label);
     v15 = v14;
   }
 

@@ -1,26 +1,26 @@
 @interface MUPlaceTilesView
 - (BOOL)shouldCalculateTileSizeAccordingToBounds;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5;
-- (MUPlaceTilesView)initWithConfiguration:(id)a3;
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path;
+- (MUPlaceTilesView)initWithConfiguration:(id)configuration;
 - (MUPlaceTilesViewDelegate)delegate;
 - (MUScrollAnalyticActionObserving)analyticsDelegate;
 - (double)_calculatedTileWidthFromBounds;
-- (double)heightForTileSize:(CGSize)a3;
+- (double)heightForTileSize:(CGSize)size;
 - (id)accessoryView;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4 itemIdentifier:(id)a5;
-- (id)imageViewForIndex:(unint64_t)a3;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path itemIdentifier:(id)identifier;
+- (id)imageViewForIndex:(unint64_t)index;
 - (void)_contentSizeDidChange;
 - (void)_setupStackView;
 - (void)_updateContent;
 - (void)_updateTileMetrics;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
 - (void)displayPlaceTiles;
-- (void)enumerateImageViewsWithBlock:(id)a3;
+- (void)enumerateImageViewsWithBlock:(id)block;
 - (void)layoutSubviews;
-- (void)scrollToViewAtIndex:(unint64_t)a3;
-- (void)scrollViewWillBeginDragging:(id)a3;
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5;
-- (void)updateViewsWithAlpha:(double)a3;
+- (void)scrollToViewAtIndex:(unint64_t)index;
+- (void)scrollViewWillBeginDragging:(id)dragging;
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset;
+- (void)updateViewsWithAlpha:(double)alpha;
 @end
 
 @implementation MUPlaceTilesView
@@ -39,9 +39,9 @@
   return WeakRetained;
 }
 
-- (double)heightForTileSize:(CGSize)a3
+- (double)heightForTileSize:(CGSize)size
 {
-  height = a3.height;
+  height = size.height;
   if (![(MUPlaceTilesViewConfiguration *)self->_configuration numberOfRows])
   {
     return 0.0;
@@ -64,9 +64,9 @@
   return v6;
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path
 {
-  v6 = [(UICollectionViewDiffableDataSource *)self->_diffableDataSource itemIdentifierForIndexPath:a5, a4];
+  layout = [(UICollectionViewDiffableDataSource *)self->_diffableDataSource itemIdentifierForIndexPath:path, layout];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -123,8 +123,8 @@
 {
   [(MUPlaceTilesView *)self _updateTileMetrics];
   diffableDataSource = self->_diffableDataSource;
-  v4 = [(UICollectionViewDiffableDataSource *)diffableDataSource snapshot];
-  [(UICollectionViewDiffableDataSource *)diffableDataSource applySnapshotUsingReloadData:v4];
+  snapshot = [(UICollectionViewDiffableDataSource *)diffableDataSource snapshot];
+  [(UICollectionViewDiffableDataSource *)diffableDataSource applySnapshotUsingReloadData:snapshot];
 }
 
 - (void)layoutSubviews
@@ -148,11 +148,11 @@
   }
 }
 
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset
 {
   x = self->_beginAnalyticsScrollingPoint.x;
-  v6 = a5->x;
-  v7 = [(MUPlaceTilesView *)self analyticsDelegate:a3];
+  v6 = offset->x;
+  v7 = [(MUPlaceTilesView *)self analyticsDelegate:dragging];
   v8 = v7;
   if (x <= v6)
   {
@@ -165,22 +165,22 @@
   }
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
   p_beginAnalyticsScrollingPoint = &self->_beginAnalyticsScrollingPoint;
-  [a3 contentOffset];
+  [dragging contentOffset];
   p_beginAnalyticsScrollingPoint->x = v4;
   p_beginAnalyticsScrollingPoint->y = v5;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v6 = [(UICollectionViewDiffableDataSource *)self->_diffableDataSource itemIdentifierForIndexPath:a4];
+  v6 = [(UICollectionViewDiffableDataSource *)self->_diffableDataSource itemIdentifierForIndexPath:path];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(MUPlaceTilesView *)self delegate];
-    [v5 placeTileCollectionView:self didTapOnAccessoryViewModel:v6];
+    delegate = [(MUPlaceTilesView *)self delegate];
+    [delegate placeTileCollectionView:self didTapOnAccessoryViewModel:v6];
   }
 
   else
@@ -190,45 +190,45 @@
       goto LABEL_6;
     }
 
-    v5 = [(MUPlaceTilesView *)self delegate];
-    [v5 placeTileCollectionView:self didTapOnViewModel:v6];
+    delegate = [(MUPlaceTilesView *)self delegate];
+    [delegate placeTileCollectionView:self didTapOnViewModel:v6];
   }
 
 LABEL_6:
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4 itemIdentifier:(id)a5
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path itemIdentifier:(id)identifier
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  viewCopy = view;
+  pathCopy = path;
+  identifierCopy = identifier;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v11 = +[MUPunchoutCollectionViewCell reuseIdentifier];
-    v12 = [v8 dequeueReusableCellWithReuseIdentifier:v11 forIndexPath:v9];
+    v12 = [viewCopy dequeueReusableCellWithReuseIdentifier:v11 forIndexPath:pathCopy];
 
-    [v12 setViewModel:v10];
+    [v12 setViewModel:identifierCopy];
   }
 
-  else if ([v10 conformsToProtocol:&unk_1F455A298])
+  else if ([identifierCopy conformsToProtocol:&unk_1F455A298])
   {
-    v13 = v10;
+    v13 = identifierCopy;
     v14 = +[MUPlaceTileCollectionViewCell reuseIdentifier];
-    v12 = [v8 dequeueReusableCellWithReuseIdentifier:v14 forIndexPath:v9];
+    v12 = [viewCopy dequeueReusableCellWithReuseIdentifier:v14 forIndexPath:pathCopy];
 
-    v15 = [(MUPlaceTilesViewConfiguration *)self->_configuration cellConfiguration];
-    [v12 setCellConfiguration:v15];
+    cellConfiguration = [(MUPlaceTilesViewConfiguration *)self->_configuration cellConfiguration];
+    [v12 setCellConfiguration:cellConfiguration];
 
     [v12 setClipsToBounds:0];
-    v16 = [v12 contentView];
-    [v16 setClipsToBounds:0];
+    contentView = [v12 contentView];
+    [contentView setClipsToBounds:0];
 
     v17 = objc_alloc_init(MUPlatterView);
     [v12 setBackgroundView:v17];
 
-    v18 = [v12 contentView];
-    [v18 _mapsui_setCardCorner];
+    contentView2 = [v12 contentView];
+    [contentView2 _mapsui_setCardCorner];
 
     [v12 setViewModel:v13];
   }
@@ -265,23 +265,23 @@ LABEL_6:
   return v4;
 }
 
-- (void)scrollToViewAtIndex:(unint64_t)a3
+- (void)scrollToViewAtIndex:(unint64_t)index
 {
   contentCollectionView = self->_contentCollectionView;
-  v4 = [MEMORY[0x1E696AC88] indexPathForRow:a3 inSection:0];
+  v4 = [MEMORY[0x1E696AC88] indexPathForRow:index inSection:0];
   [(UICollectionView *)contentCollectionView scrollToItemAtIndexPath:v4 atScrollPosition:16 animated:0];
 }
 
-- (void)enumerateImageViewsWithBlock:(id)a3
+- (void)enumerateImageViewsWithBlock:(id)block
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(UICollectionView *)self->_contentCollectionView visibleCells];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  visibleCells = [(UICollectionView *)self->_contentCollectionView visibleCells];
+  v6 = [visibleCells countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -293,22 +293,22 @@ LABEL_6:
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(visibleCells);
         }
 
         v10 = *(*(&v13 + 1) + 8 * v9);
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v11 = [v10 tileImageView];
-          v4[2](v4, v11);
+          tileImageView = [v10 tileImageView];
+          blockCopy[2](blockCopy, tileImageView);
         }
 
         ++v9;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [visibleCells countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v7);
@@ -317,15 +317,15 @@ LABEL_6:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)updateViewsWithAlpha:(double)a3
+- (void)updateViewsWithAlpha:(double)alpha
 {
   v15 = *MEMORY[0x1E69E9840];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [(UICollectionView *)self->_contentCollectionView visibleCells];
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  visibleCells = [(UICollectionView *)self->_contentCollectionView visibleCells];
+  v5 = [visibleCells countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -337,14 +337,14 @@ LABEL_6:
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(visibleCells);
         }
 
-        [*(*(&v10 + 1) + 8 * v8++) setAlpha:a3];
+        [*(*(&v10 + 1) + 8 * v8++) setAlpha:alpha];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [visibleCells countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
@@ -353,20 +353,20 @@ LABEL_6:
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (id)imageViewForIndex:(unint64_t)a3
+- (id)imageViewForIndex:(unint64_t)index
 {
   contentCollectionView = self->_contentCollectionView;
-  v4 = [MEMORY[0x1E696AC88] indexPathForRow:a3 inSection:0];
+  v4 = [MEMORY[0x1E696AC88] indexPathForRow:index inSection:0];
   v5 = [(UICollectionView *)contentCollectionView cellForItemAtIndexPath:v4];
 
   objc_opt_class();
-  v6 = 0;
+  tileImageView = 0;
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v5 tileImageView];
+    tileImageView = [v5 tileImageView];
   }
 
-  return v6;
+  return tileImageView;
 }
 
 - (void)_updateContent
@@ -413,8 +413,8 @@ LABEL_6:
   }
 
   v3 = [(NSArray *)self->_viewModels copy];
-  v4 = [(MUPlaceTilesViewConfiguration *)self->_configuration cellConfiguration];
-  [MUPlaceTileCollectionViewCell preferredSizeForViewModels:v3 cellConfiguration:v4 usingMeasurements:v7];
+  cellConfiguration = [(MUPlaceTilesViewConfiguration *)self->_configuration cellConfiguration];
+  [MUPlaceTileCollectionViewCell preferredSizeForViewModels:v3 cellConfiguration:cellConfiguration usingMeasurements:v7];
   self->_tileSize.width = v5;
   self->_tileSize.height = v6;
 
@@ -451,8 +451,8 @@ LABEL_6:
 
   MKPlaceHorizontalPlatterMargin();
   [(UICollectionView *)self->_contentCollectionView setContentInset:0.0, v8, 0.0, v8];
-  v9 = [MEMORY[0x1E69DC888] clearColor];
-  [(UICollectionView *)self->_contentCollectionView setBackgroundColor:v9];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [(UICollectionView *)self->_contentCollectionView setBackgroundColor:clearColor];
 
   [(UICollectionView *)self->_contentCollectionView setShowsHorizontalScrollIndicator:0];
   [(UICollectionView *)self->_contentCollectionView setDelegate:self];
@@ -477,27 +477,27 @@ LABEL_6:
   v21 = self->_contentCollectionView;
   [(UICollectionView *)v21 setTranslatesAutoresizingMaskIntoConstraints:0];
   [(MUPlaceTilesView *)self addSubview:v21];
-  v22 = [(UICollectionView *)v21 heightAnchor];
-  v23 = [v22 constraintEqualToConstant:0.0];
+  heightAnchor = [(UICollectionView *)v21 heightAnchor];
+  v23 = [heightAnchor constraintEqualToConstant:0.0];
   heightConstraint = self->_heightConstraint;
   self->_heightConstraint = v23;
 
   v38 = MEMORY[0x1E696ACD8];
-  v43 = [(UICollectionView *)v21 leadingAnchor];
-  v42 = [(MUPlaceTilesView *)self leadingAnchor];
-  v41 = [v43 constraintEqualToAnchor:v42];
+  leadingAnchor = [(UICollectionView *)v21 leadingAnchor];
+  leadingAnchor2 = [(MUPlaceTilesView *)self leadingAnchor];
+  v41 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v46[0] = v41;
-  v40 = [(UICollectionView *)v21 trailingAnchor];
-  v39 = [(MUPlaceTilesView *)self trailingAnchor];
-  v25 = [v40 constraintEqualToAnchor:v39];
+  trailingAnchor = [(UICollectionView *)v21 trailingAnchor];
+  trailingAnchor2 = [(MUPlaceTilesView *)self trailingAnchor];
+  v25 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v46[1] = v25;
-  v26 = [(UICollectionView *)v21 topAnchor];
-  v27 = [(MUPlaceTilesView *)self topAnchor];
-  v28 = [v26 constraintEqualToAnchor:v27];
+  topAnchor = [(UICollectionView *)v21 topAnchor];
+  topAnchor2 = [(MUPlaceTilesView *)self topAnchor];
+  v28 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v46[2] = v28;
-  v29 = [(UICollectionView *)v21 bottomAnchor];
-  v30 = [(MUPlaceTilesView *)self bottomAnchor];
-  v31 = [v29 constraintEqualToAnchor:v30];
+  bottomAnchor = [(UICollectionView *)v21 bottomAnchor];
+  bottomAnchor2 = [(MUPlaceTilesView *)self bottomAnchor];
+  v31 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v32 = self->_heightConstraint;
   v46[3] = v31;
   v46[4] = v32;
@@ -512,9 +512,9 @@ LABEL_6:
   v37 = *MEMORY[0x1E69E9840];
 }
 
-- (MUPlaceTilesView)initWithConfiguration:(id)a3
+- (MUPlaceTilesView)initWithConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   v9.receiver = self;
   v9.super_class = MUPlaceTilesView;
   v6 = [(MUPlaceTilesView *)&v9 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
@@ -522,7 +522,7 @@ LABEL_6:
   if (v6)
   {
     v6->_tileSize = *MEMORY[0x1E695F060];
-    objc_storeStrong(&v6->_configuration, a3);
+    objc_storeStrong(&v6->_configuration, configuration);
     [(MUPlaceTilesView *)v7 _setupStackView];
   }
 

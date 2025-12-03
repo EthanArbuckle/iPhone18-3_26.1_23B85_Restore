@@ -1,20 +1,20 @@
 @interface PHChangeRequest
-+ (id)sanitizedFailureWithError:(id)a3;
++ (id)sanitizedFailureWithError:(id)error;
 - (BOOL)isMutated;
 - (BOOL)isNewRequest;
-- (BOOL)prepareForPhotoLibraryCheck:(id)a3 error:(id *)a4;
-- (BOOL)prepareForServicePreflightCheck:(id *)a3;
+- (BOOL)prepareForPhotoLibraryCheck:(id)check error:(id *)error;
+- (BOOL)prepareForServicePreflightCheck:(id *)check;
 - (NSString)changeTypeForSummary;
 - (NSString)managedEntityName;
 - (NSString)uuid;
 - (PHChangeRequest)init;
-- (PHChangeRequest)initWithUUID:(id)a3 objectID:(id)a4;
-- (PHChangeRequest)initWithXPCDict:(id)a3 request:(id)a4 clientAuthorization:(id)a5;
+- (PHChangeRequest)initWithUUID:(id)d objectID:(id)iD;
+- (PHChangeRequest)initWithXPCDict:(id)dict request:(id)request clientAuthorization:(id)authorization;
 - (PHPhotoLibrary)photoLibrary;
-- (id)createManagedObjectForInsertIntoPhotoLibrary:(id)a3 error:(id *)a4;
+- (id)createManagedObjectForInsertIntoPhotoLibrary:(id)library error:(id *)error;
 - (id)initForNewObject;
-- (id)objectIDsFromXPCDict:(id)a3 key:(const char *)a4 request:(id)a5;
-- (void)encodeToXPCDict:(id)a3;
+- (id)objectIDsFromXPCDict:(id)dict key:(const char *)key request:(id)request;
+- (void)encodeToXPCDict:(id)dict;
 - (void)performConcurrentWork;
 @end
 
@@ -27,27 +27,27 @@
   return WeakRetained;
 }
 
-- (id)objectIDsFromXPCDict:(id)a3 key:(const char *)a4 request:(id)a5
+- (id)objectIDsFromXPCDict:(id)dict key:(const char *)key request:(id)request
 {
-  v8 = a5;
-  v9 = xpc_dictionary_get_value(a3, a4);
+  requestCopy = request;
+  v9 = xpc_dictionary_get_value(dict, key);
   if (v9)
   {
     v10 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v11 = [v8 persistentStoreCoordinator];
+    persistentStoreCoordinator = [requestCopy persistentStoreCoordinator];
     v17 = MEMORY[0x1E69E9820];
     v18 = 3221225472;
     v19 = __52__PHChangeRequest_objectIDsFromXPCDict_key_request___block_invoke;
     v20 = &unk_1E75AA628;
-    v21 = v11;
+    v21 = persistentStoreCoordinator;
     v22 = v10;
     v12 = v10;
-    v13 = v11;
+    v13 = persistentStoreCoordinator;
     xpc_array_apply(v9, &v17);
     v14 = [(PHChangeRequest *)self helper:v17];
     [v14 setMutated:1];
 
-    [v8 recordUpdateRequest:self];
+    [requestCopy recordUpdateRequest:self];
     v15 = [v12 copy];
   }
 
@@ -76,13 +76,13 @@ uint64_t __52__PHChangeRequest_objectIDsFromXPCDict_key_request___block_invoke(u
   return 1;
 }
 
-- (BOOL)prepareForServicePreflightCheck:(id *)a3
+- (BOOL)prepareForServicePreflightCheck:(id *)check
 {
-  v4 = [(PHChangeRequest *)self helper];
-  v5 = v4;
-  if (v4)
+  helper = [(PHChangeRequest *)self helper];
+  v5 = helper;
+  if (helper)
   {
-    v6 = [v4 prepareForServicePreflightCheck:a3];
+    v6 = [helper prepareForServicePreflightCheck:check];
   }
 
   else
@@ -93,14 +93,14 @@ uint64_t __52__PHChangeRequest_objectIDsFromXPCDict_key_request___block_invoke(u
   return v6;
 }
 
-- (BOOL)prepareForPhotoLibraryCheck:(id)a3 error:(id *)a4
+- (BOOL)prepareForPhotoLibraryCheck:(id)check error:(id *)error
 {
-  v6 = a3;
-  v7 = [(PHChangeRequest *)self helper];
-  v8 = v7;
-  if (v7)
+  checkCopy = check;
+  helper = [(PHChangeRequest *)self helper];
+  v8 = helper;
+  if (helper)
   {
-    v9 = [v7 prepareForPhotoLibraryCheck:v6 error:a4];
+    v9 = [helper prepareForPhotoLibraryCheck:checkCopy error:error];
   }
 
   else
@@ -113,18 +113,18 @@ uint64_t __52__PHChangeRequest_objectIDsFromXPCDict_key_request___block_invoke(u
 
 - (NSString)changeTypeForSummary
 {
-  v2 = [(PHChangeRequest *)self managedEntityName];
-  if (!v2)
+  managedEntityName = [(PHChangeRequest *)self managedEntityName];
+  if (!managedEntityName)
   {
-    v2 = [objc_opt_class() description];
+    managedEntityName = [objc_opt_class() description];
   }
 
-  return v2;
+  return managedEntityName;
 }
 
-- (void)encodeToXPCDict:(id)a3
+- (void)encodeToXPCDict:(id)dict
 {
-  v4 = a3;
+  dictCopy = dict;
   v5 = objc_alloc(MEMORY[0x1E695DF30]);
   v6 = *MEMORY[0x1E695D930];
   v7 = MEMORY[0x1E696AEC0];
@@ -137,10 +137,10 @@ uint64_t __52__PHChangeRequest_objectIDsFromXPCDict_key_request___block_invoke(u
   objc_exception_throw(v12);
 }
 
-- (PHChangeRequest)initWithUUID:(id)a3 objectID:(id)a4
+- (PHChangeRequest)initWithUUID:(id)d objectID:(id)iD
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  iDCopy = iD;
   v8 = objc_alloc(MEMORY[0x1E695DF30]);
   v9 = *MEMORY[0x1E695D930];
   v10 = MEMORY[0x1E696AEC0];
@@ -155,18 +155,18 @@ uint64_t __52__PHChangeRequest_objectIDsFromXPCDict_key_request___block_invoke(u
 
 - (NSString)uuid
 {
-  v2 = [(PHChangeRequest *)self helper];
-  v3 = [v2 uuid];
+  helper = [(PHChangeRequest *)self helper];
+  uuid = [helper uuid];
 
-  return v3;
+  return uuid;
 }
 
 - (BOOL)isMutated
 {
-  v2 = [(PHChangeRequest *)self helper];
-  v3 = [v2 isMutated];
+  helper = [(PHChangeRequest *)self helper];
+  isMutated = [helper isMutated];
 
-  return v3;
+  return isMutated;
 }
 
 - (id)initForNewObject
@@ -185,10 +185,10 @@ uint64_t __52__PHChangeRequest_objectIDsFromXPCDict_key_request___block_invoke(u
 
 - (BOOL)isNewRequest
 {
-  v2 = [(PHChangeRequest *)self helper];
-  v3 = [v2 isNewRequest];
+  helper = [(PHChangeRequest *)self helper];
+  isNewRequest = [helper isNewRequest];
 
-  return v3;
+  return isNewRequest;
 }
 
 - (void)performConcurrentWork
@@ -205,7 +205,7 @@ uint64_t __52__PHChangeRequest_objectIDsFromXPCDict_key_request___block_invoke(u
   objc_exception_throw(v10);
 }
 
-- (id)createManagedObjectForInsertIntoPhotoLibrary:(id)a3 error:(id *)a4
+- (id)createManagedObjectForInsertIntoPhotoLibrary:(id)library error:(id *)error
 {
   v20 = *MEMORY[0x1E69E9840];
   v5 = objc_alloc(MEMORY[0x1E695DF30]);
@@ -231,11 +231,11 @@ uint64_t __52__PHChangeRequest_objectIDsFromXPCDict_key_request___block_invoke(u
   return 0;
 }
 
-- (PHChangeRequest)initWithXPCDict:(id)a3 request:(id)a4 clientAuthorization:(id)a5
+- (PHChangeRequest)initWithXPCDict:(id)dict request:(id)request clientAuthorization:(id)authorization
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dictCopy = dict;
+  requestCopy = request;
+  authorizationCopy = authorization;
   v11 = objc_alloc(MEMORY[0x1E695DF30]);
   v12 = *MEMORY[0x1E695D930];
   v13 = MEMORY[0x1E696AEC0];
@@ -270,22 +270,22 @@ uint64_t __52__PHChangeRequest_objectIDsFromXPCDict_key_request___block_invoke(u
   if (v2 && (PLIsAssetsd() & 1) == 0)
   {
     +[PHPhotoLibrary assertTransaction];
-    v3 = [objc_opt_class() photoLibraryForCurrentTransaction];
-    objc_storeWeak(&v2->_photoLibrary, v3);
+    photoLibraryForCurrentTransaction = [objc_opt_class() photoLibraryForCurrentTransaction];
+    objc_storeWeak(&v2->_photoLibrary, photoLibraryForCurrentTransaction);
   }
 
   return v2;
 }
 
-+ (id)sanitizedFailureWithError:(id)a3
++ (id)sanitizedFailureWithError:(id)error
 {
   v29 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  errorCopy = error;
+  v4 = errorCopy;
+  if (errorCopy)
   {
-    v5 = [v3 domain];
-    v6 = [v5 isEqualToString:*MEMORY[0x1E69BFF48]];
+    domain = [errorCopy domain];
+    v6 = [domain isEqualToString:*MEMORY[0x1E69BFF48]];
 
     v7 = v4;
     if (v6)
@@ -293,8 +293,8 @@ uint64_t __52__PHChangeRequest_objectIDsFromXPCDict_key_request___block_invoke(u
       v7 = PHErrorFromPLError(v4);
     }
 
-    v8 = [v7 domain];
-    v9 = [v8 isEqualToString:*MEMORY[0x1E69BECB0]];
+    domain2 = [v7 domain];
+    v9 = [domain2 isEqualToString:*MEMORY[0x1E69BECB0]];
 
     if (v9)
     {
@@ -303,15 +303,15 @@ uint64_t __52__PHChangeRequest_objectIDsFromXPCDict_key_request___block_invoke(u
       v7 = v10;
     }
 
-    v11 = [v7 domain];
-    v12 = [v11 isEqualToString:@"PHPhotosErrorDomain"];
+    domain3 = [v7 domain];
+    v12 = [domain3 isEqualToString:@"PHPhotosErrorDomain"];
 
     if (v12)
     {
       v13 = MEMORY[0x1E696ABC0];
-      v14 = [v7 code];
-      v15 = [v7 userInfo];
-      v16 = [v13 ph_errorWithDomain:@"PHPhotosErrorDomain" code:v14 userInfo:v15];
+      code = [v7 code];
+      userInfo = [v7 userInfo];
+      v16 = [v13 ph_errorWithDomain:@"PHPhotosErrorDomain" code:code userInfo:userInfo];
     }
 
     else
@@ -325,8 +325,8 @@ uint64_t __52__PHChangeRequest_objectIDsFromXPCDict_key_request___block_invoke(u
       }
 
       v21 = MEMORY[0x1E696ABC0];
-      v22 = [v4 localizedDescription];
-      v16 = [v21 ph_genericErrorWithLocalizedDescription:{@"Changes failed with error %@", v22}];
+      localizedDescription = [v4 localizedDescription];
+      v16 = [v21 ph_genericErrorWithLocalizedDescription:{@"Changes failed with error %@", localizedDescription}];
     }
   }
 

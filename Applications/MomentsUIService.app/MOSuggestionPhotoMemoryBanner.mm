@@ -1,10 +1,10 @@
 @interface MOSuggestionPhotoMemoryBanner
-- (_TtC16MomentsUIService29MOSuggestionPhotoMemoryBanner)initWithCoder:(id)a3;
+- (_TtC16MomentsUIService29MOSuggestionPhotoMemoryBanner)initWithCoder:(id)coder;
 @end
 
 @implementation MOSuggestionPhotoMemoryBanner
 
-- (_TtC16MomentsUIService29MOSuggestionPhotoMemoryBanner)initWithCoder:(id)a3
+- (_TtC16MomentsUIService29MOSuggestionPhotoMemoryBanner)initWithCoder:(id)coder
 {
   v3 = OBJC_IVAR____TtC16MomentsUIService29MOSuggestionPhotoMemoryBanner_bannerLabel;
   *(&self->super.super.super.isa + v3) = [objc_allocWithZone(UILabel) init];

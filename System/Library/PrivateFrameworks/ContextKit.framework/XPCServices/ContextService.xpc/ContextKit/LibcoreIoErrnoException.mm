@@ -1,6 +1,6 @@
 @interface LibcoreIoErrnoException
-- (LibcoreIoErrnoException)initWithNSString:(id)a3 withInt:(int)a4;
-- (LibcoreIoErrnoException)initWithNSString:(id)a3 withInt:(int)a4 withJavaLangThrowable:(id)a5;
+- (LibcoreIoErrnoException)initWithNSString:(id)string withInt:(int)int;
+- (LibcoreIoErrnoException)initWithNSString:(id)string withInt:(int)int withJavaLangThrowable:(id)throwable;
 - (id)getMessage;
 - (id)rethrowAsIOException;
 - (void)dealloc;
@@ -8,19 +8,19 @@
 
 @implementation LibcoreIoErrnoException
 
-- (LibcoreIoErrnoException)initWithNSString:(id)a3 withInt:(int)a4
+- (LibcoreIoErrnoException)initWithNSString:(id)string withInt:(int)int
 {
   JavaLangException_init(self, a2);
-  JreStrongAssign(&self->errno__, a3);
-  *(&self->super.super.rawFrameCount + 1) = a4;
+  JreStrongAssign(&self->errno__, string);
+  *(&self->super.super.rawFrameCount + 1) = int;
   return self;
 }
 
-- (LibcoreIoErrnoException)initWithNSString:(id)a3 withInt:(int)a4 withJavaLangThrowable:(id)a5
+- (LibcoreIoErrnoException)initWithNSString:(id)string withInt:(int)int withJavaLangThrowable:(id)throwable
 {
-  JavaLangException_initWithJavaLangThrowable_(self, a5);
-  JreStrongAssign(&self->errno__, a3);
-  *(&self->super.super.rawFrameCount + 1) = a4;
+  JavaLangException_initWithJavaLangThrowable_(self, throwable);
+  JreStrongAssign(&self->errno__, string);
+  *(&self->super.super.rawFrameCount + 1) = int;
   return self;
 }
 

@@ -1,14 +1,14 @@
 @interface PUOneUpTitleModel
-- (void)setInputAsset:(id)a3;
+- (void)setInputAsset:(id)asset;
 @end
 
 @implementation PUOneUpTitleModel
 
-- (void)setInputAsset:(id)a3
+- (void)setInputAsset:(id)asset
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  OneUpTitleModel.setInputAsset(_:)(a3);
+  selfCopy = self;
+  OneUpTitleModel.setInputAsset(_:)(asset);
   swift_unknownObjectRelease();
 }
 

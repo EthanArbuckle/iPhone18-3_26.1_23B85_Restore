@@ -10,59 +10,59 @@
 
 - (id)atx_startDate
 {
-  v2 = [a1 metadata];
+  metadata = [self metadata];
 
-  if (v2 && ([a1 metadata], v3 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v3, "objectForKeyedSubscript:", @"start"), v4 = objc_claimAutoreleasedReturnValue(), v3, v4))
+  if (metadata && ([self metadata], v3 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v3, "objectForKeyedSubscript:", @"start"), v4 = objc_claimAutoreleasedReturnValue(), v3, v4))
   {
-    v5 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:{objc_msgSend(v4, "longLongValue")}];
+    startDate = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:{objc_msgSend(v4, "longLongValue")}];
   }
 
   else
   {
-    v5 = [a1 startDate];
+    startDate = [self startDate];
   }
 
-  return v5;
+  return startDate;
 }
 
 - (id)atx_endDate
 {
-  v2 = [a1 metadata];
+  metadata = [self metadata];
 
-  if (v2 && ([a1 metadata], v3 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v3, "objectForKeyedSubscript:", @"end"), v4 = objc_claimAutoreleasedReturnValue(), v3, v4))
+  if (metadata && ([self metadata], v3 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v3, "objectForKeyedSubscript:", @"end"), v4 = objc_claimAutoreleasedReturnValue(), v3, v4))
   {
-    v5 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:{objc_msgSend(v4, "longLongValue")}];
+    endDate = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:{objc_msgSend(v4, "longLongValue")}];
   }
 
   else
   {
-    v5 = [a1 endDate];
+    endDate = [self endDate];
   }
 
-  return v5;
+  return endDate;
 }
 
 - (id)atx_mode
 {
-  v1 = [a1 value];
-  v2 = [v1 stringValue];
+  value = [self value];
+  stringValue = [value stringValue];
 
-  return v2;
+  return stringValue;
 }
 
 - (id)atx_bundleID
 {
-  v1 = [a1 value];
-  v2 = [v1 stringValue];
+  value = [self value];
+  stringValue = [value stringValue];
 
-  return v2;
+  return stringValue;
 }
 
 - (double)atx_eventDuration
 {
-  v2 = [a1 atx_endDate];
-  v3 = [a1 atx_startDate];
-  [v2 timeIntervalSinceDate:v3];
+  atx_endDate = [self atx_endDate];
+  atx_startDate = [self atx_startDate];
+  [atx_endDate timeIntervalSinceDate:atx_startDate];
   v5 = v4;
 
   return v5;

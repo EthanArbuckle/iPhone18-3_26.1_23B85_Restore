@@ -1,7 +1,7 @@
 @interface NSOrderedCollectionDifference
-- (id)_groupedInsertionsByObjectForCollection:(int)a3 inferMoves:;
-- (void)_groupedInsertionAndMoves:(void *)a1;
-- (void)_groupedInsertionsWithObjectsToInsert:(void *)a3 insertGroup:;
+- (id)_groupedInsertionsByObjectForCollection:(int)collection inferMoves:;
+- (void)_groupedInsertionAndMoves:(void *)moves;
+- (void)_groupedInsertionsWithObjectsToInsert:(void *)insert insertGroup:;
 @end
 
 @implementation NSOrderedCollectionDifference
@@ -13,18 +13,18 @@ void __79__NSOrderedCollectionDifference_EmailFoundationAdditions__ef_groupedIns
   [*(a1 + 32) addObject:v6];
 }
 
-- (void)_groupedInsertionsWithObjectsToInsert:(void *)a3 insertGroup:
+- (void)_groupedInsertionsWithObjectsToInsert:(void *)insert insertGroup:
 {
   v25 = *MEMORY[0x1E69E9840];
   v5 = a2;
-  v19 = a3;
-  if (!a1)
+  insertCopy = insert;
+  if (!self)
   {
     goto LABEL_21;
   }
 
-  v6 = [a1 insertions];
-  v7 = [v6 count];
+  insertions = [self insertions];
+  v7 = [insertions count];
 
   if (!v7)
   {
@@ -35,8 +35,8 @@ void __79__NSOrderedCollectionDifference_EmailFoundationAdditions__ef_groupedIns
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v8 = [a1 insertions];
-  v9 = [v8 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  insertions2 = [self insertions];
+  v9 = [insertions2 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (!v9)
   {
 
@@ -45,31 +45,31 @@ void __79__NSOrderedCollectionDifference_EmailFoundationAdditions__ef_groupedIns
 
   v10 = 0;
   v11 = *v21;
-  v18 = (v19 + 2);
-  v12 = 0x7FFFFFFFFFFFFFFFLL;
+  v18 = (insertCopy + 2);
+  index = 0x7FFFFFFFFFFFFFFFLL;
   do
   {
     for (i = 0; i != v9; ++i)
     {
       if (*v21 != v11)
       {
-        objc_enumerationMutation(v8);
+        objc_enumerationMutation(insertions2);
       }
 
       v14 = *(*(&v20 + 1) + 8 * i);
-      if (v12 == 0x7FFFFFFFFFFFFFFFLL)
+      if (index == 0x7FFFFFFFFFFFFFFFLL)
       {
-        v12 = [*(*(&v20 + 1) + 8 * i) index];
-        v15 = [v14 object];
-        [v5 addObject:v15];
+        index = [*(*(&v20 + 1) + 8 * i) index];
+        object = [v14 object];
+        [v5 addObject:object];
       }
 
       else
       {
-        if ([*(*(&v20 + 1) + 8 * i) index] == v10 + v12)
+        if ([*(*(&v20 + 1) + 8 * i) index] == v10 + index)
         {
-          v15 = [v14 object];
-          [v5 addObject:v15];
+          object = [v14 object];
+          [v5 addObject:object];
           ++v10;
           goto LABEL_16;
         }
@@ -77,27 +77,27 @@ void __79__NSOrderedCollectionDifference_EmailFoundationAdditions__ef_groupedIns
         if (v10)
         {
           v16 = [v5 copy];
-          v19[2](v19, v12, v10, v16);
+          insertCopy[2](insertCopy, index, v10, v16);
         }
 
-        v12 = [v14 index];
+        index = [v14 index];
         [v5 removeAllObjects];
-        v15 = [v14 object];
-        [v5 addObject:v15];
+        object = [v14 object];
+        [v5 addObject:object];
       }
 
       v10 = 1;
 LABEL_16:
     }
 
-    v9 = [v8 countByEnumeratingWithState:&v20 objects:v24 count:16];
+    v9 = [insertions2 countByEnumeratingWithState:&v20 objects:v24 count:16];
   }
 
   while (v9);
 
   if (v10)
   {
-    v19[2](v19, v12, v10, v5);
+    insertCopy[2](insertCopy, index, v10, v5);
   }
 
 LABEL_21:
@@ -105,13 +105,13 @@ LABEL_21:
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_groupedInsertionsByObjectForCollection:(int)a3 inferMoves:
+- (id)_groupedInsertionsByObjectForCollection:(int)collection inferMoves:
 {
   v5 = a2;
-  if (a1)
+  if (self)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
-    if (a3)
+    array = [MEMORY[0x1E695DF70] array];
+    if (collection)
     {
       v13[0] = MEMORY[0x1E69E9820];
       v13[1] = 3221225472;
@@ -120,8 +120,8 @@ LABEL_21:
       v7 = &v14;
       v14 = v5;
       v8 = &v15;
-      v15 = v6;
-      [(NSOrderedCollectionDifference *)a1 _groupedInsertionAndMoves:v13];
+      v15 = array;
+      [(NSOrderedCollectionDifference *)self _groupedInsertionAndMoves:v13];
     }
 
     else
@@ -133,17 +133,17 @@ LABEL_21:
       v7 = &v11;
       v11 = v5;
       v8 = &v12;
-      v12 = v6;
-      [(NSOrderedCollectionDifference *)a1 _groupedInsertionsWithObjectsToInsert:v10 insertGroup:?];
+      v12 = array;
+      [(NSOrderedCollectionDifference *)self _groupedInsertionsWithObjectsToInsert:v10 insertGroup:?];
     }
   }
 
   else
   {
-    v6 = 0;
+    array = 0;
   }
 
-  return v6;
+  return array;
 }
 
 void __110__NSOrderedCollectionDifference_EmailFoundationAdditions___groupedInsertionsByObjectForCollection_inferMoves___block_invoke(uint64_t a1, char *a2, uint64_t a3, unint64_t a4, uint64_t a5)
@@ -169,14 +169,14 @@ void __110__NSOrderedCollectionDifference_EmailFoundationAdditions___groupedInse
   [*(a1 + 40) addObject:v10];
 }
 
-- (void)_groupedInsertionAndMoves:(void *)a1
+- (void)_groupedInsertionAndMoves:(void *)moves
 {
   v40 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (a1)
+  if (moves)
   {
-    v4 = [a1 insertions];
-    v5 = [v4 count];
+    insertions = [moves insertions];
+    v5 = [insertions count];
 
     if (v5)
     {
@@ -208,8 +208,8 @@ void __110__NSOrderedCollectionDifference_EmailFoundationAdditions___groupedInse
       v26 = 0u;
       v23 = 0u;
       v24 = 0u;
-      v10 = [a1 insertions];
-      v11 = [v10 countByEnumeratingWithState:&v23 objects:v39 count:16];
+      insertions2 = [moves insertions];
+      v11 = [insertions2 countByEnumeratingWithState:&v23 objects:v39 count:16];
       if (v11)
       {
         v12 = *v24;
@@ -220,30 +220,30 @@ void __110__NSOrderedCollectionDifference_EmailFoundationAdditions___groupedInse
           {
             if (*v24 != v12)
             {
-              objc_enumerationMutation(v10);
+              objc_enumerationMutation(insertions2);
             }
 
             v14 = *(*(&v23 + 1) + 8 * v13);
             if (v35[4] == 0x7FFFFFFFFFFFFFFFLL)
             {
-              v15 = [*(*(&v23 + 1) + 8 * v13) index];
-              v35[4] = v15;
+              index = [*(*(&v23 + 1) + 8 * v13) index];
+              v35[4] = index;
             }
 
             else
             {
-              v16 = [*(*(&v23 + 1) + 8 * v13) index];
+              index2 = [*(*(&v23 + 1) + 8 * v13) index];
               v17 = v35[5];
-              if (v16 != v17 + v35[4])
+              if (index2 != v17 + v35[4])
               {
                 if (v17)
                 {
                   v9[2](v9);
                 }
 
-                v18 = [v14 index];
+                index3 = [v14 index];
                 v19 = v35;
-                v35[4] = v18;
+                v35[4] = index3;
                 v19[5] = 0;
               }
             }
@@ -253,7 +253,7 @@ void __110__NSOrderedCollectionDifference_EmailFoundationAdditions___groupedInse
           }
 
           while (v11 != v13);
-          v11 = [v10 countByEnumeratingWithState:&v23 objects:v39 count:16];
+          v11 = [insertions2 countByEnumeratingWithState:&v23 objects:v39 count:16];
         }
 
         while (v11);

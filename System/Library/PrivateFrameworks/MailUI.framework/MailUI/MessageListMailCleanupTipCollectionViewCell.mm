@@ -1,15 +1,15 @@
 @interface MessageListMailCleanupTipCollectionViewCell
-- (void)configureForTip:(id)a3 onSetupClick:(id)a4 onDismissClick:(id)a5 onAppear:(id)a6;
+- (void)configureForTip:(id)tip onSetupClick:(id)click onDismissClick:(id)dismissClick onAppear:(id)appear;
 @end
 
 @implementation MessageListMailCleanupTipCollectionViewCell
 
-- (void)configureForTip:(id)a3 onSetupClick:(id)a4 onDismissClick:(id)a5 onAppear:(id)a6
+- (void)configureForTip:(id)tip onSetupClick:(id)click onDismissClick:(id)dismissClick onAppear:(id)appear
 {
-  MEMORY[0x277D82BE0](a3);
-  v22 = _Block_copy(a4);
-  v19 = _Block_copy(a5);
-  v21 = _Block_copy(a6);
+  MEMORY[0x277D82BE0](tip);
+  v22 = _Block_copy(click);
+  v19 = _Block_copy(dismissClick);
+  v21 = _Block_copy(appear);
   MEMORY[0x277D82BE0](self);
   if (v22)
   {
@@ -53,12 +53,12 @@
     v10 = 0;
   }
 
-  MessageListMailCleanupTipCollectionViewCell.configure(forTip:onSetupClick:onDismissClick:onAppear:)(a3, v13, v14, v11, v12, v9, v10);
+  MessageListMailCleanupTipCollectionViewCell.configure(forTip:onSetupClick:onDismissClick:onAppear:)(tip, v13, v14, v11, v12, v9, v10);
   sub_214A6B584(v9);
   sub_214A6B584(v11);
   sub_214A6B584(v13);
   MEMORY[0x277D82BD8](self);
-  MEMORY[0x277D82BD8](a3);
+  MEMORY[0x277D82BD8](tip);
 }
 
 @end

@@ -1,18 +1,18 @@
 @interface NSDictionary
-- (id)objectForCaseInsensitiveKey:(id)a3;
+- (id)objectForCaseInsensitiveKey:(id)key;
 @end
 
 @implementation NSDictionary
 
-- (id)objectForCaseInsensitiveKey:(id)a3
+- (id)objectForCaseInsensitiveKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(NSDictionary *)self allKeys];
-  v6 = [(NSArray *)v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  allKeys = [(NSDictionary *)self allKeys];
+  v6 = [(NSArray *)allKeys countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -23,18 +23,18 @@
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allKeys);
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
-        if (![v10 compare:v4 options:1])
+        if (![v10 compare:keyCopy options:1])
         {
           v11 = [(NSDictionary *)self objectForKey:v10];
           goto LABEL_11;
         }
       }
 
-      v7 = [(NSArray *)v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [(NSArray *)allKeys countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v7)
       {
         continue;

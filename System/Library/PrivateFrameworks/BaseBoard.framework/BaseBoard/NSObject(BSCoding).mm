@@ -38,7 +38,7 @@
           objc_enumerationMutation(v2);
         }
 
-        if ([a1 isSubclassOfClass:{*(*(&v8 + 1) + 8 * i), v8}])
+        if ([self isSubclassOfClass:{*(*(&v8 + 1) + 8 * i), v8}])
         {
           v6 = 1;
           goto LABEL_13;
@@ -79,8 +79,8 @@ LABEL_13:
       v20 = 0u;
       v17 = 0u;
       v18 = 0u;
-      v4 = a1;
-      v5 = [v4 countByEnumeratingWithState:&v17 objects:v22 count:16];
+      selfCopy = self;
+      v5 = [selfCopy countByEnumeratingWithState:&v17 objects:v22 count:16];
       if (v5)
       {
         v6 = *v18;
@@ -90,7 +90,7 @@ LABEL_10:
         {
           if (*v18 != v6)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(selfCopy);
           }
 
           if (([*(*(&v17 + 1) + 8 * v7) bs_isPlist] & 1) == 0)
@@ -100,7 +100,7 @@ LABEL_10:
 
           if (v5 == ++v7)
           {
-            v5 = [v4 countByEnumeratingWithState:&v17 objects:v22 count:16];
+            v5 = [selfCopy countByEnumeratingWithState:&v17 objects:v22 count:16];
             v2 = 1;
             if (v5)
             {
@@ -128,8 +128,8 @@ LABEL_31:
       v16 = 0u;
       v13 = 0u;
       v14 = 0u;
-      v8 = a1;
-      v9 = [v8 countByEnumeratingWithState:&v13 objects:v21 count:16];
+      selfCopy2 = self;
+      v9 = [selfCopy2 countByEnumeratingWithState:&v13 objects:v21 count:16];
       if (v9)
       {
         v10 = *v14;
@@ -139,10 +139,10 @@ LABEL_31:
           {
             if (*v14 != v10)
             {
-              objc_enumerationMutation(v8);
+              objc_enumerationMutation(selfCopy2);
             }
 
-            v12 = [v8 objectForKey:{*(*(&v13 + 1) + 8 * i), v13}];
+            v12 = [selfCopy2 objectForKey:{*(*(&v13 + 1) + 8 * i), v13}];
             if (!_NSIsNSString() || ([v12 bs_isPlist] & 1) == 0)
             {
 
@@ -150,7 +150,7 @@ LABEL_31:
             }
           }
 
-          v9 = [v8 countByEnumeratingWithState:&v13 objects:v21 count:16];
+          v9 = [selfCopy2 countByEnumeratingWithState:&v13 objects:v21 count:16];
           v2 = 1;
           if (v9)
           {
@@ -173,7 +173,7 @@ LABEL_32:
 
 - (id)bs_secureEncoded
 {
-  v1 = _BSCreateDataFromObject(a1);
+  v1 = _BSCreateDataFromObject(self);
 
   return v1;
 }
@@ -183,16 +183,16 @@ LABEL_32:
   v5 = a3;
   if (v5)
   {
-    v6 = _BSCreateObjectOfClassFromData(a1, v5);
+    v6 = _BSCreateObjectOfClassFromData(self, v5);
     if (v6)
     {
       goto LABEL_6;
     }
 
-    if (([(objc_class *)a1 conformsToProtocol:&unk_1F03BA528]& 1) == 0)
+    if (([(objc_class *)self conformsToProtocol:&unk_1F03BA528]& 1) == 0)
     {
-      v8 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v8 handleFailureInMethod:a2 object:a1 file:@"NSObject+BSCoding.m" lineNumber:151 description:{@"%@ does not implement NSSecureCoding", a1}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"NSObject+BSCoding.m" lineNumber:151 description:{@"%@ does not implement NSSecureCoding", self}];
     }
   }
 
@@ -205,10 +205,10 @@ LABEL_6:
 + (id)bs_secureDecodedFromData:()BSCoding withAdditionalClasses:
 {
   v28 = *MEMORY[0x1E69E9840];
-  v21 = a1;
+  selfCopy = self;
   v7 = a3;
   v8 = a4;
-  if ([a1 supportsSecureCoding])
+  if ([self supportsSecureCoding])
   {
     if (v7)
     {
@@ -218,14 +218,14 @@ LABEL_6:
 
   else
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    v18 = NSStringFromClass(a1);
-    [v17 handleFailureInMethod:a2 object:a1 file:@"NSObject+BSCoding.m" lineNumber:159 description:{@"%@ does not support secure coding", v18}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    v18 = NSStringFromClass(self);
+    [currentHandler handleFailureInMethod:a2 object:self file:@"NSObject+BSCoding.m" lineNumber:159 description:{@"%@ does not support secure coding", v18}];
 
     if (v7)
     {
 LABEL_3:
-      v9 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithObjects:&v21 count:1];
+      v9 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithObjects:&selfCopy count:1];
       v10 = v9;
       if (v8)
       {
@@ -249,7 +249,7 @@ LABEL_15:
         v13 = BSLogCommon();
         if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
         {
-          v14 = v21;
+          v14 = selfCopy;
           v15 = objc_opt_class();
           *buf = 136315650;
           v23 = "+[NSObject(BSCoding) bs_secureDecodedFromData:withAdditionalClasses:]";
@@ -262,10 +262,10 @@ LABEL_15:
         }
       }
 
-      if (([v21 conformsToProtocol:&unk_1F03BA528] & 1) == 0)
+      if (([selfCopy conformsToProtocol:&unk_1F03BA528] & 1) == 0)
       {
-        v20 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v20 handleFailureInMethod:a2 object:v21 file:? lineNumber:? description:?];
+        currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler2 handleFailureInMethod:a2 object:selfCopy file:? lineNumber:? description:?];
       }
 
       v12 = 0;

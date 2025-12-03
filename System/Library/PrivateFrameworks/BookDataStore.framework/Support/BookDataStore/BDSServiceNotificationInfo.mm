@@ -1,50 +1,50 @@
 @interface BDSServiceNotificationInfo
-- (BDSServiceNotificationInfo)initWithCoder:(id)a3;
-- (BDSServiceNotificationInfo)initWithName:(id)a3 changeToken:(int64_t)a4;
+- (BDSServiceNotificationInfo)initWithCoder:(id)coder;
+- (BDSServiceNotificationInfo)initWithName:(id)name changeToken:(int64_t)token;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BDSServiceNotificationInfo
 
-- (BDSServiceNotificationInfo)initWithName:(id)a3 changeToken:(int64_t)a4
+- (BDSServiceNotificationInfo)initWithName:(id)name changeToken:(int64_t)token
 {
-  v7 = a3;
+  nameCopy = name;
   v11.receiver = self;
   v11.super_class = BDSServiceNotificationInfo;
   v8 = [(BDSServiceNotificationInfo *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_name, a3);
-    v9->_changeToken = a4;
+    objc_storeStrong(&v8->_name, name);
+    v9->_changeToken = token;
   }
 
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  v4 = [(BDSServiceNotificationInfo *)self name];
-  [v5 encodeObject:v4 forKey:@"name"];
+  coderCopy = coder;
+  name = [(BDSServiceNotificationInfo *)self name];
+  [coderCopy encodeObject:name forKey:@"name"];
 
-  [v5 encodeInteger:-[BDSServiceNotificationInfo changeToken](self forKey:{"changeToken"), @"changeToken"}];
+  [coderCopy encodeInteger:-[BDSServiceNotificationInfo changeToken](self forKey:{"changeToken"), @"changeToken"}];
 }
 
-- (BDSServiceNotificationInfo)initWithCoder:(id)a3
+- (BDSServiceNotificationInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = BDSServiceNotificationInfo;
   v5 = [(BDSServiceNotificationInfo *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
     name = v5->_name;
     v5->_name = v6;
 
-    v5->_changeToken = [v4 decodeIntegerForKey:@"changeToken"];
+    v5->_changeToken = [coderCopy decodeIntegerForKey:@"changeToken"];
   }
 
   return v5;
@@ -54,8 +54,8 @@
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(BDSServiceNotificationInfo *)self name];
-  v6 = [NSString stringWithFormat:@"<%@:%p name=%@ changeToken=%ld>", v4, self, v5, [(BDSServiceNotificationInfo *)self changeToken]];
+  name = [(BDSServiceNotificationInfo *)self name];
+  v6 = [NSString stringWithFormat:@"<%@:%p name=%@ changeToken=%ld>", v4, self, name, [(BDSServiceNotificationInfo *)self changeToken]];
 
   return v6;
 }

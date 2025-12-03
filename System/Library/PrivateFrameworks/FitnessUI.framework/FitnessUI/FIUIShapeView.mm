@@ -1,65 +1,65 @@
 @interface FIUIShapeView
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3;
-- (FIUIShapeView)initWithFrame:(CGRect)a3;
-- (void)setFillColor:(id)a3;
-- (void)setLineWidth:(double)a3;
-- (void)setPath:(id)a3;
-- (void)setStrokeColor:(id)a3;
-- (void)setStrokeEnd:(double)a3;
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key;
+- (FIUIShapeView)initWithFrame:(CGRect)frame;
+- (void)setFillColor:(id)color;
+- (void)setLineWidth:(double)width;
+- (void)setPath:(id)path;
+- (void)setStrokeColor:(id)color;
+- (void)setStrokeEnd:(double)end;
 @end
 
 @implementation FIUIShapeView
 
-- (FIUIShapeView)initWithFrame:(CGRect)a3
+- (FIUIShapeView)initWithFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = FIUIShapeView;
-  return [(FIUIShapeView *)&v4 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  return [(FIUIShapeView *)&v4 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
 }
 
-- (void)setPath:(id)a3
+- (void)setPath:(id)path
 {
-  v4 = a3;
-  v6 = [(FIUIShapeView *)self shapeLayer];
-  v5 = [v4 CGPath];
+  pathCopy = path;
+  shapeLayer = [(FIUIShapeView *)self shapeLayer];
+  cGPath = [pathCopy CGPath];
 
-  [v6 setPath:v5];
+  [shapeLayer setPath:cGPath];
 }
 
-- (void)setFillColor:(id)a3
+- (void)setFillColor:(id)color
 {
-  v4 = a3;
-  v6 = [(FIUIShapeView *)self shapeLayer];
-  v5 = [v4 CGColor];
+  colorCopy = color;
+  shapeLayer = [(FIUIShapeView *)self shapeLayer];
+  cGColor = [colorCopy CGColor];
 
-  [v6 setFillColor:v5];
+  [shapeLayer setFillColor:cGColor];
 }
 
-- (void)setStrokeColor:(id)a3
+- (void)setStrokeColor:(id)color
 {
-  v4 = a3;
-  v6 = [(FIUIShapeView *)self shapeLayer];
-  v5 = [v4 CGColor];
+  colorCopy = color;
+  shapeLayer = [(FIUIShapeView *)self shapeLayer];
+  cGColor = [colorCopy CGColor];
 
-  [v6 setStrokeColor:v5];
+  [shapeLayer setStrokeColor:cGColor];
 }
 
-- (void)setLineWidth:(double)a3
+- (void)setLineWidth:(double)width
 {
-  v4 = [(FIUIShapeView *)self shapeLayer];
-  [v4 setLineWidth:a3];
+  shapeLayer = [(FIUIShapeView *)self shapeLayer];
+  [shapeLayer setLineWidth:width];
 }
 
-- (void)setStrokeEnd:(double)a3
+- (void)setStrokeEnd:(double)end
 {
-  v4 = [(FIUIShapeView *)self shapeLayer];
-  [v4 setStrokeEnd:a3];
+  shapeLayer = [(FIUIShapeView *)self shapeLayer];
+  [shapeLayer setStrokeEnd:end];
 }
 
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"strokeEnd"] & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"path"))
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"strokeEnd"] & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"path"))
   {
     v5 = 1;
   }
@@ -68,7 +68,7 @@
   {
     v7.receiver = self;
     v7.super_class = FIUIShapeView;
-    v5 = [(FIUIShapeView *)&v7 _shouldAnimatePropertyWithKey:v4];
+    v5 = [(FIUIShapeView *)&v7 _shouldAnimatePropertyWithKey:keyCopy];
   }
 
   return v5;

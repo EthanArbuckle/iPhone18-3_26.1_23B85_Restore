@@ -1,24 +1,24 @@
 @interface _TopHitsMessageListCellLayoutValues
-- (BOOL)useSelectedColorForConfigurationState:(id)a3 backgroundConfiguration:(id)a4;
+- (BOOL)useSelectedColorForConfigurationState:(id)state backgroundConfiguration:(id)configuration;
 @end
 
 @implementation _TopHitsMessageListCellLayoutValues
 
-- (BOOL)useSelectedColorForConfigurationState:(id)a3 backgroundConfiguration:(id)a4
+- (BOOL)useSelectedColorForConfigurationState:(id)state backgroundConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [v4 isSelected];
-  v6 = [v4 isFocused];
-  v7 = [v4 isFocusSystemActive];
+  stateCopy = state;
+  isSelected = [stateCopy isSelected];
+  isFocused = [stateCopy isFocused];
+  isFocusSystemActive = [stateCopy isFocusSystemActive];
 
-  if (v6)
+  if (isFocused)
   {
-    return v5;
+    return isSelected;
   }
 
   else
   {
-    return v5 & (v7 ^ 1);
+    return isSelected & (isFocusSystemActive ^ 1);
   }
 }
 

@@ -1,25 +1,25 @@
 @interface PUCropAspectFlipperButton
 - (PUCropAspectFlipperButton)init;
 - (void)layoutSubviews;
-- (void)setEnabled:(BOOL)a3;
-- (void)setSelected:(BOOL)a3;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setSelected:(BOOL)selected;
 @end
 
 @implementation PUCropAspectFlipperButton
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
   v4.receiver = self;
   v4.super_class = PUCropAspectFlipperButton;
-  [(PUCropAspectFlipperButton *)&v4 setEnabled:a3];
+  [(PUCropAspectFlipperButton *)&v4 setEnabled:enabled];
   [(PUCropAspectFlipperButton *)self setNeedsLayout];
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
   v4.receiver = self;
   v4.super_class = PUCropAspectFlipperButton;
-  [(PUCropAspectFlipperButton *)&v4 setSelected:a3];
+  [(PUCropAspectFlipperButton *)&v4 setSelected:selected];
   [(PUCropAspectFlipperButton *)self setNeedsLayout];
 }
 
@@ -40,8 +40,8 @@
     [(PUCropAspectFlipperButton *)self bounds];
     [(CALayer *)self->_pageLayer setPosition:v6, v7 * 0.5];
     [(CALayer *)self->_pageLayer setBorderWidth:2.0];
-    v8 = [(PUCropAspectFlipperButton *)self layer];
-    [v8 addSublayer:self->_pageLayer];
+    layer = [(PUCropAspectFlipperButton *)self layer];
+    [layer addSublayer:self->_pageLayer];
   }
 
   if (!self->_selectionCheckboxLayer)
@@ -58,16 +58,16 @@
 
   if ([(PUCropAspectFlipperButton *)self isEnabled])
   {
-    v12 = [MEMORY[0x1E69DC888] systemGrayColor];
-    -[CALayer setBackgroundColor:](self->_pageLayer, "setBackgroundColor:", [v12 CGColor]);
+    systemGrayColor = [MEMORY[0x1E69DC888] systemGrayColor];
+    -[CALayer setBackgroundColor:](self->_pageLayer, "setBackgroundColor:", [systemGrayColor CGColor]);
 
     [MEMORY[0x1E69DC888] secondaryLabelColor];
   }
 
   else
   {
-    v13 = [MEMORY[0x1E69DC888] systemGray5Color];
-    -[CALayer setBackgroundColor:](self->_pageLayer, "setBackgroundColor:", [v13 CGColor]);
+    systemGray5Color = [MEMORY[0x1E69DC888] systemGray5Color];
+    -[CALayer setBackgroundColor:](self->_pageLayer, "setBackgroundColor:", [systemGray5Color CGColor]);
 
     [MEMORY[0x1E69DC888] systemGray3Color];
   }
@@ -76,9 +76,9 @@
 
   if ([(PUCropAspectFlipperButton *)self isSelected]&& [(PUCropAspectFlipperButton *)self isEnabled])
   {
-    v15 = [(CALayer *)self->_selectionCheckboxLayer superlayer];
+    superlayer = [(CALayer *)self->_selectionCheckboxLayer superlayer];
 
-    if (!v15)
+    if (!superlayer)
     {
       v16 = self->_pageLayer;
       v17 = self->_selectionCheckboxLayer;
@@ -89,9 +89,9 @@
 
   else
   {
-    v18 = [(CALayer *)self->_selectionCheckboxLayer superlayer];
+    superlayer2 = [(CALayer *)self->_selectionCheckboxLayer superlayer];
 
-    if (v18)
+    if (superlayer2)
     {
       v19 = self->_selectionCheckboxLayer;
 

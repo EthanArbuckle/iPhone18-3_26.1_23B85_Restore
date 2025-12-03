@@ -1,14 +1,14 @@
 @interface CRLChangeCoordinatorCachedShareState
-- (void)shareStateUpdatedWithShare:(id)a3;
+- (void)shareStateUpdatedWithShare:(id)share;
 @end
 
 @implementation CRLChangeCoordinatorCachedShareState
 
-- (void)shareStateUpdatedWithShare:(id)a3
+- (void)shareStateUpdatedWithShare:(id)share
 {
   v4 = *self->cachedShare;
-  *self->cachedShare = a3;
-  v5 = a3;
+  *self->cachedShare = share;
+  shareCopy = share;
 
   v6 = sub_100BD5850(_swiftEmptyArrayStorage);
   swift_beginAccess();

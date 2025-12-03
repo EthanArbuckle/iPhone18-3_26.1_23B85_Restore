@@ -1,54 +1,54 @@
 @interface NNMKSyncedAccount
 - (NNMKSyncedAccount)init;
-- (NNMKSyncedAccount)initWithAccount:(id)a3;
+- (NNMKSyncedAccount)initWithAccount:(id)account;
 - (id)account;
 @end
 
 @implementation NNMKSyncedAccount
 
-- (NNMKSyncedAccount)initWithAccount:(id)a3
+- (NNMKSyncedAccount)initWithAccount:(id)account
 {
-  v4 = a3;
+  accountCopy = account;
   v5 = [(NNMKSyncedAccount *)self init];
   if (v5)
   {
-    v6 = [v4 accountId];
+    accountId = [accountCopy accountId];
     accountId = v5->_accountId;
-    v5->_accountId = v6;
+    v5->_accountId = accountId;
 
-    v8 = [v4 displayName];
+    displayName = [accountCopy displayName];
     displayName = v5->_displayName;
-    v5->_displayName = v8;
+    v5->_displayName = displayName;
 
-    v5->_shouldArchive = [v4 shouldArchive];
-    v10 = [v4 emailAddresses];
-    v11 = [v10 copy];
+    v5->_shouldArchive = [accountCopy shouldArchive];
+    emailAddresses = [accountCopy emailAddresses];
+    v11 = [emailAddresses copy];
     emailAddresses = v5->_emailAddresses;
     v5->_emailAddresses = v11;
 
-    v13 = [v4 defaultEmailAddress];
+    defaultEmailAddress = [accountCopy defaultEmailAddress];
     defaultEmailAddress = v5->_defaultEmailAddress;
-    v5->_defaultEmailAddress = v13;
+    v5->_defaultEmailAddress = defaultEmailAddress;
 
-    v15 = [v4 username];
+    username = [accountCopy username];
     username = v5->_username;
-    v5->_username = v15;
+    v5->_username = username;
 
-    v17 = [v4 localId];
+    localId = [accountCopy localId];
     localId = v5->_localId;
-    v5->_localId = v17;
+    v5->_localId = localId;
 
-    v19 = [v4 typeIdentifier];
+    typeIdentifier = [accountCopy typeIdentifier];
     typeIdentifier = v5->_typeIdentifier;
-    v5->_typeIdentifier = v19;
+    v5->_typeIdentifier = typeIdentifier;
 
-    v21 = [v4 emailAddressToken];
+    emailAddressToken = [accountCopy emailAddressToken];
     emailAddressToken = v5->_emailAddressToken;
-    v5->_emailAddressToken = v21;
+    v5->_emailAddressToken = emailAddressToken;
 
-    v23 = [v4 pccEmailAddress];
+    pccEmailAddress = [accountCopy pccEmailAddress];
     pccEmailAddress = v5->_pccEmailAddress;
-    v5->_pccEmailAddress = v23;
+    v5->_pccEmailAddress = pccEmailAddress;
   }
 
   return v5;
@@ -79,34 +79,34 @@
 - (id)account
 {
   v3 = objc_alloc_init(NNMKAccount);
-  v4 = [(NNMKSyncedAccount *)self accountId];
-  [(NNMKAccount *)v3 setAccountId:v4];
+  accountId = [(NNMKSyncedAccount *)self accountId];
+  [(NNMKAccount *)v3 setAccountId:accountId];
 
-  v5 = [(NNMKSyncedAccount *)self localId];
-  [(NNMKAccount *)v3 setLocalId:v5];
+  localId = [(NNMKSyncedAccount *)self localId];
+  [(NNMKAccount *)v3 setLocalId:localId];
 
-  v6 = [(NNMKSyncedAccount *)self displayName];
-  [(NNMKAccount *)v3 setDisplayName:v6];
+  displayName = [(NNMKSyncedAccount *)self displayName];
+  [(NNMKAccount *)v3 setDisplayName:displayName];
 
   [(NNMKAccount *)v3 setShouldArchive:[(NNMKSyncedAccount *)self shouldArchive]];
-  v7 = [(NNMKSyncedAccount *)self emailAddresses];
-  [(NNMKAccount *)v3 setEmailAddresses:v7];
+  emailAddresses = [(NNMKSyncedAccount *)self emailAddresses];
+  [(NNMKAccount *)v3 setEmailAddresses:emailAddresses];
 
-  v8 = [(NNMKSyncedAccount *)self defaultEmailAddress];
-  [(NNMKAccount *)v3 setDefaultEmailAddress:v8];
+  defaultEmailAddress = [(NNMKSyncedAccount *)self defaultEmailAddress];
+  [(NNMKAccount *)v3 setDefaultEmailAddress:defaultEmailAddress];
 
   [(NNMKAccount *)v3 setSourceType:[(NNMKSyncedAccount *)self sourceType]];
-  v9 = [(NNMKSyncedAccount *)self username];
-  [(NNMKAccount *)v3 setUsername:v9];
+  username = [(NNMKSyncedAccount *)self username];
+  [(NNMKAccount *)v3 setUsername:username];
 
-  v10 = [(NNMKSyncedAccount *)self typeIdentifier];
-  [(NNMKAccount *)v3 setTypeIdentifier:v10];
+  typeIdentifier = [(NNMKSyncedAccount *)self typeIdentifier];
+  [(NNMKAccount *)v3 setTypeIdentifier:typeIdentifier];
 
-  v11 = [(NNMKSyncedAccount *)self emailAddressToken];
-  [(NNMKAccount *)v3 setEmailAddressToken:v11];
+  emailAddressToken = [(NNMKSyncedAccount *)self emailAddressToken];
+  [(NNMKAccount *)v3 setEmailAddressToken:emailAddressToken];
 
-  v12 = [(NNMKSyncedAccount *)self pccEmailAddress];
-  [(NNMKAccount *)v3 setPccEmailAddress:v12];
+  pccEmailAddress = [(NNMKSyncedAccount *)self pccEmailAddress];
+  [(NNMKAccount *)v3 setPccEmailAddress:pccEmailAddress];
 
   return v3;
 }

@@ -1,14 +1,14 @@
 @interface HKInteractiveChartBloodGlucosePercentInRangeData
-- (int64_t)countForClassification:(int64_t)a3;
+- (int64_t)countForClassification:(int64_t)classification;
 @end
 
 @implementation HKInteractiveChartBloodGlucosePercentInRangeData
 
-- (int64_t)countForClassification:(int64_t)a3
+- (int64_t)countForClassification:(int64_t)classification
 {
-  if (a3 <= 3)
+  if (classification <= 3)
   {
-    return *(self + 8 * a3 + 8);
+    return *(self + 8 * classification + 8);
   }
 
   return self;

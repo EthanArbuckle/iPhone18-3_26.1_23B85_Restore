@@ -1,11 +1,11 @@
 @interface AVCaptureDeferredPhotoProxy
 - ($2825F4736939C4A6D3AD43837233062D)dimensions;
 - (AVCaptureDeferredPhotoProxy)init;
-- (AVCaptureDeferredPhotoProxy)initWithApplicationIdentifier:(id)a3 captureRequestIdentifier:(id)a4 photoIdentifier:(id)a5 timestamp:(id *)a6 expectedPhotoProcessingFlags:(unsigned int)a7;
-- (AVCaptureDeferredPhotoProxy)initWithDeferredPhotoIdentifier:(id)a3 applicationIdentifier:(id)a4;
-- (AVCaptureDeferredPhotoProxy)initWithDeferredPhotoIdentifier:(id)a3 applicationIdentifier:(id)a4 photoLibraryThumbnailDimensions:(id)a5;
-- (AVCaptureDeferredPhotoProxy)initWithTimestamp:(id *)a3 proxySurface:(__IOSurface *)a4 proxySurfaceSize:(unint64_t)a5 proxyFileType:(id)a6 previewPhotoSurface:(__IOSurface *)a7 metadata:(id)a8 captureRequest:(id)a9 sequenceCount:(unint64_t)a10 photoCount:(unint64_t)a11 applicationIdentifier:(id)a12 captureRequestIdentifier:(id)a13 photoIdentifier:(id)a14 expectedPhotoProcessingFlags:(unsigned int)a15 sourceDeviceType:(id)a16;
-- (BOOL)isEqual:(id)a3;
+- (AVCaptureDeferredPhotoProxy)initWithApplicationIdentifier:(id)identifier captureRequestIdentifier:(id)requestIdentifier photoIdentifier:(id)photoIdentifier timestamp:(id *)timestamp expectedPhotoProcessingFlags:(unsigned int)flags;
+- (AVCaptureDeferredPhotoProxy)initWithDeferredPhotoIdentifier:(id)identifier applicationIdentifier:(id)applicationIdentifier;
+- (AVCaptureDeferredPhotoProxy)initWithDeferredPhotoIdentifier:(id)identifier applicationIdentifier:(id)applicationIdentifier photoLibraryThumbnailDimensions:(id)dimensions;
+- (AVCaptureDeferredPhotoProxy)initWithTimestamp:(id *)timestamp proxySurface:(__IOSurface *)surface proxySurfaceSize:(unint64_t)size proxyFileType:(id)type previewPhotoSurface:(__IOSurface *)photoSurface metadata:(id)metadata captureRequest:(id)request sequenceCount:(unint64_t)self0 photoCount:(unint64_t)self1 applicationIdentifier:(id)self2 captureRequestIdentifier:(id)self3 photoIdentifier:(id)self4 expectedPhotoProcessingFlags:(unsigned int)self5 sourceDeviceType:(id)self6;
+- (BOOL)isEqual:(id)equal;
 - (id)captureRequestIdentifier;
 - (id)debugDescription;
 - (id)description;
@@ -36,21 +36,21 @@
   }
 }
 
-- (AVCaptureDeferredPhotoProxy)initWithApplicationIdentifier:(id)a3 captureRequestIdentifier:(id)a4 photoIdentifier:(id)a5 timestamp:(id *)a6 expectedPhotoProcessingFlags:(unsigned int)a7
+- (AVCaptureDeferredPhotoProxy)initWithApplicationIdentifier:(id)identifier captureRequestIdentifier:(id)requestIdentifier photoIdentifier:(id)photoIdentifier timestamp:(id *)timestamp expectedPhotoProcessingFlags:(unsigned int)flags
 {
   if (AVCaptureClientHasEntitlement(AVCaptureEntitlementDeferredPhotoProcessor))
   {
     v19.receiver = self;
     v19.super_class = AVCaptureDeferredPhotoProxy;
-    v17 = *&a6->var0;
-    var3 = a6->var3;
-    v16 = a7;
-    v13 = [(AVCapturePhoto *)&v19 initWithTimestamp:&v17 photoSurface:0 photoSurfaceSize:0 processedFileType:0 previewPhotoSurface:0 embeddedThumbnailSourceSurface:0 photoLibraryThumbnails:0 metadata:0 depthDataSurface:0 depthMetadataDictionary:0 portraitEffectsMatteSurface:0 portraitEffectsMatteMetadataDictionary:0 hairSegmentationMatteSurface:0 hairSegmentationMatteMetadataDictionary:0 skinSegmentationMatteSurface:0 skinSegmentationMatteMetadataDictionary:0 teethSegmentationMatteSurface:0 teethSegmentationMatteMetadataDictionary:0 glassesSegmentationMatteSurface:0 glassesSegmentationMatteMetadataDictionary:0 constantColorConfidenceMapSurface:0 constantColorMetadataDictionary:0 captureRequest:0 bracketSettings:0 sequenceCount:1 photoCount:1 expectedPhotoProcessingFlags:v16 sourceDeviceType:@"AVCaptureDeviceTypeBuiltInWideAngleCamera"];
+    v17 = *&timestamp->var0;
+    var3 = timestamp->var3;
+    flagsCopy = flags;
+    v13 = [(AVCapturePhoto *)&v19 initWithTimestamp:&v17 photoSurface:0 photoSurfaceSize:0 processedFileType:0 previewPhotoSurface:0 embeddedThumbnailSourceSurface:0 photoLibraryThumbnails:0 metadata:0 depthDataSurface:0 depthMetadataDictionary:0 portraitEffectsMatteSurface:0 portraitEffectsMatteMetadataDictionary:0 hairSegmentationMatteSurface:0 hairSegmentationMatteMetadataDictionary:0 skinSegmentationMatteSurface:0 skinSegmentationMatteMetadataDictionary:0 teethSegmentationMatteSurface:0 teethSegmentationMatteMetadataDictionary:0 glassesSegmentationMatteSurface:0 glassesSegmentationMatteMetadataDictionary:0 constantColorConfidenceMapSurface:0 constantColorMetadataDictionary:0 captureRequest:0 bracketSettings:0 sequenceCount:1 photoCount:1 expectedPhotoProcessingFlags:flagsCopy sourceDeviceType:@"AVCaptureDeviceTypeBuiltInWideAngleCamera"];
     if (v13)
     {
-      v13->_applicationIdentifier = [a3 copy];
-      v13->_captureRequestIdentifier = [a4 copy];
-      v13->_photoIdentifier = [a5 copy];
+      v13->_applicationIdentifier = [identifier copy];
+      v13->_captureRequestIdentifier = [requestIdentifier copy];
+      v13->_photoIdentifier = [photoIdentifier copy];
     }
   }
 
@@ -69,38 +69,38 @@
   return v13;
 }
 
-- (AVCaptureDeferredPhotoProxy)initWithTimestamp:(id *)a3 proxySurface:(__IOSurface *)a4 proxySurfaceSize:(unint64_t)a5 proxyFileType:(id)a6 previewPhotoSurface:(__IOSurface *)a7 metadata:(id)a8 captureRequest:(id)a9 sequenceCount:(unint64_t)a10 photoCount:(unint64_t)a11 applicationIdentifier:(id)a12 captureRequestIdentifier:(id)a13 photoIdentifier:(id)a14 expectedPhotoProcessingFlags:(unsigned int)a15 sourceDeviceType:(id)a16
+- (AVCaptureDeferredPhotoProxy)initWithTimestamp:(id *)timestamp proxySurface:(__IOSurface *)surface proxySurfaceSize:(unint64_t)size proxyFileType:(id)type previewPhotoSurface:(__IOSurface *)photoSurface metadata:(id)metadata captureRequest:(id)request sequenceCount:(unint64_t)self0 photoCount:(unint64_t)self1 applicationIdentifier:(id)self2 captureRequestIdentifier:(id)self3 photoIdentifier:(id)self4 expectedPhotoProcessingFlags:(unsigned int)self5 sourceDeviceType:(id)self6
 {
   v19.receiver = self;
   v19.super_class = AVCaptureDeferredPhotoProxy;
-  v18 = *a3;
-  v16 = [(AVCapturePhoto *)&v19 initWithTimestamp:&v18 photoSurface:a4 photoSurfaceSize:a5 processedFileType:a6 previewPhotoSurface:a7 embeddedThumbnailSourceSurface:0 photoLibraryThumbnails:0 metadata:a8 depthDataSurface:0 depthMetadataDictionary:0 portraitEffectsMatteSurface:0 portraitEffectsMatteMetadataDictionary:0 hairSegmentationMatteSurface:0 hairSegmentationMatteMetadataDictionary:0 skinSegmentationMatteSurface:0 skinSegmentationMatteMetadataDictionary:0 teethSegmentationMatteSurface:0 teethSegmentationMatteMetadataDictionary:0 glassesSegmentationMatteSurface:0 glassesSegmentationMatteMetadataDictionary:0 constantColorConfidenceMapSurface:0 constantColorMetadataDictionary:0 captureRequest:a9 bracketSettings:0 sequenceCount:a10 photoCount:a11 expectedPhotoProcessingFlags:a15 sourceDeviceType:a16];
+  v18 = *timestamp;
+  v16 = [(AVCapturePhoto *)&v19 initWithTimestamp:&v18 photoSurface:surface photoSurfaceSize:size processedFileType:type previewPhotoSurface:photoSurface embeddedThumbnailSourceSurface:0 photoLibraryThumbnails:0 metadata:metadata depthDataSurface:0 depthMetadataDictionary:0 portraitEffectsMatteSurface:0 portraitEffectsMatteMetadataDictionary:0 hairSegmentationMatteSurface:0 hairSegmentationMatteMetadataDictionary:0 skinSegmentationMatteSurface:0 skinSegmentationMatteMetadataDictionary:0 teethSegmentationMatteSurface:0 teethSegmentationMatteMetadataDictionary:0 glassesSegmentationMatteSurface:0 glassesSegmentationMatteMetadataDictionary:0 constantColorConfidenceMapSurface:0 constantColorMetadataDictionary:0 captureRequest:request bracketSettings:0 sequenceCount:count photoCount:photoCount expectedPhotoProcessingFlags:flags sourceDeviceType:deviceType];
   if (v16)
   {
-    v16->_applicationIdentifier = [a12 copy];
-    v16->_captureRequestIdentifier = [a13 copy];
-    v16->_photoIdentifier = [a14 copy];
+    v16->_applicationIdentifier = [identifier copy];
+    v16->_captureRequestIdentifier = [requestIdentifier copy];
+    v16->_photoIdentifier = [photoIdentifier copy];
   }
 
   return v16;
 }
 
-- (AVCaptureDeferredPhotoProxy)initWithDeferredPhotoIdentifier:(id)a3 applicationIdentifier:(id)a4 photoLibraryThumbnailDimensions:(id)a5
+- (AVCaptureDeferredPhotoProxy)initWithDeferredPhotoIdentifier:(id)identifier applicationIdentifier:(id)applicationIdentifier photoLibraryThumbnailDimensions:(id)dimensions
 {
-  v6 = [(AVCaptureDeferredPhotoProxy *)self initWithDeferredPhotoIdentifier:a3 applicationIdentifier:a4];
+  v6 = [(AVCaptureDeferredPhotoProxy *)self initWithDeferredPhotoIdentifier:identifier applicationIdentifier:applicationIdentifier];
   if (v6)
   {
-    v6->_photoLibraryThumbnailDimensions = [a5 copy];
+    v6->_photoLibraryThumbnailDimensions = [dimensions copy];
   }
 
   return v6;
 }
 
-- (AVCaptureDeferredPhotoProxy)initWithDeferredPhotoIdentifier:(id)a3 applicationIdentifier:(id)a4
+- (AVCaptureDeferredPhotoProxy)initWithDeferredPhotoIdentifier:(id)identifier applicationIdentifier:(id)applicationIdentifier
 {
   if (AVCaptureClientHasEntitlement(AVCaptureEntitlementDeferredPhotoProcessor))
   {
-    v7 = [a3 componentsSeparatedByString:@"/"];
+    v7 = [identifier componentsSeparatedByString:@"/"];
     if ([v7 count] == 2)
     {
       v8 = [v7 objectAtIndexedSubscript:0];
@@ -117,10 +117,10 @@
     {
       v13 = *MEMORY[0x1E6960C70];
       v14 = *(MEMORY[0x1E6960C70] + 16);
-      return [(AVCaptureDeferredPhotoProxy *)self initWithApplicationIdentifier:a4 captureRequestIdentifier:v8 photoIdentifier:v9 timestamp:&v13 expectedPhotoProcessingFlags:0];
+      return [(AVCaptureDeferredPhotoProxy *)self initWithApplicationIdentifier:applicationIdentifier captureRequestIdentifier:v8 photoIdentifier:v9 timestamp:&v13 expectedPhotoProcessingFlags:0];
     }
 
-    v12 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector() userInfo:{0, a3}];
+    v12 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector() userInfo:{0, identifier}];
 
     if (AVCaptureShouldThrowForAPIViolations())
     {
@@ -158,9 +158,9 @@
   [(AVCapturePhoto *)&v3 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     LOBYTE(v5) = 1;
   }
@@ -170,16 +170,16 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = -[NSString isEqual:](self->_applicationIdentifier, "isEqual:", [a3 applicationIdentifier]);
+      v5 = -[NSString isEqual:](self->_applicationIdentifier, "isEqual:", [equal applicationIdentifier]);
       if (v5)
       {
-        v5 = -[NSString isEqual:](self->_captureRequestIdentifier, "isEqual:", [a3 captureRequestIdentifier]);
+        v5 = -[NSString isEqual:](self->_captureRequestIdentifier, "isEqual:", [equal captureRequestIdentifier]);
         if (v5)
         {
           photoIdentifier = self->_photoIdentifier;
-          v7 = [a3 persistentStorageUUID];
+          persistentStorageUUID = [equal persistentStorageUUID];
 
-          LOBYTE(v5) = [(NSString *)photoIdentifier isEqual:v7];
+          LOBYTE(v5) = [(NSString *)photoIdentifier isEqual:persistentStorageUUID];
         }
       }
     }
@@ -208,11 +208,11 @@
   }
 
   Seconds = CMTimeGetSeconds(&time);
-  v6 = [(AVCapturePhoto *)self photoCount];
-  v7 = [(AVCaptureResolvedPhotoSettings *)[(AVCapturePhoto *)self resolvedSettings] expectedPhotoCount];
+  photoCount = [(AVCapturePhoto *)self photoCount];
+  expectedPhotoCount = [(AVCaptureResolvedPhotoSettings *)[(AVCapturePhoto *)self resolvedSettings] expectedPhotoCount];
   v8 = [(AVCaptureResolvedPhotoSettings *)[(AVCapturePhoto *)self resolvedSettings] debugDescription];
   [(AVCapturePhoto *)self expectedPhotoProcessingFlags];
-  return [v4 stringWithFormat:@"pts:%f %d/%d %@ settings:%@ flags: %@", *&Seconds, v6, v7, v3, v8, AVAppleMakerNoteProcessingFlagsToShortString()];
+  return [v4 stringWithFormat:@"pts:%f %d/%d %@ settings:%@ flags: %@", *&Seconds, photoCount, expectedPhotoCount, v3, v8, AVAppleMakerNoteProcessingFlagsToShortString()];
 }
 
 - (id)description

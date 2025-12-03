@@ -4,7 +4,7 @@
 + (NSURL)mailAccountDirectory;
 + (NSURL)mailDataDirectory;
 + (OS_os_log)log;
-+ (id)_nonContainerizedBaseMailDirectoryPathCreated:(BOOL *)a3;
++ (id)_nonContainerizedBaseMailDirectoryPathCreated:(BOOL *)created;
 @end
 
 @implementation EMPersistenceLayoutManager
@@ -12,8 +12,8 @@
 + (NSURL)mailDataDirectory
 {
   v2 = MEMORY[0x1E695DFF8];
-  v3 = [a1 mailDataDirectoryPath];
-  v4 = [v2 fileURLWithPath:v3 isDirectory:1];
+  mailDataDirectoryPath = [self mailDataDirectoryPath];
+  v4 = [v2 fileURLWithPath:mailDataDirectoryPath isDirectory:1];
 
   return v4;
 }
@@ -24,7 +24,7 @@
   block[1] = 3221225472;
   block[2] = __51__EMPersistenceLayoutManager_baseMailDirectoryPath__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (baseMailDirectoryPath_onceToken != -1)
   {
     dispatch_once(&baseMailDirectoryPath_onceToken, block);
@@ -85,8 +85,8 @@ void __51__EMPersistenceLayoutManager_baseMailDirectoryPath__block_invoke(uint64
 + (NSURL)mailAccountDirectory
 {
   v2 = MEMORY[0x1E695DFF8];
-  v3 = [a1 mailAccountDirectoryPath];
-  v4 = [v2 fileURLWithPath:v3 isDirectory:1];
+  mailAccountDirectoryPath = [self mailAccountDirectoryPath];
+  v4 = [v2 fileURLWithPath:mailAccountDirectoryPath isDirectory:1];
 
   return v4;
 }
@@ -97,7 +97,7 @@ void __51__EMPersistenceLayoutManager_baseMailDirectoryPath__block_invoke(uint64
   block[1] = 3221225472;
   block[2] = __33__EMPersistenceLayoutManager_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_31 != -1)
   {
     dispatch_once(&log_onceToken_31, block);
@@ -119,13 +119,13 @@ void __33__EMPersistenceLayoutManager_log__block_invoke(uint64_t a1)
 + (NSURL)baseMailDirectory
 {
   v2 = MEMORY[0x1E695DFF8];
-  v3 = [a1 baseMailDirectoryPath];
-  v4 = [v2 fileURLWithPath:v3 isDirectory:1];
+  baseMailDirectoryPath = [self baseMailDirectoryPath];
+  v4 = [v2 fileURLWithPath:baseMailDirectoryPath isDirectory:1];
 
   return v4;
 }
 
-+ (id)_nonContainerizedBaseMailDirectoryPathCreated:(BOOL *)a3
++ (id)_nonContainerizedBaseMailDirectoryPathCreated:(BOOL *)created
 {
   v22 = *MEMORY[0x1E69E9840];
   v6 = EFNonContainerizedHomeDirectory();
@@ -134,42 +134,42 @@ void __33__EMPersistenceLayoutManager_log__block_invoke(uint64_t a1)
 
   if (!v8)
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a2 object:a1 file:@"EMPersistenceLayoutManager.m" lineNumber:55 description:@"Unable to get mail directory"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"EMPersistenceLayoutManager.m" lineNumber:55 description:@"Unable to get mail directory"];
   }
 
-  *a3 = 0;
-  v9 = [MEMORY[0x1E696AC08] defaultManager];
+  *created = 0;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v20 = 0;
-  v10 = [v9 createDirectoryAtURL:v8 withIntermediateDirectories:0 attributes:0 error:&v20];
+  v10 = [defaultManager createDirectoryAtURL:v8 withIntermediateDirectories:0 attributes:0 error:&v20];
   v11 = v20;
 
   if (v10)
   {
-    *a3 = 1;
+    *created = 1;
   }
 
   else
   {
-    v12 = [v11 ef_match];
-    v13 = v12[2](v12, *MEMORY[0x1E696A250], 516);
+    ef_match = [v11 ef_match];
+    v13 = ef_match[2](ef_match, *MEMORY[0x1E696A250], 516);
 
     if ((v13 & 1) == 0)
     {
       v14 = +[EMPersistenceLayoutManager log];
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
       {
-        v15 = [v11 ef_publicDescription];
-        [(EMPersistenceLayoutManager *)v15 _nonContainerizedBaseMailDirectoryPathCreated:buf, v14];
+        ef_publicDescription = [v11 ef_publicDescription];
+        [(EMPersistenceLayoutManager *)ef_publicDescription _nonContainerizedBaseMailDirectoryPathCreated:buf, v14];
       }
     }
   }
 
-  v16 = [v8 path];
+  path = [v8 path];
 
   v17 = *MEMORY[0x1E69E9840];
 
-  return v16;
+  return path;
 }
 
 + (void)_nonContainerizedBaseMailDirectoryPathCreated:(os_log_t)log .cold.1(void *a1, uint8_t *buf, os_log_t log)

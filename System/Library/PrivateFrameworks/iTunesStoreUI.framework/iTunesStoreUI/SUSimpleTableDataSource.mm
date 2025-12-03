@@ -1,7 +1,7 @@
 @interface SUSimpleTableDataSource
-- (id)cellForIndexPath:(id)a3;
-- (id)objectForIndexPath:(id)a3;
-- (void)configureCell:(id)a3 forIndexPath:(id)a4;
+- (id)cellForIndexPath:(id)path;
+- (id)objectForIndexPath:(id)path;
+- (void)configureCell:(id)cell forIndexPath:(id)path;
 - (void)dealloc;
 - (void)reloadCellContexts;
 @end
@@ -18,7 +18,7 @@
   [(SUTableDataSource *)&v3 dealloc];
 }
 
-- (id)objectForIndexPath:(id)a3
+- (id)objectForIndexPath:(id)path
 {
   objects = self->_objects;
   v4 = [-[SUTableDataSource cellReuseSource](self "cellReuseSource")];
@@ -26,7 +26,7 @@
   return [(NSArray *)objects objectAtIndex:v4];
 }
 
-- (id)cellForIndexPath:(id)a3
+- (id)cellForIndexPath:(id)path
 {
   result = [-[SUTableDataSource cellReuseSource](self cellReuseSource];
   if (!result)
@@ -39,13 +39,13 @@
   return result;
 }
 
-- (void)configureCell:(id)a3 forIndexPath:(id)a4
+- (void)configureCell:(id)cell forIndexPath:(id)path
 {
   v6 = [-[SUTableDataSource cellReuseSource](self "cellReuseSource")];
   v7 = [(SUTableDataSource *)self cachedConfigurationForClass:self->_cellConfigurationClass index:v6];
   [v7 setRepresentedObject:{-[NSArray objectAtIndex:](self->_objects, "objectAtIndex:", v6)}];
 
-  [a3 setConfiguration:v7];
+  [cell setConfiguration:v7];
 }
 
 - (void)reloadCellContexts
@@ -54,8 +54,8 @@
   v5.super_class = SUSimpleTableDataSource;
   [(SUTableDataSource *)&v5 reloadCellContexts];
   v3 = [(SUVariableCellConfigurationCache *)self->super._configurationCache cacheForClass:self->_cellConfigurationClass];
-  v4 = [(objc_class *)self->_cellConfigurationClass copyDefaultContext];
-  [v3 setCellContext:v4];
+  copyDefaultContext = [(objc_class *)self->_cellConfigurationClass copyDefaultContext];
+  [v3 setCellContext:copyDefaultContext];
 }
 
 @end

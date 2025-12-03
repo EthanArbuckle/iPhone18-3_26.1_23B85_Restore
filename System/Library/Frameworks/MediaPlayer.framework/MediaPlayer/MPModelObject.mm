@@ -1,29 +1,29 @@
 @interface MPModelObject
-+ (BOOL)_lookupPropertyForSelector:(SEL)a3 result:(id)a4;
-+ (BOOL)resolveInstanceMethod:(SEL)a3;
-+ (id)_modelKeyForPropertySelector:(SEL)a3;
++ (BOOL)_lookupPropertyForSelector:(SEL)selector result:(id)result;
++ (BOOL)resolveInstanceMethod:(SEL)method;
++ (id)_modelKeyForPropertySelector:(SEL)selector;
 + (void)_indexProperties;
 + (void)initialize;
-+ (void)performWithoutEnforcement:(id)a3;
-- (BOOL)_isModelKey:(id)a3;
-- (BOOL)hasLoadedValueForKey:(id)a3;
-- (BOOL)hasLoadedValuesForPropertySet:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (MPModelObject)initWithCoder:(id)a3;
-- (MPModelObject)initWithIdentifiers:(id)a3 block:(id)a4;
++ (void)performWithoutEnforcement:(id)enforcement;
+- (BOOL)_isModelKey:(id)key;
+- (BOOL)hasLoadedValueForKey:(id)key;
+- (BOOL)hasLoadedValuesForPropertySet:(id)set;
+- (BOOL)isEqual:(id)equal;
+- (MPModelObject)initWithCoder:(id)coder;
+- (MPModelObject)initWithIdentifiers:(id)identifiers block:(id)block;
 - (NSString)description;
 - (NSString)humanDescription;
 - (id)_sanitizedStorage;
 - (id)_stateDumpObject;
-- (id)copyWithIdentifiers:(id)a3 block:(id)a4;
-- (id)copyWithIdentifiers:(id)a3 propertySet:(id)a4;
-- (id)copyWithPropertySet:(id)a3;
-- (id)mergeWithObject:(id)a3;
-- (id)valueForModelKey:(id)a3;
-- (id)valueForUndefinedKey:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setValue:(id)a3 forModelKey:(id)a4;
-- (void)setValue:(id)a3 forUndefinedKey:(id)a4;
+- (id)copyWithIdentifiers:(id)identifiers block:(id)block;
+- (id)copyWithIdentifiers:(id)identifiers propertySet:(id)set;
+- (id)copyWithPropertySet:(id)set;
+- (id)mergeWithObject:(id)object;
+- (id)valueForModelKey:(id)key;
+- (id)valueForUndefinedKey:(id)key;
+- (void)encodeWithCoder:(id)coder;
+- (void)setValue:(id)value forModelKey:(id)key;
+- (void)setValue:(id)value forUndefinedKey:(id)key;
 @end
 
 @implementation MPModelObject
@@ -31,15 +31,15 @@
 + (void)initialize
 {
   v3 = objc_autoreleasePoolPush();
-  [a1 _indexProperties];
+  [self _indexProperties];
 
   objc_autoreleasePoolPop(v3);
 }
 
 + (void)_indexProperties
 {
-  v21 = [MEMORY[0x1E69B1450] bidirectionalDictionary];
-  v20 = [MEMORY[0x1E695DF90] dictionary];
+  bidirectionalDictionary = [MEMORY[0x1E69B1450] bidirectionalDictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v3 = [MEMORY[0x1E695DFA8] set];
   v18 = MEMORY[0x1E69E9820];
   v19 = v3;
@@ -51,9 +51,9 @@
     v23 = __33__MPModelObject__indexProperties__block_invoke;
     v24 = &unk_1E767A460;
     v28 = Superclass;
-    v4 = v21;
+    v4 = bidirectionalDictionary;
     v25 = v4;
-    v5 = v20;
+    v5 = dictionary;
     v26 = v5;
     v6 = v19;
     v27 = v6;
@@ -85,11 +85,11 @@
   }
 
   while (Superclass != objc_opt_class());
-  v14 = [v4 allKeys];
+  allKeys = [v4 allKeys];
   objc_setAssociatedObject(object, _MPModelObjectPropertySelectorIndexKey, v5, 3);
   objc_setAssociatedObject(object, _MPModelObjectModelKeyPropertyIndexKey, v4, 3);
   v15 = _MPModelObjectSharedKeySetKey;
-  v16 = [MEMORY[0x1E695DF90] sharedKeySetForKeys:v14];
+  v16 = [MEMORY[0x1E695DF90] sharedKeySetForKeys:allKeys];
   objc_setAssociatedObject(object, v15, v16, 1);
 
   objc_setAssociatedObject(object, _MPModelObjectPropertyClassesKey, v6, 3);
@@ -212,11 +212,11 @@ void __34__MPModelObject__sanitizedStorage__block_invoke(uint64_t a1, void *a2, 
   return v5;
 }
 
-+ (id)_modelKeyForPropertySelector:(SEL)a3
++ (id)_modelKeyForPropertySelector:(SEL)selector
 {
-  v5 = objc_getAssociatedObject(a1, _MPModelObjectPropertySelectorIndexKey);
-  v6 = objc_getAssociatedObject(a1, _MPModelObjectModelKeyPropertyIndexKey);
-  v7 = NSStringFromSelector(a3);
+  v5 = objc_getAssociatedObject(self, _MPModelObjectPropertySelectorIndexKey);
+  v6 = objc_getAssociatedObject(self, _MPModelObjectModelKeyPropertyIndexKey);
+  v7 = NSStringFromSelector(selector);
   v8 = [v5 objectForKeyedSubscript:v7];
 
   if (v8)
@@ -232,14 +232,14 @@ void __34__MPModelObject__sanitizedStorage__block_invoke(uint64_t a1, void *a2, 
   return v9;
 }
 
-+ (BOOL)_lookupPropertyForSelector:(SEL)a3 result:(id)a4
++ (BOOL)_lookupPropertyForSelector:(SEL)selector result:(id)result
 {
-  v6 = a4;
-  v7 = objc_getAssociatedObject(a1, _MPModelObjectPropertySelectorIndexKey);
-  v8 = NSStringFromSelector(a3);
+  resultCopy = result;
+  v7 = objc_getAssociatedObject(self, _MPModelObjectPropertySelectorIndexKey);
+  v8 = NSStringFromSelector(selector);
   v9 = [v7 objectForKeyedSubscript:v8];
 
-  Property = class_getProperty(a1, [v9 UTF8String]);
+  Property = class_getProperty(self, [v9 UTF8String]);
   v11 = Property;
   if (Property)
   {
@@ -274,8 +274,8 @@ void __34__MPModelObject__sanitizedStorage__block_invoke(uint64_t a1, void *a2, 
       {
         v20 = [MEMORY[0x1E696AD60] stringWithUTF8String:property_getName(v11)];
         v21 = [v20 substringToIndex:1];
-        v22 = [v21 uppercaseString];
-        [v20 replaceCharactersInRange:0 withString:{1, v22}];
+        uppercaseString = [v21 uppercaseString];
+        [v20 replaceCharactersInRange:0 withString:{1, uppercaseString}];
 
         [v20 insertString:@"set" atIndex:0];
         [v20 appendString:@":"];
@@ -283,15 +283,15 @@ void __34__MPModelObject__sanitizedStorage__block_invoke(uint64_t a1, void *a2, 
       }
     }
 
-    v6[2](v6, v11, Uid, v17);
+    resultCopy[2](resultCopy, v11, Uid, v17);
   }
 
   return v11 != 0;
 }
 
-+ (void)performWithoutEnforcement:(id)a3
++ (void)performWithoutEnforcement:(id)enforcement
 {
-  v4 = a3;
+  enforcementCopy = enforcement;
   if (!MSVDeviceOSIsInternalInstall() || (_os_feature_enabled_impl() & 1) != 0)
   {
     goto LABEL_6;
@@ -305,7 +305,7 @@ void __34__MPModelObject__sanitizedStorage__block_invoke(uint64_t a1, void *a2, 
   if (pthread_getspecific(_MPModelObjectEnforcementDisabledPThreadKey_sThreadKey))
   {
 LABEL_6:
-    v4[2]();
+    enforcementCopy[2]();
   }
 
   else
@@ -317,12 +317,12 @@ LABEL_6:
 
     v3 = _MPModelObjectEnforcementDisabledPThreadKey_sThreadKey;
     pthread_setspecific(_MPModelObjectEnforcementDisabledPThreadKey_sThreadKey, 1);
-    v4[2]();
+    enforcementCopy[2]();
     pthread_setspecific(v3, 0);
   }
 }
 
-+ (BOOL)resolveInstanceMethod:(SEL)a3
++ (BOOL)resolveInstanceMethod:(SEL)method
 {
   v15 = 0;
   v16 = &v15;
@@ -333,9 +333,9 @@ LABEL_6:
   v10 = __39__MPModelObject_resolveInstanceMethod___block_invoke;
   v11 = &unk_1E767A3C0;
   v12 = &v15;
-  v13 = a3;
-  v14 = a1;
-  [a1 _lookupPropertyForSelector:? result:?];
+  methodCopy = method;
+  selfCopy = self;
+  [self _lookupPropertyForSelector:? result:?];
   if (v16[3])
   {
     v5 = 1;
@@ -343,9 +343,9 @@ LABEL_6:
 
   else
   {
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___MPModelObject;
-    v5 = objc_msgSendSuper2(&v7, sel_resolveInstanceMethod_, a3);
+    v5 = objc_msgSendSuper2(&v7, sel_resolveInstanceMethod_, method);
   }
 
   _Block_object_dispose(&v15, 8);
@@ -668,12 +668,12 @@ LABEL_71:
   free(v7);
 }
 
-- (BOOL)_isModelKey:(id)a3
+- (BOOL)_isModelKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   v4 = objc_opt_class();
   v5 = objc_getAssociatedObject(v4, _MPModelObjectModelKeyPropertyIndexKey);
-  v6 = [v5 objectForKey:v3];
+  v6 = [v5 objectForKey:keyCopy];
 
   return v6 != 0;
 }
@@ -695,10 +695,10 @@ LABEL_71:
   return v5;
 }
 
-- (void)setValue:(id)a3 forModelKey:(id)a4
+- (void)setValue:(id)value forModelKey:(id)key
 {
-  v18 = a3;
-  v7 = a4;
+  valueCopy = value;
+  keyCopy = key;
   if (MSVDeviceOSIsInternalInstall() && (_os_feature_enabled_impl() & 1) == 0)
   {
     if (_MPModelObjectEnforcementDisabledPThreadKey_sOnceToken != -1)
@@ -708,21 +708,21 @@ LABEL_71:
 
     if (!pthread_getspecific(_MPModelObjectEnforcementDisabledPThreadKey_sThreadKey) && self->_isFinalized)
     {
-      v17 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v17 handleFailureInMethod:a2 object:self file:@"MPModelObject.m" lineNumber:467 description:{@"Attempt to set enforced property after initialization: %@", v7}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelObject.m" lineNumber:467 description:{@"Attempt to set enforced property after initialization: %@", keyCopy}];
     }
   }
 
   v8 = objc_opt_class();
   v9 = objc_getAssociatedObject(v8, _MPModelObjectModelKeyPropertyIndexKey);
-  v10 = [v9 objectForKey:v7];
+  v10 = [v9 objectForKey:keyCopy];
   Property = class_getProperty(v8, [v10 UTF8String]);
 
   v12 = property_copyAttributeValue(Property, "C");
   if (v12)
   {
     v13 = v12;
-    v14 = [v18 copy];
+    v14 = [valueCopy copy];
 
     free(v13);
     v15 = v14;
@@ -730,26 +730,26 @@ LABEL_71:
 
   else
   {
-    v15 = v18;
+    v15 = valueCopy;
   }
 
   v19 = v15;
   if (v15)
   {
-    [(NSMutableDictionary *)self->_storage setObject:v15 forKeyedSubscript:v7];
+    [(NSMutableDictionary *)self->_storage setObject:v15 forKeyedSubscript:keyCopy];
   }
 
   else
   {
-    v16 = [MEMORY[0x1E695DFB0] null];
-    [(NSMutableDictionary *)self->_storage setObject:v16 forKeyedSubscript:v7];
+    null = [MEMORY[0x1E695DFB0] null];
+    [(NSMutableDictionary *)self->_storage setObject:null forKeyedSubscript:keyCopy];
   }
 }
 
-- (id)valueForModelKey:(id)a3
+- (id)valueForModelKey:(id)key
 {
-  v5 = a3;
-  v6 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:v5];
+  keyCopy = key;
+  v6 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:keyCopy];
   if (!v6 && MSVDeviceOSIsInternalInstall() && (_os_feature_enabled_impl() & 1) == 0)
   {
     if (_MPModelObjectEnforcementDisabledPThreadKey_sOnceToken != -1)
@@ -759,13 +759,13 @@ LABEL_71:
 
     if (!pthread_getspecific(_MPModelObjectEnforcementDisabledPThreadKey_sThreadKey))
     {
-      v11 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v11 handleFailureInMethod:a2 object:self file:@"MPModelObject.m" lineNumber:457 description:{@"Attempt to retrieve enforced uninitialized property: %@", v5}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelObject.m" lineNumber:457 description:{@"Attempt to retrieve enforced uninitialized property: %@", keyCopy}];
     }
   }
 
-  v7 = [MEMORY[0x1E695DFB0] null];
-  if (v6 == v7)
+  null = [MEMORY[0x1E695DFB0] null];
+  if (v6 == null)
   {
     v8 = 0;
   }
@@ -780,11 +780,11 @@ LABEL_71:
   return v8;
 }
 
-- (id)mergeWithObject:(id)a3
+- (id)mergeWithObject:(id)object
 {
-  v5 = a3;
-  v6 = self;
-  v7 = v5;
+  objectCopy = object;
+  selfCopy = self;
+  v7 = objectCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
@@ -793,7 +793,7 @@ LABEL_71:
     {
 LABEL_6:
 
-      v8 = v6;
+      currentHandler = selfCopy;
 LABEL_7:
 
       goto LABEL_9;
@@ -824,23 +824,23 @@ LABEL_7:
 
   if ((isKindOfClass & 1) == 0)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v16 = objc_opt_class();
-    [v8 handleFailureInMethod:a2 object:v6 file:@"MPModelObject.m" lineNumber:431 description:{@"MPModelObject mergeWithObject: cannot merge objects [] self.class=%@ object.class%@", v16, objc_opt_class()}];
+    [currentHandler handleFailureInMethod:a2 object:selfCopy file:@"MPModelObject.m" lineNumber:431 description:{@"MPModelObject mergeWithObject: cannot merge objects [] self.class=%@ object.class%@", v16, objc_opt_class()}];
     goto LABEL_7;
   }
 
 LABEL_9:
-  v10 = [(MPModelObject *)v6 identifiers];
-  v11 = [v7 identifiers];
-  v12 = [v10 unionSet:v11];
+  identifiers = [(MPModelObject *)selfCopy identifiers];
+  identifiers2 = [v7 identifiers];
+  v12 = [identifiers unionSet:identifiers2];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __33__MPModelObject_mergeWithObject___block_invoke;
   v17[3] = &unk_1E767C0A8;
   v18 = v7;
   v13 = v7;
-  v14 = [(MPModelObject *)v6 copyWithIdentifiers:v12 block:v17];
+  v14 = [(MPModelObject *)selfCopy copyWithIdentifiers:v12 block:v17];
 
   return v14;
 }
@@ -881,11 +881,11 @@ void __33__MPModelObject_mergeWithObject___block_invoke_2(uint64_t a1, void *a2,
   }
 }
 
-- (BOOL)hasLoadedValuesForPropertySet:(id)a3
+- (BOOL)hasLoadedValuesForPropertySet:(id)set
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  [v4 properties];
+  setCopy = set;
+  [setCopy properties];
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
@@ -929,14 +929,14 @@ void __33__MPModelObject_mergeWithObject___block_invoke_2(uint64_t a1, void *a2,
   v14 = &v13;
   v15 = 0x2020000000;
   v16 = 1;
-  v9 = [v4 relationships];
+  relationships = [setCopy relationships];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __47__MPModelObject_hasLoadedValuesForPropertySet___block_invoke;
   v12[3] = &unk_1E767FB78;
   v12[4] = self;
   v12[5] = &v13;
-  [v9 enumerateKeysAndObjectsUsingBlock:v12];
+  [relationships enumerateKeysAndObjectsUsingBlock:v12];
   v10 = *(v14 + 24);
 
   _Block_object_dispose(&v13, 8);
@@ -969,25 +969,25 @@ LABEL_5:
   }
 }
 
-- (BOOL)hasLoadedValueForKey:(id)a3
+- (BOOL)hasLoadedValueForKey:(id)key
 {
-  v3 = [(NSMutableDictionary *)self->_storage objectForKey:a3];
+  v3 = [(NSMutableDictionary *)self->_storage objectForKey:key];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (id)copyWithIdentifiers:(id)a3 propertySet:(id)a4
+- (id)copyWithIdentifiers:(id)identifiers propertySet:(id)set
 {
-  v6 = a4;
+  setCopy = set;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __49__MPModelObject_copyWithIdentifiers_propertySet___block_invoke;
   v10[3] = &unk_1E767BD60;
-  v11 = v6;
-  v12 = self;
-  v7 = v6;
-  v8 = [(MPModelObject *)self copyWithIdentifiers:a3 block:v10];
+  v11 = setCopy;
+  selfCopy = self;
+  v7 = setCopy;
+  v8 = [(MPModelObject *)self copyWithIdentifiers:identifiers block:v10];
 
   return v8;
 }
@@ -1059,28 +1059,28 @@ void __49__MPModelObject_copyWithIdentifiers_propertySet___block_invoke_3(uint64
   }
 }
 
-- (id)copyWithPropertySet:(id)a3
+- (id)copyWithPropertySet:(id)set
 {
-  v4 = a3;
-  v5 = [(MPModelObject *)self identifiers];
-  v6 = [(MPModelObject *)self copyWithIdentifiers:v5 propertySet:v4];
+  setCopy = set;
+  identifiers = [(MPModelObject *)self identifiers];
+  v6 = [(MPModelObject *)self copyWithIdentifiers:identifiers propertySet:setCopy];
 
   return v6;
 }
 
-- (id)copyWithIdentifiers:(id)a3 block:(id)a4
+- (id)copyWithIdentifiers:(id)identifiers block:(id)block
 {
-  v6 = a4;
-  v7 = a3;
+  blockCopy = block;
+  identifiersCopy = identifiers;
   v8 = objc_alloc(objc_opt_class());
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __43__MPModelObject_copyWithIdentifiers_block___block_invoke;
   v12[3] = &unk_1E767A3E8;
   v12[4] = self;
-  v13 = v6;
-  v9 = v6;
-  v10 = [v8 initWithIdentifiers:v7 block:v12];
+  v13 = blockCopy;
+  v9 = blockCopy;
+  v10 = [v8 initWithIdentifiers:identifiersCopy block:v12];
 
   return v10;
 }
@@ -1096,19 +1096,19 @@ void __43__MPModelObject_copyWithIdentifiers_block___block_invoke(uint64_t a1, v
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifiers = self->_identifiers;
-  v5 = a3;
-  [v5 encodeObject:identifiers forKey:@"identifiers"];
-  v6 = [(MPModelObject *)self _sanitizedStorage];
-  [v5 encodeObject:v6 forKey:@"storage"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifiers forKey:@"identifiers"];
+  _sanitizedStorage = [(MPModelObject *)self _sanitizedStorage];
+  [coderCopy encodeObject:_sanitizedStorage forKey:@"storage"];
 }
 
-- (MPModelObject)initWithCoder:(id)a3
+- (MPModelObject)initWithCoder:(id)coder
 {
   v34 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  coderCopy = coder;
   v32.receiver = self;
   v32.super_class = MPModelObject;
   v6 = [(MPModelObject *)&v32 init];
@@ -1116,16 +1116,16 @@ void __43__MPModelObject_copyWithIdentifiers_block___block_invoke(uint64_t a1, v
   {
     v7 = objc_opt_class();
     v8 = objc_getAssociatedObject(v7, _MPModelObjectPropertyClassesKey);
-    v9 = [objc_opt_class() classesForSecureCoding];
-    if ([v9 containsObject:objc_opt_class()])
+    classesForSecureCoding = [objc_opt_class() classesForSecureCoding];
+    if ([classesForSecureCoding containsObject:objc_opt_class()])
     {
-      v26 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v26 handleFailureInMethod:a2 object:v6 file:@"MPModelObject.m" lineNumber:296 description:@"classesForSecureCoding cannot contain NSObject"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v6 file:@"MPModelObject.m" lineNumber:296 description:@"classesForSecureCoding cannot contain NSObject"];
     }
 
-    v10 = [MEMORY[0x1E695DFA8] setWithCapacity:{objc_msgSend(v8, "count") + objc_msgSend(v9, "count") + 4}];
-    v27 = v9;
-    [v10 addObjectsFromArray:v9];
+    v10 = [MEMORY[0x1E695DFA8] setWithCapacity:{objc_msgSend(v8, "count") + objc_msgSend(classesForSecureCoding, "count") + 4}];
+    v27 = classesForSecureCoding;
+    [v10 addObjectsFromArray:classesForSecureCoding];
     [v10 addObject:objc_opt_class()];
     [v10 addObject:objc_opt_class()];
     [v10 addObject:objc_opt_class()];
@@ -1167,15 +1167,15 @@ void __43__MPModelObject_copyWithIdentifiers_block___block_invoke(uint64_t a1, v
       while (v13);
     }
 
-    v17 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"identifiers"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifiers"];
     identifiers = v6->_identifiers;
     v6->_identifiers = v17;
 
-    v19 = [v5 decodeObjectOfClasses:v10 forKey:@"storage"];
+    v19 = [coderCopy decodeObjectOfClasses:v10 forKey:@"storage"];
     storage = v6->_storage;
     v6->_storage = v19;
 
-    v21 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"original"];
+    v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"original"];
     v22 = v21;
     if (v21)
     {
@@ -1191,26 +1191,26 @@ void __43__MPModelObject_copyWithIdentifiers_block___block_invoke(uint64_t a1, v
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  equalCopy = equal;
+  if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v5 = v4;
+    v5 = equalCopy;
     identifiers = self->_identifiers;
-    v7 = [v5 identifiers];
-    if (identifiers == v7 || [(MPIdentifierSet *)identifiers isEqual:v7])
+    identifiers = [v5 identifiers];
+    if (identifiers == identifiers || [(MPIdentifierSet *)identifiers isEqual:identifiers])
     {
-      v8 = [(MPModelObject *)self _sanitizedStorage];
-      v9 = [v5 _sanitizedStorage];
-      if (v8 == v9)
+      _sanitizedStorage = [(MPModelObject *)self _sanitizedStorage];
+      _sanitizedStorage2 = [v5 _sanitizedStorage];
+      if (_sanitizedStorage == _sanitizedStorage2)
       {
         v10 = 1;
       }
 
       else
       {
-        v10 = [v8 isEqual:v9];
+        v10 = [_sanitizedStorage isEqual:_sanitizedStorage2];
       }
     }
 
@@ -1228,33 +1228,33 @@ void __43__MPModelObject_copyWithIdentifiers_block___block_invoke(uint64_t a1, v
   return v10;
 }
 
-- (void)setValue:(id)a3 forUndefinedKey:(id)a4
+- (void)setValue:(id)value forUndefinedKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
-  if ([(MPModelObject *)self _isModelKey:v7])
+  valueCopy = value;
+  keyCopy = key;
+  if ([(MPModelObject *)self _isModelKey:keyCopy])
   {
-    [(MPModelObject *)self setValue:v6 forModelKey:v7];
+    [(MPModelObject *)self setValue:valueCopy forModelKey:keyCopy];
   }
 
   v8.receiver = self;
   v8.super_class = MPModelObject;
-  [(MPModelObject *)&v8 setValue:v6 forUndefinedKey:v7];
+  [(MPModelObject *)&v8 setValue:valueCopy forUndefinedKey:keyCopy];
 }
 
-- (id)valueForUndefinedKey:(id)a3
+- (id)valueForUndefinedKey:(id)key
 {
-  v4 = a3;
-  if ([(MPModelObject *)self _isModelKey:v4])
+  keyCopy = key;
+  if ([(MPModelObject *)self _isModelKey:keyCopy])
   {
-    v5 = [(MPModelObject *)self valueForModelKey:v4];
+    v5 = [(MPModelObject *)self valueForModelKey:keyCopy];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = MPModelObject;
-    v5 = [(MPModelObject *)&v8 valueForUndefinedKey:v4];
+    v5 = [(MPModelObject *)&v8 valueForUndefinedKey:keyCopy];
   }
 
   v6 = v5;
@@ -1273,7 +1273,7 @@ void __43__MPModelObject_copyWithIdentifiers_block___block_invoke(uint64_t a1, v
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(MPModelObject *)self identifiers];
+  identifiers = [(MPModelObject *)self identifiers];
   if ([(NSMutableDictionary *)self->_storage count])
   {
     storage = self->_storage;
@@ -1284,21 +1284,21 @@ void __43__MPModelObject_copyWithIdentifiers_block___block_invoke(uint64_t a1, v
     storage = @"{}";
   }
 
-  v7 = [v3 stringWithFormat:@"<%@: %p identifiers=%@ properties=%@>", v4, self, v5, storage];
+  storage = [v3 stringWithFormat:@"<%@: %p identifiers=%@ properties=%@>", v4, self, identifiers, storage];
 
-  return v7;
+  return storage;
 }
 
-- (MPModelObject)initWithIdentifiers:(id)a3 block:(id)a4
+- (MPModelObject)initWithIdentifiers:(id)identifiers block:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  identifiersCopy = identifiers;
+  blockCopy = block;
   v16.receiver = self;
   v16.super_class = MPModelObject;
   v8 = [(MPModelObject *)&v16 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [identifiersCopy copy];
     identifiers = v8->_identifiers;
     v8->_identifiers = v9;
 
@@ -1308,7 +1308,7 @@ void __43__MPModelObject_copyWithIdentifiers_block___block_invoke(uint64_t a1, v
     storage = v8->_storage;
     v8->_storage = v13;
 
-    v7[2](v7, v8);
+    blockCopy[2](blockCopy, v8);
     v8->_isFinalized = 1;
   }
 

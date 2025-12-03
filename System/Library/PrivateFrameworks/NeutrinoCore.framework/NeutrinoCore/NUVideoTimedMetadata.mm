@@ -1,8 +1,8 @@
 @interface NUVideoTimedMetadata
 - (CGVector)estimatedCenterMotion;
 - (CGVector)estimatedMotionBlur;
-- (__n128)setTrajectoryHomography:(__n128)a3;
-- (void)setTime:(id *)a3;
+- (__n128)setTrajectoryHomography:(__n128)homography;
+- (void)setTime:(id *)time;
 @end
 
 @implementation NUVideoTimedMetadata
@@ -27,18 +27,18 @@
   return result;
 }
 
-- (__n128)setTrajectoryHomography:(__n128)a3
+- (__n128)setTrajectoryHomography:(__n128)homography
 {
   result[5] = a2;
-  result[6] = a3;
+  result[6] = homography;
   result[7] = a4;
   return result;
 }
 
-- (void)setTime:(id *)a3
+- (void)setTime:(id *)time
 {
-  v3 = *&a3->var0;
-  self->_time.epoch = a3->var3;
+  v3 = *&time->var0;
+  self->_time.epoch = time->var3;
   *&self->_time.value = v3;
 }
 

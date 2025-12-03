@@ -1,33 +1,33 @@
 @interface MPMutablePropertySet
-- (MPMutablePropertySet)initWithProperties:(id)a3 relationships:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)addRelationship:(id)a3 properties:(id)a4;
+- (MPMutablePropertySet)initWithProperties:(id)properties relationships:(id)relationships;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)addRelationship:(id)relationship properties:(id)properties;
 @end
 
 @implementation MPMutablePropertySet
 
-- (void)addRelationship:(id)a3 properties:(id)a4
+- (void)addRelationship:(id)relationship properties:(id)properties
 {
   v6 = self->super._relationships;
-  v7 = a3;
-  v8 = [a4 copy];
-  [(NSDictionary *)v6 setObject:v8 forKeyedSubscript:v7];
+  relationshipCopy = relationship;
+  v8 = [properties copy];
+  [(NSDictionary *)v6 setObject:v8 forKeyedSubscript:relationshipCopy];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [MPPropertySet alloc];
-  v5 = [(NSSet *)self->super._properties allObjects];
-  v6 = [(MPPropertySet *)v4 initWithProperties:v5 relationships:self->super._relationships];
+  allObjects = [(NSSet *)self->super._properties allObjects];
+  v6 = [(MPPropertySet *)v4 initWithProperties:allObjects relationships:self->super._relationships];
 
   return v6;
 }
 
-- (MPMutablePropertySet)initWithProperties:(id)a3 relationships:(id)a4
+- (MPMutablePropertySet)initWithProperties:(id)properties relationships:(id)relationships
 {
   v11.receiver = self;
   v11.super_class = MPMutablePropertySet;
-  v4 = [(MPPropertySet *)&v11 initWithProperties:a3 relationships:a4];
+  v4 = [(MPPropertySet *)&v11 initWithProperties:properties relationships:relationships];
   v5 = v4;
   if (v4)
   {

@@ -1,53 +1,53 @@
 @interface CNAutocompleteInputStringTokenizer
-+ (id)lazyNameStringTokenizerWithLocale:(id)a3;
-+ (id)tokensFromString:(id)a3;
++ (id)lazyNameStringTokenizerWithLocale:(id)locale;
++ (id)tokensFromString:(id)string;
 - (CNAutocompleteInputStringTokenizer)init;
-- (CNAutocompleteInputStringTokenizer)initWithLocale:(id)a3;
+- (CNAutocompleteInputStringTokenizer)initWithLocale:(id)locale;
 - (id)expandCJKNames;
-- (id)tokensFromString:(id)a3;
+- (id)tokensFromString:(id)string;
 @end
 
 @implementation CNAutocompleteInputStringTokenizer
 
-+ (id)tokensFromString:(id)a3
++ (id)tokensFromString:(id)string
 {
-  v4 = a3;
-  v5 = objc_alloc_init(a1);
-  v6 = [v5 tokensFromString:v4];
+  stringCopy = string;
+  v5 = objc_alloc_init(self);
+  v6 = [v5 tokensFromString:stringCopy];
 
   return v6;
 }
 
 - (CNAutocompleteInputStringTokenizer)init
 {
-  v3 = [MEMORY[0x277CBEAF8] currentLocale];
-  v4 = [(CNAutocompleteInputStringTokenizer *)self initWithLocale:v3];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  v4 = [(CNAutocompleteInputStringTokenizer *)self initWithLocale:currentLocale];
 
   return v4;
 }
 
-- (CNAutocompleteInputStringTokenizer)initWithLocale:(id)a3
+- (CNAutocompleteInputStringTokenizer)initWithLocale:(id)locale
 {
   v7.receiver = self;
   v7.super_class = CNAutocompleteInputStringTokenizer;
-  v3 = a3;
+  localeCopy = locale;
   v4 = [(CNAutocompleteInputStringTokenizer *)&v7 init];
-  v5 = [objc_opt_class() lazyNameStringTokenizerWithLocale:{v3, v7.receiver, v7.super_class}];
+  v5 = [objc_opt_class() lazyNameStringTokenizerWithLocale:{localeCopy, v7.receiver, v7.super_class}];
 
   [(CNAutocompleteInputStringTokenizer *)v4 setNameStringTokenizer:v5];
   return v4;
 }
 
-+ (id)lazyNameStringTokenizerWithLocale:(id)a3
++ (id)lazyNameStringTokenizerWithLocale:(id)locale
 {
-  v3 = a3;
+  localeCopy = locale;
   v4 = MEMORY[0x277CFBE28];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __72__CNAutocompleteInputStringTokenizer_lazyNameStringTokenizerWithLocale___block_invoke;
   v8[3] = &unk_2781C4500;
-  v9 = v3;
-  v5 = v3;
+  v9 = localeCopy;
+  v5 = localeCopy;
   v6 = [v4 lazyFutureWithBlock:v8];
   [v6 addFailureBlock:&__block_literal_global_11];
 
@@ -61,13 +61,13 @@ id __72__CNAutocompleteInputStringTokenizer_lazyNameStringTokenizerWithLocale___
   return v1;
 }
 
-- (id)tokensFromString:(id)a3
+- (id)tokensFromString:(id)string
 {
-  v4 = [a3 componentsSeparatedByString:@" "];
+  v4 = [string componentsSeparatedByString:@" "];
   v5 = [v4 _cn_filter:&__block_literal_global_10];
 
-  v6 = [(CNAutocompleteInputStringTokenizer *)self expandCJKNames];
-  v7 = [v5 _cn_flatMap:v6];
+  expandCJKNames = [(CNAutocompleteInputStringTokenizer *)self expandCJKNames];
+  v7 = [v5 _cn_flatMap:expandCJKNames];
 
   return v7;
 }

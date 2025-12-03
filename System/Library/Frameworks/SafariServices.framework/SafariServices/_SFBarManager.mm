@@ -1,43 +1,43 @@
 @interface _SFBarManager
-- (BOOL)anyBarIsSourceForPopover:(id)a3;
-- (BOOL)barRegistration:(id)a3 canHandleLongPressForBarItem:(int64_t)a4;
-- (BOOL)isBarItemEnabled:(int64_t)a3;
-- (BOOL)isBarItemHidden:(int64_t)a3;
-- (BOOL)isBarItemSelected:(int64_t)a3;
-- (CGRect)frameForBarItem:(int64_t)a3 inCoordinateSpace:(id)a4;
+- (BOOL)anyBarIsSourceForPopover:(id)popover;
+- (BOOL)barRegistration:(id)registration canHandleLongPressForBarItem:(int64_t)item;
+- (BOOL)isBarItemEnabled:(int64_t)enabled;
+- (BOOL)isBarItemHidden:(int64_t)hidden;
+- (BOOL)isBarItemSelected:(int64_t)selected;
+- (CGRect)frameForBarItem:(int64_t)item inCoordinateSpace:(id)space;
 - (_SFBarManager)init;
 - (_SFBarManagerDelegate)delegate;
-- (id)menuForBarItem:(int64_t)a3;
-- (id)test_registrationForBar:(id)a3;
+- (id)menuForBarItem:(int64_t)item;
+- (id)test_registrationForBar:(id)bar;
 - (unint64_t)test_numberOfRegistrations;
 - (void)_invalidateCoalescedUpdatesTimer;
-- (void)_updateAllRegistrationsAnimated:(BOOL)a3;
-- (void)_updateRegistrationWithToken:(id)a3 animated:(BOOL)a4;
-- (void)barRegistration:(id)a3 didReceiveLongPressForBarItem:(int64_t)a4;
-- (void)barRegistration:(id)a3 didReceiveTapForBarItem:(int64_t)a4;
-- (void)barRegistration:(id)a3 didReceiveTouchDownForBarItem:(int64_t)a4;
-- (void)performCoalescedUpdatesAnimated:(BOOL)a3 updates:(id)a4;
-- (void)performCoalescedUpdatesNowAnimated:(BOOL)a3;
-- (void)performWithRegistrationContainingItem:(int64_t)a3 block:(id)a4;
+- (void)_updateAllRegistrationsAnimated:(BOOL)animated;
+- (void)_updateRegistrationWithToken:(id)token animated:(BOOL)animated;
+- (void)barRegistration:(id)registration didReceiveLongPressForBarItem:(int64_t)item;
+- (void)barRegistration:(id)registration didReceiveTapForBarItem:(int64_t)item;
+- (void)barRegistration:(id)registration didReceiveTouchDownForBarItem:(int64_t)item;
+- (void)performCoalescedUpdatesAnimated:(BOOL)animated updates:(id)updates;
+- (void)performCoalescedUpdatesNowAnimated:(BOOL)animated;
+- (void)performWithRegistrationContainingItem:(int64_t)item block:(id)block;
 - (void)pulseDownloadsItem;
-- (void)registerBar:(id)a3 withLayout:(int64_t)a4 persona:(int64_t)a5;
-- (void)registerBar:(id)a3 withToken:(id)a4;
-- (void)registerToolbar:(id)a3 withLayout:(int64_t)a4 persona:(int64_t)a5;
-- (void)registerUnifiedBar:(id)a3 withPersona:(int64_t)a4;
-- (void)setAllBarItemsAreDisabled:(BOOL)a3;
-- (void)setBarItem:(int64_t)a3 attributedTitle:(id)a4;
-- (void)setBarItem:(int64_t)a3 enabled:(BOOL)a4;
-- (void)setBarItem:(int64_t)a3 hidden:(BOOL)a4;
-- (void)setBarItem:(int64_t)a3 menu:(id)a4;
-- (void)setBarItem:(int64_t)a3 selected:(BOOL)a4;
-- (void)setBarItem:(int64_t)a3 title:(id)a4;
-- (void)setCollaborationButton:(id)a3;
-- (void)setContentMode:(int64_t)a3;
-- (void)setCustomActivityImage:(id)a3 accessibilityLabel:(id)a4;
+- (void)registerBar:(id)bar withLayout:(int64_t)layout persona:(int64_t)persona;
+- (void)registerBar:(id)bar withToken:(id)token;
+- (void)registerToolbar:(id)toolbar withLayout:(int64_t)layout persona:(int64_t)persona;
+- (void)registerUnifiedBar:(id)bar withPersona:(int64_t)persona;
+- (void)setAllBarItemsAreDisabled:(BOOL)disabled;
+- (void)setBarItem:(int64_t)item attributedTitle:(id)title;
+- (void)setBarItem:(int64_t)item enabled:(BOOL)enabled;
+- (void)setBarItem:(int64_t)item hidden:(BOOL)hidden;
+- (void)setBarItem:(int64_t)item menu:(id)menu;
+- (void)setBarItem:(int64_t)item selected:(BOOL)selected;
+- (void)setBarItem:(int64_t)item title:(id)title;
+- (void)setCollaborationButton:(id)button;
+- (void)setContentMode:(int64_t)mode;
+- (void)setCustomActivityImage:(id)image accessibilityLabel:(id)label;
 - (void)setDownloadsItemNeedsLayout;
-- (void)setDownloadsItemProgress:(double)a3;
-- (void)setImage:(id)a3 forBarItem:(int64_t)a4;
-- (void)setState:(int64_t)a3;
+- (void)setDownloadsItemProgress:(double)progress;
+- (void)setImage:(id)image forBarItem:(int64_t)item;
+- (void)setState:(int64_t)state;
 - (void)visibleBarItemsNeedUpdate;
 @end
 
@@ -50,9 +50,9 @@
   v2 = [(_SFBarManager *)&v14 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
     barToRegistrationMap = v2->_barToRegistrationMap;
-    v2->_barToRegistrationMap = v3;
+    v2->_barToRegistrationMap = weakToStrongObjectsMapTable;
 
     v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:17];
     v6 = v5;
@@ -99,8 +99,8 @@
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(NSMapTable *)self->_barToRegistrationMap objectEnumerator];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  objectEnumerator = [(NSMapTable *)self->_barToRegistrationMap objectEnumerator];
+  v3 = [objectEnumerator countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = v3;
@@ -112,46 +112,46 @@
       {
         if (*v8 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         [*(*(&v7 + 1) + 8 * v6++) updateBarAnimated:0];
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v4 = [objectEnumerator countByEnumeratingWithState:&v7 objects:v11 count:16];
     }
 
     while (v4);
   }
 }
 
-- (void)setContentMode:(int64_t)a3
+- (void)setContentMode:(int64_t)mode
 {
-  if (self->_contentMode != a3)
+  if (self->_contentMode != mode)
   {
-    self->_contentMode = a3;
+    self->_contentMode = mode;
     [(_SFBarManager *)self _updateAllRegistrations];
   }
 }
 
-- (void)setState:(int64_t)a3
+- (void)setState:(int64_t)state
 {
-  if (self->_state != a3)
+  if (self->_state != state)
   {
-    self->_state = a3;
+    self->_state = state;
     [(_SFBarManager *)self _updateAllRegistrations];
   }
 }
 
-- (void)setCustomActivityImage:(id)a3 accessibilityLabel:(id)a4
+- (void)setCustomActivityImage:(id)image accessibilityLabel:(id)label
 {
-  v10 = a3;
-  v7 = a4;
-  if (self->_customActivityImage != v10 || (WBSIsEqual() & 1) == 0)
+  imageCopy = image;
+  labelCopy = label;
+  if (self->_customActivityImage != imageCopy || (WBSIsEqual() & 1) == 0)
   {
-    objc_storeStrong(&self->_customActivityImage, a3);
-    v8 = [v7 copy];
+    objc_storeStrong(&self->_customActivityImage, image);
+    v8 = [labelCopy copy];
     customActivityAccessibilityLabel = self->_customActivityAccessibilityLabel;
     self->_customActivityAccessibilityLabel = v8;
 
@@ -159,166 +159,166 @@
   }
 }
 
-- (BOOL)isBarItemEnabled:(int64_t)a3
+- (BOOL)isBarItemEnabled:(int64_t)enabled
 {
   if (self->_allBarItemsAreDisabled)
   {
     return 0;
   }
 
-  v4 = [(NSArray *)self->_itemConfigurationMap objectAtIndexedSubscript:a3];
-  v5 = [v4 isEnabled];
+  v4 = [(NSArray *)self->_itemConfigurationMap objectAtIndexedSubscript:enabled];
+  isEnabled = [v4 isEnabled];
 
-  return v5;
+  return isEnabled;
 }
 
-- (void)setBarItem:(int64_t)a3 enabled:(BOOL)a4
+- (void)setBarItem:(int64_t)item enabled:(BOOL)enabled
 {
-  v4 = a4;
+  enabledCopy = enabled;
   v7 = [(NSArray *)self->_itemConfigurationMap objectAtIndexedSubscript:?];
-  v8 = [v7 isEnabled];
+  isEnabled = [v7 isEnabled];
 
-  if (v8 != v4)
+  if (isEnabled != enabledCopy)
   {
-    v9 = [(NSArray *)self->_itemConfigurationMap objectAtIndexedSubscript:a3];
-    [v9 setEnabled:v4];
+    v9 = [(NSArray *)self->_itemConfigurationMap objectAtIndexedSubscript:item];
+    [v9 setEnabled:enabledCopy];
 
     [(_SFBarManager *)self _updateAllRegistrations];
   }
 }
 
-- (BOOL)isBarItemHidden:(int64_t)a3
+- (BOOL)isBarItemHidden:(int64_t)hidden
 {
-  v3 = [(NSArray *)self->_itemConfigurationMap objectAtIndexedSubscript:a3];
-  v4 = [v3 isHidden];
+  v3 = [(NSArray *)self->_itemConfigurationMap objectAtIndexedSubscript:hidden];
+  isHidden = [v3 isHidden];
 
-  return v4;
+  return isHidden;
 }
 
-- (void)setBarItem:(int64_t)a3 hidden:(BOOL)a4
+- (void)setBarItem:(int64_t)item hidden:(BOOL)hidden
 {
-  v4 = a4;
+  hiddenCopy = hidden;
   v7 = [(NSArray *)self->_itemConfigurationMap objectAtIndexedSubscript:?];
-  v8 = [v7 isHidden];
+  isHidden = [v7 isHidden];
 
-  if (v8 != v4)
+  if (isHidden != hiddenCopy)
   {
-    v9 = [(NSArray *)self->_itemConfigurationMap objectAtIndexedSubscript:a3];
-    [v9 setHidden:v4];
+    v9 = [(NSArray *)self->_itemConfigurationMap objectAtIndexedSubscript:item];
+    [v9 setHidden:hiddenCopy];
 
     [(_SFBarManager *)self _updateAllRegistrations];
   }
 }
 
-- (BOOL)isBarItemSelected:(int64_t)a3
+- (BOOL)isBarItemSelected:(int64_t)selected
 {
-  v3 = [(NSArray *)self->_itemConfigurationMap objectAtIndexedSubscript:a3];
-  v4 = [v3 isSelected];
+  v3 = [(NSArray *)self->_itemConfigurationMap objectAtIndexedSubscript:selected];
+  isSelected = [v3 isSelected];
 
-  return v4;
+  return isSelected;
 }
 
-- (void)setBarItem:(int64_t)a3 selected:(BOOL)a4
+- (void)setBarItem:(int64_t)item selected:(BOOL)selected
 {
-  v4 = a4;
+  selectedCopy = selected;
   v7 = [(NSArray *)self->_itemConfigurationMap objectAtIndexedSubscript:?];
-  v8 = [v7 isSelected];
+  isSelected = [v7 isSelected];
 
-  if (v8 != v4)
+  if (isSelected != selectedCopy)
   {
-    v9 = [(NSArray *)self->_itemConfigurationMap objectAtIndexedSubscript:a3];
-    [v9 setSelected:v4];
+    v9 = [(NSArray *)self->_itemConfigurationMap objectAtIndexedSubscript:item];
+    [v9 setSelected:selectedCopy];
 
     [(_SFBarManager *)self _updateAllRegistrations];
   }
 }
 
-- (void)setBarItem:(int64_t)a3 menu:(id)a4
+- (void)setBarItem:(int64_t)item menu:(id)menu
 {
-  v10 = a4;
-  v6 = [(NSArray *)self->_itemConfigurationMap objectAtIndexedSubscript:a3];
-  v7 = [v6 menu];
+  menuCopy = menu;
+  v6 = [(NSArray *)self->_itemConfigurationMap objectAtIndexedSubscript:item];
+  menu = [v6 menu];
   v8 = WBSIsEqual();
 
   if ((v8 & 1) == 0)
   {
-    v9 = [(NSArray *)self->_itemConfigurationMap objectAtIndexedSubscript:a3];
-    [v9 setMenu:v10];
+    v9 = [(NSArray *)self->_itemConfigurationMap objectAtIndexedSubscript:item];
+    [v9 setMenu:menuCopy];
 
     [(_SFBarManager *)self _updateAllRegistrations];
   }
 }
 
-- (void)setBarItem:(int64_t)a3 title:(id)a4
+- (void)setBarItem:(int64_t)item title:(id)title
 {
-  v11 = a4;
-  if (v11)
+  titleCopy = title;
+  if (titleCopy)
   {
-    v6 = [(NSArray *)self->_itemConfigurationMap objectAtIndexedSubscript:a3];
-    v7 = [v6 title];
-    v8 = [v7 isEqualToString:v11];
+    v6 = [(NSArray *)self->_itemConfigurationMap objectAtIndexedSubscript:item];
+    title = [v6 title];
+    v8 = [title isEqualToString:titleCopy];
 
     if ((v8 & 1) == 0)
     {
-      v9 = [(NSArray *)self->_itemConfigurationMap objectAtIndexedSubscript:a3];
+      v9 = [(NSArray *)self->_itemConfigurationMap objectAtIndexedSubscript:item];
       [v9 setAttributedTitle:0];
 
-      v10 = [(NSArray *)self->_itemConfigurationMap objectAtIndexedSubscript:a3];
-      [v10 setTitle:v11];
+      v10 = [(NSArray *)self->_itemConfigurationMap objectAtIndexedSubscript:item];
+      [v10 setTitle:titleCopy];
 
       [(_SFBarManager *)self _updateAllRegistrations];
     }
   }
 }
 
-- (void)setBarItem:(int64_t)a3 attributedTitle:(id)a4
+- (void)setBarItem:(int64_t)item attributedTitle:(id)title
 {
-  v11 = a4;
-  if (v11)
+  titleCopy = title;
+  if (titleCopy)
   {
-    v6 = [(NSArray *)self->_itemConfigurationMap objectAtIndexedSubscript:a3];
-    v7 = [v6 attributedTitle];
-    v8 = [v7 safari_isEqualToAttributedString:v11];
+    v6 = [(NSArray *)self->_itemConfigurationMap objectAtIndexedSubscript:item];
+    attributedTitle = [v6 attributedTitle];
+    v8 = [attributedTitle safari_isEqualToAttributedString:titleCopy];
 
     if ((v8 & 1) == 0)
     {
-      v9 = [(NSArray *)self->_itemConfigurationMap objectAtIndexedSubscript:a3];
+      v9 = [(NSArray *)self->_itemConfigurationMap objectAtIndexedSubscript:item];
       [v9 setTitle:0];
 
-      v10 = [(NSArray *)self->_itemConfigurationMap objectAtIndexedSubscript:a3];
-      [v10 setAttributedTitle:v11];
+      v10 = [(NSArray *)self->_itemConfigurationMap objectAtIndexedSubscript:item];
+      [v10 setAttributedTitle:titleCopy];
 
       [(_SFBarManager *)self _updateAllRegistrations];
     }
   }
 }
 
-- (void)setImage:(id)a3 forBarItem:(int64_t)a4
+- (void)setImage:(id)image forBarItem:(int64_t)item
 {
-  v10 = a3;
-  v6 = [(NSArray *)self->_itemConfigurationMap objectAtIndexedSubscript:a4];
-  v7 = [v6 image];
+  imageCopy = image;
+  v6 = [(NSArray *)self->_itemConfigurationMap objectAtIndexedSubscript:item];
+  image = [v6 image];
   v8 = WBSIsEqual();
 
   if ((v8 & 1) == 0)
   {
-    v9 = [(NSArray *)self->_itemConfigurationMap objectAtIndexedSubscript:a4];
-    [v9 setImage:v10];
+    v9 = [(NSArray *)self->_itemConfigurationMap objectAtIndexedSubscript:item];
+    [v9 setImage:imageCopy];
 
     [(_SFBarManager *)self _updateAllRegistrations];
   }
 }
 
-- (void)setDownloadsItemProgress:(double)a3
+- (void)setDownloadsItemProgress:(double)progress
 {
   v15 = *MEMORY[0x1E69E9840];
-  self->_downloadsItemProgress = a3;
+  self->_downloadsItemProgress = progress;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [(NSMapTable *)self->_barToRegistrationMap objectEnumerator];
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  objectEnumerator = [(NSMapTable *)self->_barToRegistrationMap objectEnumerator];
+  v5 = [objectEnumerator countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -330,43 +330,43 @@
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v9 = *(*(&v10 + 1) + 8 * v8);
         if (objc_opt_respondsToSelector())
         {
-          [v9 setProgress:11 forBarItem:a3];
+          [v9 setProgress:11 forBarItem:progress];
         }
 
         ++v8;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [objectEnumerator countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)setCollaborationButton:(id)a3
+- (void)setCollaborationButton:(id)button
 {
-  v5 = a3;
-  if (self->_collaborationButton != v5)
+  buttonCopy = button;
+  if (self->_collaborationButton != buttonCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_collaborationButton, a3);
+    v6 = buttonCopy;
+    objc_storeStrong(&self->_collaborationButton, button);
     [(_SFBarManager *)self _updateAllRegistrations];
-    v5 = v6;
+    buttonCopy = v6;
   }
 }
 
-- (void)setAllBarItemsAreDisabled:(BOOL)a3
+- (void)setAllBarItemsAreDisabled:(BOOL)disabled
 {
-  if (self->_allBarItemsAreDisabled != a3)
+  if (self->_allBarItemsAreDisabled != disabled)
   {
-    self->_allBarItemsAreDisabled = a3;
+    self->_allBarItemsAreDisabled = disabled;
     [(_SFBarManager *)self _updateAllRegistrations];
   }
 }
@@ -378,8 +378,8 @@
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(NSMapTable *)self->_barToRegistrationMap objectEnumerator];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  objectEnumerator = [(NSMapTable *)self->_barToRegistrationMap objectEnumerator];
+  v3 = [objectEnumerator countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = v3;
@@ -391,7 +391,7 @@
       {
         if (*v9 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v7 = *(*(&v8 + 1) + 8 * v6);
@@ -404,7 +404,7 @@
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v4 = [objectEnumerator countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v4);
@@ -418,8 +418,8 @@
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v2 = [(NSMapTable *)self->_barToRegistrationMap objectEnumerator];
-  v3 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  objectEnumerator = [(NSMapTable *)self->_barToRegistrationMap objectEnumerator];
+  v3 = [objectEnumerator countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v3)
   {
     v4 = v3;
@@ -431,15 +431,15 @@
       {
         if (*v11 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v7 = *(*(&v10 + 1) + 8 * v6);
         if (objc_opt_respondsToSelector())
         {
           v8 = [v7 UIBarButtonItemForItem:11];
-          v9 = [v8 customView];
-          [v9 setNeedsLayout];
+          customView = [v8 customView];
+          [customView setNeedsLayout];
         }
 
         else
@@ -458,22 +458,22 @@ LABEL_11:
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v4 = [objectEnumerator countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v4);
   }
 }
 
-- (void)performCoalescedUpdatesAnimated:(BOOL)a3 updates:(id)a4
+- (void)performCoalescedUpdatesAnimated:(BOOL)animated updates:(id)updates
 {
-  v6 = a4;
+  updatesCopy = updates;
   if (CFAbsoluteTimeGetCurrent() - self->_lastCoalescedUpdatesTime < 0.2)
   {
     [(_SFBarManager *)self _invalidateCoalescedUpdatesTimer];
   }
 
-  v7 = _Block_copy(v6);
+  v7 = _Block_copy(updatesCopy);
   coalescedUpdatesBlock = self->_coalescedUpdatesBlock;
   self->_coalescedUpdatesBlock = v7;
 
@@ -484,19 +484,19 @@ LABEL_11:
     v12[2] = __57___SFBarManager_performCoalescedUpdatesAnimated_updates___block_invoke;
     v12[3] = &unk_1E84966C8;
     v12[4] = self;
-    v13 = a3;
+    animatedCopy = animated;
     v9 = [MEMORY[0x1E695DFF0] timerWithTimeInterval:0 repeats:v12 block:0.04];
     coalescedUpdatesTimer = self->_coalescedUpdatesTimer;
     self->_coalescedUpdatesTimer = v9;
 
-    v11 = [MEMORY[0x1E695DFD0] mainRunLoop];
-    [v11 addTimer:self->_coalescedUpdatesTimer forMode:*MEMORY[0x1E695DA28]];
+    mainRunLoop = [MEMORY[0x1E695DFD0] mainRunLoop];
+    [mainRunLoop addTimer:self->_coalescedUpdatesTimer forMode:*MEMORY[0x1E695DA28]];
   }
 }
 
-- (void)performCoalescedUpdatesNowAnimated:(BOOL)a3
+- (void)performCoalescedUpdatesNowAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v8 = _Block_copy(self->_coalescedUpdatesBlock);
   [(_SFBarManager *)self _invalidateCoalescedUpdatesTimer];
   Current = CFAbsoluteTimeGetCurrent();
@@ -512,7 +512,7 @@ LABEL_11:
     if (self->_needsUpdateAllRegistrations)
     {
       self->_needsUpdateAllRegistrations = 0;
-      [(_SFBarManager *)self _updateAllRegistrationsAnimated:v3];
+      [(_SFBarManager *)self _updateAllRegistrationsAnimated:animatedCopy];
       v6 = v8;
     }
   }
@@ -528,49 +528,49 @@ LABEL_11:
   self->_coalescedUpdatesBlock = 0;
 }
 
-- (void)registerToolbar:(id)a3 withLayout:(int64_t)a4 persona:(int64_t)a5
+- (void)registerToolbar:(id)toolbar withLayout:(int64_t)layout persona:(int64_t)persona
 {
-  v8 = a3;
-  v9 = [[SFBarRegistration alloc] initWithBar:v8 barManager:self layout:a4 persona:a5];
-  [(_SFBarManager *)self registerBar:v8 withToken:v9];
+  toolbarCopy = toolbar;
+  v9 = [[SFBarRegistration alloc] initWithBar:toolbarCopy barManager:self layout:layout persona:persona];
+  [(_SFBarManager *)self registerBar:toolbarCopy withToken:v9];
 }
 
-- (void)registerBar:(id)a3 withLayout:(int64_t)a4 persona:(int64_t)a5
+- (void)registerBar:(id)bar withLayout:(int64_t)layout persona:(int64_t)persona
 {
-  v8 = a3;
-  v9 = [[SFBarRegistration alloc] initWithBar:v8 barManager:self layout:a4 persona:a5];
-  [(_SFBarManager *)self registerBar:v8 withToken:v9];
+  barCopy = bar;
+  v9 = [[SFBarRegistration alloc] initWithBar:barCopy barManager:self layout:layout persona:persona];
+  [(_SFBarManager *)self registerBar:barCopy withToken:v9];
 }
 
-- (void)registerBar:(id)a3 withToken:(id)a4
+- (void)registerBar:(id)bar withToken:(id)token
 {
-  v8 = a3;
-  v6 = a4;
-  [(_SFBarManager *)self _updateRegistrationWithToken:v6 animated:0];
-  [(NSMapTable *)self->_barToRegistrationMap setObject:v6 forKey:v8];
+  barCopy = bar;
+  tokenCopy = token;
+  [(_SFBarManager *)self _updateRegistrationWithToken:tokenCopy animated:0];
+  [(NSMapTable *)self->_barToRegistrationMap setObject:tokenCopy forKey:barCopy];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained barManager:self willRegisterBarWithToken:v6];
+    [WeakRetained barManager:self willRegisterBarWithToken:tokenCopy];
   }
 
   if (objc_opt_respondsToSelector())
   {
-    [v8 didCompleteBarRegistrationWithToken:v6];
+    [barCopy didCompleteBarRegistrationWithToken:tokenCopy];
   }
 }
 
-- (void)registerUnifiedBar:(id)a3 withPersona:(int64_t)a4
+- (void)registerUnifiedBar:(id)bar withPersona:(int64_t)persona
 {
-  v6 = a3;
-  v7 = [[SFUnifiedBarRegistration alloc] initWithBar:v6 barManager:self persona:a4];
-  [(_SFBarManager *)self registerBar:v6 withToken:v7];
+  barCopy = bar;
+  v7 = [[SFUnifiedBarRegistration alloc] initWithBar:barCopy barManager:self persona:persona];
+  [(_SFBarManager *)self registerBar:barCopy withToken:v7];
 }
 
-- (void)performWithRegistrationContainingItem:(int64_t)a3 block:(id)a4
+- (void)performWithRegistrationContainingItem:(int64_t)item block:(id)block
 {
   v22 = *MEMORY[0x1E69E9840];
-  v16 = a4;
+  blockCopy = block;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -591,14 +591,14 @@ LABEL_11:
         }
 
         v11 = *(*(&v17 + 1) + 8 * i);
-        v12 = [v11 window];
+        window = [v11 window];
 
-        if (v12)
+        if (window)
         {
           v13 = [(NSMapTable *)self->_barToRegistrationMap objectForKey:v11];
-          if ([v13 containsBarItem:a3])
+          if ([v13 containsBarItem:item])
           {
-            v16[2](v16, a3, v13, v11);
+            blockCopy[2](blockCopy, item, v13, v11);
 LABEL_18:
 
             goto LABEL_19;
@@ -606,11 +606,11 @@ LABEL_18:
 
           if (objc_opt_respondsToSelector())
           {
-            v14 = [v11 barItemTargetForAnimatingToBarItem:a3];
+            v14 = [v11 barItemTargetForAnimatingToBarItem:item];
             v15 = v14;
             if (v14 && ([v13 containsBarItem:{objc_msgSend(v14, "integerValue")}] & 1) != 0)
             {
-              v16[2](v16, [v15 integerValue], v13, v11);
+              blockCopy[2](blockCopy, [v15 integerValue], v13, v11);
 
               goto LABEL_18;
             }
@@ -631,10 +631,10 @@ LABEL_18:
 LABEL_19:
 }
 
-- (CGRect)frameForBarItem:(int64_t)a3 inCoordinateSpace:(id)a4
+- (CGRect)frameForBarItem:(int64_t)item inCoordinateSpace:(id)space
 {
   v46 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  spaceCopy = space;
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
@@ -651,7 +651,7 @@ LABEL_19:
   }
 
   v12 = v7;
-  v39 = v6;
+  v39 = spaceCopy;
   v13 = *v42;
   while (2)
   {
@@ -666,7 +666,7 @@ LABEL_19:
       v16 = [(NSMapTable *)self->_barToRegistrationMap objectForKey:v15, v39];
       if (objc_opt_respondsToSelector())
       {
-        v17 = [v16 UIBarButtonItemForItem:a3];
+        v17 = [v16 UIBarButtonItemForItem:item];
         if (v17)
         {
           objc_opt_class();
@@ -684,7 +684,7 @@ LABEL_19:
             v50.size.height = v11;
             if (!CGRectEqualToRect(v47, v50))
             {
-              v6 = v39;
+              spaceCopy = v39;
               [v18 convertRect:v39 toCoordinateSpace:{x, y, width, height}];
               v8 = v31;
               v9 = v32;
@@ -704,7 +704,7 @@ LABEL_19:
           goto LABEL_14;
         }
 
-        v17 = [v16 viewForBarItem:a3];
+        v17 = [v16 viewForBarItem:item];
         [v17 bounds];
         v23 = v48.origin.x;
         v24 = v48.origin.y;
@@ -716,7 +716,7 @@ LABEL_19:
         v51.size.height = v11;
         if (!CGRectEqualToRect(v48, v51))
         {
-          v6 = v39;
+          spaceCopy = v39;
           [v17 convertRect:v39 toCoordinateSpace:{v23, v24, v25, v26}];
           v8 = v27;
           v9 = v28;
@@ -740,7 +740,7 @@ LABEL_14:
     break;
   }
 
-  v6 = v39;
+  spaceCopy = v39;
 LABEL_20:
 
   v35 = v8;
@@ -754,18 +754,18 @@ LABEL_20:
   return result;
 }
 
-- (BOOL)anyBarIsSourceForPopover:(id)a3
+- (BOOL)anyBarIsSourceForPopover:(id)popover
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = [a3 sourceView];
-  if (v4)
+  sourceView = [popover sourceView];
+  if (sourceView)
   {
     v12 = 0u;
     v13 = 0u;
     v10 = 0u;
     v11 = 0u;
-    v5 = [(NSMapTable *)self->_barToRegistrationMap keyEnumerator];
-    v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+    keyEnumerator = [(NSMapTable *)self->_barToRegistrationMap keyEnumerator];
+    v6 = [keyEnumerator countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v6)
     {
       v7 = *v11;
@@ -775,17 +775,17 @@ LABEL_20:
         {
           if (*v11 != v7)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(keyEnumerator);
           }
 
-          if ([v4 isDescendantOfView:*(*(&v10 + 1) + 8 * i)])
+          if ([sourceView isDescendantOfView:*(*(&v10 + 1) + 8 * i)])
           {
             LOBYTE(v6) = 1;
             goto LABEL_12;
           }
         }
 
-        v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+        v6 = [keyEnumerator countByEnumeratingWithState:&v10 objects:v14 count:16];
         if (v6)
         {
           continue;
@@ -806,7 +806,7 @@ LABEL_12:
   return v6;
 }
 
-- (void)_updateAllRegistrationsAnimated:(BOOL)a3
+- (void)_updateAllRegistrationsAnimated:(BOOL)animated
 {
   v15 = *MEMORY[0x1E69E9840];
   if (self->_deferUpdateAllRegistrations)
@@ -816,13 +816,13 @@ LABEL_12:
 
   else
   {
-    v4 = a3;
+    animatedCopy = animated;
     v12 = 0u;
     v13 = 0u;
     v10 = 0u;
     v11 = 0u;
-    v5 = [(NSMapTable *)self->_barToRegistrationMap objectEnumerator];
-    v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+    objectEnumerator = [(NSMapTable *)self->_barToRegistrationMap objectEnumerator];
+    v6 = [objectEnumerator countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v6)
     {
       v7 = v6;
@@ -834,14 +834,14 @@ LABEL_12:
         {
           if (*v11 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(objectEnumerator);
           }
 
-          [(_SFBarManager *)self _updateRegistrationWithToken:*(*(&v10 + 1) + 8 * v9++) animated:v4];
+          [(_SFBarManager *)self _updateRegistrationWithToken:*(*(&v10 + 1) + 8 * v9++) animated:animatedCopy];
         }
 
         while (v7 != v9);
-        v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+        v7 = [objectEnumerator countByEnumeratingWithState:&v10 objects:v14 count:16];
       }
 
       while (v7);
@@ -849,57 +849,57 @@ LABEL_12:
   }
 }
 
-- (void)_updateRegistrationWithToken:(id)a3 animated:(BOOL)a4
+- (void)_updateRegistrationWithToken:(id)token animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
+  animatedCopy = animated;
+  tokenCopy = token;
   if (objc_opt_respondsToSelector())
   {
-    [v6 setContentMode:self->_contentMode];
+    [tokenCopy setContentMode:self->_contentMode];
   }
 
   if (objc_opt_respondsToSelector())
   {
-    [v6 setState:self->_state];
+    [tokenCopy setState:self->_state];
   }
 
   if (objc_opt_respondsToSelector())
   {
-    [v6 setCustomActivityImage:self->_customActivityImage accessibilityLabel:self->_customActivityAccessibilityLabel];
+    [tokenCopy setCustomActivityImage:self->_customActivityImage accessibilityLabel:self->_customActivityAccessibilityLabel];
   }
 
   if (objc_opt_respondsToSelector())
   {
-    [v6 setCollaborationButton:self->_collaborationButton];
+    [tokenCopy setCollaborationButton:self->_collaborationButton];
   }
 
   v8 = MEMORY[0x1E69E9820];
-  v9 = self;
-  v7 = v6;
+  selfCopy = self;
+  v7 = tokenCopy;
   _SFBarItemEnumerateCases();
-  [v7 updateBarAnimated:{v4, v8, 3221225472, __55___SFBarManager__updateRegistrationWithToken_animated___block_invoke, &unk_1E8493220, v9}];
+  [v7 updateBarAnimated:{animatedCopy, v8, 3221225472, __55___SFBarManager__updateRegistrationWithToken_animated___block_invoke, &unk_1E8493220, selfCopy}];
 }
 
-- (id)menuForBarItem:(int64_t)a3
+- (id)menuForBarItem:(int64_t)item
 {
-  v3 = [(NSArray *)self->_itemConfigurationMap objectAtIndexedSubscript:a3];
-  v4 = [v3 menu];
+  v3 = [(NSArray *)self->_itemConfigurationMap objectAtIndexedSubscript:item];
+  menu = [v3 menu];
 
-  return v4;
+  return menu;
 }
 
 - (unint64_t)test_numberOfRegistrations
 {
-  v2 = [(NSMapTable *)self->_barToRegistrationMap objectEnumerator];
-  v3 = [v2 allObjects];
-  v4 = [v3 count];
+  objectEnumerator = [(NSMapTable *)self->_barToRegistrationMap objectEnumerator];
+  allObjects = [objectEnumerator allObjects];
+  v4 = [allObjects count];
 
   return v4;
 }
 
-- (id)test_registrationForBar:(id)a3
+- (id)test_registrationForBar:(id)bar
 {
-  v3 = [(NSMapTable *)self->_barToRegistrationMap objectForKey:a3];
+  v3 = [(NSMapTable *)self->_barToRegistrationMap objectForKey:bar];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -916,21 +916,21 @@ LABEL_12:
   return v4;
 }
 
-- (void)barRegistration:(id)a3 didReceiveTapForBarItem:(int64_t)a4
+- (void)barRegistration:(id)registration didReceiveTapForBarItem:(int64_t)item
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained barManager:self didReceiveTapForBarItem:a4];
+    [WeakRetained barManager:self didReceiveTapForBarItem:item];
   }
 }
 
-- (BOOL)barRegistration:(id)a3 canHandleLongPressForBarItem:(int64_t)a4
+- (BOOL)barRegistration:(id)registration canHandleLongPressForBarItem:(int64_t)item
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    v7 = [WeakRetained barManager:self canHandleLongPressForBarItem:a4];
+    v7 = [WeakRetained barManager:self canHandleLongPressForBarItem:item];
   }
 
   else
@@ -943,21 +943,21 @@ LABEL_12:
   return v8 & 1;
 }
 
-- (void)barRegistration:(id)a3 didReceiveLongPressForBarItem:(int64_t)a4
+- (void)barRegistration:(id)registration didReceiveLongPressForBarItem:(int64_t)item
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained barManager:self didReceiveLongPressForBarItem:a4];
+    [WeakRetained barManager:self didReceiveLongPressForBarItem:item];
   }
 }
 
-- (void)barRegistration:(id)a3 didReceiveTouchDownForBarItem:(int64_t)a4
+- (void)barRegistration:(id)registration didReceiveTouchDownForBarItem:(int64_t)item
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained barManager:self didReceiveTouchDownForBarItem:a4];
+    [WeakRetained barManager:self didReceiveTouchDownForBarItem:item];
   }
 }
 

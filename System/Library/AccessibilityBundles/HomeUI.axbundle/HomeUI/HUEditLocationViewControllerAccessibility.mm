@@ -1,31 +1,31 @@
 @interface HUEditLocationViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (void)setupCell:(id)a3 forItem:(id)a4 indexPath:(id)a5;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (void)setupCell:(id)cell forItem:(id)item indexPath:(id)path;
 @end
 
 @implementation HUEditLocationViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"HUEditLocationViewController" hasInstanceMethod:@"setupCell:forItem:indexPath:" withFullSignature:{"v", "@", "@", "@", 0}];
-  [v3 validateClass:@"HUEditLocationViewController" hasInstanceMethod:@"homeItemManager" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HUEditLocationItemManager" hasInstanceMethod:@"inviteUsersItem" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"HUEditLocationViewController" hasInstanceMethod:@"setupCell:forItem:indexPath:" withFullSignature:{"v", "@", "@", "@", 0}];
+  [validationsCopy validateClass:@"HUEditLocationViewController" hasInstanceMethod:@"homeItemManager" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HUEditLocationItemManager" hasInstanceMethod:@"inviteUsersItem" withFullSignature:{"@", 0}];
 }
 
-- (void)setupCell:(id)a3 forItem:(id)a4 indexPath:(id)a5
+- (void)setupCell:(id)cell forItem:(id)item indexPath:(id)path
 {
-  v8 = a3;
+  cellCopy = cell;
   v11.receiver = self;
   v11.super_class = HUEditLocationViewControllerAccessibility;
-  v9 = a4;
-  [(HUEditLocationViewControllerAccessibility *)&v11 setupCell:v8 forItem:v9 indexPath:a5];
+  itemCopy = item;
+  [(HUEditLocationViewControllerAccessibility *)&v11 setupCell:cellCopy forItem:itemCopy indexPath:path];
   v10 = [(HUEditLocationViewControllerAccessibility *)self safeValueForKeyPath:@"homeItemManager.inviteUsersItem", v11.receiver, v11.super_class];
-  LODWORD(self) = [v10 isEqual:v9];
+  LODWORD(self) = [v10 isEqual:itemCopy];
 
   if (self)
   {
-    [v8 setAccessibilityTraits:*MEMORY[0x29EDC7F70]];
+    [cellCopy setAccessibilityTraits:*MEMORY[0x29EDC7F70]];
   }
 }
 

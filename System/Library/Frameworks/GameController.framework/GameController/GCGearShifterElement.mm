@@ -2,12 +2,12 @@
 + (unsigned)updateContextSize;
 - (BOOL)canWrap;
 - (BOOL)isAnalog;
-- (BOOL)isEqualToElement:(id)a3;
+- (BOOL)isEqualToElement:(id)element;
 - (BOOL)isSequential;
-- (BOOL)update:(void *)a3 forGamepadEvent:(id)a4 withTimestamp:(double)a5;
-- (BOOL)update:(void *)a3 forUsages:(unint64_t)a4 with:(id)a5;
-- (GCGearShifterElement)initWithParameters:(id)a3;
-- (GCGearShifterElement)initWithTemplate:(id)a3 context:(id)a4;
+- (BOOL)update:(void *)update forGamepadEvent:(id)event withTimestamp:(double)timestamp;
+- (BOOL)update:(void *)update forUsages:(unint64_t)usages with:(id)with;
+- (GCGearShifterElement)initWithParameters:(id)parameters;
+- (GCGearShifterElement)initWithTemplate:(id)template context:(id)context;
 - (NSSet)sources;
 - (NSString)description;
 - (_NSRange)positionRange;
@@ -41,29 +41,29 @@
 - (uint64_t)_setPositionMin:(uint64_t)result;
 - (uint64_t)_setSources:(uint64_t)result;
 - (uint64_t)_sources;
-- (void)postCommit:(const void *)a3 sender:(id)a4;
-- (void)preCommit:(const void *)a3 sender:(id)a4;
-- (void)setDeltaDidChangeHandler:(id)a3;
-- (void)setPositionDidChangeHandler:(id)a3;
+- (void)postCommit:(const void *)commit sender:(id)sender;
+- (void)preCommit:(const void *)commit sender:(id)sender;
+- (void)setDeltaDidChangeHandler:(id)handler;
+- (void)setPositionDidChangeHandler:(id)handler;
 @end
 
 @implementation GCGearShifterElement
 
-- (GCGearShifterElement)initWithTemplate:(id)a3 context:(id)a4
+- (GCGearShifterElement)initWithTemplate:(id)template context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  templateCopy = template;
+  contextCopy = context;
   v12.receiver = self;
   v12.super_class = GCGearShifterElement;
-  v8 = [(_GCDevicePhysicalInputElement *)&v12 initWithTemplate:v6 context:v7];
-  v9 = *(v6 + 56);
+  v8 = [(_GCDevicePhysicalInputElement *)&v12 initWithTemplate:templateCopy context:contextCopy];
+  v9 = *(templateCopy + 56);
   v8->_isPatternShifter = v9;
-  v8->_impl.pattern.sourcesSlot = [v7 view:v8 allocatePrimitiveSlot:1 withCopyOfValueFromView:v6 slot:v6[8]];
+  v8->_impl.pattern.sourcesSlot = [contextCopy view:v8 allocatePrimitiveSlot:1 withCopyOfValueFromView:templateCopy slot:templateCopy[8]];
   if (v9 == 1)
   {
-    v8->_impl.pattern.positionMinSlot = [v7 view:v8 allocatePrimitiveSlot:1 withCopyOfValueFromView:v6 slot:v6[9]];
-    v8->_impl.pattern.positionMaxSlot = [v7 view:v8 allocatePrimitiveSlot:1 withCopyOfValueFromView:v6 slot:v6[10]];
-    v8->_impl.pattern.positionFieldSlot = [v7 view:v8 allocatePrimitiveSlot:1 withCopyOfValueFromView:v6 slot:v6[11]];
+    v8->_impl.pattern.positionMinSlot = [contextCopy view:v8 allocatePrimitiveSlot:1 withCopyOfValueFromView:templateCopy slot:templateCopy[9]];
+    v8->_impl.pattern.positionMaxSlot = [contextCopy view:v8 allocatePrimitiveSlot:1 withCopyOfValueFromView:templateCopy slot:templateCopy[10]];
+    v8->_impl.pattern.positionFieldSlot = [contextCopy view:v8 allocatePrimitiveSlot:1 withCopyOfValueFromView:templateCopy slot:templateCopy[11]];
   }
 
   if (v8->_isPatternShifter)
@@ -76,17 +76,17 @@
     v10 = 1;
   }
 
-  *(&v8->_impl.pattern.sourcesSlot + v10 * 8) = [v7 view:v8 allocateObjectSlot:2 withCopyOfValueFromView:v6 slot:v6[v10 + 8]];
+  *(&v8->_impl.pattern.sourcesSlot + v10 * 8) = [contextCopy view:v8 allocateObjectSlot:2 withCopyOfValueFromView:templateCopy slot:templateCopy[v10 + 8]];
   if (v8->_isPatternShifter)
   {
-    v8->_impl.pattern.positionSlot = [v7 view:v8 allocatePrimitiveSlot:3 withCopyOfValueFromView:v6 slot:v6[13]];
-    v8->_impl.pattern.timestampSlot = [v7 view:v8 allocatePrimitiveSlot:3 withCopyOfValueFromView:v6 slot:v6[14]];
+    v8->_impl.pattern.positionSlot = [contextCopy view:v8 allocatePrimitiveSlot:3 withCopyOfValueFromView:templateCopy slot:templateCopy[13]];
+    v8->_impl.pattern.timestampSlot = [contextCopy view:v8 allocatePrimitiveSlot:3 withCopyOfValueFromView:templateCopy slot:templateCopy[14]];
   }
 
   else
   {
-    v8->_impl.pattern.positionMaxSlot = [v7 view:v8 allocatePrimitiveSlot:3 withCopyOfValueFromView:v6 slot:v6[10]];
-    v8->_impl.pattern.positionMaxSlot = [v7 view:v8 allocatePrimitiveSlot:3 withCopyOfValueFromView:v6 slot:v6[10]];
+    v8->_impl.pattern.positionMaxSlot = [contextCopy view:v8 allocatePrimitiveSlot:3 withCopyOfValueFromView:templateCopy slot:templateCopy[10]];
+    v8->_impl.pattern.positionMaxSlot = [contextCopy view:v8 allocatePrimitiveSlot:3 withCopyOfValueFromView:templateCopy slot:templateCopy[10]];
   }
 
   return v8;
@@ -94,18 +94,18 @@
 
 + (unsigned)updateContextSize
 {
-  v3.receiver = a1;
+  v3.receiver = self;
   v3.super_class = &OBJC_METACLASS___GCGearShifterElement;
   return objc_msgSendSuper2(&v3, sel_updateContextSize) + 2;
 }
 
-- (BOOL)update:(void *)a3 forUsages:(unint64_t)a4 with:(id)a5
+- (BOOL)update:(void *)update forUsages:(unint64_t)usages with:(id)with
 {
-  v6 = a4;
+  usagesCopy = usages;
   v45.receiver = self;
   v45.super_class = GCGearShifterElement;
   v10 = [_GCDevicePhysicalInputElement update:sel_update_forUsages_with_ forUsages:? with:?];
-  if (self->_isPatternShifter != *(a5 + 56))
+  if (self->_isPatternShifter != *(with + 56))
   {
     [GCGearShifterElement update:a2 forUsages:self with:?];
   }
@@ -119,17 +119,17 @@
 
   if (!self->_isPatternShifter)
   {
-    if ((v6 & 2) != 0)
+    if ((usagesCopy & 2) != 0)
     {
-      v40 = [(GCGearShifterElement *)a5 _sources];
-      v41 = [(GCGearShifterElement *)self _setSources:v40];
-      *(a3 + v11) = *(a3 + v11) & 0xFE | v41;
+      _sources = [(GCGearShifterElement *)with _sources];
+      v41 = [(GCGearShifterElement *)self _setSources:_sources];
+      *(update + v11) = *(update + v11) & 0xFE | v41;
       v10 |= v41;
 
-      if ((v6 & 4) == 0)
+      if ((usagesCopy & 4) == 0)
       {
 LABEL_15:
-        if ((v6 & 8) == 0)
+        if ((usagesCopy & 8) == 0)
         {
           return v10;
         }
@@ -138,13 +138,13 @@ LABEL_15:
       }
     }
 
-    else if ((v6 & 4) == 0)
+    else if ((usagesCopy & 4) == 0)
     {
       goto LABEL_15;
     }
 
-    v42 = [(GCGearShifterElement *)a5 _deltaDidChangeHandler];
-    v43 = [(GCGearShifterElement *)self _setDeltaDidChangeHandler:v42];
+    _deltaDidChangeHandler = [(GCGearShifterElement *)with _deltaDidChangeHandler];
+    v43 = [(GCGearShifterElement *)self _setDeltaDidChangeHandler:_deltaDidChangeHandler];
     if (v43)
     {
       v44 = 2;
@@ -155,16 +155,16 @@ LABEL_15:
       v44 = 0;
     }
 
-    *(a3 + v11) = *(a3 + v11) & 0xFD | v44;
+    *(update + v11) = *(update + v11) & 0xFD | v44;
     v10 |= v43;
 
-    if ((v6 & 8) == 0)
+    if ((usagesCopy & 8) == 0)
     {
       return v10;
     }
 
 LABEL_16:
-    v17 = COERCE_DOUBLE([(_GCDevicePhysicalInputView *)a5 _primitiveValueForSlot:?]);
+    v17 = COERCE_DOUBLE([(_GCDevicePhysicalInputView *)with _primitiveValueForSlot:?]);
     v18 = [(_GCDevicePhysicalInputView *)self _testAndSetPrimitiveValue:&self->_impl.pattern.positionMaxSlot forSlot:?];
     if (v18)
     {
@@ -176,20 +176,20 @@ LABEL_16:
       v19 = 0;
     }
 
-    *(a3 + v11) = *(a3 + v11) & 0xFB | v19;
+    *(update + v11) = *(update + v11) & 0xFB | v19;
     v15 = v10 | v18;
     v16 = 24;
     goto LABEL_20;
   }
 
-  if ((v6 & 2) != 0)
+  if ((usagesCopy & 2) != 0)
   {
-    v24 = [(GCGearShifterElement *)a5 _sources];
-    v25 = [(GCGearShifterElement *)self _setSources:v24];
-    *(a3 + v11) = *(a3 + v11) & 0xFFFE | v25;
+    _sources2 = [(GCGearShifterElement *)with _sources];
+    v25 = [(GCGearShifterElement *)self _setSources:_sources2];
+    *(update + v11) = *(update + v11) & 0xFFFE | v25;
     v26 = v10 | v25;
 
-    v27 = [(_GCDevicePhysicalInputView *)a5 _primitiveValueForSlot:?];
+    v27 = [(_GCDevicePhysicalInputView *)with _primitiveValueForSlot:?];
     v28 = [(_GCDevicePhysicalInputView *)self _testAndSetPrimitiveValue:v27 forSlot:&self->_impl.pattern.positionMinSlot];
     if (v28)
     {
@@ -201,9 +201,9 @@ LABEL_16:
       v29 = 0;
     }
 
-    *(a3 + v11) = *(a3 + v11) & 0xFFF7 | v29;
+    *(update + v11) = *(update + v11) & 0xFFF7 | v29;
     v30 = v26 | v28;
-    v31 = [(_GCDevicePhysicalInputView *)a5 _primitiveValueForSlot:?];
+    v31 = [(_GCDevicePhysicalInputView *)with _primitiveValueForSlot:?];
     v32 = [(_GCDevicePhysicalInputView *)self _testAndSetPrimitiveValue:v31 forSlot:&self->_impl.pattern.positionMaxSlot];
     if (v32)
     {
@@ -215,8 +215,8 @@ LABEL_16:
       v33 = 0;
     }
 
-    *(a3 + v11) = *(a3 + v11) & 0xFFEF | v33;
-    v34 = [(_GCDevicePhysicalInputView *)a5 _primitiveValueForSlot:?];
+    *(update + v11) = *(update + v11) & 0xFFEF | v33;
+    v34 = [(_GCDevicePhysicalInputView *)with _primitiveValueForSlot:?];
     v35 = [(_GCDevicePhysicalInputView *)self _testAndSetPrimitiveValue:v34 forSlot:&self->_impl.pattern.positionFieldSlot];
     if (v35)
     {
@@ -228,12 +228,12 @@ LABEL_16:
       v36 = 0;
     }
 
-    *(a3 + v11) = *(a3 + v11) & 0xFFDF | v36;
+    *(update + v11) = *(update + v11) & 0xFFDF | v36;
     v10 = v30 | v32 | v35;
-    if ((v6 & 4) == 0)
+    if ((usagesCopy & 4) == 0)
     {
 LABEL_8:
-      if ((v6 & 8) == 0)
+      if ((usagesCopy & 8) == 0)
       {
         return v10;
       }
@@ -242,13 +242,13 @@ LABEL_8:
     }
   }
 
-  else if ((v6 & 4) == 0)
+  else if ((usagesCopy & 4) == 0)
   {
     goto LABEL_8;
   }
 
-  v37 = [(GCGearShifterElement *)a5 _positionDidChangeHandler];
-  v38 = [(GCGearShifterElement *)self _setPositionDidChangeHandler:v37];
+  _positionDidChangeHandler = [(GCGearShifterElement *)with _positionDidChangeHandler];
+  v38 = [(GCGearShifterElement *)self _setPositionDidChangeHandler:_positionDidChangeHandler];
   if (v38)
   {
     v39 = 64;
@@ -259,13 +259,13 @@ LABEL_8:
     v39 = 0;
   }
 
-  *(a3 + v11) = *(a3 + v11) & 0xFFBF | v39;
+  *(update + v11) = *(update + v11) & 0xFFBF | v39;
   v10 |= v38;
 
-  if ((v6 & 8) != 0)
+  if ((usagesCopy & 8) != 0)
   {
 LABEL_9:
-    v12 = [(_GCDevicePhysicalInputView *)a5 _primitiveValueForSlot:?];
+    v12 = [(_GCDevicePhysicalInputView *)with _primitiveValueForSlot:?];
     v13 = [(_GCDevicePhysicalInputView *)self _testAndSetPrimitiveValue:v12 forSlot:&self->_impl.pattern.positionSlot];
     if (v13)
     {
@@ -277,11 +277,11 @@ LABEL_9:
       v14 = 0;
     }
 
-    *(a3 + v11) = *(a3 + v11) & 0xFF7F | v14;
+    *(update + v11) = *(update + v11) & 0xFF7F | v14;
     v15 = v10 | v13;
     v16 = 48;
 LABEL_20:
-    v20 = [(_GCDevicePhysicalInputView *)a5 _primitiveValueForSlot:?];
+    v20 = [(_GCDevicePhysicalInputView *)with _primitiveValueForSlot:?];
     v21 = [(_GCDevicePhysicalInputView *)self _testAndSetPrimitiveValue:v20 forSlot:&self->_impl + v16];
     if (v21)
     {
@@ -293,18 +293,18 @@ LABEL_20:
       v22 = 0;
     }
 
-    *(a3 + v11) = *(a3 + v11) & 0xFEFF | v22;
+    *(update + v11) = *(update + v11) & 0xFEFF | v22;
     return v15 | v21;
   }
 
   return v10;
 }
 
-- (void)preCommit:(const void *)a3 sender:(id)a4
+- (void)preCommit:(const void *)commit sender:(id)sender
 {
   v11.receiver = self;
   v11.super_class = GCGearShifterElement;
-  [(_GCDevicePhysicalInputElement *)&v11 preCommit:a3 sender:a4];
+  [(_GCDevicePhysicalInputElement *)&v11 preCommit:commit sender:sender];
   v6 = MyUpdateContext_Offset;
   if (MyUpdateContext_Offset == -1)
   {
@@ -314,17 +314,17 @@ LABEL_20:
 
   if (self->_isPatternShifter)
   {
-    v7 = *(a3 + v6);
+    v7 = *(commit + v6);
     if (v7)
     {
       [(_GCDevicePhysicalInputView *)self _willChangeValueForKey:?];
-      v7 = *(a3 + v6);
+      v7 = *(commit + v6);
     }
 
     if ((v7 & 0x18) != 0)
     {
       [(_GCDevicePhysicalInputView *)self _willChangeValueForKey:?];
-      v7 = *(a3 + v6);
+      v7 = *(commit + v6);
       if ((v7 & 0x40) == 0)
       {
 LABEL_8:
@@ -343,7 +343,7 @@ LABEL_8:
     }
 
     [(_GCDevicePhysicalInputView *)self _willChangeValueForKey:?];
-    v7 = *(a3 + v6);
+    v7 = *(commit + v6);
     if ((v7 & 0x80) == 0)
     {
 LABEL_9:
@@ -357,7 +357,7 @@ LABEL_9:
 
 LABEL_18:
     [(_GCDevicePhysicalInputView *)self _willChangeValueForKey:?];
-    if ((*(a3 + v6) & 0x100) == 0)
+    if ((*(commit + v6) & 0x100) == 0)
     {
       return;
     }
@@ -371,11 +371,11 @@ LABEL_24:
     return;
   }
 
-  v8 = *(a3 + v6);
+  v8 = *(commit + v6);
   if (v8)
   {
     [(_GCDevicePhysicalInputView *)self _willChangeValueForKey:?];
-    v8 = *(a3 + v6);
+    v8 = *(commit + v6);
     if ((v8 & 2) == 0)
     {
 LABEL_13:
@@ -386,7 +386,7 @@ LABEL_13:
 
 LABEL_22:
       [(_GCDevicePhysicalInputView *)self _willChangeValueForKey:?];
-      if ((*(a3 + v6) & 8) == 0)
+      if ((*(commit + v6) & 8) == 0)
       {
         return;
       }
@@ -395,13 +395,13 @@ LABEL_22:
     }
   }
 
-  else if ((*(a3 + v6) & 2) == 0)
+  else if ((*(commit + v6) & 2) == 0)
   {
     goto LABEL_13;
   }
 
   [(_GCDevicePhysicalInputView *)self _willChangeValueForKey:?];
-  v8 = *(a3 + v6);
+  v8 = *(commit + v6);
   if ((v8 & 4) != 0)
   {
     goto LABEL_22;
@@ -417,11 +417,11 @@ LABEL_23:
   }
 }
 
-- (void)postCommit:(const void *)a3 sender:(id)a4
+- (void)postCommit:(const void *)commit sender:(id)sender
 {
   v9.receiver = self;
   v9.super_class = GCGearShifterElement;
-  [(_GCDevicePhysicalInputElement *)&v9 preCommit:a3 sender:a4];
+  [(_GCDevicePhysicalInputElement *)&v9 preCommit:commit sender:sender];
   v6 = MyUpdateContext_Offset;
   if (MyUpdateContext_Offset == -1)
   {
@@ -431,17 +431,17 @@ LABEL_23:
 
   if (self->_isPatternShifter)
   {
-    v7 = *(a3 + v6);
+    v7 = *(commit + v6);
     if (v7)
     {
       [(_GCDevicePhysicalInputView *)self _didChangeValueForKey:?];
-      v7 = *(a3 + v6);
+      v7 = *(commit + v6);
     }
 
     if ((v7 & 0x18) != 0)
     {
       [(_GCDevicePhysicalInputView *)self _didChangeValueForKey:?];
-      v7 = *(a3 + v6);
+      v7 = *(commit + v6);
       if ((v7 & 0x40) == 0)
       {
 LABEL_8:
@@ -460,7 +460,7 @@ LABEL_8:
     }
 
     [(_GCDevicePhysicalInputView *)self _didChangeValueForKey:?];
-    v7 = *(a3 + v6);
+    v7 = *(commit + v6);
     if ((v7 & 0x80) == 0)
     {
 LABEL_9:
@@ -474,7 +474,7 @@ LABEL_9:
 
 LABEL_19:
     [(_GCDevicePhysicalInputView *)self _didChangeValueForKey:?];
-    v7 = *(a3 + v6);
+    v7 = *(commit + v6);
     if ((v7 & 0x100) == 0)
     {
 LABEL_10:
@@ -491,7 +491,7 @@ LABEL_21:
 LABEL_20:
     [(_GCDevicePhysicalInputView *)self _didChangeValueForKey:?];
     [(_GCDevicePhysicalInputView *)self _didChangeValueForKey:?];
-    if ((*(a3 + v6) & 0x80) == 0)
+    if ((*(commit + v6) & 0x80) == 0)
     {
       return;
     }
@@ -499,11 +499,11 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  v8 = *(a3 + v6);
+  v8 = *(commit + v6);
   if (v8)
   {
     [(_GCDevicePhysicalInputView *)self _didChangeValueForKey:?];
-    v8 = *(a3 + v6);
+    v8 = *(commit + v6);
     if ((v8 & 2) == 0)
     {
 LABEL_14:
@@ -514,7 +514,7 @@ LABEL_14:
 
 LABEL_24:
       [(_GCDevicePhysicalInputView *)self _didChangeValueForKey:?];
-      if ((*(a3 + v6) & 8) == 0)
+      if ((*(commit + v6) & 8) == 0)
       {
         return;
       }
@@ -523,13 +523,13 @@ LABEL_24:
     }
   }
 
-  else if ((*(a3 + v6) & 2) == 0)
+  else if ((*(commit + v6) & 2) == 0)
   {
     goto LABEL_14;
   }
 
   [(_GCDevicePhysicalInputView *)self _didChangeValueForKey:?];
-  v8 = *(a3 + v6);
+  v8 = *(commit + v6);
   if ((v8 & 4) != 0)
   {
     goto LABEL_24;
@@ -544,33 +544,33 @@ LABEL_25:
   }
 }
 
-- (BOOL)isEqualToElement:(id)a3
+- (BOOL)isEqualToElement:(id)element
 {
-  v8 = a3;
+  elementCopy = element;
   v21.receiver = self;
   v21.super_class = GCGearShifterElement;
-  if ([(_GCDevicePhysicalInputElement *)&v21 isEqualToElement:v8])
+  if ([(_GCDevicePhysicalInputElement *)&v21 isEqualToElement:elementCopy])
   {
     isPatternShifter = self->_isPatternShifter;
-    if (isPatternShifter == v8[56])
+    if (isPatternShifter == elementCopy[56])
     {
       if (self->_isPatternShifter)
       {
-        v3 = [(GCGearShifterElement *)self _sources];
-        v4 = [(GCGearShifterElement *)v8 _sources];
-        v12 = v3 != v4;
-        if (v3 == v4 || (v5 = -[GCGearShifterElement _sources](self), v6 = -[GCGearShifterElement _sources](v8), [v5 isEqual:?]))
+        _sources = [(GCGearShifterElement *)self _sources];
+        _sources2 = [(GCGearShifterElement *)elementCopy _sources];
+        v12 = _sources != _sources2;
+        if (_sources == _sources2 || (v5 = -[GCGearShifterElement _sources](self), v6 = -[GCGearShifterElement _sources](elementCopy), [v5 isEqual:?]))
         {
           v13 = [(_GCDevicePhysicalInputView *)self _primitiveValueForSlot:?];
-          if (v13 == [(_GCDevicePhysicalInputView *)v8 _primitiveValueForSlot:?])
+          if (v13 == [(_GCDevicePhysicalInputView *)elementCopy _primitiveValueForSlot:?])
           {
             v14 = [(_GCDevicePhysicalInputView *)self _primitiveValueForSlot:?];
-            if (v14 == [(_GCDevicePhysicalInputView *)v8 _primitiveValueForSlot:?])
+            if (v14 == [(_GCDevicePhysicalInputView *)elementCopy _primitiveValueForSlot:?])
             {
               v15 = [(_GCDevicePhysicalInputView *)self _primitiveValueForSlot:?];
-              if (v15 == [(_GCDevicePhysicalInputView *)v8 _primitiveValueForSlot:?])
+              if (v15 == [(_GCDevicePhysicalInputView *)elementCopy _primitiveValueForSlot:?])
               {
-                if (v3 != v4)
+                if (_sources != _sources2)
                 {
                 }
 
@@ -592,10 +592,10 @@ LABEL_25:
         v12 = 0;
       }
 
-      v16 = [(GCGearShifterElement *)self _sources];
-      v17 = [(GCGearShifterElement *)v8 _sources];
-      v18 = v17;
-      if (v16 == v17)
+      _sources3 = [(GCGearShifterElement *)self _sources];
+      _sources4 = [(GCGearShifterElement *)elementCopy _sources];
+      v18 = _sources4;
+      if (_sources3 == _sources4)
       {
 
         v10 = 1;
@@ -607,9 +607,9 @@ LABEL_25:
 
       else
       {
-        v20 = [(GCGearShifterElement *)self _sources];
-        v19 = [(GCGearShifterElement *)v8 _sources];
-        v10 = [v20 isEqual:v19];
+        _sources5 = [(GCGearShifterElement *)self _sources];
+        _sources6 = [(GCGearShifterElement *)elementCopy _sources];
+        v10 = [_sources5 isEqual:_sources6];
 
         if (v12)
         {
@@ -665,16 +665,16 @@ LABEL_4:
 {
   isPatternShifter = self->_isPatternShifter;
   v4 = MEMORY[0x1E696AEC0];
-  v5 = [(_GCDevicePhysicalInputElement *)self identifier];
+  identifier = [(_GCDevicePhysicalInputElement *)self identifier];
   if (isPatternShifter)
   {
-    [v4 stringWithFormat:@"<Pattern Shifter '%@'; position = %zd>", v5, -[GCGearShifterElement position](self, "position")];
+    [v4 stringWithFormat:@"<Pattern Shifter '%@'; position = %zd>", identifier, -[GCGearShifterElement position](self, "position")];
   }
 
   else
   {
     [(GCGearShifterElement *)self delta];
-    [v4 stringWithFormat:@"<Sequential Shifter '%@'; delta = %f>", v5, v6];
+    [v4 stringWithFormat:@"<Sequential Shifter '%@'; delta = %f>", identifier, v6];
   }
   v7 = ;
 
@@ -685,23 +685,23 @@ LABEL_4:
 {
   if (self->_isPatternShifter)
   {
-    v2 = [(GCGearShifterElement *)self _positionDidChangeHandler];
+    _positionDidChangeHandler = [(GCGearShifterElement *)self _positionDidChangeHandler];
   }
 
   else
   {
     [(GCGearShifterElement *)self doesNotRecognizeSelector:a2];
-    v2 = 0;
+    _positionDidChangeHandler = 0;
   }
 
-  return v2;
+  return _positionDidChangeHandler;
 }
 
-- (void)setPositionDidChangeHandler:(id)a3
+- (void)setPositionDidChangeHandler:(id)handler
 {
   if (self->_isPatternShifter)
   {
-    [(GCGearShifterElement *)self _setPositionDidChangeHandler:a3];
+    [(GCGearShifterElement *)self _setPositionDidChangeHandler:handler];
   }
 
   else
@@ -802,18 +802,18 @@ LABEL_4:
   if (self->_isPatternShifter)
   {
     [(GCGearShifterElement *)self doesNotRecognizeSelector:a2];
-    v2 = 0;
+    _deltaDidChangeHandler = 0;
   }
 
   else
   {
-    v2 = [(GCGearShifterElement *)self _deltaDidChangeHandler];
+    _deltaDidChangeHandler = [(GCGearShifterElement *)self _deltaDidChangeHandler];
   }
 
-  return v2;
+  return _deltaDidChangeHandler;
 }
 
-- (void)setDeltaDidChangeHandler:(id)a3
+- (void)setDeltaDidChangeHandler:(id)handler
 {
   if (self->_isPatternShifter)
   {
@@ -822,7 +822,7 @@ LABEL_4:
 
   else
   {
-    [(GCGearShifterElement *)self _setDeltaDidChangeHandler:a3];
+    [(GCGearShifterElement *)self _setDeltaDidChangeHandler:handler];
   }
 }
 
@@ -865,13 +865,13 @@ LABEL_4:
     mach_timebase_info(&lastDeltaLatency_sTimebaseInfo);
   }
 
-  v4 = COERCE_DOUBLE([(_GCDevicePhysicalInputView *)a1 _primitiveValueForSlot:?]);
+  v4 = COERCE_DOUBLE([(_GCDevicePhysicalInputView *)self _primitiveValueForSlot:?]);
   result = (mach_absolute_time() * lastDeltaLatency_sTimebaseInfo / dword_1EC735E9C) / 1000000000.0 - v4;
   *a2 = result;
   return result;
 }
 
-- (BOOL)update:(void *)a3 forGamepadEvent:(id)a4 withTimestamp:(double)a5
+- (BOOL)update:(void *)update forGamepadEvent:(id)event withTimestamp:(double)timestamp
 {
   v17.receiver = self;
   v17.super_class = GCGearShifterElement;
@@ -890,13 +890,13 @@ LABEL_4:
     {
       v12 = v11;
       v13 = [(_GCDevicePhysicalInputView *)self _primitiveValueForSlot:?];
-      [a4 floatValueForElement:v12];
+      [event floatValueForElement:v12];
       v15 = rintf(v14);
       if (v13 != v15)
       {
         [(_GCDevicePhysicalInputView *)self _testAndSetPrimitiveValue:v15 forSlot:&self->_impl.pattern.positionSlot];
         [(_GCDevicePhysicalInputView *)self _testAndSetPrimitiveValue:&self->_impl.pattern.timestampSlot forSlot:?];
-        *(a3 + v10) |= 0x180u;
+        *(update + v10) |= 0x180u;
         return 1;
       }
     }
@@ -905,16 +905,16 @@ LABEL_4:
   return v9;
 }
 
-- (GCGearShifterElement)initWithParameters:(id)a3
+- (GCGearShifterElement)initWithParameters:(id)parameters
 {
-  v4 = a3;
+  parametersCopy = parameters;
   v18.receiver = self;
   v18.super_class = GCGearShifterElement;
-  v5 = [(_GCDevicePhysicalInputElement *)&v18 initWithParameters:v4];
+  v5 = [(_GCDevicePhysicalInputElement *)&v18 initWithParameters:parametersCopy];
   v6 = v5;
-  if (v4)
+  if (parametersCopy)
   {
-    v7 = v4[40];
+    v7 = parametersCopy[40];
   }
 
   else
@@ -923,18 +923,18 @@ LABEL_4:
   }
 
   v5->_isPatternShifter = v7 & 1;
-  v8 = [(_GCGearShifterElementParameters *)v4 sources];
-  [(GCGearShifterElement *)v6 _setSources:v8];
+  sources = [(_GCGearShifterElementParameters *)parametersCopy sources];
+  [(GCGearShifterElement *)v6 _setSources:sources];
 
   if (v6->_isPatternShifter)
   {
-    if (v4)
+    if (parametersCopy)
     {
-      v9 = *(v4 + 8);
+      v9 = *(parametersCopy + 8);
       OUTLINED_FUNCTION_2_0();
       [(_GCDevicePhysicalInputView *)v6 _testAndSetPrimitiveValue:v11 forSlot:v10 + 8];
       [(_GCDevicePhysicalInputView *)v6 _testAndSetPrimitiveValue:&v6->_impl.pattern.positionMaxSlot forSlot:?];
-      v12 = *(v4 + 7);
+      v12 = *(parametersCopy + 7);
     }
 
     else
@@ -959,8 +959,8 @@ LABEL_4:
     v3 = result;
     if (!a2)
     {
-      v4 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v4 handleFailureInMethod:sel__setSources_ object:v3 file:@"GCGearShifterElement.m" lineNumber:320 description:{@"Invalid parameter not satisfying: %s", "newValue != nil"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:sel__setSources_ object:v3 file:@"GCGearShifterElement.m" lineNumber:320 description:{@"Invalid parameter not satisfying: %s", "newValue != nil"}];
     }
 
     return [(_GCDevicePhysicalInputView *)v3 _testAndSetObjectValue:a2 forSlot:v3 + 64 policy:771];
@@ -1087,9 +1087,9 @@ LABEL_4:
 
 - (double)_lastPositionTimestamp
 {
-  if (a1)
+  if (self)
   {
-    return COERCE_DOUBLE([(_GCDevicePhysicalInputView *)a1 _primitiveValueForSlot:?]);
+    return COERCE_DOUBLE([(_GCDevicePhysicalInputView *)self _primitiveValueForSlot:?]);
   }
 
   else
@@ -1135,9 +1135,9 @@ LABEL_4:
 
 - (__n64)_delta
 {
-  if (a1)
+  if (self)
   {
-    v1 = COERCE_DOUBLE([(_GCDevicePhysicalInputView *)a1 _primitiveValueForSlot:?]);
+    v1 = COERCE_DOUBLE([(_GCDevicePhysicalInputView *)self _primitiveValueForSlot:?]);
     result.n64_u32[1] = HIDWORD(v1);
     result.n64_f32[0] = v1;
   }
@@ -1162,9 +1162,9 @@ LABEL_4:
 
 - (double)_lastDeltaTimestamp
 {
-  if (a1)
+  if (self)
   {
-    return COERCE_DOUBLE([(_GCDevicePhysicalInputView *)a1 _primitiveValueForSlot:?]);
+    return COERCE_DOUBLE([(_GCDevicePhysicalInputView *)self _primitiveValueForSlot:?]);
   }
 
   else
@@ -1185,9 +1185,9 @@ LABEL_4:
 
 - (NSSet)sources
 {
-  v2 = [(GCGearShifterElement *)self _sources];
+  _sources = [(GCGearShifterElement *)self _sources];
 
-  return v2;
+  return _sources;
 }
 
 - (void)update:(uint64_t)a1 forUsages:(uint64_t)a2 with:.cold.1(uint64_t a1, uint64_t a2)

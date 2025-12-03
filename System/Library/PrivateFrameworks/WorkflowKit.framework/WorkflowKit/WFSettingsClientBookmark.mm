@@ -1,69 +1,69 @@
 @interface WFSettingsClientBookmark
-- (WFSettingsClientBookmark)initWithActionReversalState:(id)a3;
-- (WFSettingsClientBookmark)initWithBiomeBookmark:(id)a3;
-- (WFSettingsClientBookmark)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (WFSettingsClientBookmark)initWithActionReversalState:(id)state;
+- (WFSettingsClientBookmark)initWithBiomeBookmark:(id)bookmark;
+- (WFSettingsClientBookmark)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFSettingsClientBookmark
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(WFSettingsClientBookmark *)self biomeBookmark];
-  [v4 encodeObject:v5 forKey:@"biomeBookmark"];
+  coderCopy = coder;
+  biomeBookmark = [(WFSettingsClientBookmark *)self biomeBookmark];
+  [coderCopy encodeObject:biomeBookmark forKey:@"biomeBookmark"];
 }
 
-- (WFSettingsClientBookmark)initWithCoder:(id)a3
+- (WFSettingsClientBookmark)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E696AB10];
-  v5 = a3;
-  v6 = [v4 bm_allowedClassesForSecureCodingBMBookmark];
-  v7 = [v5 decodeObjectOfClasses:v6 forKey:@"biomeBookmark"];
+  coderCopy = coder;
+  bm_allowedClassesForSecureCodingBMBookmark = [v4 bm_allowedClassesForSecureCodingBMBookmark];
+  v7 = [coderCopy decodeObjectOfClasses:bm_allowedClassesForSecureCodingBMBookmark forKey:@"biomeBookmark"];
 
   if (v7)
   {
     self = [(WFSettingsClientBookmark *)self initWithBiomeBookmark:v7];
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (WFSettingsClientBookmark)initWithBiomeBookmark:(id)a3
+- (WFSettingsClientBookmark)initWithBiomeBookmark:(id)bookmark
 {
-  v5 = a3;
+  bookmarkCopy = bookmark;
   v10.receiver = self;
   v10.super_class = WFSettingsClientBookmark;
   v6 = [(WFSettingsClientBookmark *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_biomeBookmark, a3);
+    objc_storeStrong(&v6->_biomeBookmark, bookmark);
     v8 = v7;
   }
 
   return v7;
 }
 
-- (WFSettingsClientBookmark)initWithActionReversalState:(id)a3
+- (WFSettingsClientBookmark)initWithActionReversalState:(id)state
 {
-  v5 = a3;
-  v6 = v5;
-  if (!v5)
+  stateCopy = state;
+  v6 = stateCopy;
+  if (!stateCopy)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"WFSettingsClientBookmark+WFActionReversalState.m" lineNumber:17 description:{@"Invalid parameter not satisfying: %@", @"reversalState"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFSettingsClientBookmark+WFActionReversalState.m" lineNumber:17 description:{@"Invalid parameter not satisfying: %@", @"reversalState"}];
 
     goto LABEL_5;
   }
 
-  v7 = v5;
+  v7 = stateCopy;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {

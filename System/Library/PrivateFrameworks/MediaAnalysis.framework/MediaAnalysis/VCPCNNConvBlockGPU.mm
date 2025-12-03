@@ -1,8 +1,8 @@
 @interface VCPCNNConvBlockGPU
 - (int)fillConvWeightsGPU;
 - (int)gpuForward;
-- (int)readBatchNormParam:(__sFILE *)a3 quantFactor:(signed __int16)a4;
-- (int)readFromDisk:(__sFILE *)a3 quantFactor:(signed __int16)a4;
+- (int)readBatchNormParam:(__sFILE *)param quantFactor:(signed __int16)factor;
+- (int)readFromDisk:(__sFILE *)disk quantFactor:(signed __int16)factor;
 - (void)dealloc;
 - (void)releaseBatchNormMemory;
 @end
@@ -53,24 +53,24 @@
 {
   if (!self->super.super._executedOnGPU || (result = [(VCPCNNData *)self->super.super._output reallocGPUTemporalBuffers]) == 0)
   {
-    v4 = [(VCPCNNMetalContext *)self->super.super._context commandBuffer];
-    if (v4)
+    commandBuffer = [(VCPCNNMetalContext *)self->super.super._context commandBuffer];
+    if (commandBuffer)
     {
-      v5 = v4;
+      v5 = commandBuffer;
       WeakRetained = objc_loadWeakRetained(&self->super.super._input);
-      v7 = [WeakRetained mpsImg];
-      if (v7)
+      mpsImg = [WeakRetained mpsImg];
+      if (mpsImg)
       {
-        v8 = [(VCPCNNData *)self->super.super._output mpsImg];
+        mpsImg2 = [(VCPCNNData *)self->super.super._output mpsImg];
 
-        if (v8)
+        if (mpsImg2)
         {
           mpsConv = self->_mpsConv;
-          v10 = [(VCPCNNMetalContext *)self->super.super._context commandBuffer];
+          commandBuffer2 = [(VCPCNNMetalContext *)self->super.super._context commandBuffer];
           v11 = objc_loadWeakRetained(&self->super.super._input);
-          v12 = [v11 mpsImg];
-          v13 = [(VCPCNNData *)self->super.super._output mpsImg];
-          [(MPSCNNConvolution *)mpsConv encodeToCommandBuffer:v10 sourceImage:v12 destinationImage:v13];
+          mpsImg3 = [v11 mpsImg];
+          mpsImg4 = [(VCPCNNData *)self->super.super._output mpsImg];
+          [(MPSCNNConvolution *)mpsConv encodeToCommandBuffer:commandBuffer2 sourceImage:mpsImg3 destinationImage:mpsImg4];
 
           result = 0;
           self->super.super._executedOnGPU = 1;
@@ -93,32 +93,32 @@
 {
   v3 = [(VCPCNNData *)self->super._filter size];
   v4 = [v3 objectAtIndexedSubscript:0];
-  v5 = [v4 intValue];
+  intValue = [v4 intValue];
 
   v6 = [(VCPCNNData *)self->super._filter size];
   v7 = [v6 objectAtIndexedSubscript:1];
-  v8 = [v7 intValue];
+  intValue2 = [v7 intValue];
 
   v9 = [(VCPCNNData *)self->super._filter size];
   v10 = [v9 objectAtIndexedSubscript:2];
-  v11 = [v10 intValue];
+  intValue3 = [v10 intValue];
   v12 = [(VCPCNNData *)self->super._filter size];
   v13 = [v12 objectAtIndexedSubscript:3];
-  v14 = [v13 intValue];
+  intValue4 = [v13 intValue];
 
   v15 = [(VCPCNNData *)self->super._filter size];
   v16 = [v15 objectAtIndexedSubscript:2];
-  v58 = [v16 intValue];
+  intValue5 = [v16 intValue];
 
   WeakRetained = objc_loadWeakRetained(&self->super.super._inputSize);
   v18 = [WeakRetained objectAtIndexedSubscript:0];
-  v19 = [v18 intValue];
+  intValue6 = [v18 intValue];
 
   v20 = [(NSMutableArray *)self->super.super._outputSize objectAtIndexedSubscript:0];
-  v21 = [v20 intValue];
-  v22 = (v14 * v11);
+  intValue7 = [v20 intValue];
+  v22 = (intValue4 * intValue3);
 
-  v23 = v8 * v5 * v22;
+  v23 = intValue2 * intValue * v22;
   if (v23 < 0)
   {
     v24 = -1;
@@ -136,12 +136,12 @@
   }
 
   v26 = v25;
-  memcpy(v25, [(VCPCNNData *)self->super._filter data], 4 * v5 * v8 * v22);
-  v27 = [(VCPCNNData *)self->super._filter data];
-  if (v5 >= 1)
+  memcpy(v25, [(VCPCNNData *)self->super._filter data], 4 * intValue * intValue2 * v22);
+  data = [(VCPCNNData *)self->super._filter data];
+  if (intValue >= 1)
   {
     v28 = 0;
-    v29 = 4 * v22 * v8;
+    v29 = 4 * v22 * intValue2;
     v30 = v26;
     do
     {
@@ -149,13 +149,13 @@
       {
         v31 = 0;
         v32 = v30;
-        v33 = v27;
+        v33 = data;
         do
         {
-          v34 = v8;
+          v34 = intValue2;
           v35 = v32;
           v36 = v33;
-          if (v8 >= 1)
+          if (intValue2 >= 1)
           {
             do
             {
@@ -168,7 +168,7 @@
           }
 
           ++v31;
-          v33 += v8;
+          v33 += intValue2;
           ++v32;
         }
 
@@ -176,17 +176,17 @@
       }
 
       ++v28;
-      v27 = (v27 + v29);
+      data = (data + v29);
       v30 = (v30 + v29);
     }
 
-    while (v28 != v5);
+    while (v28 != intValue);
   }
 
   MEMORY[0x1CCA95C10](v26, 0x1000C8052888210);
-  if (v19 != v21 || v19 != self->super._groups)
+  if (intValue6 != intValue7 || intValue6 != self->super._groups)
   {
-    v39 = [MEMORY[0x1E69748E8] cnnConvolutionDescriptorWithKernelWidth:v58 kernelHeight:v58 inputFeatureChannels:v19 outputFeatureChannels:v21];
+    v39 = [MEMORY[0x1E69748E8] cnnConvolutionDescriptorWithKernelWidth:intValue5 kernelHeight:intValue5 inputFeatureChannels:intValue6 outputFeatureChannels:intValue7];
     if (v39)
     {
       v38 = v39;
@@ -197,7 +197,7 @@
     return -108;
   }
 
-  v37 = [MEMORY[0x1E6974910] cnnConvolutionDescriptorWithKernelWidth:v58 kernelHeight:v58 inputFeatureChannels:v19 outputFeatureChannels:v19];
+  v37 = [MEMORY[0x1E6974910] cnnConvolutionDescriptorWithKernelWidth:intValue5 kernelHeight:intValue5 inputFeatureChannels:intValue6 outputFeatureChannels:intValue6];
   if (!v37)
   {
     return -108;
@@ -208,11 +208,11 @@
 LABEL_19:
   if (self->super._reLU)
   {
-    v40 = [v38 fusedNeuronDescriptor];
-    [v40 setNeuronType:1];
+    fusedNeuronDescriptor = [v38 fusedNeuronDescriptor];
+    [fusedNeuronDescriptor setNeuronType:1];
 
-    v41 = [v38 fusedNeuronDescriptor];
-    [v41 setA:0.0];
+    fusedNeuronDescriptor2 = [v38 fusedNeuronDescriptor];
+    [fusedNeuronDescriptor2 setA:0.0];
   }
 
   [v38 setStrideInPixelsX:self->super._stride];
@@ -229,20 +229,20 @@ LABEL_19:
   {
     [(MPSCNNConvolution *)v48 setEdgeMode:0];
     v49 = [(NSMutableArray *)self->super.super._outputSize objectAtIndexedSubscript:2];
-    v50 = [v49 intValue];
+    intValue8 = [v49 intValue];
     v51 = [(NSMutableArray *)self->super.super._outputSize objectAtIndexedSubscript:1];
-    v52 = [v51 intValue];
+    intValue9 = [v51 intValue];
 
     if (!self->super._padding)
     {
-      if (v58 == 1)
+      if (intValue5 == 1)
       {
         v53 = 0;
       }
 
       else
       {
-        LODWORD(v53) = (v58 - 1) / 2;
+        LODWORD(v53) = (intValue5 - 1) / 2;
         if (v53 <= 1)
         {
           v53 = 1;
@@ -265,8 +265,8 @@ LABEL_19:
     v59 = 0;
     v60 = 0;
     v61 = 0;
-    v62 = v50;
-    v63 = v52;
+    v62 = intValue8;
+    v63 = intValue9;
     v64 = 1;
     [(MPSCNNConvolution *)v56 setClipRect:&v59];
     v54 = 0;
@@ -280,17 +280,17 @@ LABEL_19:
   return v54;
 }
 
-- (int)readBatchNormParam:(__sFILE *)a3 quantFactor:(signed __int16)a4
+- (int)readBatchNormParam:(__sFILE *)param quantFactor:(signed __int16)factor
 {
   if (!self->super._batchNorm)
   {
     return 0;
   }
 
-  v4 = a4;
+  factorCopy = factor;
   [(VCPCNNConvBlockGPU *)self releaseBatchNormMemory];
   filterSize = self->super._filterSize;
-  if (!v4)
+  if (!factorCopy)
   {
     if ((filterSize & 0x80000000) != 0)
     {
@@ -327,7 +327,7 @@ LABEL_19:
     return -108;
   }
 
-  if (v4 != 1)
+  if (factorCopy != 1)
   {
     return -50;
   }
@@ -370,7 +370,7 @@ LABEL_19:
     return -108;
   }
 
-  if (fread(self->_batchNormMean, 4uLL, filterSize, a3) == filterSize && fread(self->_batchNormVar, 4uLL, filterSize, a3) == filterSize && fread(self->_batchNormGamma, 4uLL, filterSize, a3) == filterSize && fread(self->_batchNormBeta, 4uLL, filterSize, a3) == filterSize)
+  if (fread(self->_batchNormMean, 4uLL, filterSize, param) == filterSize && fread(self->_batchNormVar, 4uLL, filterSize, param) == filterSize && fread(self->_batchNormGamma, 4uLL, filterSize, param) == filterSize && fread(self->_batchNormBeta, 4uLL, filterSize, param) == filterSize)
   {
     return 0;
   }
@@ -381,16 +381,16 @@ LABEL_19:
   }
 }
 
-- (int)readFromDisk:(__sFILE *)a3 quantFactor:(signed __int16)a4
+- (int)readFromDisk:(__sFILE *)disk quantFactor:(signed __int16)factor
 {
-  v4 = a4;
+  factorCopy = factor;
   result = [VCPCNNData readFromDisk:"readFromDisk:quantFactor:" quantFactor:?];
   if (!result)
   {
-    result = [(VCPCNNData *)self->super._bias readFromDisk:a3 quantFactor:v4];
+    result = [(VCPCNNData *)self->super._bias readFromDisk:disk quantFactor:factorCopy];
     if (!result)
     {
-      result = [(VCPCNNConvBlockGPU *)self readBatchNormParam:a3 quantFactor:v4];
+      result = [(VCPCNNConvBlockGPU *)self readBatchNormParam:disk quantFactor:factorCopy];
       if (!result)
       {
 

@@ -1,9 +1,9 @@
 @interface TSWReviewAssociativeAnswerState
-- (TSWReviewAssociativeAnswerState)initWithCoder:(id)a3;
-- (id)choicesForTargetIndex:(unint64_t)a3;
+- (TSWReviewAssociativeAnswerState)initWithCoder:(id)coder;
+- (id)choicesForTargetIndex:(unint64_t)index;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)setChoices:(id)a3 forTargetIndex:(unint64_t)a4;
+- (void)encodeWithCoder:(id)coder;
+- (void)setChoices:(id)choices forTargetIndex:(unint64_t)index;
 @end
 
 @implementation TSWReviewAssociativeAnswerState
@@ -16,7 +16,7 @@
   [(TSWReviewAssociativeAnswerState *)&v3 dealloc];
 }
 
-- (TSWReviewAssociativeAnswerState)initWithCoder:(id)a3
+- (TSWReviewAssociativeAnswerState)initWithCoder:(id)coder
 {
   v8.receiver = self;
   v8.super_class = TSWReviewAssociativeAnswerState;
@@ -25,21 +25,21 @@
   {
     v5 = objc_opt_class();
     v6 = objc_opt_class();
-    v4->mChoicesForTarget = [a3 decodeObjectOfClasses:+[NSSet setWithObjects:](NSSet forKey:{"setWithObjects:", v5, v6, objc_opt_class(), 0), @"TSWReviewAnswerStateChoicesForTarget"}];
+    v4->mChoicesForTarget = [coder decodeObjectOfClasses:+[NSSet setWithObjects:](NSSet forKey:{"setWithObjects:", v5, v6, objc_opt_class(), 0), @"TSWReviewAnswerStateChoicesForTarget"}];
   }
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = TSWReviewAssociativeAnswerState;
   [(TSWReviewAnswerState *)&v5 encodeWithCoder:?];
-  [a3 encodeObject:self->mChoicesForTarget forKey:@"TSWReviewAnswerStateChoicesForTarget"];
+  [coder encodeObject:self->mChoicesForTarget forKey:@"TSWReviewAnswerStateChoicesForTarget"];
 }
 
-- (id)choicesForTargetIndex:(unint64_t)a3
+- (id)choicesForTargetIndex:(unint64_t)index
 {
   mChoicesForTarget = self->mChoicesForTarget;
   if (!mChoicesForTarget)
@@ -48,17 +48,17 @@
     self->mChoicesForTarget = mChoicesForTarget;
   }
 
-  v6 = [NSNumber numberWithUnsignedInteger:a3];
+  v6 = [NSNumber numberWithUnsignedInteger:index];
 
   return [(NSMutableDictionary *)mChoicesForTarget objectForKey:v6];
 }
 
-- (void)setChoices:(id)a3 forTargetIndex:(unint64_t)a4
+- (void)setChoices:(id)choices forTargetIndex:(unint64_t)index
 {
   mChoicesForTarget = self->mChoicesForTarget;
-  v6 = [NSNumber numberWithUnsignedInteger:a4];
+  v6 = [NSNumber numberWithUnsignedInteger:index];
 
-  [(NSMutableDictionary *)mChoicesForTarget setObject:a3 forKey:v6];
+  [(NSMutableDictionary *)mChoicesForTarget setObject:choices forKey:v6];
 }
 
 @end

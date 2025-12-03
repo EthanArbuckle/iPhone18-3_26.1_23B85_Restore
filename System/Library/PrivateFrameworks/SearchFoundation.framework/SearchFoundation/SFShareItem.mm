@@ -1,31 +1,31 @@
 @interface SFShareItem
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (SFShareItem)initWithCoder:(id)a3;
-- (SFShareItem)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (SFShareItem)initWithCoder:(id)coder;
+- (SFShareItem)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFShareItem
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }
 
-  v3 = a3;
-  v4 = [v3 isMemberOfClass:objc_opt_class()];
+  equalCopy = equal;
+  v4 = [equalCopy isMemberOfClass:objc_opt_class()];
 
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v3 = [objc_opt_class() allocWithZone:a3];
+  v3 = [objc_opt_class() allocWithZone:zone];
 
   return [v3 init];
 }
@@ -33,31 +33,31 @@
 - (NSData)jsonData
 {
   v2 = [[_SFPBShareItem alloc] initWithFacade:self];
-  v3 = [(_SFPBShareItem *)v2 jsonData];
+  jsonData = [(_SFPBShareItem *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBShareItem alloc] initWithFacade:self];
-  v3 = [(_SFPBShareItem *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBShareItem *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6 = [[_SFPBShareItem alloc] initWithFacade:self];
-  v5 = [(_SFPBShareItem *)v6 data];
-  [v4 encodeObject:v5 forKey:@"_backingStore"];
+  data = [(_SFPBShareItem *)v6 data];
+  [coderCopy encodeObject:data forKey:@"_backingStore"];
 }
 
-- (SFShareItem)initWithCoder:(id)a3
+- (SFShareItem)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v6 = [[_SFPBShareItem alloc] initWithData:v5];
   v7 = [(SFShareItem *)self initWithProtobuf:v6];
@@ -65,38 +65,38 @@
   return v7;
 }
 
-- (SFShareItem)initWithProtobuf:(id)a3
+- (SFShareItem)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
+  protobufCopy = protobuf;
   v13.receiver = self;
   v13.super_class = SFShareItem;
   v5 = [(SFShareItem *)&v13 init];
   if (v5)
   {
-    v6 = [v4 urlShareItem];
+    urlShareItem = [protobufCopy urlShareItem];
 
-    if (v6)
+    if (urlShareItem)
     {
       v7 = [SFURLShareItem alloc];
-      v8 = [v4 urlShareItem];
+      urlShareItem2 = [protobufCopy urlShareItem];
     }
 
     else
     {
-      v10 = [v4 spotlightShareItem];
+      spotlightShareItem = [protobufCopy spotlightShareItem];
 
-      if (!v10)
+      if (!spotlightShareItem)
       {
         v9 = v5;
         goto LABEL_8;
       }
 
       v7 = [SFCoreSpotlightShareItem alloc];
-      v8 = [v4 spotlightShareItem];
+      urlShareItem2 = [protobufCopy spotlightShareItem];
     }
 
-    v11 = v8;
-    v9 = [(SFURLShareItem *)v7 initWithProtobuf:v8];
+    v11 = urlShareItem2;
+    v9 = [(SFURLShareItem *)v7 initWithProtobuf:urlShareItem2];
   }
 
   else

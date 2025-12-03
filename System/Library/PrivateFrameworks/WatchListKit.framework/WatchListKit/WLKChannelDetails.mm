@@ -1,40 +1,40 @@
 @interface WLKChannelDetails
-+ (void)sui_fetchSeasonTitlesSettingWithCompletionHandler:(id)a3;
++ (void)sui_fetchSeasonTitlesSettingWithCompletionHandler:(id)handler;
 - (NSString)description;
 - (NSURL)appStoreURL;
 - (WLKChannelDetails)init;
-- (WLKChannelDetails)initWithDictionary:(id)a3;
-- (id)appIconURLForSize:(CGSize)a3;
+- (WLKChannelDetails)initWithDictionary:(id)dictionary;
+- (id)appIconURLForSize:(CGSize)size;
 - (id)sui_channelName;
-- (id)sui_seasonEpisodeLabel:(BOOL)a3 seasonTitleAvailable:(BOOL)a4 seasonNumber:(id)a5 episodeNumber:(id)a6;
+- (id)sui_seasonEpisodeLabel:(BOOL)label seasonTitleAvailable:(BOOL)available seasonNumber:(id)number episodeNumber:(id)episodeNumber;
 @end
 
 @implementation WLKChannelDetails
 
 - (id)sui_channelName
 {
-  v3 = [(WLKChannelDetails *)self title];
+  title = [(WLKChannelDetails *)self title];
   if ([(WLKChannelDetails *)self isiTunes])
   {
     v4 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.WatchListKit"];
     v5 = [v4 localizedStringForKey:@"ITUNES_CHANNEL_NAME" value:&stru_288206BC0 table:@"WatchListKit"];
 
-    v3 = v5;
+    title = v5;
   }
 
-  return v3;
+  return title;
 }
 
-+ (void)sui_fetchSeasonTitlesSettingWithCompletionHandler:(id)a3
++ (void)sui_fetchSeasonTitlesSettingWithCompletionHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   v4 = +[WLKConfigurationManager sharedInstance];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __90__WLKChannelDetails_SearchUIAdditions__sui_fetchSeasonTitlesSettingWithCompletionHandler___block_invoke;
   v6[3] = &unk_279E5E8A8;
-  v7 = v3;
-  v5 = v3;
+  v7 = handlerCopy;
+  v5 = handlerCopy;
   [v4 fetchConfigurationWithCompletionHandler:v6];
 }
 
@@ -60,16 +60,16 @@ void __90__WLKChannelDetails_SearchUIAdditions__sui_fetchSeasonTitlesSettingWith
   }
 }
 
-- (id)sui_seasonEpisodeLabel:(BOOL)a3 seasonTitleAvailable:(BOOL)a4 seasonNumber:(id)a5 episodeNumber:(id)a6
+- (id)sui_seasonEpisodeLabel:(BOOL)label seasonTitleAvailable:(BOOL)available seasonNumber:(id)number episodeNumber:(id)episodeNumber
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = a5;
-  v10 = a6;
-  v11 = v10;
-  if (v8 && v7)
+  availableCopy = available;
+  labelCopy = label;
+  numberCopy = number;
+  episodeNumberCopy = episodeNumber;
+  v11 = episodeNumberCopy;
+  if (labelCopy && availableCopy)
   {
-    if (v10)
+    if (episodeNumberCopy)
     {
       v12 = MEMORY[0x277CCACA8];
       v13 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.WatchListKit"];
@@ -92,12 +92,12 @@ void __90__WLKChannelDetails_SearchUIAdditions__sui_fetchSeasonTitlesSettingWith
 
   else
   {
-    if (v9 && v10)
+    if (numberCopy && episodeNumberCopy)
     {
       v15 = MEMORY[0x277CCACA8];
       v13 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.WatchListKit"];
       v14 = [v13 localizedStringForKey:@"SEASON_EPISODE_FORMAT" value:&stru_288206BC0 table:@"WatchListKit"];
-      [v15 stringWithFormat:v14, v9, v11];
+      [v15 stringWithFormat:v14, numberCopy, v11];
       goto LABEL_8;
     }
 
@@ -118,87 +118,87 @@ LABEL_15:
   return v16;
 }
 
-- (id)appIconURLForSize:(CGSize)a3
+- (id)appIconURLForSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [(WLKChannelDetails *)self images];
-  v6 = [v5 bestArtworkVariantOfType:10 forSize:{width, height}];
+  height = size.height;
+  width = size.width;
+  images = [(WLKChannelDetails *)self images];
+  v6 = [images bestArtworkVariantOfType:10 forSize:{width, height}];
   v7 = [v6 artworkURLForSize:@"png" format:{width, height}];
 
   return v7;
 }
 
-- (WLKChannelDetails)initWithDictionary:(id)a3
+- (WLKChannelDetails)initWithDictionary:(id)dictionary
 {
   v58 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v56.receiver = self;
   v56.super_class = WLKChannelDetails;
   v5 = [(WLKChannelDetails *)&v56 init];
   if (v5)
   {
-    v6 = [v4 wlk_stringForKey:@"id"];
+    v6 = [dictionaryCopy wlk_stringForKey:@"id"];
     v7 = [v6 copy];
     channelID = v5->_channelID;
     v5->_channelID = v7;
 
-    v9 = [v4 wlk_stringForKey:@"title"];
+    v9 = [dictionaryCopy wlk_stringForKey:@"title"];
     v10 = [v9 copy];
     title = v5->_title;
     v5->_title = v10;
 
-    v12 = [v4 wlk_stringForKey:@"name"];
+    v12 = [dictionaryCopy wlk_stringForKey:@"name"];
     v13 = [v12 copy];
     name = v5->_name;
     v5->_name = v13;
 
-    v15 = [v4 wlk_arrayForKey:@"appAdamIds"];
+    v15 = [dictionaryCopy wlk_arrayForKey:@"appAdamIds"];
     v16 = [v15 copy];
     appAdamIDs = v5->_appAdamIDs;
     v5->_appAdamIDs = v16;
 
-    v18 = [v4 wlk_arrayForKey:@"appBundleIds"];
+    v18 = [dictionaryCopy wlk_arrayForKey:@"appBundleIds"];
     v19 = [v18 copy];
     appBundleIDs = v5->_appBundleIDs;
     v5->_appBundleIDs = v19;
 
-    v21 = [v4 wlk_stringForKey:@"appName"];
+    v21 = [dictionaryCopy wlk_stringForKey:@"appName"];
     v22 = [v21 copy];
     appName = v5->_appName;
     v5->_appName = v22;
 
-    v24 = [v4 wlk_stringForKey:@"appStoreUrl"];
+    v24 = [dictionaryCopy wlk_stringForKey:@"appStoreUrl"];
     v25 = [v24 copy];
     appStoreURLString = v5->_appStoreURLString;
     v5->_appStoreURLString = v25;
 
-    v5->_subscribed = [v4 wlk_BOOLForKey:@"isSubscribed" defaultValue:0];
-    v5->_itunes = [v4 wlk_BOOLForKey:@"isItunes" defaultValue:0];
-    v5->_firstParty = [v4 wlk_BOOLForKey:@"isFirstParty" defaultValue:0];
-    v5->_watchListEnabled = [v4 wlk_BOOLForKey:@"isWatchlistEnabled" defaultValue:0];
+    v5->_subscribed = [dictionaryCopy wlk_BOOLForKey:@"isSubscribed" defaultValue:0];
+    v5->_itunes = [dictionaryCopy wlk_BOOLForKey:@"isItunes" defaultValue:0];
+    v5->_firstParty = [dictionaryCopy wlk_BOOLForKey:@"isFirstParty" defaultValue:0];
+    v5->_watchListEnabled = [dictionaryCopy wlk_BOOLForKey:@"isWatchlistEnabled" defaultValue:0];
     v27 = [WLKArtworkVariantListing alloc];
-    v28 = [v4 wlk_dictionaryForKey:@"images"];
+    v28 = [dictionaryCopy wlk_dictionaryForKey:@"images"];
     v29 = [(WLKArtworkVariantListing *)v27 initWithArtworkDictionary:v28];
     images = v5->_images;
     v5->_images = v29;
 
-    v31 = [v4 wlk_dictionaryForKey:@"rateLimit"];
+    v31 = [dictionaryCopy wlk_dictionaryForKey:@"rateLimit"];
     v32 = [v31 copy];
     rateLimit = v5->_rateLimit;
     v5->_rateLimit = v32;
 
-    v5->_shouldTrackPlayActivity = [v4 wlk_BOOLForKey:@"shouldTrackPlayActivity" defaultValue:1];
-    v5->_consented = [v4 wlk_BOOLForKey:@"isConsented" defaultValue:0];
-    v5->_apSubscription = [v4 wlk_BOOLForKey:@"isApSubscription" defaultValue:0];
-    v34 = [v4 wlk_stringForKey:@"minWatchlistAppVersion"];
+    v5->_shouldTrackPlayActivity = [dictionaryCopy wlk_BOOLForKey:@"shouldTrackPlayActivity" defaultValue:1];
+    v5->_consented = [dictionaryCopy wlk_BOOLForKey:@"isConsented" defaultValue:0];
+    v5->_apSubscription = [dictionaryCopy wlk_BOOLForKey:@"isApSubscription" defaultValue:0];
+    v34 = [dictionaryCopy wlk_stringForKey:@"minWatchlistAppVersion"];
     minRequiredAppVersion = v5->_minRequiredAppVersion;
     v5->_minRequiredAppVersion = v34;
 
-    v36 = [v4 wlk_numberForKey:@"channelType"];
-    v37 = [v36 unsignedIntValue];
-    v5->_channelType = v37;
-    if (v5->_itunes || v37 == 1 || ([v4 wlk_numberForKey:@"isInstalled"], v38 = objc_claimAutoreleasedReturnValue(), v39 = objc_msgSend(v38, "isEqual:", &unk_288222D28), v38, v39))
+    v36 = [dictionaryCopy wlk_numberForKey:@"channelType"];
+    unsignedIntValue = [v36 unsignedIntValue];
+    v5->_channelType = unsignedIntValue;
+    if (v5->_itunes || unsignedIntValue == 1 || ([dictionaryCopy wlk_numberForKey:@"isInstalled"], v38 = objc_claimAutoreleasedReturnValue(), v39 = objc_msgSend(v38, "isEqual:", &unk_288222D28), v38, v39))
     {
       v5->_appInstalled = 1;
     }
@@ -207,12 +207,12 @@ LABEL_15:
     {
       v40 = objc_alloc_init(MEMORY[0x277CBEB18]);
       v41 = +[WLKAppLibrary defaultAppLibrary];
-      v42 = [v41 allAppBundleIdentifiers];
-      [v40 addObjectsFromArray:v42];
+      allAppBundleIdentifiers = [v41 allAppBundleIdentifiers];
+      [v40 addObjectsFromArray:allAppBundleIdentifiers];
 
       v43 = +[WLKAppLibrary defaultAppLibrary];
-      v44 = [v43 _nonConformingAppBundleIdentifiers];
-      [v40 addObjectsFromArray:v44];
+      _nonConformingAppBundleIdentifiers = [v43 _nonConformingAppBundleIdentifiers];
+      [v40 addObjectsFromArray:_nonConformingAppBundleIdentifiers];
 
       v54 = 0u;
       v55 = 0u;

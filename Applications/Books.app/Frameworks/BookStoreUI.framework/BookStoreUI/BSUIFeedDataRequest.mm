@@ -1,9 +1,9 @@
 @interface BSUIFeedDataRequest
 - (BSUIFeedDataRequest)init;
 - (NSArray)operations;
-- (void)addOperation:(id)a3;
+- (void)addOperation:(id)operation;
 - (void)cancelRequest;
-- (void)setPriority:(float)a3;
+- (void)setPriority:(float)priority;
 @end
 
 @implementation BSUIFeedDataRequest
@@ -29,20 +29,20 @@
   return v2;
 }
 
-- (void)addOperation:(id)a3
+- (void)addOperation:(id)operation
 {
-  v4 = a3;
-  if (v4)
+  operationCopy = operation;
+  if (operationCopy)
   {
     [(BSUIFeedDataRequest *)self priority];
-    [v4 setPriority:?];
+    [operationCopy setPriority:?];
     accessQueue = self->_accessQueue;
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = sub_35188;
     v6[3] = &unk_386D98;
     v6[4] = self;
-    v7 = v4;
+    v7 = operationCopy;
     dispatch_barrier_sync(accessQueue, v6);
   }
 }
@@ -55,14 +55,14 @@
   v10 = sub_352B0;
   v11 = sub_352C0;
   v12 = 0;
-  v3 = [(BSUIFeedDataRequest *)self accessQueue];
+  accessQueue = [(BSUIFeedDataRequest *)self accessQueue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_352C8;
   v6[3] = &unk_3870C8;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(accessQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -76,8 +76,8 @@
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(BSUIFeedDataRequest *)self operations];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  operations = [(BSUIFeedDataRequest *)self operations];
+  v3 = [operations countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = v3;
@@ -89,7 +89,7 @@
       {
         if (*v8 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(operations);
         }
 
         [*(*(&v7 + 1) + 8 * v6) cancel];
@@ -97,22 +97,22 @@
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v4 = [operations countByEnumeratingWithState:&v7 objects:v11 count:16];
     }
 
     while (v4);
   }
 }
 
-- (void)setPriority:(float)a3
+- (void)setPriority:(float)priority
 {
-  self->_priority = a3;
+  self->_priority = priority;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [(BSUIFeedDataRequest *)self operations];
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  operations = [(BSUIFeedDataRequest *)self operations];
+  v5 = [operations countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v7 = v5;
@@ -124,16 +124,16 @@
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(operations);
         }
 
-        *&v6 = a3;
+        *&v6 = priority;
         [*(*(&v10 + 1) + 8 * v9) setPriority:v6];
         v9 = v9 + 1;
       }
 
       while (v7 != v9);
-      v7 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [operations countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);

@@ -1,34 +1,34 @@
 @interface BRInterfaceAOP
 + (id)interface;
-+ (int)_convertClickState:(unint64_t)a3;
-+ (int)_convertForceFeel:(unint64_t)a3;
-- (BOOL)_serviceSetProperty:(void *)a3 forKey:(__CFString *)a4;
++ (int)_convertClickState:(unint64_t)state;
++ (int)_convertForceFeel:(unint64_t)feel;
+- (BOOL)_serviceSetProperty:(void *)property forKey:(__CFString *)key;
 - (BOOL)_setDefaultAOPConfigs;
-- (BOOL)_setGlobalAOPConfigsFromBRFConfigs:(id)a3;
-- (BOOL)_setStateAOPConfigsFromStateData:(id)a3 andSlotData:(id)a4;
-- (BOOL)disableStates:(id)a3 clearAsset:(BOOL)a4 error:(id *)a5;
-- (BOOL)enableStates:(id)a3 error:(id *)a4;
-- (BOOL)playState:(unint64_t)a3 forSpeed:(unint64_t)a4 error:(id *)a5;
-- (BOOL)setConfigs:(id)a3 withAssets:(id)a4 forStates:(id)a5 error:(id *)a6;
-- (BOOL)setGlobalConfigs:(id)a3 error:(id *)a4;
+- (BOOL)_setGlobalAOPConfigsFromBRFConfigs:(id)configs;
+- (BOOL)_setStateAOPConfigsFromStateData:(id)data andSlotData:(id)slotData;
+- (BOOL)disableStates:(id)states clearAsset:(BOOL)asset error:(id *)error;
+- (BOOL)enableStates:(id)states error:(id *)error;
+- (BOOL)playState:(unint64_t)state forSpeed:(unint64_t)speed error:(id *)error;
+- (BOOL)setConfigs:(id)configs withAssets:(id)assets forStates:(id)states error:(id *)error;
+- (BOOL)setGlobalConfigs:(id)configs error:(id *)error;
 - (BOOL)updateReadyState;
-- (BRInterfaceAOP)initWithFastHaptics:(BOOL)a3;
-- (id)dataForSlot:(id)a3 fromArray:(id)a4;
+- (BRInterfaceAOP)initWithFastHaptics:(BOOL)haptics;
+- (id)dataForSlot:(id)slot fromArray:(id)array;
 - (id)description;
 - (id)propertyList;
 - (unint64_t)unusedAssetSlots;
 - (void)_findService;
-- (void)_receiveLoaderAvailableNotification:(id)a3;
+- (void)_receiveLoaderAvailableNotification:(id)notification;
 - (void)dealloc;
-- (void)mergeStateChanges:(id)a3 into:(id)a4;
+- (void)mergeStateChanges:(id)changes into:(id)into;
 - (void)propertyList;
-- (void)scheduleReadyNotificationWithBlock:(id)a3;
+- (void)scheduleReadyNotificationWithBlock:(id)block;
 - (void)updateReadyState;
 @end
 
 @implementation BRInterfaceAOP
 
-- (BRInterfaceAOP)initWithFastHaptics:(BOOL)a3
+- (BRInterfaceAOP)initWithFastHaptics:(BOOL)haptics
 {
   v13.receiver = self;
   v13.super_class = BRInterfaceAOP;
@@ -36,7 +36,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_fastHaptics = a3;
+    v4->_fastHaptics = haptics;
     v4->_service = 0;
     v4->_connect = 0;
     v4->_notificationPort = 0;
@@ -59,9 +59,9 @@
     }
 
     [objc_msgSend(MEMORY[0x277CCAB98] "defaultCenter")];
-    v9 = [NSClassFromString(&cfstr_Habuttonhaptic_0.isa) sharedInstance];
-    v5->_loader = v9;
-    if (!v9 || (v5->_freeSlots = 0, v10 = objc_alloc_init(MEMORY[0x277CBEB18]), (v5->_slotArray = v10) == 0) || (v11 = objc_alloc_init(MEMORY[0x277CBEB38]), (v5->_stateDict = v11) == 0))
+    nSClassFromString(&cfstr_Habuttonhaptic_0.isa) = [NSClassFromString(&cfstr_Habuttonhaptic_0.isa) sharedInstance];
+    v5->_loader = nSClassFromString(&cfstr_Habuttonhaptic_0.isa);
+    if (!nSClassFromString(&cfstr_Habuttonhaptic_0.isa) || (v5->_freeSlots = 0, v10 = objc_alloc_init(MEMORY[0x277CBEB18]), (v5->_slotArray = v10) == 0) || (v11 = objc_alloc_init(MEMORY[0x277CBEB38]), (v5->_stateDict = v11) == 0))
     {
 LABEL_8:
       [BRInterfaceAOP initWithFastHaptics:?];
@@ -124,23 +124,23 @@ LABEL_8:
   v33.receiver = self;
   v33.super_class = BRInterfaceAOP;
   v3 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:{-[BRInterface propertyList](&v33, sel_propertyList)}];
-  v4 = [MEMORY[0x277CBEB18] array];
-  v5 = [MEMORY[0x277CBEB18] array];
-  v6 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
+  array3 = [MEMORY[0x277CBEB18] array];
   freeSlots = self->_freeSlots;
   if (freeSlots)
   {
-    v8 = [(NSMutableIndexSet *)freeSlots firstIndex];
-    if (v8 != 0x7FFFFFFFFFFFFFFFLL)
+    firstIndex = [(NSMutableIndexSet *)freeSlots firstIndex];
+    if (firstIndex != 0x7FFFFFFFFFFFFFFFLL)
     {
-      for (i = v8; i != 0x7FFFFFFFFFFFFFFFLL; i = [(NSMutableIndexSet *)self->_freeSlots indexGreaterThanIndex:i])
+      for (i = firstIndex; i != 0x7FFFFFFFFFFFFFFFLL; i = [(NSMutableIndexSet *)self->_freeSlots indexGreaterThanIndex:i])
       {
-        [v4 addObject:{objc_msgSend(MEMORY[0x277CCABB0], "numberWithUnsignedInteger:", i)}];
+        [array addObject:{objc_msgSend(MEMORY[0x277CCABB0], "numberWithUnsignedInteger:", i)}];
       }
     }
   }
 
-  [v3 setObject:v4 forKey:@"FreeSlots"];
+  [v3 setObject:array forKey:@"FreeSlots"];
   v31 = 0u;
   v32 = 0u;
   v29 = 0u;
@@ -163,7 +163,7 @@ LABEL_8:
         v15 = *(*(&v29 + 1) + 8 * j);
         if ([v15 propertyList])
         {
-          [v5 addObject:{objc_msgSend(v15, "propertyList")}];
+          [array2 addObject:{objc_msgSend(v15, "propertyList")}];
         }
       }
 
@@ -173,7 +173,7 @@ LABEL_8:
     while (v12);
   }
 
-  [v3 setObject:v5 forKey:@"SlotData"];
+  [v3 setObject:array2 forKey:@"SlotData"];
   v27 = 0u;
   v28 = 0u;
   v25 = 0u;
@@ -196,7 +196,7 @@ LABEL_8:
         v21 = [(NSMutableDictionary *)self->_stateDict objectForKeyedSubscript:*(*(&v25 + 1) + 8 * k)];
         if ([v21 propertyList])
         {
-          [v6 addObject:{objc_msgSend(v21, "propertyList")}];
+          [array3 addObject:{objc_msgSend(v21, "propertyList")}];
         }
       }
 
@@ -206,7 +206,7 @@ LABEL_8:
     while (v18);
   }
 
-  [v3 setObject:v6 forKey:@"StateData"];
+  [v3 setObject:array3 forKey:@"StateData"];
   v22 = _BRLog_log_0;
   if (!_BRLog_log_0)
   {
@@ -264,10 +264,10 @@ LABEL_8:
   return result;
 }
 
-- (BOOL)setGlobalConfigs:(id)a3 error:(id *)a4
+- (BOOL)setGlobalConfigs:(id)configs error:(id *)error
 {
   -[BRInterface timestampWithLabel:](self, "timestampWithLabel:", [MEMORY[0x277CCACA8] stringWithFormat:@"%@ %@", NSStringFromSelector(a2), @"start"]);
-  if ([(BRInterfaceAOP *)self _setGlobalAOPConfigsFromBRFConfigs:a3])
+  if ([(BRInterfaceAOP *)self _setGlobalAOPConfigsFromBRFConfigs:configs])
   {
     v8 = 0;
   }
@@ -276,9 +276,9 @@ LABEL_8:
   {
     v10 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:-536870167 userInfo:0];
     v8 = v10 != 0;
-    if (a4 && v10)
+    if (error && v10)
     {
-      *a4 = v10;
+      *error = v10;
       v8 = 1;
     }
   }
@@ -287,19 +287,19 @@ LABEL_8:
   return !v8;
 }
 
-- (BOOL)enableStates:(id)a3 error:(id *)a4
+- (BOOL)enableStates:(id)states error:(id *)error
 {
   v5 = a2;
   v40 = *MEMORY[0x277D85DE8];
   v7 = 0x277CCA000uLL;
   -[BRInterface timestampWithLabel:](self, "timestampWithLabel:", [MEMORY[0x277CCACA8] stringWithFormat:@"%@ %@", NSStringFromSelector(a2), @"start"]);
-  v8 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  obj = a3;
-  v29 = [a3 countByEnumeratingWithState:&v34 objects:v39 count:16];
+  obj = states;
+  v29 = [states countByEnumeratingWithState:&v34 objects:v39 count:16];
   if (v29)
   {
     v28 = *v35;
@@ -313,8 +313,8 @@ LABEL_8:
           objc_enumerationMutation(obj);
         }
 
-        v10 = [*(*(&v34 + 1) + 8 * i) unsignedIntegerValue];
-        if (v10 > 0x10 || (v11 = v10, v32 = 0u, v33 = 0u, v30 = 0u, v31 = 0u, stateDict = self->_stateDict, (v13 = [(NSMutableDictionary *)stateDict countByEnumeratingWithState:&v30 objects:v38 count:16]) == 0))
+        unsignedIntegerValue = [*(*(&v34 + 1) + 8 * i) unsignedIntegerValue];
+        if (unsignedIntegerValue > 0x10 || (v11 = unsignedIntegerValue, v32 = 0u, v33 = 0u, v30 = 0u, v31 = 0u, stateDict = self->_stateDict, (v13 = [(NSMutableDictionary *)stateDict countByEnumeratingWithState:&v30 objects:v38 count:16]) == 0))
         {
 LABEL_21:
           v21 = -536870206;
@@ -360,7 +360,7 @@ LABEL_9:
 
         v19 = v18;
         [v18 setEnabled:1];
-        [v8 setObject:v19 forKeyedSubscript:{objc_msgSend(MEMORY[0x277CCABB0], "numberWithUnsignedInteger:", v11)}];
+        [dictionary setObject:v19 forKeyedSubscript:{objc_msgSend(MEMORY[0x277CCABB0], "numberWithUnsignedInteger:", v11)}];
       }
 
       v5 = v25;
@@ -375,9 +375,9 @@ LABEL_9:
     }
   }
 
-  if ([(BRInterfaceAOP *)self _setStateAOPConfigsFromStateData:v8 andSlotData:self->_slotArray])
+  if ([(BRInterfaceAOP *)self _setStateAOPConfigsFromStateData:dictionary andSlotData:self->_slotArray])
   {
-    [(BRInterfaceAOP *)self mergeStateChanges:v8 into:self->_stateDict];
+    [(BRInterfaceAOP *)self mergeStateChanges:dictionary into:self->_stateDict];
     v20 = 0;
   }
 
@@ -387,9 +387,9 @@ LABEL_9:
 LABEL_22:
     v22 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:v21 userInfo:0];
     v20 = v22 != 0;
-    if (a4 && v22)
+    if (error && v22)
     {
-      *a4 = v22;
+      *error = v22;
       v20 = 1;
     }
   }
@@ -399,18 +399,18 @@ LABEL_22:
   return !v20;
 }
 
-- (BOOL)disableStates:(id)a3 clearAsset:(BOOL)a4 error:(id *)a5
+- (BOOL)disableStates:(id)states clearAsset:(BOOL)asset error:(id *)error
 {
-  v40 = a4;
+  assetCopy = asset;
   v65 = *MEMORY[0x277D85DE8];
   -[BRInterface timestampWithLabel:](self, "timestampWithLabel:", [MEMORY[0x277CCACA8] stringWithFormat:@"%@ %@", NSStringFromSelector(a2), @"start"]);
-  v44 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v57 = 0u;
   v58 = 0u;
   v59 = 0u;
   v60 = 0u;
-  obj = a3;
-  v7 = [a3 countByEnumeratingWithState:&v57 objects:v64 count:16];
+  obj = states;
+  v7 = [states countByEnumeratingWithState:&v57 objects:v64 count:16];
   if (v7)
   {
     v8 = v7;
@@ -424,14 +424,14 @@ LABEL_22:
           objc_enumerationMutation(obj);
         }
 
-        v10 = [*(*(&v57 + 1) + 8 * i) unsignedIntegerValue];
-        if (v10 > 0x10)
+        unsignedIntegerValue = [*(*(&v57 + 1) + 8 * i) unsignedIntegerValue];
+        if (unsignedIntegerValue > 0x10)
         {
           v34 = -536870206;
           goto LABEL_45;
         }
 
-        v11 = v10;
+        v11 = unsignedIntegerValue;
         v55 = 0u;
         v56 = 0u;
         v53 = 0u;
@@ -459,7 +459,7 @@ LABEL_22:
                 {
                   v19 = v18;
                   [v18 setEnabled:0];
-                  [v44 setObject:v19 forKeyedSubscript:{objc_msgSend(MEMORY[0x277CCABB0], "numberWithUnsignedInteger:", v11)}];
+                  [dictionary setObject:v19 forKeyedSubscript:{objc_msgSend(MEMORY[0x277CCABB0], "numberWithUnsignedInteger:", v11)}];
                 }
 
                 goto LABEL_18;
@@ -490,15 +490,15 @@ LABEL_18:
     }
   }
 
-  if ([(BRInterfaceAOP *)self _setStateAOPConfigsFromStateData:v44 andSlotData:self->_slotArray])
+  if ([(BRInterfaceAOP *)self _setStateAOPConfigsFromStateData:dictionary andSlotData:self->_slotArray])
   {
-    if (v40)
+    if (assetCopy)
     {
       v51 = 0u;
       v52 = 0u;
       v49 = 0u;
       v50 = 0u;
-      v41 = [v44 countByEnumeratingWithState:&v49 objects:v62 count:16];
+      v41 = [dictionary countByEnumeratingWithState:&v49 objects:v62 count:16];
       if (v41)
       {
         v39 = *v50;
@@ -509,17 +509,17 @@ LABEL_18:
           {
             if (*v50 != v39)
             {
-              objc_enumerationMutation(v44);
+              objc_enumerationMutation(dictionary);
             }
 
             v43 = v20;
-            v21 = [v44 objectForKeyedSubscript:*(*(&v49 + 1) + 8 * v20)];
+            v21 = [dictionary objectForKeyedSubscript:*(*(&v49 + 1) + 8 * v20)];
             v45 = 0u;
             v46 = 0u;
             v47 = 0u;
             v48 = 0u;
-            v22 = [v21 speedSlots];
-            v23 = [v22 countByEnumeratingWithState:&v45 objects:v61 count:16];
+            speedSlots = [v21 speedSlots];
+            v23 = [speedSlots countByEnumeratingWithState:&v45 objects:v61 count:16];
             if (v23)
             {
               v24 = v23;
@@ -530,7 +530,7 @@ LABEL_18:
                 {
                   if (*v46 != v25)
                   {
-                    objc_enumerationMutation(v22);
+                    objc_enumerationMutation(speedSlots);
                   }
 
                   v27 = -[BRInterfaceAOP dataForSlot:fromArray:](self, "dataForSlot:fromArray:", [objc_msgSend(v21 "speedSlots")], self->_slotArray);
@@ -546,7 +546,7 @@ LABEL_18:
                   }
                 }
 
-                v24 = [v22 countByEnumeratingWithState:&v45 objects:v61 count:16];
+                v24 = [speedSlots countByEnumeratingWithState:&v45 objects:v61 count:16];
               }
 
               while (v24);
@@ -556,7 +556,7 @@ LABEL_18:
           }
 
           while (v43 + 1 != v41);
-          v41 = [v44 countByEnumeratingWithState:&v49 objects:v62 count:16];
+          v41 = [dictionary countByEnumeratingWithState:&v49 objects:v62 count:16];
         }
 
         while (v41);
@@ -567,7 +567,7 @@ LABEL_18:
 
     else
     {
-      [(BRInterfaceAOP *)self mergeStateChanges:v44 into:self->_stateDict];
+      [(BRInterfaceAOP *)self mergeStateChanges:dictionary into:self->_stateDict];
     }
 
     v29 = 0;
@@ -581,7 +581,7 @@ LABEL_42:
 LABEL_45:
   v35 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:v34 userInfo:0];
   v29 = v35 != 0;
-  if (!a5)
+  if (!error)
   {
     goto LABEL_42;
   }
@@ -590,7 +590,7 @@ LABEL_45:
   v31 = 0x277CCA000;
   if (v35)
   {
-    *a5 = v35;
+    *error = v35;
     v29 = 1;
   }
 
@@ -600,10 +600,10 @@ LABEL_43:
   return !v29;
 }
 
-- (id)dataForSlot:(id)a3 fromArray:(id)a4
+- (id)dataForSlot:(id)slot fromArray:(id)array
 {
   v18 = *MEMORY[0x277D85DE8];
-  if (a3 && [a3 integerValue] != -1 && (v15 = 0u, v16 = 0u, v13 = 0u, v14 = 0u, (v6 = objc_msgSend(a4, "countByEnumeratingWithState:objects:count:", &v13, v17, 16)) != 0))
+  if (slot && [slot integerValue] != -1 && (v15 = 0u, v16 = 0u, v13 = 0u, v14 = 0u, (v6 = objc_msgSend(array, "countByEnumeratingWithState:objects:count:", &v13, v17, 16)) != 0))
   {
     v7 = v6;
     v8 = *v14;
@@ -613,18 +613,18 @@ LABEL_5:
     {
       if (*v14 != v8)
       {
-        objc_enumerationMutation(a4);
+        objc_enumerationMutation(array);
       }
 
       v10 = *(*(&v13 + 1) + 8 * v9);
-      if ([a3 isEqualToNumber:{objc_msgSend(v10, "slot")}])
+      if ([slot isEqualToNumber:{objc_msgSend(v10, "slot")}])
       {
         break;
       }
 
       if (v7 == ++v9)
       {
-        v7 = [a4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v7 = [array countByEnumeratingWithState:&v13 objects:v17 count:16];
         v10 = 0;
         if (v7)
         {
@@ -645,14 +645,14 @@ LABEL_5:
   return v10;
 }
 
-- (void)mergeStateChanges:(id)a3 into:(id)a4
+- (void)mergeStateChanges:(id)changes into:(id)into
 {
   v16 = *MEMORY[0x277D85DE8];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = [a3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v6 = [changes countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -664,15 +664,15 @@ LABEL_5:
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(changes);
         }
 
-        [a4 setObject:objc_msgSend(a3 forKeyedSubscript:{"objectForKeyedSubscript:", *(*(&v11 + 1) + 8 * v9)), *(*(&v11 + 1) + 8 * v9)}];
+        [into setObject:objc_msgSend(changes forKeyedSubscript:{"objectForKeyedSubscript:", *(*(&v11 + 1) + 8 * v9)), *(*(&v11 + 1) + 8 * v9)}];
         ++v9;
       }
 
       while (v7 != v9);
-      v7 = [a3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [changes countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
@@ -681,14 +681,14 @@ LABEL_5:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)playState:(unint64_t)a3 forSpeed:(unint64_t)a4 error:(id *)a5
+- (BOOL)playState:(unint64_t)state forSpeed:(unint64_t)speed error:(id *)error
 {
   v12 = *MEMORY[0x277D85DE8];
-  -[BRInterface timestampWithLabel:](self, "timestampWithLabel:", [MEMORY[0x277CCACA8] stringWithFormat:@"%@ %@", NSStringFromSelector(a2), @"start", a4, a3, 0, v12]);
+  -[BRInterface timestampWithLabel:](self, "timestampWithLabel:", [MEMORY[0x277CCACA8] stringWithFormat:@"%@ %@", NSStringFromSelector(a2), @"start", speed, state, 0, v12]);
   v8 = IOConnectCallScalarMethod(self->_connect, 2u, &input, 3u, 0, 0);
   if (v8)
   {
-    [BRInterfaceAOP playState:a5 forSpeed:? error:?];
+    [BRInterfaceAOP playState:error forSpeed:? error:?];
   }
 
   -[BRInterface timestampWithLabel:](self, "timestampWithLabel:", [MEMORY[0x277CCACA8] stringWithFormat:@"%@ %@", NSStringFromSelector(a2), @"end"]);
@@ -696,16 +696,16 @@ LABEL_5:
   return v8 == 0;
 }
 
-- (void)scheduleReadyNotificationWithBlock:(id)a3
+- (void)scheduleReadyNotificationWithBlock:(id)block
 {
-  v5 = [(BRInterface *)self queue];
+  queue = [(BRInterface *)self queue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __53__BRInterfaceAOP_scheduleReadyNotificationWithBlock___block_invoke;
   v6[3] = &unk_278D3F360;
   v6[4] = self;
-  v6[5] = a3;
-  dispatch_sync(v5, v6);
+  v6[5] = block;
+  dispatch_sync(queue, v6);
   [(BRInterfaceAOP *)self _findService];
 }
 
@@ -738,10 +738,10 @@ uint64_t __53__BRInterfaceAOP_scheduleReadyNotificationWithBlock___block_invoke(
       v6 = "NO";
     }
 
-    v7 = [(HAButtonHapticsLoader *)self->_loader serviceAvailable];
+    serviceAvailable = [(HAButtonHapticsLoader *)self->_loader serviceAvailable];
     *v11 = 136315650;
     *&v11[4] = "[BRInterfaceAOP updateReadyState]";
-    if (v7)
+    if (serviceAvailable)
     {
       v8 = "YES";
     }
@@ -774,15 +774,15 @@ uint64_t __53__BRInterfaceAOP_scheduleReadyNotificationWithBlock___block_invoke(
 
     if ([(HAButtonHapticsLoader *)self->_loader maxNumberOfSlots]< 1)
     {
-      v5 = 0;
+      maxNumberOfSlots = 0;
     }
 
     else
     {
-      v5 = [(HAButtonHapticsLoader *)self->_loader maxNumberOfSlots];
+      maxNumberOfSlots = [(HAButtonHapticsLoader *)self->_loader maxNumberOfSlots];
     }
 
-    self->_maxAssetSlots = v5;
+    self->_maxAssetSlots = maxNumberOfSlots;
     self->_freeSlots = [objc_alloc(MEMORY[0x277CCAB58]) initWithIndexesInRange:{0, self->_maxAssetSlots}];
     [(BRInterfaceAOP *)self _setDefaultAOPConfigs];
     self->_isReady = 1;
@@ -806,16 +806,16 @@ uint64_t __53__BRInterfaceAOP_scheduleReadyNotificationWithBlock___block_invoke(
 
 - (void)_findService
 {
-  v3 = [(BRInterface *)self queue];
+  queue = [(BRInterface *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __30__BRInterfaceAOP__findService__block_invoke;
   block[3] = &unk_278D3F310;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
-- (void)_receiveLoaderAvailableNotification:(id)a3
+- (void)_receiveLoaderAvailableNotification:(id)notification
 {
   v5 = _BRLog_log_0;
   if (!_BRLog_log_0)
@@ -829,19 +829,19 @@ uint64_t __53__BRInterfaceAOP_scheduleReadyNotificationWithBlock___block_invoke(
     [BRInterfaceAOP _receiveLoaderAvailableNotification:];
   }
 
-  if ([objc_msgSend(a3 "name")])
+  if ([objc_msgSend(notification "name")])
   {
-    v6 = [(BRInterface *)self queue];
+    queue = [(BRInterface *)self queue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __54__BRInterfaceAOP__receiveLoaderAvailableNotification___block_invoke;
     block[3] = &unk_278D3F310;
     block[4] = self;
-    dispatch_async(v6, block);
+    dispatch_async(queue, block);
   }
 }
 
-- (BOOL)_serviceSetProperty:(void *)a3 forKey:(__CFString *)a4
+- (BOOL)_serviceSetProperty:(void *)property forKey:(__CFString *)key
 {
   v7 = _BRLog_log_0;
   if (!_BRLog_log_0)
@@ -855,7 +855,7 @@ uint64_t __53__BRInterfaceAOP_scheduleReadyNotificationWithBlock___block_invoke(
     [BRInterfaceAOP _serviceSetProperty:forKey:];
   }
 
-  v8 = IORegistryEntrySetCFProperty(self->_service, a4, a3);
+  v8 = IORegistryEntrySetCFProperty(self->_service, key, property);
   if (v8)
   {
     [BRInterfaceAOP _serviceSetProperty:? forKey:?];
@@ -864,33 +864,33 @@ uint64_t __53__BRInterfaceAOP_scheduleReadyNotificationWithBlock___block_invoke(
   return v8 == 0;
 }
 
-+ (int)_convertForceFeel:(unint64_t)a3
++ (int)_convertForceFeel:(unint64_t)feel
 {
-  if (a3 >= 3)
+  if (feel >= 3)
   {
     return 3;
   }
 
   else
   {
-    return a3;
+    return feel;
   }
 }
 
-+ (int)_convertClickState:(unint64_t)a3
++ (int)_convertClickState:(unint64_t)state
 {
-  if (a3 >= 0x11)
+  if (state >= 0x11)
   {
     return 17;
   }
 
   else
   {
-    return a3;
+    return state;
   }
 }
 
-- (BOOL)setConfigs:(id)a3 withAssets:(id)a4 forStates:(id)a5 error:(id *)a6
+- (BOOL)setConfigs:(id)configs withAssets:(id)assets forStates:(id)states error:(id *)error
 {
   v201 = *MEMORY[0x277D85DE8];
   v184 = 0;
@@ -899,9 +899,9 @@ uint64_t __53__BRInterfaceAOP_scheduleReadyNotificationWithBlock___block_invoke(
   v124 = NSStringFromSelector(a2);
   [v11 stringWithFormat:@"%@ %@"];
   [OUTLINED_FUNCTION_4() timestampWithLabel:?];
-  v138 = a3;
-  v131 = a6;
-  if (!a3 || !a4)
+  configsCopy = configs;
+  errorCopy = error;
+  if (!configs || !assets)
   {
 LABEL_132:
     v121 = MEMORY[0x277CCA9B8];
@@ -913,19 +913,19 @@ LABEL_132:
   v133 = [(NSMutableIndexSet *)self->_freeSlots mutableCopy];
   obj = [MEMORY[0x277CBEB38] dictionary];
   v12 = [objc_alloc(MEMORY[0x277CBEB18]) initWithArray:self->_slotArray copyItems:1];
-  v129 = [MEMORY[0x277CBEB18] array];
-  v13 = [a5 count];
-  v148 = self;
-  v140 = a5;
-  v142 = a4;
+  array = [MEMORY[0x277CBEB18] array];
+  v13 = [states count];
+  selfCopy = self;
+  statesCopy = states;
+  assetsCopy = assets;
   if (v13)
   {
     v21 = 0;
     v135 = @"Speed";
     do
     {
-      v22 = [objc_msgSend(a5 objectAtIndexedSubscript:{v21), "unsignedIntegerValue"}];
-      v23 = [v138 objectAtIndexedSubscript:v21];
+      v22 = [objc_msgSend(states objectAtIndexedSubscript:{v21), "unsignedIntegerValue"}];
+      v23 = [configsCopy objectAtIndexedSubscript:v21];
       v24 = [v23 objectForKeyedSubscript:@"Speed"] ? objc_msgSend(objc_msgSend(v23, "objectForKeyedSubscript:", @"Speed"), "unsignedIntegerValue") : 3;
       if (v22 > 0x10)
       {
@@ -951,15 +951,15 @@ LABEL_132:
               objc_enumerationMutation(stateDict);
             }
 
-            v30 = [(NSMutableDictionary *)v148->_stateDict objectForKeyedSubscript:*(*(&v180 + 1) + 8 * i)];
+            v30 = [(NSMutableDictionary *)selfCopy->_stateDict objectForKeyedSubscript:*(*(&v180 + 1) + 8 * i)];
             if ([v30 state] == v22)
             {
               v178 = 0u;
               v179 = 0u;
               v176 = 0u;
               v177 = 0u;
-              v31 = [v30 speedSlots];
-              v32 = [v31 countByEnumeratingWithState:&v176 objects:v200 count:16];
+              speedSlots = [v30 speedSlots];
+              v32 = [speedSlots countByEnumeratingWithState:&v176 objects:v200 count:16];
               if (v32)
               {
                 v33 = v32;
@@ -971,13 +971,13 @@ LABEL_132:
                     OUTLINED_FUNCTION_5(v177);
                     if (!v36)
                     {
-                      objc_enumerationMutation(v31);
+                      objc_enumerationMutation(speedSlots);
                     }
 
                     v37 = *(*(&v176 + 1) + 8 * j);
                     if ([v37 unsignedIntegerValue] == v24)
                     {
-                      v38 = -[BRInterfaceAOP dataForSlot:fromArray:](v148, "dataForSlot:fromArray:", [objc_msgSend(v30 "speedSlots")], v12);
+                      v38 = -[BRInterfaceAOP dataForSlot:fromArray:](selfCopy, "dataForSlot:fromArray:", [objc_msgSend(v30 "speedSlots")], v12);
                       if (v38)
                       {
                         [v38 setRefCount:{objc_msgSend(v38, "refCount") - 1}];
@@ -987,7 +987,7 @@ LABEL_132:
                     }
                   }
 
-                  v33 = [v31 countByEnumeratingWithState:&v176 objects:v200 count:16];
+                  v33 = [speedSlots countByEnumeratingWithState:&v176 objects:v200 count:16];
                   if (v33)
                   {
                     continue;
@@ -1013,10 +1013,10 @@ LABEL_132:
 
 LABEL_29:
       ++v21;
-      a5 = v140;
-      v13 = [v140 count];
-      self = v148;
-      a4 = v142;
+      states = statesCopy;
+      v13 = [statesCopy count];
+      self = selfCopy;
+      assets = assetsCopy;
     }
 
     while (v21 < v13);
@@ -1026,7 +1026,7 @@ LABEL_29:
   v175 = 0u;
   v172 = 0u;
   v173 = 0u;
-  v39 = OUTLINED_FUNCTION_8(v13, v14, v15, v16, v17, v18, v19, v20, v124, @"start", 96, 88, v129, v131, aSelector, v133, v135, v137, v138, v140, v142, v144, obj, v148, v150, *(&v150 + 1), v151, *(&v151 + 1), v152, *(&v152 + 1), v153, *(&v153 + 1), v154, *(&v154 + 1), v155, *(&v155 + 1), v156, *(&v156 + 1), v157, *(&v157 + 1), v158, *(&v158 + 1), v159, *(&v159 + 1), v160, *(&v160 + 1), v161, *(&v161 + 1), v162, *(&v162 + 1), v163, *(&v163 + 1), v164, *(&v164 + 1), v165, *(&v165 + 1), v166, v167, v168, *(&v168 + 1), v169, *(&v169 + 1), v170);
+  v39 = OUTLINED_FUNCTION_8(v13, v14, v15, v16, v17, v18, v19, v20, v124, @"start", 96, 88, array, errorCopy, aSelector, v133, v135, v137, configsCopy, statesCopy, assetsCopy, v144, obj, selfCopy, v150, *(&v150 + 1), v151, *(&v151 + 1), v152, *(&v152 + 1), v153, *(&v153 + 1), v154, *(&v154 + 1), v155, *(&v155 + 1), v156, *(&v156 + 1), v157, *(&v157 + 1), v158, *(&v158 + 1), v159, *(&v159 + 1), v160, *(&v160 + 1), v161, *(&v161 + 1), v162, *(&v162 + 1), v163, *(&v163 + 1), v164, *(&v164 + 1), v165, *(&v165 + 1), v166, v167, v168, *(&v168 + 1), v169, *(&v169 + 1), v170);
   if (v39)
   {
     v41 = v39;
@@ -1040,18 +1040,18 @@ LABEL_29:
       {
         if (*v173 != v42)
         {
-          objc_enumerationMutation(a4);
+          objc_enumerationMutation(assets);
         }
 
         v44 = *(*(&v172 + 1) + 8 * v43);
-        v45 = [v44 isNull];
-        if ((v45 & 1) == 0)
+        isNull = [v44 isNull];
+        if ((isNull & 1) == 0)
         {
           v170 = 0u;
           v171 = 0u;
           v168 = 0u;
           v169 = 0u;
-          v53 = OUTLINED_FUNCTION_2(v45, v46, &v168, v199);
+          v53 = OUTLINED_FUNCTION_2(isNull, v46, &v168, v199);
           if (v53)
           {
             v54 = v53;
@@ -1070,7 +1070,7 @@ LABEL_29:
                 v58 = [objc_msgSend(v57 "asset")];
                 if (v58)
                 {
-                  v45 = [v57 setRefCount:{objc_msgSend(v57, "refCount") + 1}];
+                  isNull = [v57 setRefCount:{objc_msgSend(v57, "refCount") + 1}];
                   goto LABEL_52;
                 }
               }
@@ -1149,12 +1149,12 @@ LABEL_29:
 
             [v44 setHasAudio:HIBYTE(v167)];
             [v44 setHasHaptic:BYTE6(v167)];
-            a4 = v143;
+            assets = v143;
           }
 
           [(BRSlotData *)v60 setAsset:v44];
           [(BRSlotData *)v60 setRefCount:1];
-          v45 = [v12 addObject:v60];
+          isNull = [v12 addObject:v60];
         }
 
 LABEL_52:
@@ -1162,7 +1162,7 @@ LABEL_52:
       }
 
       while (v43 != v41);
-      v66 = OUTLINED_FUNCTION_8(v45, v46, v47, v48, v49, v50, v51, v52, v125, v126, v127, v128, v130, v131, aSelector, v134, v136, *(&v136 + 1), v139, v141, v143, v145, obja, v149, v150, *(&v150 + 1), v151, *(&v151 + 1), v152, *(&v152 + 1), v153, *(&v153 + 1), v154, *(&v154 + 1), v155, *(&v155 + 1), v156, *(&v156 + 1), v157, *(&v157 + 1), v158, *(&v158 + 1), v159, *(&v159 + 1), v160, *(&v160 + 1), v161, *(&v161 + 1), v162, *(&v162 + 1), v163, *(&v163 + 1), v164, *(&v164 + 1), v165, *(&v165 + 1), v166, v167, v168, *(&v168 + 1), v169, *(&v169 + 1), v170);
+      v66 = OUTLINED_FUNCTION_8(isNull, v46, v47, v48, v49, v50, v51, v52, v125, v126, v127, v128, v130, errorCopy, aSelector, v134, v136, *(&v136 + 1), v139, v141, v143, v145, obja, v149, v150, *(&v150 + 1), v151, *(&v151 + 1), v152, *(&v152 + 1), v153, *(&v153 + 1), v154, *(&v154 + 1), v155, *(&v155 + 1), v156, *(&v156 + 1), v157, *(&v157 + 1), v158, *(&v158 + 1), v159, *(&v159 + 1), v160, *(&v160 + 1), v161, *(&v161 + 1), v162, *(&v162 + 1), v163, *(&v163 + 1), v164, *(&v164 + 1), v165, *(&v165 + 1), v166, v167, v168, *(&v168 + 1), v169, *(&v169 + 1), v170);
       v41 = v66;
     }
 
@@ -1191,16 +1191,16 @@ LABEL_52:
         }
 
         v74 = *(*(&v162 + 1) + 8 * m);
-        v75 = [v74 refCount];
-        if (!v75)
+        refCount = [v74 refCount];
+        if (!refCount)
         {
           [objc_msgSend(v74 "slot")];
           [OUTLINED_FUNCTION_4() addIndex:?];
-          v75 = [v130 addObject:v74];
+          refCount = [v130 addObject:v74];
         }
       }
 
-      v71 = OUTLINED_FUNCTION_2(v75, v76, &v162, v188);
+      v71 = OUTLINED_FUNCTION_2(refCount, v76, &v162, v188);
     }
 
     while (v71);
@@ -1238,13 +1238,13 @@ LABEL_107:
           }
 
           v110 = *(*(&v150 + 1) + 8 * v109);
-          v111 = [v110 isProgrammed];
-          if ((v111 & 1) == 0)
+          isProgrammed = [v110 isProgrammed];
+          if ((isProgrammed & 1) == 0)
           {
-            v113 = [v110 asset];
-            if (([v113 isNull] & 1) == 0)
+            asset = [v110 asset];
+            if (([asset isNull] & 1) == 0)
             {
-              v114 = [v103[10] loadButtonHapticOfType:objc_msgSend(v113 withParameters:"type") atSlot:objc_msgSend(v113 error:{"parameters"), objc_msgSend(objc_msgSend(v110, "slot"), "integerValue"), &v184}];
+              v114 = [v103[10] loadButtonHapticOfType:objc_msgSend(asset withParameters:"type") atSlot:objc_msgSend(asset error:{"parameters"), objc_msgSend(objc_msgSend(v110, "slot"), "integerValue"), &v184}];
               v115 = _BRLog_log_0;
               if (!_BRLog_log_0)
               {
@@ -1254,7 +1254,7 @@ LABEL_107:
 
               if (os_log_type_enabled(v115, OS_LOG_TYPE_DEBUG))
               {
-                v116 = [v110 slot];
+                slot = [v110 slot];
                 *buf = 136315906;
                 v117 = "NO";
                 if (v114)
@@ -1264,9 +1264,9 @@ LABEL_107:
 
                 v190 = "[BRInterfaceAOP setConfigs:withAssets:forStates:error:]";
                 v191 = 2112;
-                v192 = v113;
+                v192 = asset;
                 v193 = 2112;
-                v194 = v116;
+                v194 = slot;
                 v195 = 2080;
                 v196 = v117;
                 _os_log_debug_impl(&dword_242149000, v115, OS_LOG_TYPE_DEBUG, "%s loaded asset: %@ at slot: %@ success: %s", buf, 0x2Au);
@@ -1279,14 +1279,14 @@ LABEL_107:
               }
             }
 
-            v111 = [v110 setIsProgrammed:1];
+            isProgrammed = [v110 setIsProgrammed:1];
           }
 
           ++v109;
         }
 
         while (v107 != v109);
-        v118 = OUTLINED_FUNCTION_2(v111, v112, &v150, v185);
+        v118 = OUTLINED_FUNCTION_2(isProgrammed, v112, &v150, v185);
         v107 = v118;
       }
 
@@ -1316,7 +1316,7 @@ LABEL_133:
   while (1)
   {
     v78 = [objc_msgSend(v70 objectAtIndexedSubscript:{v77), "unsignedIntegerValue"}];
-    v79 = [a4 objectAtIndexedSubscript:v77];
+    v79 = [assets objectAtIndexedSubscript:v77];
     v80 = [v139 objectAtIndexedSubscript:v77];
     if ([v80 objectForKeyedSubscript:@"Speed"])
     {
@@ -1371,12 +1371,12 @@ LABEL_88:
 LABEL_89:
     v86 = 0x277CCA000;
     [(NSMutableDictionary *)[(BRStateData *)v85 speedConfigs] setObject:v80 forKeyedSubscript:OUTLINED_FUNCTION_9()];
-    v87 = [v79 isNull];
-    if (v87)
+    isNull2 = [v79 isNull];
+    if (isNull2)
     {
-      v89 = [(BRStateData *)v85 speedSlots];
+      speedSlots2 = [(BRStateData *)v85 speedSlots];
       v90 = OUTLINED_FUNCTION_9();
-      v91 = v89;
+      v91 = speedSlots2;
       v92 = &unk_285467E68;
 LABEL_102:
       [v91 setObject:v92 forKeyedSubscript:v90];
@@ -1387,7 +1387,7 @@ LABEL_102:
     v157 = 0u;
     v154 = 0u;
     v155 = 0u;
-    v93 = OUTLINED_FUNCTION_2(v87, v88, &v154, v186);
+    v93 = OUTLINED_FUNCTION_2(isNull2, v88, &v154, v186);
     if (v93)
     {
       break;
@@ -1397,7 +1397,7 @@ LABEL_103:
     [obja setObject:v85 forKeyedSubscript:{objc_msgSend(*(v86 + 2992), "numberWithUnsignedInteger:", v78)}];
     ++v77;
     v70 = v141;
-    a4 = v143;
+    assets = v143;
     if (v77 >= [v141 count])
     {
       goto LABEL_107;
@@ -1438,31 +1438,31 @@ LABEL_93:
 
   if ([v97 slot])
   {
-    v100 = [v97 slot];
-    v101 = [(BRStateData *)v85 speedSlots];
+    slot2 = [v97 slot];
+    speedSlots3 = [(BRStateData *)v85 speedSlots];
     v86 = 0x277CCA000uLL;
     v90 = OUTLINED_FUNCTION_9();
-    v91 = v101;
-    v92 = v100;
+    v91 = speedSlots3;
+    v92 = slot2;
     goto LABEL_102;
   }
 
   v86 = 0x277CCA000uLL;
   if ([v134 count])
   {
-    v102 = [v134 firstIndex];
-    [v134 removeIndex:v102];
-    [v97 setSlot:{objc_msgSend(MEMORY[0x277CCABB0], "numberWithUnsignedInteger:", v102)}];
-    -[NSMutableDictionary setObject:forKeyedSubscript:](-[BRStateData speedSlots](v85, "speedSlots"), "setObject:forKeyedSubscript:", [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v102], OUTLINED_FUNCTION_9());
+    firstIndex = [v134 firstIndex];
+    [v134 removeIndex:firstIndex];
+    [v97 setSlot:{objc_msgSend(MEMORY[0x277CCABB0], "numberWithUnsignedInteger:", firstIndex)}];
+    -[NSMutableDictionary setObject:forKeyedSubscript:](-[BRStateData speedSlots](v85, "speedSlots"), "setObject:forKeyedSubscript:", [MEMORY[0x277CCABB0] numberWithUnsignedInteger:firstIndex], OUTLINED_FUNCTION_9());
     [v97 setIsProgrammed:0];
     goto LABEL_103;
   }
 
   v184 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:-536870210 userInfo:0];
 LABEL_128:
-  if (v131 && v184)
+  if (errorCopy && v184)
   {
-    *v131 = v184;
+    *errorCopy = v184;
   }
 
   [MEMORY[0x277CCACA8] stringWithFormat:@"%@ %@", NSStringFromSelector(aSelector), @"end"];
@@ -1506,13 +1506,13 @@ void __30__BRInterfaceAOP__findService__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (BOOL)_setGlobalAOPConfigsFromBRFConfigs:(id)a3
+- (BOOL)_setGlobalAOPConfigsFromBRFConfigs:(id)configs
 {
   v10[1] = *MEMORY[0x277D85DE8];
-  v5 = [a3 count];
+  v5 = [configs count];
   if (v5)
   {
-    v6 = +[BRInterfaceAOP _convertForceFeel:](BRInterfaceAOP, "_convertForceFeel:", [objc_msgSend(a3 objectForKeyedSubscript:{@"ForceFeel", "unsignedIntegerValue"}]);
+    v6 = +[BRInterfaceAOP _convertForceFeel:](BRInterfaceAOP, "_convertForceFeel:", [objc_msgSend(configs objectForKeyedSubscript:{@"ForceFeel", "unsignedIntegerValue"}]);
     if (v6 == 3)
     {
       LOBYTE(v5) = 0;
@@ -1530,22 +1530,22 @@ void __30__BRInterfaceAOP__findService__block_invoke(uint64_t a1)
   return v5;
 }
 
-- (BOOL)_setStateAOPConfigsFromStateData:(id)a3 andSlotData:(id)a4
+- (BOOL)_setStateAOPConfigsFromStateData:(id)data andSlotData:(id)slotData
 {
   v66[18] = *MEMORY[0x277D85DE8];
-  v54 = [MEMORY[0x277CBEB18] array];
-  v5 = [a3 count];
+  array = [MEMORY[0x277CBEB18] array];
+  v5 = [data count];
   if (v5)
   {
     v62 = 0u;
     v63 = 0u;
     v60 = 0u;
     v61 = 0u;
-    v43 = OUTLINED_FUNCTION_6(v5, v6, v7, v8, v9, v10, v11, v12, v36, v38, v40, v42, v44, obj, a4, self, v52, v54, v56, *(&v56 + 1), v57, *(&v57 + 1), v58, *(&v58 + 1), v59, *(&v59 + 1), 0);
+    v43 = OUTLINED_FUNCTION_6(v5, v6, v7, v8, v9, v10, v11, v12, v36, v38, v40, v42, v44, obj, slotData, self, v52, array, v56, *(&v56 + 1), v57, *(&v57 + 1), v58, *(&v58 + 1), v59, *(&v59 + 1), 0);
     if (v43)
     {
       v39 = *v61;
-      v41 = a3;
+      dataCopy = data;
       do
       {
         v13 = 0;
@@ -1553,11 +1553,11 @@ void __30__BRInterfaceAOP__findService__block_invoke(uint64_t a1)
         {
           if (*v61 != v39)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(data);
           }
 
           v45 = v13;
-          v14 = [a3 objectForKey:*(*(&v60 + 1) + 8 * v13)];
+          v14 = [data objectForKey:*(*(&v60 + 1) + 8 * v13)];
           v15 = +[BRInterfaceAOP _convertClickState:](BRInterfaceAOP, "_convertClickState:", [v14 state]);
           v65[0] = @"StateButtonState";
           v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v15];
@@ -1592,7 +1592,7 @@ void __30__BRInterfaceAOP__findService__block_invoke(uint64_t a1)
                   [objc_msgSend(v14 "speedSlots")];
                   [OUTLINED_FUNCTION_3() setObject:? forKey:?];
                   v29 = [objc_msgSend(v51 dataForSlot:objc_msgSend(objc_msgSend(v14 fromArray:{"speedSlots"), "objectForKeyedSubscript:", v28), v49), "asset"}];
-                  v30 = [v29 hasAudio];
+                  hasAudio = [v29 hasAudio];
                   if ([v29 hasHaptic])
                   {
                     v31 = 2;
@@ -1603,7 +1603,7 @@ void __30__BRInterfaceAOP__findService__block_invoke(uint64_t a1)
                     v31 = 0;
                   }
 
-                  [MEMORY[0x277CCABB0] numberWithUnsignedInt:v31 | v30];
+                  [MEMORY[0x277CCABB0] numberWithUnsignedInt:v31 | hasAudio];
                   [OUTLINED_FUNCTION_3() setObject:? forKey:?];
                   if ([objc_msgSend(objc_msgSend(v14 "speedConfigs")])
                   {
@@ -1644,11 +1644,11 @@ void __30__BRInterfaceAOP__findService__block_invoke(uint64_t a1)
           }
 
           v13 = v45 + 1;
-          a3 = v41;
+          data = dataCopy;
         }
 
         while (v45 + 1 != v43);
-        v43 = OUTLINED_FUNCTION_6(v18, v19, v20, v21, v22, v23, v24, v25, v37, v39, v41, v43, v45, obja, v49, v51, v53, v55, v56, *(&v56 + 1), v57, *(&v57 + 1), v58, *(&v58 + 1), v59, *(&v59 + 1), v60);
+        v43 = OUTLINED_FUNCTION_6(v18, v19, v20, v21, v22, v23, v24, v25, v37, v39, dataCopy, v43, v45, obja, v49, v51, v53, v55, v56, *(&v56 + 1), v57, *(&v57 + 1), v58, *(&v58 + 1), v59, *(&v59 + 1), v60);
       }
 
       while (v43);

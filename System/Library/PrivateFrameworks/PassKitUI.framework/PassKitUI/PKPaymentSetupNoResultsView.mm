@@ -1,25 +1,25 @@
 @interface PKPaymentSetupNoResultsView
-- (CGSize)_layoutWithBounds:(CGRect)a3 isTemplateLayout:(BOOL)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKPaymentSetupNoResultsView)initWithFrame:(CGRect)a3;
+- (CGSize)_layoutWithBounds:(CGRect)bounds isTemplateLayout:(BOOL)layout;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKPaymentSetupNoResultsView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setActionButtonTitle:(id)a3 addTarget:(id)a4 action:(SEL)a5;
-- (void)setIcon:(id)a3;
-- (void)setSubtitle:(id)a3;
-- (void)setTitle:(id)a3;
+- (void)setActionButtonTitle:(id)title addTarget:(id)target action:(SEL)action;
+- (void)setIcon:(id)icon;
+- (void)setSubtitle:(id)subtitle;
+- (void)setTitle:(id)title;
 @end
 
 @implementation PKPaymentSetupNoResultsView
 
-- (PKPaymentSetupNoResultsView)initWithFrame:(CGRect)a3
+- (PKPaymentSetupNoResultsView)initWithFrame:(CGRect)frame
 {
   v27.receiver = self;
   v27.super_class = PKPaymentSetupNoResultsView;
-  v3 = [(PKPaymentSetupNoResultsView *)&v27 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PKPaymentSetupNoResultsView *)&v27 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-    [(PKPaymentSetupNoResultsView *)v3 setBackgroundColor:v4];
+    systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+    [(PKPaymentSetupNoResultsView *)v3 setBackgroundColor:systemBackgroundColor];
 
     v5 = objc_alloc(MEMORY[0x1E69DCAE0]);
     v6 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"magnifyingglass"];
@@ -29,8 +29,8 @@
 
     [(UIImageView *)v3->_iconImageView setContentMode:1];
     v9 = v3->_iconImageView;
-    v10 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [(UIImageView *)v9 setTintColor:v10];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [(UIImageView *)v9 setTintColor:secondaryLabelColor];
 
     [(PKPaymentSetupNoResultsView *)v3 addSubview:v3->_iconImageView];
     v11 = objc_alloc_init(MEMORY[0x1E69DCC10]);
@@ -43,8 +43,8 @@
     [(UILabel *)v13 setFont:v15];
 
     v16 = v3->_titleLabel;
-    v17 = [MEMORY[0x1E69DC888] labelColor];
-    [(UILabel *)v16 setTextColor:v17];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    [(UILabel *)v16 setTextColor:labelColor];
 
     v18 = v3->_titleLabel;
     v19 = PKLocalizedPaymentString(&cfstr_PaymentSetupNo.isa);
@@ -62,8 +62,8 @@
     [(UILabel *)v22 setFont:v23];
 
     v24 = v3->_subtitleLabel;
-    v25 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [(UILabel *)v24 setTextColor:v25];
+    secondaryLabelColor2 = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [(UILabel *)v24 setTextColor:secondaryLabelColor2];
 
     [(UILabel *)v3->_subtitleLabel setTextAlignment:1];
     [(UILabel *)v3->_subtitleLabel setNumberOfLines:0];
@@ -82,25 +82,25 @@
   [(PKPaymentSetupNoResultsView *)self _layoutWithBounds:0 isTemplateLayout:?];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(PKPaymentSetupNoResultsView *)self _layoutWithBounds:1 isTemplateLayout:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), a3.width, a3.height];
+  [(PKPaymentSetupNoResultsView *)self _layoutWithBounds:1 isTemplateLayout:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;
 }
 
-- (CGSize)_layoutWithBounds:(CGRect)a3 isTemplateLayout:(BOOL)a4
+- (CGSize)_layoutWithBounds:(CGRect)bounds isTemplateLayout:(BOOL)layout
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = [(PKPaymentSetupNoResultsView *)self readableContentGuide];
-  [v10 layoutFrame];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  readableContentGuide = [(PKPaymentSetupNoResultsView *)self readableContentGuide];
+  [readableContentGuide layoutFrame];
   v12 = v11;
 
-  if (a4)
+  if (layout)
   {
     v13 = 0.0;
 LABEL_5:
@@ -119,9 +119,9 @@ LABEL_5:
   v16 = 0;
   v13 = 15.0;
 LABEL_7:
-  v17 = [(UIImageView *)self->_iconImageView image];
+  image = [(UIImageView *)self->_iconImageView image];
 
-  if (v17)
+  if (image)
   {
     if (v16)
     {
@@ -130,7 +130,7 @@ LABEL_7:
       v46.size.width = 50.0;
       v46.size.height = 50.0;
       v18 = CGRectGetMaxY(v46) + 20.0;
-      if (!a4)
+      if (!layout)
       {
         [(UIImageView *)self->_iconImageView setFrame:(width + -50.0) * 0.5, v13, 50.0, 50.0];
       }
@@ -146,8 +146,8 @@ LABEL_7:
   }
 
   v19 = v12 + -12.0;
-  v20 = [(UILabel *)self->_titleLabel text];
-  v21 = [v20 length];
+  text = [(UILabel *)self->_titleLabel text];
+  v21 = [text length];
 
   if (v21)
   {
@@ -160,7 +160,7 @@ LABEL_7:
     v47.size.width = v23;
     v47.size.height = v25;
     v27 = CGRectGetMaxY(v47) + 15.0;
-    if (!a4)
+    if (!layout)
     {
       [(UILabel *)self->_titleLabel setFrame:v26, v13, v23, v25];
     }
@@ -171,8 +171,8 @@ LABEL_7:
     v27 = v13;
   }
 
-  v28 = [(UILabel *)self->_subtitleLabel text];
-  v29 = [v28 length];
+  text2 = [(UILabel *)self->_subtitleLabel text];
+  v29 = [text2 length];
 
   if (v29)
   {
@@ -185,7 +185,7 @@ LABEL_7:
     v48.size.width = v31;
     v48.size.height = v33;
     v35 = CGRectGetMaxY(v48) + 15.0;
-    if (!a4)
+    if (!layout)
     {
       [(UILabel *)self->_subtitleLabel setFrame:v34, v27, v31, v33];
     }
@@ -208,7 +208,7 @@ LABEL_7:
     v49.size.width = v38;
     v49.size.height = v40;
     MaxY = CGRectGetMaxY(v49);
-    if (!a4)
+    if (!layout)
     {
       [(UIButton *)self->_actionButton setFrame:v41, v35, v38, v40];
     }
@@ -226,47 +226,47 @@ LABEL_7:
   return result;
 }
 
-- (void)setIcon:(id)a3
+- (void)setIcon:(id)icon
 {
-  [(UIImageView *)self->_iconImageView setImage:a3];
+  [(UIImageView *)self->_iconImageView setImage:icon];
 
   [(PKPaymentSetupNoResultsView *)self setNeedsLayout];
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v6 = a3;
-  v4 = [(UILabel *)self->_titleLabel text];
-  v5 = [v4 isEqualToString:v6];
+  titleCopy = title;
+  text = [(UILabel *)self->_titleLabel text];
+  v5 = [text isEqualToString:titleCopy];
 
   if ((v5 & 1) == 0)
   {
-    [(UILabel *)self->_titleLabel setText:v6];
+    [(UILabel *)self->_titleLabel setText:titleCopy];
     [(PKPaymentSetupNoResultsView *)self setNeedsLayout];
   }
 }
 
-- (void)setSubtitle:(id)a3
+- (void)setSubtitle:(id)subtitle
 {
-  v6 = a3;
-  v4 = [(UILabel *)self->_subtitleLabel text];
-  v5 = [v4 isEqualToString:v6];
+  subtitleCopy = subtitle;
+  text = [(UILabel *)self->_subtitleLabel text];
+  v5 = [text isEqualToString:subtitleCopy];
 
   if ((v5 & 1) == 0)
   {
-    [(UILabel *)self->_subtitleLabel setText:v6];
+    [(UILabel *)self->_subtitleLabel setText:subtitleCopy];
     [(PKPaymentSetupNoResultsView *)self setNeedsLayout];
   }
 }
 
-- (void)setActionButtonTitle:(id)a3 addTarget:(id)a4 action:(SEL)a5
+- (void)setActionButtonTitle:(id)title addTarget:(id)target action:(SEL)action
 {
-  v18 = a3;
-  v8 = a4;
-  v9 = v18;
-  v10 = v8;
+  titleCopy = title;
+  targetCopy = target;
+  v9 = titleCopy;
+  v10 = targetCopy;
   actionButton = self->_actionButton;
-  if (v18 && v10)
+  if (titleCopy && v10)
   {
     if (!actionButton)
     {
@@ -275,22 +275,22 @@ LABEL_7:
       self->_actionButton = v12;
 
       [(UIButton *)self->_actionButton setExclusiveTouch:1];
-      v14 = [(UIButton *)self->_actionButton titleLabel];
-      [v14 setNumberOfLines:0];
-      v15 = [MEMORY[0x1E69DC888] labelColor];
-      [v14 setTextColor:v15];
+      titleLabel = [(UIButton *)self->_actionButton titleLabel];
+      [titleLabel setNumberOfLines:0];
+      labelColor = [MEMORY[0x1E69DC888] labelColor];
+      [titleLabel setTextColor:labelColor];
 
-      [v14 setTextAlignment:1];
+      [titleLabel setTextAlignment:1];
       v16 = [MEMORY[0x1E69DB878] systemFontOfSize:15.0];
-      [v14 setFont:v16];
+      [titleLabel setFont:v16];
 
       [(PKPaymentSetupNoResultsView *)self addSubview:self->_actionButton];
-      v9 = v18;
+      v9 = titleCopy;
       actionButton = self->_actionButton;
     }
 
     [(UIButton *)actionButton setTitle:v9 forState:0];
-    [(UIButton *)self->_actionButton addTarget:v10 action:a5 forControlEvents:0x2000];
+    [(UIButton *)self->_actionButton addTarget:v10 action:action forControlEvents:0x2000];
   }
 
   else

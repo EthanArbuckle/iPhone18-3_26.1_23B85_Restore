@@ -1,22 +1,22 @@
 @interface WDUnitTableViewCell
 + (NSString)defaultReuseIdentifier;
-- (WDUnitTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (WDUnitTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (id)_textLabelText;
 @end
 
 @implementation WDUnitTableViewCell
 
-- (WDUnitTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (WDUnitTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v9.receiver = self;
   v9.super_class = WDUnitTableViewCell;
-  v4 = [(WDUnitTableViewCell *)&v9 initWithStyle:1 reuseIdentifier:a4];
+  v4 = [(WDUnitTableViewCell *)&v9 initWithStyle:1 reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
-    v6 = [(WDUnitTableViewCell *)v4 _textLabelText];
-    v7 = [(WDUnitTableViewCell *)v5 textLabel];
-    [v7 setText:v6];
+    _textLabelText = [(WDUnitTableViewCell *)v4 _textLabelText];
+    textLabel = [(WDUnitTableViewCell *)v5 textLabel];
+    [textLabel setText:_textLabelText];
 
     [(WDUnitTableViewCell *)v5 setAccessoryType:1];
   }

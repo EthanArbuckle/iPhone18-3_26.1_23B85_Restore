@@ -81,7 +81,7 @@ id __52__CIDisparityRefinementSparseSamplerV3_sampleKernel__block_invoke()
   v41 = [CIVector vectorWithX:(-1.0 / ((v24 * v24) + (v24 * v24))) Y:v27 Z:v27 W:v29];
   v42 = [CIVector vectorWithX:v38 Y:v39 Z:v56 W:v32];
   v43 = [CIVector vectorWithX:v8 Y:v62];
-  v44 = [(CIDisparityRefinementSparseSamplerV3 *)self sampleKernel];
+  sampleKernel = [(CIDisparityRefinementSparseSamplerV3 *)self sampleKernel];
   memset(&v67, 0, sizeof(v67));
   CGAffineTransformMakeScale(&v67, v8 / v61, v62 / v63);
   v65[0] = MEMORY[0x1E69E9820];
@@ -105,7 +105,7 @@ id __52__CIDisparityRefinementSparseSamplerV3_sampleKernel__block_invoke()
   v54 = [MEMORY[0x1E695DEC8] arrayWithObjects:v70 count:6];
   v68 = @"kCIKernelOutputFormat";
   v69 = [MEMORY[0x1E696AD98] numberWithInt:2053];
-  return [v44 applyWithExtent:v65 roiCallback:v54 arguments:objc_msgSend(MEMORY[0x1E695DF20] options:{"dictionaryWithObjects:forKeys:count:", &v69, &v68, 1), v47, v49, v51, v53}];
+  return [sampleKernel applyWithExtent:v65 roiCallback:v54 arguments:objc_msgSend(MEMORY[0x1E695DF20] options:{"dictionaryWithObjects:forKeys:count:", &v69, &v68, 1), v47, v49, v51, v53}];
 }
 
 @end

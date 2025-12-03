@@ -1,12 +1,12 @@
 @interface CKPhoneTranscriptMessageCell
-- (CKPhoneTranscriptMessageCell)initWithFrame:(CGRect)a3;
+- (CKPhoneTranscriptMessageCell)initWithFrame:(CGRect)frame;
 - (CKPhoneTranscriptMessageCellAvatarDelegate)messageCellAvatarDelegate;
-- (id)avatarView:(id)a3 orderedPropertiesForProperties:(id)a4 category:(id)a5;
+- (id)avatarView:(id)view orderedPropertiesForProperties:(id)properties category:(id)category;
 - (id)contactImageView;
-- (id)presentingViewControllerForAvatarView:(id)a3;
+- (id)presentingViewControllerForAvatarView:(id)view;
 - (void)dealloc;
 - (void)layoutSubviewsForContents;
-- (void)setShowAvatarView:(BOOL)a3 withContact:(id)a4 preferredHandle:(id)a5 messageCellAvatarDelegate:(id)a6;
+- (void)setShowAvatarView:(BOOL)view withContact:(id)contact preferredHandle:(id)handle messageCellAvatarDelegate:(id)delegate;
 - (void)transcriptBackgroundActiveTraitDidChange;
 @end
 
@@ -20,12 +20,12 @@
   [(CKPhoneTranscriptMessageCell *)&v3 dealloc];
 }
 
-- (CKPhoneTranscriptMessageCell)initWithFrame:(CGRect)a3
+- (CKPhoneTranscriptMessageCell)initWithFrame:(CGRect)frame
 {
   v11[1] = *MEMORY[0x1E69E9840];
   v10.receiver = self;
   v10.super_class = CKPhoneTranscriptMessageCell;
-  v3 = [(CKTranscriptCell *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CKTranscriptCell *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     objc_initWeak(&location, v3);
@@ -54,9 +54,9 @@ void __46__CKPhoneTranscriptMessageCell_initWithFrame___block_invoke(uint64_t a1
 - (id)contactImageView
 {
   v3 = +[CKPrintController sharedInstance];
-  v4 = [v3 isPrinting];
+  isPrinting = [v3 isPrinting];
 
-  if (v4)
+  if (isPrinting)
   {
     [(CKPhoneTranscriptMessageCell *)self printableAvatarView];
   }
@@ -73,9 +73,9 @@ void __46__CKPhoneTranscriptMessageCell_initWithFrame___block_invoke(uint64_t a1
 - (void)transcriptBackgroundActiveTraitDidChange
 {
   [(CKTranscriptMessageCell *)self configureContactImageStrokeView];
-  v3 = [(CKTranscriptMessageCell *)self failed];
+  failed = [(CKTranscriptMessageCell *)self failed];
 
-  [(CKTranscriptMessageCell *)self configureMessageDeliveryFailureButtonForFailed:v3];
+  [(CKTranscriptMessageCell *)self configureMessageDeliveryFailureButtonForFailed:failed];
 }
 
 - (void)layoutSubviewsForContents
@@ -83,85 +83,85 @@ void __46__CKPhoneTranscriptMessageCell_initWithFrame___block_invoke(uint64_t a1
   v9.receiver = self;
   v9.super_class = CKPhoneTranscriptMessageCell;
   [(CKTranscriptMessageCell *)&v9 layoutSubviewsForContents];
-  v3 = [(CKPhoneTranscriptMessageCell *)self contactImageView];
-  if (v3)
+  contactImageView = [(CKPhoneTranscriptMessageCell *)self contactImageView];
+  if (contactImageView)
   {
-    v4 = v3;
-    v5 = [(CKPhoneTranscriptMessageCell *)self contactImageView];
-    v6 = [v5 superview];
+    v4 = contactImageView;
+    contactImageView2 = [(CKPhoneTranscriptMessageCell *)self contactImageView];
+    superview = [contactImageView2 superview];
 
-    if (!v6)
+    if (!superview)
     {
-      v7 = [(CKEditableCollectionViewCell *)self contentView];
-      v8 = [(CKPhoneTranscriptMessageCell *)self contactImageView];
-      [v7 addSubview:v8];
+      contentView = [(CKEditableCollectionViewCell *)self contentView];
+      contactImageView3 = [(CKPhoneTranscriptMessageCell *)self contactImageView];
+      [contentView addSubview:contactImageView3];
     }
   }
 }
 
-- (void)setShowAvatarView:(BOOL)a3 withContact:(id)a4 preferredHandle:(id)a5 messageCellAvatarDelegate:(id)a6
+- (void)setShowAvatarView:(BOOL)view withContact:(id)contact preferredHandle:(id)handle messageCellAvatarDelegate:(id)delegate
 {
-  v8 = a3;
-  v29 = a4;
-  v10 = a5;
-  objc_storeWeak(&self->_messageCellAvatarDelegate, a6);
+  viewCopy = view;
+  contactCopy = contact;
+  handleCopy = handle;
+  objc_storeWeak(&self->_messageCellAvatarDelegate, delegate);
   v11 = +[CKPrintController sharedInstance];
-  v12 = [v11 isPrinting];
+  isPrinting = [v11 isPrinting];
 
-  if (v12)
+  if (isPrinting)
   {
-    v13 = [(CKPhoneTranscriptMessageCell *)self printableAvatarView];
+    printableAvatarView = [(CKPhoneTranscriptMessageCell *)self printableAvatarView];
     v14 = +[CKUIBehavior sharedBehaviors];
     [v14 transcriptContactImageDiameter];
     v16 = v15;
 
-    if (v8)
+    if (viewCopy)
     {
-      if (!v13)
+      if (!printableAvatarView)
       {
-        v13 = objc_alloc_init(MEMORY[0x1E69DCAE0]);
-        [(CKAvatarView *)v13 setFrame:0.0, 0.0, v16, v16];
-        [(CKPhoneTranscriptMessageCell *)self setPrintableAvatarView:v13];
+        printableAvatarView = objc_alloc_init(MEMORY[0x1E69DCAE0]);
+        [(CKAvatarView *)printableAvatarView setFrame:0.0, 0.0, v16, v16];
+        [(CKPhoneTranscriptMessageCell *)self setPrintableAvatarView:printableAvatarView];
       }
 
-      v17 = v13;
+      v17 = printableAvatarView;
       v18 = 0;
     }
 
     else
     {
-      v17 = v13;
+      v17 = printableAvatarView;
       v18 = 1;
     }
 
     [(CKAvatarView *)v17 setHidden:v18];
     v24 = +[CKPrintController sharedInstance];
-    v25 = [v24 avatarImageForContact:v29 diameter:v16];
+    contact = [v24 avatarImageForContact:contactCopy diameter:v16];
 
-    [(CKAvatarView *)v13 setImage:v25];
+    [(CKAvatarView *)printableAvatarView setImage:contact];
   }
 
   else
   {
-    v19 = [(CKPhoneTranscriptMessageCell *)self avatarView];
-    v13 = v19;
-    if (v8)
+    avatarView = [(CKPhoneTranscriptMessageCell *)self avatarView];
+    printableAvatarView = avatarView;
+    if (viewCopy)
     {
-      if (!v19)
+      if (!avatarView)
       {
         v20 = +[CKUIBehavior sharedBehaviors];
         [v20 transcriptContactImageDiameter];
         v22 = v21;
 
-        v13 = [[CKAvatarView alloc] initWithFrame:0.0, 0.0, v22, v22];
-        [(CNAvatarView *)v13 setShowsContactOnTap:0];
-        [(CKAvatarView *)v13 setPreferredHandle:v10];
-        [(CNAvatarView *)v13 setForcePressView:v13];
-        [(CKPhoneTranscriptMessageCell *)self setAvatarView:v13];
+        printableAvatarView = [[CKAvatarView alloc] initWithFrame:0.0, 0.0, v22, v22];
+        [(CNAvatarView *)printableAvatarView setShowsContactOnTap:0];
+        [(CKAvatarView *)printableAvatarView setPreferredHandle:handleCopy];
+        [(CNAvatarView *)printableAvatarView setForcePressView:printableAvatarView];
+        [(CKPhoneTranscriptMessageCell *)self setAvatarView:printableAvatarView];
         [(CKPhoneTranscriptMessageCell *)self setNeedsLayout];
       }
 
-      v19 = v13;
+      avatarView = printableAvatarView;
       v23 = 0;
     }
 
@@ -170,38 +170,38 @@ void __46__CKPhoneTranscriptMessageCell_initWithFrame___block_invoke(uint64_t a1
       v23 = 1;
     }
 
-    [(CKAvatarView *)v19 setHidden:v23];
-    v25 = [(CNAvatarView *)v13 contact];
-    if (v29)
+    [(CKAvatarView *)avatarView setHidden:v23];
+    contact = [(CNAvatarView *)printableAvatarView contact];
+    if (contactCopy)
     {
-      if (!v25 || ([v29 identifier], v26 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v25, "identifier"), v27 = objc_claimAutoreleasedReturnValue(), v28 = objc_msgSend(v26, "isEqualToString:", v27), v27, v26, (v28 & 1) == 0))
+      if (!contact || ([contactCopy identifier], v26 = objc_claimAutoreleasedReturnValue(), objc_msgSend(contact, "identifier"), v27 = objc_claimAutoreleasedReturnValue(), v28 = objc_msgSend(v26, "isEqualToString:", v27), v27, v26, (v28 & 1) == 0))
       {
-        [(CNAvatarView *)v13 setContact:v29];
+        [(CNAvatarView *)printableAvatarView setContact:contactCopy];
       }
     }
 
-    [(CNAvatarView *)v13 setDelegate:self];
+    [(CNAvatarView *)printableAvatarView setDelegate:self];
   }
 
   [(CKTranscriptMessageCell *)self configureContactImageStrokeView];
 }
 
-- (id)presentingViewControllerForAvatarView:(id)a3
+- (id)presentingViewControllerForAvatarView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   WeakRetained = objc_loadWeakRetained(&self->_messageCellAvatarDelegate);
-  v6 = [WeakRetained presentingViewControllerForAvatarView:v4];
+  v6 = [WeakRetained presentingViewControllerForAvatarView:viewCopy];
 
   return v6;
 }
 
-- (id)avatarView:(id)a3 orderedPropertiesForProperties:(id)a4 category:(id)a5
+- (id)avatarView:(id)view orderedPropertiesForProperties:(id)properties category:(id)category
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  categoryCopy = category;
+  propertiesCopy = properties;
+  viewCopy = view;
   WeakRetained = objc_loadWeakRetained(&self->_messageCellAvatarDelegate);
-  v12 = [WeakRetained avatarView:v10 orderedPropertiesForProperties:v9 category:v8];
+  v12 = [WeakRetained avatarView:viewCopy orderedPropertiesForProperties:propertiesCopy category:categoryCopy];
 
   return v12;
 }

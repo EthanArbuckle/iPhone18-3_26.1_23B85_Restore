@@ -1,26 +1,26 @@
 @interface HDHealthRecordRuleset
-+ (id)rulesetFromDictionary:(id)a3 rulesetVersion:(id)a4 error:(id *)a5;
++ (id)rulesetFromDictionary:(id)dictionary rulesetVersion:(id)version error:(id *)error;
 - (HRSSupportedFHIRRelease)releaseSupport;
-- (id)initForFHIRRelease:(id)a3 rulesetVersion:(id)a4;
-- (id)rulesetForClinicalType:(int64_t)a3;
-- (id)rulesetForFHIRResourceObject:(id)a3;
-- (id)rulesetForFHIRResourceType:(id)a3;
+- (id)initForFHIRRelease:(id)release rulesetVersion:(id)version;
+- (id)rulesetForClinicalType:(int64_t)type;
+- (id)rulesetForFHIRResourceObject:(id)object;
+- (id)rulesetForFHIRResourceType:(id)type;
 @end
 
 @implementation HDHealthRecordRuleset
 
-- (id)initForFHIRRelease:(id)a3 rulesetVersion:(id)a4
+- (id)initForFHIRRelease:(id)release rulesetVersion:(id)version
 {
-  v7 = a3;
-  v8 = a4;
+  releaseCopy = release;
+  versionCopy = version;
   v14.receiver = self;
   v14.super_class = HDHealthRecordRuleset;
   v9 = [(HDHealthRecordRuleset *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_FHIRRelease, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_FHIRRelease, release);
+    v11 = [versionCopy copy];
     rulesetVersion = v10->_rulesetVersion;
     v10->_rulesetVersion = v11;
   }
@@ -28,39 +28,39 @@
   return v10;
 }
 
-+ (id)rulesetFromDictionary:(id)a3 rulesetVersion:(id)a4 error:(id *)a5
++ (id)rulesetFromDictionary:(id)dictionary rulesetVersion:(id)version error:(id *)error
 {
   v55 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  if (!v9)
+  dictionaryCopy = dictionary;
+  versionCopy = version;
+  if (!dictionaryCopy)
   {
-    [HDHealthRecordRuleset rulesetFromDictionary:a2 rulesetVersion:a1 error:?];
+    [HDHealthRecordRuleset rulesetFromDictionary:a2 rulesetVersion:self error:?];
   }
 
   v53 = 0;
-  v11 = [v9 hk_safeStringForKeyPath:@"release" error:&v53];
+  v11 = [dictionaryCopy hk_safeStringForKeyPath:@"release" error:&v53];
   v12 = v53;
   if (v11)
   {
     v13 = HKFHIRReleaseFromNSString();
     if (v13 == *MEMORY[0x277CCBDD8])
     {
-      [MEMORY[0x277CCA9B8] hk_assignError:a5 code:100 format:{@"Ruleset specifies an unsupported release: %@", v11}];
+      [MEMORY[0x277CCA9B8] hk_assignError:error code:100 format:{@"Ruleset specifies an unsupported release: %@", v11}];
       v32 = 0;
     }
 
     else
     {
-      v14 = [[HDHealthRecordRuleset alloc] initForFHIRRelease:v13 rulesetVersion:v10];
+      v14 = [[HDHealthRecordRuleset alloc] initForFHIRRelease:v13 rulesetVersion:versionCopy];
 
       v52 = 0;
-      v15 = [v9 hk_safeValueForKeyPath:@"resources" class:objc_opt_class() error:&v52];
+      v15 = [dictionaryCopy hk_safeValueForKeyPath:@"resources" class:objc_opt_class() error:&v52];
       v12 = v52;
       if (v15)
       {
-        v45 = [MEMORY[0x277CBEB38] dictionary];
-        v44 = [MEMORY[0x277CBEB38] dictionary];
+        dictionary = [MEMORY[0x277CBEB38] dictionary];
+        dictionary2 = [MEMORY[0x277CBEB38] dictionary];
         v48 = 0u;
         v49 = 0u;
         v50 = 0u;
@@ -70,13 +70,13 @@
         if (v16)
         {
           v17 = v16;
-          v36 = a5;
+          errorCopy = error;
           v37 = v14;
           v18 = *v49;
           v43 = v15;
-          v19 = v45;
-          v40 = v10;
-          v41 = v9;
+          v19 = dictionary;
+          v40 = versionCopy;
+          v41 = dictionaryCopy;
           v38 = v13;
           v39 = v11;
 LABEL_8:
@@ -105,45 +105,45 @@ LABEL_8:
 
             if (!v25)
             {
-              [MEMORY[0x277CCA9B8] hk_assignError:v36 code:100 description:@"Ruleset couldn't create rule from resource" underlyingError:v12];
+              [MEMORY[0x277CCA9B8] hk_assignError:errorCopy code:100 description:@"Ruleset couldn't create rule from resource" underlyingError:v12];
 
               v24 = v12;
               goto LABEL_28;
             }
 
-            v26 = [v25 resourceType];
-            v27 = [v19 objectForKeyedSubscript:v26];
-            if (!v27)
+            resourceType = [v25 resourceType];
+            array = [v19 objectForKeyedSubscript:resourceType];
+            if (!array)
             {
-              v27 = [MEMORY[0x277CBEB18] array];
-              [v19 setObject:v27 forKeyedSubscript:v26];
+              array = [MEMORY[0x277CBEB18] array];
+              [v19 setObject:array forKeyedSubscript:resourceType];
             }
 
-            v28 = [v25 condition];
+            condition = [v25 condition];
 
-            if (v28)
+            if (condition)
             {
-              [v27 insertObject:v25 atIndex:0];
+              [array insertObject:v25 atIndex:0];
             }
 
             else
             {
-              [v27 addObject:v25];
+              [array addObject:v25];
             }
 
             v29 = MEMORY[0x277CCABB0];
-            v30 = [v25 clinicalType];
-            v31 = [v29 numberWithInteger:{objc_msgSend(v30, "type")}];
-            [v44 setObject:v25 forKeyedSubscript:v31];
+            clinicalType = [v25 clinicalType];
+            v31 = [v29 numberWithInteger:{objc_msgSend(clinicalType, "type")}];
+            [dictionary2 setObject:v25 forKeyedSubscript:v31];
 
             ++v20;
             v15 = v43;
-            v19 = v45;
+            v19 = dictionary;
             if (v17 == v20)
             {
               v17 = [obj countByEnumeratingWithState:&v48 objects:v54 count:16];
-              v10 = v40;
-              v9 = v41;
+              versionCopy = v40;
+              dictionaryCopy = v41;
               v13 = v38;
               v11 = v39;
               v14 = v37;
@@ -156,33 +156,33 @@ LABEL_8:
             }
           }
 
-          [MEMORY[0x277CCA9B8] hk_assignError:v36 code:100 description:@"Ruleset couldn't load resources" underlyingError:v24];
+          [MEMORY[0x277CCA9B8] hk_assignError:errorCopy code:100 description:@"Ruleset couldn't load resources" underlyingError:v24];
 LABEL_28:
 
           v32 = 0;
           v12 = v24;
-          v10 = v40;
-          v9 = v41;
+          versionCopy = v40;
+          dictionaryCopy = v41;
           v13 = v38;
           v11 = v39;
           v14 = v37;
-          v33 = v44;
+          v33 = dictionary2;
           goto LABEL_29;
         }
 
-        v19 = v45;
+        v19 = dictionary;
 LABEL_25:
 
         [v14 setRulesByResourceType:v19];
-        v33 = v44;
-        [v14 setRulesByClinicalType:v44];
+        v33 = dictionary2;
+        [v14 setRulesByClinicalType:dictionary2];
         v32 = v14;
 LABEL_29:
       }
 
       else
       {
-        [MEMORY[0x277CCA9B8] hk_assignError:a5 code:100 description:@"Ruleset couldn't find resources" underlyingError:v12];
+        [MEMORY[0x277CCA9B8] hk_assignError:error code:100 description:@"Ruleset couldn't find resources" underlyingError:v12];
         v32 = 0;
       }
     }
@@ -203,38 +203,38 @@ LABEL_29:
   v3 = objc_alloc(MEMORY[0x277D124C0]);
   FHIRRelease = self->_FHIRRelease;
   v5 = MEMORY[0x277CBEB98];
-  v6 = [(NSDictionary *)self->_rulesByResourceType allKeys];
-  v7 = [v5 setWithArray:v6];
+  allKeys = [(NSDictionary *)self->_rulesByResourceType allKeys];
+  v7 = [v5 setWithArray:allKeys];
   v8 = [v3 initWithFHIRRelease:FHIRRelease resourceTypes:v7];
 
   return v8;
 }
 
-- (id)rulesetForClinicalType:(int64_t)a3
+- (id)rulesetForClinicalType:(int64_t)type
 {
   rulesByClinicalType = self->_rulesByClinicalType;
-  v4 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithInteger:type];
   v5 = [(NSDictionary *)rulesByClinicalType objectForKeyedSubscript:v4];
 
   return v5;
 }
 
-- (id)rulesetForFHIRResourceType:(id)a3
+- (id)rulesetForFHIRResourceType:(id)type
 {
-  v3 = [(NSDictionary *)self->_rulesByResourceType objectForKeyedSubscript:a3];
-  v4 = [v3 lastObject];
+  v3 = [(NSDictionary *)self->_rulesByResourceType objectForKeyedSubscript:type];
+  lastObject = [v3 lastObject];
 
-  return v4;
+  return lastObject;
 }
 
-- (id)rulesetForFHIRResourceObject:(id)a3
+- (id)rulesetForFHIRResourceObject:(id)object
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 identifier];
-  v6 = [v5 resourceType];
+  objectCopy = object;
+  identifier = [objectCopy identifier];
+  resourceType = [identifier resourceType];
 
-  [(NSDictionary *)self->_rulesByResourceType objectForKeyedSubscript:v6];
+  [(NSDictionary *)self->_rulesByResourceType objectForKeyedSubscript:resourceType];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -254,7 +254,7 @@ LABEL_29:
         }
 
         v12 = *(*(&v17 + 1) + 8 * i);
-        if ([v12 evaluateWithObject:{v4, v17}])
+        if ([v12 evaluateWithObject:{objectCopy, v17}])
         {
           v14 = v12;
 

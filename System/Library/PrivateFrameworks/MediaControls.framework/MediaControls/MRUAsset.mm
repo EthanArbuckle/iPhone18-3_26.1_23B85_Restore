@@ -1,14 +1,14 @@
 @interface MRUAsset
-+ (id)image:(id)a3;
-+ (id)packageAsset:(id)a3;
-+ (id)packageAsset:(id)a3 symbolName:(id)a4;
-+ (id)packageAsset:(id)a3 symbolName:(id)a4 image:(id)a5;
-+ (id)packageAssetNamed:(id)a3;
-+ (id)symbolNamed:(id)a3;
-+ (id)symbolNamed:(id)a3 symbolEffect:(id)a4 symbolEffectOptions:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (MRUAsset)initWithPackageAsset:(id)a3 symbolName:(id)a4 symbolEffect:(id)a5 symbolEffectOptions:(id)a6 image:(id)a7;
-- (MRUAsset)initWithPackageAssetNamed:(id)a3;
++ (id)image:(id)image;
++ (id)packageAsset:(id)asset;
++ (id)packageAsset:(id)asset symbolName:(id)name;
++ (id)packageAsset:(id)asset symbolName:(id)name image:(id)image;
++ (id)packageAssetNamed:(id)named;
++ (id)symbolNamed:(id)named;
++ (id)symbolNamed:(id)named symbolEffect:(id)effect symbolEffectOptions:(id)options;
+- (BOOL)isEqual:(id)equal;
+- (MRUAsset)initWithPackageAsset:(id)asset symbolName:(id)name symbolEffect:(id)effect symbolEffectOptions:(id)options image:(id)image;
+- (MRUAsset)initWithPackageAssetNamed:(id)named;
 - (UIImage)image;
 @end
 
@@ -29,102 +29,102 @@
   return v2;
 }
 
-+ (id)packageAsset:(id)a3 symbolName:(id)a4 image:(id)a5
++ (id)packageAsset:(id)asset symbolName:(id)name image:(id)image
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[a1 alloc] initWithPackageAsset:v10 symbolName:v9 image:v8];
+  imageCopy = image;
+  nameCopy = name;
+  assetCopy = asset;
+  v11 = [[self alloc] initWithPackageAsset:assetCopy symbolName:nameCopy image:imageCopy];
 
   return v11;
 }
 
-+ (id)packageAsset:(id)a3 symbolName:(id)a4
++ (id)packageAsset:(id)asset symbolName:(id)name
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithPackageAsset:v7 symbolName:v6 image:0];
+  nameCopy = name;
+  assetCopy = asset;
+  v8 = [[self alloc] initWithPackageAsset:assetCopy symbolName:nameCopy image:0];
 
   return v8;
 }
 
-+ (id)packageAsset:(id)a3
++ (id)packageAsset:(id)asset
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithPackageAsset:v4];
+  assetCopy = asset;
+  v5 = [[self alloc] initWithPackageAsset:assetCopy];
 
   return v5;
 }
 
-+ (id)packageAssetNamed:(id)a3
++ (id)packageAssetNamed:(id)named
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithPackageAssetNamed:v4];
+  namedCopy = named;
+  v5 = [[self alloc] initWithPackageAssetNamed:namedCopy];
 
   return v5;
 }
 
-+ (id)symbolNamed:(id)a3
++ (id)symbolNamed:(id)named
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithSymbolName:v4];
+  namedCopy = named;
+  v5 = [[self alloc] initWithSymbolName:namedCopy];
 
   return v5;
 }
 
-+ (id)symbolNamed:(id)a3 symbolEffect:(id)a4 symbolEffectOptions:(id)a5
++ (id)symbolNamed:(id)named symbolEffect:(id)effect symbolEffectOptions:(id)options
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[a1 alloc] initWithSymbolName:v10 symbolEffect:v9 symbolEffectOptions:v8];
+  optionsCopy = options;
+  effectCopy = effect;
+  namedCopy = named;
+  v11 = [[self alloc] initWithSymbolName:namedCopy symbolEffect:effectCopy symbolEffectOptions:optionsCopy];
 
   return v11;
 }
 
-+ (id)image:(id)a3
++ (id)image:(id)image
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithImage:v4];
+  imageCopy = image;
+  v5 = [[self alloc] initWithImage:imageCopy];
 
   return v5;
 }
 
-- (MRUAsset)initWithPackageAsset:(id)a3 symbolName:(id)a4 symbolEffect:(id)a5 symbolEffectOptions:(id)a6 image:(id)a7
+- (MRUAsset)initWithPackageAsset:(id)asset symbolName:(id)name symbolEffect:(id)effect symbolEffectOptions:(id)options image:(id)image
 {
-  v20 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  assetCopy = asset;
+  nameCopy = name;
+  effectCopy = effect;
+  optionsCopy = options;
+  imageCopy = image;
   v21.receiver = self;
   v21.super_class = MRUAsset;
   v17 = [(MRUAsset *)&v21 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_packageAsset, a3);
-    objc_storeStrong(&v18->_symbolName, a4);
-    objc_storeStrong(&v18->_symbolEffect, a5);
-    objc_storeStrong(&v18->_symbolEffectOptions, a6);
-    objc_storeStrong(&v18->_image, a7);
+    objc_storeStrong(&v17->_packageAsset, asset);
+    objc_storeStrong(&v18->_symbolName, name);
+    objc_storeStrong(&v18->_symbolEffect, effect);
+    objc_storeStrong(&v18->_symbolEffectOptions, options);
+    objc_storeStrong(&v18->_image, image);
   }
 
   return v18;
 }
 
-- (MRUAsset)initWithPackageAssetNamed:(id)a3
+- (MRUAsset)initWithPackageAssetNamed:(id)named
 {
-  v4 = [MRUCAPackageAsset packageNamed:a3];
+  v4 = [MRUCAPackageAsset packageNamed:named];
   v5 = [(MRUAsset *)self initWithPackageAsset:v4 symbolName:0 image:0];
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
@@ -134,29 +134,29 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [v5 packageAsset];
-      v7 = v6;
-      if (v6 == self->_packageAsset)
+      v5 = equalCopy;
+      packageAsset = [v5 packageAsset];
+      v7 = packageAsset;
+      if (packageAsset == self->_packageAsset)
       {
         v8 = 1;
       }
 
       else
       {
-        v8 = [(MRUCAPackageAsset *)v6 isEqual:?];
+        v8 = [(MRUCAPackageAsset *)packageAsset isEqual:?];
       }
 
-      v10 = [v5 symbolName];
-      v11 = v10;
-      if (v10 == self->_symbolName)
+      symbolName = [v5 symbolName];
+      v11 = symbolName;
+      if (symbolName == self->_symbolName)
       {
         v12 = 1;
       }
 
       else
       {
-        v12 = [(NSString *)v10 isEqual:?];
+        v12 = [(NSString *)symbolName isEqual:?];
       }
 
       v13 = v8 & v12;

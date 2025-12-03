@@ -1,56 +1,56 @@
 @interface TUIRenderModelRatings
-- (BOOL)isEqualToRenderModel:(id)a3;
-- (TUIRenderModelRatings)initWithReuseIdentifier:(id)a3 identifier:(id)a4 elementStates:(id)a5 actionHandler:(id)a6 viewState:(id)a7 enabled:(BOOL)a8 name:(id)a9 rating:(double)a10 direction:(unint64_t)a11 color:(id)a12 startColor:(id)a13 backgroundColor:(id)a14 backgroundImageName:(id)a15 foregroundImageName:(id)a16 starWidth:(double)a17 starPadding:(double)a18;
-- (id)_copyAppearanceWithFlags:(unint64_t)a3 statesCopyProc:(void *)a4;
+- (BOOL)isEqualToRenderModel:(id)model;
+- (TUIRenderModelRatings)initWithReuseIdentifier:(id)identifier identifier:(id)a4 elementStates:(id)states actionHandler:(id)handler viewState:(id)state enabled:(BOOL)enabled name:(id)name rating:(double)self0 direction:(unint64_t)self1 color:(id)self2 startColor:(id)self3 backgroundColor:(id)self4 backgroundImageName:(id)self5 foregroundImageName:(id)self6 starWidth:(double)self7 starPadding:(double)self8;
+- (id)_copyAppearanceWithFlags:(unint64_t)flags statesCopyProc:(void *)proc;
 @end
 
 @implementation TUIRenderModelRatings
 
-- (TUIRenderModelRatings)initWithReuseIdentifier:(id)a3 identifier:(id)a4 elementStates:(id)a5 actionHandler:(id)a6 viewState:(id)a7 enabled:(BOOL)a8 name:(id)a9 rating:(double)a10 direction:(unint64_t)a11 color:(id)a12 startColor:(id)a13 backgroundColor:(id)a14 backgroundImageName:(id)a15 foregroundImageName:(id)a16 starWidth:(double)a17 starPadding:(double)a18
+- (TUIRenderModelRatings)initWithReuseIdentifier:(id)identifier identifier:(id)a4 elementStates:(id)states actionHandler:(id)handler viewState:(id)state enabled:(BOOL)enabled name:(id)name rating:(double)self0 direction:(unint64_t)self1 color:(id)self2 startColor:(id)self3 backgroundColor:(id)self4 backgroundImageName:(id)self5 foregroundImageName:(id)self6 starWidth:(double)self7 starPadding:(double)self8
 {
-  v24 = a12;
-  v25 = a13;
-  v26 = a14;
-  v27 = a15;
-  v28 = a16;
+  colorCopy = color;
+  startColorCopy = startColor;
+  backgroundColorCopy = backgroundColor;
+  imageNameCopy = imageName;
+  foregroundImageNameCopy = foregroundImageName;
   v42.receiver = self;
   v42.super_class = TUIRenderModelRatings;
-  v29 = [(TUIRenderModelInteractive *)&v42 initWithReuseIdentifier:a3 identifier:a4 style:0 elementStates:a5 imageModelIDToResource:0 actionHandler:a6 viewState:1.0 enabled:UIEdgeInsetsZero.top pressScale:UIEdgeInsetsZero.left touchInsets:UIEdgeInsetsZero.bottom pointer:UIEdgeInsetsZero.right focusStyle:a7 menu:a8 name:0, 0, 0, a9];
-  v30 = v29;
-  if (v29)
+  name = [(TUIRenderModelInteractive *)&v42 initWithReuseIdentifier:identifier identifier:a4 style:0 elementStates:states imageModelIDToResource:0 actionHandler:handler viewState:1.0 enabled:UIEdgeInsetsZero.top pressScale:UIEdgeInsetsZero.left touchInsets:UIEdgeInsetsZero.bottom pointer:UIEdgeInsetsZero.right focusStyle:state menu:enabled name:0, 0, 0, name];
+  v30 = name;
+  if (name)
   {
-    v29->_rating = a10;
-    v29->_direction = a11;
-    v29->_starWidth = a17;
-    v29->_starPadding = a18;
-    objc_storeStrong(&v29->_color, a12);
-    if (v25)
+    name->_rating = rating;
+    name->_direction = direction;
+    name->_starWidth = width;
+    name->_starPadding = padding;
+    objc_storeStrong(&name->_color, color);
+    if (startColorCopy)
     {
-      v31 = v25;
+      v31 = startColorCopy;
     }
 
     else
     {
-      v31 = v24;
+      v31 = colorCopy;
     }
 
     objc_storeStrong(&v30->_startColor, v31);
-    if (v26)
+    if (backgroundColorCopy)
     {
-      v32 = v26;
+      v32 = backgroundColorCopy;
     }
 
     else
     {
-      v32 = v24;
+      v32 = colorCopy;
     }
 
     objc_storeStrong(&v30->_backgroundColor, v32);
-    v33 = [v27 copy];
+    v33 = [imageNameCopy copy];
     backgroundImageName = v30->_backgroundImageName;
     v30->_backgroundImageName = v33;
 
-    v35 = [v28 copy];
+    v35 = [foregroundImageNameCopy copy];
     foregroundImageName = v30->_foregroundImageName;
     v30->_foregroundImageName = v35;
   }
@@ -58,11 +58,11 @@
   return v30;
 }
 
-- (BOOL)isEqualToRenderModel:(id)a3
+- (BOOL)isEqualToRenderModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   v5 = objc_opt_class();
-  v6 = TUIDynamicCast(v5, v4);
+  v6 = TUIDynamicCast(v5, modelCopy);
 
   v40.receiver = self;
   v40.super_class = TUIRenderModelRatings;
@@ -99,17 +99,17 @@
   }
 
   color = self->_color;
-  v15 = [v6 color];
-  v16 = v15;
-  if (color == v15)
+  color = [v6 color];
+  v16 = color;
+  if (color == color)
   {
   }
 
   else
   {
     v17 = self->_color;
-    v18 = [v6 color];
-    LODWORD(v17) = [(UIColor *)v17 isEqual:v18];
+    color2 = [v6 color];
+    LODWORD(v17) = [(UIColor *)v17 isEqual:color2];
 
     if (!v17)
     {
@@ -118,17 +118,17 @@
   }
 
   startColor = self->_startColor;
-  v20 = [v6 startColor];
-  v21 = v20;
-  if (startColor == v20)
+  startColor = [v6 startColor];
+  v21 = startColor;
+  if (startColor == startColor)
   {
   }
 
   else
   {
     v22 = self->_startColor;
-    v23 = [v6 startColor];
-    LODWORD(v22) = [(UIColor *)v22 isEqual:v23];
+    startColor2 = [v6 startColor];
+    LODWORD(v22) = [(UIColor *)v22 isEqual:startColor2];
 
     if (!v22)
     {
@@ -137,17 +137,17 @@
   }
 
   backgroundColor = self->_backgroundColor;
-  v25 = [v6 backgroundColor];
-  v26 = v25;
-  if (backgroundColor == v25)
+  backgroundColor = [v6 backgroundColor];
+  v26 = backgroundColor;
+  if (backgroundColor == backgroundColor)
   {
   }
 
   else
   {
     v27 = self->_backgroundColor;
-    v28 = [v6 backgroundColor];
-    LODWORD(v27) = [(UIColor *)v27 isEqual:v28];
+    backgroundColor2 = [v6 backgroundColor];
+    LODWORD(v27) = [(UIColor *)v27 isEqual:backgroundColor2];
 
     if (!v27)
     {
@@ -156,17 +156,17 @@
   }
 
   backgroundImageName = self->_backgroundImageName;
-  v30 = [v6 backgroundImageName];
-  v31 = v30;
-  if (backgroundImageName == v30)
+  backgroundImageName = [v6 backgroundImageName];
+  v31 = backgroundImageName;
+  if (backgroundImageName == backgroundImageName)
   {
   }
 
   else
   {
     v32 = self->_backgroundImageName;
-    v33 = [v6 backgroundImageName];
-    LODWORD(v32) = [(NSString *)v32 isEqualToString:v33];
+    backgroundImageName2 = [v6 backgroundImageName];
+    LODWORD(v32) = [(NSString *)v32 isEqualToString:backgroundImageName2];
 
     if (!v32)
     {
@@ -177,8 +177,8 @@ LABEL_20:
   }
 
   foregroundImageName = self->_foregroundImageName;
-  v37 = [v6 foregroundImageName];
-  if (foregroundImageName == v37)
+  foregroundImageName = [v6 foregroundImageName];
+  if (foregroundImageName == foregroundImageName)
   {
     v34 = 1;
   }
@@ -186,31 +186,31 @@ LABEL_20:
   else
   {
     v38 = self->_foregroundImageName;
-    v39 = [v6 foregroundImageName];
-    v34 = [(NSString *)v38 isEqualToString:v39];
+    foregroundImageName2 = [v6 foregroundImageName];
+    v34 = [(NSString *)v38 isEqualToString:foregroundImageName2];
   }
 
 LABEL_21:
   return v34;
 }
 
-- (id)_copyAppearanceWithFlags:(unint64_t)a3 statesCopyProc:(void *)a4
+- (id)_copyAppearanceWithFlags:(unint64_t)flags statesCopyProc:(void *)proc
 {
   v7 = objc_alloc(objc_opt_class());
-  v8 = [(TUIRenderModelInteractive *)self reuseIdentifier];
-  v9 = [(TUIRenderModelInteractive *)self identifier];
-  v10 = [(TUIRenderModelInteractive *)self stateToModel];
-  v11 = (a4)(v10, a3);
-  v12 = [(TUIRenderModelInteractive *)self actionHandler];
-  v13 = [(TUIRenderModelInteractive *)self viewState];
-  v14 = [(TUIRenderModelInteractive *)self enabled];
-  v15 = [(TUIRenderModelInteractive *)self name];
-  v16 = [v7 initWithReuseIdentifier:v8 identifier:v9 elementStates:v11 actionHandler:v12 viewState:v13 enabled:v14 name:self->_rating rating:self->_starWidth direction:self->_starPadding color:v15 startColor:self->_direction backgroundColor:self->_color backgroundImageName:self->_startColor foregroundImageName:self->_backgroundColor starWidth:self->_backgroundImageName starPadding:self->_foregroundImageName];
+  reuseIdentifier = [(TUIRenderModelInteractive *)self reuseIdentifier];
+  identifier = [(TUIRenderModelInteractive *)self identifier];
+  stateToModel = [(TUIRenderModelInteractive *)self stateToModel];
+  v11 = (proc)(stateToModel, flags);
+  actionHandler = [(TUIRenderModelInteractive *)self actionHandler];
+  viewState = [(TUIRenderModelInteractive *)self viewState];
+  enabled = [(TUIRenderModelInteractive *)self enabled];
+  name = [(TUIRenderModelInteractive *)self name];
+  v16 = [v7 initWithReuseIdentifier:reuseIdentifier identifier:identifier elementStates:v11 actionHandler:actionHandler viewState:viewState enabled:enabled name:self->_rating rating:self->_starWidth direction:self->_starPadding color:name startColor:self->_direction backgroundColor:self->_color backgroundImageName:self->_startColor foregroundImageName:self->_backgroundColor starWidth:self->_backgroundImageName starPadding:self->_foregroundImageName];
 
   TUIRenderModelCopyProperties(v16, self);
-  v17 = self;
+  selfCopy = self;
 
-  return v17;
+  return selfCopy;
 }
 
 @end

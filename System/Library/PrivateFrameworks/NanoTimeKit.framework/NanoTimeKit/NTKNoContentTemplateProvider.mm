@@ -1,62 +1,62 @@
 @interface NTKNoContentTemplateProvider
 + (id)largeModularEmptyTextProvider;
-+ (id)templateForDisplayName:(id)a3 image:(id)a4 family:(int64_t)a5 device:(id)a6 sdkVersion:(id)a7;
++ (id)templateForDisplayName:(id)name image:(id)image family:(int64_t)family device:(id)device sdkVersion:(id)version;
 @end
 
 @implementation NTKNoContentTemplateProvider
 
-+ (id)templateForDisplayName:(id)a3 image:(id)a4 family:(int64_t)a5 device:(id)a6 sdkVersion:(id)a7
++ (id)templateForDisplayName:(id)name image:(id)image family:(int64_t)family device:(id)device sdkVersion:(id)version
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
+  nameCopy = name;
+  imageCopy = image;
+  deviceCopy = device;
+  versionCopy = version;
   v16 = 0;
-  if (a5 > 6)
+  if (family > 6)
   {
-    if (a5 <= 9)
+    if (family <= 9)
     {
-      if (a5 == 7)
+      if (family == 7)
       {
-        v17 = [MEMORY[0x277CBBB40] imageProviderWithOnePieceImage:v13];
+        v17 = [MEMORY[0x277CBBB40] imageProviderWithOnePieceImage:imageCopy];
         v18 = MEMORY[0x277CBB7F0];
         goto LABEL_34;
       }
 
-      if (a5 == 8)
+      if (family == 8)
       {
         v17 = NTKClockFaceLocalizedString(@"SIGNATURE_CONER_NO_DATA", @"----");
-        if (!v13)
+        if (!imageCopy)
         {
-          v26 = [MEMORY[0x277CBBB88] textProviderWithText:v12];
+          v26 = [MEMORY[0x277CBBB88] textProviderWithText:nameCopy];
           v28 = [MEMORY[0x277CBBB88] textProviderWithText:v17];
           v16 = [MEMORY[0x277CBB900] templateWithInnerTextProvider:v28 outerTextProvider:v26];
 
 LABEL_47:
-          v13 = 0;
+          imageCopy = 0;
           goto LABEL_48;
         }
 
-        v19 = [MEMORY[0x277CBBB10] providerWithFullColorImage:v13 monochromeFilterType:0];
+        largeModularEmptyTextProvider = [MEMORY[0x277CBBB10] providerWithFullColorImage:imageCopy monochromeFilterType:0];
         v23 = [MEMORY[0x277CBBB88] textProviderWithText:v17];
-        v24 = [MEMORY[0x277CBB908] templateWithTextProvider:v23 imageProvider:v19];
+        v24 = [MEMORY[0x277CBB908] templateWithTextProvider:v23 imageProvider:largeModularEmptyTextProvider];
       }
 
       else
       {
-        v17 = [MEMORY[0x277CBBB88] textProviderWithText:v12];
-        if (v13)
+        v17 = [MEMORY[0x277CBBB88] textProviderWithText:nameCopy];
+        if (imageCopy)
         {
-          v19 = [MEMORY[0x277CBBB10] providerWithFullColorImage:v13 monochromeFilterType:0];
+          largeModularEmptyTextProvider = [MEMORY[0x277CBBB10] providerWithFullColorImage:imageCopy monochromeFilterType:0];
         }
 
         else
         {
-          v25 = [NTKNoContentTemplateProvider graphicCircularEmptyImageForDevice:v14];
-          v19 = [MEMORY[0x277CBBB10] providerWithFullColorImage:v25 monochromeFilterType:0 applyScalingAndCircularMasking:0];
+          v25 = [NTKNoContentTemplateProvider graphicCircularEmptyImageForDevice:deviceCopy];
+          largeModularEmptyTextProvider = [MEMORY[0x277CBBB10] providerWithFullColorImage:v25 monochromeFilterType:0 applyScalingAndCircularMasking:0];
         }
 
-        v23 = [MEMORY[0x277CBB850] templateWithImageProvider:v19];
+        v23 = [MEMORY[0x277CBB850] templateWithImageProvider:largeModularEmptyTextProvider];
         v24 = [MEMORY[0x277CBB810] templateWithCircularTemplate:v23 textProvider:v17];
       }
 
@@ -65,28 +65,28 @@ LABEL_47:
       goto LABEL_42;
     }
 
-    if (a5 == 10)
+    if (family == 10)
     {
-      if (!v13)
+      if (!imageCopy)
       {
-        v13 = [NTKNoContentTemplateProvider graphicCircularEmptyImageForDevice:v14];
+        imageCopy = [NTKNoContentTemplateProvider graphicCircularEmptyImageForDevice:deviceCopy];
       }
 
-      v17 = [MEMORY[0x277CBBB10] providerWithFullColorImage:v13 monochromeFilterType:0 applyScalingAndCircularMasking:1];
+      v17 = [MEMORY[0x277CBBB10] providerWithFullColorImage:imageCopy monochromeFilterType:0 applyScalingAndCircularMasking:1];
       v18 = MEMORY[0x277CBB850];
       goto LABEL_34;
     }
 
-    if (a5 != 11)
+    if (family != 11)
     {
-      if (a5 == 12)
+      if (family == 12)
       {
-        if (!v13)
+        if (!imageCopy)
         {
-          v13 = [NTKNoContentTemplateProvider graphicExtraLargeCircularEmptyImageForDevice:v14];
+          imageCopy = [NTKNoContentTemplateProvider graphicExtraLargeCircularEmptyImageForDevice:deviceCopy];
         }
 
-        v17 = [MEMORY[0x277CBBB10] providerWithFullColorImage:v13 monochromeFilterType:0 applyScalingAndCircularMasking:1];
+        v17 = [MEMORY[0x277CBBB10] providerWithFullColorImage:imageCopy monochromeFilterType:0 applyScalingAndCircularMasking:1];
         v18 = MEMORY[0x277CBB938];
         goto LABEL_34;
       }
@@ -94,35 +94,35 @@ LABEL_47:
       goto LABEL_49;
     }
 
-    v17 = [MEMORY[0x277CBBB88] textProviderWithText:v12];
-    if (v13)
+    v17 = [MEMORY[0x277CBBB88] textProviderWithText:nameCopy];
+    if (imageCopy)
     {
-      v19 = [MEMORY[0x277CBBB10] providerWithFullColorImage:v13 monochromeFilterType:0];
-      v22 = [MEMORY[0x277CBB9B0] templateWithTextProvider:v17 imageProvider:v19];
+      largeModularEmptyTextProvider = [MEMORY[0x277CBBB10] providerWithFullColorImage:imageCopy monochromeFilterType:0];
+      v22 = [MEMORY[0x277CBB9B0] templateWithTextProvider:v17 imageProvider:largeModularEmptyTextProvider];
       goto LABEL_38;
     }
 
-    v26 = [a1 largeRectangularEmptyTextProviderForDevice:v14];
+    v26 = [self largeRectangularEmptyTextProviderForDevice:deviceCopy];
     v27 = [MEMORY[0x277CBB9D8] templateWithHeaderTextProvider:v17 body1TextProvider:v26];
 LABEL_46:
     v16 = v27;
     goto LABEL_47;
   }
 
-  if (a5 > 2)
+  if (family > 2)
   {
-    switch(a5)
+    switch(family)
     {
       case 3:
-        v17 = [MEMORY[0x277CBBB88] textProviderWithText:v12];
+        v17 = [MEMORY[0x277CBBB88] textProviderWithText:nameCopy];
         v20 = MEMORY[0x277CBBA80];
         break;
       case 4:
-        v17 = [MEMORY[0x277CBBB40] imageProviderWithOnePieceImage:v13];
+        v17 = [MEMORY[0x277CBBB40] imageProviderWithOnePieceImage:imageCopy];
         v18 = MEMORY[0x277CBB790];
         goto LABEL_34;
       case 6:
-        v17 = [MEMORY[0x277CBBB88] textProviderWithText:v12];
+        v17 = [MEMORY[0x277CBBB88] textProviderWithText:nameCopy];
         v20 = MEMORY[0x277CBBA90];
         break;
       default:
@@ -137,12 +137,12 @@ LABEL_48:
     goto LABEL_49;
   }
 
-  switch(a5)
+  switch(family)
   {
     case 0:
-      if (v13)
+      if (imageCopy)
       {
-        v17 = [MEMORY[0x277CBBB40] imageProviderWithOnePieceImage:v13];
+        v17 = [MEMORY[0x277CBBB40] imageProviderWithOnePieceImage:imageCopy];
         v18 = MEMORY[0x277CBBA50];
         goto LABEL_34;
       }
@@ -152,16 +152,16 @@ LABEL_48:
       v27 = [MEMORY[0x277CBBA60] templateWithTextProvider:v26];
       goto LABEL_46;
     case 1:
-      v17 = [MEMORY[0x277CBBB88] textProviderWithText:v12];
-      v19 = [a1 largeModularEmptyTextProvider];
-      v22 = [MEMORY[0x277CBBA08] templateWithHeaderTextProvider:v17 body1TextProvider:v19];
+      v17 = [MEMORY[0x277CBBB88] textProviderWithText:nameCopy];
+      largeModularEmptyTextProvider = [self largeModularEmptyTextProvider];
+      v22 = [MEMORY[0x277CBBA08] templateWithHeaderTextProvider:v17 body1TextProvider:largeModularEmptyTextProvider];
 LABEL_38:
       v16 = v22;
 LABEL_42:
 
       goto LABEL_48;
     case 2:
-      v17 = [MEMORY[0x277CBBB40] imageProviderWithOnePieceImage:v13];
+      v17 = [MEMORY[0x277CBBB40] imageProviderWithOnePieceImage:imageCopy];
       v18 = MEMORY[0x277CBBAC0];
 LABEL_34:
       v21 = [v18 templateWithImageProvider:v17];
@@ -169,15 +169,15 @@ LABEL_34:
   }
 
 LABEL_49:
-  [v16 setSDKVersionFromLS:v15];
+  [v16 setSDKVersionFromLS:versionCopy];
   v34 = MEMORY[0x277D85DD0];
   v35 = 3221225472;
   v36 = __86__NTKNoContentTemplateProvider_templateForDisplayName_image_family_device_sdkVersion___block_invoke;
   v37 = &unk_2787846C8;
   v29 = v16;
   v38 = v29;
-  v39 = v15;
-  v30 = v15;
+  v39 = versionCopy;
+  v30 = versionCopy;
   [v29 enumerateEmbeddedTemplateKeysWithBlock:&v34];
   [v29 finalize];
   v31 = v39;

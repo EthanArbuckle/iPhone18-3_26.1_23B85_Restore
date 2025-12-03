@@ -1,42 +1,42 @@
 @interface ICInAppMessageStore
 - (ICInAppMessageStore)init;
-- (ICInAppMessageStore)initWithFilePath:(id)a3;
+- (ICInAppMessageStore)initWithFilePath:(id)path;
 - (id)_defaultStoreFilePath;
 - (void)_commit;
 - (void)_load;
-- (void)addMessageEntry:(id)a3 completion:(id)a4;
-- (void)addPendingMessageEvent:(id)a3 completion:(id)a4;
-- (void)allApplicationStorePropertiesWithCompletion:(id)a3;
-- (void)allStorePropertiesWithCompletion:(id)a3;
-- (void)getAllMessageEntriesForBundleIdentifier:(id)a3 completion:(id)a4;
-- (void)getAllMessageEntriesForBundleIdentifiers:(id)a3 completion:(id)a4;
-- (void)getAllMessageEntriesWithCompletion:(id)a3;
-- (void)getAllMetadataForBundleIdentifier:(id)a3 completion:(id)a4;
-- (void)getAllMetadataForBundleIdentifiers:(id)a3 completion:(id)a4;
-- (void)getMessageEntryWithIdentifier:(id)a3 bundleIdentifier:(id)a4 completion:(id)a5;
-- (void)getMetadataForMessageIdentifier:(id)a3 bundleIdentifier:(id)a4 completion:(id)a5;
-- (void)getStorePropertyForKey:(id)a3 bundleIdentifier:(id)a4 completion:(id)a5;
-- (void)getStorePropertyForKey:(id)a3 completion:(id)a4;
-- (void)pendingMessageEventsWithCompletion:(id)a3;
-- (void)removeAllMessageEntriesForBundleIdentifier:(id)a3 completion:(id)a4;
-- (void)removeAllMetadataForBundleIdentifier:(id)a3 completion:(id)a4;
-- (void)removeMessageEntry:(id)a3 completion:(id)a4;
-- (void)removeMessageEntryWithIdentifier:(id)a3 forBundleIdentifier:(id)a4 completion:(id)a5;
-- (void)removeMetadataForMessageIdentifier:(id)a3 bundleIdentifier:(id)a4 completion:(id)a5;
-- (void)removePendingMessageEventWithIdentifier:(id)a3 completion:(id)a4;
-- (void)resetStoreWithCompletion:(id)a3;
-- (void)updateMessageEntry:(id)a3 completion:(id)a4;
-- (void)updateMetadata:(id)a3 messageIdentifier:(id)a4 bundleIdentifier:(id)a5 completion:(id)a6;
-- (void)updateStoreProperty:(id)a3 forKey:(id)a4 bundleIdentifier:(id)a5 completion:(id)a6;
-- (void)updateStoreProperty:(id)a3 forKey:(id)a4 completion:(id)a5;
+- (void)addMessageEntry:(id)entry completion:(id)completion;
+- (void)addPendingMessageEvent:(id)event completion:(id)completion;
+- (void)allApplicationStorePropertiesWithCompletion:(id)completion;
+- (void)allStorePropertiesWithCompletion:(id)completion;
+- (void)getAllMessageEntriesForBundleIdentifier:(id)identifier completion:(id)completion;
+- (void)getAllMessageEntriesForBundleIdentifiers:(id)identifiers completion:(id)completion;
+- (void)getAllMessageEntriesWithCompletion:(id)completion;
+- (void)getAllMetadataForBundleIdentifier:(id)identifier completion:(id)completion;
+- (void)getAllMetadataForBundleIdentifiers:(id)identifiers completion:(id)completion;
+- (void)getMessageEntryWithIdentifier:(id)identifier bundleIdentifier:(id)bundleIdentifier completion:(id)completion;
+- (void)getMetadataForMessageIdentifier:(id)identifier bundleIdentifier:(id)bundleIdentifier completion:(id)completion;
+- (void)getStorePropertyForKey:(id)key bundleIdentifier:(id)identifier completion:(id)completion;
+- (void)getStorePropertyForKey:(id)key completion:(id)completion;
+- (void)pendingMessageEventsWithCompletion:(id)completion;
+- (void)removeAllMessageEntriesForBundleIdentifier:(id)identifier completion:(id)completion;
+- (void)removeAllMetadataForBundleIdentifier:(id)identifier completion:(id)completion;
+- (void)removeMessageEntry:(id)entry completion:(id)completion;
+- (void)removeMessageEntryWithIdentifier:(id)identifier forBundleIdentifier:(id)bundleIdentifier completion:(id)completion;
+- (void)removeMetadataForMessageIdentifier:(id)identifier bundleIdentifier:(id)bundleIdentifier completion:(id)completion;
+- (void)removePendingMessageEventWithIdentifier:(id)identifier completion:(id)completion;
+- (void)resetStoreWithCompletion:(id)completion;
+- (void)updateMessageEntry:(id)entry completion:(id)completion;
+- (void)updateMetadata:(id)metadata messageIdentifier:(id)identifier bundleIdentifier:(id)bundleIdentifier completion:(id)completion;
+- (void)updateStoreProperty:(id)property forKey:(id)key bundleIdentifier:(id)identifier completion:(id)completion;
+- (void)updateStoreProperty:(id)property forKey:(id)key completion:(id)completion;
 @end
 
 @implementation ICInAppMessageStore
 
 - (ICInAppMessageStore)init
 {
-  v3 = [(ICInAppMessageStore *)self _defaultStoreFilePath];
-  v4 = [(ICInAppMessageStore *)self initWithFilePath:v3];
+  _defaultStoreFilePath = [(ICInAppMessageStore *)self _defaultStoreFilePath];
+  v4 = [(ICInAppMessageStore *)self initWithFilePath:_defaultStoreFilePath];
 
   return v4;
 }
@@ -53,21 +53,21 @@
 - (void)_load
 {
   v53 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   messageEntryCache = self->_messageEntryCache;
-  self->_messageEntryCache = v3;
+  self->_messageEntryCache = dictionary;
 
-  v5 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary2 = [MEMORY[0x1E695DF90] dictionary];
   v6 = self->_messageEntryCache;
-  self->_messageEntryCache = v5;
+  self->_messageEntryCache = dictionary2;
 
-  v7 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary3 = [MEMORY[0x1E695DF90] dictionary];
   globalPropertyCache = self->_globalPropertyCache;
-  self->_globalPropertyCache = v7;
+  self->_globalPropertyCache = dictionary3;
 
-  v9 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   pendingEvents = self->_pendingEvents;
-  self->_pendingEvents = v9;
+  self->_pendingEvents = array;
 
   v11 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithContentsOfFile:self->_filePath];
   if ([v11 length])
@@ -81,7 +81,7 @@
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543618;
-        v50 = self;
+        selfCopy2 = self;
         v51 = 2114;
         v52 = v13;
         _os_log_impl(&dword_1B4491000, v14, OS_LOG_TYPE_DEFAULT, "%{public}@ Failed to read message store data. err=%{public}@", buf, 0x16u);
@@ -166,7 +166,7 @@
               if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
               {
                 *buf = 138543618;
-                v50 = self;
+                selfCopy2 = self;
                 v51 = 2114;
                 v52 = v32;
                 _os_log_impl(&dword_1B4491000, v33, OS_LOG_TYPE_DEFAULT, "%{public}@ Failed to deserialize event entry. err=%{public}@", buf, 0x16u);
@@ -271,11 +271,11 @@
             v22 = os_log_create("com.apple.amp.iTunesCloud", "Default");
             if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
             {
-              v23 = [v19 eventIdentifier];
+              eventIdentifier = [v19 eventIdentifier];
               *buf = 138543874;
-              v39 = self;
+              selfCopy2 = self;
               v40 = 2114;
-              v41 = v23;
+              v41 = eventIdentifier;
               v42 = 2114;
               v43 = v21;
               _os_log_impl(&dword_1B4491000, v22, OS_LOG_TYPE_DEFAULT, "%{public}@ Failed to serialize event entry with identifier %{public}@. err=%{public}@", buf, 0x20u);
@@ -302,7 +302,7 @@
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v39 = self;
+      selfCopy2 = self;
       v40 = 2114;
       v41 = v25;
       _os_log_impl(&dword_1B4491000, v26, OS_LOG_TYPE_DEFAULT, "%{public}@ Failed to commit message store data. err=%{public}@", buf, 0x16u);
@@ -514,20 +514,20 @@ void __28__ICInAppMessageStore__load__block_invoke_2(uint64_t a1, void *a2, void
   }
 }
 
-- (void)removeAllMetadataForBundleIdentifier:(id)a3 completion:(id)a4
+- (void)removeAllMetadataForBundleIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   accessQueue = self->_accessQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __71__ICInAppMessageStore_removeAllMetadataForBundleIdentifier_completion___block_invoke;
   block[3] = &unk_1E7BF9E28;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = identifierCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = identifierCopy;
   dispatch_async(accessQueue, block);
 }
 
@@ -544,23 +544,23 @@ void __71__ICInAppMessageStore_removeAllMetadataForBundleIdentifier_completion__
   dispatch_async(v2, block);
 }
 
-- (void)removeMetadataForMessageIdentifier:(id)a3 bundleIdentifier:(id)a4 completion:(id)a5
+- (void)removeMetadataForMessageIdentifier:(id)identifier bundleIdentifier:(id)bundleIdentifier completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  bundleIdentifierCopy = bundleIdentifier;
+  completionCopy = completion;
   accessQueue = self->_accessQueue;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __86__ICInAppMessageStore_removeMetadataForMessageIdentifier_bundleIdentifier_completion___block_invoke;
   v15[3] = &unk_1E7BF9E78;
   v15[4] = self;
-  v16 = v9;
-  v17 = v8;
-  v18 = v10;
-  v12 = v10;
-  v13 = v8;
-  v14 = v9;
+  v16 = bundleIdentifierCopy;
+  v17 = identifierCopy;
+  v18 = completionCopy;
+  v12 = completionCopy;
+  v13 = identifierCopy;
+  v14 = bundleIdentifierCopy;
   dispatch_async(accessQueue, v15);
 }
 
@@ -583,26 +583,26 @@ void __86__ICInAppMessageStore_removeMetadataForMessageIdentifier_bundleIdentifi
   dispatch_async(v4, block);
 }
 
-- (void)updateMetadata:(id)a3 messageIdentifier:(id)a4 bundleIdentifier:(id)a5 completion:(id)a6
+- (void)updateMetadata:(id)metadata messageIdentifier:(id)identifier bundleIdentifier:(id)bundleIdentifier completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  metadataCopy = metadata;
+  identifierCopy = identifier;
+  bundleIdentifierCopy = bundleIdentifier;
+  completionCopy = completion;
   accessQueue = self->_accessQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __84__ICInAppMessageStore_updateMetadata_messageIdentifier_bundleIdentifier_completion___block_invoke;
   block[3] = &unk_1E7BF70D8;
   block[4] = self;
-  v20 = v12;
-  v21 = v10;
-  v22 = v11;
-  v23 = v13;
-  v15 = v13;
-  v16 = v11;
-  v17 = v10;
-  v18 = v12;
+  v20 = bundleIdentifierCopy;
+  v21 = metadataCopy;
+  v22 = identifierCopy;
+  v23 = completionCopy;
+  v15 = completionCopy;
+  v16 = identifierCopy;
+  v17 = metadataCopy;
+  v18 = bundleIdentifierCopy;
   dispatch_async(accessQueue, block);
 }
 
@@ -628,20 +628,20 @@ void __84__ICInAppMessageStore_updateMetadata_messageIdentifier_bundleIdentifier
   dispatch_async(v4, block);
 }
 
-- (void)getAllMetadataForBundleIdentifiers:(id)a3 completion:(id)a4
+- (void)getAllMetadataForBundleIdentifiers:(id)identifiers completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifiersCopy = identifiers;
+  completionCopy = completion;
   accessQueue = self->_accessQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __69__ICInAppMessageStore_getAllMetadataForBundleIdentifiers_completion___block_invoke;
   block[3] = &unk_1E7BF9E28;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = identifiersCopy;
+  selfCopy = self;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  v10 = identifiersCopy;
   dispatch_async(accessQueue, block);
 }
 
@@ -699,31 +699,31 @@ void __69__ICInAppMessageStore_getAllMetadataForBundleIdentifiers_completion___b
   dispatch_async(v10, v13);
 }
 
-- (void)getAllMetadataForBundleIdentifier:(id)a3 completion:(id)a4
+- (void)getAllMetadataForBundleIdentifier:(id)identifier completion:(id)completion
 {
   v6 = MEMORY[0x1E695DFD8];
-  v7 = a4;
-  v8 = [v6 setWithObject:a3];
-  [(ICInAppMessageStore *)self getAllMetadataForBundleIdentifiers:v8 completion:v7];
+  completionCopy = completion;
+  v8 = [v6 setWithObject:identifier];
+  [(ICInAppMessageStore *)self getAllMetadataForBundleIdentifiers:v8 completion:completionCopy];
 }
 
-- (void)getMetadataForMessageIdentifier:(id)a3 bundleIdentifier:(id)a4 completion:(id)a5
+- (void)getMetadataForMessageIdentifier:(id)identifier bundleIdentifier:(id)bundleIdentifier completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  bundleIdentifierCopy = bundleIdentifier;
+  completionCopy = completion;
   accessQueue = self->_accessQueue;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __83__ICInAppMessageStore_getMetadataForMessageIdentifier_bundleIdentifier_completion___block_invoke;
   v15[3] = &unk_1E7BF9E78;
   v15[4] = self;
-  v16 = v9;
-  v17 = v8;
-  v18 = v10;
-  v12 = v10;
-  v13 = v8;
-  v14 = v9;
+  v16 = bundleIdentifierCopy;
+  v17 = identifierCopy;
+  v18 = completionCopy;
+  v12 = completionCopy;
+  v13 = identifierCopy;
+  v14 = bundleIdentifierCopy;
   dispatch_async(accessQueue, v15);
 }
 
@@ -745,20 +745,20 @@ void __83__ICInAppMessageStore_getMetadataForMessageIdentifier_bundleIdentifier_
   dispatch_async(v5, v8);
 }
 
-- (void)removePendingMessageEventWithIdentifier:(id)a3 completion:(id)a4
+- (void)removePendingMessageEventWithIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   accessQueue = self->_accessQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __74__ICInAppMessageStore_removePendingMessageEventWithIdentifier_completion___block_invoke;
   block[3] = &unk_1E7BF9E28;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = identifierCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = identifierCopy;
   dispatch_async(accessQueue, block);
 }
 
@@ -791,17 +791,17 @@ void __74__ICInAppMessageStore_removePendingMessageEventWithIdentifier_completio
   dispatch_async(v6, block);
 }
 
-- (void)pendingMessageEventsWithCompletion:(id)a3
+- (void)pendingMessageEventsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   accessQueue = self->_accessQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __58__ICInAppMessageStore_pendingMessageEventsWithCompletion___block_invoke;
   v7[3] = &unk_1E7BF9EC8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(accessQueue, v7);
 }
 
@@ -820,20 +820,20 @@ void __58__ICInAppMessageStore_pendingMessageEventsWithCompletion___block_invoke
   dispatch_async(v3, v6);
 }
 
-- (void)addPendingMessageEvent:(id)a3 completion:(id)a4
+- (void)addPendingMessageEvent:(id)event completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  eventCopy = event;
+  completionCopy = completion;
   accessQueue = self->_accessQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __57__ICInAppMessageStore_addPendingMessageEvent_completion___block_invoke;
   block[3] = &unk_1E7BF9E28;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = eventCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = eventCopy;
   dispatch_async(accessQueue, block);
 }
 
@@ -861,17 +861,17 @@ void __57__ICInAppMessageStore_addPendingMessageEvent_completion___block_invoke(
   dispatch_async(v6, block);
 }
 
-- (void)resetStoreWithCompletion:(id)a3
+- (void)resetStoreWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   accessQueue = self->_accessQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __48__ICInAppMessageStore_resetStoreWithCompletion___block_invoke;
   v7[3] = &unk_1E7BF9EC8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(accessQueue, v7);
 }
 
@@ -907,20 +907,20 @@ void __48__ICInAppMessageStore_resetStoreWithCompletion___block_invoke(uint64_t 
   dispatch_async(v14, block);
 }
 
-- (void)getAllMessageEntriesForBundleIdentifiers:(id)a3 completion:(id)a4
+- (void)getAllMessageEntriesForBundleIdentifiers:(id)identifiers completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifiersCopy = identifiers;
+  completionCopy = completion;
   accessQueue = self->_accessQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __75__ICInAppMessageStore_getAllMessageEntriesForBundleIdentifiers_completion___block_invoke;
   block[3] = &unk_1E7BF9E28;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = identifiersCopy;
+  selfCopy = self;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  v10 = identifiersCopy;
   dispatch_async(accessQueue, block);
 }
 
@@ -969,25 +969,25 @@ void __75__ICInAppMessageStore_getAllMessageEntriesForBundleIdentifiers_completi
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)getAllMessageEntriesForBundleIdentifier:(id)a3 completion:(id)a4
+- (void)getAllMessageEntriesForBundleIdentifier:(id)identifier completion:(id)completion
 {
   v6 = MEMORY[0x1E695DFD8];
-  v7 = a4;
-  v8 = [v6 setWithObject:a3];
-  [(ICInAppMessageStore *)self getAllMessageEntriesForBundleIdentifiers:v8 completion:v7];
+  completionCopy = completion;
+  v8 = [v6 setWithObject:identifier];
+  [(ICInAppMessageStore *)self getAllMessageEntriesForBundleIdentifiers:v8 completion:completionCopy];
 }
 
-- (void)getAllMessageEntriesWithCompletion:(id)a3
+- (void)getAllMessageEntriesWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   accessQueue = self->_accessQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __58__ICInAppMessageStore_getAllMessageEntriesWithCompletion___block_invoke;
   v7[3] = &unk_1E7BF9EC8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(accessQueue, v7);
 }
 
@@ -1031,23 +1031,23 @@ void __58__ICInAppMessageStore_getAllMessageEntriesWithCompletion___block_invoke
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)getMessageEntryWithIdentifier:(id)a3 bundleIdentifier:(id)a4 completion:(id)a5
+- (void)getMessageEntryWithIdentifier:(id)identifier bundleIdentifier:(id)bundleIdentifier completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  bundleIdentifierCopy = bundleIdentifier;
+  completionCopy = completion;
   accessQueue = self->_accessQueue;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __81__ICInAppMessageStore_getMessageEntryWithIdentifier_bundleIdentifier_completion___block_invoke;
   v15[3] = &unk_1E7BF9E78;
   v15[4] = self;
-  v16 = v9;
-  v17 = v8;
-  v18 = v10;
-  v12 = v10;
-  v13 = v8;
-  v14 = v9;
+  v16 = bundleIdentifierCopy;
+  v17 = identifierCopy;
+  v18 = completionCopy;
+  v12 = completionCopy;
+  v13 = identifierCopy;
+  v14 = bundleIdentifierCopy;
   dispatch_async(accessQueue, v15);
 }
 
@@ -1068,20 +1068,20 @@ void __81__ICInAppMessageStore_getMessageEntryWithIdentifier_bundleIdentifier_co
   (*(a1[7] + 16))();
 }
 
-- (void)removeAllMessageEntriesForBundleIdentifier:(id)a3 completion:(id)a4
+- (void)removeAllMessageEntriesForBundleIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   accessQueue = self->_accessQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __77__ICInAppMessageStore_removeAllMessageEntriesForBundleIdentifier_completion___block_invoke;
   block[3] = &unk_1E7BF9E28;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = identifierCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = identifierCopy;
   dispatch_async(accessQueue, block);
 }
 
@@ -1098,23 +1098,23 @@ void __77__ICInAppMessageStore_removeAllMessageEntriesForBundleIdentifier_comple
   dispatch_async(v2, block);
 }
 
-- (void)removeMessageEntryWithIdentifier:(id)a3 forBundleIdentifier:(id)a4 completion:(id)a5
+- (void)removeMessageEntryWithIdentifier:(id)identifier forBundleIdentifier:(id)bundleIdentifier completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  bundleIdentifierCopy = bundleIdentifier;
+  completionCopy = completion;
   accessQueue = self->_accessQueue;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __87__ICInAppMessageStore_removeMessageEntryWithIdentifier_forBundleIdentifier_completion___block_invoke;
   v15[3] = &unk_1E7BF9E78;
   v15[4] = self;
-  v16 = v9;
-  v17 = v8;
-  v18 = v10;
-  v12 = v10;
-  v13 = v8;
-  v14 = v9;
+  v16 = bundleIdentifierCopy;
+  v17 = identifierCopy;
+  v18 = completionCopy;
+  v12 = completionCopy;
+  v13 = identifierCopy;
+  v14 = bundleIdentifierCopy;
   dispatch_async(accessQueue, v15);
 }
 
@@ -1138,31 +1138,31 @@ void __87__ICInAppMessageStore_removeMessageEntryWithIdentifier_forBundleIdentif
   dispatch_async(v4, block);
 }
 
-- (void)removeMessageEntry:(id)a3 completion:(id)a4
+- (void)removeMessageEntry:(id)entry completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v10 = [v7 bundleIdentifier];
-  v8 = [v7 applicationMessage];
+  completionCopy = completion;
+  entryCopy = entry;
+  bundleIdentifier = [entryCopy bundleIdentifier];
+  applicationMessage = [entryCopy applicationMessage];
 
-  v9 = [v8 identifier];
-  [(ICInAppMessageStore *)self removeMessageEntryWithIdentifier:v9 forBundleIdentifier:v10 completion:v6];
+  identifier = [applicationMessage identifier];
+  [(ICInAppMessageStore *)self removeMessageEntryWithIdentifier:identifier forBundleIdentifier:bundleIdentifier completion:completionCopy];
 }
 
-- (void)updateMessageEntry:(id)a3 completion:(id)a4
+- (void)updateMessageEntry:(id)entry completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  entryCopy = entry;
+  completionCopy = completion;
   accessQueue = self->_accessQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __53__ICInAppMessageStore_updateMessageEntry_completion___block_invoke;
   block[3] = &unk_1E7BF9E28;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = entryCopy;
+  selfCopy = self;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  v10 = entryCopy;
   dispatch_async(accessQueue, block);
 }
 
@@ -1191,20 +1191,20 @@ void __53__ICInAppMessageStore_updateMessageEntry_completion___block_invoke(id *
   dispatch_async(v7, block);
 }
 
-- (void)addMessageEntry:(id)a3 completion:(id)a4
+- (void)addMessageEntry:(id)entry completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  entryCopy = entry;
+  completionCopy = completion;
   accessQueue = self->_accessQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __50__ICInAppMessageStore_addMessageEntry_completion___block_invoke;
   block[3] = &unk_1E7BF9E28;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = entryCopy;
+  selfCopy = self;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  v10 = entryCopy;
   dispatch_async(accessQueue, block);
 }
 
@@ -1233,17 +1233,17 @@ void __50__ICInAppMessageStore_addMessageEntry_completion___block_invoke(id *a1)
   dispatch_async(v7, block);
 }
 
-- (void)allApplicationStorePropertiesWithCompletion:(id)a3
+- (void)allApplicationStorePropertiesWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   accessQueue = self->_accessQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __67__ICInAppMessageStore_allApplicationStorePropertiesWithCompletion___block_invoke;
   v7[3] = &unk_1E7BF9EC8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(accessQueue, v7);
 }
 
@@ -1262,23 +1262,23 @@ void __67__ICInAppMessageStore_allApplicationStorePropertiesWithCompletion___blo
   dispatch_async(v3, v6);
 }
 
-- (void)getStorePropertyForKey:(id)a3 bundleIdentifier:(id)a4 completion:(id)a5
+- (void)getStorePropertyForKey:(id)key bundleIdentifier:(id)identifier completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  keyCopy = key;
+  identifierCopy = identifier;
+  completionCopy = completion;
   accessQueue = self->_accessQueue;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __74__ICInAppMessageStore_getStorePropertyForKey_bundleIdentifier_completion___block_invoke;
   v15[3] = &unk_1E7BF9E78;
   v15[4] = self;
-  v16 = v9;
-  v17 = v8;
-  v18 = v10;
-  v12 = v8;
-  v13 = v10;
-  v14 = v9;
+  v16 = identifierCopy;
+  v17 = keyCopy;
+  v18 = completionCopy;
+  v12 = keyCopy;
+  v13 = completionCopy;
+  v14 = identifierCopy;
   dispatch_async(accessQueue, v15);
 }
 
@@ -1304,26 +1304,26 @@ void __74__ICInAppMessageStore_getStorePropertyForKey_bundleIdentifier_completio
   (*(v1 + 16))(v1, v2, 0);
 }
 
-- (void)updateStoreProperty:(id)a3 forKey:(id)a4 bundleIdentifier:(id)a5 completion:(id)a6
+- (void)updateStoreProperty:(id)property forKey:(id)key bundleIdentifier:(id)identifier completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  propertyCopy = property;
+  keyCopy = key;
+  identifierCopy = identifier;
+  completionCopy = completion;
   accessQueue = self->_accessQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __78__ICInAppMessageStore_updateStoreProperty_forKey_bundleIdentifier_completion___block_invoke;
   block[3] = &unk_1E7BF70D8;
   block[4] = self;
-  v20 = v12;
-  v21 = v10;
-  v22 = v11;
-  v23 = v13;
-  v15 = v13;
-  v16 = v11;
-  v17 = v10;
-  v18 = v12;
+  v20 = identifierCopy;
+  v21 = propertyCopy;
+  v22 = keyCopy;
+  v23 = completionCopy;
+  v15 = completionCopy;
+  v16 = keyCopy;
+  v17 = propertyCopy;
+  v18 = identifierCopy;
   dispatch_async(accessQueue, block);
 }
 
@@ -1349,17 +1349,17 @@ void __78__ICInAppMessageStore_updateStoreProperty_forKey_bundleIdentifier_compl
   dispatch_async(v4, block);
 }
 
-- (void)allStorePropertiesWithCompletion:(id)a3
+- (void)allStorePropertiesWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   accessQueue = self->_accessQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __56__ICInAppMessageStore_allStorePropertiesWithCompletion___block_invoke;
   v7[3] = &unk_1E7BF9EC8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(accessQueue, v7);
 }
 
@@ -1378,20 +1378,20 @@ void __56__ICInAppMessageStore_allStorePropertiesWithCompletion___block_invoke(u
   dispatch_async(v3, v6);
 }
 
-- (void)getStorePropertyForKey:(id)a3 completion:(id)a4
+- (void)getStorePropertyForKey:(id)key completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  completionCopy = completion;
   accessQueue = self->_accessQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __57__ICInAppMessageStore_getStorePropertyForKey_completion___block_invoke;
   block[3] = &unk_1E7BF9E28;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = keyCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = keyCopy;
   dispatch_async(accessQueue, block);
 }
 
@@ -1412,23 +1412,23 @@ void __57__ICInAppMessageStore_getStorePropertyForKey_completion___block_invoke(
   dispatch_async(v4, v7);
 }
 
-- (void)updateStoreProperty:(id)a3 forKey:(id)a4 completion:(id)a5
+- (void)updateStoreProperty:(id)property forKey:(id)key completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  propertyCopy = property;
+  keyCopy = key;
+  completionCopy = completion;
   accessQueue = self->_accessQueue;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __61__ICInAppMessageStore_updateStoreProperty_forKey_completion___block_invoke;
   v15[3] = &unk_1E7BF9E78;
   v15[4] = self;
-  v16 = v9;
-  v17 = v8;
-  v18 = v10;
-  v12 = v10;
-  v13 = v8;
-  v14 = v9;
+  v16 = keyCopy;
+  v17 = propertyCopy;
+  v18 = completionCopy;
+  v12 = completionCopy;
+  v13 = propertyCopy;
+  v14 = keyCopy;
   dispatch_async(accessQueue, v15);
 }
 
@@ -1445,16 +1445,16 @@ void __61__ICInAppMessageStore_updateStoreProperty_forKey_completion___block_inv
   dispatch_async(v2, block);
 }
 
-- (ICInAppMessageStore)initWithFilePath:(id)a3
+- (ICInAppMessageStore)initWithFilePath:(id)path
 {
-  v5 = a3;
+  pathCopy = path;
   v25.receiver = self;
   v25.super_class = ICInAppMessageStore;
   v6 = [(ICInAppMessageStore *)&v25 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_filePath, a3);
+    objc_storeStrong(&v6->_filePath, path);
     v8 = objc_alloc_init(MEMORY[0x1E695DF90]);
     messageEntryCache = v7->_messageEntryCache;
     v7->_messageEntryCache = v8;

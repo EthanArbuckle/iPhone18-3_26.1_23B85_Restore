@@ -1,22 +1,22 @@
 @interface PUExportUnmodifiedOriginalsActivity
-- (BOOL)canPerformWithActivityItems:(id)a3;
-- (id)_createDocumentPickerViewControllerForExportedItems:(id)a3;
+- (BOOL)canPerformWithActivityItems:(id)items;
+- (id)_createDocumentPickerViewControllerForExportedItems:(id)items;
 - (id)activityTitle;
-- (void)prepareWithActivityItems:(id)a3;
+- (void)prepareWithActivityItems:(id)items;
 @end
 
 @implementation PUExportUnmodifiedOriginalsActivity
 
-- (id)_createDocumentPickerViewControllerForExportedItems:(id)a3
+- (id)_createDocumentPickerViewControllerForExportedItems:(id)items
 {
   v35 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v3, "count")}];
+  itemsCopy = items;
+  v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(itemsCopy, "count")}];
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v5 = v3;
+  v5 = itemsCopy;
   v6 = [v5 countByEnumeratingWithState:&v29 objects:v34 count:16];
   if (v6)
   {
@@ -129,19 +129,19 @@
   return v21;
 }
 
-- (void)prepareWithActivityItems:(id)a3
+- (void)prepareWithActivityItems:(id)items
 {
-  v4 = [(PUExportUnmodifiedOriginalsActivity *)self _createDocumentPickerViewControllerForExportedItems:a3];
+  v4 = [(PUExportUnmodifiedOriginalsActivity *)self _createDocumentPickerViewControllerForExportedItems:items];
   [(PUExportUnmodifiedOriginalsActivity *)self setCachedDocumentPickerViewController:v4];
 }
 
-- (BOOL)canPerformWithActivityItems:(id)a3
+- (BOOL)canPerformWithActivityItems:(id)items
 {
-  v3 = [(PXActivity *)self itemSourceController];
-  if ([v3 isPreparingIndividualItems])
+  itemSourceController = [(PXActivity *)self itemSourceController];
+  if ([itemSourceController isPreparingIndividualItems])
   {
-    v4 = [v3 assets];
-    v5 = [v4 count] != 0;
+    assets = [itemSourceController assets];
+    v5 = [assets count] != 0;
   }
 
   else
@@ -154,9 +154,9 @@
 
 - (id)activityTitle
 {
-  v2 = [(PXActivity *)self itemSourceController];
-  v3 = [v2 assets];
-  if ([v3 count] == 1)
+  itemSourceController = [(PXActivity *)self itemSourceController];
+  assets = [itemSourceController assets];
+  if ([assets count] == 1)
   {
     v4 = @"SHARING_EXPORT_UNMODIFIED_ORIGINALS_TITLE";
   }

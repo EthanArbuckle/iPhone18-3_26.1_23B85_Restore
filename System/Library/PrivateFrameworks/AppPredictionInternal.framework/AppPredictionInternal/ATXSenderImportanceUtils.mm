@@ -1,23 +1,23 @@
 @interface ATXSenderImportanceUtils
-+ (id)_contactFromName:(id)a3 contactStore:(id)a4;
-+ (id)contactFromHandle:(id)a3 contactStore:(id)a4;
++ (id)_contactFromName:(id)name contactStore:(id)store;
++ (id)contactFromHandle:(id)handle contactStore:(id)store;
 @end
 
 @implementation ATXSenderImportanceUtils
 
-+ (id)contactFromHandle:(id)a3 contactStore:(id)a4
++ (id)contactFromHandle:(id)handle contactStore:(id)store
 {
   v21[4] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 contactIdentifier];
+  handleCopy = handle;
+  storeCopy = store;
+  contactIdentifier = [handleCopy contactIdentifier];
 
-  if (v8)
+  if (contactIdentifier)
   {
-    v9 = [[ATXStableContactRepresentationDatastore alloc] initWithContactStore:v7];
-    v10 = [v6 contactIdentifier];
-    v11 = [v6 handle];
-    v12 = [(ATXStableContactRepresentationDatastore *)v9 cnContactForCnContactId:v10 rawIdentifier:v11];
+    name2 = [[ATXStableContactRepresentationDatastore alloc] initWithContactStore:storeCopy];
+    contactIdentifier2 = [handleCopy contactIdentifier];
+    handle = [handleCopy handle];
+    v12 = [(ATXStableContactRepresentationDatastore *)name2 cnContactForCnContactId:contactIdentifier2 rawIdentifier:handle];
 LABEL_5:
     v17 = v12;
 
@@ -25,9 +25,9 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v13 = [v6 handle];
+  handle2 = [handleCopy handle];
 
-  if (v13)
+  if (handle2)
   {
     v14 = [MEMORY[0x277CBDA78] descriptorForRequiredKeysForStyle:0];
     v15 = *MEMORY[0x277CBD160];
@@ -36,20 +36,20 @@ LABEL_6:
     v16 = *MEMORY[0x277CBCFC0];
     v21[2] = *MEMORY[0x277CBD098];
     v21[3] = v16;
-    v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v21 count:4];
+    name2 = [MEMORY[0x277CBEA60] arrayWithObjects:v21 count:4];
 
-    v10 = [objc_alloc(MEMORY[0x277D3A088]) initWithContactStore:v7 keysToFetch:v9];
-    v11 = [v6 handle];
-    v12 = [v10 resolveContactIfPossibleFromContactIdentifierString:v11 pickFirstOfMultiple:1];
+    contactIdentifier2 = [objc_alloc(MEMORY[0x277D3A088]) initWithContactStore:storeCopy keysToFetch:name2];
+    handle = [handleCopy handle];
+    v12 = [contactIdentifier2 resolveContactIfPossibleFromContactIdentifierString:handle pickFirstOfMultiple:1];
     goto LABEL_5;
   }
 
-  v20 = [v6 name];
+  name = [handleCopy name];
 
-  if (v20)
+  if (name)
   {
-    v9 = [v6 name];
-    v17 = [a1 _contactFromName:v9 contactStore:v7];
+    name2 = [handleCopy name];
+    v17 = [self _contactFromName:name2 contactStore:storeCopy];
     goto LABEL_6;
   }
 
@@ -61,12 +61,12 @@ LABEL_7:
   return v17;
 }
 
-+ (id)_contactFromName:(id)a3 contactStore:(id)a4
++ (id)_contactFromName:(id)name contactStore:(id)store
 {
   v25[7] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  nameCopy = name;
   v6 = MEMORY[0x277CBDA78];
-  v7 = a4;
+  storeCopy = store;
   v8 = [v6 descriptorForRequiredKeysForStyle:0];
   v25[0] = v8;
   v9 = [MEMORY[0x277CBDA78] descriptorForRequiredKeysForStyle:1000];
@@ -81,9 +81,9 @@ LABEL_7:
   v25[6] = v12;
   v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v25 count:7];
 
-  v14 = [MEMORY[0x277CBDA58] predicateForContactsMatchingName:v5];
+  v14 = [MEMORY[0x277CBDA58] predicateForContactsMatchingName:nameCopy];
   v22 = 0;
-  v15 = [v7 unifiedContactsMatchingPredicate:v14 keysToFetch:v13 error:&v22];
+  v15 = [storeCopy unifiedContactsMatchingPredicate:v14 keysToFetch:v13 error:&v22];
 
   v16 = v22;
   if (v16)
@@ -94,7 +94,7 @@ LABEL_7:
       [(ATXSenderImportanceUtils *)v14 _contactFromName:v16 contactStore:v17];
     }
 
-    v18 = 0;
+    firstObject = 0;
   }
 
   else
@@ -105,17 +105,17 @@ LABEL_7:
       if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v24 = v5;
+        v24 = nameCopy;
         _os_log_impl(&dword_2263AA000, v19, OS_LOG_TYPE_INFO, "No contact matches found for the given name: %@", buf, 0xCu);
       }
     }
 
-    v18 = [v15 firstObject];
+    firstObject = [v15 firstObject];
   }
 
   v20 = *MEMORY[0x277D85DE8];
 
-  return v18;
+  return firstObject;
 }
 
 + (void)_contactFromName:(os_log_t)log contactStore:.cold.1(uint64_t a1, uint64_t a2, os_log_t log)

@@ -22,7 +22,7 @@
 
 - (Class)NSObject
 {
-  v1 = *(a1 + 32);
+  v1 = *(self + 32);
 
   v3 = v1(v2);
 
@@ -42,7 +42,7 @@
 
 - (uint64_t)Any
 {
-  v1 = *(a1 + 32);
+  v1 = *(self + 32);
   v2 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
 
   v1(v2);

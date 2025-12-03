@@ -1,14 +1,14 @@
 @interface SBAddModifierSwitcherEventResponse
-- (SBAddModifierSwitcherEventResponse)initWithModifier:(id)a3 level:(int64_t)a4 key:(id)a5;
+- (SBAddModifierSwitcherEventResponse)initWithModifier:(id)modifier level:(int64_t)level key:(id)key;
 @end
 
 @implementation SBAddModifierSwitcherEventResponse
 
-- (SBAddModifierSwitcherEventResponse)initWithModifier:(id)a3 level:(int64_t)a4 key:(id)a5
+- (SBAddModifierSwitcherEventResponse)initWithModifier:(id)modifier level:(int64_t)level key:(id)key
 {
-  v10 = a3;
-  v11 = a5;
-  if (!v10)
+  modifierCopy = modifier;
+  keyCopy = key;
+  if (!modifierCopy)
   {
     [SBAddModifierSwitcherEventResponse initWithModifier:a2 level:self key:?];
   }
@@ -19,9 +19,9 @@
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_modifier, a3);
-    v13->_level = a4;
-    v14 = [v11 copy];
+    objc_storeStrong(&v12->_modifier, modifier);
+    v13->_level = level;
+    v14 = [keyCopy copy];
     key = v13->_key;
     v13->_key = v14;
   }

@@ -11,44 +11,44 @@
 
 - (uint64_t)newRevision
 {
-  v1 = [a1 valueForKey:@"NewRevisionKey"];
-  v2 = [v1 unsignedLongLongValue];
+  v1 = [self valueForKey:@"NewRevisionKey"];
+  unsignedLongLongValue = [v1 unsignedLongLongValue];
 
-  return v2;
+  return unsignedLongLongValue;
 }
 
 - (void)setNewRevision:()ATSyncState
 {
   v2 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:?];
-  [a1 setValue:v2 forKey:@"NewRevisionKey"];
+  [self setValue:v2 forKey:@"NewRevisionKey"];
 }
 
 - (void)setLastClientRevision:()ATSyncState
 {
   v2 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:?];
-  [a1 setValue:v2 forKey:@"LastClientRevision"];
+  [self setValue:v2 forKey:@"LastClientRevision"];
 }
 
 - (uint64_t)lastClientRevision
 {
-  v1 = [a1 valueForKey:@"LastClientRevision"];
-  v2 = [v1 unsignedLongLongValue];
+  v1 = [self valueForKey:@"LastClientRevision"];
+  unsignedLongLongValue = [v1 unsignedLongLongValue];
 
-  return v2;
+  return unsignedLongLongValue;
 }
 
 - (void)setLastServerRevision:()ATSyncState
 {
   v2 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:?];
-  [a1 setValue:v2 forKey:@"LastServerRevision"];
+  [self setValue:v2 forKey:@"LastServerRevision"];
 }
 
 - (uint64_t)lastServerRevision
 {
-  v1 = [a1 valueForKey:@"LastServerRevision"];
-  v2 = [v1 unsignedLongLongValue];
+  v1 = [self valueForKey:@"LastServerRevision"];
+  unsignedLongLongValue = [v1 unsignedLongLongValue];
 
-  return v2;
+  return unsignedLongLongValue;
 }
 
 @end

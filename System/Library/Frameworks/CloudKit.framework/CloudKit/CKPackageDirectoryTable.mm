@@ -1,15 +1,15 @@
 @interface CKPackageDirectoryTable
 + (id)dbProperties;
-+ (id)objectClassesForProperty:(id)a3;
-- (id)extendExpirationOfPackage:(id)a3 forReference:(id)a4;
-- (id)fetchSignatureAndVerificationKey:(id)a3;
++ (id)objectClassesForProperty:(id)property;
+- (id)extendExpirationOfPackage:(id)package forReference:(id)reference;
+- (id)fetchSignatureAndVerificationKey:(id)key;
 - (id)finishInitializing;
-- (id)packageInfoForNewPackageWithID:(id)a3 error:(id *)a4;
+- (id)packageInfoForNewPackageWithID:(id)d error:(id *)error;
 - (id)removeExpiredPackages;
-- (id)updateAssetTransferOptions:(id)a3;
-- (id)updateBoundaryKey:(id)a3;
-- (id)updatePackageReference:(id)a3;
-- (id)updateSignatureAndVerificationKey:(id)a3;
+- (id)updateAssetTransferOptions:(id)options;
+- (id)updateBoundaryKey:(id)key;
+- (id)updatePackageReference:(id)reference;
+- (id)updateSignatureAndVerificationKey:(id)key;
 @end
 
 @implementation CKPackageDirectoryTable
@@ -37,20 +37,20 @@
   return v2;
 }
 
-+ (id)objectClassesForProperty:(id)a3
++ (id)objectClassesForProperty:(id)property
 {
-  v4 = a3;
-  v13.receiver = a1;
+  propertyCopy = property;
+  v13.receiver = self;
   v13.super_class = &OBJC_METACLASS___CKPackageDirectoryTable;
-  v5 = objc_msgSendSuper2(&v13, sel_objectClassesForProperty_, v4);
-  if (objc_msgSend_isEqualToString_(v4, v6, @"assetTransferOptions"))
+  v5 = objc_msgSendSuper2(&v13, sel_objectClassesForProperty_, propertyCopy);
+  if (objc_msgSend_isEqualToString_(propertyCopy, v6, @"assetTransferOptions"))
   {
     v8 = off_1E70BA010;
   }
 
   else
   {
-    if (!objc_msgSend_isEqualToString_(v4, v7, @"packageReference"))
+    if (!objc_msgSend_isEqualToString_(propertyCopy, v7, @"packageReference"))
     {
       goto LABEL_6;
     }
@@ -127,11 +127,11 @@ LABEL_6:
   return v17;
 }
 
-- (id)packageInfoForNewPackageWithID:(id)a3 error:(id *)a4
+- (id)packageInfoForNewPackageWithID:(id)d error:(id *)error
 {
-  v6 = a3;
+  dCopy = d;
   v7 = objc_alloc_init(CKPackageInfo);
-  objc_msgSend_setPackageID_(v7, v8, v6);
+  objc_msgSend_setPackageID_(v7, v8, dCopy);
 
   v11 = objc_msgSend_date(MEMORY[0x1E695DF00], v9, v10);
   objc_msgSend_setExpirationDate_(v7, v12, v11);
@@ -140,10 +140,10 @@ LABEL_6:
   v15 = v14;
   if (v14)
   {
-    if (a4)
+    if (error)
     {
       v16 = v14;
-      *a4 = v15;
+      *error = v15;
     }
 
     v7 = 0;
@@ -184,29 +184,29 @@ LABEL_6:
   return v9;
 }
 
-- (id)extendExpirationOfPackage:(id)a3 forReference:(id)a4
+- (id)extendExpirationOfPackage:(id)package forReference:(id)reference
 {
   v30[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v11 = objc_msgSend_expirationDate(a4, v7, v8);
+  packageCopy = package;
+  v11 = objc_msgSend_expirationDate(reference, v7, v8);
   if (v11)
   {
-    v12 = objc_msgSend_expirationDate(v6, v9, v10);
+    v12 = objc_msgSend_expirationDate(packageCopy, v9, v10);
     v15 = objc_msgSend_laterDate_(v11, v13, v12);
     if (v15 == v11)
     {
       v30[0] = @"expirationDate";
       v17 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v14, v30, 1);
-      objc_msgSend_setExpirationDate_(v6, v18, v11);
+      objc_msgSend_setExpirationDate_(packageCopy, v18, v11);
       v28[0] = @"PACKAGE_ID";
-      v21 = objc_msgSend_packageID(v6, v19, v20);
+      v21 = objc_msgSend_packageID(packageCopy, v19, v20);
       v28[1] = @"EXP_DATE";
       v29[0] = v21;
       v29[1] = v11;
       v23 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x1E695DF20], v22, v29, v28, 2);
 
       v27 = 0;
-      objc_msgSend_setProperties_valuesToStore_inEntriesMatching_label_error_predicate_(self, v24, v17, v6, v23, off_1EA90EB80, &v27, &unk_1EFA2E528);
+      objc_msgSend_setProperties_valuesToStore_inEntriesMatching_label_error_predicate_(self, v24, v17, packageCopy, v23, off_1EA90EB80, &v27, &unk_1EFA2E528);
       v16 = v27;
     }
 
@@ -226,72 +226,72 @@ LABEL_6:
   return v16;
 }
 
-- (id)updatePackageReference:(id)a3
+- (id)updatePackageReference:(id)reference
 {
   v13 = *MEMORY[0x1E69E9840];
   v12 = @"packageReference";
   v4 = MEMORY[0x1E695DEC8];
-  v5 = a3;
+  referenceCopy = reference;
   v7 = objc_msgSend_arrayWithObjects_count_(v4, v6, &v12, 1);
-  v9 = objc_msgSend_updateProperties_usingObject_label_(self, v8, v7, v5, 0, v12, v13);
+  v9 = objc_msgSend_updateProperties_usingObject_label_(self, v8, v7, referenceCopy, 0, v12, v13);
 
   v10 = *MEMORY[0x1E69E9840];
 
   return v9;
 }
 
-- (id)updateAssetTransferOptions:(id)a3
+- (id)updateAssetTransferOptions:(id)options
 {
   v13 = *MEMORY[0x1E69E9840];
   v12 = @"assetTransferOptions";
   v4 = MEMORY[0x1E695DEC8];
-  v5 = a3;
+  optionsCopy = options;
   v7 = objc_msgSend_arrayWithObjects_count_(v4, v6, &v12, 1);
-  v9 = objc_msgSend_updateProperties_usingObject_label_(self, v8, v7, v5, 0, v12, v13);
+  v9 = objc_msgSend_updateProperties_usingObject_label_(self, v8, v7, optionsCopy, 0, v12, v13);
 
   v10 = *MEMORY[0x1E69E9840];
 
   return v9;
 }
 
-- (id)updateBoundaryKey:(id)a3
+- (id)updateBoundaryKey:(id)key
 {
   v13 = *MEMORY[0x1E69E9840];
   v12 = @"boundaryKey";
   v4 = MEMORY[0x1E695DEC8];
-  v5 = a3;
+  keyCopy = key;
   v7 = objc_msgSend_arrayWithObjects_count_(v4, v6, &v12, 1);
-  v9 = objc_msgSend_updateProperties_usingObject_label_(self, v8, v7, v5, 0, v12, v13);
+  v9 = objc_msgSend_updateProperties_usingObject_label_(self, v8, v7, keyCopy, 0, v12, v13);
 
   v10 = *MEMORY[0x1E69E9840];
 
   return v9;
 }
 
-- (id)updateSignatureAndVerificationKey:(id)a3
+- (id)updateSignatureAndVerificationKey:(id)key
 {
   v12[2] = *MEMORY[0x1E69E9840];
   v12[0] = @"signature";
   v12[1] = @"verificationKey";
   v4 = MEMORY[0x1E695DEC8];
-  v5 = a3;
+  keyCopy = key;
   v7 = objc_msgSend_arrayWithObjects_count_(v4, v6, v12, 2);
-  v9 = objc_msgSend_updateProperties_usingObject_label_(self, v8, v7, v5, 0);
+  v9 = objc_msgSend_updateProperties_usingObject_label_(self, v8, v7, keyCopy, 0);
 
   v10 = *MEMORY[0x1E69E9840];
 
   return v9;
 }
 
-- (id)fetchSignatureAndVerificationKey:(id)a3
+- (id)fetchSignatureAndVerificationKey:(id)key
 {
   v12[2] = *MEMORY[0x1E69E9840];
   v12[0] = @"signature";
   v12[1] = @"verificationKey";
   v4 = MEMORY[0x1E695DEC8];
-  v5 = a3;
+  keyCopy = key;
   v7 = objc_msgSend_arrayWithObjects_count_(v4, v6, v12, 2);
-  v9 = objc_msgSend_fetchProperties_inObject_label_(self, v8, v7, v5, 0);
+  v9 = objc_msgSend_fetchProperties_inObject_label_(self, v8, v7, keyCopy, 0);
 
   v10 = *MEMORY[0x1E69E9840];
 

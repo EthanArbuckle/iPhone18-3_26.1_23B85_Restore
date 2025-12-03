@@ -1,43 +1,43 @@
 @interface MKDistanceFormatter
 - (BOOL)_useMetric;
-- (BOOL)getObjectValue:(id *)a3 forString:(id)a4 errorDescription:(id *)a5;
+- (BOOL)getObjectValue:(id *)value forString:(id)string errorDescription:(id *)description;
 - (CLLocationDistance)distanceFromString:(NSString *)distance;
 - (MKDistanceFormatter)init;
-- (MKDistanceFormatter)initWithCoder:(id)a3;
+- (MKDistanceFormatter)initWithCoder:(id)coder;
 - (NSString)stringFromDistance:(CLLocationDistance)distance;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)stringForObjectValue:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)stringForObjectValue:(id)value;
+- (void)encodeWithCoder:(id)coder;
 - (void)setLocale:(NSLocale *)locale;
 @end
 
 @implementation MKDistanceFormatter
 
-- (BOOL)getObjectValue:(id *)a3 forString:(id)a4 errorDescription:(id *)a5
+- (BOOL)getObjectValue:(id *)value forString:(id)string errorDescription:(id *)description
 {
-  [(MKDistanceFormatter *)self distanceFromString:a4];
+  [(MKDistanceFormatter *)self distanceFromString:string];
   v8 = v7;
   if (v7 < 0.0)
   {
-    if (a3)
+    if (value)
     {
-      *a3 = 0;
+      *value = 0;
     }
 
-    if (a5)
+    if (description)
     {
       v9 = _MKLocalizedStringFromThisBundle(@"Couldn't convert to distance");
-      a3 = a5;
+      value = description;
       goto LABEL_8;
     }
   }
 
-  else if (a3)
+  else if (value)
   {
     v9 = [MEMORY[0x1E696AD98] numberWithDouble:v7];
 LABEL_8:
-    *a3 = v9;
+    *value = v9;
   }
 
   return v8 >= 0.0;
@@ -160,12 +160,12 @@ uint64_t __42__MKDistanceFormatter_distanceFromString___block_invoke(uint64_t a1
   return v8;
 }
 
-- (id)stringForObjectValue:(id)a3
+- (id)stringForObjectValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   if (objc_opt_respondsToSelector())
   {
-    [v4 doubleValue];
+    [valueCopy doubleValue];
     v5 = [(MKDistanceFormatter *)self stringFromDistance:?];
   }
 
@@ -179,8 +179,8 @@ uint64_t __42__MKDistanceFormatter_distanceFromString___block_invoke(uint64_t a1
 
 - (NSString)stringFromDistance:(CLLocationDistance)distance
 {
-  v5 = [(MKDistanceFormatter *)self _useMetric];
-  if (v5)
+  _useMetric = [(MKDistanceFormatter *)self _useMetric];
+  if (_useMetric)
   {
     v6 = 1;
     v7 = 2;
@@ -194,9 +194,9 @@ uint64_t __42__MKDistanceFormatter_distanceFromString___block_invoke(uint64_t a1
 
   else
   {
-    v8 = [(NSLocale *)self->_locale _navigation_useYardsForShortDistances];
+    _navigation_useYardsForShortDistances = [(NSLocale *)self->_locale _navigation_useYardsForShortDistances];
     v7 = 1;
-    if (v8)
+    if (_navigation_useYardsForShortDistances)
     {
       v6 = 2;
     }
@@ -215,7 +215,7 @@ uint64_t __42__MKDistanceFormatter_distanceFromString___block_invoke(uint64_t a1
 
   else
   {
-    v10 = v5;
+    v10 = _useMetric;
   }
 
   v11 = MEMORY[0x1E696AEC0];
@@ -280,28 +280,28 @@ uint64_t __42__MKDistanceFormatter_distanceFromString___block_invoke(uint64_t a1
     v7 = v4;
     if (v4)
     {
-      v5 = v4;
+      autoupdatingCurrentLocale = v4;
     }
 
     else
     {
-      v5 = [MEMORY[0x1E695DF58] autoupdatingCurrentLocale];
+      autoupdatingCurrentLocale = [MEMORY[0x1E695DF58] autoupdatingCurrentLocale];
     }
 
     v6 = self->_locale;
-    self->_locale = v5;
+    self->_locale = autoupdatingCurrentLocale;
 
     v4 = v7;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if (v5)
   {
-    v6 = [(MKDistanceFormatter *)self locale];
-    v7 = [v6 copyWithZone:a3];
+    locale = [(MKDistanceFormatter *)self locale];
+    v7 = [locale copyWithZone:zone];
     [v5 setLocale:v7];
 
     [v5 setUnits:{-[MKDistanceFormatter units](self, "units")}];
@@ -311,40 +311,40 @@ uint64_t __42__MKDistanceFormatter_distanceFromString___block_invoke(uint64_t a1
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = MKDistanceFormatter;
-  v4 = a3;
-  [(MKDistanceFormatter *)&v6 encodeWithCoder:v4];
-  [v4 encodeInteger:-[MKDistanceFormatter units](self forKey:{"units", v6.receiver, v6.super_class), @"MKDistanceFormatterUnits"}];
-  [v4 encodeInteger:-[MKDistanceFormatter unitStyle](self forKey:{"unitStyle"), @"MKDistanceFormatterUnitStyle"}];
-  v5 = [(MKDistanceFormatter *)self locale];
-  [v4 encodeObject:v5 forKey:@"MKDistanceFormatterLocale"];
+  coderCopy = coder;
+  [(MKDistanceFormatter *)&v6 encodeWithCoder:coderCopy];
+  [coderCopy encodeInteger:-[MKDistanceFormatter units](self forKey:{"units", v6.receiver, v6.super_class), @"MKDistanceFormatterUnits"}];
+  [coderCopy encodeInteger:-[MKDistanceFormatter unitStyle](self forKey:{"unitStyle"), @"MKDistanceFormatterUnitStyle"}];
+  locale = [(MKDistanceFormatter *)self locale];
+  [coderCopy encodeObject:locale forKey:@"MKDistanceFormatterLocale"];
 }
 
-- (MKDistanceFormatter)initWithCoder:(id)a3
+- (MKDistanceFormatter)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = MKDistanceFormatter;
-  v5 = [(MKDistanceFormatter *)&v8 initWithCoder:v4];
+  v5 = [(MKDistanceFormatter *)&v8 initWithCoder:coderCopy];
   if (v5)
   {
-    if ([v4 containsValueForKey:@"MKDistanceFormatterLocale"])
+    if ([coderCopy containsValueForKey:@"MKDistanceFormatterLocale"])
     {
-      v6 = [v4 decodeObjectForKey:@"MKDistanceFormatterLocale"];
+      v6 = [coderCopy decodeObjectForKey:@"MKDistanceFormatterLocale"];
       [(MKDistanceFormatter *)v5 setLocale:v6];
     }
 
-    if ([v4 containsValueForKey:@"MKDistanceFormatterUnits"])
+    if ([coderCopy containsValueForKey:@"MKDistanceFormatterUnits"])
     {
-      -[MKDistanceFormatter setUnits:](v5, "setUnits:", [v4 decodeIntegerForKey:@"MKDistanceFormatterUnits"]);
+      -[MKDistanceFormatter setUnits:](v5, "setUnits:", [coderCopy decodeIntegerForKey:@"MKDistanceFormatterUnits"]);
     }
 
-    if ([v4 containsValueForKey:@"MKDistanceFormatterUnitStyle"])
+    if ([coderCopy containsValueForKey:@"MKDistanceFormatterUnitStyle"])
     {
-      -[MKDistanceFormatter setUnitStyle:](v5, "setUnitStyle:", [v4 decodeIntegerForKey:@"MKDistanceFormatterUnitStyle"]);
+      -[MKDistanceFormatter setUnitStyle:](v5, "setUnitStyle:", [coderCopy decodeIntegerForKey:@"MKDistanceFormatterUnitStyle"]);
     }
   }
 
@@ -358,8 +358,8 @@ uint64_t __42__MKDistanceFormatter_distanceFromString___block_invoke(uint64_t a1
   v2 = [(MKDistanceFormatter *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF58] autoupdatingCurrentLocale];
-    [(MKDistanceFormatter *)v2 setLocale:v3];
+    autoupdatingCurrentLocale = [MEMORY[0x1E695DF58] autoupdatingCurrentLocale];
+    [(MKDistanceFormatter *)v2 setLocale:autoupdatingCurrentLocale];
 
     v4 = +[MKUsageCounter sharedCounter];
     [v4 count:1];

@@ -1,26 +1,26 @@
 @interface TCEnumerationMultiMap
-- (TCEnumerationMultiMap)initWithStructs:(const TCEnumerationStruct *)a3 count:(int)a4 caseSensitive:(BOOL)a5;
-- (id)stringForValue:(int)a3;
-- (int64_t)valueForString:(id)a3;
+- (TCEnumerationMultiMap)initWithStructs:(const TCEnumerationStruct *)structs count:(int)count caseSensitive:(BOOL)sensitive;
+- (id)stringForValue:(int)value;
+- (int64_t)valueForString:(id)string;
 - (void)dealloc;
 @end
 
 @implementation TCEnumerationMultiMap
 
-- (TCEnumerationMultiMap)initWithStructs:(const TCEnumerationStruct *)a3 count:(int)a4 caseSensitive:(BOOL)a5
+- (TCEnumerationMultiMap)initWithStructs:(const TCEnumerationStruct *)structs count:(int)count caseSensitive:(BOOL)sensitive
 {
   v16.receiver = self;
   v16.super_class = TCEnumerationMultiMap;
   v8 = [(TCEnumerationMultiMap *)&v16 init];
   if (v8)
   {
-    v8->m_valueToString = CFDictionaryCreateMutable(0, a4, 0, MEMORY[0x277CBF150]);
-    v8->m_stringToValue = CFDictionaryCreateMutable(0, a4, MEMORY[0x277CBED60], 0);
-    v8->m_caseSensitive = a5;
-    if (a4 >= 1)
+    v8->m_valueToString = CFDictionaryCreateMutable(0, count, 0, MEMORY[0x277CBF150]);
+    v8->m_stringToValue = CFDictionaryCreateMutable(0, count, MEMORY[0x277CBED60], 0);
+    v8->m_caseSensitive = sensitive;
+    if (count >= 1)
     {
-      v9 = a4;
-      p_var1 = &a3->var1;
+      countCopy = count;
+      p_var1 = &structs->var1;
       do
       {
         v11 = *(p_var1 - 2);
@@ -35,10 +35,10 @@
         v14 = v11;
         CFDictionaryAddValue(v8->m_valueToString, v11, v12);
         CFDictionaryAddValue(v8->m_stringToValue, v12, v14);
-        --v9;
+        --countCopy;
       }
 
-      while (v9);
+      while (countCopy);
     }
   }
 
@@ -56,16 +56,16 @@
   [(TCEnumerationMultiMap *)&v3 dealloc];
 }
 
-- (int64_t)valueForString:(id)a3
+- (int64_t)valueForString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   m_stringToValue = self->m_stringToValue;
   if (!self->m_caseSensitive)
   {
-    v3 = [a3 lowercaseString];
+    stringCopy = [string lowercaseString];
   }
 
-  Value = CFDictionaryGetValue(m_stringToValue, v3);
+  Value = CFDictionaryGetValue(m_stringToValue, stringCopy);
   if (Value == -130883970)
   {
     v6 = 0;
@@ -87,19 +87,19 @@
   }
 }
 
-- (id)stringForValue:(int)a3
+- (id)stringForValue:(int)value
 {
-  if (a3)
+  if (value)
   {
-    v3 = a3;
+    valueCopy = value;
   }
 
   else
   {
-    v3 = -130883970;
+    valueCopy = -130883970;
   }
 
-  return CFDictionaryGetValue(self->m_valueToString, v3);
+  return CFDictionaryGetValue(self->m_valueToString, valueCopy);
 }
 
 @end

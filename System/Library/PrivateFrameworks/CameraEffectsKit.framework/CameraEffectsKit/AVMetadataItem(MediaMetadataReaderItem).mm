@@ -6,8 +6,8 @@
 
 - (CMTimeRange)timeRange
 {
-  [a1 time];
-  [a1 duration];
+  [self time];
+  [self duration];
   return CMTimeRangeMake(a2, &start, &v5);
 }
 

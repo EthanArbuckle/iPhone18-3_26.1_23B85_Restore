@@ -7,7 +7,7 @@
 + (BOOL)forceStewieHTTP;
 + (BOOL)forceStewieQA1;
 + (BOOL)forceStewieQA2;
-+ (BOOL)handleInFirewallAllowList:(id)a3;
++ (BOOL)handleInFirewallAllowList:(id)list;
 + (BOOL)isAbsintheV4Enabled;
 + (BOOL)isAlwaysPairAsTinker;
 + (BOOL)isBAACertDisabled;
@@ -38,9 +38,9 @@
 + (BOOL)shouldFirewallDropForAllCategories;
 + (BOOL)shouldForceFailKTKVSSync;
 + (BOOL)useKeyTransparencyAccountStatusDefault;
-+ (id)configurationForOptions:(id)a3;
-+ (id)fileForOptions:(id)a3;
-+ (id)fileTypeForOptions:(id)a3;
++ (id)configurationForOptions:(id)options;
++ (id)fileForOptions:(id)options;
++ (id)fileTypeForOptions:(id)options;
 + (id)fixedInterface;
 + (id)fixedInterfaceDestination;
 + (id)secondaryRegistrationDisabledDiceRoll;
@@ -53,11 +53,11 @@
 + (int64_t)keyTransparencyFirstGossipChance;
 + (int64_t)keyTransparencySubsequentGossipChance;
 + (int64_t)offGridModeDisableWhenOnlineForTimeInterval;
-+ (int64_t)serviceConstraintOverride:(id)a3;
++ (int64_t)serviceConstraintOverride:(id)override;
 + (int64_t)sessionNetworkAvailabilityCheckOverrideBehavior;
 + (int64_t)stewieDebounceWindow;
 + (int64_t)stewieHeartbeatInterval;
-+ (void)setSecondaryRegistrationDisabledDiceRoll:(id)a3;
++ (void)setSecondaryRegistrationDisabledDiceRoll:(id)roll;
 @end
 
 @implementation IMUserDefaults
@@ -447,42 +447,42 @@
   return v3;
 }
 
-+ (id)configurationForOptions:(id)a3
++ (id)configurationForOptions:(id)options
 {
-  v3 = a3;
+  optionsCopy = options;
   v4 = [[NSUserDefaults alloc] initWithSuiteName:@"com.apple.ids"];
-  v5 = [v3 bundleID];
-  v6 = [v3 name];
+  bundleID = [optionsCopy bundleID];
+  name = [optionsCopy name];
 
-  v7 = [NSString stringWithFormat:@"global-bag-config-%@-%@", v5, v6];
+  v7 = [NSString stringWithFormat:@"global-bag-config-%@-%@", bundleID, name];
 
   v8 = [v4 dictionaryForKey:v7];
 
   return v8;
 }
 
-+ (id)fileForOptions:(id)a3
++ (id)fileForOptions:(id)options
 {
-  v3 = a3;
+  optionsCopy = options;
   v4 = [[NSUserDefaults alloc] initWithSuiteName:@"com.apple.ids"];
-  v5 = [v3 bundleID];
-  v6 = [v3 name];
+  bundleID = [optionsCopy bundleID];
+  name = [optionsCopy name];
 
-  v7 = [NSString stringWithFormat:@"global-bag-file-%@-%@", v5, v6];
+  v7 = [NSString stringWithFormat:@"global-bag-file-%@-%@", bundleID, name];
 
   v8 = [v4 dataForKey:v7];
 
   return v8;
 }
 
-+ (id)fileTypeForOptions:(id)a3
++ (id)fileTypeForOptions:(id)options
 {
-  v3 = a3;
+  optionsCopy = options;
   v4 = [[NSUserDefaults alloc] initWithSuiteName:@"com.apple.ids"];
-  v5 = [v3 bundleID];
-  v6 = [v3 name];
+  bundleID = [optionsCopy bundleID];
+  name = [optionsCopy name];
 
-  v7 = [NSString stringWithFormat:@"global-bag-filetype-%@-%@", v5, v6];
+  v7 = [NSString stringWithFormat:@"global-bag-filetype-%@-%@", bundleID, name];
 
   v8 = [v4 stringForKey:v7];
 
@@ -494,16 +494,16 @@
   v2 = [[NSUserDefaults alloc] initWithSuiteName:@"com.apple.ids"];
   if ([v2 BOOLForKey:@"FirewallOn"] & 1) != 0 || (+[NSUserDefaults standardUserDefaults](NSUserDefaults, "standardUserDefaults"), v3 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v3, "objectForKey:inDomain:", @"LDMGlobalEnabled", NSGlobalDomain), v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v4, "BOOLValue"), v4, v3, (v5))
   {
-    v6 = 1;
+    enabled = 1;
   }
 
   else
   {
-    v7 = [IMWeakLinkClass() shared];
-    v6 = [v7 enabled];
+    iMWeakLinkClass() = [IMWeakLinkClass() shared];
+    enabled = [iMWeakLinkClass() enabled];
   }
 
-  return v6;
+  return enabled;
 }
 
 + (BOOL)shouldFirewallDropForAllCategories
@@ -514,23 +514,23 @@
   return v3;
 }
 
-+ (BOOL)handleInFirewallAllowList:(id)a3
++ (BOOL)handleInFirewallAllowList:(id)list
 {
-  v3 = a3;
+  listCopy = list;
   v4 = [[NSUserDefaults alloc] initWithSuiteName:@"com.apple.ids"];
-  v5 = [NSString stringWithFormat:@"%@%@", @"FirewallAllowList-", v3];
+  listCopy = [NSString stringWithFormat:@"%@%@", @"FirewallAllowList-", listCopy];
 
-  LOBYTE(v3) = [v4 BOOLForKey:v5];
-  return v3;
+  LOBYTE(listCopy) = [v4 BOOLForKey:listCopy];
+  return listCopy;
 }
 
-+ (int64_t)serviceConstraintOverride:(id)a3
++ (int64_t)serviceConstraintOverride:(id)override
 {
-  v3 = a3;
+  overrideCopy = override;
   v4 = [[NSUserDefaults alloc] initWithSuiteName:@"com.apple.ids"];
-  v5 = [NSString stringWithFormat:@"%@%@", @"ServiceConstraintOverride-", v3];
+  overrideCopy = [NSString stringWithFormat:@"%@%@", @"ServiceConstraintOverride-", overrideCopy];
 
-  v6 = [v4 integerForKey:v5];
+  v6 = [v4 integerForKey:overrideCopy];
   return v6;
 }
 
@@ -558,11 +558,11 @@
   return v3;
 }
 
-+ (void)setSecondaryRegistrationDisabledDiceRoll:(id)a3
++ (void)setSecondaryRegistrationDisabledDiceRoll:(id)roll
 {
-  v3 = a3;
+  rollCopy = roll;
   v4 = [[NSUserDefaults alloc] initWithSuiteName:@"com.apple.ids"];
-  [v4 setObject:v3 forKey:@"SecondaryRegistrationDisabledDiceRoll"];
+  [v4 setObject:rollCopy forKey:@"SecondaryRegistrationDisabledDiceRoll"];
 }
 
 + (int64_t)offGridModeDisableWhenOnlineForTimeInterval

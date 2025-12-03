@@ -1,13 +1,13 @@
 @interface _TFTextFormattingContentViewController
-- (_TFTextFormattingContentViewController)initWithCoder:(id)a3;
-- (_TFTextFormattingContentViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)_presentColorPicker:(CGRect)a3 selectedColor:(id)a4;
-- (void)_presentFontPickerWithConfiguration:(id)a3 selectedFonts:(id)a4;
-- (void)_presentTypographySettingsForFont:(id)a3;
-- (void)_setConfiguration:(id)a3;
-- (void)_setDisabledComponents:(id)a3;
-- (void)_setFormattingDescriptor:(id)a3;
-- (void)_textFormattingDidChangeValue:(id)a3 textAttributesData:(id)a4;
+- (_TFTextFormattingContentViewController)initWithCoder:(id)coder;
+- (_TFTextFormattingContentViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)_presentColorPicker:(CGRect)picker selectedColor:(id)color;
+- (void)_presentFontPickerWithConfiguration:(id)configuration selectedFonts:(id)fonts;
+- (void)_presentTypographySettingsForFont:(id)font;
+- (void)_setConfiguration:(id)configuration;
+- (void)_setDisabledComponents:(id)components;
+- (void)_setFormattingDescriptor:(id)descriptor;
+- (void)_textFormattingDidChangeValue:(id)value textAttributesData:(id)data;
 - (void)_textFormattingDidFinish;
 - (void)loadView;
 - (void)viewWillLayoutSubviews;
@@ -15,7 +15,7 @@
 
 @implementation _TFTextFormattingContentViewController
 
-- (_TFTextFormattingContentViewController)initWithCoder:(id)a3
+- (_TFTextFormattingContentViewController)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TFTextFormattingContentViewController_viewState;
   type metadata accessor for TextFormattingState();
@@ -30,38 +30,38 @@
 
 - (void)loadView
 {
-  v2 = self;
+  selfCopy = self;
   sub_26D34968C();
 }
 
 - (void)viewWillLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_26D3497E4();
 }
 
-- (_TFTextFormattingContentViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TFTextFormattingContentViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)_setConfiguration:(id)a3
+- (void)_setConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = self;
-  _TFTextFormattingContentViewController._setConfiguration(_:)(v4);
+  configurationCopy = configuration;
+  selfCopy = self;
+  _TFTextFormattingContentViewController._setConfiguration(_:)(configurationCopy);
 }
 
-- (void)_setFormattingDescriptor:(id)a3
+- (void)_setFormattingDescriptor:(id)descriptor
 {
-  v4 = a3;
-  v5 = self;
+  descriptorCopy = descriptor;
+  selfCopy = self;
   _TFTextFormattingContentViewController._setFormattingDescriptor(_:)();
 }
 
-- (void)_setDisabledComponents:(id)a3
+- (void)_setDisabledComponents:(id)components
 {
   type metadata accessor for ComponentKey(0);
   sub_26D34C534(&qword_2804FADD0, type metadata accessor for ComponentKey);
@@ -72,29 +72,29 @@
   sub_26D39FF78();
 }
 
-- (void)_textFormattingDidChangeValue:(id)a3 textAttributesData:(id)a4
+- (void)_textFormattingDidChangeValue:(id)value textAttributesData:(id)data
 {
-  if (a4)
+  if (data)
   {
-    v6 = a3;
-    v7 = self;
-    v8 = a4;
+    valueCopy = value;
+    selfCopy = self;
+    dataCopy = data;
     v9 = sub_26D39FE68();
     v11 = v10;
   }
 
   else
   {
-    v12 = a3;
-    v13 = self;
+    valueCopy2 = value;
+    selfCopy2 = self;
     v9 = 0;
     v11 = 0xF000000000000000;
   }
 
-  v14 = [(_TFTextFormattingContentViewController *)self parentViewController];
-  if (v14)
+  parentViewController = [(_TFTextFormattingContentViewController *)self parentViewController];
+  if (parentViewController)
   {
-    v15 = v14;
+    v15 = parentViewController;
     v16 = swift_dynamicCastObjCProtocolConditional();
     if (v16)
     {
@@ -131,11 +131,11 @@
 
 - (void)_textFormattingDidFinish
 {
-  v5 = self;
-  v2 = [(_TFTextFormattingContentViewController *)v5 parentViewController];
-  if (v2)
+  selfCopy = self;
+  parentViewController = [(_TFTextFormattingContentViewController *)selfCopy parentViewController];
+  if (parentViewController)
   {
-    v3 = v2;
+    v3 = parentViewController;
     v4 = swift_dynamicCastObjCProtocolConditional();
     if (v4)
     {
@@ -152,18 +152,18 @@
   }
 }
 
-- (void)_presentColorPicker:(CGRect)a3 selectedColor:(id)a4
+- (void)_presentColorPicker:(CGRect)picker selectedColor:(id)color
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
-  v13 = self;
-  v10 = [(_TFTextFormattingContentViewController *)v13 parentViewController];
-  if (v10)
+  height = picker.size.height;
+  width = picker.size.width;
+  y = picker.origin.y;
+  x = picker.origin.x;
+  colorCopy = color;
+  selfCopy = self;
+  parentViewController = [(_TFTextFormattingContentViewController *)selfCopy parentViewController];
+  if (parentViewController)
   {
-    v11 = v10;
+    v11 = parentViewController;
     v12 = swift_dynamicCastObjCProtocolConditional();
     if (v12)
     {
@@ -180,15 +180,15 @@
   }
 }
 
-- (void)_presentFontPickerWithConfiguration:(id)a3 selectedFonts:(id)a4
+- (void)_presentFontPickerWithConfiguration:(id)configuration selectedFonts:(id)fonts
 {
-  v6 = a3;
-  v7 = a4;
-  v11 = self;
-  v8 = [(_TFTextFormattingContentViewController *)v11 parentViewController];
-  if (v8)
+  configurationCopy = configuration;
+  fontsCopy = fonts;
+  selfCopy = self;
+  parentViewController = [(_TFTextFormattingContentViewController *)selfCopy parentViewController];
+  if (parentViewController)
   {
-    v9 = v8;
+    v9 = parentViewController;
     v10 = swift_dynamicCastObjCProtocolConditional();
     if (v10)
     {
@@ -205,14 +205,14 @@
   }
 }
 
-- (void)_presentTypographySettingsForFont:(id)a3
+- (void)_presentTypographySettingsForFont:(id)font
 {
-  v4 = a3;
-  v8 = self;
-  v5 = [(_TFTextFormattingContentViewController *)v8 parentViewController];
-  if (v5)
+  fontCopy = font;
+  selfCopy = self;
+  parentViewController = [(_TFTextFormattingContentViewController *)selfCopy parentViewController];
+  if (parentViewController)
   {
-    v6 = v5;
+    v6 = parentViewController;
     v7 = swift_dynamicCastObjCProtocolConditional();
     if (v7)
     {

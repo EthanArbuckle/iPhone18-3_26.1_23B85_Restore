@@ -1,11 +1,11 @@
 @interface MSDiOSApp
-+ (id)appWithPath:(id)a3;
++ (id)appWithPath:(id)path;
 - (BOOL)isAlmondApp;
-- (MSDiOSApp)initWithPath:(id)a3;
+- (MSDiOSApp)initWithPath:(id)path;
 - (id)codeSignaturePathForAlmondApp;
 - (id)getCodeResourcesURL;
 - (id)getExcutableURL;
-- (id)serachForFileWithSuffix:(id)a3 inFolder:(id)a4;
+- (id)serachForFileWithSuffix:(id)suffix inFolder:(id)folder;
 - (id)uniqueIdentifier;
 - (id)versionInfo;
 - (void)dealloc;
@@ -13,27 +13,27 @@
 
 @implementation MSDiOSApp
 
-+ (id)appWithPath:(id)a3
++ (id)appWithPath:(id)path
 {
-  v3 = a3;
-  v4 = [[MSDiOSApp alloc] initWithPath:v3];
+  pathCopy = path;
+  v4 = [[MSDiOSApp alloc] initWithPath:pathCopy];
 
   return v4;
 }
 
-- (MSDiOSApp)initWithPath:(id)a3
+- (MSDiOSApp)initWithPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v11.receiver = self;
   v11.super_class = MSDiOSApp;
   v5 = [(MSDiOSApp *)&v11 init];
   if (!v5)
   {
-    v8 = 0;
+    infoDictionary = 0;
     goto LABEL_8;
   }
 
-  if ([v4 rangeOfString:@".app"] == 0x7FFFFFFFFFFFFFFFLL)
+  if ([pathCopy rangeOfString:@".app"] == 0x7FFFFFFFFFFFFFFFLL)
   {
     v7 = sub_100063A54();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -44,19 +44,19 @@
 
   else
   {
-    v6 = [NSBundle bundleWithPath:v4];
+    v6 = [NSBundle bundleWithPath:pathCopy];
     if (v6)
     {
       v7 = v6;
-      v8 = [v6 infoDictionary];
+      infoDictionary = [v6 infoDictionary];
 
-      if (v8)
+      if (infoDictionary)
       {
-        [(MSDiOSApp *)v5 setPath:v4];
-        v9 = [v7 infoDictionary];
-        [(MSDiOSApp *)v5 setInfo:v9];
+        [(MSDiOSApp *)v5 setPath:pathCopy];
+        infoDictionary2 = [v7 infoDictionary];
+        [(MSDiOSApp *)v5 setInfo:infoDictionary2];
 
-        v8 = v5;
+        infoDictionary = v5;
       }
 
       else
@@ -74,11 +74,11 @@
     }
   }
 
-  v8 = 0;
+  infoDictionary = 0;
 LABEL_6:
 
 LABEL_8:
-  return v8;
+  return infoDictionary;
 }
 
 - (void)dealloc
@@ -98,28 +98,28 @@ LABEL_8:
   if (!v3)
   {
     sub_1000E4640(v4, self);
-    v7 = 0;
+    getCodeResourcesURL = 0;
 LABEL_22:
     v14 = 0;
     v17 = 0;
-    v20 = 0;
+    hexStringRepresentation = 0;
     goto LABEL_16;
   }
 
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v3 path];
+    path = [v3 path];
     *buf = 136315394;
     v26 = "[MSDiOSApp uniqueIdentifier]";
     v27 = 2114;
-    v28 = v6;
+    v28 = path;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s - executableFileURL:  %{public}@", buf, 0x16u);
   }
 
-  v7 = [(MSDiOSApp *)self getCodeResourcesURL];
+  getCodeResourcesURL = [(MSDiOSApp *)self getCodeResourcesURL];
   v8 = sub_100063A54();
   v9 = v8;
-  if (!v7)
+  if (!getCodeResourcesURL)
   {
     sub_1000E4588(v8, self);
     goto LABEL_22;
@@ -127,17 +127,17 @@ LABEL_22:
 
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v7 path];
+    path2 = [getCodeResourcesURL path];
     *buf = 136315394;
     v26 = "[MSDiOSApp uniqueIdentifier]";
     v27 = 2114;
-    v28 = v10;
+    v28 = path2;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%s - codeResourcesURL:  %{public}@", buf, 0x16u);
   }
 
   CC_SHA1_Init(&v23);
-  v11 = [v3 path];
-  v12 = [NSInputStream inputStreamWithFileAtPath:v11];
+  path3 = [v3 path];
+  v12 = [NSInputStream inputStreamWithFileAtPath:path3];
 
   if (!v12)
   {
@@ -174,8 +174,8 @@ LABEL_22:
   else
   {
     [v12 close];
-    v16 = [v7 path];
-    v17 = [NSInputStream inputStreamWithFileAtPath:v16];
+    path4 = [getCodeResourcesURL path];
+    v17 = [NSInputStream inputStreamWithFileAtPath:path4];
 
     if (v17)
     {
@@ -201,14 +201,14 @@ LABEL_22:
         free(v14);
         CC_SHA1_Final(md, &v23);
         v14 = [NSData dataWithBytes:md length:20];
-        v20 = [v14 hexStringRepresentation];
+        hexStringRepresentation = [v14 hexStringRepresentation];
         goto LABEL_16;
       }
 
       v22 = sub_100063A54();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
       {
-        sub_1000E43C8(v7);
+        sub_1000E43C8(getCodeResourcesURL);
       }
 
       v12 = v17;
@@ -219,7 +219,7 @@ LABEL_22:
       v22 = sub_100063A54();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
       {
-        sub_1000E4454(v7);
+        sub_1000E4454(getCodeResourcesURL);
       }
 
       v12 = 0;
@@ -232,24 +232,24 @@ LABEL_22:
     v14 = 0;
   }
 
-  v20 = 0;
+  hexStringRepresentation = 0;
   v17 = v12;
 LABEL_16:
 
-  return v20;
+  return hexStringRepresentation;
 }
 
 - (id)versionInfo
 {
-  v3 = [(MSDiOSApp *)self info];
+  info = [(MSDiOSApp *)self info];
   v4 = @"CFBundleShortVersionString";
-  v5 = [v3 objectForKey:@"CFBundleShortVersionString"];
+  v5 = [info objectForKey:@"CFBundleShortVersionString"];
 
   if (!v5)
   {
     v4 = kCFBundleVersionKey;
-    v6 = [(MSDiOSApp *)self info];
-    v5 = [v6 objectForKey:v4];
+    info2 = [(MSDiOSApp *)self info];
+    v5 = [info2 objectForKey:v4];
 
     if (!v5 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
@@ -278,13 +278,13 @@ LABEL_7:
 
 - (id)getExcutableURL
 {
-  v3 = [(MSDiOSApp *)self path];
-  v4 = [NSBundle bundleWithPath:v3];
+  path = [(MSDiOSApp *)self path];
+  v4 = [NSBundle bundleWithPath:path];
 
   if (v4)
   {
-    v5 = [v4 executableURL];
-    if (v5)
+    executableURL = [v4 executableURL];
+    if (executableURL)
     {
       goto LABEL_3;
     }
@@ -297,48 +297,48 @@ LABEL_7:
     sub_1000E48E8(self, &v7);
   }
 
-  v5 = 0;
+  executableURL = 0;
 LABEL_3:
 
-  return v5;
+  return executableURL;
 }
 
 - (id)getCodeResourcesURL
 {
-  v3 = [(MSDiOSApp *)self path];
-  v4 = [MSDMacAppPkg isMacApp:v3];
+  path = [(MSDiOSApp *)self path];
+  v4 = [MSDMacAppPkg isMacApp:path];
 
   if (v4)
   {
-    v5 = [(MSDiOSApp *)self path];
-    v6 = [MSDMacAppPkg codeSignaturePath:v5];
+    path2 = [(MSDiOSApp *)self path];
+    v6 = [MSDMacAppPkg codeSignaturePath:path2];
   }
 
   else
   {
     if ([(MSDiOSApp *)self isAlmondApp])
     {
-      v7 = [(MSDiOSApp *)self codeSignaturePathForAlmondApp];
+      codeSignaturePathForAlmondApp = [(MSDiOSApp *)self codeSignaturePathForAlmondApp];
       goto LABEL_7;
     }
 
-    v5 = [(MSDiOSApp *)self path];
-    v6 = [v5 stringByAppendingPathComponent:@"_CodeSignature"];
+    path2 = [(MSDiOSApp *)self path];
+    v6 = [path2 stringByAppendingPathComponent:@"_CodeSignature"];
   }
 
-  v7 = v6;
+  codeSignaturePathForAlmondApp = v6;
 
 LABEL_7:
-  if (v7)
+  if (codeSignaturePathForAlmondApp)
   {
-    v8 = [v7 stringByAppendingPathComponent:@"CodeResources"];
-    v9 = [NSURL fileURLWithPath:v8];
+    path3 = [codeSignaturePathForAlmondApp stringByAppendingPathComponent:@"CodeResources"];
+    v9 = [NSURL fileURLWithPath:path3];
   }
 
   else
   {
-    v8 = [(MSDiOSApp *)self path];
-    NSLog(@"Error - Failed to get CodeSignature path for app:  %@", v8);
+    path3 = [(MSDiOSApp *)self path];
+    NSLog(@"Error - Failed to get CodeSignature path for app:  %@", path3);
     v9 = 0;
   }
 
@@ -348,8 +348,8 @@ LABEL_7:
 - (BOOL)isAlmondApp
 {
   v7 = 0;
-  v2 = [(MSDiOSApp *)self path];
-  v3 = [v2 stringByAppendingPathComponent:@"Wrapper"];
+  path = [(MSDiOSApp *)self path];
+  v3 = [path stringByAppendingPathComponent:@"Wrapper"];
 
   v4 = +[NSFileManager defaultManager];
   v5 = [v4 fileExistsAtPath:v3 isDirectory:&v7];
@@ -360,8 +360,8 @@ LABEL_7:
 
 - (id)codeSignaturePathForAlmondApp
 {
-  v3 = [(MSDiOSApp *)self path];
-  v4 = [v3 stringByAppendingPathComponent:@"Wrapper"];
+  path = [(MSDiOSApp *)self path];
+  v4 = [path stringByAppendingPathComponent:@"Wrapper"];
 
   v5 = [(MSDiOSApp *)self serachForFileWithSuffix:@".app" inFolder:v4];
   if (v5)
@@ -378,13 +378,13 @@ LABEL_7:
   return v6;
 }
 
-- (id)serachForFileWithSuffix:(id)a3 inFolder:(id)a4
+- (id)serachForFileWithSuffix:(id)suffix inFolder:(id)folder
 {
-  v5 = a3;
-  v6 = a4;
+  suffixCopy = suffix;
+  folderCopy = folder;
   v7 = +[NSFileManager defaultManager];
   v23 = 0;
-  v8 = [v7 contentsOfDirectoryAtPath:v6 error:&v23];
+  v8 = [v7 contentsOfDirectoryAtPath:folderCopy error:&v23];
   v9 = v23;
 
   if (v8)
@@ -413,7 +413,7 @@ LABEL_7:
 
           v13 = *(*(&v19 + 1) + 8 * v15);
 
-          if ([v13 hasSuffix:{v5, v19}])
+          if ([v13 hasSuffix:{suffixCopy, v19}])
           {
             v17 = v13;
 
@@ -438,7 +438,7 @@ LABEL_7:
 
   else
   {
-    sub_1000E4A48(v6, v9);
+    sub_1000E4A48(folderCopy, v9);
   }
 
   v17 = 0;

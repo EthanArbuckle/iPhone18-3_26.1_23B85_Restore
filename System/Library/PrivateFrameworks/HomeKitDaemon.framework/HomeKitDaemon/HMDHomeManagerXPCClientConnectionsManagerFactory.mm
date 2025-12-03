@@ -1,11 +1,11 @@
 @interface HMDHomeManagerXPCClientConnectionsManagerFactory
-+ (id)makeInstanceWithQueue:(id)a3 messageDispatcher:(id)a4 messageTargetUUID:(id)a5 accessoryBrowser:(id)a6 logEventSubmitter:(id)a7;
++ (id)makeInstanceWithQueue:(id)queue messageDispatcher:(id)dispatcher messageTargetUUID:(id)d accessoryBrowser:(id)browser logEventSubmitter:(id)submitter;
 - (HMDHomeManagerXPCClientConnectionsManagerFactory)init;
 @end
 
 @implementation HMDHomeManagerXPCClientConnectionsManagerFactory
 
-+ (id)makeInstanceWithQueue:(id)a3 messageDispatcher:(id)a4 messageTargetUUID:(id)a5 accessoryBrowser:(id)a6 logEventSubmitter:(id)a7
++ (id)makeInstanceWithQueue:(id)queue messageDispatcher:(id)dispatcher messageTargetUUID:(id)d accessoryBrowser:(id)browser logEventSubmitter:(id)submitter
 {
   v11 = sub_22A4DB7DC();
   v12 = *(v11 - 8);
@@ -13,11 +13,11 @@
   MEMORY[0x28223BE20](v11);
   v15 = &v20 - ((v14 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_22A4DB79C();
-  v16 = a3;
-  v17 = a4;
+  queueCopy = queue;
+  dispatcherCopy = dispatcher;
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
-  v18 = sub_229796568(v16, v17, v15, a6, a7);
+  v18 = sub_229796568(queueCopy, dispatcherCopy, v15, browser, submitter);
 
   swift_unknownObjectRelease();
   swift_unknownObjectRelease();

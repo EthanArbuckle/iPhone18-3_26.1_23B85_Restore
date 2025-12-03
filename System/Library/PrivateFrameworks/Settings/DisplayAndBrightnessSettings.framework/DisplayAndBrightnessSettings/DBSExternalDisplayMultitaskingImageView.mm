@@ -1,63 +1,63 @@
 @interface DBSExternalDisplayMultitaskingImageView
-- (DBSExternalDisplayMultitaskingImageView)initWithImageName:(id)a3 height:(double)a4;
+- (DBSExternalDisplayMultitaskingImageView)initWithImageName:(id)name height:(double)height;
 - (id)_imageNameWithUserInterfaceStyle;
 - (void)_userInterfaceStyleDidChange;
 @end
 
 @implementation DBSExternalDisplayMultitaskingImageView
 
-- (DBSExternalDisplayMultitaskingImageView)initWithImageName:(id)a3 height:(double)a4
+- (DBSExternalDisplayMultitaskingImageView)initWithImageName:(id)name height:(double)height
 {
   v37[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  nameCopy = name;
   v36.receiver = self;
   v36.super_class = DBSExternalDisplayMultitaskingImageView;
   v8 = [(DBSExternalDisplayMultitaskingImageView *)&v36 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_name, a3);
+    objc_storeStrong(&v8->_name, name);
     v10 = MEMORY[0x277D755B8];
-    v11 = [(DBSExternalDisplayMultitaskingImageView *)v9 _imageNameWithUserInterfaceStyle];
+    _imageNameWithUserInterfaceStyle = [(DBSExternalDisplayMultitaskingImageView *)v9 _imageNameWithUserInterfaceStyle];
     v12 = DBS_BundleForDisplayAndBrightnessSettingsFramework();
-    v13 = [v10 imageNamed:v11 inBundle:v12 compatibleWithTraitCollection:0];
+    v13 = [v10 imageNamed:_imageNameWithUserInterfaceStyle inBundle:v12 compatibleWithTraitCollection:0];
     [(DBSExternalDisplayMultitaskingImageView *)v9 setImage:v13];
 
     [(DBSExternalDisplayMultitaskingImageView *)v9 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v14 = [(DBSExternalDisplayMultitaskingImageView *)v9 heightAnchor];
-    v15 = [v14 constraintEqualToConstant:a4];
+    heightAnchor = [(DBSExternalDisplayMultitaskingImageView *)v9 heightAnchor];
+    v15 = [heightAnchor constraintEqualToConstant:height];
     [v15 setActive:1];
 
-    v16 = [(DBSExternalDisplayMultitaskingImageView *)v9 image];
-    [v16 size];
-    v18 = a4 / v17;
+    image = [(DBSExternalDisplayMultitaskingImageView *)v9 image];
+    [image size];
+    v18 = height / v17;
 
-    v19 = [(DBSExternalDisplayMultitaskingImageView *)v9 image];
-    [v19 size];
+    image2 = [(DBSExternalDisplayMultitaskingImageView *)v9 image];
+    [image2 size];
     v21 = v18 * v20;
 
-    v22 = [(DBSExternalDisplayMultitaskingImageView *)v9 widthAnchor];
-    v23 = [v22 constraintEqualToConstant:v21];
+    widthAnchor = [(DBSExternalDisplayMultitaskingImageView *)v9 widthAnchor];
+    v23 = [widthAnchor constraintEqualToConstant:v21];
     [v23 setActive:1];
 
     [(DBSExternalDisplayMultitaskingImageView *)v9 setContentMode:1];
-    v24 = [MEMORY[0x277D75348] systemBlackColor];
-    [(DBSExternalDisplayMultitaskingImageView *)v9 setBackgroundColor:v24];
+    systemBlackColor = [MEMORY[0x277D75348] systemBlackColor];
+    [(DBSExternalDisplayMultitaskingImageView *)v9 setBackgroundColor:systemBlackColor];
 
-    v25 = [(DBSExternalDisplayMultitaskingImageView *)v9 layer];
-    [v25 setCornerRadius:10.0];
+    layer = [(DBSExternalDisplayMultitaskingImageView *)v9 layer];
+    [layer setCornerRadius:10.0];
 
-    v26 = [(DBSExternalDisplayMultitaskingImageView *)v9 layer];
-    [v26 setMasksToBounds:1];
+    layer2 = [(DBSExternalDisplayMultitaskingImageView *)v9 layer];
+    [layer2 setMasksToBounds:1];
 
-    v27 = [MEMORY[0x277D75348] blackColor];
-    v28 = [v27 colorWithAlphaComponent:0.1];
-    v29 = [v28 CGColor];
-    v30 = [(DBSExternalDisplayMultitaskingImageView *)v9 layer];
-    [v30 setBorderColor:v29];
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    v28 = [blackColor colorWithAlphaComponent:0.1];
+    cGColor = [v28 CGColor];
+    layer3 = [(DBSExternalDisplayMultitaskingImageView *)v9 layer];
+    [layer3 setBorderColor:cGColor];
 
-    v31 = [(DBSExternalDisplayMultitaskingImageView *)v9 layer];
-    [v31 setBorderWidth:1.0];
+    layer4 = [(DBSExternalDisplayMultitaskingImageView *)v9 layer];
+    [layer4 setBorderWidth:1.0];
 
     v32 = objc_opt_self();
     v37[0] = v32;
@@ -71,20 +71,20 @@
 - (void)_userInterfaceStyleDidChange
 {
   v3 = MEMORY[0x277D755B8];
-  v6 = [(DBSExternalDisplayMultitaskingImageView *)self _imageNameWithUserInterfaceStyle];
+  _imageNameWithUserInterfaceStyle = [(DBSExternalDisplayMultitaskingImageView *)self _imageNameWithUserInterfaceStyle];
   v4 = DBS_BundleForDisplayAndBrightnessSettingsFramework();
-  v5 = [v3 imageNamed:v6 inBundle:v4 compatibleWithTraitCollection:0];
+  v5 = [v3 imageNamed:_imageNameWithUserInterfaceStyle inBundle:v4 compatibleWithTraitCollection:0];
   [(DBSExternalDisplayMultitaskingImageView *)self setImage:v5];
 }
 
 - (id)_imageNameWithUserInterfaceStyle
 {
-  v3 = [(DBSExternalDisplayMultitaskingImageView *)self traitCollection];
-  v4 = [v3 userInterfaceStyle];
+  traitCollection = [(DBSExternalDisplayMultitaskingImageView *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  if (v4 <= 2)
+  if (userInterfaceStyle <= 2)
   {
-    v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%@", self->_name, off_2784595F8[v4]];
+    v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%@", self->_name, off_2784595F8[userInterfaceStyle]];
   }
 
   return v5;

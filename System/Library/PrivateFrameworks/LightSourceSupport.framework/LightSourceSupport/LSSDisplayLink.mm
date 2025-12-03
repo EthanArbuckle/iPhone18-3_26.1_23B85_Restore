@@ -1,41 +1,41 @@
 @interface LSSDisplayLink
-- (LSSDisplayLink)initWithDisplay:(id)a3 updateInterval:(double)a4 target:(id)a5 action:(SEL)a6;
+- (LSSDisplayLink)initWithDisplay:(id)display updateInterval:(double)interval target:(id)target action:(SEL)action;
 - (void)_thread_displayLinkFired;
 - (void)_thread_invalidate;
-- (void)_thread_setPaused:(id)a3;
+- (void)_thread_setPaused:(id)paused;
 - (void)_thread_startRunLoop;
 - (void)dealloc;
 - (void)invalidate;
-- (void)setPaused:(BOOL)a3;
+- (void)setPaused:(BOOL)paused;
 @end
 
 @implementation LSSDisplayLink
 
-- (LSSDisplayLink)initWithDisplay:(id)a3 updateInterval:(double)a4 target:(id)a5 action:(SEL)a6
+- (LSSDisplayLink)initWithDisplay:(id)display updateInterval:(double)interval target:(id)target action:(SEL)action
 {
   v26[1] = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a5;
+  displayCopy = display;
+  targetCopy = target;
   v25.receiver = self;
   v25.super_class = LSSDisplayLink;
   v13 = [(LSSDisplayLink *)&v25 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_display, a3);
-    objc_storeStrong(&v14->_target, a5);
-    if (a6)
+    objc_storeStrong(&v13->_display, display);
+    objc_storeStrong(&v14->_target, target);
+    if (action)
     {
-      v15 = a6;
+      actionCopy = action;
     }
 
     else
     {
-      v15 = 0;
+      actionCopy = 0;
     }
 
-    v14->_action = v15;
-    v14->_updateInterval = a4;
+    v14->_action = actionCopy;
+    v14->_updateInterval = interval;
     v14->_paused = 1;
     v16 = [objc_alloc(MEMORY[0x277CCACC8]) initWithTarget:v14 selector:sel__thread_startRunLoop object:0];
     thread = v14->_thread;
@@ -43,8 +43,8 @@
 
     [(NSThread *)v14->_thread start];
     v18 = MEMORY[0x277CCACA8];
-    v19 = [v11 uniqueId];
-    v20 = [v18 stringWithFormat:@"LSSDisplayLink:%p for %@", v14, v19];
+    uniqueId = [displayCopy uniqueId];
+    v20 = [v18 stringWithFormat:@"LSSDisplayLink:%p for %@", v14, uniqueId];
 
     [(NSThread *)v14->_thread setName:v20];
     v21 = v14->_thread;
@@ -76,7 +76,7 @@
   if (os_log_type_enabled(_MergedGlobals_1, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 134217984;
-    v7 = self;
+    selfCopy2 = self;
     _os_log_impl(&dword_255E8B000, v3, OS_LOG_TYPE_DEFAULT, "LSSDisplayLink %p invalidate start ", &v6, 0xCu);
   }
 
@@ -98,7 +98,7 @@
   {
 LABEL_7:
     v6 = 134217984;
-    v7 = self;
+    selfCopy2 = self;
     _os_log_impl(&dword_255E8B000, v4, OS_LOG_TYPE_DEFAULT, "LSSDisplayLink %p invalidate finish", &v6, 0xCu);
   }
 
@@ -106,30 +106,30 @@ LABEL_8:
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setPaused:(BOOL)a3
+- (void)setPaused:(BOOL)paused
 {
-  if (self->_paused != a3)
+  if (self->_paused != paused)
   {
-    self->_paused = a3;
+    self->_paused = paused;
     thread = self->_thread;
     v6 = [MEMORY[0x277CCABB0] numberWithBool:?];
     [(LSSDisplayLink *)self performSelector:sel__thread_setPaused_ onThread:thread withObject:v6 waitUntilDone:0];
   }
 }
 
-- (void)_thread_setPaused:(id)a3
+- (void)_thread_setPaused:(id)paused
 {
   thread_displayLink = self->_thread_displayLink;
-  v4 = [a3 BOOLValue];
+  bOOLValue = [paused BOOLValue];
 
-  [(CADisplayLink *)thread_displayLink setPaused:v4];
+  [(CADisplayLink *)thread_displayLink setPaused:bOOLValue];
 }
 
 - (void)_thread_invalidate
 {
   v5 = *MEMORY[0x277D85DE8];
   v3 = 134217984;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_255E8B000, a2, OS_LOG_TYPE_ERROR, "LSSDisplayLink %p _thread_invalidate already invalid", &v3, 0xCu);
   v2 = *MEMORY[0x277D85DE8];
 }
@@ -155,9 +155,9 @@ LABEL_8:
 - (void)_thread_startRunLoop
 {
   v12 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB88] currentRunLoop];
+  currentRunLoop = [MEMORY[0x277CBEB88] currentRunLoop];
   runLoop = self->_runLoop;
-  self->_runLoop = v3;
+  self->_runLoop = currentRunLoop;
 
   if (qword_280D2F4D0 == -1)
   {
@@ -176,7 +176,7 @@ LABEL_8:
   {
 LABEL_3:
     v10 = 134217984;
-    v11 = self;
+    selfCopy = self;
     _os_log_impl(&dword_255E8B000, v5, OS_LOG_TYPE_DEFAULT, "LSSDisplayLink %p _thread_startRunLoop", &v10, 0xCu);
   }
 

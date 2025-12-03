@@ -1,13 +1,13 @@
 @interface TSKChangeRecord
-+ (id)changeRecordWithKind:(int)a3 details:(id)a4;
++ (id)changeRecordWithKind:(int)kind details:(id)details;
 - (BOOL)allowedInCommit;
-- (TSKChangeRecord)initWithKind:(int)a3 details:(id)a4;
+- (TSKChangeRecord)initWithKind:(int)kind details:(id)details;
 - (void)dealloc;
 @end
 
 @implementation TSKChangeRecord
 
-- (TSKChangeRecord)initWithKind:(int)a3 details:(id)a4
+- (TSKChangeRecord)initWithKind:(int)kind details:(id)details
 {
   v9.receiver = self;
   v9.super_class = TSKChangeRecord;
@@ -15,16 +15,16 @@
   v7 = v6;
   if (v6)
   {
-    v6->mKind = a3;
-    v6->mDetails = a4;
+    v6->mKind = kind;
+    v6->mDetails = details;
   }
 
   return v7;
 }
 
-+ (id)changeRecordWithKind:(int)a3 details:(id)a4
++ (id)changeRecordWithKind:(int)kind details:(id)details
 {
-  v4 = [[TSKChangeRecord alloc] initWithKind:*&a3 details:a4];
+  v4 = [[TSKChangeRecord alloc] initWithKind:*&kind details:details];
 
   return v4;
 }

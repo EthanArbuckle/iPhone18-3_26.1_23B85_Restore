@@ -42,8 +42,8 @@
   v20 = [v19 intervalIndexForValue:{-[HMDCloudSyncAnalysisResultLogEvent legacyUploadCount](self, "legacyUploadCount")}];
   [v3 setObject:v20 forKeyedSubscript:@"legacyUploadCount"];
 
-  v21 = [(HMDCloudSyncAnalysisResultLogEvent *)self legacyUploadReasonCountMap];
-  v22 = [v21 keysSortedByValueUsingComparator:&__block_literal_global_140839];
+  legacyUploadReasonCountMap = [(HMDCloudSyncAnalysisResultLogEvent *)self legacyUploadReasonCountMap];
+  v22 = [legacyUploadReasonCountMap keysSortedByValueUsingComparator:&__block_literal_global_140839];
 
   v23 = [v22 count];
   if (v23 >= 3)
@@ -69,15 +69,15 @@
       v29 = [MEMORY[0x277CCACA8] stringWithFormat:@"topLegacyUploadReason%d", v26 + 1];
       [v3 setObject:v27 forKeyedSubscript:v29];
 
-      v30 = [(HMDCloudSyncAnalysisResultLogEvent *)self legacyUploadReasonCountMap];
+      legacyUploadReasonCountMap2 = [(HMDCloudSyncAnalysisResultLogEvent *)self legacyUploadReasonCountMap];
       v31 = [v25 objectAtIndexedSubscript:v26];
-      v32 = [v30 objectForKeyedSubscript:v31];
-      v33 = self;
-      v34 = [v32 unsignedIntegerValue];
+      v32 = [legacyUploadReasonCountMap2 objectForKeyedSubscript:v31];
+      selfCopy = self;
+      unsignedIntegerValue = [v32 unsignedIntegerValue];
 
       v35 = +[HMDLogEventHistograms lowVolumeHistogram];
-      v36 = v34;
-      self = v33;
+      v36 = unsignedIntegerValue;
+      self = selfCopy;
       v25 = v100;
       v37 = [v35 intervalIndexForValue:v36];
       v38 = [MEMORY[0x277CCACA8] stringWithFormat:@"topLegacyUploadReasonCount%d", v28];
@@ -93,8 +93,8 @@
   v40 = [v39 intervalIndexForValue:{-[HMDCloudSyncAnalysisResultLogEvent uploadErrorCount](self, "uploadErrorCount")}];
   [v3 setObject:v40 forKeyedSubscript:@"uploadErrorCount"];
 
-  v41 = [(HMDCloudSyncAnalysisResultLogEvent *)self uploadErrorCountMap];
-  v42 = [v41 keysSortedByValueUsingComparator:&__block_literal_global_114_140841];
+  uploadErrorCountMap = [(HMDCloudSyncAnalysisResultLogEvent *)self uploadErrorCountMap];
+  v42 = [uploadErrorCountMap keysSortedByValueUsingComparator:&__block_literal_global_114_140841];
 
   v43 = [v42 count];
   if (v43 >= 3)
@@ -109,7 +109,7 @@
 
   v45 = [v42 subarrayWithRange:{0, v44}];
 
-  v46 = self;
+  selfCopy2 = self;
   v101 = v45;
   if ([v45 count])
   {
@@ -121,13 +121,13 @@
       v50 = [MEMORY[0x277CCACA8] stringWithFormat:@"topUploadError%d", v47 + 1];
       [v3 setObject:v48 forKeyedSubscript:v50];
 
-      v51 = [(HMDCloudSyncAnalysisResultLogEvent *)v46 uploadErrorCountMap];
+      uploadErrorCountMap2 = [(HMDCloudSyncAnalysisResultLogEvent *)selfCopy2 uploadErrorCountMap];
       v52 = [v101 objectAtIndexedSubscript:v47];
-      v53 = [v51 objectForKeyedSubscript:v52];
-      v54 = [v53 unsignedIntegerValue];
+      v53 = [uploadErrorCountMap2 objectForKeyedSubscript:v52];
+      unsignedIntegerValue2 = [v53 unsignedIntegerValue];
 
       v55 = +[HMDLogEventHistograms lowVolumeHistogram];
-      v56 = [v55 intervalIndexForValue:v54];
+      v56 = [v55 intervalIndexForValue:unsignedIntegerValue2];
       v57 = [MEMORY[0x277CCACA8] stringWithFormat:@"topUploadErrorCount%d", v49];
       [v3 setObject:v56 forKeyedSubscript:v57];
 
@@ -139,11 +139,11 @@
   }
 
   v58 = +[HMDLogEventHistograms lowVolumeHistogram];
-  v59 = [v58 intervalIndexForValue:{-[HMDCloudSyncAnalysisResultLogEvent legacyUploadErrorCount](v46, "legacyUploadErrorCount")}];
+  v59 = [v58 intervalIndexForValue:{-[HMDCloudSyncAnalysisResultLogEvent legacyUploadErrorCount](selfCopy2, "legacyUploadErrorCount")}];
   [v3 setObject:v59 forKeyedSubscript:@"legacyUploadErrorCount"];
 
-  v60 = [(HMDCloudSyncAnalysisResultLogEvent *)v46 legacyUploadErrorCountMap];
-  v61 = [v60 keysSortedByValueUsingComparator:&__block_literal_global_125_140846];
+  legacyUploadErrorCountMap = [(HMDCloudSyncAnalysisResultLogEvent *)selfCopy2 legacyUploadErrorCountMap];
+  v61 = [legacyUploadErrorCountMap keysSortedByValueUsingComparator:&__block_literal_global_125_140846];
 
   v62 = [v61 count];
   if (v62 >= 3)
@@ -170,14 +170,14 @@
       v70 = v69 = p_info;
       [v3 setObject:v67 forKeyedSubscript:v70];
 
-      v71 = [(HMDCloudSyncAnalysisResultLogEvent *)v46 legacyUploadErrorCountMap];
+      legacyUploadErrorCountMap2 = [(HMDCloudSyncAnalysisResultLogEvent *)selfCopy2 legacyUploadErrorCountMap];
       v72 = [v64 objectAtIndexedSubscript:v66];
-      v73 = [v71 objectForKeyedSubscript:v72];
-      v74 = [v73 unsignedIntegerValue];
+      v73 = [legacyUploadErrorCountMap2 objectForKeyedSubscript:v72];
+      unsignedIntegerValue3 = [v73 unsignedIntegerValue];
 
       p_info = v69;
-      v75 = [v69 + 371 lowVolumeHistogram];
-      v76 = [v75 intervalIndexForValue:v74];
+      lowVolumeHistogram = [v69 + 371 lowVolumeHistogram];
+      v76 = [lowVolumeHistogram intervalIndexForValue:unsignedIntegerValue3];
       v77 = [MEMORY[0x277CCACA8] stringWithFormat:@"topLegacyUploadErrorCount%d", v68];
       [v3 setObject:v76 forKeyedSubscript:v77];
 
@@ -187,65 +187,65 @@
     while ([v64 count] > v68);
   }
 
-  v78 = [(HMDCloudSyncAnalysisResultLogEvent *)v46 bytesFetched];
+  bytesFetched = [(HMDCloudSyncAnalysisResultLogEvent *)selfCopy2 bytesFetched];
   v79 = MEMORY[0x277CCABB0];
-  v80 = [(HMDCloudSyncAnalysisResultLogEvent *)v46 bytesFetched];
-  if (v78 >> 21 <= 2)
+  bytesFetched2 = [(HMDCloudSyncAnalysisResultLogEvent *)selfCopy2 bytesFetched];
+  if (bytesFetched >> 21 <= 2)
   {
-    v81 = v80 >> 20;
+    v81 = bytesFetched2 >> 20;
   }
 
   else
   {
-    v81 = v80 / 0x500000 + 5;
+    v81 = bytesFetched2 / 0x500000 + 5;
   }
 
   v82 = [v79 numberWithUnsignedInteger:v81];
   [v3 setObject:v82 forKeyedSubscript:@"bytesFetched"];
 
-  v83 = [(HMDCloudSyncAnalysisResultLogEvent *)v46 bytesPushed];
+  bytesPushed = [(HMDCloudSyncAnalysisResultLogEvent *)selfCopy2 bytesPushed];
   v84 = MEMORY[0x277CCABB0];
-  v85 = [(HMDCloudSyncAnalysisResultLogEvent *)v46 bytesPushed];
-  if (v83 > 0x5FFFFF)
+  bytesPushed2 = [(HMDCloudSyncAnalysisResultLogEvent *)selfCopy2 bytesPushed];
+  if (bytesPushed > 0x5FFFFF)
   {
-    v86 = v85 / 0x500000 + 5;
+    v86 = bytesPushed2 / 0x500000 + 5;
   }
 
   else
   {
-    v86 = v85 >> 20;
+    v86 = bytesPushed2 >> 20;
   }
 
   v87 = [v84 numberWithUnsignedInteger:v86];
   [v3 setObject:v87 forKeyedSubscript:@"bytesPushed"];
 
-  v88 = [(HMDCloudSyncAnalysisResultLogEvent *)v46 legacyBytesFetched];
+  legacyBytesFetched = [(HMDCloudSyncAnalysisResultLogEvent *)selfCopy2 legacyBytesFetched];
   v89 = MEMORY[0x277CCABB0];
-  v90 = [(HMDCloudSyncAnalysisResultLogEvent *)v46 legacyBytesFetched];
-  if (v88 > 0x5FFFFF)
+  legacyBytesFetched2 = [(HMDCloudSyncAnalysisResultLogEvent *)selfCopy2 legacyBytesFetched];
+  if (legacyBytesFetched > 0x5FFFFF)
   {
-    v91 = v90 / 0x500000 + 5;
+    v91 = legacyBytesFetched2 / 0x500000 + 5;
   }
 
   else
   {
-    v91 = v90 >> 20;
+    v91 = legacyBytesFetched2 >> 20;
   }
 
   v92 = [v89 numberWithUnsignedInteger:v91];
   [v3 setObject:v92 forKeyedSubscript:@"legacyBytesFetched"];
 
-  v93 = [(HMDCloudSyncAnalysisResultLogEvent *)v46 legacyBytesPushed];
+  legacyBytesPushed = [(HMDCloudSyncAnalysisResultLogEvent *)selfCopy2 legacyBytesPushed];
   v94 = MEMORY[0x277CCABB0];
-  v95 = [(HMDCloudSyncAnalysisResultLogEvent *)v46 legacyBytesPushed];
-  if (v93 > 0x5FFFFF)
+  legacyBytesPushed2 = [(HMDCloudSyncAnalysisResultLogEvent *)selfCopy2 legacyBytesPushed];
+  if (legacyBytesPushed > 0x5FFFFF)
   {
-    v96 = v95 / 0x500000 + 5;
+    v96 = legacyBytesPushed2 / 0x500000 + 5;
   }
 
   else
   {
-    v96 = v95 >> 20;
+    v96 = legacyBytesPushed2 >> 20;
   }
 
   v97 = [v94 numberWithUnsignedInteger:v96];

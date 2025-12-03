@@ -1,54 +1,54 @@
 @interface NCModeConfigurationRemoteSuggestionContentProvider
-+ (id)_localizedSummaryStringForSuggestionType:(unint64_t)a3 configurationType:(unint64_t)a4 scope:(unint64_t)a5 semanticType:(int64_t)a6 modeName:(id)a7 bundleDisplayName:(id)a8 preferredSenderSummary:(id)a9 localizedStringForKeyBlock:(id)a10;
-- (NCModeConfigurationRemoteSuggestionContentProvider)initWithNotificationRequest:(id)a3 bundleDisplayName:(id)a4 managementDelegate:(id)a5 suggestionDelegate:(id)a6 uuid:(id)a7 suggestionType:(unint64_t)a8 scope:(unint64_t)a9 modeConfiguration:(id)a10;
++ (id)_localizedSummaryStringForSuggestionType:(unint64_t)type configurationType:(unint64_t)configurationType scope:(unint64_t)scope semanticType:(int64_t)semanticType modeName:(id)name bundleDisplayName:(id)displayName preferredSenderSummary:(id)summary localizedStringForKeyBlock:(id)self0;
+- (NCModeConfigurationRemoteSuggestionContentProvider)initWithNotificationRequest:(id)request bundleDisplayName:(id)name managementDelegate:(id)delegate suggestionDelegate:(id)suggestionDelegate uuid:(id)uuid suggestionType:(unint64_t)type scope:(unint64_t)scope modeConfiguration:(id)self0;
 - (id)auxiliaryOptionActions;
 - (void)auxiliaryOptionActions;
-- (void)handleAcceptAction:(id)a3;
-- (void)handleRejectAction:(id)a3;
+- (void)handleAcceptAction:(id)action;
+- (void)handleRejectAction:(id)action;
 @end
 
 @implementation NCModeConfigurationRemoteSuggestionContentProvider
 
-- (NCModeConfigurationRemoteSuggestionContentProvider)initWithNotificationRequest:(id)a3 bundleDisplayName:(id)a4 managementDelegate:(id)a5 suggestionDelegate:(id)a6 uuid:(id)a7 suggestionType:(unint64_t)a8 scope:(unint64_t)a9 modeConfiguration:(id)a10
+- (NCModeConfigurationRemoteSuggestionContentProvider)initWithNotificationRequest:(id)request bundleDisplayName:(id)name managementDelegate:(id)delegate suggestionDelegate:(id)suggestionDelegate uuid:(id)uuid suggestionType:(unint64_t)type scope:(unint64_t)scope modeConfiguration:(id)self0
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a10;
+  requestCopy = request;
+  nameCopy = name;
+  configurationCopy = configuration;
   v35.receiver = self;
   v35.super_class = NCModeConfigurationRemoteSuggestionContentProvider;
-  v19 = [(NCRemoteSuggestionContentProvider *)&v35 initWithNotificationRequest:v16 bundleDisplayName:v17 managementDelegate:a5 suggestionDelegate:a6 uuid:a7];
+  v19 = [(NCRemoteSuggestionContentProvider *)&v35 initWithNotificationRequest:requestCopy bundleDisplayName:nameCopy managementDelegate:delegate suggestionDelegate:suggestionDelegate uuid:uuid];
   v20 = v19;
   if (v19)
   {
-    v34 = a8;
-    v19->_suggestionType = a8;
-    objc_storeStrong(&v19->_modeConfiguration, a10);
-    v20->_scope = a9;
-    v21 = [(DNDModeConfiguration *)v20->_modeConfiguration configuration];
-    v22 = v21;
-    if (a9)
+    typeCopy = type;
+    v19->_suggestionType = type;
+    objc_storeStrong(&v19->_modeConfiguration, configuration);
+    v20->_scope = scope;
+    configuration = [(DNDModeConfiguration *)v20->_modeConfiguration configuration];
+    v22 = configuration;
+    if (scope)
     {
-      v23 = [v21 senderConfigurationType];
+      senderConfigurationType = [configuration senderConfigurationType];
     }
 
     else
     {
-      v23 = [v21 applicationConfigurationType];
+      senderConfigurationType = [configuration applicationConfigurationType];
     }
 
-    v33 = v23;
+    v33 = senderConfigurationType;
 
-    v24 = [v18 mode];
-    v25 = [v24 name];
+    mode = [configurationCopy mode];
+    name = [mode name];
 
-    v26 = [v18 mode];
-    v27 = [v26 semanticType];
+    mode2 = [configurationCopy mode];
+    semanticType = [mode2 semanticType];
 
-    v28 = [v16 content];
-    v29 = [v28 communicationContext];
-    v30 = [v29 preferredSenderSummary];
+    content = [requestCopy content];
+    communicationContext = [content communicationContext];
+    preferredSenderSummary = [communicationContext preferredSenderSummary];
 
-    v31 = [objc_opt_class() _localizedSummaryStringForSuggestionType:v34 configurationType:v33 scope:a9 semanticType:v27 modeName:v25 bundleDisplayName:v17 preferredSenderSummary:v30 localizedStringForKeyBlock:&__block_literal_global_22];
+    v31 = [objc_opt_class() _localizedSummaryStringForSuggestionType:typeCopy configurationType:v33 scope:scope semanticType:semanticType modeName:name bundleDisplayName:nameCopy preferredSenderSummary:preferredSenderSummary localizedStringForKeyBlock:&__block_literal_global_22];
     [(NCNotificationManagementSuggestionContentProvider *)v20 setAuxiliaryOptionsSummaryText:v31];
   }
 
@@ -79,19 +79,19 @@ LABEL_6:
   if (!suggestionType)
   {
     v4 = self->_scope == 0;
-    v5 = [(DNDModeConfiguration *)self->_modeConfiguration configuration];
-    v6 = v5;
+    configuration = [(DNDModeConfiguration *)self->_modeConfiguration configuration];
+    v6 = configuration;
     if (v4)
     {
-      v7 = [v5 applicationConfigurationType];
+      applicationConfigurationType = [configuration applicationConfigurationType];
     }
 
     else
     {
-      v7 = [v5 senderConfigurationType];
+      applicationConfigurationType = [configuration senderConfigurationType];
     }
 
-    v10 = v7;
+    v10 = applicationConfigurationType;
 
     switch(v10)
     {
@@ -167,24 +167,24 @@ void __76__NCModeConfigurationRemoteSuggestionContentProvider_auxiliaryOptionAct
   [WeakRetained handleAcceptAction:v4];
 }
 
-- (void)handleRejectAction:(id)a3
+- (void)handleRejectAction:(id)action
 {
-  v4 = [MEMORY[0x277CEB1B8] sharedInstance];
-  v5 = [(NCRemoteSuggestionContentProvider *)self uuid];
+  mEMORY[0x277CEB1B8] = [MEMORY[0x277CEB1B8] sharedInstance];
+  uuid = [(NCRemoteSuggestionContentProvider *)self uuid];
   v6 = [MEMORY[0x277CBEAA8] now];
-  [v4 logSuggestionEvent:1 suggestionType:5 suggestionIdentifier:v5 timestamp:v6];
+  [mEMORY[0x277CEB1B8] logSuggestionEvent:1 suggestionType:5 suggestionIdentifier:uuid timestamp:v6];
 
-  v8 = [(NCNotificationManagementSuggestionContentProvider *)self suggestionDelegate];
-  v7 = [(NCNotificationManagementContentProvider *)self notificationRequest];
-  [v8 notificationManagementContentProvider:self requestsRemoveSuggestionForRequest:v7];
+  suggestionDelegate = [(NCNotificationManagementSuggestionContentProvider *)self suggestionDelegate];
+  notificationRequest = [(NCNotificationManagementContentProvider *)self notificationRequest];
+  [suggestionDelegate notificationManagementContentProvider:self requestsRemoveSuggestionForRequest:notificationRequest];
 }
 
-- (void)handleAcceptAction:(id)a3
+- (void)handleAcceptAction:(id)action
 {
-  v19 = [(NCNotificationManagementSuggestionContentProvider *)self suggestionDelegate];
+  suggestionDelegate = [(NCNotificationManagementSuggestionContentProvider *)self suggestionDelegate];
   v4 = [(DNDModeConfiguration *)self->_modeConfiguration mutableCopy];
-  v5 = [v4 configuration];
-  v6 = [v5 mutableCopy];
+  configuration = [v4 configuration];
+  v6 = [configuration mutableCopy];
 
   suggestionType = self->_suggestionType;
   if (!suggestionType)
@@ -203,21 +203,21 @@ void __76__NCModeConfigurationRemoteSuggestionContentProvider_auxiliaryOptionAct
   scope = self->_scope;
   if (scope == 2)
   {
-    v11 = [(NCNotificationManagementContentProvider *)self notificationRequest];
-    v12 = [v11 content];
-    v13 = [v12 communicationContext];
-    v14 = [v13 sender];
-    v9 = [v14 cnContactIdentifier];
+    notificationRequest = [(NCNotificationManagementContentProvider *)self notificationRequest];
+    content = [notificationRequest content];
+    communicationContext = [content communicationContext];
+    sender = [communicationContext sender];
+    cnContactIdentifier = [sender cnContactIdentifier];
 
-    v10 = [objc_alloc(MEMORY[0x277D058F0]) initWithContactIdentifier:v9];
+    sectionIdentifier = [objc_alloc(MEMORY[0x277D058F0]) initWithContactIdentifier:cnContactIdentifier];
     if (suggestionType)
     {
-      [v6 removeExceptionForContact:v10];
+      [v6 removeExceptionForContact:sectionIdentifier];
     }
 
     else
     {
-      [v6 setExceptionForContact:v10];
+      [v6 setExceptionForContact:sectionIdentifier];
     }
   }
 
@@ -228,64 +228,64 @@ void __76__NCModeConfigurationRemoteSuggestionContentProvider_auxiliaryOptionAct
       goto LABEL_14;
     }
 
-    v9 = [(NCNotificationManagementContentProvider *)self notificationRequest];
-    v10 = [v9 sectionIdentifier];
+    cnContactIdentifier = [(NCNotificationManagementContentProvider *)self notificationRequest];
+    sectionIdentifier = [cnContactIdentifier sectionIdentifier];
     if (suggestionType)
     {
-      [v6 removeExceptionForApplication:v10];
+      [v6 removeExceptionForApplication:sectionIdentifier];
     }
 
     else
     {
-      [v6 setExceptionForApplication:v10];
+      [v6 setExceptionForApplication:sectionIdentifier];
     }
   }
 
 LABEL_14:
   [v4 setConfiguration:v6];
-  [v19 notificationManagementContentProvider:self setModeConfiguration:v4];
-  v15 = [MEMORY[0x277CEB1B8] sharedInstance];
-  v16 = [(NCRemoteSuggestionContentProvider *)self uuid];
+  [suggestionDelegate notificationManagementContentProvider:self setModeConfiguration:v4];
+  mEMORY[0x277CEB1B8] = [MEMORY[0x277CEB1B8] sharedInstance];
+  uuid = [(NCRemoteSuggestionContentProvider *)self uuid];
   v17 = [MEMORY[0x277CBEAA8] now];
-  [v15 logSuggestionEvent:2 suggestionType:5 suggestionIdentifier:v16 timestamp:v17];
+  [mEMORY[0x277CEB1B8] logSuggestionEvent:2 suggestionType:5 suggestionIdentifier:uuid timestamp:v17];
 
-  v18 = [(NCNotificationManagementContentProvider *)self notificationRequest];
-  [v19 notificationManagementContentProvider:self requestsRemoveSuggestionForRequest:v18];
+  notificationRequest2 = [(NCNotificationManagementContentProvider *)self notificationRequest];
+  [suggestionDelegate notificationManagementContentProvider:self requestsRemoveSuggestionForRequest:notificationRequest2];
 }
 
-+ (id)_localizedSummaryStringForSuggestionType:(unint64_t)a3 configurationType:(unint64_t)a4 scope:(unint64_t)a5 semanticType:(int64_t)a6 modeName:(id)a7 bundleDisplayName:(id)a8 preferredSenderSummary:(id)a9 localizedStringForKeyBlock:(id)a10
++ (id)_localizedSummaryStringForSuggestionType:(unint64_t)type configurationType:(unint64_t)configurationType scope:(unint64_t)scope semanticType:(int64_t)semanticType modeName:(id)name bundleDisplayName:(id)displayName preferredSenderSummary:(id)summary localizedStringForKeyBlock:(id)self0
 {
-  v15 = a7;
-  v16 = a8;
-  v17 = a9;
-  v18 = a10;
-  if (a3 == 1)
+  nameCopy = name;
+  displayNameCopy = displayName;
+  summaryCopy = summary;
+  blockCopy = block;
+  if (type == 1)
   {
     v20 = *MEMORY[0x277D77DD8];
     if (os_log_type_enabled(*MEMORY[0x277D77DD8], OS_LOG_TYPE_FAULT))
     {
-      [NCModeConfigurationRemoteSuggestionContentProvider(Testing) _localizedSummaryStringForSuggestionType:v20 configurationType:a4 scope:a5 semanticType:? modeName:? bundleDisplayName:? preferredSenderSummary:? localizedStringForKeyBlock:?];
+      [NCModeConfigurationRemoteSuggestionContentProvider(Testing) _localizedSummaryStringForSuggestionType:v20 configurationType:configurationType scope:scope semanticType:? modeName:? bundleDisplayName:? preferredSenderSummary:? localizedStringForKeyBlock:?];
     }
 
     goto LABEL_9;
   }
 
-  if (a3)
+  if (type)
   {
 LABEL_9:
     v21 = @"NOTIFICATION_REMOTE_MANAGEMENT_MODE_CONFIGURATION_SUGGESTION";
     goto LABEL_10;
   }
 
-  if (a4 != 2)
+  if (configurationType != 2)
   {
-    if (a4 == 1)
+    if (configurationType == 1)
     {
       v19 = @"_SILENCE";
       goto LABEL_53;
     }
 
-    if (!a4)
+    if (!configurationType)
     {
       v19 = @"_ALLOW";
 LABEL_53:
@@ -299,22 +299,22 @@ LABEL_53:
   v35 = *MEMORY[0x277D77DD8];
   if (os_log_type_enabled(*MEMORY[0x277D77DD8], OS_LOG_TYPE_FAULT))
   {
-    [NCModeConfigurationRemoteSuggestionContentProvider(Testing) _localizedSummaryStringForSuggestionType:v35 configurationType:a5 scope:? semanticType:? modeName:? bundleDisplayName:? preferredSenderSummary:? localizedStringForKeyBlock:?];
+    [NCModeConfigurationRemoteSuggestionContentProvider(Testing) _localizedSummaryStringForSuggestionType:v35 configurationType:scope scope:? semanticType:? modeName:? bundleDisplayName:? preferredSenderSummary:? localizedStringForKeyBlock:?];
   }
 
   v21 = 0;
 LABEL_10:
-  switch(a5)
+  switch(scope)
   {
     case 0uLL:
       v24 = [(__CFString *)v21 stringByAppendingString:@"_APP"];
 
-      v25 = v16;
+      v25 = displayNameCopy;
       goto LABEL_19;
     case 2uLL:
       v24 = [(__CFString *)v21 stringByAppendingString:@"_CONTACT"];
 
-      v25 = v17;
+      v25 = summaryCopy;
 LABEL_19:
       v23 = v25;
       v21 = v24;
@@ -323,7 +323,7 @@ LABEL_19:
       v22 = *MEMORY[0x277D77DD8];
       if (os_log_type_enabled(*MEMORY[0x277D77DD8], OS_LOG_TYPE_FAULT))
       {
-        [NCModeConfigurationRemoteSuggestionContentProvider(Testing) _localizedSummaryStringForSuggestionType:v22 configurationType:a4 scope:? semanticType:? modeName:? bundleDisplayName:? preferredSenderSummary:? localizedStringForKeyBlock:?];
+        [NCModeConfigurationRemoteSuggestionContentProvider(Testing) _localizedSummaryStringForSuggestionType:v22 configurationType:configurationType scope:? semanticType:? modeName:? bundleDisplayName:? preferredSenderSummary:? localizedStringForKeyBlock:?];
       }
 
       v21 = 0;
@@ -332,18 +332,18 @@ LABEL_19:
 
   v23 = &stru_282FE84F8;
 LABEL_20:
-  if (a6 <= 3)
+  if (semanticType <= 3)
   {
-    if (a6 <= 1)
+    if (semanticType <= 1)
     {
-      if (!a6)
+      if (!semanticType)
       {
         v26 = 0;
         v27 = @"_DO_NOT_DISTURB";
         goto LABEL_40;
       }
 
-      if (a6 == 1)
+      if (semanticType == 1)
       {
         v26 = 0;
         v27 = @"_SLEEP";
@@ -357,7 +357,7 @@ LABEL_39:
     }
 
     v26 = 0;
-    if (a6 == 2)
+    if (semanticType == 2)
     {
       v27 = @"_DRIVING";
     }
@@ -370,9 +370,9 @@ LABEL_39:
 
   else
   {
-    if (a6 > 5)
+    if (semanticType > 5)
     {
-      switch(a6)
+      switch(semanticType)
       {
         case 6:
           v26 = 0;
@@ -392,7 +392,7 @@ LABEL_39:
     }
 
     v26 = 0;
-    if (a6 == 4)
+    if (semanticType == 4)
     {
       v27 = @"_WORK";
     }
@@ -408,11 +408,11 @@ LABEL_40:
 
   if (v28)
   {
-    v29 = v18[2](v18, v28);
+    v29 = blockCopy[2](blockCopy, v28);
     if (v26)
     {
       v30 = &v38;
-      [MEMORY[0x277CCACA8] localizedStringWithValidatedFormat:v29 validFormatSpecifiers:@"%@%@" error:&v38, v23, v15, v37, 0];
+      [MEMORY[0x277CCACA8] localizedStringWithValidatedFormat:v29 validFormatSpecifiers:@"%@%@" error:&v38, v23, nameCopy, v37, 0];
     }
 
     else
@@ -443,7 +443,7 @@ LABEL_40:
 
 - (void)auxiliaryOptionActions
 {
-  v5 = OUTLINED_FUNCTION_2_1(a1);
+  v5 = OUTLINED_FUNCTION_2_1(self);
   v6 = [v2 numberWithUnsignedInteger:2];
   v7 = [*(v3 + 2992) numberWithUnsignedInteger:*a2];
   OUTLINED_FUNCTION_0_5();

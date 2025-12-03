@@ -3,11 +3,11 @@
 - (HDDatabase)db;
 - (HDDatabaseAvailabilityCondition)init;
 - (id)callback;
-- (void)database:(id)a3 protectedDataDidBecomeAvailable:(BOOL)a4;
-- (void)setCallback:(id)a3;
-- (void)setLoggingCategory:(id)a3;
-- (void)setReadyCallback:(id)a3;
-- (void)setWaitingStartTime:(id)a3;
+- (void)database:(id)database protectedDataDidBecomeAvailable:(BOOL)available;
+- (void)setCallback:(id)callback;
+- (void)setLoggingCategory:(id)category;
+- (void)setReadyCallback:(id)callback;
+- (void)setWaitingStartTime:(id)time;
 @end
 
 @implementation HDDatabaseAvailabilityCondition
@@ -41,9 +41,9 @@
   return v3;
 }
 
-- (void)setCallback:(id)a3
+- (void)setCallback:(id)callback
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(callback);
   if (v4)
   {
     v5 = v4;
@@ -62,58 +62,58 @@
   v9 = *(self + OBJC_IVAR___HDDatabaseAvailabilityCondition_callback + 8);
   *v7 = v6;
   v7[1] = v4;
-  v10 = self;
+  selfCopy = self;
   sub_2289ACBE4(v8);
 }
 
-- (void)setWaitingStartTime:(id)a3
+- (void)setWaitingStartTime:(id)time
 {
   v4 = *(self + OBJC_IVAR___HDDatabaseAvailabilityCondition_waitingStartTime);
-  *(self + OBJC_IVAR___HDDatabaseAvailabilityCondition_waitingStartTime) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR___HDDatabaseAvailabilityCondition_waitingStartTime) = time;
+  timeCopy = time;
 }
 
-- (void)setLoggingCategory:(id)a3
+- (void)setLoggingCategory:(id)category
 {
   v4 = *(self + OBJC_IVAR___HDDatabaseAvailabilityCondition_loggingCategory);
-  *(self + OBJC_IVAR___HDDatabaseAvailabilityCondition_loggingCategory) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR___HDDatabaseAvailabilityCondition_loggingCategory) = category;
+  categoryCopy = category;
 }
 
-- (void)database:(id)a3 protectedDataDidBecomeAvailable:(BOOL)a4
+- (void)database:(id)database protectedDataDidBecomeAvailable:(BOOL)available
 {
   swift_unknownObjectRetain();
-  v6 = self;
-  sub_2289DFF5C(a4);
+  selfCopy = self;
+  sub_2289DFF5C(available);
   swift_unknownObjectRelease();
 }
 
-- (void)setReadyCallback:(id)a3
+- (void)setReadyCallback:(id)callback
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(callback);
   _Block_copy(v4);
-  v5 = self;
-  sub_2289E0368(v5, v4);
+  selfCopy = self;
+  sub_2289E0368(selfCopy, v4);
   _Block_release(v4);
   _Block_release(v4);
 }
 
 - (BOOL)isConditionMet
 {
-  v2 = self;
-  v3 = [(HDDatabaseAvailabilityCondition *)v2 db];
+  selfCopy = self;
+  v3 = [(HDDatabaseAvailabilityCondition *)selfCopy db];
   if (v3)
   {
     v4 = v3;
-    v5 = [(HDDatabase *)v3 isProtectedDataAvailable];
+    isProtectedDataAvailable = [(HDDatabase *)v3 isProtectedDataAvailable];
   }
 
   else
   {
-    v5 = 0;
+    isProtectedDataAvailable = 0;
   }
 
-  return v5;
+  return isProtectedDataAvailable;
 }
 
 - (HDDatabaseAvailabilityCondition)init

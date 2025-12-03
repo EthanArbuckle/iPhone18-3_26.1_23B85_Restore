@@ -1,26 +1,26 @@
 @interface SWCDownloader
 - (SWCDownloader)init;
 - (SWCDownloaderDelegate)delegate;
-- (id)_URLRequestWithDomain:(id)a3 downloadRoute:(unsigned __int8)a4;
-- (id)_replaceTaskState:(id)a3;
-- (id)_sessionForTaskState:(id)a3;
-- (id)_taskStateForDomain:(id)a3 downloadRoute:(unsigned __int8)a4;
-- (unint64_t)_maximumActiveTaskCountForSessionID:(unsigned __int8)a3;
-- (unsigned)_sessionIDForTaskState:(id)a3;
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveData:(id)a5;
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveResponse:(id)a5 completionHandler:(id)a6;
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5;
-- (void)URLSession:(id)a3 task:(id)a4 didReceiveChallenge:(id)a5 completionHandler:(id)a6;
-- (void)URLSession:(id)a3 task:(id)a4 willPerformHTTPRedirection:(id)a5 newRequest:(id)a6 completionHandler:(id)a7;
-- (void)_downloadAASAFileForDomain:(id)a3 applicationIdentifier:(id)a4 downloadRoute:(unsigned __int8)a5 discretionary:(BOOL)a6 completionHandlers:(id)a7;
-- (void)_enumerateTaskStatesUsingBlock:(id)a3;
-- (void)_invokeCompletionHandlerForState:(id)a3 JSONObject:(id)a4 error:(id)a5;
-- (void)_processDownloadedDataForState:(id)a3;
+- (id)_URLRequestWithDomain:(id)domain downloadRoute:(unsigned __int8)route;
+- (id)_replaceTaskState:(id)state;
+- (id)_sessionForTaskState:(id)state;
+- (id)_taskStateForDomain:(id)domain downloadRoute:(unsigned __int8)route;
+- (unint64_t)_maximumActiveTaskCountForSessionID:(unsigned __int8)d;
+- (unsigned)_sessionIDForTaskState:(id)state;
+- (void)URLSession:(id)session dataTask:(id)task didReceiveData:(id)data;
+- (void)URLSession:(id)session dataTask:(id)task didReceiveResponse:(id)response completionHandler:(id)handler;
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error;
+- (void)URLSession:(id)session task:(id)task didReceiveChallenge:(id)challenge completionHandler:(id)handler;
+- (void)URLSession:(id)session task:(id)task willPerformHTTPRedirection:(id)redirection newRequest:(id)request completionHandler:(id)handler;
+- (void)_downloadAASAFileForDomain:(id)domain applicationIdentifier:(id)identifier downloadRoute:(unsigned __int8)route discretionary:(BOOL)discretionary completionHandlers:(id)handlers;
+- (void)_enumerateTaskStatesUsingBlock:(id)block;
+- (void)_invokeCompletionHandlerForState:(id)state JSONObject:(id)object error:(id)error;
+- (void)_processDownloadedDataForState:(id)state;
 - (void)_resumePendingTasks;
-- (void)downloadAASAFileForDomain:(id)a3 applicationIdentifier:(id)a4 completionHandler:(id)a5;
-- (void)enumerateActiveAASAFileDownloadsWithBlock:(id)a3;
+- (void)downloadAASAFileForDomain:(id)domain applicationIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)enumerateActiveAASAFileDownloadsWithBlock:(id)block;
 - (void)receiveSIGTERMSignal;
-- (void)updateAASAFileForDomain:(id)a3 applicationIdentifier:(id)a4 completionHandler:(id)a5;
+- (void)updateAASAFileForDomain:(id)domain applicationIdentifier:(id)identifier completionHandler:(id)handler;
 @end
 
 @implementation SWCDownloader
@@ -62,7 +62,7 @@
 - (void)receiveSIGTERMSignal
 {
   v3 = os_transaction_create();
-  v4 = [(NSOperationQueue *)self->_queue underlyingQueue];
+  underlyingQueue = [(NSOperationQueue *)self->_queue underlyingQueue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10000137C;
@@ -70,59 +70,59 @@
   v6[4] = self;
   v7 = v3;
   v5 = v3;
-  dispatch_async(v4, v6);
+  dispatch_async(underlyingQueue, v6);
 }
 
-- (void)downloadAASAFileForDomain:(id)a3 applicationIdentifier:(id)a4 completionHandler:(id)a5
+- (void)downloadAASAFileForDomain:(id)domain applicationIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v10 = a3;
-  v8 = a4;
-  v9 = a5;
-  -[SWCDownloader downloadAASAFileForDomain:applicationIdentifier:downloadRoute:completionHandler:](self, "downloadAASAFileForDomain:applicationIdentifier:downloadRoute:completionHandler:", v10, v8, [v10 modeOfOperation] != 0, v9);
+  domainCopy = domain;
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  -[SWCDownloader downloadAASAFileForDomain:applicationIdentifier:downloadRoute:completionHandler:](self, "downloadAASAFileForDomain:applicationIdentifier:downloadRoute:completionHandler:", domainCopy, identifierCopy, [domainCopy modeOfOperation] != 0, handlerCopy);
 }
 
-- (void)updateAASAFileForDomain:(id)a3 applicationIdentifier:(id)a4 completionHandler:(id)a5
+- (void)updateAASAFileForDomain:(id)domain applicationIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v10 = a3;
-  v8 = a4;
-  v9 = a5;
-  -[SWCDownloader updateAASAFileForDomain:applicationIdentifier:downloadRoute:completionHandler:](self, "updateAASAFileForDomain:applicationIdentifier:downloadRoute:completionHandler:", v10, v8, [v10 modeOfOperation] != 0, v9);
+  domainCopy = domain;
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  -[SWCDownloader updateAASAFileForDomain:applicationIdentifier:downloadRoute:completionHandler:](self, "updateAASAFileForDomain:applicationIdentifier:downloadRoute:completionHandler:", domainCopy, identifierCopy, [domainCopy modeOfOperation] != 0, handlerCopy);
 }
 
-- (void)enumerateActiveAASAFileDownloadsWithBlock:(id)a3
+- (void)enumerateActiveAASAFileDownloadsWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = objc_autoreleasePoolPush();
-  v6 = [(NSOperationQueue *)self->_queue underlyingQueue];
+  underlyingQueue = [(NSOperationQueue *)self->_queue underlyingQueue];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100001824;
   v8[3] = &unk_100034810;
   v8[4] = self;
-  v7 = v4;
+  v7 = blockCopy;
   v9 = v7;
-  dispatch_sync(v6, v8);
+  dispatch_sync(underlyingQueue, v8);
 
   objc_autoreleasePoolPop(v5);
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didReceiveChallenge:(id)a5 completionHandler:(id)a6
+- (void)URLSession:(id)session task:(id)task didReceiveChallenge:(id)challenge completionHandler:(id)handler
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
-  v12 = [(NSOperationQueue *)self->_queue underlyingQueue];
-  dispatch_assert_queue_V2(v12);
+  taskCopy = task;
+  challengeCopy = challenge;
+  handlerCopy = handler;
+  underlyingQueue = [(NSOperationQueue *)self->_queue underlyingQueue];
+  dispatch_assert_queue_V2(underlyingQueue);
 
   allTaskStates = self->_allTaskStates;
-  v14 = [v9 taskDescription];
-  v15 = [(NSMapTable *)allTaskStates objectForKey:v14];
+  taskDescription = [taskCopy taskDescription];
+  v15 = [(NSMapTable *)allTaskStates objectForKey:taskDescription];
 
   if (v15)
   {
-    v16 = [v10 protectionSpace];
-    v17 = [v16 authenticationMethod];
-    v18 = [v17 isEqualToString:NSURLAuthenticationMethodServerTrust];
+    protectionSpace = [challengeCopy protectionSpace];
+    authenticationMethod = [protectionSpace authenticationMethod];
+    v18 = [authenticationMethod isEqualToString:NSURLAuthenticationMethodServerTrust];
 
     if (!v18)
     {
@@ -133,8 +133,8 @@ LABEL_28:
       goto LABEL_29;
     }
 
-    v19 = [v16 serverTrust];
-    if (!v19)
+    serverTrust = [protectionSpace serverTrust];
+    if (!serverTrust)
     {
       if (qword_10003AC48 != -1)
       {
@@ -145,7 +145,7 @@ LABEL_28:
       if (os_log_type_enabled(qword_10003AC40, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412546;
-        v41 = v16;
+        v41 = protectionSpace;
         v42 = 2112;
         v43 = v15;
         _os_log_error_impl(&_mh_execute_header, v28, OS_LOG_TYPE_ERROR, "Failed to get server trust from %@ for task %@", buf, 0x16u);
@@ -164,17 +164,17 @@ LABEL_28:
       goto LABEL_26;
     }
 
-    v20 = [v15 domain];
-    v21 = [v20 modeOfOperation];
+    domain = [v15 domain];
+    modeOfOperation = [domain modeOfOperation];
 
     v22 = +[SWCSecurityGuard sharedSecurityGuard];
     v37 = 0;
-    v23 = [v22 verifyTrust:v19 allowInstalledRootCertificates:v21 & 1 error:&v37];
+    v23 = [v22 verifyTrust:serverTrust allowInstalledRootCertificates:modeOfOperation & 1 error:&v37];
     v24 = v37;
 
     if (v23)
     {
-      v25 = [NSURLCredential credentialForTrust:v19];
+      v25 = [NSURLCredential credentialForTrust:serverTrust];
       if (v25)
       {
         if (qword_10003AC48 != -1)
@@ -186,7 +186,7 @@ LABEL_28:
         if (os_log_type_enabled(qword_10003AC40, OS_LOG_TYPE_INFO))
         {
           *buf = 138412546;
-          v41 = v10;
+          v41 = challengeCopy;
           v42 = 2112;
           v43 = v15;
           _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_INFO, "Successfully got credential for challenge %@ for task %@", buf, 0x16u);
@@ -208,7 +208,7 @@ LABEL_28:
       }
 
       *buf = 138412546;
-      v41 = v19;
+      v41 = serverTrust;
       v42 = 2112;
       v43 = v15;
       v33 = "Failed to get credential from server trust %@ for task %@";
@@ -230,7 +230,7 @@ LABEL_28:
       }
 
       *buf = 138412802;
-      v41 = v19;
+      v41 = serverTrust;
       v42 = 2112;
       v43 = v15;
       v44 = 2114;
@@ -255,27 +255,27 @@ LABEL_27:
   v27 = 2;
 LABEL_29:
 
-  v11[2](v11, v27, v25);
+  handlerCopy[2](handlerCopy, v27, v25);
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 willPerformHTTPRedirection:(id)a5 newRequest:(id)a6 completionHandler:(id)a7
+- (void)URLSession:(id)session task:(id)task willPerformHTTPRedirection:(id)redirection newRequest:(id)request completionHandler:(id)handler
 {
-  v10 = a4;
-  v11 = a6;
-  v12 = a7;
-  v13 = [(NSOperationQueue *)self->_queue underlyingQueue];
-  dispatch_assert_queue_V2(v13);
+  taskCopy = task;
+  requestCopy = request;
+  handlerCopy = handler;
+  underlyingQueue = [(NSOperationQueue *)self->_queue underlyingQueue];
+  dispatch_assert_queue_V2(underlyingQueue);
 
   allTaskStates = self->_allTaskStates;
-  v15 = [v10 taskDescription];
-  v16 = [(NSMapTable *)allTaskStates objectForKey:v15];
+  taskDescription = [taskCopy taskDescription];
+  v16 = [(NSMapTable *)allTaskStates objectForKey:taskDescription];
 
   if (v16)
   {
-    v17 = [v11 URL];
-    v18 = [v17 scheme];
+    v17 = [requestCopy URL];
+    scheme = [v17 scheme];
 
-    if (v18 && ![v18 caseInsensitiveCompare:@"https"])
+    if (scheme && ![scheme caseInsensitiveCompare:@"https"])
     {
       if (qword_10003AC48 != -1)
       {
@@ -285,9 +285,9 @@ LABEL_29:
       v19 = qword_10003AC40;
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
       {
-        v24 = [v10 originalRequest];
-        v25 = [v24 URL];
-        v26 = [v11 URL];
+        originalRequest = [taskCopy originalRequest];
+        v25 = [originalRequest URL];
+        v26 = [requestCopy URL];
         v27 = 138412802;
         v28 = v25;
         v29 = 2112;
@@ -297,7 +297,7 @@ LABEL_29:
         _os_log_debug_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEBUG, "Allowing redirect '%@' -> '%@' for task %@", &v27, 0x20u);
       }
 
-      v20 = v11;
+      v20 = requestCopy;
     }
 
     else
@@ -310,9 +310,9 @@ LABEL_29:
       v19 = qword_10003AC40;
       if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
       {
-        v21 = [v10 originalRequest];
-        v22 = [v21 URL];
-        v23 = [v11 URL];
+        originalRequest2 = [taskCopy originalRequest];
+        v22 = [originalRequest2 URL];
+        v23 = [requestCopy URL];
         v27 = 138412802;
         v28 = v22;
         v29 = 2112;
@@ -325,26 +325,26 @@ LABEL_29:
       v20 = 0;
     }
 
-    (v12)[2](v12, v20);
+    (handlerCopy)[2](handlerCopy, v20);
   }
 
   else
   {
-    v12[2](v12, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 }
 
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveResponse:(id)a5 completionHandler:(id)a6
+- (void)URLSession:(id)session dataTask:(id)task didReceiveResponse:(id)response completionHandler:(id)handler
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
-  v12 = [(NSOperationQueue *)self->_queue underlyingQueue];
-  dispatch_assert_queue_V2(v12);
+  taskCopy = task;
+  responseCopy = response;
+  handlerCopy = handler;
+  underlyingQueue = [(NSOperationQueue *)self->_queue underlyingQueue];
+  dispatch_assert_queue_V2(underlyingQueue);
 
   allTaskStates = self->_allTaskStates;
-  v14 = [v9 taskDescription];
-  v15 = [(NSMapTable *)allTaskStates objectForKey:v14];
+  taskDescription = [taskCopy taskDescription];
+  v15 = [(NSMapTable *)allTaskStates objectForKey:taskDescription];
 
   if (v15)
   {
@@ -356,7 +356,7 @@ LABEL_29:
     v16 = qword_10003AC40;
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
     {
-      v40 = [v10 URL];
+      v40 = [responseCopy URL];
       *buf = 138412546;
       v56 = v40;
       v57 = 2112;
@@ -364,8 +364,8 @@ LABEL_29:
       _os_log_debug_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEBUG, "Received URL '%@' response start for task %@", buf, 0x16u);
     }
 
-    v17 = [(__CFString *)v15 buffer];
-    [v17 setLength:0];
+    buffer = [(__CFString *)v15 buffer];
+    [buffer setLength:0];
 
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -378,7 +378,7 @@ LABEL_29:
       v18 = qword_10003AC40;
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
       {
-        v42 = [v10 URL];
+        v42 = [responseCopy URL];
         v43 = objc_opt_class();
         v44 = NSStringFromClass(v43);
         *buf = 138412802;
@@ -394,8 +394,8 @@ LABEL_29:
       goto LABEL_51;
     }
 
-    v18 = v10;
-    v52 = [v18 statusCode];
+    v18 = responseCopy;
+    statusCode = [v18 statusCode];
     v19 = [v18 valueForHTTPHeaderField:@"Apple-Failure-Reason"];
     v20 = [v18 valueForHTTPHeaderField:@"Apple-Failure-Details"];
     if ([v20 length])
@@ -425,9 +425,9 @@ LABEL_29:
       v24 = @"unknown";
     }
 
-    v25 = [(__CFString *)v15 downloadRoute];
-    v26 = (v52 - 400);
-    if (v25)
+    downloadRoute = [(__CFString *)v15 downloadRoute];
+    v26 = (statusCode - 400);
+    if (downloadRoute)
     {
       if (v26 <= 0x63)
       {
@@ -439,7 +439,7 @@ LABEL_29:
         v54[1] = v28;
         v29 = [NSDictionary dictionaryWithObjects:v54 forKeys:v53 count:2];
         v30 = v24;
-        v31 = [v27 initWithDomain:@"HTTP" code:v52 userInfo:v29];
+        v31 = [v27 initWithDomain:@"HTTP" code:statusCode userInfo:v29];
         [(__CFString *)v15 setCancellationError:v31];
 
         if (qword_10003AC48 != -1)
@@ -455,7 +455,7 @@ LABEL_29:
           *buf = 138413058;
           v56 = v45;
           v57 = 2048;
-          v58 = v52;
+          v58 = statusCode;
           v59 = 2114;
           v60 = v46;
           v61 = 2112;
@@ -478,7 +478,7 @@ LABEL_49:
       if (os_log_type_enabled(qword_10003AC40, OS_LOG_TYPE_DEBUG))
       {
         *buf = 134218242;
-        v56 = v52;
+        v56 = statusCode;
         v57 = 2112;
         v58 = v15;
         v39 = "Proceeding with response (status: %lli) for task %@";
@@ -507,7 +507,7 @@ LABEL_43:
         v49 = [NSString stringWithUTF8String:"[SWCDownloader URLSession:dataTask:didReceiveResponse:completionHandler:]"];
         v64[1] = v49;
         v48 = [NSDictionary dictionaryWithObjects:v64 forKeys:v63 count:2];
-        v34 = [v33 initWithDomain:@"HTTP" code:v52 userInfo:?];
+        v34 = [v33 initWithDomain:@"HTTP" code:statusCode userInfo:?];
         v66[3] = v34;
         v35 = [NSDictionary dictionaryWithObjects:v66 forKeys:v65 count:4];
         v30 = v24;
@@ -528,7 +528,7 @@ LABEL_43:
           v57 = 2112;
           v58 = v15;
           v59 = 2048;
-          v60 = v52;
+          v60 = statusCode;
           v61 = 2114;
           v62 = v24;
           _os_log_error_impl(&_mh_execute_header, v37, OS_LOG_TYPE_ERROR, "Request for '%@' for task %@ denied because the CDN told us to stop with HTTP status %lli: %{public}@", buf, 0x2Au);
@@ -538,7 +538,7 @@ LABEL_43:
       }
 
       v30 = v24;
-      if ((v52 - 200) >= 0x64)
+      if ((statusCode - 200) >= 0x64)
       {
         if (qword_10003AC48 != -1)
         {
@@ -549,7 +549,7 @@ LABEL_43:
         if (os_log_type_enabled(qword_10003AC40, OS_LOG_TYPE_ERROR))
         {
           *buf = 134218242;
-          v56 = v52;
+          v56 = statusCode;
           v57 = 2112;
           v58 = v15;
           _os_log_error_impl(&_mh_execute_header, v41, OS_LOG_TYPE_ERROR, "CDN sent an unexpected HTTP status %lli (ignoring) for task %@", buf, 0x16u);
@@ -567,7 +567,7 @@ LABEL_43:
       if (os_log_type_enabled(qword_10003AC40, OS_LOG_TYPE_DEBUG))
       {
         *buf = 134218242;
-        v56 = v52;
+        v56 = statusCode;
         v57 = 2112;
         v58 = v15;
         v39 = "Proceeding: CDN gave HTTP status %lli for task %@";
@@ -585,25 +585,25 @@ LABEL_51:
   v22 = 0;
 LABEL_52:
 
-  v11[2](v11, v22);
+  handlerCopy[2](handlerCopy, v22);
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error
 {
-  v12 = a4;
-  v7 = a5;
-  v8 = [(NSOperationQueue *)self->_queue underlyingQueue];
-  dispatch_assert_queue_V2(v8);
+  taskCopy = task;
+  errorCopy = error;
+  underlyingQueue = [(NSOperationQueue *)self->_queue underlyingQueue];
+  dispatch_assert_queue_V2(underlyingQueue);
 
   allTaskStates = self->_allTaskStates;
-  v10 = [v12 taskDescription];
-  v11 = [(NSMapTable *)allTaskStates objectForKey:v10];
+  taskDescription = [taskCopy taskDescription];
+  v11 = [(NSMapTable *)allTaskStates objectForKey:taskDescription];
 
   if (v11)
   {
-    if (v7)
+    if (errorCopy)
     {
-      [(SWCDownloader *)self _invokeCompletionHandlerForState:v11 JSONObject:0 error:v7];
+      [(SWCDownloader *)self _invokeCompletionHandlerForState:v11 JSONObject:0 error:errorCopy];
     }
 
     else
@@ -613,24 +613,24 @@ LABEL_52:
   }
 }
 
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveData:(id)a5
+- (void)URLSession:(id)session dataTask:(id)task didReceiveData:(id)data
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [(NSOperationQueue *)self->_queue underlyingQueue];
-  dispatch_assert_queue_V2(v9);
+  taskCopy = task;
+  dataCopy = data;
+  underlyingQueue = [(NSOperationQueue *)self->_queue underlyingQueue];
+  dispatch_assert_queue_V2(underlyingQueue);
 
   allTaskStates = self->_allTaskStates;
-  v11 = [v7 taskDescription];
-  v12 = [(NSMapTable *)allTaskStates objectForKey:v11];
+  taskDescription = [taskCopy taskDescription];
+  v12 = [(NSMapTable *)allTaskStates objectForKey:taskDescription];
 
   if (v12)
   {
-    v13 = [v12 buffer];
-    [v13 appendData:v8];
+    buffer = [v12 buffer];
+    [buffer appendData:dataCopy];
 
-    v14 = [v12 buffer];
-    v15 = [v14 length];
+    buffer2 = [v12 buffer];
+    v15 = [buffer2 length];
 
     if (v15 > 0x20000)
     {
@@ -647,15 +647,15 @@ LABEL_52:
         _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Data for task %@ exceeded maximum length", buf, 0xCu);
       }
 
-      v17 = [[NSString alloc] initWithFormat:@"Data exceeded maximum length of %zu bytes.", 0x20000];
-      v18 = [v12 task];
-      v19 = [v18 response];
+      0x20000 = [[NSString alloc] initWithFormat:@"Data exceeded maximum length of %zu bytes.", 0x20000];
+      task = [v12 task];
+      response = [task response];
 
-      if (v19 && [v19 expectedContentLength] >= 1)
+      if (response && [response expectedContentLength] >= 1)
       {
-        v20 = [[NSString alloc] initWithFormat:@"Data exceeded maximum length of %zu bytes (server said it would be %lld bytes.)", 0x20000, objc_msgSend(v19, "expectedContentLength")];
+        v20 = [[NSString alloc] initWithFormat:@"Data exceeded maximum length of %zu bytes (server said it would be %lld bytes.)", 0x20000, objc_msgSend(response, "expectedContentLength")];
 
-        v17 = v20;
+        0x20000 = v20;
       }
 
       v21 = [NSError alloc];
@@ -665,7 +665,7 @@ LABEL_52:
       v22 = [NSString stringWithUTF8String:"[SWCDownloader URLSession:dataTask:didReceiveData:]"];
       v25[2] = NSDebugDescriptionErrorKey;
       v26[1] = v22;
-      v26[2] = v17;
+      v26[2] = 0x20000;
       v23 = [NSDictionary dictionaryWithObjects:v26 forKeys:v25 count:3];
       v24 = [v21 initWithDomain:NSURLErrorDomain code:-1103 userInfo:v23];
       [v12 cancelTaskWithError:v24];
@@ -680,12 +680,12 @@ LABEL_52:
   return WeakRetained;
 }
 
-- (unsigned)_sessionIDForTaskState:(id)a3
+- (unsigned)_sessionIDForTaskState:(id)state
 {
-  v3 = a3;
-  v4 = [v3 downloadRoute];
-  v5 = [v3 isDiscretionary];
-  v6 = v4 == 0;
+  stateCopy = state;
+  downloadRoute = [stateCopy downloadRoute];
+  isDiscretionary = [stateCopy isDiscretionary];
+  v6 = downloadRoute == 0;
   if (v6)
   {
     v7 = 3;
@@ -696,7 +696,7 @@ LABEL_52:
     v7 = 2;
   }
 
-  if (v5)
+  if (isDiscretionary)
   {
     return v7;
   }
@@ -707,10 +707,10 @@ LABEL_52:
   }
 }
 
-- (id)_sessionForTaskState:(id)a3
+- (id)_sessionForTaskState:(id)state
 {
   v5 = objc_autoreleasePoolPush();
-  v6 = [(SWCDownloader *)self _sessionIDForTaskState:a3];
+  v6 = [(SWCDownloader *)self _sessionIDForTaskState:state];
   sessions = self->_sessions;
   v8 = self->_sessions[v6];
   if (!v8)
@@ -750,37 +750,37 @@ LABEL_52:
   return v14;
 }
 
-- (unint64_t)_maximumActiveTaskCountForSessionID:(unsigned __int8)a3
+- (unint64_t)_maximumActiveTaskCountForSessionID:(unsigned __int8)d
 {
-  if (a3 > 3u)
+  if (d > 3u)
   {
     return 1;
   }
 
   else
   {
-    return qword_100029418[a3];
+    return qword_100029418[d];
   }
 }
 
-- (id)_taskStateForDomain:(id)a3 downloadRoute:(unsigned __int8)a4
+- (id)_taskStateForDomain:(id)domain downloadRoute:(unsigned __int8)route
 {
-  v6 = a3;
+  domainCopy = domain;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
   v18 = sub_100003EB4;
   v19 = sub_100003EC4;
   v20 = 0;
-  v7 = [(NSOperationQueue *)self->_queue underlyingQueue];
-  dispatch_assert_queue_V2(v7);
+  underlyingQueue = [(NSOperationQueue *)self->_queue underlyingQueue];
+  dispatch_assert_queue_V2(underlyingQueue);
 
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100003ECC;
   v11[3] = &unk_100034838;
-  v14 = a4;
-  v8 = v6;
+  routeCopy = route;
+  v8 = domainCopy;
   v12 = v8;
   v13 = &v15;
   [(SWCDownloader *)self _enumerateTaskStatesUsingBlock:v11];
@@ -791,53 +791,53 @@ LABEL_52:
   return v9;
 }
 
-- (void)_downloadAASAFileForDomain:(id)a3 applicationIdentifier:(id)a4 downloadRoute:(unsigned __int8)a5 discretionary:(BOOL)a6 completionHandlers:(id)a7
+- (void)_downloadAASAFileForDomain:(id)domain applicationIdentifier:(id)identifier downloadRoute:(unsigned __int8)route discretionary:(BOOL)discretionary completionHandlers:(id)handlers
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a7;
+  domainCopy = domain;
+  identifierCopy = identifier;
+  handlersCopy = handlers;
   v16 = [NSString alloc];
-  v17 = [v13 redactedDescription];
-  v18 = [v16 initWithFormat:@"com.apple.swc.dl.begin-%@", v17];
+  redactedDescription = [domainCopy redactedDescription];
+  v18 = [v16 initWithFormat:@"com.apple.swc.dl.begin-%@", redactedDescription];
   [v18 UTF8String];
   v19 = os_transaction_create();
 
-  v20 = [(NSOperationQueue *)self->_queue underlyingQueue];
+  underlyingQueue = [(NSOperationQueue *)self->_queue underlyingQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100004160;
   block[3] = &unk_100034860;
   block[4] = self;
-  v26 = v13;
-  v31 = a5;
-  v32 = a6;
-  v27 = v15;
-  v28 = v14;
+  v26 = domainCopy;
+  routeCopy = route;
+  discretionaryCopy = discretionary;
+  v27 = handlersCopy;
+  v28 = identifierCopy;
   v29 = v19;
   v30 = a2;
   v21 = v19;
-  v22 = v14;
-  v23 = v15;
-  v24 = v13;
-  dispatch_async(v20, block);
+  v22 = identifierCopy;
+  v23 = handlersCopy;
+  v24 = domainCopy;
+  dispatch_async(underlyingQueue, block);
 }
 
-- (id)_URLRequestWithDomain:(id)a3 downloadRoute:(unsigned __int8)a4
+- (id)_URLRequestWithDomain:(id)domain downloadRoute:(unsigned __int8)route
 {
-  v4 = a4;
-  v5 = a3;
+  routeCopy = route;
+  domainCopy = domain;
   v6 = objc_autoreleasePoolPush();
   v7 = objc_alloc_init(NSURLComponents);
   [v7 setScheme:@"https"];
-  if (v4)
+  if (routeCopy)
   {
-    if (v4 == 1)
+    if (routeCopy == 1)
     {
-      v8 = [v5 host];
-      [v7 setHost:v8];
+      host = [domainCopy host];
+      [v7 setHost:host];
 
-      v9 = [v5 port];
-      [v7 setPort:v9];
+      port = [domainCopy port];
+      [v7 setPort:port];
 
       [v7 setPath:@"/.well-known/apple-app-site-association"];
     }
@@ -853,7 +853,7 @@ LABEL_52:
       if (os_log_type_enabled(qword_10003AC40, OS_LOG_TYPE_FAULT))
       {
         *buf = 134217984;
-        v27 = v4;
+        v27 = routeCopy;
         _os_log_fault_impl(&_mh_execute_header, v16, OS_LOG_TYPE_FAULT, "Unknown download route %llu: this is a bug in SWC.", buf, 0xCu);
       }
     }
@@ -865,20 +865,20 @@ LABEL_52:
   {
     [v7 setHost:@"app-site-association.cdn-apple.com"];
     v10 = [@"/a/v1/" mutableCopy];
-    v11 = [v5 host];
-    [v10 appendString:v11];
+    host2 = [domainCopy host];
+    [v10 appendString:host2];
 
-    v12 = [v5 port];
-    v13 = v12;
-    if (v12)
+    port2 = [domainCopy port];
+    v13 = port2;
+    if (port2)
     {
-      [v10 appendFormat:@":%@", v12];
+      [v10 appendFormat:@":%@", port2];
     }
 
     [v7 setPath:v10];
     v14 = objc_alloc_init(NSMutableDictionary);
-    v15 = [v5 host];
-    [v14 setObject:v15 forKeyedSubscript:@"Apple-Proxied-Domain-Name"];
+    host3 = [domainCopy host];
+    [v14 setObject:host3 forKeyedSubscript:@"Apple-Proxied-Domain-Name"];
   }
 
   v17 = [NSMutableURLRequest alloc];
@@ -892,7 +892,7 @@ LABEL_52:
   v20 = v19;
   v25 = v20;
   [v14 enumerateKeysAndObjectsUsingBlock:v24];
-  if (v4)
+  if (routeCopy)
   {
     v21 = v20;
     [v20 _CFURLRequest];
@@ -908,19 +908,19 @@ LABEL_52:
   return v22;
 }
 
-- (void)_enumerateTaskStatesUsingBlock:(id)a3
+- (void)_enumerateTaskStatesUsingBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(NSOperationQueue *)self->_queue underlyingQueue];
-  dispatch_assert_queue_V2(v5);
+  blockCopy = block;
+  underlyingQueue = [(NSOperationQueue *)self->_queue underlyingQueue];
+  dispatch_assert_queue_V2(underlyingQueue);
 
   v16 = 0;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [(NSMapTable *)self->_allTaskStates objectEnumerator];
-  v7 = [v6 countByEnumeratingWithState:&v12 objects:v17 count:16];
+  objectEnumerator = [(NSMapTable *)self->_allTaskStates objectEnumerator];
+  v7 = [objectEnumerator countByEnumeratingWithState:&v12 objects:v17 count:16];
   if (v7)
   {
     v8 = *v13;
@@ -930,12 +930,12 @@ LABEL_3:
     {
       if (*v13 != v8)
       {
-        objc_enumerationMutation(v6);
+        objc_enumerationMutation(objectEnumerator);
       }
 
       v10 = *(*(&v12 + 1) + 8 * v9);
       v11 = objc_autoreleasePoolPush();
-      v4[2](v4, v10, &v16);
+      blockCopy[2](blockCopy, v10, &v16);
       LOBYTE(v10) = v16;
       objc_autoreleasePoolPop(v11);
       if (v10)
@@ -945,7 +945,7 @@ LABEL_3:
 
       if (v7 == ++v9)
       {
-        v7 = [v6 countByEnumeratingWithState:&v12 objects:v17 count:16];
+        v7 = [objectEnumerator countByEnumeratingWithState:&v12 objects:v17 count:16];
         if (v7)
         {
           goto LABEL_3;
@@ -959,8 +959,8 @@ LABEL_3:
 
 - (void)_resumePendingTasks
 {
-  v3 = [(NSOperationQueue *)self->_queue underlyingQueue];
-  dispatch_assert_queue_V2(v3);
+  underlyingQueue = [(NSOperationQueue *)self->_queue underlyingQueue];
+  dispatch_assert_queue_V2(underlyingQueue);
 
   v4 = objc_autoreleasePoolPush();
   v18[0] = 0;
@@ -1022,15 +1022,15 @@ LABEL_3:
   objc_autoreleasePoolPop(v4);
 }
 
-- (id)_replaceTaskState:(id)a3
+- (id)_replaceTaskState:(id)state
 {
-  v5 = a3;
-  v6 = [(NSOperationQueue *)self->_queue underlyingQueue];
-  dispatch_assert_queue_V2(v6);
+  stateCopy = state;
+  underlyingQueue = [(NSOperationQueue *)self->_queue underlyingQueue];
+  dispatch_assert_queue_V2(underlyingQueue);
 
   v7 = [SWCDownloadTaskState alloc];
-  v8 = [v5 domain];
-  v9 = -[SWCDownloadTaskState initWithDownloader:domain:downloadRoute:](v7, "initWithDownloader:domain:downloadRoute:", self, v8, [v5 downloadRoute]);
+  domain = [stateCopy domain];
+  v9 = -[SWCDownloadTaskState initWithDownloader:domain:downloadRoute:](v7, "initWithDownloader:domain:downloadRoute:", self, domain, [stateCopy downloadRoute]);
 
   if (!v9)
   {
@@ -1038,33 +1038,33 @@ LABEL_3:
     [v20 handleFailureInMethod:a2 object:self file:@"SWCDownloader.mm" lineNumber:709 description:@"Failed to create download state object"];
   }
 
-  v10 = [(SWCDownloadTaskState *)v9 completionHandlers];
-  v11 = [v5 completionHandlers];
-  [v10 setArray:v11];
+  completionHandlers = [(SWCDownloadTaskState *)v9 completionHandlers];
+  completionHandlers2 = [stateCopy completionHandlers];
+  [completionHandlers setArray:completionHandlers2];
 
-  v12 = [v5 completionHandlers];
-  [v12 removeAllObjects];
+  completionHandlers3 = [stateCopy completionHandlers];
+  [completionHandlers3 removeAllObjects];
 
-  v13 = [v5 cancellationError];
-  [(SWCDownloadTaskState *)v9 setCancellationError:v13];
+  cancellationError = [stateCopy cancellationError];
+  [(SWCDownloadTaskState *)v9 setCancellationError:cancellationError];
 
   allTaskStates = self->_allTaskStates;
-  v15 = [v5 task];
-  v16 = [v15 taskDescription];
-  [(NSMapTable *)allTaskStates removeObjectForKey:v16];
+  task = [stateCopy task];
+  taskDescription = [task taskDescription];
+  [(NSMapTable *)allTaskStates removeObjectForKey:taskDescription];
 
   v17 = self->_allTaskStates;
-  v18 = [(SWCDownloadTaskState *)v9 taskDescription];
-  [(NSMapTable *)v17 setObject:v9 forKey:v18];
+  taskDescription2 = [(SWCDownloadTaskState *)v9 taskDescription];
+  [(NSMapTable *)v17 setObject:v9 forKey:taskDescription2];
 
-  [v5 cancelTaskWithError:0];
+  [stateCopy cancelTaskWithError:0];
 
   return v9;
 }
 
-- (void)_processDownloadedDataForState:(id)a3
+- (void)_processDownloadedDataForState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v5 = objc_autoreleasePoolPush();
   if (qword_10003AC48 != -1)
   {
@@ -1074,37 +1074,37 @@ LABEL_3:
   v6 = qword_10003AC40;
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
-    v21 = [v4 domain];
-    v22 = sub_1000010F0([v4 downloadRoute]);
+    domain = [stateCopy domain];
+    v22 = sub_1000010F0([stateCopy downloadRoute]);
     __buf = 138412546;
-    v25 = v21;
+    v25 = domain;
     v26 = 2114;
     v27 = v22;
     _os_log_debug_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEBUG, "Downloaded data for domain %@ (route? %{public}@)", &__buf, 0x16u);
   }
 
-  v7 = [v4 domain];
-  v8 = [v4 buffer];
+  domain2 = [stateCopy domain];
+  buffer = [stateCopy buffer];
   v9 = [NSString alloc];
-  v10 = [v7 redactedDescription];
-  v11 = [v9 initWithFormat:@"com.apple.swc.aasa.read-%@", v10];
+  redactedDescription = [domain2 redactedDescription];
+  v11 = [v9 initWithFormat:@"com.apple.swc.aasa.read-%@", redactedDescription];
   v12 = v11;
   [v11 UTF8String];
   v13 = os_transaction_create();
 
-  if (v8)
+  if (buffer)
   {
     if (_SWCDiagnosticStorage[2] && (+[_SWCPrefs sharedPrefs](_SWCPrefs, "sharedPrefs"), v14 = objc_claimAutoreleasedReturnValue(), v15 = [v14 isAppleInternal], v14, v15))
     {
       arc4random_buf(&__buf, 0x80uLL);
-      v16 = [[NSMutableData alloc] initWithCapacity:{objc_msgSend(v8, "length") + 128}];
+      v16 = [[NSMutableData alloc] initWithCapacity:{objc_msgSend(buffer, "length") + 128}];
       [v16 appendBytes:&__buf length:128];
-      [v16 appendData:v8];
+      [v16 appendData:buffer];
     }
 
     else
     {
-      v16 = v8;
+      v16 = buffer;
     }
   }
 
@@ -1120,7 +1120,7 @@ LABEL_3:
 
   if (v18)
   {
-    [(SWCDownloader *)self _invokeCompletionHandlerForState:v4 JSONObject:v18 error:0];
+    [(SWCDownloader *)self _invokeCompletionHandlerForState:stateCopy JSONObject:v18 error:0];
   }
 
   else
@@ -1134,43 +1134,43 @@ LABEL_3:
     if (os_log_type_enabled(qword_10003AC40, OS_LOG_TYPE_ERROR))
     {
       __buf = 138412546;
-      v25 = v7;
+      v25 = domain2;
       v26 = 2112;
       v27 = v19;
       _os_log_error_impl(&_mh_execute_header, v20, OS_LOG_TYPE_ERROR, "Error securing JSON file for %@: %@", &__buf, 0x16u);
     }
 
-    [(SWCDownloader *)self _invokeCompletionHandlerForState:v4 JSONObject:0 error:v19];
+    [(SWCDownloader *)self _invokeCompletionHandlerForState:stateCopy JSONObject:0 error:v19];
   }
 
   objc_autoreleasePoolPop(v5);
 }
 
-- (void)_invokeCompletionHandlerForState:(id)a3 JSONObject:(id)a4 error:(id)a5
+- (void)_invokeCompletionHandlerForState:(id)state JSONObject:(id)object error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(NSOperationQueue *)self->_queue underlyingQueue];
-  dispatch_assert_queue_V2(v11);
+  stateCopy = state;
+  objectCopy = object;
+  errorCopy = error;
+  underlyingQueue = [(NSOperationQueue *)self->_queue underlyingQueue];
+  dispatch_assert_queue_V2(underlyingQueue);
 
   context = objc_autoreleasePoolPush();
-  v35 = [(SWCDownloader *)self delegate];
-  v12 = [v8 downloadRoute];
-  if (v9)
+  delegate = [(SWCDownloader *)self delegate];
+  downloadRoute = [stateCopy downloadRoute];
+  if (objectCopy)
   {
-    if (v35 && (objc_opt_respondsToSelector() & 1) != 0)
+    if (delegate && (objc_opt_respondsToSelector() & 1) != 0)
     {
-      v13 = [v8 domain];
-      [v35 downloader:self didDownloadAASAFileContainingJSONObject:v9 fromDomain:v13 downloadRoute:v12];
+      domain = [stateCopy domain];
+      [delegate downloader:self didDownloadAASAFileContainingJSONObject:objectCopy fromDomain:domain downloadRoute:downloadRoute];
     }
 
     v42 = 0u;
     v43 = 0u;
     v40 = 0u;
     v41 = 0u;
-    v14 = [v8 completionHandlers];
-    v15 = [v14 countByEnumeratingWithState:&v40 objects:v49 count:16];
+    completionHandlers = [stateCopy completionHandlers];
+    v15 = [completionHandlers countByEnumeratingWithState:&v40 objects:v49 count:16];
     if (v15)
     {
       v16 = *v41;
@@ -1180,13 +1180,13 @@ LABEL_3:
         {
           if (*v41 != v16)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(completionHandlers);
           }
 
           (*(*(*(&v40 + 1) + 8 * i) + 16))();
         }
 
-        v15 = [v14 countByEnumeratingWithState:&v40 objects:v49 count:16];
+        v15 = [completionHandlers countByEnumeratingWithState:&v40 objects:v49 count:16];
       }
 
       while (v15);
@@ -1195,12 +1195,12 @@ LABEL_3:
 
   else
   {
-    v14 = [v8 cancellationError];
-    if ([v10 code] == -999)
+    completionHandlers = [stateCopy cancellationError];
+    if ([errorCopy code] == -999)
     {
-      v18 = [v10 domain];
-      v19 = [v18 isEqual:NSURLErrorDomain];
-      v20 = v14 ? v19 : 0;
+      domain2 = [errorCopy domain];
+      v19 = [domain2 isEqual:NSURLErrorDomain];
+      v20 = completionHandlers ? v19 : 0;
 
       if (v20 == 1)
       {
@@ -1213,30 +1213,30 @@ LABEL_3:
         if (os_log_type_enabled(qword_10003AC40, OS_LOG_TYPE_INFO))
         {
           *buf = 138412546;
-          v46 = v14;
+          v46 = completionHandlers;
           v47 = 2112;
-          v48 = v10;
+          v48 = errorCopy;
           _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_INFO, "Substituting cancellation error %@ for error %@", buf, 0x16u);
         }
 
-        v22 = v14;
+        v22 = completionHandlers;
 
-        v10 = v22;
+        errorCopy = v22;
       }
     }
 
-    if (v35 && (objc_opt_respondsToSelector() & 1) != 0)
+    if (delegate && (objc_opt_respondsToSelector() & 1) != 0)
     {
-      v23 = [v8 domain];
-      [v35 downloader:self failedToDownloadAASAFileFromDomain:v23 error:v10];
+      domain3 = [stateCopy domain];
+      [delegate downloader:self failedToDownloadAASAFileFromDomain:domain3 error:errorCopy];
     }
 
     v38 = 0u;
     v39 = 0u;
     v36 = 0u;
     v37 = 0u;
-    v24 = [v8 completionHandlers];
-    v25 = [v24 countByEnumeratingWithState:&v36 objects:v44 count:16];
+    completionHandlers2 = [stateCopy completionHandlers];
+    v25 = [completionHandlers2 countByEnumeratingWithState:&v36 objects:v44 count:16];
     if (v25)
     {
       v26 = *v37;
@@ -1246,13 +1246,13 @@ LABEL_3:
         {
           if (*v37 != v26)
           {
-            objc_enumerationMutation(v24);
+            objc_enumerationMutation(completionHandlers2);
           }
 
           (*(*(*(&v36 + 1) + 8 * j) + 16))();
         }
 
-        v25 = [v24 countByEnumeratingWithState:&v36 objects:v44 count:16];
+        v25 = [completionHandlers2 countByEnumeratingWithState:&v36 objects:v44 count:16];
       }
 
       while (v25);
@@ -1260,9 +1260,9 @@ LABEL_3:
   }
 
   allTaskStates = self->_allTaskStates;
-  v29 = [v8 task];
-  v30 = [v29 taskDescription];
-  [(NSMapTable *)allTaskStates removeObjectForKey:v30];
+  task = [stateCopy task];
+  taskDescription = [task taskDescription];
+  [(NSMapTable *)allTaskStates removeObjectForKey:taskDescription];
 
   if ([(NSMapTable *)self->_allTaskStates count])
   {

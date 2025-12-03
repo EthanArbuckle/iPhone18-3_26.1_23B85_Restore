@@ -1,36 +1,36 @@
 @interface NGMPBP256Key
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsKeystore:(id)a3;
+- (int)StringAsKeystore:(id)keystore;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NGMPBP256Key
 
-- (int)StringAsKeystore:(id)a3
+- (int)StringAsKeystore:(id)keystore
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Software"])
+  keystoreCopy = keystore;
+  if ([keystoreCopy isEqualToString:@"Software"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"SEP"])
+  else if ([keystoreCopy isEqualToString:@"SEP"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"SecKey"])
+  else if ([keystoreCopy isEqualToString:@"SecKey"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"CTKTokenOID"])
+  else if ([keystoreCopy isEqualToString:@"CTKTokenOID"])
   {
     v4 = 4;
   }
@@ -49,20 +49,20 @@
   v8.receiver = self;
   v8.super_class = NGMPBP256Key;
   v4 = [(NGMPBP256Key *)&v8 description];
-  v5 = [(NGMPBP256Key *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NGMPBP256Key *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   keychainTag = self->_keychainTag;
   if (keychainTag)
   {
-    [v3 setObject:keychainTag forKey:@"keychainTag"];
+    [dictionary setObject:keychainTag forKey:@"keychainTag"];
   }
 
   v6 = self->_keystore - 1;
@@ -87,9 +87,9 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   if (self->_keychainTag)
   {
     PBDataWriterWriteStringField();
@@ -103,46 +103,46 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_keychainTag)
   {
-    [v4 setKeychainTag:?];
-    v4 = v5;
+    [toCopy setKeychainTag:?];
+    toCopy = v5;
   }
 
-  v4[6] = self->_keystore;
+  toCopy[6] = self->_keystore;
   if (self->_keyData)
   {
     [v5 setKeyData:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_keychainTag copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_keychainTag copyWithZone:zone];
   v7 = *(v5 + 16);
   *(v5 + 16) = v6;
 
   *(v5 + 24) = self->_keystore;
-  v8 = [(NSData *)self->_keyData copyWithZone:a3];
+  v8 = [(NSData *)self->_keyData copyWithZone:zone];
   v9 = *(v5 + 8);
   *(v5 + 8) = v8;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((keychainTag = self->_keychainTag, !(keychainTag | v4[2])) || -[NSString isEqual:](keychainTag, "isEqual:")) && self->_keystore == *(v4 + 6))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((keychainTag = self->_keychainTag, !(keychainTag | equalCopy[2])) || -[NSString isEqual:](keychainTag, "isEqual:")) && self->_keystore == *(equalCopy + 6))
   {
     keyData = self->_keyData;
-    if (keyData | v4[1])
+    if (keyData | equalCopy[1])
     {
       v7 = [(NSData *)keyData isEqual:?];
     }
@@ -168,21 +168,21 @@
   return v4 ^ v3 ^ [(NSData *)self->_keyData hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 2))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 2))
   {
     [(NGMPBP256Key *)self setKeychainTag:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  self->_keystore = v4[6];
-  if (*(v4 + 1))
+  self->_keystore = fromCopy[6];
+  if (*(fromCopy + 1))
   {
     [(NGMPBP256Key *)self setKeyData:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 }
 

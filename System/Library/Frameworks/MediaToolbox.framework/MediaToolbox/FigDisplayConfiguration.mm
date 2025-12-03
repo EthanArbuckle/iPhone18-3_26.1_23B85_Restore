@@ -15,19 +15,19 @@
 - (unint64_t)toneMappingMode;
 - (unsigned)refreshRate;
 - (void)dealloc;
-- (void)setCanvasSize:(CGSize)a3;
-- (void)setChromaLocation:(id)a3;
-- (void)setClientName:(id)a3;
-- (void)setClientPID:(int64_t)a3;
-- (void)setDisplayLabel:(id)a3;
-- (void)setDisplayMode:(int64_t)a3;
-- (void)setImagePoolSize:(int64_t)a3;
-- (void)setMaxDisplaySize:(CGSize)a3;
-- (void)setNumOfIdleFrames:(int64_t)a3;
-- (void)setPreferredUIScaleFactor:(int64_t)a3;
-- (void)setPreset:(unint64_t)a3;
-- (void)setRefreshRate:(unsigned int)a3;
-- (void)setToneMappingMode:(unint64_t)a3;
+- (void)setCanvasSize:(CGSize)size;
+- (void)setChromaLocation:(id)location;
+- (void)setClientName:(id)name;
+- (void)setClientPID:(int64_t)d;
+- (void)setDisplayLabel:(id)label;
+- (void)setDisplayMode:(int64_t)mode;
+- (void)setImagePoolSize:(int64_t)size;
+- (void)setMaxDisplaySize:(CGSize)size;
+- (void)setNumOfIdleFrames:(int64_t)frames;
+- (void)setPreferredUIScaleFactor:(int64_t)factor;
+- (void)setPreset:(unint64_t)preset;
+- (void)setRefreshRate:(unsigned int)rate;
+- (void)setToneMappingMode:(unint64_t)mode;
 @end
 
 @implementation FigDisplayConfiguration
@@ -72,9 +72,9 @@
   return [v3 stringWithFormat:@"<%@: %p, options = %@>", NSStringFromClass(v4), self, -[__CFDictionary description](self->_fvdOptions, "description")];
 }
 
-- (void)setMaxDisplaySize:(CGSize)a3
+- (void)setMaxDisplaySize:(CGSize)size
 {
-  DictionaryRepresentation = CGSizeCreateDictionaryRepresentation(a3);
+  DictionaryRepresentation = CGSizeCreateDictionaryRepresentation(size);
   FigSimpleMutexLock();
   v5 = CFDictionaryGetValue(self->_fvdOptions, @"deviceInfo");
   if (v5)
@@ -111,7 +111,7 @@
   return result;
 }
 
-- (void)setRefreshRate:(unsigned int)a3
+- (void)setRefreshRate:(unsigned int)rate
 {
   FigSimpleMutexLock();
   FigCFDictionarySetInt32();
@@ -128,22 +128,22 @@
   return 60;
 }
 
-- (void)setPreset:(unint64_t)a3
+- (void)setPreset:(unint64_t)preset
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  v5 = convertPresetEnumToUsageModeString(a3);
+  v5 = convertPresetEnumToUsageModeString(preset);
   if (v5)
   {
-    v6 = a3;
+    presetCopy = preset;
   }
 
   else
   {
-    v6 = 0;
+    presetCopy = 0;
   }
 
   FigSimpleMutexLock();
-  if (v6 - 7 <= 7)
+  if (presetCopy - 7 <= 7)
   {
     Value = CFDictionaryGetValue(self->_fvdOptions, @"deviceInfo");
     if (Value)
@@ -157,11 +157,11 @@
       v8 = objc_alloc_init(MEMORY[0x1E695DF90]);
     }
 
-    if (v6 - 9 > 1)
+    if (presetCopy - 9 > 1)
     {
-      if (v6 - 11 > 1)
+      if (presetCopy - 11 > 1)
       {
-        if (v6 - 13 > 1)
+        if (presetCopy - 13 > 1)
         {
           v15 = @"HDRMode";
           v16 = @"HDR10";
@@ -216,7 +216,7 @@
   }
 
   CFDictionarySetValue(self->_fvdOptions, @"usage", v14);
-  self->_preset = v6;
+  self->_preset = presetCopy;
   FigSimpleMutexUnlock();
 }
 
@@ -228,7 +228,7 @@
   return preset;
 }
 
-- (void)setNumOfIdleFrames:(int64_t)a3
+- (void)setNumOfIdleFrames:(int64_t)frames
 {
   FigSimpleMutexLock();
   FigCFDictionarySetInt();
@@ -244,7 +244,7 @@
   return 0;
 }
 
-- (void)setImagePoolSize:(int64_t)a3
+- (void)setImagePoolSize:(int64_t)size
 {
   FigSimpleMutexLock();
   FigCFDictionarySetInt();
@@ -260,13 +260,13 @@
   return 0;
 }
 
-- (void)setClientName:(id)a3
+- (void)setClientName:(id)name
 {
   FigSimpleMutexLock();
   fvdOptions = self->_fvdOptions;
-  if (a3)
+  if (name)
   {
-    CFDictionarySetValue(fvdOptions, @"clientName", a3);
+    CFDictionarySetValue(fvdOptions, @"clientName", name);
   }
 
   else
@@ -285,10 +285,10 @@
   return Value;
 }
 
-- (void)setClientPID:(int64_t)a3
+- (void)setClientPID:(int64_t)d
 {
   FigSimpleMutexLock();
-  if (a3 < 1)
+  if (d < 1)
   {
     CFDictionaryRemoveValue(self->_fvdOptions, @"clientPID");
     CFDictionaryRemoveValue(self->_fvdOptions, @"MirroringMode");
@@ -311,9 +311,9 @@
   return 0;
 }
 
-- (void)setDisplayMode:(int64_t)a3
+- (void)setDisplayMode:(int64_t)mode
 {
-  if (a3 <= 3 && a3 != 2)
+  if (mode <= 3 && mode != 2)
   {
     FigSimpleMutexLock();
     FigCFDictionarySetInt();
@@ -330,13 +330,13 @@
   return 0;
 }
 
-- (void)setDisplayLabel:(id)a3
+- (void)setDisplayLabel:(id)label
 {
   FigSimpleMutexLock();
   fvdOptions = self->_fvdOptions;
-  if (a3)
+  if (label)
   {
-    CFDictionarySetValue(fvdOptions, @"DisplayLabel", a3);
+    CFDictionarySetValue(fvdOptions, @"DisplayLabel", label);
   }
 
   else
@@ -355,10 +355,10 @@
   return Value;
 }
 
-- (void)setCanvasSize:(CGSize)a3
+- (void)setCanvasSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   FigSimpleMutexLock();
   if (width > 0.0 && height > 0.0)
   {
@@ -382,7 +382,7 @@
   return result;
 }
 
-- (void)setPreferredUIScaleFactor:(int64_t)a3
+- (void)setPreferredUIScaleFactor:(int64_t)factor
 {
   FigSimpleMutexLock();
   v5 = CFDictionaryGetValue(self->_fvdOptions, @"deviceInfo");
@@ -397,7 +397,7 @@
     value = objc_alloc_init(MEMORY[0x1E695DF90]);
   }
 
-  [value setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInteger:", a3), @"preferredUIScale"}];
+  [value setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInteger:", factor), @"preferredUIScale"}];
   CFDictionarySetValue(self->_fvdOptions, @"deviceInfo", value);
   FigSimpleMutexUnlock();
 }
@@ -411,9 +411,9 @@
   return 0;
 }
 
-- (void)setToneMappingMode:(unint64_t)a3
+- (void)setToneMappingMode:(unint64_t)mode
 {
-  if (a3 - 1 <= 1)
+  if (mode - 1 <= 1)
   {
     FigSimpleMutexLock();
     FigCFDictionarySetInt32();
@@ -430,7 +430,7 @@
   return 0;
 }
 
-- (void)setChromaLocation:(id)a3
+- (void)setChromaLocation:(id)location
 {
   FigSimpleMutexLock();
   FigCFDictionarySetValue();

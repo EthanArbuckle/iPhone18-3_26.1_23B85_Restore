@@ -1,5 +1,5 @@
 @interface MKPlaceInfoPostalAddressRowView
-- (MKPlaceInfoPostalAddressRowView)initWithFrame:(CGRect)a3;
+- (MKPlaceInfoPostalAddressRowView)initWithFrame:(CGRect)frame;
 - (id)_valueString;
 @end
 
@@ -7,22 +7,22 @@
 
 - (id)_valueString
 {
-  v2 = [(MKPlaceInfoContactRowView *)self labeledValue];
-  v3 = [v2 value];
+  labeledValue = [(MKPlaceInfoContactRowView *)self labeledValue];
+  value = [labeledValue value];
 
-  return v3;
+  return value;
 }
 
-- (MKPlaceInfoPostalAddressRowView)initWithFrame:(CGRect)a3
+- (MKPlaceInfoPostalAddressRowView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = MKPlaceInfoPostalAddressRowView;
-  v3 = [(MKPlaceInfoContactRowView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MKPlaceInfoContactRowView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(MKPlaceInfoContactRowView *)v3 valueLabel];
-    [v5 setLineBreakMode:0];
+    valueLabel = [(MKPlaceInfoContactRowView *)v3 valueLabel];
+    [valueLabel setLineBreakMode:0];
   }
 
   return v4;

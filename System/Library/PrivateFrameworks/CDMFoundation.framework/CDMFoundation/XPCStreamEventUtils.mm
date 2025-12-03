@@ -1,13 +1,13 @@
 @interface XPCStreamEventUtils
-+ (id)getXPCEventName:(id)a3;
++ (id)getXPCEventName:(id)name;
 @end
 
 @implementation XPCStreamEventUtils
 
-+ (id)getXPCEventName:(id)a3
++ (id)getXPCEventName:(id)name
 {
   v12 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  nameCopy = name;
   if (MEMORY[0x1E1298A50]() != MEMORY[0x1E69E9E80])
   {
     v4 = CDMOSLoggerForCategory(0);
@@ -27,7 +27,7 @@ LABEL_12:
     goto LABEL_3;
   }
 
-  string = xpc_dictionary_get_string(v3, *MEMORY[0x1E69E9E40]);
+  string = xpc_dictionary_get_string(nameCopy, *MEMORY[0x1E69E9E40]);
   if (!string)
   {
     v4 = CDMOSLoggerForCategory(0);

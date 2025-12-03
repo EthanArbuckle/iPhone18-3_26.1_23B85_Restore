@@ -1,22 +1,22 @@
 @interface PUIReusableViewMap
-- (BOOL)isViewRecycled:(id)a3;
+- (BOOL)isViewRecycled:(id)recycled;
 - (PUIReusableViewMap)init;
-- (PUIReusableViewMap)initWithDelegate:(id)a3;
+- (PUIReusableViewMap)initWithDelegate:(id)delegate;
 - (PUIReusableViewMapDelegate)delegate;
-- (id)dequeueReusableViewOfClass:(Class)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)newViewOfClass:(Class)a3;
+- (id)dequeueReusableViewOfClass:(Class)class;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)newViewOfClass:(Class)class;
 - (id)succinctDescription;
-- (id)viewOfClass:(Class)a3;
+- (id)viewOfClass:(Class)class;
 - (unint64_t)recycledViewCount;
-- (void)addRecycledViewsOfClass:(Class)a3 upToCount:(unint64_t)a4;
+- (void)addRecycledViewsOfClass:(Class)class upToCount:(unint64_t)count;
 - (void)dealloc;
-- (void)enumerateRecycledViewsUsingBlock:(id)a3;
+- (void)enumerateRecycledViewsUsingBlock:(id)block;
 - (void)purgeAllViews;
-- (void)purgeView:(id)a3;
-- (void)purgeViewsForClass:(Class)a3;
-- (void)recycleView:(id)a3;
+- (void)purgeView:(id)view;
+- (void)purgeViewsForClass:(Class)class;
+- (void)recycleView:(id)view;
 @end
 
 @implementation PUIReusableViewMap
@@ -28,22 +28,22 @@
   v2 = [(PUIReusableViewMap *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
     recycledViewsByClass = v2->_recycledViewsByClass;
-    v2->_recycledViewsByClass = v3;
+    v2->_recycledViewsByClass = weakToStrongObjectsMapTable;
   }
 
   return v2;
 }
 
-- (PUIReusableViewMap)initWithDelegate:(id)a3
+- (PUIReusableViewMap)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v5 = [(PUIReusableViewMap *)self init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
   }
 
   return v6;
@@ -56,8 +56,8 @@
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v3 = [(NSMapTable *)self->_recycledViewsByClass objectEnumerator];
-  v4 = [v3 countByEnumeratingWithState:&v19 objects:v24 count:16];
+  objectEnumerator = [(NSMapTable *)self->_recycledViewsByClass objectEnumerator];
+  v4 = [objectEnumerator countByEnumeratingWithState:&v19 objects:v24 count:16];
   if (v4)
   {
     v5 = v4;
@@ -69,7 +69,7 @@
       {
         if (*v20 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v8 = *(*(&v19 + 1) + 8 * v7);
@@ -107,7 +107,7 @@
       }
 
       while (v7 != v5);
-      v5 = [v3 countByEnumeratingWithState:&v19 objects:v24 count:16];
+      v5 = [objectEnumerator countByEnumeratingWithState:&v19 objects:v24 count:16];
     }
 
     while (v5);
@@ -118,40 +118,40 @@
   [(PUIReusableViewMap *)&v14 dealloc];
 }
 
-- (id)viewOfClass:(Class)a3
+- (id)viewOfClass:(Class)class
 {
   v5 = [(PUIReusableViewMap *)self dequeueReusableViewOfClass:?];
   if (!v5)
   {
-    v5 = [(PUIReusableViewMap *)self newViewOfClass:a3];
+    v5 = [(PUIReusableViewMap *)self newViewOfClass:class];
   }
 
   return v5;
 }
 
-- (id)newViewOfClass:(Class)a3
+- (id)newViewOfClass:(Class)class
 {
-  v5 = [(PUIReusableViewMap *)self delegate];
-  if ((objc_opt_respondsToSelector() & 1) == 0 || ([v5 viewMap:self makeNewViewOfClass:a3], (v6 = objc_claimAutoreleasedReturnValue()) == 0))
+  delegate = [(PUIReusableViewMap *)self delegate];
+  if ((objc_opt_respondsToSelector() & 1) == 0 || ([delegate viewMap:self makeNewViewOfClass:class], (v6 = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v6 = objc_alloc_init(a3);
+    v6 = objc_alloc_init(class);
   }
 
   return v6;
 }
 
-- (id)dequeueReusableViewOfClass:(Class)a3
+- (id)dequeueReusableViewOfClass:(Class)class
 {
   v19 = *MEMORY[0x1E69E9840];
   v5 = [(NSMapTable *)self->_recycledViewsByClass objectForKey:?];
-  v6 = [v5 anyObject];
-  if (v6)
+  anyObject = [v5 anyObject];
+  if (anyObject)
   {
-    [v5 removeObject:v6];
-    v7 = [v6 layer];
-    [v7 clearHasBeenCommitted];
+    [v5 removeObject:anyObject];
+    layer = [anyObject layer];
+    [layer clearHasBeenCommitted];
 
-    [v6 setHidden:0];
+    [anyObject setHidden:0];
     v8 = PUILogReusableViewCache();
     if (!os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
@@ -159,9 +159,9 @@
     }
 
     v13 = 134218498;
-    v14 = self;
+    selfCopy2 = self;
     v15 = 2112;
-    v16 = a3;
+    classCopy2 = class;
     v17 = 2048;
     v18 = [v5 count];
     v9 = "(%p) dequeued reusable view of class: %@ (%lu remaining)";
@@ -178,9 +178,9 @@
     }
 
     v13 = 134218242;
-    v14 = self;
+    selfCopy2 = self;
     v15 = 2112;
-    v16 = a3;
+    classCopy2 = class;
     v9 = "(%p) could not dequeue reusable view of class: %@";
     v10 = v8;
     v11 = 22;
@@ -189,16 +189,16 @@
   _os_log_impl(&dword_1A8C85000, v10, OS_LOG_TYPE_DEFAULT, v9, &v13, v11);
 LABEL_7:
 
-  return v6;
+  return anyObject;
 }
 
-- (void)recycleView:(id)a3
+- (void)recycleView:(id)view
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  viewCopy = view;
+  if (viewCopy)
   {
-    v5 = [(PUIReusableViewMap *)self delegate];
+    delegate = [(PUIReusableViewMap *)self delegate];
     if (self->_invalidated)
     {
       v6 = 0;
@@ -209,17 +209,17 @@ LABEL_7:
       v7 = objc_opt_class();
       v8 = [(NSMapTable *)self->_recycledViewsByClass objectForKey:v7];
       v9 = [v8 count];
-      if (v9 >= [v5 viewMap:self maxRecycledViewsOfClass:v7] || (objc_opt_respondsToSelector() & 1) != 0 && !objc_msgSend(v4, "isEligibleForReuse") || (objc_opt_respondsToSelector() & 1) != 0 && !objc_msgSend(v5, "viewMap:shouldRecycleView:", self, v4))
+      if (v9 >= [delegate viewMap:self maxRecycledViewsOfClass:v7] || (objc_opt_respondsToSelector() & 1) != 0 && !objc_msgSend(viewCopy, "isEligibleForReuse") || (objc_opt_respondsToSelector() & 1) != 0 && !objc_msgSend(delegate, "viewMap:shouldRecycleView:", self, viewCopy))
       {
         v11 = PUILogReusableViewCache();
         if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 134218498;
-          v22 = self;
+          selfCopy2 = self;
           v23 = 2112;
           v24 = v7;
           v25 = 2048;
-          v26 = v4;
+          v26 = viewCopy;
           _os_log_impl(&dword_1A8C85000, v11, OS_LOG_TYPE_DEFAULT, "(%p) will not recycle reusable view of class: %@/%p", buf, 0x20u);
         }
 
@@ -235,19 +235,19 @@ LABEL_7:
           v19[1] = 3221225472;
           v19[2] = __34__PUIReusableViewMap_recycleView___block_invoke;
           v19[3] = &unk_1E7854320;
-          v20 = v4;
+          v20 = viewCopy;
           [v10 performWithoutAnimation:v19];
         }
 
         if (v8)
         {
-          [v8 addObject:v4];
+          [v8 addObject:viewCopy];
         }
 
         else
         {
           recycledViewsByClass = self->_recycledViewsByClass;
-          v13 = [MEMORY[0x1E695DFA8] setWithObject:v4];
+          v13 = [MEMORY[0x1E695DFA8] setWithObject:viewCopy];
           [(NSMapTable *)recycledViewsByClass setObject:v13 forKey:v7];
         }
 
@@ -255,7 +255,7 @@ LABEL_7:
         if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 134218498;
-          v22 = self;
+          selfCopy2 = self;
           v23 = 2112;
           v24 = v7;
           v25 = 2048;
@@ -267,35 +267,35 @@ LABEL_7:
       }
     }
 
-    v14 = [v5 recycledViewsContainerProviderForViewMap:self];
-    v15 = [v14 recycledViewsContainer];
-    v16 = v15;
-    if (v6 && v15 && ([v15 window], v17 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "window"), v18 = objc_claimAutoreleasedReturnValue(), v18, v17, v17 == v18))
+    v14 = [delegate recycledViewsContainerProviderForViewMap:self];
+    recycledViewsContainer = [v14 recycledViewsContainer];
+    v16 = recycledViewsContainer;
+    if (v6 && recycledViewsContainer && ([recycledViewsContainer window], v17 = objc_claimAutoreleasedReturnValue(), objc_msgSend(viewCopy, "window"), v18 = objc_claimAutoreleasedReturnValue(), v18, v17, v17 == v18))
     {
-      [v16 addSubview:v4];
+      [v16 addSubview:viewCopy];
     }
 
     else
     {
       if (objc_opt_respondsToSelector())
       {
-        [v5 viewMap:self willDiscardView:v4];
+        [delegate viewMap:self willDiscardView:viewCopy];
       }
 
-      [v4 removeFromSuperview];
+      [viewCopy removeFromSuperview];
     }
   }
 }
 
-- (BOOL)isViewRecycled:(id)a3
+- (BOOL)isViewRecycled:(id)recycled
 {
-  v4 = a3;
-  v5 = [(PUIReusableViewMap *)self delegate];
-  v6 = [v5 recycledViewsContainerProviderForViewMap:self];
-  v7 = [v6 recycledViewsContainer];
-  if (v7)
+  recycledCopy = recycled;
+  delegate = [(PUIReusableViewMap *)self delegate];
+  v6 = [delegate recycledViewsContainerProviderForViewMap:self];
+  recycledViewsContainer = [v6 recycledViewsContainer];
+  if (recycledViewsContainer)
   {
-    v8 = [v4 isDescendantOfView:v7];
+    v8 = [recycledCopy isDescendantOfView:recycledViewsContainer];
   }
 
   else
@@ -306,16 +306,16 @@ LABEL_7:
   return v8;
 }
 
-- (void)purgeViewsForClass:(Class)a3
+- (void)purgeViewsForClass:(Class)class
 {
   v20 = *MEMORY[0x1E69E9840];
   v5 = PUILogReusableViewCache();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218242;
-    v17 = self;
+    selfCopy = self;
     v18 = 2112;
-    v19 = a3;
+    classCopy = class;
     _os_log_impl(&dword_1A8C85000, v5, OS_LOG_TYPE_DEFAULT, "(%p) purge reusable views of class: %@", buf, 0x16u);
   }
 
@@ -323,7 +323,7 @@ LABEL_7:
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v6 = [(NSMapTable *)self->_recycledViewsByClass objectForKey:a3, 0];
+  v6 = [(NSMapTable *)self->_recycledViewsByClass objectForKey:class, 0];
   v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {
@@ -349,39 +349,39 @@ LABEL_7:
     while (v8);
   }
 
-  [(NSMapTable *)self->_recycledViewsByClass removeObjectForKey:a3];
+  [(NSMapTable *)self->_recycledViewsByClass removeObjectForKey:class];
 }
 
-- (void)purgeView:(id)a3
+- (void)purgeView:(id)view
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  viewCopy = view;
   v5 = PUILogReusableViewCache();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = objc_opt_class();
     v7 = NSStringFromClass(v6);
     *buf = 134218498;
-    v20 = self;
+    selfCopy = self;
     v21 = 2048;
-    v22 = v4;
+    v22 = viewCopy;
     v23 = 2112;
     v24 = v7;
     _os_log_impl(&dword_1A8C85000, v5, OS_LOG_TYPE_DEFAULT, "(%p) purging %p / %@", buf, 0x20u);
   }
 
-  [v4 removeFromSuperview];
+  [viewCopy removeFromSuperview];
   if (objc_opt_respondsToSelector())
   {
-    [v4 prepareForReuse];
+    [viewCopy prepareForReuse];
   }
 
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v8 = [(NSMapTable *)self->_recycledViewsByClass keyEnumerator];
-  v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  keyEnumerator = [(NSMapTable *)self->_recycledViewsByClass keyEnumerator];
+  v9 = [keyEnumerator countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v9)
   {
     v10 = v9;
@@ -393,17 +393,17 @@ LABEL_7:
       {
         if (*v15 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(keyEnumerator);
         }
 
         v13 = [(NSMapTable *)self->_recycledViewsByClass objectForKey:*(*(&v14 + 1) + 8 * v12)];
-        [v13 removeObject:v4];
+        [v13 removeObject:viewCopy];
 
         ++v12;
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v10 = [keyEnumerator countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v10);
@@ -417,7 +417,7 @@ LABEL_7:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v15 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1A8C85000, v3, OS_LOG_TYPE_DEFAULT, "(%p) purge all reusable views", buf, 0xCu);
   }
 
@@ -425,8 +425,8 @@ LABEL_7:
   v12 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v4 = [(NSMapTable *)self->_recycledViewsByClass keyEnumerator];
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  keyEnumerator = [(NSMapTable *)self->_recycledViewsByClass keyEnumerator];
+  v5 = [keyEnumerator countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -438,14 +438,14 @@ LABEL_7:
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(keyEnumerator);
         }
 
         [(PUIReusableViewMap *)self purgeViewsForClass:*(*(&v9 + 1) + 8 * v8++)];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [keyEnumerator countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
@@ -454,15 +454,15 @@ LABEL_7:
   [(NSMapTable *)self->_recycledViewsByClass removeAllObjects];
 }
 
-- (void)addRecycledViewsOfClass:(Class)a3 upToCount:(unint64_t)a4
+- (void)addRecycledViewsOfClass:(Class)class upToCount:(unint64_t)count
 {
   v7 = [(NSMapTable *)self->_recycledViewsByClass count];
-  v8 = a4 - v7;
-  if (a4 > v7)
+  v8 = count - v7;
+  if (count > v7)
   {
     do
     {
-      v9 = [(PUIReusableViewMap *)self newViewOfClass:a3];
+      v9 = [(PUIReusableViewMap *)self newViewOfClass:class];
       if (v9)
       {
         [(PUIReusableViewMap *)self recycleView:v9];
@@ -475,17 +475,17 @@ LABEL_7:
   }
 }
 
-- (void)enumerateRecycledViewsUsingBlock:(id)a3
+- (void)enumerateRecycledViewsUsingBlock:(id)block
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   v24 = 0;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v5 = [(NSMapTable *)self->_recycledViewsByClass objectEnumerator];
-  v6 = [v5 countByEnumeratingWithState:&v20 objects:v26 count:16];
+  objectEnumerator = [(NSMapTable *)self->_recycledViewsByClass objectEnumerator];
+  v6 = [objectEnumerator countByEnumeratingWithState:&v20 objects:v26 count:16];
   if (v6)
   {
     v7 = v6;
@@ -496,7 +496,7 @@ LABEL_7:
       {
         if (*v21 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v10 = *(*(&v20 + 1) + 8 * i);
@@ -519,7 +519,7 @@ LABEL_7:
                 objc_enumerationMutation(v11);
               }
 
-              v4[2](v4, *(*(&v16 + 1) + 8 * j), &v24);
+              blockCopy[2](blockCopy, *(*(&v16 + 1) + 8 * j), &v24);
               if (v24)
               {
 
@@ -538,7 +538,7 @@ LABEL_7:
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v20 objects:v26 count:16];
+      v7 = [objectEnumerator countByEnumeratingWithState:&v20 objects:v26 count:16];
     }
 
     while (v7);
@@ -590,27 +590,27 @@ LABEL_18:
 
 - (id)succinctDescription
 {
-  v2 = [(PUIReusableViewMap *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(PUIReusableViewMap *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(PUIReusableViewMap *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(PUIReusableViewMap *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = [(PUIReusableViewMap *)self succinctDescriptionBuilder];
-  v5 = [v4 appendUnsignedInteger:-[PUIReusableViewMap recycledViewCount](self withName:{"recycledViewCount"), @"recycledViewCount"}];
-  v6 = [v4 appendUnsignedInteger:-[PUIReusableViewMap viewRecyclingCount](self withName:{"viewRecyclingCount"), @"viewRecyclingCount"}];
+  succinctDescriptionBuilder = [(PUIReusableViewMap *)self succinctDescriptionBuilder];
+  v5 = [succinctDescriptionBuilder appendUnsignedInteger:-[PUIReusableViewMap recycledViewCount](self withName:{"recycledViewCount"), @"recycledViewCount"}];
+  v6 = [succinctDescriptionBuilder appendUnsignedInteger:-[PUIReusableViewMap viewRecyclingCount](self withName:{"viewRecyclingCount"), @"viewRecyclingCount"}];
 
-  return v4;
+  return succinctDescriptionBuilder;
 }
 
 - (PUIReusableViewMapDelegate)delegate

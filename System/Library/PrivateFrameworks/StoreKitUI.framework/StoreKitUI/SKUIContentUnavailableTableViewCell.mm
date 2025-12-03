@@ -1,13 +1,13 @@
 @interface SKUIContentUnavailableTableViewCell
-- (SKUIContentUnavailableTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (SKUIContentUnavailableTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)layoutSubviews;
 @end
 
 @implementation SKUIContentUnavailableTableViewCell
 
-- (SKUIContentUnavailableTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (SKUIContentUnavailableTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  v6 = a4;
+  identifierCopy = identifier;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIContentUnavailableTableViewCell initWithStyle:reuseIdentifier:];
@@ -15,7 +15,7 @@
 
   v14.receiver = self;
   v14.super_class = SKUIContentUnavailableTableViewCell;
-  v7 = [(SKUITableViewCell *)&v14 initWithStyle:a3 reuseIdentifier:v6];
+  v7 = [(SKUITableViewCell *)&v14 initWithStyle:style reuseIdentifier:identifierCopy];
   v8 = v7;
   if (v7)
   {
@@ -25,8 +25,8 @@
     view = v8->_view;
     v8->_view = v10;
 
-    v12 = [(SKUIContentUnavailableTableViewCell *)v8 contentView];
-    [v12 addSubview:v8->_view];
+    contentView = [(SKUIContentUnavailableTableViewCell *)v8 contentView];
+    [contentView addSubview:v8->_view];
   }
 
   return v8;
@@ -37,8 +37,8 @@
   v12.receiver = self;
   v12.super_class = SKUIContentUnavailableTableViewCell;
   [(SKUITableViewCell *)&v12 layoutSubviews];
-  v3 = [(SKUIContentUnavailableTableViewCell *)self contentView];
-  [v3 bounds];
+  contentView = [(SKUIContentUnavailableTableViewCell *)self contentView];
+  [contentView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;

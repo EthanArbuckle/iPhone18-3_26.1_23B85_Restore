@@ -1,14 +1,14 @@
 @interface Feed
-- (_TtC14HealthPlatform4Feed)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4;
+- (_TtC14HealthPlatform4Feed)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context;
 @end
 
 @implementation Feed
 
-- (_TtC14HealthPlatform4Feed)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4
+- (_TtC14HealthPlatform4Feed)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for Feed();
-  return [(Feed *)&v7 initWithEntity:a3 insertIntoManagedObjectContext:a4];
+  return [(Feed *)&v7 initWithEntity:entity insertIntoManagedObjectContext:context];
 }
 
 @end

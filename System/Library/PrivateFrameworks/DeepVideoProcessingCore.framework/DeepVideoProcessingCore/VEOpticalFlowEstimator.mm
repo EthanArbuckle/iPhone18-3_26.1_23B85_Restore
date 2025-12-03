@@ -1,18 +1,18 @@
 @interface VEOpticalFlowEstimator
-- (VEOpticalFlowEstimator)initWithUsage:(int64_t)a3;
-- (VEOpticalFlowEstimator)initWithWidth:(int64_t)a3 height:(int64_t)a4 configuration:(id)a5;
-- (__CVBuffer)allocateFlowBufferFullSize:(BOOL)a3;
-- (__CVBuffer)matchFlow:(__CVBuffer *)a3;
-- (__CVBuffer)opticalFlowFrom:(__CVBuffer *)a3 to:(__CVBuffer *)a4;
-- (id)opticalFlowsFrom:(__CVBuffer *)a3 to:(__CVBuffer *)a4;
-- (int64_t)flowAdaptationFrom:(__CVBuffer *)a3 to:(__CVBuffer *)a4 inputForwardFlow:(__CVBuffer *)a5 inputBackwardFlow:(__CVBuffer *)a6 outputForwardFlow:(__CVBuffer *)a7 outputBackwardFlow:(__CVBuffer *)a8;
-- (int64_t)opticalFlowFrom:(__CVBuffer *)a3 to:(__CVBuffer *)a4 flow:(__CVBuffer *)a5;
-- (int64_t)opticalFlowsFrom:(__CVBuffer *)a3 to:(__CVBuffer *)a4 forwardFlow:(__CVBuffer *)a5 backwardFlow:(__CVBuffer *)a6;
+- (VEOpticalFlowEstimator)initWithUsage:(int64_t)usage;
+- (VEOpticalFlowEstimator)initWithWidth:(int64_t)width height:(int64_t)height configuration:(id)configuration;
+- (__CVBuffer)allocateFlowBufferFullSize:(BOOL)size;
+- (__CVBuffer)matchFlow:(__CVBuffer *)flow;
+- (__CVBuffer)opticalFlowFrom:(__CVBuffer *)from to:(__CVBuffer *)to;
+- (id)opticalFlowsFrom:(__CVBuffer *)from to:(__CVBuffer *)to;
+- (int64_t)flowAdaptationFrom:(__CVBuffer *)from to:(__CVBuffer *)to inputForwardFlow:(__CVBuffer *)flow inputBackwardFlow:(__CVBuffer *)backwardFlow outputForwardFlow:(__CVBuffer *)forwardFlow outputBackwardFlow:(__CVBuffer *)outputBackwardFlow;
+- (int64_t)opticalFlowFrom:(__CVBuffer *)from to:(__CVBuffer *)to flow:(__CVBuffer *)flow;
+- (int64_t)opticalFlowsFrom:(__CVBuffer *)from to:(__CVBuffer *)to forwardFlow:(__CVBuffer *)flow backwardFlow:(__CVBuffer *)backwardFlow;
 - (unint64_t)flowHeight;
 - (unint64_t)flowWidth;
 - (void)dealloc;
-- (void)matchFlow:(__CVBuffer *)a3 toFullSizeFlow:(__CVBuffer *)a4;
-- (void)updateFlowOnlyMode:(BOOL)a3;
+- (void)matchFlow:(__CVBuffer *)flow toFullSizeFlow:(__CVBuffer *)sizeFlow;
+- (void)updateFlowOnlyMode:(BOOL)mode;
 @end
 
 @implementation VEOpticalFlowEstimator
@@ -43,16 +43,16 @@
   }
 }
 
-- (VEOpticalFlowEstimator)initWithUsage:(int64_t)a3
+- (VEOpticalFlowEstimator)initWithUsage:(int64_t)usage
 {
-  v3 = a3;
+  usageCopy = usage;
   v9 = 0;
   v10 = 0;
-  getInputFrameSizeForUsage(a3, &v10, &v9);
+  getInputFrameSizeForUsage(usage, &v10, &v9);
   v5 = objc_alloc_init(VEOpticalFlowEstimatorConfiguration);
   v6 = [(VEOpticalFlowEstimator *)self initWithWidth:v10 height:v9 configuration:v5];
   v7 = v6;
-  if ((v3 & 0x1000) != 0)
+  if ((usageCopy & 0x1000) != 0)
   {
     v6->_inputRotation = 2;
   }
@@ -60,20 +60,20 @@
   return v7;
 }
 
-- (VEOpticalFlowEstimator)initWithWidth:(int64_t)a3 height:(int64_t)a4 configuration:(id)a5
+- (VEOpticalFlowEstimator)initWithWidth:(int64_t)width height:(int64_t)height configuration:(id)configuration
 {
   v66 = *MEMORY[0x277D85DE8];
-  v8 = a5;
+  configurationCopy = configuration;
   v49.receiver = self;
   v49.super_class = VEOpticalFlowEstimator;
   v9 = [(VEOpticalFlowEstimator *)&v49 init];
   v10 = v9;
   if (v9)
   {
-    v9->_inputWidth = a3;
-    v9->_inputHeight = a4;
-    v9->_matchFlowDimensions = [v8 matchOutputDimensions] != 0;
-    UsageFromSize = getUsageFromSize(a3, a4);
+    v9->_inputWidth = width;
+    v9->_inputHeight = height;
+    v9->_matchFlowDimensions = [configurationCopy matchOutputDimensions] != 0;
+    UsageFromSize = getUsageFromSize(width, height);
     v12 = UsageFromSize;
     v13 = UsageFromSize & 0x1000;
     if ((UsageFromSize & 0x1000) != 0)
@@ -88,10 +88,10 @@
     processor = v10->_processor;
     v10->_processor = v14;
 
-    v16 = [v8 legacyNormalization];
+    legacyNormalization = [configurationCopy legacyNormalization];
     v17 = [ImageProcessor alloc];
     usage = v10->_usage;
-    if (v16)
+    if (legacyNormalization)
     {
       v19 = [(ImageProcessor *)v17 initLegacyModeWithUsage:usage];
     }
@@ -108,23 +108,23 @@
     opticalFlow = v10->_opticalFlow;
     v10->_opticalFlow = v21;
 
-    if ([v8 outputPixelFormat] == 1278226536 || objc_msgSend(v8, "outputPixelFormat") == 843264104)
+    if ([configurationCopy outputPixelFormat] == 1278226536 || objc_msgSend(configurationCopy, "outputPixelFormat") == 843264104)
     {
-      v10->_outputPixelFormat = [v8 outputPixelFormat];
+      v10->_outputPixelFormat = [configurationCopy outputPixelFormat];
       v23 = v10->_opticalFlow;
       if (v23)
       {
-        if (v8)
+        if (configurationCopy)
         {
-          if ([v8 mode] == 1 || objc_msgSend(v8, "adaptationLayerOnly"))
+          if ([configurationCopy mode] == 1 || objc_msgSend(configurationCopy, "adaptationLayerOnly"))
           {
             [(VEOpticalFlow *)v10->_opticalFlow setUseAdaptationLayer:1];
           }
 
-          -[VEOpticalFlow setDisableOutputFlowScaling:](v10->_opticalFlow, "setDisableOutputFlowScaling:", [v8 disableOutputFlowScaling]);
-          -[VEOpticalFlow setRevision:](v10->_opticalFlow, "setRevision:", [v8 revision]);
-          -[VEOpticalFlow setSkipLastLevel:](v10->_opticalFlow, "setSkipLastLevel:", [v8 skipLastLevel]);
-          -[VEOpticalFlow setAdaptationLayerOnly:](v10->_opticalFlow, "setAdaptationLayerOnly:", [v8 adaptationLayerOnly]);
+          -[VEOpticalFlow setDisableOutputFlowScaling:](v10->_opticalFlow, "setDisableOutputFlowScaling:", [configurationCopy disableOutputFlowScaling]);
+          -[VEOpticalFlow setRevision:](v10->_opticalFlow, "setRevision:", [configurationCopy revision]);
+          -[VEOpticalFlow setSkipLastLevel:](v10->_opticalFlow, "setSkipLastLevel:", [configurationCopy skipLastLevel]);
+          -[VEOpticalFlow setAdaptationLayerOnly:](v10->_opticalFlow, "setAdaptationLayerOnly:", [configurationCopy adaptationLayerOnly]);
           v23 = v10->_opticalFlow;
         }
 
@@ -149,9 +149,9 @@
 
         if ([(VEOpticalFlow *)v10->_opticalFlow switchUsageTo:v10->_usage])
         {
-          v25 = [(VEOpticalFlow *)v10->_opticalFlow backwarp];
+          backwarp = [(VEOpticalFlow *)v10->_opticalFlow backwarp];
           backwarp = v10->_backwarp;
-          v10->_backwarp = v25;
+          v10->_backwarp = backwarp;
 
           if (v10->_matchFlowDimensions)
           {
@@ -166,11 +166,11 @@
               v28 = v10->_opticalFlow;
               v29 = v27;
               LODWORD(v28) = [(VEOpticalFlow *)v28 downsampling];
-              v30 = [(VEOpticalFlow *)v10->_opticalFlow useAdaptationLayer];
-              v31 = [(VEOpticalFlow *)v10->_opticalFlow twoStageFlow];
-              v32 = [(VEOpticalFlow *)v10->_opticalFlow revision];
-              v33 = [(VEOpticalFlowEstimator *)v10 flowWidth];
-              v34 = [(VEOpticalFlowEstimator *)v10 flowHeight];
+              useAdaptationLayer = [(VEOpticalFlow *)v10->_opticalFlow useAdaptationLayer];
+              twoStageFlow = [(VEOpticalFlow *)v10->_opticalFlow twoStageFlow];
+              revision = [(VEOpticalFlow *)v10->_opticalFlow revision];
+              flowWidth = [(VEOpticalFlowEstimator *)v10 flowWidth];
+              flowHeight = [(VEOpticalFlowEstimator *)v10 flowHeight];
               *buf = 134219776;
               v51 = v10;
               v52 = 1024;
@@ -178,15 +178,15 @@
               v54 = 1024;
               v55 = v28;
               v56 = 1024;
-              v57 = v30;
+              v57 = useAdaptationLayer;
               v58 = 1024;
-              v59 = v31;
+              v59 = twoStageFlow;
               v60 = 1024;
-              v61 = v32;
+              v61 = revision;
               v62 = 2048;
-              v63 = v33;
+              v63 = flowWidth;
               v64 = 2048;
-              v65 = v34;
+              v65 = flowHeight;
               _os_log_impl(&dword_24874B000, v29, OS_LOG_TYPE_INFO, "Initialized successfully (%p) [usage:%d, 1/4 flow:%d, adaptation layer:%d, twoStage:%d, revision:%d, flow size (%ldx%ld)].", buf, 0x3Eu);
             }
           }
@@ -202,11 +202,11 @@
             v42 = v10->_opticalFlow;
             v43 = v39;
             LODWORD(v42) = [(VEOpticalFlow *)v42 downsampling];
-            v44 = [(VEOpticalFlow *)v10->_opticalFlow useAdaptationLayer];
-            v45 = [(VEOpticalFlow *)v10->_opticalFlow twoStageFlow];
-            v46 = [(VEOpticalFlow *)v10->_opticalFlow revision];
-            v47 = [(VEOpticalFlowEstimator *)v10 flowWidth];
-            v48 = [(VEOpticalFlowEstimator *)v10 flowHeight];
+            useAdaptationLayer2 = [(VEOpticalFlow *)v10->_opticalFlow useAdaptationLayer];
+            twoStageFlow2 = [(VEOpticalFlow *)v10->_opticalFlow twoStageFlow];
+            revision2 = [(VEOpticalFlow *)v10->_opticalFlow revision];
+            flowWidth2 = [(VEOpticalFlowEstimator *)v10 flowWidth];
+            flowHeight2 = [(VEOpticalFlowEstimator *)v10 flowHeight];
             *buf = 134219776;
             v51 = v10;
             v52 = 1024;
@@ -214,15 +214,15 @@
             v54 = 1024;
             v55 = v42;
             v56 = 1024;
-            v57 = v44;
+            v57 = useAdaptationLayer2;
             v58 = 1024;
-            v59 = v45;
+            v59 = twoStageFlow2;
             v60 = 1024;
-            v61 = v46;
+            v61 = revision2;
             v62 = 2048;
-            v63 = v47;
+            v63 = flowWidth2;
             v64 = 2048;
-            v65 = v48;
+            v65 = flowHeight2;
             _os_log_error_impl(&dword_24874B000, v43, OS_LOG_TYPE_ERROR, "Failed to switch (%p) [usage:%d, 1/4 flow:%d, adaptation layer:%d, twoStage:%d, revision:%d, flow size (%ldx%ld)].", buf, 0x3Eu);
           }
         }
@@ -285,7 +285,7 @@ LABEL_40:
     {
       usage = self->_usage;
       *buf = 134218240;
-      v8 = self;
+      selfCopy = self;
       v9 = 2048;
       v10 = usage;
       _os_log_impl(&dword_24874B000, v4, OS_LOG_TYPE_INFO, "Released (%p) [usage:%ld]", buf, 0x16u);
@@ -297,9 +297,9 @@ LABEL_40:
   [(VEOpticalFlowEstimator *)&v6 dealloc];
 }
 
-- (__CVBuffer)allocateFlowBufferFullSize:(BOOL)a3
+- (__CVBuffer)allocateFlowBufferFullSize:(BOOL)size
 {
-  if (a3)
+  if (size)
   {
     inputWidth = self->_inputWidth;
     inputHeight = self->_inputHeight;
@@ -316,7 +316,7 @@ LABEL_40:
   return createPixelBuffer(inputWidth, inputHeight << (outputPixelFormat == 1278226536), outputPixelFormat, 0);
 }
 
-- (int64_t)opticalFlowFrom:(__CVBuffer *)a3 to:(__CVBuffer *)a4 flow:(__CVBuffer *)a5
+- (int64_t)opticalFlowFrom:(__CVBuffer *)from to:(__CVBuffer *)to flow:(__CVBuffer *)flow
 {
   v21 = *MEMORY[0x277D85DE8];
   if ((global_logLevel & 4) != 0)
@@ -326,14 +326,14 @@ LABEL_40:
     {
       v10 = v9;
       v17 = 134218240;
-      Width = CVPixelBufferGetWidth(a5);
+      Width = CVPixelBufferGetWidth(flow);
       v19 = 2048;
-      Height = CVPixelBufferGetHeight(a5);
+      Height = CVPixelBufferGetHeight(flow);
       _os_log_impl(&dword_24874B000, v10, OS_LOG_TYPE_INFO, "opticalFlowFrom:to:outputFlow [Flow Size %ld x %ld]\n", &v17, 0x16u);
     }
   }
 
-  intermediateFlow = a5;
+  intermediateFlow = flow;
   if (self->_matchFlowDimensions)
   {
     intermediateFlow = self->_intermediateFlow;
@@ -348,26 +348,26 @@ LABEL_40:
   processor = self->_processor;
   if ([(VEOpticalFlowEstimator *)self skipFirstFramePreProcessing])
   {
-    v13 = 0;
+    fromCopy = 0;
   }
 
   else
   {
-    v13 = a3;
+    fromCopy = from;
   }
 
-  [(ImageProcessor *)processor preProcessFirstInput:v13 secondInput:a4 waitForCompletion:0];
+  [(ImageProcessor *)processor preProcessFirstInput:fromCopy secondInput:to waitForCompletion:0];
   opticalFlow = self->_opticalFlow;
-  v15 = 0;
+  normalizedFirst = 0;
   if (![(VEOpticalFlowEstimator *)self skipFirstFramePreProcessing])
   {
-    v15 = [(ImageProcessor *)self->_processor normalizedFirst];
+    normalizedFirst = [(ImageProcessor *)self->_processor normalizedFirst];
   }
 
-  [(VEOpticalFlow *)opticalFlow opticalFlowFirstFrame:v15 secondFrame:[(ImageProcessor *)self->_processor normalizedSecond] flow:intermediateFlow];
+  [(VEOpticalFlow *)opticalFlow opticalFlowFirstFrame:normalizedFirst secondFrame:[(ImageProcessor *)self->_processor normalizedSecond] flow:intermediateFlow];
   if (self->_matchFlowDimensions)
   {
-    [(VEOpticalFlowEstimator *)self matchFlow:self->_intermediateFlow toFullSizeFlow:a5];
+    [(VEOpticalFlowEstimator *)self matchFlow:self->_intermediateFlow toFullSizeFlow:flow];
   }
 
   if (!self->_resourcePreAllocated)
@@ -379,7 +379,7 @@ LABEL_40:
   return 0;
 }
 
-- (int64_t)opticalFlowsFrom:(__CVBuffer *)a3 to:(__CVBuffer *)a4 forwardFlow:(__CVBuffer *)a5 backwardFlow:(__CVBuffer *)a6
+- (int64_t)opticalFlowsFrom:(__CVBuffer *)from to:(__CVBuffer *)to forwardFlow:(__CVBuffer *)flow backwardFlow:(__CVBuffer *)backwardFlow
 {
   v22 = *MEMORY[0x277D85DE8];
   if ((global_logLevel & 4) != 0)
@@ -389,9 +389,9 @@ LABEL_40:
     {
       v12 = v11;
       v18 = 134218240;
-      Width = CVPixelBufferGetWidth(a5);
+      Width = CVPixelBufferGetWidth(flow);
       v20 = 2048;
-      Height = CVPixelBufferGetHeight(a5);
+      Height = CVPixelBufferGetHeight(flow);
       _os_log_impl(&dword_24874B000, v12, OS_LOG_TYPE_INFO, "opticalFlowsFrom:to:forwardFlow:backwardFlow [Flow Size %ld x %ld]\n", &v18, 0x16u);
     }
   }
@@ -405,23 +405,23 @@ LABEL_40:
   processor = self->_processor;
   if ([(VEOpticalFlowEstimator *)self skipFirstFramePreProcessing])
   {
-    v14 = 0;
+    fromCopy = 0;
   }
 
   else
   {
-    v14 = a3;
+    fromCopy = from;
   }
 
-  [(ImageProcessor *)processor preProcessFirstInput:v14 secondInput:a4 waitForCompletion:0];
+  [(ImageProcessor *)processor preProcessFirstInput:fromCopy secondInput:to waitForCompletion:0];
   opticalFlow = self->_opticalFlow;
-  v16 = 0;
+  normalizedFirst = 0;
   if (![(VEOpticalFlowEstimator *)self skipFirstFramePreProcessing])
   {
-    v16 = [(ImageProcessor *)self->_processor normalizedFirst];
+    normalizedFirst = [(ImageProcessor *)self->_processor normalizedFirst];
   }
 
-  [(VEOpticalFlow *)opticalFlow opticalFlowFirstFrame:v16 secondFrame:[(ImageProcessor *)self->_processor normalizedSecond] flowForward:a5 flowBackward:a6];
+  [(VEOpticalFlow *)opticalFlow opticalFlowFirstFrame:normalizedFirst secondFrame:[(ImageProcessor *)self->_processor normalizedSecond] flowForward:flow flowBackward:backwardFlow];
   if (!self->_resourcePreAllocated)
   {
     [(VEOpticalFlow *)self->_opticalFlow releaseResources];
@@ -431,7 +431,7 @@ LABEL_40:
   return 0;
 }
 
-- (__CVBuffer)opticalFlowFrom:(__CVBuffer *)a3 to:(__CVBuffer *)a4
+- (__CVBuffer)opticalFlowFrom:(__CVBuffer *)from to:(__CVBuffer *)to
 {
   v18 = *MEMORY[0x277D85DE8];
   if ((global_logLevel & 4) != 0)
@@ -441,18 +441,18 @@ LABEL_40:
     {
       opticalFlow = self->_opticalFlow;
       v9 = v7;
-      v10 = [(VEOpticalFlow *)opticalFlow flowWidth];
-      v11 = [(VEOpticalFlow *)self->_opticalFlow flowHeight];
+      flowWidth = [(VEOpticalFlow *)opticalFlow flowWidth];
+      flowHeight = [(VEOpticalFlow *)self->_opticalFlow flowHeight];
       v14 = 134218240;
-      v15 = v10;
+      v15 = flowWidth;
       v16 = 2048;
-      v17 = v11;
+      v17 = flowHeight;
       _os_log_impl(&dword_24874B000, v9, OS_LOG_TYPE_INFO, "opticalFlowFrom:to: [Flow Size %ld x %ld]\n", &v14, 0x16u);
     }
   }
 
   v12 = [(VEOpticalFlowEstimator *)self allocateFlowBufferFullSize:self->_matchFlowDimensions];
-  if ([(VEOpticalFlowEstimator *)self opticalFlowFrom:a3 to:a4 flow:v12])
+  if ([(VEOpticalFlowEstimator *)self opticalFlowFrom:from to:to flow:v12])
   {
     CVPixelBufferRelease(v12);
     return 0;
@@ -461,14 +461,14 @@ LABEL_40:
   return v12;
 }
 
-- (__CVBuffer)matchFlow:(__CVBuffer *)a3
+- (__CVBuffer)matchFlow:(__CVBuffer *)flow
 {
   v5 = [(VEOpticalFlowEstimator *)self allocateFlowBufferFullSize:1];
-  [(VEOpticalFlowEstimator *)self matchFlow:a3 toFullSizeFlow:v5];
+  [(VEOpticalFlowEstimator *)self matchFlow:flow toFullSizeFlow:v5];
   return v5;
 }
 
-- (void)matchFlow:(__CVBuffer *)a3 toFullSizeFlow:(__CVBuffer *)a4
+- (void)matchFlow:(__CVBuffer *)flow toFullSizeFlow:(__CVBuffer *)sizeFlow
 {
   v19 = *MEMORY[0x277D85DE8];
   if ((global_logLevel & 4) != 0)
@@ -478,9 +478,9 @@ LABEL_40:
     {
       v8 = v7;
       v15 = 134218240;
-      v16 = [(VEOpticalFlowEstimator *)self flowWidth];
+      flowWidth = [(VEOpticalFlowEstimator *)self flowWidth];
       v17 = 2048;
-      v18 = [(VEOpticalFlowEstimator *)self flowHeight];
+      flowHeight = [(VEOpticalFlowEstimator *)self flowHeight];
       _os_log_impl(&dword_24874B000, v8, OS_LOG_TYPE_INFO, "Output Flow %ld, %ld", &v15, 0x16u);
     }
   }
@@ -505,16 +505,16 @@ LABEL_40:
     v10 = 2;
   }
 
-  v11 = [(VEOpticalFlow *)self->_opticalFlow device];
-  v12 = createTexturesFromCVPixelBuffer(a3, v11, v10, v9);
+  device = [(VEOpticalFlow *)self->_opticalFlow device];
+  v12 = createTexturesFromCVPixelBuffer(flow, device, v10, v9);
 
-  v13 = [(VEOpticalFlow *)self->_opticalFlow device];
-  v14 = createTexturesFromCVPixelBuffer(a4, v13, v10, v9);
+  device2 = [(VEOpticalFlow *)self->_opticalFlow device];
+  v14 = createTexturesFromCVPixelBuffer(sizeFlow, device2, v10, v9);
 
   [(OFBackwarp *)self->_backwarp upscaleFlow:v12 destination:v14];
 }
 
-- (id)opticalFlowsFrom:(__CVBuffer *)a3 to:(__CVBuffer *)a4
+- (id)opticalFlowsFrom:(__CVBuffer *)from to:(__CVBuffer *)to
 {
   v24 = *MEMORY[0x277D85DE8];
   if ((global_logLevel & 4) != 0)
@@ -524,12 +524,12 @@ LABEL_40:
     {
       opticalFlow = self->_opticalFlow;
       v9 = v7;
-      v10 = [(VEOpticalFlow *)opticalFlow flowWidth];
-      v11 = [(VEOpticalFlow *)self->_opticalFlow flowHeight];
+      flowWidth = [(VEOpticalFlow *)opticalFlow flowWidth];
+      flowHeight = [(VEOpticalFlow *)self->_opticalFlow flowHeight];
       *buf = 134218240;
-      *&buf[4] = v10;
+      *&buf[4] = flowWidth;
       *&buf[12] = 2048;
-      *&buf[14] = v11;
+      *&buf[14] = flowHeight;
       _os_log_impl(&dword_24874B000, v9, OS_LOG_TYPE_INFO, "opticalFlowsFrom:to: [Flow Size %ld x %ld]\n", buf, 0x16u);
     }
   }
@@ -537,7 +537,7 @@ LABEL_40:
   v12 = [(VEOpticalFlowEstimator *)self flowHeight]<< (self->_outputPixelFormat == 1278226536);
   PixelBuffer = CreatePixelBuffer([(VEOpticalFlowEstimator *)self flowWidth], v12, self->_outputPixelFormat);
   v14 = CreatePixelBuffer([(VEOpticalFlowEstimator *)self flowWidth], v12, self->_outputPixelFormat);
-  if ([(VEOpticalFlowEstimator *)self opticalFlowsFrom:a3 to:a4 forwardFlow:PixelBuffer backwardFlow:v14])
+  if ([(VEOpticalFlowEstimator *)self opticalFlowsFrom:from to:to forwardFlow:PixelBuffer backwardFlow:v14])
   {
     CVPixelBufferRelease(PixelBuffer);
     CVPixelBufferRelease(v14);
@@ -564,7 +564,7 @@ LABEL_40:
   return v15;
 }
 
-- (int64_t)flowAdaptationFrom:(__CVBuffer *)a3 to:(__CVBuffer *)a4 inputForwardFlow:(__CVBuffer *)a5 inputBackwardFlow:(__CVBuffer *)a6 outputForwardFlow:(__CVBuffer *)a7 outputBackwardFlow:(__CVBuffer *)a8
+- (int64_t)flowAdaptationFrom:(__CVBuffer *)from to:(__CVBuffer *)to inputForwardFlow:(__CVBuffer *)flow inputBackwardFlow:(__CVBuffer *)backwardFlow outputForwardFlow:(__CVBuffer *)forwardFlow outputBackwardFlow:(__CVBuffer *)outputBackwardFlow
 {
   v30 = *MEMORY[0x277D85DE8];
   if ((global_logLevel & 4) != 0)
@@ -574,13 +574,13 @@ LABEL_40:
     {
       log = v15;
       *buf = 134218752;
-      Width = CVPixelBufferGetWidth(a5);
+      Width = CVPixelBufferGetWidth(flow);
       v24 = 2048;
-      Height = CVPixelBufferGetHeight(a6);
+      Height = CVPixelBufferGetHeight(backwardFlow);
       v26 = 2048;
-      v27 = CVPixelBufferGetWidth(a7);
+      v27 = CVPixelBufferGetWidth(forwardFlow);
       v28 = 2048;
-      v29 = CVPixelBufferGetHeight(a8);
+      v29 = CVPixelBufferGetHeight(outputBackwardFlow);
       _os_log_impl(&dword_24874B000, log, OS_LOG_TYPE_INFO, "flowAdaptationFrom:to:inputForwardFlow:inputBackwardFlow:outputForwardFlow:outputBackwardFlow [inputFlow Size %ld x %ld] [outputFlow Size %ld x %ld]\n", buf, 0x2Au);
     }
   }
@@ -594,23 +594,23 @@ LABEL_40:
   processor = self->_processor;
   if ([(VEOpticalFlowEstimator *)self skipFirstFramePreProcessing])
   {
-    v17 = 0;
+    fromCopy = 0;
   }
 
   else
   {
-    v17 = a3;
+    fromCopy = from;
   }
 
-  [(ImageProcessor *)processor preProcessFirstInput:v17 secondInput:a4 waitForCompletion:0];
+  [(ImageProcessor *)processor preProcessFirstInput:fromCopy secondInput:to waitForCompletion:0];
   opticalFlow = self->_opticalFlow;
-  v19 = 0;
+  normalizedFirst = 0;
   if (![(VEOpticalFlowEstimator *)self skipFirstFramePreProcessing])
   {
-    v19 = [(ImageProcessor *)self->_processor normalizedFirst];
+    normalizedFirst = [(ImageProcessor *)self->_processor normalizedFirst];
   }
 
-  [(VEOpticalFlow *)opticalFlow flowAdaptationFirstFrame:v19 secondFrame:[(ImageProcessor *)self->_processor normalizedSecond] inputFlowForward:a5 inputFlowBackward:a6 outputFlowForward:a7 outputFlowBackward:a8];
+  [(VEOpticalFlow *)opticalFlow flowAdaptationFirstFrame:normalizedFirst secondFrame:[(ImageProcessor *)self->_processor normalizedSecond] inputFlowForward:flow inputFlowBackward:backwardFlow outputFlowForward:forwardFlow outputFlowBackward:outputBackwardFlow];
   if (!self->_resourcePreAllocated)
   {
     [(VEOpticalFlow *)self->_opticalFlow releaseResources];
@@ -620,16 +620,16 @@ LABEL_40:
   return 0;
 }
 
-- (void)updateFlowOnlyMode:(BOOL)a3
+- (void)updateFlowOnlyMode:(BOOL)mode
 {
   opticalFlow = self->_opticalFlow;
   if (opticalFlow)
   {
-    v5 = a3;
+    modeCopy = mode;
     [(VEOpticalFlow *)opticalFlow setConcurrentDualFlowProcessing:?];
     v6 = self->_opticalFlow;
 
-    [(VEOpticalFlow *)v6 setWaitForCompletion:v5];
+    [(VEOpticalFlow *)v6 setWaitForCompletion:modeCopy];
   }
 }
 

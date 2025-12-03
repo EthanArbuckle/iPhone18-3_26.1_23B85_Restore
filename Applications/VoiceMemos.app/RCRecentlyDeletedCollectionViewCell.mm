@@ -23,8 +23,8 @@
   v4.receiver = self;
   v4.super_class = RCRecentlyDeletedCollectionViewCell;
   [(RCRecordingCollectionViewCell *)&v4 _createShuttleBarIfNeeded];
-  v3 = [(RCRecordingCollectionViewCell *)self shuttleBar];
-  [v3 setRecentlyDeleted:1];
+  shuttleBar = [(RCRecordingCollectionViewCell *)self shuttleBar];
+  [shuttleBar setRecentlyDeleted:1];
 }
 
 @end

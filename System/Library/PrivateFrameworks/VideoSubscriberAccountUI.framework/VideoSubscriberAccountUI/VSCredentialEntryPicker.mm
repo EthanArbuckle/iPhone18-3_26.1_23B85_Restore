@@ -6,8 +6,8 @@
 
 - (id)pickerItemAtCurrentIndex
 {
-  v3 = [(VSCredentialEntryPicker *)self pickerItems];
-  v4 = [v3 objectAtIndex:{-[VSCredentialEntryPicker selectedIndex](self, "selectedIndex")}];
+  pickerItems = [(VSCredentialEntryPicker *)self pickerItems];
+  v4 = [pickerItems objectAtIndex:{-[VSCredentialEntryPicker selectedIndex](self, "selectedIndex")}];
 
   return v4;
 }

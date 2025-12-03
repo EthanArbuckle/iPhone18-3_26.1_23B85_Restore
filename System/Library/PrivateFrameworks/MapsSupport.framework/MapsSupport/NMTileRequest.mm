@@ -1,58 +1,58 @@
 @interface NMTileRequest
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addBaseHeaders:(id)a3;
-- (void)addLocalizationHeaders:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasPriority:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addBaseHeaders:(id)headers;
+- (void)addLocalizationHeaders:(id)headers;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasPriority:(BOOL)priority;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NMTileRequest
 
-- (void)addBaseHeaders:(id)a3
+- (void)addBaseHeaders:(id)headers
 {
-  v4 = a3;
+  headersCopy = headers;
   baseHeaders = self->_baseHeaders;
-  v8 = v4;
+  v8 = headersCopy;
   if (!baseHeaders)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_baseHeaders;
     self->_baseHeaders = v6;
 
-    v4 = v8;
+    headersCopy = v8;
     baseHeaders = self->_baseHeaders;
   }
 
-  [(NSMutableArray *)baseHeaders addObject:v4];
+  [(NSMutableArray *)baseHeaders addObject:headersCopy];
 }
 
-- (void)addLocalizationHeaders:(id)a3
+- (void)addLocalizationHeaders:(id)headers
 {
-  v4 = a3;
+  headersCopy = headers;
   localizationHeaders = self->_localizationHeaders;
-  v8 = v4;
+  v8 = headersCopy;
   if (!localizationHeaders)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_localizationHeaders;
     self->_localizationHeaders = v6;
 
-    v4 = v8;
+    headersCopy = v8;
     localizationHeaders = self->_localizationHeaders;
   }
 
-  [(NSMutableArray *)localizationHeaders addObject:v4];
+  [(NSMutableArray *)localizationHeaders addObject:headersCopy];
 }
 
-- (void)setHasPriority:(BOOL)a3
+- (void)setHasPriority:(BOOL)priority
 {
-  if (a3)
+  if (priority)
   {
     v3 = 2;
   }
@@ -70,8 +70,8 @@
   v7.receiver = self;
   v7.super_class = NMTileRequest;
   v3 = [(NMTileRequest *)&v7 description];
-  v4 = [(NMTileRequest *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(NMTileRequest *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -120,8 +120,8 @@
             objc_enumerationMutation(v9);
           }
 
-          v14 = [*(*(&v33 + 1) + 8 * i) dictionaryRepresentation];
-          [v8 addObject:v14];
+          dictionaryRepresentation = [*(*(&v33 + 1) + 8 * i) dictionaryRepresentation];
+          [v8 addObject:dictionaryRepresentation];
         }
 
         v11 = [(NSMutableArray *)v9 countByEnumeratingWithState:&v33 objects:v38 count:16];
@@ -167,8 +167,8 @@
             objc_enumerationMutation(v18);
           }
 
-          v23 = [*(*(&v29 + 1) + 8 * j) dictionaryRepresentation];
-          [v17 addObject:v23];
+          dictionaryRepresentation2 = [*(*(&v29 + 1) + 8 * j) dictionaryRepresentation];
+          [v17 addObject:dictionaryRepresentation2];
         }
 
         v20 = [(NSMutableArray *)v18 countByEnumeratingWithState:&v29 objects:v37 count:16];
@@ -204,9 +204,9 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_tileKey)
   {
     PBDataWriterWriteDataField();
@@ -310,96 +310,96 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v13 = a3;
+  toCopy = to;
   if (self->_tileKey)
   {
-    [v13 setTileKey:?];
+    [toCopy setTileKey:?];
   }
 
   if (self->_cachedETag)
   {
-    [v13 setCachedETag:?];
+    [toCopy setCachedETag:?];
   }
 
   if (self->_baseURL)
   {
-    [v13 setBaseURL:?];
+    [toCopy setBaseURL:?];
   }
 
   if ([(NMTileRequest *)self baseHeadersCount])
   {
-    [v13 clearBaseHeaders];
-    v4 = [(NMTileRequest *)self baseHeadersCount];
-    if (v4)
+    [toCopy clearBaseHeaders];
+    baseHeadersCount = [(NMTileRequest *)self baseHeadersCount];
+    if (baseHeadersCount)
     {
-      v5 = v4;
+      v5 = baseHeadersCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(NMTileRequest *)self baseHeadersAtIndex:i];
-        [v13 addBaseHeaders:v7];
+        [toCopy addBaseHeaders:v7];
       }
     }
   }
 
   if (self->_cachedBaseETag)
   {
-    [v13 setCachedBaseETag:?];
+    [toCopy setCachedBaseETag:?];
   }
 
   if (self->_localizationURL)
   {
-    [v13 setLocalizationURL:?];
+    [toCopy setLocalizationURL:?];
   }
 
   if ([(NMTileRequest *)self localizationHeadersCount])
   {
-    [v13 clearLocalizationHeaders];
-    v8 = [(NMTileRequest *)self localizationHeadersCount];
-    if (v8)
+    [toCopy clearLocalizationHeaders];
+    localizationHeadersCount = [(NMTileRequest *)self localizationHeadersCount];
+    if (localizationHeadersCount)
     {
-      v9 = v8;
+      v9 = localizationHeadersCount;
       for (j = 0; j != v9; ++j)
       {
         v11 = [(NMTileRequest *)self localizationHeadersAtIndex:j];
-        [v13 addLocalizationHeaders:v11];
+        [toCopy addLocalizationHeaders:v11];
       }
     }
   }
 
   if (self->_cachedLocalizationETag)
   {
-    [v13 setCachedLocalizationETag:?];
+    [toCopy setCachedLocalizationETag:?];
   }
 
   has = self->_has;
   if (has)
   {
-    *(v13 + 12) = self->_checksumMethod;
-    *(v13 + 88) |= 1u;
+    *(toCopy + 12) = self->_checksumMethod;
+    *(toCopy + 88) |= 1u;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    *(v13 + 18) = self->_priority;
-    *(v13 + 88) |= 2u;
+    *(toCopy + 18) = self->_priority;
+    *(toCopy + 88) |= 2u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSData *)self->_tileKey copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSData *)self->_tileKey copyWithZone:zone];
   v7 = v5[10];
   v5[10] = v6;
 
-  v8 = [(NSString *)self->_cachedETag copyWithZone:a3];
+  v8 = [(NSString *)self->_cachedETag copyWithZone:zone];
   v9 = v5[4];
   v5[4] = v8;
 
-  v10 = [(NSString *)self->_baseURL copyWithZone:a3];
+  v10 = [(NSString *)self->_baseURL copyWithZone:zone];
   v11 = v5[2];
   v5[2] = v10;
 
@@ -422,7 +422,7 @@
           objc_enumerationMutation(v12);
         }
 
-        v17 = [*(*(&v36 + 1) + 8 * i) copyWithZone:a3];
+        v17 = [*(*(&v36 + 1) + 8 * i) copyWithZone:zone];
         [v5 addBaseHeaders:v17];
       }
 
@@ -432,11 +432,11 @@
     while (v14);
   }
 
-  v18 = [(NSString *)self->_cachedBaseETag copyWithZone:a3];
+  v18 = [(NSString *)self->_cachedBaseETag copyWithZone:zone];
   v19 = v5[3];
   v5[3] = v18;
 
-  v20 = [(NSString *)self->_localizationURL copyWithZone:a3];
+  v20 = [(NSString *)self->_localizationURL copyWithZone:zone];
   v21 = v5[8];
   v5[8] = v20;
 
@@ -459,7 +459,7 @@
           objc_enumerationMutation(v22);
         }
 
-        v27 = [*(*(&v32 + 1) + 8 * j) copyWithZone:{a3, v32}];
+        v27 = [*(*(&v32 + 1) + 8 * j) copyWithZone:{zone, v32}];
         [v5 addLocalizationHeaders:v27];
       }
 
@@ -469,7 +469,7 @@
     while (v24);
   }
 
-  v28 = [(NSString *)self->_cachedLocalizationETag copyWithZone:a3];
+  v28 = [(NSString *)self->_cachedLocalizationETag copyWithZone:zone];
   v29 = v5[5];
   v5[5] = v28;
 
@@ -490,16 +490,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_27;
   }
 
   tileKey = self->_tileKey;
-  if (tileKey | *(v4 + 10))
+  if (tileKey | *(equalCopy + 10))
   {
     if (![(NSData *)tileKey isEqual:?])
     {
@@ -508,7 +508,7 @@
   }
 
   cachedETag = self->_cachedETag;
-  if (cachedETag | *(v4 + 4))
+  if (cachedETag | *(equalCopy + 4))
   {
     if (![(NSString *)cachedETag isEqual:?])
     {
@@ -517,7 +517,7 @@
   }
 
   baseURL = self->_baseURL;
-  if (baseURL | *(v4 + 2))
+  if (baseURL | *(equalCopy + 2))
   {
     if (![(NSString *)baseURL isEqual:?])
     {
@@ -526,7 +526,7 @@
   }
 
   baseHeaders = self->_baseHeaders;
-  if (baseHeaders | *(v4 + 1))
+  if (baseHeaders | *(equalCopy + 1))
   {
     if (![(NSMutableArray *)baseHeaders isEqual:?])
     {
@@ -535,7 +535,7 @@
   }
 
   cachedBaseETag = self->_cachedBaseETag;
-  if (cachedBaseETag | *(v4 + 3))
+  if (cachedBaseETag | *(equalCopy + 3))
   {
     if (![(NSString *)cachedBaseETag isEqual:?])
     {
@@ -544,7 +544,7 @@
   }
 
   localizationURL = self->_localizationURL;
-  if (localizationURL | *(v4 + 8))
+  if (localizationURL | *(equalCopy + 8))
   {
     if (![(NSString *)localizationURL isEqual:?])
     {
@@ -553,7 +553,7 @@
   }
 
   localizationHeaders = self->_localizationHeaders;
-  if (localizationHeaders | *(v4 + 7))
+  if (localizationHeaders | *(equalCopy + 7))
   {
     if (![(NSMutableArray *)localizationHeaders isEqual:?])
     {
@@ -562,7 +562,7 @@
   }
 
   cachedLocalizationETag = self->_cachedLocalizationETag;
-  if (cachedLocalizationETag | *(v4 + 5))
+  if (cachedLocalizationETag | *(equalCopy + 5))
   {
     if (![(NSString *)cachedLocalizationETag isEqual:?])
     {
@@ -572,23 +572,23 @@
 
   if (*&self->_has)
   {
-    if ((*(v4 + 88) & 1) == 0 || self->_checksumMethod != *(v4 + 12))
+    if ((*(equalCopy + 88) & 1) == 0 || self->_checksumMethod != *(equalCopy + 12))
     {
       goto LABEL_27;
     }
   }
 
-  else if (*(v4 + 88))
+  else if (*(equalCopy + 88))
   {
 LABEL_27:
     v13 = 0;
     goto LABEL_28;
   }
 
-  v13 = (*(v4 + 88) & 2) == 0;
+  v13 = (*(equalCopy + 88) & 2) == 0;
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 88) & 2) == 0 || self->_priority != *(v4 + 18))
+    if ((*(equalCopy + 88) & 2) == 0 || self->_priority != *(equalCopy + 18))
     {
       goto LABEL_27;
     }
@@ -635,20 +635,20 @@ LABEL_3:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (*(v4 + 10))
+  fromCopy = from;
+  if (*(fromCopy + 10))
   {
     [(NMTileRequest *)self setTileKey:?];
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(NMTileRequest *)self setCachedETag:?];
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(NMTileRequest *)self setBaseURL:?];
   }
@@ -657,7 +657,7 @@ LABEL_3:
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v5 = *(v4 + 1);
+  v5 = *(fromCopy + 1);
   v6 = [v5 countByEnumeratingWithState:&v20 objects:v25 count:16];
   if (v6)
   {
@@ -681,12 +681,12 @@ LABEL_3:
     while (v7);
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(NMTileRequest *)self setCachedBaseETag:?];
   }
 
-  if (*(v4 + 8))
+  if (*(fromCopy + 8))
   {
     [(NMTileRequest *)self setLocalizationURL:?];
   }
@@ -695,7 +695,7 @@ LABEL_3:
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v10 = *(v4 + 7);
+  v10 = *(fromCopy + 7);
   v11 = [v10 countByEnumeratingWithState:&v16 objects:v24 count:16];
   if (v11)
   {
@@ -719,22 +719,22 @@ LABEL_3:
     while (v12);
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(NMTileRequest *)self setCachedLocalizationETag:?];
   }
 
-  v15 = *(v4 + 88);
+  v15 = *(fromCopy + 88);
   if (v15)
   {
-    self->_checksumMethod = *(v4 + 12);
+    self->_checksumMethod = *(fromCopy + 12);
     *&self->_has |= 1u;
-    v15 = *(v4 + 88);
+    v15 = *(fromCopy + 88);
   }
 
   if ((v15 & 2) != 0)
   {
-    self->_priority = *(v4 + 18);
+    self->_priority = *(fromCopy + 18);
     *&self->_has |= 2u;
   }
 }

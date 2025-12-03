@@ -30,14 +30,14 @@
   v16[1] = 0x3032000000;
   v16[2] = __Block_byref_object_copy__3;
   v16[3] = __Block_byref_object_dispose__3;
-  v17 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v9 = MEMORY[0x277D85DD0];
   v10 = 3221225472;
   v11 = __51__NSDictionary_xpcdictConv__initWithXPCDictionary___block_invoke;
   v12 = &unk_2798EF8B0;
   v14 = &v15;
-  v5 = a1;
-  v13 = v5;
+  selfCopy = self;
+  v13 = selfCopy;
   if (xpc_dictionary_apply(v4, &v9))
   {
     v6 = defaultLogHandle();
@@ -46,8 +46,8 @@
       [(NSDictionary(xpcdictConv) *)v16 initWithXPCDictionary:v6];
     }
 
-    v5 = [v5 initWithDictionary:{*(v16[0] + 40), v9, v10, v11, v12}];
-    v7 = v5;
+    selfCopy = [selfCopy initWithDictionary:{*(v16[0] + 40), v9, v10, v11, v12}];
+    v7 = selfCopy;
   }
 
   else
@@ -67,8 +67,8 @@
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v3 = a1;
-  v4 = [v3 countByEnumeratingWithState:&v27 objects:v31 count:16];
+  selfCopy = self;
+  v4 = [selfCopy countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v4)
   {
     v5 = v4;
@@ -79,11 +79,11 @@
       {
         if (*v28 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(selfCopy);
         }
 
         v8 = *(*(&v27 + 1) + 8 * i);
-        v9 = [v3 objectForKey:{v8, v27}];
+        v9 = [selfCopy objectForKey:{v8, v27}];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
@@ -104,29 +104,29 @@
             if (objc_opt_isKindOfClass())
             {
               v10 = v9;
-              v11 = [v10 objCType];
-              if (*v11 == 105 && !v11[1] || (v12 = [v10 objCType], *v12 == 115) && !v12[1] || (v13 = [v10 objCType], *v13 == 113) && !v13[1] || (v14 = [v10 objCType], *v14 == 113) && !v14[1])
+              objCType = [v10 objCType];
+              if (*objCType == 105 && !objCType[1] || (v12 = [v10 objCType], *v12 == 115) && !v12[1] || (v13 = [v10 objCType], *v13 == 113) && !v13[1] || (v14 = [v10 objCType], *v14 == 113) && !v14[1])
               {
                 xpc_dictionary_set_int64(v2, [v8 UTF8String], -[NSObject longLongValue](v10, "longLongValue"));
               }
 
               else
               {
-                v15 = [v10 objCType];
-                if (*v15 == 102 && !v15[1] || (v16 = [v10 objCType], *v16 == 100) && !v16[1])
+                objCType2 = [v10 objCType];
+                if (*objCType2 == 102 && !objCType2[1] || (v16 = [v10 objCType], *v16 == 100) && !v16[1])
                 {
-                  v21 = [v8 UTF8String];
+                  uTF8String = [v8 UTF8String];
                   [v10 doubleValue];
-                  xpc_dictionary_set_double(v2, v21, v22);
+                  xpc_dictionary_set_double(v2, uTF8String, v22);
                 }
 
                 else
                 {
-                  v17 = [v10 objCType];
-                  if (*v17 != 66 || v17[1])
+                  objCType3 = [v10 objCType];
+                  if (*objCType3 != 66 || objCType3[1])
                   {
-                    v18 = [v10 objCType];
-                    if (*v18 != 99 || v18[1])
+                    objCType4 = [v10 objCType];
+                    if (*objCType4 != 99 || objCType4[1])
                     {
                       v24 = defaultLogHandle();
                       if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
@@ -159,15 +159,15 @@ LABEL_41:
                 goto LABEL_41;
               }
 
-              v19 = [v8 UTF8String];
+              uTF8String2 = [v8 UTF8String];
               [v9 timeIntervalSince1970];
-              xpc_dictionary_set_date(v2, v19, v20);
+              xpc_dictionary_set_date(v2, uTF8String2, v20);
             }
           }
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v27 objects:v31 count:16];
+      v5 = [selfCopy countByEnumeratingWithState:&v27 objects:v31 count:16];
       if (v5)
       {
         continue;
@@ -233,10 +233,10 @@ LABEL_5:
 
 - (NSObject)convertToNSData
 {
-  if ([MEMORY[0x277CCAAA0] isValidJSONObject:a1])
+  if ([MEMORY[0x277CCAAA0] isValidJSONObject:self])
   {
     v7 = 0;
-    v2 = [MEMORY[0x277CCAAA0] dataWithJSONObject:a1 options:0 error:&v7];
+    v2 = [MEMORY[0x277CCAAA0] dataWithJSONObject:self options:0 error:&v7];
     v3 = v7;
     v4 = v3;
     if (v2)
@@ -282,7 +282,7 @@ LABEL_4:
     v16 = a4;
     v12 = dispatch_data_create(bytes_ptr, length, v11, destructor);
 
-    v13 = [a1 dictionaryFromJsonData:v12];
+    v13 = [self dictionaryFromJsonData:v12];
   }
 
   else
@@ -301,12 +301,12 @@ LABEL_4:
   {
     if (a4)
     {
-      v8 = [a1 convertToNSData];
-      v7 = v8;
-      if (v8)
+      convertToNSData = [self convertToNSData];
+      v7 = convertToNSData;
+      if (convertToNSData)
       {
-        v9 = [v8 _createDispatchData];
-        v10 = xpc_data_create_with_dispatch_data(v9);
+        _createDispatchData = [convertToNSData _createDispatchData];
+        v10 = xpc_data_create_with_dispatch_data(_createDispatchData);
 
         xpc_dictionary_set_value(v6, a4, v10);
         v7 = 1;
@@ -319,7 +319,7 @@ LABEL_4:
 
 - (id)objectForKey:()xpcdictConv ofType:
 {
-  v1 = [a1 objectForKey:?];
+  v1 = [self objectForKey:?];
   if (v1 && (objc_opt_isKindOfClass() & 1) != 0)
   {
     v2 = v1;
@@ -346,7 +346,7 @@ LABEL_4:
 - (void)createXPCDictionary
 {
   v7 = *MEMORY[0x277D85DE8];
-  [a1 objCType];
+  [self objCType];
   OUTLINED_FUNCTION_2();
   _os_log_error_impl(v1, v2, v3, v4, v5, 0xCu);
   v6 = *MEMORY[0x277D85DE8];
@@ -399,8 +399,8 @@ LABEL_4:
   v2 = defaultLogHandle();
   if (os_log_type_enabled(v2, OS_LOG_TYPE_ERROR))
   {
-    v4 = [a1 localizedDescription];
-    [a1 code];
+    localizedDescription = [self localizedDescription];
+    [self code];
     OUTLINED_FUNCTION_1_4();
     OUTLINED_FUNCTION_2();
     _os_log_error_impl(v5, v6, v7, v8, v9, 0x20u);

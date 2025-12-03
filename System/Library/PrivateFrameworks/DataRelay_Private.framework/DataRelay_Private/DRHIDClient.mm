@@ -1,30 +1,30 @@
 @interface DRHIDClient
-- ($ED4A0B18993299B00AEB513B70343C82)getSensorTime:(id)a3;
-- (DRHIDClient)initWithClientType:(int64_t)a3;
+- ($ED4A0B18993299B00AEB513B70343C82)getSensorTime:(id)time;
+- (DRHIDClient)initWithClientType:(int64_t)type;
 - (void)activate;
 - (void)dealloc;
-- (void)handleEvent:(id)a3 withService:(id)a4;
+- (void)handleEvent:(id)event withService:(id)service;
 - (void)invalidate;
 - (void)reset;
-- (void)routedWxDeviceChanged:(id)a3;
-- (void)serviceAdded:(id)a3;
-- (void)serviceRemoved:(id)a3 resetReportInterval:(BOOL)a4;
+- (void)routedWxDeviceChanged:(id)changed;
+- (void)serviceAdded:(id)added;
+- (void)serviceRemoved:(id)removed resetReportInterval:(BOOL)interval;
 @end
 
 @implementation DRHIDClient
 
-- (DRHIDClient)initWithClientType:(int64_t)a3
+- (DRHIDClient)initWithClientType:(int64_t)type
 {
   v8.receiver = self;
   v8.super_class = DRHIDClient;
   v4 = [(DRHIDClient *)&v8 init];
   if (v4)
   {
-    v5 = [MEMORY[0x277CBEA90] data];
+    data = [MEMORY[0x277CBEA90] data];
     wxRoute = v4->_wxRoute;
-    v4->_wxRoute = v5;
+    v4->_wxRoute = data;
 
-    v4->_clientType = a3;
+    v4->_clientType = type;
   }
 
   return v4;
@@ -32,7 +32,7 @@
 
 - (void)activate
 {
-  v1 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(a1, "serviceID")}];
+  v1 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(self, "serviceID")}];
   LogPrintF();
 }
 
@@ -118,8 +118,8 @@ void __23__DRHIDClient_activate__block_invoke_3(uint64_t a1)
     v13 = 0u;
     v10 = 0u;
     v11 = 0u;
-    v3 = [(HIDEventSystemClient *)self->_HIDClient services];
-    v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+    services = [(HIDEventSystemClient *)self->_HIDClient services];
+    v4 = [services countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v4)
     {
       v5 = v4;
@@ -130,13 +130,13 @@ void __23__DRHIDClient_activate__block_invoke_3(uint64_t a1)
         {
           if (*v11 != v6)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(services);
           }
 
           [(DRHIDClient *)self serviceRemoved:*(*(&v10 + 1) + 8 * i) resetReportInterval:1];
         }
 
-        v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+        v5 = [services countByEnumeratingWithState:&v10 objects:v14 count:16];
       }
 
       while (v5);
@@ -170,26 +170,26 @@ void __23__DRHIDClient_activate__block_invoke_3(uint64_t a1)
   [(DRHIDClient *)&v4 dealloc];
 }
 
-- (void)handleEvent:(id)a3 withService:(id)a4
+- (void)handleEvent:(id)event withService:(id)service
 {
-  v5 = a3;
-  v6 = a4;
+  eventCopy = event;
+  serviceCopy = service;
   v7 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE648] reason:@"subclasses must override the implementation of this" userInfo:0];
   objc_exception_throw(v7);
 }
 
-- ($ED4A0B18993299B00AEB513B70343C82)getSensorTime:(id)a3
+- ($ED4A0B18993299B00AEB513B70343C82)getSensorTime:(id)time
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [a3 children];
-  v4 = v3;
-  if (v3)
+  children = [time children];
+  v4 = children;
+  if (children)
   {
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v5 = v3;
+    v5 = children;
     v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v6)
     {
@@ -242,12 +242,12 @@ LABEL_17:
   return v6;
 }
 
-- (void)serviceAdded:(id)a3
+- (void)serviceAdded:(id)added
 {
-  v9 = a3;
-  v4 = [(DRHIDClient *)self HIDServices];
-  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v9, "serviceID")}];
-  v6 = [v4 objectForKeyedSubscript:v5];
+  addedCopy = added;
+  hIDServices = [(DRHIDClient *)self HIDServices];
+  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(addedCopy, "serviceID")}];
+  v6 = [hIDServices objectForKeyedSubscript:v5];
 
   if (v6)
   {
@@ -259,21 +259,21 @@ LABEL_17:
 
   else
   {
-    v7 = [(DRHIDClient *)self HIDServices];
-    v8 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v9, "serviceID")}];
-    [v7 setObject:v9 forKey:v8];
+    hIDServices2 = [(DRHIDClient *)self HIDServices];
+    v8 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(addedCopy, "serviceID")}];
+    [hIDServices2 setObject:addedCopy forKey:v8];
   }
 }
 
-- (void)serviceRemoved:(id)a3 resetReportInterval:(BOOL)a4
+- (void)serviceRemoved:(id)removed resetReportInterval:(BOOL)interval
 {
-  v5 = a3;
-  v9 = [(DRHIDClient *)self HIDServices];
+  removedCopy = removed;
+  hIDServices = [(DRHIDClient *)self HIDServices];
   v6 = MEMORY[0x277CCABB0];
-  v7 = [v5 serviceID];
+  serviceID = [removedCopy serviceID];
 
-  v8 = [v6 numberWithUnsignedLongLong:v7];
-  [v9 removeObjectForKey:v8];
+  v8 = [v6 numberWithUnsignedLongLong:serviceID];
+  [hIDServices removeObjectForKey:v8];
 }
 
 - (void)reset
@@ -321,16 +321,16 @@ void __20__DRHIDClient_reset__block_invoke_2(uint64_t a1)
   [WeakRetained setHIDClient:0];
 }
 
-- (void)routedWxDeviceChanged:(id)a3
+- (void)routedWxDeviceChanged:(id)changed
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  changedCopy = changed;
   if (gLogCategory_DRHIDClient <= 50 && (gLogCategory_DRHIDClient != -1 || _LogCategory_Initialize()))
   {
     [DRHIDClient routedWxDeviceChanged:];
   }
 
-  objc_storeStrong(&self->_wxRoute, a3);
+  objc_storeStrong(&self->_wxRoute, changed);
   HIDServices = self->_HIDServices;
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
@@ -342,8 +342,8 @@ void __20__DRHIDClient_reset__block_invoke_2(uint64_t a1)
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = [(HIDEventSystemClient *)self->_HIDClient services];
-  v8 = [v7 countByEnumeratingWithState:&v17 objects:v22 count:16];
+  services = [(HIDEventSystemClient *)self->_HIDClient services];
+  v8 = [services countByEnumeratingWithState:&v17 objects:v22 count:16];
   if (v8)
   {
     v9 = v8;
@@ -354,7 +354,7 @@ LABEL_6:
     {
       if (*v18 != v10)
       {
-        objc_enumerationMutation(v7);
+        objc_enumerationMutation(services);
       }
 
       v12 = *(*(&v17 + 1) + 8 * v11);
@@ -378,7 +378,7 @@ LABEL_6:
 
       if (v9 == ++v11)
       {
-        v9 = [v7 countByEnumeratingWithState:&v17 objects:v22 count:16];
+        v9 = [services countByEnumeratingWithState:&v17 objects:v22 count:16];
         if (v9)
         {
           goto LABEL_6;

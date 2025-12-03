@@ -1,8 +1,8 @@
 @interface MOEventPatternDetectorTrendDetectorMannKendall
-+ (id)medianOf:(void *)a3;
-- (BOOL)configure:(id)a3;
++ (id)medianOf:(void *)of;
+- (BOOL)configure:(id)configure;
 - (MOEventPatternDetectorTrendDetectorMannKendall)init;
-- (id)extractTrendEventsFrom:(id)a3 withFeatures:(id)a4;
+- (id)extractTrendEventsFrom:(id)from withFeatures:(id)features;
 @end
 
 @implementation MOEventPatternDetectorTrendDetectorMannKendall
@@ -24,11 +24,11 @@
   return v3;
 }
 
-- (id)extractTrendEventsFrom:(id)a3 withFeatures:(id)a4
+- (id)extractTrendEventsFrom:(id)from withFeatures:(id)features
 {
-  v109 = a3;
-  v106 = a4;
-  v107 = self;
+  fromCopy = from;
+  featuresCopy = features;
+  selfCopy = self;
   if (self->_minimumFeatureNumberForTrend)
   {
     v100 = objc_opt_new();
@@ -40,22 +40,22 @@
     v112 = v6;
     while (1)
     {
-      if ([v109 count] <= v111)
+      if ([fromCopy count] <= v111)
       {
         [(MOPerformanceMeasurement *)v6 endSession];
         goto LABEL_89;
       }
 
       context = objc_autoreleasePoolPush();
-      v114 = [v109 objectAtIndex:v111];
-      v115 = [v106 objectAtIndex:v111];
+      v114 = [fromCopy objectAtIndex:v111];
+      v115 = [featuresCopy objectAtIndex:v111];
       v8 = [v115 count];
       v9 = [v115 valueForKeyPath:@"@max.doubleValue"];
       [v9 doubleValue];
       v11 = v10;
 
       v12 = v8;
-      if (v8 >= v107->_minimumFeatureNumberForTrend && v11 >= v107->_minimumValueOfFeatureMaximum)
+      if (v8 >= selfCopy->_minimumFeatureNumberForTrend && v11 >= selfCopy->_minimumValueOfFeatureMaximum)
       {
         break;
       }
@@ -98,9 +98,9 @@ LABEL_84:
 
             v25 = [v114 objectAtIndex:v14];
             v26 = [v114 objectAtIndex:v18];
-            v27 = [v26 startDate];
-            v28 = [v25 startDate];
-            [v27 timeIntervalSinceDate:v28];
+            startDate = [v26 startDate];
+            startDate2 = [v25 startDate];
+            [startDate timeIntervalSinceDate:startDate2];
             v30 = v29;
 
             if (v24 - v21 <= 0.0)
@@ -260,18 +260,18 @@ LABEL_48:
     if (v54 != 0.0 && v55 * -0.5 + 1.0 + v55 * -0.5 + 1.0 < 0.025)
     {
       [v105 doubleValue];
-      if (fabs(v56) >= v107->_minimumFeatureSlopeForTrend)
+      if (fabs(v56) >= selfCopy->_minimumFeatureSlopeForTrend)
       {
         v102 = [v44 objectAtIndex:{objc_msgSend(v44, "count") - 1}];
         v57 = [MOEvent alloc];
         v58 = +[NSUUID UUID];
-        v59 = [v102 startDate];
-        v60 = [v102 endDate];
+        startDate3 = [v102 startDate];
+        endDate = [v102 endDate];
         v61 = +[NSDate date];
-        v101 = -[MOEvent initWithEventIdentifier:startDate:endDate:creationDate:provider:category:](v57, "initWithEventIdentifier:startDate:endDate:creationDate:provider:category:", v58, v59, v60, v61, 5, [v102 category]);
+        v101 = -[MOEvent initWithEventIdentifier:startDate:endDate:creationDate:provider:category:](v57, "initWithEventIdentifier:startDate:endDate:creationDate:provider:category:", v58, startDate3, endDate, v61, 5, [v102 category]);
 
-        v62 = [v102 endDate];
-        v63 = [v62 dateByAddingTimeInterval:2419200.0];
+        endDate2 = [v102 endDate];
+        v63 = [endDate2 dateByAddingTimeInterval:2419200.0];
         [(MOEvent *)v101 setExpirationDate:v63];
 
         v113 = objc_opt_new();
@@ -293,9 +293,9 @@ LABEL_48:
                 objc_enumerationMutation(v64);
               }
 
-              v68 = [*(*(&v120 + 1) + 8 * j) eventIdentifier];
-              v69 = [v68 UUIDString];
-              [v113 addObject:v69];
+              eventIdentifier = [*(*(&v120 + 1) + 8 * j) eventIdentifier];
+              uUIDString = [eventIdentifier UUIDString];
+              [v113 addObject:uUIDString];
             }
 
             v65 = [v64 countByEnumeratingWithState:&v120 objects:v134 count:16];
@@ -306,7 +306,7 @@ LABEL_48:
 
         v103 = objc_opt_new();
         [v103 setObject:&off_10036BE48 forKeyedSubscript:@"kEventPatternType"];
-        v70 = [NSNumber numberWithUnsignedInteger:v107->_trendFeatureType];
+        v70 = [NSNumber numberWithUnsignedInteger:selfCopy->_trendFeatureType];
         [v103 setObject:v70 forKeyedSubscript:@"kEventPatternTrendFeatureType"];
 
         [v103 setObject:v113 forKeyedSubscript:@"kEventPatternTrendEventIdentifierList"];
@@ -319,16 +319,16 @@ LABEL_48:
 
         if ([v102 category] == 10)
         {
-          v73 = [v102 interactionScoredContact];
-          v74 = [v73 contact];
-          v75 = [v74 identifier];
-          [v103 setObject:v75 forKeyedSubscript:@"kEventPatternInteractionScoredContactIdentifier"];
+          interactionScoredContact = [v102 interactionScoredContact];
+          contact = [interactionScoredContact contact];
+          identifier = [contact identifier];
+          [v103 setObject:identifier forKeyedSubscript:@"kEventPatternInteractionScoredContactIdentifier"];
         }
 
         if ([v102 category] == 2)
         {
-          v76 = [v102 workoutType];
-          [v103 setObject:v76 forKeyedSubscript:@"kEventPatternOverallWorkoutType"];
+          workoutType = [v102 workoutType];
+          [v103 setObject:workoutType forKeyedSubscript:@"kEventPatternOverallWorkoutType"];
         }
 
         v110 = objc_opt_new();
@@ -353,45 +353,45 @@ LABEL_48:
               v81 = *(*(&v116 + 1) + 8 * k);
               if ([v81 category] == 2)
               {
-                v82 = [v81 startDate];
-                if (v82)
+                startDate4 = [v81 startDate];
+                if (startDate4)
                 {
-                  v83 = [v81 endDate];
-                  if (v83)
+                  endDate3 = [v81 endDate];
+                  if (endDate3)
                   {
-                    v84 = [v81 workoutType];
-                    if (v84)
+                    workoutType2 = [v81 workoutType];
+                    if (workoutType2)
                     {
-                      v85 = [v81 identifierFromProvider];
-                      v86 = v85 == 0;
+                      identifierFromProvider = [v81 identifierFromProvider];
+                      v86 = identifierFromProvider == 0;
 
                       if (v86)
                       {
                         continue;
                       }
 
-                      v82 = objc_opt_new();
-                      v87 = [v81 identifierFromProvider];
-                      [v82 setObject:v87 forKey:@"kEventResourcePatternWorkoutIdentifierFromProvider"];
+                      startDate4 = objc_opt_new();
+                      identifierFromProvider2 = [v81 identifierFromProvider];
+                      [startDate4 setObject:identifierFromProvider2 forKey:@"kEventResourcePatternWorkoutIdentifierFromProvider"];
 
-                      v88 = [v81 startDate];
-                      [v88 timeIntervalSince1970];
+                      startDate5 = [v81 startDate];
+                      [startDate5 timeIntervalSince1970];
                       v89 = [NSNumber numberWithDouble:?];
-                      [v82 setObject:v89 forKey:@"kEventResourcePatternWorkoutStartDate"];
+                      [startDate4 setObject:v89 forKey:@"kEventResourcePatternWorkoutStartDate"];
 
-                      v90 = [v81 endDate];
-                      [v90 timeIntervalSince1970];
+                      endDate4 = [v81 endDate];
+                      [endDate4 timeIntervalSince1970];
                       v91 = [NSNumber numberWithDouble:?];
-                      [v82 setObject:v91 forKey:@"kEventResourcePatternWorkoutEndDate"];
+                      [startDate4 setObject:v91 forKey:@"kEventResourcePatternWorkoutEndDate"];
 
-                      v92 = [v81 workoutEvent];
-                      v93 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v92 isIndoors]);
-                      [v82 setObject:v93 forKey:@"kEventResourcePatternWorkoutIsIndoors"];
+                      workoutEvent = [v81 workoutEvent];
+                      v93 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [workoutEvent isIndoors]);
+                      [startDate4 setObject:v93 forKey:@"kEventResourcePatternWorkoutIsIndoors"];
 
-                      v94 = [v81 workoutType];
-                      [v82 setObject:v94 forKey:@"kEventResourcePatternWorkoutType"];
+                      workoutType3 = [v81 workoutType];
+                      [startDate4 setObject:workoutType3 forKey:@"kEventResourcePatternWorkoutType"];
 
-                      [v110 addObject:v82];
+                      [v110 addObject:startDate4];
                     }
 
                     else
@@ -450,11 +450,11 @@ LABEL_89:
   return v100;
 }
 
-+ (id)medianOf:(void *)a3
++ (id)medianOf:(void *)of
 {
-  v5 = *(a3 + 1);
-  v6 = *a3;
-  v7 = v5 - *a3;
+  v5 = *(of + 1);
+  v6 = *of;
+  v7 = v5 - *of;
   v8 = v7 >> 3;
   if (v7 >> 3)
   {
@@ -470,8 +470,8 @@ LABEL_89:
       if (v12 != v5)
       {
         std::__nth_element[abi:ne200100]<std::_ClassicAlgPolicy,std::__less<void,void> &,std::__wrap_iter<double *>>(v6, v12, v5, v3);
-        v6 = *a3;
-        v7 = *(a3 + 1) - *a3;
+        v6 = *of;
+        v7 = *(of + 1) - *of;
       }
 
       v9 = v6[v11];
@@ -514,17 +514,17 @@ LABEL_89:
   return v10;
 }
 
-- (BOOL)configure:(id)a3
+- (BOOL)configure:(id)configure
 {
-  v4 = a3;
-  v5 = [v4 count];
+  configureCopy = configure;
+  v5 = [configureCopy count];
   if (v5)
   {
-    v6 = [v4 objectForKey:@"MinimumFeatureNumberForTrend"];
+    v6 = [configureCopy objectForKey:@"MinimumFeatureNumberForTrend"];
 
     if (v6)
     {
-      v7 = [v4 objectForKeyedSubscript:@"MinimumFeatureNumberForTrend"];
+      v7 = [configureCopy objectForKeyedSubscript:@"MinimumFeatureNumberForTrend"];
       self->_minimumFeatureNumberForTrend = [v7 intValue];
     }
 
@@ -537,11 +537,11 @@ LABEL_89:
       }
     }
 
-    v9 = [v4 objectForKey:@"MinimumValueOfFeatureMaximum"];
+    v9 = [configureCopy objectForKey:@"MinimumValueOfFeatureMaximum"];
 
     if (v9)
     {
-      v10 = [v4 objectForKeyedSubscript:@"MinimumValueOfFeatureMaximum"];
+      v10 = [configureCopy objectForKeyedSubscript:@"MinimumValueOfFeatureMaximum"];
       [v10 doubleValue];
       self->_minimumValueOfFeatureMaximum = v11;
     }
@@ -555,11 +555,11 @@ LABEL_89:
       }
     }
 
-    v12 = [v4 objectForKey:@"MinimumFeatureSlopeForTrend"];
+    v12 = [configureCopy objectForKey:@"MinimumFeatureSlopeForTrend"];
 
     if (v12)
     {
-      v13 = [v4 objectForKeyedSubscript:@"MinimumFeatureSlopeForTrend"];
+      v13 = [configureCopy objectForKeyedSubscript:@"MinimumFeatureSlopeForTrend"];
       [v13 doubleValue];
       self->_minimumFeatureSlopeForTrend = v14;
     }
@@ -573,11 +573,11 @@ LABEL_89:
       }
     }
 
-    v15 = [v4 objectForKey:@"MinimumFeatureSlopeForTrend"];
+    v15 = [configureCopy objectForKey:@"MinimumFeatureSlopeForTrend"];
 
     if (v15)
     {
-      v16 = [v4 objectForKeyedSubscript:@"MinimumFeatureSlopeForTrend"];
+      v16 = [configureCopy objectForKeyedSubscript:@"MinimumFeatureSlopeForTrend"];
       [v16 doubleValue];
       self->_minimumFeatureSlopeForTrend = v17;
     }
@@ -591,11 +591,11 @@ LABEL_89:
       }
     }
 
-    v18 = [v4 objectForKey:@"TrendFeatureType"];
+    v18 = [configureCopy objectForKey:@"TrendFeatureType"];
 
     if (v18)
     {
-      v19 = [v4 objectForKeyedSubscript:@"TrendFeatureType"];
+      v19 = [configureCopy objectForKeyedSubscript:@"TrendFeatureType"];
       self->_trendFeatureType = [v19 intValue];
     }
 

@@ -1,20 +1,20 @@
 @interface FCRestorePaidSubscriptionItem
-- (FCRestorePaidSubscriptionItem)initWithChannelID:(id)a3 isNewsAppPurchase:(BOOL)a4;
+- (FCRestorePaidSubscriptionItem)initWithChannelID:(id)d isNewsAppPurchase:(BOOL)purchase;
 @end
 
 @implementation FCRestorePaidSubscriptionItem
 
-- (FCRestorePaidSubscriptionItem)initWithChannelID:(id)a3 isNewsAppPurchase:(BOOL)a4
+- (FCRestorePaidSubscriptionItem)initWithChannelID:(id)d isNewsAppPurchase:(BOOL)purchase
 {
-  v7 = a3;
+  dCopy = d;
   v11.receiver = self;
   v11.super_class = FCRestorePaidSubscriptionItem;
   v8 = [(FCRestorePaidSubscriptionItem *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_channelID, a3);
-    v9->_isNewsAppPurchase = a4;
+    objc_storeStrong(&v8->_channelID, d);
+    v9->_isNewsAppPurchase = purchase;
   }
 
   return v9;

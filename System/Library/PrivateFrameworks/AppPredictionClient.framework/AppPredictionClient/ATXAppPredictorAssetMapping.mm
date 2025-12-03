@@ -1,11 +1,11 @@
 @interface ATXAppPredictorAssetMapping
 + (id)assetMappingWithCachedAssets;
 + (id)sharedInstanceWithMobileAssets;
-- (ATXAppPredictorAssetMapping)initWithUseMobileAssets:(BOOL)a3;
-- (id)getAssetFileAndSubscoreForConsumerSubType:(unsigned __int8)a3;
+- (ATXAppPredictorAssetMapping)initWithUseMobileAssets:(BOOL)assets;
+- (id)getAssetFileAndSubscoreForConsumerSubType:(unsigned __int8)type;
 - (id)getAtxToolDescription;
-- (id)getFullCachePathWithBaseCachePath:(id)a3 consumerSubType:(unsigned __int8)a4;
-- (id)getFullDefaultCachePathWithConsumerSubType:(unsigned __int8)a3;
+- (id)getFullCachePathWithBaseCachePath:(id)path consumerSubType:(unsigned __int8)type;
+- (id)getFullDefaultCachePathWithConsumerSubType:(unsigned __int8)type;
 @end
 
 @implementation ATXAppPredictorAssetMapping
@@ -17,11 +17,11 @@
   return v2;
 }
 
-- (ATXAppPredictorAssetMapping)initWithUseMobileAssets:(BOOL)a3
+- (ATXAppPredictorAssetMapping)initWithUseMobileAssets:(BOOL)assets
 {
-  v3 = a3;
-  v6 = [MEMORY[0x1E698B010] appPredictionDirectory];
-  v7 = [v6 stringByAppendingPathComponent:@"caches/assetMapping"];
+  assetsCopy = assets;
+  appPredictionDirectory = [MEMORY[0x1E698B010] appPredictionDirectory];
+  v7 = [appPredictionDirectory stringByAppendingPathComponent:@"caches/assetMapping"];
 
   v46.receiver = self;
   v46.super_class = ATXAppPredictorAssetMapping;
@@ -32,7 +32,7 @@
     goto LABEL_20;
   }
 
-  if (!v3)
+  if (!assetsCopy)
   {
     v9 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithContentsOfFile:v7];
     if (v9)
@@ -81,12 +81,12 @@ LABEL_10:
   v22 = NSStringFromClass(v21);
   v23 = [(ATXAssetsABHelper *)v20 initWithAssetsForResource:v22 ofType:@"plist" specifiedABGroup:0];
 
-  v24 = [(ATXAssetsABHelper *)v23 abGroupContents];
-  v25 = [v24 objectForKeyedSubscript:@"consumerSubTypeToAssetFileMapping"];
+  abGroupContents = [(ATXAssetsABHelper *)v23 abGroupContents];
+  v25 = [abGroupContents objectForKeyedSubscript:@"consumerSubTypeToAssetFileMapping"];
   v26 = v8->_consumerSubTypeAssetMappings;
   v8->_consumerSubTypeAssetMappings = v25;
 
-  if (v3)
+  if (assetsCopy)
   {
     if (!v8->_consumerSubTypeAssetMappings)
     {
@@ -141,9 +141,9 @@ void __61__ATXAppPredictorAssetMapping_sharedInstanceWithMobileAssets__block_inv
   objc_autoreleasePoolPop(v0);
 }
 
-- (id)getAssetFileAndSubscoreForConsumerSubType:(unsigned __int8)a3
+- (id)getAssetFileAndSubscoreForConsumerSubType:(unsigned __int8)type
 {
-  v5 = [MEMORY[0x1E698B028] stringForConsumerSubtype:a3];
+  v5 = [MEMORY[0x1E698B028] stringForConsumerSubtype:type];
   v6 = [(NSDictionary *)self->_consumerSubTypeAssetMappings objectForKeyedSubscript:v5];
   if (v6)
   {
@@ -187,24 +187,24 @@ LABEL_7:
   return v17;
 }
 
-- (id)getFullDefaultCachePathWithConsumerSubType:(unsigned __int8)a3
+- (id)getFullDefaultCachePathWithConsumerSubType:(unsigned __int8)type
 {
-  v3 = a3;
-  v5 = [MEMORY[0x1E698B010] appPredictionDirectory];
-  v6 = [v5 stringByAppendingPathComponent:@"caches/ATXCacheFile"];
-  v7 = [(ATXAppPredictorAssetMapping *)self getFullCachePathWithBaseCachePath:v6 consumerSubType:v3];
+  typeCopy = type;
+  appPredictionDirectory = [MEMORY[0x1E698B010] appPredictionDirectory];
+  v6 = [appPredictionDirectory stringByAppendingPathComponent:@"caches/ATXCacheFile"];
+  v7 = [(ATXAppPredictorAssetMapping *)self getFullCachePathWithBaseCachePath:v6 consumerSubType:typeCopy];
 
   return v7;
 }
 
-- (id)getFullCachePathWithBaseCachePath:(id)a3 consumerSubType:(unsigned __int8)a4
+- (id)getFullCachePathWithBaseCachePath:(id)path consumerSubType:(unsigned __int8)type
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(ATXAppPredictorAssetMapping *)self getAssetFileAndSubscoreForConsumerSubType:v4];
-  v8 = [v7 first];
-  v9 = [v7 second];
-  v10 = [ATXAppPredictorAssetMapping getFullCachePathWithBaseCachePath:v6 cacheFileBaseName:v8 subScoreName:v9];
+  typeCopy = type;
+  pathCopy = path;
+  v7 = [(ATXAppPredictorAssetMapping *)self getAssetFileAndSubscoreForConsumerSubType:typeCopy];
+  first = [v7 first];
+  second = [v7 second];
+  v10 = [ATXAppPredictorAssetMapping getFullCachePathWithBaseCachePath:pathCopy cacheFileBaseName:first subScoreName:second];
 
   return v10;
 }
@@ -289,7 +289,7 @@ LABEL_7:
         if ([v39 containsObject:v16])
         {
           v40 = [[ATXAssetsABHelper alloc] initWithAssetsForResource:v16 ofType:@"plist" specifiedABGroup:0];
-          v21 = [(ATXAssetsABHelper *)v40 abGroupContents];
+          abGroupContents = [(ATXAssetsABHelper *)v40 abGroupContents];
 LABEL_22:
           v23 = &stru_1F3E050C8;
           goto LABEL_25;
@@ -297,16 +297,16 @@ LABEL_22:
 
         if ([v34 containsObject:v16])
         {
-          v21 = 0;
+          abGroupContents = 0;
           v40 = 0;
         }
 
         else
         {
           v22 = [[ATXAssetsABHelper alloc] initWithAssetsForResource:v16 ofType:@"plist" specifiedABGroup:0];
-          v21 = [(ATXAssetsABHelper *)v22 abGroupContents];
+          abGroupContents = [(ATXAssetsABHelper *)v22 abGroupContents];
           v40 = v22;
-          if (v21)
+          if (abGroupContents)
           {
             [v39 addObject:v16];
             goto LABEL_22;
@@ -317,7 +317,7 @@ LABEL_22:
 
         v23 = @"(INVALID ASSET FILE)";
 LABEL_25:
-        v24 = [v21 objectForKeyedSubscript:@"Scorer"];
+        v24 = [abGroupContents objectForKeyedSubscript:@"Scorer"];
         v25 = [v24 objectForKeyedSubscript:v20];
         v26 = @" (MISSING FROM ASSET FILE)";
         if (v25)
@@ -327,8 +327,8 @@ LABEL_25:
 
         v27 = v26;
 
-        v28 = [MEMORY[0x1E698B010] appPredictionDirectory];
-        v29 = [v28 stringByAppendingPathComponent:@"caches/ATXCacheFile"];
+        appPredictionDirectory = [MEMORY[0x1E698B010] appPredictionDirectory];
+        v29 = [appPredictionDirectory stringByAppendingPathComponent:@"caches/ATXCacheFile"];
         v30 = [ATXAppPredictorAssetMapping getFullCachePathWithBaseCachePath:v29 cacheFileBaseName:v16 subScoreName:v20];
 
         [v36 appendFormat:@"%@%@\n", v41, v43];

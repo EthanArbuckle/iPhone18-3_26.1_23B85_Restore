@@ -1,13 +1,13 @@
 @interface RelatedSearchSuggestionView
 - (CGSize)intrinsicContentSize;
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3;
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size;
 - (MapsThemeButton)closeButton;
 - (UIScrollView)scrollView;
 - (UIVisualEffectView)blurView;
 - (void)layoutSubviews;
 - (void)safeAreaInsetsDidChange;
-- (void)setAlpha:(double)a3 animated:(BOOL)a4;
-- (void)setShowCloseButton:(BOOL)a3;
+- (void)setAlpha:(double)alpha animated:(BOOL)animated;
+- (void)setShowCloseButton:(BOOL)button;
 @end
 
 @implementation RelatedSearchSuggestionView
@@ -94,37 +94,37 @@
   return result;
 }
 
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size
 {
-  width = a3.width;
-  [(RelatedSearchSuggestionView *)self intrinsicContentSize:a3.width];
+  width = size.width;
+  [(RelatedSearchSuggestionView *)self intrinsicContentSize:size.width];
   v5 = width;
   result.height = v4;
   result.width = v5;
   return result;
 }
 
-- (void)setShowCloseButton:(BOOL)a3
+- (void)setShowCloseButton:(BOOL)button
 {
-  if (self->_showCloseButton != a3)
+  if (self->_showCloseButton != button)
   {
-    self->_showCloseButton = a3;
+    self->_showCloseButton = button;
     [(RelatedSearchSuggestionView *)self setNeedsLayout];
   }
 }
 
-- (void)setAlpha:(double)a3 animated:(BOOL)a4
+- (void)setAlpha:(double)alpha animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   [(RelatedSearchSuggestionView *)self alpha];
-  if (v7 != a3)
+  if (v7 != alpha)
   {
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_100DB34D4;
     v12[3] = &unk_101661650;
     v12[4] = self;
-    *&v12[5] = a3;
+    *&v12[5] = alpha;
     v8 = objc_retainBlock(v12);
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
@@ -134,7 +134,7 @@
     v9 = objc_retainBlock(v11);
     [(RelatedSearchSuggestionView *)self endEditing:1];
     [(RelatedSearchSuggestionView *)self setUserInteractionEnabled:0];
-    if (v4)
+    if (animatedCopy)
     {
       v10[0] = _NSConcreteStackBlock;
       v10[1] = 3221225472;

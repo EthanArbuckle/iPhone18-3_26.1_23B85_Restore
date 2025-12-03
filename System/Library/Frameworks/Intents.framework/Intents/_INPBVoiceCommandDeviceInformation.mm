@@ -1,44 +1,44 @@
 @interface _INPBVoiceCommandDeviceInformation
-- (BOOL)isEqual:(id)a3;
-- (_INPBVoiceCommandDeviceInformation)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBVoiceCommandDeviceInformation)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (int)StringAsDeviceIdiom:(id)a3;
+- (int)StringAsDeviceIdiom:(id)idiom;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setDeviceIdiom:(int)a3;
-- (void)setHasIsHomePodInUltimateMode:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setDeviceIdiom:(int)idiom;
+- (void)setHasIsHomePodInUltimateMode:(BOOL)mode;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBVoiceCommandDeviceInformation
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(_INPBVoiceCommandDeviceInformation *)self hasDeviceIdiom])
   {
-    v4 = [(_INPBVoiceCommandDeviceInformation *)self deviceIdiom];
-    if ((v4 - 1) >= 7)
+    deviceIdiom = [(_INPBVoiceCommandDeviceInformation *)self deviceIdiom];
+    if ((deviceIdiom - 1) >= 7)
     {
-      v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v4];
+      v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", deviceIdiom];
     }
 
     else
     {
-      v5 = off_1E727DF48[(v4 - 1)];
+      v5 = off_1E727DF48[(deviceIdiom - 1)];
     }
 
-    [v3 setObject:v5 forKeyedSubscript:@"deviceIdiom"];
+    [dictionary setObject:v5 forKeyedSubscript:@"deviceIdiom"];
   }
 
   if ([(_INPBVoiceCommandDeviceInformation *)self hasIsHomePodInUltimateMode])
   {
     v6 = [MEMORY[0x1E696AD98] numberWithBool:{-[_INPBVoiceCommandDeviceInformation isHomePodInUltimateMode](self, "isHomePodInUltimateMode")}];
-    [v3 setObject:v6 forKeyedSubscript:@"isHomePodInUltimateMode"];
+    [dictionary setObject:v6 forKeyedSubscript:@"isHomePodInUltimateMode"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -66,21 +66,21 @@
   return v4 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v8 = 0;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(_INPBVoiceCommandDeviceInformation *)self hasDeviceIdiom];
-    if (v5 == [v4 hasDeviceIdiom])
+    hasDeviceIdiom = [(_INPBVoiceCommandDeviceInformation *)self hasDeviceIdiom];
+    if (hasDeviceIdiom == [equalCopy hasDeviceIdiom])
     {
-      if (!-[_INPBVoiceCommandDeviceInformation hasDeviceIdiom](self, "hasDeviceIdiom") || ![v4 hasDeviceIdiom] || (deviceIdiom = self->_deviceIdiom, deviceIdiom == objc_msgSend(v4, "deviceIdiom")))
+      if (!-[_INPBVoiceCommandDeviceInformation hasDeviceIdiom](self, "hasDeviceIdiom") || ![equalCopy hasDeviceIdiom] || (deviceIdiom = self->_deviceIdiom, deviceIdiom == objc_msgSend(equalCopy, "deviceIdiom")))
       {
-        v7 = [(_INPBVoiceCommandDeviceInformation *)self hasIsHomePodInUltimateMode];
-        if (v7 == [v4 hasIsHomePodInUltimateMode])
+        hasIsHomePodInUltimateMode = [(_INPBVoiceCommandDeviceInformation *)self hasIsHomePodInUltimateMode];
+        if (hasIsHomePodInUltimateMode == [equalCopy hasIsHomePodInUltimateMode])
         {
-          if (!-[_INPBVoiceCommandDeviceInformation hasIsHomePodInUltimateMode](self, "hasIsHomePodInUltimateMode") || ![v4 hasIsHomePodInUltimateMode] || (isHomePodInUltimateMode = self->_isHomePodInUltimateMode, isHomePodInUltimateMode == objc_msgSend(v4, "isHomePodInUltimateMode")))
+          if (!-[_INPBVoiceCommandDeviceInformation hasIsHomePodInUltimateMode](self, "hasIsHomePodInUltimateMode") || ![equalCopy hasIsHomePodInUltimateMode] || (isHomePodInUltimateMode = self->_isHomePodInUltimateMode, isHomePodInUltimateMode == objc_msgSend(equalCopy, "isHomePodInUltimateMode")))
           {
             v8 = 1;
           }
@@ -92,7 +92,7 @@
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[_INPBVoiceCommandDeviceInformation allocWithZone:?]];
   if ([(_INPBVoiceCommandDeviceInformation *)self hasDeviceIdiom])
@@ -108,33 +108,33 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBVoiceCommandDeviceInformation *)self data];
+  coderCopy = coder;
+  data = [(_INPBVoiceCommandDeviceInformation *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBVoiceCommandDeviceInformation)initWithCoder:(id)a3
+- (_INPBVoiceCommandDeviceInformation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBVoiceCommandDeviceInformation *)self initWithData:v6];
+    self = [(_INPBVoiceCommandDeviceInformation *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
+  toCopy = to;
   if ([(_INPBVoiceCommandDeviceInformation *)self hasDeviceIdiom])
   {
     deviceIdiom = self->_deviceIdiom;
@@ -148,9 +148,9 @@
   }
 }
 
-- (void)setHasIsHomePodInUltimateMode:(BOOL)a3
+- (void)setHasIsHomePodInUltimateMode:(BOOL)mode
 {
-  if (a3)
+  if (mode)
   {
     v3 = 2;
   }
@@ -163,40 +163,40 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (int)StringAsDeviceIdiom:(id)a3
+- (int)StringAsDeviceIdiom:(id)idiom
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"PHONE"])
+  idiomCopy = idiom;
+  if ([idiomCopy isEqualToString:@"PHONE"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"PAD"])
+  else if ([idiomCopy isEqualToString:@"PAD"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"WATCH"])
+  else if ([idiomCopy isEqualToString:@"WATCH"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"HOME_POD"])
+  else if ([idiomCopy isEqualToString:@"HOME_POD"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"CARPLAY"])
+  else if ([idiomCopy isEqualToString:@"CARPLAY"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"APPLE_TV"])
+  else if ([idiomCopy isEqualToString:@"APPLE_TV"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"MAC"])
+  else if ([idiomCopy isEqualToString:@"MAC"])
   {
     v4 = 7;
   }
@@ -209,10 +209,10 @@
   return v4;
 }
 
-- (void)setDeviceIdiom:(int)a3
+- (void)setDeviceIdiom:(int)idiom
 {
   has = self->_has;
-  if (a3 == 0x7FFFFFFF)
+  if (idiom == 0x7FFFFFFF)
   {
     *&self->_has = has & 0xFE;
   }
@@ -220,7 +220,7 @@
   else
   {
     *&self->_has = has | 1;
-    self->_deviceIdiom = a3;
+    self->_deviceIdiom = idiom;
   }
 }
 

@@ -1,18 +1,18 @@
 @interface HMDHAPAccessoryReaderWriterMetricHelper
-+ (BOOL)_isLinkFallback:(id)a3 reportedLinkLayerType:(int64_t)a4;
-+ (void)updateLogEvents:(id)a3 withResponses:(id)a4 forTaskID:(id)a5 shouldSubmit:(BOOL)a6;
-+ (void)updateLogEvents:(id)a3 withResponses:(id)a4 remoteMessageResponse:(id)a5 forTaskID:(id)a6 shouldSubmit:(BOOL)a7;
++ (BOOL)_isLinkFallback:(id)fallback reportedLinkLayerType:(int64_t)type;
++ (void)updateLogEvents:(id)events withResponses:(id)responses forTaskID:(id)d shouldSubmit:(BOOL)submit;
++ (void)updateLogEvents:(id)events withResponses:(id)responses remoteMessageResponse:(id)response forTaskID:(id)d shouldSubmit:(BOOL)submit;
 @end
 
 @implementation HMDHAPAccessoryReaderWriterMetricHelper
 
-+ (BOOL)_isLinkFallback:(id)a3 reportedLinkLayerType:(int64_t)a4
++ (BOOL)_isLinkFallback:(id)fallback reportedLinkLayerType:(int64_t)type
 {
-  v5 = a3;
-  v6 = v5;
-  if ((a4 - 1) < 2)
+  fallbackCopy = fallback;
+  v6 = fallbackCopy;
+  if ((type - 1) < 2)
   {
-    if ([v5 isEqualToString:@"WiFi-Ethernet"])
+    if ([fallbackCopy isEqualToString:@"WiFi-Ethernet"])
     {
       goto LABEL_9;
     }
@@ -20,14 +20,14 @@
     v7 = @"IP";
   }
 
-  else if (a4 == 3)
+  else if (type == 3)
   {
     v7 = @"BLE";
   }
 
   else
   {
-    if (a4 != 4)
+    if (type != 4)
     {
       goto LABEL_9;
     }
@@ -48,17 +48,17 @@ LABEL_11:
   return v8;
 }
 
-+ (void)updateLogEvents:(id)a3 withResponses:(id)a4 remoteMessageResponse:(id)a5 forTaskID:(id)a6 shouldSubmit:(BOOL)a7
++ (void)updateLogEvents:(id)events withResponses:(id)responses remoteMessageResponse:(id)response forTaskID:(id)d shouldSubmit:(BOOL)submit
 {
-  v12 = a3;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = [v14 objectForKeyedSubscript:@"kRemoteMessageTransportAttributionKey"];
-  v17 = [v16 intValue];
+  eventsCopy = events;
+  dCopy = d;
+  responseCopy = response;
+  responsesCopy = responses;
+  v16 = [responseCopy objectForKeyedSubscript:@"kRemoteMessageTransportAttributionKey"];
+  intValue = [v16 intValue];
 
-  LOBYTE(v16) = [v14 hmf_BOOLForKey:@"kRemoteMessageIsRapportLinkSlowKey"];
-  v18 = [v14 hmf_BOOLForKey:@"kRemoteMessageIsModernTransportUsedKey"];
+  LOBYTE(v16) = [responseCopy hmf_BOOLForKey:@"kRemoteMessageIsRapportLinkSlowKey"];
+  v18 = [responseCopy hmf_BOOLForKey:@"kRemoteMessageIsModernTransportUsedKey"];
 
   [MEMORY[0x277D17DC0] currentTime];
   v20 = v19;
@@ -67,19 +67,19 @@ LABEL_11:
   v25[1] = 3221225472;
   v25[2] = __118__HMDHAPAccessoryReaderWriterMetricHelper_updateLogEvents_withResponses_remoteMessageResponse_forTaskID_shouldSubmit___block_invoke;
   v25[3] = &unk_279728DB0;
-  v31 = v17;
+  v31 = intValue;
   v32 = v16;
   v33 = v18;
   v29 = v20;
-  v34 = a7;
-  v26 = v12;
+  submitCopy = submit;
+  v26 = eventsCopy;
   v27 = v21;
-  v30 = a1;
-  v28 = v13;
-  v22 = v13;
+  selfCopy = self;
+  v28 = dCopy;
+  v22 = dCopy;
   v23 = v21;
-  v24 = v12;
-  [v15 na_each:v25];
+  v24 = eventsCopy;
+  [responsesCopy na_each:v25];
 }
 
 void __118__HMDHAPAccessoryReaderWriterMetricHelper_updateLogEvents_withResponses_remoteMessageResponse_forTaskID_shouldSubmit___block_invoke(uint64_t a1, void *a2)
@@ -218,12 +218,12 @@ void __118__HMDHAPAccessoryReaderWriterMetricHelper_updateLogEvents_withResponse
   v25 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)updateLogEvents:(id)a3 withResponses:(id)a4 forTaskID:(id)a5 shouldSubmit:(BOOL)a6
++ (void)updateLogEvents:(id)events withResponses:(id)responses forTaskID:(id)d shouldSubmit:(BOOL)submit
 {
-  v10 = a3;
-  v11 = a5;
+  eventsCopy = events;
+  dCopy = d;
   v12 = MEMORY[0x277D17DC0];
-  v13 = a4;
+  responsesCopy = responses;
   [v12 currentTime];
   v15 = v14;
   v16 = [MEMORY[0x277CBEB58] set];
@@ -232,15 +232,15 @@ void __118__HMDHAPAccessoryReaderWriterMetricHelper_updateLogEvents_withResponse
   v20[2] = __96__HMDHAPAccessoryReaderWriterMetricHelper_updateLogEvents_withResponses_forTaskID_shouldSubmit___block_invoke;
   v20[3] = &unk_279728D88;
   v24 = v15;
-  v25 = a1;
-  v26 = a6;
-  v21 = v10;
+  selfCopy = self;
+  submitCopy = submit;
+  v21 = eventsCopy;
   v22 = v16;
-  v23 = v11;
-  v17 = v11;
+  v23 = dCopy;
+  v17 = dCopy;
   v18 = v16;
-  v19 = v10;
-  [v13 na_each:v20];
+  v19 = eventsCopy;
+  [responsesCopy na_each:v20];
 }
 
 void __96__HMDHAPAccessoryReaderWriterMetricHelper_updateLogEvents_withResponses_forTaskID_shouldSubmit___block_invoke(uint64_t a1, void *a2)

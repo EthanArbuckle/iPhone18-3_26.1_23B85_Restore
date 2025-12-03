@@ -1,10 +1,10 @@
 @interface HDServiceEntity
-+ (BOOL)deleteService:(id)a3 healthDatabase:(id)a4 error:(id *)a5;
-+ (BOOL)healthUpdatesEnabledForDevice:(id)a3 inDatabase:(id)a4 error:(id *)a5;
-+ (BOOL)setHealthUpdatesEnabled:(BOOL)a3 forDevice:(id)a4 inDatabase:(id)a5 error:(id *)a6;
-+ (id)allServicesWithProfile:(id)a3 error:(id *)a4;
-+ (id)entityEncoderForProfile:(id)a3 transaction:(id)a4 purpose:(int64_t)a5 encodingOptions:(id)a6 authorizationFilter:(id)a7;
-+ (id)insertOrUpdateService:(id)a3 healthDatabase:(id)a4 error:(id *)a5;
++ (BOOL)deleteService:(id)service healthDatabase:(id)database error:(id *)error;
++ (BOOL)healthUpdatesEnabledForDevice:(id)device inDatabase:(id)database error:(id *)error;
++ (BOOL)setHealthUpdatesEnabled:(BOOL)enabled forDevice:(id)device inDatabase:(id)database error:(id *)error;
++ (id)allServicesWithProfile:(id)profile error:(id *)error;
++ (id)entityEncoderForProfile:(id)profile transaction:(id)transaction purpose:(int64_t)purpose encodingOptions:(id)options authorizationFilter:(id)filter;
++ (id)insertOrUpdateService:(id)service healthDatabase:(id)database error:(id *)error;
 + (id)uniquedColumns;
 @end
 
@@ -21,13 +21,13 @@
   return v2;
 }
 
-+ (id)insertOrUpdateService:(id)a3 healthDatabase:(id)a4 error:(id *)a5
++ (id)insertOrUpdateService:(id)service healthDatabase:(id)database error:(id *)error
 {
   v42 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (v8 && v9)
+  serviceCopy = service;
+  databaseCopy = database;
+  v10 = databaseCopy;
+  if (serviceCopy && databaseCopy)
   {
     *buf = 0;
     *&buf[8] = buf;
@@ -39,12 +39,12 @@
     v27 = 3221225472;
     v28 = __62__HDServiceEntity_insertOrUpdateService_healthDatabase_error___block_invoke;
     v29 = &unk_27861C150;
-    v33 = a1;
-    v11 = v8;
+    selfCopy = self;
+    v11 = serviceCopy;
     v30 = v11;
     v32 = buf;
     v31 = v10;
-    if ([a1 performWriteTransactionWithHealthDatabase:v31 error:a5 block:&v26])
+    if ([self performWriteTransactionWithHealthDatabase:v31 error:error block:&v26])
     {
       v12 = *(*&buf[8] + 40);
     }
@@ -56,12 +56,12 @@
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
       {
         v23 = objc_opt_class();
-        v24 = [v11 identifier];
-        v25 = [v24 UUIDString];
+        identifier = [v11 identifier];
+        uUIDString = [identifier UUIDString];
         *v34 = 138543618;
         v35 = v23;
         v36 = 2114;
-        v37 = v25;
+        v37 = uUIDString;
         _os_log_error_impl(&dword_228986000, v15, OS_LOG_TYPE_ERROR, "%{public}@: cannot insert service %{public}@ into database", v34, 0x16u);
       }
 
@@ -82,12 +82,12 @@
       v18 = v13;
       v19 = objc_opt_class();
       v20 = v19;
-      v21 = [v8 identifier];
-      v22 = [v21 UUIDString];
+      identifier2 = [serviceCopy identifier];
+      uUIDString2 = [identifier2 UUIDString];
       *buf = 138543618;
       *&buf[4] = v19;
       *&buf[12] = 2114;
-      *&buf[14] = v22;
+      *&buf[14] = uUIDString2;
       _os_log_error_impl(&dword_228986000, v18, OS_LOG_TYPE_ERROR, "%{public}@: invalid parameters, service: %{public}@", buf, 0x16u);
     }
 
@@ -239,34 +239,34 @@ void __62__HDServiceEntity_insertOrUpdateService_healthDatabase_error___block_in
   JUMPOUT(0x22AAC6B60);
 }
 
-+ (BOOL)deleteService:(id)a3 healthDatabase:(id)a4 error:(id *)a5
++ (BOOL)deleteService:(id)service healthDatabase:(id)database error:(id *)error
 {
   v33 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
+  serviceCopy = service;
+  databaseCopy = database;
   v21 = MEMORY[0x277D85DD0];
   v22 = 3221225472;
   v23 = __54__HDServiceEntity_deleteService_healthDatabase_error___block_invoke;
   v24 = &unk_2786154B8;
-  v27 = a1;
-  v11 = v9;
+  selfCopy = self;
+  v11 = serviceCopy;
   v25 = v11;
-  v12 = v10;
+  v12 = databaseCopy;
   v26 = v12;
   v28 = a2;
-  v13 = [a1 performWriteTransactionWithHealthDatabase:v12 error:a5 block:&v21];
+  v13 = [self performWriteTransactionWithHealthDatabase:v12 error:error block:&v21];
   if ((v13 & 1) == 0)
   {
     _HKInitializeLogging();
     v14 = *MEMORY[0x277CCC318];
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
-      v17 = [v11 identifier];
-      v18 = [v17 UUIDString];
-      v19 = v18;
-      if (a5)
+      identifier = [v11 identifier];
+      uUIDString = [identifier UUIDString];
+      v19 = uUIDString;
+      if (error)
       {
-        v20 = *a5;
+        v20 = *error;
       }
 
       else
@@ -275,7 +275,7 @@ void __62__HDServiceEntity_insertOrUpdateService_healthDatabase_error___block_in
       }
 
       *buf = 138543618;
-      v30 = v18;
+      v30 = uUIDString;
       v31 = 2114;
       v32 = v20;
       _os_log_error_impl(&dword_228986000, v14, OS_LOG_TYPE_ERROR, "Cannot delete service %{public}@ from database. Error: %{public}@", buf, 0x16u);
@@ -354,9 +354,9 @@ LABEL_9:
   return v28;
 }
 
-+ (id)allServicesWithProfile:(id)a3 error:(id *)a4
++ (id)allServicesWithProfile:(id)profile error:(id *)error
 {
-  v6 = a3;
+  profileCopy = profile;
   v25 = 0;
   v26 = &v25;
   v27 = 0x3032000000;
@@ -369,30 +369,30 @@ LABEL_9:
   v22 = __Block_byref_object_copy__62;
   v23 = __Block_byref_object_dispose__62;
   v24 = 0;
-  v7 = [v6 database];
+  database = [profileCopy database];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __48__HDServiceEntity_allServicesWithProfile_error___block_invoke;
   v14[3] = &unk_27861C178;
   v16 = &v25;
-  v18 = a1;
-  v8 = v6;
+  selfCopy = self;
+  v8 = profileCopy;
   v15 = v8;
   v17 = &v19;
-  v9 = [a1 performReadTransactionWithHealthDatabase:v7 error:a4 block:v14];
+  v9 = [self performReadTransactionWithHealthDatabase:database error:error block:v14];
 
   if (v9)
   {
     if ([v20[5] count])
     {
-      v10 = [v8 database];
+      database2 = [v8 database];
       v13[0] = MEMORY[0x277D85DD0];
       v13[1] = 3221225472;
       v13[2] = __48__HDServiceEntity_allServicesWithProfile_error___block_invoke_2;
       v13[3] = &unk_27861C1A0;
       v13[4] = &v19;
-      v13[5] = a1;
-      [a1 performWriteTransactionWithHealthDatabase:v10 error:a4 block:v13];
+      v13[5] = self;
+      [self performWriteTransactionWithHealthDatabase:database2 error:error block:v13];
     }
 
     v11 = v26[5];
@@ -521,12 +521,12 @@ uint64_t __48__HDServiceEntity_allServicesWithProfile_error___block_invoke_2(uin
   return 1;
 }
 
-+ (BOOL)healthUpdatesEnabledForDevice:(id)a3 inDatabase:(id)a4 error:(id *)a5
++ (BOOL)healthUpdatesEnabledForDevice:(id)device inDatabase:(id)database error:(id *)error
 {
   v26[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (v8)
+  deviceCopy = device;
+  databaseCopy = database;
+  if (databaseCopy)
   {
     v22 = 0;
     v23 = &v22;
@@ -549,13 +549,13 @@ uint64_t __48__HDServiceEntity_allServicesWithProfile_error___block_invoke_2(uin
     v17[3] = &unk_278619EE8;
     v17[4] = &v22;
     v17[5] = &v18;
-    LOBYTE(v12) = [v12 enumerateProperties:v13 withPredicate:v11 healthDatabase:v8 error:a5 enumerationHandler:v17];
+    LOBYTE(v12) = [v12 enumerateProperties:v13 withPredicate:v11 healthDatabase:databaseCopy error:error enumerationHandler:v17];
 
     if (v12)
     {
       if ((v19[3] & 1) == 0)
       {
-        [MEMORY[0x277CCA9B8] hk_assignError:a5 code:313 description:@"device not found"];
+        [MEMORY[0x277CCA9B8] hk_assignError:error code:313 description:@"device not found"];
       }
 
       v14 = *(v23 + 24);
@@ -586,11 +586,11 @@ uint64_t __66__HDServiceEntity_healthUpdatesEnabledForDevice_inDatabase_error___
   return 0;
 }
 
-+ (BOOL)setHealthUpdatesEnabled:(BOOL)a3 forDevice:(id)a4 inDatabase:(id)a5 error:(id *)a6
++ (BOOL)setHealthUpdatesEnabled:(BOOL)enabled forDevice:(id)device inDatabase:(id)database error:(id *)error
 {
   v18[1] = *MEMORY[0x277D85DE8];
   v9 = MEMORY[0x277D10B18];
-  v10 = a5;
+  databaseCopy = database;
   v11 = _HDSQLiteValueForUUID();
   v12 = [v9 predicateWithProperty:@"device_uuid" equalToValue:v11];
 
@@ -600,11 +600,11 @@ uint64_t __66__HDServiceEntity_healthUpdatesEnabledForDevice_inDatabase_error___
   v16[1] = 3221225472;
   v16[2] = __70__HDServiceEntity_setHealthUpdatesEnabled_forDevice_inDatabase_error___block_invoke;
   v16[3] = &__block_descriptor_33_e34_v16__0__HDSQLiteStatementBinder__8l;
-  v17 = a3;
-  LOBYTE(a6) = [a1 updateProperties:v13 predicate:v12 healthDatabase:v10 error:a6 bindingHandler:v16];
+  enabledCopy = enabled;
+  LOBYTE(error) = [self updateProperties:v13 predicate:v12 healthDatabase:databaseCopy error:error bindingHandler:v16];
 
   v14 = *MEMORY[0x277D85DE8];
-  return a6;
+  return error;
 }
 
 uint64_t __69__HDServiceEntity__servicesWithDatabaseTransaction_profile_removals___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3, uint64_t a4)
@@ -653,13 +653,13 @@ uint64_t __69__HDServiceEntity__servicesWithDatabaseTransaction_profile_removals
   return 1;
 }
 
-+ (id)entityEncoderForProfile:(id)a3 transaction:(id)a4 purpose:(int64_t)a5 encodingOptions:(id)a6 authorizationFilter:(id)a7
++ (id)entityEncoderForProfile:(id)profile transaction:(id)transaction purpose:(int64_t)purpose encodingOptions:(id)options authorizationFilter:(id)filter
 {
-  v11 = a7;
-  v12 = a6;
-  v13 = a4;
-  v14 = a3;
-  v15 = [(HDEntityEncoder *)[_HDServiceEntityEncoder alloc] initWithHealthEntityClass:objc_opt_class() profile:v14 transaction:v13 purpose:a5 encodingOptions:v12 authorizationFilter:v11];
+  filterCopy = filter;
+  optionsCopy = options;
+  transactionCopy = transaction;
+  profileCopy = profile;
+  v15 = [(HDEntityEncoder *)[_HDServiceEntityEncoder alloc] initWithHealthEntityClass:objc_opt_class() profile:profileCopy transaction:transactionCopy purpose:purpose encodingOptions:optionsCopy authorizationFilter:filterCopy];
 
   return v15;
 }

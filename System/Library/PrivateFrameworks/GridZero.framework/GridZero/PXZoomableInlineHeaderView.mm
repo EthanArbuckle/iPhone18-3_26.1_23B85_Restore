@@ -1,19 +1,19 @@
 @interface PXZoomableInlineHeaderView
-+ (CGSize)sizeWithConfiguration:(id)a3 preferredContentSizeCategory:(int64_t)a4;
-+ (double)_heightForStyle:(unint64_t)a3;
-+ (id)_titleFontForStyle:(unint64_t)a3 preferredContentSizeCategory:(int64_t)a4;
++ (CGSize)sizeWithConfiguration:(id)configuration preferredContentSizeCategory:(int64_t)category;
++ (double)_heightForStyle:(unint64_t)style;
++ (id)_titleFontForStyle:(unint64_t)style preferredContentSizeCategory:(int64_t)category;
 - (CGRect)clippingRect;
-- (PXZoomableInlineHeaderView)initWithFrame:(CGRect)a3;
+- (PXZoomableInlineHeaderView)initWithFrame:(CGRect)frame;
 - (void)_commonLayoutSubviews;
 - (void)_configureViews;
 - (void)_setupBackgroundView;
 - (void)_setupViews;
-- (void)_updateButtonWithConfiguration:(id)a3;
+- (void)_updateButtonWithConfiguration:(id)configuration;
 - (void)_updateConfiguration;
 - (void)layoutSubviews;
-- (void)setHidden:(BOOL)a3;
-- (void)setUserData:(id)a3;
-- (void)traitEnvironment:(id)a3 didChangePreviousTraitCollection:(id)a4;
+- (void)setHidden:(BOOL)hidden;
+- (void)setUserData:(id)data;
+- (void)traitEnvironment:(id)environment didChangePreviousTraitCollection:(id)collection;
 @end
 
 @implementation PXZoomableInlineHeaderView
@@ -34,9 +34,9 @@
 - (void)_setupBackgroundView
 {
   v3 = +[PXZoomablePhotosSettings sharedInstance];
-  v4 = [v3 enableHeaderBlur];
+  enableHeaderBlur = [v3 enableHeaderBlur];
 
-  if (v4)
+  if (enableHeaderBlur)
   {
     v5 = objc_alloc(MEMORY[0x277D75D68]);
     [(PXZoomableInlineHeaderView *)self bounds];
@@ -68,14 +68,14 @@
   [(PXZoomableInlineHeaderView *)self addSubview:v9];
 }
 
-- (void)traitEnvironment:(id)a3 didChangePreviousTraitCollection:(id)a4
+- (void)traitEnvironment:(id)environment didChangePreviousTraitCollection:(id)collection
 {
-  v5 = a4;
-  v6 = [(PXZoomableInlineHeaderView *)self traitCollection];
-  v7 = [v6 preferredContentSizeCategory];
-  v8 = [v5 preferredContentSizeCategory];
+  collectionCopy = collection;
+  traitCollection = [(PXZoomableInlineHeaderView *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  preferredContentSizeCategory2 = [collectionCopy preferredContentSizeCategory];
 
-  if (v7 != v8)
+  if (preferredContentSizeCategory != preferredContentSizeCategory2)
   {
 
     [(PXZoomableInlineHeaderView *)self _updateConfiguration];
@@ -89,9 +89,9 @@
     return;
   }
 
-  v87 = [(PXZoomableInlineHeaderView *)self userData];
-  v3 = [v87 style];
-  v4 = [(PXZoomableInlineHeaderView *)self effectiveUserInterfaceLayoutDirection];
+  userData = [(PXZoomableInlineHeaderView *)self userData];
+  style = [userData style];
+  effectiveUserInterfaceLayoutDirection = [(PXZoomableInlineHeaderView *)self effectiveUserInterfaceLayoutDirection];
   v5 = self->_titleLabel;
   v6 = self->_subtitleLabel;
   [(PXZoomableInlineHeaderView *)self bounds];
@@ -123,7 +123,7 @@
 
   v88 = v15;
   v89 = v16;
-  [objc_opt_class() _heightForStyle:v3];
+  [objc_opt_class() _heightForStyle:style];
   v19 = v18;
   v20 = v18 * 0.5 - v14 * 0.5;
   v92.origin.x = 8.0;
@@ -140,8 +140,8 @@
 
   v23 = MaxX + 4.0;
   v24 = effectView;
-  v25 = [(UILabel *)self->_subtitleLabel text];
-  v26 = [v25 length];
+  text = [(UILabel *)self->_subtitleLabel text];
+  v26 = [text length];
 
   v27 = v14;
   v28 = v17;
@@ -162,7 +162,7 @@
   v34 = 8.0;
   v35 = CGRectGetMaxX(*&v30) + 8.0;
   v36 = PXRectRoundToPixel();
-  if (v4 == 1)
+  if (effectiveUserInterfaceLayoutDirection == 1)
   {
     v85 = v40;
     v86 = v37;
@@ -176,12 +176,12 @@
     v48 = v47;
     v79 = v50;
     v80 = v49;
-    v51 = [(PXZoomableInlineHeaderView *)self bounds];
+    bounds = [(PXZoomableInlineHeaderView *)self bounds];
     v53 = v52;
     v55 = v54;
     v57 = v56;
     v59 = v58;
-    v34 = MEMORY[0x21CEE0310](v51, v41, v43, v45, v81, v52, v54, v56, v58);
+    v34 = MEMORY[0x21CEE0310](bounds, v41, v43, v45, v81, v52, v54, v56, v58);
     v82 = v60;
     v17 = v61;
     v14 = v62;
@@ -210,11 +210,11 @@
   [(UILabel *)self->_subtitleLabel frameForAlignmentRect:v23, v20, v68, v89];
   PXRectRoundToPixel();
   [(UILabel *)self->_subtitleLabel setFrame:?];
-  v72 = [(UILabel *)v5 text];
-  if (![v72 length])
+  text2 = [(UILabel *)v5 text];
+  if (![text2 length])
   {
-    v75 = [(UILabel *)v6 text];
-    v76 = [v75 length];
+    text3 = [(UILabel *)v6 text];
+    v76 = [text3 length];
     v74 = v76 == 0;
 
     tintView = self->_effectView;
@@ -260,9 +260,9 @@ LABEL_22:
   [(PXZoomableInlineHeaderView *)self _commonLayoutSubviews];
 }
 
-- (void)_updateButtonWithConfiguration:(id)a3
+- (void)_updateButtonWithConfiguration:(id)configuration
 {
-  v17 = a3;
+  configurationCopy = configuration;
   if (self->_effectView)
   {
     [(PXZoomableInlineHeaderView *)self _setEffectViewCornerRadius:8.0];
@@ -270,46 +270,46 @@ LABEL_22:
 
   else
   {
-    v4 = [(UIView *)self->_tintView layer];
-    [v4 setCornerRadius:8.0];
-    [v4 setCornerCurve:*MEMORY[0x277CDA138]];
+    layer = [(UIView *)self->_tintView layer];
+    [layer setCornerRadius:8.0];
+    [layer setCornerCurve:*MEMORY[0x277CDA138]];
   }
 
-  v5 = [(PXZoomableInlineHeaderView *)self traitCollection];
+  traitCollection = [(PXZoomableInlineHeaderView *)self traitCollection];
   v6 = PXPreferredContentSizeCategoryFromUITraitCollection();
 
-  v7 = [v17 style];
-  v8 = [objc_opt_class() _titleFontForStyle:v7 preferredContentSizeCategory:v6];
+  style = [configurationCopy style];
+  v8 = [objc_opt_class() _titleFontForStyle:style preferredContentSizeCategory:v6];
   p_titleLabel = &self->_titleLabel;
   [(UILabel *)self->_titleLabel setFont:v8];
 
-  v10 = [objc_opt_class() _subtitleFontForStyle:v7 preferredContentSizeCategory:v6];
+  v10 = [objc_opt_class() _subtitleFontForStyle:style preferredContentSizeCategory:v6];
   p_subtitleLabel = &self->_subtitleLabel;
   [(UILabel *)self->_subtitleLabel setFont:v10];
 
-  v12 = [v17 subtitle];
-  -[UILabel setHidden:](*p_subtitleLabel, "setHidden:", [v12 length] == 0);
+  subtitle = [configurationCopy subtitle];
+  -[UILabel setHidden:](*p_subtitleLabel, "setHidden:", [subtitle length] == 0);
 
-  if ([v17 swapTitleAndSubtitle] && (-[UILabel isHidden](*p_subtitleLabel, "isHidden") & 1) == 0)
+  if ([configurationCopy swapTitleAndSubtitle] && (-[UILabel isHidden](*p_subtitleLabel, "isHidden") & 1) == 0)
   {
-    v16 = [v17 subtitle];
-    [(UILabel *)*p_titleLabel setText:v16];
+    subtitle2 = [configurationCopy subtitle];
+    [(UILabel *)*p_titleLabel setText:subtitle2];
 
-    v14 = [v17 title];
+    title = [configurationCopy title];
     v15 = p_titleLabel;
     p_titleLabel = p_subtitleLabel;
   }
 
   else
   {
-    v13 = [v17 title];
-    [(UILabel *)*p_titleLabel setText:v13];
+    title2 = [configurationCopy title];
+    [(UILabel *)*p_titleLabel setText:title2];
 
-    v14 = [v17 subtitle];
+    title = [configurationCopy subtitle];
     v15 = p_subtitleLabel;
   }
 
-  [(UILabel *)*p_subtitleLabel setText:v14];
+  [(UILabel *)*p_subtitleLabel setText:title];
 
   [*v15 setAlpha:0.5];
   [(UILabel *)*p_titleLabel setAlpha:1.0];
@@ -319,25 +319,25 @@ LABEL_22:
 {
   if (self->_tintView)
   {
-    v3 = [(PXZoomableInlineHeaderView *)self _tintViewBackgroundColor];
-    [(UIView *)self->_tintView setBackgroundColor:v3];
+    _tintViewBackgroundColor = [(PXZoomableInlineHeaderView *)self _tintViewBackgroundColor];
+    [(UIView *)self->_tintView setBackgroundColor:_tintViewBackgroundColor];
 
     v4 = +[PXZoomablePhotosSettings sharedInstance];
     [v4 zoomingHeaderTintOpacity];
     [(UIView *)self->_tintView setAlpha:?];
   }
 
-  v5 = [MEMORY[0x277D75348] labelColor];
-  [(UILabel *)self->_titleLabel setTextColor:v5];
+  labelColor = [MEMORY[0x277D75348] labelColor];
+  [(UILabel *)self->_titleLabel setTextColor:labelColor];
 
-  v6 = [MEMORY[0x277D75348] labelColor];
-  [(UILabel *)self->_subtitleLabel setTextColor:v6];
+  labelColor2 = [MEMORY[0x277D75348] labelColor];
+  [(UILabel *)self->_subtitleLabel setTextColor:labelColor2];
 }
 
 - (void)_setupViews
 {
-  v3 = [(PXZoomableInlineHeaderView *)self layer];
-  [v3 setAllowsGroupOpacity:0];
+  layer = [(PXZoomableInlineHeaderView *)self layer];
+  [layer setAllowsGroupOpacity:0];
 
   [(PXZoomableInlineHeaderView *)self bounds];
   v5 = v4;
@@ -346,8 +346,8 @@ LABEL_22:
   v11 = v10;
   [(PXZoomableInlineHeaderView *)self _setupBackgroundView];
   v12 = [objc_alloc(MEMORY[0x277D756B8]) initWithFrame:{v5, v7, v9, v11}];
-  v13 = [MEMORY[0x277D75348] blackColor];
-  [(UILabel *)v12 setTextColor:v13];
+  blackColor = [MEMORY[0x277D75348] blackColor];
+  [(UILabel *)v12 setTextColor:blackColor];
 
   [(UILabel *)v12 setLineBreakMode:4];
   [(UILabel *)v12 setTextAlignment:0];
@@ -358,8 +358,8 @@ LABEL_22:
 
   [(PXZoomableInlineHeaderView *)self addSubview:v15];
   v16 = [objc_alloc(MEMORY[0x277D756B8]) initWithFrame:{v5, v7, v9, v11}];
-  v17 = [MEMORY[0x277D75348] blackColor];
-  [(UILabel *)v16 setTextColor:v17];
+  blackColor2 = [MEMORY[0x277D75348] blackColor];
+  [(UILabel *)v16 setTextColor:blackColor2];
 
   [(UILabel *)v16 setLineBreakMode:4];
   [(UILabel *)v16 setTextAlignment:0];
@@ -373,14 +373,14 @@ LABEL_22:
   [(PXZoomableInlineHeaderView *)self _platformSpecificViewSetup];
 }
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
-  v3 = a3;
-  if ([(PXZoomableInlineHeaderView *)self isHidden]!= a3)
+  hiddenCopy = hidden;
+  if ([(PXZoomableInlineHeaderView *)self isHidden]!= hidden)
   {
     v5.receiver = self;
     v5.super_class = PXZoomableInlineHeaderView;
-    [(PXZoomableInlineHeaderView *)&v5 setHidden:v3];
+    [(PXZoomableInlineHeaderView *)&v5 setHidden:hiddenCopy];
     [(PXZoomableInlineHeaderView *)self setNeedsLayout];
   }
 }
@@ -388,34 +388,34 @@ LABEL_22:
 - (void)_updateConfiguration
 {
   [(PXZoomableInlineHeaderView *)self _configureViews];
-  v3 = [(PXZoomableInlineHeaderView *)self userData];
-  [(PXZoomableInlineHeaderView *)self _updateButtonWithConfiguration:v3];
+  userData = [(PXZoomableInlineHeaderView *)self userData];
+  [(PXZoomableInlineHeaderView *)self _updateButtonWithConfiguration:userData];
 
   [(PXZoomableInlineHeaderView *)self setNeedsLayout];
 }
 
-- (void)setUserData:(id)a3
+- (void)setUserData:(id)data
 {
-  v5 = a3;
-  if (self->_userData != v5)
+  dataCopy = data;
+  if (self->_userData != dataCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_userData, a3);
+    v6 = dataCopy;
+    objc_storeStrong(&self->_userData, data);
     [(PXZoomableInlineHeaderView *)self _updateConfiguration];
-    v5 = v6;
+    dataCopy = v6;
   }
 }
 
-- (PXZoomableInlineHeaderView)initWithFrame:(CGRect)a3
+- (PXZoomableInlineHeaderView)initWithFrame:(CGRect)frame
 {
   v9[1] = *MEMORY[0x277D85DE8];
   v8.receiver = self;
   v8.super_class = PXZoomableInlineHeaderView;
-  v3 = [(PXZoomableInlineHeaderView *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PXZoomableInlineHeaderView *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x277D75348] clearColor];
-    [(PXZoomableInlineHeaderView *)v3 setBackgroundColor:v4];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(PXZoomableInlineHeaderView *)v3 setBackgroundColor:clearColor];
 
     v9[0] = objc_opt_class();
     v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:1];
@@ -427,19 +427,19 @@ LABEL_22:
   return v3;
 }
 
-+ (double)_heightForStyle:(unint64_t)a3
++ (double)_heightForStyle:(unint64_t)style
 {
-  if (a3 == 1)
+  if (style == 1)
   {
     return 34.0;
   }
 
-  if (a3)
+  if (style)
   {
     v13 = v4;
     v14 = v3;
-    v12 = [MEMORY[0x277CCA890] currentHandler];
-    [v12 handleFailureInMethod:a2 object:a1 file:@"PXZoomableInlineHeaderView.m" lineNumber:148 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXZoomableInlineHeaderView.m" lineNumber:148 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
@@ -447,9 +447,9 @@ LABEL_22:
   return 28.0;
 }
 
-+ (CGSize)sizeWithConfiguration:(id)a3 preferredContentSizeCategory:(int64_t)a4
++ (CGSize)sizeWithConfiguration:(id)configuration preferredContentSizeCategory:(int64_t)category
 {
-  [a1 _heightForStyle:{objc_msgSend(a3, "style")}];
+  [self _heightForStyle:{objc_msgSend(configuration, "style")}];
   v5 = v4;
   v6 = 200.0;
   result.height = v5;
@@ -457,14 +457,14 @@ LABEL_22:
   return result;
 }
 
-+ (id)_titleFontForStyle:(unint64_t)a3 preferredContentSizeCategory:(int64_t)a4
++ (id)_titleFontForStyle:(unint64_t)style preferredContentSizeCategory:(int64_t)category
 {
   if (PXTitleFontForInlineHeaderStyle_onceToken != -1)
   {
     dispatch_once(&PXTitleFontForInlineHeaderStyle_onceToken, &__block_literal_global_8854);
   }
 
-  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:style];
   v6 = [PXTitleFontForInlineHeaderStyle_fontCache objectForKey:v5];
   if (!v6)
   {

@@ -8,7 +8,7 @@
 
 + (id)sharedInstance
 {
-  [a1 createSharedInstanceIfNecessary];
+  [self createSharedInstanceIfNecessary];
   v2 = _statisticsIntegrator;
 
   return v2;

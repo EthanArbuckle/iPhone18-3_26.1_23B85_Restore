@@ -1,22 +1,22 @@
 @interface BCSConfigurationManager
 - (NSXPCConnection)serviceConnection;
-- (void)processAppClipImageWithURL:(id)a3 scale:(double)a4 completion:(id)a5;
-- (void)setUpQRCodeControlCenterModuleWithCompletionHandler:(id)a3;
+- (void)processAppClipImageWithURL:(id)l scale:(double)scale completion:(id)completion;
+- (void)setUpQRCodeControlCenterModuleWithCompletionHandler:(id)handler;
 @end
 
 @implementation BCSConfigurationManager
 
-- (void)setUpQRCodeControlCenterModuleWithCompletionHandler:(id)a3
+- (void)setUpQRCodeControlCenterModuleWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(BCSConfigurationManager *)self serviceConnection];
+  handlerCopy = handler;
+  serviceConnection = [(BCSConfigurationManager *)self serviceConnection];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __79__BCSConfigurationManager_setUpQRCodeControlCenterModuleWithCompletionHandler___block_invoke;
   v11[3] = &unk_278CFED28;
-  v6 = v4;
+  v6 = handlerCopy;
   v12 = v6;
-  v7 = [v5 remoteObjectProxyWithErrorHandler:v11];
+  v7 = [serviceConnection remoteObjectProxyWithErrorHandler:v11];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __79__BCSConfigurationManager_setUpQRCodeControlCenterModuleWithCompletionHandler___block_invoke_1;
@@ -91,25 +91,25 @@ void __44__BCSConfigurationManager_serviceConnection__block_invoke(uint64_t a1)
   [WeakRetained setServiceConnection:0];
 }
 
-- (void)processAppClipImageWithURL:(id)a3 scale:(double)a4 completion:(id)a5
+- (void)processAppClipImageWithURL:(id)l scale:(double)scale completion:(id)completion
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [(BCSConfigurationManager *)self serviceConnection];
+  completionCopy = completion;
+  lCopy = l;
+  serviceConnection = [(BCSConfigurationManager *)self serviceConnection];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __71__BCSConfigurationManager_processAppClipImageWithURL_scale_completion___block_invoke;
   v16[3] = &unk_278CFED28;
-  v11 = v8;
+  v11 = completionCopy;
   v17 = v11;
-  v12 = [v10 remoteObjectProxyWithErrorHandler:v16];
+  v12 = [serviceConnection remoteObjectProxyWithErrorHandler:v16];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __71__BCSConfigurationManager_processAppClipImageWithURL_scale_completion___block_invoke_52;
   v14[3] = &unk_278CFED78;
   v15 = v11;
   v13 = v11;
-  [v12 processAppClipImageWithURL:v9 scale:v14 reply:a4];
+  [v12 processAppClipImageWithURL:lCopy scale:v14 reply:scale];
 }
 
 void __71__BCSConfigurationManager_processAppClipImageWithURL_scale_completion___block_invoke(uint64_t a1, void *a2)

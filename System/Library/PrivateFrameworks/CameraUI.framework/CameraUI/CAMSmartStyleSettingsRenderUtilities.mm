@@ -1,38 +1,38 @@
 @interface CAMSmartStyleSettingsRenderUtilities
-+ (id)compositionForStyle:(id)a3 compositionController:(id)a4 originalAsset:(id)a5 fileURL:(id)a6 fileURLImageProperties:(id)a7 aspectRatio:(double)a8 cropRect:(CGRect)a9;
++ (id)compositionForStyle:(id)style compositionController:(id)controller originalAsset:(id)asset fileURL:(id)l fileURLImageProperties:(id)properties aspectRatio:(double)ratio cropRect:(CGRect)rect;
 @end
 
 @implementation CAMSmartStyleSettingsRenderUtilities
 
-+ (id)compositionForStyle:(id)a3 compositionController:(id)a4 originalAsset:(id)a5 fileURL:(id)a6 fileURLImageProperties:(id)a7 aspectRatio:(double)a8 cropRect:(CGRect)a9
++ (id)compositionForStyle:(id)style compositionController:(id)controller originalAsset:(id)asset fileURL:(id)l fileURLImageProperties:(id)properties aspectRatio:(double)ratio cropRect:(CGRect)rect
 {
-  height = a9.size.height;
-  width = a9.size.width;
-  y = a9.origin.y;
-  x = a9.origin.x;
-  v19 = a4;
-  v20 = a5;
-  v21 = a7;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  controllerCopy = controller;
+  assetCopy = asset;
+  propertiesCopy = properties;
   v22 = 0;
-  if (a3 && v19)
+  if (style && controllerCopy)
   {
     v23 = MEMORY[0x1E69C4958];
-    v24 = a3;
-    v25 = [a1 _styleCastForSmartStyle:{objc_msgSend(v24, "castType")}];
-    [v24 toneBias];
+    styleCopy = style;
+    v25 = [self _styleCastForSmartStyle:{objc_msgSend(styleCopy, "castType")}];
+    [styleCopy toneBias];
     v27 = v26;
-    [v24 colorBias];
+    [styleCopy colorBias];
     v29 = v28;
-    [v24 castIntensity];
+    [styleCopy castIntensity];
     v31 = v30;
 
-    [v23 updateCompositionController:v19 withStyleCast:v25 tone:v27 color:v29 intensity:v31];
-    v32 = [v19 orientationAdjustmentControllerCreatingIfNecessary:0];
-    v33 = [v32 orientation];
-    if (a6)
+    [v23 updateCompositionController:controllerCopy withStyleCast:v25 tone:v27 color:v29 intensity:v31];
+    v32 = [controllerCopy orientationAdjustmentControllerCreatingIfNecessary:0];
+    orientation = [v32 orientation];
+    if (l)
     {
-      a6 = [CAMOrientationUtilities pixelWidthFromImageProperties:v21];
-      v34 = [CAMOrientationUtilities pixelHeightFromImageProperties:v21];
+      l = [CAMOrientationUtilities pixelWidthFromImageProperties:propertiesCopy];
+      v34 = [CAMOrientationUtilities pixelHeightFromImageProperties:propertiesCopy];
     }
 
     else
@@ -40,8 +40,8 @@
       v34 = 0;
     }
 
-    v35 = v20 != 0;
-    if (a6)
+    v35 = assetCopy != 0;
+    if (l)
     {
       v36 = v34 == 0;
     }
@@ -57,28 +57,28 @@
       v35 = 1;
     }
 
-    if (a8 != 0.0 && v35)
+    if (ratio != 0.0 && v35)
     {
       v38 = *MEMORY[0x1E69BDFC0];
       v41 = MEMORY[0x1E69E9820];
       v42 = 3221225472;
       v43 = __148__CAMSmartStyleSettingsRenderUtilities_compositionForStyle_compositionController_originalAsset_fileURL_fileURLImageProperties_aspectRatio_cropRect___block_invoke;
       v44 = &unk_1E76FCB18;
-      v46 = a8;
-      v45 = v20;
-      v47 = v33;
-      v48 = a6;
+      ratioCopy = ratio;
+      v45 = assetCopy;
+      v47 = orientation;
+      lCopy = l;
       v49 = v34;
       v54 = v37;
       v50 = x;
       v51 = y;
       v52 = width;
       v53 = height;
-      [v19 modifyAdjustmentWithKey:v38 modificationBlock:&v41];
+      [controllerCopy modifyAdjustmentWithKey:v38 modificationBlock:&v41];
     }
 
-    v39 = [v19 composition];
-    v22 = [v39 copy];
+    composition = [controllerCopy composition];
+    v22 = [composition copy];
 
     [v22 setMediaType:1];
   }

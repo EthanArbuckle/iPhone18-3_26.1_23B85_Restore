@@ -1,42 +1,42 @@
 @interface SVXServiceCommandHandlerPreSynthesizeTTS
-- (SVXServiceCommandHandlerPreSynthesizeTTS)initWithSpeechSynthesizer:(id)a3 speechSynthesisUtils:(id)a4;
-- (void)handleCommand:(id)a3 withContext:(id)a4 taskTracker:(id)a5 completion:(id)a6;
+- (SVXServiceCommandHandlerPreSynthesizeTTS)initWithSpeechSynthesizer:(id)synthesizer speechSynthesisUtils:(id)utils;
+- (void)handleCommand:(id)command withContext:(id)context taskTracker:(id)tracker completion:(id)completion;
 @end
 
 @implementation SVXServiceCommandHandlerPreSynthesizeTTS
 
-- (void)handleCommand:(id)a3 withContext:(id)a4 taskTracker:(id)a5 completion:(id)a6
+- (void)handleCommand:(id)command withContext:(id)context taskTracker:(id)tracker completion:(id)completion
 {
-  v9 = a3;
-  v10 = a6;
+  commandCopy = command;
+  completionCopy = completion;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v20 = [MEMORY[0x277CCA890] currentHandler];
-    [v20 handleFailureInMethod:a2 object:self file:@"SVXServiceCommandHandlerPreSynthesizeTTS.m" lineNumber:57 description:{@"Invalid parameter not satisfying: %@", @"[command isKindOfClass:[SAPreSynthesizeTTS class]]"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SVXServiceCommandHandlerPreSynthesizeTTS.m" lineNumber:57 description:{@"Invalid parameter not satisfying: %@", @"[command isKindOfClass:[SAPreSynthesizeTTS class]]"}];
   }
 
-  v11 = v9;
-  v12 = [v11 dialogStrings];
-  v13 = [v11 aceAudioData];
-  v14 = [v11 streamIds];
-  v15 = [v11 speakableContextInfo];
+  v11 = commandCopy;
+  dialogStrings = [v11 dialogStrings];
+  aceAudioData = [v11 aceAudioData];
+  streamIds = [v11 streamIds];
+  speakableContextInfo = [v11 speakableContextInfo];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __93__SVXServiceCommandHandlerPreSynthesizeTTS_handleCommand_withContext_taskTracker_completion___block_invoke;
   v21[3] = &unk_279C67BE8;
-  v16 = v14;
+  v16 = streamIds;
   v22 = v16;
-  v17 = v13;
+  v17 = aceAudioData;
   v23 = v17;
-  v24 = self;
-  v18 = v15;
+  selfCopy = self;
+  v18 = speakableContextInfo;
   v25 = v18;
-  [v12 enumerateObjectsUsingBlock:v21];
-  if (v10)
+  [dialogStrings enumerateObjectsUsingBlock:v21];
+  if (completionCopy)
   {
     v19 = +[SVXServiceCommandResult resultSuccess];
-    v10[2](v10, v19);
+    completionCopy[2](completionCopy, v19);
   }
 }
 
@@ -104,21 +104,21 @@ void __93__SVXServiceCommandHandlerPreSynthesizeTTS_handleCommand_withContext_ta
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (SVXServiceCommandHandlerPreSynthesizeTTS)initWithSpeechSynthesizer:(id)a3 speechSynthesisUtils:(id)a4
+- (SVXServiceCommandHandlerPreSynthesizeTTS)initWithSpeechSynthesizer:(id)synthesizer speechSynthesisUtils:(id)utils
 {
-  v7 = a3;
-  v8 = a4;
+  synthesizerCopy = synthesizer;
+  utilsCopy = utils;
   v17.receiver = self;
   v17.super_class = SVXServiceCommandHandlerPreSynthesizeTTS;
   v9 = [(SVXServiceCommandHandlerPreSynthesizeTTS *)&v17 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_speechSynthesizer, a3);
-    objc_storeStrong(&v10->_speechSynthesisUtils, a4);
+    objc_storeStrong(&v9->_speechSynthesizer, synthesizer);
+    objc_storeStrong(&v10->_speechSynthesisUtils, utils);
     v11 = objc_alloc(MEMORY[0x277CCACA8]);
-    v12 = [objc_opt_class() supportedCommandClass];
-    v13 = NSStringFromClass(v12);
+    supportedCommandClass = [objc_opt_class() supportedCommandClass];
+    v13 = NSStringFromClass(supportedCommandClass);
     v14 = [v11 initWithFormat:@"com.apple.SiriVOXService.service-command.%@", v13];
     identifier = v10->_identifier;
     v10->_identifier = v14;

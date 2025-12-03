@@ -1,12 +1,12 @@
 @interface CPChunk
-+ (float)chooseReferenceFontSizeFrom:(float)a3 and:(float)a4;
-- (BOOL)boundsEqualsRect:(CGRect)a3 accuracy:(double)a4;
-- (BOOL)geometricallyContains:(id)a3;
-- (BOOL)intersectsChild:(CGRect)a3;
-- (BOOL)overlapsHorizontallyWith:(id)a3;
-- (BOOL)overlapsVerticallyWith:(id)a3;
++ (float)chooseReferenceFontSizeFrom:(float)from and:(float)and;
+- (BOOL)boundsEqualsRect:(CGRect)rect accuracy:(double)accuracy;
+- (BOOL)geometricallyContains:(id)contains;
+- (BOOL)intersectsChild:(CGRect)child;
+- (BOOL)overlapsHorizontallyWith:(id)with;
+- (BOOL)overlapsVerticallyWith:(id)with;
 - (CGPoint)anchor;
-- (CGRect)adjustToPointBoundary:(CGRect)a3;
+- (CGRect)adjustToPointBoundary:(CGRect)boundary;
 - (CGRect)bounds;
 - (CGRect)renderedBounds;
 - (CGSize)advance;
@@ -16,36 +16,36 @@
 - (double)right;
 - (double)rotationAngle;
 - (double)top;
-- (float)absoluteGapTo:(id)a3;
-- (float)clusterGapTo:(id)a3;
-- (id)copyAndSplitChildrenAtIndex:(unsigned int)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (float)absoluteGapTo:(id)to;
+- (float)clusterGapTo:(id)to;
+- (id)copyAndSplitChildrenAtIndex:(unsigned int)index;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)newTakeChildren;
-- (id)newTakeChildrenAmong:(id)a3;
-- (int64_t)compareAnchorY:(id)a3;
-- (int64_t)compareAnchorYDescending:(id)a3;
-- (int64_t)compareChunkPosition:(id)a3;
-- (int64_t)compareCommonAnchorX:(id)a3;
-- (int64_t)compareInsertionOrder:(id)a3;
-- (int64_t)compareLinearBounds:(id)a3;
-- (int64_t)compareTopDescending:(id)a3;
-- (int64_t)compareXBounds:(id)a3;
-- (int64_t)compareY:(id)a3;
-- (int64_t)compareYBounds:(id)a3;
-- (int64_t)compareYDescending:(id)a3;
-- (int64_t)compareYDescendingX:(id)a3;
-- (int64_t)compareZ:(id)a3;
-- (int64_t)compareZDescending:(id)a3;
-- (void)add:(id)a3;
-- (void)add:(id)a3 atIndex:(unsigned int)a4;
-- (void)addChildrenOf:(id)a3;
+- (id)newTakeChildrenAmong:(id)among;
+- (int64_t)compareAnchorY:(id)y;
+- (int64_t)compareAnchorYDescending:(id)descending;
+- (int64_t)compareChunkPosition:(id)position;
+- (int64_t)compareCommonAnchorX:(id)x;
+- (int64_t)compareInsertionOrder:(id)order;
+- (int64_t)compareLinearBounds:(id)bounds;
+- (int64_t)compareTopDescending:(id)descending;
+- (int64_t)compareXBounds:(id)bounds;
+- (int64_t)compareY:(id)y;
+- (int64_t)compareYBounds:(id)bounds;
+- (int64_t)compareYDescending:(id)descending;
+- (int64_t)compareYDescendingX:(id)x;
+- (int64_t)compareZ:(id)z;
+- (int64_t)compareZDescending:(id)descending;
+- (void)add:(id)add;
+- (void)add:(id)add atIndex:(unsigned int)index;
+- (void)addChildrenOf:(id)of;
 - (void)fitBoundsToChildren;
-- (void)orderedInsert:(id)a3 usingSelector:(SEL)a4;
-- (void)remove:(id)a3;
+- (void)orderedInsert:(id)insert usingSelector:(SEL)selector;
+- (void)remove:(id)remove;
 - (void)removeAll;
-- (void)resizeWith:(id)a3;
-- (void)setChildren:(id)a3;
-- (void)setInsertionOrder:(int64_t)a3;
+- (void)resizeWith:(id)with;
+- (void)setChildren:(id)children;
+- (void)setInsertionOrder:(int64_t)order;
 @end
 
 @implementation CPChunk
@@ -69,12 +69,12 @@
   return result;
 }
 
-- (BOOL)intersectsChild:(CGRect)a3
+- (BOOL)intersectsChild:(CGRect)child
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = child.size.height;
+  width = child.size.width;
+  y = child.origin.y;
+  x = child.origin.x;
   v8 = [(CPObject *)self count];
   if (v8 < 1)
   {
@@ -107,26 +107,26 @@
   return v11;
 }
 
-- (BOOL)boundsEqualsRect:(CGRect)a3 accuracy:(double)a4
+- (BOOL)boundsEqualsRect:(CGRect)rect accuracy:(double)accuracy
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   [(CPChunk *)self bounds];
   v13 = vabdd_f64(v12, y);
-  if (vabdd_f64(v11, x) > a4 || v13 > a4)
+  if (vabdd_f64(v11, x) > accuracy || v13 > accuracy)
   {
     return 0;
   }
 
-  v16 = vabdd_f64(v9, width) <= a4;
-  return vabdd_f64(v10, height) <= a4 && v16;
+  v16 = vabdd_f64(v9, width) <= accuracy;
+  return vabdd_f64(v10, height) <= accuracy && v16;
 }
 
-- (BOOL)geometricallyContains:(id)a3
+- (BOOL)geometricallyContains:(id)contains
 {
-  [a3 bounds];
+  [contains bounds];
   v8 = v7;
   if (v7 == INFINITY || v4 == INFINITY)
   {
@@ -144,14 +144,14 @@
   return CGRectContainsRect(*&x, *&v8);
 }
 
-- (BOOL)overlapsVerticallyWith:(id)a3
+- (BOOL)overlapsVerticallyWith:(id)with
 {
   [(CPChunk *)self bounds];
   x = v4;
   v7 = v6;
   width = v8;
   v11 = v10;
-  [a3 bounds];
+  [with bounds];
   v13 = v12;
   v24 = v14;
   v16 = v15;
@@ -201,19 +201,19 @@
   return v13 < x + width && v20 + v16 > v19;
 }
 
-- (BOOL)overlapsHorizontallyWith:(id)a3
+- (BOOL)overlapsHorizontallyWith:(id)with
 {
   [(CPChunk *)self top];
   v6 = v5;
   [(CPChunk *)self bottom];
   v8 = v7;
-  [a3 top];
+  [with top];
   v10 = v9;
-  [a3 bottom];
+  [with bottom];
   return v10 > v8 && v11 < v6;
 }
 
-- (void)orderedInsert:(id)a3 usingSelector:(SEL)a4
+- (void)orderedInsert:(id)insert usingSelector:(SEL)selector
 {
   v7 = [(CPObject *)self count];
   if (v7 < 1)
@@ -225,7 +225,7 @@
   {
     v8 = v7;
     v9 = 0;
-    while ([-[CPObject childAtIndex:](self childAtIndex:{v9), "performSelector:withObject:", a4, a3}] != 1)
+    while ([-[CPObject childAtIndex:](self childAtIndex:{v9), "performSelector:withObject:", selector, insert}] != 1)
     {
       v9 = (v9 + 1);
       if (v8 == v9)
@@ -236,7 +236,7 @@
     }
   }
 
-  [(CPChunk *)self add:a3 atIndex:v9];
+  [(CPChunk *)self add:insert atIndex:v9];
 }
 
 - (CGSize)advance
@@ -292,26 +292,26 @@
   return result;
 }
 
-- (int64_t)compareChunkPosition:(id)a3
+- (int64_t)compareChunkPosition:(id)position
 {
-  v4 = [(CPChunk *)self chunkPosition];
-  v5 = [a3 chunkPosition];
-  if (v4 < v5)
+  chunkPosition = [(CPChunk *)self chunkPosition];
+  chunkPosition2 = [position chunkPosition];
+  if (chunkPosition < chunkPosition2)
   {
     return -1;
   }
 
   else
   {
-    return v4 != v5;
+    return chunkPosition != chunkPosition2;
   }
 }
 
-- (int64_t)compareYDescendingX:(id)a3
+- (int64_t)compareYDescendingX:(id)x
 {
   [(CPChunk *)self anchor];
   v6 = v5;
-  [a3 anchor];
+  [x anchor];
   if (v6 < v7)
   {
     return 1;
@@ -324,7 +324,7 @@
 
   [(CPChunk *)self anchor];
   v10 = v9;
-  [a3 anchor];
+  [x anchor];
   if (v10 >= v11)
   {
     return v10 > v11;
@@ -336,11 +336,11 @@
   }
 }
 
-- (int64_t)compareYDescending:(id)a3
+- (int64_t)compareYDescending:(id)descending
 {
   [(CPChunk *)self anchor];
   v5 = v4;
-  [a3 anchor];
+  [descending anchor];
   if (v5 <= v6)
   {
     v7 = 0;
@@ -362,11 +362,11 @@
   }
 }
 
-- (int64_t)compareTopDescending:(id)a3
+- (int64_t)compareTopDescending:(id)descending
 {
   [(CPChunk *)self top];
   v5 = v4;
-  [a3 top];
+  [descending top];
   if (v5 <= v6)
   {
     v7 = 0;
@@ -388,11 +388,11 @@
   }
 }
 
-- (int64_t)compareYBounds:(id)a3
+- (int64_t)compareYBounds:(id)bounds
 {
   [(CPChunk *)self bounds];
   v5 = v4;
-  [a3 bounds];
+  [bounds bounds];
   v7 = vabdd_f64(v5, v6);
   v8 = -1;
   if (v5 >= v6)
@@ -411,11 +411,11 @@
   }
 }
 
-- (int64_t)compareY:(id)a3
+- (int64_t)compareY:(id)y
 {
   [(CPChunk *)self anchor];
   v5 = v4;
-  [a3 anchor];
+  [y anchor];
   v7 = vabdd_f64(v5, v6);
   v8 = -1;
   if (v5 >= v6)
@@ -434,12 +434,12 @@
   }
 }
 
-- (int64_t)compareLinearBounds:(id)a3
+- (int64_t)compareLinearBounds:(id)bounds
 {
   v4 = fmax(self->bounds.size.height, self->bounds.size.width);
-  [a3 bounds];
+  [bounds bounds];
   v6 = v5;
-  [a3 bounds];
+  [bounds bounds];
   v8 = fmax(v6, v7);
   if (v4 <= v8)
   {
@@ -452,10 +452,10 @@
   }
 }
 
-- (int64_t)compareXBounds:(id)a3
+- (int64_t)compareXBounds:(id)bounds
 {
   x = self->bounds.origin.x;
-  [a3 bounds];
+  [bounds bounds];
   if (x < v4)
   {
     return -1;
@@ -467,11 +467,11 @@
   }
 }
 
-- (int64_t)compareZDescending:(id)a3
+- (int64_t)compareZDescending:(id)descending
 {
-  v4 = [(CPObject *)self zOrder];
-  v5 = [a3 zOrder];
-  if (v4 == v5)
+  zOrder = [(CPObject *)self zOrder];
+  zOrder2 = [descending zOrder];
+  if (zOrder == zOrder2)
   {
     v6 = 0;
   }
@@ -481,7 +481,7 @@
     v6 = -1;
   }
 
-  if (v4 < v5)
+  if (zOrder < zOrder2)
   {
     return 1;
   }
@@ -492,41 +492,41 @@
   }
 }
 
-- (int64_t)compareZ:(id)a3
+- (int64_t)compareZ:(id)z
 {
-  v4 = [(CPObject *)self zOrder];
-  v5 = [a3 zOrder];
-  if (v4 < v5)
+  zOrder = [(CPObject *)self zOrder];
+  zOrder2 = [z zOrder];
+  if (zOrder < zOrder2)
   {
     return -1;
   }
 
   else
   {
-    return v4 != v5;
+    return zOrder != zOrder2;
   }
 }
 
-- (int64_t)compareInsertionOrder:(id)a3
+- (int64_t)compareInsertionOrder:(id)order
 {
-  v4 = [(CPChunk *)self insertionOrder];
-  v5 = [a3 insertionOrder];
-  if (v4 < v5)
+  insertionOrder = [(CPChunk *)self insertionOrder];
+  insertionOrder2 = [order insertionOrder];
+  if (insertionOrder < insertionOrder2)
   {
     return -1;
   }
 
   else
   {
-    return v4 != v5;
+    return insertionOrder != insertionOrder2;
   }
 }
 
-- (int64_t)compareAnchorYDescending:(id)a3
+- (int64_t)compareAnchorYDescending:(id)descending
 {
   [(CPChunk *)self anchor];
   v5 = v4;
-  [a3 anchor];
+  [descending anchor];
   if (v5 <= v6)
   {
     v7 = 0;
@@ -548,11 +548,11 @@
   }
 }
 
-- (int64_t)compareCommonAnchorX:(id)a3
+- (int64_t)compareCommonAnchorX:(id)x
 {
   [(CPChunk *)self anchor];
   v5 = v4;
-  [a3 anchor];
+  [x anchor];
   if (v5 < v6)
   {
     return -1;
@@ -564,11 +564,11 @@
   }
 }
 
-- (int64_t)compareAnchorY:(id)a3
+- (int64_t)compareAnchorY:(id)y
 {
   [(CPChunk *)self anchor];
   v5 = v4;
-  [a3 anchor];
+  [y anchor];
   if (v5 < v6)
   {
     return -1;
@@ -580,16 +580,16 @@
   }
 }
 
-- (void)setInsertionOrder:(int64_t)a3
+- (void)setInsertionOrder:(int64_t)order
 {
-  self->insertionOrder = a3;
-  if (self->super.zOrder < a3)
+  self->insertionOrder = order;
+  if (self->super.zOrder < order)
   {
-    self->super.zOrder = a3;
+    self->super.zOrder = order;
   }
 }
 
-- (void)resizeWith:(id)a3
+- (void)resizeWith:(id)with
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -599,7 +599,7 @@
     v8 = v7;
     v10 = v9;
     v12 = v11;
-    [a3 bounds];
+    [with bounds];
     v20.origin.x = v13;
     v20.origin.y = v14;
     v20.size.width = v15;
@@ -675,28 +675,28 @@
   *p_dirtyBounds = 0;
 }
 
-- (float)absoluteGapTo:(id)a3
+- (float)absoluteGapTo:(id)to
 {
-  [a3 advanceDeltaAfterSpace];
+  [to advanceDeltaAfterSpace];
   v6 = v5;
   [(CPChunk *)self advance];
   v8 = v7 + (v6 * 0.5);
-  [a3 anchor];
+  [to anchor];
   v10 = v9;
   [(CPChunk *)self anchor];
   return v10 - v11 - v8;
 }
 
-- (float)clusterGapTo:(id)a3
+- (float)clusterGapTo:(id)to
 {
   [(CPChunk *)self fontSize];
   v6 = v5;
-  [a3 fontSize];
+  [to fontSize];
   LODWORD(v8) = v7;
   LODWORD(v9) = v6;
   [CPChunk chooseReferenceFontSizeFrom:v9 and:v8];
   v11 = v10;
-  [(CPChunk *)self absoluteGapTo:a3];
+  [(CPChunk *)self absoluteGapTo:to];
   return v12 / v11;
 }
 
@@ -772,15 +772,15 @@
   return result;
 }
 
-- (CGRect)adjustToPointBoundary:(CGRect)a3
+- (CGRect)adjustToPointBoundary:(CGRect)boundary
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if (a3.size.width < 0.0 || a3.size.height < 0.0)
+  height = boundary.size.height;
+  width = boundary.size.width;
+  y = boundary.origin.y;
+  x = boundary.origin.x;
+  if (boundary.size.width < 0.0 || boundary.size.height < 0.0)
   {
-    v15 = CGRectStandardize(a3);
+    v15 = CGRectStandardize(boundary);
     v8 = v15.origin.x;
     v10 = v15.size.width;
     v15.origin.x = x;
@@ -798,8 +798,8 @@
 
   else
   {
-    v7 = trunc(a3.origin.x);
-    v8 = a3.origin.x;
+    v7 = trunc(boundary.origin.x);
+    v8 = boundary.origin.x;
     v9 = v7;
   }
 
@@ -832,10 +832,10 @@
   return result;
 }
 
-- (void)setChildren:(id)a3
+- (void)setChildren:(id)children
 {
   children = self->super.children;
-  if (children != a3)
+  if (children != children)
   {
     v16 = v6;
     v17 = v5;
@@ -844,9 +844,9 @@
     v20 = v7;
     v21 = v8;
 
-    v12 = a3;
-    self->super.children = v12;
-    v13 = [(NSMutableArray *)v12 count];
+    childrenCopy = children;
+    self->super.children = childrenCopy;
+    v13 = [(NSMutableArray *)childrenCopy count];
     v14 = v13;
     if (v13)
     {
@@ -864,11 +864,11 @@
   }
 }
 
-- (id)newTakeChildrenAmong:(id)a3
+- (id)newTakeChildrenAmong:(id)among
 {
   v7.receiver = self;
   v7.super_class = CPChunk;
-  v4 = [(CPObject *)&v7 newTakeChildrenAmong:a3];
+  v4 = [(CPObject *)&v7 newTakeChildrenAmong:among];
   v5 = v4;
   if (self->shrinksWithChildren && [v4 count])
   {
@@ -902,48 +902,48 @@
   [(CPObject *)&v3 removeAll];
 }
 
-- (void)remove:(id)a3
+- (void)remove:(id)remove
 {
   v4.receiver = self;
   v4.super_class = CPChunk;
-  [(CPObject *)&v4 remove:a3];
+  [(CPObject *)&v4 remove:remove];
   if (self->shrinksWithChildren)
   {
     self->dirtyBounds = 1;
   }
 }
 
-- (void)addChildrenOf:(id)a3
+- (void)addChildrenOf:(id)of
 {
   v4.receiver = self;
   v4.super_class = CPChunk;
-  [(CPObject *)&v4 addChildrenOf:a3];
+  [(CPObject *)&v4 addChildrenOf:of];
   [(CPChunk *)self fitBoundsToChildren];
 }
 
-- (void)add:(id)a3 atIndex:(unsigned int)a4
+- (void)add:(id)add atIndex:(unsigned int)index
 {
   v6.receiver = self;
   v6.super_class = CPChunk;
-  [(CPObject *)&v6 add:a3 atIndex:*&a4];
-  [(CPChunk *)self resizeWith:a3];
-  -[CPObject updateZOrder:](self, "updateZOrder:", [a3 zOrder]);
+  [(CPObject *)&v6 add:add atIndex:*&index];
+  [(CPChunk *)self resizeWith:add];
+  -[CPObject updateZOrder:](self, "updateZOrder:", [add zOrder]);
 }
 
-- (void)add:(id)a3
+- (void)add:(id)add
 {
   v5.receiver = self;
   v5.super_class = CPChunk;
   [(CPObject *)&v5 add:?];
-  [(CPChunk *)self resizeWith:a3];
-  -[CPObject updateZOrder:](self, "updateZOrder:", [a3 zOrder]);
+  [(CPChunk *)self resizeWith:add];
+  -[CPObject updateZOrder:](self, "updateZOrder:", [add zOrder]);
 }
 
-- (id)copyAndSplitChildrenAtIndex:(unsigned int)a3
+- (id)copyAndSplitChildrenAtIndex:(unsigned int)index
 {
   v6.receiver = self;
   v6.super_class = CPChunk;
-  v4 = [(CPObject *)&v6 copyAndSplitChildrenAtIndex:*&a3];
+  v4 = [(CPObject *)&v6 copyAndSplitChildrenAtIndex:*&index];
   self->dirtyBounds = 1;
   *(v4 + 81) = 1;
   if ([(NSMutableArray *)self->super.children count])
@@ -959,11 +959,11 @@
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4.receiver = self;
   v4.super_class = CPChunk;
-  return [(CPObject *)&v4 copyWithZone:a3];
+  return [(CPObject *)&v4 copyWithZone:zone];
 }
 
 - (CPChunk)init
@@ -980,19 +980,19 @@
   return result;
 }
 
-+ (float)chooseReferenceFontSizeFrom:(float)a3 and:(float)a4
++ (float)chooseReferenceFontSizeFrom:(float)from and:(float)and
 {
-  if (a3 > 0.0 && (a4 >= a3 || a4 == 0.0))
+  if (from > 0.0 && (and >= from || and == 0.0))
   {
-    return a3;
+    return from;
   }
 
   v4 = 12.0;
-  if (a4 > 0.0)
+  if (and > 0.0)
   {
-    if (a3 > a4 || a3 == 0.0)
+    if (from > and || from == 0.0)
     {
-      return a4;
+      return and;
     }
 
     else

@@ -1,14 +1,14 @@
 @interface _UICollectionTableIndexOverlaySelectionViewCollectionViewFlowLayout
 - (CGRect)frameForDoneButton;
-- (id)layoutAttributesForElementsInRect:(CGRect)a3;
-- (id)layoutAttributesForSupplementaryViewOfKind:(id)a3 atIndexPath:(id)a4;
+- (id)layoutAttributesForElementsInRect:(CGRect)rect;
+- (id)layoutAttributesForSupplementaryViewOfKind:(id)kind atIndexPath:(id)path;
 @end
 
 @implementation _UICollectionTableIndexOverlaySelectionViewCollectionViewFlowLayout
 
-- (id)layoutAttributesForSupplementaryViewOfKind:(id)a3 atIndexPath:(id)a4
+- (id)layoutAttributesForSupplementaryViewOfKind:(id)kind atIndexPath:(id)path
 {
-  v5 = [(UICollectionViewLayoutAttributes *)_UICollectionTableIndexOverlaySelectionViewCollectionViewLayoutAttributes layoutAttributesForSupplementaryViewOfKind:@"ExternalDoneKind" withIndexPath:a4];
+  v5 = [(UICollectionViewLayoutAttributes *)_UICollectionTableIndexOverlaySelectionViewCollectionViewLayoutAttributes layoutAttributesForSupplementaryViewOfKind:@"ExternalDoneKind" withIndexPath:path];
   [v5 setFrame:{self->_frameForDoneButton.origin.x, self->_frameForDoneButton.origin.y, self->_frameForDoneButton.size.width, self->_frameForDoneButton.size.height}];
   [(_UICollectionTableIndexOverlaySelectionViewCollectionViewFlowLayout *)self rightMarginForDoneButton];
   [v5 setRightMargin:?];
@@ -29,12 +29,12 @@
   return result;
 }
 
-- (id)layoutAttributesForElementsInRect:(CGRect)a3
+- (id)layoutAttributesForElementsInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v15[1] = *MEMORY[0x1E69E9840];
   v14.receiver = self;
   v14.super_class = _UICollectionTableIndexOverlaySelectionViewCollectionViewFlowLayout;

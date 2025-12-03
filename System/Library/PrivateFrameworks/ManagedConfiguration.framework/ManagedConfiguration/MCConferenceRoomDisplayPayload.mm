@@ -1,6 +1,6 @@
 @interface MCConferenceRoomDisplayPayload
 + (id)typeStrings;
-- (MCConferenceRoomDisplayPayload)initWithDictionary:(id)a3 profile:(id)a4 outError:(id *)a5;
+- (MCConferenceRoomDisplayPayload)initWithDictionary:(id)dictionary profile:(id)profile outError:(id *)error;
 - (id)configuration;
 - (id)payloadDescriptionKeyValueSections;
 - (id)stubDictionary;
@@ -18,17 +18,17 @@
   return v2;
 }
 
-- (MCConferenceRoomDisplayPayload)initWithDictionary:(id)a3 profile:(id)a4 outError:(id *)a5
+- (MCConferenceRoomDisplayPayload)initWithDictionary:(id)dictionary profile:(id)profile outError:(id *)error
 {
   v32 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  dictionaryCopy = dictionary;
   v27.receiver = self;
   v27.super_class = MCConferenceRoomDisplayPayload;
-  v9 = [(MCPayload *)&v27 initWithDictionary:v8 profile:a4 outError:a5];
+  v9 = [(MCPayload *)&v27 initWithDictionary:dictionaryCopy profile:profile outError:error];
   if (v9)
   {
     v26 = 0;
-    v10 = [v8 MCValidateAndRemoveNonZeroLengthStringWithKey:@"Message" isRequired:0 outError:&v26];
+    v10 = [dictionaryCopy MCValidateAndRemoveNonZeroLengthStringWithKey:@"Message" isRequired:0 outError:&v26];
     v11 = v26;
     customMessage = v9->_customMessage;
     v9->_customMessage = v10;
@@ -37,10 +37,10 @@
     {
       v13 = [(MCPayload *)v9 malformedPayloadErrorWithError:v11];
       v14 = v13;
-      if (a5)
+      if (error)
       {
         v15 = v13;
-        *a5 = v14;
+        *error = v14;
       }
 
       v16 = _MCLogObjects;
@@ -49,28 +49,28 @@
         v17 = v16;
         v18 = objc_opt_class();
         v19 = v18;
-        v20 = [v14 MCVerboseDescription];
+        mCVerboseDescription = [v14 MCVerboseDescription];
         *buf = 138543618;
         v29 = v18;
         v30 = 2114;
-        v31 = v20;
+        v31 = mCVerboseDescription;
         _os_log_impl(&dword_1A795B000, v17, OS_LOG_TYPE_ERROR, "%{public}@ Can't parse payload: %{public}@", buf, 0x16u);
       }
 
       v9 = 0;
     }
 
-    if ([v8 count])
+    if ([dictionaryCopy count])
     {
       v21 = _MCLogObjects;
       if (os_log_type_enabled(_MCLogObjects, OS_LOG_TYPE_INFO))
       {
         v22 = v21;
-        v23 = [(MCPayload *)v9 friendlyName];
+        friendlyName = [(MCPayload *)v9 friendlyName];
         *buf = 138543618;
-        v29 = v23;
+        v29 = friendlyName;
         v30 = 2114;
-        v31 = v8;
+        v31 = dictionaryCopy;
         _os_log_impl(&dword_1A795B000, v22, OS_LOG_TYPE_INFO, "Payload “%{public}@” contains ignored fields. They are: %{public}@", buf, 0x16u);
       }
     }
@@ -82,37 +82,37 @@
 
 - (id)configuration
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(MCConferenceRoomDisplayPayload *)self customMessage];
-  [v3 setObject:v4 forKeyedSubscript:@"Message"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  customMessage = [(MCConferenceRoomDisplayPayload *)self customMessage];
+  [dictionary setObject:customMessage forKeyedSubscript:@"Message"];
 
-  return v3;
+  return dictionary;
 }
 
 - (id)stubDictionary
 {
   v6.receiver = self;
   v6.super_class = MCConferenceRoomDisplayPayload;
-  v3 = [(MCPayload *)&v6 stubDictionary];
-  v4 = [(MCConferenceRoomDisplayPayload *)self configuration];
-  [v3 addEntriesFromDictionary:v4];
+  stubDictionary = [(MCPayload *)&v6 stubDictionary];
+  configuration = [(MCConferenceRoomDisplayPayload *)self configuration];
+  [stubDictionary addEntriesFromDictionary:configuration];
 
-  return v3;
+  return stubDictionary;
 }
 
 - (id)payloadDescriptionKeyValueSections
 {
   v14[1] = *MEMORY[0x1E69E9840];
   v3 = objc_opt_new();
-  v4 = [(MCConferenceRoomDisplayPayload *)self customMessage];
-  v5 = [v4 length];
+  customMessage = [(MCConferenceRoomDisplayPayload *)self customMessage];
+  v5 = [customMessage length];
 
   if (v5)
   {
     v6 = [MCKeyValue alloc];
-    v7 = [(MCConferenceRoomDisplayPayload *)self customMessage];
+    customMessage2 = [(MCConferenceRoomDisplayPayload *)self customMessage];
     v8 = MCLocalizedString(@"CONFERENCE_ROOM_DISPLAY_CUSTOM_MESSAGE");
-    v9 = [(MCKeyValue *)v6 initWithLocalizedString:v7 localizedKey:v8];
+    v9 = [(MCKeyValue *)v6 initWithLocalizedString:customMessage2 localizedKey:v8];
 
     [v3 addObject:v9];
   }

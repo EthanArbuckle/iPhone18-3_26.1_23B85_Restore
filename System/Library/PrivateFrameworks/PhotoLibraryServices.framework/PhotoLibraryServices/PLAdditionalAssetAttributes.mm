@@ -1,15 +1,15 @@
 @interface PLAdditionalAssetAttributes
-+ (BOOL)shouldPersistImportedByDisplayName:(id)a3;
-+ (id)descriptionForDestinationAssetCopyState:(signed __int16)a3;
++ (BOOL)shouldPersistImportedByDisplayName:(id)name;
++ (id)descriptionForDestinationAssetCopyState:(signed __int16)state;
 + (id)listOfSyncedProperties;
-+ (id)newExtraDurationDataFromStillDisplayTime:(id *)a3 videoDuration:(id *)a4;
-+ (id)predicateToIncludeOnlyAllowedForAnalysisAndProcessedToFaceVersion:(id)a3 noindex:(BOOL)a4;
-+ (id)predicateToIncludeOnlyAllowedForAnalysisAndProcessedToLatestFaceVersionWithNoindex:(BOOL)a3;
-+ (id)predicateToIncludeOnlyAllowedForAnalysisAndProcessedToLatestSceneVersionWithNoindex:(BOOL)a3;
-+ (id)predicateToIncludeOnlyAllowedForAnalysisAndProcessedToSceneVersion:(id)a3 noindex:(BOOL)a4;
-+ (id)predicateToIncludeOnlyAllowedForAnalysisWithNoindex:(BOOL)a3;
-+ (void)fromExtraDurationData:(id)a3 getStillDisplayTime:(id *)a4 videoDuration:(id *)a5;
-- (BOOL)containsDuplicateDetectorPerceptualProcessingState:(unsigned __int16)a3;
++ (id)newExtraDurationDataFromStillDisplayTime:(id *)time videoDuration:(id *)duration;
++ (id)predicateToIncludeOnlyAllowedForAnalysisAndProcessedToFaceVersion:(id)version noindex:(BOOL)noindex;
++ (id)predicateToIncludeOnlyAllowedForAnalysisAndProcessedToLatestFaceVersionWithNoindex:(BOOL)noindex;
++ (id)predicateToIncludeOnlyAllowedForAnalysisAndProcessedToLatestSceneVersionWithNoindex:(BOOL)noindex;
++ (id)predicateToIncludeOnlyAllowedForAnalysisAndProcessedToSceneVersion:(id)version noindex:(BOOL)noindex;
++ (id)predicateToIncludeOnlyAllowedForAnalysisWithNoindex:(BOOL)noindex;
++ (void)fromExtraDurationData:(id)data getStillDisplayTime:(id *)time videoDuration:(id *)duration;
+- (BOOL)containsDuplicateDetectorPerceptualProcessingState:(unsigned __int16)state;
 - (BOOL)hasDuplicateMatchingData;
 - (BOOL)isSyncableChange;
 - (BOOL)isUserInterfaceChange;
@@ -21,61 +21,61 @@
 - (PLSpatialOverCaptureInformation)spatialOverCaptureInformation;
 - (id)allSceneClassifications;
 - (id)duplicateSortPropertyNames;
-- (id)payloadForChangedKeys:(id)a3;
+- (id)payloadForChangedKeys:(id)keys;
 - (id)payloadID;
 - (signed)viewPresentation;
-- (void)_updateInferredTimeZoneOffsetWithChangedValues:(id)a3;
-- (void)addDuplicateDetectorPerceptualProcessingStates:(unsigned __int16)a3 removeProcessingStates:(unsigned __int16)a4;
-- (void)appendLibraryScopeAssetContributorsToUpdate:(id)a3;
+- (void)_updateInferredTimeZoneOffsetWithChangedValues:(id)values;
+- (void)addDuplicateDetectorPerceptualProcessingStates:(unsigned __int16)states removeProcessingStates:(unsigned __int16)processingStates;
+- (void)appendLibraryScopeAssetContributorsToUpdate:(id)update;
 - (void)correctOriginalOrientationIfRequired;
 - (void)recalculatehasPeopleSceneMidOrGreaterConfidence;
-- (void)removeCloudRecoveryStateFlag:(unint64_t)a3;
+- (void)removeCloudRecoveryStateFlag:(unint64_t)flag;
 - (void)resetNonSyncViewPresentation;
-- (void)setCloudRecoveryStateFlag:(unint64_t)a3;
-- (void)setDuplicateMatchingData:(id)a3 duplicateMatchingAlternateData:(id)a4 processingSucceeded:(BOOL)a5;
-- (void)setLongDescription:(id)a3;
-- (void)setMediaMetadataData:(id)a3;
-- (void)setMontage:(id)a3;
-- (void)setSceneprintWithData:(id)a3;
-- (void)setShiftedLocation:(id)a3;
-- (void)setShiftedLocationIsValid:(BOOL)a3;
-- (void)setSourceAssetForDuplicationCPLScopedIdentifier:(id)a3;
-- (void)truncatedOriginalCheckChangedValues:(id)a3;
+- (void)setCloudRecoveryStateFlag:(unint64_t)flag;
+- (void)setDuplicateMatchingData:(id)data duplicateMatchingAlternateData:(id)alternateData processingSucceeded:(BOOL)succeeded;
+- (void)setLongDescription:(id)description;
+- (void)setMediaMetadataData:(id)data;
+- (void)setMontage:(id)montage;
+- (void)setSceneprintWithData:(id)data;
+- (void)setShiftedLocation:(id)location;
+- (void)setShiftedLocationIsValid:(BOOL)valid;
+- (void)setSourceAssetForDuplicationCPLScopedIdentifier:(id)identifier;
+- (void)truncatedOriginalCheckChangedValues:(id)values;
 - (void)updateAllowedForAnalysis;
 - (void)willSave;
 @end
 
 @implementation PLAdditionalAssetAttributes
 
-+ (void)fromExtraDurationData:(id)a3 getStillDisplayTime:(id *)a4 videoDuration:(id *)a5
++ (void)fromExtraDurationData:(id)data getStillDisplayTime:(id *)time videoDuration:(id *)duration
 {
-  v7 = a3;
+  dataCopy = data;
   v8 = *MEMORY[0x1E6960C70];
   v9 = *(MEMORY[0x1E6960C70] + 16);
   v10 = v8;
   v11 = v9;
-  if ([v7 length] >= 0x30)
+  if ([dataCopy length] >= 0x30)
   {
-    [v7 getBytes:&v8 length:48];
+    [dataCopy getBytes:&v8 length:48];
   }
 
-  if (a4)
+  if (time)
   {
-    *&a4->var0 = v8;
-    a4->var3 = v9;
+    *&time->var0 = v8;
+    time->var3 = v9;
   }
 
-  if (a5)
+  if (duration)
   {
-    *&a5->var0 = v10;
-    a5->var3 = v11;
+    *&duration->var0 = v10;
+    duration->var3 = v11;
   }
 }
 
-+ (id)newExtraDurationDataFromStillDisplayTime:(id *)a3 videoDuration:(id *)a4
++ (id)newExtraDurationDataFromStillDisplayTime:(id *)time videoDuration:(id *)duration
 {
-  v5[0] = *a3;
-  v5[1] = *a4;
+  v5[0] = *time;
+  v5[1] = *duration;
   return [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytes:v5 length:48];
 }
 
@@ -90,13 +90,13 @@
   return v2;
 }
 
-- (id)payloadForChangedKeys:(id)a3
+- (id)payloadForChangedKeys:(id)keys
 {
-  v4 = a3;
-  v5 = [(PLAdditionalAssetAttributes *)self asset];
-  if ([v5 isValidForJournalPersistence])
+  keysCopy = keys;
+  asset = [(PLAdditionalAssetAttributes *)self asset];
+  if ([asset isValidForJournalPersistence])
   {
-    v6 = [[PLAssetJournalEntryPayload alloc] initWithAdditionalAssetAttributes:self changedKeys:v4];
+    v6 = [[PLAssetJournalEntryPayload alloc] initWithAdditionalAssetAttributes:self changedKeys:keysCopy];
   }
 
   else
@@ -109,9 +109,9 @@
 
 - (id)payloadID
 {
-  v2 = [(PLAdditionalAssetAttributes *)self asset];
-  v3 = [v2 uuid];
-  v4 = [PLJournalEntryPayloadIDFactory payloadIDWithUUIDString:v3];
+  asset = [(PLAdditionalAssetAttributes *)self asset];
+  uuid = [asset uuid];
+  v4 = [PLJournalEntryPayloadIDFactory payloadIDWithUUIDString:uuid];
 
   return v4;
 }
@@ -129,40 +129,40 @@
 {
   [(PLAdditionalAssetAttributes *)self willAccessValueForKey:@"viewPresentation"];
   v3 = [(PLAdditionalAssetAttributes *)self primitiveValueForKey:@"viewPresentation"];
-  v4 = [v3 unsignedShortValue];
+  unsignedShortValue = [v3 unsignedShortValue];
 
   [(PLAdditionalAssetAttributes *)self didAccessValueForKey:@"viewPresentation"];
-  return v4;
+  return unsignedShortValue;
 }
 
 - (id)allSceneClassifications
 {
-  v3 = [(PLAdditionalAssetAttributes *)self sceneClassifications];
-  v4 = [(PLAdditionalAssetAttributes *)self temporalSceneClassifications];
-  v5 = [v4 allObjects];
-  v6 = [v3 setByAddingObjectsFromArray:v5];
+  sceneClassifications = [(PLAdditionalAssetAttributes *)self sceneClassifications];
+  temporalSceneClassifications = [(PLAdditionalAssetAttributes *)self temporalSceneClassifications];
+  allObjects = [temporalSceneClassifications allObjects];
+  v6 = [sceneClassifications setByAddingObjectsFromArray:allObjects];
 
   return v6;
 }
 
-- (BOOL)containsDuplicateDetectorPerceptualProcessingState:(unsigned __int16)a3
+- (BOOL)containsDuplicateDetectorPerceptualProcessingState:(unsigned __int16)state
 {
-  v3 = a3;
-  v4 = [(PLAdditionalAssetAttributes *)self duplicateDetectorPerceptualProcessingState];
-  if (v3)
+  stateCopy = state;
+  duplicateDetectorPerceptualProcessingState = [(PLAdditionalAssetAttributes *)self duplicateDetectorPerceptualProcessingState];
+  if (stateCopy)
   {
-    return (v3 & ~v4) == 0;
+    return (stateCopy & ~duplicateDetectorPerceptualProcessingState) == 0;
   }
 
   else
   {
-    return v4 == 0;
+    return duplicateDetectorPerceptualProcessingState == 0;
   }
 }
 
-- (void)addDuplicateDetectorPerceptualProcessingStates:(unsigned __int16)a3 removeProcessingStates:(unsigned __int16)a4
+- (void)addDuplicateDetectorPerceptualProcessingStates:(unsigned __int16)states removeProcessingStates:(unsigned __int16)processingStates
 {
-  v5 = ([(PLAdditionalAssetAttributes *)self duplicateDetectorPerceptualProcessingState]| a3) & ~a4;
+  v5 = ([(PLAdditionalAssetAttributes *)self duplicateDetectorPerceptualProcessingState]| states) & ~processingStates;
   if (v5 != [(PLAdditionalAssetAttributes *)self duplicateDetectorPerceptualProcessingState])
   {
 
@@ -170,42 +170,42 @@
   }
 }
 
-- (void)appendLibraryScopeAssetContributorsToUpdate:(id)a3
+- (void)appendLibraryScopeAssetContributorsToUpdate:(id)update
 {
-  v7 = a3;
-  if ([v7 count])
+  updateCopy = update;
+  if ([updateCopy count])
   {
-    v4 = [(PLAdditionalAssetAttributes *)self libraryScopeAssetContributorsToUpdate];
-    v5 = [v4 mutableCopy];
+    libraryScopeAssetContributorsToUpdate = [(PLAdditionalAssetAttributes *)self libraryScopeAssetContributorsToUpdate];
+    v5 = [libraryScopeAssetContributorsToUpdate mutableCopy];
 
     if (!v5)
     {
       v5 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     }
 
-    v6 = [v7 allObjects];
-    [v5 addObjectsFromArray:v6];
+    allObjects = [updateCopy allObjects];
+    [v5 addObjectsFromArray:allObjects];
 
     [(PLAdditionalAssetAttributes *)self setLibraryScopeAssetContributorsToUpdate:v5];
   }
 }
 
-- (void)setShiftedLocationIsValid:(BOOL)a3
+- (void)setShiftedLocationIsValid:(BOOL)valid
 {
-  v3 = a3;
+  validCopy = valid;
   [(PLAdditionalAssetAttributes *)self willChangeValueForKey:@"shiftedLocationIsValid"];
-  v5 = [MEMORY[0x1E696AD98] numberWithBool:v3];
+  v5 = [MEMORY[0x1E696AD98] numberWithBool:validCopy];
   [(PLAdditionalAssetAttributes *)self setPrimitiveValue:v5 forKey:@"shiftedLocationIsValid"];
 
   [(PLAdditionalAssetAttributes *)self didChangeValueForKey:@"shiftedLocationIsValid"];
-  if (!v3)
+  if (!validCopy)
   {
-    v6 = [(PLAdditionalAssetAttributes *)self asset];
-    v13 = [v6 location];
+    asset = [(PLAdditionalAssetAttributes *)self asset];
+    location = [asset location];
 
-    if (v13)
+    if (location)
     {
-      [v13 coordinate];
+      [location coordinate];
       v8 = v7;
       v10 = v9;
     }
@@ -216,75 +216,75 @@
       v10 = *(MEMORY[0x1E6985CC0] + 8);
     }
 
-    v11 = [(PLAdditionalAssetAttributes *)self asset];
-    [v11 setLatitude:v8];
+    asset2 = [(PLAdditionalAssetAttributes *)self asset];
+    [asset2 setLatitude:v8];
 
-    v12 = [(PLAdditionalAssetAttributes *)self asset];
-    [v12 setLongitude:v10];
+    asset3 = [(PLAdditionalAssetAttributes *)self asset];
+    [asset3 setLongitude:v10];
   }
 }
 
 - (CLLocation)shiftedLocation
 {
   [(PLAdditionalAssetAttributes *)self willAccessValueForKey:@"shiftedLocation"];
-  v3 = [(PLAdditionalAssetAttributes *)self _cachedShiftedLocation];
+  _cachedShiftedLocation = [(PLAdditionalAssetAttributes *)self _cachedShiftedLocation];
   [(PLAdditionalAssetAttributes *)self didAccessValueForKey:@"shiftedLocation"];
-  if (!v3)
+  if (!_cachedShiftedLocation)
   {
-    v4 = [(PLAdditionalAssetAttributes *)self shiftedLocationData];
-    v3 = [PLManagedAsset newLocationFromLocationData:v4 timestampIfMissing:0];
-    if (v3)
+    shiftedLocationData = [(PLAdditionalAssetAttributes *)self shiftedLocationData];
+    _cachedShiftedLocation = [PLManagedAsset newLocationFromLocationData:shiftedLocationData timestampIfMissing:0];
+    if (_cachedShiftedLocation)
     {
       [(PLAdditionalAssetAttributes *)self willChangeValueForKey:@"shiftedLocation"];
-      [(PLAdditionalAssetAttributes *)self _setCachedShiftedLocation:v3];
+      [(PLAdditionalAssetAttributes *)self _setCachedShiftedLocation:_cachedShiftedLocation];
       [(PLAdditionalAssetAttributes *)self didChangeValueForKey:@"shiftedLocation"];
     }
   }
 
-  return v3;
+  return _cachedShiftedLocation;
 }
 
 - (void)updateAllowedForAnalysis
 {
-  v5 = [(PLAdditionalAssetAttributes *)self asset];
-  v3 = [v5 calculateAllowedForAnalysis];
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:v3];
+  asset = [(PLAdditionalAssetAttributes *)self asset];
+  calculateAllowedForAnalysis = [asset calculateAllowedForAnalysis];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:calculateAllowedForAnalysis];
   [(PLManagedObject *)self pl_safeSetValue:v4 forKey:@"allowedForAnalysis" valueDidChangeHandler:0];
 }
 
-- (void)setMontage:(id)a3
+- (void)setMontage:(id)montage
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __42__PLAdditionalAssetAttributes_setMontage___block_invoke;
   v3[3] = &unk_1E75732D0;
   v3[4] = self;
-  [(PLManagedObject *)self pl_safeSetValue:a3 forKey:@"montage" valueDidChangeHandler:v3];
+  [(PLManagedObject *)self pl_safeSetValue:montage forKey:@"montage" valueDidChangeHandler:v3];
 }
 
-- (void)setShiftedLocation:(id)a3
+- (void)setShiftedLocation:(id)location
 {
-  v15 = a3;
+  locationCopy = location;
   [(PLAdditionalAssetAttributes *)self willChangeValueForKey:@"shiftedLocation"];
-  [(PLAdditionalAssetAttributes *)self _setCachedShiftedLocation:v15];
+  [(PLAdditionalAssetAttributes *)self _setCachedShiftedLocation:locationCopy];
   [(PLAdditionalAssetAttributes *)self didChangeValueForKey:@"shiftedLocation"];
-  v4 = [PLManagedAsset newLocationDataFromLocation:v15];
+  v4 = [PLManagedAsset newLocationDataFromLocation:locationCopy];
   [(PLAdditionalAssetAttributes *)self setShiftedLocationData:v4];
   if (v4)
   {
-    [v15 coordinate];
+    [locationCopy coordinate];
     v6 = v5;
     v8 = v7;
   }
 
   else
   {
-    v9 = [(PLAdditionalAssetAttributes *)self asset];
-    v10 = [v9 location];
+    asset = [(PLAdditionalAssetAttributes *)self asset];
+    location = [asset location];
 
-    if (v10)
+    if (location)
     {
-      [v10 coordinate];
+      [location coordinate];
       v6 = v11;
       v8 = v12;
     }
@@ -296,11 +296,11 @@
     }
   }
 
-  v13 = [(PLAdditionalAssetAttributes *)self asset];
-  [v13 setLatitude:v6];
+  asset2 = [(PLAdditionalAssetAttributes *)self asset];
+  [asset2 setLatitude:v6];
 
-  v14 = [(PLAdditionalAssetAttributes *)self asset];
-  [v14 setLongitude:v8];
+  asset3 = [(PLAdditionalAssetAttributes *)self asset];
+  [asset3 setLongitude:v8];
 }
 
 - (void)recalculatehasPeopleSceneMidOrGreaterConfidence
@@ -310,8 +310,8 @@
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [(PLAdditionalAssetAttributes *)self sceneClassifications];
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  sceneClassifications = [(PLAdditionalAssetAttributes *)self sceneClassifications];
+  v4 = [sceneClassifications countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = *v11;
@@ -321,7 +321,7 @@
       {
         if (*v11 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(sceneClassifications);
         }
 
         v7 = *(*(&v10 + 1) + 8 * i);
@@ -336,7 +336,7 @@
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v4 = [sceneClassifications countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v4)
       {
         continue;
@@ -358,64 +358,64 @@ LABEL_12:
   v104.receiver = self;
   v104.super_class = PLAdditionalAssetAttributes;
   [(PLManagedObject *)&v104 willSave];
-  v3 = [(PLAdditionalAssetAttributes *)self managedObjectContext];
+  managedObjectContext = [(PLAdditionalAssetAttributes *)self managedObjectContext];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     goto LABEL_89;
   }
 
-  v4 = [(PLAdditionalAssetAttributes *)self asset];
-  v5 = [v4 isDeleted];
+  asset = [(PLAdditionalAssetAttributes *)self asset];
+  isDeleted = [asset isDeleted];
 
-  if ((v5 & 1) == 0)
+  if ((isDeleted & 1) == 0)
   {
-    v101 = v3;
-    v6 = [(PLAdditionalAssetAttributes *)self changedValues];
-    v7 = [(PLAdditionalAssetAttributes *)self isSyncableChange];
-    v8 = [(PLAdditionalAssetAttributes *)self isUserInterfaceChange];
-    v9 = [(PLAdditionalAssetAttributes *)self asset];
-    v10 = [v9 changedValues];
-    v11 = [v10 objectForKeyedSubscript:@"modificationDate"];
-    if (v11 || !v7 && !v8)
+    v101 = managedObjectContext;
+    changedValues = [(PLAdditionalAssetAttributes *)self changedValues];
+    isSyncableChange = [(PLAdditionalAssetAttributes *)self isSyncableChange];
+    isUserInterfaceChange = [(PLAdditionalAssetAttributes *)self isUserInterfaceChange];
+    asset2 = [(PLAdditionalAssetAttributes *)self asset];
+    changedValues2 = [asset2 changedValues];
+    v11 = [changedValues2 objectForKeyedSubscript:@"modificationDate"];
+    if (v11 || !isSyncableChange && !isUserInterfaceChange)
     {
     }
 
     else
     {
-      v12 = [(PLAdditionalAssetAttributes *)self asset];
-      v13 = [v12 isFinderSyncedAsset];
+      asset3 = [(PLAdditionalAssetAttributes *)self asset];
+      isFinderSyncedAsset = [asset3 isFinderSyncedAsset];
 
-      if (v13)
+      if (isFinderSyncedAsset)
       {
 LABEL_9:
-        v102 = [v6 objectForKeyedSubscript:@"placeAnnotationData"];
+        v102 = [changedValues objectForKeyedSubscript:@"placeAnnotationData"];
 
-        v100 = [v6 objectForKeyedSubscript:@"publicGlobalUUID"];
+        v100 = [changedValues objectForKeyedSubscript:@"publicGlobalUUID"];
 
-        v14 = [v6 objectForKeyedSubscript:@"title"];
+        v14 = [changedValues objectForKeyedSubscript:@"title"];
 
-        [v6 objectForKeyedSubscript:@"accessibilityDescription"];
+        [changedValues objectForKeyedSubscript:@"accessibilityDescription"];
         v91 = v90 = v14;
         v98 = v14 | v91;
 
-        v15 = [v6 objectForKeyedSubscript:@"timeZoneName"];
+        v15 = [changedValues objectForKeyedSubscript:@"timeZoneName"];
 
-        v93 = [v6 objectForKeyedSubscript:@"timeZoneOffset"];
+        v93 = [changedValues objectForKeyedSubscript:@"timeZoneOffset"];
 
-        v16 = [v6 objectForKeyedSubscript:@"importedBy"];
+        v16 = [changedValues objectForKeyedSubscript:@"importedBy"];
 
-        v17 = [v6 objectForKeyedSubscript:@"spatialOverCaptureGroupIdentifier"];
+        v17 = [changedValues objectForKeyedSubscript:@"spatialOverCaptureGroupIdentifier"];
 
-        v18 = [v6 objectForKeyedSubscript:@"syndicationIdentifier"];
+        v18 = [changedValues objectForKeyedSubscript:@"syndicationIdentifier"];
 
-        v19 = [v6 objectForKeyedSubscript:@"libraryScopeAssetContributorsToUpdate"];
+        v19 = [changedValues objectForKeyedSubscript:@"libraryScopeAssetContributorsToUpdate"];
 
-        v20 = [v6 objectForKeyedSubscript:@"syndicationHistory"];
+        v20 = [changedValues objectForKeyedSubscript:@"syndicationHistory"];
 
-        v21 = [v6 objectForKeyedSubscript:@"sceneAnalysisIsFromPreview"];
+        v21 = [changedValues objectForKeyedSubscript:@"sceneAnalysisIsFromPreview"];
 
-        v22 = [v6 objectForKeyedSubscript:@"viewPresentation"];
+        v22 = [changedValues objectForKeyedSubscript:@"viewPresentation"];
 
         v92 = v15;
         v23 = v15 | v102;
@@ -424,23 +424,23 @@ LABEL_9:
         v95 = v18;
         v25 = v16;
         v26 = v16 | v17 | v18;
-        v27 = v6;
+        v27 = changedValues;
         v28 = v98 | v23 | v26;
         v96 = v20;
         v97 = v21;
         v99 = v22;
         v29 = (v28 | v24 | v20 | v21 | v22) != 0;
-        v30 = [v6 objectForKeyedSubscript:@"sceneClassifications"];
+        v30 = [changedValues objectForKeyedSubscript:@"sceneClassifications"];
 
         if (([(PLAdditionalAssetAttributes *)self isInserted]& 1) != 0 || v30)
         {
-          v31 = [(PLAdditionalAssetAttributes *)self asset];
-          [v31 recalculateIsDetectedScreenshot];
+          asset4 = [(PLAdditionalAssetAttributes *)self asset];
+          [asset4 recalculateIsDetectedScreenshot];
 
           [(PLAdditionalAssetAttributes *)self recalculatehasPeopleSceneMidOrGreaterConfidence];
         }
 
-        v3 = v101;
+        managedObjectContext = v101;
         if (v100)
         {
           v32 = 1;
@@ -453,19 +453,19 @@ LABEL_9:
 
         if (v32 == 1)
         {
-          v33 = [(PLAdditionalAssetAttributes *)self asset];
-          v34 = [v33 isValidTypeForPersistence];
+          asset5 = [(PLAdditionalAssetAttributes *)self asset];
+          isValidTypeForPersistence = [asset5 isValidTypeForPersistence];
 
-          if (v34)
+          if (isValidTypeForPersistence)
           {
             if (v29)
             {
-              v35 = [(PLAdditionalAssetAttributes *)self asset];
-              v36 = [v35 persistedFileSystemAttributesFileURL];
+              asset6 = [(PLAdditionalAssetAttributes *)self asset];
+              persistedFileSystemAttributesFileURL = [asset6 persistedFileSystemAttributesFileURL];
 
-              if (v36)
+              if (persistedFileSystemAttributesFileURL)
               {
-                v37 = [MEMORY[0x1E69BF230] filesystemPersistenceBatchItemForFileAtURL:v36];
+                v37 = [MEMORY[0x1E69BF230] filesystemPersistenceBatchItemForFileAtURL:persistedFileSystemAttributesFileURL];
                 if (v90)
                 {
                   [(PLAdditionalAssetAttributes *)self title];
@@ -477,54 +477,54 @@ LABEL_9:
 
                 if (v91)
                 {
-                  v40 = [(PLAdditionalAssetAttributes *)self accessibilityDescription];
-                  [v37 setString:v40 forKey:*MEMORY[0x1E69BFD00]];
+                  accessibilityDescription = [(PLAdditionalAssetAttributes *)self accessibilityDescription];
+                  [v37 setString:accessibilityDescription forKey:*MEMORY[0x1E69BFD00]];
                 }
 
                 if (v92)
                 {
-                  v41 = [(PLAdditionalAssetAttributes *)self timeZoneName];
-                  [v37 setString:v41 forKey:*MEMORY[0x1E69BFE40]];
+                  timeZoneName = [(PLAdditionalAssetAttributes *)self timeZoneName];
+                  [v37 setString:timeZoneName forKey:*MEMORY[0x1E69BFE40]];
                 }
 
                 if (v93)
                 {
-                  v42 = [(PLAdditionalAssetAttributes *)self timeZoneOffset];
-                  v43 = [v42 intValue];
-                  [v37 setInt32:v43 forKey:*MEMORY[0x1E69BFE48]];
+                  timeZoneOffset = [(PLAdditionalAssetAttributes *)self timeZoneOffset];
+                  intValue = [timeZoneOffset intValue];
+                  [v37 setInt32:intValue forKey:*MEMORY[0x1E69BFE48]];
                 }
 
                 if (v102)
                 {
-                  v44 = [(PLAdditionalAssetAttributes *)self placeAnnotationData];
-                  [v37 setData:v44 forKey:*MEMORY[0x1E69BFE00]];
+                  placeAnnotationData = [(PLAdditionalAssetAttributes *)self placeAnnotationData];
+                  [v37 setData:placeAnnotationData forKey:*MEMORY[0x1E69BFE00]];
                 }
 
                 if (v25 && [(PLAdditionalAssetAttributes *)self importedBy])
                 {
-                  v45 = [(PLAdditionalAssetAttributes *)self importedBy];
-                  [v37 setUInt16:v45 forKey:*MEMORY[0x1E69BFDA0]];
+                  importedBy = [(PLAdditionalAssetAttributes *)self importedBy];
+                  [v37 setUInt16:importedBy forKey:*MEMORY[0x1E69BFDA0]];
                 }
 
                 if (v94)
                 {
-                  v46 = [(PLAdditionalAssetAttributes *)self spatialOverCaptureGroupIdentifier];
-                  [v37 setString:v46 forKey:*MEMORY[0x1E69BFE28]];
+                  spatialOverCaptureGroupIdentifier = [(PLAdditionalAssetAttributes *)self spatialOverCaptureGroupIdentifier];
+                  [v37 setString:spatialOverCaptureGroupIdentifier forKey:*MEMORY[0x1E69BFE28]];
                 }
 
                 if (v95)
                 {
-                  v47 = [(PLAdditionalAssetAttributes *)self syndicationIdentifier];
-                  [v37 setString:v47 forKey:*MEMORY[0x1E69BFE38]];
+                  syndicationIdentifier = [(PLAdditionalAssetAttributes *)self syndicationIdentifier];
+                  [v37 setString:syndicationIdentifier forKey:*MEMORY[0x1E69BFE38]];
                 }
 
                 if (v24)
                 {
-                  v48 = v36;
+                  v48 = persistedFileSystemAttributesFileURL;
                   v49 = MEMORY[0x1E696ACC8];
-                  v50 = [(PLAdditionalAssetAttributes *)self libraryScopeAssetContributorsToUpdate];
+                  libraryScopeAssetContributorsToUpdate = [(PLAdditionalAssetAttributes *)self libraryScopeAssetContributorsToUpdate];
                   v103 = 0;
-                  v51 = [v49 archivedDataWithRootObject:v50 requiringSecureCoding:1 error:&v103];
+                  v51 = [v49 archivedDataWithRootObject:libraryScopeAssetContributorsToUpdate requiringSecureCoding:1 error:&v103];
                   v52 = v103;
 
                   if (v52)
@@ -543,25 +543,25 @@ LABEL_9:
                     [v37 setData:v51 forKey:*MEMORY[0x1E69BFDD0]];
                   }
 
-                  v36 = v48;
+                  persistedFileSystemAttributesFileURL = v48;
                 }
 
                 if (v96)
                 {
-                  v54 = [(PLAdditionalAssetAttributes *)self syndicationHistory];
-                  [v37 setUInt16:v54 forKey:*MEMORY[0x1E69BFE30]];
+                  syndicationHistory = [(PLAdditionalAssetAttributes *)self syndicationHistory];
+                  [v37 setUInt16:syndicationHistory forKey:*MEMORY[0x1E69BFE30]];
                 }
 
                 if (v97)
                 {
-                  v55 = [(PLAdditionalAssetAttributes *)self sceneAnalysisIsFromPreview];
-                  [v37 setUInt16:v55 forKey:*MEMORY[0x1E69BFE20]];
+                  sceneAnalysisIsFromPreview = [(PLAdditionalAssetAttributes *)self sceneAnalysisIsFromPreview];
+                  [v37 setUInt16:sceneAnalysisIsFromPreview forKey:*MEMORY[0x1E69BFE20]];
                 }
 
                 if (v99)
                 {
-                  v56 = [(PLAdditionalAssetAttributes *)self viewPresentation];
-                  [v37 setUInt16:v56 forKey:*MEMORY[0x1E69BFE78]];
+                  viewPresentation = [(PLAdditionalAssetAttributes *)self viewPresentation];
+                  [v37 setUInt16:viewPresentation forKey:*MEMORY[0x1E69BFE78]];
                 }
 
                 [v37 persist];
@@ -570,9 +570,9 @@ LABEL_9:
 
             if (v100)
             {
-              v57 = [v101 delayedSaveActions];
-              v58 = [(PLAdditionalAssetAttributes *)self asset];
-              [v57 recordAssetForFileSystemPersistencyUpdate:v58];
+              delayedSaveActions = [v101 delayedSaveActions];
+              asset7 = [(PLAdditionalAssetAttributes *)self asset];
+              [delayedSaveActions recordAssetForFileSystemPersistencyUpdate:asset7];
             }
           }
         }
@@ -585,8 +585,8 @@ LABEL_9:
         if (PLPlatformMomentsSupported())
         {
           [(PLAdditionalAssetAttributes *)self _updateInferredTimeZoneOffsetWithChangedValues:v27];
-          v59 = [v101 delayedSaveActions];
-          [v59 recordAdditionalAssetAttributesForMomentUpdate:self];
+          delayedSaveActions2 = [v101 delayedSaveActions];
+          [delayedSaveActions2 recordAdditionalAssetAttributesForMomentUpdate:self];
         }
 
         v60 = [v27 objectForKeyedSubscript:{@"originalOrientation", v90}];
@@ -600,40 +600,40 @@ LABEL_9:
 
         if (v61)
         {
-          v62 = [(PLAdditionalAssetAttributes *)self keywords];
-          v63 = [v62 count] != 0;
+          keywords = [(PLAdditionalAssetAttributes *)self keywords];
+          v63 = [keywords count] != 0;
 
-          v64 = [(PLAdditionalAssetAttributes *)self asset];
-          [v64 setKeywordBadgeAttribute:v63];
+          asset8 = [(PLAdditionalAssetAttributes *)self asset];
+          [asset8 setKeywordBadgeAttribute:v63];
         }
 
         v65 = [v27 objectForKeyedSubscript:@"originalResourceChoice"];
 
         if (v65)
         {
-          v66 = [(PLAdditionalAssetAttributes *)self asset];
-          [v66 recalculateRAWBadgeAttribute];
+          asset9 = [(PLAdditionalAssetAttributes *)self asset];
+          [asset9 recalculateRAWBadgeAttribute];
         }
 
         if ([PLDuplicateAsset isDuplicateAssetSortChangedObject:self])
         {
-          v67 = [(PLAdditionalAssetAttributes *)self asset];
-          v68 = [v67 duplicateAlbum];
+          asset10 = [(PLAdditionalAssetAttributes *)self asset];
+          duplicateAlbum = [asset10 duplicateAlbum];
 
-          [v68 sortAssets];
+          [duplicateAlbum sortAssets];
         }
 
         v69 = [v27 objectForKeyedSubscript:@"sceneAnalysisVersion"];
         if (v69)
         {
           v70 = v69;
-          v71 = [(PLAdditionalAssetAttributes *)self asset];
-          if ([v71 duplicateAssetVisibilityState])
+          asset11 = [(PLAdditionalAssetAttributes *)self asset];
+          if ([asset11 duplicateAssetVisibilityState])
           {
-            v72 = [(PLAdditionalAssetAttributes *)self asset];
-            v73 = [v72 isValidForPerceptualProcessing];
+            asset12 = [(PLAdditionalAssetAttributes *)self asset];
+            isValidForPerceptualProcessing = [asset12 isValidForPerceptualProcessing];
 
-            if (!v73)
+            if (!isValidForPerceptualProcessing)
             {
               goto LABEL_77;
             }
@@ -643,22 +643,22 @@ LABEL_9:
             v70 = [(PLAdditionalAssetAttributes *)self committedValuesForKeys:v74];
 
             v75 = [v70 objectForKeyedSubscript:@"sceneAnalysisVersion"];
-            v76 = [v75 shortValue];
+            shortValue = [v75 shortValue];
 
             v77 = [v27 objectForKeyedSubscript:@"sceneAnalysisVersion"];
-            v78 = [v77 shortValue];
+            shortValue2 = [v77 shortValue];
 
-            v79 = v76 != v78 || v78 == 0;
-            if (v76 && v79)
+            v79 = shortValue != shortValue2 || shortValue2 == 0;
+            if (shortValue && v79)
             {
-              v80 = [(PLAdditionalAssetAttributes *)self asset];
-              [v80 removeFromDuplicateAlbum];
+              asset13 = [(PLAdditionalAssetAttributes *)self asset];
+              [asset13 removeFromDuplicateAlbum];
             }
 
-            v71 = [(PLAdditionalAssetAttributes *)self asset];
-            v81 = [v71 uuid];
-            v82 = [(PLManagedObject *)self photoLibrary];
-            [PLDuplicateProcessor signalDuplicateBackgroundJobItemForAssetUUID:v81 requiresMetadataProcessing:0 library:v82];
+            asset11 = [(PLAdditionalAssetAttributes *)self asset];
+            uuid = [asset11 uuid];
+            photoLibrary = [(PLManagedObject *)self photoLibrary];
+            [PLDuplicateProcessor signalDuplicateBackgroundJobItemForAssetUUID:uuid requiresMetadataProcessing:0 library:photoLibrary];
           }
         }
 
@@ -667,13 +667,13 @@ LABEL_77:
 
         if (v83)
         {
-          v84 = [(PLAdditionalAssetAttributes *)self asset];
-          v85 = [v84 uuid];
+          asset14 = [(PLAdditionalAssetAttributes *)self asset];
+          uuid2 = [asset14 uuid];
 
-          if (v85)
+          if (uuid2)
           {
-            v86 = [(PLManagedObject *)self photoLibrary];
-            [PLDuplicateProcessor signalDuplicateBackgroundJobItemForAssetUUID:v85 requiresMetadataProcessing:1 library:v86];
+            photoLibrary2 = [(PLManagedObject *)self photoLibrary];
+            [PLDuplicateProcessor signalDuplicateBackgroundJobItemForAssetUUID:uuid2 requiresMetadataProcessing:1 library:photoLibrary2];
           }
         }
 
@@ -697,15 +697,15 @@ LABEL_86:
           }
         }
 
-        v89 = [(PLAdditionalAssetAttributes *)self asset];
-        [v89 recalculateIsRecentlySaved];
+        asset15 = [(PLAdditionalAssetAttributes *)self asset];
+        [asset15 recalculateIsRecentlySaved];
 
         goto LABEL_86;
       }
 
-      v9 = [(PLAdditionalAssetAttributes *)self asset];
-      v10 = [MEMORY[0x1E695DF00] date];
-      [v9 setModificationDate:v10];
+      asset2 = [(PLAdditionalAssetAttributes *)self asset];
+      changedValues2 = [MEMORY[0x1E695DF00] date];
+      [asset2 setModificationDate:changedValues2];
     }
 
     goto LABEL_9;
@@ -722,30 +722,30 @@ LABEL_89:
 
 - (void)correctOriginalOrientationIfRequired
 {
-  v3 = [(PLAdditionalAssetAttributes *)self asset];
-  v4 = [v3 extendedAttributes];
-  v5 = [v4 orientation];
-  v6 = [v5 shortValue];
+  asset = [(PLAdditionalAssetAttributes *)self asset];
+  extendedAttributes = [asset extendedAttributes];
+  orientation = [extendedAttributes orientation];
+  shortValue = [orientation shortValue];
 
-  LODWORD(v4) = [PLManagedAsset correctedOrientation:v6];
-  v7 = [(PLAdditionalAssetAttributes *)self originalOrientation];
-  v8 = [v7 shortValue];
+  LODWORD(extendedAttributes) = [PLManagedAsset correctedOrientation:shortValue];
+  originalOrientation = [(PLAdditionalAssetAttributes *)self originalOrientation];
+  shortValue2 = [originalOrientation shortValue];
 
-  v9 = [PLManagedAsset correctedOrientation:v8];
-  if (v4 == v6)
+  v9 = [PLManagedAsset correctedOrientation:shortValue2];
+  if (extendedAttributes == shortValue)
   {
-    if (v8 == v6)
+    if (shortValue2 == shortValue)
     {
       return;
     }
 
-    v10 = v6;
+    v10 = shortValue;
   }
 
   else
   {
     v10 = v9;
-    if (v9 == v8)
+    if (v9 == shortValue2)
     {
       return;
     }
@@ -755,43 +755,43 @@ LABEL_89:
   [(PLAdditionalAssetAttributes *)self setOriginalOrientation:v11];
 }
 
-- (void)_updateInferredTimeZoneOffsetWithChangedValues:(id)a3
+- (void)_updateInferredTimeZoneOffsetWithChangedValues:(id)values
 {
-  v20 = a3;
-  v4 = [(PLAdditionalAssetAttributes *)self isUpdated];
-  v5 = v20;
-  if (v4)
+  valuesCopy = values;
+  isUpdated = [(PLAdditionalAssetAttributes *)self isUpdated];
+  v5 = valuesCopy;
+  if (isUpdated)
   {
-    v6 = [v20 objectForKeyedSubscript:@"timeZoneOffset"];
-    v5 = v20;
+    v6 = [valuesCopy objectForKeyedSubscript:@"timeZoneOffset"];
+    v5 = valuesCopy;
     if (v6)
     {
-      v7 = v6;
-      v8 = [v20 objectForKeyedSubscript:@"inferredTimeZoneOffset"];
+      metadataFromMediaPropertiesOrOriginalResource = v6;
+      v8 = [valuesCopy objectForKeyedSubscript:@"inferredTimeZoneOffset"];
       if (v8)
       {
 
 LABEL_5:
-        v5 = v20;
+        v5 = valuesCopy;
         goto LABEL_6;
       }
 
-      v9 = [(PLAdditionalAssetAttributes *)self timeZoneOffset];
+      timeZoneOffset = [(PLAdditionalAssetAttributes *)self timeZoneOffset];
 
-      v5 = v20;
-      if (v9)
+      v5 = valuesCopy;
+      if (timeZoneOffset)
       {
-        v10 = [(PLAdditionalAssetAttributes *)self asset];
-        v7 = [v10 metadataFromMediaPropertiesOrOriginalResource];
+        asset = [(PLAdditionalAssetAttributes *)self asset];
+        metadataFromMediaPropertiesOrOriginalResource = [asset metadataFromMediaPropertiesOrOriginalResource];
 
-        v11 = [v7 timeZoneOffset];
-        v12 = [v11 integerValue];
-        v13 = [(PLAdditionalAssetAttributes *)self timeZoneOffset];
-        v14 = [v13 integerValue];
+        timeZoneOffset2 = [metadataFromMediaPropertiesOrOriginalResource timeZoneOffset];
+        integerValue = [timeZoneOffset2 integerValue];
+        timeZoneOffset3 = [(PLAdditionalAssetAttributes *)self timeZoneOffset];
+        integerValue2 = [timeZoneOffset3 integerValue];
 
-        v15 = [(PLAdditionalAssetAttributes *)self inferredTimeZoneOffset];
-        v16 = v15;
-        if (v12 == v14)
+        inferredTimeZoneOffset = [(PLAdditionalAssetAttributes *)self inferredTimeZoneOffset];
+        v16 = inferredTimeZoneOffset;
+        if (integerValue == integerValue2)
         {
 
           if (v16)
@@ -802,13 +802,13 @@ LABEL_5:
 
         else
         {
-          v17 = [(PLAdditionalAssetAttributes *)self timeZoneOffset];
-          v18 = [v16 isEqualToNumber:v17];
+          timeZoneOffset4 = [(PLAdditionalAssetAttributes *)self timeZoneOffset];
+          v18 = [v16 isEqualToNumber:timeZoneOffset4];
 
           if ((v18 & 1) == 0)
           {
-            v19 = [(PLAdditionalAssetAttributes *)self timeZoneOffset];
-            [(PLAdditionalAssetAttributes *)self setInferredTimeZoneOffset:v19];
+            timeZoneOffset5 = [(PLAdditionalAssetAttributes *)self timeZoneOffset];
+            [(PLAdditionalAssetAttributes *)self setInferredTimeZoneOffset:timeZoneOffset5];
           }
         }
 
@@ -820,38 +820,38 @@ LABEL_5:
 LABEL_6:
 }
 
-- (void)truncatedOriginalCheckChangedValues:(id)a3
+- (void)truncatedOriginalCheckChangedValues:(id)values
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"originalFilesize"];
+  valuesCopy = values;
+  v5 = [valuesCopy objectForKeyedSubscript:@"originalFilesize"];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 unsignedIntegerValue];
-    if (v7 <= 0x10000 && (v7 & 0xFFF) == 0)
+    unsignedIntegerValue = [v5 unsignedIntegerValue];
+    if (unsignedIntegerValue <= 0x10000 && (unsignedIntegerValue & 0xFFF) == 0)
     {
-      v9 = [(PLAdditionalAssetAttributes *)self asset];
-      v10 = [v9 addedDate];
+      asset = [(PLAdditionalAssetAttributes *)self asset];
+      addedDate = [asset addedDate];
       v11 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:-60.0];
-      if (([v9 importedBy] - 1) <= 1u && objc_msgSend(v10, "compare:", v11) == 1)
+      if (([asset importedBy] - 1) <= 1u && objc_msgSend(addedDate, "compare:", v11) == 1)
       {
-        v12 = [v9 pathForOriginalFile];
+        pathForOriginalFile = [asset pathForOriginalFile];
         v13 = PLBackendGetLog();
         if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412802;
           v18 = v6;
           v19 = 2112;
-          v20 = v12;
+          v20 = pathForOriginalFile;
           v21 = 2112;
-          v22 = self;
+          selfCopy = self;
           _os_log_impl(&dword_19BF1F000, v13, OS_LOG_TYPE_ERROR, "rdar://39848396: truncated original originalFilesize=%@ path=%@ %@", buf, 0x20u);
         }
 
         v14 = MEMORY[0x1E696AEC0];
-        v15 = [v4 objectForKeyedSubscript:@"originalFilename"];
-        v16 = [v14 stringWithFormat:@"Captured truncated original with originalFilesize=%@ originalFilename=%@ path=%@. See rdar://39848396.", v6, v15, v12];
+        v15 = [valuesCopy objectForKeyedSubscript:@"originalFilename"];
+        v16 = [v14 stringWithFormat:@"Captured truncated original with originalFilesize=%@ originalFilename=%@ path=%@. See rdar://39848396.", v6, v15, pathForOriginalFile];
 
         [PLDiagnostics fileRadarUserNotificationWithHeader:@"Photos Data Loss Issue Detected!" message:@"Please file a Radar for critical truncated original issue." radarTitle:@"TTR Photos Framework: captured truncated original" radarDescription:v16];
       }
@@ -861,17 +861,17 @@ LABEL_6:
 
 - (BOOL)isUserInterfaceChange
 {
-  v2 = [(PLAdditionalAssetAttributes *)self changedValues];
-  v3 = [v2 objectForKeyedSubscript:@"variationSuggestionStates"];
+  changedValues = [(PLAdditionalAssetAttributes *)self changedValues];
+  v3 = [changedValues objectForKeyedSubscript:@"variationSuggestionStates"];
 
-  if (v3 || ([v2 objectForKeyedSubscript:@"reverseLocationData"], v4 = objc_claimAutoreleasedReturnValue(), v4, v4) || (objc_msgSend(v2, "objectForKeyedSubscript:", @"reverseLocationDataIsValid"), v5 = objc_claimAutoreleasedReturnValue(), v5, v5) || (objc_msgSend(v2, "objectForKeyedSubscript:", @"destinationAssetCopyState"), v6 = objc_claimAutoreleasedReturnValue(), v6, v6))
+  if (v3 || ([changedValues objectForKeyedSubscript:@"reverseLocationData"], v4 = objc_claimAutoreleasedReturnValue(), v4, v4) || (objc_msgSend(changedValues, "objectForKeyedSubscript:", @"reverseLocationDataIsValid"), v5 = objc_claimAutoreleasedReturnValue(), v5, v5) || (objc_msgSend(changedValues, "objectForKeyedSubscript:", @"destinationAssetCopyState"), v6 = objc_claimAutoreleasedReturnValue(), v6, v6))
   {
     LOBYTE(v7) = 1;
   }
 
   else
   {
-    v9 = [v2 objectForKeyedSubscript:@"lastViewedDate"];
+    v9 = [changedValues objectForKeyedSubscript:@"lastViewedDate"];
     v7 = v9 != 0;
   }
 
@@ -881,15 +881,15 @@ LABEL_6:
 - (BOOL)isSyncableChange
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = [(PLAdditionalAssetAttributes *)self asset];
-  v4 = [v3 savedAssetTypeIsSupportedForUpload];
+  asset = [(PLAdditionalAssetAttributes *)self asset];
+  savedAssetTypeIsSupportedForUpload = [asset savedAssetTypeIsSupportedForUpload];
 
-  if (!v4)
+  if (!savedAssetTypeIsSupportedForUpload)
   {
     return 0;
   }
 
-  v5 = [(PLAdditionalAssetAttributes *)self changedValues];
+  changedValues = [(PLAdditionalAssetAttributes *)self changedValues];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -909,7 +909,7 @@ LABEL_4:
         objc_enumerationMutation(v6);
       }
 
-      v11 = [v5 objectForKey:*(*(&v16 + 1) + 8 * v10)];
+      v11 = [changedValues objectForKey:*(*(&v16 + 1) + 8 * v10)];
 
       if (v11)
       {
@@ -928,13 +928,13 @@ LABEL_4:
       }
     }
 
-    v13 = [(PLAdditionalAssetAttributes *)self asset];
-    v14 = [v13 isPlaceholderAsset];
+    asset2 = [(PLAdditionalAssetAttributes *)self asset];
+    isPlaceholderAsset = [asset2 isPlaceholderAsset];
 
-    if (v14)
+    if (isPlaceholderAsset)
     {
-      v5 = [(PLAdditionalAssetAttributes *)self asset];
-      v12 = [PLManagedAsset validShareForPlaceholderAsset:v5];
+      changedValues = [(PLAdditionalAssetAttributes *)self asset];
+      v12 = [PLManagedAsset validShareForPlaceholderAsset:changedValues];
       goto LABEL_14;
     }
 
@@ -954,29 +954,29 @@ LABEL_14:
 
 - (BOOL)supportsCloudUpload
 {
-  v2 = [(PLAdditionalAssetAttributes *)self asset];
-  v3 = [v2 supportsCloudUpload];
+  asset = [(PLAdditionalAssetAttributes *)self asset];
+  supportsCloudUpload = [asset supportsCloudUpload];
 
-  return v3;
+  return supportsCloudUpload;
 }
 
-+ (id)predicateToIncludeOnlyAllowedForAnalysisAndProcessedToFaceVersion:(id)a3 noindex:(BOOL)a4
++ (id)predicateToIncludeOnlyAllowedForAnalysisAndProcessedToFaceVersion:(id)version noindex:(BOOL)noindex
 {
-  v4 = a4;
+  noindexCopy = noindex;
   v16[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  versionCopy = version;
+  v7 = versionCopy;
+  if (versionCopy)
   {
-    v8 = [v6 intValue];
+    intValue = [versionCopy intValue];
   }
 
   else
   {
-    v8 = 1;
+    intValue = 1;
   }
 
-  if (v4)
+  if (noindexCopy)
   {
     v9 = @"noindex:(%K) >= %d";
   }
@@ -986,9 +986,9 @@ LABEL_14:
     v9 = @"%K >= %d";
   }
 
-  v10 = [MEMORY[0x1E696AE18] predicateWithFormat:v9, @"faceAnalysisVersion", v8];
+  v10 = [MEMORY[0x1E696AE18] predicateWithFormat:v9, @"faceAnalysisVersion", intValue];
   v11 = MEMORY[0x1E696AB28];
-  v12 = [a1 predicateToIncludeOnlyAllowedForAnalysisWithNoindex:v4];
+  v12 = [self predicateToIncludeOnlyAllowedForAnalysisWithNoindex:noindexCopy];
   v16[0] = v12;
   v16[1] = v10;
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:2];
@@ -997,32 +997,32 @@ LABEL_14:
   return v14;
 }
 
-+ (id)predicateToIncludeOnlyAllowedForAnalysisAndProcessedToLatestFaceVersionWithNoindex:(BOOL)a3
++ (id)predicateToIncludeOnlyAllowedForAnalysisAndProcessedToLatestFaceVersionWithNoindex:(BOOL)noindex
 {
-  v3 = a3;
+  noindexCopy = noindex;
   v5 = +[PLMediaAnalysisServiceRequestAdapter currentFaceVersion];
-  v6 = [a1 predicateToIncludeOnlyAllowedForAnalysisAndProcessedToFaceVersion:v5 noindex:v3];
+  v6 = [self predicateToIncludeOnlyAllowedForAnalysisAndProcessedToFaceVersion:v5 noindex:noindexCopy];
 
   return v6;
 }
 
-+ (id)predicateToIncludeOnlyAllowedForAnalysisAndProcessedToSceneVersion:(id)a3 noindex:(BOOL)a4
++ (id)predicateToIncludeOnlyAllowedForAnalysisAndProcessedToSceneVersion:(id)version noindex:(BOOL)noindex
 {
-  v4 = a4;
+  noindexCopy = noindex;
   v16[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  versionCopy = version;
+  v7 = versionCopy;
+  if (versionCopy)
   {
-    v8 = [v6 intValue];
+    intValue = [versionCopy intValue];
   }
 
   else
   {
-    v8 = 1;
+    intValue = 1;
   }
 
-  if (v4)
+  if (noindexCopy)
   {
     v9 = @"noindex:(%K) >= %d";
   }
@@ -1032,9 +1032,9 @@ LABEL_14:
     v9 = @"%K >= %d";
   }
 
-  v10 = [MEMORY[0x1E696AE18] predicateWithFormat:v9, @"sceneAnalysisVersion", v8];
+  v10 = [MEMORY[0x1E696AE18] predicateWithFormat:v9, @"sceneAnalysisVersion", intValue];
   v11 = MEMORY[0x1E696AB28];
-  v12 = [a1 predicateToIncludeOnlyAllowedForAnalysisWithNoindex:v4];
+  v12 = [self predicateToIncludeOnlyAllowedForAnalysisWithNoindex:noindexCopy];
   v16[0] = v12;
   v16[1] = v10;
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:2];
@@ -1043,18 +1043,18 @@ LABEL_14:
   return v14;
 }
 
-+ (id)predicateToIncludeOnlyAllowedForAnalysisAndProcessedToLatestSceneVersionWithNoindex:(BOOL)a3
++ (id)predicateToIncludeOnlyAllowedForAnalysisAndProcessedToLatestSceneVersionWithNoindex:(BOOL)noindex
 {
-  v3 = a3;
+  noindexCopy = noindex;
   v5 = +[PLMediaAnalysisServiceRequestAdapter currentSceneVersion];
-  v6 = [a1 predicateToIncludeOnlyAllowedForAnalysisAndProcessedToSceneVersion:v5 noindex:v3];
+  v6 = [self predicateToIncludeOnlyAllowedForAnalysisAndProcessedToSceneVersion:v5 noindex:noindexCopy];
 
   return v6;
 }
 
-+ (id)predicateToIncludeOnlyAllowedForAnalysisWithNoindex:(BOOL)a3
++ (id)predicateToIncludeOnlyAllowedForAnalysisWithNoindex:(BOOL)noindex
 {
-  if (a3)
+  if (noindex)
   {
     v3 = @"noindex:(%K) == YES";
   }
@@ -1069,12 +1069,12 @@ LABEL_14:
   return v4;
 }
 
-+ (BOOL)shouldPersistImportedByDisplayName:(id)a3
++ (BOOL)shouldPersistImportedByDisplayName:(id)name
 {
-  v3 = a3;
-  if ([v3 length])
+  nameCopy = name;
+  if ([nameCopy length])
   {
-    v4 = [v3 hasPrefix:@"com.apple."] ^ 1;
+    v4 = [nameCopy hasPrefix:@"com.apple."] ^ 1;
   }
 
   else
@@ -1103,29 +1103,29 @@ void __53__PLAdditionalAssetAttributes_listOfSyncedProperties__block_invoke()
 - (PLSpatialOverCaptureInformation)spatialOverCaptureInformation
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [(PLAdditionalAssetAttributes *)self asset];
-  v4 = [v3 pathForSpatialOverCaptureContentFile];
+  asset = [(PLAdditionalAssetAttributes *)self asset];
+  pathForSpatialOverCaptureContentFile = [asset pathForSpatialOverCaptureContentFile];
 
-  if (!v4)
+  if (!pathForSpatialOverCaptureContentFile)
   {
     v13 = 0;
     goto LABEL_12;
   }
 
   v5 = objc_opt_new();
-  v6 = [MEMORY[0x1E695DFF8] fileURLWithPath:v4 isDirectory:0];
-  v7 = [(PLAdditionalAssetAttributes *)self asset];
-  v8 = [v7 isVideo];
+  v6 = [MEMORY[0x1E695DFF8] fileURLWithPath:pathForSpatialOverCaptureContentFile isDirectory:0];
+  asset2 = [(PLAdditionalAssetAttributes *)self asset];
+  isVideo = [asset2 isVideo];
 
   v9 = objc_alloc(MEMORY[0x1E69C0718]);
-  if (!v8)
+  if (!isVideo)
   {
     v11 = [v9 initWithImageURL:v6 contentType:0 timeZoneLookup:0];
-    v14 = [v11 spatialOverCaptureIdentifier];
-    [v5 setSpatialOverCaptureGroupIdentifier:v14];
+    spatialOverCaptureIdentifier = [v11 spatialOverCaptureIdentifier];
+    [v5 setSpatialOverCaptureGroupIdentifier:spatialOverCaptureIdentifier];
 
-    v15 = [v11 livePhotoPairingIdentifier];
-    [v5 setSpatialOverCaptureLivePhotoPairingIdentifier:v15];
+    livePhotoPairingIdentifier = [v11 livePhotoPairingIdentifier];
+    [v5 setSpatialOverCaptureLivePhotoPairingIdentifier:livePhotoPairingIdentifier];
 
     if (v11)
     {
@@ -1137,7 +1137,7 @@ LABEL_8:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       v17 = 138412290;
-      v18 = v4;
+      v18 = pathForSpatialOverCaptureContentFile;
       _os_log_impl(&dword_19BF1F000, v11, OS_LOG_TYPE_ERROR, "Unable to read metadata for %@", &v17, 0xCu);
     }
 
@@ -1152,8 +1152,8 @@ LABEL_8:
   }
 
   v11 = v10;
-  v12 = [v10 spatialOverCaptureIdentifier];
-  [v5 setSpatialOverCaptureGroupIdentifier:v12];
+  spatialOverCaptureIdentifier2 = [v10 spatialOverCaptureIdentifier];
+  [v5 setSpatialOverCaptureGroupIdentifier:spatialOverCaptureIdentifier2];
 
 LABEL_7:
   v13 = v5;
@@ -1164,17 +1164,17 @@ LABEL_12:
   return v13;
 }
 
-- (void)setSourceAssetForDuplicationCPLScopedIdentifier:(id)a3
+- (void)setSourceAssetForDuplicationCPLScopedIdentifier:(id)identifier
 {
-  v4 = a3;
-  v7 = v4;
-  if (v4)
+  identifierCopy = identifier;
+  v7 = identifierCopy;
+  if (identifierCopy)
   {
-    v5 = [v4 identifier];
-    [(PLAdditionalAssetAttributes *)self setSourceAssetForDuplicationIdentifier:v5];
+    identifier = [identifierCopy identifier];
+    [(PLAdditionalAssetAttributes *)self setSourceAssetForDuplicationIdentifier:identifier];
 
-    v6 = [v7 scopeIdentifier];
-    [(PLAdditionalAssetAttributes *)self setSourceAssetForDuplicationScopeIdentifier:v6];
+    scopeIdentifier = [v7 scopeIdentifier];
+    [(PLAdditionalAssetAttributes *)self setSourceAssetForDuplicationScopeIdentifier:scopeIdentifier];
   }
 
   else
@@ -1186,11 +1186,11 @@ LABEL_12:
 
 - (CPLScopedIdentifier)sourceAssetForDuplicationCPLScopedIdentifier
 {
-  v3 = [(PLAdditionalAssetAttributes *)self sourceAssetForDuplicationIdentifier];
-  v4 = [(PLAdditionalAssetAttributes *)self sourceAssetForDuplicationScopeIdentifier];
-  if (v3)
+  sourceAssetForDuplicationIdentifier = [(PLAdditionalAssetAttributes *)self sourceAssetForDuplicationIdentifier];
+  sourceAssetForDuplicationScopeIdentifier = [(PLAdditionalAssetAttributes *)self sourceAssetForDuplicationScopeIdentifier];
+  if (sourceAssetForDuplicationIdentifier)
   {
-    v5 = [objc_alloc(MEMORY[0x1E6994BB8]) initWithScopeIdentifier:v4 identifier:v3];
+    v5 = [objc_alloc(MEMORY[0x1E6994BB8]) initWithScopeIdentifier:sourceAssetForDuplicationScopeIdentifier identifier:sourceAssetForDuplicationIdentifier];
   }
 
   else
@@ -1203,87 +1203,87 @@ LABEL_12:
 
 - (BOOL)hasDuplicateMatchingData
 {
-  v3 = [(PLAdditionalAssetAttributes *)self sceneprint];
-  v4 = [v3 duplicateMatchingData];
-  if (v4)
+  sceneprint = [(PLAdditionalAssetAttributes *)self sceneprint];
+  duplicateMatchingData = [sceneprint duplicateMatchingData];
+  if (duplicateMatchingData)
   {
     v5 = 1;
   }
 
   else
   {
-    v6 = [(PLAdditionalAssetAttributes *)self sceneprint];
-    v7 = [v6 duplicateMatchingAlternateData];
-    v5 = v7 != 0;
+    sceneprint2 = [(PLAdditionalAssetAttributes *)self sceneprint];
+    duplicateMatchingAlternateData = [sceneprint2 duplicateMatchingAlternateData];
+    v5 = duplicateMatchingAlternateData != 0;
   }
 
   return v5;
 }
 
-- (void)setDuplicateMatchingData:(id)a3 duplicateMatchingAlternateData:(id)a4 processingSucceeded:(BOOL)a5
+- (void)setDuplicateMatchingData:(id)data duplicateMatchingAlternateData:(id)alternateData processingSucceeded:(BOOL)succeeded
 {
-  v5 = a5;
-  v11 = a3;
-  v8 = a4;
-  v9 = [(PLAdditionalAssetAttributes *)self sceneprint];
-  if (!v9)
+  succeededCopy = succeeded;
+  dataCopy = data;
+  alternateDataCopy = alternateData;
+  sceneprint = [(PLAdditionalAssetAttributes *)self sceneprint];
+  if (!sceneprint)
   {
-    v10 = [(PLAdditionalAssetAttributes *)self managedObjectContext];
-    v9 = [PLSceneprint insertInCurrentManagedObjectContext:v10 withAdditionalAssetAttributes:self];
+    managedObjectContext = [(PLAdditionalAssetAttributes *)self managedObjectContext];
+    sceneprint = [PLSceneprint insertInCurrentManagedObjectContext:managedObjectContext withAdditionalAssetAttributes:self];
   }
 
-  [v9 setDuplicateMatchingData:v11 duplicateMatchingAlternateData:v8];
-  [(PLAdditionalAssetAttributes *)self addDuplicateDetectorPerceptualProcessingStates:v5 ^ 1 removeProcessingStates:v5];
+  [sceneprint setDuplicateMatchingData:dataCopy duplicateMatchingAlternateData:alternateDataCopy];
+  [(PLAdditionalAssetAttributes *)self addDuplicateDetectorPerceptualProcessingStates:succeededCopy ^ 1 removeProcessingStates:succeededCopy];
 }
 
-- (void)setSceneprintWithData:(id)a3
+- (void)setSceneprintWithData:(id)data
 {
-  v6 = a3;
-  v4 = [(PLAdditionalAssetAttributes *)self sceneprint];
-  if (!v4)
+  dataCopy = data;
+  sceneprint = [(PLAdditionalAssetAttributes *)self sceneprint];
+  if (!sceneprint)
   {
-    v5 = [(PLAdditionalAssetAttributes *)self managedObjectContext];
-    v4 = [PLSceneprint insertInCurrentManagedObjectContext:v5 withAdditionalAssetAttributes:self];
+    managedObjectContext = [(PLAdditionalAssetAttributes *)self managedObjectContext];
+    sceneprint = [PLSceneprint insertInCurrentManagedObjectContext:managedObjectContext withAdditionalAssetAttributes:self];
   }
 
-  [v4 setData:v6];
+  [sceneprint setData:dataCopy];
 }
 
-- (void)setMediaMetadataData:(id)a3
+- (void)setMediaMetadataData:(id)data
 {
-  v13 = a3;
-  v4 = [(PLAdditionalAssetAttributes *)self asset];
-  v5 = [v4 hasAdjustments];
+  dataCopy = data;
+  asset = [(PLAdditionalAssetAttributes *)self asset];
+  hasAdjustments = [asset hasAdjustments];
 
-  v6 = [(PLAdditionalAssetAttributes *)self mediaMetadata];
+  mediaMetadata = [(PLAdditionalAssetAttributes *)self mediaMetadata];
 
-  if (!v6 && v5)
+  if (!mediaMetadata && hasAdjustments)
   {
-    v7 = [(PLAdditionalAssetAttributes *)self managedObjectContext];
-    v8 = [(PLManagedObject *)PLCloudMasterMediaMetadata insertInManagedObjectContext:v7];
+    managedObjectContext = [(PLAdditionalAssetAttributes *)self managedObjectContext];
+    v8 = [(PLManagedObject *)PLCloudMasterMediaMetadata insertInManagedObjectContext:managedObjectContext];
     [(PLAdditionalAssetAttributes *)self setMediaMetadata:v8];
   }
 
-  if (v13)
+  if (dataCopy)
   {
-    v9 = [(PLAdditionalAssetAttributes *)self mediaMetadata];
+    mediaMetadata2 = [(PLAdditionalAssetAttributes *)self mediaMetadata];
 
-    if (!v9)
+    if (!mediaMetadata2)
     {
-      v10 = [(PLAdditionalAssetAttributes *)self managedObjectContext];
-      v11 = [(PLManagedObject *)PLCloudMasterMediaMetadata insertInManagedObjectContext:v10];
+      managedObjectContext2 = [(PLAdditionalAssetAttributes *)self managedObjectContext];
+      v11 = [(PLManagedObject *)PLCloudMasterMediaMetadata insertInManagedObjectContext:managedObjectContext2];
       [(PLAdditionalAssetAttributes *)self setMediaMetadata:v11];
     }
 
-    v12 = [(PLAdditionalAssetAttributes *)self mediaMetadata];
-    [v12 setValue:v13 forKey:@"data"];
+    mediaMetadata3 = [(PLAdditionalAssetAttributes *)self mediaMetadata];
+    [mediaMetadata3 setValue:dataCopy forKey:@"data"];
     goto LABEL_10;
   }
 
-  if (v5)
+  if (hasAdjustments)
   {
-    v12 = [(PLAdditionalAssetAttributes *)self mediaMetadata];
-    [v12 setData:0];
+    mediaMetadata3 = [(PLAdditionalAssetAttributes *)self mediaMetadata];
+    [mediaMetadata3 setData:0];
 LABEL_10:
 
     goto LABEL_11;
@@ -1295,46 +1295,46 @@ LABEL_11:
 
 - (NSData)mediaMetadataData
 {
-  v2 = [(PLAdditionalAssetAttributes *)self mediaMetadata];
-  v3 = [v2 valueForKey:@"data"];
+  mediaMetadata = [(PLAdditionalAssetAttributes *)self mediaMetadata];
+  v3 = [mediaMetadata valueForKey:@"data"];
 
   return v3;
 }
 
-- (void)setLongDescription:(id)a3
+- (void)setLongDescription:(id)description
 {
-  v10 = a3;
-  v4 = [v10 length];
-  v5 = [(PLAdditionalAssetAttributes *)self assetDescription];
-  v6 = v5;
+  descriptionCopy = description;
+  v4 = [descriptionCopy length];
+  assetDescription = [(PLAdditionalAssetAttributes *)self assetDescription];
+  managedObjectContext2 = assetDescription;
   if (v4)
   {
-    if (!v5)
+    if (!assetDescription)
     {
-      v7 = [(PLAdditionalAssetAttributes *)self managedObjectContext];
+      managedObjectContext = [(PLAdditionalAssetAttributes *)self managedObjectContext];
       v8 = +[PLAssetDescription entityName];
-      v6 = PLSafeInsertNewObjectForEntityForNameInManagedObjectContext(v8, v7, 0);
+      managedObjectContext2 = PLSafeInsertNewObjectForEntityForNameInManagedObjectContext(v8, managedObjectContext, 0);
 
-      if (v6)
+      if (managedObjectContext2)
       {
-        [(PLAdditionalAssetAttributes *)self setAssetDescription:v6];
+        [(PLAdditionalAssetAttributes *)self setAssetDescription:managedObjectContext2];
       }
     }
 
-    [v6 setLongDescription:v10];
+    [managedObjectContext2 setLongDescription:descriptionCopy];
   }
 
   else
   {
 
-    if (!v6)
+    if (!managedObjectContext2)
     {
       goto LABEL_10;
     }
 
-    v6 = [(PLAdditionalAssetAttributes *)self managedObjectContext];
-    v9 = [(PLAdditionalAssetAttributes *)self assetDescription];
-    [v6 deleteObject:v9];
+    managedObjectContext2 = [(PLAdditionalAssetAttributes *)self managedObjectContext];
+    assetDescription2 = [(PLAdditionalAssetAttributes *)self assetDescription];
+    [managedObjectContext2 deleteObject:assetDescription2];
   }
 
 LABEL_10:
@@ -1342,36 +1342,36 @@ LABEL_10:
 
 - (NSString)longDescription
 {
-  v2 = [(PLAdditionalAssetAttributes *)self assetDescription];
-  v3 = [v2 longDescription];
+  assetDescription = [(PLAdditionalAssetAttributes *)self assetDescription];
+  longDescription = [assetDescription longDescription];
 
-  return v3;
+  return longDescription;
 }
 
-- (void)removeCloudRecoveryStateFlag:(unint64_t)a3
+- (void)removeCloudRecoveryStateFlag:(unint64_t)flag
 {
-  v4 = [(PLAdditionalAssetAttributes *)self cloudRecoveryState]& ~a3;
+  v4 = [(PLAdditionalAssetAttributes *)self cloudRecoveryState]& ~flag;
 
   [(PLAdditionalAssetAttributes *)self setCloudRecoveryState:v4];
 }
 
-- (void)setCloudRecoveryStateFlag:(unint64_t)a3
+- (void)setCloudRecoveryStateFlag:(unint64_t)flag
 {
-  v4 = [(PLAdditionalAssetAttributes *)self cloudRecoveryState]| a3;
+  v4 = [(PLAdditionalAssetAttributes *)self cloudRecoveryState]| flag;
 
   [(PLAdditionalAssetAttributes *)self setCloudRecoveryState:v4];
 }
 
-+ (id)descriptionForDestinationAssetCopyState:(signed __int16)a3
++ (id)descriptionForDestinationAssetCopyState:(signed __int16)state
 {
-  if ((a3 + 1) > 3u)
+  if ((state + 1) > 3u)
   {
     return &stru_1F0F06D80;
   }
 
   else
   {
-    return off_1E75732F0[(a3 + 1)];
+    return off_1E75732F0[(state + 1)];
   }
 }
 

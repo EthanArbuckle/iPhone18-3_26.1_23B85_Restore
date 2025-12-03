@@ -1,23 +1,23 @@
 @interface SBUISystemApertureElementPresentationSession
-- (void)_associateWithSourceIfNeeded:(id)a3;
-- (void)_associateWithSourceWithIdentityToken:(id)a3;
-- (void)_handleSourceDidConnect:(id)a3;
-- (void)activateWithElementProvider:(id)a3;
+- (void)_associateWithSourceIfNeeded:(id)needed;
+- (void)_associateWithSourceWithIdentityToken:(id)token;
+- (void)_handleSourceDidConnect:(id)connect;
+- (void)activateWithElementProvider:(id)provider;
 - (void)dealloc;
 @end
 
 @implementation SBUISystemApertureElementPresentationSession
 
-- (void)activateWithElementProvider:(id)a3
+- (void)activateWithElementProvider:(id)provider
 {
-  obj = a3;
+  obj = provider;
   if ((SBUIIsSystemApertureEnabled() & 1) == 0)
   {
     [(SBUISystemApertureElementPresentationSession *)a2 activateWithElementProvider:?];
   }
 
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v5 addObserver:self selector:sel__handleSourceDidConnect_ name:@"SBUISystemApertureElementSourceDidConnectNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__handleSourceDidConnect_ name:@"SBUISystemApertureElementSourceDidConnectNotification" object:0];
 
   objc_storeWeak(&self->_elementProvider, obj);
   v6 = objc_alloc_init(MEMORY[0x1E69D42F0]);
@@ -29,8 +29,8 @@
 
 - (void)dealloc
 {
-  v3 = [(SBSSystemApertureScenePresentationSessionClient *)self->_client connection];
-  [v3 invalidate];
+  connection = [(SBSSystemApertureScenePresentationSessionClient *)self->_client connection];
+  [connection invalidate];
 
   client = self->_client;
   self->_client = 0;
@@ -40,11 +40,11 @@
   [(SBUISystemApertureElementPresentationSession *)&v5 dealloc];
 }
 
-- (void)_handleSourceDidConnect:(id)a3
+- (void)_handleSourceDidConnect:(id)connect
 {
-  v4 = [a3 object];
+  object = [connect object];
   v5 = objc_opt_class();
-  v6 = v4;
+  v6 = object;
   if (v5)
   {
     if (objc_opt_isKindOfClass())
@@ -65,21 +65,21 @@
 
   v8 = v7;
 
-  v9 = [v8 identityToken];
+  identityToken = [v8 identityToken];
 
-  [(SBUISystemApertureElementPresentationSession *)self _associateWithSourceWithIdentityToken:v9];
+  [(SBUISystemApertureElementPresentationSession *)self _associateWithSourceWithIdentityToken:identityToken];
 }
 
-- (void)_associateWithSourceIfNeeded:(id)a3
+- (void)_associateWithSourceIfNeeded:(id)needed
 {
-  v4 = a3;
-  if (v4)
+  neededCopy = needed;
+  if (neededCopy)
   {
-    obj = v4;
-    v5 = [v4 systemApertureElement];
+    obj = neededCopy;
+    systemApertureElement = [neededCopy systemApertureElement];
 
-    v4 = obj;
-    if (!v5)
+    neededCopy = obj;
+    if (!systemApertureElement)
     {
       WeakRetained = objc_loadWeakRetained(&self->_associatedSource);
 
@@ -90,22 +90,22 @@
         [obj setSystemApertureElementViewControllerProvider:v7];
       }
 
-      v8 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v8 removeObserver:self name:@"SBUISystemApertureElementSourceDidConnectNotification" object:0];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter removeObserver:self name:@"SBUISystemApertureElementSourceDidConnectNotification" object:0];
 
-      v4 = obj;
+      neededCopy = obj;
     }
   }
 }
 
-- (void)_associateWithSourceWithIdentityToken:(id)a3
+- (void)_associateWithSourceWithIdentityToken:(id)token
 {
   v18 = *MEMORY[0x1E69E9840];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [SBUISystemApertureElementSource openSources:a3];
+  v4 = [SBUISystemApertureElementSource openSources:token];
   v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
@@ -121,9 +121,9 @@
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 identityToken];
-        v11 = [(SBSSystemApertureScenePresentationSessionClient *)self->_client identityToken];
-        v12 = [v10 isEqual:v11];
+        identityToken = [v9 identityToken];
+        identityToken2 = [(SBSSystemApertureScenePresentationSessionClient *)self->_client identityToken];
+        v12 = [identityToken isEqual:identityToken2];
 
         if (v12)
         {

@@ -1,9 +1,9 @@
 @interface WebAppNotificationCenterDelegate
 + (id)sharedDelegate;
 - (WebAppNotificationCenterDelegate)init;
-- (void)addWebAppViewController:(id)a3;
-- (void)removeWebAppViewController:(id)a3;
-- (void)userNotificationCenter:(id)a3 didReceiveNotificationResponse:(id)a4 withCompletionHandler:(id)a5;
+- (void)addWebAppViewController:(id)controller;
+- (void)removeWebAppViewController:(id)controller;
+- (void)userNotificationCenter:(id)center didReceiveNotificationResponse:(id)response withCompletionHandler:(id)handler;
 @end
 
 @implementation WebAppNotificationCenterDelegate
@@ -48,74 +48,74 @@ void __50__WebAppNotificationCenterDelegate_sharedDelegate__block_invoke()
   return v2;
 }
 
-- (void)addWebAppViewController:(id)a3
+- (void)addWebAppViewController:(id)controller
 {
   webAppViewControllers = self->_webAppViewControllers;
-  v4 = a3;
-  v6 = [v4 webClip];
-  v5 = [v6 identifier];
-  [(NSMutableDictionary *)webAppViewControllers setObject:v4 forKeyedSubscript:v5];
+  controllerCopy = controller;
+  webClip = [controllerCopy webClip];
+  identifier = [webClip identifier];
+  [(NSMutableDictionary *)webAppViewControllers setObject:controllerCopy forKeyedSubscript:identifier];
 }
 
-- (void)removeWebAppViewController:(id)a3
+- (void)removeWebAppViewController:(id)controller
 {
-  v9 = a3;
-  v4 = [v9 webClip];
-  v5 = [v4 identifier];
+  controllerCopy = controller;
+  webClip = [controllerCopy webClip];
+  identifier = [webClip identifier];
 
-  if (v5)
+  if (identifier)
   {
     webAppViewControllers = self->_webAppViewControllers;
-    v7 = [v9 webClip];
-    v8 = [v7 identifier];
-    [(NSMutableDictionary *)webAppViewControllers setObject:0 forKeyedSubscript:v8];
+    webClip2 = [controllerCopy webClip];
+    identifier2 = [webClip2 identifier];
+    [(NSMutableDictionary *)webAppViewControllers setObject:0 forKeyedSubscript:identifier2];
   }
 }
 
-- (void)userNotificationCenter:(id)a3 didReceiveNotificationResponse:(id)a4 withCompletionHandler:(id)a5
+- (void)userNotificationCenter:(id)center didReceiveNotificationResponse:(id)response withCompletionHandler:(id)handler
 {
   v27 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
-  v9 = [v7 actionIdentifier];
-  v10 = [v9 isEqualToString:*MEMORY[0x277CE20E8]];
+  responseCopy = response;
+  handlerCopy = handler;
+  actionIdentifier = [responseCopy actionIdentifier];
+  v10 = [actionIdentifier isEqualToString:*MEMORY[0x277CE20E8]];
 
   if (v10)
   {
     webAppViewControllers = self->_webAppViewControllers;
-    v12 = [v7 notification];
-    v13 = [v12 request];
-    v14 = [v13 content];
-    v15 = [v14 targetContentIdentifier];
-    v16 = [(NSMutableDictionary *)webAppViewControllers objectForKeyedSubscript:v15];
+    notification = [responseCopy notification];
+    request = [notification request];
+    content = [request content];
+    targetContentIdentifier = [content targetContentIdentifier];
+    v16 = [(NSMutableDictionary *)webAppViewControllers objectForKeyedSubscript:targetContentIdentifier];
 
     if (v16)
     {
-      v17 = [v7 notification];
-      v18 = [v17 request];
-      v19 = [v18 content];
-      v20 = [v19 userInfo];
-      [v16 notificationActivated:v20];
+      notification2 = [responseCopy notification];
+      request2 = [notification2 request];
+      content2 = [request2 content];
+      userInfo = [content2 userInfo];
+      [v16 notificationActivated:userInfo];
     }
 
     else
     {
-      v17 = viewServiceLog();
-      if (!os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
+      notification2 = viewServiceLog();
+      if (!os_log_type_enabled(notification2, OS_LOG_TYPE_INFO))
       {
 LABEL_10:
 
-        v8[2](v8);
+        handlerCopy[2](handlerCopy);
         goto LABEL_11;
       }
 
-      v18 = [v7 notification];
-      v19 = [v18 request];
-      v20 = [v19 content];
-      v23 = [v20 targetContentIdentifier];
+      request2 = [responseCopy notification];
+      content2 = [request2 request];
+      userInfo = [content2 content];
+      targetContentIdentifier2 = [userInfo targetContentIdentifier];
       v25 = 138543362;
-      v26 = v23;
-      _os_log_impl(&dword_272C17000, v17, OS_LOG_TYPE_INFO, "Received UNNotificationResponse for WebClip %{public}@, but cannot find associated WebAppViewController", &v25, 0xCu);
+      v26 = targetContentIdentifier2;
+      _os_log_impl(&dword_272C17000, notification2, OS_LOG_TYPE_INFO, "Received UNNotificationResponse for WebClip %{public}@, but cannot find associated WebAppViewController", &v25, 0xCu);
     }
 
     goto LABEL_10;
@@ -124,13 +124,13 @@ LABEL_10:
   v21 = viewServiceLog();
   if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
   {
-    v22 = [v7 actionIdentifier];
+    actionIdentifier2 = [responseCopy actionIdentifier];
     v25 = 138412290;
-    v26 = v22;
+    v26 = actionIdentifier2;
     _os_log_impl(&dword_272C17000, v21, OS_LOG_TYPE_INFO, "Received UNNotificationResponse that was not for the default action: %@", &v25, 0xCu);
   }
 
-  v8[2](v8);
+  handlerCopy[2](handlerCopy);
 LABEL_11:
 
   v24 = *MEMORY[0x277D85DE8];

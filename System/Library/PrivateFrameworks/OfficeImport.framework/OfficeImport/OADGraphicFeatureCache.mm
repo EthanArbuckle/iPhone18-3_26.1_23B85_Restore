@@ -1,7 +1,7 @@
 @interface OADGraphicFeatureCache
 - (OADGraphicFeatureCache)init;
-- (id)countedFeatureAtIndex:(unint64_t)a3;
-- (unint64_t)cacheFeature:(id)a3;
+- (id)countedFeatureAtIndex:(unint64_t)index;
+- (unint64_t)cacheFeature:(id)feature;
 - (void)dealloc;
 @end
 
@@ -39,12 +39,12 @@
   [(OADGraphicFeatureCache *)&v5 dealloc];
 }
 
-- (unint64_t)cacheFeature:(id)a3
+- (unint64_t)cacheFeature:(id)feature
 {
-  v4 = a3;
-  if (v4)
+  featureCopy = feature;
+  if (featureCopy)
   {
-    v5 = [(OITSUNoCopyDictionary *)self->mFeatureMap objectForKey:v4];
+    v5 = [(OITSUNoCopyDictionary *)self->mFeatureMap objectForKey:featureCopy];
     v6 = v5;
     if (v5)
     {
@@ -55,29 +55,29 @@
     else
     {
       v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[NSMutableArray count](self->mFeatureUsageArray, "count") + 1}];
-      v10 = [[OADCountedGraphicFeature alloc] initWithFeature:v4];
+      v10 = [[OADCountedGraphicFeature alloc] initWithFeature:featureCopy];
       [(NSMutableArray *)self->mFeatureUsageArray addObject:v10];
 
-      [(OITSUNoCopyDictionary *)self->mFeatureMap setObject:v9 forKey:v4];
+      [(OITSUNoCopyDictionary *)self->mFeatureMap setObject:v9 forKey:featureCopy];
       v6 = v9;
     }
 
-    v8 = [v6 unsignedIntegerValue];
+    unsignedIntegerValue = [v6 unsignedIntegerValue];
   }
 
   else
   {
-    v8 = 0;
+    unsignedIntegerValue = 0;
   }
 
-  return v8;
+  return unsignedIntegerValue;
 }
 
-- (id)countedFeatureAtIndex:(unint64_t)a3
+- (id)countedFeatureAtIndex:(unint64_t)index
 {
-  if (a3)
+  if (index)
   {
-    v4 = [(NSMutableArray *)self->mFeatureUsageArray objectAtIndex:a3 - 1];
+    v4 = [(NSMutableArray *)self->mFeatureUsageArray objectAtIndex:index - 1];
   }
 
   else

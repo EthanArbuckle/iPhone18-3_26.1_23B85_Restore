@@ -1,14 +1,14 @@
 @interface AVAudioSessionXPCClientRelay
-- (AVAudioSessionXPCClientRelay)initWithConnection:(id)a3 token:(ProcessToken)a4;
+- (AVAudioSessionXPCClientRelay)initWithConnection:(id)connection token:(ProcessToken)token;
 - (id).cxx_construct;
-- (void)sendControlValueChanged:(const void *)a3;
+- (void)sendControlValueChanged:(const void *)changed;
 - (void)sendDeferredMessages;
-- (void)sendInterruptionMessageForSession:(unsigned int)a3 userInfo:(id)a4;
-- (void)sendServerConfigurationChange:(const void *)a3;
-- (void)sendServerDefaultRouteChange:(const void *)a3;
-- (void)sendSession:(unsigned int)a3 hasProxies:(BOOL)a4;
-- (void)sendSessionNeedsStateSync:(unsigned int)a3;
-- (void)sendSessionStoppedForAppStateChange:(unsigned int)a3;
+- (void)sendInterruptionMessageForSession:(unsigned int)session userInfo:(id)info;
+- (void)sendServerConfigurationChange:(const void *)change;
+- (void)sendServerDefaultRouteChange:(const void *)change;
+- (void)sendSession:(unsigned int)session hasProxies:(BOOL)proxies;
+- (void)sendSessionNeedsStateSync:(unsigned int)sync;
+- (void)sendSessionStoppedForAppStateChange:(unsigned int)change;
 - (void)setBarrierBlock;
 @end
 
@@ -36,23 +36,23 @@
   return self;
 }
 
-- (AVAudioSessionXPCClientRelay)initWithConnection:(id)a3 token:(ProcessToken)a4
+- (AVAudioSessionXPCClientRelay)initWithConnection:(id)connection token:(ProcessToken)token
 {
-  v6 = a3;
+  connectionCopy = connection;
   v12.receiver = self;
   v12.super_class = AVAudioSessionXPCClientRelay;
   v7 = [(AVAudioSessionXPCClientRelay *)&v12 init];
   v8 = v7;
   if (v7)
   {
-    objc_storeWeak(&v7->connection, v6);
-    v8->token = a4;
+    objc_storeWeak(&v7->connection, connectionCopy);
+    v8->token = token;
     os_unfair_lock_lock(&v8->guarded_impl.mMutex.m_lock);
-    v9 = [v6 remoteObjectProxy];
+    remoteObjectProxy = [connectionCopy remoteObjectProxy];
     proxy = v8->guarded_impl.mObject.proxy;
-    v8->guarded_impl.mObject.proxy = v9;
+    v8->guarded_impl.mObject.proxy = remoteObjectProxy;
 
-    v8->guarded_impl.mObject.mToken = a4;
+    v8->guarded_impl.mObject.mToken = token;
     os_unfair_lock_unlock(&v8->guarded_impl.mMutex.m_lock);
   }
 
@@ -100,24 +100,24 @@ void __47__AVAudioSessionXPCClientRelay_setBarrierBlock__block_invoke(uint64_t a
   }
 }
 
-- (void)sendServerDefaultRouteChange:(const void *)a3
+- (void)sendServerDefaultRouteChange:(const void *)change
 {
   os_unfair_lock_lock(&self->guarded_impl.mMutex.m_lock);
-  avas::server::DeferredMessageState::EnqueueDefaultRouteChange(&self->guarded_impl.mObject, a3);
-  LODWORD(a3) = avas::server::DeferredMessageState::SendSingleMessage(&self->guarded_impl.mObject);
+  avas::server::DeferredMessageState::EnqueueDefaultRouteChange(&self->guarded_impl.mObject, change);
+  LODWORD(change) = avas::server::DeferredMessageState::SendSingleMessage(&self->guarded_impl.mObject);
   os_unfair_lock_unlock(&self->guarded_impl.mMutex.m_lock);
-  if (a3)
+  if (change)
   {
 
     [(AVAudioSessionXPCClientRelay *)self setBarrierBlock];
   }
 }
 
-- (void)sendInterruptionMessageForSession:(unsigned int)a3 userInfo:(id)a4
+- (void)sendInterruptionMessageForSession:(unsigned int)session userInfo:(id)info
 {
-  v6 = a4;
+  infoCopy = info;
   os_unfair_lock_lock(&self->guarded_impl.mMutex.m_lock);
-  v7 = avas::server::DeferredMessageState::SendInterruptionMessage(&self->guarded_impl.mObject, a3, v6);
+  v7 = avas::server::DeferredMessageState::SendInterruptionMessage(&self->guarded_impl.mObject, session, infoCopy);
 
   os_unfair_lock_unlock(&self->guarded_impl.mMutex.m_lock);
   if (v7)
@@ -127,10 +127,10 @@ void __47__AVAudioSessionXPCClientRelay_setBarrierBlock__block_invoke(uint64_t a
   }
 }
 
-- (void)sendSessionStoppedForAppStateChange:(unsigned int)a3
+- (void)sendSessionStoppedForAppStateChange:(unsigned int)change
 {
   os_unfair_lock_lock(&self->guarded_impl.mMutex.m_lock);
-  avas::server::DeferredMessageState::EnqueueStoppedForAppStateChange(&self->guarded_impl.mObject, a3);
+  avas::server::DeferredMessageState::EnqueueStoppedForAppStateChange(&self->guarded_impl.mObject, change);
   v5 = avas::server::DeferredMessageState::SendSingleMessage(&self->guarded_impl.mObject);
   os_unfair_lock_unlock(&self->guarded_impl.mMutex.m_lock);
   if (v5)
@@ -140,11 +140,11 @@ void __47__AVAudioSessionXPCClientRelay_setBarrierBlock__block_invoke(uint64_t a
   }
 }
 
-- (void)sendSession:(unsigned int)a3 hasProxies:(BOOL)a4
+- (void)sendSession:(unsigned int)session hasProxies:(BOOL)proxies
 {
-  v4 = a4;
+  proxiesCopy = proxies;
   os_unfair_lock_lock(&self->guarded_impl.mMutex.m_lock);
-  avas::server::DeferredMessageState::EnqueueHasProxies(&self->guarded_impl.mObject, a3, v4);
+  avas::server::DeferredMessageState::EnqueueHasProxies(&self->guarded_impl.mObject, session, proxiesCopy);
   v7 = avas::server::DeferredMessageState::SendSingleMessage(&self->guarded_impl.mObject);
   os_unfair_lock_unlock(&self->guarded_impl.mMutex.m_lock);
   if (v7)
@@ -154,10 +154,10 @@ void __47__AVAudioSessionXPCClientRelay_setBarrierBlock__block_invoke(uint64_t a
   }
 }
 
-- (void)sendSessionNeedsStateSync:(unsigned int)a3
+- (void)sendSessionNeedsStateSync:(unsigned int)sync
 {
   os_unfair_lock_lock(&self->guarded_impl.mMutex.m_lock);
-  avas::server::DeferredMessageState::EnqueueNeedsStateSync(&self->guarded_impl.mObject, a3);
+  avas::server::DeferredMessageState::EnqueueNeedsStateSync(&self->guarded_impl.mObject, sync);
   v5 = avas::server::DeferredMessageState::SendSingleMessage(&self->guarded_impl.mObject);
   os_unfair_lock_unlock(&self->guarded_impl.mMutex.m_lock);
   if (v5)
@@ -167,26 +167,26 @@ void __47__AVAudioSessionXPCClientRelay_setBarrierBlock__block_invoke(uint64_t a
   }
 }
 
-- (void)sendServerConfigurationChange:(const void *)a3
+- (void)sendServerConfigurationChange:(const void *)change
 {
   os_unfair_lock_lock(&self->guarded_impl.mMutex.m_lock);
-  avas::server::DeferredMessageState::EnqueueConfigurationChange(&self->guarded_impl.mObject, a3);
-  LODWORD(a3) = avas::server::DeferredMessageState::SendSingleMessage(&self->guarded_impl.mObject);
+  avas::server::DeferredMessageState::EnqueueConfigurationChange(&self->guarded_impl.mObject, change);
+  LODWORD(change) = avas::server::DeferredMessageState::SendSingleMessage(&self->guarded_impl.mObject);
   os_unfair_lock_unlock(&self->guarded_impl.mMutex.m_lock);
-  if (a3)
+  if (change)
   {
 
     [(AVAudioSessionXPCClientRelay *)self setBarrierBlock];
   }
 }
 
-- (void)sendControlValueChanged:(const void *)a3
+- (void)sendControlValueChanged:(const void *)changed
 {
   os_unfair_lock_lock(&self->guarded_impl.mMutex.m_lock);
-  avas::server::DeferredMessageState::EnqueueControlValueChanged(&self->guarded_impl.mObject, a3);
-  LODWORD(a3) = avas::server::DeferredMessageState::SendSingleMessage(&self->guarded_impl.mObject);
+  avas::server::DeferredMessageState::EnqueueControlValueChanged(&self->guarded_impl.mObject, changed);
+  LODWORD(changed) = avas::server::DeferredMessageState::SendSingleMessage(&self->guarded_impl.mObject);
   os_unfair_lock_unlock(&self->guarded_impl.mMutex.m_lock);
-  if (a3)
+  if (changed)
   {
 
     [(AVAudioSessionXPCClientRelay *)self setBarrierBlock];

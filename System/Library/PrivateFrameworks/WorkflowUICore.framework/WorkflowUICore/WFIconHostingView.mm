@@ -1,10 +1,10 @@
 @interface WFIconHostingView
-+ (id)renderIcon:(id)a3 size:(CGSize)a4;
++ (id)renderIcon:(id)icon size:(CGSize)size;
 - (CGSize)iconSize;
 - (WFIcon)icon;
-- (void)setIcon:(id)a3;
-- (void)setIconSize:(CGSize)a3;
-- (void)setUseAccentColor:(BOOL)a3;
+- (void)setIcon:(id)icon;
+- (void)setIconSize:(CGSize)size;
+- (void)setUseAccentColor:(BOOL)color;
 @end
 
 @implementation WFIconHostingView
@@ -16,11 +16,11 @@
   return v2;
 }
 
-- (void)setIcon:(id)a3
+- (void)setIcon:(id)icon
 {
-  v5 = a3;
-  v6 = self;
-  sub_274B6E40C(a3);
+  iconCopy = icon;
+  selfCopy = self;
+  sub_274B6E40C(icon);
 }
 
 - (CGSize)iconSize
@@ -31,21 +31,21 @@
   return result;
 }
 
-- (void)setIconSize:(CGSize)a3
+- (void)setIconSize:(CGSize)size
 {
-  v3 = self;
+  selfCopy = self;
   sub_274B6E708();
 }
 
-- (void)setUseAccentColor:(BOOL)a3
+- (void)setUseAccentColor:(BOOL)color
 {
-  v4 = self;
-  sub_274B6E954(a3);
+  selfCopy = self;
+  sub_274B6E954(color);
 }
 
-+ (id)renderIcon:(id)a3 size:(CGSize)a4
++ (id)renderIcon:(id)icon size:(CGSize)size
 {
-  v4 = a3;
+  iconCopy = icon;
   v5 = static IconHostingView.render(icon:with:)();
 
   return v5;

@@ -1,25 +1,25 @@
 @interface HKWorkoutDataSource
-+ (BOOL)_isBLECollectedDataType:(id)a3 indoorWorkout:(BOOL)a4;
-+ (BOOL)_shouldCollectDistanceForActivityType:(unint64_t)a3 isIndoor:(BOOL)a4 isAppleWatch:(BOOL)a5;
-+ (BOOL)_shouldCollectRunningMetricTypesForActivityType:(unint64_t)a3 moveMode:(int64_t)a4 connectedToFitnessMachine:(BOOL)a5 isIndoor:(BOOL)a6;
-+ (BOOL)_shouldCollectSpeedForActivityType:(unint64_t)a3 isIndoor:(BOOL)a4 connectedToFitnessMachine:(BOOL)a5 isAppleWatch:(BOOL)a6;
-+ (id)_heartRateTypeForActivityType:(unint64_t)a3;
-+ (id)_stepCountTypeForActivityType:(unint64_t)a3;
-+ (id)defaultConfigurationWithWorkoutConfiguration:(id)a3 activityMoveMode:(int64_t)a4;
++ (BOOL)_isBLECollectedDataType:(id)type indoorWorkout:(BOOL)workout;
++ (BOOL)_shouldCollectDistanceForActivityType:(unint64_t)type isIndoor:(BOOL)indoor isAppleWatch:(BOOL)watch;
++ (BOOL)_shouldCollectRunningMetricTypesForActivityType:(unint64_t)type moveMode:(int64_t)mode connectedToFitnessMachine:(BOOL)machine isIndoor:(BOOL)indoor;
++ (BOOL)_shouldCollectSpeedForActivityType:(unint64_t)type isIndoor:(BOOL)indoor connectedToFitnessMachine:(BOOL)machine isAppleWatch:(BOOL)watch;
++ (id)_heartRateTypeForActivityType:(unint64_t)type;
++ (id)_stepCountTypeForActivityType:(unint64_t)type;
++ (id)defaultConfigurationWithWorkoutConfiguration:(id)configuration activityMoveMode:(int64_t)mode;
 @end
 
 @implementation HKWorkoutDataSource
 
-+ (id)defaultConfigurationWithWorkoutConfiguration:(id)a3 activityMoveMode:(int64_t)a4
++ (id)defaultConfigurationWithWorkoutConfiguration:(id)configuration activityMoveMode:(int64_t)mode
 {
   v34 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  configurationCopy = configuration;
+  v7 = configurationCopy;
+  if (configurationCopy)
   {
-    v8 = [v6 locationType];
+    locationType = [configurationCopy locationType];
     v27 = v7;
-    v9 = +[HKWorkoutDataSource observedTypesForActivityType:isIndoor:connectedToFitnessMachine:activityMode:](HKWorkoutDataSource, "observedTypesForActivityType:isIndoor:connectedToFitnessMachine:activityMode:", [v7 activityType], v8 == 2, 0, a4);
+    v9 = +[HKWorkoutDataSource observedTypesForActivityType:isIndoor:connectedToFitnessMachine:activityMode:](HKWorkoutDataSource, "observedTypesForActivityType:isIndoor:connectedToFitnessMachine:activityMode:", [v7 activityType], locationType == 2, 0, mode);
     v10 = objc_alloc_init(MEMORY[0x1E695DF90]);
     v29 = 0u;
     v30 = 0u;
@@ -41,7 +41,7 @@
           }
 
           v15 = *(*(&v29 + 1) + 8 * i);
-          v16 = [a1 _sourcePredicateForSampleType:v15 isIndoor:v8 == 2];
+          v16 = [self _sourcePredicateForSampleType:v15 isIndoor:locationType == 2];
           v17 = [MEMORY[0x1E695DFD8] setWithObject:v15];
           v18 = [v16 hk_filterRepresentationForDataTypes:v17];
           [v10 setObject:v18 forKeyedSubscript:v15];
@@ -72,23 +72,23 @@
   return v21;
 }
 
-+ (BOOL)_isBLECollectedDataType:(id)a3 indoorWorkout:(BOOL)a4
++ (BOOL)_isBLECollectedDataType:(id)type indoorWorkout:(BOOL)workout
 {
-  v4 = a4;
-  v5 = a3;
+  workoutCopy = workout;
+  typeCopy = type;
   if (_isBLECollectedDataType_indoorWorkout__onceToken != -1)
   {
     +[HKWorkoutDataSource _isBLECollectedDataType:indoorWorkout:];
   }
 
   v6 = _isBLECollectedDataType_indoorWorkout___bleCollectedTypes;
-  v7 = [v5 identifier];
-  v8 = [v6 containsObject:v7];
+  identifier = [typeCopy identifier];
+  v8 = [v6 containsObject:identifier];
 
-  if ((v8 & 1) == 0 && v4)
+  if ((v8 & 1) == 0 && workoutCopy)
   {
-    v9 = [v5 identifier];
-    v8 = v9 == @"HKQuantityTypeIdentifierDistanceCycling";
+    identifier2 = [typeCopy identifier];
+    v8 = identifier2 == @"HKQuantityTypeIdentifierDistanceCycling";
   }
 
   return v8;
@@ -178,9 +178,9 @@ void __62__HKWorkoutDataSource__sourcePredicateForSampleType_isIndoor___block_in
   v19 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)_heartRateTypeForActivityType:(unint64_t)a3
++ (id)_heartRateTypeForActivityType:(unint64_t)type
 {
-  if ([a1 _shouldCollectHeartRateForActivityType:a3])
+  if ([self _shouldCollectHeartRateForActivityType:type])
   {
     v3 = [HKObjectType quantityTypeForIdentifier:@"HKQuantityTypeIdentifierHeartRate"];
   }
@@ -193,9 +193,9 @@ void __62__HKWorkoutDataSource__sourcePredicateForSampleType_isIndoor___block_in
   return v3;
 }
 
-+ (id)_stepCountTypeForActivityType:(unint64_t)a3
++ (id)_stepCountTypeForActivityType:(unint64_t)type
 {
-  if ([a1 _shouldCollectStepCountTypesForActivityType:a3])
+  if ([self _shouldCollectStepCountTypesForActivityType:type])
   {
     v3 = [HKObjectType quantityTypeForIdentifier:@"HKQuantityTypeIdentifierStepCount"];
   }
@@ -208,10 +208,10 @@ void __62__HKWorkoutDataSource__sourcePredicateForSampleType_isIndoor___block_in
   return v3;
 }
 
-+ (BOOL)_shouldCollectDistanceForActivityType:(unint64_t)a3 isIndoor:(BOOL)a4 isAppleWatch:(BOOL)a5
++ (BOOL)_shouldCollectDistanceForActivityType:(unint64_t)type isIndoor:(BOOL)indoor isAppleWatch:(BOOL)watch
 {
-  v5 = a3 - 16;
-  if (a3 - 16 > 0x37)
+  v5 = type - 16;
+  if (type - 16 > 0x37)
   {
     goto LABEL_14;
   }
@@ -224,7 +224,7 @@ void __62__HKWorkoutDataSource__sourcePredicateForSampleType_isIndoor___block_in
     }
 
 LABEL_14:
-    if (a5)
+    if (watch)
     {
       return 1;
     }
@@ -232,19 +232,19 @@ LABEL_14:
     goto LABEL_5;
   }
 
-  result = !a4;
-  if (!a4 && !a5)
+  result = !indoor;
+  if (!indoor && !watch)
   {
 LABEL_5:
-    v7 = a3 - 13;
-    if (a3 - 13 > 0x3A)
+    v7 = type - 13;
+    if (type - 13 > 0x3A)
     {
       return 0;
     }
 
     if (((1 << v7) & 0x600000004440001) != 0)
     {
-      return !a4;
+      return !indoor;
     }
 
     return ((1 << v7) & 0x808001000800) != 0;
@@ -253,14 +253,14 @@ LABEL_5:
   return result;
 }
 
-+ (BOOL)_shouldCollectSpeedForActivityType:(unint64_t)a3 isIndoor:(BOOL)a4 connectedToFitnessMachine:(BOOL)a5 isAppleWatch:(BOOL)a6
++ (BOOL)_shouldCollectSpeedForActivityType:(unint64_t)type isIndoor:(BOOL)indoor connectedToFitnessMachine:(BOOL)machine isAppleWatch:(BOOL)watch
 {
-  v6 = a4;
-  if (a3 <= 34)
+  indoorCopy = indoor;
+  if (type <= 34)
   {
-    if (a3 == 13)
+    if (type == 13)
     {
-      if (a4)
+      if (indoor)
       {
         goto LABEL_14;
       }
@@ -268,13 +268,13 @@ LABEL_5:
       return 0;
     }
 
-    if (a3 != 31)
+    if (type != 31)
     {
       goto LABEL_14;
     }
 
 LABEL_8:
-    if (!a4)
+    if (!indoor)
     {
       goto LABEL_14;
     }
@@ -282,13 +282,13 @@ LABEL_8:
     return 0;
   }
 
-  switch(a3)
+  switch(type)
   {
     case '<':
       goto LABEL_8;
     case '%':
       result = 0;
-      if (a4 || a5)
+      if (indoor || machine)
       {
         return result;
       }
@@ -300,17 +300,17 @@ LABEL_8:
 
 LABEL_14:
   v9 = +[_HKBehavior sharedBehavior];
-  v10 = [v9 isAppleWatch];
+  isAppleWatch = [v9 isAppleWatch];
 
-  return (v10 & 1) != 0 || a3 <= 0x3C && ((1 << a3) & 0x100000A880000000) != 0 && !v6;
+  return (isAppleWatch & 1) != 0 || type <= 0x3C && ((1 << type) & 0x100000A880000000) != 0 && !indoorCopy;
 }
 
-+ (BOOL)_shouldCollectRunningMetricTypesForActivityType:(unint64_t)a3 moveMode:(int64_t)a4 connectedToFitnessMachine:(BOOL)a5 isIndoor:(BOOL)a6
++ (BOOL)_shouldCollectRunningMetricTypesForActivityType:(unint64_t)type moveMode:(int64_t)mode connectedToFitnessMachine:(BOOL)machine isIndoor:(BOOL)indoor
 {
   result = 0;
-  if (a4 != 2 && !a6 && !a5)
+  if (mode != 2 && !indoor && !machine)
   {
-    return a3 == 37 && (HKCoreMotionSupportsRunningMetrics() & 1) != 0;
+    return type == 37 && (HKCoreMotionSupportsRunningMetrics() & 1) != 0;
   }
 
   return result;

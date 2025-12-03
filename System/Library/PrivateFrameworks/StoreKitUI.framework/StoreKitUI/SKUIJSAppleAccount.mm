@@ -1,12 +1,12 @@
 @interface SKUIJSAppleAccount
-- (SKUIJSAppleAccount)initWithACAccount:(id)a3;
+- (SKUIJSAppleAccount)initWithACAccount:(id)account;
 @end
 
 @implementation SKUIJSAppleAccount
 
-- (SKUIJSAppleAccount)initWithACAccount:(id)a3
+- (SKUIJSAppleAccount)initWithACAccount:(id)account
 {
-  v5 = a3;
+  accountCopy = account;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIJSAppleAccount initWithACAccount:];
@@ -18,7 +18,7 @@
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_account, a3);
+    objc_storeStrong(&v6->_account, account);
   }
 
   return v7;

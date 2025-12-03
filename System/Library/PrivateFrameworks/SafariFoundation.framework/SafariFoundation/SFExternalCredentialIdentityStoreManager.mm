@@ -1,9 +1,9 @@
 @interface SFExternalCredentialIdentityStoreManager
 + (id)sharedManager;
 - (SFExternalCredentialIdentityStoreManager)init;
-- (id)_credentialIdentityStoreWithIdentifier:(id)a3;
-- (void)getCredentialIdentityStoreWithIdentifier:(id)a3 completion:(id)a4;
-- (void)removeCredentialIdentityStoreWithIdentifier:(id)a3 completion:(id)a4;
+- (id)_credentialIdentityStoreWithIdentifier:(id)identifier;
+- (void)getCredentialIdentityStoreWithIdentifier:(id)identifier completion:(id)completion;
+- (void)removeCredentialIdentityStoreWithIdentifier:(id)identifier completion:(id)completion;
 @end
 
 @implementation SFExternalCredentialIdentityStoreManager
@@ -48,21 +48,21 @@ uint64_t __57__SFExternalCredentialIdentityStoreManager_sharedManager__block_inv
   return v2;
 }
 
-- (void)getCredentialIdentityStoreWithIdentifier:(id)a3 completion:(id)a4
+- (void)getCredentialIdentityStoreWithIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  identifierCopy = identifier;
+  completionCopy = completion;
+  v8 = completionCopy;
+  if (completionCopy)
   {
     queue = self->_queue;
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __96__SFExternalCredentialIdentityStoreManager_getCredentialIdentityStoreWithIdentifier_completion___block_invoke;
     block[3] = &unk_279B61B50;
-    v12 = v7;
+    v12 = completionCopy;
     block[4] = self;
-    v11 = v6;
+    v11 = identifierCopy;
     dispatch_async(queue, block);
   }
 }
@@ -74,20 +74,20 @@ void __96__SFExternalCredentialIdentityStoreManager_getCredentialIdentityStoreWi
   (*(v1 + 16))(v1, v2);
 }
 
-- (id)_credentialIdentityStoreWithIdentifier:(id)a3
+- (id)_credentialIdentityStoreWithIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
-    v3 = containerForCredentialIdentityStoreWithIdentifier(a3);
+    v3 = containerForCredentialIdentityStoreWithIdentifier(identifier);
     v4 = v3;
     if (v3)
     {
       v5 = [v3 URLByAppendingPathComponent:@"Identities" isDirectory:1];
       if (v5)
       {
-        v6 = [MEMORY[0x277CCAA00] defaultManager];
+        defaultManager = [MEMORY[0x277CCAA00] defaultManager];
         v13 = 0;
-        v7 = [v6 createDirectoryAtURL:v4 withIntermediateDirectories:1 attributes:0 error:&v13];
+        v7 = [defaultManager createDirectoryAtURL:v4 withIntermediateDirectories:1 attributes:0 error:&v13];
         v8 = v13;
 
         if (v7)
@@ -128,29 +128,29 @@ void __96__SFExternalCredentialIdentityStoreManager_getCredentialIdentityStoreWi
   return v10;
 }
 
-- (void)removeCredentialIdentityStoreWithIdentifier:(id)a3 completion:(id)a4
+- (void)removeCredentialIdentityStoreWithIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  if (a4)
+  identifierCopy = identifier;
+  if (completion)
   {
-    v7 = a4;
+    completionCopy = completion;
   }
 
   else
   {
-    v7 = &__block_literal_global_7_0;
+    completionCopy = &__block_literal_global_7_0;
   }
 
-  v8 = _Block_copy(v7);
+  v8 = _Block_copy(completionCopy);
   queue = self->_queue;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __99__SFExternalCredentialIdentityStoreManager_removeCredentialIdentityStoreWithIdentifier_completion___block_invoke_2;
   v12[3] = &unk_279B61B98;
-  v13 = v6;
+  v13 = identifierCopy;
   v14 = v8;
   v10 = v8;
-  v11 = v6;
+  v11 = identifierCopy;
   dispatch_async(queue, v12);
 }
 

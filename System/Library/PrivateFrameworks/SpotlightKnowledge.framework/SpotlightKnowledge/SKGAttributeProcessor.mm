@@ -2,11 +2,11 @@
 + (id)sharedImporterProcessor;
 + (id)sharedProcessor;
 - (SKGAttributeProcessor)init;
-- (id)addUpdaterAttributesForMDPlistRecord:(id *)a3 bundleID:(id)a4;
+- (id)addUpdaterAttributesForMDPlistRecord:(id *)record bundleID:(id)d;
 - (id)eventsJournalsStats;
 - (id)initForImporter;
-- (void)getGenerationConfigurationForProcessorFlags:(unint64_t)a3 configurationHandler:(id)a4 completionHandler:(id)a5;
-- (void)getGenerationProgressReportForProtectionClasses:(id)a3 processorFlags:(unint64_t)a4 reportHandler:(id)a5 completionHandler:(id)a6;
+- (void)getGenerationConfigurationForProcessorFlags:(unint64_t)flags configurationHandler:(id)handler completionHandler:(id)completionHandler;
+- (void)getGenerationProgressReportForProtectionClasses:(id)classes processorFlags:(unint64_t)flags reportHandler:(id)handler completionHandler:(id)completionHandler;
 @end
 
 @implementation SKGAttributeProcessor
@@ -71,39 +71,39 @@ uint64_t __48__SKGAttributeProcessor_sharedImporterProcessor__block_invoke()
   v2 = [(SKGAttributeProcessor *)&v6 init];
   if (v2)
   {
-    v3 = [[SKGProcessorConnection alloc] initForImporter];
+    initForImporter = [[SKGProcessorConnection alloc] initForImporter];
     connection = v2->_connection;
-    v2->_connection = v3;
+    v2->_connection = initForImporter;
   }
 
   return v2;
 }
 
-- (id)addUpdaterAttributesForMDPlistRecord:(id *)a3 bundleID:(id)a4
+- (id)addUpdaterAttributesForMDPlistRecord:(id *)record bundleID:(id)d
 {
-  v9 = *a3;
-  v5 = a4;
+  v9 = *record;
+  dCopy = d;
   v6 = _MDPlistContainerCopyObject();
-  v7 = [(SKGAttributeProcessor *)self processorAttributesForRecord:v6 bundleID:v5 protectionClass:0 isUpdate:0, *&v9.var0, *&v9.var2];
+  v7 = [(SKGAttributeProcessor *)self processorAttributesForRecord:v6 bundleID:dCopy protectionClass:0 isUpdate:0, *&v9.var0, *&v9.var2];
 
   return v7;
 }
 
-- (void)getGenerationProgressReportForProtectionClasses:(id)a3 processorFlags:(unint64_t)a4 reportHandler:(id)a5 completionHandler:(id)a6
+- (void)getGenerationProgressReportForProtectionClasses:(id)classes processorFlags:(unint64_t)flags reportHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v8 = a4;
-  v14 = a3;
-  v10 = a5;
-  v11 = a6;
+  flagsCopy = flags;
+  classesCopy = classes;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
   v12 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v13 = v12;
-  if ((v8 & 4) != 0)
+  if ((flagsCopy & 4) != 0)
   {
     [v12 addObject:@"embedding"];
-    if ((v8 & 8) == 0)
+    if ((flagsCopy & 8) == 0)
     {
 LABEL_3:
-      if ((v8 & 0x20) == 0)
+      if ((flagsCopy & 0x20) == 0)
       {
         goto LABEL_4;
       }
@@ -112,16 +112,16 @@ LABEL_3:
     }
   }
 
-  else if ((v8 & 8) == 0)
+  else if ((flagsCopy & 8) == 0)
   {
     goto LABEL_3;
   }
 
   [v13 addObject:@"keyphrase"];
-  if ((v8 & 0x20) == 0)
+  if ((flagsCopy & 0x20) == 0)
   {
 LABEL_4:
-    if ((v8 & 0x40) == 0)
+    if ((flagsCopy & 0x40) == 0)
     {
       goto LABEL_6;
     }
@@ -131,29 +131,29 @@ LABEL_4:
 
 LABEL_11:
   [v13 addObject:@"suggestedEvents"];
-  if ((v8 & 0x40) != 0)
+  if ((flagsCopy & 0x40) != 0)
   {
 LABEL_5:
     [v13 addObject:@"documentUnderstanding"];
   }
 
 LABEL_6:
-  [(SKGProcessorConnection *)self->_connection getGenerationProgressReportForTypes:v13 protectionClasses:v14 reportHandler:v10 completionHandler:v11];
+  [(SKGProcessorConnection *)self->_connection getGenerationProgressReportForTypes:v13 protectionClasses:classesCopy reportHandler:handlerCopy completionHandler:completionHandlerCopy];
 }
 
-- (void)getGenerationConfigurationForProcessorFlags:(unint64_t)a3 configurationHandler:(id)a4 completionHandler:(id)a5
+- (void)getGenerationConfigurationForProcessorFlags:(unint64_t)flags configurationHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v6 = a3;
-  v11 = a4;
-  v8 = a5;
+  flagsCopy = flags;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
   v9 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v10 = v9;
-  if ((v6 & 4) != 0)
+  if ((flagsCopy & 4) != 0)
   {
     [v9 addObject:@"embedding"];
   }
 
-  [(SKGProcessorConnection *)self->_connection getGenerationConfigurationForTypes:v10 configurationHandler:v11 completionHandler:v8];
+  [(SKGProcessorConnection *)self->_connection getGenerationConfigurationForTypes:v10 configurationHandler:handlerCopy completionHandler:completionHandlerCopy];
 }
 
 - (id)eventsJournalsStats

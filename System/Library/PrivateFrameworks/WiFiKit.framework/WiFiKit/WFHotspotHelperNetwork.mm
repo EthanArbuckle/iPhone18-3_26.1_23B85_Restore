@@ -1,17 +1,17 @@
 @interface WFHotspotHelperNetwork
-- (WFHotspotHelperNetwork)initWithSSID:(id)a3 bundleIdentifier:(id)a4 password:(id)a5 label:(id)a6;
+- (WFHotspotHelperNetwork)initWithSSID:(id)d bundleIdentifier:(id)identifier password:(id)password label:(id)label;
 - (id)description;
 @end
 
 @implementation WFHotspotHelperNetwork
 
-- (WFHotspotHelperNetwork)initWithSSID:(id)a3 bundleIdentifier:(id)a4 password:(id)a5 label:(id)a6
+- (WFHotspotHelperNetwork)initWithSSID:(id)d bundleIdentifier:(id)identifier password:(id)password label:(id)label
 {
   v30 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  dCopy = d;
+  identifierCopy = identifier;
+  passwordCopy = password;
+  labelCopy = label;
   v25.receiver = self;
   v25.super_class = WFHotspotHelperNetwork;
   v15 = [(WFHotspotHelperNetwork *)&v25 init];
@@ -24,7 +24,7 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  objc_storeStrong(&v15->_ssid, a3);
+  objc_storeStrong(&v15->_ssid, d);
   if (!v16->_ssid)
   {
     [WFHotspotHelperNetwork initWithSSID:bundleIdentifier:password:label:];
@@ -33,7 +33,7 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  objc_storeStrong(&v16->_password, a5);
+  objc_storeStrong(&v16->_password, password);
   if (!v16->_password)
   {
     v17 = WFLogForCategory(0);
@@ -47,8 +47,8 @@ LABEL_14:
     }
   }
 
-  objc_storeStrong(&v16->_label, a6);
-  objc_storeStrong(&v16->_bundleIdentifier, a4);
+  objc_storeStrong(&v16->_label, label);
+  objc_storeStrong(&v16->_bundleIdentifier, identifier);
   if (!v16->_bundleIdentifier)
   {
     p_super = WFLogForCategory(0);
@@ -77,11 +77,11 @@ LABEL_15:
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(WFHotspotHelperNetwork *)self ssid];
-  v7 = [(WFHotspotHelperNetwork *)self password];
-  v8 = [(WFHotspotHelperNetwork *)self label];
-  v9 = [(WFHotspotHelperNetwork *)self bundleIdentifier];
-  v10 = [v3 stringWithFormat:@"<%@: SSID: %@, Password: %@, Label: %@, Identifier: %@>", v5, v6, v7, v8, v9];
+  ssid = [(WFHotspotHelperNetwork *)self ssid];
+  password = [(WFHotspotHelperNetwork *)self password];
+  label = [(WFHotspotHelperNetwork *)self label];
+  bundleIdentifier = [(WFHotspotHelperNetwork *)self bundleIdentifier];
+  v10 = [v3 stringWithFormat:@"<%@: SSID: %@, Password: %@, Label: %@, Identifier: %@>", v5, ssid, password, label, bundleIdentifier];
 
   return v10;
 }

@@ -1,21 +1,21 @@
 @interface TPSAppleCashFamilyValidation
-- (void)validateWithCompletion:(id)a3;
+- (void)validateWithCompletion:(id)completion;
 @end
 
 @implementation TPSAppleCashFamilyValidation
 
-- (void)validateWithCompletion:(id)a3
+- (void)validateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   HasCashFamilyAccounts = PKPeerPaymentHasCashFamilyAccounts();
   v6 = HasCashFamilyAccounts ^ [(TPSTargetingValidation *)self BOOLValue];
-  v7 = [MEMORY[0x277D71778] targeting];
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
+  targeting = [MEMORY[0x277D71778] targeting];
+  if (os_log_type_enabled(targeting, OS_LOG_TYPE_DEBUG))
   {
-    [(TPSDictationLanguageValidation *)self validateWithCompletion:v7];
+    [(TPSDictationLanguageValidation *)self validateWithCompletion:targeting];
   }
 
-  (*(v4 + 2))(v4, v6 ^ 1u, 0);
+  (*(completionCopy + 2))(completionCopy, v6 ^ 1u, 0);
 }
 
 @end

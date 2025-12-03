@@ -1,15 +1,15 @@
 @interface ODMSiriSchemaODMSiriClientEvent
-+ (id)getInnerTypeStringByTag:(unint64_t)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)getInnerTypeStringByTag:(unint64_t)tag;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (ODMSiriSchemaODMSiriClientEvent)initWithDictionary:(id)a3;
-- (ODMSiriSchemaODMSiriClientEvent)initWithJSON:(id)a3;
+- (ODMSiriSchemaODMSiriClientEvent)initWithDictionary:(id)dictionary;
+- (ODMSiriSchemaODMSiriClientEvent)initWithJSON:(id)n;
 - (ODMSiriSchemaODMSiriCountsReported)countsReported;
 - (ODMSiriSchemaODMSiriCountsReportedAll)countsReportedAll;
 - (ODMSiriSchemaODMSiriTaskCountsReported)taskCountsReported;
 - (ODMSiriSchemaODMSiriTurnRestatementScoresReported)turnRestatementScoresReported;
 - (SISchemaInstrumentationMessage)innerEvent;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)qualifiedMessageName;
 - (id)suppressMessageUnderConditions;
@@ -19,24 +19,24 @@
 - (void)deleteCountsReportedAll;
 - (void)deleteTaskCountsReported;
 - (void)deleteTurnRestatementScoresReported;
-- (void)setCountsReported:(id)a3;
-- (void)setCountsReportedAll:(id)a3;
-- (void)setTaskCountsReported:(id)a3;
-- (void)setTurnRestatementScoresReported:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setCountsReported:(id)reported;
+- (void)setCountsReportedAll:(id)all;
+- (void)setTaskCountsReported:(id)reported;
+- (void)setTurnRestatementScoresReported:(id)reported;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ODMSiriSchemaODMSiriClientEvent
 
-- (ODMSiriSchemaODMSiriClientEvent)initWithDictionary:(id)a3
+- (ODMSiriSchemaODMSiriClientEvent)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v18.receiver = self;
   v18.super_class = ODMSiriSchemaODMSiriClientEvent;
   v5 = [(ODMSiriSchemaODMSiriClientEvent *)&v18 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"eventMetadata"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"eventMetadata"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -44,7 +44,7 @@
       [(ODMSiriSchemaODMSiriClientEvent *)v5 setEventMetadata:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"taskCountsReported"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"taskCountsReported"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -52,7 +52,7 @@
       [(ODMSiriSchemaODMSiriClientEvent *)v5 setTaskCountsReported:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"countsReported"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"countsReported"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -60,7 +60,7 @@
       [(ODMSiriSchemaODMSiriClientEvent *)v5 setCountsReported:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"countsReportedAll"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"countsReportedAll"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -68,7 +68,7 @@
       [(ODMSiriSchemaODMSiriClientEvent *)v5 setCountsReportedAll:v13];
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"turnRestatementScoresReported"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"turnRestatementScoresReported"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -82,30 +82,30 @@
   return v5;
 }
 
-- (ODMSiriSchemaODMSiriClientEvent)initWithJSON:(id)a3
+- (ODMSiriSchemaODMSiriClientEvent)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(ODMSiriSchemaODMSiriClientEvent *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(ODMSiriSchemaODMSiriClientEvent *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(ODMSiriSchemaODMSiriClientEvent *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -118,90 +118,90 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_countsReported)
   {
-    v4 = [(ODMSiriSchemaODMSiriClientEvent *)self countsReported];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    countsReported = [(ODMSiriSchemaODMSiriClientEvent *)self countsReported];
+    dictionaryRepresentation = [countsReported dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"countsReported"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"countsReported"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"countsReported"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"countsReported"];
     }
   }
 
   if (self->_countsReportedAll)
   {
-    v7 = [(ODMSiriSchemaODMSiriClientEvent *)self countsReportedAll];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    countsReportedAll = [(ODMSiriSchemaODMSiriClientEvent *)self countsReportedAll];
+    dictionaryRepresentation2 = [countsReportedAll dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"countsReportedAll"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"countsReportedAll"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"countsReportedAll"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"countsReportedAll"];
     }
   }
 
   if (self->_eventMetadata)
   {
-    v10 = [(ODMSiriSchemaODMSiriClientEvent *)self eventMetadata];
-    v11 = [v10 dictionaryRepresentation];
-    if (v11)
+    eventMetadata = [(ODMSiriSchemaODMSiriClientEvent *)self eventMetadata];
+    dictionaryRepresentation3 = [eventMetadata dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v11 forKeyedSubscript:@"eventMetadata"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"eventMetadata"];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v12 forKeyedSubscript:@"eventMetadata"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"eventMetadata"];
     }
   }
 
   if (self->_taskCountsReported)
   {
-    v13 = [(ODMSiriSchemaODMSiriClientEvent *)self taskCountsReported];
-    v14 = [v13 dictionaryRepresentation];
-    if (v14)
+    taskCountsReported = [(ODMSiriSchemaODMSiriClientEvent *)self taskCountsReported];
+    dictionaryRepresentation4 = [taskCountsReported dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v14 forKeyedSubscript:@"taskCountsReported"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"taskCountsReported"];
     }
 
     else
     {
-      v15 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v15 forKeyedSubscript:@"taskCountsReported"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"taskCountsReported"];
     }
   }
 
   if (self->_turnRestatementScoresReported)
   {
-    v16 = [(ODMSiriSchemaODMSiriClientEvent *)self turnRestatementScoresReported];
-    v17 = [v16 dictionaryRepresentation];
-    if (v17)
+    turnRestatementScoresReported = [(ODMSiriSchemaODMSiriClientEvent *)self turnRestatementScoresReported];
+    dictionaryRepresentation5 = [turnRestatementScoresReported dictionaryRepresentation];
+    if (dictionaryRepresentation5)
     {
-      [v3 setObject:v17 forKeyedSubscript:@"turnRestatementScoresReported"];
+      [dictionary setObject:dictionaryRepresentation5 forKeyedSubscript:@"turnRestatementScoresReported"];
     }
 
     else
     {
-      v18 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v18 forKeyedSubscript:@"turnRestatementScoresReported"];
+      null5 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null5 forKeyedSubscript:@"turnRestatementScoresReported"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -213,34 +213,34 @@
   return v6 ^ [(ODMSiriSchemaODMSiriTurnRestatementScoresReported *)self->_turnRestatementScoresReported hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_28;
   }
 
   whichEvent_Type = self->_whichEvent_Type;
-  if (whichEvent_Type != [v4 whichEvent_Type])
+  if (whichEvent_Type != [equalCopy whichEvent_Type])
   {
     goto LABEL_28;
   }
 
-  v6 = [(ODMSiriSchemaODMSiriClientEvent *)self eventMetadata];
-  v7 = [v4 eventMetadata];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(ODMSiriSchemaODMSiriClientEvent *)self eventMetadata];
+  eventMetadata2 = [equalCopy eventMetadata];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_27;
   }
 
-  v8 = [(ODMSiriSchemaODMSiriClientEvent *)self eventMetadata];
-  if (v8)
+  eventMetadata3 = [(ODMSiriSchemaODMSiriClientEvent *)self eventMetadata];
+  if (eventMetadata3)
   {
-    v9 = v8;
-    v10 = [(ODMSiriSchemaODMSiriClientEvent *)self eventMetadata];
-    v11 = [v4 eventMetadata];
-    v12 = [v10 isEqual:v11];
+    v9 = eventMetadata3;
+    eventMetadata4 = [(ODMSiriSchemaODMSiriClientEvent *)self eventMetadata];
+    eventMetadata5 = [equalCopy eventMetadata];
+    v12 = [eventMetadata4 isEqual:eventMetadata5];
 
     if (!v12)
     {
@@ -252,20 +252,20 @@
   {
   }
 
-  v6 = [(ODMSiriSchemaODMSiriClientEvent *)self taskCountsReported];
-  v7 = [v4 taskCountsReported];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(ODMSiriSchemaODMSiriClientEvent *)self taskCountsReported];
+  eventMetadata2 = [equalCopy taskCountsReported];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_27;
   }
 
-  v13 = [(ODMSiriSchemaODMSiriClientEvent *)self taskCountsReported];
-  if (v13)
+  taskCountsReported = [(ODMSiriSchemaODMSiriClientEvent *)self taskCountsReported];
+  if (taskCountsReported)
   {
-    v14 = v13;
-    v15 = [(ODMSiriSchemaODMSiriClientEvent *)self taskCountsReported];
-    v16 = [v4 taskCountsReported];
-    v17 = [v15 isEqual:v16];
+    v14 = taskCountsReported;
+    taskCountsReported2 = [(ODMSiriSchemaODMSiriClientEvent *)self taskCountsReported];
+    taskCountsReported3 = [equalCopy taskCountsReported];
+    v17 = [taskCountsReported2 isEqual:taskCountsReported3];
 
     if (!v17)
     {
@@ -277,20 +277,20 @@
   {
   }
 
-  v6 = [(ODMSiriSchemaODMSiriClientEvent *)self countsReported];
-  v7 = [v4 countsReported];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(ODMSiriSchemaODMSiriClientEvent *)self countsReported];
+  eventMetadata2 = [equalCopy countsReported];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_27;
   }
 
-  v18 = [(ODMSiriSchemaODMSiriClientEvent *)self countsReported];
-  if (v18)
+  countsReported = [(ODMSiriSchemaODMSiriClientEvent *)self countsReported];
+  if (countsReported)
   {
-    v19 = v18;
-    v20 = [(ODMSiriSchemaODMSiriClientEvent *)self countsReported];
-    v21 = [v4 countsReported];
-    v22 = [v20 isEqual:v21];
+    v19 = countsReported;
+    countsReported2 = [(ODMSiriSchemaODMSiriClientEvent *)self countsReported];
+    countsReported3 = [equalCopy countsReported];
+    v22 = [countsReported2 isEqual:countsReported3];
 
     if (!v22)
     {
@@ -302,20 +302,20 @@
   {
   }
 
-  v6 = [(ODMSiriSchemaODMSiriClientEvent *)self countsReportedAll];
-  v7 = [v4 countsReportedAll];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(ODMSiriSchemaODMSiriClientEvent *)self countsReportedAll];
+  eventMetadata2 = [equalCopy countsReportedAll];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_27;
   }
 
-  v23 = [(ODMSiriSchemaODMSiriClientEvent *)self countsReportedAll];
-  if (v23)
+  countsReportedAll = [(ODMSiriSchemaODMSiriClientEvent *)self countsReportedAll];
+  if (countsReportedAll)
   {
-    v24 = v23;
-    v25 = [(ODMSiriSchemaODMSiriClientEvent *)self countsReportedAll];
-    v26 = [v4 countsReportedAll];
-    v27 = [v25 isEqual:v26];
+    v24 = countsReportedAll;
+    countsReportedAll2 = [(ODMSiriSchemaODMSiriClientEvent *)self countsReportedAll];
+    countsReportedAll3 = [equalCopy countsReportedAll];
+    v27 = [countsReportedAll2 isEqual:countsReportedAll3];
 
     if (!v27)
     {
@@ -327,12 +327,12 @@
   {
   }
 
-  v6 = [(ODMSiriSchemaODMSiriClientEvent *)self turnRestatementScoresReported];
-  v7 = [v4 turnRestatementScoresReported];
-  if ((v6 != 0) != (v7 == 0))
+  eventMetadata = [(ODMSiriSchemaODMSiriClientEvent *)self turnRestatementScoresReported];
+  eventMetadata2 = [equalCopy turnRestatementScoresReported];
+  if ((eventMetadata != 0) != (eventMetadata2 == 0))
   {
-    v28 = [(ODMSiriSchemaODMSiriClientEvent *)self turnRestatementScoresReported];
-    if (!v28)
+    turnRestatementScoresReported = [(ODMSiriSchemaODMSiriClientEvent *)self turnRestatementScoresReported];
+    if (!turnRestatementScoresReported)
     {
 
 LABEL_31:
@@ -340,10 +340,10 @@ LABEL_31:
       goto LABEL_29;
     }
 
-    v29 = v28;
-    v30 = [(ODMSiriSchemaODMSiriClientEvent *)self turnRestatementScoresReported];
-    v31 = [v4 turnRestatementScoresReported];
-    v32 = [v30 isEqual:v31];
+    v29 = turnRestatementScoresReported;
+    turnRestatementScoresReported2 = [(ODMSiriSchemaODMSiriClientEvent *)self turnRestatementScoresReported];
+    turnRestatementScoresReported3 = [equalCopy turnRestatementScoresReported];
+    v32 = [turnRestatementScoresReported2 isEqual:turnRestatementScoresReported3];
 
     if (v32)
     {
@@ -363,50 +363,50 @@ LABEL_29:
   return v33;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v15 = a3;
-  v4 = [(ODMSiriSchemaODMSiriClientEvent *)self eventMetadata];
+  toCopy = to;
+  eventMetadata = [(ODMSiriSchemaODMSiriClientEvent *)self eventMetadata];
 
-  if (v4)
+  if (eventMetadata)
   {
-    v5 = [(ODMSiriSchemaODMSiriClientEvent *)self eventMetadata];
+    eventMetadata2 = [(ODMSiriSchemaODMSiriClientEvent *)self eventMetadata];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(ODMSiriSchemaODMSiriClientEvent *)self taskCountsReported];
+  taskCountsReported = [(ODMSiriSchemaODMSiriClientEvent *)self taskCountsReported];
 
-  if (v6)
+  if (taskCountsReported)
   {
-    v7 = [(ODMSiriSchemaODMSiriClientEvent *)self taskCountsReported];
+    taskCountsReported2 = [(ODMSiriSchemaODMSiriClientEvent *)self taskCountsReported];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(ODMSiriSchemaODMSiriClientEvent *)self countsReported];
+  countsReported = [(ODMSiriSchemaODMSiriClientEvent *)self countsReported];
 
-  if (v8)
+  if (countsReported)
   {
-    v9 = [(ODMSiriSchemaODMSiriClientEvent *)self countsReported];
+    countsReported2 = [(ODMSiriSchemaODMSiriClientEvent *)self countsReported];
     PBDataWriterWriteSubmessage();
   }
 
-  v10 = [(ODMSiriSchemaODMSiriClientEvent *)self countsReportedAll];
+  countsReportedAll = [(ODMSiriSchemaODMSiriClientEvent *)self countsReportedAll];
 
-  if (v10)
+  if (countsReportedAll)
   {
-    v11 = [(ODMSiriSchemaODMSiriClientEvent *)self countsReportedAll];
+    countsReportedAll2 = [(ODMSiriSchemaODMSiriClientEvent *)self countsReportedAll];
     PBDataWriterWriteSubmessage();
   }
 
-  v12 = [(ODMSiriSchemaODMSiriClientEvent *)self turnRestatementScoresReported];
+  turnRestatementScoresReported = [(ODMSiriSchemaODMSiriClientEvent *)self turnRestatementScoresReported];
 
-  v13 = v15;
-  if (v12)
+  v13 = toCopy;
+  if (turnRestatementScoresReported)
   {
-    v14 = [(ODMSiriSchemaODMSiriClientEvent *)self turnRestatementScoresReported];
+    turnRestatementScoresReported2 = [(ODMSiriSchemaODMSiriClientEvent *)self turnRestatementScoresReported];
     PBDataWriterWriteSubmessage();
 
-    v13 = v15;
+    v13 = toCopy;
   }
 }
 
@@ -435,9 +435,9 @@ LABEL_29:
   return v3;
 }
 
-- (void)setTurnRestatementScoresReported:(id)a3
+- (void)setTurnRestatementScoresReported:(id)reported
 {
-  v4 = a3;
+  reportedCopy = reported;
   taskCountsReported = self->_taskCountsReported;
   self->_taskCountsReported = 0;
 
@@ -448,14 +448,14 @@ LABEL_29:
   self->_countsReportedAll = 0;
 
   v8 = 5;
-  if (!v4)
+  if (!reportedCopy)
   {
     v8 = 0;
   }
 
   self->_whichEvent_Type = v8;
   turnRestatementScoresReported = self->_turnRestatementScoresReported;
-  self->_turnRestatementScoresReported = v4;
+  self->_turnRestatementScoresReported = reportedCopy;
 }
 
 - (void)deleteCountsReportedAll
@@ -483,9 +483,9 @@ LABEL_29:
   return v3;
 }
 
-- (void)setCountsReportedAll:(id)a3
+- (void)setCountsReportedAll:(id)all
 {
-  v4 = a3;
+  allCopy = all;
   taskCountsReported = self->_taskCountsReported;
   self->_taskCountsReported = 0;
 
@@ -495,9 +495,9 @@ LABEL_29:
   turnRestatementScoresReported = self->_turnRestatementScoresReported;
   self->_turnRestatementScoresReported = 0;
 
-  self->_whichEvent_Type = 4 * (v4 != 0);
+  self->_whichEvent_Type = 4 * (allCopy != 0);
   countsReportedAll = self->_countsReportedAll;
-  self->_countsReportedAll = v4;
+  self->_countsReportedAll = allCopy;
 }
 
 - (void)deleteCountsReported
@@ -525,9 +525,9 @@ LABEL_29:
   return v3;
 }
 
-- (void)setCountsReported:(id)a3
+- (void)setCountsReported:(id)reported
 {
-  v4 = a3;
+  reportedCopy = reported;
   taskCountsReported = self->_taskCountsReported;
   self->_taskCountsReported = 0;
 
@@ -538,14 +538,14 @@ LABEL_29:
   self->_turnRestatementScoresReported = 0;
 
   v8 = 3;
-  if (!v4)
+  if (!reportedCopy)
   {
     v8 = 0;
   }
 
   self->_whichEvent_Type = v8;
   countsReported = self->_countsReported;
-  self->_countsReported = v4;
+  self->_countsReported = reportedCopy;
 }
 
 - (void)deleteTaskCountsReported
@@ -573,9 +573,9 @@ LABEL_29:
   return v3;
 }
 
-- (void)setTaskCountsReported:(id)a3
+- (void)setTaskCountsReported:(id)reported
 {
-  v4 = a3;
+  reportedCopy = reported;
   countsReported = self->_countsReported;
   self->_countsReported = 0;
 
@@ -585,72 +585,72 @@ LABEL_29:
   turnRestatementScoresReported = self->_turnRestatementScoresReported;
   self->_turnRestatementScoresReported = 0;
 
-  self->_whichEvent_Type = 2 * (v4 != 0);
+  self->_whichEvent_Type = 2 * (reportedCopy != 0);
   taskCountsReported = self->_taskCountsReported;
-  self->_taskCountsReported = v4;
+  self->_taskCountsReported = reportedCopy;
 }
 
 - (id)qualifiedMessageName
 {
-  v2 = [(ODMSiriSchemaODMSiriClientEvent *)self whichEvent_Type];
-  if (v2 - 2 > 3)
+  whichEvent_Type = [(ODMSiriSchemaODMSiriClientEvent *)self whichEvent_Type];
+  if (whichEvent_Type - 2 > 3)
   {
     return @"com.apple.aiml.odm.siri.ODMSiriClientEvent";
   }
 
   else
   {
-    return off_1E78DE110[v2 - 2];
+    return off_1E78DE110[whichEvent_Type - 2];
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v22.receiver = self;
   v22.super_class = ODMSiriSchemaODMSiriClientEvent;
-  v5 = [(SISchemaInstrumentationMessage *)&v22 applySensitiveConditionsPolicy:v4];
-  v6 = [(ODMSiriSchemaODMSiriClientEvent *)self eventMetadata];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v22 applySensitiveConditionsPolicy:policyCopy];
+  eventMetadata = [(ODMSiriSchemaODMSiriClientEvent *)self eventMetadata];
+  v7 = [eventMetadata applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(ODMSiriSchemaODMSiriClientEvent *)self deleteEventMetadata];
   }
 
-  v9 = [(ODMSiriSchemaODMSiriClientEvent *)self taskCountsReported];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  taskCountsReported = [(ODMSiriSchemaODMSiriClientEvent *)self taskCountsReported];
+  v10 = [taskCountsReported applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(ODMSiriSchemaODMSiriClientEvent *)self deleteTaskCountsReported];
   }
 
-  v12 = [(ODMSiriSchemaODMSiriClientEvent *)self countsReported];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  countsReported = [(ODMSiriSchemaODMSiriClientEvent *)self countsReported];
+  v13 = [countsReported applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(ODMSiriSchemaODMSiriClientEvent *)self deleteCountsReported];
   }
 
-  v15 = [(ODMSiriSchemaODMSiriClientEvent *)self countsReportedAll];
-  v16 = [v15 applySensitiveConditionsPolicy:v4];
-  v17 = [v16 suppressMessage];
+  countsReportedAll = [(ODMSiriSchemaODMSiriClientEvent *)self countsReportedAll];
+  v16 = [countsReportedAll applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage4 = [v16 suppressMessage];
 
-  if (v17)
+  if (suppressMessage4)
   {
     [(ODMSiriSchemaODMSiriClientEvent *)self deleteCountsReportedAll];
   }
 
-  v18 = [(ODMSiriSchemaODMSiriClientEvent *)self turnRestatementScoresReported];
-  v19 = [v18 applySensitiveConditionsPolicy:v4];
-  v20 = [v19 suppressMessage];
+  turnRestatementScoresReported = [(ODMSiriSchemaODMSiriClientEvent *)self turnRestatementScoresReported];
+  v19 = [turnRestatementScoresReported applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage5 = [v19 suppressMessage];
 
-  if (v20)
+  if (suppressMessage5)
   {
     [(ODMSiriSchemaODMSiriClientEvent *)self deleteTurnRestatementScoresReported];
   }
@@ -668,30 +668,30 @@ LABEL_29:
 
 - (SISchemaInstrumentationMessage)innerEvent
 {
-  v3 = [(ODMSiriSchemaODMSiriClientEvent *)self whichEvent_Type];
-  if (v3 - 2 > 3)
+  whichEvent_Type = [(ODMSiriSchemaODMSiriClientEvent *)self whichEvent_Type];
+  if (whichEvent_Type - 2 > 3)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = *(&self->super.super.super.super.isa + *off_1E78EA5D8[v3 - 2]);
+    v4 = *(&self->super.super.super.super.isa + *off_1E78EA5D8[whichEvent_Type - 2]);
   }
 
   return v4;
 }
 
-+ (id)getInnerTypeStringByTag:(unint64_t)a3
++ (id)getInnerTypeStringByTag:(unint64_t)tag
 {
-  if (a3 - 2 > 3)
+  if (tag - 2 > 3)
   {
     return 0;
   }
 
   else
   {
-    return off_1E78EA5F8[a3 - 2];
+    return off_1E78EA5F8[tag - 2];
   }
 }
 

@@ -1,34 +1,34 @@
 @interface PUWallpaperPosterParallaxView
-- (BOOL)_applyKeyPathsAndRelativeValues:(id)a3 forMotionEffect:(id)a4;
-- (PUWallpaperPosterParallaxView)initWithFrame:(CGRect)a3 parallaxHandler:(id)a4;
+- (BOOL)_applyKeyPathsAndRelativeValues:(id)values forMotionEffect:(id)effect;
+- (PUWallpaperPosterParallaxView)initWithFrame:(CGRect)frame parallaxHandler:(id)handler;
 - (void)startParallax;
 - (void)stopParallax;
 @end
 
 @implementation PUWallpaperPosterParallaxView
 
-- (BOOL)_applyKeyPathsAndRelativeValues:(id)a3 forMotionEffect:(id)a4
+- (BOOL)_applyKeyPathsAndRelativeValues:(id)values forMotionEffect:(id)effect
 {
-  v5 = a3;
-  v6 = [(PUWallpaperPosterParallaxView *)self motionEffect];
-  [v6 parallaxVectorFromKeyPathsAndRelativeValues:v5];
+  valuesCopy = values;
+  motionEffect = [(PUWallpaperPosterParallaxView *)self motionEffect];
+  [motionEffect parallaxVectorFromKeyPathsAndRelativeValues:valuesCopy];
   v8 = v7;
   v10 = v9;
 
-  v11 = [(PUWallpaperPosterParallaxView *)self parallaxHandler];
-  v11[2](v8, v10);
+  parallaxHandler = [(PUWallpaperPosterParallaxView *)self parallaxHandler];
+  parallaxHandler[2](v8, v10);
 
   return 1;
 }
 
 - (void)stopParallax
 {
-  v3 = [(PUWallpaperPosterParallaxView *)self motionEffect];
+  motionEffect = [(PUWallpaperPosterParallaxView *)self motionEffect];
 
-  if (v3)
+  if (motionEffect)
   {
-    v4 = [(PUWallpaperPosterParallaxView *)self motionEffect];
-    [(PUWallpaperPosterParallaxView *)self removeMotionEffect:v4];
+    motionEffect2 = [(PUWallpaperPosterParallaxView *)self motionEffect];
+    [(PUWallpaperPosterParallaxView *)self removeMotionEffect:motionEffect2];
 
     [(PUWallpaperPosterParallaxView *)self setMotionEffect:0];
   }
@@ -36,36 +36,36 @@
 
 - (void)startParallax
 {
-  v3 = [(PUWallpaperPosterParallaxView *)self motionEffect];
+  motionEffect = [(PUWallpaperPosterParallaxView *)self motionEffect];
 
-  if (!v3)
+  if (!motionEffect)
   {
     v4 = objc_alloc_init(PUWallpaperPosterMotionEffect);
     [(PUWallpaperPosterParallaxView *)self setMotionEffect:v4];
 
-    v5 = [(PUWallpaperPosterParallaxView *)self motionEffect];
-    [(PUWallpaperPosterParallaxView *)self addMotionEffect:v5];
+    motionEffect2 = [(PUWallpaperPosterParallaxView *)self motionEffect];
+    [(PUWallpaperPosterParallaxView *)self addMotionEffect:motionEffect2];
   }
 }
 
-- (PUWallpaperPosterParallaxView)initWithFrame:(CGRect)a3 parallaxHandler:(id)a4
+- (PUWallpaperPosterParallaxView)initWithFrame:(CGRect)frame parallaxHandler:(id)handler
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  handlerCopy = handler;
   v14.receiver = self;
   v14.super_class = PUWallpaperPosterParallaxView;
-  v10 = [(PUWallpaperPosterParallaxView *)&v14 initWithFrame:x, y, width, height];
-  if (v10)
+  height = [(PUWallpaperPosterParallaxView *)&v14 initWithFrame:x, y, width, height];
+  if (height)
   {
-    v11 = [v9 copy];
-    parallaxHandler = v10->_parallaxHandler;
-    v10->_parallaxHandler = v11;
+    v11 = [handlerCopy copy];
+    parallaxHandler = height->_parallaxHandler;
+    height->_parallaxHandler = v11;
   }
 
-  return v10;
+  return height;
 }
 
 @end

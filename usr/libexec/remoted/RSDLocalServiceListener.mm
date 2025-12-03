@@ -16,16 +16,16 @@
 
 - (id)copyServiceDescription
 {
-  v3 = [(RSDLocalServiceListener *)self service];
-  v4 = [v3 copyServiceDescription];
+  service = [(RSDLocalServiceListener *)self service];
+  copyServiceDescription = [service copyServiceDescription];
 
-  if (!v4)
+  if (!copyServiceDescription)
   {
     sub_100038D18(&v6, v7);
   }
 
-  xpc_dictionary_set_string(v4, "Port", [(RSDLocalServiceListener *)self port]);
-  return v4;
+  xpc_dictionary_set_string(copyServiceDescription, "Port", [(RSDLocalServiceListener *)self port]);
+  return copyServiceDescription;
 }
 
 - (RSDRemoteDevice)device

@@ -8,7 +8,7 @@
 - (id)propertyListForRadioResponseReturningError:()RadioRequestAdditions unparsedResponseDictionary:
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = [MEMORY[0x277CCAC58] propertyListWithData:a1 options:0 format:0 error:a3];
+  v6 = [MEMORY[0x277CCAC58] propertyListWithData:self options:0 format:0 error:a3];
   objc_opt_class();
   v7 = 0;
   if (objc_opt_isKindOfClass())

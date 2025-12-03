@@ -1,18 +1,18 @@
 @interface NDNoSupportFeedPersonalizer
-- (id)rankTagIDsDescending:(id)a3;
-- (id)sortItems:(id)a3 options:(int64_t)a4 configurationSet:(int64_t)a5;
+- (id)rankTagIDsDescending:(id)descending;
+- (id)sortItems:(id)items options:(int64_t)options configurationSet:(int64_t)set;
 @end
 
 @implementation NDNoSupportFeedPersonalizer
 
-- (id)rankTagIDsDescending:(id)a3
+- (id)rankTagIDsDescending:(id)descending
 {
-  v3 = [a3 copy];
+  v3 = [descending copy];
 
   return v3;
 }
 
-- (id)sortItems:(id)a3 options:(int64_t)a4 configurationSet:(int64_t)a5
+- (id)sortItems:(id)items options:(int64_t)options configurationSet:(int64_t)set
 {
   v5 = objc_alloc_init(FCFeedPersonalizedItems);
   [v5 setSortedItems:&__NSArray0__struct];

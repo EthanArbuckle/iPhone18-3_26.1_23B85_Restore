@@ -1,33 +1,33 @@
 @interface ADCoreBluetoothV2Device
-- (ADCoreBluetoothV2Device)initWithAddress:(id)a3 cbuuid:(id)a4 dataSource:(id)a5;
-- (ADCoreBluetoothV2Device)initWithDeviceUID:(id)a3 dataSource:(id)a4;
+- (ADCoreBluetoothV2Device)initWithAddress:(id)address cbuuid:(id)cbuuid dataSource:(id)source;
+- (ADCoreBluetoothV2Device)initWithDeviceUID:(id)d dataSource:(id)source;
 - (id)_deviceInfo;
-- (id)_inEarDetectionStateFromCBDevice:(id)a3;
+- (id)_inEarDetectionStateFromCBDevice:(id)device;
 - (id)address;
 - (id)cbuuid;
 - (id)deviceInfo;
 - (id)identifier;
-- (int64_t)_headphoneListeningModeFromDevice:(id)a3;
-- (int64_t)_inEarStatusFromDevicePlacement:(int)a3;
-- (void)_enumerateObserversUsingBlock:(id)a3;
+- (int64_t)_headphoneListeningModeFromDevice:(id)device;
+- (int64_t)_inEarStatusFromDevicePlacement:(int)placement;
+- (void)_enumerateObserversUsingBlock:(id)block;
 - (void)_invalidate;
-- (void)_updateDevice:(id)a3;
-- (void)_updateDeviceInfo:(id)a3;
-- (void)addObserver:(id)a3;
-- (void)fetchCBUIIDWithCompletion:(id)a3;
-- (void)getConversationAwareness:(id)a3;
-- (void)getDeviceInfo:(id)a3;
-- (void)getHeadGestures:(id)a3;
-- (void)getHeadphoneInEarDetectionState:(id)a3;
-- (void)getHeadphoneListeningMode:(id)a3;
-- (void)getPersonalVolume:(id)a3;
+- (void)_updateDevice:(id)device;
+- (void)_updateDeviceInfo:(id)info;
+- (void)addObserver:(id)observer;
+- (void)fetchCBUIIDWithCompletion:(id)completion;
+- (void)getConversationAwareness:(id)awareness;
+- (void)getDeviceInfo:(id)info;
+- (void)getHeadGestures:(id)gestures;
+- (void)getHeadphoneInEarDetectionState:(id)state;
+- (void)getHeadphoneListeningMode:(id)mode;
+- (void)getPersonalVolume:(id)volume;
 - (void)invalidate;
-- (void)removeObserver:(id)a3;
-- (void)setConversationAwareness:(BOOL)a3 completion:(id)a4;
-- (void)setHeadGestures:(BOOL)a3 completion:(id)a4;
-- (void)setHeadphoneListeningMode:(int64_t)a3 completion:(id)a4;
-- (void)setPersonalVolume:(BOOL)a3 completion:(id)a4;
-- (void)updateDevice:(id)a3;
+- (void)removeObserver:(id)observer;
+- (void)setConversationAwareness:(BOOL)awareness completion:(id)completion;
+- (void)setHeadGestures:(BOOL)gestures completion:(id)completion;
+- (void)setHeadphoneListeningMode:(int64_t)mode completion:(id)completion;
+- (void)setPersonalVolume:(BOOL)volume completion:(id)completion;
+- (void)updateDevice:(id)device;
 @end
 
 @implementation ADCoreBluetoothV2Device
@@ -98,29 +98,29 @@
   return v3;
 }
 
-- (id)_inEarDetectionStateFromCBDevice:(id)a3
+- (id)_inEarDetectionStateFromCBDevice:(id)device
 {
-  v4 = [a3 coreBluetoothDevice];
-  v5 = [v4 primaryPlacement];
-  v6 = [v4 secondaryPlacement];
-  v7 = [v4 primaryBudSide];
-  v8 = [(ADCoreBluetoothV2Device *)self _inEarStatusFromDevicePlacement:v5];
-  v9 = [(ADCoreBluetoothV2Device *)self _inEarStatusFromDevicePlacement:v6];
-  if (v7 == 1)
+  coreBluetoothDevice = [device coreBluetoothDevice];
+  primaryPlacement = [coreBluetoothDevice primaryPlacement];
+  secondaryPlacement = [coreBluetoothDevice secondaryPlacement];
+  primaryBudSide = [coreBluetoothDevice primaryBudSide];
+  v8 = [(ADCoreBluetoothV2Device *)self _inEarStatusFromDevicePlacement:primaryPlacement];
+  v9 = [(ADCoreBluetoothV2Device *)self _inEarStatusFromDevicePlacement:secondaryPlacement];
+  if (primaryBudSide == 1)
   {
     v10 = 1;
   }
 
   else
   {
-    v10 = 2 * (v7 == 2);
+    v10 = 2 * (primaryBudSide == 2);
   }
 
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_10024CAFC;
   v13[3] = &unk_100517AA8;
-  v14 = v5;
+  v14 = primaryPlacement;
   v13[4] = v8;
   v13[5] = v9;
   v13[6] = v10;
@@ -129,10 +129,10 @@
   return v11;
 }
 
-- (int64_t)_headphoneListeningModeFromDevice:(id)a3
+- (int64_t)_headphoneListeningModeFromDevice:(id)device
 {
-  v3 = [a3 coreBluetoothDevice];
-  v4 = [v3 listeningMode] - 1;
+  coreBluetoothDevice = [device coreBluetoothDevice];
+  v4 = [coreBluetoothDevice listeningMode] - 1;
   if (v4 >= 4)
   {
     v5 = 1;
@@ -146,43 +146,43 @@
   return v5;
 }
 
-- (int64_t)_inEarStatusFromDevicePlacement:(int)a3
+- (int64_t)_inEarStatusFromDevicePlacement:(int)placement
 {
-  if ((a3 - 1) > 5)
+  if ((placement - 1) > 5)
   {
     return 1;
   }
 
   else
   {
-    return qword_1003F0518[a3 - 1];
+    return qword_1003F0518[placement - 1];
   }
 }
 
-- (void)_enumerateObserversUsingBlock:(id)a3
+- (void)_enumerateObserversUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   observers = self->_observers;
   if (observers)
   {
-    v6 = [(NSHashTable *)observers setRepresentation];
+    setRepresentation = [(NSHashTable *)observers setRepresentation];
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_10024CC90;
     v7[3] = &unk_100517A88;
-    v8 = v4;
-    [v6 enumerateObjectsUsingBlock:v7];
+    v8 = blockCopy;
+    [setRepresentation enumerateObjectsUsingBlock:v7];
   }
 }
 
-- (void)_updateDeviceInfo:(id)a3
+- (void)_updateDeviceInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   deviceInfo = self->_deviceInfo;
-  if (deviceInfo != v4 && ([(AFBluetoothDeviceInfo *)deviceInfo isEqual:v4]& 1) == 0)
+  if (deviceInfo != infoCopy && ([(AFBluetoothDeviceInfo *)deviceInfo isEqual:infoCopy]& 1) == 0)
   {
     v6 = self->_deviceInfo;
-    v7 = [(AFBluetoothDeviceInfo *)v4 copy];
+    v7 = [(AFBluetoothDeviceInfo *)infoCopy copy];
     v8 = self->_deviceInfo;
     self->_deviceInfo = v7;
 
@@ -214,17 +214,17 @@
   return deviceInfo;
 }
 
-- (void)_updateDevice:(id)a3
+- (void)_updateDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10024D9E0;
   block[3] = &unk_10051E010;
-  v6 = v4;
+  v6 = deviceCopy;
   v29 = v6;
-  v30 = self;
+  selfCopy = self;
   dispatch_async(queue, block);
   v7 = self->_device;
   v8 = v6;
@@ -233,13 +233,13 @@
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     v11 = v10;
-    v12 = [(ADCoreBluetoothV2Device *)self cbuuid];
+    cbuuid = [(ADCoreBluetoothV2Device *)self cbuuid];
     *buf = 136315650;
     v32 = "[ADCoreBluetoothV2Device _updateDevice:]";
     v33 = 2112;
     v34 = v8;
     v35 = 2112;
-    v36 = v12;
+    v36 = cbuuid;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "%s found device: %@, cbuuid: %@", buf, 0x20u);
   }
 
@@ -307,23 +307,23 @@
   self->_device = v8;
 }
 
-- (void)updateDevice:(id)a3
+- (void)updateDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   aadQueue = self->_aadQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10024DC0C;
   v7[3] = &unk_10051E010;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = deviceCopy;
+  v6 = deviceCopy;
   dispatch_async(aadQueue, v7);
 }
 
-- (void)getHeadphoneListeningMode:(id)a3
+- (void)getHeadphoneListeningMode:(id)mode
 {
-  v4 = a3;
+  modeCopy = mode;
   group = self->_group;
   aadQueue = self->_aadQueue;
   v8[0] = _NSConcreteStackBlock;
@@ -331,14 +331,14 @@
   v8[2] = sub_10024DCC0;
   v8[3] = &unk_10051E038;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = modeCopy;
+  v7 = modeCopy;
   dispatch_group_notify(group, aadQueue, v8);
 }
 
-- (void)getHeadphoneInEarDetectionState:(id)a3
+- (void)getHeadphoneInEarDetectionState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   group = self->_group;
   aadQueue = self->_aadQueue;
   v8[0] = _NSConcreteStackBlock;
@@ -346,30 +346,30 @@
   v8[2] = sub_10024DDB0;
   v8[3] = &unk_10051E038;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = stateCopy;
+  v7 = stateCopy;
   dispatch_group_notify(group, aadQueue, v8);
 }
 
-- (void)setHeadGestures:(BOOL)a3 completion:(id)a4
+- (void)setHeadGestures:(BOOL)gestures completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   group = self->_group;
   aadQueue = self->_aadQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10024DEC0;
   block[3] = &unk_10051D228;
-  v12 = a3;
+  gesturesCopy = gestures;
   block[4] = self;
-  v11 = v6;
-  v9 = v6;
+  v11 = completionCopy;
+  v9 = completionCopy;
   dispatch_group_notify(group, aadQueue, block);
 }
 
-- (void)getHeadGestures:(id)a3
+- (void)getHeadGestures:(id)gestures
 {
-  v4 = a3;
+  gesturesCopy = gestures;
   group = self->_group;
   aadQueue = self->_aadQueue;
   v8[0] = _NSConcreteStackBlock;
@@ -377,30 +377,30 @@
   v8[2] = sub_10024E368;
   v8[3] = &unk_10051E038;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = gesturesCopy;
+  v7 = gesturesCopy;
   dispatch_group_notify(group, aadQueue, v8);
 }
 
-- (void)setPersonalVolume:(BOOL)a3 completion:(id)a4
+- (void)setPersonalVolume:(BOOL)volume completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   group = self->_group;
   aadQueue = self->_aadQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10024E630;
   block[3] = &unk_10051D228;
-  v12 = a3;
+  volumeCopy = volume;
   block[4] = self;
-  v11 = v6;
-  v9 = v6;
+  v11 = completionCopy;
+  v9 = completionCopy;
   dispatch_group_notify(group, aadQueue, block);
 }
 
-- (void)getPersonalVolume:(id)a3
+- (void)getPersonalVolume:(id)volume
 {
-  v4 = a3;
+  volumeCopy = volume;
   group = self->_group;
   aadQueue = self->_aadQueue;
   v8[0] = _NSConcreteStackBlock;
@@ -408,30 +408,30 @@
   v8[2] = sub_10024E8E0;
   v8[3] = &unk_10051E038;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = volumeCopy;
+  v7 = volumeCopy;
   dispatch_group_notify(group, aadQueue, v8);
 }
 
-- (void)setConversationAwareness:(BOOL)a3 completion:(id)a4
+- (void)setConversationAwareness:(BOOL)awareness completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   group = self->_group;
   aadQueue = self->_aadQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10024EBF8;
   block[3] = &unk_10051D228;
-  v12 = a3;
+  awarenessCopy = awareness;
   block[4] = self;
-  v11 = v6;
-  v9 = v6;
+  v11 = completionCopy;
+  v9 = completionCopy;
   dispatch_group_notify(group, aadQueue, block);
 }
 
-- (void)getConversationAwareness:(id)a3
+- (void)getConversationAwareness:(id)awareness
 {
-  v4 = a3;
+  awarenessCopy = awareness;
   group = self->_group;
   aadQueue = self->_aadQueue;
   v8[0] = _NSConcreteStackBlock;
@@ -439,30 +439,30 @@
   v8[2] = sub_10024EEA8;
   v8[3] = &unk_10051E038;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = awarenessCopy;
+  v7 = awarenessCopy;
   dispatch_group_notify(group, aadQueue, v8);
 }
 
-- (void)setHeadphoneListeningMode:(int64_t)a3 completion:(id)a4
+- (void)setHeadphoneListeningMode:(int64_t)mode completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   group = self->_group;
   aadQueue = self->_aadQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10024F1C0;
   block[3] = &unk_10051BFA8;
-  v11 = v6;
-  v12 = a3;
+  v11 = completionCopy;
+  modeCopy = mode;
   block[4] = self;
-  v9 = v6;
+  v9 = completionCopy;
   dispatch_group_notify(group, aadQueue, block);
 }
 
-- (void)fetchCBUIIDWithCompletion:(id)a3
+- (void)fetchCBUIIDWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   group = self->_group;
   aadQueue = self->_aadQueue;
   v8[0] = _NSConcreteStackBlock;
@@ -470,14 +470,14 @@
   v8[2] = sub_10024F35C;
   v8[3] = &unk_10051E038;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = completionCopy;
+  v7 = completionCopy;
   dispatch_group_notify(group, aadQueue, v8);
 }
 
-- (void)getDeviceInfo:(id)a3
+- (void)getDeviceInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   group = self->_group;
   aadQueue = self->_aadQueue;
   v8[0] = _NSConcreteStackBlock;
@@ -485,8 +485,8 @@
   v8[2] = sub_10024F478;
   v8[3] = &unk_10051E038;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = infoCopy;
+  v7 = infoCopy;
   dispatch_group_notify(group, aadQueue, v8);
 }
 
@@ -512,11 +512,11 @@
   return v3;
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  observerCopy = observer;
+  v5 = observerCopy;
+  if (observerCopy)
   {
     aadQueue = self->_aadQueue;
     v7[0] = _NSConcreteStackBlock;
@@ -524,16 +524,16 @@
     v7[2] = sub_10024F6B8;
     v7[3] = &unk_10051E010;
     v7[4] = self;
-    v8 = v4;
+    v8 = observerCopy;
     dispatch_async(aadQueue, v7);
   }
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  observerCopy = observer;
+  v5 = observerCopy;
+  if (observerCopy)
   {
     aadQueue = self->_aadQueue;
     v7[0] = _NSConcreteStackBlock;
@@ -541,7 +541,7 @@
     v7[2] = sub_10024F848;
     v7[3] = &unk_10051E010;
     v7[4] = self;
-    v8 = v4;
+    v8 = observerCopy;
     dispatch_async(aadQueue, v7);
   }
 }
@@ -569,20 +569,20 @@
   dispatch_sync(aadQueue, block);
 }
 
-- (ADCoreBluetoothV2Device)initWithDeviceUID:(id)a3 dataSource:(id)a4
+- (ADCoreBluetoothV2Device)initWithDeviceUID:(id)d dataSource:(id)source
 {
-  v6 = a4;
-  v7 = [a3 UUIDString];
-  v8 = [(ADCoreBluetoothV2Device *)self initWithAddress:0 cbuuid:v7 dataSource:v6];
+  sourceCopy = source;
+  uUIDString = [d UUIDString];
+  v8 = [(ADCoreBluetoothV2Device *)self initWithAddress:0 cbuuid:uUIDString dataSource:sourceCopy];
 
   return v8;
 }
 
-- (ADCoreBluetoothV2Device)initWithAddress:(id)a3 cbuuid:(id)a4 dataSource:(id)a5
+- (ADCoreBluetoothV2Device)initWithAddress:(id)address cbuuid:(id)cbuuid dataSource:(id)source
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  addressCopy = address;
+  cbuuidCopy = cbuuid;
+  sourceCopy = source;
   v32.receiver = self;
   v32.super_class = ADCoreBluetoothV2Device;
   v11 = [(ADCoreBluetoothV2Device *)&v32 init];
@@ -611,10 +611,10 @@
     block[3] = &unk_10051DB68;
     v21 = v11;
     v29 = v21;
-    v30 = v8;
-    v31 = v9;
+    v30 = addressCopy;
+    v31 = cbuuidCopy;
     dispatch_async(v20, block);
-    objc_storeWeak(v21 + 1, v10);
+    objc_storeWeak(v21 + 1, sourceCopy);
     dispatch_group_enter(*(v11 + 5));
     objc_initWeak(&location, v21);
     v22 = *(v11 + 3);

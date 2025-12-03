@@ -1,37 +1,37 @@
 @interface RWIProtocolDOMFlexOverlayConfig
 - (BOOL)showOrderNumbers;
-- (RWIProtocolDOMFlexOverlayConfig)initWithFlexColor:(id)a3;
+- (RWIProtocolDOMFlexOverlayConfig)initWithFlexColor:(id)color;
 - (RWIProtocolDOMRGBAColor)flexColor;
-- (void)setFlexColor:(id)a3;
+- (void)setFlexColor:(id)color;
 @end
 
 @implementation RWIProtocolDOMFlexOverlayConfig
 
-- (RWIProtocolDOMFlexOverlayConfig)initWithFlexColor:(id)a3
+- (RWIProtocolDOMFlexOverlayConfig)initWithFlexColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   v8.receiver = self;
   v8.super_class = RWIProtocolDOMFlexOverlayConfig;
   v5 = [(RWIProtocolJSONObject *)&v8 init];
   if (v5)
   {
-    if (!v4)
+    if (!colorCopy)
     {
       [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"required property '%@' cannot be nil", @"flexColor"}];
     }
 
-    [(RWIProtocolDOMFlexOverlayConfig *)v5 setFlexColor:v4];
+    [(RWIProtocolDOMFlexOverlayConfig *)v5 setFlexColor:colorCopy];
     v6 = v5;
   }
 
   return v5;
 }
 
-- (void)setFlexColor:(id)a3
+- (void)setFlexColor:(id)color
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolDOMFlexOverlayConfig;
-  [(RWIProtocolJSONObject *)&v3 setObject:a3 forKey:@"flexColor"];
+  [(RWIProtocolJSONObject *)&v3 setObject:color forKey:@"flexColor"];
 }
 
 - (RWIProtocolDOMRGBAColor)flexColor

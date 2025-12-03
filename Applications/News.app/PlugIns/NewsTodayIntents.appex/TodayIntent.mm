@@ -1,8 +1,8 @@
 @interface TodayIntent
 - (TodayIntent)init;
-- (TodayIntent)initWithCoder:(id)a3;
-- (TodayIntent)initWithDomain:(id)a3 verb:(id)a4 parametersByName:(id)a5;
-- (TodayIntent)initWithIdentifier:(id)a3 backingStore:(id)a4;
+- (TodayIntent)initWithCoder:(id)coder;
+- (TodayIntent)initWithDomain:(id)domain verb:(id)verb parametersByName:(id)name;
+- (TodayIntent)initWithIdentifier:(id)identifier backingStore:(id)store;
 @end
 
 @implementation TodayIntent
@@ -14,12 +14,12 @@
   return [(TodayIntent *)&v3 init];
 }
 
-- (TodayIntent)initWithCoder:(id)a3
+- (TodayIntent)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for TodayIntent();
-  v4 = a3;
-  v5 = [(TodayIntent *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(TodayIntent *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {
@@ -28,48 +28,48 @@
   return v5;
 }
 
-- (TodayIntent)initWithIdentifier:(id)a3 backingStore:(id)a4
+- (TodayIntent)initWithIdentifier:(id)identifier backingStore:(id)store
 {
-  if (a3)
+  if (identifier)
   {
     sub_10000F154();
-    v6 = a4;
+    storeCopy = store;
     v7 = sub_10000F144();
   }
 
   else
   {
-    v8 = a4;
+    storeCopy2 = store;
     v7 = 0;
   }
 
   v11.receiver = self;
   v11.super_class = type metadata accessor for TodayIntent();
-  v9 = [(TodayIntent *)&v11 initWithIdentifier:v7 backingStore:a4];
+  v9 = [(TodayIntent *)&v11 initWithIdentifier:v7 backingStore:store];
 
   return v9;
 }
 
-- (TodayIntent)initWithDomain:(id)a3 verb:(id)a4 parametersByName:(id)a5
+- (TodayIntent)initWithDomain:(id)domain verb:(id)verb parametersByName:(id)name
 {
-  if (a5)
+  if (name)
   {
     sub_10000F134();
-    v8 = a3;
-    v9 = a4;
+    domainCopy = domain;
+    verbCopy = verb;
     v10.super.isa = sub_10000F124().super.isa;
   }
 
   else
   {
-    v11 = a3;
-    v12 = a4;
+    domainCopy2 = domain;
+    verbCopy2 = verb;
     v10.super.isa = 0;
   }
 
   v15.receiver = self;
   v15.super_class = type metadata accessor for TodayIntent();
-  v13 = [(TodayIntent *)&v15 initWithDomain:a3 verb:a4 parametersByName:v10.super.isa];
+  v13 = [(TodayIntent *)&v15 initWithDomain:domain verb:verb parametersByName:v10.super.isa];
 
   return v13;
 }

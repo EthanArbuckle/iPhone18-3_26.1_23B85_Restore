@@ -6,40 +6,40 @@
 - (BOOL)_showActionSetsInstructionItem;
 - (BOOL)_showEnableSwitch;
 - (BOOL)_showTriggerSummary;
-- (HUTriggerSummaryItemManager)initWithTriggerBuilder:(id)a3 flow:(id)a4 delegate:(id)a5;
+- (HUTriggerSummaryItemManager)initWithTriggerBuilder:(id)builder flow:(id)flow delegate:(id)delegate;
 - (NSArray)overviewItemModules;
 - (NSSet)prioritizedAccessories;
-- (id)_buildItemModulesForHome:(id)a3;
-- (id)_buildItemProvidersForHome:(id)a3;
-- (id)_buildSectionsWithDisplayedItems:(id)a3;
+- (id)_buildItemModulesForHome:(id)home;
+- (id)_buildItemProvidersForHome:(id)home;
+- (id)_buildSectionsWithDisplayedItems:(id)items;
 - (id)_homeFuture;
-- (id)_itemsToHideInSet:(id)a3;
-- (id)_staticItemsForHome:(id)a3;
+- (id)_itemsToHideInSet:(id)set;
+- (id)_staticItemsForHome:(id)home;
 - (id)_triggerDeleteInstructionItemString;
 - (id)_triggerServiceActionsInstructionDescription;
 - (id)_triggerTestActionsInstructionDescription;
 - (id)_unsupportedTriggers;
 - (id)triggerCurrentDisplayedName;
-- (void)setPrioritizedAccessories:(id)a3;
+- (void)setPrioritizedAccessories:(id)accessories;
 - (void)triggerBuilderDidChange;
 @end
 
 @implementation HUTriggerSummaryItemManager
 
-- (HUTriggerSummaryItemManager)initWithTriggerBuilder:(id)a3 flow:(id)a4 delegate:(id)a5
+- (HUTriggerSummaryItemManager)initWithTriggerBuilder:(id)builder flow:(id)flow delegate:(id)delegate
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [[HUTriggerBuilderItem alloc] initWithTriggerBuilder:v9 nameType:4];
+  builderCopy = builder;
+  flowCopy = flow;
+  delegateCopy = delegate;
+  v12 = [[HUTriggerBuilderItem alloc] initWithTriggerBuilder:builderCopy nameType:4];
   v15.receiver = self;
   v15.super_class = HUTriggerSummaryItemManager;
-  v13 = [(HFItemManager *)&v15 initWithDelegate:v11 sourceItem:v12];
+  v13 = [(HFItemManager *)&v15 initWithDelegate:delegateCopy sourceItem:v12];
 
   if (v13)
   {
-    objc_storeStrong(&v13->_triggerBuilder, a3);
-    objc_storeStrong(&v13->_currentFlow, a4);
+    objc_storeStrong(&v13->_triggerBuilder, builder);
+    objc_storeStrong(&v13->_currentFlow, flow);
   }
 
   return v13;
@@ -47,20 +47,20 @@
 
 - (void)triggerBuilderDidChange
 {
-  v4 = [(HUTriggerSummaryItemManager *)self triggerBuilder];
-  v5 = [v4 naturalLanguageNameOfType:2];
-  v6 = [(HUTriggerSummaryItemManager *)self triggerBuilder];
-  [v6 setDisplayName:v5];
+  triggerBuilder = [(HUTriggerSummaryItemManager *)self triggerBuilder];
+  v5 = [triggerBuilder naturalLanguageNameOfType:2];
+  triggerBuilder2 = [(HUTriggerSummaryItemManager *)self triggerBuilder];
+  [triggerBuilder2 setDisplayName:v5];
 
-  v7 = [(HUTriggerSummaryItemManager *)self triggerBuilder];
-  LOBYTE(v5) = [v7 nameIsConfigured];
+  triggerBuilder3 = [(HUTriggerSummaryItemManager *)self triggerBuilder];
+  LOBYTE(v5) = [triggerBuilder3 nameIsConfigured];
 
   if ((v5 & 1) == 0)
   {
-    v8 = [(HUTriggerSummaryItemManager *)self triggerBuilder];
-    v9 = [v8 naturalLanguageNameOfType:0];
-    v10 = [(HUTriggerSummaryItemManager *)self triggerBuilder];
-    [v10 setName:v9];
+    triggerBuilder4 = [(HUTriggerSummaryItemManager *)self triggerBuilder];
+    v9 = [triggerBuilder4 naturalLanguageNameOfType:0];
+    triggerBuilder5 = [(HUTriggerSummaryItemManager *)self triggerBuilder];
+    [triggerBuilder5 setName:v9];
   }
 
   v11 = [(HFItemManager *)self reloadAndUpdateAllItemsFromSenderSelector:a2];
@@ -68,33 +68,33 @@
 
 - (id)triggerCurrentDisplayedName
 {
-  v3 = [(HUTriggerSummaryItemManager *)self triggerBuilder];
-  v4 = [v3 nameIsConfigured];
-  v5 = [(HUTriggerSummaryItemManager *)self triggerBuilder];
-  v6 = v5;
-  if (v4)
+  triggerBuilder = [(HUTriggerSummaryItemManager *)self triggerBuilder];
+  nameIsConfigured = [triggerBuilder nameIsConfigured];
+  triggerBuilder2 = [(HUTriggerSummaryItemManager *)self triggerBuilder];
+  v6 = triggerBuilder2;
+  if (nameIsConfigured)
   {
-    [v5 name];
+    [triggerBuilder2 name];
   }
 
   else
   {
-    [v5 displayName];
+    [triggerBuilder2 displayName];
   }
   v7 = ;
 
   return v7;
 }
 
-- (void)setPrioritizedAccessories:(id)a3
+- (void)setPrioritizedAccessories:(id)accessories
 {
-  v8 = a3;
-  v4 = [(HUTriggerSummaryItemManager *)self actionsModule];
+  accessoriesCopy = accessories;
+  actionsModule = [(HUTriggerSummaryItemManager *)self actionsModule];
 
-  if (v4)
+  if (actionsModule)
   {
-    v5 = [(HUTriggerSummaryItemManager *)self actionsModule];
-    [v5 setPrioritizedAccessories:v8];
+    actionsModule2 = [(HUTriggerSummaryItemManager *)self actionsModule];
+    [actionsModule2 setPrioritizedAccessories:accessoriesCopy];
 
     prioritizedAccessories = self->_prioritizedAccessories;
     self->_prioritizedAccessories = 0;
@@ -102,7 +102,7 @@
 
   else
   {
-    v7 = v8;
+    v7 = accessoriesCopy;
     prioritizedAccessories = self->_prioritizedAccessories;
     self->_prioritizedAccessories = v7;
   }
@@ -110,10 +110,10 @@
 
 - (NSSet)prioritizedAccessories
 {
-  v3 = [(HUTriggerSummaryItemManager *)self actionsModule];
-  v4 = [v3 prioritizedAccessories];
-  prioritizedAccessories = v4;
-  if (!v4)
+  actionsModule = [(HUTriggerSummaryItemManager *)self actionsModule];
+  prioritizedAccessories = [actionsModule prioritizedAccessories];
+  prioritizedAccessories = prioritizedAccessories;
+  if (!prioritizedAccessories)
   {
     prioritizedAccessories = self->_prioritizedAccessories;
   }
@@ -123,26 +123,26 @@
   return prioritizedAccessories;
 }
 
-- (id)_buildItemProvidersForHome:(id)a3
+- (id)_buildItemProvidersForHome:(id)home
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HFItemManager *)self home];
-  v6 = [v5 hf_supportsSharedEventAutomation];
+  homeCopy = home;
+  home = [(HFItemManager *)self home];
+  hf_supportsSharedEventAutomation = [home hf_supportsSharedEventAutomation];
 
   v7 = HFLogForCategory();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_INFO);
-  if (v6)
+  if (hf_supportsSharedEventAutomation)
   {
     if (!v8)
     {
       goto LABEL_7;
     }
 
-    v9 = [(HFItemManager *)self home];
-    v10 = [v9 hf_prettyDescription];
+    home2 = [(HFItemManager *)self home];
+    hf_prettyDescription = [home2 hf_prettyDescription];
     *buf = 138412290;
-    v28 = v10;
+    v28 = hf_prettyDescription;
     _os_log_impl(&dword_20CEB6000, v7, OS_LOG_TYPE_INFO, "Home %@ supports shared event automation", buf, 0xCu);
   }
 
@@ -153,57 +153,57 @@
       goto LABEL_7;
     }
 
-    v9 = [(HFItemManager *)self home];
-    v10 = [v9 hf_prettyDescription];
-    v11 = [(HFItemManager *)self home];
-    v12 = [v11 residentDevices];
-    v13 = [v12 hf_prettyDescription];
+    home2 = [(HFItemManager *)self home];
+    hf_prettyDescription = [home2 hf_prettyDescription];
+    home3 = [(HFItemManager *)self home];
+    residentDevices = [home3 residentDevices];
+    hf_prettyDescription2 = [residentDevices hf_prettyDescription];
     *buf = 138412546;
-    v28 = v10;
+    v28 = hf_prettyDescription;
     v29 = 2112;
-    v30 = v13;
+    v30 = hf_prettyDescription2;
     _os_log_impl(&dword_20CEB6000, v7, OS_LOG_TYPE_INFO, "No resident on home %@ supports shared event automation; residents: %@", buf, 0x16u);
   }
 
 LABEL_7:
-  v14 = [MEMORY[0x277CBEB18] array];
-  v15 = [(HUTriggerSummaryItemManager *)self _staticItemsForHome:v4];
+  array = [MEMORY[0x277CBEB18] array];
+  v15 = [(HUTriggerSummaryItemManager *)self _staticItemsForHome:homeCopy];
   if ([v15 count])
   {
     v16 = [objc_alloc(MEMORY[0x277D14B40]) initWithItems:v15];
-    [v14 na_safeAddObject:v16];
+    [array na_safeAddObject:v16];
   }
 
-  v17 = [(HUTriggerSummaryItemManager *)self _unsupportedTriggers];
-  if ([v17 count])
+  _unsupportedTriggers = [(HUTriggerSummaryItemManager *)self _unsupportedTriggers];
+  if ([_unsupportedTriggers count])
   {
-    v18 = [(HUTriggerSummaryItemManager *)self _isInEditMode];
+    _isInEditMode = [(HUTriggerSummaryItemManager *)self _isInEditMode];
 
-    if (!v18)
+    if (!_isInEditMode)
     {
       goto LABEL_13;
     }
 
     v19 = objc_alloc(MEMORY[0x277D14B40]);
-    v20 = [(HUTriggerSummaryItemManager *)self _unsupportedTriggers];
+    _unsupportedTriggers2 = [(HUTriggerSummaryItemManager *)self _unsupportedTriggers];
     v25[0] = MEMORY[0x277D85DD0];
     v25[1] = 3221225472;
     v25[2] = __58__HUTriggerSummaryItemManager__buildItemProvidersForHome___block_invoke;
     v25[3] = &unk_277DC3BE0;
-    v26 = v4;
-    v21 = [v20 na_map:v25];
+    v26 = homeCopy;
+    v21 = [_unsupportedTriggers2 na_map:v25];
     v22 = [v19 initWithItems:v21];
     [(HUTriggerSummaryItemManager *)self setUnsupportedItemProvider:v22];
 
-    v23 = [(HUTriggerSummaryItemManager *)self unsupportedItemProvider];
-    [v14 na_safeAddObject:v23];
+    unsupportedItemProvider = [(HUTriggerSummaryItemManager *)self unsupportedItemProvider];
+    [array na_safeAddObject:unsupportedItemProvider];
 
-    v17 = v26;
+    _unsupportedTriggers = v26;
   }
 
 LABEL_13:
 
-  return v14;
+  return array;
 }
 
 id __58__HUTriggerSummaryItemManager__buildItemProvidersForHome___block_invoke(uint64_t a1, void *a2)
@@ -215,15 +215,15 @@ id __58__HUTriggerSummaryItemManager__buildItemProvidersForHome___block_invoke(u
   return v5;
 }
 
-- (id)_staticItemsForHome:(id)a3
+- (id)_staticItemsForHome:(id)home
 {
   v37[2] = *MEMORY[0x277D85DE8];
-  v26 = a3;
+  homeCopy = home;
   v4 = [MEMORY[0x277CBEB58] set];
   objc_initWeak(&location, self);
   v5 = objc_alloc(MEMORY[0x277D14C30]);
-  v6 = [(HFItemManager *)self sourceItem];
-  v7 = [v6 copy];
+  sourceItem = [(HFItemManager *)self sourceItem];
+  v7 = [sourceItem copy];
   v33[0] = MEMORY[0x277D85DD0];
   v33[1] = 3221225472;
   v33[2] = __51__HUTriggerSummaryItemManager__staticItemsForHome___block_invoke;
@@ -232,8 +232,8 @@ id __58__HUTriggerSummaryItemManager__buildItemProvidersForHome___block_invoke(u
   v8 = [v5 initWithSourceItem:v7 transformationBlock:v33];
   [(HUTriggerSummaryItemManager *)self setEnableItem:v8];
 
-  v9 = [(HUTriggerSummaryItemManager *)self enableItem];
-  [v4 addObject:v9];
+  enableItem = [(HUTriggerSummaryItemManager *)self enableItem];
+  [v4 addObject:enableItem];
 
   v10 = objc_alloc(MEMORY[0x277D14B38]);
   v31[0] = MEMORY[0x277D85DD0];
@@ -244,8 +244,8 @@ id __58__HUTriggerSummaryItemManager__buildItemProvidersForHome___block_invoke(u
   v11 = [v10 initWithResultsBlock:v31];
   [(HUTriggerSummaryItemManager *)self setNamingRowItem:v11];
 
-  v12 = [(HUTriggerSummaryItemManager *)self namingRowItem];
-  [v4 addObject:v12];
+  namingRowItem = [(HUTriggerSummaryItemManager *)self namingRowItem];
+  [v4 addObject:namingRowItem];
 
   v13 = objc_alloc(MEMORY[0x277D14B38]);
   v29[0] = MEMORY[0x277D85DD0];
@@ -256,8 +256,8 @@ id __58__HUTriggerSummaryItemManager__buildItemProvidersForHome___block_invoke(u
   v14 = [v13 initWithResultsBlock:v29];
   [(HUTriggerSummaryItemManager *)self setCreateActionButtonItem:v14];
 
-  v15 = [(HUTriggerSummaryItemManager *)self createActionButtonItem];
-  [v4 addObject:v15];
+  createActionButtonItem = [(HUTriggerSummaryItemManager *)self createActionButtonItem];
+  [v4 addObject:createActionButtonItem];
 
   v16 = objc_alloc(MEMORY[0x277D14B38]);
   v27[0] = MEMORY[0x277D85DD0];
@@ -268,13 +268,13 @@ id __58__HUTriggerSummaryItemManager__buildItemProvidersForHome___block_invoke(u
   v17 = [v16 initWithResultsBlock:v27];
   [(HUTriggerSummaryItemManager *)self setTestTriggerItem:v17];
 
-  v18 = [(HUTriggerSummaryItemManager *)self testTriggerItem];
-  [v4 addObject:v18];
+  testTriggerItem = [(HUTriggerSummaryItemManager *)self testTriggerItem];
+  [v4 addObject:testTriggerItem];
 
   v19 = objc_alloc(MEMORY[0x277D14B38]);
   v36[0] = *MEMORY[0x277D13F60];
-  v20 = [(HUTriggerSummaryItemManager *)self _triggerDeleteInstructionItemString];
-  v37[0] = v20;
+  _triggerDeleteInstructionItemString = [(HUTriggerSummaryItemManager *)self _triggerDeleteInstructionItemString];
+  v37[0] = _triggerDeleteInstructionItemString;
   v36[1] = *MEMORY[0x277D13FB8];
   v21 = [MEMORY[0x277CCABB0] numberWithInt:{-[HUTriggerSummaryItemManager _shouldShowDeleteItem](self, "_shouldShowDeleteItem") ^ 1}];
   v37[1] = v21;
@@ -282,8 +282,8 @@ id __58__HUTriggerSummaryItemManager__buildItemProvidersForHome___block_invoke(u
   v23 = [v19 initWithResults:v22];
   [(HUTriggerSummaryItemManager *)self setDeleteTriggerItem:v23];
 
-  v24 = [(HUTriggerSummaryItemManager *)self deleteTriggerItem];
-  [v4 addObject:v24];
+  deleteTriggerItem = [(HUTriggerSummaryItemManager *)self deleteTriggerItem];
+  [v4 addObject:deleteTriggerItem];
 
   objc_destroyWeak(&v28);
   objc_destroyWeak(&v30);
@@ -435,19 +435,19 @@ id __51__HUTriggerSummaryItemManager__staticItemsForHome___block_invoke_4(uint64
   return v6;
 }
 
-- (id)_buildItemModulesForHome:(id)a3
+- (id)_buildItemModulesForHome:(id)home
 {
-  v4 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v5 = [HUTriggerEventsItemModule alloc];
-  v6 = [(HUTriggerSummaryItemManager *)self triggerBuilder];
-  v7 = [(HUTriggerEventsItemModule *)v5 initWithTriggerBuilder:v6 itemUpdater:self];
+  triggerBuilder = [(HUTriggerSummaryItemManager *)self triggerBuilder];
+  v7 = [(HUTriggerEventsItemModule *)v5 initWithTriggerBuilder:triggerBuilder itemUpdater:self];
   [(HUTriggerSummaryItemManager *)self setEventsModule:v7];
 
-  v8 = [(HUTriggerSummaryItemManager *)self _isInEditMode];
-  if (v8)
+  _isInEditMode = [(HUTriggerSummaryItemManager *)self _isInEditMode];
+  if (_isInEditMode)
   {
-    v6 = [(HFItemManager *)self home];
-    v9 = [v6 hf_currentUserIsAdministrator] ^ 1;
+    triggerBuilder = [(HFItemManager *)self home];
+    v9 = [triggerBuilder hf_currentUserIsAdministrator] ^ 1;
   }
 
   else
@@ -455,56 +455,56 @@ id __51__HUTriggerSummaryItemManager__staticItemsForHome___block_invoke_4(uint64
     v9 = 1;
   }
 
-  v10 = [(HUTriggerSummaryItemManager *)self eventsModule];
-  [v10 setHideAddEventButton:v9];
+  eventsModule = [(HUTriggerSummaryItemManager *)self eventsModule];
+  [eventsModule setHideAddEventButton:v9];
 
-  if (v8)
+  if (_isInEditMode)
   {
   }
 
-  v11 = [(HUTriggerSummaryItemManager *)self eventsModule];
-  [v4 na_safeAddObject:v11];
+  eventsModule2 = [(HUTriggerSummaryItemManager *)self eventsModule];
+  [array na_safeAddObject:eventsModule2];
 
   v12 = [HUTriggerDurationItemModule alloc];
-  v13 = [(HUTriggerSummaryItemManager *)self triggerBuilder];
-  v14 = [(HUTriggerDurationItemModule *)v12 initWithTriggerBuilder:v13 itemUpdater:self];
+  triggerBuilder2 = [(HUTriggerSummaryItemManager *)self triggerBuilder];
+  v14 = [(HUTriggerDurationItemModule *)v12 initWithTriggerBuilder:triggerBuilder2 itemUpdater:self];
   [(HUTriggerSummaryItemManager *)self setDurationModule:v14];
 
-  v15 = [(HUTriggerSummaryItemManager *)self durationModule];
-  [v15 setItemManager:self];
+  durationModule = [(HUTriggerSummaryItemManager *)self durationModule];
+  [durationModule setItemManager:self];
 
-  v16 = [(HUTriggerSummaryItemManager *)self durationModule];
-  [v4 na_safeAddObject:v16];
+  durationModule2 = [(HUTriggerSummaryItemManager *)self durationModule];
+  [array na_safeAddObject:durationModule2];
 
   v17 = [HUTriggerActionSetsItemModule alloc];
-  v18 = [(HUTriggerSummaryItemManager *)self triggerBuilder];
-  v19 = [(HUTriggerSummaryItemManager *)self currentFlow];
-  v20 = [(HUTriggerActionSetsItemModule *)v17 initWithTriggerBuilder:v18 flow:v19 itemUpdater:self];
+  triggerBuilder3 = [(HUTriggerSummaryItemManager *)self triggerBuilder];
+  currentFlow = [(HUTriggerSummaryItemManager *)self currentFlow];
+  v20 = [(HUTriggerActionSetsItemModule *)v17 initWithTriggerBuilder:triggerBuilder3 flow:currentFlow itemUpdater:self];
   [(HUTriggerSummaryItemManager *)self setActionsModule:v20];
 
   prioritizedAccessories = self->_prioritizedAccessories;
-  v22 = [(HUTriggerSummaryItemManager *)self actionsModule];
-  [v22 setPrioritizedAccessories:prioritizedAccessories];
+  actionsModule = [(HUTriggerSummaryItemManager *)self actionsModule];
+  [actionsModule setPrioritizedAccessories:prioritizedAccessories];
 
   v23 = self->_prioritizedAccessories;
   self->_prioritizedAccessories = 0;
 
-  v24 = [(HUTriggerSummaryItemManager *)self actionsModule];
-  [v4 na_safeAddObject:v24];
+  actionsModule2 = [(HUTriggerSummaryItemManager *)self actionsModule];
+  [array na_safeAddObject:actionsModule2];
 
   v25 = [HUTriggerMediaItemModule alloc];
-  v26 = [(HUTriggerSummaryItemManager *)self triggerBuilder];
-  v27 = [(HUTriggerMediaItemModule *)v25 initWithTriggerBuilder:v26 itemUpdater:self];
+  triggerBuilder4 = [(HUTriggerSummaryItemManager *)self triggerBuilder];
+  v27 = [(HUTriggerMediaItemModule *)v25 initWithTriggerBuilder:triggerBuilder4 itemUpdater:self];
   [(HUTriggerSummaryItemManager *)self setMediaModule:v27];
 
-  v28 = [(HUTriggerSummaryItemManager *)self mediaModule];
-  [v4 na_safeAddObject:v28];
+  mediaModule = [(HUTriggerSummaryItemManager *)self mediaModule];
+  [array na_safeAddObject:mediaModule];
 
   objc_opt_class();
-  v29 = [(HUTriggerSummaryItemManager *)self triggerBuilder];
+  triggerBuilder5 = [(HUTriggerSummaryItemManager *)self triggerBuilder];
   if (objc_opt_isKindOfClass())
   {
-    v30 = v29;
+    v30 = triggerBuilder5;
   }
 
   else
@@ -517,13 +517,13 @@ id __51__HUTriggerSummaryItemManager__staticItemsForHome___block_invoke_4(uint64
   if (_os_feature_enabled_impl() && v31)
   {
     v32 = [MEMORY[0x277CBEB58] set];
-    v33 = [v31 eventTypes];
-    v34 = [v33 count];
+    eventTypes = [v31 eventTypes];
+    v34 = [eventTypes count];
 
     if (v34 == 1)
     {
-      v35 = [v31 eventTypes];
-      v36 = [v35 containsObject:*MEMORY[0x277D13898]];
+      eventTypes2 = [v31 eventTypes];
+      v36 = [eventTypes2 containsObject:*MEMORY[0x277D13898]];
 
       if (v36)
       {
@@ -533,8 +533,8 @@ LABEL_16:
         goto LABEL_17;
       }
 
-      v38 = [v31 eventTypes];
-      v39 = [v38 containsObject:*MEMORY[0x277D13890]];
+      eventTypes3 = [v31 eventTypes];
+      v39 = [eventTypes3 containsObject:*MEMORY[0x277D13890]];
 
       if (v39)
       {
@@ -545,41 +545,41 @@ LABEL_16:
 
 LABEL_17:
     v40 = [HUTriggerConditionEditorItemModule alloc];
-    v41 = [(HUTriggerSummaryItemManager *)self triggerBuilder];
-    v42 = [v41 home];
-    v43 = [(HUTriggerSummaryItemManager *)self triggerBuilder];
-    v44 = [v43 conditionCollection];
-    v45 = [(HUTriggerConditionEditorItemModule *)v40 initWithItemUpdater:self home:v42 conditionCollection:v44 disallowedConditionTypes:v32];
+    triggerBuilder6 = [(HUTriggerSummaryItemManager *)self triggerBuilder];
+    home = [triggerBuilder6 home];
+    triggerBuilder7 = [(HUTriggerSummaryItemManager *)self triggerBuilder];
+    conditionCollection = [triggerBuilder7 conditionCollection];
+    v45 = [(HUTriggerConditionEditorItemModule *)v40 initWithItemUpdater:self home:home conditionCollection:conditionCollection disallowedConditionTypes:v32];
     [(HUTriggerSummaryItemManager *)self setConditionModule:v45];
 
-    v46 = [(HUTriggerSummaryItemManager *)self conditionModule];
-    [v4 na_safeAddObject:v46];
+    conditionModule = [(HUTriggerSummaryItemManager *)self conditionModule];
+    [array na_safeAddObject:conditionModule];
   }
 
-  return v4;
+  return array;
 }
 
-- (id)_buildSectionsWithDisplayedItems:(id)a3
+- (id)_buildSectionsWithDisplayedItems:(id)items
 {
   v49[11] = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CBEB18];
-  v5 = a3;
-  v48 = [v4 array];
-  v6 = [(HUTriggerSummaryItemManager *)self eventsModule];
-  v45 = [v6 buildSectionsWithDisplayedItems:v5];
+  itemsCopy = items;
+  array = [v4 array];
+  eventsModule = [(HUTriggerSummaryItemManager *)self eventsModule];
+  v45 = [eventsModule buildSectionsWithDisplayedItems:itemsCopy];
 
-  v7 = [(HUTriggerSummaryItemManager *)self actionsModule];
-  v42 = [v7 buildSectionsWithDisplayedItems:v5];
+  actionsModule = [(HUTriggerSummaryItemManager *)self actionsModule];
+  v42 = [actionsModule buildSectionsWithDisplayedItems:itemsCopy];
 
-  v8 = [(HUTriggerSummaryItemManager *)self mediaModule];
-  v46 = [v8 buildSectionsWithDisplayedItems:v5];
+  mediaModule = [(HUTriggerSummaryItemManager *)self mediaModule];
+  v46 = [mediaModule buildSectionsWithDisplayedItems:itemsCopy];
 
-  v9 = [(HUTriggerSummaryItemManager *)self durationModule];
-  v47 = v5;
-  v44 = [v9 buildSectionsWithDisplayedItems:v5];
+  durationModule = [(HUTriggerSummaryItemManager *)self durationModule];
+  v47 = itemsCopy;
+  v44 = [durationModule buildSectionsWithDisplayedItems:itemsCopy];
 
-  v10 = [(HUTriggerSummaryItemManager *)self conditionModule];
-  v11 = [v10 buildSectionsWithDisplayedItems:v5];
+  conditionModule = [(HUTriggerSummaryItemManager *)self conditionModule];
+  v11 = [conditionModule buildSectionsWithDisplayedItems:itemsCopy];
   v12 = v11;
   v13 = MEMORY[0x277CBEBF8];
   if (v11)
@@ -591,38 +591,38 @@ LABEL_17:
 
   v14 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:@"HUTriggerSummarySectionIdentifierEnable"];
   v15 = MEMORY[0x277CBEA60];
-  v16 = [(HUTriggerSummaryItemManager *)self enableItem];
-  v17 = [v15 na_arrayWithSafeObject:v16];
+  enableItem = [(HUTriggerSummaryItemManager *)self enableItem];
+  v17 = [v15 na_arrayWithSafeObject:enableItem];
   [v14 setItems:v17];
 
   v18 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:@"HUTriggerSummarySectionIdentifierNamingSection"];
   v19 = MEMORY[0x277CBEA60];
-  v20 = [(HUTriggerSummaryItemManager *)self namingRowItem];
-  v21 = [v19 na_arrayWithSafeObject:v20];
+  namingRowItem = [(HUTriggerSummaryItemManager *)self namingRowItem];
+  v21 = [v19 na_arrayWithSafeObject:namingRowItem];
   [v18 setItems:v21];
 
   v22 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:@"HUTriggerSummarySectionIdentifierAdd"];
   v23 = MEMORY[0x277CBEA60];
-  v24 = [(HUTriggerSummaryItemManager *)self createActionButtonItem];
-  v25 = [v23 na_arrayWithSafeObject:v24];
+  createActionButtonItem = [(HUTriggerSummaryItemManager *)self createActionButtonItem];
+  v25 = [v23 na_arrayWithSafeObject:createActionButtonItem];
   [v22 setItems:v25];
 
   v26 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:@"HUTriggerSummarySectionIdentifierTest"];
   v27 = MEMORY[0x277CBEA60];
-  v28 = [(HUTriggerSummaryItemManager *)self testTriggerItem];
-  v29 = [v27 na_arrayWithSafeObject:v28];
+  testTriggerItem = [(HUTriggerSummaryItemManager *)self testTriggerItem];
+  v29 = [v27 na_arrayWithSafeObject:testTriggerItem];
   [v26 setItems:v29];
 
   v30 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:@"HUTriggerSummarySectionIdentifierUnsupportedItems"];
-  v31 = [(HUTriggerSummaryItemManager *)self unsupportedItemProvider];
-  v32 = [v31 items];
-  v33 = [v32 allObjects];
-  [v30 setItems:v33];
+  unsupportedItemProvider = [(HUTriggerSummaryItemManager *)self unsupportedItemProvider];
+  items = [unsupportedItemProvider items];
+  allObjects = [items allObjects];
+  [v30 setItems:allObjects];
 
   v34 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:@"HUTriggerSummarySectionIdentifierDelete"];
   v35 = MEMORY[0x277CBEA60];
-  v36 = [(HUTriggerSummaryItemManager *)self deleteTriggerItem];
-  v37 = [v35 na_arrayWithSafeObject:v36];
+  deleteTriggerItem = [(HUTriggerSummaryItemManager *)self deleteTriggerItem];
+  v37 = [v35 na_arrayWithSafeObject:deleteTriggerItem];
   [v34 setItems:v37];
 
   v49[0] = v14;
@@ -637,19 +637,19 @@ LABEL_17:
   v49[9] = v30;
   v49[10] = v34;
   v38 = [MEMORY[0x277CBEA60] arrayWithObjects:v49 count:11];
-  v39 = [v38 na_arrayByFlattening];
-  [v48 addObjectsFromArray:v39];
+  na_arrayByFlattening = [v38 na_arrayByFlattening];
+  [array addObjectsFromArray:na_arrayByFlattening];
 
-  v40 = [MEMORY[0x277D14778] filterSections:v48 toDisplayedItems:v47];
+  v40 = [MEMORY[0x277D14778] filterSections:array toDisplayedItems:v47];
 
   return v40;
 }
 
-- (id)_itemsToHideInSet:(id)a3
+- (id)_itemsToHideInSet:(id)set
 {
   v6.receiver = self;
   v6.super_class = HUTriggerSummaryItemManager;
-  v3 = [(HFItemManager *)&v6 _itemsToHideInSet:a3];
+  v3 = [(HFItemManager *)&v6 _itemsToHideInSet:set];
   v4 = [v3 mutableCopy];
 
   return v4;
@@ -658,17 +658,17 @@ LABEL_17:
 - (id)_homeFuture
 {
   v2 = MEMORY[0x277D2C900];
-  v3 = [(HUTriggerSummaryItemManager *)self triggerBuilder];
-  v4 = [v3 home];
-  v5 = [v2 futureWithResult:v4];
+  triggerBuilder = [(HUTriggerSummaryItemManager *)self triggerBuilder];
+  home = [triggerBuilder home];
+  v5 = [v2 futureWithResult:home];
 
   return v5;
 }
 
 - (NSArray)overviewItemModules
 {
-  v2 = [(HFItemManager *)self itemModules];
-  v3 = [v2 na_map:&__block_literal_global_264];
+  itemModules = [(HFItemManager *)self itemModules];
+  v3 = [itemModules na_map:&__block_literal_global_264];
 
   return v3;
 }
@@ -693,12 +693,12 @@ void *__50__HUTriggerSummaryItemManager_overviewItemModules__block_invoke(uint64
 
 - (BOOL)_showTriggerSummary
 {
-  v3 = [(HUTriggerSummaryItemManager *)self triggerBuilder];
-  v4 = [v3 context];
-  if ([v4 showTriggerSummary])
+  triggerBuilder = [(HUTriggerSummaryItemManager *)self triggerBuilder];
+  context = [triggerBuilder context];
+  if ([context showTriggerSummary])
   {
-    v5 = [(HUTriggerSummaryItemManager *)self currentFlow];
-    v6 = [v5 isStandalone] ^ 1;
+    currentFlow = [(HUTriggerSummaryItemManager *)self currentFlow];
+    v6 = [currentFlow isStandalone] ^ 1;
   }
 
   else
@@ -711,12 +711,12 @@ void *__50__HUTriggerSummaryItemManager_overviewItemModules__block_invoke(uint64
 
 - (BOOL)_showEnableSwitch
 {
-  v3 = [(HUTriggerSummaryItemManager *)self triggerBuilder];
-  v4 = [v3 context];
-  if ([v4 showTriggerEnableSwitch])
+  triggerBuilder = [(HUTriggerSummaryItemManager *)self triggerBuilder];
+  context = [triggerBuilder context];
+  if ([context showTriggerEnableSwitch])
   {
-    v5 = [(HUTriggerSummaryItemManager *)self currentFlow];
-    v6 = [v5 isStandalone] ^ 1;
+    currentFlow = [(HUTriggerSummaryItemManager *)self currentFlow];
+    v6 = [currentFlow isStandalone] ^ 1;
   }
 
   else
@@ -729,53 +729,53 @@ void *__50__HUTriggerSummaryItemManager_overviewItemModules__block_invoke(uint64
 
 - (BOOL)_shouldShowDurationItems
 {
-  v3 = [(HUTriggerSummaryItemManager *)self triggerBuilder];
-  v4 = [v3 context];
-  if ([v4 allowDurationEditing])
+  triggerBuilder = [(HUTriggerSummaryItemManager *)self triggerBuilder];
+  context = [triggerBuilder context];
+  if ([context allowDurationEditing])
   {
-    v5 = [(HUTriggerSummaryItemManager *)self triggerBuilder];
-    v6 = [v5 supportsEndEvents];
+    triggerBuilder2 = [(HUTriggerSummaryItemManager *)self triggerBuilder];
+    supportsEndEvents = [triggerBuilder2 supportsEndEvents];
 
-    if (!v6)
+    if (!supportsEndEvents)
     {
       return 0;
     }
 
-    v3 = [(HUTriggerSummaryItemManager *)self triggerBuilder];
-    v7 = [v3 areActionsAffectedByEndEvents];
+    triggerBuilder = [(HUTriggerSummaryItemManager *)self triggerBuilder];
+    areActionsAffectedByEndEvents = [triggerBuilder areActionsAffectedByEndEvents];
   }
 
   else
   {
 
-    v7 = 0;
+    areActionsAffectedByEndEvents = 0;
   }
 
-  return v7;
+  return areActionsAffectedByEndEvents;
 }
 
 - (BOOL)_isInEditMode
 {
-  v2 = [(HUTriggerSummaryItemManager *)self currentFlow];
-  v3 = [v2 isSingleFlow];
+  currentFlow = [(HUTriggerSummaryItemManager *)self currentFlow];
+  isSingleFlow = [currentFlow isSingleFlow];
 
-  return v3;
+  return isSingleFlow;
 }
 
 - (BOOL)_shouldShowTestItem
 {
-  v3 = [(HUTriggerSummaryItemManager *)self currentFlow];
-  if ([v3 isStandalone])
+  currentFlow = [(HUTriggerSummaryItemManager *)self currentFlow];
+  if ([currentFlow isStandalone])
   {
     v4 = 0;
   }
 
   else
   {
-    v5 = [(HUTriggerSummaryItemManager *)self triggerBuilder];
-    v6 = [v5 triggerActionSets];
-    v7 = [v6 allActionBuilders];
-    v4 = [v7 count] != 0;
+    triggerBuilder = [(HUTriggerSummaryItemManager *)self triggerBuilder];
+    triggerActionSets = [triggerBuilder triggerActionSets];
+    allActionBuilders = [triggerActionSets allActionBuilders];
+    v4 = [allActionBuilders count] != 0;
   }
 
   return v4;
@@ -783,48 +783,48 @@ void *__50__HUTriggerSummaryItemManager_overviewItemModules__block_invoke(uint64
 
 - (BOOL)_shouldShowDeleteItem
 {
-  v3 = [(HUTriggerSummaryItemManager *)self currentFlow];
-  if ([v3 isStandalone])
+  currentFlow = [(HUTriggerSummaryItemManager *)self currentFlow];
+  if ([currentFlow isStandalone])
   {
-    v4 = 0;
+    hf_currentUserIsAdministrator = 0;
   }
 
   else
   {
-    v5 = [(HUTriggerSummaryItemManager *)self currentFlow];
-    if ([v5 flowState] == 3)
+    currentFlow2 = [(HUTriggerSummaryItemManager *)self currentFlow];
+    if ([currentFlow2 flowState] == 3)
     {
-      v6 = [(HUTriggerSummaryItemManager *)self triggerBuilder];
-      v7 = [v6 context];
-      if ([v7 showTriggerDeleteButton])
+      triggerBuilder = [(HUTriggerSummaryItemManager *)self triggerBuilder];
+      context = [triggerBuilder context];
+      if ([context showTriggerDeleteButton])
       {
-        v8 = [(HFItemManager *)self home];
-        v4 = [v8 hf_currentUserIsAdministrator];
+        home = [(HFItemManager *)self home];
+        hf_currentUserIsAdministrator = [home hf_currentUserIsAdministrator];
       }
 
       else
       {
-        v4 = 0;
+        hf_currentUserIsAdministrator = 0;
       }
     }
 
     else
     {
-      v4 = 0;
+      hf_currentUserIsAdministrator = 0;
     }
   }
 
-  return v4;
+  return hf_currentUserIsAdministrator;
 }
 
 - (BOOL)_showActionSetsInstructionItem
 {
-  v3 = [(HUTriggerSummaryItemManager *)self triggerBuilder];
-  v4 = [v3 context];
-  if ([v4 showActionSetsInstructions])
+  triggerBuilder = [(HUTriggerSummaryItemManager *)self triggerBuilder];
+  context = [triggerBuilder context];
+  if ([context showActionSetsInstructions])
   {
-    v5 = [(HUTriggerSummaryItemManager *)self currentFlow];
-    v6 = [v5 isStandalone] ^ 1;
+    currentFlow = [(HUTriggerSummaryItemManager *)self currentFlow];
+    v6 = [currentFlow isStandalone] ^ 1;
   }
 
   else
@@ -837,38 +837,38 @@ void *__50__HUTriggerSummaryItemManager_overviewItemModules__block_invoke(uint64
 
 - (id)_unsupportedTriggers
 {
-  v2 = [(HUTriggerSummaryItemManager *)self triggerBuilder];
-  v3 = [v2 context];
-  v4 = [v3 unsupportedTriggers];
+  triggerBuilder = [(HUTriggerSummaryItemManager *)self triggerBuilder];
+  context = [triggerBuilder context];
+  unsupportedTriggers = [context unsupportedTriggers];
 
-  return v4;
+  return unsupportedTriggers;
 }
 
 - (id)_triggerTestActionsInstructionDescription
 {
-  v2 = [(HUTriggerSummaryItemManager *)self triggerBuilder];
-  v3 = [v2 context];
-  v4 = [v3 testActionsInstructionDescription];
+  triggerBuilder = [(HUTriggerSummaryItemManager *)self triggerBuilder];
+  context = [triggerBuilder context];
+  testActionsInstructionDescription = [context testActionsInstructionDescription];
 
-  return v4;
+  return testActionsInstructionDescription;
 }
 
 - (id)_triggerServiceActionsInstructionDescription
 {
-  v2 = [(HUTriggerSummaryItemManager *)self triggerBuilder];
-  v3 = [v2 context];
-  v4 = [v3 serviceActionsInstructionDescription];
+  triggerBuilder = [(HUTriggerSummaryItemManager *)self triggerBuilder];
+  context = [triggerBuilder context];
+  serviceActionsInstructionDescription = [context serviceActionsInstructionDescription];
 
-  return v4;
+  return serviceActionsInstructionDescription;
 }
 
 - (id)_triggerDeleteInstructionItemString
 {
-  v2 = [(HUTriggerSummaryItemManager *)self triggerBuilder];
-  v3 = [v2 context];
-  v4 = [v3 deleteInstructionDescription];
+  triggerBuilder = [(HUTriggerSummaryItemManager *)self triggerBuilder];
+  context = [triggerBuilder context];
+  deleteInstructionDescription = [context deleteInstructionDescription];
 
-  return v4;
+  return deleteInstructionDescription;
 }
 
 @end

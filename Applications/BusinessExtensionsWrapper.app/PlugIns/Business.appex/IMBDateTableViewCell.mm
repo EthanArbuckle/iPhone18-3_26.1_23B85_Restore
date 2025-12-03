@@ -2,10 +2,10 @@
 - (UIButton)showMoreButton;
 - (UILabel)conflictsLabel;
 - (UILabel)dateLabel;
-- (_TtC8Business20IMBDateTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (void)setConflictsLabel:(id)a3;
-- (void)setDateLabel:(id)a3;
-- (void)setShowMoreButton:(id)a3;
+- (_TtC8Business20IMBDateTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (void)setConflictsLabel:(id)label;
+- (void)setDateLabel:(id)label;
+- (void)setShowMoreButton:(id)button;
 - (void)toggleMoreLess;
 - (void)viewInCalendar;
 @end
@@ -14,54 +14,54 @@
 
 - (UILabel)dateLabel
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10006B4BC();
 
   return v3;
 }
 
-- (void)setDateLabel:(id)a3
+- (void)setDateLabel:(id)label
 {
   v4 = *(&self->super.super.super.super.isa + OBJC_IVAR____TtC8Business20IMBDateTableViewCell____lazy_storage___dateLabel);
-  *(&self->super.super.super.super.isa + OBJC_IVAR____TtC8Business20IMBDateTableViewCell____lazy_storage___dateLabel) = a3;
-  v3 = a3;
+  *(&self->super.super.super.super.isa + OBJC_IVAR____TtC8Business20IMBDateTableViewCell____lazy_storage___dateLabel) = label;
+  labelCopy = label;
 }
 
 - (UILabel)conflictsLabel
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10006B62C();
 
   return v3;
 }
 
-- (void)setConflictsLabel:(id)a3
+- (void)setConflictsLabel:(id)label
 {
   v4 = *(&self->super.super.super.super.isa + OBJC_IVAR____TtC8Business20IMBDateTableViewCell____lazy_storage___conflictsLabel);
-  *(&self->super.super.super.super.isa + OBJC_IVAR____TtC8Business20IMBDateTableViewCell____lazy_storage___conflictsLabel) = a3;
-  v3 = a3;
+  *(&self->super.super.super.super.isa + OBJC_IVAR____TtC8Business20IMBDateTableViewCell____lazy_storage___conflictsLabel) = label;
+  labelCopy = label;
 }
 
 - (UIButton)showMoreButton
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10006B7D0();
 
   return v3;
 }
 
-- (void)setShowMoreButton:(id)a3
+- (void)setShowMoreButton:(id)button
 {
   v4 = *(&self->super.super.super.super.isa + OBJC_IVAR____TtC8Business20IMBDateTableViewCell____lazy_storage___showMoreButton);
-  *(&self->super.super.super.super.isa + OBJC_IVAR____TtC8Business20IMBDateTableViewCell____lazy_storage___showMoreButton) = a3;
-  v3 = a3;
+  *(&self->super.super.super.super.isa + OBJC_IVAR____TtC8Business20IMBDateTableViewCell____lazy_storage___showMoreButton) = button;
+  buttonCopy = button;
 }
 
-- (_TtC8Business20IMBDateTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC8Business20IMBDateTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
-    a4 = sub_1000AC06C();
+    identifier = sub_1000AC06C();
     v6 = v5;
   }
 
@@ -70,18 +70,18 @@
     v6 = 0;
   }
 
-  return sub_10006BC08(a3, a4, v6);
+  return sub_10006BC08(style, identifier, v6);
 }
 
 - (void)toggleMoreLess
 {
-  v2 = self;
+  selfCopy = self;
   sub_10006D394();
 }
 
 - (void)viewInCalendar
 {
-  v2 = self;
+  selfCopy = self;
   sub_10006D76C();
 }
 

@@ -1,15 +1,15 @@
 @interface PXStoryTVInfoPanelViewConfiguration
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
 @implementation PXStoryTVInfoPanelViewConfiguration
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -19,16 +19,16 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(PXStoryTVInfoPanelViewConfiguration *)v4 viewModel];
-      v6 = [(PXStoryTVInfoPanelViewConfiguration *)self viewModel];
-      if (v5 == v6)
+      viewModel = [(PXStoryTVInfoPanelViewConfiguration *)equalCopy viewModel];
+      viewModel2 = [(PXStoryTVInfoPanelViewConfiguration *)self viewModel];
+      if (viewModel == viewModel2)
       {
         v7 = 1;
       }
 
       else
       {
-        v7 = [v5 isEqual:v6];
+        v7 = [viewModel isEqual:viewModel2];
       }
     }
 
@@ -43,18 +43,18 @@
 
 - (unint64_t)hash
 {
-  v2 = [(PXStoryTVInfoPanelViewConfiguration *)self viewModel];
-  v3 = [v2 hash];
+  viewModel = [(PXStoryTVInfoPanelViewConfiguration *)self viewModel];
+  v3 = [viewModel hash];
 
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
-  v5 = [(PXStoryTVInfoPanelViewConfiguration *)self viewModel];
+  viewModel = [(PXStoryTVInfoPanelViewConfiguration *)self viewModel];
   v6 = v4[1];
-  v4[1] = v5;
+  v4[1] = viewModel;
 
   return v4;
 }

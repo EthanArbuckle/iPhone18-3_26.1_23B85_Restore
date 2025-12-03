@@ -1,5 +1,5 @@
 @interface NTKSFCompactFontLoader
-+ (id)_loadFontDescriptorForFontWithName:(id)a3;
++ (id)_loadFontDescriptorForFontWithName:(id)name;
 + (id)sfCompactNumericFontDescriptor;
 + (id)sfCompactNumericRoundedFontDescriptor;
 + (id)sfCompactNumericSoftFontDescriptor;
@@ -64,12 +64,12 @@ void __63__NTKSFCompactFontLoader_sfCompactNumericRoundedFontDescriptor__block_i
   sfCompactNumericRoundedFontDescriptor_descriptor = v0;
 }
 
-+ (id)_loadFontDescriptorForFontWithName:(id)a3
++ (id)_loadFontDescriptorForFontWithName:(id)name
 {
   v3 = MEMORY[0x277CCA8D8];
-  v4 = a3;
+  nameCopy = name;
   v5 = [v3 bundleForClass:objc_opt_class()];
-  v6 = [v5 URLForResource:v4 withExtension:@"ttf"];
+  v6 = [v5 URLForResource:nameCopy withExtension:@"ttf"];
 
   if (v6)
   {

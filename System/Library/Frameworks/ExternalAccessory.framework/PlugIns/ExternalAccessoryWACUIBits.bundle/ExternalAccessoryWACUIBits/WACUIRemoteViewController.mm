@@ -1,29 +1,29 @@
 @interface WACUIRemoteViewController
 - (EAWiFiUnconfiguredAccessoryBrowserManager)parent;
 - (void)_signalPresentationComplete;
-- (void)backendFoundNewWACDevices:(id)a3 andRemovedWACDevices:(id)a4;
-- (void)updateState:(int64_t)a3;
+- (void)backendFoundNewWACDevices:(id)devices andRemovedWACDevices:(id)cDevices;
+- (void)updateState:(int64_t)state;
 - (void)wifiDidShutdown;
 @end
 
 @implementation WACUIRemoteViewController
 
-- (void)updateState:(int64_t)a3
+- (void)updateState:(int64_t)state
 {
   WeakRetained = objc_loadWeakRetained(&self->_parent);
-  [WeakRetained updateState:a3];
+  [WeakRetained updateState:state];
 }
 
-- (void)backendFoundNewWACDevices:(id)a3 andRemovedWACDevices:(id)a4
+- (void)backendFoundNewWACDevices:(id)devices andRemovedWACDevices:(id)cDevices
 {
-  v9 = a3;
-  v6 = a4;
+  devicesCopy = devices;
+  cDevicesCopy = cDevices;
   WeakRetained = objc_loadWeakRetained(&self->_parent);
 
   if (WeakRetained)
   {
     v8 = objc_loadWeakRetained(&self->_parent);
-    [v8 didFindNewUnconfiguredAccessories:v9 andRemovedUnconfiguredAccessories:v6];
+    [v8 didFindNewUnconfiguredAccessories:devicesCopy andRemovedUnconfiguredAccessories:cDevicesCopy];
   }
 }
 

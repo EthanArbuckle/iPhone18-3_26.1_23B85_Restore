@@ -1,104 +1,104 @@
 @interface NUCoreAssembly
-- (void)loadInRegistry:(id)a3;
+- (void)loadInRegistry:(id)registry;
 @end
 
 @implementation NUCoreAssembly
 
-- (void)loadInRegistry:(id)a3
+- (void)loadInRegistry:(id)registry
 {
-  v3 = a3;
-  v4 = [v3 publicContainer];
-  v5 = [v4 registerClass:objc_opt_class() factory:&__block_literal_global_4];
+  registryCopy = registry;
+  publicContainer = [registryCopy publicContainer];
+  v5 = [publicContainer registerClass:objc_opt_class() factory:&__block_literal_global_4];
   v6 = [v5 inScope:2];
 
-  v7 = [v3 publicContainer];
-  v8 = [v7 registerProtocol:&unk_286E4B788 factory:&__block_literal_global_186];
+  publicContainer2 = [registryCopy publicContainer];
+  v8 = [publicContainer2 registerProtocol:&unk_286E4B788 factory:&__block_literal_global_186];
 
-  v9 = [v3 publicContainer];
-  v10 = [v9 registerProtocol:&unk_286E4BEB0 factory:&__block_literal_global_269];
+  publicContainer3 = [registryCopy publicContainer];
+  v10 = [publicContainer3 registerProtocol:&unk_286E4BEB0 factory:&__block_literal_global_269];
 
-  v11 = [v3 publicContainer];
-  v12 = [v11 registerProtocol:&unk_286E4C1D0 factory:&__block_literal_global_308];
+  publicContainer4 = [registryCopy publicContainer];
+  v12 = [publicContainer4 registerProtocol:&unk_286E4C1D0 factory:&__block_literal_global_308];
   v13 = [v12 withConfiguration:&__block_literal_global_311];
 
-  v14 = [v3 publicContainer];
-  v15 = [v14 registerClass:objc_opt_class() factory:&__block_literal_global_315];
+  publicContainer5 = [registryCopy publicContainer];
+  v15 = [publicContainer5 registerClass:objc_opt_class() factory:&__block_literal_global_315];
 
-  v16 = [v3 publicContainer];
-  v17 = [v16 registerClass:objc_opt_class() factory:&__block_literal_global_319];
+  publicContainer6 = [registryCopy publicContainer];
+  v17 = [publicContainer6 registerClass:objc_opt_class() factory:&__block_literal_global_319];
   v18 = [v17 inScope:2];
 
-  v19 = [v3 publicContainer];
-  v20 = [v19 registerClass:objc_opt_class() factory:&__block_literal_global_323];
+  publicContainer7 = [registryCopy publicContainer];
+  v20 = [publicContainer7 registerClass:objc_opt_class() factory:&__block_literal_global_323];
   v21 = [v20 inScope:2];
 
-  v22 = [v3 publicContainer];
-  v23 = [v22 registerClass:objc_opt_class() factory:&__block_literal_global_327];
+  publicContainer8 = [registryCopy publicContainer];
+  v23 = [publicContainer8 registerClass:objc_opt_class() factory:&__block_literal_global_327];
   v24 = [v23 inScope:2];
 
-  v25 = [v3 publicContainer];
-  v26 = [v25 registerClass:objc_opt_class() factory:&__block_literal_global_331];
+  publicContainer9 = [registryCopy publicContainer];
+  v26 = [publicContainer9 registerClass:objc_opt_class() factory:&__block_literal_global_331];
   v27 = [v26 inScope:2];
 
-  v28 = [v3 publicContainer];
-  v29 = [v28 registerClass:objc_opt_class() factory:&__block_literal_global_335];
+  publicContainer10 = [registryCopy publicContainer];
+  v29 = [publicContainer10 registerClass:objc_opt_class() factory:&__block_literal_global_335];
   v30 = [v29 inScope:2];
 
-  v31 = [v3 publicContainer];
-  v32 = [v31 registerClass:objc_opt_class() factory:&__block_literal_global_339];
+  publicContainer11 = [registryCopy publicContainer];
+  v32 = [publicContainer11 registerClass:objc_opt_class() factory:&__block_literal_global_339];
   v33 = [v32 inScope:2];
 
-  v34 = [v3 publicContainer];
-  v35 = [v34 registerClass:objc_opt_class() factory:&__block_literal_global_343];
+  publicContainer12 = [registryCopy publicContainer];
+  v35 = [publicContainer12 registerClass:objc_opt_class() factory:&__block_literal_global_343];
   v36 = [v35 inScope:2];
 
-  v37 = [v3 publicContainer];
-  v38 = [v37 registerClass:objc_opt_class() factory:&__block_literal_global_347];
+  publicContainer13 = [registryCopy publicContainer];
+  v38 = [publicContainer13 registerClass:objc_opt_class() factory:&__block_literal_global_347];
   v39 = [v38 inScope:2];
 
-  v40 = [v3 publicContainer];
-  v41 = [v40 registerProtocol:&unk_286E4C428 factory:&__block_literal_global_384];
+  publicContainer14 = [registryCopy publicContainer];
+  v41 = [publicContainer14 registerProtocol:&unk_286E4C428 factory:&__block_literal_global_384];
   v42 = [v41 inScope:2];
 
-  v43 = [v3 publicContainer];
-  v44 = [v43 registerClass:objc_opt_class() factory:&__block_literal_global_388];
+  publicContainer15 = [registryCopy publicContainer];
+  v44 = [publicContainer15 registerClass:objc_opt_class() factory:&__block_literal_global_388];
   v45 = [v44 inScope:2];
 
-  v46 = [v3 publicContainer];
-  v47 = [v46 registerProtocol:&unk_286E4C590 factory:&__block_literal_global_406];
+  publicContainer16 = [registryCopy publicContainer];
+  v47 = [publicContainer16 registerProtocol:&unk_286E4C590 factory:&__block_literal_global_406];
   v48 = [v47 inScope:2];
 
-  v49 = [v3 publicContainer];
-  v50 = [v49 registerClass:objc_opt_class() factory:&__block_literal_global_409];
+  publicContainer17 = [registryCopy publicContainer];
+  v50 = [publicContainer17 registerClass:objc_opt_class() factory:&__block_literal_global_409];
   v51 = [v50 inScope:2];
 
-  v52 = [v3 publicContainer];
-  v53 = [v52 registerProtocol:&unk_286E4C7C8 factory:&__block_literal_global_428];
+  publicContainer18 = [registryCopy publicContainer];
+  v53 = [publicContainer18 registerProtocol:&unk_286E4C7C8 factory:&__block_literal_global_428];
   v54 = [v53 inScope:2];
 
-  v55 = [v3 publicContainer];
-  v56 = [v55 registerClass:objc_opt_class() factory:&__block_literal_global_432];
+  publicContainer19 = [registryCopy publicContainer];
+  v56 = [publicContainer19 registerClass:objc_opt_class() factory:&__block_literal_global_432];
   v57 = [v56 inScope:2];
 
-  v58 = [v3 publicContainer];
-  v59 = [v58 registerProtocol:&unk_286E4CFD8 factory:&__block_literal_global_521];
+  publicContainer20 = [registryCopy publicContainer];
+  v59 = [publicContainer20 registerProtocol:&unk_286E4CFD8 factory:&__block_literal_global_521];
   v60 = [v59 inScope:2];
 
-  v61 = [v3 publicContainer];
-  v62 = [v61 registerProtocol:&unk_286E4D090 factory:&__block_literal_global_531];
+  publicContainer21 = [registryCopy publicContainer];
+  v62 = [publicContainer21 registerProtocol:&unk_286E4D090 factory:&__block_literal_global_531];
   v63 = [v62 inScope:2];
 
-  v64 = [v3 publicContainer];
-  v65 = [v64 registerProtocol:&unk_286E26AA8 factory:&__block_literal_global_540];
+  publicContainer22 = [registryCopy publicContainer];
+  v65 = [publicContainer22 registerProtocol:&unk_286E26AA8 factory:&__block_literal_global_540];
   v66 = [v65 inScope:2];
 
-  v67 = [v3 publicContainer];
-  v68 = [v67 registerProtocol:&unk_286E2F518 factory:&__block_literal_global_547];
+  publicContainer23 = [registryCopy publicContainer];
+  v68 = [publicContainer23 registerProtocol:&unk_286E2F518 factory:&__block_literal_global_547];
   v69 = [v68 inScope:0];
 
-  v71 = [v3 publicContainer];
+  publicContainer24 = [registryCopy publicContainer];
 
-  v70 = [v71 registerProtocol:&unk_286E2F420 factory:&__block_literal_global_557];
+  v70 = [publicContainer24 registerProtocol:&unk_286E2F420 factory:&__block_literal_global_557];
 }
 
 id __33__NUCoreAssembly_loadInRegistry___block_invoke(uint64_t a1, void *a2)

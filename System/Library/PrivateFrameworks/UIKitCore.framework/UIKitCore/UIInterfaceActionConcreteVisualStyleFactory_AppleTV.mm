@@ -1,12 +1,12 @@
 @interface UIInterfaceActionConcreteVisualStyleFactory_AppleTV
-+ (id)styleForTraitCollection:(id)a3 presentationStyle:(int64_t)a4;
++ (id)styleForTraitCollection:(id)collection presentationStyle:(int64_t)style;
 @end
 
 @implementation UIInterfaceActionConcreteVisualStyleFactory_AppleTV
 
-+ (id)styleForTraitCollection:(id)a3 presentationStyle:(int64_t)a4
++ (id)styleForTraitCollection:(id)collection presentationStyle:(int64_t)style
 {
-  if ([a3 userInterfaceIdiom] == 8)
+  if ([collection userInterfaceIdiom] == 8)
   {
     v4 = off_1E70E9B90;
   }

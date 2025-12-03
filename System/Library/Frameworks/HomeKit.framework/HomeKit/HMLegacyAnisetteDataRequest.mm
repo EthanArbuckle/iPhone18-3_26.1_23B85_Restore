@@ -1,23 +1,23 @@
 @interface HMLegacyAnisetteDataRequest
-+ (id)objWithDict:(id)a3;
-+ (id)objWithMessage:(id)a3;
-- (HMLegacyAnisetteDataRequest)initWithCoder:(id)a3;
++ (id)objWithDict:(id)dict;
++ (id)objWithMessage:(id)message;
+- (HMLegacyAnisetteDataRequest)initWithCoder:(id)coder;
 - (NSDictionary)messagePayload;
 - (NSString)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMLegacyAnisetteDataRequest
 
-- (HMLegacyAnisetteDataRequest)initWithCoder:(id)a3
+- (HMLegacyAnisetteDataRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = HMLegacyAnisetteDataRequest;
-  v5 = [(HMRemoteLoginMessage *)&v9 initWithCoder:v4];
+  v5 = [(HMRemoteLoginMessage *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"TRAnisetteDataMessages_d"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"TRAnisetteDataMessages_d"];
     dsid = v5->_dsid;
     v5->_dsid = v6;
   }
@@ -25,14 +25,14 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = HMLegacyAnisetteDataRequest;
-  v4 = a3;
-  [(HMRemoteLoginMessage *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(HMRemoteLoginMessage *)&v6 encodeWithCoder:coderCopy];
   v5 = [(HMLegacyAnisetteDataRequest *)self dsid:v6.receiver];
-  [v4 encodeObject:v5 forKey:@"TRAnisetteDataMessages_d"];
+  [coderCopy encodeObject:v5 forKey:@"TRAnisetteDataMessages_d"];
 }
 
 - (NSString)description
@@ -41,8 +41,8 @@
   v8.receiver = self;
   v8.super_class = HMLegacyAnisetteDataRequest;
   v4 = [(HMRemoteLoginMessage *)&v8 description];
-  v5 = [(HMLegacyAnisetteDataRequest *)self dsid];
-  v6 = [v3 stringWithFormat:@"[HMFetchAnisetteDataResponse: %@, dsid %@]", v4, v5];
+  dsid = [(HMLegacyAnisetteDataRequest *)self dsid];
+  v6 = [v3 stringWithFormat:@"[HMFetchAnisetteDataResponse: %@, dsid %@]", v4, dsid];
 
   return v6;
 }
@@ -51,8 +51,8 @@
 {
   v9[1] = *MEMORY[0x1E69E9840];
   v3 = encodeRootObject(self);
-  v4 = [(HMLegacyAnisetteDataRequest *)self messageName];
-  v8 = v4;
+  messageName = [(HMLegacyAnisetteDataRequest *)self messageName];
+  v8 = messageName;
   v9[0] = v3;
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:&v8 count:1];
 
@@ -61,12 +61,12 @@
   return v5;
 }
 
-+ (id)objWithMessage:(id)a3
++ (id)objWithMessage:(id)message
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 messagePayload];
-  v6 = [v5 hmf_dataForKey:@"kHMLegacyAnisetteDataRequest"];
+  messageCopy = message;
+  messagePayload = [messageCopy messagePayload];
+  v6 = [messagePayload hmf_dataForKey:@"kHMLegacyAnisetteDataRequest"];
 
   v15 = 0;
   v7 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:v6 error:&v15];
@@ -74,7 +74,7 @@
   if (!v7)
   {
     v9 = objc_autoreleasePoolPush();
-    v10 = a1;
+    selfCopy = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
@@ -94,18 +94,18 @@
   return v7;
 }
 
-+ (id)objWithDict:(id)a3
++ (id)objWithDict:(id)dict
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 hmf_dataForKey:@"kHMLegacyAnisetteDataRequest"];
+  dictCopy = dict;
+  v5 = [dictCopy hmf_dataForKey:@"kHMLegacyAnisetteDataRequest"];
   v14 = 0;
   v6 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:v5 error:&v14];
   v7 = v14;
   if (!v6)
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = a1;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {

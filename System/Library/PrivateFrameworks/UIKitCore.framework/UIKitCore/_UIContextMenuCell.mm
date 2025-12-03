@@ -1,18 +1,18 @@
 @interface _UIContextMenuCell
 - (BOOL)_allowsHorizontalFocusMovement;
-- (_UIContextMenuCell)initWithFrame:(CGRect)a3;
+- (_UIContextMenuCell)initWithFrame:(CGRect)frame;
 - (int64_t)focusItemDeferralMode;
-- (void)_configureBackgroundView:(id)a3 withContentShape:(id)a4;
-- (void)_configureFocusedFloatingContentView:(id)a3;
-- (void)_setTypeSelectState:(int64_t)a3;
-- (void)_updateStateWithAnimationCoordinator:(id)a3 animated:(BOOL)a4;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
+- (void)_configureBackgroundView:(id)view withContentShape:(id)shape;
+- (void)_configureFocusedFloatingContentView:(id)view;
+- (void)_setTypeSelectState:(int64_t)state;
+- (void)_updateStateWithAnimationCoordinator:(id)coordinator animated:(BOOL)animated;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setDirectionalLayoutMargins:(NSDirectionalEdgeInsets)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setHighlighted:(BOOL)a3 forHover:(BOOL)a4;
-- (void)setSelected:(BOOL)a3;
+- (void)setDirectionalLayoutMargins:(NSDirectionalEdgeInsets)margins;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setHighlighted:(BOOL)highlighted forHover:(BOOL)hover;
+- (void)setSelected:(BOOL)selected;
 @end
 
 @implementation _UIContextMenuCell
@@ -22,22 +22,22 @@
   v9.receiver = self;
   v9.super_class = _UIContextMenuCell;
   [(UICollectionViewCell *)&v9 layoutSubviews];
-  v3 = [(_UIContextMenuCell *)self _backgroundShape];
-  if (v3)
+  _backgroundShape = [(_UIContextMenuCell *)self _backgroundShape];
+  if (_backgroundShape)
   {
-    v4 = +[UIShape rectShape];
-    v5 = v3;
+    selectedBackgroundView = +[UIShape rectShape];
+    v5 = _backgroundShape;
     v6 = v5;
-    if (v4 == v5)
+    if (selectedBackgroundView == v5)
     {
 
 LABEL_12:
       goto LABEL_13;
     }
 
-    if (v4)
+    if (selectedBackgroundView)
     {
-      v7 = [v4 isEqual:v5];
+      v7 = [selectedBackgroundView isEqual:v5];
 
       if (v7)
       {
@@ -51,14 +51,14 @@ LABEL_12:
 
     if ([(UICollectionViewCell *)self isHighlighted])
     {
-      v8 = [(UICollectionViewCell *)self backgroundView];
-      [(_UIContextMenuCell *)self _configureBackgroundView:v8 withContentShape:v6];
+      backgroundView = [(UICollectionViewCell *)self backgroundView];
+      [(_UIContextMenuCell *)self _configureBackgroundView:backgroundView withContentShape:v6];
     }
 
     if ([(UICollectionViewCell *)self isSelected])
     {
-      v4 = [(UICollectionViewCell *)self selectedBackgroundView];
-      [(_UIContextMenuCell *)self _configureBackgroundView:v4 withContentShape:v6];
+      selectedBackgroundView = [(UICollectionViewCell *)self selectedBackgroundView];
+      [(_UIContextMenuCell *)self _configureBackgroundView:selectedBackgroundView withContentShape:v6];
       goto LABEL_12;
     }
   }
@@ -66,17 +66,17 @@ LABEL_12:
 LABEL_13:
 }
 
-- (_UIContextMenuCell)initWithFrame:(CGRect)a3
+- (_UIContextMenuCell)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = _UIContextMenuCell;
-  v3 = [(UICollectionViewCell *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UICollectionViewCell *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     [(UIView *)v3 setFocusEffect:0];
-    v5 = [(UIView *)v4 traitCollection];
-    v6 = _UIContextMenuGetPlatformMetrics([v5 userInterfaceIdiom]);
+    traitCollection = [(UIView *)v4 traitCollection];
+    v6 = _UIContextMenuGetPlatformMetrics([traitCollection userInterfaceIdiom]);
 
     -[UICollectionViewCell _setFocusStyle:](v4, "_setFocusStyle:", [v6 enableFloatingFocusStyle]);
   }
@@ -84,28 +84,28 @@ LABEL_13:
   return v4;
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  v3 = a3;
+  selectedCopy = selected;
   v14.receiver = self;
   v14.super_class = _UIContextMenuCell;
   [(UICollectionViewCell *)&v14 setSelected:?];
   [(_UIContextMenuCell *)self _updateStateWithAnimationCoordinator:0 animated:+[UIView _isInAnimationBlock]];
-  if (v3)
+  if (selectedCopy)
   {
-    v5 = [(UICollectionViewCell *)self selectedBackgroundView];
-    if (!v5)
+    selectedBackgroundView = [(UICollectionViewCell *)self selectedBackgroundView];
+    if (!selectedBackgroundView)
     {
-      v5 = objc_alloc_init(UIVisualEffectView);
-      [(UICollectionViewCell *)self setSelectedBackgroundView:v5];
+      selectedBackgroundView = objc_alloc_init(UIVisualEffectView);
+      [(UICollectionViewCell *)self setSelectedBackgroundView:selectedBackgroundView];
     }
 
-    v6 = [(_UIContextMenuCell *)self actionView];
-    v7 = [v6 contentShape];
-    v8 = v7;
-    if (v7)
+    actionView = [(_UIContextMenuCell *)self actionView];
+    contentShape = [actionView contentShape];
+    v8 = contentShape;
+    if (contentShape)
     {
-      v9 = v7;
+      v9 = contentShape;
     }
 
     else
@@ -115,54 +115,54 @@ LABEL_13:
 
     v10 = v9;
 
-    v11 = [(_UIContextMenuCell *)self _backgroundShape];
-    v12 = [v11 isEqual:v10] ^ 1;
+    _backgroundShape = [(_UIContextMenuCell *)self _backgroundShape];
+    v12 = [_backgroundShape isEqual:v10] ^ 1;
 
     if ([(_UIContextMenuCell *)self _selectedBackgroundViewNeedsUpdate]|| v12)
     {
       [(_UIContextMenuCell *)self set_backgroundShape:v10];
-      [(_UIContextMenuCell *)self _configureBackgroundView:v5 withContentShape:v10];
+      [(_UIContextMenuCell *)self _configureBackgroundView:selectedBackgroundView withContentShape:v10];
       [(_UIContextMenuCell *)self set_highlightBackgroundViewNeedsUpdate:v12];
       [(_UIContextMenuCell *)self set_selectedBackgroundViewNeedsUpdate:0];
     }
   }
 
-  v13 = [(UICollectionViewCell *)self selectedBackgroundView];
-  [v13 setHidden:!v3];
+  selectedBackgroundView2 = [(UICollectionViewCell *)self selectedBackgroundView];
+  [selectedBackgroundView2 setHidden:!selectedCopy];
 }
 
-- (void)setHighlighted:(BOOL)a3 forHover:(BOOL)a4
+- (void)setHighlighted:(BOOL)highlighted forHover:(BOOL)hover
 {
-  v4 = a4;
-  v5 = a3;
-  v7 = [(_UIContextMenuCell *)self actionView];
-  v8 = [v7 shouldHighlightOnHover];
+  hoverCopy = hover;
+  highlightedCopy = highlighted;
+  actionView = [(_UIContextMenuCell *)self actionView];
+  shouldHighlightOnHover = [actionView shouldHighlightOnHover];
 
-  [(_UIContextMenuCell *)self setHighlighted:(v8 | ~v4) & v5];
+  [(_UIContextMenuCell *)self setHighlighted:(shouldHighlightOnHover | ~hoverCopy) & highlightedCopy];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v14.receiver = self;
   v14.super_class = _UIContextMenuCell;
   [(UICollectionViewCell *)&v14 setHighlighted:?];
   [(_UIContextMenuCell *)self _updateStateWithAnimationCoordinator:0 animated:+[UIView _isInAnimationBlock]];
-  if (v3)
+  if (highlightedCopy)
   {
-    v5 = [(UICollectionViewCell *)self backgroundView];
-    if (!v5)
+    backgroundView = [(UICollectionViewCell *)self backgroundView];
+    if (!backgroundView)
     {
-      v5 = objc_alloc_init(UIVisualEffectView);
-      [(UICollectionViewCell *)self setBackgroundView:v5];
+      backgroundView = objc_alloc_init(UIVisualEffectView);
+      [(UICollectionViewCell *)self setBackgroundView:backgroundView];
     }
 
-    v6 = [(_UIContextMenuCell *)self actionView];
-    v7 = [v6 contentShape];
-    v8 = v7;
-    if (v7)
+    actionView = [(_UIContextMenuCell *)self actionView];
+    contentShape = [actionView contentShape];
+    v8 = contentShape;
+    if (contentShape)
     {
-      v9 = v7;
+      v9 = contentShape;
     }
 
     else
@@ -172,88 +172,88 @@ LABEL_13:
 
     v10 = v9;
 
-    v11 = [(_UIContextMenuCell *)self _backgroundShape];
-    v12 = [v11 isEqual:v10] ^ 1;
+    _backgroundShape = [(_UIContextMenuCell *)self _backgroundShape];
+    v12 = [_backgroundShape isEqual:v10] ^ 1;
 
     if ([(_UIContextMenuCell *)self _highlightBackgroundViewNeedsUpdate]|| v12)
     {
       [(_UIContextMenuCell *)self set_backgroundShape:v10];
-      [(_UIContextMenuCell *)self _configureBackgroundView:v5 withContentShape:v10];
+      [(_UIContextMenuCell *)self _configureBackgroundView:backgroundView withContentShape:v10];
       [(_UIContextMenuCell *)self set_highlightBackgroundViewNeedsUpdate:0];
       [(_UIContextMenuCell *)self set_selectedBackgroundViewNeedsUpdate:v12];
     }
   }
 
-  v13 = [(UICollectionViewCell *)self backgroundView];
-  [v13 setHidden:!v3];
+  backgroundView2 = [(UICollectionViewCell *)self backgroundView];
+  [backgroundView2 setHidden:!highlightedCopy];
 }
 
-- (void)_setTypeSelectState:(int64_t)a3
+- (void)_setTypeSelectState:(int64_t)state
 {
   v6.receiver = self;
   v6.super_class = _UIContextMenuCell;
   [(UICollectionViewCell *)&v6 _setTypeSelectState:?];
-  v5 = [(_UIContextMenuCell *)self actionView];
-  [v5 setTypeSelectState:a3];
+  actionView = [(_UIContextMenuCell *)self actionView];
+  [actionView setTypeSelectState:state];
 }
 
-- (void)_configureBackgroundView:(id)a3 withContentShape:(id)a4
+- (void)_configureBackgroundView:(id)view withContentShape:(id)shape
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(UIView *)self traitCollection];
-  v9 = [v8 userInterfaceIdiom];
-  v18 = v6;
-  v10 = _UIContextMenuGetPlatformMetrics(v9);
-  v11 = [v10 menuHighlightBackgroundDescriptorProvider];
-  v12 = (v11)[2](v11, v18);
+  shapeCopy = shape;
+  viewCopy = view;
+  traitCollection = [(UIView *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
+  v18 = shapeCopy;
+  v10 = _UIContextMenuGetPlatformMetrics(userInterfaceIdiom);
+  menuHighlightBackgroundDescriptorProvider = [v10 menuHighlightBackgroundDescriptorProvider];
+  v12 = (menuHighlightBackgroundDescriptorProvider)[2](menuHighlightBackgroundDescriptorProvider, v18);
 
   [(UIView *)self bounds];
-  [v7 setFrame:?];
-  v13 = [v12 effect];
-  [v7 setEffect:v13];
+  [viewCopy setFrame:?];
+  effect = [v12 effect];
+  [viewCopy setEffect:effect];
 
-  v14 = [v12 backgroundColor];
-  [v7 setBackgroundColor:v14];
+  backgroundColor = [v12 backgroundColor];
+  [viewCopy setBackgroundColor:backgroundColor];
 
-  v15 = [v12 contentBackgroundColor];
-  v16 = [v7 contentView];
-  [v16 setBackgroundColor:v15];
+  contentBackgroundColor = [v12 contentBackgroundColor];
+  contentView = [viewCopy contentView];
+  [contentView setBackgroundColor:contentBackgroundColor];
 
-  v17 = [v12 backgroundShape];
-  [v7 _applyShape:v17];
+  backgroundShape = [v12 backgroundShape];
+  [viewCopy _applyShape:backgroundShape];
 }
 
-- (void)setDirectionalLayoutMargins:(NSDirectionalEdgeInsets)a3
+- (void)setDirectionalLayoutMargins:(NSDirectionalEdgeInsets)margins
 {
-  trailing = a3.trailing;
-  bottom = a3.bottom;
-  leading = a3.leading;
-  top = a3.top;
+  trailing = margins.trailing;
+  bottom = margins.bottom;
+  leading = margins.leading;
+  top = margins.top;
   v9.receiver = self;
   v9.super_class = _UIContextMenuCell;
   [(UIView *)&v9 setDirectionalLayoutMargins:?];
-  v8 = [(UICollectionViewCell *)self contentView];
-  [v8 setDirectionalLayoutMargins:{top, leading, bottom, trailing}];
+  contentView = [(UICollectionViewCell *)self contentView];
+  [contentView setDirectionalLayoutMargins:{top, leading, bottom, trailing}];
 }
 
 - (void)prepareForReuse
 {
-  v3 = [(_UIContextMenuCell *)self actionView];
-  [v3 prepareForReuse];
+  actionView = [(_UIContextMenuCell *)self actionView];
+  [actionView prepareForReuse];
 
   v4.receiver = self;
   v4.super_class = _UIContextMenuCell;
   [(UICollectionViewCell *)&v4 prepareForReuse];
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
   v7.receiver = self;
   v7.super_class = _UIContextMenuCell;
-  v6 = a4;
-  [(UIView *)&v7 didUpdateFocusInContext:a3 withAnimationCoordinator:v6];
-  [(_UIContextMenuCell *)self _updateStateWithAnimationCoordinator:v6 animated:1, v7.receiver, v7.super_class];
+  coordinatorCopy = coordinator;
+  [(UIView *)&v7 didUpdateFocusInContext:context withAnimationCoordinator:coordinatorCopy];
+  [(_UIContextMenuCell *)self _updateStateWithAnimationCoordinator:coordinatorCopy animated:1, v7.receiver, v7.super_class];
 }
 
 - (int64_t)focusItemDeferralMode
@@ -271,16 +271,16 @@ LABEL_13:
 
 - (BOOL)_allowsHorizontalFocusMovement
 {
-  v2 = [(_UIContextMenuCell *)self actionView];
-  v3 = ([v2 options] >> 7) & 1;
+  actionView = [(_UIContextMenuCell *)self actionView];
+  v3 = ([actionView options] >> 7) & 1;
 
   return v3;
 }
 
-- (void)_updateStateWithAnimationCoordinator:(id)a3 animated:(BOOL)a4
+- (void)_updateStateWithAnimationCoordinator:(id)coordinator animated:(BOOL)animated
 {
-  v4 = a4;
-  v17 = a3;
+  animatedCopy = animated;
+  coordinatorCopy = coordinator;
   if ([(UICollectionViewCell *)self isFocused])
   {
     v6 = 8;
@@ -301,48 +301,48 @@ LABEL_13:
     v7 = v6;
   }
 
-  v8 = [(UICollectionViewCell *)self isHighlighted];
-  v9 = [(_UIContextMenuCell *)self actionView];
-  [v9 setControlState:v7 | v8 withAnimationCoordinator:v17];
+  isHighlighted = [(UICollectionViewCell *)self isHighlighted];
+  actionView = [(_UIContextMenuCell *)self actionView];
+  [actionView setControlState:v7 | isHighlighted withAnimationCoordinator:coordinatorCopy];
 
-  v10 = [(UICollectionViewCell *)self _focusedFloatingContentView];
-  if (v10)
+  _focusedFloatingContentView = [(UICollectionViewCell *)self _focusedFloatingContentView];
+  if (_focusedFloatingContentView)
   {
-    v11 = [UIControl _primaryStateForState:v7 | v8];
-    v12 = [(UIView *)self traitCollection];
-    v13 = _UIContextMenuGetPlatformMetrics([v12 userInterfaceIdiom]);
-    v14 = [v13 wantsFloatingContentViewAsBackground];
+    v11 = [UIControl _primaryStateForState:v7 | isHighlighted];
+    traitCollection = [(UIView *)self traitCollection];
+    v13 = _UIContextMenuGetPlatformMetrics([traitCollection userInterfaceIdiom]);
+    wantsFloatingContentViewAsBackground = [v13 wantsFloatingContentViewAsBackground];
 
-    if (v14)
+    if (wantsFloatingContentViewAsBackground)
     {
-      v15 = [(_UIContextMenuCell *)self actionView];
-      v16 = [v15 _primaryBackgroundColorForCurrentState];
-      [v10 setBackgroundColor:v16 forState:v11];
+      actionView2 = [(_UIContextMenuCell *)self actionView];
+      _primaryBackgroundColorForCurrentState = [actionView2 _primaryBackgroundColorForCurrentState];
+      [_focusedFloatingContentView setBackgroundColor:_primaryBackgroundColorForCurrentState forState:v11];
     }
 
-    if (v17)
+    if (coordinatorCopy)
     {
-      [v10 setControlState:v11 withAnimationCoordinator:v17];
+      [_focusedFloatingContentView setControlState:v11 withAnimationCoordinator:coordinatorCopy];
     }
 
     else
     {
-      [v10 setControlState:v11 animated:v4];
+      [_focusedFloatingContentView setControlState:v11 animated:animatedCopy];
     }
   }
 }
 
-- (void)_configureFocusedFloatingContentView:(id)a3
+- (void)_configureFocusedFloatingContentView:(id)view
 {
-  v8 = a3;
-  v4 = [(UIView *)self traitCollection];
-  v5 = _UIContextMenuGetPlatformMetrics([v4 userInterfaceIdiom]);
+  viewCopy = view;
+  traitCollection = [(UIView *)self traitCollection];
+  v5 = _UIContextMenuGetPlatformMetrics([traitCollection userInterfaceIdiom]);
 
-  v6 = [v5 floatingContentViewConfigurationProvider];
-  v7 = v6;
-  if (v6)
+  floatingContentViewConfigurationProvider = [v5 floatingContentViewConfigurationProvider];
+  v7 = floatingContentViewConfigurationProvider;
+  if (floatingContentViewConfigurationProvider)
   {
-    (*(v6 + 16))(v6, v8);
+    (*(floatingContentViewConfigurationProvider + 16))(floatingContentViewConfigurationProvider, viewCopy);
   }
 }
 

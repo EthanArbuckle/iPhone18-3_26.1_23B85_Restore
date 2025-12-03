@@ -1,8 +1,8 @@
 @interface _WKWebsiteDataStoreBSActionHandler
 + (id)shared;
-- (BOOL)handleNotificationResponse:(id)a3;
-- (id)_respondToApplicationActions:(id)a3 fromTransitionContext:(id)a4;
-- (void)setWebPushActionHandler:(id)a3;
+- (BOOL)handleNotificationResponse:(id)response;
+- (id)_respondToApplicationActions:(id)actions fromTransitionContext:(id)context;
+- (void)setWebPushActionHandler:(id)handler;
 @end
 
 @implementation _WKWebsiteDataStoreBSActionHandler
@@ -20,11 +20,11 @@
   return result;
 }
 
-- (void)setWebPushActionHandler:(id)a3
+- (void)setWebPushActionHandler:(id)handler
 {
-  if (a3)
+  if (handler)
   {
-    v4 = _Block_copy(a3);
+    v4 = _Block_copy(handler);
     _Block_release(self->_webPushActionHandler.m_block);
     self->_webPushActionHandler.m_block = v4;
 
@@ -37,9 +37,9 @@
   }
 }
 
-- (BOOL)handleNotificationResponse:(id)a3
+- (BOOL)handleNotificationResponse:(id)response
 {
-  v3 = [_WKWebPushAction _webPushActionWithNotificationResponse:a3];
+  v3 = [_WKWebPushAction _webPushActionWithNotificationResponse:response];
   v4 = v3;
   if (v3)
   {
@@ -61,7 +61,7 @@
   return v4 != 0;
 }
 
-- (id)_respondToApplicationActions:(id)a3 fromTransitionContext:(id)a4
+- (id)_respondToApplicationActions:(id)actions fromTransitionContext:(id)context
 {
   v24 = *MEMORY[0x1E69E9840];
   v6 = objc_alloc_init(MEMORY[0x1E695DFA8]);
@@ -69,7 +69,7 @@
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v7 = [a3 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  v7 = [actions countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v7)
   {
     v8 = *v20;
@@ -79,7 +79,7 @@
       {
         if (*v20 != v8)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(actions);
         }
 
         v10 = *(*(&v19 + 1) + 8 * i);
@@ -123,7 +123,7 @@
         }
       }
 
-      v7 = [a3 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v7 = [actions countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v7);

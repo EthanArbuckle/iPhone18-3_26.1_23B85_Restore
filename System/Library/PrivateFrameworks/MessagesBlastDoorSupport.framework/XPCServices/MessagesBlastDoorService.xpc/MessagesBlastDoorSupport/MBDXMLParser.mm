@@ -1,10 +1,10 @@
 @interface MBDXMLParser
 + (id)sharedInstance;
-- (BOOL)parseContext:(id)a3;
-- (void)parser:(id)a3 didEndElement:(id)a4 namespaceURI:(id)a5 qualifiedName:(id)a6;
-- (void)parser:(id)a3 didStartElement:(id)a4 namespaceURI:(id)a5 qualifiedName:(id)a6 attributes:(id)a7;
-- (void)parser:(id)a3 foundCharacters:(id)a4;
-- (void)parser:(id)a3 foundIgnorableWhitespace:(id)a4;
+- (BOOL)parseContext:(id)context;
+- (void)parser:(id)parser didEndElement:(id)element namespaceURI:(id)i qualifiedName:(id)name;
+- (void)parser:(id)parser didStartElement:(id)element namespaceURI:(id)i qualifiedName:(id)name attributes:(id)attributes;
+- (void)parser:(id)parser foundCharacters:(id)characters;
+- (void)parser:(id)parser foundIgnorableWhitespace:(id)whitespace;
 @end
 
 @implementation MBDXMLParser
@@ -21,9 +21,9 @@
   return v3;
 }
 
-- (BOOL)parseContext:(id)a3
+- (BOOL)parseContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_10000D8F0;
@@ -36,9 +36,9 @@
   v17[3] = &unk_1000F0D28;
   v17[4] = self;
   v7 = objc_retainBlock(v17);
-  v8 = [v5 inContentAsData];
-  objc_storeStrong(&self->_context, a3);
-  v9 = [v5 name];
+  inContentAsData = [contextCopy inContentAsData];
+  objc_storeStrong(&self->_context, context);
+  name = [contextCopy name];
   Mutable = qword_1000FE140;
   if (!qword_1000FE140)
   {
@@ -46,16 +46,16 @@
     qword_1000FE140 = Mutable;
   }
 
-  Value = CFDictionaryGetValue(Mutable, v9);
+  Value = CFDictionaryGetValue(Mutable, name);
   self->_framespace = Value;
   if (!Value)
   {
     v12 = CFDictionaryCreateMutable(0, 0, &kCFTypeDictionaryKeyCallBacks, 0);
     self->_framespace = v12;
-    CFDictionarySetValue(qword_1000FE140, v9, v12);
+    CFDictionarySetValue(qword_1000FE140, name, v12);
   }
 
-  v13 = (v6[2])(v6, v8);
+  v13 = (v6[2])(v6, inContentAsData);
   if ((v13 & 1) == 0)
   {
     v14 = os_log_create("com.apple.Messages.blastdoor", "IMXMLParser");
@@ -72,17 +72,17 @@
   return v13;
 }
 
-- (void)parser:(id)a3 didStartElement:(id)a4 namespaceURI:(id)a5 qualifiedName:(id)a6 attributes:(id)a7
+- (void)parser:(id)parser didStartElement:(id)element namespaceURI:(id)i qualifiedName:(id)name attributes:(id)attributes
 {
-  v12 = a3;
-  v13 = a4;
-  v29 = a5;
-  v14 = a6;
-  v15 = a7;
+  parserCopy = parser;
+  elementCopy = element;
+  iCopy = i;
+  nameCopy = name;
+  attributesCopy = attributes;
   context = objc_autoreleasePoolPush();
   framespace = self->_framespace;
   v17 = self->_context;
-  MutableCopy = CFStringCreateMutableCopy(0, 0, v13);
+  MutableCopy = CFStringCreateMutableCopy(0, 0, elementCopy);
   CFStringUppercase(MutableCopy, 0);
   Value = CFDictionaryGetValue(framespace, MutableCopy);
   v30[0] = _NSConcreteStackBlock;
@@ -126,21 +126,21 @@
   self->_topFrame = v25;
   v27 = v25;
 
-  [(MBDXMLParserFrame *)v27 parser:self context:self->_context didStartElement:v13 namespaceURI:v29 qualifiedName:v14 attributes:v15];
+  [(MBDXMLParserFrame *)v27 parser:self context:self->_context didStartElement:elementCopy namespaceURI:iCopy qualifiedName:nameCopy attributes:attributesCopy];
   objc_autoreleasePoolPop(context);
 }
 
-- (void)parser:(id)a3 didEndElement:(id)a4 namespaceURI:(id)a5 qualifiedName:(id)a6
+- (void)parser:(id)parser didEndElement:(id)element namespaceURI:(id)i qualifiedName:(id)name
 {
-  v16 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  parserCopy = parser;
+  elementCopy = element;
+  iCopy = i;
+  nameCopy = name;
   v13 = objc_autoreleasePoolPush();
-  [(MBDXMLParserFrame *)self->_topFrame parser:self context:self->_context didEndElement:v10 namespaceURI:v11 qualifiedName:v12];
-  v14 = [(NSMutableArray *)self->_otherFrames lastObject];
+  [(MBDXMLParserFrame *)self->_topFrame parser:self context:self->_context didEndElement:elementCopy namespaceURI:iCopy qualifiedName:nameCopy];
+  lastObject = [(NSMutableArray *)self->_otherFrames lastObject];
   topFrame = self->_topFrame;
-  self->_topFrame = v14;
+  self->_topFrame = lastObject;
 
   if (self->_topFrame)
   {
@@ -150,21 +150,21 @@
   objc_autoreleasePoolPop(v13);
 }
 
-- (void)parser:(id)a3 foundCharacters:(id)a4
+- (void)parser:(id)parser foundCharacters:(id)characters
 {
-  v8 = a3;
-  v6 = a4;
+  parserCopy = parser;
+  charactersCopy = characters;
   v7 = objc_autoreleasePoolPush();
-  [(MBDXMLParserFrame *)self->_topFrame parser:self context:self->_context foundCharacters:v6];
+  [(MBDXMLParserFrame *)self->_topFrame parser:self context:self->_context foundCharacters:charactersCopy];
   objc_autoreleasePoolPop(v7);
 }
 
-- (void)parser:(id)a3 foundIgnorableWhitespace:(id)a4
+- (void)parser:(id)parser foundIgnorableWhitespace:(id)whitespace
 {
-  v8 = a3;
-  v6 = a4;
+  parserCopy = parser;
+  whitespaceCopy = whitespace;
   v7 = objc_autoreleasePoolPush();
-  [(MBDXMLParserFrame *)self->_topFrame parser:self context:self->_context foundIgnorableWhitespace:v6];
+  [(MBDXMLParserFrame *)self->_topFrame parser:self context:self->_context foundIgnorableWhitespace:whitespaceCopy];
   objc_autoreleasePoolPop(v7);
 }
 

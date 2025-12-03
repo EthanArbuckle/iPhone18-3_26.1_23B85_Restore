@@ -1,62 +1,62 @@
 @interface CRRegisterGreatest
-- (CRRegisterGreatest)initWithCRCoder:(id)a3;
-- (int64_t)compare:(id)a3 with:(id)a4;
-- (void)encodeWithCRCoder:(id)a3;
-- (void)mergeWith:(id)a3;
-- (void)mergeWithRegisterGreatest:(id)a3;
-- (void)setContents:(id)a3;
+- (CRRegisterGreatest)initWithCRCoder:(id)coder;
+- (int64_t)compare:(id)compare with:(id)with;
+- (void)encodeWithCRCoder:(id)coder;
+- (void)mergeWith:(id)with;
+- (void)mergeWithRegisterGreatest:(id)greatest;
+- (void)setContents:(id)contents;
 @end
 
 @implementation CRRegisterGreatest
 
-- (void)encodeWithCRCoder:(id)a3
+- (void)encodeWithCRCoder:(id)coder
 {
-  v6 = a3;
-  v4 = [v6 currentDocumentObjectForEncoding];
-  v5 = v4;
-  if (*(v4 + 48) != 2)
+  coderCopy = coder;
+  currentDocumentObjectForEncoding = [coderCopy currentDocumentObjectForEncoding];
+  v5 = currentDocumentObjectForEncoding;
+  if (*(currentDocumentObjectForEncoding + 48) != 2)
   {
-    CRDT::Document_DocObject::clear_contents(v4);
+    CRDT::Document_DocObject::clear_contents(currentDocumentObjectForEncoding);
     *(v5 + 48) = 2;
     operator new();
   }
 
-  [(CRRegisterLatest *)self encodeIntoProtobufRegisterLatest:*(v4 + 40) coder:v6];
+  [(CRRegisterLatest *)self encodeIntoProtobufRegisterLatest:*(currentDocumentObjectForEncoding + 40) coder:coderCopy];
 }
 
-- (CRRegisterGreatest)initWithCRCoder:(id)a3
+- (CRRegisterGreatest)initWithCRCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 currentDocumentObjectForDecoding];
-  if (*(v5 + 48) == 2)
+  coderCopy = coder;
+  currentDocumentObjectForDecoding = [coderCopy currentDocumentObjectForDecoding];
+  if (*(currentDocumentObjectForDecoding + 48) == 2)
   {
-    v6 = [(CRRegisterLatest *)self initWithProtobufRegisterLatest:*(v5 + 40) decoder:v4];
+    v6 = [(CRRegisterLatest *)self initWithProtobufRegisterLatest:*(currentDocumentObjectForDecoding + 40) decoder:coderCopy];
   }
 
   else
   {
-    v7 = [v4 document];
-    v6 = [(CRRegisterLatest *)self initWithContents:0 document:v7];
+    document = [coderCopy document];
+    v6 = [(CRRegisterLatest *)self initWithContents:0 document:document];
   }
 
   return v6;
 }
 
-- (int64_t)compare:(id)a3 with:(id)a4
+- (int64_t)compare:(id)compare with:(id)with
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5 == v6)
+  compareCopy = compare;
+  withCopy = with;
+  v7 = withCopy;
+  if (compareCopy == withCopy)
   {
     v8 = 0;
   }
 
-  else if (v5)
+  else if (compareCopy)
   {
-    if (v6)
+    if (withCopy)
     {
-      v8 = [v5 compare:v6];
+      v8 = [compareCopy compare:withCopy];
     }
 
     else
@@ -73,23 +73,23 @@
   return v8;
 }
 
-- (void)setContents:(id)a3
+- (void)setContents:(id)contents
 {
-  v4 = a3;
-  v5 = [(CRRegisterLatest *)self contents];
-  v6 = [(CRRegisterGreatest *)self compare:v5 with:v4];
+  contentsCopy = contents;
+  contents = [(CRRegisterLatest *)self contents];
+  v6 = [(CRRegisterGreatest *)self compare:contents with:contentsCopy];
 
   if (v6 == -1)
   {
     v7.receiver = self;
     v7.super_class = CRRegisterGreatest;
-    [(CRRegisterLatest *)&v7 setContents:v4];
+    [(CRRegisterLatest *)&v7 setContents:contentsCopy];
   }
 }
 
-- (void)mergeWith:(id)a3
+- (void)mergeWith:(id)with
 {
-  v5 = a3;
+  withCopy = with;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -97,23 +97,23 @@
     objc_exception_throw(v4);
   }
 
-  [(CRRegisterGreatest *)self mergeWithRegisterGreatest:v5];
+  [(CRRegisterGreatest *)self mergeWithRegisterGreatest:withCopy];
 }
 
-- (void)mergeWithRegisterGreatest:(id)a3
+- (void)mergeWithRegisterGreatest:(id)greatest
 {
-  v9 = a3;
-  v4 = [(CRRegisterLatest *)self contents];
-  v5 = [v9 contents];
-  v6 = [(CRRegisterGreatest *)self compare:v4 with:v5];
+  greatestCopy = greatest;
+  contents = [(CRRegisterLatest *)self contents];
+  contents2 = [greatestCopy contents];
+  v6 = [(CRRegisterGreatest *)self compare:contents with:contents2];
 
   if (v6 == -1)
   {
-    v7 = [v9 contents];
-    [(CRRegisterLatest *)self _setContents:v7];
+    contents3 = [greatestCopy contents];
+    [(CRRegisterLatest *)self _setContents:contents3];
 
-    v8 = [v9 timestamp];
-    [(CRRegisterLatest *)self setTimestamp:v8];
+    timestamp = [greatestCopy timestamp];
+    [(CRRegisterLatest *)self setTimestamp:timestamp];
   }
 }
 

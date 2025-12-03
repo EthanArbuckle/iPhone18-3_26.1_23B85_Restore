@@ -1,32 +1,32 @@
 @interface ACHBackgroundTaskScheduler
-- (ACHBackgroundTaskScheduler)initWithName:(id)a3 systemTaskScheduler:(id)a4 performHandler:(id)a5;
+- (ACHBackgroundTaskScheduler)initWithName:(id)name systemTaskScheduler:(id)scheduler performHandler:(id)handler;
 - (NSDate)lastSuccessfulRunDate;
-- (void)_performActivityWithCompletion:(id)a3;
+- (void)_performActivityWithCompletion:(id)completion;
 - (void)_registerTask;
-- (void)setLastSuccessfulRunDate:(id)a3;
-- (void)synthesizeActivityFireWithCompletion:(id)a3;
+- (void)setLastSuccessfulRunDate:(id)date;
+- (void)synthesizeActivityFireWithCompletion:(id)completion;
 @end
 
 @implementation ACHBackgroundTaskScheduler
 
-- (ACHBackgroundTaskScheduler)initWithName:(id)a3 systemTaskScheduler:(id)a4 performHandler:(id)a5
+- (ACHBackgroundTaskScheduler)initWithName:(id)name systemTaskScheduler:(id)scheduler performHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  nameCopy = name;
+  schedulerCopy = scheduler;
+  handlerCopy = handler;
   v19.receiver = self;
   v19.super_class = ACHBackgroundTaskScheduler;
   v12 = [(ACHBackgroundTaskScheduler *)&v19 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_name, a3);
-    objc_storeStrong(&v13->_systemTaskScheduler, a4);
-    v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"ACHBackgroundTaskScheduler_%@_lastSuccessfulRunDate", v9];
+    objc_storeStrong(&v12->_name, name);
+    objc_storeStrong(&v13->_systemTaskScheduler, scheduler);
+    nameCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"ACHBackgroundTaskScheduler_%@_lastSuccessfulRunDate", nameCopy];
     lastSuccessfulRunDateKey = v13->_lastSuccessfulRunDateKey;
-    v13->_lastSuccessfulRunDateKey = v14;
+    v13->_lastSuccessfulRunDateKey = nameCopy;
 
-    v16 = [v11 copy];
+    v16 = [handlerCopy copy];
     performHandler = v13->_performHandler;
     v13->_performHandler = v16;
 
@@ -37,20 +37,20 @@
   return v13;
 }
 
-- (void)setLastSuccessfulRunDate:(id)a3
+- (void)setLastSuccessfulRunDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   os_unfair_lock_lock(&self->_lock);
   lastSuccessfulRunDate = self->_lastSuccessfulRunDate;
-  self->_lastSuccessfulRunDate = v4;
-  v6 = v4;
+  self->_lastSuccessfulRunDate = dateCopy;
+  v6 = dateCopy;
 
-  v7 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
   [(NSDate *)self->_lastSuccessfulRunDate timeIntervalSinceReferenceDate];
   v9 = v8;
 
-  v10 = [(ACHBackgroundTaskScheduler *)self lastSuccessfulRunDateKey];
-  [v7 setDouble:v10 forKey:v9];
+  lastSuccessfulRunDateKey = [(ACHBackgroundTaskScheduler *)self lastSuccessfulRunDateKey];
+  [standardUserDefaults setDouble:lastSuccessfulRunDateKey forKey:v9];
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -60,9 +60,9 @@
   os_unfair_lock_lock(&self->_lock);
   if (!self->_lastSuccessfulRunDate)
   {
-    v3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v4 = [(ACHBackgroundTaskScheduler *)self lastSuccessfulRunDateKey];
-    [v3 doubleForKey:v4];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    lastSuccessfulRunDateKey = [(ACHBackgroundTaskScheduler *)self lastSuccessfulRunDateKey];
+    [standardUserDefaults doubleForKey:lastSuccessfulRunDateKey];
     v6 = v5;
 
     if (v6 <= 0.0)
@@ -88,7 +88,7 @@
 - (void)_registerTask
 {
   *buf = 138412546;
-  *(buf + 4) = a1;
+  *(buf + 4) = self;
   *(buf + 6) = 2112;
   *(buf + 14) = a2;
   _os_log_error_impl(&dword_221DDC000, log, OS_LOG_TYPE_ERROR, "Error submitting task request for %@: %@", buf, 0x16u);
@@ -101,29 +101,29 @@ void __43__ACHBackgroundTaskScheduler__registerTask__block_invoke(uint64_t a1, u
   [WeakRetained _performActivityWithCompletion:v4];
 }
 
-- (void)_performActivityWithCompletion:(id)a3
+- (void)_performActivityWithCompletion:(id)completion
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = ACHLogScheduler();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(ACHBackgroundTaskScheduler *)self name];
+    name = [(ACHBackgroundTaskScheduler *)self name];
     *buf = 138543362;
-    v14 = v6;
+    v14 = name;
     _os_log_impl(&dword_221DDC000, v5, OS_LOG_TYPE_DEFAULT, "Performing task for %{public}@", buf, 0xCu);
   }
 
-  v7 = [(ACHBackgroundTaskScheduler *)self performHandler];
+  performHandler = [(ACHBackgroundTaskScheduler *)self performHandler];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __61__ACHBackgroundTaskScheduler__performActivityWithCompletion___block_invoke;
   v11[3] = &unk_278491400;
   v11[4] = self;
-  v12 = v4;
-  v8 = v7[2];
-  v9 = v4;
-  v8(v7, v11);
+  v12 = completionCopy;
+  v8 = performHandler[2];
+  v9 = completionCopy;
+  v8(performHandler, v11);
 
   v10 = *MEMORY[0x277D85DE8];
 }
@@ -149,11 +149,11 @@ void __61__ACHBackgroundTaskScheduler__performActivityWithCompletion___block_inv
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)synthesizeActivityFireWithCompletion:(id)a3
+- (void)synthesizeActivityFireWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(ACHBackgroundTaskScheduler *)self performHandler];
-  v5[2](v5, v4);
+  completionCopy = completion;
+  performHandler = [(ACHBackgroundTaskScheduler *)self performHandler];
+  performHandler[2](performHandler, completionCopy);
 }
 
 void __61__ACHBackgroundTaskScheduler__performActivityWithCompletion___block_invoke_cold_1(uint64_t a1, uint64_t a2, NSObject *a3)

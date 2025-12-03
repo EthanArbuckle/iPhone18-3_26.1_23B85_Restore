@@ -1,20 +1,20 @@
 @interface IMMutedChatList
 + (IMMutedChatList)sharedList;
-- (BOOL)isMutedChatForChatIdentifier:(id)a3 chatStyle:(unsigned __int8)a4 groupID:(id)a5 domainIdentifiers:(id)a6 participantIDs:(id)a7 lastAddressedHandleID:(id)a8 originalGroupID:(id)a9;
-- (BOOL)isMutedChatForMuteIdentifiers:(id)a3;
+- (BOOL)isMutedChatForChatIdentifier:(id)identifier chatStyle:(unsigned __int8)style groupID:(id)d domainIdentifiers:(id)identifiers participantIDs:(id)ds lastAddressedHandleID:(id)iD originalGroupID:(id)groupID;
+- (BOOL)isMutedChatForMuteIdentifiers:(id)identifiers;
 - (IMMutedChatList)init;
 - (NSDictionary)mutedChatList;
-- (id)groupHashForParticipantIDs:(id)a3 lastAddressedHandleID:(id)a4;
-- (id)muteIdentifiersForChatStyle:(unsigned __int8)a3 groupID:(id)a4 domainIdentifiers:(id)a5 participantIDs:(id)a6 lastAddressedHandleID:(id)a7 originalGroupID:(id)a8 chatIdentifier:(id)a9;
-- (id)unmuteDateForMuteIdentifier:(id)a3;
-- (id)unmuteDateForMuteIdentifiers:(id)a3;
-- (void)_handleChatGroupIDChangedNotification:(id)a3;
-- (void)_synchronizeMutedChatList:(id)a3 syncToPairedDevice:(BOOL)a4;
+- (id)groupHashForParticipantIDs:(id)ds lastAddressedHandleID:(id)d;
+- (id)muteIdentifiersForChatStyle:(unsigned __int8)style groupID:(id)d domainIdentifiers:(id)identifiers participantIDs:(id)ds lastAddressedHandleID:(id)iD originalGroupID:(id)groupID chatIdentifier:(id)identifier;
+- (id)unmuteDateForMuteIdentifier:(id)identifier;
+- (id)unmuteDateForMuteIdentifiers:(id)identifiers;
+- (void)_handleChatGroupIDChangedNotification:(id)notification;
+- (void)_synchronizeMutedChatList:(id)list syncToPairedDevice:(BOOL)device;
 - (void)dealloc;
-- (void)groupID:(id)a3 didChangeTo:(id)a4 previousDomainIdentifiers:(id)a5 newDomainIdentifiers:(id)a6 forChatIdentifier:(id)a7;
-- (void)muteChatWithMuteIdentifiers:(id)a3 untilDate:(id)a4 syncToPairedDevice:(BOOL)a5;
-- (void)syncToPairedDeviceIncludingVersion:(BOOL)a3;
-- (void)unmuteChatWithMuteIdentifiers:(id)a3 syncToPairedDevice:(BOOL)a4;
+- (void)groupID:(id)d didChangeTo:(id)to previousDomainIdentifiers:(id)identifiers newDomainIdentifiers:(id)domainIdentifiers forChatIdentifier:(id)identifier;
+- (void)muteChatWithMuteIdentifiers:(id)identifiers untilDate:(id)date syncToPairedDevice:(BOOL)device;
+- (void)syncToPairedDeviceIncludingVersion:(BOOL)version;
+- (void)unmuteChatWithMuteIdentifiers:(id)identifiers syncToPairedDevice:(BOOL)device;
 @end
 
 @implementation IMMutedChatList
@@ -40,8 +40,8 @@
   {
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
     CFNotificationCenterAddObserver(DarwinNotifyCenter, v2, sub_1A86AAC80, @"com.apple.MobileSMS.CKDNDList.changed", 0, CFNotificationSuspensionBehaviorDeliverImmediately);
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v4 addObserver:v2 selector:sel__handleChatGroupIDChangedNotification_ name:@"_IMGroupIDChangedNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__handleChatGroupIDChangedNotification_ name:@"_IMGroupIDChangedNotification" object:0];
   }
 
   return v2;
@@ -67,34 +67,34 @@
   [(IMMutedChatList *)&v4 dealloc];
 }
 
-- (id)muteIdentifiersForChatStyle:(unsigned __int8)a3 groupID:(id)a4 domainIdentifiers:(id)a5 participantIDs:(id)a6 lastAddressedHandleID:(id)a7 originalGroupID:(id)a8 chatIdentifier:(id)a9
+- (id)muteIdentifiersForChatStyle:(unsigned __int8)style groupID:(id)d domainIdentifiers:(id)identifiers participantIDs:(id)ds lastAddressedHandleID:(id)iD originalGroupID:(id)groupID chatIdentifier:(id)identifier
 {
-  v13 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v20 = a9;
+  styleCopy = style;
+  dCopy = d;
+  identifiersCopy = identifiers;
+  dsCopy = ds;
+  iDCopy = iD;
+  groupIDCopy = groupID;
+  identifierCopy = identifier;
   v21 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  if (v13 == 45)
+  if (styleCopy == 45)
   {
-    if ([v20 length])
+    if ([identifierCopy length])
     {
-      [v21 addObject:v20];
+      [v21 addObject:identifierCopy];
     }
   }
 
   else
   {
-    if ([v15 length])
+    if ([dCopy length])
     {
-      [v21 addObject:v15];
+      [v21 addObject:dCopy];
     }
 
-    if ([v16 count])
+    if ([identifiersCopy count])
     {
-      v27 = self;
+      selfCopy = self;
       v35 = 0;
       v36 = &v35;
       v37 = 0x3032000000;
@@ -113,26 +113,26 @@
       v28[3] = &unk_1E78295C0;
       v28[4] = &v35;
       v28[5] = &v29;
-      [v16 enumerateKeysAndObjectsUsingBlock:v28];
-      v22 = [v36[5] allObjects];
-      [v21 addObjectsFromArray:v22];
+      [identifiersCopy enumerateKeysAndObjectsUsingBlock:v28];
+      allObjects = [v36[5] allObjects];
+      [v21 addObjectsFromArray:allObjects];
 
-      v23 = [v30[5] allObjects];
-      [v21 addObjectsFromArray:v23];
+      allObjects2 = [v30[5] allObjects];
+      [v21 addObjectsFromArray:allObjects2];
 
       _Block_object_dispose(&v29, 8);
       _Block_object_dispose(&v35, 8);
     }
 
-    v24 = [(IMMutedChatList *)self groupHashForParticipantIDs:v17 lastAddressedHandleID:v18, v27];
-    if ([v24 length])
+    selfCopy = [(IMMutedChatList *)self groupHashForParticipantIDs:dsCopy lastAddressedHandleID:iDCopy, selfCopy];
+    if ([selfCopy length])
     {
-      [v21 addObject:v24];
+      [v21 addObject:selfCopy];
     }
 
-    if ([v19 length])
+    if ([groupIDCopy length])
     {
-      [v21 addObject:v19];
+      [v21 addObject:groupIDCopy];
     }
   }
 
@@ -141,22 +141,22 @@
   return v25;
 }
 
-- (BOOL)isMutedChatForChatIdentifier:(id)a3 chatStyle:(unsigned __int8)a4 groupID:(id)a5 domainIdentifiers:(id)a6 participantIDs:(id)a7 lastAddressedHandleID:(id)a8 originalGroupID:(id)a9
+- (BOOL)isMutedChatForChatIdentifier:(id)identifier chatStyle:(unsigned __int8)style groupID:(id)d domainIdentifiers:(id)identifiers participantIDs:(id)ds lastAddressedHandleID:(id)iD originalGroupID:(id)groupID
 {
-  v9 = self;
-  v10 = [(IMMutedChatList *)self muteIdentifiersForChatStyle:a4 groupID:a5 domainIdentifiers:a6 participantIDs:a7 lastAddressedHandleID:a8 originalGroupID:a9 chatIdentifier:a3];
-  LOBYTE(v9) = [(IMMutedChatList *)v9 isMutedChatForMuteIdentifiers:v10];
+  selfCopy = self;
+  v10 = [(IMMutedChatList *)self muteIdentifiersForChatStyle:style groupID:d domainIdentifiers:identifiers participantIDs:ds lastAddressedHandleID:iD originalGroupID:groupID chatIdentifier:identifier];
+  LOBYTE(selfCopy) = [(IMMutedChatList *)selfCopy isMutedChatForMuteIdentifiers:v10];
 
-  return v9;
+  return selfCopy;
 }
 
-- (BOOL)isMutedChatForMuteIdentifiers:(id)a3
+- (BOOL)isMutedChatForMuteIdentifiers:(id)identifiers
 {
-  v3 = [(IMMutedChatList *)self unmuteDateForMuteIdentifiers:a3];
+  v3 = [(IMMutedChatList *)self unmuteDateForMuteIdentifiers:identifiers];
   if (v3)
   {
-    v4 = [MEMORY[0x1E695DF00] date];
-    v5 = [v4 compare:v3] == -1;
+    date = [MEMORY[0x1E695DF00] date];
+    v5 = [date compare:v3] == -1;
   }
 
   else
@@ -167,15 +167,15 @@
   return v5;
 }
 
-- (id)unmuteDateForMuteIdentifiers:(id)a3
+- (id)unmuteDateForMuteIdentifiers:(id)identifiers
 {
   v17 = *MEMORY[0x1E69E9840];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  identifiersCopy = identifiers;
+  v5 = [identifiersCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -186,7 +186,7 @@
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(identifiersCopy);
         }
 
         v9 = [(IMMutedChatList *)self unmuteDateForMuteIdentifier:*(*(&v12 + 1) + 8 * i), v12];
@@ -197,7 +197,7 @@
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [identifiersCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v6)
       {
         continue;
@@ -213,11 +213,11 @@ LABEL_11:
   return v10;
 }
 
-- (id)unmuteDateForMuteIdentifier:(id)a3
+- (id)unmuteDateForMuteIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(IMMutedChatList *)self mutedChatList];
-  v6 = [v5 objectForKey:v4];
+  identifierCopy = identifier;
+  mutedChatList = [(IMMutedChatList *)self mutedChatList];
+  v6 = [mutedChatList objectForKey:identifierCopy];
 
   if (v6)
   {
@@ -234,23 +234,23 @@ LABEL_11:
   return v8;
 }
 
-- (void)unmuteChatWithMuteIdentifiers:(id)a3 syncToPairedDevice:(BOOL)a4
+- (void)unmuteChatWithMuteIdentifiers:(id)identifiers syncToPairedDevice:(BOOL)device
 {
-  v4 = a4;
+  deviceCopy = device;
   v30 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if ([v6 count])
+  identifiersCopy = identifiers;
+  if ([identifiersCopy count])
   {
-    v21 = v4;
-    v20 = self;
-    v19 = [(IMMutedChatList *)self mutedChatList];
-    v7 = [v19 mutableCopy];
+    v21 = deviceCopy;
+    selfCopy = self;
+    mutedChatList = [(IMMutedChatList *)self mutedChatList];
+    v7 = [mutedChatList mutableCopy];
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v22 = v6;
-    v8 = v6;
+    v22 = identifiersCopy;
+    v8 = identifiersCopy;
     v9 = [v8 countByEnumeratingWithState:&v23 objects:v29 count:16];
     if (!v9)
     {
@@ -310,43 +310,43 @@ LABEL_13:
 LABEL_15:
 
         v18 = [v7 copy];
-        [(IMMutedChatList *)v20 _synchronizeMutedChatList:v18 syncToPairedDevice:v21];
+        [(IMMutedChatList *)selfCopy _synchronizeMutedChatList:v18 syncToPairedDevice:v21];
 
-        v6 = v22;
+        identifiersCopy = v22;
         break;
       }
     }
   }
 }
 
-- (void)muteChatWithMuteIdentifiers:(id)a3 untilDate:(id)a4 syncToPairedDevice:(BOOL)a5
+- (void)muteChatWithMuteIdentifiers:(id)identifiers untilDate:(id)date syncToPairedDevice:(BOOL)device
 {
-  v5 = a5;
+  deviceCopy = device;
   v40 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  if ([v8 count])
+  identifiersCopy = identifiers;
+  dateCopy = date;
+  if ([identifiersCopy count])
   {
-    if (!v9)
+    if (!dateCopy)
     {
-      [(IMMutedChatList *)self unmuteChatWithMuteIdentifiers:v8 syncToPairedDevice:v5];
+      [(IMMutedChatList *)self unmuteChatWithMuteIdentifiers:identifiersCopy syncToPairedDevice:deviceCopy];
       goto LABEL_22;
     }
 
-    v28 = v5;
-    v27 = self;
-    v10 = [(IMMutedChatList *)self mutedChatList];
-    v11 = [v10 mutableCopy];
-    v30 = v9;
-    [v9 timeIntervalSince1970];
+    v28 = deviceCopy;
+    selfCopy = self;
+    mutedChatList = [(IMMutedChatList *)self mutedChatList];
+    v11 = [mutedChatList mutableCopy];
+    v30 = dateCopy;
+    [dateCopy timeIntervalSince1970];
     v13 = v12;
     v14 = [MEMORY[0x1E696AD98] numberWithDouble:?];
     v31 = 0u;
     v32 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v29 = v8;
-    v15 = v8;
+    v29 = identifiersCopy;
+    v15 = identifiersCopy;
     v16 = [v15 countByEnumeratingWithState:&v31 objects:v39 count:16];
     if (!v16)
     {
@@ -365,7 +365,7 @@ LABEL_15:
         }
 
         v20 = *(*(&v31 + 1) + 8 * i);
-        v21 = [v10 objectForKey:v20];
+        v21 = [mutedChatList objectForKey:v20];
         if (v21 && [v14 isEqualToNumber:v21])
         {
           v22 = IMMutedChatListLogHandle();
@@ -424,10 +424,10 @@ LABEL_18:
 LABEL_20:
 
         v26 = [v11 copy];
-        [(IMMutedChatList *)v27 _synchronizeMutedChatList:v26 syncToPairedDevice:v28];
+        [(IMMutedChatList *)selfCopy _synchronizeMutedChatList:v26 syncToPairedDevice:v28];
 
-        v8 = v29;
-        v9 = v30;
+        identifiersCopy = v29;
+        dateCopy = v30;
         break;
       }
     }
@@ -436,10 +436,10 @@ LABEL_20:
 LABEL_22:
 }
 
-- (void)_synchronizeMutedChatList:(id)a3 syncToPairedDevice:(BOOL)a4
+- (void)_synchronizeMutedChatList:(id)list syncToPairedDevice:(BOOL)device
 {
-  v4 = a4;
-  CFPreferencesSetAppValue(@"CKDNDListKey", a3, @"com.apple.MobileSMS.CKDNDList");
+  deviceCopy = device;
+  CFPreferencesSetAppValue(@"CKDNDListKey", list, @"com.apple.MobileSMS.CKDNDList");
   CFPreferencesAppSynchronize(@"com.apple.MobileSMS.CKDNDList");
   v6 = IMMutedChatListLogHandle();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -450,20 +450,20 @@ LABEL_22:
 
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterPostNotification(DarwinNotifyCenter, @"com.apple.MobileSMS.CKDNDList.changed", 0, 0, 2u);
-  if (v4)
+  if (deviceCopy)
   {
     [(IMMutedChatList *)self syncToPairedDeviceIncludingVersion:0];
   }
 }
 
-- (id)groupHashForParticipantIDs:(id)a3 lastAddressedHandleID:(id)a4
+- (id)groupHashForParticipantIDs:(id)ds lastAddressedHandleID:(id)d
 {
-  v5 = a4;
-  v6 = [a3 mutableCopy];
+  dCopy = d;
+  v6 = [ds mutableCopy];
   v7 = v6;
-  if (v5)
+  if (dCopy)
   {
-    [v6 addObject:v5];
+    [v6 addObject:dCopy];
   }
 
   v8 = [v7 copy];
@@ -472,24 +472,24 @@ LABEL_22:
   return v9;
 }
 
-- (void)syncToPairedDeviceIncludingVersion:(BOOL)a3
+- (void)syncToPairedDeviceIncludingVersion:(BOOL)version
 {
-  v3 = a3;
-  v5 = [(IMMutedChatList *)self syncManager];
-  if (!v5)
+  versionCopy = version;
+  syncManager = [(IMMutedChatList *)self syncManager];
+  if (!syncManager)
   {
-    v5 = objc_alloc_init(MEMORY[0x1AC570AA0](@"NPSManager", @"NanoPreferencesSync"));
-    [(IMMutedChatList *)self setSyncManager:v5];
+    syncManager = objc_alloc_init(MEMORY[0x1AC570AA0](@"NPSManager", @"NanoPreferencesSync"));
+    [(IMMutedChatList *)self setSyncManager:syncManager];
   }
 
   v6 = [MEMORY[0x1E695DFA8] setWithObject:@"CKDNDListKey"];
   v7 = v6;
-  if (v3)
+  if (versionCopy)
   {
     [v6 addObject:@"CKDNDMigrationKey"];
   }
 
-  [v5 synchronizeUserDefaultsDomain:@"com.apple.MobileSMS.CKDNDList" keys:v7];
+  [syncManager synchronizeUserDefaultsDomain:@"com.apple.MobileSMS.CKDNDList" keys:v7];
   v8 = IMMutedChatListLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -498,24 +498,24 @@ LABEL_22:
   }
 }
 
-- (void)groupID:(id)a3 didChangeTo:(id)a4 previousDomainIdentifiers:(id)a5 newDomainIdentifiers:(id)a6 forChatIdentifier:(id)a7
+- (void)groupID:(id)d didChangeTo:(id)to previousDomainIdentifiers:(id)identifiers newDomainIdentifiers:(id)domainIdentifiers forChatIdentifier:(id)identifier
 {
   v56[1] = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  if (v16)
+  dCopy = d;
+  toCopy = to;
+  identifiersCopy = identifiers;
+  domainIdentifiersCopy = domainIdentifiers;
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    if (v12)
+    if (dCopy)
     {
-      if (v13)
+      if (toCopy)
       {
-        v17 = [(IMMutedChatList *)self unmuteDateForMuteIdentifier:v12];
+        v17 = [(IMMutedChatList *)self unmuteDateForMuteIdentifier:dCopy];
         if (v17)
         {
-          v18 = [(IMMutedChatList *)self unmuteDateForMuteIdentifier:v13];
+          v18 = [(IMMutedChatList *)self unmuteDateForMuteIdentifier:toCopy];
 
           if (!v18)
           {
@@ -523,21 +523,21 @@ LABEL_22:
             if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138412802;
-              *&buf[4] = v12;
+              *&buf[4] = dCopy;
               *&buf[12] = 2112;
-              *&buf[14] = v13;
+              *&buf[14] = toCopy;
               *&buf[22] = 2112;
-              v53 = v16;
+              v53 = identifierCopy;
               _os_log_impl(&dword_1A85E5000, v19, OS_LOG_TYPE_DEFAULT, "Chat with previousGroupID (%@) was muted, but that group ID changed. Updating muted chat to new group ID (%@) for chatIdentifier: %@", buf, 0x20u);
             }
 
-            v56[0] = v13;
+            v56[0] = toCopy;
             v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v56 count:1];
             [(IMMutedChatList *)self muteChatWithMuteIdentifiers:v20 untilDate:v17 syncToPairedDevice:1];
           }
 
-          v43 = [v15 __im_setDifferenceBetweenSelfAndObject:v14];
-          v21 = [v14 __im_setDifferenceBetweenSelfAndObject:v15];
+          v43 = [domainIdentifiersCopy __im_setDifferenceBetweenSelfAndObject:identifiersCopy];
+          v21 = [identifiersCopy __im_setDifferenceBetweenSelfAndObject:domainIdentifiersCopy];
           *buf = 0;
           *&buf[8] = buf;
           *&buf[16] = 0x3032000000;
@@ -602,24 +602,24 @@ LABEL_22:
   }
 }
 
-- (void)_handleChatGroupIDChangedNotification:(id)a3
+- (void)_handleChatGroupIDChangedNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v14 = [v5 objectForKey:@"_IMGroupIDChangedPreviousGroupIDKey"];
+  notificationCopy = notification;
+  userInfo = [notificationCopy userInfo];
+  v14 = [userInfo objectForKey:@"_IMGroupIDChangedPreviousGroupIDKey"];
 
-  v6 = [v4 userInfo];
-  v7 = [v6 objectForKey:@"_IMGroupIDChangedUpdatedGroupIDKey"];
+  userInfo2 = [notificationCopy userInfo];
+  v7 = [userInfo2 objectForKey:@"_IMGroupIDChangedUpdatedGroupIDKey"];
 
-  v8 = [v4 userInfo];
-  v9 = [v8 objectForKey:@"_IMGroupIDChangedChatIdentifierKey"];
+  userInfo3 = [notificationCopy userInfo];
+  v9 = [userInfo3 objectForKey:@"_IMGroupIDChangedChatIdentifierKey"];
 
-  v10 = [v4 userInfo];
-  v11 = [v10 objectForKey:@"_IMGroupIDChangedPreviousGroupIdentifiersKey"];
+  userInfo4 = [notificationCopy userInfo];
+  v11 = [userInfo4 objectForKey:@"_IMGroupIDChangedPreviousGroupIdentifiersKey"];
 
-  v12 = [v4 userInfo];
+  userInfo5 = [notificationCopy userInfo];
 
-  v13 = [v12 objectForKey:@"_IMGroupIDChangedUpdatedGroupIdentifiersKey"];
+  v13 = [userInfo5 objectForKey:@"_IMGroupIDChangedUpdatedGroupIdentifiersKey"];
 
   [(IMMutedChatList *)self groupID:v14 didChangeTo:v7 previousDomainIdentifiers:v11 newDomainIdentifiers:v13 forChatIdentifier:v9];
 }

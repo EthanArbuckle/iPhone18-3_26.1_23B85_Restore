@@ -1,19 +1,19 @@
 @interface ENUIRegionDetailsViewController
 - (BOOL)isActiveRegion;
 - (BOOL)isShareAnalyticsRestricted;
-- (ENUIRegionDetailsViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (ENUIRegionDetailsViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (id)_applessSpecifiers;
 - (id)_headerSpecifiers;
 - (id)_installedAppSpecifiers;
 - (id)_preAuthorizationSpecifiers;
 - (id)isKeyReleasePreAuthorized;
 - (id)isShareTravelStatusEnabled;
-- (id)readPreferenceValue:(id)a3;
+- (id)readPreferenceValue:(id)value;
 - (id)shareAnalyticsEnabled;
 - (id)shouldShareExposureInformation;
 - (id)specifiers;
 - (void)_refreshRegionAndReloadSpecifiers;
-- (void)addFooterText:(id)a3 withLinkText:(id)a4 toGroup:(id)a5 action:(SEL)a6;
+- (void)addFooterText:(id)text withLinkText:(id)linkText toGroup:(id)group action:(SEL)action;
 - (void)didConfirmRemoveRegion;
 - (void)didTapAccessAppButton;
 - (void)didTapLearnMore;
@@ -23,24 +23,24 @@
 - (void)didTapSetActiveRegion;
 - (void)didTapSetUpRegion;
 - (void)didTapShareDiagnosisButton;
-- (void)didToggleShareTravelStatus:(id)a3 specifier:(id)a4;
-- (void)handleURL:(id)a3 withCompletion:(id)a4;
+- (void)didToggleShareTravelStatus:(id)status specifier:(id)specifier;
+- (void)handleURL:(id)l withCompletion:(id)completion;
 - (void)refreshSwitchStates;
-- (void)setPreferenceValue:(id)a3 specifier:(id)a4;
-- (void)showController:(id)a3;
-- (void)togglePreAuthorizationSwitch:(id)a3 specifier:(id)a4;
-- (void)toggleShareAnalytics:(id)a3 specifier:(id)a4;
-- (void)toggleShareExposureInformationSwitch:(id)a3 specifier:(id)a4;
+- (void)setPreferenceValue:(id)value specifier:(id)specifier;
+- (void)showController:(id)controller;
+- (void)togglePreAuthorizationSwitch:(id)switch specifier:(id)specifier;
+- (void)toggleShareAnalytics:(id)analytics specifier:(id)specifier;
+- (void)toggleShareExposureInformationSwitch:(id)switch specifier:(id)specifier;
 - (void)viewDidLoad;
 @end
 
 @implementation ENUIRegionDetailsViewController
 
-- (ENUIRegionDetailsViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (ENUIRegionDetailsViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v8.receiver = self;
   v8.super_class = ENUIRegionDetailsViewController;
-  v4 = [(ENUIRegionDetailsViewController *)&v8 initWithNibName:a3 bundle:a4];
+  v4 = [(ENUIRegionDetailsViewController *)&v8 initWithNibName:name bundle:bundle];
   v5 = v4;
   if (v4)
   {
@@ -53,16 +53,16 @@
 
 - (void)viewDidLoad
 {
-  v3 = [(ENUIRegionDetailsViewController *)self specifier];
-  v4 = [v3 userInfo];
+  specifier = [(ENUIRegionDetailsViewController *)self specifier];
+  userInfo = [specifier userInfo];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
-  v6 = [(ENUIRegionDetailsViewController *)self specifier];
-  v7 = [v6 userInfo];
+  specifier2 = [(ENUIRegionDetailsViewController *)self specifier];
+  userInfo2 = [specifier2 userInfo];
   if (isKindOfClass)
   {
-    [(ENUIRegionDetailsViewController *)self setModel:v7];
+    [(ENUIRegionDetailsViewController *)self setModel:userInfo2];
 
     [(ENUIRegionDetailsViewController *)self setDidRefreshModelSinceLoading:0];
   }
@@ -86,14 +86,14 @@
   v17.receiver = self;
   v17.super_class = ENUIRegionDetailsViewController;
   [(ENUIRegionDetailsViewController *)&v17 viewDidLoad];
-  v9 = [(ENUIRegionDetailsViewController *)self table];
-  [v9 contentInset];
+  table = [(ENUIRegionDetailsViewController *)self table];
+  [table contentInset];
   v11 = v10;
   v13 = v12;
   v15 = v14;
 
-  v16 = [(ENUIRegionDetailsViewController *)self table];
-  [v16 setContentInset:{-36.0, v11, v13, v15}];
+  table2 = [(ENUIRegionDetailsViewController *)self table];
+  [table2 setContentInset:{-36.0, v11, v13, v15}];
 
   [(ENUIRegionDetailsViewController *)self refreshSwitchStates];
 }
@@ -113,15 +113,15 @@
 
 - (void)refreshSwitchStates
 {
-  v3 = [(ENUIRegionDetailsViewController *)self model];
+  model = [(ENUIRegionDetailsViewController *)self model];
 
-  if (v3)
+  if (model)
   {
     v4 = +[_TtC28HealthExposureNotificationUI16ENManagerAdapter defaultAdapter];
     v5 = dispatch_group_create();
     dispatch_group_enter(v5);
-    v6 = [(ENUIRegionDetailsViewController *)self model];
-    v7 = [v6 region];
+    model2 = [(ENUIRegionDetailsViewController *)self model];
+    region = [model2 region];
     v19[0] = _NSConcreteStackBlock;
     v19[1] = 3221225472;
     v19[2] = sub_125D8;
@@ -129,11 +129,11 @@
     v19[4] = self;
     v8 = v5;
     v20 = v8;
-    [v4 isTravelStatusEnabledForRegion:v7 completion:v19];
+    [v4 isTravelStatusEnabledForRegion:region completion:v19];
 
     dispatch_group_enter(v8);
-    v9 = [(ENUIRegionDetailsViewController *)self model];
-    v10 = [v9 region];
+    model3 = [(ENUIRegionDetailsViewController *)self model];
+    region2 = [model3 region];
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
     v16[2] = sub_12618;
@@ -143,7 +143,7 @@
     v11 = v4;
     v18 = v11;
     v12 = v8;
-    [v11 isKeyReleasePreAuthorizedForRegion:v10 completion:v16];
+    [v11 isKeyReleasePreAuthorizedForRegion:region2 completion:v16];
 
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
@@ -161,26 +161,26 @@
   v3 = +[_TtC28HealthExposureNotificationUI27ENUIPublicHealthAgencyModel activeRegion];
   if (([v3 regionIsPlaceholder] & 1) == 0)
   {
-    v4 = [(ENUIRegionDetailsViewController *)self model];
-    v5 = [v4 regionIsPlaceholder];
+    model = [(ENUIRegionDetailsViewController *)self model];
+    regionIsPlaceholder = [model regionIsPlaceholder];
 
-    if ((v5 & 1) == 0)
+    if ((regionIsPlaceholder & 1) == 0)
     {
-      v6 = [v3 region];
-      v7 = [(ENUIRegionDetailsViewController *)self model];
-      v8 = [v7 region];
-      v10 = [v6 isEqual:v8];
+      region = [v3 region];
+      model2 = [(ENUIRegionDetailsViewController *)self model];
+      region2 = [model2 region];
+      v10 = [region isEqual:region2];
       goto LABEL_7;
     }
   }
 
-  v6 = [v3 appBundleId];
-  if (v6)
+  region = [v3 appBundleId];
+  if (region)
   {
-    v7 = [v3 appBundleId];
-    v8 = [(ENUIRegionDetailsViewController *)self model];
-    v9 = [v8 appBundleId];
-    v10 = [v7 isEqualToString:v9];
+    model2 = [v3 appBundleId];
+    region2 = [(ENUIRegionDetailsViewController *)self model];
+    appBundleId = [region2 appBundleId];
+    v10 = [model2 isEqualToString:appBundleId];
 
 LABEL_7:
     goto LABEL_8;
@@ -192,35 +192,35 @@ LABEL_8:
   return v10;
 }
 
-- (void)addFooterText:(id)a3 withLinkText:(id)a4 toGroup:(id)a5 action:(SEL)a6
+- (void)addFooterText:(id)text withLinkText:(id)linkText toGroup:(id)group action:(SEL)action
 {
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
+  groupCopy = group;
+  linkTextCopy = linkText;
+  textCopy = text;
   v13 = objc_opt_class();
   v14 = NSStringFromClass(v13);
-  [v10 setObject:v14 forKeyedSubscript:PSFooterCellClassGroupKey];
+  [groupCopy setObject:v14 forKeyedSubscript:PSFooterCellClassGroupKey];
 
-  [v10 setObject:v12 forKeyedSubscript:PSFooterHyperlinkViewTitleKey];
-  v15 = [v12 rangeOfString:v11];
+  [groupCopy setObject:textCopy forKeyedSubscript:PSFooterHyperlinkViewTitleKey];
+  v15 = [textCopy rangeOfString:linkTextCopy];
   v17 = v16;
 
   v22.location = v15;
   v22.length = v17;
   v18 = NSStringFromRange(v22);
-  [v10 setObject:v18 forKeyedSubscript:PSFooterHyperlinkViewLinkRangeKey];
+  [groupCopy setObject:v18 forKeyedSubscript:PSFooterHyperlinkViewLinkRangeKey];
 
   v19 = [NSValue valueWithNonretainedObject:self];
-  [v10 setObject:v19 forKeyedSubscript:PSFooterHyperlinkViewTargetKey];
+  [groupCopy setObject:v19 forKeyedSubscript:PSFooterHyperlinkViewTargetKey];
 
-  v20 = NSStringFromSelector(a6);
-  [v10 setObject:v20 forKeyedSubscript:PSFooterHyperlinkViewActionKey];
+  v20 = NSStringFromSelector(action);
+  [groupCopy setObject:v20 forKeyedSubscript:PSFooterHyperlinkViewActionKey];
 }
 
 - (id)specifiers
 {
-  v3 = [(ENUIRegionDetailsViewController *)self model];
-  if (v3 && (v4 = v3, v5 = [(ENUIRegionDetailsViewController *)self isDataLoaded], v4, v5))
+  model = [(ENUIRegionDetailsViewController *)self model];
+  if (model && (v4 = model, v5 = [(ENUIRegionDetailsViewController *)self isDataLoaded], v4, v5))
   {
     v6 = OBJC_IVAR___PSListController__specifiers;
     v7 = *&self->PSListController_opaque[OBJC_IVAR___PSListController__specifiers];
@@ -232,13 +232,13 @@ LABEL_8:
     else
     {
       v10 = objc_alloc_init(NSMutableArray);
-      v11 = [(ENUIRegionDetailsViewController *)self _headerSpecifiers];
-      [v10 addObjectsFromArray:v11];
+      _headerSpecifiers = [(ENUIRegionDetailsViewController *)self _headerSpecifiers];
+      [v10 addObjectsFromArray:_headerSpecifiers];
 
-      v12 = [(ENUIRegionDetailsViewController *)self model];
-      v13 = [v12 isRegionUsingApp];
+      model2 = [(ENUIRegionDetailsViewController *)self model];
+      isRegionUsingApp = [model2 isRegionUsingApp];
 
-      if (v13)
+      if (isRegionUsingApp)
       {
         [(ENUIRegionDetailsViewController *)self _installedAppSpecifiers];
       }
@@ -270,8 +270,8 @@ LABEL_8:
 {
   v3 = [PSSpecifier groupSpecifierWithID:@"details-header-group"];
   v4 = [PSSpecifier preferenceSpecifierNamed:&stru_2D818 target:self set:0 get:0 detail:0 cell:-1 edit:0];
-  v5 = [(ENUIRegionDetailsViewController *)self model];
-  [v4 setUserInfo:v5];
+  model = [(ENUIRegionDetailsViewController *)self model];
+  [v4 setUserInfo:model];
 
   [v4 setObject:objc_opt_class() forKeyedSubscript:PSCellClassKey];
   v6 = PSEnabledKey;
@@ -305,24 +305,24 @@ LABEL_8:
     [v8 addObject:v9];
 LABEL_9:
     v19 = ENUILocalizedString();
-    v20 = [(ENUIRegionDetailsViewController *)self model];
-    v21 = [v20 name];
-    v22 = [NSString stringWithFormat:v19, v21];
+    model2 = [(ENUIRegionDetailsViewController *)self model];
+    name = [model2 name];
+    v22 = [NSString stringWithFormat:v19, name];
     [v3 setObject:v22 forKeyedSubscript:PSFooterTextGroupKey];
 
     goto LABEL_10;
   }
 
-  v13 = [(ENUIRegionDetailsViewController *)self model];
-  if ([v13 isAuthorized])
+  model3 = [(ENUIRegionDetailsViewController *)self model];
+  if ([model3 isAuthorized])
   {
 
 LABEL_8:
     v16 = ENUILocalizedString();
     [v9 setName:v16];
 
-    v17 = [(ENUIRegionDetailsViewController *)self model];
-    v18 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v17 regionIsPlaceholder] ^ 1);
+    model4 = [(ENUIRegionDetailsViewController *)self model];
+    v18 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [model4 regionIsPlaceholder] ^ 1);
     [v9 setObject:v18 forKeyedSubscript:v6];
 
     [v9 setButtonAction:"didTapSetActiveRegion"];
@@ -330,10 +330,10 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v14 = [(ENUIRegionDetailsViewController *)self model];
-  v15 = [v14 isRegionUsingApp];
+  model5 = [(ENUIRegionDetailsViewController *)self model];
+  isRegionUsingApp = [model5 isRegionUsingApp];
 
-  if (v15)
+  if (isRegionUsingApp)
   {
     goto LABEL_8;
   }
@@ -355,9 +355,9 @@ LABEL_10:
   if ([(ENUIRegionDetailsViewController *)self _preAuthorizationFlag]&& [(ENUIRegionDetailsViewController *)self isDaysUntilPreAuthExpiresValid])
   {
     v5 = ENUILocalizedString();
-    v6 = [(ENUIRegionDetailsViewController *)self model];
-    v7 = [v6 name];
-    v8 = [NSString stringWithFormat:v5, v7, [(ENUIRegionDetailsViewController *)self _daysUntilPreAuthExpires]];
+    model = [(ENUIRegionDetailsViewController *)self model];
+    name = [model name];
+    v8 = [NSString stringWithFormat:v5, name, [(ENUIRegionDetailsViewController *)self _daysUntilPreAuthExpires]];
   }
 
   else
@@ -386,10 +386,10 @@ LABEL_10:
   v3 = objc_opt_new();
   v4 = [PSSpecifier groupSpecifierWithID:@"access-app-group"];
   v5 = ENUILocalizedString();
-  v6 = [(ENUIRegionDetailsViewController *)self model];
-  v7 = [v6 name];
+  model = [(ENUIRegionDetailsViewController *)self model];
+  name = [model name];
   v33 = v5;
-  v8 = [NSString stringWithFormat:v5, v7];
+  v8 = [NSString stringWithFormat:v5, name];
 
   v32 = v8;
   v9 = [PSSpecifier preferenceSpecifierNamed:v8 target:self set:0 get:0 detail:0 cell:13 edit:0];
@@ -402,14 +402,14 @@ LABEL_10:
   v11 = [NSArray arrayWithObjects:v37 count:2];
   [v3 addObjectsFromArray:v11];
 
-  v31 = [(ENUIRegionDetailsViewController *)self _preAuthorizationSpecifiers];
+  _preAuthorizationSpecifiers = [(ENUIRegionDetailsViewController *)self _preAuthorizationSpecifiers];
   [v3 addObjectsFromArray:?];
   v12 = [PSSpecifier groupSpecifierWithID:@"share-exposure-info-group"];
   v13 = ENUILocalizedString();
-  v14 = [(ENUIRegionDetailsViewController *)self model];
-  v15 = [v14 installedAppName];
+  model2 = [(ENUIRegionDetailsViewController *)self model];
+  installedAppName = [model2 installedAppName];
   v30 = v13;
-  v16 = [NSString stringWithFormat:v13, v15];
+  v16 = [NSString stringWithFormat:v13, installedAppName];
   v17 = PSFooterTextGroupKey;
   [v12 setObject:v16 forKeyedSubscript:PSFooterTextGroupKey];
 
@@ -422,10 +422,10 @@ LABEL_10:
   v20 = [NSArray arrayWithObjects:v36 count:2];
   [v3 addObjectsFromArray:v20];
 
-  v21 = [(ENUIRegionDetailsViewController *)self model];
-  LOBYTE(v15) = [v21 regionIsPlaceholder];
+  model3 = [(ENUIRegionDetailsViewController *)self model];
+  LOBYTE(installedAppName) = [model3 regionIsPlaceholder];
 
-  if ((v15 & 1) == 0)
+  if ((installedAppName & 1) == 0)
   {
     v22 = [PSSpecifier groupSpecifierWithID:@"travel-status-group"];
     v23 = ENUILocalizedString();
@@ -466,14 +466,14 @@ LABEL_10:
     [v3 addObjectsFromArray:v7];
   }
 
-  v55 = [(ENUIRegionDetailsViewController *)self _preAuthorizationSpecifiers];
+  _preAuthorizationSpecifiers = [(ENUIRegionDetailsViewController *)self _preAuthorizationSpecifiers];
   [v3 addObjectsFromArray:?];
-  v8 = [(ENUIRegionDetailsViewController *)self model];
-  if ([v8 isAuthorized])
+  model = [(ENUIRegionDetailsViewController *)self model];
+  if ([model isAuthorized])
   {
-    v9 = [(ENUIRegionDetailsViewController *)self model];
-    v10 = [v9 legalese];
-    v11 = v10 != 0;
+    model2 = [(ENUIRegionDetailsViewController *)self model];
+    legalese = [model2 legalese];
+    v11 = legalese != 0;
   }
 
   else
@@ -481,10 +481,10 @@ LABEL_10:
     v11 = 0;
   }
 
-  v12 = [(ENUIRegionDetailsViewController *)self model];
-  v13 = [v12 regionWebsiteURL];
-  v14 = [v13 absoluteString];
-  v15 = [v14 length];
+  model3 = [(ENUIRegionDetailsViewController *)self model];
+  regionWebsiteURL = [model3 regionWebsiteURL];
+  absoluteString = [regionWebsiteURL absoluteString];
+  v15 = [absoluteString length];
 
   if (!v11 && !v15)
   {
@@ -499,10 +499,10 @@ LABEL_21:
     v39 = +[NSLocale currentLocale];
     [v38 setLocale:v39];
 
-    v40 = [(ENUIRegionDetailsViewController *)self model];
-    v41 = [v40 consentStatus];
-    v42 = [v41 dateConsented];
-    v43 = [v38 stringFromDate:v42];
+    model4 = [(ENUIRegionDetailsViewController *)self model];
+    consentStatus = [model4 consentStatus];
+    dateConsented = [consentStatus dateConsented];
+    v43 = [v38 stringFromDate:dateConsented];
 
     v44 = [PSSpecifier preferenceSpecifierNamed:&stru_2D818 target:self set:0 get:0 detail:objc_opt_class() cell:1 edit:0];
     [v44 setObject:objc_opt_class() forKeyedSubscript:PSCellClassKey];
@@ -510,8 +510,8 @@ LABEL_21:
     [v44 setObject:v45 forKeyedSubscript:PSTitleKey];
 
     [v44 setObject:v43 forKeyedSubscript:PSValueKey];
-    v46 = [(ENUIRegionDetailsViewController *)self model];
-    [v44 setUserInfo:v46];
+    model5 = [(ENUIRegionDetailsViewController *)self model];
+    [v44 setUserInfo:model5];
 
     [v3 addObject:v44];
     if (!v15)
@@ -542,24 +542,24 @@ LABEL_12:
   }
 
 LABEL_13:
-  v18 = [(ENUIRegionDetailsViewController *)self isShareAnalyticsRestricted];
-  v19 = [(ENUIRegionDetailsViewController *)self model];
-  v20 = [v19 wantsAnalytics];
+  isShareAnalyticsRestricted = [(ENUIRegionDetailsViewController *)self isShareAnalyticsRestricted];
+  model6 = [(ENUIRegionDetailsViewController *)self model];
+  wantsAnalytics = [model6 wantsAnalytics];
 
   v21 = &MGCopyAnswer_ptr;
-  if ((v20 & 1) != 0 || v18)
+  if ((wantsAnalytics & 1) != 0 || isShareAnalyticsRestricted)
   {
     v54 = [PSSpecifier groupSpecifierWithID:@"share-analytics"];
     v22 = ENUILocalizedString();
     v23 = [PSSpecifier preferenceSpecifierNamed:v22 target:self set:"toggleShareAnalytics:specifier:" get:"shareAnalyticsEnabled" detail:0 cell:6 edit:0];
 
-    v24 = [NSNumber numberWithInt:v18 ^ 1];
+    v24 = [NSNumber numberWithInt:isShareAnalyticsRestricted ^ 1];
     [v23 setObject:v24 forKeyedSubscript:PSEnabledKey];
 
     v25 = PSAllowMultilineTitleKey;
     [v23 setObject:&__kCFBooleanTrue forKeyedSubscript:PSAllowMultilineTitleKey];
     v26 = @"REGION_DETAIL_SHARE_ANALYTICS_FOOTER_%@";
-    if (v18)
+    if (isShareAnalyticsRestricted)
     {
       v26 = @"REGION_DETAIL_SHARE_ANALYTICS_RESTRICTED_FOOTER_%@";
     }
@@ -575,8 +575,8 @@ LABEL_13:
     v32 = [PSSpecifier preferenceSpecifierNamed:v31 target:self set:0 get:0 detail:objc_opt_class() cell:1 edit:0];
 
     [v32 setObject:&__kCFBooleanTrue forKeyedSubscript:v25];
-    v33 = [(ENUIRegionDetailsViewController *)self model];
-    [v32 setUserInfo:v33];
+    model7 = [(ENUIRegionDetailsViewController *)self model];
+    [v32 setUserInfo:model7];
 
     v57[0] = v54;
     v57[1] = v23;
@@ -587,8 +587,8 @@ LABEL_13:
     v21 = &MGCopyAnswer_ptr;
   }
 
-  v35 = [(ENUIRegionDetailsViewController *)self model];
-  if ([v35 isAuthorized])
+  model8 = [(ENUIRegionDetailsViewController *)self model];
+  if ([model8 isAuthorized])
   {
     v36 = [(ENUIRegionDetailsViewController *)self didRequestRegionRemoval]^ 1;
   }
@@ -618,86 +618,86 @@ LABEL_13:
   return v52;
 }
 
-- (void)handleURL:(id)a3 withCompletion:(id)a4
+- (void)handleURL:(id)l withCompletion:(id)completion
 {
   v6 = OBJC_IVAR___PSViewController__parentController;
-  v7 = a4;
-  v8 = a3;
+  completionCopy = completion;
+  lCopy = l;
   WeakRetained = objc_loadWeakRetained(&self->PSListController_opaque[v6]);
-  [WeakRetained handleURL:v8 withCompletion:v7];
+  [WeakRetained handleURL:lCopy withCompletion:completionCopy];
 }
 
-- (void)setPreferenceValue:(id)a3 specifier:(id)a4
+- (void)setPreferenceValue:(id)value specifier:(id)specifier
 {
   v6 = OBJC_IVAR___PSViewController__parentController;
-  v7 = a4;
-  v8 = a3;
+  specifierCopy = specifier;
+  valueCopy = value;
   WeakRetained = objc_loadWeakRetained(&self->PSListController_opaque[v6]);
-  [WeakRetained setPreferenceValue:v8 specifier:v7];
+  [WeakRetained setPreferenceValue:valueCopy specifier:specifierCopy];
 }
 
-- (id)readPreferenceValue:(id)a3
+- (id)readPreferenceValue:(id)value
 {
   v4 = OBJC_IVAR___PSViewController__parentController;
-  v5 = a3;
+  valueCopy = value;
   WeakRetained = objc_loadWeakRetained(&self->PSListController_opaque[v4]);
-  v7 = [WeakRetained readPreferenceValue:v5];
+  v7 = [WeakRetained readPreferenceValue:valueCopy];
 
   return v7;
 }
 
-- (void)showController:(id)a3
+- (void)showController:(id)controller
 {
   v4 = OBJC_IVAR___PSViewController__parentController;
-  v5 = a3;
+  controllerCopy = controller;
   WeakRetained = objc_loadWeakRetained(&self->PSListController_opaque[v4]);
-  [WeakRetained showController:v5];
+  [WeakRetained showController:controllerCopy];
 }
 
 - (void)didTapAccessAppButton
 {
-  v3 = [(ENUIRegionDetailsViewController *)self model];
-  [_TtC28HealthExposureNotificationUI20AppStoreAssetManager accessAppFor:v3 presentingViewController:self completion:&stru_2D110];
+  model = [(ENUIRegionDetailsViewController *)self model];
+  [_TtC28HealthExposureNotificationUI20AppStoreAssetManager accessAppFor:model presentingViewController:self completion:&stru_2D110];
 }
 
 - (void)didTapOpenWebsiteButton
 {
   v5 = +[LSApplicationWorkspace defaultWorkspace];
-  v3 = [(ENUIRegionDetailsViewController *)self model];
-  v4 = [v3 regionWebsiteURL];
-  [v5 openURL:v4 withOptions:0];
+  model = [(ENUIRegionDetailsViewController *)self model];
+  regionWebsiteURL = [model regionWebsiteURL];
+  [v5 openURL:regionWebsiteURL withOptions:0];
 }
 
 - (void)didTapSetActiveRegion
 {
   objc_initWeak(&location, self);
-  v3 = [(ENUIRegionDetailsViewController *)self model];
-  v4 = [v3 regionIsPlaceholder];
+  model = [(ENUIRegionDetailsViewController *)self model];
+  regionIsPlaceholder = [model regionIsPlaceholder];
 
   v5 = +[_TtC28HealthExposureNotificationUI16ENManagerAdapter defaultAdapter];
-  v6 = [(ENUIRegionDetailsViewController *)self model];
-  if (v4)
+  model2 = [(ENUIRegionDetailsViewController *)self model];
+  if (regionIsPlaceholder)
   {
-    v7 = [v6 appBundleId];
+    appBundleId = [model2 appBundleId];
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_145DC;
     v11[3] = &unk_2CD38;
     v8 = &v12;
     objc_copyWeak(&v12, &location);
-    [v5 setActivePhaseOneAppWithBundleIdentifier:v7 completion:v11];
+    [v5 setActivePhaseOneAppWithBundleIdentifier:appBundleId completion:v11];
   }
 
   else
   {
-    v7 = [v6 region];
+    appBundleId = [model2 region];
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_1461C;
     v9[3] = &unk_2CD38;
     v8 = &v10;
     objc_copyWeak(&v10, &location);
-    [v5 setActiveRegion:v7 completion:v9];
+    [v5 setActiveRegion:appBundleId completion:v9];
   }
 
   objc_destroyWeak(v8);
@@ -706,10 +706,10 @@ LABEL_13:
 
 - (void)didTapSetUpRegion
 {
-  v3 = [(ENUIRegionDetailsViewController *)self model];
-  v4 = [v3 regionIsPlaceholder];
+  model = [(ENUIRegionDetailsViewController *)self model];
+  regionIsPlaceholder = [model regionIsPlaceholder];
 
-  if (v4)
+  if (regionIsPlaceholder)
   {
 
     [(ENUIRegionDetailsViewController *)self _refreshRegionAndReloadSpecifiers];
@@ -720,13 +720,13 @@ LABEL_13:
     v5 = +[_TtC28HealthExposureNotificationUI16ENManagerAdapter defaultAdapter];
     objc_initWeak(&location, self);
     v6 = +[ENUIViewControllerFactory sharedInstance];
-    v7 = [(ENUIRegionDetailsViewController *)self model];
+    model2 = [(ENUIRegionDetailsViewController *)self model];
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_14840;
     v10[3] = &unk_2C970;
     objc_copyWeak(&v11, &location);
-    v8 = [v6 createOnboardingStackForAgencyModel:v7 exposureManager:v5 fromAvailabilityAlert:0 fromDeepLink:0 subsequentFlow:0 completion:v10];
+    v8 = [v6 createOnboardingStackForAgencyModel:model2 exposureManager:v5 fromAvailabilityAlert:0 fromDeepLink:0 subsequentFlow:0 completion:v10];
 
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
@@ -742,19 +742,19 @@ LABEL_13:
 
 - (void)didTapRemoveRegion
 {
-  v3 = [(ENUIRegionDetailsViewController *)self model];
-  if (v3)
+  model = [(ENUIRegionDetailsViewController *)self model];
+  if (model)
   {
-    v4 = v3;
-    v5 = [(ENUIRegionDetailsViewController *)self model];
-    v6 = [v5 isRegionUsingApp];
+    v4 = model;
+    model2 = [(ENUIRegionDetailsViewController *)self model];
+    isRegionUsingApp = [model2 isRegionUsingApp];
 
-    if ((v6 & 1) == 0)
+    if ((isRegionUsingApp & 1) == 0)
     {
       v7 = ENUILocalizedString();
-      v8 = [(ENUIRegionDetailsViewController *)self model];
-      v9 = [v8 name];
-      v10 = [NSString stringWithFormat:v7, v9];
+      model3 = [(ENUIRegionDetailsViewController *)self model];
+      name = [model3 name];
+      v10 = [NSString stringWithFormat:v7, name];
 
       v11 = ENUILocalizedString();
       v12 = ENUILocalizedString();
@@ -782,9 +782,9 @@ LABEL_13:
 
 - (void)didConfirmRemoveRegion
 {
-  v3 = [(ENUIRegionDetailsViewController *)self model];
+  model = [(ENUIRegionDetailsViewController *)self model];
 
-  if (v3)
+  if (model)
   {
     [(ENUIRegionDetailsViewController *)self setDidRequestRegionRemoval:1];
     objc_initWeak(&location, self);
@@ -795,64 +795,64 @@ LABEL_13:
     objc_copyWeak(&v15, &location);
     v4 = objc_retainBlock(v14);
     v5 = +[_TtC28HealthExposureNotificationUI16ENManagerAdapter defaultAdapter];
-    v6 = [(ENUIRegionDetailsViewController *)self model];
-    v7 = [v6 region];
-    v8 = [(ENUIRegionDetailsViewController *)self model];
-    v9 = [v8 consentStatus];
-    v10 = [v9 versionConsented];
+    model2 = [(ENUIRegionDetailsViewController *)self model];
+    region = [model2 region];
+    model3 = [(ENUIRegionDetailsViewController *)self model];
+    consentStatus = [model3 consentStatus];
+    versionConsented = [consentStatus versionConsented];
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_14F48;
     v12[3] = &unk_2D008;
     v11 = v4;
     v13 = v11;
-    [v5 setUserConsent:1 region:v7 text:0 version:v10 completion:v12];
+    [v5 setUserConsent:1 region:region text:0 version:versionConsented completion:v12];
 
     objc_destroyWeak(&v15);
     objc_destroyWeak(&location);
   }
 }
 
-- (void)didToggleShareTravelStatus:(id)a3 specifier:(id)a4
+- (void)didToggleShareTravelStatus:(id)status specifier:(id)specifier
 {
-  v5 = a3;
-  v6 = [(ENUIRegionDetailsViewController *)self model];
+  statusCopy = status;
+  model = [(ENUIRegionDetailsViewController *)self model];
 
-  if (v6)
+  if (model)
   {
-    -[ENUIRegionDetailsViewController set_travelStatusFlag:](self, "set_travelStatusFlag:", [v5 BOOLValue]);
+    -[ENUIRegionDetailsViewController set_travelStatusFlag:](self, "set_travelStatusFlag:", [statusCopy BOOLValue]);
     v7 = +[_TtC28HealthExposureNotificationUI16ENManagerAdapter defaultAdapter];
-    v8 = [v5 BOOLValue];
-    v9 = [(ENUIRegionDetailsViewController *)self model];
-    v10 = [v9 region];
+    bOOLValue = [statusCopy BOOLValue];
+    model2 = [(ENUIRegionDetailsViewController *)self model];
+    region = [model2 region];
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_150FC;
     v11[3] = &unk_2CF40;
     v11[4] = self;
-    [v7 setTravelStatusEnabled:v8 region:v10 completion:v11];
+    [v7 setTravelStatusEnabled:bOOLValue region:region completion:v11];
   }
 }
 
 - (id)isShareTravelStatusEnabled
 {
-  v2 = [(ENUIRegionDetailsViewController *)self _travelStatusFlag];
+  _travelStatusFlag = [(ENUIRegionDetailsViewController *)self _travelStatusFlag];
 
-  return [NSNumber numberWithBool:v2];
+  return [NSNumber numberWithBool:_travelStatusFlag];
 }
 
-- (void)toggleShareExposureInformationSwitch:(id)a3 specifier:(id)a4
+- (void)toggleShareExposureInformationSwitch:(id)switch specifier:(id)specifier
 {
-  v10 = a3;
-  v5 = [(ENUIRegionDetailsViewController *)self model];
-  v6 = [v5 appBundleId];
+  switchCopy = switch;
+  model = [(ENUIRegionDetailsViewController *)self model];
+  appBundleId = [model appBundleId];
 
-  if (v6)
+  if (appBundleId)
   {
-    v7 = [v10 BOOLValue];
-    v8 = [(ENUIRegionDetailsViewController *)self model];
-    v9 = [v8 appBundleId];
-    [ENUITCCUtilities setExposureNotificationEnabled:v7 forBundleIdentifier:v9];
+    bOOLValue = [switchCopy BOOLValue];
+    model2 = [(ENUIRegionDetailsViewController *)self model];
+    appBundleId2 = [model2 appBundleId];
+    [ENUITCCUtilities setExposureNotificationEnabled:bOOLValue forBundleIdentifier:appBundleId2];
 
     [(ENUIRegionDetailsViewController *)self refreshSwitchStates];
   }
@@ -860,25 +860,25 @@ LABEL_13:
 
 - (id)isKeyReleasePreAuthorized
 {
-  v2 = [(ENUIRegionDetailsViewController *)self _preAuthorizationFlag];
+  _preAuthorizationFlag = [(ENUIRegionDetailsViewController *)self _preAuthorizationFlag];
 
-  return [NSNumber numberWithBool:v2];
+  return [NSNumber numberWithBool:_preAuthorizationFlag];
 }
 
-- (void)togglePreAuthorizationSwitch:(id)a3 specifier:(id)a4
+- (void)togglePreAuthorizationSwitch:(id)switch specifier:(id)specifier
 {
-  if (a3)
+  if (switch)
   {
-    -[ENUIRegionDetailsViewController set_preAuthorizationFlag:](self, "set_preAuthorizationFlag:", [a3 BOOLValue]);
+    -[ENUIRegionDetailsViewController set_preAuthorizationFlag:](self, "set_preAuthorizationFlag:", [switch BOOLValue]);
     v5 = +[_TtC28HealthExposureNotificationUI16ENManagerAdapter defaultAdapter];
-    v6 = [(ENUIRegionDetailsViewController *)self model];
-    v7 = [v6 region];
+    model = [(ENUIRegionDetailsViewController *)self model];
+    region = [model region];
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_153B4;
     v9[3] = &unk_2CF40;
     v9[4] = self;
-    [v5 setPreAuthorizeDiagnosisKeysEnabled:0 forRegion:v7 completion:v9];
+    [v5 setPreAuthorizeDiagnosisKeysEnabled:0 forRegion:region completion:v9];
   }
 
   else
@@ -895,14 +895,14 @@ LABEL_13:
 
 - (id)shouldShareExposureInformation
 {
-  v3 = [(ENUIRegionDetailsViewController *)self model];
-  v4 = [v3 appBundleId];
+  model = [(ENUIRegionDetailsViewController *)self model];
+  appBundleId = [model appBundleId];
 
-  if (v4)
+  if (appBundleId)
   {
-    v5 = [(ENUIRegionDetailsViewController *)self model];
-    v6 = [v5 appBundleId];
-    v7 = [NSNumber numberWithBool:[ENUITCCUtilities isExposureNotificationEnabledForBundleIdentifier:v6]];
+    model2 = [(ENUIRegionDetailsViewController *)self model];
+    appBundleId2 = [model2 appBundleId];
+    v7 = [NSNumber numberWithBool:[ENUITCCUtilities isExposureNotificationEnabledForBundleIdentifier:appBundleId2]];
   }
 
   else
@@ -917,14 +917,14 @@ LABEL_13:
 {
   objc_initWeak(&location, self);
   v3 = +[ENUIViewControllerFactory sharedInstance];
-  v4 = [(ENUIRegionDetailsViewController *)self model];
+  model = [(ENUIRegionDetailsViewController *)self model];
   v5 = +[_TtC28HealthExposureNotificationUI16ENManagerAdapter defaultAdapter];
   v8 = _NSConcreteStackBlock;
   v9 = 3221225472;
   v10 = sub_1564C;
   v11 = &unk_2C970;
   objc_copyWeak(&v12, &location);
-  v6 = [v3 createVerificationStackForAgencyModel:v4 exposureManager:v5 sessionIdentifier:0 reportType:0 enteredFromMainScreen:0 completion:&v8];
+  v6 = [v3 createVerificationStackForAgencyModel:model exposureManager:v5 sessionIdentifier:0 reportType:0 enteredFromMainScreen:0 completion:&v8];
 
   v7 = [(ENUIRegionDetailsViewController *)self navigationController:v8];
   [v7 presentViewController:v6 animated:1 completion:0];
@@ -942,73 +942,73 @@ LABEL_13:
 
 - (id)shareAnalyticsEnabled
 {
-  v2 = [(ENUIRegionDetailsViewController *)self model];
-  v3 = [v2 analyticsConsentStatus] == &dword_0 + 2;
+  model = [(ENUIRegionDetailsViewController *)self model];
+  v3 = [model analyticsConsentStatus] == &dword_0 + 2;
 
   return [NSNumber numberWithBool:v3];
 }
 
 - (BOOL)isShareAnalyticsRestricted
 {
-  v2 = [(ENUIRegionDetailsViewController *)self model];
-  v3 = [v2 analyticsConsentStatus] == &dword_4;
+  model = [(ENUIRegionDetailsViewController *)self model];
+  v3 = [model analyticsConsentStatus] == &dword_4;
 
   return v3;
 }
 
-- (void)toggleShareAnalytics:(id)a3 specifier:(id)a4
+- (void)toggleShareAnalytics:(id)analytics specifier:(id)specifier
 {
-  v5 = a3;
-  if ([v5 BOOLValue])
+  analyticsCopy = analytics;
+  if ([analyticsCopy BOOLValue])
   {
     v6 = +[ENUIViewControllerFactory sharedInstance];
-    v7 = [(ENUIRegionDetailsViewController *)self model];
+    model = [(ENUIRegionDetailsViewController *)self model];
     v8 = +[_TtC28HealthExposureNotificationUI16ENManagerAdapter defaultAdapter];
     v17[0] = _NSConcreteStackBlock;
     v17[1] = 3221225472;
     v17[2] = sub_159C0;
     v17[3] = &unk_2D160;
     v17[4] = self;
-    v9 = [v6 createAnalyticsConsentStackForAgencyModel:v7 exposureManager:v8 completion:v17];
+    v9 = [v6 createAnalyticsConsentStackForAgencyModel:model exposureManager:v8 completion:v17];
 
-    v10 = [(ENUIRegionDetailsViewController *)self navigationController];
-    [v10 presentViewController:v9 animated:1 completion:0];
+    navigationController = [(ENUIRegionDetailsViewController *)self navigationController];
+    [navigationController presentViewController:v9 animated:1 completion:0];
   }
 
   else
   {
-    v11 = [(ENUIRegionDetailsViewController *)self model];
-    [v11 setAnalyticsConsentStatus:1];
+    model2 = [(ENUIRegionDetailsViewController *)self model];
+    [model2 setAnalyticsConsentStatus:1];
 
     v9 = +[_TtC28HealthExposureNotificationUI16ENManagerAdapter defaultAdapter];
-    v12 = [v5 BOOLValue];
-    v10 = [(ENUIRegionDetailsViewController *)self model];
-    v13 = [v10 region];
-    v14 = [(ENUIRegionDetailsViewController *)self model];
-    v15 = [v14 consentVersion];
+    bOOLValue = [analyticsCopy BOOLValue];
+    navigationController = [(ENUIRegionDetailsViewController *)self model];
+    region = [navigationController region];
+    model3 = [(ENUIRegionDetailsViewController *)self model];
+    consentVersion = [model3 consentVersion];
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
     v16[2] = sub_15A30;
     v16[3] = &unk_2CF40;
     v16[4] = self;
-    [v9 setShareAnalyticsEnabled:v12 region:v13 version:v15 completion:v16];
+    [v9 setShareAnalyticsEnabled:bOOLValue region:region version:consentVersion completion:v16];
   }
 }
 
 - (void)didTapLearnMore
 {
   v10 = [OBPrivacyPresenter presenterForPrivacySplashWithIdentifier:@"com.apple.onboarding.contacttracing"];
-  v3 = [v10 splashController];
-  [v3 setModalPresentationStyle:2];
+  splashController = [v10 splashController];
+  [splashController setModalPresentationStyle:2];
 
   v4 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:0 target:self action:"didTapDone"];
-  v5 = [v10 splashController];
-  v6 = [v5 navigationItem];
-  [v6 setRightBarButtonItem:v4];
+  splashController2 = [v10 splashController];
+  navigationItem = [splashController2 navigationItem];
+  [navigationItem setRightBarButtonItem:v4];
 
   v7 = [UINavigationController alloc];
-  v8 = [v10 splashController];
-  v9 = [v7 initWithRootViewController:v8];
+  splashController3 = [v10 splashController];
+  v9 = [v7 initWithRootViewController:splashController3];
 
   [(ENUIRegionDetailsViewController *)self presentViewController:v9 animated:1 completion:0];
 }

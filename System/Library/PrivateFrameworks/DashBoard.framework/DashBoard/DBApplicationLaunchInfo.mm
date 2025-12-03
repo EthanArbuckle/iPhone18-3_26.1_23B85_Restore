@@ -1,40 +1,40 @@
 @interface DBApplicationLaunchInfo
-+ (id)launchInfoForApplication:(id)a3;
-+ (id)launchInfoForApplication:(id)a3 withActivationSettings:(id)a4;
-- (DBApplicationLaunchInfo)initWithApplication:(id)a3 activationSettings:(id)a4;
++ (id)launchInfoForApplication:(id)application;
++ (id)launchInfoForApplication:(id)application withActivationSettings:(id)settings;
+- (DBApplicationLaunchInfo)initWithApplication:(id)application activationSettings:(id)settings;
 @end
 
 @implementation DBApplicationLaunchInfo
 
-+ (id)launchInfoForApplication:(id)a3
++ (id)launchInfoForApplication:(id)application
 {
-  v3 = a3;
-  v4 = [[DBApplicationLaunchInfo alloc] initWithApplication:v3 activationSettings:0];
+  applicationCopy = application;
+  v4 = [[DBApplicationLaunchInfo alloc] initWithApplication:applicationCopy activationSettings:0];
 
   return v4;
 }
 
-+ (id)launchInfoForApplication:(id)a3 withActivationSettings:(id)a4
++ (id)launchInfoForApplication:(id)application withActivationSettings:(id)settings
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[DBApplicationLaunchInfo alloc] initWithApplication:v6 activationSettings:v5];
+  settingsCopy = settings;
+  applicationCopy = application;
+  v7 = [[DBApplicationLaunchInfo alloc] initWithApplication:applicationCopy activationSettings:settingsCopy];
 
   return v7;
 }
 
-- (DBApplicationLaunchInfo)initWithApplication:(id)a3 activationSettings:(id)a4
+- (DBApplicationLaunchInfo)initWithApplication:(id)application activationSettings:(id)settings
 {
-  v7 = a3;
-  v8 = a4;
+  applicationCopy = application;
+  settingsCopy = settings;
   v12.receiver = self;
   v12.super_class = DBApplicationLaunchInfo;
   v9 = [(DBApplicationLaunchInfo *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_application, a3);
-    objc_storeStrong(&v10->_activationSettings, a4);
+    objc_storeStrong(&v9->_application, application);
+    objc_storeStrong(&v10->_activationSettings, settings);
   }
 
   return v10;

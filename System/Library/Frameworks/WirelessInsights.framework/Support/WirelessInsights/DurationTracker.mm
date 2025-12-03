@@ -1,8 +1,8 @@
 @interface DurationTracker
 - (DurationTracker)init;
-- (unint64_t)getTotalDurationAndResetAtTimestamp:(unint64_t)a3;
-- (void)hasBecomeActiveAtTimestamp:(unint64_t)a3;
-- (void)hasBecomeInactiveAtTimestamp:(unint64_t)a3;
+- (unint64_t)getTotalDurationAndResetAtTimestamp:(unint64_t)timestamp;
+- (void)hasBecomeActiveAtTimestamp:(unint64_t)timestamp;
+- (void)hasBecomeInactiveAtTimestamp:(unint64_t)timestamp;
 @end
 
 @implementation DurationTracker
@@ -23,7 +23,7 @@
   return v3;
 }
 
-- (void)hasBecomeActiveAtTimestamp:(unint64_t)a3
+- (void)hasBecomeActiveAtTimestamp:(unint64_t)timestamp
 {
   if ([(DurationTracker *)self startTimestamp])
   {
@@ -36,17 +36,17 @@
   else
   {
 
-    [(DurationTracker *)self setStartTimestamp:a3];
+    [(DurationTracker *)self setStartTimestamp:timestamp];
   }
 }
 
-- (void)hasBecomeInactiveAtTimestamp:(unint64_t)a3
+- (void)hasBecomeInactiveAtTimestamp:(unint64_t)timestamp
 {
-  v5 = [(DurationTracker *)self startTimestamp];
-  if (v5)
+  startTimestamp = [(DurationTracker *)self startTimestamp];
+  if (startTimestamp)
   {
-    v6 = a3 >= v5;
-    v7 = a3 - v5;
+    v6 = timestamp >= startTimestamp;
+    v7 = timestamp - startTimestamp;
     if (v6)
     {
       [(DurationTracker *)self setTotalDuration:[(DurationTracker *)self totalDuration]+ v7];
@@ -66,17 +66,17 @@
   }
 }
 
-- (unint64_t)getTotalDurationAndResetAtTimestamp:(unint64_t)a3
+- (unint64_t)getTotalDurationAndResetAtTimestamp:(unint64_t)timestamp
 {
-  v5 = [(DurationTracker *)self startTimestamp];
-  v6 = [(DurationTracker *)self totalDuration];
+  startTimestamp = [(DurationTracker *)self startTimestamp];
+  totalDuration = [(DurationTracker *)self totalDuration];
   [(DurationTracker *)self setTotalDuration:0];
-  if (v5)
+  if (startTimestamp)
   {
-    [(DurationTracker *)self setStartTimestamp:a3];
-    if (a3 >= v5)
+    [(DurationTracker *)self setStartTimestamp:timestamp];
+    if (timestamp >= startTimestamp)
     {
-      v6 += a3 - v5;
+      totalDuration += timestamp - startTimestamp;
     }
 
     else if (os_log_type_enabled(*(qword_1002DBE98 + 48), OS_LOG_TYPE_ERROR))
@@ -85,7 +85,7 @@
     }
   }
 
-  return v6;
+  return totalDuration;
 }
 
 @end

@@ -1,32 +1,32 @@
 @interface PowerUIMLPhonePredictor
-- (id)getInputFeatures:(double)a3 events:(id)a4 pluginBatteryLevel:(unint64_t)a5 timeFromPlugin:(double)a6 pluginDate:(id)a7 withLog:(id)a8;
-- (id)getMultiArrayForFeatureDict:(id)a3;
+- (id)getInputFeatures:(double)features events:(id)events pluginBatteryLevel:(unint64_t)level timeFromPlugin:(double)plugin pluginDate:(id)date withLog:(id)log;
+- (id)getMultiArrayForFeatureDict:(id)dict;
 @end
 
 @implementation PowerUIMLPhonePredictor
 
-- (id)getInputFeatures:(double)a3 events:(id)a4 pluginBatteryLevel:(unint64_t)a5 timeFromPlugin:(double)a6 pluginDate:(id)a7 withLog:(id)a8
+- (id)getInputFeatures:(double)features events:(id)events pluginBatteryLevel:(unint64_t)level timeFromPlugin:(double)plugin pluginDate:(id)date withLog:(id)log
 {
   v164 = *MEMORY[0x277D85DE8];
-  v10 = a7;
-  v117 = a8;
-  v11 = a4;
-  v12 = [PowerUIPredictorHelper filterEventsSortedByStartDateAscending:v11 startsBefore:v10 dynamicallyAroundDate:v10 withHourBinWidth:1];
-  v13 = [PowerUIPredictorHelper filterEventsSortedByStartDateAscending:v11 startsBefore:v10 dynamicallyAroundDate:v10 withHourBinWidth:2];
-  v14 = [PowerUIPredictorHelper filterEventsSortedByStartDateAscending:v11 startsBefore:v10 dynamicallyAroundDate:v10 withHourBinWidth:4];
-  v15 = [PowerUIPredictorHelper filterEventsSortedByStartDateAscending:v11 startsBefore:v10 dynamicallyAroundDate:v10 withHourBinWidth:8];
-  v16 = [PowerUIPredictorHelper filterEventsSortedByStartDateAscending:v11 startsBefore:v10 dynamicallyAroundDate:v10 withHourBinWidth:16];
-  v17 = [PowerUIPredictorHelper filterEventsSortedByStartDateAscending:v11 startsBefore:v10 dynamicallyAroundDate:v10 withHourBinWidth:24];
+  dateCopy = date;
+  logCopy = log;
+  eventsCopy = events;
+  v12 = [PowerUIPredictorHelper filterEventsSortedByStartDateAscending:eventsCopy startsBefore:dateCopy dynamicallyAroundDate:dateCopy withHourBinWidth:1];
+  v13 = [PowerUIPredictorHelper filterEventsSortedByStartDateAscending:eventsCopy startsBefore:dateCopy dynamicallyAroundDate:dateCopy withHourBinWidth:2];
+  v14 = [PowerUIPredictorHelper filterEventsSortedByStartDateAscending:eventsCopy startsBefore:dateCopy dynamicallyAroundDate:dateCopy withHourBinWidth:4];
+  v15 = [PowerUIPredictorHelper filterEventsSortedByStartDateAscending:eventsCopy startsBefore:dateCopy dynamicallyAroundDate:dateCopy withHourBinWidth:8];
+  v16 = [PowerUIPredictorHelper filterEventsSortedByStartDateAscending:eventsCopy startsBefore:dateCopy dynamicallyAroundDate:dateCopy withHourBinWidth:16];
+  v17 = [PowerUIPredictorHelper filterEventsSortedByStartDateAscending:eventsCopy startsBefore:dateCopy dynamicallyAroundDate:dateCopy withHourBinWidth:24];
 
-  v18 = [PowerUIPredictorHelper filterEvents:v12 startOnSameWeekdayAs:v10];
+  v18 = [PowerUIPredictorHelper filterEvents:v12 startOnSameWeekdayAs:dateCopy];
   v144 = v13;
-  v148 = [PowerUIPredictorHelper filterEvents:v13 startOnSameWeekdayAs:v10];
+  v148 = [PowerUIPredictorHelper filterEvents:v13 startOnSameWeekdayAs:dateCopy];
   v19 = v14;
   v116 = v14;
-  v20 = [PowerUIPredictorHelper filterEvents:v14 startOnSameWeekdayAs:v10];
-  v147 = [PowerUIPredictorHelper filterEvents:v15 startOnSameWeekdayAs:v10];
-  v128 = v10;
-  v146 = [PowerUIPredictorHelper filterEvents:v17 startOnSameWeekdayAs:v10];
+  v20 = [PowerUIPredictorHelper filterEvents:v14 startOnSameWeekdayAs:dateCopy];
+  v147 = [PowerUIPredictorHelper filterEvents:v15 startOnSameWeekdayAs:dateCopy];
+  v128 = dateCopy;
+  v146 = [PowerUIPredictorHelper filterEvents:v17 startOnSameWeekdayAs:dateCopy];
   v145 = v12;
   v21 = [PowerUIPredictorHelper getDurationsFromEvents:v12 withUnit:3600.0 cappedAt:0.0];
   v22 = [PowerUIPredictorHelper getDurationsFromEvents:v13 withUnit:3600.0 cappedAt:0.0];
@@ -90,12 +90,12 @@
   v119 = v29;
   [PowerUIPredictorHelper medianOf:v29];
   v57 = v56;
-  v58 = v117;
+  v58 = logCopy;
   if (os_log_type_enabled(v58, OS_LOG_TYPE_DEFAULT))
   {
-    v59 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a5];
-    v60 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
-    v61 = [MEMORY[0x277CCABB0] numberWithDouble:a6];
+    v59 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:level];
+    v60 = [MEMORY[0x277CCABB0] numberWithDouble:features];
+    v61 = [MEMORY[0x277CCABB0] numberWithDouble:plugin];
     *buf = 138412802;
     v159 = *&v59;
     v160 = 2112;
@@ -277,93 +277,93 @@
     _os_log_impl(&dword_21B766000, v72, OS_LOG_TYPE_DEFAULT, "Model inputs for weekday24: weekday_med_dur_24: %lf", buf, 0xCu);
   }
 
-  v74 = [MEMORY[0x277CBEB38] dictionary];
-  v75 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a5];
-  [v74 setObject:v75 forKeyedSubscript:@"plugin_battery_level"];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v75 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:level];
+  [dictionary setObject:v75 forKeyedSubscript:@"plugin_battery_level"];
 
-  v76 = [MEMORY[0x277CCABB0] numberWithDouble:a6];
-  [v74 setObject:v76 forKeyedSubscript:@"time_from_plugin"];
+  v76 = [MEMORY[0x277CCABB0] numberWithDouble:plugin];
+  [dictionary setObject:v76 forKeyedSubscript:@"time_from_plugin"];
 
   v77 = [MEMORY[0x277CCABB0] numberWithDouble:v42];
-  [v74 setObject:v77 forKeyedSubscript:@"med_dur_1"];
+  [dictionary setObject:v77 forKeyedSubscript:@"med_dur_1"];
 
   v78 = [MEMORY[0x277CCABB0] numberWithDouble:v131];
-  [v74 setObject:v78 forKeyedSubscript:@"med_dur_2"];
+  [dictionary setObject:v78 forKeyedSubscript:@"med_dur_2"];
 
   v79 = [MEMORY[0x277CCABB0] numberWithDouble:v132];
-  [v74 setObject:v79 forKeyedSubscript:@"med_dur_4"];
+  [dictionary setObject:v79 forKeyedSubscript:@"med_dur_4"];
 
   v80 = [MEMORY[0x277CCABB0] numberWithDouble:v133];
-  [v74 setObject:v80 forKeyedSubscript:@"med_dur_8"];
+  [dictionary setObject:v80 forKeyedSubscript:@"med_dur_8"];
 
   v81 = [MEMORY[0x277CCABB0] numberWithDouble:v134];
-  [v74 setObject:v81 forKeyedSubscript:@"med_dur_16"];
+  [dictionary setObject:v81 forKeyedSubscript:@"med_dur_16"];
 
   v82 = [MEMORY[0x277CCABB0] numberWithDouble:v135];
-  [v74 setObject:v82 forKeyedSubscript:@"med_dur_24"];
+  [dictionary setObject:v82 forKeyedSubscript:@"med_dur_24"];
 
   v83 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v145, "count")}];
-  [v74 setObject:v83 forKeyedSubscript:@"cnt_dur_1"];
+  [dictionary setObject:v83 forKeyedSubscript:@"cnt_dur_1"];
 
   v84 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v144, "count")}];
-  [v74 setObject:v84 forKeyedSubscript:@"cnt_dur_2"];
+  [dictionary setObject:v84 forKeyedSubscript:@"cnt_dur_2"];
 
   v85 = v45;
   v86 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v45, "count")}];
-  [v74 setObject:v86 forKeyedSubscript:@"cnt_dur_4"];
+  [dictionary setObject:v86 forKeyedSubscript:@"cnt_dur_4"];
 
   v87 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v151, "count")}];
-  [v74 setObject:v87 forKeyedSubscript:@"cnt_dur_8"];
+  [dictionary setObject:v87 forKeyedSubscript:@"cnt_dur_8"];
 
   v88 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v150, "count")}];
-  [v74 setObject:v88 forKeyedSubscript:@"cnt_dur_16"];
+  [dictionary setObject:v88 forKeyedSubscript:@"cnt_dur_16"];
 
   v89 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v149, "count")}];
-  [v74 setObject:v89 forKeyedSubscript:@"cnt_dur_24"];
+  [dictionary setObject:v89 forKeyedSubscript:@"cnt_dur_24"];
 
   v90 = [MEMORY[0x277CCABB0] numberWithDouble:v136];
-  [v74 setObject:v90 forKeyedSubscript:@"std_dur_1"];
+  [dictionary setObject:v90 forKeyedSubscript:@"std_dur_1"];
 
   v91 = [MEMORY[0x277CCABB0] numberWithDouble:v137];
-  [v74 setObject:v91 forKeyedSubscript:@"std_dur_2"];
+  [dictionary setObject:v91 forKeyedSubscript:@"std_dur_2"];
 
   v92 = [MEMORY[0x277CCABB0] numberWithDouble:v140];
-  [v74 setObject:v92 forKeyedSubscript:@"std_dur_4"];
+  [dictionary setObject:v92 forKeyedSubscript:@"std_dur_4"];
 
   v93 = [MEMORY[0x277CCABB0] numberWithDouble:v34];
-  [v74 setObject:v93 forKeyedSubscript:@"std_dur_8"];
+  [dictionary setObject:v93 forKeyedSubscript:@"std_dur_8"];
 
   v94 = [MEMORY[0x277CCABB0] numberWithDouble:v36];
-  [v74 setObject:v94 forKeyedSubscript:@"std_dur_16"];
+  [dictionary setObject:v94 forKeyedSubscript:@"std_dur_16"];
 
   v95 = [MEMORY[0x277CCABB0] numberWithDouble:v38];
-  [v74 setObject:v95 forKeyedSubscript:@"std_dur_24"];
+  [dictionary setObject:v95 forKeyedSubscript:@"std_dur_24"];
 
   v96 = [MEMORY[0x277CCABB0] numberWithDouble:v139];
-  [v74 setObject:v96 forKeyedSubscript:@"weekday_med_dur_1"];
+  [dictionary setObject:v96 forKeyedSubscript:@"weekday_med_dur_1"];
 
   v97 = [MEMORY[0x277CCABB0] numberWithDouble:v141];
-  [v74 setObject:v97 forKeyedSubscript:@"weekday_med_dur_2"];
+  [dictionary setObject:v97 forKeyedSubscript:@"weekday_med_dur_2"];
 
   v98 = [MEMORY[0x277CCABB0] numberWithDouble:v53];
-  [v74 setObject:v98 forKeyedSubscript:@"weekday_med_dur_4"];
+  [dictionary setObject:v98 forKeyedSubscript:@"weekday_med_dur_4"];
 
   v99 = [MEMORY[0x277CCABB0] numberWithDouble:v55];
-  [v74 setObject:v99 forKeyedSubscript:@"weekday_med_dur_8"];
+  [dictionary setObject:v99 forKeyedSubscript:@"weekday_med_dur_8"];
 
   v100 = [MEMORY[0x277CCABB0] numberWithDouble:v57];
-  [v74 setObject:v100 forKeyedSubscript:@"weekday_med_dur_24"];
+  [dictionary setObject:v100 forKeyedSubscript:@"weekday_med_dur_24"];
 
   v101 = [MEMORY[0x277CCABB0] numberWithDouble:v40];
-  [v74 setObject:v101 forKeyedSubscript:@"weekday_std_dur_4"];
+  [dictionary setObject:v101 forKeyedSubscript:@"weekday_std_dur_4"];
 
-  v102 = [objc_alloc(MEMORY[0x277CBFED0]) initWithDictionary:v74 error:0];
+  v102 = [objc_alloc(MEMORY[0x277CBFED0]) initWithDictionary:dictionary error:0];
   [v128 timeIntervalSince1970];
   v104 = floor(v103);
   v156[0] = @"pluginDateAsInterval";
   v105 = [MEMORY[0x277CCABB0] numberWithDouble:v104];
   v157[0] = v105;
-  v157[1] = v74;
+  v157[1] = dictionary;
   v156[1] = @"features";
   v156[2] = @"dataVersion";
   v157[2] = &unk_282D4E140;
@@ -408,11 +408,11 @@
   return v102;
 }
 
-- (id)getMultiArrayForFeatureDict:(id)a3
+- (id)getMultiArrayForFeatureDict:(id)dict
 {
   v32 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB18] array];
+  dictCopy = dict;
+  array = [MEMORY[0x277CBEB18] array];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
@@ -424,7 +424,7 @@
   }
 
   v7 = v5;
-  v8 = v4;
+  v8 = array;
   v21 = 0;
   v9 = *v26;
   *&v6 = 138412290;
@@ -440,7 +440,7 @@
 
       v11 = *(*(&v25 + 1) + 8 * i);
       v12 = MEMORY[0x277CCABB0];
-      v13 = [v3 objectForKeyedSubscript:{v11, v20}];
+      v13 = [dictCopy objectForKeyedSubscript:{v11, v20}];
       [v13 doubleValue];
       v14 = [v12 numberWithDouble:?];
 
@@ -469,7 +469,7 @@
   }
 
   while (v7);
-  v4 = v8;
+  array = v8;
   if (v21)
   {
     v16 = 0;
@@ -478,7 +478,7 @@
   else
   {
 LABEL_15:
-    v17 = [MEMORY[0x277CBEA60] arrayWithArray:v4];
+    v17 = [MEMORY[0x277CBEA60] arrayWithArray:array];
     v23.receiver = self;
     v23.super_class = PowerUIMLPhonePredictor;
     v16 = [(PowerUIMLTwoStageModelPredictor *)&v23 arrayWithShape:&unk_282D4EA28 values:v17 type:65568];

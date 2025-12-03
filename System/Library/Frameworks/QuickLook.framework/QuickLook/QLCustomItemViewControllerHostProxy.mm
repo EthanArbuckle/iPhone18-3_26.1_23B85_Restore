@@ -1,33 +1,33 @@
 @interface QLCustomItemViewControllerHostProxy
 - (QLCustomItemViewControllerHost)delegate;
 - (void)dismissQuickLook;
-- (void)forwardMessageToHostOfCustomViewController:(id)a3 completionHandler:(id)a4;
-- (void)presentShareSheetWithPopoverTracker:(id)a3 customSharedURL:(id)a4 dismissCompletion:(id)a5;
+- (void)forwardMessageToHostOfCustomViewController:(id)controller completionHandler:(id)handler;
+- (void)presentShareSheetWithPopoverTracker:(id)tracker customSharedURL:(id)l dismissCompletion:(id)completion;
 @end
 
 @implementation QLCustomItemViewControllerHostProxy
 
-- (void)presentShareSheetWithPopoverTracker:(id)a3 customSharedURL:(id)a4 dismissCompletion:(id)a5
+- (void)presentShareSheetWithPopoverTracker:(id)tracker customSharedURL:(id)l dismissCompletion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(QLCustomItemViewControllerHostProxy *)self delegate];
-  [v11 presentShareSheetWithPopoverTracker:v10 customSharedURL:v9 dismissCompletion:v8];
+  completionCopy = completion;
+  lCopy = l;
+  trackerCopy = tracker;
+  delegate = [(QLCustomItemViewControllerHostProxy *)self delegate];
+  [delegate presentShareSheetWithPopoverTracker:trackerCopy customSharedURL:lCopy dismissCompletion:completionCopy];
 }
 
 - (void)dismissQuickLook
 {
-  v2 = [(QLCustomItemViewControllerHostProxy *)self delegate];
-  [v2 dismissQuickLook];
+  delegate = [(QLCustomItemViewControllerHostProxy *)self delegate];
+  [delegate dismissQuickLook];
 }
 
-- (void)forwardMessageToHostOfCustomViewController:(id)a3 completionHandler:(id)a4
+- (void)forwardMessageToHostOfCustomViewController:(id)controller completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(QLCustomItemViewControllerHostProxy *)self delegate];
-  [v8 forwardMessageToHostOfCustomViewController:v7 completionHandler:v6];
+  handlerCopy = handler;
+  controllerCopy = controller;
+  delegate = [(QLCustomItemViewControllerHostProxy *)self delegate];
+  [delegate forwardMessageToHostOfCustomViewController:controllerCopy completionHandler:handlerCopy];
 }
 
 - (QLCustomItemViewControllerHost)delegate

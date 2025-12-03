@@ -1,17 +1,17 @@
 @interface PGAssetPhotoLibraryFeatureValidator
-- (int64_t)isValidEntity:(id)a3 error:(id *)a4;
+- (int64_t)isValidEntity:(id)entity error:(id *)error;
 @end
 
 @implementation PGAssetPhotoLibraryFeatureValidator
 
-- (int64_t)isValidEntity:(id)a3 error:(id *)a4
+- (int64_t)isValidEntity:(id)entity error:(id *)error
 {
-  v6 = a3;
+  entityCopy = entity;
   v7 = [PGFeatureExtractorAssetPhotoLibrary alloc];
-  v8 = [(PGFeatureValidator *)self featureExtractor];
-  v9 = [(PGFeatureExtractorAssetPhotoLibrary *)v7 initWithPhotoLibraryFeatureExtractor:v8];
+  featureExtractor = [(PGFeatureValidator *)self featureExtractor];
+  v9 = [(PGFeatureExtractorAssetPhotoLibrary *)v7 initWithPhotoLibraryFeatureExtractor:featureExtractor];
 
-  v10 = [(PGFeatureValidator *)self _isValidEntity:v6 featureExtractor:v9 error:a4];
+  v10 = [(PGFeatureValidator *)self _isValidEntity:entityCopy featureExtractor:v9 error:error];
   return v10;
 }
 

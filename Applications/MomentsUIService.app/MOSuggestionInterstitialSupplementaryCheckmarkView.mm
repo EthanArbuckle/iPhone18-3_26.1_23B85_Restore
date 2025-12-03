@@ -1,10 +1,10 @@
 @interface MOSuggestionInterstitialSupplementaryCheckmarkView
-- (_TtC16MomentsUIService50MOSuggestionInterstitialSupplementaryCheckmarkView)initWithCoder:(id)a3;
+- (_TtC16MomentsUIService50MOSuggestionInterstitialSupplementaryCheckmarkView)initWithCoder:(id)coder;
 @end
 
 @implementation MOSuggestionInterstitialSupplementaryCheckmarkView
 
-- (_TtC16MomentsUIService50MOSuggestionInterstitialSupplementaryCheckmarkView)initWithCoder:(id)a3
+- (_TtC16MomentsUIService50MOSuggestionInterstitialSupplementaryCheckmarkView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC16MomentsUIService50MOSuggestionInterstitialSupplementaryCheckmarkView_checkmarkView;
   *(&self->super.super.super.super.isa + v4) = [objc_allocWithZone(type metadata accessor for MOSuggestionInterstitialCarouselCheckMarkView()) initWithFrame:{0.0, 0.0, 23.0, 23.0}];

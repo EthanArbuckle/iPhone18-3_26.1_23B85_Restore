@@ -11,29 +11,29 @@
 
 - (id)hf_networkConfigurationProfiles
 {
-  v1 = [a1 accessories];
-  v2 = [v1 na_flatMap:&__block_literal_global_64];
+  accessories = [self accessories];
+  v2 = [accessories na_flatMap:&__block_literal_global_64];
 
   return v2;
 }
 
 - (id)hf_home
 {
-  v1 = [a1 accessories];
-  v2 = [v1 firstObject];
-  v3 = [v2 home];
+  accessories = [self accessories];
+  firstObject = [accessories firstObject];
+  home = [firstObject home];
 
-  return v3;
+  return home;
 }
 
 - (id)hf_title
 {
-  v2 = [a1 manufacturer];
+  manufacturer = [self manufacturer];
   v3 = MEMORY[0x277CD1650];
-  v4 = [a1 category];
-  v5 = [v4 categoryType];
-  v14 = [v3 hf_userFriendlyLocalizedCapitalizedDescription:v5];
-  v12 = HFLocalizedStringWithFormat(@"HFNetworkProtectionTitleFormat", @"%@ %@", v6, v7, v8, v9, v10, v11, v2);
+  category = [self category];
+  categoryType = [category categoryType];
+  v14 = [v3 hf_userFriendlyLocalizedCapitalizedDescription:categoryType];
+  v12 = HFLocalizedStringWithFormat(@"HFNetworkProtectionTitleFormat", @"%@ %@", v6, v7, v8, v9, v10, v11, manufacturer);
 
   return v12;
 }
@@ -41,8 +41,8 @@
 - (uint64_t)hf_displayCurrentProtectionMode
 {
   v22 = *MEMORY[0x277D85DE8];
-  v2 = [a1 hf_networkConfigurationProfiles];
-  v3 = [v2 na_map:&__block_literal_global_14_1];
+  hf_networkConfigurationProfiles = [self hf_networkConfigurationProfiles];
+  v3 = [hf_networkConfigurationProfiles na_map:&__block_literal_global_14_1];
 
   v17 = 0u;
   v18 = 0u;
@@ -65,7 +65,7 @@
         v8 = *(*(&v15 + 1) + 8 * i);
         if ([v3 containsObject:v8])
         {
-          v12 = [v8 unsignedIntegerValue];
+          unsignedIntegerValue = [v8 unsignedIntegerValue];
           goto LABEL_13;
         }
       }
@@ -84,17 +84,17 @@
   if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412290;
-    v20 = a1;
+    selfCopy = self;
     _os_log_error_impl(&dword_20D9BF000, v9, OS_LOG_TYPE_ERROR, "Invalid current protection mode for group %@", buf, 0xCu);
   }
 
-  v10 = [a1 hf_networkConfigurationProfiles];
-  v11 = [v10 firstObject];
-  v12 = [v11 currentProtectionMode];
+  hf_networkConfigurationProfiles2 = [self hf_networkConfigurationProfiles];
+  firstObject = [hf_networkConfigurationProfiles2 firstObject];
+  unsignedIntegerValue = [firstObject currentProtectionMode];
 
 LABEL_13:
   v13 = *MEMORY[0x277D85DE8];
-  return v12;
+  return unsignedIntegerValue;
 }
 
 - (id)hf_updateProtectionMode:()HFAdditions
@@ -123,8 +123,8 @@ LABEL_13:
   v9[4] = a3;
   v4 = [a4 na_map:v9];
   v5 = MEMORY[0x277D2C900];
-  v6 = [v4 allObjects];
-  v7 = [v5 combineAllFutures:v6];
+  allObjects = [v4 allObjects];
+  v7 = [v5 combineAllFutures:allObjects];
 
   return v7;
 }

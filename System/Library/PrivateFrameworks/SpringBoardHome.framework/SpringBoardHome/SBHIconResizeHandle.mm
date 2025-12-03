@@ -1,34 +1,34 @@
 @interface SBHIconResizeHandle
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3;
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key;
 - (BOOL)isResizing;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (SBHIconResizeHandle)initWithCoder:(id)a3;
-- (SBHIconResizeHandle)initWithFrame:(CGRect)a3;
-- (SBHIconResizeHandle)initWithMetrics:(SBIconResizeHandleMetrics *)a3 iconImageInfo:(SBIconImageInfo *)a4 backgroundView:(id)a5;
-- (SBHIconResizeHandle)initWithMetrics:(SBIconResizeHandleMetrics *)a3 iconImageInfo:(SBIconImageInfo *)a4 backgroundView:(id)a5 material:(int64_t)a6;
-- (SBHIconResizeHandle)initWithMetrics:(SBIconResizeHandleMetrics *)a3 iconImageInfo:(SBIconImageInfo *)a4 material:(int64_t)a5;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (SBHIconResizeHandle)initWithCoder:(id)coder;
+- (SBHIconResizeHandle)initWithFrame:(CGRect)frame;
+- (SBHIconResizeHandle)initWithMetrics:(SBIconResizeHandleMetrics *)metrics iconImageInfo:(SBIconImageInfo *)info backgroundView:(id)view;
+- (SBHIconResizeHandle)initWithMetrics:(SBIconResizeHandleMetrics *)metrics iconImageInfo:(SBIconImageInfo *)info backgroundView:(id)view material:(int64_t)material;
+- (SBHIconResizeHandle)initWithMetrics:(SBIconResizeHandleMetrics *)metrics iconImageInfo:(SBIconImageInfo *)info material:(int64_t)material;
 - (SBIconImageInfo)iconImageInfo;
 - (SBIconResizeHandleMetrics)metrics;
 - (const)shapePath;
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4;
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region;
 - (void)layoutSubviews;
-- (void)setDarkStyle:(BOOL)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setResizing:(BOOL)a3;
-- (void)setResizingGestureRecognizer:(id)a3;
-- (void)setShapeLayer:(id)a3;
-- (void)set_isResizing:(BOOL)a3;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
+- (void)setDarkStyle:(BOOL)style;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setResizing:(BOOL)resizing;
+- (void)setResizingGestureRecognizer:(id)recognizer;
+- (void)setShapeLayer:(id)layer;
+- (void)set_isResizing:(BOOL)resizing;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
 @end
 
 @implementation SBHIconResizeHandle
 
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region
 {
   v5 = objc_alloc_init(MEMORY[0x1E69DCE28]);
-  v6 = [(SBHIconResizeHandle *)self shapePath];
-  v7 = [MEMORY[0x1E69DC728] bezierPathWithCGPath:v6];
+  shapePath = [(SBHIconResizeHandle *)self shapePath];
+  v7 = [MEMORY[0x1E69DC728] bezierPathWithCGPath:shapePath];
   [v5 setShadowPath:v7];
   v8 = [objc_alloc(MEMORY[0x1E69DD070]) initWithView:self parameters:v5];
   v9 = [MEMORY[0x1E69DCDB8] effectWithPreview:v8];
@@ -76,7 +76,7 @@
   }
 }
 
-- (void)setResizingGestureRecognizer:(id)a3
+- (void)setResizingGestureRecognizer:(id)recognizer
 {
   sub_1BEE4720C();
   sub_1BEE471FC();
@@ -88,26 +88,26 @@
 
   v4 = OBJC_IVAR___SBHIconResizeHandle_resizingGestureRecognizer;
   v5 = *(&self->super.super.super.isa + OBJC_IVAR___SBHIconResizeHandle_resizingGestureRecognizer);
-  v6 = a3;
+  recognizerCopy = recognizer;
   if (v5)
   {
     [(SBHIconResizeHandle *)self removeGestureRecognizer:v5];
-    v7 = self;
+    selfCopy3 = self;
     v5 = *(&self->super.super.super.isa + v4);
   }
 
   else
   {
-    v8 = self;
-    v7 = self;
+    selfCopy2 = self;
+    selfCopy3 = self;
   }
 
-  *(&v7->super.super.super.isa + v4) = a3;
-  v9 = a3;
+  *(&selfCopy3->super.super.super.isa + v4) = recognizer;
+  recognizerCopy2 = recognizer;
 
-  if (v9)
+  if (recognizerCopy2)
   {
-    [(SBHIconResizeHandle *)self addGestureRecognizer:v9];
+    [(SBHIconResizeHandle *)self addGestureRecognizer:recognizerCopy2];
   }
 
   else
@@ -115,18 +115,18 @@
   }
 }
 
-- (SBHIconResizeHandle)initWithMetrics:(SBIconResizeHandleMetrics *)a3 iconImageInfo:(SBIconImageInfo *)a4 material:(int64_t)a5
+- (SBHIconResizeHandle)initWithMetrics:(SBIconResizeHandleMetrics *)metrics iconImageInfo:(SBIconImageInfo *)info material:(int64_t)material
 {
   v10 = v8;
   v11 = v7;
   v12 = v6;
   v13 = v5;
-  v21 = *&a3->var2;
-  v22 = *&a3->var0;
-  var4 = a3->var4;
-  var5 = a3->var5;
-  v19 = *&a3->var6.bottom;
-  v20 = *&a3->var6.top;
+  v21 = *&metrics->var2;
+  v22 = *&metrics->var0;
+  var4 = metrics->var4;
+  var5 = metrics->var5;
+  v19 = *&metrics->var6.bottom;
+  v20 = *&metrics->var6.top;
   sub_1BEE4720C();
   sub_1BEE471FC();
   sub_1BEE471EC();
@@ -141,23 +141,23 @@
   v25 = var5;
   v26 = v20;
   v27 = v19;
-  v17 = [(SBHIconResizeHandle *)self initWithMetrics:v23 iconImageInfo:0 backgroundView:a4 material:v13, v12, v11, v10, v19, v20, v21, v22];
+  v17 = [(SBHIconResizeHandle *)self initWithMetrics:v23 iconImageInfo:0 backgroundView:info material:v13, v12, v11, v10, v19, v20, v21, v22];
 
   return v17;
 }
 
-- (SBHIconResizeHandle)initWithMetrics:(SBIconResizeHandleMetrics *)a3 iconImageInfo:(SBIconImageInfo *)a4 backgroundView:(id)a5
+- (SBHIconResizeHandle)initWithMetrics:(SBIconResizeHandleMetrics *)metrics iconImageInfo:(SBIconImageInfo *)info backgroundView:(id)view
 {
   v10 = v8;
   v11 = v7;
   v12 = v6;
   v13 = v5;
-  v21 = *&a3->var2;
-  v22 = *&a3->var0;
-  var4 = a3->var4;
-  var5 = a3->var5;
-  v19 = *&a3->var6.bottom;
-  v20 = *&a3->var6.top;
+  v21 = *&metrics->var2;
+  v22 = *&metrics->var0;
+  var4 = metrics->var4;
+  var5 = metrics->var5;
+  v19 = *&metrics->var6.bottom;
+  v20 = *&metrics->var6.top;
   sub_1BEE4720C();
   sub_1BEE471FC();
   sub_1BEE471EC();
@@ -172,26 +172,26 @@
   v25 = var5;
   v26 = v20;
   v27 = v19;
-  v17 = [(SBHIconResizeHandle *)self initWithMetrics:v23 iconImageInfo:a4 backgroundView:0 material:v13, v12, v11, v10, v19, v20, v21, v22];
+  v17 = [(SBHIconResizeHandle *)self initWithMetrics:v23 iconImageInfo:info backgroundView:0 material:v13, v12, v11, v10, v19, v20, v21, v22];
 
   return v17;
 }
 
-- (SBHIconResizeHandle)initWithMetrics:(SBIconResizeHandleMetrics *)a3 iconImageInfo:(SBIconImageInfo *)a4 backgroundView:(id)a5 material:(int64_t)a6
+- (SBHIconResizeHandle)initWithMetrics:(SBIconResizeHandleMetrics *)metrics iconImageInfo:(SBIconImageInfo *)info backgroundView:(id)view material:(int64_t)material
 {
   v12 = v9;
   v13 = v8;
   v14 = v7;
   v15 = v6;
-  var4 = a3->var4;
-  var5 = a3->var5;
-  v18 = *&a3->var2;
-  v23[0] = *&a3->var0;
+  var4 = metrics->var4;
+  var5 = metrics->var5;
+  v18 = *&metrics->var2;
+  v23[0] = *&metrics->var0;
   v23[1] = v18;
   v24 = var4;
   v25 = var5;
-  v19 = *&a3->var6.bottom;
-  v26 = *&a3->var6.top;
+  v19 = *&metrics->var6.bottom;
+  v26 = *&metrics->var6.top;
   v27 = v19;
   sub_1BEE4720C();
   sub_1BEE471FC();
@@ -201,13 +201,13 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v20 = a4;
-  v21 = sub_1BEDD0B38(v23, a4, a5, v15, v14, v13, v12);
+  infoCopy = info;
+  v21 = sub_1BEDD0B38(v23, info, view, v15, v14, v13, v12);
 
   return v21;
 }
 
-- (SBHIconResizeHandle)initWithCoder:(id)a3
+- (SBHIconResizeHandle)initWithCoder:(id)coder
 {
   sub_1BEE4720C();
   sub_1BEE471FC();
@@ -230,11 +230,11 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v3 = self;
+  selfCopy = self;
   SBHIconResizeHandle.layoutSubviews()();
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   sub_1BEE4720C();
   sub_1BEE471FC();
@@ -254,7 +254,7 @@
   return result;
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
   sub_1BEE4720C();
   sub_1BEE471FC();
@@ -265,12 +265,12 @@
   }
 
   v5 = *(&self->super.super.super.isa + OBJC_IVAR___SBHIconResizeHandle_isHighlighted);
-  *(&self->super.super.super.isa + OBJC_IVAR___SBHIconResizeHandle_isHighlighted) = a3;
-  v6 = self;
+  *(&self->super.super.super.isa + OBJC_IVAR___SBHIconResizeHandle_isHighlighted) = highlighted;
+  selfCopy = self;
   sub_1BEDD21D4(v5);
 }
 
-- (void)set_isResizing:(BOOL)a3
+- (void)set_isResizing:(BOOL)resizing
 {
   sub_1BEE4720C();
   sub_1BEE471FC();
@@ -280,7 +280,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  *(&self->super.super.super.isa + OBJC_IVAR___SBHIconResizeHandle__isResizing) = a3;
+  *(&self->super.super.super.isa + OBJC_IVAR___SBHIconResizeHandle__isResizing) = resizing;
 }
 
 - (BOOL)isResizing
@@ -293,14 +293,14 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v3 = [(SBHIconResizeHandle *)self _isResizing];
+  _isResizing = [(SBHIconResizeHandle *)self _isResizing];
 
-  return v3;
+  return _isResizing;
 }
 
-- (void)setResizing:(BOOL)a3
+- (void)setResizing:(BOOL)resizing
 {
-  v3 = a3;
+  resizingCopy = resizing;
   sub_1BEE4720C();
   sub_1BEE471FC();
   sub_1BEE471EC();
@@ -309,12 +309,12 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  [(SBHIconResizeHandle *)self set_isResizing:v3];
+  [(SBHIconResizeHandle *)self set_isResizing:resizingCopy];
 }
 
-- (void)setDarkStyle:(BOOL)a3
+- (void)setDarkStyle:(BOOL)style
 {
-  v3 = a3;
+  styleCopy = style;
   sub_1BEE4720C();
   sub_1BEE471FC();
   sub_1BEE471EC();
@@ -323,12 +323,12 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  *(&self->super.super.super.isa + OBJC_IVAR___SBHIconResizeHandle_isDarkStyle) = v3;
+  *(&self->super.super.super.isa + OBJC_IVAR___SBHIconResizeHandle_isDarkStyle) = styleCopy;
   v5 = *(&self->super.super.super.isa + OBJC_IVAR___SBHIconResizeHandle_whiteTintView);
   if (v5)
   {
     v6 = 0.42;
-    if (v3)
+    if (styleCopy)
     {
       v6 = 0.0;
     }
@@ -347,14 +347,14 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v3 = self;
+  selfCopy = self;
   sub_1BEDD2ABC();
   v5 = v4;
 
   return v5;
 }
 
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key
 {
   sub_1BEE4720C();
   sub_1BEE471FC();
@@ -364,10 +364,10 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  if (a3)
+  if (key)
   {
     v5 = sub_1BEE4708C();
-    a3 = v6;
+    key = v6;
   }
 
   else
@@ -375,18 +375,18 @@
     v5 = 0;
   }
 
-  v7 = self;
+  selfCopy = self;
   v8.value._countAndFlagsBits = v5;
-  v8.value._object = a3;
+  v8.value._object = key;
   v9 = SBHIconResizeHandle._shouldAnimateProperty(withKey:)(v8);
 
   return v9;
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   sub_1BEE4720C();
   sub_1BEE471FC();
   sub_1BEE471EC();
@@ -395,14 +395,14 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v8 = a4;
-  v9 = self;
+  eventCopy = event;
+  selfCopy = self;
   v10 = _sSo19SBHIconResizeHandleC15SpringBoardHomeE5point6inside4withSbSo7CGPointV_So7UIEventCSgtF_0(x, y);
 
   return v10;
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
   sub_1BEE4720C();
   sub_1BEE471FC();
@@ -415,21 +415,21 @@
   sub_1BEB20D28(0, &qword_1EBDC75C8);
   sub_1BEDD3D58();
   sub_1BEE4726C();
-  v6 = a4;
-  v7 = self;
+  eventCopy = event;
+  selfCopy = self;
   v8 = sub_1BEE4724C();
 
-  v9.receiver = v7;
+  v9.receiver = selfCopy;
   v9.super_class = SBHIconResizeHandle;
-  [(SBHIconResizeHandle *)&v9 touchesCancelled:v8 withEvent:v6];
+  [(SBHIconResizeHandle *)&v9 touchesCancelled:v8 withEvent:eventCopy];
 
-  if (![(SBHIconResizeHandle *)v7 isResizing])
+  if (![(SBHIconResizeHandle *)selfCopy isResizing])
   {
-    [(SBHIconResizeHandle *)v7 setHighlighted:0];
+    [(SBHIconResizeHandle *)selfCopy setHighlighted:0];
   }
 }
 
-- (void)setShapeLayer:(id)a3
+- (void)setShapeLayer:(id)layer
 {
   sub_1BEE4720C();
   sub_1BEE471FC();
@@ -440,11 +440,11 @@
   }
 
   v6 = *(&self->super.super.super.isa + OBJC_IVAR___SBHIconResizeHandle_shapeLayer);
-  *(&self->super.super.super.isa + OBJC_IVAR___SBHIconResizeHandle_shapeLayer) = a3;
-  v5 = a3;
+  *(&self->super.super.super.isa + OBJC_IVAR___SBHIconResizeHandle_shapeLayer) = layer;
+  layerCopy = layer;
 }
 
-- (SBHIconResizeHandle)initWithFrame:(CGRect)a3
+- (SBHIconResizeHandle)initWithFrame:(CGRect)frame
 {
   sub_1BEE4720C();
   sub_1BEE471FC();

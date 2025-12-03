@@ -5,35 +5,35 @@
 - (BOOL)installationRequiresKeybagOrPasswordUnlock;
 - (BOOL)insufficientDiskSpace;
 - (BOOL)isDelayingUpdate;
-- (BOOL)isNonBlockingErrorForStatefulDescriptor:(id)a3 download:(id)a4;
+- (BOOL)isNonBlockingErrorForStatefulDescriptor:(id)descriptor download:(id)download;
 - (BOOL)networkUnavailable;
 - (BOOL)noUpdateFound;
-- (BOOL)shouldEnableUpdateButtonForNetworkError:(id)a3 download:(id)a4;
-- (BOOL)shouldEnableUpdateOptionsWithStatefulDescriptor:(id)a3 download:(id)a4;
-- (id)bodyForNetworkError:(id)a3;
-- (id)bodyForUnmetConstraints:(id)a3;
-- (id)bodyTokenWithStatefulDescriptor:(id)a3 download:(id)a4;
-- (id)headingForUnmetConstraints:(id)a3;
-- (id)headingTokenWithStatefulDescriptor:(id)a3 download:(id)a4;
+- (BOOL)shouldEnableUpdateButtonForNetworkError:(id)error download:(id)download;
+- (BOOL)shouldEnableUpdateOptionsWithStatefulDescriptor:(id)descriptor download:(id)download;
+- (id)bodyForNetworkError:(id)error;
+- (id)bodyForUnmetConstraints:(id)constraints;
+- (id)bodyTokenWithStatefulDescriptor:(id)descriptor download:(id)download;
+- (id)headingForUnmetConstraints:(id)constraints;
+- (id)headingTokenWithStatefulDescriptor:(id)descriptor download:(id)download;
 @end
 
 @implementation SUUIMobileStatefulError
 
-- (BOOL)isNonBlockingErrorForStatefulDescriptor:(id)a3 download:(id)a4
+- (BOOL)isNonBlockingErrorForStatefulDescriptor:(id)descriptor download:(id)download
 {
-  v22 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, descriptor);
   v20 = 0;
-  objc_storeStrong(&v20, a4);
-  v19 = [(SUUIMobileStatefulError *)v22 code];
-  v10 = [(SUUIMobileStatefulError *)v22 domain];
-  v11 = [v10 isEqualToString:*MEMORY[0x277D64910]];
-  MEMORY[0x277D82BD8](v10);
+  objc_storeStrong(&v20, download);
+  code = [(SUUIMobileStatefulError *)selfCopy code];
+  domain = [(SUUIMobileStatefulError *)selfCopy domain];
+  v11 = [domain isEqualToString:*MEMORY[0x277D64910]];
+  MEMORY[0x277D82BD8](domain);
   if (v11)
   {
-    if (v19 == 3 || v19 == 11 || v19 == 13)
+    if (code == 3 || code == 11 || code == 13)
     {
       v23 = 1;
       v18 = 1;
@@ -44,14 +44,14 @@
     v8 = 1;
     if (location[0])
     {
-      v17 = [location[0] descriptor];
+      descriptor = [location[0] descriptor];
       v16 = 1;
-      v8 = v17 == 0;
+      v8 = descriptor == 0;
     }
 
     if (v16)
     {
-      MEMORY[0x277D82BD8](v17);
+      MEMORY[0x277D82BD8](descriptor);
     }
 
     if (v8)
@@ -65,10 +65,10 @@
     v7 = 1;
     if (v20)
     {
-      v15 = [v20 progress];
+      progress = [v20 progress];
       v14 = 1;
       v7 = 1;
-      if (v15)
+      if (progress)
       {
         v7 = [location[0] currentState] != 2;
       }
@@ -76,7 +76,7 @@
 
     if (v14)
     {
-      MEMORY[0x277D82BD8](v15);
+      MEMORY[0x277D82BD8](progress);
     }
 
     if (v7)
@@ -86,13 +86,13 @@
       goto LABEL_40;
     }
 
-    v13 = [v20 progress];
-    if ([v13 phase] == 2)
+    progress2 = [v20 progress];
+    if ([progress2 phase] == 2)
     {
-      [v13 percentComplete];
+      [progress2 percentComplete];
       if (v4 >= 1.0)
       {
-        switch(v19)
+        switch(code)
         {
           case 33:
           case 34:
@@ -104,16 +104,16 @@
             v23 = 1;
             v18 = 1;
 LABEL_39:
-            objc_storeStrong(&v13, 0);
+            objc_storeStrong(&progress2, 0);
             goto LABEL_40;
           case 6:
             v23 = 1;
             v18 = 1;
             goto LABEL_39;
           case 20:
-            v6 = [(SUUIMobileStatefulError *)v22 userInfo];
-            v12 = [v6 objectForKey:*MEMORY[0x277D64A18]];
-            MEMORY[0x277D82BD8](v6);
+            userInfo = [(SUUIMobileStatefulError *)selfCopy userInfo];
+            v12 = [userInfo objectForKey:*MEMORY[0x277D64A18]];
+            MEMORY[0x277D82BD8](userInfo);
             if (v12 && [v12 unsignedIntegerValue] == 4)
             {
               v23 = 1;
@@ -149,48 +149,48 @@ LABEL_40:
   return v23 & 1;
 }
 
-- (id)headingTokenWithStatefulDescriptor:(id)a3 download:(id)a4
+- (id)headingTokenWithStatefulDescriptor:(id)descriptor download:(id)download
 {
   v23 = *MEMORY[0x277D85DE8];
-  v20 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, descriptor);
   v18 = 0;
-  objc_storeStrong(&v18, a4);
-  if (-[SUUIMobileStatefulError isNonBlockingErrorForStatefulDescriptor:download:](v20, "isNonBlockingErrorForStatefulDescriptor:download:", location[0], v18) || (v11 = -[SUUIMobileStatefulError domain](v20, "domain"), v12 = [v11 isEqualToString:*MEMORY[0x277D64910]], MEMORY[0x277D82BD8](v11), (v12 & 1) == 0))
+  objc_storeStrong(&v18, download);
+  if (-[SUUIMobileStatefulError isNonBlockingErrorForStatefulDescriptor:download:](selfCopy, "isNonBlockingErrorForStatefulDescriptor:download:", location[0], v18) || (v11 = -[SUUIMobileStatefulError domain](selfCopy, "domain"), v12 = [v11 isEqualToString:*MEMORY[0x277D64910]], MEMORY[0x277D82BD8](v11), (v12 & 1) == 0))
   {
     v21 = [MEMORY[0x277D64BA8] headingTokenWithType:0];
     v17 = 1;
     goto LABEL_25;
   }
 
-  v10 = [(SUUIMobileStatefulError *)v20 code];
-  if (v10 == 6)
+  code = [(SUUIMobileStatefulError *)selfCopy code];
+  if (code == 6)
   {
     v21 = [MEMORY[0x277D64BA8] headingTokenWithType:4];
     v17 = 1;
     goto LABEL_25;
   }
 
-  if ((v10 - 7) <= 2)
+  if ((code - 7) <= 2)
   {
     goto LABEL_18;
   }
 
-  if (v10 == 17 || v10 == 19)
+  if (code == 17 || code == 19)
   {
     goto LABEL_20;
   }
 
-  if (v10 == 20)
+  if (code == 20)
   {
-    v21 = [(SUUIMobileStatefulError *)v20 headingForUnmetConstraints:location[0]];
+    v21 = [(SUUIMobileStatefulError *)selfCopy headingForUnmetConstraints:location[0]];
     v17 = 1;
     goto LABEL_25;
   }
 
-  if (v10 == 26 || v10 == 31 || (v10 - 33) <= 1 || v10 == 57 || v10 == 83)
+  if (code == 26 || code == 31 || (code - 33) <= 1 || code == 57 || code == 83)
   {
 LABEL_18:
     v21 = [MEMORY[0x277D64BA8] headingTokenWithType:2];
@@ -198,14 +198,14 @@ LABEL_18:
     goto LABEL_25;
   }
 
-  if (v10 == 104)
+  if (code == 104)
   {
     v21 = [MEMORY[0x277D64BA8] headingTokenWithType:1];
     v17 = 1;
     goto LABEL_25;
   }
 
-  if (v10 == 106)
+  if (code == 106)
   {
 LABEL_20:
     v21 = [MEMORY[0x277D64BA8] headingTokenWithType:3];
@@ -213,23 +213,23 @@ LABEL_20:
     goto LABEL_25;
   }
 
-  v9 = [MEMORY[0x277D64B58] statefulUILogger];
-  v16 = [v9 oslog];
-  MEMORY[0x277D82BD8](v9);
+  statefulUILogger = [MEMORY[0x277D64B58] statefulUILogger];
+  oslog = [statefulUILogger oslog];
+  MEMORY[0x277D82BD8](statefulUILogger);
   v15 = 16;
-  if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+  if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
   {
-    log = v16;
+    log = oslog;
     type = v15;
-    v8 = [location[0] updateName];
-    v14 = MEMORY[0x277D82BE0](v8);
-    __os_log_helper_16_2_2_8_66_8_66(v22, v14, v20);
+    updateName = [location[0] updateName];
+    v14 = MEMORY[0x277D82BE0](updateName);
+    __os_log_helper_16_2_2_8_66_8_66(v22, v14, selfCopy);
     _os_log_error_impl(&dword_26B0B9000, log, type, "Couldn't map the error into a localizable title for %{public}@: %{public}@", v22, 0x16u);
-    MEMORY[0x277D82BD8](v8);
+    MEMORY[0x277D82BD8](updateName);
     objc_storeStrong(&v14, 0);
   }
 
-  objc_storeStrong(&v16, 0);
+  objc_storeStrong(&oslog, 0);
   v21 = [MEMORY[0x277D64BA8] headingTokenWithType:1];
   v17 = 1;
 LABEL_25:
@@ -241,16 +241,16 @@ LABEL_25:
   return v4;
 }
 
-- (id)bodyTokenWithStatefulDescriptor:(id)a3 download:(id)a4
+- (id)bodyTokenWithStatefulDescriptor:(id)descriptor download:(id)download
 {
   v39[1] = *MEMORY[0x277D85DE8];
-  v33 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, descriptor);
   v31 = 0;
-  objc_storeStrong(&v31, a4);
-  if (-[SUUIMobileStatefulError isNonBlockingErrorForStatefulDescriptor:download:](v33, "isNonBlockingErrorForStatefulDescriptor:download:", location[0], v31) || (v19 = -[SUUIMobileStatefulError domain](v33, "domain"), v20 = [v19 isEqualToString:*MEMORY[0x277D64910]], MEMORY[0x277D82BD8](v19), (v20 & 1) == 0))
+  objc_storeStrong(&v31, download);
+  if (-[SUUIMobileStatefulError isNonBlockingErrorForStatefulDescriptor:download:](selfCopy, "isNonBlockingErrorForStatefulDescriptor:download:", location[0], v31) || (v19 = -[SUUIMobileStatefulError domain](selfCopy, "domain"), v20 = [v19 isEqualToString:*MEMORY[0x277D64910]], MEMORY[0x277D82BD8](v19), (v20 & 1) == 0))
   {
     v34 = [MEMORY[0x277D64BA8] bodyTokenWithType:0];
     v30 = 1;
@@ -258,10 +258,10 @@ LABEL_25:
 
   else
   {
-    switch([(SUUIMobileStatefulError *)v33 code])
+    switch([(SUUIMobileStatefulError *)selfCopy code])
     {
       case 6:
-        v27 = [location[0] descriptor];
+        descriptor = [location[0] descriptor];
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
@@ -269,14 +269,14 @@ LABEL_25:
           _suui_precondition_failure_with_format();
         }
 
-        v26 = MEMORY[0x277D82BE0](v27);
-        objc_storeStrong(&v27, 0);
+        v26 = MEMORY[0x277D82BE0](descriptor);
+        objc_storeStrong(&descriptor, 0);
         v28 = v26;
         v15 = MEMORY[0x277CCA8E8];
         v14 = MEMORY[0x277D64908];
-        v16 = [v26 underlyingDescriptor];
+        underlyingDescriptor = [v26 underlyingDescriptor];
         v25 = [v15 stringFromByteCount:objc_msgSend(v14 countStyle:{"totalDiskSpaceForUpdate:"), 2}];
-        MEMORY[0x277D82BD8](v16);
+        MEMORY[0x277D82BD8](underlyingDescriptor);
         v17 = MEMORY[0x277D64BA8];
         v38 = *MEMORY[0x277D64C48];
         v39[0] = v25;
@@ -315,10 +315,10 @@ LABEL_25:
       case 19:
         v12 = MEMORY[0x277D64BA8];
         v36 = *MEMORY[0x277D64C38];
-        v13 = [location[0] updateName];
-        if (v13)
+        updateName = [location[0] updateName];
+        if (updateName)
         {
-          v11 = v13;
+          v11 = updateName;
         }
 
         else
@@ -330,11 +330,11 @@ LABEL_25:
         v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v37 forKeys:&v36 count:1];
         v34 = [v12 bodyTokenWithType:11 parameters:?];
         MEMORY[0x277D82BD8](v10);
-        MEMORY[0x277D82BD8](v13);
+        MEMORY[0x277D82BD8](updateName);
         v30 = 1;
         break;
       case 20:
-        v34 = [(SUUIMobileStatefulError *)v33 bodyForUnmetConstraints:location[0]];
+        v34 = [(SUUIMobileStatefulError *)selfCopy bodyForUnmetConstraints:location[0]];
         v30 = 1;
         break;
       case 31:
@@ -343,7 +343,7 @@ LABEL_25:
         break;
       case 33:
       case 34:
-        v29 = [(SUUIMobileStatefulError *)v33 bodyForNetworkError:location[0]];
+        v29 = [(SUUIMobileStatefulError *)selfCopy bodyForNetworkError:location[0]];
         if (v29)
         {
           v34 = MEMORY[0x277D82BE0](v29);
@@ -395,23 +395,23 @@ LABEL_10:
         v30 = 1;
         break;
       default:
-        v9 = [MEMORY[0x277D64B58] statefulUILogger];
-        v24 = [v9 oslog];
-        MEMORY[0x277D82BD8](v9);
+        statefulUILogger = [MEMORY[0x277D64B58] statefulUILogger];
+        oslog = [statefulUILogger oslog];
+        MEMORY[0x277D82BD8](statefulUILogger);
         v23 = 16;
-        if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
+        if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
         {
-          log = v24;
+          log = oslog;
           type = v23;
-          v8 = [location[0] updateName];
-          v22 = MEMORY[0x277D82BE0](v8);
-          __os_log_helper_16_2_2_8_66_8_66(v35, v22, v33);
+          updateName2 = [location[0] updateName];
+          v22 = MEMORY[0x277D82BE0](updateName2);
+          __os_log_helper_16_2_2_8_66_8_66(v35, v22, selfCopy);
           _os_log_error_impl(&dword_26B0B9000, log, type, "Couldn't map the error into a localizable title for %{public}@: %{public}@", v35, 0x16u);
-          MEMORY[0x277D82BD8](v8);
+          MEMORY[0x277D82BD8](updateName2);
           objc_storeStrong(&v22, 0);
         }
 
-        objc_storeStrong(&v24, 0);
+        objc_storeStrong(&oslog, 0);
         v34 = [MEMORY[0x277D64BA8] bodyTokenWithType:0];
         v30 = 1;
         break;
@@ -426,16 +426,16 @@ LABEL_10:
   return v4;
 }
 
-- (BOOL)shouldEnableUpdateOptionsWithStatefulDescriptor:(id)a3 download:(id)a4
+- (BOOL)shouldEnableUpdateOptionsWithStatefulDescriptor:(id)descriptor download:(id)download
 {
   v21 = *MEMORY[0x277D85DE8];
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, descriptor);
   v16 = 0;
-  objc_storeStrong(&v16, a4);
-  if ([(SUUIMobileStatefulError *)v18 isNonBlockingErrorForStatefulDescriptor:location[0] download:v16])
+  objc_storeStrong(&v16, download);
+  if ([(SUUIMobileStatefulError *)selfCopy isNonBlockingErrorForStatefulDescriptor:location[0] download:v16])
   {
     v19 = 1;
     v15 = 1;
@@ -443,19 +443,19 @@ LABEL_10:
 
   else
   {
-    v9 = [(SUUIMobileStatefulError *)v18 domain];
-    v10 = [v9 isEqualToString:*MEMORY[0x277D64910]];
-    MEMORY[0x277D82BD8](v9);
+    domain = [(SUUIMobileStatefulError *)selfCopy domain];
+    v10 = [domain isEqualToString:*MEMORY[0x277D64910]];
+    MEMORY[0x277D82BD8](domain);
     if (v10)
     {
-      if (([(SUUIMobileStatefulError *)v18 code]- 33) > 1)
+      if (([(SUUIMobileStatefulError *)selfCopy code]- 33) > 1)
       {
         v19 = 0;
       }
 
       else
       {
-        v19 = [(SUUIMobileStatefulError *)v18 shouldEnableUpdateButtonForNetworkError:location[0] download:v16];
+        v19 = [(SUUIMobileStatefulError *)selfCopy shouldEnableUpdateButtonForNetworkError:location[0] download:v16];
       }
 
       v15 = 1;
@@ -463,23 +463,23 @@ LABEL_10:
 
     else
     {
-      v8 = [MEMORY[0x277D64B58] statefulUILogger];
-      v14 = [v8 oslog];
-      MEMORY[0x277D82BD8](v8);
+      statefulUILogger = [MEMORY[0x277D64B58] statefulUILogger];
+      oslog = [statefulUILogger oslog];
+      MEMORY[0x277D82BD8](statefulUILogger);
       v13 = 16;
-      if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+      if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
       {
-        log = v14;
+        log = oslog;
         type = v13;
-        v7 = [location[0] updateName];
-        v12 = MEMORY[0x277D82BE0](v7);
-        __os_log_helper_16_2_2_8_66_8_66(v20, v12, v18);
+        updateName = [location[0] updateName];
+        v12 = MEMORY[0x277D82BE0](updateName);
+        __os_log_helper_16_2_2_8_66_8_66(v20, v12, selfCopy);
         _os_log_error_impl(&dword_26B0B9000, log, type, "Receieved an unexpected non-SUS error for descriptor %{public}@. Not ignoring. Error: %{public}@", v20, 0x16u);
-        MEMORY[0x277D82BD8](v7);
+        MEMORY[0x277D82BD8](updateName);
         objc_storeStrong(&v12, 0);
       }
 
-      objc_storeStrong(&v14, 0);
+      objc_storeStrong(&oslog, 0);
       v19 = 0;
       v15 = 1;
     }
@@ -493,35 +493,35 @@ LABEL_10:
 
 - (BOOL)isDelayingUpdate
 {
-  v3 = [(SUUIMobileStatefulError *)self domain];
+  domain = [(SUUIMobileStatefulError *)self domain];
   v4 = 0;
-  if ([v3 isEqualToString:*MEMORY[0x277D64910]])
+  if ([domain isEqualToString:*MEMORY[0x277D64910]])
   {
     v4 = [(SUUIMobileStatefulError *)self code]== 55;
   }
 
-  MEMORY[0x277D82BD8](v3);
+  MEMORY[0x277D82BD8](domain);
   return v4;
 }
 
 - (BOOL)noUpdateFound
 {
-  v3 = [(SUUIMobileStatefulError *)self domain];
+  domain = [(SUUIMobileStatefulError *)self domain];
   v4 = 0;
-  if ([v3 isEqualToString:*MEMORY[0x277D64910]])
+  if ([domain isEqualToString:*MEMORY[0x277D64910]])
   {
     v4 = [(SUUIMobileStatefulError *)self code]== 3;
   }
 
-  MEMORY[0x277D82BD8](v3);
+  MEMORY[0x277D82BD8](domain);
   return v4;
 }
 
 - (BOOL)networkUnavailable
 {
-  v4 = [(SUUIMobileStatefulError *)self domain];
+  domain = [(SUUIMobileStatefulError *)self domain];
   v5 = 0;
-  if ([v4 isEqualToString:*MEMORY[0x277D64910]])
+  if ([domain isEqualToString:*MEMORY[0x277D64910]])
   {
     v3 = 1;
     if ([(SUUIMobileStatefulError *)self code]!= 26)
@@ -532,49 +532,49 @@ LABEL_10:
     v5 = v3;
   }
 
-  MEMORY[0x277D82BD8](v4);
+  MEMORY[0x277D82BD8](domain);
   return v5;
 }
 
 - (BOOL)connectionInvalid
 {
-  v3 = [(SUUIMobileStatefulError *)self domain];
+  domain = [(SUUIMobileStatefulError *)self domain];
   v4 = 0;
-  if ([v3 isEqualToString:*MEMORY[0x277CCA050]])
+  if ([domain isEqualToString:*MEMORY[0x277CCA050]])
   {
     v4 = [(SUUIMobileStatefulError *)self code]== 4099;
   }
 
-  MEMORY[0x277D82BD8](v3);
+  MEMORY[0x277D82BD8](domain);
   return v4;
 }
 
 - (BOOL)insufficientDiskSpace
 {
-  v3 = [(SUUIMobileStatefulError *)self domain];
+  domain = [(SUUIMobileStatefulError *)self domain];
   v4 = 0;
-  if ([v3 isEqualToString:*MEMORY[0x277D64910]])
+  if ([domain isEqualToString:*MEMORY[0x277D64910]])
   {
     v4 = [(SUUIMobileStatefulError *)self code]== 6;
   }
 
-  MEMORY[0x277D82BD8](v3);
+  MEMORY[0x277D82BD8](domain);
   return v4;
 }
 
 - (BOOL)installationInProgress
 {
-  v6 = [(SUUIMobileStatefulError *)self domain];
-  v7 = [v6 isEqualToString:*MEMORY[0x277D64C28]];
-  MEMORY[0x277D82BD8](v6);
+  domain = [(SUUIMobileStatefulError *)self domain];
+  v7 = [domain isEqualToString:*MEMORY[0x277D64C28]];
+  MEMORY[0x277D82BD8](domain);
   if (v7)
   {
     return [(SUUIMobileStatefulError *)self code]== 4;
   }
 
-  v4 = [(SUUIMobileStatefulError *)self domain];
+  domain2 = [(SUUIMobileStatefulError *)self domain];
   v5 = 0;
-  if ([v4 isEqualToString:*MEMORY[0x277D64910]])
+  if ([domain2 isEqualToString:*MEMORY[0x277D64910]])
   {
     v3 = 1;
     if ([(SUUIMobileStatefulError *)self code]!= 14)
@@ -585,15 +585,15 @@ LABEL_10:
     v5 = v3;
   }
 
-  MEMORY[0x277D82BD8](v4);
+  MEMORY[0x277D82BD8](domain2);
   return v5;
 }
 
 - (BOOL)installationInvalidState
 {
-  v4 = [(SUUIMobileStatefulError *)self domain];
+  domain = [(SUUIMobileStatefulError *)self domain];
   v5 = 0;
-  if ([v4 isEqualToString:*MEMORY[0x277D64910]])
+  if ([domain isEqualToString:*MEMORY[0x277D64910]])
   {
     v3 = 1;
     if ([(SUUIMobileStatefulError *)self code]!= 11)
@@ -608,15 +608,15 @@ LABEL_10:
     v5 = v3;
   }
 
-  MEMORY[0x277D82BD8](v4);
+  MEMORY[0x277D82BD8](domain);
   return v5;
 }
 
 - (BOOL)installationRequiresKeybagOrPasswordUnlock
 {
-  v7 = [(SUUIMobileStatefulError *)self domain];
-  v8 = [v7 isEqualToString:*MEMORY[0x277D64910]];
-  MEMORY[0x277D82BD8](v7);
+  domain = [(SUUIMobileStatefulError *)self domain];
+  v8 = [domain isEqualToString:*MEMORY[0x277D64910]];
+  MEMORY[0x277D82BD8](domain);
   if ((v8 & 1) == 0)
   {
     return 0;
@@ -627,33 +627,33 @@ LABEL_10:
     return 0;
   }
 
-  v4 = [(SUUIMobileStatefulError *)self userInfo];
-  v3 = [v4 objectForKey:*MEMORY[0x277D64A18]];
-  v5 = [v3 unsignedIntegerValue];
+  userInfo = [(SUUIMobileStatefulError *)self userInfo];
+  v3 = [userInfo objectForKey:*MEMORY[0x277D64A18]];
+  unsignedIntegerValue = [v3 unsignedIntegerValue];
   MEMORY[0x277D82BD8](v3);
-  MEMORY[0x277D82BD8](v4);
+  MEMORY[0x277D82BD8](userInfo);
   v6 = 1;
-  if (v5 != 16)
+  if (unsignedIntegerValue != 16)
   {
     v6 = 1;
-    if (v5 != 32)
+    if (unsignedIntegerValue != 32)
     {
-      return v5 == 48;
+      return unsignedIntegerValue == 48;
     }
   }
 
   return v6;
 }
 
-- (BOOL)shouldEnableUpdateButtonForNetworkError:(id)a3 download:(id)a4
+- (BOOL)shouldEnableUpdateButtonForNetworkError:(id)error download:(id)download
 {
   v38 = *MEMORY[0x277D85DE8];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, error);
   v33 = 0;
-  objc_storeStrong(&v33, a4);
+  objc_storeStrong(&v33, download);
   if ([location[0] currentState] == 3)
   {
     v31 = 0;
@@ -677,13 +677,13 @@ LABEL_10:
       MEMORY[0x277D82BD8](v4);
       if (!v31)
       {
-        v9 = [MEMORY[0x277D64B58] statefulUILogger];
-        v21 = [v9 oslog];
-        MEMORY[0x277D82BD8](v9);
+        statefulUILogger = [MEMORY[0x277D64B58] statefulUILogger];
+        oslog = [statefulUILogger oslog];
+        MEMORY[0x277D82BD8](statefulUILogger);
         v20 = 16;
-        if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
+        if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
         {
-          v6 = v21;
+          v6 = oslog;
           v7 = v20;
           v8 = [v23 description];
           v19 = MEMORY[0x277D82BE0](v8);
@@ -693,7 +693,7 @@ LABEL_10:
           objc_storeStrong(&v19, 0);
         }
 
-        objc_storeStrong(&v21, 0);
+        objc_storeStrong(&oslog, 0);
       }
 
       objc_storeStrong(&v23, 0);
@@ -701,13 +701,13 @@ LABEL_10:
 
     else
     {
-      v14 = [MEMORY[0x277D64B58] statefulUILogger];
-      v26 = [v14 oslog];
-      MEMORY[0x277D82BD8](v14);
+      statefulUILogger2 = [MEMORY[0x277D64B58] statefulUILogger];
+      oslog2 = [statefulUILogger2 oslog];
+      MEMORY[0x277D82BD8](statefulUILogger2);
       v25 = 16;
-      if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
+      if (os_log_type_enabled(oslog2, OS_LOG_TYPE_ERROR))
       {
-        log = v26;
+        log = oslog2;
         type = v25;
         v13 = [v29 description];
         v24 = MEMORY[0x277D82BE0](v13);
@@ -717,7 +717,7 @@ LABEL_10:
         objc_storeStrong(&v24, 0);
       }
 
-      objc_storeStrong(&v26, 0);
+      objc_storeStrong(&oslog2, 0);
     }
 
     if ([v31 isEqualToString:*MEMORY[0x277CC3E70]] & 1) != 0 && (PSIsDataRoamingEnabled())
@@ -750,20 +750,20 @@ LABEL_10:
   return v35 & 1;
 }
 
-- (id)headingForUnmetConstraints:(id)a3
+- (id)headingForUnmetConstraints:(id)constraints
 {
   v29[1] = *MEMORY[0x277D85DE8];
-  v26 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v15 = [(SUUIMobileStatefulError *)v26 userInfo];
-  v14 = [v15 objectForKey:*MEMORY[0x277D64A18]];
-  v16 = [v14 unsignedIntegerValue];
+  objc_storeStrong(location, constraints);
+  userInfo = [(SUUIMobileStatefulError *)selfCopy userInfo];
+  v14 = [userInfo objectForKey:*MEMORY[0x277D64A18]];
+  unsignedIntegerValue = [v14 unsignedIntegerValue];
   MEMORY[0x277D82BD8](v14);
-  MEMORY[0x277D82BD8](v15);
-  v24 = v16;
-  if ((v16 & 4) != 0)
+  MEMORY[0x277D82BD8](userInfo);
+  v24 = unsignedIntegerValue;
+  if ((unsignedIntegerValue & 4) != 0)
   {
     v27 = [MEMORY[0x277D64BA8] headingTokenWithType:4];
     v23 = 1;
@@ -771,11 +771,11 @@ LABEL_10:
 
   else if (v24)
   {
-    v21 = [location[0] descriptor];
+    descriptor = [location[0] descriptor];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v3 = MEMORY[0x277D82BE0](v21);
+      v3 = MEMORY[0x277D82BE0](descriptor);
     }
 
     else
@@ -784,12 +784,12 @@ LABEL_10:
     }
 
     v20 = v3;
-    objc_storeStrong(&v21, 0);
+    objc_storeStrong(&descriptor, 0);
     v22 = v20;
-    v8 = [v20 underlyingDescriptor];
+    underlyingDescriptor = [v20 underlyingDescriptor];
     SURequiredBatteryLevelForInstallation();
     v9 = v4;
-    MEMORY[0x277D82BD8](v8);
+    MEMORY[0x277D82BD8](underlyingDescriptor);
     v19 = v9;
     v5 = floorf(100.0 * v9) / 100.0;
     *&v5 = v5;
@@ -822,18 +822,18 @@ LABEL_10:
   return v6;
 }
 
-- (id)bodyForUnmetConstraints:(id)a3
+- (id)bodyForUnmetConstraints:(id)constraints
 {
   v62[2] = *MEMORY[0x277D85DE8];
-  v47 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v44 = [location[0] descriptor];
+  objc_storeStrong(location, constraints);
+  descriptor = [location[0] descriptor];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = MEMORY[0x277D82BE0](v44);
+    v3 = MEMORY[0x277D82BE0](descriptor);
   }
 
   else
@@ -842,26 +842,26 @@ LABEL_10:
   }
 
   v43 = v3;
-  objc_storeStrong(&v44, 0);
+  objc_storeStrong(&descriptor, 0);
   v45 = v43;
-  v26 = [v43 underlyingDescriptor];
+  underlyingDescriptor = [v43 underlyingDescriptor];
   SURequiredBatteryLevelForInstallation();
   v27 = v4;
-  MEMORY[0x277D82BD8](v26);
+  MEMORY[0x277D82BD8](underlyingDescriptor);
   v5 = 100.0 * v27;
   v6 = floorf(v5) / 100.0;
   v42 = v6;
   v28 = MEMORY[0x277CCA8E8];
-  v29 = [location[0] descriptor];
-  v41 = [v28 stringFromByteCount:objc_msgSend(v29 countStyle:{"installationSize"), 2}];
-  MEMORY[0x277D82BD8](v29);
-  v31 = [(SUUIMobileStatefulError *)v47 userInfo];
-  v30 = [v31 objectForKey:*MEMORY[0x277D64A18]];
-  v32 = [v30 unsignedIntegerValue];
+  descriptor2 = [location[0] descriptor];
+  v41 = [v28 stringFromByteCount:objc_msgSend(descriptor2 countStyle:{"installationSize"), 2}];
+  MEMORY[0x277D82BD8](descriptor2);
+  userInfo = [(SUUIMobileStatefulError *)selfCopy userInfo];
+  v30 = [userInfo objectForKey:*MEMORY[0x277D64A18]];
+  unsignedIntegerValue = [v30 unsignedIntegerValue];
   MEMORY[0x277D82BD8](v30);
-  MEMORY[0x277D82BD8](v31);
-  v40 = v32;
-  if ((v32 & 8) != 0)
+  MEMORY[0x277D82BD8](userInfo);
+  v40 = unsignedIntegerValue;
+  if ((unsignedIntegerValue & 8) != 0)
   {
     v48 = [MEMORY[0x277D64BA8] bodyTokenWithType:12];
     v39 = 1;
@@ -1032,14 +1032,14 @@ LABEL_10:
   return v8;
 }
 
-- (id)bodyForNetworkError:(id)a3
+- (id)bodyForNetworkError:(id)error
 {
   v38 = *MEMORY[0x277D85DE8];
-  v34 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v32 = [(SUUIMobileStatefulError *)v34 code];
+  objc_storeStrong(location, error);
+  code = [(SUUIMobileStatefulError *)selfCopy code];
   if ([location[0] currentState] == 3)
   {
     v30 = 0;
@@ -1063,9 +1063,9 @@ LABEL_10:
       MEMORY[0x277D82BD8](v3);
       if (!v30)
       {
-        v9 = [MEMORY[0x277D64B58] statefulUILogger];
-        oslog = [v9 oslog];
-        MEMORY[0x277D82BD8](v9);
+        statefulUILogger = [MEMORY[0x277D64B58] statefulUILogger];
+        oslog = [statefulUILogger oslog];
+        MEMORY[0x277D82BD8](statefulUILogger);
         v19 = OS_LOG_TYPE_ERROR;
         if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
         {
@@ -1087,13 +1087,13 @@ LABEL_10:
 
     else
     {
-      v14 = [MEMORY[0x277D64B58] statefulUILogger];
-      v25 = [v14 oslog];
-      MEMORY[0x277D82BD8](v14);
+      statefulUILogger2 = [MEMORY[0x277D64B58] statefulUILogger];
+      oslog = [statefulUILogger2 oslog];
+      MEMORY[0x277D82BD8](statefulUILogger2);
       v24 = 16;
-      if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
+      if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
       {
-        log = v25;
+        log = oslog;
         type = v24;
         v13 = [v28 description];
         v23 = MEMORY[0x277D82BE0](v13);
@@ -1103,7 +1103,7 @@ LABEL_10:
         objc_storeStrong(&v23, 0);
       }
 
-      objc_storeStrong(&v25, 0);
+      objc_storeStrong(&oslog, 0);
     }
 
     if ([v30 isEqualToString:*MEMORY[0x277CC3E70]])
@@ -1123,7 +1123,7 @@ LABEL_10:
 
     else
     {
-      if (v32 == 33)
+      if (code == 33)
       {
         v35 = [MEMORY[0x277D64BA8] bodyTokenWithType:1];
       }

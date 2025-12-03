@@ -1,20 +1,20 @@
 @interface CLSFeederPrefetchOptions
-+ (id)feederPrefetchOptionsWithDefaultMode:(unint64_t)a3;
++ (id)feederPrefetchOptionsWithDefaultMode:(unint64_t)mode;
 - (CLSFeederPrefetchOptions)init;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)mergeWithFeederPrefetchOptions:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)mergeWithFeederPrefetchOptions:(id)options;
 @end
 
 @implementation CLSFeederPrefetchOptions
 
-- (void)mergeWithFeederPrefetchOptions:(id)a3
+- (void)mergeWithFeederPrefetchOptions:(id)options
 {
   personCountPrefetchMode = self->_personCountPrefetchMode;
-  v5 = a3;
-  v6 = [v5 personCountPrefetchMode];
-  if (personCountPrefetchMode <= v6)
+  optionsCopy = options;
+  personCountPrefetchMode = [optionsCopy personCountPrefetchMode];
+  if (personCountPrefetchMode <= personCountPrefetchMode)
   {
-    v7 = v6;
+    v7 = personCountPrefetchMode;
   }
 
   else
@@ -24,10 +24,10 @@
 
   self->_personCountPrefetchMode = v7;
   personsPrefetchMode = self->_personsPrefetchMode;
-  v9 = [v5 personsPrefetchMode];
-  if (personsPrefetchMode <= v9)
+  personsPrefetchMode = [optionsCopy personsPrefetchMode];
+  if (personsPrefetchMode <= personsPrefetchMode)
   {
-    v10 = v9;
+    v10 = personsPrefetchMode;
   }
 
   else
@@ -37,10 +37,10 @@
 
   self->_personsPrefetchMode = v10;
   scenesPrefetchMode = self->_scenesPrefetchMode;
-  v12 = [v5 scenesPrefetchMode];
-  if (scenesPrefetchMode <= v12)
+  scenesPrefetchMode = [optionsCopy scenesPrefetchMode];
+  if (scenesPrefetchMode <= scenesPrefetchMode)
   {
-    v13 = v12;
+    v13 = scenesPrefetchMode;
   }
 
   else
@@ -50,10 +50,10 @@
 
   self->_scenesPrefetchMode = v13;
   faceInformationPrefetchMode = self->_faceInformationPrefetchMode;
-  v15 = [v5 faceInformationPrefetchMode];
-  if (faceInformationPrefetchMode <= v15)
+  faceInformationPrefetchMode = [optionsCopy faceInformationPrefetchMode];
+  if (faceInformationPrefetchMode <= faceInformationPrefetchMode)
   {
-    v16 = v15;
+    v16 = faceInformationPrefetchMode;
   }
 
   else
@@ -63,11 +63,11 @@
 
   self->_faceInformationPrefetchMode = v16;
   locationPrefetchMode = self->_locationPrefetchMode;
-  v18 = [v5 locationPrefetchMode];
+  locationPrefetchMode = [optionsCopy locationPrefetchMode];
 
-  if (locationPrefetchMode <= v18)
+  if (locationPrefetchMode <= locationPrefetchMode)
   {
-    v19 = v18;
+    v19 = locationPrefetchMode;
   }
 
   else
@@ -78,9 +78,9 @@
   self->_locationPrefetchMode = v19;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_opt_class() allocWithZone:a3];
+  result = [objc_opt_class() allocWithZone:zone];
   *(result + 1) = self->_personCountPrefetchMode;
   *(result + 2) = self->_personsPrefetchMode;
   *(result + 3) = self->_scenesPrefetchMode;
@@ -104,14 +104,14 @@
   return result;
 }
 
-+ (id)feederPrefetchOptionsWithDefaultMode:(unint64_t)a3
++ (id)feederPrefetchOptionsWithDefaultMode:(unint64_t)mode
 {
   v4 = objc_alloc_init(CLSFeederPrefetchOptions);
-  v4->_personCountPrefetchMode = a3;
-  v4->_personsPrefetchMode = a3;
-  v4->_scenesPrefetchMode = a3;
-  v4->_faceInformationPrefetchMode = a3;
-  v4->_locationPrefetchMode = a3;
+  v4->_personCountPrefetchMode = mode;
+  v4->_personsPrefetchMode = mode;
+  v4->_scenesPrefetchMode = mode;
+  v4->_faceInformationPrefetchMode = mode;
+  v4->_locationPrefetchMode = mode;
 
   return v4;
 }

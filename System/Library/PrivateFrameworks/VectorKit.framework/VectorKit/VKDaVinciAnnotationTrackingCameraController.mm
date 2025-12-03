@@ -1,18 +1,18 @@
 @interface VKDaVinciAnnotationTrackingCameraController
-- (Coordinate3D<geo::Radians,)_centerCoordinate:()Coordinate3D<geo:(double>)a3 :(VKEdgeInsets)a4 Radians forEdgeInsets:;
+- (Coordinate3D<geo::Radians,)_centerCoordinate:()Coordinate3D<geo:(double>)geo :(VKEdgeInsets)a4 Radians forEdgeInsets:;
 - (VKEdgeInsets)_effectiveEdgeInsets;
-- (VKEdgeInsets)_scaledEdgeInsets:(VKEdgeInsets)a3 withCanvasSize:(CGSize)a4;
-- (double)_minTrackingCameraDistance:(BOOL)a3;
-- (double)_zoomLevelForDistance:()Unit<geo:(double>)a3 :MeterUnitDescription;
-- (void)_goToAnnotationAnimated:(BOOL)a3 duration:(double)a4 timingFunction:(id)a5 isInitial:(BOOL)a6;
-- (void)_rotateToHeadingAnimated:(BOOL)a3 duration:(double)a4;
-- (void)setEdgeInsets:(VKEdgeInsets)a3;
+- (VKEdgeInsets)_scaledEdgeInsets:(VKEdgeInsets)insets withCanvasSize:(CGSize)size;
+- (double)_minTrackingCameraDistance:(BOOL)distance;
+- (double)_zoomLevelForDistance:()Unit<geo:(double>)geo :MeterUnitDescription;
+- (void)_goToAnnotationAnimated:(BOOL)animated duration:(double)duration timingFunction:(id)function isInitial:(BOOL)initial;
+- (void)_rotateToHeadingAnimated:(BOOL)animated duration:(double)duration;
+- (void)setEdgeInsets:(VKEdgeInsets)insets;
 - (void)updateFramerate;
 @end
 
 @implementation VKDaVinciAnnotationTrackingCameraController
 
-- (void)_rotateToHeadingAnimated:(BOOL)a3 duration:(double)a4
+- (void)_rotateToHeadingAnimated:(BOOL)animated duration:(double)duration
 {
   v32 = *MEMORY[0x1E69E9840];
   if (self->super._annotation)
@@ -23,12 +23,12 @@
       if ((v5 & 2) != 0)
       {
         *(&self->super._hasUserSpecifiedZoomLevel + 1) = v5 | 8;
-        self->super._pendingHeadingChangeDuration = a4;
+        self->super._pendingHeadingChangeDuration = duration;
       }
 
       else
       {
-        v7 = a3;
+        animatedCopy = animated;
         currentHeadingAnimation = self->super._currentHeadingAnimation;
         if (currentHeadingAnimation)
         {
@@ -50,16 +50,16 @@
 
           [(VKTrackableAnnotation *)self->super._annotation headingDegrees];
           v12 = v11 * -0.0174532925 + 6.28318531;
-          if (v7)
+          if (animatedCopy)
           {
             self->super._headingAnimationCompletedAngle = 0.0;
-            v13 = [[VKTimedAnimation alloc] initWithDuration:fmax(a4, 0.200000003)];
+            v13 = [[VKTimedAnimation alloc] initWithDuration:fmax(duration, 0.200000003)];
             v14 = self->super._currentHeadingAnimation;
             self->super._currentHeadingAnimation = v13;
 
             [(VKTimedAnimation *)self->super._currentHeadingAnimation setTimingFunction:VKAnimationCurveLinear];
-            v15 = [(VKCameraController *)self cameraDelegate];
-            [v15 willBeginAnimatingAccess];
+            cameraDelegate = [(VKCameraController *)self cameraDelegate];
+            [cameraDelegate willBeginAnimatingAccess];
 
             objc_initWeak(location, self);
             v25[0] = MEMORY[0x1E69E9820];
@@ -84,11 +84,11 @@
 
           else
           {
-            v16 = [(VKCameraController *)self cameraDelegate];
-            v17 = v16;
-            if (v16)
+            cameraDelegate2 = [(VKCameraController *)self cameraDelegate];
+            v17 = cameraDelegate2;
+            if (cameraDelegate2)
             {
-              [v16 willBeginRegionChangeAccess:0];
+              [cameraDelegate2 willBeginRegionChangeAccess:0];
             }
 
             else
@@ -107,8 +107,8 @@
               std::__shared_weak_count::__release_shared[abi:nn200100](v22);
             }
 
-            v18 = [(VKCameraController *)self cameraDelegate];
-            [v18 mapLayerDidChangeVisibleRegion];
+            cameraDelegate3 = [(VKCameraController *)self cameraDelegate];
+            [cameraDelegate3 mapLayerDidChangeVisibleRegion];
 
             v19 = *[(VKCameraController *)self runLoopController];
             if (v19)
@@ -117,8 +117,8 @@
               md::MapEngine::setNeedsTick(v19, &v21);
             }
 
-            v20 = [(VKCameraController *)self cameraDelegate];
-            [v20 didEndRegionChangeAccess:location];
+            cameraDelegate4 = [(VKCameraController *)self cameraDelegate];
+            [cameraDelegate4 didEndRegionChangeAccess:location];
 
             gdc::ReferenceCountedAccess<md::VKCameraRegionChange>::~ReferenceCountedAccess(location);
           }
@@ -174,12 +174,12 @@ void __81__VKDaVinciAnnotationTrackingCameraController__rotateToHeadingAnimated_
   }
 }
 
-- (void)_goToAnnotationAnimated:(BOOL)a3 duration:(double)a4 timingFunction:(id)a5 isInitial:(BOOL)a6
+- (void)_goToAnnotationAnimated:(BOOL)animated duration:(double)duration timingFunction:(id)function isInitial:(BOOL)initial
 {
-  v156 = a6;
-  v7 = a3;
+  initialCopy = initial;
+  animatedCopy = animated;
   v194 = *MEMORY[0x1E69E9840];
-  v157 = a5;
+  functionCopy = function;
   if (self->super._annotation)
   {
     [(VKCameraController *)self camera];
@@ -190,9 +190,9 @@ void __81__VKDaVinciAnnotationTrackingCameraController__rotateToHeadingAnimated_
     }
 
     v148 = *(v9 + 24);
-    v10 = [(VKCameraController *)self canvas];
-    v150 = a4;
-    [v10 size];
+    canvas = [(VKCameraController *)self canvas];
+    durationCopy = duration;
+    [canvas size];
     v151 = v12;
     v153 = v11;
 
@@ -227,7 +227,7 @@ void __81__VKDaVinciAnnotationTrackingCameraController__rotateToHeadingAnimated_
       v36 = 0.0;
 LABEL_10:
       annotationPresentation = self->super._annotationPresentation;
-      if (v156)
+      if (initialCopy)
       {
         v41 = 16;
       }
@@ -238,7 +238,7 @@ LABEL_10:
       }
 
       *(&self->super._hasUserSpecifiedZoomLevel + 1) = v35 & 0xFFEF | v41;
-      v42 = [(VKAnnotationTrackingCameraController *)self shouldForceZoomToFit];
+      shouldForceZoomToFit = [(VKAnnotationTrackingCameraController *)self shouldForceZoomToFit];
       v43 = (v24 - v28);
       v44 = (v26 - v22);
       gdc::ViewDataAccess::screenPointForCoordinate(*([(VKCameraController *)self mapDataAccess]+ 16), &v185, v9);
@@ -279,12 +279,12 @@ LABEL_18:
       v154 = 0.0;
       if ((*(&self->super._hasUserSpecifiedZoomLevel + 1) & 0x80) != 0)
       {
-        v62 = [(VKCameraController *)self canvas];
-        [v62 size];
+        canvas2 = [(VKCameraController *)self canvas];
+        [canvas2 size];
         if (v63 > 0.0)
         {
-          v64 = [(VKCameraController *)self canvas];
-          [v64 size];
+          canvas3 = [(VKCameraController *)self canvas];
+          [canvas3 size];
           v66 = v65 > 0.0;
 
           if (v66)
@@ -292,7 +292,7 @@ LABEL_18:
             [(VKTrackableAnnotation *)self->super._annotation accuracy];
             v66 = 0;
             v154 = 0.0;
-            if (v7 && !v156)
+            if (animatedCopy && !initialCopy)
             {
               if (self->super._annotationPresentation)
               {
@@ -331,8 +331,8 @@ LABEL_18:
             [v125 size];
             v127 = v126;
 
-            v128 = [(VKCameraController *)self canvas];
-            [v128 size];
+            canvas4 = [(VKCameraController *)self canvas];
+            [canvas4 size];
             v130 = v129;
 
             v131.f64[0] = v152;
@@ -366,26 +366,26 @@ LABEL_27:
           {
             if (v70 < v69)
             {
-              LOBYTE(v42) = v42 || v156;
+              LOBYTE(shouldForceZoomToFit) = shouldForceZoomToFit || initialCopy;
             }
 
-            if ((v156 & (vabdd_f64(v69, v70) > 4.5)) == 0 && !v42)
+            if ((initialCopy & (vabdd_f64(v69, v70) > 4.5)) == 0 && !shouldForceZoomToFit)
             {
               goto LABEL_35;
             }
           }
 
-          else if (!v42)
+          else if (!shouldForceZoomToFit)
           {
 LABEL_35:
             LODWORD(v71) = 0;
             v61 = v148;
 LABEL_38:
-            v72 = [(VKCameraController *)self canvas];
-            [v72 size];
+            canvas5 = [(VKCameraController *)self canvas];
+            [canvas5 size];
             v74 = v73;
-            v75 = [(VKCameraController *)self canvas];
-            [v75 size];
+            canvas6 = [(VKCameraController *)self canvas];
+            [canvas6 size];
             v77 = v76;
 
             gdc::ViewDataAccess::screenPointForCoordinate(*([(VKCameraController *)self mapDataAccess]+ 16), &v187, v9);
@@ -399,12 +399,12 @@ LABEL_38:
 
             if ((!v71 || v81 <= 0.000000001) && v80 < 1.5)
             {
-              v7 = 0;
+              animatedCopy = 0;
             }
 
-            if (v156)
+            if (initialCopy)
             {
-              v7 = v7 & (v80 <= 10000.0);
+              animatedCopy = animatedCopy & (v80 <= 10000.0);
             }
 
             if (v81 > 0.000000001)
@@ -417,11 +417,11 @@ LABEL_38:
             v181[2] = __105__VKDaVinciAnnotationTrackingCameraController__goToAnnotationAnimated_duration_timingFunction_isInitial___block_invoke;
             v181[3] = &unk_1E7B37F98;
             v181[4] = self;
-            v182 = v7;
+            v182 = animatedCopy;
             v82 = MEMORY[0x1B8C62DA0](v181);
-            if (v7)
+            if (animatedCopy)
             {
-              if (v150 == -1.0)
+              if (durationCopy == -1.0)
               {
                 location[0] = *(v9 + 24);
                 [(VKDaVinciAnnotationTrackingCameraController *)self _zoomLevelForDistance:location];
@@ -433,7 +433,7 @@ LABEL_38:
 
               else if (v36 <= 0.200000003)
               {
-                v36 = fmax(v150, 0.200000003);
+                v36 = fmax(durationCopy, 0.200000003);
               }
 
               v88 = *v9;
@@ -454,8 +454,8 @@ LABEL_38:
                 }
               }
 
-              v89 = [(VKCameraController *)self cameraDelegate];
-              [v89 willBeginAnimatingAccess];
+              cameraDelegate = [(VKCameraController *)self cameraDelegate];
+              [cameraDelegate willBeginAnimatingAccess];
 
               v90 = self->super._annotationPresentation;
               v91 = v90;
@@ -469,9 +469,9 @@ LABEL_38:
                 if (v154 >= v95)
                 {
                   [(VKCameraController *)self camera];
-                  v96 = [(VKCameraController *)self canvas];
+                  canvas7 = [(VKCameraController *)self canvas];
                   v97 = v71;
-                  [v96 size];
+                  [canvas7 size];
                   v99 = v98;
                   v71 = location[0];
                   v100 = gdc::Camera::pitch(location[0]);
@@ -503,15 +503,15 @@ LABEL_38:
               self->super._currentAnimation = v107;
 
               v109 = &VKAnimationCurveEaseInOut;
-              if (!v156)
+              if (!initialCopy)
               {
                 v109 = &VKAnimationCurveLinear;
               }
 
               v110 = *v109;
-              if (v157)
+              if (functionCopy)
               {
-                v111 = v157;
+                v111 = functionCopy;
               }
 
               else
@@ -562,7 +562,7 @@ LABEL_38:
               v160[4] = self;
               v118 = v117;
               v161 = v118;
-              v168 = v156;
+              v168 = initialCopy;
               v162 = v82;
               [(VKAnimation *)self->super._currentAnimation setCompletionHandler:v160];
               md::AnimationRunner::runAnimation([(VKCameraController *)self animationRunner], &self->super._currentAnimation->super);
@@ -575,11 +575,11 @@ LABEL_38:
             else
             {
               *(&self->super._hasUserSpecifiedZoomLevel + 1) |= 0x20u;
-              v86 = [(VKCameraController *)self cameraDelegate];
-              v87 = v86;
-              if (v86)
+              cameraDelegate2 = [(VKCameraController *)self cameraDelegate];
+              v87 = cameraDelegate2;
+              if (cameraDelegate2)
               {
-                [v86 willBeginRegionChangeAccess:0];
+                [cameraDelegate2 willBeginRegionChangeAccess:0];
               }
 
               else
@@ -612,8 +612,8 @@ LABEL_38:
                 [(VKTrackableAnnotationPresentation *)self->super._annotationPresentation setPresentationCoordinate:?];
               }
 
-              v120 = [(VKCameraController *)self cameraDelegate];
-              [v120 mapLayerDidChangeVisibleRegion];
+              cameraDelegate3 = [(VKCameraController *)self cameraDelegate];
+              [cameraDelegate3 mapLayerDidChangeVisibleRegion];
 
               v121 = *[(VKCameraController *)self runLoopController];
               if (v121)
@@ -623,8 +623,8 @@ LABEL_38:
               }
 
               *(&self->super._hasUserSpecifiedZoomLevel + 1) &= ~0x20u;
-              v122 = [(VKCameraController *)self cameraDelegate];
-              [v122 didEndRegionChangeAccess:location];
+              cameraDelegate4 = [(VKCameraController *)self cameraDelegate];
+              [cameraDelegate4 didEndRegionChangeAccess:location];
 
               if (!self->super._annotationPresentation)
               {
@@ -665,7 +665,7 @@ LABEL_85:
     }
 
     *(&self->super._hasUserSpecifiedZoomLevel + 1) = v35 | 1;
-    self->super._pendingChangeDuration = v150;
+    self->super._pendingChangeDuration = durationCopy;
   }
 
 LABEL_86:
@@ -818,10 +818,10 @@ void __105__VKDaVinciAnnotationTrackingCameraController__goToAnnotationAnimated_
 {
   if (LOBYTE(self->_currentAnimationCompletedFraction) == 1)
   {
-    v3 = [(VKCameraController *)self runLoopController];
-    v3->var1 = [(VKCameraController *)self maxDisplayRate];
+    runLoopController = [(VKCameraController *)self runLoopController];
+    runLoopController->var1 = [(VKCameraController *)self maxDisplayRate];
 
-    md::RunLoopController::_updateDisplayRate(v3, v4, v5, v6);
+    md::RunLoopController::_updateDisplayRate(runLoopController, v4, v5, v6);
   }
 
   else
@@ -860,14 +860,14 @@ void __105__VKDaVinciAnnotationTrackingCameraController__goToAnnotationAnimated_
   return result;
 }
 
-- (VKEdgeInsets)_scaledEdgeInsets:(VKEdgeInsets)a3 withCanvasSize:(CGSize)a4
+- (VKEdgeInsets)_scaledEdgeInsets:(VKEdgeInsets)insets withCanvasSize:(CGSize)size
 {
-  v4 = a4.height + a4.height;
-  v5 = a4.width + a4.width;
-  v6 = a3.top / v4;
-  v7 = a3.left / v5;
-  v8 = a3.bottom / v4;
-  v9 = a3.right / v5;
+  v4 = size.height + size.height;
+  v5 = size.width + size.width;
+  v6 = insets.top / v4;
+  v7 = insets.left / v5;
+  v8 = insets.bottom / v4;
+  v9 = insets.right / v5;
   result.right = v9;
   result.bottom = v8;
   result.left = v7;
@@ -875,15 +875,15 @@ void __105__VKDaVinciAnnotationTrackingCameraController__goToAnnotationAnimated_
   return result;
 }
 
-- (Coordinate3D<geo::Radians,)_centerCoordinate:()Coordinate3D<geo:(double>)a3 :(VKEdgeInsets)a4 Radians forEdgeInsets:
+- (Coordinate3D<geo::Radians,)_centerCoordinate:()Coordinate3D<geo:(double>)geo :(VKEdgeInsets)a4 Radians forEdgeInsets:
 {
   top = a4.top;
-  value_low = LODWORD(a3.altitude._value);
-  v8 = LODWORD(a3.longitude._value);
-  v9 = LODWORD(a3.latitude._value);
+  value_low = LODWORD(geo.altitude._value);
+  v8 = LODWORD(geo.longitude._value);
+  v9 = LODWORD(geo.latitude._value);
   v10 = v4;
   v12 = v5;
-  v13 = [(VKCameraController *)self canvas:a3.latitude._value];
+  v13 = [(VKCameraController *)self canvas:geo.latitude._value];
   [v13 size];
   v15 = v14;
   v17 = v16;
@@ -910,10 +910,10 @@ void __105__VKDaVinciAnnotationTrackingCameraController__goToAnnotationAnimated_
 
   v39 = *v10;
   v40 = *(v10 + 2);
-  v31 = [(VKCameraController *)self mapDataAccess];
+  mapDataAccess = [(VKCameraController *)self mapDataAccess];
   v32.f64[0] = v28 + 0.5;
   v32.f64[1] = v29 + 0.5;
-  md::MapDataAccess::groundCoordinateForScreenPoint(&v36, v31, &v39, 0, 0, v32);
+  md::MapDataAccess::groundCoordinateForScreenPoint(&v36, mapDataAccess, &v39, 0, 0, v32);
   v33 = v38;
   v34 = *v10;
   if (*&v36 == -3.14159265 && *&v37 == -3.14159265 && v38 == 0.0)
@@ -937,12 +937,12 @@ void __105__VKDaVinciAnnotationTrackingCameraController__goToAnnotationAnimated_
   return result;
 }
 
-- (void)setEdgeInsets:(VKEdgeInsets)a3
+- (void)setEdgeInsets:(VKEdgeInsets)insets
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
   [(VKDaVinciAnnotationTrackingCameraController *)self _effectiveEdgeInsets];
   v9 = v8;
   v11 = v10;
@@ -962,8 +962,8 @@ void __105__VKDaVinciAnnotationTrackingCameraController__goToAnnotationAnimated_
     v23 = v22;
     v25 = v24;
     v27 = v26;
-    v28 = [(VKCameraController *)self canvas];
-    [v28 size];
+    canvas = [(VKCameraController *)self canvas];
+    [canvas size];
     v30 = v29;
     v32 = v31;
     LODWORD(v29) = v9;
@@ -976,8 +976,8 @@ void __105__VKDaVinciAnnotationTrackingCameraController__goToAnnotationAnimated_
     v40 = v39;
     v42 = v41;
 
-    v43 = [(VKCameraController *)self canvas];
-    [v43 size];
+    canvas2 = [(VKCameraController *)self canvas];
+    [canvas2 size];
     v45 = v44;
     v47 = v46;
     LODWORD(v44) = v21;
@@ -990,13 +990,13 @@ void __105__VKDaVinciAnnotationTrackingCameraController__goToAnnotationAnimated_
     v55 = v54;
     v57 = v56;
 
-    v58 = [(VKCameraController *)self mapDataAccess];
+    mapDataAccess = [(VKCameraController *)self mapDataAccess];
     v59.f64[0] = (v38 - v42) + 0.5;
     v59.f64[1] = (v40 - v36) + 0.5;
     v82 = v59;
     [(VKCameraController *)self camera];
     v60 = gdc::Camera::cameraFrame(v91);
-    md::MapDataAccess::groundCoordinateForScreenPoint(v89, v58, v60, 0, 0, v82);
+    md::MapDataAccess::groundCoordinateForScreenPoint(v89, mapDataAccess, v60, 0, 0, v82);
     v61 = (v53 - v57);
     v62 = (v55 - v51);
     if (*(&v91 + 1))
@@ -1004,13 +1004,13 @@ void __105__VKDaVinciAnnotationTrackingCameraController__goToAnnotationAnimated_
       std::__shared_weak_count::__release_shared[abi:nn200100](*(&v91 + 1));
     }
 
-    v63 = [(VKCameraController *)self mapDataAccess];
+    mapDataAccess2 = [(VKCameraController *)self mapDataAccess];
     v64.f64[0] = v61 + 0.5;
     v64.f64[1] = v62 + 0.5;
     v83 = v64;
     [(VKCameraController *)self camera];
     v65 = gdc::Camera::cameraFrame(v91);
-    md::MapDataAccess::groundCoordinateForScreenPoint(v88, v63, v65, 0, 0, v83);
+    md::MapDataAccess::groundCoordinateForScreenPoint(v88, mapDataAccess2, v65, 0, 0, v83);
     if (*(&v91 + 1))
     {
       std::__shared_weak_count::__release_shared[abi:nn200100](*(&v91 + 1));
@@ -1064,11 +1064,11 @@ void __105__VKDaVinciAnnotationTrackingCameraController__goToAnnotationAnimated_
   }
 }
 
-- (double)_minTrackingCameraDistance:(BOOL)a3
+- (double)_minTrackingCameraDistance:(BOOL)distance
 {
-  v3 = a3;
-  v5 = [(VKCameraController *)self canvas];
-  [v5 size];
+  distanceCopy = distance;
+  canvas = [(VKCameraController *)self canvas];
+  [canvas size];
   *&v6 = 512.0 / v6;
   v7 = log2f(*&v6);
 
@@ -1150,7 +1150,7 @@ void __105__VKDaVinciAnnotationTrackingCameraController__goToAnnotationAnimated_
   }
 
   v17 = fmin(fmax(idealCenterCoordinateDistance, v12), v15);
-  if (self->super._behavior.shouldPreserveUserSpecifiedZoomLevel && self->super._hasUserSpecifiedZoomLevel && v3)
+  if (self->super._behavior.shouldPreserveUserSpecifiedZoomLevel && self->super._hasUserSpecifiedZoomLevel && distanceCopy)
   {
     [(VKCameraController *)self camera];
     v18 = *grl::IconMetricsRenderResult::size(v23);
@@ -1165,7 +1165,7 @@ void __105__VKDaVinciAnnotationTrackingCameraController__goToAnnotationAnimated_
   return v17;
 }
 
-- (double)_zoomLevelForDistance:()Unit<geo:(double>)a3 :MeterUnitDescription
+- (double)_zoomLevelForDistance:()Unit<geo:(double>)geo :MeterUnitDescription
 {
   v4 = v3;
   [(VKCameraController *)self camera];
@@ -1177,8 +1177,8 @@ void __105__VKDaVinciAnnotationTrackingCameraController__goToAnnotationAnimated_
     std::__shared_weak_count::__release_shared[abi:nn200100](v16);
   }
 
-  v8 = [(VKCameraController *)self canvas];
-  [v8 size];
+  canvas = [(VKCameraController *)self canvas];
+  [canvas size];
   v10 = v9;
   v11 = gdc::DisplayZoomLevel::zoomLevelForDistance(v6, v7);
   v12 = 512.0 / v10;

@@ -1,48 +1,48 @@
 @interface __NSTextAppearanceEffectContext
-- (__NSTextAppearanceEffectContext)initWithTextEffectName:(id)a3 catalog:(id)a4 styleEffectConfiguration:(id)a5 font:(id)a6 color:(id)a7 applicationFrameworkContext:(int64_t)a8 useSimplifiedEffect:(BOOL)a9;
+- (__NSTextAppearanceEffectContext)initWithTextEffectName:(id)name catalog:(id)catalog styleEffectConfiguration:(id)configuration font:(id)font color:(id)color applicationFrameworkContext:(int64_t)context useSimplifiedEffect:(BOOL)effect;
 - (void)dealloc;
 @end
 
 @implementation __NSTextAppearanceEffectContext
 
-- (__NSTextAppearanceEffectContext)initWithTextEffectName:(id)a3 catalog:(id)a4 styleEffectConfiguration:(id)a5 font:(id)a6 color:(id)a7 applicationFrameworkContext:(int64_t)a8 useSimplifiedEffect:(BOOL)a9
+- (__NSTextAppearanceEffectContext)initWithTextEffectName:(id)name catalog:(id)catalog styleEffectConfiguration:(id)configuration font:(id)font color:(id)color applicationFrameworkContext:(int64_t)context useSimplifiedEffect:(BOOL)effect
 {
   if (+[NSTextGraphicsContextProvider textGraphicsContextProviderClassRespondsToColorQuery])
   {
-    v16 = [(objc_class *)+[NSTextGraphicsContextProvider textGraphicsContextProviderClass](NSTextGraphicsContextProvider colorClassForApplicationFrameworkContext:"colorClassForApplicationFrameworkContext:", a8];
+    context = [(objc_class *)+[NSTextGraphicsContextProvider textGraphicsContextProviderClass](NSTextGraphicsContextProvider colorClassForApplicationFrameworkContext:"colorClassForApplicationFrameworkContext:", context];
   }
 
   else
   {
-    v16 = +[NSTextGraphicsContextProvider __defaultColorClass];
+    context = +[NSTextGraphicsContextProvider __defaultColorClass];
   }
 
-  v17 = v16;
-  if (a8 == 2)
+  v17 = context;
+  if (context == 2)
   {
-    if (!a4)
+    if (!catalog)
     {
       goto LABEL_21;
     }
 
-    if (!a3)
+    if (!name)
     {
-      if (!a5)
+      if (!configuration)
       {
         goto LABEL_21;
       }
 
       objc_opt_class();
-      if ((objc_opt_isKindOfClass() & 1) == 0 || ![a5 backgroundType])
+      if ((objc_opt_isKindOfClass() & 1) == 0 || ![configuration backgroundType])
       {
         goto LABEL_21;
       }
     }
   }
 
-  else if (!a3 || a4)
+  else if (!name || catalog)
   {
-    if (!a3)
+    if (!name)
     {
 LABEL_21:
 
@@ -74,7 +74,7 @@ LABEL_21:
       [__NSTextAppearanceEffectContext initWithTextEffectName:catalog:styleEffectConfiguration:font:color:applicationFrameworkContext:useSimplifiedEffect:];
     }
 
-    a4 = v18();
+    catalog = v18();
   }
 
   v22.receiver = self;
@@ -82,11 +82,11 @@ LABEL_21:
   v19 = [(__NSTextAppearanceEffectContext *)&v22 init];
   if (v19)
   {
-    v19->_effectName = a3;
-    v19->_catalog = a4;
-    if (a5)
+    v19->_effectName = name;
+    v19->_catalog = catalog;
+    if (configuration)
     {
-      v20 = [a5 copy];
+      v20 = [configuration copy];
     }
 
     else
@@ -95,14 +95,14 @@ LABEL_21:
     }
 
     v19->_effectConfiguration = v20;
-    v19->_font = a6;
-    if (!a7)
+    v19->_font = font;
+    if (!color)
     {
-      a7 = [(objc_class *)v17 blackColor];
+      color = [(objc_class *)v17 blackColor];
     }
 
-    v19->_color = a7;
-    [(CUIStyleEffectConfiguration *)v19->_effectConfiguration setUseSimplifiedEffect:a9];
+    v19->_color = color;
+    [(CUIStyleEffectConfiguration *)v19->_effectConfiguration setUseSimplifiedEffect:effect];
   }
 
   return v19;

@@ -1,29 +1,29 @@
 @interface TSUZipInflateReadChannel
-- (BOOL)processData:(id)a3 inflateResult:(int *)a4 CRC:(unsigned int *)a5 isDone:(BOOL)a6 handler:(id)a7;
-- (TSUZipInflateReadChannel)initWithReadChannel:(id)a3 uncompressedSize:(unint64_t)a4 CRC:(unsigned int)a5 validateCRC:(BOOL)a6;
+- (BOOL)processData:(id)data inflateResult:(int *)result CRC:(unsigned int *)c isDone:(BOOL)done handler:(id)handler;
+- (TSUZipInflateReadChannel)initWithReadChannel:(id)channel uncompressedSize:(unint64_t)size CRC:(unsigned int)c validateCRC:(BOOL)rC;
 - (void)close;
 - (void)dealloc;
-- (void)handleFailureWithHandler:(id)a3 error:(id)a4;
+- (void)handleFailureWithHandler:(id)handler error:(id)error;
 - (void)prepareBuffer;
-- (void)readWithHandler:(id)a3;
+- (void)readWithHandler:(id)handler;
 @end
 
 @implementation TSUZipInflateReadChannel
 
-- (TSUZipInflateReadChannel)initWithReadChannel:(id)a3 uncompressedSize:(unint64_t)a4 CRC:(unsigned int)a5 validateCRC:(BOOL)a6
+- (TSUZipInflateReadChannel)initWithReadChannel:(id)channel uncompressedSize:(unint64_t)size CRC:(unsigned int)c validateCRC:(BOOL)rC
 {
-  v11 = a3;
+  channelCopy = channel;
   v15.receiver = self;
   v15.super_class = TSUZipInflateReadChannel;
   v12 = [(TSUZipInflateReadChannel *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_readChannel, a3);
+    objc_storeStrong(&v12->_readChannel, channel);
     v13->_stream.next_in = 0;
-    v13->_remainingUncompressedSize = a4;
-    v13->_CRC = a5;
-    v13->_validateCRC = a6;
+    v13->_remainingUncompressedSize = size;
+    v13->_CRC = c;
+    v13->_validateCRC = rC;
     v13->_stream.avail_in = 0;
     v13->_stream.avail_out = 0;
     v13->_stream.next_out = 0;
@@ -93,9 +93,9 @@
   self->_stream.next_out = v8;
 }
 
-- (void)readWithHandler:(id)a3
+- (void)readWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v19[0] = 0;
   v19[1] = v19;
   v19[2] = 0x2020000000;
@@ -119,7 +119,7 @@
   v7[3] = &unk_27A702910;
   v9 = v19;
   v7[4] = self;
-  v6 = v4;
+  v6 = handlerCopy;
   v8 = v6;
   v10 = v15;
   v11 = v17;
@@ -132,11 +132,11 @@
   _Block_object_dispose(v19, 8);
 }
 
-- (BOOL)processData:(id)a3 inflateResult:(int *)a4 CRC:(unsigned int *)a5 isDone:(BOOL)a6 handler:(id)a7
+- (BOOL)processData:(id)data inflateResult:(int *)result CRC:(unsigned int *)c isDone:(BOOL)done handler:(id)handler
 {
-  v8 = a6;
-  v12 = a3;
-  v13 = a7;
+  doneCopy = done;
+  dataCopy = data;
+  handlerCopy = handler;
   v23 = 0;
   v24 = &v23;
   v25 = 0x2020000000;
@@ -146,26 +146,26 @@
   applier[2] = sub_2770BC724;
   applier[3] = &unk_27A702938;
   v20 = &v23;
-  v21 = a4;
+  resultCopy = result;
   applier[4] = self;
-  v22 = a5;
-  v14 = v13;
+  cCopy = c;
+  v14 = handlerCopy;
   v19 = v14;
-  dispatch_data_apply(v12, applier);
+  dispatch_data_apply(dataCopy, applier);
   v15 = *(v24 + 24);
   if (!self->_validateCRC || (v24[3] & 1) == 0)
   {
     goto LABEL_10;
   }
 
-  if (v8)
+  if (doneCopy)
   {
-    if (!a5)
+    if (!c)
     {
 LABEL_9:
       v15 = 1;
 LABEL_10:
-      if ((v15 & 1) == 0 || !v8 || *a4 == 1)
+      if ((v15 & 1) == 0 || !doneCopy || *result == 1)
       {
         if (v15)
         {
@@ -190,7 +190,7 @@ LABEL_19:
     }
 
 LABEL_8:
-    if (self->_CRC != *a5)
+    if (self->_CRC != *c)
     {
       if (TSUDefaultCat_init_token != -1)
       {
@@ -204,7 +204,7 @@ LABEL_8:
   }
 
   v16 = 1;
-  if (a5 && *a4 == 1)
+  if (c && *result == 1)
   {
     goto LABEL_8;
   }
@@ -215,21 +215,21 @@ LABEL_21:
   return v16 & 1;
 }
 
-- (void)handleFailureWithHandler:(id)a3 error:(id)a4
+- (void)handleFailureWithHandler:(id)handler error:(id)error
 {
-  if (a4)
+  if (error)
   {
-    v5 = *(a3 + 2);
-    v8 = a3;
+    v5 = *(handler + 2);
+    handlerCopy = handler;
     v5();
   }
 
   else
   {
     v6 = MEMORY[0x277CCA9B8];
-    v7 = a3;
-    v8 = [v6 tsu_fileReadUnknownErrorWithUserInfo:0];
-    (*(a3 + 2))(v7, 1, 0);
+    handlerCopy2 = handler;
+    handlerCopy = [v6 tsu_fileReadUnknownErrorWithUserInfo:0];
+    (*(handler + 2))(handlerCopy2, 1, 0);
   }
 }
 

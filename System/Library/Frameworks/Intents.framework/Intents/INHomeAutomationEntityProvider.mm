@@ -1,13 +1,13 @@
 @interface INHomeAutomationEntityProvider
-+ (id)_intents_decodeWithJSONDecoder:(id)a3 codableDescription:(id)a4 from:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (INHomeAutomationEntityProvider)initWithCoder:(id)a3;
-- (INHomeAutomationEntityProvider)initWithRoomNames:(id)a3 homeName:(id)a4 zoneNames:(id)a5 accessoryNames:(id)a6 serviceNames:(id)a7 serviceGroups:(id)a8 intentFromEntities:(id)a9 intentDeviceQuantifier:(id)a10 destinationDeviceId:(id)a11 intentDeviceType:(id)a12 intentPlaceHint:(id)a13 intentReference:(id)a14;
++ (id)_intents_decodeWithJSONDecoder:(id)decoder codableDescription:(id)description from:(id)from;
+- (BOOL)isEqual:(id)equal;
+- (INHomeAutomationEntityProvider)initWithCoder:(id)coder;
+- (INHomeAutomationEntityProvider)initWithRoomNames:(id)names homeName:(id)name zoneNames:(id)zoneNames accessoryNames:(id)accessoryNames serviceNames:(id)serviceNames serviceGroups:(id)groups intentFromEntities:(id)entities intentDeviceQuantifier:(id)self0 destinationDeviceId:(id)self1 intentDeviceType:(id)self2 intentPlaceHint:(id)self3 intentReference:(id)self4;
 - (id)_dictionaryRepresentation;
-- (id)_intents_encodeWithJSONEncoder:(id)a3 codableDescription:(id)a4;
-- (id)descriptionAtIndent:(unint64_t)a3;
+- (id)_intents_encodeWithJSONEncoder:(id)encoder codableDescription:(id)description;
+- (id)descriptionAtIndent:(unint64_t)indent;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation INHomeAutomationEntityProvider
@@ -16,14 +16,14 @@
 {
   v40[12] = *MEMORY[0x1E69E9840];
   roomNames = self->_roomNames;
-  v3 = roomNames;
+  null = roomNames;
   v39[0] = @"roomNames";
   if (!roomNames)
   {
-    v3 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v40[0] = v3;
+  v40[0] = null;
   v39[1] = @"homeName";
   homeName = self->_homeName;
   v36 = homeName;
@@ -71,67 +71,67 @@
   v40[5] = serviceGroups;
   v39[6] = @"intentFromEntities";
   intentFromEntities = self->_intentFromEntities;
-  v10 = intentFromEntities;
+  null2 = intentFromEntities;
   if (!intentFromEntities)
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v26 = v10;
-  v40[6] = v10;
+  v26 = null2;
+  v40[6] = null2;
   v39[7] = @"intentDeviceQuantifier";
   intentDeviceQuantifier = self->_intentDeviceQuantifier;
-  v12 = intentDeviceQuantifier;
+  null3 = intentDeviceQuantifier;
   if (!intentDeviceQuantifier)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v37 = v3;
-  v25 = v12;
-  v40[7] = v12;
+  v37 = null;
+  v25 = null3;
+  v40[7] = null3;
   v39[8] = @"destinationDeviceId";
   destinationDeviceId = self->_destinationDeviceId;
-  v14 = destinationDeviceId;
+  null4 = destinationDeviceId;
   if (!destinationDeviceId)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
   v27 = serviceGroups;
   v28 = serviceNames;
   v29 = accessoryNames;
   v35 = homeName;
-  v24 = v14;
-  v40[8] = v14;
+  v24 = null4;
+  v40[8] = null4;
   v39[9] = @"intentDeviceType";
   intentDeviceType = self->_intentDeviceType;
-  v16 = intentDeviceType;
+  null5 = intentDeviceType;
   if (!intentDeviceType)
   {
-    v16 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
   v17 = zoneNames;
-  v40[9] = v16;
+  v40[9] = null5;
   v39[10] = @"intentPlaceHint";
   intentPlaceHint = self->_intentPlaceHint;
-  v19 = intentPlaceHint;
+  null6 = intentPlaceHint;
   if (!intentPlaceHint)
   {
-    v19 = [MEMORY[0x1E695DFB0] null];
+    null6 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v40[10] = v19;
+  v40[10] = null6;
   v39[11] = @"intentReference";
   intentReference = self->_intentReference;
-  v21 = intentReference;
+  null7 = intentReference;
   if (!intentReference)
   {
-    v21 = [MEMORY[0x1E695DFB0] null];
+    null7 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v40[11] = v21;
+  v40[11] = null7;
   v30 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v40 forKeys:v39 count:12];
   if (intentReference)
   {
@@ -215,144 +215,144 @@ LABEL_32:
   return v30;
 }
 
-- (id)descriptionAtIndent:(unint64_t)a3
+- (id)descriptionAtIndent:(unint64_t)indent
 {
   v5 = MEMORY[0x1E696AEC0];
   v11.receiver = self;
   v11.super_class = INHomeAutomationEntityProvider;
   v6 = [(INHomeAutomationEntityProvider *)&v11 description];
-  v7 = [(INHomeAutomationEntityProvider *)self _dictionaryRepresentation];
-  v8 = [v7 descriptionAtIndent:a3];
+  _dictionaryRepresentation = [(INHomeAutomationEntityProvider *)self _dictionaryRepresentation];
+  v8 = [_dictionaryRepresentation descriptionAtIndent:indent];
   v9 = [v5 stringWithFormat:@"%@ %@", v6, v8];
 
   return v9;
 }
 
-- (id)_intents_encodeWithJSONEncoder:(id)a3 codableDescription:(id)a4
+- (id)_intents_encodeWithJSONEncoder:(id)encoder codableDescription:(id)description
 {
   v5 = MEMORY[0x1E695DF90];
-  v6 = a3;
-  v7 = [v5 dictionary];
-  v8 = [v6 encodeObject:self->_roomNames];
-  [v7 if_setObjectIfNonNil:v8 forKey:@"roomNames"];
+  encoderCopy = encoder;
+  dictionary = [v5 dictionary];
+  v8 = [encoderCopy encodeObject:self->_roomNames];
+  [dictionary if_setObjectIfNonNil:v8 forKey:@"roomNames"];
 
-  v9 = [v6 encodeObject:self->_homeName];
-  [v7 if_setObjectIfNonNil:v9 forKey:@"homeName"];
+  v9 = [encoderCopy encodeObject:self->_homeName];
+  [dictionary if_setObjectIfNonNil:v9 forKey:@"homeName"];
 
-  v10 = [v6 encodeObject:self->_zoneNames];
-  [v7 if_setObjectIfNonNil:v10 forKey:@"zoneNames"];
+  v10 = [encoderCopy encodeObject:self->_zoneNames];
+  [dictionary if_setObjectIfNonNil:v10 forKey:@"zoneNames"];
 
-  v11 = [v6 encodeObject:self->_accessoryNames];
-  [v7 if_setObjectIfNonNil:v11 forKey:@"accessoryNames"];
+  v11 = [encoderCopy encodeObject:self->_accessoryNames];
+  [dictionary if_setObjectIfNonNil:v11 forKey:@"accessoryNames"];
 
-  v12 = [v6 encodeObject:self->_serviceNames];
-  [v7 if_setObjectIfNonNil:v12 forKey:@"serviceNames"];
+  v12 = [encoderCopy encodeObject:self->_serviceNames];
+  [dictionary if_setObjectIfNonNil:v12 forKey:@"serviceNames"];
 
-  v13 = [v6 encodeObject:self->_serviceGroups];
-  [v7 if_setObjectIfNonNil:v13 forKey:@"serviceGroups"];
+  v13 = [encoderCopy encodeObject:self->_serviceGroups];
+  [dictionary if_setObjectIfNonNil:v13 forKey:@"serviceGroups"];
 
-  v14 = [v6 encodeObject:self->_intentFromEntities];
-  [v7 if_setObjectIfNonNil:v14 forKey:@"intentFromEntities"];
+  v14 = [encoderCopy encodeObject:self->_intentFromEntities];
+  [dictionary if_setObjectIfNonNil:v14 forKey:@"intentFromEntities"];
 
-  v15 = [v6 encodeObject:self->_intentDeviceQuantifier];
-  [v7 if_setObjectIfNonNil:v15 forKey:@"intentDeviceQuantifier"];
+  v15 = [encoderCopy encodeObject:self->_intentDeviceQuantifier];
+  [dictionary if_setObjectIfNonNil:v15 forKey:@"intentDeviceQuantifier"];
 
-  v16 = [v6 encodeObject:self->_destinationDeviceId];
-  [v7 if_setObjectIfNonNil:v16 forKey:@"destinationDeviceId"];
+  v16 = [encoderCopy encodeObject:self->_destinationDeviceId];
+  [dictionary if_setObjectIfNonNil:v16 forKey:@"destinationDeviceId"];
 
-  v17 = [v6 encodeObject:self->_intentDeviceType];
-  [v7 if_setObjectIfNonNil:v17 forKey:@"intentDeviceType"];
+  v17 = [encoderCopy encodeObject:self->_intentDeviceType];
+  [dictionary if_setObjectIfNonNil:v17 forKey:@"intentDeviceType"];
 
-  v18 = [v6 encodeObject:self->_intentPlaceHint];
-  [v7 if_setObjectIfNonNil:v18 forKey:@"intentPlaceHint"];
+  v18 = [encoderCopy encodeObject:self->_intentPlaceHint];
+  [dictionary if_setObjectIfNonNil:v18 forKey:@"intentPlaceHint"];
 
-  v19 = [v6 encodeObject:self->_intentReference];
+  v19 = [encoderCopy encodeObject:self->_intentReference];
 
-  [v7 if_setObjectIfNonNil:v19 forKey:@"intentReference"];
+  [dictionary if_setObjectIfNonNil:v19 forKey:@"intentReference"];
 
-  return v7;
+  return dictionary;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   roomNames = self->_roomNames;
-  v5 = a3;
-  [v5 encodeObject:roomNames forKey:@"roomNames"];
-  [v5 encodeObject:self->_homeName forKey:@"homeName"];
-  [v5 encodeObject:self->_zoneNames forKey:@"zoneNames"];
-  [v5 encodeObject:self->_accessoryNames forKey:@"accessoryNames"];
-  [v5 encodeObject:self->_serviceNames forKey:@"serviceNames"];
-  [v5 encodeObject:self->_serviceGroups forKey:@"serviceGroups"];
-  [v5 encodeObject:self->_intentFromEntities forKey:@"intentFromEntities"];
-  [v5 encodeObject:self->_intentDeviceQuantifier forKey:@"intentDeviceQuantifier"];
-  [v5 encodeObject:self->_destinationDeviceId forKey:@"destinationDeviceId"];
-  [v5 encodeObject:self->_intentDeviceType forKey:@"intentDeviceType"];
-  [v5 encodeObject:self->_intentPlaceHint forKey:@"intentPlaceHint"];
-  [v5 encodeObject:self->_intentReference forKey:@"intentReference"];
+  coderCopy = coder;
+  [coderCopy encodeObject:roomNames forKey:@"roomNames"];
+  [coderCopy encodeObject:self->_homeName forKey:@"homeName"];
+  [coderCopy encodeObject:self->_zoneNames forKey:@"zoneNames"];
+  [coderCopy encodeObject:self->_accessoryNames forKey:@"accessoryNames"];
+  [coderCopy encodeObject:self->_serviceNames forKey:@"serviceNames"];
+  [coderCopy encodeObject:self->_serviceGroups forKey:@"serviceGroups"];
+  [coderCopy encodeObject:self->_intentFromEntities forKey:@"intentFromEntities"];
+  [coderCopy encodeObject:self->_intentDeviceQuantifier forKey:@"intentDeviceQuantifier"];
+  [coderCopy encodeObject:self->_destinationDeviceId forKey:@"destinationDeviceId"];
+  [coderCopy encodeObject:self->_intentDeviceType forKey:@"intentDeviceType"];
+  [coderCopy encodeObject:self->_intentPlaceHint forKey:@"intentPlaceHint"];
+  [coderCopy encodeObject:self->_intentReference forKey:@"intentReference"];
 }
 
-- (INHomeAutomationEntityProvider)initWithCoder:(id)a3
+- (INHomeAutomationEntityProvider)initWithCoder:(id)coder
 {
   v43[2] = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E695DFD8];
-  v4 = a3;
+  coderCopy = coder;
   v43[0] = objc_opt_class();
   v43[1] = objc_opt_class();
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v43 count:2];
   v6 = [v3 setWithArray:v5];
-  v7 = [v4 decodeObjectOfClasses:v6 forKey:@"roomNames"];
+  v7 = [coderCopy decodeObjectOfClasses:v6 forKey:@"roomNames"];
 
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"homeName"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"homeName"];
   v9 = MEMORY[0x1E695DFD8];
   v42[0] = objc_opt_class();
   v42[1] = objc_opt_class();
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v42 count:2];
   v11 = [v9 setWithArray:v10];
-  v37 = [v4 decodeObjectOfClasses:v11 forKey:@"zoneNames"];
+  v37 = [coderCopy decodeObjectOfClasses:v11 forKey:@"zoneNames"];
 
   v12 = MEMORY[0x1E695DFD8];
   v41[0] = objc_opt_class();
   v41[1] = objc_opt_class();
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v41 count:2];
   v14 = [v12 setWithArray:v13];
-  v36 = [v4 decodeObjectOfClasses:v14 forKey:@"accessoryNames"];
+  v36 = [coderCopy decodeObjectOfClasses:v14 forKey:@"accessoryNames"];
 
   v15 = MEMORY[0x1E695DFD8];
   v40[0] = objc_opt_class();
   v40[1] = objc_opt_class();
   v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v40 count:2];
   v17 = [v15 setWithArray:v16];
-  v18 = [v4 decodeObjectOfClasses:v17 forKey:@"serviceNames"];
+  v18 = [coderCopy decodeObjectOfClasses:v17 forKey:@"serviceNames"];
 
   v19 = MEMORY[0x1E695DFD8];
   v39[0] = objc_opt_class();
   v39[1] = objc_opt_class();
   v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v39 count:2];
   v21 = [v19 setWithArray:v20];
-  v35 = [v4 decodeObjectOfClasses:v21 forKey:@"serviceGroups"];
+  v35 = [coderCopy decodeObjectOfClasses:v21 forKey:@"serviceGroups"];
 
   v22 = MEMORY[0x1E695DFD8];
   v38[0] = objc_opt_class();
   v38[1] = objc_opt_class();
   v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:v38 count:2];
   v24 = [v22 setWithArray:v23];
-  v32 = [v4 decodeObjectOfClasses:v24 forKey:@"intentFromEntities"];
+  v32 = [coderCopy decodeObjectOfClasses:v24 forKey:@"intentFromEntities"];
 
-  v31 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"intentDeviceQuantifier"];
-  v25 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"destinationDeviceId"];
-  v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"intentDeviceType"];
-  v27 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"intentPlaceHint"];
-  v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"intentReference"];
+  v31 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"intentDeviceQuantifier"];
+  v25 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"destinationDeviceId"];
+  v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"intentDeviceType"];
+  v27 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"intentPlaceHint"];
+  v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"intentReference"];
 
   v34 = [(INHomeAutomationEntityProvider *)self initWithRoomNames:v7 homeName:v8 zoneNames:v37 accessoryNames:v36 serviceNames:v18 serviceGroups:v35 intentFromEntities:v32 intentDeviceQuantifier:v31 destinationDeviceId:v25 intentDeviceType:v26 intentPlaceHint:v27 intentReference:v28];
   v29 = *MEMORY[0x1E69E9840];
   return v34;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v18 = 1;
   }
@@ -362,7 +362,7 @@ LABEL_32:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       roomNames = self->_roomNames;
       if (roomNames != v5->_roomNames && ![(NSArray *)roomNames isEqual:?])
       {
@@ -430,27 +430,27 @@ LABEL_30:
   return v13 ^ [(NSString *)self->_intentReference hash];
 }
 
-- (INHomeAutomationEntityProvider)initWithRoomNames:(id)a3 homeName:(id)a4 zoneNames:(id)a5 accessoryNames:(id)a6 serviceNames:(id)a7 serviceGroups:(id)a8 intentFromEntities:(id)a9 intentDeviceQuantifier:(id)a10 destinationDeviceId:(id)a11 intentDeviceType:(id)a12 intentPlaceHint:(id)a13 intentReference:(id)a14
+- (INHomeAutomationEntityProvider)initWithRoomNames:(id)names homeName:(id)name zoneNames:(id)zoneNames accessoryNames:(id)accessoryNames serviceNames:(id)serviceNames serviceGroups:(id)groups intentFromEntities:(id)entities intentDeviceQuantifier:(id)self0 destinationDeviceId:(id)self1 intentDeviceType:(id)self2 intentPlaceHint:(id)self3 intentReference:(id)self4
 {
-  v19 = a3;
-  v20 = a4;
-  v21 = a5;
-  v58 = a6;
-  v57 = a7;
-  v56 = a8;
-  v22 = v20;
-  v23 = a9;
-  v24 = a10;
-  v25 = a11;
-  v26 = a12;
-  v27 = a13;
-  v28 = a14;
+  namesCopy = names;
+  nameCopy = name;
+  zoneNamesCopy = zoneNames;
+  accessoryNamesCopy = accessoryNames;
+  serviceNamesCopy = serviceNames;
+  groupsCopy = groups;
+  v22 = nameCopy;
+  entitiesCopy = entities;
+  quantifierCopy = quantifier;
+  idCopy = id;
+  typeCopy = type;
+  hintCopy = hint;
+  referenceCopy = reference;
   v59.receiver = self;
   v59.super_class = INHomeAutomationEntityProvider;
   v29 = [(INHomeAutomationEntityProvider *)&v59 init];
   if (v29)
   {
-    v30 = [v19 copy];
+    v30 = [namesCopy copy];
     roomNames = v29->_roomNames;
     v29->_roomNames = v30;
 
@@ -458,43 +458,43 @@ LABEL_30:
     homeName = v29->_homeName;
     v29->_homeName = v32;
 
-    v34 = [v21 copy];
+    v34 = [zoneNamesCopy copy];
     zoneNames = v29->_zoneNames;
     v29->_zoneNames = v34;
 
-    v36 = [v58 copy];
+    v36 = [accessoryNamesCopy copy];
     accessoryNames = v29->_accessoryNames;
     v29->_accessoryNames = v36;
 
-    v38 = [v57 copy];
+    v38 = [serviceNamesCopy copy];
     serviceNames = v29->_serviceNames;
     v29->_serviceNames = v38;
 
-    v40 = [v56 copy];
+    v40 = [groupsCopy copy];
     serviceGroups = v29->_serviceGroups;
     v29->_serviceGroups = v40;
 
-    v42 = [v23 copy];
+    v42 = [entitiesCopy copy];
     intentFromEntities = v29->_intentFromEntities;
     v29->_intentFromEntities = v42;
 
-    v44 = [v24 copy];
+    v44 = [quantifierCopy copy];
     intentDeviceQuantifier = v29->_intentDeviceQuantifier;
     v29->_intentDeviceQuantifier = v44;
 
-    v46 = [v25 copy];
+    v46 = [idCopy copy];
     destinationDeviceId = v29->_destinationDeviceId;
     v29->_destinationDeviceId = v46;
 
-    v48 = [v26 copy];
+    v48 = [typeCopy copy];
     intentDeviceType = v29->_intentDeviceType;
     v29->_intentDeviceType = v48;
 
-    v50 = [v27 copy];
+    v50 = [hintCopy copy];
     intentPlaceHint = v29->_intentPlaceHint;
     v29->_intentPlaceHint = v50;
 
-    v52 = [v28 copy];
+    v52 = [referenceCopy copy];
     intentReference = v29->_intentReference;
     v29->_intentReference = v52;
   }
@@ -502,63 +502,63 @@ LABEL_30:
   return v29;
 }
 
-+ (id)_intents_decodeWithJSONDecoder:(id)a3 codableDescription:(id)a4 from:(id)a5
++ (id)_intents_decodeWithJSONDecoder:(id)decoder codableDescription:(id)description from:(id)from
 {
-  v7 = a3;
-  v8 = a5;
+  decoderCopy = decoder;
+  fromCopy = from;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v43 = a1;
+    selfCopy = self;
     v9 = objc_opt_class();
-    v10 = [v8 objectForKeyedSubscript:@"roomNames"];
-    v47 = [v7 decodeObjectsOfClass:v9 from:v10];
+    v10 = [fromCopy objectForKeyedSubscript:@"roomNames"];
+    v47 = [decoderCopy decodeObjectsOfClass:v9 from:v10];
 
     v11 = objc_opt_class();
-    v12 = [v8 objectForKeyedSubscript:@"homeName"];
-    v46 = [v7 decodeObjectOfClass:v11 from:v12];
+    v12 = [fromCopy objectForKeyedSubscript:@"homeName"];
+    v46 = [decoderCopy decodeObjectOfClass:v11 from:v12];
 
     v13 = objc_opt_class();
-    v14 = [v8 objectForKeyedSubscript:@"zoneNames"];
-    v45 = [v7 decodeObjectsOfClass:v13 from:v14];
+    v14 = [fromCopy objectForKeyedSubscript:@"zoneNames"];
+    v45 = [decoderCopy decodeObjectsOfClass:v13 from:v14];
 
     v15 = objc_opt_class();
-    v16 = [v8 objectForKeyedSubscript:@"accessoryNames"];
-    v44 = [v7 decodeObjectsOfClass:v15 from:v16];
+    v16 = [fromCopy objectForKeyedSubscript:@"accessoryNames"];
+    v44 = [decoderCopy decodeObjectsOfClass:v15 from:v16];
 
     v17 = objc_opt_class();
-    v18 = [v8 objectForKeyedSubscript:@"serviceNames"];
-    v41 = [v7 decodeObjectsOfClass:v17 from:v18];
+    v18 = [fromCopy objectForKeyedSubscript:@"serviceNames"];
+    v41 = [decoderCopy decodeObjectsOfClass:v17 from:v18];
 
     v19 = objc_opt_class();
-    v20 = [v8 objectForKeyedSubscript:@"serviceGroups"];
-    v42 = [v7 decodeObjectsOfClass:v19 from:v20];
+    v20 = [fromCopy objectForKeyedSubscript:@"serviceGroups"];
+    v42 = [decoderCopy decodeObjectsOfClass:v19 from:v20];
 
     v21 = objc_opt_class();
-    v22 = [v8 objectForKeyedSubscript:@"intentFromEntities"];
-    v23 = [v7 decodeObjectsOfClass:v21 from:v22];
+    v22 = [fromCopy objectForKeyedSubscript:@"intentFromEntities"];
+    v23 = [decoderCopy decodeObjectsOfClass:v21 from:v22];
 
     v24 = objc_opt_class();
-    v25 = [v8 objectForKeyedSubscript:@"intentDeviceQuantifier"];
-    v40 = [v7 decodeObjectOfClass:v24 from:v25];
+    v25 = [fromCopy objectForKeyedSubscript:@"intentDeviceQuantifier"];
+    v40 = [decoderCopy decodeObjectOfClass:v24 from:v25];
 
     v26 = objc_opt_class();
-    v27 = [v8 objectForKeyedSubscript:@"destinationDeviceId"];
-    v28 = [v7 decodeObjectOfClass:v26 from:v27];
+    v27 = [fromCopy objectForKeyedSubscript:@"destinationDeviceId"];
+    v28 = [decoderCopy decodeObjectOfClass:v26 from:v27];
 
     v29 = objc_opt_class();
-    v30 = [v8 objectForKeyedSubscript:@"intentDeviceType"];
-    v39 = [v7 decodeObjectOfClass:v29 from:v30];
+    v30 = [fromCopy objectForKeyedSubscript:@"intentDeviceType"];
+    v39 = [decoderCopy decodeObjectOfClass:v29 from:v30];
 
     v31 = objc_opt_class();
-    v32 = [v8 objectForKeyedSubscript:@"intentPlaceHint"];
-    v33 = [v7 decodeObjectOfClass:v31 from:v32];
+    v32 = [fromCopy objectForKeyedSubscript:@"intentPlaceHint"];
+    v33 = [decoderCopy decodeObjectOfClass:v31 from:v32];
 
     v34 = objc_opt_class();
-    v35 = [v8 objectForKeyedSubscript:@"intentReference"];
-    v36 = [v7 decodeObjectOfClass:v34 from:v35];
+    v35 = [fromCopy objectForKeyedSubscript:@"intentReference"];
+    v36 = [decoderCopy decodeObjectOfClass:v34 from:v35];
 
-    v37 = [[v43 alloc] initWithRoomNames:v47 homeName:v46 zoneNames:v45 accessoryNames:v44 serviceNames:v41 serviceGroups:v42 intentFromEntities:v23 intentDeviceQuantifier:v40 destinationDeviceId:v28 intentDeviceType:v39 intentPlaceHint:v33 intentReference:v36];
+    v37 = [[selfCopy alloc] initWithRoomNames:v47 homeName:v46 zoneNames:v45 accessoryNames:v44 serviceNames:v41 serviceGroups:v42 intentFromEntities:v23 intentDeviceQuantifier:v40 destinationDeviceId:v28 intentDeviceType:v39 intentPlaceHint:v33 intentReference:v36];
   }
 
   else

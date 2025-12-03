@@ -1,99 +1,99 @@
 @interface CUIKEditingContextGroup
 - (BOOL)earlyCommitDecisionForGroupIsSet;
 - (BOOL)spanDecisionForGroupIsSet;
-- (CUIKEditingContextGroup)initWithObjectGroup:(id)a3;
+- (CUIKEditingContextGroup)initWithObjectGroup:(id)group;
 - (EKEventStore)eventStore;
 - (id)activeEditingContexts;
-- (id)activeEditingContextsExcludingContext:(id)a3;
-- (id)newIdentifierForIdentifier:(id)a3;
+- (id)activeEditingContextsExcludingContext:(id)context;
+- (id)newIdentifierForIdentifier:(id)identifier;
 - (id)objectsToCommit;
-- (id)oldObject:(id)a3 didUpdateTo:(id)a4;
+- (id)oldObject:(id)object didUpdateTo:(id)to;
 - (id)originalObjects;
 - (id)trackedObjects;
 - (unint64_t)earlyCommitDecisionForGroup;
 - (unint64_t)spanDecisionForGroup;
-- (void)addAdditionalObjects:(id)a3;
-- (void)addContext:(id)a3;
-- (void)removeContext:(id)a3;
-- (void)specifyEarlyCommitDecisionForGroup:(unint64_t)a3;
-- (void)specifySpanDecisionForGroup:(unint64_t)a3;
+- (void)addAdditionalObjects:(id)objects;
+- (void)addContext:(id)context;
+- (void)removeContext:(id)context;
+- (void)specifyEarlyCommitDecisionForGroup:(unint64_t)group;
+- (void)specifySpanDecisionForGroup:(unint64_t)group;
 @end
 
 @implementation CUIKEditingContextGroup
 
-- (CUIKEditingContextGroup)initWithObjectGroup:(id)a3
+- (CUIKEditingContextGroup)initWithObjectGroup:(id)group
 {
-  v4 = a3;
+  groupCopy = group;
   v9.receiver = self;
   v9.super_class = CUIKEditingContextGroup;
   v5 = [(CUIKEditingContextGroup *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    [(CUIKEditingContextGroup *)v5 setObjectGroup:v4];
-    v7 = [MEMORY[0x1E695DF70] array];
-    [(CUIKEditingContextGroup *)v6 setAdditionalObjectGroups:v7];
+    [(CUIKEditingContextGroup *)v5 setObjectGroup:groupCopy];
+    array = [MEMORY[0x1E695DF70] array];
+    [(CUIKEditingContextGroup *)v6 setAdditionalObjectGroups:array];
   }
 
   return v6;
 }
 
-- (void)addContext:(id)a3
+- (void)addContext:(id)context
 {
-  v4 = a3;
-  v5 = [(CUIKEditingContextGroup *)self openContexts];
+  contextCopy = context;
+  openContexts = [(CUIKEditingContextGroup *)self openContexts];
 
-  if (!v5)
+  if (!openContexts)
   {
     v6 = [MEMORY[0x1E695DFA8] set];
     [(CUIKEditingContextGroup *)self setOpenContexts:v6];
   }
 
-  [v4 setGroup:self];
-  [v4 _markAsOpen];
+  [contextCopy setGroup:self];
+  [contextCopy _markAsOpen];
   v7 = +[CUIKLogSubsystem editingContext];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     [CUIKEditingContextGroup addContext:];
   }
 
-  v8 = [(CUIKEditingContextGroup *)self openContexts];
-  [v8 addObject:v4];
+  openContexts2 = [(CUIKEditingContextGroup *)self openContexts];
+  [openContexts2 addObject:contextCopy];
 }
 
-- (void)removeContext:(id)a3
+- (void)removeContext:(id)context
 {
-  v4 = a3;
-  [v4 _markAsClosed];
+  contextCopy = context;
+  [contextCopy _markAsClosed];
   v5 = +[CUIKLogSubsystem editingContext];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [CUIKEditingContextGroup removeContext:];
   }
 
-  v6 = [(CUIKEditingContextGroup *)self openContexts];
-  [v6 removeObject:v4];
+  openContexts = [(CUIKEditingContextGroup *)self openContexts];
+  [openContexts removeObject:contextCopy];
 }
 
 - (id)activeEditingContexts
 {
-  v2 = [(CUIKEditingContextGroup *)self openContexts];
-  v3 = [v2 objectsPassingTest:&__block_literal_global_11];
+  openContexts = [(CUIKEditingContextGroup *)self openContexts];
+  v3 = [openContexts objectsPassingTest:&__block_literal_global_11];
 
   return v3;
 }
 
-- (id)activeEditingContextsExcludingContext:(id)a3
+- (id)activeEditingContextsExcludingContext:(id)context
 {
-  v4 = a3;
-  v5 = [(CUIKEditingContextGroup *)self openContexts];
+  contextCopy = context;
+  openContexts = [(CUIKEditingContextGroup *)self openContexts];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __65__CUIKEditingContextGroup_activeEditingContextsExcludingContext___block_invoke;
   v9[3] = &unk_1E839A4A8;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 objectsPassingTest:v9];
+  v10 = contextCopy;
+  v6 = contextCopy;
+  v7 = [openContexts objectsPassingTest:v9];
 
   return v7;
 }
@@ -111,64 +111,64 @@ uint64_t __65__CUIKEditingContextGroup_activeEditingContextsExcludingContext___b
   }
 }
 
-- (void)specifySpanDecisionForGroup:(unint64_t)a3
+- (void)specifySpanDecisionForGroup:(unint64_t)group
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:group];
   [(CUIKEditingContextGroup *)self setSpanDecisionAsNumber:v4];
 }
 
 - (BOOL)spanDecisionForGroupIsSet
 {
-  v2 = [(CUIKEditingContextGroup *)self spanDecisionAsNumber];
-  v3 = v2 != 0;
+  spanDecisionAsNumber = [(CUIKEditingContextGroup *)self spanDecisionAsNumber];
+  v3 = spanDecisionAsNumber != 0;
 
   return v3;
 }
 
 - (unint64_t)spanDecisionForGroup
 {
-  v2 = [(CUIKEditingContextGroup *)self spanDecisionAsNumber];
-  v3 = [v2 integerValue];
+  spanDecisionAsNumber = [(CUIKEditingContextGroup *)self spanDecisionAsNumber];
+  integerValue = [spanDecisionAsNumber integerValue];
 
-  return v3;
+  return integerValue;
 }
 
-- (void)specifyEarlyCommitDecisionForGroup:(unint64_t)a3
+- (void)specifyEarlyCommitDecisionForGroup:(unint64_t)group
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:group];
   [(CUIKEditingContextGroup *)self setEarlyCommitDecisionAsNumber:v4];
 }
 
 - (BOOL)earlyCommitDecisionForGroupIsSet
 {
-  v2 = [(CUIKEditingContextGroup *)self earlyCommitDecisionAsNumber];
-  v3 = v2 != 0;
+  earlyCommitDecisionAsNumber = [(CUIKEditingContextGroup *)self earlyCommitDecisionAsNumber];
+  v3 = earlyCommitDecisionAsNumber != 0;
 
   return v3;
 }
 
 - (unint64_t)earlyCommitDecisionForGroup
 {
-  v2 = [(CUIKEditingContextGroup *)self earlyCommitDecisionAsNumber];
-  v3 = [v2 integerValue];
+  earlyCommitDecisionAsNumber = [(CUIKEditingContextGroup *)self earlyCommitDecisionAsNumber];
+  integerValue = [earlyCommitDecisionAsNumber integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 - (id)objectsToCommit
 {
   v21 = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E695DFA8];
-  v4 = [(CUIKEditingContextGroup *)self objectGroup];
-  v5 = [v4 objects];
-  v6 = [v3 setWithArray:v5];
+  objectGroup = [(CUIKEditingContextGroup *)self objectGroup];
+  objects = [objectGroup objects];
+  v6 = [v3 setWithArray:objects];
 
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v7 = [(CUIKEditingContextGroup *)self additionalObjectGroups];
-  v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  additionalObjectGroups = [(CUIKEditingContextGroup *)self additionalObjectGroups];
+  v8 = [additionalObjectGroups countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v8)
   {
     v9 = v8;
@@ -179,16 +179,16 @@ uint64_t __65__CUIKEditingContextGroup_activeEditingContextsExcludingContext___b
       {
         if (*v17 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(additionalObjectGroups);
         }
 
         v12 = MEMORY[0x1E695DFD8];
-        v13 = [*(*(&v16 + 1) + 8 * i) objects];
-        v14 = [v12 setWithArray:v13];
+        objects2 = [*(*(&v16 + 1) + 8 * i) objects];
+        v14 = [v12 setWithArray:objects2];
         [v6 unionSet:v14];
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v9 = [additionalObjectGroups countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v9);
@@ -199,48 +199,48 @@ uint64_t __65__CUIKEditingContextGroup_activeEditingContextsExcludingContext___b
 
 - (id)trackedObjects
 {
-  v2 = [(CUIKEditingContextGroup *)self objectGroup];
-  v3 = [v2 objects];
+  objectGroup = [(CUIKEditingContextGroup *)self objectGroup];
+  objects = [objectGroup objects];
 
-  return v3;
+  return objects;
 }
 
 - (id)originalObjects
 {
-  v2 = [(CUIKEditingContextGroup *)self objectGroup];
-  v3 = [v2 originalObjects];
+  objectGroup = [(CUIKEditingContextGroup *)self objectGroup];
+  originalObjects = [objectGroup originalObjects];
 
-  return v3;
+  return originalObjects;
 }
 
-- (void)addAdditionalObjects:(id)a3
+- (void)addAdditionalObjects:(id)objects
 {
-  v6 = a3;
-  if ([v6 count])
+  objectsCopy = objects;
+  if ([objectsCopy count])
   {
-    v4 = [[CUIKObjectGroup alloc] initWithObjects:v6];
-    v5 = [(CUIKEditingContextGroup *)self additionalObjectGroups];
-    [v5 addObject:v4];
+    v4 = [[CUIKObjectGroup alloc] initWithObjects:objectsCopy];
+    additionalObjectGroups = [(CUIKEditingContextGroup *)self additionalObjectGroups];
+    [additionalObjectGroups addObject:v4];
   }
 }
 
-- (id)newIdentifierForIdentifier:(id)a3
+- (id)newIdentifierForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(CUIKEditingContextGroup *)self objectGroup];
-  v6 = [v5 shiftedOccurrencePreviouslySpawnedByIdentifier:v4];
+  identifierCopy = identifier;
+  objectGroup = [(CUIKEditingContextGroup *)self objectGroup];
+  v6 = [objectGroup shiftedOccurrencePreviouslySpawnedByIdentifier:identifierCopy];
 
   return v6;
 }
 
-- (id)oldObject:(id)a3 didUpdateTo:(id)a4
+- (id)oldObject:(id)object didUpdateTo:(id)to
 {
-  if (a3 && a4)
+  if (object && to)
   {
-    v6 = a4;
-    v7 = a3;
-    v8 = [(CUIKEditingContextGroup *)self objectGroup];
-    [v8 newObject:v6 spawnedFromObject:v7];
+    toCopy = to;
+    objectCopy = object;
+    objectGroup = [(CUIKEditingContextGroup *)self objectGroup];
+    [objectGroup newObject:toCopy spawnedFromObject:objectCopy];
   }
 
   return 0;

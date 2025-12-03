@@ -1,5 +1,5 @@
 @interface SALostPerfEventV7
-- (SALostPerfEventV7)initWithStartTime:(id)a3 reason:(unsigned int)a4;
+- (SALostPerfEventV7)initWithStartTime:(id)time reason:(unsigned int)reason;
 - (id)domain;
 - (id)lostPerf;
 - (id)mode;
@@ -9,15 +9,15 @@
 
 @implementation SALostPerfEventV7
 
-- (SALostPerfEventV7)initWithStartTime:(id)a3 reason:(unsigned int)a4
+- (SALostPerfEventV7)initWithStartTime:(id)time reason:(unsigned int)reason
 {
   v9.receiver = self;
   v9.super_class = SALostPerfEventV7;
-  v5 = [(SALostPerfEvent *)&v9 initWithStartTime:a3];
+  v5 = [(SALostPerfEvent *)&v9 initWithStartTime:time];
   v6 = v5;
   if (v5)
   {
-    v5->_reason = a4;
+    v5->_reason = reason;
     v7 = v5;
   }
 

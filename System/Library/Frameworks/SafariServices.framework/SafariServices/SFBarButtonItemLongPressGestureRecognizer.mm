@@ -1,80 +1,80 @@
 @interface SFBarButtonItemLongPressGestureRecognizer
-+ (id)gestureRecognizerTarget:(id)a3 longPressAction:(SEL)a4 touchDownAction:(SEL)a5 attachedToBarButtonItem:(id)a6;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
-- (void)_contentSizeCategoryDidChange:(id)a3;
++ (id)gestureRecognizerTarget:(id)target longPressAction:(SEL)action touchDownAction:(SEL)downAction attachedToBarButtonItem:(id)item;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
+- (void)_contentSizeCategoryDidChange:(id)change;
 - (void)_invokeLongPressAction;
-- (void)_updateMinimumPressDurationForContentSizeCategory:(id)a3;
-- (void)longPress:(id)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
+- (void)_updateMinimumPressDurationForContentSizeCategory:(id)category;
+- (void)longPress:(id)press;
+- (void)touchesBegan:(id)began withEvent:(id)event;
 @end
 
 @implementation SFBarButtonItemLongPressGestureRecognizer
 
-+ (id)gestureRecognizerTarget:(id)a3 longPressAction:(SEL)a4 touchDownAction:(SEL)a5 attachedToBarButtonItem:(id)a6
++ (id)gestureRecognizerTarget:(id)target longPressAction:(SEL)action touchDownAction:(SEL)downAction attachedToBarButtonItem:(id)item
 {
-  v10 = a6;
-  v11 = a3;
-  v12 = objc_alloc_init(a1);
+  itemCopy = item;
+  targetCopy = target;
+  v12 = objc_alloc_init(self);
   [v12 addTarget:v12 action:sel_longPress_];
   [MEMORY[0x1E69DC708] _sf_longPressAllowableMovement];
   [v12 setAllowableMovement:?];
   [v12 setDelegate:v12];
-  objc_storeWeak(v12 + 63, v10);
+  objc_storeWeak(v12 + 63, itemCopy);
 
-  if (a4)
+  if (action)
   {
-    v13 = a4;
+    actionCopy = action;
   }
 
   else
   {
-    v13 = 0;
+    actionCopy = 0;
   }
 
-  v12[65] = v13;
-  objc_storeWeak(v12 + 64, v11);
+  v12[65] = actionCopy;
+  objc_storeWeak(v12 + 64, targetCopy);
 
-  if (a5)
+  if (downAction)
   {
-    v14 = a5;
+    downActionCopy = downAction;
   }
 
   else
   {
-    v14 = 0;
+    downActionCopy = 0;
   }
 
-  v12[66] = v14;
+  v12[66] = downActionCopy;
   [v12 setButtonMaskRequired:3];
-  v15 = [MEMORY[0x1E69DC668] sharedApplication];
-  v16 = [v15 preferredContentSizeCategory];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  preferredContentSizeCategory = [mEMORY[0x1E69DC668] preferredContentSizeCategory];
 
-  [v12 _updateMinimumPressDurationForContentSizeCategory:v16];
-  v17 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v17 addObserver:v12 selector:sel__contentSizeCategoryDidChange_ name:*MEMORY[0x1E69DDC48] object:0];
+  [v12 _updateMinimumPressDurationForContentSizeCategory:preferredContentSizeCategory];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:v12 selector:sel__contentSizeCategoryDidChange_ name:*MEMORY[0x1E69DDC48] object:0];
 
   return v12;
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
+  beganCopy = began;
+  eventCopy = event;
   v14.receiver = self;
   v14.super_class = SFBarButtonItemLongPressGestureRecognizer;
-  [(SFBarButtonItemLongPressGestureRecognizer *)&v14 touchesBegan:v6 withEvent:v7];
+  [(SFBarButtonItemLongPressGestureRecognizer *)&v14 touchesBegan:beganCopy withEvent:eventCopy];
   if (![(SFBarButtonItemLongPressGestureRecognizer *)self state])
   {
-    v8 = v7;
+    v8 = eventCopy;
     if (([v8 _keyModifierFlags] & 0x40000) != 0)
     {
     }
 
     else
     {
-      v9 = [v8 buttonMask];
+      buttonMask = [v8 buttonMask];
 
-      if ((v9 & 2) == 0)
+      if ((buttonMask & 2) == 0)
       {
         goto LABEL_7;
       }
@@ -86,7 +86,7 @@
 LABEL_7:
   if (![(SFBarButtonItemLongPressGestureRecognizer *)self state]&& self->_touchDownAction)
   {
-    v10 = [MEMORY[0x1E69DC668] sharedApplication];
+    mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
     if (self->_touchDownAction)
     {
       touchDownAction = self->_touchDownAction;
@@ -99,11 +99,11 @@ LABEL_7:
 
     WeakRetained = objc_loadWeakRetained(&self->_target);
     v13 = objc_loadWeakRetained(&self->_barButtonItem);
-    [v10 sendAction:touchDownAction to:WeakRetained from:v13 forEvent:0];
+    [mEMORY[0x1E69DC668] sendAction:touchDownAction to:WeakRetained from:v13 forEvent:0];
   }
 }
 
-- (void)longPress:(id)a3
+- (void)longPress:(id)press
 {
   if ([(SFBarButtonItemLongPressGestureRecognizer *)self state]== 1)
   {
@@ -114,7 +114,7 @@ LABEL_7:
 
 - (void)_invokeLongPressAction
 {
-  v6 = [MEMORY[0x1E69DC668] sharedApplication];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
   if (self->_longPressAction)
   {
     longPressAction = self->_longPressAction;
@@ -127,20 +127,20 @@ LABEL_7:
 
   WeakRetained = objc_loadWeakRetained(&self->_target);
   v5 = objc_loadWeakRetained(&self->_barButtonItem);
-  [v6 sendAction:longPressAction to:WeakRetained from:v5 forEvent:0];
+  [mEMORY[0x1E69DC668] sendAction:longPressAction to:WeakRetained from:v5 forEvent:0];
 }
 
-- (void)_contentSizeCategoryDidChange:(id)a3
+- (void)_contentSizeCategoryDidChange:(id)change
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x1E69DDC80]];
+  userInfo = [change userInfo];
+  v5 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E69DDC80]];
 
   [(SFBarButtonItemLongPressGestureRecognizer *)self _updateMinimumPressDurationForContentSizeCategory:v5];
 }
 
-- (void)_updateMinimumPressDurationForContentSizeCategory:(id)a3
+- (void)_updateMinimumPressDurationForContentSizeCategory:(id)category
 {
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(a3);
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(category);
   v5 = 0.5;
   if (IsAccessibilityCategory)
   {
@@ -150,9 +150,9 @@ LABEL_7:
   [(SFBarButtonItemLongPressGestureRecognizer *)self setMinimumPressDuration:v5];
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
+  beginCopy = begin;
   WeakRetained = objc_loadWeakRetained(&self->_target);
   objc_opt_class();
   if (objc_opt_isKindOfClass())

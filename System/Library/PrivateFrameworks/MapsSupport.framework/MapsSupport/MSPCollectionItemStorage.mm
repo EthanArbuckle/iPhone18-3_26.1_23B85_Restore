@@ -1,12 +1,12 @@
 @interface MSPCollectionItemStorage
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation MSPCollectionItemStorage
@@ -17,20 +17,20 @@
   v8.receiver = self;
   v8.super_class = MSPCollectionItemStorage;
   v4 = [(MSPCollectionItemStorage *)&v8 description];
-  v5 = [(MSPCollectionItemStorage *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(MSPCollectionItemStorage *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   storageIdentifier = self->_storageIdentifier;
   if (storageIdentifier)
   {
-    [v3 setObject:storageIdentifier forKey:@"storageIdentifier"];
+    [dictionary setObject:storageIdentifier forKey:@"storageIdentifier"];
   }
 
   contents = self->_contents;
@@ -60,105 +60,105 @@
   unknownFields = self->_unknownFields;
   if (unknownFields)
   {
-    v11 = [(PBUnknownFields *)unknownFields dictionaryRepresentation];
-    [v4 setObject:v11 forKey:@"Unknown Fields"];
+    dictionaryRepresentation = [(PBUnknownFields *)unknownFields dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"Unknown Fields"];
   }
 
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_storageIdentifier)
   {
     PBDataWriterWriteDataField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_contents)
   {
     PBDataWriterWriteDataField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_contentsTimestamp)
   {
     PBDataWriterWriteDataField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_position)
   {
     PBDataWriterWriteDataField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_positionTimestamp)
   {
     PBDataWriterWriteDataField();
-    v4 = v5;
+    toCopy = v5;
   }
 
-  [(PBUnknownFields *)self->_unknownFields writeTo:v4];
+  [(PBUnknownFields *)self->_unknownFields writeTo:toCopy];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_storageIdentifier)
   {
-    [v4 setStorageIdentifier:?];
-    v4 = v5;
+    [toCopy setStorageIdentifier:?];
+    toCopy = v5;
   }
 
   if (self->_contents)
   {
     [v5 setContents:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_contentsTimestamp)
   {
     [v5 setContentsTimestamp:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_position)
   {
     [v5 setPosition:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_positionTimestamp)
   {
     [v5 setPositionTimestamp:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSData *)self->_storageIdentifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSData *)self->_storageIdentifier copyWithZone:zone];
   v7 = *(v5 + 48);
   *(v5 + 48) = v6;
 
-  v8 = [(NSData *)self->_contents copyWithZone:a3];
+  v8 = [(NSData *)self->_contents copyWithZone:zone];
   v9 = *(v5 + 16);
   *(v5 + 16) = v8;
 
-  v10 = [(NSData *)self->_contentsTimestamp copyWithZone:a3];
+  v10 = [(NSData *)self->_contentsTimestamp copyWithZone:zone];
   v11 = *(v5 + 24);
   *(v5 + 24) = v10;
 
-  v12 = [(NSData *)self->_position copyWithZone:a3];
+  v12 = [(NSData *)self->_position copyWithZone:zone];
   v13 = *(v5 + 32);
   *(v5 + 32) = v12;
 
-  v14 = [(NSData *)self->_positionTimestamp copyWithZone:a3];
+  v14 = [(NSData *)self->_positionTimestamp copyWithZone:zone];
   v15 = *(v5 + 40);
   *(v5 + 40) = v14;
 
@@ -166,13 +166,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((storageIdentifier = self->_storageIdentifier, !(storageIdentifier | v4[6])) || -[NSData isEqual:](storageIdentifier, "isEqual:")) && ((contents = self->_contents, !(contents | v4[2])) || -[NSData isEqual:](contents, "isEqual:")) && ((contentsTimestamp = self->_contentsTimestamp, !(contentsTimestamp | v4[3])) || -[NSData isEqual:](contentsTimestamp, "isEqual:")) && ((position = self->_position, !(position | v4[4])) || -[NSData isEqual:](position, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((storageIdentifier = self->_storageIdentifier, !(storageIdentifier | equalCopy[6])) || -[NSData isEqual:](storageIdentifier, "isEqual:")) && ((contents = self->_contents, !(contents | equalCopy[2])) || -[NSData isEqual:](contents, "isEqual:")) && ((contentsTimestamp = self->_contentsTimestamp, !(contentsTimestamp | equalCopy[3])) || -[NSData isEqual:](contentsTimestamp, "isEqual:")) && ((position = self->_position, !(position | equalCopy[4])) || -[NSData isEqual:](position, "isEqual:")))
   {
     positionTimestamp = self->_positionTimestamp;
-    if (positionTimestamp | v4[5])
+    if (positionTimestamp | equalCopy[5])
     {
       v10 = [(NSData *)positionTimestamp isEqual:?];
     }
@@ -200,30 +200,30 @@
   return v6 ^ [(NSData *)self->_positionTimestamp hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (v4[6])
+  fromCopy = from;
+  if (fromCopy[6])
   {
     [(MSPCollectionItemStorage *)self setStorageIdentifier:?];
   }
 
-  if (v4[2])
+  if (fromCopy[2])
   {
     [(MSPCollectionItemStorage *)self setContents:?];
   }
 
-  if (v4[3])
+  if (fromCopy[3])
   {
     [(MSPCollectionItemStorage *)self setContentsTimestamp:?];
   }
 
-  if (v4[4])
+  if (fromCopy[4])
   {
     [(MSPCollectionItemStorage *)self setPosition:?];
   }
 
-  if (v4[5])
+  if (fromCopy[5])
   {
     [(MSPCollectionItemStorage *)self setPositionTimestamp:?];
   }

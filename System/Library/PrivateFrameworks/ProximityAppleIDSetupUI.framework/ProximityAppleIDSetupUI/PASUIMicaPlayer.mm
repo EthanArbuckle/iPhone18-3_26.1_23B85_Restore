@@ -1,17 +1,17 @@
 @interface PASUIMicaPlayer
-+ (BOOL)BOOLFromDictionary:(id)a3 key:(id)a4 defaultValue:(BOOL)a5;
-+ (id)rootDictForPath:(id)a3;
-+ (id)updatePublishedObjects:(id)a3 toReferenceLayersInTree:(id)a4 ratherThanLayersInTree:(id)a5;
++ (BOOL)BOOLFromDictionary:(id)dictionary key:(id)key defaultValue:(BOOL)value;
++ (id)rootDictForPath:(id)path;
++ (id)updatePublishedObjects:(id)objects toReferenceLayersInTree:(id)tree ratherThanLayersInTree:(id)inTree;
 - (BOOL)isPlaybackAtEnd;
 - (BOOL)isTimerNeeded;
-- (PASUIMicaPlayer)initWithFileName:(id)a3 retinaScale:(double)a4;
-- (PASUIMicaPlayer)initWithPath:(id)a3 retinaScale:(double)a4;
-- (PASUIMicaPlayer)initWithPath:(id)a3 retinaScale:(double)a4 rootLayer:(id)a5 publishedObjects:(id)a6;
+- (PASUIMicaPlayer)initWithFileName:(id)name retinaScale:(double)scale;
+- (PASUIMicaPlayer)initWithPath:(id)path retinaScale:(double)scale;
+- (PASUIMicaPlayer)initWithPath:(id)path retinaScale:(double)scale rootLayer:(id)layer publishedObjects:(id)objects;
 - (PASUIMicaPlayerDelegate)delegate;
 - (double)playbackTime;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)publishedObjectWithKey:(id)a3 required:(BOOL)a4;
-- (void)addToLayer:(id)a3 onTop:(BOOL)a4 gravity:(id)a5;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)publishedObjectWithKey:(id)key required:(BOOL)required;
+- (void)addToLayer:(id)layer onTop:(BOOL)top gravity:(id)gravity;
 - (void)dealloc;
 - (void)notifyDelegateDidChangePlaybackTime;
 - (void)notifyDelegateDidStartPlaying;
@@ -19,48 +19,48 @@
 - (void)pause;
 - (void)play;
 - (void)removeFromSuperlayer;
-- (void)runPlayTimer:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setPlaybackTime:(double)a3;
-- (void)setPreferredPlaybackSpeed:(float)a3;
+- (void)runPlayTimer:(id)timer;
+- (void)setDelegate:(id)delegate;
+- (void)setPlaybackTime:(double)time;
+- (void)setPreferredPlaybackSpeed:(float)speed;
 - (void)startPlayTimerIfNeeded;
 - (void)stopPlayTimer;
 @end
 
 @implementation PASUIMicaPlayer
 
-- (PASUIMicaPlayer)initWithFileName:(id)a3 retinaScale:(double)a4
+- (PASUIMicaPlayer)initWithFileName:(id)name retinaScale:(double)scale
 {
-  v6 = a3;
+  nameCopy = name;
   v7 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-  v8 = [v7 URLForResource:v6 withExtension:@"caar"];
+  v8 = [v7 URLForResource:nameCopy withExtension:@"caar"];
 
   if (v8)
   {
-    v9 = [v8 path];
-    v10 = [(PASUIMicaPlayer *)self initWithPath:v9 retinaScale:a4];
-    self = v9;
+    path = [v8 path];
+    v10 = [(PASUIMicaPlayer *)self initWithPath:path retinaScale:scale];
+    self = path;
   }
 
   else
   {
-    NSLog(&cfstr_UnableToFindMi.isa, v6);
+    NSLog(&cfstr_UnableToFindMi.isa, nameCopy);
     v10 = 0;
   }
 
   return v10;
 }
 
-- (PASUIMicaPlayer)initWithPath:(id)a3 retinaScale:(double)a4
+- (PASUIMicaPlayer)initWithPath:(id)path retinaScale:(double)scale
 {
-  v6 = a3;
-  v7 = [PASUIMicaPlayer rootDictForPath:v6];
+  pathCopy = path;
+  v7 = [PASUIMicaPlayer rootDictForPath:pathCopy];
   v8 = v7;
   if (!v7 || ([v7 objectForKeyedSubscript:@"rootLayer"], (v9 = objc_claimAutoreleasedReturnValue()) == 0))
   {
 
 LABEL_6:
-    NSLog(&cfstr_UnableToLoadMi.isa, v6);
+    NSLog(&cfstr_UnableToLoadMi.isa, pathCopy);
     v12 = 0;
     goto LABEL_7;
   }
@@ -70,7 +70,7 @@ LABEL_6:
   [v10 setMasksToBounds:1];
   [v10 setRepeatCount:0.0];
   v11 = [v8 objectForKeyedSubscript:@"publishedObjects"];
-  v12 = [(PASUIMicaPlayer *)self initWithPath:v6 retinaScale:v10 rootLayer:v11 publishedObjects:a4];
+  v12 = [(PASUIMicaPlayer *)self initWithPath:pathCopy retinaScale:v10 rootLayer:v11 publishedObjects:scale];
 
   if (!v12)
   {
@@ -82,24 +82,24 @@ LABEL_7:
   return v12;
 }
 
-- (PASUIMicaPlayer)initWithPath:(id)a3 retinaScale:(double)a4 rootLayer:(id)a5 publishedObjects:(id)a6
+- (PASUIMicaPlayer)initWithPath:(id)path retinaScale:(double)scale rootLayer:(id)layer publishedObjects:(id)objects
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  pathCopy = path;
+  layerCopy = layer;
+  objectsCopy = objects;
   v17.receiver = self;
   v17.super_class = PASUIMicaPlayer;
   v13 = [(PASUIMicaPlayer *)&v17 init];
   v14 = v13;
   if (v13)
   {
-    [(PASUIMicaPlayer *)v13 setPath:v10];
-    [(PASUIMicaPlayer *)v14 setRootLayer:v11];
-    [(PASUIMicaPlayer *)v14 setPublishedObjects:v12];
+    [(PASUIMicaPlayer *)v13 setPath:pathCopy];
+    [(PASUIMicaPlayer *)v14 setRootLayer:layerCopy];
+    [(PASUIMicaPlayer *)v14 setPublishedObjects:objectsCopy];
     LODWORD(v15) = 1.0;
     [(PASUIMicaPlayer *)v14 setPreferredPlaybackSpeed:v15];
-    [(PASUIMicaPlayer *)v14 setRetinaScale:a4];
-    [v11 duration];
+    [(PASUIMicaPlayer *)v14 setRetinaScale:scale];
+    [layerCopy duration];
     [(PASUIMicaPlayer *)v14 setDocumentDuration:?];
     [(CALayer *)v14->_rootLayer setDuration:INFINITY];
   }
@@ -115,10 +115,10 @@ LABEL_7:
   [(PASUIMicaPlayer *)&v3 dealloc];
 }
 
-+ (id)rootDictForPath:(id)a3
++ (id)rootDictForPath:(id)path
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEBC0] fileURLWithPath:v3];
+  pathCopy = path;
+  v4 = [MEMORY[0x277CBEBC0] fileURLWithPath:pathCopy];
   if (v4)
   {
     v20 = 0;
@@ -139,8 +139,8 @@ LABEL_7:
 
       if (v15)
       {
-        v16 = [v3 lastPathComponent];
-        NSLog(&cfstr_UnableToOpenMi.isa, v16);
+        lastPathComponent = [pathCopy lastPathComponent];
+        NSLog(&cfstr_UnableToOpenMi.isa, lastPathComponent);
 
         v17 = [v15 description];
         NSLog(&cfstr_Error.isa, v17);
@@ -162,56 +162,56 @@ LABEL_7:
   return v14;
 }
 
-+ (BOOL)BOOLFromDictionary:(id)a3 key:(id)a4 defaultValue:(BOOL)a5
++ (BOOL)BOOLFromDictionary:(id)dictionary key:(id)key defaultValue:(BOOL)value
 {
-  v6 = [a3 objectForKeyedSubscript:a4];
+  v6 = [dictionary objectForKeyedSubscript:key];
   v7 = v6;
   if (v6)
   {
-    a5 = [v6 BOOLValue];
+    value = [v6 BOOLValue];
   }
 
-  return a5;
+  return value;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [(PASUIMicaPlayer *)self path];
-  v6 = [v5 copy];
+  path = [(PASUIMicaPlayer *)self path];
+  v6 = [path copy];
 
-  v7 = [(PASUIMicaPlayer *)self rootLayer];
-  v8 = [v7 mp_deepCopyLayer];
+  rootLayer = [(PASUIMicaPlayer *)self rootLayer];
+  mp_deepCopyLayer = [rootLayer mp_deepCopyLayer];
 
-  v9 = [(PASUIMicaPlayer *)self publishedObjects];
-  v10 = [(PASUIMicaPlayer *)self rootLayer];
-  v11 = [PASUIMicaPlayer updatePublishedObjects:v9 toReferenceLayersInTree:v8 ratherThanLayersInTree:v10];
+  publishedObjects = [(PASUIMicaPlayer *)self publishedObjects];
+  rootLayer2 = [(PASUIMicaPlayer *)self rootLayer];
+  v11 = [PASUIMicaPlayer updatePublishedObjects:publishedObjects toReferenceLayersInTree:mp_deepCopyLayer ratherThanLayersInTree:rootLayer2];
 
-  v12 = [objc_opt_class() allocWithZone:a3];
+  v12 = [objc_opt_class() allocWithZone:zone];
   [(PASUIMicaPlayer *)self retinaScale];
-  v13 = [v12 initWithPath:v6 retinaScale:v8 rootLayer:v11 publishedObjects:?];
+  v13 = [v12 initWithPath:v6 retinaScale:mp_deepCopyLayer rootLayer:v11 publishedObjects:?];
 
   return v13;
 }
 
-+ (id)updatePublishedObjects:(id)a3 toReferenceLayersInTree:(id)a4 ratherThanLayersInTree:(id)a5
++ (id)updatePublishedObjects:(id)objects toReferenceLayersInTree:(id)tree ratherThanLayersInTree:(id)inTree
 {
   v35 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v29 = [MEMORY[0x277CBEB38] dictionary];
-  if (v7 && [v7 count])
+  objectsCopy = objects;
+  treeCopy = tree;
+  inTreeCopy = inTree;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  if (objectsCopy && [objectsCopy count])
   {
-    v10 = [v9 mp_allLayersInTree];
-    v25 = v9;
-    v27 = [v9 mp_allAnimationsInTree];
-    v11 = [v8 mp_allLayersInTree];
-    v26 = [v8 mp_allAnimationsInTree];
+    mp_allLayersInTree = [inTreeCopy mp_allLayersInTree];
+    v25 = inTreeCopy;
+    mp_allAnimationsInTree = [inTreeCopy mp_allAnimationsInTree];
+    mp_allLayersInTree2 = [treeCopy mp_allLayersInTree];
+    mp_allAnimationsInTree2 = [treeCopy mp_allAnimationsInTree];
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
     v33 = 0u;
-    obj = [v7 allKeys];
+    obj = [objectsCopy allKeys];
     v12 = [obj countByEnumeratingWithState:&v30 objects:v34 count:16];
     if (v12)
     {
@@ -227,15 +227,15 @@ LABEL_7:
           }
 
           v16 = *(*(&v30 + 1) + 8 * i);
-          v17 = [v7 objectForKeyedSubscript:v16];
+          v17 = [objectsCopy objectForKeyedSubscript:v16];
           objc_opt_class();
           isKindOfClass = objc_opt_isKindOfClass();
-          v19 = v10;
-          v20 = v11;
-          if (isKindOfClass & 1) != 0 || (objc_opt_class(), v21 = objc_opt_isKindOfClass(), v20 = v26, v19 = v27, (v21))
+          v19 = mp_allLayersInTree;
+          v20 = mp_allLayersInTree2;
+          if (isKindOfClass & 1) != 0 || (objc_opt_class(), v21 = objc_opt_isKindOfClass(), v20 = mp_allAnimationsInTree2, v19 = mp_allAnimationsInTree, (v21))
           {
             v22 = [v20 objectAtIndexedSubscript:{objc_msgSend(v19, "indexOfObjectIdenticalTo:", v17)}];
-            [v29 setObject:v22 forKeyedSubscript:v16];
+            [dictionary setObject:v22 forKeyedSubscript:v16];
           }
         }
 
@@ -245,44 +245,44 @@ LABEL_7:
       while (v13);
     }
 
-    v9 = v25;
+    inTreeCopy = v25;
   }
 
   v23 = *MEMORY[0x277D85DE8];
 
-  return v29;
+  return dictionary;
 }
 
-- (void)addToLayer:(id)a3 onTop:(BOOL)a4 gravity:(id)a5
+- (void)addToLayer:(id)layer onTop:(BOOL)top gravity:(id)gravity
 {
-  v6 = a4;
-  v11 = a3;
-  v8 = a5;
-  v9 = [(CALayer *)self->_rootLayer superlayer];
+  topCopy = top;
+  layerCopy = layer;
+  gravityCopy = gravity;
+  superlayer = [(CALayer *)self->_rootLayer superlayer];
 
-  if (!v9)
+  if (!superlayer)
   {
     [(PASUIMicaPlayer *)self pause];
     [(PASUIMicaPlayer *)self setPlaybackTime:0.0];
-    [(PASUIMicaPlayer *)self moveAndResizeWithinParentLayer:v11 usingGravity:v8 animate:0];
+    [(PASUIMicaPlayer *)self moveAndResizeWithinParentLayer:layerCopy usingGravity:gravityCopy animate:0];
     rootLayer = self->_rootLayer;
-    if (v6)
+    if (topCopy)
     {
-      [v11 addSublayer:rootLayer];
+      [layerCopy addSublayer:rootLayer];
     }
 
     else
     {
-      [v11 insertSublayer:rootLayer atIndex:0];
+      [layerCopy insertSublayer:rootLayer atIndex:0];
     }
   }
 }
 
 - (void)removeFromSuperlayer
 {
-  v3 = [(CALayer *)self->_rootLayer superlayer];
+  superlayer = [(CALayer *)self->_rootLayer superlayer];
 
-  if (v3)
+  if (superlayer)
   {
     [(PASUIMicaPlayer *)self pause];
     rootLayer = self->_rootLayer;
@@ -291,16 +291,16 @@ LABEL_7:
   }
 }
 
-- (id)publishedObjectWithKey:(id)a3 required:(BOOL)a4
+- (id)publishedObjectWithKey:(id)key required:(BOOL)required
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(NSDictionary *)self->_publishedObjects objectForKeyedSubscript:v6];
+  requiredCopy = required;
+  keyCopy = key;
+  v7 = [(NSDictionary *)self->_publishedObjects objectForKeyedSubscript:keyCopy];
   v8 = v7;
-  if (v4 && !v7)
+  if (requiredCopy && !v7)
   {
-    v9 = [(NSString *)self->_path lastPathComponent];
-    NSLog(&cfstr_MissingPublish.isa, v6, v9);
+    lastPathComponent = [(NSString *)self->_path lastPathComponent];
+    NSLog(&cfstr_MissingPublish.isa, keyCopy, lastPathComponent);
   }
 
   return v8;
@@ -336,23 +336,23 @@ LABEL_7:
   }
 }
 
-- (void)setPreferredPlaybackSpeed:(float)a3
+- (void)setPreferredPlaybackSpeed:(float)speed
 {
-  if (a3 <= 0.0)
+  if (speed <= 0.0)
   {
-    v4 = 1.0;
+    speedCopy = 1.0;
   }
 
   else
   {
-    v4 = a3;
+    speedCopy = speed;
   }
 
-  self->_preferredPlaybackSpeed = v4;
+  self->_preferredPlaybackSpeed = speedCopy;
   if ([(PASUIMicaPlayer *)self isPlaying])
   {
     rootLayer = self->_rootLayer;
-    *&v5 = v4;
+    *&v5 = speedCopy;
 
     [(CALayer *)rootLayer setSpeed:v5];
   }
@@ -379,18 +379,18 @@ LABEL_7:
   return result;
 }
 
-- (void)setPlaybackTime:(double)a3
+- (void)setPlaybackTime:(double)time
 {
-  v5 = [(PASUIMicaPlayer *)self isPlaying];
+  isPlaying = [(PASUIMicaPlayer *)self isPlaying];
   v6 = 0.0;
-  if (v5)
+  if (isPlaying)
   {
-    v6 = CACurrentMediaTime() - a3;
-    a3 = 0.0;
+    v6 = CACurrentMediaTime() - time;
+    time = 0.0;
   }
 
   [(CALayer *)self->_rootLayer setBeginTime:v6];
-  [(CALayer *)self->_rootLayer setTimeOffset:a3];
+  [(CALayer *)self->_rootLayer setTimeOffset:time];
 
   [(PASUIMicaPlayer *)self notifyDelegateDidChangePlaybackTime];
 }
@@ -403,9 +403,9 @@ LABEL_7:
   return v4 >= v5 + -0.001;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  objc_storeWeak(&self->_delegate, a3);
+  objc_storeWeak(&self->_delegate, delegate);
   if ([(PASUIMicaPlayer *)self isTimerNeeded])
   {
 
@@ -483,10 +483,10 @@ LABEL_7:
     [(PASUIMicaPlayer *)self documentDuration];
     if (v3 == INFINITY)
     {
-      v5 = [(PASUIMicaPlayer *)self delegate];
-      if (v5)
+      delegate = [(PASUIMicaPlayer *)self delegate];
+      if (delegate)
       {
-        v6 = [(PASUIMicaPlayer *)self delegate];
+        delegate2 = [(PASUIMicaPlayer *)self delegate];
         v4 = objc_opt_respondsToSelector();
       }
 
@@ -551,7 +551,7 @@ void __41__PASUIMicaPlayer_startPlayTimerIfNeeded__block_invoke(uint64_t a1, voi
   }
 }
 
-- (void)runPlayTimer:(id)a3
+- (void)runPlayTimer:(id)timer
 {
   if ([(PASUIMicaPlayer *)self isPlaybackAtEnd])
   {

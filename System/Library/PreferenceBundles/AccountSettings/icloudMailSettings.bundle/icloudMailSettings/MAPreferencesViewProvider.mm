@@ -1,17 +1,17 @@
 @interface MAPreferencesViewProvider
-+ (id)getSwiftUIViewWithAccountStore:(id)a3 appleAccount:(id)a4 delegate:(id)a5;
++ (id)getSwiftUIViewWithAccountStore:(id)store appleAccount:(id)account delegate:(id)delegate;
 - (_TtC18icloudMailSettings25MAPreferencesViewProvider)init;
 @end
 
 @implementation MAPreferencesViewProvider
 
-+ (id)getSwiftUIViewWithAccountStore:(id)a3 appleAccount:(id)a4 delegate:(id)a5
++ (id)getSwiftUIViewWithAccountStore:(id)store appleAccount:(id)account delegate:(id)delegate
 {
   v8 = objc_allocWithZone(type metadata accessor for MAPreferencesController());
-  v9 = a3;
-  v10 = a4;
+  storeCopy = store;
+  accountCopy = account;
   swift_unknownObjectRetain();
-  v11 = sub_7BDE0(v9, v10, a5);
+  v11 = sub_7BDE0(storeCopy, accountCopy, delegate);
 
   swift_unknownObjectRelease();
 

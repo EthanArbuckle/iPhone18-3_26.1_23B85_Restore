@@ -1,7 +1,7 @@
 @interface SDNodeCoalescer
 - (SDNodeCoalescer)init;
-- (id)coalescedNodesForNewAvailableNodes:(id)a3;
-- (id)setMappedContactIdentifier:(id)a3 relatedContactIdentifiers:(id)a4;
+- (id)coalescedNodesForNewAvailableNodes:(id)nodes;
+- (id)setMappedContactIdentifier:(id)identifier relatedContactIdentifiers:(id)identifiers;
 @end
 
 @implementation SDNodeCoalescer
@@ -25,23 +25,23 @@
   return v2;
 }
 
-- (id)coalescedNodesForNewAvailableNodes:(id)a3
+- (id)coalescedNodesForNewAvailableNodes:(id)nodes
 {
-  v86 = a3;
+  nodesCopy = nodes;
   v91 = objc_opt_new();
   v100 = objc_opt_new();
   v90 = objc_opt_new();
   v87 = objc_opt_new();
   v89 = objc_opt_new();
-  v5 = self;
+  selfCopy = self;
   v6 = objc_opt_new();
-  objc_storeStrong(&self->_availableNodes, a3);
+  objc_storeStrong(&self->_availableNodes, nodes);
   v113 = 0u;
   v114 = 0u;
   v111 = 0u;
   v112 = 0u;
   obj = self->_availableNodes;
-  v101 = self;
+  selfCopy2 = self;
   v95 = v6;
   v94 = [(NSArray *)obj countByEnumeratingWithState:&v111 objects:v124 count:16];
   if (v94)
@@ -182,26 +182,26 @@ LABEL_16:
           if (v28)
           {
             v29 = v28;
-            v5 = v101;
+            selfCopy = selfCopy2;
             goto LABEL_44;
           }
 
           v41 = SFNodeCopyComputerName();
-          v5 = v101;
+          selfCopy = selfCopy2;
           if (v41)
           {
             v29 = v41;
 LABEL_44:
-            v42 = [(NSMutableDictionary *)v5->_originalNodes objectForKeyedSubscript:v29, v79];
+            v42 = [(NSMutableDictionary *)selfCopy->_originalNodes objectForKeyedSubscript:v29, v79];
 
             if (!v42)
             {
               Copy = SFNodeCreateCopy();
-              [(NSMutableDictionary *)v5->_originalNodes setObject:Copy forKeyedSubscript:v29];
+              [(NSMutableDictionary *)selfCopy->_originalNodes setObject:Copy forKeyedSubscript:v29];
               CFRelease(Copy);
             }
 
-            v44 = [(NSMutableDictionary *)v5->_originalNodes objectForKeyedSubscript:v29];
+            v44 = [(NSMutableDictionary *)selfCopy->_originalNodes objectForKeyedSubscript:v29];
             [v91 setObject:v44 forKeyedSubscript:v29];
 
             v45 = [v100 objectForKeyedSubscript:v29];
@@ -248,18 +248,18 @@ LABEL_54:
 
         if (v15)
         {
-          v5 = v101;
-          v30 = [(SDNodeCoalescer *)v101 setMappedContactIdentifier:v105 relatedContactIdentifiers:v11];
-          v31 = [(NSMutableDictionary *)v101->_originalNodes objectForKeyedSubscript:v30];
+          selfCopy = selfCopy2;
+          v30 = [(SDNodeCoalescer *)selfCopy2 setMappedContactIdentifier:v105 relatedContactIdentifiers:v11];
+          v31 = [(NSMutableDictionary *)selfCopy2->_originalNodes objectForKeyedSubscript:v30];
 
           if (!v31)
           {
             v32 = SFNodeCreateCopy();
-            [(NSMutableDictionary *)v101->_originalNodes setObject:v32 forKeyedSubscript:v30];
+            [(NSMutableDictionary *)selfCopy2->_originalNodes setObject:v32 forKeyedSubscript:v30];
             CFRelease(v32);
           }
 
-          v33 = [(NSMutableDictionary *)v101->_originalNodes objectForKeyedSubscript:v30, v79];
+          v33 = [(NSMutableDictionary *)selfCopy2->_originalNodes objectForKeyedSubscript:v30, v79];
           [v91 setObject:v33 forKeyedSubscript:v30];
 
           v34 = [v90 objectForKeyedSubscript:v30];
@@ -286,24 +286,24 @@ LABEL_54:
           if (!v13)
           {
             [v91 setObject:v8 forKeyedSubscript:v10];
-            v5 = v101;
+            selfCopy = selfCopy2;
             goto LABEL_54;
           }
 
-          v5 = v101;
+          selfCopy = selfCopy2;
           if ((v96 & 1) == 0)
           {
-            v36 = [(NSMutableDictionary *)v101->_originalNodes objectForKeyedSubscript:v13];
+            v36 = [(NSMutableDictionary *)selfCopy2->_originalNodes objectForKeyedSubscript:v13];
 
             if (!v36)
             {
               v37 = SFNodeCreateCopy();
-              [(NSMutableDictionary *)v101->_originalNodes setObject:v37 forKeyedSubscript:v13];
+              [(NSMutableDictionary *)selfCopy2->_originalNodes setObject:v37 forKeyedSubscript:v13];
               CFRelease(v37);
             }
 
-            v38 = [(NSMutableDictionary *)v101->_originalNodes objectForKeyedSubscript:v13, v79, v80, v81, v82, v83, v84, v85, v86];
-            [v91 setObject:v38 forKeyedSubscript:v13];
+            nodesCopy = [(NSMutableDictionary *)selfCopy2->_originalNodes objectForKeyedSubscript:v13, v79, v80, v81, v82, v83, v84, v85, nodesCopy];
+            [v91 setObject:nodesCopy forKeyedSubscript:v13];
           }
 
           v39 = [v87 objectForKeyedSubscript:{v13, v79}];
@@ -338,8 +338,8 @@ LABEL_62:
   v110 = 0u;
   v107 = 0u;
   v108 = 0u;
-  v99 = [v91 allValues];
-  v104 = [v99 countByEnumeratingWithState:&v107 objects:v123 count:16];
+  allValues = [v91 allValues];
+  v104 = [allValues countByEnumeratingWithState:&v107 objects:v123 count:16];
   if (!v104)
   {
     goto LABEL_108;
@@ -353,7 +353,7 @@ LABEL_62:
     {
       if (*v108 != v103)
       {
-        objc_enumerationMutation(v99);
+        objc_enumerationMutation(allValues);
       }
 
       v52 = *(*(&v107 + 1) + 8 * v51);
@@ -393,7 +393,7 @@ LABEL_62:
 
       else
       {
-        v59 = [(SDNodeCoalescer *)v5 mappedContactIdentifierForContactIdentifier:v54];
+        v59 = [(SDNodeCoalescer *)selfCopy mappedContactIdentifierForContactIdentifier:v54];
         v58 = v54;
       }
 
@@ -448,7 +448,7 @@ LABEL_62:
           SFNodeSetIconData();
         }
 
-        v5 = v101;
+        selfCopy = selfCopy2;
         goto LABEL_98;
       }
 
@@ -492,7 +492,7 @@ LABEL_98:
           v118 = v72;
           _os_log_debug_impl(&_mh_execute_header, v70, OS_LOG_TYPE_DEBUG, "Coalesced node %@ represents nodes %@", buf, 0x16u);
 
-          v5 = v101;
+          selfCopy = selfCopy2;
         }
       }
 
@@ -500,32 +500,32 @@ LABEL_98:
     }
 
     while (v104 != v51);
-    v73 = [v99 countByEnumeratingWithState:&v107 objects:v123 count:16];
+    v73 = [allValues countByEnumeratingWithState:&v107 objects:v123 count:16];
     v104 = v73;
   }
 
   while (v73);
 LABEL_108:
 
-  v74 = [v91 allValues];
-  coalescedNodes = v5->_coalescedNodes;
-  v5->_coalescedNodes = v74;
+  allValues2 = [v91 allValues];
+  coalescedNodes = selfCopy->_coalescedNodes;
+  selfCopy->_coalescedNodes = allValues2;
 
-  v76 = v5->_coalescedNodes;
+  v76 = selfCopy->_coalescedNodes;
   v77 = v76;
 
   return v76;
 }
 
-- (id)setMappedContactIdentifier:(id)a3 relatedContactIdentifiers:(id)a4
+- (id)setMappedContactIdentifier:(id)identifier relatedContactIdentifiers:(id)identifiers
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v7 = a4;
-  v8 = [v7 countByEnumeratingWithState:&v27 objects:v32 count:16];
+  identifiersCopy = identifiers;
+  v8 = [identifiersCopy countByEnumeratingWithState:&v27 objects:v32 count:16];
   if (v8)
   {
     v9 = v8;
@@ -536,7 +536,7 @@ LABEL_3:
     {
       if (*v28 != v10)
       {
-        objc_enumerationMutation(v7);
+        objc_enumerationMutation(identifiersCopy);
       }
 
       v12 = *(*(&v27 + 1) + 8 * v11);
@@ -549,7 +549,7 @@ LABEL_3:
 
       if (v9 == ++v11)
       {
-        v9 = [v7 countByEnumeratingWithState:&v27 objects:v32 count:16];
+        v9 = [identifiersCopy countByEnumeratingWithState:&v27 objects:v32 count:16];
         if (v9)
         {
           goto LABEL_3;
@@ -572,13 +572,13 @@ LABEL_3:
 LABEL_9:
   }
 
-  v14 = v6;
+  v14 = identifierCopy;
 LABEL_12:
   v25 = 0u;
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v15 = v7;
+  v15 = identifiersCopy;
   v16 = [v15 countByEnumeratingWithState:&v23 objects:v31 count:16];
   if (v16)
   {

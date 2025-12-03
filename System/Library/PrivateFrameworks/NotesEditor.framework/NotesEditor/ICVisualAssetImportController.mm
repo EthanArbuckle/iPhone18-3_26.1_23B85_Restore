@@ -1,27 +1,27 @@
 @interface ICVisualAssetImportController
 - (BOOL)isShowing;
 - (ICVisualAssetImportController)init;
-- (ICVisualAssetImportController)initWithCoder:(id)a3;
-- (ICVisualAssetImportController)initWithNote:(id)a3 textView:(id)a4;
-- (void)addImageData:(id)a3 typeIdentifier:(id)a4;
-- (void)addImageData:(id)a3 typeIdentifier:(id)a4 forceAddToPaper:(BOOL)a5;
-- (void)presentVisualAssetCaptureControllerWithDisableAutorotate:(BOOL)a3;
+- (ICVisualAssetImportController)initWithCoder:(id)coder;
+- (ICVisualAssetImportController)initWithNote:(id)note textView:(id)view;
+- (void)addImageData:(id)data typeIdentifier:(id)identifier;
+- (void)addImageData:(id)data typeIdentifier:(id)identifier forceAddToPaper:(BOOL)paper;
+- (void)presentVisualAssetCaptureControllerWithDisableAutorotate:(BOOL)autorotate;
 - (void)presentVisualAssetPickerController;
-- (void)setIsShowing:(BOOL)a3;
+- (void)setIsShowing:(BOOL)showing;
 @end
 
 @implementation ICVisualAssetImportController
 
-- (ICVisualAssetImportController)initWithNote:(id)a3 textView:(id)a4
+- (ICVisualAssetImportController)initWithNote:(id)note textView:(id)view
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = sub_2151AEB64(v5, v6);
+  noteCopy = note;
+  viewCopy = view;
+  v7 = sub_2151AEB64(noteCopy, viewCopy);
 
   return v7;
 }
 
-- (ICVisualAssetImportController)initWithCoder:(id)a3
+- (ICVisualAssetImportController)initWithCoder:(id)coder
 {
   *(&self->super.isa + OBJC_IVAR___ICVisualAssetImportController_paperImageInsertionController) = 0;
   *(&self->super.isa + OBJC_IVAR___ICVisualAssetImportController_captureController) = 0;
@@ -39,32 +39,32 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setIsShowing:(BOOL)a3
+- (void)setIsShowing:(BOOL)showing
 {
   v5 = OBJC_IVAR___ICVisualAssetImportController_isShowing;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = showing;
 }
 
 - (void)presentVisualAssetPickerController
 {
-  v2 = self;
+  selfCopy = self;
   VisualAssetImportController.presentVisualAssetPickerController()();
 }
 
-- (void)presentVisualAssetCaptureControllerWithDisableAutorotate:(BOOL)a3
+- (void)presentVisualAssetCaptureControllerWithDisableAutorotate:(BOOL)autorotate
 {
-  v4 = self;
-  VisualAssetImportController.presentVisualAssetCaptureController(disableAutorotate:)(a3);
+  selfCopy = self;
+  VisualAssetImportController.presentVisualAssetCaptureController(disableAutorotate:)(autorotate);
 }
 
-- (void)addImageData:(id)a3 typeIdentifier:(id)a4
+- (void)addImageData:(id)data typeIdentifier:(id)identifier
 {
   v6 = sub_2154A1F4C();
-  if (a4)
+  if (identifier)
   {
     v7 = sub_2154A1D6C();
-    a4 = v8;
+    identifier = v8;
   }
 
   else
@@ -72,19 +72,19 @@
     v7 = 0;
   }
 
-  v9 = self;
+  selfCopy = self;
   v10.value._countAndFlagsBits = v7;
-  v10.value._object = a4;
+  v10.value._object = identifier;
   VisualAssetImportController.add(_:typeIdentifier:forceAddToPaper:)(v6, v10, 0);
 }
 
-- (void)addImageData:(id)a3 typeIdentifier:(id)a4 forceAddToPaper:(BOOL)a5
+- (void)addImageData:(id)data typeIdentifier:(id)identifier forceAddToPaper:(BOOL)paper
 {
   v8 = sub_2154A1F4C();
-  if (a4)
+  if (identifier)
   {
     v9 = sub_2154A1D6C();
-    a4 = v10;
+    identifier = v10;
   }
 
   else
@@ -92,10 +92,10 @@
     v9 = 0;
   }
 
-  v11 = self;
+  selfCopy = self;
   v12.value._countAndFlagsBits = v9;
-  v12.value._object = a4;
-  VisualAssetImportController.add(_:typeIdentifier:forceAddToPaper:)(v8, v12, a5);
+  v12.value._object = identifier;
+  VisualAssetImportController.add(_:typeIdentifier:forceAddToPaper:)(v8, v12, paper);
 }
 
 - (ICVisualAssetImportController)init

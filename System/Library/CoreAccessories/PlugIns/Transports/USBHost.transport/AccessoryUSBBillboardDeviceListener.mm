@@ -1,5 +1,5 @@
 @interface AccessoryUSBBillboardDeviceListener
-- (AccessoryUSBBillboardDeviceListener)initWithVID:(unsigned __int16)a3 PID:(unsigned __int16)a4;
+- (AccessoryUSBBillboardDeviceListener)initWithVID:(unsigned __int16)d PID:(unsigned __int16)iD;
 - (BOOL)startDetectUSBBillboardDevice;
 - (BOOL)stopDetectUSBBillboardDevice;
 - (void)dealloc;
@@ -8,17 +8,17 @@
 
 @implementation AccessoryUSBBillboardDeviceListener
 
-- (AccessoryUSBBillboardDeviceListener)initWithVID:(unsigned __int16)a3 PID:(unsigned __int16)a4
+- (AccessoryUSBBillboardDeviceListener)initWithVID:(unsigned __int16)d PID:(unsigned __int16)iD
 {
-  v4 = a4;
-  v5 = a3;
+  iDCopy = iD;
+  dCopy = d;
   v14.receiver = self;
   v14.super_class = AccessoryUSBBillboardDeviceListener;
   v6 = [(AccessoryUSBBillboardDeviceListener *)&v14 init];
   v7 = v6;
   if (v6)
   {
-    v6->_accessoryUSBBillboardDeviceVIDPID = v4 | (v5 << 16);
+    v6->_accessoryUSBBillboardDeviceVIDPID = iDCopy | (dCopy << 16);
     v6->_appleUSBHostBillboardDeviceNotify = 0;
     v8 = objc_alloc_init(MEMORY[0x277CBEB58]);
     accessoryUSBBillboardDeviceRegistryIDs = v7->_accessoryUSBBillboardDeviceRegistryIDs;
@@ -91,13 +91,13 @@
 
   if (!self->_started)
   {
-    v8 = self;
-    objc_sync_enter(v8);
-    if (!v8->_appleUSBHostBillboardDeviceNotify)
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    if (!selfCopy->_appleUSBHostBillboardDeviceNotify)
     {
       v9 = IONotificationPortCreate(*MEMORY[0x277CD28A0]);
-      v8->_appleUSBHostBillboardDeviceNotify = v9;
-      IONotificationPortSetDispatchQueue(v9, v8->_accessoryUSBBillboardDeviceListenerQueue);
+      selfCopy->_appleUSBHostBillboardDeviceNotify = v9;
+      IONotificationPortSetDispatchQueue(v9, selfCopy->_accessoryUSBBillboardDeviceListenerQueue);
     }
 
     v10 = IOServiceMatching("AppleUSBHostBillboardDevice");
@@ -153,16 +153,16 @@
             _os_log_impl(&dword_2336F5000, v17, OS_LOG_TYPE_DEFAULT, "%s: vidpid = 0x%X (0x%x,0x%x), vs 0x%X, matchingDictionary = %@", buf, 0x2Eu);
           }
 
-          if (!IOServiceAddMatchingNotification(v8->_appleUSBHostBillboardDeviceNotify, "IOServicePublish", v10, __AppleUSBHostBillboardDeviceAdded, v8, &v8->_billboardAddedIterator))
+          if (!IOServiceAddMatchingNotification(selfCopy->_appleUSBHostBillboardDeviceNotify, "IOServicePublish", v10, __AppleUSBHostBillboardDeviceAdded, selfCopy, &selfCopy->_billboardAddedIterator))
           {
-            __AppleUSBHostBillboardDeviceAdded(v8, v8->_billboardAddedIterator);
+            __AppleUSBHostBillboardDeviceAdded(selfCopy, selfCopy->_billboardAddedIterator);
             CFRetain(v10);
-            v20 = IOServiceAddMatchingNotification(v8->_appleUSBHostBillboardDeviceNotify, "IOServiceTerminate", v10, __AppleUSBHostBillboardDeviceTerminated, v8, &v8->_billboardRemovedIterator);
+            v20 = IOServiceAddMatchingNotification(selfCopy->_appleUSBHostBillboardDeviceNotify, "IOServiceTerminate", v10, __AppleUSBHostBillboardDeviceTerminated, selfCopy, &selfCopy->_billboardRemovedIterator);
             if (!v20)
             {
-              __AppleUSBHostBillboardDeviceTerminated(v8, v8->_billboardRemovedIterator);
+              __AppleUSBHostBillboardDeviceTerminated(selfCopy, selfCopy->_billboardRemovedIterator);
               self->_started = 1;
-              objc_sync_exit(v8);
+              objc_sync_exit(selfCopy);
 
               v21 = 1;
 LABEL_28:
@@ -216,7 +216,7 @@ LABEL_61:
 
 LABEL_47:
 
-          objc_sync_exit(v8);
+          objc_sync_exit(selfCopy);
           goto LABEL_48;
         }
 
@@ -284,8 +284,8 @@ LABEL_40:
     goto LABEL_40;
   }
 
-  v8 = logObjectForModule();
-  if (os_log_type_enabled(&v8->super, OS_LOG_TYPE_ERROR))
+  selfCopy = logObjectForModule();
+  if (os_log_type_enabled(&selfCopy->super, OS_LOG_TYPE_ERROR))
   {
     v33 = self->_accessoryUSBBillboardDeviceVIDPID;
     *buf = 67109888;
@@ -296,7 +296,7 @@ LABEL_40:
     *&v41[2] = v37;
     *v42 = 1024;
     *&v42[2] = v33;
-    _os_log_error_impl(&dword_2336F5000, &v8->super, OS_LOG_TYPE_ERROR, "Already started detecting billboard device, vidpid = 0x%X (0x%x,0x%x), vs 0x%X", buf, 0x1Au);
+    _os_log_error_impl(&dword_2336F5000, &selfCopy->super, OS_LOG_TYPE_ERROR, "Already started detecting billboard device, vidpid = 0x%X (0x%x,0x%x), vs 0x%X", buf, 0x1Au);
   }
 
   v10 = 0;
@@ -349,31 +349,31 @@ LABEL_29:
 
 - (BOOL)stopDetectUSBBillboardDevice
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  appleUSBHostBillboardDeviceNotify = v2->_appleUSBHostBillboardDeviceNotify;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  appleUSBHostBillboardDeviceNotify = selfCopy->_appleUSBHostBillboardDeviceNotify;
   if (appleUSBHostBillboardDeviceNotify)
   {
     IONotificationPortDestroy(appleUSBHostBillboardDeviceNotify);
-    v2->_appleUSBHostBillboardDeviceNotify = 0;
+    selfCopy->_appleUSBHostBillboardDeviceNotify = 0;
   }
 
-  billboardAddedIterator = v2->_billboardAddedIterator;
+  billboardAddedIterator = selfCopy->_billboardAddedIterator;
   if (billboardAddedIterator)
   {
     IOObjectRelease(billboardAddedIterator);
-    v2->_billboardAddedIterator = 0;
+    selfCopy->_billboardAddedIterator = 0;
   }
 
-  billboardRemovedIterator = v2->_billboardRemovedIterator;
+  billboardRemovedIterator = selfCopy->_billboardRemovedIterator;
   if (billboardRemovedIterator)
   {
     IOObjectRelease(billboardRemovedIterator);
-    v2->_billboardRemovedIterator = 0;
+    selfCopy->_billboardRemovedIterator = 0;
   }
 
-  v2->_started = 0;
-  objc_sync_exit(v2);
+  selfCopy->_started = 0;
+  objc_sync_exit(selfCopy);
 
   return 1;
 }
@@ -382,7 +382,7 @@ LABEL_29:
 {
   v4 = *MEMORY[0x277D85DE8];
   v3[0] = 67109120;
-  v3[1] = a1;
+  v3[1] = self;
   _os_log_error_impl(&dword_2336F5000, a2, OS_LOG_TYPE_ERROR, "Failed startDetectUSBBillboardDevice, cleanup, vidpid = 0x%X", v3, 8u);
   v2 = *MEMORY[0x277D85DE8];
 }

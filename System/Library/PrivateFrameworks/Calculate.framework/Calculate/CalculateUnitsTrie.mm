@@ -1,6 +1,6 @@
 @interface CalculateUnitsTrie
 - (CalculateUnitsTrie)init;
-- (CalculateUnitsTrie)initWithLocales:(id)a3;
+- (CalculateUnitsTrie)initWithLocales:(id)locales;
 - (NSSet)conversionVerbs;
 @end
 
@@ -83,16 +83,16 @@ LABEL_14:
   return conversionVerbs;
 }
 
-- (CalculateUnitsTrie)initWithLocales:(id)a3
+- (CalculateUnitsTrie)initWithLocales:(id)locales
 {
-  v5 = a3;
+  localesCopy = locales;
   v15.receiver = self;
   v15.super_class = CalculateUnitsTrie;
   v6 = [(CalculateUnitsTrie *)&v15 init];
   if (v6)
   {
     v7 = +[AvailableUnitRanks shared];
-    v8 = [v7 ranksWithLocales:v5];
+    v8 = [v7 ranksWithLocales:localesCopy];
     trie = v6->_trie;
     v6->_trie = v8;
 
@@ -111,7 +111,7 @@ LABEL_14:
     root = v6->_root;
     v6->_root = v12;
 
-    objc_storeStrong(&v6->_locales, a3);
+    objc_storeStrong(&v6->_locales, locales);
   }
 
   return v6;
@@ -125,9 +125,9 @@ LABEL_14:
   if (v2)
   {
     v3 = +[AvailableUnitRanks shared];
-    v4 = [v3 ranks];
+    ranks = [v3 ranks];
     trie = v2->_trie;
-    v2->_trie = v4;
+    v2->_trie = ranks;
 
     v6 = v2->_trie;
     if (v6)

@@ -1,7 +1,7 @@
 @interface AVAudioMixCinematicAudioEffect
-+ (id)cinematicAudioEffectWithData:(id)a3;
-- (AVAudioMixCinematicAudioEffect)initWithData:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)cinematicAudioEffectWithData:(id)data;
+- (AVAudioMixCinematicAudioEffect)initWithData:(id)data;
+- (BOOL)isEqual:(id)equal;
 - (NSData)data;
 - (id)description;
 - (void)dealloc;
@@ -9,22 +9,22 @@
 
 @implementation AVAudioMixCinematicAudioEffect
 
-- (AVAudioMixCinematicAudioEffect)initWithData:(id)a3
+- (AVAudioMixCinematicAudioEffect)initWithData:(id)data
 {
   v6.receiver = self;
   v6.super_class = AVAudioMixCinematicAudioEffect;
   v4 = [(AVAudioMixEffect *)&v6 init];
   if (v4)
   {
-    v4->_data = [a3 copy];
+    v4->_data = [data copy];
   }
 
   return v4;
 }
 
-+ (id)cinematicAudioEffectWithData:(id)a3
++ (id)cinematicAudioEffectWithData:(id)data
 {
-  v3 = [[a1 alloc] initWithData:a3];
+  v3 = [[self alloc] initWithData:data];
 
   return v3;
 }
@@ -36,7 +36,7 @@
   [(AVAudioMixCinematicAudioEffect *)&v3 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -44,10 +44,10 @@
     return 0;
   }
 
-  v5 = [(AVAudioMixCinematicAudioEffect *)self data];
-  v6 = [a3 data];
+  data = [(AVAudioMixCinematicAudioEffect *)self data];
+  data2 = [equal data];
 
-  return [(NSData *)v5 isEqualToData:v6];
+  return [(NSData *)data isEqualToData:data2];
 }
 
 - (NSData)data

@@ -1,21 +1,21 @@
 @interface CalibrationViewController
 - (CalibrationViewController)init;
-- (CalibrationViewController)initWithOriginPoint:(CGPoint)a3;
-- (double)_correctedAngleForCurrentOrientation:(double)a3;
+- (CalibrationViewController)initWithOriginPoint:(CGPoint)point;
+- (double)_correctedAngleForCurrentOrientation:(double)orientation;
 - (double)completeCircle;
-- (float)quantizedPercentage:(double)a3 forAngle:(double)a4;
+- (float)quantizedPercentage:(double)percentage forAngle:(double)angle;
 - (id)updatedMaskingPath;
 - (void)_updateSizes;
 - (void)addConstraints;
 - (void)dealloc;
 - (void)hideAllTics;
 - (void)reset;
-- (void)setBallAngle:(double)a3 tiltAngle:(double)a4;
-- (void)setMotion:(id)a3;
-- (void)showTicAtAngle:(double)a3 withCredit:(double)a4;
-- (void)showTicsBetweenStartAngle:(double)a3 endAngle:(double)a4 withCredit:(double)a5;
+- (void)setBallAngle:(double)angle tiltAngle:(double)tiltAngle;
+- (void)setMotion:(id)motion;
+- (void)showTicAtAngle:(double)angle withCredit:(double)credit;
+- (void)showTicsBetweenStartAngle:(double)angle endAngle:(double)endAngle withCredit:(double)credit;
 - (void)updateMaskingPath;
-- (void)userDefaultsChanged:(id)a3;
+- (void)userDefaultsChanged:(id)changed;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
@@ -30,10 +30,10 @@
   return MEMORY[0x2821F9670](self, sel_initWithOriginPoint_);
 }
 
-- (CalibrationViewController)initWithOriginPoint:(CGPoint)a3
+- (CalibrationViewController)initWithOriginPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v14.receiver = self;
   v14.super_class = CalibrationViewController;
   v5 = [(CalibrationViewController *)&v14 init];
@@ -48,8 +48,8 @@
       v5->_compassOriginPoint.y = y;
     }
 
-    v7 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    [v7 doubleForKey:@"CalibrationAwesomeAngle"];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    [standardUserDefaults doubleForKey:@"CalibrationAwesomeAngle"];
     v5->_calibrationAngle = v8 * 3.14159265 / 180.0;
 
     if (v5->_calibrationAngle == 0.0)
@@ -57,11 +57,11 @@
       v5->_calibrationAngle = 0.872664626;
     }
 
-    v9 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v5->_quantizationType = [v9 integerForKey:@"CalibrationQuantizationType"];
+    standardUserDefaults2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v5->_quantizationType = [standardUserDefaults2 integerForKey:@"CalibrationQuantizationType"];
 
-    v10 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v5->_shouldCompleteTics = [v10 BOOLForKey:@"CalibrationShouldCompleteTics"];
+    standardUserDefaults3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v5->_shouldCompleteTics = [standardUserDefaults3 BOOLForKey:@"CalibrationShouldCompleteTics"];
 
     v11 = objc_alloc_init(MEMORY[0x277CBEB18]);
     calibrationConstraints = v5->_calibrationConstraints;
@@ -74,11 +74,11 @@
 - (void)_updateSizes
 {
   v40 = *MEMORY[0x277D85DE8];
-  v3 = [(CalibrationViewController *)self traitCollection];
-  if ([v3 horizontalSizeClass] == 2)
+  traitCollection = [(CalibrationViewController *)self traitCollection];
+  if ([traitCollection horizontalSizeClass] == 2)
   {
-    v4 = [(CalibrationViewController *)self traitCollection];
-    v5 = [v4 verticalSizeClass] == 2;
+    traitCollection2 = [(CalibrationViewController *)self traitCollection];
+    v5 = [traitCollection2 verticalSizeClass] == 2;
   }
 
   else
@@ -86,12 +86,12 @@
     v5 = 0;
   }
 
-  v6 = [(CalibrationViewController *)self view];
-  [v6 frame];
+  view = [(CalibrationViewController *)self view];
+  [view frame];
   Width = CGRectGetWidth(v41);
 
-  v8 = [(CalibrationViewController *)self view];
-  [v8 frame];
+  view2 = [(CalibrationViewController *)self view];
+  [view2 frame];
   Height = CGRectGetHeight(v42);
 
   if (Width >= Height)
@@ -146,8 +146,8 @@
 
   v25 = fmin(v24, 26.0);
   v26 = MEMORY[0x277D74300];
-  v27 = [MEMORY[0x277D759A0] mainScreen];
-  [v27 bounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   v29 = v28;
   LODWORD(v39) = -798153473;
   v30 = MGIsDeviceOfType();
@@ -173,19 +173,19 @@
   v55.receiver = self;
   v55.super_class = CalibrationViewController;
   [(CalibrationViewController *)&v55 viewDidLoad];
-  v3 = [MEMORY[0x277D75348] blackColor];
-  v4 = [(CalibrationViewController *)self view];
-  [v4 setBackgroundColor:v3];
+  blackColor = [MEMORY[0x277D75348] blackColor];
+  view = [(CalibrationViewController *)self view];
+  [view setBackgroundColor:blackColor];
 
-  v5 = [(CalibrationViewController *)self view];
-  v6 = [v5 layer];
-  [v6 setBorderWidth:1.0];
+  view2 = [(CalibrationViewController *)self view];
+  layer = [view2 layer];
+  [layer setBorderWidth:1.0];
 
-  v7 = [MEMORY[0x277D75348] blackColor];
-  v8 = [v7 CGColor];
-  v9 = [(CalibrationViewController *)self view];
-  v10 = [v9 layer];
-  [v10 setBorderColor:v8];
+  blackColor2 = [MEMORY[0x277D75348] blackColor];
+  cGColor = [blackColor2 CGColor];
+  view3 = [(CalibrationViewController *)self view];
+  layer2 = [view3 layer];
+  [layer2 setBorderColor:cGColor];
 
   v11 = [CompassBackgroundView alloc];
   v12 = *MEMORY[0x277CBF3A0];
@@ -198,12 +198,12 @@
 
   [(CompassBackgroundView *)self->_compassBackgroundView setTranslatesAutoresizingMaskIntoConstraints:0];
   self->_numCompleteTics = 0;
-  v18 = [MEMORY[0x277CD9F90] layer];
+  layer3 = [MEMORY[0x277CD9F90] layer];
   compassBackgroundViewMask = self->_compassBackgroundViewMask;
-  self->_compassBackgroundViewMask = v18;
+  self->_compassBackgroundViewMask = layer3;
 
-  v20 = [MEMORY[0x277D75348] blackColor];
-  -[CAShapeLayer setFillColor:](self->_compassBackgroundViewMask, "setFillColor:", [v20 CGColor]);
+  blackColor3 = [MEMORY[0x277D75348] blackColor];
+  -[CAShapeLayer setFillColor:](self->_compassBackgroundViewMask, "setFillColor:", [blackColor3 CGColor]);
 
   [(CAShapeLayer *)self->_compassBackgroundViewMask setLineWidth:0.5];
   LODWORD(v21) = 1060320051;
@@ -214,16 +214,16 @@
   self->_titleLabel = v22;
 
   [(UILabel *)self->_titleLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-  v24 = [MEMORY[0x277D75348] grayColor];
-  [(UILabel *)self->_titleLabel setTextColor:v24];
+  grayColor = [MEMORY[0x277D75348] grayColor];
+  [(UILabel *)self->_titleLabel setTextColor:grayColor];
 
   [(UILabel *)self->_titleLabel setTextAlignment:1];
-  v25 = [MEMORY[0x277CCA8D8] mainBundle];
-  v26 = [v25 localizedStringForKey:@"Calibrate" value:&stru_2856FB5D0 table:0];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v26 = [mainBundle localizedStringForKey:@"Calibrate" value:&stru_2856FB5D0 table:0];
   [(UILabel *)self->_titleLabel setText:v26];
 
-  v27 = [MEMORY[0x277D75348] clearColor];
-  [(UILabel *)self->_titleLabel setBackgroundColor:v27];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [(UILabel *)self->_titleLabel setBackgroundColor:clearColor];
 
   [(UILabel *)self->_titleLabel setAdjustsFontSizeToFitWidth:1];
   [(UILabel *)self->_titleLabel setMinimumScaleFactor:0.699999988];
@@ -232,12 +232,12 @@
   self->_instructionLabel = v28;
 
   [(UILabel *)self->_instructionLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-  v30 = [MEMORY[0x277D75348] grayColor];
-  [(UILabel *)self->_instructionLabel setTextColor:v30];
+  grayColor2 = [MEMORY[0x277D75348] grayColor];
+  [(UILabel *)self->_instructionLabel setTextColor:grayColor2];
 
   [(UILabel *)self->_instructionLabel setTextAlignment:1];
-  v31 = [MEMORY[0x277CCA8D8] mainBundle];
-  v32 = [v31 localizedStringForKey:@"Tilt the screen to roll the ball around the circle" value:&stru_2856FB5D0 table:0];
+  mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
+  v32 = [mainBundle2 localizedStringForKey:@"Tilt the screen to roll the ball around the circle" value:&stru_2856FB5D0 table:0];
   [(UILabel *)self->_instructionLabel setText:v32];
 
   [(UILabel *)self->_instructionLabel setNumberOfLines:3];
@@ -251,25 +251,25 @@
   v35 = [MEMORY[0x277D75348] colorWithWhite:0.400000006 alpha:1.0];
   [(UIButton *)self->_cancelButton setBackgroundColor:v35];
 
-  v36 = [(UIButton *)self->_cancelButton layer];
-  [v36 setCornerRadius:5.0];
+  layer4 = [(UIButton *)self->_cancelButton layer];
+  [layer4 setCornerRadius:5.0];
 
   v37 = [MEMORY[0x277D74300] boldSystemFontOfSize:18.0];
-  v38 = [(UIButton *)self->_cancelButton titleLabel];
-  [v38 setFont:v37];
+  titleLabel = [(UIButton *)self->_cancelButton titleLabel];
+  [titleLabel setFont:v37];
 
   v39 = self->_cancelButton;
-  v40 = [MEMORY[0x277CCA8D8] mainBundle];
-  v41 = [v40 localizedStringForKey:@"Cancel" value:&stru_2856FB5D0 table:0];
+  mainBundle3 = [MEMORY[0x277CCA8D8] mainBundle];
+  v41 = [mainBundle3 localizedStringForKey:@"Cancel" value:&stru_2856FB5D0 table:0];
   [(UIButton *)v39 setTitle:v41 forState:0];
 
   v42 = self->_cancelButton;
-  v43 = [MEMORY[0x277D75348] blackColor];
-  [(UIButton *)v42 setTitleColor:v43 forState:0];
+  blackColor4 = [MEMORY[0x277D75348] blackColor];
+  [(UIButton *)v42 setTitleColor:blackColor4 forState:0];
 
   v44 = self->_cancelButton;
-  v45 = [MEMORY[0x277D75348] whiteColor];
-  [(UIButton *)v44 setTitleColor:v45 forState:4];
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  [(UIButton *)v44 setTitleColor:whiteColor forState:4];
 
   [(UIButton *)self->_cancelButton addTarget:self action:sel_cancel forControlEvents:64];
   v46 = [[CalibrationBallView alloc] initWithFrame:v12 ballRadius:v13, v14, v15, 0.0];
@@ -278,33 +278,33 @@
 
   [(CalibrationBallView *)self->_ballView setTranslatesAutoresizingMaskIntoConstraints:0];
   [(CalibrationViewController *)self _updateSizes];
-  v48 = [(CalibrationViewController *)self view];
-  [v48 addSubview:self->_compassBackgroundView];
+  view4 = [(CalibrationViewController *)self view];
+  [view4 addSubview:self->_compassBackgroundView];
 
-  v49 = [(CalibrationViewController *)self view];
-  [v49 addSubview:self->_instructionLabel];
+  view5 = [(CalibrationViewController *)self view];
+  [view5 addSubview:self->_instructionLabel];
 
-  v50 = [(CalibrationViewController *)self view];
-  v51 = [v50 layer];
-  [v51 addSublayer:self->_compassBackgroundViewMask];
+  view6 = [(CalibrationViewController *)self view];
+  layer5 = [view6 layer];
+  [layer5 addSublayer:self->_compassBackgroundViewMask];
 
-  v52 = [(CalibrationViewController *)self view];
-  [v52 addSubview:self->_titleLabel];
+  view7 = [(CalibrationViewController *)self view];
+  [view7 addSubview:self->_titleLabel];
 
-  v53 = [(CalibrationViewController *)self view];
-  [v53 addSubview:self->_ballView];
+  view8 = [(CalibrationViewController *)self view];
+  [view8 addSubview:self->_ballView];
 
-  v54 = [(CalibrationViewController *)self view];
-  [v54 addSubview:self->_cancelButton];
+  view9 = [(CalibrationViewController *)self view];
+  [view9 addSubview:self->_cancelButton];
 }
 
-- (void)userDefaultsChanged:(id)a3
+- (void)userDefaultsChanged:(id)changed
 {
-  v4 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  self->_quantizationType = [v4 integerForKey:@"CalibrationQuantizationType"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  self->_quantizationType = [standardUserDefaults integerForKey:@"CalibrationQuantizationType"];
 
-  v5 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v5 doubleForKey:@"CalibrationAwesomeAngle"];
+  standardUserDefaults2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults2 doubleForKey:@"CalibrationAwesomeAngle"];
   self->_calibrationAngle = v6 * 3.14159265 / 180.0;
 
   if (self->_calibrationAngle == 0.0)
@@ -312,18 +312,18 @@
     self->_calibrationAngle = 0.872664626;
   }
 
-  v7 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  self->_shouldCompleteTics = [v7 BOOLForKey:@"CalibrationShouldCompleteTics"];
+  standardUserDefaults3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  self->_shouldCompleteTics = [standardUserDefaults3 BOOLForKey:@"CalibrationShouldCompleteTics"];
 }
 
-- (float)quantizedPercentage:(double)a3 forAngle:(double)a4
+- (float)quantizedPercentage:(double)percentage forAngle:(double)angle
 {
   if (qword_27EDBA528 != -1)
   {
     sub_243D6FB24();
   }
 
-  v7 = fmax(cos((a4 * 2.0 + -270.0) * 3.14159265 / 180.0) * *&qword_27EDBA520, 0.0) + a3;
+  v7 = fmax(cos((angle * 2.0 + -270.0) * 3.14159265 / 180.0) * *&qword_27EDBA520, 0.0) + percentage;
   quantizationType = self->_quantizationType;
   if (quantizationType)
   {
@@ -370,8 +370,8 @@
 - (void)addConstraints
 {
   v119[1] = *MEMORY[0x277D85DE8];
-  v3 = [(CalibrationViewController *)self view];
-  [v3 removeConstraints:self->_calibrationConstraints];
+  view = [(CalibrationViewController *)self view];
+  [view removeConstraints:self->_calibrationConstraints];
 
   [(NSMutableArray *)self->_calibrationConstraints removeAllObjects];
   calibrationConstraints = self->_calibrationConstraints;
@@ -381,16 +381,16 @@
   v6 = self->_calibrationConstraints;
   v7 = MEMORY[0x277CCAAD0];
   compassBackgroundView = self->_compassBackgroundView;
-  v9 = [(CalibrationViewController *)self view];
-  v10 = [v7 constraintWithItem:compassBackgroundView attribute:9 relatedBy:0 toItem:v9 attribute:9 multiplier:1.0 constant:0.0];
+  view2 = [(CalibrationViewController *)self view];
+  v10 = [v7 constraintWithItem:compassBackgroundView attribute:9 relatedBy:0 toItem:view2 attribute:9 multiplier:1.0 constant:0.0];
   [(NSMutableArray *)v6 addObject:v10];
 
-  v11 = [(CalibrationViewController *)self view];
-  [v11 frame];
+  view3 = [(CalibrationViewController *)self view];
+  [view3 frame];
   v13 = v12;
 
-  v14 = [(CalibrationViewController *)self view];
-  [v14 frame];
+  view4 = [(CalibrationViewController *)self view];
+  [view4 frame];
   v16 = v15;
 
   if (v13 >= v16)
@@ -444,23 +444,23 @@
   v38 = self->_calibrationConstraints;
   v39 = MEMORY[0x277CCAAD0];
   instructionLabel = self->_instructionLabel;
-  v41 = [(CalibrationViewController *)self view];
-  v42 = [v39 constraintWithItem:instructionLabel attribute:7 relatedBy:0 toItem:v41 attribute:7 multiplier:0.660000026 constant:0.0];
+  view5 = [(CalibrationViewController *)self view];
+  v42 = [v39 constraintWithItem:instructionLabel attribute:7 relatedBy:0 toItem:view5 attribute:7 multiplier:0.660000026 constant:0.0];
   [(NSMutableArray *)v38 addObject:v42];
 
   v43 = self->_calibrationConstraints;
   v44 = MEMORY[0x277CCAAD0];
   cancelButton = self->_cancelButton;
-  v46 = [(CalibrationViewController *)self view];
-  v47 = [v44 constraintWithItem:cancelButton attribute:9 relatedBy:0 toItem:v46 attribute:9 multiplier:1.0 constant:0.0];
+  view6 = [(CalibrationViewController *)self view];
+  v47 = [v44 constraintWithItem:cancelButton attribute:9 relatedBy:0 toItem:view6 attribute:9 multiplier:1.0 constant:0.0];
   [(NSMutableArray *)v43 addObject:v47];
 
   v48 = self->_calibrationConstraints;
   v49 = [MEMORY[0x277CCAAD0] constraintWithItem:self->_cancelButton attribute:7 relatedBy:0 toItem:0 attribute:7 multiplier:1.0 constant:150.0];
   [(NSMutableArray *)v48 addObject:v49];
 
-  v50 = [(CalibrationViewController *)self view];
-  [v50 frame];
+  view7 = [(CalibrationViewController *)self view];
+  [view7 frame];
   v52 = v51;
 
   v53 = self->_calibrationConstraints;
@@ -478,11 +478,11 @@
   v59 = [v55 constraintsWithVisualFormat:@"V:[_instructionLabel]-(instructionBottomMargin)-[_cancelButton(==buttonHeight)]-(buttonBottomMargin)-|" options:0 metrics:v57 views:v58];
   [(NSMutableArray *)v53 addObjectsFromArray:v59];
 
-  v60 = [(CalibrationViewController *)self traitCollection];
-  if ([v60 horizontalSizeClass] == 2)
+  traitCollection = [(CalibrationViewController *)self traitCollection];
+  if ([traitCollection horizontalSizeClass] == 2)
   {
-    v61 = [(CalibrationViewController *)self traitCollection];
-    v62 = [v61 verticalSizeClass] == 2;
+    traitCollection2 = [(CalibrationViewController *)self traitCollection];
+    v62 = [traitCollection2 verticalSizeClass] == 2;
   }
 
   else
@@ -490,12 +490,12 @@
     v62 = 0;
   }
 
-  v63 = [(CalibrationViewController *)self view];
-  [v63 frame];
+  view8 = [(CalibrationViewController *)self view];
+  [view8 frame];
   Width = CGRectGetWidth(v120);
 
-  v65 = [(CalibrationViewController *)self view];
-  [v65 frame];
+  view9 = [(CalibrationViewController *)self view];
+  [view9 frame];
   Height = CGRectGetHeight(v121);
 
   if (Width >= Height)
@@ -503,8 +503,8 @@
     Width = Height;
   }
 
-  v67 = [(CalibrationViewController *)self view];
-  [v67 frame];
+  view10 = [(CalibrationViewController *)self view];
+  [view10 frame];
   v68 = CGRectGetWidth(v122);
 
   compassRadius = self->_compassRadius;
@@ -542,19 +542,19 @@
     v85 = self->_calibrationConstraints;
     v86 = MEMORY[0x277CCAAD0];
     v87 = self->_compassBackgroundView;
-    v88 = [(CalibrationViewController *)self view];
-    v89 = [v86 constraintWithItem:v87 attribute:10 relatedBy:0 toItem:v88 attribute:10 multiplier:1.0 constant:-18.0];
+    view11 = [(CalibrationViewController *)self view];
+    v89 = [v86 constraintWithItem:v87 attribute:10 relatedBy:0 toItem:view11 attribute:10 multiplier:1.0 constant:-18.0];
     [(NSMutableArray *)v85 addObject:v89];
 
     v90 = self->_calibrationConstraints;
-    v91 = [MEMORY[0x277CCAAD0] constraintWithItem:self->_compassBackgroundView attribute:8 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:Width];
-    [(NSMutableArray *)v90 addObject:v91];
+    view13 = [MEMORY[0x277CCAAD0] constraintWithItem:self->_compassBackgroundView attribute:8 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:Width];
+    [(NSMutableArray *)v90 addObject:view13];
   }
 
   else
   {
-    v92 = [(CalibrationViewController *)self view];
-    [v92 frame];
+    view12 = [(CalibrationViewController *)self view];
+    [view12 frame];
     v94 = (v93 + v93) / 3.0;
     [(CompassBackgroundView *)self->_compassBackgroundView frame];
     v96 = v95;
@@ -564,30 +564,30 @@
       v100 = self->_calibrationConstraints;
       v109 = MEMORY[0x277CCAAD0];
       v110 = self->_compassBackgroundView;
-      v91 = [(CalibrationViewController *)self view];
+      view13 = [(CalibrationViewController *)self view];
       v103 = 1.0;
       v108 = 20.0;
       v104 = v109;
       v105 = v110;
       v106 = 3;
-      v107 = v91;
+      v107 = view13;
     }
 
     else
     {
-      v97 = [(CalibrationViewController *)self view];
-      [v97 frame];
+      view14 = [(CalibrationViewController *)self view];
+      [view14 frame];
       v99 = round(v98 * 227.0 / 568.0);
 
       v100 = self->_calibrationConstraints;
       v101 = MEMORY[0x277CCAAD0];
       v102 = self->_compassBackgroundView;
-      v91 = [(CalibrationViewController *)self view];
+      view13 = [(CalibrationViewController *)self view];
       v103 = 1.0;
       v104 = v101;
       v105 = v102;
       v106 = 10;
-      v107 = v91;
+      v107 = view13;
       v108 = v99;
     }
 
@@ -595,8 +595,8 @@
     [(NSMutableArray *)v100 addObject:v111];
   }
 
-  v112 = [(CalibrationViewController *)self view];
-  [v112 addConstraints:self->_calibrationConstraints];
+  view15 = [(CalibrationViewController *)self view];
+  [view15 addConstraints:self->_calibrationConstraints];
 
   v113 = *MEMORY[0x277D85DE8];
 }
@@ -637,8 +637,8 @@
   v22 = v5 * 0.5;
   [(CompassBackgroundView *)self->_compassBackgroundView frame];
   v21 = v6 * 0.5;
-  v7 = [MEMORY[0x277D75208] bezierPath];
-  [v7 setLineWidth:0.5];
+  bezierPath = [MEMORY[0x277D75208] bezierPath];
+  [bezierPath setLineWidth:0.5];
   v8 = 0;
   v23 = 0x168uLL;
   v9 = -1;
@@ -650,33 +650,33 @@
     v12 = (v11 + 2.0) * v10;
     v13 = fmod(v9, v23);
     v14 = __sincos_stret(v13 * v19 / 180.0);
-    [v7 moveToPoint:?];
+    [bezierPath moveToPoint:?];
     v15 = v20 - v12;
-    [v7 addLineToPoint:{v22 + v15 * v14.__cosval, v21 + v15 * v14.__sinval}];
+    [bezierPath addLineToPoint:{v22 + v15 * v14.__cosval, v21 + v15 * v14.__sinval}];
     v9 += 2;
     v16 = fmod(v9, v23);
     v17 = __sincos_stret(v16 * v19 / 180.0);
-    [v7 addLineToPoint:{v22 + v15 * v17.__cosval, v21 + v15 * v17.__sinval}];
-    [v7 addLineToPoint:{v22 + v20 * v17.__cosval, v21 + v20 * v17.__sinval}];
-    [v7 addLineToPoint:{v22 + v20 * v14.__cosval, v21 + v20 * v14.__sinval}];
+    [bezierPath addLineToPoint:{v22 + v15 * v17.__cosval, v21 + v15 * v17.__sinval}];
+    [bezierPath addLineToPoint:{v22 + v20 * v17.__cosval, v21 + v20 * v17.__sinval}];
+    [bezierPath addLineToPoint:{v22 + v20 * v14.__cosval, v21 + v20 * v14.__sinval}];
     ++v8;
   }
 
   while (v8 != 180);
 
-  return v7;
+  return bezierPath;
 }
 
 - (void)updateMaskingPath
 {
-  v4 = [(CalibrationViewController *)self updatedMaskingPath];
-  v3 = v4;
-  -[CAShapeLayer setPath:](self->_compassBackgroundViewMask, "setPath:", [v4 CGPath]);
+  updatedMaskingPath = [(CalibrationViewController *)self updatedMaskingPath];
+  v3 = updatedMaskingPath;
+  -[CAShapeLayer setPath:](self->_compassBackgroundViewMask, "setPath:", [updatedMaskingPath CGPath]);
 }
 
-- (void)showTicAtAngle:(double)a3 withCredit:(double)a4
+- (void)showTicAtAngle:(double)angle withCredit:(double)credit
 {
-  v5 = vcvtmd_u64_f64(a3 * 0.5);
+  v5 = vcvtmd_u64_f64(angle * 0.5);
   if (v5 <= 0xB3)
   {
     v6 = v5;
@@ -691,9 +691,9 @@
   v8 = ticsShowingArray[v6];
   if (v8 < 1.0)
   {
-    if (v8 < a4)
+    if (v8 < credit)
     {
-      [(CalibrationViewController *)self quantizedPercentage:a4 forAngle:a3];
+      [(CalibrationViewController *)self quantizedPercentage:credit forAngle:angle];
       ticsShowingArray = self->_ticsShowingArray;
     }
 
@@ -707,7 +707,7 @@
   }
 }
 
-- (void)showTicsBetweenStartAngle:(double)a3 endAngle:(double)a4 withCredit:(double)a5
+- (void)showTicsBetweenStartAngle:(double)angle endAngle:(double)endAngle withCredit:(double)credit
 {
     ;
   }
@@ -716,8 +716,8 @@
   }
 
   v7 = 0;
-  v8 = vcvtmd_u64_f64(a3 * 0.5) % 0xB4;
-  v9 = vcvtmd_u64_f64(a4 * 0.5);
+  v8 = vcvtmd_u64_f64(angle * 0.5) % 0xB4;
+  v9 = vcvtmd_u64_f64(endAngle * 0.5);
   if (v8 <= v9 % 0xB4)
   {
     v10 = v9 % 0xB4;
@@ -744,9 +744,9 @@
     v13 = ticsShowingArray[v11];
     if (v13 < 1.0)
     {
-      if (v13 < a5)
+      if (v13 < credit)
       {
-        [(CalibrationViewController *)self quantizedPercentage:a5 forAngle:v11];
+        [(CalibrationViewController *)self quantizedPercentage:credit forAngle:v11];
         ticsShowingArray = self->_ticsShowingArray;
       }
 
@@ -778,31 +778,31 @@
   [(CalibrationViewController *)self updateMaskingPath];
 }
 
-- (void)setBallAngle:(double)a3 tiltAngle:(double)a4
+- (void)setBallAngle:(double)angle tiltAngle:(double)tiltAngle
 {
   if (self->_startTicAngle < 0.0)
   {
-    self->_startTicAngle = a3 / 0.0174532925;
+    self->_startTicAngle = angle / 0.0174532925;
   }
 
   self->_calibrationAngle;
   [CalibrationViewController showTicsBetweenStartAngle:"showTicsBetweenStartAngle:endAngle:withCredit:" endAngle:? withCredit:?];
-  self->_startTicAngle = a3 / 0.0174532925;
-  [(CalibrationBallView *)self->_ballView setAngle:a3];
+  self->_startTicAngle = angle / 0.0174532925;
+  [(CalibrationBallView *)self->_ballView setAngle:angle];
   [(CompassBackgroundView *)self->_compassBackgroundView setNeedsLayout];
   ballView = self->_ballView;
 
   [(CalibrationBallView *)ballView setNeedsLayout];
 }
 
-- (double)_correctedAngleForCurrentOrientation:(double)a3
+- (double)_correctedAngleForCurrentOrientation:(double)orientation
 {
-  v4 = [(CalibrationViewController *)self view];
-  v5 = [v4 window];
-  v6 = [v5 windowScene];
-  v7 = [v6 interfaceOrientation];
+  view = [(CalibrationViewController *)self view];
+  window = [view window];
+  windowScene = [window windowScene];
+  interfaceOrientation = [windowScene interfaceOrientation];
 
-  switch(v7)
+  switch(interfaceOrientation)
   {
     case 2:
       v8 = 3.14159265;
@@ -814,26 +814,26 @@
       v8 = 1.57079633;
       break;
     default:
-      return a3;
+      return orientation;
   }
 
-  v9 = a3 + v8;
-  v10 = fmod(a3 + v8, 6.28318531);
-  a3 = v10;
+  v9 = orientation + v8;
+  v10 = fmod(orientation + v8, 6.28318531);
+  orientation = v10;
   if (v9 < 0.0)
   {
     return v10 + 6.28318531;
   }
 
-  return a3;
+  return orientation;
 }
 
-- (void)setMotion:(id)a3
+- (void)setMotion:(id)motion
 {
   if (!self->_ignoreMotionUpdates)
   {
-    v4 = a3;
-    [v4 gravity];
+    motionCopy = motion;
+    [motionCopy gravity];
     v6 = v5;
     v8.f64[1] = v7;
     __x = v8;
@@ -860,7 +860,7 @@
     v14 = *&self->_previousGravity[16] * (1.0 - v13);
     *&v12 = v14 + v13 * v6;
     v25 = v12;
-    [v4 timestamp];
+    [motionCopy timestamp];
     v16 = v15;
 
     v17 = atan2(-__xa.f64[1], __xa.f64[0]);

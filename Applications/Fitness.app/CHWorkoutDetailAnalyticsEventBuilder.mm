@@ -1,19 +1,19 @@
 @interface CHWorkoutDetailAnalyticsEventBuilder
 - (CHWorkoutDetailAnalyticsEventBuilder)init;
-- (CHWorkoutDetailAnalyticsEventBuilder)initWithWorkout:(id)a3 workoutActivity:(id)a4;
+- (CHWorkoutDetailAnalyticsEventBuilder)initWithWorkout:(id)workout workoutActivity:(id)activity;
 - (NSDictionary)analyticsPayload;
 - (NSString)analyticsEventName;
-- (void)didEndMirroredWorkoutWith:(double)a3;
-- (void)didExpandDetailSection:(int64_t)a3;
+- (void)didEndMirroredWorkoutWith:(double)with;
+- (void)didExpandDetailSection:(int64_t)section;
 @end
 
 @implementation CHWorkoutDetailAnalyticsEventBuilder
 
-- (CHWorkoutDetailAnalyticsEventBuilder)initWithWorkout:(id)a3 workoutActivity:(id)a4
+- (CHWorkoutDetailAnalyticsEventBuilder)initWithWorkout:(id)workout workoutActivity:(id)activity
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = sub_1003F7E10(v5, a4);
+  workoutCopy = workout;
+  activityCopy = activity;
+  v7 = sub_1003F7E10(workoutCopy, activity);
 
   return v7;
 }
@@ -27,7 +27,7 @@
 
 - (NSDictionary)analyticsPayload
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1003F776C();
 
   if (v3)
@@ -51,22 +51,22 @@
   return result;
 }
 
-- (void)didExpandDetailSection:(int64_t)a3
+- (void)didExpandDetailSection:(int64_t)section
 {
   v4 = sub_1003F359C();
   v6 = v5;
   swift_beginAccess();
-  v7 = self;
+  selfCopy = self;
   sub_1001A45BC(&v8, v4, v6);
   swift_endAccess();
 }
 
-- (void)didEndMirroredWorkoutWith:(double)a3
+- (void)didEndMirroredWorkoutWith:(double)with
 {
   v5[3] = &type metadata for Double;
-  *v5 = a3;
+  *v5 = with;
   swift_beginAccess();
-  v4 = self;
+  selfCopy = self;
   sub_10055A82C(v5, 0xD000000000000018, 0x800000010075BD80);
   swift_endAccess();
 }

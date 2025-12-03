@@ -20,9 +20,9 @@
     v2[11] = 0;
     *(v2 + 36) = 0;
     *(v2 + 28) = 0;
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v5 = *(v3 + 8);
-    *(v3 + 8) = v4;
+    *(v3 + 8) = array;
 
     v6 = *(v3 + 10);
     *(v3 + 10) = 0;
@@ -31,9 +31,9 @@
     v3[12] = 0;
     *(v3 + 6) = 0;
     *(v3 + 14) = 0;
-    v7 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     v8 = *(v3 + 9);
-    *(v3 + 9) = v7;
+    *(v3 + 9) = array2;
 
     *(v3 + 15) = 0;
     *(v3 + 11) = 0;

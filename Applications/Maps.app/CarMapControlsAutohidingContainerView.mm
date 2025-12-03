@@ -2,9 +2,9 @@
 - (CGSize)intrinsicContentSize;
 - (NSArray)focusOrderSubItems;
 - (NSArray)preferredFocusEnvironments;
-- (void)addSubview:(id)a3;
+- (void)addSubview:(id)subview;
 - (void)layoutSubviews;
-- (void)setAlpha:(double)a3;
+- (void)setAlpha:(double)alpha;
 @end
 
 @implementation CarMapControlsAutohidingContainerView
@@ -15,8 +15,8 @@
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v3 = [(CarMapControlsAutohidingContainerView *)self subviews];
-  v4 = [v3 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  subviews = [(CarMapControlsAutohidingContainerView *)self subviews];
+  v4 = [subviews countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v4)
   {
     v5 = v4;
@@ -28,26 +28,26 @@
       {
         if (*v17 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(subviews);
         }
 
         [*(*(&v16 + 1) + 8 * i) intrinsicContentSize];
         v7 = v9 + v7;
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v5 = [subviews countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v5);
   }
 
-  v10 = [(CarMapControlsAutohidingContainerView *)self subviews];
-  v11 = [v10 count];
+  subviews2 = [(CarMapControlsAutohidingContainerView *)self subviews];
+  v11 = [subviews2 count];
 
   if (v11 >= 2)
   {
-    v12 = [(CarMapControlsAutohidingContainerView *)self subviews];
-    [v12 count];
+    subviews3 = [(CarMapControlsAutohidingContainerView *)self subviews];
+    [subviews3 count];
   }
 
   UIRoundToViewScale();
@@ -85,13 +85,13 @@
 
   else
   {
-    v5 = self;
+    selfCopy = self;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [(CarMapControlsAutohidingContainerView *)v5 arrangedSubviews];
+      arrangedSubviews = [(CarMapControlsAutohidingContainerView *)selfCopy arrangedSubviews];
       v7 = +[NSMutableArray array];
-      v8 = [v6 sortedArrayUsingComparator:&stru_1016329C8];
+      v8 = [arrangedSubviews sortedArrayUsingComparator:&stru_1016329C8];
       v24 = 0u;
       v25 = 0u;
       v26 = 0u;
@@ -113,8 +113,8 @@
             v13 = *(*(&v24 + 1) + 8 * i);
             if (objc_opt_respondsToSelector())
             {
-              v14 = [v13 focusOrderSubItems];
-              [v7 addObjectsFromArray:v14];
+              focusOrderSubItems = [v13 focusOrderSubItems];
+              [v7 addObjectsFromArray:focusOrderSubItems];
             }
 
             else
@@ -132,9 +132,9 @@
 
     else
     {
-      v6 = [(CarMapControlsAutohidingContainerView *)v5 subviews];
+      arrangedSubviews = [(CarMapControlsAutohidingContainerView *)selfCopy subviews];
       v7 = +[NSMutableArray array];
-      v8 = [v6 sortedArrayUsingComparator:&stru_1016329C8];
+      v8 = [arrangedSubviews sortedArrayUsingComparator:&stru_1016329C8];
       v24 = 0u;
       v25 = 0u;
       v26 = 0u;
@@ -156,8 +156,8 @@
             v19 = *(*(&v24 + 1) + 8 * j);
             if (objc_opt_respondsToSelector())
             {
-              v20 = [v19 focusOrderSubItems];
-              [v7 addObjectsFromArray:v20];
+              focusOrderSubItems2 = [v19 focusOrderSubItems];
+              [v7 addObjectsFromArray:focusOrderSubItems2];
             }
 
             else
@@ -177,8 +177,8 @@
 
     if ([v21 count])
     {
-      v22 = [v21 firstObject];
-      v28 = v22;
+      firstObject = [v21 firstObject];
+      v28 = firstObject;
       v4 = [NSArray arrayWithObjects:&v28 count:1];
     }
 
@@ -201,13 +201,13 @@
 
   else
   {
-    v5 = self;
+    selfCopy = self;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [(CarMapControlsAutohidingContainerView *)v5 arrangedSubviews];
+      arrangedSubviews = [(CarMapControlsAutohidingContainerView *)selfCopy arrangedSubviews];
       v7 = +[NSMutableArray array];
-      v8 = [v6 sortedArrayUsingComparator:&stru_1016329C8];
+      v8 = [arrangedSubviews sortedArrayUsingComparator:&stru_1016329C8];
       v22 = 0u;
       v23 = 0u;
       v24 = 0u;
@@ -229,8 +229,8 @@
             v13 = *(*(&v22 + 1) + 8 * i);
             if (objc_opt_respondsToSelector())
             {
-              v14 = [v13 focusOrderSubItems];
-              [v7 addObjectsFromArray:v14];
+              focusOrderSubItems = [v13 focusOrderSubItems];
+              [v7 addObjectsFromArray:focusOrderSubItems];
             }
 
             else
@@ -248,9 +248,9 @@
 
     else
     {
-      v6 = [(CarMapControlsAutohidingContainerView *)v5 subviews];
+      arrangedSubviews = [(CarMapControlsAutohidingContainerView *)selfCopy subviews];
       v7 = +[NSMutableArray array];
-      v8 = [v6 sortedArrayUsingComparator:&stru_1016329C8];
+      v8 = [arrangedSubviews sortedArrayUsingComparator:&stru_1016329C8];
       v22 = 0u;
       v23 = 0u;
       v24 = 0u;
@@ -272,8 +272,8 @@
             v19 = *(*(&v22 + 1) + 8 * j);
             if (objc_opt_respondsToSelector())
             {
-              v20 = [v19 focusOrderSubItems];
-              [v7 addObjectsFromArray:v20];
+              focusOrderSubItems2 = [v19 focusOrderSubItems];
+              [v7 addObjectsFromArray:focusOrderSubItems2];
             }
 
             else
@@ -295,21 +295,21 @@
   return v4;
 }
 
-- (void)addSubview:(id)a3
+- (void)addSubview:(id)subview
 {
   v4.receiver = self;
   v4.super_class = CarMapControlsAutohidingContainerView;
-  [(CarMapControlsAutohidingContainerView *)&v4 addSubview:a3];
+  [(CarMapControlsAutohidingContainerView *)&v4 addSubview:subview];
   [(CarMapControlsAutohidingContainerView *)self invalidateIntrinsicContentSize];
 }
 
-- (void)setAlpha:(double)a3
+- (void)setAlpha:(double)alpha
 {
   [(CarMapControlsAutohidingContainerView *)self alpha];
   v6 = v5;
   v10.receiver = self;
   v10.super_class = CarMapControlsAutohidingContainerView;
-  [(CarMapControlsAutohidingContainerView *)&v10 setAlpha:a3];
+  [(CarMapControlsAutohidingContainerView *)&v10 setAlpha:alpha];
   [(CarMapControlsAutohidingContainerView *)self alpha];
   if (v6 != v7)
   {

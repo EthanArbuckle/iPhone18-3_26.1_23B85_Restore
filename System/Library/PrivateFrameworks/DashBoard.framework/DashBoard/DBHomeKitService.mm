@@ -1,8 +1,8 @@
 @interface DBHomeKitService
-+ (DBHomeKitService)serviceWithHome:(id)a3 service:(id)a4;
++ (DBHomeKitService)serviceWithHome:(id)home service:(id)service;
 + (id)registeredServiceClasses;
 + (void)load;
-+ (void)registerServiceClass:(Class)a3;
++ (void)registerServiceClass:(Class)class;
 - (BOOL)current;
 - (BOOL)hasError;
 - (BOOL)interactive;
@@ -11,7 +11,7 @@
 - (BOOL)reachable;
 - (BOOL)usable;
 - (DBHome)home;
-- (DBHomeKitService)initWithHome:(id)a3 service:(id)a4;
+- (DBHomeKitService)initWithHome:(id)home service:(id)service;
 - (NSString)description;
 - (NSString)name;
 - (NSString)stateDescription;
@@ -19,16 +19,16 @@
 - (NSUUID)uniqueIdentifier;
 - (double)distance;
 - (id)applicationData;
-- (id)characteristicForName:(id)a3;
-- (id)characteristicForType:(id)a3;
+- (id)characteristicForName:(id)name;
+- (id)characteristicForType:(id)type;
 - (id)serviceType;
-- (void)_characteristicDidUpdate:(id)a3;
-- (void)accessory:(id)a3 service:(id)a4 didUpdateValueForCharacteristic:(id)a5;
-- (void)accessoryDidUpdateReachability:(id)a3;
-- (void)accessoryDidUpdateServices:(id)a3;
-- (void)addObserver:(id)a3;
+- (void)_characteristicDidUpdate:(id)update;
+- (void)accessory:(id)accessory service:(id)service didUpdateValueForCharacteristic:(id)characteristic;
+- (void)accessoryDidUpdateReachability:(id)reachability;
+- (void)accessoryDidUpdateServices:(id)services;
+- (void)addObserver:(id)observer;
 - (void)refreshCharacteristicValues;
-- (void)removeObserver:(id)a3;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation DBHomeKitService
@@ -44,7 +44,7 @@
   }
 }
 
-+ (void)registerServiceClass:(Class)a3
++ (void)registerServiceClass:(Class)class
 {
   if (registerServiceClass__onceToken != -1)
   {
@@ -54,8 +54,8 @@
   obj = _registeredServiceClasses;
   objc_sync_enter(obj);
   v4 = _registeredServiceClasses;
-  v5 = [(objc_class *)a3 serviceType];
-  [v4 setObject:a3 forKeyedSubscript:v5];
+  serviceType = [(objc_class *)class serviceType];
+  [v4 setObject:class forKeyedSubscript:serviceType];
 
   objc_sync_exit(obj);
 }
@@ -79,14 +79,14 @@ uint64_t __41__DBHomeKitService_registerServiceClass___block_invoke()
   return v3;
 }
 
-+ (DBHomeKitService)serviceWithHome:(id)a3 service:(id)a4
++ (DBHomeKitService)serviceWithHome:(id)home service:(id)service
 {
-  v5 = a4;
-  v6 = a3;
+  serviceCopy = service;
+  homeCopy = home;
   v7 = +[DBHomeKitService registeredServiceClasses];
   v8 = +[DBHomeKitServiceTypes serviceNameByType];
-  v9 = [v5 serviceType];
-  v10 = [v8 objectForKeyedSubscript:v9];
+  serviceType = [serviceCopy serviceType];
+  v10 = [v8 objectForKeyedSubscript:serviceType];
   v11 = [v7 objectForKeyedSubscript:v10];
 
   if (!v11)
@@ -94,33 +94,33 @@ uint64_t __41__DBHomeKitService_registerServiceClass___block_invoke()
     v11 = objc_opt_class();
   }
 
-  v12 = [[v11 alloc] initWithHome:v6 service:v5];
+  v12 = [[v11 alloc] initWithHome:homeCopy service:serviceCopy];
 
   return v12;
 }
 
-- (DBHomeKitService)initWithHome:(id)a3 service:(id)a4
+- (DBHomeKitService)initWithHome:(id)home service:(id)service
 {
   v37 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  homeCopy = home;
+  serviceCopy = service;
   v35.receiver = self;
   v35.super_class = DBHomeKitService;
   v8 = [(DBHomeKitService *)&v35 init];
   v9 = v8;
   if (v8)
   {
-    v29 = v7;
-    objc_storeWeak(&v8->_home, v6);
-    objc_storeStrong(&v9->_service, a4);
+    v29 = serviceCopy;
+    objc_storeWeak(&v8->_home, homeCopy);
+    objc_storeStrong(&v9->_service, service);
     v10 = objc_alloc(MEMORY[0x277CF89C0]);
-    v11 = [objc_opt_class() observerProtocol];
-    v12 = [v10 initWithProtocol:v11];
+    observerProtocol = [objc_opt_class() observerProtocol];
+    v12 = [v10 initWithProtocol:observerProtocol];
     observers = v9->_observers;
     v9->_observers = v12;
 
-    v14 = [(HMService *)v9->_service accessory];
-    [v14 setDelegate:v9];
+    accessory = [(HMService *)v9->_service accessory];
+    [accessory setDelegate:v9];
 
     obj = objc_alloc_init(MEMORY[0x277CBEB38]);
     v15 = objc_alloc_init(MEMORY[0x277CBEB38]);
@@ -128,8 +128,8 @@ uint64_t __41__DBHomeKitService_registerServiceClass___block_invoke()
     v34 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v16 = [(HMService *)v9->_service characteristics];
-    v17 = [v16 countByEnumeratingWithState:&v31 objects:v36 count:16];
+    characteristics = [(HMService *)v9->_service characteristics];
+    v17 = [characteristics countByEnumeratingWithState:&v31 objects:v36 count:16];
     if (v17)
     {
       v18 = v17;
@@ -140,30 +140,30 @@ uint64_t __41__DBHomeKitService_registerServiceClass___block_invoke()
         {
           if (*v32 != v19)
           {
-            objc_enumerationMutation(v16);
+            objc_enumerationMutation(characteristics);
           }
 
           v21 = [DBHomeKitCharacteristic chacteristicWithService:v9 characteristic:*(*(&v31 + 1) + 8 * i)];
           if ([v21 usable])
           {
-            v22 = [v21 uniqueIdentifier];
-            [obj setObject:v21 forKeyedSubscript:v22];
+            uniqueIdentifier = [v21 uniqueIdentifier];
+            [obj setObject:v21 forKeyedSubscript:uniqueIdentifier];
           }
 
-          v23 = [v21 name];
-          v24 = [v15 objectForKeyedSubscript:v23];
+          name = [v21 name];
+          v24 = [v15 objectForKeyedSubscript:name];
 
           if (!v24)
           {
             v24 = objc_opt_new();
-            v25 = [v21 name];
-            [v15 setObject:v24 forKeyedSubscript:v25];
+            name2 = [v21 name];
+            [v15 setObject:v24 forKeyedSubscript:name2];
           }
 
           [v24 addObject:v21];
         }
 
-        v18 = [v16 countByEnumeratingWithState:&v31 objects:v36 count:16];
+        v18 = [characteristics countByEnumeratingWithState:&v31 objects:v36 count:16];
       }
 
       while (v18);
@@ -174,74 +174,74 @@ uint64_t __41__DBHomeKitService_registerServiceClass___block_invoke()
     if ([(DBHomeKitService *)v9 _tracksLastUsed])
     {
       WeakRetained = objc_loadWeakRetained(&v9->_home);
-      v27 = [(HMService *)v9->_service serviceType];
-      [WeakRetained _updateLastUsedServiceOfType:v27];
+      serviceType = [(HMService *)v9->_service serviceType];
+      [WeakRetained _updateLastUsedServiceOfType:serviceType];
     }
 
-    v7 = v29;
+    serviceCopy = v29;
   }
 
   return v9;
 }
 
-- (id)characteristicForType:(id)a3
+- (id)characteristicForType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   v5 = +[DBHomeKitCharacteristicTypes characteristicNameByType];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  v6 = [v5 objectForKeyedSubscript:typeCopy];
 
   v7 = [(DBHomeKitService *)self characteristicForName:v6];
 
   return v7;
 }
 
-- (id)characteristicForName:(id)a3
+- (id)characteristicForName:(id)name
 {
-  v4 = a3;
-  v5 = [(DBHomeKitService *)self characteristicsByType];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  nameCopy = name;
+  characteristicsByType = [(DBHomeKitService *)self characteristicsByType];
+  v6 = [characteristicsByType objectForKeyedSubscript:nameCopy];
 
-  v7 = [v6 firstObject];
+  firstObject = [v6 firstObject];
 
-  return v7;
+  return firstObject;
 }
 
 - (BOOL)interactive
 {
-  v2 = [(DBHomeKitService *)self service];
-  v3 = [v2 isUserInteractive];
+  service = [(DBHomeKitService *)self service];
+  isUserInteractive = [service isUserInteractive];
 
-  return v3;
+  return isUserInteractive;
 }
 
 - (NSString)type
 {
   v3 = +[DBHomeKitServiceTypes serviceNameByType];
-  v4 = [(DBHomeKitService *)self service];
-  v5 = [v4 serviceType];
-  v6 = [v3 objectForKeyedSubscript:v5];
+  service = [(DBHomeKitService *)self service];
+  serviceType = [service serviceType];
+  v6 = [v3 objectForKeyedSubscript:serviceType];
 
   if (v6)
   {
-    v7 = v6;
+    serviceType2 = v6;
   }
 
   else
   {
-    v8 = [(DBHomeKitService *)self service];
-    v7 = [v8 serviceType];
+    service2 = [(DBHomeKitService *)self service];
+    serviceType2 = [service2 serviceType];
   }
 
-  return v7;
+  return serviceType2;
 }
 
 - (BOOL)reachable
 {
-  v2 = [(DBHomeKitService *)self service];
-  v3 = [v2 accessory];
-  v4 = [v3 isReachable];
+  service = [(DBHomeKitService *)self service];
+  accessory = [service accessory];
+  isReachable = [accessory isReachable];
 
-  return v4;
+  return isReachable;
 }
 
 - (BOOL)current
@@ -251,10 +251,10 @@ uint64_t __41__DBHomeKitService_registerServiceClass___block_invoke()
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v2 = [(DBHomeKitService *)self characteristics];
-  v3 = [v2 allValues];
+  characteristics = [(DBHomeKitService *)self characteristics];
+  allValues = [characteristics allValues];
 
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v4 = [allValues countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -266,13 +266,13 @@ uint64_t __41__DBHomeKitService_registerServiceClass___block_invoke()
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allValues);
         }
 
         v7 &= [*(*(&v10 + 1) + 8 * i) current];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [allValues countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);
@@ -293,10 +293,10 @@ uint64_t __41__DBHomeKitService_registerServiceClass___block_invoke()
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v2 = [(DBHomeKitService *)self characteristics];
-  v3 = [v2 allValues];
+  characteristics = [(DBHomeKitService *)self characteristics];
+  allValues = [characteristics allValues];
 
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v4 = [allValues countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -308,13 +308,13 @@ uint64_t __41__DBHomeKitService_registerServiceClass___block_invoke()
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allValues);
         }
 
         v6 |= [*(*(&v10 + 1) + 8 * i) pendingWrite];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [allValues countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);
@@ -335,10 +335,10 @@ uint64_t __41__DBHomeKitService_registerServiceClass___block_invoke()
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(DBHomeKitService *)self characteristics];
-  v3 = [v2 allValues];
+  characteristics = [(DBHomeKitService *)self characteristics];
+  allValues = [characteristics allValues];
 
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  v4 = [allValues countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = *v9;
@@ -348,7 +348,7 @@ uint64_t __41__DBHomeKitService_registerServiceClass___block_invoke()
       {
         if (*v9 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allValues);
         }
 
         if ([*(*(&v8 + 1) + 8 * i) pendingRead])
@@ -358,7 +358,7 @@ uint64_t __41__DBHomeKitService_registerServiceClass___block_invoke()
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v4 = [allValues countByEnumeratingWithState:&v8 objects:v12 count:16];
       if (v4)
       {
         continue;
@@ -380,10 +380,10 @@ LABEL_11:
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(DBHomeKitService *)self characteristics];
-  v3 = [v2 allValues];
+  characteristics = [(DBHomeKitService *)self characteristics];
+  allValues = [characteristics allValues];
 
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  v4 = [allValues countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = *v9;
@@ -393,7 +393,7 @@ LABEL_11:
       {
         if (*v9 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allValues);
         }
 
         if ([*(*(&v8 + 1) + 8 * i) hasError])
@@ -403,7 +403,7 @@ LABEL_11:
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v4 = [allValues countByEnumeratingWithState:&v8 objects:v12 count:16];
       if (v4)
       {
         continue;
@@ -418,30 +418,30 @@ LABEL_11:
   return v4;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(DBHomeKitService *)self observers];
-  [v5 addObserver:v4];
+  observerCopy = observer;
+  observers = [(DBHomeKitService *)self observers];
+  [observers addObserver:observerCopy];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(DBHomeKitService *)self observers];
-  [v5 removeObserver:v4];
+  observerCopy = observer;
+  observers = [(DBHomeKitService *)self observers];
+  [observers removeObserver:observerCopy];
 }
 
 - (NSString)description
 {
   v18 = MEMORY[0x277CCACA8];
   v17 = objc_opt_class();
-  v15 = [(DBHomeKitService *)self name];
-  v14 = [(DBHomeKitService *)self uniqueIdentifier];
-  v13 = [(DBHomeKitService *)self home];
-  v16 = [(DBHomeKitService *)self home];
-  v3 = [v16 uniqueIdentifier];
-  v4 = [(DBHomeKitService *)self type];
+  name = [(DBHomeKitService *)self name];
+  uniqueIdentifier = [(DBHomeKitService *)self uniqueIdentifier];
+  home = [(DBHomeKitService *)self home];
+  home2 = [(DBHomeKitService *)self home];
+  uniqueIdentifier2 = [home2 uniqueIdentifier];
+  type = [(DBHomeKitService *)self type];
   if ([(DBHomeKitService *)self interactive])
   {
     v5 = @"YES";
@@ -502,7 +502,7 @@ LABEL_11:
     v10 = @"NO";
   }
 
-  v11 = [v18 stringWithFormat:@"<%@: %p name=%@ uniqueIdentifier=%@ home=(%p)%@ type=%@ interactive=%@ reachable=%@ current=%@ pendingWrite=%@ pendingRead=%@ hasError=%@>", v17, self, v15, v14, v13, v3, v4, v5, v6, v7, v8, v9, v10];
+  v11 = [v18 stringWithFormat:@"<%@: %p name=%@ uniqueIdentifier=%@ home=(%p)%@ type=%@ interactive=%@ reachable=%@ current=%@ pendingWrite=%@ pendingRead=%@ hasError=%@>", v17, self, name, uniqueIdentifier, home, uniqueIdentifier2, type, v5, v6, v7, v8, v9, v10];
 
   return v11;
 }
@@ -520,10 +520,10 @@ LABEL_11:
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [(DBHomeKitService *)self characteristics];
-  v5 = [v4 allValues];
+  characteristics = [(DBHomeKitService *)self characteristics];
+  allValues = [characteristics allValues];
 
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v6 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -535,76 +535,76 @@ LABEL_11:
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allValues);
         }
 
         [*(*(&v11 + 1) + 8 * v9++) updateValueRequiringRead:0];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
   }
 
-  v10 = [(DBHomeKitService *)self observers];
-  [v10 serviceDidUpdate:self];
+  observers = [(DBHomeKitService *)self observers];
+  [observers serviceDidUpdate:self];
 }
 
 - (id)applicationData
 {
-  v2 = [(DBHomeKitService *)self service];
-  v3 = [v2 applicationData];
+  service = [(DBHomeKitService *)self service];
+  applicationData = [service applicationData];
 
-  return v3;
+  return applicationData;
 }
 
 - (id)serviceType
 {
-  v2 = [(DBHomeKitService *)self service];
-  v3 = [v2 serviceType];
+  service = [(DBHomeKitService *)self service];
+  serviceType = [service serviceType];
 
-  return v3;
+  return serviceType;
 }
 
-- (void)_characteristicDidUpdate:(id)a3
+- (void)_characteristicDidUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   v5 = DBLogForCategory(9uLL);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [DBHomeKitService _characteristicDidUpdate:];
   }
 
-  v6 = [(DBHomeKitService *)self observers];
-  [v6 serviceDidUpdate:self];
+  observers = [(DBHomeKitService *)self observers];
+  [observers serviceDidUpdate:self];
 }
 
 - (NSUUID)uniqueIdentifier
 {
-  v2 = [(DBHomeKitService *)self service];
-  v3 = [v2 uniqueIdentifier];
+  service = [(DBHomeKitService *)self service];
+  uniqueIdentifier = [service uniqueIdentifier];
 
-  return v3;
+  return uniqueIdentifier;
 }
 
 - (NSString)name
 {
-  v2 = [(DBHomeKitService *)self service];
-  v3 = [v2 name];
+  service = [(DBHomeKitService *)self service];
+  name = [service name];
 
-  return v3;
+  return name;
 }
 
 - (BOOL)usable
 {
-  v3 = [(DBHomeKitService *)self characteristics];
-  if ([v3 count])
+  characteristics = [(DBHomeKitService *)self characteristics];
+  if ([characteristics count])
   {
-    v4 = [(DBHomeKitService *)self service];
-    v5 = [v4 serviceType];
-    v6 = [v5 isEqualToString:*MEMORY[0x277CD0DD0]] ^ 1;
+    service = [(DBHomeKitService *)self service];
+    serviceType = [service serviceType];
+    v6 = [serviceType isEqualToString:*MEMORY[0x277CD0DD0]] ^ 1;
   }
 
   else
@@ -619,24 +619,24 @@ LABEL_11:
 {
   v25 = *MEMORY[0x277D85DE8];
   v3 = objc_opt_new();
-  v4 = [(DBHomeKitService *)self managedCharacteristics];
-  v5 = v4;
-  if (v4)
+  managedCharacteristics = [(DBHomeKitService *)self managedCharacteristics];
+  v5 = managedCharacteristics;
+  if (managedCharacteristics)
   {
-    v6 = v4;
+    allValues = managedCharacteristics;
   }
 
   else
   {
-    v7 = [(DBHomeKitService *)self characteristics];
-    v6 = [v7 allValues];
+    characteristics = [(DBHomeKitService *)self characteristics];
+    allValues = [characteristics allValues];
   }
 
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v8 = v6;
+  v8 = allValues;
   v9 = [v8 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v9)
   {
@@ -651,8 +651,8 @@ LABEL_11:
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v20 + 1) + 8 * i) stateDescription];
-        [v3 addObject:v13];
+        stateDescription = [*(*(&v20 + 1) + 8 * i) stateDescription];
+        [v3 addObject:stateDescription];
       }
 
       v10 = [v8 countByEnumeratingWithState:&v20 objects:v24 count:16];
@@ -690,77 +690,77 @@ LABEL_11:
 
 - (double)distance
 {
-  v2 = [(DBHomeKitService *)self home];
-  [v2 distance];
+  home = [(DBHomeKitService *)self home];
+  [home distance];
   v4 = v3;
 
   return v4;
 }
 
-- (void)accessoryDidUpdateServices:(id)a3
+- (void)accessoryDidUpdateServices:(id)services
 {
-  v4 = a3;
+  servicesCopy = services;
   v5 = DBLogForCategory(9uLL);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [DBHomeKitService accessoryDidUpdateServices:];
   }
 
-  v6 = [(DBHomeKitService *)self observers];
-  [v6 serviceDidUpdate:self];
+  observers = [(DBHomeKitService *)self observers];
+  [observers serviceDidUpdate:self];
 }
 
-- (void)accessory:(id)a3 service:(id)a4 didUpdateValueForCharacteristic:(id)a5
+- (void)accessory:(id)accessory service:(id)service didUpdateValueForCharacteristic:(id)characteristic
 {
   v28 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  accessoryCopy = accessory;
+  serviceCopy = service;
+  characteristicCopy = characteristic;
   v11 = DBLogForCategory(9uLL);
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
     v20 = 138544130;
-    v21 = self;
+    selfCopy = self;
     v22 = 2114;
-    v23 = v8;
+    v23 = accessoryCopy;
     v24 = 2114;
-    v25 = v9;
+    v25 = serviceCopy;
     v26 = 2114;
-    v27 = v10;
+    v27 = characteristicCopy;
     _os_log_debug_impl(&dword_248146000, v11, OS_LOG_TYPE_DEBUG, "%{public}@ accessory=%{public}@ HMService=%{public}@ HMCharacteristic=%{public}@", &v20, 0x2Au);
   }
 
-  v12 = [v9 uniqueIdentifier];
-  v13 = [(DBHomeKitService *)self uniqueIdentifier];
-  v14 = [v12 isEqual:v13];
+  uniqueIdentifier = [serviceCopy uniqueIdentifier];
+  uniqueIdentifier2 = [(DBHomeKitService *)self uniqueIdentifier];
+  v14 = [uniqueIdentifier isEqual:uniqueIdentifier2];
 
   if (v14)
   {
-    v15 = [(DBHomeKitService *)self characteristics];
-    v16 = [v10 uniqueIdentifier];
-    v17 = [v15 objectForKeyedSubscript:v16];
+    characteristics = [(DBHomeKitService *)self characteristics];
+    uniqueIdentifier3 = [characteristicCopy uniqueIdentifier];
+    v17 = [characteristics objectForKeyedSubscript:uniqueIdentifier3];
 
     [v17 updateValueRequiringRead:0];
     if ([(DBHomeKitService *)self _shouldUpdateLastUsedForCharacteristic:v17])
     {
-      v18 = [(DBHomeKitService *)self home];
-      v19 = [v9 serviceType];
-      [v18 _updateLastUsedServiceOfType:v19];
+      home = [(DBHomeKitService *)self home];
+      serviceType = [serviceCopy serviceType];
+      [home _updateLastUsedServiceOfType:serviceType];
     }
   }
 }
 
-- (void)accessoryDidUpdateReachability:(id)a3
+- (void)accessoryDidUpdateReachability:(id)reachability
 {
-  v4 = a3;
+  reachabilityCopy = reachability;
   v5 = DBLogForCategory(9uLL);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [DBHomeKitService accessoryDidUpdateServices:];
   }
 
-  v6 = [(DBHomeKitService *)self observers];
-  [v6 serviceDidUpdate:self];
+  observers = [(DBHomeKitService *)self observers];
+  [observers serviceDidUpdate:self];
 }
 
 - (DBHome)home

@@ -6,16 +6,16 @@
 + (id)userDefaults;
 + (void)clearPersistedObject;
 - (BOOL)isExpired;
-- (BOOL)isValidForAccount:(id)a3;
-- (ICQDaemonPersisted)initWithDictionary:(id)a3;
+- (BOOL)isValidForAccount:(id)account;
+- (ICQDaemonPersisted)initWithDictionary:(id)dictionary;
 - (NSDate)expirationDate;
 - (NSDictionary)_persistenceDictionary;
 - (NSMutableDictionary)_mutablePersistenceDictionary;
 - (NSNumber)_cachedQuotaAvailable;
-- (double)_callbackIntervalFromServerObject:(id)a3;
-- (id)_initWithAccount:(id)a3 error:(id)a4;
-- (id)_initWithAccount:(id)a3 serverDictionary:(id)a4;
-- (id)_initWithAccountAltDSID:(id)a3 error:(id)a4;
+- (double)_callbackIntervalFromServerObject:(id)object;
+- (id)_initWithAccount:(id)account error:(id)error;
+- (id)_initWithAccount:(id)account serverDictionary:(id)dictionary;
+- (id)_initWithAccountAltDSID:(id)d error:(id)error;
 - (void)persistObject;
 @end
 
@@ -33,12 +33,12 @@
     _os_log_impl(&dword_275572000, v3, OS_LOG_TYPE_DEFAULT, "Clearing persisted object for %{public}@", &v9, 0xCu);
   }
 
-  v5 = [a1 userDefaults];
-  v6 = [a1 persistenceKey];
-  [v5 removeObjectForKey:v6];
+  userDefaults = [self userDefaults];
+  persistenceKey = [self persistenceKey];
+  [userDefaults removeObjectForKey:persistenceKey];
 
-  v7 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v7 postNotificationName:@"ICQDaemonOfferPersistedNotificationName" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"ICQDaemonOfferPersistedNotificationName" object:0];
 
   v8 = *MEMORY[0x277D85DE8];
 }
@@ -49,7 +49,7 @@
   block[1] = 3221225472;
   block[2] = __34__ICQDaemonPersisted_userDefaults__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (userDefaults_onceToken != -1)
   {
     dispatch_once(&userDefaults_onceToken, block);
@@ -62,13 +62,13 @@
 
 + (id)persistedObject
 {
-  v3 = [a1 userDefaults];
-  v4 = [a1 persistenceKey];
-  v5 = [v3 valueForKey:v4];
+  userDefaults = [self userDefaults];
+  persistenceKey = [self persistenceKey];
+  v5 = [userDefaults valueForKey:persistenceKey];
 
   if (v5)
   {
-    v6 = [[a1 alloc] initWithDictionary:v5];
+    v6 = [[self alloc] initWithDictionary:v5];
   }
 
   else
@@ -90,9 +90,9 @@ void __34__ICQDaemonPersisted_userDefaults__block_invoke(uint64_t a1)
 
 + (id)_placeholderObject
 {
-  v3 = [a1 alloc];
-  v4 = [a1 _placeholderPersistenceDictionary];
-  v5 = [v3 initWithDictionary:v4];
+  v3 = [self alloc];
+  _placeholderPersistenceDictionary = [self _placeholderPersistenceDictionary];
+  v5 = [v3 initWithDictionary:_placeholderPersistenceDictionary];
 
   return v5;
 }
@@ -105,60 +105,60 @@ void __34__ICQDaemonPersisted_userDefaults__block_invoke(uint64_t a1)
   {
     v4 = objc_opt_class();
     v5 = v4;
-    v6 = [objc_opt_class() persistenceKey];
-    v7 = [objc_opt_class() persistenceDomain];
+    persistenceKey = [objc_opt_class() persistenceKey];
+    persistenceDomain = [objc_opt_class() persistenceDomain];
     v13 = 138543874;
     v14 = v4;
     v15 = 2112;
-    v16 = v6;
+    v16 = persistenceKey;
     v17 = 2112;
-    v18 = v7;
+    v18 = persistenceDomain;
     _os_log_impl(&dword_275572000, v3, OS_LOG_TYPE_DEFAULT, "Persisting %{public}@ using key %@ at location %@", &v13, 0x20u);
   }
 
-  v8 = [(ICQDaemonPersisted *)self _persistenceDictionary];
-  v9 = [objc_opt_class() userDefaults];
-  v10 = [objc_opt_class() persistenceKey];
-  [v9 setObject:v8 forKey:v10];
+  _persistenceDictionary = [(ICQDaemonPersisted *)self _persistenceDictionary];
+  userDefaults = [objc_opt_class() userDefaults];
+  persistenceKey2 = [objc_opt_class() persistenceKey];
+  [userDefaults setObject:_persistenceDictionary forKey:persistenceKey2];
 
-  v11 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v11 postNotificationName:@"ICQDaemonOfferPersistedNotificationName" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"ICQDaemonOfferPersistedNotificationName" object:0];
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
 - (NSDate)expirationDate
 {
-  v3 = [(ICQDaemonPersisted *)self retrievalDate];
+  retrievalDate = [(ICQDaemonPersisted *)self retrievalDate];
   [(ICQDaemonPersisted *)self callbackInterval];
-  v4 = [v3 dateByAddingTimeInterval:?];
+  v4 = [retrievalDate dateByAddingTimeInterval:?];
 
   return v4;
 }
 
 - (BOOL)isExpired
 {
-  v2 = [(ICQDaemonPersisted *)self expirationDate];
-  v3 = [MEMORY[0x277CBEAA8] date];
-  v4 = [v2 compare:v3] == -1;
+  expirationDate = [(ICQDaemonPersisted *)self expirationDate];
+  date = [MEMORY[0x277CBEAA8] date];
+  v4 = [expirationDate compare:date] == -1;
 
   return v4;
 }
 
-- (BOOL)isValidForAccount:(id)a3
+- (BOOL)isValidForAccount:(id)account
 {
-  v4 = a3;
-  v5 = [(ICQDaemonPersisted *)self accountAltDSID];
-  v6 = [v4 aa_altDSID];
+  accountCopy = account;
+  accountAltDSID = [(ICQDaemonPersisted *)self accountAltDSID];
+  aa_altDSID = [accountCopy aa_altDSID];
 
-  LOBYTE(v4) = [v5 isEqualToString:v6];
-  return v4;
+  LOBYTE(accountCopy) = [accountAltDSID isEqualToString:aa_altDSID];
+  return accountCopy;
 }
 
-- (ICQDaemonPersisted)initWithDictionary:(id)a3
+- (ICQDaemonPersisted)initWithDictionary:(id)dictionary
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v23.receiver = self;
   v23.super_class = ICQDaemonPersisted;
   v5 = [(ICQDaemonPersisted *)&v23 init];
@@ -174,7 +174,7 @@ LABEL_30:
       goto LABEL_31;
     }
 
-    v6 = [v4 objectForKey:@"retrievalDate"];
+    v6 = [dictionaryCopy objectForKey:@"retrievalDate"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -196,7 +196,7 @@ LABEL_30:
 
 LABEL_9:
 
-        v10 = [v4 objectForKey:@"callbackInterval"];
+        v10 = [dictionaryCopy objectForKey:@"callbackInterval"];
         if (v10)
         {
           if ((objc_opt_respondsToSelector() & 1) == 0)
@@ -222,11 +222,11 @@ LABEL_9:
 
         v5->_callbackInterval = v11;
 LABEL_17:
-        v13 = _ICQStringFromDictionaryKey(v4, @"altDSID", &stru_288431E38);
+        v13 = _ICQStringFromDictionaryKey(dictionaryCopy, @"altDSID", &stru_288431E38);
         accountAltDSID = v5->_accountAltDSID;
         v5->_accountAltDSID = v13;
 
-        v15 = [v4 objectForKey:@"serverDict"];
+        v15 = [dictionaryCopy objectForKey:@"serverDict"];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
@@ -254,8 +254,8 @@ LABEL_17:
           }
         }
 
-        v5->_failedToFetchFromServer = _ICQIntegerFromDictionaryKey(v4, @"failedToFetchFromServer", 0) != 0;
-        v19 = [v4 objectForKey:@"failureDetails"];
+        v5->_failedToFetchFromServer = _ICQIntegerFromDictionaryKey(dictionaryCopy, @"failedToFetchFromServer", 0) != 0;
+        v19 = [dictionaryCopy objectForKey:@"failureDetails"];
         failureDetails = v5->_failureDetails;
         v5->_failureDetails = v19;
 
@@ -284,68 +284,68 @@ LABEL_31:
   return v5;
 }
 
-- (id)_initWithAccount:(id)a3 serverDictionary:(id)a4
+- (id)_initWithAccount:(id)account serverDictionary:(id)dictionary
 {
-  v6 = a3;
-  v7 = a4;
+  accountCopy = account;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = ICQDaemonPersisted;
   v8 = [(ICQDaemonPersisted *)&v13 init];
   if (v8)
   {
-    v9 = [MEMORY[0x277CBEAA8] date];
-    [(ICQDaemonPersisted *)v8 setRetrievalDate:v9];
+    date = [MEMORY[0x277CBEAA8] date];
+    [(ICQDaemonPersisted *)v8 setRetrievalDate:date];
 
-    v10 = [v7 objectForKeyedSubscript:@"callbackInterval"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"callbackInterval"];
     [(ICQDaemonPersisted *)v8 _callbackIntervalFromServerObject:v10];
     [(ICQDaemonPersisted *)v8 setCallbackInterval:?];
 
-    v11 = [v6 aa_altDSID];
-    [(ICQDaemonPersisted *)v8 setAccountAltDSID:v11];
+    aa_altDSID = [accountCopy aa_altDSID];
+    [(ICQDaemonPersisted *)v8 setAccountAltDSID:aa_altDSID];
 
-    [(ICQDaemonPersisted *)v8 setServerDictionary:v7];
+    [(ICQDaemonPersisted *)v8 setServerDictionary:dictionaryCopy];
   }
 
   return v8;
 }
 
-- (id)_initWithAccount:(id)a3 error:(id)a4
+- (id)_initWithAccount:(id)account error:(id)error
 {
-  v6 = a4;
-  v7 = [a3 aa_altDSID];
-  v8 = [(ICQDaemonPersisted *)self _initWithAccountAltDSID:v7 error:v6];
+  errorCopy = error;
+  aa_altDSID = [account aa_altDSID];
+  v8 = [(ICQDaemonPersisted *)self _initWithAccountAltDSID:aa_altDSID error:errorCopy];
 
   return v8;
 }
 
-- (id)_initWithAccountAltDSID:(id)a3 error:(id)a4
+- (id)_initWithAccountAltDSID:(id)d error:(id)error
 {
   v23[3] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  errorCopy = error;
   v21.receiver = self;
   v21.super_class = ICQDaemonPersisted;
   v8 = [(ICQDaemonPersisted *)&v21 init];
   if (v8)
   {
-    v9 = [MEMORY[0x277CBEAA8] date];
-    [(ICQDaemonPersisted *)v8 setRetrievalDate:v9];
+    date = [MEMORY[0x277CBEAA8] date];
+    [(ICQDaemonPersisted *)v8 setRetrievalDate:date];
 
     [objc_opt_class() defaultCallbackInterval];
     [(ICQDaemonPersisted *)v8 setCallbackInterval:?];
-    [(ICQDaemonPersisted *)v8 setAccountAltDSID:v6];
-    v10 = [objc_opt_class() _placeholderPersistenceDictionary];
-    [(ICQDaemonPersisted *)v8 setServerDictionary:v10];
+    [(ICQDaemonPersisted *)v8 setAccountAltDSID:dCopy];
+    _placeholderPersistenceDictionary = [objc_opt_class() _placeholderPersistenceDictionary];
+    [(ICQDaemonPersisted *)v8 setServerDictionary:_placeholderPersistenceDictionary];
 
     [(ICQDaemonPersisted *)v8 setFailedToFetchFromServer:1];
-    if (v7)
+    if (errorCopy)
     {
       v22[0] = @"ErrorDomain";
-      v11 = [v7 domain];
-      v12 = v11;
-      if (v11)
+      domain = [errorCopy domain];
+      v12 = domain;
+      if (domain)
       {
-        v13 = v11;
+        v13 = domain;
       }
 
       else
@@ -355,14 +355,14 @@ LABEL_31:
 
       v23[0] = v13;
       v22[1] = @"ErrorCode";
-      v14 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v7, "code")}];
+      v14 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(errorCopy, "code")}];
       v23[1] = v14;
       v22[2] = @"ErrorDescription";
-      v15 = [v7 localizedDescription];
-      v16 = v15;
-      if (v15)
+      localizedDescription = [errorCopy localizedDescription];
+      v16 = localizedDescription;
+      if (localizedDescription)
       {
-        v17 = v15;
+        v17 = localizedDescription;
       }
 
       else
@@ -432,17 +432,17 @@ LABEL_31:
   return v9;
 }
 
-- (double)_callbackIntervalFromServerObject:(id)a3
+- (double)_callbackIntervalFromServerObject:(id)object
 {
-  v3 = a3;
+  objectCopy = object;
   [objc_opt_class() defaultCallbackInterval];
   v5 = v4;
   if (objc_opt_respondsToSelector())
   {
-    [v3 doubleValue];
+    [objectCopy doubleValue];
     if ((v6 & 0x7FFFFFFFFFFFFFFFuLL) <= 0x7FEFFFFFFFFFFFFFLL)
     {
-      [v3 doubleValue];
+      [objectCopy doubleValue];
       v5 = 3600.0;
       if (v7 >= 3600.0)
       {
@@ -460,8 +460,8 @@ LABEL_31:
 
 - (NSNumber)_cachedQuotaAvailable
 {
-  v2 = [(ICQDaemonPersisted *)self serverDictionary];
-  v3 = [v2 objectForKeyedSubscript:@"quotaInfo"];
+  serverDictionary = [(ICQDaemonPersisted *)self serverDictionary];
+  v3 = [serverDictionary objectForKeyedSubscript:@"quotaInfo"];
   v4 = [v3 objectForKeyedSubscript:@"totalAvailable"];
 
   objc_opt_class();
@@ -485,8 +485,8 @@ LABEL_31:
 
 + (NSDictionary)_placeholderPersistenceDictionary
 {
-  v2 = [a1 _mutablePlaceholderPersistanceDictionary];
-  v3 = [v2 copy];
+  _mutablePlaceholderPersistanceDictionary = [self _mutablePlaceholderPersistanceDictionary];
+  v3 = [_mutablePlaceholderPersistanceDictionary copy];
 
   return v3;
 }
@@ -494,8 +494,8 @@ LABEL_31:
 - (NSDictionary)_persistenceDictionary
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [(ICQDaemonPersisted *)self _mutablePersistenceDictionary];
-  v4 = [v3 copy];
+  _mutablePersistenceDictionary = [(ICQDaemonPersisted *)self _mutablePersistenceDictionary];
+  v4 = [_mutablePersistenceDictionary copy];
 
   v5 = [MEMORY[0x277CCAC58] propertyList:v4 isValidForFormat:200];
   v6 = _ICQGetLogSystem();
@@ -519,10 +519,10 @@ LABEL_31:
     }
 
     v8 = objc_alloc(objc_opt_class());
-    v9 = [(ICQDaemonPersisted *)self accountAltDSID];
-    v10 = [v8 _initWithAccountAltDSID:v9 error:0];
-    v11 = [v10 _mutablePersistenceDictionary];
-    v12 = [v11 copy];
+    accountAltDSID = [(ICQDaemonPersisted *)self accountAltDSID];
+    v10 = [v8 _initWithAccountAltDSID:accountAltDSID error:0];
+    _mutablePersistenceDictionary2 = [v10 _mutablePersistenceDictionary];
+    v12 = [_mutablePersistenceDictionary2 copy];
 
     v6 = _ICQGetLogSystem();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))

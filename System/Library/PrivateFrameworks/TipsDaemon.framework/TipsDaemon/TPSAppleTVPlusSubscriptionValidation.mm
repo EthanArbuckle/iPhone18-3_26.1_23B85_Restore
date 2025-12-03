@@ -1,6 +1,6 @@
 @interface TPSAppleTVPlusSubscriptionValidation
 - (TPSAppleTVPlusSubscriptionValidation)init;
-- (TPSAppleTVPlusSubscriptionValidation)initWithTargetContext:(id)a3;
+- (TPSAppleTVPlusSubscriptionValidation)initWithTargetContext:(id)context;
 @end
 
 @implementation TPSAppleTVPlusSubscriptionValidation
@@ -14,7 +14,7 @@
   return result;
 }
 
-- (TPSAppleTVPlusSubscriptionValidation)initWithTargetContext:(id)a3
+- (TPSAppleTVPlusSubscriptionValidation)initWithTargetContext:(id)context
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

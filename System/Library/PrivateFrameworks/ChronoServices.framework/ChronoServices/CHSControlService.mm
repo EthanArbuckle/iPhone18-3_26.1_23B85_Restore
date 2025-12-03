@@ -1,9 +1,9 @@
 @interface CHSControlService
 + (CHSControlService)sharedInstance;
 - (CHSControlService)init;
-- (void)allControlConfigurationsByHostWithCompletion:(id)a3;
-- (void)fetchControlDescriptorsForExtensionBundleIdentifier:(id)a3 userInitiated:(BOOL)a4 reason:(id)a5 completion:(id)a6;
-- (void)reloadControlsForExtension:(id)a3 kind:(id)a4 reason:(id)a5;
+- (void)allControlConfigurationsByHostWithCompletion:(id)completion;
+- (void)fetchControlDescriptorsForExtensionBundleIdentifier:(id)identifier userInitiated:(BOOL)initiated reason:(id)reason completion:(id)completion;
+- (void)reloadControlsForExtension:(id)extension kind:(id)kind reason:(id)reason;
 @end
 
 @implementation CHSControlService
@@ -20,14 +20,14 @@
   return v3;
 }
 
-- (void)reloadControlsForExtension:(id)a3 kind:(id)a4 reason:(id)a5
+- (void)reloadControlsForExtension:(id)extension kind:(id)kind reason:(id)reason
 {
   v7 = sub_195FA08B8();
   v9 = v8;
-  if (a4)
+  if (kind)
   {
     v10 = sub_195FA08B8();
-    a4 = v11;
+    kind = v11;
   }
 
   else
@@ -37,8 +37,8 @@
 
   v12 = sub_195FA08B8();
   v14 = v13;
-  v15 = self;
-  _sSo17CHSControlServiceC14ChronoServicesE14reloadControls12forExtension4kind6reasonySS_SSSgSStF_0(v7, v9, v10, a4, v12, v14);
+  selfCopy = self;
+  _sSo17CHSControlServiceC14ChronoServicesE14reloadControls12forExtension4kind6reasonySS_SSSgSStF_0(v7, v9, v10, kind, v12, v14);
 }
 
 - (CHSControlService)init
@@ -48,13 +48,13 @@
   return [(CHSControlService *)&v3 init];
 }
 
-- (void)allControlConfigurationsByHostWithCompletion:(id)a3
+- (void)allControlConfigurationsByHostWithCompletion:(id)completion
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EAEEE330, &qword_195FAFCB8);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x1EEE9AC00](v5 - 8);
   v8 = &v14 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(completion);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   v11 = sub_195FA0BC8();
@@ -65,21 +65,21 @@
   v12[4] = self;
   v12[5] = sub_195F71200;
   v12[6] = v10;
-  v13 = self;
+  selfCopy = self;
   sub_195F6FE44(0, 0, v8, &unk_195FAFCE0, v12);
 }
 
-- (void)fetchControlDescriptorsForExtensionBundleIdentifier:(id)a3 userInitiated:(BOOL)a4 reason:(id)a5 completion:(id)a6
+- (void)fetchControlDescriptorsForExtensionBundleIdentifier:(id)identifier userInitiated:(BOOL)initiated reason:(id)reason completion:(id)completion
 {
-  v8 = _Block_copy(a6);
+  v8 = _Block_copy(completion);
   v9 = sub_195FA08B8();
   v11 = v10;
   v12 = sub_195FA08B8();
   v14 = v13;
   v15 = swift_allocObject();
   *(v15 + 16) = v8;
-  v16 = self;
-  CHSControlService.fetchControlDescriptors(forExtensionBundleIdentifier:userInitiated:reason:completion:)(v9, v11, a4, v12, v14, sub_195F711F8, v15);
+  selfCopy = self;
+  CHSControlService.fetchControlDescriptors(forExtensionBundleIdentifier:userInitiated:reason:completion:)(v9, v11, initiated, v12, v14, sub_195F711F8, v15);
 }
 
 @end

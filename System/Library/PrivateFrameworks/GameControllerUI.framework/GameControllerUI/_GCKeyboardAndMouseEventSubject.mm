@@ -1,17 +1,17 @@
 @interface _GCKeyboardAndMouseEventSubject
 - (_GCKeyboardAndMouseEventSubject)init;
-- (id)observeButtonEvents:(id)a3;
-- (id)observeDigitizerEvents:(id)a3;
-- (id)observeKeyboardEvents:(id)a3;
-- (id)observePointerEvents:(id)a3;
-- (id)observeScrollEvents:(id)a3;
-- (void)addMaskAndPublishButtonEvent:(uint64_t)a3 atTimestamp:;
-- (void)publishButtonEvent:(void *)a1;
-- (void)publishDigitizerEvent:(void *)a1;
-- (void)publishKeyboardEvent:(void *)a1;
-- (void)publishPointerEvent:(void *)a1;
-- (void)publishScrollEvent:(void *)a1;
-- (void)removeMaskAndPublishButtonEvent:(uint64_t)a3 atTimestamp:;
+- (id)observeButtonEvents:(id)events;
+- (id)observeDigitizerEvents:(id)events;
+- (id)observeKeyboardEvents:(id)events;
+- (id)observePointerEvents:(id)events;
+- (id)observeScrollEvents:(id)events;
+- (void)addMaskAndPublishButtonEvent:(uint64_t)event atTimestamp:;
+- (void)publishButtonEvent:(void *)event;
+- (void)publishDigitizerEvent:(void *)event;
+- (void)publishKeyboardEvent:(void *)event;
+- (void)publishPointerEvent:(void *)event;
+- (void)publishScrollEvent:(void *)event;
+- (void)removeMaskAndPublishButtonEvent:(uint64_t)event atTimestamp:;
 @end
 
 @implementation _GCKeyboardAndMouseEventSubject
@@ -44,27 +44,27 @@
   return v2;
 }
 
-- (id)observeButtonEvents:(id)a3
+- (id)observeButtonEvents:(id)events
 {
-  v4 = [a3 copy];
-  v5 = [(_GCKeyboardAndMouseEventSubject *)self buttonEventObservers];
+  v4 = [events copy];
+  buttonEventObservers = [(_GCKeyboardAndMouseEventSubject *)self buttonEventObservers];
   v6 = MEMORY[0x20F32E600](v4);
-  v7 = [v5 containsObject:v6];
+  v7 = [buttonEventObservers containsObject:v6];
 
   if ((v7 & 1) == 0)
   {
     do
     {
-      v8 = [(_GCKeyboardAndMouseEventSubject *)self buttonEventObservers];
-      v9 = [v8 mutableCopy];
+      buttonEventObservers2 = [(_GCKeyboardAndMouseEventSubject *)self buttonEventObservers];
+      v9 = [buttonEventObservers2 mutableCopy];
 
       v10 = MEMORY[0x20F32E600](v4);
       [v9 addObject:v10];
 
       [(_GCKeyboardAndMouseEventSubject *)self setButtonEventObservers:v9];
-      v11 = [(_GCKeyboardAndMouseEventSubject *)self buttonEventObservers];
+      buttonEventObservers3 = [(_GCKeyboardAndMouseEventSubject *)self buttonEventObservers];
       v12 = MEMORY[0x20F32E600](v4);
-      v13 = [v11 containsObject:v12];
+      v13 = [buttonEventObservers3 containsObject:v12];
     }
 
     while (!v13);
@@ -83,27 +83,27 @@
   return v16;
 }
 
-- (id)observeKeyboardEvents:(id)a3
+- (id)observeKeyboardEvents:(id)events
 {
-  v4 = [a3 copy];
-  v5 = [(_GCKeyboardAndMouseEventSubject *)self keyboardEventObservers];
+  v4 = [events copy];
+  keyboardEventObservers = [(_GCKeyboardAndMouseEventSubject *)self keyboardEventObservers];
   v6 = MEMORY[0x20F32E600](v4);
-  v7 = [v5 containsObject:v6];
+  v7 = [keyboardEventObservers containsObject:v6];
 
   if ((v7 & 1) == 0)
   {
     do
     {
-      v8 = [(_GCKeyboardAndMouseEventSubject *)self keyboardEventObservers];
-      v9 = [v8 mutableCopy];
+      keyboardEventObservers2 = [(_GCKeyboardAndMouseEventSubject *)self keyboardEventObservers];
+      v9 = [keyboardEventObservers2 mutableCopy];
 
       v10 = MEMORY[0x20F32E600](v4);
       [v9 addObject:v10];
 
       [(_GCKeyboardAndMouseEventSubject *)self setKeyboardEventObservers:v9];
-      v11 = [(_GCKeyboardAndMouseEventSubject *)self keyboardEventObservers];
+      keyboardEventObservers3 = [(_GCKeyboardAndMouseEventSubject *)self keyboardEventObservers];
       v12 = MEMORY[0x20F32E600](v4);
-      v13 = [v11 containsObject:v12];
+      v13 = [keyboardEventObservers3 containsObject:v12];
     }
 
     while (!v13);
@@ -122,27 +122,27 @@
   return v16;
 }
 
-- (id)observeScrollEvents:(id)a3
+- (id)observeScrollEvents:(id)events
 {
-  v4 = [a3 copy];
-  v5 = [(_GCKeyboardAndMouseEventSubject *)self scrollEventObservers];
+  v4 = [events copy];
+  scrollEventObservers = [(_GCKeyboardAndMouseEventSubject *)self scrollEventObservers];
   v6 = MEMORY[0x20F32E600](v4);
-  v7 = [v5 containsObject:v6];
+  v7 = [scrollEventObservers containsObject:v6];
 
   if ((v7 & 1) == 0)
   {
     do
     {
-      v8 = [(_GCKeyboardAndMouseEventSubject *)self scrollEventObservers];
-      v9 = [v8 mutableCopy];
+      scrollEventObservers2 = [(_GCKeyboardAndMouseEventSubject *)self scrollEventObservers];
+      v9 = [scrollEventObservers2 mutableCopy];
 
       v10 = MEMORY[0x20F32E600](v4);
       [v9 addObject:v10];
 
       [(_GCKeyboardAndMouseEventSubject *)self setScrollEventObservers:v9];
-      v11 = [(_GCKeyboardAndMouseEventSubject *)self scrollEventObservers];
+      scrollEventObservers3 = [(_GCKeyboardAndMouseEventSubject *)self scrollEventObservers];
       v12 = MEMORY[0x20F32E600](v4);
-      v13 = [v11 containsObject:v12];
+      v13 = [scrollEventObservers3 containsObject:v12];
     }
 
     while (!v13);
@@ -161,27 +161,27 @@
   return v16;
 }
 
-- (id)observeDigitizerEvents:(id)a3
+- (id)observeDigitizerEvents:(id)events
 {
-  v4 = [a3 copy];
-  v5 = [(_GCKeyboardAndMouseEventSubject *)self digitizerEventObservers];
+  v4 = [events copy];
+  digitizerEventObservers = [(_GCKeyboardAndMouseEventSubject *)self digitizerEventObservers];
   v6 = MEMORY[0x20F32E600](v4);
-  v7 = [v5 containsObject:v6];
+  v7 = [digitizerEventObservers containsObject:v6];
 
   if ((v7 & 1) == 0)
   {
     do
     {
-      v8 = [(_GCKeyboardAndMouseEventSubject *)self digitizerEventObservers];
-      v9 = [v8 mutableCopy];
+      digitizerEventObservers2 = [(_GCKeyboardAndMouseEventSubject *)self digitizerEventObservers];
+      v9 = [digitizerEventObservers2 mutableCopy];
 
       v10 = MEMORY[0x20F32E600](v4);
       [v9 addObject:v10];
 
       [(_GCKeyboardAndMouseEventSubject *)self setDigitizerEventObservers:v9];
-      v11 = [(_GCKeyboardAndMouseEventSubject *)self digitizerEventObservers];
+      digitizerEventObservers3 = [(_GCKeyboardAndMouseEventSubject *)self digitizerEventObservers];
       v12 = MEMORY[0x20F32E600](v4);
-      v13 = [v11 containsObject:v12];
+      v13 = [digitizerEventObservers3 containsObject:v12];
     }
 
     while (!v13);
@@ -200,27 +200,27 @@
   return v16;
 }
 
-- (id)observePointerEvents:(id)a3
+- (id)observePointerEvents:(id)events
 {
-  v4 = [a3 copy];
-  v5 = [(_GCKeyboardAndMouseEventSubject *)self pointerEventObservers];
+  v4 = [events copy];
+  pointerEventObservers = [(_GCKeyboardAndMouseEventSubject *)self pointerEventObservers];
   v6 = MEMORY[0x20F32E600](v4);
-  v7 = [v5 containsObject:v6];
+  v7 = [pointerEventObservers containsObject:v6];
 
   if ((v7 & 1) == 0)
   {
     do
     {
-      v8 = [(_GCKeyboardAndMouseEventSubject *)self pointerEventObservers];
-      v9 = [v8 mutableCopy];
+      pointerEventObservers2 = [(_GCKeyboardAndMouseEventSubject *)self pointerEventObservers];
+      v9 = [pointerEventObservers2 mutableCopy];
 
       v10 = MEMORY[0x20F32E600](v4);
       [v9 addObject:v10];
 
       [(_GCKeyboardAndMouseEventSubject *)self setPointerEventObservers:v9];
-      v11 = [(_GCKeyboardAndMouseEventSubject *)self pointerEventObservers];
+      pointerEventObservers3 = [(_GCKeyboardAndMouseEventSubject *)self pointerEventObservers];
       v12 = MEMORY[0x20F32E600](v4);
-      v13 = [v11 containsObject:v12];
+      v13 = [pointerEventObservers3 containsObject:v12];
     }
 
     while (!v13);
@@ -239,15 +239,15 @@
   return v16;
 }
 
-- (void)publishButtonEvent:(void *)a1
+- (void)publishButtonEvent:(void *)event
 {
   v50 = *MEMORY[0x277D85DE8];
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (event)
   {
-    a1[1] = [v3 mask];
-    v5 = objc_getProperty(a1, sel_buttonEventObservers, 16, 1);
+    event[1] = [v3 mask];
+    v5 = objc_getProperty(event, sel_buttonEventObservers, 16, 1);
     v7 = OUTLINED_FUNCTION_1(v5, v6);
     if (v7)
     {
@@ -257,7 +257,7 @@
         OUTLINED_FUNCTION_3(v15, v16, v17, v18, v19, v20, v21, v22, v36, v39, v42);
         if (!v31)
         {
-          objc_enumerationMutation(a1);
+          objc_enumerationMutation(event);
         }
 
         v32 = OUTLINED_FUNCTION_0(v23, v24, v25, v26, v27, v28, v29, v30, v37, v40);
@@ -278,35 +278,35 @@
   v34 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addMaskAndPublishButtonEvent:(uint64_t)a3 atTimestamp:
+- (void)addMaskAndPublishButtonEvent:(uint64_t)event atTimestamp:
 {
-  if (a1)
+  if (self)
   {
     v6 = objc_opt_new();
-    [v6 setTimestamp:a3];
-    [v6 setMask:a1[1] | a2];
-    [(_GCKeyboardAndMouseEventSubject *)a1 publishButtonEvent:v6];
+    [v6 setTimestamp:event];
+    [v6 setMask:self[1] | a2];
+    [(_GCKeyboardAndMouseEventSubject *)self publishButtonEvent:v6];
   }
 }
 
-- (void)removeMaskAndPublishButtonEvent:(uint64_t)a3 atTimestamp:
+- (void)removeMaskAndPublishButtonEvent:(uint64_t)event atTimestamp:
 {
-  if (a1)
+  if (self)
   {
     v6 = objc_opt_new();
-    [v6 setTimestamp:a3];
-    [v6 setMask:a1[1] & ~a2];
-    [(_GCKeyboardAndMouseEventSubject *)a1 publishButtonEvent:v6];
+    [v6 setTimestamp:event];
+    [v6 setMask:self[1] & ~a2];
+    [(_GCKeyboardAndMouseEventSubject *)self publishButtonEvent:v6];
   }
 }
 
-- (void)publishKeyboardEvent:(void *)a1
+- (void)publishKeyboardEvent:(void *)event
 {
   v49 = *MEMORY[0x277D85DE8];
   v3 = a2;
-  if (a1)
+  if (event)
   {
-    v4 = objc_getProperty(a1, sel_keyboardEventObservers, 24, 1);
+    v4 = objc_getProperty(event, sel_keyboardEventObservers, 24, 1);
     v6 = OUTLINED_FUNCTION_1(v4, v5);
     if (v6)
     {
@@ -316,7 +316,7 @@
         OUTLINED_FUNCTION_3(v14, v15, v16, v17, v18, v19, v20, v21, v35, v38, v41);
         if (!v30)
         {
-          objc_enumerationMutation(a1);
+          objc_enumerationMutation(event);
         }
 
         v31 = OUTLINED_FUNCTION_0(v22, v23, v24, v25, v26, v27, v28, v29, v36, v39);
@@ -337,13 +337,13 @@
   v33 = *MEMORY[0x277D85DE8];
 }
 
-- (void)publishScrollEvent:(void *)a1
+- (void)publishScrollEvent:(void *)event
 {
   v49 = *MEMORY[0x277D85DE8];
   v3 = a2;
-  if (a1)
+  if (event)
   {
-    v4 = objc_getProperty(a1, sel_scrollEventObservers, 32, 1);
+    v4 = objc_getProperty(event, sel_scrollEventObservers, 32, 1);
     v6 = OUTLINED_FUNCTION_1(v4, v5);
     if (v6)
     {
@@ -353,7 +353,7 @@
         OUTLINED_FUNCTION_3(v14, v15, v16, v17, v18, v19, v20, v21, v35, v38, v41);
         if (!v30)
         {
-          objc_enumerationMutation(a1);
+          objc_enumerationMutation(event);
         }
 
         v31 = OUTLINED_FUNCTION_0(v22, v23, v24, v25, v26, v27, v28, v29, v36, v39);
@@ -374,13 +374,13 @@
   v33 = *MEMORY[0x277D85DE8];
 }
 
-- (void)publishDigitizerEvent:(void *)a1
+- (void)publishDigitizerEvent:(void *)event
 {
   v49 = *MEMORY[0x277D85DE8];
   v3 = a2;
-  if (a1)
+  if (event)
   {
-    v4 = objc_getProperty(a1, sel_digitizerEventObservers, 40, 1);
+    v4 = objc_getProperty(event, sel_digitizerEventObservers, 40, 1);
     v6 = OUTLINED_FUNCTION_1(v4, v5);
     if (v6)
     {
@@ -390,7 +390,7 @@
         OUTLINED_FUNCTION_3(v14, v15, v16, v17, v18, v19, v20, v21, v35, v38, v41);
         if (!v30)
         {
-          objc_enumerationMutation(a1);
+          objc_enumerationMutation(event);
         }
 
         v31 = OUTLINED_FUNCTION_0(v22, v23, v24, v25, v26, v27, v28, v29, v36, v39);
@@ -411,13 +411,13 @@
   v33 = *MEMORY[0x277D85DE8];
 }
 
-- (void)publishPointerEvent:(void *)a1
+- (void)publishPointerEvent:(void *)event
 {
   v49 = *MEMORY[0x277D85DE8];
   v3 = a2;
-  if (a1)
+  if (event)
   {
-    v4 = objc_getProperty(a1, sel_pointerEventObservers, 48, 1);
+    v4 = objc_getProperty(event, sel_pointerEventObservers, 48, 1);
     v6 = OUTLINED_FUNCTION_1(v4, v5);
     if (v6)
     {
@@ -427,7 +427,7 @@
         OUTLINED_FUNCTION_3(v14, v15, v16, v17, v18, v19, v20, v21, v35, v38, v41);
         if (!v30)
         {
-          objc_enumerationMutation(a1);
+          objc_enumerationMutation(event);
         }
 
         v31 = OUTLINED_FUNCTION_0(v22, v23, v24, v25, v26, v27, v28, v29, v36, v39);

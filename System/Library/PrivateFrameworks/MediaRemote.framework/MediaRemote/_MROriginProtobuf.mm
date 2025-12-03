@@ -1,16 +1,16 @@
 @interface _MROriginProtobuf
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsType:(id)a3;
+- (int)StringAsType:(id)type;
 - (int)type;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasIsLocallyHosted:(BOOL)a3;
-- (void)setHasType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasIsLocallyHosted:(BOOL)hosted;
+- (void)setHasType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _MROriginProtobuf
@@ -28,9 +28,9 @@
   }
 }
 
-- (void)setHasType:(BOOL)a3
+- (void)setHasType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }
@@ -43,13 +43,13 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (int)StringAsType:(id)a3
+- (int)StringAsType:(id)type
 {
-  v3 = a3;
+  typeCopy = type;
   v4 = 1;
-  if (([v3 isEqualToString:@"Local"] & 1) == 0)
+  if (([typeCopy isEqualToString:@"Local"] & 1) == 0)
   {
-    if ([v3 isEqualToString:@"Custom"])
+    if ([typeCopy isEqualToString:@"Custom"])
     {
       v4 = 2;
     }
@@ -63,9 +63,9 @@
   return v4;
 }
 
-- (void)setHasIsLocallyHosted:(BOOL)a3
+- (void)setHasIsLocallyHosted:(BOOL)hosted
 {
-  if (a3)
+  if (hosted)
   {
     v3 = 4;
   }
@@ -84,15 +84,15 @@
   v8.receiver = self;
   v8.super_class = _MROriginProtobuf;
   v4 = [(_MROriginProtobuf *)&v8 description];
-  v5 = [(_MROriginProtobuf *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(_MROriginProtobuf *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ((*&self->_has & 2) != 0)
   {
     type = self->_type;
@@ -111,40 +111,40 @@
       v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", self->_type];
     }
 
-    [v3 setObject:v5 forKey:@"type"];
+    [dictionary setObject:v5 forKey:@"type"];
   }
 
   displayName = self->_displayName;
   if (displayName)
   {
-    [v3 setObject:displayName forKey:@"displayName"];
+    [dictionary setObject:displayName forKey:@"displayName"];
   }
 
   if (*&self->_has)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithInt:self->_identifier];
-    [v3 setObject:v7 forKey:@"identifier"];
+    [dictionary setObject:v7 forKey:@"identifier"];
   }
 
   deviceInfoDeprecated = self->_deviceInfoDeprecated;
   if (deviceInfoDeprecated)
   {
-    v9 = [(_MRDeviceInfoMessageProtobuf *)deviceInfoDeprecated dictionaryRepresentation];
-    [v3 setObject:v9 forKey:@"deviceInfoDeprecated"];
+    dictionaryRepresentation = [(_MRDeviceInfoMessageProtobuf *)deviceInfoDeprecated dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"deviceInfoDeprecated"];
   }
 
   if ((*&self->_has & 4) != 0)
   {
     v10 = [MEMORY[0x1E696AD98] numberWithBool:self->_isLocallyHosted];
-    [v3 setObject:v10 forKey:@"isLocallyHosted"];
+    [dictionary setObject:v10 forKey:@"isLocallyHosted"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v7 = a3;
+  toCopy = to;
   if ((*&self->_has & 2) != 0)
   {
     type = self->_type;
@@ -174,44 +174,44 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if ((*&self->_has & 2) != 0)
   {
-    v4[7] = self->_type;
-    *(v4 + 36) |= 2u;
+    toCopy[7] = self->_type;
+    *(toCopy + 36) |= 2u;
   }
 
-  v5 = v4;
+  v5 = toCopy;
   if (self->_displayName)
   {
-    [v4 setDisplayName:?];
-    v4 = v5;
+    [toCopy setDisplayName:?];
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    v4[6] = self->_identifier;
-    *(v4 + 36) |= 1u;
+    toCopy[6] = self->_identifier;
+    *(toCopy + 36) |= 1u;
   }
 
   if (self->_deviceInfoDeprecated)
   {
     [v5 setDeviceInfoDeprecated:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    *(v4 + 32) = self->_isLocallyHosted;
-    *(v4 + 36) |= 4u;
+    *(toCopy + 32) = self->_isLocallyHosted;
+    *(toCopy + 36) |= 4u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if ((*&self->_has & 2) != 0)
   {
@@ -219,7 +219,7 @@
     *(v5 + 36) |= 2u;
   }
 
-  v7 = [(NSString *)self->_displayName copyWithZone:a3];
+  v7 = [(NSString *)self->_displayName copyWithZone:zone];
   v8 = *(v6 + 16);
   *(v6 + 16) = v7;
 
@@ -229,7 +229,7 @@
     *(v6 + 36) |= 1u;
   }
 
-  v9 = [(_MRDeviceInfoMessageProtobuf *)self->_deviceInfoDeprecated copyWithZone:a3];
+  v9 = [(_MRDeviceInfoMessageProtobuf *)self->_deviceInfoDeprecated copyWithZone:zone];
   v10 = *(v6 + 8);
   *(v6 + 8) = v9;
 
@@ -242,31 +242,31 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_20;
   }
 
   has = self->_has;
-  v6 = *(v4 + 36);
+  v6 = *(equalCopy + 36);
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 36) & 2) == 0 || self->_type != *(v4 + 7))
+    if ((*(equalCopy + 36) & 2) == 0 || self->_type != *(equalCopy + 7))
     {
       goto LABEL_20;
     }
   }
 
-  else if ((*(v4 + 36) & 2) != 0)
+  else if ((*(equalCopy + 36) & 2) != 0)
   {
     goto LABEL_20;
   }
 
   displayName = self->_displayName;
-  if (displayName | *(v4 + 2))
+  if (displayName | *(equalCopy + 2))
   {
     if (![(NSString *)displayName isEqual:?])
     {
@@ -276,22 +276,22 @@
     has = self->_has;
   }
 
-  v8 = *(v4 + 36);
+  v8 = *(equalCopy + 36);
   if (has)
   {
-    if ((*(v4 + 36) & 1) == 0 || self->_identifier != *(v4 + 6))
+    if ((*(equalCopy + 36) & 1) == 0 || self->_identifier != *(equalCopy + 6))
     {
       goto LABEL_20;
     }
   }
 
-  else if (*(v4 + 36))
+  else if (*(equalCopy + 36))
   {
     goto LABEL_20;
   }
 
   deviceInfoDeprecated = self->_deviceInfoDeprecated;
-  if (deviceInfoDeprecated | *(v4 + 1))
+  if (deviceInfoDeprecated | *(equalCopy + 1))
   {
     if (![(_MRDeviceInfoMessageProtobuf *)deviceInfoDeprecated isEqual:?])
     {
@@ -301,20 +301,20 @@
     has = self->_has;
   }
 
-  v10 = (*(v4 + 36) & 4) == 0;
+  v10 = (*(equalCopy + 36) & 4) == 0;
   if ((has & 4) != 0)
   {
-    if ((*(v4 + 36) & 4) != 0)
+    if ((*(equalCopy + 36) & 4) != 0)
     {
       if (self->_isLocallyHosted)
       {
-        if ((*(v4 + 32) & 1) == 0)
+        if ((*(equalCopy + 32) & 1) == 0)
         {
           goto LABEL_20;
         }
       }
 
-      else if (*(v4 + 32))
+      else if (*(equalCopy + 32))
       {
         goto LABEL_20;
       }
@@ -369,18 +369,18 @@ LABEL_21:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if ((v4[9] & 2) != 0)
+  fromCopy = from;
+  v5 = fromCopy;
+  if ((fromCopy[9] & 2) != 0)
   {
-    self->_type = v4[7];
+    self->_type = fromCopy[7];
     *&self->_has |= 2u;
   }
 
-  v8 = v4;
-  if (*(v4 + 2))
+  v8 = fromCopy;
+  if (*(fromCopy + 2))
   {
     [(_MROriginProtobuf *)self setDisplayName:?];
     v5 = v8;

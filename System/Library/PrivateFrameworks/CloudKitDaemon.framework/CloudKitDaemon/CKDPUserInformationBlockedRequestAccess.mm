@@ -1,11 +1,11 @@
 @interface CKDPUserInformationBlockedRequestAccess
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CKDPUserInformationBlockedRequestAccess
@@ -42,66 +42,66 @@
   return v6;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_userId)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_contactInformation)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   userId = self->_userId;
-  v8 = v4;
+  v8 = toCopy;
   if (userId)
   {
-    objc_msgSend_setUserId_(v4, v5, userId);
-    v4 = v8;
+    objc_msgSend_setUserId_(toCopy, v5, userId);
+    toCopy = v8;
   }
 
   contactInformation = self->_contactInformation;
   if (contactInformation)
   {
     objc_msgSend_setContactInformation_(v8, v5, contactInformation);
-    v4 = v8;
+    toCopy = v8;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v10 = objc_msgSend_init(v7, v8, v9);
-  v12 = objc_msgSend_copyWithZone_(self->_userId, v11, a3);
+  v12 = objc_msgSend_copyWithZone_(self->_userId, v11, zone);
   v13 = v10[2];
   v10[2] = v12;
 
-  v15 = objc_msgSend_copyWithZone_(self->_contactInformation, v14, a3);
+  v15 = objc_msgSend_copyWithZone_(self->_contactInformation, v14, zone);
   v16 = v10[1];
   v10[1] = v15;
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if (objc_msgSend_isMemberOfClass_(v4, v6, v5) && ((userId = self->_userId, v9 = v4[2], !(userId | v9)) || objc_msgSend_isEqual_(userId, v7, v9)))
+  if (objc_msgSend_isMemberOfClass_(equalCopy, v6, v5) && ((userId = self->_userId, v9 = equalCopy[2], !(userId | v9)) || objc_msgSend_isEqual_(userId, v7, v9)))
   {
     contactInformation = self->_contactInformation;
-    v11 = v4[1];
+    v11 = equalCopy[1];
     if (contactInformation | v11)
     {
       isEqual = objc_msgSend_isEqual_(contactInformation, v7, v11);
@@ -121,30 +121,30 @@
   return isEqual;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4[2];
-  v8 = v4;
+  fromCopy = from;
+  v5 = fromCopy[2];
+  v8 = fromCopy;
   if (v5)
   {
-    objc_msgSend_setUserId_(self, v4, v5);
-    v4 = v8;
+    objc_msgSend_setUserId_(self, fromCopy, v5);
+    fromCopy = v8;
   }
 
   contactInformation = self->_contactInformation;
-  v7 = v4[1];
+  v7 = fromCopy[1];
   if (contactInformation)
   {
     if (v7)
     {
-      objc_msgSend_mergeFrom_(contactInformation, v4, v7);
+      objc_msgSend_mergeFrom_(contactInformation, fromCopy, v7);
     }
   }
 
   else if (v7)
   {
-    objc_msgSend_setContactInformation_(self, v4, v7);
+    objc_msgSend_setContactInformation_(self, fromCopy, v7);
   }
 
   MEMORY[0x2821F96F8]();

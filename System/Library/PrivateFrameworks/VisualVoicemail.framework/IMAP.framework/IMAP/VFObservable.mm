@@ -1,42 +1,42 @@
 @interface VFObservable
-+ (VFObservable)observableWithBlock:(id)a3;
-+ (VFObservable)observableWithError:(id)a3;
-+ (VFObservable)observableWithInitialState:(id)a3 condition:(id)a4 nextState:(id)a5 resultSelector:(id)a6;
-+ (VFObservable)observableWithResults:(id)a3;
-+ (id)combineLatest:(id)a3;
-+ (id)concatenate:(id)a3;
++ (VFObservable)observableWithBlock:(id)block;
++ (VFObservable)observableWithError:(id)error;
++ (VFObservable)observableWithInitialState:(id)state condition:(id)condition nextState:(id)nextState resultSelector:(id)selector;
++ (VFObservable)observableWithResults:(id)results;
++ (id)combineLatest:(id)latest;
++ (id)concatenate:(id)concatenate;
 + (id)observableObserver;
-+ (id)observableOnDefaultNotificationCenterWithName:(id)a3 object:(id)a4;
-+ (id)observableOnNotificationCenter:(id)a3 name:(id)a4 object:(id)a5;
-+ (id)observableOnNotifyTokenWithName:(id)a3;
-- (id)allObjects:(id *)a3;
++ (id)observableOnDefaultNotificationCenterWithName:(id)name object:(id)object;
++ (id)observableOnNotificationCenter:(id)center name:(id)name object:(id)object;
++ (id)observableOnNotifyTokenWithName:(id)name;
+- (id)allObjects:(id *)objects;
 - (id)distinctUntilChanged;
-- (id)doOnCancel:(id)a3;
-- (id)doOnCompletion:(id)a3;
-- (id)doOnError:(id)a3;
-- (id)doOnNext:(id)a3;
-- (id)doOnSubscribe:(id)a3;
-- (id)doOnTerminate:(id)a3;
-- (id)filter:(id)a3;
-- (id)map:(id)a3;
-- (id)multicast:(id)a3;
-- (id)observeOnQueue:(const char *)a3 qos:(unsigned int)a4;
+- (id)doOnCancel:(id)cancel;
+- (id)doOnCompletion:(id)completion;
+- (id)doOnError:(id)error;
+- (id)doOnNext:(id)next;
+- (id)doOnSubscribe:(id)subscribe;
+- (id)doOnTerminate:(id)terminate;
+- (id)filter:(id)filter;
+- (id)map:(id)map;
+- (id)multicast:(id)multicast;
+- (id)observeOnQueue:(const char *)queue qos:(unsigned int)qos;
 - (id)publish;
-- (id)skip:(unint64_t)a3;
-- (id)startWith:(id)a3;
-- (id)subscribeWithResultBlock:(id)a3;
-- (id)take:(unint64_t)a3;
+- (id)skip:(unint64_t)skip;
+- (id)startWith:(id)with;
+- (id)subscribeWithResultBlock:(id)block;
+- (id)take:(unint64_t)take;
 @end
 
 @implementation VFObservable
 
-+ (VFObservable)observableWithInitialState:(id)a3 condition:(id)a4 nextState:(id)a5 resultSelector:(id)a6
++ (VFObservable)observableWithInitialState:(id)state condition:(id)condition nextState:(id)nextState resultSelector:(id)selector
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [[_VFGeneratorObservable alloc] initWithInitialState:v12 condition:v11 nextState:v10 resultSelector:v9];
+  selectorCopy = selector;
+  nextStateCopy = nextState;
+  conditionCopy = condition;
+  stateCopy = state;
+  v13 = [[_VFGeneratorObservable alloc] initWithInitialState:stateCopy condition:conditionCopy nextState:nextStateCopy resultSelector:selectorCopy];
 
   return v13;
 }
@@ -48,18 +48,18 @@
   return v2;
 }
 
-+ (VFObservable)observableWithBlock:(id)a3
++ (VFObservable)observableWithBlock:(id)block
 {
-  v3 = a3;
-  v4 = [[_VFBlockObservable alloc] initWithBlock:v3];
+  blockCopy = block;
+  v4 = [[_VFBlockObservable alloc] initWithBlock:blockCopy];
 
   return v4;
 }
 
-+ (VFObservable)observableWithResults:(id)a3
++ (VFObservable)observableWithResults:(id)results
 {
-  v4 = a3;
-  v5 = [v4 count];
+  resultsCopy = results;
+  v5 = [resultsCopy count];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __38__VFObservable_observableWithResults___block_invoke;
@@ -69,9 +69,9 @@
   v9[1] = 3221225472;
   v9[2] = __38__VFObservable_observableWithResults___block_invoke_3;
   v9[3] = &unk_279E35D40;
-  v6 = v4;
+  v6 = resultsCopy;
   v10 = v6;
-  v7 = [a1 observableWithInitialState:&unk_288175710 condition:v11 nextState:&__block_literal_global_26 resultSelector:v9];
+  v7 = [self observableWithInitialState:&unk_288175710 condition:v11 nextState:&__block_literal_global_26 resultSelector:v9];
 
   return v7;
 }
@@ -92,16 +92,16 @@ id __38__VFObservable_observableWithResults___block_invoke_3(uint64_t a1, void *
   return v4;
 }
 
-+ (VFObservable)observableWithError:(id)a3
++ (VFObservable)observableWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __36__VFObservable_observableWithError___block_invoke;
   v8[3] = &unk_279E35D68;
-  v9 = v4;
-  v5 = v4;
-  v6 = [a1 observableWithBlock:v8];
+  v9 = errorCopy;
+  v5 = errorCopy;
+  v6 = [self observableWithBlock:v8];
 
   return v6;
 }
@@ -115,22 +115,22 @@ VFCancelationToken *__36__VFObservable_observableWithError___block_invoke(uint64
   return v4;
 }
 
-+ (id)observableOnNotificationCenter:(id)a3 name:(id)a4 object:(id)a5
++ (id)observableOnNotificationCenter:(id)center name:(id)name object:(id)object
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  centerCopy = center;
+  nameCopy = name;
+  objectCopy = object;
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __59__VFObservable_observableOnNotificationCenter_name_object___block_invoke;
   v16[3] = &unk_279E35DB8;
-  v17 = v8;
-  v18 = v9;
-  v19 = v10;
-  v11 = v10;
-  v12 = v9;
-  v13 = v8;
-  v14 = [a1 observableWithBlock:v16];
+  v17 = centerCopy;
+  v18 = nameCopy;
+  v19 = objectCopy;
+  v11 = objectCopy;
+  v12 = nameCopy;
+  v13 = centerCopy;
+  v14 = [self observableWithBlock:v16];
 
   return v14;
 }
@@ -165,26 +165,26 @@ VFCancelationToken *__59__VFObservable_observableOnNotificationCenter_name_objec
   return v9;
 }
 
-+ (id)observableOnDefaultNotificationCenterWithName:(id)a3 object:(id)a4
++ (id)observableOnDefaultNotificationCenterWithName:(id)name object:(id)object
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CCAB98] defaultCenter];
-  v9 = [a1 observableOnNotificationCenter:v8 name:v6 object:v7];
+  nameCopy = name;
+  objectCopy = object;
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  v9 = [self observableOnNotificationCenter:defaultCenter name:nameCopy object:objectCopy];
 
   return v9;
 }
 
-+ (id)observableOnNotifyTokenWithName:(id)a3
++ (id)observableOnNotifyTokenWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __48__VFObservable_observableOnNotifyTokenWithName___block_invoke;
   v8[3] = &unk_279E35D68;
-  v9 = v4;
-  v5 = v4;
-  v6 = [a1 observableWithBlock:v8];
+  v9 = nameCopy;
+  v5 = nameCopy;
+  v6 = [self observableWithBlock:v8];
 
   return v6;
 }
@@ -255,12 +255,12 @@ void __48__VFObservable_observableOnNotifyTokenWithName___block_invoke_2(uint64_
   objc_autoreleasePoolPop(v4);
 }
 
-+ (id)combineLatest:(id)a3
++ (id)combineLatest:(id)latest
 {
-  v3 = a3;
-  if ([v3 count])
+  latestCopy = latest;
+  if ([latestCopy count])
   {
-    v4 = [[_VFCombineLatestObservable alloc] initWithObservables:v3];
+    v4 = [[_VFCombineLatestObservable alloc] initWithObservables:latestCopy];
   }
 
   else
@@ -273,16 +273,16 @@ void __48__VFObservable_observableOnNotifyTokenWithName___block_invoke_2(uint64_
   return v5;
 }
 
-+ (id)concatenate:(id)a3
++ (id)concatenate:(id)concatenate
 {
-  v4 = a3;
+  concatenateCopy = concatenate;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __28__VFObservable_concatenate___block_invoke;
   v8[3] = &unk_279E35D68;
-  v9 = v4;
-  v5 = v4;
-  v6 = [a1 observableWithBlock:v8];
+  v9 = concatenateCopy;
+  v5 = concatenateCopy;
+  v6 = [self observableWithBlock:v8];
 
   return v6;
 }
@@ -312,18 +312,18 @@ VFCancelationToken *__31__VFObservable_emptyObservable__block_invoke(uint64_t a1
   return v3;
 }
 
-- (id)subscribeWithResultBlock:(id)a3
+- (id)subscribeWithResultBlock:(id)block
 {
-  v4 = [VFObserver observerWithResultBlock:a3];
+  v4 = [VFObserver observerWithResultBlock:block];
   v5 = [(VFObservable *)self subscribe:v4];
 
   return v5;
 }
 
-- (id)observeOnQueue:(const char *)a3 qos:(unsigned int)a4
+- (id)observeOnQueue:(const char *)queue qos:(unsigned int)qos
 {
-  v6 = dispatch_queue_attr_make_with_qos_class(0, a4, 0);
-  v7 = dispatch_queue_create(a3, v6);
+  v6 = dispatch_queue_attr_make_with_qos_class(0, qos, 0);
+  v7 = dispatch_queue_create(queue, v6);
 
   v8 = objc_opt_class();
   v13[0] = MEMORY[0x277D85DD0];
@@ -469,28 +469,28 @@ uint64_t __35__VFObservable_observeOnQueue_qos___block_invoke_2_40(uint64_t a1)
   return result;
 }
 
-- (id)allObjects:(id *)a3
+- (id)allObjects:(id *)objects
 {
   v5 = +[VFPromise promise];
-  v6 = [v5 completionHandlerAdapter];
-  v7 = [VFObserver observerWithCompletionHandler:v6];
+  completionHandlerAdapter = [v5 completionHandlerAdapter];
+  v7 = [VFObserver observerWithCompletionHandler:completionHandlerAdapter];
   v8 = [(VFObservable *)self subscribe:v7];
 
-  v9 = [v5 future];
-  v10 = [v9 result:a3];
+  future = [v5 future];
+  v10 = [future result:objects];
 
   return v10;
 }
 
-- (id)doOnSubscribe:(id)a3
+- (id)doOnSubscribe:(id)subscribe
 {
-  v4 = a3;
+  subscribeCopy = subscribe;
   v5 = objc_opt_class();
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __30__VFObservable_doOnSubscribe___block_invoke;
   v9[3] = &unk_279E35E50;
-  v6 = v4;
+  v6 = subscribeCopy;
   v9[4] = self;
   v10 = v6;
   v7 = [v5 observableWithBlock:v9];
@@ -507,16 +507,16 @@ id __30__VFObservable_doOnSubscribe___block_invoke(uint64_t a1, void *a2)
   return v4;
 }
 
-- (id)doOnNext:(id)a3
+- (id)doOnNext:(id)next
 {
-  v4 = a3;
+  nextCopy = next;
   v5 = objc_opt_class();
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __25__VFObservable_doOnNext___block_invoke;
   v9[3] = &unk_279E35EA0;
   v9[4] = self;
-  v6 = v4;
+  v6 = nextCopy;
   v10 = v6;
   v7 = [v5 observableWithBlock:v9];
 
@@ -557,16 +557,16 @@ void __25__VFObservable_doOnNext___block_invoke_2(uint64_t a1, void *a2)
   [*(a1 + 32) observerDidReceiveResult:v3];
 }
 
-- (id)doOnCompletion:(id)a3
+- (id)doOnCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = objc_opt_class();
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __31__VFObservable_doOnCompletion___block_invoke;
   v9[3] = &unk_279E35EA0;
   v9[4] = self;
-  v6 = v4;
+  v6 = completionCopy;
   v10 = v6;
   v7 = [v5 observableWithBlock:v9];
 
@@ -608,16 +608,16 @@ uint64_t __31__VFObservable_doOnCompletion___block_invoke_3(uint64_t a1)
   return v2();
 }
 
-- (id)doOnError:(id)a3
+- (id)doOnError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = objc_opt_class();
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __26__VFObservable_doOnError___block_invoke;
   v9[3] = &unk_279E35EA0;
   v9[4] = self;
-  v6 = v4;
+  v6 = errorCopy;
   v10 = v6;
   v7 = [v5 observableWithBlock:v9];
 
@@ -658,16 +658,16 @@ void __26__VFObservable_doOnError___block_invoke_4(uint64_t a1, void *a2)
   (*(*(a1 + 40) + 16))();
 }
 
-- (id)doOnCancel:(id)a3
+- (id)doOnCancel:(id)cancel
 {
-  v4 = a3;
+  cancelCopy = cancel;
   v5 = objc_opt_class();
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __27__VFObservable_doOnCancel___block_invoke;
   v9[3] = &unk_279E35EA0;
   v9[4] = self;
-  v6 = v4;
+  v6 = cancelCopy;
   v10 = v6;
   v7 = [v5 observableWithBlock:v9];
 
@@ -720,16 +720,16 @@ uint64_t __27__VFObservable_doOnCancel___block_invoke_4(uint64_t result)
   return result;
 }
 
-- (id)doOnTerminate:(id)a3
+- (id)doOnTerminate:(id)terminate
 {
-  v4 = a3;
+  terminateCopy = terminate;
   v5 = objc_opt_class();
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __30__VFObservable_doOnTerminate___block_invoke;
   v9[3] = &unk_279E35EA0;
   v9[4] = self;
-  v6 = v4;
+  v6 = terminateCopy;
   v10 = v6;
   v7 = [v5 observableWithBlock:v9];
 
@@ -786,12 +786,12 @@ void __30__VFObservable_doOnTerminate___block_invoke_4(uint64_t a1, void *a2)
   return v2;
 }
 
-- (id)take:(unint64_t)a3
+- (id)take:(unint64_t)take
 {
   v8[0] = 0;
   v8[1] = v8;
   v8[2] = 0x2020000000;
-  v8[3] = a3;
+  v8[3] = take;
   v4 = objc_opt_class();
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
@@ -849,12 +849,12 @@ void __21__VFObservable_take___block_invoke_2(uint64_t a1, void *a2)
   }
 }
 
-- (id)skip:(unint64_t)a3
+- (id)skip:(unint64_t)skip
 {
   v8[0] = 0;
   v8[1] = v8;
   v8[2] = 0x2020000000;
-  v8[3] = a3;
+  v8[3] = skip;
   v4 = objc_opt_class();
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
@@ -914,16 +914,16 @@ void __21__VFObservable_skip___block_invoke_2(uint64_t a1, void *a2)
   }
 }
 
-- (id)filter:(id)a3
+- (id)filter:(id)filter
 {
-  v4 = a3;
+  filterCopy = filter;
   v5 = objc_opt_class();
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __23__VFObservable_filter___block_invoke;
   v9[3] = &unk_279E35EA0;
   v9[4] = self;
-  v6 = v4;
+  v6 = filterCopy;
   v10 = v6;
   v7 = [v5 observableWithBlock:v9];
 
@@ -966,16 +966,16 @@ void __23__VFObservable_filter___block_invoke_2(uint64_t a1, void *a2)
   }
 }
 
-- (id)map:(id)a3
+- (id)map:(id)map
 {
-  v4 = a3;
+  mapCopy = map;
   v5 = objc_opt_class();
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __20__VFObservable_map___block_invoke;
   v9[3] = &unk_279E35EA0;
   v9[4] = self;
-  v6 = v4;
+  v6 = mapCopy;
   v10 = v6;
   v7 = [v5 observableWithBlock:v9];
 
@@ -1028,10 +1028,10 @@ void __20__VFObservable_map___block_invoke_2(uint64_t a1)
   }
 }
 
-- (id)multicast:(id)a3
+- (id)multicast:(id)multicast
 {
-  v4 = a3;
-  v5 = [[_VFConnectableObservable alloc] initWithObservable:self subject:v4];
+  multicastCopy = multicast;
+  v5 = [[_VFConnectableObservable alloc] initWithObservable:self subject:multicastCopy];
 
   return v5;
 }
@@ -1044,12 +1044,12 @@ void __20__VFObservable_map___block_invoke_2(uint64_t a1)
   return v4;
 }
 
-- (id)startWith:(id)a3
+- (id)startWith:(id)with
 {
   v11[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  withCopy = with;
   v5 = objc_opt_class();
-  v6 = [objc_opt_class() observableWithResults:v4];
+  v6 = [objc_opt_class() observableWithResults:withCopy];
   v11[0] = v6;
   v11[1] = self;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:2];

@@ -1,19 +1,19 @@
 @interface MapsSettingsMenuTableCell
-- (MapsSettingsMenuTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (MapsSettingsMenuTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)_setupViews;
 - (void)_updateConstraints;
 - (void)prepareForReuse;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
-- (void)willMoveToWindow:(id)a3;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
+- (void)willMoveToWindow:(id)window;
 @end
 
 @implementation MapsSettingsMenuTableCell
 
-- (MapsSettingsMenuTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (MapsSettingsMenuTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v10.receiver = self;
   v10.super_class = MapsSettingsMenuTableCell;
-  v4 = [(MapsSettingsMenuTableCell *)&v10 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(MapsSettingsMenuTableCell *)&v10 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
@@ -28,11 +28,11 @@
   return v5;
 }
 
-- (void)willMoveToWindow:(id)a3
+- (void)willMoveToWindow:(id)window
 {
   v4.receiver = self;
   v4.super_class = MapsSettingsMenuTableCell;
-  [(MapsSettingsMenuTableCell *)&v4 willMoveToWindow:a3];
+  [(MapsSettingsMenuTableCell *)&v4 willMoveToWindow:window];
   [(MapsSettingsMenuTableCell *)self _updateConstraints];
 }
 
@@ -48,8 +48,8 @@
   [(UILabel *)self->_label setFont:v5];
 
   [(UILabel *)self->_label setAdjustsFontForContentSizeCategory:1];
-  v6 = [(MapsSettingsMenuTableCell *)self contentView];
-  [v6 addSubview:self->_label];
+  contentView = [(MapsSettingsMenuTableCell *)self contentView];
+  [contentView addSubview:self->_label];
 
   v12 = +[UIButtonConfiguration plainButtonConfiguration];
   v7 = +[UIColor secondaryLabelColor];
@@ -64,8 +64,8 @@
   [(UIButton *)self->_menuButton setContentHuggingPriority:0 forAxis:v10];
   [(UIButton *)self->_menuButton setShowsMenuAsPrimaryAction:1];
   [(UIButton *)self->_menuButton setChangesSelectionAsPrimaryAction:1];
-  v11 = [(MapsSettingsMenuTableCell *)self contentView];
-  [v11 addSubview:self->_menuButton];
+  contentView2 = [(MapsSettingsMenuTableCell *)self contentView];
+  [contentView2 addSubview:self->_menuButton];
 }
 
 - (void)_updateConstraints
@@ -75,58 +75,58 @@
     [NSLayoutConstraint deactivateConstraints:?];
   }
 
-  v3 = [(MapsSettingsMenuTableCell *)self traitCollection];
-  v4 = [v3 preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v4);
+  traitCollection = [(MapsSettingsMenuTableCell *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
-  v6 = [(UILabel *)self->_label leadingAnchor];
-  v7 = [(MapsSettingsMenuTableCell *)self contentView];
-  v8 = [v7 layoutMarginsGuide];
-  [v8 leadingAnchor];
-  v49 = v53 = v6;
-  v9 = [v6 constraintEqualToAnchor:?];
+  leadingAnchor = [(UILabel *)self->_label leadingAnchor];
+  contentView = [(MapsSettingsMenuTableCell *)self contentView];
+  layoutMarginsGuide = [contentView layoutMarginsGuide];
+  [layoutMarginsGuide leadingAnchor];
+  v49 = v53 = leadingAnchor;
+  v9 = [leadingAnchor constraintEqualToAnchor:?];
   v67 = v9;
   if (IsAccessibilityCategory)
   {
     v69[0] = v9;
-    v10 = [(UILabel *)self->_label trailingAnchor];
-    v66 = [(MapsSettingsMenuTableCell *)self contentView];
-    v65 = [v66 layoutMarginsGuide];
-    v64 = [v65 trailingAnchor];
-    v63 = [v10 constraintEqualToAnchor:?];
+    trailingAnchor = [(UILabel *)self->_label trailingAnchor];
+    contentView2 = [(MapsSettingsMenuTableCell *)self contentView];
+    layoutMarginsGuide2 = [contentView2 layoutMarginsGuide];
+    trailingAnchor2 = [layoutMarginsGuide2 trailingAnchor];
+    v63 = [trailingAnchor constraintEqualToAnchor:?];
     v69[1] = v63;
-    v11 = [(UILabel *)self->_label topAnchor];
-    v61 = [(MapsSettingsMenuTableCell *)self contentView];
-    v60 = [v61 layoutMarginsGuide];
-    [v60 topAnchor];
-    v59 = v62 = v11;
-    v58 = [v11 constraintEqualToAnchor:?];
+    topAnchor = [(UILabel *)self->_label topAnchor];
+    contentView3 = [(MapsSettingsMenuTableCell *)self contentView];
+    layoutMarginsGuide3 = [contentView3 layoutMarginsGuide];
+    [layoutMarginsGuide3 topAnchor];
+    v59 = v62 = topAnchor;
+    v58 = [topAnchor constraintEqualToAnchor:?];
     v69[2] = v58;
-    v12 = [(UIButton *)self->_menuButton leadingAnchor];
-    v56 = [(MapsSettingsMenuTableCell *)self contentView];
-    v55 = [v56 layoutMarginsGuide];
-    v13 = [v55 leadingAnchor];
-    v57 = v12;
-    v14 = v12;
-    v15 = v13;
-    v54 = [v14 constraintEqualToAnchor:v13];
+    leadingAnchor2 = [(UIButton *)self->_menuButton leadingAnchor];
+    contentView4 = [(MapsSettingsMenuTableCell *)self contentView];
+    layoutMarginsGuide4 = [contentView4 layoutMarginsGuide];
+    leadingAnchor3 = [layoutMarginsGuide4 leadingAnchor];
+    v57 = leadingAnchor2;
+    v14 = leadingAnchor2;
+    v15 = leadingAnchor3;
+    v54 = [v14 constraintEqualToAnchor:leadingAnchor3];
     v69[3] = v54;
-    v16 = [(UIButton *)self->_menuButton trailingAnchor];
-    v51 = [(MapsSettingsMenuTableCell *)self contentView];
-    v50 = [v51 layoutMarginsGuide];
-    [v50 trailingAnchor];
-    v42 = v52 = v16;
-    v48 = [v16 constraintLessThanOrEqualToAnchor:v42];
-    v69[4] = v48;
-    v17 = [(UIButton *)self->_menuButton topAnchor];
-    v18 = [(UILabel *)self->_label bottomAnchor];
-    v47 = [v17 constraintEqualToAnchor:v18];
+    trailingAnchor3 = [(UIButton *)self->_menuButton trailingAnchor];
+    contentView5 = [(MapsSettingsMenuTableCell *)self contentView];
+    layoutMarginsGuide5 = [contentView5 layoutMarginsGuide];
+    [layoutMarginsGuide5 trailingAnchor];
+    trailingAnchor4 = v52 = trailingAnchor3;
+    contentView7 = [trailingAnchor3 constraintLessThanOrEqualToAnchor:trailingAnchor4];
+    v69[4] = contentView7;
+    topAnchor2 = [(UIButton *)self->_menuButton topAnchor];
+    bottomAnchor = [(UILabel *)self->_label bottomAnchor];
+    v47 = [topAnchor2 constraintEqualToAnchor:bottomAnchor];
     v69[5] = v47;
-    v19 = [(UIButton *)self->_menuButton bottomAnchor];
-    v46 = [(MapsSettingsMenuTableCell *)self contentView];
-    v45 = [v46 layoutMarginsGuide];
-    v44 = [v45 bottomAnchor];
-    v43 = [v19 constraintEqualToAnchor:?];
+    bottomAnchor2 = [(UIButton *)self->_menuButton bottomAnchor];
+    contentView6 = [(MapsSettingsMenuTableCell *)self contentView];
+    layoutMarginsGuide6 = [contentView6 layoutMarginsGuide];
+    bottomAnchor3 = [layoutMarginsGuide6 bottomAnchor];
+    v43 = [bottomAnchor2 constraintEqualToAnchor:?];
     v69[6] = v43;
     v20 = [NSArray arrayWithObjects:v69 count:7];
     constraints = self->_constraints;
@@ -136,69 +136,69 @@
   else
   {
     v68[0] = v9;
-    v40 = [(UILabel *)self->_label topAnchor];
-    v66 = [(MapsSettingsMenuTableCell *)self contentView];
-    v65 = [v66 layoutMarginsGuide];
-    v64 = [v65 topAnchor];
-    v63 = [v40 constraintGreaterThanOrEqualToAnchor:?];
+    topAnchor3 = [(UILabel *)self->_label topAnchor];
+    contentView2 = [(MapsSettingsMenuTableCell *)self contentView];
+    layoutMarginsGuide2 = [contentView2 layoutMarginsGuide];
+    trailingAnchor2 = [layoutMarginsGuide2 topAnchor];
+    v63 = [topAnchor3 constraintGreaterThanOrEqualToAnchor:?];
     v68[1] = v63;
-    v22 = [(UILabel *)self->_label bottomAnchor];
-    v61 = [(MapsSettingsMenuTableCell *)self contentView];
-    v60 = [v61 layoutMarginsGuide];
-    [v60 bottomAnchor];
-    v59 = v62 = v22;
-    v58 = [v22 constraintLessThanOrEqualToAnchor:?];
+    bottomAnchor4 = [(UILabel *)self->_label bottomAnchor];
+    contentView3 = [(MapsSettingsMenuTableCell *)self contentView];
+    layoutMarginsGuide3 = [contentView3 layoutMarginsGuide];
+    [layoutMarginsGuide3 bottomAnchor];
+    v59 = v62 = bottomAnchor4;
+    v58 = [bottomAnchor4 constraintLessThanOrEqualToAnchor:?];
     v68[2] = v58;
-    v23 = [(UILabel *)self->_label centerYAnchor];
-    v56 = [(MapsSettingsMenuTableCell *)self contentView];
-    v55 = [v56 layoutMarginsGuide];
-    v39 = [v55 centerYAnchor];
-    v57 = v23;
-    v54 = [v23 constraintEqualToAnchor:v39];
+    centerYAnchor = [(UILabel *)self->_label centerYAnchor];
+    contentView4 = [(MapsSettingsMenuTableCell *)self contentView];
+    layoutMarginsGuide4 = [contentView4 layoutMarginsGuide];
+    centerYAnchor2 = [layoutMarginsGuide4 centerYAnchor];
+    v57 = centerYAnchor;
+    v54 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v68[3] = v54;
-    v24 = [(UIButton *)self->_menuButton leadingAnchor];
-    v51 = [(UILabel *)self->_label trailingAnchor];
-    v52 = v24;
-    v50 = [v24 constraintGreaterThanOrEqualToAnchor:8.0 constant:?];
-    v68[4] = v50;
-    v42 = [(UIButton *)self->_menuButton trailingAnchor];
-    v48 = [(MapsSettingsMenuTableCell *)self contentView];
-    v38 = [v48 layoutMarginsGuide];
-    v37 = [v38 trailingAnchor];
-    v47 = [v42 constraintEqualToAnchor:v37];
+    leadingAnchor4 = [(UIButton *)self->_menuButton leadingAnchor];
+    contentView5 = [(UILabel *)self->_label trailingAnchor];
+    v52 = leadingAnchor4;
+    layoutMarginsGuide5 = [leadingAnchor4 constraintGreaterThanOrEqualToAnchor:8.0 constant:?];
+    v68[4] = layoutMarginsGuide5;
+    trailingAnchor4 = [(UIButton *)self->_menuButton trailingAnchor];
+    contentView7 = [(MapsSettingsMenuTableCell *)self contentView];
+    layoutMarginsGuide7 = [contentView7 layoutMarginsGuide];
+    trailingAnchor5 = [layoutMarginsGuide7 trailingAnchor];
+    v47 = [trailingAnchor4 constraintEqualToAnchor:trailingAnchor5];
     v68[5] = v47;
-    v19 = [(UIButton *)self->_menuButton topAnchor];
-    v46 = [(MapsSettingsMenuTableCell *)self contentView];
-    v45 = [v46 layoutMarginsGuide];
-    v44 = [v45 topAnchor];
-    v43 = [v19 constraintGreaterThanOrEqualToAnchor:?];
+    bottomAnchor2 = [(UIButton *)self->_menuButton topAnchor];
+    contentView6 = [(MapsSettingsMenuTableCell *)self contentView];
+    layoutMarginsGuide6 = [contentView6 layoutMarginsGuide];
+    bottomAnchor3 = [layoutMarginsGuide6 topAnchor];
+    v43 = [bottomAnchor2 constraintGreaterThanOrEqualToAnchor:?];
     v68[6] = v43;
     constraints = [(UIButton *)self->_menuButton bottomAnchor];
-    v36 = [(MapsSettingsMenuTableCell *)self contentView];
-    v35 = [v36 layoutMarginsGuide];
-    v34 = [v35 bottomAnchor];
-    v33 = [constraints constraintLessThanOrEqualToAnchor:v34];
+    contentView8 = [(MapsSettingsMenuTableCell *)self contentView];
+    layoutMarginsGuide8 = [contentView8 layoutMarginsGuide];
+    bottomAnchor5 = [layoutMarginsGuide8 bottomAnchor];
+    v33 = [constraints constraintLessThanOrEqualToAnchor:bottomAnchor5];
     v68[7] = v33;
-    v25 = [(UIButton *)self->_menuButton centerYAnchor];
+    centerYAnchor3 = [(UIButton *)self->_menuButton centerYAnchor];
     [(MapsSettingsMenuTableCell *)self contentView];
-    v26 = v41 = v8;
-    v27 = [v26 layoutMarginsGuide];
-    [v27 centerYAnchor];
-    v29 = v28 = v7;
-    v30 = [v25 constraintEqualToAnchor:v29];
+    v26 = v41 = layoutMarginsGuide;
+    layoutMarginsGuide9 = [v26 layoutMarginsGuide];
+    [layoutMarginsGuide9 centerYAnchor];
+    v29 = v28 = contentView;
+    v30 = [centerYAnchor3 constraintEqualToAnchor:v29];
     v68[8] = v30;
     v31 = [NSArray arrayWithObjects:v68 count:9];
     v32 = self->_constraints;
     self->_constraints = v31;
 
-    v18 = v37;
-    v7 = v28;
-    v17 = v38;
+    bottomAnchor = trailingAnchor5;
+    contentView = v28;
+    topAnchor2 = layoutMarginsGuide7;
 
-    v15 = v39;
-    v8 = v41;
+    v15 = centerYAnchor2;
+    layoutMarginsGuide = v41;
 
-    v10 = v40;
+    trailingAnchor = topAnchor3;
   }
 
   [NSLayoutConstraint activateConstraints:self->_constraints];
@@ -212,30 +212,30 @@
   [(UIButton *)self->_menuButton setMenu:0];
 }
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   v9.receiver = self;
   v9.super_class = MapsSettingsMenuTableCell;
-  [(MapsSettingsMenuTableCell *)&v9 refreshCellContentsWithSpecifier:v4];
-  v5 = [v4 name];
-  [(UILabel *)self->_label setText:v5];
+  [(MapsSettingsMenuTableCell *)&v9 refreshCellContentsWithSpecifier:specifierCopy];
+  name = [specifierCopy name];
+  [(UILabel *)self->_label setText:name];
 
-  v6 = [v4 userInfo];
+  userInfo = [specifierCopy userInfo];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v8 = [v4 userInfo];
+    userInfo2 = [specifierCopy userInfo];
   }
 
   else
   {
-    v8 = 0;
+    userInfo2 = 0;
   }
 
-  [(UIButton *)self->_menuButton setMenu:v8];
+  [(UIButton *)self->_menuButton setMenu:userInfo2];
   [(MapsSettingsMenuTableCell *)self _setPopupMenuButton:self->_menuButton];
   [(MapsSettingsMenuTableCell *)self setSelectionStyle:3];
 }

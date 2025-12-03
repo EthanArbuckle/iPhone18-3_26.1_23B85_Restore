@@ -1,9 +1,9 @@
 @interface _PUProgressIndicatorTileView
 - (UIView)extraHittableSubview;
 - (_PUProgressIndicatorTileViewDelegate)traitCollectionDelegate;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (void)setTraitCollectionDelegate:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (void)setTraitCollectionDelegate:(id)delegate;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation _PUProgressIndicatorTileView
@@ -22,21 +22,21 @@
   return WeakRetained;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v5.receiver = self;
   v5.super_class = _PUProgressIndicatorTileView;
-  [(_PUProgressIndicatorTileView *)&v5 traitCollectionDidChange:a3];
+  [(_PUProgressIndicatorTileView *)&v5 traitCollectionDidChange:change];
   if (self->_delegateFlags.respondsToDidChangeTraitCollection)
   {
-    v4 = [(_PUProgressIndicatorTileView *)self traitCollectionDelegate];
-    [v4 viewTraitCollectionDidChange:self];
+    traitCollectionDelegate = [(_PUProgressIndicatorTileView *)self traitCollectionDelegate];
+    [traitCollectionDelegate viewTraitCollectionDidChange:self];
   }
 }
 
-- (void)setTraitCollectionDelegate:(id)a3
+- (void)setTraitCollectionDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_traitCollectionDelegate);
 
   if (WeakRetained != obj)
@@ -46,21 +46,21 @@
   }
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
   v8 = +[PUOneUpSettings sharedInstance];
-  v9 = [v8 allowsVisualIntelligenceV2];
+  allowsVisualIntelligenceV2 = [v8 allowsVisualIntelligenceV2];
 
-  if (v9)
+  if (allowsVisualIntelligenceV2)
   {
     if ([(_PUProgressIndicatorTileView *)self showingErrorProgressView])
     {
       v16.receiver = self;
       v16.super_class = _PUProgressIndicatorTileView;
-      v10 = [(_PUProgressIndicatorTileView *)&v16 hitTest:v7 withEvent:x, y];
+      v10 = [(_PUProgressIndicatorTileView *)&v16 hitTest:eventCopy withEvent:x, y];
     }
 
     else
@@ -73,17 +73,17 @@
   {
     v15.receiver = self;
     v15.super_class = _PUProgressIndicatorTileView;
-    v10 = [(_PUProgressIndicatorTileView *)&v15 hitTest:v7 withEvent:x, y];
-    v11 = [(_PUProgressIndicatorTileView *)self extraHittableSubview];
-    v12 = v11;
+    v10 = [(_PUProgressIndicatorTileView *)&v15 hitTest:eventCopy withEvent:x, y];
+    extraHittableSubview = [(_PUProgressIndicatorTileView *)self extraHittableSubview];
+    v12 = extraHittableSubview;
     if (!v10)
     {
-      v13 = [v11 superview];
+      superview = [extraHittableSubview superview];
 
-      if (v13 == self)
+      if (superview == self)
       {
         [v12 convertPoint:self fromView:{x, y}];
-        v10 = [v12 hitTest:v7 withEvent:?];
+        v10 = [v12 hitTest:eventCopy withEvent:?];
       }
 
       else

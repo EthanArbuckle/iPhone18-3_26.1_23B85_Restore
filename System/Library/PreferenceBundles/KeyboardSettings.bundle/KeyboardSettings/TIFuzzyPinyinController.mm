@@ -1,12 +1,12 @@
 @interface TIFuzzyPinyinController
 - (NSArray)fuzzyPinyinPairSpecifiers;
-- (id)keyboardPreferenceValue:(id)a3;
+- (id)keyboardPreferenceValue:(id)value;
 - (id)readFuzzyPinyinPairs;
 - (id)specifiers;
 - (void)dealloc;
 - (void)emitNavigationEventForFuzzyPinyinController;
-- (void)setKeyboardPreferenceValue:(id)a3 forSpecifier:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)setKeyboardPreferenceValue:(id)value forSpecifier:(id)specifier;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -162,7 +162,7 @@
   return v5;
 }
 
-- (id)keyboardPreferenceValue:(id)a3
+- (id)keyboardPreferenceValue:(id)value
 {
   v3 = +[TIPreferencesController sharedPreferencesController];
   v4 = TIFuzzyPinyinPreference;
@@ -170,26 +170,26 @@
   return [v3 valueForPreferenceKey:v4];
 }
 
-- (void)setKeyboardPreferenceValue:(id)a3 forSpecifier:(id)a4
+- (void)setKeyboardPreferenceValue:(id)value forSpecifier:(id)specifier
 {
-  v6 = [*&self->PSListController_opaque[OBJC_IVAR___PSListController__specifiers] specifierForID:{@"FUZZY_PINYIN_PAIRS_GROUP", a4}];
-  v7 = [a3 BOOLValue];
-  v8 = [(TIFuzzyPinyinController *)self fuzzyPinyinPairSpecifiers];
-  if (v7)
+  v6 = [*&self->PSListController_opaque[OBJC_IVAR___PSListController__specifiers] specifierForID:{@"FUZZY_PINYIN_PAIRS_GROUP", specifier}];
+  bOOLValue = [value BOOLValue];
+  fuzzyPinyinPairSpecifiers = [(TIFuzzyPinyinController *)self fuzzyPinyinPairSpecifiers];
+  if (bOOLValue)
   {
-    [(TIFuzzyPinyinController *)self insertContiguousSpecifiers:v8 afterSpecifier:v6 animated:1];
+    [(TIFuzzyPinyinController *)self insertContiguousSpecifiers:fuzzyPinyinPairSpecifiers afterSpecifier:v6 animated:1];
   }
 
   else
   {
-    [(TIFuzzyPinyinController *)self removeContiguousSpecifiers:v8 animated:1];
+    [(TIFuzzyPinyinController *)self removeContiguousSpecifiers:fuzzyPinyinPairSpecifiers animated:1];
     [(TIFuzzyPinyinController *)self setFuzzyPinyinPairSpecifiers:0];
   }
 
   v9 = +[TIPreferencesController sharedPreferencesController];
   v10 = TIFuzzyPinyinPreference;
 
-  [v9 setValue:a3 forPreferenceKey:v10];
+  [v9 setValue:value forPreferenceKey:v10];
 }
 
 - (id)specifiers
@@ -246,20 +246,20 @@
   return result;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v17.receiver = self;
   v17.super_class = TIFuzzyPinyinController;
   [TIFuzzyPinyinController tableView:"tableView:didSelectRowAtIndexPath:" didSelectRowAtIndexPath:?];
-  if ([a4 section] == &dword_0 + 1)
+  if ([path section] == &dword_0 + 1)
   {
-    v7 = [a4 row];
+    v7 = [path row];
     if (v7 < [(NSArray *)[(TIFuzzyPinyinController *)self fuzzyPinyinPairSpecifiers] count])
     {
       v8 = [(NSArray *)[(TIFuzzyPinyinController *)self fuzzyPinyinPairSpecifiers] objectAtIndex:v7];
-      v9 = [a3 cellForRowAtIndexPath:a4];
-      v10 = [v9 accessoryType];
-      if (v10 == &dword_0 + 3)
+      v9 = [view cellForRowAtIndexPath:path];
+      accessoryType = [v9 accessoryType];
+      if (accessoryType == &dword_0 + 3)
       {
         v11 = 0;
       }
@@ -271,22 +271,22 @@
 
       [v9 setAccessoryType:v11];
       v12 = [v8 propertyForKey:@"TISpecifierKeyFuzzyPinyinPair"];
-      v13 = [(TIFuzzyPinyinController *)self fuzzyPinyinPairs];
-      if (v10 == &dword_0 + 3)
+      fuzzyPinyinPairs = [(TIFuzzyPinyinController *)self fuzzyPinyinPairs];
+      if (accessoryType == &dword_0 + 3)
       {
-        [(NSMutableSet *)v13 removeObject:v12];
+        [(NSMutableSet *)fuzzyPinyinPairs removeObject:v12];
       }
 
       else
       {
-        [(NSMutableSet *)v13 addObject:v12];
+        [(NSMutableSet *)fuzzyPinyinPairs addObject:v12];
       }
 
-      v14 = [NSNumber numberWithInt:v10 != &dword_0 + 3];
+      v14 = [NSNumber numberWithInt:accessoryType != &dword_0 + 3];
       [v8 setProperty:v14 forKey:PSValueKey];
       v15 = +[TIPreferencesController sharedPreferencesController];
-      v16 = [(NSMutableSet *)[(TIFuzzyPinyinController *)self fuzzyPinyinPairs] allObjects];
-      [v15 setValue:v16 forPreferenceKey:TIFuzzyPinyinPairsPreference];
+      allObjects = [(NSMutableSet *)[(TIFuzzyPinyinController *)self fuzzyPinyinPairs] allObjects];
+      [v15 setValue:allObjects forPreferenceKey:TIFuzzyPinyinPairsPreference];
     }
   }
 }

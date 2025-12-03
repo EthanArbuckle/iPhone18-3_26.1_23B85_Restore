@@ -1,15 +1,15 @@
 @interface TSWPDropCapRunDelegateState
-- (TSWPDropCapRunDelegateState)initWithCharacterRange:(_NSRange)a3 adornment:(id)a4;
+- (TSWPDropCapRunDelegateState)initWithCharacterRange:(_NSRange)range adornment:(id)adornment;
 - (_NSRange)characterRange;
 @end
 
 @implementation TSWPDropCapRunDelegateState
 
-- (TSWPDropCapRunDelegateState)initWithCharacterRange:(_NSRange)a3 adornment:(id)a4
+- (TSWPDropCapRunDelegateState)initWithCharacterRange:(_NSRange)range adornment:(id)adornment
 {
-  length = a3.length;
-  location = a3.location;
-  v8 = a4;
+  length = range.length;
+  location = range.location;
+  adornmentCopy = adornment;
   v12.receiver = self;
   v12.super_class = TSWPDropCapRunDelegateState;
   v9 = [(TSWPDropCapRunDelegateState *)&v12 init];
@@ -18,7 +18,7 @@
   {
     v9->_characterRange.location = location;
     v9->_characterRange.length = length;
-    objc_storeStrong(&v9->_adornment, a4);
+    objc_storeStrong(&v9->_adornment, adornment);
   }
 
   return v10;

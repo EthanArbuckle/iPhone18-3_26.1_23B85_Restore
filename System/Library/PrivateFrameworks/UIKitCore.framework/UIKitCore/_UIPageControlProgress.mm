@@ -1,18 +1,18 @@
 @interface _UIPageControlProgress
 - (void)_pausePageProgress;
-- (void)_progressVisibilityChanged:(BOOL)a3;
+- (void)_progressVisibilityChanged:(BOOL)changed;
 - (void)_resumePageProgress;
-- (void)setDelegate:(id)a3;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation _UIPageControlProgress
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   v8.receiver = self;
   v8.super_class = _UIPageControlProgress;
-  v4 = a3;
-  [(UIPageControlProgress *)&v8 setDelegate:v4];
+  delegateCopy = delegate;
+  [(UIPageControlProgress *)&v8 setDelegate:delegateCopy];
   *&self->_delegateImplements = *&self->_delegateImplements & 0xFE | objc_opt_respondsToSelector() & 1;
   if (objc_opt_respondsToSelector())
   {
@@ -40,13 +40,13 @@
   *&self->_delegateImplements = *&self->_delegateImplements & 0xFB | v7;
 }
 
-- (void)_progressVisibilityChanged:(BOOL)a3
+- (void)_progressVisibilityChanged:(BOOL)changed
 {
-  v3 = a3;
+  changedCopy = changed;
   v5.receiver = self;
   v5.super_class = _UIPageControlProgress;
   [(UIPageControlProgress *)&v5 _progressVisibilityChanged:?];
-  if (v3)
+  if (changedCopy)
   {
     [(_UIPageControlProgress *)self _resumePageProgress];
   }
@@ -61,8 +61,8 @@
 {
   if ((*&self->_delegateImplements & 2) != 0)
   {
-    v4 = [(UIPageControlProgress *)self delegate];
-    [v4 _pageControlProgressDidPause:self];
+    delegate = [(UIPageControlProgress *)self delegate];
+    [delegate _pageControlProgressDidPause:self];
   }
 }
 
@@ -70,8 +70,8 @@
 {
   if ((*&self->_delegateImplements & 4) != 0)
   {
-    v4 = [(UIPageControlProgress *)self delegate];
-    [v4 _pageControlProgressDidResume:self];
+    delegate = [(UIPageControlProgress *)self delegate];
+    [delegate _pageControlProgressDidResume:self];
   }
 }
 

@@ -1,5 +1,5 @@
 @interface AUTextFieldUIAlert
-- (id)textFieldAtIndex:(unint64_t)a3;
+- (id)textFieldAtIndex:(unint64_t)index;
 - (void)prepareToShow;
 @end
 
@@ -13,15 +13,15 @@
   objc_msgSend_addTextField(self, v3, v4);
 }
 
-- (id)textFieldAtIndex:(unint64_t)a3
+- (id)textFieldAtIndex:(unint64_t)index
 {
-  v4 = objc_msgSend_textFields(self->super.alert, a2, a3);
-  if (objc_msgSend_count(v4, v5, v6) <= a3)
+  v4 = objc_msgSend_textFields(self->super.alert, a2, index);
+  if (objc_msgSend_count(v4, v5, v6) <= index)
   {
     return 0;
   }
 
-  return objc_msgSend_objectAtIndexedSubscript_(v4, v7, a3);
+  return objc_msgSend_objectAtIndexedSubscript_(v4, v7, index);
 }
 
 @end

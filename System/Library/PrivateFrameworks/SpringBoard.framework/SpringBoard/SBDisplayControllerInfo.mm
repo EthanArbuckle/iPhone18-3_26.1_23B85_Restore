@@ -1,19 +1,19 @@
 @interface SBDisplayControllerInfo
-- (SBDisplayControllerInfo)initWithController:(id)a3 windowingMode:(int64_t)a4 priorityLevel:(unint64_t)a5 deactivationReasons:(unint64_t)a6;
+- (SBDisplayControllerInfo)initWithController:(id)controller windowingMode:(int64_t)mode priorityLevel:(unint64_t)level deactivationReasons:(unint64_t)reasons;
 - (id)description;
 @end
 
 @implementation SBDisplayControllerInfo
 
-- (SBDisplayControllerInfo)initWithController:(id)a3 windowingMode:(int64_t)a4 priorityLevel:(unint64_t)a5 deactivationReasons:(unint64_t)a6
+- (SBDisplayControllerInfo)initWithController:(id)controller windowingMode:(int64_t)mode priorityLevel:(unint64_t)level deactivationReasons:(unint64_t)reasons
 {
-  v12 = a3;
-  if (!v12)
+  controllerCopy = controller;
+  if (!controllerCopy)
   {
     [SBDisplayControllerInfo initWithController:a2 windowingMode:self priorityLevel:? deactivationReasons:?];
   }
 
-  if (!SBDisplayAssertionLevelIsValid(a5))
+  if (!SBDisplayAssertionLevelIsValid(level))
   {
     [SBDisplayControllerInfo initWithController:a2 windowingMode:self priorityLevel:? deactivationReasons:?];
   }
@@ -24,10 +24,10 @@
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_displayController, a3);
-    v14->_windowingMode = a4;
-    v14->_priorityLevel = a5;
-    v14->_deactivationReasons = a6;
+    objc_storeStrong(&v13->_displayController, controller);
+    v14->_windowingMode = mode;
+    v14->_priorityLevel = level;
+    v14->_deactivationReasons = reasons;
   }
 
   return v14;
@@ -47,9 +47,9 @@
   v8 = [v7 description];
   [v3 appendString:v8 withName:@"deactivationReasons"];
 
-  v9 = [v3 build];
+  build = [v3 build];
 
-  return v9;
+  return build;
 }
 
 - (void)initWithController:(uint64_t)a1 windowingMode:(uint64_t)a2 priorityLevel:deactivationReasons:.cold.1(uint64_t a1, uint64_t a2)

@@ -1,30 +1,30 @@
 @interface SiriCoreAceConnectionAnalysisInfo
-- (SiriCoreAceConnectionAnalysisInfo)initWithConnectionURL:(id)a3 interfaceIndex:(int)a4 sendBufferSize:(id)a5 wwanPreferred:(BOOL)a6 connectionType:(id)a7 policyId:(id)a8;
+- (SiriCoreAceConnectionAnalysisInfo)initWithConnectionURL:(id)l interfaceIndex:(int)index sendBufferSize:(id)size wwanPreferred:(BOOL)preferred connectionType:(id)type policyId:(id)id;
 @end
 
 @implementation SiriCoreAceConnectionAnalysisInfo
 
-- (SiriCoreAceConnectionAnalysisInfo)initWithConnectionURL:(id)a3 interfaceIndex:(int)a4 sendBufferSize:(id)a5 wwanPreferred:(BOOL)a6 connectionType:(id)a7 policyId:(id)a8
+- (SiriCoreAceConnectionAnalysisInfo)initWithConnectionURL:(id)l interfaceIndex:(int)index sendBufferSize:(id)size wwanPreferred:(BOOL)preferred connectionType:(id)type policyId:(id)id
 {
-  v15 = a3;
-  v16 = a5;
-  v17 = a7;
-  v18 = a8;
+  lCopy = l;
+  sizeCopy = size;
+  typeCopy = type;
+  idCopy = id;
   v26.receiver = self;
   v26.super_class = SiriCoreAceConnectionAnalysisInfo;
   v19 = [(SiriCoreAceConnectionAnalysisInfo *)&v26 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_connectionURL, a3);
-    v20->_interfaceIndex = a4;
-    v21 = [v16 copy];
+    objc_storeStrong(&v19->_connectionURL, l);
+    v20->_interfaceIndex = index;
+    v21 = [sizeCopy copy];
     sendBufferSize = v20->_sendBufferSize;
     v20->_sendBufferSize = v21;
 
-    v20->_wwanPreferred = a6;
-    objc_storeStrong(&v20->_connectionType, a7);
-    v23 = [v18 copy];
+    v20->_wwanPreferred = preferred;
+    objc_storeStrong(&v20->_connectionType, type);
+    v23 = [idCopy copy];
     policyId = v20->_policyId;
     v20->_policyId = v23;
   }

@@ -25,8 +25,8 @@
     v3 = result;
     if (!a2)
     {
-      v4 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v4 handleFailureInMethod:sel_initWithFilter_ object:v3 file:@"_UIVelocityIntegrator.mm" lineNumber:249 description:{@"Invalid parameter not satisfying: %@", @"filter"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:sel_initWithFilter_ object:v3 file:@"_UIVelocityIntegrator.mm" lineNumber:249 description:{@"Invalid parameter not satisfying: %@", @"filter"}];
     }
 
     v5.receiver = v3;

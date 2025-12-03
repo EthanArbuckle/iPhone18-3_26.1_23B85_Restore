@@ -15,8 +15,8 @@
   v3 = [(PageLabelViewAccessibility *)self safeSwiftValueForKey:@"label"];
   v4 = __UIAccessibilityCastAsClass();
 
-  v5 = [v4 text];
-  [v4 setAccessibilityLabel:v5];
+  text = [v4 text];
+  [v4 setAccessibilityLabel:text];
 }
 
 - (id)accessibilityValue
@@ -25,17 +25,17 @@
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 accessibilityLabel];
+    accessibilityLabel = [v3 accessibilityLabel];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = PageLabelViewAccessibility;
-    v5 = [(PageLabelViewAccessibility *)&v8 accessibilityValue];
+    accessibilityLabel = [(PageLabelViewAccessibility *)&v8 accessibilityValue];
   }
 
-  v6 = v5;
+  v6 = accessibilityLabel;
 
   return v6;
 }

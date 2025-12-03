@@ -1,152 +1,152 @@
 @interface WBTableCellStyleProperties
-+ (void)readFrom:(void *)a3 properties:(id)a4;
-+ (void)write:(id)a3 to:(void *)a4;
++ (void)readFrom:(void *)from properties:(id)properties;
++ (void)write:(id)write to:(void *)to;
 @end
 
 @implementation WBTableCellStyleProperties
 
-+ (void)readFrom:(void *)a3 properties:(id)a4
++ (void)readFrom:(void *)from properties:(id)properties
 {
-  v24 = a4;
-  [v24 setResolveMode:0];
-  v5 = *(a3 + 2);
+  propertiesCopy = properties;
+  [propertiesCopy setResolveMode:0];
+  v5 = *(from + 2);
   if ((v5 & 0x20) != 0)
   {
-    TopBorderReference = WrdTableProperties::getTopBorderReference(a3);
-    v7 = [v24 mutableTopBorder];
-    [WBBorder readFrom:TopBorderReference to:v7];
+    TopBorderReference = WrdTableProperties::getTopBorderReference(from);
+    mutableTopBorder = [propertiesCopy mutableTopBorder];
+    [WBBorder readFrom:TopBorderReference to:mutableTopBorder];
 
-    v5 = *(a3 + 2);
+    v5 = *(from + 2);
   }
 
   if ((v5 & 0x40) != 0)
   {
-    LeftBorderReference = WrdTableProperties::getLeftBorderReference(a3);
-    v9 = [v24 mutableLeftBorder];
-    [WBBorder readFrom:LeftBorderReference to:v9];
+    LeftBorderReference = WrdTableProperties::getLeftBorderReference(from);
+    mutableLeftBorder = [propertiesCopy mutableLeftBorder];
+    [WBBorder readFrom:LeftBorderReference to:mutableLeftBorder];
 
-    v5 = *(a3 + 2);
+    v5 = *(from + 2);
   }
 
   if ((v5 & 0x80) != 0)
   {
-    BottomBorderReference = WrdTableProperties::getBottomBorderReference(a3);
-    v11 = [v24 mutableBottomBorder];
-    [WBBorder readFrom:BottomBorderReference to:v11];
+    BottomBorderReference = WrdTableProperties::getBottomBorderReference(from);
+    mutableBottomBorder = [propertiesCopy mutableBottomBorder];
+    [WBBorder readFrom:BottomBorderReference to:mutableBottomBorder];
 
-    v5 = *(a3 + 2);
+    v5 = *(from + 2);
   }
 
   if ((v5 & 0x100) != 0)
   {
-    RightBorderReference = WrdTableProperties::getRightBorderReference(a3);
-    v13 = [v24 mutableRightBorder];
-    [WBBorder readFrom:RightBorderReference to:v13];
+    RightBorderReference = WrdTableProperties::getRightBorderReference(from);
+    mutableRightBorder = [propertiesCopy mutableRightBorder];
+    [WBBorder readFrom:RightBorderReference to:mutableRightBorder];
 
-    v5 = *(a3 + 2);
+    v5 = *(from + 2);
   }
 
   if ((v5 & 0x10) != 0)
   {
-    ShadingReference = WrdTableProperties::getShadingReference(a3);
-    v15 = [v24 mutableShading];
-    [WBShading readFrom:ShadingReference to:v15];
+    ShadingReference = WrdTableProperties::getShadingReference(from);
+    mutableShading = [propertiesCopy mutableShading];
+    [WBShading readFrom:ShadingReference to:mutableShading];
 
-    v5 = *(a3 + 2);
+    v5 = *(from + 2);
   }
 
   if ((v5 & 0x1000) != 0)
   {
-    DiagonalUpBorderReference = WrdTableProperties::getDiagonalUpBorderReference(a3);
-    v17 = [v24 mutableDiagonalUpBorder];
-    [WBBorder readFrom:DiagonalUpBorderReference to:v17];
+    DiagonalUpBorderReference = WrdTableProperties::getDiagonalUpBorderReference(from);
+    mutableDiagonalUpBorder = [propertiesCopy mutableDiagonalUpBorder];
+    [WBBorder readFrom:DiagonalUpBorderReference to:mutableDiagonalUpBorder];
 
-    v5 = *(a3 + 2);
+    v5 = *(from + 2);
   }
 
   if ((v5 & 0x800) != 0)
   {
-    DiagonalDownBorderReference = WrdTableProperties::getDiagonalDownBorderReference(a3);
-    v19 = [v24 mutableDiagonalDownBorder];
-    [WBBorder readFrom:DiagonalDownBorderReference to:v19];
+    DiagonalDownBorderReference = WrdTableProperties::getDiagonalDownBorderReference(from);
+    mutableDiagonalDownBorder = [propertiesCopy mutableDiagonalDownBorder];
+    [WBBorder readFrom:DiagonalDownBorderReference to:mutableDiagonalDownBorder];
 
-    v5 = *(a3 + 2);
+    v5 = *(from + 2);
   }
 
   if ((v5 & 0x200) != 0)
   {
-    InnerHorizontalBorderReference = WrdTableProperties::getInnerHorizontalBorderReference(a3);
-    v21 = [v24 mutableInsideHorizontalBorder];
-    [WBBorder readFrom:InnerHorizontalBorderReference to:v21];
+    InnerHorizontalBorderReference = WrdTableProperties::getInnerHorizontalBorderReference(from);
+    mutableInsideHorizontalBorder = [propertiesCopy mutableInsideHorizontalBorder];
+    [WBBorder readFrom:InnerHorizontalBorderReference to:mutableInsideHorizontalBorder];
 
-    v5 = *(a3 + 2);
+    v5 = *(from + 2);
   }
 
   if ((v5 & 0x400) != 0)
   {
-    InnerVerticalBorderReference = WrdTableProperties::getInnerVerticalBorderReference(a3);
-    v23 = [v24 mutableInsideVerticalBorder];
-    [WBBorder readFrom:InnerVerticalBorderReference to:v23];
+    InnerVerticalBorderReference = WrdTableProperties::getInnerVerticalBorderReference(from);
+    mutableInsideVerticalBorder = [propertiesCopy mutableInsideVerticalBorder];
+    [WBBorder readFrom:InnerVerticalBorderReference to:mutableInsideVerticalBorder];
   }
 
-  [v24 setResolveMode:2];
+  [propertiesCopy setResolveMode:2];
 }
 
-+ (void)write:(id)a3 to:(void *)a4
++ (void)write:(id)write to:(void *)to
 {
-  v14 = a3;
-  if ([v14 isTopBorderOverridden])
+  writeCopy = write;
+  if ([writeCopy isTopBorderOverridden])
   {
-    v5 = [v14 topBorder];
-    [WBBorder write:v5 to:WrdTableProperties::getTopBorderReference(a4)];
+    topBorder = [writeCopy topBorder];
+    [WBBorder write:topBorder to:WrdTableProperties::getTopBorderReference(to)];
   }
 
-  if ([v14 isLeftBorderOverridden])
+  if ([writeCopy isLeftBorderOverridden])
   {
-    v6 = [v14 leftBorder];
-    [WBBorder write:v6 to:WrdTableProperties::getLeftBorderReference(a4)];
+    leftBorder = [writeCopy leftBorder];
+    [WBBorder write:leftBorder to:WrdTableProperties::getLeftBorderReference(to)];
   }
 
-  if ([v14 isBottomBorderOverridden])
+  if ([writeCopy isBottomBorderOverridden])
   {
-    v7 = [v14 bottomBorder];
-    [WBBorder write:v7 to:WrdTableProperties::getBottomBorderReference(a4)];
+    bottomBorder = [writeCopy bottomBorder];
+    [WBBorder write:bottomBorder to:WrdTableProperties::getBottomBorderReference(to)];
   }
 
-  if ([v14 isRightBorderOverridden])
+  if ([writeCopy isRightBorderOverridden])
   {
-    v8 = [v14 rightBorder];
-    [WBBorder write:v8 to:WrdTableProperties::getRightBorderReference(a4)];
+    rightBorder = [writeCopy rightBorder];
+    [WBBorder write:rightBorder to:WrdTableProperties::getRightBorderReference(to)];
   }
 
-  if ([v14 isShadingOverridden])
+  if ([writeCopy isShadingOverridden])
   {
-    v9 = [v14 shading];
-    [WBShading write:v9 to:WrdTableProperties::getShadingReference(a4)];
+    shading = [writeCopy shading];
+    [WBShading write:shading to:WrdTableProperties::getShadingReference(to)];
   }
 
-  if ([v14 isDiagonalUpBorderOverridden])
+  if ([writeCopy isDiagonalUpBorderOverridden])
   {
-    v10 = [v14 diagonalUpBorder];
-    [WBBorder write:v10 to:WrdTableProperties::getDiagonalUpBorderReference(a4)];
+    diagonalUpBorder = [writeCopy diagonalUpBorder];
+    [WBBorder write:diagonalUpBorder to:WrdTableProperties::getDiagonalUpBorderReference(to)];
   }
 
-  if ([v14 isDiagonalDownBorderOverridden])
+  if ([writeCopy isDiagonalDownBorderOverridden])
   {
-    v11 = [v14 diagonalDownBorder];
-    [WBBorder write:v11 to:WrdTableProperties::getDiagonalDownBorderReference(a4)];
+    diagonalDownBorder = [writeCopy diagonalDownBorder];
+    [WBBorder write:diagonalDownBorder to:WrdTableProperties::getDiagonalDownBorderReference(to)];
   }
 
-  if ([v14 isInsideHorizontalBorderOverridden])
+  if ([writeCopy isInsideHorizontalBorderOverridden])
   {
-    v12 = [v14 insideHorizontalBorder];
-    [WBBorder write:v12 to:WrdTableProperties::getInnerHorizontalBorderReference(a4)];
+    insideHorizontalBorder = [writeCopy insideHorizontalBorder];
+    [WBBorder write:insideHorizontalBorder to:WrdTableProperties::getInnerHorizontalBorderReference(to)];
   }
 
-  if ([v14 isInsideVerticalBorderOverridden])
+  if ([writeCopy isInsideVerticalBorderOverridden])
   {
-    v13 = [v14 insideVerticalBorder];
-    [WBBorder write:v13 to:WrdTableProperties::getInnerVerticalBorderReference(a4)];
+    insideVerticalBorder = [writeCopy insideVerticalBorder];
+    [WBBorder write:insideVerticalBorder to:WrdTableProperties::getInnerVerticalBorderReference(to)];
   }
 }
 

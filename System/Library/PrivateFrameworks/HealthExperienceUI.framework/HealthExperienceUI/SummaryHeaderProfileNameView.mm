@@ -6,7 +6,7 @@
 
 - (void)showProfileViewController
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BA45FCAC();
 }
 

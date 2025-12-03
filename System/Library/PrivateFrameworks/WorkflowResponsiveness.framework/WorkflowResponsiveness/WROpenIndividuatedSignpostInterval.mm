@@ -1,10 +1,10 @@
 @interface WROpenIndividuatedSignpostInterval
-- (void)initWithSignpost:(uint64_t)a3 individuationIdentifier:(uint64_t)a4 timestampAndThread:(uint64_t)a5;
+- (void)initWithSignpost:(uint64_t)signpost individuationIdentifier:(uint64_t)identifier timestampAndThread:(uint64_t)thread;
 @end
 
 @implementation WROpenIndividuatedSignpostInterval
 
-- (void)initWithSignpost:(uint64_t)a3 individuationIdentifier:(uint64_t)a4 timestampAndThread:(uint64_t)a5
+- (void)initWithSignpost:(uint64_t)signpost individuationIdentifier:(uint64_t)identifier timestampAndThread:(uint64_t)thread
 {
   OUTLINED_FUNCTION_93();
   a18 = v19;

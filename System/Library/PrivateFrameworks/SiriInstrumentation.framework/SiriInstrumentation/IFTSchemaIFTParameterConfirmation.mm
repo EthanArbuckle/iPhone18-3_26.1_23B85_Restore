@@ -1,34 +1,34 @@
 @interface IFTSchemaIFTParameterConfirmation
-- (BOOL)isEqual:(id)a3;
-- (IFTSchemaIFTParameterConfirmation)initWithDictionary:(id)a3;
-- (IFTSchemaIFTParameterConfirmation)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (IFTSchemaIFTParameterConfirmation)initWithDictionary:(id)dictionary;
+- (IFTSchemaIFTParameterConfirmation)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasParameterIndex:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasParameterIndex:(BOOL)index;
+- (void)writeTo:(id)to;
 @end
 
 @implementation IFTSchemaIFTParameterConfirmation
 
-- (IFTSchemaIFTParameterConfirmation)initWithDictionary:(id)a3
+- (IFTSchemaIFTParameterConfirmation)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v14.receiver = self;
   v14.super_class = IFTSchemaIFTParameterConfirmation;
   v5 = [(IFTSchemaIFTParameterConfirmation *)&v14 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"exists"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"exists"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[IFTSchemaIFTParameterConfirmation setExists:](v5, "setExists:", [v6 BOOLValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"parameterId"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"parameterId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -36,14 +36,14 @@
       [(IFTSchemaIFTParameterConfirmation *)v5 setParameterId:v8];
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"parameterIndex"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"parameterIndex"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[IFTSchemaIFTParameterConfirmation setParameterIndex:](v5, "setParameterIndex:", [v9 longLongValue]);
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"item"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"item"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -57,30 +57,30 @@
   return v5;
 }
 
-- (IFTSchemaIFTParameterConfirmation)initWithJSON:(id)a3
+- (IFTSchemaIFTParameterConfirmation)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(IFTSchemaIFTParameterConfirmation *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(IFTSchemaIFTParameterConfirmation *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(IFTSchemaIFTParameterConfirmation *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -93,45 +93,45 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithBool:{-[IFTSchemaIFTParameterConfirmation exists](self, "exists")}];
-    [v3 setObject:v4 forKeyedSubscript:@"exists"];
+    [dictionary setObject:v4 forKeyedSubscript:@"exists"];
   }
 
   if (self->_item)
   {
-    v5 = [(IFTSchemaIFTParameterConfirmation *)self item];
-    v6 = [v5 dictionaryRepresentation];
-    if (v6)
+    item = [(IFTSchemaIFTParameterConfirmation *)self item];
+    dictionaryRepresentation = [item dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v6 forKeyedSubscript:@"item"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"item"];
     }
 
     else
     {
-      v7 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v7 forKeyedSubscript:@"item"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"item"];
     }
   }
 
   if (self->_parameterId)
   {
-    v8 = [(IFTSchemaIFTParameterConfirmation *)self parameterId];
-    v9 = [v8 copy];
-    [v3 setObject:v9 forKeyedSubscript:@"parameterId"];
+    parameterId = [(IFTSchemaIFTParameterConfirmation *)self parameterId];
+    v9 = [parameterId copy];
+    [dictionary setObject:v9 forKeyedSubscript:@"parameterId"];
   }
 
   if ((*&self->_has & 2) != 0)
   {
     v10 = [MEMORY[0x1E696AD98] numberWithLongLong:{-[IFTSchemaIFTParameterConfirmation parameterIndex](self, "parameterIndex")}];
-    [v3 setObject:v10 forKeyedSubscript:@"parameterIndex"];
+    [dictionary setObject:v10 forKeyedSubscript:@"parameterIndex"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -160,15 +160,15 @@
   return v4 ^ v3 ^ v5 ^ [(IFTSchemaIFTTypedValue *)self->_item hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_18;
   }
 
-  if ((*&self->_has & 1) != (v4[40] & 1))
+  if ((*&self->_has & 1) != (equalCopy[40] & 1))
   {
     goto LABEL_18;
   }
@@ -176,26 +176,26 @@
   if (*&self->_has)
   {
     exists = self->_exists;
-    if (exists != [v4 exists])
+    if (exists != [equalCopy exists])
     {
       goto LABEL_18;
     }
   }
 
-  v6 = [(IFTSchemaIFTParameterConfirmation *)self parameterId];
-  v7 = [v4 parameterId];
-  if ((v6 != 0) == (v7 == 0))
+  parameterId = [(IFTSchemaIFTParameterConfirmation *)self parameterId];
+  parameterId2 = [equalCopy parameterId];
+  if ((parameterId != 0) == (parameterId2 == 0))
   {
     goto LABEL_17;
   }
 
-  v8 = [(IFTSchemaIFTParameterConfirmation *)self parameterId];
-  if (v8)
+  parameterId3 = [(IFTSchemaIFTParameterConfirmation *)self parameterId];
+  if (parameterId3)
   {
-    v9 = v8;
-    v10 = [(IFTSchemaIFTParameterConfirmation *)self parameterId];
-    v11 = [v4 parameterId];
-    v12 = [v10 isEqual:v11];
+    v9 = parameterId3;
+    parameterId4 = [(IFTSchemaIFTParameterConfirmation *)self parameterId];
+    parameterId5 = [equalCopy parameterId];
+    v12 = [parameterId4 isEqual:parameterId5];
 
     if (!v12)
     {
@@ -208,7 +208,7 @@
   }
 
   v13 = (*&self->_has >> 1) & 1;
-  if (v13 != ((v4[40] >> 1) & 1))
+  if (v13 != ((equalCopy[40] >> 1) & 1))
   {
     goto LABEL_18;
   }
@@ -216,18 +216,18 @@
   if (v13)
   {
     parameterIndex = self->_parameterIndex;
-    if (parameterIndex != [v4 parameterIndex])
+    if (parameterIndex != [equalCopy parameterIndex])
     {
       goto LABEL_18;
     }
   }
 
-  v6 = [(IFTSchemaIFTParameterConfirmation *)self item];
-  v7 = [v4 item];
-  if ((v6 != 0) != (v7 == 0))
+  parameterId = [(IFTSchemaIFTParameterConfirmation *)self item];
+  parameterId2 = [equalCopy item];
+  if ((parameterId != 0) != (parameterId2 == 0))
   {
-    v15 = [(IFTSchemaIFTParameterConfirmation *)self item];
-    if (!v15)
+    item = [(IFTSchemaIFTParameterConfirmation *)self item];
+    if (!item)
     {
 
 LABEL_21:
@@ -235,10 +235,10 @@ LABEL_21:
       goto LABEL_19;
     }
 
-    v16 = v15;
-    v17 = [(IFTSchemaIFTParameterConfirmation *)self item];
-    v18 = [v4 item];
-    v19 = [v17 isEqual:v18];
+    v16 = item;
+    item2 = [(IFTSchemaIFTParameterConfirmation *)self item];
+    item3 = [equalCopy item];
+    v19 = [item2 isEqual:item3];
 
     if (v19)
     {
@@ -258,17 +258,17 @@ LABEL_19:
   return v20;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     PBDataWriterWriteBOOLField();
   }
 
-  v4 = [(IFTSchemaIFTParameterConfirmation *)self parameterId];
+  parameterId = [(IFTSchemaIFTParameterConfirmation *)self parameterId];
 
-  if (v4)
+  if (parameterId)
   {
     PBDataWriterWriteStringField();
   }
@@ -278,21 +278,21 @@ LABEL_19:
     PBDataWriterWriteInt64Field();
   }
 
-  v5 = [(IFTSchemaIFTParameterConfirmation *)self item];
+  item = [(IFTSchemaIFTParameterConfirmation *)self item];
 
-  v6 = v8;
-  if (v5)
+  v6 = toCopy;
+  if (item)
   {
-    v7 = [(IFTSchemaIFTParameterConfirmation *)self item];
+    item2 = [(IFTSchemaIFTParameterConfirmation *)self item];
     PBDataWriterWriteSubmessage();
 
-    v6 = v8;
+    v6 = toCopy;
   }
 }
 
-- (void)setHasParameterIndex:(BOOL)a3
+- (void)setHasParameterIndex:(BOOL)index
 {
-  if (a3)
+  if (index)
   {
     v3 = 2;
   }
@@ -305,17 +305,17 @@ LABEL_19:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = IFTSchemaIFTParameterConfirmation;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(IFTSchemaIFTParameterConfirmation *)self item:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(IFTSchemaIFTParameterConfirmation *)self deleteItem];
   }

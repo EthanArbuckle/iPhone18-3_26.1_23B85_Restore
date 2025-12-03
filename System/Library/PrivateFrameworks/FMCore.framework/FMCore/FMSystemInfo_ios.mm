@@ -1,9 +1,9 @@
 @interface FMSystemInfo_ios
-- (BOOL)_BOOLDeviceInfoForKey:(__CFString *)a3;
+- (BOOL)_BOOLDeviceInfoForKey:(__CFString *)key;
 - (BOOL)hasSEP;
 - (BOOL)isDeviceSecured;
-- (id)_deviceInfoForKey:(__CFString *)a3;
-- (id)_deviceInfoNumberForKey:(__CFString *)a3;
+- (id)_deviceInfoForKey:(__CFString *)key;
+- (id)_deviceInfoNumberForKey:(__CFString *)key;
 - (id)btMacAddress;
 - (id)chipId;
 - (id)deviceClass;
@@ -120,21 +120,21 @@
   return deviceUDID_deviceIdentifier;
 }
 
-- (id)_deviceInfoForKey:(__CFString *)a3
+- (id)_deviceInfoForKey:(__CFString *)key
 {
   v3 = MGCopyAnswerWithError();
 
   return v3;
 }
 
-- (id)_deviceInfoNumberForKey:(__CFString *)a3
+- (id)_deviceInfoNumberForKey:(__CFString *)key
 {
   v3 = MGCopyAnswerWithError();
 
   return v3;
 }
 
-- (BOOL)_BOOLDeviceInfoForKey:(__CFString *)a3
+- (BOOL)_BOOLDeviceInfoForKey:(__CFString *)key
 {
   v3 = MGCopyAnswerWithError();
   v4 = *MEMORY[0x277CBED28];
@@ -290,10 +290,10 @@
 
 - (BOOL)isDeviceSecured
 {
-  v2 = [MEMORY[0x277D262A0] sharedConnection];
-  v3 = [v2 isPasscodeSet];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  isPasscodeSet = [mEMORY[0x277D262A0] isPasscodeSet];
 
-  return v3;
+  return isPasscodeSet;
 }
 
 - (BOOL)hasSEP

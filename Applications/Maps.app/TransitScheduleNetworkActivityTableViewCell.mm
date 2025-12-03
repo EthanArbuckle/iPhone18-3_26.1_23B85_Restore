@@ -1,28 +1,28 @@
 @interface TransitScheduleNetworkActivityTableViewCell
-- (TransitScheduleNetworkActivityTableViewCell)initWithFrame:(CGRect)a3;
+- (TransitScheduleNetworkActivityTableViewCell)initWithFrame:(CGRect)frame;
 - (void)configureErrorView;
 - (void)configureLoadingView;
-- (void)setErrorStateWithString:(id)a3;
-- (void)setState:(unint64_t)a3 withErrorString:(id)a4;
+- (void)setErrorStateWithString:(id)string;
+- (void)setState:(unint64_t)state withErrorString:(id)string;
 @end
 
 @implementation TransitScheduleNetworkActivityTableViewCell
 
-- (void)setErrorStateWithString:(id)a3
+- (void)setErrorStateWithString:(id)string
 {
-  v4 = a3;
-  v7 = v4;
-  if (self->_state != 3 || (v5 = [v4 isEqualToString:self->_serverErrorString], v6 = v7, (v5 & 1) == 0))
+  stringCopy = string;
+  v7 = stringCopy;
+  if (self->_state != 3 || (v5 = [stringCopy isEqualToString:self->_serverErrorString], v6 = v7, (v5 & 1) == 0))
   {
     [(TransitScheduleNetworkActivityTableViewCell *)self setState:3 withErrorString:v7];
     v6 = v7;
   }
 }
 
-- (void)setState:(unint64_t)a3 withErrorString:(id)a4
+- (void)setState:(unint64_t)state withErrorString:(id)string
 {
-  self->_state = a3;
-  v5 = [a4 copy];
+  self->_state = state;
+  v5 = [string copy];
   serverErrorString = self->_serverErrorString;
   self->_serverErrorString = v5;
 
@@ -64,11 +64,11 @@ LABEL_6:
     [(UILabel *)self->_errorLabel setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UILabel *)self->_errorLabel setTextAlignment:1];
     [(UILabel *)self->_errorLabel setNumberOfLines:2];
-    v5 = [(TransitScheduleNetworkActivityTableViewCell *)self labelFont];
-    [(UILabel *)self->_errorLabel setFont:v5];
+    labelFont = [(TransitScheduleNetworkActivityTableViewCell *)self labelFont];
+    [(UILabel *)self->_errorLabel setFont:labelFont];
 
-    v6 = [(TransitScheduleNetworkActivityTableViewCell *)self labelColor];
-    [(UILabel *)self->_errorLabel setTextColor:v6];
+    labelColor = [(TransitScheduleNetworkActivityTableViewCell *)self labelColor];
+    [(UILabel *)self->_errorLabel setTextColor:labelColor];
 
     if (self->_state == 3 && [(NSString *)self->_serverErrorString length])
     {
@@ -82,28 +82,28 @@ LABEL_6:
       [(UILabel *)self->_errorLabel setText:v8];
     }
 
-    v9 = [(TransitScheduleNetworkActivityTableViewCell *)self contentView];
-    [v9 addSubview:self->_errorLabel];
+    contentView = [(TransitScheduleNetworkActivityTableViewCell *)self contentView];
+    [contentView addSubview:self->_errorLabel];
 
-    v27 = [(UILabel *)self->_errorLabel topAnchor];
-    v28 = [(TransitScheduleNetworkActivityTableViewCell *)self contentView];
-    v26 = [v28 topAnchor];
-    v25 = [v27 constraintEqualToSystemSpacingBelowAnchor:v26 multiplier:1.0];
+    topAnchor = [(UILabel *)self->_errorLabel topAnchor];
+    contentView2 = [(TransitScheduleNetworkActivityTableViewCell *)self contentView];
+    topAnchor2 = [contentView2 topAnchor];
+    v25 = [topAnchor constraintEqualToSystemSpacingBelowAnchor:topAnchor2 multiplier:1.0];
     v29[0] = v25;
-    v24 = [(TransitScheduleNetworkActivityTableViewCell *)self contentView];
-    v23 = [v24 bottomAnchor];
-    v22 = [(UILabel *)self->_errorLabel bottomAnchor];
-    v21 = [v23 constraintEqualToSystemSpacingBelowAnchor:v22 multiplier:1.0];
+    contentView3 = [(TransitScheduleNetworkActivityTableViewCell *)self contentView];
+    bottomAnchor = [contentView3 bottomAnchor];
+    bottomAnchor2 = [(UILabel *)self->_errorLabel bottomAnchor];
+    v21 = [bottomAnchor constraintEqualToSystemSpacingBelowAnchor:bottomAnchor2 multiplier:1.0];
     v29[1] = v21;
-    v20 = [(UILabel *)self->_errorLabel leadingAnchor];
-    v10 = [(TransitScheduleNetworkActivityTableViewCell *)self contentView];
-    v11 = [v10 leadingAnchor];
-    v12 = [v20 constraintEqualToAnchor:v11];
+    leadingAnchor = [(UILabel *)self->_errorLabel leadingAnchor];
+    contentView4 = [(TransitScheduleNetworkActivityTableViewCell *)self contentView];
+    leadingAnchor2 = [contentView4 leadingAnchor];
+    v12 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v29[2] = v12;
-    v13 = [(UILabel *)self->_errorLabel trailingAnchor];
-    v14 = [(TransitScheduleNetworkActivityTableViewCell *)self contentView];
-    v15 = [v14 trailingAnchor];
-    v16 = [v13 constraintEqualToAnchor:v15];
+    trailingAnchor = [(UILabel *)self->_errorLabel trailingAnchor];
+    contentView5 = [(TransitScheduleNetworkActivityTableViewCell *)self contentView];
+    trailingAnchor2 = [contentView5 trailingAnchor];
+    v16 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v29[3] = v16;
     v17 = [NSArray arrayWithObjects:v29 count:4];
     [NSLayoutConstraint activateConstraints:v17];
@@ -135,46 +135,46 @@ LABEL_6:
 
     [(LoadingModeView *)self->_loadingView setTranslatesAutoresizingMaskIntoConstraints:0];
     v8 = self->_loadingView;
-    v9 = [(TransitScheduleNetworkActivityTableViewCell *)self labelColor];
-    [(LoadingModeView *)v8 setTitleColor:v9];
+    labelColor = [(TransitScheduleNetworkActivityTableViewCell *)self labelColor];
+    [(LoadingModeView *)v8 setTitleColor:labelColor];
 
     v10 = self->_loadingView;
-    v11 = [(TransitScheduleNetworkActivityTableViewCell *)self labelFont];
-    [(LoadingModeView *)v10 setTitleFont:v11];
+    labelFont = [(TransitScheduleNetworkActivityTableViewCell *)self labelFont];
+    [(LoadingModeView *)v10 setTitleFont:labelFont];
 
-    v12 = [(TransitScheduleNetworkActivityTableViewCell *)self contentView];
-    [v12 addSubview:self->_loadingView];
+    contentView = [(TransitScheduleNetworkActivityTableViewCell *)self contentView];
+    [contentView addSubview:self->_loadingView];
 
-    v28 = [(LoadingModeView *)self->_loadingView topAnchor];
-    v29 = [(TransitScheduleNetworkActivityTableViewCell *)self contentView];
-    v27 = [v29 topAnchor];
-    v26 = [v28 constraintEqualToAnchor:v27];
+    topAnchor = [(LoadingModeView *)self->_loadingView topAnchor];
+    contentView2 = [(TransitScheduleNetworkActivityTableViewCell *)self contentView];
+    topAnchor2 = [contentView2 topAnchor];
+    v26 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v30[0] = v26;
-    v24 = [(LoadingModeView *)self->_loadingView bottomAnchor];
-    v25 = [(TransitScheduleNetworkActivityTableViewCell *)self contentView];
-    v23 = [v25 bottomAnchor];
-    v13 = [v24 constraintEqualToAnchor:v23];
+    bottomAnchor = [(LoadingModeView *)self->_loadingView bottomAnchor];
+    contentView3 = [(TransitScheduleNetworkActivityTableViewCell *)self contentView];
+    bottomAnchor2 = [contentView3 bottomAnchor];
+    v13 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v30[1] = v13;
-    v14 = [(LoadingModeView *)self->_loadingView leadingAnchor];
-    v15 = [(TransitScheduleNetworkActivityTableViewCell *)self contentView];
-    v16 = [v15 leadingAnchor];
-    v17 = [v14 constraintEqualToAnchor:v16];
+    leadingAnchor = [(LoadingModeView *)self->_loadingView leadingAnchor];
+    contentView4 = [(TransitScheduleNetworkActivityTableViewCell *)self contentView];
+    leadingAnchor2 = [contentView4 leadingAnchor];
+    v17 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v30[2] = v17;
-    v18 = [(LoadingModeView *)self->_loadingView trailingAnchor];
-    v19 = [(TransitScheduleNetworkActivityTableViewCell *)self contentView];
-    v20 = [v19 trailingAnchor];
-    v21 = [v18 constraintEqualToAnchor:v20];
+    trailingAnchor = [(LoadingModeView *)self->_loadingView trailingAnchor];
+    contentView5 = [(TransitScheduleNetworkActivityTableViewCell *)self contentView];
+    trailingAnchor2 = [contentView5 trailingAnchor];
+    v21 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v30[3] = v21;
     v22 = [NSArray arrayWithObjects:v30 count:4];
     [NSLayoutConstraint activateConstraints:v22];
   }
 }
 
-- (TransitScheduleNetworkActivityTableViewCell)initWithFrame:(CGRect)a3
+- (TransitScheduleNetworkActivityTableViewCell)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = TransitScheduleNetworkActivityTableViewCell;
-  v3 = [(TransitScheduleNetworkActivityTableViewCell *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(TransitScheduleNetworkActivityTableViewCell *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = +[UIColor clearColor];

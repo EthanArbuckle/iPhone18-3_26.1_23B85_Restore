@@ -11,10 +11,10 @@
   if ((objc_opt_isKindOfClass() & 1) != 0 && [v5 hasPrefix:@"#"])
   {
     v6 = [v5 stringByReplacingCharactersInRange:0 withString:{1, @"0x"}];
-    v7 = [v6 UTF8String];
+    uTF8String = [v6 UTF8String];
 
-    v8 = strlen(v7);
-    v9 = strtoll(v7, 0, 0);
+    v8 = strlen(uTF8String);
+    v9 = strtoll(uTF8String, 0, 0);
     if (v8 > 7)
     {
       if (v8 != 8)
@@ -32,9 +32,9 @@ LABEL_64:
         }
 
 LABEL_39:
-        v36 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
         v37 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"UIColor+SXJSONObject.m"];
-        [v36 handleFailureInMethod:a2 object:a1 file:v37 lineNumber:84 description:@"Invalid color string"];
+        [currentHandler handleFailureInMethod:a2 object:self file:v37 lineNumber:84 description:@"Invalid color string"];
 
         v15 = 0;
         v27 = 0.0;
@@ -54,7 +54,7 @@ LABEL_39:
       {
         if (v8 == 6)
         {
-          v10 = *(v7 + 2);
+          v10 = *(uTF8String + 2);
           v11 = v10 - 48;
           v12 = v10 - 97;
           if ((v10 - 65) >= 6)
@@ -79,7 +79,7 @@ LABEL_39:
           }
 
           v15.f32[0] = (v14 + (v14 * 16.0)) / 255.0;
-          v16 = *(v7 + 3);
+          v16 = *(uTF8String + 3);
           v17 = v16 - 48;
           v18 = v16 - 97;
           if ((v16 - 65) >= 6)
@@ -104,7 +104,7 @@ LABEL_39:
           }
 
           v21 = (v20 + (v20 * 16.0)) / 255.0;
-          v22 = *(v7 + 4);
+          v22 = *(uTF8String + 4);
           v23 = v22 - 48;
           v24 = v22 - 97;
           if ((v22 - 65) >= 6)
@@ -129,7 +129,7 @@ LABEL_39:
           }
 
           v27 = (v26 + (v26 * 16.0)) / 255.0;
-          v28 = *(v7 + 5);
+          v28 = *(uTF8String + 5);
           v29 = v28 - 48;
           v30 = v28 - 97;
           if ((v28 - 65) >= 6)
@@ -161,7 +161,7 @@ LABEL_39:
         goto LABEL_39;
       }
 
-      v38 = *(v7 + 2);
+      v38 = *(uTF8String + 2);
       v39 = v38 - 48;
       v40 = v38 - 97;
       if ((v38 - 65) >= 6)
@@ -186,7 +186,7 @@ LABEL_39:
       }
 
       v15.f32[0] = (v42 + (v42 * 16.0)) / 255.0;
-      v43 = *(v7 + 3);
+      v43 = *(uTF8String + 3);
       v44 = v43 - 48;
       v45 = v43 - 97;
       if ((v43 - 65) >= 6)
@@ -211,7 +211,7 @@ LABEL_39:
       }
 
       v48 = (v47 + (v47 * 16.0)) / 255.0;
-      v49 = *(v7 + 4);
+      v49 = *(uTF8String + 4);
       v50 = v49 - 48;
       v51 = v49 - 97;
       if ((v49 - 65) >= 6)

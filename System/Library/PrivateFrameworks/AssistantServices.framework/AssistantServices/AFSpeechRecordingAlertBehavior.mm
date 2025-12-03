@@ -1,46 +1,46 @@
 @interface AFSpeechRecordingAlertBehavior
-+ (id)newWithBuilder:(id)a3;
-- (AFSpeechRecordingAlertBehavior)initWithBuilder:(id)a3;
-- (AFSpeechRecordingAlertBehavior)initWithCoder:(id)a3;
-- (AFSpeechRecordingAlertBehavior)initWithStyle:(int64_t)a3 beepSoundID:(int64_t)a4;
-- (BOOL)isEqual:(id)a3;
-- (id)_descriptionWithIndent:(unint64_t)a3;
-- (id)mutatedCopyWithMutator:(id)a3;
++ (id)newWithBuilder:(id)builder;
+- (AFSpeechRecordingAlertBehavior)initWithBuilder:(id)builder;
+- (AFSpeechRecordingAlertBehavior)initWithCoder:(id)coder;
+- (AFSpeechRecordingAlertBehavior)initWithStyle:(int64_t)style beepSoundID:(int64_t)d;
+- (BOOL)isEqual:(id)equal;
+- (id)_descriptionWithIndent:(unint64_t)indent;
+- (id)mutatedCopyWithMutator:(id)mutator;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AFSpeechRecordingAlertBehavior
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E696AD98];
   style = self->_style;
-  v6 = a3;
+  coderCopy = coder;
   v7 = [v4 numberWithInteger:style];
-  [v6 encodeObject:v7 forKey:@"AFSpeechRecordingAlertBehavior::style"];
+  [coderCopy encodeObject:v7 forKey:@"AFSpeechRecordingAlertBehavior::style"];
 
   v8 = [MEMORY[0x1E696AD98] numberWithInteger:self->_beepSoundID];
-  [v6 encodeObject:v8 forKey:@"AFSpeechRecordingAlertBehavior::beepSoundID"];
+  [coderCopy encodeObject:v8 forKey:@"AFSpeechRecordingAlertBehavior::beepSoundID"];
 }
 
-- (AFSpeechRecordingAlertBehavior)initWithCoder:(id)a3
+- (AFSpeechRecordingAlertBehavior)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AFSpeechRecordingAlertBehavior::style"];
-  v6 = [v5 integerValue];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFSpeechRecordingAlertBehavior::style"];
+  integerValue = [v5 integerValue];
 
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AFSpeechRecordingAlertBehavior::beepSoundID"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFSpeechRecordingAlertBehavior::beepSoundID"];
 
-  v8 = [v7 integerValue];
+  integerValue2 = [v7 integerValue];
 
-  return [(AFSpeechRecordingAlertBehavior *)self initWithStyle:v6 beepSoundID:v8];
+  return [(AFSpeechRecordingAlertBehavior *)self initWithStyle:integerValue beepSoundID:integerValue2];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -50,7 +50,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       style = self->_style;
       if (style == [(AFSpeechRecordingAlertBehavior *)v5 style])
       {
@@ -83,7 +83,7 @@
   return v6 ^ v4;
 }
 
-- (id)_descriptionWithIndent:(unint64_t)a3
+- (id)_descriptionWithIndent:(unint64_t)indent
 {
   v4 = objc_alloc(MEMORY[0x1E696AEC0]);
   v14.receiver = self;
@@ -118,14 +118,14 @@
   return v12;
 }
 
-- (AFSpeechRecordingAlertBehavior)initWithStyle:(int64_t)a3 beepSoundID:(int64_t)a4
+- (AFSpeechRecordingAlertBehavior)initWithStyle:(int64_t)style beepSoundID:(int64_t)d
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __60__AFSpeechRecordingAlertBehavior_initWithStyle_beepSoundID___block_invoke;
   v5[3] = &__block_descriptor_48_e50_v16__0___AFSpeechRecordingAlertBehaviorMutating__8l;
-  v5[4] = a3;
-  v5[5] = a4;
+  v5[4] = style;
+  v5[5] = d;
   return [(AFSpeechRecordingAlertBehavior *)self initWithBuilder:v5];
 }
 
@@ -137,17 +137,17 @@ void __60__AFSpeechRecordingAlertBehavior_initWithStyle_beepSoundID___block_invo
   [v4 setBeepSoundID:*(a1 + 40)];
 }
 
-- (AFSpeechRecordingAlertBehavior)initWithBuilder:(id)a3
+- (AFSpeechRecordingAlertBehavior)initWithBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v9.receiver = self;
   v9.super_class = AFSpeechRecordingAlertBehavior;
   v5 = [(AFSpeechRecordingAlertBehavior *)&v9 init];
   v6 = v5;
-  if (v4 && v5)
+  if (builderCopy && v5)
   {
     v7 = [[_AFSpeechRecordingAlertBehaviorMutation alloc] initWithBase:0];
-    v4[2](v4, v7);
+    builderCopy[2](builderCopy, v7);
     if ([(_AFSpeechRecordingAlertBehaviorMutation *)v7 isDirty])
     {
       v6->_style = [(_AFSpeechRecordingAlertBehaviorMutation *)v7 getStyle];
@@ -158,21 +158,21 @@ void __60__AFSpeechRecordingAlertBehavior_initWithStyle_beepSoundID___block_invo
   return v6;
 }
 
-+ (id)newWithBuilder:(id)a3
++ (id)newWithBuilder:(id)builder
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:v3];
+  builderCopy = builder;
+  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:builderCopy];
 
   return v4;
 }
 
-- (id)mutatedCopyWithMutator:(id)a3
+- (id)mutatedCopyWithMutator:(id)mutator
 {
-  v4 = a3;
-  if (v4)
+  mutatorCopy = mutator;
+  if (mutatorCopy)
   {
     v5 = [[_AFSpeechRecordingAlertBehaviorMutation alloc] initWithBase:self];
-    v4[2](v4, v5);
+    mutatorCopy[2](mutatorCopy, v5);
     if ([(_AFSpeechRecordingAlertBehaviorMutation *)v5 isDirty])
     {
       v6 = objc_alloc_init(AFSpeechRecordingAlertBehavior);

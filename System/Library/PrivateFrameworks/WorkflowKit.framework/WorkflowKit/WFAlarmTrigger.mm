@@ -1,13 +1,13 @@
 @interface WFAlarmTrigger
 + (id)displayGlyph;
-+ (id)localizedDisplayNameWithContext:(id)a3;
++ (id)localizedDisplayNameWithContext:(id)context;
 - (WFAlarmTrigger)init;
-- (WFAlarmTrigger)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (WFAlarmTrigger)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)localizedDescriptionWithConfigurationSummary;
 - (id)localizedPastTenseDescription;
 - (id)suggestedActions;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFAlarmTrigger
@@ -20,34 +20,34 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v10.receiver = self;
   v10.super_class = WFAlarmTrigger;
-  v4 = [(WFTrigger *)&v10 copyWithZone:a3];
+  v4 = [(WFTrigger *)&v10 copyWithZone:zone];
   [v4 setAlarmType:{-[WFAlarmTrigger alarmType](self, "alarmType")}];
-  v5 = [(WFAlarmTrigger *)self alarmIDs];
-  v6 = [v5 copy];
+  alarmIDs = [(WFAlarmTrigger *)self alarmIDs];
+  v6 = [alarmIDs copy];
   [v4 setAlarmIDs:v6];
 
-  v7 = [(WFAlarmTrigger *)self cachedAlarmDescriptions];
-  v8 = [v7 copy];
+  cachedAlarmDescriptions = [(WFAlarmTrigger *)self cachedAlarmDescriptions];
+  v8 = [cachedAlarmDescriptions copy];
   [v4 setCachedAlarmDescriptions:v8];
 
   [v4 setAlarmState:{-[WFAlarmTrigger alarmState](self, "alarmState")}];
   return v4;
 }
 
-- (WFAlarmTrigger)initWithCoder:(id)a3
+- (WFAlarmTrigger)initWithCoder:(id)coder
 {
   v36[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v32.receiver = self;
   v32.super_class = WFAlarmTrigger;
-  v5 = [(WFTrigger *)&v32 initWithCoder:v4];
+  v5 = [(WFTrigger *)&v32 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"alarmType"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"alarmType"];
     v7 = v6;
     if (v6)
     {
@@ -57,7 +57,7 @@
       v36[1] = objc_opt_class();
       v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v36 count:2];
       v10 = [v8 setWithArray:v9];
-      v11 = [v4 decodeObjectOfClasses:v10 forKey:@"alarmIDs"];
+      v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"alarmIDs"];
       v12 = v11;
       v13 = MEMORY[0x1E695E0F0];
       if (v11)
@@ -77,7 +77,7 @@
       v35[1] = objc_opt_class();
       v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v35 count:2];
       v17 = [v15 setWithArray:v16];
-      v18 = [v4 decodeObjectOfClasses:v17 forKey:@"cachedAlarmDescriptions"];
+      v18 = [coderCopy decodeObjectOfClasses:v17 forKey:@"cachedAlarmDescriptions"];
       v19 = v18;
       if (v18)
       {
@@ -93,8 +93,8 @@
 
       if ([(WFAlarmTrigger *)v5 alarmType]== 1)
       {
-        v21 = [(WFAlarmTrigger *)v5 alarmIDs];
-        v22 = [v21 count];
+        alarmIDs = [(WFAlarmTrigger *)v5 alarmIDs];
+        v22 = [alarmIDs count];
 
         if (!v22)
         {
@@ -117,25 +117,25 @@
       [(WFAlarmTrigger *)v5 setAlarmIDs:MEMORY[0x1E695E0F0]];
     }
 
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"alarmState"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"alarmState"];
     v25 = v24;
     if (v24)
     {
-      v26 = [v24 integerValue];
+      integerValue = [v24 integerValue];
     }
 
     else
     {
-      v26 = 2;
+      integerValue = 2;
     }
 
-    [(WFAlarmTrigger *)v5 setAlarmState:v26];
-    v27 = [MEMORY[0x1E69E0A90] currentDevice];
-    if ([v27 idiom] == 1)
+    [(WFAlarmTrigger *)v5 setAlarmState:integerValue];
+    currentDevice = [MEMORY[0x1E69E0A90] currentDevice];
+    if ([currentDevice idiom] == 1)
     {
-      v28 = [(WFAlarmTrigger *)v5 alarmType];
+      alarmType = [(WFAlarmTrigger *)v5 alarmType];
 
-      if (v28 == 2)
+      if (alarmType == 2)
       {
         [(WFAlarmTrigger *)v5 setAlarmType:1];
       }
@@ -152,44 +152,44 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v9.receiver = self;
   v9.super_class = WFAlarmTrigger;
-  v4 = a3;
-  [(WFTrigger *)&v9 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(WFTrigger *)&v9 encodeWithCoder:coderCopy];
   v5 = [MEMORY[0x1E696AD98] numberWithInteger:{-[WFAlarmTrigger alarmType](self, "alarmType", v9.receiver, v9.super_class)}];
-  [v4 encodeObject:v5 forKey:@"alarmType"];
+  [coderCopy encodeObject:v5 forKey:@"alarmType"];
 
-  v6 = [(WFAlarmTrigger *)self alarmIDs];
-  [v4 encodeObject:v6 forKey:@"alarmIDs"];
+  alarmIDs = [(WFAlarmTrigger *)self alarmIDs];
+  [coderCopy encodeObject:alarmIDs forKey:@"alarmIDs"];
 
-  v7 = [(WFAlarmTrigger *)self cachedAlarmDescriptions];
-  [v4 encodeObject:v7 forKey:@"cachedAlarmDescriptions"];
+  cachedAlarmDescriptions = [(WFAlarmTrigger *)self cachedAlarmDescriptions];
+  [coderCopy encodeObject:cachedAlarmDescriptions forKey:@"cachedAlarmDescriptions"];
 
   v8 = [MEMORY[0x1E696AD98] numberWithInteger:{-[WFAlarmTrigger alarmState](self, "alarmState")}];
-  [v4 encodeObject:v8 forKey:@"alarmState"];
+  [coderCopy encodeObject:v8 forKey:@"alarmState"];
 }
 
 - (id)localizedPastTenseDescription
 {
-  v4 = [(WFAlarmTrigger *)self alarmType];
-  if (v4 == 2)
+  alarmType = [(WFAlarmTrigger *)self alarmType];
+  if (alarmType == 2)
   {
-    v12 = [(WFAlarmTrigger *)self alarmState];
-    if (v12 == 2)
+    alarmState = [(WFAlarmTrigger *)self alarmState];
+    if (alarmState == 2)
     {
       v6 = @"My wake-up alarm stopped";
     }
 
-    else if (v12 == 1)
+    else if (alarmState == 1)
     {
       v6 = @"My wake-up alarm snoozed";
     }
 
     else
     {
-      if (v12)
+      if (alarmState)
       {
         goto LABEL_25;
       }
@@ -200,27 +200,27 @@
     goto LABEL_24;
   }
 
-  if (v4 != 1)
+  if (alarmType != 1)
   {
-    if (v4)
+    if (alarmType)
     {
       goto LABEL_25;
     }
 
-    v5 = [(WFAlarmTrigger *)self alarmState];
-    if (v5 == 2)
+    alarmState2 = [(WFAlarmTrigger *)self alarmState];
+    if (alarmState2 == 2)
     {
       v6 = @"Any alarm stopped";
     }
 
-    else if (v5 == 1)
+    else if (alarmState2 == 1)
     {
       v6 = @"Any alarm snoozed";
     }
 
     else
     {
-      if (v5)
+      if (alarmState2)
       {
         goto LABEL_25;
       }
@@ -229,37 +229,37 @@
     }
 
 LABEL_24:
-    v2 = WFLocalizedString(v6);
+    alarmIDs = WFLocalizedString(v6);
     goto LABEL_25;
   }
 
-  v2 = [(WFAlarmTrigger *)self alarmIDs];
-  v7 = [v2 count];
+  alarmIDs = [(WFAlarmTrigger *)self alarmIDs];
+  v7 = [alarmIDs count];
 
   if (v7 == 1)
   {
-    v2 = [(WFAlarmTrigger *)self cachedAlarmDescriptions];
-    v8 = [v2 firstObject];
+    alarmIDs = [(WFAlarmTrigger *)self cachedAlarmDescriptions];
+    firstObject = [alarmIDs firstObject];
 
-    v9 = [(WFAlarmTrigger *)self alarmState];
-    if (v9 <= 2)
+    alarmState3 = [(WFAlarmTrigger *)self alarmState];
+    if (alarmState3 <= 2)
     {
       v10 = MEMORY[0x1E696AEC0];
-      v11 = WFLocalizedString(off_1E837B698[v9]);
-      v2 = [v10 localizedStringWithFormat:v11, v8];
+      v11 = WFLocalizedString(off_1E837B698[alarmState3]);
+      alarmIDs = [v10 localizedStringWithFormat:v11, firstObject];
     }
   }
 
   else
   {
-    v13 = [(WFAlarmTrigger *)self alarmState];
-    if (v13 == 2)
+    alarmState4 = [(WFAlarmTrigger *)self alarmState];
+    if (alarmState4 == 2)
     {
       v14 = MEMORY[0x1E696AEC0];
       v15 = @"Any of %lu alarms stopped";
     }
 
-    else if (v13 == 1)
+    else if (alarmState4 == 1)
     {
       v14 = MEMORY[0x1E696AEC0];
       v15 = @"Any of %lu alarms snoozed";
@@ -267,7 +267,7 @@ LABEL_24:
 
     else
     {
-      if (v13)
+      if (alarmState4)
       {
         goto LABEL_25;
       }
@@ -277,33 +277,33 @@ LABEL_24:
     }
 
     v17 = WFLocalizedPluralString(v15);
-    v2 = [v14 localizedStringWithFormat:v17, v7];
+    alarmIDs = [v14 localizedStringWithFormat:v17, v7];
   }
 
 LABEL_25:
 
-  return v2;
+  return alarmIDs;
 }
 
 - (id)localizedDescriptionWithConfigurationSummary
 {
-  v4 = [(WFAlarmTrigger *)self alarmType];
-  if (v4 == 2)
+  alarmType = [(WFAlarmTrigger *)self alarmType];
+  if (alarmType == 2)
   {
-    v12 = [(WFAlarmTrigger *)self alarmState];
-    if (v12 == 2)
+    alarmState = [(WFAlarmTrigger *)self alarmState];
+    if (alarmState == 2)
     {
       v6 = @"When my wake-up alarm is stopped";
     }
 
-    else if (v12 == 1)
+    else if (alarmState == 1)
     {
       v6 = @"When my wake-up alarm is snoozed";
     }
 
     else
     {
-      if (v12)
+      if (alarmState)
       {
         goto LABEL_25;
       }
@@ -314,27 +314,27 @@ LABEL_25:
     goto LABEL_24;
   }
 
-  if (v4 != 1)
+  if (alarmType != 1)
   {
-    if (v4)
+    if (alarmType)
     {
       goto LABEL_25;
     }
 
-    v5 = [(WFAlarmTrigger *)self alarmState];
-    if (v5 == 2)
+    alarmState2 = [(WFAlarmTrigger *)self alarmState];
+    if (alarmState2 == 2)
     {
       v6 = @"When any alarm is stopped";
     }
 
-    else if (v5 == 1)
+    else if (alarmState2 == 1)
     {
       v6 = @"When any alarm is snoozed";
     }
 
     else
     {
-      if (v5)
+      if (alarmState2)
       {
         goto LABEL_25;
       }
@@ -343,37 +343,37 @@ LABEL_25:
     }
 
 LABEL_24:
-    v2 = WFLocalizedString(v6);
+    alarmIDs = WFLocalizedString(v6);
     goto LABEL_25;
   }
 
-  v2 = [(WFAlarmTrigger *)self alarmIDs];
-  v7 = [v2 count];
+  alarmIDs = [(WFAlarmTrigger *)self alarmIDs];
+  v7 = [alarmIDs count];
 
   if (v7 == 1)
   {
-    v2 = [(WFAlarmTrigger *)self cachedAlarmDescriptions];
-    v8 = [v2 firstObject];
+    alarmIDs = [(WFAlarmTrigger *)self cachedAlarmDescriptions];
+    firstObject = [alarmIDs firstObject];
 
-    v9 = [(WFAlarmTrigger *)self alarmState];
-    if (v9 <= 2)
+    alarmState3 = [(WFAlarmTrigger *)self alarmState];
+    if (alarmState3 <= 2)
     {
       v10 = MEMORY[0x1E696AEC0];
-      v11 = WFLocalizedString(off_1E837B680[v9]);
-      v2 = [v10 localizedStringWithFormat:v11, v8];
+      v11 = WFLocalizedString(off_1E837B680[alarmState3]);
+      alarmIDs = [v10 localizedStringWithFormat:v11, firstObject];
     }
   }
 
   else
   {
-    v13 = [(WFAlarmTrigger *)self alarmState];
-    if (v13 == 2)
+    alarmState4 = [(WFAlarmTrigger *)self alarmState];
+    if (alarmState4 == 2)
     {
       v14 = MEMORY[0x1E696AEC0];
       v15 = @"When any of %lu alarms is stopped";
     }
 
-    else if (v13 == 1)
+    else if (alarmState4 == 1)
     {
       v14 = MEMORY[0x1E696AEC0];
       v15 = @"When any of %lu alarms is snoozed";
@@ -381,7 +381,7 @@ LABEL_24:
 
     else
     {
-      if (v13)
+      if (alarmState4)
       {
         goto LABEL_25;
       }
@@ -391,12 +391,12 @@ LABEL_24:
     }
 
     v17 = WFLocalizedPluralString(v15);
-    v2 = [v14 localizedStringWithFormat:v17, v7];
+    alarmIDs = [v14 localizedStringWithFormat:v17, v7];
   }
 
 LABEL_25:
 
-  return v2;
+  return alarmIDs;
 }
 
 - (WFAlarmTrigger)init
@@ -425,17 +425,17 @@ LABEL_25:
 + (id)displayGlyph
 {
   v2 = MEMORY[0x1E69E0B58];
-  v3 = [a1 displayGlyphName];
-  v4 = [v2 triggerDisplaySymbolNamed:v3 renderingMode:2];
+  displayGlyphName = [self displayGlyphName];
+  v4 = [v2 triggerDisplaySymbolNamed:displayGlyphName renderingMode:2];
 
   return v4;
 }
 
-+ (id)localizedDisplayNameWithContext:(id)a3
++ (id)localizedDisplayNameWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"Alarm", @"Alarm");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }

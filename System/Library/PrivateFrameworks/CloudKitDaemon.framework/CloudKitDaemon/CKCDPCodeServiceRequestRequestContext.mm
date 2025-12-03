@@ -1,21 +1,21 @@
 @interface CKCDPCodeServiceRequestRequestContext
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)databaseEnvironmentAsString:(int)a3;
-- (id)databaseTypeAsString:(int)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)databaseEnvironmentAsString:(int)string;
+- (id)databaseTypeAsString:(int)string;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsDatabaseEnvironment:(id)a3;
-- (int)StringAsDatabaseType:(id)a3;
+- (int)StringAsDatabaseEnvironment:(id)environment;
+- (int)StringAsDatabaseType:(id)type;
 - (int)databaseEnvironment;
 - (int)databaseType;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasDatabaseEnvironment:(BOOL)a3;
-- (void)setHasDatabaseType:(BOOL)a3;
-- (void)setHasInternalBuild:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasDatabaseEnvironment:(BOOL)environment;
+- (void)setHasDatabaseType:(BOOL)type;
+- (void)setHasInternalBuild:(BOOL)build;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CKCDPCodeServiceRequestRequestContext
@@ -33,9 +33,9 @@
   }
 }
 
-- (void)setHasDatabaseEnvironment:(BOOL)a3
+- (void)setHasDatabaseEnvironment:(BOOL)environment
 {
-  if (a3)
+  if (environment)
   {
     v3 = 2;
   }
@@ -48,18 +48,18 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)databaseEnvironmentAsString:(int)a3
+- (id)databaseEnvironmentAsString:(int)string
 {
-  if (a3)
+  if (string)
   {
-    if (a3 == 1)
+    if (string == 1)
     {
       v4 = @"production";
     }
 
     else
     {
-      v4 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], a2, @"(unknown: %i)", a3);
+      v4 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], a2, @"(unknown: %i)", string);
     }
   }
 
@@ -71,17 +71,17 @@
   return v4;
 }
 
-- (int)StringAsDatabaseEnvironment:(id)a3
+- (int)StringAsDatabaseEnvironment:(id)environment
 {
-  v3 = a3;
-  if (objc_msgSend_isEqualToString_(v3, v4, @"sandbox"))
+  environmentCopy = environment;
+  if (objc_msgSend_isEqualToString_(environmentCopy, v4, @"sandbox"))
   {
     isEqualToString = 0;
   }
 
   else
   {
-    isEqualToString = objc_msgSend_isEqualToString_(v3, v5, @"production");
+    isEqualToString = objc_msgSend_isEqualToString_(environmentCopy, v5, @"production");
   }
 
   return isEqualToString;
@@ -100,9 +100,9 @@
   }
 }
 
-- (void)setHasDatabaseType:(BOOL)a3
+- (void)setHasDatabaseType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 4;
   }
@@ -115,50 +115,50 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (id)databaseTypeAsString:(int)a3
+- (id)databaseTypeAsString:(int)string
 {
-  if (a3 >= 6)
+  if (string >= 6)
   {
-    v4 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], a2, @"(unknown: %i)", a3);
+    v4 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], a2, @"(unknown: %i)", string);
   }
 
   else
   {
-    v4 = off_27854C768[a3];
+    v4 = off_27854C768[string];
   }
 
   return v4;
 }
 
-- (int)StringAsDatabaseType:(id)a3
+- (int)StringAsDatabaseType:(id)type
 {
-  v3 = a3;
-  if (objc_msgSend_isEqualToString_(v3, v4, @"privateDatabase"))
+  typeCopy = type;
+  if (objc_msgSend_isEqualToString_(typeCopy, v4, @"privateDatabase"))
   {
     v6 = 0;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v5, @"publicDatabase"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v5, @"publicDatabase"))
   {
     v6 = 1;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v7, @"sharedDatabase"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v7, @"sharedDatabase"))
   {
     v6 = 2;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v8, @"orgDatabase"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v8, @"orgDatabase"))
   {
     v6 = 3;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v9, @"teamDatabase"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v9, @"teamDatabase"))
   {
     v6 = 4;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v10, @"gameDatabase"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v10, @"gameDatabase"))
   {
     v6 = 5;
   }
@@ -171,9 +171,9 @@
   return v6;
 }
 
-- (void)setHasInternalBuild:(BOOL)a3
+- (void)setHasInternalBuild:(BOOL)build
 {
-  if (a3)
+  if (build)
   {
     v3 = 8;
   }
@@ -311,20 +311,20 @@
   return v6;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v10 = v4;
+  toCopy = to;
+  v10 = toCopy;
   if (self->_userId)
   {
     PBDataWriterWriteStringField();
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_containerName)
   {
     PBDataWriterWriteStringField();
-    v4 = v10;
+    toCopy = v10;
   }
 
   has = self->_has;
@@ -332,7 +332,7 @@
   {
     databaseEnvironment = self->_databaseEnvironment;
     PBDataWriterWriteInt32Field();
-    v4 = v10;
+    toCopy = v10;
     has = self->_has;
   }
 
@@ -340,157 +340,157 @@
   {
     databaseType = self->_databaseType;
     PBDataWriterWriteInt32Field();
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_deviceId)
   {
     PBDataWriterWriteStringField();
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_applicationBundleId)
   {
     PBDataWriterWriteStringField();
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_clientInfo)
   {
     PBDataWriterWriteStringField();
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (*&self->_has)
   {
     dsid = self->_dsid;
     PBDataWriterWriteUint64Field();
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_userAgent)
   {
     PBDataWriterWriteStringField();
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_operationGroup)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_databaseOwnerId)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v10;
+    toCopy = v10;
   }
 
   if ((*&self->_has & 8) != 0)
   {
     internalBuild = self->_internalBuild;
     PBDataWriterWriteBOOLField();
-    v4 = v10;
+    toCopy = v10;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   userId = self->_userId;
-  v15 = v4;
+  v15 = toCopy;
   if (userId)
   {
-    objc_msgSend_setUserId_(v4, v5, userId);
-    v4 = v15;
+    objc_msgSend_setUserId_(toCopy, v5, userId);
+    toCopy = v15;
   }
 
   containerName = self->_containerName;
   if (containerName)
   {
     objc_msgSend_setContainerName_(v15, v5, containerName);
-    v4 = v15;
+    toCopy = v15;
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(v4 + 10) = self->_databaseEnvironment;
-    *(v4 + 100) |= 2u;
+    *(toCopy + 10) = self->_databaseEnvironment;
+    *(toCopy + 100) |= 2u;
     has = self->_has;
   }
 
   if ((has & 4) != 0)
   {
-    *(v4 + 14) = self->_databaseType;
-    *(v4 + 100) |= 4u;
+    *(toCopy + 14) = self->_databaseType;
+    *(toCopy + 100) |= 4u;
   }
 
   deviceId = self->_deviceId;
   if (deviceId)
   {
     objc_msgSend_setDeviceId_(v15, v5, deviceId);
-    v4 = v15;
+    toCopy = v15;
   }
 
   applicationBundleId = self->_applicationBundleId;
   if (applicationBundleId)
   {
     objc_msgSend_setApplicationBundleId_(v15, v5, applicationBundleId);
-    v4 = v15;
+    toCopy = v15;
   }
 
   clientInfo = self->_clientInfo;
   if (clientInfo)
   {
     objc_msgSend_setClientInfo_(v15, v5, clientInfo);
-    v4 = v15;
+    toCopy = v15;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 1) = self->_dsid;
-    *(v4 + 100) |= 1u;
+    *(toCopy + 1) = self->_dsid;
+    *(toCopy + 100) |= 1u;
   }
 
   userAgent = self->_userAgent;
   if (userAgent)
   {
     objc_msgSend_setUserAgent_(v15, v5, userAgent);
-    v4 = v15;
+    toCopy = v15;
   }
 
   operationGroup = self->_operationGroup;
   if (operationGroup)
   {
     objc_msgSend_setOperationGroup_(v15, v5, operationGroup);
-    v4 = v15;
+    toCopy = v15;
   }
 
   databaseOwnerId = self->_databaseOwnerId;
   if (databaseOwnerId)
   {
     objc_msgSend_setDatabaseOwnerId_(v15, v5, databaseOwnerId);
-    v4 = v15;
+    toCopy = v15;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    *(v4 + 96) = self->_internalBuild;
-    *(v4 + 100) |= 8u;
+    *(toCopy + 96) = self->_internalBuild;
+    *(toCopy + 100) |= 8u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v10 = objc_msgSend_init(v7, v8, v9);
-  v12 = objc_msgSend_copyWithZone_(self->_userId, v11, a3);
+  v12 = objc_msgSend_copyWithZone_(self->_userId, v11, zone);
   v13 = *(v10 + 88);
   *(v10 + 88) = v12;
 
-  v15 = objc_msgSend_copyWithZone_(self->_containerName, v14, a3);
+  v15 = objc_msgSend_copyWithZone_(self->_containerName, v14, zone);
   v16 = *(v10 + 32);
   *(v10 + 32) = v15;
 
@@ -508,15 +508,15 @@
     *(v10 + 100) |= 4u;
   }
 
-  v19 = objc_msgSend_copyWithZone_(self->_deviceId, v17, a3);
+  v19 = objc_msgSend_copyWithZone_(self->_deviceId, v17, zone);
   v20 = *(v10 + 64);
   *(v10 + 64) = v19;
 
-  v22 = objc_msgSend_copyWithZone_(self->_applicationBundleId, v21, a3);
+  v22 = objc_msgSend_copyWithZone_(self->_applicationBundleId, v21, zone);
   v23 = *(v10 + 16);
   *(v10 + 16) = v22;
 
-  v25 = objc_msgSend_copyWithZone_(self->_clientInfo, v24, a3);
+  v25 = objc_msgSend_copyWithZone_(self->_clientInfo, v24, zone);
   v26 = *(v10 + 24);
   *(v10 + 24) = v25;
 
@@ -526,15 +526,15 @@
     *(v10 + 100) |= 1u;
   }
 
-  v28 = objc_msgSend_copyWithZone_(self->_userAgent, v27, a3);
+  v28 = objc_msgSend_copyWithZone_(self->_userAgent, v27, zone);
   v29 = *(v10 + 80);
   *(v10 + 80) = v28;
 
-  v31 = objc_msgSend_copyWithZone_(self->_operationGroup, v30, a3);
+  v31 = objc_msgSend_copyWithZone_(self->_operationGroup, v30, zone);
   v32 = *(v10 + 72);
   *(v10 + 72) = v31;
 
-  v34 = objc_msgSend_copyWithZone_(self->_databaseOwnerId, v33, a3);
+  v34 = objc_msgSend_copyWithZone_(self->_databaseOwnerId, v33, zone);
   v35 = *(v10 + 48);
   *(v10 + 48) = v34;
 
@@ -547,17 +547,17 @@
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if (!objc_msgSend_isMemberOfClass_(v4, v6, v5))
+  if (!objc_msgSend_isMemberOfClass_(equalCopy, v6, v5))
   {
     goto LABEL_35;
   }
 
   userId = self->_userId;
-  v9 = v4[11];
+  v9 = equalCopy[11];
   if (userId | v9)
   {
     if (!objc_msgSend_isEqual_(userId, v7, v9))
@@ -567,7 +567,7 @@
   }
 
   containerName = self->_containerName;
-  v11 = v4[4];
+  v11 = equalCopy[4];
   if (containerName | v11)
   {
     if (!objc_msgSend_isEqual_(containerName, v7, v11))
@@ -576,42 +576,42 @@
     }
   }
 
-  v12 = *(v4 + 100);
+  v12 = *(equalCopy + 100);
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 100) & 2) == 0 || self->_databaseEnvironment != *(v4 + 10))
+    if ((*(equalCopy + 100) & 2) == 0 || self->_databaseEnvironment != *(equalCopy + 10))
     {
       goto LABEL_35;
     }
   }
 
-  else if ((*(v4 + 100) & 2) != 0)
+  else if ((*(equalCopy + 100) & 2) != 0)
   {
     goto LABEL_35;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 100) & 4) == 0 || self->_databaseType != *(v4 + 14))
+    if ((*(equalCopy + 100) & 4) == 0 || self->_databaseType != *(equalCopy + 14))
     {
       goto LABEL_35;
     }
   }
 
-  else if ((*(v4 + 100) & 4) != 0)
+  else if ((*(equalCopy + 100) & 4) != 0)
   {
     goto LABEL_35;
   }
 
   deviceId = self->_deviceId;
-  v14 = v4[8];
+  v14 = equalCopy[8];
   if (deviceId | v14 && !objc_msgSend_isEqual_(deviceId, v7, v14))
   {
     goto LABEL_35;
   }
 
   applicationBundleId = self->_applicationBundleId;
-  v16 = v4[2];
+  v16 = equalCopy[2];
   if (applicationBundleId | v16)
   {
     if (!objc_msgSend_isEqual_(applicationBundleId, v7, v16))
@@ -621,7 +621,7 @@
   }
 
   clientInfo = self->_clientInfo;
-  v18 = v4[3];
+  v18 = equalCopy[3];
   if (clientInfo | v18)
   {
     if (!objc_msgSend_isEqual_(clientInfo, v7, v18))
@@ -630,29 +630,29 @@
     }
   }
 
-  v19 = *(v4 + 100);
+  v19 = *(equalCopy + 100);
   if (*&self->_has)
   {
-    if ((*(v4 + 100) & 1) == 0 || self->_dsid != v4[1])
+    if ((*(equalCopy + 100) & 1) == 0 || self->_dsid != equalCopy[1])
     {
       goto LABEL_35;
     }
   }
 
-  else if (*(v4 + 100))
+  else if (*(equalCopy + 100))
   {
     goto LABEL_35;
   }
 
   userAgent = self->_userAgent;
-  v21 = v4[10];
+  v21 = equalCopy[10];
   if (userAgent | v21 && !objc_msgSend_isEqual_(userAgent, v7, v21))
   {
     goto LABEL_35;
   }
 
   operationGroup = self->_operationGroup;
-  v23 = v4[9];
+  v23 = equalCopy[9];
   if (operationGroup | v23)
   {
     if (!objc_msgSend_isEqual_(operationGroup, v7, v23))
@@ -662,7 +662,7 @@
   }
 
   databaseOwnerId = self->_databaseOwnerId;
-  v25 = v4[6];
+  v25 = equalCopy[6];
   if (databaseOwnerId | v25)
   {
     if (!objc_msgSend_isEqual_(databaseOwnerId, v7, v25))
@@ -671,10 +671,10 @@
     }
   }
 
-  v26 = (*(v4 + 100) & 8) == 0;
+  v26 = (*(equalCopy + 100) & 8) == 0;
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 100) & 8) == 0)
+    if ((*(equalCopy + 100) & 8) == 0)
     {
 LABEL_35:
       v26 = 0;
@@ -683,13 +683,13 @@ LABEL_35:
 
     if (self->_internalBuild)
     {
-      if ((v4[12] & 1) == 0)
+      if ((equalCopy[12] & 1) == 0)
       {
         goto LABEL_35;
       }
     }
 
-    else if (*(v4 + 96))
+    else if (*(equalCopy + 96))
     {
       goto LABEL_35;
     }
@@ -757,74 +757,74 @@ LABEL_6:
   return v30 ^ v31 ^ v29 ^ v28 ^ v11 ^ v12 ^ v17 ^ v18 ^ v19 ^ v22 ^ v25 ^ v26;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 11);
-  v16 = v4;
+  fromCopy = from;
+  v5 = *(fromCopy + 11);
+  v16 = fromCopy;
   if (v5)
   {
-    objc_msgSend_setUserId_(self, v4, v5);
-    v4 = v16;
+    objc_msgSend_setUserId_(self, fromCopy, v5);
+    fromCopy = v16;
   }
 
-  v6 = *(v4 + 4);
+  v6 = *(fromCopy + 4);
   if (v6)
   {
-    objc_msgSend_setContainerName_(self, v4, v6);
-    v4 = v16;
+    objc_msgSend_setContainerName_(self, fromCopy, v6);
+    fromCopy = v16;
   }
 
-  v7 = *(v4 + 100);
+  v7 = *(fromCopy + 100);
   if ((v7 & 2) != 0)
   {
-    self->_databaseEnvironment = *(v4 + 10);
+    self->_databaseEnvironment = *(fromCopy + 10);
     *&self->_has |= 2u;
-    v7 = *(v4 + 100);
+    v7 = *(fromCopy + 100);
   }
 
   if ((v7 & 4) != 0)
   {
-    self->_databaseType = *(v4 + 14);
+    self->_databaseType = *(fromCopy + 14);
     *&self->_has |= 4u;
   }
 
-  v8 = *(v4 + 8);
+  v8 = *(fromCopy + 8);
   if (v8)
   {
-    objc_msgSend_setDeviceId_(self, v4, v8);
-    v4 = v16;
+    objc_msgSend_setDeviceId_(self, fromCopy, v8);
+    fromCopy = v16;
   }
 
-  v9 = *(v4 + 2);
+  v9 = *(fromCopy + 2);
   if (v9)
   {
-    objc_msgSend_setApplicationBundleId_(self, v4, v9);
-    v4 = v16;
+    objc_msgSend_setApplicationBundleId_(self, fromCopy, v9);
+    fromCopy = v16;
   }
 
-  v10 = *(v4 + 3);
+  v10 = *(fromCopy + 3);
   if (v10)
   {
-    objc_msgSend_setClientInfo_(self, v4, v10);
-    v4 = v16;
+    objc_msgSend_setClientInfo_(self, fromCopy, v10);
+    fromCopy = v16;
   }
 
-  if (*(v4 + 100))
+  if (*(fromCopy + 100))
   {
-    self->_dsid = *(v4 + 1);
+    self->_dsid = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
-  v11 = *(v4 + 10);
+  v11 = *(fromCopy + 10);
   if (v11)
   {
-    objc_msgSend_setUserAgent_(self, v4, v11);
-    v4 = v16;
+    objc_msgSend_setUserAgent_(self, fromCopy, v11);
+    fromCopy = v16;
   }
 
   operationGroup = self->_operationGroup;
-  v13 = *(v4 + 9);
+  v13 = *(fromCopy + 9);
   if (operationGroup)
   {
     if (!v13)
@@ -832,7 +832,7 @@ LABEL_6:
       goto LABEL_25;
     }
 
-    objc_msgSend_mergeFrom_(operationGroup, v4, v13);
+    objc_msgSend_mergeFrom_(operationGroup, fromCopy, v13);
   }
 
   else
@@ -842,13 +842,13 @@ LABEL_6:
       goto LABEL_25;
     }
 
-    objc_msgSend_setOperationGroup_(self, v4, v13);
+    objc_msgSend_setOperationGroup_(self, fromCopy, v13);
   }
 
-  v4 = v16;
+  fromCopy = v16;
 LABEL_25:
   databaseOwnerId = self->_databaseOwnerId;
-  v15 = *(v4 + 6);
+  v15 = *(fromCopy + 6);
   if (databaseOwnerId)
   {
     if (!v15)
@@ -856,7 +856,7 @@ LABEL_25:
       goto LABEL_31;
     }
 
-    objc_msgSend_mergeFrom_(databaseOwnerId, v4, v15);
+    objc_msgSend_mergeFrom_(databaseOwnerId, fromCopy, v15);
   }
 
   else
@@ -866,14 +866,14 @@ LABEL_25:
       goto LABEL_31;
     }
 
-    objc_msgSend_setDatabaseOwnerId_(self, v4, v15);
+    objc_msgSend_setDatabaseOwnerId_(self, fromCopy, v15);
   }
 
-  v4 = v16;
+  fromCopy = v16;
 LABEL_31:
-  if ((*(v4 + 100) & 8) != 0)
+  if ((*(fromCopy + 100) & 8) != 0)
   {
-    self->_internalBuild = *(v4 + 96);
+    self->_internalBuild = *(fromCopy + 96);
     *&self->_has |= 8u;
   }
 

@@ -1,12 +1,12 @@
 @interface NESMProviderRegistration
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 @end
 
 @implementation NESMProviderRegistration
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -14,7 +14,7 @@
     goto LABEL_7;
   }
 
-  if (!v4)
+  if (!equalCopy)
   {
     v5 = 0;
     if (self)
@@ -27,7 +27,7 @@ LABEL_9:
     goto LABEL_5;
   }
 
-  v5 = v4[1];
+  v5 = equalCopy[1];
   if (!self)
   {
     goto LABEL_9;

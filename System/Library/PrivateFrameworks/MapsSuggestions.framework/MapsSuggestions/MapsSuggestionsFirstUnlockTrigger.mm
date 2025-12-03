@@ -1,17 +1,17 @@
 @interface MapsSuggestionsFirstUnlockTrigger
 - (MapsSuggestionsFirstUnlockTrigger)init;
-- (MapsSuggestionsFirstUnlockTrigger)initWithFirstLock:(id)a3;
+- (MapsSuggestionsFirstUnlockTrigger)initWithFirstLock:(id)lock;
 - (id)objectForJSON;
-- (void)triggerFired:(id)a3;
+- (void)triggerFired:(id)fired;
 @end
 
 @implementation MapsSuggestionsFirstUnlockTrigger
 
 - (id)objectForJSON
 {
-  v2 = [(MapsSuggestionsFirstUnlockTrigger *)self isTrue];
+  isTrue = [(MapsSuggestionsFirstUnlockTrigger *)self isTrue];
 
-  return MSg::jsonFor(v2);
+  return MSg::jsonFor(isTrue);
 }
 
 - (MapsSuggestionsFirstUnlockTrigger)init
@@ -22,22 +22,22 @@
   return v4;
 }
 
-- (MapsSuggestionsFirstUnlockTrigger)initWithFirstLock:(id)a3
+- (MapsSuggestionsFirstUnlockTrigger)initWithFirstLock:(id)lock
 {
-  v5 = a3;
+  lockCopy = lock;
   v9.receiver = self;
   v9.super_class = MapsSuggestionsFirstUnlockTrigger;
   v6 = [(MapsSuggestionsBaseTrigger *)&v9 initWithName:@"MapsSuggestionsFirstUnlockTrigger"];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_firstUnlock, a3);
+    objc_storeStrong(&v6->_firstUnlock, lock);
   }
 
   return v7;
 }
 
-- (void)triggerFired:(id)a3
+- (void)triggerFired:(id)fired
 {
   v4 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))

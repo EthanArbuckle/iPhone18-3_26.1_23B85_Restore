@@ -1,6 +1,6 @@
 @interface VOTCancelDragCustomAction
-- (BOOL)isEqual:(id)a3;
-- (BOOL)performWithContext:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)performWithContext:(id)context;
 - (VOTCancelDragCustomAction)init;
 - (unint64_t)hash;
 @end
@@ -14,22 +14,22 @@
   return [(VOTCancelDragCustomAction *)&v3 init];
 }
 
-- (BOOL)performWithContext:(id)a3
+- (BOOL)performWithContext:(id)context
 {
-  v3 = a3;
-  v4 = [v3 dragSessionActive];
-  if (v4)
+  contextCopy = context;
+  dragSessionActive = [contextCopy dragSessionActive];
+  if (dragSessionActive)
   {
-    [v3 cancelDrag];
+    [contextCopy cancelDrag];
   }
 
-  return v4;
+  return dragSessionActive;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v3 = a3;
-  v4 = [v3 isMemberOfClass:objc_opt_class()];
+  equalCopy = equal;
+  v4 = [equalCopy isMemberOfClass:objc_opt_class()];
 
   return v4;
 }

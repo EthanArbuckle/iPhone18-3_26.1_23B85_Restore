@@ -4,22 +4,22 @@
 - (FindMyLocateSession)init;
 - (id)cachedFriendsFollowingMyLocation;
 - (id)cachedFriendsSharingLocationsWithMe;
-- (id)cachedLocationForHandle:(id)a3;
-- (id)cachedOfferExpirationForHandle:(id)a3 groupId:(id)a4;
+- (id)cachedLocationForHandle:(id)handle;
+- (id)cachedOfferExpirationForHandle:(id)handle groupId:(id)id;
 - (id)friendshipUpdateCallback;
 - (id)locationUpdateCallback;
 - (id)meDeviceUpdateCallback;
-- (void)getActiveLocationSharingDeviceWithCompletion:(id)a3;
-- (void)getFriendsFollowingMyLocationWithCompletion:(id)a3;
-- (void)getFriendsSharingLocationsWithMeWithCompletion:(id)a3;
-- (void)getOfferExpirationForHandle:(id)a3 groupId:(id)a4 completion:(id)a5;
-- (void)setActiveLocationSharingDevice:(id)a3 completion:(id)a4;
-- (void)setFriendshipUpdateCallback:(id)a3;
-- (void)setLocationUpdateCallback:(id)a3;
-- (void)setMeDeviceUpdateCallback:(id)a3;
-- (void)startMonitoringActiveLocationSharingDeviceChangeWithCompletion:(id)a3;
-- (void)stopRefreshingLocationWithCompletion:(id)a3;
-- (void)stopUpdatingFriendsWithCompletion:(id)a3;
+- (void)getActiveLocationSharingDeviceWithCompletion:(id)completion;
+- (void)getFriendsFollowingMyLocationWithCompletion:(id)completion;
+- (void)getFriendsSharingLocationsWithMeWithCompletion:(id)completion;
+- (void)getOfferExpirationForHandle:(id)handle groupId:(id)id completion:(id)completion;
+- (void)setActiveLocationSharingDevice:(id)device completion:(id)completion;
+- (void)setFriendshipUpdateCallback:(id)callback;
+- (void)setLocationUpdateCallback:(id)callback;
+- (void)setMeDeviceUpdateCallback:(id)callback;
+- (void)startMonitoringActiveLocationSharingDeviceChangeWithCompletion:(id)completion;
+- (void)stopRefreshingLocationWithCompletion:(id)completion;
+- (void)stopUpdatingFriendsWithCompletion:(id)completion;
 @end
 
 @implementation FindMyLocateSession
@@ -35,108 +35,108 @@
   return v2;
 }
 
-- (void)setLocationUpdateCallback:(id)a3
+- (void)setLocationUpdateCallback:(id)callback
 {
-  v4 = a3;
-  v5 = [(FindMyLocateSession *)self trampoline];
-  [v5 setLocationUpdateCallback:v4];
+  callbackCopy = callback;
+  trampoline = [(FindMyLocateSession *)self trampoline];
+  [trampoline setLocationUpdateCallback:callbackCopy];
 }
 
 - (id)locationUpdateCallback
 {
-  v2 = [(FindMyLocateSession *)self trampoline];
-  v3 = [v2 locationUpdateCallback];
+  trampoline = [(FindMyLocateSession *)self trampoline];
+  locationUpdateCallback = [trampoline locationUpdateCallback];
 
-  return v3;
+  return locationUpdateCallback;
 }
 
-- (void)setFriendshipUpdateCallback:(id)a3
+- (void)setFriendshipUpdateCallback:(id)callback
 {
-  v4 = a3;
-  v5 = [(FindMyLocateSession *)self trampoline];
-  [v5 setFriendshipUpdateCallback:v4];
+  callbackCopy = callback;
+  trampoline = [(FindMyLocateSession *)self trampoline];
+  [trampoline setFriendshipUpdateCallback:callbackCopy];
 }
 
 - (id)friendshipUpdateCallback
 {
-  v2 = [(FindMyLocateSession *)self trampoline];
-  v3 = [v2 friendshipUpdateCallback];
+  trampoline = [(FindMyLocateSession *)self trampoline];
+  friendshipUpdateCallback = [trampoline friendshipUpdateCallback];
 
-  return v3;
+  return friendshipUpdateCallback;
 }
 
-- (void)setMeDeviceUpdateCallback:(id)a3
+- (void)setMeDeviceUpdateCallback:(id)callback
 {
-  v4 = a3;
-  v5 = [(FindMyLocateSession *)self trampoline];
-  [v5 setMeDeviceUpdateCallback:v4];
+  callbackCopy = callback;
+  trampoline = [(FindMyLocateSession *)self trampoline];
+  [trampoline setMeDeviceUpdateCallback:callbackCopy];
 }
 
 - (id)meDeviceUpdateCallback
 {
-  v2 = [(FindMyLocateSession *)self trampoline];
-  v3 = [v2 meDeviceUpdateCallback];
+  trampoline = [(FindMyLocateSession *)self trampoline];
+  meDeviceUpdateCallback = [trampoline meDeviceUpdateCallback];
 
-  return v3;
+  return meDeviceUpdateCallback;
 }
 
-- (void)stopRefreshingLocationWithCompletion:(id)a3
+- (void)stopRefreshingLocationWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(FindMyLocateSession *)self trampoline];
-  [v5 stopRefreshingLocationWithCompletionHandler:v4];
+  completionCopy = completion;
+  trampoline = [(FindMyLocateSession *)self trampoline];
+  [trampoline stopRefreshingLocationWithCompletionHandler:completionCopy];
 }
 
-- (void)stopUpdatingFriendsWithCompletion:(id)a3
+- (void)stopUpdatingFriendsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(FindMyLocateSession *)self trampoline];
-  [v5 stopUpdatingFriendsWithCompletionHandler:v4];
+  completionCopy = completion;
+  trampoline = [(FindMyLocateSession *)self trampoline];
+  [trampoline stopUpdatingFriendsWithCompletionHandler:completionCopy];
 }
 
-- (void)startMonitoringActiveLocationSharingDeviceChangeWithCompletion:(id)a3
+- (void)startMonitoringActiveLocationSharingDeviceChangeWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(FindMyLocateSession *)self trampoline];
-  [v5 startMonitoringActiveLocationSharingDeviceWithCompletionHandler:v4];
+  completionCopy = completion;
+  trampoline = [(FindMyLocateSession *)self trampoline];
+  [trampoline startMonitoringActiveLocationSharingDeviceWithCompletionHandler:completionCopy];
 }
 
-- (void)setActiveLocationSharingDevice:(id)a3 completion:(id)a4
+- (void)setActiveLocationSharingDevice:(id)device completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(FindMyLocateSession *)self trampoline];
-  [v8 setActiveLocationSharingDevice:v7 completionHandler:v6];
+  completionCopy = completion;
+  deviceCopy = device;
+  trampoline = [(FindMyLocateSession *)self trampoline];
+  [trampoline setActiveLocationSharingDevice:deviceCopy completionHandler:completionCopy];
 }
 
-- (void)getActiveLocationSharingDeviceWithCompletion:(id)a3
+- (void)getActiveLocationSharingDeviceWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(FindMyLocateSession *)self trampoline];
-  [v5 getActiveLocationSharingDeviceWithCompletionHandler:v4];
+  completionCopy = completion;
+  trampoline = [(FindMyLocateSession *)self trampoline];
+  [trampoline getActiveLocationSharingDeviceWithCompletionHandler:completionCopy];
 }
 
-- (void)getFriendsSharingLocationsWithMeWithCompletion:(id)a3
+- (void)getFriendsSharingLocationsWithMeWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(FindMyLocateSession *)self trampoline];
-  [v5 getFriendsWith:1 completionHandler:v4];
+  completionCopy = completion;
+  trampoline = [(FindMyLocateSession *)self trampoline];
+  [trampoline getFriendsWith:1 completionHandler:completionCopy];
 }
 
-- (void)getFriendsFollowingMyLocationWithCompletion:(id)a3
+- (void)getFriendsFollowingMyLocationWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(FindMyLocateSession *)self trampoline];
-  [v5 getFriendsWith:0 completionHandler:v4];
+  completionCopy = completion;
+  trampoline = [(FindMyLocateSession *)self trampoline];
+  [trampoline getFriendsWith:0 completionHandler:completionCopy];
 }
 
-- (void)getOfferExpirationForHandle:(id)a3 groupId:(id)a4 completion:(id)a5
+- (void)getOfferExpirationForHandle:(id)handle groupId:(id)id completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(FindMyLocateSession *)self trampoline];
-  [v11 getOfferExpirationForHandle:v10 groupId:v9 completionHandler:v8];
+  completionCopy = completion;
+  idCopy = id;
+  handleCopy = handle;
+  trampoline = [(FindMyLocateSession *)self trampoline];
+  [trampoline getOfferExpirationForHandle:handleCopy groupId:idCopy completionHandler:completionCopy];
 }
 
 + (BOOL)FMFAllowed
@@ -166,43 +166,43 @@
 + (BOOL)FMFRestricted
 {
   v2 = *MEMORY[0x277D25EA8];
-  v3 = [MEMORY[0x277D262A0] sharedConnection];
-  LOBYTE(v2) = [v3 effectiveBoolValueForSetting:v2] == 2;
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  LOBYTE(v2) = [mEMORY[0x277D262A0] effectiveBoolValueForSetting:v2] == 2;
 
   return v2;
 }
 
 - (id)cachedFriendsFollowingMyLocation
 {
-  v2 = [(FindMyLocateSession *)self trampoline];
-  v3 = [v2 cachedFriendsFollowingMyLocation];
+  trampoline = [(FindMyLocateSession *)self trampoline];
+  cachedFriendsFollowingMyLocation = [trampoline cachedFriendsFollowingMyLocation];
 
-  return v3;
+  return cachedFriendsFollowingMyLocation;
 }
 
 - (id)cachedFriendsSharingLocationsWithMe
 {
-  v2 = [(FindMyLocateSession *)self trampoline];
-  v3 = [v2 cachedFriendsSharingLocationWithMe];
+  trampoline = [(FindMyLocateSession *)self trampoline];
+  cachedFriendsSharingLocationWithMe = [trampoline cachedFriendsSharingLocationWithMe];
 
-  return v3;
+  return cachedFriendsSharingLocationWithMe;
 }
 
-- (id)cachedLocationForHandle:(id)a3
+- (id)cachedLocationForHandle:(id)handle
 {
-  v4 = a3;
-  v5 = [(FindMyLocateSession *)self trampoline];
-  v6 = [v5 cachedLocationFor:v4 includeAddress:1];
+  handleCopy = handle;
+  trampoline = [(FindMyLocateSession *)self trampoline];
+  v6 = [trampoline cachedLocationFor:handleCopy includeAddress:1];
 
   return v6;
 }
 
-- (id)cachedOfferExpirationForHandle:(id)a3 groupId:(id)a4
+- (id)cachedOfferExpirationForHandle:(id)handle groupId:(id)id
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(FindMyLocateSession *)self trampoline];
-  v9 = [v8 cachedOfferExpirationFor:v7 groupId:v6];
+  idCopy = id;
+  handleCopy = handle;
+  trampoline = [(FindMyLocateSession *)self trampoline];
+  v9 = [trampoline cachedOfferExpirationFor:handleCopy groupId:idCopy];
 
   return v9;
 }

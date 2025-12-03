@@ -1,40 +1,40 @@
 @interface DAChangeHistoryClerk
-+ (id)clerkWithAddressBook:(void *)a3;
-+ (id)clerkWithContactStore:(id)a3;
++ (id)clerkWithAddressBook:(void *)book;
++ (id)clerkWithContactStore:(id)store;
 - (id)identifiersOfAllRegisterdClients;
-- (void)registerClientWithIdentifier:(id)a3 forContainer:(id)a4;
-- (void)unregisterClientWithIdentifier:(id)a3 forContainer:(id)a4;
+- (void)registerClientWithIdentifier:(id)identifier forContainer:(id)container;
+- (void)unregisterClientWithIdentifier:(id)identifier forContainer:(id)container;
 @end
 
 @implementation DAChangeHistoryClerk
 
-+ (id)clerkWithContactStore:(id)a3
++ (id)clerkWithContactStore:(id)store
 {
-  v3 = a3;
-  v4 = [[_DAChangeHistoryContactsClerk alloc] initWithContactStore:v3];
+  storeCopy = store;
+  v4 = [[_DAChangeHistoryContactsClerk alloc] initWithContactStore:storeCopy];
 
   return v4;
 }
 
-+ (id)clerkWithAddressBook:(void *)a3
++ (id)clerkWithAddressBook:(void *)book
 {
-  v3 = [[_DAChangeHistoryABLegacyClerk alloc] initWithAddressBook:a3];
+  v3 = [[_DAChangeHistoryABLegacyClerk alloc] initWithAddressBook:book];
 
   return v3;
 }
 
-- (void)unregisterClientWithIdentifier:(id)a3 forContainer:(id)a4
+- (void)unregisterClientWithIdentifier:(id)identifier forContainer:(id)container
 {
-  v5 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  containerCopy = container;
   v7 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE658] reason:@"unregisterClientWithIdentifier: is abstract" userInfo:0];
   objc_exception_throw(v7);
 }
 
-- (void)registerClientWithIdentifier:(id)a3 forContainer:(id)a4
+- (void)registerClientWithIdentifier:(id)identifier forContainer:(id)container
 {
-  v5 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  containerCopy = container;
   v7 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE658] reason:@"registerClientWithIdentifier: is abstract" userInfo:0];
   objc_exception_throw(v7);
 }

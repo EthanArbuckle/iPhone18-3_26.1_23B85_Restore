@@ -1,20 +1,20 @@
 @interface MPSNNCropAndResizeBilinear
 - (MPSNNCropAndResizeBilinear)initWithCoder:(NSCoder *)aDecoder device:(id)device;
 - (MPSNNCropAndResizeBilinear)initWithDevice:(id)device resizeWidth:(NSUInteger)resizeWidth resizeHeight:(NSUInteger)resizeHeight numberOfRegions:(NSUInteger)numberOfRegions regions:(const MPSRegion *)regions;
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4;
+- (id)copyWithZone:(_NSZone *)zone device:(id)device;
 - (id)debugDescription;
-- (id)destinationImageDescriptorForSourceImages:(id)a3 sourceStates:(id)a4 paddingMethod:(unint64_t)a5 sourceOffset:(id *)a6;
+- (id)destinationImageDescriptorForSourceImages:(id)images sourceStates:(id)states paddingMethod:(unint64_t)method sourceOffset:(id *)offset;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MPSNNCropAndResizeBilinear
 
-- (id)destinationImageDescriptorForSourceImages:(id)a3 sourceStates:(id)a4 paddingMethod:(unint64_t)a5 sourceOffset:(id *)a6
+- (id)destinationImageDescriptorForSourceImages:(id)images sourceStates:(id)states paddingMethod:(unint64_t)method sourceOffset:(id *)offset
 {
   v47.receiver = self;
   v47.super_class = MPSNNCropAndResizeBilinear;
-  v7 = [(MPSCNNKernel *)&v47 destinationImageDescriptorForSourceImages:a3 sourceStates:a4 paddingMethod:a5 sourceOffset:a6];
+  v7 = [(MPSCNNKernel *)&v47 destinationImageDescriptorForSourceImages:images sourceStates:states paddingMethod:method sourceOffset:offset];
   objc_msgSend_setWidth_(v7, v8, self->_resizeWidth, v9, v10, v11, v12, v13);
   objc_msgSend_setHeight_(v7, v14, self->_resizeHeight, v15, v16, v17, v18, v19);
   v27 = objc_msgSend_featureChannels(v7, v20, v21, v22, v23, v24, v25, v26) + 3;
@@ -253,23 +253,23 @@ LABEL_13:
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + *MEMORY[0x277CD7358] + 2) = 1;
   v24.receiver = self;
   v24.super_class = MPSNNCropAndResizeBilinear;
   [(MPSCNNKernel *)&v24 encodeWithCoder:?];
-  objc_msgSend_encodeInt64_forKey_(a3, v5, self->_resizeWidth, @"MPSNNCropAndResizeBilinear.resizeWidth", v6, v7, v8, v9);
-  objc_msgSend_encodeInt64_forKey_(a3, v10, self->_resizeHeight, @"MPSNNCropAndResizeBilinear.resizeHeight", v11, v12, v13, v14);
-  objc_msgSend_encodeInt64_forKey_(a3, v15, self->_numberOfRegions, @"MPSNNCropAndResizeBilinear.numberOfRegions", v16, v17, v18, v19);
-  objc_msgSend_encodeBytes_length_forKey_(a3, v20, self->_regions, 48 * self->_numberOfRegions, @"MPSNNCropAndResizeBilinear.regions", v21, v22, v23);
+  objc_msgSend_encodeInt64_forKey_(coder, v5, self->_resizeWidth, @"MPSNNCropAndResizeBilinear.resizeWidth", v6, v7, v8, v9);
+  objc_msgSend_encodeInt64_forKey_(coder, v10, self->_resizeHeight, @"MPSNNCropAndResizeBilinear.resizeHeight", v11, v12, v13, v14);
+  objc_msgSend_encodeInt64_forKey_(coder, v15, self->_numberOfRegions, @"MPSNNCropAndResizeBilinear.numberOfRegions", v16, v17, v18, v19);
+  objc_msgSend_encodeBytes_length_forKey_(coder, v20, self->_regions, 48 * self->_numberOfRegions, @"MPSNNCropAndResizeBilinear.regions", v21, v22, v23);
 }
 
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4
+- (id)copyWithZone:(_NSZone *)zone device:(id)device
 {
   v18.receiver = self;
   v18.super_class = MPSNNCropAndResizeBilinear;
-  result = [(MPSCNNKernel *)&v18 copyWithZone:a3 device:a4];
+  result = [(MPSCNNKernel *)&v18 copyWithZone:zone device:device];
   if (result)
   {
     *(result + 41) = self->_resizeWidth;

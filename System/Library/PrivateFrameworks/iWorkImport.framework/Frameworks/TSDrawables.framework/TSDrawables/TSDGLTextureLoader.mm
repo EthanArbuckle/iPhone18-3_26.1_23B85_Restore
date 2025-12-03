@@ -1,27 +1,27 @@
 @interface TSDGLTextureLoader
-+ (id)p_textureInfoFromCGImage:(CGImage *)a3 generateMipmaps:(BOOL)a4;
-+ (id)textureWithContentsOfFile:(id)a3 generateMipmaps:(BOOL)a4 error:(id *)a5;
++ (id)p_textureInfoFromCGImage:(CGImage *)image generateMipmaps:(BOOL)mipmaps;
++ (id)textureWithContentsOfFile:(id)file generateMipmaps:(BOOL)mipmaps error:(id *)error;
 @end
 
 @implementation TSDGLTextureLoader
 
-+ (id)p_textureInfoFromCGImage:(CGImage *)a3 generateMipmaps:(BOOL)a4
++ (id)p_textureInfoFromCGImage:(CGImage *)image generateMipmaps:(BOOL)mipmaps
 {
   textures = 0;
-  if (!a3)
+  if (!image)
   {
-    v4 = 0;
+    mipmapsCopy = 0;
     v17 = 0;
     Height = 0;
     Width = 0;
 LABEL_12:
     v18 = [TSDGLTextureInfo alloc];
-    return objc_msgSend_initWithName_target_width_height_containsMipmaps_(v18, v19, textures, v17, Width, Height, v4);
+    return objc_msgSend_initWithName_target_width_height_containsMipmaps_(v18, v19, textures, v17, Width, Height, mipmapsCopy);
   }
 
-  v4 = a4;
-  Width = CGImageGetWidth(a3);
-  Height = CGImageGetHeight(a3);
+  mipmapsCopy = mipmaps;
+  Width = CGImageGetWidth(image);
+  Height = CGImageGetHeight(image);
   result = 0;
   if (Width && Height)
   {
@@ -35,7 +35,7 @@ LABEL_12:
       if (!(Height >> 31))
       {
         pixels = malloc_type_malloc(4 * Width * Height, 0x100004077774924uLL);
-        ColorSpace = CGImageGetColorSpace(a3);
+        ColorSpace = CGImageGetColorSpace(image);
         v11 = CGBitmapContextCreate(pixels, Width, Height, 8uLL, 4 * Width, ColorSpace, 1u);
         if (v11)
         {
@@ -52,7 +52,7 @@ LABEL_12:
           v22.origin.y = y;
           v22.size.width = v15;
           v22.size.height = v16;
-          CGContextDrawImage(v12, v22, a3);
+          CGContextDrawImage(v12, v22, image);
           CGContextRelease(v12);
           glGenTextures(1, &textures);
           glBindTexture(0xDE1u, textures);
@@ -62,7 +62,7 @@ LABEL_12:
           glTexParameteri(0xDE1u, 0x2803u, 33071);
           glTexImage2D(0xDE1u, 0, 6408, Width, Height, 0, 0x1908u, 0x1401u, pixels);
           free(pixels);
-          if (v4)
+          if (mipmapsCopy)
           {
             glGenerateMipmap(0xDE1u);
           }
@@ -73,7 +73,7 @@ LABEL_12:
 
         else
         {
-          v4 = 0;
+          mipmapsCopy = 0;
           v17 = 0;
         }
 
@@ -89,12 +89,12 @@ LABEL_12:
   return result;
 }
 
-+ (id)textureWithContentsOfFile:(id)a3 generateMipmaps:(BOOL)a4 error:(id *)a5
++ (id)textureWithContentsOfFile:(id)file generateMipmaps:(BOOL)mipmaps error:(id *)error
 {
-  v6 = objc_msgSend_imageWithContentsOfFile_(MEMORY[0x277D811F8], a2, a3, a4, a5);
+  v6 = objc_msgSend_imageWithContentsOfFile_(MEMORY[0x277D811F8], a2, file, mipmaps, error);
   v9 = objc_msgSend_CGImage(v6, v7, v8);
 
-  return MEMORY[0x2821F9670](a1, sel_p_textureInfoFromCGImage_generateMipmaps_, v9);
+  return MEMORY[0x2821F9670](self, sel_p_textureInfoFromCGImage_generateMipmaps_, v9);
 }
 
 @end

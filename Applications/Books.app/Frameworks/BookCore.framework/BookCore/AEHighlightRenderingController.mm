@@ -1,21 +1,21 @@
 @interface AEHighlightRenderingController
-+ (CGRect)p_currentLineRectForLine:(id)a3 ofHighlight:(id)a4;
-+ (CGRect)p_fullLineRectForLine:(id)a3 ofHighlight:(id)a4;
-+ (UIEdgeInsets)highlightInsets:(BOOL)a3;
-+ (UIEdgeInsets)insetsForHighlight:(id)a3;
-+ (UIEdgeInsets)insetsForHighlight:(id)a3 lineRect:(CGRect)a4 numberOfLines:(unint64_t)a5;
++ (CGRect)p_currentLineRectForLine:(id)line ofHighlight:(id)highlight;
++ (CGRect)p_fullLineRectForLine:(id)line ofHighlight:(id)highlight;
++ (UIEdgeInsets)highlightInsets:(BOOL)insets;
++ (UIEdgeInsets)insetsForHighlight:(id)highlight;
++ (UIEdgeInsets)insetsForHighlight:(id)highlight lineRect:(CGRect)rect numberOfLines:(unint64_t)lines;
 - (AEHighlightRenderingController)init;
-- (BOOL)layer:(id)a3 containsHighlightAtPoint:(CGPoint)a4;
-- (id)annotationUuidForHighlightLayer:(id)a3;
+- (BOOL)layer:(id)layer containsHighlightAtPoint:(CGPoint)point;
+- (id)annotationUuidForHighlightLayer:(id)layer;
 - (id)highlightLayers;
-- (id)highlightWithData:(id)a3;
-- (id)p_highlightForContainerLayer:(id)a3;
-- (id)p_lineRectsForHighlight:(id)a3;
-- (void)addHighlight:(id)a3 forData:(id)a4;
-- (void)p_renderLinesForHighlight:(id)a3 intoContainerLayer:(id)a4;
+- (id)highlightWithData:(id)data;
+- (id)p_highlightForContainerLayer:(id)layer;
+- (id)p_lineRectsForHighlight:(id)highlight;
+- (void)addHighlight:(id)highlight forData:(id)data;
+- (void)p_renderLinesForHighlight:(id)highlight intoContainerLayer:(id)layer;
 - (void)removeAll;
-- (void)removeHighlightForData:(id)a3;
-- (void)updatedHighlight:(id)a3 forceRerender:(BOOL)a4;
+- (void)removeHighlightForData:(id)data;
+- (void)updatedHighlight:(id)highlight forceRerender:(BOOL)rerender;
 @end
 
 @implementation AEHighlightRenderingController
@@ -39,16 +39,16 @@
   return v2;
 }
 
-- (id)highlightWithData:(id)a3
+- (id)highlightWithData:(id)data
 {
-  v4 = a3;
-  v5 = [(AEHighlightRenderingController *)self dataHighlights];
-  v6 = [v5 objectForKey:v4];
+  dataCopy = data;
+  dataHighlights = [(AEHighlightRenderingController *)self dataHighlights];
+  v6 = [dataHighlights objectForKey:dataCopy];
 
   return v6;
 }
 
-+ (UIEdgeInsets)highlightInsets:(BOOL)a3
++ (UIEdgeInsets)highlightInsets:(BOOL)insets
 {
   v3 = 0.0;
   v4 = 0.0;
@@ -61,10 +61,10 @@
   return result;
 }
 
-+ (UIEdgeInsets)insetsForHighlight:(id)a3
++ (UIEdgeInsets)insetsForHighlight:(id)highlight
 {
-  v4 = [a3 annotation];
-  [a1 highlightInsets:{objc_msgSend(v4, "annotationIsUnderline")}];
+  annotation = [highlight annotation];
+  [self highlightInsets:{objc_msgSend(annotation, "annotationIsUnderline")}];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -81,17 +81,17 @@
   return result;
 }
 
-+ (UIEdgeInsets)insetsForHighlight:(id)a3 lineRect:(CGRect)a4 numberOfLines:(unint64_t)a5
++ (UIEdgeInsets)insetsForHighlight:(id)highlight lineRect:(CGRect)rect numberOfLines:(unint64_t)lines
 {
-  v5 = a3;
-  [AEHighlightRenderingController insetsForHighlight:v5];
+  highlightCopy = highlight;
+  [AEHighlightRenderingController insetsForHighlight:highlightCopy];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  v14 = [v5 vertical];
+  vertical = [highlightCopy vertical];
 
-  if (v14)
+  if (vertical)
   {
     v15 = v7;
   }
@@ -101,7 +101,7 @@
     v15 = v13;
   }
 
-  if (v14)
+  if (vertical)
   {
     v16 = v9;
   }
@@ -111,7 +111,7 @@
     v16 = v11;
   }
 
-  if (v14)
+  if (vertical)
   {
     v17 = v11;
   }
@@ -121,7 +121,7 @@
     v17 = v9;
   }
 
-  if (v14)
+  if (vertical)
   {
     v18 = v13;
   }
@@ -138,20 +138,20 @@
   return result;
 }
 
-+ (CGRect)p_currentLineRectForLine:(id)a3 ofHighlight:(id)a4
++ (CGRect)p_currentLineRectForLine:(id)line ofHighlight:(id)highlight
 {
-  v6 = a4;
-  v7 = a3;
-  [v7 currentLineRect];
+  highlightCopy = highlight;
+  lineCopy = line;
+  [lineCopy currentLineRect];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
-  v16 = [v7 includesCapSpace];
+  includesCapSpace = [lineCopy includesCapSpace];
 
-  if ((v16 & 1) == 0)
+  if ((includesCapSpace & 1) == 0)
   {
-    [a1 insetsForHighlight:v6];
+    [self insetsForHighlight:highlightCopy];
     v9 = v9 + v17;
     v11 = v11 + v18;
     v13 = v13 - (v17 + v19);
@@ -169,20 +169,20 @@
   return result;
 }
 
-+ (CGRect)p_fullLineRectForLine:(id)a3 ofHighlight:(id)a4
++ (CGRect)p_fullLineRectForLine:(id)line ofHighlight:(id)highlight
 {
-  v6 = a4;
-  v7 = a3;
-  [v7 fullLineRect];
+  highlightCopy = highlight;
+  lineCopy = line;
+  [lineCopy fullLineRect];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
-  v16 = [v7 includesCapSpace];
+  includesCapSpace = [lineCopy includesCapSpace];
 
-  if ((v16 & 1) == 0)
+  if ((includesCapSpace & 1) == 0)
   {
-    [a1 insetsForHighlight:v6];
+    [self insetsForHighlight:highlightCopy];
     v9 = v9 + v17;
     v11 = v11 + v18;
     v13 = v13 - (v17 + v19);
@@ -200,16 +200,16 @@
   return result;
 }
 
-- (id)p_lineRectsForHighlight:(id)a3
+- (id)p_lineRectsForHighlight:(id)highlight
 {
-  v3 = a3;
-  v4 = [v3 lines];
-  v5 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v4 count]);
+  highlightCopy = highlight;
+  lines = [highlightCopy lines];
+  v5 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [lines count]);
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = v4;
+  v6 = lines;
   v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
@@ -224,7 +224,7 @@
           objc_enumerationMutation(v6);
         }
 
-        [objc_opt_class() p_currentLineRectForLine:*(*(&v13 + 1) + 8 * i) ofHighlight:{v3, v13}];
+        [objc_opt_class() p_currentLineRectForLine:*(*(&v13 + 1) + 8 * i) ofHighlight:{highlightCopy, v13}];
         v11 = [NSValue valueWithCGRect:?];
         [v5 addObject:v11];
       }
@@ -238,27 +238,27 @@
   return v5;
 }
 
-- (void)p_renderLinesForHighlight:(id)a3 intoContainerLayer:(id)a4
+- (void)p_renderLinesForHighlight:(id)highlight intoContainerLayer:(id)layer
 {
-  v6 = a3;
-  v7 = a4;
+  highlightCopy = highlight;
+  layerCopy = layer;
   +[CATransaction begin];
   [CATransaction setDisableActions:1];
-  v8 = [(AEHighlightRenderingController *)self p_lineRectsForHighlight:v6];
-  v9 = [v6 annotation];
-  v69 = [v9 annotationIsUnderline];
+  v8 = [(AEHighlightRenderingController *)self p_lineRectsForHighlight:highlightCopy];
+  annotation = [highlightCopy annotation];
+  annotationIsUnderline = [annotation annotationIsUnderline];
 
   if ([(AEHighlightRenderingController *)self canUseFilters])
   {
-    v10 = [(AEHighlightRenderingController *)self annotationBlendMode];
+    annotationBlendMode = [(AEHighlightRenderingController *)self annotationBlendMode];
   }
 
   else
   {
-    v10 = 0;
+    annotationBlendMode = 0;
   }
 
-  [v7 setBlendMode:v10];
+  [layerCopy setBlendMode:annotationBlendMode];
   x = CGRectNull.origin.x;
   y = CGRectNull.origin.y;
   width = CGRectNull.size.width;
@@ -315,7 +315,7 @@
   v88.origin.y = y;
   v88.size.width = width;
   v88.size.height = height;
-  v67 = self;
+  selfCopy = self;
   if (CGRectIsNull(v88))
   {
     x = CGRectZero.origin.x;
@@ -324,16 +324,16 @@
     height = CGRectZero.size.height;
   }
 
-  v68 = v7;
-  [v7 setFrame:{x, y, width, height}];
+  v68 = layerCopy;
+  [layerCopy setFrame:{x, y, width, height}];
   Mutable = CGPathCreateMutable();
   CGPathMoveToPoint(Mutable, 0, 0.0, 0.0);
   v76 = 0u;
   v77 = 0u;
   v74 = 0u;
   v75 = 0u;
-  v25 = [v6 lines];
-  v26 = [v25 countByEnumeratingWithState:&v74 objects:v83 count:16];
+  lines = [highlightCopy lines];
+  v26 = [lines countByEnumeratingWithState:&v74 objects:v83 count:16];
   if (v26)
   {
     v27 = v26;
@@ -345,7 +345,7 @@
       {
         if (*v75 != v29)
         {
-          objc_enumerationMutation(v25);
+          objc_enumerationMutation(lines);
         }
 
         v31 = *(*(&v74 + 1) + 8 * j);
@@ -365,10 +365,10 @@
           CGPointSubtract();
           v42 = v41;
           v44 = v43;
-          if (v69)
+          if (annotationIsUnderline)
           {
-            v45 = [v31 underlineDirection];
-            if (v45 == 2)
+            underlineDirection = [v31 underlineDirection];
+            if (underlineDirection == 2)
             {
               v91.origin.x = v42;
               v91.origin.y = v44;
@@ -379,9 +379,9 @@
 
             else
             {
-              if (v45 != 1)
+              if (underlineDirection != 1)
               {
-                if (!v45)
+                if (!underlineDirection)
                 {
                   v90.origin.x = v42;
                   v90.origin.y = v44;
@@ -401,7 +401,7 @@
           }
 
 LABEL_29:
-          [v6 cornerRadius];
+          [highlightCopy cornerRadius];
           if (v46 <= 0.0)
           {
             v92.origin.x = v42;
@@ -413,7 +413,7 @@ LABEL_29:
 
           else
           {
-            [v6 cornerRadius];
+            [highlightCopy cornerRadius];
             v48 = [UIBezierPath bezierPathWithRoundedRect:v42 cornerRadius:v44, v38, v40, v47];
             CGPathAddPath(Mutable, 0, [v48 CGPath]);
           }
@@ -422,7 +422,7 @@ LABEL_29:
         ++v28;
       }
 
-      v27 = [v25 countByEnumeratingWithState:&v74 objects:v83 count:16];
+      v27 = [lines countByEnumeratingWithState:&v74 objects:v83 count:16];
     }
 
     while (v27);
@@ -432,11 +432,11 @@ LABEL_29:
   v73 = 0u;
   v70 = 0u;
   v71 = 0u;
-  v49 = [v68 sublayers];
-  v50 = [v49 copy];
+  sublayers = [v68 sublayers];
+  v50 = [sublayers copy];
 
   v51 = [v50 countByEnumeratingWithState:&v70 objects:v82 count:16];
-  v52 = v67;
+  v52 = selfCopy;
   if (v51)
   {
     v53 = v51;
@@ -459,21 +459,21 @@ LABEL_29:
     while (v53);
   }
 
-  v56 = [v6 annotation];
-  v57 = +[AEAnnotationTheme themeForAnnotationStyle:pageTheme:isUnderline:](AEAnnotationTheme, "themeForAnnotationStyle:pageTheme:isUnderline:", [v56 annotationStyle], -[AEHighlightRenderingController pageTheme](v67, "pageTheme"), v69);
+  annotation2 = [highlightCopy annotation];
+  v57 = +[AEAnnotationTheme themeForAnnotationStyle:pageTheme:isUnderline:](AEAnnotationTheme, "themeForAnnotationStyle:pageTheme:isUnderline:", [annotation2 annotationStyle], -[AEHighlightRenderingController pageTheme](selfCopy, "pageTheme"), annotationIsUnderline);
 
-  v58 = [v57 highlightColor];
-  if ([(AEHighlightRenderingController *)v67 pageTheme]!= &dword_0 + 3)
+  highlightColor = [v57 highlightColor];
+  if ([(AEHighlightRenderingController *)selfCopy pageTheme]!= &dword_0 + 3)
   {
-    v59 = [v58 bkaxAdjustedDarkerForIncreaseContrast];
+    bkaxAdjustedDarkerForIncreaseContrast = [highlightColor bkaxAdjustedDarkerForIncreaseContrast];
 
-    v58 = v59;
+    highlightColor = bkaxAdjustedDarkerForIncreaseContrast;
   }
 
-  [AEAnnotationTheme highlightOpacityForPageTheme:[(AEHighlightRenderingController *)v67 pageTheme]];
-  v60 = [v58 colorWithAlphaComponent:?];
+  [AEAnnotationTheme highlightOpacityForPageTheme:[(AEHighlightRenderingController *)selfCopy pageTheme]];
+  v60 = [highlightColor colorWithAlphaComponent:?];
 
-  if ([(AEHighlightRenderingController *)v67 drawSpecialGrayHighlights]&& [(AEHighlightRenderingController *)v67 pageTheme]== &dword_0 + 2)
+  if ([(AEHighlightRenderingController *)selfCopy drawSpecialGrayHighlights]&& [(AEHighlightRenderingController *)selfCopy pageTheme]== &dword_0 + 2)
   {
     v61 = +[CAShapeLayer layer];
     v62 = +[UIColor blackColor];
@@ -495,7 +495,7 @@ LABEL_29:
     [v64 setPath:Mutable];
     [v68 addSublayer:v64];
 
-    v52 = v67;
+    v52 = selfCopy;
   }
 
   else
@@ -506,55 +506,55 @@ LABEL_29:
   [v68 setPath:Mutable];
   CGPathRelease(Mutable);
   [v68 setHidden:0];
-  v65 = [NSValue valueWithCGRect:x, y, width, height];
-  [v68 setValue:v65 forKey:@"kAEHighlightLayerCurrentRectKey"];
+  height = [NSValue valueWithCGRect:x, y, width, height];
+  [v68 setValue:height forKey:@"kAEHighlightLayerCurrentRectKey"];
 
-  v66 = [(AEHighlightRenderingController *)v52 containerLayers];
-  [v66 setObject:v68 forKey:v6];
+  containerLayers = [(AEHighlightRenderingController *)v52 containerLayers];
+  [containerLayers setObject:v68 forKey:highlightCopy];
 
   +[CATransaction commit];
 }
 
-- (void)addHighlight:(id)a3 forData:(id)a4
+- (void)addHighlight:(id)highlight forData:(id)data
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(AEHighlightRenderingController *)self dataHighlights];
-  [v8 setObject:v7 forKey:v6];
+  dataCopy = data;
+  highlightCopy = highlight;
+  dataHighlights = [(AEHighlightRenderingController *)self dataHighlights];
+  [dataHighlights setObject:highlightCopy forKey:dataCopy];
 
   v9 = +[AEHighlightContainerLayer layer];
-  [(AEHighlightRenderingController *)self p_renderLinesForHighlight:v7 intoContainerLayer:v9];
+  [(AEHighlightRenderingController *)self p_renderLinesForHighlight:highlightCopy intoContainerLayer:v9];
 }
 
-- (void)removeHighlightForData:(id)a3
+- (void)removeHighlightForData:(id)data
 {
-  v10 = a3;
-  v4 = [(AEHighlightRenderingController *)self dataHighlights];
-  v5 = [v4 objectForKey:v10];
+  dataCopy = data;
+  dataHighlights = [(AEHighlightRenderingController *)self dataHighlights];
+  v5 = [dataHighlights objectForKey:dataCopy];
 
   if (v5)
   {
-    v6 = [(AEHighlightRenderingController *)self containerLayers];
-    v7 = [v6 objectForKey:v5];
+    containerLayers = [(AEHighlightRenderingController *)self containerLayers];
+    v7 = [containerLayers objectForKey:v5];
 
-    v8 = [(AEHighlightRenderingController *)self containerLayers];
-    [v8 removeObjectForKey:v5];
+    containerLayers2 = [(AEHighlightRenderingController *)self containerLayers];
+    [containerLayers2 removeObjectForKey:v5];
 
     [v7 removeFromSuperlayer];
-    v9 = [(AEHighlightRenderingController *)self dataHighlights];
-    [v9 removeObjectForKey:v10];
+    dataHighlights2 = [(AEHighlightRenderingController *)self dataHighlights];
+    [dataHighlights2 removeObjectForKey:dataCopy];
   }
 }
 
 - (void)removeAll
 {
-  v3 = [(AEHighlightRenderingController *)self dataHighlights];
-  v4 = [v3 count];
+  dataHighlights = [(AEHighlightRenderingController *)self dataHighlights];
+  v4 = [dataHighlights count];
 
   if (v4)
   {
-    v5 = [(AEHighlightRenderingController *)self dataHighlights];
-    v6 = NSAllMapTableKeys(v5);
+    dataHighlights2 = [(AEHighlightRenderingController *)self dataHighlights];
+    v6 = NSAllMapTableKeys(dataHighlights2);
     v7 = [v6 copy];
 
     v15 = 0u;
@@ -590,14 +590,14 @@ LABEL_29:
   }
 }
 
-- (void)updatedHighlight:(id)a3 forceRerender:(BOOL)a4
+- (void)updatedHighlight:(id)highlight forceRerender:(BOOL)rerender
 {
-  v5 = a3;
-  if (v5)
+  highlightCopy = highlight;
+  if (highlightCopy)
   {
-    v8 = v5;
-    v6 = [(AEHighlightRenderingController *)self containerLayers];
-    v7 = [v6 objectForKey:v8];
+    v8 = highlightCopy;
+    containerLayers = [(AEHighlightRenderingController *)self containerLayers];
+    v7 = [containerLayers objectForKey:v8];
 
     if (!v7)
     {
@@ -607,16 +607,16 @@ LABEL_29:
     [(AEHighlightRenderingController *)self p_renderLinesForHighlight:v8 intoContainerLayer:v7];
   }
 
-  _objc_release_x1(v5);
+  _objc_release_x1(highlightCopy);
 }
 
 - (id)highlightLayers
 {
   v3 = +[NSMutableArray array];
-  v4 = [(AEHighlightRenderingController *)self dataHighlights];
-  v5 = [v4 objectEnumerator];
-  v6 = [v5 allObjects];
-  v7 = [(AEHighlightRenderingController *)self p_orderHighlights:v6];
+  dataHighlights = [(AEHighlightRenderingController *)self dataHighlights];
+  objectEnumerator = [dataHighlights objectEnumerator];
+  allObjects = [objectEnumerator allObjects];
+  v7 = [(AEHighlightRenderingController *)self p_orderHighlights:allObjects];
 
   v28 = 0u;
   v29 = 0u;
@@ -639,8 +639,8 @@ LABEL_29:
         }
 
         v13 = *(*(&v26 + 1) + 8 * v12);
-        v14 = [(AEHighlightRenderingController *)self containerLayers];
-        v15 = [v14 objectForKey:v13];
+        containerLayers = [(AEHighlightRenderingController *)self containerLayers];
+        v15 = [containerLayers objectForKey:v13];
 
         if (v15)
         {
@@ -666,17 +666,17 @@ LABEL_29:
   return v3;
 }
 
-- (id)p_highlightForContainerLayer:(id)a3
+- (id)p_highlightForContainerLayer:(id)layer
 {
-  v4 = a3;
+  layerCopy = layer;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = [(AEHighlightRenderingController *)self containerLayers];
-  v6 = [v5 keyEnumerator];
+  containerLayers = [(AEHighlightRenderingController *)self containerLayers];
+  keyEnumerator = [containerLayers keyEnumerator];
 
-  v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v7 = [keyEnumerator countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
     v8 = v7;
@@ -687,14 +687,14 @@ LABEL_29:
       {
         if (*v17 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(keyEnumerator);
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
-        v12 = [(AEHighlightRenderingController *)self containerLayers];
-        v13 = [v12 objectForKey:v11];
+        containerLayers2 = [(AEHighlightRenderingController *)self containerLayers];
+        v13 = [containerLayers2 objectForKey:v11];
 
-        if (v13 == v4)
+        if (v13 == layerCopy)
         {
           v14 = v11;
 
@@ -702,7 +702,7 @@ LABEL_29:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v8 = [keyEnumerator countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v8)
       {
         continue;
@@ -718,20 +718,20 @@ LABEL_11:
   return v14;
 }
 
-- (id)annotationUuidForHighlightLayer:(id)a3
+- (id)annotationUuidForHighlightLayer:(id)layer
 {
-  v3 = [(AEHighlightRenderingController *)self p_highlightForContainerLayer:a3];
-  v4 = [v3 annotation];
-  v5 = [v4 annotationUuid];
+  v3 = [(AEHighlightRenderingController *)self p_highlightForContainerLayer:layer];
+  annotation = [v3 annotation];
+  annotationUuid = [annotation annotationUuid];
 
-  return v5;
+  return annotationUuid;
 }
 
-- (BOOL)layer:(id)a3 containsHighlightAtPoint:(CGPoint)a4
+- (BOOL)layer:(id)layer containsHighlightAtPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = a3;
+  y = point.y;
+  x = point.x;
+  layerCopy = layer;
   objc_opt_class();
   v15 = BUDynamicCast();
   if (!v15)
@@ -739,29 +739,29 @@ LABEL_11:
     sub_1E868C(0, v8, v9, v10, v11, v12, v13, v14);
   }
 
-  v19 = [(AEHighlightRenderingController *)self p_highlightForContainerLayer:v7];
+  v19 = [(AEHighlightRenderingController *)self p_highlightForContainerLayer:layerCopy];
   if (!v19)
   {
     BCReportAssertionFailureWithMessage("/Library/Caches/com.apple.xbs/Sources/Alder/frameworks/BookCore/BookCore/AssetsEngine/AECore/Annotations/AEHighlightRenderingController.m", 434, "[AEHighlightRenderingController layer:containsHighlightAtPoint:]", "highlight", 0, v16, v17, v18, v34);
-    v32 = [v7 containsPoint:{x, y}];
+    v32 = [layerCopy containsPoint:{x, y}];
     goto LABEL_17;
   }
 
-  if (![v7 containsPoint:{x, y}])
+  if (![layerCopy containsPoint:{x, y}])
   {
     LOBYTE(v24) = 0;
     goto LABEL_20;
   }
 
-  v20 = [v19 annotation];
-  v21 = [v20 annotationIsUnderline];
+  annotation = [v19 annotation];
+  annotationIsUnderline = [annotation annotationIsUnderline];
 
-  if (!v21)
+  if (!annotationIsUnderline)
   {
-    v31 = [v15 path];
+    path = [v15 path];
     v39.x = x;
     v39.y = y;
-    v32 = CGPathContainsPoint(v31, 0, v39, 0);
+    v32 = CGPathContainsPoint(path, 0, v39, 0);
 LABEL_17:
     LOBYTE(v24) = v32;
     goto LABEL_20;

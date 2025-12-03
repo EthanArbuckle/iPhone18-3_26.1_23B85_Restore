@@ -1,16 +1,16 @@
 @interface VLFilesystemDataProvider
-- (VLFilesystemDataProvider)initWithBaseDirectory:(id)a3;
+- (VLFilesystemDataProvider)initWithBaseDirectory:(id)directory;
 - (VLLocalizationDataProviderDelegate)delegate;
-- (id)fileURLForKey:(id *)a3 error:(id *)a4;
-- (void)determineAvailabilityForCoordinate:(id *)a3 horizontalAccuracy:(double)a4 purpose:(int64_t)a5 callbackQueue:(id)a6 callback:(id)a7;
+- (id)fileURLForKey:(id *)key error:(id *)error;
+- (void)determineAvailabilityForCoordinate:(id *)coordinate horizontalAccuracy:(double)accuracy purpose:(int64_t)purpose callbackQueue:(id)queue callback:(id)callback;
 @end
 
 @implementation VLFilesystemDataProvider
 
-- (VLFilesystemDataProvider)initWithBaseDirectory:(id)a3
+- (VLFilesystemDataProvider)initWithBaseDirectory:(id)directory
 {
-  v5 = a3;
-  if (([v5 isFileURL] & 1) == 0)
+  directoryCopy = directory;
+  if (([directoryCopy isFileURL] & 1) == 0)
   {
     v10 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE660] reason:@"directoryURL must be a file URL" userInfo:0];
     objc_exception_throw(v10);
@@ -22,32 +22,32 @@
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_baseDirectory, a3);
+    objc_storeStrong(&v6->_baseDirectory, directory);
     v8 = v7;
   }
 
   return v7;
 }
 
-- (id)fileURLForKey:(id *)a3 error:(id *)a4
+- (id)fileURLForKey:(id *)key error:(id *)error
 {
   baseDirectory = self->_baseDirectory;
-  v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%i/%i/%i/tracks_%i.vtrk", a3->var0, a3->var1, a3->var2, a3->var3];
+  v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%i/%i/%i/tracks_%i.vtrk", key->var0, key->var1, key->var2, key->var3];
   v7 = [(NSURL *)baseDirectory URLByAppendingPathComponent:v6];
 
-  v8 = [MEMORY[0x277CCAA00] defaultManager];
-  v9 = [v7 path];
-  v10 = [v8 fileExistsAtPath:v9];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  path = [v7 path];
+  v10 = [defaultManager fileExistsAtPath:path];
 
   if (v10)
   {
     v11 = v7;
   }
 
-  else if (a4)
+  else if (error)
   {
     [MEMORY[0x277CCA9B8] errorWithDomain:@"VLLocalizationDataProviderErrorDomain" code:2 userInfo:0];
-    *a4 = v11 = 0;
+    *error = v11 = 0;
   }
 
   else
@@ -58,20 +58,20 @@
   return v11;
 }
 
-- (void)determineAvailabilityForCoordinate:(id *)a3 horizontalAccuracy:(double)a4 purpose:(int64_t)a5 callbackQueue:(id)a6 callback:(id)a7
+- (void)determineAvailabilityForCoordinate:(id *)coordinate horizontalAccuracy:(double)accuracy purpose:(int64_t)purpose callbackQueue:(id)queue callback:(id)callback
 {
-  v10 = a7;
-  v11 = v10;
-  if (v10)
+  callbackCopy = callback;
+  v11 = callbackCopy;
+  if (callbackCopy)
   {
-    v14 = *a3;
+    v14 = *coordinate;
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __113__VLFilesystemDataProvider_determineAvailabilityForCoordinate_horizontalAccuracy_purpose_callbackQueue_callback___block_invoke;
     v12[3] = &unk_279E2DA20;
     v12[4] = self;
-    v13 = v10;
-    dispatch_async(a6, v12);
+    v13 = callbackCopy;
+    dispatch_async(queue, v12);
   }
 }
 

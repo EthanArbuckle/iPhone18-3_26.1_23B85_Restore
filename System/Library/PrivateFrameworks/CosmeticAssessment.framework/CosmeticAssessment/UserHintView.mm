@@ -1,11 +1,11 @@
 @interface UserHintView
-- (_TtC18CosmeticAssessment12UserHintView)initWithCoder:(id)a3;
-- (_TtC18CosmeticAssessment12UserHintView)initWithFrame:(CGRect)a3;
+- (_TtC18CosmeticAssessment12UserHintView)initWithCoder:(id)coder;
+- (_TtC18CosmeticAssessment12UserHintView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation UserHintView
 
-- (_TtC18CosmeticAssessment12UserHintView)initWithCoder:(id)a3
+- (_TtC18CosmeticAssessment12UserHintView)initWithCoder:(id)coder
 {
   sub_247D1FEA8();
   sub_247D1FE98();
@@ -15,11 +15,11 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v4 = a3;
+  coderCopy = coder;
   sub_247CBDCA4();
 }
 
-- (_TtC18CosmeticAssessment12UserHintView)initWithFrame:(CGRect)a3
+- (_TtC18CosmeticAssessment12UserHintView)initWithFrame:(CGRect)frame
 {
   sub_247D1FEA8();
   sub_247D1FE98();

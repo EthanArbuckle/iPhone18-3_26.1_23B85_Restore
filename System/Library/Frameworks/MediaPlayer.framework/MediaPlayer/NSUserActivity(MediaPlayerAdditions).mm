@@ -10,8 +10,8 @@
 - (void)_setExternalMediaContentBundleIdentifier:()MediaPlayerAdditions
 {
   v4 = a3;
-  v5 = [a1 _internalUserActivity];
-  v6 = [v5 objectForIdentifier:@"UAPayloadIdentifierExternalMediaContentBundleIdentifier"];
+  _internalUserActivity = [self _internalUserActivity];
+  v6 = [_internalUserActivity objectForIdentifier:@"UAPayloadIdentifierExternalMediaContentBundleIdentifier"];
   v7 = v6;
   if (v4)
   {
@@ -20,28 +20,28 @@
     v8[2] = __81__NSUserActivity_MediaPlayerAdditions___setExternalMediaContentBundleIdentifier___block_invoke;
     v8[3] = &unk_1E76821F8;
     v9 = v4;
-    [v5 setPayloadIdentifier:@"UAPayloadIdentifierExternalMediaContentBundleIdentifier" object:v9 withBlock:v8];
+    [_internalUserActivity setPayloadIdentifier:@"UAPayloadIdentifierExternalMediaContentBundleIdentifier" object:v9 withBlock:v8];
   }
 
   else if (v6)
   {
-    [v5 setPayloadIdentifier:@"UAPayloadIdentifierExternalMediaContentBundleIdentifier" object:0 withBlock:0];
+    [_internalUserActivity setPayloadIdentifier:@"UAPayloadIdentifierExternalMediaContentBundleIdentifier" object:0 withBlock:0];
   }
 }
 
 - (id)_externalMediaContentBundleIdentifier
 {
-  v1 = [a1 _internalUserActivity];
-  v2 = [v1 objectForIdentifier:@"UAPayloadIdentifierExternalMediaContentBundleIdentifier"];
+  _internalUserActivity = [self _internalUserActivity];
+  v2 = [_internalUserActivity objectForIdentifier:@"UAPayloadIdentifierExternalMediaContentBundleIdentifier"];
   if (!v2)
   {
-    v3 = [v1 payloadForIdentifier:@"UAPayloadIdentifierExternalMediaContentBundleIdentifier"];
+    v3 = [_internalUserActivity payloadForIdentifier:@"UAPayloadIdentifierExternalMediaContentBundleIdentifier"];
     if (v3)
     {
       v2 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:v3 encoding:4];
       if (v2)
       {
-        [v1 setPayload:v3 object:v2 identifier:@"UAPayloadIdentifierExternalMediaContentBundleIdentifier"];
+        [_internalUserActivity setPayload:v3 object:v2 identifier:@"UAPayloadIdentifierExternalMediaContentBundleIdentifier"];
       }
     }
 
@@ -59,8 +59,8 @@
 - (void)setExternalMediaContentIdentifier:()MediaPlayerAdditions
 {
   v4 = a3;
-  v5 = [a1 _internalUserActivity];
-  v6 = [v5 objectForIdentifier:@"UAPayloadIdentifierExternalMediaContentIdentifier"];
+  _internalUserActivity = [self _internalUserActivity];
+  v6 = [_internalUserActivity objectForIdentifier:@"UAPayloadIdentifierExternalMediaContentIdentifier"];
   v7 = v6;
   if (v4)
   {
@@ -69,36 +69,36 @@
     v10[2] = __74__NSUserActivity_MediaPlayerAdditions__setExternalMediaContentIdentifier___block_invoke;
     v10[3] = &unk_1E76821F8;
     v11 = v4;
-    [v5 setPayloadIdentifier:@"UAPayloadIdentifierExternalMediaContentIdentifier" object:v11 withBlock:v10];
+    [_internalUserActivity setPayloadIdentifier:@"UAPayloadIdentifierExternalMediaContentIdentifier" object:v11 withBlock:v10];
   }
 
   else if (v6)
   {
-    [v5 setPayloadIdentifier:@"UAPayloadIdentifierExternalMediaContentIdentifier" object:0 withBlock:0];
+    [_internalUserActivity setPayloadIdentifier:@"UAPayloadIdentifierExternalMediaContentIdentifier" object:0 withBlock:0];
   }
 
-  v8 = [MEMORY[0x1E696AAE8] mainBundle];
-  v9 = [v8 bundleIdentifier];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
 
-  if (v9)
+  if (bundleIdentifier)
   {
-    [a1 _setExternalMediaContentBundleIdentifier:v9];
+    [self _setExternalMediaContentBundleIdentifier:bundleIdentifier];
   }
 }
 
 - (id)externalMediaContentIdentifier
 {
-  v1 = [a1 _internalUserActivity];
-  v2 = [v1 objectForIdentifier:@"UAPayloadIdentifierExternalMediaContentIdentifier"];
+  _internalUserActivity = [self _internalUserActivity];
+  v2 = [_internalUserActivity objectForIdentifier:@"UAPayloadIdentifierExternalMediaContentIdentifier"];
   if (!v2)
   {
-    v3 = [v1 payloadForIdentifier:@"UAPayloadIdentifierExternalMediaContentIdentifier"];
+    v3 = [_internalUserActivity payloadForIdentifier:@"UAPayloadIdentifierExternalMediaContentIdentifier"];
     if (v3)
     {
       v2 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:v3 encoding:4];
       if (v2)
       {
-        [v1 setPayload:v3 object:v2 identifier:@"UAPayloadIdentifierExternalMediaContentIdentifier"];
+        [_internalUserActivity setPayload:v3 object:v2 identifier:@"UAPayloadIdentifierExternalMediaContentIdentifier"];
       }
     }
 

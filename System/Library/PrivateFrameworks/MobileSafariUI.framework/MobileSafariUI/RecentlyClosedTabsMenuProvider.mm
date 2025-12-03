@@ -1,6 +1,6 @@
 @interface RecentlyClosedTabsMenuProvider
 - (RecentlyClosedTabsMenuProvider)init;
-- (id)makeMenuElementsForPersona:(int64_t)a3;
+- (id)makeMenuElementsForPersona:(int64_t)persona;
 @end
 
 @implementation RecentlyClosedTabsMenuProvider
@@ -12,7 +12,7 @@
   return [(RecentlyClosedTabsMenuProvider *)&v3 init];
 }
 
-- (id)makeMenuElementsForPersona:(int64_t)a3
+- (id)makeMenuElementsForPersona:(int64_t)persona
 {
   __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27CA7DCF0);
   v4 = swift_allocObject();
@@ -27,11 +27,11 @@
   v12[2] = sub_2159F92E8;
   v12[3] = &block_descriptor_9;
   v7 = _Block_copy(v12);
-  v8 = self;
+  selfCopy = self;
 
-  v9 = [v5 elementWithUncachedProvider_];
+  elementWithUncachedProvider_ = [v5 elementWithUncachedProvider_];
   _Block_release(v7);
-  *(v4 + 32) = v9;
+  *(v4 + 32) = elementWithUncachedProvider_;
 
   sub_2159F7DA8(0, &unk_2811A25B0);
   v10 = sub_215A705D0();

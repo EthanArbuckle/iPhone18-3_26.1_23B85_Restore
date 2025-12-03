@@ -1,11 +1,11 @@
 @interface SafariCloudBookmarksMigrationCoordinator
 + (id)migrationCoordinator;
 - (BOOL)_evaluateMigrationEnabled;
-- (SafariCloudBookmarksMigrationCoordinator)initWithSyncAgent:(id)a3;
-- (void)_detectedLocalMigrationStateTransition:(id)a3;
+- (SafariCloudBookmarksMigrationCoordinator)initWithSyncAgent:(id)agent;
+- (void)_detectedLocalMigrationStateTransition:(id)transition;
 - (void)dealloc;
-- (void)getLocalMigrationStateForMigrationCoordinator:(id)a3 completionHandler:(id)a4;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)getLocalMigrationStateForMigrationCoordinator:(id)coordinator completionHandler:(id)handler;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation SafariCloudBookmarksMigrationCoordinator
@@ -52,8 +52,8 @@ void __64__SafariCloudBookmarksMigrationCoordinator_migrationCoordinator__block_
 {
   if ([MEMORY[0x277D49A08] hasInternalContent])
   {
-    v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v3 = [v2 integerForKey:*MEMORY[0x277D4A188]];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v3 = [standardUserDefaults integerForKey:*MEMORY[0x277D4A188]];
 
     if (v3 == -1)
     {
@@ -62,26 +62,26 @@ void __64__SafariCloudBookmarksMigrationCoordinator_migrationCoordinator__block_
   }
 
   v4 = +[FeatureManager sharedFeatureManager];
-  v5 = [v4 isCloudKitBookmarksAvailable];
+  isCloudKitBookmarksAvailable = [v4 isCloudKitBookmarksAvailable];
 
-  return v5;
+  return isCloudKitBookmarksAvailable;
 }
 
-- (SafariCloudBookmarksMigrationCoordinator)initWithSyncAgent:(id)a3
+- (SafariCloudBookmarksMigrationCoordinator)initWithSyncAgent:(id)agent
 {
   v11.receiver = self;
   v11.super_class = SafariCloudBookmarksMigrationCoordinator;
-  v3 = [(WBSCloudBookmarksMigrationCoordinator *)&v11 initWithSyncAgent:a3 localDataProvider:self];
+  v3 = [(WBSCloudBookmarksMigrationCoordinator *)&v11 initWithSyncAgent:agent localDataProvider:self];
   v4 = v3;
   if (v3)
   {
     [(WBSCloudBookmarksMigrationCoordinator *)v3 setMigrationEnabled:[(SafariCloudBookmarksMigrationCoordinator *)v3 _evaluateMigrationEnabled]];
-    v5 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    [v5 addObserver:v4 forKeyPath:*MEMORY[0x277D4A188] options:0 context:kvoContext_2];
-    v6 = [MEMORY[0x277CCAB98] defaultCenter];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    [standardUserDefaults addObserver:v4 forKeyPath:*MEMORY[0x277D4A188] options:0 context:kvoContext_2];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v7 = *MEMORY[0x277D7B5F8];
-    v8 = [MEMORY[0x277D7B5A8] mainBookmarkCollection];
-    [v6 addObserver:v4 selector:sel__detectedLocalMigrationStateTransition_ name:v7 object:v8];
+    mainBookmarkCollection = [MEMORY[0x277D7B5A8] mainBookmarkCollection];
+    [defaultCenter addObserver:v4 selector:sel__detectedLocalMigrationStateTransition_ name:v7 object:mainBookmarkCollection];
 
     v9 = v4;
   }
@@ -91,25 +91,25 @@ void __64__SafariCloudBookmarksMigrationCoordinator_migrationCoordinator__block_
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277D7B5F8] object:0];
-  v4 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v4 removeObserver:self forKeyPath:*MEMORY[0x277D4A188] context:kvoContext_2];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D7B5F8] object:0];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults removeObserver:self forKeyPath:*MEMORY[0x277D4A188] context:kvoContext_2];
 
   v5.receiver = self;
   v5.super_class = SafariCloudBookmarksMigrationCoordinator;
   [(SafariCloudBookmarksMigrationCoordinator *)&v5 dealloc];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (kvoContext_2 == a6)
+  if (kvoContext_2 == context)
   {
-    if ([a3 isEqualToString:{*MEMORY[0x277D4A188], a4, a5}])
+    if ([path isEqualToString:{*MEMORY[0x277D4A188], object, change}])
     {
-      v7 = [(SafariCloudBookmarksMigrationCoordinator *)self _evaluateMigrationEnabled];
+      _evaluateMigrationEnabled = [(SafariCloudBookmarksMigrationCoordinator *)self _evaluateMigrationEnabled];
 
-      [(WBSCloudBookmarksMigrationCoordinator *)self setMigrationEnabled:v7];
+      [(WBSCloudBookmarksMigrationCoordinator *)self setMigrationEnabled:_evaluateMigrationEnabled];
     }
   }
 
@@ -117,15 +117,15 @@ void __64__SafariCloudBookmarksMigrationCoordinator_migrationCoordinator__block_
   {
     v8.receiver = self;
     v8.super_class = SafariCloudBookmarksMigrationCoordinator;
-    [(SafariCloudBookmarksMigrationCoordinator *)&v8 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:?];
+    [(SafariCloudBookmarksMigrationCoordinator *)&v8 observeValueForKeyPath:path ofObject:object change:change context:?];
   }
 }
 
-- (void)_detectedLocalMigrationStateTransition:(id)a3
+- (void)_detectedLocalMigrationStateTransition:(id)transition
 {
-  v12 = [a3 userInfo];
-  v4 = [v12 safari_numberForKey:*MEMORY[0x277D7B628]];
-  v5 = [v12 safari_numberForKey:*MEMORY[0x277D7B648]];
+  userInfo = [transition userInfo];
+  v4 = [userInfo safari_numberForKey:*MEMORY[0x277D7B628]];
+  v5 = [userInfo safari_numberForKey:*MEMORY[0x277D7B648]];
   v6 = v5;
   if (v4)
   {
@@ -139,26 +139,26 @@ void __64__SafariCloudBookmarksMigrationCoordinator_migrationCoordinator__block_
 
   if (!v7)
   {
-    v8 = [v4 integerValue];
-    v9 = [v6 integerValue];
-    if ((v8 - 4) >= 0xFFFFFFFFFFFFFFFDLL && v9 == 0)
+    integerValue = [v4 integerValue];
+    integerValue2 = [v6 integerValue];
+    if ((integerValue - 4) >= 0xFFFFFFFFFFFFFFFDLL && integerValue2 == 0)
     {
       [(WBSCloudBookmarksMigrationCoordinator *)self startCoordinatingMigration];
-      v11 = [MEMORY[0x277D7B5A8] safariBookmarkCollection];
-      [v11 _postBookmarksChangedSyncNotification];
+      safariBookmarkCollection = [MEMORY[0x277D7B5A8] safariBookmarkCollection];
+      [safariBookmarkCollection _postBookmarksChangedSyncNotification];
     }
   }
 }
 
-- (void)getLocalMigrationStateForMigrationCoordinator:(id)a3 completionHandler:(id)a4
+- (void)getLocalMigrationStateForMigrationCoordinator:(id)coordinator completionHandler:(id)handler
 {
-  v4 = a4;
+  handlerCopy = handler;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __108__SafariCloudBookmarksMigrationCoordinator_getLocalMigrationStateForMigrationCoordinator_completionHandler___block_invoke;
   block[3] = &unk_2781D4D90;
-  v7 = v4;
-  v5 = v4;
+  v7 = handlerCopy;
+  v5 = handlerCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 

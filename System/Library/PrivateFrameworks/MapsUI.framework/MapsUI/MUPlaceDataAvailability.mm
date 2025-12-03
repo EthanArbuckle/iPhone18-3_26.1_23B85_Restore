@@ -32,7 +32,7 @@
 - (BOOL)supportsReportsInReview;
 - (BOOL)supportsShowingCoordinates;
 - (BOOL)supportsVenueTextInfo;
-- (MUPlaceDataAvailability)initWithMapItem:(id)a3 options:(unint64_t)a4;
+- (MUPlaceDataAvailability)initWithMapItem:(id)item options:(unint64_t)options;
 @end
 
 @implementation MUPlaceDataAvailability
@@ -66,9 +66,9 @@
 
 - (BOOL)supportsHikingTrails
 {
-  v2 = [(MKMapItem *)self->_mapItem _trailHead];
-  v3 = [v2 trails];
-  v4 = v3 != 0;
+  _trailHead = [(MKMapItem *)self->_mapItem _trailHead];
+  trails = [_trailHead trails];
+  v4 = trails != 0;
 
   return v4;
 }
@@ -80,18 +80,18 @@
     return 0;
   }
 
-  v3 = [(MKMapItem *)self->_mapItem _geoMapItem];
-  v4 = [v3 _evCharger];
-  v5 = [v4 plugs];
+  _geoMapItem = [(MKMapItem *)self->_mapItem _geoMapItem];
+  _evCharger = [_geoMapItem _evCharger];
+  plugs = [_evCharger plugs];
 
-  v6 = [v5 count] != 0;
+  v6 = [plugs count] != 0;
   return v6;
 }
 
 - (BOOL)supportsMessagesForBusiness
 {
-  v2 = [(MKMapItem *)self->_mapItem _messageURLString];
-  v3 = [v2 length] != 0;
+  _messageURLString = [(MKMapItem *)self->_mapItem _messageURLString];
+  v3 = [_messageURLString length] != 0;
 
   return v3;
 }
@@ -101,13 +101,13 @@
   IsEnabled_SydneyARP = MapsFeature_IsEnabled_SydneyARP();
   if (IsEnabled_SydneyARP)
   {
-    v4 = [(MKMapItem *)self->_mapItem _geoMapItem];
-    v5 = [v4 _hasUserRatingScore];
+    _geoMapItem = [(MKMapItem *)self->_mapItem _geoMapItem];
+    _hasUserRatingScore = [_geoMapItem _hasUserRatingScore];
 
-    v6 = [(MKMapItem *)self->_mapItem _geoMapItem];
-    v7 = [v6 _hasAppleRatings];
+    _geoMapItem2 = [(MKMapItem *)self->_mapItem _geoMapItem];
+    _hasAppleRatings = [_geoMapItem2 _hasAppleRatings];
 
-    if (!v5 || v7)
+    if (!_hasUserRatingScore || _hasAppleRatings)
     {
       IsEnabled_SydneyARP = [(MUPlaceDataAvailability *)self supportsCallToAction];
       if (IsEnabled_SydneyARP)
@@ -140,9 +140,9 @@
 
 - (BOOL)supportsPlaceEnrichment
 {
-  v3 = [(MKMapItem *)self->_mapItem _enrichmentInfo];
+  _enrichmentInfo = [(MKMapItem *)self->_mapItem _enrichmentInfo];
   result = 0;
-  if (v3)
+  if (_enrichmentInfo)
   {
     placeCardOptions = self->_placeCardOptions;
 
@@ -172,38 +172,38 @@
 
 - (BOOL)supportsPhotoOnlyDataCollection
 {
-  v2 = [(MKMapItem *)self->_mapItem _geoMapItem];
-  v3 = [v2 _placeQuestionnaire];
+  _geoMapItem = [(MKMapItem *)self->_mapItem _geoMapItem];
+  _placeQuestionnaire = [_geoMapItem _placeQuestionnaire];
 
-  if ([v3 canCollectRatings])
+  if ([_placeQuestionnaire canCollectRatings])
   {
-    v4 = 0;
+    canCollectPhotos = 0;
   }
 
   else
   {
-    v4 = [v3 canCollectPhotos];
+    canCollectPhotos = [_placeQuestionnaire canCollectPhotos];
   }
 
-  return v4;
+  return canCollectPhotos;
 }
 
 - (BOOL)supportsPlaceDescription
 {
-  v2 = [(MKMapItem *)self->_mapItem _geoMapItem];
-  v3 = [v2 _hasPlaceDescription];
+  _geoMapItem = [(MKMapItem *)self->_mapItem _geoMapItem];
+  _hasPlaceDescription = [_geoMapItem _hasPlaceDescription];
 
-  return v3;
+  return _hasPlaceDescription;
 }
 
 - (BOOL)supportsMessageHours
 {
   v2 = self->_mapItem;
-  v3 = [(MKMapItem *)v2 _geoMapItem];
-  v4 = [v3 _messageLink];
-  v5 = [v4 timeZone];
+  _geoMapItem = [(MKMapItem *)v2 _geoMapItem];
+  _messageLink = [_geoMapItem _messageLink];
+  timeZone = [_messageLink timeZone];
 
-  if (!v5)
+  if (!timeZone)
   {
     goto LABEL_6;
   }
@@ -213,18 +213,18 @@
     goto LABEL_6;
   }
 
-  v6 = [(MKMapItem *)v2 _messageBusinessHours];
-  if (!v6)
+  _messageBusinessHours = [(MKMapItem *)v2 _messageBusinessHours];
+  if (!_messageBusinessHours)
   {
     goto LABEL_6;
   }
 
-  v7 = v6;
-  v8 = [(MKMapItem *)v2 _geoMapItem];
-  v9 = [v8 _messageLink];
-  v10 = [v9 timeZone];
+  v7 = _messageBusinessHours;
+  _geoMapItem2 = [(MKMapItem *)v2 _geoMapItem];
+  _messageLink2 = [_geoMapItem2 _messageLink];
+  timeZone2 = [_messageLink2 timeZone];
 
-  if (v10)
+  if (timeZone2)
   {
     v11 = 1;
   }
@@ -241,27 +241,27 @@ LABEL_6:
 - (BOOL)supportsShowingCoordinates
 {
   v2 = self->_mapItem;
-  v3 = [(MKMapItem *)v2 _geoMapItem];
-  v4 = [v3 _placeType];
+  _geoMapItem = [(MKMapItem *)v2 _geoMapItem];
+  _placeType = [_geoMapItem _placeType];
 
-  if (v4 != 5 && v4 != 10)
+  if (_placeType != 5 && _placeType != 10)
   {
     v8 = MEMORY[0x1E69A1E80];
-    v9 = [(MKMapItem *)v2 _geoMapItem];
-    [v9 coordinate];
+    _geoMapItem2 = [(MKMapItem *)v2 _geoMapItem];
+    [_geoMapItem2 coordinate];
     if ([v8 isLocationShiftRequiredForCoordinate:?])
     {
     }
 
     else
     {
-      v10 = [(MKMapItem *)v2 _geoMapItem];
-      v11 = [v10 referenceFrame];
+      _geoMapItem3 = [(MKMapItem *)v2 _geoMapItem];
+      referenceFrame = [_geoMapItem3 referenceFrame];
 
-      if (v11 != 2)
+      if (referenceFrame != 2)
       {
-        v12 = [(MKMapItem *)v2 _geoMapItem];
-        [v12 coordinate];
+        _geoMapItem4 = [(MKMapItem *)v2 _geoMapItem];
+        [_geoMapItem4 coordinate];
         v14 = v13;
         v16 = v15;
 
@@ -315,8 +315,8 @@ LABEL_7:
 
 - (BOOL)hasRatingsOrReviews
 {
-  v3 = [(MKMapItem *)self->_mapItem _reviews];
-  v4 = [v3 count];
+  _reviews = [(MKMapItem *)self->_mapItem _reviews];
+  v4 = [_reviews count];
 
   result = [(MKMapItem *)self->_mapItem _hasUserRatingScore];
   if (v4)
@@ -331,19 +331,19 @@ LABEL_7:
 {
   if (self->_placeCardOptions)
   {
-    LOBYTE(v3) = 0;
+    LOBYTE(_isMapItemTypeBrand) = 0;
   }
 
   else
   {
-    v3 = [(MKMapItem *)self->_mapItem _isMapItemTypeBrand];
-    if (v3)
+    _isMapItemTypeBrand = [(MKMapItem *)self->_mapItem _isMapItemTypeBrand];
+    if (_isMapItemTypeBrand)
     {
-      LOBYTE(v3) = [(MKMapItem *)self->_mapItem _isStandAloneBrand]^ 1;
+      LOBYTE(_isMapItemTypeBrand) = [(MKMapItem *)self->_mapItem _isStandAloneBrand]^ 1;
     }
   }
 
-  return v3;
+  return _isMapItemTypeBrand;
 }
 
 - (BOOL)supportsInlineMap
@@ -364,14 +364,14 @@ LABEL_7:
 
 - (BOOL)supportsBrowseCategory
 {
-  v3 = [(MKMapItem *)self->_mapItem _browseCategory_isVenueItem];
+  _browseCategory_isVenueItem = [(MKMapItem *)self->_mapItem _browseCategory_isVenueItem];
   mapItem = self->_mapItem;
-  if (!v3)
+  if (!_browseCategory_isVenueItem)
   {
-    v5 = [(MKMapItem *)mapItem _browseCategory_canDisplayBrowseCategoriesForPlace];
-    if (!v5)
+    _browseCategory_canDisplayBrowseCategoriesForPlace = [(MKMapItem *)mapItem _browseCategory_canDisplayBrowseCategoriesForPlace];
+    if (!_browseCategory_canDisplayBrowseCategoriesForPlace)
     {
-      return v5;
+      return _browseCategory_canDisplayBrowseCategoriesForPlace;
     }
 
     return (BYTE2(self->_placeCardOptions) >> 1) & 1;
@@ -382,30 +382,30 @@ LABEL_7:
     return (BYTE2(self->_placeCardOptions) >> 1) & 1;
   }
 
-  LOBYTE(v5) = 0;
-  return v5;
+  LOBYTE(_browseCategory_canDisplayBrowseCategoriesForPlace) = 0;
+  return _browseCategory_canDisplayBrowseCategoriesForPlace;
 }
 
 - (BOOL)shouldShowRatingsAndReviewsModule
 {
-  v3 = [(MUPlaceDataAvailability *)self supportsAppleRatings];
-  if (v3 && [(MUPlaceDataAvailability *)self _hasAppleRatingsCategories])
+  supportsAppleRatings = [(MUPlaceDataAvailability *)self supportsAppleRatings];
+  if (supportsAppleRatings && [(MUPlaceDataAvailability *)self _hasAppleRatingsCategories])
   {
     return 1;
   }
 
-  v5 = [(MKMapItem *)self->_mapItem _reviews];
-  v6 = [v5 count];
+  _reviews = [(MKMapItem *)self->_mapItem _reviews];
+  v6 = [_reviews count];
 
-  v7 = [(MKMapItem *)self->_mapItem _hasUserRatingScore];
-  v8 = [(MKMapItem *)self->_mapItem _geoMapItem];
-  v9 = [v8 _hasPlaceCollectionPullQuotes];
+  _hasUserRatingScore = [(MKMapItem *)self->_mapItem _hasUserRatingScore];
+  _geoMapItem = [(MKMapItem *)self->_mapItem _geoMapItem];
+  _hasPlaceCollectionPullQuotes = [_geoMapItem _hasPlaceCollectionPullQuotes];
 
-  v10 = [(MKMapItem *)self->_mapItem _tips];
-  v11 = [v10 count];
+  _tips = [(MKMapItem *)self->_mapItem _tips];
+  v11 = [_tips count];
 
   result = 1;
-  if ((v3 | v7 ^ 1) == 1)
+  if ((supportsAppleRatings | _hasUserRatingScore ^ 1) == 1)
   {
     if (v11)
     {
@@ -414,7 +414,7 @@ LABEL_7:
 
     else
     {
-      v12 = v9;
+      v12 = _hasPlaceCollectionPullQuotes;
     }
 
     return v6 || v12;
@@ -430,10 +430,10 @@ LABEL_7:
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = [(MKMapItem *)self->_mapItem _geoMapItem];
-  v3 = [v2 _appleRatings];
+  _geoMapItem = [(MKMapItem *)self->_mapItem _geoMapItem];
+  _appleRatings = [_geoMapItem _appleRatings];
 
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v4 = [_appleRatings countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = *v10;
@@ -443,7 +443,7 @@ LABEL_7:
       {
         if (*v10 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(_appleRatings);
         }
 
         if ([*(*(&v9 + 1) + 8 * i) ratingType] == 1)
@@ -453,7 +453,7 @@ LABEL_7:
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v4 = [_appleRatings countByEnumeratingWithState:&v9 objects:v13 count:16];
       if (v4)
       {
         continue;
@@ -472,7 +472,7 @@ LABEL_11:
 - (BOOL)supportsAnnotatedTextList
 {
   placeCardOptions = self->_placeCardOptions;
-  v3 = [(MKMapItem *)self->_mapItem _annotatedItemList];
+  _annotatedItemList = [(MKMapItem *)self->_mapItem _annotatedItemList];
   v4 = displayStyleForAnnotatedItemList() == 2;
 
   return v4;
@@ -481,7 +481,7 @@ LABEL_11:
 - (BOOL)supportsAnnotatedPhotos
 {
   placeCardOptions = self->_placeCardOptions;
-  v3 = [(MKMapItem *)self->_mapItem _annotatedItemList];
+  _annotatedItemList = [(MKMapItem *)self->_mapItem _annotatedItemList];
   v4 = displayStyleForAnnotatedItemList() == 1;
 
   return v4;
@@ -494,20 +494,20 @@ LABEL_11:
     return 0;
   }
 
-  v3 = [(MKMapItem *)self->_mapItem _venueInfo];
-  v4 = [v3 contents];
-  v5 = [v4 items];
-  v6 = [v5 count] != 0;
+  _venueInfo = [(MKMapItem *)self->_mapItem _venueInfo];
+  contents = [_venueInfo contents];
+  items = [contents items];
+  v6 = [items count] != 0;
 
   return v6;
 }
 
 - (BOOL)supportsEncyclopedicDescription
 {
-  v2 = [(MKMapItem *)self->_mapItem _encyclopedicInfo];
-  v3 = [v2 hasTextBlock];
+  _encyclopedicInfo = [(MKMapItem *)self->_mapItem _encyclopedicInfo];
+  hasTextBlock = [_encyclopedicInfo hasTextBlock];
 
-  return v3;
+  return hasTextBlock;
 }
 
 - (BOOL)supportsCuratedGuidesCarousel
@@ -517,8 +517,8 @@ LABEL_11:
     return 0;
   }
 
-  v3 = [(MKMapItem *)self->_mapItem _placeCollections];
-  v2 = [v3 count] != 0;
+  _placeCollections = [(MKMapItem *)self->_mapItem _placeCollections];
+  v2 = [_placeCollections count] != 0;
 
   return v2;
 }
@@ -526,13 +526,13 @@ LABEL_11:
 - (BOOL)supportsHours
 {
   v2 = self->_mapItem;
-  v3 = [(MKMapItem *)v2 timeZone];
+  timeZone = [(MKMapItem *)v2 timeZone];
 
-  if (v3)
-    LOBYTE(v3) = (-[MKMapItem _isMapItemTypeBrand](v2, "_isMapItemTypeBrand") & 1) == 0 && (-[MKMapItem _businessHours](v2, "_businessHours"), v4 = {;
+  if (timeZone)
+    LOBYTE(timeZone) = (-[MKMapItem _isMapItemTypeBrand](v2, "_isMapItemTypeBrand") & 1) == 0 && (-[MKMapItem _businessHours](v2, "_businessHours"), v4 = {;
   }
 
-  return v3;
+  return timeZone;
 }
 
 - (BOOL)suportsOfficialApp
@@ -542,18 +542,18 @@ LABEL_11:
     return 0;
   }
 
-  v3 = [(MKMapItem *)self->_mapItem _preferedAppAdamID];
-  v2 = v3 != 0;
+  _preferedAppAdamID = [(MKMapItem *)self->_mapItem _preferedAppAdamID];
+  v2 = _preferedAppAdamID != 0;
 
   return v2;
 }
 
 - (BOOL)supportsHeaderContainment
 {
-  v2 = [(MKMapItem *)self->_mapItem _geoMapItem];
-  v3 = [v2 _containedPlace];
-  v4 = [v3 parent];
-  v5 = v4 != 0;
+  _geoMapItem = [(MKMapItem *)self->_mapItem _geoMapItem];
+  _containedPlace = [_geoMapItem _containedPlace];
+  parent = [_containedPlace parent];
+  v5 = parent != 0;
 
   return v5;
 }
@@ -565,8 +565,8 @@ LABEL_11:
     return 0;
   }
 
-  v2 = [(MKMapItem *)self->_mapItem _relatedPlaceLists];
-  v3 = [v2 count] != 0;
+  _relatedPlaceLists = [(MKMapItem *)self->_mapItem _relatedPlaceLists];
+  v3 = [_relatedPlaceLists count] != 0;
 
   return v3;
 }
@@ -578,8 +578,8 @@ LABEL_11:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v2 = [(MKMapItem *)self->_mapItem _amenities];
-  v3 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  _amenities = [(MKMapItem *)self->_mapItem _amenities];
+  v3 = [_amenities countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v3)
   {
     v4 = v3;
@@ -590,7 +590,7 @@ LABEL_11:
       {
         if (*v12 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(_amenities);
         }
 
         v7 = *(*(&v11 + 1) + 8 * i);
@@ -601,7 +601,7 @@ LABEL_11:
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v4 = [_amenities countByEnumeratingWithState:&v11 objects:v15 count:16];
       v8 = 0;
       if (v4)
       {
@@ -626,39 +626,39 @@ LABEL_13:
 - (BOOL)supportsPhotoSlider
 {
   v3 = self->_mapItem;
-  v4 = [(MKMapItem *)v3 place];
-  v5 = [v4 firstBusiness];
-  if ([v5 photosCount])
+  place = [(MKMapItem *)v3 place];
+  firstBusiness = [place firstBusiness];
+  if ([firstBusiness photosCount])
   {
-    v6 = 1;
+    _hasCaptionedPhotoAlbum = 1;
   }
 
   else
   {
-    v7 = [(MKMapItem *)v3 _geoMapItem];
-    v6 = [v7 _hasCaptionedPhotoAlbum];
+    _geoMapItem = [(MKMapItem *)v3 _geoMapItem];
+    _hasCaptionedPhotoAlbum = [_geoMapItem _hasCaptionedPhotoAlbum];
   }
 
   if (MapKitIdiomIsMacCatalyst())
   {
     v8 = (self->_placeCardOptions & 0x2000000) == 0;
-    v6 |= v8 & [(MKMapItem *)v3 _hasLookAroundStorefront];
+    _hasCaptionedPhotoAlbum |= v8 & [(MKMapItem *)v3 _hasLookAroundStorefront];
   }
 
-  return v6 & 1;
+  return _hasCaptionedPhotoAlbum & 1;
 }
 
-- (MUPlaceDataAvailability)initWithMapItem:(id)a3 options:(unint64_t)a4
+- (MUPlaceDataAvailability)initWithMapItem:(id)item options:(unint64_t)options
 {
-  v7 = a3;
+  itemCopy = item;
   v11.receiver = self;
   v11.super_class = MUPlaceDataAvailability;
   v8 = [(MUPlaceDataAvailability *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_mapItem, a3);
-    v9->_placeCardOptions = a4;
+    objc_storeStrong(&v8->_mapItem, item);
+    v9->_placeCardOptions = options;
     v9->_myPlacesEnabled = MapsFeature_IsEnabled_MyPlacesFeatures();
     v9->_hikingIOSEnabled = MapsFeature_IsEnabled_HikingiOS();
   }

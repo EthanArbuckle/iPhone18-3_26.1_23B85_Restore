@@ -1,25 +1,25 @@
 @interface PKPeerPaymentMessagesAmountStepperViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_axAnnounceAmount;
 - (void)_decrementAmount;
 - (void)_incrementAmount;
-- (void)handleNumberPadAction:(unint64_t)a3;
+- (void)handleNumberPadAction:(unint64_t)action;
 @end
 
 @implementation PKPeerPaymentMessagesAmountStepperViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PKPeerPaymentMessagesAmountStepperView" hasInstanceMethod:@"amount" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PKCurrencyAmount" hasInstanceMethod:@"formattedStringValue" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PKPeerPaymentMessagesAmountStepperView" hasInstanceMethod:@"amount" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PKCurrencyAmount" hasInstanceMethod:@"formattedStringValue" withFullSignature:{"@", 0}];
 }
 
-- (void)handleNumberPadAction:(unint64_t)a3
+- (void)handleNumberPadAction:(unint64_t)action
 {
   v4.receiver = self;
   v4.super_class = PKPeerPaymentMessagesAmountStepperViewAccessibility;
-  [(PKPeerPaymentMessagesAmountStepperViewAccessibility *)&v4 handleNumberPadAction:a3];
+  [(PKPeerPaymentMessagesAmountStepperViewAccessibility *)&v4 handleNumberPadAction:action];
   [(PKPeerPaymentMessagesAmountStepperViewAccessibility *)self _axAnnounceAmount];
 }
 

@@ -1,11 +1,11 @@
 @interface RS3DCurvedSurface
 - (RS3DCurvedSurface)init;
-- (RS3DCurvedSurface)initWithCoder:(id)a3;
-- (RS3DCurvedSurface)initWithDictionaryRepresentation:(id)a3 WithGroupId:(unsigned int)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (RS3DCurvedSurface)initWithCoder:(id)coder;
+- (RS3DCurvedSurface)initWithDictionaryRepresentation:(id)representation WithGroupId:(unsigned int)id;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (void)encodeWithCoder:(id)a3;
-- (void)rotateAlongZAxisRightHand:(float)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)rotateAlongZAxisRightHand:(float)hand;
 - (void)translateBy:(RS3DCurvedSurface *)self;
 @end
 
@@ -20,12 +20,12 @@
   *&self->_circleCenter[4] = vadd_f32(v4, *&self->_circleCenter[4]);
 }
 
-- (void)rotateAlongZAxisRightHand:(float)a3
+- (void)rotateAlongZAxisRightHand:(float)hand
 {
   v9.receiver = self;
   v9.super_class = RS3DCurvedSurface;
   [(RS3DSurface *)&v9 rotateAlongZAxisRightHand:?];
-  v7 = __sincosf_stret(a3);
+  v7 = __sincosf_stret(hand);
   *v6.i32 = v7.__cosval;
   *v5.i8 = v7;
   *&v6.i32[1] = -v7.__sinval;
@@ -33,53 +33,53 @@
   *&self->_circleCenter[4] = vmla_lane_f32(vmul_n_f32(*v8.i8, COERCE_FLOAT(*&self->_circleCenter[4])), *&vextq_s8(v8, v8, 8uLL), *&self->_circleCenter[4], 1);
 }
 
-- (RS3DCurvedSurface)initWithCoder:(id)a3
+- (RS3DCurvedSurface)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v20.receiver = self;
   v20.super_class = RS3DCurvedSurface;
-  v5 = [(RS3DSurface *)&v20 initWithCoder:v4];
+  v5 = [(RS3DSurface *)&v20 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = MEMORY[0x277CBEB98];
     v7 = objc_opt_class();
     v8 = objc_opt_class();
     v10 = objc_msgSend_setWithObjects_(v6, v9, v7, v8, 0);
-    v12 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v11, v10, @"circle_center");
+    v12 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v11, v10, @"circle_center");
     sub_2622F7C64(v12, &v5->_circleCenter[4]);
-    objc_msgSend_decodeFloatForKey_(v4, v13, @"radius");
+    objc_msgSend_decodeFloatForKey_(coderCopy, v13, @"radius");
     v5->_radius = v14;
-    objc_msgSend_decodeFloatForKey_(v4, v15, @"starting_orientation");
+    objc_msgSend_decodeFloatForKey_(coderCopy, v15, @"starting_orientation");
     v5->_startOrientation = v16;
-    objc_msgSend_decodeFloatForKey_(v4, v17, @"ending_orientation");
+    objc_msgSend_decodeFloatForKey_(coderCopy, v17, @"ending_orientation");
     v5->_endOrientation = v18;
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = RS3DCurvedSurface;
-  v5 = [(RS3DSurface *)&v16 encodeWithCoder:v4];
+  v5 = [(RS3DSurface *)&v16 encodeWithCoder:coderCopy];
   v8 = sub_2622F7E2C(*&self->_circleCenter[4], v5, v6, v7);
-  objc_msgSend_encodeObject_forKey_(v4, v9, v8, @"circle_center");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v9, v8, @"circle_center");
 
   *&v10 = self->_radius;
-  objc_msgSend_encodeFloat_forKey_(v4, v11, @"radius", v10);
+  objc_msgSend_encodeFloat_forKey_(coderCopy, v11, @"radius", v10);
   *&v12 = self->_startOrientation;
-  objc_msgSend_encodeFloat_forKey_(v4, v13, @"starting_orientation", v12);
+  objc_msgSend_encodeFloat_forKey_(coderCopy, v13, @"starting_orientation", v12);
   *&v14 = self->_endOrientation;
-  objc_msgSend_encodeFloat_forKey_(v4, v15, @"ending_orientation", v14);
+  objc_msgSend_encodeFloat_forKey_(coderCopy, v15, @"ending_orientation", v14);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5.receiver = self;
   v5.super_class = RS3DCurvedSurface;
-  result = [(RS3DSurface *)&v5 copyWithZone:a3];
+  result = [(RS3DSurface *)&v5 copyWithZone:zone];
   *(result + 45) = *&self->_circleCenter[4];
   *(result + 84) = LODWORD(self->_radius);
   *(result + 85) = LODWORD(self->_startOrientation);
@@ -93,8 +93,8 @@
 {
   v38.receiver = self;
   v38.super_class = RS3DCurvedSurface;
-  v3 = [(RS3DSurface *)&v38 dictionaryRepresentation];
-  v6 = objc_msgSend_mutableCopy(v3, v4, v5);
+  dictionaryRepresentation = [(RS3DSurface *)&v38 dictionaryRepresentation];
+  v6 = objc_msgSend_mutableCopy(dictionaryRepresentation, v4, v5);
 
   v10 = sub_2622F7E2C(*&self->_circleCenter[4], v7, v8, v9);
   objc_msgSend_setObject_forKeyedSubscript_(v6, v11, v10, @"circle_center");
@@ -122,13 +122,13 @@
   return v6;
 }
 
-- (RS3DCurvedSurface)initWithDictionaryRepresentation:(id)a3 WithGroupId:(unsigned int)a4
+- (RS3DCurvedSurface)initWithDictionaryRepresentation:(id)representation WithGroupId:(unsigned int)id
 {
-  v5 = a3;
+  representationCopy = representation;
   v8 = objc_msgSend_init(self, v6, v7);
   v9 = v8;
-  objc_msgSend_fillWithDictionaryRepresentation_(v8, v10, v5);
-  v12 = objc_msgSend_objectForKeyedSubscript_(v5, v11, @"circle_center");
+  objc_msgSend_fillWithDictionaryRepresentation_(v8, v10, representationCopy);
+  v12 = objc_msgSend_objectForKeyedSubscript_(representationCopy, v11, @"circle_center");
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -145,7 +145,7 @@
     sub_2622F7C64(v13, v8 + 45);
   }
 
-  v15 = objc_msgSend_objectForKeyedSubscript_(v5, v14, @"radius");
+  v15 = objc_msgSend_objectForKeyedSubscript_(representationCopy, v14, @"radius");
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -163,7 +163,7 @@
     *(v9 + 84) = v19;
   }
 
-  v21 = objc_msgSend_objectForKeyedSubscript_(v5, v20, @"starting_orientation");
+  v21 = objc_msgSend_objectForKeyedSubscript_(representationCopy, v20, @"starting_orientation");
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -181,7 +181,7 @@
     *(v9 + 85) = v25;
   }
 
-  v27 = objc_msgSend_objectForKeyedSubscript_(v5, v26, @"ending_orientation");
+  v27 = objc_msgSend_objectForKeyedSubscript_(representationCopy, v26, @"ending_orientation");
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -199,11 +199,11 @@
     *(v9 + 86) = v31;
   }
 
-  v33 = objc_msgSend_objectForKeyedSubscript_(v5, v32, @"floor_height");
+  v33 = objc_msgSend_objectForKeyedSubscript_(representationCopy, v32, @"floor_height");
 
   if (v33)
   {
-    v35 = objc_msgSend_objectForKeyedSubscript_(v5, v34, @"floor_height");
+    v35 = objc_msgSend_objectForKeyedSubscript_(representationCopy, v34, @"floor_height");
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -222,11 +222,11 @@
     }
   }
 
-  v40 = objc_msgSend_objectForKeyedSubscript_(v5, v34, @"ceiling_height");
+  v40 = objc_msgSend_objectForKeyedSubscript_(representationCopy, v34, @"ceiling_height");
 
   if (v40)
   {
-    v42 = objc_msgSend_objectForKeyedSubscript_(v5, v41, @"ceiling_height");
+    v42 = objc_msgSend_objectForKeyedSubscript_(representationCopy, v41, @"ceiling_height");
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {

@@ -1,13 +1,13 @@
 @interface ReceiptionistCaptionsProvider.ReceiptionistCaptionsClient
-- (void)captionsClient:(id)a3 didDetectGibberish:(BOOL)a4;
-- (void)captionsClient:(id)a3 didEnableCaptions:(BOOL)a4 error:(id)a5;
-- (void)captionsClient:(id)a3 didUpdateCaptions:(id)a4;
-- (void)streamTokenDidChange:(id)a3;
+- (void)captionsClient:(id)client didDetectGibberish:(BOOL)gibberish;
+- (void)captionsClient:(id)client didEnableCaptions:(BOOL)captions error:(id)error;
+- (void)captionsClient:(id)client didUpdateCaptions:(id)captions;
+- (void)streamTokenDidChange:(id)change;
 @end
 
 @implementation ReceiptionistCaptionsProvider.ReceiptionistCaptionsClient
 
-- (void)streamTokenDidChange:(id)a3
+- (void)streamTokenDidChange:(id)change
 {
   v3 = type metadata accessor for Notification();
   v4 = *(v3 - 8);
@@ -20,27 +20,27 @@
   (*(v4 + 8))(v6, v3);
 }
 
-- (void)captionsClient:(id)a3 didEnableCaptions:(BOOL)a4 error:(id)a5
+- (void)captionsClient:(id)client didEnableCaptions:(BOOL)captions error:(id)error
 {
-  v7 = a3;
+  clientCopy = client;
 
-  v8 = a5;
-  ReceiptionistCaptionsProvider.ReceiptionistCaptionsClient.captionsClient(_:didEnableCaptions:error:)(v8, a4, a5);
+  errorCopy = error;
+  ReceiptionistCaptionsProvider.ReceiptionistCaptionsClient.captionsClient(_:didEnableCaptions:error:)(errorCopy, captions, error);
 }
 
-- (void)captionsClient:(id)a3 didUpdateCaptions:(id)a4
+- (void)captionsClient:(id)client didUpdateCaptions:(id)captions
 {
-  v5 = a3;
-  v6 = a4;
+  clientCopy = client;
+  captionsCopy = captions;
 
   ReceiptionistCaptionsProvider.ReceiptionistCaptionsClient.captionsClient(_:didUpdateCaptions:)();
 }
 
-- (void)captionsClient:(id)a3 didDetectGibberish:(BOOL)a4
+- (void)captionsClient:(id)client didDetectGibberish:(BOOL)gibberish
 {
-  v5 = a3;
+  clientCopy = client;
 
-  ReceiptionistCaptionsProvider.ReceiptionistCaptionsClient.captionsClient(_:didDetectGibberish:)(v6, a4);
+  ReceiptionistCaptionsProvider.ReceiptionistCaptionsClient.captionsClient(_:didDetectGibberish:)(v6, gibberish);
 }
 
 @end

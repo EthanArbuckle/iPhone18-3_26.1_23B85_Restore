@@ -2,9 +2,9 @@
 - (NSDictionary)namespaces;
 - (NSString)documentType;
 - (WKIdentityDocumentPresentmentMobileDocumentIndividualDocumentRequest)init;
-- (WKIdentityDocumentPresentmentMobileDocumentIndividualDocumentRequest)initWithDocumentType:(id)a3 namespaces:(id)a4;
-- (void)setDocumentType:(id)a3;
-- (void)setNamespaces:(id)a3;
+- (WKIdentityDocumentPresentmentMobileDocumentIndividualDocumentRequest)initWithDocumentType:(id)type namespaces:(id)namespaces;
+- (void)setDocumentType:(id)type;
+- (void)setNamespaces:(id)namespaces;
 @end
 
 @implementation WKIdentityDocumentPresentmentMobileDocumentIndividualDocumentRequest
@@ -21,7 +21,7 @@
   return v5;
 }
 
-- (void)setDocumentType:(id)a3
+- (void)setDocumentType:(id)type
 {
   v4 = sub_23B59D820();
   v6 = v5;
@@ -44,7 +44,7 @@
   return v5;
 }
 
-- (void)setNamespaces:(id)a3
+- (void)setNamespaces:(id)namespaces
 {
   __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27E15A7D0, &qword_23B59ED28);
   v4 = sub_23B59D7D0();
@@ -54,7 +54,7 @@
   *(self + v5) = v4;
 }
 
-- (WKIdentityDocumentPresentmentMobileDocumentIndividualDocumentRequest)initWithDocumentType:(id)a3 namespaces:(id)a4
+- (WKIdentityDocumentPresentmentMobileDocumentIndividualDocumentRequest)initWithDocumentType:(id)type namespaces:(id)namespaces
 {
   v5 = sub_23B59D820();
   v7 = v6;

@@ -1,28 +1,28 @@
 @interface CPLMingleChangesTask
-- (BOOL)shouldProcessScope:(id)a3 inTransaction:(id)a4;
-- (id)enumerateScopesForTaskInTransaction:(id)a3;
-- (id)newScopedTaskWithScope:(id)a3 session:(id)a4 transportScope:(id)a5 clientCacheIdentifier:(id)a6;
-- (id)scopeFilterInTransaction:(id)a3;
+- (BOOL)shouldProcessScope:(id)scope inTransaction:(id)transaction;
+- (id)enumerateScopesForTaskInTransaction:(id)transaction;
+- (id)newScopedTaskWithScope:(id)scope session:(id)session transportScope:(id)transportScope clientCacheIdentifier:(id)identifier;
+- (id)scopeFilterInTransaction:(id)transaction;
 - (void)launch;
-- (void)taskDidFinishWithError:(id)a3;
+- (void)taskDidFinishWithError:(id)error;
 @end
 
 @implementation CPLMingleChangesTask
 
-- (void)taskDidFinishWithError:(id)a3
+- (void)taskDidFinishWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   [(CPLMingleChangesTask *)self hash];
   kdebug_trace();
-  if (!v4)
+  if (!errorCopy)
   {
-    v5 = [(CPLEngineSyncTask *)self session];
-    [v5 noteClientNeedsToPullIfNecessary];
+    session = [(CPLEngineSyncTask *)self session];
+    [session noteClientNeedsToPullIfNecessary];
   }
 
   v6.receiver = self;
   v6.super_class = CPLMingleChangesTask;
-  [(CPLEngineSyncTask *)&v6 taskDidFinishWithError:v4];
+  [(CPLEngineSyncTask *)&v6 taskDidFinishWithError:errorCopy];
 }
 
 - (void)launch
@@ -34,21 +34,21 @@
   [(CPLEngineMultiscopeSyncTask *)&v3 launch];
 }
 
-- (BOOL)shouldProcessScope:(id)a3 inTransaction:(id)a4
+- (BOOL)shouldProcessScope:(id)scope inTransaction:(id)transaction
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  scopeCopy = scope;
   v23.receiver = self;
   v23.super_class = CPLMingleChangesTask;
-  if (![(CPLEngineMultiscopeSyncTask *)&v23 shouldProcessScope:v6 inTransaction:a4])
+  if (![(CPLEngineMultiscopeSyncTask *)&v23 shouldProcessScope:scopeCopy inTransaction:transaction])
   {
-    v9 = [(CPLEngineMultiscopeSyncTask *)self scopes];
+    scopes = [(CPLEngineMultiscopeSyncTask *)self scopes];
     goto LABEL_9;
   }
 
-  v7 = +[CPLScopeChange supportsDirectMinglingForScopeWithType:](CPLScopeChange, "supportsDirectMinglingForScopeWithType:", [v6 scopeType]);
-  v8 = [(CPLEngineMultiscopeSyncTask *)self scopes];
-  v9 = v8;
+  v7 = +[CPLScopeChange supportsDirectMinglingForScopeWithType:](CPLScopeChange, "supportsDirectMinglingForScopeWithType:", [scopeCopy scopeType]);
+  scopes2 = [(CPLEngineMultiscopeSyncTask *)self scopes];
+  scopes = scopes2;
   if (!v7)
   {
 LABEL_9:
@@ -56,7 +56,7 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if ([v8 valueForFlag:52 forScope:v6])
+  if ([scopes2 valueForFlag:52 forScope:scopeCopy])
   {
     if ((_CPLSilentLogging & 1) == 0)
     {
@@ -64,7 +64,7 @@ LABEL_9:
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v25 = v6;
+        v25 = scopeCopy;
         _os_log_impl(&dword_1DC05A000, v10, OS_LOG_TYPE_DEFAULT, "Ignoring mingling for %@", buf, 0xCu);
       }
     }
@@ -77,7 +77,7 @@ LABEL_9:
     goto LABEL_21;
   }
 
-  v16 = [v9 transientSyncAnchorForScope:v6];
+  v16 = [scopes transientSyncAnchorForScope:scopeCopy];
   if (v16)
   {
 
@@ -86,21 +86,21 @@ LABEL_21:
     goto LABEL_10;
   }
 
-  v17 = [v9 engineStore];
-  v18 = [v17 transientPullRepository];
-  v19 = [v18 hasUnmingledChangesForScope:v6];
+  engineStore = [scopes engineStore];
+  transientPullRepository = [engineStore transientPullRepository];
+  v19 = [transientPullRepository hasUnmingledChangesForScope:scopeCopy];
 
   if (v19)
   {
     goto LABEL_21;
   }
 
-  v20 = [v9 sharingScopeForScope:v6];
+  v20 = [scopes sharingScopeForScope:scopeCopy];
   if (v20)
   {
-    v21 = [v9 engineStore];
-    v22 = [v21 transientPullRepository];
-    v11 = [v22 hasUnmingledChangesForScope:v20];
+    engineStore2 = [scopes engineStore];
+    transientPullRepository2 = [engineStore2 transientPullRepository];
+    v11 = [transientPullRepository2 hasUnmingledChangesForScope:v20];
   }
 
   else
@@ -121,7 +121,7 @@ LABEL_10:
       }
 
       *buf = 138412546;
-      v25 = v6;
+      v25 = scopeCopy;
       v26 = 2112;
       v27 = v13;
       _os_log_impl(&dword_1DC05A000, v12, OS_LOG_TYPE_DEFAULT, "Should mingle changes for %@: %@", buf, 0x16u);
@@ -132,28 +132,28 @@ LABEL_10:
   return v11;
 }
 
-- (id)newScopedTaskWithScope:(id)a3 session:(id)a4 transportScope:(id)a5 clientCacheIdentifier:(id)a6
+- (id)newScopedTaskWithScope:(id)scope session:(id)session transportScope:(id)transportScope clientCacheIdentifier:(id)identifier
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  identifierCopy = identifier;
+  transportScopeCopy = transportScope;
+  sessionCopy = session;
+  scopeCopy = scope;
   v14 = [CPLMingleChangesScopeTask alloc];
-  v15 = [(CPLEngineSyncTask *)self engineLibrary];
-  v16 = [(CPLMingleChangesScopeTask *)v14 initWithEngineLibrary:v15 session:v12 clientCacheIdentifier:v10 scope:v13 transportScope:v11];
+  engineLibrary = [(CPLEngineSyncTask *)self engineLibrary];
+  v16 = [(CPLMingleChangesScopeTask *)v14 initWithEngineLibrary:engineLibrary session:sessionCopy clientCacheIdentifier:identifierCopy scope:scopeCopy transportScope:transportScopeCopy];
 
   return v16;
 }
 
-- (id)scopeFilterInTransaction:(id)a3
+- (id)scopeFilterInTransaction:(id)transaction
 {
-  v4 = [(CPLEngineSyncTask *)self session];
-  v5 = [v4 scopeIdentifiersExcludedFromMingling];
+  session = [(CPLEngineSyncTask *)self session];
+  scopeIdentifiersExcludedFromMingling = [session scopeIdentifiersExcludedFromMingling];
 
-  if (v5)
+  if (scopeIdentifiersExcludedFromMingling)
   {
-    v6 = [(CPLEngineMultiscopeSyncTask *)self scopes];
-    v7 = [v6 filterForExcludedScopeIdentifiers:v5];
+    scopes = [(CPLEngineMultiscopeSyncTask *)self scopes];
+    v7 = [scopes filterForExcludedScopeIdentifiers:scopeIdentifiersExcludedFromMingling];
   }
 
   else
@@ -164,12 +164,12 @@ LABEL_10:
   return v7;
 }
 
-- (id)enumerateScopesForTaskInTransaction:(id)a3
+- (id)enumerateScopesForTaskInTransaction:(id)transaction
 {
-  v3 = [(CPLEngineMultiscopeSyncTask *)self scopes];
-  v4 = [v3 enumeratorForScopesWithMingling];
+  scopes = [(CPLEngineMultiscopeSyncTask *)self scopes];
+  enumeratorForScopesWithMingling = [scopes enumeratorForScopesWithMingling];
 
-  return v4;
+  return enumeratorForScopesWithMingling;
 }
 
 @end

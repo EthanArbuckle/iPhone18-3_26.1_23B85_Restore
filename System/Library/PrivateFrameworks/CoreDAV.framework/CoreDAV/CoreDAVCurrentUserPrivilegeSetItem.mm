@@ -1,8 +1,8 @@
 @interface CoreDAVCurrentUserPrivilegeSetItem
 + (id)copyParseRules;
-- (BOOL)hasPrivilegeWithNameSpace:(id)a3 andName:(id)a4;
+- (BOOL)hasPrivilegeWithNameSpace:(id)space andName:(id)name;
 - (id)description;
-- (void)addPrivilege:(id)a3;
+- (void)addPrivilege:(id)privilege;
 @end
 
 @implementation CoreDAVCurrentUserPrivilegeSetItem
@@ -15,8 +15,8 @@
   v4 = [(CoreDAVItem *)&v7 description];
   [v3 appendFormat:@"[%@]", v4];
 
-  v5 = [(CoreDAVCurrentUserPrivilegeSetItem *)self privileges];
-  [v3 appendFormat:@"\n  Number of privileges: [%lu]", objc_msgSend(v5, "count")];
+  privileges = [(CoreDAVCurrentUserPrivilegeSetItem *)self privileges];
+  [v3 appendFormat:@"\n  Number of privileges: [%lu]", objc_msgSend(privileges, "count")];
 
   return v3;
 }
@@ -24,7 +24,7 @@
 + (id)copyParseRules
 {
   v3 = +[CoreDAVItem parseRuleCache];
-  v4 = NSStringFromClass(a1);
+  v4 = NSStringFromClass(self);
   v5 = [v3 objectForKey:v4];
 
   if (!v5)
@@ -35,34 +35,34 @@
     v5 = [v6 initWithObjectsAndKeys:{v7, v8, 0}];
 
     v9 = +[CoreDAVItem parseRuleCache];
-    v10 = NSStringFromClass(a1);
+    v10 = NSStringFromClass(self);
     [v9 setObject:v5 forKey:v10];
   }
 
   return v5;
 }
 
-- (void)addPrivilege:(id)a3
+- (void)addPrivilege:(id)privilege
 {
-  v4 = a3;
-  v5 = [(CoreDAVCurrentUserPrivilegeSetItem *)self privileges];
+  privilegeCopy = privilege;
+  privileges = [(CoreDAVCurrentUserPrivilegeSetItem *)self privileges];
 
-  if (!v5)
+  if (!privileges)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB58]);
     [(CoreDAVCurrentUserPrivilegeSetItem *)self setPrivileges:v6];
   }
 
-  v7 = [(CoreDAVCurrentUserPrivilegeSetItem *)self privileges];
-  [v7 addObject:v4];
+  privileges2 = [(CoreDAVCurrentUserPrivilegeSetItem *)self privileges];
+  [privileges2 addObject:privilegeCopy];
 }
 
-- (BOOL)hasPrivilegeWithNameSpace:(id)a3 andName:(id)a4
+- (BOOL)hasPrivilegeWithNameSpace:(id)space andName:(id)name
 {
   v39 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (!v7 || (v8 = v7, ![v7 length]))
+  spaceCopy = space;
+  nameCopy = name;
+  if (!nameCopy || (v8 = nameCopy, ![nameCopy length]))
   {
     v25 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE660] reason:@"Non-nil and non-empty 'name' required." userInfo:0];
     objc_exception_throw(v25);
@@ -72,12 +72,12 @@
   v36 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v9 = [(CoreDAVCurrentUserPrivilegeSetItem *)self privileges];
-  v27 = [v9 countByEnumeratingWithState:&v33 objects:v38 count:16];
+  privileges = [(CoreDAVCurrentUserPrivilegeSetItem *)self privileges];
+  v27 = [privileges countByEnumeratingWithState:&v33 objects:v38 count:16];
   if (v27)
   {
     v10 = *v34;
-    v28 = v9;
+    v28 = privileges;
     v26 = *v34;
     do
     {
@@ -85,7 +85,7 @@
       {
         if (*v34 != v10)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(privileges);
         }
 
         v12 = *(*(&v33 + 1) + 8 * i);
@@ -93,8 +93,8 @@
         v30 = 0u;
         v31 = 0u;
         v32 = 0u;
-        v13 = [v12 extraChildItems];
-        v14 = [v13 countByEnumeratingWithState:&v29 objects:v37 count:16];
+        extraChildItems = [v12 extraChildItems];
+        v14 = [extraChildItems countByEnumeratingWithState:&v29 objects:v37 count:16];
         if (v14)
         {
           v15 = v14;
@@ -105,24 +105,24 @@
             {
               if (*v30 != v16)
               {
-                objc_enumerationMutation(v13);
+                objc_enumerationMutation(extraChildItems);
               }
 
               v18 = *(*(&v29 + 1) + 8 * j);
-              v19 = [v18 name];
-              if ([v8 isEqualToString:v19])
+              name = [v18 name];
+              if ([v8 isEqualToString:name])
               {
-                if (!v6)
+                if (!spaceCopy)
                 {
 
 LABEL_25:
                   v22 = 1;
-                  v9 = v28;
+                  privileges = v28;
                   goto LABEL_26;
                 }
 
-                v20 = [v18 nameSpace];
-                v21 = [v6 isEqualToString:v20];
+                nameSpace = [v18 nameSpace];
+                v21 = [spaceCopy isEqualToString:nameSpace];
 
                 if (v21)
                 {
@@ -135,7 +135,7 @@ LABEL_25:
               }
             }
 
-            v15 = [v13 countByEnumeratingWithState:&v29 objects:v37 count:16];
+            v15 = [extraChildItems countByEnumeratingWithState:&v29 objects:v37 count:16];
             if (v15)
             {
               continue;
@@ -145,7 +145,7 @@ LABEL_25:
           }
         }
 
-        v9 = v28;
+        privileges = v28;
         v10 = v26;
       }
 

@@ -1,18 +1,18 @@
 @interface TIErrorGenerator
-+ (TIErrorGenerator)errorGeneratorWithAttributes:(id)a3;
++ (TIErrorGenerator)errorGeneratorWithAttributes:(id)attributes;
 - (CGPoint)globalBias;
-- (CGPoint)persistentBiasForBottomRow:(CGRect)a3;
-- (CGPoint)persistentBiasForKeyString:(id)a3 rect:(CGRect)a4;
-- (CGPoint)persistentBiasForSpaceBarRect:(CGRect)a3;
-- (CGPoint)randomErrorForKeyString:(id)a3 rect:(CGRect)a4;
+- (CGPoint)persistentBiasForBottomRow:(CGRect)row;
+- (CGPoint)persistentBiasForKeyString:(id)string rect:(CGRect)rect;
+- (CGPoint)persistentBiasForSpaceBarRect:(CGRect)rect;
+- (CGPoint)randomErrorForKeyString:(id)string rect:(CGRect)rect;
 - (CGPoint)randomPointInDistribution;
-- (CGPoint)uniformRandomPointInRect:(CGRect)a3;
-- (TIErrorGenerator)initWithAttributes:(id)a3;
+- (CGPoint)uniformRandomPointInRect:(CGRect)rect;
+- (TIErrorGenerator)initWithAttributes:(id)attributes;
 - (TIKeyboardInfoDelegate)keyboardInfoDelgate;
 - (double)uniformRandomNumber;
-- (id)errorForKeyString:(id)a3 rect:(CGRect)a4;
+- (id)errorForKeyString:(id)string rect:(CGRect)rect;
 - (void)dealloc;
-- (void)setRandomNumberSeed:(unsigned int)a3;
+- (void)setRandomNumberSeed:(unsigned int)seed;
 @end
 
 @implementation TIErrorGenerator
@@ -36,24 +36,24 @@
   return result;
 }
 
-- (id)errorForKeyString:(id)a3 rect:(CGRect)a4
+- (id)errorForKeyString:(id)string rect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = a3;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  stringCopy = string;
   [(TIErrorGenerator *)self globalBias];
   v11 = v10;
   v13 = v12;
-  if (_isNumberPunctationKey(v9))
+  if (_isNumberPunctationKey(stringCopy))
   {
     v14 = 24;
   }
 
   else
   {
-    if (!_isControlKey(v9))
+    if (!_isControlKey(stringCopy))
     {
       goto LABEL_6;
     }
@@ -65,20 +65,20 @@
   v11 = v11 * v15;
   v13 = v13 * v15;
 LABEL_6:
-  [(TIErrorGenerator *)self persistentBiasForKeyString:v9 rect:x, y, width, height];
+  [(TIErrorGenerator *)self persistentBiasForKeyString:stringCopy rect:x, y, width, height];
   v17 = v16;
   v19 = v18;
-  [(TIErrorGenerator *)self randomErrorForKeyString:v9 rect:x, y, width, height];
+  [(TIErrorGenerator *)self randomErrorForKeyString:stringCopy rect:x, y, width, height];
   v21 = v20;
   v23 = v22;
-  if (_isNumberPunctationKey(v9))
+  if (_isNumberPunctationKey(stringCopy))
   {
     v24 = 24;
   }
 
   else
   {
-    if (!_isControlKey(v9))
+    if (!_isControlKey(stringCopy))
     {
       goto LABEL_11;
     }
@@ -95,7 +95,7 @@ LABEL_11:
   return v26;
 }
 
-- (CGPoint)randomErrorForKeyString:(id)a3 rect:(CGRect)a4
+- (CGPoint)randomErrorForKeyString:(id)string rect:(CGRect)rect
 {
   v4 = *MEMORY[0x277CBF348];
   v5 = *(MEMORY[0x277CBF348] + 8);
@@ -104,22 +104,22 @@ LABEL_11:
   return result;
 }
 
-- (CGPoint)persistentBiasForKeyString:(id)a3 rect:(CGRect)a4
+- (CGPoint)persistentBiasForKeyString:(id)string rect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = a3;
-  if ([v9 isEqualToString:@" "])
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  stringCopy = string;
+  if ([stringCopy isEqualToString:@" "])
   {
     [(TIErrorGenerator *)self persistentBiasForSpaceBarRect:x, y, width, height];
   }
 
   else
   {
-    v12 = [(TIErrorGenerator *)self keyboardInfoDelgate];
-    v13 = [v12 isKeyStringAboveSpaceBar:v9];
+    keyboardInfoDelgate = [(TIErrorGenerator *)self keyboardInfoDelgate];
+    v13 = [keyboardInfoDelgate isKeyStringAboveSpaceBar:stringCopy];
 
     if (!v13)
     {
@@ -151,13 +151,13 @@ LABEL_7:
   return result;
 }
 
-- (CGPoint)persistentBiasForBottomRow:(CGRect)a3
+- (CGPoint)persistentBiasForBottomRow:(CGRect)row
 {
   v4 = *MEMORY[0x277CBF348];
   v5 = *(MEMORY[0x277CBF348] + 8);
-  Height = CGRectGetHeight(a3);
-  v7 = [(TIErrorGenerator *)self spacingErrorsApplied];
-  if (v7 < [(TIErrorGenerator *)self spacingErrorMaxCount])
+  Height = CGRectGetHeight(row);
+  spacingErrorsApplied = [(TIErrorGenerator *)self spacingErrorsApplied];
+  if (spacingErrorsApplied < [(TIErrorGenerator *)self spacingErrorMaxCount])
   {
     [(TIErrorGenerator *)self uniformRandomNumber];
     v9 = v8;
@@ -176,29 +176,29 @@ LABEL_7:
   return result;
 }
 
-- (CGPoint)persistentBiasForSpaceBarRect:(CGRect)a3
+- (CGPoint)persistentBiasForSpaceBarRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v8 = *MEMORY[0x277CBF348];
   v9 = *(MEMORY[0x277CBF348] + 8);
-  v10 = CGRectGetHeight(a3);
+  v10 = CGRectGetHeight(rect);
   v25.origin.x = x;
   v25.origin.y = y;
   v25.size.width = width;
   v25.size.height = height;
   v11 = CGRectGetWidth(v25) - v10;
-  v12 = [(TIErrorGenerator *)self spaceHorizontalErrorMode];
+  spaceHorizontalErrorMode = [(TIErrorGenerator *)self spaceHorizontalErrorMode];
   v13 = v8 + v11 * -0.5;
   v14 = v8 + v11 * 0.5;
-  if (v12 != 2)
+  if (spaceHorizontalErrorMode != 2)
   {
     v14 = v8;
   }
 
-  if (v12 == 3)
+  if (spaceHorizontalErrorMode == 3)
   {
     v15 = v8 + v11 * -0.5;
   }
@@ -210,8 +210,8 @@ LABEL_7:
 
   [(TIErrorGenerator *)self spaceVerticalBias:v13];
   v17 = v9 - v10 * v16;
-  v18 = [(TIErrorGenerator *)self spacingErrorsApplied];
-  if (v18 < [(TIErrorGenerator *)self spacingErrorMaxCount])
+  spacingErrorsApplied = [(TIErrorGenerator *)self spacingErrorsApplied];
+  if (spacingErrorsApplied < [(TIErrorGenerator *)self spacingErrorMaxCount])
   {
     [(TIErrorGenerator *)self uniformRandomNumber];
     v20 = v19;
@@ -230,12 +230,12 @@ LABEL_7:
   return result;
 }
 
-- (CGPoint)uniformRandomPointInRect:(CGRect)a3
+- (CGPoint)uniformRandomPointInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   [(TIErrorGenerator *)self uniformRandomNumber];
   v9 = x + v8 * width;
   [(TIErrorGenerator *)self uniformRandomNumber];
@@ -255,9 +255,9 @@ LABEL_7:
   return *m_distribution + v4 * ((v5 + std::mersenne_twister_engine<unsigned int,32ul,624ul,397ul,31ul,2567483615u,11ul,4294967295u,7ul,2636928640u,15ul,4022730752u,18ul,1812433253u>::operator()(m_generator) * 4294967300.0) * 5.42101086e-20);
 }
 
-- (void)setRandomNumberSeed:(unsigned int)a3
+- (void)setRandomNumberSeed:(unsigned int)seed
 {
-  v3 = 257 * self->_RNGSeedSalt + a3;
+  v3 = 257 * self->_RNGSeedSalt + seed;
   m_generator = self->m_generator;
   *m_generator = v3;
   for (i = 1; i != 624; ++i)
@@ -289,15 +289,15 @@ LABEL_7:
   [(TIErrorGenerator *)&v5 dealloc];
 }
 
-- (TIErrorGenerator)initWithAttributes:(id)a3
+- (TIErrorGenerator)initWithAttributes:(id)attributes
 {
-  v4 = a3;
+  attributesCopy = attributes;
   v25.receiver = self;
   v25.super_class = TIErrorGenerator;
   v5 = [(TIErrorGenerator *)&v25 init];
   if (v5)
   {
-    v6 = [v4 objectForKey:@"SPACE_HORIZONTAL_ERROR_BIAS"];
+    v6 = [attributesCopy objectForKey:@"SPACE_HORIZONTAL_ERROR_BIAS"];
     v7 = v6;
     if (!v6)
     {
@@ -306,7 +306,7 @@ LABEL_7:
 
     v5->_spaceHorizontalErrorMode = [(__CFString *)v6 integerValue];
 
-    v8 = [v4 objectForKey:@"SPACE_VERTICAL_ERROR_BIAS"];
+    v8 = [attributesCopy objectForKey:@"SPACE_VERTICAL_ERROR_BIAS"];
     v9 = v8;
     if (!v8)
     {
@@ -316,18 +316,18 @@ LABEL_7:
     [(__CFString *)v8 floatValue];
     v5->_spaceVerticalBias = v10;
 
-    v11 = [v4 valueForKey:@"PROB_SPACE_REPLACED_BY_BOTTOM_ROW"];
+    v11 = [attributesCopy valueForKey:@"PROB_SPACE_REPLACED_BY_BOTTOM_ROW"];
     [v11 floatValue];
     v5->_probTappingSpaceReplacedByBottomRow = v12;
 
-    v13 = [v4 valueForKey:@"PROB_SPACE_INSTEAD_OF_BOTTOM_ROW"];
+    v13 = [attributesCopy valueForKey:@"PROB_SPACE_INSTEAD_OF_BOTTOM_ROW"];
     [v13 floatValue];
     v5->_probTappingSpaceInsteadOfBottomRow = v14;
 
-    v15 = [v4 valueForKey:@"MAX_SPACE_ERRORS_PER_TEST"];
+    v15 = [attributesCopy valueForKey:@"MAX_SPACE_ERRORS_PER_TEST"];
     v5->_spacingErrorMaxCount = [v15 intValue];
 
-    v16 = [v4 valueForKey:@"REL_ERROR_NUMBERS_PUNCTATION"];
+    v16 = [attributesCopy valueForKey:@"REL_ERROR_NUMBERS_PUNCTATION"];
     v17 = v16;
     if (!v16)
     {
@@ -337,7 +337,7 @@ LABEL_7:
     [v16 floatValue];
     v5->_relErrorNumbersPunctuation = v18;
 
-    v19 = [v4 valueForKey:@"REL_ERROR_CONTROL_KEYS"];
+    v19 = [attributesCopy valueForKey:@"REL_ERROR_CONTROL_KEYS"];
     v20 = v19;
     if (!v19)
     {
@@ -347,7 +347,7 @@ LABEL_7:
     [v19 floatValue];
     v5->_relErrorControlKeys = v21;
 
-    v22 = [v4 valueForKey:@"RNG_SEED_SALT"];
+    v22 = [attributesCopy valueForKey:@"RNG_SEED_SALT"];
     v23 = v22;
     if (!v22)
     {
@@ -362,17 +362,17 @@ LABEL_7:
   return 0;
 }
 
-+ (TIErrorGenerator)errorGeneratorWithAttributes:(id)a3
++ (TIErrorGenerator)errorGeneratorWithAttributes:(id)attributes
 {
-  v3 = a3;
-  v4 = [v3 valueForKey:@"ERROR_GENERATOR"];
+  attributesCopy = attributes;
+  v4 = [attributesCopy valueForKey:@"ERROR_GENERATOR"];
   v5 = NSClassFromString(v4);
   if (!v5)
   {
     v5 = objc_opt_class();
   }
 
-  v6 = [[v5 alloc] initWithAttributes:v3];
+  v6 = [[v5 alloc] initWithAttributes:attributesCopy];
 
   return v6;
 }

@@ -1,13 +1,13 @@
 @interface MKHTTPRange
-- (MKHTTPRange)initWithHeaderValue:(id)a3;
-- (MKHTTPRange)initWithOffset:(unint64_t)a3 length:(unint64_t)a4;
+- (MKHTTPRange)initWithHeaderValue:(id)value;
+- (MKHTTPRange)initWithOffset:(unint64_t)offset length:(unint64_t)length;
 @end
 
 @implementation MKHTTPRange
 
-- (MKHTTPRange)initWithHeaderValue:(id)a3
+- (MKHTTPRange)initWithHeaderValue:(id)value
 {
-  v4 = [a3 componentsSeparatedByString:@"bytes="];
+  v4 = [value componentsSeparatedByString:@"bytes="];
   if ([v4 count] == 2)
   {
     v5 = [v4 objectAtIndexedSubscript:1];
@@ -19,17 +19,17 @@
       v8 = [v6 objectAtIndexedSubscript:1];
       if ([v7 length])
       {
-        v9 = [v7 longLongValue];
+        longLongValue = [v7 longLongValue];
       }
 
       else
       {
-        v9 = 0;
+        longLongValue = 0;
       }
 
       if ([v8 length])
       {
-        v10 = [v8 longLongValue] - v9;
+        v10 = [v8 longLongValue] - longLongValue;
       }
 
       else
@@ -41,21 +41,21 @@
     else
     {
       v10 = 0;
-      v9 = 0;
+      longLongValue = 0;
     }
   }
 
   else
   {
     v10 = 0;
-    v9 = 0;
+    longLongValue = 0;
     v6 = v4;
   }
 
-  return [(MKHTTPRange *)self initWithOffset:v9 length:v10];
+  return [(MKHTTPRange *)self initWithOffset:longLongValue length:v10];
 }
 
-- (MKHTTPRange)initWithOffset:(unint64_t)a3 length:(unint64_t)a4
+- (MKHTTPRange)initWithOffset:(unint64_t)offset length:(unint64_t)length
 {
   v9.receiver = self;
   v9.super_class = MKHTTPRange;
@@ -63,8 +63,8 @@
   v7 = v6;
   if (v6)
   {
-    [(MKHTTPRange *)v6 setOffset:a3];
-    [(MKHTTPRange *)v7 setLength:a4];
+    [(MKHTTPRange *)v6 setOffset:offset];
+    [(MKHTTPRange *)v7 setLength:length];
   }
 
   return v7;

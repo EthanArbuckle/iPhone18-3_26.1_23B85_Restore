@@ -1,10 +1,10 @@
 @interface ASVSettings
 + (ASVSettingsProvider)sharedSettings;
-+ (float)BOOLForKey:(id)a3;
-+ (float)floatForKey:(id)a3;
++ (float)BOOLForKey:(id)key;
++ (float)floatForKey:(id)key;
 - (ASVSettings)init;
-- (float)BOOLForKey:(id)a3;
-- (float)floatForKey:(id)a3;
+- (float)BOOLForKey:(id)key;
+- (float)floatForKey:(id)key;
 @end
 
 @implementation ASVSettings
@@ -417,11 +417,11 @@
   return v2;
 }
 
-- (float)floatForKey:(id)a3
+- (float)floatForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(ASVSettings *)self settings];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  keyCopy = key;
+  settings = [(ASVSettings *)self settings];
+  v6 = [settings objectForKeyedSubscript:keyCopy];
 
   [v6 floatValue];
   v8 = v7;
@@ -429,31 +429,31 @@
   return v8;
 }
 
-- (float)BOOLForKey:(id)a3
+- (float)BOOLForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(ASVSettings *)self settings];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  keyCopy = key;
+  settings = [(ASVSettings *)self settings];
+  v6 = [settings objectForKeyedSubscript:keyCopy];
 
-  v7 = [v6 BOOLValue];
-  return v7;
+  bOOLValue = [v6 BOOLValue];
+  return bOOLValue;
 }
 
-+ (float)floatForKey:(id)a3
++ (float)floatForKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   v4 = +[ASVSettings sharedSettings];
-  [v4 floatForKey:v3];
+  [v4 floatForKey:keyCopy];
   v6 = v5;
 
   return v6;
 }
 
-+ (float)BOOLForKey:(id)a3
++ (float)BOOLForKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   v4 = +[ASVSettings sharedSettings];
-  [v4 BOOLForKey:v3];
+  [v4 BOOLForKey:keyCopy];
   v6 = v5;
 
   return v6;

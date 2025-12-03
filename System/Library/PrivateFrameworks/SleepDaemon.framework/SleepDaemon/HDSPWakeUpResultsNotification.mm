@@ -1,75 +1,75 @@
 @interface HDSPWakeUpResultsNotification
-+ (id)goalAchievedQuantityForCategory:(unint64_t)a3 userInfo:(id)a4;
-+ (id)goalAchievedUserInfoKeyForCategory:(unint64_t)a3;
-+ (id)wakeUpResultsNotificationFromUserInfo:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToNotification:(id)a3;
-- (HDSPWakeUpResultsNotification)initWithCategory:(unint64_t)a3 endMorningIndex:(int64_t)a4 goalAchieved:(id)a5 notificationVariant:(int64_t)a6 userFirstName:(id)a7;
++ (id)goalAchievedQuantityForCategory:(unint64_t)category userInfo:(id)info;
++ (id)goalAchievedUserInfoKeyForCategory:(unint64_t)category;
++ (id)wakeUpResultsNotificationFromUserInfo:(id)info;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToNotification:(id)notification;
+- (HDSPWakeUpResultsNotification)initWithCategory:(unint64_t)category endMorningIndex:(int64_t)index goalAchieved:(id)achieved notificationVariant:(int64_t)variant userFirstName:(id)name;
 - (NSDictionary)userInfo;
 - (int64_t)goalAchievedUserInfoValue;
 @end
 
 @implementation HDSPWakeUpResultsNotification
 
-- (HDSPWakeUpResultsNotification)initWithCategory:(unint64_t)a3 endMorningIndex:(int64_t)a4 goalAchieved:(id)a5 notificationVariant:(int64_t)a6 userFirstName:(id)a7
+- (HDSPWakeUpResultsNotification)initWithCategory:(unint64_t)category endMorningIndex:(int64_t)index goalAchieved:(id)achieved notificationVariant:(int64_t)variant userFirstName:(id)name
 {
-  v12 = a5;
-  v13 = a7;
+  achievedCopy = achieved;
+  nameCopy = name;
   v26.receiver = self;
   v26.super_class = HDSPWakeUpResultsNotification;
   v14 = [(HDSPWakeUpResultsNotification *)&v26 init];
   v15 = v14;
   if (v14)
   {
-    v14->_category = a3;
-    v16 = [v12 copy];
+    v14->_category = category;
+    v16 = [achievedCopy copy];
     goalAchieved = v15->_goalAchieved;
     v15->_goalAchieved = v16;
 
-    v15->_endMorningIndex = a4;
-    if (a6 < 1)
+    v15->_endMorningIndex = index;
+    if (variant < 1)
     {
-      v19 = 1;
+      variantCopy = 1;
     }
 
     else
     {
-      if (a3 > 2)
+      if (category > 2)
       {
         v18 = 0;
       }
 
       else
       {
-        v18 = qword_269B982F8[a3];
+        v18 = qword_269B982F8[category];
       }
 
-      if (v18 < a6)
+      if (v18 < variant)
       {
-        v19 = 1;
+        variantCopy = 1;
       }
 
       else
       {
-        v19 = a6;
+        variantCopy = variant;
       }
     }
 
-    v15->_notificationVariant = v19;
-    v20 = v13;
+    v15->_notificationVariant = variantCopy;
+    v20 = nameCopy;
     v21 = v20;
     if (v20 && [v20 length])
     {
-      v22 = [v21 hk_stripLeadingTrailingWhitespace];
+      hk_stripLeadingTrailingWhitespace = [v21 hk_stripLeadingTrailingWhitespace];
     }
 
     else
     {
-      v22 = 0;
+      hk_stripLeadingTrailingWhitespace = 0;
     }
 
     userFirstName = v15->_userFirstName;
-    v15->_userFirstName = v22;
+    v15->_userFirstName = hk_stripLeadingTrailingWhitespace;
 
     v24 = v15;
   }
@@ -77,11 +77,11 @@
   return v15;
 }
 
-+ (id)wakeUpResultsNotificationFromUserInfo:(id)a3
++ (id)wakeUpResultsNotificationFromUserInfo:(id)info
 {
-  v4 = a3;
-  v5 = [v4 allKeys];
-  v6 = [v5 count];
+  infoCopy = info;
+  allKeys = [infoCopy allKeys];
+  v6 = [allKeys count];
 
   if (v6 < 4)
   {
@@ -89,7 +89,7 @@
     goto LABEL_22;
   }
 
-  v8 = [v4 objectForKeyedSubscript:*MEMORY[0x277D62360]];
+  v8 = [infoCopy objectForKeyedSubscript:*MEMORY[0x277D62360]];
   v9 = v8;
   if (v8)
   {
@@ -114,17 +114,17 @@
       v11 = 2;
     }
 
-    v10 = [v4 objectForKeyedSubscript:*MEMORY[0x277D62370]];
+    v10 = [infoCopy objectForKeyedSubscript:*MEMORY[0x277D62370]];
     if (v10)
     {
-      v12 = [v4 objectForKeyedSubscript:*MEMORY[0x277D62388]];
+      v12 = [infoCopy objectForKeyedSubscript:*MEMORY[0x277D62388]];
       if (v12)
       {
-        v13 = [a1 goalAchievedQuantityForCategory:v11 userInfo:v4];
+        v13 = [self goalAchievedQuantityForCategory:v11 userInfo:infoCopy];
         if (v13)
         {
-          v14 = [v4 objectForKeyedSubscript:*MEMORY[0x277D62368]];
-          v7 = [[a1 alloc] initWithCategory:v11 endMorningIndex:objc_msgSend(v10 goalAchieved:"integerValue") notificationVariant:v13 userFirstName:{objc_msgSend(v12, "integerValue"), v14}];
+          v14 = [infoCopy objectForKeyedSubscript:*MEMORY[0x277D62368]];
+          v7 = [[self alloc] initWithCategory:v11 endMorningIndex:objc_msgSend(v10 goalAchieved:"integerValue") notificationVariant:v13 userFirstName:{objc_msgSend(v12, "integerValue"), v14}];
         }
 
         else
@@ -176,12 +176,12 @@ LABEL_22:
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v17 forKeys:v16 count:4];
   v10 = [v3 initWithDictionary:v9];
 
-  v11 = [(HDSPWakeUpResultsNotification *)self userFirstName];
+  userFirstName = [(HDSPWakeUpResultsNotification *)self userFirstName];
 
-  if (v11)
+  if (userFirstName)
   {
-    v12 = [(HDSPWakeUpResultsNotification *)self userFirstName];
-    [v10 setObject:v12 forKeyedSubscript:*MEMORY[0x277D62368]];
+    userFirstName2 = [(HDSPWakeUpResultsNotification *)self userFirstName];
+    [v10 setObject:userFirstName2 forKeyedSubscript:*MEMORY[0x277D62368]];
   }
 
   v13 = [v10 copy];
@@ -191,14 +191,14 @@ LABEL_22:
   return v13;
 }
 
-- (BOOL)isEqualToNotification:(id)a3
+- (BOOL)isEqualToNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   category = self->_category;
-  if (category == [v4 category] && (endMorningIndex = self->_endMorningIndex, endMorningIndex == objc_msgSend(v4, "endMorningIndex")))
+  if (category == [notificationCopy category] && (endMorningIndex = self->_endMorningIndex, endMorningIndex == objc_msgSend(notificationCopy, "endMorningIndex")))
   {
-    v7 = [(HDSPWakeUpResultsNotification *)self goalAchievedUserInfoValue];
-    v8 = v7 == [v4 goalAchievedUserInfoValue];
+    goalAchievedUserInfoValue = [(HDSPWakeUpResultsNotification *)self goalAchievedUserInfoValue];
+    v8 = goalAchievedUserInfoValue == [notificationCopy goalAchievedUserInfoValue];
   }
 
   else
@@ -209,10 +209,10 @@ LABEL_22:
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -220,7 +220,7 @@ LABEL_22:
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(HDSPWakeUpResultsNotification *)self isEqualToNotification:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(HDSPWakeUpResultsNotification *)self isEqualToNotification:equalCopy];
   }
 
   return v5;
@@ -228,9 +228,9 @@ LABEL_22:
 
 - (int64_t)goalAchievedUserInfoValue
 {
-  v3 = [(HDSPWakeUpResultsNotification *)self isOneNight];
+  isOneNight = [(HDSPWakeUpResultsNotification *)self isOneNight];
   goalAchieved = self->_goalAchieved;
-  if (v3)
+  if (isOneNight)
   {
     [MEMORY[0x277CCDAB0] secondUnit];
   }
@@ -246,10 +246,10 @@ LABEL_22:
   return v7;
 }
 
-+ (id)goalAchievedUserInfoKeyForCategory:(unint64_t)a3
++ (id)goalAchievedUserInfoKeyForCategory:(unint64_t)category
 {
   v3 = MEMORY[0x277D62380];
-  if (a3)
+  if (category)
   {
     v3 = MEMORY[0x277D62378];
   }
@@ -257,11 +257,11 @@ LABEL_22:
   return *v3;
 }
 
-+ (id)goalAchievedQuantityForCategory:(unint64_t)a3 userInfo:(id)a4
++ (id)goalAchievedQuantityForCategory:(unint64_t)category userInfo:(id)info
 {
-  v6 = a4;
-  v7 = [a1 goalAchievedUserInfoKeyForCategory:a3];
-  if (a3)
+  infoCopy = info;
+  v7 = [self goalAchievedUserInfoKeyForCategory:category];
+  if (category)
   {
     [MEMORY[0x277CCDAB0] dayUnit];
   }
@@ -271,7 +271,7 @@ LABEL_22:
     [MEMORY[0x277CCDAB0] secondUnit];
   }
   v8 = ;
-  v9 = [v6 objectForKeyedSubscript:v7];
+  v9 = [infoCopy objectForKeyedSubscript:v7];
 
   if (v9)
   {

@@ -1,23 +1,23 @@
 @interface FCAtypicalDayEvent
-- (BOOL)shouldFireWithTypicalDayModel:(id)a3 evaluationDelegate:(id)a4;
-- (FCAtypicalDayEvent)initWithConfiguration:(id)a3;
+- (BOOL)shouldFireWithTypicalDayModel:(id)model evaluationDelegate:(id)delegate;
+- (FCAtypicalDayEvent)initWithConfiguration:(id)configuration;
 - (double)minimumDayDuration;
-- (id)goalProgressContentForModel:(id)a3;
-- (id)nextFireDateWithModel:(id)a3;
+- (id)goalProgressContentForModel:(id)model;
+- (id)nextFireDateWithModel:(id)model;
 @end
 
 @implementation FCAtypicalDayEvent
 
-- (FCAtypicalDayEvent)initWithConfiguration:(id)a3
+- (FCAtypicalDayEvent)initWithConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   v9.receiver = self;
   v9.super_class = FCAtypicalDayEvent;
   v6 = [(FCAtypicalDayEvent *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_configuration, a3);
+    objc_storeStrong(&v6->_configuration, configuration);
   }
 
   return v7;
@@ -25,18 +25,18 @@
 
 - (double)minimumDayDuration
 {
-  v2 = [(FCCAtypicalDayConfiguration *)self->_configuration percentageOfDayRule];
-  [v2 minimumDayDuration];
+  percentageOfDayRule = [(FCCAtypicalDayConfiguration *)self->_configuration percentageOfDayRule];
+  [percentageOfDayRule minimumDayDuration];
   v4 = v3;
 
   return v4;
 }
 
-- (BOOL)shouldFireWithTypicalDayModel:(id)a3 evaluationDelegate:(id)a4
+- (BOOL)shouldFireWithTypicalDayModel:(id)model evaluationDelegate:(id)delegate
 {
   v48 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if ([a4 currentExperienceType] != 1)
+  modelCopy = model;
+  if ([delegate currentExperienceType] != 1)
   {
     _HKInitializeLogging();
     v11 = *MEMORY[0x277CCC290];
@@ -52,9 +52,9 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  [v6 valueOfTypicalDayMoveEarnedByNow];
+  [modelCopy valueOfTypicalDayMoveEarnedByNow];
   v8 = v7;
-  [v6 valueOfTypicalDayBriskMinutesEarnedByNow];
+  [modelCopy valueOfTypicalDayBriskMinutesEarnedByNow];
   v10 = v9;
   if (v8 <= 0.0 && v9 <= 0.0)
   {
@@ -72,12 +72,12 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  [v6 currentMoveGoalPercentage];
+  [modelCopy currentMoveGoalPercentage];
   v17 = v16;
-  [v6 percentageOfTypicalDayMoveComparedToNow];
+  [modelCopy percentageOfTypicalDayMoveComparedToNow];
   v19 = v18;
-  v20 = [(FCCAtypicalDayConfiguration *)self->_configuration allowedGoalTypes];
-  v21 = [v20 containsObject:&unk_285E86948];
+  allowedGoalTypes = [(FCCAtypicalDayConfiguration *)self->_configuration allowedGoalTypes];
+  v21 = [allowedGoalTypes containsObject:&unk_285E86948];
 
   v22 = 0;
   if (v21)
@@ -96,12 +96,12 @@ LABEL_8:
     v23 = 0;
   }
 
-  [v6 currentExerciseGoalPercentage];
+  [modelCopy currentExerciseGoalPercentage];
   v26 = v25;
-  [v6 percentageOfTypicalDayBriskMinutesEarnedComparedToNow];
+  [modelCopy percentageOfTypicalDayBriskMinutesEarnedComparedToNow];
   v28 = v27;
-  v29 = [(FCCAtypicalDayConfiguration *)self->_configuration allowedGoalTypes];
-  v30 = [v29 containsObject:&unk_285E86960];
+  allowedGoalTypes2 = [(FCCAtypicalDayConfiguration *)self->_configuration allowedGoalTypes];
+  v30 = [allowedGoalTypes2 containsObject:&unk_285E86960];
 
   v31 = 0;
   if (v30)
@@ -176,25 +176,25 @@ LABEL_10:
   return v13;
 }
 
-- (id)nextFireDateWithModel:(id)a3
+- (id)nextFireDateWithModel:(id)model
 {
   configuration = self->_configuration;
-  v4 = a3;
-  v5 = [(FCCAtypicalDayConfiguration *)configuration percentageOfDayRule];
-  v6 = FCFireDateForPercentOfDayRule(v5, v4);
+  modelCopy = model;
+  percentageOfDayRule = [(FCCAtypicalDayConfiguration *)configuration percentageOfDayRule];
+  v6 = FCFireDateForPercentOfDayRule(percentageOfDayRule, modelCopy);
 
   return v6;
 }
 
-- (id)goalProgressContentForModel:(id)a3
+- (id)goalProgressContentForModel:(id)model
 {
-  v4 = a3;
-  v5 = [(FCCAtypicalDayConfiguration *)self->_configuration allowedGoalTypes];
-  v6 = [v5 containsObject:&unk_285E86948];
+  modelCopy = model;
+  allowedGoalTypes = [(FCCAtypicalDayConfiguration *)self->_configuration allowedGoalTypes];
+  v6 = [allowedGoalTypes containsObject:&unk_285E86948];
 
   if (v6)
   {
-    [v4 percentageOfTypicalDayMoveComparedToNow];
+    [modelCopy percentageOfTypicalDayMoveComparedToNow];
     v8 = v7;
     v9 = [(FCAtypicalDayEvent *)self _isProgressSignificantlyWorse:?];
     v6 = [(FCAtypicalDayEvent *)self _isProgressSignificantlyBetter:v8];
@@ -205,12 +205,12 @@ LABEL_10:
     v9 = 0;
   }
 
-  v10 = [(FCCAtypicalDayConfiguration *)self->_configuration allowedGoalTypes];
-  v11 = [v10 containsObject:&unk_285E86960];
+  allowedGoalTypes2 = [(FCCAtypicalDayConfiguration *)self->_configuration allowedGoalTypes];
+  v11 = [allowedGoalTypes2 containsObject:&unk_285E86960];
 
   if (v11)
   {
-    [v4 percentageOfTypicalDayBriskMinutesEarnedComparedToNow];
+    [modelCopy percentageOfTypicalDayBriskMinutesEarnedComparedToNow];
     v13 = v12;
     v11 = [(FCAtypicalDayEvent *)self _isProgressSignificantlyWorse:?];
     v14 = [(FCAtypicalDayEvent *)self _isProgressSignificantlyBetter:v13];
@@ -225,14 +225,14 @@ LABEL_10:
   {
     if (v9)
     {
-      [v4 valueOfTypicalDayMoveEarnedByNow];
+      [modelCopy valueOfTypicalDayMoveEarnedByNow];
       v16 = v15;
       v17 = 1;
     }
 
     else if (v11)
     {
-      [v4 valueOfTypicalDayBriskMinutesEarnedByNow];
+      [modelCopy valueOfTypicalDayBriskMinutesEarnedByNow];
       v16 = v21;
       v17 = 2;
     }
@@ -252,7 +252,7 @@ LABEL_10:
     if (v6)
     {
       v18 = [MEMORY[0x277CBEBF8] arrayByAddingObject:&unk_285E86948];
-      [v4 valueOfTypicalDayMoveEarnedByNow];
+      [modelCopy valueOfTypicalDayMoveEarnedByNow];
       v16 = v19;
       v17 = 1;
       if (!v14)
@@ -278,7 +278,7 @@ LABEL_13:
 
     if (v16 == 0.0)
     {
-      [v4 valueOfTypicalDayBriskMinutesEarnedByNow];
+      [modelCopy valueOfTypicalDayBriskMinutesEarnedByNow];
       v16 = v22;
       v17 = 2;
     }
@@ -293,8 +293,8 @@ LABEL_13:
 
 LABEL_22:
   v23 = objc_alloc(MEMORY[0x277D09CB8]);
-  v24 = [(FCAtypicalDayEvent *)self eventIdentifier];
-  v25 = [v23 initWithEventIdentifier:v24 goalTypesToDisplay:v20 goalTypeToHighlight:v17 expectedGoalValue:v16];
+  eventIdentifier = [(FCAtypicalDayEvent *)self eventIdentifier];
+  v25 = [v23 initWithEventIdentifier:eventIdentifier goalTypesToDisplay:v20 goalTypeToHighlight:v17 expectedGoalValue:v16];
 
   return v25;
 }

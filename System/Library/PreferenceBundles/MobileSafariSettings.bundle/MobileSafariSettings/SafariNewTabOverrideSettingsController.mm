@@ -1,44 +1,44 @@
 @interface SafariNewTabOverrideSettingsController
-+ (BOOL)canUseCurrentNewTabOverrideSelectionWithWebExtensionsController:(id)a3;
-+ (id)_specifierTitleForExtensionNamed:(id)a3;
-+ (id)topLevelDetailStringWithWebExtensionsController:(id)a3;
++ (BOOL)canUseCurrentNewTabOverrideSelectionWithWebExtensionsController:(id)controller;
++ (id)_specifierTitleForExtensionNamed:(id)named;
++ (id)topLevelDetailStringWithWebExtensionsController:(id)controller;
 - (id)_webExtensionsController;
 - (id)specifiers;
 - (void)_computeCurrentCheckmarkIndexPath;
-- (void)_newTabPageDidChangeRemotely:(id)a3;
-- (void)_reloadSpecifiersSoon:(BOOL)a3;
-- (void)_setUserInfoForExtensionWithIdentifier:(id)a3;
-- (void)tabGroupManager:(id)a3 didUpdateProfileWithIdentifier:(id)a4 difference:(id)a5;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
+- (void)_newTabPageDidChangeRemotely:(id)remotely;
+- (void)_reloadSpecifiersSoon:(BOOL)soon;
+- (void)_setUserInfoForExtensionWithIdentifier:(id)identifier;
+- (void)tabGroupManager:(id)manager didUpdateProfileWithIdentifier:(id)identifier difference:(id)difference;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
 @end
 
 @implementation SafariNewTabOverrideSettingsController
 
-+ (id)_specifierTitleForExtensionNamed:(id)a3
++ (id)_specifierTitleForExtensionNamed:(id)named
 {
-  v3 = a3;
+  namedCopy = named;
   v4 = SafariSettingsLocalizedString(@"Specifier Title For Extension With New Tab Override Page", @"Extensions");
-  v5 = [NSString stringWithFormat:v4, v3];
+  namedCopy = [NSString stringWithFormat:v4, namedCopy];
 
-  return v5;
+  return namedCopy;
 }
 
-+ (BOOL)canUseCurrentNewTabOverrideSelectionWithWebExtensionsController:(id)a3
++ (BOOL)canUseCurrentNewTabOverrideSelectionWithWebExtensionsController:(id)controller
 {
-  v3 = a3;
-  v4 = [v3 tabOverridePreferencesManager];
+  controllerCopy = controller;
+  tabOverridePreferencesManager = [controllerCopy tabOverridePreferencesManager];
   v5 = +[NSUserDefaults safari_browserDefaults];
-  v6 = [v4 extensionComposedIdentifierForNewTabPreferenceInDefaults:v5];
+  v6 = [tabOverridePreferencesManager extensionComposedIdentifierForNewTabPreferenceInDefaults:v5];
 
   if (v6)
   {
-    v7 = [v3 extensionWithComposedIdentifier:v6];
-    v8 = [v3 webExtensionForExtension:v7];
-    v9 = [v8 newTabOverridePageURL];
+    v7 = [controllerCopy extensionWithComposedIdentifier:v6];
+    v8 = [controllerCopy webExtensionForExtension:v7];
+    newTabOverridePageURL = [v8 newTabOverridePageURL];
 
-    v10 = [v3 extensionIsEnabled:v7];
-    if (v9)
+    v10 = [controllerCopy extensionIsEnabled:v7];
+    if (newTabOverridePageURL)
     {
       v11 = v10;
     }
@@ -57,53 +57,53 @@
   return v11;
 }
 
-+ (id)topLevelDetailStringWithWebExtensionsController:(id)a3
++ (id)topLevelDetailStringWithWebExtensionsController:(id)controller
 {
   v15 = _NSConcreteStackBlock;
   v16 = 3221225472;
   v17 = __90__SafariNewTabOverrideSettingsController_topLevelDetailStringWithWebExtensionsController___block_invoke;
   v18 = &unk_8B1B0;
-  v4 = a3;
-  v19 = v4;
-  v20 = a1;
+  controllerCopy = controller;
+  v19 = controllerCopy;
+  selfCopy = self;
   v5 = objc_retainBlock(&v15);
   v6 = [WBSManagedNewTabPageController sharedController:v15];
-  v7 = [v6 managedNewTabPageState];
+  managedNewTabPageState = [v6 managedNewTabPageState];
 
-  if (v7 == &dword_0 + 3)
+  if (managedNewTabPageState == &dword_0 + 3)
   {
     v9 = +[WBSManagedNewTabPageController sharedController];
-    v8 = [v9 managedNewTabPageHomepageURLString];
+    managedNewTabPageHomepageURLString = [v9 managedNewTabPageHomepageURLString];
     goto LABEL_7;
   }
 
-  if (v7 == &dword_0 + 2)
+  if (managedNewTabPageState == &dword_0 + 2)
   {
     v9 = +[WBSManagedNewTabPageController sharedController];
-    v10 = [v9 managedNewTabPageExtensionComposedIdentifier];
-    v8 = (v5[2])(v5, v10);
+    managedNewTabPageExtensionComposedIdentifier = [v9 managedNewTabPageExtensionComposedIdentifier];
+    managedNewTabPageHomepageURLString = (v5[2])(v5, managedNewTabPageExtensionComposedIdentifier);
 
 LABEL_7:
     goto LABEL_9;
   }
 
-  if (v7 == &dword_0 + 1)
+  if (managedNewTabPageState == &dword_0 + 1)
   {
-    v8 = [objc_opt_class() _defaultStartPageTitleTopLevel];
+    managedNewTabPageHomepageURLString = [objc_opt_class() _defaultStartPageTitleTopLevel];
   }
 
   else
   {
-    v11 = [v4 tabOverridePreferencesManager];
+    tabOverridePreferencesManager = [controllerCopy tabOverridePreferencesManager];
     v12 = +[NSUserDefaults safari_browserDefaults];
-    v13 = [v11 extensionComposedIdentifierForNewTabPreferenceInDefaults:v12];
+    v13 = [tabOverridePreferencesManager extensionComposedIdentifierForNewTabPreferenceInDefaults:v12];
 
-    v8 = (v5[2])(v5, v13);
+    managedNewTabPageHomepageURLString = (v5[2])(v5, v13);
   }
 
 LABEL_9:
 
-  return v8;
+  return managedNewTabPageHomepageURLString;
 }
 
 id __90__SafariNewTabOverrideSettingsController_topLevelDetailStringWithWebExtensionsController___block_invoke(uint64_t a1, uint64_t a2)
@@ -135,47 +135,47 @@ id __90__SafariNewTabOverrideSettingsController_topLevelDetailStringWithWebExten
 
   else
   {
-    v3 = [*&self->super.PSListController_opaque[OBJC_IVAR___PSViewController__specifier] userInfo];
-    v2 = [v3 objectForKeyedSubscript:WBSProfileIDKey];
+    userInfo = [*&self->super.PSListController_opaque[OBJC_IVAR___PSViewController__specifier] userInfo];
+    v2 = [userInfo objectForKeyedSubscript:WBSProfileIDKey];
   }
 
   v4 = +[SafariSettingsController extensionsProfilesDataSource];
-  v5 = [v4 profileServerIDToWebExtensionsControllers];
-  v6 = [v5 objectForKeyedSubscript:v2];
+  profileServerIDToWebExtensionsControllers = [v4 profileServerIDToWebExtensionsControllers];
+  v6 = [profileServerIDToWebExtensionsControllers objectForKeyedSubscript:v2];
 
   return v6;
 }
 
-- (void)_setUserInfoForExtensionWithIdentifier:(id)a3
+- (void)_setUserInfoForExtensionWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(SafariNewTabOverrideSettingsController *)self _webExtensionsController];
-  v6 = [v5 webExtensionForComposedIdentifier:v4];
-  v7 = [v6 displayName];
+  identifierCopy = identifier;
+  _webExtensionsController = [(SafariNewTabOverrideSettingsController *)self _webExtensionsController];
+  v6 = [_webExtensionsController webExtensionForComposedIdentifier:identifierCopy];
+  displayName = [v6 displayName];
 
   v8 = OBJC_IVAR___PSViewController__specifier;
-  v9 = [*&self->super.PSListController_opaque[OBJC_IVAR___PSViewController__specifier] userInfo];
+  userInfo = [*&self->super.PSListController_opaque[OBJC_IVAR___PSViewController__specifier] userInfo];
   v14[0] = WBSNewTabTopLevelStringKey;
-  v10 = v7;
-  if (!v7)
+  _defaultStartPageTitleTopLevel = displayName;
+  if (!displayName)
   {
-    v10 = [objc_opt_class() _defaultStartPageTitleTopLevel];
+    _defaultStartPageTitleTopLevel = [objc_opt_class() _defaultStartPageTitleTopLevel];
   }
 
   v14[1] = WBSWebExtensionComposedIdentifierKey;
-  v15[0] = v10;
+  v15[0] = _defaultStartPageTitleTopLevel;
   v11 = &stru_8BB60;
-  if (v4)
+  if (identifierCopy)
   {
-    v11 = v4;
+    v11 = identifierCopy;
   }
 
   v15[1] = v11;
   v12 = [NSDictionary dictionaryWithObjects:v15 forKeys:v14 count:2];
-  v13 = [v9 safari_setValuesFromDictionary:v12];
+  v13 = [userInfo safari_setValuesFromDictionary:v12];
   [*&self->super.PSListController_opaque[v8] setUserInfo:v13];
 
-  if (!v7)
+  if (!displayName)
   {
   }
 }
@@ -190,15 +190,15 @@ id __90__SafariNewTabOverrideSettingsController_topLevelDetailStringWithWebExten
 
   else
   {
-    v4 = self;
+    selfCopy = self;
     v31 = OBJC_IVAR___PSListController__specifiers;
-    v5 = [*&self->super.PSListController_opaque[OBJC_IVAR___PSViewController__specifier] userInfo];
-    v6 = [v5 objectForKeyedSubscript:WBSProfileIDKey];
-    v4->_isCreatingNewProfile = [v6 length] == 0;
+    userInfo = [*&self->super.PSListController_opaque[OBJC_IVAR___PSViewController__specifier] userInfo];
+    v6 = [userInfo objectForKeyedSubscript:WBSProfileIDKey];
+    selfCopy->_isCreatingNewProfile = [v6 length] == 0;
 
     v7 = +[NSMutableArray array];
-    v8 = [objc_opt_class() _defaultStartPageTitleDrillIn];
-    v9 = [PSSpecifier preferenceSpecifierNamed:v8 target:v4 set:0 get:0 detail:0 cell:3 edit:0];
+    _defaultStartPageTitleDrillIn = [objc_opt_class() _defaultStartPageTitleDrillIn];
+    v9 = [PSSpecifier preferenceSpecifierNamed:_defaultStartPageTitleDrillIn target:selfCopy set:0 get:0 detail:0 cell:3 edit:0];
 
     v10 = safariMobileApplicationBundleIdentifier;
     v34 = kISImageDescriptorTableUIName;
@@ -209,22 +209,22 @@ id __90__SafariNewTabOverrideSettingsController_topLevelDetailStringWithWebExten
     v41[3] = &unk_89790;
     v12 = v9;
     v42 = v12;
-    v43 = v4;
+    v43 = selfCopy;
     [SFIconGenerator getAppIconForBundleIdentifier:v10 imageDescriptor:v11 resultHandler:v41];
 
     v36 = v7;
     v30 = v12;
     [v7 addObject:v12];
-    v35 = [(SafariNewTabOverrideSettingsController *)v4 _webExtensionsController];
-    v13 = [v35 tabOverridePreferencesManager];
-    v14 = [v13 sortedComposedIdentifiersForExtensionsWithOverridePages];
+    _webExtensionsController = [(SafariNewTabOverrideSettingsController *)selfCopy _webExtensionsController];
+    tabOverridePreferencesManager = [_webExtensionsController tabOverridePreferencesManager];
+    sortedComposedIdentifiersForExtensionsWithOverridePages = [tabOverridePreferencesManager sortedComposedIdentifiersForExtensionsWithOverridePages];
 
-    v4->_showingEnabledNewTabOverrideExtensions = [v14 count] != 0;
+    selfCopy->_showingEnabledNewTabOverrideExtensions = [sortedComposedIdentifiersForExtensionsWithOverridePages count] != 0;
     v37 = 0u;
     v38 = 0u;
     v39 = 0u;
     v40 = 0u;
-    obj = v14;
+    obj = sortedComposedIdentifiersForExtensionsWithOverridePages;
     v15 = [obj countByEnumeratingWithState:&v37 objects:v44 count:16];
     if (v15)
     {
@@ -241,17 +241,17 @@ id __90__SafariNewTabOverrideSettingsController_topLevelDetailStringWithWebExten
           }
 
           v19 = *(*(&v37 + 1) + 8 * i);
-          v20 = [v35 webExtensionForComposedIdentifier:v19];
-          v21 = [v20 displayName];
-          v22 = [PSSpecifier preferenceSpecifierNamed:v21 target:v4 set:0 get:0 detail:0 cell:3 edit:0];
+          v20 = [_webExtensionsController webExtensionForComposedIdentifier:v19];
+          displayName = [v20 displayName];
+          v22 = [PSSpecifier preferenceSpecifierNamed:displayName target:selfCopy set:0 get:0 detail:0 cell:3 edit:0];
 
           [v20 preferencesIcon];
-          v24 = v23 = v4;
+          v24 = v23 = selfCopy;
           v25 = [ISImageDescriptor imageDescriptorNamed:v34];
           [v25 size];
           v26 = [WBSImageUtilities resizedImage:v24 withSize:?];
 
-          v4 = v23;
+          selfCopy = v23;
           [v22 setProperty:v26 forKey:v17];
           [v22 setUserInfo:v19];
           [v36 addObject:v22];
@@ -264,10 +264,10 @@ id __90__SafariNewTabOverrideSettingsController_topLevelDetailStringWithWebExten
     }
 
     v27 = [v36 copy];
-    v28 = *&v4->super.PSListController_opaque[v31];
-    *&v4->super.PSListController_opaque[v31] = v27;
+    v28 = *&selfCopy->super.PSListController_opaque[v31];
+    *&selfCopy->super.PSListController_opaque[v31] = v27;
 
-    v3 = *&v4->super.PSListController_opaque[v31];
+    v3 = *&selfCopy->super.PSListController_opaque[v31];
   }
 
   return v3;
@@ -295,9 +295,9 @@ id __52__SafariNewTabOverrideSettingsController_specifiers__block_invoke_2(uint6
   return [v2 reload];
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  if (self->_currentCheckmarkIndexPath == a5)
+  if (self->_currentCheckmarkIndexPath == path)
   {
     v5 = 3;
   }
@@ -307,14 +307,14 @@ id __52__SafariNewTabOverrideSettingsController_specifiers__block_invoke_2(uint6
     v5 = 0;
   }
 
-  [a4 setAccessoryType:v5];
+  [cell setAccessoryType:v5];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SafariNewTabOverrideSettingsController *)self indexForIndexPath:v7];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [(SafariNewTabOverrideSettingsController *)self indexForIndexPath:pathCopy];
   if (v8 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v9 = 0;
@@ -325,52 +325,52 @@ id __52__SafariNewTabOverrideSettingsController_specifiers__block_invoke_2(uint6
     v9 = [*&self->super.PSListController_opaque[OBJC_IVAR___PSListController__specifiers] objectAtIndex:v8];
   }
 
-  [v6 deselectRowAtIndexPath:v7 animated:0];
-  if (self->_currentCheckmarkIndexPath != v7)
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:0];
+  if (self->_currentCheckmarkIndexPath != pathCopy)
   {
-    v10 = [v6 cellForRowAtIndexPath:?];
+    v10 = [viewCopy cellForRowAtIndexPath:?];
     [v10 setAccessoryType:0];
 
-    v11 = [v6 cellForRowAtIndexPath:v7];
+    v11 = [viewCopy cellForRowAtIndexPath:pathCopy];
     [v11 setAccessoryType:3];
 
     v12 = +[NSUserDefaults safari_browserDefaults];
-    v13 = [v9 userInfo];
+    userInfo = [v9 userInfo];
     if (self->_isCreatingNewProfile)
     {
-      [(SafariNewTabOverrideSettingsController *)self _setUserInfoForExtensionWithIdentifier:v13];
+      [(SafariNewTabOverrideSettingsController *)self _setUserInfoForExtensionWithIdentifier:userInfo];
     }
 
     else
     {
-      v14 = [(SafariNewTabOverrideSettingsController *)self _webExtensionsController];
-      v15 = [v14 tabOverridePreferencesManager];
-      v16 = v15;
-      if (v13)
+      _webExtensionsController = [(SafariNewTabOverrideSettingsController *)self _webExtensionsController];
+      tabOverridePreferencesManager = [_webExtensionsController tabOverridePreferencesManager];
+      v16 = tabOverridePreferencesManager;
+      if (userInfo)
       {
-        [v15 setNewTabBehaviorWithExtensionComposedIdentifier:v13 inDefaults:v12];
+        [tabOverridePreferencesManager setNewTabBehaviorWithExtensionComposedIdentifier:userInfo inDefaults:v12];
       }
 
       else
       {
-        [v15 clearNewTabBehaviorInDefaults:v12];
+        [tabOverridePreferencesManager clearNewTabBehaviorInDefaults:v12];
       }
     }
 
-    objc_storeStrong(&self->_currentCheckmarkIndexPath, a4);
-    v17 = [*&self->super.PSListController_opaque[OBJC_IVAR___PSViewController__specifier] userInfo];
-    v18 = [v17 objectForKeyedSubscript:WBSDelegateKey];
+    objc_storeStrong(&self->_currentCheckmarkIndexPath, path);
+    userInfo2 = [*&self->super.PSListController_opaque[OBJC_IVAR___PSViewController__specifier] userInfo];
+    v18 = [userInfo2 objectForKeyedSubscript:WBSDelegateKey];
 
     [v18 profileNewTabOverrideSettingsController:self];
     v19.receiver = self;
     v19.super_class = SafariNewTabOverrideSettingsController;
-    [(SafariSettingsListController *)&v19 tableView:v6 didSelectRowAtIndexPath:v7];
+    [(SafariSettingsListController *)&v19 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
   }
 }
 
-- (void)_reloadSpecifiersSoon:(BOOL)a3
+- (void)_reloadSpecifiersSoon:(BOOL)soon
 {
-  if (a3)
+  if (soon)
   {
     objc_initWeak(&location, self);
     [(NSTimer *)self->_reloadSpecifiersTimer invalidate];
@@ -413,8 +413,8 @@ void __64__SafariNewTabOverrideSettingsController__reloadSpecifiersSoon___block_
   v13[3] = &unk_8B200;
   v13[4] = self;
   v3 = objc_retainBlock(v13);
-  v4 = [*&self->super.PSListController_opaque[OBJC_IVAR___PSViewController__specifier] userInfo];
-  v5 = [v4 objectForKeyedSubscript:WBSWebExtensionComposedIdentifierKey];
+  userInfo = [*&self->super.PSListController_opaque[OBJC_IVAR___PSViewController__specifier] userInfo];
+  v5 = [userInfo objectForKeyedSubscript:WBSWebExtensionComposedIdentifierKey];
 
   if ([v5 length])
   {
@@ -427,9 +427,9 @@ void __64__SafariNewTabOverrideSettingsController__reloadSpecifiersSoon___block_
   else
   {
     currentCheckmarkIndexPath = [(SafariNewTabOverrideSettingsController *)self _webExtensionsController];
-    v9 = [currentCheckmarkIndexPath tabOverridePreferencesManager];
+    tabOverridePreferencesManager = [currentCheckmarkIndexPath tabOverridePreferencesManager];
     v10 = +[NSUserDefaults safari_browserDefaults];
-    v8 = [v9 extensionComposedIdentifierForNewTabPreferenceInDefaults:v10];
+    v8 = [tabOverridePreferencesManager extensionComposedIdentifierForNewTabPreferenceInDefaults:v10];
 
     if (self->_isCreatingNewProfile)
     {
@@ -482,13 +482,13 @@ id __75__SafariNewTabOverrideSettingsController__computeCurrentCheckmarkIndexPat
   return v5;
 }
 
-- (void)tabGroupManager:(id)a3 didUpdateProfileWithIdentifier:(id)a4 difference:(id)a5
+- (void)tabGroupManager:(id)manager didUpdateProfileWithIdentifier:(id)identifier difference:(id)difference
 {
-  v6 = a4;
-  v7 = [(SafariNewTabOverrideSettingsController *)self _webExtensionsController];
-  v8 = [v7 profile];
-  v9 = [v8 identifier];
-  v10 = [v9 isEqualToString:v6];
+  identifierCopy = identifier;
+  _webExtensionsController = [(SafariNewTabOverrideSettingsController *)self _webExtensionsController];
+  profile = [_webExtensionsController profile];
+  identifier = [profile identifier];
+  v10 = [identifier isEqualToString:identifierCopy];
 
   if (v10)
   {
@@ -498,7 +498,7 @@ id __75__SafariNewTabOverrideSettingsController__computeCurrentCheckmarkIndexPat
   }
 }
 
-- (void)_newTabPageDidChangeRemotely:(id)a3
+- (void)_newTabPageDidChangeRemotely:(id)remotely
 {
   [(SafariNewTabOverrideSettingsController *)self _computeCurrentCheckmarkIndexPath];
 

@@ -1,18 +1,18 @@
 @interface SessionRingsViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (CGRect)accessibilityFrame;
 - (unint64_t)accessibilityTraits;
-- (void)displayHighlightWithDuration:(double)a3;
+- (void)displayHighlightWithDuration:(double)duration;
 @end
 
 @implementation SessionRingsViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SeymourUI.SessionRingsView" isKindOfClass:@"UIView"];
-  [v3 validateClass:@"SeymourUI.SessionRingsView" hasSwiftField:@"ringsPlatter" withSwiftType:"UIView"];
-  [v3 validateClass:@"SeymourUI.SessionRingsView" hasInstanceMethod:@"displayHighlightWithDuration:" withFullSignature:{"v", "d", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SeymourUI.SessionRingsView" isKindOfClass:@"UIView"];
+  [validationsCopy validateClass:@"SeymourUI.SessionRingsView" hasSwiftField:@"ringsPlatter" withSwiftType:"UIView"];
+  [validationsCopy validateClass:@"SeymourUI.SessionRingsView" hasInstanceMethod:@"displayHighlightWithDuration:" withFullSignature:{"v", "d", 0}];
 }
 
 - (unint64_t)accessibilityTraits
@@ -35,12 +35,12 @@
     v9 = v8;
     v11 = v10;
     v13 = v12;
-    v14 = [v4 superview];
+    superview = [v4 superview];
     v23.origin.x = v7;
     v23.origin.y = v9;
     v23.size.width = v11;
     v23.size.height = v13;
-    v24 = UIAccessibilityConvertFrameToScreenCoordinates(v23, v14);
+    v24 = UIAccessibilityConvertFrameToScreenCoordinates(v23, superview);
     x = v24.origin.x;
     y = v24.origin.y;
     width = v24.size.width;
@@ -66,7 +66,7 @@
   return result;
 }
 
-- (void)displayHighlightWithDuration:(double)a3
+- (void)displayHighlightWithDuration:(double)duration
 {
   v3.receiver = self;
   v3.super_class = SessionRingsViewAccessibility;

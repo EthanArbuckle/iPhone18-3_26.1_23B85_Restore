@@ -1,61 +1,61 @@
 @interface PGLastMonthAtHomeMemoryGenerator
-+ (id)lastMonthAtHomeMemoriesForMonth:(int64_t)a3 year:(int64_t)a4 inGraph:(id)a5 momentNodesWithBlockedFeatureCache:(id)a6 photoLibrary:(id)a7 loggingConnection:(id)a8 progressReporter:(id)a9;
-- (id)titleGeneratorForTriggeredMemory:(id)a3 withKeyAsset:(id)a4 curatedAssets:(id)a5 extendedCuratedAssets:(id)a6 titleGenerationContext:(id)a7 inGraph:(id)a8;
++ (id)lastMonthAtHomeMemoriesForMonth:(int64_t)month year:(int64_t)year inGraph:(id)graph momentNodesWithBlockedFeatureCache:(id)cache photoLibrary:(id)library loggingConnection:(id)connection progressReporter:(id)reporter;
+- (id)titleGeneratorForTriggeredMemory:(id)memory withKeyAsset:(id)asset curatedAssets:(id)assets extendedCuratedAssets:(id)curatedAssets titleGenerationContext:(id)context inGraph:(id)graph;
 @end
 
 @implementation PGLastMonthAtHomeMemoryGenerator
 
-+ (id)lastMonthAtHomeMemoriesForMonth:(int64_t)a3 year:(int64_t)a4 inGraph:(id)a5 momentNodesWithBlockedFeatureCache:(id)a6 photoLibrary:(id)a7 loggingConnection:(id)a8 progressReporter:(id)a9
++ (id)lastMonthAtHomeMemoriesForMonth:(int64_t)month year:(int64_t)year inGraph:(id)graph momentNodesWithBlockedFeatureCache:(id)cache photoLibrary:(id)library loggingConnection:(id)connection progressReporter:(id)reporter
 {
   v66[2] = *MEMORY[0x277D85DE8];
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
-  v18 = a9;
-  if (v16)
+  graphCopy = graph;
+  cacheCopy = cache;
+  libraryCopy = library;
+  connectionCopy = connection;
+  reporterCopy = reporter;
+  if (libraryCopy)
   {
-    v19 = [[PGMemoryProcessedScenesAndFacesCache alloc] initWithPhotoLibrary:v16];
+    v19 = [[PGMemoryProcessedScenesAndFacesCache alloc] initWithPhotoLibrary:libraryCopy];
   }
 
   else
   {
-    if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
+    if (os_log_type_enabled(connectionCopy, OS_LOG_TYPE_INFO))
     {
       *buf = 0;
-      _os_log_impl(&dword_22F0FC000, v17, OS_LOG_TYPE_INFO, "[PGLastMonthAtHomeMemoryGenerator] +lastMonthAtHomeMemoriesForMonth: was passed in a nil photoLibrary, not checking if moments have their scenes processed.", buf, 2u);
+      _os_log_impl(&dword_22F0FC000, connectionCopy, OS_LOG_TYPE_INFO, "[PGLastMonthAtHomeMemoryGenerator] +lastMonthAtHomeMemoriesForMonth: was passed in a nil photoLibrary, not checking if moments have their scenes processed.", buf, 2u);
     }
 
     v19 = 0;
   }
 
   v20 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v21 = [(PGGraphNodeCollection *)PGGraphMeNodeCollection nodesInGraph:v14];
+  v21 = [(PGGraphNodeCollection *)PGGraphMeNodeCollection nodesInGraph:graphCopy];
   if ([v21 count])
   {
-    v56 = a3;
-    v22 = [v21 homeNodes];
-    if ([v22 count])
+    monthCopy = month;
+    homeNodes = [v21 homeNodes];
+    if ([homeNodes count])
     {
       v54 = v19;
-      v55 = v18;
-      v53 = v15;
-      v23 = [PGGraphMonthNodeCollection monthNodesForMonth:v56 inGraph:v14];
-      v24 = [PGGraphYearNodeCollection yearNodesForYear:a4 inGraph:v14];
+      v55 = reporterCopy;
+      v53 = cacheCopy;
+      v23 = [PGGraphMonthNodeCollection monthNodesForMonth:monthCopy inGraph:graphCopy];
+      v24 = [PGGraphYearNodeCollection yearNodesForYear:year inGraph:graphCopy];
       v52 = v23;
-      v25 = [v23 dateNodes];
+      dateNodes = [v23 dateNodes];
       v51 = v24;
-      v26 = [v24 dateNodes];
-      v27 = [v25 collectionByIntersecting:v26];
+      dateNodes2 = [v24 dateNodes];
+      v27 = [dateNodes collectionByIntersecting:dateNodes2];
 
       v50 = v27;
       [v27 momentNodes];
-      v28 = v47 = v14;
+      v28 = v47 = graphCopy;
       v29 = MEMORY[0x277D22C90];
       v30 = +[PGGraphMomentNode addressOfMoment];
       v66[0] = v30;
       +[PGGraphAddressNode homeOfAddress];
-      v31 = v46 = a4;
+      v31 = v46 = year;
       v66[1] = v31;
       v32 = [MEMORY[0x277CBEA60] arrayWithObjects:v66 count:2];
       v33 = [v29 chain:v32];
@@ -63,16 +63,16 @@
       v48 = v33;
       v49 = v28;
       v34 = [MEMORY[0x277D22BF8] adjacencyWithSources:v28 relation:v33 targetsClass:objc_opt_class()];
-      v35 = [v34 intersectingTargetsWith:v22];
+      v35 = [v34 intersectingTargetsWith:homeNodes];
 
       if ([v35 sourcesCount])
       {
-        v14 = v47;
+        graphCopy = v47;
         v36 = [v53 momentNodesWithBlockedFeatureInGraph:v47 progressReporter:v55];
         [v35 subtractingSourcesWith:v36];
-        v37 = v57 = v16;
+        v37 = v57 = libraryCopy;
 
-        v38 = [v37 transposed];
+        transposed = [v37 transposed];
         v58[0] = MEMORY[0x277D85DD0];
         v58[1] = 3221225472;
         v58[2] = __164__PGLastMonthAtHomeMemoryGenerator_lastMonthAtHomeMemoriesForMonth_year_inGraph_momentNodesWithBlockedFeatureCache_photoLibrary_loggingConnection_progressReporter___block_invoke;
@@ -81,29 +81,29 @@
         v59 = v54;
         v39 = v20;
         v60 = v39;
-        v61 = v17;
-        [v38 enumerateTargetsBySourceWithBlock:v58];
+        v61 = connectionCopy;
+        [transposed enumerateTargetsBySourceWithBlock:v58];
 
         v40 = v39;
-        v15 = v53;
+        cacheCopy = v53;
 
         v35 = v37;
-        v18 = v55;
-        v16 = v57;
+        reporterCopy = v55;
+        libraryCopy = v57;
       }
 
       else
       {
-        v14 = v47;
-        v15 = v53;
-        v18 = v55;
-        if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
+        graphCopy = v47;
+        cacheCopy = v53;
+        reporterCopy = v55;
+        if (os_log_type_enabled(connectionCopy, OS_LOG_TYPE_INFO))
         {
           *buf = 67109376;
-          v63 = v56;
+          v63 = monthCopy;
           v64 = 1024;
           v65 = v46;
-          _os_log_impl(&dword_22F0FC000, v17, OS_LOG_TYPE_INFO, "[PGLastMonthAtHomeMemoryGenerator] No moments detected at home in month: %d year: %d", buf, 0xEu);
+          _os_log_impl(&dword_22F0FC000, connectionCopy, OS_LOG_TYPE_INFO, "[PGLastMonthAtHomeMemoryGenerator] No moments detected at home in month: %d year: %d", buf, 0xEu);
         }
 
         v43 = v20;
@@ -113,10 +113,10 @@
 
     else
     {
-      if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
+      if (os_log_type_enabled(connectionCopy, OS_LOG_TYPE_INFO))
       {
         *buf = 0;
-        _os_log_impl(&dword_22F0FC000, v17, OS_LOG_TYPE_INFO, "[PGLastMonthAtHomeMemoryGenerator] No home nodes found for me node. Not generating last month at home memories.", buf, 2u);
+        _os_log_impl(&dword_22F0FC000, connectionCopy, OS_LOG_TYPE_INFO, "[PGLastMonthAtHomeMemoryGenerator] No home nodes found for me node. Not generating last month at home memories.", buf, 2u);
       }
 
       v42 = v20;
@@ -125,10 +125,10 @@
 
   else
   {
-    if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
+    if (os_log_type_enabled(connectionCopy, OS_LOG_TYPE_INFO))
     {
       *buf = 0;
-      _os_log_impl(&dword_22F0FC000, v17, OS_LOG_TYPE_INFO, "[PGLastMonthAtHomeMemoryGenerator] No me node found in graph. Not generating last month at home memories.", buf, 2u);
+      _os_log_impl(&dword_22F0FC000, connectionCopy, OS_LOG_TYPE_INFO, "[PGLastMonthAtHomeMemoryGenerator] No me node found in graph. Not generating last month at home memories.", buf, 2u);
     }
 
     v41 = v20;
@@ -190,15 +190,15 @@ void __164__PGLastMonthAtHomeMemoryGenerator_lastMonthAtHomeMemoriesForMonth_yea
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (id)titleGeneratorForTriggeredMemory:(id)a3 withKeyAsset:(id)a4 curatedAssets:(id)a5 extendedCuratedAssets:(id)a6 titleGenerationContext:(id)a7 inGraph:(id)a8
+- (id)titleGeneratorForTriggeredMemory:(id)memory withKeyAsset:(id)asset curatedAssets:(id)assets extendedCuratedAssets:(id)curatedAssets titleGenerationContext:(id)context inGraph:(id)graph
 {
-  v9 = a7;
-  v10 = a3;
+  contextCopy = context;
+  memoryCopy = memory;
   v11 = [PGHomeAggregationMemoryTitleGenerator alloc];
-  v12 = [v10 memoryMomentNodes];
+  memoryMomentNodes = [memoryCopy memoryMomentNodes];
 
-  v13 = [v12 temporarySet];
-  v14 = [(PGHomeAggregationMemoryTitleGenerator *)v11 initWithMomentNodes:v13 titleGenerationContext:v9];
+  temporarySet = [memoryMomentNodes temporarySet];
+  v14 = [(PGHomeAggregationMemoryTitleGenerator *)v11 initWithMomentNodes:temporarySet titleGenerationContext:contextCopy];
 
   return v14;
 }

@@ -23,8 +23,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277D0C8C8] sharedTheme];
-  [v3 clearResourceCache];
+  mEMORY[0x277D0C8C8] = [MEMORY[0x277D0C8C8] sharedTheme];
+  [mEMORY[0x277D0C8C8] clearResourceCache];
 
   v4.receiver = self;
   v4.super_class = GKAchievementViewController;
@@ -34,7 +34,7 @@
 - (void)notifyDelegateOnWillFinish
 {
   WeakRetained = objc_loadWeakRetained(&self->_achievementDelegate);
-  v4 = [(GKGameCenterViewController *)self gameCenterDelegate];
+  gameCenterDelegate = [(GKGameCenterViewController *)self gameCenterDelegate];
   if (objc_opt_respondsToSelector())
   {
     v5 = WeakRetained;
@@ -56,7 +56,7 @@
       goto LABEL_9;
     }
 
-    v5 = v4;
+    v5 = gameCenterDelegate;
   }
 
   [v5 achievementViewControllerDidFinish:self];

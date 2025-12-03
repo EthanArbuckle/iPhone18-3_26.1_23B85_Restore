@@ -1,6 +1,6 @@
 @interface MTRScenesManagementClusterSceneInfoStruct
 - (MTRScenesManagementClusterSceneInfoStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -36,26 +36,26 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRScenesManagementClusterSceneInfoStruct);
-  v5 = [(MTRScenesManagementClusterSceneInfoStruct *)self sceneCount];
-  [(MTRScenesManagementClusterSceneInfoStruct *)v4 setSceneCount:v5];
+  sceneCount = [(MTRScenesManagementClusterSceneInfoStruct *)self sceneCount];
+  [(MTRScenesManagementClusterSceneInfoStruct *)v4 setSceneCount:sceneCount];
 
-  v6 = [(MTRScenesManagementClusterSceneInfoStruct *)self currentScene];
-  [(MTRScenesManagementClusterSceneInfoStruct *)v4 setCurrentScene:v6];
+  currentScene = [(MTRScenesManagementClusterSceneInfoStruct *)self currentScene];
+  [(MTRScenesManagementClusterSceneInfoStruct *)v4 setCurrentScene:currentScene];
 
-  v7 = [(MTRScenesManagementClusterSceneInfoStruct *)self currentGroup];
-  [(MTRScenesManagementClusterSceneInfoStruct *)v4 setCurrentGroup:v7];
+  currentGroup = [(MTRScenesManagementClusterSceneInfoStruct *)self currentGroup];
+  [(MTRScenesManagementClusterSceneInfoStruct *)v4 setCurrentGroup:currentGroup];
 
-  v8 = [(MTRScenesManagementClusterSceneInfoStruct *)self sceneValid];
-  [(MTRScenesManagementClusterSceneInfoStruct *)v4 setSceneValid:v8];
+  sceneValid = [(MTRScenesManagementClusterSceneInfoStruct *)self sceneValid];
+  [(MTRScenesManagementClusterSceneInfoStruct *)v4 setSceneValid:sceneValid];
 
-  v9 = [(MTRScenesManagementClusterSceneInfoStruct *)self remainingCapacity];
-  [(MTRScenesManagementClusterSceneInfoStruct *)v4 setRemainingCapacity:v9];
+  remainingCapacity = [(MTRScenesManagementClusterSceneInfoStruct *)self remainingCapacity];
+  [(MTRScenesManagementClusterSceneInfoStruct *)v4 setRemainingCapacity:remainingCapacity];
 
-  v10 = [(MTRScenesManagementClusterSceneInfoStruct *)self fabricIndex];
-  [(MTRScenesManagementClusterSceneInfoStruct *)v4 setFabricIndex:v10];
+  fabricIndex = [(MTRScenesManagementClusterSceneInfoStruct *)self fabricIndex];
+  [(MTRScenesManagementClusterSceneInfoStruct *)v4 setFabricIndex:fabricIndex];
 
   return v4;
 }

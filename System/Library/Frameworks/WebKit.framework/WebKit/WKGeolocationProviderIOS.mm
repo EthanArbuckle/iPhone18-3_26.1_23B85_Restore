@@ -1,16 +1,16 @@
 @interface WKGeolocationProviderIOS
-- (WKGeolocationProviderIOS)initWithProcessPool:(void *)a3;
+- (WKGeolocationProviderIOS)initWithProcessPool:(void *)pool;
 - (id).cxx_construct;
-- (uint64_t)decidePolicyForGeolocationRequestFromOrigin:(WTF *)this completionHandler:(void *)a2 view:;
-- (uint64_t)decidePolicyForGeolocationRequestFromOrigin:(uint64_t)a1 completionHandler:(int)a2 view:;
+- (uint64_t)decidePolicyForGeolocationRequestFromOrigin:(WTF *)this completionHandler:(void *)handler view:;
+- (uint64_t)decidePolicyForGeolocationRequestFromOrigin:(uint64_t)origin completionHandler:(int)handler view:;
 - (void)_startUpdating;
 - (void)_stopUpdating;
-- (void)decidePolicyForGeolocationRequestFromOrigin:(void *)a1 completionHandler:view:;
-- (void)decidePolicyForGeolocationRequestFromOrigin:(void *)a3 completionHandler:(void *)a4 view:(id)a5;
-- (void)errorOccurred:(id)a3;
+- (void)decidePolicyForGeolocationRequestFromOrigin:(void *)origin completionHandler:(void *)handler view:(id)view;
+- (void)decidePolicyForGeolocationRequestFromOrigin:(void *)origin completionHandler:view:;
+- (void)errorOccurred:(id)occurred;
 - (void)geolocationAuthorizationDenied;
 - (void)geolocationAuthorizationGranted;
-- (void)positionChanged:(id)a3;
+- (void)positionChanged:(id)changed;
 @end
 
 @implementation WKGeolocationProviderIOS
@@ -42,15 +42,15 @@
   }
 }
 
-- (WKGeolocationProviderIOS)initWithProcessPool:(void *)a3
+- (WKGeolocationProviderIOS)initWithProcessPool:(void *)pool
 {
   v20.receiver = self;
   v20.super_class = WKGeolocationProviderIOS;
   v4 = [(WKGeolocationProviderIOS *)&v20 init];
   if (v4)
   {
-    CFRetain(*(a3 + 1));
-    v5 = *(a3 + 1);
+    CFRetain(*(pool + 1));
+    v5 = *(pool + 1);
     if (v5 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       __break(0xC471u);
@@ -61,11 +61,11 @@
       if (![v5 _coreLocationProvider])
       {
 LABEL_18:
-        CFRelease(*(a3 + 1));
+        CFRelease(*(pool + 1));
         return v4;
       }
 
-      v6 = WebKit::WebProcessPool::supplement<WebKit::WebGeolocationManagerProxy>(a3);
+      v6 = WebKit::WebProcessPool::supplement<WebKit::WebGeolocationManagerProxy>(pool);
       v7 = v6;
       if (v6)
       {
@@ -96,14 +96,14 @@ LABEL_18:
       }
 
       WKGeolocationManagerSetProvider(v9, &v16);
-      v10 = *(a3 + 1);
+      v10 = *(pool + 1);
       if (!v10 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
-        v11 = [v10 _coreLocationProvider];
-        v12 = v11;
-        if (v11)
+        _coreLocationProvider = [v10 _coreLocationProvider];
+        v12 = _coreLocationProvider;
+        if (_coreLocationProvider)
         {
-          v13 = v11;
+          v13 = _coreLocationProvider;
         }
 
         v14 = v4->_coreLocationProvider.m_ptr;
@@ -127,36 +127,36 @@ LABEL_18:
   return v4;
 }
 
-- (void)decidePolicyForGeolocationRequestFromOrigin:(void *)a3 completionHandler:(void *)a4 view:(id)a5
+- (void)decidePolicyForGeolocationRequestFromOrigin:(void *)origin completionHandler:(void *)handler view:(id)view
 {
   v69 = *MEMORY[0x1E69E9840];
-  WebCore::RegistrableDomain::RegistrableDomain(&v47, (a3 + 208));
-  MEMORY[0x19EB01DE0](v48, [a5 URL]);
-  v49 = *a3;
-  WebCore::ResourceRequestBase::RequestData::RequestData(v50, a3 + 8);
-  v9 = *(a3 + 10);
-  *(a3 + 20) = 0;
-  *(a3 + 21) = 0;
+  WebCore::RegistrableDomain::RegistrableDomain(&v47, (origin + 208));
+  MEMORY[0x19EB01DE0](v48, [view URL]);
+  v49 = *origin;
+  WebCore::ResourceRequestBase::RequestData::RequestData(v50, origin + 8);
+  v9 = *(origin + 10);
+  *(origin + 20) = 0;
+  *(origin + 21) = 0;
   *&v50[152] = v9;
-  v10 = *(a3 + 22);
-  v11 = *(a3 + 23);
-  *(a3 + 22) = 0;
+  v10 = *(origin + 22);
+  v11 = *(origin + 23);
+  *(origin + 22) = 0;
   v51 = v10;
   v52 = v11;
-  v53 = *(a3 + 192);
-  v12 = *(a3 + 25);
-  *(a3 + 25) = 0;
+  v53 = *(origin + 192);
+  v12 = *(origin + 25);
+  *(origin + 25) = 0;
   v54 = v12;
   LOBYTE(v55) = 0;
   v57 = -1;
-  v13 = *(a3 + 232);
-  if (!*(a3 + 232))
+  v13 = *(origin + 232);
+  if (!*(origin + 232))
   {
-    v14 = *(a3 + 13);
-    *(a3 + 26) = 0;
-    *(a3 + 27) = 0;
+    v14 = *(origin + 13);
+    *(origin + 26) = 0;
+    *(origin + 27) = 0;
     v55 = v14;
-    v56 = *(a3 + 56);
+    v56 = *(origin + 56);
 LABEL_3:
     v57 = v13;
     goto LABEL_4;
@@ -164,35 +164,35 @@ LABEL_3:
 
   if (v13 != 255)
   {
-    v55 = *(a3 + 13);
+    v55 = *(origin + 13);
     goto LABEL_3;
   }
 
 LABEL_4:
-  v15 = *(a3 + 30);
-  *(a3 + 30) = 0;
-  v16 = *(a3 + 264);
-  v17 = *(a3 + 280);
-  v59 = *(a3 + 248);
+  v15 = *(origin + 30);
+  *(origin + 30) = 0;
+  v16 = *(origin + 264);
+  v17 = *(origin + 280);
+  v59 = *(origin + 248);
   v60 = v16;
   v61 = v17;
-  v18 = *(a3 + 37);
-  v19 = *(a3 + 38);
+  v18 = *(origin + 37);
+  v19 = *(origin + 38);
   v58 = v15;
   v62 = v18;
   v63 = v19;
-  *(a3 + 38) = 0;
-  v20 = *(a3 + 328);
-  v64 = *(a3 + 312);
+  *(origin + 38) = 0;
+  v20 = *(origin + 328);
+  v64 = *(origin + 312);
   v65 = v20;
-  v66 = *(a3 + 86);
-  v21 = *a4;
-  *a4 = 0;
+  v66 = *(origin + 86);
+  v21 = *handler;
+  *handler = 0;
   v67 = v21;
-  v68 = a5;
-  if (a5)
+  viewCopy = view;
+  if (view)
   {
-    v22 = a5;
+    viewCopy2 = view;
   }
 
   m_start = self->_requestsWaitingForCoreLocationAuthorization.m_start;
@@ -321,7 +321,7 @@ LABEL_34:
 
   else
   {
-    v42 = self;
+    selfCopy = self;
     v43 = WTF::fastMalloc(0x18);
     *v43 = &unk_1F110D840;
     v43[1] = self;
@@ -399,13 +399,13 @@ LABEL_28:
   self->_requestsWaitingForCoreLocationAuthorization.m_start = v7;
   v8 = v32;
   v32 = 0;
-  v9 = self;
+  selfCopy = self;
   v10 = WTF::fastMalloc(0x18);
   *v10 = &unk_1F110D868;
   v10[1] = v8;
   v10[2] = self;
   v28 = v10;
-  v11 = [v33 UIDelegate];
+  uIDelegate = [v33 UIDelegate];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
     v14 = [[WKWebAllowDenyPolicyListener alloc] initWithCompletionHandler:&v28];
@@ -455,7 +455,7 @@ LABEL_18:
     CFRelease(*(v29[0] + 8));
   }
 
-  WebKit::CompletionHandlerCallChecker::create(v11, sel__webView_requestGeolocationAuthorizationForURL_frame_decisionHandler_, v29);
+  WebKit::CompletionHandlerCallChecker::create(uIDelegate, sel__webView_requestGeolocationAuthorizationForURL_frame_decisionHandler_, v29);
   v21 = v33;
   WTF::URL::createCFURL(&v27, v30);
   v22 = v27;
@@ -468,7 +468,7 @@ LABEL_18:
   v24[3] = &WTF::BlockPtr<void ()(BOOL)>::fromCallable<[WKGeolocationProviderIOS(WebGeolocationCoreLocationUpdateListener) geolocationAuthorizationGranted]::$_1>([WKGeolocationProviderIOS(WebGeolocationCoreLocationUpdateListener) geolocationAuthorizationGranted]::$_1)::descriptor;
   v24[4] = v10;
   v24[5] = v23;
-  [(WebKit::CompletionHandlerCallChecker *)v11 _webView:v21 requestGeolocationAuthorizationForURL:v22 frame:v14 decisionHandler:v24];
+  [(WebKit::CompletionHandlerCallChecker *)uIDelegate _webView:v21 requestGeolocationAuthorizationForURL:v22 frame:v14 decisionHandler:v24];
   _Block_release(v24);
   v25 = v27;
   v27 = 0;
@@ -613,12 +613,12 @@ LABEL_25:
   }
 }
 
-- (void)positionChanged:(id)a3
+- (void)positionChanged:(id)changed
 {
-  v4 = (a3 + 8);
-  if (a3)
+  v4 = (changed + 8);
+  if (changed)
   {
-    CFRetain(*(a3 + 2));
+    CFRetain(*(changed + 2));
   }
 
   m_ptr = self->_lastActivePosition.m_ptr;
@@ -631,13 +631,13 @@ LABEL_25:
 
   v6 = self->_geolocationManager.m_ptr;
 
-  WebKit::WebGeolocationManagerProxy::providerDidChangePosition(v6, v4, a3);
+  WebKit::WebGeolocationManagerProxy::providerDidChangePosition(v6, v4, changed);
 }
 
-- (void)errorOccurred:(id)a3
+- (void)errorOccurred:(id)occurred
 {
   m_ptr = self->_geolocationManager.m_ptr;
-  MEMORY[0x19EB02040](&v7, a3);
+  MEMORY[0x19EB02040](&v7, occurred);
   WebKit::WebGeolocationManagerProxy::providerDidFailToDeterminePosition(m_ptr, &v7, v4);
   v6 = v7;
   v7 = 0;
@@ -650,19 +650,19 @@ LABEL_25:
   }
 }
 
-- (void)decidePolicyForGeolocationRequestFromOrigin:(void *)a1 completionHandler:view:
+- (void)decidePolicyForGeolocationRequestFromOrigin:(void *)origin completionHandler:view:
 {
-  *a1 = &unk_1F110D840;
-  v2 = a1[2];
-  a1[2] = 0;
+  *origin = &unk_1F110D840;
+  v2 = origin[2];
+  origin[2] = 0;
   if (v2)
   {
   }
 
-  return a1;
+  return origin;
 }
 
-- (uint64_t)decidePolicyForGeolocationRequestFromOrigin:(WTF *)this completionHandler:(void *)a2 view:
+- (uint64_t)decidePolicyForGeolocationRequestFromOrigin:(WTF *)this completionHandler:(void *)handler view:
 {
   *this = &unk_1F110D840;
   v3 = *(this + 2);
@@ -671,13 +671,13 @@ LABEL_25:
   {
   }
 
-  return WTF::fastFree(this, a2);
+  return WTF::fastFree(this, handler);
 }
 
-- (uint64_t)decidePolicyForGeolocationRequestFromOrigin:(uint64_t)a1 completionHandler:(int)a2 view:
+- (uint64_t)decidePolicyForGeolocationRequestFromOrigin:(uint64_t)origin completionHandler:(int)handler view:
 {
-  v2 = *(a1 + 8);
-  if (a2)
+  v2 = *(origin + 8);
+  if (handler)
   {
     return [v2 geolocationAuthorizationGranted];
   }

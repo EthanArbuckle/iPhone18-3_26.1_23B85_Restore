@@ -1,67 +1,67 @@
 @interface PKCreditBalanceDetailsViewController
-- (BOOL)_hasFooterForSectionIndex:(unint64_t)a3;
+- (BOOL)_hasFooterForSectionIndex:(unint64_t)index;
 - (BOOL)_statementIsFromMonthOfMerge;
-- (BOOL)collectionView:(id)a3 shouldHighlightItemAtIndexPath:(id)a4;
-- (PKCreditBalanceDetailsViewController)initWithStyle:(int64_t)a3 transactionSourceCollection:(id)a4 familyCollection:(id)a5 webService:(id)a6 account:(id)a7 accountUserCollection:(id)a8 physicalCards:(id)a9 statement:(id)a10 previousStatements:(id)a11;
+- (BOOL)collectionView:(id)view shouldHighlightItemAtIndexPath:(id)path;
+- (PKCreditBalanceDetailsViewController)initWithStyle:(int64_t)style transactionSourceCollection:(id)collection familyCollection:(id)familyCollection webService:(id)service account:(id)account accountUserCollection:(id)userCollection physicalCards:(id)cards statement:(id)self0 previousStatements:(id)self1;
 - (id)_compositionalLayout;
-- (id)_createSummaryItemOfType:(unint64_t)a3;
+- (id)_createSummaryItemOfType:(unint64_t)type;
 - (id)_footerForTransactionLimitSection;
-- (id)_summaryItemForIndexPath:(id)a3;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5;
-- (id)viewControllerForStatement:(id)a3 style:(int64_t)a4;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
-- (unint64_t)_sectionForIndex:(unint64_t)a3;
-- (void)_configureFooterView:(id)a3 inSectionIndex:(unint64_t)a4;
-- (void)_configureHeaderView:(id)a3 inSectionIndex:(unint64_t)a4;
+- (id)_summaryItemForIndexPath:(id)path;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path;
+- (id)viewControllerForStatement:(id)statement style:(int64_t)style;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
+- (unint64_t)_sectionForIndex:(unint64_t)index;
+- (void)_configureFooterView:(id)view inSectionIndex:(unint64_t)index;
+- (void)_configureHeaderView:(id)view inSectionIndex:(unint64_t)index;
 - (void)_reloadData;
-- (void)_reportEventForPassIfNecessary:(id)a3;
+- (void)_reportEventForPassIfNecessary:(id)necessary;
 - (void)_sortStatementsForPresentation;
 - (void)_updateStatements;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)statementsChangedForAccountIdentifier:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)statementsChangedForAccountIdentifier:(id)identifier;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)viewWillLayoutSubviews;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation PKCreditBalanceDetailsViewController
 
-- (PKCreditBalanceDetailsViewController)initWithStyle:(int64_t)a3 transactionSourceCollection:(id)a4 familyCollection:(id)a5 webService:(id)a6 account:(id)a7 accountUserCollection:(id)a8 physicalCards:(id)a9 statement:(id)a10 previousStatements:(id)a11
+- (PKCreditBalanceDetailsViewController)initWithStyle:(int64_t)style transactionSourceCollection:(id)collection familyCollection:(id)familyCollection webService:(id)service account:(id)account accountUserCollection:(id)userCollection physicalCards:(id)cards statement:(id)self0 previousStatements:(id)self1
 {
   v283 = *MEMORY[0x1E69E9840];
-  v257 = a4;
-  v256 = a5;
-  v255 = a6;
-  v258 = a7;
-  v254 = a8;
-  v17 = a9;
-  v253 = a10;
-  v252 = a11;
-  v18 = [(PKCreditBalanceDetailsViewController *)self _compositionalLayout];
+  collectionCopy = collection;
+  familyCollectionCopy = familyCollection;
+  serviceCopy = service;
+  accountCopy = account;
+  userCollectionCopy = userCollection;
+  cardsCopy = cards;
+  statementCopy = statement;
+  statementsCopy = statements;
+  _compositionalLayout = [(PKCreditBalanceDetailsViewController *)self _compositionalLayout];
   v274.receiver = self;
   v274.super_class = PKCreditBalanceDetailsViewController;
-  v19 = [(PKCreditBalanceDetailsViewController *)&v274 initWithCollectionViewLayout:v18];
+  v19 = [(PKCreditBalanceDetailsViewController *)&v274 initWithCollectionViewLayout:_compositionalLayout];
 
   if (v19)
   {
-    v19->_style = a3;
-    objc_storeStrong(&v19->_transactionSourceCollection, a4);
-    objc_storeStrong(&v19->_account, a7);
-    objc_storeStrong(&v19->_accountUserCollection, a8);
-    v20 = [v17 copy];
+    v19->_style = style;
+    objc_storeStrong(&v19->_transactionSourceCollection, collection);
+    objc_storeStrong(&v19->_account, account);
+    objc_storeStrong(&v19->_accountUserCollection, userCollection);
+    v20 = [cardsCopy copy];
     physicalCards = v19->_physicalCards;
     v19->_physicalCards = v20;
 
-    objc_storeStrong(&v19->_statement, a10);
-    objc_storeStrong(&v19->_statements, a11);
-    objc_storeStrong(&v19->_webService, a6);
+    objc_storeStrong(&v19->_statement, statement);
+    objc_storeStrong(&v19->_statements, statements);
+    objc_storeStrong(&v19->_webService, service);
     v19->_feature = [(PKAccount *)v19->_account feature];
-    objc_storeStrong(&v19->_familyCollection, a5);
+    objc_storeStrong(&v19->_familyCollection, familyCollection);
     v22 = objc_alloc_init(MEMORY[0x1E695DF70]);
     [(PKAccount *)v19->_account stateReason];
     if (!PKAccountStateReasonIsInMerge() || v19->_statement || (-[PKCreditBalanceDetailsViewController _createSummaryItemOfType:](v19, "_createSummaryItemOfType:", 17), v23 = objc_claimAutoreleasedReturnValue(), accountMergingItem = v19->_accountMergingItem, v19->_accountMergingItem = v23, accountMergingItem, [v22 addObject:&unk_1F3CC7280], v19->_statement))
@@ -69,8 +69,8 @@
       [v22 addObject:&unk_1F3CC7298];
     }
 
-    v251 = [(PKCreditBalanceDetailsViewController *)v19 _statementIsFromMonthOfMerge];
-    if (v251)
+    _statementIsFromMonthOfMerge = [(PKCreditBalanceDetailsViewController *)v19 _statementIsFromMonthOfMerge];
+    if (_statementIsFromMonthOfMerge)
     {
       [v22 addObject:&unk_1F3CC72B0];
     }
@@ -80,7 +80,7 @@
       [v22 addObject:&unk_1F3CC72C8];
     }
 
-    v250 = v17;
+    v250 = cardsCopy;
     if (v19->_statement)
     {
       [v22 addObjectsFromArray:&unk_1F3CC8390];
@@ -89,25 +89,25 @@
     else
     {
       v25 = v22;
-      v26 = [(PKAccount *)v19->_account creditDetails];
-      v27 = [v26 accountSummary];
+      creditDetails = [(PKAccount *)v19->_account creditDetails];
+      accountSummary = [creditDetails accountSummary];
       accountSummary = v19->_accountSummary;
-      v19->_accountSummary = v27;
+      v19->_accountSummary = accountSummary;
 
-      v29 = [(PKAccount *)v19->_account creditDetails];
-      v30 = [v29 accountSummary];
-      v31 = [v30 currentStatement];
+      creditDetails2 = [(PKAccount *)v19->_account creditDetails];
+      accountSummary2 = [creditDetails2 accountSummary];
+      currentStatement = [accountSummary2 currentStatement];
       previousStatement = v19->_previousStatement;
-      v19->_previousStatement = v31;
+      v19->_previousStatement = currentStatement;
 
-      v33 = [(PKAccount *)v19->_account creditDetails];
-      v34 = [v33 accountSummary];
-      v35 = [v34 installmentBalance];
+      creditDetails3 = [(PKAccount *)v19->_account creditDetails];
+      accountSummary3 = [creditDetails3 accountSummary];
+      installmentBalance = [accountSummary3 installmentBalance];
 
-      if (v35)
+      if (installmentBalance)
       {
-        v36 = [MEMORY[0x1E696AB90] zero];
-        v37 = [v35 compare:v36];
+        zero = [MEMORY[0x1E696AB90] zero];
+        v37 = [installmentBalance compare:zero];
 
         if (v37 == 1)
         {
@@ -131,8 +131,8 @@
         v19->_spendLimitItems = v43;
       }
 
-      v45 = [(PKAccountUserCollection *)v19->_accountUserCollection currentAccountUser];
-      if (-[PKAccount accessLevel](v19->_account, "accessLevel") == 1 || ([v45 preferences], v46 = objc_claimAutoreleasedReturnValue(), v47 = objc_msgSend(v46, "showAvailableCredit"), v46, v47))
+      currentAccountUser = [(PKAccountUserCollection *)v19->_accountUserCollection currentAccountUser];
+      if (-[PKAccount accessLevel](v19->_account, "accessLevel") == 1 || ([currentAccountUser preferences], v46 = objc_claimAutoreleasedReturnValue(), v47 = objc_msgSend(v46, "showAvailableCredit"), v46, v47))
       {
         [v25 addObject:&unk_1F3CC7310];
       }
@@ -162,31 +162,31 @@
 
     if (!v19->_accountSummary)
     {
-      v63 = [(PKCreditAccountStatement *)v19->_statement totalBalance];
-      v64 = v63;
-      if (v63)
+      totalBalance = [(PKCreditAccountStatement *)v19->_statement totalBalance];
+      v64 = totalBalance;
+      if (totalBalance)
       {
-        v65 = v63;
+        statementBalance = totalBalance;
       }
 
       else
       {
-        v65 = [(PKCreditAccountStatement *)v19->_statement statementBalance];
+        statementBalance = [(PKCreditAccountStatement *)v19->_statement statementBalance];
       }
 
-      pageTagForAnalyticsReporting = v65;
+      pageTagForAnalyticsReporting = statementBalance;
 
-      v86 = [(PKCreditAccountStatement *)v19->_statement currencyCode];
-      v248 = PKCurrencyAmountCreate(pageTagForAnalyticsReporting, v86);
+      currencyCode = [(PKCreditAccountStatement *)v19->_statement currencyCode];
+      v248 = PKCurrencyAmountCreate(pageTagForAnalyticsReporting, currencyCode);
 
       v87 = v19->_balanceItem;
-      v88 = [v248 formattedStringValue];
-      [(PKDashboardBalanceItem *)v87 setBalance:v88];
+      formattedStringValue = [v248 formattedStringValue];
+      [(PKDashboardBalanceItem *)v87 setBalance:formattedStringValue];
 
       v89 = objc_alloc_init(MEMORY[0x1E696AB78]);
-      v90 = [(PKAccount *)v19->_account creditDetails];
-      v91 = [v90 productTimeZone];
-      [v89 setTimeZone:v91];
+      creditDetails4 = [(PKAccount *)v19->_account creditDetails];
+      productTimeZone = [creditDetails4 productTimeZone];
+      [v89 setTimeZone:productTimeZone];
 
       aBlock[0] = MEMORY[0x1E69E9820];
       aBlock[1] = 3221225472;
@@ -195,11 +195,11 @@
       v273 = v89;
       v246 = v89;
       v92 = _Block_copy(aBlock);
-      v93 = [(PKCreditAccountStatement *)v19->_statement openingDate];
-      v94 = v92[2](v92, v93, @"MMM d");
+      openingDate = [(PKCreditAccountStatement *)v19->_statement openingDate];
+      v94 = v92[2](v92, openingDate, @"MMM d");
 
-      v95 = [(PKCreditAccountStatement *)v19->_statement closingDate];
-      v96 = v92[2](v92, v95, @"MMM d yyyy");
+      closingDate = [(PKCreditAccountStatement *)v19->_statement closingDate];
+      v96 = v92[2](v92, closingDate, @"MMM d yyyy");
 
       v97 = v19->_balanceItem;
       v98 = PKLocalizedFeatureString();
@@ -257,19 +257,19 @@ LABEL_57:
           interestSummaryItem = v19->_interestSummaryItem;
           v19->_interestSummaryItem = v138;
 
-          if (v251)
+          if (_statementIsFromMonthOfMerge)
           {
-            v140 = [(PKAccount *)v19->_account creditDetails];
-            v141 = [v140 accountSummary];
-            v142 = [v141 mergeSummary];
+            creditDetails5 = [(PKAccount *)v19->_account creditDetails];
+            accountSummary4 = [creditDetails5 accountSummary];
+            mergeSummary = [accountSummary4 mergeSummary];
 
             v143 = objc_alloc_init(MEMORY[0x1E695DF70]);
             v268 = 0u;
             v269 = 0u;
             v270 = 0u;
             v271 = 0u;
-            v144 = [v142 accountDetails];
-            v145 = [v144 countByEnumeratingWithState:&v268 objects:v282 count:16];
+            accountDetails = [mergeSummary accountDetails];
+            v145 = [accountDetails countByEnumeratingWithState:&v268 objects:v282 count:16];
             if (v145)
             {
               v146 = v145;
@@ -280,13 +280,13 @@ LABEL_57:
                 {
                   if (*v269 != v147)
                   {
-                    objc_enumerationMutation(v144);
+                    objc_enumerationMutation(accountDetails);
                   }
 
                   v149 = *(*(&v268 + 1) + 8 * i);
                   v150 = [(PKCreditBalanceDetailsViewController *)v19 _createSummaryItemOfType:18];
                   [v150 setMergeSummaryAccountDetails:v149];
-                  v151 = [v149 ownerAltDSID];
+                  ownerAltDSID = [v149 ownerAltDSID];
                   v152 = PKAltDSIDIsCurrentUser();
 
                   if (v152)
@@ -300,15 +300,15 @@ LABEL_57:
                   }
                 }
 
-                v146 = [v144 countByEnumeratingWithState:&v268 objects:v282 count:16];
+                v146 = [accountDetails countByEnumeratingWithState:&v268 objects:v282 count:16];
               }
 
               while (v146);
             }
 
             v153 = [(PKCreditBalanceDetailsViewController *)v19 _createSummaryItemOfType:18];
-            v154 = [v142 mergeDate];
-            [v153 setMergeDate:v154];
+            mergeDate = [mergeSummary mergeDate];
+            [v153 setMergeDate:mergeDate];
 
             [v143 insertObject:v153 atIndex:0];
             v155 = [v143 copy];
@@ -319,21 +319,21 @@ LABEL_57:
           v157 = v19->_accountSummary;
           if (v157)
           {
-            v158 = [(PKCreditAccountSummary *)v157 mergeSummary];
-            if (v158)
+            mergeSummary2 = [(PKCreditAccountSummary *)v157 mergeSummary];
+            if (mergeSummary2)
             {
-              v159 = [(PKAccount *)v19->_account creditDetails];
-              v160 = [v159 isInMonthOfMerge];
+              creditDetails6 = [(PKAccount *)v19->_account creditDetails];
+              isInMonthOfMerge = [creditDetails6 isInMonthOfMerge];
 
-              if (v160)
+              if (isInMonthOfMerge)
               {
                 v161 = objc_alloc_init(MEMORY[0x1E695DF70]);
                 v264 = 0u;
                 v265 = 0u;
                 v266 = 0u;
                 v267 = 0u;
-                v162 = [v158 accountDetails];
-                v163 = [v162 countByEnumeratingWithState:&v264 objects:v281 count:16];
+                accountDetails2 = [mergeSummary2 accountDetails];
+                v163 = [accountDetails2 countByEnumeratingWithState:&v264 objects:v281 count:16];
                 if (v163)
                 {
                   v164 = v163;
@@ -344,23 +344,23 @@ LABEL_57:
                     {
                       if (*v265 != v165)
                       {
-                        objc_enumerationMutation(v162);
+                        objc_enumerationMutation(accountDetails2);
                       }
 
                       v167 = *(*(&v264 + 1) + 8 * j);
-                      v168 = [v167 statementBalance];
+                      statementBalance2 = [v167 statementBalance];
 
-                      if (v168)
+                      if (statementBalance2)
                       {
                         v169 = [(PKCreditBalanceDetailsViewController *)v19 _createSummaryItemOfType:0];
                         [v169 setMergeSummaryAccountDetails:v167];
-                        v170 = [v158 mergeDate];
-                        [v169 setMergeDate:v170];
+                        mergeDate2 = [mergeSummary2 mergeDate];
+                        [v169 setMergeDate:mergeDate2];
 
-                        v171 = [v167 ownerAltDSID];
-                        LODWORD(v170) = PKAltDSIDIsCurrentUser();
+                        ownerAltDSID2 = [v167 ownerAltDSID];
+                        LODWORD(mergeDate2) = PKAltDSIDIsCurrentUser();
 
-                        if (v170)
+                        if (mergeDate2)
                         {
                           [(NSArray *)v161 insertObject:v169 atIndex:0];
                         }
@@ -372,7 +372,7 @@ LABEL_57:
                       }
                     }
 
-                    v164 = [v162 countByEnumeratingWithState:&v264 objects:v281 count:16];
+                    v164 = [accountDetails2 countByEnumeratingWithState:&v264 objects:v281 count:16];
                   }
 
                   while (v164);
@@ -405,12 +405,12 @@ LABEL_111:
 
           else
           {
-            v181 = [(PKAccount *)v19->_account creditDetails];
-            v182 = [v181 accountSummary];
-            v158 = [v182 mergeSummary];
+            creditDetails7 = [(PKAccount *)v19->_account creditDetails];
+            accountSummary5 = [creditDetails7 accountSummary];
+            mergeSummary2 = [accountSummary5 mergeSummary];
 
-            v183 = !v251;
-            if (!v158)
+            v183 = !_statementIsFromMonthOfMerge;
+            if (!mergeSummary2)
             {
               v183 = 1;
             }
@@ -422,8 +422,8 @@ LABEL_111:
               v261 = 0u;
               v262 = 0u;
               v263 = 0u;
-              v184 = [v158 accountDetails];
-              v185 = [v184 countByEnumeratingWithState:&v260 objects:v278 count:16];
+              accountDetails3 = [mergeSummary2 accountDetails];
+              v185 = [accountDetails3 countByEnumeratingWithState:&v260 objects:v278 count:16];
               if (v185)
               {
                 v186 = v185;
@@ -434,26 +434,26 @@ LABEL_111:
                   {
                     if (*v261 != v187)
                     {
-                      objc_enumerationMutation(v184);
+                      objc_enumerationMutation(accountDetails3);
                     }
 
                     v189 = *(*(&v260 + 1) + 8 * k);
-                    v190 = [v189 statementBalance];
+                    statementBalance3 = [v189 statementBalance];
 
-                    if (v190)
+                    if (statementBalance3)
                     {
                       v191 = [(PKCreditBalanceDetailsViewController *)v19 _createSummaryItemOfType:0];
                       [v191 setMergeSummaryAccountDetails:v189];
-                      v192 = [v158 mergeDate];
-                      [v191 setMergeDate:v192];
+                      mergeDate3 = [mergeSummary2 mergeDate];
+                      [v191 setMergeDate:mergeDate3];
 
-                      v193 = [(NSArray *)v19->_statements firstObject];
-                      [v191 setStatement:v193];
+                      firstObject = [(NSArray *)v19->_statements firstObject];
+                      [v191 setStatement:firstObject];
 
-                      v194 = [v189 ownerAltDSID];
-                      LODWORD(v193) = PKAltDSIDIsCurrentUser();
+                      ownerAltDSID3 = [v189 ownerAltDSID];
+                      LODWORD(firstObject) = PKAltDSIDIsCurrentUser();
 
-                      if (v193)
+                      if (firstObject)
                       {
                         [(NSArray *)v161 insertObject:v191 atIndex:0];
                       }
@@ -465,7 +465,7 @@ LABEL_111:
                     }
                   }
 
-                  v186 = [v184 countByEnumeratingWithState:&v260 objects:v278 count:16];
+                  v186 = [accountDetails3 countByEnumeratingWithState:&v260 objects:v278 count:16];
                 }
 
                 while (v186);
@@ -538,15 +538,15 @@ LABEL_113:
               v222 = *(MEMORY[0x1E695F058] + 8);
               v223 = *(MEMORY[0x1E695F058] + 16);
               v224 = *(MEMORY[0x1E695F058] + 24);
-              v225 = [(PKDashboardTitleHeaderView *)v220 initWithFrame:*MEMORY[0x1E695F058], v222, v223, v224];
+              v224 = [(PKDashboardTitleHeaderView *)v220 initWithFrame:*MEMORY[0x1E695F058], v222, v223, v224];
               sampleHeaderView = v19->_sampleHeaderView;
-              v19->_sampleHeaderView = v225;
+              v19->_sampleHeaderView = v224;
 
-              v227 = [[PKDashboardFooterTextView alloc] initWithFrame:v221, v222, v223, v224];
+              v2242 = [[PKDashboardFooterTextView alloc] initWithFrame:v221, v222, v223, v224];
               sampleFooterView = v19->_sampleFooterView;
-              v19->_sampleFooterView = v227;
+              v19->_sampleFooterView = v2242;
 
-              v229 = [objc_alloc(MEMORY[0x1E69B8698]) initWithTransactionSourceCollection:v19->_transactionSourceCollection account:v258];
+              v229 = [objc_alloc(MEMORY[0x1E69B8698]) initWithTransactionSourceCollection:v19->_transactionSourceCollection account:accountCopy];
               fetcher = v19->_fetcher;
               v19->_fetcher = v229;
 
@@ -555,14 +555,14 @@ LABEL_113:
               v19->_monthYearFormatter = v231;
 
               [(NSDateFormatter *)v19->_monthYearFormatter setLocalizedDateFormatFromTemplate:@"MMMM yyyy"];
-              v233 = [MEMORY[0x1E69B8400] sharedInstance];
-              [v233 registerObserver:v19];
+              mEMORY[0x1E69B8400] = [MEMORY[0x1E69B8400] sharedInstance];
+              [mEMORY[0x1E69B8400] registerObserver:v19];
 
-              v234 = [(PKCreditBalanceDetailsViewController *)v19 navigationItem];
+              navigationItem = [(PKCreditBalanceDetailsViewController *)v19 navigationItem];
               if ((_UISolariumEnabled() & 1) == 0)
               {
-                [v234 pkui_setupScrollEdgeChromelessAppearance];
-                [v234 pkui_enableManualScrollEdgeAppearanceWithInitialProgress:0.0];
+                [navigationItem pkui_setupScrollEdgeChromelessAppearance];
+                [navigationItem pkui_enableManualScrollEdgeAppearanceWithInitialProgress:0.0];
               }
 
               if (v19->_style)
@@ -575,12 +575,12 @@ LABEL_113:
                 v235 = 1;
               }
 
-              [v234 setLargeTitleDisplayMode:v235];
-              [v234 setBackButtonDisplayMode:2];
+              [navigationItem setLargeTitleDisplayMode:v235];
+              [navigationItem setBackButtonDisplayMode:2];
               if (v19->_accountSummary)
               {
                 v236 = PKLocalizedFeatureString();
-                [v234 setTitle:v236];
+                [navigationItem setTitle:v236];
               }
 
               else
@@ -593,16 +593,16 @@ LABEL_127:
                   v241 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v275 count:1];
                   v242 = [(PKCreditBalanceDetailsViewController *)v19 registerForTraitChanges:v241 withHandler:&__block_literal_global_83];
 
-                  v17 = v250;
+                  cardsCopy = v250;
                   goto LABEL_128;
                 }
 
-                v238 = [(PKCreditAccountStatement *)statement openingDate];
-                v239 = [(PKCreditAccountStatement *)v19->_statement closingDate];
+                openingDate2 = [(PKCreditAccountStatement *)statement openingDate];
+                closingDate2 = [(PKCreditAccountStatement *)v19->_statement closingDate];
                 v236 = PKDatesMidpoint();
 
                 v240 = [(NSDateFormatter *)v19->_monthYearFormatter stringFromDate:v236];
-                [v234 setTitle:v240];
+                [navigationItem setTitle:v240];
               }
 
               goto LABEL_127;
@@ -632,13 +632,13 @@ LABEL_112:
           goto LABEL_113;
         }
 
-        v177 = [(PKCreditAccountSummary *)v176 currentStatement];
-        v135 = v177;
-        if (v177)
+        currentStatement2 = [(PKCreditAccountSummary *)v176 currentStatement];
+        v135 = currentStatement2;
+        if (currentStatement2)
         {
-          v178 = [v177 identifier];
+          identifier = [currentStatement2 identifier];
 
-          if (v178)
+          if (identifier)
           {
             v179 = [(PKCreditBalanceDetailsViewController *)v19 _createSummaryItemOfType:0];
             v180 = v19->_lastStatementSummaryItem;
@@ -654,57 +654,57 @@ LABEL_112:
 
     if ([(PKAccount *)v19->_account accessLevel]== 1)
     {
-      v56 = [(PKAccount *)v19->_account creditDetails];
-      v57 = [v56 cardBalance];
+      creditDetails8 = [(PKAccount *)v19->_account creditDetails];
+      cardBalance = [creditDetails8 cardBalance];
 
-      v58 = [v57 amount];
-      v59 = [MEMORY[0x1E696AB90] zero];
-      v60 = [v58 compare:v59];
+      amount = [cardBalance amount];
+      zero2 = [MEMORY[0x1E696AB90] zero];
+      v60 = [amount compare:zero2];
 
       if (v60 == -1)
       {
-        v106 = [v57 negativeValue];
+        negativeValue = [cardBalance negativeValue];
 
         v107 = v19->_balanceItem;
-        v62 = [v106 formattedStringValue];
-        v108 = PKLocalizedPaymentString(&cfstr_AmountFormatRe.isa, &stru_1F3BD5BF0.isa, v62);
+        formattedStringValue2 = [negativeValue formattedStringValue];
+        v108 = PKLocalizedPaymentString(&cfstr_AmountFormatRe.isa, &stru_1F3BD5BF0.isa, formattedStringValue2);
         [(PKDashboardBalanceItem *)v107 setBalance:v108];
 
-        v57 = v106;
+        cardBalance = negativeValue;
       }
 
       else
       {
         v61 = v19->_balanceItem;
-        v62 = [v57 formattedStringValue];
-        [(PKDashboardBalanceItem *)v61 setBalance:v62];
+        formattedStringValue2 = [cardBalance formattedStringValue];
+        [(PKDashboardBalanceItem *)v61 setBalance:formattedStringValue2];
       }
 
       v109 = v19->_balanceItem;
       v110 = PKLocalizedFeatureString();
       [(PKDashboardBalanceItem *)v109 setTitle:v110];
 
-      v69 = [(PKCreditAccountSummary *)v19->_accountSummary availableCredit];
-      v111 = [(PKAccount *)v19->_account creditDetails];
-      v112 = [v111 currencyCode];
+      availableCredit = [(PKCreditAccountSummary *)v19->_accountSummary availableCredit];
+      creditDetails9 = [(PKAccount *)v19->_account creditDetails];
+      currencyCode2 = [creditDetails9 currencyCode];
 
-      if (!v69 || !v112)
+      if (!availableCredit || !currencyCode2)
       {
         goto LABEL_52;
       }
 
-      v245 = v112;
-      v247 = v57;
-      v78 = PKCurrencyAmountCreate(v69, v112);
+      v245 = currencyCode2;
+      v247 = cardBalance;
+      currencyCode3 = PKCurrencyAmountCreate(availableCredit, currencyCode2);
       v113 = v19->_balanceItem;
-      [v258 feature];
-      v114 = [v78 formattedStringValue];
-      v115 = PKLocalizedFeatureString();
-      [(PKDashboardBalanceItem *)v113 setAvailableCredit:v115, v114];
+      [accountCopy feature];
+      formattedStringValue3 = [currencyCode3 formattedStringValue];
+      monthlySpendLimitAmount = PKLocalizedFeatureString();
+      [(PKDashboardBalanceItem *)v113 setAvailableCredit:monthlySpendLimitAmount, formattedStringValue3];
 LABEL_51:
 
-      v112 = v245;
-      v57 = v247;
+      currencyCode2 = v245;
+      cardBalance = v247;
 LABEL_52:
 
       v129 = *MEMORY[0x1E69BA560];
@@ -713,15 +713,15 @@ LABEL_52:
       goto LABEL_53;
     }
 
-    v66 = [(PKAccountUserCollection *)v19->_accountUserCollection currentAccountUser];
+    currentAccountUser2 = [(PKAccountUserCollection *)v19->_accountUserCollection currentAccountUser];
     v67 = v19->_accountSummary;
-    v247 = v66;
-    v68 = [v66 altDSID];
-    v69 = [(PKCreditAccountSummary *)v67 accountUserActivityForAccountUserAltDSID:v68];
+    v247 = currentAccountUser2;
+    altDSID = [currentAccountUser2 altDSID];
+    availableCredit = [(PKCreditAccountSummary *)v67 accountUserActivityForAccountUserAltDSID:altDSID];
 
     v70 = [MEMORY[0x1E695DEE8] calendarWithIdentifier:*MEMORY[0x1E695D850]];
-    v71 = [MEMORY[0x1E695DF00] date];
-    v72 = [v70 components:8 fromDate:v71];
+    date = [MEMORY[0x1E695DF00] date];
+    v72 = [v70 components:8 fromDate:date];
     [v72 month];
 
     v73 = v19->_balanceItem;
@@ -729,56 +729,56 @@ LABEL_52:
     v75 = PKLocalizedFeatureString();
     [(PKDashboardBalanceItem *)v73 setTitle:v75];
 
-    v76 = [(NSDecimalNumber *)v69 totalSpending];
-    v77 = [(PKAccount *)v19->_account creditDetails];
-    v78 = [v77 currencyCode];
+    totalSpending = [(NSDecimalNumber *)availableCredit totalSpending];
+    creditDetails10 = [(PKAccount *)v19->_account creditDetails];
+    currencyCode3 = [creditDetails10 currencyCode];
 
-    v245 = v76;
-    if (v76 && v78)
+    v245 = totalSpending;
+    if (totalSpending && currencyCode3)
     {
       v79 = PKCurrencyAmountMake();
-      v80 = [v79 amount];
-      v81 = [MEMORY[0x1E696AB90] zero];
-      v82 = [v80 compare:v81];
+      amount2 = [v79 amount];
+      zero3 = [MEMORY[0x1E696AB90] zero];
+      v82 = [amount2 compare:zero3];
 
       if (v82 == -1)
       {
-        v116 = [v79 negativeValue];
+        negativeValue2 = [v79 negativeValue];
 
         v117 = v19->_balanceItem;
-        v84 = [v116 formattedStringValue];
-        v118 = PKLocalizedPaymentString(&cfstr_AmountFormatRe.isa, &stru_1F3BD5BF0.isa, v84);
+        formattedStringValue4 = [negativeValue2 formattedStringValue];
+        v118 = PKLocalizedPaymentString(&cfstr_AmountFormatRe.isa, &stru_1F3BD5BF0.isa, formattedStringValue4);
         [(PKDashboardBalanceItem *)v117 setBalance:v118];
 
-        v79 = v116;
+        v79 = negativeValue2;
       }
 
       else
       {
         v83 = v19->_balanceItem;
-        v84 = [v79 formattedStringValue];
-        [(PKDashboardBalanceItem *)v83 setBalance:v84];
+        formattedStringValue4 = [v79 formattedStringValue];
+        [(PKDashboardBalanceItem *)v83 setBalance:formattedStringValue4];
       }
     }
 
-    v114 = [v247 preferences];
-    v119 = [v114 monthlySpendLimitEnabled];
-    v115 = [v114 monthlySpendLimitAmount];
-    v120 = [v114 showAvailableCredit];
-    v121 = [(PKCreditAccountSummary *)v19->_accountSummary availableCredit];
-    v122 = v121;
-    if (v119 && v115 && v78)
+    formattedStringValue3 = [v247 preferences];
+    monthlySpendLimitEnabled = [formattedStringValue3 monthlySpendLimitEnabled];
+    monthlySpendLimitAmount = [formattedStringValue3 monthlySpendLimitAmount];
+    showAvailableCredit = [formattedStringValue3 showAvailableCredit];
+    availableCredit2 = [(PKCreditAccountSummary *)v19->_accountSummary availableCredit];
+    v122 = availableCredit2;
+    if (monthlySpendLimitEnabled && monthlySpendLimitAmount && currencyCode3)
     {
-      v244 = v69;
-      v123 = [(NSDecimalNumber *)v69 remainingMonthlySpendWithLimit:v115];
-      v124 = PKCurrencyAmountCreate(v123, v78);
+      v244 = availableCredit;
+      v123 = [(NSDecimalNumber *)availableCredit remainingMonthlySpendWithLimit:monthlySpendLimitAmount];
+      v124 = PKCurrencyAmountCreate(v123, currencyCode3);
     }
 
     else
     {
-      if (v121)
+      if (availableCredit2)
       {
-        v125 = v120;
+        v125 = showAvailableCredit;
       }
 
       else
@@ -786,22 +786,22 @@ LABEL_52:
         v125 = 0;
       }
 
-      if (v125 != 1 || !v78)
+      if (v125 != 1 || !currencyCode3)
       {
         goto LABEL_50;
       }
 
-      v244 = v69;
-      v124 = PKCurrencyAmountCreate(v121, v78);
+      v244 = availableCredit;
+      v124 = PKCurrencyAmountCreate(availableCredit2, currencyCode3);
     }
 
     v126 = v19->_balanceItem;
-    [v258 feature];
-    v127 = [v124 formattedStringValue];
+    [accountCopy feature];
+    formattedStringValue5 = [v124 formattedStringValue];
     v128 = PKLocalizedFeatureString();
-    [(PKDashboardBalanceItem *)v126 setAvailableCredit:v128, v127];
+    [(PKDashboardBalanceItem *)v126 setAvailableCredit:v128, formattedStringValue5];
 
-    v69 = v244;
+    availableCredit = v244;
 LABEL_50:
 
     goto LABEL_51;
@@ -861,22 +861,22 @@ void __183__PKCreditBalanceDetailsViewController_initWithStyle_transactionSource
   v6.receiver = self;
   v6.super_class = PKCreditBalanceDetailsViewController;
   [(PKCreditBalanceDetailsViewController *)&v6 viewDidLoad];
-  v3 = [(PKCreditBalanceDetailsViewController *)self collectionView];
-  [v3 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"PKDashboardBalanceSummaryItemPresenterIdentifier"];
-  [v3 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"PKDashboardStatementSummaryItemPresenterIdentifier"];
-  [v3 registerClass:objc_opt_class() forSupplementaryViewOfKind:*MEMORY[0x1E69DDC08] withReuseIdentifier:@"titleIdentifier"];
-  [v3 registerClass:objc_opt_class() forSupplementaryViewOfKind:*MEMORY[0x1E69DDC00] withReuseIdentifier:@"footerIdentifier"];
-  [v3 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"PKDashboardBalancePresenterIdentifier"];
-  [v3 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"centeredTextIdentifier"];
-  [v3 setShowsVerticalScrollIndicator:1];
-  [v3 setAlwaysBounceVertical:1];
-  [v3 setBounces:1];
+  collectionView = [(PKCreditBalanceDetailsViewController *)self collectionView];
+  [collectionView registerClass:objc_opt_class() forCellWithReuseIdentifier:@"PKDashboardBalanceSummaryItemPresenterIdentifier"];
+  [collectionView registerClass:objc_opt_class() forCellWithReuseIdentifier:@"PKDashboardStatementSummaryItemPresenterIdentifier"];
+  [collectionView registerClass:objc_opt_class() forSupplementaryViewOfKind:*MEMORY[0x1E69DDC08] withReuseIdentifier:@"titleIdentifier"];
+  [collectionView registerClass:objc_opt_class() forSupplementaryViewOfKind:*MEMORY[0x1E69DDC00] withReuseIdentifier:@"footerIdentifier"];
+  [collectionView registerClass:objc_opt_class() forCellWithReuseIdentifier:@"PKDashboardBalancePresenterIdentifier"];
+  [collectionView registerClass:objc_opt_class() forCellWithReuseIdentifier:@"centeredTextIdentifier"];
+  [collectionView setShowsVerticalScrollIndicator:1];
+  [collectionView setAlwaysBounceVertical:1];
+  [collectionView setBounces:1];
   v4 = +[PKDashboardViewController backgroundColor];
-  [v3 setBackgroundColor:v4];
+  [collectionView setBackgroundColor:v4];
 
   [(PKCreditBalanceDetailsViewController *)self _reloadData];
-  v5 = [(PKCreditBalanceDetailsViewController *)self view];
-  [v5 setAccessibilityIdentifier:*MEMORY[0x1E69B9648]];
+  view = [(PKCreditBalanceDetailsViewController *)self view];
+  [view setAccessibilityIdentifier:*MEMORY[0x1E69B9648]];
 }
 
 - (id)_compositionalLayout
@@ -919,25 +919,25 @@ id __60__PKCreditBalanceDetailsViewController__compositionalLayout__block_invoke
   return v8;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = PKCreditBalanceDetailsViewController;
-  [(PKCreditBalanceDetailsViewController *)&v6 viewWillAppear:a3];
+  [(PKCreditBalanceDetailsViewController *)&v6 viewWillAppear:appear];
   if (!self->_style)
   {
-    v4 = [(PKCreditBalanceDetailsViewController *)self navigationController];
-    v5 = [v4 navigationBar];
-    [v5 setPrefersLargeTitles:1];
+    navigationController = [(PKCreditBalanceDetailsViewController *)self navigationController];
+    navigationBar = [navigationController navigationBar];
+    [navigationBar setPrefersLargeTitles:1];
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v12[2] = *MEMORY[0x1E69E9840];
   v10.receiver = self;
   v10.super_class = PKCreditBalanceDetailsViewController;
-  [(PKCreditBalanceDetailsViewController *)&v10 viewDidAppear:a3];
+  [(PKCreditBalanceDetailsViewController *)&v10 viewDidAppear:appear];
   v4 = *MEMORY[0x1E69BA818];
   v5 = *MEMORY[0x1E69BABE8];
   v11[0] = *MEMORY[0x1E69BA680];
@@ -947,16 +947,16 @@ id __60__PKCreditBalanceDetailsViewController__compositionalLayout__block_invoke
   v12[1] = pageTagForAnalyticsReporting;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:v11 count:2];
   v8 = MEMORY[0x1E69B8540];
-  v9 = [(PKTransactionSourceCollection *)self->_transactionSourceCollection paymentPass];
-  [v8 reportDashboardEventIfNecessary:v7 forPass:v9];
+  paymentPass = [(PKTransactionSourceCollection *)self->_transactionSourceCollection paymentPass];
+  [v8 reportDashboardEventIfNecessary:v7 forPass:paymentPass];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v12[2] = *MEMORY[0x1E69E9840];
   v10.receiver = self;
   v10.super_class = PKCreditBalanceDetailsViewController;
-  [(PKCreditBalanceDetailsViewController *)&v10 viewDidDisappear:a3];
+  [(PKCreditBalanceDetailsViewController *)&v10 viewDidDisappear:disappear];
   v4 = *MEMORY[0x1E69BA820];
   v5 = *MEMORY[0x1E69BABE8];
   v11[0] = *MEMORY[0x1E69BA680];
@@ -966,8 +966,8 @@ id __60__PKCreditBalanceDetailsViewController__compositionalLayout__block_invoke
   v12[1] = pageTagForAnalyticsReporting;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:v11 count:2];
   v8 = MEMORY[0x1E69B8540];
-  v9 = [(PKTransactionSourceCollection *)self->_transactionSourceCollection paymentPass];
-  [v8 reportDashboardEventIfNecessary:v7 forPass:v9];
+  paymentPass = [(PKTransactionSourceCollection *)self->_transactionSourceCollection paymentPass];
+  [v8 reportDashboardEventIfNecessary:v7 forPass:paymentPass];
 }
 
 - (void)viewWillLayoutSubviews
@@ -977,21 +977,21 @@ id __60__PKCreditBalanceDetailsViewController__compositionalLayout__block_invoke
   [(PKCreditBalanceDetailsViewController *)&v5 viewWillLayoutSubviews];
   if ((_UISolariumEnabled() & 1) == 0)
   {
-    v3 = [(PKCreditBalanceDetailsViewController *)self collectionView];
-    v4 = [(PKCreditBalanceDetailsViewController *)self navigationItem];
-    [v3 pkui_adjustManualScrollEdgeAppearanceProgressForNavigationItem:v4];
+    collectionView = [(PKCreditBalanceDetailsViewController *)self collectionView];
+    navigationItem = [(PKCreditBalanceDetailsViewController *)self navigationItem];
+    [collectionView pkui_adjustManualScrollEdgeAppearanceProgressForNavigationItem:navigationItem];
   }
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v3 = [(PKCreditBalanceDetailsViewController *)self view];
-  [v3 setNeedsLayout];
+  view = [(PKCreditBalanceDetailsViewController *)self view];
+  [view setNeedsLayout];
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
-  v6 = [(PKCreditBalanceDetailsViewController *)self _sectionForIndex:a4];
+  v6 = [(PKCreditBalanceDetailsViewController *)self _sectionForIndex:section];
   result = 0;
   if (v6 > 4)
   {
@@ -1017,7 +1017,7 @@ id __60__PKCreditBalanceDetailsViewController__compositionalLayout__block_invoke
 
     if (v6 != 5 && [(NSArray *)self->_sortedYears count])
     {
-      v9 = [(NSArray *)self->_sortedYears objectAtIndexedSubscript:a4 - self->_numberOfStaticSections];
+      v9 = [(NSArray *)self->_sortedYears objectAtIndexedSubscript:section - self->_numberOfStaticSections];
       v10 = [(NSDictionary *)self->_statementsByYear objectForKeyedSubscript:v9];
       v11 = [v10 count];
 
@@ -1061,12 +1061,12 @@ LABEL_21:
   return [v12 count];
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = -[PKCreditBalanceDetailsViewController _sectionForIndex:](self, "_sectionForIndex:", [v7 section]);
-  v9 = [v7 row];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = -[PKCreditBalanceDetailsViewController _sectionForIndex:](self, "_sectionForIndex:", [pathCopy section]);
+  v9 = [pathCopy row];
   v10 = 0;
   if (v8 > 4)
   {
@@ -1080,7 +1080,7 @@ LABEL_21:
 
       if (v8 == 8)
       {
-        v14 = [(NSArray *)self->_spendLimitItems objectAtIndexedSubscript:v9];
+        cellConfiguration = [(NSArray *)self->_spendLimitItems objectAtIndexedSubscript:v9];
         goto LABEL_23;
       }
 
@@ -1100,26 +1100,26 @@ LABEL_26:
     {
       if (![(NSArray *)self->_sortedYears count])
       {
-        v10 = [v6 dequeueReusableCellWithReuseIdentifier:@"centeredTextIdentifier" forIndexPath:v7];
-        v14 = [MEMORY[0x1E69DCC28] cellConfiguration];
-        v18 = [v14 textProperties];
-        v19 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-        [v18 setColor:v19];
+        v10 = [viewCopy dequeueReusableCellWithReuseIdentifier:@"centeredTextIdentifier" forIndexPath:pathCopy];
+        cellConfiguration = [MEMORY[0x1E69DCC28] cellConfiguration];
+        textProperties = [cellConfiguration textProperties];
+        secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+        [textProperties setColor:secondaryLabelColor];
 
-        [v18 setAlignment:1];
-        [v14 directionalLayoutMargins];
-        [v14 setDirectionalLayoutMargins:26.0];
+        [textProperties setAlignment:1];
+        [cellConfiguration directionalLayoutMargins];
+        [cellConfiguration setDirectionalLayoutMargins:26.0];
         [(PKAccount *)self->_account feature];
         v20 = PKLocalizedFeatureString();
-        [v14 setText:v20];
+        [cellConfiguration setText:v20];
 
-        [v10 setContentConfiguration:v14];
+        [v10 setContentConfiguration:cellConfiguration];
         goto LABEL_24;
       }
 
-      v14 = [(PKCreditBalanceDetailsViewController *)self _summaryItemForIndexPath:v7];
+      cellConfiguration = [(PKCreditBalanceDetailsViewController *)self _summaryItemForIndexPath:pathCopy];
 LABEL_23:
-      v10 = [(PKDashboardBalanceSummaryItemPresenter *)self->_balanceSummaryItemPresenter cellForItem:v14 inCollectionView:v6 atIndexPath:v7];
+      v10 = [(PKDashboardBalanceSummaryItemPresenter *)self->_balanceSummaryItemPresenter cellForItem:cellConfiguration inCollectionView:viewCopy atIndexPath:pathCopy];
 LABEL_24:
 
       goto LABEL_28;
@@ -1145,7 +1145,7 @@ LABEL_24:
 LABEL_21:
         v13 = [*(&self->super.super.super.super.isa + v11) objectAtIndex:v9];
 LABEL_22:
-        v14 = v13;
+        cellConfiguration = v13;
         goto LABEL_23;
       }
 
@@ -1169,26 +1169,26 @@ LABEL_22:
   }
 
 LABEL_27:
-  v10 = [balanceSummaryItemPresenter cellForItem:*(&self->super.super.super.super.isa + v16) inCollectionView:v6 atIndexPath:v7];
+  v10 = [balanceSummaryItemPresenter cellForItem:*(&self->super.super.super.super.isa + v16) inCollectionView:viewCopy atIndexPath:pathCopy];
 LABEL_28:
 
   return v10;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
   v33[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = -[PKCreditBalanceDetailsViewController _sectionForIndex:](self, "_sectionForIndex:", [v7 section]);
+  viewCopy = view;
+  pathCopy = path;
+  v8 = -[PKCreditBalanceDetailsViewController _sectionForIndex:](self, "_sectionForIndex:", [pathCopy section]);
   if (v8 == 6)
   {
     if ([(NSArray *)self->_sortedYears count])
     {
       balanceSummaryItemPresenter = self->_balanceSummaryItemPresenter;
-      v19 = [(PKCreditBalanceDetailsViewController *)self _summaryItemForIndexPath:v7];
-      v20 = [(PKCreditBalanceDetailsViewController *)self navigationController];
-      [(PKDashboardBalanceSummaryItemPresenter *)balanceSummaryItemPresenter didSelectItem:v19 inCollectionView:v6 atIndexPath:v7 navigationController:v20 canPresent:0];
+      v19 = [(PKCreditBalanceDetailsViewController *)self _summaryItemForIndexPath:pathCopy];
+      navigationController = [(PKCreditBalanceDetailsViewController *)self navigationController];
+      [(PKDashboardBalanceSummaryItemPresenter *)balanceSummaryItemPresenter didSelectItem:v19 inCollectionView:viewCopy atIndexPath:pathCopy navigationController:navigationController canPresent:0];
 
       v21 = *MEMORY[0x1E69BA7C8];
       v22 = *MEMORY[0x1E69BB170];
@@ -1205,10 +1205,10 @@ LABEL_28:
 
   else if (v8 == 7)
   {
-    v9 = -[NSArray objectAtIndex:](self->_buttonItems, "objectAtIndex:", [v7 row]);
+    v9 = -[NSArray objectAtIndex:](self->_buttonItems, "objectAtIndex:", [pathCopy row]);
     v10 = self->_balanceSummaryItemPresenter;
-    v11 = [(PKCreditBalanceDetailsViewController *)self navigationController];
-    [(PKDashboardBalanceSummaryItemPresenter *)v10 didSelectItem:v9 inCollectionView:v6 atIndexPath:v7 navigationController:v11 canPresent:0];
+    navigationController2 = [(PKCreditBalanceDetailsViewController *)self navigationController];
+    [(PKDashboardBalanceSummaryItemPresenter *)v10 didSelectItem:v9 inCollectionView:viewCopy atIndexPath:pathCopy navigationController:navigationController2 canPresent:0];
 
     if ([v9 type] == 6)
     {
@@ -1248,11 +1248,11 @@ LABEL_10:
   }
 }
 
-- (BOOL)collectionView:(id)a3 shouldHighlightItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view shouldHighlightItemAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = -[PKCreditBalanceDetailsViewController _sectionForIndex:](self, "_sectionForIndex:", [v7 section]);
+  viewCopy = view;
+  pathCopy = path;
+  v8 = -[PKCreditBalanceDetailsViewController _sectionForIndex:](self, "_sectionForIndex:", [pathCopy section]);
   if (v8 > 9)
   {
     v9 = 1;
@@ -1266,8 +1266,8 @@ LABEL_10:
 
   if (v8 != 6)
   {
-    v13 = -[NSArray objectAtIndex:](self->_buttonItems, "objectAtIndex:", [v7 row]);
-    v9 = [(PKDashboardBalanceSummaryItemPresenter *)self->_balanceSummaryItemPresenter canSelectItem:v13 inCollectionView:v6 atIndexPath:v7];
+    v13 = -[NSArray objectAtIndex:](self->_buttonItems, "objectAtIndex:", [pathCopy row]);
+    v9 = [(PKDashboardBalanceSummaryItemPresenter *)self->_balanceSummaryItemPresenter canSelectItem:v13 inCollectionView:viewCopy atIndexPath:pathCopy];
 
     goto LABEL_4;
   }
@@ -1281,8 +1281,8 @@ LABEL_3:
   else
   {
     balanceSummaryItemPresenter = self->_balanceSummaryItemPresenter;
-    v12 = [(PKCreditBalanceDetailsViewController *)self _summaryItemForIndexPath:v7];
-    v9 = [(PKDashboardBalanceSummaryItemPresenter *)balanceSummaryItemPresenter canSelectItem:v12 inCollectionView:v6 atIndexPath:v7];
+    v12 = [(PKCreditBalanceDetailsViewController *)self _summaryItemForIndexPath:pathCopy];
+    v9 = [(PKDashboardBalanceSummaryItemPresenter *)balanceSummaryItemPresenter canSelectItem:v12 inCollectionView:viewCopy atIndexPath:pathCopy];
   }
 
 LABEL_4:
@@ -1290,12 +1290,12 @@ LABEL_4:
   return v9;
 }
 
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path
 {
-  v8 = a4;
-  v9 = a5;
+  kindCopy = kind;
+  pathCopy = path;
   v10 = *MEMORY[0x1E69DDC08];
-  if (*MEMORY[0x1E69DDC08] == v8)
+  if (*MEMORY[0x1E69DDC08] == kindCopy)
   {
     v11 = @"titleIdentifier";
   }
@@ -1305,28 +1305,28 @@ LABEL_4:
     v11 = @"footerIdentifier";
   }
 
-  v12 = [a3 dequeueReusableSupplementaryViewOfKind:v8 withReuseIdentifier:v11 forIndexPath:v9];
-  if (v10 == v8)
+  v12 = [view dequeueReusableSupplementaryViewOfKind:kindCopy withReuseIdentifier:v11 forIndexPath:pathCopy];
+  if (v10 == kindCopy)
   {
-    -[PKCreditBalanceDetailsViewController _configureHeaderView:inSectionIndex:](self, "_configureHeaderView:inSectionIndex:", v12, [v9 section]);
+    -[PKCreditBalanceDetailsViewController _configureHeaderView:inSectionIndex:](self, "_configureHeaderView:inSectionIndex:", v12, [pathCopy section]);
   }
 
-  else if (*MEMORY[0x1E69DDC00] == v8)
+  else if (*MEMORY[0x1E69DDC00] == kindCopy)
   {
-    -[PKCreditBalanceDetailsViewController _configureFooterView:inSectionIndex:](self, "_configureFooterView:inSectionIndex:", v12, [v9 section]);
+    -[PKCreditBalanceDetailsViewController _configureFooterView:inSectionIndex:](self, "_configureFooterView:inSectionIndex:", v12, [pathCopy section]);
   }
 
   return v12;
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
   v9.receiver = self;
   v9.super_class = PKCreditBalanceDetailsViewController;
-  [(PKCreditBalanceDetailsViewController *)&v9 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  [(PKCreditBalanceDetailsViewController *)&v9 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   if ((PKIsVision() & 1) != 0 || PKIsPad())
   {
     v8[0] = MEMORY[0x1E69E9820];
@@ -1334,7 +1334,7 @@ LABEL_4:
     v8[2] = __91__PKCreditBalanceDetailsViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke;
     v8[3] = &unk_1E80127E0;
     v8[4] = self;
-    [v7 animateAlongsideTransition:v8 completion:0];
+    [coordinatorCopy animateAlongsideTransition:v8 completion:0];
   }
 }
 
@@ -1344,29 +1344,29 @@ void __91__PKCreditBalanceDetailsViewController_viewWillTransitionToSize_withTra
   [v1 invalidateLayout];
 }
 
-- (id)viewControllerForStatement:(id)a3 style:(int64_t)a4
+- (id)viewControllerForStatement:(id)statement style:(int64_t)style
 {
-  v6 = a3;
-  v7 = [[PKCreditBalanceDetailsViewController alloc] initWithStyle:a4 transactionSourceCollection:self->_transactionSourceCollection familyCollection:self->_familyCollection webService:self->_webService account:self->_account accountUserCollection:self->_accountUserCollection physicalCards:self->_physicalCards statement:v6 previousStatements:0];
+  statementCopy = statement;
+  v7 = [[PKCreditBalanceDetailsViewController alloc] initWithStyle:style transactionSourceCollection:self->_transactionSourceCollection familyCollection:self->_familyCollection webService:self->_webService account:self->_account accountUserCollection:self->_accountUserCollection physicalCards:self->_physicalCards statement:statementCopy previousStatements:0];
 
   return v7;
 }
 
-- (unint64_t)_sectionForIndex:(unint64_t)a3
+- (unint64_t)_sectionForIndex:(unint64_t)index
 {
-  v3 = [(NSArray *)self->_sectionMap objectAtIndex:a3];
-  v4 = [v3 unsignedIntegerValue];
+  v3 = [(NSArray *)self->_sectionMap objectAtIndex:index];
+  unsignedIntegerValue = [v3 unsignedIntegerValue];
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
-- (id)_summaryItemForIndexPath:(id)a3
+- (id)_summaryItemForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [v4 row];
-  v6 = [v4 section];
+  pathCopy = path;
+  v5 = [pathCopy row];
+  section = [pathCopy section];
 
-  v7 = [(NSArray *)self->_sortedYears objectAtIndexedSubscript:v6 - self->_numberOfStaticSections];
+  v7 = [(NSArray *)self->_sortedYears objectAtIndexedSubscript:section - self->_numberOfStaticSections];
   v8 = [(NSDictionary *)self->_statementsByYear objectForKeyedSubscript:v7];
   v9 = objc_alloc_init(PKDashboardBalanceSummaryItem);
   [(PKDashboardBalanceSummaryItem *)v9 setAccount:self->_account];
@@ -1381,8 +1381,8 @@ void __91__PKCreditBalanceDetailsViewController_viewWillTransitionToSize_withTra
   if ([(NSArray *)self->_statements count])
   {
     statements = self->_statements;
-    v12 = [(PKDashboardBalanceSummaryItem *)v9 statement];
-    v13 = [(NSArray *)statements indexOfObject:v12]+ 1;
+    statement = [(PKDashboardBalanceSummaryItem *)v9 statement];
+    v13 = [(NSArray *)statements indexOfObject:statement]+ 1;
 
     if (v13 < [(NSArray *)self->_statements count])
     {
@@ -1396,9 +1396,9 @@ void __91__PKCreditBalanceDetailsViewController_viewWillTransitionToSize_withTra
   return v9;
 }
 
-- (BOOL)_hasFooterForSectionIndex:(unint64_t)a3
+- (BOOL)_hasFooterForSectionIndex:(unint64_t)index
 {
-  v4 = [(PKCreditBalanceDetailsViewController *)self _sectionForIndex:a3];
+  v4 = [(PKCreditBalanceDetailsViewController *)self _sectionForIndex:index];
   if (v4 > 4)
   {
     if (v4 == 5)
@@ -1436,11 +1436,11 @@ void __91__PKCreditBalanceDetailsViewController_viewWillTransitionToSize_withTra
         return 0;
       }
 
-      v8 = [(PKCreditAccountSummary *)accountSummary mergeSummary];
-      if (v8)
+      mergeSummary = [(PKCreditAccountSummary *)accountSummary mergeSummary];
+      if (mergeSummary)
       {
-        v9 = [(PKAccount *)self->_account creditDetails];
-        if ([v9 isInMonthOfMerge])
+        creditDetails = [(PKAccount *)self->_account creditDetails];
+        if ([creditDetails isInMonthOfMerge])
         {
           v6 = 1;
         }
@@ -1471,10 +1471,10 @@ void __91__PKCreditBalanceDetailsViewController_viewWillTransitionToSize_withTra
   return v6;
 }
 
-- (void)_configureHeaderView:(id)a3 inSectionIndex:(unint64_t)a4
+- (void)_configureHeaderView:(id)view inSectionIndex:(unint64_t)index
 {
-  v6 = a3;
-  if ([(PKCreditBalanceDetailsViewController *)self _sectionForIndex:a4]== 6 && self->_numberOfStaticSections == a4)
+  viewCopy = view;
+  if ([(PKCreditBalanceDetailsViewController *)self _sectionForIndex:index]== 6 && self->_numberOfStaticSections == index)
   {
     v10 = PKLocalizedFeatureString();
   }
@@ -1487,51 +1487,51 @@ void __91__PKCreditBalanceDetailsViewController_viewWillTransitionToSize_withTra
   style = self->_style;
   if (style == 1)
   {
-    v8 = [MEMORY[0x1E69DCC28] headerConfiguration];
+    headerConfiguration = [MEMORY[0x1E69DCC28] headerConfiguration];
     goto LABEL_9;
   }
 
   if (!style)
   {
-    v8 = [MEMORY[0x1E69DCC28] extraProminentInsetGroupedHeaderConfiguration];
+    headerConfiguration = [MEMORY[0x1E69DCC28] extraProminentInsetGroupedHeaderConfiguration];
 LABEL_9:
-    v9 = v8;
+    v9 = headerConfiguration;
     goto LABEL_11;
   }
 
   v9 = 0;
 LABEL_11:
   [v9 setText:v10];
-  [v6 setContentConfiguration:v9];
+  [viewCopy setContentConfiguration:v9];
 }
 
-- (void)_configureFooterView:(id)a3 inSectionIndex:(unint64_t)a4
+- (void)_configureFooterView:(id)view inSectionIndex:(unint64_t)index
 {
   v97 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(PKCreditBalanceDetailsViewController *)self _sectionForIndex:a4];
+  viewCopy = view;
+  v7 = [(PKCreditBalanceDetailsViewController *)self _sectionForIndex:index];
   if (v7 > 4)
   {
     if (v7 == 5)
     {
       v19 = PKLocalizedFeatureString();
       v20 = PKLocalizedFeatureString();
-      [v6 setFooterText:{v20, v19}];
-      v21 = [MEMORY[0x1E69DC888] linkColor];
-      [v6 setLinkTextColor:v21];
+      [viewCopy setFooterText:{v20, v19}];
+      linkColor = [MEMORY[0x1E69DC888] linkColor];
+      [viewCopy setLinkTextColor:linkColor];
 
       v22 = [[PKTextRangeHyperlink alloc] initWithLinkText:v19 action:&__block_literal_global_149_1];
       v95 = v22;
       v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v95 count:1];
-      [v6 setSources:v23];
+      [viewCopy setSources:v23];
     }
 
     else if (v7 == 8)
     {
-      v18 = [(PKCreditBalanceDetailsViewController *)self _footerForTransactionLimitSection];
+      _footerForTransactionLimitSection = [(PKCreditBalanceDetailsViewController *)self _footerForTransactionLimitSection];
 LABEL_31:
-      v62 = v18;
-      [v6 setFooterText:v18];
+      v62 = _footerForTransactionLimitSection;
+      [viewCopy setFooterText:_footerForTransactionLimitSection];
 LABEL_32:
     }
   }
@@ -1540,17 +1540,17 @@ LABEL_32:
   {
     if (v7 == 2)
     {
-      v8 = [(PKAccount *)self->_account creditDetails];
-      v9 = [v8 isInMonthOfMerge];
+      creditDetails = [(PKAccount *)self->_account creditDetails];
+      isInMonthOfMerge = [creditDetails isInMonthOfMerge];
 
       v93 = 0u;
       v94 = 0u;
       v91 = 0u;
       v92 = 0u;
-      v10 = [(PKCreditAccountSummary *)self->_accountSummary mergeSummary];
-      v11 = [v10 accountDetails];
+      mergeSummary = [(PKCreditAccountSummary *)self->_accountSummary mergeSummary];
+      accountDetails = [mergeSummary accountDetails];
 
-      v12 = [v11 countByEnumeratingWithState:&v91 objects:v96 count:16];
+      v12 = [accountDetails countByEnumeratingWithState:&v91 objects:v96 count:16];
       if (v12)
       {
         v13 = v12;
@@ -1562,13 +1562,13 @@ LABEL_32:
           {
             if (*v92 != v14)
             {
-              objc_enumerationMutation(v11);
+              objc_enumerationMutation(accountDetails);
             }
 
             if (v15)
             {
-              v17 = [*(*(&v91 + 1) + 8 * i) statementBalance];
-              v15 = v17 != 0;
+              statementBalance = [*(*(&v91 + 1) + 8 * i) statementBalance];
+              v15 = statementBalance != 0;
             }
 
             else
@@ -1577,7 +1577,7 @@ LABEL_32:
             }
           }
 
-          v13 = [v11 countByEnumeratingWithState:&v91 objects:v96 count:16];
+          v13 = [accountDetails countByEnumeratingWithState:&v91 objects:v96 count:16];
         }
 
         while (v13);
@@ -1588,14 +1588,14 @@ LABEL_32:
         v15 = 1;
       }
 
-      if ((v9 & v15) == 1)
+      if ((isInMonthOfMerge & v15) == 1)
       {
-        v90 = [(PKCreditAccountSummary *)self->_accountSummary balanceSummary];
-        v47 = [v90 openingDate];
-        [v90 closingDate];
-        v88 = v87 = v47;
-        [v88 timeIntervalSinceDate:v47];
-        v85 = [MEMORY[0x1E695DF00] dateWithTimeInterval:v47 sinceDate:v48 * 0.5];
+        balanceSummary = [(PKCreditAccountSummary *)self->_accountSummary balanceSummary];
+        openingDate = [balanceSummary openingDate];
+        [balanceSummary closingDate];
+        v88 = v87 = openingDate;
+        [v88 timeIntervalSinceDate:openingDate];
+        v85 = [MEMORY[0x1E695DF00] dateWithTimeInterval:openingDate sinceDate:v48 * 0.5];
         v49 = objc_alloc_init(MEMORY[0x1E695DF10]);
         [v49 setMonth:-1];
         v50 = [MEMORY[0x1E695DEE8] calendarWithIdentifier:*MEMORY[0x1E695D850]];
@@ -1603,20 +1603,20 @@ LABEL_32:
         v51 = [v50 components:8 fromDate:v83];
         [v51 month];
 
-        v52 = [(PKAccountUserCollection *)self->_accountUserCollection coOwnerAccountUser];
+        coOwnerAccountUser = [(PKAccountUserCollection *)self->_accountUserCollection coOwnerAccountUser];
         familyCollection = self->_familyCollection;
-        v54 = [v52 altDSID];
-        v55 = [(PKFamilyMemberCollection *)familyCollection familyMemberForAltDSID:v54];
+        altDSID = [coOwnerAccountUser altDSID];
+        v55 = [(PKFamilyMemberCollection *)familyCollection familyMemberForAltDSID:altDSID];
 
         v56 = MEMORY[0x1E69B8740];
-        v57 = [v52 nameComponents];
-        v58 = [v56 contactForFamilyMember:v55 nameComponents:v57 imageData:0];
+        nameComponents = [coOwnerAccountUser nameComponents];
+        v58 = [v56 contactForFamilyMember:v55 nameComponents:nameComponents imageData:0];
 
         v59 = PKGregorianMonthSpecificLocalizedStringKeyForKey();
-        v78 = [v58 givenName];
+        givenName = [v58 givenName];
         v60 = PKLocalizedFeatureString();
 
-        [v6 setFooterText:{v60, v78}];
+        [viewCopy setFooterText:{v60, givenName}];
         v61 = v87;
 LABEL_29:
 
@@ -1632,95 +1632,95 @@ LABEL_29:
     if ([(PKCreditAccountSummary *)self->_accountSummary requiresDebtCollectionNotices])
     {
 LABEL_30:
-      v18 = PKLocalizedFeatureString();
+      _footerForTransactionLimitSection = PKLocalizedFeatureString();
       goto LABEL_31;
     }
 
     accountSummary = self->_accountSummary;
     if (accountSummary)
     {
-      v25 = [(PKCreditAccountSummary *)accountSummary mergeSummary];
-      if (v25)
+      mergeSummary2 = [(PKCreditAccountSummary *)accountSummary mergeSummary];
+      if (mergeSummary2)
       {
-        v26 = v25;
-        v27 = [(PKAccount *)self->_account creditDetails];
-        v28 = [v27 isInMonthOfMerge];
+        v26 = mergeSummary2;
+        creditDetails2 = [(PKAccount *)self->_account creditDetails];
+        isInMonthOfMerge2 = [creditDetails2 isInMonthOfMerge];
 
-        if (v28)
+        if (isInMonthOfMerge2)
         {
-          v29 = [(PKCreditAccountSummary *)self->_accountSummary mergeSummary];
-          v30 = [(PKAccountUserCollection *)self->_accountUserCollection coOwnerAccountUser];
-          v31 = [(PKAccountUserCollection *)self->_accountUserCollection currentAccountUser];
+          mergeSummary3 = [(PKCreditAccountSummary *)self->_accountSummary mergeSummary];
+          coOwnerAccountUser2 = [(PKAccountUserCollection *)self->_accountUserCollection coOwnerAccountUser];
+          currentAccountUser = [(PKAccountUserCollection *)self->_accountUserCollection currentAccountUser];
           v32 = self->_familyCollection;
-          v33 = [v30 altDSID];
-          v34 = [(PKFamilyMemberCollection *)v32 familyMemberForAltDSID:v33];
+          altDSID2 = [coOwnerAccountUser2 altDSID];
+          v34 = [(PKFamilyMemberCollection *)v32 familyMemberForAltDSID:altDSID2];
 
           v35 = MEMORY[0x1E69B8740];
-          v36 = [v30 nameComponents];
+          nameComponents2 = [coOwnerAccountUser2 nameComponents];
           v86 = v34;
-          v37 = [v35 contactForFamilyMember:v34 nameComponents:v36 imageData:0];
+          v37 = [v35 contactForFamilyMember:v34 nameComponents:nameComponents2 imageData:0];
 
           v84 = v37;
-          v82 = [v37 givenName];
+          givenName2 = [v37 givenName];
           v38 = MEMORY[0x1E696AB78];
-          v39 = [v29 mergeDate];
-          v80 = [v38 localizedStringFromDate:v39 dateStyle:2 timeStyle:0];
+          mergeDate = [mergeSummary3 mergeDate];
+          v80 = [v38 localizedStringFromDate:mergeDate dateStyle:2 timeStyle:0];
 
-          v40 = [(PKAccount *)self->_account creditDetails];
-          v41 = [v40 currencyCode];
+          creditDetails3 = [(PKAccount *)self->_account creditDetails];
+          currencyCode = [creditDetails3 currencyCode];
 
-          v81 = v30;
-          v42 = [v30 altDSID];
-          v43 = [v29 accountDetailsForAltDSID:v42];
-          v44 = [v43 currentBalance];
-          v45 = v44;
-          if (v44)
+          v81 = coOwnerAccountUser2;
+          altDSID3 = [coOwnerAccountUser2 altDSID];
+          v43 = [mergeSummary3 accountDetailsForAltDSID:altDSID3];
+          currentBalance = [v43 currentBalance];
+          v45 = currentBalance;
+          if (currentBalance)
           {
-            v46 = v44;
+            zero = currentBalance;
           }
 
           else
           {
-            v46 = [MEMORY[0x1E696AB90] zero];
+            zero = [MEMORY[0x1E696AB90] zero];
           }
 
-          v67 = v46;
+          v67 = zero;
 
           v68 = 0;
-          if (v67 && v41)
+          if (v67 && currencyCode)
           {
             v68 = PKCurrencyAmountMake();
           }
 
-          v89 = v31;
-          v69 = [v31 altDSID];
-          v90 = v29;
-          v70 = [v29 accountDetailsForAltDSID:v69];
-          v71 = [v70 currentBalance];
-          v72 = v71;
-          if (v71)
+          v89 = currentAccountUser;
+          altDSID4 = [currentAccountUser altDSID];
+          balanceSummary = mergeSummary3;
+          v70 = [mergeSummary3 accountDetailsForAltDSID:altDSID4];
+          currentBalance2 = [v70 currentBalance];
+          v72 = currentBalance2;
+          if (currentBalance2)
           {
-            v73 = v71;
+            zero2 = currentBalance2;
           }
 
           else
           {
-            v73 = [MEMORY[0x1E696AB90] zero];
+            zero2 = [MEMORY[0x1E696AB90] zero];
           }
 
-          v74 = v73;
+          v74 = zero2;
 
           v75 = 0;
-          if (v74 && v41)
+          if (v74 && currencyCode)
           {
             v75 = PKCurrencyAmountMake();
           }
 
-          v76 = [v68 formattedStringValue];
-          v79 = [v75 formattedStringValue];
+          formattedStringValue = [v68 formattedStringValue];
+          formattedStringValue2 = [v75 formattedStringValue];
           v77 = PKLocalizedFeatureString();
 
-          [v6 setFooterText:{v77, v80, v76, v82, v79}];
+          [viewCopy setFooterText:{v77, v80, formattedStringValue, givenName2, formattedStringValue2}];
           v61 = v81;
           goto LABEL_29;
         }
@@ -1729,13 +1729,13 @@ LABEL_30:
       if (self->_accountSummary && [(PKAccount *)self->_account accessLevel]== 2)
       {
         v63 = [MEMORY[0x1E695DEE8] calendarWithIdentifier:*MEMORY[0x1E695D850]];
-        v64 = [MEMORY[0x1E695DF00] date];
-        v65 = [v63 components:8 fromDate:v64];
+        date = [MEMORY[0x1E695DF00] date];
+        v65 = [v63 components:8 fromDate:date];
         [v65 month];
 
         v62 = PKGregorianMonthSpecificLocalizedStringKeyForKey();
         v66 = PKLocalizedFeatureString();
-        [v6 setFooterText:v66];
+        [viewCopy setFooterText:v66];
 
         goto LABEL_32;
       }
@@ -1753,16 +1753,16 @@ void __76__PKCreditBalanceDetailsViewController__configureFooterView_inSectionIn
 
 - (id)_footerForTransactionLimitSection
 {
-  v3 = [(PKAccountUserCollection *)self->_accountUserCollection currentAccountUser];
-  v4 = [v3 preferences];
-  v5 = [(PKAccount *)self->_account creditDetails];
-  v6 = [v5 currencyCode];
+  currentAccountUser = [(PKAccountUserCollection *)self->_accountUserCollection currentAccountUser];
+  preferences = [currentAccountUser preferences];
+  creditDetails = [(PKAccount *)self->_account creditDetails];
+  currencyCode = [creditDetails currencyCode];
 
-  v7 = [v4 transactionSpendLimitAmount];
-  v8 = [v4 transactionSpendLimitEnabled];
-  if (v7)
+  transactionSpendLimitAmount = [preferences transactionSpendLimitAmount];
+  transactionSpendLimitEnabled = [preferences transactionSpendLimitEnabled];
+  if (transactionSpendLimitAmount)
   {
-    v9 = v6 == 0;
+    v9 = currencyCode == 0;
   }
 
   else
@@ -1771,7 +1771,7 @@ void __76__PKCreditBalanceDetailsViewController__configureFooterView_inSectionIn
   }
 
   v10 = !v9;
-  if (v8)
+  if (transactionSpendLimitEnabled)
   {
     v11 = v10;
   }
@@ -1781,12 +1781,12 @@ void __76__PKCreditBalanceDetailsViewController__configureFooterView_inSectionIn
     v11 = 0;
   }
 
-  v12 = [v4 monthlySpendLimitAmount];
-  if ([v4 monthlySpendLimitEnabled])
+  monthlySpendLimitAmount = [preferences monthlySpendLimitAmount];
+  if ([preferences monthlySpendLimitEnabled])
   {
-    if (v12)
+    if (monthlySpendLimitAmount)
     {
-      v13 = v6 == 0;
+      v13 = currencyCode == 0;
     }
 
     else
@@ -1798,9 +1798,9 @@ void __76__PKCreditBalanceDetailsViewController__configureFooterView_inSectionIn
     if ((v14 & v11) == 1)
     {
       v15 = PKCurrencyAmountMake();
-      v16 = PKCurrencyAmountMake();
-      v17 = [v16 formattedStringValue];
-      v20 = [v15 formattedStringValue];
+      formattedStringValue3 = PKCurrencyAmountMake();
+      formattedStringValue = [formattedStringValue3 formattedStringValue];
+      formattedStringValue2 = [v15 formattedStringValue];
       v18 = PKLocalizedFeatureString();
 
 LABEL_22:
@@ -1817,7 +1817,7 @@ LABEL_22:
   {
 LABEL_21:
     v15 = PKCurrencyAmountMake();
-    v16 = [v15 formattedStringValue];
+    formattedStringValue3 = [v15 formattedStringValue];
     v18 = PKLocalizedFeatureString();
     goto LABEL_22;
   }
@@ -1830,13 +1830,13 @@ LABEL_24:
 
 - (BOOL)_statementIsFromMonthOfMerge
 {
-  v3 = [(PKAccount *)self->_account creditDetails];
-  v4 = [v3 mergeDate];
+  creditDetails = [(PKAccount *)self->_account creditDetails];
+  mergeDate = [creditDetails mergeDate];
 
   statement = self->_statement;
   if (statement)
   {
-    v6 = v4 == 0;
+    v6 = mergeDate == 0;
   }
 
   else
@@ -1851,19 +1851,19 @@ LABEL_24:
 
   else
   {
-    v7 = [(PKCreditAccountStatement *)statement openingDate];
-    v8 = [(PKCreditAccountStatement *)self->_statement closingDate];
+    openingDate = [(PKCreditAccountStatement *)statement openingDate];
+    closingDate = [(PKCreditAccountStatement *)self->_statement closingDate];
     IsBetweenDates = PKDateIsBetweenDates();
   }
 
   return IsBetweenDates;
 }
 
-- (id)_createSummaryItemOfType:(unint64_t)a3
+- (id)_createSummaryItemOfType:(unint64_t)type
 {
-  if (a3 <= 8)
+  if (type <= 8)
   {
-    switch(a3)
+    switch(type)
     {
       case 6uLL:
         if (([(PKAccount *)self->_account supportsRequestStatement]& 1) == 0)
@@ -1878,9 +1878,9 @@ LABEL_24:
           goto LABEL_34;
         }
 
-        v3 = [(PKAccount *)self->_account exportTransactionDataFeatureDescriptor];
-        v12 = [(PKDashboardBalanceSummaryItem *)v3 supportedFileFormatsForTransactionData];
-        v13 = [v12 count];
+        exportTransactionDataFeatureDescriptor = [(PKAccount *)self->_account exportTransactionDataFeatureDescriptor];
+        supportedFileFormatsForTransactionData = [(PKDashboardBalanceSummaryItem *)exportTransactionDataFeatureDescriptor supportedFileFormatsForTransactionData];
+        v13 = [supportedFileFormatsForTransactionData count];
 
 LABEL_31:
 LABEL_32:
@@ -1894,8 +1894,8 @@ LABEL_32:
         statement = self->_statement;
         if (statement)
         {
-          v3 = [(PKCreditAccountStatement *)self->_statement credits];
-          if (!v3)
+          exportTransactionDataFeatureDescriptor = [(PKCreditAccountStatement *)self->_statement credits];
+          if (!exportTransactionDataFeatureDescriptor)
           {
             goto LABEL_35;
           }
@@ -1918,10 +1918,10 @@ LABEL_19:
           }
         }
 
-        v15 = [(PKCreditAccountSummary *)accountSummary balanceSummary];
-        v16 = [v15 credits];
+        balanceSummary = [(PKCreditAccountSummary *)accountSummary balanceSummary];
+        credits = [balanceSummary credits];
 LABEL_30:
-        v13 = v16;
+        v13 = credits;
 
         if (!statement)
         {
@@ -1932,27 +1932,27 @@ LABEL_30:
     }
 
 LABEL_33:
-    v3 = objc_alloc_init(PKDashboardBalanceSummaryItem);
-    [(PKDashboardBalanceSummaryItem *)v3 setAccount:self->_account];
-    [(PKDashboardBalanceSummaryItem *)v3 setAccountUserCollection:self->_accountUserCollection];
-    [(PKDashboardBalanceSummaryItem *)v3 setPhysicalCards:self->_physicalCards];
-    [(PKDashboardBalanceSummaryItem *)v3 setWebService:self->_webService];
-    [(PKDashboardBalanceSummaryItem *)v3 setTransactionSourceCollection:self->_transactionSourceCollection];
-    [(PKDashboardBalanceSummaryItem *)v3 setFamilyCollection:self->_familyCollection];
-    [(PKDashboardBalanceSummaryItem *)v3 setType:a3];
-    [(PKDashboardBalanceSummaryItem *)v3 setSummary:self->_accountSummary];
-    [(PKDashboardBalanceSummaryItem *)v3 setStatement:self->_statement];
+    exportTransactionDataFeatureDescriptor = objc_alloc_init(PKDashboardBalanceSummaryItem);
+    [(PKDashboardBalanceSummaryItem *)exportTransactionDataFeatureDescriptor setAccount:self->_account];
+    [(PKDashboardBalanceSummaryItem *)exportTransactionDataFeatureDescriptor setAccountUserCollection:self->_accountUserCollection];
+    [(PKDashboardBalanceSummaryItem *)exportTransactionDataFeatureDescriptor setPhysicalCards:self->_physicalCards];
+    [(PKDashboardBalanceSummaryItem *)exportTransactionDataFeatureDescriptor setWebService:self->_webService];
+    [(PKDashboardBalanceSummaryItem *)exportTransactionDataFeatureDescriptor setTransactionSourceCollection:self->_transactionSourceCollection];
+    [(PKDashboardBalanceSummaryItem *)exportTransactionDataFeatureDescriptor setFamilyCollection:self->_familyCollection];
+    [(PKDashboardBalanceSummaryItem *)exportTransactionDataFeatureDescriptor setType:type];
+    [(PKDashboardBalanceSummaryItem *)exportTransactionDataFeatureDescriptor setSummary:self->_accountSummary];
+    [(PKDashboardBalanceSummaryItem *)exportTransactionDataFeatureDescriptor setStatement:self->_statement];
     goto LABEL_35;
   }
 
-  switch(a3)
+  switch(type)
   {
     case 9uLL:
       statement = self->_statement;
       if (statement)
       {
-        v3 = [(PKCreditAccountStatement *)self->_statement payments];
-        if (!v3)
+        exportTransactionDataFeatureDescriptor = [(PKCreditAccountStatement *)self->_statement payments];
+        if (!exportTransactionDataFeatureDescriptor)
         {
           goto LABEL_35;
         }
@@ -1973,8 +1973,8 @@ LABEL_33:
         }
       }
 
-      v15 = [(PKCreditAccountSummary *)v11 balanceSummary];
-      v16 = [v15 payments];
+      balanceSummary = [(PKCreditAccountSummary *)v11 balanceSummary];
+      credits = [balanceSummary payments];
       goto LABEL_30;
     case 0xFuLL:
       if ([(PKAccount *)self->_account accessLevel]!= 2)
@@ -1982,9 +1982,9 @@ LABEL_33:
         goto LABEL_34;
       }
 
-      v8 = [(PKAccountUserCollection *)self->_accountUserCollection currentAccountUser];
-      v9 = [v8 preferences];
-      v10 = [v9 transactionSpendLimitEnabled];
+      currentAccountUser = [(PKAccountUserCollection *)self->_accountUserCollection currentAccountUser];
+      preferences = [currentAccountUser preferences];
+      transactionSpendLimitEnabled = [preferences transactionSpendLimitEnabled];
       break;
     case 0x10uLL:
       if ([(PKAccount *)self->_account accessLevel]!= 2)
@@ -1992,15 +1992,15 @@ LABEL_33:
         goto LABEL_34;
       }
 
-      v8 = [(PKAccountUserCollection *)self->_accountUserCollection currentAccountUser];
-      v9 = [v8 preferences];
-      v10 = [v9 monthlySpendLimitEnabled];
+      currentAccountUser = [(PKAccountUserCollection *)self->_accountUserCollection currentAccountUser];
+      preferences = [currentAccountUser preferences];
+      transactionSpendLimitEnabled = [preferences monthlySpendLimitEnabled];
       break;
     default:
       goto LABEL_33;
   }
 
-  v14 = v10;
+  v14 = transactionSpendLimitEnabled;
 
   if (v14)
   {
@@ -2008,10 +2008,10 @@ LABEL_33:
   }
 
 LABEL_34:
-  v3 = 0;
+  exportTransactionDataFeatureDescriptor = 0;
 LABEL_35:
 
-  return v3;
+  return exportTransactionDataFeatureDescriptor;
 }
 
 - (void)_reloadData
@@ -2019,19 +2019,19 @@ LABEL_35:
   accountSummary = self->_accountSummary;
   if (accountSummary)
   {
-    v4 = [(PKCreditAccountSummary *)accountSummary balanceSummary];
-    v5 = [v4 openingDate];
+    balanceSummary = [(PKCreditAccountSummary *)accountSummary balanceSummary];
+    openingDate = [balanceSummary openingDate];
 
-    v6 = [(PKCreditAccountSummary *)self->_accountSummary balanceSummary];
-    v7 = [v6 closingDate];
+    balanceSummary2 = [(PKCreditAccountSummary *)self->_accountSummary balanceSummary];
+    closingDate = [balanceSummary2 closingDate];
 
     v8 = 0;
   }
 
   else
   {
-    v5 = [(PKCreditAccountStatement *)self->_statement openingDate];
-    v7 = [(PKCreditAccountStatement *)self->_statement closingDate];
+    openingDate = [(PKCreditAccountStatement *)self->_statement openingDate];
+    closingDate = [(PKCreditAccountStatement *)self->_statement closingDate];
     v8 = 1;
   }
 
@@ -2041,7 +2041,7 @@ LABEL_35:
   v10[2] = __51__PKCreditBalanceDetailsViewController__reloadData__block_invoke;
   v10[3] = &unk_1E8017F08;
   v10[4] = self;
-  [(PKBalanceSummaryFetcher *)fetcher balanceSummaryStartingWithDate:v5 endDate:v7 type:v8 completion:v10];
+  [(PKBalanceSummaryFetcher *)fetcher balanceSummaryStartingWithDate:openingDate endDate:closingDate type:v8 completion:v10];
   [(PKCreditBalanceDetailsViewController *)self _updateStatements];
 }
 
@@ -2080,9 +2080,9 @@ void __51__PKCreditBalanceDetailsViewController__reloadData__block_invoke_2(uint
 - (void)_sortStatementsForPresentation
 {
   v45 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DEE8] currentCalendar];
-  v4 = [MEMORY[0x1E695DF90] dictionary];
-  v34 = [MEMORY[0x1E695DF70] array];
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  array = [MEMORY[0x1E695DF70] array];
   v5 = [(NSArray *)self->_statements sortedArrayUsingComparator:&__block_literal_global_170];
   statements = self->_statements;
   self->_statements = v5;
@@ -2091,7 +2091,7 @@ void __51__PKCreditBalanceDetailsViewController__reloadData__block_invoke_2(uint
   v42 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v33 = self;
+  selfCopy = self;
   v7 = self->_statements;
   v8 = [(NSArray *)v7 countByEnumeratingWithState:&v39 objects:v44 count:16];
   if (v8)
@@ -2109,18 +2109,18 @@ void __51__PKCreditBalanceDetailsViewController__reloadData__block_invoke_2(uint
 
         v12 = *(*(&v39 + 1) + 8 * i);
         v13 = MEMORY[0x1E696AD98];
-        v14 = [v12 closingDate];
-        v15 = [v13 numberWithInteger:{objc_msgSend(v3, "component:fromDate:", 4, v14)}];
+        closingDate = [v12 closingDate];
+        v15 = [v13 numberWithInteger:{objc_msgSend(currentCalendar, "component:fromDate:", 4, closingDate)}];
 
-        v16 = [v4 objectForKeyedSubscript:v15];
-        if (!v16)
+        array2 = [dictionary objectForKeyedSubscript:v15];
+        if (!array2)
         {
-          v16 = [MEMORY[0x1E695DF70] array];
-          [v34 addObject:v15];
+          array2 = [MEMORY[0x1E695DF70] array];
+          [array addObject:v15];
         }
 
-        [v16 addObject:v12];
-        [v4 setObject:v16 forKeyedSubscript:v15];
+        [array2 addObject:v12];
+        [dictionary setObject:array2 forKeyedSubscript:v15];
       }
 
       v9 = [(NSArray *)v7 countByEnumeratingWithState:&v39 objects:v44 count:16];
@@ -2129,24 +2129,24 @@ void __51__PKCreditBalanceDetailsViewController__reloadData__block_invoke_2(uint
     while (v9);
   }
 
-  v17 = [v4 copy];
-  statementsByYear = v33->_statementsByYear;
-  v33->_statementsByYear = v17;
+  v17 = [dictionary copy];
+  statementsByYear = selfCopy->_statementsByYear;
+  selfCopy->_statementsByYear = v17;
 
-  v19 = [v34 sortedArrayUsingComparator:&__block_literal_global_174];
-  sortedYears = v33->_sortedYears;
-  v33->_sortedYears = v19;
+  v19 = [array sortedArrayUsingComparator:&__block_literal_global_174];
+  sortedYears = selfCopy->_sortedYears;
+  selfCopy->_sortedYears = v19;
 
   v21 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  if ([(PKAccount *)v33->_account accessLevel]== 1)
+  if ([(PKAccount *)selfCopy->_account accessLevel]== 1)
   {
-    if ([v34 count])
+    if ([array count])
     {
       v37 = 0u;
       v38 = 0u;
       v35 = 0u;
       v36 = 0u;
-      v22 = v34;
+      v22 = array;
       v23 = [v22 countByEnumeratingWithState:&v35 objects:v43 count:16];
       if (v23)
       {
@@ -2178,23 +2178,23 @@ void __51__PKCreditBalanceDetailsViewController__reloadData__block_invoke_2(uint
     }
   }
 
-  v26 = [(NSArray *)v33->_sectionMap subarrayWithRange:0, v33->_numberOfStaticSections];
-  sectionMap = v33->_sectionMap;
-  v33->_sectionMap = v26;
+  v26 = [(NSArray *)selfCopy->_sectionMap subarrayWithRange:0, selfCopy->_numberOfStaticSections];
+  sectionMap = selfCopy->_sectionMap;
+  selfCopy->_sectionMap = v26;
 
-  v28 = [(NSArray *)v33->_sectionMap arrayByAddingObjectsFromArray:v21];
-  v29 = v33->_sectionMap;
-  v33->_sectionMap = v28;
+  v28 = [(NSArray *)selfCopy->_sectionMap arrayByAddingObjectsFromArray:v21];
+  v29 = selfCopy->_sectionMap;
+  selfCopy->_sectionMap = v28;
 
-  if ([(NSArray *)v33->_statements count])
+  if ([(NSArray *)selfCopy->_statements count])
   {
-    lastStatementSummaryItem = v33->_lastStatementSummaryItem;
-    v31 = [(NSArray *)v33->_statements subarrayWithRange:1, [(NSArray *)v33->_statements count]- 1];
+    lastStatementSummaryItem = selfCopy->_lastStatementSummaryItem;
+    v31 = [(NSArray *)selfCopy->_statements subarrayWithRange:1, [(NSArray *)selfCopy->_statements count]- 1];
     [(PKDashboardBalanceSummaryItem *)lastStatementSummaryItem setStatements:v31];
   }
 
-  v32 = [(PKCreditBalanceDetailsViewController *)v33 collectionView];
-  [v32 reloadData];
+  collectionView = [(PKCreditBalanceDetailsViewController *)selfCopy collectionView];
+  [collectionView reloadData];
 }
 
 uint64_t __70__PKCreditBalanceDetailsViewController__sortStatementsForPresentation__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -2211,14 +2211,14 @@ uint64_t __70__PKCreditBalanceDetailsViewController__sortStatementsForPresentati
 {
   if (self->_accountSummary)
   {
-    v3 = [MEMORY[0x1E69B8400] sharedInstance];
-    v4 = [(PKAccount *)self->_account accountIdentifier];
+    mEMORY[0x1E69B8400] = [MEMORY[0x1E69B8400] sharedInstance];
+    accountIdentifier = [(PKAccount *)self->_account accountIdentifier];
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __57__PKCreditBalanceDetailsViewController__updateStatements__block_invoke;
     v5[3] = &unk_1E8017F70;
     v5[4] = self;
-    [v3 creditStatementsForAccountIdentifier:v4 completion:v5];
+    [mEMORY[0x1E69B8400] creditStatementsForAccountIdentifier:accountIdentifier completion:v5];
   }
 }
 
@@ -2247,12 +2247,12 @@ uint64_t __57__PKCreditBalanceDetailsViewController__updateStatements__block_inv
   return [v5 _sortStatementsForPresentation];
 }
 
-- (void)statementsChangedForAccountIdentifier:(id)a3
+- (void)statementsChangedForAccountIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(PKAccount *)self->_account accountIdentifier];
-  v8 = v4;
-  v6 = v5;
+  identifierCopy = identifier;
+  accountIdentifier = [(PKAccount *)self->_account accountIdentifier];
+  v8 = identifierCopy;
+  v6 = accountIdentifier;
   if (v6 == v8)
   {
 
@@ -2276,16 +2276,16 @@ LABEL_7:
 LABEL_9:
 }
 
-- (void)_reportEventForPassIfNecessary:(id)a3
+- (void)_reportEventForPassIfNecessary:(id)necessary
 {
-  if (a3)
+  if (necessary)
   {
-    v7 = [a3 mutableCopy];
+    v7 = [necessary mutableCopy];
     [v7 setObject:self->_pageTagForAnalyticsReporting forKey:*MEMORY[0x1E69BABE8]];
     v4 = MEMORY[0x1E69B8540];
     v5 = [v7 copy];
-    v6 = [(PKTransactionSourceCollection *)self->_transactionSourceCollection paymentPass];
-    [v4 reportDashboardEventIfNecessary:v5 forPass:v6];
+    paymentPass = [(PKTransactionSourceCollection *)self->_transactionSourceCollection paymentPass];
+    [v4 reportDashboardEventIfNecessary:v5 forPass:paymentPass];
   }
 }
 

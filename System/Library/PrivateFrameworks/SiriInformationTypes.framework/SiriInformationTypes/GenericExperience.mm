@@ -1,14 +1,14 @@
 @interface GenericExperience
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation GenericExperience
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  GenericExperience.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  GenericExperience.encode(with:)(coderCopy);
 }
 
 @end

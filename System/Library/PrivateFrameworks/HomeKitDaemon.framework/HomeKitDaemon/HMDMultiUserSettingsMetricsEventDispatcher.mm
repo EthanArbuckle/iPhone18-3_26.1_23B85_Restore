@@ -1,6 +1,6 @@
 @interface HMDMultiUserSettingsMetricsEventDispatcher
 + (id)logCategory;
-- (HMDMultiUserSettingsMetricsEventDispatcher)initWithIdentifier:(id)a3 logEventSubmitter:(id)a4 dailyScheduler:(id)a5;
+- (HMDMultiUserSettingsMetricsEventDispatcher)initWithIdentifier:(id)identifier logEventSubmitter:(id)submitter dailyScheduler:(id)scheduler;
 - (HMDMultiUserSettingsMetricsEventDispatcherDataSource)dataSource;
 - (id)logIdentifier;
 - (void)registerForDailyMultiUserSettingsEvents;
@@ -18,21 +18,21 @@
 
 - (id)logIdentifier
 {
-  v2 = [(HMDMultiUserSettingsMetricsEventDispatcher *)self identifier];
-  v3 = [v2 UUIDString];
+  identifier = [(HMDMultiUserSettingsMetricsEventDispatcher *)self identifier];
+  uUIDString = [identifier UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
 - (void)submitMultiUserSettingsDailyEvent
 {
   v26 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDMultiUserSettingsMetricsEventDispatcher *)self dataSource];
+  dataSource = [(HMDMultiUserSettingsMetricsEventDispatcher *)self dataSource];
   v4 = objc_autoreleasePoolPush();
-  v5 = self;
+  selfCopy = self;
   v6 = HMFGetOSLogHandle();
   v7 = v6;
-  if (v3)
+  if (dataSource)
   {
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
@@ -43,18 +43,18 @@
     }
 
     objc_autoreleasePoolPop(v4);
-    v9 = [v3 multiUserSettingsForMultiUserSettingsMetricsEventDispatcherDataSource];
-    v10 = [v9 numSharedUsers];
-    if ([v10 intValue])
+    multiUserSettingsForMultiUserSettingsMetricsEventDispatcherDataSource = [dataSource multiUserSettingsForMultiUserSettingsMetricsEventDispatcherDataSource];
+    numSharedUsers = [multiUserSettingsForMultiUserSettingsMetricsEventDispatcherDataSource numSharedUsers];
+    if ([numSharedUsers intValue])
     {
-      v11 = [v9 numSharedUsers];
-      v12 = [v11 intValue];
+      numSharedUsers2 = [multiUserSettingsForMultiUserSettingsMetricsEventDispatcherDataSource numSharedUsers];
+      intValue = [numSharedUsers2 intValue];
 
-      if (v12 < 11)
+      if (intValue < 11)
       {
-        v13 = [[HMDMultiUserSettingsLogEvent alloc] initWithMultiUserSettings:v9];
-        v14 = [(HMDMultiUserSettingsMetricsEventDispatcher *)v5 logEventSubmitter];
-        [v14 submitLogEvent:v13];
+        v13 = [[HMDMultiUserSettingsLogEvent alloc] initWithMultiUserSettings:multiUserSettingsForMultiUserSettingsMetricsEventDispatcherDataSource];
+        logEventSubmitter = [(HMDMultiUserSettingsMetricsEventDispatcher *)selfCopy logEventSubmitter];
+        [logEventSubmitter submitLogEvent:v13];
 
 LABEL_14:
         goto LABEL_15;
@@ -66,16 +66,16 @@ LABEL_14:
     }
 
     v16 = objc_autoreleasePoolPush();
-    v17 = v5;
+    v17 = selfCopy;
     v18 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
     {
       v19 = HMFGetLogIdentifier();
-      v20 = [v9 numSharedUsers];
+      numSharedUsers3 = [multiUserSettingsForMultiUserSettingsMetricsEventDispatcherDataSource numSharedUsers];
       v22 = 138543618;
       v23 = v19;
       v24 = 2112;
-      v25 = v20;
+      v25 = numSharedUsers3;
       _os_log_impl(&dword_229538000, v18, OS_LOG_TYPE_INFO, "%{public}@numSharedUsers is %@. Don't submit logs", &v22, 0x16u);
     }
 
@@ -99,24 +99,24 @@ LABEL_15:
 
 - (void)registerForDailyMultiUserSettingsEvents
 {
-  v3 = [(HMDMultiUserSettingsMetricsEventDispatcher *)self dailyScheduler];
-  [v3 registerDailyTaskRunner:self];
+  dailyScheduler = [(HMDMultiUserSettingsMetricsEventDispatcher *)self dailyScheduler];
+  [dailyScheduler registerDailyTaskRunner:self];
 }
 
-- (HMDMultiUserSettingsMetricsEventDispatcher)initWithIdentifier:(id)a3 logEventSubmitter:(id)a4 dailyScheduler:(id)a5
+- (HMDMultiUserSettingsMetricsEventDispatcher)initWithIdentifier:(id)identifier logEventSubmitter:(id)submitter dailyScheduler:(id)scheduler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  identifierCopy = identifier;
+  submitterCopy = submitter;
+  schedulerCopy = scheduler;
   v15.receiver = self;
   v15.super_class = HMDMultiUserSettingsMetricsEventDispatcher;
   v12 = [(HMDMultiUserSettingsMetricsEventDispatcher *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_identifier, a3);
-    objc_storeStrong(&v13->_logEventSubmitter, a4);
-    objc_storeStrong(&v13->_dailyScheduler, a5);
+    objc_storeStrong(&v12->_identifier, identifier);
+    objc_storeStrong(&v13->_logEventSubmitter, submitter);
+    objc_storeStrong(&v13->_dailyScheduler, scheduler);
   }
 
   return v13;

@@ -3,17 +3,17 @@
 + (void)checkEntitlements;
 - (NSDictionary)dictionaryRepresentation;
 - (_TtC8MapsSync18MapsSyncKeyedStore)init;
-- (id)arrayForKey:(id)a3;
-- (id)dataForKey:(id)a3;
-- (id)dictionaryForKey:(id)a3;
-- (id)stringForKey:(id)a3;
-- (void)removeObjectForKey:(id)a3;
-- (void)setArray:(id)a3 key:(id)a4;
-- (void)setData:(id)a3 key:(id)a4;
-- (void)setDictionary:(id)a3 key:(id)a4;
-- (void)setDouble:(double)a3 key:(id)a4;
-- (void)setInt64:(int64_t)a3 key:(id)a4;
-- (void)setString:(id)a3 key:(id)a4;
+- (id)arrayForKey:(id)key;
+- (id)dataForKey:(id)key;
+- (id)dictionaryForKey:(id)key;
+- (id)stringForKey:(id)key;
+- (void)removeObjectForKey:(id)key;
+- (void)setArray:(id)array key:(id)key;
+- (void)setData:(id)data key:(id)key;
+- (void)setDictionary:(id)dictionary key:(id)key;
+- (void)setDouble:(double)double key:(id)key;
+- (void)setInt64:(int64_t)int64 key:(id)key;
+- (void)setString:(id)string key:(id)key;
 @end
 
 @implementation MapsSyncKeyedStore
@@ -43,14 +43,14 @@
   return [(MapsSyncKeyedStore *)&v7 init];
 }
 
-- (id)stringForKey:(id)a3
+- (id)stringForKey:(id)key
 {
   v4 = *(&self->super.isa + OBJC_IVAR____TtC8MapsSync18MapsSyncKeyedStore_store);
-  v5 = self;
-  v6 = [v4 stringForKey_];
-  if (v6)
+  selfCopy = self;
+  stringForKey_ = [v4 stringForKey_];
+  if (stringForKey_)
   {
-    v7 = v6;
+    v7 = stringForKey_;
     sub_1B63BEBD4();
 
     v8 = sub_1B63BEBC4();
@@ -65,14 +65,14 @@
   return v8;
 }
 
-- (id)arrayForKey:(id)a3
+- (id)arrayForKey:(id)key
 {
   v4 = *(&self->super.isa + OBJC_IVAR____TtC8MapsSync18MapsSyncKeyedStore_store);
-  v5 = self;
-  v6 = [v4 arrayForKey_];
-  if (v6)
+  selfCopy = self;
+  arrayForKey_ = [v4 arrayForKey_];
+  if (arrayForKey_)
   {
-    v7 = v6;
+    v7 = arrayForKey_;
     sub_1B63BECA4();
 
     v8 = sub_1B63BEC94();
@@ -87,14 +87,14 @@
   return v8;
 }
 
-- (id)dictionaryForKey:(id)a3
+- (id)dictionaryForKey:(id)key
 {
   v4 = *(&self->super.isa + OBJC_IVAR____TtC8MapsSync18MapsSyncKeyedStore_store);
-  v5 = self;
-  v6 = [v4 dictionaryForKey_];
-  if (v6)
+  selfCopy = self;
+  dictionaryForKey_ = [v4 dictionaryForKey_];
+  if (dictionaryForKey_)
   {
-    v7 = v6;
+    v7 = dictionaryForKey_;
     sub_1B63BEB74();
 
     v8 = sub_1B63BEB54();
@@ -109,14 +109,14 @@
   return v8;
 }
 
-- (id)dataForKey:(id)a3
+- (id)dataForKey:(id)key
 {
   v4 = *(&self->super.isa + OBJC_IVAR____TtC8MapsSync18MapsSyncKeyedStore_store);
-  v5 = self;
-  v6 = [v4 dataForKey_];
-  if (v6)
+  selfCopy = self;
+  dataForKey_ = [v4 dataForKey_];
+  if (dataForKey_)
   {
-    v7 = v6;
+    v7 = dataForKey_;
     v8 = sub_1B63BE924();
     v10 = v9;
 
@@ -136,8 +136,8 @@
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = *(&self->super.isa + OBJC_IVAR____TtC8MapsSync18MapsSyncKeyedStore_store);
-  v3 = self;
-  v4 = [v2 dictionaryRepresentation];
+  selfCopy = self;
+  dictionaryRepresentation = [v2 dictionaryRepresentation];
   sub_1B63BEB74();
 
   v5 = sub_1B63BEB54();
@@ -145,131 +145,131 @@
   return v5;
 }
 
-- (void)setString:(id)a3 key:(id)a4
+- (void)setString:(id)string key:(id)key
 {
-  if (a3)
+  if (string)
   {
     sub_1B63BEBD4();
     v6 = *(&self->super.isa + OBJC_IVAR____TtC8MapsSync18MapsSyncKeyedStore_store);
-    v7 = a4;
-    v8 = self;
+    keyCopy = key;
+    selfCopy = self;
     v9 = sub_1B63BEBC4();
   }
 
   else
   {
     v6 = *(&self->super.isa + OBJC_IVAR____TtC8MapsSync18MapsSyncKeyedStore_store);
-    v10 = a4;
-    v11 = self;
+    keyCopy2 = key;
+    selfCopy2 = self;
     v9 = 0;
   }
 
-  [v6 setString:v9 forKey:a4];
+  [v6 setString:v9 forKey:key];
 
   [*(&self->super.isa + OBJC_IVAR____TtC8MapsSync18MapsSyncKeyedStore_store) synchronize];
 }
 
-- (void)setData:(id)a3 key:(id)a4
+- (void)setData:(id)data key:(id)key
 {
-  v5 = a3;
-  if (a3)
+  dataCopy = data;
+  if (data)
   {
-    v6 = a4;
-    v7 = self;
-    v8 = v5;
-    v5 = sub_1B63BE924();
+    keyCopy = key;
+    selfCopy = self;
+    v8 = dataCopy;
+    dataCopy = sub_1B63BE924();
     v10 = v9;
 
-    v11 = *(&v7->super.isa + OBJC_IVAR____TtC8MapsSync18MapsSyncKeyedStore_store);
+    v11 = *(&selfCopy->super.isa + OBJC_IVAR____TtC8MapsSync18MapsSyncKeyedStore_store);
     v12 = sub_1B63BE904();
   }
 
   else
   {
     v11 = *(&self->super.isa + OBJC_IVAR____TtC8MapsSync18MapsSyncKeyedStore_store);
-    v13 = a4;
-    v14 = self;
+    keyCopy2 = key;
+    selfCopy2 = self;
     v12 = 0;
     v10 = 0xF000000000000000;
   }
 
-  [v11 setData:v12 forKey:a4];
+  [v11 setData:v12 forKey:key];
 
   [*(&self->super.isa + OBJC_IVAR____TtC8MapsSync18MapsSyncKeyedStore_store) synchronize];
-  sub_1B6284F64(v5, v10);
+  sub_1B6284F64(dataCopy, v10);
 }
 
-- (void)setArray:(id)a3 key:(id)a4
+- (void)setArray:(id)array key:(id)key
 {
-  if (a3)
+  if (array)
   {
     sub_1B63BECA4();
     v6 = *(&self->super.isa + OBJC_IVAR____TtC8MapsSync18MapsSyncKeyedStore_store);
-    v7 = a4;
-    v8 = self;
+    keyCopy = key;
+    selfCopy = self;
     v9 = sub_1B63BEC94();
   }
 
   else
   {
     v6 = *(&self->super.isa + OBJC_IVAR____TtC8MapsSync18MapsSyncKeyedStore_store);
-    v10 = a4;
-    v11 = self;
+    keyCopy2 = key;
+    selfCopy2 = self;
     v9 = 0;
   }
 
-  [v6 setArray:v9 forKey:a4];
+  [v6 setArray:v9 forKey:key];
 
   [*(&self->super.isa + OBJC_IVAR____TtC8MapsSync18MapsSyncKeyedStore_store) synchronize];
 }
 
-- (void)setDictionary:(id)a3 key:(id)a4
+- (void)setDictionary:(id)dictionary key:(id)key
 {
-  if (a3)
+  if (dictionary)
   {
     sub_1B63BEB74();
     v6 = *(&self->super.isa + OBJC_IVAR____TtC8MapsSync18MapsSyncKeyedStore_store);
-    v7 = a4;
-    v8 = self;
+    keyCopy = key;
+    selfCopy = self;
     v9 = sub_1B63BEB54();
   }
 
   else
   {
     v6 = *(&self->super.isa + OBJC_IVAR____TtC8MapsSync18MapsSyncKeyedStore_store);
-    v10 = a4;
-    v11 = self;
+    keyCopy2 = key;
+    selfCopy2 = self;
     v9 = 0;
   }
 
-  [v6 setDictionary:v9 forKey:a4];
+  [v6 setDictionary:v9 forKey:key];
 
   [*(&self->super.isa + OBJC_IVAR____TtC8MapsSync18MapsSyncKeyedStore_store) synchronize];
 }
 
-- (void)setInt64:(int64_t)a3 key:(id)a4
+- (void)setInt64:(int64_t)int64 key:(id)key
 {
   v7 = OBJC_IVAR____TtC8MapsSync18MapsSyncKeyedStore_store;
   v8 = *(&self->super.isa + OBJC_IVAR____TtC8MapsSync18MapsSyncKeyedStore_store);
-  v9 = self;
-  [v8 setLongLong:a3 forKey:a4];
+  selfCopy = self;
+  [v8 setLongLong:int64 forKey:key];
   [*(&self->super.isa + v7) synchronize];
 }
 
-- (void)setDouble:(double)a3 key:(id)a4
+- (void)setDouble:(double)double key:(id)key
 {
   v7 = OBJC_IVAR____TtC8MapsSync18MapsSyncKeyedStore_store;
   v8 = *(&self->super.isa + OBJC_IVAR____TtC8MapsSync18MapsSyncKeyedStore_store);
-  v9 = self;
-  [v8 setDouble:a4 forKey:a3];
+  selfCopy = self;
+  [v8 setDouble:key forKey:double];
   [*(&self->super.isa + v7) synchronize];
 }
 
-- (void)removeObjectForKey:(id)a3
+- (void)removeObjectForKey:(id)key
 {
   v5 = OBJC_IVAR____TtC8MapsSync18MapsSyncKeyedStore_store;
   v6 = *(&self->super.isa + OBJC_IVAR____TtC8MapsSync18MapsSyncKeyedStore_store);
-  v7 = self;
+  selfCopy = self;
   [v6 removeObjectForKey_];
   [*(&self->super.isa + v5) synchronize];
 }

@@ -1,62 +1,62 @@
 @interface CHDrawing
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToDrawing:(id)a3;
-- (BOOL)isPrefixForDrawing:(id)a3;
-- (CGPoint)centroidForStrokeIndexes:(id)a3;
-- (CGPoint)pointForStrokeIndex:(unint64_t)a3 pointIndex:(unint64_t)a4;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToDrawing:(id)drawing;
+- (BOOL)isPrefixForDrawing:(id)drawing;
+- (CGPoint)centroidForStrokeIndexes:(id)indexes;
+- (CGPoint)pointForStrokeIndex:(unint64_t)index pointIndex:(unint64_t)pointIndex;
 - (CGRect)bounds;
-- (CGRect)boundsForStrokeIndex:(unint64_t)a3;
-- (CGRect)boundsForStrokeIndexes:(id)a3;
-- (CHDrawing)drawingWithLastStrokes:(int64_t)a3;
-- (CHDrawing)drawingWithStrokesFromIndexArray:(id)a3;
-- (CHDrawing)drawingWithStrokesFromIndexSet:(id)a3;
-- (CHDrawing)initWithCoder:(id)a3;
-- (CHDrawing)initWithContentsOfFile:(id)a3;
-- (CHDrawing)initWithContentsOfJSONDictionary:(id)a3;
-- (CHDrawing)initWithContentsOfXYString:(id)a3;
-- (Matrix<float>)bitmapRepresentationForSize:(SEL)a3;
-- (_NSRange)matchingStrokePrefixRangeForDrawing:(id)a3;
-- (double)averageCharacterHeightEstimation:(double)a3 minChunkHeight:(double)a4;
-- (double)endTimeForStroke:(unint64_t)a3;
-- (double)startTimeForStroke:(unint64_t)a3;
+- (CGRect)boundsForStrokeIndex:(unint64_t)index;
+- (CGRect)boundsForStrokeIndexes:(id)indexes;
+- (CHDrawing)drawingWithLastStrokes:(int64_t)strokes;
+- (CHDrawing)drawingWithStrokesFromIndexArray:(id)array;
+- (CHDrawing)drawingWithStrokesFromIndexSet:(id)set;
+- (CHDrawing)initWithCoder:(id)coder;
+- (CHDrawing)initWithContentsOfFile:(id)file;
+- (CHDrawing)initWithContentsOfJSONDictionary:(id)dictionary;
+- (CHDrawing)initWithContentsOfXYString:(id)string;
+- (Matrix<float>)bitmapRepresentationForSize:(SEL)size;
+- (_NSRange)matchingStrokePrefixRangeForDrawing:(id)drawing;
+- (double)averageCharacterHeightEstimation:(double)estimation minChunkHeight:(double)height;
+- (double)endTimeForStroke:(unint64_t)stroke;
+- (double)startTimeForStroke:(unint64_t)stroke;
 - (float)cumulativePointToPointDistance;
 - (float)distanceBetweenFirstAndLastPoint;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugQuickLookObject;
 - (id)description;
-- (id)drawingByRemovingUnnaturalHorizontalGaps:(double)a3;
-- (id)drawingResampledWithCatmullRomSplineInterpolation:(double)a3;
-- (id)drawingSpatiallyResampled:(double)a3 maxPointsPerStroke:(int64_t)a4;
-- (id)drawingSpatiallyResampled:(double)a3 outputPointMap:(void *)a4;
-- (id)drawingTransformedWithTranslation:(CGVector)a3 scaleFactor:(double)a4;
-- (id)indexesOfStrokesSmallerThanSize:(CGSize)a3;
-- (id)jsonRepresentationWithContext:(id)a3;
-- (id)newDrawingWithAffineTransform:(CGAffineTransform *)a3;
-- (id)newDrawingWithTransform:(id)a3;
+- (id)drawingByRemovingUnnaturalHorizontalGaps:(double)gaps;
+- (id)drawingResampledWithCatmullRomSplineInterpolation:(double)interpolation;
+- (id)drawingSpatiallyResampled:(double)resampled maxPointsPerStroke:(int64_t)stroke;
+- (id)drawingSpatiallyResampled:(double)resampled outputPointMap:(void *)map;
+- (id)drawingTransformedWithTranslation:(CGVector)translation scaleFactor:(double)factor;
+- (id)indexesOfStrokesSmallerThanSize:(CGSize)size;
+- (id)jsonRepresentationWithContext:(id)context;
+- (id)newDrawingWithAffineTransform:(CGAffineTransform *)transform;
+- (id)newDrawingWithTransform:(id)transform;
 - (id)singleStrokeDrawing;
 - (id)sortedDrawingUsingMinXCoordinate;
-- (id)sortedDrawingUsingStrokeMidPoint:(id *)a3;
-- (id)sortedDrawingUsingStrokeMidPointHorizontalOverlapAware:(id *)a3 shouldSortRTL:(BOOL)a4;
+- (id)sortedDrawingUsingStrokeMidPoint:(id *)point;
+- (id)sortedDrawingUsingStrokeMidPointHorizontalOverlapAware:(id *)aware shouldSortRTL:(BOOL)l;
 - (id)xyRepresentation;
 - (unint64_t)hash;
 - (unint64_t)pointCount;
 - (unint64_t)strokeCount;
 - (vector<long,)strokeIndicesSortedByMinXCoordinate;
-- (void)addPoint:(CGPoint)a3;
-- (void)appendDrawing:(id)a3;
-- (void)appendSegment:(id)a3 fromDrawing:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (void)addPoint:(CGPoint)point;
+- (void)appendDrawing:(id)drawing;
+- (void)appendSegment:(id)segment fromDrawing:(id)drawing;
+- (void)encodeWithCoder:(id)coder;
 - (void)endStroke;
 - (void)writeToFile;
-- (void)writeToFileWithContext:(id)a3 folder:(id)a4 basename:(id)a5;
+- (void)writeToFileWithContext:(id)context folder:(id)folder basename:(id)basename;
 @end
 
 @implementation CHDrawing
 
-- (CHDrawing)initWithContentsOfFile:(id)a3
+- (CHDrawing)initWithContentsOfFile:(id)file
 {
   v84 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  fileCopy = file;
   v78.receiver = self;
   v78.super_class = CHDrawing;
   v76 = [(CHDrawing *)&v78 init];
@@ -65,10 +65,10 @@
     goto LABEL_64;
   }
 
-  if (objc_msgSend_length(v4, v5, v6, v7, v8, v9) < 5 || (v15 = objc_msgSend_length(v4, v10, v11, v12, v13, v14), objc_msgSend_substringFromIndex_(v4, v16, v15 - 4, v17, v18, v19), v20 = objc_claimAutoreleasedReturnValue(), isEqualToString = objc_msgSend_isEqualToString_(v20, v21, @"json", v22, v23, v24), v20, !isEqualToString))
+  if (objc_msgSend_length(fileCopy, v5, v6, v7, v8, v9) < 5 || (v15 = objc_msgSend_length(fileCopy, v10, v11, v12, v13, v14), objc_msgSend_substringFromIndex_(fileCopy, v16, v15 - 4, v17, v18, v19), v20 = objc_claimAutoreleasedReturnValue(), isEqualToString = objc_msgSend_isEqualToString_(v20, v21, @"json", v22, v23, v24), v20, !isEqualToString))
   {
-    v41 = v4;
-    v46 = objc_msgSend_cStringUsingEncoding_(v4, v42, 4, v43, v44, v45);
+    v41 = fileCopy;
+    v46 = objc_msgSend_cStringUsingEncoding_(fileCopy, v42, 4, v43, v44, v45);
     v47 = v46;
     if (!v46 || !*v46)
     {
@@ -280,7 +280,7 @@ LABEL_64:
     goto LABEL_63;
   }
 
-  v32 = objc_msgSend_dataWithContentsOfFile_(MEMORY[0x1E695DEF0], v26, v4, v27, v28, v29);
+  v32 = objc_msgSend_dataWithContentsOfFile_(MEMORY[0x1E695DEF0], v26, fileCopy, v27, v28, v29);
   if (!v32)
   {
     if (qword_1EA84DC48 != -1)
@@ -292,7 +292,7 @@ LABEL_64:
     if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v83 = v4;
+      v83 = fileCopy;
       _os_log_impl(&dword_18366B000, v33, OS_LOG_TYPE_ERROR, "Could not read data from file %@", buf, 0xCu);
     }
   }
@@ -306,10 +306,10 @@ LABEL_65:
   return v40;
 }
 
-- (CHDrawing)initWithContentsOfXYString:(id)a3
+- (CHDrawing)initWithContentsOfXYString:(id)string
 {
   v78 = *MEMORY[0x1E69E9840];
-  v71 = a3;
+  stringCopy = string;
   v76.receiver = self;
   v76.super_class = CHDrawing;
   v8 = [(CHDrawing *)&v76 init];
@@ -319,7 +319,7 @@ LABEL_65:
     v75 = 0u;
     v72 = 0u;
     v73 = 0u;
-    v9 = objc_msgSend_componentsSeparatedByString_(v71, v4, @"\n", v5, v6, v7);
+    v9 = objc_msgSend_componentsSeparatedByString_(stringCopy, v4, @"\n", v5, v6, v7);
     v16 = objc_msgSend_countByEnumeratingWithState_objects_count_(v9, v10, &v72, v77, 16, v11);
     if (v16)
     {
@@ -375,16 +375,16 @@ LABEL_65:
   return v8;
 }
 
-- (CHDrawing)initWithContentsOfJSONDictionary:(id)a3
+- (CHDrawing)initWithContentsOfJSONDictionary:(id)dictionary
 {
   v110 = *MEMORY[0x1E69E9840];
-  v95 = a3;
+  dictionaryCopy = dictionary;
   v107.receiver = self;
   v107.super_class = CHDrawing;
   v8 = [(CHDrawing *)&v107 init];
   if (v8)
   {
-    v9 = objc_msgSend_objectForKey_(v95, v4, @"channel", v5, v6, v7);
+    v9 = objc_msgSend_objectForKey_(dictionaryCopy, v4, @"channel", v5, v6, v7);
     v10 = v9 == 0;
 
     if (v10)
@@ -395,7 +395,7 @@ LABEL_65:
 
     else
     {
-      v15 = objc_msgSend_objectForKeyedSubscript_(v95, v11, @"channel", v12, v13, v14);
+      v15 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v11, @"channel", v12, v13, v14);
       v20 = objc_msgSend_objectForKey_(v15, v16, @"x", v17, v18, v19);
       v21 = v20 == 0;
 
@@ -425,7 +425,7 @@ LABEL_65:
       }
     }
 
-    objc_msgSend_objectForKeyedSubscript_(v95, v11, @"data", v12, v13, v14);
+    objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v11, @"data", v12, v13, v14);
     v105 = 0u;
     v106 = 0u;
     v103 = 0u;
@@ -493,10 +493,10 @@ LABEL_65:
   return v8;
 }
 
-- (CHDrawing)initWithCoder:(id)a3
+- (CHDrawing)initWithCoder:(id)coder
 {
   STACK[0xD38] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v73.receiver = self;
   v73.super_class = CHDrawing;
   v5 = [(CHDrawing *)&v73 init];
@@ -506,8 +506,8 @@ LABEL_65:
     v7 = objc_opt_class();
     objc_opt_class();
     vars8 = objc_msgSend_setWithObjects_(v6, v8, v7, v9, v10, v11);
-    v67 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v12, vars8, @"drawingStrokes", v13, v14);
-    v18 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v15, vars8, @"drawingStrokesTimeStamps", v16, v17);
+    v67 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v12, vars8, @"drawingStrokes", v13, v14);
+    v18 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v15, vars8, @"drawingStrokesTimeStamps", v16, v17);
     if (v67)
     {
       sub_183707B88(&STACK[0xAA0]);
@@ -703,10 +703,10 @@ LABEL_40:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   STACK[0x618] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v32 = objc_msgSend_array(MEMORY[0x1E695DF70], v5, v6, v7, v8, v9);
   if (self)
   {
@@ -727,8 +727,8 @@ LABEL_40:
     operator new();
   }
 
-  objc_msgSend_encodeObject_forKey_(v4, v26, v32, @"drawingStrokes", v27, v28);
-  objc_msgSend_encodeObject_forKey_(v4, v29, v20, @"drawingStrokesTimeStamps", v30, v31);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v26, v32, @"drawingStrokes", v27, v28);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v29, v20, @"drawingStrokesTimeStamps", v30, v31);
 }
 
 - (id)description
@@ -745,16 +745,16 @@ LABEL_40:
   return v33;
 }
 
-- (id)newDrawingWithTransform:(id)a3
+- (id)newDrawingWithTransform:(id)transform
 {
-  v4 = a3;
+  transformCopy = transform;
   v10 = objc_alloc_init(CHDrawing);
   for (i = 0; objc_msgSend_strokeCount(self, v5, v6, v7, v8, v9) > i; ++i)
   {
     for (j = 0; objc_msgSend_pointCountForStrokeIndex_(self, v12, i, v13, v14, v15) > j; ++j)
     {
       objc_msgSend_pointForStrokeIndex_pointIndex_(self, v17, i, j, v20, v21);
-      v4[2](v4);
+      transformCopy[2](transformCopy);
       objc_msgSend_addPoint_(v10, v22, v23, v24, v25, v26);
     }
 
@@ -764,7 +764,7 @@ LABEL_40:
   return v10;
 }
 
-- (id)newDrawingWithAffineTransform:(CGAffineTransform *)a3
+- (id)newDrawingWithAffineTransform:(CGAffineTransform *)transform
 {
   v10 = objc_alloc_init(CHDrawing);
   for (i = 0; objc_msgSend_strokeCount(self, v5, v6, v7, v8, v9) > i; ++i)
@@ -772,7 +772,7 @@ LABEL_40:
     for (j = 0; objc_msgSend_pointCountForStrokeIndex_(self, v12, i, v13, v14, v15) > j; ++j)
     {
       objc_msgSend_pointForStrokeIndex_pointIndex_(self, v17, i, j, v20, v21);
-      objc_msgSend_addPoint_(v10, v24, v25, v26, v27, v28, vaddq_f64(*&a3->tx, vmlaq_n_f64(vmulq_n_f64(*&a3->c, v22), *&a3->a, v23)));
+      objc_msgSend_addPoint_(v10, v24, v25, v26, v27, v28, vaddq_f64(*&transform->tx, vmlaq_n_f64(vmulq_n_f64(*&transform->c, v22), *&transform->a, v23)));
     }
 
     objc_msgSend_endStroke(v10, v17, v18, v19, v20, v21);
@@ -781,25 +781,25 @@ LABEL_40:
   return v10;
 }
 
-- (id)drawingByRemovingUnnaturalHorizontalGaps:(double)a3
+- (id)drawingByRemovingUnnaturalHorizontalGaps:(double)gaps
 {
-  v4 = self;
-  objc_msgSend_bounds(v4, v5, v6, v7, v8, v9);
-  if (v15 <= a3 * 0.8)
+  selfCopy = self;
+  objc_msgSend_bounds(selfCopy, v5, v6, v7, v8, v9);
+  if (v15 <= gaps * 0.8)
   {
-    v28 = v4;
+    v28 = selfCopy;
   }
 
   else
   {
-    objc_msgSend_strokeIndicesSortedByMinXCoordinate(v4, v10, v11, v12, v13, v14);
+    objc_msgSend_strokeIndicesSortedByMinXCoordinate(selfCopy, v10, v11, v12, v13, v14);
     if (v31 != __p)
     {
       v20 = *(MEMORY[0x1E695F050] + 16);
       v21 = *(MEMORY[0x1E695F050] + 24);
       v22 = *MEMORY[0x1E695F050];
       v23 = *(MEMORY[0x1E695F050] + 8);
-      objc_msgSend_boundsForStrokeIndex_(v4, v16, *__p, v17, v18, v19, a3 + 50.0);
+      objc_msgSend_boundsForStrokeIndex_(selfCopy, v16, *__p, v17, v18, v19, gaps + 50.0);
       v25 = v24;
       v27 = v26;
       v33.origin.x = v22;
@@ -842,7 +842,7 @@ LABEL_40:
       operator new();
     }
 
-    v28 = v4;
+    v28 = selfCopy;
     if (__p)
     {
       operator delete(__p);
@@ -918,9 +918,9 @@ LABEL_40:
   return result;
 }
 
-- (CGPoint)pointForStrokeIndex:(unint64_t)a3 pointIndex:(unint64_t)a4
+- (CGPoint)pointForStrokeIndex:(unint64_t)index pointIndex:(unint64_t)pointIndex
 {
-  v4 = (*(self->_drawing.strokes.__begin_ + 3 * a3) + 16 * a4);
+  v4 = (*(self->_drawing.strokes.__begin_ + 3 * index) + 16 * pointIndex);
   v5 = *v4;
   v6 = v4[1];
   result.y = v6;
@@ -928,25 +928,25 @@ LABEL_40:
   return result;
 }
 
-- (double)startTimeForStroke:(unint64_t)a3
+- (double)startTimeForStroke:(unint64_t)stroke
 {
   begin = self->_drawing.startTimes.__begin_;
   result = -1.0;
-  if (a3 < self->_drawing.startTimes.__end_ - begin)
+  if (stroke < self->_drawing.startTimes.__end_ - begin)
   {
-    return begin[a3];
+    return begin[stroke];
   }
 
   return result;
 }
 
-- (double)endTimeForStroke:(unint64_t)a3
+- (double)endTimeForStroke:(unint64_t)stroke
 {
   begin = self->_drawing.endTimes.__begin_;
   result = -1.0;
-  if (a3 < self->_drawing.endTimes.__end_ - begin)
+  if (stroke < self->_drawing.endTimes.__end_ - begin)
   {
-    return begin[a3];
+    return begin[stroke];
   }
 
   return result;
@@ -967,10 +967,10 @@ LABEL_40:
   }
 }
 
-- (id)indexesOfStrokesSmallerThanSize:(CGSize)a3
+- (id)indexesOfStrokesSmallerThanSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v10 = objc_msgSend_indexSet(MEMORY[0x1E696AD50], a2, v3, v4, v5, v6);
   end = self->_drawing.strokes.__end_;
   v12 = end - self->_drawing.strokes.__begin_;
@@ -1002,9 +1002,9 @@ LABEL_40:
   return v10;
 }
 
-- (CHDrawing)drawingWithStrokesFromIndexSet:(id)a3
+- (CHDrawing)drawingWithStrokesFromIndexSet:(id)set
 {
-  v4 = a3;
+  setCopy = set;
   v10 = objc_msgSend_array(MEMORY[0x1E695DF70], v5, v6, v7, v8, v9);
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
@@ -1012,16 +1012,16 @@ LABEL_40:
   v22[3] = &unk_1E6DDCC38;
   v11 = v10;
   v23 = v11;
-  objc_msgSend_enumerateIndexesUsingBlock_(v4, v12, v22, v13, v14, v15);
+  objc_msgSend_enumerateIndexesUsingBlock_(setCopy, v12, v22, v13, v14, v15);
   v20 = objc_msgSend_drawingWithStrokesFromIndexArray_(self, v16, v11, v17, v18, v19);
 
   return v20;
 }
 
-- (CHDrawing)drawingWithStrokesFromIndexArray:(id)a3
+- (CHDrawing)drawingWithStrokesFromIndexArray:(id)array
 {
   STACK[0xD38] = *MEMORY[0x1E69E9840];
-  v39 = a3;
+  arrayCopy = array;
   v3 = objc_alloc_init(CHDrawing);
   sub_183707B88(&STACK[0xAA0]);
   v4 = STACK[0xB00];
@@ -1061,7 +1061,7 @@ LABEL_40:
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
-  obj = v39;
+  obj = arrayCopy;
   v17 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v10, &v42, &STACK[0xA20], 16, v11);
   if (v17)
   {
@@ -1180,10 +1180,10 @@ LABEL_40:
   sub_1837088E8(v51, &STACK[0xAA0]);
 }
 
-- (CGPoint)centroidForStrokeIndexes:(id)a3
+- (CGPoint)centroidForStrokeIndexes:(id)indexes
 {
-  v4 = a3;
-  if (!objc_msgSend_count(v4, v5, v6, v7, v8, v9))
+  indexesCopy = indexes;
+  if (!objc_msgSend_count(indexesCopy, v5, v6, v7, v8, v9))
   {
     if (qword_1EA84DC48 != -1)
     {
@@ -1198,7 +1198,7 @@ LABEL_40:
     }
   }
 
-  if (!objc_msgSend_count(v4, v10, v11, v12, v13, v14))
+  if (!objc_msgSend_count(indexesCopy, v10, v11, v12, v13, v14))
   {
     if (qword_1EA84DC48 != -1)
     {
@@ -1233,7 +1233,7 @@ LABEL_40:
   v26[5] = buf;
   v26[6] = &v31;
   v26[7] = &v27;
-  objc_msgSend_enumerateIndexesUsingBlock_(v4, v16, v26, v17, v18, v19);
+  objc_msgSend_enumerateIndexesUsingBlock_(indexesCopy, v16, v26, v17, v18, v19);
   v21 = v28[3];
   if (v21 < 1)
   {
@@ -1258,7 +1258,7 @@ LABEL_40:
   return result;
 }
 
-- (CGRect)boundsForStrokeIndexes:(id)a3
+- (CGRect)boundsForStrokeIndexes:(id)indexes
 {
   v16 = 0;
   v17 = &v16;
@@ -1275,7 +1275,7 @@ LABEL_40:
   v15[3] = &unk_1E6DDCB80;
   v15[4] = self;
   v15[5] = &v16;
-  objc_msgSend_enumerateIndexesUsingBlock_(a3, a2, v15, v3, v4, v5);
+  objc_msgSend_enumerateIndexesUsingBlock_(indexes, a2, v15, v3, v4, v5);
   v7 = v17[6];
   v8 = v17[7];
   v9 = v17[8];
@@ -1292,13 +1292,13 @@ LABEL_40:
   return result;
 }
 
-- (CGRect)boundsForStrokeIndex:(unint64_t)a3
+- (CGRect)boundsForStrokeIndex:(unint64_t)index
 {
   end = self->_drawing.strokes.__end_;
   v4 = end - self->_drawing.strokes.__begin_;
   if (v4 && (0xAAAAAAAAAAAAAAABLL * (v4 >> 3) - (*(end - 2) == *(end - 3))) > 0)
   {
-    sub_1836FCBE8(&__p, &self->_drawing.strokeBounds.__begin_, a3);
+    sub_1836FCBE8(&__p, &self->_drawing.strokeBounds.__begin_, index);
     v5 = *__p;
     v6 = *(__p + 1);
     v7 = *(__p + 2) - *__p;
@@ -1397,10 +1397,10 @@ LABEL_40:
   return sqrtf(vaddv_f32(vmul_f32(v5, v5)));
 }
 
-- (void)addPoint:(CGPoint)a3
+- (void)addPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   sub_183707A70(self->_drawing.strokes.__begin_ + 24 * self->_drawing.currentStrokeIndex, &x);
   sub_183707A70(self->_drawing.strokes.__begin_ + 24 * self->_drawing.currentStrokeIndex, &y);
   *(self->_drawing.strokeBoundsValidity.__begin_ + ((self->_drawing.currentStrokeIndex >> 3) & 0x1FFFFFFFFFFFFFF8)) &= ~(1 << self->_drawing.currentStrokeIndex);
@@ -1415,11 +1415,11 @@ LABEL_40:
   }
 }
 
-- (BOOL)isPrefixForDrawing:(id)a3
+- (BOOL)isPrefixForDrawing:(id)drawing
 {
-  v4 = a3;
+  drawingCopy = drawing;
   v10 = objc_msgSend_pointCount(self, v5, v6, v7, v8, v9);
-  if (v10 <= objc_msgSend_pointCount(v4, v11, v12, v13, v14, v15) && (v21 = objc_msgSend_strokeCount(self, v16, v17, v18, v19, v20), v21 <= objc_msgSend_strokeCount(v4, v22, v23, v24, v25, v26)))
+  if (v10 <= objc_msgSend_pointCount(drawingCopy, v11, v12, v13, v14, v15) && (v21 = objc_msgSend_strokeCount(self, v16, v17, v18, v19, v20), v21 <= objc_msgSend_strokeCount(drawingCopy, v22, v23, v24, v25, v26)))
   {
     for (i = 0; ; ++i)
     {
@@ -1431,7 +1431,7 @@ LABEL_40:
       }
 
       v40 = objc_msgSend_pointCountForStrokeIndex_(self, v36, i, v37, v38, v39);
-      if (v40 > objc_msgSend_pointCountForStrokeIndex_(v4, v41, i, v42, v43, v44))
+      if (v40 > objc_msgSend_pointCountForStrokeIndex_(drawingCopy, v41, i, v42, v43, v44))
       {
         break;
       }
@@ -1442,7 +1442,7 @@ LABEL_40:
         objc_msgSend_pointForStrokeIndex_pointIndex_(self, v27, i, v49, v30, v31);
         v51 = v50;
         v53 = v52;
-        objc_msgSend_pointForStrokeIndex_pointIndex_(v4, v54, i, v49, v55, v56);
+        objc_msgSend_pointForStrokeIndex_pointIndex_(drawingCopy, v54, i, v49, v55, v56);
         v32 = 0;
         if (v51 == v58)
         {
@@ -1468,18 +1468,18 @@ LABEL_4:
   return v32;
 }
 
-- (_NSRange)matchingStrokePrefixRangeForDrawing:(id)a3
+- (_NSRange)matchingStrokePrefixRangeForDrawing:(id)drawing
 {
-  v9 = a3;
+  drawingCopy = drawing;
   for (i = 0; i < objc_msgSend_strokeCount(self, v4, v5, v6, v7, v8); ++i)
   {
-    if (i >= objc_msgSend_strokeCount(v9, v11, v12, v13, v14, v15))
+    if (i >= objc_msgSend_strokeCount(drawingCopy, v11, v12, v13, v14, v15))
     {
       break;
     }
 
     v20 = objc_msgSend_pointCountForStrokeIndex_(self, v16, i, v17, v18, v19);
-    if (v20 != objc_msgSend_pointCountForStrokeIndex_(v9, v21, i, v22, v23, v24))
+    if (v20 != objc_msgSend_pointCountForStrokeIndex_(drawingCopy, v21, i, v22, v23, v24))
     {
       break;
     }
@@ -1490,7 +1490,7 @@ LABEL_4:
       objc_msgSend_pointForStrokeIndex_pointIndex_(self, v4, i, v29, v7, v8);
       v31 = v30;
       v33 = v32;
-      objc_msgSend_pointForStrokeIndex_pointIndex_(v9, v34, i, v29, v35, v36);
+      objc_msgSend_pointForStrokeIndex_pointIndex_(drawingCopy, v34, i, v29, v35, v36);
       if (v31 == v38)
       {
         ++v29;
@@ -1513,21 +1513,21 @@ LABEL_11:
   return result;
 }
 
-- (BOOL)isEqualToDrawing:(id)a3
+- (BOOL)isEqualToDrawing:(id)drawing
 {
   STACK[0x598] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  drawingCopy = drawing;
+  v5 = drawingCopy;
+  if (self == drawingCopy)
   {
     v6 = 1;
   }
 
   else
   {
-    if (v4)
+    if (drawingCopy)
     {
-      sub_1837088E8(&v15, &v4->_drawing);
+      sub_1837088E8(&v15, &drawingCopy->_drawing);
     }
 
     bzero(&v15, 0x280uLL);
@@ -1587,13 +1587,13 @@ LABEL_16:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    isEqualToDrawing = objc_msgSend_isEqualToDrawing_(self, v5, v4, v6, v7, v8);
+    isEqualToDrawing = objc_msgSend_isEqualToDrawing_(self, v5, equalCopy, v6, v7, v8);
 
     return isEqualToDrawing;
   }
@@ -1640,11 +1640,11 @@ LABEL_16:
   return v12;
 }
 
-- (id)jsonRepresentationWithContext:(id)a3
+- (id)jsonRepresentationWithContext:(id)context
 {
   v64[2] = *MEMORY[0x1E69E9840];
-  v62 = a3;
-  v63 = objc_msgSend_mutableCopy(v62, v4, v5, v6, v7, v8);
+  contextCopy = context;
+  v63 = objc_msgSend_mutableCopy(contextCopy, v4, v5, v6, v7, v8);
   v19 = objc_msgSend_array(MEMORY[0x1E695DF70], v9, v10, v11, v12, v13);
   for (i = 0; i < objc_msgSend_strokeCount(self, v14, v15, v16, v17, v18); ++i)
   {
@@ -1670,7 +1670,7 @@ LABEL_16:
   return v63;
 }
 
-- (Matrix<float>)bitmapRepresentationForSize:(SEL)a3
+- (Matrix<float>)bitmapRepresentationForSize:(SEL)size
 {
   STACK[0xCF8] = *MEMORY[0x1E69E9840];
   sub_183707B88(&STACK[0xA00]);
@@ -2124,12 +2124,12 @@ LABEL_27:
   sub_1837088E8(v12, &STACK[0x8C0]);
 }
 
-- (id)sortedDrawingUsingStrokeMidPoint:(id *)a3
+- (id)sortedDrawingUsingStrokeMidPoint:(id *)point
 {
   __p = 0;
   v21 = 0;
   v22 = 0;
-  if (objc_msgSend_strokeCount(self, a2, a3, v3, v4, v5))
+  if (objc_msgSend_strokeCount(self, a2, point, v3, v4, v5))
   {
     objc_msgSend_boundsForStrokeIndex_(self, v7, 0, v8, v9, v10);
     operator new();
@@ -2139,10 +2139,10 @@ LABEL_27:
   sub_18370D614(0, 0, &p_p, 0, 1);
   v11 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v16 = objc_msgSend_drawingWithStrokesFromIndexArray_(self, v12, v11, v13, v14, v15);
-  if (a3)
+  if (point)
   {
     v17 = v11;
-    *a3 = v11;
+    *point = v11;
   }
 
   if (__p)
@@ -2154,10 +2154,10 @@ LABEL_27:
   return v16;
 }
 
-- (id)sortedDrawingUsingStrokeMidPointHorizontalOverlapAware:(id *)a3 shouldSortRTL:(BOOL)a4
+- (id)sortedDrawingUsingStrokeMidPointHorizontalOverlapAware:(id *)aware shouldSortRTL:(BOOL)l
 {
-  v60 = a4;
-  v8 = objc_msgSend_strokeCount(self, a2, a3, a4, v4, v5);
+  lCopy = l;
+  v8 = objc_msgSend_strokeCount(self, a2, aware, l, v4, v5);
   if (v8)
   {
     if (!(v8 >> 61))
@@ -2253,16 +2253,16 @@ LABEL_27:
   }
 
   *&v64 = &__p;
-  *(&v64 + 1) = v60;
+  *(&v64 + 1) = lCopy;
   v40 = sub_18370E5F8(0, 0, &v64, 0, 0, 0);
   v41 = MEMORY[0x1E695DF70];
   v47 = objc_msgSend_strokeCount(self, v42, v43, v44, v45, v46, v40);
   v52 = objc_msgSend_arrayWithCapacity_(v41, v48, v47, v49, v50, v51);
   v57 = objc_msgSend_drawingWithStrokesFromIndexArray_(self, v53, v52, v54, v55, v56);
-  if (a3)
+  if (aware)
   {
     v58 = v52;
-    *a3 = v52;
+    *aware = v52;
   }
 
   if (__p)
@@ -2274,11 +2274,11 @@ LABEL_27:
   return v57;
 }
 
-- (id)drawingTransformedWithTranslation:(CGVector)a3 scaleFactor:(double)a4
+- (id)drawingTransformedWithTranslation:(CGVector)translation scaleFactor:(double)factor
 {
-  dy = a3.dy;
-  dx = a3.dx;
-  if (a4 == 1.0 && a3.dx == 0.0 && a3.dy == 0.0)
+  dy = translation.dy;
+  dx = translation.dx;
+  if (factor == 1.0 && translation.dx == 0.0 && translation.dy == 0.0)
   {
     v12 = objc_msgSend_copy(self, a2, v4, v5, v6, v7);
   }
@@ -2291,7 +2291,7 @@ LABEL_27:
       for (j = 0; j < objc_msgSend_pointCountForStrokeIndex_(self, v20, i, v21, v22, v23); ++j)
       {
         objc_msgSend_pointForStrokeIndex_pointIndex_(self, v25, i, j, v28, v29);
-        objc_msgSend_addPoint_(v12, v32, v33, v34, v35, v36, (dx + v30) * a4, (dy + v31) * a4);
+        objc_msgSend_addPoint_(v12, v32, v33, v34, v35, v36, (dx + v30) * factor, (dy + v31) * factor);
       }
 
       objc_msgSend_endStroke(v12, v25, v26, v27, v28, v29);
@@ -2301,10 +2301,10 @@ LABEL_27:
   return v12;
 }
 
-- (id)drawingSpatiallyResampled:(double)a3 outputPointMap:(void *)a4
+- (id)drawingSpatiallyResampled:(double)resampled outputPointMap:(void *)map
 {
   STACK[0xF78] = *MEMORY[0x1E69E9840];
-  v9 = objc_msgSend_copy(self, a2, a4, v4, v5, v6);
+  v9 = objc_msgSend_copy(self, a2, map, v4, v5, v6);
   if (v9)
   {
     sub_1837088E8(&STACK[0xCC0], v9 + 128);
@@ -2312,15 +2312,15 @@ LABEL_27:
 
   bzero(&STACK[0xCC0], 0x280uLL);
   sub_183707B88(&STACK[0xA40]);
-  v10 = a3;
-  sub_1836FBBE4(&STACK[0xCC0], &STACK[0xA40], a4, 0x7FFFFFFFFFFFFFFFLL, v10);
+  resampledCopy = resampled;
+  sub_1836FBBE4(&STACK[0xCC0], &STACK[0xA40], map, 0x7FFFFFFFFFFFFFFFLL, resampledCopy);
   sub_1837088E8(&v12, &STACK[0xA40]);
 }
 
-- (id)drawingSpatiallyResampled:(double)a3 maxPointsPerStroke:(int64_t)a4
+- (id)drawingSpatiallyResampled:(double)resampled maxPointsPerStroke:(int64_t)stroke
 {
   STACK[0xF78] = *MEMORY[0x1E69E9840];
-  v9 = objc_msgSend_copy(self, a2, a4, v4, v5, v6);
+  v9 = objc_msgSend_copy(self, a2, stroke, v4, v5, v6);
   if (v9)
   {
     sub_1837088E8(&STACK[0xCC0], v9 + 128);
@@ -2328,12 +2328,12 @@ LABEL_27:
 
   bzero(&STACK[0xCC0], 0x280uLL);
   sub_183707B88(&STACK[0xA40]);
-  v10 = a3;
-  sub_1836FBBE4(&STACK[0xCC0], &STACK[0xA40], 0, a4, v10);
+  resampledCopy = resampled;
+  sub_1836FBBE4(&STACK[0xCC0], &STACK[0xA40], 0, stroke, resampledCopy);
   sub_1837088E8(&v12, &STACK[0xA40]);
 }
 
-- (id)drawingResampledWithCatmullRomSplineInterpolation:(double)a3
+- (id)drawingResampledWithCatmullRomSplineInterpolation:(double)interpolation
 {
   STACK[0x10B8] = *MEMORY[0x1E69E9840];
   v8 = objc_msgSend_copy(self, a2, v3, v4, v5, v6);
@@ -2429,7 +2429,7 @@ LABEL_27:
 
   sub_1836FB830(&STACK[0xB60] | 0x18, v9, 0);
   v22 = 0;
-  v23 = a3;
+  interpolationCopy = interpolation;
   v24 = STACK[0xE48];
   v25 = STACK[0xE40];
   v26 = STACK[0xE48] - STACK[0xE40];
@@ -2516,7 +2516,7 @@ LABEL_38:
         sub_18368964C();
       }
 
-      sub_1836FBD80(&STACK[0xDE0], &STACK[0xB60], v22, 0, (round(v31 / v23) + 1.0), v23);
+      sub_1836FBD80(&STACK[0xDE0], &STACK[0xB60], v22, 0, (round(v31 / interpolationCopy) + 1.0), interpolationCopy);
     }
 
     ++v22;
@@ -2530,19 +2530,19 @@ LABEL_38:
   }
 }
 
-- (CHDrawing)drawingWithLastStrokes:(int64_t)a3
+- (CHDrawing)drawingWithLastStrokes:(int64_t)strokes
 {
-  v8 = objc_msgSend_strokeCount(self, a2, a3, v3, v4, v5);
-  v9 = v8 - a3;
-  if (v8 <= a3)
+  v8 = objc_msgSend_strokeCount(self, a2, strokes, v3, v4, v5);
+  v9 = v8 - strokes;
+  if (v8 <= strokes)
   {
-    v15 = self;
+    selfCopy = self;
   }
 
   else
   {
     v10 = v8;
-    v15 = objc_alloc_init(CHDrawing);
+    selfCopy = objc_alloc_init(CHDrawing);
     v16 = v9 & ~(v9 >> 63);
     if (v16 < v10)
     {
@@ -2551,10 +2551,10 @@ LABEL_38:
         for (i = 0; i < objc_msgSend_pointCountForStrokeIndex_(self, v11, v16, v12, v13, v14); ++i)
         {
           objc_msgSend_pointForStrokeIndex_pointIndex_(self, v18, v16, i, v21, v22);
-          objc_msgSend_addPoint_(v15, v23, v24, v25, v26, v27);
+          objc_msgSend_addPoint_(selfCopy, v23, v24, v25, v26, v27);
         }
 
-        objc_msgSend_endStroke(v15, v18, v19, v20, v21, v22);
+        objc_msgSend_endStroke(selfCopy, v18, v19, v20, v21, v22);
         ++v16;
       }
 
@@ -2562,7 +2562,7 @@ LABEL_38:
     }
   }
 
-  return v15;
+  return selfCopy;
 }
 
 - (id)singleStrokeDrawing
@@ -2580,15 +2580,15 @@ LABEL_38:
     }
 
     objc_msgSend_endStroke(v14, v16, v17, v18, v19, v20);
-    v7 = v14;
+    selfCopy = v14;
   }
 
   else
   {
-    v7 = self;
+    selfCopy = self;
   }
 
-  return v7;
+  return selfCopy;
 }
 
 - (vector<long,)strokeIndicesSortedByMinXCoordinate
@@ -2633,17 +2633,17 @@ LABEL_38:
   return sub_18370ACC0(var0, var1, &v13, v11, 1);
 }
 
-- (void)appendSegment:(id)a3 fromDrawing:(id)a4
+- (void)appendSegment:(id)segment fromDrawing:(id)drawing
 {
-  v70 = a3;
-  v6 = a4;
-  v12 = objc_msgSend_startCutPoint(v70, v7, v8, v9, v10, v11);
+  segmentCopy = segment;
+  drawingCopy = drawing;
+  v12 = objc_msgSend_startCutPoint(segmentCopy, v7, v8, v9, v10, v11);
   v18 = objc_msgSend_strokeIndex(v12, v13, v14, v15, v16, v17);
 
-  v24 = objc_msgSend_endCutPoint(v70, v19, v20, v21, v22, v23);
+  v24 = objc_msgSend_endCutPoint(segmentCopy, v19, v20, v21, v22, v23);
   v30 = objc_msgSend_strokeIndex(v24, v25, v26, v27, v28, v29);
 
-  v36 = objc_msgSend_startCutPoint(v70, v31, v32, v33, v34, v35);
+  v36 = objc_msgSend_startCutPoint(segmentCopy, v31, v32, v33, v34, v35);
   v42 = objc_msgSend_pointIndex(v36, v37, v38, v39, v40, v41);
 
   if (v18 <= v30)
@@ -2656,10 +2656,10 @@ LABEL_38:
         v42 = 0;
       }
 
-      v50 = objc_msgSend_endCutPoint(v70, v43, v44, v45, v46, v47);
+      v50 = objc_msgSend_endCutPoint(segmentCopy, v43, v44, v45, v46, v47);
       v56 = objc_msgSend_pointIndex(v50, v51, v52, v53, v54, v55);
 
-      v61 = objc_msgSend_pointCountForStrokeIndex_(v6, v57, v48, v58, v59, v60);
+      v61 = objc_msgSend_pointCountForStrokeIndex_(drawingCopy, v57, v48, v58, v59, v60);
       v62 = v61 - 1;
       if (v61 >= 1)
       {
@@ -2674,7 +2674,7 @@ LABEL_38:
           v64 = v42;
           do
           {
-            objc_msgSend_pointForStrokeIndex_pointIndex_(v6, v43, v48, v64, v46, v47);
+            objc_msgSend_pointForStrokeIndex_pointIndex_(drawingCopy, v43, v48, v64, v46, v47);
             objc_msgSend_addPoint_(self, v65, v66, v67, v68, v69);
             ++v64;
           }
@@ -2690,14 +2690,14 @@ LABEL_38:
   }
 }
 
-- (void)appendDrawing:(id)a3
+- (void)appendDrawing:(id)drawing
 {
-  v25 = a3;
-  for (i = 0; i < objc_msgSend_strokeCount(v25, v4, v5, v6, v7, v8); ++i)
+  drawingCopy = drawing;
+  for (i = 0; i < objc_msgSend_strokeCount(drawingCopy, v4, v5, v6, v7, v8); ++i)
   {
-    for (j = 0; j < objc_msgSend_pointCountForStrokeIndex_(v25, v10, i, v11, v12, v13); ++j)
+    for (j = 0; j < objc_msgSend_pointCountForStrokeIndex_(drawingCopy, v10, i, v11, v12, v13); ++j)
     {
-      objc_msgSend_pointForStrokeIndex_pointIndex_(v25, v15, i, j, v18, v19);
+      objc_msgSend_pointForStrokeIndex_pointIndex_(drawingCopy, v15, i, j, v18, v19);
       objc_msgSend_addPoint_(self, v20, v21, v22, v23, v24);
     }
 
@@ -2705,7 +2705,7 @@ LABEL_38:
   }
 }
 
-- (double)averageCharacterHeightEstimation:(double)a3 minChunkHeight:(double)a4
+- (double)averageCharacterHeightEstimation:(double)estimation minChunkHeight:(double)height
 {
   v9 = objc_msgSend_strokeCount(self, a2, v4, v5, v6, v7);
   if (v9)
@@ -2728,7 +2728,7 @@ LABEL_38:
   v24 = 0;
   v25 = 0;
   v26 = *MEMORY[0x1E695F050];
-  v27 = *(MEMORY[0x1E695F050] + 24);
+  heightCopy = *(MEMORY[0x1E695F050] + 24);
   MaxX = -1.79769313e308;
   v29 = 16;
   v46 = 0.0;
@@ -2737,7 +2737,7 @@ LABEL_38:
   v42 = *MEMORY[0x1E695F050];
   v48 = v41;
   r2 = v47;
-  v43 = v27;
+  v43 = heightCopy;
   while (v24 < objc_msgSend_strokeCount(self, v19, v20, v21, v22, v23))
   {
     x = *(v29 - 16);
@@ -2752,15 +2752,15 @@ LABEL_38:
     v50.origin.x = v26;
     v50.size.width = v47;
     v50.origin.y = v48;
-    v50.size.height = v27;
+    v50.size.height = heightCopy;
     IsNull = CGRectIsNull(v50);
-    v36 = MinX - MaxX < a3 || IsNull;
-    if ((v36 & 1) != 0 || v27 < a4)
+    v36 = MinX - MaxX < estimation || IsNull;
+    if ((v36 & 1) != 0 || heightCopy < height)
     {
       v51.origin.x = v26;
       v51.size.width = v47;
       v51.origin.y = v48;
-      v51.size.height = v27;
+      v51.size.height = heightCopy;
       v56.origin.x = x;
       v56.origin.y = y;
       v56.size.width = width;
@@ -2775,17 +2775,17 @@ LABEL_38:
     else
     {
       ++v25;
-      v46 = v27 + v46;
+      v46 = heightCopy + v46;
       v41 = v48;
       v42 = v26;
       r2 = v47;
-      v43 = v27;
+      v43 = heightCopy;
     }
 
     v26 = x;
     v47 = width;
     v48 = y;
-    v27 = height;
+    heightCopy = height;
     v53.origin.x = x;
     v53.origin.y = y;
     v53.size.width = width;
@@ -2795,9 +2795,9 @@ LABEL_38:
     v29 += 32;
   }
 
-  if (v27 >= a4 || v25 <= 0)
+  if (heightCopy >= height || v25 <= 0)
   {
-    v39 = v27 + v46;
+    v39 = heightCopy + v46;
     ++v25;
   }
 
@@ -2806,7 +2806,7 @@ LABEL_38:
     v54.origin.x = v26;
     v54.size.width = v47;
     v54.origin.y = v48;
-    v54.size.height = v27;
+    v54.size.height = heightCopy;
     v57.origin.y = v41;
     v57.origin.x = v42;
     v57.size.width = r2;
@@ -2818,11 +2818,11 @@ LABEL_38:
   return v39 / v25;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   STACK[0x598] = *MEMORY[0x1E69E9840];
   v5 = objc_opt_class();
-  v10 = objc_msgSend_allocWithZone_(v5, v6, a3, v7, v8, v9);
+  v10 = objc_msgSend_allocWithZone_(v5, v6, zone, v7, v8, v9);
   if (objc_msgSend_init(v10, v11, v12, v13, v14, v15))
   {
     sub_1837088E8(&v17, &self->_drawing);
@@ -2854,23 +2854,23 @@ LABEL_38:
   objc_msgSend_writeToFileWithContext_folder_basename_(self, v63, &unk_1EF1EB9C8, v24, v62, v64);
 }
 
-- (void)writeToFileWithContext:(id)a3 folder:(id)a4 basename:(id)a5
+- (void)writeToFileWithContext:(id)context folder:(id)folder basename:(id)basename
 {
   v55 = *MEMORY[0x1E69E9840];
-  v48 = a3;
-  v8 = a4;
-  v9 = a5;
+  contextCopy = context;
+  folderCopy = folder;
+  basenameCopy = basename;
   v10 = objc_alloc_init(MEMORY[0x1E696AC08]);
-  v16 = objc_msgSend_absoluteString(v8, v11, v12, v13, v14, v15);
+  v16 = objc_msgSend_absoluteString(folderCopy, v11, v12, v13, v14, v15);
   v21 = objc_msgSend_fileExistsAtPath_(v10, v17, v16, v18, v19, v20);
 
   if (v21)
   {
     v26 = 0;
 LABEL_4:
-    v28 = objc_msgSend_jsonRepresentationWithContext_(self, v22, v48, v23, v24, v25);
+    v28 = objc_msgSend_jsonRepresentationWithContext_(self, v22, contextCopy, v23, v24, v25);
     v31 = objc_msgSend_dataWithJSONObject_options_error_(MEMORY[0x1E696ACB0], v29, v28, 1, 0, v30);
-    v36 = objc_msgSend_URLByAppendingPathComponent_(v8, v32, v9, v33, v34, v35);
+    v36 = objc_msgSend_URLByAppendingPathComponent_(folderCopy, v32, basenameCopy, v33, v34, v35);
     v49 = 0;
     objc_msgSend_writeToURL_options_error_(v31, v37, v36, 1, &v49, v38);
     v39 = v49;
@@ -2894,7 +2894,7 @@ LABEL_4:
   }
 
   v50 = 0;
-  DirectoryAtURL_withIntermediateDirectories_attributes_error = objc_msgSend_createDirectoryAtURL_withIntermediateDirectories_attributes_error_(v10, v22, v8, 1, 0, &v50);
+  DirectoryAtURL_withIntermediateDirectories_attributes_error = objc_msgSend_createDirectoryAtURL_withIntermediateDirectories_attributes_error_(v10, v22, folderCopy, 1, 0, &v50);
   v26 = v50;
   if (DirectoryAtURL_withIntermediateDirectories_attributes_error)
   {
@@ -2910,7 +2910,7 @@ LABEL_4:
   if (os_log_type_enabled(v47, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412546;
-    v52 = v8;
+    v52 = folderCopy;
     v53 = 2112;
     v54 = v26;
     _os_log_impl(&dword_18366B000, v47, OS_LOG_TYPE_ERROR, "Drawing unable to create folder at URL %@: Error %@", buf, 0x16u);

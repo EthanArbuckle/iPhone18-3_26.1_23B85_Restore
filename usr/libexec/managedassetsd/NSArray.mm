@@ -16,8 +16,8 @@
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = self;
-  v4 = [(NSArray *)v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  selfCopy = self;
+  v4 = [(NSArray *)selfCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -28,7 +28,7 @@
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(selfCopy);
         }
 
         v8 = *(*(&v11 + 1) + 8 * i);
@@ -40,7 +40,7 @@
         }
       }
 
-      v5 = [(NSArray *)v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [(NSArray *)selfCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
       v9 = 1;
       if (v5)
       {
@@ -72,8 +72,8 @@ LABEL_16:
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = self;
-  v4 = [(NSArray *)v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  selfCopy = self;
+  v4 = [(NSArray *)selfCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -84,7 +84,7 @@ LABEL_16:
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(selfCopy);
         }
 
         v8 = *(*(&v11 + 1) + 8 * i);
@@ -96,7 +96,7 @@ LABEL_16:
         }
       }
 
-      v5 = [(NSArray *)v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [(NSArray *)selfCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
       v9 = 1;
       if (v5)
       {

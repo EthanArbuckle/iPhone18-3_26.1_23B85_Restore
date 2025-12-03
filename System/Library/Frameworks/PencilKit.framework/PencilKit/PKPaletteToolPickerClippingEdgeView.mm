@@ -1,10 +1,10 @@
 @interface PKPaletteToolPickerClippingEdgeView
 - (PKPaletteToolPickerClippingEdgeView)init;
 - (double)scaledMagicPocketThickness;
-- (id)initWithEdge:(void *)a3 inParent:(void *)a4 withScrollView:;
+- (id)initWithEdge:(void *)edge inParent:(void *)parent withScrollView:;
 - (void)_updateUI;
 - (void)layoutSubviews;
-- (void)setScalingFactor:(double)a3;
+- (void)setScalingFactor:(double)factor;
 @end
 
 @implementation PKPaletteToolPickerClippingEdgeView
@@ -24,8 +24,8 @@
     v3->_gradientLayer = v4;
 
     [(CAGradientLayer *)v3->_gradientLayer setGeometryFlipped:1];
-    v6 = [(PKPaletteToolPickerClippingEdgeView *)v3 layer];
-    [v6 insertSublayer:v3->_gradientLayer atIndex:0];
+    layer = [(PKPaletteToolPickerClippingEdgeView *)v3 layer];
+    [layer insertSublayer:v3->_gradientLayer atIndex:0];
 
     [(PKPaletteToolPickerClippingEdgeView *)v3 _updateUI];
   }
@@ -36,31 +36,31 @@
 - (void)_updateUI
 {
   v17[2] = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     if (_UISolariumEnabled())
     {
-      [*(a1 + 416) setHidden:*(a1 + 441)];
-      [*(a1 + 432) setHidden:*(a1 + 441)];
-      v2 = *(a1 + 441);
-      v3 = *(a1 + 416);
+      [*(self + 416) setHidden:*(self + 441)];
+      [*(self + 432) setHidden:*(self + 441)];
+      v2 = *(self + 441);
+      v3 = *(self + 416);
 
       [v3 setHidden:v2];
     }
 
     else
     {
-      v4 = [MEMORY[0x1E69DC888] systemFillColor];
+      systemFillColor = [MEMORY[0x1E69DC888] systemFillColor];
       v5 = 0.5;
-      v6 = [v4 colorWithAlphaComponent:0.5];
+      v6 = [systemFillColor colorWithAlphaComponent:0.5];
 
       v7 = [v6 colorWithAlphaComponent:0.0];
       v17[0] = [v6 CGColor];
       v17[1] = [v7 CGColor];
       v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:2];
-      [*(a1 + 408) setColors:v8];
+      [*(self + 408) setColors:v8];
 
-      v9 = *(a1 + 456);
+      v9 = *(self + 456);
       v10 = 0.75;
       if (v9)
       {
@@ -88,34 +88,34 @@
         v5 = 1.0;
       }
 
-      [*(a1 + 408) setStartPoint:{v10, v11}];
-      [*(a1 + 408) setEndPoint:{v12, v5}];
+      [*(self + 408) setStartPoint:{v10, v11}];
+      [*(self + 408) setEndPoint:{v12, v5}];
       v13 = -1.0;
-      if (!*(a1 + 440))
+      if (!*(self + 440))
       {
         v13 = 1.0;
       }
 
       CATransform3DMakeScale(&v16, v13, 1.0, 1.0);
-      v14 = *(a1 + 408);
+      v14 = *(self + 408);
       v15 = v16;
       [v14 setTransform:&v15];
     }
   }
 }
 
-- (id)initWithEdge:(void *)a3 inParent:(void *)a4 withScrollView:
+- (id)initWithEdge:(void *)edge inParent:(void *)parent withScrollView:
 {
   v91 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!a1)
+  edgeCopy = edge;
+  parentCopy = parent;
+  if (!self)
   {
     v9 = 0;
     goto LABEL_53;
   }
 
-  v75.receiver = a1;
+  v75.receiver = self;
   v75.super_class = PKPaletteToolPickerClippingEdgeView;
   v8 = objc_msgSendSuper2(&v75, sel_init);
   v9 = v8;
@@ -129,18 +129,18 @@
     v12 = MEMORY[0x1E69DC730];
     if (a2 == 8 || a2 == 2)
     {
-      v13 = [(PKPaletteToolPickerClippingEdgeView *)v9 scaledMagicPocketThickness];
-      v14 = 1.0;
+      scaledMagicPocketThickness = [(PKPaletteToolPickerClippingEdgeView *)v9 scaledMagicPocketThickness];
+      scaledMagicPocketThickness2 = 1.0;
     }
 
     else
     {
-      v14 = [(PKPaletteToolPickerClippingEdgeView *)v9 scaledMagicPocketThickness];
-      v13 = 1.0;
+      scaledMagicPocketThickness2 = [(PKPaletteToolPickerClippingEdgeView *)v9 scaledMagicPocketThickness];
+      scaledMagicPocketThickness = 1.0;
     }
 
-    v92.width = v13;
-    v92.height = v14;
+    v92.width = scaledMagicPocketThickness;
+    v92.height = scaledMagicPocketThickness2;
     UIGraphicsBeginImageContextWithOptions(v92, 0, 0.0);
     CurrentContext = UIGraphicsGetCurrentContext();
     DeviceRGB = CGColorSpaceCreateDeviceRGB();
@@ -156,8 +156,8 @@
         *(&v86 + 1) = 0x3FF0000000000000;
         locations = xmmword_1C8019980;
         v18 = CGGradientCreateWithColorComponents(DeviceRGB, components, &locations, 2uLL);
-        v13 = 0.0;
-        v19 = v14;
+        scaledMagicPocketThickness = 0.0;
+        v19 = scaledMagicPocketThickness2;
         goto LABEL_19;
       }
 
@@ -183,7 +183,7 @@
         *(&v86 + 1) = 0x3FF0000000000000;
         locations = xmmword_1C8019980;
         v18 = CGGradientCreateWithColorComponents(DeviceRGB, components, &locations, 2uLL);
-        v13 = 0.0;
+        scaledMagicPocketThickness = 0.0;
         v19 = 0.0;
         v20 = 0;
         goto LABEL_20;
@@ -204,10 +204,10 @@ LABEL_16:
         v19 = 0.0;
 LABEL_19:
         v20 = 0;
-        v14 = 0.0;
+        scaledMagicPocketThickness2 = 0.0;
 LABEL_20:
-        v21 = v14;
-        v22 = v13;
+        v21 = scaledMagicPocketThickness2;
+        v22 = scaledMagicPocketThickness;
         CGContextDrawLinearGradient(CurrentContext, v18, *&v20, *(&v19 - 1), 0);
         v23 = UIGraphicsGetImageFromCurrentImageContext();
         UIGraphicsEndImageContext();
@@ -225,8 +225,8 @@ LABEL_20:
         *(v9 + 53) = v27;
 
         [*(v9 + 53) setUserInteractionEnabled:0];
-        v29 = v6;
-        v30 = v7;
+        v29 = edgeCopy;
+        v30 = parentCopy;
         if (!_UISolariumEnabled())
         {
 LABEL_52:
@@ -237,8 +237,8 @@ LABEL_52:
         [v29 insertSubview:*(v9 + 52) belowSubview:v30];
         [v29 addSubview:*(v9 + 54)];
         [v29 addSubview:*(v9 + 53)];
-        v69 = [MEMORY[0x1E695DF70] array];
-        v31 = [(PKPaletteToolPickerClippingEdgeView *)v9 scaledMagicPocketThickness];
+        array = [MEMORY[0x1E695DF70] array];
+        scaledMagicPocketThickness3 = [(PKPaletteToolPickerClippingEdgeView *)v9 scaledMagicPocketThickness];
         v67 = v29;
         if (a2 == 8 || a2 == 2)
         {
@@ -269,8 +269,8 @@ LABEL_52:
           v57 = v30;
           v58 = v24;
           v59 = v9;
-          v60 = v7;
-          v61 = v6;
+          v60 = parentCopy;
+          v61 = edgeCopy;
           v63 = *v88;
           do
           {
@@ -283,17 +283,17 @@ LABEL_52:
 
               v33 = *(*(&locations + 1) + 8 * i);
               [v33 setTranslatesAutoresizingMaskIntoConstraints:0];
-              v34 = [v33 topAnchor];
-              v71 = [v29 topAnchor];
-              v73 = v34;
-              v35 = [v34 constraintEqualToAnchor:v71];
+              topAnchor = [v33 topAnchor];
+              topAnchor2 = [v29 topAnchor];
+              v73 = topAnchor;
+              v35 = [topAnchor constraintEqualToAnchor:topAnchor2];
               v76 = v35;
-              v36 = [v33 bottomAnchor];
-              v37 = [v29 bottomAnchor];
-              v38 = [v36 constraintEqualToAnchor:v37];
+              bottomAnchor = [v33 bottomAnchor];
+              bottomAnchor2 = [v29 bottomAnchor];
+              v38 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
               v77 = v38;
-              v39 = [v33 widthAnchor];
-              v40 = [v39 constraintEqualToConstant:v31];
+              widthAnchor = [v33 widthAnchor];
+              v40 = [widthAnchor constraintEqualToConstant:scaledMagicPocketThickness3];
               v78 = v40;
               if (a2 == 2)
               {
@@ -308,7 +308,7 @@ LABEL_52:
               v42 = [v41 constraintEqualToAnchor:v68];
               v79 = v42;
               v43 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v76 count:4];
-              [v69 addObjectsFromArray:v43];
+              [array addObjectsFromArray:v43];
 
               v29 = v67;
             }
@@ -348,8 +348,8 @@ LABEL_52:
           v57 = v30;
           v58 = v24;
           v59 = v9;
-          v60 = v7;
-          v61 = v6;
+          v60 = parentCopy;
+          v61 = edgeCopy;
           v64 = *v88;
           do
           {
@@ -362,17 +362,17 @@ LABEL_52:
 
               v45 = *(*(&locations + 1) + 8 * j);
               [v45 setTranslatesAutoresizingMaskIntoConstraints:0];
-              v46 = [v45 leadingAnchor];
-              v72 = [v29 leadingAnchor];
-              v74 = v46;
-              v47 = [v46 constraintEqualToAnchor:v72];
+              leadingAnchor = [v45 leadingAnchor];
+              leadingAnchor2 = [v29 leadingAnchor];
+              v74 = leadingAnchor;
+              v47 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
               v76 = v47;
-              v48 = [v45 trailingAnchor];
-              v49 = [v29 trailingAnchor];
-              v50 = [v48 constraintEqualToAnchor:v49];
+              trailingAnchor = [v45 trailingAnchor];
+              trailingAnchor2 = [v29 trailingAnchor];
+              v50 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
               v77 = v50;
-              v51 = [v45 heightAnchor];
-              v52 = [v51 constraintEqualToConstant:v31];
+              heightAnchor = [v45 heightAnchor];
+              v52 = [heightAnchor constraintEqualToConstant:scaledMagicPocketThickness3];
               v78 = v52;
               if (a2 == 1)
               {
@@ -387,7 +387,7 @@ LABEL_52:
               v54 = [v53 constraintEqualToAnchor:v68];
               v79 = v54;
               v55 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v76 count:4];
-              [v69 addObjectsFromArray:v55];
+              [array addObjectsFromArray:v55];
 
               v29 = v67;
             }
@@ -398,14 +398,14 @@ LABEL_52:
           while (v66);
         }
 
-        v7 = v60;
-        v6 = v61;
+        parentCopy = v60;
+        edgeCopy = v61;
         v24 = v58;
         v9 = v59;
         v30 = v57;
 LABEL_51:
 
-        [MEMORY[0x1E696ACD8] activateConstraints:v69];
+        [MEMORY[0x1E696ACD8] activateConstraints:array];
         goto LABEL_52;
       }
     }
@@ -416,7 +416,7 @@ LABEL_51:
     v84 = 0u;
     locations = xmmword_1C8019980;
     v18 = CGGradientCreateWithColorComponents(DeviceRGB, components, &locations, 2uLL);
-    v13 = 0.0;
+    scaledMagicPocketThickness = 0.0;
     goto LABEL_16;
   }
 
@@ -427,11 +427,11 @@ LABEL_53:
 
 - (double)scaledMagicPocketThickness
 {
-  v2 = a1[56];
-  v3 = [a1 traitCollection];
-  v4 = [a1 window];
-  v5 = [v4 windowScene];
-  v6 = PKUseCompactSize(v3, v5);
+  v2 = self[56];
+  traitCollection = [self traitCollection];
+  window = [self window];
+  windowScene = [window windowScene];
+  v6 = PKUseCompactSize(traitCollection, windowScene);
 
   v7 = 26.0;
   if (v6)
@@ -454,12 +454,12 @@ LABEL_53:
   }
 }
 
-- (void)setScalingFactor:(double)a3
+- (void)setScalingFactor:(double)factor
 {
   scalingFactor = self->_scalingFactor;
-  if (scalingFactor != a3 && vabdd_f64(scalingFactor, a3) >= fabs(a3 * 0.000000999999997))
+  if (scalingFactor != factor && vabdd_f64(scalingFactor, factor) >= fabs(factor * 0.000000999999997))
   {
-    self->_scalingFactor = a3;
+    self->_scalingFactor = factor;
     [(PKPaletteToolPickerClippingEdgeView *)self _updateUI];
   }
 }

@@ -1,37 +1,37 @@
 @interface ADJasperColorInFieldCalibrationTelemetryData
 - (ADJasperColorInFieldCalibrationTelemetryData)init;
-- (ADJasperColorInFieldCalibrationTelemetryData)initWithDictionaryRepresentation:(id)a3;
+- (ADJasperColorInFieldCalibrationTelemetryData)initWithDictionaryRepresentation:(id)representation;
 - (float)getAverageNumValidPoints;
 - (id)persistenceData;
 - (void)initEventTimestampsArray;
-- (void)reportBackendRunTime:(unint64_t)a3;
+- (void)reportBackendRunTime:(unint64_t)time;
 - (void)reset;
-- (void)updateLastExecutionTime:(unint64_t)a3;
-- (void)updateValidPointsSum:(unint64_t)a3;
+- (void)updateLastExecutionTime:(unint64_t)time;
+- (void)updateValidPointsSum:(unint64_t)sum;
 @end
 
 @implementation ADJasperColorInFieldCalibrationTelemetryData
 
-- (ADJasperColorInFieldCalibrationTelemetryData)initWithDictionaryRepresentation:(id)a3
+- (ADJasperColorInFieldCalibrationTelemetryData)initWithDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"telemetryVersion"];
+  representationCopy = representation;
+  selfCopy = [representationCopy objectForKeyedSubscript:@"telemetryVersion"];
 
-  if (v5)
+  if (selfCopy)
   {
-    v6 = [v4 objectForKeyedSubscript:@"telemetryVersion"];
+    v6 = [representationCopy objectForKeyedSubscript:@"telemetryVersion"];
     self->_telemetryVersion = [v6 unsignedIntValue];
 
-    v7 = [v4 objectForKeyedSubscript:@"lastExecutionTime"];
+    v7 = [representationCopy objectForKeyedSubscript:@"lastExecutionTime"];
     if (!v7)
     {
 LABEL_6:
-      v5 = 0;
+      selfCopy = 0;
       goto LABEL_14;
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"totalNumRuns"];
-    v5 = v8;
+    v8 = [representationCopy objectForKeyedSubscript:@"totalNumRuns"];
+    selfCopy = v8;
     if (!v8)
     {
 
@@ -44,7 +44,7 @@ LABEL_6:
 
     else
     {
-      v9 = [v4 objectForKeyedSubscript:@"lastToleranceDetectedTime"];
+      v9 = [representationCopy objectForKeyedSubscript:@"lastToleranceDetectedTime"];
 
       if (!v9)
       {
@@ -59,16 +59,16 @@ LABEL_6:
     if (v10)
     {
       [(ADJasperColorInFieldCalibrationTelemetryData *)v10 reset];
-      v12 = [v4 objectForKeyedSubscript:@"lastExecutionTime"];
+      v12 = [representationCopy objectForKeyedSubscript:@"lastExecutionTime"];
       v11->_lastExecutionTime = [v12 unsignedLongValue];
 
-      v13 = [v4 objectForKeyedSubscript:@"totalNumRuns"];
+      v13 = [representationCopy objectForKeyedSubscript:@"totalNumRuns"];
       v11->_totalNumRuns = [v13 unsignedLongValue];
 
-      v14 = [v4 objectForKeyedSubscript:@"lastToleranceDetectedTime"];
+      v14 = [representationCopy objectForKeyedSubscript:@"lastToleranceDetectedTime"];
       v11->_lastToleranceDetectedTime = [v14 unsignedLongValue];
 
-      v15 = [v4 objectForKeyedSubscript:@"firedEventTimestampsArray"];
+      v15 = [representationCopy objectForKeyedSubscript:@"firedEventTimestampsArray"];
       v16 = [v15 mutableCopy];
       firedEventTimestampsArray = v11->_firedEventTimestampsArray;
       v11->_firedEventTimestampsArray = v16;
@@ -81,12 +81,12 @@ LABEL_6:
     }
 
     self = v11;
-    v5 = self;
+    selfCopy = self;
   }
 
 LABEL_14:
 
-  return v5;
+  return selfCopy;
 }
 
 - (id)persistenceData
@@ -126,38 +126,38 @@ LABEL_14:
   }
 }
 
-- (void)updateValidPointsSum:(unint64_t)a3
+- (void)updateValidPointsSum:(unint64_t)sum
 {
   v3 = vdupq_n_s64(1uLL);
-  v3.i64[0] = a3;
+  v3.i64[0] = sum;
   *&self->_validPointsSum = vaddq_s64(*&self->_validPointsSum, v3);
 }
 
-- (void)updateLastExecutionTime:(unint64_t)a3
+- (void)updateLastExecutionTime:(unint64_t)time
 {
   lastExecutionTime = self->_lastExecutionTime;
   if (lastExecutionTime)
   {
-    self->_timeSincePrevRun = a3 - lastExecutionTime;
+    self->_timeSincePrevRun = time - lastExecutionTime;
   }
 
-  self->_lastExecutionTime = a3;
+  self->_lastExecutionTime = time;
 }
 
-- (void)reportBackendRunTime:(unint64_t)a3
+- (void)reportBackendRunTime:(unint64_t)time
 {
-  v3 = a3;
-  if (self->_maxBackEndRunTime < a3)
+  timeCopy = time;
+  if (self->_maxBackEndRunTime < time)
   {
-    self->_maxBackEndRunTime = v3;
+    self->_maxBackEndRunTime = timeCopy;
   }
 
-  if (self->_minBackEndRunTime > a3)
+  if (self->_minBackEndRunTime > time)
   {
-    self->_minBackEndRunTime = v3;
+    self->_minBackEndRunTime = timeCopy;
   }
 
-  self->_totalBackEndTime = (a3 + self->_totalBackEndTime);
+  self->_totalBackEndTime = (time + self->_totalBackEndTime);
 }
 
 - (void)reset

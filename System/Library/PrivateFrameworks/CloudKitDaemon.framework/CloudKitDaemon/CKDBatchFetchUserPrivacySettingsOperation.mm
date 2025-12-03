@@ -1,5 +1,5 @@
 @interface CKDBatchFetchUserPrivacySettingsOperation
-+ (id)appPermissionGroupsFromContainerPrivacySettings:(id)a3;
++ (id)appPermissionGroupsFromContainerPrivacySettings:(id)settings;
 - (id)activityCreate;
 - (void)main;
 @end
@@ -36,10 +36,10 @@
   objc_destroyWeak(&location);
 }
 
-+ (id)appPermissionGroupsFromContainerPrivacySettings:(id)a3
++ (id)appPermissionGroupsFromContainerPrivacySettings:(id)settings
 {
   v127 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  settingsCopy = settings;
   v4 = objc_opt_new();
   v101 = objc_opt_new();
   v5 = v4;
@@ -48,7 +48,7 @@
   v119 = 0u;
   v120 = 0u;
   v121 = 0u;
-  obj = v3;
+  obj = settingsCopy;
   v99 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v6, &v118, v126, 16);
   if (v99)
   {

@@ -1,11 +1,11 @@
 @interface SKUIReviewsFacebookViewController
 - (SKUIReviewsFacebookViewControllerDelegate)delegate;
-- (void)_changeStatusToUserLiked:(BOOL)a3;
+- (void)_changeStatusToUserLiked:(BOOL)liked;
 - (void)_reloadFacebookView;
-- (void)_toggleLike:(id)a3;
+- (void)_toggleLike:(id)like;
 - (void)dealloc;
 - (void)loadView;
-- (void)setFacebookLikeStatus:(id)a3;
+- (void)setFacebookLikeStatus:(id)status;
 @end
 
 @implementation SKUIReviewsFacebookViewController
@@ -24,17 +24,17 @@
     }
   }
 
-  v11 = [(SKUIReviewsFacebookView *)self->_facebookView likeToggleButton];
-  [v11 removeTarget:self action:0 forControlEvents:4095];
+  likeToggleButton = [(SKUIReviewsFacebookView *)self->_facebookView likeToggleButton];
+  [likeToggleButton removeTarget:self action:0 forControlEvents:4095];
 
   v12.receiver = self;
   v12.super_class = SKUIReviewsFacebookViewController;
   [(SKUIReviewsFacebookViewController *)&v12 dealloc];
 }
 
-- (void)setFacebookLikeStatus:(id)a3
+- (void)setFacebookLikeStatus:(id)status
 {
-  v4 = a3;
+  statusCopy = status;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -47,9 +47,9 @@
     }
   }
 
-  if (self->_facebookLikeStatus != v4)
+  if (self->_facebookLikeStatus != statusCopy)
   {
-    v13 = [(SKUIFacebookLikeStatus *)v4 copy];
+    v13 = [(SKUIFacebookLikeStatus *)statusCopy copy];
     facebookLikeStatus = self->_facebookLikeStatus;
     self->_facebookLikeStatus = v13;
 
@@ -78,8 +78,8 @@
     v13 = self->_facebookView;
     self->_facebookView = v12;
 
-    v14 = [(SKUIReviewsFacebookView *)self->_facebookView likeToggleButton];
-    [v14 addTarget:self action:sel__toggleLike_ forControlEvents:64];
+    likeToggleButton = [(SKUIReviewsFacebookView *)self->_facebookView likeToggleButton];
+    [likeToggleButton addTarget:self action:sel__toggleLike_ forControlEvents:64];
 
     [(SKUIReviewsFacebookViewController *)self _reloadFacebookView];
     facebookView = self->_facebookView;
@@ -88,12 +88,12 @@
   [(SKUIReviewsFacebookViewController *)self setView:facebookView];
 }
 
-- (void)_toggleLike:(id)a3
+- (void)_toggleLike:(id)like
 {
-  v4 = a3;
-  v5 = [(SKUIFacebookLikeStatus *)self->_facebookLikeStatus isUserLiked];
-  v6 = v5;
-  v7 = !v5;
+  likeCopy = like;
+  isUserLiked = [(SKUIFacebookLikeStatus *)self->_facebookLikeStatus isUserLiked];
+  v6 = isUserLiked;
+  v7 = !isUserLiked;
   [(SKUIReviewsFacebookViewController *)self _changeStatusToUserLiked:v7];
   objc_initWeak(&location, self);
   aBlock[0] = MEMORY[0x277D85DD0];
@@ -150,24 +150,24 @@ void __49__SKUIReviewsFacebookViewController__toggleLike___block_invoke_2(uint64
   [WeakRetained _changeStatusToUserLiked:(*(a1 + 40) & 1) == 0];
 }
 
-- (void)_changeStatusToUserLiked:(BOOL)a3
+- (void)_changeStatusToUserLiked:(BOOL)liked
 {
-  v3 = a3;
+  likedCopy = liked;
   v5 = [(SKUIFacebookLikeStatus *)self->_facebookLikeStatus copy];
-  [v5 setUserLiked:v3];
+  [v5 setUserLiked:likedCopy];
   [(SKUIReviewsFacebookViewController *)self setFacebookLikeStatus:v5];
 }
 
 - (void)_reloadFacebookView
 {
   facebookView = self->_facebookView;
-  v4 = [(SKUIFacebookLikeStatus *)self->_facebookLikeStatus friendNames];
-  [(SKUIReviewsFacebookView *)facebookView setFriendNames:v4];
+  friendNames = [(SKUIFacebookLikeStatus *)self->_facebookLikeStatus friendNames];
+  [(SKUIReviewsFacebookView *)facebookView setFriendNames:friendNames];
 
   v5 = self->_facebookView;
-  v6 = [(SKUIFacebookLikeStatus *)self->_facebookLikeStatus isUserLiked];
+  isUserLiked = [(SKUIFacebookLikeStatus *)self->_facebookLikeStatus isUserLiked];
 
-  [(SKUIReviewsFacebookView *)v5 setUserLiked:v6];
+  [(SKUIReviewsFacebookView *)v5 setUserLiked:isUserLiked];
 }
 
 - (SKUIReviewsFacebookViewControllerDelegate)delegate

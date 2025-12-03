@@ -1,43 +1,43 @@
 @interface AXLanguageTaggedContent
-- ($1230CF39250A084FEEB876D19862D23B)_languageHintsEvenlyDistributedWithProbability:(float)a3 excludingHints:(id)a4;
-- (AXLanguageTaggedContent)initWithContent:(id)a3;
+- ($1230CF39250A084FEEB876D19862D23B)_languageHintsEvenlyDistributedWithProbability:(float)probability excludingHints:(id)hints;
+- (AXLanguageTaggedContent)initWithContent:(id)content;
 - (BOOL)_addLanguageTagForCurrentChunk;
 - (BOOL)_addLanguageTagForDateIfNecessary;
-- (BOOL)_isNamedEntity:(id)a3;
-- (BOOL)_isStringCombinationOfCommonAndEmoji:(id)a3;
+- (BOOL)_isNamedEntity:(id)entity;
+- (BOOL)_isStringCombinationOfCommonAndEmoji:(id)emoji;
 - (BOOL)hasOnlyNonWesternLangMaps;
 - (BOOL)hasOnlyWesternLangMaps;
-- (id)_overrideLanguageDetection:(id)a3;
+- (id)_overrideLanguageDetection:(id)detection;
 - (id)_preferredLanguagesForTagging;
 - (id)ambiguousLangMaps;
 - (id)description;
-- (id)langCodeForlangId:(int)a3;
+- (id)langCodeForlangId:(int)id;
 - (id)primaryAmbiguousDialect;
 - (id)primaryUnambiguousDialect;
 - (id)significantAmbiguousLangMapsForUserKeyboards;
 - (id)unambiguousLangMaps;
-- (int)langIDforLangCode:(id)a3;
+- (int)langIDforLangCode:(id)code;
 - (void)_addTag;
-- (void)_debugLog:(id)a3 token:(id)a4 range:(_NSRange)a5 script:(id)a6 dialects:(id)a7;
-- (void)_manuallyProcessContentWithRange:(_NSRange)a3;
+- (void)_debugLog:(id)log token:(id)token range:(_NSRange)range script:(id)script dialects:(id)dialects;
+- (void)_manuallyProcessContentWithRange:(_NSRange)range;
 - (void)_searchForShorthandDates;
-- (void)appendLanguageTaggedContent:(id)a3;
+- (void)appendLanguageTaggedContent:(id)content;
 - (void)dealloc;
-- (void)enumeratePredictedTags:(id)a3;
-- (void)enumerateUnpredictedTags:(id)a3;
+- (void)enumeratePredictedTags:(id)tags;
+- (void)enumerateUnpredictedTags:(id)tags;
 - (void)tagContent;
 - (void)updateTagsForLocalePrefChange;
 @end
 
 @implementation AXLanguageTaggedContent
 
-- (AXLanguageTaggedContent)initWithContent:(id)a3
+- (AXLanguageTaggedContent)initWithContent:(id)content
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4 && (v8.receiver = self, v8.super_class = AXLanguageTaggedContent, (self = [(AXLanguageTaggedContent *)&v8 init]) != 0))
+  contentCopy = content;
+  if (contentCopy && (v8.receiver = self, v8.super_class = AXLanguageTaggedContent, (self = [(AXLanguageTaggedContent *)&v8 init]) != 0))
   {
-    v5 = [v4 mutableCopy];
+    v5 = [contentCopy mutableCopy];
     [(AXLanguageTaggedContent *)self setContentString:v5];
 
     v10[0] = *MEMORY[0x1E6998268];
@@ -47,15 +47,15 @@
     [MEMORY[0x1E695DEC8] arrayWithObjects:&v9 count:1];
     self->_namedEntityTagger = NLTaggerCreate();
     self = self;
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (void)dealloc
@@ -75,8 +75,8 @@
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [(AXLanguageTaggedContent *)self tags];
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  tags = [(AXLanguageTaggedContent *)self tags];
+  v5 = [tags countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -87,13 +87,13 @@
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(tags);
         }
 
         [v3 appendFormat:@"  %@\n", *(*(&v10 + 1) + 8 * i)];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [tags countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
@@ -102,10 +102,10 @@
   return v3;
 }
 
-- (void)appendLanguageTaggedContent:(id)a3
+- (void)appendLanguageTaggedContent:(id)content
 {
   v43 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  contentCopy = content;
   v5 = AXLogSpokenContentTextProcessing();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -113,16 +113,16 @@
     _os_log_impl(&dword_18B15E000, v5, OS_LOG_TYPE_INFO, "Will append new tagged content to current tagged content", buf, 2u);
   }
 
-  v6 = [(AXLanguageTaggedContent *)self contentString];
-  v7 = [v4 contentString];
-  [v6 appendString:v7];
+  contentString = [(AXLanguageTaggedContent *)self contentString];
+  contentString2 = [contentCopy contentString];
+  [contentString appendString:contentString2];
 
   v36 = 0u;
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v8 = [v4 tags];
-  v9 = [v8 countByEnumeratingWithState:&v34 objects:v42 count:16];
+  tags = [contentCopy tags];
+  v9 = [tags countByEnumeratingWithState:&v34 objects:v42 count:16];
   if (v9)
   {
     v10 = v9;
@@ -134,18 +134,18 @@
       {
         if (*v35 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(tags);
         }
 
         v13 = *(*(&v34 + 1) + 8 * v12);
-        v14 = [(AXLanguageTaggedContent *)self content];
-        [v13 setContent:v14];
+        content = [(AXLanguageTaggedContent *)self content];
+        [v13 setContent:content];
 
-        v15 = [v13 range];
-        v16 = [(AXLanguageTaggedContent *)self contentString];
-        v17 = [v16 length] + v15;
-        v18 = [v4 contentString];
-        v19 = v17 - [v18 length];
+        range = [v13 range];
+        contentString3 = [(AXLanguageTaggedContent *)self contentString];
+        v17 = [contentString3 length] + range;
+        contentString4 = [contentCopy contentString];
+        v19 = v17 - [contentString4 length];
         [v13 range];
         [v13 setRange:{v19, v20}];
 
@@ -153,65 +153,65 @@
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v34 objects:v42 count:16];
+      v10 = [tags countByEnumeratingWithState:&v34 objects:v42 count:16];
     }
 
     while (v10);
   }
 
-  v21 = [(AXLanguageTaggedContent *)self tags];
-  v22 = [v4 tags];
-  [v21 addObjectsFromArray:v22];
+  tags2 = [(AXLanguageTaggedContent *)self tags];
+  tags3 = [contentCopy tags];
+  [tags2 addObjectsFromArray:tags3];
 
-  v23 = [(AXLanguageTaggedContent *)self unpredictedAmbiguousLangMaps];
-  v24 = [v4 unpredictedAmbiguousLangMaps];
-  [v23 unionOrderedSet:v24];
+  unpredictedAmbiguousLangMaps = [(AXLanguageTaggedContent *)self unpredictedAmbiguousLangMaps];
+  unpredictedAmbiguousLangMaps2 = [contentCopy unpredictedAmbiguousLangMaps];
+  [unpredictedAmbiguousLangMaps unionOrderedSet:unpredictedAmbiguousLangMaps2];
 
-  v25 = [(AXLanguageTaggedContent *)self predictedSecondaryLangMaps];
-  v26 = [v4 predictedSecondaryLangMaps];
-  [v25 unionOrderedSet:v26];
+  predictedSecondaryLangMaps = [(AXLanguageTaggedContent *)self predictedSecondaryLangMaps];
+  predictedSecondaryLangMaps2 = [contentCopy predictedSecondaryLangMaps];
+  [predictedSecondaryLangMaps unionOrderedSet:predictedSecondaryLangMaps2];
 
   v27 = AXLogSpokenContentTextProcessing();
   if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
   {
-    v28 = [(AXLanguageTaggedContent *)self currentDialects];
-    v29 = [v4 currentDialects];
+    currentDialects = [(AXLanguageTaggedContent *)self currentDialects];
+    currentDialects2 = [contentCopy currentDialects];
     *buf = 138412546;
-    v39 = v28;
+    v39 = currentDialects;
     v40 = 2112;
-    v41 = v29;
+    v41 = currentDialects2;
     _os_log_impl(&dword_18B15E000, v27, OS_LOG_TYPE_INFO, "Combining currentDialects. old: %@. new: %@", buf, 0x16u);
   }
 
-  v30 = [(AXLanguageTaggedContent *)self currentDialects];
-  v31 = [v4 currentDialects];
-  v32 = [v30 arrayByAddingObjectsFromArray:v31];
+  currentDialects3 = [(AXLanguageTaggedContent *)self currentDialects];
+  currentDialects4 = [contentCopy currentDialects];
+  v32 = [currentDialects3 arrayByAddingObjectsFromArray:currentDialects4];
   [(AXLanguageTaggedContent *)self setCurrentDialects:v32];
 
   if ([(AXLanguageTaggedContent *)self isTagged])
   {
-    v33 = [v4 isTagged];
+    isTagged = [contentCopy isTagged];
   }
 
   else
   {
-    v33 = 0;
+    isTagged = 0;
   }
 
-  [(AXLanguageTaggedContent *)self setTagged:v33];
+  [(AXLanguageTaggedContent *)self setTagged:isTagged];
 }
 
-- (void)enumerateUnpredictedTags:(id)a3
+- (void)enumerateUnpredictedTags:(id)tags
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  tagsCopy = tags;
   v15 = 0;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(AXLanguageTaggedContent *)self tags];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v16 count:16];
+  tags = [(AXLanguageTaggedContent *)self tags];
+  v6 = [tags countByEnumeratingWithState:&v11 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -222,13 +222,13 @@ LABEL_3:
     {
       if (*v12 != v8)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(tags);
       }
 
       v10 = *(*(&v11 + 1) + 8 * v9);
       if (([v10 wasPredicted] & 1) == 0)
       {
-        v4[2](v4, v10, &v15);
+        tagsCopy[2](tagsCopy, v10, &v15);
         if (v15)
         {
           break;
@@ -237,7 +237,7 @@ LABEL_3:
 
       if (v7 == ++v9)
       {
-        v7 = [v5 countByEnumeratingWithState:&v11 objects:v16 count:16];
+        v7 = [tags countByEnumeratingWithState:&v11 objects:v16 count:16];
         if (v7)
         {
           goto LABEL_3;
@@ -249,17 +249,17 @@ LABEL_3:
   }
 }
 
-- (void)enumeratePredictedTags:(id)a3
+- (void)enumeratePredictedTags:(id)tags
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  tagsCopy = tags;
   v15 = 0;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(AXLanguageTaggedContent *)self tags];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v16 count:16];
+  tags = [(AXLanguageTaggedContent *)self tags];
+  v6 = [tags countByEnumeratingWithState:&v11 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -270,13 +270,13 @@ LABEL_3:
     {
       if (*v12 != v8)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(tags);
       }
 
       v10 = *(*(&v11 + 1) + 8 * v9);
       if ([v10 wasPredicted])
       {
-        v4[2](v4, v10, &v15);
+        tagsCopy[2](tagsCopy, v10, &v15);
         if (v15)
         {
           break;
@@ -285,7 +285,7 @@ LABEL_3:
 
       if (v7 == ++v9)
       {
-        v7 = [v5 countByEnumeratingWithState:&v11 objects:v16 count:16];
+        v7 = [tags countByEnumeratingWithState:&v11 objects:v16 count:16];
         if (v7)
         {
           goto LABEL_3;
@@ -297,278 +297,278 @@ LABEL_3:
   }
 }
 
-- (id)langCodeForlangId:(int)a3
+- (id)langCodeForlangId:(int)id
 {
-  if ((a3 - 2) > 0x38)
+  if ((id - 2) > 0x38)
   {
     return @"und";
   }
 
   else
   {
-    return off_1E71EBE38[a3 - 2];
+    return off_1E71EBE38[id - 2];
   }
 }
 
-- (int)langIDforLangCode:(id)a3
+- (int)langIDforLangCode:(id)code
 {
-  v3 = a3;
-  if ([v3 hasPrefix:@"ar"])
+  codeCopy = code;
+  if ([codeCopy hasPrefix:@"ar"])
   {
     v4 = 2;
   }
 
-  else if ([v3 hasPrefix:@"bg"])
+  else if ([codeCopy hasPrefix:@"bg"])
   {
     v4 = 3;
   }
 
-  else if ([v3 hasPrefix:@"zh-Hans"])
+  else if ([codeCopy hasPrefix:@"zh-Hans"])
   {
     v4 = 4;
   }
 
-  else if ([v3 hasPrefix:@"zh-Hant"])
+  else if ([codeCopy hasPrefix:@"zh-Hant"])
   {
     v4 = 5;
   }
 
-  else if ([v3 hasPrefix:@"hr"])
+  else if ([codeCopy hasPrefix:@"hr"])
   {
     v4 = 6;
   }
 
-  else if ([v3 hasPrefix:@"cs"])
+  else if ([codeCopy hasPrefix:@"cs"])
   {
     v4 = 7;
   }
 
-  else if ([v3 hasPrefix:@"da"])
+  else if ([codeCopy hasPrefix:@"da"])
   {
     v4 = 8;
   }
 
-  else if ([v3 hasPrefix:@"nl"])
+  else if ([codeCopy hasPrefix:@"nl"])
   {
     v4 = 9;
   }
 
-  else if ([v3 hasPrefix:@"en"])
+  else if ([codeCopy hasPrefix:@"en"])
   {
     v4 = 10;
   }
 
-  else if ([v3 hasPrefix:@"fi"])
+  else if ([codeCopy hasPrefix:@"fi"])
   {
     v4 = 11;
   }
 
-  else if ([v3 hasPrefix:@"fr"])
+  else if ([codeCopy hasPrefix:@"fr"])
   {
     v4 = 12;
   }
 
-  else if ([v3 hasPrefix:@"de"])
+  else if ([codeCopy hasPrefix:@"de"])
   {
     v4 = 13;
   }
 
-  else if ([v3 hasPrefix:@"el"])
+  else if ([codeCopy hasPrefix:@"el"])
   {
     v4 = 14;
   }
 
-  else if ([v3 hasPrefix:@"he"])
+  else if ([codeCopy hasPrefix:@"he"])
   {
     v4 = 15;
   }
 
-  else if ([v3 hasPrefix:@"hi"])
+  else if ([codeCopy hasPrefix:@"hi"])
   {
     v4 = 16;
   }
 
-  else if ([v3 hasPrefix:@"hu"])
+  else if ([codeCopy hasPrefix:@"hu"])
   {
     v4 = 17;
   }
 
-  else if ([v3 hasPrefix:@"is"])
+  else if ([codeCopy hasPrefix:@"is"])
   {
     v4 = 18;
   }
 
-  else if ([v3 hasPrefix:@"it"])
+  else if ([codeCopy hasPrefix:@"it"])
   {
     v4 = 19;
   }
 
-  else if ([v3 hasPrefix:@"ja"])
+  else if ([codeCopy hasPrefix:@"ja"])
   {
     v4 = 20;
   }
 
-  else if ([v3 hasPrefix:@"ko"])
+  else if ([codeCopy hasPrefix:@"ko"])
   {
     v4 = 21;
   }
 
-  else if ([v3 hasPrefix:@"mr"])
+  else if ([codeCopy hasPrefix:@"mr"])
   {
     v4 = 22;
   }
 
-  else if ([v3 hasPrefix:@"nb"])
+  else if ([codeCopy hasPrefix:@"nb"])
   {
     v4 = 23;
   }
 
-  else if ([v3 hasPrefix:@"pl"])
+  else if ([codeCopy hasPrefix:@"pl"])
   {
     v4 = 24;
   }
 
-  else if ([v3 hasPrefix:@"pt"])
+  else if ([codeCopy hasPrefix:@"pt"])
   {
     v4 = 25;
   }
 
-  else if ([v3 hasPrefix:@"ro"])
+  else if ([codeCopy hasPrefix:@"ro"])
   {
     v4 = 26;
   }
 
-  else if ([v3 hasPrefix:@"ru"])
+  else if ([codeCopy hasPrefix:@"ru"])
   {
     v4 = 27;
   }
 
-  else if ([v3 hasPrefix:@"sk"])
+  else if ([codeCopy hasPrefix:@"sk"])
   {
     v4 = 28;
   }
 
-  else if ([v3 hasPrefix:@"es"])
+  else if ([codeCopy hasPrefix:@"es"])
   {
     v4 = 29;
   }
 
-  else if ([v3 hasPrefix:@"sv"])
+  else if ([codeCopy hasPrefix:@"sv"])
   {
     v4 = 30;
   }
 
-  else if ([v3 hasPrefix:@"th"])
+  else if ([codeCopy hasPrefix:@"th"])
   {
     v4 = 31;
   }
 
-  else if ([v3 hasPrefix:@"tr"])
+  else if ([codeCopy hasPrefix:@"tr"])
   {
     v4 = 32;
   }
 
-  else if ([v3 hasPrefix:@"uk"])
+  else if ([codeCopy hasPrefix:@"uk"])
   {
     v4 = 33;
   }
 
-  else if ([v3 hasPrefix:@"ur"])
+  else if ([codeCopy hasPrefix:@"ur"])
   {
     v4 = 34;
   }
 
-  else if ([v3 hasPrefix:@"hy"])
+  else if ([codeCopy hasPrefix:@"hy"])
   {
     v4 = 35;
   }
 
-  else if ([v3 hasPrefix:@"bn"])
+  else if ([codeCopy hasPrefix:@"bn"])
   {
     v4 = 36;
   }
 
-  else if ([v3 hasPrefix:@"pa"])
+  else if ([codeCopy hasPrefix:@"pa"])
   {
     v4 = 37;
   }
 
-  else if ([v3 hasPrefix:@"gu"])
+  else if ([codeCopy hasPrefix:@"gu"])
   {
     v4 = 38;
   }
 
-  else if ([v3 hasPrefix:@"or"])
+  else if ([codeCopy hasPrefix:@"or"])
   {
     v4 = 39;
   }
 
-  else if ([v3 hasPrefix:@"ta"])
+  else if ([codeCopy hasPrefix:@"ta"])
   {
     v4 = 40;
   }
 
-  else if ([v3 hasPrefix:@"te"])
+  else if ([codeCopy hasPrefix:@"te"])
   {
     v4 = 41;
   }
 
-  else if ([v3 hasPrefix:@"kn"])
+  else if ([codeCopy hasPrefix:@"kn"])
   {
     v4 = 42;
   }
 
-  else if ([v3 hasPrefix:@"ml"])
+  else if ([codeCopy hasPrefix:@"ml"])
   {
     v4 = 43;
   }
 
-  else if ([v3 hasPrefix:@"si"])
+  else if ([codeCopy hasPrefix:@"si"])
   {
     v4 = 44;
   }
 
-  else if ([v3 hasPrefix:@"lo"])
+  else if ([codeCopy hasPrefix:@"lo"])
   {
     v4 = 45;
   }
 
-  else if ([v3 hasPrefix:@"bo"])
+  else if ([codeCopy hasPrefix:@"bo"])
   {
     v4 = 46;
   }
 
-  else if ([v3 hasPrefix:@"my"])
+  else if ([codeCopy hasPrefix:@"my"])
   {
     v4 = 47;
   }
 
-  else if ([v3 hasPrefix:@"ka"])
+  else if ([codeCopy hasPrefix:@"ka"])
   {
     v4 = 48;
   }
 
-  else if ([v3 hasPrefix:@"am"])
+  else if ([codeCopy hasPrefix:@"am"])
   {
     v4 = 49;
   }
 
-  else if ([v3 hasPrefix:@"chr"])
+  else if ([codeCopy hasPrefix:@"chr"])
   {
     v4 = 50;
   }
 
-  else if ([v3 hasPrefix:@"iu"])
+  else if ([codeCopy hasPrefix:@"iu"])
   {
     v4 = 51;
   }
 
-  else if ([v3 hasPrefix:@"km"])
+  else if ([codeCopy hasPrefix:@"km"])
   {
     v4 = 52;
   }
 
-  else if ([v3 hasPrefix:@"mn"])
+  else if ([codeCopy hasPrefix:@"mn"])
   {
     v4 = 53;
   }
@@ -581,35 +581,35 @@ LABEL_3:
   return v4;
 }
 
-- ($1230CF39250A084FEEB876D19862D23B)_languageHintsEvenlyDistributedWithProbability:(float)a3 excludingHints:(id)a4
+- ($1230CF39250A084FEEB876D19862D23B)_languageHintsEvenlyDistributedWithProbability:(float)probability excludingHints:(id)hints
 {
-  v6 = a4;
-  v7 = [(AXLanguageTaggedContent *)self _allLangIDs];
-  v8 = malloc_type_malloc(8 * [v7 count], 0x100004000313F17uLL);
-  v9 = [v7 count];
-  v10 = [v6 count];
+  hintsCopy = hints;
+  _allLangIDs = [(AXLanguageTaggedContent *)self _allLangIDs];
+  v8 = malloc_type_malloc(8 * [_allLangIDs count], 0x100004000313F17uLL);
+  v9 = [_allLangIDs count];
+  v10 = [hintsCopy count];
   v11 = 0.0;
   if (v9 != v10)
   {
-    v11 = a3 / (v9 - v10);
+    v11 = probability / (v9 - v10);
   }
 
-  if ([v7 count])
+  if ([_allLangIDs count])
   {
     v12 = 0;
     p_var1 = &v8->var1;
     do
     {
-      v14 = [v7 objectAtIndexedSubscript:v12];
+      v14 = [_allLangIDs objectAtIndexedSubscript:v12];
       *(p_var1 - 1) = [v14 intValue];
 
-      v15 = [v7 objectAtIndexedSubscript:v12];
-      v16 = [v6 objectForKey:v15];
+      v15 = [_allLangIDs objectAtIndexedSubscript:v12];
+      v16 = [hintsCopy objectForKey:v15];
 
       if (v16)
       {
-        v17 = [v7 objectAtIndexedSubscript:v12];
-        v18 = [v6 objectForKey:v17];
+        v17 = [_allLangIDs objectAtIndexedSubscript:v12];
+        v18 = [hintsCopy objectForKey:v17];
         [v18 floatValue];
         *p_var1 = v19;
       }
@@ -623,79 +623,79 @@ LABEL_3:
       p_var1 += 2;
     }
 
-    while ([v7 count] > v12);
+    while ([_allLangIDs count] > v12);
   }
 
   return v8;
 }
 
-- (id)_overrideLanguageDetection:(id)a3
+- (id)_overrideLanguageDetection:(id)detection
 {
   v14 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  detectionCopy = detection;
   v4 = +[AXLanguageManager sharedInstance];
-  v5 = [v4 dialectForSystemLanguage];
-  v6 = [v5 specificLanguageID];
+  dialectForSystemLanguage = [v4 dialectForSystemLanguage];
+  specificLanguageID = [dialectForSystemLanguage specificLanguageID];
 
-  if ([v3 hasPrefix:@"zh"] && (objc_msgSend(v6, "hasPrefix:", @"ja") & 1) != 0 || objc_msgSend(v3, "hasPrefix:", @"ja") && objc_msgSend(v6, "hasPrefix:", @"zh"))
+  if ([detectionCopy hasPrefix:@"zh"] && (objc_msgSend(specificLanguageID, "hasPrefix:", @"ja") & 1) != 0 || objc_msgSend(detectionCopy, "hasPrefix:", @"ja") && objc_msgSend(specificLanguageID, "hasPrefix:", @"zh"))
   {
     v7 = AXLogSpokenContentTextProcessing();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       v12 = 138412290;
-      v13 = v3;
+      v13 = detectionCopy;
       _os_log_impl(&dword_18B15E000, v7, OS_LOG_TYPE_INFO, "Override language {%@} detection to be ja-JP", &v12, 0xCu);
     }
 
     v8 = +[AXLanguageManager sharedInstance];
-    v9 = [v8 dialectForSystemLanguage];
-    v10 = [v9 specificLanguageID];
+    dialectForSystemLanguage2 = [v8 dialectForSystemLanguage];
+    specificLanguageID2 = [dialectForSystemLanguage2 specificLanguageID];
   }
 
   else
   {
-    v10 = v3;
+    specificLanguageID2 = detectionCopy;
   }
 
-  return v10;
+  return specificLanguageID2;
 }
 
 - (void)_searchForShorthandDates
 {
   v3 = [MEMORY[0x1E696AB60] dataDetectorWithTypes:8 error:0];
-  v4 = [(AXLanguageTaggedContent *)self contentString];
-  v5 = [v4 length];
+  contentString = [(AXLanguageTaggedContent *)self contentString];
+  v5 = [contentString length];
 
-  v6 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v7 = objc_alloc_init(MEMORY[0x1E696AB78]);
   v8 = +[AXLanguageManager sharedInstance];
-  v9 = [v8 dialectForSystemLanguage];
+  dialectForSystemLanguage = [v8 dialectForSystemLanguage];
 
   v10 = MEMORY[0x1E695DF58];
-  v11 = [v9 specificLanguageID];
-  v12 = [v10 localeWithLocaleIdentifier:v11];
+  specificLanguageID = [dialectForSystemLanguage specificLanguageID];
+  v12 = [v10 localeWithLocaleIdentifier:specificLanguageID];
   [v7 setLocale:v12];
 
-  v13 = [v7 shortMonthSymbols];
-  [v6 addObjectsFromArray:v13];
+  shortMonthSymbols = [v7 shortMonthSymbols];
+  [array addObjectsFromArray:shortMonthSymbols];
 
-  v14 = [v7 shortWeekdaySymbols];
-  [v6 addObjectsFromArray:v14];
+  shortWeekdaySymbols = [v7 shortWeekdaySymbols];
+  [array addObjectsFromArray:shortWeekdaySymbols];
 
-  v15 = [(AXLanguageTaggedContent *)self contentString];
-  v16 = [v3 matchesInString:v15 options:0 range:{0, v5}];
+  contentString2 = [(AXLanguageTaggedContent *)self contentString];
+  v16 = [v3 matchesInString:contentString2 options:0 range:{0, v5}];
   [(AXLanguageTaggedContent *)self setShorthandDateMatches:v16];
 
-  v17 = [(AXLanguageTaggedContent *)self shorthandDateMatches];
+  shorthandDateMatches = [(AXLanguageTaggedContent *)self shorthandDateMatches];
   v20 = MEMORY[0x1E69E9820];
   v21 = 3221225472;
   v22 = __51__AXLanguageTaggedContent__searchForShorthandDates__block_invoke;
   v23 = &unk_1E71EBD78;
-  v24 = self;
-  v25 = v6;
-  v18 = v6;
-  v19 = [v17 ax_filteredArrayUsingBlock:&v20];
-  [(AXLanguageTaggedContent *)self setShorthandDateMatches:v19, v20, v21, v22, v23, v24];
+  selfCopy = self;
+  v25 = array;
+  v18 = array;
+  v19 = [shorthandDateMatches ax_filteredArrayUsingBlock:&v20];
+  [(AXLanguageTaggedContent *)self setShorthandDateMatches:v19, v20, v21, v22, v23, selfCopy];
 }
 
 uint64_t __51__AXLanguageTaggedContent__searchForShorthandDates__block_invoke(uint64_t a1, void *a2)
@@ -754,9 +754,9 @@ LABEL_13:
   return v9;
 }
 
-- (BOOL)_isNamedEntity:(id)a3
+- (BOOL)_isNamedEntity:(id)entity
 {
-  v3 = a3;
+  entityCopy = entity;
   NLTaggerSetString();
   v7 = 0;
   v8 = &v7;
@@ -766,7 +766,7 @@ LABEL_13:
   v6[1] = v6;
   v6[2] = 0x2020000000;
   v6[3] = 0;
-  [v3 length];
+  [entityCopy length];
   NLTaggerEnumerateTokens();
   v4 = *(v8 + 24);
   _Block_object_dispose(v6, 8);
@@ -802,34 +802,34 @@ uint64_t __42__AXLanguageTaggedContent__isNamedEntity___block_invoke(uint64_t a1
 - (BOOL)_addLanguageTagForDateIfNecessary
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  v3 = [(AXLanguageTaggedContent *)self shorthandDateMatches];
-  if (![v3 count])
+  shorthandDateMatches = [(AXLanguageTaggedContent *)self shorthandDateMatches];
+  if (![shorthandDateMatches count])
   {
 LABEL_10:
 
     return 0;
   }
 
-  v4 = [(AXLanguageTaggedContent *)self nextShorthandDateIndex];
-  v5 = [(AXLanguageTaggedContent *)self shorthandDateMatches];
-  v6 = [v5 count];
+  nextShorthandDateIndex = [(AXLanguageTaggedContent *)self nextShorthandDateIndex];
+  shorthandDateMatches2 = [(AXLanguageTaggedContent *)self shorthandDateMatches];
+  v6 = [shorthandDateMatches2 count];
 
-  if (v4 >= v6)
+  if (nextShorthandDateIndex >= v6)
   {
     return 0;
   }
 
-  v7 = [(AXLanguageTaggedContent *)self shorthandDateMatches];
-  v3 = [v7 objectAtIndexedSubscript:{-[AXLanguageTaggedContent nextShorthandDateIndex](self, "nextShorthandDateIndex")}];
+  shorthandDateMatches3 = [(AXLanguageTaggedContent *)self shorthandDateMatches];
+  shorthandDateMatches = [shorthandDateMatches3 objectAtIndexedSubscript:{-[AXLanguageTaggedContent nextShorthandDateIndex](self, "nextShorthandDateIndex")}];
 
-  v8 = [v3 range];
+  range = [shorthandDateMatches range];
   location = self->_currentChunk.location;
   length = self->_currentChunk.length;
-  if (location != v8 || length != v9)
+  if (location != range || length != v9)
   {
     v18 = length + location;
-    v19 = [v3 range];
-    if (v18 > v19 + v20)
+    range2 = [shorthandDateMatches range];
+    if (v18 > range2 + v20)
     {
       [(AXLanguageTaggedContent *)self setNextShorthandDateIndex:[(AXLanguageTaggedContent *)self nextShorthandDateIndex]+ 1];
     }
@@ -839,17 +839,17 @@ LABEL_10:
 
   [(AXLanguageTaggedContent *)self setNextShorthandDateIndex:[(AXLanguageTaggedContent *)self nextShorthandDateIndex]+ 1];
   v12 = +[AXLanguageManager sharedInstance];
-  v13 = [v12 dialectForSystemLanguage];
-  v23[0] = v13;
+  dialectForSystemLanguage = [v12 dialectForSystemLanguage];
+  v23[0] = dialectForSystemLanguage;
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:1];
   [(AXLanguageTaggedContent *)self setCurrentDialects:v14];
 
   v15 = AXLogSpokenContentTextProcessing();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
   {
-    v16 = [(AXLanguageTaggedContent *)self currentDialects];
+    currentDialects = [(AXLanguageTaggedContent *)self currentDialects];
     v21 = 138412290;
-    v22 = v16;
+    v22 = currentDialects;
     _os_log_impl(&dword_18B15E000, v15, OS_LOG_TYPE_INFO, "Setting currentDialetcs to dialectForSystemLanguage: %@", &v21, 0xCu);
   }
 
@@ -862,8 +862,8 @@ LABEL_10:
   v80[3] = *MEMORY[0x1E69E9840];
   v3 = +[AXLanguageManager sharedInstance];
   v4 = self->_currentChunk.length + self->_currentChunk.location;
-  v5 = [(AXLanguageTaggedContent *)self contentString];
-  v6 = [v5 length];
+  contentString = [(AXLanguageTaggedContent *)self contentString];
+  v6 = [contentString length];
 
   if (v4 > v6)
   {
@@ -873,17 +873,17 @@ LABEL_10:
       [(AXLanguageTaggedContent *)v7 _addLanguageTagForCurrentChunk];
     }
 
-    v8 = [(AXLanguageTaggedContent *)self contentString];
-    self->_currentChunk.length = [v8 length] - self->_currentChunk.location;
+    contentString2 = [(AXLanguageTaggedContent *)self contentString];
+    self->_currentChunk.length = [contentString2 length] - self->_currentChunk.location;
   }
 
   v9 = +[AXSettings sharedInstance];
-  v10 = [v9 spokenContentShouldUseLanguageDetection];
+  spokenContentShouldUseLanguageDetection = [v9 spokenContentShouldUseLanguageDetection];
 
-  if (v10)
+  if (spokenContentShouldUseLanguageDetection)
   {
-    v11 = [(AXLanguageTaggedContent *)self contentString];
-    v12 = [v11 substringWithRange:{self->_currentChunk.location, self->_currentChunk.length}];
+    contentString3 = [(AXLanguageTaggedContent *)self contentString];
+    v12 = [contentString3 substringWithRange:{self->_currentChunk.location, self->_currentChunk.length}];
 
     if ([(AXLanguageTaggedContent *)self _addLanguageTagForDateIfNecessary])
     {
@@ -907,8 +907,8 @@ LABEL_10:
 
       v61 = v12;
 
-      v16 = [MEMORY[0x1E695DF58] preferredLanguages];
-      v17 = [v16 count];
+      preferredLanguages = [MEMORY[0x1E695DF58] preferredLanguages];
+      v17 = [preferredLanguages count];
       v18 = v17;
       if (v17 >= 3)
       {
@@ -929,7 +929,7 @@ LABEL_10:
         {
           v24 = [MEMORY[0x1E696AD98] numberWithDouble:v19 * 0.6 / v23];
           v25 = MEMORY[0x1E696AD98];
-          v26 = [v16 objectAtIndexedSubscript:v22];
+          v26 = [preferredLanguages objectAtIndexedSubscript:v22];
           v27 = [v25 numberWithUnsignedInt:{-[AXLanguageTaggedContent langIDforLangCode:](self, "langIDforLangCode:", v26)}];
           [v20 setObject:v24 forKeyedSubscript:v27];
 
@@ -942,14 +942,14 @@ LABEL_10:
 
       LODWORD(v21) = 1053609165;
       v28 = [(AXLanguageTaggedContent *)self _languageHintsEvenlyDistributedWithProbability:v20 excludingHints:v21];
-      v29 = [(AXLanguageTaggedContent *)self _allLangIDs];
-      [v29 count];
+      _allLangIDs = [(AXLanguageTaggedContent *)self _allLangIDs];
+      [_allLangIDs count];
       NLLanguageIdentifierSetLanguageHints();
 
       memset(v80, 0, 24);
       NLLanguageIdentifierGetTopHypotheses();
-      v30 = [MEMORY[0x1E695DFA0] orderedSet];
-      v31 = v30;
+      orderedSet = [MEMORY[0x1E695DFA0] orderedSet];
+      v31 = orderedSet;
       v60 = v28;
       if (LODWORD(v80[0]) <= 1 || *(v80 + 1) <= 0.9)
       {
@@ -959,7 +959,7 @@ LABEL_10:
 
       else
       {
-        v65 = v30;
+        v65 = orderedSet;
         v63 = [(AXLanguageTaggedContent *)self langCodeForlangId:*(v80 + 1)];
         v32 = 1;
         *&v33 = 138412802;
@@ -979,8 +979,8 @@ LABEL_10:
             v69 = 0u;
             v70 = 0u;
             v71 = 0u;
-            v36 = [MEMORY[0x1E695DF58] preferredLanguages];
-            v37 = [v36 countByEnumeratingWithState:&v68 objects:v79 count:16];
+            preferredLanguages2 = [MEMORY[0x1E695DF58] preferredLanguages];
+            v37 = [preferredLanguages2 countByEnumeratingWithState:&v68 objects:v79 count:16];
             if (v37)
             {
               v38 = v37;
@@ -991,7 +991,7 @@ LABEL_10:
                 {
                   if (*v69 != v39)
                   {
-                    objc_enumerationMutation(v36);
+                    objc_enumerationMutation(preferredLanguages2);
                   }
 
                   if ([*(*(&v68 + 1) + 8 * i) hasPrefix:{v35, v59, v60}])
@@ -1018,7 +1018,7 @@ LABEL_10:
                   }
                 }
 
-                v38 = [v36 countByEnumeratingWithState:&v68 objects:v79 count:16];
+                v38 = [preferredLanguages2 countByEnumeratingWithState:&v68 objects:v79 count:16];
                 if (v38)
                 {
                   continue;
@@ -1071,12 +1071,12 @@ LABEL_38:
 
         v64 = v45;
         v48 = +[AXLanguageManager sharedInstance];
-        v49 = [v48 dialectForSystemLanguage];
-        v50 = [v49 specificLanguageID];
+        dialectForSystemLanguage = [v48 dialectForSystemLanguage];
+        specificLanguageID = [dialectForSystemLanguage specificLanguageID];
 
-        v51 = [*&v47 specificLanguageID];
-        v62 = v50;
-        v52 = ([v50 isEqualToString:v51] & 1) == 0 && -[AXLanguageTaggedContent _isNamedEntity:](self, "_isNamedEntity:", v12);
+        specificLanguageID2 = [*&v47 specificLanguageID];
+        v62 = specificLanguageID;
+        v52 = ([specificLanguageID isEqualToString:specificLanguageID2] & 1) == 0 && -[AXLanguageTaggedContent _isNamedEntity:](self, "_isNamedEntity:", v12);
 
         v13 = *&v47 == 0 || v52;
         if (*&v47 == 0 || v52)
@@ -1110,9 +1110,9 @@ LABEL_38:
           }
 
           [(AXLanguageTaggedContent *)self _addTag];
-          v56 = [(AXLanguageTaggedContent *)self tags];
-          v57 = [(AXLanguageTaggedContent *)self tags];
-          v53 = [v56 objectAtIndex:{objc_msgSend(v57, "count") - 1}];
+          tags = [(AXLanguageTaggedContent *)self tags];
+          tags2 = [(AXLanguageTaggedContent *)self tags];
+          v53 = [tags objectAtIndex:{objc_msgSend(tags2, "count") - 1}];
 
           if ([v66 count])
           {
@@ -1154,26 +1154,26 @@ LABEL_38:
   return v13 & 1;
 }
 
-- (void)_debugLog:(id)a3 token:(id)a4 range:(_NSRange)a5 script:(id)a6 dialects:(id)a7
+- (void)_debugLog:(id)log token:(id)token range:(_NSRange)range script:(id)script dialects:(id)dialects
 {
-  length = a5.length;
-  location = a5.location;
+  length = range.length;
+  location = range.location;
   v32 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
+  logCopy = log;
+  tokenCopy = token;
+  scriptCopy = script;
+  dialectsCopy = dialects;
   v16 = AXLogSpokenContentTextProcessing();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
   {
-    v17 = [v13 stringByReplacingOccurrencesOfString:@"\n" withString:@"<newline>"];
+    v17 = [tokenCopy stringByReplacingOccurrencesOfString:@"\n" withString:@"<newline>"];
     v33.location = location;
     v33.length = length;
     v18 = NSStringFromRange(v33);
     v19 = &stru_1EFE6D570;
-    if ([(__CFString *)v14 length])
+    if ([(__CFString *)scriptCopy length])
     {
-      v20 = v14;
+      v20 = scriptCopy;
     }
 
     else
@@ -1181,14 +1181,14 @@ LABEL_38:
       v20 = &stru_1EFE6D570;
     }
 
-    v21 = [v15 count];
+    v21 = [dialectsCopy count];
     if (v21)
     {
-      v19 = [v15 description];
+      v19 = [dialectsCopy description];
     }
 
     v22 = 138413315;
-    v23 = v12;
+    v23 = logCopy;
     v24 = 2113;
     v25 = v17;
     v26 = 2112;
@@ -1209,7 +1209,7 @@ LABEL_38:
   v133 = *MEMORY[0x1E69E9840];
   if (![(AXLanguageTaggedContent *)self isTagged])
   {
-    v72 = self;
+    selfCopy = self;
     [(AXLanguageTaggedContent *)self setTagged:1];
     v71 = +[AXLanguageManager sharedInstance];
     v70 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -1224,14 +1224,14 @@ LABEL_38:
       _os_log_impl(&dword_18B15E000, v3, OS_LOG_TYPE_INFO, "Setting currentDialects to nil", buf, 2u);
     }
 
-    [(AXLanguageTaggedContent *)v72 setCurrentDialects:0];
+    [(AXLanguageTaggedContent *)selfCopy setCurrentDialects:0];
     v117 = 0;
     v118 = &v117;
     v119 = 0x2020000000;
     v120 = 0;
-    v4 = [(AXLanguageTaggedContent *)v72 contentString];
-    [(AXLanguageTaggedContent *)v72 setNextShorthandDateIndex:0];
-    [(AXLanguageTaggedContent *)v72 _searchForShorthandDates];
+    contentString = [(AXLanguageTaggedContent *)selfCopy contentString];
+    [(AXLanguageTaggedContent *)selfCopy setNextShorthandDateIndex:0];
+    [(AXLanguageTaggedContent *)selfCopy _searchForShorthandDates];
     NLTaggerSetString();
     *buf = 0;
     v112 = buf;
@@ -1255,47 +1255,47 @@ LABEL_38:
       [(AXLanguageTaggedContent *)v5 tagContent];
     }
 
-    p_isa = &v72->super.isa;
-    [v4 length];
+    p_isa = &selfCopy->super.isa;
+    [contentString length];
     v97 = MEMORY[0x1E69E9820];
     v98 = 3221225472;
     v99 = __37__AXLanguageTaggedContent_tagContent__block_invoke;
     v100 = &unk_1E71EBDC8;
-    v68 = v4;
+    v68 = contentString;
     v101 = v68;
-    v102 = v72;
+    v102 = selfCopy;
     v103 = buf;
     v104 = v109;
     v105 = v107;
     v106 = &v117;
     NLTaggerEnumerateTokens();
-    if ([(AXLanguageTaggedContent *)v72 _addLanguageTagForCurrentChunk])
+    if ([(AXLanguageTaggedContent *)selfCopy _addLanguageTagForCurrentChunk])
     {
-      location = v72->_currentChunk.location;
-      length = v72->_currentChunk.length;
-      v72->_currentChunk.length = 0;
-      [(AXLanguageTaggedContent *)v72 _manuallyProcessContentWithRange:location, length, v68];
+      location = selfCopy->_currentChunk.location;
+      length = selfCopy->_currentChunk.length;
+      selfCopy->_currentChunk.length = 0;
+      [(AXLanguageTaggedContent *)selfCopy _manuallyProcessContentWithRange:location, length, v68];
       *(v118 + 24) = 1;
     }
 
-    v9 = v72->_currentChunk.length;
+    v9 = selfCopy->_currentChunk.length;
     if (v9)
     {
-      v10 = v72->_currentChunk.location;
-      v11 = [(AXLanguageTaggedContent *)v72 contentString];
-      v12 = v10 + v9 > [v11 length];
+      v10 = selfCopy->_currentChunk.location;
+      contentString2 = [(AXLanguageTaggedContent *)selfCopy contentString];
+      v12 = v10 + v9 > [contentString2 length];
 
-      p_isa = &v72->super.isa;
+      p_isa = &selfCopy->super.isa;
       if (!v12)
       {
-        if (![(NSArray *)v72->_currentDialects count])
+        if (![(NSArray *)selfCopy->_currentDialects count])
         {
-          v13 = [v71 dialectForSystemLanguage];
+          dialectForSystemLanguage = [v71 dialectForSystemLanguage];
           if (v118[3])
           {
-            v14 = [(AXLanguageTaggedContent *)v72 contentString];
-            v15 = [(AXLanguageTaggedContent *)v72 _isStringCombinationOfCommonAndEmoji:v14];
-            if (v13)
+            contentString3 = [(AXLanguageTaggedContent *)selfCopy contentString];
+            v15 = [(AXLanguageTaggedContent *)selfCopy _isStringCombinationOfCommonAndEmoji:contentString3];
+            if (dialectForSystemLanguage)
             {
               v16 = v15;
             }
@@ -1307,16 +1307,16 @@ LABEL_38:
 
             if (v16)
             {
-              v131 = v13;
+              v131 = dialectForSystemLanguage;
               v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v131 count:1];
-              [(AXLanguageTaggedContent *)v72 setCurrentDialects:v17];
+              [(AXLanguageTaggedContent *)selfCopy setCurrentDialects:v17];
 
               v18 = AXLogSpokenContentTextProcessing();
               if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
               {
-                v19 = [(AXLanguageTaggedContent *)v72 currentDialects];
+                currentDialects = [(AXLanguageTaggedContent *)selfCopy currentDialects];
                 *v121 = 138412290;
-                v122 = v19;
+                v122 = currentDialects;
                 _os_log_impl(&dword_18B15E000, v18, OS_LOG_TYPE_INFO, "Setting currentDialects to dialectForSystemLanguage: %@", v121, 0xCu);
               }
             }
@@ -1324,19 +1324,19 @@ LABEL_38:
 
           else
           {
-            v20 = [MEMORY[0x1E695DF70] array];
-            v14 = v20;
-            if (v13)
+            array = [MEMORY[0x1E695DF70] array];
+            contentString3 = array;
+            if (dialectForSystemLanguage)
             {
-              [(AXLanguageTaggedContent *)v20 addObject:v13];
+              [(AXLanguageTaggedContent *)array addObject:dialectForSystemLanguage];
             }
 
             v95 = 0u;
             v96 = 0u;
             v93 = 0u;
             v94 = 0u;
-            v21 = [(AXLanguageTaggedContent *)v72 significantAmbiguousLangMapsForUserKeyboards];
-            v22 = [v21 countByEnumeratingWithState:&v93 objects:v132 count:16];
+            significantAmbiguousLangMapsForUserKeyboards = [(AXLanguageTaggedContent *)selfCopy significantAmbiguousLangMapsForUserKeyboards];
+            v22 = [significantAmbiguousLangMapsForUserKeyboards countByEnumeratingWithState:&v93 objects:v132 count:16];
             if (v22)
             {
               v23 = *v94;
@@ -1346,21 +1346,21 @@ LABEL_38:
                 {
                   if (*v94 != v23)
                   {
-                    objc_enumerationMutation(v21);
+                    objc_enumerationMutation(significantAmbiguousLangMapsForUserKeyboards);
                   }
 
                   v25 = *(*(&v93 + 1) + 8 * i);
-                  v26 = [v25 defaultDialect];
-                  v27 = [v26 isEqual:v13];
+                  defaultDialect = [v25 defaultDialect];
+                  v27 = [defaultDialect isEqual:dialectForSystemLanguage];
 
                   if ((v27 & 1) == 0)
                   {
-                    v28 = [v25 defaultDialect];
-                    [(AXLanguageTaggedContent *)v14 addObject:v28];
+                    defaultDialect2 = [v25 defaultDialect];
+                    [(AXLanguageTaggedContent *)contentString3 addObject:defaultDialect2];
                   }
                 }
 
-                v22 = [v21 countByEnumeratingWithState:&v93 objects:v132 count:16];
+                v22 = [significantAmbiguousLangMapsForUserKeyboards countByEnumeratingWithState:&v93 objects:v132 count:16];
               }
 
               while (v22);
@@ -1370,14 +1370,14 @@ LABEL_38:
             if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
             {
               *v121 = 138412290;
-              v122 = v14;
+              v122 = contentString3;
               _os_log_impl(&dword_18B15E000, v29, OS_LOG_TYPE_INFO, "Setting currentDialects to defaultMaps: %@", v121, 0xCu);
             }
 
-            [(AXLanguageTaggedContent *)v72 setCurrentDialects:v14];
+            [(AXLanguageTaggedContent *)selfCopy setCurrentDialects:contentString3];
           }
 
-          p_isa = &v72->super.isa;
+          p_isa = &selfCopy->super.isa;
         }
 
         if ([p_isa[1] count])
@@ -1385,8 +1385,8 @@ LABEL_38:
           v30 = AXLogSpokenContentTextProcessing();
           if (os_log_type_enabled(v30, OS_LOG_TYPE_INFO))
           {
-            currentDialects = v72->_currentDialects;
-            v32 = NSStringFromRange(v72->_currentChunk);
+            currentDialects = selfCopy->_currentDialects;
+            v32 = NSStringFromRange(selfCopy->_currentChunk);
             *v121 = 138412546;
             v122 = currentDialects;
             v123 = 2112;
@@ -1394,23 +1394,23 @@ LABEL_38:
             _os_log_impl(&dword_18B15E000, v30, OS_LOG_TYPE_INFO, "Add last chunk: %@ %@", v121, 0x16u);
           }
 
-          p_isa = &v72->super.isa;
-          [(AXLanguageTaggedContent *)v72 _addTag];
+          p_isa = &selfCopy->super.isa;
+          [(AXLanguageTaggedContent *)selfCopy _addTag];
         }
       }
     }
 
-    v75 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     v91 = 0u;
     v92 = 0u;
     v89 = 0u;
     v90 = 0u;
-    v33 = [p_isa tags];
-    v34 = [v33 countByEnumeratingWithState:&v89 objects:v130 count:16];
+    tags = [p_isa tags];
+    v34 = [tags countByEnumeratingWithState:&v89 objects:v130 count:16];
     if (v34)
     {
       v35 = 0;
-      v36 = 0;
+      dialect3 = 0;
       v37 = *v90;
       do
       {
@@ -1418,22 +1418,22 @@ LABEL_38:
         {
           if (*v90 != v37)
           {
-            objc_enumerationMutation(v33);
+            objc_enumerationMutation(tags);
           }
 
           v39 = *(*(&v89 + 1) + 8 * j);
-          if (v35 | v36)
+          if (v35 | dialect3)
           {
-            v40 = [*(*(&v89 + 1) + 8 * j) dialect];
-            v41 = v36 == v40;
+            dialect = [*(*(&v89 + 1) + 8 * j) dialect];
+            v41 = dialect3 == dialect;
 
             if (v41)
             {
-              v44 = [v35 range];
+              range = [v35 range];
               [v35 range];
               v46 = v45;
               [v39 range];
-              [v35 setRange:{v44, v47 + v46}];
+              [v35 setRange:{range, v47 + v46}];
               if ([v39 wasPredicted])
               {
                 [v35 setWasPredicted:1];
@@ -1444,64 +1444,64 @@ LABEL_38:
 
             else
             {
-              [(NSArray *)v75 addObject:v35];
+              [(NSArray *)array2 addObject:v35];
               v42 = v39;
 
-              v43 = [v42 dialect];
+              dialect2 = [v42 dialect];
 
               v35 = v42;
-              v36 = v43;
+              dialect3 = dialect2;
             }
           }
 
           else
           {
             v35 = v39;
-            v36 = [v35 dialect];
+            dialect3 = [v35 dialect];
           }
         }
 
-        v34 = [v33 countByEnumeratingWithState:&v89 objects:v130 count:16];
+        v34 = [tags countByEnumeratingWithState:&v89 objects:v130 count:16];
       }
 
       while (v34);
 
       if (v35)
       {
-        [(NSArray *)v75 addObject:v35];
+        [(NSArray *)array2 addObject:v35];
       }
     }
 
     else
     {
 
-      v36 = 0;
+      dialect3 = 0;
       v35 = 0;
     }
 
     v48 = AXLogSpokenContentTextProcessing();
     if (os_log_type_enabled(v48, OS_LOG_TYPE_INFO))
     {
-      v49 = [(AXLanguageTaggedContent *)v72 tags];
+      tags2 = [(AXLanguageTaggedContent *)selfCopy tags];
       *v121 = 138478083;
-      v122 = v49;
+      v122 = tags2;
       v123 = 2113;
-      v124 = v75;
+      v124 = array2;
       _os_log_impl(&dword_18B15E000, v48, OS_LOG_TYPE_INFO, "Combining tags. Old tags were: %{private}@. New tags are: %{private}@", v121, 0x16u);
     }
 
-    [(AXLanguageTaggedContent *)v72 setTags:v75];
-    v50 = [MEMORY[0x1E695DFA0] orderedSet];
-    v51 = [MEMORY[0x1E695DFA0] orderedSet];
+    [(AXLanguageTaggedContent *)selfCopy setTags:array2];
+    orderedSet = [MEMORY[0x1E695DFA0] orderedSet];
+    orderedSet2 = [MEMORY[0x1E695DFA0] orderedSet];
     v87 = 0u;
     v88 = 0u;
     v85 = 0u;
     v86 = 0u;
-    v52 = [(AXLanguageTaggedContent *)v72 tags];
-    v53 = [v52 countByEnumeratingWithState:&v85 objects:v129 count:16];
+    tags3 = [(AXLanguageTaggedContent *)selfCopy tags];
+    v53 = [tags3 countByEnumeratingWithState:&v85 objects:v129 count:16];
     if (v53)
     {
-      obj = v52;
+      obj = tags3;
       v74 = *v86;
       do
       {
@@ -1520,8 +1520,8 @@ LABEL_38:
             v80 = 0uLL;
             v77 = 0uLL;
             v78 = 0uLL;
-            v56 = [v55 predictedSecondaryDialects];
-            v57 = [v56 countByEnumeratingWithState:&v77 objects:v127 count:16];
+            predictedSecondaryDialects = [v55 predictedSecondaryDialects];
+            v57 = [predictedSecondaryDialects countByEnumeratingWithState:&v77 objects:v127 count:16];
             if (v57)
             {
               v58 = *v78;
@@ -1531,14 +1531,14 @@ LABEL_38:
                 {
                   if (*v78 != v58)
                   {
-                    objc_enumerationMutation(v56);
+                    objc_enumerationMutation(predictedSecondaryDialects);
                   }
 
-                  v60 = [*(*(&v77 + 1) + 8 * m) langMap];
-                  [v51 addObject:v60];
+                  langMap = [*(*(&v77 + 1) + 8 * m) langMap];
+                  [orderedSet2 addObject:langMap];
                 }
 
-                v57 = [v56 countByEnumeratingWithState:&v77 objects:v127 count:16];
+                v57 = [predictedSecondaryDialects countByEnumeratingWithState:&v77 objects:v127 count:16];
               }
 
               while (v57);
@@ -1551,8 +1551,8 @@ LABEL_38:
             v84 = 0uLL;
             v81 = 0uLL;
             v82 = 0uLL;
-            v56 = [v55 ambiguousDialects];
-            v61 = [v56 countByEnumeratingWithState:&v81 objects:v128 count:16];
+            predictedSecondaryDialects = [v55 ambiguousDialects];
+            v61 = [predictedSecondaryDialects countByEnumeratingWithState:&v81 objects:v128 count:16];
             if (v61)
             {
               v62 = *v82;
@@ -1562,14 +1562,14 @@ LABEL_38:
                 {
                   if (*v82 != v62)
                   {
-                    objc_enumerationMutation(v56);
+                    objc_enumerationMutation(predictedSecondaryDialects);
                   }
 
-                  v64 = [*(*(&v81 + 1) + 8 * n) langMap];
-                  [v50 addObject:v64];
+                  langMap2 = [*(*(&v81 + 1) + 8 * n) langMap];
+                  [orderedSet addObject:langMap2];
                 }
 
-                v61 = [v56 countByEnumeratingWithState:&v81 objects:v128 count:16];
+                v61 = [predictedSecondaryDialects countByEnumeratingWithState:&v81 objects:v128 count:16];
               }
 
               while (v61);
@@ -1577,22 +1577,22 @@ LABEL_38:
           }
         }
 
-        v52 = obj;
+        tags3 = obj;
         v53 = [obj countByEnumeratingWithState:&v85 objects:v129 count:16];
       }
 
       while (v53);
     }
 
-    [(AXLanguageTaggedContent *)v72 setUnpredictedAmbiguousLangMaps:v50];
-    [(AXLanguageTaggedContent *)v72 setPredictedSecondaryLangMaps:v51];
+    [(AXLanguageTaggedContent *)selfCopy setUnpredictedAmbiguousLangMaps:orderedSet];
+    [(AXLanguageTaggedContent *)selfCopy setPredictedSecondaryLangMaps:orderedSet2];
     v65 = AXLogSpokenContentTextProcessing();
     if (os_log_type_enabled(v65, OS_LOG_TYPE_INFO))
     {
-      v66 = v72->_currentDialects;
-      v67 = NSStringFromRange(v72->_currentChunk);
+      v66 = selfCopy->_currentDialects;
+      v67 = NSStringFromRange(selfCopy->_currentChunk);
       *v121 = 138412802;
-      v122 = v72;
+      v122 = selfCopy;
       v123 = 2112;
       v124 = v66;
       v125 = 2112;
@@ -1730,22 +1730,22 @@ LABEL_26:
   *(v30 + 40) = v4;
 }
 
-- (BOOL)_isStringCombinationOfCommonAndEmoji:(id)a3
+- (BOOL)_isStringCombinationOfCommonAndEmoji:(id)emoji
 {
-  v3 = a3;
+  emojiCopy = emoji;
   v4 = +[AXLanguageManager sharedInstance];
   v5 = 0;
-  while (v5 < [v3 length])
+  while (v5 < [emojiCopy length])
   {
-    v6 = [v3 length] - v5;
+    v6 = [emojiCopy length] - v5;
     v13 = 0;
     v14 = &v13;
     v15 = 0x3010000000;
     v16 = &unk_18B3155F1;
     v17 = 0;
     v18 = 0;
-    v7 = [v4 commonCharacters];
-    v17 = [v3 rangeOfCharacterFromSet:v7 options:0 range:{v5, v6}];
+    commonCharacters = [v4 commonCharacters];
+    v17 = [emojiCopy rangeOfCharacterFromSet:commonCharacters options:0 range:{v5, v6}];
     v18 = v8;
 
     v9 = v14;
@@ -1763,7 +1763,7 @@ LABEL_8:
 
     else
     {
-      [v3 length];
+      [emojiCopy length];
       CEMEnumerateEmojiTokensInStringWithBlock();
       v9 = v14;
       if (v14[4] > v5)
@@ -1776,7 +1776,7 @@ LABEL_8:
     _Block_object_dispose(&v13, 8);
   }
 
-  v11 = v5 == [v3 length];
+  v11 = v5 == [emojiCopy length];
 LABEL_9:
 
   return v11;
@@ -1804,8 +1804,8 @@ uint64_t __64__AXLanguageTaggedContent__isStringCombinationOfCommonAndEmoji___bl
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [v2 ambiguousDialectsFromUserKeyboardPreferences];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  ambiguousDialectsFromUserKeyboardPreferences = [v2 ambiguousDialectsFromUserKeyboardPreferences];
+  v5 = [ambiguousDialectsFromUserKeyboardPreferences countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1816,14 +1816,14 @@ uint64_t __64__AXLanguageTaggedContent__isStringCombinationOfCommonAndEmoji___bl
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(ambiguousDialectsFromUserKeyboardPreferences);
         }
 
-        v9 = [*(*(&v11 + 1) + 8 * i) langMap];
-        [v3 addObject:v9];
+        langMap = [*(*(&v11 + 1) + 8 * i) langMap];
+        [v3 addObject:langMap];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [ambiguousDialectsFromUserKeyboardPreferences countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -1840,8 +1840,8 @@ uint64_t __64__AXLanguageTaggedContent__isStringCombinationOfCommonAndEmoji___bl
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v4 = [(AXLanguageTaggedContent *)self tags];
-  v5 = [v4 countByEnumeratingWithState:&v21 objects:v26 count:16];
+  tags = [(AXLanguageTaggedContent *)self tags];
+  v5 = [tags countByEnumeratingWithState:&v21 objects:v26 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1852,7 +1852,7 @@ uint64_t __64__AXLanguageTaggedContent__isStringCombinationOfCommonAndEmoji___bl
       {
         if (*v22 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(tags);
         }
 
         v9 = *(*(&v21 + 1) + 8 * i);
@@ -1860,8 +1860,8 @@ uint64_t __64__AXLanguageTaggedContent__isStringCombinationOfCommonAndEmoji___bl
         v18 = 0u;
         v19 = 0u;
         v20 = 0u;
-        v10 = [v9 unambiguousDialects];
-        v11 = [v10 countByEnumeratingWithState:&v17 objects:v25 count:16];
+        unambiguousDialects = [v9 unambiguousDialects];
+        v11 = [unambiguousDialects countByEnumeratingWithState:&v17 objects:v25 count:16];
         if (v11)
         {
           v12 = v11;
@@ -1872,21 +1872,21 @@ uint64_t __64__AXLanguageTaggedContent__isStringCombinationOfCommonAndEmoji___bl
             {
               if (*v18 != v13)
               {
-                objc_enumerationMutation(v10);
+                objc_enumerationMutation(unambiguousDialects);
               }
 
-              v15 = [*(*(&v17 + 1) + 8 * j) langMap];
-              [v3 addObject:v15];
+              langMap = [*(*(&v17 + 1) + 8 * j) langMap];
+              [v3 addObject:langMap];
             }
 
-            v12 = [v10 countByEnumeratingWithState:&v17 objects:v25 count:16];
+            v12 = [unambiguousDialects countByEnumeratingWithState:&v17 objects:v25 count:16];
           }
 
           while (v12);
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v21 objects:v26 count:16];
+      v6 = [tags countByEnumeratingWithState:&v21 objects:v26 count:16];
     }
 
     while (v6);
@@ -1903,8 +1903,8 @@ uint64_t __64__AXLanguageTaggedContent__isStringCombinationOfCommonAndEmoji___bl
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v4 = [(AXLanguageTaggedContent *)self tags];
-  v5 = [v4 countByEnumeratingWithState:&v21 objects:v26 count:16];
+  tags = [(AXLanguageTaggedContent *)self tags];
+  v5 = [tags countByEnumeratingWithState:&v21 objects:v26 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1915,7 +1915,7 @@ uint64_t __64__AXLanguageTaggedContent__isStringCombinationOfCommonAndEmoji___bl
       {
         if (*v22 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(tags);
         }
 
         v9 = *(*(&v21 + 1) + 8 * i);
@@ -1923,8 +1923,8 @@ uint64_t __64__AXLanguageTaggedContent__isStringCombinationOfCommonAndEmoji___bl
         v18 = 0u;
         v19 = 0u;
         v20 = 0u;
-        v10 = [v9 ambiguousDialects];
-        v11 = [v10 countByEnumeratingWithState:&v17 objects:v25 count:16];
+        ambiguousDialects = [v9 ambiguousDialects];
+        v11 = [ambiguousDialects countByEnumeratingWithState:&v17 objects:v25 count:16];
         if (v11)
         {
           v12 = v11;
@@ -1935,21 +1935,21 @@ uint64_t __64__AXLanguageTaggedContent__isStringCombinationOfCommonAndEmoji___bl
             {
               if (*v18 != v13)
               {
-                objc_enumerationMutation(v10);
+                objc_enumerationMutation(ambiguousDialects);
               }
 
-              v15 = [*(*(&v17 + 1) + 8 * j) langMap];
-              [v3 addObject:v15];
+              langMap = [*(*(&v17 + 1) + 8 * j) langMap];
+              [v3 addObject:langMap];
             }
 
-            v12 = [v10 countByEnumeratingWithState:&v17 objects:v25 count:16];
+            v12 = [ambiguousDialects countByEnumeratingWithState:&v17 objects:v25 count:16];
           }
 
           while (v12);
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v21 objects:v26 count:16];
+      v6 = [tags countByEnumeratingWithState:&v21 objects:v26 count:16];
     }
 
     while (v6);
@@ -1965,8 +1965,8 @@ uint64_t __64__AXLanguageTaggedContent__isStringCombinationOfCommonAndEmoji___bl
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v2 = [(AXLanguageTaggedContent *)self tags];
-  v3 = [v2 countByEnumeratingWithState:&v32 objects:v38 count:16];
+  tags = [(AXLanguageTaggedContent *)self tags];
+  v3 = [tags countByEnumeratingWithState:&v32 objects:v38 count:16];
   if (!v3)
   {
     v21 = 1;
@@ -1982,7 +1982,7 @@ uint64_t __64__AXLanguageTaggedContent__isStringCombinationOfCommonAndEmoji___bl
     {
       if (*v33 != v5)
       {
-        objc_enumerationMutation(v2);
+        objc_enumerationMutation(tags);
       }
 
       v7 = *(*(&v32 + 1) + 8 * i);
@@ -1990,8 +1990,8 @@ uint64_t __64__AXLanguageTaggedContent__isStringCombinationOfCommonAndEmoji___bl
       v29 = 0u;
       v30 = 0u;
       v31 = 0u;
-      v8 = [v7 unambiguousDialects];
-      v9 = [v8 countByEnumeratingWithState:&v28 objects:v37 count:16];
+      unambiguousDialects = [v7 unambiguousDialects];
+      v9 = [unambiguousDialects countByEnumeratingWithState:&v28 objects:v37 count:16];
       if (v9)
       {
         v10 = v9;
@@ -2002,20 +2002,20 @@ LABEL_8:
         {
           if (*v29 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(unambiguousDialects);
           }
 
-          v13 = [*(*(&v28 + 1) + 8 * v12) langMap];
-          v14 = [v13 isWestern];
+          langMap = [*(*(&v28 + 1) + 8 * v12) langMap];
+          isWestern = [langMap isWestern];
 
-          if (!v14)
+          if (!isWestern)
           {
             goto LABEL_25;
           }
 
           if (v10 == ++v12)
           {
-            v10 = [v8 countByEnumeratingWithState:&v28 objects:v37 count:16];
+            v10 = [unambiguousDialects countByEnumeratingWithState:&v28 objects:v37 count:16];
             if (v10)
             {
               goto LABEL_8;
@@ -2030,8 +2030,8 @@ LABEL_8:
       v27 = 0u;
       v24 = 0u;
       v25 = 0u;
-      v8 = [v7 ambiguousDialects];
-      v15 = [v8 countByEnumeratingWithState:&v24 objects:v36 count:16];
+      unambiguousDialects = [v7 ambiguousDialects];
+      v15 = [unambiguousDialects countByEnumeratingWithState:&v24 objects:v36 count:16];
       if (v15)
       {
         v16 = v15;
@@ -2042,20 +2042,20 @@ LABEL_16:
         {
           if (*v25 != v17)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(unambiguousDialects);
           }
 
-          v19 = [*(*(&v24 + 1) + 8 * v18) langMap];
-          v20 = [v19 isWestern];
+          langMap2 = [*(*(&v24 + 1) + 8 * v18) langMap];
+          isWestern2 = [langMap2 isWestern];
 
-          if (!v20)
+          if (!isWestern2)
           {
             break;
           }
 
           if (v16 == ++v18)
           {
-            v16 = [v8 countByEnumeratingWithState:&v24 objects:v36 count:16];
+            v16 = [unambiguousDialects countByEnumeratingWithState:&v24 objects:v36 count:16];
             if (v16)
             {
               goto LABEL_16;
@@ -2076,7 +2076,7 @@ LABEL_22:
       v5 = v23;
     }
 
-    v4 = [v2 countByEnumeratingWithState:&v32 objects:v38 count:16];
+    v4 = [tags countByEnumeratingWithState:&v32 objects:v38 count:16];
     v21 = 1;
     if (v4)
     {
@@ -2098,8 +2098,8 @@ LABEL_27:
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v2 = [(AXLanguageTaggedContent *)self tags];
-  v3 = [v2 countByEnumeratingWithState:&v32 objects:v38 count:16];
+  tags = [(AXLanguageTaggedContent *)self tags];
+  v3 = [tags countByEnumeratingWithState:&v32 objects:v38 count:16];
   if (!v3)
   {
     v21 = 1;
@@ -2115,7 +2115,7 @@ LABEL_27:
     {
       if (*v33 != v5)
       {
-        objc_enumerationMutation(v2);
+        objc_enumerationMutation(tags);
       }
 
       v7 = *(*(&v32 + 1) + 8 * i);
@@ -2123,8 +2123,8 @@ LABEL_27:
       v29 = 0u;
       v30 = 0u;
       v31 = 0u;
-      v8 = [v7 unambiguousDialects];
-      v9 = [v8 countByEnumeratingWithState:&v28 objects:v37 count:16];
+      unambiguousDialects = [v7 unambiguousDialects];
+      v9 = [unambiguousDialects countByEnumeratingWithState:&v28 objects:v37 count:16];
       if (v9)
       {
         v10 = v9;
@@ -2135,20 +2135,20 @@ LABEL_8:
         {
           if (*v29 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(unambiguousDialects);
           }
 
-          v13 = [*(*(&v28 + 1) + 8 * v12) langMap];
-          v14 = [v13 isWestern];
+          langMap = [*(*(&v28 + 1) + 8 * v12) langMap];
+          isWestern = [langMap isWestern];
 
-          if (v14)
+          if (isWestern)
           {
             goto LABEL_25;
           }
 
           if (v10 == ++v12)
           {
-            v10 = [v8 countByEnumeratingWithState:&v28 objects:v37 count:16];
+            v10 = [unambiguousDialects countByEnumeratingWithState:&v28 objects:v37 count:16];
             if (v10)
             {
               goto LABEL_8;
@@ -2163,8 +2163,8 @@ LABEL_8:
       v27 = 0u;
       v24 = 0u;
       v25 = 0u;
-      v8 = [v7 ambiguousDialects];
-      v15 = [v8 countByEnumeratingWithState:&v24 objects:v36 count:16];
+      unambiguousDialects = [v7 ambiguousDialects];
+      v15 = [unambiguousDialects countByEnumeratingWithState:&v24 objects:v36 count:16];
       if (v15)
       {
         v16 = v15;
@@ -2175,20 +2175,20 @@ LABEL_16:
         {
           if (*v25 != v17)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(unambiguousDialects);
           }
 
-          v19 = [*(*(&v24 + 1) + 8 * v18) langMap];
-          v20 = [v19 isWestern];
+          langMap2 = [*(*(&v24 + 1) + 8 * v18) langMap];
+          isWestern2 = [langMap2 isWestern];
 
-          if (v20)
+          if (isWestern2)
           {
             break;
           }
 
           if (v16 == ++v18)
           {
-            v16 = [v8 countByEnumeratingWithState:&v24 objects:v36 count:16];
+            v16 = [unambiguousDialects countByEnumeratingWithState:&v24 objects:v36 count:16];
             if (v16)
             {
               goto LABEL_16;
@@ -2209,7 +2209,7 @@ LABEL_22:
       v5 = v23;
     }
 
-    v4 = [v2 countByEnumeratingWithState:&v32 objects:v38 count:16];
+    v4 = [tags countByEnumeratingWithState:&v32 objects:v38 count:16];
     v21 = 1;
     if (v4)
     {
@@ -2228,11 +2228,11 @@ LABEL_27:
 {
   v6[1] = *MEMORY[0x1E69E9840];
   v2 = +[AXSettings sharedInstance];
-  v3 = [v2 spokenContentDefaultFallbackLanguage];
+  spokenContentDefaultFallbackLanguage = [v2 spokenContentDefaultFallbackLanguage];
 
-  if (v3)
+  if (spokenContentDefaultFallbackLanguage)
   {
-    v6[0] = v3;
+    v6[0] = spokenContentDefaultFallbackLanguage;
     v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:1];
   }
 
@@ -2244,18 +2244,18 @@ LABEL_27:
   return v4;
 }
 
-- (void)_manuallyProcessContentWithRange:(_NSRange)a3
+- (void)_manuallyProcessContentWithRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v83 = *MEMORY[0x1E69E9840];
   v5 = AXLogSpokenContentTextProcessing();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG);
 
   if (v6)
   {
-    v7 = [(AXLanguageTaggedContent *)self contentString];
-    v8 = [v7 substringWithRange:{location, length}];
+    contentString = [(AXLanguageTaggedContent *)self contentString];
+    v8 = [contentString substringWithRange:{location, length}];
     [(AXLanguageTaggedContent *)self _debugLog:@"Manual process:" token:v8 range:location script:length dialects:0, self->_currentDialects];
   }
 
@@ -2267,12 +2267,12 @@ LABEL_27:
     v66 = v9;
     do
     {
-      v11 = [(AXLanguageTaggedContent *)self contentString];
-      v12 = [v11 rangeOfComposedCharacterSequenceAtIndex:location + v10];
+      contentString2 = [(AXLanguageTaggedContent *)self contentString];
+      v12 = [contentString2 rangeOfComposedCharacterSequenceAtIndex:location + v10];
       v14 = v13;
 
-      v15 = [(AXLanguageTaggedContent *)self contentString];
-      v16 = [v15 substringWithRange:{v12, v14}];
+      contentString3 = [(AXLanguageTaggedContent *)self contentString];
+      v16 = [contentString3 substringWithRange:{v12, v14}];
 
       v17 = AXLogSpokenContentTextProcessing();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
@@ -2370,8 +2370,8 @@ LABEL_23:
               goto LABEL_23;
             }
 
-            v25 = [(AXLanguageTaggedContent *)self _preferredLanguagesForTagging];
-            v22 = [v67 dialectsThatCanSpeakCharacter:v18 overridePreferredLanguages:v25 allowTransliteration:0 preferOverrides:1];
+            _preferredLanguagesForTagging = [(AXLanguageTaggedContent *)self _preferredLanguagesForTagging];
+            v22 = [v67 dialectsThatCanSpeakCharacter:v18 overridePreferredLanguages:_preferredLanguagesForTagging allowTransliteration:0 preferOverrides:1];
 
             if ([v22 count])
             {
@@ -2384,18 +2384,18 @@ LABEL_23:
               v26 = AXLogSpokenContentTextProcessing();
               if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
               {
-                v27 = [(AXLanguageTaggedContent *)self _preferredLanguagesForTagging];
+                _preferredLanguagesForTagging2 = [(AXLanguageTaggedContent *)self _preferredLanguagesForTagging];
                 *buf = 138412290;
-                v74 = v27;
+                v74 = _preferredLanguagesForTagging2;
                 _os_log_impl(&dword_18B15E000, v26, OS_LOG_TYPE_INFO, "OverridePreferredLanguages: %@", buf, 0xCu);
               }
 
               v28 = AXLogSpokenContentTextProcessing();
               if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
               {
-                v29 = [(AXLanguageTaggedContent *)self currentDialects];
+                currentDialects = [(AXLanguageTaggedContent *)self currentDialects];
                 *buf = 138412290;
-                v74 = v29;
+                v74 = currentDialects;
                 _os_log_impl(&dword_18B15E000, v28, OS_LOG_TYPE_INFO, "Setting currentDialects to dialectsThatCanSpeakCharacter: %@", buf, 0xCu);
               }
 
@@ -2470,25 +2470,25 @@ LABEL_23:
 
         if (![v67 isCharacterCommon:v18])
         {
-          v40 = [(AXLanguageTaggedContent *)self _preferredLanguagesForTagging];
-          v41 = [v67 dialectsThatCanSpeakCharacter:v18 overridePreferredLanguages:v40 allowTransliteration:0 preferOverrides:1];
+          _preferredLanguagesForTagging3 = [(AXLanguageTaggedContent *)self _preferredLanguagesForTagging];
+          v41 = [v67 dialectsThatCanSpeakCharacter:v18 overridePreferredLanguages:_preferredLanguagesForTagging3 allowTransliteration:0 preferOverrides:1];
           [(AXLanguageTaggedContent *)self setCurrentDialects:v41];
 
           v42 = AXLogSpokenContentTextProcessing();
           if (os_log_type_enabled(v42, OS_LOG_TYPE_INFO))
           {
-            v43 = [(AXLanguageTaggedContent *)self _preferredLanguagesForTagging];
+            _preferredLanguagesForTagging4 = [(AXLanguageTaggedContent *)self _preferredLanguagesForTagging];
             *v77 = 138412290;
-            *&v77[4] = v43;
+            *&v77[4] = _preferredLanguagesForTagging4;
             _os_log_impl(&dword_18B15E000, v42, OS_LOG_TYPE_INFO, "OverridePreferredLanguages: %@", v77, 0xCu);
           }
 
           v44 = AXLogSpokenContentTextProcessing();
           if (os_log_type_enabled(v44, OS_LOG_TYPE_INFO))
           {
-            v45 = [(AXLanguageTaggedContent *)self currentDialects];
+            currentDialects2 = [(AXLanguageTaggedContent *)self currentDialects];
             *v77 = 138412290;
-            *&v77[4] = v45;
+            *&v77[4] = currentDialects2;
             _os_log_impl(&dword_18B15E000, v44, OS_LOG_TYPE_INFO, "Setting currentDialects to dialectsThatCanSpeakCharacter: %@", v77, 0xCu);
           }
 
@@ -2527,56 +2527,56 @@ LABEL_42:
   }
 
   v52 = +[AXLanguageManager sharedInstance];
-  v53 = [v52 dialectForCurrentLocale];
+  dialectForCurrentLocale = [v52 dialectForCurrentLocale];
 
-  if (!v53)
+  if (!dialectForCurrentLocale)
   {
-    v54 = AXLogSpokenContentTextProcessing();
-    if (os_log_type_enabled(v54, OS_LOG_TYPE_INFO))
+    currentDialects3 = AXLogSpokenContentTextProcessing();
+    if (os_log_type_enabled(currentDialects3, OS_LOG_TYPE_INFO))
     {
-      v61 = [v67 systemLanguageID];
-      v62 = [v67 userLocale];
-      v63 = [v62 objectForKey:*MEMORY[0x1E695D9B0]];
-      v64 = [v67 userLocale];
-      v65 = [v64 objectForKey:*MEMORY[0x1E695D978]];
+      systemLanguageID = [v67 systemLanguageID];
+      userLocale = [v67 userLocale];
+      v63 = [userLocale objectForKey:*MEMORY[0x1E695D9B0]];
+      userLocale2 = [v67 userLocale];
+      v65 = [userLocale2 objectForKey:*MEMORY[0x1E695D978]];
       *v77 = 138412802;
-      *&v77[4] = v61;
+      *&v77[4] = systemLanguageID;
       *&v77[12] = 2112;
       *&v77[14] = v63;
       *&v77[22] = 2112;
       v78 = v65;
-      _os_log_impl(&dword_18B15E000, v54, OS_LOG_TYPE_INFO, "Failed to find dialect map for system language: %@, locale language: %@, locale region: %@", v77, 0x20u);
+      _os_log_impl(&dword_18B15E000, currentDialects3, OS_LOG_TYPE_INFO, "Failed to find dialect map for system language: %@, locale language: %@, locale region: %@", v77, 0x20u);
     }
 
     goto LABEL_68;
   }
 
-  v54 = [(AXLanguageTaggedContent *)self currentDialects];
-  if (([v54 containsObject:v53]& 1) != 0)
+  currentDialects3 = [(AXLanguageTaggedContent *)self currentDialects];
+  if (([currentDialects3 containsObject:dialectForCurrentLocale]& 1) != 0)
   {
 LABEL_68:
 
     goto LABEL_69;
   }
 
-  v55 = [v53 speakableCharacters];
-  v56 = v55 == 0;
+  speakableCharacters = [dialectForCurrentLocale speakableCharacters];
+  v56 = speakableCharacters == 0;
 
   if (v56)
   {
-    v72 = v53;
+    v72 = dialectForCurrentLocale;
     v57 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v72 count:1];
-    v58 = [(AXLanguageTaggedContent *)self currentDialects];
-    v59 = [v57 arrayByAddingObjectsFromArray:v58];
+    currentDialects4 = [(AXLanguageTaggedContent *)self currentDialects];
+    v59 = [v57 arrayByAddingObjectsFromArray:currentDialects4];
     [(AXLanguageTaggedContent *)self setCurrentDialects:v59];
 
-    v54 = AXLogSpokenContentTextProcessing();
-    if (os_log_type_enabled(v54, OS_LOG_TYPE_INFO))
+    currentDialects3 = AXLogSpokenContentTextProcessing();
+    if (os_log_type_enabled(currentDialects3, OS_LOG_TYPE_INFO))
     {
-      v60 = [v53 specificLanguageID];
+      specificLanguageID = [dialectForCurrentLocale specificLanguageID];
       *v77 = 138412290;
-      *&v77[4] = v60;
-      _os_log_impl(&dword_18B15E000, v54, OS_LOG_TYPE_INFO, "Adding language %@ to content because we don't have spoken range", v77, 0xCu);
+      *&v77[4] = specificLanguageID;
+      _os_log_impl(&dword_18B15E000, currentDialects3, OS_LOG_TYPE_INFO, "Adding language %@ to content because we don't have spoken range", v77, 0xCu);
     }
 
     goto LABEL_68;
@@ -2600,9 +2600,9 @@ uint64_t __60__AXLanguageTaggedContent__manuallyProcessContentWithRange___block_
 - (void)_addTag
 {
   v26 = *MEMORY[0x1E69E9840];
-  v3 = [(AXLanguageTaggedContent *)self currentDialects];
+  currentDialects = [(AXLanguageTaggedContent *)self currentDialects];
 
-  if (!v3)
+  if (!currentDialects)
   {
     v4 = AXLogSpokenContentTextProcessing();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_FAULT))
@@ -2611,28 +2611,28 @@ uint64_t __60__AXLanguageTaggedContent__manuallyProcessContentWithRange___block_
     }
   }
 
-  v5 = [(AXLanguageTaggedContent *)self currentDialects];
-  v6 = [(AXLanguageTaggedContent *)self contentString];
-  v7 = [AXLanguageTag tagWithDialects:v5 range:self->_currentChunk.location content:self->_currentChunk.length predictedByTagger:v6, self->_predictedByTagger];
+  currentDialects2 = [(AXLanguageTaggedContent *)self currentDialects];
+  contentString = [(AXLanguageTaggedContent *)self contentString];
+  v7 = [AXLanguageTag tagWithDialects:currentDialects2 range:self->_currentChunk.location content:self->_currentChunk.length predictedByTagger:contentString, self->_predictedByTagger];
 
   if (!self->_predictedByTagger && [v7 hasAmbigiousDialects])
   {
     v8 = +[AXLanguageManager sharedInstance];
-    v9 = [v8 dialectForSystemLanguage];
-    v10 = [v9 langMap];
-    v11 = [v10 isAmbiguous];
+    dialectForSystemLanguage = [v8 dialectForSystemLanguage];
+    langMap = [dialectForSystemLanguage langMap];
+    isAmbiguous = [langMap isAmbiguous];
 
-    if (v11 && [v7 canBeSpokenByDialect:v9])
+    if (isAmbiguous && [v7 canBeSpokenByDialect:dialectForSystemLanguage])
     {
-      [v7 addAmbiguousDialect:v9];
+      [v7 addAmbiguousDialect:dialectForSystemLanguage];
     }
 
     v23 = 0u;
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v12 = [v8 ambiguousDialectsFromUserKeyboardPreferences];
-    v13 = [v12 countByEnumeratingWithState:&v21 objects:v25 count:16];
+    ambiguousDialectsFromUserKeyboardPreferences = [v8 ambiguousDialectsFromUserKeyboardPreferences];
+    v13 = [ambiguousDialectsFromUserKeyboardPreferences countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (v13)
     {
       v14 = v13;
@@ -2643,7 +2643,7 @@ uint64_t __60__AXLanguageTaggedContent__manuallyProcessContentWithRange___block_
         {
           if (*v22 != v15)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(ambiguousDialectsFromUserKeyboardPreferences);
           }
 
           v17 = *(*(&v21 + 1) + 8 * i);
@@ -2653,7 +2653,7 @@ uint64_t __60__AXLanguageTaggedContent__manuallyProcessContentWithRange___block_
           }
         }
 
-        v14 = [v12 countByEnumeratingWithState:&v21 objects:v25 count:16];
+        v14 = [ambiguousDialectsFromUserKeyboardPreferences countByEnumeratingWithState:&v21 objects:v25 count:16];
       }
 
       while (v14);
@@ -2661,8 +2661,8 @@ uint64_t __60__AXLanguageTaggedContent__manuallyProcessContentWithRange___block_
   }
 
   [v7 setCreatedFromNewline:0];
-  v18 = [(AXLanguageTaggedContent *)self tags];
-  [v18 addObject:v7];
+  tags = [(AXLanguageTaggedContent *)self tags];
+  [tags addObject:v7];
 
   self->_predictedByTagger = 0;
   v19 = AXLogSpokenContentTextProcessing();
@@ -2680,18 +2680,18 @@ uint64_t __60__AXLanguageTaggedContent__manuallyProcessContentWithRange___block_
 - (id)primaryAmbiguousDialect
 {
   v34 = *MEMORY[0x1E69E9840];
-  v2 = [(AXLanguageTaggedContent *)self ambiguousLangMaps];
+  ambiguousLangMaps = [(AXLanguageTaggedContent *)self ambiguousLangMaps];
   v3 = +[AXSettings sharedInstance];
-  v4 = [v3 spokenContentDefaultFallbackLanguage];
+  spokenContentDefaultFallbackLanguage = [v3 spokenContentDefaultFallbackLanguage];
 
-  if (v4)
+  if (spokenContentDefaultFallbackLanguage)
   {
     v30 = 0u;
     v31 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v5 = v2;
-    v6 = [v5 countByEnumeratingWithState:&v28 objects:v33 count:16];
+    systemLanguageID = ambiguousLangMaps;
+    v6 = [systemLanguageID countByEnumeratingWithState:&v28 objects:v33 count:16];
     if (v6)
     {
       v7 = v6;
@@ -2702,21 +2702,21 @@ uint64_t __60__AXLanguageTaggedContent__manuallyProcessContentWithRange___block_
         {
           if (*v29 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(systemLanguageID);
           }
 
           v10 = *(*(&v28 + 1) + 8 * i);
-          v11 = [v10 generalLanguageID];
-          v12 = [v11 isEqual:v4];
+          generalLanguageID = [v10 generalLanguageID];
+          v12 = [generalLanguageID isEqual:spokenContentDefaultFallbackLanguage];
 
           if (v12)
           {
-            v22 = [v10 defaultDialect];
+            defaultDialect = [v10 defaultDialect];
             goto LABEL_22;
           }
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v28 objects:v33 count:16];
+        v7 = [systemLanguageID countByEnumeratingWithState:&v28 objects:v33 count:16];
         if (v7)
         {
           continue;
@@ -2728,13 +2728,13 @@ uint64_t __60__AXLanguageTaggedContent__manuallyProcessContentWithRange___block_
   }
 
   v13 = +[AXLanguageManager sharedInstance];
-  v5 = [v13 systemLanguageID];
+  systemLanguageID = [v13 systemLanguageID];
 
   v26 = 0u;
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v14 = v2;
+  v14 = ambiguousLangMaps;
   v15 = [v14 countByEnumeratingWithState:&v24 objects:v32 count:16];
   if (v15)
   {
@@ -2749,9 +2749,9 @@ LABEL_13:
         objc_enumerationMutation(v14);
       }
 
-      v19 = *(*(&v24 + 1) + 8 * v18);
-      v20 = [v19 generalLanguageID];
-      v21 = [v20 isEqual:v5];
+      firstObject = *(*(&v24 + 1) + 8 * v18);
+      generalLanguageID2 = [firstObject generalLanguageID];
+      v21 = [generalLanguageID2 isEqual:systemLanguageID];
 
       if (v21)
       {
@@ -2775,24 +2775,24 @@ LABEL_13:
   {
 LABEL_19:
 
-    v19 = [v14 firstObject];
-    v14 = v19;
+    firstObject = [v14 firstObject];
+    v14 = firstObject;
   }
 
-  v22 = [v19 defaultDialect];
+  defaultDialect = [firstObject defaultDialect];
 
 LABEL_22:
 
-  return v22;
+  return defaultDialect;
 }
 
 - (id)primaryUnambiguousDialect
 {
-  v2 = [(AXLanguageTaggedContent *)self unambiguousLangMaps];
-  v3 = [v2 firstObject];
-  v4 = [v3 defaultDialect];
+  unambiguousLangMaps = [(AXLanguageTaggedContent *)self unambiguousLangMaps];
+  firstObject = [unambiguousLangMaps firstObject];
+  defaultDialect = [firstObject defaultDialect];
 
-  return v4;
+  return defaultDialect;
 }
 
 - (void)updateTagsForLocalePrefChange
@@ -2819,13 +2819,13 @@ LABEL_22:
         }
 
         v4 = *(*(&v32 + 1) + 8 * v3);
-        v5 = [*(v2 + 4000) orderedSet];
+        orderedSet = [*(v2 + 4000) orderedSet];
         v28 = 0u;
         v29 = 0u;
         v30 = 0u;
         v31 = 0u;
-        v6 = [v4 ambiguousDialects];
-        v7 = [v6 countByEnumeratingWithState:&v28 objects:v37 count:16];
+        ambiguousDialects = [v4 ambiguousDialects];
+        v7 = [ambiguousDialects countByEnumeratingWithState:&v28 objects:v37 count:16];
         if (v7)
         {
           v8 = v7;
@@ -2837,30 +2837,30 @@ LABEL_22:
             {
               if (*v29 != v9)
               {
-                objc_enumerationMutation(v6);
+                objc_enumerationMutation(ambiguousDialects);
               }
 
-              v11 = [*(*(&v28 + 1) + 8 * v10) langMap];
-              v12 = [v11 defaultDialect];
-              [v5 addObject:v12];
+              langMap = [*(*(&v28 + 1) + 8 * v10) langMap];
+              defaultDialect = [langMap defaultDialect];
+              [orderedSet addObject:defaultDialect];
 
               ++v10;
             }
 
             while (v8 != v10);
-            v8 = [v6 countByEnumeratingWithState:&v28 objects:v37 count:16];
+            v8 = [ambiguousDialects countByEnumeratingWithState:&v28 objects:v37 count:16];
           }
 
           while (v8);
         }
 
-        v13 = [*(v2 + 4000) orderedSet];
+        orderedSet2 = [*(v2 + 4000) orderedSet];
         v24 = 0u;
         v25 = 0u;
         v26 = 0u;
         v27 = 0u;
-        v14 = [v4 unambiguousDialects];
-        v15 = [v14 countByEnumeratingWithState:&v24 objects:v36 count:16];
+        unambiguousDialects = [v4 unambiguousDialects];
+        v15 = [unambiguousDialects countByEnumeratingWithState:&v24 objects:v36 count:16];
         if (v15)
         {
           v16 = v15;
@@ -2872,25 +2872,25 @@ LABEL_22:
             {
               if (*v25 != v17)
               {
-                objc_enumerationMutation(v14);
+                objc_enumerationMutation(unambiguousDialects);
               }
 
-              v19 = [*(*(&v24 + 1) + 8 * v18) langMap];
-              v20 = [v19 defaultDialect];
-              [v13 addObject:v20];
+              langMap2 = [*(*(&v24 + 1) + 8 * v18) langMap];
+              defaultDialect2 = [langMap2 defaultDialect];
+              [orderedSet2 addObject:defaultDialect2];
 
               ++v18;
             }
 
             while (v16 != v18);
-            v16 = [v14 countByEnumeratingWithState:&v24 objects:v36 count:16];
+            v16 = [unambiguousDialects countByEnumeratingWithState:&v24 objects:v36 count:16];
           }
 
           while (v16);
         }
 
-        [v4 setAmbiguousDialects:v5];
-        [v4 setUnambiguousDialects:v13];
+        [v4 setAmbiguousDialects:orderedSet];
+        [v4 setUnambiguousDialects:orderedSet2];
 
         ++v3;
         v2 = 0x1E695D000;

@@ -1,6 +1,6 @@
 @interface TVRCRPCompanionLinkClientWrapper
-+ (TVRCRPCompanionLinkClientWrapper)wrapperWithDevice:(id)a3;
-- (BOOL)_featureSupported:(id)a3;
++ (TVRCRPCompanionLinkClientWrapper)wrapperWithDevice:(id)device;
+- (BOOL)_featureSupported:(id)supported;
 - (NSDictionary)alternateIdentifiers;
 - (NSString)description;
 - (NSString)identifier;
@@ -8,22 +8,22 @@
 - (NSString)model;
 - (NSString)name;
 - (NSString)sourceVersion;
-- (TVRCRPCompanionLinkClientWrapper)initWithDevice:(id)a3;
+- (TVRCRPCompanionLinkClientWrapper)initWithDevice:(id)device;
 - (_TVRCCompanionLinkClientWrapperDelegate)delegate;
-- (id)_stringForFeatureFlags:(unint64_t)a3;
+- (id)_stringForFeatureFlags:(unint64_t)flags;
 - (id)newCompanionLinkClient;
 - (id)supportedButtons;
-- (int)_commandForButtonEvent:(id)a3;
-- (int)_stateForButtonEvent:(id)a3;
+- (int)_commandForButtonEvent:(id)event;
+- (int)_stateForButtonEvent:(id)event;
 - (int64_t)linkType;
-- (void)_disconnectWithError:(id)a3;
-- (void)_fetchSiriEnabledWithSiriInfo:(id)a3 completionHandler:(id)a4;
+- (void)_disconnectWithError:(id)error;
+- (void)_fetchSiriEnabledWithSiriInfo:(id)info completionHandler:(id)handler;
 - (void)_fetchTVSystemStatusAndStartMonitoring;
-- (void)_handleSideEffectsForEvent:(id)a3;
+- (void)_handleSideEffectsForEvent:(id)event;
 - (void)_invalidateAndReset;
-- (void)_invalidateAndResetWithCompletionHandler:(id)a3;
+- (void)_invalidateAndResetWithCompletionHandler:(id)handler;
 - (void)_invalidateRemoteFindingManager;
-- (void)_launchApplicationOrURL:(id)a3;
+- (void)_launchApplicationOrURL:(id)l;
 - (void)_resetState;
 - (void)_resolveFeatureFlags;
 - (void)_sendSessionStart;
@@ -41,59 +41,59 @@
 - (void)_stopMonitoringNowPlayingInfo;
 - (void)_stopMonitoringSupportedActions;
 - (void)_stopMonitoringTVSystemStatus;
-- (void)_updateAttentionState:(int64_t)a3;
+- (void)_updateAttentionState:(int64_t)state;
 - (void)_updateConnectedState;
-- (void)_updateNowPlayingInfo:(id)a3;
-- (void)_updateSiriRemoteFindingState:(int64_t)a3;
-- (void)_updateSiriStatusFromSiriInfo:(id)a3;
+- (void)_updateNowPlayingInfo:(id)info;
+- (void)_updateSiriRemoteFindingState:(int64_t)state;
+- (void)_updateSiriStatusFromSiriInfo:(id)info;
 - (void)_updateSupportedButtons;
-- (void)addItemWithMediaIdentifier:(id)a3 completion:(id)a4;
+- (void)addItemWithMediaIdentifier:(id)identifier completion:(id)completion;
 - (void)connect;
 - (void)dealloc;
-- (void)deregisterEvent:(id)a3;
+- (void)deregisterEvent:(id)event;
 - (void)disconnect;
-- (void)disconnectWithError:(id)a3;
-- (void)fetchLaunchableAppsWithCompletion:(id)a3;
-- (void)fetchUpNextInfoWithPaginationToken:(id)a3 completion:(id)a4;
-- (void)getCurrentRTISourceSession:(id)a3;
-- (void)launchAppWithBundleID:(id)a3 completion:(id)a4;
-- (void)markAsWatchedWithMediaIdentifier:(id)a3 completion:(id)a4;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)playItem:(id)a3 completion:(id)a4;
+- (void)disconnectWithError:(id)error;
+- (void)fetchLaunchableAppsWithCompletion:(id)completion;
+- (void)fetchUpNextInfoWithPaginationToken:(id)token completion:(id)completion;
+- (void)getCurrentRTISourceSession:(id)session;
+- (void)launchAppWithBundleID:(id)d completion:(id)completion;
+- (void)markAsWatchedWithMediaIdentifier:(id)identifier completion:(id)completion;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)playItem:(id)item completion:(id)completion;
 - (void)reconnect;
-- (void)reestablishConnectionWithCompletionHandler:(id)a3;
-- (void)registerEvent:(id)a3 options:(id)a4 handler:(id)a5;
-- (void)removeItemWithMediaIdentifier:(id)a3 completion:(id)a4;
+- (void)reestablishConnectionWithCompletionHandler:(id)handler;
+- (void)registerEvent:(id)event options:(id)options handler:(id)handler;
+- (void)removeItemWithMediaIdentifier:(id)identifier completion:(id)completion;
 - (void)rpSiriSessionDidReceiveStopRecording;
-- (void)sendButtonEvent:(id)a3;
-- (void)sendEvent:(id)a3 options:(id)a4 shouldRetry:(BOOL)a5 response:(id)a6;
-- (void)sendTouchEvent:(id)a3;
-- (void)setRTISessionHandler:(id)a3;
+- (void)sendButtonEvent:(id)event;
+- (void)sendEvent:(id)event options:(id)options shouldRetry:(BOOL)retry response:(id)response;
+- (void)sendTouchEvent:(id)event;
+- (void)setRTISessionHandler:(id)handler;
 - (void)sourceVersion;
-- (void)toggleCaptions:(BOOL)a3;
-- (void)updateWithDevice:(id)a3;
+- (void)toggleCaptions:(BOOL)captions;
+- (void)updateWithDevice:(id)device;
 @end
 
 @implementation TVRCRPCompanionLinkClientWrapper
 
-+ (TVRCRPCompanionLinkClientWrapper)wrapperWithDevice:(id)a3
++ (TVRCRPCompanionLinkClientWrapper)wrapperWithDevice:(id)device
 {
-  v3 = a3;
-  v4 = [[TVRCRPCompanionLinkClientWrapper alloc] initWithDevice:v3];
+  deviceCopy = device;
+  v4 = [[TVRCRPCompanionLinkClientWrapper alloc] initWithDevice:deviceCopy];
 
   return v4;
 }
 
-- (TVRCRPCompanionLinkClientWrapper)initWithDevice:(id)a3
+- (TVRCRPCompanionLinkClientWrapper)initWithDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v9.receiver = self;
   v9.super_class = TVRCRPCompanionLinkClientWrapper;
   v6 = [(TVRCRPCompanionLinkClientWrapper *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_device, a3);
+    objc_storeStrong(&v6->_device, device);
     v7->_connected = 0;
     [(TVRCRPCompanionLinkClientWrapper *)v7 _resolveFeatureFlags];
   }
@@ -103,24 +103,24 @@
 
 - (NSString)name
 {
-  v2 = [(RPCompanionLinkDevice *)self->_device name];
-  v3 = [v2 copy];
+  name = [(RPCompanionLinkDevice *)self->_device name];
+  v3 = [name copy];
 
   return v3;
 }
 
 - (NSString)identifier
 {
-  v2 = [(RPCompanionLinkDevice *)self->_device effectiveIdentifier];
-  v3 = [v2 copy];
+  effectiveIdentifier = [(RPCompanionLinkDevice *)self->_device effectiveIdentifier];
+  v3 = [effectiveIdentifier copy];
 
   return v3;
 }
 
 - (NSString)idsIdentifier
 {
-  v2 = [(RPCompanionLinkDevice *)self->_device idsDeviceIdentifier];
-  v3 = [v2 copy];
+  idsDeviceIdentifier = [(RPCompanionLinkDevice *)self->_device idsDeviceIdentifier];
+  v3 = [idsDeviceIdentifier copy];
 
   return v3;
 }
@@ -128,36 +128,36 @@
 - (NSDictionary)alternateIdentifiers
 {
   v3 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v4 = [(RPCompanionLinkDevice *)self->_device mediaRemoteIdentifier];
-  v5 = [(RPCompanionLinkDevice *)self->_device mediaRouteIdentifier];
-  v6 = [(RPCompanionLinkDevice *)self->_device name];
-  v7 = [(RPCompanionLinkDevice *)self->_device idsDeviceIdentifier];
-  v8 = [(RPCompanionLinkDevice *)self->_device homeKitIdentifier];
-  v9 = [v8 UUIDString];
+  mediaRemoteIdentifier = [(RPCompanionLinkDevice *)self->_device mediaRemoteIdentifier];
+  mediaRouteIdentifier = [(RPCompanionLinkDevice *)self->_device mediaRouteIdentifier];
+  name = [(RPCompanionLinkDevice *)self->_device name];
+  idsDeviceIdentifier = [(RPCompanionLinkDevice *)self->_device idsDeviceIdentifier];
+  homeKitIdentifier = [(RPCompanionLinkDevice *)self->_device homeKitIdentifier];
+  uUIDString = [homeKitIdentifier UUIDString];
 
-  if (v7)
+  if (idsDeviceIdentifier)
   {
-    [v3 setObject:v7 forKey:@"TVRCIDSID"];
+    [v3 setObject:idsDeviceIdentifier forKey:@"TVRCIDSID"];
   }
 
-  if (v9)
+  if (uUIDString)
   {
-    [v3 setObject:v9 forKey:@"HomeKitID"];
+    [v3 setObject:uUIDString forKey:@"HomeKitID"];
   }
 
-  if (v4)
+  if (mediaRemoteIdentifier)
   {
-    [v3 setObject:v4 forKey:@"MediaRemoteID"];
+    [v3 setObject:mediaRemoteIdentifier forKey:@"MediaRemoteID"];
   }
 
-  if (v5)
+  if (mediaRouteIdentifier)
   {
-    [v3 setObject:v5 forKey:@"AirplayID"];
+    [v3 setObject:mediaRouteIdentifier forKey:@"AirplayID"];
   }
 
-  if (v6)
+  if (name)
   {
-    [v3 setObject:v6 forKey:@"DeviceName"];
+    [v3 setObject:name forKey:@"DeviceName"];
   }
 
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithDictionary:v3];
@@ -167,8 +167,8 @@
 
 - (NSString)model
 {
-  v2 = [(RPCompanionLinkDevice *)self->_device model];
-  v3 = [v2 copy];
+  model = [(RPCompanionLinkDevice *)self->_device model];
+  v3 = [model copy];
 
   return v3;
 }
@@ -188,24 +188,24 @@
   return ([(RPCompanionLinkDevice *)self->_device statusFlags]>> 1) & 1;
 }
 
-- (void)updateWithDevice:(id)a3
+- (void)updateWithDevice:(id)device
 {
   v32 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  deviceCopy = device;
   v6 = _TVRCRapportLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315650;
     *v28 = "[TVRCRPCompanionLinkClientWrapper updateWithDevice:]";
     *&v28[8] = 2114;
-    v29 = v5;
+    v29 = deviceCopy;
     v30 = 2114;
-    v31 = self;
+    selfCopy = self;
     _os_log_impl(&dword_26CF7F000, v6, OS_LOG_TYPE_DEFAULT, "%s - device: %{public}@, %{public}@", buf, 0x20u);
   }
 
   p_device = &self->_device;
-  v8 = [(RPCompanionLinkDevice *)self->_device isEqualToRPDevice:v5];
+  v8 = [(RPCompanionLinkDevice *)self->_device isEqualToRPDevice:deviceCopy];
   v9 = _TVRCRapportLog();
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
   if (v8)
@@ -216,51 +216,51 @@
       _os_log_impl(&dword_26CF7F000, v9, OS_LOG_TYPE_DEFAULT, "Devices are the same", buf, 2u);
     }
 
-    v11 = [(RPCompanionLinkDevice *)*p_device deviceCapabilityFlags];
-    v12 = [v5 deviceCapabilityFlags];
-    if (v11 != v12)
+    deviceCapabilityFlags = [(RPCompanionLinkDevice *)*p_device deviceCapabilityFlags];
+    deviceCapabilityFlags2 = [deviceCopy deviceCapabilityFlags];
+    if (deviceCapabilityFlags != deviceCapabilityFlags2)
     {
       v13 = _TVRCRapportLog();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
-        v14 = [(RPCompanionLinkDevice *)*p_device deviceCapabilityFlags];
-        v15 = [v5 deviceCapabilityFlags];
+        deviceCapabilityFlags3 = [(RPCompanionLinkDevice *)*p_device deviceCapabilityFlags];
+        deviceCapabilityFlags4 = [deviceCopy deviceCapabilityFlags];
         *buf = 67109376;
-        *v28 = v14;
+        *v28 = deviceCapabilityFlags3;
         *&v28[4] = 1024;
-        *&v28[6] = v15;
+        *&v28[6] = deviceCapabilityFlags4;
         _os_log_impl(&dword_26CF7F000, v13, OS_LOG_TYPE_DEFAULT, "Device capabilities changed: old: %d, new: %d", buf, 0xEu);
       }
     }
 
-    v16 = [(RPCompanionLinkDevice *)*p_device name];
-    v17 = [v5 name];
-    if (([v16 isEqualToString:v17] & 1) == 0)
+    name = [(RPCompanionLinkDevice *)*p_device name];
+    name2 = [deviceCopy name];
+    if (([name isEqualToString:name2] & 1) == 0)
     {
       v18 = _TVRCRapportLog();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
-        v26 = [(RPCompanionLinkDevice *)*p_device name];
-        v19 = [v5 name];
+        name3 = [(RPCompanionLinkDevice *)*p_device name];
+        name4 = [deviceCopy name];
         *buf = 138543618;
-        *v28 = v26;
+        *v28 = name3;
         *&v28[8] = 2114;
-        v29 = v19;
-        v20 = v19;
+        v29 = name4;
+        v20 = name4;
         _os_log_impl(&dword_26CF7F000, v18, OS_LOG_TYPE_DEFAULT, "Device name changed: old: %{public}@, new: %{public}@", buf, 0x16u);
       }
     }
 
-    objc_storeStrong(&self->_device, a3);
-    if (v11 != v12)
+    objc_storeStrong(&self->_device, device);
+    if (deviceCapabilityFlags != deviceCapabilityFlags2)
     {
-      v21 = [(TVRCRPCompanionLinkClientWrapper *)self _findMyRemoteSupportedForDevice:v5];
-      v22 = [(TVRCRPCompanionLinkClientWrapper *)self delegate];
-      [v22 deviceSupportsFindMyRemote:v21];
+      v21 = [(TVRCRPCompanionLinkClientWrapper *)self _findMyRemoteSupportedForDevice:deviceCopy];
+      delegate = [(TVRCRPCompanionLinkClientWrapper *)self delegate];
+      [delegate deviceSupportsFindMyRemote:v21];
     }
 
-    v23 = [(TVRCRPCompanionLinkClientWrapper *)self delegate];
-    [v23 didUpdateDevice:self];
+    delegate2 = [(TVRCRPCompanionLinkClientWrapper *)self delegate];
+    [delegate2 didUpdateDevice:self];
   }
 
   else
@@ -271,14 +271,14 @@
       _os_log_impl(&dword_26CF7F000, v9, OS_LOG_TYPE_DEFAULT, "Devices are not the same", buf, 2u);
     }
 
-    objc_storeStrong(&self->_device, a3);
+    objc_storeStrong(&self->_device, device);
     if ([(TVRCRPCompanionLinkClientWrapper *)self connected])
     {
       v24 = _TVRCRapportLog();
       if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        *v28 = v5;
+        *v28 = deviceCopy;
         _os_log_impl(&dword_26CF7F000, v24, OS_LOG_TYPE_DEFAULT, "Device was connected. Attempting to reconnect to new device: %{public}@", buf, 0xCu);
       }
 
@@ -298,7 +298,7 @@
     *buf = 136315394;
     v7 = "[TVRCRPCompanionLinkClientWrapper reconnect]";
     v8 = 2112;
-    v9 = self;
+    selfCopy = self;
     _os_log_impl(&dword_26CF7F000, v3, OS_LOG_TYPE_DEFAULT, "%s %@", buf, 0x16u);
   }
 
@@ -312,10 +312,10 @@
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)reestablishConnectionWithCompletionHandler:(id)a3
+- (void)reestablishConnectionWithCompletionHandler:(id)handler
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = _TVRCRapportLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -324,16 +324,16 @@
     _os_log_impl(&dword_26CF7F000, v5, OS_LOG_TYPE_DEFAULT, "%s", buf, 0xCu);
   }
 
-  v6 = [(TVRCRPCompanionLinkClientWrapper *)self newCompanionLinkClient];
-  objc_initWeak(buf, v6);
+  newCompanionLinkClient = [(TVRCRPCompanionLinkClientWrapper *)self newCompanionLinkClient];
+  objc_initWeak(buf, newCompanionLinkClient);
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __79__TVRCRPCompanionLinkClientWrapper_reestablishConnectionWithCompletionHandler___block_invoke;
   v9[3] = &unk_279D83278;
-  v7 = v4;
+  v7 = handlerCopy;
   v10 = v7;
   objc_copyWeak(&v11, buf);
-  [v6 activateWithCompletion:v9];
+  [newCompanionLinkClient activateWithCompletion:v9];
   objc_destroyWeak(&v11);
 
   objc_destroyWeak(buf);
@@ -377,9 +377,9 @@ void __79__TVRCRPCompanionLinkClientWrapper_reestablishConnectionWithCompletionH
   {
     device = self->_device;
     *buf = 136315650;
-    v34 = "[TVRCRPCompanionLinkClientWrapper connect]";
+    selfCopy3 = "[TVRCRPCompanionLinkClientWrapper connect]";
     v35 = 2112;
-    v36 = self;
+    selfCopy = self;
     v37 = 2114;
     v38 = device;
     _os_log_impl(&dword_26CF7F000, v3, OS_LOG_TYPE_DEFAULT, "%s %@ %{public}@", buf, 0x20u);
@@ -391,9 +391,9 @@ void __79__TVRCRPCompanionLinkClientWrapper_reestablishConnectionWithCompletionH
     self->_connectionState = 1;
     if (!self->_companionClient)
     {
-      v8 = [(TVRCRPCompanionLinkClientWrapper *)self newCompanionLinkClient];
+      newCompanionLinkClient = [(TVRCRPCompanionLinkClientWrapper *)self newCompanionLinkClient];
       companionClient = self->_companionClient;
-      self->_companionClient = v8;
+      self->_companionClient = newCompanionLinkClient;
 
       v10 = self->_companionClient;
       v30[0] = MEMORY[0x277D85DD0];
@@ -409,9 +409,9 @@ void __79__TVRCRPCompanionLinkClientWrapper_reestablishConnectionWithCompletionH
       v28[3] = &unk_279D826E8;
       objc_copyWeak(&v29, &location);
       [(RPCompanionLinkClient *)v11 setInterruptionHandler:v28];
-      v12 = [(RPCompanionLinkDevice *)self->_device flags];
-      self->_authenticated = (v12 & 1) == 0;
-      if (v12)
+      flags = [(RPCompanionLinkDevice *)self->_device flags];
+      self->_authenticated = (flags & 1) == 0;
+      if (flags)
       {
         v13 = _TVRCRapportLog();
         if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -448,7 +448,7 @@ void __79__TVRCRPCompanionLinkClientWrapper_reestablishConnectionWithCompletionH
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v34 = self;
+      selfCopy3 = self;
       _os_log_impl(&dword_26CF7F000, v16, OS_LOG_TYPE_DEFAULT, "Activate companion client %@", buf, 0xCu);
     }
 
@@ -470,7 +470,7 @@ void __79__TVRCRPCompanionLinkClientWrapper_reestablishConnectionWithCompletionH
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v34 = self;
+      selfCopy3 = self;
       _os_log_impl(&dword_26CF7F000, v7, OS_LOG_TYPE_DEFAULT, "CompanionClient is already activated %@", buf, 0xCu);
     }
 
@@ -700,13 +700,13 @@ void __43__TVRCRPCompanionLinkClientWrapper_connect__block_invoke_12(uint64_t a1
   v3 = _TVRCRapportLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(TVRCRPCompanionLinkClientWrapper *)self device];
+    device = [(TVRCRPCompanionLinkClientWrapper *)self device];
     v6 = 136315650;
     v7 = "[TVRCRPCompanionLinkClientWrapper disconnect]";
     v8 = 2114;
-    v9 = v4;
+    v9 = device;
     v10 = 2112;
-    v11 = self;
+    selfCopy = self;
     _os_log_impl(&dword_26CF7F000, v3, OS_LOG_TYPE_DEFAULT, "%s - Disconnecting %{public}@ %@", &v6, 0x20u);
   }
 
@@ -714,23 +714,23 @@ void __43__TVRCRPCompanionLinkClientWrapper_connect__block_invoke_12(uint64_t a1
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)disconnectWithError:(id)a3
+- (void)disconnectWithError:(id)error
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  errorCopy = error;
   v5 = _TVRCRapportLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 136315650;
     v8 = "[TVRCRPCompanionLinkClientWrapper disconnectWithError:]";
     v9 = 2112;
-    v10 = v4;
+    v10 = errorCopy;
     v11 = 2112;
-    v12 = self;
+    selfCopy = self;
     _os_log_impl(&dword_26CF7F000, v5, OS_LOG_TYPE_DEFAULT, "%s error:%@ %@", &v7, 0x20u);
   }
 
-  [(TVRCRPCompanionLinkClientWrapper *)self _disconnectWithError:v4];
+  [(TVRCRPCompanionLinkClientWrapper *)self _disconnectWithError:errorCopy];
   v6 = *MEMORY[0x277D85DE8];
 }
 
@@ -785,10 +785,10 @@ void __43__TVRCRPCompanionLinkClientWrapper_connect__block_invoke_12(uint64_t a1
     v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v32 count:2];
     [v3 addObjectsFromArray:v14];
 
-    v15 = [(TVRCMediaEventsManaging *)self->_mediaManager supportedMediaCommands];
-    if (v15)
+    supportedMediaCommands = [(TVRCMediaEventsManaging *)self->_mediaManager supportedMediaCommands];
+    if (supportedMediaCommands)
     {
-      [v3 unionSet:v15];
+      [v3 unionSet:supportedMediaCommands];
     }
   }
 
@@ -817,49 +817,49 @@ void __43__TVRCRPCompanionLinkClientWrapper_connect__block_invoke_12(uint64_t a1
   return v21;
 }
 
-- (void)sendButtonEvent:(id)a3
+- (void)sendButtonEvent:(id)event
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  eventCopy = event;
   v5 = _TVRCRapportLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315650;
     v29 = "[TVRCRPCompanionLinkClientWrapper sendButtonEvent:]";
     v30 = 2112;
-    v31 = v4;
+    v31 = eventCopy;
     v32 = 2112;
-    v33 = self;
+    selfCopy = self;
     _os_log_impl(&dword_26CF7F000, v5, OS_LOG_TYPE_DEFAULT, "%s event:%@ %@", buf, 0x20u);
   }
 
   if ([(TVRCRPCompanionLinkClientWrapper *)self connected])
   {
-    if ([TVRCButton _isMediaButtonEvent:v4])
+    if ([TVRCButton _isMediaButtonEvent:eventCopy])
     {
-      [(TVRCMediaEventsManaging *)self->_mediaManager sendMediaEvent:v4];
-      v6 = [v4 button];
-      v7 = [v6 buttonType];
+      [(TVRCMediaEventsManaging *)self->_mediaManager sendMediaEvent:eventCopy];
+      button = [eventCopy button];
+      buttonType = [button buttonType];
 
-      if ((v7 - 17) <= 1)
+      if ((buttonType - 17) <= 1)
       {
-        [(TVRCRPCompanionLinkClientWrapper *)self toggleCaptions:v7 == 17];
+        [(TVRCRPCompanionLinkClientWrapper *)self toggleCaptions:buttonType == 17];
       }
 
       goto LABEL_24;
     }
 
-    v9 = [v4 button];
-    if ([v9 buttonType] == 20)
+    button2 = [eventCopy button];
+    if ([button2 buttonType] == 20)
     {
-      v10 = [v4 eventType] == 0;
+      v10 = [eventCopy eventType] == 0;
 
       if (v10)
       {
-        v11 = [v4 button];
-        v12 = [v11 properties];
+        button3 = [eventCopy button];
+        properties = [button3 properties];
 
-        v13 = [v12 objectForKey:@"TVRCButtonApplicationBundleIDKey"];
+        v13 = [properties objectForKey:@"TVRCButtonApplicationBundleIDKey"];
         [(TVRCRPCompanionLinkClientWrapper *)self _launchApplicationOrURL:v13];
 
         goto LABEL_24;
@@ -870,25 +870,25 @@ void __43__TVRCRPCompanionLinkClientWrapper_connect__block_invoke_12(uint64_t a1
     {
     }
 
-    v14 = [v4 button];
-    if ([v14 buttonType] == 2)
+    button4 = [eventCopy button];
+    if ([button4 buttonType] == 2)
     {
     }
 
     else
     {
-      v15 = [v4 button];
-      v16 = [v15 buttonType] == 23;
+      button5 = [eventCopy button];
+      v16 = [button5 buttonType] == 23;
 
       if (!v16)
       {
 LABEL_21:
-        v19 = [(TVRCRPCompanionLinkClientWrapper *)self _commandForButtonEvent:v4];
-        v20 = [(TVRCRPCompanionLinkClientWrapper *)self _stateForButtonEvent:v4];
+        v19 = [(TVRCRPCompanionLinkClientWrapper *)self _commandForButtonEvent:eventCopy];
+        v20 = [(TVRCRPCompanionLinkClientWrapper *)self _stateForButtonEvent:eventCopy];
         v21 = _TVRCRapportLog();
         if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
         {
-          [(TVRCRPCompanionLinkClientWrapper *)v4 sendButtonEvent:?];
+          [(TVRCRPCompanionLinkClientWrapper *)eventCopy sendButtonEvent:?];
         }
 
         objc_initWeak(buf, self);
@@ -900,7 +900,7 @@ LABEL_21:
         objc_copyWeak(&v27, buf);
         v23 = *MEMORY[0x277D44228];
         v25[4] = self;
-        v26 = v4;
+        v26 = eventCopy;
         [(RPHIDSession *)hidSession hidCommand:v19 buttonState:v20 destinationID:v23 completion:v25];
 
         objc_destroyWeak(&v27);
@@ -967,9 +967,9 @@ void __52__TVRCRPCompanionLinkClientWrapper_sendButtonEvent___block_invoke(uint6
   }
 }
 
-- (void)sendTouchEvent:(id)a3
+- (void)sendTouchEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v5 = _TVRCRapportLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -990,19 +990,19 @@ void __52__TVRCRPCompanionLinkClientWrapper_sendButtonEvent___block_invoke(uint6
   if (self->_hidTouchSession)
   {
     v6 = objc_alloc_init(MEMORY[0x277D441A0]);
-    -[NSObject setFinger:](v6, "setFinger:", [v4 finger]);
-    [v4 digitizerLocation];
+    -[NSObject setFinger:](v6, "setFinger:", [eventCopy finger]);
+    [eventCopy digitizerLocation];
     [v6 setLocation:?];
-    v7 = [v4 phase];
-    if (v7 <= 2)
+    phase = [eventCopy phase];
+    if (phase <= 2)
     {
-      if (v7 == 1)
+      if (phase == 1)
       {
         v9 = 1;
         goto LABEL_21;
       }
 
-      if (v7 != 2)
+      if (phase != 2)
       {
         v9 = 0;
         goto LABEL_21;
@@ -1011,9 +1011,9 @@ void __52__TVRCRPCompanionLinkClientWrapper_sendButtonEvent___block_invoke(uint6
       [v6 setPhase:2];
     }
 
-    else if (v7 != 3)
+    else if (phase != 3)
     {
-      if (v7 == 5)
+      if (phase == 5)
       {
         v8 = 5;
       }
@@ -1023,7 +1023,7 @@ void __52__TVRCRPCompanionLinkClientWrapper_sendButtonEvent___block_invoke(uint6
         v8 = 0;
       }
 
-      if (v7 == 4)
+      if (phase == 4)
       {
         v9 = 4;
       }
@@ -1039,7 +1039,7 @@ void __52__TVRCRPCompanionLinkClientWrapper_sendButtonEvent___block_invoke(uint6
     v9 = 3;
 LABEL_21:
     [v6 setPhase:v9];
-    [v4 timestamp];
+    [eventCopy timestamp];
     [v6 setTimestampSeconds:?];
     objc_initWeak(&location, self);
     hidTouchSession = self->_hidTouchSession;
@@ -1088,17 +1088,17 @@ void __51__TVRCRPCompanionLinkClientWrapper_sendTouchEvent___block_invoke(uint64
   }
 }
 
-- (void)getCurrentRTISourceSession:(id)a3
+- (void)getCurrentRTISourceSession:(id)session
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  sessionCopy = session;
   v5 = _TVRCRapportLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v12 = "[TVRCRPCompanionLinkClientWrapper getCurrentRTISourceSession:]";
     v13 = 2112;
-    v14 = self;
+    selfCopy = self;
     _os_log_impl(&dword_26CF7F000, v5, OS_LOG_TYPE_DEFAULT, "%s %@", buf, 0x16u);
   }
 
@@ -1108,8 +1108,8 @@ void __51__TVRCRPCompanionLinkClientWrapper_sendTouchEvent___block_invoke(uint64
   v8[2] = __63__TVRCRPCompanionLinkClientWrapper_getCurrentRTISourceSession___block_invoke;
   v8[3] = &unk_279D82F58;
   objc_copyWeak(&v10, buf);
-  v9 = v4;
-  v6 = v4;
+  v9 = sessionCopy;
+  v6 = sessionCopy;
   dispatch_async(MEMORY[0x277D85CD0], v8);
 
   objc_destroyWeak(&v10);
@@ -1134,28 +1134,28 @@ void __63__TVRCRPCompanionLinkClientWrapper_getCurrentRTISourceSession___block_i
   }
 }
 
-- (void)setRTISessionHandler:(id)a3
+- (void)setRTISessionHandler:(id)handler
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = _TVRCRapportLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v12 = "[TVRCRPCompanionLinkClientWrapper setRTISessionHandler:]";
     v13 = 2112;
-    v14 = self;
+    selfCopy = self;
     _os_log_impl(&dword_26CF7F000, v5, OS_LOG_TYPE_DEFAULT, "%s %@", buf, 0x16u);
   }
 
-  [(TVRCRPCompanionLinkClientWrapper *)self setRtiSessionHandler:v4];
+  [(TVRCRPCompanionLinkClientWrapper *)self setRtiSessionHandler:handlerCopy];
   objc_initWeak(buf, self);
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __57__TVRCRPCompanionLinkClientWrapper_setRTISessionHandler___block_invoke;
   v8[3] = &unk_279D82F58;
   objc_copyWeak(&v10, buf);
-  v6 = v4;
+  v6 = handlerCopy;
   v9 = v6;
   [(RPTextInputSession *)self->_textInputSession setRtiUpdatedHandler:v8];
 
@@ -1182,26 +1182,26 @@ void __57__TVRCRPCompanionLinkClientWrapper_setRTISessionHandler___block_invoke(
   }
 }
 
-- (void)sendEvent:(id)a3 options:(id)a4 shouldRetry:(BOOL)a5 response:(id)a6
+- (void)sendEvent:(id)event options:(id)options shouldRetry:(BOOL)retry response:(id)response
 {
   v32 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  eventCopy = event;
+  optionsCopy = options;
+  responseCopy = response;
   v13 = _TVRCRapportLog();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v29 = v10;
+    v29 = eventCopy;
     v30 = 2112;
-    v31 = self;
+    selfCopy = self;
     _os_log_impl(&dword_26CF7F000, v13, OS_LOG_TYPE_DEFAULT, "Sending companion request with ID %@ %@", buf, 0x16u);
   }
 
   v14 = MEMORY[0x277CBEC10];
-  if (v11)
+  if (optionsCopy)
   {
-    v14 = v11;
+    v14 = optionsCopy;
   }
 
   v15 = v14;
@@ -1211,14 +1211,14 @@ void __57__TVRCRPCompanionLinkClientWrapper_setRTISessionHandler___block_invoke(
   v22[1] = 3221225472;
   v22[2] = __75__TVRCRPCompanionLinkClientWrapper_sendEvent_options_shouldRetry_response___block_invoke;
   v22[3] = &unk_279D83388;
-  v17 = v10;
+  v17 = eventCopy;
   v23 = v17;
-  v27 = a5;
+  retryCopy = retry;
   objc_copyWeak(&v26, buf);
   v18 = *MEMORY[0x277D44228];
-  v19 = v12;
+  v19 = responseCopy;
   v25 = v19;
-  v20 = v11;
+  v20 = optionsCopy;
   v24 = v20;
   [(RPCompanionLinkClient *)companionClient sendRequestID:v17 request:v15 destinationID:v18 options:0 responseHandler:v22];
 
@@ -1312,28 +1312,28 @@ void __75__TVRCRPCompanionLinkClientWrapper_sendEvent_options_shouldRetry_respon
   }
 }
 
-- (void)registerEvent:(id)a3 options:(id)a4 handler:(id)a5
+- (void)registerEvent:(id)event options:(id)options handler:(id)handler
 {
   v19 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(TVRCRPCompanionLinkClientWrapper *)self activated];
+  eventCopy = event;
+  optionsCopy = options;
+  handlerCopy = handler;
+  activated = [(TVRCRPCompanionLinkClientWrapper *)self activated];
   v12 = _TVRCRapportLog();
-  v13 = v12;
-  if (v11)
+  companionClient = v12;
+  if (activated)
   {
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       v15 = 138543618;
-      v16 = v8;
+      v16 = eventCopy;
       v17 = 2112;
-      v18 = self;
-      _os_log_impl(&dword_26CF7F000, v13, OS_LOG_TYPE_DEFAULT, "Registering event with ID %{public}@ %@", &v15, 0x16u);
+      selfCopy = self;
+      _os_log_impl(&dword_26CF7F000, companionClient, OS_LOG_TYPE_DEFAULT, "Registering event with ID %{public}@ %@", &v15, 0x16u);
     }
 
-    v13 = [(TVRCRPCompanionLinkClientWrapper *)self companionClient];
-    [v13 registerEventID:v8 options:v9 handler:v10];
+    companionClient = [(TVRCRPCompanionLinkClientWrapper *)self companionClient];
+    [companionClient registerEventID:eventCopy options:optionsCopy handler:handlerCopy];
   }
 
   else if (os_log_type_enabled(v12, OS_LOG_TYPE_FAULT))
@@ -1344,29 +1344,29 @@ void __75__TVRCRPCompanionLinkClientWrapper_sendEvent_options_shouldRetry_respon
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deregisterEvent:(id)a3
+- (void)deregisterEvent:(id)event
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  eventCopy = event;
   v5 = _TVRCRapportLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138543618;
-    v9 = v4;
+    v9 = eventCopy;
     v10 = 2112;
-    v11 = self;
+    selfCopy = self;
     _os_log_impl(&dword_26CF7F000, v5, OS_LOG_TYPE_DEFAULT, "De-registering event %{public}@ %@", &v8, 0x16u);
   }
 
-  v6 = [(TVRCRPCompanionLinkClientWrapper *)self companionClient];
-  [v6 deregisterEventID:v4];
+  companionClient = [(TVRCRPCompanionLinkClientWrapper *)self companionClient];
+  [companionClient deregisterEventID:eventCopy];
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)toggleCaptions:(BOOL)a3
+- (void)toggleCaptions:(BOOL)captions
 {
-  v3 = a3;
+  captionsCopy = captions;
   v19 = *MEMORY[0x277D85DE8];
   if ([(TVRCRPCompanionLinkClientWrapper *)self supportsDirectCaptionQueries])
   {
@@ -1376,14 +1376,14 @@ void __75__TVRCRPCompanionLinkClientWrapper_sendEvent_options_shouldRetry_respon
       *buf = 136315650;
       v14 = "[TVRCRPCompanionLinkClientWrapper toggleCaptions:]";
       v15 = 1026;
-      v16 = v3;
+      v16 = captionsCopy;
       v17 = 2112;
-      v18 = self;
+      selfCopy = self;
       _os_log_impl(&dword_26CF7F000, v5, OS_LOG_TYPE_DEFAULT, "%s: %{public,BOOL}d %@", buf, 0x1Cu);
     }
 
     v6 = @"NO";
-    if (v3)
+    if (captionsCopy)
     {
       v6 = @"YES";
     }
@@ -1400,11 +1400,11 @@ void __75__TVRCRPCompanionLinkClientWrapper_sendEvent_options_shouldRetry_respon
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fetchUpNextInfoWithPaginationToken:(id)a3 completion:(id)a4
+- (void)fetchUpNextInfoWithPaginationToken:(id)token completion:(id)completion
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  tokenCopy = token;
+  completionCopy = completion;
   v8 = @"FetchUpNextInfoEvent";
   v9 = _TVRCRapportLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -1412,19 +1412,19 @@ void __75__TVRCRPCompanionLinkClientWrapper_sendEvent_options_shouldRetry_respon
     *buf = 138412546;
     v23 = v8;
     v24 = 2112;
-    v25 = self;
+    selfCopy = self;
     _os_log_impl(&dword_26CF7F000, v9, OS_LOG_TYPE_DEFAULT, "Sending companion request with ID %@ %@", buf, 0x16u);
   }
 
   companionClient = self->_companionClient;
   v20 = @"PaginationTokenKey";
-  v11 = v6;
-  if (!v6)
+  null = tokenCopy;
+  if (!tokenCopy)
   {
-    v11 = [MEMORY[0x277CBEB68] null];
+    null = [MEMORY[0x277CBEB68] null];
   }
 
-  v21 = v11;
+  v21 = null;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v21 forKeys:&v20 count:1];
   v13 = *MEMORY[0x277D44228];
   v17[0] = MEMORY[0x277D85DD0];
@@ -1433,11 +1433,11 @@ void __75__TVRCRPCompanionLinkClientWrapper_sendEvent_options_shouldRetry_respon
   v17[3] = &unk_279D833B0;
   v14 = v8;
   v18 = v14;
-  v19 = v7;
-  v15 = v7;
+  v19 = completionCopy;
+  v15 = completionCopy;
   [(RPCompanionLinkClient *)companionClient sendRequestID:v14 request:v12 destinationID:v13 options:0 responseHandler:v17];
 
-  if (!v6)
+  if (!tokenCopy)
   {
   }
 
@@ -1475,16 +1475,16 @@ void __82__TVRCRPCompanionLinkClientWrapper_fetchUpNextInfoWithPaginationToken_c
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)markAsWatchedWithMediaIdentifier:(id)a3 completion:(id)a4
+- (void)markAsWatchedWithMediaIdentifier:(id)identifier completion:(id)completion
 {
   v23[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v8 = @"MarkAsWatchedEvent";
-  if ([v6 length])
+  if ([identifierCopy length])
   {
     v22 = @"IdentifierKey";
-    v23[0] = v6;
+    v23[0] = identifierCopy;
     v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v23 forKeys:&v22 count:1];
     v10 = _TVRCRapportLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -1492,7 +1492,7 @@ void __82__TVRCRPCompanionLinkClientWrapper_fetchUpNextInfoWithPaginationToken_c
       *buf = 138412546;
       v19 = v8;
       v20 = 2112;
-      v21 = self;
+      selfCopy = self;
       _os_log_impl(&dword_26CF7F000, v10, OS_LOG_TYPE_DEFAULT, "Sending companion request with ID %@ %@", buf, 0x16u);
     }
 
@@ -1503,7 +1503,7 @@ void __82__TVRCRPCompanionLinkClientWrapper_fetchUpNextInfoWithPaginationToken_c
     v15[2] = __80__TVRCRPCompanionLinkClientWrapper_markAsWatchedWithMediaIdentifier_completion___block_invoke;
     v15[3] = &unk_279D833B0;
     v16 = v8;
-    v17 = v7;
+    v17 = completionCopy;
     [(RPCompanionLinkClient *)companionClient sendRequestID:v16 request:v9 destinationID:v12 options:0 responseHandler:v15];
   }
 
@@ -1517,7 +1517,7 @@ void __82__TVRCRPCompanionLinkClientWrapper_fetchUpNextInfoWithPaginationToken_c
       _os_log_impl(&dword_26CF7F000, v13, OS_LOG_TYPE_DEFAULT, "Invalid mediaIdentifier sent to %@", buf, 0xCu);
     }
 
-    (*(v7 + 2))(v7, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 
   v14 = *MEMORY[0x277D85DE8];
@@ -1545,16 +1545,16 @@ void __80__TVRCRPCompanionLinkClientWrapper_markAsWatchedWithMediaIdentifier_com
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addItemWithMediaIdentifier:(id)a3 completion:(id)a4
+- (void)addItemWithMediaIdentifier:(id)identifier completion:(id)completion
 {
   v23[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v8 = @"AddToUpNextEvent";
-  if ([v6 length])
+  if ([identifierCopy length])
   {
     v22 = @"IdentifierKey";
-    v23[0] = v6;
+    v23[0] = identifierCopy;
     v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v23 forKeys:&v22 count:1];
     v10 = _TVRCRapportLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -1562,7 +1562,7 @@ void __80__TVRCRPCompanionLinkClientWrapper_markAsWatchedWithMediaIdentifier_com
       *buf = 138412546;
       v19 = v8;
       v20 = 2112;
-      v21 = self;
+      selfCopy = self;
       _os_log_impl(&dword_26CF7F000, v10, OS_LOG_TYPE_DEFAULT, "Sending companion request with ID %@ %@", buf, 0x16u);
     }
 
@@ -1573,7 +1573,7 @@ void __80__TVRCRPCompanionLinkClientWrapper_markAsWatchedWithMediaIdentifier_com
     v15[2] = __74__TVRCRPCompanionLinkClientWrapper_addItemWithMediaIdentifier_completion___block_invoke;
     v15[3] = &unk_279D833B0;
     v16 = v8;
-    v17 = v7;
+    v17 = completionCopy;
     [(RPCompanionLinkClient *)companionClient sendRequestID:v16 request:v9 destinationID:v12 options:0 responseHandler:v15];
   }
 
@@ -1587,7 +1587,7 @@ void __80__TVRCRPCompanionLinkClientWrapper_markAsWatchedWithMediaIdentifier_com
       _os_log_impl(&dword_26CF7F000, v13, OS_LOG_TYPE_DEFAULT, "Invalid mediaIdentifier sent to %@", buf, 0xCu);
     }
 
-    (*(v7 + 2))(v7, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 
   v14 = *MEMORY[0x277D85DE8];
@@ -1615,16 +1615,16 @@ void __74__TVRCRPCompanionLinkClientWrapper_addItemWithMediaIdentifier_completio
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeItemWithMediaIdentifier:(id)a3 completion:(id)a4
+- (void)removeItemWithMediaIdentifier:(id)identifier completion:(id)completion
 {
   v23[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v8 = @"RemoveFromUpNextEvent";
-  if ([v6 length])
+  if ([identifierCopy length])
   {
     v22 = @"IdentifierKey";
-    v23[0] = v6;
+    v23[0] = identifierCopy;
     v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v23 forKeys:&v22 count:1];
     v10 = _TVRCRapportLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -1632,7 +1632,7 @@ void __74__TVRCRPCompanionLinkClientWrapper_addItemWithMediaIdentifier_completio
       *buf = 138412546;
       v19 = v8;
       v20 = 2112;
-      v21 = self;
+      selfCopy = self;
       _os_log_impl(&dword_26CF7F000, v10, OS_LOG_TYPE_DEFAULT, "Sending companion request with ID %@ %@", buf, 0x16u);
     }
 
@@ -1643,7 +1643,7 @@ void __74__TVRCRPCompanionLinkClientWrapper_addItemWithMediaIdentifier_completio
     v15[2] = __77__TVRCRPCompanionLinkClientWrapper_removeItemWithMediaIdentifier_completion___block_invoke;
     v15[3] = &unk_279D833B0;
     v16 = v8;
-    v17 = v7;
+    v17 = completionCopy;
     [(RPCompanionLinkClient *)companionClient sendRequestID:v16 request:v9 destinationID:v12 options:0 responseHandler:v15];
   }
 
@@ -1657,7 +1657,7 @@ void __74__TVRCRPCompanionLinkClientWrapper_addItemWithMediaIdentifier_completio
       _os_log_impl(&dword_26CF7F000, v13, OS_LOG_TYPE_DEFAULT, "Invalid mediaIdentifier sent to %@", buf, 0xCu);
     }
 
-    (*(v7 + 2))(v7, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 
   v14 = *MEMORY[0x277D85DE8];
@@ -1685,22 +1685,22 @@ void __77__TVRCRPCompanionLinkClientWrapper_removeItemWithMediaIdentifier_comple
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)playItem:(id)a3 completion:(id)a4
+- (void)playItem:(id)item completion:(id)completion
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  completionCopy = completion;
   v8 = @"PlayMediaEvent";
-  if ([v6 isValid])
+  if ([itemCopy isValid])
   {
-    v9 = [v6 dictionaryRepresentation];
+    dictionaryRepresentation = [itemCopy dictionaryRepresentation];
     v10 = _TVRCRapportLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
       v19 = v8;
       v20 = 2112;
-      v21 = self;
+      selfCopy = self;
       _os_log_impl(&dword_26CF7F000, v10, OS_LOG_TYPE_DEFAULT, "Sending companion request with ID %@ %@", buf, 0x16u);
     }
 
@@ -1711,8 +1711,8 @@ void __77__TVRCRPCompanionLinkClientWrapper_removeItemWithMediaIdentifier_comple
     v15[2] = __56__TVRCRPCompanionLinkClientWrapper_playItem_completion___block_invoke;
     v15[3] = &unk_279D833B0;
     v16 = v8;
-    v17 = v7;
-    [(RPCompanionLinkClient *)companionClient sendRequestID:v16 request:v9 destinationID:v12 options:0 responseHandler:v15];
+    v17 = completionCopy;
+    [(RPCompanionLinkClient *)companionClient sendRequestID:v16 request:dictionaryRepresentation destinationID:v12 options:0 responseHandler:v15];
   }
 
   else
@@ -1725,7 +1725,7 @@ void __77__TVRCRPCompanionLinkClientWrapper_removeItemWithMediaIdentifier_comple
       _os_log_impl(&dword_26CF7F000, v13, OS_LOG_TYPE_DEFAULT, "Invalid item sent to %@", buf, 0xCu);
     }
 
-    (*(v7 + 2))(v7, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 
   v14 = *MEMORY[0x277D85DE8];
@@ -1753,10 +1753,10 @@ void __56__TVRCRPCompanionLinkClientWrapper_playItem_completion___block_invoke(u
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fetchLaunchableAppsWithCompletion:(id)a3
+- (void)fetchLaunchableAppsWithCompletion:(id)completion
 {
   v18[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = @"FetchLaunchableApplicationsEvent";
   v17 = @"IncludeAppMetadataKey";
   v18[0] = MEMORY[0x277CBEC38];
@@ -1776,8 +1776,8 @@ void __56__TVRCRPCompanionLinkClientWrapper_playItem_completion___block_invoke(u
   v12[2] = __70__TVRCRPCompanionLinkClientWrapper_fetchLaunchableAppsWithCompletion___block_invoke;
   v12[3] = &unk_279D833B0;
   v13 = v5;
-  v14 = v4;
-  v10 = v4;
+  v14 = completionCopy;
+  v10 = completionCopy;
   [(RPCompanionLinkClient *)companionClient sendRequestID:v5 request:v6 destinationID:v9 options:0 responseHandler:v12];
 
   v11 = *MEMORY[0x277D85DE8];
@@ -1805,16 +1805,16 @@ void __70__TVRCRPCompanionLinkClientWrapper_fetchLaunchableAppsWithCompletion___
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)launchAppWithBundleID:(id)a3 completion:(id)a4
+- (void)launchAppWithBundleID:(id)d completion:(id)completion
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   v8 = @"LaunchApp";
-  if ([v6 length])
+  if ([dCopy length])
   {
     v18 = @"BundleIDKey";
-    v19 = v6;
+    v19 = dCopy;
     v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v19 forKeys:&v18 count:1];
     v10 = _TVRCRapportLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -1831,7 +1831,7 @@ void __70__TVRCRPCompanionLinkClientWrapper_fetchLaunchableAppsWithCompletion___
     v15[2] = __69__TVRCRPCompanionLinkClientWrapper_launchAppWithBundleID_completion___block_invoke;
     v15[3] = &unk_279D833B0;
     v16 = v8;
-    v17 = v7;
+    v17 = completionCopy;
     [(RPCompanionLinkClient *)companionClient sendRequestID:v16 request:v9 destinationID:v12 options:0 responseHandler:v15];
   }
 
@@ -1845,7 +1845,7 @@ void __70__TVRCRPCompanionLinkClientWrapper_fetchLaunchableAppsWithCompletion___
       _os_log_impl(&dword_26CF7F000, v13, OS_LOG_TYPE_DEFAULT, "Invalid bundleID sent to %@", buf, 0xCu);
     }
 
-    (*(v7 + 2))(v7, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 
   v14 = *MEMORY[0x277D85DE8];
@@ -1876,17 +1876,17 @@ void __69__TVRCRPCompanionLinkClientWrapper_launchAppWithBundleID_completion___b
 - (NSString)description
 {
   v3 = [MEMORY[0x277CF0C00] builderWithObject:self];
-  v4 = [(TVRCRPCompanionLinkClientWrapper *)self name];
-  [v3 appendString:v4 withName:@"name"];
+  name = [(TVRCRPCompanionLinkClientWrapper *)self name];
+  [v3 appendString:name withName:@"name"];
 
-  v5 = [(TVRCRPCompanionLinkClientWrapper *)self identifier];
-  [v3 appendString:v5 withName:@"Identifier"];
+  identifier = [(TVRCRPCompanionLinkClientWrapper *)self identifier];
+  [v3 appendString:identifier withName:@"Identifier"];
 
-  v6 = [(TVRCRPCompanionLinkClientWrapper *)self model];
-  [v3 appendString:v6 withName:@"model"];
+  model = [(TVRCRPCompanionLinkClientWrapper *)self model];
+  [v3 appendString:model withName:@"model"];
 
-  v7 = [(TVRCRPCompanionLinkClientWrapper *)self sourceVersion];
-  [v3 appendString:v7 withName:@"sourceVersion"];
+  sourceVersion = [(TVRCRPCompanionLinkClientWrapper *)self sourceVersion];
+  [v3 appendString:sourceVersion withName:@"sourceVersion"];
 
   v8 = [v3 appendBool:-[TVRCRPCompanionLinkClientWrapper isSiriEnabled](self withName:{"isSiriEnabled"), @"siriEnabled"}];
   v9 = [v3 appendBool:-[TVRCRPCompanionLinkClientWrapper activated](self withName:{"activated"), @"activated"}];
@@ -1898,33 +1898,33 @@ void __69__TVRCRPCompanionLinkClientWrapper_launchAppWithBundleID_completion___b
   v13 = [v3 appendBool:-[TVRCRPCompanionLinkClientWrapper connected](self withName:{"connected"), @"connected"}];
   v14 = [v3 appendBool:-[TVRCRPCompanionLinkClientWrapper isPaired](self withName:{"isPaired"), @"isPaired"}];
   v15 = [v3 appendBool:-[TVRCRPCompanionLinkClientWrapper supportsFindMyRemote](self withName:{"supportsFindMyRemote"), @"supportsFindMyRemote"}];
-  v16 = [(TVRCRPCompanionLinkClientWrapper *)self alternateIdentifiers];
-  [v3 appendDictionarySection:v16 withName:@"alternateIdentifiers" skipIfEmpty:0];
+  alternateIdentifiers = [(TVRCRPCompanionLinkClientWrapper *)self alternateIdentifiers];
+  [v3 appendDictionarySection:alternateIdentifiers withName:@"alternateIdentifiers" skipIfEmpty:0];
 
-  v17 = [(TVRCRPCompanionLinkClientWrapper *)self companionClient];
-  v18 = [v3 appendObject:v17 withName:@"companionClient"];
+  companionClient = [(TVRCRPCompanionLinkClientWrapper *)self companionClient];
+  v18 = [v3 appendObject:companionClient withName:@"companionClient"];
 
-  v19 = [v3 build];
+  build = [v3 build];
 
-  return v19;
+  return build;
 }
 
-- (BOOL)_featureSupported:(id)a3
+- (BOOL)_featureSupported:(id)supported
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(TVRCRPCompanionLinkClientWrapper *)self sourceVersion];
-  v6 = [v5 compare:v4 options:64];
+  supportedCopy = supported;
+  sourceVersion = [(TVRCRPCompanionLinkClientWrapper *)self sourceVersion];
+  v6 = [sourceVersion compare:supportedCopy options:64];
   v7 = _TVRCRapportLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    v10 = [(TVRCRPCompanionLinkClientWrapper *)self name];
+    name = [(TVRCRPCompanionLinkClientWrapper *)self name];
     v11 = 138413058;
-    v12 = v4;
+    v12 = supportedCopy;
     v13 = 2112;
-    v14 = v10;
+    v14 = name;
     v15 = 2112;
-    v16 = v5;
+    v16 = sourceVersion;
     v17 = 1024;
     v18 = v6 < 2;
     _os_log_debug_impl(&dword_26CF7F000, v7, OS_LOG_TYPE_DEBUG, "Checking if '%@' is supported on '%@' for sourceVersion '%@': %{BOOL}d", &v11, 0x26u);
@@ -1937,17 +1937,17 @@ void __69__TVRCRPCompanionLinkClientWrapper_launchAppWithBundleID_completion___b
 - (NSString)sourceVersion
 {
   v29 = *MEMORY[0x277D85DE8];
-  v3 = [(TVRCRPCompanionLinkClientWrapper *)self device];
-  v4 = [v3 sourceVersion];
+  device = [(TVRCRPCompanionLinkClientWrapper *)self device];
+  sourceVersion = [device sourceVersion];
 
   v5 = MEMORY[0x277CCACA8];
-  v6 = [(TVRCRPCompanionLinkClientWrapper *)self device];
-  v7 = [v6 name];
-  v8 = [v5 stringWithFormat:@"%@-SourceVersion", v7];
+  device2 = [(TVRCRPCompanionLinkClientWrapper *)self device];
+  name = [device2 name];
+  v8 = [v5 stringWithFormat:@"%@-SourceVersion", name];
 
-  v9 = [(__CFString *)v4 length];
-  v10 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v11 = [v10 objectForKey:v8];
+  v9 = [(__CFString *)sourceVersion length];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v11 = [standardUserDefaults objectForKey:v8];
   if (v9)
   {
 
@@ -1972,25 +1972,25 @@ void __69__TVRCRPCompanionLinkClientWrapper_launchAppWithBundleID_completion___b
       v11 = @"0.0";
     }
 
-    v17 = [(__CFString *)v11 compare:v4 options:64];
-    v18 = _TVRCRapportLog();
-    v19 = os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG);
+    v17 = [(__CFString *)v11 compare:sourceVersion options:64];
+    standardUserDefaults2 = _TVRCRapportLog();
+    v19 = os_log_type_enabled(standardUserDefaults2, OS_LOG_TYPE_DEBUG);
     if (v17 > 1)
     {
       if (v19)
       {
         *buf = 138412802;
-        v24 = v4;
+        v24 = sourceVersion;
         v25 = 2112;
         v26 = v8;
         v27 = 2112;
         v28 = v11;
-        _os_log_debug_impl(&dword_26CF7F000, v18, OS_LOG_TYPE_DEBUG, "sourceVersion '%@' for '%@' is greater than cached version '%@' so caching and returning it", buf, 0x20u);
+        _os_log_debug_impl(&dword_26CF7F000, standardUserDefaults2, OS_LOG_TYPE_DEBUG, "sourceVersion '%@' for '%@' is greater than cached version '%@' so caching and returning it", buf, 0x20u);
       }
 
-      v18 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-      [v18 setObject:v4 forKey:v8];
-      v20 = v4;
+      standardUserDefaults2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+      [standardUserDefaults2 setObject:sourceVersion forKey:v8];
+      v20 = sourceVersion;
     }
 
     else
@@ -2002,8 +2002,8 @@ void __69__TVRCRPCompanionLinkClientWrapper_launchAppWithBundleID_completion___b
         v25 = 2112;
         v26 = v8;
         v27 = 2112;
-        v28 = v4;
-        _os_log_debug_impl(&dword_26CF7F000, v18, OS_LOG_TYPE_DEBUG, "Cached version '%@' for '%@' is >= reported version '%@' so returning it", buf, 0x20u);
+        v28 = sourceVersion;
+        _os_log_debug_impl(&dword_26CF7F000, standardUserDefaults2, OS_LOG_TYPE_DEBUG, "Cached version '%@' for '%@' is >= reported version '%@' so returning it", buf, 0x20u);
       }
 
       v20 = v11;
@@ -2025,8 +2025,8 @@ void __69__TVRCRPCompanionLinkClientWrapper_launchAppWithBundleID_completion___b
         [TVRCRPCompanionLinkClientWrapper sourceVersion];
       }
 
-      v4 = v11;
-      v16 = v4;
+      sourceVersion = v11;
+      v16 = sourceVersion;
     }
 
     else
@@ -2038,7 +2038,7 @@ void __69__TVRCRPCompanionLinkClientWrapper_launchAppWithBundleID_completion___b
       }
 
       v16 = @"9999.9";
-      v4 = v11;
+      sourceVersion = v11;
     }
   }
 
@@ -2058,8 +2058,8 @@ void __69__TVRCRPCompanionLinkClientWrapper_launchAppWithBundleID_completion___b
     _os_log_impl(&dword_26CF7F000, v3, OS_LOG_TYPE_DEFAULT, "%s", &v12, 0xCu);
   }
 
-  v4 = [(RPCompanionLinkDevice *)self->_device flags];
-  v5 = ([(RPCompanionLinkDevice *)self->_device flags]>> 7) & 2 | (v4 >> 10) & 1;
+  flags = [(RPCompanionLinkDevice *)self->_device flags];
+  v5 = ([(RPCompanionLinkDevice *)self->_device flags]>> 7) & 2 | (flags >> 10) & 1;
   v6 = v5 | ([(RPCompanionLinkDevice *)self->_device flags]>> 10) & 4;
   if ([(TVRCRPCompanionLinkClientWrapper *)self _featureSupported:@"250.3"])
   {
@@ -2099,18 +2099,18 @@ void __69__TVRCRPCompanionLinkClientWrapper_launchAppWithBundleID_completion___b
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_stringForFeatureFlags:(unint64_t)a3
+- (id)_stringForFeatureFlags:(unint64_t)flags
 {
-  v3 = a3;
+  flagsCopy = flags;
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v5 = v4;
-  if (v3)
+  if (flagsCopy)
   {
     [v4 addObject:@"HID"];
-    if ((v3 & 2) == 0)
+    if ((flagsCopy & 2) == 0)
     {
 LABEL_3:
-      if ((v3 & 4) == 0)
+      if ((flagsCopy & 4) == 0)
       {
         goto LABEL_4;
       }
@@ -2119,16 +2119,16 @@ LABEL_3:
     }
   }
 
-  else if ((v3 & 2) == 0)
+  else if ((flagsCopy & 2) == 0)
   {
     goto LABEL_3;
   }
 
   [v5 addObject:@"MediaControl"];
-  if ((v3 & 4) == 0)
+  if ((flagsCopy & 4) == 0)
   {
 LABEL_4:
-    if ((v3 & 8) == 0)
+    if ((flagsCopy & 8) == 0)
     {
       goto LABEL_5;
     }
@@ -2138,10 +2138,10 @@ LABEL_4:
 
 LABEL_12:
   [v5 addObject:@"TextInput"];
-  if ((v3 & 8) == 0)
+  if ((flagsCopy & 8) == 0)
   {
 LABEL_5:
-    if ((v3 & 0x10) == 0)
+    if ((flagsCopy & 0x10) == 0)
     {
       goto LABEL_7;
     }
@@ -2151,7 +2151,7 @@ LABEL_5:
 
 LABEL_13:
   [v5 addObject:@"MVPD"];
-  if ((v3 & 0x10) != 0)
+  if ((flagsCopy & 0x10) != 0)
   {
 LABEL_6:
     [v5 addObject:@"SiriPTT"];
@@ -2165,13 +2165,13 @@ LABEL_7:
   return v8;
 }
 
-- (void)_disconnectWithError:(id)a3
+- (void)_disconnectWithError:(id)error
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  errorCopy = error;
   v5 = _TVRCRapportLog();
   v6 = v5;
-  if (v4)
+  if (errorCopy)
   {
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
@@ -2184,13 +2184,13 @@ LABEL_7:
     v9 = 136315394;
     v10 = "[TVRCRPCompanionLinkClientWrapper _disconnectWithError:]";
     v11 = 2112;
-    v12 = self;
+    selfCopy = self;
     _os_log_impl(&dword_26CF7F000, v6, OS_LOG_TYPE_DEFAULT, "%s %@", &v9, 0x16u);
   }
 
   [(TVRCRPCompanionLinkClientWrapper *)self _invalidateAndReset];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained disconnectedFromDevice:self error:v4];
+  [WeakRetained disconnectedFromDevice:self error:errorCopy];
 
   v8 = *MEMORY[0x277D85DE8];
 }
@@ -2204,7 +2204,7 @@ LABEL_7:
     v5 = 136315394;
     v6 = "[TVRCRPCompanionLinkClientWrapper _invalidateAndReset]";
     v7 = 2112;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_26CF7F000, v3, OS_LOG_TYPE_DEFAULT, "%s %@", &v5, 0x16u);
   }
 
@@ -2212,17 +2212,17 @@ LABEL_7:
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_invalidateAndResetWithCompletionHandler:(id)a3
+- (void)_invalidateAndResetWithCompletionHandler:(id)handler
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = _TVRCRapportLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
-    v28 = "[TVRCRPCompanionLinkClientWrapper _invalidateAndResetWithCompletionHandler:]";
+    selfCopy3 = "[TVRCRPCompanionLinkClientWrapper _invalidateAndResetWithCompletionHandler:]";
     v29 = 2112;
-    v30 = self;
+    selfCopy = self;
     _os_log_impl(&dword_26CF7F000, v5, OS_LOG_TYPE_DEFAULT, "%s %@", buf, 0x16u);
   }
 
@@ -2244,23 +2244,23 @@ LABEL_7:
     block[3] = &unk_279D825E0;
     block[4] = self;
     dispatch_group_async(v7, v8, block);
-    v10 = [(TVRCRPCompanionLinkClientWrapper *)self siriSession];
+    siriSession = [(TVRCRPCompanionLinkClientWrapper *)self siriSession];
 
-    if (v10)
+    if (siriSession)
     {
       dispatch_group_enter(v7);
-      v11 = [(TVRCRPCompanionLinkClientWrapper *)self siriSession];
+      siriSession2 = [(TVRCRPCompanionLinkClientWrapper *)self siriSession];
       v24[0] = MEMORY[0x277D85DD0];
       v24[1] = 3221225472;
       v24[2] = __77__TVRCRPCompanionLinkClientWrapper__invalidateAndResetWithCompletionHandler___block_invoke_111;
       v24[3] = &unk_279D82DD8;
       v24[4] = self;
       v25 = v7;
-      [v11 invalidateWithCompletion:v24];
+      [siriSession2 invalidateWithCompletion:v24];
     }
 
-    v12 = [(TVRCRPCompanionLinkClientWrapper *)self hidTouchSession];
-    if (v12)
+    hidTouchSession = [(TVRCRPCompanionLinkClientWrapper *)self hidTouchSession];
+    if (hidTouchSession)
     {
     }
 
@@ -2274,8 +2274,8 @@ LABEL_14:
       v17[3] = &unk_279D83400;
       v18 = v7;
       v19 = v8;
-      v20 = self;
-      v21 = v4;
+      selfCopy2 = self;
+      v21 = handlerCopy;
       v6 = v7;
       dispatch_async(v15, v17);
 
@@ -2290,14 +2290,14 @@ LABEL_14:
     }
 
     dispatch_group_enter(v7);
-    v14 = [(TVRCRPCompanionLinkClientWrapper *)self hidTouchSession];
+    hidTouchSession2 = [(TVRCRPCompanionLinkClientWrapper *)self hidTouchSession];
     v22[0] = MEMORY[0x277D85DD0];
     v22[1] = 3221225472;
     v22[2] = __77__TVRCRPCompanionLinkClientWrapper__invalidateAndResetWithCompletionHandler___block_invoke_112;
     v22[3] = &unk_279D82DD8;
     v22[4] = self;
     v23 = v7;
-    [v14 invalidateWithCompletion:v22];
+    [hidTouchSession2 invalidateWithCompletion:v22];
 
     goto LABEL_14;
   }
@@ -2306,7 +2306,7 @@ LABEL_14:
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v28 = self;
+    selfCopy3 = self;
     _os_log_impl(&dword_26CF7F000, v6, OS_LOG_TYPE_DEFAULT, "Already in the process of invalidating. Ignoring this request. %@", buf, 0xCu);
   }
 
@@ -2485,8 +2485,8 @@ LABEL_7:
     _os_log_impl(&dword_26CF7F000, v3, OS_LOG_TYPE_DEFAULT, "Resetting state", v6, 2u);
   }
 
-  v4 = [(TVRCRPCompanionLinkClientWrapper *)self companionClient];
-  [v4 invalidate];
+  companionClient = [(TVRCRPCompanionLinkClientWrapper *)self companionClient];
+  [companionClient invalidate];
 
   companionClient = self->_companionClient;
   self->_companionClient = 0;
@@ -2694,9 +2694,9 @@ void __60__TVRCRPCompanionLinkClientWrapper__setupHidSessionIfNeeded__block_invo
     block[3] = &unk_279D826E8;
     objc_copyWeak(&v10, buf);
     dispatch_after(v5, MEMORY[0x277D85CD0], block);
-    v6 = [(TVRCRPCompanionLinkClientWrapper *)self device];
-    v7 = [v6 siriInfo];
-    [(TVRCRPCompanionLinkClientWrapper *)self _updateSiriStatusFromSiriInfo:v7];
+    device = [(TVRCRPCompanionLinkClientWrapper *)self device];
+    siriInfo = [device siriInfo];
+    [(TVRCRPCompanionLinkClientWrapper *)self _updateSiriStatusFromSiriInfo:siriInfo];
 
     objc_destroyWeak(&v10);
     objc_destroyWeak(buf);
@@ -2743,13 +2743,13 @@ void __65__TVRCRPCompanionLinkClientWrapper__setupFeatureServicesIfNeeded__block
   objc_initWeak(buf, self);
   v4 = [TVRCMediaEventsManager alloc];
   companionClient = self->_companionClient;
-  v6 = [(TVRCRPCompanionLinkClientWrapper *)self supportsDirectCaptionQueries];
+  supportsDirectCaptionQueries = [(TVRCRPCompanionLinkClientWrapper *)self supportsDirectCaptionQueries];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __60__TVRCRPCompanionLinkClientWrapper__setupMediaEventsManager__block_invoke;
   v11[3] = &unk_279D826E8;
   objc_copyWeak(&v12, buf);
-  v7 = [(TVRCMediaEventsManager *)v4 initWithCompanionLinkClient:companionClient supportsDirectCaptionQueries:v6 eventHandler:v11];
+  v7 = [(TVRCMediaEventsManager *)v4 initWithCompanionLinkClient:companionClient supportsDirectCaptionQueries:supportsDirectCaptionQueries eventHandler:v11];
   mediaManager = self->_mediaManager;
   self->_mediaManager = v7;
 
@@ -2840,13 +2840,13 @@ void __60__TVRCRPCompanionLinkClientWrapper__setupMediaEventsManager__block_invo
   objc_initWeak(buf, self);
   v4 = [TVRCRapportMediaEventsManager alloc];
   companionClient = self->_companionClient;
-  v6 = [(TVRCRPCompanionLinkClientWrapper *)self supportsDirectCaptionQueries];
+  supportsDirectCaptionQueries = [(TVRCRPCompanionLinkClientWrapper *)self supportsDirectCaptionQueries];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __66__TVRCRPCompanionLinkClientWrapper__setupLegacyMediaEventsManager__block_invoke;
   v9[3] = &unk_279D826E8;
   objc_copyWeak(&v10, buf);
-  v7 = [(TVRCRapportMediaEventsManager *)v4 initWithCompanionLinkClient:companionClient supportsDirectCaptionQueries:v6 eventHandler:v9];
+  v7 = [(TVRCRapportMediaEventsManager *)v4 initWithCompanionLinkClient:companionClient supportsDirectCaptionQueries:supportsDirectCaptionQueries eventHandler:v9];
   mediaManager = self->_mediaManager;
   self->_mediaManager = v7;
 
@@ -3067,8 +3067,8 @@ void __66__TVRCRPCompanionLinkClientWrapper__setupTextInputSessionIfNeeded__bloc
   v11 = *MEMORY[0x277D85DE8];
   if ([(TVRCRPCompanionLinkClientWrapper *)self receivedSiriSettings]&& [(TVRCRPCompanionLinkClientWrapper *)self receivedVolumeSettings])
   {
-    v6 = [(TVRCRPCompanionLinkClientWrapper *)self delegate];
-    [v6 deviceUpdatedSupportedButtons:self];
+    delegate = [(TVRCRPCompanionLinkClientWrapper *)self delegate];
+    [delegate deviceUpdatedSupportedButtons:self];
     v3 = *MEMORY[0x277D85DE8];
   }
 
@@ -3078,9 +3078,9 @@ void __66__TVRCRPCompanionLinkClientWrapper__setupTextInputSessionIfNeeded__bloc
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109376;
-      v8 = [(TVRCRPCompanionLinkClientWrapper *)self receivedSiriSettings];
+      receivedSiriSettings = [(TVRCRPCompanionLinkClientWrapper *)self receivedSiriSettings];
       v9 = 1024;
-      v10 = [(TVRCRPCompanionLinkClientWrapper *)self receivedVolumeSettings];
+      receivedVolumeSettings = [(TVRCRPCompanionLinkClientWrapper *)self receivedVolumeSettings];
       _os_log_impl(&dword_26CF7F000, v4, OS_LOG_TYPE_DEFAULT, "Waiting for volume or siri settings before notifying client of supported buttons. receivedSiriSettings:%d, receivedVolumeSettings:%d", buf, 0xEu);
     }
 
@@ -3088,34 +3088,34 @@ void __66__TVRCRPCompanionLinkClientWrapper__setupTextInputSessionIfNeeded__bloc
   }
 }
 
-- (void)_updateAttentionState:(int64_t)a3
+- (void)_updateAttentionState:(int64_t)state
 {
   v16 = *MEMORY[0x277D85DE8];
-  if ([(TVRCRPCompanionLinkClientWrapper *)self attentionState]!= a3)
+  if ([(TVRCRPCompanionLinkClientWrapper *)self attentionState]!= state)
   {
     v5 = _TVRCRapportLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      if ((a3 - 1) >= 3)
+      if ((state - 1) >= 3)
       {
-        v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"(unknown: %ld)", a3];
+        state = [MEMORY[0x277CCACA8] stringWithFormat:@"(unknown: %ld)", state];
       }
 
       else
       {
-        v6 = off_279D834E8[a3 - 1];
+        state = off_279D834E8[state - 1];
       }
 
-      v7 = v6;
-      v8 = [(TVRCRPCompanionLinkClientWrapper *)self attentionState];
-      if ((v8 - 1) >= 3)
+      v7 = state;
+      attentionState = [(TVRCRPCompanionLinkClientWrapper *)self attentionState];
+      if ((attentionState - 1) >= 3)
       {
-        v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"(unknown: %ld)", v8];
+        v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"(unknown: %ld)", attentionState];
       }
 
       else
       {
-        v9 = off_279D834E8[v8 - 1];
+        v9 = off_279D834E8[attentionState - 1];
       }
 
       *buf = 138543618;
@@ -3125,7 +3125,7 @@ void __66__TVRCRPCompanionLinkClientWrapper__setupTextInputSessionIfNeeded__bloc
       _os_log_impl(&dword_26CF7F000, v5, OS_LOG_TYPE_DEFAULT, "TV attention state updated to %{public}@ from %{public}@", buf, 0x16u);
     }
 
-    self->_attentionState = a3;
+    self->_attentionState = state;
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     [WeakRetained deviceUpdatedAttentionState];
   }
@@ -3172,13 +3172,13 @@ void __74__TVRCRPCompanionLinkClientWrapper__fetchTVSystemStatusAndStartMonitori
   v10 = MEMORY[0x277CBEC38];
   v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v10 forKeys:&v9 count:1];
   objc_initWeak(buf, self);
-  v5 = [(TVRCRPCompanionLinkClientWrapper *)self companionClient];
+  companionClient = [(TVRCRPCompanionLinkClientWrapper *)self companionClient];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __66__TVRCRPCompanionLinkClientWrapper__startMonitoringTVSystemStatus__block_invoke;
   v7[3] = &unk_279D827B0;
   objc_copyWeak(&v8, buf);
-  [v5 registerEventID:@"TVSystemStatus" options:v4 handler:v7];
+  [companionClient registerEventID:@"TVSystemStatus" options:v4 handler:v7];
 
   objc_destroyWeak(&v8);
   objc_destroyWeak(buf);
@@ -3206,8 +3206,8 @@ void __66__TVRCRPCompanionLinkClientWrapper__startMonitoringTVSystemStatus__bloc
     _os_log_impl(&dword_26CF7F000, v3, OS_LOG_TYPE_DEFAULT, "Stopped monitoring TVSystemStatus", v5, 2u);
   }
 
-  v4 = [(TVRCRPCompanionLinkClientWrapper *)self companionClient];
-  [v4 deregisterRequestID:@"TVSystemStatus"];
+  companionClient = [(TVRCRPCompanionLinkClientWrapper *)self companionClient];
+  [companionClient deregisterRequestID:@"TVSystemStatus"];
 }
 
 - (void)_setupRemoteFindingManagerIfNeeded
@@ -3254,7 +3254,7 @@ void __66__TVRCRPCompanionLinkClientWrapper__startMonitoringTVSystemStatus__bloc
   self->_remoteFindingManager = 0;
 }
 
-- (void)_updateSiriRemoteFindingState:(int64_t)a3
+- (void)_updateSiriRemoteFindingState:(int64_t)state
 {
   v12 = *MEMORY[0x277D85DE8];
   v5 = _TVRCRapportLog();
@@ -3263,15 +3263,15 @@ void __66__TVRCRPCompanionLinkClientWrapper__startMonitoringTVSystemStatus__bloc
     v8 = 136315394;
     v9 = "[TVRCRPCompanionLinkClientWrapper _updateSiriRemoteFindingState:]";
     v10 = 2112;
-    v11 = self;
+    selfCopy = self;
     _os_log_impl(&dword_26CF7F000, v5, OS_LOG_TYPE_DEFAULT, "%s %@", &v8, 0x16u);
   }
 
-  if (self->_siriRemoteFindingSessionState != a3)
+  if (self->_siriRemoteFindingSessionState != state)
   {
-    self->_siriRemoteFindingSessionState = a3;
-    v6 = [(TVRCRPCompanionLinkClientWrapper *)self delegate];
-    [v6 deviceUpdateSiriRemoteFindingState];
+    self->_siriRemoteFindingSessionState = state;
+    delegate = [(TVRCRPCompanionLinkClientWrapper *)self delegate];
+    [delegate deviceUpdateSiriRemoteFindingState];
   }
 
   v7 = *MEMORY[0x277D85DE8];
@@ -3284,13 +3284,13 @@ void __66__TVRCRPCompanionLinkClientWrapper__startMonitoringTVSystemStatus__bloc
   v10[0] = MEMORY[0x277CBEC38];
   v3 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v10 forKeys:&v9 count:1];
   objc_initWeak(&location, self);
-  v4 = [(TVRCRPCompanionLinkClientWrapper *)self companionClient];
+  companionClient = [(TVRCRPCompanionLinkClientWrapper *)self companionClient];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __66__TVRCRPCompanionLinkClientWrapper__startMonitoringNowPlayingInfo__block_invoke;
   v6[3] = &unk_279D827B0;
   objc_copyWeak(&v7, &location);
-  [v4 registerEventID:@"NowPlayingInfo" options:v3 handler:v6];
+  [companionClient registerEventID:@"NowPlayingInfo" options:v3 handler:v6];
 
   [(TVRCRPCompanionLinkClientWrapper *)self sendEvent:@"FetchCurrentNowPlayingInfoEvent" options:MEMORY[0x277CBEC10] response:&__block_literal_global_141];
   objc_destroyWeak(&v7);
@@ -3319,21 +3319,21 @@ void __66__TVRCRPCompanionLinkClientWrapper__startMonitoringNowPlayingInfo__bloc
     _os_log_impl(&dword_26CF7F000, v3, OS_LOG_TYPE_DEFAULT, "Stopped monitoring NowPlayingInfo", v5, 2u);
   }
 
-  v4 = [(TVRCRPCompanionLinkClientWrapper *)self companionClient];
-  [v4 deregisterEventID:@"NowPlayingInfo"];
+  companionClient = [(TVRCRPCompanionLinkClientWrapper *)self companionClient];
+  [companionClient deregisterEventID:@"NowPlayingInfo"];
 }
 
-- (void)_updateNowPlayingInfo:(id)a3
+- (void)_updateNowPlayingInfo:(id)info
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = [a3 objectForKeyedSubscript:@"NowPlayingInfoKey"];
+  v4 = [info objectForKeyedSubscript:@"NowPlayingInfoKey"];
   if (v4)
   {
     v10 = 0;
     v5 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:objc_opt_class() fromData:v4 error:&v10];
     v6 = v10;
     v7 = _TVRCRapportLog();
-    v8 = v7;
+    delegate = v7;
     if (v6)
     {
       if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -3348,12 +3348,12 @@ void __66__TVRCRPCompanionLinkClientWrapper__startMonitoringNowPlayingInfo__bloc
       {
         *buf = 138543362;
         v12 = v5;
-        _os_log_impl(&dword_26CF7F000, v8, OS_LOG_TYPE_DEFAULT, "Updated now playing info: %{public}@", buf, 0xCu);
+        _os_log_impl(&dword_26CF7F000, delegate, OS_LOG_TYPE_DEFAULT, "Updated now playing info: %{public}@", buf, 0xCu);
       }
 
       [(TVRCRPCompanionLinkClientWrapper *)self setNowPlayingInfo:v5];
-      v8 = [(TVRCRPCompanionLinkClientWrapper *)self delegate];
-      [v8 deviceUpdatedNowPlayingInfo:self];
+      delegate = [(TVRCRPCompanionLinkClientWrapper *)self delegate];
+      [delegate deviceUpdatedNowPlayingInfo:self];
     }
   }
 
@@ -3367,13 +3367,13 @@ void __66__TVRCRPCompanionLinkClientWrapper__startMonitoringNowPlayingInfo__bloc
   v10[0] = MEMORY[0x277CBEC38];
   v3 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v10 forKeys:&v9 count:1];
   objc_initWeak(&location, self);
-  v4 = [(TVRCRPCompanionLinkClientWrapper *)self companionClient];
+  companionClient = [(TVRCRPCompanionLinkClientWrapper *)self companionClient];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __68__TVRCRPCompanionLinkClientWrapper__startMonitoringSupportedActions__block_invoke;
   v6[3] = &unk_279D827B0;
   objc_copyWeak(&v7, &location);
-  [v4 registerEventID:@"SupportedActions" options:v3 handler:v6];
+  [companionClient registerEventID:@"SupportedActions" options:v3 handler:v6];
 
   [(TVRCRPCompanionLinkClientWrapper *)self sendEvent:@"FetchSupportedActionsEvent" options:MEMORY[0x277CBEC10] response:0];
   objc_destroyWeak(&v7);
@@ -3396,52 +3396,52 @@ void __68__TVRCRPCompanionLinkClientWrapper__startMonitoringSupportedActions__bl
 
 - (void)_stopMonitoringSupportedActions
 {
-  v2 = [(TVRCRPCompanionLinkClientWrapper *)self companionClient];
-  [v2 deregisterEventID:@"SupportedActions"];
+  companionClient = [(TVRCRPCompanionLinkClientWrapper *)self companionClient];
+  [companionClient deregisterEventID:@"SupportedActions"];
 }
 
-- (int)_commandForButtonEvent:(id)a3
+- (int)_commandForButtonEvent:(id)event
 {
-  v3 = [a3 button];
-  v4 = [v3 buttonType];
+  button = [event button];
+  buttonType = [button buttonType];
 
-  if ((v4 - 1) > 0x1D)
+  if ((buttonType - 1) > 0x1D)
   {
     return 0;
   }
 
   else
   {
-    return dword_26CFC8920[v4 - 1];
+    return dword_26CFC8920[buttonType - 1];
   }
 }
 
-- (int)_stateForButtonEvent:(id)a3
+- (int)_stateForButtonEvent:(id)event
 {
-  v3 = [a3 eventType];
-  if (v3 == 1)
+  eventType = [event eventType];
+  if (eventType == 1)
   {
     return 1;
   }
 
   else
   {
-    return 2 * (v3 == 2);
+    return 2 * (eventType == 2);
   }
 }
 
-- (void)_handleSideEffectsForEvent:(id)a3
+- (void)_handleSideEffectsForEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   objc_initWeak(&location, self);
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __63__TVRCRPCompanionLinkClientWrapper__handleSideEffectsForEvent___block_invoke;
   v6[3] = &unk_279D83450;
   objc_copyWeak(&v9, &location);
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = eventCopy;
+  selfCopy = self;
+  v5 = eventCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 
   objc_destroyWeak(&v9);
@@ -3702,7 +3702,7 @@ void __63__TVRCRPCompanionLinkClientWrapper__handleSideEffectsForEvent___block_i
     v8 = 136315394;
     v9 = "[TVRCRPCompanionLinkClientWrapper _updateConnectedState]";
     v10 = 2112;
-    v11 = self;
+    selfCopy = self;
     _os_log_impl(&dword_26CF7F000, v3, OS_LOG_TYPE_DEFAULT, "%s %@", &v8, 0x16u);
   }
 
@@ -3745,14 +3745,14 @@ void __63__TVRCRPCompanionLinkClientWrapper__handleSideEffectsForEvent___block_i
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_launchApplicationOrURL:(id)a3
+- (void)_launchApplicationOrURL:(id)l
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  lCopy = l;
+  v5 = lCopy;
+  if (lCopy)
   {
-    if ([v4 containsString:@"://"])
+    if ([lCopy containsString:@"://"])
     {
       v6 = [objc_alloc(MEMORY[0x277CBEBC0]) initWithString:v5];
       v7 = _TVRCRapportLog();
@@ -3857,7 +3857,7 @@ void __60__TVRCRPCompanionLinkClientWrapper__launchApplicationOrURL___block_invo
     *buf = 136315394;
     v7 = "[TVRCRPCompanionLinkClientWrapper dealloc]";
     v8 = 2112;
-    v9 = self;
+    selfCopy = self;
     _os_log_impl(&dword_26CF7F000, v3, OS_LOG_TYPE_DEFAULT, "%s %@", buf, 0x16u);
   }
 
@@ -3867,11 +3867,11 @@ void __60__TVRCRPCompanionLinkClientWrapper__launchApplicationOrURL___block_invo
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_fetchSiriEnabledWithSiriInfo:(id)a3 completionHandler:(id)a4
+- (void)_fetchSiriEnabledWithSiriInfo:(id)info completionHandler:(id)handler
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  infoCopy = info;
+  handlerCopy = handler;
   v8 = _TVRCRapportLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -3892,10 +3892,10 @@ void __60__TVRCRPCompanionLinkClientWrapper__launchApplicationOrURL___block_invo
   v12[2] = __84__TVRCRPCompanionLinkClientWrapper__fetchSiriEnabledWithSiriInfo_completionHandler___block_invoke;
   v12[3] = &unk_279D834A0;
   v12[4] = self;
-  v10 = v7;
+  v10 = handlerCopy;
   v13 = v10;
   p_buf = &buf;
-  [v9 getAssistantIsEnabledForDeviceWithSiriInfo:v6 withCompletion:v12];
+  [v9 getAssistantIsEnabledForDeviceWithSiriInfo:infoCopy withCompletion:v12];
 
   _Block_object_dispose(&buf, 8);
   v11 = *MEMORY[0x277D85DE8];
@@ -3974,10 +3974,10 @@ void __84__TVRCRPCompanionLinkClientWrapper__fetchSiriEnabledWithSiriInfo_comple
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateSiriStatusFromSiriInfo:(id)a3
+- (void)_updateSiriStatusFromSiriInfo:(id)info
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  infoCopy = info;
   v5 = _TVRCRapportLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -3992,7 +3992,7 @@ void __84__TVRCRPCompanionLinkClientWrapper__fetchSiriEnabledWithSiriInfo_comple
   v7[2] = __66__TVRCRPCompanionLinkClientWrapper__updateSiriStatusFromSiriInfo___block_invoke;
   v7[3] = &unk_279D834C8;
   objc_copyWeak(&v8, buf);
-  [(TVRCRPCompanionLinkClientWrapper *)self _fetchSiriEnabledWithSiriInfo:v4 completionHandler:v7];
+  [(TVRCRPCompanionLinkClientWrapper *)self _fetchSiriEnabledWithSiriInfo:infoCopy completionHandler:v7];
   objc_destroyWeak(&v8);
   objc_destroyWeak(buf);
 
@@ -4071,9 +4071,9 @@ void __72__TVRCRPCompanionLinkClientWrapper_rpSiriSessionDidReceiveStopRecording
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (TVRCSiriRemoteObserverContext == a6)
+  if (TVRCSiriRemoteObserverContext == context)
   {
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
@@ -4087,7 +4087,7 @@ void __72__TVRCRPCompanionLinkClientWrapper_rpSiriSessionDidReceiveStopRecording
   {
     v6.receiver = self;
     v6.super_class = TVRCRPCompanionLinkClientWrapper;
-    [(TVRCRPCompanionLinkClientWrapper *)&v6 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:?];
+    [(TVRCRPCompanionLinkClientWrapper *)&v6 observeValueForKeyPath:path ofObject:object change:change context:?];
   }
 }
 

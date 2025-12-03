@@ -1,11 +1,11 @@
 @interface SiriTTSLanguages
 + (NSSet)availableLanguages;
-+ (id)fallbackLanguageFor:(id)a3;
++ (id)fallbackLanguageFor:(id)for;
 @end
 
 @implementation SiriTTSLanguages
 
-+ (id)fallbackLanguageFor:(id)a3
++ (id)fallbackLanguageFor:(id)for
 {
   sub_1B1C2CB58();
   swift_getObjCClassMetadata();

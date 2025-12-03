@@ -1,12 +1,12 @@
 @interface SATrie
-- (BOOL)isAncestor:(id)a3;
-- (BOOL)isOverlapping:(id)a3 checkIfExists:(BOOL)a4;
-- (BOOL)isSuccessor:(id)a3;
+- (BOOL)isAncestor:(id)ancestor;
+- (BOOL)isOverlapping:(id)overlapping checkIfExists:(BOOL)exists;
+- (BOOL)isSuccessor:(id)successor;
 - (SATrie)init;
-- (id)getAncestorOfPath:(id)a3;
-- (id)getPathsComponents:(id)a3;
+- (id)getAncestorOfPath:(id)path;
+- (id)getPathsComponents:(id)components;
 - (void)clearPaths;
-- (void)insertPath:(id)a3;
+- (void)insertPath:(id)path;
 @end
 
 @implementation SATrie
@@ -35,9 +35,9 @@
   _objc_release_x1();
 }
 
-- (id)getPathsComponents:(id)a3
+- (id)getPathsComponents:(id)components
 {
-  v3 = [a3 componentsSeparatedByString:@"/"];
+  v3 = [components componentsSeparatedByString:@"/"];
   v4 = [v3 mutableCopy];
 
   [v4 removeObject:&stru_100066450];
@@ -45,9 +45,9 @@
   return v4;
 }
 
-- (void)insertPath:(id)a3
+- (void)insertPath:(id)path
 {
-  v4 = [(SATrie *)self getPathsComponents:a3];
+  v4 = [(SATrie *)self getPathsComponents:path];
   v5 = self->_root;
   v17 = 0u;
   v18 = 0u;
@@ -70,18 +70,18 @@
         }
 
         v11 = *(*(&v17 + 1) + 8 * v9);
-        v12 = [(TrieNode *)v10 children];
-        v13 = [v12 objectForKeyedSubscript:v11];
+        children = [(TrieNode *)v10 children];
+        v13 = [children objectForKeyedSubscript:v11];
 
         if (!v13)
         {
           v14 = objc_opt_new();
-          v15 = [(TrieNode *)v10 children];
-          [v15 setObject:v14 forKeyedSubscript:v11];
+          children2 = [(TrieNode *)v10 children];
+          [children2 setObject:v14 forKeyedSubscript:v11];
         }
 
-        v16 = [(TrieNode *)v10 children];
-        v5 = [v16 objectForKeyedSubscript:v11];
+        children3 = [(TrieNode *)v10 children];
+        v5 = [children3 objectForKeyedSubscript:v11];
 
         v9 = v9 + 1;
         v10 = v5;
@@ -97,11 +97,11 @@
   [(TrieNode *)v5 setIsEndOfPath:1];
 }
 
-- (id)getAncestorOfPath:(id)a3
+- (id)getAncestorOfPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v5 = objc_opt_new();
-  v6 = [(SATrie *)self getPathsComponents:v4];
+  v6 = [(SATrie *)self getPathsComponents:pathCopy];
   v7 = self->_root;
   v19 = 0u;
   v20 = 0u;
@@ -124,8 +124,8 @@
         }
 
         v13 = *(*(&v19 + 1) + 8 * v11);
-        v14 = [(TrieNode *)v12 children];
-        v15 = [v14 objectForKeyedSubscript:v13];
+        children = [(TrieNode *)v12 children];
+        v15 = [children objectForKeyedSubscript:v13];
 
         if (!v15)
         {
@@ -145,8 +145,8 @@
         }
 
         [v5 addObject:v13];
-        v16 = [(TrieNode *)v12 children];
-        v7 = [v16 objectForKeyedSubscript:v13];
+        children2 = [(TrieNode *)v12 children];
+        v7 = [children2 objectForKeyedSubscript:v13];
 
         v11 = v11 + 1;
         v12 = v7;
@@ -168,17 +168,17 @@ LABEL_14:
   return v9;
 }
 
-- (BOOL)isSuccessor:(id)a3
+- (BOOL)isSuccessor:(id)successor
 {
-  v3 = [(SATrie *)self getAncestorOfPath:a3];
+  v3 = [(SATrie *)self getAncestorOfPath:successor];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (BOOL)isAncestor:(id)a3
+- (BOOL)isAncestor:(id)ancestor
 {
-  v4 = [(SATrie *)self getPathsComponents:a3];
+  v4 = [(SATrie *)self getPathsComponents:ancestor];
   v5 = self->_root;
   v19 = 0u;
   v20 = 0u;
@@ -202,18 +202,18 @@ LABEL_14:
         }
 
         v12 = *(*(&v19 + 1) + 8 * v10);
-        v13 = [(TrieNode *)v11 children];
-        v14 = [v13 objectForKeyedSubscript:v12];
+        children = [(TrieNode *)v11 children];
+        v14 = [children objectForKeyedSubscript:v12];
 
         if (!v14)
         {
           v17 = 0;
-          v16 = v6;
+          children3 = v6;
           goto LABEL_11;
         }
 
-        v15 = [(TrieNode *)v11 children];
-        v5 = [v15 objectForKeyedSubscript:v12];
+        children2 = [(TrieNode *)v11 children];
+        v5 = [children2 objectForKeyedSubscript:v12];
 
         v10 = v10 + 1;
         v11 = v5;
@@ -230,20 +230,20 @@ LABEL_14:
     }
   }
 
-  v16 = [(TrieNode *)v5 children];
-  v17 = [v16 count] != 0;
+  children3 = [(TrieNode *)v5 children];
+  v17 = [children3 count] != 0;
   v11 = v5;
 LABEL_11:
 
   return v17;
 }
 
-- (BOOL)isOverlapping:(id)a3 checkIfExists:(BOOL)a4
+- (BOOL)isOverlapping:(id)overlapping checkIfExists:(BOOL)exists
 {
-  v6 = a3;
-  if (v6)
+  overlappingCopy = overlapping;
+  if (overlappingCopy)
   {
-    v7 = [(SATrie *)self getPathsComponents:v6];
+    v7 = [(SATrie *)self getPathsComponents:overlappingCopy];
     v8 = self->_root;
     v27 = 0u;
     v28 = 0u;
@@ -254,8 +254,8 @@ LABEL_11:
     if (v10)
     {
       v11 = v10;
-      v25 = a4;
-      v26 = v6;
+      existsCopy = exists;
+      v26 = overlappingCopy;
       v12 = *v28;
       v13 = 1;
       v14 = 1;
@@ -269,13 +269,13 @@ LABEL_11:
           }
 
           v16 = *(*(&v27 + 1) + 8 * i);
-          v17 = [(TrieNode *)v8 children];
-          v18 = [v17 objectForKeyedSubscript:v16];
+          children = [(TrieNode *)v8 children];
+          v18 = [children objectForKeyedSubscript:v16];
 
           if (v18)
           {
-            v19 = [(TrieNode *)v8 children];
-            v20 = [v19 objectForKeyedSubscript:v16];
+            children2 = [(TrieNode *)v8 children];
+            v20 = [children2 objectForKeyedSubscript:v16];
 
             v8 = v20;
           }
@@ -285,8 +285,8 @@ LABEL_11:
             if ([(TrieNode *)v8 isEndOfPath])
             {
               v22 = 1;
-              v23 = v9;
-              v6 = v26;
+              children3 = v9;
+              overlappingCopy = v26;
               goto LABEL_20;
             }
 
@@ -305,8 +305,8 @@ LABEL_11:
       }
 
       v21 = v13 ^ 1;
-      v6 = v26;
-      a4 = v25;
+      overlappingCopy = v26;
+      exists = existsCopy;
     }
 
     else
@@ -315,11 +315,11 @@ LABEL_11:
       v14 = 1;
     }
 
-    v22 = a4 & v14;
+    v22 = exists & v14;
     if (!v22 && (v21 & 1) == 0)
     {
-      v23 = [(TrieNode *)v8 children];
-      v22 = [v23 count] != 0;
+      children3 = [(TrieNode *)v8 children];
+      v22 = [children3 count] != 0;
 LABEL_20:
     }
   }

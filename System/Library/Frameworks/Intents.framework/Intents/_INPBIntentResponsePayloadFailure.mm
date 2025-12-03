@@ -1,40 +1,40 @@
 @interface _INPBIntentResponsePayloadFailure
-- (BOOL)isEqual:(id)a3;
-- (_INPBIntentResponsePayloadFailure)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBIntentResponsePayloadFailure)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setEnumTypeName:(id)a3;
-- (void)setHasErrorCode:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setEnumTypeName:(id)name;
+- (void)setHasErrorCode:(BOOL)code;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBIntentResponsePayloadFailure
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(_INPBIntentResponsePayloadFailure *)self hasAppLaunchRequested])
   {
     v4 = [MEMORY[0x1E696AD98] numberWithBool:{-[_INPBIntentResponsePayloadFailure appLaunchRequested](self, "appLaunchRequested")}];
-    [v3 setObject:v4 forKeyedSubscript:@"app_launch_requested"];
+    [dictionary setObject:v4 forKeyedSubscript:@"app_launch_requested"];
   }
 
   if (self->_enumTypeName)
   {
-    v5 = [(_INPBIntentResponsePayloadFailure *)self enumTypeName];
-    v6 = [v5 copy];
-    [v3 setObject:v6 forKeyedSubscript:@"enum_type_name"];
+    enumTypeName = [(_INPBIntentResponsePayloadFailure *)self enumTypeName];
+    v6 = [enumTypeName copy];
+    [dictionary setObject:v6 forKeyedSubscript:@"enum_type_name"];
   }
 
   if ([(_INPBIntentResponsePayloadFailure *)self hasErrorCode])
   {
     v7 = [MEMORY[0x1E696AD98] numberWithInt:{-[_INPBIntentResponsePayloadFailure errorCode](self, "errorCode")}];
-    [v3 setObject:v7 forKeyedSubscript:@"error_code"];
+    [dictionary setObject:v7 forKeyedSubscript:@"error_code"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -63,44 +63,44 @@
   return v4 ^ v3 ^ v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_13;
   }
 
-  v5 = [(_INPBIntentResponsePayloadFailure *)self hasAppLaunchRequested];
-  if (v5 != [v4 hasAppLaunchRequested])
+  hasAppLaunchRequested = [(_INPBIntentResponsePayloadFailure *)self hasAppLaunchRequested];
+  if (hasAppLaunchRequested != [equalCopy hasAppLaunchRequested])
   {
     goto LABEL_13;
   }
 
   if ([(_INPBIntentResponsePayloadFailure *)self hasAppLaunchRequested])
   {
-    if ([v4 hasAppLaunchRequested])
+    if ([equalCopy hasAppLaunchRequested])
     {
       appLaunchRequested = self->_appLaunchRequested;
-      if (appLaunchRequested != [v4 appLaunchRequested])
+      if (appLaunchRequested != [equalCopy appLaunchRequested])
       {
         goto LABEL_13;
       }
     }
   }
 
-  v7 = [(_INPBIntentResponsePayloadFailure *)self enumTypeName];
-  v8 = [v4 enumTypeName];
-  v9 = v8;
-  if ((v7 != 0) != (v8 == 0))
+  enumTypeName = [(_INPBIntentResponsePayloadFailure *)self enumTypeName];
+  enumTypeName2 = [equalCopy enumTypeName];
+  v9 = enumTypeName2;
+  if ((enumTypeName != 0) != (enumTypeName2 == 0))
   {
-    v10 = [(_INPBIntentResponsePayloadFailure *)self enumTypeName];
-    if (v10)
+    enumTypeName3 = [(_INPBIntentResponsePayloadFailure *)self enumTypeName];
+    if (enumTypeName3)
     {
-      v11 = v10;
-      v12 = [(_INPBIntentResponsePayloadFailure *)self enumTypeName];
-      v13 = [v4 enumTypeName];
-      v14 = [v12 isEqual:v13];
+      v11 = enumTypeName3;
+      enumTypeName4 = [(_INPBIntentResponsePayloadFailure *)self enumTypeName];
+      enumTypeName5 = [equalCopy enumTypeName];
+      v14 = [enumTypeName4 isEqual:enumTypeName5];
 
       if (!v14)
       {
@@ -112,10 +112,10 @@
     {
     }
 
-    v15 = [(_INPBIntentResponsePayloadFailure *)self hasErrorCode];
-    if (v15 == [v4 hasErrorCode])
+    hasErrorCode = [(_INPBIntentResponsePayloadFailure *)self hasErrorCode];
+    if (hasErrorCode == [equalCopy hasErrorCode])
     {
-      if (!-[_INPBIntentResponsePayloadFailure hasErrorCode](self, "hasErrorCode") || ![v4 hasErrorCode] || (errorCode = self->_errorCode, errorCode == objc_msgSend(v4, "errorCode")))
+      if (!-[_INPBIntentResponsePayloadFailure hasErrorCode](self, "hasErrorCode") || ![equalCopy hasErrorCode] || (errorCode = self->_errorCode, errorCode == objc_msgSend(equalCopy, "errorCode")))
       {
         v16 = 1;
         goto LABEL_14;
@@ -134,7 +134,7 @@ LABEL_14:
   return v16;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBIntentResponsePayloadFailure allocWithZone:](_INPBIntentResponsePayloadFailure init];
   if ([(_INPBIntentResponsePayloadFailure *)self hasAppLaunchRequested])
@@ -142,7 +142,7 @@ LABEL_14:
     [(_INPBIntentResponsePayloadFailure *)v5 setAppLaunchRequested:[(_INPBIntentResponsePayloadFailure *)self appLaunchRequested]];
   }
 
-  v6 = [(NSString *)self->_enumTypeName copyWithZone:a3];
+  v6 = [(NSString *)self->_enumTypeName copyWithZone:zone];
   [(_INPBIntentResponsePayloadFailure *)v5 setEnumTypeName:v6];
 
   if ([(_INPBIntentResponsePayloadFailure *)self hasErrorCode])
@@ -153,42 +153,42 @@ LABEL_14:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBIntentResponsePayloadFailure *)self data];
+  coderCopy = coder;
+  data = [(_INPBIntentResponsePayloadFailure *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBIntentResponsePayloadFailure)initWithCoder:(id)a3
+- (_INPBIntentResponsePayloadFailure)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBIntentResponsePayloadFailure *)self initWithData:v6];
+    self = [(_INPBIntentResponsePayloadFailure *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if ([(_INPBIntentResponsePayloadFailure *)self hasAppLaunchRequested])
   {
     appLaunchRequested = self->_appLaunchRequested;
     PBDataWriterWriteBOOLField();
   }
 
-  v5 = [(_INPBIntentResponsePayloadFailure *)self enumTypeName];
+  enumTypeName = [(_INPBIntentResponsePayloadFailure *)self enumTypeName];
 
-  if (v5)
+  if (enumTypeName)
   {
     enumTypeName = self->_enumTypeName;
     PBDataWriterWriteStringField();
@@ -201,9 +201,9 @@ LABEL_14:
   }
 }
 
-- (void)setHasErrorCode:(BOOL)a3
+- (void)setHasErrorCode:(BOOL)code
 {
-  if (a3)
+  if (code)
   {
     v3 = 2;
   }
@@ -216,9 +216,9 @@ LABEL_14:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setEnumTypeName:(id)a3
+- (void)setEnumTypeName:(id)name
 {
-  v4 = [a3 copy];
+  v4 = [name copy];
   enumTypeName = self->_enumTypeName;
   self->_enumTypeName = v4;
 

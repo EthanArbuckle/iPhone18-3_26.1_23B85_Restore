@@ -7,15 +7,15 @@
 
 - (uint64_t)hksp_configurationState
 {
-  v1 = [a1 configuration];
-  if ([v1 senderConfigurationType] == 2 && objc_msgSend(v1, "applicationConfigurationType") == 2)
+  configuration = [self configuration];
+  if ([configuration senderConfigurationType] == 2 && objc_msgSend(configuration, "applicationConfigurationType") == 2)
   {
     v2 = 1;
   }
 
-  else if ([v1 senderConfigurationType] || objc_msgSend(v1, "applicationConfigurationType"))
+  else if ([configuration senderConfigurationType] || objc_msgSend(configuration, "applicationConfigurationType"))
   {
-    if ([v1 senderConfigurationType] == 1 && objc_msgSend(v1, "applicationConfigurationType") == 1)
+    if ([configuration senderConfigurationType] == 1 && objc_msgSend(configuration, "applicationConfigurationType") == 1)
     {
       v2 = 2;
     }
@@ -36,9 +36,9 @@
 
 - (id)hksp_configurationWithConfigurationState:()Sleep
 {
-  v4 = [a1 mutableCopy];
-  v5 = [v4 configuration];
-  v6 = [v5 mutableCopy];
+  v4 = [self mutableCopy];
+  configuration = [v4 configuration];
+  v6 = [configuration mutableCopy];
 
   if ((a3 - 1) <= 2)
   {

@@ -1,40 +1,40 @@
 @interface WFExpandURLAction
-- (id)smartPromptWithContentDescription:(id)a3 contentDestination:(id)a4 workflowName:(id)a5;
-- (void)getContentDestinationWithCompletionHandler:(id)a3;
-- (void)runAsynchronouslyWithInput:(id)a3;
+- (id)smartPromptWithContentDescription:(id)description contentDestination:(id)destination workflowName:(id)name;
+- (void)getContentDestinationWithCompletionHandler:(id)handler;
+- (void)runAsynchronouslyWithInput:(id)input;
 @end
 
 @implementation WFExpandURLAction
 
-- (id)smartPromptWithContentDescription:(id)a3 contentDestination:(id)a4 workflowName:(id)a5
+- (id)smartPromptWithContentDescription:(id)description contentDestination:(id)destination workflowName:(id)name
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = a4;
-  v10 = [v7 length];
+  descriptionCopy = description;
+  nameCopy = name;
+  destinationCopy = destination;
+  v10 = [descriptionCopy length];
   v11 = MEMORY[0x277CCACA8];
   if (v10)
   {
     v12 = WFLocalizedString(@"Allow “%1$@” to open “%2$@” with %3$@?");
-    [v11 localizedStringWithFormat:v12, v8, v9, v7];
+    [v11 localizedStringWithFormat:v12, nameCopy, destinationCopy, descriptionCopy];
   }
 
   else
   {
     v12 = WFLocalizedString(@"Allow “%1$@” to open “%2$@”?");
-    [v11 localizedStringWithFormat:v12, v8, v9, v15];
+    [v11 localizedStringWithFormat:v12, nameCopy, destinationCopy, v15];
   }
   v13 = ;
 
   return v13;
 }
 
-- (void)getContentDestinationWithCompletionHandler:(id)a3
+- (void)getContentDestinationWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(WFExpandURLAction *)self input];
-  v7 = v4;
-  v6 = v4;
+  handlerCopy = handler;
+  input = [(WFExpandURLAction *)self input];
+  v7 = handlerCopy;
+  v6 = handlerCopy;
   WFGetContentLocationFromURLActionInput();
 }
 
@@ -56,16 +56,16 @@ void __64__WFExpandURLAction_getContentDestinationWithCompletionHandler___block_
   }
 }
 
-- (void)runAsynchronouslyWithInput:(id)a3
+- (void)runAsynchronouslyWithInput:(id)input
 {
-  v4 = a3;
+  inputCopy = input;
   v5 = objc_opt_class();
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __48__WFExpandURLAction_runAsynchronouslyWithInput___block_invoke_3;
   v6[3] = &unk_278C21E70;
   v6[4] = self;
-  [v4 transformObjectRepresentationsForClass:v5 usingBlock:&__block_literal_global_3521 completionHandler:v6];
+  [inputCopy transformObjectRepresentationsForClass:v5 usingBlock:&__block_literal_global_3521 completionHandler:v6];
 }
 
 void __48__WFExpandURLAction_runAsynchronouslyWithInput___block_invoke_3(uint64_t a1, uint64_t a2, void *a3)

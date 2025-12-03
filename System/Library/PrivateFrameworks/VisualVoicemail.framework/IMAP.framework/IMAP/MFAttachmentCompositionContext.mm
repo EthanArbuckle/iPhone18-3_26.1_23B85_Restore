@@ -1,6 +1,6 @@
 @interface MFAttachmentCompositionContext
 - (MFAttachmentCompositionContext)init;
-- (MFAttachmentCompositionContext)initWithContextID:(id)a3;
+- (MFAttachmentCompositionContext)initWithContextID:(id)d;
 - (NSArray)attachments;
 - (void)dealloc;
 @end
@@ -14,8 +14,8 @@
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v3 = [(MFAttachmentCompositionContext *)self attachments];
-  v4 = [v3 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  attachments = [(MFAttachmentCompositionContext *)self attachments];
+  v4 = [attachments countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v4)
   {
     v5 = v4;
@@ -27,7 +27,7 @@
       {
         if (*v17 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(attachments);
         }
 
         v8 = *(*(&v16 + 1) + 8 * v7);
@@ -42,15 +42,15 @@
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v5 = [attachments countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v5);
   }
 
   v12 = +[MFAttachmentManager defaultManager];
-  v13 = [(MFAttachmentCompositionContext *)self attachmentsBaseURL];
-  [v12 removeProviderForBaseURL:v13];
+  attachmentsBaseURL = [(MFAttachmentCompositionContext *)self attachmentsBaseURL];
+  [v12 removeProviderForBaseURL:attachmentsBaseURL];
 
   v15.receiver = self;
   v15.super_class = MFAttachmentCompositionContext;
@@ -60,22 +60,22 @@
 
 - (MFAttachmentCompositionContext)init
 {
-  v3 = [MEMORY[0x277CCACA8] mf_UUID];
-  v4 = [(MFAttachmentCompositionContext *)self initWithContextID:v3];
+  mf_UUID = [MEMORY[0x277CCACA8] mf_UUID];
+  v4 = [(MFAttachmentCompositionContext *)self initWithContextID:mf_UUID];
 
   return v4;
 }
 
-- (MFAttachmentCompositionContext)initWithContextID:(id)a3
+- (MFAttachmentCompositionContext)initWithContextID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v9.receiver = self;
   v9.super_class = MFAttachmentCompositionContext;
   v6 = [(MFAttachmentCompositionContext *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_contextID, a3);
+    objc_storeStrong(&v6->_contextID, d);
   }
 
   return v7;
@@ -84,8 +84,8 @@
 - (NSArray)attachments
 {
   v3 = +[MFAttachmentManager defaultManager];
-  v4 = [(MFAttachmentCompositionContext *)self contextID];
-  v5 = [v3 attachmentsForContext:v4];
+  contextID = [(MFAttachmentCompositionContext *)self contextID];
+  v5 = [v3 attachmentsForContext:contextID];
 
   return v5;
 }

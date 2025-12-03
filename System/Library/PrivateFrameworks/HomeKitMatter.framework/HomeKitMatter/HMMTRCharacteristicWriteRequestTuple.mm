@@ -1,12 +1,12 @@
 @interface HMMTRCharacteristicWriteRequestTuple
-- (HMMTRCharacteristicWriteRequestTuple)initWithRequestTuple:(id)a3;
+- (HMMTRCharacteristicWriteRequestTuple)initWithRequestTuple:(id)tuple;
 @end
 
 @implementation HMMTRCharacteristicWriteRequestTuple
 
-- (HMMTRCharacteristicWriteRequestTuple)initWithRequestTuple:(id)a3
+- (HMMTRCharacteristicWriteRequestTuple)initWithRequestTuple:(id)tuple
 {
-  v5 = a3;
+  tupleCopy = tuple;
   v10.receiver = self;
   v10.super_class = HMMTRCharacteristicWriteRequestTuple;
   v6 = [(HMMTRCharacteristicWriteRequestTuple *)&v10 init];
@@ -14,7 +14,7 @@
   if (v6)
   {
     v6->_characteristicHandlingType = 0;
-    objc_storeStrong(&v6->_primary, a3);
+    objc_storeStrong(&v6->_primary, tuple);
     secondary = v7->_secondary;
     v7->_secondary = 0;
   }

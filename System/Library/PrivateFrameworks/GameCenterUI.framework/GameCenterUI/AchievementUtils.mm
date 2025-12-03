@@ -1,12 +1,12 @@
 @interface AchievementUtils
-+ (id)achievementBadgeWithAchievement:(id)a3;
++ (id)achievementBadgeWithAchievement:(id)achievement;
 @end
 
 @implementation AchievementUtils
 
-+ (id)achievementBadgeWithAchievement:(id)a3
++ (id)achievementBadgeWithAchievement:(id)achievement
 {
-  v3 = a3;
+  achievementCopy = achievement;
   v4 = sub_24E250B98();
 
   return v4;

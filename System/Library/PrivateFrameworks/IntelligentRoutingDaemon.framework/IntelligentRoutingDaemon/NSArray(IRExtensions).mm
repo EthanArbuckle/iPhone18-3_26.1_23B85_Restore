@@ -10,14 +10,14 @@
 - (id)allWhere:()IRExtensions
 {
   v4 = a3;
-  v5 = [a1 mutableCopy];
-  if ([a1 count])
+  v5 = [self mutableCopy];
+  if ([self count])
   {
     v6 = 0;
     v7 = 0;
     do
     {
-      v8 = [a1 objectAtIndexedSubscript:v7];
+      v8 = [self objectAtIndexedSubscript:v7];
       if ((v4[2](v4, v8) & 1) == 0)
       {
         [v5 removeObjectAtIndex:v7 - v6++];
@@ -26,7 +26,7 @@
       ++v7;
     }
 
-    while (v7 < [a1 count]);
+    while (v7 < [self count]);
   }
 
   v9 = [v5 copy];
@@ -36,7 +36,7 @@
 
 - (BOOL)containsObjectPassingTest:()IRExtensions
 {
-  v1 = [a1 firstWhere:?];
+  v1 = [self firstWhere:?];
   v2 = v1 != 0;
 
   return v2;
@@ -45,17 +45,17 @@
 - (id)arrayByAddingObject:()IRExtensions withCapacityLimit:
 {
   v6 = a3;
-  if ([a1 count] >= a4)
+  if ([self count] >= a4)
   {
-    v7 = a1;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = [a1 arrayByAddingObject:v6];
+    selfCopy = [self arrayByAddingObject:v6];
   }
 
-  v8 = v7;
+  v8 = selfCopy;
 
   return v8;
 }
@@ -64,13 +64,13 @@
 {
   v20 = *MEMORY[0x277D85DE8];
   v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(a1, "count")}];
+  v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(self, "count")}];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = a1;
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  selfCopy = self;
+  v7 = [selfCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -81,7 +81,7 @@
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(selfCopy);
         }
 
         v11 = v4[2](v4, *(*(&v15 + 1) + 8 * i));
@@ -91,7 +91,7 @@
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [selfCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v8);

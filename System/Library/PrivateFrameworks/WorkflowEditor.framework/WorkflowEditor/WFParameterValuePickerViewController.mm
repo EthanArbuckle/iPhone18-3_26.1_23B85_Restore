@@ -1,58 +1,58 @@
 @interface WFParameterValuePickerViewController
-- (BOOL)currentSelectedValueIsVariable:(id)a3;
-- (BOOL)currentSelectedValuesContainsState:(id)a3;
-- (BOOL)tableView:(id)a3 shouldDrawBottomSeparatorForSection:(int64_t)a4;
+- (BOOL)currentSelectedValueIsVariable:(id)variable;
+- (BOOL)currentSelectedValuesContainsState:(id)state;
+- (BOOL)tableView:(id)view shouldDrawBottomSeparatorForSection:(int64_t)section;
 - (UIBarButtonItem)cancelBarButtonItem;
 - (UIBarButtonItem)deselectAllBarButtonItem;
 - (UIBarButtonItem)doneBarButtonItem;
 - (UIBarButtonItem)removeItemBarButtonItem;
 - (UIBarButtonItem)selectAllBarButtonItem;
-- (WFParameterValuePickerViewController)initWithParameter:(id)a3 widgetFamily:(int64_t)a4 allowsVariables:(BOOL)a5 initialCollection:(id)a6 currentState:(id)a7 delegate:(id)a8;
+- (WFParameterValuePickerViewController)initWithParameter:(id)parameter widgetFamily:(int64_t)family allowsVariables:(BOOL)variables initialCollection:(id)collection currentState:(id)state delegate:(id)delegate;
 - (WFParameterValuePickerViewControllerDelegate)delegate;
 - (WFVariableProvider)variableProvider;
 - (WFVariableUIDelegate)variableUIDelegate;
-- (double)tableView:(id)a3 estimatedHeightForHeaderInSection:(int64_t)a4;
-- (id)extractIntentsExecutionErrorFromError:(id)a3;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4;
+- (double)tableView:(id)view estimatedHeightForHeaderInSection:(int64_t)section;
+- (id)extractIntentsExecutionErrorFromError:(id)error;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path;
 - (void)cancelPickingValue;
-- (void)configureCell:(id)a3 forState:(id)a4;
-- (void)configureCell:(id)a3 forVariable:(id)a4;
-- (void)displayError:(id)a3;
+- (void)configureCell:(id)cell forState:(id)state;
+- (void)configureCell:(id)cell forVariable:(id)variable;
+- (void)displayError:(id)error;
 - (void)finishPickingValue;
-- (void)parameterAttributesDidChange:(id)a3;
-- (void)parameterValuePickerTableViewCell:(id)a3 didToggleSelection:(BOOL)a4;
-- (void)performSearchWithUserInput:(id)a3;
+- (void)parameterAttributesDidChange:(id)change;
+- (void)parameterValuePickerTableViewCell:(id)cell didToggleSelection:(BOOL)selection;
+- (void)performSearchWithUserInput:(id)input;
 - (void)reloadChoosingPrompt;
-- (void)reloadDisplayingValuesWithCollection:(id)a3 searchTerm:(id)a4 validateCurrentState:(BOOL)a5 animatingDifferences:(BOOL)a6;
+- (void)reloadDisplayingValuesWithCollection:(id)collection searchTerm:(id)term validateCurrentState:(BOOL)state animatingDifferences:(BOOL)differences;
 - (void)reloadNavigationBarButtonItems;
 - (void)requestRemovingItem;
 - (void)requestSelectAllItems;
 - (void)resetVisibleCellsSelection;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)searchBar:(id)a3 textDidChange:(id)a4;
-- (void)searchBarSearchButtonClicked:(id)a3;
-- (void)setAllowsMultipleSelection:(BOOL)a3;
-- (void)setCustomPrompt:(id)a3;
-- (void)setDefaultPrompt:(id)a3;
-- (void)setDeselectAllButtonTitle:(id)a3;
-- (void)setNoOptionAvailableTitle:(id)a3;
-- (void)setRemoveItemButtonTitle:(id)a3;
-- (void)setSelectAllButtonTitle:(id)a3;
-- (void)setShowsCancelButton:(BOOL)a3;
-- (void)setShowsPrompt:(BOOL)a3;
-- (void)setVariableProvider:(id)a3;
-- (void)setVariableUIDelegate:(id)a3;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)searchBar:(id)bar textDidChange:(id)change;
+- (void)searchBarSearchButtonClicked:(id)clicked;
+- (void)setAllowsMultipleSelection:(BOOL)selection;
+- (void)setCustomPrompt:(id)prompt;
+- (void)setDefaultPrompt:(id)prompt;
+- (void)setDeselectAllButtonTitle:(id)title;
+- (void)setNoOptionAvailableTitle:(id)title;
+- (void)setRemoveItemButtonTitle:(id)title;
+- (void)setSelectAllButtonTitle:(id)title;
+- (void)setShowsCancelButton:(BOOL)button;
+- (void)setShowsPrompt:(BOOL)prompt;
+- (void)setVariableProvider:(id)provider;
+- (void)setVariableUIDelegate:(id)delegate;
 - (void)setupSearchController;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
-- (void)toggleCell:(id)a3 atIndexPath:(id)a4;
-- (void)updateContentUnavailableConfigurationUsingState:(id)a3;
-- (void)updateSearchResultsForSearchController:(id)a3;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
+- (void)toggleCell:(id)cell atIndexPath:(id)path;
+- (void)updateContentUnavailableConfigurationUsingState:(id)state;
+- (void)updateSearchResultsForSearchController:(id)controller;
 - (void)updateSearchResultsFromCurrentUserInput;
-- (void)validateCurrentStateWithCollection:(id)a3;
+- (void)validateCurrentStateWithCollection:(id)collection;
 - (void)viewDidLoad;
-- (void)viewIsAppearing:(BOOL)a3;
+- (void)viewIsAppearing:(BOOL)appearing;
 @end
 
 @implementation WFParameterValuePickerViewController
@@ -78,23 +78,23 @@
   return WeakRetained;
 }
 
-- (void)parameterValuePickerTableViewCell:(id)a3 didToggleSelection:(BOOL)a4
+- (void)parameterValuePickerTableViewCell:(id)cell didToggleSelection:(BOOL)selection
 {
-  v5 = a3;
-  v6 = [(WFParameterValuePickerViewController *)self tableView];
-  v7 = [v6 indexPathForCell:v5];
+  cellCopy = cell;
+  tableView = [(WFParameterValuePickerViewController *)self tableView];
+  v7 = [tableView indexPathForCell:cellCopy];
 
-  [(WFParameterValuePickerViewController *)self toggleCell:v5 atIndexPath:v7];
+  [(WFParameterValuePickerViewController *)self toggleCell:cellCopy atIndexPath:v7];
 }
 
-- (void)parameterAttributesDidChange:(id)a3
+- (void)parameterAttributesDidChange:(id)change
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __69__WFParameterValuePickerViewController_parameterAttributesDidChange___block_invoke;
   v3[3] = &unk_279EDBDA8;
   v3[4] = self;
-  [a3 wf_reloadFromAttributesDidChangeWithCompletionHandler:v3];
+  [change wf_reloadFromAttributesDidChangeWithCompletionHandler:v3];
 }
 
 void __69__WFParameterValuePickerViewController_parameterAttributesDidChange___block_invoke(uint64_t a1, void *a2)
@@ -122,12 +122,12 @@ uint64_t __69__WFParameterValuePickerViewController_parameterAttributesDidChange
   return result;
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v20 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = v8;
+  viewCopy = view;
+  cellCopy = cell;
+  pathCopy = path;
+  v10 = cellCopy;
   if (v10)
   {
     objc_opt_class();
@@ -164,8 +164,8 @@ uint64_t __69__WFParameterValuePickerViewController_parameterAttributesDidChange
 
   v15 = v14;
 
-  v16 = [(WFParameterValuePickerViewController *)self dataSource];
-  v17 = [v16 parameterStateAtIndexPath:v9];
+  dataSource = [(WFParameterValuePickerViewController *)self dataSource];
+  v17 = [dataSource parameterStateAtIndexPath:pathCopy];
 
   v18 = [(WFParameterValuePickerViewController *)self currentSelectedValuesContainsState:v17];
   if (v18)
@@ -182,20 +182,20 @@ uint64_t __69__WFParameterValuePickerViewController_parameterAttributesDidChange
   [v15 setAccessoryType:v19];
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = [(WFParameterValuePickerViewController *)self dataSource];
-  v8 = [v7 tableView:v6 titleForHeaderInSection:a4];
+  viewCopy = view;
+  dataSource = [(WFParameterValuePickerViewController *)self dataSource];
+  v8 = [dataSource tableView:viewCopy titleForHeaderInSection:section];
 
   if (v8)
   {
-    v9 = [v6 dequeueReusableHeaderFooterViewWithIdentifier:@"WFParameterValuePickerSectionHeaderView"];
-    v10 = [MEMORY[0x277D756E0] headerConfiguration];
-    [v10 setText:v8];
-    [v9 setContentConfiguration:v10];
-    v11 = [MEMORY[0x277D751C0] listHeaderConfiguration];
-    [v9 setBackgroundConfiguration:v11];
+    v9 = [viewCopy dequeueReusableHeaderFooterViewWithIdentifier:@"WFParameterValuePickerSectionHeaderView"];
+    headerConfiguration = [MEMORY[0x277D756E0] headerConfiguration];
+    [headerConfiguration setText:v8];
+    [v9 setContentConfiguration:headerConfiguration];
+    listHeaderConfiguration = [MEMORY[0x277D751C0] listHeaderConfiguration];
+    [v9 setBackgroundConfiguration:listHeaderConfiguration];
   }
 
   else
@@ -206,11 +206,11 @@ uint64_t __69__WFParameterValuePickerViewController_parameterAttributesDidChange
   return v9;
 }
 
-- (double)tableView:(id)a3 estimatedHeightForHeaderInSection:(int64_t)a4
+- (double)tableView:(id)view estimatedHeightForHeaderInSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = [(WFParameterValuePickerViewController *)self dataSource];
-  v8 = [v7 tableView:v6 titleForHeaderInSection:a4];
+  viewCopy = view;
+  dataSource = [(WFParameterValuePickerViewController *)self dataSource];
+  v8 = [dataSource tableView:viewCopy titleForHeaderInSection:section];
 
   if (v8)
   {
@@ -225,72 +225,72 @@ uint64_t __69__WFParameterValuePickerViewController_parameterAttributesDidChange
   return v9;
 }
 
-- (BOOL)tableView:(id)a3 shouldDrawBottomSeparatorForSection:(int64_t)a4
+- (BOOL)tableView:(id)view shouldDrawBottomSeparatorForSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = [(WFParameterValuePickerViewController *)self dataSource];
-  v8 = [v7 sectionsCount] - 1;
+  viewCopy = view;
+  dataSource = [(WFParameterValuePickerViewController *)self dataSource];
+  v8 = [dataSource sectionsCount] - 1;
 
-  if (v8 <= a4)
+  if (v8 <= section)
   {
-    v10 = [MEMORY[0x277CCA8D8] mainBundle];
-    v11 = [v10 wf_isWidgetConfigurationExtensionBundle];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    wf_isWidgetConfigurationExtensionBundle = [mainBundle wf_isWidgetConfigurationExtensionBundle];
   }
 
   else
   {
-    v9 = [(WFParameterValuePickerViewController *)self dataSource];
-    v10 = [v9 tableView:v6 titleForHeaderInSection:a4 + 1];
+    dataSource2 = [(WFParameterValuePickerViewController *)self dataSource];
+    mainBundle = [dataSource2 tableView:viewCopy titleForHeaderInSection:section + 1];
 
-    v11 = [v10 length] == 0;
+    wf_isWidgetConfigurationExtensionBundle = [mainBundle length] == 0;
   }
 
-  return v11;
+  return wf_isWidgetConfigurationExtensionBundle;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [(WFParameterValuePickerViewController *)self parameter];
-  v8 = [v7 wf_usesTogglesForSelection];
+  viewCopy = view;
+  pathCopy = path;
+  parameter = [(WFParameterValuePickerViewController *)self parameter];
+  wf_usesTogglesForSelection = [parameter wf_usesTogglesForSelection];
 
-  if ((v8 & 1) == 0)
+  if ((wf_usesTogglesForSelection & 1) == 0)
   {
-    [v10 deselectRowAtIndexPath:v6 animated:1];
-    v9 = [v10 cellForRowAtIndexPath:v6];
-    [(WFParameterValuePickerViewController *)self toggleCell:v9 atIndexPath:v6];
+    [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
+    v9 = [viewCopy cellForRowAtIndexPath:pathCopy];
+    [(WFParameterValuePickerViewController *)self toggleCell:v9 atIndexPath:pathCopy];
     [(WFParameterValuePickerViewController *)self reloadNavigationBarButtonItems];
   }
 }
 
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path
 {
-  v5 = a4;
+  pathCopy = path;
   if ([(WFParameterValuePickerViewController *)self maximumSelectableItemsCount]< 2 || [(WFParameterValuePickerViewController *)self maximumSelectableItemsCount]== 0x7FFFFFFFFFFFFFFFLL)
   {
 LABEL_3:
-    v6 = v5;
+    v6 = pathCopy;
     goto LABEL_4;
   }
 
-  v8 = [(WFParameterValuePickerViewController *)self dataSource];
-  v9 = [v8 parameterStateAtIndexPath:v5];
+  dataSource = [(WFParameterValuePickerViewController *)self dataSource];
+  v9 = [dataSource parameterStateAtIndexPath:pathCopy];
 
   if ([(WFParameterValuePickerViewController *)self currentSelectedValuesContainsState:v9])
   {
-    v6 = v5;
+    v6 = pathCopy;
   }
 
   else
   {
-    v10 = [(WFParameterValuePickerViewController *)self currentState];
-    if (v10)
+    currentState = [(WFParameterValuePickerViewController *)self currentState];
+    if (currentState)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v11 = v10;
+        v11 = currentState;
       }
 
       else
@@ -306,12 +306,12 @@ LABEL_3:
 
     v12 = v11;
 
-    v13 = [v12 parameterStates];
+    parameterStates = [v12 parameterStates];
 
-    v14 = [v13 count];
-    v15 = [(WFParameterValuePickerViewController *)self maximumSelectableItemsCount];
+    v14 = [parameterStates count];
+    maximumSelectableItemsCount = [(WFParameterValuePickerViewController *)self maximumSelectableItemsCount];
 
-    if (v14 < v15)
+    if (v14 < maximumSelectableItemsCount)
     {
       goto LABEL_3;
     }
@@ -324,12 +324,12 @@ LABEL_4:
   return v6;
 }
 
-- (void)toggleCell:(id)a3 atIndexPath:(id)a4
+- (void)toggleCell:(id)cell atIndexPath:(id)path
 {
   v41[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
+  cellCopy = cell;
+  pathCopy = path;
+  v8 = cellCopy;
   if (v8)
   {
     objc_opt_class();
@@ -366,11 +366,11 @@ LABEL_4:
 
   v13 = v12;
 
-  v14 = [(WFParameterValuePickerViewController *)self dataSource];
-  v15 = [v14 parameterStateAtIndexPath:v7];
+  dataSource = [(WFParameterValuePickerViewController *)self dataSource];
+  v15 = [dataSource parameterStateAtIndexPath:pathCopy];
 
-  v16 = [v15 variable];
-  v17 = [v16 isEqual:*MEMORY[0x277D7D038]];
+  variable = [v15 variable];
+  v17 = [variable isEqual:*MEMORY[0x277D7D038]];
 
   if (!v17)
   {
@@ -381,31 +381,31 @@ LABEL_4:
       goto LABEL_26;
     }
 
-    v21 = [(WFParameterValuePickerViewController *)self currentState];
+    currentState = [(WFParameterValuePickerViewController *)self currentState];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v22 = [(WFParameterValuePickerViewController *)self currentState];
-      v23 = [v22 variable];
+      currentState2 = [(WFParameterValuePickerViewController *)self currentState];
+      variable2 = [currentState2 variable];
 
-      if (!v23)
+      if (!variable2)
       {
         v24 = [(WFParameterValuePickerViewController *)self currentSelectedValuesContainsState:v15];
-        v25 = [(WFParameterValuePickerViewController *)self currentState];
-        v18 = v25;
+        currentState3 = [(WFParameterValuePickerViewController *)self currentState];
+        presentingViewController = currentState3;
         if (v24)
         {
-          v26 = [v25 parameterStates];
+          parameterStates = [currentState3 parameterStates];
           v35 = MEMORY[0x277D85DD0];
           v36 = 3221225472;
           v37 = __63__WFParameterValuePickerViewController_toggleCell_atIndexPath___block_invoke_3;
           v38 = &unk_279EDBCC0;
           v39 = v15;
-          v27 = [v26 indexOfObjectPassingTest:&v35];
+          v27 = [parameterStates indexOfObjectPassingTest:&v35];
 
           if (v27 != 0x7FFFFFFFFFFFFFFFLL)
           {
-            v28 = [v18 stateByRemovingValueAtIndex:{v27, v35, v36, v37, v38}];
+            v28 = [presentingViewController stateByRemovingValueAtIndex:{v27, v35, v36, v37, v38}];
             [(WFParameterValuePickerViewController *)self setCurrentState:v28];
 
             [v10 setContainedInState:0];
@@ -415,7 +415,7 @@ LABEL_4:
           goto LABEL_11;
         }
 
-        v34 = [v25 stateByAppendingValue:v15];
+        v34 = [currentState3 stateByAppendingValue:v15];
         [(WFParameterValuePickerViewController *)self setCurrentState:v34];
 
 LABEL_25:
@@ -429,10 +429,10 @@ LABEL_25:
     {
     }
 
-    v29 = [(WFParameterValuePickerViewController *)self currentState];
-    v30 = [v29 variable];
+    currentState4 = [(WFParameterValuePickerViewController *)self currentState];
+    variable3 = [currentState4 variable];
 
-    if (v30)
+    if (variable3)
     {
       [(WFParameterValuePickerViewController *)self resetVisibleCellsSelection];
     }
@@ -446,13 +446,13 @@ LABEL_25:
     goto LABEL_25;
   }
 
-  v18 = [(WFParameterValuePickerViewController *)self presentingViewController];
+  presentingViewController = [(WFParameterValuePickerViewController *)self presentingViewController];
   v40[0] = MEMORY[0x277D85DD0];
   v40[1] = 3221225472;
   v40[2] = __63__WFParameterValuePickerViewController_toggleCell_atIndexPath___block_invoke;
   v40[3] = &unk_279EDC288;
   v40[4] = self;
-  [v18 dismissViewControllerAnimated:1 completion:v40];
+  [presentingViewController dismissViewControllerAnimated:1 completion:v40];
 LABEL_11:
 
 LABEL_26:
@@ -503,9 +503,9 @@ void __63__WFParameterValuePickerViewController_toggleCell_atIndexPath___block_i
 
 - (void)resetVisibleCellsSelection
 {
-  v3 = [(WFParameterValuePickerViewController *)self tableView];
-  v2 = [v3 visibleCells];
-  [v2 enumerateObjectsUsingBlock:&__block_literal_global_267];
+  tableView = [(WFParameterValuePickerViewController *)self tableView];
+  visibleCells = [tableView visibleCells];
+  [visibleCells enumerateObjectsUsingBlock:&__block_literal_global_267];
 }
 
 void __66__WFParameterValuePickerViewController_resetVisibleCellsSelection__block_invoke(uint64_t a1, void *a2)
@@ -555,13 +555,13 @@ void __66__WFParameterValuePickerViewController_resetVisibleCellsSelection__bloc
 {
   if (![(WFParameterValuePickerViewController *)self allowsMultipleSelection])
   {
-    v11 = [MEMORY[0x277CCA890] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"WFParameterValuePickerViewController.m" lineNumber:691 description:{@"Invalid parameter not satisfying: %@", @"self.allowsMultipleSelection"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFParameterValuePickerViewController.m" lineNumber:691 description:{@"Invalid parameter not satisfying: %@", @"self.allowsMultipleSelection"}];
   }
 
   [(WFParameterValuePickerViewController *)self resetVisibleCellsSelection];
   v4 = objc_opt_new();
-  v5 = [(INObjectCollection *)self->_defaultResults sections];
+  sections = [(INObjectCollection *)self->_defaultResults sections];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __61__WFParameterValuePickerViewController_requestSelectAllItems__block_invoke;
@@ -569,21 +569,21 @@ void __66__WFParameterValuePickerViewController_resetVisibleCellsSelection__bloc
   v13[4] = self;
   v6 = v4;
   v14 = v6;
-  [v5 enumerateObjectsUsingBlock:v13];
+  [sections enumerateObjectsUsingBlock:v13];
 
   v7 = [v6 count];
   if (v7 > [(WFParameterValuePickerViewController *)self maximumSelectableItemsCount])
   {
-    v12 = [MEMORY[0x277CCA890] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"WFParameterValuePickerViewController.m" lineNumber:702 description:{@"Invalid parameter not satisfying: %@", @"allParameterStates.count <= self.maximumSelectableItemsCount"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"WFParameterValuePickerViewController.m" lineNumber:702 description:{@"Invalid parameter not satisfying: %@", @"allParameterStates.count <= self.maximumSelectableItemsCount"}];
   }
 
   v8 = [objc_alloc(MEMORY[0x277D7C678]) initWithParameterStates:v6];
   [(WFParameterValuePickerViewController *)self setCurrentState:v8];
 
-  v9 = [(WFParameterValuePickerViewController *)self tableView];
-  v10 = [v9 visibleCells];
-  [v10 enumerateObjectsUsingBlock:&__block_literal_global_265];
+  tableView = [(WFParameterValuePickerViewController *)self tableView];
+  visibleCells = [tableView visibleCells];
+  [visibleCells enumerateObjectsUsingBlock:&__block_literal_global_265];
 
   [(WFParameterValuePickerViewController *)self reloadNavigationBarButtonItems];
 }
@@ -667,56 +667,56 @@ void __61__WFParameterValuePickerViewController_requestSelectAllItems__block_inv
 
   else
   {
-    v3 = [(WFParameterValuePickerViewController *)self delegate];
+    delegate = [(WFParameterValuePickerViewController *)self delegate];
     v4 = objc_opt_respondsToSelector();
 
     if (v4)
     {
-      v5 = [(WFParameterValuePickerViewController *)self delegate];
-      [v5 parameterValuePickerViewControllerDidRequestRemovingItem:self];
+      delegate2 = [(WFParameterValuePickerViewController *)self delegate];
+      [delegate2 parameterValuePickerViewControllerDidRequestRemovingItem:self];
     }
   }
 }
 
 - (void)cancelPickingValue
 {
-  v3 = [(WFParameterValuePickerViewController *)self searchController];
-  [v3 setActive:0];
+  searchController = [(WFParameterValuePickerViewController *)self searchController];
+  [searchController setActive:0];
 
-  v4 = [(WFParameterValuePickerViewController *)self delegate];
+  delegate = [(WFParameterValuePickerViewController *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(WFParameterValuePickerViewController *)self delegate];
-    [v6 parameterValuePickerViewControllerDidCancel:self];
+    delegate2 = [(WFParameterValuePickerViewController *)self delegate];
+    [delegate2 parameterValuePickerViewControllerDidCancel:self];
   }
 }
 
 - (void)finishPickingValue
 {
-  v3 = [(WFParameterValuePickerViewController *)self searchController];
-  [v3 setActive:0];
+  searchController = [(WFParameterValuePickerViewController *)self searchController];
+  [searchController setActive:0];
 
-  v4 = [(WFParameterValuePickerViewController *)self delegate];
+  delegate = [(WFParameterValuePickerViewController *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v7 = [(WFParameterValuePickerViewController *)self delegate];
-    v6 = [(WFParameterValuePickerViewController *)self currentState];
-    [v7 parameterValuePickerViewController:self didFinishWithParameterState:v6];
+    delegate2 = [(WFParameterValuePickerViewController *)self delegate];
+    currentState = [(WFParameterValuePickerViewController *)self currentState];
+    [delegate2 parameterValuePickerViewController:self didFinishWithParameterState:currentState];
   }
 }
 
 - (void)updateSearchResultsFromCurrentUserInput
 {
-  v3 = [(WFParameterValuePickerViewController *)self searchBar];
-  v5 = [v3 text];
+  searchBar = [(WFParameterValuePickerViewController *)self searchBar];
+  text = [searchBar text];
 
-  if ([v5 length])
+  if ([text length])
   {
-    v4 = v5;
+    v4 = text;
   }
 
   else
@@ -729,79 +729,79 @@ void __61__WFParameterValuePickerViewController_requestSelectAllItems__block_inv
   [(WFParameterValuePickerViewController *)self performSearchWithUserInput:v4];
 }
 
-- (void)searchBarSearchButtonClicked:(id)a3
+- (void)searchBarSearchButtonClicked:(id)clicked
 {
-  v3 = [(WFParameterValuePickerViewController *)self searchBar];
-  [v3 resignFirstResponder];
+  searchBar = [(WFParameterValuePickerViewController *)self searchBar];
+  [searchBar resignFirstResponder];
 }
 
-- (void)searchBar:(id)a3 textDidChange:(id)a4
+- (void)searchBar:(id)bar textDidChange:(id)change
 {
-  v4 = [(WFParameterValuePickerViewController *)self inputDebouncer:a3];
+  v4 = [(WFParameterValuePickerViewController *)self inputDebouncer:bar];
   [v4 poke];
 }
 
-- (void)updateSearchResultsForSearchController:(id)a3
+- (void)updateSearchResultsForSearchController:(id)controller
 {
-  if ([a3 isActive])
+  if ([controller isActive])
   {
-    v4 = [(WFParameterValuePickerViewController *)self inputDebouncer];
-    [v4 poke];
+    inputDebouncer = [(WFParameterValuePickerViewController *)self inputDebouncer];
+    [inputDebouncer poke];
   }
 }
 
-- (void)performSearchWithUserInput:(id)a3
+- (void)performSearchWithUserInput:(id)input
 {
-  v5 = a3;
-  if ([v5 length])
+  inputCopy = input;
+  if ([inputCopy length])
   {
-    v6 = [(WFParameterValuePickerViewController *)self cachedResults];
-    v7 = [v6 objectForKey:v5];
+    cachedResults = [(WFParameterValuePickerViewController *)self cachedResults];
+    defaultResults = [cachedResults objectForKey:inputCopy];
 
-    v8 = [(WFParameterValuePickerViewController *)self cachedPrompts];
-    v9 = [v8 objectForKey:v5];
+    cachedPrompts = [(WFParameterValuePickerViewController *)self cachedPrompts];
+    defaultPrompt = [cachedPrompts objectForKey:inputCopy];
 
     v10 = 1;
-    if (v7)
+    if (defaultResults)
     {
 LABEL_3:
-      [(WFParameterValuePickerViewController *)self reloadDisplayingValuesWithCollection:v7 searchTerm:v5 validateCurrentState:1 animatingDifferences:1];
-      [(WFParameterValuePickerViewController *)self setCustomPrompt:v9];
+      [(WFParameterValuePickerViewController *)self reloadDisplayingValuesWithCollection:defaultResults searchTerm:inputCopy validateCurrentState:1 animatingDifferences:1];
+      [(WFParameterValuePickerViewController *)self setCustomPrompt:defaultPrompt];
       goto LABEL_19;
     }
   }
 
   else
   {
-    v7 = [(WFParameterValuePickerViewController *)self defaultResults];
-    v9 = [(WFParameterValuePickerViewController *)self defaultPrompt];
-    v10 = v7 != 0;
-    if (v7)
+    defaultResults = [(WFParameterValuePickerViewController *)self defaultResults];
+    defaultPrompt = [(WFParameterValuePickerViewController *)self defaultPrompt];
+    v10 = defaultResults != 0;
+    if (defaultResults)
     {
       goto LABEL_3;
     }
   }
 
-  if (!v5 || (-[WFParameterValuePickerViewController parameter](self, "parameter"), v11 = objc_claimAutoreleasedReturnValue(), v3 = [v11 wf_supportsSearch], v11, v3))
+  if (!inputCopy || (-[WFParameterValuePickerViewController parameter](self, "parameter"), v11 = objc_claimAutoreleasedReturnValue(), defaultResults2 = [v11 wf_supportsSearch], v11, defaultResults2))
   {
     objc_initWeak(&location, self);
-    v12 = [v5 length];
+    v12 = [inputCopy length];
     if (!v12)
     {
-      v3 = [(WFParameterValuePickerViewController *)self defaultResults];
-      if (!v3)
+      defaultResults2 = [(WFParameterValuePickerViewController *)self defaultResults];
+      if (!defaultResults2)
       {
         goto LABEL_16;
       }
     }
 
-    v13 = [(WFParameterValuePickerViewController *)self searchBar];
-    v14 = [v13 searchTextField];
-    v15 = [v14 rightView];
+    searchBar = [(WFParameterValuePickerViewController *)self searchBar];
+    searchTextField = [searchBar searchTextField];
+    rightView = [searchTextField rightView];
 
     if (v12)
     {
-      if (!v15)
+      if (!rightView)
       {
         goto LABEL_15;
       }
@@ -810,42 +810,42 @@ LABEL_3:
     else
     {
 
-      if (!v15)
+      if (!rightView)
       {
 LABEL_15:
         v19 = [objc_alloc(MEMORY[0x277D750E8]) initWithActivityIndicatorStyle:100];
         [v19 startAnimating];
-        v20 = [(WFParameterValuePickerViewController *)self searchBar];
-        v21 = [v20 searchTextField];
-        [v21 setRightView:v19];
+        searchBar2 = [(WFParameterValuePickerViewController *)self searchBar];
+        searchTextField2 = [searchBar2 searchTextField];
+        [searchTextField2 setRightView:v19];
 
-        v22 = [(WFParameterValuePickerViewController *)self searchBar];
-        v23 = [v22 searchTextField];
-        [v23 setRightViewMode:1];
+        searchBar3 = [(WFParameterValuePickerViewController *)self searchBar];
+        searchTextField3 = [searchBar3 searchTextField];
+        [searchTextField3 setRightViewMode:1];
       }
     }
 
 LABEL_16:
-    v24 = [(WFParameterValuePickerViewController *)self parameter];
+    parameter = [(WFParameterValuePickerViewController *)self parameter];
     v35[0] = MEMORY[0x277D85DD0];
     v35[1] = 3221225472;
     v35[2] = __67__WFParameterValuePickerViewController_performSearchWithUserInput___block_invoke;
     v35[3] = &unk_279EDBD10;
     objc_copyWeak(&v37, &location);
-    v36 = v5;
+    v36 = inputCopy;
     v38 = v10;
-    [v24 wf_loadStatesWithSearchTerm:v36 completionHandler:v35];
+    [parameter wf_loadStatesWithSearchTerm:v36 completionHandler:v35];
 
     objc_destroyWeak(&v37);
     objc_destroyWeak(&location);
     goto LABEL_19;
   }
 
-  v16 = [(WFParameterValuePickerViewController *)self defaultResults];
-  v17 = v16;
-  if (v16)
+  defaultResults3 = [(WFParameterValuePickerViewController *)self defaultResults];
+  v17 = defaultResults3;
+  if (defaultResults3)
   {
-    v18 = v16;
+    v18 = defaultResults3;
   }
 
   else
@@ -860,11 +860,11 @@ LABEL_16:
   v30 = 3221225472;
   v31 = __67__WFParameterValuePickerViewController_performSearchWithUserInput___block_invoke_3;
   v32 = &unk_279EDBD38;
-  v33 = self;
-  v27 = v5;
+  selfCopy = self;
+  v27 = inputCopy;
   v34 = v27;
   v28 = [v26 wf_filteredCollectionUsingBlock:&v29];
-  [(WFParameterValuePickerViewController *)self reloadDisplayingValuesWithCollection:v28 searchTerm:v27 validateCurrentState:0 animatingDifferences:v10, v29, v30, v31, v32, v33];
+  [(WFParameterValuePickerViewController *)self reloadDisplayingValuesWithCollection:v28 searchTerm:v27 validateCurrentState:0 animatingDifferences:v10, v29, v30, v31, v32, selfCopy];
 
 LABEL_19:
 }
@@ -1041,43 +1041,43 @@ LABEL_13:
   }
 }
 
-- (void)reloadDisplayingValuesWithCollection:(id)a3 searchTerm:(id)a4 validateCurrentState:(BOOL)a5 animatingDifferences:(BOOL)a6
+- (void)reloadDisplayingValuesWithCollection:(id)collection searchTerm:(id)term validateCurrentState:(BOOL)state animatingDifferences:(BOOL)differences
 {
-  v6 = a6;
-  v7 = a5;
-  v22 = a3;
-  v10 = a4;
+  differencesCopy = differences;
+  stateCopy = state;
+  collectionCopy = collection;
+  termCopy = term;
   [(WFParameterValuePickerViewController *)self setContentUnavailableConfiguration:0];
-  v11 = [(WFParameterValuePickerViewController *)self searchBar];
-  v12 = [v11 text];
+  searchBar = [(WFParameterValuePickerViewController *)self searchBar];
+  text = [searchBar text];
 
-  if (![v12 length])
+  if (![text length])
   {
 
-    v12 = 0;
+    text = 0;
   }
 
-  if (![v10 length])
+  if (![termCopy length])
   {
-    [(WFParameterValuePickerViewController *)self setDefaultResults:v22];
+    [(WFParameterValuePickerViewController *)self setDefaultResults:collectionCopy];
     goto LABEL_10;
   }
 
-  v13 = v12;
-  v14 = v10;
+  cachedResults = text;
+  v14 = termCopy;
   v15 = v14;
-  if (v13 == v14)
+  if (cachedResults == v14)
   {
 
 LABEL_25:
-    v13 = [(WFParameterValuePickerViewController *)self cachedResults];
-    [v13 setObject:v22 forKeyedSubscript:v15];
+    cachedResults = [(WFParameterValuePickerViewController *)self cachedResults];
+    [cachedResults setObject:collectionCopy forKeyedSubscript:v15];
     goto LABEL_27;
   }
 
-  if (v14 && v13)
+  if (v14 && cachedResults)
   {
-    v16 = [v13 isEqualToString:v14];
+    v16 = [cachedResults isEqualToString:v14];
 
     if (v16)
     {
@@ -1085,7 +1085,7 @@ LABEL_25:
     }
 
 LABEL_10:
-    if (!v7)
+    if (!stateCopy)
     {
       goto LABEL_12;
     }
@@ -1094,15 +1094,15 @@ LABEL_10:
   }
 
 LABEL_27:
-  if (v7)
+  if (stateCopy)
   {
 LABEL_11:
-    [(WFParameterValuePickerViewController *)self validateCurrentStateWithCollection:v22];
+    [(WFParameterValuePickerViewController *)self validateCurrentStateWithCollection:collectionCopy];
   }
 
 LABEL_12:
-  v17 = v12;
-  v18 = v10;
+  v17 = text;
+  v18 = termCopy;
   v19 = v18;
   if (v17 == v18)
   {
@@ -1110,8 +1110,8 @@ LABEL_12:
 LABEL_18:
     if ([(WFParameterValuePickerViewController *)self isViewLoaded])
     {
-      v21 = [(WFParameterValuePickerViewController *)self dataSource];
-      [v21 applyCollection:v22 animatingDifferences:v6 filterVariableTitle:v19];
+      dataSource = [(WFParameterValuePickerViewController *)self dataSource];
+      [dataSource applyCollection:collectionCopy animatingDifferences:differencesCopy filterVariableTitle:v19];
 
       [(WFParameterValuePickerViewController *)self setNeedsUpdateContentUnavailableConfiguration];
       [(WFParameterValuePickerViewController *)self setupSearchController];
@@ -1136,44 +1136,44 @@ LABEL_18:
 LABEL_21:
 }
 
-- (void)validateCurrentStateWithCollection:(id)a3
+- (void)validateCurrentStateWithCollection:(id)collection
 {
-  v4 = a3;
-  v5 = [(WFParameterValuePickerViewController *)self currentState];
-  if (v5)
+  collectionCopy = collection;
+  currentState = [(WFParameterValuePickerViewController *)self currentState];
+  if (currentState)
   {
-    v6 = v5;
-    v7 = [(WFParameterValuePickerViewController *)self parameter];
-    if ([v7 wf_shouldValidateCurrentStateOnCollectionChanged])
+    v6 = currentState;
+    parameter = [(WFParameterValuePickerViewController *)self parameter];
+    if ([parameter wf_shouldValidateCurrentStateOnCollectionChanged])
     {
-      v8 = [(WFParameterValuePickerViewController *)self currentState];
-      v9 = [v8 variable];
+      currentState2 = [(WFParameterValuePickerViewController *)self currentState];
+      variable = [currentState2 variable];
 
-      if (!v9)
+      if (!variable)
       {
         aBlock[0] = MEMORY[0x277D85DD0];
         aBlock[1] = 3221225472;
         aBlock[2] = __75__WFParameterValuePickerViewController_validateCurrentStateWithCollection___block_invoke;
         aBlock[3] = &unk_279EDBCE8;
-        v22 = v4;
+        v22 = collectionCopy;
         v10 = _Block_copy(aBlock);
-        v11 = [(WFParameterValuePickerViewController *)self currentState];
-        if (v11 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+        currentState3 = [(WFParameterValuePickerViewController *)self currentState];
+        if (currentState3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
         {
-          v12 = [v11 parameterStates];
-          v13 = [v12 if_objectsPassingTest:v10];
+          parameterStates = [currentState3 parameterStates];
+          v13 = [parameterStates if_objectsPassingTest:v10];
 
-          v14 = [v11 parameterStates];
-          v15 = [v14 isEqual:v13];
+          parameterStates2 = [currentState3 parameterStates];
+          v15 = [parameterStates2 isEqual:v13];
 
           if ((v15 & 1) == 0)
           {
-            v16 = [(WFParameterValuePickerViewController *)self parameter];
-            v17 = [v16 multipleStateClass];
+            parameter2 = [(WFParameterValuePickerViewController *)self parameter];
+            multipleStateClass = [parameter2 multipleStateClass];
 
             if ([v13 count])
             {
-              v18 = [[v17 alloc] initWithParameterStates:v13];
+              v18 = [[multipleStateClass alloc] initWithParameterStates:v13];
               [(WFParameterValuePickerViewController *)self setCurrentState:v18];
             }
 
@@ -1187,8 +1187,8 @@ LABEL_21:
         else
         {
 
-          v19 = [(WFParameterValuePickerViewController *)self currentState];
-          v20 = v10[2](v10, v19);
+          currentState4 = [(WFParameterValuePickerViewController *)self currentState];
+          v20 = v10[2](v10, currentState4);
 
           if ((v20 & 1) == 0)
           {
@@ -1226,24 +1226,24 @@ uint64_t __75__WFParameterValuePickerViewController_validateCurrentStateWithColl
   return result;
 }
 
-- (BOOL)currentSelectedValueIsVariable:(id)a3
+- (BOOL)currentSelectedValueIsVariable:(id)variable
 {
-  v4 = a3;
-  v5 = [(WFParameterValuePickerViewController *)self currentState];
-  v6 = [v5 variable];
+  variableCopy = variable;
+  currentState = [(WFParameterValuePickerViewController *)self currentState];
+  variable = [currentState variable];
 
-  if (v6)
+  if (variable)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [v4 isEqual:*MEMORY[0x277D7D038]];
+      v7 = [variableCopy isEqual:*MEMORY[0x277D7D038]];
     }
 
     else
     {
-      v8 = [v6 name];
-      v9 = v4;
+      name = [variable name];
+      v9 = variableCopy;
       if (v9)
       {
         objc_opt_class();
@@ -1265,9 +1265,9 @@ uint64_t __75__WFParameterValuePickerViewController_validateCurrentStateWithColl
 
       v11 = v10;
 
-      v12 = [v11 name];
+      name2 = [v11 name];
 
-      v7 = [v8 isEqualToString:v12];
+      v7 = [name isEqualToString:name2];
     }
   }
 
@@ -1279,14 +1279,14 @@ uint64_t __75__WFParameterValuePickerViewController_validateCurrentStateWithColl
   return v7;
 }
 
-- (BOOL)currentSelectedValuesContainsState:(id)a3
+- (BOOL)currentSelectedValuesContainsState:(id)state
 {
-  v4 = a3;
-  v5 = [(WFParameterValuePickerViewController *)self currentState];
-  if (!v5 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  stateCopy = state;
+  currentState = [(WFParameterValuePickerViewController *)self currentState];
+  if (!currentState || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
 
-    v5 = 0;
+    currentState = 0;
     goto LABEL_6;
   }
 
@@ -1294,8 +1294,8 @@ uint64_t __75__WFParameterValuePickerViewController_validateCurrentStateWithColl
   if (objc_opt_isKindOfClass())
   {
 LABEL_6:
-    v8 = [(WFParameterValuePickerViewController *)self currentState];
-    v7 = [v8 stateIsEquivalent:v4];
+    currentState2 = [(WFParameterValuePickerViewController *)self currentState];
+    v7 = [currentState2 stateIsEquivalent:stateCopy];
 
     goto LABEL_7;
   }
@@ -1304,14 +1304,14 @@ LABEL_6:
   v14 = &v13;
   v15 = 0x2020000000;
   v16 = 0;
-  v6 = [v5 parameterStates];
+  parameterStates = [currentState parameterStates];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __75__WFParameterValuePickerViewController_currentSelectedValuesContainsState___block_invoke;
   v10[3] = &unk_279EDBC98;
   v12 = &v13;
-  v11 = v4;
-  [v6 enumerateObjectsUsingBlock:v10];
+  v11 = stateCopy;
+  [parameterStates enumerateObjectsUsingBlock:v10];
 
   v7 = *(v14 + 24);
   _Block_object_dispose(&v13, 8);
@@ -1328,60 +1328,60 @@ uint64_t __75__WFParameterValuePickerViewController_currentSelectedValuesContain
   return result;
 }
 
-- (void)updateContentUnavailableConfigurationUsingState:(id)a3
+- (void)updateContentUnavailableConfigurationUsingState:(id)state
 {
-  v4 = [(WFParameterValuePickerViewController *)self searchBar];
-  v5 = [v4 text];
-  if ([v5 length])
+  searchBar = [(WFParameterValuePickerViewController *)self searchBar];
+  text = [searchBar text];
+  if ([text length])
   {
   }
 
   else
   {
-    v6 = [(WFParameterValuePickerViewController *)self defaultResults];
+    defaultResults = [(WFParameterValuePickerViewController *)self defaultResults];
 
-    if (!v6)
+    if (!defaultResults)
     {
-      v9 = [MEMORY[0x277D75390] loadingConfiguration];
+      loadingConfiguration = [MEMORY[0x277D75390] loadingConfiguration];
       goto LABEL_8;
     }
   }
 
-  v7 = [(WFParameterValuePickerViewController *)self dataSource];
-  v8 = [v7 itemsCount];
+  dataSource = [(WFParameterValuePickerViewController *)self dataSource];
+  itemsCount = [dataSource itemsCount];
 
-  if (v8)
+  if (itemsCount)
   {
-    v9 = 0;
+    loadingConfiguration = 0;
   }
 
   else
   {
-    v11 = [MEMORY[0x277D75390] emptyConfiguration];
-    v10 = [(WFParameterValuePickerViewController *)self noOptionAvailableTitle];
-    [v11 setSecondaryText:v10];
+    emptyConfiguration = [MEMORY[0x277D75390] emptyConfiguration];
+    noOptionAvailableTitle = [(WFParameterValuePickerViewController *)self noOptionAvailableTitle];
+    [emptyConfiguration setSecondaryText:noOptionAvailableTitle];
 
-    v9 = v11;
+    loadingConfiguration = emptyConfiguration;
   }
 
 LABEL_8:
-  v12 = v9;
-  [(WFParameterValuePickerViewController *)self setContentUnavailableConfiguration:v9];
+  v12 = loadingConfiguration;
+  [(WFParameterValuePickerViewController *)self setContentUnavailableConfiguration:loadingConfiguration];
 }
 
-- (void)displayError:(id)a3
+- (void)displayError:(id)error
 {
-  v4 = a3;
-  if (v4)
+  errorCopy = error;
+  if (errorCopy)
   {
-    v5 = [(WFParameterValuePickerViewController *)self dataSource];
+    dataSource = [(WFParameterValuePickerViewController *)self dataSource];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __53__WFParameterValuePickerViewController_displayError___block_invoke;
     v6[3] = &unk_279EDBC70;
     v6[4] = self;
-    v7 = v4;
-    [v5 applyEmptyCollectionAnimatingDifferences:1 completion:v6];
+    v7 = errorCopy;
+    [dataSource applyEmptyCollectionAnimatingDifferences:1 completion:v6];
   }
 }
 
@@ -1399,22 +1399,22 @@ void __53__WFParameterValuePickerViewController_displayError___block_invoke(uint
   [*(a1 + 32) setContentUnavailableConfiguration:v2];
 }
 
-- (id)extractIntentsExecutionErrorFromError:(id)a3
+- (id)extractIntentsExecutionErrorFromError:(id)error
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
+  errorCopy = error;
+  userInfo = [errorCopy userInfo];
   v6 = *MEMORY[0x277CCA7E8];
-  v7 = [v5 objectForKeyedSubscript:*MEMORY[0x277CCA7E8]];
+  v7 = [userInfo objectForKeyedSubscript:*MEMORY[0x277CCA7E8]];
 
   if (v7)
   {
-    v8 = [v4 domain];
-    if ([v8 isEqualToString:*MEMORY[0x277D7CCD0]])
+    domain = [errorCopy domain];
+    if ([domain isEqualToString:*MEMORY[0x277D7CCD0]])
     {
 
 LABEL_5:
-      v11 = [v4 userInfo];
-      v12 = [v11 objectForKeyedSubscript:v6];
+      userInfo2 = [errorCopy userInfo];
+      v12 = [userInfo2 objectForKeyedSubscript:v6];
 
       if (v12)
       {
@@ -1423,7 +1423,7 @@ LABEL_5:
 
       else
       {
-        v13 = v4;
+        v13 = errorCopy;
       }
 
       v14 = v13;
@@ -1431,8 +1431,8 @@ LABEL_5:
       goto LABEL_10;
     }
 
-    v9 = [v4 domain];
-    v10 = [v9 isEqualToString:*MEMORY[0x277CD4450]];
+    domain2 = [errorCopy domain];
+    v10 = [domain2 isEqualToString:*MEMORY[0x277CD4450]];
 
     if (v10)
     {
@@ -1440,7 +1440,7 @@ LABEL_5:
     }
   }
 
-  v14 = v4;
+  v14 = errorCopy;
 LABEL_10:
 
   return v14;
@@ -1450,19 +1450,19 @@ LABEL_10:
 {
   if ([(WFParameterValuePickerViewController *)self showsPrompt])
   {
-    v3 = [(WFParameterValuePickerViewController *)self customPrompt];
-    v4 = v3;
-    if (v3)
+    customPrompt = [(WFParameterValuePickerViewController *)self customPrompt];
+    v4 = customPrompt;
+    if (customPrompt)
     {
-      v5 = v3;
+      defaultPrompt = customPrompt;
     }
 
     else
     {
-      v5 = [(WFParameterValuePickerViewController *)self defaultPrompt];
+      defaultPrompt = [(WFParameterValuePickerViewController *)self defaultPrompt];
     }
 
-    v7 = v5;
+    v7 = defaultPrompt;
 
     v6 = v7;
   }
@@ -1480,19 +1480,19 @@ LABEL_10:
 {
   if ([(WFParameterValuePickerViewController *)self allowsMultipleSelection])
   {
-    v3 = [(WFParameterValuePickerViewController *)self doneBarButtonItem];
-    v4 = [(WFParameterValuePickerViewController *)self navigationItem];
-    [v4 setRightBarButtonItem:v3];
+    doneBarButtonItem = [(WFParameterValuePickerViewController *)self doneBarButtonItem];
+    navigationItem = [(WFParameterValuePickerViewController *)self navigationItem];
+    [navigationItem setRightBarButtonItem:doneBarButtonItem];
 
     if (-[WFParameterValuePickerViewController minimumSelectableItemsCount](self, "minimumSelectableItemsCount") && (-[WFParameterValuePickerViewController dataSource](self, "dataSource"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 itemsCount], v7 = -[WFParameterValuePickerViewController maximumSelectableItemsCount](self, "maximumSelectableItemsCount"), v5, v6 <= v7))
     {
-      v11 = [(WFParameterValuePickerViewController *)self currentState];
-      if (v11)
+      currentState = [(WFParameterValuePickerViewController *)self currentState];
+      if (currentState)
       {
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v12 = v11;
+          v12 = currentState;
         }
 
         else
@@ -1508,19 +1508,19 @@ LABEL_10:
 
       v13 = v12;
 
-      v14 = [v13 parameterStates];
+      parameterStates = [v13 parameterStates];
 
-      v15 = [v14 count];
-      v16 = [(WFParameterValuePickerViewController *)self dataSource];
-      v17 = [v16 itemsCount];
+      v15 = [parameterStates count];
+      dataSource = [(WFParameterValuePickerViewController *)self dataSource];
+      itemsCount = [dataSource itemsCount];
 
       v18 = v15 >= [(WFParameterValuePickerViewController *)self minimumSelectableItemsCount];
-      v19 = [(WFParameterValuePickerViewController *)self navigationItem];
-      v20 = [v19 rightBarButtonItem];
-      [v20 setEnabled:v18];
+      navigationItem2 = [(WFParameterValuePickerViewController *)self navigationItem];
+      rightBarButtonItem = [navigationItem2 rightBarButtonItem];
+      [rightBarButtonItem setEnabled:v18];
 
-      v21 = [(WFParameterValuePickerViewController *)self navigationItem];
-      if (v15 >= v17)
+      navigationItem3 = [(WFParameterValuePickerViewController *)self navigationItem];
+      if (v15 >= itemsCount)
       {
         [(WFParameterValuePickerViewController *)self deselectAllBarButtonItem];
       }
@@ -1529,64 +1529,64 @@ LABEL_10:
       {
         [(WFParameterValuePickerViewController *)self selectAllBarButtonItem];
       }
-      v8 = ;
-      [v21 setLeftBarButtonItem:v8 animated:1];
+      navigationItem4 = ;
+      [navigationItem3 setLeftBarButtonItem:navigationItem4 animated:1];
     }
 
     else
     {
-      v21 = [(WFParameterValuePickerViewController *)self removeItemBarButtonItem];
-      v8 = [(WFParameterValuePickerViewController *)self navigationItem];
-      [v8 setLeftBarButtonItem:v21];
+      navigationItem3 = [(WFParameterValuePickerViewController *)self removeItemBarButtonItem];
+      navigationItem4 = [(WFParameterValuePickerViewController *)self navigationItem];
+      [navigationItem4 setLeftBarButtonItem:navigationItem3];
     }
   }
 
   else
   {
-    v9 = [(WFParameterValuePickerViewController *)self navigationItem];
+    navigationItem5 = [(WFParameterValuePickerViewController *)self navigationItem];
     if ([(WFParameterValuePickerViewController *)self showsCancelButton])
     {
-      v10 = [(WFParameterValuePickerViewController *)self cancelBarButtonItem];
-      [v9 setLeftBarButtonItem:v10 animated:1];
+      cancelBarButtonItem = [(WFParameterValuePickerViewController *)self cancelBarButtonItem];
+      [navigationItem5 setLeftBarButtonItem:cancelBarButtonItem animated:1];
     }
 
     else
     {
-      [v9 setLeftBarButtonItem:0 animated:1];
+      [navigationItem5 setLeftBarButtonItem:0 animated:1];
     }
 
-    v21 = [(WFParameterValuePickerViewController *)self navigationItem];
-    v8 = [(WFParameterValuePickerViewController *)self removeItemBarButtonItem];
-    [v21 setRightBarButtonItem:v8 animated:1];
+    navigationItem3 = [(WFParameterValuePickerViewController *)self navigationItem];
+    navigationItem4 = [(WFParameterValuePickerViewController *)self removeItemBarButtonItem];
+    [navigationItem3 setRightBarButtonItem:navigationItem4 animated:1];
   }
 }
 
-- (void)configureCell:(id)a3 forVariable:(id)a4
+- (void)configureCell:(id)cell forVariable:(id)variable
 {
-  v13 = a3;
-  v6 = a4;
-  if (v6)
+  cellCopy = cell;
+  variableCopy = variable;
+  if (variableCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [v6 name];
-      v8 = [v6 icon];
-      [v13 updateWithName:v7 icon:v8];
-      v9 = v6;
+      name = [variableCopy name];
+      icon = [variableCopy icon];
+      [cellCopy updateWithName:name icon:icon];
+      v9 = variableCopy;
 LABEL_6:
 
       goto LABEL_8;
     }
   }
 
-  if ([v6 isEqual:*MEMORY[0x277D7D038]])
+  if ([variableCopy isEqual:*MEMORY[0x277D7D038]])
   {
-    v7 = WFLocalizedString(@"Select Variable");
+    name = WFLocalizedString(@"Select Variable");
     v10 = objc_alloc(MEMORY[0x277D7A158]);
-    v8 = [MEMORY[0x277D79FB8] clearBackground];
-    v11 = [v10 initWithSymbolName:@"wand.and.stars" background:v8];
-    [v13 updateWithName:v7 icon:v11];
+    icon = [MEMORY[0x277D79FB8] clearBackground];
+    v11 = [v10 initWithSymbolName:@"wand.and.stars" background:icon];
+    [cellCopy updateWithName:name icon:v11];
 
     v9 = 0;
     goto LABEL_6;
@@ -1594,7 +1594,7 @@ LABEL_6:
 
   v9 = 0;
 LABEL_8:
-  if ([(WFParameterValuePickerViewController *)self currentSelectedValueIsVariable:v6])
+  if ([(WFParameterValuePickerViewController *)self currentSelectedValueIsVariable:variableCopy])
   {
     v12 = 3;
   }
@@ -1604,22 +1604,22 @@ LABEL_8:
     v12 = 0;
   }
 
-  [v13 setAccessoryType:v12];
+  [cellCopy setAccessoryType:v12];
 }
 
-- (void)configureCell:(id)a3 forState:(id)a4
+- (void)configureCell:(id)cell forState:(id)state
 {
-  v6 = a4;
-  v11 = a3;
-  v7 = [(WFParameterValuePickerViewController *)self parameter];
-  [v11 setParameter:v7];
+  stateCopy = state;
+  cellCopy = cell;
+  parameter = [(WFParameterValuePickerViewController *)self parameter];
+  [cellCopy setParameter:parameter];
 
-  [v11 setState:v6];
-  v8 = [(WFParameterValuePickerViewController *)self currentSelectedValuesContainsState:v6];
+  [cellCopy setState:stateCopy];
+  v8 = [(WFParameterValuePickerViewController *)self currentSelectedValuesContainsState:stateCopy];
 
-  [v11 setContainedInState:v8];
-  v9 = [(WFParameterValuePickerViewController *)self parameter];
-  if ([v9 wf_usesTogglesForSelection])
+  [cellCopy setContainedInState:v8];
+  parameter2 = [(WFParameterValuePickerViewController *)self parameter];
+  if ([parameter2 wf_usesTogglesForSelection])
   {
     v10 = 0;
   }
@@ -1629,32 +1629,32 @@ LABEL_8:
     v10 = 3;
   }
 
-  [v11 setSelectionStyle:v10];
+  [cellCopy setSelectionStyle:v10];
 
-  [v11 setParentViewController:self];
-  [v11 setDelegate:self];
+  [cellCopy setParentViewController:self];
+  [cellCopy setDelegate:self];
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v4 = [(WFParameterValuePickerViewController *)self tableView];
-  v5 = [v4 panGestureRecognizer];
-  v6 = [v5 numberOfTouches];
+  tableView = [(WFParameterValuePickerViewController *)self tableView];
+  panGestureRecognizer = [tableView panGestureRecognizer];
+  numberOfTouches = [panGestureRecognizer numberOfTouches];
 
-  if (v6)
+  if (numberOfTouches)
   {
-    v8 = [(WFParameterValuePickerViewController *)self searchController];
-    v7 = [v8 searchBar];
-    [v7 resignFirstResponder];
+    searchController = [(WFParameterValuePickerViewController *)self searchController];
+    searchBar = [searchController searchBar];
+    [searchBar resignFirstResponder];
   }
 }
 
-- (void)viewIsAppearing:(BOOL)a3
+- (void)viewIsAppearing:(BOOL)appearing
 {
   v25 = *MEMORY[0x277D85DE8];
   v23.receiver = self;
   v23.super_class = WFParameterValuePickerViewController;
-  [(WFParameterValuePickerViewController *)&v23 viewWillAppear:a3];
+  [(WFParameterValuePickerViewController *)&v23 viewWillAppear:appearing];
   if (![(WFParameterValuePickerViewController *)self hasScrolledToSelectedItem])
   {
     [(WFParameterValuePickerViewController *)self setHasScrolledToSelectedItem:1];
@@ -1662,11 +1662,11 @@ LABEL_8:
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v4 = [(WFParameterValuePickerViewController *)self dataSource];
-    v5 = [v4 collection];
-    v6 = [v5 allItems];
+    dataSource = [(WFParameterValuePickerViewController *)self dataSource];
+    collection = [dataSource collection];
+    allItems = [collection allItems];
 
-    v7 = [v6 countByEnumeratingWithState:&v19 objects:v24 count:16];
+    v7 = [allItems countByEnumeratingWithState:&v19 objects:v24 count:16];
     if (v7)
     {
       v8 = v7;
@@ -1682,20 +1682,20 @@ LABEL_8:
         {
           if (*v20 != v11)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(allItems);
           }
 
           v15 = *(*(&v19 + 1) + 8 * v12);
-          v16 = [(WFParameterValuePickerViewController *)self dataSource];
-          v10 = [v16 indexPathForItemIdentifier:v15];
+          dataSource2 = [(WFParameterValuePickerViewController *)self dataSource];
+          v10 = [dataSource2 indexPathForItemIdentifier:v15];
 
-          v17 = [(WFParameterValuePickerViewController *)self dataSource];
-          v9 = [v17 parameterStateAtIndexPath:v10];
+          dataSource3 = [(WFParameterValuePickerViewController *)self dataSource];
+          v9 = [dataSource3 parameterStateAtIndexPath:v10];
 
           if ([(WFParameterValuePickerViewController *)self currentSelectedValuesContainsState:v9])
           {
-            v18 = [(WFParameterValuePickerViewController *)self tableView];
-            [v18 scrollToRowAtIndexPath:v10 atScrollPosition:2 animated:0];
+            tableView = [(WFParameterValuePickerViewController *)self tableView];
+            [tableView scrollToRowAtIndexPath:v10 atScrollPosition:2 animated:0];
 
             goto LABEL_12;
           }
@@ -1706,7 +1706,7 @@ LABEL_8:
         }
 
         while (v8 != v12);
-        v8 = [v6 countByEnumeratingWithState:&v19 objects:v24 count:16];
+        v8 = [allItems countByEnumeratingWithState:&v19 objects:v24 count:16];
         if (v8)
         {
           continue;
@@ -1726,67 +1726,67 @@ LABEL_12:
   v34.receiver = self;
   v34.super_class = WFParameterValuePickerViewController;
   [(WFParameterValuePickerViewController *)&v34 viewDidLoad];
-  v3 = [(WFParameterValuePickerViewController *)self tableView];
-  [v3 registerClass:objc_opt_class() forCellReuseIdentifier:@"ParameterStateCell"];
+  tableView = [(WFParameterValuePickerViewController *)self tableView];
+  [tableView registerClass:objc_opt_class() forCellReuseIdentifier:@"ParameterStateCell"];
 
-  v4 = [(WFParameterValuePickerViewController *)self tableView];
-  [v4 registerClass:objc_opt_class() forCellReuseIdentifier:@"ParameterVariableCell"];
+  tableView2 = [(WFParameterValuePickerViewController *)self tableView];
+  [tableView2 registerClass:objc_opt_class() forCellReuseIdentifier:@"ParameterVariableCell"];
 
-  v5 = [(WFParameterValuePickerViewController *)self tableView];
-  [v5 registerClass:objc_opt_class() forHeaderFooterViewReuseIdentifier:@"WFParameterValuePickerSectionHeaderView"];
+  tableView3 = [(WFParameterValuePickerViewController *)self tableView];
+  [tableView3 registerClass:objc_opt_class() forHeaderFooterViewReuseIdentifier:@"WFParameterValuePickerSectionHeaderView"];
 
-  v6 = [(WFParameterValuePickerViewController *)self allowsMultipleSelection];
-  v7 = [(WFParameterValuePickerViewController *)self tableView];
-  [v7 setAllowsMultipleSelection:v6];
+  allowsMultipleSelection = [(WFParameterValuePickerViewController *)self allowsMultipleSelection];
+  tableView4 = [(WFParameterValuePickerViewController *)self tableView];
+  [tableView4 setAllowsMultipleSelection:allowsMultipleSelection];
 
-  v8 = [(WFParameterValuePickerViewController *)self tableView];
-  [v8 setEstimatedRowHeight:44.0];
+  tableView5 = [(WFParameterValuePickerViewController *)self tableView];
+  [tableView5 setEstimatedRowHeight:44.0];
 
-  v9 = [(WFParameterValuePickerViewController *)self tableView];
-  [v9 setRowHeight:*MEMORY[0x277D76F30]];
+  tableView6 = [(WFParameterValuePickerViewController *)self tableView];
+  [tableView6 setRowHeight:*MEMORY[0x277D76F30]];
 
   objc_initWeak(&location, self);
   v10 = [WFParameterValuePickerDataSource alloc];
-  v11 = [(WFParameterValuePickerViewController *)self parameter];
-  v12 = [(WFParameterValuePickerViewController *)self tableView];
+  parameter = [(WFParameterValuePickerViewController *)self parameter];
+  tableView7 = [(WFParameterValuePickerViewController *)self tableView];
   v28 = MEMORY[0x277D85DD0];
   v29 = 3221225472;
   v30 = __51__WFParameterValuePickerViewController_viewDidLoad__block_invoke;
   v31 = &unk_279EDBC28;
   objc_copyWeak(&v32, &location);
-  v13 = [(WFParameterValuePickerDataSource *)v10 initWithParameter:v11 tableView:v12 cellProvider:&v28];
+  v13 = [(WFParameterValuePickerDataSource *)v10 initWithParameter:parameter tableView:tableView7 cellProvider:&v28];
   [(WFParameterValuePickerViewController *)self setDataSource:v13, v28, v29, v30, v31];
 
-  v14 = [(WFParameterValuePickerViewController *)self variableProvider];
-  v15 = [(WFParameterValuePickerViewController *)self dataSource];
-  [v15 setVariableProvider:v14];
+  variableProvider = [(WFParameterValuePickerViewController *)self variableProvider];
+  dataSource = [(WFParameterValuePickerViewController *)self dataSource];
+  [dataSource setVariableProvider:variableProvider];
 
-  v16 = [(WFParameterValuePickerViewController *)self variableUIDelegate];
-  v17 = [(WFParameterValuePickerViewController *)self dataSource];
-  [v17 setVariableUIDelegate:v16];
+  variableUIDelegate = [(WFParameterValuePickerViewController *)self variableUIDelegate];
+  dataSource2 = [(WFParameterValuePickerViewController *)self dataSource];
+  [dataSource2 setVariableUIDelegate:variableUIDelegate];
 
-  v18 = [(WFParameterValuePickerViewController *)self allowedVariableTypes];
-  v19 = [(WFParameterValuePickerViewController *)self dataSource];
-  [v19 setAllowedVariableTypes:v18];
+  allowedVariableTypes = [(WFParameterValuePickerViewController *)self allowedVariableTypes];
+  dataSource3 = [(WFParameterValuePickerViewController *)self dataSource];
+  [dataSource3 setAllowedVariableTypes:allowedVariableTypes];
 
-  v20 = [(WFParameterValuePickerViewController *)self dataSource];
-  [v20 setDefaultRowAnimation:0];
+  dataSource4 = [(WFParameterValuePickerViewController *)self dataSource];
+  [dataSource4 setDefaultRowAnimation:0];
 
-  v21 = [(WFParameterValuePickerViewController *)self defaultResults];
+  defaultResults = [(WFParameterValuePickerViewController *)self defaultResults];
 
-  if (v21)
+  if (defaultResults)
   {
-    v22 = [(WFParameterValuePickerViewController *)self dataSource];
-    v23 = [(WFParameterValuePickerViewController *)self defaultResults];
-    [v22 applyCollection:v23 animatingDifferences:0 filterVariableTitle:0];
+    dataSource5 = [(WFParameterValuePickerViewController *)self dataSource];
+    defaultResults2 = [(WFParameterValuePickerViewController *)self defaultResults];
+    [dataSource5 applyCollection:defaultResults2 animatingDifferences:0 filterVariableTitle:0];
 
     [(WFParameterValuePickerViewController *)self setNeedsUpdateContentUnavailableConfiguration];
     [(WFParameterValuePickerViewController *)self setCustomPrompt:0];
   }
 
   v24 = [objc_alloc(MEMORY[0x277D75D18]) initWithFrame:{0.0, 0.0, 1.0, 1.0}];
-  v25 = [(WFParameterValuePickerViewController *)self tableView];
-  [v25 setTableFooterView:v24];
+  tableView8 = [(WFParameterValuePickerViewController *)self tableView];
+  [tableView8 setTableFooterView:v24];
 
   v35[0] = objc_opt_class();
   v26 = [MEMORY[0x277CBEA60] arrayWithObjects:v35 count:1];
@@ -1877,21 +1877,21 @@ void __51__WFParameterValuePickerViewController_viewDidLoad__block_invoke_2(uint
 
 - (void)setupSearchController
 {
-  v3 = [(WFParameterValuePickerViewController *)self searchController];
-  if (v3)
+  searchController = [(WFParameterValuePickerViewController *)self searchController];
+  if (searchController)
   {
 LABEL_9:
 
     return;
   }
 
-  v4 = [(WFParameterValuePickerViewController *)self parameter];
-  if (v4)
+  parameter = [(WFParameterValuePickerViewController *)self parameter];
+  if (parameter)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = parameter;
     }
 
     else
@@ -1907,54 +1907,54 @@ LABEL_9:
 
   v6 = v5;
 
-  v7 = [v6 preferContextMenu];
-  if ((v7 & 1) == 0)
+  preferContextMenu = [v6 preferContextMenu];
+  if ((preferContextMenu & 1) == 0)
   {
     v8 = [objc_alloc(MEMORY[0x277D759F0]) initWithSearchResultsController:0];
     [(WFParameterValuePickerViewController *)self setSearchController:v8];
 
-    v9 = [(WFParameterValuePickerViewController *)self searchController];
-    [v9 setObscuresBackgroundDuringPresentation:0];
+    searchController2 = [(WFParameterValuePickerViewController *)self searchController];
+    [searchController2 setObscuresBackgroundDuringPresentation:0];
 
-    v10 = [(WFParameterValuePickerViewController *)self searchController];
-    [v10 setHidesNavigationBarDuringPresentation:0];
+    searchController3 = [(WFParameterValuePickerViewController *)self searchController];
+    [searchController3 setHidesNavigationBarDuringPresentation:0];
 
-    v11 = [(WFParameterValuePickerViewController *)self searchController];
-    [v11 setAutomaticallyShowsCancelButton:1];
+    searchController4 = [(WFParameterValuePickerViewController *)self searchController];
+    [searchController4 setAutomaticallyShowsCancelButton:1];
 
-    v12 = [(WFParameterValuePickerViewController *)self searchController];
-    [v12 setSearchResultsUpdater:self];
+    searchController5 = [(WFParameterValuePickerViewController *)self searchController];
+    [searchController5 setSearchResultsUpdater:self];
 
-    v13 = [(WFParameterValuePickerViewController *)self searchController];
-    v14 = [v13 searchBar];
-    [(WFParameterValuePickerViewController *)self setSearchBar:v14];
+    searchController6 = [(WFParameterValuePickerViewController *)self searchController];
+    searchBar = [searchController6 searchBar];
+    [(WFParameterValuePickerViewController *)self setSearchBar:searchBar];
 
-    v15 = [(WFParameterValuePickerViewController *)self searchBar];
-    [v15 setShowsCancelButton:0];
+    searchBar2 = [(WFParameterValuePickerViewController *)self searchBar];
+    [searchBar2 setShowsCancelButton:0];
 
-    v16 = [(WFParameterValuePickerViewController *)self searchBar];
-    [v16 setSearchBarStyle:2];
+    searchBar3 = [(WFParameterValuePickerViewController *)self searchBar];
+    [searchBar3 setSearchBarStyle:2];
 
-    v17 = [(WFParameterValuePickerViewController *)self searchBar];
-    [v17 setAutocorrectionType:1];
+    searchBar4 = [(WFParameterValuePickerViewController *)self searchBar];
+    [searchBar4 setAutocorrectionType:1];
 
-    v18 = [(WFParameterValuePickerViewController *)self searchBar];
-    [v18 setSearchBarStyle:2];
+    searchBar5 = [(WFParameterValuePickerViewController *)self searchBar];
+    [searchBar5 setSearchBarStyle:2];
 
     v20 = WFLocalizedString(@"Search");
-    v19 = [(WFParameterValuePickerViewController *)self searchBar];
-    [v19 setPlaceholder:v20];
+    searchBar6 = [(WFParameterValuePickerViewController *)self searchBar];
+    [searchBar6 setPlaceholder:v20];
 
-    v3 = v20;
+    searchController = v20;
     goto LABEL_9;
   }
 }
 
-- (void)setCustomPrompt:(id)a3
+- (void)setCustomPrompt:(id)prompt
 {
-  v4 = a3;
+  promptCopy = prompt;
   v5 = self->_customPrompt;
-  v6 = v4;
+  v6 = promptCopy;
   v10 = v6;
   if (v5 == v6)
   {
@@ -1988,11 +1988,11 @@ LABEL_9:
 LABEL_10:
 }
 
-- (void)setDefaultPrompt:(id)a3
+- (void)setDefaultPrompt:(id)prompt
 {
-  v4 = a3;
+  promptCopy = prompt;
   v5 = self->_defaultPrompt;
-  v6 = v4;
+  v6 = promptCopy;
   v10 = v6;
   if (v5 == v6)
   {
@@ -2026,11 +2026,11 @@ LABEL_10:
 LABEL_10:
 }
 
-- (void)setShowsCancelButton:(BOOL)a3
+- (void)setShowsCancelButton:(BOOL)button
 {
-  if (self->_showsCancelButton != a3)
+  if (self->_showsCancelButton != button)
   {
-    self->_showsCancelButton = a3;
+    self->_showsCancelButton = button;
     if ([(WFParameterValuePickerViewController *)self isViewLoaded])
     {
 
@@ -2039,11 +2039,11 @@ LABEL_10:
   }
 }
 
-- (void)setShowsPrompt:(BOOL)a3
+- (void)setShowsPrompt:(BOOL)prompt
 {
-  if (self->_showsPrompt != a3)
+  if (self->_showsPrompt != prompt)
   {
-    self->_showsPrompt = a3;
+    self->_showsPrompt = prompt;
     if ([(WFParameterValuePickerViewController *)self isViewLoaded])
     {
 
@@ -2071,13 +2071,13 @@ LABEL_10:
 {
   if (!self->_deselectAllBarButtonItem)
   {
-    v3 = [(WFParameterValuePickerViewController *)self deselectAllButtonTitle];
+    deselectAllButtonTitle = [(WFParameterValuePickerViewController *)self deselectAllButtonTitle];
 
-    if (v3)
+    if (deselectAllButtonTitle)
     {
       v4 = objc_alloc(MEMORY[0x277D751E0]);
-      v5 = [(WFParameterValuePickerViewController *)self deselectAllButtonTitle];
-      v6 = [v4 initWithTitle:v5 style:0 target:self action:sel_requestDeselectAllItems];
+      deselectAllButtonTitle2 = [(WFParameterValuePickerViewController *)self deselectAllButtonTitle];
+      v6 = [v4 initWithTitle:deselectAllButtonTitle2 style:0 target:self action:sel_requestDeselectAllItems];
       deselectAllBarButtonItem = self->_deselectAllBarButtonItem;
       self->_deselectAllBarButtonItem = v6;
     }
@@ -2092,13 +2092,13 @@ LABEL_10:
 {
   if (!self->_selectAllBarButtonItem)
   {
-    v3 = [(WFParameterValuePickerViewController *)self selectAllButtonTitle];
+    selectAllButtonTitle = [(WFParameterValuePickerViewController *)self selectAllButtonTitle];
 
-    if (v3)
+    if (selectAllButtonTitle)
     {
       v4 = objc_alloc(MEMORY[0x277D751E0]);
-      v5 = [(WFParameterValuePickerViewController *)self selectAllButtonTitle];
-      v6 = [v4 initWithTitle:v5 style:0 target:self action:sel_requestSelectAllItems];
+      selectAllButtonTitle2 = [(WFParameterValuePickerViewController *)self selectAllButtonTitle];
+      v6 = [v4 initWithTitle:selectAllButtonTitle2 style:0 target:self action:sel_requestSelectAllItems];
       selectAllBarButtonItem = self->_selectAllBarButtonItem;
       self->_selectAllBarButtonItem = v6;
     }
@@ -2113,13 +2113,13 @@ LABEL_10:
 {
   if (!self->_removeItemBarButtonItem)
   {
-    v3 = [(WFParameterValuePickerViewController *)self removeItemButtonTitle];
+    removeItemButtonTitle = [(WFParameterValuePickerViewController *)self removeItemButtonTitle];
 
-    if (v3)
+    if (removeItemButtonTitle)
     {
       v4 = objc_alloc(MEMORY[0x277D751E0]);
-      v5 = [(WFParameterValuePickerViewController *)self removeItemButtonTitle];
-      v6 = [v4 initWithTitle:v5 style:0 target:self action:sel_requestRemovingItem];
+      removeItemButtonTitle2 = [(WFParameterValuePickerViewController *)self removeItemButtonTitle];
+      v6 = [v4 initWithTitle:removeItemButtonTitle2 style:0 target:self action:sel_requestRemovingItem];
       removeItemBarButtonItem = self->_removeItemBarButtonItem;
       self->_removeItemBarButtonItem = v6;
     }
@@ -2145,25 +2145,25 @@ LABEL_10:
   return doneBarButtonItem;
 }
 
-- (void)setVariableUIDelegate:(id)a3
+- (void)setVariableUIDelegate:(id)delegate
 {
-  v4 = a3;
-  objc_storeWeak(&self->_variableUIDelegate, v4);
-  v5 = [(WFParameterValuePickerViewController *)self dataSource];
-  [v5 setVariableUIDelegate:v4];
+  delegateCopy = delegate;
+  objc_storeWeak(&self->_variableUIDelegate, delegateCopy);
+  dataSource = [(WFParameterValuePickerViewController *)self dataSource];
+  [dataSource setVariableUIDelegate:delegateCopy];
 }
 
-- (void)setVariableProvider:(id)a3
+- (void)setVariableProvider:(id)provider
 {
-  v4 = a3;
-  objc_storeWeak(&self->_variableProvider, v4);
-  v5 = [(WFParameterValuePickerViewController *)self dataSource];
-  [v5 setVariableProvider:v4];
+  providerCopy = provider;
+  objc_storeWeak(&self->_variableProvider, providerCopy);
+  dataSource = [(WFParameterValuePickerViewController *)self dataSource];
+  [dataSource setVariableProvider:providerCopy];
 }
 
-- (void)setDeselectAllButtonTitle:(id)a3
+- (void)setDeselectAllButtonTitle:(id)title
 {
-  v4 = [a3 copy];
+  v4 = [title copy];
   deselectAllButtonTitle = self->_deselectAllButtonTitle;
   self->_deselectAllButtonTitle = v4;
 
@@ -2177,9 +2177,9 @@ LABEL_10:
   }
 }
 
-- (void)setSelectAllButtonTitle:(id)a3
+- (void)setSelectAllButtonTitle:(id)title
 {
-  v4 = [a3 copy];
+  v4 = [title copy];
   selectAllButtonTitle = self->_selectAllButtonTitle;
   self->_selectAllButtonTitle = v4;
 
@@ -2193,9 +2193,9 @@ LABEL_10:
   }
 }
 
-- (void)setRemoveItemButtonTitle:(id)a3
+- (void)setRemoveItemButtonTitle:(id)title
 {
-  v4 = [a3 copy];
+  v4 = [title copy];
   removeItemButtonTitle = self->_removeItemButtonTitle;
   self->_removeItemButtonTitle = v4;
 
@@ -2209,22 +2209,22 @@ LABEL_10:
   }
 }
 
-- (void)setAllowsMultipleSelection:(BOOL)a3
+- (void)setAllowsMultipleSelection:(BOOL)selection
 {
-  v3 = a3;
-  self->_allowsMultipleSelection = a3;
+  selectionCopy = selection;
+  self->_allowsMultipleSelection = selection;
   if ([(WFParameterValuePickerViewController *)self isViewLoaded])
   {
-    v5 = [(WFParameterValuePickerViewController *)self tableView];
-    [v5 setAllowsMultipleSelection:v3];
+    tableView = [(WFParameterValuePickerViewController *)self tableView];
+    [tableView setAllowsMultipleSelection:selectionCopy];
 
     [(WFParameterValuePickerViewController *)self reloadNavigationBarButtonItems];
   }
 }
 
-- (void)setNoOptionAvailableTitle:(id)a3
+- (void)setNoOptionAvailableTitle:(id)title
 {
-  v4 = [a3 copy];
+  v4 = [title copy];
   noOptionAvailableTitle = self->_noOptionAvailableTitle;
   self->_noOptionAvailableTitle = v4;
 
@@ -2235,14 +2235,14 @@ LABEL_10:
   }
 }
 
-- (WFParameterValuePickerViewController)initWithParameter:(id)a3 widgetFamily:(int64_t)a4 allowsVariables:(BOOL)a5 initialCollection:(id)a6 currentState:(id)a7 delegate:(id)a8
+- (WFParameterValuePickerViewController)initWithParameter:(id)parameter widgetFamily:(int64_t)family allowsVariables:(BOOL)variables initialCollection:(id)collection currentState:(id)state delegate:(id)delegate
 {
-  v11 = a5;
-  v15 = a3;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  if ([v15 wf_usesGroupTableViewStyle])
+  variablesCopy = variables;
+  parameterCopy = parameter;
+  collectionCopy = collection;
+  stateCopy = state;
+  delegateCopy = delegate;
+  if ([parameterCopy wf_usesGroupTableViewStyle])
   {
     v19 = 2;
   }
@@ -2258,30 +2258,30 @@ LABEL_10:
   v21 = v20;
   if (v20)
   {
-    objc_storeStrong(&v20->_parameter, a3);
-    v21->_widgetFamily = a4;
-    if (v11)
+    objc_storeStrong(&v20->_parameter, parameter);
+    v21->_widgetFamily = family;
+    if (variablesCopy)
     {
-      v22 = [v15 supportedVariableTypes];
+      supportedVariableTypes = [parameterCopy supportedVariableTypes];
     }
 
     else
     {
-      v22 = objc_opt_new();
+      supportedVariableTypes = objc_opt_new();
     }
 
     allowedVariableTypes = v21->_allowedVariableTypes;
-    v21->_allowedVariableTypes = v22;
+    v21->_allowedVariableTypes = supportedVariableTypes;
 
-    objc_storeWeak(&v21->_delegate, v18);
+    objc_storeWeak(&v21->_delegate, delegateCopy);
     v24 = objc_alloc(MEMORY[0x277D79F00]);
     v25 = [v24 initWithDelay:MEMORY[0x277D85CD0] queue:0.200000003];
     inputDebouncer = v21->_inputDebouncer;
     v21->_inputDebouncer = v25;
 
     [(WFDebouncer *)v21->_inputDebouncer addTarget:v21 action:sel_updateSearchResultsFromCurrentUserInput];
-    objc_storeStrong(&v21->_defaultResults, a6);
-    objc_storeStrong(&v21->_currentState, a7);
+    objc_storeStrong(&v21->_defaultResults, collection);
+    objc_storeStrong(&v21->_currentState, state);
     v27 = objc_opt_new();
     cachedResults = v21->_cachedResults;
     v21->_cachedResults = v27;
@@ -2290,9 +2290,9 @@ LABEL_10:
     cachedPrompts = v21->_cachedPrompts;
     v21->_cachedPrompts = v29;
 
-    if ([v15 isRangedSizeArray])
+    if ([parameterCopy isRangedSizeArray])
     {
-      v31 = [v15 arrayMaxCountForWidgetFamily:a4];
+      v31 = [parameterCopy arrayMaxCountForWidgetFamily:family];
     }
 
     else
@@ -2301,26 +2301,26 @@ LABEL_10:
     }
 
     v21->_maximumSelectableItemsCount = v31;
-    v21->_minimumSelectableItemsCount = [v15 allowsEmptyValue] ^ 1;
+    v21->_minimumSelectableItemsCount = [parameterCopy allowsEmptyValue] ^ 1;
     [(WFParameterValuePickerViewController *)v21 setupSearchController];
-    v32 = [(WFParameterValuePickerViewController *)v21 searchController];
-    v33 = [(WFParameterValuePickerViewController *)v21 navigationItem];
-    [v33 setSearchController:v32];
+    searchController = [(WFParameterValuePickerViewController *)v21 searchController];
+    navigationItem = [(WFParameterValuePickerViewController *)v21 navigationItem];
+    [navigationItem setSearchController:searchController];
 
     v34 = WFLocalizedString(@"Choose");
     [(WFParameterValuePickerViewController *)v21 setTitle:v34];
 
-    v35 = [(WFParameterValuePickerViewController *)v21 navigationItem];
-    [v35 setHidesSearchBarWhenScrolling:0];
+    navigationItem2 = [(WFParameterValuePickerViewController *)v21 navigationItem];
+    [navigationItem2 setHidesSearchBarWhenScrolling:0];
 
-    v36 = [(WFParameterValuePickerViewController *)v21 parameter];
-    v37 = [v36 wf_displayLocalizedPrompt];
-    [(WFParameterValuePickerViewController *)v21 setDefaultPrompt:v37];
+    parameter = [(WFParameterValuePickerViewController *)v21 parameter];
+    wf_displayLocalizedPrompt = [parameter wf_displayLocalizedPrompt];
+    [(WFParameterValuePickerViewController *)v21 setDefaultPrompt:wf_displayLocalizedPrompt];
 
     v21->_showsPrompt = 1;
     v21->_showsCancelButton = 1;
     [(WFParameterValuePickerViewController *)v21 performSearchWithUserInput:0];
-    [v15 addEventObserver:v21];
+    [parameterCopy addEventObserver:v21];
     v38 = v21;
   }
 

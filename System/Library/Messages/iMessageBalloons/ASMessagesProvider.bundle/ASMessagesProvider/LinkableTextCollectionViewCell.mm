@@ -1,11 +1,11 @@
 @interface LinkableTextCollectionViewCell
-- (_TtC18ASMessagesProvider30LinkableTextCollectionViewCell)initWithCoder:(id)a3;
+- (_TtC18ASMessagesProvider30LinkableTextCollectionViewCell)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 @end
 
 @implementation LinkableTextCollectionViewCell
 
-- (_TtC18ASMessagesProvider30LinkableTextCollectionViewCell)initWithCoder:(id)a3
+- (_TtC18ASMessagesProvider30LinkableTextCollectionViewCell)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC18ASMessagesProvider30LinkableTextCollectionViewCell_itemLayoutContext;
   v5 = sub_75C840();
@@ -20,7 +20,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_3B4FC8();
 }
 

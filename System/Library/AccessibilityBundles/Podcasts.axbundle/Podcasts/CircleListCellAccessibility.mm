@@ -1,17 +1,17 @@
 @interface CircleListCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 - (unint64_t)accessibilityTraits;
 @end
 
 @implementation CircleListCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"ShelfKitCollectionViews.CircleListCell" hasSwiftField:@"ordinalLabel" withSwiftType:"DynamicTypeLabel"];
-  [v3 validateClass:@"ShelfKitCollectionViews.CircleListCell" hasSwiftField:@"titleLabel" withSwiftType:"DynamicTypeLabel"];
-  [v3 validateClass:@"ShelfKitCollectionViews.CircleListCell" hasSwiftField:@"subtitleLabel" withSwiftType:"DynamicTypeLabel"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"ShelfKitCollectionViews.CircleListCell" hasSwiftField:@"ordinalLabel" withSwiftType:"DynamicTypeLabel"];
+  [validationsCopy validateClass:@"ShelfKitCollectionViews.CircleListCell" hasSwiftField:@"titleLabel" withSwiftType:"DynamicTypeLabel"];
+  [validationsCopy validateClass:@"ShelfKitCollectionViews.CircleListCell" hasSwiftField:@"subtitleLabel" withSwiftType:"DynamicTypeLabel"];
 }
 
 - (unint64_t)accessibilityTraits

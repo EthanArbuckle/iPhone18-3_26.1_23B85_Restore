@@ -1,13 +1,13 @@
 @interface GKAchievementIconView
 + (id)progressSource;
 + (id)progressSourceDetail;
-- (GKAchievementIconView)initWithFrame:(CGRect)a3;
-- (double)progressForAchievement:(id)a3;
-- (id)processProgressImage:(id)a3 forAchievement:(id)a4;
-- (id)progressIdentifierForAchievement:(id)a3;
+- (GKAchievementIconView)initWithFrame:(CGRect)frame;
+- (double)progressForAchievement:(id)achievement;
+- (id)processProgressImage:(id)image forAchievement:(id)achievement;
+- (id)progressIdentifierForAchievement:(id)achievement;
 - (void)configureImage;
-- (void)loadAndProcessAchievementProgressImageForAchievement:(id)a3 withHandler:(id)a4;
-- (void)setupForAchievement:(id)a3 localAchievement:(id)a4;
+- (void)loadAndProcessAchievementProgressImageForAchievement:(id)achievement withHandler:(id)handler;
+- (void)setupForAchievement:(id)achievement localAchievement:(id)localAchievement;
 @end
 
 @implementation GKAchievementIconView
@@ -54,81 +54,81 @@ uint64_t __45__GKAchievementIconView_progressSourceDetail__block_invoke()
   return MEMORY[0x2821F96F8](v0, v1);
 }
 
-- (GKAchievementIconView)initWithFrame:(CGRect)a3
+- (GKAchievementIconView)initWithFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = GKAchievementIconView;
-  return [(GKAchievementIconView *)&v4 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  return [(GKAchievementIconView *)&v4 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
 }
 
-- (void)setupForAchievement:(id)a3 localAchievement:(id)a4
+- (void)setupForAchievement:(id)achievement localAchievement:(id)localAchievement
 {
   v11 = self->_achievement;
   v7 = self->_localAchievement;
-  v8 = a4;
-  v9 = a3;
-  [(GKAchievementIconView *)self setAchievement:v9];
-  [(GKAchievementIconView *)self setLocalAchievement:v8];
+  localAchievementCopy = localAchievement;
+  achievementCopy = achievement;
+  [(GKAchievementIconView *)self setAchievement:achievementCopy];
+  [(GKAchievementIconView *)self setLocalAchievement:localAchievementCopy];
 
-  if (v11 != v9 || v7 != v8)
+  if (v11 != achievementCopy || v7 != localAchievementCopy)
   {
     [(GKAchievementIconView *)self configureImage];
   }
 }
 
-- (double)progressForAchievement:(id)a3
+- (double)progressForAchievement:(id)achievement
 {
-  v3 = a3;
-  v4 = [v3 internal];
-  v5 = [v4 isHidden];
+  achievementCopy = achievement;
+  internal = [achievementCopy internal];
+  isHidden = [internal isHidden];
 
   v6 = 0.0;
-  if ((v5 & 1) == 0)
+  if ((isHidden & 1) == 0)
   {
-    [v3 percentComplete];
+    [achievementCopy percentComplete];
     v6 = v7 / 100.0;
   }
 
   return v6;
 }
 
-- (id)processProgressImage:(id)a3 forAchievement:(id)a4
+- (id)processProgressImage:(id)image forAchievement:(id)achievement
 {
-  v6 = a4;
-  v7 = a3;
-  [(GKAchievementIconView *)self progressForAchievement:v6];
-  v9 = [v7 _gkImageWithProgress:v6 achievement:-[GKAchievementIconView isDetail](self isDetail:{"isDetail"), v8}];
+  achievementCopy = achievement;
+  imageCopy = image;
+  [(GKAchievementIconView *)self progressForAchievement:achievementCopy];
+  v9 = [imageCopy _gkImageWithProgress:achievementCopy achievement:-[GKAchievementIconView isDetail](self isDetail:{"isDetail"), v8}];
 
   return v9;
 }
 
-- (id)progressIdentifierForAchievement:(id)a3
+- (id)progressIdentifierForAchievement:(id)achievement
 {
-  v4 = a3;
-  [(GKAchievementIconView *)self progressForAchievement:v4];
+  achievementCopy = achievement;
+  [(GKAchievementIconView *)self progressForAchievement:achievementCopy];
   v6 = v5;
   v7 = MEMORY[0x277CCACA8];
-  v8 = [v4 identifier];
+  identifier = [achievementCopy identifier];
 
-  v9 = [v7 stringWithFormat:@"%@~%g", v8, v6];
+  v9 = [v7 stringWithFormat:@"%@~%g", identifier, v6];
 
   return v9;
 }
 
-- (void)loadAndProcessAchievementProgressImageForAchievement:(id)a3 withHandler:(id)a4
+- (void)loadAndProcessAchievementProgressImageForAchievement:(id)achievement withHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277D0C8C8] sharedTheme];
-  v9 = v8;
+  achievementCopy = achievement;
+  handlerCopy = handler;
+  mEMORY[0x277D0C8C8] = [MEMORY[0x277D0C8C8] sharedTheme];
+  v9 = mEMORY[0x277D0C8C8];
   if (self->_isDetail)
   {
-    [v8 untreatedAchievementImageDetailSource];
+    [mEMORY[0x277D0C8C8] untreatedAchievementImageDetailSource];
   }
 
   else
   {
-    [v8 untreatedAchievementImageSource];
+    [mEMORY[0x277D0C8C8] untreatedAchievementImageSource];
   }
   v10 = ;
   aBlock[0] = MEMORY[0x277D85DD0];
@@ -139,8 +139,8 @@ uint64_t __45__GKAchievementIconView_progressSourceDetail__block_invoke()
   v24 = v9;
   v11 = v10;
   v25 = v11;
-  v26 = v7;
-  v12 = v7;
+  v26 = handlerCopy;
+  v12 = handlerCopy;
   v13 = v9;
   v14 = _Block_copy(aBlock);
   v15 = dispatch_get_global_queue(0, 0);
@@ -149,10 +149,10 @@ uint64_t __45__GKAchievementIconView_progressSourceDetail__block_invoke()
   block[2] = __90__GKAchievementIconView_loadAndProcessAchievementProgressImageForAchievement_withHandler___block_invoke_3;
   block[3] = &unk_27966B380;
   v20 = v11;
-  v21 = v6;
+  v21 = achievementCopy;
   v22 = v14;
   v16 = v14;
-  v17 = v6;
+  v17 = achievementCopy;
   v18 = v11;
   dispatch_async(v15, block);
 }
@@ -245,8 +245,8 @@ void __90__GKAchievementIconView_loadAndProcessAchievementProgressImageForAchiev
 - (void)configureImage
 {
   p_localAchievement = &self->_localAchievement;
-  v4 = [(GKAchievement *)self->_localAchievement internal];
-  if (([v4 isHidden] & 1) == 0)
+  internal = [(GKAchievement *)self->_localAchievement internal];
+  if (([internal isHidden] & 1) == 0)
   {
     p_localAchievement = &self->_achievement;
   }
@@ -281,7 +281,7 @@ void __90__GKAchievementIconView_loadAndProcessAchievementProgressImageForAchiev
     v11[2] = __39__GKAchievementIconView_configureImage__block_invoke;
     v11[3] = &unk_27966D4C8;
     v12 = v5;
-    v13 = self;
+    selfCopy = self;
     [(GKAchievementIconView *)self loadAndProcessAchievementProgressImageForAchievement:v12 withHandler:v11];
   }
 }

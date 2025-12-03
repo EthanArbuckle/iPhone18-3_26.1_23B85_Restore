@@ -1,81 +1,81 @@
 @interface MFComposeRecipientView
-- (BOOL)containsAddress:(id)a3;
+- (BOOL)containsAddress:(id)address;
 - (BOOL)finishEnteringRecipient;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
 - (BOOL)hasContent;
-- (BOOL)keyboardInput:(id)a3 shouldInsertText:(id)a4 isMarkedText:(BOOL)a5;
-- (BOOL)keyboardInputShouldDelete:(id)a3;
-- (BOOL)mf_chooseSelectedSearchResultForTextField:(id)a3;
-- (BOOL)mf_presentSearchResultsForTextField:(id)a3;
-- (BOOL)mf_textFieldShowingSearchResults:(id)a3;
-- (BOOL)textFieldShouldReturn:(id)a3;
-- (MFComposeRecipientView)initWithFrame:(CGRect)a3;
+- (BOOL)keyboardInput:(id)input shouldInsertText:(id)text isMarkedText:(BOOL)markedText;
+- (BOOL)keyboardInputShouldDelete:(id)delete;
+- (BOOL)mf_chooseSelectedSearchResultForTextField:(id)field;
+- (BOOL)mf_presentSearchResultsForTextField:(id)field;
+- (BOOL)mf_textFieldShowingSearchResults:(id)results;
+- (BOOL)textFieldShouldReturn:(id)return;
+- (MFComposeRecipientView)initWithFrame:(CGRect)frame;
 - (MFComposeRecipientViewDelegate)delegate;
 - (NSString)text;
 - (UIFont)baseFont;
 - (double)_topRowTextWidth;
 - (double)offsetForRowWithTextField;
-- (double)textFieldOffsetForNumberOfRowsToScroll:(unint64_t)a3 numberOfRowsAboveField:(int64_t)a4;
+- (double)textFieldOffsetForNumberOfRowsToScroll:(unint64_t)scroll numberOfRowsAboveField:(int64_t)field;
 - (int64_t)numberOfRowsOfTextInField;
-- (unint64_t)_addressAtomPresentationOptionsForRecipient:(id)a3;
-- (void)_addRecord:(void *)a3 identifier:(int)a4;
-- (void)_addUncommentedAddress:(id)a3;
+- (unint64_t)_addressAtomPresentationOptionsForRecipient:(id)recipient;
+- (void)_addRecord:(void *)record identifier:(int)identifier;
+- (void)_addUncommentedAddress:(id)address;
 - (void)_cancelDelayTimer;
-- (void)_delayTimerFired:(id)a3;
+- (void)_delayTimerFired:(id)fired;
 - (void)_deleteSelectedAtom;
 - (void)_deselectAtom;
-- (void)_reflowAnimated:(BOOL)a3;
-- (void)_removeAddressAtomPresentationOptionsForRecipient:(id)a3;
+- (void)_reflowAnimated:(BOOL)animated;
+- (void)_removeAddressAtomPresentationOptionsForRecipient:(id)recipient;
 - (void)_removeAllRecipients;
-- (void)_removeUncommentedAddress:(id)a3;
+- (void)_removeUncommentedAddress:(id)address;
 - (void)_setNeedsLayoutConstraintUpdate;
 - (void)_setNeedsReflow;
-- (void)_tapGestureRecognized:(id)a3;
-- (void)_updateLayoutConstraintsAndGetNumberOfRows:(unint64_t *)a3 textFieldWillBeLastRow:(BOOL *)a4;
-- (void)addAddress:(id)a3;
-- (void)addButtonClicked:(id)a3;
-- (void)addRecipient:(id)a3;
-- (void)addRecipient:(id)a3 index:(unint64_t)a4 animate:(BOOL)a5;
-- (void)addRecord:(void *)a3 property:(int)a4 identifier:(int)a5;
+- (void)_tapGestureRecognized:(id)recognized;
+- (void)_updateLayoutConstraintsAndGetNumberOfRows:(unint64_t *)rows textFieldWillBeLastRow:(BOOL *)row;
+- (void)addAddress:(id)address;
+- (void)addButtonClicked:(id)clicked;
+- (void)addRecipient:(id)recipient;
+- (void)addRecipient:(id)recipient index:(unint64_t)index animate:(BOOL)animate;
+- (void)addRecord:(void *)record property:(int)property identifier:(int)identifier;
 - (void)clearAllAddressAtomPresentationOptions;
-- (void)composeRecipientAtomSelectNext:(id)a3;
-- (void)composeRecipientAtomSelectPrevious:(id)a3;
-- (void)composeRecipientAtomShowPersonCard:(id)a3;
+- (void)composeRecipientAtomSelectNext:(id)next;
+- (void)composeRecipientAtomSelectPrevious:(id)previous;
+- (void)composeRecipientAtomShowPersonCard:(id)card;
 - (void)dealloc;
-- (void)deselectComposeRecipientAtom:(id)a3;
+- (void)deselectComposeRecipientAtom:(id)atom;
 - (void)didMoveToSuperview;
-- (void)didTapShowCorecipientsForIndicatorAtom:(id)a3 recipients:(id)a4;
-- (void)keyboardInputChangedSelection:(id)a3;
-- (void)mf_dismissSearchResults:(id)a3;
-- (void)mf_recipientTextField:(id)a3 didAddRecipientAddress:(id)a4;
-- (void)mf_selectNextSearchResultForTextField:(id)a3;
-- (void)mf_selectPreviousSearchResultForTextField:(id)a3;
+- (void)didTapShowCorecipientsForIndicatorAtom:(id)atom recipients:(id)recipients;
+- (void)keyboardInputChangedSelection:(id)selection;
+- (void)mf_dismissSearchResults:(id)results;
+- (void)mf_recipientTextField:(id)field didAddRecipientAddress:(id)address;
+- (void)mf_selectNextSearchResultForTextField:(id)field;
+- (void)mf_selectPreviousSearchResultForTextField:(id)field;
 - (void)refreshPreferredContentSize;
-- (void)removeRecipient:(id)a3;
-- (void)selectComposeRecipientAtom:(id)a3;
-- (void)setAddressAtomPresentationOptions:(unint64_t)a3 forRecipient:(id)a4;
-- (void)setAddresses:(id)a3;
-- (void)setBaseFont:(id)a3;
-- (void)setEditable:(BOOL)a3;
-- (void)setExpanded:(BOOL)a3;
-- (void)setLabel:(id)a3;
-- (void)setPlaceholderRecipient:(id)a3;
-- (void)setProperty:(int)a3;
-- (void)setSeparatorHidden:(BOOL)a3;
-- (void)showCorecipientIndicator:(BOOL)a3 withCorecipients:(id)a4 animated:(BOOL)a5;
-- (void)textChanged:(id)a3;
-- (void)textFieldDidBecomeFirstResponder:(id)a3;
-- (void)textFieldDidResignFirstResponder:(id)a3;
+- (void)removeRecipient:(id)recipient;
+- (void)selectComposeRecipientAtom:(id)atom;
+- (void)setAddressAtomPresentationOptions:(unint64_t)options forRecipient:(id)recipient;
+- (void)setAddresses:(id)addresses;
+- (void)setBaseFont:(id)font;
+- (void)setEditable:(BOOL)editable;
+- (void)setExpanded:(BOOL)expanded;
+- (void)setLabel:(id)label;
+- (void)setPlaceholderRecipient:(id)recipient;
+- (void)setProperty:(int)property;
+- (void)setSeparatorHidden:(BOOL)hidden;
+- (void)showCorecipientIndicator:(BOOL)indicator withCorecipients:(id)corecipients animated:(BOOL)animated;
+- (void)textChanged:(id)changed;
+- (void)textFieldDidBecomeFirstResponder:(id)responder;
+- (void)textFieldDidResignFirstResponder:(id)responder;
 @end
 
 @implementation MFComposeRecipientView
 
-- (MFComposeRecipientView)initWithFrame:(CGRect)a3
+- (MFComposeRecipientView)initWithFrame:(CGRect)frame
 {
-  width = a3.size.width;
+  width = frame.size.width;
   v27.receiver = self;
   v27.super_class = MFComposeRecipientView;
-  v4 = [(MFComposeHeaderView *)&v27 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v4 = [(MFComposeHeaderView *)&v27 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v4)
   {
     v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -99,8 +99,8 @@
     [(_MFMailRecipientTextField *)v4->_textField setDelegate:v4];
     [(_MFMailRecipientTextField *)v4->_textField setBorderStyle:0];
     v13 = v4->_textField;
-    v14 = [(MFComposeRecipientView *)v4 baseFont];
-    [(_MFMailRecipientTextField *)v13 setFont:v14];
+    baseFont = [(MFComposeRecipientView *)v4 baseFont];
+    [(_MFMailRecipientTextField *)v13 setFont:baseFont];
 
     [(_MFMailRecipientTextField *)v4->_textField setForceEnableDictation:1];
     [(_MFMailRecipientTextField *)v4->_textField setKeyboardType:7];
@@ -108,8 +108,8 @@
     [(_MFMailRecipientTextField *)v4->_textField setAutocorrectionType:1];
     [(MFComposeRecipientView *)v4 addSubview:v4->_textField];
     [(MFComposeRecipientView *)v4 setProperty:*MEMORY[0x1E698A148]];
-    v15 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v15 addObserver:v4 selector:sel_textChanged_ name:*MEMORY[0x1E69DE5C0] object:v4->_textField];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v4 selector:sel_textChanged_ name:*MEMORY[0x1E69DE5C0] object:v4->_textField];
     v16 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:v4 action:sel__tapGestureRecognized_];
     tapGestureRecognizer = v4->_tapGestureRecognizer;
     v4->_tapGestureRecognizer = v16;
@@ -165,25 +165,25 @@
   return WeakRetained;
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
-  v4 = a3;
+  labelCopy = label;
   v5.receiver = self;
   v5.super_class = MFComposeRecipientView;
-  [(MFComposeHeaderView *)&v5 setLabel:v4];
+  [(MFComposeHeaderView *)&v5 setLabel:labelCopy];
   [(MFComposeRecipientView *)self _setNeedsReflow];
 }
 
-- (void)setEditable:(BOOL)a3
+- (void)setEditable:(BOOL)editable
 {
-  if (self->_editable != a3)
+  if (self->_editable != editable)
   {
-    v3 = a3;
-    self->_editable = a3;
-    v5 = [(NSMutableDictionary *)self->_atoms allValues];
-    [v5 makeObjectsPerformSelector:sel_removeFromSuperview];
+    editableCopy = editable;
+    self->_editable = editable;
+    allValues = [(NSMutableDictionary *)self->_atoms allValues];
+    [allValues makeObjectsPerformSelector:sel_removeFromSuperview];
 
-    if (v3)
+    if (editableCopy)
     {
       [(MFComposeRecipientView *)self clearText];
     }
@@ -192,20 +192,20 @@
   }
 }
 
-- (void)setExpanded:(BOOL)a3
+- (void)setExpanded:(BOOL)expanded
 {
-  if (self->_expanded != a3)
+  if (self->_expanded != expanded)
   {
-    self->_expanded = a3;
+    self->_expanded = expanded;
     [(MFComposeRecipientView *)self _setNeedsReflow];
   }
 }
 
 - (NSString)text
 {
-  v2 = [(_MFMailRecipientTextField *)self->_textField searchText];
-  v3 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
-  v4 = [v2 stringByTrimmingCharactersInSet:v3];
+  searchText = [(_MFMailRecipientTextField *)self->_textField searchText];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+  v4 = [searchText stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
   return v4;
 }
@@ -228,46 +228,46 @@
 
 - (BOOL)hasContent
 {
-  v3 = [(MFComposeRecipientView *)self recipients];
-  if ([v3 count])
+  recipients = [(MFComposeRecipientView *)self recipients];
+  if ([recipients count])
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(MFComposeRecipientView *)self text];
-    v4 = [v5 length] != 0;
+    text = [(MFComposeRecipientView *)self text];
+    v4 = [text length] != 0;
   }
 
   return v4;
 }
 
-- (void)setProperty:(int)a3
+- (void)setProperty:(int)property
 {
   v4 = MEMORY[0x1E695DEC8];
-  v6 = [MEMORY[0x1E696AD98] numberWithInt:*&a3];
+  v6 = [MEMORY[0x1E696AD98] numberWithInt:*&property];
   v5 = [v4 arrayWithObject:?];
   [(MFComposeRecipientView *)self setProperties:v5];
 }
 
-- (void)setAddresses:(id)a3
+- (void)setAddresses:(id)addresses
 {
   v29 = *MEMORY[0x1E69E9840];
-  v21 = a3;
+  addressesCopy = addresses;
   [(MFComposeRecipientView *)self layoutIfNeeded];
   v20 = self->_recipients;
   [(MFComposeRecipientView *)self _removeAllRecipients];
-  v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v21, "count")}];
+  v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(addressesCopy, "count")}];
   recipients = self->_recipients;
   self->_recipients = v4;
 
-  v23 = [(MFComposeRecipientView *)self delegate];
+  delegate = [(MFComposeRecipientView *)self delegate];
   v26 = 0u;
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  obj = v21;
+  obj = addressesCopy;
   v6 = [obj countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v6)
   {
@@ -282,24 +282,24 @@
         }
 
         v9 = *(*(&v24 + 1) + 8 * i);
-        v10 = [v23 composeRecipientView:self composeRecipientForAddress:v9];
+        v10 = [delegate composeRecipientView:self composeRecipientForAddress:v9];
         if (([(NSMutableArray *)self->_recipients containsObject:v10]& 1) == 0)
         {
           v11 = v9;
-          v12 = [v11 emailAddressValue];
-          v13 = [v12 simpleAddress];
-          v14 = v13;
-          if (v13)
+          emailAddressValue = [v11 emailAddressValue];
+          simpleAddress = [emailAddressValue simpleAddress];
+          v14 = simpleAddress;
+          if (simpleAddress)
           {
-            v15 = v13;
+            stringValue = simpleAddress;
           }
 
           else
           {
-            v15 = [v11 stringValue];
+            stringValue = [v11 stringValue];
           }
 
-          v16 = v15;
+          v16 = stringValue;
 
           [(MFComposeRecipientView *)self _addUncommentedAddress:v16];
           [(NSMutableArray *)self->_recipients addObject:v10];
@@ -341,25 +341,25 @@
   [(MFComposeRecipientView *)self _setNeedsReflow];
 }
 
-- (void)removeRecipient:(id)a3
+- (void)removeRecipient:(id)recipient
 {
-  v4 = a3;
+  recipientCopy = recipient;
   recipients = self->_recipients;
   if (recipients)
   {
-    v16 = v4;
+    v16 = recipientCopy;
     v6 = [(NSMutableArray *)recipients indexOfObject:?];
     if (v6 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v7 = [(MFComposeRecipientView *)self firstResponder];
-      v8 = [v7 undoManager];
+      firstResponder = [(MFComposeRecipientView *)self firstResponder];
+      undoManager = [firstResponder undoManager];
 
-      [v8 registerUndoWithTarget:self selector:sel_addRecipient_ object:v16];
-      if (([v8 isUndoing] & 1) == 0)
+      [undoManager registerUndoWithTarget:self selector:sel_addRecipient_ object:v16];
+      if (([undoManager isUndoing] & 1) == 0)
       {
         v9 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
         v10 = [v9 localizedStringForKey:@"ADDRESS_DELETION" value:&stru_1F3CF3758 table:@"Main"];
-        [v8 setActionName:v10];
+        [undoManager setActionName:v10];
       }
 
       v11 = v16;
@@ -368,44 +368,44 @@
       [v12 removeFromSuperview];
 
       [(NSMutableDictionary *)self->_atoms removeObjectForKey:v11];
-      v13 = [v11 uncommentedAddress];
-      [(MFComposeRecipientView *)self _removeUncommentedAddress:v13];
+      uncommentedAddress = [v11 uncommentedAddress];
+      [(MFComposeRecipientView *)self _removeUncommentedAddress:uncommentedAddress];
 
       [(NSMutableArray *)self->_recipients removeObjectAtIndex:v6];
-      v14 = [(MFComposeRecipientView *)self delegate];
+      delegate = [(MFComposeRecipientView *)self delegate];
       if (objc_opt_respondsToSelector())
       {
-        [v14 composeRecipientView:self didRemoveRecipient:v11];
+        [delegate composeRecipientView:self didRemoveRecipient:v11];
       }
 
       [(MFComposeRecipientView *)self _setNeedsReflow];
-      v15 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v15 postNotificationName:@"MFComposeRecipientTextViewDidChangeNotification" object:self userInfo:0];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter postNotificationName:@"MFComposeRecipientTextViewDidChangeNotification" object:self userInfo:0];
     }
   }
 
   MEMORY[0x1EEE66BE0]();
 }
 
-- (void)addRecipient:(id)a3
+- (void)addRecipient:(id)recipient
 {
-  v4 = a3;
-  [(MFComposeRecipientView *)self addRecipient:v4 index:[(NSMutableArray *)self->_recipients count] animate:0];
+  recipientCopy = recipient;
+  [(MFComposeRecipientView *)self addRecipient:recipientCopy index:[(NSMutableArray *)self->_recipients count] animate:0];
 }
 
-- (void)addRecipient:(id)a3 index:(unint64_t)a4 animate:(BOOL)a5
+- (void)addRecipient:(id)recipient index:(unint64_t)index animate:(BOOL)animate
 {
-  v5 = a5;
+  animateCopy = animate;
   v26 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  if ([v8 isGroup])
+  recipientCopy = recipient;
+  if ([recipientCopy isGroup])
   {
     v22 = 0u;
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v9 = [v8 children];
-    v10 = [v9 countByEnumeratingWithState:&v20 objects:v25 count:16];
+    children = [recipientCopy children];
+    v10 = [children countByEnumeratingWithState:&v20 objects:v25 count:16];
     if (v10)
     {
       v11 = *v21;
@@ -415,13 +415,13 @@
         {
           if (*v21 != v11)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(children);
           }
 
-          [(MFComposeRecipientView *)self addRecipient:*(*(&v20 + 1) + 8 * i) index:a4 animate:v5];
+          [(MFComposeRecipientView *)self addRecipient:*(*(&v20 + 1) + 8 * i) index:index animate:animateCopy];
         }
 
-        v10 = [v9 countByEnumeratingWithState:&v20 objects:v25 count:16];
+        v10 = [children countByEnumeratingWithState:&v20 objects:v25 count:16];
       }
 
       while (v10);
@@ -432,44 +432,44 @@ LABEL_24:
     goto LABEL_25;
   }
 
-  if (v8)
+  if (recipientCopy)
   {
-    if (([(NSMutableArray *)self->_recipients containsObject:v8]& 1) == 0)
+    if (([(NSMutableArray *)self->_recipients containsObject:recipientCopy]& 1) == 0)
     {
-      [(NSMutableArray *)self->_recipients insertObject:v8 atIndex:a4];
+      [(NSMutableArray *)self->_recipients insertObject:recipientCopy atIndex:index];
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        v13 = [(MFComposeRecipientView *)self firstResponder];
-        v14 = [v13 undoManager];
+        firstResponder = [(MFComposeRecipientView *)self firstResponder];
+        undoManager = [firstResponder undoManager];
 
-        [v14 registerUndoWithTarget:self selector:sel_removeRecipient_ object:v8];
-        if (([v14 isUndoing] & 1) == 0)
+        [undoManager registerUndoWithTarget:self selector:sel_removeRecipient_ object:recipientCopy];
+        if (([undoManager isUndoing] & 1) == 0)
         {
           v15 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
           v16 = [v15 localizedStringForKey:@"ADDRESS_ADDITION" value:&stru_1F3CF3758 table:@"Main"];
-          [v14 setActionName:v16];
+          [undoManager setActionName:v16];
         }
 
-        v17 = [v8 uncommentedAddress];
-        [(MFComposeRecipientView *)self _addUncommentedAddress:v17];
+        uncommentedAddress = [recipientCopy uncommentedAddress];
+        [(MFComposeRecipientView *)self _addUncommentedAddress:uncommentedAddress];
 
-        v18 = [(MFComposeRecipientView *)self delegate];
+        delegate = [(MFComposeRecipientView *)self delegate];
         if (objc_opt_respondsToSelector())
         {
-          v24 = v8;
+          v24 = recipientCopy;
           v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v24 count:1];
-          [v18 composeRecipientView:self didAddRecipients:v19];
+          [delegate composeRecipientView:self didAddRecipients:v19];
         }
 
         else if (objc_opt_respondsToSelector())
         {
-          [v18 composeRecipientView:self didAddRecipient:v8];
+          [delegate composeRecipientView:self didAddRecipient:recipientCopy];
         }
       }
     }
 
-    if (v5)
+    if (animateCopy)
     {
       [(MFComposeRecipientView *)self _reflowAnimated:1];
     }
@@ -479,78 +479,78 @@ LABEL_24:
       [(MFComposeRecipientView *)self _setNeedsReflow];
     }
 
-    v9 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v9 postNotificationName:@"MFComposeRecipientTextViewDidChangeNotification" object:self userInfo:0];
+    children = [MEMORY[0x1E696AD88] defaultCenter];
+    [children postNotificationName:@"MFComposeRecipientTextViewDidChangeNotification" object:self userInfo:0];
     goto LABEL_24;
   }
 
 LABEL_25:
 }
 
-- (void)addAddress:(id)a3
+- (void)addAddress:(id)address
 {
-  v6 = a3;
+  addressCopy = address;
   WeakRetained = objc_loadWeakRetained(&self->super._delegate);
-  v5 = [WeakRetained composeRecipientView:self composeRecipientForAddress:v6];
+  v5 = [WeakRetained composeRecipientView:self composeRecipientForAddress:addressCopy];
 
   [(MFComposeRecipientView *)self addRecipient:v5];
 }
 
-- (void)_addRecord:(void *)a3 identifier:(int)a4
+- (void)_addRecord:(void *)record identifier:(int)identifier
 {
-  v4 = *&a4;
+  v4 = *&identifier;
   WeakRetained = objc_loadWeakRetained(&self->super._delegate);
-  v8 = [WeakRetained composeRecipientView:self composeRecipientForRecord:a3 identifier:v4];
+  v8 = [WeakRetained composeRecipientView:self composeRecipientForRecord:record identifier:v4];
 
   [(MFComposeRecipientView *)self addRecipient:v8];
 }
 
-- (void)addRecord:(void *)a3 property:(int)a4 identifier:(int)a5
+- (void)addRecord:(void *)record property:(int)property identifier:(int)identifier
 {
-  v5 = *&a5;
-  v6 = *&a4;
-  v10 = [(MFComposeRecipientView *)self delegate];
+  v5 = *&identifier;
+  v6 = *&property;
+  delegate = [(MFComposeRecipientView *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v9 = [v10 composeRecipientView:self composeRecipientForRecord:a3 property:v6 identifier:v5];
+    v9 = [delegate composeRecipientView:self composeRecipientForRecord:record property:v6 identifier:v5];
     [(MFComposeRecipientView *)self addRecipient:v9];
   }
 
   else
   {
-    [(MFComposeRecipientView *)self _addRecord:a3 identifier:v5];
+    [(MFComposeRecipientView *)self _addRecord:record identifier:v5];
   }
 }
 
-- (void)setPlaceholderRecipient:(id)a3
+- (void)setPlaceholderRecipient:(id)recipient
 {
-  v4 = a3;
+  recipientCopy = recipient;
   if (self->_placeholderRecipient)
   {
     atoms = self->_atoms;
-    v6 = [(MFComposeRecipientView *)self placeholderRecipient];
-    v7 = [(NSMutableDictionary *)atoms objectForKey:v6];
+    placeholderRecipient = [(MFComposeRecipientView *)self placeholderRecipient];
+    v7 = [(NSMutableDictionary *)atoms objectForKey:placeholderRecipient];
     [v7 removeFromSuperview];
 
     v8 = self->_atoms;
-    v9 = [(MFComposeRecipientView *)self placeholderRecipient];
-    [(NSMutableDictionary *)v8 removeObjectForKey:v9];
+    placeholderRecipient2 = [(MFComposeRecipientView *)self placeholderRecipient];
+    [(NSMutableDictionary *)v8 removeObjectForKey:placeholderRecipient2];
 
     recipients = self->_recipients;
-    v11 = [(MFComposeRecipientView *)self placeholderRecipient];
-    [(NSMutableArray *)recipients removeObject:v11];
+    placeholderRecipient3 = [(MFComposeRecipientView *)self placeholderRecipient];
+    [(NSMutableArray *)recipients removeObject:placeholderRecipient3];
   }
 
   placeholderRecipient = self->_placeholderRecipient;
-  self->_placeholderRecipient = v4;
+  self->_placeholderRecipient = recipientCopy;
 }
 
-- (void)setAddressAtomPresentationOptions:(unint64_t)a3 forRecipient:(id)a4
+- (void)setAddressAtomPresentationOptions:(unint64_t)options forRecipient:(id)recipient
 {
-  v6 = a4;
-  if (v6)
+  recipientCopy = recipient;
+  if (recipientCopy)
   {
-    key = v6;
+    key = recipientCopy;
     atomPresentationOptionsByRecipient = self->_atomPresentationOptionsByRecipient;
     if (!atomPresentationOptionsByRecipient)
     {
@@ -558,21 +558,21 @@ LABEL_25:
       self->_atomPresentationOptionsByRecipient = atomPresentationOptionsByRecipient;
     }
 
-    CFDictionarySetValue(atomPresentationOptionsByRecipient, key, a3);
+    CFDictionarySetValue(atomPresentationOptionsByRecipient, key, options);
     v8 = [(NSMutableDictionary *)self->_atoms objectForKey:key];
     v9 = v8;
     if (v8)
     {
-      [v8 setPresentationOptions:a3];
+      [v8 setPresentationOptions:options];
     }
 
-    v6 = key;
+    recipientCopy = key;
   }
 }
 
-- (void)_removeAddressAtomPresentationOptionsForRecipient:(id)a3
+- (void)_removeAddressAtomPresentationOptionsForRecipient:(id)recipient
 {
-  key = a3;
+  key = recipient;
   atomPresentationOptionsByRecipient = self->_atomPresentationOptionsByRecipient;
   if (atomPresentationOptionsByRecipient)
   {
@@ -580,15 +580,15 @@ LABEL_25:
   }
 }
 
-- (unint64_t)_addressAtomPresentationOptionsForRecipient:(id)a3
+- (unint64_t)_addressAtomPresentationOptionsForRecipient:(id)recipient
 {
-  v4 = a3;
+  recipientCopy = recipient;
   defaultAtomPresentationOptions = self->_defaultAtomPresentationOptions;
   value = defaultAtomPresentationOptions;
   atomPresentationOptionsByRecipient = self->_atomPresentationOptionsByRecipient;
   if (atomPresentationOptionsByRecipient)
   {
-    CFDictionaryGetValueIfPresent(atomPresentationOptionsByRecipient, v4, &value);
+    CFDictionaryGetValueIfPresent(atomPresentationOptionsByRecipient, recipientCopy, &value);
     defaultAtomPresentationOptions = value;
   }
 
@@ -605,45 +605,45 @@ LABEL_25:
   }
 }
 
-- (BOOL)containsAddress:(id)a3
+- (BOOL)containsAddress:(id)address
 {
-  v4 = a3;
+  addressCopy = address;
   uncommentedAddresses = self->_uncommentedAddresses;
-  v6 = v4;
-  v7 = [v6 emailAddressValue];
-  v8 = [v7 simpleAddress];
-  v9 = v8;
-  if (v8)
+  v6 = addressCopy;
+  emailAddressValue = [v6 emailAddressValue];
+  simpleAddress = [emailAddressValue simpleAddress];
+  v9 = simpleAddress;
+  if (simpleAddress)
   {
-    v10 = v8;
+    stringValue = simpleAddress;
   }
 
   else
   {
-    v10 = [v6 stringValue];
+    stringValue = [v6 stringValue];
   }
 
-  v11 = v10;
+  v11 = stringValue;
 
   v12 = [(NSCountedSet *)uncommentedAddresses countForObject:v11]!= 0;
   return v12;
 }
 
-- (void)_addUncommentedAddress:(id)a3
+- (void)_addUncommentedAddress:(id)address
 {
-  v4 = a3;
-  if (v4)
+  addressCopy = address;
+  if (addressCopy)
   {
-    [(NSCountedSet *)self->_uncommentedAddresses addObject:v4];
+    [(NSCountedSet *)self->_uncommentedAddresses addObject:addressCopy];
   }
 }
 
-- (void)_removeUncommentedAddress:(id)a3
+- (void)_removeUncommentedAddress:(id)address
 {
-  v4 = a3;
-  if (v4)
+  addressCopy = address;
+  if (addressCopy)
   {
-    [(NSCountedSet *)self->_uncommentedAddresses removeObject:v4];
+    [(NSCountedSet *)self->_uncommentedAddresses removeObject:addressCopy];
   }
 }
 
@@ -654,8 +654,8 @@ LABEL_25:
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [(NSMutableDictionary *)self->_atoms allValues];
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  allValues = [(NSMutableDictionary *)self->_atoms allValues];
+  v4 = [allValues countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = *v9;
@@ -666,14 +666,14 @@ LABEL_25:
       {
         if (*v9 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allValues);
         }
 
         [*(*(&v8 + 1) + 8 * v6++) removeFromSuperview];
       }
 
       while (v4 != v6);
-      v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v4 = [allValues countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v4);
@@ -686,7 +686,7 @@ LABEL_25:
   self->_recipients = 0;
 }
 
-- (void)keyboardInputChangedSelection:(id)a3
+- (void)keyboardInputChangedSelection:(id)selection
 {
   if (self->_selectedAtom && self->_deselectOnNextKeyboardInput)
   {
@@ -699,44 +699,44 @@ LABEL_25:
   }
 }
 
-- (void)selectComposeRecipientAtom:(id)a3
+- (void)selectComposeRecipientAtom:(id)atom
 {
-  v5 = a3;
-  if (self->_selectedAtom != v5)
+  atomCopy = atom;
+  if (self->_selectedAtom != atomCopy)
   {
     if (([(_MFMailRecipientTextField *)self->_textField isFirstResponder]& 1) == 0)
     {
       self->_deselectOnNextKeyboardInput = 0;
-      v6 = [MEMORY[0x1E699B978] mainThreadScheduler];
+      mainThreadScheduler = [MEMORY[0x1E699B978] mainThreadScheduler];
       v8[0] = MEMORY[0x1E69E9820];
       v8[1] = 3221225472;
       v8[2] = __53__MFComposeRecipientView_selectComposeRecipientAtom___block_invoke;
       v8[3] = &unk_1E806C570;
       v8[4] = self;
-      v7 = [v6 afterDelay:v8 performBlock:0.1];
+      v7 = [mainThreadScheduler afterDelay:v8 performBlock:0.1];
     }
 
     [(MFComposeRecipientView *)self finishEnteringRecipient];
     [(MFComposeRecipientView *)self _deselectAtom];
     [(_MFMailRecipientTextField *)self->_textField _clearSelectionUI];
-    [(MFModernAtomView *)v5 setSelected:1 animated:1];
-    objc_storeStrong(&self->_selectedAtom, a3);
+    [(MFModernAtomView *)atomCopy setSelected:1 animated:1];
+    objc_storeStrong(&self->_selectedAtom, atom);
   }
 }
 
-- (void)deselectComposeRecipientAtom:(id)a3
+- (void)deselectComposeRecipientAtom:(id)atom
 {
-  if (self->_selectedAtom == a3)
+  if (self->_selectedAtom == atom)
   {
     [(MFComposeRecipientView *)self _deselectAtom];
   }
 }
 
-- (void)_reflowAnimated:(BOOL)a3
+- (void)_reflowAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(MFComposeRecipientView *)self _addable];
-  v6 = !+[MFAddressBookManager isAuthorizedToUseAddressBook]|| !self->_editable || !v5 || !self->_expanded;
+  animatedCopy = animated;
+  _addable = [(MFComposeRecipientView *)self _addable];
+  v6 = !+[MFAddressBookManager isAuthorizedToUseAddressBook]|| !self->_editable || !_addable || !self->_expanded;
   [(UIButton *)self->_addButton setHidden:v6];
   if (self->_editable)
   {
@@ -765,7 +765,7 @@ LABEL_25:
     v23[6] = v25;
     v8 = _Block_copy(v23);
     v9 = 0.200000003;
-    if (!v3)
+    if (!animatedCopy)
     {
       v9 = 0.0;
     }
@@ -795,12 +795,12 @@ LABEL_25:
     recipients = self->_recipients;
     [(MFComposeRecipientView *)self _topRowTextWidth];
     v17 = v16;
-    v18 = [(MFComposeRecipientView *)self baseFont];
-    v19 = [(NSMutableArray *)recipients mf_commaSeparatedRecipientListWithWidth:v18 forFont:&__block_literal_global_11 usingBlock:v17];
+    baseFont = [(MFComposeRecipientView *)self baseFont];
+    v19 = [(NSMutableArray *)recipients mf_commaSeparatedRecipientListWithWidth:baseFont forFont:&__block_literal_global_11 usingBlock:v17];
 
     textField = self->_textField;
-    v21 = [(MFComposeRecipientView *)self tintColor];
-    [(_MFMailRecipientTextField *)textField setTextColor:v21];
+    tintColor = [(MFComposeRecipientView *)self tintColor];
+    [(_MFMailRecipientTextField *)textField setTextColor:tintColor];
 
     [(_MFMailRecipientTextField *)self->_textField setText:v19];
     WeakRetained = objc_loadWeakRetained(&self->super._delegate);
@@ -941,16 +941,16 @@ id __42__MFComposeRecipientView__reflowAnimated___block_invoke_3(uint64_t a1, vo
   return v2;
 }
 
-- (void)showCorecipientIndicator:(BOOL)a3 withCorecipients:(id)a4 animated:(BOOL)a5
+- (void)showCorecipientIndicator:(BOOL)indicator withCorecipients:(id)corecipients animated:(BOOL)animated
 {
-  v5 = a5;
-  v6 = a3;
-  v8 = a4;
+  animatedCopy = animated;
+  indicatorCopy = indicator;
+  corecipientsCopy = corecipients;
   if ([(MFComposeRecipientView *)self _shouldShowCorecipientsIndicatorAtom])
   {
-    if (v6)
+    if (indicatorCopy)
     {
-      v9 = [v8 count];
+      v9 = [corecipientsCopy count];
       p_corecipientsIndicatorAtom = &self->_corecipientsIndicatorAtom;
       corecipientsIndicatorAtom = self->_corecipientsIndicatorAtom;
       if (!v9)
@@ -970,10 +970,10 @@ id __42__MFComposeRecipientView__reflowAnimated___block_invoke_3(uint64_t a1, vo
         corecipientsIndicatorAtom = *p_corecipientsIndicatorAtom;
       }
 
-      [(MFCorecipientsIndicatorAtom *)corecipientsIndicatorAtom setRecipients:v8];
+      [(MFCorecipientsIndicatorAtom *)corecipientsIndicatorAtom setRecipients:corecipientsCopy];
       [*p_corecipientsIndicatorAtom setTitle:@" ..."];
       [*p_corecipientsIndicatorAtom setAlpha:0.649999976];
-      if (v5 && [*p_corecipientsIndicatorAtom isHidden])
+      if (animatedCopy && [*p_corecipientsIndicatorAtom isHidden])
       {
         [*p_corecipientsIndicatorAtom setAlpha:0.0];
         v14[0] = MEMORY[0x1E69E9820];
@@ -991,26 +991,26 @@ id __42__MFComposeRecipientView__reflowAnimated___block_invoke_3(uint64_t a1, vo
       [(MFCorecipientsIndicatorAtom *)self->_corecipientsIndicatorAtom setRecipients:0];
     }
 
-    [*p_corecipientsIndicatorAtom setHidden:!v6];
+    [*p_corecipientsIndicatorAtom setHidden:!indicatorCopy];
 LABEL_11:
-    [(MFComposeRecipientView *)self _reflowAnimated:v5];
+    [(MFComposeRecipientView *)self _reflowAnimated:animatedCopy];
   }
 }
 
-- (void)addButtonClicked:(id)a3
+- (void)addButtonClicked:(id)clicked
 {
-  v4 = [(MFComposeRecipientView *)self delegate];
+  delegate = [(MFComposeRecipientView *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 composeRecipientViewRequestAddRecipient:self];
+    [delegate composeRecipientViewRequestAddRecipient:self];
   }
 }
 
-- (void)setSeparatorHidden:(BOOL)a3
+- (void)setSeparatorHidden:(BOOL)hidden
 {
-  if (self->_separatorHidden != a3)
+  if (self->_separatorHidden != hidden)
   {
-    self->_separatorHidden = a3;
+    self->_separatorHidden = hidden;
     [(UIView *)self->super._separator setHidden:?];
   }
 }
@@ -1021,8 +1021,8 @@ LABEL_11:
   v6.super_class = MFComposeRecipientView;
   [(MFComposeHeaderView *)&v6 refreshPreferredContentSize];
   textField = self->_textField;
-  v4 = [(MFComposeRecipientView *)self baseFont];
-  [(_MFMailRecipientTextField *)textField setFont:v4];
+  baseFont = [(MFComposeRecipientView *)self baseFont];
+  [(_MFMailRecipientTextField *)textField setFont:baseFont];
 
   [(MFComposeRecipientView *)self setEditable:0];
   if (self->_textFieldConstraints)
@@ -1036,12 +1036,12 @@ LABEL_11:
   [(MFComposeRecipientView *)self reflow];
 }
 
-- (void)setBaseFont:(id)a3
+- (void)setBaseFont:(id)font
 {
-  v5 = a3;
+  fontCopy = font;
   if (([(UIFont *)self->_baseFont isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_baseFont, a3);
+    objc_storeStrong(&self->_baseFont, font);
     [(_MFMailRecipientTextField *)self->_textField setFont:self->_baseFont];
     [(MFComposeRecipientView *)self _setNeedsReflow];
   }
@@ -1049,21 +1049,21 @@ LABEL_11:
 
 - (UIFont)baseFont
 {
-  v2 = self->_baseFont;
-  if (!v2)
+  defaultFont = self->_baseFont;
+  if (!defaultFont)
   {
-    v2 = [objc_opt_class() defaultFont];
+    defaultFont = [objc_opt_class() defaultFont];
   }
 
-  return v2;
+  return defaultFont;
 }
 
-- (BOOL)mf_textFieldShowingSearchResults:(id)a3
+- (BOOL)mf_textFieldShowingSearchResults:(id)results
 {
-  v4 = [(MFComposeRecipientView *)self delegate];
+  delegate = [(MFComposeRecipientView *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v5 = [v4 composeRecipientViewShowingSearchResults:self];
+    v5 = [delegate composeRecipientViewShowingSearchResults:self];
   }
 
   else
@@ -1074,30 +1074,30 @@ LABEL_11:
   return v5;
 }
 
-- (void)mf_selectNextSearchResultForTextField:(id)a3
+- (void)mf_selectNextSearchResultForTextField:(id)field
 {
-  v4 = [(MFComposeRecipientView *)self delegate];
+  delegate = [(MFComposeRecipientView *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 selectNextSearchResultForComposeRecipientView:self];
+    [delegate selectNextSearchResultForComposeRecipientView:self];
   }
 }
 
-- (void)mf_selectPreviousSearchResultForTextField:(id)a3
+- (void)mf_selectPreviousSearchResultForTextField:(id)field
 {
-  v4 = [(MFComposeRecipientView *)self delegate];
+  delegate = [(MFComposeRecipientView *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 selectPreviousSearchResultForComposeRecipientView:self];
+    [delegate selectPreviousSearchResultForComposeRecipientView:self];
   }
 }
 
-- (BOOL)mf_presentSearchResultsForTextField:(id)a3
+- (BOOL)mf_presentSearchResultsForTextField:(id)field
 {
-  v4 = [(MFComposeRecipientView *)self delegate];
+  delegate = [(MFComposeRecipientView *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v5 = [v4 presentSearchResultsForComposeRecipientView:self];
+    v5 = [delegate presentSearchResultsForComposeRecipientView:self];
   }
 
   else
@@ -1108,12 +1108,12 @@ LABEL_11:
   return v5;
 }
 
-- (BOOL)mf_chooseSelectedSearchResultForTextField:(id)a3
+- (BOOL)mf_chooseSelectedSearchResultForTextField:(id)field
 {
-  v4 = [(MFComposeRecipientView *)self delegate];
+  delegate = [(MFComposeRecipientView *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v5 = [v4 chooseSelectedSearchResultForComposeRecipientView:self];
+    v5 = [delegate chooseSelectedSearchResultForComposeRecipientView:self];
   }
 
   else
@@ -1124,43 +1124,43 @@ LABEL_11:
   return v5;
 }
 
-- (void)mf_dismissSearchResults:(id)a3
+- (void)mf_dismissSearchResults:(id)results
 {
-  v4 = [(MFComposeRecipientView *)self delegate];
+  delegate = [(MFComposeRecipientView *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 dismissSearchResultsForComposeRecipientView:self];
+    [delegate dismissSearchResultsForComposeRecipientView:self];
   }
 }
 
-- (void)mf_recipientTextField:(id)a3 didAddRecipientAddress:(id)a4
+- (void)mf_recipientTextField:(id)field didAddRecipientAddress:(id)address
 {
-  v6 = a4;
-  v5 = [(MFComposeRecipientView *)self delegate];
+  addressCopy = address;
+  delegate = [(MFComposeRecipientView *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 composeRecipientView:self didFinishEnteringAddress:v6];
+    [delegate composeRecipientView:self didFinishEnteringAddress:addressCopy];
   }
 }
 
-- (void)textFieldDidBecomeFirstResponder:(id)a3
+- (void)textFieldDidBecomeFirstResponder:(id)responder
 {
   [(MFComposeRecipientView *)self setDidIgnoreFirstResponderResign:0];
-  v6 = [(MFComposeRecipientView *)self delegate];
+  delegate = [(MFComposeRecipientView *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v6 recipientViewDidBecomeFirstResponder:self];
+    [delegate recipientViewDidBecomeFirstResponder:self];
   }
 
   if (objc_opt_respondsToSelector())
   {
-    [v6 composeRecipientViewDidBecomeFirstResponder:self];
+    [delegate composeRecipientViewDidBecomeFirstResponder:self];
   }
 
   if (![(MFComposeRecipientView *)self _addable])
   {
-    v4 = [(NSMutableArray *)self->_recipients lastObject];
-    v5 = [(NSMutableDictionary *)self->_atoms objectForKey:v4];
+    lastObject = [(NSMutableArray *)self->_recipients lastObject];
+    v5 = [(NSMutableDictionary *)self->_atoms objectForKey:lastObject];
     [(MFComposeRecipientView *)self selectComposeRecipientAtom:v5];
   }
 
@@ -1176,10 +1176,10 @@ LABEL_11:
   }
 }
 
-- (void)textFieldDidResignFirstResponder:(id)a3
+- (void)textFieldDidResignFirstResponder:(id)responder
 {
-  v4 = [(MFComposeRecipientView *)self delegate];
-  if ((objc_opt_respondsToSelector() & 1) != 0 && [v4 recipientViewShouldIgnoreFirstResponderChanges:self])
+  delegate = [(MFComposeRecipientView *)self delegate];
+  if ((objc_opt_respondsToSelector() & 1) != 0 && [delegate recipientViewShouldIgnoreFirstResponderChanges:self])
   {
     [(MFComposeRecipientView *)self setDidIgnoreFirstResponderResign:1];
   }
@@ -1189,7 +1189,7 @@ LABEL_11:
     [(MFComposeRecipientView *)self finishEnteringRecipient];
     if (objc_opt_respondsToSelector())
     {
-      [v4 recipientViewDidResignFirstResponder:self];
+      [delegate recipientViewDidResignFirstResponder:self];
     }
 
     [(MFComposeRecipientView *)self _deselectAtom];
@@ -1197,23 +1197,23 @@ LABEL_11:
   }
 }
 
-- (void)composeRecipientAtomShowPersonCard:(id)a3
+- (void)composeRecipientAtomShowPersonCard:(id)card
 {
-  v5 = a3;
-  v4 = [(MFComposeRecipientView *)self delegate];
+  cardCopy = card;
+  delegate = [(MFComposeRecipientView *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 composeRecipientView:self showPersonCardForAtom:v5];
+    [delegate composeRecipientView:self showPersonCardForAtom:cardCopy];
   }
 }
 
-- (void)didTapShowCorecipientsForIndicatorAtom:(id)a3 recipients:(id)a4
+- (void)didTapShowCorecipientsForIndicatorAtom:(id)atom recipients:(id)recipients
 {
-  v6 = a4;
-  v5 = [(MFComposeRecipientView *)self delegate];
+  recipientsCopy = recipients;
+  delegate = [(MFComposeRecipientView *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 composeRecipientView:self showCorecipients:v6];
+    [delegate composeRecipientView:self showCorecipients:recipientsCopy];
   }
 }
 
@@ -1224,21 +1224,21 @@ LABEL_11:
   self->_delayTimer = 0;
 }
 
-- (void)_delayTimerFired:(id)a3
+- (void)_delayTimerFired:(id)fired
 {
   [(MFComposeRecipientView *)self _cancelDelayTimer];
   WeakRetained = objc_loadWeakRetained(&self->super._delegate);
-  v4 = [(MFComposeRecipientView *)self text];
-  [WeakRetained composeRecipientView:self textDidChange:v4];
+  text = [(MFComposeRecipientView *)self text];
+  [WeakRetained composeRecipientView:self textDidChange:text];
 }
 
-- (void)composeRecipientAtomSelectPrevious:(id)a3
+- (void)composeRecipientAtomSelectPrevious:(id)previous
 {
-  v4 = a3;
+  previousCopy = previous;
   recipients = self->_recipients;
-  v12 = v4;
-  v6 = [v4 recipient];
-  v7 = [(NSMutableArray *)recipients indexOfObject:v6];
+  v12 = previousCopy;
+  recipient = [previousCopy recipient];
+  v7 = [(NSMutableArray *)recipients indexOfObject:recipient];
 
   if (v7)
   {
@@ -1259,13 +1259,13 @@ LABEL_11:
   }
 }
 
-- (void)composeRecipientAtomSelectNext:(id)a3
+- (void)composeRecipientAtomSelectNext:(id)next
 {
-  v4 = a3;
+  nextCopy = next;
   recipients = self->_recipients;
-  v11 = v4;
-  v6 = [v4 recipient];
-  v7 = [(NSMutableArray *)recipients indexOfObject:v6];
+  v11 = nextCopy;
+  recipient = [nextCopy recipient];
+  v7 = [(NSMutableArray *)recipients indexOfObject:recipient];
 
   if (v7 >= [(NSMutableArray *)self->_recipients count]- 1)
   {
@@ -1281,14 +1281,14 @@ LABEL_11:
   }
 }
 
-- (void)textChanged:(id)a3
+- (void)textChanged:(id)changed
 {
-  v7 = a3;
+  changedCopy = changed;
   if (self->_inputDelay <= 0.0)
   {
     WeakRetained = objc_loadWeakRetained(&self->super._delegate);
-    v5 = [(MFComposeRecipientView *)self text];
-    [WeakRetained composeRecipientView:self textDidChange:v5];
+    text = [(MFComposeRecipientView *)self text];
+    [WeakRetained composeRecipientView:self textDidChange:text];
   }
 
   else if (self->_delayTimer)
@@ -1318,8 +1318,8 @@ LABEL_11:
 
 - (void)_deleteSelectedAtom
 {
-  v3 = [(MFModernComposeRecipientAtom *)self->_selectedAtom recipient];
-  [(MFComposeRecipientView *)self removeRecipient:v3];
+  recipient = [(MFModernComposeRecipientAtom *)self->_selectedAtom recipient];
+  [(MFComposeRecipientView *)self removeRecipient:recipient];
 
   [(MFComposeRecipientView *)self _deselectAtom];
   textField = self->_textField;
@@ -1327,10 +1327,10 @@ LABEL_11:
   [(_MFMailRecipientTextField *)textField _resetSelectionUI];
 }
 
-- (BOOL)keyboardInput:(id)a3 shouldInsertText:(id)a4 isMarkedText:(BOOL)a5
+- (BOOL)keyboardInput:(id)input shouldInsertText:(id)text isMarkedText:(BOOL)markedText
 {
-  v6 = a4;
-  if ([v6 isEqual:{@", "}])
+  textCopy = text;
+  if ([textCopy isEqual:{@", "}])
   {
     v7 = ![(MFComposeRecipientView *)self finishEnteringRecipient];
   }
@@ -1348,16 +1348,16 @@ LABEL_11:
   return v7;
 }
 
-- (BOOL)keyboardInputShouldDelete:(id)a3
+- (BOOL)keyboardInputShouldDelete:(id)delete
 {
-  v4 = [(_MFMailRecipientTextField *)self->_textField text];
-  v5 = [v4 length];
+  text = [(_MFMailRecipientTextField *)self->_textField text];
+  v5 = [text length];
   v6 = v5 != 0;
   if (!v5)
   {
-    v7 = [(_MFMailRecipientTextField *)self->_textField isShowingDictationPlaceholder];
+    isShowingDictationPlaceholder = [(_MFMailRecipientTextField *)self->_textField isShowingDictationPlaceholder];
 
-    if (v7)
+    if (isShowingDictationPlaceholder)
     {
       return 1;
     }
@@ -1369,34 +1369,34 @@ LABEL_11:
     }
 
     atoms = self->_atoms;
-    v4 = [(NSMutableArray *)self->_recipients lastObject];
-    v10 = [(NSMutableDictionary *)atoms objectForKey:v4];
+    text = [(NSMutableArray *)self->_recipients lastObject];
+    v10 = [(NSMutableDictionary *)atoms objectForKey:text];
     [(MFComposeRecipientView *)self selectComposeRecipientAtom:v10];
   }
 
   return v6;
 }
 
-- (double)textFieldOffsetForNumberOfRowsToScroll:(unint64_t)a3 numberOfRowsAboveField:(int64_t)a4
+- (double)textFieldOffsetForNumberOfRowsToScroll:(unint64_t)scroll numberOfRowsAboveField:(int64_t)field
 {
-  v6 = [(MFComposeRecipientView *)self numberOfRowsOfTextInField];
-  if (a4 >= a3)
+  numberOfRowsOfTextInField = [(MFComposeRecipientView *)self numberOfRowsOfTextInField];
+  if (field >= scroll)
   {
-    v7 = a3;
+    fieldCopy = scroll;
   }
 
   else
   {
-    v7 = a4;
+    fieldCopy = field;
   }
 
-  v8 = a3 - v7;
-  if (v6 < a3 - v7)
+  v8 = scroll - fieldCopy;
+  if (numberOfRowsOfTextInField < scroll - fieldCopy)
   {
-    v8 = v6;
+    v8 = numberOfRowsOfTextInField;
   }
 
-  if (a4 >= a3)
+  if (field >= scroll)
   {
     v9 = 0;
   }
@@ -1408,9 +1408,9 @@ LABEL_11:
 
   v10 = 0.0;
   v11 = 0.0;
-  if (v7 >= 1)
+  if (fieldCopy >= 1)
   {
-    v12 = v7;
+    v12 = fieldCopy;
     [objc_opt_class() preferredHeight];
     v11 = v13 * v12;
   }
@@ -1424,12 +1424,12 @@ LABEL_11:
   return v11 + v10;
 }
 
-- (BOOL)textFieldShouldReturn:(id)a3
+- (BOOL)textFieldShouldReturn:(id)return
 {
-  v4 = [(MFComposeRecipientView *)self delegate];
+  delegate = [(MFComposeRecipientView *)self delegate];
   if (![(MFComposeRecipientView *)self finishEnteringRecipient]&& (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v4 composeRecipientViewReturnPressed:self];
+    [delegate composeRecipientViewReturnPressed:self];
   }
 
   return 0;
@@ -1447,19 +1447,19 @@ LABEL_11:
     return 0;
   }
 
-  v3 = [(MFComposeRecipientView *)self text];
-  v4 = [v3 length];
+  text = [(MFComposeRecipientView *)self text];
+  v4 = [text length];
 
   if (!v4)
   {
     return 0;
   }
 
-  v5 = [(MFComposeRecipientView *)self delegate];
+  delegate = [(MFComposeRecipientView *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [(MFComposeRecipientView *)self text];
-    [v5 composeRecipientView:self didFinishEnteringAddress:v6];
+    text2 = [(MFComposeRecipientView *)self text];
+    [delegate composeRecipientView:self didFinishEnteringAddress:text2];
   }
 
   return 1;
@@ -1480,12 +1480,12 @@ LABEL_11:
   return Width;
 }
 
-- (void)_updateLayoutConstraintsAndGetNumberOfRows:(unint64_t *)a3 textFieldWillBeLastRow:(BOOL *)a4
+- (void)_updateLayoutConstraintsAndGetNumberOfRows:(unint64_t *)rows textFieldWillBeLastRow:(BOOL *)row
 {
   v96 = *MEMORY[0x1E69E9840];
-  v4 = [(MFComposeRecipientView *)self superview];
+  superview = [(MFComposeRecipientView *)self superview];
 
-  if (!v4)
+  if (!superview)
   {
     return;
   }
@@ -1497,16 +1497,16 @@ LABEL_11:
     self->_textFieldConstraints = 0;
   }
 
-  v80 = [MEMORY[0x1E695DF70] array];
-  v6 = self;
+  array = [MEMORY[0x1E695DF70] array];
+  selfCopy5 = self;
   firstValue = self->super._labelView;
   [(MFComposeRecipientView *)self bounds];
   v8 = v7;
-  v9 = [MEMORY[0x1E69DC668] sharedApplication];
-  v10 = [v9 userInterfaceLayoutDirection];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  userInterfaceLayoutDirection = [mEMORY[0x1E69DC668] userInterfaceLayoutDirection];
 
   [(MFHeaderLabelView *)self->super._labelView frame];
-  if (v10)
+  if (userInterfaceLayoutDirection)
   {
     MaxX = v8 - CGRectGetMinX(*&v11);
   }
@@ -1553,19 +1553,19 @@ LABEL_11:
         objc_enumerationMutation(obj);
       }
 
-      v25 = [(NSMutableDictionary *)v6->_atoms objectForKey:*(*(&v85 + 1) + 8 * i)];
+      v25 = [(NSMutableDictionary *)selfCopy5->_atoms objectForKey:*(*(&v85 + 1) + 8 * i)];
       [v25 setTranslatesAutoresizingMaskIntoConstraints:0];
       LODWORD(v26) = 1148846080;
       [v25 setContentHuggingPriority:0 forAxis:v26];
       LODWORD(v27) = 1148846080;
       [v25 setContentCompressionResistancePriority:1 forAxis:v27];
       [v25 layoutIfNeeded];
-      v28 = [v25 superview];
-      v29 = v28 == 0;
+      superview2 = [v25 superview];
+      v29 = superview2 == 0;
 
       if (!v29)
       {
-        v30 = self;
+        selfCopy4 = self;
         v31 = self->super._labelView;
         v32 = v31;
         if (v22 == 1)
@@ -1588,16 +1588,16 @@ LABEL_11:
             v36 = v22 + 1;
             v23 = MaxX;
             v34 = v8 - MaxX;
-            v30 = self;
+            selfCopy4 = self;
             goto LABEL_22;
           }
 
           v48 = v20;
 
           v32 = v48;
-          v30 = self;
+          selfCopy4 = self;
 LABEL_24:
-          if (v32 == v30->super._labelView)
+          if (v32 == selfCopy4->super._labelView)
           {
             v50 = 0.0;
           }
@@ -1630,10 +1630,10 @@ LABEL_24:
           v36 = v22;
 LABEL_22:
           v22 = v36;
-          v37 = [MEMORY[0x1E696ACD8] constraintWithItem:v25 attribute:11 relatedBy:0 toItem:v30->super._labelView attribute:11 multiplier:v36 constant:0.0];
+          v37 = [MEMORY[0x1E696ACD8] constraintWithItem:v25 attribute:11 relatedBy:0 toItem:selfCopy4->super._labelView attribute:11 multiplier:v36 constant:0.0];
           [v25 edgeInsets];
           v39 = v38;
-          [(MFComposeRecipientView *)v30 layoutMargins];
+          [(MFComposeRecipientView *)selfCopy4 layoutMargins];
           v41 = MEMORY[0x1E696ACD8];
           v91[0] = @"PADDING";
           v42 = [MEMORY[0x1E696AD98] numberWithDouble:v40 + 0.0 - v39];
@@ -1651,7 +1651,7 @@ LABEL_22:
 
         [v25 preferredWidth];
         v55 = v54;
-        [v80 addObjectsFromArray:v47];
+        [array addObjectsFromArray:v47];
         v56 = v25;
 
         v20 = v56;
@@ -1659,7 +1659,7 @@ LABEL_22:
         firstValue = v20;
       }
 
-      v6 = self;
+      selfCopy5 = self;
     }
 
     v19 = [(NSMutableArray *)obj countByEnumeratingWithState:&v85 objects:v95 count:16];
@@ -1708,7 +1708,7 @@ LABEL_35:
     v67 = MEMORY[0x1E696ACD8];
     v68 = _NSDictionaryOfVariableBindings(&cfstr_Addbutton.isa, self->_addButton, 0);
     v69 = [v67 constraintsWithVisualFormat:@"[_addButton]-(BUTTON_PADDING)-|" options:0 metrics:v63 views:v68];
-    [v80 addObjectsFromArray:v69];
+    [array addObjectsFromArray:v69];
 
     v66 = @"%@-[_textField]-(BUTTON_PADDING)-|";
     v65 = v57;
@@ -1718,11 +1718,11 @@ LABEL_35:
   if (v64 <= v8)
   {
     v71 = @"[textFieldBuddy]-(PADDING)";
-    if (a4)
+    if (row)
     {
       v72 = 0;
 LABEL_47:
-      *a4 = v72;
+      *row = v72;
     }
   }
 
@@ -1730,7 +1730,7 @@ LABEL_47:
   {
     ++v65;
     v71 = @"H:|-(HORIZ_INSET)";
-    if (a4)
+    if (row)
     {
       v72 = 1;
       goto LABEL_47;
@@ -1738,20 +1738,20 @@ LABEL_47:
   }
 
   v73 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_textField attribute:11 relatedBy:0 toItem:self->super._labelView attribute:11 multiplier:v65 constant:0.0];
-  [v80 addObject:v73];
+  [array addObject:v73];
   v74 = [MEMORY[0x1E696AEC0] stringWithFormat:v66, v71];
   v75 = [MEMORY[0x1E696ACD8] constraintsWithVisualFormat:v74 options:0 metrics:v63 views:v70];
-  [v80 addObjectsFromArray:v75];
+  [array addObjectsFromArray:v75];
   v76 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_addButton attribute:10 relatedBy:0 toItem:self->super._labelView attribute:10 multiplier:1.0 constant:1.0];
-  [v80 addObject:v76];
-  if (a3)
+  [array addObject:v76];
+  if (rows)
   {
-    *a3 = v65;
+    *rows = v65;
   }
 
-  if (v80)
+  if (array)
   {
-    objc_storeStrong(&self->_textFieldConstraints, v80);
+    objc_storeStrong(&self->_textFieldConstraints, array);
     [(MFComposeRecipientView *)self addConstraints:self->_textFieldConstraints];
   }
 
@@ -1763,7 +1763,7 @@ LABEL_47:
   if (!self->_needsReflow)
   {
     self->_needsReflow = 1;
-    v4 = [MEMORY[0x1E699B978] __mui_nextRunLoopMainThreadScheduler];
+    __mui_nextRunLoopMainThreadScheduler = [MEMORY[0x1E699B978] __mui_nextRunLoopMainThreadScheduler];
     v3 = [(MFComposeRecipientView *)self ef_onScheduler:?];
     [v3 _reflowAnimated:0];
   }
@@ -1774,7 +1774,7 @@ LABEL_47:
   if (!self->_needsLayoutConstraintUpdate)
   {
     self->_needsLayoutConstraintUpdate = 1;
-    v4 = [MEMORY[0x1E699B978] __mui_nextRunLoopMainThreadScheduler];
+    __mui_nextRunLoopMainThreadScheduler = [MEMORY[0x1E699B978] __mui_nextRunLoopMainThreadScheduler];
     v3 = [(MFComposeRecipientView *)self ef_onScheduler:?];
     [v3 _updateLayoutConstraintsAndGetNumberOfRows:0 textFieldWillBeLastRow:0];
   }
@@ -1787,27 +1787,27 @@ LABEL_47:
   [(MFComposeRecipientView *)&v2 viewDidMoveToSuperview];
 }
 
-- (void)_tapGestureRecognized:(id)a3
+- (void)_tapGestureRecognized:(id)recognized
 {
-  v4 = a3;
-  if ([v4 state] == 3)
+  recognizedCopy = recognized;
+  if ([recognizedCopy state] == 3)
   {
     [(_MFMailRecipientTextField *)self->_textField becomeFirstResponder];
   }
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
   v19 = *MEMORY[0x1E69E9840];
-  [a3 locationInView:self];
+  [begin locationInView:self];
   v5 = v4;
   v7 = v6;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v8 = [(NSMutableDictionary *)self->_atoms allValues];
-  v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  allValues = [(NSMutableDictionary *)self->_atoms allValues];
+  v9 = [allValues countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v9)
   {
     v10 = *v15;
@@ -1817,7 +1817,7 @@ LABEL_47:
       {
         if (*v15 != v10)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(allValues);
         }
 
         [*(*(&v14 + 1) + 8 * i) frame];
@@ -1830,7 +1830,7 @@ LABEL_47:
         }
       }
 
-      v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v9 = [allValues countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v9)
       {
         continue;

@@ -1,18 +1,18 @@
 @interface SFBatteryInfo
-- (SFBatteryInfo)initWithCoder:(id)a3;
+- (SFBatteryInfo)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFBatteryInfo
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   batteryLevel = self->_batteryLevel;
-  v5 = a3;
-  [v5 encodeDouble:@"batteryLevel" forKey:batteryLevel];
-  [v5 encodeInteger:self->_batteryState forKey:@"batteryState"];
-  [v5 encodeInteger:self->_batteryType forKey:@"batteryType"];
+  coderCopy = coder;
+  [coderCopy encodeDouble:@"batteryLevel" forKey:batteryLevel];
+  [coderCopy encodeInteger:self->_batteryState forKey:@"batteryState"];
+  [coderCopy encodeInteger:self->_batteryType forKey:@"batteryType"];
 }
 
 - (id)description
@@ -28,28 +28,28 @@
   return NSPrintF();
 }
 
-- (SFBatteryInfo)initWithCoder:(id)a3
+- (SFBatteryInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = SFBatteryInfo;
   v5 = [(SFBatteryInfo *)&v9 init];
   if (v5)
   {
-    if ([v4 containsValueForKey:@"batteryLevel"])
+    if ([coderCopy containsValueForKey:@"batteryLevel"])
     {
-      [v4 decodeDoubleForKey:@"batteryLevel"];
+      [coderCopy decodeDoubleForKey:@"batteryLevel"];
       v5->_batteryLevel = v6;
     }
 
-    if ([v4 containsValueForKey:@"batteryState"])
+    if ([coderCopy containsValueForKey:@"batteryState"])
     {
-      v5->_batteryState = [v4 decodeIntegerForKey:@"batteryState"];
+      v5->_batteryState = [coderCopy decodeIntegerForKey:@"batteryState"];
     }
 
-    if ([v4 containsValueForKey:@"batteryType"])
+    if ([coderCopy containsValueForKey:@"batteryType"])
     {
-      v5->_batteryType = [v4 decodeIntegerForKey:@"batteryType"];
+      v5->_batteryType = [coderCopy decodeIntegerForKey:@"batteryType"];
     }
 
     v7 = v5;

@@ -1,8 +1,8 @@
 @interface ArtworkShadowView
 - (CGRect)bounds;
-- (_TtC5BooksP33_12E437AC0882FE18A400AEA3D6DAFFF617ArtworkShadowView)initWithCoder:(id)a3;
-- (_TtC5BooksP33_12E437AC0882FE18A400AEA3D6DAFFF617ArtworkShadowView)initWithFrame:(CGRect)a3;
-- (void)setBounds:(CGRect)a3;
+- (_TtC5BooksP33_12E437AC0882FE18A400AEA3D6DAFFF617ArtworkShadowView)initWithCoder:(id)coder;
+- (_TtC5BooksP33_12E437AC0882FE18A400AEA3D6DAFFF617ArtworkShadowView)initWithFrame:(CGRect)frame;
+- (void)setBounds:(CGRect)bounds;
 @end
 
 @implementation ArtworkShadowView
@@ -19,12 +19,12 @@
   return result;
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v8.receiver = self;
   v8.super_class = type metadata accessor for ArtworkShadowView();
   v7 = v8.receiver;
@@ -32,23 +32,23 @@
   sub_1005BD35C();
 }
 
-- (_TtC5BooksP33_12E437AC0882FE18A400AEA3D6DAFFF617ArtworkShadowView)initWithFrame:(CGRect)a3
+- (_TtC5BooksP33_12E437AC0882FE18A400AEA3D6DAFFF617ArtworkShadowView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8.receiver = self;
   v8.super_class = type metadata accessor for ArtworkShadowView();
   return [(ArtworkShadowView *)&v8 initWithFrame:x, y, width, height];
 }
 
-- (_TtC5BooksP33_12E437AC0882FE18A400AEA3D6DAFFF617ArtworkShadowView)initWithCoder:(id)a3
+- (_TtC5BooksP33_12E437AC0882FE18A400AEA3D6DAFFF617ArtworkShadowView)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for ArtworkShadowView();
-  v4 = a3;
-  v5 = [(ArtworkShadowView *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(ArtworkShadowView *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

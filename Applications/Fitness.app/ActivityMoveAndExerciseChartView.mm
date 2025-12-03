@@ -1,10 +1,10 @@
 @interface ActivityMoveAndExerciseChartView
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (NSArray)moveAndExerciseChartPoints;
 - (double)moveAndExerciseChartMaxYValue;
 - (void)layoutSubviews;
-- (void)reloadDataWithShowFull:(BOOL)a3 animated:(BOOL)a4;
+- (void)reloadDataWithShowFull:(BOOL)full animated:(BOOL)animated;
 - (void)updateFonts;
 @end
 
@@ -13,9 +13,9 @@
 - (CGSize)intrinsicContentSize
 {
   v3 = objc_opt_self();
-  v4 = self;
-  v5 = [v3 mainScreen];
-  [v5 bounds];
+  selfCopy = self;
+  mainScreen = [v3 mainScreen];
+  [mainScreen bounds];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -25,7 +25,7 @@
   v21.origin.y = v9;
   v21.size.width = v11;
   v21.size.height = v13;
-  [(ActivityMoveAndExerciseChartView *)v4 sizeThatFits:CGRectGetWidth(v21), 1.79769313e308];
+  [(ActivityMoveAndExerciseChartView *)selfCopy sizeThatFits:CGRectGetWidth(v21), 1.79769313e308];
   v15 = v14;
   v17 = v16;
 
@@ -38,27 +38,27 @@
 
 - (void)updateFonts
 {
-  v2 = self;
+  selfCopy = self;
   sub_10038537C();
 }
 
-- (void)reloadDataWithShowFull:(BOOL)a3 animated:(BOOL)a4
+- (void)reloadDataWithShowFull:(BOOL)full animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = self;
-  sub_100385598(v5, v4);
+  animatedCopy = animated;
+  fullCopy = full;
+  selfCopy = self;
+  sub_100385598(fullCopy, animatedCopy);
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_100386288();
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
+  width = fits.width;
   v4 = *(&self->super.super.super.isa + OBJC_IVAR____TtC10FitnessApp32ActivityMoveAndExerciseChartView_chartHeight);
   sub_100386F04();
   v6 = v4 + v5;
@@ -70,7 +70,7 @@
 
 - (NSArray)moveAndExerciseChartPoints
 {
-  v2 = self;
+  selfCopy = self;
   sub_1003868EC();
 
   type metadata accessor for CGPoint(0);
@@ -81,7 +81,7 @@
 
 - (double)moveAndExerciseChartMaxYValue
 {
-  v2 = self;
+  selfCopy = self;
   sub_100384174(v4);
 
   sub_100386E54(v4);

@@ -1,27 +1,27 @@
 @interface MIDICIDeviceManager
 + (MIDICIDeviceManager)sharedInstance;
-- (BOOL)postNotificationName:(id)a3 device:(id)a4 profile:(id)a5;
-- (BOOL)removeDevice:(unsigned int)a3;
-- (BOOL)removeMutableDevice:(id)a3;
-- (BOOL)removeProfile:(unsigned int)a3;
+- (BOOL)postNotificationName:(id)name device:(id)device profile:(id)profile;
+- (BOOL)removeDevice:(unsigned int)device;
+- (BOOL)removeMutableDevice:(id)device;
+- (BOOL)removeProfile:(unsigned int)profile;
 - (MIDICIDeviceManager)init;
 - (NSArray)discoveredCIDevices;
-- (id)findDevice:(unsigned int)a3;
-- (id)findDeviceWithMUID:(unsigned int)a3;
-- (id)findProfile:(unsigned int)a3;
+- (id)findDevice:(unsigned int)device;
+- (id)findDeviceWithMUID:(unsigned int)d;
+- (id)findProfile:(unsigned int)profile;
 - (optional<std::pair<MIDICIDevice)findProfileAndDevice:(MIDICIDeviceManager *)self;
-- (void)addDevice:(id)a3;
-- (void)addMutableDevice:(id)a3;
-- (void)addProfile:(id)a3;
-- (void)handleProcessInquiryReplyMessage:(const InternalUMPCI_ProcessInquiryReport *)a3;
-- (void)handleProfileDetailsReplyMessage:(const void *)a3;
-- (void)updateDevice:(unsigned int)a3 description:(id)a4;
-- (void)updateProfile:(unsigned int)a3 description:(id)a4;
+- (void)addDevice:(id)device;
+- (void)addMutableDevice:(id)device;
+- (void)addProfile:(id)profile;
+- (void)handleProcessInquiryReplyMessage:(const InternalUMPCI_ProcessInquiryReport *)message;
+- (void)handleProfileDetailsReplyMessage:(const void *)message;
+- (void)updateDevice:(unsigned int)device description:(id)description;
+- (void)updateProfile:(unsigned int)profile description:(id)description;
 @end
 
 @implementation MIDICIDeviceManager
 
-- (void)handleProcessInquiryReplyMessage:(const InternalUMPCI_ProcessInquiryReport *)a3
+- (void)handleProcessInquiryReplyMessage:(const InternalUMPCI_ProcessInquiryReport *)message
 {
   v19 = *MEMORY[0x277D85DE8];
   os_unfair_lock_lock(&self->mMutex.m_lock);
@@ -47,7 +47,7 @@
           objc_enumerationMutation(v7);
         }
 
-        [*(*(&v14 + 1) + 8 * v10++) handleProcessInquiryReplyMessage:{a3, v14}];
+        [*(*(&v14 + 1) + 8 * v10++) handleProcessInquiryReplyMessage:{message, v14}];
       }
 
       while (v8 != v10);
@@ -63,12 +63,12 @@
     v13 = v12;
     if (v12)
     {
-      [v12 handleProcessInquiryReplyMessage:a3];
+      [v12 handleProcessInquiryReplyMessage:message];
     }
   }
 }
 
-- (void)handleProfileDetailsReplyMessage:(const void *)a3
+- (void)handleProfileDetailsReplyMessage:(const void *)message
 {
   v19 = *MEMORY[0x277D85DE8];
   os_unfair_lock_lock(&self->mMutex.m_lock);
@@ -94,7 +94,7 @@
           objc_enumerationMutation(v7);
         }
 
-        [*(*(&v14 + 1) + 8 * v10++) handleProfileDetailsReplyMessage:{a3, v14}];
+        [*(*(&v14 + 1) + 8 * v10++) handleProfileDetailsReplyMessage:{message, v14}];
       }
 
       while (v8 != v10);
@@ -110,14 +110,14 @@
     v13 = v12;
     if (v12)
     {
-      [v12 handleProfileDetailsReplyMessage:a3];
+      [v12 handleProfileDetailsReplyMessage:message];
     }
   }
 }
 
-- (BOOL)removeMutableDevice:(id)a3
+- (BOOL)removeMutableDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   os_unfair_lock_lock(&self->mMutex.m_lock);
   for (i = 0; ; ++i)
   {
@@ -129,7 +129,7 @@
 
     v7 = [(NSPointerArray *)self->_mutableDevices pointerAtIndex:i];
     v8 = v7;
-    if (v7 == v4)
+    if (v7 == deviceCopy)
     {
       [(NSPointerArray *)self->_mutableDevices removePointerAtIndex:i];
 
@@ -142,33 +142,33 @@
   return i < v6;
 }
 
-- (void)addMutableDevice:(id)a3
+- (void)addMutableDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   os_unfair_lock_lock(&self->mMutex.m_lock);
-  [(NSPointerArray *)self->_mutableDevices addPointer:v4];
+  [(NSPointerArray *)self->_mutableDevices addPointer:deviceCopy];
 
   os_unfair_lock_unlock(&self->mMutex.m_lock);
 }
 
-- (void)updateDevice:(unsigned int)a3 description:(id)a4
+- (void)updateDevice:(unsigned int)device description:(id)description
 {
-  v4 = *&a3;
-  v8 = a4;
+  v4 = *&device;
+  descriptionCopy = description;
   os_unfair_lock_lock(&self->mMutex.m_lock);
   v6 = [(MIDICIDeviceManager *)self findDevice:v4];
   v7 = v6;
   if (v6)
   {
-    [v6 deserialize:v8];
+    [v6 deserialize:descriptionCopy];
   }
 
   os_unfair_lock_unlock(&self->mMutex.m_lock);
 }
 
-- (BOOL)removeDevice:(unsigned int)a3
+- (BOOL)removeDevice:(unsigned int)device
 {
-  v3 = *&a3;
+  v3 = *&device;
   os_unfair_lock_lock(&self->mMutex.m_lock);
   v5 = [(MIDICIDeviceManager *)self findDevice:v3];
   if (v5)
@@ -190,12 +190,12 @@
   return v5 != 0;
 }
 
-- (void)addDevice:(id)a3
+- (void)addDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   os_unfair_lock_lock(&self->mMutex.m_lock);
-  [v5 isMine];
-  v4 = -[MIDICIDeviceManager findDevice:](self, "findDevice:", [v5 objectRef]);
+  [deviceCopy isMine];
+  v4 = -[MIDICIDeviceManager findDevice:](self, "findDevice:", [deviceCopy objectRef]);
 
   if (v4)
   {
@@ -204,13 +204,13 @@
 
   else
   {
-    [(NSMutableArray *)self->_devices addObject:v5];
+    [(NSMutableArray *)self->_devices addObject:deviceCopy];
     os_unfair_lock_unlock(&self->mMutex.m_lock);
-    [(MIDICIDeviceManager *)self postNotificationName:@"MIDICIDeviceWasAddedNotification" device:v5 profile:0];
+    [(MIDICIDeviceManager *)self postNotificationName:@"MIDICIDeviceWasAddedNotification" device:deviceCopy profile:0];
   }
 }
 
-- (id)findDeviceWithMUID:(unsigned int)a3
+- (id)findDeviceWithMUID:(unsigned int)d
 {
   v17 = *MEMORY[0x277D85DE8];
   os_unfair_lock_lock(&self->mMutex.m_lock);
@@ -233,7 +233,7 @@
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
-        if ([v9 MUID] == a3)
+        if ([v9 MUID] == d)
         {
           v10 = v9;
           goto LABEL_11;
@@ -258,7 +258,7 @@ LABEL_11:
   return v10;
 }
 
-- (id)findDevice:(unsigned int)a3
+- (id)findDevice:(unsigned int)device
 {
   v16 = *MEMORY[0x277D85DE8];
   v11 = 0u;
@@ -280,7 +280,7 @@ LABEL_11:
         }
 
         v8 = *(*(&v11 + 1) + 8 * i);
-        if ([v8 objectRef] == a3)
+        if ([v8 objectRef] == device)
         {
           v9 = v8;
           goto LABEL_11;
@@ -303,10 +303,10 @@ LABEL_11:
   return v9;
 }
 
-- (void)updateProfile:(unsigned int)a3 description:(id)a4
+- (void)updateProfile:(unsigned int)profile description:(id)description
 {
-  v4 = *&a3;
-  v6 = a4;
+  v4 = *&profile;
+  descriptionCopy = description;
   LOBYTE(v11) = 0;
   v13 = 0;
   os_unfair_lock_lock(&self->mMutex.m_lock);
@@ -319,7 +319,7 @@ LABEL_11:
   if (v13 == 1)
   {
     v7 = v12;
-    v8 = [v12 deserialize:v6];
+    v8 = [v12 deserialize:descriptionCopy];
     os_unfair_lock_unlock(&self->mMutex.m_lock);
     if (v8)
     {
@@ -333,9 +333,9 @@ LABEL_11:
   }
 }
 
-- (BOOL)removeProfile:(unsigned int)a3
+- (BOOL)removeProfile:(unsigned int)profile
 {
-  v3 = *&a3;
+  v3 = *&profile;
   LOBYTE(v12) = 0;
   v14 = 0;
   os_unfair_lock_lock(&self->mMutex.m_lock);
@@ -365,23 +365,23 @@ LABEL_11:
   return v5;
 }
 
-- (void)addProfile:(id)a3
+- (void)addProfile:(id)profile
 {
-  v6 = a3;
+  profileCopy = profile;
   os_unfair_lock_lock(&self->mMutex.m_lock);
-  [v6 isMine];
-  v4 = -[MIDICIDeviceManager findProfile:](self, "findProfile:", [v6 objectRef]);
+  [profileCopy isMine];
+  v4 = -[MIDICIDeviceManager findProfile:](self, "findProfile:", [profileCopy objectRef]);
 
   if (!v4)
   {
-    v5 = -[MIDICIDeviceManager findDevice:](self, "findDevice:", [v6 ownerObjectRef]);
-    [v5 addProfile:v6];
+    v5 = -[MIDICIDeviceManager findDevice:](self, "findDevice:", [profileCopy ownerObjectRef]);
+    [v5 addProfile:profileCopy];
   }
 
   os_unfair_lock_unlock(&self->mMutex.m_lock);
 }
 
-- (id)findProfile:(unsigned int)a3
+- (id)findProfile:(unsigned int)profile
 {
   v26 = *MEMORY[0x277D85DE8];
   v20 = 0u;
@@ -407,8 +407,8 @@ LABEL_11:
         v17 = 0u;
         v18 = 0u;
         v19 = 0u;
-        v9 = [v8 profiles];
-        v10 = [v9 countByEnumeratingWithState:&v16 objects:v24 count:16];
+        profiles = [v8 profiles];
+        v10 = [profiles countByEnumeratingWithState:&v16 objects:v24 count:16];
         if (v10)
         {
           v11 = *v17;
@@ -418,11 +418,11 @@ LABEL_11:
             {
               if (*v17 != v11)
               {
-                objc_enumerationMutation(v9);
+                objc_enumerationMutation(profiles);
               }
 
               v13 = *(*(&v16 + 1) + 8 * j);
-              if ([v13 objectRef] == a3)
+              if ([v13 objectRef] == profile)
               {
                 v14 = v13;
 
@@ -430,7 +430,7 @@ LABEL_11:
               }
             }
 
-            v10 = [v9 countByEnumeratingWithState:&v16 objects:v24 count:16];
+            v10 = [profiles countByEnumeratingWithState:&v16 objects:v24 count:16];
             if (v10)
             {
               continue;
@@ -486,8 +486,8 @@ LABEL_19:
         v21 = 0u;
         v22 = 0u;
         v23 = 0u;
-        v10 = [v9 profiles];
-        v11 = [v10 countByEnumeratingWithState:&v20 objects:v28 count:16];
+        profiles = [v9 profiles];
+        v11 = [profiles countByEnumeratingWithState:&v20 objects:v28 count:16];
         if (v11)
         {
           v12 = *v21;
@@ -497,7 +497,7 @@ LABEL_19:
             {
               if (*v21 != v12)
               {
-                objc_enumerationMutation(v10);
+                objc_enumerationMutation(profiles);
               }
 
               v14 = *(*(&v20 + 1) + 8 * j);
@@ -513,7 +513,7 @@ LABEL_19:
               }
             }
 
-            v11 = [v10 countByEnumeratingWithState:&v20 objects:v28 count:16];
+            v11 = [profiles countByEnumeratingWithState:&v20 objects:v28 count:16];
             if (v11)
             {
               continue;
@@ -537,30 +537,30 @@ LABEL_19:
   return result;
 }
 
-- (BOOL)postNotificationName:(id)a3 device:(id)a4 profile:(id)a5
+- (BOOL)postNotificationName:(id)name device:(id)device profile:(id)profile
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v9 | v10)
+  nameCopy = name;
+  deviceCopy = device;
+  profileCopy = profile;
+  if (deviceCopy | profileCopy)
   {
     v11 = objc_opt_new();
     v12 = v11;
-    if (v9)
+    if (deviceCopy)
     {
-      [v11 setValue:v9 forKey:@"MIDICIDeviceObjectKey"];
+      [v11 setValue:deviceCopy forKey:@"MIDICIDeviceObjectKey"];
     }
 
-    if (v10)
+    if (profileCopy)
     {
-      [v12 setValue:v10 forKey:@"MIDICIProfileObjectKey"];
+      [v12 setValue:profileCopy forKey:@"MIDICIProfileObjectKey"];
     }
 
-    v13 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v13 postNotificationName:v8 object:self userInfo:v12];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:nameCopy object:self userInfo:v12];
   }
 
-  return (v9 | v10) != 0;
+  return (deviceCopy | profileCopy) != 0;
 }
 
 - (NSArray)discoveredCIDevices
@@ -580,9 +580,9 @@ LABEL_19:
   v2 = [(MIDICIDeviceManager *)&v24 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAC18] weakObjectsPointerArray];
+    weakObjectsPointerArray = [MEMORY[0x277CCAC18] weakObjectsPointerArray];
     mutableDevices = v2->_mutableDevices;
-    v2->_mutableDevices = v3;
+    v2->_mutableDevices = weakObjectsPointerArray;
 
     v23 = 0;
     if (!UMPCIGlobalState(&v23, v5))
@@ -647,7 +647,7 @@ LABEL_19:
   block[1] = 3221225472;
   block[2] = __37__MIDICIDeviceManager_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (+[MIDICIDeviceManager sharedInstance]::onceToken != -1)
   {
     dispatch_once(&+[MIDICIDeviceManager sharedInstance]::onceToken, block);

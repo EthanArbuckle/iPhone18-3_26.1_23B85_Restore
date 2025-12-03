@@ -1,11 +1,11 @@
 @interface _APRSPrewarmInterface
 + (id)sharedInstance;
-- (BOOL)hasPrewarmAssertionForApplication:(id)a3;
+- (BOOL)hasPrewarmAssertionForApplication:(id)application;
 - (_APRSPrewarmInterface)init;
-- (id)prelaunchAppFromBundleID:(id)a3 isClosure:(BOOL)a4;
-- (void)appendPrewarmAssertion:(id)a3 withAssertion:(id)a4;
-- (void)invalidatePrewarmAssertionForApplication:(id)a3 onInvalidation:(id)a4;
-- (void)prewarmRecommendations:(id)a3;
+- (id)prelaunchAppFromBundleID:(id)d isClosure:(BOOL)closure;
+- (void)appendPrewarmAssertion:(id)assertion withAssertion:(id)withAssertion;
+- (void)invalidatePrewarmAssertionForApplication:(id)application onInvalidation:(id)invalidation;
+- (void)prewarmRecommendations:(id)recommendations;
 @end
 
 @implementation _APRSPrewarmInterface
@@ -55,14 +55,14 @@
   return v2;
 }
 
-- (void)prewarmRecommendations:(id)a3
+- (void)prewarmRecommendations:(id)recommendations
 {
-  v4 = a3;
+  recommendationsCopy = recommendations;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v28 = v4;
+    v28 = recommendationsCopy;
     _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_DEFAULT, "Prewarm recommendations: %@", buf, 0xCu);
   }
 
@@ -70,9 +70,9 @@
   if (_os_feature_enabled_impl())
   {
     v7 = +[_DASLowPowerModePolicy policyInstance];
-    v8 = [v7 isChallengedForBatteryLife];
+    isChallengedForBatteryLife = [v7 isChallengedForBatteryLife];
 
-    if (v8)
+    if (isChallengedForBatteryLife)
     {
       v6 = 1;
     }
@@ -88,7 +88,7 @@
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v10 = v4;
+  v10 = recommendationsCopy;
   v11 = [v10 countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v11)
   {
@@ -141,20 +141,20 @@ LABEL_9:
   }
 }
 
-- (void)appendPrewarmAssertion:(id)a3 withAssertion:(id)a4
+- (void)appendPrewarmAssertion:(id)assertion withAssertion:(id)withAssertion
 {
-  v6 = a3;
-  v7 = a4;
+  assertionCopy = assertion;
+  withAssertionCopy = withAssertion;
   os_unfair_lock_lock(&self->_lock);
-  v8 = [(NSMutableDictionary *)self->_prewarmedAssertions objectForKeyedSubscript:v6];
+  v8 = [(NSMutableDictionary *)self->_prewarmedAssertions objectForKeyedSubscript:assertionCopy];
 
   if (v8)
   {
-    v9 = [(NSMutableDictionary *)self->_prewarmedAssertions objectForKeyedSubscript:v6];
+    v9 = [(NSMutableDictionary *)self->_prewarmedAssertions objectForKeyedSubscript:assertionCopy];
     [v9 invalidate];
   }
 
-  [(NSMutableDictionary *)self->_prewarmedAssertions setObject:v7 forKey:v6];
+  [(NSMutableDictionary *)self->_prewarmedAssertions setObject:withAssertionCopy forKey:assertionCopy];
   os_unfair_lock_unlock(&self->_lock);
   v10 = dispatch_time(0, 500000000);
   v11 = dispatch_get_global_queue(0, 0);
@@ -163,40 +163,40 @@ LABEL_9:
   v13[2] = sub_10006323C;
   v13[3] = &unk_1001B56E0;
   v13[4] = self;
-  v14 = v6;
-  v12 = v6;
+  v14 = assertionCopy;
+  v12 = assertionCopy;
   dispatch_after(v10, v11, v13);
 }
 
-- (BOOL)hasPrewarmAssertionForApplication:(id)a3
+- (BOOL)hasPrewarmAssertionForApplication:(id)application
 {
-  v4 = a3;
+  applicationCopy = application;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(NSMutableDictionary *)self->_prewarmedAssertions objectForKeyedSubscript:v4];
+  v5 = [(NSMutableDictionary *)self->_prewarmedAssertions objectForKeyedSubscript:applicationCopy];
 
   os_unfair_lock_unlock(&self->_lock);
   return v5 != 0;
 }
 
-- (void)invalidatePrewarmAssertionForApplication:(id)a3 onInvalidation:(id)a4
+- (void)invalidatePrewarmAssertionForApplication:(id)application onInvalidation:(id)invalidation
 {
-  v6 = a3;
-  v7 = a4;
+  applicationCopy = application;
+  invalidationCopy = invalidation;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 138412290;
-    v14 = v6;
+    v14 = applicationCopy;
     _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_DEFAULT, "Requesting prewarm termination for %@", &v13, 0xCu);
   }
 
   os_unfair_lock_lock(&self->_lock);
-  v9 = [(NSMutableDictionary *)self->_prewarmedAssertions objectForKeyedSubscript:v6];
+  v9 = [(NSMutableDictionary *)self->_prewarmedAssertions objectForKeyedSubscript:applicationCopy];
   v10 = v9;
   if (v9)
   {
     [v9 invalidateSyncWithError:0];
-    [(NSMutableDictionary *)self->_prewarmedAssertions removeObjectForKey:v6];
+    [(NSMutableDictionary *)self->_prewarmedAssertions removeObjectForKey:applicationCopy];
     os_unfair_lock_unlock(&self->_lock);
     v11 = self->_log;
     if (!os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -205,7 +205,7 @@ LABEL_9:
     }
 
     v13 = 138412290;
-    v14 = v6;
+    v14 = applicationCopy;
     v12 = "Prewarm terminated for %@";
   }
 
@@ -219,24 +219,24 @@ LABEL_9:
     }
 
     v13 = 138412290;
-    v14 = v6;
+    v14 = applicationCopy;
     v12 = "Prewarm assertion lost for %@";
   }
 
   _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, v12, &v13, 0xCu);
 LABEL_9:
-  if (v7)
+  if (invalidationCopy)
   {
-    v7[2](v7, v10 != 0);
+    invalidationCopy[2](invalidationCopy, v10 != 0);
   }
 }
 
-- (id)prelaunchAppFromBundleID:(id)a3 isClosure:(BOOL)a4
+- (id)prelaunchAppFromBundleID:(id)d isClosure:(BOOL)closure
 {
-  v4 = a4;
-  v6 = a3;
+  closureCopy = closure;
+  dCopy = d;
   v7 = objc_alloc_init(RBSLaunchContext);
-  v8 = [RBSProcessIdentity identityForEmbeddedApplicationIdentifier:v6];
+  v8 = [RBSProcessIdentity identityForEmbeddedApplicationIdentifier:dCopy];
   [v7 setIdentity:v8];
 
   v9 = [RBSDomainAttribute attributeWithDomain:@"com.apple.dasd" name:@"DYLDLaunch"];
@@ -244,7 +244,7 @@ LABEL_9:
   v10 = [NSArray arrayWithObjects:&v35 count:1];
   [v7 setAttributes:v10];
 
-  if (v4)
+  if (closureCopy)
   {
     v11 = @"DAS DYLD3 Closure Generation";
   }
@@ -254,7 +254,7 @@ LABEL_9:
     v11 = @"DAS Prewarm launch";
   }
 
-  if (v4)
+  if (closureCopy)
   {
     v12 = &off_1001CAE78;
   }
@@ -281,9 +281,9 @@ LABEL_9:
     if (v19)
     {
       *buf = 138412546;
-      *v32 = v6;
+      *v32 = dCopy;
       *&v32[8] = 1024;
-      *&v32[10] = v4;
+      *&v32[10] = closureCopy;
       _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_DEFAULT, "Prelaunched app: %@ (%u)", buf, 0x12u);
     }
 
@@ -295,19 +295,19 @@ LABEL_9:
       v26 = &unk_1001B6B00;
       v27 = v15;
       [v27 monitorForDeath:&v23];
-      [(_APRSPrewarmInterface *)self appendPrewarmAssertion:v6 withAssertion:v16, v23, v24, v25, v26];
+      [(_APRSPrewarmInterface *)self appendPrewarmAssertion:dCopy withAssertion:v16, v23, v24, v25, v26];
     }
 
     v20 = +[_APRSMetricRecorder sharedInstance];
-    [v20 startLoggingForApp:v6 pid:objc_msgSend(v15 forEvent:{"pid"), 0}];
+    [v20 startLoggingForApp:dCopy pid:objc_msgSend(v15 forEvent:{"pid"), 0}];
   }
 
   else if (v19)
   {
     *buf = 67109634;
-    *v32 = v4;
+    *v32 = closureCopy;
     *&v32[4] = 2112;
-    *&v32[6] = v6;
+    *&v32[6] = dCopy;
     v33 = 2112;
     v34 = v17;
     _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_DEFAULT, "Encountered error with prelaunch (%u) of %@: %@", buf, 0x1Cu);

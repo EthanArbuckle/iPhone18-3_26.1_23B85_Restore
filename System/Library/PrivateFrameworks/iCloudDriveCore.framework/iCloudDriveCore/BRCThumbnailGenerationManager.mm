@@ -1,17 +1,17 @@
 @interface BRCThumbnailGenerationManager
 + (id)defaultManager;
 - (BRCThumbnailGenerationManager)init;
-- (id)_generateThumbnailOperationAtURL:(id)a3 targetURL:(id)a4 timeout:(id)a5 sessionContext:(id)a6;
+- (id)_generateThumbnailOperationAtURL:(id)l targetURL:(id)rL timeout:(id)timeout sessionContext:(id)context;
 - (id)description;
-- (id)operationForThumbnailID:(id)a3;
+- (id)operationForThumbnailID:(id)d;
 - (unint64_t)_thumbnailOperationsMax;
-- (void)_addThumbnailGenerationJobAtURL:(id)a3 targetURL:(id)a4 thumbnailID:(id)a5 timeout:(id)a6 syncContext:(id)a7 completionHandler:(id)a8;
-- (void)_addThumbnailOperation:(id)a3 thumbnailID:(id)a4;
-- (void)_removeThumbnailOperationForThumbnailID:(id)a3;
-- (void)addOutOfBandThumbnailGenerationJobAtURL:(id)a3 targetURL:(id)a4 timeout:(double)a5 syncContext:(id)a6 completionHandler:(id)a7;
-- (void)addThumbnailGenerationJobAtURL:(id)a3 targetURL:(id)a4 thumbnailID:(id)a5 syncContext:(id)a6 completionHandler:(id)a7;
+- (void)_addThumbnailGenerationJobAtURL:(id)l targetURL:(id)rL thumbnailID:(id)d timeout:(id)timeout syncContext:(id)context completionHandler:(id)handler;
+- (void)_addThumbnailOperation:(id)operation thumbnailID:(id)d;
+- (void)_removeThumbnailOperationForThumbnailID:(id)d;
+- (void)addOutOfBandThumbnailGenerationJobAtURL:(id)l targetURL:(id)rL timeout:(double)timeout syncContext:(id)context completionHandler:(id)handler;
+- (void)addThumbnailGenerationJobAtURL:(id)l targetURL:(id)rL thumbnailID:(id)d syncContext:(id)context completionHandler:(id)handler;
 - (void)cancel;
-- (void)getLocalThumbnailWithShare:(id)a3 mangledID:(id)a4 targetURL:(id)a5 sessionContext:(id)a6 completionHandler:(id)a7;
+- (void)getLocalThumbnailWithShare:(id)share mangledID:(id)d targetURL:(id)l sessionContext:(id)context completionHandler:(id)handler;
 @end
 
 @implementation BRCThumbnailGenerationManager
@@ -67,17 +67,17 @@ uint64_t __47__BRCThumbnailGenerationManager_defaultManager__block_invoke()
 - (unint64_t)_thumbnailOperationsMax
 {
   v2 = [BRCUserDefaults defaultsForMangledID:0];
-  v3 = [v2 thumbnailTransferQueueWidth];
+  thumbnailTransferQueueWidth = [v2 thumbnailTransferQueueWidth];
 
-  return v3;
+  return thumbnailTransferQueueWidth;
 }
 
-- (void)_addThumbnailOperation:(id)a3 thumbnailID:(id)a4
+- (void)_addThumbnailOperation:(id)operation thumbnailID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  operationCopy = operation;
+  dCopy = d;
+  v8 = dCopy;
+  if (dCopy)
   {
     thumbnailPrivateQueue = self->_thumbnailPrivateQueue;
     block[0] = MEMORY[0x277D85DD0];
@@ -85,8 +85,8 @@ uint64_t __47__BRCThumbnailGenerationManager_defaultManager__block_invoke()
     block[2] = __68__BRCThumbnailGenerationManager__addThumbnailOperation_thumbnailID___block_invoke;
     block[3] = &unk_2784FF4A0;
     block[4] = self;
-    v11 = v7;
-    v12 = v6;
+    v11 = dCopy;
+    v12 = operationCopy;
     dispatch_sync(thumbnailPrivateQueue, block);
   }
 }
@@ -117,11 +117,11 @@ unint64_t __68__BRCThumbnailGenerationManager__addThumbnailOperation_thumbnailID
   return result;
 }
 
-- (void)_removeThumbnailOperationForThumbnailID:(id)a3
+- (void)_removeThumbnailOperationForThumbnailID:(id)d
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  dCopy = d;
+  v5 = dCopy;
+  if (dCopy)
   {
     thumbnailPrivateQueue = self->_thumbnailPrivateQueue;
     v7[0] = MEMORY[0x277D85DD0];
@@ -129,7 +129,7 @@ unint64_t __68__BRCThumbnailGenerationManager__addThumbnailOperation_thumbnailID
     v7[2] = __73__BRCThumbnailGenerationManager__removeThumbnailOperationForThumbnailID___block_invoke;
     v7[3] = &unk_2784FF478;
     v7[4] = self;
-    v8 = v4;
+    v8 = dCopy;
     dispatch_sync(thumbnailPrivateQueue, v7);
   }
 }
@@ -163,36 +163,36 @@ unint64_t __73__BRCThumbnailGenerationManager__removeThumbnailOperationForThumbn
   return result;
 }
 
-- (id)_generateThumbnailOperationAtURL:(id)a3 targetURL:(id)a4 timeout:(id)a5 sessionContext:(id)a6
+- (id)_generateThumbnailOperationAtURL:(id)l targetURL:(id)rL timeout:(id)timeout sessionContext:(id)context
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [[BRCThumbnailGenerateOperation alloc] initWithDocumentAtURL:v12 targetURL:v11 timeout:v10 sessionContext:v9];
+  contextCopy = context;
+  timeoutCopy = timeout;
+  rLCopy = rL;
+  lCopy = l;
+  v13 = [[BRCThumbnailGenerateOperation alloc] initWithDocumentAtURL:lCopy targetURL:rLCopy timeout:timeoutCopy sessionContext:contextCopy];
 
   return v13;
 }
 
-- (void)_addThumbnailGenerationJobAtURL:(id)a3 targetURL:(id)a4 thumbnailID:(id)a5 timeout:(id)a6 syncContext:(id)a7 completionHandler:(id)a8
+- (void)_addThumbnailGenerationJobAtURL:(id)l targetURL:(id)rL thumbnailID:(id)d timeout:(id)timeout syncContext:(id)context completionHandler:(id)handler
 {
   v60 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v40 = a6;
-  v17 = a7;
-  v18 = a8;
-  v19 = [v17 sessionContext];
-  v20 = [(BRCThumbnailGenerationManager *)self _generateThumbnailOperationAtURL:v14 targetURL:v15 timeout:v40 sessionContext:v19];
+  lCopy = l;
+  rLCopy = rL;
+  dCopy = d;
+  timeoutCopy = timeout;
+  contextCopy = context;
+  handlerCopy = handler;
+  sessionContext = [contextCopy sessionContext];
+  v20 = [(BRCThumbnailGenerationManager *)self _generateThumbnailOperationAtURL:lCopy targetURL:rLCopy timeout:timeoutCopy sessionContext:sessionContext];
 
-  [(BRCThumbnailGenerationManager *)self _addThumbnailOperation:v20 thumbnailID:v16];
+  [(BRCThumbnailGenerationManager *)self _addThumbnailOperation:v20 thumbnailID:dCopy];
   v21 = brc_bread_crumbs();
   v22 = brc_default_log();
   if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
   {
     *block = 138412802;
-    *&block[4] = v16;
+    *&block[4] = dCopy;
     *&block[12] = 2112;
     *&block[14] = v20;
     *&block[22] = 2112;
@@ -205,15 +205,15 @@ unint64_t __73__BRCThumbnailGenerationManager__removeThumbnailOperationForThumbn
   v44[1] = 3221225472;
   v44[2] = __125__BRCThumbnailGenerationManager__addThumbnailGenerationJobAtURL_targetURL_thumbnailID_timeout_syncContext_completionHandler___block_invoke;
   v44[3] = &unk_2785054C0;
-  v39 = v15;
+  v39 = rLCopy;
   v45 = v39;
-  v38 = v14;
+  v38 = lCopy;
   v46 = v38;
   objc_copyWeak(&v50, &location);
-  v23 = v18;
+  v23 = handlerCopy;
   v49 = v23;
-  v47 = self;
-  v24 = v16;
+  selfCopy = self;
+  v24 = dCopy;
   v48 = v24;
   [v20 setSaveThumbnailCompletionBlock:v44];
   thumbnailQueue = self->_thumbnailQueue;
@@ -221,7 +221,7 @@ unint64_t __73__BRCThumbnailGenerationManager__removeThumbnailOperationForThumbn
   v41[1] = 3221225472;
   v41[2] = __125__BRCThumbnailGenerationManager__addThumbnailGenerationJobAtURL_targetURL_thumbnailID_timeout_syncContext_completionHandler___block_invoke_7;
   v41[3] = &unk_2784FF478;
-  v26 = v17;
+  v26 = contextCopy;
   v42 = v26;
   v27 = v20;
   v43 = v27;
@@ -298,65 +298,65 @@ void __125__BRCThumbnailGenerationManager__addThumbnailGenerationJobAtURL_target
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addThumbnailGenerationJobAtURL:(id)a3 targetURL:(id)a4 thumbnailID:(id)a5 syncContext:(id)a6 completionHandler:(id)a7
+- (void)addThumbnailGenerationJobAtURL:(id)l targetURL:(id)rL thumbnailID:(id)d syncContext:(id)context completionHandler:(id)handler
 {
-  if (a5)
+  if (d)
   {
-    v15 = a7;
-    [(BRCThumbnailGenerationManager *)self _addThumbnailGenerationJobAtURL:a3 targetURL:a4 thumbnailID:a5 timeout:0 syncContext:a6 completionHandler:?];
+    handlerCopy = handler;
+    [(BRCThumbnailGenerationManager *)self _addThumbnailGenerationJobAtURL:l targetURL:rL thumbnailID:d timeout:0 syncContext:context completionHandler:?];
   }
 
   else
   {
     v13 = MEMORY[0x277CCA9B8];
-    v14 = a7;
-    v15 = [v13 brc_errorInvalidParameter:@"thumbnailID" value:0];
-    (*(a7 + 2))(v14, 0);
+    handlerCopy2 = handler;
+    handlerCopy = [v13 brc_errorInvalidParameter:@"thumbnailID" value:0];
+    (*(handler + 2))(handlerCopy2, 0);
   }
 }
 
-- (void)addOutOfBandThumbnailGenerationJobAtURL:(id)a3 targetURL:(id)a4 timeout:(double)a5 syncContext:(id)a6 completionHandler:(id)a7
+- (void)addOutOfBandThumbnailGenerationJobAtURL:(id)l targetURL:(id)rL timeout:(double)timeout syncContext:(id)context completionHandler:(id)handler
 {
   v12 = MEMORY[0x277CCABB0];
-  v13 = a7;
-  v14 = a6;
-  v15 = a4;
-  v16 = a3;
-  v17 = [v12 numberWithDouble:a5];
-  [(BRCThumbnailGenerationManager *)self _addThumbnailGenerationJobAtURL:v16 targetURL:v15 thumbnailID:0 timeout:v17 syncContext:v14 completionHandler:v13];
+  handlerCopy = handler;
+  contextCopy = context;
+  rLCopy = rL;
+  lCopy = l;
+  v17 = [v12 numberWithDouble:timeout];
+  [(BRCThumbnailGenerationManager *)self _addThumbnailGenerationJobAtURL:lCopy targetURL:rLCopy thumbnailID:0 timeout:v17 syncContext:contextCopy completionHandler:handlerCopy];
 }
 
-- (void)getLocalThumbnailWithShare:(id)a3 mangledID:(id)a4 targetURL:(id)a5 sessionContext:(id)a6 completionHandler:(id)a7
+- (void)getLocalThumbnailWithShare:(id)share mangledID:(id)d targetURL:(id)l sessionContext:(id)context completionHandler:(id)handler
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = [MEMORY[0x277CCAA00] defaultManager];
-  v18 = [v14 path];
-  v19 = [v17 fileExistsAtPath:v18];
+  shareCopy = share;
+  dCopy = d;
+  lCopy = l;
+  contextCopy = context;
+  handlerCopy = handler;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  path = [lCopy path];
+  v19 = [defaultManager fileExistsAtPath:path];
 
   if (v19)
   {
-    v16[2](v16, v14);
+    handlerCopy[2](handlerCopy, lCopy);
   }
 
   else
   {
-    v20 = [v15 clientReadWriteDatabaseFacade];
-    v21 = [v20 workloop];
+    clientReadWriteDatabaseFacade = [contextCopy clientReadWriteDatabaseFacade];
+    workloop = [clientReadWriteDatabaseFacade workloop];
     v22[0] = MEMORY[0x277D85DD0];
     v22[1] = 3221225472;
     v22[2] = __113__BRCThumbnailGenerationManager_getLocalThumbnailWithShare_mangledID_targetURL_sessionContext_completionHandler___block_invoke;
     v22[3] = &unk_2785011B8;
-    v23 = v12;
-    v24 = v15;
-    v25 = v13;
-    v28 = v16;
-    v26 = self;
-    v27 = v14;
-    dispatch_async(v21, v22);
+    v23 = shareCopy;
+    v24 = contextCopy;
+    v25 = dCopy;
+    v28 = handlerCopy;
+    selfCopy = self;
+    v27 = lCopy;
+    dispatch_async(workloop, v22);
   }
 }
 
@@ -449,9 +449,9 @@ void __113__BRCThumbnailGenerationManager_getLocalThumbnailWithShare_mangledID_t
   dispatch_sync(thumbnailPrivateQueue, block);
 }
 
-- (id)operationForThumbnailID:(id)a3
+- (id)operationForThumbnailID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -463,10 +463,10 @@ void __113__BRCThumbnailGenerationManager_getLocalThumbnailWithShare_mangledID_t
   block[1] = 3221225472;
   block[2] = __57__BRCThumbnailGenerationManager_operationForThumbnailID___block_invoke;
   block[3] = &unk_278500D08;
-  v10 = v4;
+  v10 = dCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = dCopy;
   dispatch_sync(thumbnailPrivateQueue, block);
   v7 = v13[5];
 

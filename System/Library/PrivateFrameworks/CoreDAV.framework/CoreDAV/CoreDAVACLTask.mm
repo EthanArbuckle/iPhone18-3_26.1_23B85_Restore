@@ -1,17 +1,17 @@
 @interface CoreDAVACLTask
-- (CoreDAVACLTask)initWithAccessControlEntities:(id)a3 atURL:(id)a4;
+- (CoreDAVACLTask)initWithAccessControlEntities:(id)entities atURL:(id)l;
 - (id)description;
 - (id)requestBody;
-- (void)finishCoreDAVTaskWithError:(id)a3;
+- (void)finishCoreDAVTaskWithError:(id)error;
 @end
 
 @implementation CoreDAVACLTask
 
-- (CoreDAVACLTask)initWithAccessControlEntities:(id)a3 atURL:(id)a4
+- (CoreDAVACLTask)initWithAccessControlEntities:(id)entities atURL:(id)l
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7 || (v9 = v8, ![v7 count]))
+  entitiesCopy = entities;
+  lCopy = l;
+  if (!entitiesCopy || (v9 = lCopy, ![entitiesCopy count]))
   {
     v13 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE660] reason:@"Non-nil and non-empty accessControlEntities required." userInfo:0];
     objc_exception_throw(v13);
@@ -23,7 +23,7 @@
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_accessControlEntities, a3);
+    objc_storeStrong(&v10->_accessControlEntities, entities);
   }
 
   return v11;
@@ -37,8 +37,8 @@
   v4 = [(CoreDAVTask *)&v7 description];
   [v3 appendFormat:@"[%@ ", v4];
 
-  v5 = [(CoreDAVACLTask *)self accessControlEntities];
-  [v3 appendFormat:@"| Number of access control entities: [%lu]", objc_msgSend(v5, "count")];
+  accessControlEntities = [(CoreDAVACLTask *)self accessControlEntities];
+  [v3 appendFormat:@"| Number of access control entities: [%lu]", objc_msgSend(accessControlEntities, "count")];
 
   [v3 appendFormat:@"]"];
 
@@ -54,8 +54,8 @@
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [(CoreDAVACLTask *)self accessControlEntities];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  accessControlEntities = [(CoreDAVACLTask *)self accessControlEntities];
+  v5 = [accessControlEntities countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -66,39 +66,39 @@
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(accessControlEntities);
         }
 
         [*(*(&v12 + 1) + 8 * i) write:v3];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [accessControlEntities countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
   }
 
   [(CoreDAVXMLData *)v3 endElement:@"acl" inNamespace:@"DAV:"];
-  v9 = [(CoreDAVXMLData *)v3 data];
+  data = [(CoreDAVXMLData *)v3 data];
 
   v10 = *MEMORY[0x277D85DE8];
 
-  return v9;
+  return data;
 }
 
-- (void)finishCoreDAVTaskWithError:(id)a3
+- (void)finishCoreDAVTaskWithError:(id)error
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  errorCopy = error;
+  v5 = errorCopy;
+  if (errorCopy)
   {
-    v6 = [v4 code];
+    code = [errorCopy code];
     v7 = +[CoreDAVLogging sharedLogging];
     WeakRetained = objc_loadWeakRetained(&self->super._accountInfoProvider);
     v9 = [v7 logHandleForAccountInfoProvider:WeakRetained];
 
-    if (v6 == 1)
+    if (code == 1)
     {
       if (v9)
       {
@@ -146,13 +146,13 @@ LABEL_10:
   }
 
   self->super._numDownloadedElements = 0;
-  v18 = [(CoreDAVTask *)self delegate];
+  delegate = [(CoreDAVTask *)self delegate];
   v19 = objc_opt_respondsToSelector();
 
   if (v19)
   {
-    v20 = [(CoreDAVTask *)self delegate];
-    [v20 aclTask:self error:v5];
+    delegate2 = [(CoreDAVTask *)self delegate];
+    [delegate2 aclTask:self error:v5];
 
     [(CoreDAVTask *)self setDelegate:0];
   }

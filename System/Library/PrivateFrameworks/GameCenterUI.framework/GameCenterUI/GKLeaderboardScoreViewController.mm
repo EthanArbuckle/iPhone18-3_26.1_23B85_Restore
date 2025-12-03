@@ -2,66 +2,66 @@
 - (BOOL)hasData;
 - (BOOL)isLoading;
 - (BOOL)updateHighlightsPersonalView;
-- (GKLeaderboardScoreViewController)initWithGameRecord:(id)a3 leaderboard:(id)a4;
+- (GKLeaderboardScoreViewController)initWithGameRecord:(id)record leaderboard:(id)leaderboard;
 - (UICollectionViewCell)preferredFocusCell;
-- (id)attributedStringWithSymbol:(id)a3;
+- (id)attributedStringWithSymbol:(id)symbol;
 - (id)preferredFocusEnvironments;
-- (id)timeRemainingFromDate:(id)a3 toDate:(id)a4;
+- (id)timeRemainingFromDate:(id)date toDate:(id)toDate;
 - (void)addLeaderboardHighlights;
 - (void)addPlayerScopeControl;
 - (void)autoRefreshHighlightsPersonalView;
-- (void)backButtonPressed:(id)a3;
-- (void)challengeWithScore:(id)a3;
+- (void)backButtonPressed:(id)pressed;
+- (void)challengeWithScore:(id)score;
 - (void)clearSelection;
 - (void)collectionViewDidScroll;
 - (void)configureCloseButton;
 - (void)configureFocusGuidesForPortraitNavigationBar;
 - (void)configurePlayerScopeFocusGuide;
 - (void)configureTimeScopeMenu;
-- (void)dataUpdated:(BOOL)a3 withError:(id)a4;
+- (void)dataUpdated:(BOOL)updated withError:(id)error;
 - (void)dealloc;
 - (void)didEnterLoadingState;
-- (void)didLoadAdditionalScoresWithUpdatedTotalEntries:(unint64_t)a3;
-- (void)didLoadScoresWithLocalPlayerEntry:(id)a3 topPlayer:(id)a4 playerAbove:(id)a5 playerBelow:(id)a6 totalEntries:(int64_t)a7;
-- (void)donePressed:(id)a3;
+- (void)didLoadAdditionalScoresWithUpdatedTotalEntries:(unint64_t)entries;
+- (void)didLoadScoresWithLocalPlayerEntry:(id)entry topPlayer:(id)player playerAbove:(id)above playerBelow:(id)below totalEntries:(int64_t)entries;
+- (void)donePressed:(id)pressed;
 - (void)enableDisableCollectionViewScrolling;
 - (void)hideNoContentPlaceholder;
 - (void)loadData;
-- (void)loadLeaderboardForOccurrence:(int64_t)a3 handler:(id)a4;
-- (void)playerScopeChanged:(id)a3;
-- (void)refreshContentsForDataType:(unsigned int)a3 userInfo:(id)a4;
-- (void)scrollToTopPressed:(id)a3;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)sendFriendInvitationViaMessagesTo:(id)a3 withPresentingViewController:(id)a4;
-- (void)setLeaderboardOccurrence:(int64_t)a3;
+- (void)loadLeaderboardForOccurrence:(int64_t)occurrence handler:(id)handler;
+- (void)playerScopeChanged:(id)changed;
+- (void)refreshContentsForDataType:(unsigned int)type userInfo:(id)info;
+- (void)scrollToTopPressed:(id)pressed;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)sendFriendInvitationViaMessagesTo:(id)to withPresentingViewController:(id)controller;
+- (void)setLeaderboardOccurrence:(int64_t)occurrence;
 - (void)setNeedsRefresh;
-- (void)setPlayerScope:(int64_t)a3 restrictToFriendsOnly:(BOOL)a4;
-- (void)setTimeScope:(int64_t)a3;
+- (void)setPlayerScope:(int64_t)scope restrictToFriendsOnly:(BOOL)only;
+- (void)setTimeScope:(int64_t)scope;
 - (void)setupFadeGradient;
-- (void)setupNoContentView:(id)a3 withError:(id)a4;
+- (void)setupNoContentView:(id)view withError:(id)error;
 - (void)setupReleaseStateInfo;
 - (void)setupVisualEffect;
-- (void)shareScore:(id)a3 fromLeaderboard:(id)a4 sendingView:(id)a5 relativeRect:(CGRect)a6;
-- (void)shareWithScore:(id)a3 fromView:(id)a4;
-- (void)showNoContentPlaceholderForError:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)shareScore:(id)score fromLeaderboard:(id)leaderboard sendingView:(id)view relativeRect:(CGRect)rect;
+- (void)shareWithScore:(id)score fromView:(id)view;
+- (void)showNoContentPlaceholderForError:(id)error;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateContentSize;
 - (void)updateHighlights;
-- (void)updatePlayerScopeLayoutForSize:(CGSize)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)updatePlayerScopeLayoutForSize:(CGSize)size;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation GKLeaderboardScoreViewController
 
-- (GKLeaderboardScoreViewController)initWithGameRecord:(id)a3 leaderboard:(id)a4
+- (GKLeaderboardScoreViewController)initWithGameRecord:(id)record leaderboard:(id)leaderboard
 {
-  v6 = a3;
-  v7 = a4;
+  recordCopy = record;
+  leaderboardCopy = leaderboard;
   if (GKIsXRUIIdiomShouldUsePadUI())
   {
     v8 = @"GKLeaderboardScoreViewController_xrOS";
@@ -69,9 +69,9 @@
 
   else
   {
-    v9 = [MEMORY[0x277D75C80] currentTraitCollection];
-    v10 = [v9 preferredContentSizeCategory];
-    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v10);
+    currentTraitCollection = [MEMORY[0x277D75C80] currentTraitCollection];
+    preferredContentSizeCategory = [currentTraitCollection preferredContentSizeCategory];
+    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
     v12 = @"GKLeaderboardScoreViewController_iOS";
     if (IsAccessibilityCategory)
@@ -90,17 +90,17 @@
   if (v14)
   {
     [(GKLeaderboardScoreViewController *)v14 setInitialPlayerScope:1];
-    [(GKLeaderboardScoreViewController *)v14 setLeaderboard:v7];
-    if ([v7 type] == 1)
+    [(GKLeaderboardScoreViewController *)v14 setLeaderboard:leaderboardCopy];
+    if ([leaderboardCopy type] == 1)
     {
-      [(GKLeaderboardScoreViewController *)v14 setCurrentOccurrence:v7];
+      [(GKLeaderboardScoreViewController *)v14 setCurrentOccurrence:leaderboardCopy];
     }
 
-    v15 = [v7 title];
-    [(GKLeaderboardScoreViewController *)v14 setTitle:v15];
+    title = [leaderboardCopy title];
+    [(GKLeaderboardScoreViewController *)v14 setTitle:title];
 
     [(GKLoadingViewController *)v14 setLoadingIndicatorDelay:0.0];
-    v16 = [[GKLeaderboardScoreDataSource alloc] initWithGameRecord:v6 leaderboard:v7];
+    v16 = [[GKLeaderboardScoreDataSource alloc] initWithGameRecord:recordCopy leaderboard:leaderboardCopy];
     objc_initWeak(&location, v14);
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
@@ -248,10 +248,10 @@ void __67__GKLeaderboardScoreViewController_initWithGameRecord_leaderboard___blo
 - (void)addLeaderboardHighlights
 {
   v14 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-  v3 = [MEMORY[0x277D75C80] currentTraitCollection];
-  v4 = [v3 preferredContentSizeCategory];
+  currentTraitCollection = [MEMORY[0x277D75C80] currentTraitCollection];
+  preferredContentSizeCategory = [currentTraitCollection preferredContentSizeCategory];
 
-  if (UIContentSizeCategoryIsAccessibilityCategory(v4))
+  if (UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory))
   {
     v5 = @"GKLeaderboardMetadataViewAX_iOS";
   }
@@ -267,20 +267,20 @@ void __67__GKLeaderboardScoreViewController_initWithGameRecord_leaderboard___blo
   }
 
   v6 = [v14 loadNibNamed:v5 owner:self options:0];
-  v7 = [v6 firstObject];
-  [(GKLeaderboardScoreViewController *)self setPersonalView:v7];
+  firstObject = [v6 firstObject];
+  [(GKLeaderboardScoreViewController *)self setPersonalView:firstObject];
 
   v8 = [v14 loadNibNamed:v5 owner:self options:0];
-  v9 = [v8 firstObject];
-  [(GKLeaderboardScoreViewController *)self setSocialView:v9];
+  firstObject2 = [v8 firstObject];
+  [(GKLeaderboardScoreViewController *)self setSocialView:firstObject2];
 
-  v10 = [(GKLeaderboardScoreViewController *)self highlightView];
-  v11 = [(GKLeaderboardScoreViewController *)self personalView];
-  [v10 addArrangedSubview:v11];
+  highlightView = [(GKLeaderboardScoreViewController *)self highlightView];
+  personalView = [(GKLeaderboardScoreViewController *)self personalView];
+  [highlightView addArrangedSubview:personalView];
 
-  v12 = [(GKLeaderboardScoreViewController *)self highlightView];
-  v13 = [(GKLeaderboardScoreViewController *)self socialView];
-  [v12 addArrangedSubview:v13];
+  highlightView2 = [(GKLeaderboardScoreViewController *)self highlightView];
+  socialView = [(GKLeaderboardScoreViewController *)self socialView];
+  [highlightView2 addArrangedSubview:socialView];
 
   [(GKLeaderboardScoreViewController *)self updateHighlights];
 }
@@ -304,14 +304,14 @@ void __67__GKLeaderboardScoreViewController_initWithGameRecord_leaderboard___blo
   }
 }
 
-- (id)attributedStringWithSymbol:(id)a3
+- (id)attributedStringWithSymbol:(id)symbol
 {
   v18[2] = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CCAB48];
-  v4 = a3;
+  symbolCopy = symbol;
   v5 = objc_alloc_init(v3);
   v6 = MEMORY[0x277D74270];
-  v7 = [MEMORY[0x277D755B8] systemImageNamed:v4];
+  v7 = [MEMORY[0x277D755B8] systemImageNamed:symbolCopy];
 
   v8 = [v6 textAttachmentWithImage:v7];
 
@@ -330,8 +330,8 @@ void __67__GKLeaderboardScoreViewController_initWithGameRecord_leaderboard___blo
   v17[0] = *MEMORY[0x277D740A8];
   v17[1] = v13;
   v18[0] = v11;
-  v14 = [MEMORY[0x277D75348] labelColor];
-  v18[1] = v14;
+  labelColor = [MEMORY[0x277D75348] labelColor];
+  v18[1] = labelColor;
   v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:v17 count:2];
   [v5 addAttributes:v15 range:{0, objc_msgSend(v5, "length")}];
 
@@ -341,58 +341,58 @@ void __67__GKLeaderboardScoreViewController_initWithGameRecord_leaderboard___blo
 - (BOOL)updateHighlightsPersonalView
 {
   v76[1] = *MEMORY[0x277D85DE8];
-  v3 = [(GKLeaderboardScoreViewController *)self leaderboard];
-  v4 = [v3 type];
+  leaderboard = [(GKLeaderboardScoreViewController *)self leaderboard];
+  type = [leaderboard type];
 
-  if (v4 != 1)
+  if (type != 1)
   {
 LABEL_4:
     if (-[GKLeaderboardScoreViewController hasData](self, "hasData") && (-[GKLeaderboardScoreViewController localPlayerEntry](self, "localPlayerEntry"), v10 = objc_claimAutoreleasedReturnValue(), v11 = [v10 rank], v10, v11 >= 1))
     {
-      v12 = [(GKLeaderboardScoreViewController *)self leaderboard];
-      if ([v12 playerScope])
+      leaderboard2 = [(GKLeaderboardScoreViewController *)self leaderboard];
+      if ([leaderboard2 playerScope])
       {
 
 LABEL_8:
-        v13 = [(GKLeaderboardScoreViewController *)self playerScopeControl];
-        v14 = [v13 selectedSegmentIndex];
+        playerScopeControl = [(GKLeaderboardScoreViewController *)self playerScopeControl];
+        selectedSegmentIndex = [playerScopeControl selectedSegmentIndex];
         v15 = MEMORY[0x277CCACA8];
         v16 = GKGameCenterUIFrameworkBundle();
         GKGetLocalizedStringFromTableInBundle();
-        if (v14 < 1)
+        if (selectedSegmentIndex < 1)
           v17 = {;
-          v19 = [(GKLeaderboardScoreViewController *)self localPlayerEntry];
-          v21 = [v15 localizedStringWithFormat:v17, objc_msgSend(v19, "rank"), -[GKLeaderboardScoreViewController totalEntries](self, "totalEntries")];
+          localPlayerEntry = [(GKLeaderboardScoreViewController *)self localPlayerEntry];
+          v21 = [v15 localizedStringWithFormat:v17, objc_msgSend(localPlayerEntry, "rank"), -[GKLeaderboardScoreViewController totalEntries](self, "totalEntries")];
         }
 
         else
           v17 = {;
           v18 = MEMORY[0x277CCABB0];
-          v19 = [(GKLeaderboardScoreViewController *)self localPlayerEntry];
-          v20 = [v18 numberWithInteger:{objc_msgSend(v19, "rank")}];
+          localPlayerEntry = [(GKLeaderboardScoreViewController *)self localPlayerEntry];
+          v20 = [v18 numberWithInteger:{objc_msgSend(localPlayerEntry, "rank")}];
           v21 = [v15 localizedStringWithFormat:v17, v20];
         }
 
-        v55 = [(GKLeaderboardScoreViewController *)self personalView];
-        v56 = [MEMORY[0x277D0C138] local];
-        v75 = v56;
+        personalView = [(GKLeaderboardScoreViewController *)self personalView];
+        local = [MEMORY[0x277D0C138] local];
+        v75 = local;
         v57 = [MEMORY[0x277CBEA60] arrayWithObjects:&v75 count:1];
-        v58 = [(GKLeaderboardScoreViewController *)self localPlayerEntry];
-        v59 = [v58 formattedScore];
-        [v55 configureWithPlayers:v57 title:v59 footnote:v21];
+        localPlayerEntry2 = [(GKLeaderboardScoreViewController *)self localPlayerEntry];
+        formattedScore = [localPlayerEntry2 formattedScore];
+        [personalView configureWithPlayers:v57 title:formattedScore footnote:v21];
 
         return 0;
       }
 
-      v36 = [(GKLeaderboardScoreViewController *)self totalEntries];
+      totalEntries = [(GKLeaderboardScoreViewController *)self totalEntries];
 
-      if (v36 < 1)
+      if (totalEntries < 1)
       {
         goto LABEL_8;
       }
 
-      v37 = [(GKLeaderboardScoreViewController *)self localPlayerEntry];
-      v38 = 100 * [v37 rank];
+      localPlayerEntry3 = [(GKLeaderboardScoreViewController *)self localPlayerEntry];
+      v38 = 100 * [localPlayerEntry3 rank];
       v39 = v38 / [(GKLeaderboardScoreViewController *)self totalEntries];
 
       if (v39 <= 1)
@@ -405,19 +405,19 @@ LABEL_8:
         v40 = v39;
       }
 
-      v41 = [(GKLeaderboardScoreViewController *)self localPlayerEntry];
-      v42 = [v41 rank];
+      localPlayerEntry4 = [(GKLeaderboardScoreViewController *)self localPlayerEntry];
+      rank = [localPlayerEntry4 rank];
 
-      if (v42 > 10)
+      if (rank > 10)
       {
         if (v39 > 10)
         {
           goto LABEL_8;
         }
 
-        v74 = [(GKLeaderboardScoreViewController *)self personalView];
-        v61 = [MEMORY[0x277D0C138] local];
-        v76[0] = v61;
+        personalView2 = [(GKLeaderboardScoreViewController *)self personalView];
+        local2 = [MEMORY[0x277D0C138] local];
+        v76[0] = local2;
         v62 = [MEMORY[0x277CBEA60] arrayWithObjects:v76 count:1];
         v63 = MEMORY[0x277CCACA8];
         v64 = GKGameCenterUIFrameworkBundle();
@@ -428,18 +428,18 @@ LABEL_8:
         v69 = GKGameCenterUIFrameworkBundle();
         v70 = GKGetLocalizedStringFromTableInBundle();
         v71 = [v68 localizedStringWithFormat:v70, -[GKLeaderboardScoreViewController totalEntries](self, "totalEntries")];
-        [v74 configureWithPlayers:v62 title:v67 footnote:v71];
+        [personalView2 configureWithPlayers:v62 title:v67 footnote:v71];
       }
 
       else
       {
-        v72 = [(GKLeaderboardScoreViewController *)self personalView];
+        personalView3 = [(GKLeaderboardScoreViewController *)self personalView];
         v43 = MEMORY[0x277CCACA8];
         v73 = GKGameCenterUIFrameworkBundle();
         v44 = GKGetLocalizedStringFromTableInBundle();
         v45 = MEMORY[0x277CCABB0];
-        v46 = [(GKLeaderboardScoreViewController *)self localPlayerEntry];
-        v47 = [v45 numberWithInteger:{objc_msgSend(v46, "rank")}];
+        localPlayerEntry5 = [(GKLeaderboardScoreViewController *)self localPlayerEntry];
+        v47 = [v45 numberWithInteger:{objc_msgSend(localPlayerEntry5, "rank")}];
         v48 = [v43 localizedStringWithFormat:v44, v47];
         v49 = GKGameCenterUIFrameworkBundle();
         v50 = GKGetLocalizedStringFromTableInBundle();
@@ -447,50 +447,50 @@ LABEL_8:
         v52 = GKGameCenterUIFrameworkBundle();
         v53 = GKGetLocalizedStringFromTableInBundle();
         v54 = [v51 localizedStringWithFormat:v53, -[GKLeaderboardScoreViewController totalEntries](self, "totalEntries")];
-        [v72 configureWithRank:v48 title:v50 footnote:v54 vibrant:1];
+        [personalView3 configureWithRank:v48 title:v50 footnote:v54 vibrant:1];
       }
     }
 
     else
     {
-      v22 = [(GKLeaderboardScoreViewController *)self personalView];
+      personalView4 = [(GKLeaderboardScoreViewController *)self personalView];
       v23 = GKGameCenterUIFrameworkBundle();
       v24 = GKGetLocalizedStringFromTableInBundle();
       v25 = GKGameCenterUIFrameworkBundle();
       v26 = GKGetLocalizedStringFromTableInBundle();
-      [v22 configureWithRank:@"👏" title:v24 footnote:v26 vibrant:0];
+      [personalView4 configureWithRank:@"👏" title:v24 footnote:v26 vibrant:0];
     }
 
     return 0;
   }
 
-  v5 = [MEMORY[0x277CBEAA8] date];
-  v6 = [(GKLeaderboardScoreViewController *)self leaderboard];
-  v7 = [v6 startDate];
-  v8 = [(GKLeaderboardScoreViewController *)self leaderboard];
-  [v8 duration];
-  v9 = [v7 dateByAddingTimeInterval:?];
+  date = [MEMORY[0x277CBEAA8] date];
+  leaderboard3 = [(GKLeaderboardScoreViewController *)self leaderboard];
+  startDate = [leaderboard3 startDate];
+  leaderboard4 = [(GKLeaderboardScoreViewController *)self leaderboard];
+  [leaderboard4 duration];
+  v9 = [startDate dateByAddingTimeInterval:?];
 
-  if ([v5 compare:v9] != -1)
+  if ([date compare:v9] != -1)
   {
 
     goto LABEL_4;
   }
 
-  v27 = [(GKLeaderboardScoreViewController *)self timeRemainingFromDate:v5 toDate:v9];
+  v27 = [(GKLeaderboardScoreViewController *)self timeRemainingFromDate:date toDate:v9];
   v28 = [(GKLeaderboardScoreViewController *)self attributedStringWithSymbol:@"timer"];
-  v29 = [(GKLeaderboardScoreViewController *)self personalView];
+  personalView5 = [(GKLeaderboardScoreViewController *)self personalView];
   v30 = GKGameCenterUIFrameworkBundle();
   v31 = GKGetLocalizedStringFromTableInBundle();
   v32 = 1;
-  [v29 configureWithRank:&stru_28612D290 title:v27 footnote:v31 vibrant:1];
+  [personalView5 configureWithRank:&stru_28612D290 title:v27 footnote:v31 vibrant:1];
 
-  v33 = [(GKLeaderboardScoreViewController *)self personalView];
-  v34 = [v33 rank];
-  [v34 setAttributedText:v28];
+  personalView6 = [(GKLeaderboardScoreViewController *)self personalView];
+  rank2 = [personalView6 rank];
+  [rank2 setAttributedText:v28];
 
-  v35 = [(GKLeaderboardScoreViewController *)self personalView];
-  [v35 configureVibrancy:1];
+  personalView7 = [(GKLeaderboardScoreViewController *)self personalView];
+  [personalView7 configureVibrancy:1];
 
   return v32;
 }
@@ -502,14 +502,14 @@ LABEL_8:
   if (![(GKLeaderboardScoreViewController *)self hasData])
   {
     v7 = MEMORY[0x277CCACA8];
-    v8 = [(GKLeaderboardScoreViewController *)self playerScopeControl];
-    [v8 selectedSegmentIndex];
+    playerScopeControl = [(GKLeaderboardScoreViewController *)self playerScopeControl];
+    [playerScopeControl selectedSegmentIndex];
     v9 = GKGameCenterUIFrameworkBundle();
     v10 = GKGetLocalizedStringFromTableInBundle();
     v64 = [v7 localizedStringWithFormat:v10, 0];
 
-    v11 = [(GKLeaderboardScoreViewController *)self playerScopeControl];
-    if ([v11 selectedSegmentIndex] == 1)
+    playerScopeControl2 = [(GKLeaderboardScoreViewController *)self playerScopeControl];
+    if ([playerScopeControl2 selectedSegmentIndex] == 1)
     {
       v12 = MEMORY[0x277CCACA8];
       v13 = GKGameCenterUIFrameworkBundle();
@@ -523,44 +523,44 @@ LABEL_8:
       v15 = GKGetLocalizedStringFromTableInBundle();
     }
 
-    v16 = [(GKLeaderboardScoreViewController *)self socialView];
+    socialView = [(GKLeaderboardScoreViewController *)self socialView];
     v17 = [(GKLeaderboardScoreViewController *)self formattedNumber:&unk_2861892D0];
-    [v16 configureWithRank:v17 title:v64 footnote:v15 vibrant:1];
+    [socialView configureWithRank:v17 title:v64 footnote:v15 vibrant:1];
 
     goto LABEL_20;
   }
 
-  v3 = [(GKLeaderboardScoreViewController *)self playerScopeControl];
-  v4 = [v3 selectedSegmentIndex];
+  playerScopeControl3 = [(GKLeaderboardScoreViewController *)self playerScopeControl];
+  selectedSegmentIndex = [playerScopeControl3 selectedSegmentIndex];
 
-  if (v4 <= 0)
+  if (selectedSegmentIndex <= 0)
   {
-    v18 = [(GKLeaderboardScoreViewController *)self playerAboveEntry];
+    playerAboveEntry = [(GKLeaderboardScoreViewController *)self playerAboveEntry];
 
-    if (v18)
+    if (playerAboveEntry)
     {
       v19 = MEMORY[0x277D0C108];
-      v20 = [(GKLeaderboardScoreViewController *)self playerAboveEntry];
-      v21 = [(GKLeaderboardScoreViewController *)self localPlayerEntry];
-      v22 = [v19 formattedDifferenceBetweenFirstScore:v20 secondScore:v21];
+      playerAboveEntry2 = [(GKLeaderboardScoreViewController *)self playerAboveEntry];
+      localPlayerEntry = [(GKLeaderboardScoreViewController *)self localPlayerEntry];
+      localPlayerEntry3 = [v19 formattedDifferenceBetweenFirstScore:playerAboveEntry2 secondScore:localPlayerEntry];
 
-      if ([v22 length])
+      if ([localPlayerEntry3 length])
       {
-        v62 = [(GKLeaderboardScoreViewController *)self socialView];
-        v65 = [(GKLeaderboardScoreViewController *)self playerAboveEntry];
-        [v65 player];
-        v24 = v23 = v22;
+        socialView2 = [(GKLeaderboardScoreViewController *)self socialView];
+        playerAboveEntry3 = [(GKLeaderboardScoreViewController *)self playerAboveEntry];
+        [playerAboveEntry3 player];
+        v24 = v23 = localPlayerEntry3;
         v68[0] = v24;
         v25 = [MEMORY[0x277CBEA60] arrayWithObjects:v68 count:1];
-        v26 = [(GKLeaderboardScoreViewController *)self playerAboveEntry];
-        v27 = [v26 player];
-        v28 = [v27 alias];
+        playerAboveEntry4 = [(GKLeaderboardScoreViewController *)self playerAboveEntry];
+        player = [playerAboveEntry4 player];
+        alias = [player alias];
         v29 = MEMORY[0x277CCACA8];
         v30 = GKGameCenterUIFrameworkBundle();
         v31 = GKGetLocalizedStringFromTableInBundle();
         v32 = [v29 localizedStringWithFormat:v31, v23];
-        v33 = v62;
-        [v62 configureWithPlayers:v25 title:v28 footnote:v32];
+        v33 = socialView2;
+        [socialView2 configureWithPlayers:v25 title:alias footnote:v32];
 
 LABEL_27:
         return;
@@ -571,114 +571,114 @@ LABEL_32:
       goto LABEL_3;
     }
 
-    v49 = [(GKLeaderboardScoreViewController *)self playerBelowEntry];
+    playerBelowEntry = [(GKLeaderboardScoreViewController *)self playerBelowEntry];
 
-    if (v49)
+    if (playerBelowEntry)
     {
       v50 = MEMORY[0x277D0C108];
-      v51 = [(GKLeaderboardScoreViewController *)self localPlayerEntry];
-      v52 = [(GKLeaderboardScoreViewController *)self playerBelowEntry];
-      v22 = [v50 formattedDifferenceBetweenFirstScore:v51 secondScore:v52];
+      localPlayerEntry2 = [(GKLeaderboardScoreViewController *)self localPlayerEntry];
+      playerBelowEntry2 = [(GKLeaderboardScoreViewController *)self playerBelowEntry];
+      localPlayerEntry3 = [v50 formattedDifferenceBetweenFirstScore:localPlayerEntry2 secondScore:playerBelowEntry2];
 
-      if (![v22 length])
+      if (![localPlayerEntry3 length])
       {
         goto LABEL_32;
       }
 
-      v63 = [(GKLeaderboardScoreViewController *)self socialView];
-      v65 = [(GKLeaderboardScoreViewController *)self playerBelowEntry];
-      [v65 player];
-      v24 = v23 = v22;
+      socialView3 = [(GKLeaderboardScoreViewController *)self socialView];
+      playerAboveEntry3 = [(GKLeaderboardScoreViewController *)self playerBelowEntry];
+      [playerAboveEntry3 player];
+      v24 = v23 = localPlayerEntry3;
       v67 = v24;
       v25 = [MEMORY[0x277CBEA60] arrayWithObjects:&v67 count:1];
-      v26 = [(GKLeaderboardScoreViewController *)self playerBelowEntry];
-      v27 = [v26 player];
-      v53 = [v27 alias];
+      playerAboveEntry4 = [(GKLeaderboardScoreViewController *)self playerBelowEntry];
+      player = [playerAboveEntry4 player];
+      alias2 = [player alias];
       v54 = MEMORY[0x277CCACA8];
       v55 = GKGameCenterUIFrameworkBundle();
     }
 
     else
     {
-      v22 = [(GKLeaderboardScoreViewController *)self localPlayerEntry];
-      if ([v22 rank] < 2)
+      localPlayerEntry3 = [(GKLeaderboardScoreViewController *)self localPlayerEntry];
+      if ([localPlayerEntry3 rank] < 2)
       {
         goto LABEL_32;
       }
 
-      v58 = [(GKLeaderboardScoreViewController *)self topPlayerEntry];
+      topPlayerEntry = [(GKLeaderboardScoreViewController *)self topPlayerEntry];
 
-      if (!v58)
+      if (!topPlayerEntry)
       {
         goto LABEL_3;
       }
 
       v59 = MEMORY[0x277D0C108];
-      v60 = [(GKLeaderboardScoreViewController *)self topPlayerEntry];
-      v61 = [(GKLeaderboardScoreViewController *)self localPlayerEntry];
-      v22 = [v59 formattedDifferenceBetweenFirstScore:v60 secondScore:v61];
+      topPlayerEntry2 = [(GKLeaderboardScoreViewController *)self topPlayerEntry];
+      localPlayerEntry4 = [(GKLeaderboardScoreViewController *)self localPlayerEntry];
+      localPlayerEntry3 = [v59 formattedDifferenceBetweenFirstScore:topPlayerEntry2 secondScore:localPlayerEntry4];
 
-      if (![v22 length])
+      if (![localPlayerEntry3 length])
       {
         goto LABEL_32;
       }
 
-      v63 = [(GKLeaderboardScoreViewController *)self socialView];
-      v65 = [(GKLeaderboardScoreViewController *)self topPlayerEntry];
-      [v65 player];
-      v24 = v23 = v22;
+      socialView3 = [(GKLeaderboardScoreViewController *)self socialView];
+      playerAboveEntry3 = [(GKLeaderboardScoreViewController *)self topPlayerEntry];
+      [playerAboveEntry3 player];
+      v24 = v23 = localPlayerEntry3;
       v66 = v24;
       v25 = [MEMORY[0x277CBEA60] arrayWithObjects:&v66 count:1];
-      v26 = [(GKLeaderboardScoreViewController *)self topPlayerEntry];
-      v27 = [v26 player];
-      v53 = [v27 alias];
+      playerAboveEntry4 = [(GKLeaderboardScoreViewController *)self topPlayerEntry];
+      player = [playerAboveEntry4 player];
+      alias2 = [player alias];
       v54 = MEMORY[0x277CCACA8];
       v55 = GKGameCenterUIFrameworkBundle();
     }
 
     v56 = GKGetLocalizedStringFromTableInBundle();
     v57 = [v54 localizedStringWithFormat:v56, v23];
-    v33 = v63;
-    [v63 configureWithPlayers:v25 title:v53 footnote:v57];
+    v33 = socialView3;
+    [socialView3 configureWithPlayers:v25 title:alias2 footnote:v57];
 
     goto LABEL_27;
   }
 
 LABEL_3:
-  v5 = [(GKLeaderboardScoreViewController *)self playerScopeControl];
-  if ([v5 selectedSegmentIndex])
+  playerScopeControl4 = [(GKLeaderboardScoreViewController *)self playerScopeControl];
+  if ([playerScopeControl4 selectedSegmentIndex])
   {
-    v6 = [(GKLeaderboardScoreViewController *)self totalEntries];
+    totalEntries = [(GKLeaderboardScoreViewController *)self totalEntries];
   }
 
   else
   {
-    v34 = [(GKLeaderboardScoreViewController *)self localPlayerEntry];
-    v35 = [v34 rank] > 0;
-    v6 = [(GKLeaderboardScoreViewController *)self totalEntries]- v35;
+    localPlayerEntry5 = [(GKLeaderboardScoreViewController *)self localPlayerEntry];
+    v35 = [localPlayerEntry5 rank] > 0;
+    totalEntries = [(GKLeaderboardScoreViewController *)self totalEntries]- v35;
   }
 
   v36 = MEMORY[0x277CCACA8];
-  v37 = [(GKLeaderboardScoreViewController *)self playerScopeControl];
-  if ([v37 selectedSegmentIndex])
+  playerScopeControl5 = [(GKLeaderboardScoreViewController *)self playerScopeControl];
+  if ([playerScopeControl5 selectedSegmentIndex])
   {
-    v64 = [v36 localizedStringWithFormat:@"%ld", v6];
+    v64 = [v36 localizedStringWithFormat:@"%ld", totalEntries];
   }
 
   else
   {
     v38 = GKGameCenterUIFrameworkBundle();
     v39 = GKGetLocalizedStringFromTableInBundle();
-    v64 = [v36 localizedStringWithFormat:v39, v6];
+    v64 = [v36 localizedStringWithFormat:v39, totalEntries];
   }
 
-  v40 = [(GKLeaderboardScoreViewController *)self playerScopeControl];
-  if ([v40 selectedSegmentIndex] == 1)
+  playerScopeControl6 = [(GKLeaderboardScoreViewController *)self playerScopeControl];
+  if ([playerScopeControl6 selectedSegmentIndex] == 1)
   {
     v41 = MEMORY[0x277CCACA8];
     v42 = GKGameCenterUIFrameworkBundle();
     v43 = GKGetLocalizedStringFromTableInBundle();
-    v44 = [v41 localizedStringWithFormat:v43, v6];
+    v44 = [v41 localizedStringWithFormat:v43, totalEntries];
   }
 
   else
@@ -687,13 +687,13 @@ LABEL_3:
     v44 = GKGetLocalizedStringFromTableInBundle();
   }
 
-  v45 = [(GKLeaderboardScoreViewController *)self socialView];
-  [v45 configureWithRank:&stru_28612D290 title:v64 footnote:v44 vibrant:1];
+  socialView4 = [(GKLeaderboardScoreViewController *)self socialView];
+  [socialView4 configureWithRank:&stru_28612D290 title:v64 footnote:v44 vibrant:1];
 
   v46 = [(GKLeaderboardScoreViewController *)self attributedStringWithSymbol:@"globe"];
-  v47 = [(GKLeaderboardScoreViewController *)self socialView];
-  v48 = [v47 rank];
-  [v48 setAttributedText:v46];
+  socialView5 = [(GKLeaderboardScoreViewController *)self socialView];
+  rank = [socialView5 rank];
+  [rank setAttributedText:v46];
 
 LABEL_20:
 }
@@ -710,38 +710,38 @@ LABEL_20:
   if (_os_feature_enabled_impl() && (-[GKLeaderboardScoreViewController leaderboard](self, "leaderboard"), v4 = objc_claimAutoreleasedReturnValue(), v5 = [v4 releaseState], v4, v5 == 2))
   {
     v6 = [MEMORY[0x277D755B8] symbolImageNamed:@"clock.fill"];
-    v7 = [MEMORY[0x277D75348] systemGray2Color];
-    v8 = [v7 CGColor];
+    systemGray2Color = [MEMORY[0x277D75348] systemGray2Color];
+    cGColor = [systemGray2Color CGColor];
 
-    v9 = [(GKLeaderboardScoreViewController *)self releaseStateInfoBox];
-    v10 = [v9 layer];
-    [v10 setBackgroundColor:v8];
+    releaseStateInfoBox = [(GKLeaderboardScoreViewController *)self releaseStateInfoBox];
+    layer = [releaseStateInfoBox layer];
+    [layer setBackgroundColor:cGColor];
 
-    v11 = [(GKLeaderboardScoreViewController *)self releaseStateInfoBox];
-    v12 = [v11 layer];
-    [v12 setCornerRadius:14.0];
+    releaseStateInfoBox2 = [(GKLeaderboardScoreViewController *)self releaseStateInfoBox];
+    layer2 = [releaseStateInfoBox2 layer];
+    [layer2 setCornerRadius:14.0];
 
     v13 = MEMORY[0x277D74300];
-    v14 = [(GKLeaderboardScoreViewController *)self releaseStateInfoText];
-    v15 = [v14 font];
-    [v15 pointSize];
+    releaseStateInfoText = [(GKLeaderboardScoreViewController *)self releaseStateInfoText];
+    font = [releaseStateInfoText font];
+    [font pointSize];
     v16 = [v13 boldSystemFontOfSize:?];
 
     v26 = *MEMORY[0x277D740A8];
     v27[0] = v16;
     v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v27 forKeys:&v26 count:1];
     v18 = objc_alloc(MEMORY[0x277CCA898]);
-    v19 = [MEMORY[0x277D0C850] PRERELEASE_ITEM];
-    v20 = [v18 initWithString:v19 attributes:v17];
-    v21 = [(GKLeaderboardScoreViewController *)self releaseStateHeaderText];
-    [v21 setAttributedText:v20];
+    pRERELEASE_ITEM = [MEMORY[0x277D0C850] PRERELEASE_ITEM];
+    v20 = [v18 initWithString:pRERELEASE_ITEM attributes:v17];
+    releaseStateHeaderText = [(GKLeaderboardScoreViewController *)self releaseStateHeaderText];
+    [releaseStateHeaderText setAttributedText:v20];
 
-    v22 = [MEMORY[0x277D0C850] LEADERBOARD_PENDING_APPROVAL];
-    v23 = [(GKLeaderboardScoreViewController *)self releaseStateInfoText];
-    [v23 setText:v22];
+    lEADERBOARD_PENDING_APPROVAL = [MEMORY[0x277D0C850] LEADERBOARD_PENDING_APPROVAL];
+    releaseStateInfoText2 = [(GKLeaderboardScoreViewController *)self releaseStateInfoText];
+    [releaseStateInfoText2 setText:lEADERBOARD_PENDING_APPROVAL];
 
-    v24 = [(GKLeaderboardScoreViewController *)self releaseStateIcon];
-    [v24 setImage:v6];
+    releaseStateIcon = [(GKLeaderboardScoreViewController *)self releaseStateIcon];
+    [releaseStateIcon setImage:v6];
   }
 
   else
@@ -767,22 +767,22 @@ void __57__GKLeaderboardScoreViewController_setupReleaseStateInfo__block_invoke(
   v91.receiver = self;
   v91.super_class = GKLeaderboardScoreViewController;
   [(GKLeaderboardScoreViewController *)&v91 viewDidLoad];
-  v3 = [MEMORY[0x277D0C010] daemonProxy];
-  [v3 addDataUpdateDelegate:self];
+  daemonProxy = [MEMORY[0x277D0C010] daemonProxy];
+  [daemonProxy addDataUpdateDelegate:self];
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  v5 = [MEMORY[0x277CCABD8] mainQueue];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  mainQueue = [MEMORY[0x277CCABD8] mainQueue];
   v90[0] = MEMORY[0x277D85DD0];
   v90[1] = 3221225472;
   v90[2] = __47__GKLeaderboardScoreViewController_viewDidLoad__block_invoke;
   v90[3] = &unk_27966D040;
   v90[4] = self;
-  v6 = [v4 addObserverForName:@"GKRefreshDataTypeFriendRecommendations" object:0 queue:v5 usingBlock:v90];
+  v6 = [defaultCenter addObserverForName:@"GKRefreshDataTypeFriendRecommendations" object:0 queue:mainQueue usingBlock:v90];
 
-  v7 = [(UIViewController *)self _gkExtensionViewController];
-  v8 = [(GKLeaderboardScoreViewController *)self leaderboard];
-  v9 = [v8 identifier];
-  [v7 dashboardDidChangeToLeaderboardIdentifier:v9];
+  _gkExtensionViewController = [(UIViewController *)self _gkExtensionViewController];
+  leaderboard = [(GKLeaderboardScoreViewController *)self leaderboard];
+  identifier = [leaderboard identifier];
+  [_gkExtensionViewController dashboardDidChangeToLeaderboardIdentifier:identifier];
 
   v10 = MEMORY[0x277D0C258];
   if (*MEMORY[0x277D0C258] == 1)
@@ -790,24 +790,24 @@ void __57__GKLeaderboardScoreViewController_setupReleaseStateInfo__block_invoke(
     [(GKLeaderboardScoreViewController *)self setupVisualEffect];
   }
 
-  v11 = [(GKLeaderboardScoreViewController *)self collectionView];
-  v12 = [(GKLeaderboardScoreViewController *)self dataSource];
-  [v12 setupCollectionView:v11];
+  collectionView = [(GKLeaderboardScoreViewController *)self collectionView];
+  dataSource = [(GKLeaderboardScoreViewController *)self dataSource];
+  [dataSource setupCollectionView:collectionView];
 
-  v13 = [(GKLeaderboardScoreViewController *)self dataSource];
-  [v13 setPresentationViewController:self];
+  dataSource2 = [(GKLeaderboardScoreViewController *)self dataSource];
+  [dataSource2 setPresentationViewController:self];
 
-  v14 = [(GKLeaderboardScoreViewController *)self dataSource];
-  [v14 setLeaderboardScoreDelegate:self];
+  dataSource3 = [(GKLeaderboardScoreViewController *)self dataSource];
+  [dataSource3 setLeaderboardScoreDelegate:self];
 
-  v15 = [(GKLeaderboardScoreViewController *)self leaderboard];
-  v16 = [v15 type] == 1;
+  leaderboard2 = [(GKLeaderboardScoreViewController *)self leaderboard];
+  v16 = [leaderboard2 type] == 1;
 
   if (v16)
   {
     self->_timeScope = 2;
-    v17 = [(GKLeaderboardScoreViewController *)self timeScopeButton];
-    [v17 setLeaderboardOccurrence:0];
+    timeScopeButton = [(GKLeaderboardScoreViewController *)self timeScopeButton];
+    [timeScopeButton setLeaderboardOccurrence:0];
 
     self->_leaderboardOccurrence = 0;
     timeScope = self->_timeScope;
@@ -816,103 +816,103 @@ void __57__GKLeaderboardScoreViewController_setupReleaseStateInfo__block_invoke(
   else
   {
     v19 = sInitialTimeScope;
-    v20 = [(GKLeaderboardScoreViewController *)self timeScopeButton];
-    [v20 setTimeScope:v19];
+    timeScopeButton2 = [(GKLeaderboardScoreViewController *)self timeScopeButton];
+    [timeScopeButton2 setTimeScope:v19];
 
     timeScope = sInitialTimeScope;
     self->_timeScope = sInitialTimeScope;
   }
 
-  v21 = [(GKLeaderboardScoreViewController *)self dataSource];
-  [v21 setTimeScope:timeScope];
+  dataSource4 = [(GKLeaderboardScoreViewController *)self dataSource];
+  [dataSource4 setTimeScope:timeScope];
 
-  v22 = [(GKLeaderboardScoreViewController *)self initialPlayerScope];
-  [(GKLeaderboardScoreViewController *)self setPlayerScope:v22 restrictToFriendsOnly:sRestrictToFriendsOnly];
-  v23 = [(GKLeaderboardScoreViewController *)self navigationItem];
-  [v23 _setAutoScrollEdgeTransitionDistance:40.0];
+  initialPlayerScope = [(GKLeaderboardScoreViewController *)self initialPlayerScope];
+  [(GKLeaderboardScoreViewController *)self setPlayerScope:initialPlayerScope restrictToFriendsOnly:sRestrictToFriendsOnly];
+  navigationItem = [(GKLeaderboardScoreViewController *)self navigationItem];
+  [navigationItem _setAutoScrollEdgeTransitionDistance:40.0];
 
-  v24 = [(GKLeaderboardScoreViewController *)self navigationItem];
-  [v24 _setManualScrollEdgeAppearanceEnabled:1];
+  navigationItem2 = [(GKLeaderboardScoreViewController *)self navigationItem];
+  [navigationItem2 _setManualScrollEdgeAppearanceEnabled:1];
 
-  v25 = [(GKLeaderboardScoreViewController *)self navigationItem];
-  [v25 setLargeTitleDisplayMode:2];
+  navigationItem3 = [(GKLeaderboardScoreViewController *)self navigationItem];
+  [navigationItem3 setLargeTitleDisplayMode:2];
 
-  v26 = [MEMORY[0x277D75348] clearColor];
-  v27 = [(GKLeaderboardScoreViewController *)self collectionView];
-  [v27 setBackgroundColor:v26];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  collectionView2 = [(GKLeaderboardScoreViewController *)self collectionView];
+  [collectionView2 setBackgroundColor:clearColor];
 
-  v28 = [(GKLeaderboardScoreViewController *)self collectionContainer];
-  v29 = [v28 layer];
-  [v29 setCornerRadius:14.0];
+  collectionContainer = [(GKLeaderboardScoreViewController *)self collectionContainer];
+  layer = [collectionContainer layer];
+  [layer setCornerRadius:14.0];
 
-  v30 = [(GKLeaderboardScoreViewController *)self collectionContainer];
-  v31 = [v30 layer];
-  [v31 setCornerCurve:*MEMORY[0x277CDA138]];
+  collectionContainer2 = [(GKLeaderboardScoreViewController *)self collectionContainer];
+  layer2 = [collectionContainer2 layer];
+  [layer2 setCornerCurve:*MEMORY[0x277CDA138]];
 
-  v32 = [(GKLeaderboardScoreViewController *)self collectionContainer];
-  v33 = [v32 layer];
-  [v33 setMasksToBounds:1];
+  collectionContainer3 = [(GKLeaderboardScoreViewController *)self collectionContainer];
+  layer3 = [collectionContainer3 layer];
+  [layer3 setMasksToBounds:1];
 
   [(GKLeaderboardScoreViewController *)self configureCloseButton];
   [(GKLeaderboardScoreViewController *)self addLeaderboardHighlights];
   [(GKLeaderboardScoreViewController *)self addPlayerScopeControl];
   [(GKLeaderboardScoreViewController *)self setupFadeGradient];
-  v34 = [MEMORY[0x277D0C8C8] sharedTheme];
-  v35 = [v34 secondaryLabelCompositingFilter];
-  v36 = [(GKLeaderboardScoreViewController *)self timeScopeContainer];
-  v37 = [v36 layer];
-  [v37 setCompositingFilter:v35];
+  mEMORY[0x277D0C8C8] = [MEMORY[0x277D0C8C8] sharedTheme];
+  secondaryLabelCompositingFilter = [mEMORY[0x277D0C8C8] secondaryLabelCompositingFilter];
+  timeScopeContainer = [(GKLeaderboardScoreViewController *)self timeScopeContainer];
+  layer4 = [timeScopeContainer layer];
+  [layer4 setCompositingFilter:secondaryLabelCompositingFilter];
 
   [(GKLeaderboardScoreViewController *)self configureTimeScopeMenu];
-  v38 = [(GKLeaderboardScoreViewController *)self timeScopeButton];
-  v39 = [v38 titleLabel];
-  [v39 setAdjustsFontForContentSizeCategory:1];
+  timeScopeButton3 = [(GKLeaderboardScoreViewController *)self timeScopeButton];
+  titleLabel = [timeScopeButton3 titleLabel];
+  [titleLabel setAdjustsFontForContentSizeCategory:1];
 
-  v40 = [(GKLeaderboardScoreViewController *)self scrollToTopButton];
-  v41 = [v40 titleLabel];
-  [v41 setAdjustsFontForContentSizeCategory:1];
+  scrollToTopButton = [(GKLeaderboardScoreViewController *)self scrollToTopButton];
+  titleLabel2 = [scrollToTopButton titleLabel];
+  [titleLabel2 setAdjustsFontForContentSizeCategory:1];
 
-  v42 = [(GKLeaderboardScoreViewController *)self mainScrollView];
-  [v42 setDelegate:self];
+  mainScrollView = [(GKLeaderboardScoreViewController *)self mainScrollView];
+  [mainScrollView setDelegate:self];
 
-  v43 = [(GKLeaderboardScoreViewController *)self timeScopeButton];
+  timeScopeButton4 = [(GKLeaderboardScoreViewController *)self timeScopeButton];
 
-  if (v43)
+  if (timeScopeButton4)
   {
     v44 = objc_alloc_init(MEMORY[0x277D75500]);
-    v45 = [(GKLeaderboardScoreViewController *)self view];
-    [v45 addLayoutGuide:v44];
+    view = [(GKLeaderboardScoreViewController *)self view];
+    [view addLayoutGuide:v44];
 
-    v46 = [(GKLeaderboardScoreViewController *)self timeScopeButton];
-    v93[0] = v46;
+    timeScopeButton5 = [(GKLeaderboardScoreViewController *)self timeScopeButton];
+    v93[0] = timeScopeButton5;
     v47 = [MEMORY[0x277CBEA60] arrayWithObjects:v93 count:1];
     [v44 setPreferredFocusEnvironments:v47];
 
     v48 = MEMORY[0x277CCAAD0];
-    v49 = [(GKLeaderboardScoreViewController *)self timeScopeButton];
-    v50 = [v49 superview];
-    [v48 _gkInstallEdgeConstraintsForLayoutGuide:v44 containedWithinParentView:v50];
+    timeScopeButton6 = [(GKLeaderboardScoreViewController *)self timeScopeButton];
+    superview = [timeScopeButton6 superview];
+    [v48 _gkInstallEdgeConstraintsForLayoutGuide:v44 containedWithinParentView:superview];
   }
 
   if (*v10 & 1) != 0 || (-[GKLeaderboardScoreViewController scrollToTopButton](self, "scrollToTopButton"), v51 = objc_claimAutoreleasedReturnValue(), [MEMORY[0x277D75348] labelColor], v52 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v51, "setTitleColor:forState:", v52, 0), v52, v51, objc_msgSend(MEMORY[0x277D75348], "systemGroupedBackgroundColor"), v53 = objc_claimAutoreleasedReturnValue(), -[GKLeaderboardScoreViewController view](self, "view"), v54 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v54, "setBackgroundColor:", v53), v54, v53, (*v10))
   {
-    v55 = [MEMORY[0x277D75348] whiteColor];
-    v56 = [v55 colorWithAlphaComponent:0.1];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    v56 = [whiteColor colorWithAlphaComponent:0.1];
     v57 = 1;
-    v58 = v56;
+    secondarySystemBackgroundColor = v56;
   }
 
   else
   {
     v59 = MEMORY[0x277D75348];
-    v55 = [MEMORY[0x277D75348] whiteColor];
-    v58 = [MEMORY[0x277D75348] secondarySystemBackgroundColor];
-    v56 = [v59 gk_dynamicColorWithLightColor:v55 darkColor:v58];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    secondarySystemBackgroundColor = [MEMORY[0x277D75348] secondarySystemBackgroundColor];
+    v56 = [v59 gk_dynamicColorWithLightColor:whiteColor darkColor:secondarySystemBackgroundColor];
     v57 = 0;
   }
 
-  v60 = [(GKLeaderboardScoreViewController *)self timeScopeContainer];
-  [v60 setBackgroundColor:v56];
+  timeScopeContainer2 = [(GKLeaderboardScoreViewController *)self timeScopeContainer];
+  [timeScopeContainer2 setBackgroundColor:v56];
 
   if ((v57 & 1) == 0)
   {
@@ -920,71 +920,71 @@ void __57__GKLeaderboardScoreViewController_setupReleaseStateInfo__block_invoke(
 
   v61 = *v10;
   v62 = MEMORY[0x277D75348];
-  v63 = [MEMORY[0x277D75348] whiteColor];
-  v64 = v63;
+  whiteColor2 = [MEMORY[0x277D75348] whiteColor];
+  v64 = whiteColor2;
   if (v61)
   {
-    v65 = [v63 colorWithAlphaComponent:0.08];
-    v66 = v65;
+    v65 = [whiteColor2 colorWithAlphaComponent:0.08];
+    secondarySystemBackgroundColor2 = v65;
   }
 
   else
   {
-    v66 = [MEMORY[0x277D75348] secondarySystemBackgroundColor];
-    v65 = [v62 gk_dynamicColorWithLightColor:v64 darkColor:v66];
+    secondarySystemBackgroundColor2 = [MEMORY[0x277D75348] secondarySystemBackgroundColor];
+    v65 = [v62 gk_dynamicColorWithLightColor:v64 darkColor:secondarySystemBackgroundColor2];
   }
 
-  v67 = [(GKLeaderboardScoreViewController *)self collectionContainer];
-  [v67 setBackgroundColor:v65];
+  collectionContainer4 = [(GKLeaderboardScoreViewController *)self collectionContainer];
+  [collectionContainer4 setBackgroundColor:v65];
 
   if ((v61 & 1) == 0)
   {
   }
 
-  v68 = [(GKLeaderboardScoreViewController *)self collectionGradientView];
-  v92[0] = v68;
-  v69 = [(GKLeaderboardScoreViewController *)self highlightView];
-  v92[1] = v69;
+  collectionGradientView = [(GKLeaderboardScoreViewController *)self collectionGradientView];
+  v92[0] = collectionGradientView;
+  highlightView = [(GKLeaderboardScoreViewController *)self highlightView];
+  v92[1] = highlightView;
   v70 = [MEMORY[0x277CBEA60] arrayWithObjects:v92 count:2];
   [(GKLoadingViewController *)self setViewsToHideWhileLoading:v70];
 
   objc_initWeak(&location, self);
-  v71 = [(GKLeaderboardScoreViewController *)self dataSource];
-  v72 = [v71 gameRecord];
-  v73 = [v72 name];
+  dataSource5 = [(GKLeaderboardScoreViewController *)self dataSource];
+  gameRecord = [dataSource5 gameRecord];
+  name = [gameRecord name];
 
-  v74 = [MEMORY[0x277D75C80] currentTraitCollection];
-  v75 = [v74 preferredContentSizeCategory];
-  LODWORD(v71) = UIContentSizeCategoryIsAccessibilityCategory(v75);
+  currentTraitCollection = [MEMORY[0x277D75C80] currentTraitCollection];
+  preferredContentSizeCategory = [currentTraitCollection preferredContentSizeCategory];
+  LODWORD(dataSource5) = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
-  v76 = [(GKLeaderboardScoreViewController *)self dataSource];
-  v77 = [v76 gameRecord];
+  dataSource6 = [(GKLeaderboardScoreViewController *)self dataSource];
+  gameRecord2 = [dataSource6 gameRecord];
   v84 = MEMORY[0x277D85DD0];
   v85 = 3221225472;
   v86 = __47__GKLeaderboardScoreViewController_viewDidLoad__block_invoke_2;
   v87 = &unk_27966D068;
   objc_copyWeak(&v88, &location);
-  v78 = [v77 loadIconForStyle:1 withCompletionHandler:&v84];
+  v78 = [gameRecord2 loadIconForStyle:1 withCompletionHandler:&v84];
 
   v79 = [(GKLeaderboardScoreViewController *)self scrollToTopButton:v84];
   v80 = v79;
-  if (v71)
+  if (dataSource5)
   {
     v81 = &stru_28612D290;
   }
 
   else
   {
-    v81 = v73;
+    v81 = name;
   }
 
   [v79 setTitle:v81 forState:0];
 
-  v82 = [(GKLeaderboardScoreViewController *)self scrollToTopButton];
-  [v82 setContentHorizontalAlignment:4];
+  scrollToTopButton2 = [(GKLeaderboardScoreViewController *)self scrollToTopButton];
+  [scrollToTopButton2 setContentHorizontalAlignment:4];
 
-  v83 = [(GKLeaderboardScoreViewController *)self scrollToTopButton];
-  [v83 setContentEdgeInsets:{*MEMORY[0x277D768C8], *(MEMORY[0x277D768C8] + 8), *(MEMORY[0x277D768C8] + 16), *(MEMORY[0x277D768C8] + 24)}];
+  scrollToTopButton3 = [(GKLeaderboardScoreViewController *)self scrollToTopButton];
+  [scrollToTopButton3 setContentEdgeInsets:{*MEMORY[0x277D768C8], *(MEMORY[0x277D768C8] + 8), *(MEMORY[0x277D768C8] + 16), *(MEMORY[0x277D768C8] + 24)}];
 
   [(GKLeaderboardScoreViewController *)self setupReleaseStateInfo];
   objc_destroyWeak(&v88);
@@ -1015,19 +1015,19 @@ void __47__GKLeaderboardScoreViewController_viewDidLoad__block_invoke_2(uint64_t
   }
 }
 
-- (id)timeRemainingFromDate:(id)a3 toDate:(id)a4
+- (id)timeRemainingFromDate:(id)date toDate:(id)toDate
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
+  dateCopy = date;
+  toDateCopy = toDate;
+  v7 = toDateCopy;
   v8 = 0;
-  if (v5 && v6)
+  if (dateCopy && toDateCopy)
   {
-    [v6 timeIntervalSinceDate:v5];
+    [toDateCopy timeIntervalSinceDate:dateCopy];
     v10 = v9;
     if (v9 < 0.0)
     {
-      v11 = v5;
+      v11 = dateCopy;
 
       v7 = v11;
     }
@@ -1035,7 +1035,7 @@ void __47__GKLeaderboardScoreViewController_viewDidLoad__block_invoke_2(uint64_t
     if (v10 >= 259200.0)
     {
       v12 = MEMORY[0x277CBEAA8];
-      v13 = v5;
+      v13 = dateCopy;
       v14 = v7;
       v15 = 16;
     }
@@ -1043,7 +1043,7 @@ void __47__GKLeaderboardScoreViewController_viewDidLoad__block_invoke_2(uint64_t
     else
     {
       v12 = MEMORY[0x277CBEAA8];
-      v13 = v5;
+      v13 = dateCopy;
       v14 = v7;
       if (v10 < 86400.0)
       {
@@ -1071,83 +1071,83 @@ LABEL_12:
   v9[2] = *MEMORY[0x277D85DE8];
   v3 = objc_alloc_init(MEMORY[0x277CD9EB0]);
   [v3 setLocations:&unk_2861897D8];
-  v4 = [MEMORY[0x277D75348] blackColor];
-  v9[0] = [v4 CGColor];
-  v5 = [MEMORY[0x277D75348] clearColor];
-  v9[1] = [v5 CGColor];
+  blackColor = [MEMORY[0x277D75348] blackColor];
+  v9[0] = [blackColor CGColor];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  v9[1] = [clearColor CGColor];
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:2];
   [v3 setColors:v6];
 
   [v3 setStartPoint:{0.5, 0.88}];
   [v3 setEndPoint:{0.5, 1.0}];
-  v7 = [(GKLeaderboardScoreViewController *)self collectionGradientView];
-  v8 = [v7 layer];
-  [v8 setMask:v3];
+  collectionGradientView = [(GKLeaderboardScoreViewController *)self collectionGradientView];
+  layer = [collectionGradientView layer];
+  [layer setMask:v3];
 
   [(GKLeaderboardScoreViewController *)self setCollectionViewFadeGradient:v3];
 }
 
 - (void)dealloc
 {
-  v3 = [(GKLeaderboardScoreViewController *)self collectionView];
-  [v3 setDataSource:0];
+  collectionView = [(GKLeaderboardScoreViewController *)self collectionView];
+  [collectionView setDataSource:0];
 
-  v4 = [(GKLeaderboardScoreViewController *)self collectionView];
-  [v4 setDelegate:0];
+  collectionView2 = [(GKLeaderboardScoreViewController *)self collectionView];
+  [collectionView2 setDelegate:0];
 
-  v5 = [MEMORY[0x277D0C010] daemonProxy];
-  [v5 removeDataUpdateDelegate:self];
+  daemonProxy = [MEMORY[0x277D0C010] daemonProxy];
+  [daemonProxy removeDataUpdateDelegate:self];
 
-  v6 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v6 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v7.receiver = self;
   v7.super_class = GKLeaderboardScoreViewController;
   [(GKLeaderboardScoreViewController *)&v7 dealloc];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v14.receiver = self;
   v14.super_class = GKLeaderboardScoreViewController;
-  [(GKLeaderboardScoreViewController *)&v14 viewWillAppear:a3];
-  v4 = [(GKLoadingViewController *)self loadingState];
-  if (v4 == @"Initial")
+  [(GKLeaderboardScoreViewController *)&v14 viewWillAppear:appear];
+  loadingState = [(GKLoadingViewController *)self loadingState];
+  if (loadingState == @"Initial")
   {
     [(GKLoadingViewController *)self setLoadingState:@"LoadingState"];
   }
 
-  v5 = [(GKLeaderboardScoreViewController *)self view];
-  [v5 bounds];
+  view = [(GKLeaderboardScoreViewController *)self view];
+  [view bounds];
   [(GKLeaderboardScoreViewController *)self updatePlayerScopeLayoutForSize:v6, v7];
 
   [(GKLeaderboardScoreViewController *)self enableDisableCollectionViewScrolling];
-  v8 = [(GKLeaderboardScoreViewController *)self collectionView];
-  v9 = [v8 collectionViewLayout];
-  [v9 invalidateLayout];
+  collectionView = [(GKLeaderboardScoreViewController *)self collectionView];
+  collectionViewLayout = [collectionView collectionViewLayout];
+  [collectionViewLayout invalidateLayout];
 
   v10 = objc_alloc_init(MEMORY[0x277D75B80]);
   [v10 addTarget:self action:sel_backButtonPressed_];
   [v10 setAllowedPressTypes:&unk_2861897F0];
-  v11 = [(GKLeaderboardScoreViewController *)self view];
-  [v11 addGestureRecognizer:v10];
+  view2 = [(GKLeaderboardScoreViewController *)self view];
+  [view2 addGestureRecognizer:v10];
 
-  v12 = [(GKLeaderboardScoreViewController *)self leaderboard];
-  v13 = [v12 type];
+  leaderboard = [(GKLeaderboardScoreViewController *)self leaderboard];
+  type = [leaderboard type];
 
-  if (v13 == 1)
+  if (type == 1)
   {
     [(GKLeaderboardScoreViewController *)self setShouldAutoRefreshHighlights:1];
     [(GKLeaderboardScoreViewController *)self autoRefreshHighlightsPersonalView];
   }
 }
 
-- (void)backButtonPressed:(id)a3
+- (void)backButtonPressed:(id)pressed
 {
   v4 = MEMORY[0x277D75518];
-  v5 = [MEMORY[0x277D75DA0] keyWindow];
-  v6 = [v4 focusSystemForEnvironment:v5];
-  v9 = [v6 focusedItem];
+  keyWindow = [MEMORY[0x277D75DA0] keyWindow];
+  v6 = [v4 focusSystemForEnvironment:keyWindow];
+  focusedItem = [v6 focusedItem];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -1158,8 +1158,8 @@ LABEL_12:
 
   else
   {
-    v7 = [(GKLeaderboardScoreViewController *)self navigationController];
-    v8 = [v7 popViewControllerAnimated:1];
+    navigationController = [(GKLeaderboardScoreViewController *)self navigationController];
+    v8 = [navigationController popViewControllerAnimated:1];
   }
 }
 
@@ -1168,56 +1168,56 @@ LABEL_12:
   v19[1] = *MEMORY[0x277D85DE8];
   if ([(GKLeaderboardScoreViewController *)self shouldPreferFocusToPlayerScopeControl])
   {
-    v3 = [(GKLeaderboardScoreViewController *)self playerScopeControl];
+    playerScopeControl = [(GKLeaderboardScoreViewController *)self playerScopeControl];
 
-    if (v3)
+    if (playerScopeControl)
     {
-      v4 = [(GKLeaderboardScoreViewController *)self playerScopeControl];
-      v19[0] = v4;
+      playerScopeControl2 = [(GKLeaderboardScoreViewController *)self playerScopeControl];
+      v19[0] = playerScopeControl2;
       v5 = MEMORY[0x277CBEA60];
       v6 = v19;
 LABEL_11:
-      v13 = [v5 arrayWithObjects:v6 count:1];
+      preferredFocusEnvironments = [v5 arrayWithObjects:v6 count:1];
 
       goto LABEL_12;
     }
   }
 
-  v7 = [(GKLeaderboardScoreViewController *)self preferredFocusCell];
+  preferredFocusCell = [(GKLeaderboardScoreViewController *)self preferredFocusCell];
 
-  if (v7)
+  if (preferredFocusCell)
   {
-    v4 = [(GKLeaderboardScoreViewController *)self preferredFocusCell];
-    v18 = v4;
+    playerScopeControl2 = [(GKLeaderboardScoreViewController *)self preferredFocusCell];
+    v18 = playerScopeControl2;
     v5 = MEMORY[0x277CBEA60];
     v6 = &v18;
     goto LABEL_11;
   }
 
-  v8 = [(GKLeaderboardScoreViewController *)self dataSource];
-  v9 = [v8 localPlayerEntryIndexPath];
+  dataSource = [(GKLeaderboardScoreViewController *)self dataSource];
+  localPlayerEntryIndexPath = [dataSource localPlayerEntryIndexPath];
 
-  if (!v9)
+  if (!localPlayerEntryIndexPath)
   {
-    v11 = [(GKLeaderboardScoreViewController *)self collectionView];
+    collectionView = [(GKLeaderboardScoreViewController *)self collectionView];
     v12 = [MEMORY[0x277CCAA70] indexPathForItem:0 inSection:0];
-    v4 = [v11 cellForItemAtIndexPath:v12];
+    playerScopeControl2 = [collectionView cellForItemAtIndexPath:v12];
 
-    if (v4)
+    if (playerScopeControl2)
     {
-      v17 = v4;
+      v17 = playerScopeControl2;
       v5 = MEMORY[0x277CBEA60];
       v6 = &v17;
       goto LABEL_11;
     }
   }
 
-  v10 = [(GKLeaderboardScoreViewController *)self playerScopeControl];
+  playerScopeControl3 = [(GKLeaderboardScoreViewController *)self playerScopeControl];
 
-  if (v10)
+  if (playerScopeControl3)
   {
-    v4 = [(GKLeaderboardScoreViewController *)self playerScopeControl];
-    v16 = v4;
+    playerScopeControl2 = [(GKLeaderboardScoreViewController *)self playerScopeControl];
+    v16 = playerScopeControl2;
     v5 = MEMORY[0x277CBEA60];
     v6 = &v16;
     goto LABEL_11;
@@ -1225,26 +1225,26 @@ LABEL_11:
 
   v15.receiver = self;
   v15.super_class = GKLeaderboardScoreViewController;
-  v13 = [(GKLeaderboardScoreViewController *)&v15 preferredFocusEnvironments];
+  preferredFocusEnvironments = [(GKLeaderboardScoreViewController *)&v15 preferredFocusEnvironments];
 LABEL_12:
 
-  return v13;
+  return preferredFocusEnvironments;
 }
 
 - (void)setupVisualEffect
 {
   v7 = objc_opt_new();
-  v3 = [MEMORY[0x277D75D58] _gkGameLayerBackgroundVisualEffect];
-  [v7 setBackgroundEffects:v3];
+  _gkGameLayerBackgroundVisualEffect = [MEMORY[0x277D75D58] _gkGameLayerBackgroundVisualEffect];
+  [v7 setBackgroundEffects:_gkGameLayerBackgroundVisualEffect];
 
   [v7 _setGroupName:@"gameLayerGroup"];
-  v4 = [(GKLeaderboardScoreViewController *)self view];
-  [v4 insertSubview:v7 atIndex:0];
+  view = [(GKLeaderboardScoreViewController *)self view];
+  [view insertSubview:v7 atIndex:0];
 
   [v7 setTranslatesAutoresizingMaskIntoConstraints:0];
   v5 = MEMORY[0x277CCAAD0];
-  v6 = [(GKLeaderboardScoreViewController *)self view];
-  [v5 _gkInstallEdgeConstraintsForView:v7 containedWithinParentView:v6];
+  view2 = [(GKLeaderboardScoreViewController *)self view];
+  [v5 _gkInstallEdgeConstraintsForView:v7 containedWithinParentView:view2];
 }
 
 - (void)viewDidLayoutSubviews
@@ -1273,39 +1273,39 @@ void __57__GKLeaderboardScoreViewController_viewDidLayoutSubviews__block_invoke(
   [v10 setFrame:{v3, v5, v7, v9}];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v9.receiver = self;
   v9.super_class = GKLeaderboardScoreViewController;
-  [(GKLeaderboardScoreViewController *)&v9 viewDidAppear:a3];
+  [(GKLeaderboardScoreViewController *)&v9 viewDidAppear:appear];
   self->_startTime = CFAbsoluteTimeGetCurrent();
   [(GKLeaderboardScoreViewController *)self clearSelection];
   [(GKLeaderboardScoreViewController *)self setNeedsFocusUpdate];
-  v4 = [(GKLeaderboardScoreViewController *)self view];
-  v5 = [v4 window];
-  v6 = [v5 _rootSheetPresentationController];
-  [v6 _setShouldScaleDownBehindDescendantSheets:0];
+  view = [(GKLeaderboardScoreViewController *)self view];
+  window = [view window];
+  _rootSheetPresentationController = [window _rootSheetPresentationController];
+  [_rootSheetPresentationController _setShouldScaleDownBehindDescendantSheets:0];
 
-  v7 = [(GKLeaderboardScoreViewController *)self leaderboard];
-  v8 = [v7 identifier];
-  [_TtC12GameCenterUI15GKMetricsBridge recordLeaderboardPageEventWithPageId:v8 withReferrerData:[(GKLeaderboardScoreViewController *)self isDeeplinked]];
+  leaderboard = [(GKLeaderboardScoreViewController *)self leaderboard];
+  identifier = [leaderboard identifier];
+  [_TtC12GameCenterUI15GKMetricsBridge recordLeaderboardPageEventWithPageId:identifier withReferrerData:[(GKLeaderboardScoreViewController *)self isDeeplinked]];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   [(GKLeaderboardScoreViewController *)self setShouldAutoRefreshHighlights:0];
-  v5 = [(GKLeaderboardScoreViewController *)self view];
-  [v5 removeAllGestureRecognizers];
+  view = [(GKLeaderboardScoreViewController *)self view];
+  [view removeAllGestureRecognizers];
 
-  v6 = [MEMORY[0x277D0C1F8] reporter];
+  reporter = [MEMORY[0x277D0C1F8] reporter];
   v7 = *MEMORY[0x277D0BB38];
   [(GKLeaderboardScoreViewController *)self startTime];
-  [v6 reportScreenTimeEventForType:v7 withStartTimestamp:?];
+  [reporter reportScreenTimeEventForType:v7 withStartTimestamp:?];
 
   v8.receiver = self;
   v8.super_class = GKLeaderboardScoreViewController;
-  [(GKLeaderboardScoreViewController *)&v8 viewWillDisappear:v3];
+  [(GKLeaderboardScoreViewController *)&v8 viewWillDisappear:disappearCopy];
 }
 
 - (void)configureCloseButton
@@ -1323,8 +1323,8 @@ void __57__GKLeaderboardScoreViewController_viewDidLayoutSubviews__block_invoke(
     v5 = 0;
   }
 
-  v6 = [(GKLeaderboardScoreViewController *)self navigationItem];
-  [v6 setRightBarButtonItem:v5];
+  navigationItem = [(GKLeaderboardScoreViewController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:v5];
 
   if (v4)
   {
@@ -1333,13 +1333,13 @@ void __57__GKLeaderboardScoreViewController_viewDidLayoutSubviews__block_invoke(
 
 - (void)loadData
 {
-  v3 = [(GKLeaderboardScoreViewController *)self dataSource];
+  dataSource = [(GKLeaderboardScoreViewController *)self dataSource];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __44__GKLeaderboardScoreViewController_loadData__block_invoke;
   v4[3] = &unk_27966B138;
   v4[4] = self;
-  [v3 loadDataWithCompletionHandler:v4];
+  [dataSource loadDataWithCompletionHandler:v4];
 }
 
 void __44__GKLeaderboardScoreViewController_loadData__block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -1416,24 +1416,24 @@ void __44__GKLeaderboardScoreViewController_loadData__block_invoke_2(uint64_t a1
 
 - (BOOL)hasData
 {
-  v2 = [(GKLeaderboardScoreViewController *)self dataSource];
-  v3 = [v2 hasData];
+  dataSource = [(GKLeaderboardScoreViewController *)self dataSource];
+  hasData = [dataSource hasData];
 
-  return v3;
+  return hasData;
 }
 
-- (void)dataUpdated:(BOOL)a3 withError:(id)a4
+- (void)dataUpdated:(BOOL)updated withError:(id)error
 {
-  v4 = a3;
-  v32 = a4;
-  v6 = [(GKLeaderboardScoreViewController *)self dataSource];
-  v7 = [v6 itemCount];
+  updatedCopy = updated;
+  errorCopy = error;
+  dataSource = [(GKLeaderboardScoreViewController *)self dataSource];
+  itemCount = [dataSource itemCount];
 
-  if (v7 >= 1)
+  if (itemCount >= 1)
   {
     [(GKLoadingViewController *)self setLoadingState:@"LoadedState"];
     [(GKLeaderboardScoreViewController *)self hideNoContentPlaceholder];
-    if (!v4)
+    if (!updatedCopy)
     {
       goto LABEL_4;
     }
@@ -1442,153 +1442,153 @@ void __44__GKLeaderboardScoreViewController_loadData__block_invoke_2(uint64_t a1
   }
 
   [(GKLoadingViewController *)self setLoadingState:@"NoContentState"];
-  [(GKLeaderboardScoreViewController *)self showNoContentPlaceholderForError:v32];
-  if (v4)
+  [(GKLeaderboardScoreViewController *)self showNoContentPlaceholderForError:errorCopy];
+  if (updatedCopy)
   {
 LABEL_3:
-    v8 = [(GKLeaderboardScoreViewController *)self collectionView];
-    [v8 contentInset];
+    collectionView = [(GKLeaderboardScoreViewController *)self collectionView];
+    [collectionView contentInset];
     v10 = -v9;
-    v11 = [(GKLeaderboardScoreViewController *)self collectionView];
-    [v11 setContentOffset:{0.0, v10}];
+    collectionView2 = [(GKLeaderboardScoreViewController *)self collectionView];
+    [collectionView2 setContentOffset:{0.0, v10}];
 
-    v12 = [(GKLeaderboardScoreViewController *)self collectionView];
-    [v12 reloadData];
+    collectionView3 = [(GKLeaderboardScoreViewController *)self collectionView];
+    [collectionView3 reloadData];
 
     [(GKLeaderboardScoreViewController *)self setNeedsFocusUpdate];
   }
 
 LABEL_4:
-  v13 = [(GKLeaderboardScoreViewController *)self playerScopeControl];
-  v14 = [v13 selectedSegmentIndex];
+  playerScopeControl = [(GKLeaderboardScoreViewController *)self playerScopeControl];
+  selectedSegmentIndex = [playerScopeControl selectedSegmentIndex];
 
-  if (!v14)
+  if (!selectedSegmentIndex)
   {
-    v15 = [(GKLeaderboardScoreViewController *)self dataSource];
-    v16 = [v15 itemCount];
+    dataSource2 = [(GKLeaderboardScoreViewController *)self dataSource];
+    itemCount2 = [dataSource2 itemCount];
 
-    v17 = [MEMORY[0x277D0C1F8] reporter];
+    reporter = [MEMORY[0x277D0C1F8] reporter];
     v18 = *MEMORY[0x277D0BE28];
     v19 = *MEMORY[0x277D0BA18];
-    v20 = [MEMORY[0x277CCABB0] numberWithInteger:v16];
-    [v17 reportEvent:v18 type:v19 friendsPlayedThisGame:v20];
+    v20 = [MEMORY[0x277CCABB0] numberWithInteger:itemCount2];
+    [reporter reportEvent:v18 type:v19 friendsPlayedThisGame:v20];
   }
 
-  v21 = [(GKLeaderboardScoreViewController *)self title];
+  title = [(GKLeaderboardScoreViewController *)self title];
 
-  if (!v21)
+  if (!title)
   {
-    v22 = [(GKLeaderboardScoreViewController *)self leaderboard];
-    v23 = [v22 title];
-    [(GKLeaderboardScoreViewController *)self setTitle:v23];
+    leaderboard = [(GKLeaderboardScoreViewController *)self leaderboard];
+    title2 = [leaderboard title];
+    [(GKLeaderboardScoreViewController *)self setTitle:title2];
 
-    v24 = [MEMORY[0x277D75C80] currentTraitCollection];
-    v25 = [v24 preferredContentSizeCategory];
-    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v25);
+    currentTraitCollection = [MEMORY[0x277D75C80] currentTraitCollection];
+    preferredContentSizeCategory = [currentTraitCollection preferredContentSizeCategory];
+    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
-    v27 = [(GKLeaderboardScoreViewController *)self scrollToTopButton];
-    v28 = v27;
+    scrollToTopButton = [(GKLeaderboardScoreViewController *)self scrollToTopButton];
+    v28 = scrollToTopButton;
     if (IsAccessibilityCategory)
     {
-      [v27 setTitle:&stru_28612D290 forState:0];
+      [scrollToTopButton setTitle:&stru_28612D290 forState:0];
     }
 
     else
     {
-      v29 = [(GKLeaderboardScoreViewController *)self leaderboard];
-      v30 = [v29 title];
-      v31 = [v30 uppercaseString];
-      [v28 setTitle:v31 forState:0];
+      leaderboard2 = [(GKLeaderboardScoreViewController *)self leaderboard];
+      title3 = [leaderboard2 title];
+      uppercaseString = [title3 uppercaseString];
+      [v28 setTitle:uppercaseString forState:0];
     }
   }
 }
 
-- (void)showNoContentPlaceholderForError:(id)a3
+- (void)showNoContentPlaceholderForError:(id)error
 {
   v24[3] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(GKLeaderboardScoreViewController *)self collectionView];
+  errorCopy = error;
+  collectionView = [(GKLeaderboardScoreViewController *)self collectionView];
 
-  if (v5)
+  if (collectionView)
   {
-    v6 = [(GKLeaderboardScoreViewController *)self collectionView];
-    [v6 setHidden:1];
+    collectionView2 = [(GKLeaderboardScoreViewController *)self collectionView];
+    [collectionView2 setHidden:1];
 
-    v7 = [(GKLeaderboardScoreViewController *)self noContentView];
+    noContentView = [(GKLeaderboardScoreViewController *)self noContentView];
 
-    if (!v7)
+    if (!noContentView)
     {
       v8 = [GKNoContentView alloc];
       [(UICollectionView *)self->_collectionView bounds];
       v9 = [(GKNoContentView *)v8 initWithFrame:?];
       [(GKLeaderboardScoreViewController *)self setNoContentView:v9];
 
-      v10 = [(GKLeaderboardScoreViewController *)self noContentView];
-      [v10 setTranslatesAutoresizingMaskIntoConstraints:0];
+      noContentView2 = [(GKLeaderboardScoreViewController *)self noContentView];
+      [noContentView2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-      v11 = [(GKLeaderboardScoreViewController *)self collectionView];
-      v12 = [v11 superview];
+      collectionView3 = [(GKLeaderboardScoreViewController *)self collectionView];
+      superview = [collectionView3 superview];
 
-      v13 = [(GKLeaderboardScoreViewController *)self noContentView];
-      v14 = [(GKLeaderboardScoreViewController *)self collectionView];
-      [v12 insertSubview:v13 aboveSubview:v14];
+      noContentView3 = [(GKLeaderboardScoreViewController *)self noContentView];
+      collectionView4 = [(GKLeaderboardScoreViewController *)self collectionView];
+      [superview insertSubview:noContentView3 aboveSubview:collectionView4];
 
       v15 = MEMORY[0x277CCAAD0];
-      v16 = [(GKLeaderboardScoreViewController *)self noContentView];
-      v17 = [(GKLeaderboardScoreViewController *)self collectionView];
-      v18 = [v15 _gkConstraintsForView:v16 withinView:v17 insets:{*MEMORY[0x277D768C8], *(MEMORY[0x277D768C8] + 8), *(MEMORY[0x277D768C8] + 16), *(MEMORY[0x277D768C8] + 24)}];
-      [v12 addConstraints:v18];
+      noContentView4 = [(GKLeaderboardScoreViewController *)self noContentView];
+      collectionView5 = [(GKLeaderboardScoreViewController *)self collectionView];
+      v18 = [v15 _gkConstraintsForView:noContentView4 withinView:collectionView5 insets:{*MEMORY[0x277D768C8], *(MEMORY[0x277D768C8] + 8), *(MEMORY[0x277D768C8] + 16), *(MEMORY[0x277D768C8] + 24)}];
+      [superview addConstraints:v18];
 
-      v19 = [(GKLeaderboardScoreViewController *)self collectionGradientView];
-      v20 = [(GKLeaderboardScoreViewController *)self highlightView];
-      v24[1] = v20;
-      v21 = [(GKLeaderboardScoreViewController *)self noContentView];
-      v24[2] = v21;
+      collectionGradientView = [(GKLeaderboardScoreViewController *)self collectionGradientView];
+      highlightView = [(GKLeaderboardScoreViewController *)self highlightView];
+      v24[1] = highlightView;
+      noContentView5 = [(GKLeaderboardScoreViewController *)self noContentView];
+      v24[2] = noContentView5;
       v22 = [MEMORY[0x277CBEA60] arrayWithObjects:v24 count:3];
       [(GKLoadingViewController *)self setViewsToHideWhileLoading:v22];
     }
 
-    [(GKLeaderboardScoreViewController *)self setupNoContentView:self->_noContentView withError:v4];
-    v23 = [(GKLeaderboardScoreViewController *)self noContentView];
-    [v23 setHidden:0];
+    [(GKLeaderboardScoreViewController *)self setupNoContentView:self->_noContentView withError:errorCopy];
+    noContentView6 = [(GKLeaderboardScoreViewController *)self noContentView];
+    [noContentView6 setHidden:0];
   }
 }
 
 - (void)hideNoContentPlaceholder
 {
-  v3 = [(GKLeaderboardScoreViewController *)self noContentView];
-  [v3 setHidden:1];
+  noContentView = [(GKLeaderboardScoreViewController *)self noContentView];
+  [noContentView setHidden:1];
 
-  v4 = [(GKLeaderboardScoreViewController *)self collectionView];
-  [v4 setHidden:0];
+  collectionView = [(GKLeaderboardScoreViewController *)self collectionView];
+  [collectionView setHidden:0];
 }
 
-- (void)setupNoContentView:(id)a3 withError:(id)a4
+- (void)setupNoContentView:(id)view withError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  errorCopy = error;
   objc_initWeak(&location, self);
   v19 = MEMORY[0x277D85DD0];
   v20 = 3221225472;
   v21 = __65__GKLeaderboardScoreViewController_setupNoContentView_withError___block_invoke;
   v22 = &unk_27966D090;
   objc_copyWeak(&v23, &location);
-  [v6 setButtonAction:&v19];
+  [viewCopy setButtonAction:&v19];
   v8 = [(GKLeaderboardScoreViewController *)self leaderboard:v19];
-  v9 = [v8 type];
+  type = [v8 type];
 
-  if (v9 != 1)
+  if (type != 1)
   {
     timeScope = self->_timeScope;
     if (timeScope < 2)
     {
       v13 = GKGameCenterUIFrameworkBundle();
       v14 = GKGetLocalizedStringFromTableInBundle();
-      [v6 setTitle:v14];
+      [viewCopy setTitle:v14];
 
       v15 = GKGameCenterUIFrameworkBundle();
       v16 = GKGetLocalizedStringFromTableInBundle();
-      [v6 setMessage:v16];
+      [viewCopy setMessage:v16];
 
       goto LABEL_7;
     }
@@ -1601,17 +1601,17 @@ LABEL_4:
 
   v10 = GKGameCenterUIFrameworkBundle();
   v11 = GKGetLocalizedStringFromTableInBundle();
-  [v6 setTitle:v11];
+  [viewCopy setTitle:v11];
 
-  [v6 setMessage:0];
+  [viewCopy setMessage:0];
 LABEL_7:
-  [v6 setButtonTitle:0];
+  [viewCopy setButtonTitle:0];
 LABEL_8:
-  if (v7)
+  if (errorCopy)
   {
     v17 = GKGameCenterUIFrameworkBundle();
     v18 = GKGetLocalizedStringFromTableInBundle();
-    [v6 setMessage:v18];
+    [viewCopy setMessage:v18];
   }
 
   objc_destroyWeak(&v23);
@@ -1645,10 +1645,10 @@ void __65__GKLeaderboardScoreViewController_setupNoContentView_withError___block
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v35 count:2];
 
   v8 = [objc_alloc(MEMORY[0x277D75A08]) initWithItems:v7];
-  v9 = [MEMORY[0x277D75418] currentDevice];
-  v10 = [v9 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v10 == 1)
+  if (userInterfaceIdiom == 1)
   {
     v11 = 140.0;
   }
@@ -1660,14 +1660,14 @@ void __65__GKLeaderboardScoreViewController_setupNoContentView_withError___block
 
   else
   {
-    v12 = [(GKLeaderboardScoreViewController *)self view];
-    [v12 bounds];
+    view = [(GKLeaderboardScoreViewController *)self view];
+    [view bounds];
     v14 = v13;
-    v15 = [(GKLeaderboardScoreViewController *)self view];
-    [v15 bounds];
+    view2 = [(GKLeaderboardScoreViewController *)self view];
+    [view2 bounds];
     v17 = v16;
-    v18 = [(GKLeaderboardScoreViewController *)self view];
-    [v18 bounds];
+    view3 = [(GKLeaderboardScoreViewController *)self view];
+    [view3 bounds];
     if (v14 >= v17)
     {
       v21 = v20;
@@ -1692,67 +1692,67 @@ void __65__GKLeaderboardScoreViewController_setupNoContentView_withError___block
   [v22 addTarget:self action:sel_playerScopeChanged_ forControlEvents:{4096, v28, v29, v30, v31}];
   v34 = *MEMORY[0x277CDA658];
   v23 = [MEMORY[0x277CBEA60] arrayWithObjects:&v34 count:1];
-  v24 = [v22 layer];
-  [v24 setBackgroundFilters:v23];
+  layer = [v22 layer];
+  [layer setBackgroundFilters:v23];
 
   [(GKLeaderboardScoreViewController *)self setPlayerScopeControl:v22];
   [(GKLeaderboardScoreViewController *)self configurePlayerScopeFocusGuide];
-  v25 = [(GKLeaderboardScoreViewController *)self playerScope];
-  if (v25 == 1)
+  playerScope = [(GKLeaderboardScoreViewController *)self playerScope];
+  if (playerScope == 1)
   {
     v26 = 0;
     goto LABEL_13;
   }
 
-  if (!v25)
+  if (!playerScope)
   {
     v26 = 1;
 LABEL_13:
-    v27 = [(GKLeaderboardScoreViewController *)self playerScopeControl];
-    [v27 setSelectedSegmentIndex:v26];
+    playerScopeControl = [(GKLeaderboardScoreViewController *)self playerScopeControl];
+    [playerScopeControl setSelectedSegmentIndex:v26];
   }
 }
 
 - (void)configurePlayerScopeFocusGuide
 {
   v29[1] = *MEMORY[0x277D85DE8];
-  v3 = [(GKLeaderboardScoreViewController *)self collectionContainer];
-  if (v3)
+  collectionContainer = [(GKLeaderboardScoreViewController *)self collectionContainer];
+  if (collectionContainer)
   {
-    v4 = v3;
-    v5 = [(GKLeaderboardScoreViewController *)self playerScopeControl];
+    v4 = collectionContainer;
+    playerScopeControl = [(GKLeaderboardScoreViewController *)self playerScopeControl];
 
-    if (v5)
+    if (playerScopeControl)
     {
       v6 = objc_alloc_init(MEMORY[0x277D75500]);
-      v7 = [(GKLeaderboardScoreViewController *)self playerScopeControl];
-      v29[0] = v7;
+      playerScopeControl2 = [(GKLeaderboardScoreViewController *)self playerScopeControl];
+      v29[0] = playerScopeControl2;
       v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v29 count:1];
       [v6 setPreferredFocusEnvironments:v8];
 
-      v9 = [(GKLeaderboardScoreViewController *)self view];
-      [v9 addLayoutGuide:v6];
+      view = [(GKLeaderboardScoreViewController *)self view];
+      [view addLayoutGuide:v6];
 
       v20 = MEMORY[0x277CCAAD0];
-      v26 = [v6 leadingAnchor];
-      v27 = [(GKLeaderboardScoreViewController *)self view];
-      v25 = [v27 leadingAnchor];
-      v24 = [v26 constraintEqualToAnchor:v25];
+      leadingAnchor = [v6 leadingAnchor];
+      view2 = [(GKLeaderboardScoreViewController *)self view];
+      leadingAnchor2 = [view2 leadingAnchor];
+      v24 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
       v28[0] = v24;
-      v22 = [v6 trailingAnchor];
-      v23 = [(GKLeaderboardScoreViewController *)self view];
-      v21 = [v23 trailingAnchor];
-      v19 = [v22 constraintEqualToAnchor:v21];
+      trailingAnchor = [v6 trailingAnchor];
+      view3 = [(GKLeaderboardScoreViewController *)self view];
+      trailingAnchor2 = [view3 trailingAnchor];
+      v19 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
       v28[1] = v19;
-      v10 = [v6 topAnchor];
-      v11 = [(GKLeaderboardScoreViewController *)self view];
-      v12 = [v11 topAnchor];
-      v13 = [v10 constraintEqualToAnchor:v12];
+      topAnchor = [v6 topAnchor];
+      view4 = [(GKLeaderboardScoreViewController *)self view];
+      topAnchor2 = [view4 topAnchor];
+      v13 = [topAnchor constraintEqualToAnchor:topAnchor2];
       v28[2] = v13;
-      v14 = [v6 bottomAnchor];
-      v15 = [(GKLeaderboardScoreViewController *)self collectionContainer];
-      v16 = [v15 topAnchor];
-      v17 = [v14 constraintEqualToAnchor:v16];
+      bottomAnchor = [v6 bottomAnchor];
+      collectionContainer2 = [(GKLeaderboardScoreViewController *)self collectionContainer];
+      topAnchor3 = [collectionContainer2 topAnchor];
+      v17 = [bottomAnchor constraintEqualToAnchor:topAnchor3];
       v28[3] = v17;
       v18 = [MEMORY[0x277CBEA60] arrayWithObjects:v28 count:4];
       [v20 activateConstraints:v18];
@@ -1760,94 +1760,94 @@ LABEL_13:
   }
 }
 
-- (void)updatePlayerScopeLayoutForSize:(CGSize)a3
+- (void)updatePlayerScopeLayoutForSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   if (GKIsXRUIIdiomShouldUsePadUI())
   {
-    v6 = [(GKLeaderboardScoreViewController *)self playerScopeControl];
-    [v6 removeFromSuperview];
+    playerScopeControl = [(GKLeaderboardScoreViewController *)self playerScopeControl];
+    [playerScopeControl removeFromSuperview];
 
     [(GKLeaderboardScoreViewController *)self addPlayerScopeControl];
-    v7 = [(GKLeaderboardScoreViewController *)self playerScopeControl];
-    [v7 setWidth:0 forSegmentAtIndex:108.0];
+    playerScopeControl2 = [(GKLeaderboardScoreViewController *)self playerScopeControl];
+    [playerScopeControl2 setWidth:0 forSegmentAtIndex:108.0];
 
-    v8 = [(GKLeaderboardScoreViewController *)self playerScopeControl];
-    [v8 setWidth:1 forSegmentAtIndex:108.0];
+    playerScopeControl3 = [(GKLeaderboardScoreViewController *)self playerScopeControl];
+    [playerScopeControl3 setWidth:1 forSegmentAtIndex:108.0];
   }
 
   else
   {
-    v9 = [(GKLeaderboardScoreViewController *)self traitCollection];
-    v10 = [v9 verticalSizeClass];
+    traitCollection = [(GKLeaderboardScoreViewController *)self traitCollection];
+    verticalSizeClass = [traitCollection verticalSizeClass];
 
-    v11 = [(GKLeaderboardScoreViewController *)self navigationItem];
-    v12 = [v11 _bottomPalette];
-    v13 = v12;
-    if (v10 == 2)
+    navigationItem = [(GKLeaderboardScoreViewController *)self navigationItem];
+    _bottomPalette = [navigationItem _bottomPalette];
+    v13 = _bottomPalette;
+    if (verticalSizeClass == 2)
     {
-      v63 = [v12 contentView];
+      contentView = [_bottomPalette contentView];
 
-      v14 = [(GKLeaderboardScoreViewController *)self playerScopeControl];
-      v15 = [v14 superview];
+      playerScopeControl4 = [(GKLeaderboardScoreViewController *)self playerScopeControl];
+      superview = [playerScopeControl4 superview];
 
-      if (!v63 || v15 != v63)
+      if (!contentView || superview != contentView)
       {
-        v16 = [(GKLeaderboardScoreViewController *)self playerScopeControl];
-        [v16 removeFromSuperview];
+        playerScopeControl5 = [(GKLeaderboardScoreViewController *)self playerScopeControl];
+        [playerScopeControl5 removeFromSuperview];
 
-        v17 = [(GKLeaderboardScoreViewController *)self navigationItem];
-        [v17 setTitleView:0];
+        navigationItem2 = [(GKLeaderboardScoreViewController *)self navigationItem];
+        [navigationItem2 setTitleView:0];
 
         v18 = objc_alloc_init(MEMORY[0x277D75D18]);
         v19 = [objc_alloc(MEMORY[0x277D76118]) initWithContentView:v18];
-        v20 = [(GKLeaderboardScoreViewController *)self navigationItem];
-        [v20 _setBottomPalette:v19];
+        navigationItem3 = [(GKLeaderboardScoreViewController *)self navigationItem];
+        [navigationItem3 _setBottomPalette:v19];
 
-        v21 = [(GKLeaderboardScoreViewController *)self navigationItem];
-        v22 = [v21 _bottomPalette];
-        v23 = [v22 contentView];
-        v24 = [(GKLeaderboardScoreViewController *)self playerScopeControl];
-        [v23 addSubview:v24];
+        navigationItem4 = [(GKLeaderboardScoreViewController *)self navigationItem];
+        _bottomPalette2 = [navigationItem4 _bottomPalette];
+        contentView2 = [_bottomPalette2 contentView];
+        playerScopeControl6 = [(GKLeaderboardScoreViewController *)self playerScopeControl];
+        [contentView2 addSubview:playerScopeControl6];
 
-        v63 = v18;
+        contentView = v18;
       }
 
-      v25 = [(GKLeaderboardScoreViewController *)self navigationItem];
-      v26 = [v25 _bottomPalette];
-      [v26 setPreferredHeight:60.0];
+      navigationItem5 = [(GKLeaderboardScoreViewController *)self navigationItem];
+      _bottomPalette3 = [navigationItem5 _bottomPalette];
+      [_bottomPalette3 setPreferredHeight:60.0];
 
-      [v63 setTranslatesAutoresizingMaskIntoConstraints:0];
-      v27 = [v63 widthAnchor];
-      v28 = [v63 superview];
-      v29 = [v28 widthAnchor];
-      v30 = [v27 constraintEqualToAnchor:v29];
+      [contentView setTranslatesAutoresizingMaskIntoConstraints:0];
+      widthAnchor = [contentView widthAnchor];
+      superview2 = [contentView superview];
+      widthAnchor2 = [superview2 widthAnchor];
+      v30 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
       [v30 setActive:1];
 
-      v31 = [v63 heightAnchor];
-      v32 = [v31 constraintEqualToConstant:60.0];
+      heightAnchor = [contentView heightAnchor];
+      v32 = [heightAnchor constraintEqualToConstant:60.0];
       [v32 setActive:1];
 
-      v33 = [(GKLeaderboardScoreViewController *)self playerScopeControl];
-      [v33 setTranslatesAutoresizingMaskIntoConstraints:0];
+      playerScopeControl7 = [(GKLeaderboardScoreViewController *)self playerScopeControl];
+      [playerScopeControl7 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-      v34 = [(GKLeaderboardScoreViewController *)self playerScopeControl];
-      v35 = [v34 centerXAnchor];
-      v36 = [v63 centerXAnchor];
-      v37 = [v35 constraintEqualToAnchor:v36];
+      playerScopeControl8 = [(GKLeaderboardScoreViewController *)self playerScopeControl];
+      centerXAnchor = [playerScopeControl8 centerXAnchor];
+      centerXAnchor2 = [contentView centerXAnchor];
+      v37 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
       [v37 setActive:1];
 
-      v38 = [(GKLeaderboardScoreViewController *)self playerScopeControl];
-      v39 = [v38 bottomAnchor];
-      v40 = [v63 bottomAnchor];
-      v41 = [v39 constraintEqualToAnchor:v40 constant:-10.0];
+      playerScopeControl9 = [(GKLeaderboardScoreViewController *)self playerScopeControl];
+      bottomAnchor = [playerScopeControl9 bottomAnchor];
+      bottomAnchor2 = [contentView bottomAnchor];
+      v41 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-10.0];
       [v41 setActive:1];
 
-      v42 = [MEMORY[0x277D75418] currentDevice];
-      v43 = [v42 userInterfaceIdiom];
+      currentDevice = [MEMORY[0x277D75418] currentDevice];
+      userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-      if (v43 == 1)
+      if (userInterfaceIdiom == 1)
       {
         v44 = 140.0;
       }
@@ -1862,22 +1862,22 @@ LABEL_13:
         v44 = (width + -40.0) / 3.0;
       }
 
-      v61 = [(GKLeaderboardScoreViewController *)self playerScopeControl];
-      [v61 setWidth:0 forSegmentAtIndex:v44];
+      playerScopeControl10 = [(GKLeaderboardScoreViewController *)self playerScopeControl];
+      [playerScopeControl10 setWidth:0 forSegmentAtIndex:v44];
 
-      v62 = [(GKLeaderboardScoreViewController *)self playerScopeControl];
-      [v62 setWidth:1 forSegmentAtIndex:v44];
+      playerScopeControl11 = [(GKLeaderboardScoreViewController *)self playerScopeControl];
+      [playerScopeControl11 setWidth:1 forSegmentAtIndex:v44];
 
       [(GKLeaderboardScoreViewController *)self configureFocusGuidesForPortraitNavigationBar];
       goto LABEL_22;
     }
 
-    [v12 setPreferredHeight:0.0];
+    [_bottomPalette setPreferredHeight:0.0];
 
-    v45 = [MEMORY[0x277D75418] currentDevice];
-    v46 = [v45 userInterfaceIdiom];
+    currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom2 = [currentDevice2 userInterfaceIdiom];
 
-    if (v46 == 1)
+    if (userInterfaceIdiom2 == 1)
     {
       v47 = 140.0;
     }
@@ -1887,23 +1887,23 @@ LABEL_13:
       v47 = (height + -40.0) / 3.0;
     }
 
-    v48 = [(GKLeaderboardScoreViewController *)self playerScopeControl];
-    [v48 setWidth:0 forSegmentAtIndex:v47];
+    playerScopeControl12 = [(GKLeaderboardScoreViewController *)self playerScopeControl];
+    [playerScopeControl12 setWidth:0 forSegmentAtIndex:v47];
 
-    v49 = [(GKLeaderboardScoreViewController *)self playerScopeControl];
-    [v49 setWidth:1 forSegmentAtIndex:v47];
+    playerScopeControl13 = [(GKLeaderboardScoreViewController *)self playerScopeControl];
+    [playerScopeControl13 setWidth:1 forSegmentAtIndex:v47];
 
-    v50 = [(GKLeaderboardScoreViewController *)self playerScopeControl];
-    v51 = [v50 superview];
-    v52 = [(GKLeaderboardScoreViewController *)self navigationItem];
-    v53 = [v52 titleView];
-    v54 = v53;
-    if (v51 == v53)
+    playerScopeControl14 = [(GKLeaderboardScoreViewController *)self playerScopeControl];
+    superview3 = [playerScopeControl14 superview];
+    navigationItem6 = [(GKLeaderboardScoreViewController *)self navigationItem];
+    titleView = [navigationItem6 titleView];
+    v54 = titleView;
+    if (superview3 == titleView)
     {
-      v59 = [(GKLeaderboardScoreViewController *)self navigationItem];
-      v60 = [v59 titleView];
+      navigationItem7 = [(GKLeaderboardScoreViewController *)self navigationItem];
+      titleView2 = [navigationItem7 titleView];
 
-      if (v60)
+      if (titleView2)
       {
         return;
       }
@@ -1913,18 +1913,18 @@ LABEL_13:
     {
     }
 
-    v55 = [(GKLeaderboardScoreViewController *)self playerScopeControl];
-    [v55 removeFromSuperview];
+    playerScopeControl15 = [(GKLeaderboardScoreViewController *)self playerScopeControl];
+    [playerScopeControl15 removeFromSuperview];
 
-    v8 = [(GKLeaderboardScoreViewController *)self navigationItem];
-    v56 = [v8 _bottomPalette];
-    v57 = [v56 contentView];
-    [v57 removeFromSuperview];
+    playerScopeControl3 = [(GKLeaderboardScoreViewController *)self navigationItem];
+    _bottomPalette4 = [playerScopeControl3 _bottomPalette];
+    contentView3 = [_bottomPalette4 contentView];
+    [contentView3 removeFromSuperview];
   }
 
-  v63 = [(GKLeaderboardScoreViewController *)self playerScopeControl];
-  v58 = [(GKLeaderboardScoreViewController *)self navigationItem];
-  [v58 setTitleView:v63];
+  contentView = [(GKLeaderboardScoreViewController *)self playerScopeControl];
+  navigationItem8 = [(GKLeaderboardScoreViewController *)self navigationItem];
+  [navigationItem8 setTitleView:contentView];
 
 LABEL_22:
 }
@@ -1932,164 +1932,164 @@ LABEL_22:
 - (void)configureFocusGuidesForPortraitNavigationBar
 {
   v65[1] = *MEMORY[0x277D85DE8];
-  v3 = [(GKLeaderboardScoreViewController *)self navigationController];
-  v4 = [v3 navigationBar];
+  navigationController = [(GKLeaderboardScoreViewController *)self navigationController];
+  navigationBar = [navigationController navigationBar];
 
-  if (v4)
+  if (navigationBar)
   {
     v5 = objc_alloc_init(MEMORY[0x277D75500]);
-    v6 = [(GKLeaderboardScoreViewController *)self navigationController];
-    v7 = [v6 navigationBar];
-    v65[0] = v7;
+    navigationController2 = [(GKLeaderboardScoreViewController *)self navigationController];
+    navigationBar2 = [navigationController2 navigationBar];
+    v65[0] = navigationBar2;
     v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v65 count:1];
     [v5 setPreferredFocusEnvironments:v8];
 
-    v9 = [(GKLeaderboardScoreViewController *)self navigationController];
-    v10 = [v9 navigationBar];
-    [v10 addLayoutGuide:v5];
+    navigationController3 = [(GKLeaderboardScoreViewController *)self navigationController];
+    navigationBar3 = [navigationController3 navigationBar];
+    [navigationBar3 addLayoutGuide:v5];
 
     v41 = MEMORY[0x277CCAAD0];
-    v58 = [v5 leadingAnchor];
-    v60 = [(GKLeaderboardScoreViewController *)self navigationController];
-    v56 = [v60 navigationBar];
-    v54 = [v56 leadingAnchor];
-    v52 = [v58 constraintEqualToAnchor:v54];
+    leadingAnchor = [v5 leadingAnchor];
+    navigationController4 = [(GKLeaderboardScoreViewController *)self navigationController];
+    navigationBar4 = [navigationController4 navigationBar];
+    leadingAnchor2 = [navigationBar4 leadingAnchor];
+    v52 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v64[0] = v52;
-    v48 = [v5 trailingAnchor];
-    v50 = [(GKLeaderboardScoreViewController *)self navigationController];
-    v46 = [v50 navigationBar];
-    v43 = [v46 trailingAnchor];
-    v40 = [v48 constraintEqualToAnchor:v43];
+    trailingAnchor = [v5 trailingAnchor];
+    navigationController5 = [(GKLeaderboardScoreViewController *)self navigationController];
+    navigationBar5 = [navigationController5 navigationBar];
+    trailingAnchor2 = [navigationBar5 trailingAnchor];
+    v40 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v64[1] = v40;
-    v38 = [v5 topAnchor];
-    v39 = [(GKLeaderboardScoreViewController *)self navigationController];
-    v37 = [v39 navigationBar];
-    v11 = [v37 topAnchor];
-    v12 = [v38 constraintEqualToAnchor:v11];
+    topAnchor = [v5 topAnchor];
+    navigationController6 = [(GKLeaderboardScoreViewController *)self navigationController];
+    navigationBar6 = [navigationController6 navigationBar];
+    topAnchor2 = [navigationBar6 topAnchor];
+    v12 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v64[2] = v12;
-    v13 = [v5 bottomAnchor];
-    v14 = [(GKLeaderboardScoreViewController *)self navigationController];
-    v15 = [v14 navigationBar];
-    v16 = [v15 topAnchor];
-    v17 = [v13 constraintEqualToAnchor:v16 constant:1.0];
+    bottomAnchor = [v5 bottomAnchor];
+    navigationController7 = [(GKLeaderboardScoreViewController *)self navigationController];
+    navigationBar7 = [navigationController7 navigationBar];
+    topAnchor3 = [navigationBar7 topAnchor];
+    v17 = [bottomAnchor constraintEqualToAnchor:topAnchor3 constant:1.0];
     v64[3] = v17;
     v18 = [MEMORY[0x277CBEA60] arrayWithObjects:v64 count:4];
     [v41 activateConstraints:v18];
   }
 
-  v19 = [(GKLeaderboardScoreViewController *)self navigationItem];
-  v20 = [v19 _bottomPalette];
-  v21 = [v20 contentView];
-  if (v21)
+  navigationItem = [(GKLeaderboardScoreViewController *)self navigationItem];
+  _bottomPalette = [navigationItem _bottomPalette];
+  contentView = [_bottomPalette contentView];
+  if (contentView)
   {
-    v22 = v21;
-    v23 = [(GKLeaderboardScoreViewController *)self playerScopeControl];
+    v22 = contentView;
+    playerScopeControl = [(GKLeaderboardScoreViewController *)self playerScopeControl];
 
-    if (!v23)
+    if (!playerScopeControl)
     {
       return;
     }
 
-    v19 = objc_alloc_init(MEMORY[0x277D75500]);
-    v24 = [(GKLeaderboardScoreViewController *)self playerScopeControl];
-    v63 = v24;
+    navigationItem = objc_alloc_init(MEMORY[0x277D75500]);
+    playerScopeControl2 = [(GKLeaderboardScoreViewController *)self playerScopeControl];
+    v63 = playerScopeControl2;
     v25 = [MEMORY[0x277CBEA60] arrayWithObjects:&v63 count:1];
-    [v19 setPreferredFocusEnvironments:v25];
+    [navigationItem setPreferredFocusEnvironments:v25];
 
-    v26 = [(GKLeaderboardScoreViewController *)self navigationItem];
-    v27 = [v26 _bottomPalette];
-    v28 = [v27 contentView];
-    [v28 addLayoutGuide:v19];
+    navigationItem2 = [(GKLeaderboardScoreViewController *)self navigationItem];
+    _bottomPalette2 = [navigationItem2 _bottomPalette];
+    contentView2 = [_bottomPalette2 contentView];
+    [contentView2 addLayoutGuide:navigationItem];
 
     v47 = MEMORY[0x277CCAAD0];
-    v20 = [v19 centerXAnchor];
-    v61 = [(GKLeaderboardScoreViewController *)self playerScopeControl];
-    v59 = [v61 centerXAnchor];
-    v57 = [v20 constraintEqualToAnchor:v59];
+    _bottomPalette = [navigationItem centerXAnchor];
+    playerScopeControl3 = [(GKLeaderboardScoreViewController *)self playerScopeControl];
+    centerXAnchor = [playerScopeControl3 centerXAnchor];
+    v57 = [_bottomPalette constraintEqualToAnchor:centerXAnchor];
     v62[0] = v57;
-    v53 = [v19 centerYAnchor];
-    v55 = [(GKLeaderboardScoreViewController *)self playerScopeControl];
-    v51 = [v55 centerYAnchor];
-    v49 = [v53 constraintEqualToAnchor:v51];
+    centerYAnchor = [navigationItem centerYAnchor];
+    playerScopeControl4 = [(GKLeaderboardScoreViewController *)self playerScopeControl];
+    centerYAnchor2 = [playerScopeControl4 centerYAnchor];
+    v49 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v62[1] = v49;
-    v42 = [v19 widthAnchor];
-    v45 = [(GKLeaderboardScoreViewController *)self navigationItem];
-    v44 = [v45 _bottomPalette];
-    v29 = [v44 contentView];
-    v30 = [v29 widthAnchor];
-    v31 = [v42 constraintEqualToAnchor:v30];
+    widthAnchor = [navigationItem widthAnchor];
+    navigationItem3 = [(GKLeaderboardScoreViewController *)self navigationItem];
+    _bottomPalette3 = [navigationItem3 _bottomPalette];
+    contentView3 = [_bottomPalette3 contentView];
+    widthAnchor2 = [contentView3 widthAnchor];
+    v31 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
     v62[2] = v31;
-    v32 = [v19 heightAnchor];
-    v33 = [(GKLeaderboardScoreViewController *)self playerScopeControl];
-    v34 = [v33 heightAnchor];
-    v35 = [v32 constraintEqualToAnchor:v34];
+    heightAnchor = [navigationItem heightAnchor];
+    playerScopeControl5 = [(GKLeaderboardScoreViewController *)self playerScopeControl];
+    heightAnchor2 = [playerScopeControl5 heightAnchor];
+    v35 = [heightAnchor constraintEqualToAnchor:heightAnchor2];
     v62[3] = v35;
     v36 = [MEMORY[0x277CBEA60] arrayWithObjects:v62 count:4];
     [v47 activateConstraints:v36];
   }
 }
 
-- (void)playerScopeChanged:(id)a3
+- (void)playerScopeChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   v5 = 1;
   [(GKLeaderboardScoreViewController *)self setShouldPreferFocusToPlayerScopeControl:1];
-  v6 = [(GKLeaderboardScoreViewController *)self dataSource];
-  v7 = [v6 playerScope];
+  dataSource = [(GKLeaderboardScoreViewController *)self dataSource];
+  playerScope = [dataSource playerScope];
 
-  v8 = [v4 selectedSegmentIndex];
-  if (!v8)
+  selectedSegmentIndex = [changedCopy selectedSegmentIndex];
+  if (!selectedSegmentIndex)
   {
     v10 = MEMORY[0x277D0BAF8];
     v9 = 1;
     goto LABEL_5;
   }
 
-  if (v8 == 1)
+  if (selectedSegmentIndex == 1)
   {
     v5 = 0;
     v9 = 0;
     v10 = MEMORY[0x277D0BB00];
 LABEL_5:
-    v11 = [MEMORY[0x277D0C1F8] reporter];
-    [v11 reportEvent:*MEMORY[0x277D0BE70] type:*v10];
+    reporter = [MEMORY[0x277D0C1F8] reporter];
+    [reporter reportEvent:*MEMORY[0x277D0BE70] type:*v10];
 
     goto LABEL_7;
   }
 
   v9 = 0;
-  v5 = v7;
+  v5 = playerScope;
 LABEL_7:
 
   [(GKLeaderboardScoreViewController *)self setPlayerScope:v5 restrictToFriendsOnly:v9];
 }
 
-- (void)setPlayerScope:(int64_t)a3 restrictToFriendsOnly:(BOOL)a4
+- (void)setPlayerScope:(int64_t)scope restrictToFriendsOnly:(BOOL)only
 {
-  v4 = a4;
+  onlyCopy = only;
   [(GKLeaderboardScoreViewController *)self setPlayerScope:?];
-  v7 = [(GKLeaderboardScoreViewController *)self dataSource];
-  [v7 setPlayerScope:a3];
+  dataSource = [(GKLeaderboardScoreViewController *)self dataSource];
+  [dataSource setPlayerScope:scope];
 
-  [objc_opt_class() setRestrictToFriendsOnly:v4];
-  v8 = [(GKLeaderboardScoreViewController *)self dataSource];
-  [v8 setRestrictToFriendsOnly:v4];
+  [objc_opt_class() setRestrictToFriendsOnly:onlyCopy];
+  dataSource2 = [(GKLeaderboardScoreViewController *)self dataSource];
+  [dataSource2 setRestrictToFriendsOnly:onlyCopy];
 
-  v9 = [(UIViewController *)self _gkExtensionViewController];
-  [v9 dashboardDidChangeToLeaderboardPlayerScope:a3];
+  _gkExtensionViewController = [(UIViewController *)self _gkExtensionViewController];
+  [_gkExtensionViewController dashboardDidChangeToLeaderboardPlayerScope:scope];
 
   [(GKLeaderboardScoreViewController *)self setNeedsRefresh];
 }
 
-- (void)scrollToTopPressed:(id)a3
+- (void)scrollToTopPressed:(id)pressed
 {
-  v4 = [MEMORY[0x277D0C1F8] reporter];
-  [v4 reportEvent:*MEMORY[0x277D0BE70] type:*MEMORY[0x277D0BB20]];
+  reporter = [MEMORY[0x277D0C1F8] reporter];
+  [reporter reportEvent:*MEMORY[0x277D0BE70] type:*MEMORY[0x277D0BB20]];
 
-  v5 = [(GKLeaderboardScoreViewController *)self dataSource];
-  v6 = [v5 startingRank];
+  dataSource = [(GKLeaderboardScoreViewController *)self dataSource];
+  startingRank = [dataSource startingRank];
 
-  if (v6 < 2)
+  if (startingRank < 2)
   {
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
@@ -2101,8 +2101,8 @@ LABEL_7:
 
   else
   {
-    v7 = [(GKLeaderboardScoreViewController *)self dataSource];
-    [v7 setAutoScrollToLocalPlayerPosition:0];
+    dataSource2 = [(GKLeaderboardScoreViewController *)self dataSource];
+    [dataSource2 setAutoScrollToLocalPlayerPosition:0];
 
     [(GKLeaderboardScoreViewController *)self setNeedsRefresh];
   }
@@ -2120,8 +2120,8 @@ void __55__GKLeaderboardScoreViewController_scrollToTopPressed___block_invoke(ui
 - (void)configureTimeScopeMenu
 {
   objc_initWeak(&location, self);
-  v3 = [(GKLeaderboardScoreViewController *)self timeScopeButton];
-  [v3 setContextMenuIsPrimary:1];
+  timeScopeButton = [(GKLeaderboardScoreViewController *)self timeScopeButton];
+  [timeScopeButton setContextMenuIsPrimary:1];
 
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
@@ -2129,8 +2129,8 @@ void __55__GKLeaderboardScoreViewController_scrollToTopPressed___block_invoke(ui
   v5[3] = &unk_27966D0E0;
   objc_copyWeak(&v6, &location);
   v5[4] = self;
-  v4 = [(GKLeaderboardScoreViewController *)self timeScopeButton];
-  [v4 _setMenuProvider:v5];
+  timeScopeButton2 = [(GKLeaderboardScoreViewController *)self timeScopeButton];
+  [timeScopeButton2 _setMenuProvider:v5];
 
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
@@ -2220,59 +2220,59 @@ id __58__GKLeaderboardScoreViewController_configureTimeScopeMenu__block_invoke(u
   return v18;
 }
 
-- (void)setTimeScope:(int64_t)a3
+- (void)setTimeScope:(int64_t)scope
 {
-  timeScope = a3;
-  if (self->_timeScope != a3)
+  timeScope = scope;
+  if (self->_timeScope != scope)
   {
-    if (a3 <= 2)
+    if (scope <= 2)
     {
-      v5 = qword_27966D178[a3];
-      v6 = [MEMORY[0x277D0C1F8] reporter];
-      [v6 reportEvent:*MEMORY[0x277D0BE70] type:*v5];
+      v5 = qword_27966D178[scope];
+      reporter = [MEMORY[0x277D0C1F8] reporter];
+      [reporter reportEvent:*MEMORY[0x277D0BE70] type:*v5];
     }
 
     self->_timeScope = timeScope;
-    v7 = [(GKLeaderboardScoreViewController *)self dataSource];
-    [v7 setTimeScope:timeScope];
+    dataSource = [(GKLeaderboardScoreViewController *)self dataSource];
+    [dataSource setTimeScope:timeScope];
 
     [(GKLeaderboardScoreViewController *)self setInitialTimeScope:timeScope];
-    v8 = [(UIViewController *)self _gkExtensionViewController];
-    [v8 dashboardDidChangeToLeaderboardTimeScope:timeScope];
+    _gkExtensionViewController = [(UIViewController *)self _gkExtensionViewController];
+    [_gkExtensionViewController dashboardDidChangeToLeaderboardTimeScope:timeScope];
 
     [(GKLeaderboardScoreViewController *)self setNeedsRefresh];
     timeScope = self->_timeScope;
   }
 
-  v9 = [(GKLeaderboardScoreViewController *)self timeScopeButton];
-  [v9 setTimeScope:timeScope];
+  timeScopeButton = [(GKLeaderboardScoreViewController *)self timeScopeButton];
+  [timeScopeButton setTimeScope:timeScope];
 }
 
-- (void)setLeaderboardOccurrence:(int64_t)a3
+- (void)setLeaderboardOccurrence:(int64_t)occurrence
 {
-  if (self->_leaderboardOccurrence != a3)
+  if (self->_leaderboardOccurrence != occurrence)
   {
     v12[10] = v3;
     v12[11] = v4;
     timeScope = self->_timeScope;
-    v8 = [(GKLeaderboardScoreViewController *)self dataSource];
-    [v8 setTimeScope:timeScope];
+    dataSource = [(GKLeaderboardScoreViewController *)self dataSource];
+    [dataSource setTimeScope:timeScope];
 
-    if (a3)
+    if (occurrence)
     {
-      if (a3 != 1)
+      if (occurrence != 1)
       {
 LABEL_7:
-        v11 = [(GKLeaderboardScoreViewController *)self timeScopeButton];
-        [v11 setEnabled:0];
+        timeScopeButton = [(GKLeaderboardScoreViewController *)self timeScopeButton];
+        [timeScopeButton setEnabled:0];
 
         v12[0] = MEMORY[0x277D85DD0];
         v12[1] = 3221225472;
         v12[2] = __61__GKLeaderboardScoreViewController_setLeaderboardOccurrence___block_invoke;
         v12[3] = &unk_27966D108;
         v12[4] = self;
-        v12[5] = a3;
-        [(GKLeaderboardScoreViewController *)self loadLeaderboardForOccurrence:a3 handler:v12];
+        v12[5] = occurrence;
+        [(GKLeaderboardScoreViewController *)self loadLeaderboardForOccurrence:occurrence handler:v12];
         return;
       }
 
@@ -2284,8 +2284,8 @@ LABEL_7:
       v9 = MEMORY[0x277D0BAE8];
     }
 
-    v10 = [MEMORY[0x277D0C1F8] reporter];
-    [v10 reportEvent:*MEMORY[0x277D0BE70] type:*v9];
+    reporter = [MEMORY[0x277D0C1F8] reporter];
+    [reporter reportEvent:*MEMORY[0x277D0BE70] type:*v9];
 
     goto LABEL_7;
   }
@@ -2322,31 +2322,31 @@ void __61__GKLeaderboardScoreViewController_setLeaderboardOccurrence___block_inv
   [v13 setEnabled:1];
 }
 
-- (void)loadLeaderboardForOccurrence:(int64_t)a3 handler:(id)a4
+- (void)loadLeaderboardForOccurrence:(int64_t)occurrence handler:(id)handler
 {
   v24[1] = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  if (a3 != 1)
+  handlerCopy = handler;
+  if (occurrence != 1)
   {
-    v9 = [(GKLeaderboardScoreViewController *)self currentOccurrence];
+    currentOccurrence = [(GKLeaderboardScoreViewController *)self currentOccurrence];
 
-    if (v9)
+    if (currentOccurrence)
     {
-      v8 = [(GKLeaderboardScoreViewController *)self currentOccurrence];
+      currentOccurrence2 = [(GKLeaderboardScoreViewController *)self currentOccurrence];
       goto LABEL_6;
     }
 
     v16 = MEMORY[0x277D0C0A0];
-    v17 = [(GKLeaderboardScoreViewController *)self leaderboard];
-    v18 = [v17 baseLeaderboardID];
-    v24[0] = v18;
+    leaderboard = [(GKLeaderboardScoreViewController *)self leaderboard];
+    baseLeaderboardID = [leaderboard baseLeaderboardID];
+    v24[0] = baseLeaderboardID;
     v19 = [MEMORY[0x277CBEA60] arrayWithObjects:v24 count:1];
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __73__GKLeaderboardScoreViewController_loadLeaderboardForOccurrence_handler___block_invoke_2;
     v20[3] = &unk_279669DF8;
     v20[4] = self;
-    v21 = v6;
+    v21 = handlerCopy;
     [v16 loadLeaderboardsWithIDs:v19 completionHandler:v20];
 
     v15 = v21;
@@ -2355,30 +2355,30 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v7 = [(GKLeaderboardScoreViewController *)self previousOccurrence];
+  previousOccurrence = [(GKLeaderboardScoreViewController *)self previousOccurrence];
 
-  if (!v7)
+  if (!previousOccurrence)
   {
-    v11 = [(GKLeaderboardScoreViewController *)self leaderboard];
-    v12 = [(GKLeaderboardScoreViewController *)self dataSource];
-    v13 = [v12 gameRecord];
-    v14 = [v13 gameDescriptor];
+    leaderboard2 = [(GKLeaderboardScoreViewController *)self leaderboard];
+    dataSource = [(GKLeaderboardScoreViewController *)self dataSource];
+    gameRecord = [dataSource gameRecord];
+    gameDescriptor = [gameRecord gameDescriptor];
     v22[0] = MEMORY[0x277D85DD0];
     v22[1] = 3221225472;
     v22[2] = __73__GKLeaderboardScoreViewController_loadLeaderboardForOccurrence_handler___block_invoke;
     v22[3] = &unk_27966D130;
     v22[4] = self;
-    v23 = v6;
-    [v11 loadPreviousOccurrenceWithGameDescriptor:v14 completionHandler:v22];
+    v23 = handlerCopy;
+    [leaderboard2 loadPreviousOccurrenceWithGameDescriptor:gameDescriptor completionHandler:v22];
 
     v15 = v23;
     goto LABEL_9;
   }
 
-  v8 = [(GKLeaderboardScoreViewController *)self previousOccurrence];
+  currentOccurrence2 = [(GKLeaderboardScoreViewController *)self previousOccurrence];
 LABEL_6:
-  v10 = v8;
-  (*(v6 + 2))(v6, v8, 0);
+  v10 = currentOccurrence2;
+  (*(handlerCopy + 2))(handlerCopy, currentOccurrence2, 0);
 
 LABEL_10:
 }
@@ -2455,13 +2455,13 @@ uint64_t __51__GKLeaderboardScoreViewController_setNeedsRefresh__block_invoke_2(
 
 - (BOOL)isLoading
 {
-  v2 = [(GKLoadingViewController *)self loadingState];
+  loadingState = [(GKLoadingViewController *)self loadingState];
   v3 = 1;
-  if (v2)
+  if (loadingState)
   {
-    if (v2 != @"Initial" && v2 != @"LoadingState")
+    if (loadingState != @"Initial" && loadingState != @"LoadingState")
     {
-      v3 = v2 == @"RefreshingState";
+      v3 = loadingState == @"RefreshingState";
     }
   }
 
@@ -2476,44 +2476,44 @@ uint64_t __51__GKLeaderboardScoreViewController_setNeedsRefresh__block_invoke_2(
   [(GKLeaderboardScoreViewController *)self loadData];
 }
 
-- (void)donePressed:(id)a3
+- (void)donePressed:(id)pressed
 {
-  v3 = [(UIViewController *)self _gkExtensionViewController];
-  [v3 finish];
+  _gkExtensionViewController = [(UIViewController *)self _gkExtensionViewController];
+  [_gkExtensionViewController finish];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v45 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changeCopy = change;
   v43.receiver = self;
   v43.super_class = GKLeaderboardScoreViewController;
-  [(GKLeaderboardScoreViewController *)&v43 traitCollectionDidChange:v4];
-  v5 = [(GKLeaderboardScoreViewController *)self traitCollection];
-  v6 = [v5 preferredContentSizeCategory];
+  [(GKLeaderboardScoreViewController *)&v43 traitCollectionDidChange:changeCopy];
+  traitCollection = [(GKLeaderboardScoreViewController *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
 
-  LODWORD(v5) = UIContentSizeCategoryIsAccessibilityCategory(v6);
-  v7 = [v4 preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v7);
+  LODWORD(traitCollection) = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
+  preferredContentSizeCategory2 = [changeCopy preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory2);
 
-  if (v5 == IsAccessibilityCategory)
+  if (traitCollection == IsAccessibilityCategory)
   {
-    v33 = [v4 preferredContentSizeCategory];
+    preferredContentSizeCategory3 = [changeCopy preferredContentSizeCategory];
 
     [(GKLeaderboardScoreViewController *)self enableDisableCollectionViewScrolling];
-    v34 = [(GKLeaderboardScoreViewController *)self collectionView];
-    v35 = v34;
-    if (v33 == v6)
+    collectionView = [(GKLeaderboardScoreViewController *)self collectionView];
+    v35 = collectionView;
+    if (preferredContentSizeCategory3 == preferredContentSizeCategory)
     {
-      v38 = [v34 collectionViewLayout];
-      [v38 invalidateLayout];
+      collectionViewLayout = [collectionView collectionViewLayout];
+      [collectionViewLayout invalidateLayout];
 
       [(GKLeaderboardScoreViewController *)self updateHighlights];
     }
 
     else
     {
-      [v34 reloadData];
+      [collectionView reloadData];
 
       [(GKLeaderboardScoreViewController *)self updateContentSize];
     }
@@ -2521,32 +2521,32 @@ uint64_t __51__GKLeaderboardScoreViewController_setNeedsRefresh__block_invoke_2(
 
   else
   {
-    v9 = [(GKLeaderboardScoreViewController *)self playerScopeControl];
-    [v9 removeFromSuperview];
+    playerScopeControl = [(GKLeaderboardScoreViewController *)self playerScopeControl];
+    [playerScopeControl removeFromSuperview];
 
-    v10 = [(GKLeaderboardScoreViewController *)self navigationItem];
-    v11 = [v10 _bottomPalette];
-    v12 = [v11 contentView];
-    [v12 removeFromSuperview];
+    navigationItem = [(GKLeaderboardScoreViewController *)self navigationItem];
+    _bottomPalette = [navigationItem _bottomPalette];
+    contentView = [_bottomPalette contentView];
+    [contentView removeFromSuperview];
 
-    v13 = [(GKLeaderboardScoreViewController *)self navigationItem];
-    v14 = [v13 _bottomPalette];
-    [v14 setPreferredHeight:0.0];
+    navigationItem2 = [(GKLeaderboardScoreViewController *)self navigationItem];
+    _bottomPalette2 = [navigationItem2 _bottomPalette];
+    [_bottomPalette2 setPreferredHeight:0.0];
 
-    v15 = [(GKLeaderboardScoreViewController *)self navigationItem];
-    v16 = [v15 _bottomPalette];
-    [v16 removeFromSuperview];
+    navigationItem3 = [(GKLeaderboardScoreViewController *)self navigationItem];
+    _bottomPalette3 = [navigationItem3 _bottomPalette];
+    [_bottomPalette3 removeFromSuperview];
 
     v17 = [GKLeaderboardScoreViewController alloc];
-    v18 = [(GKLeaderboardScoreViewController *)self dataSource];
-    v19 = [v18 gameRecord];
-    v20 = [(GKLeaderboardScoreViewController *)self leaderboard];
-    v21 = [(GKLeaderboardScoreViewController *)v17 initWithGameRecord:v19 leaderboard:v20];
+    dataSource = [(GKLeaderboardScoreViewController *)self dataSource];
+    gameRecord = [dataSource gameRecord];
+    leaderboard = [(GKLeaderboardScoreViewController *)self leaderboard];
+    v21 = [(GKLeaderboardScoreViewController *)v17 initWithGameRecord:gameRecord leaderboard:leaderboard];
 
     v22 = MEMORY[0x277CBEB18];
-    v23 = [(GKLeaderboardScoreViewController *)self navigationController];
-    v24 = [v23 viewControllers];
-    v25 = [v22 arrayWithArray:v24];
+    navigationController = [(GKLeaderboardScoreViewController *)self navigationController];
+    viewControllers = [navigationController viewControllers];
+    v25 = [v22 arrayWithArray:viewControllers];
 
     v41 = 0u;
     v42 = 0u;
@@ -2600,22 +2600,22 @@ uint64_t __51__GKLeaderboardScoreViewController_setNeedsRefresh__block_invoke_2(
 LABEL_15:
 
     [v26 replaceObjectAtIndex:v29 withObject:{v21, v39}];
-    v36 = [(GKLeaderboardScoreViewController *)self navigationController];
-    [v36 setViewControllers:v26];
+    navigationController2 = [(GKLeaderboardScoreViewController *)self navigationController];
+    [navigationController2 setViewControllers:v26];
 
-    v37 = [(GKLeaderboardScoreViewController *)self view];
-    [v37 removeFromSuperview];
+    view = [(GKLeaderboardScoreViewController *)self view];
+    [view removeFromSuperview];
   }
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v9.receiver = self;
   v9.super_class = GKLeaderboardScoreViewController;
-  v7 = a4;
-  [(GKLeaderboardScoreViewController *)&v9 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  coordinatorCopy = coordinator;
+  [(GKLeaderboardScoreViewController *)&v9 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __87__GKLeaderboardScoreViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke;
@@ -2623,20 +2623,20 @@ LABEL_15:
   v8[4] = self;
   *&v8[5] = width;
   *&v8[6] = height;
-  [v7 animateAlongsideTransition:v8 completion:0];
+  [coordinatorCopy animateAlongsideTransition:v8 completion:0];
 }
 
 - (void)clearSelection
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [(GKLeaderboardScoreViewController *)self collectionView];
-  v4 = [v3 indexPathsForSelectedItems];
+  collectionView = [(GKLeaderboardScoreViewController *)self collectionView];
+  indexPathsForSelectedItems = [collectionView indexPathsForSelectedItems];
 
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = v4;
+  v5 = indexPathsForSelectedItems;
   v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
@@ -2653,8 +2653,8 @@ LABEL_15:
         }
 
         v10 = *(*(&v12 + 1) + 8 * v9);
-        v11 = [(GKLeaderboardScoreViewController *)self collectionView];
-        [v11 deselectItemAtIndexPath:v10 animated:1];
+        collectionView2 = [(GKLeaderboardScoreViewController *)self collectionView];
+        [collectionView2 deselectItemAtIndexPath:v10 animated:1];
 
         ++v9;
       }
@@ -2670,15 +2670,15 @@ LABEL_15:
 - (void)collectionViewDidScroll
 {
   v17[2] = *MEMORY[0x277D85DE8];
-  v3 = [(GKLeaderboardScoreViewController *)self collectionView];
-  v4 = [v3 collectionViewLayout];
-  [v4 collectionViewContentSize];
+  collectionView = [(GKLeaderboardScoreViewController *)self collectionView];
+  collectionViewLayout = [collectionView collectionViewLayout];
+  [collectionViewLayout collectionViewContentSize];
   v6 = v5;
-  v7 = [(GKLeaderboardScoreViewController *)self collectionView];
-  [v7 contentOffset];
+  collectionView2 = [(GKLeaderboardScoreViewController *)self collectionView];
+  [collectionView2 contentOffset];
   v9 = v6 - v8;
-  v10 = [(GKLeaderboardScoreViewController *)self collectionView];
-  [v10 frame];
+  collectionView3 = [(GKLeaderboardScoreViewController *)self collectionView];
+  [collectionView3 frame];
   v12 = v9 - v11;
 
   v13 = v12 / 20.0;
@@ -2691,32 +2691,32 @@ LABEL_15:
   v17[0] = v14;
   v17[1] = &unk_2861896C8;
   v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:2];
-  v16 = [(GKLeaderboardScoreViewController *)self collectionViewFadeGradient];
-  [v16 setLocations:v15];
+  collectionViewFadeGradient = [(GKLeaderboardScoreViewController *)self collectionViewFadeGradient];
+  [collectionViewFadeGradient setLocations:v15];
 }
 
-- (void)didLoadScoresWithLocalPlayerEntry:(id)a3 topPlayer:(id)a4 playerAbove:(id)a5 playerBelow:(id)a6 totalEntries:(int64_t)a7
+- (void)didLoadScoresWithLocalPlayerEntry:(id)entry topPlayer:(id)player playerAbove:(id)above playerBelow:(id)below totalEntries:(int64_t)entries
 {
-  v12 = a6;
-  v13 = a5;
-  v14 = a4;
-  [(GKLeaderboardScoreViewController *)self setLocalPlayerEntry:a3];
-  [(GKLeaderboardScoreViewController *)self setTopPlayerEntry:v14];
+  belowCopy = below;
+  aboveCopy = above;
+  playerCopy = player;
+  [(GKLeaderboardScoreViewController *)self setLocalPlayerEntry:entry];
+  [(GKLeaderboardScoreViewController *)self setTopPlayerEntry:playerCopy];
 
-  [(GKLeaderboardScoreViewController *)self setPlayerAboveEntry:v13];
-  [(GKLeaderboardScoreViewController *)self setPlayerBelowEntry:v12];
+  [(GKLeaderboardScoreViewController *)self setPlayerAboveEntry:aboveCopy];
+  [(GKLeaderboardScoreViewController *)self setPlayerBelowEntry:belowCopy];
 
-  [(GKLeaderboardScoreViewController *)self setTotalEntries:a7];
+  [(GKLeaderboardScoreViewController *)self setTotalEntries:entries];
   [(GKLeaderboardScoreViewController *)self updateHighlights];
 
   [(GKLeaderboardScoreViewController *)self updateContentSize];
 }
 
-- (void)didLoadAdditionalScoresWithUpdatedTotalEntries:(unint64_t)a3
+- (void)didLoadAdditionalScoresWithUpdatedTotalEntries:(unint64_t)entries
 {
-  if ([(GKLeaderboardScoreViewController *)self totalEntries]!= a3)
+  if ([(GKLeaderboardScoreViewController *)self totalEntries]!= entries)
   {
-    [(GKLeaderboardScoreViewController *)self setTotalEntries:a3];
+    [(GKLeaderboardScoreViewController *)self setTotalEntries:entries];
     [(GKLeaderboardScoreViewController *)self updateHighlights];
   }
 
@@ -2725,9 +2725,9 @@ LABEL_15:
 
 - (void)updateContentSize
 {
-  v3 = [(GKLeaderboardScoreViewController *)self collectionView];
-  v4 = [v3 collectionViewLayout];
-  [v4 collectionViewContentSize];
+  collectionView = [(GKLeaderboardScoreViewController *)self collectionView];
+  collectionViewLayout = [collectionView collectionViewLayout];
+  [collectionViewLayout collectionViewContentSize];
   v6 = v5;
 
   if (v6 <= 0.0)
@@ -2735,25 +2735,25 @@ LABEL_15:
     v6 = 300.0;
   }
 
-  v7 = [(GKLeaderboardScoreViewController *)self timeScopeContainer];
-  [v7 bounds];
+  timeScopeContainer = [(GKLeaderboardScoreViewController *)self timeScopeContainer];
+  [timeScopeContainer bounds];
   v9 = v6 + v8;
-  v10 = [(GKLeaderboardScoreViewController *)self collectionContainerHeight];
-  [v10 setConstant:v9];
+  collectionContainerHeight = [(GKLeaderboardScoreViewController *)self collectionContainerHeight];
+  [collectionContainerHeight setConstant:v9];
 
   [(GKLeaderboardScoreViewController *)self collectionViewDidScroll];
 }
 
-- (void)shareScore:(id)a3 fromLeaderboard:(id)a4 sendingView:(id)a5 relativeRect:(CGRect)a6
+- (void)shareScore:(id)score fromLeaderboard:(id)leaderboard sendingView:(id)view relativeRect:(CGRect)rect
 {
   v45[2] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [v9 player];
-  v13 = [v12 isLocalPlayer];
+  scoreCopy = score;
+  leaderboardCopy = leaderboard;
+  viewCopy = view;
+  player = [scoreCopy player];
+  isLocalPlayer = [player isLocalPlayer];
 
-  if (v13)
+  if (isLocalPlayer)
   {
     v14 = MEMORY[0x277D0BA50];
     v15 = MEMORY[0x277D0BA68];
@@ -2761,10 +2761,10 @@ LABEL_15:
 
   else
   {
-    v16 = [v9 player];
-    v17 = [v16 isFamiliarFriend];
+    player2 = [scoreCopy player];
+    isFamiliarFriend = [player2 isFamiliarFriend];
 
-    if (!v17)
+    if (!isFamiliarFriend)
     {
       goto LABEL_6;
     }
@@ -2773,75 +2773,75 @@ LABEL_15:
     v15 = MEMORY[0x277D0BA60];
   }
 
-  v18 = [MEMORY[0x277D0C1F8] reporter];
+  reporter = [MEMORY[0x277D0C1F8] reporter];
   v19 = *MEMORY[0x277D0BE28];
-  [v18 reportEvent:*MEMORY[0x277D0BE28] type:*v15];
+  [reporter reportEvent:*MEMORY[0x277D0BE28] type:*v15];
 
-  v20 = [MEMORY[0x277D0C1F8] reporter];
+  reporter2 = [MEMORY[0x277D0C1F8] reporter];
   v21 = *v14;
-  v22 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v9, "rank")}];
-  [v20 reportEvent:v19 type:v21 scoreRank:v22];
+  v22 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(scoreCopy, "rank")}];
+  [reporter2 reportEvent:v19 type:v21 scoreRank:v22];
 
 LABEL_6:
-  v23 = [MEMORY[0x277D0C1D8] shared];
-  v24 = [v23 shouldAllowGameProgressSharing];
+  mEMORY[0x277D0C1D8] = [MEMORY[0x277D0C1D8] shared];
+  shouldAllowGameProgressSharing = [mEMORY[0x277D0C1D8] shouldAllowGameProgressSharing];
 
-  if (v24)
+  if (shouldAllowGameProgressSharing)
   {
-    v25 = [v9 sharingScoreMessageFromLeaderboard:v10];
+    v25 = [scoreCopy sharingScoreMessageFromLeaderboard:leaderboardCopy];
     v45[0] = v25;
-    v26 = [v9 sharingScoreURL];
-    v45[1] = v26;
+    sharingScoreURL = [scoreCopy sharingScoreURL];
+    v45[1] = sharingScoreURL;
     v27 = [MEMORY[0x277CBEA60] arrayWithObjects:v45 count:2];
-    v28 = [(GKLeaderboardScoreViewController *)self _gkPresentActivityViewControllerForActivityItems:v27 fromView:v11 withCompletionHandler:0];
+    v28 = [(GKLeaderboardScoreViewController *)self _gkPresentActivityViewControllerForActivityItems:v27 fromView:viewCopy withCompletionHandler:0];
   }
 
   else
   {
     v25 = GKGameCenterUIFrameworkBundle();
-    v26 = GKGetLocalizedStringFromTableInBundle();
+    sharingScoreURL = GKGetLocalizedStringFromTableInBundle();
     v27 = GKGameCenterUIFrameworkBundle();
     v29 = GKGetLocalizedStringFromTableInBundle();
     v30 = GKGameCenterUIFrameworkBundle();
     v31 = GKGetLocalizedStringFromTableInBundle();
-    v32 = [(GKLeaderboardScoreViewController *)self _gkPresentAlertWithTitle:v26 message:v29 buttonTitle:v31 dismissHandler:0];
+    v32 = [(GKLeaderboardScoreViewController *)self _gkPresentAlertWithTitle:sharingScoreURL message:v29 buttonTitle:v31 dismissHandler:0];
   }
 
-  v33 = [v9 player];
-  v34 = [v33 isLocalPlayer];
+  player3 = [scoreCopy player];
+  isLocalPlayer2 = [player3 isLocalPlayer];
   v35 = @"friendPlayer";
-  if (v34)
+  if (isLocalPlayer2)
   {
     v35 = @"localPlayer";
   }
 
   v36 = v35;
 
-  v37 = [MEMORY[0x277D0BFA8] reporter];
+  reporter3 = [MEMORY[0x277D0BFA8] reporter];
   v43 = @"location";
   v41[0] = @"scorer";
   v41[1] = @"scoreRank";
   v42[0] = v36;
-  v38 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v9, "rank")}];
+  v38 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(scoreCopy, "rank")}];
   v42[1] = v38;
   v39 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v42 forKeys:v41 count:2];
   v44 = v39;
   v40 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v44 forKeys:&v43 count:1];
 
-  [v37 recordClickWithAction:@"share" targetId:@"leaderboardEntry" targetType:@"collectionViewCell" pageId:@"leaderboardScores" pageType:@"leaderboard" additionalFields:v40];
+  [reporter3 recordClickWithAction:@"share" targetId:@"leaderboardEntry" targetType:@"collectionViewCell" pageId:@"leaderboardScores" pageType:@"leaderboard" additionalFields:v40];
 }
 
-- (void)sendFriendInvitationViaMessagesTo:(id)a3 withPresentingViewController:(id)a4
+- (void)sendFriendInvitationViaMessagesTo:(id)to withPresentingViewController:(id)controller
 {
   v15[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  toCopy = to;
+  controllerCopy = controller;
   if (*MEMORY[0x277D0C258])
   {
-    if (v6)
+    if (toCopy)
     {
-      v4 = [v6 contact];
-      v14 = v4;
+      contact = [toCopy contact];
+      v14 = contact;
       v8 = [MEMORY[0x277CBEA60] arrayWithObjects:&v14 count:1];
     }
 
@@ -2855,9 +2855,9 @@ LABEL_6:
     v10[2] = __99__GKLeaderboardScoreViewController_sendFriendInvitationViaMessagesTo_withPresentingViewController___block_invoke_2;
     v10[3] = &unk_27966AD50;
     v9 = &v11;
-    v11 = v7;
+    v11 = controllerCopy;
     [_TtC12GameCenterUI24FriendRequestFacilitator makeViewControllerWithRecipients:v8 chatGUID:0 completionHandler:v10];
-    if (!v6)
+    if (!toCopy)
     {
       goto LABEL_12;
     }
@@ -2867,10 +2867,10 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if (v6)
+  if (toCopy)
   {
-    v4 = [v6 contact];
-    v15[0] = v4;
+    contact = [toCopy contact];
+    v15[0] = contact;
     v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:1];
   }
 
@@ -2884,9 +2884,9 @@ LABEL_11:
   v12[2] = __99__GKLeaderboardScoreViewController_sendFriendInvitationViaMessagesTo_withPresentingViewController___block_invoke;
   v12[3] = &unk_27966C2B0;
   v9 = &v13;
-  v13 = v7;
+  v13 = controllerCopy;
   [_TtC12GameCenterUI24FriendRequestFacilitator makeViewControllerForRemoteInviteWithRecipients:v8 chatGUID:0 resultHandler:v12];
-  if (v6)
+  if (toCopy)
   {
     goto LABEL_11;
   }
@@ -2914,22 +2914,22 @@ void __99__GKLeaderboardScoreViewController_sendFriendInvitationViaMessagesTo_wi
   }
 }
 
-- (void)challengeWithScore:(id)a3
+- (void)challengeWithScore:(id)score
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(GKLeaderboardScoreViewController *)self leaderboard];
-  v6 = [MEMORY[0x277D0C138] local];
-  v11[0] = v6;
+  scoreCopy = score;
+  leaderboard = [(GKLeaderboardScoreViewController *)self leaderboard];
+  local = [MEMORY[0x277D0C138] local];
+  v11[0] = local;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:1];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __55__GKLeaderboardScoreViewController_challengeWithScore___block_invoke;
   v9[3] = &unk_27966D158;
   v9[4] = self;
-  v10 = v4;
-  v8 = v4;
-  [v5 loadEntriesForPlayers:v7 timeScope:2 completionHandler:v9];
+  v10 = scoreCopy;
+  v8 = scoreCopy;
+  [leaderboard loadEntriesForPlayers:v7 timeScope:2 completionHandler:v9];
 }
 
 void __55__GKLeaderboardScoreViewController_challengeWithScore___block_invoke(uint64_t a1, void *a2, void *a3, void *a4)
@@ -3140,44 +3140,44 @@ void __55__GKLeaderboardScoreViewController_challengeWithScore___block_invoke_2(
   }
 }
 
-- (void)shareWithScore:(id)a3 fromView:(id)a4
+- (void)shareWithScore:(id)score fromView:(id)view
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(GKLeaderboardScoreViewController *)self leaderboard];
-  [(GKLeaderboardScoreViewController *)self shareScore:v7 fromLeaderboard:v8 sendingView:v6 relativeRect:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
+  viewCopy = view;
+  scoreCopy = score;
+  leaderboard = [(GKLeaderboardScoreViewController *)self leaderboard];
+  [(GKLeaderboardScoreViewController *)self shareScore:scoreCopy fromLeaderboard:leaderboard sendingView:viewCopy relativeRect:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v4 = a3;
-  v5 = [(GKLeaderboardScoreViewController *)self mainScrollView];
+  scrollCopy = scroll;
+  mainScrollView = [(GKLeaderboardScoreViewController *)self mainScrollView];
 
-  if (v5 == v4)
+  if (mainScrollView == scrollCopy)
   {
     [(GKLeaderboardScoreViewController *)self enableDisableCollectionViewScrolling];
-    v15 = [(GKLeaderboardScoreViewController *)self collectionGradientView];
-    [v15 bounds];
+    collectionGradientView = [(GKLeaderboardScoreViewController *)self collectionGradientView];
+    [collectionGradientView bounds];
     v7 = v6;
     v9 = v8;
     v11 = v10;
     v13 = v12;
-    v14 = [(GKLeaderboardScoreViewController *)self collectionViewFadeGradient];
-    [v14 setFrame:{v7, v9, v11, v13}];
+    collectionViewFadeGradient = [(GKLeaderboardScoreViewController *)self collectionViewFadeGradient];
+    [collectionViewFadeGradient setFrame:{v7, v9, v11, v13}];
   }
 }
 
 - (void)enableDisableCollectionViewScrolling
 {
-  v3 = [(GKLeaderboardScoreViewController *)self traitCollection];
-  category = [v3 preferredContentSizeCategory];
+  traitCollection = [(GKLeaderboardScoreViewController *)self traitCollection];
+  category = [traitCollection preferredContentSizeCategory];
 
   IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(category);
-  v5 = [(GKLeaderboardScoreViewController *)self traitCollection];
-  if ([v5 horizontalSizeClass] == 1)
+  traitCollection2 = [(GKLeaderboardScoreViewController *)self traitCollection];
+  if ([traitCollection2 horizontalSizeClass] == 1)
   {
-    v6 = [(GKLeaderboardScoreViewController *)self traitCollection];
-    v7 = [v6 verticalSizeClass] == 2;
+    traitCollection3 = [(GKLeaderboardScoreViewController *)self traitCollection];
+    v7 = [traitCollection3 verticalSizeClass] == 2;
   }
 
   else
@@ -3185,24 +3185,24 @@ void __55__GKLeaderboardScoreViewController_challengeWithScore___block_invoke_2(
     v7 = 0;
   }
 
-  v8 = [(GKLeaderboardScoreViewController *)self traitCollection];
-  v9 = [v8 verticalSizeClass];
+  traitCollection4 = [(GKLeaderboardScoreViewController *)self traitCollection];
+  verticalSizeClass = [traitCollection4 verticalSizeClass];
 
   if (!IsAccessibilityCategory)
   {
     if (GKIsXRUIIdiomShouldUsePadUI())
     {
-      v14 = [(GKLeaderboardScoreViewController *)self mainScrollView];
-      [v14 setScrollEnabled:0];
+      mainScrollView = [(GKLeaderboardScoreViewController *)self mainScrollView];
+      [mainScrollView setScrollEnabled:0];
 LABEL_46:
 
-      v18 = [(GKLeaderboardScoreViewController *)self collectionView];
-      [v18 setScrollEnabled:1];
+      collectionView = [(GKLeaderboardScoreViewController *)self collectionView];
+      [collectionView setScrollEnabled:1];
       goto LABEL_47;
     }
 
     v15 = MEMORY[0x277D76818];
-    if (v9 == 1)
+    if (verticalSizeClass == 1)
     {
       if ([(NSString *)category isEqualToString:*MEMORY[0x277D76820]])
       {
@@ -3219,11 +3219,11 @@ LABEL_46:
         v16 = 162.0;
       }
 
-      v27 = [(GKLeaderboardScoreViewController *)self highlightViewWidthConstraint];
-      [v27 setConstant:v16];
+      highlightViewWidthConstraint = [(GKLeaderboardScoreViewController *)self highlightViewWidthConstraint];
+      [highlightViewWidthConstraint setConstant:v16];
 
-      v28 = [(GKLeaderboardScoreViewController *)self view];
-      [v28 bounds];
+      view = [(GKLeaderboardScoreViewController *)self view];
+      [view bounds];
       v30 = v29;
 
       v31 = v30 > 320.0;
@@ -3247,20 +3247,20 @@ LABEL_46:
         v33 = 20.0;
       }
 
-      v34 = [(GKLeaderboardScoreViewController *)self highlightViewLandscapeTopConstraint];
-      [v34 setConstant:v32];
+      highlightViewLandscapeTopConstraint = [(GKLeaderboardScoreViewController *)self highlightViewLandscapeTopConstraint];
+      [highlightViewLandscapeTopConstraint setConstant:v32];
 
-      v35 = [(GKLeaderboardScoreViewController *)self collectionGradientViewLandscapeTopConstraint];
-      [v35 setConstant:v33];
+      collectionGradientViewLandscapeTopConstraint = [(GKLeaderboardScoreViewController *)self collectionGradientViewLandscapeTopConstraint];
+      [collectionGradientViewLandscapeTopConstraint setConstant:v33];
     }
 
     v36 = [(NSString *)category isEqualToString:*v15];
-    v37 = [MEMORY[0x277D75418] currentDevice];
-    v38 = [v37 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
     if (v36)
     {
-      if (v38 != 1)
+      if (userInterfaceIdiom != 1)
       {
         v45 = GKIsXRUIIdiom() == 0;
         v46 = 145.0;
@@ -3273,7 +3273,7 @@ LABEL_46:
 
     else
     {
-      if (v38 != 1)
+      if (userInterfaceIdiom != 1)
       {
         v45 = GKIsXRUIIdiom() == 0;
         v46 = 125.0;
@@ -3297,25 +3297,25 @@ LABEL_42:
 
     v40 = *&v39;
 LABEL_45:
-    v14 = [(GKLeaderboardScoreViewController *)self highlightViewHeightConstraint];
-    [v14 setConstant:v40];
+    mainScrollView = [(GKLeaderboardScoreViewController *)self highlightViewHeightConstraint];
+    [mainScrollView setConstant:v40];
     goto LABEL_46;
   }
 
-  v10 = [(GKLeaderboardScoreViewController *)self highlightViewHeightConstraint];
-  [v10 setActive:1];
+  highlightViewHeightConstraint = [(GKLeaderboardScoreViewController *)self highlightViewHeightConstraint];
+  [highlightViewHeightConstraint setActive:1];
 
   if ([(NSString *)category isEqualToString:*MEMORY[0x277D767E8]])
   {
-    v11 = [(GKLeaderboardScoreViewController *)self highlightViewHeightConstraint];
-    v12 = v11;
+    highlightViewHeightConstraint2 = [(GKLeaderboardScoreViewController *)self highlightViewHeightConstraint];
+    v12 = highlightViewHeightConstraint2;
     v13 = 544.0;
   }
 
   else if ([(NSString *)category isEqualToString:*MEMORY[0x277D767F0]])
   {
-    v11 = [(GKLeaderboardScoreViewController *)self highlightViewHeightConstraint];
-    v12 = v11;
+    highlightViewHeightConstraint2 = [(GKLeaderboardScoreViewController *)self highlightViewHeightConstraint];
+    v12 = highlightViewHeightConstraint2;
     v13 = 494.0;
   }
 
@@ -3324,8 +3324,8 @@ LABEL_45:
     if (![(NSString *)category isEqualToString:*MEMORY[0x277D767F8]])
     {
       v41 = [(NSString *)category isEqualToString:*MEMORY[0x277D76800]];
-      v42 = [(GKLeaderboardScoreViewController *)self highlightViewHeightConstraint];
-      v12 = v42;
+      highlightViewHeightConstraint3 = [(GKLeaderboardScoreViewController *)self highlightViewHeightConstraint];
+      v12 = highlightViewHeightConstraint3;
       if (v41)
       {
         v43 = 244.0;
@@ -3343,55 +3343,55 @@ LABEL_45:
         v43 = v44;
       }
 
-      [v42 setConstant:v43];
+      [highlightViewHeightConstraint3 setConstant:v43];
       goto LABEL_17;
     }
 
-    v11 = [(GKLeaderboardScoreViewController *)self highlightViewHeightConstraint];
-    v12 = v11;
+    highlightViewHeightConstraint2 = [(GKLeaderboardScoreViewController *)self highlightViewHeightConstraint];
+    v12 = highlightViewHeightConstraint2;
     v13 = 444.0;
   }
 
-  [v11 setConstant:v13];
+  [highlightViewHeightConstraint2 setConstant:v13];
   v7 = 1;
 LABEL_17:
 
-  v17 = [(GKLeaderboardScoreViewController *)self highlightView];
-  [v17 setAxis:v7];
+  highlightView = [(GKLeaderboardScoreViewController *)self highlightView];
+  [highlightView setAxis:v7];
 
-  v18 = [(GKLeaderboardScoreViewController *)self mainScrollView];
-  [v18 contentSize];
+  collectionView = [(GKLeaderboardScoreViewController *)self mainScrollView];
+  [collectionView contentSize];
   v25 = 0;
   if (v19 > 0.0)
   {
-    [v18 contentOffset];
+    [collectionView contentOffset];
     v21 = v20;
-    [v18 contentSize];
+    [collectionView contentSize];
     v23 = v22;
-    [v18 frame];
+    [collectionView frame];
     if (v21 >= v23 - v24)
     {
       v25 = 1;
     }
   }
 
-  v26 = [(GKLeaderboardScoreViewController *)self collectionView];
-  [v26 setScrollEnabled:v25];
+  collectionView2 = [(GKLeaderboardScoreViewController *)self collectionView];
+  [collectionView2 setScrollEnabled:v25];
 
 LABEL_47:
 }
 
-- (void)refreshContentsForDataType:(unsigned int)a3 userInfo:(id)a4
+- (void)refreshContentsForDataType:(unsigned int)type userInfo:(id)info
 {
-  v6 = a4;
+  infoCopy = info;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __72__GKLeaderboardScoreViewController_refreshContentsForDataType_userInfo___block_invoke;
   block[3] = &unk_27966BE50;
-  v11 = a3;
-  v9 = v6;
-  v10 = self;
-  v7 = v6;
+  typeCopy = type;
+  v9 = infoCopy;
+  selfCopy = self;
+  v7 = infoCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 

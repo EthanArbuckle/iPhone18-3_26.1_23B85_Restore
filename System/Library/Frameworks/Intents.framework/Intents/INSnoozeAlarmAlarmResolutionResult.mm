@@ -1,24 +1,24 @@
 @interface INSnoozeAlarmAlarmResolutionResult
-+ (id)unsupportedForReason:(int64_t)a3;
-- (id)_buildIntentSlotResolutionResultWithIntentSlotDescription:(id)a3;
-- (id)_initWithIntentSlotResolutionResult:(id)a3 slotDescription:(id)a4;
++ (id)unsupportedForReason:(int64_t)reason;
+- (id)_buildIntentSlotResolutionResultWithIntentSlotDescription:(id)description;
+- (id)_initWithIntentSlotResolutionResult:(id)result slotDescription:(id)description;
 @end
 
 @implementation INSnoozeAlarmAlarmResolutionResult
 
-- (id)_buildIntentSlotResolutionResultWithIntentSlotDescription:(id)a3
+- (id)_buildIntentSlotResolutionResultWithIntentSlotDescription:(id)description
 {
   v11.receiver = self;
   v11.super_class = INSnoozeAlarmAlarmResolutionResult;
-  v4 = [(INIntentResolutionResult *)&v11 _buildIntentSlotResolutionResultWithIntentSlotDescription:a3];
+  v4 = [(INIntentResolutionResult *)&v11 _buildIntentSlotResolutionResultWithIntentSlotDescription:description];
   if ([(INIntentResolutionResult *)self resolutionResultCode]== 1 && [(INIntentResolutionResult *)self unsupportedReason])
   {
-    v5 = [v4 payloadUnsupported];
-    [v5 setReason:1000];
+    payloadUnsupported = [v4 payloadUnsupported];
+    [payloadUnsupported setReason:1000];
 
-    v6 = [v4 payloadUnsupported];
-    v7 = [(INIntentResolutionResult *)self unsupportedReason];
-    if (v7 == 2)
+    payloadUnsupported2 = [v4 payloadUnsupported];
+    unsupportedReason = [(INIntentResolutionResult *)self unsupportedReason];
+    if (unsupportedReason == 2)
     {
       v8 = 1;
     }
@@ -28,7 +28,7 @@
       v8 = 0x7FFFFFFF;
     }
 
-    if (v7 == 1)
+    if (unsupportedReason == 1)
     {
       v9 = 0;
     }
@@ -38,30 +38,30 @@
       v9 = v8;
     }
 
-    [v6 setSnoozeAlarmIntentAlarmsUnsupportedReason:v9];
+    [payloadUnsupported2 setSnoozeAlarmIntentAlarmsUnsupportedReason:v9];
   }
 
   return v4;
 }
 
-- (id)_initWithIntentSlotResolutionResult:(id)a3 slotDescription:(id)a4
+- (id)_initWithIntentSlotResolutionResult:(id)result slotDescription:(id)description
 {
-  v6 = a3;
+  resultCopy = result;
   v14.receiver = self;
   v14.super_class = INSnoozeAlarmAlarmResolutionResult;
-  v7 = [(INIntentResolutionResult *)&v14 _initWithIntentSlotResolutionResult:v6 slotDescription:a4];
+  v7 = [(INIntentResolutionResult *)&v14 _initWithIntentSlotResolutionResult:resultCopy slotDescription:description];
   if (v7)
   {
-    v8 = [v6 payloadUnsupported];
-    v9 = [v8 hasSnoozeAlarmIntentAlarmsUnsupportedReason];
+    payloadUnsupported = [resultCopy payloadUnsupported];
+    hasSnoozeAlarmIntentAlarmsUnsupportedReason = [payloadUnsupported hasSnoozeAlarmIntentAlarmsUnsupportedReason];
 
-    if (v9)
+    if (hasSnoozeAlarmIntentAlarmsUnsupportedReason)
     {
-      v10 = [v6 payloadUnsupported];
-      v11 = [v10 snoozeAlarmIntentAlarmsUnsupportedReason];
-      if (v11)
+      payloadUnsupported2 = [resultCopy payloadUnsupported];
+      snoozeAlarmIntentAlarmsUnsupportedReason = [payloadUnsupported2 snoozeAlarmIntentAlarmsUnsupportedReason];
+      if (snoozeAlarmIntentAlarmsUnsupportedReason)
       {
-        v12 = 2 * (v11 == 1);
+        v12 = 2 * (snoozeAlarmIntentAlarmsUnsupportedReason == 1);
       }
 
       else
@@ -76,12 +76,12 @@
   return v7;
 }
 
-+ (id)unsupportedForReason:(int64_t)a3
++ (id)unsupportedForReason:(int64_t)reason
 {
-  v4 = [a1 unsupported];
-  [v4 setUnsupportedReason:a3];
+  unsupported = [self unsupported];
+  [unsupported setUnsupportedReason:reason];
 
-  return v4;
+  return unsupported;
 }
 
 @end

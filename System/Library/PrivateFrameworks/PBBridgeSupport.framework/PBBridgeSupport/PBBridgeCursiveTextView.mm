@@ -1,20 +1,20 @@
 @interface PBBridgeCursiveTextView
 - (CGRect)boundingBoxOfTextPath;
-- (PBBridgeCursiveTextView)initWithFrame:(CGRect)a3;
+- (PBBridgeCursiveTextView)initWithFrame:(CGRect)frame;
 - (float)duration;
 - (void)configure;
 - (void)layoutSubviews;
-- (void)loadText:(id)a3 pointSize:(double)a4 options:(id)a5;
-- (void)setTime:(double)a3;
+- (void)loadText:(id)text pointSize:(double)size options:(id)options;
+- (void)setTime:(double)time;
 @end
 
 @implementation PBBridgeCursiveTextView
 
-- (PBBridgeCursiveTextView)initWithFrame:(CGRect)a3
+- (PBBridgeCursiveTextView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = PBBridgeCursiveTextView;
-  v3 = [(PBBridgeCursiveTextView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PBBridgeCursiveTextView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -32,11 +32,11 @@
 
   [(PBBridgeCursiveTextView *)self frame];
   [(CAShapeLayer *)self->_textLayer setFrame:?];
-  v5 = [MEMORY[0x277D75348] whiteColor];
-  -[CAShapeLayer setFillColor:](self->_textLayer, "setFillColor:", [v5 CGColor]);
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  -[CAShapeLayer setFillColor:](self->_textLayer, "setFillColor:", [whiteColor CGColor]);
 
-  v6 = [(PBBridgeCursiveTextView *)self layer];
-  [v6 addSublayer:self->_textLayer];
+  layer = [(PBBridgeCursiveTextView *)self layer];
+  [layer addSublayer:self->_textLayer];
 }
 
 - (void)layoutSubviews
@@ -47,12 +47,12 @@
   [(CAShapeLayer *)textLayer setFrame:?];
 }
 
-- (void)loadText:(id)a3 pointSize:(double)a4 options:(id)a5
+- (void)loadText:(id)text pointSize:(double)size options:(id)options
 {
   v24 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = [[PBBridgeCursiveTextPath alloc] initWithURL:v8 options:v9];
+  textCopy = text;
+  optionsCopy = options;
+  v10 = [[PBBridgeCursiveTextPath alloc] initWithURL:textCopy options:optionsCopy];
   textPath = self->_textPath;
   self->_textPath = v10;
 
@@ -64,11 +64,11 @@
     if (v14)
     {
       *buf = 138412802;
-      *&buf[4] = v8;
+      *&buf[4] = textCopy;
       *&buf[12] = 2048;
-      *&buf[14] = a4;
+      *&buf[14] = size;
       *&buf[22] = 2112;
-      *&buf[24] = v9;
+      *&buf[24] = optionsCopy;
       _os_log_impl(&dword_25DE64000, v13, OS_LOG_TYPE_DEFAULT, "Loading text from url: %@ at pointSize: %f with options: %@", buf, 0x20u);
     }
 
@@ -89,8 +89,8 @@
     *&self->_textTransform.a = *buf;
     *&self->_textTransform.c = v16;
     *&self->_textTransform.tx = v23;
-    v17 = [(PBBridgeCursiveTextView *)self layer];
-    [v17 opacity];
+    layer = [(PBBridgeCursiveTextView *)self layer];
+    [layer opacity];
     v19 = v18;
 
     if (v19 < 1.0)
@@ -135,10 +135,10 @@ void __54__PBBridgeCursiveTextView_loadText_pointSize_options___block_invoke(uin
   return result;
 }
 
-- (void)setTime:(double)a3
+- (void)setTime:(double)time
 {
-  *&a3 = a3;
-  v4 = [(PBBridgeCursiveTextPath *)self->_textPath pathForTime:a3];
+  *&time = time;
+  v4 = [(PBBridgeCursiveTextPath *)self->_textPath pathForTime:time];
   v5 = MEMORY[0x25F8A5F50](v4, &self->_textTransform);
   [(CAShapeLayer *)self->_textLayer setPath:v5];
   CGPathRelease(v5);

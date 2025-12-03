@@ -1,9 +1,9 @@
 @interface BMUserFocusComputedModeEvent
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
-- (BMUserFocusComputedModeEvent)initWithMode:(id)a3 semanticModeIdentifier:(id)a4 starting:(BOOL)a5 modeUpdateReason:(unint64_t)a6 modeSemanticType:(int64_t)a7 modeUpdateSource:(int64_t)a8;
-- (BMUserFocusComputedModeEvent)initWithProto:(id)a3;
-- (BMUserFocusComputedModeEvent)initWithProtoData:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
+- (BMUserFocusComputedModeEvent)initWithMode:(id)mode semanticModeIdentifier:(id)identifier starting:(BOOL)starting modeUpdateReason:(unint64_t)reason modeSemanticType:(int64_t)type modeUpdateSource:(int64_t)source;
+- (BMUserFocusComputedModeEvent)initWithProto:(id)proto;
+- (BMUserFocusComputedModeEvent)initWithProtoData:(id)data;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (id)encodeAsProto;
 - (id)json;
@@ -14,22 +14,22 @@
 
 @implementation BMUserFocusComputedModeEvent
 
-- (BMUserFocusComputedModeEvent)initWithMode:(id)a3 semanticModeIdentifier:(id)a4 starting:(BOOL)a5 modeUpdateReason:(unint64_t)a6 modeSemanticType:(int64_t)a7 modeUpdateSource:(int64_t)a8
+- (BMUserFocusComputedModeEvent)initWithMode:(id)mode semanticModeIdentifier:(id)identifier starting:(BOOL)starting modeUpdateReason:(unint64_t)reason modeSemanticType:(int64_t)type modeUpdateSource:(int64_t)source
 {
-  v15 = a3;
-  v16 = a4;
+  modeCopy = mode;
+  identifierCopy = identifier;
   v20.receiver = self;
   v20.super_class = BMUserFocusComputedModeEvent;
   v17 = [(BMEventBase *)&v20 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_mode, a3);
-    objc_storeStrong(&v18->_semanticModeIdentifier, a4);
-    v18->_starting = a5;
-    v18->_modeUpdateReason = a6;
-    v18->_modeSemanticType = a7;
-    v18->_modeUpdateSource = a8;
+    objc_storeStrong(&v17->_mode, mode);
+    objc_storeStrong(&v18->_semanticModeIdentifier, identifier);
+    v18->_starting = starting;
+    v18->_modeUpdateReason = reason;
+    v18->_modeSemanticType = type;
+    v18->_modeUpdateSource = source;
   }
 
   return v18;
@@ -53,23 +53,23 @@
 {
   v15[6] = *MEMORY[0x1E69E9840];
   v14[0] = @"mode";
-  v3 = [(BMUserFocusComputedModeEvent *)self mode];
-  v4 = v3;
-  if (!v3)
+  mode = [(BMUserFocusComputedModeEvent *)self mode];
+  null = mode;
+  if (!mode)
   {
-    v4 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v15[0] = v4;
+  v15[0] = null;
   v14[1] = @"semanticModeIdentifier";
-  v5 = [(BMUserFocusComputedModeEvent *)self semanticModeIdentifier];
-  v6 = v5;
-  if (!v5)
+  semanticModeIdentifier = [(BMUserFocusComputedModeEvent *)self semanticModeIdentifier];
+  null2 = semanticModeIdentifier;
+  if (!semanticModeIdentifier)
   {
-    v6 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v15[1] = v6;
+  v15[1] = null2;
   v14[2] = @"starting";
   v7 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMUserFocusComputedModeEvent isStarting](self, "isStarting")}];
   v15[2] = v7;
@@ -84,11 +84,11 @@
   v15[5] = v10;
   v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:v14 count:6];
 
-  if (!v5)
+  if (!semanticModeIdentifier)
   {
   }
 
-  if (!v3)
+  if (!mode)
   {
   }
 
@@ -100,9 +100,9 @@
 - (id)json
 {
   v2 = MEMORY[0x1E696ACB0];
-  v3 = [(BMUserFocusComputedModeEvent *)self jsonDict];
+  jsonDict = [(BMUserFocusComputedModeEvent *)self jsonDict];
   v8 = 0;
-  v4 = [v2 dataWithJSONObject:v3 options:3 error:&v8];
+  v4 = [v2 dataWithJSONObject:jsonDict options:3 error:&v8];
   v5 = v8;
 
   if (v5)
@@ -117,30 +117,30 @@
   return v4;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4 == 2)
+  if (version == 2)
   {
-    v4 = BMUserFocusComputedModeEvent_v2;
+    selfCopy = BMUserFocusComputedModeEvent_v2;
   }
 
   else
   {
-    v4 = a1;
+    selfCopy = self;
   }
 
-  v5 = a3;
-  v6 = [[v4 alloc] initWithProtoData:v5];
+  dataCopy = data;
+  v6 = [[selfCopy alloc] initWithProtoData:dataCopy];
 
   return v6;
 }
 
 - (unint64_t)hash
 {
-  v3 = [(BMUserFocusComputedModeEvent *)self mode];
-  v4 = [v3 hash];
-  v5 = [(BMUserFocusComputedModeEvent *)self semanticModeIdentifier];
-  v6 = [v5 hash] ^ v4;
+  mode = [(BMUserFocusComputedModeEvent *)self mode];
+  v4 = [mode hash];
+  semanticModeIdentifier = [(BMUserFocusComputedModeEvent *)self semanticModeIdentifier];
+  v6 = [semanticModeIdentifier hash] ^ v4;
   v7 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMUserFocusComputedModeEvent isStarting](self, "isStarting")}];
   v8 = v6 ^ [v7 hash];
   v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[BMUserFocusComputedModeEvent modeUpdateReason](self, "modeUpdateReason")}];
@@ -153,16 +153,16 @@
   return v12 ^ v14;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v6;
-    v8 = [(BMUserFocusComputedModeEvent *)self mode];
-    v9 = [v7 mode];
-    if (![v8 isEqual:v9])
+    v7 = equalCopy;
+    mode = [(BMUserFocusComputedModeEvent *)self mode];
+    mode2 = [v7 mode];
+    if (![mode isEqual:mode2])
     {
       v12 = 0;
 LABEL_21:
@@ -170,12 +170,12 @@ LABEL_21:
       goto LABEL_22;
     }
 
-    v10 = [(BMUserFocusComputedModeEvent *)self semanticModeIdentifier];
-    if (v10 || ([v7 semanticModeIdentifier], (v18 = objc_claimAutoreleasedReturnValue()) != 0))
+    semanticModeIdentifier = [(BMUserFocusComputedModeEvent *)self semanticModeIdentifier];
+    if (semanticModeIdentifier || ([v7 semanticModeIdentifier], (v18 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v3 = [(BMUserFocusComputedModeEvent *)self semanticModeIdentifier];
-      v4 = [v7 semanticModeIdentifier];
-      if (![v3 isEqualToString:v4])
+      semanticModeIdentifier2 = [(BMUserFocusComputedModeEvent *)self semanticModeIdentifier];
+      semanticModeIdentifier3 = [v7 semanticModeIdentifier];
+      if (![semanticModeIdentifier2 isEqualToString:semanticModeIdentifier3])
       {
         v12 = 0;
         goto LABEL_17;
@@ -190,11 +190,11 @@ LABEL_21:
       v11 = 0;
     }
 
-    v13 = [(BMUserFocusComputedModeEvent *)self isStarting];
-    if (v13 == [v7 isStarting] && (v14 = -[BMUserFocusComputedModeEvent modeSemanticType](self, "modeSemanticType"), v14 == objc_msgSend(v7, "modeSemanticType")) && (v15 = -[BMUserFocusComputedModeEvent modeUpdateReason](self, "modeUpdateReason"), v15 == objc_msgSend(v7, "modeUpdateReason")))
+    isStarting = [(BMUserFocusComputedModeEvent *)self isStarting];
+    if (isStarting == [v7 isStarting] && (v14 = -[BMUserFocusComputedModeEvent modeSemanticType](self, "modeSemanticType"), v14 == objc_msgSend(v7, "modeSemanticType")) && (v15 = -[BMUserFocusComputedModeEvent modeUpdateReason](self, "modeUpdateReason"), v15 == objc_msgSend(v7, "modeUpdateReason")))
     {
-      v16 = [(BMUserFocusComputedModeEvent *)self modeUpdateSource];
-      v12 = v16 == [v7 modeUpdateSource];
+      modeUpdateSource = [(BMUserFocusComputedModeEvent *)self modeUpdateSource];
+      v12 = modeUpdateSource == [v7 modeUpdateSource];
       if ((v11 & 1) == 0)
       {
         goto LABEL_18;
@@ -207,7 +207,7 @@ LABEL_21:
       if (!v11)
       {
 LABEL_18:
-        if (!v10)
+        if (!semanticModeIdentifier)
         {
         }
 
@@ -228,27 +228,27 @@ LABEL_22:
 
 - (id)encodeAsProto
 {
-  v2 = [(BMUserFocusComputedModeEvent *)self proto];
-  v3 = [v2 data];
+  proto = [(BMUserFocusComputedModeEvent *)self proto];
+  data = [proto data];
 
-  return v3;
+  return data;
 }
 
-- (BMUserFocusComputedModeEvent)initWithProto:(id)a3
+- (BMUserFocusComputedModeEvent)initWithProto:(id)proto
 {
-  v4 = a3;
-  if (v4)
+  protoCopy = proto;
+  if (protoCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [v5 mode];
-      v7 = [v5 semanticModeIdentifier];
-      v8 = [v5 starting];
+      v5 = protoCopy;
+      mode = [v5 mode];
+      semanticModeIdentifier = [v5 semanticModeIdentifier];
+      starting = [v5 starting];
       updated = BMUserFocusComputedModeUpdateReasonFromReason([v5 modeUpdateReason]);
-      v10 = [v5 modeSemanticType];
-      if (v10 >= 0xA)
+      modeSemanticType = [v5 modeSemanticType];
+      if (modeSemanticType >= 0xA)
       {
         v13 = __biome_log_for_category();
         if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -261,12 +261,12 @@ LABEL_22:
 
       else
       {
-        v11 = v10 - 1;
+        v11 = modeSemanticType - 1;
       }
 
-      self = [(BMUserFocusComputedModeEvent *)self initWithMode:v6 semanticModeIdentifier:v7 starting:v8 modeUpdateReason:updated modeSemanticType:v11 modeUpdateSource:BMUserFocusComputedModeUpdateSourceFromSource([v5 modeUpdateSource])];
+      self = [(BMUserFocusComputedModeEvent *)self initWithMode:mode semanticModeIdentifier:semanticModeIdentifier starting:starting modeUpdateReason:updated modeSemanticType:v11 modeUpdateSource:BMUserFocusComputedModeUpdateSourceFromSource([v5 modeUpdateSource])];
 
-      v12 = self;
+      selfCopy = self;
     }
 
     else
@@ -277,52 +277,52 @@ LABEL_22:
         [BMUserFocusComputedModeEvent initWithProto:];
       }
 
-      v12 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v12 = 0;
+    selfCopy = 0;
   }
 
-  return v12;
+  return selfCopy;
 }
 
-- (BMUserFocusComputedModeEvent)initWithProtoData:(id)a3
+- (BMUserFocusComputedModeEvent)initWithProtoData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[BMPBUserFocusComputedModeEvent alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[BMPBUserFocusComputedModeEvent alloc] initWithData:dataCopy];
 
     self = [(BMUserFocusComputedModeEvent *)self initWithProto:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (id)proto
 {
   v3 = objc_opt_new();
-  v4 = [(BMUserFocusComputedModeEvent *)self mode];
-  [v3 setMode:v4];
+  mode = [(BMUserFocusComputedModeEvent *)self mode];
+  [v3 setMode:mode];
 
-  v5 = [(BMUserFocusComputedModeEvent *)self semanticModeIdentifier];
-  [v3 setSemanticModeIdentifier:v5];
+  semanticModeIdentifier = [(BMUserFocusComputedModeEvent *)self semanticModeIdentifier];
+  [v3 setSemanticModeIdentifier:semanticModeIdentifier];
 
   [v3 setStarting:{-[BMUserFocusComputedModeEvent isStarting](self, "isStarting")}];
-  v6 = [(BMUserFocusComputedModeEvent *)self modeUpdateReason];
-  v7 = v6;
-  if (v6 > 1)
+  modeUpdateReason = [(BMUserFocusComputedModeEvent *)self modeUpdateReason];
+  v7 = modeUpdateReason;
+  if (modeUpdateReason > 1)
   {
-    if (v6 != 2 && v6 != 3)
+    if (modeUpdateReason != 2 && modeUpdateReason != 3)
     {
       goto LABEL_22;
     }
@@ -332,7 +332,7 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  if (v6 < 2)
+  if (modeUpdateReason < 2)
   {
     goto LABEL_6;
   }
@@ -347,13 +347,13 @@ LABEL_22:
   v7 = 0xFFFFFFFFLL;
   v8 = 1;
 LABEL_7:
-  v9 = [(BMUserFocusComputedModeEvent *)self modeSemanticType];
-  v10 = v9;
-  if (v9 > 3)
+  modeSemanticType = [(BMUserFocusComputedModeEvent *)self modeSemanticType];
+  v10 = modeSemanticType;
+  if (modeSemanticType > 3)
   {
-    if (v9 <= 5)
+    if (modeSemanticType <= 5)
     {
-      if (v9 == 4)
+      if (modeSemanticType == 4)
       {
         v11 = 5;
       }
@@ -366,7 +366,7 @@ LABEL_7:
       goto LABEL_34;
     }
 
-    switch(v9)
+    switch(modeSemanticType)
     {
       case 6:
         v11 = 7;
@@ -382,14 +382,14 @@ LABEL_7:
 
   else
   {
-    if (v9 > 0)
+    if (modeSemanticType > 0)
     {
-      if (v9 == 1)
+      if (modeSemanticType == 1)
       {
         v11 = 2;
       }
 
-      else if (v9 == 2)
+      else if (modeSemanticType == 2)
       {
         v11 = 3;
       }
@@ -402,13 +402,13 @@ LABEL_7:
       goto LABEL_34;
     }
 
-    if (v9 == -1)
+    if (modeSemanticType == -1)
     {
       v11 = 0;
       goto LABEL_34;
     }
 
-    if (!v9)
+    if (!modeSemanticType)
     {
       v11 = 1;
       goto LABEL_34;
@@ -424,13 +424,13 @@ LABEL_7:
   v11 = 0xFFFFFFFFLL;
   v8 = 1;
 LABEL_34:
-  v14 = [(BMUserFocusComputedModeEvent *)self modeUpdateSource];
-  if (v14 >= 4)
+  modeUpdateSource = [(BMUserFocusComputedModeEvent *)self modeUpdateSource];
+  if (modeUpdateSource >= 4)
   {
     v16 = __biome_log_for_category();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
-      [(BMUserFocusComputedModeEvent *)v14 proto];
+      [(BMUserFocusComputedModeEvent *)modeUpdateSource proto];
     }
   }
 
@@ -438,7 +438,7 @@ LABEL_34:
   {
     [v3 setModeUpdateReason:v7];
     [v3 setModeSemanticType:v11];
-    [v3 setModeUpdateSource:v14];
+    [v3 setModeUpdateSource:modeUpdateSource];
     v15 = v3;
     goto LABEL_41;
   }

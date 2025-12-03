@@ -1,42 +1,42 @@
 @interface TSCHStyleSemanticTag
-+ (TSCHStyleSemanticTag)styleSemanticTagWithType:(int)a3 index:(unint64_t)a4;
-- (BOOL)isEqual:(id)a3;
++ (TSCHStyleSemanticTag)styleSemanticTagWithType:(int)type index:(unint64_t)index;
+- (BOOL)isEqual:(id)equal;
 - (Class)styleClass;
-- (TSCHStyleSemanticTag)initWithType:(int)a3 index:(unint64_t)a4;
+- (TSCHStyleSemanticTag)initWithType:(int)type index:(unint64_t)index;
 - (id)description;
 @end
 
 @implementation TSCHStyleSemanticTag
 
-+ (TSCHStyleSemanticTag)styleSemanticTagWithType:(int)a3 index:(unint64_t)a4
++ (TSCHStyleSemanticTag)styleSemanticTagWithType:(int)type index:(unint64_t)index
 {
-  v5 = *&a3;
+  v5 = *&type;
   v6 = objc_alloc(objc_opt_class());
-  v11 = objc_msgSend_initWithType_index_(v6, v7, v8, v9, v10, v5, a4);
+  v11 = objc_msgSend_initWithType_index_(v6, v7, v8, v9, v10, v5, index);
 
   return v11;
 }
 
-- (TSCHStyleSemanticTag)initWithType:(int)a3 index:(unint64_t)a4
+- (TSCHStyleSemanticTag)initWithType:(int)type index:(unint64_t)index
 {
   v7.receiver = self;
   v7.super_class = TSCHStyleSemanticTag;
   result = [(TSCHStyleSemanticTag *)&v7 init];
   if (result)
   {
-    result->_type = a3;
-    result->_index = a4;
+    result->_type = type;
+    result->_index = index;
   }
 
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v26.receiver = self;
   v26.super_class = TSCHStyleSemanticTag;
-  if ([(TSCHStyleSemanticTag *)&v26 isEqual:v4])
+  if ([(TSCHStyleSemanticTag *)&v26 isEqual:equalCopy])
   {
     v5 = 1;
   }

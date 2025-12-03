@@ -1,25 +1,25 @@
 @interface SUScriptFacebookRequest
-+ (id)webScriptNameForKeyName:(id)a3;
-+ (id)webScriptNameForSelector:(SEL)a3;
++ (id)webScriptNameForKeyName:(id)name;
++ (id)webScriptNameForSelector:(SEL)selector;
 + (void)initialize;
-- (BOOL)_isRequestAllowed:(id *)a3;
+- (BOOL)_isRequestAllowed:(id *)allowed;
 - (NSURL)URL;
 - (SUScriptAppleAccount)account;
-- (SUScriptFacebookRequest)initWithURL:(id)a3 requestMethod:(id)a4;
+- (SUScriptFacebookRequest)initWithURL:(id)l requestMethod:(id)method;
 - (id)scriptAttributeKeys;
 - (int64_t)requestMethod;
-- (void)_performRequest:(id)a3 withScriptFunction:(id)a4;
-- (void)addMultiPartData:(id)a3 withName:(id)a4 type:(id)a5;
-- (void)addParameterWithKey:(id)a3 value:(id)a4;
+- (void)_performRequest:(id)request withScriptFunction:(id)function;
+- (void)addMultiPartData:(id)data withName:(id)name type:(id)type;
+- (void)addParameterWithKey:(id)key value:(id)value;
 - (void)dealloc;
-- (void)performRequestWithFunction:(id)a3;
-- (void)setAccount:(id)a3;
-- (void)setParameters:(id)a3;
+- (void)performRequestWithFunction:(id)function;
+- (void)setAccount:(id)account;
+- (void)setParameters:(id)parameters;
 @end
 
 @implementation SUScriptFacebookRequest
 
-- (SUScriptFacebookRequest)initWithURL:(id)a3 requestMethod:(id)a4
+- (SUScriptFacebookRequest)initWithURL:(id)l requestMethod:(id)method
 {
   v12.receiver = self;
   v12.super_class = SUScriptFacebookRequest;
@@ -27,28 +27,28 @@
   v7 = v6;
   if (v6)
   {
-    v8 = [(SUScriptFacebookRequest *)v6 requestMethodGet];
-    if ([a4 caseInsensitiveCompare:@"POST"])
+    requestMethodGet = [(SUScriptFacebookRequest *)v6 requestMethodGet];
+    if ([method caseInsensitiveCompare:@"POST"])
     {
-      if ([a4 caseInsensitiveCompare:@"DELETE"])
+      if ([method caseInsensitiveCompare:@"DELETE"])
       {
 LABEL_7:
         v10 = objc_alloc(ISWeakLinkedClassForString());
-        v7->_request = [v10 initWithServiceType:ISWeakLinkedStringConstantForString() URL:a3 parameters:0 requestMethod:v8];
-        v7->_requestMethod = v8;
-        v7->_url = [a3 copy];
+        v7->_request = [v10 initWithServiceType:ISWeakLinkedStringConstantForString() URL:l parameters:0 requestMethod:requestMethodGet];
+        v7->_requestMethod = requestMethodGet;
+        v7->_url = [l copy];
         return v7;
       }
 
-      v9 = [(SUScriptFacebookRequest *)v7 requestMethodDelete];
+      requestMethodDelete = [(SUScriptFacebookRequest *)v7 requestMethodDelete];
     }
 
     else
     {
-      v9 = [(SUScriptFacebookRequest *)v7 requestMethodPost];
+      requestMethodDelete = [(SUScriptFacebookRequest *)v7 requestMethodPost];
     }
 
-    v8 = v9;
+    requestMethodGet = requestMethodDelete;
     goto LABEL_7;
   }
 
@@ -79,22 +79,22 @@ LABEL_7:
   return requestMethod;
 }
 
-- (void)setAccount:(id)a3
+- (void)setAccount:(id)account
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = 0;
+    accountCopy = 0;
 LABEL_3:
     [(SUScriptObject *)self lock];
     scriptAccount = self->_scriptAccount;
-    if (scriptAccount != v5)
+    if (scriptAccount != accountCopy)
     {
 
-      self->_scriptAccount = v5;
+      self->_scriptAccount = accountCopy;
     }
 
-    [(SLRequest *)self->_request setAccount:[(SUScriptAppleAccount *)v5 nativeAccount]];
+    [(SLRequest *)self->_request setAccount:[(SUScriptAppleAccount *)accountCopy nativeAccount]];
 
     [(SUScriptObject *)self unlock];
     return;
@@ -102,8 +102,8 @@ LABEL_3:
 
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  v5 = 0;
-  if (!a3)
+  accountCopy = 0;
+  if (!account)
   {
     goto LABEL_3;
   }
@@ -114,7 +114,7 @@ LABEL_3:
   }
 
   objc_opt_class();
-  v5 = a3;
+  accountCopy = account;
   if (objc_opt_isKindOfClass())
   {
     goto LABEL_3;
@@ -134,7 +134,7 @@ LABEL_3:
   return v3;
 }
 
-- (void)addMultiPartData:(id)a3 withName:(id)a4 type:(id)a5
+- (void)addMultiPartData:(id)data withName:(id)name type:(id)type
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -145,17 +145,17 @@ LABEL_3:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        if ([a5 hasPrefix:@"text/"])
+        if ([type hasPrefix:@"text/"])
         {
-          v9 = [a3 dataUsingEncoding:4];
+          v9 = [data dataUsingEncoding:4];
           [(SUScriptObject *)self lock];
-          [(SLRequest *)self->_request addMultipartData:v9 withName:a4 type:a5 filename:0];
+          [(SLRequest *)self->_request addMultipartData:v9 withName:name type:type filename:0];
 
           [(SUScriptObject *)self unlock];
           return;
         }
 
-        v11 = [objc_alloc(MEMORY[0x1E695DFF8]) initWithString:a3];
+        v11 = [objc_alloc(MEMORY[0x1E695DFF8]) initWithString:data];
         if (!v11)
         {
           return;
@@ -171,19 +171,19 @@ LABEL_19:
             return;
           }
 
-          v12 = [(WebResource *)[(WebDataSource *)[(WebFrame *)[(SUScriptObject *)self webFrame] dataSource] subresourceForURL:v14] data];
+          data = [(WebResource *)[(WebDataSource *)[(WebFrame *)[(SUScriptObject *)self webFrame] dataSource] subresourceForURL:v14] data];
         }
 
         else
         {
-          v12 = SUGetDataForDataURL(v14, 0);
+          data = SUGetDataForDataURL(v14, 0);
         }
 
-        v13 = v12;
-        if (v12)
+        v13 = data;
+        if (data)
         {
           [(SUScriptObject *)self lock];
-          [(SLRequest *)self->_request addMultipartData:v13 withName:a4 type:a5 filename:0];
+          [(SLRequest *)self->_request addMultipartData:v13 withName:name type:type filename:0];
           [(SUScriptObject *)self unlock];
         }
 
@@ -197,19 +197,19 @@ LABEL_19:
   [v10 throwException:@"Invalid argument"];
 }
 
-- (void)addParameterWithKey:(id)a3 value:(id)a4
+- (void)addParameterWithKey:(id)key value:(id)value
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    a4 = 0;
+    value = 0;
   }
 
   objc_opt_class();
-  if (objc_opt_isKindOfClass() & 1) != 0 && (!a4 || (objc_opt_class(), (objc_opt_isKindOfClass())))
+  if (objc_opt_isKindOfClass() & 1) != 0 && (!value || (objc_opt_class(), (objc_opt_isKindOfClass())))
   {
     [(SUScriptObject *)self lock];
-    [(SLRequest *)self->_request setParameterValue:a4 forKey:a3];
+    [(SLRequest *)self->_request setParameterValue:value forKey:key];
 
     [(SUScriptObject *)self unlock];
   }
@@ -222,12 +222,12 @@ LABEL_19:
   }
 }
 
-- (void)performRequestWithFunction:(id)a3
+- (void)performRequestWithFunction:(id)function
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [[SUScriptFunction alloc] initWithScriptObject:a3];
+    v5 = [[SUScriptFunction alloc] initWithScriptObject:function];
     [(SUScriptFunction *)v5 setThisObject:self];
     v9 = 0;
     if ([(SUScriptFacebookRequest *)self _isRequestAllowed:&v9])
@@ -255,16 +255,16 @@ LABEL_19:
   }
 }
 
-- (void)setParameters:(id)a3
+- (void)setParameters:(id)parameters
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(SUScriptObject *)self copyJavaScriptContext];
-    if (v5)
+    copyJavaScriptContext = [(SUScriptObject *)self copyJavaScriptContext];
+    if (copyJavaScriptContext)
     {
-      v6 = v5;
-      v7 = [a3 copyArrayOrDictionaryWithContext:v5];
+      v6 = copyJavaScriptContext;
+      v7 = [parameters copyArrayOrDictionaryWithContext:copyJavaScriptContext];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -290,31 +290,31 @@ LABEL_19:
   }
 }
 
-- (BOOL)_isRequestAllowed:(id *)a3
+- (BOOL)_isRequestAllowed:(id *)allowed
 {
   v9 = 0;
   v5 = objc_alloc_init(SUScriptAccessSecurity);
   v6 = [(SUScriptAccessSecurity *)v5 canAccessFacebookWithURL:self->_url inFrame:[(SUScriptObject *)self webFrame] error:&v9];
   v7 = v6;
-  if (a3 && !v6)
+  if (allowed && !v6)
   {
-    *a3 = v9;
+    *allowed = v9;
   }
 
   return v7;
 }
 
-- (void)_performRequest:(id)a3 withScriptFunction:(id)a4
+- (void)_performRequest:(id)request withScriptFunction:(id)function
 {
-  v7 = a3;
+  requestCopy = request;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __62__SUScriptFacebookRequest__performRequest_withScriptFunction___block_invoke;
   v8[3] = &unk_1E8167078;
   v8[4] = self;
-  v8[5] = a4;
-  v8[6] = a3;
-  [a3 performRequestWithHandler:v8];
+  v8[5] = function;
+  v8[6] = request;
+  [request performRequestWithHandler:v8];
 }
 
 void __62__SUScriptFacebookRequest__performRequest_withScriptFunction___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3, uint64_t a4)
@@ -327,27 +327,27 @@ void __62__SUScriptFacebookRequest__performRequest_withScriptFunction___block_in
   v7 = *(a1 + 48);
 }
 
-+ (id)webScriptNameForKeyName:(id)a3
++ (id)webScriptNameForKeyName:(id)name
 {
   result = [__KeyMapping_62 objectForKey:?];
   if (!result)
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___SUScriptFacebookRequest;
-    return objc_msgSendSuper2(&v6, sel_webScriptNameForKeyName_, a3);
+    return objc_msgSendSuper2(&v6, sel_webScriptNameForKeyName_, name);
   }
 
   return result;
 }
 
-+ (id)webScriptNameForSelector:(SEL)a3
++ (id)webScriptNameForSelector:(SEL)selector
 {
-  result = SUWebScriptNameForSelector2(a3, &__SelectorMapping_48, 4);
+  result = SUWebScriptNameForSelector2(selector, &__SelectorMapping_48, 4);
   if (!result)
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___SUScriptFacebookRequest;
-    return objc_msgSendSuper2(&v6, sel_webScriptNameForSelector_, a3);
+    return objc_msgSendSuper2(&v6, sel_webScriptNameForSelector_, selector);
   }
 
   return result;
@@ -357,14 +357,14 @@ void __62__SUScriptFacebookRequest__performRequest_withScriptFunction___block_in
 {
   v4.receiver = self;
   v4.super_class = SUScriptFacebookRequest;
-  v2 = [(SUScriptObject *)&v4 scriptAttributeKeys];
-  -[NSMutableArray addObjectsFromArray:](v2, "addObjectsFromArray:", [__KeyMapping_62 allKeys]);
-  return v2;
+  scriptAttributeKeys = [(SUScriptObject *)&v4 scriptAttributeKeys];
+  -[NSMutableArray addObjectsFromArray:](scriptAttributeKeys, "addObjectsFromArray:", [__KeyMapping_62 allKeys]);
+  return scriptAttributeKeys;
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     __SelectorMapping_48 = sel_addMultiPartData_withName_type_;
     unk_1EBF3B690 = @"addMultiPartData";

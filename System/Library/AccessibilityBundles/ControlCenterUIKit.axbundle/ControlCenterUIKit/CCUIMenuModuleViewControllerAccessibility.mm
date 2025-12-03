@@ -1,5 +1,5 @@
 @interface CCUIMenuModuleViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_accessibilityControlCenterShouldExpandContentModule;
 - (CGRect)_accessibilityControlCenterButtonFrame;
 - (id)_accessibilityControlCenterButtonIdentifier;
@@ -11,16 +11,16 @@
 
 @implementation CCUIMenuModuleViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CCUIMenuModuleViewController" isKindOfClass:@"CCUIButtonModuleViewController"];
-  [v3 validateClass:@"CCUIMenuModuleViewController" hasProperty:@"title" withType:"@"];
-  [v3 validateClass:@"CCUIMenuModuleViewController" hasInstanceMethod:@"viewDidLoad" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"CCUIMenuModuleViewController" hasInstanceMethod:@"viewDidLoad" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"CCUIMenuModuleViewController" hasInstanceMethod:@"shouldBeginTransitionToExpandedContentModule" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"CCUIButtonModuleViewController" hasInstanceMethod:@"isExpanded" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"CCUIMenuModuleViewController" hasInstanceVariable:@"_menuItemsContainer" withType:"UIStackView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CCUIMenuModuleViewController" isKindOfClass:@"CCUIButtonModuleViewController"];
+  [validationsCopy validateClass:@"CCUIMenuModuleViewController" hasProperty:@"title" withType:"@"];
+  [validationsCopy validateClass:@"CCUIMenuModuleViewController" hasInstanceMethod:@"viewDidLoad" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"CCUIMenuModuleViewController" hasInstanceMethod:@"viewDidLoad" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"CCUIMenuModuleViewController" hasInstanceMethod:@"shouldBeginTransitionToExpandedContentModule" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"CCUIButtonModuleViewController" hasInstanceMethod:@"isExpanded" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"CCUIMenuModuleViewController" hasInstanceVariable:@"_menuItemsContainer" withType:"UIStackView"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -83,22 +83,22 @@ LABEL_4:
     else
     {
       v7 = [MEMORY[0x29EDB9F48] bundleForClass:objc_opt_class()];
-      v8 = [v7 localizedInfoDictionary];
-      v9 = [v8 objectForKey:*MEMORY[0x29EDB8EB8]];
+      localizedInfoDictionary = [v7 localizedInfoDictionary];
+      v9 = [localizedInfoDictionary objectForKey:*MEMORY[0x29EDB8EB8]];
 
       if ([v9 length])
       {
-        v10 = v9;
+        accessibilityLabel = v9;
       }
 
       else
       {
         v12.receiver = self;
         v12.super_class = CCUIMenuModuleViewControllerAccessibility;
-        v10 = [(CCUIMenuModuleViewControllerAccessibility *)&v12 accessibilityLabel];
+        accessibilityLabel = [(CCUIMenuModuleViewControllerAccessibility *)&v12 accessibilityLabel];
       }
 
-      v3 = v10;
+      v3 = accessibilityLabel;
     }
 
     goto LABEL_10;
@@ -120,17 +120,17 @@ LABEL_10:
 {
   if (objc_opt_respondsToSelector())
   {
-    v3 = [(CCUIMenuModuleViewControllerAccessibility *)self safeStringForKey:@"title"];
+    accessibilityLabel = [(CCUIMenuModuleViewControllerAccessibility *)self safeStringForKey:@"title"];
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = CCUIMenuModuleViewControllerAccessibility;
-    v3 = [(CCUIMenuModuleViewControllerAccessibility *)&v5 accessibilityLabel];
+    accessibilityLabel = [(CCUIMenuModuleViewControllerAccessibility *)&v5 accessibilityLabel];
   }
 
-  return v3;
+  return accessibilityLabel;
 }
 
 - (BOOL)_accessibilityControlCenterShouldExpandContentModule
@@ -200,11 +200,11 @@ LABEL_10:
 
 - (id)_accessibilityModuleViewElements
 {
-  v3 = [(CCUIMenuModuleViewControllerAccessibility *)self _accessibilityValueForKey:@"AXChildren"];
-  if (!v3)
+  array = [(CCUIMenuModuleViewControllerAccessibility *)self _accessibilityValueForKey:@"AXChildren"];
+  if (!array)
   {
-    v3 = [MEMORY[0x29EDB8DE8] array];
-    [(CCUIMenuModuleViewControllerAccessibility *)self _accessibilitySetRetainedValue:v3 forKey:@"AXChildren"];
+    array = [MEMORY[0x29EDB8DE8] array];
+    [(CCUIMenuModuleViewControllerAccessibility *)self _accessibilitySetRetainedValue:array forKey:@"AXChildren"];
   }
 
   LOBYTE(location) = 0;
@@ -212,17 +212,17 @@ LABEL_10:
   v4 = [(CCUIMenuModuleViewControllerAccessibility *)self safeUIViewForKey:@"_menuItemsContainer"];
   v5 = __UIAccessibilityCastAsClass();
 
-  v6 = [v5 arrangedSubviews];
-  v7 = [v6 count];
+  arrangedSubviews = [v5 arrangedSubviews];
+  v7 = [arrangedSubviews count];
 
-  v8 = [v3 count];
-  v9 = [v3 count];
+  v8 = [array count];
+  v9 = [array count];
   if (v8 <= v7)
   {
     if (v9 < v7)
     {
       objc_initWeak(&location, self);
-      for (i = 0; i < v7 - [v3 count]; ++i)
+      for (i = 0; i < v7 - [array count]; ++i)
       {
         v11 = [[AXCCMenuModuleElement alloc] initWithAccessibilityContainer:self];
         v13[0] = MEMORY[0x29EDCA5F8];
@@ -231,8 +231,8 @@ LABEL_10:
         v13[3] = &unk_29F2B73B0;
         objc_copyWeak(&v14, &location);
         [(AXCCMenuModuleElement *)v11 setProvider:v13];
-        -[AXCCMenuModuleElement setIndex:](v11, "setIndex:", [v3 count]);
-        [v3 addObject:v11];
+        -[AXCCMenuModuleElement setIndex:](v11, "setIndex:", [array count]);
+        [array addObject:v11];
         objc_destroyWeak(&v14);
       }
 
@@ -242,10 +242,10 @@ LABEL_10:
 
   else
   {
-    [v3 removeObjectsInRange:{v7, v9 - v7}];
+    [array removeObjectsInRange:{v7, v9 - v7}];
   }
 
-  return v3;
+  return array;
 }
 
 id __77__CCUIMenuModuleViewControllerAccessibility__accessibilityModuleViewElements__block_invoke(uint64_t a1, void *a2)

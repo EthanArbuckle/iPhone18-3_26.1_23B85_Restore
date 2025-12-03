@@ -1,9 +1,9 @@
 @interface ASDTPMDeviceProxy
-+ (id)forPMDevice:(id)a3;
++ (id)forPMDevice:(id)device;
 - (ASDTPMProtocol)proxiedDevice;
 - (BOOL)pmNoStateChangeOnFailure;
 - (NSString)name;
-- (id)initForPMDevice:(id)a3;
+- (id)initForPMDevice:(id)device;
 - (int)performPowerStateOn;
 - (int)performPowerStateSleep;
 - (int)powerState;
@@ -13,24 +13,24 @@
 
 @implementation ASDTPMDeviceProxy
 
-+ (id)forPMDevice:(id)a3
++ (id)forPMDevice:(id)device
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initForPMDevice:v4];
+  deviceCopy = device;
+  v5 = [[self alloc] initForPMDevice:deviceCopy];
 
   return v5;
 }
 
-- (id)initForPMDevice:(id)a3
+- (id)initForPMDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v8.receiver = self;
   v8.super_class = ASDTPMDeviceProxy;
   v5 = [(ASDTPMDeviceProxy *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(ASDTPMDeviceProxy *)v5 setProxiedDevice:v4];
+    [(ASDTPMDeviceProxy *)v5 setProxiedDevice:deviceCopy];
   }
 
   return v6;
@@ -38,58 +38,58 @@
 
 - (NSString)name
 {
-  v2 = [(ASDTPMDeviceProxy *)self proxiedDevice];
-  v3 = [v2 name];
+  proxiedDevice = [(ASDTPMDeviceProxy *)self proxiedDevice];
+  name = [proxiedDevice name];
 
-  return v3;
+  return name;
 }
 
 - (unsigned)pmOrderPowerUp
 {
-  v2 = [(ASDTPMDeviceProxy *)self proxiedDevice];
-  v3 = [v2 pmOrderPowerUp];
+  proxiedDevice = [(ASDTPMDeviceProxy *)self proxiedDevice];
+  pmOrderPowerUp = [proxiedDevice pmOrderPowerUp];
 
-  return v3;
+  return pmOrderPowerUp;
 }
 
 - (unsigned)pmOrderPowerDown
 {
-  v2 = [(ASDTPMDeviceProxy *)self proxiedDevice];
-  v3 = [v2 pmOrderPowerDown];
+  proxiedDevice = [(ASDTPMDeviceProxy *)self proxiedDevice];
+  pmOrderPowerDown = [proxiedDevice pmOrderPowerDown];
 
-  return v3;
+  return pmOrderPowerDown;
 }
 
 - (BOOL)pmNoStateChangeOnFailure
 {
-  v2 = [(ASDTPMDeviceProxy *)self proxiedDevice];
-  v3 = [v2 pmNoStateChangeOnFailure];
+  proxiedDevice = [(ASDTPMDeviceProxy *)self proxiedDevice];
+  pmNoStateChangeOnFailure = [proxiedDevice pmNoStateChangeOnFailure];
 
-  return v3;
+  return pmNoStateChangeOnFailure;
 }
 
 - (int)powerState
 {
-  v2 = [(ASDTPMDeviceProxy *)self proxiedDevice];
-  v3 = [v2 powerState];
+  proxiedDevice = [(ASDTPMDeviceProxy *)self proxiedDevice];
+  powerState = [proxiedDevice powerState];
 
-  return v3;
+  return powerState;
 }
 
 - (int)performPowerStateSleep
 {
-  v2 = [(ASDTPMDeviceProxy *)self proxiedDevice];
-  v3 = [v2 performPowerStateSleep];
+  proxiedDevice = [(ASDTPMDeviceProxy *)self proxiedDevice];
+  performPowerStateSleep = [proxiedDevice performPowerStateSleep];
 
-  return v3;
+  return performPowerStateSleep;
 }
 
 - (int)performPowerStateOn
 {
-  v2 = [(ASDTPMDeviceProxy *)self proxiedDevice];
-  v3 = [v2 performPowerStateOn];
+  proxiedDevice = [(ASDTPMDeviceProxy *)self proxiedDevice];
+  performPowerStateOn = [proxiedDevice performPowerStateOn];
 
-  return v3;
+  return performPowerStateOn;
 }
 
 - (ASDTPMProtocol)proxiedDevice

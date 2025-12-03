@@ -1,15 +1,15 @@
 @interface SUIAFrameRateAssertion
-- (SUIAFrameRateAssertion)initWithFrameRateRange:(CAFrameRateRange)a3 highFrameRateReason:(unsigned int)a4;
+- (SUIAFrameRateAssertion)initWithFrameRateRange:(CAFrameRateRange)range highFrameRateReason:(unsigned int)reason;
 @end
 
 @implementation SUIAFrameRateAssertion
 
-- (SUIAFrameRateAssertion)initWithFrameRateRange:(CAFrameRateRange)a3 highFrameRateReason:(unsigned int)a4
+- (SUIAFrameRateAssertion)initWithFrameRateRange:(CAFrameRateRange)range highFrameRateReason:(unsigned int)reason
 {
-  v4 = *&a4;
-  preferred = a3.preferred;
-  maximum = a3.maximum;
-  minimum = a3.minimum;
+  v4 = *&reason;
+  preferred = range.preferred;
+  maximum = range.maximum;
+  minimum = range.minimum;
   v19.receiver = self;
   v19.super_class = SUIAFrameRateAssertion;
   v8 = [(SUIAFrameRateAssertion *)&v19 init];

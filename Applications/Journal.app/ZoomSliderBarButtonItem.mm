@@ -1,11 +1,11 @@
 @interface ZoomSliderBarButtonItem
 - (_TtC7Journal23ZoomSliderBarButtonItem)init;
-- (_TtC7Journal23ZoomSliderBarButtonItem)initWithCoder:(id)a3;
+- (_TtC7Journal23ZoomSliderBarButtonItem)initWithCoder:(id)coder;
 @end
 
 @implementation ZoomSliderBarButtonItem
 
-- (_TtC7Journal23ZoomSliderBarButtonItem)initWithCoder:(id)a3
+- (_TtC7Journal23ZoomSliderBarButtonItem)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC7Journal23ZoomSliderBarButtonItem_slider;
   type metadata accessor for ZoomSliderBarButtonItem.Slider();

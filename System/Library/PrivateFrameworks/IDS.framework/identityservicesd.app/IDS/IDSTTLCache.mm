@@ -1,41 +1,41 @@
 @interface IDSTTLCache
-- (BOOL)_delegate_shouldEvictObject:(id)a3 forKey:(id)a4;
+- (BOOL)_delegate_shouldEvictObject:(id)object forKey:(id)key;
 - (BOOL)_delegate_shouldTTLCacheEvictExpiredItems;
-- (IDSTTLCache)initWithQueue:(id)a3 ttlInSeconds:(double)a4;
+- (IDSTTLCache)initWithQueue:(id)queue ttlInSeconds:(double)seconds;
 - (IDSTTLCacheDelegate)delegate;
-- (void)_delegate_DidEvictObject:(id)a3 forKey:(id)a4;
-- (void)_delegate_didCacheObject:(id)a3 forKey:(id)a4;
-- (void)_delegate_willReturnCachedObject:(id)a3 forKey:(id)a4 completion:(id)a5;
-- (void)_fetchCachedObjectForKey:(id)a3 completion:(id)a4;
+- (void)_delegate_DidEvictObject:(id)object forKey:(id)key;
+- (void)_delegate_didCacheObject:(id)object forKey:(id)key;
+- (void)_delegate_willReturnCachedObject:(id)object forKey:(id)key completion:(id)completion;
+- (void)_fetchCachedObjectForKey:(id)key completion:(id)completion;
 - (void)_performEvictionSweep;
 - (void)_startEvictionTimerIfNeeded;
 - (void)_stopEvictionTimer;
 - (void)_stopEvictionTimerIfEmpty;
-- (void)cacheObject:(id)a3 forKey:(id)a4;
+- (void)cacheObject:(id)object forKey:(id)key;
 - (void)dealloc;
-- (void)evictCachedObjectForKey:(id)a3;
-- (void)fetchCachedObjectForKey:(id)a3 completion:(id)a4;
+- (void)evictCachedObjectForKey:(id)key;
+- (void)fetchCachedObjectForKey:(id)key completion:(id)completion;
 @end
 
 @implementation IDSTTLCache
 
-- (IDSTTLCache)initWithQueue:(id)a3 ttlInSeconds:(double)a4
+- (IDSTTLCache)initWithQueue:(id)queue ttlInSeconds:(double)seconds
 {
-  v7 = a3;
-  dispatch_assert_queue_V2(v7);
+  queueCopy = queue;
+  dispatch_assert_queue_V2(queueCopy);
   v15.receiver = self;
   v15.super_class = IDSTTLCache;
   v8 = [(IDSTTLCache *)&v15 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_queue, a3);
+    objc_storeStrong(&v8->_queue, queue);
     v10 = objc_alloc_init(NSMutableDictionary);
     backingStore = v9->_backingStore;
     v9->_backingStore = v10;
 
-    v9->_ttlInSeconds = a4;
-    v12 = [[IMMultiQueue alloc] initWithQueue:v7];
+    v9->_ttlInSeconds = seconds;
+    v12 = [[IMMultiQueue alloc] initWithQueue:queueCopy];
     multiQueue = v9->_multiQueue;
     v9->_multiQueue = v12;
   }
@@ -43,87 +43,87 @@
   return v9;
 }
 
-- (void)cacheObject:(id)a3 forKey:(id)a4
+- (void)cacheObject:(id)object forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  objectCopy = object;
+  keyCopy = key;
   v8 = +[IDSFoundationLog utilities];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v12 = 138478083;
-    v13 = v7;
+    v13 = keyCopy;
     v14 = 2113;
-    v15 = v6;
+    v15 = objectCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "Caching object {key: %{private}@, object: %{private}@}", &v12, 0x16u);
   }
 
-  v9 = [(IDSTTLCache *)self queue];
-  dispatch_assert_queue_V2(v9);
+  queue = [(IDSTTLCache *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  if (v6)
+  if (objectCopy)
   {
-    v10 = [[IDSTTLCacheItem alloc] initWithObject:v6 key:v7];
+    v10 = [[IDSTTLCacheItem alloc] initWithObject:objectCopy key:keyCopy];
     [(IDSTTLCache *)self ttlInSeconds];
     [(IDSTTLCacheItem *)v10 bumpEvictionDateToSecondsFromNow:?];
-    v11 = [(IDSTTLCache *)self backingStore];
-    [v11 setObject:v10 forKeyedSubscript:v7];
+    backingStore = [(IDSTTLCache *)self backingStore];
+    [backingStore setObject:v10 forKeyedSubscript:keyCopy];
 
-    [(IDSTTLCache *)self _delegate_didCacheObject:v6 forKey:v7];
+    [(IDSTTLCache *)self _delegate_didCacheObject:objectCopy forKey:keyCopy];
     [(IDSTTLCache *)self _startEvictionTimerIfNeeded];
   }
 
   else
   {
-    [(IDSTTLCache *)self evictCachedObjectForKey:v7];
+    [(IDSTTLCache *)self evictCachedObjectForKey:keyCopy];
   }
 }
 
-- (void)fetchCachedObjectForKey:(id)a3 completion:(id)a4
+- (void)fetchCachedObjectForKey:(id)key completion:(id)completion
 {
-  v6 = a3;
+  keyCopy = key;
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_100450E7C;
   v18[3] = &unk_100BDCA48;
-  v7 = a4;
-  v19 = v7;
+  completionCopy = completion;
+  v19 = completionCopy;
   v8 = objc_retainBlock(v18);
-  v9 = [(IDSTTLCache *)self queue];
-  dispatch_assert_queue_V2(v9);
+  queue = [(IDSTTLCache *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   objc_initWeak(&location, self);
-  v10 = [(IDSTTLCache *)self multiQueue];
+  multiQueue = [(IDSTTLCache *)self multiQueue];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100450E94;
   v13[3] = &unk_100BDCA98;
   objc_copyWeak(&v16, &location);
-  v11 = v6;
+  v11 = keyCopy;
   v14 = v11;
   v12 = v8;
   v15 = v12;
-  [v10 addBlock:v13 forKey:v11 description:@"IDSTTLCache fetch cached object"];
+  [multiQueue addBlock:v13 forKey:v11 description:@"IDSTTLCache fetch cached object"];
 
   objc_destroyWeak(&v16);
   objc_destroyWeak(&location);
 }
 
-- (void)evictCachedObjectForKey:(id)a3
+- (void)evictCachedObjectForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(IDSTTLCache *)self queue];
-  dispatch_assert_queue_V2(v5);
+  keyCopy = key;
+  queue = [(IDSTTLCache *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v6 = +[IDSFoundationLog utilities];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     v15 = 138477827;
-    v16 = v4;
+    v16 = keyCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "Evicting object {key: %{private}@", &v15, 0xCu);
   }
 
-  v7 = [(IDSTTLCache *)self backingStore];
-  v8 = [v7 objectForKey:v4];
+  backingStore = [(IDSTTLCache *)self backingStore];
+  v8 = [backingStore objectForKey:keyCopy];
 
   if (!v8)
   {
@@ -131,7 +131,7 @@
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       v15 = 138477827;
-      v16 = v4;
+      v16 = keyCopy;
       v14 = "Tried to evict object that is not in cache {key: %{private}@}";
 LABEL_10:
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, v14, &v15, 0xCu);
@@ -142,8 +142,8 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v9 = [v8 object];
-  v10 = [(IDSTTLCache *)self _delegate_shouldEvictObject:v9 forKey:v4];
+  object = [v8 object];
+  v10 = [(IDSTTLCache *)self _delegate_shouldEvictObject:object forKey:keyCopy];
 
   if (!v10)
   {
@@ -151,7 +151,7 @@ LABEL_11:
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       v15 = 138477827;
-      v16 = v4;
+      v16 = keyCopy;
       v14 = "Delegate return NO to shouldEvict -- Bail {key: %{private}@}";
       goto LABEL_10;
     }
@@ -159,11 +159,11 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  v11 = [(IDSTTLCache *)self backingStore];
-  [v11 removeObjectForKey:v4];
+  backingStore2 = [(IDSTTLCache *)self backingStore];
+  [backingStore2 removeObjectForKey:keyCopy];
 
-  v12 = [v8 object];
-  [(IDSTTLCache *)self _delegate_DidEvictObject:v12 forKey:v4];
+  object2 = [v8 object];
+  [(IDSTTLCache *)self _delegate_DidEvictObject:object2 forKey:keyCopy];
 
   [(IDSTTLCache *)self _stopEvictionTimerIfEmpty];
 LABEL_12:
@@ -180,9 +180,9 @@ LABEL_12:
 
 - (void)_startEvictionTimerIfNeeded
 {
-  v3 = [(IDSTTLCache *)self evictionTimer];
+  evictionTimer = [(IDSTTLCache *)self evictionTimer];
 
-  if (!v3)
+  if (!evictionTimer)
   {
     [(IDSTTLCache *)self ttlInSeconds];
     v5 = v4 * 1.2;
@@ -198,23 +198,23 @@ LABEL_12:
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Eviction timer did start {interval: %.6f, leeway: %.6f", buf, 0x16u);
     }
 
-    v9 = [(IDSTTLCache *)self queue];
-    v10 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, v9);
+    queue = [(IDSTTLCache *)self queue];
+    v10 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, queue);
     [(IDSTTLCache *)self setEvictionTimer:v10];
 
-    v11 = [(IDSTTLCache *)self evictionTimer];
-    dispatch_source_set_timer(v11, 0, (v5 * 1000000000.0), (v7 * 1000000000.0));
+    evictionTimer2 = [(IDSTTLCache *)self evictionTimer];
+    dispatch_source_set_timer(evictionTimer2, 0, (v5 * 1000000000.0), (v7 * 1000000000.0));
 
-    v12 = [(IDSTTLCache *)self evictionTimer];
+    evictionTimer3 = [(IDSTTLCache *)self evictionTimer];
     handler[0] = _NSConcreteStackBlock;
     handler[1] = 3221225472;
     handler[2] = sub_100451408;
     handler[3] = &unk_100BD6ED0;
     handler[4] = self;
-    dispatch_source_set_event_handler(v12, handler);
+    dispatch_source_set_event_handler(evictionTimer3, handler);
 
-    v13 = [(IDSTTLCache *)self evictionTimer];
-    dispatch_resume(v13);
+    evictionTimer4 = [(IDSTTLCache *)self evictionTimer];
+    dispatch_resume(evictionTimer4);
   }
 }
 
@@ -227,16 +227,16 @@ LABEL_12:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "Stop eviction timer if empty", &v9, 2u);
   }
 
-  v4 = [(IDSTTLCache *)self backingStore];
-  v5 = [v4 count];
+  backingStore = [(IDSTTLCache *)self backingStore];
+  v5 = [backingStore count];
 
   if (v5)
   {
     v6 = +[IDSFoundationLog utilities];
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
-      v7 = [(IDSTTLCache *)self backingStore];
-      v8 = [v7 count];
+      backingStore2 = [(IDSTTLCache *)self backingStore];
+      v8 = [backingStore2 count];
       v9 = 134217984;
       v10 = v8;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "Not stopping eviction timer {backingStore.count: %ld}", &v9, 0xCu);
@@ -254,18 +254,18 @@ LABEL_12:
   v3 = +[IDSFoundationLog utilities];
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(IDSTTLCache *)self backingStore];
+    backingStore = [(IDSTTLCache *)self backingStore];
     v7 = 134217984;
-    v8 = [v4 count];
+    v8 = [backingStore count];
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Stopping eviction timer {backingStore.count: %ld}", &v7, 0xCu);
   }
 
-  v5 = [(IDSTTLCache *)self evictionTimer];
+  evictionTimer = [(IDSTTLCache *)self evictionTimer];
 
-  if (v5)
+  if (evictionTimer)
   {
-    v6 = [(IDSTTLCache *)self evictionTimer];
-    dispatch_source_cancel(v6);
+    evictionTimer2 = [(IDSTTLCache *)self evictionTimer];
+    dispatch_source_cancel(evictionTimer2);
 
     [(IDSTTLCache *)self setEvictionTimer:0];
   }
@@ -285,7 +285,7 @@ LABEL_12:
     }
 
     v5 = objc_alloc_init(NSMutableArray);
-    v6 = [(IDSTTLCache *)self backingStore];
+    backingStore = [(IDSTTLCache *)self backingStore];
     v18[0] = _NSConcreteStackBlock;
     v18[1] = 3221225472;
     v18[2] = sub_1004518BC;
@@ -294,7 +294,7 @@ LABEL_12:
     v19 = v7;
     v8 = v5;
     v20 = v8;
-    [v6 enumerateKeysAndObjectsUsingBlock:v18];
+    [backingStore enumerateKeysAndObjectsUsingBlock:v18];
 
     v16 = 0u;
     v17 = 0u;
@@ -341,15 +341,15 @@ LABEL_12:
   }
 }
 
-- (void)_fetchCachedObjectForKey:(id)a3 completion:(id)a4
+- (void)_fetchCachedObjectForKey:(id)key completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(IDSTTLCache *)self queue];
-  dispatch_assert_queue_V2(v8);
+  keyCopy = key;
+  completionCopy = completion;
+  queue = [(IDSTTLCache *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v9 = [(IDSTTLCache *)self backingStore];
-  v10 = [v9 objectForKey:v6];
+  backingStore = [(IDSTTLCache *)self backingStore];
+  v10 = [backingStore objectForKey:keyCopy];
 
   if (!v10)
   {
@@ -357,71 +357,71 @@ LABEL_12:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138477827;
-      v21 = v6;
+      v21 = keyCopy;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Cache miss {key: %{private}@", buf, 0xCu);
     }
   }
 
-  v12 = [v10 object];
+  object = [v10 object];
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_100451BCC;
   v16[3] = &unk_100BDCAE8;
   v16[4] = self;
   v17 = v10;
-  v18 = v6;
-  v19 = v7;
-  v13 = v7;
-  v14 = v6;
+  v18 = keyCopy;
+  v19 = completionCopy;
+  v13 = completionCopy;
+  v14 = keyCopy;
   v15 = v10;
-  [(IDSTTLCache *)self _delegate_willReturnCachedObject:v12 forKey:v14 completion:v16];
+  [(IDSTTLCache *)self _delegate_willReturnCachedObject:object forKey:v14 completion:v16];
 }
 
-- (void)_delegate_didCacheObject:(id)a3 forKey:(id)a4
+- (void)_delegate_didCacheObject:(id)object forKey:(id)key
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [(IDSTTLCache *)self delegate];
+  objectCopy = object;
+  keyCopy = key;
+  delegate = [(IDSTTLCache *)self delegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(IDSTTLCache *)self delegate];
-    [v9 ttlCache:self didCacheObject:v10 forKey:v6];
+    delegate2 = [(IDSTTLCache *)self delegate];
+    [delegate2 ttlCache:self didCacheObject:objectCopy forKey:keyCopy];
   }
 }
 
-- (void)_delegate_willReturnCachedObject:(id)a3 forKey:(id)a4 completion:(id)a5
+- (void)_delegate_willReturnCachedObject:(id)object forKey:(id)key completion:(id)completion
 {
-  v13 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(IDSTTLCache *)self delegate];
+  objectCopy = object;
+  keyCopy = key;
+  completionCopy = completion;
+  delegate = [(IDSTTLCache *)self delegate];
   v11 = objc_opt_respondsToSelector();
 
   if (v11)
   {
-    v12 = [(IDSTTLCache *)self delegate];
-    [v12 ttlCache:self willReturnCachedObject:v13 forKey:v8 completion:v9];
+    delegate2 = [(IDSTTLCache *)self delegate];
+    [delegate2 ttlCache:self willReturnCachedObject:objectCopy forKey:keyCopy completion:completionCopy];
   }
 
   else
   {
-    v9[2](v9, v13);
+    completionCopy[2](completionCopy, objectCopy);
   }
 }
 
-- (BOOL)_delegate_shouldEvictObject:(id)a3 forKey:(id)a4
+- (BOOL)_delegate_shouldEvictObject:(id)object forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(IDSTTLCache *)self delegate];
+  objectCopy = object;
+  keyCopy = key;
+  delegate = [(IDSTTLCache *)self delegate];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
-    v10 = [(IDSTTLCache *)self delegate];
-    v11 = [v10 ttlCache:self shouldEvictObject:v6 forKey:v7];
+    delegate2 = [(IDSTTLCache *)self delegate];
+    v11 = [delegate2 ttlCache:self shouldEvictObject:objectCopy forKey:keyCopy];
   }
 
   else
@@ -432,23 +432,23 @@ LABEL_12:
   return v11;
 }
 
-- (void)_delegate_DidEvictObject:(id)a3 forKey:(id)a4
+- (void)_delegate_DidEvictObject:(id)object forKey:(id)key
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [(IDSTTLCache *)self delegate];
+  objectCopy = object;
+  keyCopy = key;
+  delegate = [(IDSTTLCache *)self delegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(IDSTTLCache *)self delegate];
-    [v9 ttlCache:self didEvictObject:v10 forKey:v6];
+    delegate2 = [(IDSTTLCache *)self delegate];
+    [delegate2 ttlCache:self didEvictObject:objectCopy forKey:keyCopy];
   }
 }
 
 - (BOOL)_delegate_shouldTTLCacheEvictExpiredItems
 {
-  v3 = [(IDSTTLCache *)self delegate];
+  delegate = [(IDSTTLCache *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if ((v4 & 1) == 0)
@@ -456,8 +456,8 @@ LABEL_12:
     return 1;
   }
 
-  v5 = [(IDSTTLCache *)self delegate];
-  v6 = [v5 shouldTTLCacheEvictExpiredItems:self];
+  delegate2 = [(IDSTTLCache *)self delegate];
+  v6 = [delegate2 shouldTTLCacheEvictExpiredItems:self];
 
   return v6;
 }

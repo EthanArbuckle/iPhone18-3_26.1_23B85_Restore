@@ -1,17 +1,17 @@
 @interface AXVoiceOverPunctuationPickerButtonSet
-- (AXVoiceOverPunctuationPickerButtonSet)initWithFrame:(CGRect)a3;
+- (AXVoiceOverPunctuationPickerButtonSet)initWithFrame:(CGRect)frame;
 - (id)accessibilityPath;
 - (void)layoutSubviews;
 @end
 
 @implementation AXVoiceOverPunctuationPickerButtonSet
 
-- (AXVoiceOverPunctuationPickerButtonSet)initWithFrame:(CGRect)a3
+- (AXVoiceOverPunctuationPickerButtonSet)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v26.receiver = self;
   v26.super_class = AXVoiceOverPunctuationPickerButtonSet;
   v7 = [(AXVoiceOverPunctuationPickerButtonSet *)&v26 initWithFrame:?];
@@ -34,8 +34,8 @@
   [(UILabel *)v10 setText:v16];
 
   [(UILabel *)v10 setTextAlignment:1];
-  v17 = [(AXVoiceOverPunctuationPickerButtonSet *)v7 tintColor];
-  [(UILabel *)v10 setTextColor:v17];
+  tintColor = [(AXVoiceOverPunctuationPickerButtonSet *)v7 tintColor];
+  [(UILabel *)v10 setTextColor:tintColor];
 
   [(UILabel *)v10 sizeToFit];
   v18 = +[CAShapeLayer layer];
@@ -45,11 +45,11 @@
   v20 = +[UIColor clearColor];
   -[CAShapeLayer setFillColor:](v7->_circle, "setFillColor:", [v20 CGColor]);
 
-  v21 = [(AXVoiceOverPunctuationPickerButtonSet *)v7 tintColor];
-  -[CAShapeLayer setStrokeColor:](v7->_circle, "setStrokeColor:", [v21 CGColor]);
+  tintColor2 = [(AXVoiceOverPunctuationPickerButtonSet *)v7 tintColor];
+  -[CAShapeLayer setStrokeColor:](v7->_circle, "setStrokeColor:", [tintColor2 CGColor]);
 
-  v22 = [(AXVoiceOverPunctuationPickerButtonSet *)v7 layer];
-  [v22 addSublayer:v7->_circle];
+  layer = [(AXVoiceOverPunctuationPickerButtonSet *)v7 layer];
+  [layer addSublayer:v7->_circle];
 
   [(AXVoiceOverPunctuationPickerButtonSet *)v7 addSubview:v10];
   [(UILabel *)v10 frame];

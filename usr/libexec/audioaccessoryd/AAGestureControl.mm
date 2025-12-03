@@ -1,29 +1,29 @@
 @interface AAGestureControl
 + (id)sharedGestureControl;
 - (AAGestureControl)init;
-- (BOOL)_handleCameraControlGesture:(unsigned __int8)a3 forSide:(unsigned __int8)a4 forIdentifier:(id)a5;
+- (BOOL)_handleCameraControlGesture:(unsigned __int8)gesture forSide:(unsigned __int8)side forIdentifier:(id)identifier;
 - (void)_aaControllerEnsureStarted;
 - (void)_aaControllerEnsureStopped;
 - (void)_activateCameraControlHIDService;
 - (void)_cancelCameraControlHIDService;
 - (void)_connectedDeviceDiscoveryEnsureStarted;
 - (void)_connectedDeviceDiscoveryEnsureStopped;
-- (void)_connectedDeviceFound:(id)a3;
-- (void)_connectedDeviceLost:(id)a3;
+- (void)_connectedDeviceFound:(id)found;
+- (void)_connectedDeviceLost:(id)lost;
 - (void)_farFieldStatusMonitoringEnsureStarted;
 - (void)_farFieldStatusMonitoringEnsureStopped;
-- (void)_handleDualBudLongPressGestureForIdentifier:(id)a3;
-- (void)_handleFarFieldStatusChanged:(id)a3;
+- (void)_handleDualBudLongPressGestureForIdentifier:(id)identifier;
+- (void)_handleFarFieldStatusChanged:(id)changed;
 - (void)_initCameraControlHIDServiceProperties;
 - (void)_observeCameraStatusEnsureStarted;
 - (void)_observeCameraStatusEnsureStopped;
-- (void)_rawGestureMessageReceived:(id)a3 fromDeviceIdentifier:(id)a4;
-- (void)_sendRawGestureConfiguration:(unsigned __int16)a3 withGestureStatus:(BOOL)a4 forAADevice:(id)a5;
-- (void)_updateCameraGestureforDevice:(id)a3;
+- (void)_rawGestureMessageReceived:(id)received fromDeviceIdentifier:(id)identifier;
+- (void)_sendRawGestureConfiguration:(unsigned __int16)configuration withGestureStatus:(BOOL)status forAADevice:(id)device;
+- (void)_updateCameraGestureforDevice:(id)device;
 - (void)activate;
 - (void)dealloc;
 - (void)invalidate;
-- (void)notification:(int64_t)a3 withProperty:(id)a4 forService:(id)a5;
+- (void)notification:(int64_t)notification withProperty:(id)property forService:(id)service;
 @end
 
 @implementation AAGestureControl
@@ -103,7 +103,7 @@
     v10[3] = &unk_1002B6E38;
     v6 = v5;
     v11 = v6;
-    v12 = self;
+    selfCopy = self;
     [(AAController *)v6 setRawGestureMessageHandler:v10];
     if (dword_1002F7008 <= 30 && (dword_1002F7008 != -1 || _LogCategory_Initialize()))
     {
@@ -116,7 +116,7 @@
     v7[3] = &unk_1002B68A8;
     v4 = v6;
     v8 = v4;
-    v9 = self;
+    selfCopy2 = self;
     [(AAController *)v4 activateWithCompletion:v7];
   }
 }
@@ -132,15 +132,15 @@
   }
 }
 
-- (BOOL)_handleCameraControlGesture:(unsigned __int8)a3 forSide:(unsigned __int8)a4 forIdentifier:(id)a5
+- (BOOL)_handleCameraControlGesture:(unsigned __int8)gesture forSide:(unsigned __int8)side forIdentifier:(id)identifier
 {
-  v5 = a3;
-  v7 = a5;
-  if (v5 != 8 && v5 != 5)
+  gestureCopy = gesture;
+  identifierCopy = identifier;
+  if (gestureCopy != 8 && gestureCopy != 5)
   {
     if (dword_1002F7008 <= 90 && (dword_1002F7008 != -1 || _LogCategory_Initialize()))
     {
-      sub_1001F5DE0(v5);
+      sub_1001F5DE0(gestureCopy);
     }
 
     goto LABEL_21;
@@ -150,7 +150,7 @@
   {
     if (dword_1002F7008 <= 60 && (dword_1002F7008 != -1 || _LogCategory_Initialize()))
     {
-      sub_1001F5C14(v5);
+      sub_1001F5C14(gestureCopy);
     }
 
 LABEL_21:
@@ -162,8 +162,8 @@ LABEL_21:
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v8 = [(NSMutableDictionary *)self->_devicesMap allValues];
-  v9 = [v8 countByEnumeratingWithState:&v28 objects:v33 count:16];
+  allValues = [(NSMutableDictionary *)self->_devicesMap allValues];
+  v9 = [allValues countByEnumeratingWithState:&v28 objects:v33 count:16];
   if (v9)
   {
     v10 = v9;
@@ -174,12 +174,12 @@ LABEL_6:
     {
       if (*v29 != v11)
       {
-        objc_enumerationMutation(v8);
+        objc_enumerationMutation(allValues);
       }
 
       v13 = *(*(&v28 + 1) + 8 * v12);
-      v14 = [v13 identifier];
-      v15 = [v14 isEqualToString:v7];
+      identifier = [v13 identifier];
+      v15 = [identifier isEqualToString:identifierCopy];
 
       if (v15)
       {
@@ -188,7 +188,7 @@ LABEL_6:
 
       if (v10 == ++v12)
       {
-        v10 = [v8 countByEnumeratingWithState:&v28 objects:v33 count:16];
+        v10 = [allValues countByEnumeratingWithState:&v28 objects:v33 count:16];
         if (v10)
         {
           goto LABEL_6;
@@ -198,21 +198,21 @@ LABEL_6:
       }
     }
 
-    v17 = [v13 bluetoothAddress];
+    bluetoothAddress = [v13 bluetoothAddress];
 
-    if (!v17)
+    if (!bluetoothAddress)
     {
       goto LABEL_13;
     }
 
     v18 = +[BTSmartRoutingDaemon sharedBTSmartRoutingDaemon];
-    v19 = [v18 getCurrentRoute];
-    if (([v19 isEqualToString:@"Speaker"] & 1) != 0 || objc_msgSend(v19, "isEqualToString:", @"Receiver"))
+    getCurrentRoute = [v18 getCurrentRoute];
+    if (([getCurrentRoute isEqualToString:@"Speaker"] & 1) != 0 || objc_msgSend(getCurrentRoute, "isEqualToString:", @"Receiver"))
     {
-      v20 = [NSString stringWithFormat:@"%@%@", v17, @"-tacl"];
+      v20 = [NSString stringWithFormat:@"%@%@", bluetoothAddress, @"-tacl"];
       if (dword_1002F7008 <= 30 && (dword_1002F7008 != -1 || _LogCategory_Initialize()))
       {
-        v26 = v19;
+        v26 = getCurrentRoute;
         v27 = v20;
         LogPrintF();
       }
@@ -222,8 +222,8 @@ LABEL_6:
 
     else
     {
-      v21 = [v18 getCurrentBTRouteAddress];
-      v22 = [v21 isEqualToString:v17];
+      getCurrentBTRouteAddress = [v18 getCurrentBTRouteAddress];
+      v22 = [getCurrentBTRouteAddress isEqualToString:bluetoothAddress];
 
       if (v22 && dword_1002F7008 <= 30 && (dword_1002F7008 != -1 || _LogCategory_Initialize()))
       {
@@ -268,7 +268,7 @@ LABEL_6:
 LABEL_12:
 
 LABEL_13:
-    sub_1001F5D5C(v7, &v32);
+    sub_1001F5D5C(identifierCopy, &v32);
     v16 = v32;
   }
 
@@ -277,20 +277,20 @@ LABEL_50:
   return v16;
 }
 
-- (void)_updateCameraGestureforDevice:(id)a3
+- (void)_updateCameraGestureforDevice:(id)device
 {
-  v6 = a3;
-  v4 = [v6 remoteCameraControlConfig];
-  if (v4 >= 2)
+  deviceCopy = device;
+  remoteCameraControlConfig = [deviceCopy remoteCameraControlConfig];
+  if (remoteCameraControlConfig >= 2)
   {
-    if (v4 == 3)
+    if (remoteCameraControlConfig == 3)
     {
       v5 = 8;
     }
 
     else
     {
-      v5 = v4 == 2;
+      v5 = remoteCameraControlConfig == 2;
     }
 
     if (dword_1002F7008 <= 30 && (dword_1002F7008 != -1 || _LogCategory_Initialize()))
@@ -298,7 +298,7 @@ LABEL_50:
       sub_1001F5E48();
     }
 
-    [(AAGestureControl *)self _sendRawGestureConfiguration:v5 withGestureStatus:self->_captureAppActive forAADevice:v6];
+    [(AAGestureControl *)self _sendRawGestureConfiguration:v5 withGestureStatus:self->_captureAppActive forAADevice:deviceCopy];
   }
 }
 
@@ -360,16 +360,16 @@ LABEL_50:
   }
 }
 
-- (void)_connectedDeviceLost:(id)a3
+- (void)_connectedDeviceLost:(id)lost
 {
-  v7 = a3;
+  lostCopy = lost;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   v4 = _os_feature_enabled_impl();
-  v5 = v7;
+  v5 = lostCopy;
   if (v4)
   {
-    v6 = [v7 identifier];
-    [(NSMutableDictionary *)self->_devicesMap removeObjectForKey:v6];
+    identifier = [lostCopy identifier];
+    [(NSMutableDictionary *)self->_devicesMap removeObjectForKey:identifier];
     if (![(NSMutableDictionary *)self->_devicesMap count])
     {
       if (dword_1002F7008 <= 30 && (dword_1002F7008 != -1 || _LogCategory_Initialize()))
@@ -380,24 +380,24 @@ LABEL_50:
       [(AAGestureControl *)self _observeCameraStatusEnsureStopped];
     }
 
-    v5 = v7;
+    v5 = lostCopy;
   }
 
   _objc_release_x1(v4, v5);
 }
 
-- (void)_rawGestureMessageReceived:(id)a3 fromDeviceIdentifier:(id)a4
+- (void)_rawGestureMessageReceived:(id)received fromDeviceIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  receivedCopy = received;
+  identifierCopy = identifier;
   if (dword_1002F7008 <= 30 && (dword_1002F7008 != -1 || _LogCategory_Initialize()))
   {
-    v10 = v6;
-    v11 = v7;
+    v10 = receivedCopy;
+    v11 = identifierCopy;
     LogPrintF();
   }
 
-  if ([v6 length] <= 1)
+  if ([receivedCopy length] <= 1)
   {
     sub_1001F6094();
   }
@@ -405,7 +405,7 @@ LABEL_50:
   else
   {
     v12 = 0;
-    [v6 getBytes:&v12 length:2];
+    [receivedCopy getBytes:&v12 length:2];
     v8 = v12;
     v9 = HIBYTE(v12);
     if (dword_1002F7008 <= 30 && (dword_1002F7008 != -1 || _LogCategory_Initialize()))
@@ -415,29 +415,29 @@ LABEL_50:
 
     if (v8 == 9 && v9 == 4)
     {
-      [(AAGestureControl *)self _handleDualBudLongPressGestureForIdentifier:v7];
+      [(AAGestureControl *)self _handleDualBudLongPressGestureForIdentifier:identifierCopy];
     }
 
     if (_os_feature_enabled_impl())
     {
-      [(AAGestureControl *)self _handleCameraControlGesture:v8 forSide:v9 forIdentifier:v7];
+      [(AAGestureControl *)self _handleCameraControlGesture:v8 forSide:v9 forIdentifier:identifierCopy];
     }
   }
 }
 
-- (void)_sendRawGestureConfiguration:(unsigned __int16)a3 withGestureStatus:(BOOL)a4 forAADevice:(id)a5
+- (void)_sendRawGestureConfiguration:(unsigned __int16)configuration withGestureStatus:(BOOL)status forAADevice:(id)device
 {
-  v5 = a4;
-  v6 = a3;
-  v8 = a5;
+  statusCopy = status;
+  configurationCopy = configuration;
+  deviceCopy = device;
   if (self->_connectedDiscovery)
   {
     v9 = objc_alloc_init(AADeviceConfig);
-    v10 = [v8 rawGesturesConfigFlags];
-    v11 = v10 | v6;
-    if (!v5)
+    rawGesturesConfigFlags = [deviceCopy rawGesturesConfigFlags];
+    v11 = rawGesturesConfigFlags | configurationCopy;
+    if (!statusCopy)
     {
-      v11 = v10 & ~v6;
+      v11 = rawGesturesConfigFlags & ~configurationCopy;
     }
 
     [v9 setRawGesturesConfigFlags:v11 | 0x8000u];
@@ -446,16 +446,16 @@ LABEL_50:
       sub_1001F60F4(v9);
     }
 
-    v12 = [v8 identifier];
+    identifier = [deviceCopy identifier];
     connectedDiscovery = self->_connectedDiscovery;
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
     v15[2] = sub_1000B6334;
     v15[3] = &unk_1002B68A8;
     v16 = v9;
-    v17 = v12;
+    v17 = identifier;
     v14 = v9;
-    [(AADeviceManager *)connectedDiscovery sendDeviceConfig:v14 identifier:v12 completion:v15];
+    [(AADeviceManager *)connectedDiscovery sendDeviceConfig:v14 identifier:identifier completion:v15];
   }
 }
 
@@ -465,8 +465,8 @@ LABEL_50:
   v17[0] = @"Transport";
   v17[1] = @"PhysicalDeviceUniqueID";
   v3 = objc_opt_new();
-  v4 = [v3 UUIDString];
-  v18[1] = v4;
+  uUIDString = [v3 UUIDString];
+  v18[1] = uUIDString;
   v17[2] = @"PrimaryUsagePage";
   v5 = [NSNumber numberWithUnsignedShort:65344];
   v18[2] = v5;
@@ -513,7 +513,7 @@ LABEL_50:
   v6[2] = sub_1000B66C4;
   v6[3] = &unk_1002B6D18;
   v7 = v3;
-  v8 = self;
+  selfCopy = self;
   v5 = v3;
   dispatch_sync(dispatchQueue, v6);
 }
@@ -527,7 +527,7 @@ LABEL_50:
   }
 }
 
-- (void)notification:(int64_t)a3 withProperty:(id)a4 forService:(id)a5
+- (void)notification:(int64_t)notification withProperty:(id)property forService:(id)service
 {
   if (_os_feature_enabled_impl() && dword_1002F7008 <= 30 && (dword_1002F7008 != -1 || _LogCategory_Initialize()))
   {
@@ -535,9 +535,9 @@ LABEL_50:
   }
 }
 
-- (void)_handleDualBudLongPressGestureForIdentifier:(id)a3
+- (void)_handleDualBudLongPressGestureForIdentifier:(id)identifier
 {
-  v12 = a3;
+  identifierCopy = identifier;
   v4 = +[LSApplicationWorkspace defaultWorkspace];
   v5 = [v4 applicationIsInstalled:@"com.apple.Translate"];
 
@@ -588,8 +588,8 @@ LABEL_24:
   }
 
   v7 = +[AADeviceManagerDaemon sharedAADeviceManagerDaemon];
-  v8 = [v7 availableDevices];
-  v9 = [v8 objectForKeyedSubscript:v12];
+  availableDevices = [v7 availableDevices];
+  v9 = [availableDevices objectForKeyedSubscript:identifierCopy];
 
   if (v9)
   {
@@ -605,16 +605,16 @@ LABEL_24:
 LABEL_25:
 }
 
-- (void)_handleFarFieldStatusChanged:(id)a3
+- (void)_handleFarFieldStatusChanged:(id)changed
 {
-  v3 = a3;
-  v4 = [v3 userInfo];
-  v14 = [v4 objectForKeyedSubscript:@"address"];
+  changedCopy = changed;
+  userInfo = [changedCopy userInfo];
+  v14 = [userInfo objectForKeyedSubscript:@"address"];
 
-  v5 = [v3 userInfo];
+  userInfo2 = [changedCopy userInfo];
 
-  v6 = [v5 objectForKeyedSubscript:@"value"];
-  v7 = [v6 intValue];
+  v6 = [userInfo2 objectForKeyedSubscript:@"value"];
+  intValue = [v6 intValue];
 
   if (dword_1002F7008 <= 50 && (dword_1002F7008 != -1 || _LogCategory_Initialize()))
   {
@@ -622,7 +622,7 @@ LABEL_25:
   }
 
   v8 = +[AAGestureControl sharedGestureControl];
-  if (v7)
+  if (intValue)
   {
     v9 = 1;
   }
@@ -632,7 +632,7 @@ LABEL_25:
     v9 = 2;
   }
 
-  if (v7)
+  if (intValue)
   {
     v10 = v14;
   }
@@ -647,7 +647,7 @@ LABEL_25:
   v11 = +[AAGestureControl sharedGestureControl];
   [v11 setFarFieldDeviceAddress:v10];
 
-  if (!v7)
+  if (!intValue)
   {
     v12 = +[AAGestureControl sharedGestureControl];
     [v12 setFarFieldDeviceAddress:0];
@@ -716,19 +716,19 @@ LABEL_25:
   }
 }
 
-- (void)_connectedDeviceFound:(id)a3
+- (void)_connectedDeviceFound:(id)found
 {
-  v12 = a3;
+  foundCopy = found;
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  v4 = _os_feature_enabled_impl();
-  v5 = v12;
-  if (v4)
+  cameraControlCapability = _os_feature_enabled_impl();
+  v5 = foundCopy;
+  if (cameraControlCapability)
   {
-    v4 = [v12 cameraControlCapability];
-    v5 = v12;
-    if (v4 == 2)
+    cameraControlCapability = [foundCopy cameraControlCapability];
+    v5 = foundCopy;
+    if (cameraControlCapability == 2)
     {
-      v6 = [v12 identifier];
+      identifier = [foundCopy identifier];
       devicesMap = self->_devicesMap;
       if (!devicesMap)
       {
@@ -739,8 +739,8 @@ LABEL_25:
         devicesMap = self->_devicesMap;
       }
 
-      v10 = [(NSMutableDictionary *)devicesMap objectForKeyedSubscript:v6];
-      [(NSMutableDictionary *)self->_devicesMap setObject:v12 forKeyedSubscript:v6];
+      v10 = [(NSMutableDictionary *)devicesMap objectForKeyedSubscript:identifier];
+      [(NSMutableDictionary *)self->_devicesMap setObject:foundCopy forKeyedSubscript:identifier];
       if (!v10)
       {
         [(AAGestureControl *)self _observeCameraStatusEnsureStarted];
@@ -749,21 +749,21 @@ LABEL_25:
           if (dword_1002F7008 <= 30 && (dword_1002F7008 != -1 || _LogCategory_Initialize()))
           {
             LogPrintF();
-            [(AAGestureControl *)self _updateCameraGestureforDevice:v12, 0];
+            [(AAGestureControl *)self _updateCameraGestureforDevice:foundCopy, 0];
           }
 
           else
           {
-            [(AAGestureControl *)self _updateCameraGestureforDevice:v12, v11];
+            [(AAGestureControl *)self _updateCameraGestureforDevice:foundCopy, v11];
           }
         }
       }
 
-      v5 = v12;
+      v5 = foundCopy;
     }
   }
 
-  _objc_release_x1(v4, v5);
+  _objc_release_x1(cameraControlCapability, v5);
 }
 
 @end

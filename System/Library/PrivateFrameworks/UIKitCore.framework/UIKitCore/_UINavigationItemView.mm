@@ -1,38 +1,38 @@
 @interface _UINavigationItemView
 - (CGRect)_labelFrame;
-- (CGSize)_currentTextShadowOffsetForBarStyle:(int64_t)a3;
+- (CGSize)_currentTextShadowOffsetForBarStyle:(int64_t)style;
 - (CGSize)_titleSize;
-- (_UINavigationItemView)initWithNavigationItem:(id)a3;
+- (_UINavigationItemView)initWithNavigationItem:(id)item;
 - (double)_titleYAdjustmentCustomization;
-- (id)_currentTextColorForBarStyle:(int64_t)a3;
-- (id)_currentTextShadowColorForBarStyle:(int64_t)a3;
+- (id)_currentTextColorForBarStyle:(int64_t)style;
+- (id)_currentTextShadowColorForBarStyle:(int64_t)style;
 - (id)_defaultFont;
 - (id)description;
 - (id)navigationItem;
 - (id)title;
 - (void)_cleanUpCrossView;
-- (void)_crossFadeHiddingButton:(BOOL)a3;
-- (void)_prepareCrossViewsForNewSize:(CGSize)a3;
-- (void)_setFont:(id)a3;
+- (void)_crossFadeHiddingButton:(BOOL)button;
+- (void)_prepareCrossViewsForNewSize:(CGSize)size;
+- (void)_setFont:(id)font;
 - (void)_updateLabel;
 - (void)_updateLabelColor;
 - (void)_updateLabelContents;
-- (void)setFont:(id)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setTitleAutoresizesToFit:(BOOL)a3;
+- (void)setFont:(id)font;
+- (void)setFrame:(CGRect)frame;
+- (void)setTitleAutoresizesToFit:(BOOL)fit;
 @end
 
 @implementation _UINavigationItemView
 
-- (_UINavigationItemView)initWithNavigationItem:(id)a3
+- (_UINavigationItemView)initWithNavigationItem:(id)item
 {
   v21[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  itemCopy = item;
   v5 = [(UIView *)self initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_item, v4);
+    objc_storeWeak(&v5->_item, itemCopy);
     __asm { FMOV            V0.2D, #-1.0 }
 
     v6->_titleSize = _Q0;
@@ -48,8 +48,8 @@
     [(UIView *)v14 setBackgroundColor:v15];
 
     [(UILabel *)v6->_label setLineBreakMode:4];
-    v16 = [(_UINavigationItemView *)v6 _defaultFont];
-    [(_UINavigationItemView *)v6 _setFont:v16];
+    _defaultFont = [(_UINavigationItemView *)v6 _defaultFont];
+    [(_UINavigationItemView *)v6 _setFont:_defaultFont];
 
     v17 = v6->_label;
     [(_UINavigationItemView *)v6 _labelFrame];
@@ -73,70 +73,70 @@
 - (id)_defaultFont
 {
   WeakRetained = objc_loadWeakRetained(&self->_item);
-  v3 = [WeakRetained _navigationBar];
+  _navigationBar = [WeakRetained _navigationBar];
   [WeakRetained _fontScaleAdjustment];
-  v4 = [v3 _defaultTitleFontWithScaleAdjustment:?];
+  v4 = [_navigationBar _defaultTitleFontWithScaleAdjustment:?];
 
   return v4;
 }
 
-- (id)_currentTextColorForBarStyle:(int64_t)a3
+- (id)_currentTextColorForBarStyle:(int64_t)style
 {
   WeakRetained = objc_loadWeakRetained(&self->_item);
-  v4 = [WeakRetained _navigationBar];
+  _navigationBar = [WeakRetained _navigationBar];
 
-  v5 = [v4 _appearanceStorage];
-  v6 = [v5 textAttributes];
-  v7 = [v6 objectForKey:*off_1E70EC920];
+  _appearanceStorage = [_navigationBar _appearanceStorage];
+  textAttributes = [_appearanceStorage textAttributes];
+  v7 = [textAttributes objectForKey:*off_1E70EC920];
 
   if (v7)
   {
-    v8 = v7;
+    _titleTextColor = v7;
   }
 
   else
   {
-    v8 = [v4 _titleTextColor];
+    _titleTextColor = [_navigationBar _titleTextColor];
   }
 
-  v9 = v8;
+  v9 = _titleTextColor;
 
   return v9;
 }
 
-- (id)_currentTextShadowColorForBarStyle:(int64_t)a3
+- (id)_currentTextShadowColorForBarStyle:(int64_t)style
 {
   WeakRetained = objc_loadWeakRetained(&self->_item);
-  v4 = [WeakRetained _navigationBar];
+  _navigationBar = [WeakRetained _navigationBar];
 
-  v5 = [v4 _appearanceStorage];
-  v6 = [v5 textAttributes];
-  v7 = [v6 objectForKey:*off_1E70EC9B0];
+  _appearanceStorage = [_navigationBar _appearanceStorage];
+  textAttributes = [_appearanceStorage textAttributes];
+  v7 = [textAttributes objectForKey:*off_1E70EC9B0];
 
-  v8 = [v7 shadowColor];
-  v9 = v8;
-  if (v8)
+  shadowColor = [v7 shadowColor];
+  v9 = shadowColor;
+  if (shadowColor)
   {
-    v10 = v8;
+    buttonItemShadowColor = shadowColor;
   }
 
   else
   {
-    v10 = [v4 buttonItemShadowColor];
+    buttonItemShadowColor = [_navigationBar buttonItemShadowColor];
   }
 
-  v11 = v10;
+  v11 = buttonItemShadowColor;
 
   return v11;
 }
 
-- (CGSize)_currentTextShadowOffsetForBarStyle:(int64_t)a3
+- (CGSize)_currentTextShadowOffsetForBarStyle:(int64_t)style
 {
   WeakRetained = objc_loadWeakRetained(&self->_item);
-  v4 = [WeakRetained _navigationBar];
-  v5 = [v4 _appearanceStorage];
-  v6 = [v5 textAttributes];
-  v7 = [v6 objectForKey:*off_1E70EC9B0];
+  _navigationBar = [WeakRetained _navigationBar];
+  _appearanceStorage = [_navigationBar _appearanceStorage];
+  textAttributes = [_appearanceStorage textAttributes];
+  v7 = [textAttributes objectForKey:*off_1E70EC9B0];
 
   if (v7)
   {
@@ -158,12 +158,12 @@
   return result;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   self->_titleSize = *MEMORY[0x1E695F060];
   [(UIView *)self setNeedsLayout];
   v8.receiver = self;
@@ -174,45 +174,45 @@
 - (void)_updateLabelColor
 {
   WeakRetained = objc_loadWeakRetained(&self->_item);
-  v7 = [WeakRetained _navigationBar];
+  _navigationBar = [WeakRetained _navigationBar];
 
-  v4 = [v7 barStyle];
+  barStyle = [_navigationBar barStyle];
   label = self->_label;
-  v6 = [(_UINavigationItemView *)self _currentTextColorForBarStyle:v4];
+  v6 = [(_UINavigationItemView *)self _currentTextColorForBarStyle:barStyle];
   [(UILabel *)label setTextColor:v6];
 }
 
 - (void)_updateLabelContents
 {
   WeakRetained = objc_loadWeakRetained(&self->_item);
-  v10 = [WeakRetained _navigationBar];
+  _navigationBar = [WeakRetained _navigationBar];
 
-  v4 = [v10 barStyle];
-  v5 = [(_UINavigationItemView *)self title];
+  barStyle = [_navigationBar barStyle];
+  title = [(_UINavigationItemView *)self title];
   [(_UINavigationItemView *)self _updateLabelColor];
   label = self->_label;
-  [(_UINavigationItemView *)self _currentTextShadowOffsetForBarStyle:v4];
+  [(_UINavigationItemView *)self _currentTextShadowOffsetForBarStyle:barStyle];
   [(UILabel *)label setShadowOffset:?];
   v7 = self->_label;
-  v8 = [(_UINavigationItemView *)self _currentTextShadowColorForBarStyle:v4];
+  v8 = [(_UINavigationItemView *)self _currentTextShadowColorForBarStyle:barStyle];
   [(UILabel *)v7 setShadowColor:v8];
 
   if (!self->_customFontSet)
   {
-    v9 = [(_UINavigationItemView *)self _defaultFont];
-    [(_UINavigationItemView *)self _setFont:v9];
+    _defaultFont = [(_UINavigationItemView *)self _defaultFont];
+    [(_UINavigationItemView *)self _setFont:_defaultFont];
   }
 
-  [(UILabel *)self->_label setText:v5];
+  [(UILabel *)self->_label setText:title];
 }
 
 - (double)_titleYAdjustmentCustomization
 {
   WeakRetained = objc_loadWeakRetained(&self->_item);
-  v3 = [WeakRetained _navigationBar];
+  _navigationBar = [WeakRetained _navigationBar];
 
-  v4 = [v3 _appearanceStorage];
-  [v4 titleVerticalAdjustmentForBarMetrics:{objc_msgSend(v3, "_activeBarMetrics")}];
+  _appearanceStorage = [_navigationBar _appearanceStorage];
+  [_appearanceStorage titleVerticalAdjustmentForBarMetrics:{objc_msgSend(_navigationBar, "_activeBarMetrics")}];
   v6 = v5;
 
   return v6;
@@ -226,16 +226,16 @@
   [(_UINavigationItemView *)self _titleSize];
   v8 = v7;
   WeakRetained = objc_loadWeakRetained(&self->_item);
-  v10 = [WeakRetained _navigationBar];
+  _navigationBar = [WeakRetained _navigationBar];
 
-  v11 = [v10 _contentView];
-  v12 = [v10 _currentVisualStyle];
-  [v12 navigationItemBaselineOffset];
+  _contentView = [_navigationBar _contentView];
+  _currentVisualStyle = [_navigationBar _currentVisualStyle];
+  [_currentVisualStyle navigationItemBaselineOffset];
   v14 = v13;
-  [v11 frame];
+  [_contentView frame];
   v15 = CGRectGetHeight(v27) - v14;
   [(UILabel *)self->_label _baselineOffsetFromBottom];
-  [(UIView *)self convertPoint:v11 fromView:v4, v15 + v16 - v8];
+  [(UIView *)self convertPoint:_contentView fromView:v4, v15 + v16 - v8];
   v18 = v17;
   v20 = v19;
   [(_UINavigationItemView *)self _titleYAdjustmentCustomization];
@@ -297,51 +297,51 @@
 - (id)title
 {
   WeakRetained = objc_loadWeakRetained(&self->_item);
-  v3 = [WeakRetained title];
+  title = [WeakRetained title];
 
-  return v3;
+  return title;
 }
 
-- (void)setTitleAutoresizesToFit:(BOOL)a3
+- (void)setTitleAutoresizesToFit:(BOOL)fit
 {
-  [(UILabel *)self->_label setAdjustsFontSizeToFitWidth:a3];
+  [(UILabel *)self->_label setAdjustsFontSizeToFitWidth:fit];
 
   [(UIView *)self setNeedsLayout];
 }
 
-- (void)_setFont:(id)a3
+- (void)_setFont:(id)font
 {
   label = self->_label;
-  v5 = a3;
-  [(UILabel *)label setFont:v5];
+  fontCopy = font;
+  [(UILabel *)label setFont:fontCopy];
   WeakRetained = objc_loadWeakRetained(&self->_item);
-  v15 = [WeakRetained _navigationBar];
+  _navigationBar = [WeakRetained _navigationBar];
 
-  v7 = [v15 barStyle];
-  v8 = [v15 _currentVisualStyle];
-  v9 = v8;
+  barStyle = [_navigationBar barStyle];
+  _currentVisualStyle = [_navigationBar _currentVisualStyle];
+  v9 = _currentVisualStyle;
   v10 = self->_label;
-  if (v7)
+  if (barStyle)
   {
-    [v8 _legacyButtonFontSize];
+    [_currentVisualStyle _legacyButtonFontSize];
   }
 
   else
   {
-    [v8 buttonFontSize];
+    [_currentVisualStyle buttonFontSize];
   }
 
   v12 = v11;
-  [v5 pointSize];
+  [fontCopy pointSize];
   v14 = v13;
 
   [(UILabel *)v10 setMinimumScaleFactor:v12 / v14];
 }
 
-- (void)setFont:(id)a3
+- (void)setFont:(id)font
 {
-  self->_customFontSet = a3 != 0;
-  if (a3)
+  self->_customFontSet = font != 0;
+  if (font)
   {
 
     [(_UINavigationItemView *)self _setFont:?];
@@ -349,8 +349,8 @@
 
   else
   {
-    v4 = [(_UINavigationItemView *)self _defaultFont];
-    [(_UINavigationItemView *)self _setFont:v4];
+    _defaultFont = [(_UINavigationItemView *)self _defaultFont];
+    [(_UINavigationItemView *)self _setFont:_defaultFont];
   }
 }
 
@@ -361,11 +361,11 @@
   v10.super_class = _UINavigationItemView;
   v4 = [(UIView *)&v10 description];
   WeakRetained = objc_loadWeakRetained(&self->_item);
-  v6 = [(_UINavigationItemView *)self title];
-  if (v6)
+  title = [(_UINavigationItemView *)self title];
+  if (title)
   {
-    v7 = [(_UINavigationItemView *)self title];
-    v8 = [v3 stringWithFormat:@"<%@: item=%@ title=%@>", v4, WeakRetained, v7];
+    title2 = [(_UINavigationItemView *)self title];
+    v8 = [v3 stringWithFormat:@"<%@: item=%@ title=%@>", v4, WeakRetained, title2];
   }
 
   else
@@ -376,10 +376,10 @@
   return v8;
 }
 
-- (void)_prepareCrossViewsForNewSize:(CGSize)a3
+- (void)_prepareCrossViewsForNewSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   if (self->_isCrossFading)
   {
     [(_UINavigationItemView *)self _cleanUpCrossView];
@@ -387,7 +387,7 @@
 
   [(UIView *)self bounds];
   _UIGraphicsBeginImageContextWithOptions(0, 0, v6, v7, 0.0);
-  v8 = [(UIView *)self layer];
+  layer = [(UIView *)self layer];
   ContextStack = GetContextStack(0);
   if (*ContextStack < 1)
   {
@@ -399,7 +399,7 @@
     v10 = ContextStack[3 * (*ContextStack - 1) + 1];
   }
 
-  [v8 renderInContext:v10];
+  [layer renderInContext:v10];
 
   v11 = _UIGraphicsGetImageFromCurrentImageContext(0);
   UIGraphicsEndImageContext();
@@ -413,12 +413,12 @@
   }
 
   v14 = [_UINavigationItemView alloc];
-  v15 = [(_UINavigationItemView *)self navigationItem];
-  v16 = [(_UINavigationItemView *)v14 initWithNavigationItem:v15];
+  navigationItem = [(_UINavigationItemView *)self navigationItem];
+  v16 = [(_UINavigationItemView *)v14 initWithNavigationItem:navigationItem];
 
   [(_UINavigationItemView *)v16 setFrame:0.0, 0.0, width, height];
   _UIGraphicsBeginImageContextWithOptions(0, 0, width, height, 0.0);
-  v17 = [(UIView *)v16 layer];
+  layer2 = [(UIView *)v16 layer];
   v18 = GetContextStack(0);
   if (*v18 < 1)
   {
@@ -430,7 +430,7 @@
     v19 = v18[3 * (*v18 - 1) + 1];
   }
 
-  [v17 renderInContext:v19];
+  [layer2 renderInContext:v19];
 
   v22 = _UIGraphicsGetImageFromCurrentImageContext(0);
 
@@ -458,10 +458,10 @@
   [(UIView *)self setNeedsLayout];
 }
 
-- (void)_crossFadeHiddingButton:(BOOL)a3
+- (void)_crossFadeHiddingButton:(BOOL)button
 {
   v3 = 0.0;
-  if (a3)
+  if (button)
   {
     v3 = 0.175;
     v4 = 0x10000;

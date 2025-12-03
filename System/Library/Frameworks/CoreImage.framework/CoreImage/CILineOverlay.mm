@@ -123,27 +123,27 @@
   v9 = [CIVector vectorWithX:v7 Y:v8 Z:-v4];
   v10 = [CIVector vectorWithX:1.2912 Y:1.2921];
   v11 = [CIVector vectorWithX:0.109088909 Y:0.114934928 Z:0.103904704];
-  v12 = [(CILineOverlay *)self _CIComicNoiseReduction];
+  _CIComicNoiseReduction = [(CILineOverlay *)self _CIComicNoiseReduction];
   [(CIImage *)self->inputImage extent];
   v30[0] = self->inputImage;
   v30[1] = v10;
   v30[2] = v11;
   v30[3] = v9;
-  v17 = [v12 applyWithExtent:&__block_literal_global_13 roiCallback:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v30, 4), v13, v14, v15, v16}];
-  v18 = [(CILineOverlay *)self _CISobelEdges];
+  v17 = [_CIComicNoiseReduction applyWithExtent:&__block_literal_global_13 roiCallback:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v30, 4), v13, v14, v15, v16}];
+  _CISobelEdges = [(CILineOverlay *)self _CISobelEdges];
   [v17 extent];
   v32 = CGRectInset(v31, -1.0, -1.0);
   inputEdgeIntensity = self->inputEdgeIntensity;
   v29[0] = v17;
   v29[1] = inputEdgeIntensity;
-  v20 = [v18 applyWithExtent:&__block_literal_global_58_1 roiCallback:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v29, 2), v32.origin.x, v32.origin.y, v32.size.width, v32.size.height}];
-  v21 = [(CILineOverlay *)self _CIColorControls];
+  v20 = [_CISobelEdges applyWithExtent:&__block_literal_global_58_1 roiCallback:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v29, 2), v32.origin.x, v32.origin.y, v32.size.width, v32.size.height}];
+  _CIColorControls = [(CILineOverlay *)self _CIColorControls];
   [v20 extent];
   inputThreshold = self->inputThreshold;
   v28[0] = v20;
   v28[1] = inputThreshold;
   v28[2] = self->inputContrast;
-  return [v21 applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v28, 3), v23, v24, v25, v26}];
+  return [_CIColorControls applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v28, 3), v23, v24, v25, v26}];
 }
 
 @end

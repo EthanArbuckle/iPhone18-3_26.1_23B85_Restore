@@ -1,33 +1,33 @@
 @interface FPUIAuthenticationTableViewController
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4;
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path;
 - (FPUIAuthenticationDelegate)authenticationDelegate;
 - (FPUIAuthenticationTableViewController)init;
-- (double)tableView:(id)a3 heightForFooterInSection:(int64_t)a4;
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
-- (id)_rowDescriptorForIndexPath:(id)a3;
-- (id)_rowDescriptorsForSection:(int64_t)a3;
-- (id)_tableView:(id)a3 viewOfType:(unint64_t)a4 inSection:(int64_t)a5;
+- (double)tableView:(id)view heightForFooterInSection:(int64_t)section;
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
+- (id)_rowDescriptorForIndexPath:(id)path;
+- (id)_rowDescriptorsForSection:(int64_t)section;
+- (id)_tableView:(id)view viewOfType:(unint64_t)type inSection:(int64_t)section;
 - (id)_titleView;
 - (id)defaultLeftBarButtonItem;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (uint64_t)_titleView;
-- (void)_cancel:(id)a3;
-- (void)_setState:(unint64_t)a3;
+- (void)_cancel:(id)_cancel;
+- (void)_setState:(unint64_t)state;
 - (void)_stateDidChange;
-- (void)authenticationDelegate:(id)a3 didEncounterError:(id)a4;
-- (void)authenticationDelegate:(id)a3 didFinishWithError:(id)a4 completionHandler:(id)a5;
-- (void)authenticationDelegate:(id)a3 didReceiveCredentialDescriptors:(id)a4;
-- (void)authenticationDelegate:(id)a3 didReceiveVolumeMountRepresentations:(id)a4;
-- (void)selectTextFieldAtIndexPath:(id)a3;
-- (void)setTitle:(id)a3;
-- (void)setTransitioning:(BOOL)a3;
-- (void)tableView:(id)a3 accessoryButtonTappedForRowWithIndexPath:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
+- (void)authenticationDelegate:(id)delegate didEncounterError:(id)error;
+- (void)authenticationDelegate:(id)delegate didFinishWithError:(id)error completionHandler:(id)handler;
+- (void)authenticationDelegate:(id)delegate didReceiveCredentialDescriptors:(id)descriptors;
+- (void)authenticationDelegate:(id)delegate didReceiveVolumeMountRepresentations:(id)representations;
+- (void)selectTextFieldAtIndexPath:(id)path;
+- (void)setTitle:(id)title;
+- (void)setTransitioning:(BOOL)transitioning;
+- (void)tableView:(id)view accessoryButtonTappedForRowWithIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -46,34 +46,34 @@
   v12.super_class = FPUIAuthenticationTableViewController;
   [(FPUIAuthenticationTableViewController *)&v12 viewDidLoad];
   v3 = objc_opt_new();
-  v4 = [(FPUIAuthenticationTableViewController *)self tableView];
-  [v4 setTableFooterView:v3];
+  tableView = [(FPUIAuthenticationTableViewController *)self tableView];
+  [tableView setTableFooterView:v3];
 
   v5 = *MEMORY[0x277D76F30];
-  v6 = [(FPUIAuthenticationTableViewController *)self tableView];
-  [v6 setRowHeight:v5];
+  tableView2 = [(FPUIAuthenticationTableViewController *)self tableView];
+  [tableView2 setRowHeight:v5];
 
-  v7 = [(FPUIAuthenticationTableViewController *)self tableView];
-  [v7 setEstimatedRowHeight:44.0];
+  tableView3 = [(FPUIAuthenticationTableViewController *)self tableView];
+  [tableView3 setEstimatedRowHeight:44.0];
 
-  v8 = [(FPUIAuthenticationTableViewController *)self tableView];
-  [v8 setSectionHeaderTopPadding:0.0];
+  tableView4 = [(FPUIAuthenticationTableViewController *)self tableView];
+  [tableView4 setSectionHeaderTopPadding:0.0];
 
-  v9 = [(FPUIAuthenticationTableViewController *)self defaultLeftBarButtonItem];
-  v10 = [(FPUIAuthenticationTableViewController *)self navigationItem];
-  [v10 setLeftBarButtonItem:v9];
+  defaultLeftBarButtonItem = [(FPUIAuthenticationTableViewController *)self defaultLeftBarButtonItem];
+  navigationItem = [(FPUIAuthenticationTableViewController *)self navigationItem];
+  [navigationItem setLeftBarButtonItem:defaultLeftBarButtonItem];
 
   [(FPUIAuthenticationTableViewController *)self _stateDidChange];
-  v11 = [objc_opt_class() defaultTitle];
-  [(FPUIAuthenticationTableViewController *)self setTitle:v11];
+  defaultTitle = [objc_opt_class() defaultTitle];
+  [(FPUIAuthenticationTableViewController *)self setTitle:defaultTitle];
 
   [(FPUIAuthenticationTableViewController *)self setupTableViewSections];
 }
 
-- (void)setTransitioning:(BOOL)a3
+- (void)setTransitioning:(BOOL)transitioning
 {
   v3 = 2;
-  if (!a3)
+  if (!transitioning)
   {
     v3 = 0;
   }
@@ -81,11 +81,11 @@
   [(FPUIAuthenticationTableViewController *)self _setState:self->_state & 0xFFFFFFFFFFFFFFFDLL | v3];
 }
 
-- (void)_setState:(unint64_t)a3
+- (void)_setState:(unint64_t)state
 {
-  if (self->_state != a3)
+  if (self->_state != state)
   {
-    self->_state = a3;
+    self->_state = state;
     [(FPUIAuthenticationTableViewController *)self _stateDidChange];
   }
 }
@@ -94,25 +94,25 @@
 {
   if ([(FPUIAuthenticationTableViewController *)self isTransitioning])
   {
-    v3 = [(FPUIAuthenticationTableViewController *)self navigationItem];
-    [v3 setRightBarButtonItem:0];
+    navigationItem = [(FPUIAuthenticationTableViewController *)self navigationItem];
+    [navigationItem setRightBarButtonItem:0];
   }
 
   else
   {
-    v4 = [(FPUIAuthenticationTableViewController *)self defaultRightBarButtonItem];
-    v5 = [(FPUIAuthenticationTableViewController *)self navigationItem];
-    [v5 setRightBarButtonItem:v4];
+    defaultRightBarButtonItem = [(FPUIAuthenticationTableViewController *)self defaultRightBarButtonItem];
+    navigationItem2 = [(FPUIAuthenticationTableViewController *)self navigationItem];
+    [navigationItem2 setRightBarButtonItem:defaultRightBarButtonItem];
 
-    v6 = [(FPUIAuthenticationTableViewController *)self canTransitionToNextStep];
-    v3 = [(FPUIAuthenticationTableViewController *)self navigationItem];
-    v7 = [v3 rightBarButtonItem];
-    [v7 setEnabled:v6];
+    canTransitionToNextStep = [(FPUIAuthenticationTableViewController *)self canTransitionToNextStep];
+    navigationItem = [(FPUIAuthenticationTableViewController *)self navigationItem];
+    rightBarButtonItem = [navigationItem rightBarButtonItem];
+    [rightBarButtonItem setEnabled:canTransitionToNextStep];
   }
 
-  v8 = [(FPUIAuthenticationTableViewController *)self isTransitioning];
-  v9 = [(FPUIAuthenticationTableViewController *)self tableView];
-  [v9 setUserInteractionEnabled:!v8];
+  isTransitioning = [(FPUIAuthenticationTableViewController *)self isTransitioning];
+  tableView = [(FPUIAuthenticationTableViewController *)self tableView];
+  [tableView setUserInteractionEnabled:!isTransitioning];
 }
 
 - (id)defaultLeftBarButtonItem
@@ -123,22 +123,22 @@
   return v10;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
   v6.receiver = self;
   v6.super_class = FPUIAuthenticationTableViewController;
-  v4 = a3;
-  [(FPUIAuthenticationTableViewController *)&v6 setTitle:v4];
+  titleCopy = title;
+  [(FPUIAuthenticationTableViewController *)&v6 setTitle:titleCopy];
   v5 = [(FPUIAuthenticationTableViewController *)self _titleView:v6.receiver];
-  [v5 setTitle:v4];
+  [v5 setTitle:titleCopy];
 }
 
 - (id)_titleView
 {
-  v4 = [(FPUIAuthenticationTableViewController *)self navigationItem];
-  v5 = [v4 titleView];
+  navigationItem = [(FPUIAuthenticationTableViewController *)self navigationItem];
+  titleView = [navigationItem titleView];
 
-  if (v5)
+  if (titleView)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -147,61 +147,61 @@
     }
 
     [(FPUIAuthenticationTableViewController *)a2 _titleView];
-    v6 = v8;
+    navigationItem2 = v8;
   }
 
   else
   {
-    v5 = objc_opt_new();
-    v6 = [(FPUIAuthenticationTableViewController *)self navigationItem];
-    [v6 setTitleView:v5];
+    titleView = objc_opt_new();
+    navigationItem2 = [(FPUIAuthenticationTableViewController *)self navigationItem];
+    [navigationItem2 setTitleView:titleView];
   }
 
 LABEL_6:
 
-  return v5;
+  return titleView;
 }
 
-- (void)selectTextFieldAtIndexPath:(id)a3
+- (void)selectTextFieldAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(FPUIAuthenticationTableViewController *)self tableView];
-  v7 = [v5 cellForRowAtIndexPath:v4];
+  pathCopy = path;
+  tableView = [(FPUIAuthenticationTableViewController *)self tableView];
+  v7 = [tableView cellForRowAtIndexPath:pathCopy];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v7 textField];
-    [v6 becomeFirstResponder];
+    textField = [v7 textField];
+    [textField becomeFirstResponder];
   }
 }
 
-- (void)_cancel:(id)a3
+- (void)_cancel:(id)_cancel
 {
-  v3 = [(FPUIAuthenticationTableViewController *)self authenticationDelegate];
-  [v3 cancelAuthenticationSession];
+  authenticationDelegate = [(FPUIAuthenticationTableViewController *)self authenticationDelegate];
+  [authenticationDelegate cancelAuthenticationSession];
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v6 = [(NSArray *)self->_sectionDescriptors objectAtIndexedSubscript:a4];
-  v7 = [v6 isActive];
+  v6 = [(NSArray *)self->_sectionDescriptors objectAtIndexedSubscript:section];
+  isActive = [v6 isActive];
 
-  if (!v7)
+  if (!isActive)
   {
     return 0;
   }
 
-  v8 = [(FPUIAuthenticationTableViewController *)self _rowDescriptorsForSection:a4];
+  v8 = [(FPUIAuthenticationTableViewController *)self _rowDescriptorsForSection:section];
   v9 = [v8 count];
 
   return v9;
 }
 
-- (id)_rowDescriptorsForSection:(int64_t)a3
+- (id)_rowDescriptorsForSection:(int64_t)section
 {
   rowDescriptors = self->_rowDescriptors;
-  v4 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithInteger:section];
   v5 = [(NSDictionary *)rowDescriptors objectForKeyedSubscript:v4];
 
   if (!v5)
@@ -212,11 +212,11 @@ LABEL_6:
   return v5;
 }
 
-- (id)_rowDescriptorForIndexPath:(id)a3
+- (id)_rowDescriptorForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = -[FPUIAuthenticationTableViewController _rowDescriptorsForSection:](self, "_rowDescriptorsForSection:", [v4 section]);
-  v6 = [v4 row];
+  pathCopy = path;
+  v5 = -[FPUIAuthenticationTableViewController _rowDescriptorsForSection:](self, "_rowDescriptorsForSection:", [pathCopy section]);
+  v6 = [pathCopy row];
 
   v7 = [v5 objectAtIndexedSubscript:v6];
   if (!v5)
@@ -227,22 +227,22 @@ LABEL_6:
   return v7;
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
-  v4 = [(FPUIAuthenticationTableViewController *)self _rowDescriptorForIndexPath:a4];
+  v4 = [(FPUIAuthenticationTableViewController *)self _rowDescriptorForIndexPath:path];
   [v4 rowHeight];
   v6 = v5;
 
   return v6;
 }
 
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = -[NSArray objectAtIndexedSubscript:](self->_sectionDescriptors, "objectAtIndexedSubscript:", [v5 section]);
+  pathCopy = path;
+  v6 = -[NSArray objectAtIndexedSubscript:](self->_sectionDescriptors, "objectAtIndexedSubscript:", [pathCopy section]);
   if ([v6 shouldHighlightRows])
   {
-    v7 = [(FPUIAuthenticationTableViewController *)self _rowDescriptorForIndexPath:v5];
+    v7 = [(FPUIAuthenticationTableViewController *)self _rowDescriptorForIndexPath:pathCopy];
     [v7 shouldHighlight];
     v9 = v8 != 0.0;
   }
@@ -255,13 +255,13 @@ LABEL_6:
   return v9;
 }
 
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section
 {
-  v6 = [(NSArray *)self->_sectionDescriptors objectAtIndexedSubscript:a4];
+  v6 = [(NSArray *)self->_sectionDescriptors objectAtIndexedSubscript:section];
   v7 = 0.0;
   if ([v6 isActive])
   {
-    v8 = [(NSArray *)self->_sectionDescriptors objectAtIndexedSubscript:a4];
+    v8 = [(NSArray *)self->_sectionDescriptors objectAtIndexedSubscript:section];
     [v8 headerHeight];
     v7 = v9;
   }
@@ -269,12 +269,12 @@ LABEL_6:
   return v7;
 }
 
-- (double)tableView:(id)a3 heightForFooterInSection:(int64_t)a4
+- (double)tableView:(id)view heightForFooterInSection:(int64_t)section
 {
-  v5 = [(NSArray *)self->_sectionDescriptors objectAtIndexedSubscript:a4];
-  v6 = [(NSArray *)self->_sectionDescriptors lastObject];
-  v7 = v6;
-  if (v5 == v6)
+  v5 = [(NSArray *)self->_sectionDescriptors objectAtIndexedSubscript:section];
+  lastObject = [(NSArray *)self->_sectionDescriptors lastObject];
+  v7 = lastObject;
+  if (v5 == lastObject)
   {
     [v5 footerHeight];
     v11 = v10;
@@ -302,98 +302,98 @@ LABEL_7:
   return v8;
 }
 
-- (void)tableView:(id)a3 accessoryButtonTappedForRowWithIndexPath:(id)a4
+- (void)tableView:(id)view accessoryButtonTappedForRowWithIndexPath:(id)path
 {
-  v8 = a4;
+  pathCopy = path;
   v5 = [(FPUIAuthenticationTableViewController *)self _rowDescriptorForIndexPath:?];
-  v6 = [v5 accessoryButtonTapHandler];
-  v7 = v6;
-  if (v6)
+  accessoryButtonTapHandler = [v5 accessoryButtonTapHandler];
+  v7 = accessoryButtonTapHandler;
+  if (accessoryButtonTapHandler)
   {
-    (*(v6 + 16))(v6, v8);
+    (*(accessoryButtonTapHandler + 16))(accessoryButtonTapHandler, pathCopy);
   }
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v8 = a4;
+  pathCopy = path;
   v5 = [(FPUIAuthenticationTableViewController *)self _rowDescriptorForIndexPath:?];
-  v6 = [v5 selectionHandler];
-  v7 = v6;
-  if (v6)
+  selectionHandler = [v5 selectionHandler];
+  v7 = selectionHandler;
+  if (selectionHandler)
   {
-    (*(v6 + 16))(v6, v8);
+    (*(selectionHandler + 16))(selectionHandler, pathCopy);
   }
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  v4 = [(NSArray *)self->_sectionDescriptors objectAtIndexedSubscript:a4];
+  v4 = [(NSArray *)self->_sectionDescriptors objectAtIndexedSubscript:section];
   if ([v4 isActive])
   {
-    v5 = [v4 headerTitle];
+    headerTitle = [v4 headerTitle];
   }
 
   else
   {
-    v5 = 0;
+    headerTitle = 0;
   }
 
-  return v5;
+  return headerTitle;
 }
 
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section
 {
-  v4 = [(NSArray *)self->_sectionDescriptors objectAtIndexedSubscript:a4];
+  v4 = [(NSArray *)self->_sectionDescriptors objectAtIndexedSubscript:section];
   if ([v4 isActive])
   {
-    v5 = [v4 footerTitle];
+    footerTitle = [v4 footerTitle];
   }
 
   else
   {
-    v5 = 0;
+    footerTitle = 0;
   }
 
-  return v5;
+  return footerTitle;
 }
 
-- (id)_tableView:(id)a3 viewOfType:(unint64_t)a4 inSection:(int64_t)a5
+- (id)_tableView:(id)view viewOfType:(unint64_t)type inSection:(int64_t)section
 {
-  v8 = a3;
-  v9 = [(NSArray *)self->_sectionDescriptors objectAtIndexedSubscript:a5];
+  viewCopy = view;
+  v9 = [(NSArray *)self->_sectionDescriptors objectAtIndexedSubscript:section];
   if (![v9 isActive])
   {
-    v10 = 0;
+    footerViewClass = 0;
     goto LABEL_14;
   }
 
-  if (a4)
+  if (type)
   {
-    v10 = [v9 footerViewClass];
-    if (!v10)
+    footerViewClass = [v9 footerViewClass];
+    if (!footerViewClass)
     {
       goto LABEL_14;
     }
 
-    v11 = [v9 footerViewReuseIdentifier];
+    footerViewReuseIdentifier = [v9 footerViewReuseIdentifier];
   }
 
   else
   {
-    v10 = [v9 headerViewClass];
-    if (!v10)
+    footerViewClass = [v9 headerViewClass];
+    if (!footerViewClass)
     {
       goto LABEL_14;
     }
 
-    v11 = [v9 headerViewReuseIdentifier];
+    footerViewReuseIdentifier = [v9 headerViewReuseIdentifier];
   }
 
-  v12 = v11;
-  [v8 registerClass:v10 forHeaderFooterViewReuseIdentifier:v11];
-  v10 = [v8 dequeueReusableHeaderFooterViewWithIdentifier:v12];
-  if (a4)
+  v12 = footerViewReuseIdentifier;
+  [viewCopy registerClass:footerViewClass forHeaderFooterViewReuseIdentifier:footerViewReuseIdentifier];
+  footerViewClass = [viewCopy dequeueReusableHeaderFooterViewWithIdentifier:v12];
+  if (type)
   {
     [v9 footerViewCustomizationBlock];
   }
@@ -407,31 +407,31 @@ LABEL_7:
 
   if (v14)
   {
-    (v14)[2](v14, v10);
+    (v14)[2](v14, footerViewClass);
   }
 
-  v15 = [v8 backgroundColor];
-  v16 = [v10 contentView];
-  [v16 setBackgroundColor:v15];
+  backgroundColor = [viewCopy backgroundColor];
+  contentView = [footerViewClass contentView];
+  [contentView setBackgroundColor:backgroundColor];
 
 LABEL_14:
 
-  return v10;
+  return footerViewClass;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
+  pathCopy = path;
   sectionDescriptors = self->_sectionDescriptors;
-  v8 = a3;
-  v9 = -[NSArray objectAtIndexedSubscript:](sectionDescriptors, "objectAtIndexedSubscript:", [v6 section]);
-  v10 = [(FPUIAuthenticationTableViewController *)self _rowDescriptorForIndexPath:v6];
-  v11 = [v9 rowCellClass];
-  if (v11)
+  viewCopy = view;
+  v9 = -[NSArray objectAtIndexedSubscript:](sectionDescriptors, "objectAtIndexedSubscript:", [pathCopy section]);
+  v10 = [(FPUIAuthenticationTableViewController *)self _rowDescriptorForIndexPath:pathCopy];
+  rowCellClass = [v9 rowCellClass];
+  if (rowCellClass)
   {
-    v12 = v11;
-    v13 = [v9 rowCellReuseIdentifier];
-    if (v13)
+    cellClass = rowCellClass;
+    rowCellReuseIdentifier = [v9 rowCellReuseIdentifier];
+    if (rowCellReuseIdentifier)
     {
       goto LABEL_6;
     }
@@ -439,12 +439,12 @@ LABEL_14:
 
   else
   {
-    v12 = [v10 cellClass];
-    v14 = [v10 cellReuseIdentifier];
-    v13 = v14;
-    if (v12)
+    cellClass = [v10 cellClass];
+    cellReuseIdentifier = [v10 cellReuseIdentifier];
+    rowCellReuseIdentifier = cellReuseIdentifier;
+    if (cellClass)
     {
-      if (v14)
+      if (cellReuseIdentifier)
       {
         goto LABEL_6;
       }
@@ -453,7 +453,7 @@ LABEL_14:
     else
     {
       [FPUIAuthenticationTableViewController tableView:cellForRowAtIndexPath:];
-      if (v13)
+      if (rowCellReuseIdentifier)
       {
         goto LABEL_6;
       }
@@ -462,59 +462,59 @@ LABEL_14:
 
   [FPUIAuthenticationTableViewController tableView:cellForRowAtIndexPath:];
 LABEL_6:
-  [v8 registerClass:v12 forCellReuseIdentifier:v13];
-  v15 = [v8 dequeueReusableCellWithIdentifier:v13 forIndexPath:v6];
+  [viewCopy registerClass:cellClass forCellReuseIdentifier:rowCellReuseIdentifier];
+  v15 = [viewCopy dequeueReusableCellWithIdentifier:rowCellReuseIdentifier forIndexPath:pathCopy];
 
   [v15 setSelectionStyle:{objc_msgSend(v10, "cellSelectionStyle")}];
-  v16 = [v10 cellCustomizationHandler];
-  v17 = v16;
-  if (v16)
+  cellCustomizationHandler = [v10 cellCustomizationHandler];
+  v17 = cellCustomizationHandler;
+  if (cellCustomizationHandler)
   {
-    (*(v16 + 16))(v16, v15, v6);
+    (*(cellCustomizationHandler + 16))(cellCustomizationHandler, v15, pathCopy);
   }
 
   return v15;
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v11 = a4;
-  v7 = a5;
-  v8 = [(FPUIAuthenticationTableViewController *)self _rowDescriptorForIndexPath:v7];
-  v9 = [v8 cellWillDisplayHandler];
-  v10 = v9;
-  if (v9)
+  cellCopy = cell;
+  pathCopy = path;
+  v8 = [(FPUIAuthenticationTableViewController *)self _rowDescriptorForIndexPath:pathCopy];
+  cellWillDisplayHandler = [v8 cellWillDisplayHandler];
+  v10 = cellWillDisplayHandler;
+  if (cellWillDisplayHandler)
   {
-    (*(v9 + 16))(v9, v11, v7);
+    (*(cellWillDisplayHandler + 16))(cellWillDisplayHandler, cellCopy, pathCopy);
   }
 }
 
-- (void)authenticationDelegate:(id)a3 didReceiveCredentialDescriptors:(id)a4
+- (void)authenticationDelegate:(id)delegate didReceiveCredentialDescriptors:(id)descriptors
 {
-  v5 = a4;
-  v8 = [[FPUIAuthenticationCredentialsViewController alloc] initWithCredentialDescriptors:v5];
+  descriptorsCopy = descriptors;
+  v8 = [[FPUIAuthenticationCredentialsViewController alloc] initWithCredentialDescriptors:descriptorsCopy];
 
-  v6 = [(FPUIAuthenticationTableViewController *)self authenticationDelegate];
-  [(FPUIAuthenticationTableViewController *)v8 setAuthenticationDelegate:v6];
+  authenticationDelegate = [(FPUIAuthenticationTableViewController *)self authenticationDelegate];
+  [(FPUIAuthenticationTableViewController *)v8 setAuthenticationDelegate:authenticationDelegate];
 
-  v7 = [(FPUIAuthenticationTableViewController *)self navigationController];
-  [v7 pushViewController:v8 animated:1];
+  navigationController = [(FPUIAuthenticationTableViewController *)self navigationController];
+  [navigationController pushViewController:v8 animated:1];
 
   [(FPUIAuthenticationTableViewController *)self setNavBarActivityIndicatorHidden:1];
 }
 
-- (void)authenticationDelegate:(id)a3 didReceiveVolumeMountRepresentations:(id)a4
+- (void)authenticationDelegate:(id)delegate didReceiveVolumeMountRepresentations:(id)representations
 {
-  v5 = a4;
-  v6 = [(FPUIAuthenticationTableViewController *)self authenticationDelegate];
+  representationsCopy = representations;
+  authenticationDelegate = [(FPUIAuthenticationTableViewController *)self authenticationDelegate];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __101__FPUIAuthenticationTableViewController_authenticationDelegate_didReceiveVolumeMountRepresentations___block_invoke;
   v8[3] = &unk_278A516E8;
-  v9 = v5;
-  v10 = self;
-  v7 = v5;
-  [v6 mountedVolumeIdentifiersWithCompletionHandler:v8];
+  v9 = representationsCopy;
+  selfCopy = self;
+  v7 = representationsCopy;
+  [authenticationDelegate mountedVolumeIdentifiersWithCompletionHandler:v8];
 }
 
 void __101__FPUIAuthenticationTableViewController_authenticationDelegate_didReceiveVolumeMountRepresentations___block_invoke(uint64_t a1, void *a2)
@@ -543,16 +543,16 @@ void __101__FPUIAuthenticationTableViewController_authenticationDelegate_didRece
   [*(a1 + 48) setNavBarActivityIndicatorHidden:1];
 }
 
-- (void)authenticationDelegate:(id)a3 didEncounterError:(id)a4
+- (void)authenticationDelegate:(id)delegate didEncounterError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  delegateCopy = delegate;
+  errorCopy = error;
+  if (!errorCopy)
   {
     [FPUIAuthenticationTableViewController authenticationDelegate:didEncounterError:];
   }
 
-  [v6 didEncounterError:v7 completionHandler:&__block_literal_global_6];
+  [delegateCopy didEncounterError:errorCopy completionHandler:&__block_literal_global_6];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __82__FPUIAuthenticationTableViewController_authenticationDelegate_didEncounterError___block_invoke_2;
@@ -569,19 +569,19 @@ uint64_t __82__FPUIAuthenticationTableViewController_authenticationDelegate_didE
   return [v2 setTransitioning:0];
 }
 
-- (void)authenticationDelegate:(id)a3 didFinishWithError:(id)a4 completionHandler:(id)a5
+- (void)authenticationDelegate:(id)delegate didFinishWithError:(id)error completionHandler:(id)handler
 {
-  v7 = a4;
-  v8 = a5;
+  errorCopy = error;
+  handlerCopy = handler;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __101__FPUIAuthenticationTableViewController_authenticationDelegate_didFinishWithError_completionHandler___block_invoke;
   block[3] = &unk_278A51398;
   block[4] = self;
-  v12 = v7;
-  v13 = v8;
-  v9 = v8;
-  v10 = v7;
+  v12 = errorCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = errorCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -612,10 +612,10 @@ void __101__FPUIAuthenticationTableViewController_authenticationDelegate_didFini
 
 - (uint64_t)_titleView
 {
-  v6 = [MEMORY[0x277CCA890] currentHandler];
-  *a3 = v6;
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  *a3 = currentHandler;
 
-  return [v6 handleFailureInMethod:a1 object:a2 file:@"FPUIAuthenticationTableViewController.m" lineNumber:141 description:@"bad titleView type"];
+  return [currentHandler handleFailureInMethod:self object:a2 file:@"FPUIAuthenticationTableViewController.m" lineNumber:141 description:@"bad titleView type"];
 }
 
 - (void)_rowDescriptorsForSection:.cold.1()

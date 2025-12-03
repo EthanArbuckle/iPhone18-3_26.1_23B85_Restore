@@ -1,34 +1,34 @@
 @interface MBUserNotificationManager
 + (id)sharedManager;
-- (BOOL)_shouldInformUserWithNotification:(id)a3 account:(id)a4;
+- (BOOL)_shouldInformUserWithNotification:(id)notification account:(id)account;
 - (MBUserNotificationManager)init;
-- (__CFUserNotification)_createCFUserNotificationFromMBUserNotification:(id)a3;
-- (id)_dateOfLastNagForIdentifier:(id)a3 account:(id)a4;
-- (id)_descriptionForResponse:(unint64_t)a3;
-- (id)_mbNotificationForCFNotification:(__CFUserNotification *)a3;
-- (id)_mbNotificationForIdentifier:(id)a3;
-- (id)_propertiesForMBUserNotification:(id)a3;
+- (__CFUserNotification)_createCFUserNotificationFromMBUserNotification:(id)notification;
+- (id)_dateOfLastNagForIdentifier:(id)identifier account:(id)account;
+- (id)_descriptionForResponse:(unint64_t)response;
+- (id)_mbNotificationForCFNotification:(__CFUserNotification *)notification;
+- (id)_mbNotificationForIdentifier:(id)identifier;
+- (id)_propertiesForMBUserNotification:(id)notification;
 - (void)_setupIsDone;
-- (void)_updateDidInformUserWithNotification:(id)a3 account:(id)a4;
-- (void)_userDidRespondToNotification:(__CFUserNotification *)a3 withFlags:(unint64_t)a4;
-- (void)cancelNotificationWithIdentifier:(id)a3 account:(id)a4;
-- (void)clearDidInformUserWithNotificationIdentifier:(id)a3 account:(id)a4;
+- (void)_updateDidInformUserWithNotification:(id)notification account:(id)account;
+- (void)_userDidRespondToNotification:(__CFUserNotification *)notification withFlags:(unint64_t)flags;
+- (void)cancelNotificationWithIdentifier:(id)identifier account:(id)account;
+- (void)clearDidInformUserWithNotificationIdentifier:(id)identifier account:(id)account;
 - (void)dealloc;
-- (void)deferUntilAfterSetupIsDone:(id)a3;
-- (void)presentUserNotification:(id)a3 account:(id)a4 completion:(id)a5;
+- (void)deferUntilAfterSetupIsDone:(id)done;
+- (void)presentUserNotification:(id)notification account:(id)account completion:(id)completion;
 @end
 
 @implementation MBUserNotificationManager
 
-- (id)_descriptionForResponse:(unint64_t)a3
+- (id)_descriptionForResponse:(unint64_t)response
 {
   v3 = @"Unknown";
-  if (a3 == 1)
+  if (response == 1)
   {
     v3 = @"kMBAlternateButton";
   }
 
-  if (a3)
+  if (response)
   {
     return v3;
   }
@@ -58,8 +58,8 @@
   v17[2] = 0x3032000000;
   v17[3] = sub_100256BB8;
   v17[4] = sub_100256BC8;
-  v18 = self;
-  v16.receiver = v18;
+  selfCopy = self;
+  v16.receiver = selfCopy;
   v16.super_class = MBUserNotificationManager;
   v2 = [(MBUserNotificationManager *)&v16 init];
   if (v2)
@@ -151,33 +151,33 @@
   [(NSMutableArray *)self->_afterSetupIsDoneBlocks removeAllObjects];
 }
 
-- (void)deferUntilAfterSetupIsDone:(id)a3
+- (void)deferUntilAfterSetupIsDone:(id)done
 {
-  v4 = a3;
+  doneCopy = done;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100256E44;
   v7[3] = &unk_1003BE9A8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = doneCopy;
+  v6 = doneCopy;
   dispatch_async(queue, v7);
 }
 
-- (id)_propertiesForMBUserNotification:(id)a3
+- (id)_propertiesForMBUserNotification:(id)notification
 {
-  v3 = a3;
+  notificationCopy = notification;
   v4 = +[NSMutableDictionary dictionary];
   v12[0] = kCFUserNotificationAlertHeaderKey;
-  v5 = [v3 title];
-  v13[0] = v5;
+  title = [notificationCopy title];
+  v13[0] = title;
   v12[1] = kCFUserNotificationAlertMessageKey;
-  v6 = [v3 body];
-  v13[1] = v6;
+  body = [notificationCopy body];
+  v13[1] = body;
   v12[2] = kCFUserNotificationDefaultButtonTitleKey;
-  v7 = [v3 button];
-  v13[2] = v7;
+  button = [notificationCopy button];
+  v13[2] = button;
   v13[3] = &__kCFBooleanTrue;
   v12[3] = kCFUserNotificationAlertTopMostKey;
   v12[4] = SBUserNotificationDontDismissOnUnlock;
@@ -189,26 +189,26 @@
   v8 = [NSDictionary dictionaryWithObjects:v13 forKeys:v12 count:7];
   [v4 addEntriesFromDictionary:v8];
 
-  v9 = [v3 alternateButton];
+  alternateButton = [notificationCopy alternateButton];
 
-  if (v9)
+  if (alternateButton)
   {
-    v10 = [v3 alternateButton];
-    [v4 setObject:v10 forKeyedSubscript:kCFUserNotificationAlternateButtonTitleKey];
+    alternateButton2 = [notificationCopy alternateButton];
+    [v4 setObject:alternateButton2 forKeyedSubscript:kCFUserNotificationAlternateButtonTitleKey];
   }
 
   return v4;
 }
 
-- (__CFUserNotification)_createCFUserNotificationFromMBUserNotification:(id)a3
+- (__CFUserNotification)_createCFUserNotificationFromMBUserNotification:(id)notification
 {
-  v3 = [(MBUserNotificationManager *)self _propertiesForMBUserNotification:a3];
+  v3 = [(MBUserNotificationManager *)self _propertiesForMBUserNotification:notification];
   v4 = CFUserNotificationCreate(kCFAllocatorDefault, 0.0, 2uLL, 0, v3);
 
   return v4;
 }
 
-- (id)_mbNotificationForCFNotification:(__CFUserNotification *)a3
+- (id)_mbNotificationForCFNotification:(__CFUserNotification *)notification
 {
   v12 = 0u;
   v13 = 0u;
@@ -230,7 +230,7 @@
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
-        if ([v9 cfUserNotification] == a3)
+        if ([v9 cfUserNotification] == notification)
         {
           v10 = v9;
           goto LABEL_11;
@@ -253,9 +253,9 @@ LABEL_11:
   return v10;
 }
 
-- (id)_mbNotificationForIdentifier:(id)a3
+- (id)_mbNotificationForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -275,8 +275,8 @@ LABEL_11:
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 identifier];
-        v11 = [v10 isEqualToString:v4];
+        identifier = [v9 identifier];
+        v11 = [identifier isEqualToString:identifierCopy];
 
         if (v11)
         {
@@ -300,28 +300,28 @@ LABEL_11:
   return v6;
 }
 
-- (void)_userDidRespondToNotification:(__CFUserNotification *)a3 withFlags:(unint64_t)a4
+- (void)_userDidRespondToNotification:(__CFUserNotification *)notification withFlags:(unint64_t)flags
 {
-  v4 = a4;
+  flagsCopy = flags;
   v8 = [(MBUserNotificationManager *)self _mbNotificationForCFNotification:?];
-  if ((v4 & 3) == 1)
+  if ((flagsCopy & 3) == 1)
   {
     v11 = 1;
   }
 
   else
   {
-    if ((v4 & 3) == 3)
+    if ((flagsCopy & 3) == 3)
     {
-      v9 = MBGetDefaultLog();
-      if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+      completionBlock2 = MBGetDefaultLog();
+      if (os_log_type_enabled(completionBlock2, OS_LOG_TYPE_DEFAULT))
       {
-        v10 = [v8 identifier];
+        identifier = [v8 identifier];
         *buf = 138412290;
-        v21 = v10;
-        _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "User notification %@ canceled", buf, 0xCu);
+        v21 = identifier;
+        _os_log_impl(&_mh_execute_header, completionBlock2, OS_LOG_TYPE_DEFAULT, "User notification %@ canceled", buf, 0xCu);
 
-        v18 = [v8 identifier];
+        identifier2 = [v8 identifier];
         _MBLog();
       }
 
@@ -343,79 +343,79 @@ LABEL_11:
     _MBLog();
   }
 
-  v14 = [v8 completionBlock];
+  completionBlock = [v8 completionBlock];
 
-  if (v14)
+  if (completionBlock)
   {
-    v9 = [v8 completionBlock];
-    (*(v9 + 16))(v9, v11);
+    completionBlock2 = [v8 completionBlock];
+    (*(completionBlock2 + 16))(completionBlock2, v11);
 LABEL_11:
   }
 
-  v15 = NSMapGet(self->_runLoopSources, a3);
+  v15 = NSMapGet(self->_runLoopSources, notification);
   Main = CFRunLoopGetMain();
   CFRunLoopRemoveSource(Main, v15, kCFRunLoopDefaultMode);
-  NSMapRemove(self->_runLoopSources, a3);
+  NSMapRemove(self->_runLoopSources, notification);
   [(NSMutableArray *)self->_notifications removeObject:v8];
   v17 = +[MBDaemon sharedDaemon];
   [v17 releaseWorkAssertion:a2];
 }
 
-- (void)presentUserNotification:(id)a3 account:(id)a4 completion:(id)a5
+- (void)presentUserNotification:(id)notification account:(id)account completion:(id)completion
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100257724;
   block[3] = &unk_1003C25B0;
   block[4] = self;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
+  notificationCopy = notification;
+  accountCopy = account;
+  completionCopy = completion;
   v15 = a2;
-  v8 = v13;
-  v9 = v14;
-  v10 = v12;
+  v8 = accountCopy;
+  v9 = completionCopy;
+  v10 = notificationCopy;
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)cancelNotificationWithIdentifier:(id)a3 account:(id)a4
+- (void)cancelNotificationWithIdentifier:(id)identifier account:(id)account
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100257F8C;
   block[3] = &unk_1003BC2E0;
   block[4] = self;
-  v8 = a3;
-  v9 = a4;
-  v5 = v9;
-  v6 = v8;
+  identifierCopy = identifier;
+  accountCopy = account;
+  v5 = accountCopy;
+  v6 = identifierCopy;
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (id)_dateOfLastNagForIdentifier:(id)a3 account:(id)a4
+- (id)_dateOfLastNagForIdentifier:(id)identifier account:(id)account
 {
-  v5 = a3;
-  v6 = [a4 persona];
-  v7 = [v6 copyPreferencesValueForKey:@"UserNotificationEvents" class:objc_opt_class()];
+  identifierCopy = identifier;
+  persona = [account persona];
+  v7 = [persona copyPreferencesValueForKey:@"UserNotificationEvents" class:objc_opt_class()];
 
-  v8 = [v7 objectForKeyedSubscript:v5];
+  v8 = [v7 objectForKeyedSubscript:identifierCopy];
 
   return v8;
 }
 
-- (BOOL)_shouldInformUserWithNotification:(id)a3 account:(id)a4
+- (BOOL)_shouldInformUserWithNotification:(id)notification account:(id)account
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 identifier];
-  v9 = [(MBUserNotificationManager *)self _dateOfLastNagForIdentifier:v8 account:v7];
+  notificationCopy = notification;
+  accountCopy = account;
+  identifier = [notificationCopy identifier];
+  v9 = [(MBUserNotificationManager *)self _dateOfLastNagForIdentifier:identifier account:accountCopy];
 
   if (v9)
   {
     v10 = +[NSDate date];
     [v10 timeIntervalSinceDate:v9];
     v12 = v11;
-    [v6 interval];
+    [notificationCopy interval];
     v14 = v12 > v13;
   }
 
@@ -427,12 +427,12 @@ LABEL_11:
   return v14;
 }
 
-- (void)_updateDidInformUserWithNotification:(id)a3 account:(id)a4
+- (void)_updateDidInformUserWithNotification:(id)notification account:(id)account
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v5 persona];
-  v12 = [v7 copyPreferencesValueForKey:@"UserNotificationEvents" class:objc_opt_class()];
+  accountCopy = account;
+  notificationCopy = notification;
+  persona = [accountCopy persona];
+  v12 = [persona copyPreferencesValueForKey:@"UserNotificationEvents" class:objc_opt_class()];
 
   v8 = [v12 mutableCopy];
   if (!v8)
@@ -441,30 +441,30 @@ LABEL_11:
   }
 
   v9 = +[NSDate date];
-  v10 = [v6 identifier];
+  identifier = [notificationCopy identifier];
 
-  [v8 setObject:v9 forKeyedSubscript:v10];
-  v11 = [v5 persona];
+  [v8 setObject:v9 forKeyedSubscript:identifier];
+  persona2 = [accountCopy persona];
 
-  [v11 setPreferencesValue:v8 forKey:@"UserNotificationEvents"];
+  [persona2 setPreferencesValue:v8 forKey:@"UserNotificationEvents"];
 }
 
-- (void)clearDidInformUserWithNotificationIdentifier:(id)a3 account:(id)a4
+- (void)clearDidInformUserWithNotificationIdentifier:(id)identifier account:(id)account
 {
-  v12 = a3;
-  v5 = a4;
-  v6 = [v5 persona];
-  v7 = [v6 copyPreferencesValueForKey:@"UserNotificationEvents" class:objc_opt_class()];
+  identifierCopy = identifier;
+  accountCopy = account;
+  persona = [accountCopy persona];
+  v7 = [persona copyPreferencesValueForKey:@"UserNotificationEvents" class:objc_opt_class()];
 
   v8 = [v7 mutableCopy];
   if (v8)
   {
     v9 = v8;
-    v10 = [v8 objectForKeyedSubscript:v12];
+    v10 = [v8 objectForKeyedSubscript:identifierCopy];
 
     if (v10)
     {
-      [v9 removeObjectForKey:v12];
+      [v9 removeObjectForKey:identifierCopy];
     }
   }
 
@@ -473,8 +473,8 @@ LABEL_11:
     v9 = +[NSMutableDictionary dictionary];
   }
 
-  v11 = [v5 persona];
-  [v11 setPreferencesValue:v9 forKey:@"UserNotificationEvents"];
+  persona2 = [accountCopy persona];
+  [persona2 setPreferencesValue:v9 forKey:@"UserNotificationEvents"];
 }
 
 @end

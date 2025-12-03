@@ -1,10 +1,10 @@
 @interface CRTextDetectorModelV3E5ML
-+ (id)E5RTFunctionDescriptorWithError:(id *)a3;
++ (id)E5RTFunctionDescriptorWithError:(id *)error;
 + (id)defaultURLOfModelInThisBundle;
 - (CRTextDetectorModelV3E5ML)init;
-- (CRTextDetectorModelV3E5ML)initWithConfiguration:(id)a3 owner:(id)a4 error:(id *)a5;
-- (CRTextDetectorModelV3E5ML)initWithContentsOfURL:(id)a3 configuration:(id)a4 owner:(id)a5 error:(id *)a6;
-- (CRTextDetectorModelV3E5ML)initWithContentsOfURL:(id)a3 owner:(id)a4 error:(id *)a5;
+- (CRTextDetectorModelV3E5ML)initWithConfiguration:(id)configuration owner:(id)owner error:(id *)error;
+- (CRTextDetectorModelV3E5ML)initWithContentsOfURL:(id)l configuration:(id)configuration owner:(id)owner error:(id *)error;
+- (CRTextDetectorModelV3E5ML)initWithContentsOfURL:(id)l owner:(id)owner error:(id *)error;
 - (id)createExecutionContext;
 - (void)dealloc;
 @end
@@ -36,28 +36,28 @@
   return v4;
 }
 
-+ (id)E5RTFunctionDescriptorWithError:(id *)a3
++ (id)E5RTFunctionDescriptorWithError:(id *)error
 {
   v15[1] = *MEMORY[0x1E69E9840];
   if (+[CRNeuralTextDetectorV3 useE5Detector])
   {
-    v4 = [objc_opt_class() defaultURLOfModelInThisBundle];
-    if (v4)
+    defaultURLOfModelInThisBundle = [objc_opt_class() defaultURLOfModelInThisBundle];
+    if (defaultURLOfModelInThisBundle)
     {
-      v5 = [CRE5MLUtilities E5RTProgramLibraryForModelURL:v4 error:a3];
+      v5 = [CRE5MLUtilities E5RTProgramLibraryForModelURL:defaultURLOfModelInThisBundle error:error];
       v6 = v5;
       if (v5)
       {
-        v7 = [v5 functionNamed:@"main" error:a3];
+        v7 = [v5 functionNamed:@"main" error:error];
         if (v7)
         {
-          v8 = [v7 descriptorOfClass:objc_opt_class() forInput:@"img_input" error:a3];
+          v8 = [v7 descriptorOfClass:objc_opt_class() forInput:@"img_input" error:error];
           v9 = v8;
           if (v8)
           {
             v15[0] = v8;
             v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:1];
-            v11 = [v7 descriptorsForOutputs:&unk_1F2BF8890 error:a3];
+            v11 = [v7 descriptorsForOutputs:&unk_1F2BF8890 error:error];
             if (v11)
             {
               v12 = [objc_alloc(MEMORY[0x1E69DF970]) initWithMajor:3];
@@ -88,10 +88,10 @@
       }
     }
 
-    else if (a3)
+    else if (error)
     {
       [CRImageReader errorWithErrorCode:-8];
-      *a3 = v13 = 0;
+      *error = v13 = 0;
     }
 
     else
@@ -110,24 +110,24 @@
 
 - (CRTextDetectorModelV3E5ML)init
 {
-  v3 = [objc_opt_class() defaultURLOfModelInThisBundle];
-  if (v3)
+  defaultURLOfModelInThisBundle = [objc_opt_class() defaultURLOfModelInThisBundle];
+  if (defaultURLOfModelInThisBundle)
   {
-    self = [(CRTextDetectorModelV3E5ML *)self initWithContentsOfURL:v3 owner:0 error:0];
-    v4 = self;
+    self = [(CRTextDetectorModelV3E5ML *)self initWithContentsOfURL:defaultURLOfModelInThisBundle owner:0 error:0];
+    selfCopy = self;
   }
 
   else
   {
-    v4 = 0;
+    selfCopy = 0;
   }
 
-  return v4;
+  return selfCopy;
 }
 
-- (CRTextDetectorModelV3E5ML)initWithContentsOfURL:(id)a3 owner:(id)a4 error:(id *)a5
+- (CRTextDetectorModelV3E5ML)initWithContentsOfURL:(id)l owner:(id)owner error:(id *)error
 {
-  v8 = a4;
+  ownerCopy = owner;
   v17.receiver = self;
   v17.super_class = CRTextDetectorModelV3E5ML;
   v9 = [(CRTextDetectorModelV3E5ML *)&v17 init];
@@ -137,8 +137,8 @@
     goto LABEL_6;
   }
 
-  objc_storeStrong(&v9->_owner, a4);
-  [CRLoadCounterFacade recordLoad:v10 owner:v8];
+  objc_storeStrong(&v9->_owner, owner);
+  [CRLoadCounterFacade recordLoad:v10 owner:ownerCopy];
   v11 = CROSLogForCategory(2);
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -146,7 +146,7 @@
     _os_log_impl(&dword_1B40D2000, v11, OS_LOG_TYPE_DEFAULT, "Loading detector model", v16, 2u);
   }
 
-  v12 = [objc_opt_class() E5RTFunctionDescriptorWithError:a5];
+  v12 = [objc_opt_class() E5RTFunctionDescriptorWithError:error];
   functionDescriptor = v10->_functionDescriptor;
   v10->_functionDescriptor = v12;
 
@@ -164,47 +164,47 @@ LABEL_6:
   return v14;
 }
 
-- (CRTextDetectorModelV3E5ML)initWithConfiguration:(id)a3 owner:(id)a4 error:(id *)a5
+- (CRTextDetectorModelV3E5ML)initWithConfiguration:(id)configuration owner:(id)owner error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [objc_opt_class() defaultURLOfModelInThisBundle];
-  if (v10)
+  configurationCopy = configuration;
+  ownerCopy = owner;
+  defaultURLOfModelInThisBundle = [objc_opt_class() defaultURLOfModelInThisBundle];
+  if (defaultURLOfModelInThisBundle)
   {
-    v11 = v10;
-    v12 = [v8 customModelPath];
+    v11 = defaultURLOfModelInThisBundle;
+    customModelPath = [configurationCopy customModelPath];
 
-    if (v12)
+    if (customModelPath)
     {
       v13 = MEMORY[0x1E695DFF8];
-      v14 = [v8 customModelPath];
-      v15 = [v13 fileURLWithPath:v14];
+      customModelPath2 = [configurationCopy customModelPath];
+      v15 = [v13 fileURLWithPath:customModelPath2];
 
       v11 = v15;
     }
 
-    self = [(CRTextDetectorModelV3E5ML *)self initWithContentsOfURL:v11 configuration:v8 owner:v9 error:a5];
+    self = [(CRTextDetectorModelV3E5ML *)self initWithContentsOfURL:v11 configuration:configurationCopy owner:ownerCopy error:error];
 
-    v16 = self;
+    selfCopy = self;
   }
 
-  else if (a5)
+  else if (error)
   {
     [CRImageReader errorWithErrorCode:-8];
-    *a5 = v16 = 0;
+    *error = selfCopy = 0;
   }
 
   else
   {
-    v16 = 0;
+    selfCopy = 0;
   }
 
-  return v16;
+  return selfCopy;
 }
 
-- (CRTextDetectorModelV3E5ML)initWithContentsOfURL:(id)a3 configuration:(id)a4 owner:(id)a5 error:(id *)a6
+- (CRTextDetectorModelV3E5ML)initWithContentsOfURL:(id)l configuration:(id)configuration owner:(id)owner error:(id *)error
 {
-  v9 = a5;
+  ownerCopy = owner;
   v18.receiver = self;
   v18.super_class = CRTextDetectorModelV3E5ML;
   v10 = [(CRTextDetectorModelV3E5ML *)&v18 init];
@@ -214,8 +214,8 @@ LABEL_6:
     goto LABEL_6;
   }
 
-  objc_storeStrong(&v10->_owner, a5);
-  [CRLoadCounterFacade recordLoad:v11 owner:v9];
+  objc_storeStrong(&v10->_owner, owner);
+  [CRLoadCounterFacade recordLoad:v11 owner:ownerCopy];
   v12 = CROSLogForCategory(2);
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
@@ -223,7 +223,7 @@ LABEL_6:
     _os_log_impl(&dword_1B40D2000, v12, OS_LOG_TYPE_DEFAULT, "Loading detector model", v17, 2u);
   }
 
-  v13 = [objc_opt_class() E5RTFunctionDescriptorWithError:a6];
+  v13 = [objc_opt_class() E5RTFunctionDescriptorWithError:error];
   functionDescriptor = v11->_functionDescriptor;
   v11->_functionDescriptor = v13;
 

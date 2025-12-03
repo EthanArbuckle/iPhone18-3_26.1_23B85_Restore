@@ -1,20 +1,20 @@
 @interface DAButtonSwitchSpecification
 - (CGRect)position;
-- (DAButtonSwitchSpecification)initWithDictionary:(id)a3;
+- (DAButtonSwitchSpecification)initWithDictionary:(id)dictionary;
 @end
 
 @implementation DAButtonSwitchSpecification
 
-- (DAButtonSwitchSpecification)initWithDictionary:(id)a3
+- (DAButtonSwitchSpecification)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v25 = 0;
   v24.receiver = self;
   v24.super_class = DAButtonSwitchSpecification;
-  v5 = [(DASpecification *)&v24 initWithDictionary:v4];
+  v5 = [(DASpecification *)&v24 initWithDictionary:dictionaryCopy];
   if (v5)
   {
-    v6 = [v4 dk_dictionaryFromRequiredKey:@"position" failed:&v25];
+    v6 = [dictionaryCopy dk_dictionaryFromRequiredKey:@"position" failed:&v25];
     v7 = [v6 dk_numberFromRequiredKey:@"x" lowerBound:&off_100011300 upperBound:&off_1000112F0 failed:&v25];
     [v7 doubleValue];
     v9 = v8;
@@ -36,7 +36,7 @@
     v5->_position.size.width = v15;
     v5->_position.size.height = v18;
     v19 = [DAAsset alloc];
-    v20 = [v4 dk_dictionaryFromRequiredKey:@"asset" failed:&v25];
+    v20 = [dictionaryCopy dk_dictionaryFromRequiredKey:@"asset" failed:&v25];
     v21 = [(DAAsset *)v19 initWithDictionary:v20];
     asset = v5->_asset;
     v5->_asset = v21;

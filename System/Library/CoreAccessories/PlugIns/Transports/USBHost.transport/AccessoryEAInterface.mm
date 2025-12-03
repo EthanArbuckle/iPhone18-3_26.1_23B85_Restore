@@ -1,39 +1,39 @@
 @interface AccessoryEAInterface
-+ (id)findNativeEAInterfacesForRegistryID:(unint64_t)a3;
++ (id)findNativeEAInterfacesForRegistryID:(unint64_t)d;
 + (void)initializeSessionClose;
-- (AccessoryEAInterface)initWithProtocol:(id)a3 endpointUUID:(id)a4 vid:(unsigned __int16)a5 pid:(unsigned __int16)a6 eaSessionUUID:(id)a7 USBDeviceID:(unint64_t)a8;
+- (AccessoryEAInterface)initWithProtocol:(id)protocol endpointUUID:(id)d vid:(unsigned __int16)vid pid:(unsigned __int16)pid eaSessionUUID:(id)iD USBDeviceID:(unint64_t)deviceID;
 - (BOOL)closeDataPipes;
-- (IOUSBInterfaceStruct942)_createInterfaceFromUSBID:(unint64_t)a3;
+- (IOUSBInterfaceStruct942)_createInterfaceFromUSBID:(unint64_t)d;
 - (id)_dequeueReadBuffer;
 - (id)_dequeueWriteBuffer;
-- (void)_acceptSocketCB:(__CFSocket *)a3 acceptedSock:(int)a4;
+- (void)_acceptSocketCB:(__CFSocket *)b acceptedSock:(int)sock;
 - (void)_cancelThread;
-- (void)_enqueueWriteBuffer:(id)a3;
-- (void)_readComplete:(id)a3 readLength:(unint64_t)a4;
+- (void)_enqueueWriteBuffer:(id)buffer;
+- (void)_readComplete:(id)complete readLength:(unint64_t)length;
 - (void)_readSessionDataFromApp;
 - (void)_readSessionDataFromUSB;
 - (void)_registerListenSocket;
 - (void)_run;
 - (void)_sendSessionCloseNotification;
 - (void)_sendSessionOpenNotification;
-- (void)_writeComplete:(id)a3 writeLength:(unint64_t)a4;
-- (void)_writeData:(id)a3;
+- (void)_writeComplete:(id)complete writeLength:(unint64_t)length;
+- (void)_writeData:(id)data;
 - (void)_writeSessionDataToApp;
-- (void)_writeUSBData:(id)a3;
+- (void)_writeUSBData:(id)data;
 - (void)dealloc;
-- (void)setDataInHandler:(id)a3;
+- (void)setDataInHandler:(id)handler;
 - (void)shuttingDownSession;
 @end
 
 @implementation AccessoryEAInterface
 
-- (AccessoryEAInterface)initWithProtocol:(id)a3 endpointUUID:(id)a4 vid:(unsigned __int16)a5 pid:(unsigned __int16)a6 eaSessionUUID:(id)a7 USBDeviceID:(unint64_t)a8
+- (AccessoryEAInterface)initWithProtocol:(id)protocol endpointUUID:(id)d vid:(unsigned __int16)vid pid:(unsigned __int16)pid eaSessionUUID:(id)iD USBDeviceID:(unint64_t)deviceID
 {
-  v10 = a6;
-  v14 = a3;
+  pidCopy = pid;
+  protocolCopy = protocol;
   v38.receiver = self;
   v38.super_class = AccessoryEAInterface;
-  v15 = [(iAP2EASession *)&v38 initWithProtocol:v14 endpointUUID:a4 eaSessionUUID:a7];
+  v15 = [(iAP2EASession *)&v38 initWithProtocol:protocolCopy endpointUUID:d eaSessionUUID:iD];
   v16 = v15;
   if (v15)
   {
@@ -62,14 +62,14 @@
     allReadBuffers = v16->_allReadBuffers;
     v16->_allReadBuffers = v25;
 
-    v16->_deviceID = a8;
-    v27 = [objc_alloc(MEMORY[0x277CCACA8]) initWithString:v14];
+    v16->_deviceID = deviceID;
+    v27 = [objc_alloc(MEMORY[0x277CCACA8]) initWithString:protocolCopy];
     protocolName = v16->_protocolName;
     v16->_protocolName = v27;
 
-    v16->_vid = a5;
-    v16->_pid = v10;
-    v29 = v10 | (v16->_vid << 16);
+    v16->_vid = vid;
+    v16->_pid = pidCopy;
+    v29 = pidCopy | (v16->_vid << 16);
     v16->_vidpid = v29;
     if (v29 == 95164176)
     {
@@ -184,10 +184,10 @@
   [(iAP2EASession *)&v9 dealloc];
 }
 
-- (void)setDataInHandler:(id)a3
+- (void)setDataInHandler:(id)handler
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   if (gLogObjects)
   {
     v5 = gNumLogObjects < 1;
@@ -217,7 +217,7 @@
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = MEMORY[0x2383AB1E0](self->_dataInHandler);
-    v9 = MEMORY[0x2383AB1E0](v4);
+    v9 = MEMORY[0x2383AB1E0](handlerCopy);
     vidpid = self->_vidpid;
     v14 = 134218496;
     v15 = v8;
@@ -228,7 +228,7 @@
     _os_log_impl(&dword_2336F5000, v7, OS_LOG_TYPE_DEFAULT, "EA Native USB: dataInHandler %p -> %p, vidpid 0x%x", &v14, 0x1Cu);
   }
 
-  v11 = MEMORY[0x2383AB1E0](v4);
+  v11 = MEMORY[0x2383AB1E0](handlerCopy);
   dataInHandler = self->_dataInHandler;
   self->_dataInHandler = v11;
 
@@ -240,14 +240,14 @@
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_writeData:(id)a3
+- (void)_writeData:(id)data
 {
-  v4 = a3;
-  v5 = [(AccessoryEAInterface *)self _dequeueWriteBuffer];
-  if (v5)
+  dataCopy = data;
+  _dequeueWriteBuffer = [(AccessoryEAInterface *)self _dequeueWriteBuffer];
+  if (_dequeueWriteBuffer)
   {
-    v6 = [v4 length];
-    v7 = [v5 writeSpaceRemaining];
+    v6 = [dataCopy length];
+    writeSpaceRemaining = [_dequeueWriteBuffer writeSpaceRemaining];
     if (gLogObjects)
     {
       v8 = gNumLogObjects <= 0;
@@ -259,7 +259,7 @@
     }
 
     v9 = !v8;
-    if (v6 <= v7)
+    if (v6 <= writeSpaceRemaining)
     {
       if (v9)
       {
@@ -282,16 +282,16 @@
         [(AccessoryEAInterface *)v6 _writeData:v13, v17, v18, v19, v20, v21, v22];
       }
 
-      memcpy([v5 writePtr], objc_msgSend(v4, "bytes"), v6);
-      [v5 moveWritePtr:v6];
-      if ([v5 dataLength])
+      memcpy([_dequeueWriteBuffer writePtr], objc_msgSend(dataCopy, "bytes"), v6);
+      [_dequeueWriteBuffer moveWritePtr:v6];
+      if ([_dequeueWriteBuffer dataLength])
       {
-        [(AccessoryEAInterface *)self _writeUSBData:v5];
+        [(AccessoryEAInterface *)self _writeUSBData:_dequeueWriteBuffer];
       }
 
       else
       {
-        [(AccessoryEAInterface *)self _enqueueWriteBuffer:v5];
+        [(AccessoryEAInterface *)self _enqueueWriteBuffer:_dequeueWriteBuffer];
       }
     }
 
@@ -315,7 +315,7 @@
 
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
-        [(AccessoryEAInterface *)v5 _writeData:v6, v10];
+        [(AccessoryEAInterface *)_dequeueWriteBuffer _writeData:v6, v10];
       }
     }
   }
@@ -367,24 +367,24 @@
   context.version = 0;
   context.info = self;
   memset(&context.retain, 0, 24);
-  v3 = [(iAP2EASession *)self _createListenSocket];
-  self->super._listenSock = v3;
+  _createListenSocket = [(iAP2EASession *)self _createListenSocket];
+  self->super._listenSock = _createListenSocket;
   v4 = *MEMORY[0x277CBECE8];
-  v5 = CFSocketCreateWithNative(*MEMORY[0x277CBECE8], v3, 2uLL, _StaticSockCallback, &context);
+  v5 = CFSocketCreateWithNative(*MEMORY[0x277CBECE8], _createListenSocket, 2uLL, _StaticSockCallback, &context);
   self->_listenSockRef = v5;
   self->_listenSockRls = CFSocketCreateRunLoopSource(v4, v5, 0);
   Current = CFRunLoopGetCurrent();
   CFRunLoopAddSource(Current, self->_listenSockRls, *MEMORY[0x277CBF058]);
 }
 
-- (void)_acceptSocketCB:(__CFSocket *)a3 acceptedSock:(int)a4
+- (void)_acceptSocketCB:(__CFSocket *)b acceptedSock:(int)sock
 {
   v16 = 1;
   context.version = 0;
   context.info = self;
   memset(&context.retain, 0, 24);
-  self->super._sock = a4;
-  v5 = CFSocketCreateWithNative(0, a4, 9uLL, _StaticSockCallback, &context);
+  self->super._sock = sock;
+  v5 = CFSocketCreateWithNative(0, sock, 9uLL, _StaticSockCallback, &context);
   self->_sockRef = v5;
   CFSocketDisableCallBacks(v5, 9uLL);
   self->_sockRls = CFSocketCreateRunLoopSource(*MEMORY[0x277CBECE8], self->_sockRef, 0);
@@ -539,9 +539,9 @@ LABEL_24:
   _os_log_error_impl(v0, v1, v2, v3, v4, 2u);
 }
 
-- (void)_enqueueWriteBuffer:(id)a3
+- (void)_enqueueWriteBuffer:(id)buffer
 {
-  [(NSMutableArray *)self->_writeBufferArray addObject:a3];
+  [(NSMutableArray *)self->_writeBufferArray addObject:buffer];
   if (self->_sockReadDisabled)
   {
     sockRef = self->_sockRef;
@@ -590,10 +590,10 @@ LABEL_24:
 - (void)_readSessionDataFromApp
 {
   v26 = *MEMORY[0x277D85DE8];
-  v3 = [(AccessoryEAInterface *)self _dequeueWriteBuffer];
-  if (v3)
+  _dequeueWriteBuffer = [(AccessoryEAInterface *)self _dequeueWriteBuffer];
+  if (_dequeueWriteBuffer)
   {
-    v5 = v3;
+    v5 = _dequeueWriteBuffer;
     v6 = MEMORY[0x277D86220];
     *&v4 = 134218240;
     v19 = v4;
@@ -649,10 +649,10 @@ LABEL_27:
         }
 
         [(AccessoryEAInterface *)self _writeUSBData:v5];
-        v17 = [(AccessoryEAInterface *)self _dequeueWriteBuffer];
+        _dequeueWriteBuffer2 = [(AccessoryEAInterface *)self _dequeueWriteBuffer];
 
-        v5 = v17;
-        if (!v17)
+        v5 = _dequeueWriteBuffer2;
+        if (!_dequeueWriteBuffer2)
         {
           goto LABEL_32;
         }
@@ -703,67 +703,67 @@ LABEL_32:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_writeUSBData:(id)a3
+- (void)_writeUSBData:(id)data
 {
-  v6 = a3;
-  if (![v6 writeAttempts] || !objc_msgSend(v6, "dataLength"))
+  dataCopy = data;
+  if (![dataCopy writeAttempts] || !objc_msgSend(dataCopy, "dataLength"))
   {
     goto LABEL_10;
   }
 
   do
   {
-    [v6 attemptWrite];
-    v4 = ((*self->_usbInterface)->WritePipeAsyncTO)(self->_usbInterface, self->_outPipe, [v6 readPtr], objc_msgSend(v6, "dataLength"), 5000, 15000, _StaticUSBWriteComplete, v6);
+    [dataCopy attemptWrite];
+    v4 = ((*self->_usbInterface)->WritePipeAsyncTO)(self->_usbInterface, self->_outPipe, [dataCopy readPtr], objc_msgSend(dataCopy, "dataLength"), 5000, 15000, _StaticUSBWriteComplete, dataCopy);
     if (!v4)
     {
       break;
     }
 
     v5 = v4;
-    [v6 setUsbError:v4];
+    [dataCopy setUsbError:v4];
     if (v5 != -536854449 || [(AccessoryEAInterface *)self _clearPipeStall:self->_outPipe])
     {
       goto LABEL_10;
     }
   }
 
-  while ([v6 writeAttempts] && objc_msgSend(v6, "dataLength"));
-  if (![v6 writeAttempts] || !objc_msgSend(v6, "dataLength"))
+  while ([dataCopy writeAttempts] && objc_msgSend(dataCopy, "dataLength"));
+  if (![dataCopy writeAttempts] || !objc_msgSend(dataCopy, "dataLength"))
   {
 LABEL_10:
-    [(AccessoryEAInterface *)self _writeComplete:v6 writeLength:0];
+    [(AccessoryEAInterface *)self _writeComplete:dataCopy writeLength:0];
   }
 }
 
-- (void)_writeComplete:(id)a3 writeLength:(unint64_t)a4
+- (void)_writeComplete:(id)complete writeLength:(unint64_t)length
 {
-  v6 = a3;
-  [v6 moveReadPtr:a4];
-  if ([v6 usbError])
+  completeCopy = complete;
+  [completeCopy moveReadPtr:length];
+  if ([completeCopy usbError])
   {
-    if ([v6 writeAttempts])
+    if ([completeCopy writeAttempts])
     {
-      [(AccessoryEAInterface *)self _writeUSBData:v6];
+      [(AccessoryEAInterface *)self _writeUSBData:completeCopy];
       goto LABEL_6;
     }
 
     NSLog(&cfstr_WriteTimedout.isa);
   }
 
-  [(AccessoryEAInterface *)self _enqueueWriteBuffer:v6];
+  [(AccessoryEAInterface *)self _enqueueWriteBuffer:completeCopy];
 LABEL_6:
 }
 
 - (void)_readSessionDataFromUSB
 {
-  v3 = [(AccessoryEAInterface *)self _dequeueReadBuffer];
-  if (v3)
+  _dequeueReadBuffer = [(AccessoryEAInterface *)self _dequeueReadBuffer];
+  if (_dequeueReadBuffer)
   {
     while (1)
     {
-      v7 = v3;
-      v4 = ((*self->_usbInterface)->ReadPipeAsync)(self->_usbInterface, self->_inPipe, [v3 writePtr], objc_msgSend(v7, "writeSpaceRemaining"), _StaticUSBReadComplete, v7);
+      v7 = _dequeueReadBuffer;
+      v4 = ((*self->_usbInterface)->ReadPipeAsync)(self->_usbInterface, self->_inPipe, [_dequeueReadBuffer writePtr], objc_msgSend(v7, "writeSpaceRemaining"), _StaticUSBReadComplete, v7);
       if (v4)
       {
         v5 = v4;
@@ -782,10 +782,10 @@ LABEL_6:
         }
       }
 
-      v6 = [(AccessoryEAInterface *)self _dequeueReadBuffer];
+      _dequeueReadBuffer2 = [(AccessoryEAInterface *)self _dequeueReadBuffer];
 
-      v3 = v6;
-      if (!v6)
+      _dequeueReadBuffer = _dequeueReadBuffer2;
+      if (!_dequeueReadBuffer2)
       {
         return;
       }
@@ -795,12 +795,12 @@ LABEL_6:
   }
 }
 
-- (void)_readComplete:(id)a3 readLength:(unint64_t)a4
+- (void)_readComplete:(id)complete readLength:(unint64_t)length
 {
-  v7 = a3;
-  if ([v7 usbError])
+  completeCopy = complete;
+  if ([completeCopy usbError])
   {
-    [(AccessoryEAInterface *)self _enqueueReadBuffer:v7];
+    [(AccessoryEAInterface *)self _enqueueReadBuffer:completeCopy];
     [(AccessoryEAInterface *)self _readSessionDataFromUSB];
     sockRef = self->_sockRef;
     if (sockRef)
@@ -811,26 +811,26 @@ LABEL_6:
 
   else
   {
-    [v7 moveWritePtr:a4];
-    [(NSMutableArray *)self->_dataForAppArray insertObject:v7 atIndex:[(NSMutableArray *)self->_dataForAppArray count]];
+    [completeCopy moveWritePtr:length];
+    [(NSMutableArray *)self->_dataForAppArray insertObject:completeCopy atIndex:[(NSMutableArray *)self->_dataForAppArray count]];
     [(AccessoryEAInterface *)self _writeSessionDataToApp];
   }
 }
 
 - (void)_writeSessionDataToApp
 {
-  v7 = [a2 dataLength];
-  *a1 = 134217984;
-  *a3 = v7;
-  _os_log_debug_impl(&dword_2336F5000, a4, OS_LOG_TYPE_DEBUG, "EA Native USB: send %lu bytes to dataInHandler", a1, 0xCu);
+  dataLength = [a2 dataLength];
+  *self = 134217984;
+  *a3 = dataLength;
+  _os_log_debug_impl(&dword_2336F5000, a4, OS_LOG_TYPE_DEBUG, "EA Native USB: send %lu bytes to dataInHandler", self, 0xCu);
 }
 
-- (IOUSBInterfaceStruct942)_createInterfaceFromUSBID:(unint64_t)a3
+- (IOUSBInterfaceStruct942)_createInterfaceFromUSBID:(unint64_t)d
 {
   v60 = *MEMORY[0x277D85DE8];
   v55 = 0;
   v4 = *MEMORY[0x277CD28A0];
-  v5 = IORegistryEntryIDMatching(a3);
+  v5 = IORegistryEntryIDMatching(d);
   MatchingService = IOServiceGetMatchingService(v4, v5);
   if (!MatchingService)
   {
@@ -1068,7 +1068,7 @@ LABEL_78:
   return v11;
 }
 
-+ (id)findNativeEAInterfacesForRegistryID:(unint64_t)a3
++ (id)findNativeEAInterfacesForRegistryID:(unint64_t)d
 {
   v56 = *MEMORY[0x277D85DE8];
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -1102,12 +1102,12 @@ LABEL_78:
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v53 = a3;
+    dCopy = d;
     _os_log_impl(&dword_2336F5000, v8, OS_LOG_TYPE_DEFAULT, "Looking for Native USB EA interfaces with parent registry ID 0x%llX", buf, 0xCu);
   }
 
   v9 = *MEMORY[0x277CD28A0];
-  v10 = IORegistryEntryIDMatching(a3);
+  v10 = IORegistryEntryIDMatching(d);
   MatchingService = IOServiceGetMatchingService(v9, v10);
   if (MatchingService)
   {
@@ -1231,7 +1231,7 @@ LABEL_78:
                     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
                     {
                       *buf = 134218240;
-                      v53 = v33;
+                      dCopy = v33;
                       v54 = 1024;
                       v55 = v34;
                       _os_log_error_impl(&dword_2336F5000, v28, OS_LOG_TYPE_ERROR, "Make sure you have called init_logging()!\ngLogObjects: %p, gNumLogObjects: %d", buf, 0x12u);
@@ -1245,7 +1245,7 @@ LABEL_78:
                   if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
                   {
                     *buf = 138412290;
-                    v53 = InterfaceAndNameString;
+                    dCopy = InterfaceAndNameString;
                     _os_log_impl(&dword_2336F5000, v35, OS_LOG_TYPE_DEFAULT, "Found interfaceNameString %@", buf, 0xCu);
                   }
 
@@ -1308,7 +1308,7 @@ LABEL_78:
   if (os_log_type_enabled(v43, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v53 = v4;
+    dCopy = v4;
     _os_log_impl(&dword_2336F5000, v43, OS_LOG_TYPE_DEFAULT, "Native EA endpoint protocols found: %@", buf, 0xCu);
   }
 

@@ -1,19 +1,19 @@
 @interface MSVArtworkColorAnalyzer
-+ (BOOL)isLightColor:(CGColor *)a3;
++ (BOOL)isLightColor:(CGColor *)color;
 - (CGSize)preferredImageSize;
-- (MSVArtworkColorAnalyzer)initWithSourceImage:(CGImage *)a3;
+- (MSVArtworkColorAnalyzer)initWithSourceImage:(CGImage *)image;
 - (id)analyze;
-- (void)analyzeWithCompletionHandler:(id)a3;
+- (void)analyzeWithCompletionHandler:(id)handler;
 @end
 
 @implementation MSVArtworkColorAnalyzer
 
-+ (BOOL)isLightColor:(CGColor *)a3
++ (BOOL)isLightColor:(CGColor *)color
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = CGColorGetComponents(a3);
+  v4 = CGColorGetComponents(color);
   v25 = xmmword_1AC881C80;
-  NumberOfComponents = CGColorGetNumberOfComponents(a3);
+  NumberOfComponents = CGColorGetNumberOfComponents(color);
   v6 = 0uLL;
   if (NumberOfComponents > 2)
   {
@@ -56,7 +56,7 @@ LABEL_9:
 LABEL_12:
   v26 = v6;
   v9 = CGColorSpaceCreateWithName(*MEMORY[0x1E695F1C0]);
-  ColorSpace = CGColorGetColorSpace(a3);
+  ColorSpace = CGColorGetColorSpace(color);
   v11 = ColorSpace;
   data = 0;
   if (!ColorSpace || !v9 || !CFEqual(ColorSpace, v9))
@@ -125,17 +125,17 @@ LABEL_22:
   return result;
 }
 
-- (void)analyzeWithCompletionHandler:(id)a3
+- (void)analyzeWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = dispatch_get_global_queue(0, 0);
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __56__MSVArtworkColorAnalyzer_analyzeWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E7982B00;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(v5, v7);
 }
 
@@ -158,9 +158,9 @@ void __56__MSVArtworkColorAnalyzer_analyzeWithCompletionHandler___block_invoke(u
   [(MSVMutableArtworkColorAnalysis *)v3 setSecondaryTextColorLight:0];
   [(MSVArtworkColorAnalysis *)v3 setTertiaryTextColorHex:@"#63666A"];
   [(MSVMutableArtworkColorAnalysis *)v3 setTertiaryTextColorLight:0];
-  v4 = [(MSVArtworkColorAnalyzer *)self sourceImage];
-  Width = CGImageGetWidth(v4);
-  Height = CGImageGetHeight(v4);
+  sourceImage = [(MSVArtworkColorAnalyzer *)self sourceImage];
+  Width = CGImageGetWidth(sourceImage);
+  Height = CGImageGetHeight(sourceImage);
   if (Width && Height)
   {
     if (CGColorSpaceGetSRGB(void)::sOnceToken != -1)
@@ -171,7 +171,7 @@ void __56__MSVArtworkColorAnalyzer_analyzeWithCompletionHandler___block_invoke(u
     v7 = CGColorSpaceGetSRGB(void)::sSpace;
     if (CGColorSpaceGetSRGB(void)::sSpace)
     {
-      CopyWithColorSpace = CGImageCreateCopyWithColorSpace(v4, CGColorSpaceGetSRGB(void)::sSpace);
+      CopyWithColorSpace = CGImageCreateCopyWithColorSpace(sourceImage, CGColorSpaceGetSRGB(void)::sSpace);
       v9 = CopyWithColorSpace;
       if (CopyWithColorSpace)
       {
@@ -180,14 +180,14 @@ void __56__MSVArtworkColorAnalyzer_analyzeWithCompletionHandler___block_invoke(u
 
       else
       {
-        v10 = v4;
+        v10 = sourceImage;
       }
     }
 
     else
     {
       v9 = 0;
-      v10 = v4;
+      v10 = sourceImage;
     }
 
     v12 = CGBitmapContextCreate(0, 0x16uLL, 0x16uLL, 8uLL, 0x58uLL, v7, 0x2002u);
@@ -260,13 +260,13 @@ void __56__MSVArtworkColorAnalyzer_analyzeWithCompletionHandler___block_invoke(u
   return v3;
 }
 
-- (MSVArtworkColorAnalyzer)initWithSourceImage:(CGImage *)a3
+- (MSVArtworkColorAnalyzer)initWithSourceImage:(CGImage *)image
 {
   v4 = [(MSVArtworkColorAnalyzer *)self init];
   v5 = v4;
   if (v4)
   {
-    [(MSVArtworkColorAnalyzer *)v4 setSourceImage:a3];
+    [(MSVArtworkColorAnalyzer *)v4 setSourceImage:image];
   }
 
   return v5;

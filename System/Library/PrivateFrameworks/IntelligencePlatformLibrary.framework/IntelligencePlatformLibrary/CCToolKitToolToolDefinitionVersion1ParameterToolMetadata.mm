@@ -1,26 +1,26 @@
 @interface CCToolKitToolToolDefinitionVersion1ParameterToolMetadata
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4;
-- (CCToolKitToolToolDefinitionVersion1ParameterToolMetadata)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (CCToolKitToolToolDefinitionVersion1ParameterToolMetadata)initWithSourceContainerId:(id)a3 backingLinkActionIdentifiers:(id)a4 error:(id *)a5;
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error;
+- (CCToolKitToolToolDefinitionVersion1ParameterToolMetadata)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (CCToolKitToolToolDefinitionVersion1ParameterToolMetadata)initWithSourceContainerId:(id)id backingLinkActionIdentifiers:(id)identifiers error:(id *)error;
 - (NSArray)backingLinkActionIdentifiers;
 - (NSString)sourceContainerId;
 - (id)jsonDictionary;
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4;
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type;
 @end
 
 @implementation CCToolKitToolToolDefinitionVersion1ParameterToolMetadata
 
-- (CCToolKitToolToolDefinitionVersion1ParameterToolMetadata)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (CCToolKitToolToolDefinitionVersion1ParameterToolMetadata)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
   v8 = 0;
   if (IsInstanceOfExpectedClass)
   {
-    v9 = [v6 objectForKeyedSubscript:@"sourceContainerId"];
-    v10 = [v6 objectForKeyedSubscript:@"backingLinkActionIdentifiers"];
-    v11 = [[CCToolKitToolToolDefinitionVersion1ParameterToolMetadata alloc] initWithSourceContainerId:v9 backingLinkActionIdentifiers:v10 error:a4];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"sourceContainerId"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"backingLinkActionIdentifiers"];
+    v11 = [[CCToolKitToolToolDefinitionVersion1ParameterToolMetadata alloc] initWithSourceContainerId:v9 backingLinkActionIdentifiers:v10 error:error];
   }
 
   else
@@ -37,14 +37,14 @@
   v3 = objc_opt_new();
   if (self->_sourceContainerId)
   {
-    v4 = [(CCToolKitToolToolDefinitionVersion1ParameterToolMetadata *)self sourceContainerId];
-    [v3 setObject:v4 forKeyedSubscript:@"sourceContainerId"];
+    sourceContainerId = [(CCToolKitToolToolDefinitionVersion1ParameterToolMetadata *)self sourceContainerId];
+    [v3 setObject:sourceContainerId forKeyedSubscript:@"sourceContainerId"];
   }
 
   if (self->_backingLinkActionIdentifiers)
   {
-    v5 = [(CCToolKitToolToolDefinitionVersion1ParameterToolMetadata *)self backingLinkActionIdentifiers];
-    [v3 setObject:v5 forKeyedSubscript:@"backingLinkActionIdentifiers"];
+    backingLinkActionIdentifiers = [(CCToolKitToolToolDefinitionVersion1ParameterToolMetadata *)self backingLinkActionIdentifiers];
+    [v3 setObject:backingLinkActionIdentifiers forKeyedSubscript:@"backingLinkActionIdentifiers"];
   }
 
   v6 = [v3 copy];
@@ -52,20 +52,20 @@
   return v6;
 }
 
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type
 {
-  v8 = a3;
+  blockCopy = block;
   v5 = MEMORY[0x1E69939A8];
   if (self->_sourceContainerId)
   {
     v6 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:*MEMORY[0x1E69939A8] stringValue:self->_sourceContainerId];
-    v8[2](v8, v6);
+    blockCopy[2](blockCopy, v6);
   }
 
   if (self->_backingLinkActionIdentifiers)
   {
     v7 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:*v5 repeatedStringValue:self->_backingLinkActionIdentifiers];
-    v8[2](v8, v7);
+    blockCopy[2](blockCopy, v7);
   }
 }
 
@@ -83,11 +83,11 @@
   return v2;
 }
 
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error
 {
-  v38 = a4;
-  v39 = a3;
-  v5 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:v39];
+  errorCopy = error;
+  dataCopy = data;
+  v5 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:dataCopy];
   v6 = MEMORY[0x1E6993AB8];
   v7 = MEMORY[0x1E6993AB0];
   if (*&v5[*MEMORY[0x1E6993AB8]] < *&v5[*MEMORY[0x1E6993AB0]])
@@ -225,7 +225,7 @@ LABEL_27:
       }
     }
 
-    [v9 addObject:{sourceContainerId, v38}];
+    [v9 addObject:{sourceContainerId, errorCopy}];
     goto LABEL_27;
   }
 
@@ -241,13 +241,13 @@ LABEL_38:
   {
     CCSetError();
     v30 = 0;
-    v31 = v39;
+    v31 = dataCopy;
   }
 
   else
   {
     v32 = MEMORY[0x1E6993AA8];
-    v31 = v39;
+    v31 = dataCopy;
     if (*&v5[*MEMORY[0x1E6993AA8]])
     {
       v33 = objc_opt_class();
@@ -268,16 +268,16 @@ LABEL_38:
   return v30;
 }
 
-- (CCToolKitToolToolDefinitionVersion1ParameterToolMetadata)initWithSourceContainerId:(id)a3 backingLinkActionIdentifiers:(id)a4 error:(id *)a5
+- (CCToolKitToolToolDefinitionVersion1ParameterToolMetadata)initWithSourceContainerId:(id)id backingLinkActionIdentifiers:(id)identifiers error:(id *)error
 {
   v32 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  idCopy = id;
+  identifiersCopy = identifiers;
   v10 = objc_opt_new();
-  if (!v8)
+  if (!idCopy)
   {
     v12 = 0;
-    if (!v9)
+    if (!identifiersCopy)
     {
       goto LABEL_15;
     }
@@ -291,7 +291,7 @@ LABEL_6:
     if (!v13)
     {
       CCSetError();
-      v22 = 0;
+      selfCopy = 0;
       v12 = v14;
       goto LABEL_18;
     }
@@ -300,7 +300,7 @@ LABEL_6:
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v15 = v9;
+    v15 = identifiersCopy;
     v16 = [v15 countByEnumeratingWithState:&v25 objects:v31 count:16];
     if (v16)
     {
@@ -339,25 +339,25 @@ LABEL_6:
   if (!IsInstanceOfExpectedClass)
   {
     CCSetError();
-    v22 = 0;
+    selfCopy = 0;
     goto LABEL_18;
   }
 
   CCPBDataWriterWriteStringField();
-  if (v9)
+  if (identifiersCopy)
   {
     goto LABEL_6;
   }
 
 LABEL_15:
-  v21 = [v10 immutableData];
-  self = [(CCItemMessage *)self initWithData:v21 error:a5];
+  immutableData = [v10 immutableData];
+  self = [(CCItemMessage *)self initWithData:immutableData error:error];
 
-  v22 = self;
+  selfCopy = self;
 LABEL_18:
 
   v23 = *MEMORY[0x1E69E9840];
-  return v22;
+  return selfCopy;
 }
 
 @end

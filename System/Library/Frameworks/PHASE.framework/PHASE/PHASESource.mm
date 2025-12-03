@@ -2,8 +2,8 @@
 - (PHASESource)init;
 - (PHASESource)initWithEngine:(PHASEEngine *)engine;
 - (PHASESource)initWithEngine:(PHASEEngine *)engine shapes:(NSArray *)shapes;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setDopplerFactor:(double)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setDopplerFactor:(double)factor;
 - (void)setGain:(double)gain;
 @end
 
@@ -58,33 +58,33 @@
     }
 
     self = v10;
-    v13 = self;
+    selfCopy = self;
   }
 
   else
   {
     [MEMORY[0x277CBEAD8] raise:@"API Misuse" format:@"Cannot create a volumetric PHASESource with nil or empty shape array"];
-    v13 = 0;
+    selfCopy = 0;
   }
 
-  return v13;
+  return selfCopy;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   if ([(NSArray *)self->_shapes count])
   {
-    v5 = [objc_opt_class() allocWithZone:a3];
-    v6 = [(PHASEObject *)self engine];
-    v7 = [(PHASESource *)self shapes];
-    v8 = [v5 initWithEngine:v6 shapes:v7];
+    v5 = [objc_opt_class() allocWithZone:zone];
+    engine = [(PHASEObject *)self engine];
+    shapes = [(PHASESource *)self shapes];
+    v8 = [v5 initWithEngine:engine shapes:shapes];
   }
 
   else
   {
-    v9 = [objc_opt_class() allocWithZone:a3];
-    v6 = [(PHASEObject *)self engine];
-    v8 = [v9 initWithEngine:v6];
+    v9 = [objc_opt_class() allocWithZone:zone];
+    engine = [(PHASEObject *)self engine];
+    v8 = [v9 initWithEngine:engine];
   }
 
   [v8 setGain:self->_gain];
@@ -98,8 +98,8 @@
 - (void)setGain:(double)gain
 {
   v28[1] = *MEMORY[0x277D85DE8];
-  v6 = [(PHASEObject *)self engine];
-  if (v6)
+  engine = [(PHASEObject *)self engine];
+  if (engine)
   {
     v7 = objc_opt_class();
     v8 = NSStringFromClass(v7);
@@ -108,7 +108,7 @@
 
     if (self->_gain != v10)
     {
-      v11 = *([v6 implementation] + 368);
+      v11 = *([engine implementation] + 368);
       v12.mData = [(PHASEObject *)self geoEntityHandle];
       v13 = v10;
       (*(*v11 + 144))(v11, v12, v13);
@@ -134,18 +134,18 @@
       v23 = 1024;
       v24 = 113;
       v25 = 2080;
-      v26 = [v19 UTF8String];
+      uTF8String = [v19 UTF8String];
       _os_log_impl(&dword_23A302000, v18, OS_LOG_TYPE_ERROR, "%25s:%-5d %s", &v21, 0x1Cu);
     }
   }
 }
 
-- (void)setDopplerFactor:(double)a3
+- (void)setDopplerFactor:(double)factor
 {
   v6 = objc_opt_class();
   v8 = NSStringFromClass(v6);
   v7 = NSStringFromSelector(a2);
-  self->_dopplerFactor = PHASEGetPropertyBounded<double>(v8, v7, a3, 0.0, 1.79769313e308);
+  self->_dopplerFactor = PHASEGetPropertyBounded<double>(v8, v7, factor, 0.0, 1.79769313e308);
 }
 
 @end

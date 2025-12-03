@@ -1,21 +1,21 @@
 @interface CPLCloudKitOperationGroupMapper
-- (CPLCloudKitOperationGroupMapper)initWithMappingAtURL:(id)a3;
-- (CPLCloudKitOperationGroupMapper)initWithMappingInFolderWithURL:(id)a3;
+- (CPLCloudKitOperationGroupMapper)initWithMappingAtURL:(id)l;
+- (CPLCloudKitOperationGroupMapper)initWithMappingInFolderWithURL:(id)l;
 - (NSArray)mappingList;
-- (id)groupNameForGroupName:(id)a3;
+- (id)groupNameForGroupName:(id)name;
 @end
 
 @implementation CPLCloudKitOperationGroupMapper
 
-- (CPLCloudKitOperationGroupMapper)initWithMappingAtURL:(id)a3
+- (CPLCloudKitOperationGroupMapper)initWithMappingAtURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v9.receiver = self;
   v9.super_class = CPLCloudKitOperationGroupMapper;
   v5 = [(CPLCloudKitOperationGroupMapper *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [lCopy copy];
     mappingURL = v5->_mappingURL;
     v5->_mappingURL = v6;
 
@@ -25,15 +25,15 @@
   return v5;
 }
 
-- (CPLCloudKitOperationGroupMapper)initWithMappingInFolderWithURL:(id)a3
+- (CPLCloudKitOperationGroupMapper)initWithMappingInFolderWithURL:(id)l
 {
-  v4 = [a3 URLByAppendingPathComponent:@"CKOperationGroupMapping.plist" isDirectory:0];
+  v4 = [l URLByAppendingPathComponent:@"CKOperationGroupMapping.plist" isDirectory:0];
   v5 = [(CPLCloudKitOperationGroupMapper *)self initWithMappingAtURL:v4];
 
   return v5;
 }
 
-- (id)groupNameForGroupName:(id)a3
+- (id)groupNameForGroupName:(id)name
 {
   v15 = 0;
   v16 = &v15;
@@ -45,10 +45,10 @@
   v9[1] = 3221225472;
   v10 = sub_100198F14;
   v11 = &unk_100273EE8;
-  v12 = self;
+  selfCopy = self;
   v14 = &v15;
-  v4 = a3;
-  v13 = v4;
+  nameCopy = name;
+  v13 = nameCopy;
   v5 = v9;
   os_unfair_lock_lock(&self->_lock);
   v10(v5);
@@ -57,7 +57,7 @@
   v6 = v16[5];
   if (!v6)
   {
-    v6 = v4;
+    v6 = nameCopy;
   }
 
   v7 = v6;
@@ -79,7 +79,7 @@
   v7[1] = 3221225472;
   v8 = sub_100198F6C;
   v9 = &unk_1002729E8;
-  v10 = self;
+  selfCopy = self;
   v11 = &v12;
   v3 = v7;
   os_unfair_lock_lock(&self->_lock);

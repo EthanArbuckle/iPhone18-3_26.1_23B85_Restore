@@ -5,9 +5,9 @@
 - (CGSize)size;
 - (GVNode)init;
 - (id)description;
-- (void)setCenter:(CGPoint)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setOrigin:(CGPoint)a3;
+- (void)setCenter:(CGPoint)center;
+- (void)setFrame:(CGRect)frame;
+- (void)setOrigin:(CGPoint)origin;
 @end
 
 @implementation GVNode
@@ -42,7 +42,7 @@
   return result;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
   if (gvnode_logger_onceToken != -1)
   {
@@ -65,7 +65,7 @@
   return result;
 }
 
-- (void)setOrigin:(CGPoint)a3
+- (void)setOrigin:(CGPoint)origin
 {
   if (gvnode_logger_onceToken != -1)
   {
@@ -90,7 +90,7 @@
   return result;
 }
 
-- (void)setCenter:(CGPoint)a3
+- (void)setCenter:(CGPoint)center
 {
   if (gvnode_logger_onceToken != -1)
   {

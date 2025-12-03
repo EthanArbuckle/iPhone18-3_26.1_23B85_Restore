@@ -1,20 +1,20 @@
 @interface CNUILikenessMediaContextBadge
-- (BOOL)isEqual:(id)a3;
-- (CNUILikenessMediaContextBadge)initWithImageData:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (CNUILikenessMediaContextBadge)initWithImageData:(id)data;
 @end
 
 @implementation CNUILikenessMediaContextBadge
 
-- (CNUILikenessMediaContextBadge)initWithImageData:(id)a3
+- (CNUILikenessMediaContextBadge)initWithImageData:(id)data
 {
-  v5 = a3;
+  dataCopy = data;
   v11.receiver = self;
   v11.super_class = CNUILikenessMediaContextBadge;
   v6 = [(CNUILikenessMediaContextBadge *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_imageData, a3);
+    objc_storeStrong(&v6->_imageData, data);
     image = v7->_image;
     v7->_image = 0;
 
@@ -25,13 +25,13 @@
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v7 = 1;
-  if (self != v4)
+  if (self != equalCopy)
   {
-    if ((objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || (imageData = self->_imageData, imageData | v4->_imageData) && ![(NSData *)imageData isEqual:?]|| (image = self->_image, image | v4->_image) && ![(UIImage *)image isEqual:?])
+    if ((objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || (imageData = self->_imageData, imageData | equalCopy->_imageData) && ![(NSData *)imageData isEqual:?]|| (image = self->_image, image | equalCopy->_image) && ![(UIImage *)image isEqual:?])
     {
       v7 = 0;
     }

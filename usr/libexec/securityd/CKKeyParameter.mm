@@ -1,17 +1,17 @@
 @interface CKKeyParameter
-- (BOOL)SOSTransportKeyParameterHandleKeyParameterChanges:(id)a3 data:(__CFData *)a4 err:(__CFError *)a5;
-- (BOOL)SOSTransportKeyParameterKVSAppendKeyInterests:(id)a3 ak:(__CFArray *)a4 firstUnLock:(__CFArray *)a5 unlocked:(__CFArray *)a6 err:(__CFError *)a7;
-- (BOOL)SOSTransportKeyParameterPublishCloudParameters:(id)a3 data:(__CFData *)a4 err:(__CFError *)a5;
-- (CKKeyParameter)initWithAccount:(id)a3;
+- (BOOL)SOSTransportKeyParameterHandleKeyParameterChanges:(id)changes data:(__CFData *)data err:(__CFError *)err;
+- (BOOL)SOSTransportKeyParameterKVSAppendKeyInterests:(id)interests ak:(__CFArray *)ak firstUnLock:(__CFArray *)lock unlocked:(__CFArray *)unlocked err:(__CFError *)err;
+- (BOOL)SOSTransportKeyParameterPublishCloudParameters:(id)parameters data:(__CFData *)data err:(__CFError *)err;
+- (CKKeyParameter)initWithAccount:(id)account;
 @end
 
 @implementation CKKeyParameter
 
-- (BOOL)SOSTransportKeyParameterPublishCloudParameters:(id)a3 data:(__CFData *)a4 err:(__CFError *)a5
+- (BOOL)SOSTransportKeyParameterPublishCloudParameters:(id)parameters data:(__CFData *)data err:(__CFError *)err
 {
   v8 = sub_100006274("circleOps");
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
-  if (a4)
+  if (data)
   {
     if (v9)
     {
@@ -30,18 +30,18 @@
     CFStringAppend(MutableCopy, @"]");
     ExternalRepresentation = CFStringCreateExternalRepresentation(0, MutableCopy, 0x8000100u, 0x3Fu);
     Length = CFDataGetLength(ExternalRepresentation);
-    v14 = CFDataGetLength(a4);
+    v14 = CFDataGetLength(data);
     Mutable = CFDataCreateMutable(kCFAllocatorDefault, v14 + Length);
     BytePtr = CFDataGetBytePtr(ExternalRepresentation);
     v17 = CFDataGetLength(ExternalRepresentation);
     CFDataAppendBytes(Mutable, BytePtr, v17);
-    v18 = CFDataGetBytePtr(a4);
-    v19 = CFDataGetLength(a4);
+    v18 = CFDataGetBytePtr(data);
+    v19 = CFDataGetLength(data);
     CFDataAppendBytes(Mutable, v18, v19);
     Copy = CFDataCreateCopy(kCFAllocatorDefault, Mutable);
-    v21 = [(SOSAccount *)self->account peerID];
+    peerID = [(SOSAccount *)self->account peerID];
 
-    if (v21)
+    if (peerID)
     {
       v22 = SOSLastKeyParametersPushedKeyCreateWithPeerID();
     }
@@ -53,7 +53,7 @@
     }
 
     v31 = v22;
-    v32 = sub_10001104C(kCFAllocatorDefault, v23, v24, v25, v26, v27, v28, v29, kSOSKVSKeyParametersKey, a4);
+    v32 = sub_10001104C(kCFAllocatorDefault, v23, v24, v25, v26, v27, v28, v29, kSOSKVSKeyParametersKey, data);
     if (v31)
     {
       CFRelease(v31);
@@ -97,29 +97,29 @@
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Tried to publish nil Cloud Parameters", buf, 2u);
     }
 
-    sub_100087E9C(0, a5, @"Tried to publish nil Cloud Parameters");
+    sub_100087E9C(0, err, @"Tried to publish nil Cloud Parameters");
   }
 
-  return a4 != 0;
+  return data != 0;
 }
 
-- (BOOL)SOSTransportKeyParameterKVSAppendKeyInterests:(id)a3 ak:(__CFArray *)a4 firstUnLock:(__CFArray *)a5 unlocked:(__CFArray *)a6 err:(__CFError *)a7
+- (BOOL)SOSTransportKeyParameterKVSAppendKeyInterests:(id)interests ak:(__CFArray *)ak firstUnLock:(__CFArray *)lock unlocked:(__CFArray *)unlocked err:(__CFError *)err
 {
-  CFArrayAppendValue(a4, kSOSKVSKeyParametersKey);
-  CFArrayAppendValue(a4, kSOSKVSOfficialDSIDKey);
+  CFArrayAppendValue(ak, kSOSKVSKeyParametersKey);
+  CFArrayAppendValue(ak, kSOSKVSOfficialDSIDKey);
   return 1;
 }
 
-- (CKKeyParameter)initWithAccount:(id)a3
+- (CKKeyParameter)initWithAccount:(id)account
 {
-  v4 = a3;
+  accountCopy = account;
   v10.receiver = self;
   v10.super_class = CKKeyParameter;
   v5 = [(CKKeyParameter *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    [(CKKeyParameter *)v5 setAccount:v4];
+    [(CKKeyParameter *)v5 setAccount:accountCopy];
     v7 = v6;
     v8 = sub_100235E68();
     CFArrayAppendValue(v8, v7);
@@ -128,7 +128,7 @@
   return v6;
 }
 
-- (BOOL)SOSTransportKeyParameterHandleKeyParameterChanges:(id)a3 data:(__CFData *)a4 err:(__CFError *)a5
+- (BOOL)SOSTransportKeyParameterHandleKeyParameterChanges:(id)changes data:(__CFData *)data err:(__CFError *)err
 {
   v6 = self->account;
   v7 = v6;
@@ -148,7 +148,7 @@
     }
 
     cf2 = 0;
-    if (!sub_100215D20(&cf2, a4))
+    if (!sub_100215D20(&cf2, data))
     {
       goto LABEL_17;
     }
@@ -157,7 +157,7 @@
   else
   {
     cf2 = 0;
-    if (!sub_100215D20(&cf2, a4))
+    if (!sub_100215D20(&cf2, data))
     {
 LABEL_17:
       v9 = 0;
@@ -180,16 +180,16 @@ LABEL_17:
     CFRelease(v10);
   }
 
-  v12 = [(SOSAccount *)v7 accountKey];
-  if (v12 && cf2)
+  accountKey = [(SOSAccount *)v7 accountKey];
+  if (accountKey && cf2)
   {
-    if (CFEqual(v12, cf2))
+    if (CFEqual(accountKey, cf2))
     {
       goto LABEL_14;
     }
   }
 
-  else if (v12 == cf2)
+  else if (accountKey == cf2)
   {
 LABEL_14:
     v13 = sub_100006274("circleOps");
@@ -205,18 +205,18 @@ LABEL_45:
     goto LABEL_46;
   }
 
-  v15 = [(SOSAccount *)v7 previousAccountKey];
+  previousAccountKey = [(SOSAccount *)v7 previousAccountKey];
   v16 = cf2;
-  if (v15 && cf2)
+  if (previousAccountKey && cf2)
   {
-    if (!CFEqual(v15, cf2))
+    if (!CFEqual(previousAccountKey, cf2))
     {
       v16 = cf2;
       goto LABEL_24;
     }
   }
 
-  else if (v15 != cf2)
+  else if (previousAccountKey != cf2)
   {
 LABEL_24:
     v17 = v7;
@@ -225,9 +225,9 @@ LABEL_24:
       v18 = sub_100006274("circleOps");
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
-        v19 = [(SOSAccount *)v17 accountKey];
+        accountKey2 = [(SOSAccount *)v17 accountKey];
         *buf = 138412290;
-        v35 = v19;
+        v35 = accountKey2;
         _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "Moving : %@ to previousAccountKey", buf, 0xCu);
       }
 
@@ -265,9 +265,9 @@ LABEL_24:
 
     [(SOSAccount *)v17 setAccountKeyDerivationParameters:0];
     v23 = v17;
-    v24 = [(SOSAccount *)v23 _password_tmp];
+    _password_tmp = [(SOSAccount *)v23 _password_tmp];
 
-    if (!v24)
+    if (!_password_tmp)
     {
       v25 = sub_100006274("circleOps");
       if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
@@ -277,13 +277,13 @@ LABEL_24:
       }
     }
 
-    v26 = [(SOSAccount *)v23 _password_tmp];
+    _password_tmp2 = [(SOSAccount *)v23 _password_tmp];
 
-    if (v26)
+    if (_password_tmp2)
     {
-      CFRetain(v26);
-      v27 = sub_100219108(v23, 0, v26, 0);
-      CFRelease(v26);
+      CFRetain(_password_tmp2);
+      v27 = sub_100219108(v23, 0, _password_tmp2, 0);
+      CFRelease(_password_tmp2);
     }
 
     else

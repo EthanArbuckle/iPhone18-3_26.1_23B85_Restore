@@ -1,7 +1,7 @@
 @interface SPUIContactViewController
 - (SPUIContactViewController)init;
-- (void)updateWithContactIdentifier:(id)a3 preferredBundleIdentifiers:(id)a4;
-- (void)willUpdateFromResultsWithHighlightedResult:(id)a3 viewController:(id)a4;
+- (void)updateWithContactIdentifier:(id)identifier preferredBundleIdentifiers:(id)identifiers;
+- (void)willUpdateFromResultsWithHighlightedResult:(id)result viewController:(id)controller;
 @end
 
 @implementation SPUIContactViewController
@@ -14,20 +14,20 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [(SPUIViewController *)v2 searchResultViewController];
-    [v4 setShouldAnimateUpdates:1];
+    searchResultViewController = [(SPUIViewController *)v2 searchResultViewController];
+    [searchResultViewController setShouldAnimateUpdates:1];
   }
 
   return v3;
 }
 
-- (void)updateWithContactIdentifier:(id)a3 preferredBundleIdentifiers:(id)a4
+- (void)updateWithContactIdentifier:(id)identifier preferredBundleIdentifiers:(id)identifiers
 {
   v30[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  objc_storeStrong(&self->_contactIdentifier, a3);
-  v8 = a4;
-  v9 = [v8 copy];
+  identifierCopy = identifier;
+  objc_storeStrong(&self->_contactIdentifier, identifier);
+  identifiersCopy = identifiers;
+  v9 = [identifiersCopy copy];
 
   preferredBundleIdentifiers = self->_preferredBundleIdentifiers;
   self->_preferredBundleIdentifiers = v9;
@@ -36,22 +36,22 @@
   v11 = +[SPUISearchModel sharedGeneralInstance];
   [v11 activate];
   [v11 updateWithQueryContext:0];
-  v12 = [(SPUIViewController *)self searchResultViewController];
-  [v12 searchAgentClearedResults:v11];
+  searchResultViewController = [(SPUIViewController *)self searchResultViewController];
+  [searchResultViewController searchAgentClearedResults:v11];
 
-  v13 = [(SPUIContactViewController *)self backgroundColorView];
-  [v13 setColor:0];
+  backgroundColorView = [(SPUIContactViewController *)self backgroundColorView];
+  [backgroundColorView setColor:0];
 
-  if ([v7 length])
+  if ([identifierCopy length])
   {
-    v14 = [MEMORY[0x277D65888] searchEntityWithContactIdentifier:v7 fromSuggestion:0];
+    v14 = [MEMORY[0x277D65888] searchEntityWithContactIdentifier:identifierCopy fromSuggestion:0];
     [v14 setPreferredBundleIDs:self->_preferredBundleIdentifiers];
     v15 = objc_alloc(MEMORY[0x277D65898]);
-    v16 = [v14 tokenText];
-    v17 = v16;
-    if (v16)
+    tokenText = [v14 tokenText];
+    v17 = tokenText;
+    if (tokenText)
     {
-      v18 = v16;
+      v18 = tokenText;
     }
 
     else
@@ -66,33 +66,33 @@
     [v19 setSearchEntities:v20];
 
     [v11 updateWithQueryContext:v19];
-    v21 = [v14 tokenText];
-    v22 = [(SPUIViewController *)self searchResultViewController];
-    [v22 setQueryString:v21];
+    tokenText2 = [v14 tokenText];
+    searchResultViewController2 = [(SPUIViewController *)self searchResultViewController];
+    [searchResultViewController2 setQueryString:tokenText2];
 
     if (![(SPUIContactViewController *)self isBackgroundColorViewHidden])
     {
       v23 = objc_opt_new();
-      v29 = v7;
+      v29 = identifierCopy;
       v24 = [MEMORY[0x277CBEA60] arrayWithObjects:&v29 count:1];
       [v23 setContactIdentifiers:v24];
 
       v25 = objc_opt_new();
       [v25 setImage:v23];
-      v26 = [(SPUIContactViewController *)self backgroundColorView];
-      if (!v26)
+      backgroundColorView2 = [(SPUIContactViewController *)self backgroundColorView];
+      if (!backgroundColorView2)
       {
-        v26 = objc_opt_new();
-        [v26 setShowsPlaceholderPlatterView:0];
-        [v26 setDelegate:self];
-        v27 = [(SPUIContactViewController *)self view];
-        [v27 insertSubview:v26 atIndex:0];
+        backgroundColorView2 = objc_opt_new();
+        [backgroundColorView2 setShowsPlaceholderPlatterView:0];
+        [backgroundColorView2 setDelegate:self];
+        view = [(SPUIContactViewController *)self view];
+        [view insertSubview:backgroundColorView2 atIndex:0];
 
-        [MEMORY[0x277D4C828] fillContainerWithView:v26];
-        [(SPUIContactViewController *)self setBackgroundColorView:v26];
+        [MEMORY[0x277D4C828] fillContainerWithView:backgroundColorView2];
+        [(SPUIContactViewController *)self setBackgroundColorView:backgroundColorView2];
       }
 
-      [v26 setColor:v25];
+      [backgroundColorView2 setColor:v25];
       [v14 setEntityBackgroundColor:v25];
     }
   }
@@ -100,9 +100,9 @@
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (void)willUpdateFromResultsWithHighlightedResult:(id)a3 viewController:(id)a4
+- (void)willUpdateFromResultsWithHighlightedResult:(id)result viewController:(id)controller
 {
-  v5 = [(SPUIViewController *)self searchResultViewController:a3];
+  v5 = [(SPUIViewController *)self searchResultViewController:result];
   [(SPUIViewController *)self activateViewController:v5 animate:1];
 }
 

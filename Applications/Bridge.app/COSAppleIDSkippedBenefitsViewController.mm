@@ -1,29 +1,29 @@
 @interface COSAppleIDSkippedBenefitsViewController
-+ (BOOL)controllerNeedsToRunForBuddyControllerDelegate:(id)a3;
++ (BOOL)controllerNeedsToRunForBuddyControllerDelegate:(id)delegate;
 - (COSAppleIDSkippedBenefitsViewController)init;
 - (id)detailString;
 - (id)detailTitleString;
 - (id)okayButtonTitle;
 - (id)suggestedButtonTitle;
 - (id)titleString;
-- (void)okayButtonPressed:(id)a3;
+- (void)okayButtonPressed:(id)pressed;
 - (void)presentLoginViewController;
-- (void)signInController:(id)a3 didCompleteWithSuccess:(BOOL)a4 error:(id)a5;
-- (void)signInControllerDidCancel:(id)a3;
-- (void)suggestedButtonPressed:(id)a3;
+- (void)signInController:(id)controller didCompleteWithSuccess:(BOOL)success error:(id)error;
+- (void)signInControllerDidCancel:(id)cancel;
+- (void)suggestedButtonPressed:(id)pressed;
 - (void)updateLoginStatus;
 - (void)updateUIFromLoginStatus;
 @end
 
 @implementation COSAppleIDSkippedBenefitsViewController
 
-+ (BOOL)controllerNeedsToRunForBuddyControllerDelegate:(id)a3
++ (BOOL)controllerNeedsToRunForBuddyControllerDelegate:(id)delegate
 {
-  v3 = [UIApp setupController];
-  v4 = [v3 appleIDSignInModel];
-  v5 = [v4 benefitsControllerPresented];
+  setupController = [UIApp setupController];
+  appleIDSignInModel = [setupController appleIDSignInModel];
+  benefitsControllerPresented = [appleIDSignInModel benefitsControllerPresented];
 
-  if (v5)
+  if (benefitsControllerPresented)
   {
     v6 = pbb_accountsignin_log();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -37,9 +37,9 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  v7 = [UIApp activeWatch];
+  activeWatch = [UIApp activeWatch];
   v8 = [[NSUUID alloc] initWithUUIDString:@"4AA3FF3B-3224-42E6-995E-481F49AE9260"];
-  v9 = [v7 supportsCapability:v8];
+  v9 = [activeWatch supportsCapability:v8];
 
   if ((v9 & 1) == 0)
   {
@@ -174,8 +174,8 @@ LABEL_21:
   {
     if (self->_iMessageAppleIDLoggedIn)
     {
-      v4 = [(COSAppleIDSkippedBenefitsViewController *)self delegate];
-      [v4 buddyControllerDone:self];
+      delegate = [(COSAppleIDSkippedBenefitsViewController *)self delegate];
+      [delegate buddyControllerDone:self];
 
       [objc_opt_class() runPostAppleIDSignInOrSkippedTasks];
     }
@@ -260,11 +260,11 @@ LABEL_21:
   return v3;
 }
 
-- (void)suggestedButtonPressed:(id)a3
+- (void)suggestedButtonPressed:(id)pressed
 {
-  v5 = [UIApp setupController];
-  v4 = [v5 appleIDSignInModel];
-  [v4 setBenefitsControllerPresented:1];
+  setupController = [UIApp setupController];
+  appleIDSignInModel = [setupController appleIDSignInModel];
+  [appleIDSignInModel setBenefitsControllerPresented:1];
 
   [(COSAppleIDSkippedBenefitsViewController *)self presentLoginViewController];
 }
@@ -280,8 +280,8 @@ LABEL_21:
   }
 
   self->_autoTryToLoginToMessages = 0;
-  v4 = [(COSAppleIDSkippedBenefitsViewController *)self view];
-  [v4 setUserInteractionEnabled:0];
+  view = [(COSAppleIDSkippedBenefitsViewController *)self view];
+  [view setUserInteractionEnabled:0];
 
   v12 = 0;
   v13 = &v12;
@@ -319,28 +319,28 @@ LABEL_21:
   [v9 prepareInViewController:self completion:v10];
 }
 
-- (void)okayButtonPressed:(id)a3
+- (void)okayButtonPressed:(id)pressed
 {
-  v6 = [UIApp setupController];
-  v4 = [v6 appleIDSignInModel];
-  [v4 setBenefitsControllerPresented:1];
+  setupController = [UIApp setupController];
+  appleIDSignInModel = [setupController appleIDSignInModel];
+  [appleIDSignInModel setBenefitsControllerPresented:1];
 
-  v5 = [(COSAppleIDSkippedBenefitsViewController *)self delegate];
-  [v5 buddyControllerDone:self];
+  delegate = [(COSAppleIDSkippedBenefitsViewController *)self delegate];
+  [delegate buddyControllerDone:self];
 
   [objc_opt_class() runPostAppleIDSignInOrSkippedTasks];
 }
 
-- (void)signInController:(id)a3 didCompleteWithSuccess:(BOOL)a4 error:(id)a5
+- (void)signInController:(id)controller didCompleteWithSuccess:(BOOL)success error:(id)error
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
+  successCopy = success;
+  controllerCopy = controller;
+  errorCopy = error;
   v10 = pbb_accountsignin_log();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v11 = @"NO";
-    if (v6)
+    if (successCopy)
     {
       v11 = @"YES";
     }
@@ -348,15 +348,15 @@ LABEL_21:
     *buf = 138412546;
     v20 = v11;
     v21 = 2112;
-    v22 = v9;
+    v22 = errorCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "COSAppleIDSkippedBenefitsViewController signInController:didCompleteWithSuccess:%@ error:%@", buf, 0x16u);
   }
 
-  if (v6)
+  if (successCopy)
   {
     v12 = sub_100025AB0();
-    v13 = [v8 serviceType];
-    v14 = [v12 isEqualToString:v13];
+    serviceType = [controllerCopy serviceType];
+    v14 = [v12 isEqualToString:serviceType];
 
     if (v14)
     {
@@ -367,14 +367,14 @@ LABEL_21:
     {
       self->_iCloudAppleIDSuccess = 1;
       self->_autoTryToLoginToMessages = 1;
-      v15 = [UIApp setupController];
-      v16 = [v15 appleIDSignInModel];
-      [v16 setCdpRepairRequiredOnBenefitsController:1];
+      setupController = [UIApp setupController];
+      appleIDSignInModel = [setupController appleIDSignInModel];
+      [appleIDSignInModel setCdpRepairRequiredOnBenefitsController:1];
     }
   }
 
-  v17 = [(COSAppleIDSkippedBenefitsViewController *)self view];
-  [v17 setUserInteractionEnabled:1];
+  view = [(COSAppleIDSkippedBenefitsViewController *)self view];
+  [view setUserInteractionEnabled:1];
 
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
@@ -384,7 +384,7 @@ LABEL_21:
   [(COSAppleIDSkippedBenefitsViewController *)self dismissViewControllerAnimated:1 completion:v18];
 }
 
-- (void)signInControllerDidCancel:(id)a3
+- (void)signInControllerDidCancel:(id)cancel
 {
   v4 = pbb_accountsignin_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -393,8 +393,8 @@ LABEL_21:
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "COSAppleIDSkippedBenefitsViewController signInControllerDidCancel:", buf, 2u);
   }
 
-  v5 = [(COSAppleIDSkippedBenefitsViewController *)self view];
-  [v5 setUserInteractionEnabled:1];
+  view = [(COSAppleIDSkippedBenefitsViewController *)self view];
+  [view setUserInteractionEnabled:1];
 
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;

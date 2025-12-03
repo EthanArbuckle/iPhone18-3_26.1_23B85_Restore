@@ -1,34 +1,34 @@
 @interface CLCKVO2MaxEstimate
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasEligibleForCalorimetry:(BOOL)a3;
-- (void)setHasEligibleForHealthKit:(BOOL)a3;
-- (void)setHasEstimatedHRRecoveryParam:(BOOL)a3;
-- (void)setHasEstimatedHRResponseParam:(BOOL)a3;
-- (void)setHasEstimatedVo2Max:(BOOL)a3;
-- (void)setHasFilteredVo2Max:(BOOL)a3;
-- (void)setHasHrMax:(BOOL)a3;
-- (void)setHasHrMin:(BOOL)a3;
-- (void)setHasNumWorkoutsContrToEstimate:(BOOL)a3;
-- (void)setHasPlatformSource:(BOOL)a3;
-- (void)setHasSessionType:(BOOL)a3;
-- (void)setHasSessionVo2Max:(BOOL)a3;
-- (void)setHasStartTime:(BOOL)a3;
-- (void)setHasVariance:(BOOL)a3;
-- (void)setHasWorkoutType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasEligibleForCalorimetry:(BOOL)calorimetry;
+- (void)setHasEligibleForHealthKit:(BOOL)kit;
+- (void)setHasEstimatedHRRecoveryParam:(BOOL)param;
+- (void)setHasEstimatedHRResponseParam:(BOOL)param;
+- (void)setHasEstimatedVo2Max:(BOOL)max;
+- (void)setHasFilteredVo2Max:(BOOL)max;
+- (void)setHasHrMax:(BOOL)max;
+- (void)setHasHrMin:(BOOL)min;
+- (void)setHasNumWorkoutsContrToEstimate:(BOOL)estimate;
+- (void)setHasPlatformSource:(BOOL)source;
+- (void)setHasSessionType:(BOOL)type;
+- (void)setHasSessionVo2Max:(BOOL)max;
+- (void)setHasStartTime:(BOOL)time;
+- (void)setHasVariance:(BOOL)variance;
+- (void)setHasWorkoutType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CLCKVO2MaxEstimate
 
-- (void)setHasStartTime:(BOOL)a3
+- (void)setHasStartTime:(BOOL)time
 {
-  if (a3)
+  if (time)
   {
     v3 = 256;
   }
@@ -41,9 +41,9 @@
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasEstimatedVo2Max:(BOOL)a3
+- (void)setHasEstimatedVo2Max:(BOOL)max
 {
-  if (a3)
+  if (max)
   {
     v3 = 8;
   }
@@ -56,9 +56,9 @@
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasWorkoutType:(BOOL)a3
+- (void)setHasWorkoutType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 0x2000;
   }
@@ -71,9 +71,9 @@
   *&self->_has = *&self->_has & 0xDFFF | v3;
 }
 
-- (void)setHasHrMax:(BOOL)a3
+- (void)setHasHrMax:(BOOL)max
 {
-  if (a3)
+  if (max)
   {
     v3 = 32;
   }
@@ -86,9 +86,9 @@
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasHrMin:(BOOL)a3
+- (void)setHasHrMin:(BOOL)min
 {
-  if (a3)
+  if (min)
   {
     v3 = 64;
   }
@@ -101,9 +101,9 @@
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasVariance:(BOOL)a3
+- (void)setHasVariance:(BOOL)variance
 {
-  if (a3)
+  if (variance)
   {
     v3 = 512;
   }
@@ -116,9 +116,9 @@
   *&self->_has = *&self->_has & 0xFDFF | v3;
 }
 
-- (void)setHasFilteredVo2Max:(BOOL)a3
+- (void)setHasFilteredVo2Max:(BOOL)max
 {
-  if (a3)
+  if (max)
   {
     v3 = 16;
   }
@@ -131,9 +131,9 @@
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasSessionType:(BOOL)a3
+- (void)setHasSessionType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 4096;
   }
@@ -146,9 +146,9 @@
   *&self->_has = *&self->_has & 0xEFFF | v3;
 }
 
-- (void)setHasEligibleForHealthKit:(BOOL)a3
+- (void)setHasEligibleForHealthKit:(BOOL)kit
 {
-  if (a3)
+  if (kit)
   {
     v3 = 0x8000;
   }
@@ -161,9 +161,9 @@
   *&self->_has = v3 & 0x8000 | *&self->_has & 0x7FFF;
 }
 
-- (void)setHasEligibleForCalorimetry:(BOOL)a3
+- (void)setHasEligibleForCalorimetry:(BOOL)calorimetry
 {
-  if (a3)
+  if (calorimetry)
   {
     v3 = 0x4000;
   }
@@ -176,9 +176,9 @@
   *&self->_has = *&self->_has & 0xBFFF | v3;
 }
 
-- (void)setHasNumWorkoutsContrToEstimate:(BOOL)a3
+- (void)setHasNumWorkoutsContrToEstimate:(BOOL)estimate
 {
-  if (a3)
+  if (estimate)
   {
     v3 = 1024;
   }
@@ -191,9 +191,9 @@
   *&self->_has = *&self->_has & 0xFBFF | v3;
 }
 
-- (void)setHasEstimatedHRResponseParam:(BOOL)a3
+- (void)setHasEstimatedHRResponseParam:(BOOL)param
 {
-  if (a3)
+  if (param)
   {
     v3 = 4;
   }
@@ -206,9 +206,9 @@
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasEstimatedHRRecoveryParam:(BOOL)a3
+- (void)setHasEstimatedHRRecoveryParam:(BOOL)param
 {
-  if (a3)
+  if (param)
   {
     v3 = 2;
   }
@@ -221,9 +221,9 @@
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (void)setHasSessionVo2Max:(BOOL)a3
+- (void)setHasSessionVo2Max:(BOOL)max
 {
-  if (a3)
+  if (max)
   {
     v3 = 128;
   }
@@ -236,9 +236,9 @@
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasPlatformSource:(BOOL)a3
+- (void)setHasPlatformSource:(BOOL)source
 {
-  if (a3)
+  if (source)
   {
     v3 = 2048;
   }
@@ -475,7 +475,7 @@ LABEL_17:
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   has = self->_has;
   if ((has & 0x100) != 0)
@@ -692,13 +692,13 @@ LABEL_33:
   PBDataWriterWriteInt32Field();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if ((has & 0x100) != 0)
   {
-    *(a3 + 9) = *&self->_startTime;
-    *(a3 + 54) |= 0x100u;
+    *(to + 9) = *&self->_startTime;
+    *(to + 54) |= 0x100u;
     has = self->_has;
     if ((has & 8) == 0)
     {
@@ -717,8 +717,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(a3 + 4) = *&self->_estimatedVo2Max;
-  *(a3 + 54) |= 8u;
+  *(to + 4) = *&self->_estimatedVo2Max;
+  *(to + 54) |= 8u;
   has = self->_has;
   if ((has & 0x2000) == 0)
   {
@@ -732,8 +732,8 @@ LABEL_4:
   }
 
 LABEL_20:
-  *(a3 + 25) = self->_workoutType;
-  *(a3 + 54) |= 0x2000u;
+  *(to + 25) = self->_workoutType;
+  *(to + 54) |= 0x2000u;
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -747,8 +747,8 @@ LABEL_5:
   }
 
 LABEL_21:
-  *(a3 + 1) = *&self->_durationInSeconds;
-  *(a3 + 54) |= 1u;
+  *(to + 1) = *&self->_durationInSeconds;
+  *(to + 54) |= 1u;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -762,8 +762,8 @@ LABEL_6:
   }
 
 LABEL_22:
-  *(a3 + 6) = *&self->_hrMax;
-  *(a3 + 54) |= 0x20u;
+  *(to + 6) = *&self->_hrMax;
+  *(to + 54) |= 0x20u;
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -777,8 +777,8 @@ LABEL_7:
   }
 
 LABEL_23:
-  *(a3 + 7) = *&self->_hrMin;
-  *(a3 + 54) |= 0x40u;
+  *(to + 7) = *&self->_hrMin;
+  *(to + 54) |= 0x40u;
   has = self->_has;
   if ((has & 0x200) == 0)
   {
@@ -792,8 +792,8 @@ LABEL_8:
   }
 
 LABEL_24:
-  *(a3 + 10) = *&self->_variance;
-  *(a3 + 54) |= 0x200u;
+  *(to + 10) = *&self->_variance;
+  *(to + 54) |= 0x200u;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -807,8 +807,8 @@ LABEL_9:
   }
 
 LABEL_25:
-  *(a3 + 5) = *&self->_filteredVo2Max;
-  *(a3 + 54) |= 0x10u;
+  *(to + 5) = *&self->_filteredVo2Max;
+  *(to + 54) |= 0x10u;
   has = self->_has;
   if ((has & 0x1000) == 0)
   {
@@ -822,8 +822,8 @@ LABEL_10:
   }
 
 LABEL_26:
-  *(a3 + 24) = self->_sessionType;
-  *(a3 + 54) |= 0x1000u;
+  *(to + 24) = self->_sessionType;
+  *(to + 54) |= 0x1000u;
   has = self->_has;
   if ((has & 0x8000) == 0)
   {
@@ -837,8 +837,8 @@ LABEL_11:
   }
 
 LABEL_27:
-  *(a3 + 105) = self->_eligibleForHealthKit;
-  *(a3 + 54) |= 0x8000u;
+  *(to + 105) = self->_eligibleForHealthKit;
+  *(to + 54) |= 0x8000u;
   has = self->_has;
   if ((has & 0x4000) == 0)
   {
@@ -852,8 +852,8 @@ LABEL_12:
   }
 
 LABEL_28:
-  *(a3 + 104) = self->_eligibleForCalorimetry;
-  *(a3 + 54) |= 0x4000u;
+  *(to + 104) = self->_eligibleForCalorimetry;
+  *(to + 54) |= 0x4000u;
   has = self->_has;
   if ((has & 0x400) == 0)
   {
@@ -867,8 +867,8 @@ LABEL_13:
   }
 
 LABEL_29:
-  *(a3 + 22) = self->_numWorkoutsContrToEstimate;
-  *(a3 + 54) |= 0x400u;
+  *(to + 22) = self->_numWorkoutsContrToEstimate;
+  *(to + 54) |= 0x400u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -882,8 +882,8 @@ LABEL_14:
   }
 
 LABEL_30:
-  *(a3 + 3) = *&self->_estimatedHRResponseParam;
-  *(a3 + 54) |= 4u;
+  *(to + 3) = *&self->_estimatedHRResponseParam;
+  *(to + 54) |= 4u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -897,8 +897,8 @@ LABEL_15:
   }
 
 LABEL_31:
-  *(a3 + 2) = *&self->_estimatedHRRecoveryParam;
-  *(a3 + 54) |= 2u;
+  *(to + 2) = *&self->_estimatedHRRecoveryParam;
+  *(to + 54) |= 2u;
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -909,23 +909,23 @@ LABEL_16:
     }
 
 LABEL_33:
-    *(a3 + 23) = self->_platformSource;
-    *(a3 + 54) |= 0x800u;
+    *(to + 23) = self->_platformSource;
+    *(to + 54) |= 0x800u;
     return;
   }
 
 LABEL_32:
-  *(a3 + 8) = *&self->_sessionVo2Max;
-  *(a3 + 54) |= 0x80u;
+  *(to + 8) = *&self->_sessionVo2Max;
+  *(to + 54) |= 0x80u;
   if ((*&self->_has & 0x800) != 0)
   {
     goto LABEL_33;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if ((has & 0x100) != 0)
   {
@@ -1157,32 +1157,32 @@ LABEL_17:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (!v5)
   {
     return v5;
   }
 
   has = self->_has;
-  v7 = *(a3 + 54);
+  v7 = *(equal + 54);
   if ((has & 0x100) != 0)
   {
-    if ((*(a3 + 54) & 0x100) == 0 || self->_startTime != *(a3 + 9))
+    if ((*(equal + 54) & 0x100) == 0 || self->_startTime != *(equal + 9))
     {
       goto LABEL_87;
     }
   }
 
-  else if ((*(a3 + 54) & 0x100) != 0)
+  else if ((*(equal + 54) & 0x100) != 0)
   {
     goto LABEL_87;
   }
 
   if ((has & 8) != 0)
   {
-    if ((v7 & 8) == 0 || self->_estimatedVo2Max != *(a3 + 4))
+    if ((v7 & 8) == 0 || self->_estimatedVo2Max != *(equal + 4))
     {
       goto LABEL_87;
     }
@@ -1195,20 +1195,20 @@ LABEL_17:
 
   if ((*&self->_has & 0x2000) != 0)
   {
-    if ((*(a3 + 54) & 0x2000) == 0 || self->_workoutType != *(a3 + 25))
+    if ((*(equal + 54) & 0x2000) == 0 || self->_workoutType != *(equal + 25))
     {
       goto LABEL_87;
     }
   }
 
-  else if ((*(a3 + 54) & 0x2000) != 0)
+  else if ((*(equal + 54) & 0x2000) != 0)
   {
     goto LABEL_87;
   }
 
   if (has)
   {
-    if ((v7 & 1) == 0 || self->_durationInSeconds != *(a3 + 1))
+    if ((v7 & 1) == 0 || self->_durationInSeconds != *(equal + 1))
     {
       goto LABEL_87;
     }
@@ -1221,7 +1221,7 @@ LABEL_17:
 
   if ((has & 0x20) != 0)
   {
-    if ((v7 & 0x20) == 0 || self->_hrMax != *(a3 + 6))
+    if ((v7 & 0x20) == 0 || self->_hrMax != *(equal + 6))
     {
       goto LABEL_87;
     }
@@ -1234,7 +1234,7 @@ LABEL_17:
 
   if ((has & 0x40) != 0)
   {
-    if ((v7 & 0x40) == 0 || self->_hrMin != *(a3 + 7))
+    if ((v7 & 0x40) == 0 || self->_hrMin != *(equal + 7))
     {
       goto LABEL_87;
     }
@@ -1247,20 +1247,20 @@ LABEL_17:
 
   if ((*&self->_has & 0x200) != 0)
   {
-    if ((*(a3 + 54) & 0x200) == 0 || self->_variance != *(a3 + 10))
+    if ((*(equal + 54) & 0x200) == 0 || self->_variance != *(equal + 10))
     {
       goto LABEL_87;
     }
   }
 
-  else if ((*(a3 + 54) & 0x200) != 0)
+  else if ((*(equal + 54) & 0x200) != 0)
   {
     goto LABEL_87;
   }
 
   if ((has & 0x10) != 0)
   {
-    if ((v7 & 0x10) == 0 || self->_filteredVo2Max != *(a3 + 5))
+    if ((v7 & 0x10) == 0 || self->_filteredVo2Max != *(equal + 5))
     {
       goto LABEL_87;
     }
@@ -1273,56 +1273,56 @@ LABEL_17:
 
   if ((*&self->_has & 0x1000) != 0)
   {
-    if ((*(a3 + 54) & 0x1000) == 0 || self->_sessionType != *(a3 + 24))
+    if ((*(equal + 54) & 0x1000) == 0 || self->_sessionType != *(equal + 24))
     {
       goto LABEL_87;
     }
   }
 
-  else if ((*(a3 + 54) & 0x1000) != 0)
+  else if ((*(equal + 54) & 0x1000) != 0)
   {
     goto LABEL_87;
   }
 
   if ((*&self->_has & 0x8000) != 0)
   {
-    if ((*(a3 + 54) & 0x8000) == 0)
+    if ((*(equal + 54) & 0x8000) == 0)
     {
       goto LABEL_87;
     }
 
     if (self->_eligibleForHealthKit)
     {
-      if ((*(a3 + 105) & 1) == 0)
+      if ((*(equal + 105) & 1) == 0)
       {
         goto LABEL_87;
       }
     }
 
-    else if (*(a3 + 105))
+    else if (*(equal + 105))
     {
       goto LABEL_87;
     }
   }
 
-  else if ((*(a3 + 54) & 0x8000) != 0)
+  else if ((*(equal + 54) & 0x8000) != 0)
   {
     goto LABEL_87;
   }
 
   if ((*&self->_has & 0x4000) != 0)
   {
-    if ((*(a3 + 54) & 0x4000) != 0)
+    if ((*(equal + 54) & 0x4000) != 0)
     {
       if (self->_eligibleForCalorimetry)
       {
-        if ((*(a3 + 104) & 1) == 0)
+        if ((*(equal + 104) & 1) == 0)
         {
           goto LABEL_87;
         }
       }
 
-      else if (*(a3 + 104))
+      else if (*(equal + 104))
       {
         goto LABEL_87;
       }
@@ -1335,7 +1335,7 @@ LABEL_87:
     return v5;
   }
 
-  if ((*(a3 + 54) & 0x4000) != 0)
+  if ((*(equal + 54) & 0x4000) != 0)
   {
     goto LABEL_87;
   }
@@ -1343,20 +1343,20 @@ LABEL_87:
 LABEL_51:
   if ((*&self->_has & 0x400) != 0)
   {
-    if ((*(a3 + 54) & 0x400) == 0 || self->_numWorkoutsContrToEstimate != *(a3 + 22))
+    if ((*(equal + 54) & 0x400) == 0 || self->_numWorkoutsContrToEstimate != *(equal + 22))
     {
       goto LABEL_87;
     }
   }
 
-  else if ((*(a3 + 54) & 0x400) != 0)
+  else if ((*(equal + 54) & 0x400) != 0)
   {
     goto LABEL_87;
   }
 
   if ((has & 4) != 0)
   {
-    if ((v7 & 4) == 0 || self->_estimatedHRResponseParam != *(a3 + 3))
+    if ((v7 & 4) == 0 || self->_estimatedHRResponseParam != *(equal + 3))
     {
       goto LABEL_87;
     }
@@ -1369,7 +1369,7 @@ LABEL_51:
 
   if ((has & 2) != 0)
   {
-    if ((v7 & 2) == 0 || self->_estimatedHRRecoveryParam != *(a3 + 2))
+    if ((v7 & 2) == 0 || self->_estimatedHRRecoveryParam != *(equal + 2))
     {
       goto LABEL_87;
     }
@@ -1382,7 +1382,7 @@ LABEL_51:
 
   if ((has & 0x80) != 0)
   {
-    if ((v7 & 0x80) == 0 || self->_sessionVo2Max != *(a3 + 8))
+    if ((v7 & 0x80) == 0 || self->_sessionVo2Max != *(equal + 8))
     {
       goto LABEL_87;
     }
@@ -1396,7 +1396,7 @@ LABEL_51:
   LOBYTE(v5) = (v7 & 0x800) == 0;
   if ((*&self->_has & 0x800) != 0)
   {
-    if ((*(a3 + 54) & 0x800) == 0 || self->_platformSource != *(a3 + 23))
+    if ((*(equal + 54) & 0x800) == 0 || self->_platformSource != *(equal + 23))
     {
       goto LABEL_87;
     }
@@ -1830,14 +1830,14 @@ LABEL_73:
   return v9 ^ v5 ^ v13 ^ v17 ^ v18 ^ v22 ^ v26 ^ v30 ^ v34 ^ v35 ^ v36 ^ v37 ^ v41 ^ v42 ^ v46 ^ v50;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v3 = *(a3 + 54);
+  v3 = *(from + 54);
   if ((v3 & 0x100) != 0)
   {
-    self->_startTime = *(a3 + 9);
+    self->_startTime = *(from + 9);
     *&self->_has |= 0x100u;
-    v3 = *(a3 + 54);
+    v3 = *(from + 54);
     if ((v3 & 8) == 0)
     {
 LABEL_3:
@@ -1855,9 +1855,9 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  self->_estimatedVo2Max = *(a3 + 4);
+  self->_estimatedVo2Max = *(from + 4);
   *&self->_has |= 8u;
-  v3 = *(a3 + 54);
+  v3 = *(from + 54);
   if ((v3 & 0x2000) == 0)
   {
 LABEL_4:
@@ -1870,9 +1870,9 @@ LABEL_4:
   }
 
 LABEL_20:
-  self->_workoutType = *(a3 + 25);
+  self->_workoutType = *(from + 25);
   *&self->_has |= 0x2000u;
-  v3 = *(a3 + 54);
+  v3 = *(from + 54);
   if ((v3 & 1) == 0)
   {
 LABEL_5:
@@ -1885,9 +1885,9 @@ LABEL_5:
   }
 
 LABEL_21:
-  self->_durationInSeconds = *(a3 + 1);
+  self->_durationInSeconds = *(from + 1);
   *&self->_has |= 1u;
-  v3 = *(a3 + 54);
+  v3 = *(from + 54);
   if ((v3 & 0x20) == 0)
   {
 LABEL_6:
@@ -1900,9 +1900,9 @@ LABEL_6:
   }
 
 LABEL_22:
-  self->_hrMax = *(a3 + 6);
+  self->_hrMax = *(from + 6);
   *&self->_has |= 0x20u;
-  v3 = *(a3 + 54);
+  v3 = *(from + 54);
   if ((v3 & 0x40) == 0)
   {
 LABEL_7:
@@ -1915,9 +1915,9 @@ LABEL_7:
   }
 
 LABEL_23:
-  self->_hrMin = *(a3 + 7);
+  self->_hrMin = *(from + 7);
   *&self->_has |= 0x40u;
-  v3 = *(a3 + 54);
+  v3 = *(from + 54);
   if ((v3 & 0x200) == 0)
   {
 LABEL_8:
@@ -1930,9 +1930,9 @@ LABEL_8:
   }
 
 LABEL_24:
-  self->_variance = *(a3 + 10);
+  self->_variance = *(from + 10);
   *&self->_has |= 0x200u;
-  v3 = *(a3 + 54);
+  v3 = *(from + 54);
   if ((v3 & 0x10) == 0)
   {
 LABEL_9:
@@ -1945,9 +1945,9 @@ LABEL_9:
   }
 
 LABEL_25:
-  self->_filteredVo2Max = *(a3 + 5);
+  self->_filteredVo2Max = *(from + 5);
   *&self->_has |= 0x10u;
-  v3 = *(a3 + 54);
+  v3 = *(from + 54);
   if ((v3 & 0x1000) == 0)
   {
 LABEL_10:
@@ -1960,9 +1960,9 @@ LABEL_10:
   }
 
 LABEL_26:
-  self->_sessionType = *(a3 + 24);
+  self->_sessionType = *(from + 24);
   *&self->_has |= 0x1000u;
-  v3 = *(a3 + 54);
+  v3 = *(from + 54);
   if ((v3 & 0x8000) == 0)
   {
 LABEL_11:
@@ -1975,9 +1975,9 @@ LABEL_11:
   }
 
 LABEL_27:
-  self->_eligibleForHealthKit = *(a3 + 105);
+  self->_eligibleForHealthKit = *(from + 105);
   *&self->_has |= 0x8000u;
-  v3 = *(a3 + 54);
+  v3 = *(from + 54);
   if ((v3 & 0x4000) == 0)
   {
 LABEL_12:
@@ -1990,9 +1990,9 @@ LABEL_12:
   }
 
 LABEL_28:
-  self->_eligibleForCalorimetry = *(a3 + 104);
+  self->_eligibleForCalorimetry = *(from + 104);
   *&self->_has |= 0x4000u;
-  v3 = *(a3 + 54);
+  v3 = *(from + 54);
   if ((v3 & 0x400) == 0)
   {
 LABEL_13:
@@ -2005,9 +2005,9 @@ LABEL_13:
   }
 
 LABEL_29:
-  self->_numWorkoutsContrToEstimate = *(a3 + 22);
+  self->_numWorkoutsContrToEstimate = *(from + 22);
   *&self->_has |= 0x400u;
-  v3 = *(a3 + 54);
+  v3 = *(from + 54);
   if ((v3 & 4) == 0)
   {
 LABEL_14:
@@ -2020,9 +2020,9 @@ LABEL_14:
   }
 
 LABEL_30:
-  self->_estimatedHRResponseParam = *(a3 + 3);
+  self->_estimatedHRResponseParam = *(from + 3);
   *&self->_has |= 4u;
-  v3 = *(a3 + 54);
+  v3 = *(from + 54);
   if ((v3 & 2) == 0)
   {
 LABEL_15:
@@ -2035,9 +2035,9 @@ LABEL_15:
   }
 
 LABEL_31:
-  self->_estimatedHRRecoveryParam = *(a3 + 2);
+  self->_estimatedHRRecoveryParam = *(from + 2);
   *&self->_has |= 2u;
-  v3 = *(a3 + 54);
+  v3 = *(from + 54);
   if ((v3 & 0x80) == 0)
   {
 LABEL_16:
@@ -2047,15 +2047,15 @@ LABEL_16:
     }
 
 LABEL_33:
-    self->_platformSource = *(a3 + 23);
+    self->_platformSource = *(from + 23);
     *&self->_has |= 0x800u;
     return;
   }
 
 LABEL_32:
-  self->_sessionVo2Max = *(a3 + 8);
+  self->_sessionVo2Max = *(from + 8);
   *&self->_has |= 0x80u;
-  if ((*(a3 + 54) & 0x800) != 0)
+  if ((*(from + 54) & 0x800) != 0)
   {
     goto LABEL_33;
   }

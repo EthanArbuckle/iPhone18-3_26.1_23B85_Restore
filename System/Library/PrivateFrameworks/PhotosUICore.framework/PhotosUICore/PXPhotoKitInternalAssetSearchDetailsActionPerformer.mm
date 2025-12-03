@@ -1,17 +1,17 @@
 @interface PXPhotoKitInternalAssetSearchDetailsActionPerformer
-+ (BOOL)canPerformOnAsset:(id)a3 inAssetCollection:(id)a4 person:(id)a5 socialGroup:(id)a6;
++ (BOOL)canPerformOnAsset:(id)asset inAssetCollection:(id)collection person:(id)person socialGroup:(id)group;
 - (void)performUserInteractionTask;
 @end
 
 @implementation PXPhotoKitInternalAssetSearchDetailsActionPerformer
 
-+ (BOOL)canPerformOnAsset:(id)a3 inAssetCollection:(id)a4 person:(id)a5 socialGroup:(id)a6
++ (BOOL)canPerformOnAsset:(id)asset inAssetCollection:(id)collection person:(id)person socialGroup:(id)group
 {
-  v7 = [PXRootSettings sharedInstance:a3];
-  v8 = [v7 canShowInternalUI];
-  if (a3)
+  v7 = [PXRootSettings sharedInstance:asset];
+  canShowInternalUI = [v7 canShowInternalUI];
+  if (asset)
   {
-    v9 = v8;
+    v9 = canShowInternalUI;
   }
 
   else
@@ -24,17 +24,17 @@
 
 - (void)performUserInteractionTask
 {
-  v3 = [(PXPhotoKitAssetActionPerformer *)self assetsByAssetCollection];
-  v4 = [v3 allKeys];
-  v10 = [v4 firstObject];
+  assetsByAssetCollection = [(PXPhotoKitAssetActionPerformer *)self assetsByAssetCollection];
+  allKeys = [assetsByAssetCollection allKeys];
+  firstObject = [allKeys firstObject];
 
-  v5 = [(PXPhotoKitAssetActionPerformer *)self assetsByAssetCollection];
-  v6 = [v5 objectForKeyedSubscript:v10];
-  v7 = [v6 firstObject];
+  assetsByAssetCollection2 = [(PXPhotoKitAssetActionPerformer *)self assetsByAssetCollection];
+  v6 = [assetsByAssetCollection2 objectForKeyedSubscript:firstObject];
+  firstObject2 = [v6 firstObject];
 
-  if (v7)
+  if (firstObject2)
   {
-    v8 = [PXSearchDiagnosticsService viewControllerForDetailsOfAsset:v7];
+    v8 = [PXSearchDiagnosticsService viewControllerForDetailsOfAsset:firstObject2];
     v9 = [(PXActionPerformer *)self presentViewController:v8];
   }
 

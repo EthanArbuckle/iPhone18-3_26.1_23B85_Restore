@@ -1,6 +1,6 @@
 @interface HDQueryServerClientState
 - (HDQueryServerClientState)init;
-- (HDQueryServerClientState)initWithApplicationState:(unsigned int)a3;
+- (HDQueryServerClientState)initWithApplicationState:(unsigned int)state;
 - (id)description;
 @end
 
@@ -16,14 +16,14 @@
   return 0;
 }
 
-- (HDQueryServerClientState)initWithApplicationState:(unsigned int)a3
+- (HDQueryServerClientState)initWithApplicationState:(unsigned int)state
 {
   v5.receiver = self;
   v5.super_class = HDQueryServerClientState;
   result = [(HDQueryServerClientState *)&v5 init];
   if (result)
   {
-    result->_applicationState = a3;
+    result->_applicationState = state;
   }
 
   return result;

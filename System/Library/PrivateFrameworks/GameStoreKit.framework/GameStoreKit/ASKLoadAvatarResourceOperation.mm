@@ -1,48 +1,48 @@
 @interface ASKLoadAvatarResourceOperation
-- (ASKLoadAvatarResourceOperation)initWithPlayerId:(id)a3;
-- (ASKLoadAvatarResourceOperation)initWithURLRequest:(id)a3 URLSession:(id)a4 dataConsumer:(id)a5;
+- (ASKLoadAvatarResourceOperation)initWithPlayerId:(id)id;
+- (ASKLoadAvatarResourceOperation)initWithURLRequest:(id)request URLSession:(id)session dataConsumer:(id)consumer;
 - (id)makePlayerFetchError;
 - (void)main;
 @end
 
 @implementation ASKLoadAvatarResourceOperation
 
-- (ASKLoadAvatarResourceOperation)initWithURLRequest:(id)a3 URLSession:(id)a4 dataConsumer:(id)a5
+- (ASKLoadAvatarResourceOperation)initWithURLRequest:(id)request URLSession:(id)session dataConsumer:(id)consumer
 {
-  v6 = a3;
-  v7 = [v6 URL];
-  v8 = [v7 host];
+  requestCopy = request;
+  v7 = [requestCopy URL];
+  host = [v7 host];
 
-  if ([v8 isEqualToString:@"G"])
+  if ([host isEqualToString:@"G"])
   {
-    v9 = [v6 URL];
-    v10 = [v9 port];
+    v9 = [requestCopy URL];
+    port = [v9 port];
 
-    if (v10)
+    if (port)
     {
       v11 = MEMORY[0x277CCACA8];
-      v12 = [v6 URL];
-      v13 = [v12 port];
-      v14 = [v11 stringWithFormat:@"G:%@", v13];
+      v12 = [requestCopy URL];
+      port2 = [v12 port];
+      v14 = [v11 stringWithFormat:@"G:%@", port2];
 
-      v8 = v14;
+      host = v14;
     }
   }
 
-  v15 = [(ASKLoadAvatarResourceOperation *)self initWithPlayerId:v8];
+  v15 = [(ASKLoadAvatarResourceOperation *)self initWithPlayerId:host];
 
   return v15;
 }
 
-- (ASKLoadAvatarResourceOperation)initWithPlayerId:(id)a3
+- (ASKLoadAvatarResourceOperation)initWithPlayerId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   v9.receiver = self;
   v9.super_class = ASKLoadAvatarResourceOperation;
   v5 = [(ASKLoadAvatarResourceOperation *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [idCopy copy];
     playerId = v5->_playerId;
     v5->_playerId = v6;
   }
@@ -55,23 +55,23 @@
   v11[1] = *MEMORY[0x277D85DE8];
   if (([(ASKLoadAvatarResourceOperation *)self isCancelled]& 1) == 0)
   {
-    v3 = [(ASKLoadAvatarResourceOperation *)self playerId];
+    playerId = [(ASKLoadAvatarResourceOperation *)self playerId];
 
-    if (v3)
+    if (playerId)
     {
       v4 = MEMORY[0x277D0C010];
-      v5 = [MEMORY[0x277D0C138] local];
-      v6 = [v4 proxyForPlayer:v5];
-      v7 = [v6 profileServicePrivate];
-      v8 = [(ASKLoadAvatarResourceOperation *)self playerId];
-      v11[0] = v8;
+      local = [MEMORY[0x277D0C138] local];
+      v6 = [v4 proxyForPlayer:local];
+      profileServicePrivate = [v6 profileServicePrivate];
+      playerId2 = [(ASKLoadAvatarResourceOperation *)self playerId];
+      v11[0] = playerId2;
       v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:1];
       v10[0] = MEMORY[0x277D85DD0];
       v10[1] = 3221225472;
       v10[2] = __38__ASKLoadAvatarResourceOperation_main__block_invoke;
       v10[3] = &unk_27968B868;
       v10[4] = self;
-      [v7 getProfilesForPlayerIDs:v9 handler:v10];
+      [profileServicePrivate getProfilesForPlayerIDs:v9 handler:v10];
     }
   }
 }
@@ -140,8 +140,8 @@ uint64_t __38__ASKLoadAvatarResourceOperation_main__block_invoke_2(uint64_t a1, 
 {
   v10[1] = *MEMORY[0x277D85DE8];
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(ASKLoadAvatarResourceOperation *)self playerId];
-  v4 = [v2 stringWithFormat:@"Unable to load player with Id: %@", v3];
+  playerId = [(ASKLoadAvatarResourceOperation *)self playerId];
+  v4 = [v2 stringWithFormat:@"Unable to load player with Id: %@", playerId];
 
   v5 = MEMORY[0x277CCA9B8];
   v9 = *MEMORY[0x277CCA450];

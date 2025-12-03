@@ -1,7 +1,7 @@
 @interface SKUIApplicationControllerOptions
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (SKUIApplicationControllerOptions)init;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 - (void)init;
 @end
@@ -63,10 +63,10 @@
   return v7 + v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
@@ -76,7 +76,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v6 = self->_requiresLocalBootstrapScript == v5->_requiresLocalBootstrapScript && self->_supportsFullApplicationReload == v5->_supportsFullApplicationReload && self->_pageRenderMetricsEnabled == v5->_pageRenderMetricsEnabled && self->_tabBarControllerStyle == v5->_tabBarControllerStyle && self->_bootstrapScriptFallbackEnabled == v5->_bootstrapScriptFallbackEnabled && self->_bootstrapScriptFallbackMaximumAge == v5->_bootstrapScriptFallbackMaximumAge && self->_bootstrapScriptTimeoutInterval == v5->_bootstrapScriptTimeoutInterval && self->_useTransientStorageForTests == v5->_useTransientStorageForTests;
     }
 
@@ -89,7 +89,7 @@
   return v6;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(SKUIMutableApplicationControllerOptions);
   [(SKUIMutableApplicationControllerOptions *)v4 setSupportsFullApplicationReload:self->_supportsFullApplicationReload];

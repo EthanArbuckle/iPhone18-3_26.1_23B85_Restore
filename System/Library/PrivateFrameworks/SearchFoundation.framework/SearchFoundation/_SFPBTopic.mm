@@ -1,27 +1,27 @@
 @interface _SFPBTopic
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (_SFPBFlightDetails)flight;
 - (_SFPBSportsDetail)sports;
-- (_SFPBTopic)initWithDictionary:(id)a3;
-- (_SFPBTopic)initWithJSON:(id)a3;
-- (_SFPBTopic)initWithSFTopic:(id)a3;
+- (_SFPBTopic)initWithDictionary:(id)dictionary;
+- (_SFPBTopic)initWithJSON:(id)n;
+- (_SFPBTopic)initWithSFTopic:(id)topic;
 - (_SFPBWeatherDetails)weather;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)setFlight:(id)a3;
-- (void)setIdentifier:(id)a3;
-- (void)setQuery:(id)a3;
-- (void)setSports:(id)a3;
-- (void)setWeather:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setFlight:(id)flight;
+- (void)setIdentifier:(id)identifier;
+- (void)setQuery:(id)query;
+- (void)setSports:(id)sports;
+- (void)setWeather:(id)weather;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBTopic
 
-- (_SFPBTopic)initWithSFTopic:(id)a3
+- (_SFPBTopic)initWithSFTopic:(id)topic
 {
-  v4 = a3;
+  topicCopy = topic;
   v19.receiver = self;
   v19.super_class = _SFPBTopic;
   v5 = [(_SFPBTopic *)&v19 init];
@@ -30,51 +30,51 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v4;
+      v6 = topicCopy;
       -[_SFPBTopic setType:](v5, "setType:", [v6 queryType]);
-      v7 = [v6 identifier];
-      [(_SFPBTopic *)v5 setIdentifier:v7];
+      identifier = [v6 identifier];
+      [(_SFPBTopic *)v5 setIdentifier:identifier];
 
-      v8 = [v6 query];
+      query = [v6 query];
 
-      [(_SFPBTopic *)v5 setQuery:v8];
+      [(_SFPBTopic *)v5 setQuery:query];
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v9 = v4;
+      v9 = topicCopy;
       v10 = [_SFPBLatLng alloc];
-      v11 = [v9 location];
+      location = [v9 location];
 
-      v12 = [(_SFPBLatLng *)v10 initWithFacade:v11];
-      v13 = [(_SFPBTopic *)v5 weather];
-      [v13 setLocation:v12];
+      v12 = [(_SFPBLatLng *)v10 initWithFacade:location];
+      weather = [(_SFPBTopic *)v5 weather];
+      [weather setLocation:v12];
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v14 = [v4 date];
-      [v14 timeIntervalSince1970];
+      date = [topicCopy date];
+      [date timeIntervalSince1970];
       v16 = v15;
-      v17 = [(_SFPBTopic *)v5 flight];
-      [v17 setTimestamp:v16];
+      flight = [(_SFPBTopic *)v5 flight];
+      [flight setTimestamp:v16];
     }
   }
 
   return v5;
 }
 
-- (_SFPBTopic)initWithDictionary:(id)a3
+- (_SFPBTopic)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v19.receiver = self;
   v19.super_class = _SFPBTopic;
   v5 = [(_SFPBTopic *)&v19 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"query"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"query"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -82,14 +82,14 @@
       [(_SFPBTopic *)v5 setQuery:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"type"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"type"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[_SFPBTopic setType:](v5, "setType:", [v8 intValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"identifier"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"identifier"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -97,7 +97,7 @@
       [(_SFPBTopic *)v5 setIdentifier:v10];
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"flight"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"flight"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -105,7 +105,7 @@
       [(_SFPBTopic *)v5 setFlight:v12];
     }
 
-    v13 = [v4 objectForKeyedSubscript:@"weather"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"weather"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -113,7 +113,7 @@
       [(_SFPBTopic *)v5 setWeather:v14];
     }
 
-    v15 = [v4 objectForKeyedSubscript:@"sports"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"sports"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -127,30 +127,30 @@
   return v5;
 }
 
-- (_SFPBTopic)initWithJSON:(id)a3
+- (_SFPBTopic)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBTopic *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBTopic *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBTopic *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -163,86 +163,86 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_flight)
   {
-    v4 = [(_SFPBTopic *)self flight];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    flight = [(_SFPBTopic *)self flight];
+    dictionaryRepresentation = [flight dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"flight"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"flight"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"flight"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"flight"];
     }
   }
 
   if (self->_identifier)
   {
-    v7 = [(_SFPBTopic *)self identifier];
-    v8 = [v7 copy];
-    [v3 setObject:v8 forKeyedSubscript:@"identifier"];
+    identifier = [(_SFPBTopic *)self identifier];
+    v8 = [identifier copy];
+    [dictionary setObject:v8 forKeyedSubscript:@"identifier"];
   }
 
   if (self->_query)
   {
-    v9 = [(_SFPBTopic *)self query];
-    v10 = [v9 copy];
-    [v3 setObject:v10 forKeyedSubscript:@"query"];
+    query = [(_SFPBTopic *)self query];
+    v10 = [query copy];
+    [dictionary setObject:v10 forKeyedSubscript:@"query"];
   }
 
   if (self->_sports)
   {
-    v11 = [(_SFPBTopic *)self sports];
-    v12 = [v11 dictionaryRepresentation];
-    if (v12)
+    sports = [(_SFPBTopic *)self sports];
+    dictionaryRepresentation2 = [sports dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v12 forKeyedSubscript:@"sports"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"sports"];
     }
 
     else
     {
-      v13 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v13 forKeyedSubscript:@"sports"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"sports"];
     }
   }
 
   if (self->_type)
   {
-    v14 = [(_SFPBTopic *)self type];
-    if (v14 >= 9)
+    type = [(_SFPBTopic *)self type];
+    if (type >= 9)
     {
-      v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v14];
+      v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", type];
     }
 
     else
     {
-      v15 = off_1E7ACE500[v14];
+      v15 = off_1E7ACE500[type];
     }
 
-    [v3 setObject:v15 forKeyedSubscript:@"type"];
+    [dictionary setObject:v15 forKeyedSubscript:@"type"];
   }
 
   if (self->_weather)
   {
-    v16 = [(_SFPBTopic *)self weather];
-    v17 = [v16 dictionaryRepresentation];
-    if (v17)
+    weather = [(_SFPBTopic *)self weather];
+    dictionaryRepresentation3 = [weather dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v17 forKeyedSubscript:@"weather"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"weather"];
     }
 
     else
     {
-      v18 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v18 forKeyedSubscript:@"weather"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"weather"];
     }
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -255,28 +255,28 @@
   return v4 ^ v7 ^ [(_SFPBSportsDetail *)self->_sports hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_28;
   }
 
-  v5 = [(_SFPBTopic *)self query];
-  v6 = [v4 query];
-  if ((v5 != 0) == (v6 == 0))
+  query = [(_SFPBTopic *)self query];
+  query2 = [equalCopy query];
+  if ((query != 0) == (query2 == 0))
   {
     goto LABEL_27;
   }
 
-  v7 = [(_SFPBTopic *)self query];
-  if (v7)
+  query3 = [(_SFPBTopic *)self query];
+  if (query3)
   {
-    v8 = v7;
-    v9 = [(_SFPBTopic *)self query];
-    v10 = [v4 query];
-    v11 = [v9 isEqual:v10];
+    v8 = query3;
+    query4 = [(_SFPBTopic *)self query];
+    query5 = [equalCopy query];
+    v11 = [query4 isEqual:query5];
 
     if (!v11)
     {
@@ -289,25 +289,25 @@
   }
 
   type = self->_type;
-  if (type != [v4 type])
+  if (type != [equalCopy type])
   {
     goto LABEL_28;
   }
 
-  v5 = [(_SFPBTopic *)self identifier];
-  v6 = [v4 identifier];
-  if ((v5 != 0) == (v6 == 0))
+  query = [(_SFPBTopic *)self identifier];
+  query2 = [equalCopy identifier];
+  if ((query != 0) == (query2 == 0))
   {
     goto LABEL_27;
   }
 
-  v13 = [(_SFPBTopic *)self identifier];
-  if (v13)
+  identifier = [(_SFPBTopic *)self identifier];
+  if (identifier)
   {
-    v14 = v13;
-    v15 = [(_SFPBTopic *)self identifier];
-    v16 = [v4 identifier];
-    v17 = [v15 isEqual:v16];
+    v14 = identifier;
+    identifier2 = [(_SFPBTopic *)self identifier];
+    identifier3 = [equalCopy identifier];
+    v17 = [identifier2 isEqual:identifier3];
 
     if (!v17)
     {
@@ -319,20 +319,20 @@
   {
   }
 
-  v5 = [(_SFPBTopic *)self flight];
-  v6 = [v4 flight];
-  if ((v5 != 0) == (v6 == 0))
+  query = [(_SFPBTopic *)self flight];
+  query2 = [equalCopy flight];
+  if ((query != 0) == (query2 == 0))
   {
     goto LABEL_27;
   }
 
-  v18 = [(_SFPBTopic *)self flight];
-  if (v18)
+  flight = [(_SFPBTopic *)self flight];
+  if (flight)
   {
-    v19 = v18;
-    v20 = [(_SFPBTopic *)self flight];
-    v21 = [v4 flight];
-    v22 = [v20 isEqual:v21];
+    v19 = flight;
+    flight2 = [(_SFPBTopic *)self flight];
+    flight3 = [equalCopy flight];
+    v22 = [flight2 isEqual:flight3];
 
     if (!v22)
     {
@@ -344,20 +344,20 @@
   {
   }
 
-  v5 = [(_SFPBTopic *)self weather];
-  v6 = [v4 weather];
-  if ((v5 != 0) == (v6 == 0))
+  query = [(_SFPBTopic *)self weather];
+  query2 = [equalCopy weather];
+  if ((query != 0) == (query2 == 0))
   {
     goto LABEL_27;
   }
 
-  v23 = [(_SFPBTopic *)self weather];
-  if (v23)
+  weather = [(_SFPBTopic *)self weather];
+  if (weather)
   {
-    v24 = v23;
-    v25 = [(_SFPBTopic *)self weather];
-    v26 = [v4 weather];
-    v27 = [v25 isEqual:v26];
+    v24 = weather;
+    weather2 = [(_SFPBTopic *)self weather];
+    weather3 = [equalCopy weather];
+    v27 = [weather2 isEqual:weather3];
 
     if (!v27)
     {
@@ -369,17 +369,17 @@
   {
   }
 
-  v5 = [(_SFPBTopic *)self sports];
-  v6 = [v4 sports];
-  if ((v5 != 0) == (v6 == 0))
+  query = [(_SFPBTopic *)self sports];
+  query2 = [equalCopy sports];
+  if ((query != 0) == (query2 == 0))
   {
 LABEL_27:
 
     goto LABEL_28;
   }
 
-  v28 = [(_SFPBTopic *)self sports];
-  if (!v28)
+  sports = [(_SFPBTopic *)self sports];
+  if (!sports)
   {
 
 LABEL_31:
@@ -387,10 +387,10 @@ LABEL_31:
     goto LABEL_29;
   }
 
-  v29 = v28;
-  v30 = [(_SFPBTopic *)self sports];
-  v31 = [v4 sports];
-  v32 = [v30 isEqual:v31];
+  v29 = sports;
+  sports2 = [(_SFPBTopic *)self sports];
+  sports3 = [equalCopy sports];
+  v32 = [sports2 isEqual:sports3];
 
   if (v32)
   {
@@ -404,11 +404,11 @@ LABEL_29:
   return v33;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v9 = a3;
-  v4 = [(_SFPBTopic *)self query];
-  if (v4)
+  toCopy = to;
+  query = [(_SFPBTopic *)self query];
+  if (query)
   {
     PBDataWriterWriteStringField();
   }
@@ -418,26 +418,26 @@ LABEL_29:
     PBDataWriterWriteInt32Field();
   }
 
-  v5 = [(_SFPBTopic *)self identifier];
-  if (v5)
+  identifier = [(_SFPBTopic *)self identifier];
+  if (identifier)
   {
     PBDataWriterWriteStringField();
   }
 
-  v6 = [(_SFPBTopic *)self flight];
-  if (v6)
+  flight = [(_SFPBTopic *)self flight];
+  if (flight)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v7 = [(_SFPBTopic *)self weather];
-  if (v7)
+  weather = [(_SFPBTopic *)self weather];
+  if (weather)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(_SFPBTopic *)self sports];
-  if (v8)
+  sports = [(_SFPBTopic *)self sports];
+  if (sports)
   {
     PBDataWriterWriteSubmessage();
   }
@@ -458,9 +458,9 @@ LABEL_29:
   return v3;
 }
 
-- (void)setSports:(id)a3
+- (void)setSports:(id)sports
 {
-  v4 = a3;
+  sportsCopy = sports;
   flight = self->_flight;
   self->_flight = 0;
 
@@ -468,14 +468,14 @@ LABEL_29:
   self->_weather = 0;
 
   v7 = 3;
-  if (!v4)
+  if (!sportsCopy)
   {
     v7 = 0;
   }
 
   self->_whichDetail = v7;
   sports = self->_sports;
-  self->_sports = v4;
+  self->_sports = sportsCopy;
 }
 
 - (_SFPBWeatherDetails)weather
@@ -493,18 +493,18 @@ LABEL_29:
   return v3;
 }
 
-- (void)setWeather:(id)a3
+- (void)setWeather:(id)weather
 {
-  v4 = a3;
+  weatherCopy = weather;
   flight = self->_flight;
   self->_flight = 0;
 
   sports = self->_sports;
   self->_sports = 0;
 
-  self->_whichDetail = 2 * (v4 != 0);
+  self->_whichDetail = 2 * (weatherCopy != 0);
   weather = self->_weather;
-  self->_weather = v4;
+  self->_weather = weatherCopy;
 }
 
 - (_SFPBFlightDetails)flight
@@ -522,32 +522,32 @@ LABEL_29:
   return v3;
 }
 
-- (void)setFlight:(id)a3
+- (void)setFlight:(id)flight
 {
-  v4 = a3;
+  flightCopy = flight;
   weather = self->_weather;
   self->_weather = 0;
 
   sports = self->_sports;
   self->_sports = 0;
 
-  self->_whichDetail = v4 != 0;
+  self->_whichDetail = flightCopy != 0;
   flight = self->_flight;
-  self->_flight = v4;
+  self->_flight = flightCopy;
 }
 
-- (void)setIdentifier:(id)a3
+- (void)setIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   identifier = self->_identifier;
   self->_identifier = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setQuery:(id)a3
+- (void)setQuery:(id)query
 {
-  v4 = [a3 copy];
+  v4 = [query copy];
   query = self->_query;
   self->_query = v4;
 

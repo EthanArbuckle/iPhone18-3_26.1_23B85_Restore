@@ -1,22 +1,22 @@
 @interface AKLoupeAnnotationRenderer
-+ (BOOL)_concretePointIsOnBorder:(CGPoint)a3 ofAnnotation:(id)a4 minimumBorderThickness:(double)a5;
-+ (CGRect)_concreteDrawingBoundsOfAnnotation:(id)a3;
-+ (CGRect)innerClipRect:(id)a3;
-+ (CGSize)_concreteDraggingBoundsInsetsForAnnotation:(id)a3;
-+ (void)_concreteRenderAnnotation:(id)a3 intoContext:(CGContext *)a4 options:(id)a5 pageControllerOrNil:(id)a6;
++ (BOOL)_concretePointIsOnBorder:(CGPoint)border ofAnnotation:(id)annotation minimumBorderThickness:(double)thickness;
++ (CGRect)_concreteDrawingBoundsOfAnnotation:(id)annotation;
++ (CGRect)innerClipRect:(id)rect;
++ (CGSize)_concreteDraggingBoundsInsetsForAnnotation:(id)annotation;
++ (void)_concreteRenderAnnotation:(id)annotation intoContext:(CGContext *)context options:(id)options pageControllerOrNil:(id)nil;
 @end
 
 @implementation AKLoupeAnnotationRenderer
 
-+ (CGRect)_concreteDrawingBoundsOfAnnotation:(id)a3
++ (CGRect)_concreteDrawingBoundsOfAnnotation:(id)annotation
 {
-  v3 = a3;
-  [v3 rectangle];
+  annotationCopy = annotation;
+  [annotationCopy rectangle];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  [v3 strokeWidth];
+  [annotationCopy strokeWidth];
   v13 = v12 * -0.5;
   v30.origin.x = v5;
   v30.origin.y = v7;
@@ -27,9 +27,9 @@
   y = v31.origin.y;
   width = v31.size.width;
   height = v31.size.height;
-  if ([v3 hasShadow])
+  if ([annotationCopy hasShadow])
   {
-    [AKAnnotationRendererUtilities outsetRectForShadow:v3 onAnnotation:x, y, width, height];
+    [AKAnnotationRendererUtilities outsetRectForShadow:annotationCopy onAnnotation:x, y, width, height];
     x = v18;
     y = v19;
     width = v20;
@@ -57,7 +57,7 @@
   return result;
 }
 
-+ (CGSize)_concreteDraggingBoundsInsetsForAnnotation:(id)a3
++ (CGSize)_concreteDraggingBoundsInsetsForAnnotation:(id)annotation
 {
   v3 = *MEMORY[0x277CBF3A8];
   v4 = *(MEMORY[0x277CBF3A8] + 8);
@@ -66,98 +66,98 @@
   return result;
 }
 
-+ (void)_concreteRenderAnnotation:(id)a3 intoContext:(CGContext *)a4 options:(id)a5 pageControllerOrNil:(id)a6
++ (void)_concreteRenderAnnotation:(id)annotation intoContext:(CGContext *)context options:(id)options pageControllerOrNil:(id)nil
 {
   v68[2] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a6;
-  v12 = a5;
-  CGContextSaveGState(a4);
-  v13 = [v12 forDisplay];
+  annotationCopy = annotation;
+  nilCopy = nil;
+  optionsCopy = options;
+  CGContextSaveGState(context);
+  forDisplay = [optionsCopy forDisplay];
 
-  [a1 _transformContextToModelCoordinates:a4 forAnnotation:v10 forDisplay:v13 pageControllerOrNil:v11];
-  v14 = [v10 hasShadow];
-  if (v14)
+  [self _transformContextToModelCoordinates:context forAnnotation:annotationCopy forDisplay:forDisplay pageControllerOrNil:nilCopy];
+  hasShadow = [annotationCopy hasShadow];
+  if (hasShadow)
   {
-    [AKAnnotationRendererUtilities beginShadowInContext:a4 forAnnotation:v10];
+    [AKAnnotationRendererUtilities beginShadowInContext:context forAnnotation:annotationCopy];
   }
 
-  [v10 rectangle];
+  [annotationCopy rectangle];
   v16 = v15;
   v18 = v17;
   v20 = v19;
   v22 = v21;
-  v23 = objc_getAssociatedObject(v10, off_27E398E98);
+  v23 = objc_getAssociatedObject(annotationCopy, off_27E398E98);
   if (v23)
   {
-    objc_setAssociatedObject(v10, @"AKLoupeAnnotationRendererPDFDocumentWrapperDict", 0, 0x301);
+    objc_setAssociatedObject(annotationCopy, @"AKLoupeAnnotationRendererPDFDocumentWrapperDict", 0, 0x301);
     Page = 0;
 LABEL_5:
-    CGContextSaveGState(a4);
-    [objc_opt_class() innerClipRect:v10];
+    CGContextSaveGState(context);
+    [objc_opt_class() innerClipRect:annotationCopy];
     v26 = v25;
     v28 = v27;
     v30 = v29;
     v32 = v31;
-    v33 = [MEMORY[0x277D75348] clearColor];
-    CGContextSetFillColorWithColor(a4, [v33 CGColor]);
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    CGContextSetFillColorWithColor(context, [clearColor CGColor]);
 
     v69.origin.x = v16;
     v69.origin.y = v18;
     v69.size.width = v20;
     v69.size.height = v22;
-    CGContextFillRect(a4, v69);
+    CGContextFillRect(context, v69);
     v70.origin.x = v26;
     v70.origin.y = v28;
     v70.size.width = v30;
     v70.size.height = v32;
-    CGContextAddEllipseInRect(a4, v70);
-    CGContextClip(a4);
-    v34 = [v10 strokeColor];
-    v35 = [v34 CGColor];
+    CGContextAddEllipseInRect(context, v70);
+    CGContextClip(context);
+    strokeColor = [annotationCopy strokeColor];
+    cGColor = [strokeColor CGColor];
 
-    if (!v35 || vabdd_f64(0.0, CGColorGetAlpha(v35)) < 0.0005)
+    if (!cGColor || vabdd_f64(0.0, CGColorGetAlpha(cGColor)) < 0.0005)
     {
-      v36 = [MEMORY[0x277D75348] grayColor];
-      v35 = [v36 CGColor];
+      grayColor = [MEMORY[0x277D75348] grayColor];
+      cGColor = [grayColor CGColor];
     }
 
-    CGContextSetStrokeColorWithColor(a4, v35);
+    CGContextSetStrokeColorWithColor(context, cGColor);
     v71.origin.x = v16;
     v71.origin.y = v18;
     v71.size.width = v20;
     v71.size.height = v22;
-    CGContextStrokeEllipseInRect(a4, v71);
+    CGContextStrokeEllipseInRect(context, v71);
     if (v23)
     {
-      CGContextSetInterpolationQuality(a4, kCGInterpolationNone);
-      v37 = [v23 akCGImage];
+      CGContextSetInterpolationQuality(context, kCGInterpolationNone);
+      akCGImage = [v23 akCGImage];
       v72.origin.x = v16;
       v72.origin.y = v18;
       v72.size.width = v20;
       v72.size.height = v22;
-      CGContextDrawImage(a4, v72, v37);
+      CGContextDrawImage(context, v72, akCGImage);
     }
 
     else
     {
-      CGContextSaveGState(a4);
+      CGContextSaveGState(context);
       v73.origin.x = v26;
       v73.origin.y = v28;
       v73.size.width = v30;
       v73.size.height = v32;
       v74 = CGRectInset(v73, 0.1, 0.1);
-      CGContextAddEllipseInRect(a4, v74);
-      CGContextClip(a4);
-      v49 = [MEMORY[0x277D75348] whiteColor];
-      CGContextSetFillColorWithColor(a4, [v49 CGColor]);
+      CGContextAddEllipseInRect(context, v74);
+      CGContextClip(context);
+      whiteColor = [MEMORY[0x277D75348] whiteColor];
+      CGContextSetFillColorWithColor(context, [whiteColor CGColor]);
 
       v75.origin.x = v16;
       v75.origin.y = v18;
       v75.size.width = v20;
       v75.size.height = v22;
-      CGContextFillRect(a4, v75);
-      CGContextRestoreGState(a4);
+      CGContextFillRect(context, v75);
+      CGContextRestoreGState(context);
       v76.origin.x = v16;
       v76.origin.y = v18;
       v76.size.width = v20;
@@ -168,48 +168,48 @@ LABEL_5:
       v77.size.width = v20;
       v77.size.height = v22;
       MinY = CGRectGetMinY(v77);
-      CGContextTranslateCTM(a4, MinX, MinY);
+      CGContextTranslateCTM(context, MinX, MinY);
       v52 = kCGInterpolationNone;
       BoxRect = CGPDFPageGetBoxRect(Page, kCGPDFCropBox);
       x = BoxRect.origin.x;
       y = BoxRect.origin.y;
       width = BoxRect.size.width;
       height = BoxRect.size.height;
-      CGContextScaleCTM(a4, v20 / BoxRect.size.width, v22 / BoxRect.size.height);
+      CGContextScaleCTM(context, v20 / BoxRect.size.width, v22 / BoxRect.size.height);
       v79.origin.x = x;
       v79.origin.y = y;
       v79.size.width = width;
       v79.size.height = height;
-      CGContextClipToRect(a4, v79);
-      [v10 magnification];
+      CGContextClipToRect(context, v79);
+      [annotationCopy magnification];
       if (v57 < 3.0)
       {
-        [v10 magnification];
+        [annotationCopy magnification];
         if (v58 != 2.0)
         {
           v52 = kCGInterpolationHigh;
         }
       }
 
-      CGContextSetInterpolationQuality(a4, v52);
-      CGContextSetShouldSmoothFonts(a4, 0);
-      CGContextSetShouldSubpixelPositionFonts(a4, 1);
-      CGContextSetShouldSubpixelQuantizeFonts(a4, 1);
-      CGContextDrawPDFPage(a4, Page);
+      CGContextSetInterpolationQuality(context, v52);
+      CGContextSetShouldSmoothFonts(context, 0);
+      CGContextSetShouldSubpixelPositionFonts(context, 1);
+      CGContextSetShouldSubpixelQuantizeFonts(context, 1);
+      CGContextDrawPDFPage(context, Page);
     }
 
-    CGContextRestoreGState(a4);
+    CGContextRestoreGState(context);
     goto LABEL_27;
   }
 
-  v38 = [v10 imageData];
-  v39 = objc_getAssociatedObject(v10, @"AKLoupeAnnotationRendererPDFDocumentWrapperDict");
+  imageData = [annotationCopy imageData];
+  v39 = objc_getAssociatedObject(annotationCopy, @"AKLoupeAnnotationRendererPDFDocumentWrapperDict");
   v40 = v39;
-  if (!v39 || ([v39 objectForKey:@"imageData"], v41 = objc_claimAutoreleasedReturnValue(), v41, v41 != v38))
+  if (!v39 || ([v39 objectForKey:@"imageData"], v41 = objc_claimAutoreleasedReturnValue(), v41, v41 != imageData))
   {
-    if (v38)
+    if (imageData)
     {
-      v42 = CGDataProviderCreateWithCFData(v38);
+      v42 = CGDataProviderCreateWithCFData(imageData);
       if (v42)
       {
         v43 = v42;
@@ -221,11 +221,11 @@ LABEL_5:
           CGPDFDocumentRelease(v44);
           v67[0] = @"imageData";
           v67[1] = @"pdfDocumentWrapper";
-          v68[0] = v38;
+          v68[0] = imageData;
           v68[1] = v45;
           v46 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v68 forKeys:v67 count:2];
 
-          objc_setAssociatedObject(v10, @"AKLoupeAnnotationRendererPDFDocumentWrapperDict", v46, 0x301);
+          objc_setAssociatedObject(annotationCopy, @"AKLoupeAnnotationRendererPDFDocumentWrapperDict", v46, 0x301);
           v40 = v46;
         }
       }
@@ -238,16 +238,16 @@ LABEL_5:
   }
 
   v47 = [v40 objectForKey:@"pdfDocumentWrapper"];
-  v48 = [v47 pdfDocument];
+  pdfDocument = [v47 pdfDocument];
 
-  if (!v48 || !CGPDFDocumentGetNumberOfPages(v48))
+  if (!pdfDocument || !CGPDFDocumentGetNumberOfPages(pdfDocument))
   {
 LABEL_21:
 
     goto LABEL_27;
   }
 
-  Page = CGPDFDocumentGetPage(v48, 1uLL);
+  Page = CGPDFDocumentGetPage(pdfDocument, 1uLL);
 
   if (Page)
   {
@@ -255,29 +255,29 @@ LABEL_21:
   }
 
 LABEL_27:
-  v59 = [v10 strokeColor];
+  strokeColor2 = [annotationCopy strokeColor];
 
-  if (v59)
+  if (strokeColor2)
   {
-    if (![v10 brushStyle])
+    if (![annotationCopy brushStyle])
     {
-      v66 = [v10 strokeColor];
-      CGContextSetStrokeColorWithColor(a4, [v66 CGColor]);
+      strokeColor3 = [annotationCopy strokeColor];
+      CGContextSetStrokeColorWithColor(context, [strokeColor3 CGColor]);
 
-      [v10 strokeWidth];
-      [AKAnnotationRendererUtilities setStandardLineStateInContext:a4 forLineWidth:?];
-      if ([v10 isDashed])
+      [annotationCopy strokeWidth];
+      [AKAnnotationRendererUtilities setStandardLineStateInContext:context forLineWidth:?];
+      if ([annotationCopy isDashed])
       {
-        [v10 strokeWidth];
-        [AKAnnotationRendererUtilities setStandardLineDashInContext:a4 forLineWidth:?];
+        [annotationCopy strokeWidth];
+        [AKAnnotationRendererUtilities setStandardLineDashInContext:context forLineWidth:?];
       }
 
       v81.origin.x = v16;
       v81.origin.y = v18;
       v81.size.width = v20;
       v81.size.height = v22;
-      CGContextStrokeEllipseInRect(a4, v81);
-      if (v14)
+      CGContextStrokeEllipseInRect(context, v81);
+      if (hasShadow)
       {
         goto LABEL_31;
       }
@@ -290,37 +290,37 @@ LABEL_27:
     v80.size.width = v20;
     v80.size.height = v22;
     v60 = CGPathCreateWithEllipseInRect(v80, 0);
-    v61 = [v10 brushStyle];
-    v62 = [v10 strokeColor];
-    [v10 strokeWidth];
-    v63 = [AKTSDBrushStroke strokeWithType:v61 color:v62 width:?];
+    brushStyle = [annotationCopy brushStyle];
+    strokeColor4 = [annotationCopy strokeColor];
+    [annotationCopy strokeWidth];
+    v63 = [AKTSDBrushStroke strokeWithType:brushStyle color:strokeColor4 width:?];
 
     v64 = [AKTSDBezierPath bezierPathWithCGPath:v60];
     v65 = objc_alloc_init(AKTSDShape);
     [(AKTSDShape *)v65 setStroke:v63];
     [(AKTSDShape *)v65 setPath:v64];
-    [(AKTSDShape *)v65 drawInContext:a4];
+    [(AKTSDShape *)v65 drawInContext:context];
     CGPathRelease(v60);
   }
 
-  if (v14)
+  if (hasShadow)
   {
 LABEL_31:
-    [AKAnnotationRendererUtilities endShadowInContext:a4];
+    [AKAnnotationRendererUtilities endShadowInContext:context];
   }
 
 LABEL_32:
-  CGContextRestoreGState(a4);
+  CGContextRestoreGState(context);
 }
 
-+ (BOOL)_concretePointIsOnBorder:(CGPoint)a3 ofAnnotation:(id)a4 minimumBorderThickness:(double)a5
++ (BOOL)_concretePointIsOnBorder:(CGPoint)border ofAnnotation:(id)annotation minimumBorderThickness:(double)thickness
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  [v7 strokeWidth];
+  y = border.y;
+  x = border.x;
+  annotationCopy = annotation;
+  [annotationCopy strokeWidth];
   v9 = v8 * -0.5;
-  [v7 rectangle];
+  [annotationCopy rectangle];
   v11 = v10;
   v13 = v12;
   v15 = v14;
@@ -339,15 +339,15 @@ LABEL_32:
   return v19;
 }
 
-+ (CGRect)innerClipRect:(id)a3
++ (CGRect)innerClipRect:(id)rect
 {
-  v3 = a3;
-  [v3 rectangle];
+  rectCopy = rect;
+  [rectCopy rectangle];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  [v3 strokeWidth];
+  [rectCopy strokeWidth];
   v13 = v12;
 
   v14 = v5;

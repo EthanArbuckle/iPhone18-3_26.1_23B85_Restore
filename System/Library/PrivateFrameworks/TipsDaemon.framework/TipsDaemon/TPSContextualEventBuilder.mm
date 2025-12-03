@@ -3,8 +3,8 @@
 - (NSString)stream;
 - (TPSContextualEventBuilder)init;
 - (id)contextualEvent;
-- (void)setDictionary:(id)a3;
-- (void)setStream:(id)a3;
+- (void)setDictionary:(id)dictionary;
+- (void)setStream:(id)stream;
 @end
 
 @implementation TPSContextualEventBuilder
@@ -18,7 +18,7 @@
   return v3;
 }
 
-- (void)setDictionary:(id)a3
+- (void)setDictionary:(id)dictionary
 {
   v4 = sub_232E01470();
   v5 = *(self + OBJC_IVAR___TPSContextualEventBuilder_dictionary);
@@ -43,9 +43,9 @@
   return v4;
 }
 
-- (void)setStream:(id)a3
+- (void)setStream:(id)stream
 {
-  if (a3)
+  if (stream)
   {
     v4 = sub_232E014D0();
   }
@@ -64,7 +64,7 @@
 
 - (id)contextualEvent
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_232DC927C();
 
   return v3;

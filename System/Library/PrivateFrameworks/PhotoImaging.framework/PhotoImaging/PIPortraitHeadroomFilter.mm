@@ -38,11 +38,11 @@
   v16 = [(CIImage *)matteImage imageByApplyingTransform:&v93];
   if (self->_classification - 3 <= 1)
   {
-    v17 = [MEMORY[0x1E695F648] colorInvertFilter];
-    [v17 setInputImage:v16];
-    v18 = [v17 outputImage];
+    colorInvertFilter = [MEMORY[0x1E695F648] colorInvertFilter];
+    [colorInvertFilter setInputImage:v16];
+    outputImage = [colorInvertFilter outputImage];
 
-    v16 = v18;
+    v16 = outputImage;
   }
 
   v19 = v13 - v9;
@@ -55,16 +55,16 @@
   [(PISegmentationInfillFilter *)v22 setInputMatteImage:v21];
   if (self->_matteImage && !self->_skipInpaint)
   {
-    v23 = [(PISegmentationInfillFilter *)v22 outputImage];
+    outputImage2 = [(PISegmentationInfillFilter *)v22 outputImage];
   }
 
   else
   {
-    v23 = v20;
+    outputImage2 = v20;
   }
 
-  v24 = v23;
-  v25 = [v23 imageByApplyingOrientation:4];
+  v24 = outputImage2;
+  v25 = [outputImage2 imageByApplyingOrientation:4];
   CGAffineTransformMakeScale(&v93, 1.0, 3.0);
   v26 = [v25 imageByApplyingTransform:&v93];
 
@@ -78,42 +78,42 @@
 
   if (self->_colorAnalysisOnly)
   {
-    v31 = v30;
+    outputImage5 = v30;
   }
 
   else
   {
     v89 = v30;
     v86 = v24;
-    v32 = [MEMORY[0x1E695F658] blackImage];
-    v33 = [v16 imageByCompositingOverImage:v32];
+    blackImage = [MEMORY[0x1E695F658] blackImage];
+    v33 = [v16 imageByCompositingOverImage:blackImage];
     v34 = [v33 imageByCroppingToRect:{p_extendedRect->origin.x, self->_extendedRect.origin.y, self->_extendedRect.size.width, self->_extendedRect.size.height}];
 
     v88 = v16;
     if ([v3 useLinearBlur])
     {
-      v35 = [MEMORY[0x1E695F648] smoothLinearGradientFilter];
+      smoothLinearGradientFilter = [MEMORY[0x1E695F648] smoothLinearGradientFilter];
       [v3 depthBottom];
       *&v36 = v36;
-      [v35 setPoint0:{0.0, v5 * *&v36}];
+      [smoothLinearGradientFilter setPoint0:{0.0, v5 * *&v36}];
       [v3 depthTop];
       *&v37 = v37;
-      [v35 setPoint1:{0.0, v5 * *&v37}];
-      v38 = [MEMORY[0x1E695F610] blackColor];
-      [v35 setColor0:v38];
+      [smoothLinearGradientFilter setPoint1:{0.0, v5 * *&v37}];
+      blackColor = [MEMORY[0x1E695F610] blackColor];
+      [smoothLinearGradientFilter setColor0:blackColor];
 
-      v39 = [MEMORY[0x1E695F610] whiteColor];
-      [v35 setColor1:v39];
+      whiteColor = [MEMORY[0x1E695F610] whiteColor];
+      [smoothLinearGradientFilter setColor1:whiteColor];
     }
 
     else
     {
-      v35 = [MEMORY[0x1E695F648] radialGradientFilter];
-      v40 = [MEMORY[0x1E695F610] blackColor];
-      [v35 setColor0:v40];
+      smoothLinearGradientFilter = [MEMORY[0x1E695F648] radialGradientFilter];
+      blackColor2 = [MEMORY[0x1E695F610] blackColor];
+      [smoothLinearGradientFilter setColor0:blackColor2];
 
-      v41 = [MEMORY[0x1E695F610] whiteColor];
-      [v35 setColor1:v41];
+      whiteColor2 = [MEMORY[0x1E695F610] whiteColor];
+      [smoothLinearGradientFilter setColor1:whiteColor2];
 
       if (v7 >= v5)
       {
@@ -127,7 +127,7 @@
 
       v43 = v42;
       v44 = v43 * 0.25;
-      [v35 setCenter:{self->_extendedRect.size.width * 0.5, -(v43 * 0.25)}];
+      [smoothLinearGradientFilter setCenter:{self->_extendedRect.size.width * 0.5, -(v43 * 0.25)}];
       v45 = v5;
       [v3 depthBottom];
       v47 = v46;
@@ -135,21 +135,21 @@
       v49 = v47 + v48;
       *&v49 = v49;
       *&v49 = v44 + (v45 * *&v49);
-      [v35 setRadius0:v49];
+      [smoothLinearGradientFilter setRadius0:v49];
       [v3 depthTop];
       v51 = v50;
       [v3 center];
       v53 = v51 + v52;
       *&v53 = v53;
       *&v53 = v44 + (v45 * *&v53);
-      [v35 setRadius1:v53];
+      [smoothLinearGradientFilter setRadius1:v53];
     }
 
     v30 = v89;
-    v85 = v35;
-    v54 = [v35 outputImage];
+    v85 = smoothLinearGradientFilter;
+    outputImage3 = [smoothLinearGradientFilter outputImage];
     [v89 extent];
-    v55 = [v54 imageByCroppingToRect:?];
+    v55 = [outputImage3 imageByCroppingToRect:?];
 
     [v3 aperture];
     v56 = [v55 _imageByApplyingGamma:?];
@@ -159,8 +159,8 @@
       [v34 extent];
       v58 = [PISegmentationHelper erodeMask:v34 withRadius:v57 * 0.00125];
 
-      v59 = [MEMORY[0x1E695F608] subtract];
-      v60 = [v59 applyWithForeground:v58 background:v56];
+      subtract = [MEMORY[0x1E695F608] subtract];
+      v60 = [subtract applyWithForeground:v58 background:v56];
 
       v56 = v60;
     }
@@ -204,30 +204,30 @@
     v75 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBase64EncodedString:&cfstr_Phg6eg1wbwv0ys options:1];
     v76 = CGImageMetadataCreateFromXMPData(v75);
     [v61 setValue:v76 forKey:@"inputAuxDataMetadata"];
-    v77 = [v61 outputImage];
+    outputImage4 = [v61 outputImage];
     CFRelease(v76);
-    v78 = [MEMORY[0x1E695F648] vignetteEffectFilter];
-    [v78 setInputImage:v77];
-    [v78 setCenter:{p_extendedRect->size.width * 0.5, 0.0}];
+    vignetteEffectFilter = [MEMORY[0x1E695F648] vignetteEffectFilter];
+    [vignetteEffectFilter setInputImage:outputImage4];
+    [vignetteEffectFilter setCenter:{p_extendedRect->size.width * 0.5, 0.0}];
     [v3 vignetteRad];
     *&v80 = v80;
     v79 = v5;
     *&v80 = v79 * *&v80;
-    [v78 setRadius:v80];
+    [vignetteEffectFilter setRadius:v80];
     [v3 vignetteIntensity];
     *&v81 = v81;
-    [v78 setIntensity:v81];
+    [vignetteEffectFilter setIntensity:v81];
     [v3 vignetteFalloff];
     *&v82 = v82;
-    [v78 setFalloff:v82];
-    v31 = [v78 outputImage];
+    [vignetteEffectFilter setFalloff:v82];
+    outputImage5 = [vignetteEffectFilter outputImage];
 
     v20 = v87;
     v16 = v88;
     v24 = v86;
   }
 
-  return v31;
+  return outputImage5;
 }
 
 @end

@@ -1,23 +1,23 @@
 @interface SKUIContentRatingArtworkResourceLoader
 - (CGSize)imageSize;
-- (SKUIContentRatingArtworkResourceLoader)initWithArtworkLoader:(id)a3;
+- (SKUIContentRatingArtworkResourceLoader)initWithArtworkLoader:(id)loader;
 - (UIImage)placeholderImage;
-- (id)_loadImage:(id)a3;
-- (id)_urlForContentRating:(id)a3 clientContext:(id)a4;
-- (id)cachedImageForContentRating:(id)a3 withClientContext:(id)a4;
-- (void)addObserver:(id)a3;
-- (void)artworkRequest:(id)a3 didLoadImage:(id)a4;
-- (void)loadImageForContentRating:(id)a3 clientContent:(id)a4 reason:(int64_t)a5;
+- (id)_loadImage:(id)image;
+- (id)_urlForContentRating:(id)rating clientContext:(id)context;
+- (id)cachedImageForContentRating:(id)rating withClientContext:(id)context;
+- (void)addObserver:(id)observer;
+- (void)artworkRequest:(id)request didLoadImage:(id)image;
+- (void)loadImageForContentRating:(id)rating clientContent:(id)content reason:(int64_t)reason;
 @end
 
 @implementation SKUIContentRatingArtworkResourceLoader
 
-- (SKUIContentRatingArtworkResourceLoader)initWithArtworkLoader:(id)a3
+- (SKUIContentRatingArtworkResourceLoader)initWithArtworkLoader:(id)loader
 {
-  v4 = a3;
+  loaderCopy = loader;
   if (!os_variant_has_internal_content() || !_os_feature_enabled_impl() || !os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
-    if (v4)
+    if (loaderCopy)
     {
       goto LABEL_5;
     }
@@ -29,7 +29,7 @@ LABEL_8:
   }
 
   [SKUIContentRatingArtworkResourceLoader initWithArtworkLoader:];
-  if (!v4)
+  if (!loaderCopy)
   {
     goto LABEL_8;
   }
@@ -44,7 +44,7 @@ LABEL_5:
     v7 = *(v5 + 1);
     *(v5 + 1) = v6;
 
-    v8 = v4;
+    v8 = loaderCopy;
     self = *(v5 + 3);
     *(v5 + 3) = v8;
 LABEL_9:
@@ -53,9 +53,9 @@ LABEL_9:
   return v5;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  objc_initWeak(&location, a3);
+  objc_initWeak(&location, observer);
   observers = self->_observers;
   if (!observers)
   {
@@ -72,13 +72,13 @@ LABEL_9:
   objc_destroyWeak(&location);
 }
 
-- (id)cachedImageForContentRating:(id)a3 withClientContext:(id)a4
+- (id)cachedImageForContentRating:(id)rating withClientContext:(id)context
 {
-  v6 = a3;
-  v7 = [(SKUIContentRatingArtworkResourceLoader *)self _urlForContentRating:v6 clientContext:a4];
-  if (v7 || ([v6 contentRatingSystemName], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "isEqualToString:", @"appsBrazil"), v8, !v9) || (v10 = MEMORY[0x277CCACA8], objc_msgSend(v6, "contentRank"), v11 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "stringWithFormat:", @"ContentRating-appsBrazil-%@", v11), v12 = objc_claimAutoreleasedReturnValue(), v11, -[SKUIContentRatingArtworkResourceLoader _loadImage:](self, "_loadImage:", v12), v13 = objc_claimAutoreleasedReturnValue(), v12, !v13))
+  ratingCopy = rating;
+  v7 = [(SKUIContentRatingArtworkResourceLoader *)self _urlForContentRating:ratingCopy clientContext:context];
+  if (v7 || ([ratingCopy contentRatingSystemName], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "isEqualToString:", @"appsBrazil"), v8, !v9) || (v10 = MEMORY[0x277CCACA8], objc_msgSend(ratingCopy, "contentRank"), v11 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "stringWithFormat:", @"ContentRating-appsBrazil-%@", v11), v12 = objc_claimAutoreleasedReturnValue(), v11, -[SKUIContentRatingArtworkResourceLoader _loadImage:](self, "_loadImage:", v12), v13 = objc_claimAutoreleasedReturnValue(), v12, !v13))
   {
-    v14 = [(NSMapTable *)self->_artworkRequestIDs objectForKey:v6];
+    v14 = [(NSMapTable *)self->_artworkRequestIDs objectForKey:ratingCopy];
     v15 = v14;
     if (v14)
     {
@@ -94,9 +94,9 @@ LABEL_9:
   return v13;
 }
 
-- (void)loadImageForContentRating:(id)a3 clientContent:(id)a4 reason:(int64_t)a5
+- (void)loadImageForContentRating:(id)rating clientContent:(id)content reason:(int64_t)reason
 {
-  v12 = a3;
+  ratingCopy = rating;
   v7 = [SKUIContentRatingArtworkResourceLoader _urlForContentRating:"_urlForContentRating:clientContext:" clientContext:?];
   if (v7)
   {
@@ -106,10 +106,10 @@ LABEL_9:
     v9 = [MEMORY[0x277CBEBC0] URLWithString:v7];
     [(SKUIArtworkRequest *)v8 setURL:v9];
 
-    [(SKUIResourceLoader *)self->_loader loadResourceWithRequest:v8 reason:a5];
+    [(SKUIResourceLoader *)self->_loader loadResourceWithRequest:v8 reason:reason];
     artworkRequestIDs = self->_artworkRequestIDs;
     v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[SKUIResourceRequest requestIdentifier](v8, "requestIdentifier")}];
-    [(NSMapTable *)artworkRequestIDs setObject:v11 forKey:v12];
+    [(NSMapTable *)artworkRequestIDs setObject:v11 forKey:ratingCopy];
   }
 }
 
@@ -139,11 +139,11 @@ LABEL_9:
   return result;
 }
 
-- (void)artworkRequest:(id)a3 didLoadImage:(id)a4
+- (void)artworkRequest:(id)request didLoadImage:(id)image
 {
   v32 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [a3 requestIdentifier];
+  imageCopy = image;
+  requestIdentifier = [request requestIdentifier];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
@@ -165,7 +165,7 @@ LABEL_3:
 
       v13 = *(*(&v26 + 1) + 8 * v12);
       v14 = [(NSMapTable *)self->_artworkRequestIDs objectForKey:v13];
-      if (v7 == [v14 unsignedIntegerValue])
+      if (requestIdentifier == [v14 unsignedIntegerValue])
       {
         break;
       }
@@ -189,12 +189,12 @@ LABEL_3:
       goto LABEL_22;
     }
 
-    v16 = [(NSHashTable *)self->_observers allObjects];
+    allObjects = [(NSHashTable *)self->_observers allObjects];
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v17 = [v16 countByEnumeratingWithState:&v22 objects:v30 count:16];
+    v17 = [allObjects countByEnumeratingWithState:&v22 objects:v30 count:16];
     if (v17)
     {
       v18 = v17;
@@ -205,17 +205,17 @@ LABEL_3:
         {
           if (*v23 != v19)
           {
-            objc_enumerationMutation(v16);
+            objc_enumerationMutation(allObjects);
           }
 
           v21 = *(*(&v22 + 1) + 8 * i);
           if (objc_opt_respondsToSelector())
           {
-            [v21 contentRatingArtworkLoader:self didLoadImage:v6 forContentRating:v15];
+            [v21 contentRatingArtworkLoader:self didLoadImage:imageCopy forContentRating:v15];
           }
         }
 
-        v18 = [v16 countByEnumeratingWithState:&v22 objects:v30 count:16];
+        v18 = [allObjects countByEnumeratingWithState:&v22 objects:v30 count:16];
       }
 
       while (v18);
@@ -231,27 +231,27 @@ LABEL_9:
 LABEL_22:
 }
 
-- (id)_urlForContentRating:(id)a3 clientContext:(id)a4
+- (id)_urlForContentRating:(id)rating clientContext:(id)context
 {
-  v5 = a3;
-  v6 = [a4 URLBag];
-  v7 = v6;
-  if (v6)
+  ratingCopy = rating;
+  uRLBag = [context URLBag];
+  v7 = uRLBag;
+  if (uRLBag)
   {
     v21 = 0;
-    v8 = [v6 valueForKey:@"imagesForRatingBadges" error:&v21];
+    v8 = [uRLBag valueForKey:@"imagesForRatingBadges" error:&v21];
     objc_opt_class();
     v9 = 0;
     if (objc_opt_isKindOfClass())
     {
-      v10 = [v5 contentRatingSystemName];
-      v11 = [v8 objectForKey:v10];
+      contentRatingSystemName = [ratingCopy contentRatingSystemName];
+      v11 = [v8 objectForKey:contentRatingSystemName];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v12 = [v5 contentRank];
-        v13 = [v11 objectForKey:v12];
+        contentRank = [ratingCopy contentRank];
+        v13 = [v11 objectForKey:contentRank];
 
         objc_opt_class();
         if (objc_opt_isKindOfClass())
@@ -264,8 +264,8 @@ LABEL_22:
 
           else
           {
-            v15 = [MEMORY[0x277D759A0] mainScreen];
-            [v15 scale];
+            mainScreen = [MEMORY[0x277D759A0] mainScreen];
+            [mainScreen scale];
             v17 = v16;
 
             if (v17 >= 2.0)
@@ -313,12 +313,12 @@ LABEL_22:
   return v9;
 }
 
-- (id)_loadImage:(id)a3
+- (id)_loadImage:(id)image
 {
   v3 = MEMORY[0x277CCA8D8];
-  v4 = a3;
+  imageCopy = image;
   v5 = [v3 bundleForClass:objc_opt_class()];
-  v6 = [MEMORY[0x277D755B8] imageNamed:v4 inBundle:v5];
+  v6 = [MEMORY[0x277D755B8] imageNamed:imageCopy inBundle:v5];
 
   return v6;
 }

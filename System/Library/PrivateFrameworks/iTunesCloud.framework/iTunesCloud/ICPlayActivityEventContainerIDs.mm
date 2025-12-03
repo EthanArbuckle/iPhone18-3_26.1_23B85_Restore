@@ -1,16 +1,16 @@
 @interface ICPlayActivityEventContainerIDs
-- (ICPlayActivityEventContainerIDs)initWithCoder:(id)a3;
-- (id)_copyWithClass:(Class)a3;
+- (ICPlayActivityEventContainerIDs)initWithCoder:(id)coder;
+- (id)_copyWithClass:(Class)class;
 - (id)description;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ICPlayActivityEventContainerIDs
 
-- (id)_copyWithClass:(Class)a3
+- (id)_copyWithClass:(Class)class
 {
-  v4 = objc_alloc_init(a3);
+  v4 = objc_alloc_init(class);
   v5 = v4;
   if (v4)
   {
@@ -28,58 +28,58 @@
   return v5;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_class();
 
   return [(ICPlayActivityEventContainerIDs *)self _copyWithClass:v4];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   adamID = self->_adamID;
-  v5 = a3;
-  [v5 encodeInt64:adamID forKey:@"ICPlayActivityEventContainerIDsAdamID"];
-  [v5 encodeObject:self->_cloudAlbumID forKey:@"ICPlayActivityEventContainerIDsCloudAlbumID"];
-  [v5 encodeInt64:self->_cloudPlaylistID forKey:@"ICPlayActivityEventContainerIDsCloudPlaylistID"];
-  [v5 encodeInt64:self->_cloudPlaylistFolderID forKey:@"ICPlayActivityEventContainerIDsCloudFolderPlaylistID"];
-  [v5 encodeObject:self->_globalPlaylistID forKey:@"ICPlayActivityEventContainerIDsGlobalPlaylistID"];
-  [v5 encodeObject:self->_playlistVersionHash forKey:@"ICPlayActivityEventContainerIDsPlaylistVersionHash"];
-  [v5 encodeObject:self->_stationHash forKey:@"ICPlayActivityEventContainerIDsStationHash"];
-  [v5 encodeObject:self->_stationStringID forKey:@"ICPlayActivityEventContainerIDsStationStringID"];
-  [v5 encodeInt64:self->_stationID forKey:@"ICPlayActivityEventContainerIDsStationID"];
+  coderCopy = coder;
+  [coderCopy encodeInt64:adamID forKey:@"ICPlayActivityEventContainerIDsAdamID"];
+  [coderCopy encodeObject:self->_cloudAlbumID forKey:@"ICPlayActivityEventContainerIDsCloudAlbumID"];
+  [coderCopy encodeInt64:self->_cloudPlaylistID forKey:@"ICPlayActivityEventContainerIDsCloudPlaylistID"];
+  [coderCopy encodeInt64:self->_cloudPlaylistFolderID forKey:@"ICPlayActivityEventContainerIDsCloudFolderPlaylistID"];
+  [coderCopy encodeObject:self->_globalPlaylistID forKey:@"ICPlayActivityEventContainerIDsGlobalPlaylistID"];
+  [coderCopy encodeObject:self->_playlistVersionHash forKey:@"ICPlayActivityEventContainerIDsPlaylistVersionHash"];
+  [coderCopy encodeObject:self->_stationHash forKey:@"ICPlayActivityEventContainerIDsStationHash"];
+  [coderCopy encodeObject:self->_stationStringID forKey:@"ICPlayActivityEventContainerIDsStationStringID"];
+  [coderCopy encodeInt64:self->_stationID forKey:@"ICPlayActivityEventContainerIDsStationID"];
 }
 
-- (ICPlayActivityEventContainerIDs)initWithCoder:(id)a3
+- (ICPlayActivityEventContainerIDs)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(ICPlayActivityEventContainerIDs *)self init];
   if (v5)
   {
-    v5->_adamID = [v4 decodeInt64ForKey:@"ICPlayActivityEventContainerIDsAdamID"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ICPlayActivityEventContainerIDsCloudAlbumID"];
+    v5->_adamID = [coderCopy decodeInt64ForKey:@"ICPlayActivityEventContainerIDsAdamID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ICPlayActivityEventContainerIDsCloudAlbumID"];
     cloudAlbumID = v5->_cloudAlbumID;
     v5->_cloudAlbumID = v6;
 
-    v5->_cloudPlaylistID = [v4 decodeInt64ForKey:@"ICPlayActivityEventContainerIDsCloudPlaylistID"];
-    v5->_cloudPlaylistFolderID = [v4 decodeInt64ForKey:@"ICPlayActivityEventContainerIDsCloudFolderPlaylistID"];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ICPlayActivityEventContainerIDsGlobalPlaylistID"];
+    v5->_cloudPlaylistID = [coderCopy decodeInt64ForKey:@"ICPlayActivityEventContainerIDsCloudPlaylistID"];
+    v5->_cloudPlaylistFolderID = [coderCopy decodeInt64ForKey:@"ICPlayActivityEventContainerIDsCloudFolderPlaylistID"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ICPlayActivityEventContainerIDsGlobalPlaylistID"];
     globalPlaylistID = v5->_globalPlaylistID;
     v5->_globalPlaylistID = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ICPlayActivityEventContainerIDsPlaylistVersionHash"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ICPlayActivityEventContainerIDsPlaylistVersionHash"];
     playlistVersionHash = v5->_playlistVersionHash;
     v5->_playlistVersionHash = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ICPlayActivityEventContainerIDsStationHash"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ICPlayActivityEventContainerIDsStationHash"];
     stationHash = v5->_stationHash;
     v5->_stationHash = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ICPlayActivityEventContainerIDsStationStringID"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ICPlayActivityEventContainerIDsStationStringID"];
     stationStringID = v5->_stationStringID;
     v5->_stationStringID = v14;
 
-    v5->_stationID = [v4 decodeInt64ForKey:@"ICPlayActivityEventContainerIDsStationID"];
+    v5->_stationID = [coderCopy decodeInt64ForKey:@"ICPlayActivityEventContainerIDsStationID"];
   }
 
   return v5;

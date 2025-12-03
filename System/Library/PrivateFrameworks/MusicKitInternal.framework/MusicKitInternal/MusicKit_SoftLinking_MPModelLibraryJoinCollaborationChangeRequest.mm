@@ -1,14 +1,14 @@
 @interface MusicKit_SoftLinking_MPModelLibraryJoinCollaborationChangeRequest
-- (MusicKit_SoftLinking_MPModelLibraryJoinCollaborationChangeRequest)initWithPlaylist:(id)a3 invitationURL:(id)a4;
-- (void)performWithCompletionHandler:(id)a3;
+- (MusicKit_SoftLinking_MPModelLibraryJoinCollaborationChangeRequest)initWithPlaylist:(id)playlist invitationURL:(id)l;
+- (void)performWithCompletionHandler:(id)handler;
 @end
 
 @implementation MusicKit_SoftLinking_MPModelLibraryJoinCollaborationChangeRequest
 
-- (MusicKit_SoftLinking_MPModelLibraryJoinCollaborationChangeRequest)initWithPlaylist:(id)a3 invitationURL:(id)a4
+- (MusicKit_SoftLinking_MPModelLibraryJoinCollaborationChangeRequest)initWithPlaylist:(id)playlist invitationURL:(id)l
 {
-  v6 = a3;
-  v7 = a4;
+  playlistCopy = playlist;
+  lCopy = l;
   v16.receiver = self;
   v16.super_class = MusicKit_SoftLinking_MPModelLibraryJoinCollaborationChangeRequest;
   v8 = [(MusicKit_SoftLinking_MPModelLibraryJoinCollaborationChangeRequest *)&v16 init];
@@ -37,25 +37,25 @@
     v8->_underlyingJoinCollaborationRequest = v11;
 
     v13 = v8->_underlyingJoinCollaborationRequest;
-    v14 = [v6 _underlyingModelObject];
-    [(MPModelLibraryJoinCollaborationChangeRequest *)v13 setCollaborationToJoin:v14];
+    _underlyingModelObject = [playlistCopy _underlyingModelObject];
+    [(MPModelLibraryJoinCollaborationChangeRequest *)v13 setCollaborationToJoin:_underlyingModelObject];
 
-    [(MPModelLibraryJoinCollaborationChangeRequest *)v8->_underlyingJoinCollaborationRequest setInvitationURL:v7];
+    [(MPModelLibraryJoinCollaborationChangeRequest *)v8->_underlyingJoinCollaborationRequest setInvitationURL:lCopy];
   }
 
   return v8;
 }
 
-- (void)performWithCompletionHandler:(id)a3
+- (void)performWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   underlyingJoinCollaborationRequest = self->_underlyingJoinCollaborationRequest;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __98__MusicKit_SoftLinking_MPModelLibraryJoinCollaborationChangeRequest_performWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E84C3A08;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   [(MPModelLibraryJoinCollaborationChangeRequest *)underlyingJoinCollaborationRequest performWithResponseHandler:v7];
 }
 

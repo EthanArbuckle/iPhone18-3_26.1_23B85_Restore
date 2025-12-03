@@ -1,15 +1,15 @@
 @interface SFSearchFieldIconContainerView
-- (SFSearchFieldIconContainerView)initWithCoder:(id)a3;
+- (SFSearchFieldIconContainerView)initWithCoder:(id)coder;
 - (SFUnifiedTabBarItemTitleContainerViewTheme)theme;
 - (UIImage)icon;
 - (void)layoutSubviews;
-- (void)setIcon:(id)a3;
-- (void)setTheme:(id)a3;
+- (void)setIcon:(id)icon;
+- (void)setTheme:(id)theme;
 @end
 
 @implementation SFSearchFieldIconContainerView
 
-- (SFSearchFieldIconContainerView)initWithCoder:(id)a3
+- (SFSearchFieldIconContainerView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR___SFSearchFieldIconContainerView_iconView;
   *(&self->super.super.super.isa + v4) = [objc_allocWithZone(SFFaviconView) init];
@@ -21,22 +21,22 @@
 
 - (UIImage)icon
 {
-  v2 = self;
-  v3 = [(SFSearchFieldIconContainerView *)v2 iconView];
-  v4 = [(SFFaviconView *)v3 icon];
+  selfCopy = self;
+  iconView = [(SFSearchFieldIconContainerView *)selfCopy iconView];
+  icon = [(SFFaviconView *)iconView icon];
 
-  return v4;
+  return icon;
 }
 
-- (void)setIcon:(id)a3
+- (void)setIcon:(id)icon
 {
-  v4 = self;
-  v5 = a3;
-  v6 = [(SFSearchFieldIconContainerView *)v4 iconView];
-  [(SFFaviconView *)v6 setIcon:v5];
+  selfCopy = self;
+  iconCopy = icon;
+  iconView = [(SFSearchFieldIconContainerView *)selfCopy iconView];
+  [(SFFaviconView *)iconView setIcon:iconCopy];
 
-  v8 = [(SFSearchFieldIconContainerView *)v4 iconView];
-  if (v5 && [v5 isSymbolImage])
+  iconView2 = [(SFSearchFieldIconContainerView *)selfCopy iconView];
+  if (iconCopy && [iconCopy isSymbolImage])
   {
     v7 = 4;
   }
@@ -46,7 +46,7 @@
     v7 = 2;
   }
 
-  [(SFFaviconView *)v8 setIconContentMode:v7];
+  [(SFFaviconView *)iconView2 setIconContentMode:v7];
 }
 
 - (SFUnifiedTabBarItemTitleContainerViewTheme)theme
@@ -56,14 +56,14 @@
   return *(&self->super.super.super.isa + v3);
 }
 
-- (void)setTheme:(id)a3
+- (void)setTheme:(id)theme
 {
   v5 = OBJC_IVAR___SFSearchFieldIconContainerView_theme;
   swift_beginAccess();
   v6 = *(&self->super.super.super.isa + v5);
-  *(&self->super.super.super.isa + v5) = a3;
-  v7 = a3;
-  v8 = self;
+  *(&self->super.super.super.isa + v5) = theme;
+  themeCopy = theme;
+  selfCopy = self;
 
   sub_18BC14A60();
 }
@@ -72,10 +72,10 @@
 {
   v9.receiver = self;
   v9.super_class = SFSearchFieldIconContainerView;
-  v2 = self;
+  selfCopy = self;
   [(SFSearchFieldIconContainerView *)&v9 layoutSubviews];
-  v3 = [(SFSearchFieldIconContainerView *)v2 iconView:v9.receiver];
-  [(SFSearchFieldIconContainerView *)v2 bounds];
+  v3 = [(SFSearchFieldIconContainerView *)selfCopy iconView:v9.receiver];
+  [(SFSearchFieldIconContainerView *)selfCopy bounds];
   x = v10.origin.x;
   y = v10.origin.y;
   width = v10.size.width;

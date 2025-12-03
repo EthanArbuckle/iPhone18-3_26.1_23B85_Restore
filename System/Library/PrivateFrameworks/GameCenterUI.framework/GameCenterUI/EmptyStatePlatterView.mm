@@ -1,14 +1,14 @@
 @interface EmptyStatePlatterView
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation EmptyStatePlatterView
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_24E00A260(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_24E00A260(change);
 }
 
 @end

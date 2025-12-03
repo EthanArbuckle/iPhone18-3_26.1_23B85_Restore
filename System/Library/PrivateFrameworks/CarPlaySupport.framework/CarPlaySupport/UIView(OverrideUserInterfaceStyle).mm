@@ -6,19 +6,19 @@
 
 - (void)overrideUserInterfaceStyleBasedOnBackgroundColor:()OverrideUserInterfaceStyle
 {
-  v5 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
   objc_storeStrong(location, obj);
   CPLuminanceForColor();
   if (v3 >= 0.5)
   {
-    [v5 setOverrideUserInterfaceStyle:1];
+    [selfCopy setOverrideUserInterfaceStyle:1];
   }
 
   else
   {
-    [v5 setOverrideUserInterfaceStyle:2];
+    [selfCopy setOverrideUserInterfaceStyle:2];
   }
 
   objc_storeStrong(location, 0);

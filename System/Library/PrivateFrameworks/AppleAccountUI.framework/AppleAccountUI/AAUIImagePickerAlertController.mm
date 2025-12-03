@@ -1,29 +1,29 @@
 @interface AAUIImagePickerAlertController
-+ (id)alertControllerWithSelectionHandler:(id)a3;
-- (id)_propertiesForImagePickerController:(id)a3;
-- (int64_t)adaptivePresentationStyleForPresentationController:(id)a3;
-- (void)_callSelectionHandlerWithImage:(id)a3 cropRect:(id)a4;
-- (void)_dismissViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)_presentDocumentPickerAnimated:(BOOL)a3;
-- (void)_presentImagePickerAnimated:(BOOL)a3;
-- (void)_presentImagePickerWithSourceType:(int64_t)a3 animated:(BOOL)a4;
-- (void)_presentImageSourcePickerAnimated:(BOOL)a3;
-- (void)documentPicker:(id)a3 didPickDocumentsAtURLs:(id)a4;
-- (void)documentPickerWasCancelled:(id)a3;
-- (void)imagePickerController:(id)a3 didFinishPickingMediaWithInfo:(id)a4;
-- (void)imagePickerControllerDidCancel:(id)a3;
-- (void)presentationControllerDidDismiss:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
++ (id)alertControllerWithSelectionHandler:(id)handler;
+- (id)_propertiesForImagePickerController:(id)controller;
+- (int64_t)adaptivePresentationStyleForPresentationController:(id)controller;
+- (void)_callSelectionHandlerWithImage:(id)image cropRect:(id)rect;
+- (void)_dismissViewController:(id)controller animated:(BOOL)animated completion:(id)completion;
+- (void)_presentDocumentPickerAnimated:(BOOL)animated;
+- (void)_presentImagePickerAnimated:(BOOL)animated;
+- (void)_presentImagePickerWithSourceType:(int64_t)type animated:(BOOL)animated;
+- (void)_presentImageSourcePickerAnimated:(BOOL)animated;
+- (void)documentPicker:(id)picker didPickDocumentsAtURLs:(id)ls;
+- (void)documentPickerWasCancelled:(id)cancelled;
+- (void)imagePickerController:(id)controller didFinishPickingMediaWithInfo:(id)info;
+- (void)imagePickerControllerDidCancel:(id)cancel;
+- (void)presentationControllerDidDismiss:(id)dismiss;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 @end
 
 @implementation AAUIImagePickerAlertController
 
-+ (id)alertControllerWithSelectionHandler:(id)a3
++ (id)alertControllerWithSelectionHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   v4 = objc_alloc_init(objc_opt_class());
-  [v4 setSelectionHandler:v3];
+  [v4 setSelectionHandler:handlerCopy];
 
   return v4;
 }
@@ -33,45 +33,45 @@
   v4.receiver = self;
   v4.super_class = AAUIImagePickerAlertController;
   [(AAUIImagePickerAlertController *)&v4 viewDidLoad];
-  v3 = [(AAUIImagePickerAlertController *)self view];
-  [v3 setBackgroundColor:0];
+  view = [(AAUIImagePickerAlertController *)self view];
+  [view setBackgroundColor:0];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = AAUIImagePickerAlertController;
-  [(AAUIImagePickerAlertController *)&v5 viewDidAppear:a3];
-  v4 = [(AAUIImagePickerAlertController *)self presentingViewController];
-  [(AAUIImagePickerAlertController *)self _presentImagePickerAnimated:v4 != 0];
+  [(AAUIImagePickerAlertController *)&v5 viewDidAppear:appear];
+  presentingViewController = [(AAUIImagePickerAlertController *)self presentingViewController];
+  [(AAUIImagePickerAlertController *)self _presentImagePickerAnimated:presentingViewController != 0];
 }
 
-- (void)_presentImagePickerAnimated:(BOOL)a3
+- (void)_presentImagePickerAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v5 = [MEMORY[0x1E69DCAD0] isSourceTypeAvailable:1];
   v6 = [MEMORY[0x1E69DCAD0] isSourceTypeAvailable:0];
   if (v5 & 1) != 0 || (v6)
   {
 
-    [(AAUIImagePickerAlertController *)self _presentImageSourcePickerAnimated:v3];
+    [(AAUIImagePickerAlertController *)self _presentImageSourcePickerAnimated:animatedCopy];
   }
 
   else
   {
 
-    [(AAUIImagePickerAlertController *)self _presentDocumentPickerAnimated:v3];
+    [(AAUIImagePickerAlertController *)self _presentDocumentPickerAnimated:animatedCopy];
   }
 }
 
-- (void)_presentImageSourcePickerAnimated:(BOOL)a3
+- (void)_presentImageSourcePickerAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v5 = [MEMORY[0x1E69DC650] alertWithTitle:0 message:0];
-  v6 = [MEMORY[0x1E69DC938] currentDevice];
-  v7 = [v6 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  [v5 setPreferredStyle:(v7 & 0xFFFFFFFFFFFFFFFBLL) == 1];
+  [v5 setPreferredStyle:(userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1];
   v8 = _AAUILogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -89,7 +89,7 @@
     v30[2] = __68__AAUIImagePickerAlertController__presentImageSourcePickerAnimated___block_invoke;
     v30[3] = &unk_1E820D4B0;
     v30[4] = self;
-    v31 = v3;
+    v31 = animatedCopy;
     v12 = [v9 actionWithTitle:v11 style:0 handler:v30];
     [v5 addAction:v12];
   }
@@ -104,7 +104,7 @@
     v28[2] = __68__AAUIImagePickerAlertController__presentImageSourcePickerAnimated___block_invoke_49;
     v28[3] = &unk_1E820D4B0;
     v28[4] = self;
-    v29 = v3;
+    v29 = animatedCopy;
     v16 = [v13 actionWithTitle:v15 style:0 handler:v28];
     [v5 addAction:v16];
   }
@@ -117,7 +117,7 @@
   v26[2] = __68__AAUIImagePickerAlertController__presentImageSourcePickerAnimated___block_invoke_53;
   v26[3] = &unk_1E820D4B0;
   v26[4] = self;
-  v27 = v3;
+  v27 = animatedCopy;
   v20 = [v17 actionWithTitle:v19 style:0 handler:v26];
   [v5 addAction:v20];
 
@@ -132,7 +132,7 @@
   v24 = [v21 actionWithTitle:v23 style:1 handler:v25];
   [v5 addAction:v24];
 
-  [(AAUIImagePickerAlertController *)self presentViewController:v5 animated:v3 completion:0];
+  [(AAUIImagePickerAlertController *)self presentViewController:v5 animated:animatedCopy completion:0];
 }
 
 uint64_t __68__AAUIImagePickerAlertController__presentImageSourcePickerAnimated___block_invoke(uint64_t a1)
@@ -183,24 +183,24 @@ uint64_t __68__AAUIImagePickerAlertController__presentImageSourcePickerAnimated_
   return [*(a1 + 32) _callSelectionHandlerWithImage:0 cropRect:0];
 }
 
-- (void)_presentImagePickerWithSourceType:(int64_t)a3 animated:(BOOL)a4
+- (void)_presentImagePickerWithSourceType:(int64_t)type animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v16 = *MEMORY[0x1E69E9840];
   v7 = _AAUILogSystem();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+    v8 = [MEMORY[0x1E696AD98] numberWithInteger:type];
     *buf = 138412290;
     v15 = v8;
     _os_log_impl(&dword_1C5355000, v7, OS_LOG_TYPE_DEFAULT, "Presenting image picker controller with source type: %@", buf, 0xCu);
   }
 
   v9 = objc_alloc_init(MEMORY[0x1E69DCAD0]);
-  v10 = [v9 presentationController];
-  [v10 setDelegate:self];
+  presentationController = [v9 presentationController];
+  [presentationController setDelegate:self];
 
-  [v9 setSourceType:a3];
+  [v9 setSourceType:type];
   v13 = *MEMORY[0x1E69637F8];
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v13 count:1];
   [v9 setMediaTypes:v11];
@@ -210,12 +210,12 @@ uint64_t __68__AAUIImagePickerAlertController__presentImageSourcePickerAnimated_
   v12 = [(AAUIImagePickerAlertController *)self _propertiesForImagePickerController:v9];
   [v9 _setProperties:v12];
 
-  [(AAUIImagePickerAlertController *)self presentViewController:v9 animated:v4 completion:0];
+  [(AAUIImagePickerAlertController *)self presentViewController:v9 animated:animatedCopy completion:0];
 }
 
-- (void)_presentDocumentPickerAnimated:(BOOL)a3
+- (void)_presentDocumentPickerAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v5 = _AAUILogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -225,25 +225,25 @@ uint64_t __68__AAUIImagePickerAlertController__presentImageSourcePickerAnimated_
 
   v6 = [MEMORY[0x1E695DEC8] arrayWithObject:*MEMORY[0x1E69637F8]];
   v7 = [objc_alloc(MEMORY[0x1E69DC968]) initWithDocumentTypes:v6 inMode:0];
-  v8 = [v7 presentationController];
-  [v8 setDelegate:self];
+  presentationController = [v7 presentationController];
+  [presentationController setDelegate:self];
 
   [v7 setShouldShowFileExtensions:0];
   [v7 setAllowsMultipleSelection:0];
   [v7 setDelegate:self];
-  [(AAUIImagePickerAlertController *)self presentViewController:v7 animated:v3 completion:0];
+  [(AAUIImagePickerAlertController *)self presentViewController:v7 animated:animatedCopy completion:0];
 }
 
-- (void)_callSelectionHandlerWithImage:(id)a3 cropRect:(id)a4
+- (void)_callSelectionHandlerWithImage:(id)image cropRect:(id)rect
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(AAUIImagePickerAlertController *)self selectionHandler];
+  imageCopy = image;
+  rectCopy = rect;
+  selectionHandler = [(AAUIImagePickerAlertController *)self selectionHandler];
 
-  if (v7)
+  if (selectionHandler)
   {
-    v8 = [(AAUIImagePickerAlertController *)self selectionHandler];
-    (v8)[2](v8, v9, v6);
+    selectionHandler2 = [(AAUIImagePickerAlertController *)self selectionHandler];
+    (selectionHandler2)[2](selectionHandler2, imageCopy, rectCopy);
 
     [(AAUIImagePickerAlertController *)self setSelectionHandler:0];
   }
@@ -251,12 +251,12 @@ uint64_t __68__AAUIImagePickerAlertController__presentImageSourcePickerAnimated_
   [(AAUIImagePickerAlertController *)self _dismissViewController:self animated:0 completion:0];
 }
 
-- (id)_propertiesForImagePickerController:(id)a3
+- (id)_propertiesForImagePickerController:(id)controller
 {
   v12[5] = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E695DF90];
-  v4 = [a3 _properties];
-  v5 = [v3 dictionaryWithDictionary:v4];
+  _properties = [controller _properties];
+  v5 = [v3 dictionaryWithDictionary:_properties];
 
   v6 = *MEMORY[0x1E69DE998];
   v11[0] = *MEMORY[0x1E69DDDD8];
@@ -278,14 +278,14 @@ uint64_t __68__AAUIImagePickerAlertController__presentImageSourcePickerAnimated_
   return v9;
 }
 
-- (void)imagePickerController:(id)a3 didFinishPickingMediaWithInfo:(id)a4
+- (void)imagePickerController:(id)controller didFinishPickingMediaWithInfo:(id)info
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  controllerCopy = controller;
   v7 = *MEMORY[0x1E69DDE10];
-  v8 = a4;
-  v9 = [v8 objectForKeyedSubscript:v7];
-  v10 = [v8 objectForKeyedSubscript:*MEMORY[0x1E69DDDE0]];
+  infoCopy = info;
+  v9 = [infoCopy objectForKeyedSubscript:v7];
+  v10 = [infoCopy objectForKeyedSubscript:*MEMORY[0x1E69DDDE0]];
 
   v11 = _AAUILogSystem();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -334,12 +334,12 @@ uint64_t __68__AAUIImagePickerAlertController__presentImageSourcePickerAnimated_
   v20 = v13;
   v16 = v13;
   v17 = v9;
-  [(AAUIImagePickerAlertController *)self _dismissViewController:v6 animated:1 completion:v18];
+  [(AAUIImagePickerAlertController *)self _dismissViewController:controllerCopy animated:1 completion:v18];
 }
 
-- (void)imagePickerControllerDidCancel:(id)a3
+- (void)imagePickerControllerDidCancel:(id)cancel
 {
-  v4 = a3;
+  cancelCopy = cancel;
   v5 = _AAUILogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -352,52 +352,52 @@ uint64_t __68__AAUIImagePickerAlertController__presentImageSourcePickerAnimated_
   v6[2] = __65__AAUIImagePickerAlertController_imagePickerControllerDidCancel___block_invoke;
   v6[3] = &unk_1E820B8F0;
   v6[4] = self;
-  [(AAUIImagePickerAlertController *)self _dismissViewController:v4 animated:1 completion:v6];
+  [(AAUIImagePickerAlertController *)self _dismissViewController:cancelCopy animated:1 completion:v6];
 }
 
-- (void)_dismissViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)_dismissViewController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
-  v5 = a4;
-  v12 = a5;
-  v8 = [a3 presentingViewController];
-  v9 = v8;
-  if (v8)
+  animatedCopy = animated;
+  completionCopy = completion;
+  presentingViewController = [controller presentingViewController];
+  v9 = presentingViewController;
+  if (presentingViewController)
   {
-    v10 = v8;
+    selfCopy = presentingViewController;
   }
 
   else
   {
-    v10 = self;
+    selfCopy = self;
   }
 
-  v11 = v10;
+  v11 = selfCopy;
 
-  [(AAUIImagePickerAlertController *)v11 dismissViewControllerAnimated:v5 completion:v12];
+  [(AAUIImagePickerAlertController *)v11 dismissViewControllerAnimated:animatedCopy completion:completionCopy];
 }
 
-- (void)documentPicker:(id)a3 didPickDocumentsAtURLs:(id)a4
+- (void)documentPicker:(id)picker didPickDocumentsAtURLs:(id)ls
 {
   v5 = MEMORY[0x1E695DEF0];
-  v6 = [a4 firstObject];
-  v13 = [v5 dataWithContentsOfURL:v6 options:0 error:0];
+  firstObject = [ls firstObject];
+  v13 = [v5 dataWithContentsOfURL:firstObject options:0 error:0];
 
   if (v13)
   {
     v7 = objc_alloc(MEMORY[0x1E69DCAD0]);
     v8 = [v7 _initWithSourceImageData:v13 cropRect:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
-    v9 = [v8 presentationController];
-    [v9 setDelegate:self];
+    presentationController = [v8 presentationController];
+    [presentationController setDelegate:self];
 
     [v8 setModalInPresentation:1];
     v10 = [(AAUIImagePickerAlertController *)self _propertiesForImagePickerController:v8];
     [v8 _setProperties:v10];
 
     [v8 setDelegate:self];
-    v11 = [MEMORY[0x1E69DC938] currentDevice];
-    v12 = [v11 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if ((v12 & 0xFFFFFFFFFFFFFFFBLL) != 1)
+    if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) != 1)
     {
       [v8 setModalPresentationStyle:0];
     }
@@ -411,7 +411,7 @@ uint64_t __68__AAUIImagePickerAlertController__presentImageSourcePickerAnimated_
   }
 }
 
-- (void)documentPickerWasCancelled:(id)a3
+- (void)documentPickerWasCancelled:(id)cancelled
 {
   v4 = _AAUILogSystem();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -423,30 +423,30 @@ uint64_t __68__AAUIImagePickerAlertController__presentImageSourcePickerAnimated_
   [(AAUIImagePickerAlertController *)self _callSelectionHandlerWithImage:0 cropRect:0];
 }
 
-- (int64_t)adaptivePresentationStyleForPresentationController:(id)a3
+- (int64_t)adaptivePresentationStyleForPresentationController:(id)controller
 {
-  v3 = a3;
-  v4 = [v3 presentedViewController];
-  v5 = [v4 modalPresentationStyle];
+  controllerCopy = controller;
+  presentedViewController = [controllerCopy presentedViewController];
+  modalPresentationStyle = [presentedViewController modalPresentationStyle];
 
-  v6 = [v3 presentedViewController];
+  presentedViewController2 = [controllerCopy presentedViewController];
 
-  if (v5 == -2)
+  if (modalPresentationStyle == -2)
   {
-    v7 = [v6 _preferredModalPresentationStyle];
+    _preferredModalPresentationStyle = [presentedViewController2 _preferredModalPresentationStyle];
   }
 
   else
   {
-    v7 = [v6 modalPresentationStyle];
+    _preferredModalPresentationStyle = [presentedViewController2 modalPresentationStyle];
   }
 
-  v8 = v7;
+  v8 = _preferredModalPresentationStyle;
 
   return v8;
 }
 
-- (void)presentationControllerDidDismiss:(id)a3
+- (void)presentationControllerDidDismiss:(id)dismiss
 {
   v4 = _AAUILogSystem();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))

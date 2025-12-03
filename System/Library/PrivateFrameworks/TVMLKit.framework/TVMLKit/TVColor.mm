@@ -2,23 +2,23 @@
 - (IKColor)ikColor;
 - (NSArray)gradientColors;
 - (NSArray)gradientPoints;
-- (TVColor)initWithColor:(id)a3;
+- (TVColor)initWithColor:(id)color;
 - (UIColor)color;
 - (int64_t)colorType;
 @end
 
 @implementation TVColor
 
-- (TVColor)initWithColor:(id)a3
+- (TVColor)initWithColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   v8.receiver = self;
   v8.super_class = TVColor;
   v5 = [(TVColor *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_ikColor, v4);
+    objc_storeWeak(&v5->_ikColor, colorCopy);
   }
 
   return v6;
@@ -28,55 +28,55 @@
 {
   if ([(TVColor *)self colorType]== 1)
   {
-    v3 = [(TVColor *)self ikColor];
-    v4 = [v3 color];
+    ikColor = [(TVColor *)self ikColor];
+    color = [ikColor color];
   }
 
   else
   {
-    v4 = 0;
+    color = 0;
   }
 
-  return v4;
+  return color;
 }
 
 - (int64_t)colorType
 {
-  v3 = [(TVColor *)self ikColor];
-  v4 = [v3 colorType];
+  ikColor = [(TVColor *)self ikColor];
+  colorType = [ikColor colorType];
 
-  if (!v4)
+  if (!colorType)
   {
     return 1;
   }
 
-  v5 = [(TVColor *)self ikColor];
-  if ([v5 colorType] != 3)
+  ikColor2 = [(TVColor *)self ikColor];
+  if ([ikColor2 colorType] != 3)
   {
 
     return 0;
   }
 
-  v6 = [(TVColor *)self ikColor];
-  v7 = [v6 gradientType];
+  ikColor3 = [(TVColor *)self ikColor];
+  gradientType = [ikColor3 gradientType];
 
-  if (v7 != 1)
+  if (gradientType != 1)
   {
     return 0;
   }
 
-  v8 = [(TVColor *)self ikColor];
-  v9 = [v8 gradientDirectionType];
+  ikColor4 = [(TVColor *)self ikColor];
+  gradientDirectionType = [ikColor4 gradientDirectionType];
 
-  if (v9 == 1)
+  if (gradientDirectionType == 1)
   {
     return 2;
   }
 
-  v11 = [(TVColor *)self ikColor];
-  v12 = [v11 gradientDirectionType];
+  ikColor5 = [(TVColor *)self ikColor];
+  gradientDirectionType2 = [ikColor5 gradientDirectionType];
 
-  if (v12 == 2)
+  if (gradientDirectionType2 == 2)
   {
     return 3;
   }
@@ -91,32 +91,32 @@
 {
   if (([(TVColor *)self colorType]& 0xFFFFFFFFFFFFFFFELL) == 2)
   {
-    v3 = [(TVColor *)self ikColor];
-    v4 = [v3 gradientColors];
+    ikColor = [(TVColor *)self ikColor];
+    gradientColors = [ikColor gradientColors];
   }
 
   else
   {
-    v4 = 0;
+    gradientColors = 0;
   }
 
-  return v4;
+  return gradientColors;
 }
 
 - (NSArray)gradientPoints
 {
   if (([(TVColor *)self colorType]& 0xFFFFFFFFFFFFFFFELL) == 2)
   {
-    v3 = [(TVColor *)self ikColor];
-    v4 = [v3 gradientPoints];
+    ikColor = [(TVColor *)self ikColor];
+    gradientPoints = [ikColor gradientPoints];
   }
 
   else
   {
-    v4 = 0;
+    gradientPoints = 0;
   }
 
-  return v4;
+  return gradientPoints;
 }
 
 - (IKColor)ikColor

@@ -1,7 +1,7 @@
 @interface VUIMediaEntitiesToGroupsValueTransformer
 - (VUIMediaEntitiesToGroupsValueTransformer)init;
-- (VUIMediaEntitiesToGroupsValueTransformer)initWithIdentifierKeyPath:(id)a3;
-- (id)transformedValue:(id)a3;
+- (VUIMediaEntitiesToGroupsValueTransformer)initWithIdentifierKeyPath:(id)path;
+- (id)transformedValue:(id)value;
 @end
 
 @implementation VUIMediaEntitiesToGroupsValueTransformer
@@ -16,10 +16,10 @@
   return 0;
 }
 
-- (VUIMediaEntitiesToGroupsValueTransformer)initWithIdentifierKeyPath:(id)a3
+- (VUIMediaEntitiesToGroupsValueTransformer)initWithIdentifierKeyPath:(id)path
 {
-  v4 = a3;
-  if (!v4)
+  pathCopy = path;
+  if (!pathCopy)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"The %@ parameter must not be nil.", @"identifierKeyPath"}];
   }
@@ -29,7 +29,7 @@
   v5 = [(VUIMediaEntitiesToGroupsValueTransformer *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [pathCopy copy];
     identifierKeyPath = v5->_identifierKeyPath;
     v5->_identifierKeyPath = v6;
   }
@@ -37,18 +37,18 @@
   return v5;
 }
 
-- (id)transformedValue:(id)a3
+- (id)transformedValue:(id)value
 {
   v38 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  valueCopy = value;
   v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v22 = self;
-  v6 = [(VUIMediaEntitiesToGroupsValueTransformer *)self identifierKeyPath];
+  selfCopy = self;
+  identifierKeyPath = [(VUIMediaEntitiesToGroupsValueTransformer *)self identifierKeyPath];
   v35 = 0u;
   v36 = 0u;
   v33 = 0u;
   v34 = 0u;
-  obj = v4;
+  obj = valueCopy;
   v7 = [obj countByEnumeratingWithState:&v33 objects:v37 count:16];
   if (v7)
   {
@@ -64,7 +64,7 @@
         }
 
         v11 = *(*(&v33 + 1) + 8 * i);
-        v12 = [v11 valueForKeyPath:v6];
+        v12 = [v11 valueForKeyPath:identifierKeyPath];
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0 || ([v12 conformsToProtocol:&unk_1F5E70050] & 1) == 0)
         {
@@ -88,7 +88,7 @@
     while (v7);
   }
 
-  v15 = [(VUIMediaEntitiesToGroupsValueTransformer *)v22 sortIndexKeyPath];
+  sortIndexKeyPath = [(VUIMediaEntitiesToGroupsValueTransformer *)selfCopy sortIndexKeyPath];
   v27 = 0;
   v28 = &v27;
   v29 = 0x3032000000;
@@ -99,28 +99,28 @@
   v24[1] = 3221225472;
   v24[2] = __61__VUIMediaEntitiesToGroupsValueTransformer_transformedValue___block_invoke;
   v24[3] = &unk_1E8735388;
-  v16 = v15;
+  v16 = sortIndexKeyPath;
   v25 = v16;
   v26 = &v27;
   [v5 enumerateKeysAndObjectsUsingBlock:v24];
-  v17 = [(VUIMediaEntitiesToGroupsValueTransformer *)v22 groupsSortComparator];
-  if (v17)
+  groupsSortComparator = [(VUIMediaEntitiesToGroupsValueTransformer *)selfCopy groupsSortComparator];
+  if (groupsSortComparator)
   {
     goto LABEL_14;
   }
 
-  if ([(VUIMediaEntitiesToGroupsValueTransformer *)v22 performDefaultSort])
+  if ([(VUIMediaEntitiesToGroupsValueTransformer *)selfCopy performDefaultSort])
   {
-    v19 = [v28[5] firstObject];
-    v20 = [v19 identifier];
+    firstObject = [v28[5] firstObject];
+    identifier = [firstObject identifier];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v17 = &__block_literal_global_130;
+      groupsSortComparator = &__block_literal_global_130;
 LABEL_20:
 
 LABEL_14:
-      v18 = [v28[5] sortedArrayUsingComparator:v17];
+      v18 = [v28[5] sortedArrayUsingComparator:groupsSortComparator];
 
       goto LABEL_23;
     }
@@ -128,7 +128,7 @@ LABEL_14:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v17 = &__block_literal_global_23_0;
+      groupsSortComparator = &__block_literal_global_23_0;
       goto LABEL_20;
     }
   }

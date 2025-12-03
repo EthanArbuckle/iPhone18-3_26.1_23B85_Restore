@@ -3,9 +3,9 @@
 - (PXTilingControllerCompositionInput)input;
 - (PXTilingControllerCompositionObserver)observer;
 - (PXTilingControllerCompositionOutput)output;
-- (void)_setScrollController:(id)a3;
-- (void)invalidateCompositionWithContext:(id)a3;
-- (void)setActive:(BOOL)a3;
+- (void)_setScrollController:(id)controller;
+- (void)invalidateCompositionWithContext:(id)context;
+- (void)setActive:(BOOL)active;
 - (void)updateComposition;
 @end
 
@@ -39,9 +39,9 @@
   return WeakRetained;
 }
 
-- (void)_setScrollController:(id)a3
+- (void)_setScrollController:(id)controller
 {
-  obj = a3;
+  obj = controller;
   WeakRetained = objc_loadWeakRetained(&self->__scrollController);
 
   v5 = obj;
@@ -65,39 +65,39 @@
   }
 }
 
-- (void)invalidateCompositionWithContext:(id)a3
+- (void)invalidateCompositionWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [(PXTilingControllerComposition *)self observer];
-  [v5 setTilingControllerCompositionNeedsUpdate:self withContext:v4];
+  contextCopy = context;
+  observer = [(PXTilingControllerComposition *)self observer];
+  [observer setTilingControllerCompositionNeedsUpdate:self withContext:contextCopy];
 }
 
 - (void)updateComposition
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXTilingControllerComposition.m" lineNumber:44 description:@"concrete subclass must implement"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXTilingControllerComposition.m" lineNumber:44 description:@"concrete subclass must implement"];
 }
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
   v20 = *MEMORY[0x1E69E9840];
-  if (self->_active != a3)
+  if (self->_active != active)
   {
-    self->_active = a3;
-    if (a3)
+    self->_active = active;
+    if (active)
     {
-      v5 = [(PXTilingControllerComposition *)self tilingControllers];
-      if (![v5 count])
+      tilingControllers = [(PXTilingControllerComposition *)self tilingControllers];
+      if (![tilingControllers count])
       {
-        v14 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v14 handleFailureInMethod:a2 object:self file:@"PXTilingControllerComposition.m" lineNumber:29 description:@"composition activated before it has any tiling controller"];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"PXTilingControllerComposition.m" lineNumber:29 description:@"composition activated before it has any tiling controller"];
       }
 
       v17 = 0u;
       v18 = 0u;
       v15 = 0u;
       v16 = 0u;
-      v6 = v5;
+      v6 = tilingControllers;
       v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v7)
       {
@@ -112,11 +112,11 @@
               objc_enumerationMutation(v6);
             }
 
-            v11 = [*(*(&v15 + 1) + 8 * i) scrollController];
-            if (v11)
+            scrollController = [*(*(&v15 + 1) + 8 * i) scrollController];
+            if (scrollController)
             {
-              v13 = v11;
-              v12 = v6;
+              v13 = scrollController;
+              currentHandler2 = v6;
               goto LABEL_18;
             }
           }
@@ -131,8 +131,8 @@
         }
       }
 
-      v12 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v12 handleFailureInMethod:a2 object:self file:@"PXTilingControllerComposition.m" lineNumber:36 description:@"composition activated before any of its tiling controller has a scroll controller"];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXTilingControllerComposition.m" lineNumber:36 description:@"composition activated before any of its tiling controller has a scroll controller"];
       v13 = 0;
 LABEL_18:
 

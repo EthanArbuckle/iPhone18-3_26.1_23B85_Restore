@@ -1,16 +1,16 @@
 @interface ASVHitTestStrategyAveragedPlaneWithClusteringAndInterpolation
 - (ASVHitTestStrategyAveragedPlaneWithClusteringAndInterpolation)init;
-- (BOOL)decisionHistoryContainsPlaneChange:(id)a3 relativeToNewDecision:(id)a4;
-- (BOOL)hasFormedClusterForInitialPlacement:(float *)a3 planeNormal:;
-- (BOOL)hasFormedClusterForMovement:(float *)a3 planeNormal:;
-- (BOOL)resultsContainPoorQualityEstimatedResults:(id)a3;
-- (id)decisionForHitTestOfType:(ASVHitTestStrategyAveragedPlaneWithClusteringAndInterpolation *)self atScreenPoint:(SEL)a2 inFrame:(int64_t)a3 withViewportSize:(id)a4 assetPosition:(CGSize)a5 maxDistance:(float)a6;
-- (id)decisionForHitTestOfType:(ASVHitTestStrategyAveragedPlaneWithClusteringAndInterpolation *)self atScreenPoint:(SEL)a2 inSession:(int64_t)a3 withViewportSize:(id)a4 assetPosition:(CGSize)a5 maxDistance:(float)a6;
-- (id)decisionForHitTestOfType:(ASVHitTestStrategyAveragedPlaneWithClusteringAndInterpolation *)self originalResult:(SEL)a2 atImagePoint:(int64_t)a3 inFrame:(id)a4 withViewportSize:(id)a5 assetPosition:(CGSize)a6 maxDistance:(float)a7;
-- (id)decisionForMovementFromOriginalResult:(ASVHitTestStrategyAveragedPlaneWithClusteringAndInterpolation *)self atImagePoint:(SEL)a2 inFrame:(id)a3 withViewportSize:(id)a4 assetPosition:(CGSize)a5 maxDistance:(float)a6;
-- (id)decisionForPlacementFromOriginalResult:(ASVHitTestStrategyAveragedPlaneWithClusteringAndInterpolation *)self afterPlacementTimeout:(SEL)a2 atImagePoint:(id)a3 inFrame:(BOOL)a4 withViewportSize:(id)a5 assetPosition:(CGSize)a6 maxDistance:(float)a7;
-- (id)interpolatedDecisionForDecision:(id)a3;
-- (id)reprojectOntoCurrentPlaneAtImagePoint:(ASVHitTestStrategyAveragedPlaneWithClusteringAndInterpolation *)self inFrame:(SEL)a2 withViewportSize:(id)a3 assetPosition:(CGSize)a4 maxDistance:(float)a5;
+- (BOOL)decisionHistoryContainsPlaneChange:(id)change relativeToNewDecision:(id)decision;
+- (BOOL)hasFormedClusterForInitialPlacement:(float *)placement planeNormal:;
+- (BOOL)hasFormedClusterForMovement:(float *)movement planeNormal:;
+- (BOOL)resultsContainPoorQualityEstimatedResults:(id)results;
+- (id)decisionForHitTestOfType:(ASVHitTestStrategyAveragedPlaneWithClusteringAndInterpolation *)self atScreenPoint:(SEL)point inFrame:(int64_t)frame withViewportSize:(id)size assetPosition:(CGSize)position maxDistance:(float)distance;
+- (id)decisionForHitTestOfType:(ASVHitTestStrategyAveragedPlaneWithClusteringAndInterpolation *)self atScreenPoint:(SEL)point inSession:(int64_t)session withViewportSize:(id)size assetPosition:(CGSize)position maxDistance:(float)distance;
+- (id)decisionForHitTestOfType:(ASVHitTestStrategyAveragedPlaneWithClusteringAndInterpolation *)self originalResult:(SEL)result atImagePoint:(int64_t)point inFrame:(id)frame withViewportSize:(id)size assetPosition:(CGSize)position maxDistance:(float)distance;
+- (id)decisionForMovementFromOriginalResult:(ASVHitTestStrategyAveragedPlaneWithClusteringAndInterpolation *)self atImagePoint:(SEL)point inFrame:(id)frame withViewportSize:(id)size assetPosition:(CGSize)position maxDistance:(float)distance;
+- (id)decisionForPlacementFromOriginalResult:(ASVHitTestStrategyAveragedPlaneWithClusteringAndInterpolation *)self afterPlacementTimeout:(SEL)timeout atImagePoint:(id)point inFrame:(BOOL)frame withViewportSize:(id)size assetPosition:(CGSize)position maxDistance:(float)distance;
+- (id)interpolatedDecisionForDecision:(id)decision;
+- (id)reprojectOntoCurrentPlaneAtImagePoint:(ASVHitTestStrategyAveragedPlaneWithClusteringAndInterpolation *)self inFrame:(SEL)frame withViewportSize:(id)size assetPosition:(CGSize)position maxDistance:(float)distance;
 - (void)clearHistory;
 @end
 
@@ -49,62 +49,62 @@
   *&self->_currentPlaneNormal[4] = kASVInvalidPosition;
 }
 
-- (id)decisionForHitTestOfType:(ASVHitTestStrategyAveragedPlaneWithClusteringAndInterpolation *)self atScreenPoint:(SEL)a2 inSession:(int64_t)a3 withViewportSize:(id)a4 assetPosition:(CGSize)a5 maxDistance:(float)a6
+- (id)decisionForHitTestOfType:(ASVHitTestStrategyAveragedPlaneWithClusteringAndInterpolation *)self atScreenPoint:(SEL)point inSession:(int64_t)session withViewportSize:(id)size assetPosition:(CGSize)position maxDistance:(float)distance
 {
   v8 = v7;
   v25 = v6;
-  v9 = *&a6;
-  height = a5.height;
-  width = a5.width;
-  v14 = a4;
-  v15 = [v14 currentFrame];
+  v9 = *&distance;
+  height = position.height;
+  width = position.width;
+  sizeCopy = size;
+  currentFrame = [sizeCopy currentFrame];
   if (+[ASVUserDefaults forceUseLegacyHitTestAPI])
   {
     LODWORD(v16) = v8;
-    v17 = [(ASVHitTestStrategyAveragedPlaneWithClusteringAndInterpolation *)self decisionForHitTestOfType:a3 atScreenPoint:v15 inFrame:width withViewportSize:height assetPosition:v9 maxDistance:v25, v16];
+    v17 = [(ASVHitTestStrategyAveragedPlaneWithClusteringAndInterpolation *)self decisionForHitTestOfType:session atScreenPoint:currentFrame inFrame:width withViewportSize:height assetPosition:v9 maxDistance:v25, v16];
   }
 
   else
   {
-    v18 = [MEMORY[0x277D759A0] mainScreen];
-    [v15 normalizedImagePointForScreenPoint:objc_msgSend(v18 viewportSize:"currentOrientation") orientation:{width, height, v9}];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [currentFrame normalizedImagePointForScreenPoint:objc_msgSend(mainScreen viewportSize:"currentOrientation") orientation:{width, height, v9}];
     v20 = v19;
 
     LODWORD(v21) = v8;
-    v22 = [v14 smartRaycastResultForImagePoint:v20 assetPosition:v25 maxDistance:v21];
+    v22 = [sizeCopy smartRaycastResultForImagePoint:v20 assetPosition:v25 maxDistance:v21];
     LODWORD(v23) = v8;
-    v17 = [(ASVHitTestStrategyAveragedPlaneWithClusteringAndInterpolation *)self decisionForHitTestOfType:a3 originalResult:v22 atImagePoint:v15 inFrame:v20 withViewportSize:height assetPosition:v9 maxDistance:v25, v23];
+    v17 = [(ASVHitTestStrategyAveragedPlaneWithClusteringAndInterpolation *)self decisionForHitTestOfType:session originalResult:v22 atImagePoint:currentFrame inFrame:v20 withViewportSize:height assetPosition:v9 maxDistance:v25, v23];
   }
 
   return v17;
 }
 
-- (id)decisionForHitTestOfType:(ASVHitTestStrategyAveragedPlaneWithClusteringAndInterpolation *)self atScreenPoint:(SEL)a2 inFrame:(int64_t)a3 withViewportSize:(id)a4 assetPosition:(CGSize)a5 maxDistance:(float)a6
+- (id)decisionForHitTestOfType:(ASVHitTestStrategyAveragedPlaneWithClusteringAndInterpolation *)self atScreenPoint:(SEL)point inFrame:(int64_t)frame withViewportSize:(id)size assetPosition:(CGSize)position maxDistance:(float)distance
 {
   v8 = v7;
   v24 = v6;
-  v9 = *&a6;
-  height = a5.height;
-  width = a5.width;
+  v9 = *&distance;
+  height = position.height;
+  width = position.width;
   v14 = MEMORY[0x277D759A0];
-  v15 = a4;
-  v16 = [v14 mainScreen];
-  [v15 normalizedImagePointForScreenPoint:objc_msgSend(v16 viewportSize:"currentOrientation") orientation:{width, height, v9}];
+  sizeCopy = size;
+  mainScreen = [v14 mainScreen];
+  [sizeCopy normalizedImagePointForScreenPoint:objc_msgSend(mainScreen viewportSize:"currentOrientation") orientation:{width, height, v9}];
   v18 = v17;
 
   LODWORD(v19) = v8;
-  v20 = [v15 smartHitTestResultForImagePoint:v18 assetPosition:v24 maxDistance:v19];
+  v20 = [sizeCopy smartHitTestResultForImagePoint:v18 assetPosition:v24 maxDistance:v19];
   LODWORD(v21) = v8;
-  v22 = [(ASVHitTestStrategyAveragedPlaneWithClusteringAndInterpolation *)self decisionForHitTestOfType:a3 originalResult:v20 atImagePoint:v15 inFrame:v18 withViewportSize:height assetPosition:v9 maxDistance:v24, v21];
+  v22 = [(ASVHitTestStrategyAveragedPlaneWithClusteringAndInterpolation *)self decisionForHitTestOfType:frame originalResult:v20 atImagePoint:sizeCopy inFrame:v18 withViewportSize:height assetPosition:v9 maxDistance:v24, v21];
 
   return v22;
 }
 
-- (id)decisionForHitTestOfType:(ASVHitTestStrategyAveragedPlaneWithClusteringAndInterpolation *)self originalResult:(SEL)a2 atImagePoint:(int64_t)a3 inFrame:(id)a4 withViewportSize:(id)a5 assetPosition:(CGSize)a6 maxDistance:(float)a7
+- (id)decisionForHitTestOfType:(ASVHitTestStrategyAveragedPlaneWithClusteringAndInterpolation *)self originalResult:(SEL)result atImagePoint:(int64_t)point inFrame:(id)frame withViewportSize:(id)size assetPosition:(CGSize)position maxDistance:(float)distance
 {
-  if (a3 > 1)
+  if (point > 1)
   {
-    v9 = [ASVHitTestStrategyAveragedPlaneWithClusteringAndInterpolation decisionForMovementFromOriginalResult:"decisionForMovementFromOriginalResult:atImagePoint:inFrame:withViewportSize:assetPosition:maxDistance:" atImagePoint:a4 inFrame:a5 withViewportSize:a6.width assetPosition:a6.height maxDistance:?];
+    v9 = [ASVHitTestStrategyAveragedPlaneWithClusteringAndInterpolation decisionForMovementFromOriginalResult:"decisionForMovementFromOriginalResult:atImagePoint:inFrame:withViewportSize:assetPosition:maxDistance:" atImagePoint:frame inFrame:size withViewportSize:position.width assetPosition:position.height maxDistance:?];
     if (!v9)
     {
       v8 = 0;
@@ -119,7 +119,7 @@ LABEL_6:
     goto LABEL_8;
   }
 
-  v8 = [ASVHitTestStrategyAveragedPlaneWithClusteringAndInterpolation decisionForPlacementFromOriginalResult:"decisionForPlacementFromOriginalResult:afterPlacementTimeout:atImagePoint:inFrame:withViewportSize:assetPosition:maxDistance:" afterPlacementTimeout:a4 atImagePoint:a3 == 1 inFrame:a5 withViewportSize:a6.width assetPosition:a6.height maxDistance:?];
+  v8 = [ASVHitTestStrategyAveragedPlaneWithClusteringAndInterpolation decisionForPlacementFromOriginalResult:"decisionForPlacementFromOriginalResult:afterPlacementTimeout:atImagePoint:inFrame:withViewportSize:assetPosition:maxDistance:" afterPlacementTimeout:frame atImagePoint:point == 1 inFrame:size withViewportSize:position.width assetPosition:position.height maxDistance:?];
   if (v8)
   {
     goto LABEL_6;
@@ -130,28 +130,28 @@ LABEL_8:
   return v8;
 }
 
-- (id)decisionForPlacementFromOriginalResult:(ASVHitTestStrategyAveragedPlaneWithClusteringAndInterpolation *)self afterPlacementTimeout:(SEL)a2 atImagePoint:(id)a3 inFrame:(BOOL)a4 withViewportSize:(id)a5 assetPosition:(CGSize)a6 maxDistance:(float)a7
+- (id)decisionForPlacementFromOriginalResult:(ASVHitTestStrategyAveragedPlaneWithClusteringAndInterpolation *)self afterPlacementTimeout:(SEL)timeout atImagePoint:(id)point inFrame:(BOOL)frame withViewportSize:(id)size assetPosition:(CGSize)position maxDistance:(float)distance
 {
   v9 = v8;
   v25 = v7;
-  v10 = *&a7;
-  height = a6.height;
-  width = a6.width;
-  v14 = a4;
-  v16 = a3;
-  v17 = a5;
-  if (v16)
+  v10 = *&distance;
+  height = position.height;
+  width = position.width;
+  frameCopy = frame;
+  pointCopy = point;
+  sizeCopy = size;
+  if (pointCopy)
   {
-    [(ASVHitTestHistory *)self addResult:v16];
-    if ([v16 isRealPlane])
+    [(ASVHitTestHistory *)self addResult:pointCopy];
+    if ([pointCopy isRealPlane])
     {
-      if (v14 || [(ASVHitTestStrategyAveragedPlaneWithClusteringAndInterpolation *)self hasFormedClusterForInitialPlacement:0 planeNormal:0])
+      if (frameCopy || [(ASVHitTestStrategyAveragedPlaneWithClusteringAndInterpolation *)self hasFormedClusterForInitialPlacement:0 planeNormal:0])
       {
-        [v16 worldTransform];
+        [pointCopy worldTransform];
         v20 = vmulq_f32(v18, v19);
         self->_currentPlaneHeight = vaddv_f32(vadd_f32(*v20.i8, *&vextq_s8(v20, v20, 8uLL)));
         *&self->_currentPlaneNormal[4] = v18;
-        v21 = [[ASVHitTestDecision alloc] initWithOriginalResult:v16 interpolatedResult:0 finalResult:v16];
+        v21 = [[ASVHitTestDecision alloc] initWithOriginalResult:pointCopy interpolatedResult:0 finalResult:pointCopy];
         goto LABEL_12;
       }
     }
@@ -166,10 +166,10 @@ LABEL_8:
         self->_currentPlaneHeight = v27;
         *&self->_currentPlaneNormal[4] = v26;
         LODWORD(v22) = v9;
-        v23 = [(ASVHitTestStrategyAveragedPlaneWithClusteringAndInterpolation *)self reprojectOntoCurrentPlaneAtImagePoint:v17 inFrame:width withViewportSize:height assetPosition:v10 maxDistance:*&v25, v22];
+        v23 = [(ASVHitTestStrategyAveragedPlaneWithClusteringAndInterpolation *)self reprojectOntoCurrentPlaneAtImagePoint:sizeCopy inFrame:width withViewportSize:height assetPosition:v10 maxDistance:*&v25, v22];
         if (v23)
         {
-          v21 = [[ASVHitTestDecision alloc] initWithOriginalResult:v16 interpolatedResult:0 finalResult:v23];
+          v21 = [[ASVHitTestDecision alloc] initWithOriginalResult:pointCopy interpolatedResult:0 finalResult:v23];
         }
 
         else
@@ -188,25 +188,25 @@ LABEL_12:
   return v21;
 }
 
-- (id)decisionForMovementFromOriginalResult:(ASVHitTestStrategyAveragedPlaneWithClusteringAndInterpolation *)self atImagePoint:(SEL)a2 inFrame:(id)a3 withViewportSize:(id)a4 assetPosition:(CGSize)a5 maxDistance:(float)a6
+- (id)decisionForMovementFromOriginalResult:(ASVHitTestStrategyAveragedPlaneWithClusteringAndInterpolation *)self atImagePoint:(SEL)point inFrame:(id)frame withViewportSize:(id)size assetPosition:(CGSize)position maxDistance:(float)distance
 {
   v8 = v7;
   v26 = v6;
-  v9 = *&a6;
-  height = a5.height;
-  width = a5.width;
-  v14 = a3;
-  v15 = a4;
-  if (v14)
+  v9 = *&distance;
+  height = position.height;
+  width = position.width;
+  frameCopy = frame;
+  sizeCopy = size;
+  if (frameCopy)
   {
-    [(ASVHitTestHistory *)self addResult:v14];
-    if ([v14 isRealPlane])
+    [(ASVHitTestHistory *)self addResult:frameCopy];
+    if ([frameCopy isRealPlane])
     {
-      [v14 worldTransform];
+      [frameCopy worldTransform];
       v19 = vmulq_f32(v17, v18);
       self->_currentPlaneHeight = vaddv_f32(vadd_f32(*v19.i8, *&vextq_s8(v19, v19, 8uLL)));
       *&self->_currentPlaneNormal[4] = v17;
-      v20 = [[ASVHitTestDecision alloc] initWithOriginalResult:v14 interpolatedResult:0 finalResult:v14];
+      v20 = [[ASVHitTestDecision alloc] initWithOriginalResult:frameCopy interpolatedResult:0 finalResult:frameCopy];
       goto LABEL_13;
     }
 
@@ -220,11 +220,11 @@ LABEL_12:
     }
 
     LODWORD(v24) = v8;
-    v21 = [(ASVHitTestStrategyAveragedPlaneWithClusteringAndInterpolation *)self reprojectOntoCurrentPlaneAtImagePoint:v15 inFrame:width withViewportSize:height assetPosition:v9 maxDistance:*&v26, v24, v26];
+    v21 = [(ASVHitTestStrategyAveragedPlaneWithClusteringAndInterpolation *)self reprojectOntoCurrentPlaneAtImagePoint:sizeCopy inFrame:width withViewportSize:height assetPosition:v9 maxDistance:*&v26, v24, v26];
     if (v21)
     {
       v22 = [ASVHitTestDecision alloc];
-      v23 = v14;
+      v23 = frameCopy;
       goto LABEL_10;
     }
 
@@ -234,7 +234,7 @@ LABEL_11:
   }
 
   LODWORD(v16) = v8;
-  v21 = [(ASVHitTestStrategyAveragedPlaneWithClusteringAndInterpolation *)self reprojectOntoCurrentPlaneAtImagePoint:v15 inFrame:width withViewportSize:height assetPosition:v9 maxDistance:*&v26, v16];
+  v21 = [(ASVHitTestStrategyAveragedPlaneWithClusteringAndInterpolation *)self reprojectOntoCurrentPlaneAtImagePoint:sizeCopy inFrame:width withViewportSize:height assetPosition:v9 maxDistance:*&v26, v16];
   if (!v21)
   {
     goto LABEL_11;
@@ -251,10 +251,10 @@ LABEL_13:
   return v20;
 }
 
-- (id)interpolatedDecisionForDecision:(id)a3
+- (id)interpolatedDecisionForDecision:(id)decision
 {
   v43 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  decisionCopy = decision;
   [ASVSettings floatForKey:@"ASVSettingInterpolationPlaneChangeDecisionCount"];
   v6 = vcvtms_u32_f32(v5);
   v7 = [(ASVHitTestHistory *)self recentDecisionsForCount:v6];
@@ -268,17 +268,17 @@ LABEL_13:
     else
     {
       v8 = [v7 count];
-      v9 = [v7 firstObject];
+      firstObject = [v7 firstObject];
       v10 = objc_opt_new();
       for (i = v6 - v8; i; --i)
       {
-        [v10 addObject:v9];
+        [v10 addObject:firstObject];
       }
 
       [v10 addObjectsFromArray:v7];
     }
 
-    if ([(ASVHitTestStrategyAveragedPlaneWithClusteringAndInterpolation *)self decisionHistoryContainsPlaneChange:v10 relativeToNewDecision:v4])
+    if ([(ASVHitTestStrategyAveragedPlaneWithClusteringAndInterpolation *)self decisionHistoryContainsPlaneChange:v10 relativeToNewDecision:decisionCopy])
     {
       v40 = 0u;
       v41 = 0u;
@@ -300,8 +300,8 @@ LABEL_13:
               objc_enumerationMutation(v7);
             }
 
-            v17 = [*(*(&v38 + 1) + 8 * j) finalResult];
-            [v17 distanceFromCamera];
+            finalResult = [*(*(&v38 + 1) + 8 * j) finalResult];
+            [finalResult distanceFromCamera];
             v15 = v15 + v18;
           }
 
@@ -317,11 +317,11 @@ LABEL_13:
       }
 
       v35 = v15 / [v7 count];
-      v19 = [v4 finalResult];
-      [v19 cameraPosition];
+      finalResult2 = [decisionCopy finalResult];
+      [finalResult2 cameraPosition];
       v37 = v20;
-      v21 = [v4 finalResult];
-      [v21 cameraToPosition];
+      finalResult3 = [decisionCopy finalResult];
+      [finalResult3 cameraToPosition];
       v23 = vmulq_f32(v22, v22);
       *&v24 = v23.f32[2] + vaddv_f32(*v23.f32);
       *v23.f32 = vrsqrte_f32(v24);
@@ -329,16 +329,16 @@ LABEL_13:
       v37.i64[0] = vmlaq_n_f32(v37, vmulq_n_f32(v22, vmul_f32(*v23.f32, vrsqrts_f32(v24, vmul_f32(*v23.f32, *v23.f32))).f32[0]), v35).u64[0];
 
       v25 = [ASVHitTestResult alloc];
-      v26 = [v4 finalResult];
-      [v26 imagePoint];
+      finalResult4 = [decisionCopy finalResult];
+      [finalResult4 imagePoint];
       v28 = v27;
-      v29 = [v4 finalResult];
-      [v29 assetPosition];
+      finalResult5 = [decisionCopy finalResult];
+      [finalResult5 assetPosition];
       v36 = v30;
-      v31 = [v4 finalResult];
-      [v31 cameraPosition];
+      finalResult6 = [decisionCopy finalResult];
+      [finalResult6 cameraPosition];
       v33 = [(ASVHitTestResult *)v25 initWithType:4 worldPosition:*v37.i64 imagePoint:v28 assetPosition:v36 cameraPosition:v32];
-      [v4 setInterpolatedResult:v33];
+      [decisionCopy setInterpolatedResult:v33];
     }
 
     else
@@ -347,26 +347,26 @@ LABEL_13:
     }
   }
 
-  return v4;
+  return decisionCopy;
 }
 
-- (BOOL)decisionHistoryContainsPlaneChange:(id)a3 relativeToNewDecision:(id)a4
+- (BOOL)decisionHistoryContainsPlaneChange:(id)change relativeToNewDecision:(id)decision
 {
   v44 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 finalResult];
-  v8 = [v7 isRealPlane];
+  changeCopy = change;
+  decisionCopy = decision;
+  finalResult = [decisionCopy finalResult];
+  isRealPlane = [finalResult isRealPlane];
 
-  if (v8)
+  if (isRealPlane)
   {
-    v9 = [v6 finalResult];
+    finalResult2 = [decisionCopy finalResult];
     v38 = 0u;
     v39 = 0u;
     v40 = 0u;
     v41 = 0u;
-    v32 = v5;
-    v10 = v5;
+    v32 = changeCopy;
+    v10 = changeCopy;
     v11 = [v10 countByEnumeratingWithState:&v38 objects:v43 count:16];
     if (v11)
     {
@@ -382,21 +382,21 @@ LABEL_13:
           }
 
           v15 = *(*(&v38 + 1) + 8 * i);
-          v16 = [v15 finalResult];
-          v17 = [v16 isRealPlane];
+          finalResult3 = [v15 finalResult];
+          isRealPlane2 = [finalResult3 isRealPlane];
 
-          if (v17)
+          if (isRealPlane2)
           {
-            v18 = [v15 finalResult];
-            v19 = [v9 planeIdentifier];
-            v20 = [v18 planeIdentifier];
-            v21 = [v19 isEqual:v20];
+            finalResult4 = [v15 finalResult];
+            planeIdentifier = [finalResult2 planeIdentifier];
+            planeIdentifier2 = [finalResult4 planeIdentifier];
+            v21 = [planeIdentifier isEqual:planeIdentifier2];
 
             if (!v21)
             {
 
               LOBYTE(v10) = 1;
-              v5 = v32;
+              changeCopy = v32;
               goto LABEL_23;
             }
           }
@@ -412,7 +412,7 @@ LABEL_13:
       }
     }
 
-    v5 = v32;
+    changeCopy = v32;
   }
 
   [ASVSettings floatForKey:@"ASVSettingInterpolationPlaneChangeMinimumSeparationDistance", v32];
@@ -421,8 +421,8 @@ LABEL_13:
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v9 = v5;
-  v10 = [v9 countByEnumeratingWithState:&v34 objects:v42 count:16];
+  finalResult2 = changeCopy;
+  v10 = [finalResult2 countByEnumeratingWithState:&v34 objects:v42 count:16];
   if (v10)
   {
     v24 = *v35;
@@ -432,14 +432,14 @@ LABEL_13:
       {
         if (*v35 != v24)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(finalResult2);
         }
 
-        v26 = [*(*(&v34 + 1) + 8 * j) finalResult];
-        [v26 worldPosition];
+        finalResult5 = [*(*(&v34 + 1) + 8 * j) finalResult];
+        [finalResult5 worldPosition];
         v33 = v27;
-        v28 = [v6 finalResult];
-        [v28 worldPosition];
+        finalResult6 = [decisionCopy finalResult];
+        [finalResult6 worldPosition];
         LODWORD(v30) = vsubq_f32(v33, v29).i32[1];
 
         if (fabsf(v30) >= v23)
@@ -449,7 +449,7 @@ LABEL_13:
         }
       }
 
-      v10 = [v9 countByEnumeratingWithState:&v34 objects:v42 count:16];
+      v10 = [finalResult2 countByEnumeratingWithState:&v34 objects:v42 count:16];
       if (v10)
       {
         continue;
@@ -464,13 +464,13 @@ LABEL_23:
   return v10;
 }
 
-- (id)reprojectOntoCurrentPlaneAtImagePoint:(ASVHitTestStrategyAveragedPlaneWithClusteringAndInterpolation *)self inFrame:(SEL)a2 withViewportSize:(id)a3 assetPosition:(CGSize)a4 maxDistance:(float)a5
+- (id)reprojectOntoCurrentPlaneAtImagePoint:(ASVHitTestStrategyAveragedPlaneWithClusteringAndInterpolation *)self inFrame:(SEL)frame withViewportSize:(id)size assetPosition:(CGSize)position maxDistance:(float)distance
 {
   v7 = v6;
   v21 = v5;
-  width = a4.width;
-  v10 = a3;
-  v12 = v10;
+  width = position.width;
+  sizeCopy = size;
+  v12 = sizeCopy;
   currentPlaneHeight = self->_currentPlaneHeight;
   if (currentPlaneHeight == -1000000.0)
   {
@@ -480,7 +480,7 @@ LABEL_23:
   else
   {
     LODWORD(v11) = v7;
-    v15 = [v10 hitTestOnPlaneWithWorldTransform:*MEMORY[0x277D860B8] forImagePoint:*&self->_currentPlaneNormal[4] maxDistance:{*(MEMORY[0x277D860B8] + 32), *vmulq_n_f32(*&self->_currentPlaneNormal[4], currentPlaneHeight).i64, width, v11}];
+    v15 = [sizeCopy hitTestOnPlaneWithWorldTransform:*MEMORY[0x277D860B8] forImagePoint:*&self->_currentPlaneNormal[4] maxDistance:{*(MEMORY[0x277D860B8] + 32), *vmulq_n_f32(*&self->_currentPlaneNormal[4], currentPlaneHeight).i64, width, v11}];
     if (v15)
     {
       v16 = [ASVHitTestResult alloc];
@@ -500,17 +500,17 @@ LABEL_23:
   return v14;
 }
 
-- (BOOL)resultsContainPoorQualityEstimatedResults:(id)a3
+- (BOOL)resultsContainPoorQualityEstimatedResults:(id)results
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  resultsCopy = results;
   [ASVSettings floatForKey:@"ASVSettingMinimumEstimatedHitPointDistanceFromCamera"];
   v5 = v4;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = v3;
+  v6 = resultsCopy;
   v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
@@ -551,7 +551,7 @@ LABEL_13:
   return v7;
 }
 
-- (BOOL)hasFormedClusterForInitialPlacement:(float *)a3 planeNormal:
+- (BOOL)hasFormedClusterForInitialPlacement:(float *)placement planeNormal:
 {
   v4 = v3;
   v50 = *MEMORY[0x277D85DE8];
@@ -562,8 +562,8 @@ LABEL_13:
     return 1;
   }
 
-  v9 = [(ASVHitTestHistory *)self results];
-  v10 = [v9 count];
+  results = [(ASVHitTestHistory *)self results];
+  v10 = [results count];
 
   if (v10 < v8)
   {
@@ -665,9 +665,9 @@ LABEL_28:
       }
     }
 
-    if (a3)
+    if (placement)
     {
-      *a3 = v39.f32[1];
+      *placement = v39.f32[1];
     }
 
     if (v4)
@@ -681,7 +681,7 @@ LABEL_28:
   return v11;
 }
 
-- (BOOL)hasFormedClusterForMovement:(float *)a3 planeNormal:
+- (BOOL)hasFormedClusterForMovement:(float *)movement planeNormal:
 {
   v4 = v3;
   v56 = *MEMORY[0x277D85DE8];
@@ -692,8 +692,8 @@ LABEL_28:
     return 1;
   }
 
-  v9 = [(ASVHitTestHistory *)self results];
-  v10 = [v9 count];
+  results = [(ASVHitTestHistory *)self results];
+  v10 = [results count];
 
   if (v10 >= v8)
   {
@@ -781,9 +781,9 @@ LABEL_28:
       if ([v25 count] < 2)
       {
 LABEL_27:
-        if (a3)
+        if (movement)
         {
-          *a3 = v20;
+          *movement = v20;
         }
 
         if (v4)

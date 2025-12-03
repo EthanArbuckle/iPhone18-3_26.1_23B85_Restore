@@ -1,13 +1,13 @@
 @interface PTPixelBufferSize
-- (PTPixelBufferSize)initWithWidth:(int)a3 height:(int)a4;
+- (PTPixelBufferSize)initWithWidth:(int)width height:(int)height;
 @end
 
 @implementation PTPixelBufferSize
 
-- (PTPixelBufferSize)initWithWidth:(int)a3 height:(int)a4
+- (PTPixelBufferSize)initWithWidth:(int)width height:(int)height
 {
-  v4 = *&a4;
-  [(PTPixelBufferSize *)self setWidth:*&a3];
+  v4 = *&height;
+  [(PTPixelBufferSize *)self setWidth:*&width];
   [(PTPixelBufferSize *)self setHeight:v4];
   return self;
 }

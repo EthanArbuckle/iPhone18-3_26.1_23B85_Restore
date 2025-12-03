@@ -1,21 +1,21 @@
 @interface NSManagedObject
-- (BOOL)setDifferentDate:(id)a3 forKey:(id)a4;
-- (BOOL)setDifferentNumber:(id)a3 forKey:(id)a4;
-- (BOOL)setDifferentObject:(id)a3 forKey:(id)a4;
-- (BOOL)setDifferentString:(id)a3 forKey:(id)a4;
-- (BOOL)setDifferentValue:(id)a3 forKey:(id)a4 klass:(Class)a5;
-- (id)propertiesForKeys:(id)a3;
+- (BOOL)setDifferentDate:(id)date forKey:(id)key;
+- (BOOL)setDifferentNumber:(id)number forKey:(id)key;
+- (BOOL)setDifferentObject:(id)object forKey:(id)key;
+- (BOOL)setDifferentString:(id)string forKey:(id)key;
+- (BOOL)setDifferentValue:(id)value forKey:(id)key klass:(Class)klass;
+- (id)propertiesForKeys:(id)keys;
 @end
 
 @implementation NSManagedObject
 
-- (BOOL)setDifferentValue:(id)a3 forKey:(id)a4 klass:(Class)a5
+- (BOOL)setDifferentValue:(id)value forKey:(id)key klass:(Class)klass
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(NSManagedObject *)self valueForKey:v8];
+  valueCopy = value;
+  keyCopy = key;
+  v9 = [(NSManagedObject *)self valueForKey:keyCopy];
   v10 = v9;
-  if (v9 == v7 || ([v9 isEqual:v7] & 1) != 0)
+  if (v9 == valueCopy || ([v9 isEqual:valueCopy] & 1) != 0)
   {
     v11 = 0;
   }
@@ -23,7 +23,7 @@
   else
   {
     v12 = BUDynamicCast();
-    [(NSManagedObject *)self setValue:v12 forKey:v8];
+    [(NSManagedObject *)self setValue:v12 forKey:keyCopy];
 
     v11 = 1;
   }
@@ -31,55 +31,55 @@
   return v11;
 }
 
-- (BOOL)setDifferentObject:(id)a3 forKey:(id)a4
+- (BOOL)setDifferentObject:(id)object forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NSManagedObject *)self valueForKey:v7];
-  if (v8 != v6)
+  objectCopy = object;
+  keyCopy = key;
+  v8 = [(NSManagedObject *)self valueForKey:keyCopy];
+  if (v8 != objectCopy)
   {
-    [(NSManagedObject *)self setValue:v6 forKey:v7];
+    [(NSManagedObject *)self setValue:objectCopy forKey:keyCopy];
   }
 
-  return v8 != v6;
+  return v8 != objectCopy;
 }
 
-- (BOOL)setDifferentString:(id)a3 forKey:(id)a4
+- (BOOL)setDifferentString:(id)string forKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
-  LOBYTE(self) = [(NSManagedObject *)self setDifferentValue:v7 forKey:v6 klass:objc_opt_class()];
+  keyCopy = key;
+  stringCopy = string;
+  LOBYTE(self) = [(NSManagedObject *)self setDifferentValue:stringCopy forKey:keyCopy klass:objc_opt_class()];
 
   return self;
 }
 
-- (BOOL)setDifferentNumber:(id)a3 forKey:(id)a4
+- (BOOL)setDifferentNumber:(id)number forKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
-  LOBYTE(self) = [(NSManagedObject *)self setDifferentValue:v7 forKey:v6 klass:objc_opt_class()];
+  keyCopy = key;
+  numberCopy = number;
+  LOBYTE(self) = [(NSManagedObject *)self setDifferentValue:numberCopy forKey:keyCopy klass:objc_opt_class()];
 
   return self;
 }
 
-- (BOOL)setDifferentDate:(id)a3 forKey:(id)a4
+- (BOOL)setDifferentDate:(id)date forKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
-  LOBYTE(self) = [(NSManagedObject *)self setDifferentValue:v7 forKey:v6 klass:objc_opt_class()];
+  keyCopy = key;
+  dateCopy = date;
+  LOBYTE(self) = [(NSManagedObject *)self setDifferentValue:dateCopy forKey:keyCopy klass:objc_opt_class()];
 
   return self;
 }
 
-- (id)propertiesForKeys:(id)a3
+- (id)propertiesForKeys:(id)keys
 {
-  v4 = a3;
+  keysCopy = keys;
   v5 = +[NSMutableDictionary dictionary];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = v4;
+  v6 = keysCopy;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {

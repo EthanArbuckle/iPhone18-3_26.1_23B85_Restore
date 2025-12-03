@@ -1,30 +1,30 @@
 @interface PEGASUSSchemaPEGASUSMultiTurnListSelectionUnderstandingTier1
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (PEGASUSSchemaPEGASUSMultiTurnListSelectionUnderstandingTier1)initWithDictionary:(id)a3;
-- (PEGASUSSchemaPEGASUSMultiTurnListSelectionUnderstandingTier1)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (PEGASUSSchemaPEGASUSMultiTurnListSelectionUnderstandingTier1)initWithDictionary:(id)dictionary;
+- (PEGASUSSchemaPEGASUSMultiTurnListSelectionUnderstandingTier1)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (int)recommendationsAtIndex:(unint64_t)a3;
+- (int)recommendationsAtIndex:(unint64_t)index;
 - (unint64_t)hash;
-- (void)addRecommendations:(int)a3;
-- (void)addResults:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addRecommendations:(int)recommendations;
+- (void)addResults:(id)results;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PEGASUSSchemaPEGASUSMultiTurnListSelectionUnderstandingTier1
 
-- (PEGASUSSchemaPEGASUSMultiTurnListSelectionUnderstandingTier1)initWithDictionary:(id)a3
+- (PEGASUSSchemaPEGASUSMultiTurnListSelectionUnderstandingTier1)initWithDictionary:(id)dictionary
 {
   v37 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v34.receiver = self;
   v34.super_class = PEGASUSSchemaPEGASUSMultiTurnListSelectionUnderstandingTier1;
   v5 = [(PEGASUSSchemaPEGASUSMultiTurnListSelectionUnderstandingTier1 *)&v34 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"followupQuery"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"followupQuery"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -32,7 +32,7 @@
       [(PEGASUSSchemaPEGASUSMultiTurnListSelectionUnderstandingTier1 *)v5 setFollowupQuery:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"results"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"results"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -75,7 +75,7 @@
       }
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"recommendations"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"recommendations"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -126,30 +126,30 @@
   return v5;
 }
 
-- (PEGASUSSchemaPEGASUSMultiTurnListSelectionUnderstandingTier1)initWithJSON:(id)a3
+- (PEGASUSSchemaPEGASUSMultiTurnListSelectionUnderstandingTier1)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(PEGASUSSchemaPEGASUSMultiTurnListSelectionUnderstandingTier1 *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(PEGASUSSchemaPEGASUSMultiTurnListSelectionUnderstandingTier1 *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(PEGASUSSchemaPEGASUSMultiTurnListSelectionUnderstandingTier1 *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -162,31 +162,31 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_followupQuery)
   {
-    v4 = [(PEGASUSSchemaPEGASUSMultiTurnListSelectionUnderstandingTier1 *)self followupQuery];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"followupQuery"];
+    followupQuery = [(PEGASUSSchemaPEGASUSMultiTurnListSelectionUnderstandingTier1 *)self followupQuery];
+    v5 = [followupQuery copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"followupQuery"];
   }
 
   if ([(NSArray *)self->_recommendations count])
   {
-    v6 = [(PEGASUSSchemaPEGASUSMultiTurnListSelectionUnderstandingTier1 *)self recommendations];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"recommendations"];
+    recommendations = [(PEGASUSSchemaPEGASUSMultiTurnListSelectionUnderstandingTier1 *)self recommendations];
+    v7 = [recommendations copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"recommendations"];
   }
 
   if (self->_results)
   {
-    v8 = [(PEGASUSSchemaPEGASUSMultiTurnListSelectionUnderstandingTier1 *)self results];
-    v9 = [v8 copy];
-    [v3 setObject:v9 forKeyedSubscript:@"results"];
+    results = [(PEGASUSSchemaPEGASUSMultiTurnListSelectionUnderstandingTier1 *)self results];
+    v9 = [results copy];
+    [dictionary setObject:v9 forKeyedSubscript:@"results"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -196,28 +196,28 @@
   return v4 ^ [(NSArray *)self->_recommendations hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_17;
   }
 
-  v5 = [(PEGASUSSchemaPEGASUSMultiTurnListSelectionUnderstandingTier1 *)self followupQuery];
-  v6 = [v4 followupQuery];
-  if ((v5 != 0) == (v6 == 0))
+  followupQuery = [(PEGASUSSchemaPEGASUSMultiTurnListSelectionUnderstandingTier1 *)self followupQuery];
+  followupQuery2 = [equalCopy followupQuery];
+  if ((followupQuery != 0) == (followupQuery2 == 0))
   {
     goto LABEL_16;
   }
 
-  v7 = [(PEGASUSSchemaPEGASUSMultiTurnListSelectionUnderstandingTier1 *)self followupQuery];
-  if (v7)
+  followupQuery3 = [(PEGASUSSchemaPEGASUSMultiTurnListSelectionUnderstandingTier1 *)self followupQuery];
+  if (followupQuery3)
   {
-    v8 = v7;
-    v9 = [(PEGASUSSchemaPEGASUSMultiTurnListSelectionUnderstandingTier1 *)self followupQuery];
-    v10 = [v4 followupQuery];
-    v11 = [v9 isEqual:v10];
+    v8 = followupQuery3;
+    followupQuery4 = [(PEGASUSSchemaPEGASUSMultiTurnListSelectionUnderstandingTier1 *)self followupQuery];
+    followupQuery5 = [equalCopy followupQuery];
+    v11 = [followupQuery4 isEqual:followupQuery5];
 
     if (!v11)
     {
@@ -229,20 +229,20 @@
   {
   }
 
-  v5 = [(PEGASUSSchemaPEGASUSMultiTurnListSelectionUnderstandingTier1 *)self results];
-  v6 = [v4 results];
-  if ((v5 != 0) == (v6 == 0))
+  followupQuery = [(PEGASUSSchemaPEGASUSMultiTurnListSelectionUnderstandingTier1 *)self results];
+  followupQuery2 = [equalCopy results];
+  if ((followupQuery != 0) == (followupQuery2 == 0))
   {
     goto LABEL_16;
   }
 
-  v12 = [(PEGASUSSchemaPEGASUSMultiTurnListSelectionUnderstandingTier1 *)self results];
-  if (v12)
+  results = [(PEGASUSSchemaPEGASUSMultiTurnListSelectionUnderstandingTier1 *)self results];
+  if (results)
   {
-    v13 = v12;
-    v14 = [(PEGASUSSchemaPEGASUSMultiTurnListSelectionUnderstandingTier1 *)self results];
-    v15 = [v4 results];
-    v16 = [v14 isEqual:v15];
+    v13 = results;
+    results2 = [(PEGASUSSchemaPEGASUSMultiTurnListSelectionUnderstandingTier1 *)self results];
+    results3 = [equalCopy results];
+    v16 = [results2 isEqual:results3];
 
     if (!v16)
     {
@@ -254,12 +254,12 @@
   {
   }
 
-  v5 = [(PEGASUSSchemaPEGASUSMultiTurnListSelectionUnderstandingTier1 *)self recommendations];
-  v6 = [v4 recommendations];
-  if ((v5 != 0) != (v6 == 0))
+  followupQuery = [(PEGASUSSchemaPEGASUSMultiTurnListSelectionUnderstandingTier1 *)self recommendations];
+  followupQuery2 = [equalCopy recommendations];
+  if ((followupQuery != 0) != (followupQuery2 == 0))
   {
-    v17 = [(PEGASUSSchemaPEGASUSMultiTurnListSelectionUnderstandingTier1 *)self recommendations];
-    if (!v17)
+    recommendations = [(PEGASUSSchemaPEGASUSMultiTurnListSelectionUnderstandingTier1 *)self recommendations];
+    if (!recommendations)
     {
 
 LABEL_20:
@@ -267,10 +267,10 @@ LABEL_20:
       goto LABEL_18;
     }
 
-    v18 = v17;
-    v19 = [(PEGASUSSchemaPEGASUSMultiTurnListSelectionUnderstandingTier1 *)self recommendations];
-    v20 = [v4 recommendations];
-    v21 = [v19 isEqual:v20];
+    v18 = recommendations;
+    recommendations2 = [(PEGASUSSchemaPEGASUSMultiTurnListSelectionUnderstandingTier1 *)self recommendations];
+    recommendations3 = [equalCopy recommendations];
+    v21 = [recommendations2 isEqual:recommendations3];
 
     if (v21)
     {
@@ -290,13 +290,13 @@ LABEL_18:
   return v22;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PEGASUSSchemaPEGASUSMultiTurnListSelectionUnderstandingTier1 *)self followupQuery];
+  toCopy = to;
+  followupQuery = [(PEGASUSSchemaPEGASUSMultiTurnListSelectionUnderstandingTier1 *)self followupQuery];
 
-  if (v5)
+  if (followupQuery)
   {
     PBDataWriterWriteStringField();
   }
@@ -365,23 +365,23 @@ LABEL_18:
   }
 }
 
-- (int)recommendationsAtIndex:(unint64_t)a3
+- (int)recommendationsAtIndex:(unint64_t)index
 {
-  v3 = [(NSArray *)self->_recommendations objectAtIndexedSubscript:a3];
-  v4 = [v3 intValue];
+  v3 = [(NSArray *)self->_recommendations objectAtIndexedSubscript:index];
+  intValue = [v3 intValue];
 
-  return v4;
+  return intValue;
 }
 
-- (void)addRecommendations:(int)a3
+- (void)addRecommendations:(int)recommendations
 {
-  v3 = *&a3;
+  v3 = *&recommendations;
   recommendations = self->_recommendations;
   if (!recommendations)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_recommendations;
-    self->_recommendations = v6;
+    self->_recommendations = array;
 
     recommendations = self->_recommendations;
   }
@@ -390,55 +390,55 @@ LABEL_18:
   [(NSArray *)recommendations addObject:v8];
 }
 
-- (void)addResults:(id)a3
+- (void)addResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   results = self->_results;
-  v8 = v4;
+  v8 = resultsCopy;
   if (!results)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_results;
-    self->_results = v6;
+    self->_results = array;
 
-    v4 = v8;
+    resultsCopy = v8;
     results = self->_results;
   }
 
-  [(NSArray *)results addObject:v4];
+  [(NSArray *)results addObject:resultsCopy];
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v7.receiver = self;
   v7.super_class = PEGASUSSchemaPEGASUSMultiTurnListSelectionUnderstandingTier1;
-  v5 = [(SISchemaInstrumentationMessage *)&v7 applySensitiveConditionsPolicy:v4];
-  if ([v4 isConditionSet:2])
+  v5 = [(SISchemaInstrumentationMessage *)&v7 applySensitiveConditionsPolicy:policyCopy];
+  if ([policyCopy isConditionSet:2])
   {
     [(PEGASUSSchemaPEGASUSMultiTurnListSelectionUnderstandingTier1 *)self deleteFollowupQuery];
     [(PEGASUSSchemaPEGASUSMultiTurnListSelectionUnderstandingTier1 *)self deleteResults];
   }
 
-  if ([v4 isConditionSet:4])
+  if ([policyCopy isConditionSet:4])
   {
     [(PEGASUSSchemaPEGASUSMultiTurnListSelectionUnderstandingTier1 *)self deleteFollowupQuery];
     [(PEGASUSSchemaPEGASUSMultiTurnListSelectionUnderstandingTier1 *)self deleteResults];
   }
 
-  if ([v4 isConditionSet:5])
+  if ([policyCopy isConditionSet:5])
   {
     [(PEGASUSSchemaPEGASUSMultiTurnListSelectionUnderstandingTier1 *)self deleteFollowupQuery];
     [(PEGASUSSchemaPEGASUSMultiTurnListSelectionUnderstandingTier1 *)self deleteResults];
   }
 
-  if ([v4 isConditionSet:6])
+  if ([policyCopy isConditionSet:6])
   {
     [(PEGASUSSchemaPEGASUSMultiTurnListSelectionUnderstandingTier1 *)self deleteFollowupQuery];
     [(PEGASUSSchemaPEGASUSMultiTurnListSelectionUnderstandingTier1 *)self deleteResults];
   }
 
-  if ([v4 isConditionSet:7])
+  if ([policyCopy isConditionSet:7])
   {
     [(PEGASUSSchemaPEGASUSMultiTurnListSelectionUnderstandingTier1 *)self deleteFollowupQuery];
     [(PEGASUSSchemaPEGASUSMultiTurnListSelectionUnderstandingTier1 *)self deleteResults];

@@ -1,30 +1,30 @@
 @interface CKDetailsWalletItemSearchController
 - (CKWalletItemSearchResultsCell)sizingCell;
-- (id)layoutGroupWithEnvironment:(id)a3;
+- (id)layoutGroupWithEnvironment:(id)environment;
 @end
 
 @implementation CKDetailsWalletItemSearchController
 
-- (id)layoutGroupWithEnvironment:(id)a3
+- (id)layoutGroupWithEnvironment:(id)environment
 {
-  v4 = [(CKSearchController *)self layoutWidth];
-  v5 = [(CKSearchController *)self delegate];
-  [v5 containerWidthForController:self];
+  layoutWidth = [(CKSearchController *)self layoutWidth];
+  delegate = [(CKSearchController *)self delegate];
+  [delegate containerWidthForController:self];
   v7 = v6;
 
   v28 = 0;
   v29 = 0.0;
-  [(CKMessageTypeSearchController *)self fractionalWidth:&v29 count:&v28 forLayoutWidth:v4];
-  v8 = [(CKSearchController *)self delegate];
-  [v8 parentMarginInsetsForSearchController:self];
+  [(CKMessageTypeSearchController *)self fractionalWidth:&v29 count:&v28 forLayoutWidth:layoutWidth];
+  delegate2 = [(CKSearchController *)self delegate];
+  [delegate2 parentMarginInsetsForSearchController:self];
   v10 = v9;
   v12 = v11;
 
   v13 = (v7 - (v10 + v12) + ((v28 - 1) * -10.0)) / v28;
   v14 = objc_opt_new();
   [v14 setFrame:{0.0, 0.0, v13, 1.79769313e308}];
-  v15 = [(CKDetailsWalletItemSearchController *)self sizingCell];
-  v16 = [v15 preferredLayoutAttributesFittingAttributes:v14];
+  sizingCell = [(CKDetailsWalletItemSearchController *)self sizingCell];
+  v16 = [sizingCell preferredLayoutAttributesFittingAttributes:v14];
 
   [v16 frame];
   Height = CGRectGetHeight(v31);
@@ -53,9 +53,9 @@
     v6 = self->_sizingCell;
     self->_sizingCell = v5;
 
-    v7 = [(CKAttachmentSearchResultCell *)self->_sizingCell dateLabel];
-    v8 = [MEMORY[0x1E695DF00] date];
-    [v7 setDate:v8];
+    dateLabel = [(CKAttachmentSearchResultCell *)self->_sizingCell dateLabel];
+    date = [MEMORY[0x1E695DF00] date];
+    [dateLabel setDate:date];
 
     sizingCell = self->_sizingCell;
   }

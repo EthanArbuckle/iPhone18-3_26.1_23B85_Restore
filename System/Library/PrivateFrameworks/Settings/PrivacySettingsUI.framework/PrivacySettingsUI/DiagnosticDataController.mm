@@ -1,8 +1,8 @@
 @interface DiagnosticDataController
 - (DiagnosticDataController)init;
 - (id)specifiers;
-- (void)_loadDiagnosticsDataWithCompletion:(id)a3;
-- (void)updateSearchResultsForSearchController:(id)a3;
+- (void)_loadDiagnosticsDataWithCompletion:(id)completion;
+- (void)updateSearchResultsForSearchController:(id)controller;
 - (void)viewDidLoad;
 @end
 
@@ -65,47 +65,47 @@ void __32__DiagnosticDataController_init__block_invoke(uint64_t a1, uint64_t a2)
   v3 = PUI_LocalizedStringForProblemReporting(@"PROBLEM_REPORTING_DATA");
   [(DiagnosticDataController *)self setTitle:v3];
 
-  v4 = [(DiagnosticDataController *)self table];
-  [v4 _setDisplaysCellContentStringsOnTapAndHold:1];
+  table = [(DiagnosticDataController *)self table];
+  [table _setDisplaysCellContentStringsOnTapAndHold:1];
 
   v5 = [objc_alloc(MEMORY[0x277D759F0]) initWithSearchResultsController:0];
   [(DiagnosticDataController *)self setSearchController:v5];
 
-  v6 = [(DiagnosticDataController *)self searchController];
-  [v6 setSearchResultsUpdater:self];
+  searchController = [(DiagnosticDataController *)self searchController];
+  [searchController setSearchResultsUpdater:self];
 
-  v7 = [(DiagnosticDataController *)self searchController];
-  [v7 setObscuresBackgroundDuringPresentation:0];
+  searchController2 = [(DiagnosticDataController *)self searchController];
+  [searchController2 setObscuresBackgroundDuringPresentation:0];
 
-  v8 = [(DiagnosticDataController *)self searchController];
-  v9 = [v8 searchBar];
-  [v9 setAutocapitalizationType:0];
+  searchController3 = [(DiagnosticDataController *)self searchController];
+  searchBar = [searchController3 searchBar];
+  [searchBar setAutocapitalizationType:0];
 
-  v10 = [(DiagnosticDataController *)self searchController];
-  v11 = [v10 searchBar];
-  [v11 setKeyboardType:0];
+  searchController4 = [(DiagnosticDataController *)self searchController];
+  searchBar2 = [searchController4 searchBar];
+  [searchBar2 setKeyboardType:0];
 
-  v12 = [(DiagnosticDataController *)self searchController];
-  v13 = [v12 searchBar];
-  [v13 setAutocorrectionType:1];
+  searchController5 = [(DiagnosticDataController *)self searchController];
+  searchBar3 = [searchController5 searchBar];
+  [searchBar3 setAutocorrectionType:1];
 
-  v14 = [(DiagnosticDataController *)self searchController];
-  v15 = [(DiagnosticDataController *)self navigationItem];
-  [v15 setSearchController:v14];
+  searchController6 = [(DiagnosticDataController *)self searchController];
+  navigationItem = [(DiagnosticDataController *)self navigationItem];
+  [navigationItem setSearchController:searchController6];
 
   [(DiagnosticDataController *)self setDefinesPresentationContext:1];
 }
 
-- (void)_loadDiagnosticsDataWithCompletion:(id)a3
+- (void)_loadDiagnosticsDataWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = dispatch_get_global_queue(33, 0);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __63__DiagnosticDataController__loadDiagnosticsDataWithCompletion___block_invoke;
   block[3] = &unk_279BA1038;
-  v7 = v3;
-  v5 = v3;
+  v7 = completionCopy;
+  v5 = completionCopy;
   dispatch_async(v4, block);
 }
 
@@ -635,13 +635,13 @@ uint64_t __63__DiagnosticDataController__loadDiagnosticsDataWithCompletion___blo
 - (id)specifiers
 {
   v20[1] = *MEMORY[0x277D85DE8];
-  v3 = [(DiagnosticDataController *)self _state];
+  _state = [(DiagnosticDataController *)self _state];
   v4 = MEMORY[0x277D3FC48];
-  if (!v3)
+  if (!_state)
   {
-    v5 = [(DiagnosticDataController *)self _allSpecifiers];
+    _allSpecifiers = [(DiagnosticDataController *)self _allSpecifiers];
 
-    if (!v5)
+    if (!_allSpecifiers)
     {
       objc_initWeak(&location, self);
       v17[0] = MEMORY[0x277D85DD0];
@@ -662,8 +662,8 @@ uint64_t __63__DiagnosticDataController__loadDiagnosticsDataWithCompletion___blo
     *(&self->super.super.super.super.super.isa + v8) = v7;
   }
 
-  v10 = [(DiagnosticDataController *)self searchController];
-  if (([v10 isActive] & 1) == 0)
+  searchController = [(DiagnosticDataController *)self searchController];
+  if (([searchController isActive] & 1) == 0)
   {
     v11 = [(DiagnosticDataController *)self _state]== 1;
 
@@ -672,10 +672,10 @@ uint64_t __63__DiagnosticDataController__loadDiagnosticsDataWithCompletion___blo
       goto LABEL_9;
     }
 
-    v12 = [(DiagnosticDataController *)self _allSpecifiers];
+    _allSpecifiers2 = [(DiagnosticDataController *)self _allSpecifiers];
     v13 = *v4;
-    v10 = *(&self->super.super.super.super.super.isa + v13);
-    *(&self->super.super.super.super.super.isa + v13) = v12;
+    searchController = *(&self->super.super.super.super.super.isa + v13);
+    *(&self->super.super.super.super.super.isa + v13) = _allSpecifiers2;
   }
 
 LABEL_9:
@@ -740,31 +740,31 @@ uint64_t __38__DiagnosticDataController_specifiers__block_invoke_3(uint64_t a1)
   return [v6 set_state:1];
 }
 
-- (void)updateSearchResultsForSearchController:(id)a3
+- (void)updateSearchResultsForSearchController:(id)controller
 {
-  v4 = [a3 searchBar];
-  v5 = [v4 text];
+  searchBar = [controller searchBar];
+  text = [searchBar text];
 
-  if ([v5 length])
+  if ([text length])
   {
-    v6 = [MEMORY[0x277CBEB18] array];
-    v7 = [(DiagnosticDataController *)self _allSpecifiers];
+    array = [MEMORY[0x277CBEB18] array];
+    _allSpecifiers = [(DiagnosticDataController *)self _allSpecifiers];
     v9 = MEMORY[0x277D85DD0];
     v10 = 3221225472;
     v11 = __67__DiagnosticDataController_updateSearchResultsForSearchController___block_invoke;
     v12 = &unk_279BA0E10;
-    v13 = v5;
-    v14 = v6;
-    v8 = v6;
-    [v7 enumerateObjectsUsingBlock:&v9];
+    v13 = text;
+    v14 = array;
+    _allSpecifiers2 = array;
+    [_allSpecifiers enumerateObjectsUsingBlock:&v9];
 
-    [(DiagnosticDataController *)self setSpecifiers:v8, v9, v10, v11, v12];
+    [(DiagnosticDataController *)self setSpecifiers:_allSpecifiers2, v9, v10, v11, v12];
   }
 
   else
   {
-    v8 = [(DiagnosticDataController *)self _allSpecifiers];
-    [(DiagnosticDataController *)self setSpecifiers:v8];
+    _allSpecifiers2 = [(DiagnosticDataController *)self _allSpecifiers];
+    [(DiagnosticDataController *)self setSpecifiers:_allSpecifiers2];
   }
 }
 

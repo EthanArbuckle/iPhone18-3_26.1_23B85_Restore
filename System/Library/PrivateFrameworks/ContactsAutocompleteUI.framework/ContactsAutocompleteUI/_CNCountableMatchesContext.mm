@@ -1,6 +1,6 @@
 @interface _CNCountableMatchesContext
 - (_CNCountableMatchesContext)init;
-- (void)countInstances:(id)a3 usingPredicate:(id)a4;
+- (void)countInstances:(id)instances usingPredicate:(id)predicate;
 @end
 
 @implementation _CNCountableMatchesContext
@@ -12,9 +12,9 @@
   v2 = [(_CNCountableMatchesContext *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     contactsCount = v2->_contactsCount;
-    v2->_contactsCount = v3;
+    v2->_contactsCount = dictionary;
 
     v5 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     highestMatches = v2->_highestMatches;
@@ -24,16 +24,16 @@
   return v2;
 }
 
-- (void)countInstances:(id)a3 usingPredicate:(id)a4
+- (void)countInstances:(id)instances usingPredicate:(id)predicate
 {
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  instancesCopy = instances;
+  predicateCopy = predicate;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v8 = [v6 countByEnumeratingWithState:&v24 objects:v28 count:16];
+  v8 = [instancesCopy countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v8)
   {
     v9 = v8;
@@ -44,20 +44,20 @@
       {
         if (*v25 != v23)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(instancesCopy);
         }
 
         v11 = *(*(&v24 + 1) + 8 * i);
-        v12 = v7[2](v7, v11);
+        v12 = predicateCopy[2](predicateCopy, v11);
         if (v12)
         {
           v13 = v12;
           contactsCount = self->_contactsCount;
-          v15 = [v11 identifier];
-          v16 = [(NSMutableDictionary *)contactsCount objectForKeyedSubscript:v15];
-          v17 = [v16 integerValue];
+          identifier = [v11 identifier];
+          v16 = [(NSMutableDictionary *)contactsCount objectForKeyedSubscript:identifier];
+          integerValue = [v16 integerValue];
 
-          v18 = v17 + v13;
+          v18 = integerValue + v13;
           maxCount = self->_maxCount;
           if (v18 == maxCount)
           {
@@ -86,14 +86,14 @@
 LABEL_13:
           v20 = [MEMORY[0x1E696AD98] numberWithInteger:v18];
           v21 = self->_contactsCount;
-          v22 = [v11 identifier];
-          [(NSMutableDictionary *)v21 setObject:v20 forKeyedSubscript:v22];
+          identifier2 = [v11 identifier];
+          [(NSMutableDictionary *)v21 setObject:v20 forKeyedSubscript:identifier2];
 
           continue;
         }
       }
 
-      v9 = [v6 countByEnumeratingWithState:&v24 objects:v28 count:16];
+      v9 = [instancesCopy countByEnumeratingWithState:&v24 objects:v28 count:16];
     }
 
     while (v9);

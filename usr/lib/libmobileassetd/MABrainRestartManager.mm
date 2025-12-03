@@ -1,7 +1,7 @@
 @interface MABrainRestartManager
 + (id)sharedInstance;
 - (MABrainRestartManager)init;
-- (void)handleSignal:(int)a3;
+- (void)handleSignal:(int)signal;
 - (void)quiesceAndRestartMobileAsset;
 - (void)quiesceMobileAsset;
 - (void)setupSignalHandlers;
@@ -43,16 +43,16 @@ void __39__MABrainRestartManager_sharedInstance__block_invoke(id a1)
   _objc_release_x1();
 }
 
-- (void)handleSignal:(int)a3
+- (void)handleSignal:(int)signal
 {
-  v5 = [(MABrainRestartManager *)self operationsQueue];
+  operationsQueue = [(MABrainRestartManager *)self operationsQueue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = __38__MABrainRestartManager_handleSignal___block_invoke;
   v6[3] = &unk_4B38D0;
-  v7 = a3;
+  signalCopy = signal;
   v6[4] = self;
-  dispatch_sync(v5, v6);
+  dispatch_sync(operationsQueue, v6);
 }
 
 void __38__MABrainRestartManager_handleSignal___block_invoke(uint64_t a1)
@@ -83,8 +83,8 @@ void __38__MABrainRestartManager_handleSignal___block_invoke(uint64_t a1)
 
 - (void)quiesceMobileAsset
 {
-  v2 = [(MABrainRestartManager *)self operationsQueue];
-  dispatch_assert_queue_V2(v2);
+  operationsQueue = [(MABrainRestartManager *)self operationsQueue];
+  dispatch_assert_queue_V2(operationsQueue);
 
   v3 = _MADLog(@"Brain");
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -98,13 +98,13 @@ void __38__MABrainRestartManager_handleSignal___block_invoke(uint64_t a1)
 
 - (void)setupSignalHandlers
 {
-  v3 = [(MABrainRestartManager *)self operationsQueue];
+  operationsQueue = [(MABrainRestartManager *)self operationsQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __44__MABrainRestartManager_setupSignalHandlers__block_invoke;
   block[3] = &unk_4B2AA0;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(operationsQueue, block);
 }
 
 void __44__MABrainRestartManager_setupSignalHandlers__block_invoke(uint64_t a1)
@@ -145,13 +145,13 @@ void __44__MABrainRestartManager_setupSignalHandlers__block_invoke_2(uint64_t a1
 
 - (void)quiesceAndRestartMobileAsset
 {
-  v3 = [(MABrainRestartManager *)self operationsQueue];
+  operationsQueue = [(MABrainRestartManager *)self operationsQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __53__MABrainRestartManager_quiesceAndRestartMobileAsset__block_invoke;
   block[3] = &unk_4B2AA0;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(operationsQueue, block);
 }
 
 void __53__MABrainRestartManager_quiesceAndRestartMobileAsset__block_invoke(uint64_t a1)

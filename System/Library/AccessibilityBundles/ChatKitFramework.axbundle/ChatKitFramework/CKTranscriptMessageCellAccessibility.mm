@@ -1,24 +1,24 @@
 @interface CKTranscriptMessageCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_accessibilityCustomActionGroupIdentifier;
 - (id)_accessibilitySupplementaryFooterViews;
-- (void)setFailed:(BOOL)a3;
+- (void)setFailed:(BOOL)failed;
 @end
 
 @implementation CKTranscriptMessageCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CKTranscriptMessageCell" hasInstanceMethod:@"setFailed:" withFullSignature:{"v", "B", 0}];
-  [v3 validateClass:@"CKTranscriptMessageCell" hasInstanceMethod:@"failureButton" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CKTranscriptMessageCell" hasInstanceMethod:@"setFailed:" withFullSignature:{"v", "B", 0}];
+  [validationsCopy validateClass:@"CKTranscriptMessageCell" hasInstanceMethod:@"failureButton" withFullSignature:{"@", 0}];
 }
 
-- (void)setFailed:(BOOL)a3
+- (void)setFailed:(BOOL)failed
 {
   v6.receiver = self;
   v6.super_class = CKTranscriptMessageCellAccessibility;
-  [(CKTranscriptMessageCellAccessibility *)&v6 setFailed:a3];
+  [(CKTranscriptMessageCellAccessibility *)&v6 setFailed:failed];
   v4 = [(CKTranscriptMessageCellAccessibility *)self safeValueForKey:@"failureButton"];
   v5 = accessibilityLocalizedString(@"failure.button.text");
   [v4 setAccessibilityLabel:v5];

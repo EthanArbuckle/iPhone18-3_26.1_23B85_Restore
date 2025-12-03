@@ -1,10 +1,10 @@
 @interface CPMTrialManager
 + (id)sharedInstance;
-- (BOOL)didTrialEnd:(id)a3;
-- (BOOL)didTrialStart:(id)a3;
-- (BOOL)didTrialUpdate:(id)a3;
+- (BOOL)didTrialEnd:(id)end;
+- (BOOL)didTrialStart:(id)start;
+- (BOOL)didTrialUpdate:(id)update;
 - (CPMTrialManager)init;
-- (void)addDelegate:(id)a3;
+- (void)addDelegate:(id)delegate;
 - (void)updateFactors;
 @end
 
@@ -64,34 +64,34 @@
   return v3;
 }
 
-- (BOOL)didTrialStart:(id)a3
+- (BOOL)didTrialStart:(id)start
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  startCopy = start;
+  v5 = startCopy;
+  if (!startCopy)
   {
 LABEL_4:
-    LOBYTE(v6) = 0;
+    LOBYTE(experimentId) = 0;
     goto LABEL_6;
   }
 
-  v6 = [v4 experimentId];
-  if (v6)
+  experimentId = [startCopy experimentId];
+  if (experimentId)
   {
-    v7 = [(CPMTrialManager *)self experimentActive];
+    experimentActive = [(CPMTrialManager *)self experimentActive];
 
-    if ((v7 & 1) == 0)
+    if ((experimentActive & 1) == 0)
     {
-      v8 = [v5 treatmentId];
+      treatmentId = [v5 treatmentId];
       treatmentID = self->_treatmentID;
-      self->_treatmentID = v8;
+      self->_treatmentID = treatmentId;
 
-      v10 = [v5 experimentId];
+      experimentId2 = [v5 experimentId];
       experimentID = self->_experimentID;
-      self->_experimentID = v10;
+      self->_experimentID = experimentId2;
 
       self->_deploymentID = [v5 deploymentId];
-      LOBYTE(v6) = 1;
+      LOBYTE(experimentId) = 1;
       [(CPMTrialManager *)self setExperimentActive:1];
       goto LABEL_6;
     }
@@ -101,45 +101,45 @@ LABEL_4:
 
 LABEL_6:
 
-  return v6;
+  return experimentId;
 }
 
-- (BOOL)didTrialEnd:(id)a3
+- (BOOL)didTrialEnd:(id)end
 {
-  if (a3)
+  if (end)
   {
-    LOBYTE(v3) = 0;
+    LOBYTE(experimentActive) = 0;
   }
 
   else
   {
-    v3 = [(CPMTrialManager *)self experimentActive];
-    if (v3)
+    experimentActive = [(CPMTrialManager *)self experimentActive];
+    if (experimentActive)
     {
       [(CPMTrialManager *)self setExperimentActive:0];
       [(CPMTrialManager *)self setExperimentID:0];
       [(CPMTrialManager *)self setTreatmentID:0];
       [(CPMTrialManager *)self setDeploymentID:0];
-      LOBYTE(v3) = 1;
+      LOBYTE(experimentActive) = 1;
     }
   }
 
-  return v3;
+  return experimentActive;
 }
 
-- (BOOL)didTrialUpdate:(id)a3
+- (BOOL)didTrialUpdate:(id)update
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && ([v4 experimentId], v6 = objc_claimAutoreleasedReturnValue(), v6, v6) && -[CPMTrialManager experimentActive](self, "experimentActive"))
+  updateCopy = update;
+  v5 = updateCopy;
+  if (updateCopy && ([updateCopy experimentId], v6 = objc_claimAutoreleasedReturnValue(), v6, v6) && -[CPMTrialManager experimentActive](self, "experimentActive"))
   {
-    v7 = [v5 treatmentId];
+    treatmentId = [v5 treatmentId];
     treatmentID = self->_treatmentID;
-    self->_treatmentID = v7;
+    self->_treatmentID = treatmentId;
 
-    v9 = [v5 experimentId];
+    experimentId = [v5 experimentId];
     experimentID = self->_experimentID;
-    self->_experimentID = v9;
+    self->_experimentID = experimentId;
 
     self->_deploymentID = [v5 deploymentId];
     v11 = 1;
@@ -155,11 +155,11 @@ LABEL_6:
 
 - (void)updateFactors
 {
-  v3 = [(CPMTrialManager *)self trialClient];
-  [v3 refresh];
+  trialClient = [(CPMTrialManager *)self trialClient];
+  [trialClient refresh];
 
-  v4 = [(CPMTrialManager *)self trialClient];
-  v5 = [v4 experimentIdentifiersWithNamespaceName:self->_namespace];
+  trialClient2 = [(CPMTrialManager *)self trialClient];
+  v5 = [trialClient2 experimentIdentifiersWithNamespaceName:self->_namespace];
 
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
@@ -215,8 +215,8 @@ LABEL_13:
     v30 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v20 = [(CPMTrialManager *)self delegates];
-    v21 = [v20 countByEnumeratingWithState:&v27 objects:v31 count:16];
+    delegates = [(CPMTrialManager *)self delegates];
+    v21 = [delegates countByEnumeratingWithState:&v27 objects:v31 count:16];
     if (v21)
     {
       v22 = v21;
@@ -227,7 +227,7 @@ LABEL_13:
         {
           if (*v28 != v23)
           {
-            objc_enumerationMutation(v20);
+            objc_enumerationMutation(delegates);
           }
 
           v25 = *(*(&v27 + 1) + 8 * i);
@@ -241,7 +241,7 @@ LABEL_13:
           [v25 cpmTrialManager:self hasUpdatedParametersForNamespace:self->_namespace];
         }
 
-        v22 = [v20 countByEnumeratingWithState:&v27 objects:v31 count:16];
+        v22 = [delegates countByEnumeratingWithState:&v27 objects:v31 count:16];
       }
 
       while (v22);
@@ -282,20 +282,20 @@ LABEL_13:
 LABEL_23:
 }
 
-- (void)addDelegate:(id)a3
+- (void)addDelegate:(id)delegate
 {
-  v4 = a3;
-  if (v4)
+  delegateCopy = delegate;
+  if (delegateCopy)
   {
-    v7 = v4;
-    v5 = [(CPMTrialManager *)self delegates];
-    objc_sync_enter(v5);
-    v6 = [(CPMTrialManager *)self delegates];
-    [v6 addObject:v7];
+    v7 = delegateCopy;
+    delegates = [(CPMTrialManager *)self delegates];
+    objc_sync_enter(delegates);
+    delegates2 = [(CPMTrialManager *)self delegates];
+    [delegates2 addObject:v7];
 
-    objc_sync_exit(v5);
+    objc_sync_exit(delegates);
     [(CPMTrialManager *)self updateFactors];
-    v4 = v7;
+    delegateCopy = v7;
   }
 }
 

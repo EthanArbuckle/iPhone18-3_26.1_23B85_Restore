@@ -1,5 +1,5 @@
 @interface ETPaletteCircleViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (CGRect)_accessibilityBounds;
 - (id)accessibilityHint;
 - (id)accessibilityLabel;
@@ -8,12 +8,12 @@
 
 @implementation ETPaletteCircleViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"ETPaletteCircleView"];
-  [v3 validateClass:@"ETPaletteCircleView" hasInstanceMethod:@"isSelected" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"ETPaletteCircleView" isKindOfClass:@"UIView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"ETPaletteCircleView"];
+  [validationsCopy validateClass:@"ETPaletteCircleView" hasInstanceMethod:@"isSelected" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"ETPaletteCircleView" isKindOfClass:@"UIView"];
 }
 
 - (unint64_t)accessibilityTraits
@@ -30,8 +30,8 @@
 
 - (id)accessibilityLabel
 {
-  v2 = [(ETPaletteCircleViewAccessibility *)self backgroundColor];
-  v3 = [v2 safeValueForKey:@"_accessibilityColorDescription"];
+  backgroundColor = [(ETPaletteCircleViewAccessibility *)self backgroundColor];
+  v3 = [backgroundColor safeValueForKey:@"_accessibilityColorDescription"];
 
   return v3;
 }
@@ -40,20 +40,20 @@
 {
   v8.receiver = self;
   v8.super_class = ETPaletteCircleViewAccessibility;
-  v3 = [(ETPaletteCircleViewAccessibility *)&v8 accessibilityHint];
-  if (v3)
+  accessibilityHint = [(ETPaletteCircleViewAccessibility *)&v8 accessibilityHint];
+  if (accessibilityHint)
   {
     v7.receiver = self;
     v7.super_class = ETPaletteCircleViewAccessibility;
-    v4 = [(ETPaletteCircleViewAccessibility *)&v7 accessibilityHint];
+    accessibilityHint2 = [(ETPaletteCircleViewAccessibility *)&v7 accessibilityHint];
   }
 
   else
   {
-    v4 = accessibilityLocalizedString(@"pallete.circle.hint");
+    accessibilityHint2 = accessibilityLocalizedString(@"pallete.circle.hint");
   }
 
-  v5 = v4;
+  v5 = accessibilityHint2;
 
   return v5;
 }

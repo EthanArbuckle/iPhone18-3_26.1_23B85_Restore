@@ -1,18 +1,18 @@
 @interface CCDataResourceWriter
-+ (BOOL)incrementRowsModified:(unint64_t)a3 database:(id)a4;
++ (BOOL)incrementRowsModified:(unint64_t)modified database:(id)database;
 - (BOOL)_cleanupDatabaseIfRequired;
-- (BOOL)_createDatabaseWithLocalDeviceSite:(id)a3;
-- (BOOL)_didCompleteMaintenance:(id *)a3 shouldDefer:(id)a4;
-- (BOOL)_executeDatabaseTransactionUsingBlock:(id)a3;
-- (BOOL)_removeResource:(id *)a3;
-- (BOOL)_tombstoneResource:(id *)a3;
-- (BOOL)initializeDatabaseWithLocalDeviceSite:(id)a3;
-- (BOOL)performMaintenance:(id *)a3 shouldDefer:(id)a4;
-- (BOOL)removeResource:(id *)a3;
-- (BOOL)submitDatabaseTransactionUsingBlock:(id)a3;
-- (CCDataResourceWriter)initWithDataResource:(id)a3 accessAssertion:(id)a4;
-- (id)_loadDatabase:(id *)a3;
-- (id)_temporaryDirectoryURLWithError:(id *)a3;
+- (BOOL)_createDatabaseWithLocalDeviceSite:(id)site;
+- (BOOL)_didCompleteMaintenance:(id *)maintenance shouldDefer:(id)defer;
+- (BOOL)_executeDatabaseTransactionUsingBlock:(id)block;
+- (BOOL)_removeResource:(id *)resource;
+- (BOOL)_tombstoneResource:(id *)resource;
+- (BOOL)initializeDatabaseWithLocalDeviceSite:(id)site;
+- (BOOL)performMaintenance:(id *)maintenance shouldDefer:(id)defer;
+- (BOOL)removeResource:(id *)resource;
+- (BOOL)submitDatabaseTransactionUsingBlock:(id)block;
+- (CCDataResourceWriter)initWithDataResource:(id)resource accessAssertion:(id)assertion;
+- (id)_loadDatabase:(id *)database;
+- (id)_temporaryDirectoryURLWithError:(id *)error;
 - (id)description;
 - (void)_cleanupDatabaseIfRequired;
 @end
@@ -30,18 +30,18 @@
   return v5;
 }
 
-- (CCDataResourceWriter)initWithDataResource:(id)a3 accessAssertion:(id)a4
+- (CCDataResourceWriter)initWithDataResource:(id)resource accessAssertion:(id)assertion
 {
-  v7 = a3;
-  v8 = a4;
+  resourceCopy = resource;
+  assertionCopy = assertion;
   v17.receiver = self;
   v17.super_class = CCDataResourceWriter;
   v9 = [(CCDataResourceWriter *)&v17 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_dataResource, a3);
-    objc_storeStrong(&v10->_accessAssertion, a4);
+    objc_storeStrong(&v9->_dataResource, resource);
+    objc_storeStrong(&v10->_accessAssertion, assertion);
     v11 = [(CCDataResourceWriter *)v10 description];
     v12 = [v11 cStringUsingEncoding:4];
     v13 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
@@ -53,9 +53,9 @@
   return v10;
 }
 
-- (BOOL)initializeDatabaseWithLocalDeviceSite:(id)a3
+- (BOOL)initializeDatabaseWithLocalDeviceSite:(id)site
 {
-  v4 = a3;
+  siteCopy = site;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -65,10 +65,10 @@
   block[1] = 3221225472;
   block[2] = __62__CCDataResourceWriter_initializeDatabaseWithLocalDeviceSite___block_invoke;
   block[3] = &unk_1E7C8B9D0;
-  v9 = v4;
+  v9 = siteCopy;
   v10 = &v11;
   block[4] = self;
-  v6 = v4;
+  v6 = siteCopy;
   dispatch_sync(queue, block);
   LOBYTE(queue) = *(v12 + 24);
 
@@ -83,7 +83,7 @@ uint64_t __62__CCDataResourceWriter_initializeDatabaseWithLocalDeviceSite___bloc
   return result;
 }
 
-- (BOOL)removeResource:(id *)a3
+- (BOOL)removeResource:(id *)resource
 {
   v15 = 0;
   v16 = &v15;
@@ -107,7 +107,7 @@ uint64_t __62__CCDataResourceWriter_initializeDatabaseWithLocalDeviceSite___bloc
   v5 = v10[5];
   if (v5)
   {
-    CCSetError(a3, v5);
+    CCSetError(resource, v5);
   }
 
   v6 = *(v16 + 24);
@@ -127,9 +127,9 @@ void __39__CCDataResourceWriter_removeResource___block_invoke(void *a1)
   *(*(a1[5] + 8) + 24) = v4;
 }
 
-- (BOOL)submitDatabaseTransactionUsingBlock:(id)a3
+- (BOOL)submitDatabaseTransactionUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -139,10 +139,10 @@ void __39__CCDataResourceWriter_removeResource___block_invoke(void *a1)
   block[1] = 3221225472;
   block[2] = __60__CCDataResourceWriter_submitDatabaseTransactionUsingBlock___block_invoke;
   block[3] = &unk_1E7C8BA20;
-  v9 = v4;
+  v9 = blockCopy;
   v10 = &v11;
   block[4] = self;
-  v6 = v4;
+  v6 = blockCopy;
   dispatch_sync(queue, block);
   LOBYTE(queue) = *(v12 + 24);
 
@@ -157,9 +157,9 @@ uint64_t __60__CCDataResourceWriter_submitDatabaseTransactionUsingBlock___block_
   return result;
 }
 
-- (BOOL)performMaintenance:(id *)a3 shouldDefer:(id)a4
+- (BOOL)performMaintenance:(id *)maintenance shouldDefer:(id)defer
 {
-  v6 = a4;
+  deferCopy = defer;
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
@@ -178,12 +178,12 @@ uint64_t __60__CCDataResourceWriter_submitDatabaseTransactionUsingBlock___block_
   v13 = &v21;
   v14 = &v15;
   v11[4] = self;
-  v8 = v6;
+  v8 = deferCopy;
   v12 = v8;
   dispatch_sync(queue, v11);
-  if (a3)
+  if (maintenance)
   {
-    *a3 = v16[5];
+    *maintenance = v16[5];
   }
 
   v9 = *(v22 + 24);
@@ -203,7 +203,7 @@ void __55__CCDataResourceWriter_performMaintenance_shouldDefer___block_invoke(ui
   *(*(*(a1 + 48) + 8) + 24) = v3;
 }
 
-- (id)_temporaryDirectoryURLWithError:(id *)a3
+- (id)_temporaryDirectoryURLWithError:(id *)error
 {
   p_dataResource = &self->_dataResource;
   dataResource = self->_dataResource;
@@ -229,13 +229,13 @@ void __55__CCDataResourceWriter_performMaintenance_shouldDefer___block_invoke(ui
     if (v13)
     {
       v14 = MEMORY[0x1E698E9C8];
-      v15 = [(CCDataResource *)*p_dataResource container];
-      v16 = [v14 biomeTemporaryDirectoryForContainer:v15];
+      container = [(CCDataResource *)*p_dataResource container];
+      v16 = [v14 biomeTemporaryDirectoryForContainer:container];
 
       v17 = objc_alloc(MEMORY[0x1E696AEC0]);
       v18 = objc_opt_new();
-      v19 = [v18 UUIDString];
-      v20 = [v17 initWithFormat:@"%@-%@-%@", @".tmp.", v13, v19];
+      uUIDString = [v18 UUIDString];
+      v20 = [v17 initWithFormat:@"%@-%@-%@", @".tmp.", v13, uUIDString];
 
       v21 = [v16 stringByAppendingPathComponent:v20];
       v11 = [MEMORY[0x1E695DFF8] fileURLWithPath:v21];
@@ -261,17 +261,17 @@ void __55__CCDataResourceWriter_performMaintenance_shouldDefer___block_invoke(ui
       [CCDataResourceWriter _temporaryDirectoryURLWithError:?];
     }
 
-    CCSetError(a3, v8);
+    CCSetError(error, v8);
     v11 = 0;
   }
 
   return v11;
 }
 
-- (BOOL)_createDatabaseWithLocalDeviceSite:(id)a3
+- (BOOL)_createDatabaseWithLocalDeviceSite:(id)site
 {
   v52 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  siteCopy = site;
   dispatch_assert_queue_V2(self->_queue);
   v47 = 0;
   v5 = [(CCDataResourceWriter *)self _temporaryDirectoryURLWithError:&v47];
@@ -284,11 +284,11 @@ void __55__CCDataResourceWriter_performMaintenance_shouldDefer___block_invoke(ui
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       dataResource = self->_dataResource;
-      v11 = [v8 path];
+      path = [v8 path];
       *buf = 138412546;
       v49 = dataResource;
       v50 = 2112;
-      v51 = v11;
+      v51 = path;
       _os_log_impl(&dword_1B6DB2000, v9, OS_LOG_TYPE_DEFAULT, "(%@) Creating database in temporary path: %@", buf, 0x16u);
     }
 
@@ -323,7 +323,7 @@ void __55__CCDataResourceWriter_performMaintenance_shouldDefer___block_invoke(ui
       if (v17)
       {
         v18 = [CCDatabaseUpdater updaterForDatabase:v12];
-        if (([v18 registerLocalDeviceSite:v4]& 1) != 0)
+        if (([v18 registerLocalDeviceSite:siteCopy]& 1) != 0)
         {
           v43 = v7;
           v19 = [v12 commitTransactionWithError:&v43];
@@ -346,27 +346,27 @@ void __55__CCDataResourceWriter_performMaintenance_shouldDefer___block_invoke(ui
 
           if (v21)
           {
-            v22 = [MEMORY[0x1E696AC08] defaultManager];
+            defaultManager = [MEMORY[0x1E696AC08] defaultManager];
             v24 = self->_dataResource;
             p_dataResource = &self->_dataResource;
-            v25 = [(CCDataResource *)v24 resourceDirectoryURL];
-            v26 = [v25 path];
-            LODWORD(v39) = [v22 fileExistsAtPath:v26];
+            resourceDirectoryURL = [(CCDataResource *)v24 resourceDirectoryURL];
+            path2 = [resourceDirectoryURL path];
+            LODWORD(v39) = [defaultManager fileExistsAtPath:path2];
 
             if (v39)
             {
 LABEL_14:
-              v29 = [v5 path];
-              v40 = [v29 cStringUsingEncoding:4];
+              path3 = [v5 path];
+              v40 = [path3 cStringUsingEncoding:4];
 
-              v30 = [(CCDataResource *)*p_dataResource databaseDirectoryURL];
-              v31 = [v30 path];
-              v32 = [v31 cStringUsingEncoding:4];
+              databaseDirectoryURL = [(CCDataResource *)*p_dataResource databaseDirectoryURL];
+              path4 = [databaseDirectoryURL path];
+              v32 = [path4 cStringUsingEncoding:4];
 
-              LODWORD(v31) = renamex_np(v40, v32, 4u);
+              LODWORD(path4) = renamex_np(v40, v32, 4u);
               v33 = __biome_log_for_category();
               v34 = v33;
-              if (!v31)
+              if (!path4)
               {
                 if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
                 {
@@ -390,10 +390,10 @@ LABEL_14:
               goto LABEL_30;
             }
 
-            v27 = [MEMORY[0x1E696AC08] defaultManager];
-            v28 = [(CCDataResource *)*p_dataResource resourceDirectoryURL];
+            defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+            resourceDirectoryURL2 = [(CCDataResource *)*p_dataResource resourceDirectoryURL];
             v41 = v7;
-            LODWORD(v39) = [v27 createDirectoryAtURL:v28 withIntermediateDirectories:1 attributes:0 error:&v41];
+            LODWORD(v39) = [defaultManager2 createDirectoryAtURL:resourceDirectoryURL2 withIntermediateDirectories:1 attributes:0 error:&v41];
             v20 = v41;
 
             if (v39)
@@ -472,7 +472,7 @@ LABEL_36:
   return v35;
 }
 
-- (BOOL)_removeResource:(id *)a3
+- (BOOL)_removeResource:(id *)resource
 {
   v28 = *MEMORY[0x1E69E9840];
   v23 = 0;
@@ -481,7 +481,7 @@ LABEL_36:
   v7 = v6;
   if (!v5 || v6)
   {
-    CCSetError(a3, v6);
+    CCSetError(resource, v6);
     v15 = __biome_log_for_category();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
@@ -491,17 +491,17 @@ LABEL_36:
     goto LABEL_9;
   }
 
-  v8 = [v5 path];
-  v9 = [v8 cStringUsingEncoding:4];
+  path = [v5 path];
+  v9 = [path cStringUsingEncoding:4];
 
-  v10 = [(CCDataResource *)self->_dataResource databaseDirectoryURL];
-  v11 = [v10 path];
-  v12 = [v11 cStringUsingEncoding:4];
+  databaseDirectoryURL = [(CCDataResource *)self->_dataResource databaseDirectoryURL];
+  path2 = [databaseDirectoryURL path];
+  v12 = [path2 cStringUsingEncoding:4];
 
-  LODWORD(v11) = renamex_np(v12, v9, 4u);
+  LODWORD(path2) = renamex_np(v12, v9, 4u);
   v13 = __biome_log_for_category();
   v14 = v13;
-  if (v11)
+  if (path2)
   {
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
@@ -509,7 +509,7 @@ LABEL_36:
     }
 
     v15 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:*__error() userInfo:0];
-    CCSetError(a3, v15);
+    CCSetError(resource, v15);
     v7 = 0;
 LABEL_9:
     v16 = 0;
@@ -525,9 +525,9 @@ LABEL_9:
     _os_log_impl(&dword_1B6DB2000, v14, OS_LOG_TYPE_DEFAULT, "Successfully renamed directory at path %s into %s", buf, 0x16u);
   }
 
-  v19 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v22 = 0;
-  v20 = [v19 removeItemAtURL:v5 error:&v22];
+  v20 = [defaultManager removeItemAtURL:v5 error:&v22];
   v7 = v22;
 
   v21 = __biome_log_for_category();
@@ -554,24 +554,24 @@ LABEL_10:
   return v16;
 }
 
-- (BOOL)_tombstoneResource:(id *)a3
+- (BOOL)_tombstoneResource:(id *)resource
 {
   dataResource = self->_dataResource;
   v5 = objc_opt_new();
-  LOBYTE(a3) = [(CCDataResource *)dataResource markTombstoned:v5 error:a3];
+  LOBYTE(resource) = [(CCDataResource *)dataResource markTombstoned:v5 error:resource];
 
-  return a3;
+  return resource;
 }
 
-- (id)_loadDatabase:(id *)a3
+- (id)_loadDatabase:(id *)database
 {
   dispatch_assert_queue_V2(self->_queue);
-  if ([(CCDataResource *)self->_dataResource databaseFileExists:a3])
+  if ([(CCDataResource *)self->_dataResource databaseFileExists:database])
   {
-    v5 = [(CCDataResource *)self->_dataResource databaseURL];
-    v6 = +[CCDatabaseConnection connectionToDatabaseAtURL:dataProtectionClass:openMode:accessAssertion:](CCDatabaseConnection, "connectionToDatabaseAtURL:dataProtectionClass:openMode:accessAssertion:", v5, [objc_opt_class() defaultDataProtectionClass], 2, self->_accessAssertion);
+    databaseURL = [(CCDataResource *)self->_dataResource databaseURL];
+    v6 = +[CCDatabaseConnection connectionToDatabaseAtURL:dataProtectionClass:openMode:accessAssertion:](CCDatabaseConnection, "connectionToDatabaseAtURL:dataProtectionClass:openMode:accessAssertion:", databaseURL, [objc_opt_class() defaultDataProtectionClass], 2, self->_accessAssertion);
 
-    if ([v6 openWithError:a3])
+    if ([v6 openWithError:database])
     {
       v7 = v6;
     }
@@ -590,10 +590,10 @@ LABEL_10:
   return v7;
 }
 
-- (BOOL)_executeDatabaseTransactionUsingBlock:(id)a3
+- (BOOL)_executeDatabaseTransactionUsingBlock:(id)block
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   dispatch_assert_queue_V2(self->_queue);
   v25 = 0;
   v5 = [(CCDataResourceWriter *)self _loadDatabase:&v25];
@@ -619,7 +619,7 @@ LABEL_17:
   if (v8)
   {
     v23 = 0;
-    if (v4[2](v4, v5, &v23) && [objc_opt_class() incrementRowsModified:v23 database:v5])
+    if (blockCopy[2](blockCopy, v5, &v23) && [objc_opt_class() incrementRowsModified:v23 database:v5])
     {
       v22 = v9;
       v10 = [v5 commitTransactionWithError:&v22];
@@ -712,14 +712,14 @@ LABEL_22:
       goto LABEL_26;
     }
 
-    v9 = [v5 unsignedIntegerValue];
+    unsignedIntegerValue = [v5 unsignedIntegerValue];
     v10 = __biome_log_for_category();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       dataResource = self->_dataResource;
       v12 = @"not ";
       *buf = 138412802;
-      if (v9 > 0x3E8)
+      if (unsignedIntegerValue > 0x3E8)
       {
         v12 = &stru_1F2EBB700;
       }
@@ -732,7 +732,7 @@ LABEL_22:
       _os_log_impl(&dword_1B6DB2000, v10, OS_LOG_TYPE_DEFAULT, "(%@) Database cleanup is %@ required. %@ rows have been modified since last cleanup", buf, 0x20u);
     }
 
-    if (v9 < 0x3E9)
+    if (unsignedIntegerValue < 0x3E9)
     {
       v16 = 0;
     }
@@ -811,10 +811,10 @@ LABEL_28:
   return v8;
 }
 
-- (BOOL)_didCompleteMaintenance:(id *)a3 shouldDefer:(id)a4
+- (BOOL)_didCompleteMaintenance:(id *)maintenance shouldDefer:(id)defer
 {
   v43 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  deferCopy = defer;
   dispatch_assert_queue_V2(self->_queue);
   p_dataResource = &self->_dataResource;
   dataResource = self->_dataResource;
@@ -841,7 +841,7 @@ LABEL_28:
     v35[1] = 3221225472;
     v35[2] = __60__CCDataResourceWriter__didCompleteMaintenance_shouldDefer___block_invoke;
     v35[3] = &unk_1E7C8BA70;
-    v14 = v6;
+    v14 = deferCopy;
     v36 = v14;
     v37 = buf;
     if (![(CCDataResourceWriter *)self _executeDatabaseTransactionUsingBlock:v35])
@@ -933,7 +933,7 @@ LABEL_30:
 
     else
     {
-      if (!a3)
+      if (!maintenance)
       {
 LABEL_36:
         v15 = __biome_log_for_category();
@@ -965,7 +965,7 @@ LABEL_36:
       }
 
       v30 = v29;
-      *a3 = v29;
+      *maintenance = v29;
     }
 
     goto LABEL_36;
@@ -1025,11 +1025,11 @@ BOOL __60__CCDataResourceWriter__didCompleteMaintenance_shouldDefer___block_invo
   return v4;
 }
 
-+ (BOOL)incrementRowsModified:(unint64_t)a3 database:(id)a4
++ (BOOL)incrementRowsModified:(unint64_t)modified database:(id)database
 {
-  v5 = a4;
+  databaseCopy = database;
   v15 = 0;
-  v6 = [CCDatabaseUpdater selectRowsModifiedCountInDatabase:v5 error:&v15];
+  v6 = [CCDatabaseUpdater selectRowsModifiedCountInDatabase:databaseCopy error:&v15];
   v7 = v15;
   v8 = &unk_1F2EC9408;
   if (v6)
@@ -1054,7 +1054,7 @@ LABEL_10:
   }
 
   v14 = 0;
-  v11 = +[CCDatabaseUpdater upsertRowsModified:database:error:](CCDatabaseUpdater, "upsertRowsModified:database:error:", [v9 unsignedIntegerValue] + a3, v5, &v14);
+  v11 = +[CCDatabaseUpdater upsertRowsModified:database:error:](CCDatabaseUpdater, "upsertRowsModified:database:error:", [v9 unsignedIntegerValue] + modified, databaseCopy, &v14);
   v7 = v14;
   if (!v11)
   {
@@ -1212,7 +1212,7 @@ LABEL_11:
 
 - (void)_cleanupDatabaseIfRequired
 {
-  OUTLINED_FUNCTION_5_0(a1, *MEMORY[0x1E69E9840]);
+  OUTLINED_FUNCTION_5_0(self, *MEMORY[0x1E69E9840]);
   OUTLINED_FUNCTION_0_5();
   OUTLINED_FUNCTION_0_3(&dword_1B6DB2000, v1, v2, "(%@) Failed to reset rows modified in database: %@");
   v3 = *MEMORY[0x1E69E9840];

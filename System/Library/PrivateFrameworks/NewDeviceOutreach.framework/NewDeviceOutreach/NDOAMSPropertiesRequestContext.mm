@@ -1,8 +1,8 @@
 @interface NDOAMSPropertiesRequestContext
 - (NDOAMSPropertiesRequestContext)init;
-- (NDOAMSPropertiesRequestContext)initWithRequestType:(unint64_t)a3 serialNumber:(id)a4 universalLinkPath:(id)a5 additionalBody:(id)a6;
+- (NDOAMSPropertiesRequestContext)initWithRequestType:(unint64_t)type serialNumber:(id)number universalLinkPath:(id)path additionalBody:(id)body;
 - (NSDictionary)additionalBody;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NDOAMSPropertiesRequestContext
@@ -16,14 +16,14 @@
   return v3;
 }
 
-- (NDOAMSPropertiesRequestContext)initWithRequestType:(unint64_t)a3 serialNumber:(id)a4 universalLinkPath:(id)a5 additionalBody:(id)a6
+- (NDOAMSPropertiesRequestContext)initWithRequestType:(unint64_t)type serialNumber:(id)number universalLinkPath:(id)path additionalBody:(id)body
 {
-  v6 = a5;
-  if (!a4)
+  pathCopy = path;
+  if (!number)
   {
     v9 = 0;
     v11 = 0;
-    if (a5)
+    if (path)
     {
       goto LABEL_3;
     }
@@ -35,22 +35,22 @@ LABEL_5:
 
   v9 = sub_25BD797B8();
   v11 = v10;
-  if (!v6)
+  if (!pathCopy)
   {
     goto LABEL_5;
   }
 
 LABEL_3:
-  v6 = sub_25BD797B8();
+  pathCopy = sub_25BD797B8();
   v13 = v12;
 LABEL_6:
   v14 = sub_25BD79778();
-  *(self + OBJC_IVAR___NDOAMSPropertiesRequestContext_requestType) = a3;
+  *(self + OBJC_IVAR___NDOAMSPropertiesRequestContext_requestType) = type;
   v15 = (self + OBJC_IVAR___NDOAMSPropertiesRequestContext_serialNumber);
   *v15 = v9;
   v15[1] = v11;
   v16 = (self + OBJC_IVAR___NDOAMSPropertiesRequestContext_universalLinkPath);
-  *v16 = v6;
+  *v16 = pathCopy;
   v16[1] = v13;
   *(self + OBJC_IVAR___NDOAMSPropertiesRequestContext_additionalBody) = v14;
   v18.receiver = self;
@@ -58,11 +58,11 @@ LABEL_6:
   return [(NDOAMSPropertiesRequestContext *)&v18 init];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  NDOAMSPropertiesRequestContext.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  NDOAMSPropertiesRequestContext.encode(with:)(coderCopy);
 }
 
 - (NDOAMSPropertiesRequestContext)init

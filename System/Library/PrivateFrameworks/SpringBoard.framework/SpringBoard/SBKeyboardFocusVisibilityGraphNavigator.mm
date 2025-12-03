@@ -1,51 +1,51 @@
 @interface SBKeyboardFocusVisibilityGraphNavigator
-- (id)_ancestorPathForTargetEnvironment:(uint64_t)a3 orTargetPid:(void *)a4 withinEndowmentTree:(void *)a5 root:(void *)a6 visitedLinks:;
-- (void)_reverseEnumerateChainContainingSceneIdentityToken:(uint64_t)a3 orSceneFromProcessID:(void *)a4 block:;
+- (id)_ancestorPathForTargetEnvironment:(uint64_t)environment orTargetPid:(void *)pid withinEndowmentTree:(void *)tree root:(void *)root visitedLinks:;
+- (void)_reverseEnumerateChainContainingSceneIdentityToken:(uint64_t)token orSceneFromProcessID:(void *)d block:;
 @end
 
 @implementation SBKeyboardFocusVisibilityGraphNavigator
 
-- (id)_ancestorPathForTargetEnvironment:(uint64_t)a3 orTargetPid:(void *)a4 withinEndowmentTree:(void *)a5 root:(void *)a6 visitedLinks:
+- (id)_ancestorPathForTargetEnvironment:(uint64_t)environment orTargetPid:(void *)pid withinEndowmentTree:(void *)tree root:(void *)root visitedLinks:
 {
   v38 = *MEMORY[0x277D85DE8];
   v11 = a2;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = v14;
-  if (!a1)
+  pidCopy = pid;
+  treeCopy = tree;
+  rootCopy = root;
+  v15 = rootCopy;
+  if (!self)
   {
     goto LABEL_6;
   }
 
-  if (!v14)
+  if (!rootCopy)
   {
-    [SBKeyboardFocusVisibilityGraphNavigator _ancestorPathForTargetEnvironment:a1 orTargetPid:? withinEndowmentTree:? root:? visitedLinks:?];
+    [SBKeyboardFocusVisibilityGraphNavigator _ancestorPathForTargetEnvironment:self orTargetPid:? withinEndowmentTree:? root:? visitedLinks:?];
   }
 
   if (v11)
   {
-    v16 = [v13 targetEnvironment];
-    v17 = [v16 isEqualToString:v11];
+    targetEnvironment = [treeCopy targetEnvironment];
+    v17 = [targetEnvironment isEqualToString:v11];
 
     if (v17)
     {
 LABEL_5:
-      a1 = MEMORY[0x277CBEBF8];
+      self = MEMORY[0x277CBEBF8];
 LABEL_6:
       v18 = v15;
       goto LABEL_25;
     }
   }
 
-  else if (a3)
+  else if (environment)
   {
-    v19 = [v13 targetEnvironment];
-    if ([v19 hasPrefix:@"UIScene:"])
+    targetEnvironment2 = [treeCopy targetEnvironment];
+    if ([targetEnvironment2 hasPrefix:@"UIScene:"])
     {
-      v20 = [v13 targetPid];
+      targetPid = [treeCopy targetPid];
 
-      if (v20 == a3)
+      if (targetPid == environment)
       {
         goto LABEL_5;
       }
@@ -56,18 +56,18 @@ LABEL_6:
     }
   }
 
-  v18 = [v15 setByAddingObject:v13];
+  v18 = [v15 setByAddingObject:treeCopy];
 
   v34 = 0u;
   v35 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v21 = [v12 childrenLinks:v13];
+  v21 = [pidCopy childrenLinks:treeCopy];
   v22 = [v21 countByEnumeratingWithState:&v32 objects:v37 count:16];
   if (v22)
   {
     v23 = v22;
-    v31 = v13;
+    v31 = treeCopy;
     v24 = *v33;
     while (2)
     {
@@ -81,14 +81,14 @@ LABEL_6:
         v26 = *(*(&v32 + 1) + 8 * i);
         if (([v18 containsObject:v26] & 1) == 0)
         {
-          v27 = [(SBKeyboardFocusVisibilityGraphNavigator *)a1 _ancestorPathForTargetEnvironment:v11 orTargetPid:a3 withinEndowmentTree:v12 root:v26 visitedLinks:v18];
+          v27 = [(SBKeyboardFocusVisibilityGraphNavigator *)self _ancestorPathForTargetEnvironment:v11 orTargetPid:environment withinEndowmentTree:pidCopy root:v26 visitedLinks:v18];
           if (v27)
           {
             v28 = v27;
-            v13 = v31;
+            treeCopy = v31;
             v36 = v31;
             v29 = [MEMORY[0x277CBEA60] arrayWithObjects:&v36 count:1];
-            a1 = [v29 arrayByAddingObjectsFromArray:v28];
+            self = [v29 arrayByAddingObjectsFromArray:v28];
 
             goto LABEL_24;
           }
@@ -104,35 +104,35 @@ LABEL_6:
       break;
     }
 
-    a1 = 0;
-    v13 = v31;
+    self = 0;
+    treeCopy = v31;
   }
 
   else
   {
-    a1 = 0;
+    self = 0;
   }
 
 LABEL_24:
 
 LABEL_25:
 
-  return a1;
+  return self;
 }
 
-- (void)_reverseEnumerateChainContainingSceneIdentityToken:(uint64_t)a3 orSceneFromProcessID:(void *)a4 block:
+- (void)_reverseEnumerateChainContainingSceneIdentityToken:(uint64_t)token orSceneFromProcessID:(void *)d block:
 {
   v48 = *MEMORY[0x277D85DE8];
   v7 = a2;
-  v8 = a4;
-  if (a1)
+  dCopy = d;
+  if (self)
   {
     v32 = v7;
     if (v7)
     {
       v9 = MEMORY[0x277CCACA8];
-      v10 = [v7 stringRepresentation];
-      v11 = [v9 stringWithFormat:@"%@%@", @"UIScene:", v10];
+      stringRepresentation = [v7 stringRepresentation];
+      v11 = [v9 stringWithFormat:@"%@%@", @"UIScene:", stringRepresentation];
     }
 
     else
@@ -150,8 +150,8 @@ LABEL_25:
     if (v33)
     {
       v35 = *v43;
-      v28 = a3;
-      v27 = a1;
+      tokenCopy = token;
+      selfCopy = self;
       v30 = v12;
       v31 = v11;
       v29 = v13;
@@ -168,7 +168,7 @@ LABEL_25:
           v36 = v14;
           v15 = *(*(&v42 + 1) + 8 * v14);
           v16 = [MEMORY[0x277CBEB98] set];
-          v17 = [(SBKeyboardFocusVisibilityGraphNavigator *)a1 _ancestorPathForTargetEnvironment:v11 orTargetPid:a3 withinEndowmentTree:v12 root:v15 visitedLinks:v16];
+          v17 = [(SBKeyboardFocusVisibilityGraphNavigator *)self _ancestorPathForTargetEnvironment:v11 orTargetPid:token withinEndowmentTree:v12 root:v15 visitedLinks:v16];
 
           if (v17)
           {
@@ -177,8 +177,8 @@ LABEL_25:
             v38 = 0u;
             v39 = 0u;
             v34 = v17;
-            v18 = [v17 reverseObjectEnumerator];
-            v19 = [v18 countByEnumeratingWithState:&v38 objects:v46 count:16];
+            reverseObjectEnumerator = [v17 reverseObjectEnumerator];
+            v19 = [reverseObjectEnumerator countByEnumeratingWithState:&v38 objects:v46 count:16];
             if (v19)
             {
               v20 = v19;
@@ -189,16 +189,16 @@ LABEL_25:
                 {
                   if (*v39 != v21)
                   {
-                    objc_enumerationMutation(v18);
+                    objc_enumerationMutation(reverseObjectEnumerator);
                   }
 
                   v23 = *(*(&v38 + 1) + 8 * i);
-                  v24 = [v23 targetEnvironment];
-                  if ([v24 hasPrefix:@"UIScene:"])
+                  targetEnvironment = [v23 targetEnvironment];
+                  if ([targetEnvironment hasPrefix:@"UIScene:"])
                   {
-                    v25 = [v24 substringFromIndex:{objc_msgSend(@"UIScene:", "length")}];
+                    v25 = [targetEnvironment substringFromIndex:{objc_msgSend(@"UIScene:", "length")}];
                     v37 = 0;
-                    v8[2](v8, v25, [v23 targetPid], &v37);
+                    dCopy[2](dCopy, v25, [v23 targetPid], &v37);
                     v26 = v37;
 
                     if (v26)
@@ -212,7 +212,7 @@ LABEL_25:
                   }
                 }
 
-                v20 = [v18 countByEnumeratingWithState:&v38 objects:v46 count:16];
+                v20 = [reverseObjectEnumerator countByEnumeratingWithState:&v38 objects:v46 count:16];
                 if (v20)
                 {
                   continue;
@@ -222,8 +222,8 @@ LABEL_25:
               }
             }
 
-            a3 = v28;
-            a1 = v27;
+            token = tokenCopy;
+            self = selfCopy;
             v12 = v30;
             v11 = v31;
             v13 = v29;

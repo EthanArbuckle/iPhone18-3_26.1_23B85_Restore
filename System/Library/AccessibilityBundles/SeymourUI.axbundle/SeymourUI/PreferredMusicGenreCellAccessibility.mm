@@ -1,6 +1,6 @@
 @interface PreferredMusicGenreCellAccessibility
 - (unint64_t)accessibilityTraits;
-- (void)accessibilityApplyState:(BOOL)a3;
+- (void)accessibilityApplyState:(BOOL)state;
 @end
 
 @implementation PreferredMusicGenreCellAccessibility
@@ -12,16 +12,16 @@
   return *MEMORY[0x29EDC7F70] | [(PreferredMusicGenreCellAccessibility *)&v3 accessibilityTraits];
 }
 
-- (void)accessibilityApplyState:(BOOL)a3
+- (void)accessibilityApplyState:(BOOL)state
 {
-  v3 = a3;
+  stateCopy = state;
   v8.receiver = self;
   v8.super_class = PreferredMusicGenreCellAccessibility;
   [(PreferredMusicGenreCellAccessibility *)&v8 accessibilityApplyState:?];
-  if (v3)
+  if (stateCopy)
   {
-    v5 = [(PreferredMusicGenreCellAccessibility *)self accessibilityTraits];
-    v6 = *MEMORY[0x29EDC7FC0] | v5;
+    accessibilityTraits = [(PreferredMusicGenreCellAccessibility *)self accessibilityTraits];
+    v6 = *MEMORY[0x29EDC7FC0] | accessibilityTraits;
   }
 
   else

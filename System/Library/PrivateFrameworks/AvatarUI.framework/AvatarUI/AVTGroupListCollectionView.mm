@@ -1,31 +1,31 @@
 @interface AVTGroupListCollectionView
-- (AVTGroupListCollectionView)initWithGroupItems:(id)a3 environment:(id)a4;
+- (AVTGroupListCollectionView)initWithGroupItems:(id)items environment:(id)environment;
 - (AVTGroupPickerDelegate)delegate;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
-- (void)collectionView:(id)a3 didDeselectItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
+- (void)collectionView:(id)view didDeselectItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
 - (void)layoutSubviews;
 - (void)reloadData;
-- (void)setSelectedGroupIndex:(int64_t)a3 animated:(BOOL)a4;
+- (void)setSelectedGroupIndex:(int64_t)index animated:(BOOL)animated;
 - (void)setupBorder;
 - (void)setupView;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)updateCollectionLayoutItemSize:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
+- (void)updateCollectionLayoutItemSize:(id)size;
 @end
 
 @implementation AVTGroupListCollectionView
 
-- (AVTGroupListCollectionView)initWithGroupItems:(id)a3 environment:(id)a4
+- (AVTGroupListCollectionView)initWithGroupItems:(id)items environment:(id)environment
 {
-  v6 = a3;
+  itemsCopy = items;
   v10.receiver = self;
   v10.super_class = AVTGroupListCollectionView;
   v7 = [(AVTGroupListCollectionView *)&v10 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_groupItems, a3);
+    objc_storeStrong(&v7->_groupItems, items);
     [(AVTGroupListCollectionView *)v8 setupView];
     [(AVTGroupListCollectionView *)v8 setupBorder];
   }
@@ -35,15 +35,15 @@
 
 - (void)setupBorder
 {
-  v3 = [MEMORY[0x1E6979398] layer];
+  layer = [MEMORY[0x1E6979398] layer];
   border = self->_border;
-  self->_border = v3;
+  self->_border = layer;
 
   v5 = +[AVTUIColorRepository separatorColor];
   -[CALayer setBackgroundColor:](self->_border, "setBackgroundColor:", [v5 CGColor]);
 
-  v6 = [(AVTGroupListCollectionView *)self layer];
-  [v6 addSublayer:self->_border];
+  layer2 = [(AVTGroupListCollectionView *)self layer];
+  [layer2 addSublayer:self->_border];
 }
 
 - (void)setupView
@@ -58,8 +58,8 @@
   collectionView = self->_collectionView;
   self->_collectionView = v4;
 
-  v6 = [MEMORY[0x1E69DC888] clearColor];
-  [(UICollectionView *)self->_collectionView setBackgroundColor:v6];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [(UICollectionView *)self->_collectionView setBackgroundColor:clearColor];
 
   [(UICollectionView *)self->_collectionView setDataSource:self];
   [(UICollectionView *)self->_collectionView setDelegate:self];
@@ -78,21 +78,21 @@
   v23.receiver = self;
   v23.super_class = AVTGroupListCollectionView;
   [(AVTGroupListCollectionView *)&v23 layoutSubviews];
-  v3 = [(AVTGroupListCollectionView *)self collectionView];
-  v4 = [v3 collectionViewLayout];
-  [(AVTGroupListCollectionView *)self updateCollectionLayoutItemSize:v4];
+  collectionView = [(AVTGroupListCollectionView *)self collectionView];
+  collectionViewLayout = [collectionView collectionViewLayout];
+  [(AVTGroupListCollectionView *)self updateCollectionLayoutItemSize:collectionViewLayout];
 
   [(AVTGroupListCollectionView *)self bounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [(AVTGroupListCollectionView *)self collectionView];
-  [v13 setFrame:{v6, v8, v10, v12}];
+  collectionView2 = [(AVTGroupListCollectionView *)self collectionView];
+  [collectionView2 setFrame:{v6, v8, v10, v12}];
 
-  v14 = [(AVTGroupListCollectionView *)self traitCollection];
+  traitCollection = [(AVTGroupListCollectionView *)self traitCollection];
   v15 = 0.0;
-  if ([v14 layoutDirection] != 1)
+  if ([traitCollection layoutDirection] != 1)
   {
     [(AVTGroupListCollectionView *)self bounds];
     v17 = v16;
@@ -104,102 +104,102 @@
   v20 = v19;
   [(AVTGroupListCollectionView *)self bounds];
   Height = CGRectGetHeight(v24);
-  v22 = [(AVTGroupListCollectionView *)self border];
-  [v22 setFrame:{v15, 0.0, v20, Height}];
+  border = [(AVTGroupListCollectionView *)self border];
+  [border setFrame:{v15, 0.0, v20, Height}];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v10.receiver = self;
   v10.super_class = AVTGroupListCollectionView;
-  v4 = a3;
-  [(AVTGroupListCollectionView *)&v10 traitCollectionDidChange:v4];
+  changeCopy = change;
+  [(AVTGroupListCollectionView *)&v10 traitCollectionDidChange:changeCopy];
   v5 = [AVTUIColorRepository separatorColor:v10.receiver];
   -[CALayer setBackgroundColor:](self->_border, "setBackgroundColor:", [v5 CGColor]);
 
-  v6 = [v4 userInterfaceStyle];
-  v7 = [(AVTGroupListCollectionView *)self traitCollection];
-  v8 = [v7 userInterfaceStyle];
+  userInterfaceStyle = [changeCopy userInterfaceStyle];
+  traitCollection = [(AVTGroupListCollectionView *)self traitCollection];
+  userInterfaceStyle2 = [traitCollection userInterfaceStyle];
 
-  if (v6 != v8)
+  if (userInterfaceStyle != userInterfaceStyle2)
   {
-    v9 = [(AVTGroupListCollectionView *)self collectionView];
-    [v9 reloadData];
+    collectionView = [(AVTGroupListCollectionView *)self collectionView];
+    [collectionView reloadData];
   }
 }
 
-- (void)updateCollectionLayoutItemSize:(id)a3
+- (void)updateCollectionLayoutItemSize:(id)size
 {
-  v9 = a3;
+  sizeCopy = size;
   [(AVTGroupListCollectionView *)self bounds];
   v5 = v4;
-  [v9 sectionInset];
+  [sizeCopy sectionInset];
   v7 = v6;
-  [v9 sectionInset];
-  [v9 setEstimatedItemSize:{v5 - (v7 + v8), 10.0}];
-  [v9 invalidateLayout];
+  [sizeCopy sectionInset];
+  [sizeCopy setEstimatedItemSize:{v5 - (v7 + v8), 10.0}];
+  [sizeCopy invalidateLayout];
 }
 
 - (void)reloadData
 {
-  v2 = [(AVTGroupListCollectionView *)self collectionView];
-  [v2 reloadData];
+  collectionView = [(AVTGroupListCollectionView *)self collectionView];
+  [collectionView reloadData];
 }
 
-- (void)setSelectedGroupIndex:(int64_t)a3 animated:(BOOL)a4
+- (void)setSelectedGroupIndex:(int64_t)index animated:(BOOL)animated
 {
-  v6 = [MEMORY[0x1E696AC88] indexPathForItem:a3 inSection:0];
-  v5 = [(AVTGroupListCollectionView *)self collectionView];
-  [v5 selectItemAtIndexPath:v6 animated:1 scrollPosition:2];
+  v6 = [MEMORY[0x1E696AC88] indexPathForItem:index inSection:0];
+  collectionView = [(AVTGroupListCollectionView *)self collectionView];
+  [collectionView selectItemAtIndexPath:v6 animated:1 scrollPosition:2];
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
-  v4 = [(AVTGroupListCollectionView *)self groupItems:a3];
+  v4 = [(AVTGroupListCollectionView *)self groupItems:view];
   v5 = [v4 count];
 
   return v5;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
+  pathCopy = path;
+  viewCopy = view;
   v8 = +[AVTGroupListCollectionViewCell cellIdentifier];
-  v9 = [v7 dequeueReusableCellWithReuseIdentifier:v8 forIndexPath:v6];
+  v9 = [viewCopy dequeueReusableCellWithReuseIdentifier:v8 forIndexPath:pathCopy];
 
-  v10 = [(AVTGroupListCollectionView *)self groupItems];
-  v11 = [v6 item];
+  groupItems = [(AVTGroupListCollectionView *)self groupItems];
+  item = [pathCopy item];
 
-  v12 = [v10 objectAtIndexedSubscript:v11];
+  v12 = [groupItems objectAtIndexedSubscript:item];
 
-  v13 = [v12 localizedName];
-  [v9 setTitle:v13];
+  localizedName = [v12 localizedName];
+  [v9 setTitle:localizedName];
 
-  v14 = [v12 symbolNameProvider];
-  v15 = [(AVTGroupListCollectionView *)self traitCollection];
-  v16 = v14[2](v14, [v15 userInterfaceStyle]);
+  symbolNameProvider = [v12 symbolNameProvider];
+  traitCollection = [(AVTGroupListCollectionView *)self traitCollection];
+  v16 = symbolNameProvider[2](symbolNameProvider, [traitCollection userInterfaceStyle]);
   [v9 setSymbolName:v16];
 
   return v9;
 }
 
-- (void)collectionView:(id)a3 didDeselectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didDeselectItemAtIndexPath:(id)path
 {
-  v5 = a4;
-  v7 = [(AVTGroupListCollectionView *)self delegate];
-  v6 = [v5 item];
+  pathCopy = path;
+  delegate = [(AVTGroupListCollectionView *)self delegate];
+  item = [pathCopy item];
 
-  [v7 groupPicker:self didDeselectGroupAtIndex:v6];
+  [delegate groupPicker:self didDeselectGroupAtIndex:item];
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v5 = a4;
-  v7 = [(AVTGroupListCollectionView *)self delegate];
-  v6 = [v5 item];
+  pathCopy = path;
+  delegate = [(AVTGroupListCollectionView *)self delegate];
+  item = [pathCopy item];
 
-  [v7 groupPicker:self didSelectGroupAtIndex:v6 tapped:1];
+  [delegate groupPicker:self didSelectGroupAtIndex:item tapped:1];
 }
 
 - (AVTGroupPickerDelegate)delegate

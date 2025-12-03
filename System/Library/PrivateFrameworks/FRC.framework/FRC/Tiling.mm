@@ -1,34 +1,34 @@
 @interface Tiling
-- ($F99D9A4FB75BC57F3386B8DC8EE08D7A)createTileInfoArrayForFrameWithWidth:(unint64_t)a3 height:(unint64_t)a4 numTiles:(unint64_t)a5;
-- (Tiling)initWithDevice:(id)a3 commmandQueue:(id)a4;
-- (void)assemble2TilesToCommandBuffer:(id)a3 from:(id *)a4 to:(id)a5 tileInfo:(id *)a6;
-- (void)assemble3TilesToCommandBuffer:(id)a3 from:(id *)a4 to:(id)a5 tileInfo:(id *)a6;
-- (void)assembleTiles:(__CVBuffer *)a3 to:(__CVBuffer *)a4 tileInfo:(id *)a5 numTiles:(int64_t)a6;
+- ($F99D9A4FB75BC57F3386B8DC8EE08D7A)createTileInfoArrayForFrameWithWidth:(unint64_t)width height:(unint64_t)height numTiles:(unint64_t)tiles;
+- (Tiling)initWithDevice:(id)device commmandQueue:(id)queue;
+- (void)assemble2TilesToCommandBuffer:(id)buffer from:(id *)from to:(id)to tileInfo:(id *)info;
+- (void)assemble3TilesToCommandBuffer:(id)buffer from:(id *)from to:(id)to tileInfo:(id *)info;
+- (void)assembleTiles:(__CVBuffer *)tiles to:(__CVBuffer *)to tileInfo:(id *)info numTiles:(int64_t)numTiles;
 - (void)dealloc;
-- (void)encodeTileBufferToCommandBuffer:(id)a3 from:(__CVBuffer *)a4 to:(__CVBuffer *)a5 channels:(int64_t)a6 tileInfo:(id *)a7 numTiles:(int64_t)a8;
-- (void)encodeTilingToCommandBuffer:(id)a3 from:(id)a4 to:(id)a5 verticalOffset:(unint64_t)a6 sourceHeight:(unint64_t)a7;
+- (void)encodeTileBufferToCommandBuffer:(id)buffer from:(__CVBuffer *)from to:(__CVBuffer *)to channels:(int64_t)channels tileInfo:(id *)info numTiles:(int64_t)tiles;
+- (void)encodeTilingToCommandBuffer:(id)buffer from:(id)from to:(id)to verticalOffset:(unint64_t)offset sourceHeight:(unint64_t)height;
 @end
 
 @implementation Tiling
 
-- (Tiling)initWithDevice:(id)a3 commmandQueue:(id)a4
+- (Tiling)initWithDevice:(id)device commmandQueue:(id)queue
 {
   v18.receiver = self;
   v18.super_class = Tiling;
-  v4 = [(FRCMetalBase *)&v18 initWithDevice:a3 commmandQueue:a4];
+  v4 = [(FRCMetalBase *)&v18 initWithDevice:device commmandQueue:queue];
   if (v4)
   {
     v5 = MTLCreateSystemDefaultDevice();
     device = v4->_device;
     v4->_device = v5;
 
-    v7 = [(MTLDeviceSPI *)v4->_device newCommandQueue];
+    newCommandQueue = [(MTLDeviceSPI *)v4->_device newCommandQueue];
     commandQueue = v4->_commandQueue;
-    v4->_commandQueue = v7;
+    v4->_commandQueue = newCommandQueue;
 
-    v9 = [(MTLDeviceSPI *)v4->_device newDefaultLibrary];
+    newDefaultLibrary = [(MTLDeviceSPI *)v4->_device newDefaultLibrary];
     mtlLibrary = v4->_mtlLibrary;
-    v4->_mtlLibrary = v9;
+    v4->_mtlLibrary = newDefaultLibrary;
 
     v11 = [(FRCMetalBase *)v4 createKernel:@"assembleHorizontalThreeTiles"];
     assembleKernel = v4->_assembleKernel;
@@ -54,56 +54,56 @@
   [(Tiling *)&v2 dealloc];
 }
 
-- (void)encodeTilingToCommandBuffer:(id)a3 from:(id)a4 to:(id)a5 verticalOffset:(unint64_t)a6 sourceHeight:(unint64_t)a7
+- (void)encodeTilingToCommandBuffer:(id)buffer from:(id)from to:(id)to verticalOffset:(unint64_t)offset sourceHeight:(unint64_t)height
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = [a3 blitCommandEncoder];
-  v14 = [v12 width];
-  if ([v11 arrayLength])
+  fromCopy = from;
+  toCopy = to;
+  blitCommandEncoder = [buffer blitCommandEncoder];
+  width = [toCopy width];
+  if ([fromCopy arrayLength])
   {
     v15 = 0;
     do
     {
       v18[0] = 0;
-      v18[1] = a6;
+      v18[1] = offset;
       v18[2] = 0;
-      v17[0] = v14;
-      v17[1] = a7;
+      v17[0] = width;
+      v17[1] = height;
       v17[2] = 1;
       memset(v16, 0, sizeof(v16));
-      [v13 copyFromTexture:v11 sourceSlice:v15 sourceLevel:0 sourceOrigin:v18 sourceSize:v17 toTexture:v12 destinationSlice:v15 destinationLevel:0 destinationOrigin:v16];
+      [blitCommandEncoder copyFromTexture:fromCopy sourceSlice:v15 sourceLevel:0 sourceOrigin:v18 sourceSize:v17 toTexture:toCopy destinationSlice:v15 destinationLevel:0 destinationOrigin:v16];
       ++v15;
     }
 
-    while ([v11 arrayLength] > v15);
+    while ([fromCopy arrayLength] > v15);
   }
 
-  [v13 endEncoding];
+  [blitCommandEncoder endEncoding];
 }
 
-- (void)encodeTileBufferToCommandBuffer:(id)a3 from:(__CVBuffer *)a4 to:(__CVBuffer *)a5 channels:(int64_t)a6 tileInfo:(id *)a7 numTiles:(int64_t)a8
+- (void)encodeTileBufferToCommandBuffer:(id)buffer from:(__CVBuffer *)from to:(__CVBuffer *)to channels:(int64_t)channels tileInfo:(id *)info numTiles:(int64_t)tiles
 {
-  v24 = a3;
-  if ((a8 - 4) > 0xFFFFFFFFFFFFFFFDLL)
+  bufferCopy = buffer;
+  if ((tiles - 4) > 0xFFFFFFFFFFFFFFFDLL)
   {
-    v14 = isPackedRGBA(a4);
+    v14 = isPackedRGBA(from);
     device = self->_device;
     if (v14)
     {
-      createRGBATextureFromCVPixelBuffer(a4, device);
+      createRGBATextureFromCVPixelBuffer(from, device);
     }
 
     else
     {
-      createTexturesFromCVPixelBuffer(a4, device, 1, a6);
+      createTexturesFromCVPixelBuffer(from, device, 1, channels);
     }
     v16 = ;
-    p_var2 = &a7->var2;
+    p_var2 = &info->var2;
     do
     {
-      v18 = isPackedRGBA(*a5);
-      v19 = *a5;
+      v18 = isPackedRGBA(*to);
+      v19 = *to;
       v20 = self->_device;
       if (v18)
       {
@@ -112,7 +112,7 @@
 
       else
       {
-        createTexturesFromCVPixelBuffer(v19, v20, 1, a6);
+        createTexturesFromCVPixelBuffer(v19, v20, 1, channels);
       }
       v21 = ;
       v22 = *p_var2 + *(p_var2 - 1);
@@ -122,14 +122,14 @@
       }
 
       v23 = *p_var2;
-      [Tiling encodeTilingToCommandBuffer:"encodeTilingToCommandBuffer:from:to:verticalOffset:sourceHeight:" from:v24 to:v16 verticalOffset:v21 sourceHeight:?];
+      [Tiling encodeTilingToCommandBuffer:"encodeTilingToCommandBuffer:from:to:verticalOffset:sourceHeight:" from:bufferCopy to:v16 verticalOffset:v21 sourceHeight:?];
 
       p_var2 += 3;
-      ++a5;
-      --a8;
+      ++to;
+      --tiles;
     }
 
-    while (a8);
+    while (tiles);
   }
 
   else
@@ -138,12 +138,12 @@
   }
 }
 
-- ($F99D9A4FB75BC57F3386B8DC8EE08D7A)createTileInfoArrayForFrameWithWidth:(unint64_t)a3 height:(unint64_t)a4 numTiles:(unint64_t)a5
+- ($F99D9A4FB75BC57F3386B8DC8EE08D7A)createTileInfoArrayForFrameWithWidth:(unint64_t)width height:(unint64_t)height numTiles:(unint64_t)tiles
 {
-  result = malloc_type_malloc(24 * a5, 0x1000040504FFAC1uLL);
+  result = malloc_type_malloc(24 * tiles, 0x1000040504FFAC1uLL);
   v10 = 0;
   v11 = 64;
-  if (a5 == 3)
+  if (tiles == 3)
   {
     v12 = 104;
   }
@@ -153,28 +153,28 @@
     v12 = 64;
   }
 
-  if (a5 == 3)
+  if (tiles == 3)
   {
     v11 = 104;
   }
 
   v13 = -64;
-  if (a5 == 3)
+  if (tiles == 3)
   {
     v13 = 0;
   }
 
   self->_tileOverlap = v12;
-  v14 = (a4 / a5 + v11 + 7) & 0xFFFFFFFFFFFFFFF8;
-  v15 = v13 + a4 / a5;
-  if (a5 <= 1)
+  v14 = (height / tiles + v11 + 7) & 0xFFFFFFFFFFFFFFF8;
+  v15 = v13 + height / tiles;
+  if (tiles <= 1)
   {
-    v16 = 1;
+    tilesCopy = 1;
   }
 
   else
   {
-    v16 = a5;
+    tilesCopy = tiles;
   }
 
   p_var2 = &result->var2;
@@ -183,45 +183,45 @@
     *(p_var2 - 1) = v14;
     *p_var2 = v10;
     v10 += v15;
-    *(p_var2 - 2) = a3;
+    *(p_var2 - 2) = width;
     p_var2 += 3;
-    --v16;
+    --tilesCopy;
   }
 
-  while (v16);
+  while (tilesCopy);
   return result;
 }
 
-- (void)assembleTiles:(__CVBuffer *)a3 to:(__CVBuffer *)a4 tileInfo:(id *)a5 numTiles:(int64_t)a6
+- (void)assembleTiles:(__CVBuffer *)tiles to:(__CVBuffer *)to tileInfo:(id *)info numTiles:(int64_t)numTiles
 {
   v25[1] = *MEMORY[0x277D85DE8];
-  v10 = isPackedRGBA(a4);
+  v10 = isPackedRGBA(to);
   device = self->_device;
   if (v10)
   {
-    createRGBATextureFromCVPixelBuffer(a4, device);
+    createRGBATextureFromCVPixelBuffer(to, device);
   }
 
   else
   {
-    createTexturesFromCVPixelBuffer(a4, device, 1, 3uLL);
+    createTexturesFromCVPixelBuffer(to, device, 1, 3uLL);
   }
   v12 = ;
-  v13 = [(MTLBuffer *)self->_tileParameters contents];
-  *v13 = self->_tileOverlap;
-  v13[2] = a6;
+  contents = [(MTLBuffer *)self->_tileParameters contents];
+  *contents = self->_tileOverlap;
+  contents[2] = numTiles;
   v25[0] = v25;
-  v13[1] = [v12 height] / a6;
-  v14 = a6;
-  bzero(v25 - ((8 * a6 + 15) & 0xFFFFFFFFFFFFFFF0), 8 * a6);
-  if (a6 >= 1)
+  contents[1] = [v12 height] / numTiles;
+  numTilesCopy = numTiles;
+  bzero(v25 - ((8 * numTiles + 15) & 0xFFFFFFFFFFFFFFF0), 8 * numTiles);
+  if (numTiles >= 1)
   {
-    v15 = a6;
-    v16 = (v25 - ((8 * a6 + 15) & 0xFFFFFFFFFFFFFFF0));
+    numTilesCopy2 = numTiles;
+    v16 = (v25 - ((8 * numTiles + 15) & 0xFFFFFFFFFFFFFFF0));
     do
     {
-      v17 = isPackedRGBA(*a3);
-      v18 = *a3;
+      v17 = isPackedRGBA(*tiles);
+      v18 = *tiles;
       v19 = self->_device;
       if (v17)
       {
@@ -236,79 +236,79 @@
       v21 = *v16;
       *v16++ = v20;
 
-      ++a3;
-      --v15;
+      ++tiles;
+      --numTilesCopy2;
     }
 
-    while (v15);
+    while (numTilesCopy2);
   }
 
-  v22 = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
-  v23 = v25 - ((8 * a6 + 15) & 0xFFFFFFFFFFFFFFF0);
-  if (a6 == 3)
+  commandBuffer = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
+  v23 = v25 - ((8 * numTiles + 15) & 0xFFFFFFFFFFFFFFF0);
+  if (numTiles == 3)
   {
-    [(Tiling *)self assemble3TilesToCommandBuffer:v22 from:v23 to:v12 tileInfo:v13];
+    [(Tiling *)self assemble3TilesToCommandBuffer:commandBuffer from:v23 to:v12 tileInfo:contents];
   }
 
   else
   {
-    [(Tiling *)self assemble2TilesToCommandBuffer:v22 from:v23 to:v12 tileInfo:v13];
+    [(Tiling *)self assemble2TilesToCommandBuffer:commandBuffer from:v23 to:v12 tileInfo:contents];
   }
 
   kdebug_trace();
-  [v22 commit];
+  [commandBuffer commit];
   kdebug_trace();
 
   do
   {
   }
 
-  while (v14 * 8);
+  while (numTilesCopy * 8);
 
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)assemble3TilesToCommandBuffer:(id)a3 from:(id *)a4 to:(id)a5 tileInfo:(id *)a6
+- (void)assemble3TilesToCommandBuffer:(id)buffer from:(id *)from to:(id)to tileInfo:(id *)info
 {
-  v9 = a5;
-  v10 = [a3 computeCommandEncoder];
-  [v10 setComputePipelineState:self->_assembleKernel];
-  [v10 setTexture:*a4 atIndex:0];
-  [v10 setTexture:a4[1] atIndex:1];
-  [v10 setTexture:a4[2] atIndex:2];
-  [v10 setTexture:v9 atIndex:3];
-  [v10 setBuffer:self->_tileParameters offset:0 atIndex:0];
-  v11 = ([v9 width] + 15) >> 4;
-  v12 = [v9 height];
+  toCopy = to;
+  computeCommandEncoder = [buffer computeCommandEncoder];
+  [computeCommandEncoder setComputePipelineState:self->_assembleKernel];
+  [computeCommandEncoder setTexture:*from atIndex:0];
+  [computeCommandEncoder setTexture:from[1] atIndex:1];
+  [computeCommandEncoder setTexture:from[2] atIndex:2];
+  [computeCommandEncoder setTexture:toCopy atIndex:3];
+  [computeCommandEncoder setBuffer:self->_tileParameters offset:0 atIndex:0];
+  v11 = ([toCopy width] + 15) >> 4;
+  height = [toCopy height];
 
   v15[0] = v11;
-  v15[1] = (v12 + 15) >> 4;
+  v15[1] = (height + 15) >> 4;
   v15[2] = 1;
   v13 = vdupq_n_s64(0x10uLL);
   v14 = 1;
-  [v10 dispatchThreadgroups:v15 threadsPerThreadgroup:&v13];
-  [v10 endEncoding];
+  [computeCommandEncoder dispatchThreadgroups:v15 threadsPerThreadgroup:&v13];
+  [computeCommandEncoder endEncoding];
 }
 
-- (void)assemble2TilesToCommandBuffer:(id)a3 from:(id *)a4 to:(id)a5 tileInfo:(id *)a6
+- (void)assemble2TilesToCommandBuffer:(id)buffer from:(id *)from to:(id)to tileInfo:(id *)info
 {
-  v9 = a5;
-  v10 = [a3 computeCommandEncoder];
-  [v10 setComputePipelineState:self->_assembleTwoTileKernel];
-  [v10 setTexture:*a4 atIndex:0];
-  [v10 setTexture:a4[1] atIndex:1];
-  [v10 setTexture:v9 atIndex:2];
-  [v10 setBuffer:self->_tileParameters offset:0 atIndex:0];
-  v11 = ([v9 width] + 15) >> 4;
-  v12 = [v9 height];
+  toCopy = to;
+  computeCommandEncoder = [buffer computeCommandEncoder];
+  [computeCommandEncoder setComputePipelineState:self->_assembleTwoTileKernel];
+  [computeCommandEncoder setTexture:*from atIndex:0];
+  [computeCommandEncoder setTexture:from[1] atIndex:1];
+  [computeCommandEncoder setTexture:toCopy atIndex:2];
+  [computeCommandEncoder setBuffer:self->_tileParameters offset:0 atIndex:0];
+  v11 = ([toCopy width] + 15) >> 4;
+  height = [toCopy height];
 
   v15[0] = v11;
-  v15[1] = (v12 + 15) >> 4;
+  v15[1] = (height + 15) >> 4;
   v15[2] = 1;
   v13 = vdupq_n_s64(0x10uLL);
   v14 = 1;
-  [v10 dispatchThreadgroups:v15 threadsPerThreadgroup:&v13];
-  [v10 endEncoding];
+  [computeCommandEncoder dispatchThreadgroups:v15 threadsPerThreadgroup:&v13];
+  [computeCommandEncoder endEncoding];
 }
 
 @end

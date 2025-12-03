@@ -1,21 +1,21 @@
 @interface SQLiteConnectionOptions
 - (BOOL)isInMemoryDatabase;
-- (SQLiteConnectionOptions)initWithDatabasePath:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)initInMemoryDatabaseWithName:(id)a3;
+- (SQLiteConnectionOptions)initWithDatabasePath:(id)path;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)initInMemoryDatabaseWithName:(id)name;
 @end
 
 @implementation SQLiteConnectionOptions
 
-- (SQLiteConnectionOptions)initWithDatabasePath:(id)a3
+- (SQLiteConnectionOptions)initWithDatabasePath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v9.receiver = self;
   v9.super_class = SQLiteConnectionOptions;
   v5 = [(SQLiteConnectionOptions *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [pathCopy copy];
     databasePath = v5->_databasePath;
     v5->_databasePath = v6;
 
@@ -25,12 +25,12 @@
   return v5;
 }
 
-- (id)initInMemoryDatabaseWithName:(id)a3
+- (id)initInMemoryDatabaseWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v5 = +[SQLiteConnectionOptions inMemoryDatabaseFlag];
   v6 = +[SQLiteConnectionOptions inMemoryDatabaseSharedCacheFlag];
-  v7 = [NSString stringWithFormat:@"file:%@?%@&%@", v4, v5, v6];
+  v7 = [NSString stringWithFormat:@"file:%@?%@&%@", nameCopy, v5, v6];
 
   v8 = [(SQLiteConnectionOptions *)self initWithDatabasePath:v7];
   return v8;
@@ -45,18 +45,18 @@
   return databasePath;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (v5)
   {
     v5[2] = self->_cacheSize;
-    v7 = [(NSString *)self->_databasePath copyWithZone:a3];
+    v7 = [(NSString *)self->_databasePath copyWithZone:zone];
     v8 = v6[3];
     v6[3] = v7;
 
-    v9 = [(NSString *)self->_encryptionKeyId copyWithZone:a3];
+    v9 = [(NSString *)self->_encryptionKeyId copyWithZone:zone];
     v10 = v6[4];
     v6[4] = v9;
 

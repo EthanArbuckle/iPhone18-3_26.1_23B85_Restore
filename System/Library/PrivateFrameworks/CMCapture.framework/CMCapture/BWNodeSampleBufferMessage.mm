@@ -1,8 +1,8 @@
 @interface BWNodeSampleBufferMessage
-+ (id)newMessageWithSampleBuffer:(opaqueCMSampleBuffer *)a3;
-+ (id)newMessageWithSampleBuffer:(opaqueCMSampleBuffer *)a3 recordingSettings:(id)a4;
-+ (id)newMessageWithSampleBuffer:(opaqueCMSampleBuffer *)a3 stillImageSettings:(id)a4;
-- (void)_initWithSampleBuffer:(void *)a3 stillImageSettings:(void *)a4 recordingSettings:;
++ (id)newMessageWithSampleBuffer:(opaqueCMSampleBuffer *)buffer;
++ (id)newMessageWithSampleBuffer:(opaqueCMSampleBuffer *)buffer recordingSettings:(id)settings;
++ (id)newMessageWithSampleBuffer:(opaqueCMSampleBuffer *)buffer stillImageSettings:(id)settings;
+- (void)_initWithSampleBuffer:(void *)buffer stillImageSettings:(void *)settings recordingSettings:;
 - (void)dealloc;
 @end
 
@@ -21,14 +21,14 @@
   [(BWNodeSampleBufferMessage *)&v4 dealloc];
 }
 
-- (void)_initWithSampleBuffer:(void *)a3 stillImageSettings:(void *)a4 recordingSettings:
+- (void)_initWithSampleBuffer:(void *)buffer stillImageSettings:(void *)settings recordingSettings:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v12.receiver = a1;
+  v12.receiver = self;
   v12.super_class = BWNodeSampleBufferMessage;
   v7 = objc_msgSendSuper2(&v12, sel_init);
   v8 = v7;
@@ -46,18 +46,18 @@
     }
 
     v8[2] = v9;
-    if (a3)
+    if (buffer)
     {
       v10 = &OBJC_IVAR___BWNodeSampleBufferMessage__stillImageSettings;
 LABEL_10:
-      *(v8 + *v10) = a3;
+      *(v8 + *v10) = buffer;
       return v8;
     }
 
-    if (a4)
+    if (settings)
     {
       v10 = &OBJC_IVAR___BWNodeSampleBufferMessage__recordingSettings;
-      a3 = a4;
+      buffer = settings;
       goto LABEL_10;
     }
   }
@@ -65,25 +65,25 @@ LABEL_10:
   return v8;
 }
 
-+ (id)newMessageWithSampleBuffer:(opaqueCMSampleBuffer *)a3
++ (id)newMessageWithSampleBuffer:(opaqueCMSampleBuffer *)buffer
 {
   v4 = [BWNodeSampleBufferMessage alloc];
 
-  return [(BWNodeSampleBufferMessage *)v4 _initWithSampleBuffer:a3 stillImageSettings:0 recordingSettings:0];
+  return [(BWNodeSampleBufferMessage *)v4 _initWithSampleBuffer:buffer stillImageSettings:0 recordingSettings:0];
 }
 
-+ (id)newMessageWithSampleBuffer:(opaqueCMSampleBuffer *)a3 stillImageSettings:(id)a4
++ (id)newMessageWithSampleBuffer:(opaqueCMSampleBuffer *)buffer stillImageSettings:(id)settings
 {
   v6 = [BWNodeSampleBufferMessage alloc];
 
-  return [(BWNodeSampleBufferMessage *)v6 _initWithSampleBuffer:a3 stillImageSettings:a4 recordingSettings:0];
+  return [(BWNodeSampleBufferMessage *)v6 _initWithSampleBuffer:buffer stillImageSettings:settings recordingSettings:0];
 }
 
-+ (id)newMessageWithSampleBuffer:(opaqueCMSampleBuffer *)a3 recordingSettings:(id)a4
++ (id)newMessageWithSampleBuffer:(opaqueCMSampleBuffer *)buffer recordingSettings:(id)settings
 {
   v6 = [BWNodeSampleBufferMessage alloc];
 
-  return [(BWNodeSampleBufferMessage *)v6 _initWithSampleBuffer:a3 stillImageSettings:0 recordingSettings:a4];
+  return [(BWNodeSampleBufferMessage *)v6 _initWithSampleBuffer:buffer stillImageSettings:0 recordingSettings:settings];
 }
 
 @end

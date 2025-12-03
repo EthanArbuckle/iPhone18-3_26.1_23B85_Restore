@@ -1,20 +1,20 @@
 @interface _HKRPOxygenSaturationAvailabilityDataSource
 - (BOOL)deviceIsSupported;
-- (_HKRPOxygenSaturationAvailabilityDataSource)initWithDevice:(id)a3;
+- (_HKRPOxygenSaturationAvailabilityDataSource)initWithDevice:(id)device;
 @end
 
 @implementation _HKRPOxygenSaturationAvailabilityDataSource
 
-- (_HKRPOxygenSaturationAvailabilityDataSource)initWithDevice:(id)a3
+- (_HKRPOxygenSaturationAvailabilityDataSource)initWithDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v9.receiver = self;
   v9.super_class = _HKRPOxygenSaturationAvailabilityDataSource;
   v6 = [(_HKRPOxygenSaturationAvailabilityDataSource *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_device, a3);
+    objc_storeStrong(&v6->_device, device);
   }
 
   return v7;
@@ -53,10 +53,10 @@ LABEL_11:
 
   else
   {
-    v12 = [MEMORY[0x277CCDD30] sharedBehavior];
-    v13 = [v12 isAppleWatch];
+    mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+    isAppleWatch = [mEMORY[0x277CCDD30] isAppleWatch];
 
-    if (v13)
+    if (isAppleWatch)
     {
       v5 = MGGetBoolAnswer();
       _HKInitializeLogging();

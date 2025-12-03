@@ -1,23 +1,23 @@
 @interface AudiogramLongitudinalChartDataSource
 - (_TtC8HealthUI36AudiogramLongitudinalChartDataSource)init;
-- (_TtC8HealthUI36AudiogramLongitudinalChartDataSource)initWithDataType:(id)a3 healthStore:(id)a4;
-- (_TtC8HealthUI36AudiogramLongitudinalChartDataSource)initWithDisplayType:(id)a3 healthStore:(id)a4;
-- (id)mappingFunctionForContext:(id)a3;
-- (id)queriesForRequest:(id)a3 completionHandler:(id)a4;
+- (_TtC8HealthUI36AudiogramLongitudinalChartDataSource)initWithDataType:(id)type healthStore:(id)store;
+- (_TtC8HealthUI36AudiogramLongitudinalChartDataSource)initWithDisplayType:(id)type healthStore:(id)store;
+- (id)mappingFunctionForContext:(id)context;
+- (id)queriesForRequest:(id)request completionHandler:(id)handler;
 - (id)queryDescription;
 @end
 
 @implementation AudiogramLongitudinalChartDataSource
 
-- (_TtC8HealthUI36AudiogramLongitudinalChartDataSource)initWithDisplayType:(id)a3 healthStore:(id)a4
+- (_TtC8HealthUI36AudiogramLongitudinalChartDataSource)initWithDisplayType:(id)type healthStore:(id)store
 {
   objc_allocWithZone(type metadata accessor for AudiogramAnalyticsManager());
-  v7 = a4;
-  v8 = a3;
-  *(&self->super.super.isa + OBJC_IVAR____TtC8HealthUI36AudiogramLongitudinalChartDataSource_analyticsManager) = sub_1C3CE5060(v7);
+  storeCopy = store;
+  typeCopy = type;
+  *(&self->super.super.isa + OBJC_IVAR____TtC8HealthUI36AudiogramLongitudinalChartDataSource_analyticsManager) = sub_1C3CE5060(storeCopy);
   v11.receiver = self;
   v11.super_class = type metadata accessor for AudiogramLongitudinalChartDataSource();
-  v9 = [(HKHealthQueryChartCacheDataSource *)&v11 initWithDisplayType:v8 healthStore:v7];
+  v9 = [(HKHealthQueryChartCacheDataSource *)&v11 initWithDisplayType:typeCopy healthStore:storeCopy];
 
   return v9;
 }
@@ -32,14 +32,14 @@
   return v2;
 }
 
-- (id)queriesForRequest:(id)a3 completionHandler:(id)a4
+- (id)queriesForRequest:(id)request completionHandler:(id)handler
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(handler);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
-  v8 = a3;
-  v9 = self;
-  sub_1C3C330F8(v8, sub_1C3C34674, v7);
+  requestCopy = request;
+  selfCopy = self;
+  sub_1C3C330F8(requestCopy, sub_1C3C34674, v7);
 
   sub_1C3C27CB4(0, &qword_1EC080DD8);
   v10 = sub_1C3D202A4();
@@ -47,7 +47,7 @@
   return v10;
 }
 
-- (id)mappingFunctionForContext:(id)a3
+- (id)mappingFunctionForContext:(id)context
 {
   swift_unknownObjectRetain();
   sub_1C3D20774();
@@ -64,7 +64,7 @@
   return v3;
 }
 
-- (_TtC8HealthUI36AudiogramLongitudinalChartDataSource)initWithDataType:(id)a3 healthStore:(id)a4
+- (_TtC8HealthUI36AudiogramLongitudinalChartDataSource)initWithDataType:(id)type healthStore:(id)store
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

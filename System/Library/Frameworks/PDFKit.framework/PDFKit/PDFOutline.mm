@@ -1,6 +1,6 @@
 @interface PDFOutline
-- (BOOL)_addDestinationToDictionaryRef:(__CFDictionary *)a3;
-- (BOOL)_childDictionaryReferencesParent:(CGPDFDictionary *)a3;
+- (BOOL)_addDestinationToDictionaryRef:(__CFDictionary *)ref;
+- (BOOL)_childDictionaryReferencesParent:(CGPDFDictionary *)parent;
 - (NSString)label;
 - (NSUInteger)index;
 - (NSUInteger)numberOfChildren;
@@ -9,7 +9,7 @@
 - (PDFDocument)document;
 - (PDFOutline)childAtIndex:(NSUInteger)index;
 - (PDFOutline)init;
-- (PDFOutline)initWithDictionary:(CGPDFDictionary *)a3 forDocument:(id)a4 parent:(id)a5;
+- (PDFOutline)initWithDictionary:(CGPDFDictionary *)dictionary forDocument:(id)document parent:(id)parent;
 - (PDFOutline)parent;
 - (__CFDictionary)createDictionaryRef;
 - (id)_childArray;
@@ -18,9 +18,9 @@
 - (id)_next;
 - (id)_previous;
 - (int)_openDescendantCount;
-- (void)_addActionToDictionaryRef:(__CFDictionary *)a3;
+- (void)_addActionToDictionaryRef:(__CFDictionary *)ref;
 - (void)_lazilyLoadChildren;
-- (void)_removeChildAtIndex:(unint64_t)a3;
+- (void)_removeChildAtIndex:(unint64_t)index;
 - (void)commonInit;
 - (void)dealloc;
 - (void)insertChild:(PDFOutline *)child atIndex:(NSUInteger)index;
@@ -81,16 +81,16 @@
 
 - (NSUInteger)index
 {
-  v3 = [(PDFOutline *)self parent];
+  parent = [(PDFOutline *)self parent];
 
-  if (!v3)
+  if (!parent)
   {
     return 0;
   }
 
-  v4 = [(PDFOutline *)self parent];
-  v5 = [v4 _childArray];
-  v6 = [v5 indexOfObject:self];
+  parent2 = [(PDFOutline *)self parent];
+  _childArray = [parent2 _childArray];
+  v6 = [_childArray indexOfObject:self];
 
   return v6;
 }
@@ -154,12 +154,12 @@
 
 - (void)removeFromParent
 {
-  v3 = [(PDFOutline *)self parent];
+  parent = [(PDFOutline *)self parent];
 
-  if (v3)
+  if (parent)
   {
-    v4 = [(PDFOutline *)self index];
-    if (v4 == 0x7FFFFFFFFFFFFFFFLL)
+    index = [(PDFOutline *)self index];
+    if (index == 0x7FFFFFFFFFFFFFFFLL)
     {
       v5 = MEMORY[0x1E695DF30];
       v6 = *MEMORY[0x1E695D920];
@@ -169,9 +169,9 @@
 
     else
     {
-      v7 = v4;
-      v8 = [(PDFOutline *)self parent];
-      [v8 _removeChildAtIndex:v7];
+      v7 = index;
+      parent2 = [(PDFOutline *)self parent];
+      [parent2 _removeChildAtIndex:v7];
 
       p_parent = &self->_private->parent;
 
@@ -206,19 +206,19 @@
 
 - (PDFDestination)destination
 {
-  v2 = [(PDFOutline *)self action];
-  v3 = v2;
-  if (v2 && ([v2 type], v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v4, "isEqualToString:", @"GoTo"), v4, v5))
+  action = [(PDFOutline *)self action];
+  v3 = action;
+  if (action && ([action type], v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v4, "isEqualToString:", @"GoTo"), v4, v5))
   {
-    v6 = [v3 destination];
+    destination = [v3 destination];
   }
 
   else
   {
-    v6 = 0;
+    destination = 0;
   }
 
-  return v6;
+  return destination;
 }
 
 - (void)setDestination:(PDFDestination *)destination
@@ -306,10 +306,10 @@ LABEL_9:
   [(PDFOutline *)&v4 dealloc];
 }
 
-- (PDFOutline)initWithDictionary:(CGPDFDictionary *)a3 forDocument:(id)a4 parent:(id)a5
+- (PDFOutline)initWithDictionary:(CGPDFDictionary *)dictionary forDocument:(id)document parent:(id)parent
 {
-  v8 = a4;
-  v9 = a5;
+  documentCopy = document;
+  parentCopy = parent;
   v21.receiver = self;
   v21.super_class = PDFOutline;
   v10 = [(PDFOutline *)&v21 init];
@@ -319,10 +319,10 @@ LABEL_9:
     [(PDFOutline *)v10 commonInit];
     v19 = 0;
     value = 0;
-    objc_storeWeak(&v11->_private->document, v8);
-    v11->_private->srcDictionary = a3;
-    objc_storeWeak(&v11->_private->parent, v9);
-    if (CGPDFDictionaryGetString(a3, "Title", &value))
+    objc_storeWeak(&v11->_private->document, documentCopy);
+    v11->_private->srcDictionary = dictionary;
+    objc_storeWeak(&v11->_private->parent, parentCopy);
+    if (CGPDFDictionaryGetString(dictionary, "Title", &value))
     {
       v12 = CGPDFStringCopyTextString(value);
       v13 = v11->_private;
@@ -335,15 +335,15 @@ LABEL_9:
       v11->_private->open = 1;
     }
 
-    if (CGPDFDictionaryGetInteger(a3, "Count", &v19))
+    if (CGPDFDictionaryGetInteger(dictionary, "Count", &v19))
     {
       v11->_private->open = v19 > 0;
     }
 
-    v15 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
     v16 = v11->_private;
     action = v16->action;
-    v16->action = v15;
+    v16->action = null;
 
     v11->_private->childrenLoaded = 0;
   }
@@ -431,75 +431,75 @@ LABEL_9:
     self->_private->dictionary = CFDictionaryCreateMutable(*MEMORY[0x1E695E480], 0, MEMORY[0x1E695E9D8], MEMORY[0x1E695E9E8]);
     if (self->_private->dictionary)
     {
-      v8 = [(PDFOutline *)self _firstChild];
-      v9 = v8;
-      if (v8)
+      _firstChild = [(PDFOutline *)self _firstChild];
+      v9 = _firstChild;
+      if (_firstChild)
       {
-        v10 = [v8 createDictionaryRef];
-        if (v10)
+        createDictionaryRef = [_firstChild createDictionaryRef];
+        if (createDictionaryRef)
         {
-          v11 = v10;
-          CFDictionarySetValue(self->_private->dictionary, @"/First", v10);
+          v11 = createDictionaryRef;
+          CFDictionarySetValue(self->_private->dictionary, @"/First", createDictionaryRef);
           CFRelease(v11);
         }
       }
 
-      v12 = [(PDFOutline *)self parent];
+      parent = [(PDFOutline *)self parent];
 
-      if (v12)
+      if (parent)
       {
-        v13 = [v12 createDictionaryRef];
-        if (v13)
+        createDictionaryRef2 = [parent createDictionaryRef];
+        if (createDictionaryRef2)
         {
-          v14 = v13;
-          CFDictionarySetValue(self->_private->dictionary, @"/Parent", v13);
+          v14 = createDictionaryRef2;
+          CFDictionarySetValue(self->_private->dictionary, @"/Parent", createDictionaryRef2);
           CFRelease(v14);
         }
       }
 
-      v15 = [(PDFOutline *)self _next];
+      _next = [(PDFOutline *)self _next];
 
-      if (v15)
+      if (_next)
       {
-        v16 = [v15 createDictionaryRef];
-        if (v16)
+        createDictionaryRef3 = [_next createDictionaryRef];
+        if (createDictionaryRef3)
         {
-          v17 = v16;
-          CFDictionarySetValue(self->_private->dictionary, @"/Next", v16);
+          v17 = createDictionaryRef3;
+          CFDictionarySetValue(self->_private->dictionary, @"/Next", createDictionaryRef3);
           CFRelease(v17);
         }
       }
 
-      v18 = [(PDFOutline *)self _previous];
+      _previous = [(PDFOutline *)self _previous];
 
-      if (v18)
+      if (_previous)
       {
-        v19 = [v18 createDictionaryRef];
-        if (v19)
+        createDictionaryRef4 = [_previous createDictionaryRef];
+        if (createDictionaryRef4)
         {
-          v20 = v19;
-          CFDictionarySetValue(self->_private->dictionary, @"/Prev", v19);
+          v20 = createDictionaryRef4;
+          CFDictionarySetValue(self->_private->dictionary, @"/Prev", createDictionaryRef4);
           CFRelease(v20);
         }
       }
 
-      v4 = [(PDFOutline *)self _lastChild];
+      _lastChild = [(PDFOutline *)self _lastChild];
 
-      if (v4)
+      if (_lastChild)
       {
-        v21 = [v4 createDictionaryRef];
-        if (v21)
+        createDictionaryRef5 = [_lastChild createDictionaryRef];
+        if (createDictionaryRef5)
         {
-          v22 = v21;
-          CFDictionarySetValue(self->_private->dictionary, @"/Last", v21);
+          v22 = createDictionaryRef5;
+          CFDictionarySetValue(self->_private->dictionary, @"/Last", createDictionaryRef5);
           CFRelease(v22);
         }
       }
 
-      v23 = [(PDFOutline *)self _openDescendantCount];
-      valuePtr = v23;
+      _openDescendantCount = [(PDFOutline *)self _openDescendantCount];
+      valuePtr = _openDescendantCount;
       WeakRetained = objc_loadWeakRetained(&self->_private->parent);
-      if (WeakRetained || v23 >= 1)
+      if (WeakRetained || _openDescendantCount >= 1)
       {
         v25 = CFNumberCreate(v7, kCFNumberSInt32Type, &valuePtr);
         if (v25)
@@ -512,8 +512,8 @@ LABEL_9:
         if (WeakRetained)
         {
           v27 = self->_private->dictionary;
-          v28 = [(PDFOutline *)self label];
-          CFDictionarySetValue(v27, @"/Title", v28);
+          label = [(PDFOutline *)self label];
+          CFDictionarySetValue(v27, @"/Title", label);
         }
       }
 
@@ -531,14 +531,14 @@ LABEL_9:
 
     else
     {
-      v4 = 0;
+      _lastChild = 0;
     }
 
     Copy = 0;
     goto LABEL_32;
   }
 
-  v4 = 0;
+  _lastChild = 0;
 LABEL_3:
   Copy = CFDictionaryCreateCopy(*v3, dictionary);
 LABEL_32:
@@ -555,10 +555,10 @@ LABEL_32:
     self->_private->dictionary = 0;
   }
 
-  v4 = [(PDFOutline *)self numberOfChildren];
-  if (v4)
+  numberOfChildren = [(PDFOutline *)self numberOfChildren];
+  if (numberOfChildren)
   {
-    v5 = v4;
+    v5 = numberOfChildren;
     for (i = 0; i != v5; ++i)
     {
       v7 = [(PDFOutline *)self childAtIndex:i];
@@ -581,7 +581,7 @@ LABEL_32:
   return children;
 }
 
-- (void)_removeChildAtIndex:(unint64_t)a3
+- (void)_removeChildAtIndex:(unint64_t)index
 {
   v4 = self->_private;
   if (!v4->childrenLoaded)
@@ -590,25 +590,25 @@ LABEL_32:
     v4 = self->_private;
   }
 
-  if (a3 != 0x7FFFFFFFFFFFFFFFLL)
+  if (index != 0x7FFFFFFFFFFFFFFFLL)
   {
     children = v4->children;
     if (children)
     {
 
-      [(NSMutableArray *)children removeObjectAtIndex:a3];
+      [(NSMutableArray *)children removeObjectAtIndex:index];
     }
   }
 }
 
-- (BOOL)_addDestinationToDictionaryRef:(__CFDictionary *)a3
+- (BOOL)_addDestinationToDictionaryRef:(__CFDictionary *)ref
 {
-  v4 = [(PDFOutline *)self destination];
-  v5 = v4;
-  if (v4 && (v6 = [v4 createArrayRef]) != 0)
+  destination = [(PDFOutline *)self destination];
+  v5 = destination;
+  if (destination && (v6 = [destination createArrayRef]) != 0)
   {
     v7 = v6;
-    CFDictionarySetValue(a3, @"/Dest", v6);
+    CFDictionarySetValue(ref, @"/Dest", v6);
     CFRelease(v7);
     v8 = 1;
   }
@@ -621,79 +621,79 @@ LABEL_32:
   return v8;
 }
 
-- (void)_addActionToDictionaryRef:(__CFDictionary *)a3
+- (void)_addActionToDictionaryRef:(__CFDictionary *)ref
 {
-  v4 = [(PDFOutline *)self action];
-  if (v4)
+  action = [(PDFOutline *)self action];
+  if (action)
   {
-    v6 = v4;
-    v5 = [v4 createDictionaryRef];
-    v4 = v6;
-    if (v5)
+    v6 = action;
+    createDictionaryRef = [action createDictionaryRef];
+    action = v6;
+    if (createDictionaryRef)
     {
-      CFDictionarySetValue(a3, @"/A", v5);
-      CFRelease(v5);
-      v4 = v6;
+      CFDictionarySetValue(ref, @"/A", createDictionaryRef);
+      CFRelease(createDictionaryRef);
+      action = v6;
     }
   }
 }
 
 - (int)_openDescendantCount
 {
-  v3 = [(PDFOutline *)self numberOfChildren];
-  if (!v3)
+  numberOfChildren = [(PDFOutline *)self numberOfChildren];
+  if (!numberOfChildren)
   {
     return 0;
   }
 
   if (![(PDFOutline *)self isOpen])
   {
-    return -v3;
+    return -numberOfChildren;
   }
 
-  if (v3 < 1)
+  if (numberOfChildren < 1)
   {
-    return v3;
+    return numberOfChildren;
   }
 
   v4 = 0;
-  v5 = v3;
+  v5 = numberOfChildren;
   do
   {
     v6 = [(PDFOutline *)self childAtIndex:v4];
-    v7 = [v6 _openDescendantCount];
+    _openDescendantCount = [v6 _openDescendantCount];
 
-    if (v7 <= 0)
+    if (_openDescendantCount <= 0)
     {
       v8 = 0;
     }
 
     else
     {
-      v8 = v3;
+      v8 = numberOfChildren;
     }
 
     v5 += v8;
     ++v4;
   }
 
-  while ((v3 & 0x7FFFFFFF) != v4);
+  while ((numberOfChildren & 0x7FFFFFFF) != v4);
   return v5;
 }
 
-- (BOOL)_childDictionaryReferencesParent:(CGPDFDictionary *)a3
+- (BOOL)_childDictionaryReferencesParent:(CGPDFDictionary *)parent
 {
-  v5 = [(PDFOutline *)self numberOfChildren];
-  if (v5)
+  numberOfChildren = [(PDFOutline *)self numberOfChildren];
+  if (numberOfChildren)
   {
-    v6 = v5;
+    v6 = numberOfChildren;
     v7 = 0;
     while (1)
     {
       v8 = [(PDFOutline *)self childAtIndex:v7];
-      v9 = [v8 _srcDictionaryRef];
+      _srcDictionaryRef = [v8 _srcDictionaryRef];
 
-      if (v9 == a3)
+      if (_srcDictionaryRef == parent)
       {
         return 1;
       }
@@ -708,22 +708,22 @@ LABEL_32:
   else
   {
 LABEL_5:
-    v10 = self;
+    selfCopy = self;
     do
     {
-      v11 = [(PDFOutline *)v10 _srcDictionaryRef];
-      v12 = v11 == a3;
-      if (v11 == a3)
+      _srcDictionaryRef2 = [(PDFOutline *)selfCopy _srcDictionaryRef];
+      v12 = _srcDictionaryRef2 == parent;
+      if (_srcDictionaryRef2 == parent)
       {
         break;
       }
 
-      v13 = [(PDFOutline *)v10 parent];
+      parent = [(PDFOutline *)selfCopy parent];
 
-      v10 = v13;
+      selfCopy = parent;
     }
 
-    while (v13);
+    while (parent);
   }
 
   return v12;
@@ -731,19 +731,19 @@ LABEL_5:
 
 - (id)_next
 {
-  v3 = [(PDFOutline *)self parent];
+  parent = [(PDFOutline *)self parent];
 
-  if (v3)
+  if (parent)
   {
-    v4 = [(PDFOutline *)self index];
-    v5 = [(PDFOutline *)self parent];
-    v6 = [v5 numberOfChildren];
+    index = [(PDFOutline *)self index];
+    parent2 = [(PDFOutline *)self parent];
+    numberOfChildren = [parent2 numberOfChildren];
 
     v7 = 0;
-    if (v6 && v4 < v6 - 1)
+    if (numberOfChildren && index < numberOfChildren - 1)
     {
-      v8 = [(PDFOutline *)self parent];
-      v7 = [v8 childAtIndex:v4 + 1];
+      parent3 = [(PDFOutline *)self parent];
+      v7 = [parent3 childAtIndex:index + 1];
     }
   }
 
@@ -757,19 +757,19 @@ LABEL_5:
 
 - (id)_previous
 {
-  v3 = [(PDFOutline *)self parent];
+  parent = [(PDFOutline *)self parent];
 
-  if (v3)
+  if (parent)
   {
-    v4 = [(PDFOutline *)self index];
-    v5 = [(PDFOutline *)self parent];
-    v6 = [v5 numberOfChildren];
+    index = [(PDFOutline *)self index];
+    parent2 = [(PDFOutline *)self parent];
+    numberOfChildren = [parent2 numberOfChildren];
 
     v7 = 0;
-    if (v6 && v4)
+    if (numberOfChildren && index)
     {
-      v8 = [(PDFOutline *)self parent];
-      v7 = [v8 childAtIndex:v4 - 1];
+      parent3 = [(PDFOutline *)self parent];
+      v7 = [parent3 childAtIndex:index - 1];
     }
   }
 
@@ -783,24 +783,24 @@ LABEL_5:
 
 - (id)_firstChild
 {
-  v3 = [(PDFOutline *)self numberOfChildren];
-  if (v3)
+  numberOfChildren = [(PDFOutline *)self numberOfChildren];
+  if (numberOfChildren)
   {
-    v3 = [(PDFOutline *)self childAtIndex:0];
+    numberOfChildren = [(PDFOutline *)self childAtIndex:0];
   }
 
-  return v3;
+  return numberOfChildren;
 }
 
 - (id)_lastChild
 {
-  v3 = [(PDFOutline *)self numberOfChildren];
-  if (v3)
+  numberOfChildren = [(PDFOutline *)self numberOfChildren];
+  if (numberOfChildren)
   {
-    v3 = [(PDFOutline *)self childAtIndex:v3 - 1];
+    numberOfChildren = [(PDFOutline *)self childAtIndex:numberOfChildren - 1];
   }
 
-  return v3;
+  return numberOfChildren;
 }
 
 @end

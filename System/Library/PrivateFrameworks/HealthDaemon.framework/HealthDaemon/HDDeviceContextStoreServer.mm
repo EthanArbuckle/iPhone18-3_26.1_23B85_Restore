@@ -1,17 +1,17 @@
 @interface HDDeviceContextStoreServer
-- (void)remote_fetchEntriesWithCompletion:(id)a3;
-- (void)remote_numberOfDeviceContextsPerDeviceType:(id)a3;
+- (void)remote_fetchEntriesWithCompletion:(id)completion;
+- (void)remote_numberOfDeviceContextsPerDeviceType:(id)type;
 @end
 
 @implementation HDDeviceContextStoreServer
 
-- (void)remote_fetchEntriesWithCompletion:(id)a3
+- (void)remote_fetchEntriesWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(HDStandardTaskServer *)self profile];
-  v6 = [v5 deviceContextManager];
+  completionCopy = completion;
+  profile = [(HDStandardTaskServer *)self profile];
+  deviceContextManager = [profile deviceContextManager];
   v11 = 0;
-  v7 = [v6 fetchAllEntriesWithError:&v11];
+  v7 = [deviceContextManager fetchAllEntriesWithError:&v11];
   v8 = v11;
 
   if (v7)
@@ -22,12 +22,12 @@
     v10[3] = &unk_278626EE8;
     v10[4] = self;
     v9 = [v7 hk_map:v10];
-    v4[2](v4, v9, 0);
+    completionCopy[2](completionCopy, v9, 0);
   }
 
   else
   {
-    (v4)[2](v4, 0, v8);
+    (completionCopy)[2](completionCopy, 0, v8);
   }
 }
 
@@ -60,13 +60,13 @@ id __64__HDDeviceContextStoreServer_remote_fetchEntriesWithCompletion___block_in
   return v13;
 }
 
-- (void)remote_numberOfDeviceContextsPerDeviceType:(id)a3
+- (void)remote_numberOfDeviceContextsPerDeviceType:(id)type
 {
-  v4 = a3;
-  v5 = [(HDStandardTaskServer *)self profile];
-  v6 = [v5 deviceContextManager];
+  typeCopy = type;
+  profile = [(HDStandardTaskServer *)self profile];
+  deviceContextManager = [profile deviceContextManager];
   v11 = 0;
-  v7 = [v6 numberOfDeviceContextsPerDeviceType:&v11];
+  v7 = [deviceContextManager numberOfDeviceContextsPerDeviceType:&v11];
   v8 = v11;
 
   if (v7)
@@ -81,7 +81,7 @@ id __64__HDDeviceContextStoreServer_remote_fetchEntriesWithCompletion___block_in
     v10 = v8;
   }
 
-  v4[2](v4, v9, v10);
+  typeCopy[2](typeCopy, v9, v10);
 }
 
 @end

@@ -1,14 +1,14 @@
 @interface MNCommuteRouteSet
 - (MNCommuteRouteSet)init;
-- (MNCommuteRouteSet)initWith:(id)a3 fetchDate:(id)a4 internalInfo:(id)a5;
+- (MNCommuteRouteSet)initWith:(id)with fetchDate:(id)date internalInfo:(id)info;
 - (NSArray)routes;
 - (NSDate)fetchDate;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MNCommuteRouteSet
 
-- (MNCommuteRouteSet)initWith:(id)a3 fetchDate:(id)a4 internalInfo:(id)a5
+- (MNCommuteRouteSet)initWith:(id)with fetchDate:(id)date internalInfo:(id)info
 {
   v7 = sub_1D3276D30();
   v8 = *(v7 - 8);
@@ -19,9 +19,9 @@
   v12 = sub_1D32771A0();
   sub_1D3276D00();
   *(self + OBJC_IVAR___MNCommuteRouteSet_routes) = v12;
-  v13 = a5;
+  infoCopy = info;
   *(self + OBJC_IVAR___MNCommuteRouteSet__fetchDate) = sub_1D3276CD0();
-  *(self + OBJC_IVAR___MNCommuteRouteSet__internalInfo) = a5;
+  *(self + OBJC_IVAR___MNCommuteRouteSet__internalInfo) = info;
   v16.receiver = self;
   v16.super_class = MNCommuteRouteSet;
   v14 = [(MNCommuteRouteSet *)&v16 init];
@@ -54,11 +54,11 @@
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  MNCommuteRouteSet.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  MNCommuteRouteSet.encode(with:)(coderCopy);
 }
 
 - (MNCommuteRouteSet)init

@@ -1,17 +1,17 @@
 @interface ICDismissableAlertController
-+ (id)alertControllerWithTitle:(id)a3 description:(id)a4 icon:(id)a5;
++ (id)alertControllerWithTitle:(id)title description:(id)description icon:(id)icon;
 @end
 
 @implementation ICDismissableAlertController
 
-+ (id)alertControllerWithTitle:(id)a3 description:(id)a4 icon:(id)a5
++ (id)alertControllerWithTitle:(id)title description:(id)description icon:(id)icon
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [a1 alertControllerWithTitle:0 message:0 preferredStyle:0];
+  iconCopy = icon;
+  descriptionCopy = description;
+  titleCopy = title;
+  v11 = [self alertControllerWithTitle:0 message:0 preferredStyle:0];
   v12 = objc_alloc_init(UIViewController);
-  v13 = [[ICActionSheetHeaderView alloc] initWithTitle:v10 snippet:v9 iconImage:v8];
+  v13 = [[ICActionSheetHeaderView alloc] initWithTitle:titleCopy snippet:descriptionCopy iconImage:iconCopy];
 
   [v12 setView:v13];
   [v11 setContentViewController:v12];

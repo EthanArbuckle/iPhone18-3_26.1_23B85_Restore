@@ -1,25 +1,25 @@
 @interface VSAppDocumentControllerFactory
-+ (id)appDocumentControllerForAppDocument:(id)a3 error:(id *)a4;
++ (id)appDocumentControllerForAppDocument:(id)document error:(id *)error;
 @end
 
 @implementation VSAppDocumentControllerFactory
 
-+ (id)appDocumentControllerForAppDocument:(id)a3 error:(id *)a4
++ (id)appDocumentControllerForAppDocument:(id)document error:(id *)error
 {
-  v5 = a3;
-  v6 = [v5 templateElement];
-  v7 = [v6 vs_elementType];
+  documentCopy = document;
+  templateElement = [documentCopy templateElement];
+  vs_elementType = [templateElement vs_elementType];
 
-  if (v7 <= 162)
+  if (vs_elementType <= 162)
   {
-    if (v7 == 161)
+    if (vs_elementType == 161)
     {
       v8 = VSCredentialEntryAppDocumentController;
     }
 
     else
     {
-      if (v7 != 162)
+      if (vs_elementType != 162)
       {
         goto LABEL_17;
       }
@@ -28,9 +28,9 @@
     }
 
 LABEL_12:
-    v9 = [[v8 alloc] initWithAppDocument:v5];
+    v9 = [[v8 alloc] initWithAppDocument:documentCopy];
     v10 = 0;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_14;
     }
@@ -38,7 +38,7 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  switch(v7)
+  switch(vs_elementType)
   {
     case 163:
       v8 = VSWebAuthenticationAppDocumentController;
@@ -60,11 +60,11 @@ LABEL_17:
 
   v10 = VSPrivateError();
   v9 = 0;
-  if (a4)
+  if (error)
   {
 LABEL_13:
     v10 = v10;
-    *a4 = v10;
+    *error = v10;
   }
 
 LABEL_14:

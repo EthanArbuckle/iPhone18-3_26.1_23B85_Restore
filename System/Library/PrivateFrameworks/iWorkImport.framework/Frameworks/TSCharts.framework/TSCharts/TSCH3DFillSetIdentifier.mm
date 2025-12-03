@@ -1,17 +1,17 @@
 @interface TSCH3DFillSetIdentifier
-+ (id)identifierWithContentsOfDictionary:(id)a3;
-+ (id)identifierWithFillName:(id)a3 seriesName:(id)a4 textureSetID:(id)a5;
-+ (id)identifierWithFillPropertyType:(int)a3 seriesIndex:(unint64_t)a4 textureSetID:(id)a5;
-+ (id)instanceWithArchive:(const void *)a3 unarchiver:(id)a4;
-+ (id)instanceWithDEPRECATEDArchive:(const void *)a3 unarchiver:(id)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)identifierWithContentsOfDictionary:(id)dictionary;
++ (id)identifierWithFillName:(id)name seriesName:(id)seriesName textureSetID:(id)d;
++ (id)identifierWithFillPropertyType:(int)type seriesIndex:(unint64_t)index textureSetID:(id)d;
++ (id)instanceWithArchive:(const void *)archive unarchiver:(id)unarchiver;
++ (id)instanceWithDEPRECATEDArchive:(const void *)archive unarchiver:(id)unarchiver;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isSageCompatible;
 - (BOOL)isStoredInLocalBundle;
 - (TSCH3DFillSetIdentifier)init;
-- (TSCH3DFillSetIdentifier)initWithArchive:(const void *)a3 unarchiver:(id)a4;
-- (TSCH3DFillSetIdentifier)initWithContentsOfDictionary:(id)a3;
-- (TSCH3DFillSetIdentifier)initWithFillName:(id)a3 seriesName:(id)a4 textureSetID:(id)a5;
-- (TSCH3DFillSetIdentifier)initWithFillPropertyType:(int)a3 seriesIndex:(unint64_t)a4 textureSetID:(id)a5;
+- (TSCH3DFillSetIdentifier)initWithArchive:(const void *)archive unarchiver:(id)unarchiver;
+- (TSCH3DFillSetIdentifier)initWithContentsOfDictionary:(id)dictionary;
+- (TSCH3DFillSetIdentifier)initWithFillName:(id)name seriesName:(id)seriesName textureSetID:(id)d;
+- (TSCH3DFillSetIdentifier)initWithFillPropertyType:(int)type seriesIndex:(unint64_t)index textureSetID:(id)d;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (id)loadPropertiesDictionary;
@@ -30,13 +30,13 @@
 - (id)sageFillName;
 - (id)sageSeriesName;
 - (id)textureOnDemandResourceTag;
-- (int)fillPropertyTypeFromName:(id)a3;
+- (int)fillPropertyTypeFromName:(id)name;
 - (unint64_t)countOfSeriesInFillSet;
 - (unint64_t)hash;
 - (unint64_t)seriesIndex;
-- (unint64_t)seriesIndexFromSageSeriesName:(id)a3;
-- (void)saveToArchive:(void *)a3 archiver:(id)a4;
-- (void)setSeriesIndex:(unint64_t)a3;
+- (unint64_t)seriesIndexFromSageSeriesName:(id)name;
+- (void)saveToArchive:(void *)archive archiver:(id)archiver;
+- (void)setSeriesIndex:(unint64_t)index;
 @end
 
 @implementation TSCH3DFillSetIdentifier
@@ -48,10 +48,10 @@
   return 0;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v41 = 1;
   }
@@ -149,9 +149,9 @@ LABEL_10:
   return seriesIndex & ~(seriesIndex >> 31);
 }
 
-- (void)setSeriesIndex:(unint64_t)a3
+- (void)setSeriesIndex:(unint64_t)index
 {
-  if (a3 >> 31)
+  if (index >> 31)
   {
     v6 = MEMORY[0x277D81150];
     v7 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, v3, v4, v5, "[TSCH3DFillSetIdentifier setSeriesIndex:]");
@@ -165,7 +165,7 @@ LABEL_10:
 
   else
   {
-    self->_seriesIndex = a3;
+    self->_seriesIndex = index;
   }
 }
 
@@ -257,31 +257,31 @@ LABEL_10:
   return (v13 | v23) & 1;
 }
 
-+ (id)instanceWithArchive:(const void *)a3 unarchiver:(id)a4
++ (id)instanceWithArchive:(const void *)archive unarchiver:(id)unarchiver
 {
-  v7 = sub_2761DEEC8(a3, a2, v4, v5, v6);
+  v7 = sub_2761DEEC8(archive, a2, v4, v5, v6);
 
   return v7;
 }
 
-- (TSCH3DFillSetIdentifier)initWithArchive:(const void *)a3 unarchiver:(id)a4
+- (TSCH3DFillSetIdentifier)initWithArchive:(const void *)archive unarchiver:(id)unarchiver
 {
   v12.receiver = self;
   v12.super_class = TSCH3DFillSetIdentifier;
-  v6 = [(TSCH3DFillSetIdentifier *)&v12 init:a3];
+  v6 = [(TSCH3DFillSetIdentifier *)&v12 init:archive];
   if (!v6)
   {
     return 0;
   }
 
-  v10 = sub_2761DEEC8(a3, v5, v7, v8, v9);
+  v10 = sub_2761DEEC8(archive, v5, v7, v8, v9);
 
   return v10;
 }
 
-- (void)saveToArchive:(void *)a3 archiver:(id)a4
+- (void)saveToArchive:(void *)archive archiver:(id)archiver
 {
-  v44 = a4;
+  archiverCopy = archiver;
   if (!self->_textureSetID)
   {
     v10 = MEMORY[0x277D81150];
@@ -303,32 +303,32 @@ LABEL_10:
   }
 
   v40 = objc_msgSend_tsp_protobufString(self->_textureSetID, v6, v7, v8, v9);
-  sub_2761DF274(a3, v40);
+  sub_2761DF274(archive, v40);
   fillPropertyType = self->_fillPropertyType;
   if ((fillPropertyType - 1) >= 5)
   {
     fillPropertyType = 0;
   }
 
-  v42 = *(a3 + 4);
-  *(a3 + 4) = v42 | 4;
-  *(a3 + 10) = fillPropertyType;
+  v42 = *(archive + 4);
+  *(archive + 4) = v42 | 4;
+  *(archive + 10) = fillPropertyType;
   seriesIndex = self->_seriesIndex;
-  *(a3 + 4) = v42 | 0xC;
-  *(a3 + 11) = seriesIndex;
+  *(archive + 4) = v42 | 0xC;
+  *(archive + 11) = seriesIndex;
 }
 
-+ (id)instanceWithDEPRECATEDArchive:(const void *)a3 unarchiver:(id)a4
++ (id)instanceWithDEPRECATEDArchive:(const void *)archive unarchiver:(id)unarchiver
 {
-  v6 = a4;
-  v10 = *(a3 + 4);
+  unarchiverCopy = unarchiver;
+  v10 = *(archive + 4);
   if ((v10 & 8) != 0)
   {
     if ((~v10 & 0x11) == 0)
     {
-      v14 = *(a3 + 12);
-      v13 = *(a3 + 13);
-      v16 = objc_msgSend_tsp_stringWithProtobufString_(MEMORY[0x277CCACA8], v5, v7, v8, v9, *(a3 + 3) & 0xFFFFFFFFFFFFFFFELL);
+      v14 = *(archive + 12);
+      v13 = *(archive + 13);
+      v16 = objc_msgSend_tsp_stringWithProtobufString_(MEMORY[0x277CCACA8], v5, v7, v8, v9, *(archive + 3) & 0xFFFFFFFFFFFFFFFELL);
       if (v14 - 1 >= 5)
       {
         objc_msgSend_identifierWithFillPropertyType_seriesIndex_textureSetID_(TSCH3DFillSetIdentifier, v15, v17, v18, v19, 0, v13, v16);
@@ -351,7 +351,7 @@ LABEL_10:
       goto LABEL_14;
     }
 
-    v11 = *(a3 + 3) & 0xFFFFFFFFFFFFFFFELL;
+    v11 = *(archive + 3) & 0xFFFFFFFFFFFFFFFELL;
     v12 = *(v11 + 23);
     if (v12 < 0)
     {
@@ -377,27 +377,27 @@ LABEL_15:
   return v20;
 }
 
-+ (id)identifierWithFillName:(id)a3 seriesName:(id)a4 textureSetID:(id)a5
++ (id)identifierWithFillName:(id)name seriesName:(id)seriesName textureSetID:(id)d
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [a1 alloc];
-  v16 = objc_msgSend_initWithFillName_seriesName_textureSetID_(v11, v12, v13, v14, v15, v8, v9, v10);
+  nameCopy = name;
+  seriesNameCopy = seriesName;
+  dCopy = d;
+  v11 = [self alloc];
+  v16 = objc_msgSend_initWithFillName_seriesName_textureSetID_(v11, v12, v13, v14, v15, nameCopy, seriesNameCopy, dCopy);
 
   return v16;
 }
 
-- (TSCH3DFillSetIdentifier)initWithFillName:(id)a3 seriesName:(id)a4 textureSetID:(id)a5
+- (TSCH3DFillSetIdentifier)initWithFillName:(id)name seriesName:(id)seriesName textureSetID:(id)d
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v15 = v10;
-  if (v8 && v9 && v10)
+  nameCopy = name;
+  seriesNameCopy = seriesName;
+  dCopy = d;
+  v15 = dCopy;
+  if (nameCopy && seriesNameCopy && dCopy)
   {
-    v16 = objc_msgSend_fillPropertyTypeFromName_(self, v11, v12, v13, v14, v8);
-    v21 = objc_msgSend_seriesIndexFromSageSeriesName_(self, v17, v18, v19, v20, v9);
+    v16 = objc_msgSend_fillPropertyTypeFromName_(self, v11, v12, v13, v14, nameCopy);
+    v21 = objc_msgSend_seriesIndexFromSageSeriesName_(self, v17, v18, v19, v20, seriesNameCopy);
     v26 = objc_msgSend_initWithFillPropertyType_seriesIndex_textureSetID_(self, v22, v23, v24, v25, v16, v21, v15);
   }
 
@@ -410,25 +410,25 @@ LABEL_15:
   return v26;
 }
 
-+ (id)identifierWithFillPropertyType:(int)a3 seriesIndex:(unint64_t)a4 textureSetID:(id)a5
++ (id)identifierWithFillPropertyType:(int)type seriesIndex:(unint64_t)index textureSetID:(id)d
 {
-  v6 = *&a3;
-  v8 = a5;
-  v9 = [a1 alloc];
-  v14 = objc_msgSend_initWithFillPropertyType_seriesIndex_textureSetID_(v9, v10, v11, v12, v13, v6, a4, v8);
+  v6 = *&type;
+  dCopy = d;
+  v9 = [self alloc];
+  v14 = objc_msgSend_initWithFillPropertyType_seriesIndex_textureSetID_(v9, v10, v11, v12, v13, v6, index, dCopy);
 
   return v14;
 }
 
-- (TSCH3DFillSetIdentifier)initWithFillPropertyType:(int)a3 seriesIndex:(unint64_t)a4 textureSetID:(id)a5
+- (TSCH3DFillSetIdentifier)initWithFillPropertyType:(int)type seriesIndex:(unint64_t)index textureSetID:(id)d
 {
-  v8 = a5;
+  dCopy = d;
   v51.receiver = self;
   v51.super_class = TSCH3DFillSetIdentifier;
   v10 = [(TSCH3DFillSetIdentifier *)&v51 init];
   if (v10)
   {
-    if (!a3)
+    if (!type)
     {
       v14 = MEMORY[0x277D81150];
       v15 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v9, v11, v12, v13, "[TSCH3DFillSetIdentifier(ImportExportAdditions) initWithFillPropertyType:seriesIndex:textureSetID:]");
@@ -438,13 +438,13 @@ LABEL_15:
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v25, v26, v27, v28);
     }
 
-    if (v8)
+    if (dCopy)
     {
-      v29 = objc_msgSend_copy(v8, v9, v11, v12, v13);
+      v29 = objc_msgSend_copy(dCopy, v9, v11, v12, v13);
       textureSetID = v10->_textureSetID;
       v10->_textureSetID = v29;
 
-      if (a4 >> 31)
+      if (index >> 31)
       {
         v35 = MEMORY[0x277D81150];
         v36 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v31, v32, v33, v34, "[TSCH3DFillSetIdentifier(ImportExportAdditions) initWithFillPropertyType:seriesIndex:textureSetID:]");
@@ -456,10 +456,10 @@ LABEL_15:
 
       else
       {
-        v10->_seriesIndex = a4;
+        v10->_seriesIndex = index;
       }
 
-      v10->_fillPropertyType = a3;
+      v10->_fillPropertyType = type;
     }
 
     else
@@ -472,28 +472,28 @@ LABEL_15:
   return v10;
 }
 
-+ (id)identifierWithContentsOfDictionary:(id)a3
++ (id)identifierWithContentsOfDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [a1 alloc];
-  v10 = objc_msgSend_initWithContentsOfDictionary_(v5, v6, v7, v8, v9, v4);
+  dictionaryCopy = dictionary;
+  v5 = [self alloc];
+  v10 = objc_msgSend_initWithContentsOfDictionary_(v5, v6, v7, v8, v9, dictionaryCopy);
 
   return v10;
 }
 
-- (TSCH3DFillSetIdentifier)initWithContentsOfDictionary:(id)a3
+- (TSCH3DFillSetIdentifier)initWithContentsOfDictionary:(id)dictionary
 {
-  v4 = a3;
-  v9 = objc_msgSend_objectForKey_(v4, v5, v6, v7, v8, @"textureSetID");
-  v14 = objc_msgSend_objectForKey_(v4, v10, v11, v12, v13, @"seriesIndex");
-  v19 = objc_msgSend_objectForKey_(v4, v15, v16, v17, v18, @"fillPropertyType");
+  dictionaryCopy = dictionary;
+  v9 = objc_msgSend_objectForKey_(dictionaryCopy, v5, v6, v7, v8, @"textureSetID");
+  v14 = objc_msgSend_objectForKey_(dictionaryCopy, v10, v11, v12, v13, @"seriesIndex");
+  v19 = objc_msgSend_objectForKey_(dictionaryCopy, v15, v16, v17, v18, @"fillPropertyType");
   v24 = v19;
   if (!v9 || !v14 || !v19)
   {
     v25 = MEMORY[0x277D81150];
     v26 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v20, v21, v22, v23, "[TSCH3DFillSetIdentifier(ImportExportAdditions) initWithContentsOfDictionary:]");
     v31 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v27, v28, v29, v30, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCH3DFillSetIdentifierImportExportAdditions.mm");
-    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v25, v32, v33, v34, v35, v26, v31, 71, 0, "invalid dictionary contents %@", v4);
+    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v25, v32, v33, v34, v35, v26, v31, 71, 0, "invalid dictionary contents %@", dictionaryCopy);
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v36, v37, v38, v39);
   }
@@ -565,18 +565,18 @@ LABEL_15:
   return v28;
 }
 
-- (int)fillPropertyTypeFromName:(id)a3
+- (int)fillPropertyTypeFromName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v9 = objc_msgSend_p_sageFillPropertyNames(self, v5, v6, v7, v8);
-  v14 = objc_msgSend_indexOfObject_(v9, v10, v11, v12, v13, v4);
+  v14 = objc_msgSend_indexOfObject_(v9, v10, v11, v12, v13, nameCopy);
 
   if (v14 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v19 = MEMORY[0x277D81150];
     v20 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v15, v16, v17, v18, "[TSCH3DFillSetIdentifier(ImportExportAdditions) fillPropertyTypeFromName:]");
     v25 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v21, v22, v23, v24, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCH3DFillSetIdentifierImportExportAdditions.mm");
-    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v19, v26, v27, v28, v29, v20, v25, 114, 0, "invalid fill property name %@", v4);
+    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v19, v26, v27, v28, v29, v20, v25, 114, 0, "invalid fill property name %@", nameCopy);
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v30, v31, v32, v33);
   }
@@ -622,18 +622,18 @@ LABEL_15:
   return v49;
 }
 
-- (unint64_t)seriesIndexFromSageSeriesName:(id)a3
+- (unint64_t)seriesIndexFromSageSeriesName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v9 = objc_msgSend_p_sageSeriesNames(self, v5, v6, v7, v8);
-  v14 = objc_msgSend_indexOfObject_(v9, v10, v11, v12, v13, v4);
+  v14 = objc_msgSend_indexOfObject_(v9, v10, v11, v12, v13, nameCopy);
 
   if (v14 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v19 = MEMORY[0x277D81150];
     v20 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v15, v16, v17, v18, "[TSCH3DFillSetIdentifier(ImportExportAdditions) seriesIndexFromSageSeriesName:]");
     v25 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v21, v22, v23, v24, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCH3DFillSetIdentifierImportExportAdditions.mm");
-    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v19, v26, v27, v28, v29, v20, v25, 148, 0, "invalid series name %@", v4);
+    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v19, v26, v27, v28, v29, v20, v25, 148, 0, "invalid series name %@", nameCopy);
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v30, v31, v32, v33);
   }

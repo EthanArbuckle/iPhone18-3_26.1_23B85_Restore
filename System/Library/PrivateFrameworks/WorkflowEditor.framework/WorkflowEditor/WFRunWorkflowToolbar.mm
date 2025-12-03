@@ -4,14 +4,14 @@
 - (NSArray)undoRedoItems;
 - (NSUndoManager)workflowUndoManager;
 - (UIToolbar)toolbar;
-- (WFRunWorkflowToolbar)initWithWorkflow:(id)a3;
+- (WFRunWorkflowToolbar)initWithWorkflow:(id)workflow;
 - (WFRunWorkflowToolbarDelegate)delegate;
 - (WFWorkflow)workflow;
 - (double)runButtonPointSizeToWidthRatio;
 - (void)layoutSubviews;
 - (void)playTapped;
 - (void)redoTapped;
-- (void)setWorkflowUndoManager:(id)a3;
+- (void)setWorkflowUndoManager:(id)manager;
 - (void)settingsTapped;
 - (void)shareTapped;
 - (void)stopTapped;
@@ -54,84 +54,84 @@
 
 - (void)redoTapped
 {
-  v3 = [(WFRunWorkflowToolbar *)self delegate];
+  delegate = [(WFRunWorkflowToolbar *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(WFRunWorkflowToolbar *)self delegate];
-    [v5 runToolbarRedoTapped:self];
+    delegate2 = [(WFRunWorkflowToolbar *)self delegate];
+    [delegate2 runToolbarRedoTapped:self];
   }
 }
 
 - (void)undoTapped
 {
-  v3 = [(WFRunWorkflowToolbar *)self delegate];
+  delegate = [(WFRunWorkflowToolbar *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(WFRunWorkflowToolbar *)self delegate];
-    [v5 runToolbarUndoTapped:self];
+    delegate2 = [(WFRunWorkflowToolbar *)self delegate];
+    [delegate2 runToolbarUndoTapped:self];
   }
 }
 
 - (void)updateUndoItems
 {
-  v4 = [(WFRunWorkflowToolbar *)self isNotRunningAndIsEditing];
-  if (v4)
+  isNotRunningAndIsEditing = [(WFRunWorkflowToolbar *)self isNotRunningAndIsEditing];
+  if (isNotRunningAndIsEditing)
   {
-    v2 = [(WFRunWorkflowToolbar *)self workflowUndoManager];
-    v5 = [v2 canUndo];
+    workflowUndoManager = [(WFRunWorkflowToolbar *)self workflowUndoManager];
+    canUndo = [workflowUndoManager canUndo];
   }
 
   else
   {
-    v5 = 0;
+    canUndo = 0;
   }
 
-  v6 = [(WFRunWorkflowToolbar *)self undoItem];
-  [v6 setEnabled:v5];
+  undoItem = [(WFRunWorkflowToolbar *)self undoItem];
+  [undoItem setEnabled:canUndo];
 
-  if (v4)
+  if (isNotRunningAndIsEditing)
   {
   }
 
-  v7 = [(WFRunWorkflowToolbar *)self isNotRunningAndIsEditing];
-  if (v7)
+  isNotRunningAndIsEditing2 = [(WFRunWorkflowToolbar *)self isNotRunningAndIsEditing];
+  if (isNotRunningAndIsEditing2)
   {
-    v2 = [(WFRunWorkflowToolbar *)self workflowUndoManager];
-    v8 = [v2 canRedo];
+    workflowUndoManager = [(WFRunWorkflowToolbar *)self workflowUndoManager];
+    canRedo = [workflowUndoManager canRedo];
   }
 
   else
   {
-    v8 = 0;
+    canRedo = 0;
   }
 
-  v9 = [(WFRunWorkflowToolbar *)self redoItem];
-  [v9 setEnabled:v8];
+  redoItem = [(WFRunWorkflowToolbar *)self redoItem];
+  [redoItem setEnabled:canRedo];
 
-  if (v7)
+  if (isNotRunningAndIsEditing2)
   {
   }
 
-  v10 = [(WFRunWorkflowToolbar *)self delegate];
-  [v10 runToolbarUndoRedoStateChanged:self];
+  delegate = [(WFRunWorkflowToolbar *)self delegate];
+  [delegate runToolbarUndoRedoStateChanged:self];
 }
 
 - (void)updatePlayButtonVisibility
 {
-  v3 = [(WFRunWorkflowToolbar *)self playEnabled];
-  v4 = [(WFRunWorkflowToolbar *)self runItem];
-  [v4 setEnabled:v3];
+  playEnabled = [(WFRunWorkflowToolbar *)self playEnabled];
+  runItem = [(WFRunWorkflowToolbar *)self runItem];
+  [runItem setEnabled:playEnabled];
 }
 
 - (void)updateShareButtonVisibility
 {
-  v3 = [(WFRunWorkflowToolbar *)self shareEnabled]&& ![(WFRunWorkflowToolbar *)self shareHidden]&& [(WFRunWorkflowToolbar *)self isNotRunningAndIsEditing];
-  v4 = [(WFRunWorkflowToolbar *)self shareItem];
-  [v4 setEnabled:v3];
+  isNotRunningAndIsEditing = [(WFRunWorkflowToolbar *)self shareEnabled]&& ![(WFRunWorkflowToolbar *)self shareHidden]&& [(WFRunWorkflowToolbar *)self isNotRunningAndIsEditing];
+  shareItem = [(WFRunWorkflowToolbar *)self shareItem];
+  [shareItem setEnabled:isNotRunningAndIsEditing];
 
   if ([(WFRunWorkflowToolbar *)self shareHidden])
   {
@@ -143,39 +143,39 @@
     [(WFRunWorkflowToolbar *)self tintColor];
   }
   v6 = ;
-  v5 = [(WFRunWorkflowToolbar *)self shareItem];
-  [v5 setTintColor:v6];
+  shareItem2 = [(WFRunWorkflowToolbar *)self shareItem];
+  [shareItem2 setTintColor:v6];
 }
 
-- (void)setWorkflowUndoManager:(id)a3
+- (void)setWorkflowUndoManager:(id)manager
 {
-  obj = a3;
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
+  obj = manager;
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v5 = *MEMORY[0x277CCA7F8];
   WeakRetained = objc_loadWeakRetained(&self->_workflowUndoManager);
-  [v4 removeObserver:self name:v5 object:WeakRetained];
+  [defaultCenter removeObserver:self name:v5 object:WeakRetained];
 
-  v7 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
   v8 = *MEMORY[0x277CCA810];
   v9 = objc_loadWeakRetained(&self->_workflowUndoManager);
-  [v7 removeObserver:self name:v8 object:v9];
+  [defaultCenter2 removeObserver:self name:v8 object:v9];
 
-  v10 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
   v11 = *MEMORY[0x277CCA808];
   v12 = objc_loadWeakRetained(&self->_workflowUndoManager);
-  [v10 removeObserver:self name:v11 object:v12];
+  [defaultCenter3 removeObserver:self name:v11 object:v12];
 
   objc_storeWeak(&self->_workflowUndoManager, obj);
   if (obj)
   {
-    v13 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v13 addObserver:self selector:sel_updateUndoItems name:v5 object:obj];
+    defaultCenter4 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter4 addObserver:self selector:sel_updateUndoItems name:v5 object:obj];
 
-    v14 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v14 addObserver:self selector:sel_updateUndoItems name:v8 object:obj];
+    defaultCenter5 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter5 addObserver:self selector:sel_updateUndoItems name:v8 object:obj];
 
-    v15 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v15 addObserver:self selector:sel_updateUndoItems name:v11 object:obj];
+    defaultCenter6 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter6 addObserver:self selector:sel_updateUndoItems name:v11 object:obj];
   }
 }
 
@@ -191,50 +191,50 @@
 
 - (void)settingsTapped
 {
-  v3 = [(WFRunWorkflowToolbar *)self delegate];
+  delegate = [(WFRunWorkflowToolbar *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(WFRunWorkflowToolbar *)self delegate];
-    [v5 runToolbarSettingsTapped:self];
+    delegate2 = [(WFRunWorkflowToolbar *)self delegate];
+    [delegate2 runToolbarSettingsTapped:self];
   }
 }
 
 - (void)shareTapped
 {
-  v3 = [(WFRunWorkflowToolbar *)self delegate];
+  delegate = [(WFRunWorkflowToolbar *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v6 = [(WFRunWorkflowToolbar *)self delegate];
-    v5 = [(WFRunWorkflowToolbar *)self shareItem];
-    [v6 runToolbarShareTapped:self sender:v5];
+    delegate2 = [(WFRunWorkflowToolbar *)self delegate];
+    shareItem = [(WFRunWorkflowToolbar *)self shareItem];
+    [delegate2 runToolbarShareTapped:self sender:shareItem];
   }
 }
 
 - (void)stopTapped
 {
-  v3 = [(WFRunWorkflowToolbar *)self delegate];
+  delegate = [(WFRunWorkflowToolbar *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(WFRunWorkflowToolbar *)self delegate];
-    [v5 runToolbarStopTapped:self];
+    delegate2 = [(WFRunWorkflowToolbar *)self delegate];
+    [delegate2 runToolbarStopTapped:self];
   }
 }
 
 - (void)playTapped
 {
-  v3 = [(WFRunWorkflowToolbar *)self delegate];
+  delegate = [(WFRunWorkflowToolbar *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(WFRunWorkflowToolbar *)self delegate];
-    [v5 runToolbarPlayTapped:self];
+    delegate2 = [(WFRunWorkflowToolbar *)self delegate];
+    [delegate2 runToolbarPlayTapped:self];
   }
 }
 
@@ -243,25 +243,25 @@
   v11.receiver = self;
   v11.super_class = WFRunWorkflowToolbar;
   [(WFRunWorkflowToolbar *)&v11 layoutSubviews];
-  v3 = [(WFRunWorkflowToolbar *)self toolbar];
-  v4 = [v3 layer];
-  [v4 shadowRadius];
+  toolbar = [(WFRunWorkflowToolbar *)self toolbar];
+  layer = [toolbar layer];
+  [layer shadowRadius];
   v6 = v5;
 
-  [v3 frame];
+  [toolbar frame];
   v8 = [MEMORY[0x277D75208] bezierPathWithRect:{0.0, v7 - v6}];
-  v9 = [v8 CGPath];
-  v10 = [v3 layer];
-  [v10 setShadowPath:v9];
+  cGPath = [v8 CGPath];
+  layer2 = [toolbar layer];
+  [layer2 setShadowPath:cGPath];
 }
 
 - (NSArray)undoRedoItems
 {
   v7[2] = *MEMORY[0x277D85DE8];
-  v3 = [(WFRunWorkflowToolbar *)self undoItem];
-  v7[0] = v3;
-  v4 = [(WFRunWorkflowToolbar *)self redoItem];
-  v7[1] = v4;
+  undoItem = [(WFRunWorkflowToolbar *)self undoItem];
+  v7[0] = undoItem;
+  redoItem = [(WFRunWorkflowToolbar *)self redoItem];
+  v7[1] = redoItem;
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v7 count:2];
 
   return v5;
@@ -269,39 +269,39 @@
 
 - (NSArray)items
 {
-  v2 = [(WFRunWorkflowToolbar *)self toolbar];
-  v3 = [v2 items];
+  toolbar = [(WFRunWorkflowToolbar *)self toolbar];
+  items = [toolbar items];
 
-  return v3;
+  return items;
 }
 
 - (void)updateRunningButtonWidthIfNeeded
 {
   [(WFRunWorkflowToolbar *)self runButtonPointSizeToWidthRatio];
   v4 = v3;
-  v5 = [(WFRunWorkflowToolbar *)self runItem];
-  v6 = [v5 customView];
-  [v6 pointSizeToWidthRatio];
+  runItem = [(WFRunWorkflowToolbar *)self runItem];
+  customView = [runItem customView];
+  [customView pointSizeToWidthRatio];
   v8 = v7;
 
   if (v4 != v8)
   {
-    v9 = [(WFRunWorkflowToolbar *)self runItem];
-    v10 = [v9 customView];
+    runItem2 = [(WFRunWorkflowToolbar *)self runItem];
+    customView2 = [runItem2 customView];
     [(WFRunWorkflowToolbar *)self runButtonPointSizeToWidthRatio];
-    [v10 setSymbolName:@"play.fill" pointSizeToWidthRatio:?];
+    [customView2 setSymbolName:@"play.fill" pointSizeToWidthRatio:?];
 
-    v12 = [(WFRunWorkflowToolbar *)self stopItem];
-    v11 = [v12 customView];
+    stopItem = [(WFRunWorkflowToolbar *)self stopItem];
+    customView3 = [stopItem customView];
     [(WFRunWorkflowToolbar *)self runButtonPointSizeToWidthRatio];
-    [v11 setSymbolName:@"square.fill" pointSizeToWidthRatio:?];
+    [customView3 setSymbolName:@"square.fill" pointSizeToWidthRatio:?];
   }
 }
 
 - (double)runButtonPointSizeToWidthRatio
 {
-  v2 = [(WFRunWorkflowToolbar *)self traitCollection];
-  if ([v2 horizontalSizeClass] == 1)
+  traitCollection = [(WFRunWorkflowToolbar *)self traitCollection];
+  if ([traitCollection horizontalSizeClass] == 1)
   {
     v3 = 1.7;
   }
@@ -314,17 +314,17 @@
   return v3;
 }
 
-- (WFRunWorkflowToolbar)initWithWorkflow:(id)a3
+- (WFRunWorkflowToolbar)initWithWorkflow:(id)workflow
 {
   v56[4] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  workflowCopy = workflow;
   v54.receiver = self;
   v54.super_class = WFRunWorkflowToolbar;
   v5 = [(WFRunWorkflowToolbar *)&v54 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_workflow, v4);
+    objc_storeWeak(&v5->_workflow, workflowCopy);
     v7 = objc_alloc(MEMORY[0x277D75C58]);
     [(WFRunWorkflowToolbar *)v6 bounds];
     v8 = [v7 initWithFrame:?];
@@ -333,24 +333,24 @@
     [(WFRunWorkflowToolbar *)v6 addSubview:v8];
     [(WFRunWorkflowToolbar *)v6 setToolbar:v8];
     v46 = MEMORY[0x277CCAAD0];
-    v51 = [v8 topAnchor];
-    v50 = [(WFRunWorkflowToolbar *)v6 topAnchor];
-    v49 = [v51 constraintEqualToAnchor:v50];
+    topAnchor = [v8 topAnchor];
+    topAnchor2 = [(WFRunWorkflowToolbar *)v6 topAnchor];
+    v49 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v56[0] = v49;
-    v48 = [v8 leadingAnchor];
-    v47 = [(WFRunWorkflowToolbar *)v6 leadingAnchor];
-    v9 = [v48 constraintEqualToAnchor:v47];
+    leadingAnchor = [v8 leadingAnchor];
+    leadingAnchor2 = [(WFRunWorkflowToolbar *)v6 leadingAnchor];
+    v9 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v56[1] = v9;
     v52 = v8;
-    v10 = [v8 bottomAnchor];
+    bottomAnchor = [v8 bottomAnchor];
     [(WFRunWorkflowToolbar *)v6 safeAreaLayoutGuide];
-    v11 = v53 = v4;
-    v12 = [v11 bottomAnchor];
-    v13 = [v10 constraintEqualToAnchor:v12];
+    v11 = v53 = workflowCopy;
+    bottomAnchor2 = [v11 bottomAnchor];
+    v13 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v56[2] = v13;
-    v14 = [v8 trailingAnchor];
-    v15 = [(WFRunWorkflowToolbar *)v6 trailingAnchor];
-    v16 = [v14 constraintEqualToAnchor:v15];
+    trailingAnchor = [v8 trailingAnchor];
+    trailingAnchor2 = [(WFRunWorkflowToolbar *)v6 trailingAnchor];
+    v16 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v56[3] = v16;
     v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v56 count:4];
     [v46 activateConstraints:v17];
@@ -378,8 +378,8 @@
     v25 = WFLocalizedString(@"Run Shortcut");
     [v24 setAccessibilityLabel:v25];
 
-    v26 = [MEMORY[0x277D75348] labelColor];
-    [v24 setTintColor:v26];
+    labelColor = [MEMORY[0x277D75348] labelColor];
+    [v24 setTintColor:labelColor];
 
     v27 = [objc_alloc(MEMORY[0x277D751E0]) initWithCustomView:v24];
     [(WFRunWorkflowToolbar *)v6 setRunItem:v27];
@@ -391,18 +391,18 @@
     v29 = WFLocalizedString(@"Stop Shortcut");
     [v28 setAccessibilityLabel:v29];
 
-    v30 = [MEMORY[0x277D75348] labelColor];
-    [v28 setTintColor:v30];
+    labelColor2 = [MEMORY[0x277D75348] labelColor];
+    [v28 setTintColor:labelColor2];
 
     v31 = [objc_alloc(MEMORY[0x277D751E0]) initWithCustomView:v28];
     [(WFRunWorkflowToolbar *)v6 setStopItem:v31];
 
     v32 = MEMORY[0x277D755B8];
     v33 = MEMORY[0x277D755D0];
-    v34 = [MEMORY[0x277D75348] labelColor];
-    v55[0] = v34;
-    v35 = [MEMORY[0x277D75348] labelColor];
-    v55[1] = v35;
+    labelColor3 = [MEMORY[0x277D75348] labelColor];
+    v55[0] = labelColor3;
+    labelColor4 = [MEMORY[0x277D75348] labelColor];
+    v55[1] = labelColor4;
     v36 = [MEMORY[0x277CBEA60] arrayWithObjects:v55 count:2];
     v37 = [v33 configurationWithPaletteColors:v36];
     v38 = [v32 systemImageNamed:@"square.and.arrow.up" withConfiguration:v37];
@@ -417,7 +417,7 @@
     [v39 setWidth:44.0];
     [(WFRunWorkflowToolbar *)v6 setShareItem:v39];
 
-    v4 = v53;
+    workflowCopy = v53;
     v42 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:5 target:0 action:0];
     [(WFRunWorkflowToolbar *)v6 setFlexibleSpaceItem:v42];
 

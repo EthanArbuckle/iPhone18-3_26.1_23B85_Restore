@@ -1,34 +1,34 @@
 @interface PKIDSBatchIDQueryControllerWrapper
-- (void)batchQueryController:(id)a3 updatedDestinationsStatus:(id)a4 onService:(id)a5 error:(id)a6;
-- (void)reachableDestinationsForDestination:(id)a3 service:(id)a4 queue:(id)a5 completion:(id)a6;
+- (void)batchQueryController:(id)controller updatedDestinationsStatus:(id)status onService:(id)service error:(id)error;
+- (void)reachableDestinationsForDestination:(id)destination service:(id)service queue:(id)queue completion:(id)completion;
 @end
 
 @implementation PKIDSBatchIDQueryControllerWrapper
 
-- (void)reachableDestinationsForDestination:(id)a3 service:(id)a4 queue:(id)a5 completion:(id)a6
+- (void)reachableDestinationsForDestination:(id)destination service:(id)service queue:(id)queue completion:(id)completion
 {
   v26[1] = *MEMORY[0x1E69E9840];
   if (!self->_hasRunQuery)
   {
     self->_hasRunQuery = 1;
     v10 = MEMORY[0x1E69A4840];
-    v11 = a6;
-    v12 = a5;
-    v13 = a4;
-    v14 = a3;
-    v15 = [[v10 alloc] initWithService:v13 delegate:self queue:v12];
+    completionCopy = completion;
+    queueCopy = queue;
+    serviceCopy = service;
+    destinationCopy = destination;
+    v15 = [[v10 alloc] initWithService:serviceCopy delegate:self queue:queueCopy];
 
     batchIDQueryController = self->_batchIDQueryController;
     self->_batchIDQueryController = v15;
 
-    v17 = PKIDSNormalizedAddress(v14);
+    v17 = PKIDSNormalizedAddress(destinationCopy);
 
     v18 = self->_batchIDQueryController;
     v26[0] = v17;
     v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:1];
     [(IDSBatchIDQueryController *)v18 setDestinations:v19];
 
-    v20 = _Block_copy(v11);
+    v20 = _Block_copy(completionCopy);
     completion = self->_completion;
     self->_completion = v20;
 
@@ -62,21 +62,21 @@ void __99__PKIDSBatchIDQueryControllerWrapper_reachableDestinationsForDestinatio
   }
 }
 
-- (void)batchQueryController:(id)a3 updatedDestinationsStatus:(id)a4 onService:(id)a5 error:(id)a6
+- (void)batchQueryController:(id)controller updatedDestinationsStatus:(id)status onService:(id)service error:(id)error
 {
   if (self->_completion)
   {
-    v8 = a6;
-    v9 = [a4 keysOfEntriesPassingTest:&__block_literal_global_112];
-    v12 = [v9 allObjects];
+    errorCopy = error;
+    v9 = [status keysOfEntriesPassingTest:&__block_literal_global_112];
+    allObjects = [v9 allObjects];
 
-    v10 = v12;
-    if (v8)
+    v10 = allObjects;
+    if (errorCopy)
     {
       v10 = 0;
     }
 
-    (*(self->_completion + 2))(self->_completion, v10, v8);
+    (*(self->_completion + 2))(self->_completion, v10, errorCopy);
 
     completion = self->_completion;
     self->_completion = 0;

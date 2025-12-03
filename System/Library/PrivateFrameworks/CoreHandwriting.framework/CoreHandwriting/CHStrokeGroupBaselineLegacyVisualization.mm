@@ -1,13 +1,13 @@
 @interface CHStrokeGroupBaselineLegacyVisualization
-- (CGRect)dirtyRectForStrokeGroup:(id)a3;
-- (void)drawVisualizationInRect:(CGRect)a3 context:(CGContext *)a4 viewBounds:(CGRect)a5;
+- (CGRect)dirtyRectForStrokeGroup:(id)group;
+- (void)drawVisualizationInRect:(CGRect)rect context:(CGContext *)context viewBounds:(CGRect)bounds;
 @end
 
 @implementation CHStrokeGroupBaselineLegacyVisualization
 
-- (CGRect)dirtyRectForStrokeGroup:(id)a3
+- (CGRect)dirtyRectForStrokeGroup:(id)group
 {
-  objc_msgSend_bounds(a3, a2, a3, v3, v4, v5);
+  objc_msgSend_bounds(group, a2, group, v3, v4, v5);
   x = v19.origin.x;
   y = v19.origin.y;
   width = v19.size.width;
@@ -62,12 +62,12 @@
   return result;
 }
 
-- (void)drawVisualizationInRect:(CGRect)a3 context:(CGContext *)a4 viewBounds:(CGRect)a5
+- (void)drawVisualizationInRect:(CGRect)rect context:(CGContext *)context viewBounds:(CGRect)bounds
 {
   v405 = *MEMORY[0x1E69E9840];
   v374.receiver = self;
   v374.super_class = CHStrokeGroupBaselineLegacyVisualization;
-  [(CHStrokeGroupBasedVisualization *)&v374 drawVisualizationInRect:a3.origin.x context:a3.origin.y viewBounds:a3.size.width, a3.size.height, a5.origin.x, a5.origin.y, a5.size.width, a5.size.height];
+  [(CHStrokeGroupBasedVisualization *)&v374 drawVisualizationInRect:rect.origin.x context:rect.origin.y viewBounds:rect.size.width, rect.size.height, bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
   v10 = objc_msgSend_recognitionSession(self, v5, v6, v7, v8, v9);
   v365 = objc_msgSend_latestStrokeProvider(v10, v11, v12, v13, v14, v15);
   space = CGColorSpaceCreateDeviceRGB();
@@ -75,8 +75,8 @@
   v313 = CGColorCreate(space, dbl_1839DA798);
   cf = sub_18397D2F0(10.0);
   v314 = sub_18397D2F0(12.0);
-  CGContextSetStrokeColorWithColor(a4, color);
-  CGContextSetFillColorWithColor(a4, color);
+  CGContextSetStrokeColorWithColor(context, color);
+  CGContextSetFillColorWithColor(context, color);
   v372 = 0u;
   v373 = 0u;
   v370 = 0u;
@@ -118,18 +118,18 @@
 
         v358 = *(*(&v370 + 1) + 8 * i);
         objc_msgSend_dirtyRectForStrokeGroup_(self, v33, v358, v34, v35, v36);
-        if (CGRectIntersectsRect(v406, a3))
+        if (CGRectIntersectsRect(v406, rect))
         {
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
             v39 = objc_msgSend_delegate(self, v33, v38, v34, v35, v36);
             v319 = objc_msgSend_visualizationIndexForStrokeGroup_(v39, v40, v358, v41, v42, v43);
-            CGContextSaveGState(a4);
+            CGContextSaveGState(context);
             *lengths = xmmword_1839CE6F0;
-            CGContextSetLineWidth(a4, 2.0);
-            CGContextSetLineDash(a4, 0.0, lengths, 2uLL);
-            CGContextSetAlpha(a4, 0.8);
+            CGContextSetLineWidth(context, 2.0);
+            CGContextSetLineDash(context, 0.0, lengths, 2uLL);
+            CGContextSetAlpha(context, 0.8);
             if (self)
             {
               v44 = [CHQuadCurvePointFIFO alloc];
@@ -602,8 +602,8 @@ LABEL_55:
               v328 = v317;
             }
 
-            CGContextAddPath(a4, v272);
-            CGContextStrokePath(a4);
+            CGContextAddPath(context, v272);
+            CGContextStrokePath(context);
             CGPathRelease(v272);
             if (self)
             {
@@ -625,26 +625,26 @@ LABEL_55:
               v274 = 0.0;
             }
 
-            CGContextSetLineWidth(a4, 2.0);
-            CGContextSetAlpha(a4, 0.8);
+            CGContextSetLineWidth(context, 2.0);
+            CGContextSetAlpha(context, 0.8);
             v424.origin.x = v274;
             v424.origin.y = v273;
             v424.size.width = v321;
             v424.size.height = v321;
-            CGContextFillEllipseInRect(a4, v424);
+            CGContextFillEllipseInRect(context, v424);
             v425.origin.x = v274;
             v425.origin.y = v273;
             v425.size.width = v321;
             v425.size.height = v321;
             v275 = CGRectGetMidY(v425);
-            CGContextTranslateCTM(a4, 0.0, v275);
-            CGContextScaleCTM(a4, 1.0, -1.0);
+            CGContextTranslateCTM(context, 0.0, v275);
+            CGContextScaleCTM(context, 1.0, -1.0);
             v426.origin.x = v274;
             v426.origin.y = v273;
             v426.size.width = v321;
             v426.size.height = v321;
             v276 = CGRectGetMidY(v426);
-            CGContextTranslateCTM(a4, 0.0, -v276);
+            CGContextTranslateCTM(context, 0.0, -v276);
             if (v319 <= 98)
             {
               v277 = 3.0;
@@ -828,7 +828,7 @@ LABEL_55:
             }
 
             v305 = (v304)(v303, 0, 0, v301, 0);
-            CGContextSetAlpha(a4, 1.0);
+            CGContextSetAlpha(context, 1.0);
             v381.a = 0.0;
             *&v381.b = &v381;
             *&v381.c = 0x2020000000;
@@ -854,12 +854,12 @@ LABEL_99:
               __break(1u);
             }
 
-            v306(v305, a4);
+            v306(v305, context);
             CFRelease(v305);
             CFRelease(v303);
             CGPathRelease(v301);
             CFRelease(v284);
-            CGContextRestoreGState(a4);
+            CGContextRestoreGState(context);
           }
         }
       }

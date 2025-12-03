@@ -1,31 +1,31 @@
 @interface WFImportToLightroomAction
-- (id)contentDestinationWithError:(id *)a3;
-- (id)generatedIntentWithIdentifier:(id)a3 input:(id)a4 processedParameters:(id)a5 error:(id *)a6;
+- (id)contentDestinationWithError:(id *)error;
+- (id)generatedIntentWithIdentifier:(id)identifier input:(id)input processedParameters:(id)parameters error:(id *)error;
 - (void)initializeParameters;
-- (void)resolveSlot:(id)a3 withProcessedValue:(id)a4 parameter:(id)a5 input:(id)a6 completion:(id)a7;
+- (void)resolveSlot:(id)slot withProcessedValue:(id)value parameter:(id)parameter input:(id)input completion:(id)completion;
 @end
 
 @implementation WFImportToLightroomAction
 
-- (id)contentDestinationWithError:(id *)a3
+- (id)contentDestinationWithError:(id *)error
 {
   v3 = MEMORY[0x277CFC238];
-  v4 = [(WFHandleIntentAction *)self appDescriptor];
-  v5 = [v3 locationWithAppDescriptor:v4];
+  appDescriptor = [(WFHandleIntentAction *)self appDescriptor];
+  v5 = [v3 locationWithAppDescriptor:appDescriptor];
 
   return v5;
 }
 
-- (void)resolveSlot:(id)a3 withProcessedValue:(id)a4 parameter:(id)a5 input:(id)a6 completion:(id)a7
+- (void)resolveSlot:(id)slot withProcessedValue:(id)value parameter:(id)parameter input:(id)input completion:(id)completion
 {
   v33[3] = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = [v12 wf_slotName];
-  v18 = [v17 isEqualToString:@"fileURLs"];
+  slotCopy = slot;
+  valueCopy = value;
+  parameterCopy = parameter;
+  inputCopy = input;
+  completionCopy = completion;
+  wf_slotName = [slotCopy wf_slotName];
+  v18 = [wf_slotName isEqualToString:@"fileURLs"];
 
   if (v18)
   {
@@ -37,39 +37,39 @@
     v31[1] = 3221225472;
     v31[2] = __87__WFImportToLightroomAction_resolveSlot_withProcessedValue_parameter_input_completion___block_invoke;
     v31[3] = &unk_278C1EE80;
-    v32 = v16;
-    [v15 generateCollectionByCoercingToItemClasses:v19 completionHandler:v31];
+    v32 = completionCopy;
+    [inputCopy generateCollectionByCoercingToItemClasses:v19 completionHandler:v31];
   }
 
   else
   {
-    v20 = [v12 wf_slotName];
-    v21 = [v20 isEqualToString:@"preset"];
+    wf_slotName2 = [slotCopy wf_slotName];
+    v21 = [wf_slotName2 isEqualToString:@"preset"];
 
     if (v21)
     {
-      v22 = v13;
-      v23 = [v22 identifier];
+      v22 = valueCopy;
+      identifier = [v22 identifier];
 
-      if (!v23)
+      if (!identifier)
       {
         v29 = +[WFLightroomPresetPickerParameter presetsByGroup];
         v24 = [(WFImportToLightroomAction *)self parameterValueForKey:@"presetGroup" ofClass:objc_opt_class()];
         v25 = [v29 objectForKeyedSubscript:v24];
-        v26 = [v22 displayString];
-        v27 = [v25 objectMatchingKey:@"displayString" value:v26];
+        displayString = [v22 displayString];
+        v27 = [v25 objectMatchingKey:@"displayString" value:displayString];
 
         v22 = v27;
       }
 
-      (*(v16 + 2))(v16, v22, 0);
+      (*(completionCopy + 2))(completionCopy, v22, 0);
     }
 
     else
     {
       v30.receiver = self;
       v30.super_class = WFImportToLightroomAction;
-      [(WFHandleIntentAction *)&v30 resolveSlot:v12 withProcessedValue:v13 parameter:v14 input:v15 completion:v16];
+      [(WFHandleIntentAction *)&v30 resolveSlot:slotCopy withProcessedValue:valueCopy parameter:parameterCopy input:inputCopy completion:completionCopy];
     }
   }
 
@@ -176,11 +176,11 @@ void __87__WFImportToLightroomAction_resolveSlot_withProcessedValue_parameter_in
   [v3 setAction:self];
 }
 
-- (id)generatedIntentWithIdentifier:(id)a3 input:(id)a4 processedParameters:(id)a5 error:(id *)a6
+- (id)generatedIntentWithIdentifier:(id)identifier input:(id)input processedParameters:(id)parameters error:(id *)error
 {
   v8.receiver = self;
   v8.super_class = WFImportToLightroomAction;
-  v6 = [(WFHandleCustomIntentAction *)&v8 generatedIntentWithIdentifier:a3 input:a4 processedParameters:a5 error:a6];
+  v6 = [(WFHandleCustomIntentAction *)&v8 generatedIntentWithIdentifier:identifier input:input processedParameters:parameters error:error];
   [v6 _setShouldForwardToAppOnSuccess:1];
 
   return v6;

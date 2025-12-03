@@ -1,27 +1,27 @@
 @interface EQKitLayout
 - (CGRect)erasableBounds;
 - (CGSize)naturalSize;
-- (EQKitLayout)initWithRoot:(id)a3 environment:(id)a4;
-- (EQKitLayout)layoutWithContext:(id)a3;
+- (EQKitLayout)initWithRoot:(id)root environment:(id)environment;
+- (EQKitLayout)layoutWithContext:(id)context;
 - (NSString)description;
 - (double)depth;
 - (double)height;
 - (double)vsize;
 - (void)dealloc;
-- (void)renderIntoContext:(CGContext *)a3 offset:(CGPoint)a4;
+- (void)renderIntoContext:(CGContext *)context offset:(CGPoint)offset;
 @end
 
 @implementation EQKitLayout
 
-- (EQKitLayout)initWithRoot:(id)a3 environment:(id)a4
+- (EQKitLayout)initWithRoot:(id)root environment:(id)environment
 {
   v8.receiver = self;
   v8.super_class = EQKitLayout;
   v6 = [(EQKitLayout *)&v8 init];
   if (v6)
   {
-    v6->mRoot = a3;
-    v6->mEnvironment = a4;
+    v6->mRoot = root;
+    v6->mEnvironment = environment;
   }
 
   return v6;
@@ -34,11 +34,11 @@
   [(EQKitLayout *)&v3 dealloc];
 }
 
-- (EQKitLayout)layoutWithContext:(id)a3
+- (EQKitLayout)layoutWithContext:(id)context
 {
   self->mBox = 0;
   self->mScale = 1.0;
-  if (a3)
+  if (context)
   {
     if ((objc_opt_respondsToSelector() & 1) == 0)
     {
@@ -52,7 +52,7 @@
     }
 
     objc_msgSend_beginLayout(self->mEnvironment, v8, v9, v10);
-    sub_275CA30B4(v48, a3, self->mEnvironment, v11);
+    sub_275CA30B4(v48, context, self->mEnvironment, v11);
     mBox = sub_275CA388C(v48, self->mRoot, &self->mAscent, &self->mDescent, &self->mLeading, &self->mNaturalAlignmentOffset, &self->mSingleLineHeight);
     self->mBox = mBox;
     if (self->mSingleLineHeight)
@@ -85,11 +85,11 @@
     objc_msgSend_width(mBox, v13, v14, v15);
     if (v29 > 0.0 && v16 > 0.0)
     {
-      objc_msgSend_targetSize(a3, v26, v27, v28);
+      objc_msgSend_targetSize(context, v26, v27, v28);
       v35 = v34;
       if (v34 <= 0.0 || (v36 = v33, v33 <= 0.0))
       {
-        objc_msgSend_containerSize(a3, v30, v31, v32);
+        objc_msgSend_containerSize(context, v30, v31, v32);
         v43 = v42;
         if (v42 <= 0.0)
         {
@@ -233,15 +233,15 @@ LABEL_20:
   return result;
 }
 
-- (void)renderIntoContext:(CGContext *)a3 offset:(CGPoint)a4
+- (void)renderIntoContext:(CGContext *)context offset:(CGPoint)offset
 {
-  y = a4.y;
-  x = a4.x;
-  CGContextSaveGState(a3);
-  CGContextScaleCTM(a3, self->mScale, self->mScale);
+  y = offset.y;
+  x = offset.x;
+  CGContextSaveGState(context);
+  CGContextScaleCTM(context, self->mScale, self->mScale);
   CGAffineTransformMakeScale(&v10, 1.0 / self->mScale, 1.0 / self->mScale);
-  objc_msgSend_renderIntoContext_offset_(self->mBox, v6, a3, v7, vaddq_f64(*&v10.tx, vmlaq_n_f64(vmulq_n_f64(*&v10.c, y), *&v10.a, x)));
-  CGContextRestoreGState(a3);
+  objc_msgSend_renderIntoContext_offset_(self->mBox, v6, context, v7, vaddq_f64(*&v10.tx, vmlaq_n_f64(vmulq_n_f64(*&v10.c, y), *&v10.a, x)));
+  CGContextRestoreGState(context);
 }
 
 - (NSString)description

@@ -1,31 +1,31 @@
 @interface _CPLProgress
-- (_CPLProgress)initWithIdentifier:(id)a3 firstSyncOfMainLibrary:(BOOL)a4;
+- (_CPLProgress)initWithIdentifier:(id)identifier firstSyncOfMainLibrary:(BOOL)library;
 - (void)_publishRealProgressIfNecessary;
 - (void)publish;
-- (void)setCompletedUnitCount:(int64_t)a3;
-- (void)setForeground:(BOOL)a3;
-- (void)setTotalUnitCount:(int64_t)a3;
-- (void)setUserInfoObject:(id)a3 forKey:(id)a4;
+- (void)setCompletedUnitCount:(int64_t)count;
+- (void)setForeground:(BOOL)foreground;
+- (void)setTotalUnitCount:(int64_t)count;
+- (void)setUserInfoObject:(id)object forKey:(id)key;
 - (void)unpublish;
 @end
 
 @implementation _CPLProgress
 
-- (_CPLProgress)initWithIdentifier:(id)a3 firstSyncOfMainLibrary:(BOOL)a4
+- (_CPLProgress)initWithIdentifier:(id)identifier firstSyncOfMainLibrary:(BOOL)library
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v16.receiver = self;
   v16.super_class = _CPLProgress;
   v7 = [(_CPLProgress *)&v16 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [identifierCopy copy];
     identifier = v7->_identifier;
     v7->_identifier = v8;
 
-    v7->_firstSyncForMainLibrary = a4;
+    v7->_firstSyncForMainLibrary = library;
     v17[0] = NSProgressCategoryKey;
-    v10 = [@"com.apple.cpl." stringByAppendingString:v6];
+    v10 = [@"com.apple.cpl." stringByAppendingString:identifierCopy];
     v17[1] = @"_CPLIsInitialSync";
     v18[0] = v10;
     v11 = [NSNumber numberWithBool:v7->_firstSyncForMainLibrary];
@@ -39,9 +39,9 @@
   return v7;
 }
 
-- (void)setTotalUnitCount:(int64_t)a3
+- (void)setTotalUnitCount:(int64_t)count
 {
-  self->_totalUnitCount = a3;
+  self->_totalUnitCount = count;
   progress = self->_progress;
   if (progress)
   {
@@ -49,9 +49,9 @@
   }
 }
 
-- (void)setCompletedUnitCount:(int64_t)a3
+- (void)setCompletedUnitCount:(int64_t)count
 {
-  self->_completedUnitCount = a3;
+  self->_completedUnitCount = count;
   progress = self->_progress;
   if (progress)
   {
@@ -59,25 +59,25 @@
   }
 }
 
-- (void)setUserInfoObject:(id)a3 forKey:(id)a4
+- (void)setUserInfoObject:(id)object forKey:(id)key
 {
-  v9 = a3;
-  v6 = a4;
+  objectCopy = object;
+  keyCopy = key;
   userInfo = self->_userInfo;
-  if (v9)
+  if (objectCopy)
   {
-    [(NSMutableDictionary *)userInfo setObject:v9 forKeyedSubscript:v6];
+    [(NSMutableDictionary *)userInfo setObject:objectCopy forKeyedSubscript:keyCopy];
   }
 
   else
   {
-    [(NSMutableDictionary *)userInfo removeObjectForKey:v6];
+    [(NSMutableDictionary *)userInfo removeObjectForKey:keyCopy];
   }
 
   progress = self->_progress;
   if (progress)
   {
-    [(NSProgress *)progress setUserInfoObject:v9 forKey:v6];
+    [(NSProgress *)progress setUserInfoObject:objectCopy forKey:keyCopy];
   }
 }
 
@@ -104,14 +104,14 @@
   }
 }
 
-- (void)setForeground:(BOOL)a3
+- (void)setForeground:(BOOL)foreground
 {
-  self->_foreground = a3;
+  self->_foreground = foreground;
   publishing = self->_publishing;
   progress = self->_progress;
-  if (!publishing || progress != 0 || !a3)
+  if (!publishing || progress != 0 || !foreground)
   {
-    if (progress && !a3)
+    if (progress && !foreground)
     {
       [(NSProgress *)progress _unpublish];
       v8 = self->_progress;

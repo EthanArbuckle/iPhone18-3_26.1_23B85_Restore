@@ -1,9 +1,9 @@
 @interface AUCalendarPolicyController
 + (id)loadPrivacySettingsBundle;
-+ (unint64_t)authorizationRightforAccessLevel:(int)a3;
-- (id)appSpecifierWithName:(id)a3 bundleID:(id)a4;
-- (id)calendarStatus:(id)a3;
-- (void)setCalendarStatus:(id)a3 specifier:(id)a4;
++ (unint64_t)authorizationRightforAccessLevel:(int)level;
+- (id)appSpecifierWithName:(id)name bundleID:(id)d;
+- (id)calendarStatus:(id)status;
+- (void)setCalendarStatus:(id)status specifier:(id)specifier;
 @end
 
 @implementation AUCalendarPolicyController
@@ -19,10 +19,10 @@
   return v5;
 }
 
-- (id)appSpecifierWithName:(id)a3 bundleID:(id)a4
+- (id)appSpecifierWithName:(id)name bundleID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  dCopy = d;
   v17 = 0;
   v18 = 0;
   v16 = 0;
@@ -30,30 +30,30 @@
   v8 = v18;
   v9 = v17;
   v10 = v16;
-  if (([v8 containsObject:v7] & 1) != 0 || (objc_msgSend(v9, "containsObject:", v7) & 1) != 0 || objc_msgSend(v10, "containsObject:", v7))
+  if (([v8 containsObject:dCopy] & 1) != 0 || (objc_msgSend(v9, "containsObject:", dCopy) & 1) != 0 || objc_msgSend(v10, "containsObject:", dCopy))
   {
-    v11 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:v6 target:self set:sel_setCalendarStatus_specifier_ get:sel_calendarStatus_ detail:objc_opt_class() cell:2 edit:0];
+    v11 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:nameCopy target:self set:sel_setCalendarStatus_specifier_ get:sel_calendarStatus_ detail:objc_opt_class() cell:2 edit:0];
     v12 = MEMORY[0x277CBEC38];
     [v11 setProperty:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277D40020]];
-    [v11 setProperty:v7 forKey:@"BUNDLE_ID"];
-    [v11 setProperty:v7 forKey:@"APP_NAME"];
+    [v11 setProperty:dCopy forKey:@"BUNDLE_ID"];
+    [v11 setProperty:dCopy forKey:@"APP_NAME"];
     [v11 setObject:v12 forKeyedSubscript:*MEMORY[0x277D3FF38]];
-    [v11 setProperty:v7 forKey:*MEMORY[0x277D3FFB8]];
+    [v11 setProperty:dCopy forKey:*MEMORY[0x277D3FFB8]];
     [v11 setObject:@"com.apple.mobilecal" forKeyedSubscript:*MEMORY[0x277D40008]];
-    v13 = [MEMORY[0x277CBEB18] array];
-    v14 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
     if (appSpecifierWithName_bundleID__onceToken != -1)
     {
       [AUCalendarPolicyController appSpecifierWithName:bundleID:];
     }
 
-    [v13 addObject:appSpecifierWithName_bundleID__noAccessStr];
-    [v14 addObject:&unk_282D7F750];
-    [v13 addObject:appSpecifierWithName_bundleID__writeAccessStr];
-    [v14 addObject:&unk_282D7F720];
-    [v13 addObject:appSpecifierWithName_bundleID__fullAccessStr];
-    [v14 addObject:&unk_282D7F738];
-    [v11 setValues:v14 titles:v13];
+    [array addObject:appSpecifierWithName_bundleID__noAccessStr];
+    [array2 addObject:&unk_282D7F750];
+    [array addObject:appSpecifierWithName_bundleID__writeAccessStr];
+    [array2 addObject:&unk_282D7F720];
+    [array addObject:appSpecifierWithName_bundleID__fullAccessStr];
+    [array2 addObject:&unk_282D7F738];
+    [v11 setValues:array2 titles:array];
   }
 
   else
@@ -80,9 +80,9 @@ void __60__AUCalendarPolicyController_appSpecifierWithName_bundleID___block_invo
   appSpecifierWithName_bundleID__noAccessStr = v4;
 }
 
-- (id)calendarStatus:(id)a3
+- (id)calendarStatus:(id)status
 {
-  v3 = [a3 propertyForKey:@"BUNDLE_ID"];
+  v3 = [status propertyForKey:@"BUNDLE_ID"];
   v11 = 0;
   v12 = 0;
   v10 = 0;
@@ -117,12 +117,12 @@ void __60__AUCalendarPolicyController_appSpecifierWithName_bundleID___block_invo
   return v7;
 }
 
-- (void)setCalendarStatus:(id)a3 specifier:(id)a4
+- (void)setCalendarStatus:(id)status specifier:(id)specifier
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [a4 propertyForKey:@"BUNDLE_ID"];
-  if ([v5 intValue] == 2)
+  statusCopy = status;
+  v6 = [specifier propertyForKey:@"BUNDLE_ID"];
+  if ([statusCopy intValue] == 2)
   {
     v7 = _AULoggingFacility();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -139,7 +139,7 @@ void __60__AUCalendarPolicyController_appSpecifierWithName_bundleID___block_invo
 
   else
   {
-    if ([v5 intValue] == 1)
+    if ([statusCopy intValue] == 1)
     {
       v11 = _AULoggingFacility();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -155,15 +155,15 @@ void __60__AUCalendarPolicyController_appSpecifierWithName_bundleID___block_invo
 
     else
     {
-      v12 = [v5 intValue];
+      intValue = [statusCopy intValue];
       v13 = _AULoggingFacility();
       v14 = os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT);
-      if (v12)
+      if (intValue)
       {
         if (v14)
         {
           v16 = 138412290;
-          v17 = v5;
+          v17 = statusCopy;
           _os_log_impl(&dword_21BAF4000, v13, OS_LOG_TYPE_DEFAULT, "Unexpected value set for calendar tcc access: %@", &v16, 0xCu);
         }
 
@@ -193,16 +193,16 @@ void __60__AUCalendarPolicyController_appSpecifierWithName_bundleID___block_invo
   v15 = *MEMORY[0x277D85DE8];
 }
 
-+ (unint64_t)authorizationRightforAccessLevel:(int)a3
++ (unint64_t)authorizationRightforAccessLevel:(int)level
 {
-  if ((a3 - 1) > 2)
+  if ((level - 1) > 2)
   {
     return 0;
   }
 
   else
   {
-    return qword_21BB24EA0[a3 - 1];
+    return qword_21BB24EA0[level - 1];
   }
 }
 

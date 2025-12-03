@@ -1,15 +1,15 @@
 @interface BLSAssertionDescriptor
-- (BLSAssertionDescriptor)initWithCoder:(id)a3;
-- (BLSAssertionDescriptor)initWithExplanation:(id)a3 attributes:(id)a4;
-- (BLSAssertionDescriptor)initWithXPCDictionary:(id)a3;
-- (BOOL)checkEntitlementSourceForRequiredEntitlements:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
+- (BLSAssertionDescriptor)initWithCoder:(id)coder;
+- (BLSAssertionDescriptor)initWithExplanation:(id)explanation attributes:(id)attributes;
+- (BLSAssertionDescriptor)initWithXPCDictionary:(id)dictionary;
+- (BOOL)checkEntitlementSourceForRequiredEntitlements:(id)entitlements error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)attributeOfClass:(Class)a3;
-- (id)attributesOfClasses:(id)a3;
+- (id)attributeOfClass:(Class)class;
+- (id)attributesOfClasses:(id)classes;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)encodeWithXPCDictionary:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)encodeWithXPCDictionary:(id)dictionary;
 @end
 
 @implementation BLSAssertionDescriptor
@@ -19,25 +19,25 @@
   v3 = [MEMORY[0x277CF0C00] builderWithObject:self];
   [v3 appendString:self->_explanation withName:@"explanation"];
   [v3 appendArraySection:self->_attributes withName:@"attributes" skipIfEmpty:0];
-  v4 = [v3 build];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (BLSAssertionDescriptor)initWithExplanation:(id)a3 attributes:(id)a4
+- (BLSAssertionDescriptor)initWithExplanation:(id)explanation attributes:(id)attributes
 {
-  v6 = a3;
-  v7 = a4;
+  explanationCopy = explanation;
+  attributesCopy = attributes;
   v72.receiver = self;
   v72.super_class = BLSAssertionDescriptor;
   v8 = [(BLSAssertionDescriptor *)&v72 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [explanationCopy copy];
     explanation = v8->_explanation;
     v8->_explanation = v9;
 
-    v11 = [v7 copy];
+    v11 = [attributesCopy copy];
     attributes = v8->_attributes;
     v8->_attributes = v11;
 
@@ -226,14 +226,14 @@ BOOL __57__BLSAssertionDescriptor_initWithExplanation_attributes___block_invoke_
   return v6;
 }
 
-- (id)attributeOfClass:(Class)a3
+- (id)attributeOfClass:(Class)class
 {
   attributes = self->_attributes;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __43__BLSAssertionDescriptor_attributeOfClass___block_invoke;
   v8[3] = &__block_descriptor_40_e29_B32__0__BLSAttribute_8Q16_B24lu32l8;
-  v8[4] = a3;
+  v8[4] = class;
   v5 = [(NSArray *)attributes indexOfObjectPassingTest:v8];
   if (v5 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -248,16 +248,16 @@ BOOL __57__BLSAssertionDescriptor_initWithExplanation_attributes___block_invoke_
   return v6;
 }
 
-- (id)attributesOfClasses:(id)a3
+- (id)attributesOfClasses:(id)classes
 {
-  v4 = a3;
+  classesCopy = classes;
   attributes = self->_attributes;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __46__BLSAssertionDescriptor_attributesOfClasses___block_invoke;
   v10[3] = &unk_278429260;
-  v11 = v4;
-  v6 = v4;
+  v11 = classesCopy;
+  v6 = classesCopy;
   v7 = [(NSArray *)attributes indexesOfObjectsPassingTest:v10];
   v8 = [(NSArray *)attributes objectsAtIndexes:v7];
 
@@ -272,16 +272,16 @@ uint64_t __46__BLSAssertionDescriptor_attributesOfClasses___block_invoke(uint64_
   return [v1 containsObject:v2];
 }
 
-- (BOOL)checkEntitlementSourceForRequiredEntitlements:(id)a3 error:(id *)a4
+- (BOOL)checkEntitlementSourceForRequiredEntitlements:(id)entitlements error:(id *)error
 {
   v40 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  entitlementsCopy = entitlements;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v8 = [(BLSAssertionDescriptor *)self attributes];
-  v9 = [v8 countByEnumeratingWithState:&v33 objects:v39 count:16];
+  attributes = [(BLSAssertionDescriptor *)self attributes];
+  v9 = [attributes countByEnumeratingWithState:&v33 objects:v39 count:16];
   v10 = v9 == 0;
   if (!v9)
   {
@@ -293,8 +293,8 @@ LABEL_21:
 
   v11 = v9;
   v28 = a2;
-  v29 = self;
-  v31 = a4;
+  selfCopy = self;
+  errorCopy = error;
   v30 = v9 == 0;
   v12 = 0;
   v13 = *v34;
@@ -305,19 +305,19 @@ LABEL_21:
     {
       if (*v34 != v13)
       {
-        objc_enumerationMutation(v8);
+        objc_enumerationMutation(attributes);
       }
 
       v15 = *(*(&v33 + 1) + 8 * i);
       v32 = 0;
-      v16 = [v15 checkEntitlementSourceForRequiredEntitlements:v7 error:&v32];
+      v16 = [v15 checkEntitlementSourceForRequiredEntitlements:entitlementsCopy error:&v32];
       v17 = v32;
       v18 = v17;
       if ((v16 & 1) == 0)
       {
         if (!v17)
         {
-          [(BLSAssertionDescriptor *)v15 checkEntitlementSourceForRequiredEntitlements:v28 error:v29];
+          [(BLSAssertionDescriptor *)v15 checkEntitlementSourceForRequiredEntitlements:v28 error:selfCopy];
         }
 
         if (v12)
@@ -334,18 +334,18 @@ LABEL_21:
       }
     }
 
-    v11 = [v8 countByEnumeratingWithState:&v33 objects:v39 count:16];
+    v11 = [attributes countByEnumeratingWithState:&v33 objects:v39 count:16];
   }
 
   while (v11);
 
-  if (v31 != 0 && !v10)
+  if (errorCopy != 0 && !v10)
   {
-    v8 = [v12 firstObject];
+    attributes = [v12 firstObject];
     if ([v12 count] < 2)
     {
-      v25 = v8;
-      *v31 = v8;
+      v25 = attributes;
+      *errorCopy = attributes;
     }
 
     else
@@ -353,14 +353,14 @@ LABEL_21:
       v19 = MEMORY[0x277CCA9B8];
       v37[0] = *MEMORY[0x277CCA450];
       v20 = MEMORY[0x277CCACA8];
-      v21 = [v7 description];
-      v22 = [v8 localizedDescription];
-      v23 = [v20 stringWithFormat:@"%@ missing multiple entitlements including '%@'", v21, v22];
+      v21 = [entitlementsCopy description];
+      localizedDescription = [attributes localizedDescription];
+      v23 = [v20 stringWithFormat:@"%@ missing multiple entitlements including '%@'", v21, localizedDescription];
       v37[1] = *MEMORY[0x277CCA578];
       v38[0] = v23;
       v38[1] = v12;
       v24 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v38 forKeys:v37 count:2];
-      *v31 = [v19 errorWithDomain:@"com.apple.BacklightServices" code:21 userInfo:v24];
+      *errorCopy = [v19 errorWithDomain:@"com.apple.BacklightServices" code:21 userInfo:v24];
     }
 
     v10 = v30;
@@ -375,18 +375,18 @@ LABEL_22:
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x277CF0C40] builder];
-  v4 = [v3 appendString:self->_explanation];
-  v5 = [v3 appendObject:self->_attributes];
-  v6 = [v3 hash];
+  builder = [MEMORY[0x277CF0C40] builder];
+  v4 = [builder appendString:self->_explanation];
+  v5 = [builder appendObject:self->_attributes];
+  v6 = [builder hash];
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v10 = 1;
   }
@@ -396,14 +396,14 @@ LABEL_22:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       explanation = self->_explanation;
-      v7 = [(BLSAssertionDescriptor *)v5 explanation];
-      if ([(NSString *)explanation isEqual:v7])
+      explanation = [(BLSAssertionDescriptor *)v5 explanation];
+      if ([(NSString *)explanation isEqual:explanation])
       {
         attributes = self->_attributes;
-        v9 = [(BLSAssertionDescriptor *)v5 attributes];
-        v10 = [(NSArray *)attributes isEqual:v9];
+        attributes = [(BLSAssertionDescriptor *)v5 attributes];
+        v10 = [(NSArray *)attributes isEqual:attributes];
       }
 
       else
@@ -421,12 +421,12 @@ LABEL_22:
   return v10;
 }
 
-- (BLSAssertionDescriptor)initWithXPCDictionary:(id)a3
+- (BLSAssertionDescriptor)initWithXPCDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [@"explanation" UTF8String];
-  v6 = [@"attributes" UTF8String];
-  string = xpc_dictionary_get_string(v4, v5);
+  dictionaryCopy = dictionary;
+  uTF8String = [@"explanation" UTF8String];
+  uTF8String2 = [@"attributes" UTF8String];
+  string = xpc_dictionary_get_string(dictionaryCopy, uTF8String);
   if (string)
   {
     v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:string];
@@ -437,13 +437,13 @@ LABEL_22:
     v9 = bls_assertions_log();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
     {
-      [(BLSBacklightChangeRequest *)v4 initWithXPCDictionary:v9];
+      [(BLSBacklightChangeRequest *)dictionaryCopy initWithXPCDictionary:v9];
     }
 
     v8 = @"<NULL>";
   }
 
-  v10 = xpc_dictionary_get_array(v4, v6);
+  v10 = xpc_dictionary_get_array(dictionaryCopy, uTF8String2);
   v11 = objc_alloc_init(MEMORY[0x277CBEB18]);
   applier[0] = MEMORY[0x277D85DD0];
   applier[1] = 3221225472;
@@ -492,39 +492,39 @@ LABEL_9:
   return 1;
 }
 
-- (void)encodeWithXPCDictionary:(id)a3
+- (void)encodeWithXPCDictionary:(id)dictionary
 {
-  xdict = a3;
-  v4 = [@"explanation" UTF8String];
+  xdict = dictionary;
+  uTF8String = [@"explanation" UTF8String];
   [@"attributes" UTF8String];
-  xpc_dictionary_set_string(xdict, v4, [(NSString *)self->_explanation UTF8String]);
+  xpc_dictionary_set_string(xdict, uTF8String, [(NSString *)self->_explanation UTF8String]);
   attributes = self->_attributes;
   BSSerializeArrayOfBSXPCEncodableObjectsToXPCDictionaryWithKey();
 }
 
-- (BLSAssertionDescriptor)initWithCoder:(id)a3
+- (BLSAssertionDescriptor)initWithCoder:(id)coder
 {
   v13[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"explanation"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"explanation"];
   v6 = MEMORY[0x277CBEB98];
   v13[0] = objc_opt_class();
   v13[1] = objc_opt_class();
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:2];
   v8 = [v6 setWithArray:v7];
-  v9 = [v4 decodeObjectOfClasses:v8 forKey:@"attributes"];
+  v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"attributes"];
 
   v10 = [(BLSAssertionDescriptor *)self initWithExplanation:v5 attributes:v9];
   v11 = *MEMORY[0x277D85DE8];
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   explanation = self->_explanation;
-  v5 = a3;
-  [v5 encodeObject:explanation forKey:@"explanation"];
-  [v5 encodeObject:self->_attributes forKey:@"attributes"];
+  coderCopy = coder;
+  [coderCopy encodeObject:explanation forKey:@"explanation"];
+  [coderCopy encodeObject:self->_attributes forKey:@"attributes"];
 }
 
 - (void)checkEntitlementSourceForRequiredEntitlements:(uint64_t)a3 error:.cold.1(uint64_t a1, const char *a2, uint64_t a3)

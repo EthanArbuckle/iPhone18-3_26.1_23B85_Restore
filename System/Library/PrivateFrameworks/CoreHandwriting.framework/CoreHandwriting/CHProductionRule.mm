@@ -1,41 +1,41 @@
 @interface CHProductionRule
-- (CHProductionRule)initWithLeftNode:(id)a3 rightNode1:(id)a4 rightNode2:(id)a5 probability:(double)a6;
-- (CHProductionRule)initWithLeftNode:(id)a3 rightNode:(id)a4 probability:(double)a5;
+- (CHProductionRule)initWithLeftNode:(id)node rightNode1:(id)node1 rightNode2:(id)node2 probability:(double)probability;
+- (CHProductionRule)initWithLeftNode:(id)node rightNode:(id)rightNode probability:(double)probability;
 - (id)description;
 - (id)key;
 @end
 
 @implementation CHProductionRule
 
-- (CHProductionRule)initWithLeftNode:(id)a3 rightNode:(id)a4 probability:(double)a5
+- (CHProductionRule)initWithLeftNode:(id)node rightNode:(id)rightNode probability:(double)probability
 {
-  v9 = a3;
-  v10 = a4;
+  nodeCopy = node;
+  rightNodeCopy = rightNode;
   v16 = objc_msgSend_init(self, v11, v12, v13, v14, v15);
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong((v16 + 8), a3);
-    objc_storeStrong(&v17->_rightNode1, a4);
-    v17->_probability = a5;
+    objc_storeStrong((v16 + 8), node);
+    objc_storeStrong(&v17->_rightNode1, rightNode);
+    v17->_probability = probability;
   }
 
   return v17;
 }
 
-- (CHProductionRule)initWithLeftNode:(id)a3 rightNode1:(id)a4 rightNode2:(id)a5 probability:(double)a6
+- (CHProductionRule)initWithLeftNode:(id)node rightNode1:(id)node1 rightNode2:(id)node2 probability:(double)probability
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  nodeCopy = node;
+  node1Copy = node1;
+  node2Copy = node2;
   v19 = objc_msgSend_init(self, v14, v15, v16, v17, v18);
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong((v19 + 8), a3);
-    objc_storeStrong(&v20->_rightNode1, a4);
-    objc_storeStrong(&v20->_rightNode2, a5);
-    v20->_probability = a6;
+    objc_storeStrong((v19 + 8), node);
+    objc_storeStrong(&v20->_rightNode1, node1);
+    objc_storeStrong(&v20->_rightNode2, node2);
+    v20->_probability = probability;
   }
 
   return v20;

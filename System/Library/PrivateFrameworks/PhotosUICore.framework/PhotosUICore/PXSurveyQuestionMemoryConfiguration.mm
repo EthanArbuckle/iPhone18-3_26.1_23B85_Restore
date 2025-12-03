@@ -1,36 +1,36 @@
 @interface PXSurveyQuestionMemoryConfiguration
-- (BOOL)needsQuestionInvalidationForChange:(id)a3;
+- (BOOL)needsQuestionInvalidationForChange:(id)change;
 - (CGRect)contentRectForOneUp;
 - (PXSurveyQuestionMemoryConfiguration)init;
-- (PXSurveyQuestionMemoryConfiguration)initWithTitle:(id)a3 memory:(id)a4 songAdamId:(id)a5 customKeyAssetIdentifier:(id)a6;
+- (PXSurveyQuestionMemoryConfiguration)initWithTitle:(id)title memory:(id)memory songAdamId:(id)id customKeyAssetIdentifier:(id)identifier;
 - (UIView)contentView;
-- (void)layoutContentViewInRect:(CGRect)a3;
-- (void)presentDetailsForMemoryView:(id)a3;
+- (void)layoutContentViewInRect:(CGRect)rect;
+- (void)presentDetailsForMemoryView:(id)view;
 @end
 
 @implementation PXSurveyQuestionMemoryConfiguration
 
-- (void)presentDetailsForMemoryView:(id)a3
+- (void)presentDetailsForMemoryView:(id)view
 {
   v9 = [PXPhotosDetailsContext photosDetailsContextForMemory:self->_memory];
   v4 = [[PXPhotosDetailsUIViewController alloc] initWithContext:v9 options:0];
-  v5 = [(PXSurveyQuestionMemoryConfiguration *)self handlers];
-  v6 = [v5 pushViewControllerHandler];
+  handlers = [(PXSurveyQuestionMemoryConfiguration *)self handlers];
+  pushViewControllerHandler = [handlers pushViewControllerHandler];
 
-  if (v6)
+  if (pushViewControllerHandler)
   {
-    v7 = [(PXSurveyQuestionMemoryConfiguration *)self handlers];
-    v8 = [v7 pushViewControllerHandler];
-    (v8)[2](v8, v4, self->_memory);
+    handlers2 = [(PXSurveyQuestionMemoryConfiguration *)self handlers];
+    pushViewControllerHandler2 = [handlers2 pushViewControllerHandler];
+    (pushViewControllerHandler2)[2](pushViewControllerHandler2, v4, self->_memory);
   }
 }
 
-- (BOOL)needsQuestionInvalidationForChange:(id)a3
+- (BOOL)needsQuestionInvalidationForChange:(id)change
 {
-  v3 = [a3 changeDetailsForObject:self->_memory];
-  v4 = [v3 objectWasDeleted];
+  v3 = [change changeDetailsForObject:self->_memory];
+  objectWasDeleted = [v3 objectWasDeleted];
 
-  return v4;
+  return objectWasDeleted;
 }
 
 - (CGRect)contentRectForOneUp
@@ -46,25 +46,25 @@
   return result;
 }
 
-- (void)layoutContentViewInRect:(CGRect)a3
+- (void)layoutContentViewInRect:(CGRect)rect
 {
-  if (a3.size.height >= a3.size.width)
+  if (rect.size.height >= rect.size.width)
   {
-    if (a3.size.height > a3.size.width)
+    if (rect.size.height > rect.size.width)
     {
-      a3.origin.y = a3.origin.y + (a3.size.height - a3.size.width) * 0.5 + 8.0;
-      a3.size.height = a3.size.width;
+      rect.origin.y = rect.origin.y + (rect.size.height - rect.size.width) * 0.5 + 8.0;
+      rect.size.height = rect.size.width;
     }
   }
 
   else
   {
-    a3.origin.x = a3.origin.x + (a3.size.width - a3.size.height) * 0.5;
-    a3.origin.y = a3.origin.y + 8.0;
-    a3.size.width = a3.size.height;
+    rect.origin.x = rect.origin.x + (rect.size.width - rect.size.height) * 0.5;
+    rect.origin.y = rect.origin.y + 8.0;
+    rect.size.width = rect.size.height;
   }
 
-  [(PXMemoryView *)self->_memoryView setFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(PXMemoryView *)self->_memoryView setFrame:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
 }
 
 - (UIView)contentView
@@ -76,11 +76,11 @@
     v4 = [PXMemoryInfo memoryInfoWithMemory:self->_memory];
     if (self->_customKeyAssetIdentifier)
     {
-      v5 = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
+      librarySpecificFetchOptions = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
       v6 = MEMORY[0x1E6978630];
       v17[0] = self->_customKeyAssetIdentifier;
       v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:1];
-      v8 = [v6 fetchAssetsWithUUIDs:v7 options:v5];
+      v8 = [v6 fetchAssetsWithUUIDs:v7 options:librarySpecificFetchOptions];
 
       v9 = [v4 memoryInfoWithUpdatedKeyAssetFetchResult:v8];
 
@@ -127,22 +127,22 @@ void __50__PXSurveyQuestionMemoryConfiguration_contentView__block_invoke(uint64_
 
 - (PXSurveyQuestionMemoryConfiguration)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXSurveyQuestionMemoryConfiguration.m" lineNumber:52 description:{@"%s is not available as initializer", "-[PXSurveyQuestionMemoryConfiguration init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXSurveyQuestionMemoryConfiguration.m" lineNumber:52 description:{@"%s is not available as initializer", "-[PXSurveyQuestionMemoryConfiguration init]"}];
 
   abort();
 }
 
-- (PXSurveyQuestionMemoryConfiguration)initWithTitle:(id)a3 memory:(id)a4 songAdamId:(id)a5 customKeyAssetIdentifier:(id)a6
+- (PXSurveyQuestionMemoryConfiguration)initWithTitle:(id)title memory:(id)memory songAdamId:(id)id customKeyAssetIdentifier:(id)identifier
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  titleCopy = title;
+  memoryCopy = memory;
+  idCopy = id;
+  identifierCopy = identifier;
   v21.receiver = self;
   v21.super_class = PXSurveyQuestionMemoryConfiguration;
   v14 = [(PXSurveyQuestionMemoryConfiguration *)&v21 init];
-  if (v14 && (v15 = [v10 copy], title = v14->_title, v14->_title = v15, title, objc_storeStrong(&v14->_memory, a4), objc_storeStrong(&v14->_songAdamId, a5), v14->_isStale = 0, objc_storeStrong(&v14->_customKeyAssetIdentifier, a6), v14->_customKeyAssetIdentifier) && (-[PHMemory photoLibrary](v14->_memory, "photoLibrary"), v17 = objc_claimAutoreleasedReturnValue(), photoLibrary = v14->_photoLibrary, v14->_photoLibrary = v17, photoLibrary, !v14->_photoLibrary))
+  if (v14 && (v15 = [titleCopy copy], title = v14->_title, v14->_title = v15, title, objc_storeStrong(&v14->_memory, memory), objc_storeStrong(&v14->_songAdamId, id), v14->_isStale = 0, objc_storeStrong(&v14->_customKeyAssetIdentifier, identifier), v14->_customKeyAssetIdentifier) && (-[PHMemory photoLibrary](v14->_memory, "photoLibrary"), v17 = objc_claimAutoreleasedReturnValue(), photoLibrary = v14->_photoLibrary, v14->_photoLibrary = v17, photoLibrary, !v14->_photoLibrary))
   {
     v19 = 0;
   }

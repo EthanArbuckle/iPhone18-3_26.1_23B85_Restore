@@ -1,31 +1,31 @@
 @interface LTUIVisualTranslationView
-+ (CGRect)clipRect:(CGRect)a3 contentRect:(CGRect)a4;
-+ (void)constrainToSuperview:(id)a3;
-+ (void)isTranslatable:(id)a3 completion:(id)a4;
-- (LTUIVisualTranslationView)initWithCoder:(id)a3;
-- (LTUIVisualTranslationView)initWithFrame:(CGRect)a3;
++ (CGRect)clipRect:(CGRect)rect contentRect:(CGRect)contentRect;
++ (void)constrainToSuperview:(id)superview;
++ (void)isTranslatable:(id)translatable completion:(id)completion;
+- (LTUIVisualTranslationView)initWithCoder:(id)coder;
+- (LTUIVisualTranslationView)initWithFrame:(CGRect)frame;
 - (UIView)_presentationAnchorView;
 - (void)didMoveToSuperview;
 - (void)dismiss;
-- (void)drawRect:(CGRect)a3;
-- (void)registerForDismissEvent:(id)a3;
-- (void)setZoomScale:(double)a3;
-- (void)translate:(id)a3;
-- (void)translate:(id)a3 completion:(id)a4;
-- (void)translate:(id)a3 sourceLocale:(id)a4 targetLocale:(id)a5 completion:(id)a6;
-- (void)updatePresentationAnchorRectForContentRect:(CGRect)a3;
+- (void)drawRect:(CGRect)rect;
+- (void)registerForDismissEvent:(id)event;
+- (void)setZoomScale:(double)scale;
+- (void)translate:(id)translate;
+- (void)translate:(id)translate completion:(id)completion;
+- (void)translate:(id)translate sourceLocale:(id)locale targetLocale:(id)targetLocale completion:(id)completion;
+- (void)updatePresentationAnchorRectForContentRect:(CGRect)rect;
 @end
 
 @implementation LTUIVisualTranslationView
 
-- (void)updatePresentationAnchorRectForContentRect:(CGRect)a3
+- (void)updatePresentationAnchorRectForContentRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v70 = *MEMORY[0x277D85DE8];
-  if (CGRectIsEmpty(a3))
+  if (CGRectIsEmpty(rect))
   {
     v8 = _LTOSLogVisualTranslation();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
@@ -36,19 +36,19 @@
 
   else
   {
-    v9 = [(LTUIVisualTranslationView *)self _presentationAnchorView];
-    [v9 frame];
+    _presentationAnchorView = [(LTUIVisualTranslationView *)self _presentationAnchorView];
+    [_presentationAnchorView frame];
     v11 = v10;
     v13 = v12;
     v15 = v14;
     v17 = v16;
 
-    v18 = [(LTUIVisualTranslationView *)self _presentationAnchorView];
+    _presentationAnchorView2 = [(LTUIVisualTranslationView *)self _presentationAnchorView];
     v58 = v13;
     v59 = v11;
     v56 = v17;
     v57 = v15;
-    [v18 convertRect:self toView:{v11, v13, v15, v17}];
+    [_presentationAnchorView2 convertRect:self toView:{v11, v13, v15, v17}];
     v20 = v19;
     v22 = v21;
     v24 = v23;
@@ -90,28 +90,28 @@
       _os_log_debug_impl(&dword_26F39E000, v42, OS_LOG_TYPE_DEBUG, "Anchor rect %{public}@ converted to %{public}@; clipped to %{public}@; Swift UI rect %{public}@ in content rect %{public}@", buf, 0x34u);
     }
 
-    v40 = [(LTUIVisualTranslationView *)self translationView];
-    [v40 setPresentationAnchorWithRect:v32 contentRect:{v34, v36, v38, x, y, width, height}];
+    translationView = [(LTUIVisualTranslationView *)self translationView];
+    [translationView setPresentationAnchorWithRect:v32 contentRect:{v34, v36, v38, x, y, width, height}];
   }
 
   v41 = *MEMORY[0x277D85DE8];
 }
 
-+ (CGRect)clipRect:(CGRect)a3 contentRect:(CGRect)a4
++ (CGRect)clipRect:(CGRect)rect contentRect:(CGRect)contentRect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = a3.size.height;
-  v9 = a3.size.width;
-  v10 = a3.origin.y;
-  v11 = a3.origin.x;
+  height = contentRect.size.height;
+  width = contentRect.size.width;
+  y = contentRect.origin.y;
+  x = contentRect.origin.x;
+  v8 = rect.size.height;
+  v9 = rect.size.width;
+  v10 = rect.origin.y;
+  v11 = rect.origin.x;
   v30.origin.x = v11;
   v30.origin.y = v10;
   v30.size.width = v9;
   v30.size.height = v8;
-  if (!CGRectContainsRect(a4, v30))
+  if (!CGRectContainsRect(contentRect, v30))
   {
     if (v11 < x)
     {
@@ -221,11 +221,11 @@
   return result;
 }
 
-- (LTUIVisualTranslationView)initWithFrame:(CGRect)a3
+- (LTUIVisualTranslationView)initWithFrame:(CGRect)frame
 {
   v15.receiver = self;
   v15.super_class = LTUIVisualTranslationView;
-  v3 = [(LTUIVisualTranslationView *)&v15 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(LTUIVisualTranslationView *)&v15 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -240,15 +240,15 @@
     [v6 setDismissHandler:&v12];
 
     [(LTUIVisualTranslationView *)v4 setCompletion:0];
-    v7 = [(LTUIVisualTranslationView *)v4 translationView];
-    v8 = [v7 view];
+    translationView = [(LTUIVisualTranslationView *)v4 translationView];
+    view = [translationView view];
 
-    [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v9 = [MEMORY[0x277D75348] clearColor];
-    [v8 setBackgroundColor:v9];
+    [view setTranslatesAutoresizingMaskIntoConstraints:0];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [view setBackgroundColor:clearColor];
 
-    [(LTUIVisualTranslationView *)v4 addSubview:v8];
-    [LTUIVisualTranslationView constrainToSuperview:v8];
+    [(LTUIVisualTranslationView *)v4 addSubview:view];
+    [LTUIVisualTranslationView constrainToSuperview:view];
     v10 = v4;
 
     objc_destroyWeak(&v13);
@@ -264,11 +264,11 @@ void __43__LTUIVisualTranslationView_initWithFrame___block_invoke(uint64_t a1)
   [WeakRetained dismiss];
 }
 
-- (LTUIVisualTranslationView)initWithCoder:(id)a3
+- (LTUIVisualTranslationView)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = LTUIVisualTranslationView;
-  v3 = [(LTUIVisualTranslationView *)&v7 initWithFrame:a3, *MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
+  v3 = [(LTUIVisualTranslationView *)&v7 initWithFrame:coder, *MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
   v4 = v3;
   if (v3)
   {
@@ -278,57 +278,57 @@ void __43__LTUIVisualTranslationView_initWithFrame___block_invoke(uint64_t a1)
   return v4;
 }
 
-+ (void)isTranslatable:(id)a3 completion:(id)a4
++ (void)isTranslatable:(id)translatable completion:(id)completion
 {
-  v5 = a4;
-  v6 = [LTUIVisualTranslationService compactObservations:a3];
+  completionCopy = completion;
+  v6 = [LTUIVisualTranslationService compactObservations:translatable];
   v7 = _LTOSLogVisualTranslation();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     +[LTUIVisualTranslationView isTranslatable:completion:];
   }
 
-  [_TtC13TranslationUI24VisualTranslationService isTranslatable:v6 completion:v5];
+  [_TtC13TranslationUI24VisualTranslationService isTranslatable:v6 completion:completionCopy];
 }
 
-- (void)translate:(id)a3
+- (void)translate:(id)translate
 {
-  v5 = [LTUIVisualTranslationService compactObservations:a3];
-  v4 = [(LTUIVisualTranslationView *)self translationView];
-  [v4 translate:v5 sourceLocale:0 targetLocale:0 completion:0];
+  v5 = [LTUIVisualTranslationService compactObservations:translate];
+  translationView = [(LTUIVisualTranslationView *)self translationView];
+  [translationView translate:v5 sourceLocale:0 targetLocale:0 completion:0];
 }
 
-- (void)translate:(id)a3 completion:(id)a4
+- (void)translate:(id)translate completion:(id)completion
 {
-  v6 = a4;
-  v8 = [LTUIVisualTranslationService compactObservations:a3];
-  v7 = [(LTUIVisualTranslationView *)self translationView];
-  [v7 translate:v8 sourceLocale:0 targetLocale:0 completion:v6];
+  completionCopy = completion;
+  v8 = [LTUIVisualTranslationService compactObservations:translate];
+  translationView = [(LTUIVisualTranslationView *)self translationView];
+  [translationView translate:v8 sourceLocale:0 targetLocale:0 completion:completionCopy];
 }
 
-- (void)translate:(id)a3 sourceLocale:(id)a4 targetLocale:(id)a5 completion:(id)a6
+- (void)translate:(id)translate sourceLocale:(id)locale targetLocale:(id)targetLocale completion:(id)completion
 {
   v25 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  translateCopy = translate;
+  localeCopy = locale;
+  targetLocaleCopy = targetLocale;
+  completionCopy = completion;
   v14 = _LTOSLogVisualTranslation();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     v15 = v14;
     v19 = 134218498;
-    v20 = [v10 count];
+    v20 = [translateCopy count];
     v21 = 2114;
-    v22 = v11;
+    v22 = localeCopy;
     v23 = 2114;
-    v24 = v12;
+    v24 = targetLocaleCopy;
     _os_log_impl(&dword_26F39E000, v15, OS_LOG_TYPE_DEFAULT, "Requested translation of %lu observations from %{public}@ to %{public}@", &v19, 0x20u);
   }
 
-  v16 = [LTUIVisualTranslationService compactObservations:v10];
-  v17 = [(LTUIVisualTranslationView *)self translationView];
-  [v17 translate:v16 sourceLocale:v11 targetLocale:v12 completion:v13];
+  v16 = [LTUIVisualTranslationService compactObservations:translateCopy];
+  translationView = [(LTUIVisualTranslationView *)self translationView];
+  [translationView translate:v16 sourceLocale:localeCopy targetLocale:targetLocaleCopy completion:completionCopy];
 
   v18 = *MEMORY[0x277D85DE8];
 }
@@ -343,30 +343,30 @@ void __43__LTUIVisualTranslationView_initWithFrame___block_invoke(uint64_t a1)
   }
 
   [(LTUIVisualTranslationView *)self removeFromSuperview];
-  v4 = [(LTUIVisualTranslationView *)self translationView];
-  [v4 dismissErrorUI];
+  translationView = [(LTUIVisualTranslationView *)self translationView];
+  [translationView dismissErrorUI];
 
-  v5 = [(LTUIVisualTranslationView *)self completion];
+  completion = [(LTUIVisualTranslationView *)self completion];
 
-  if (v5)
+  if (completion)
   {
-    v6 = [(LTUIVisualTranslationView *)self completion];
-    v6[2](v6, 0);
+    completion2 = [(LTUIVisualTranslationView *)self completion];
+    completion2[2](completion2, 0);
   }
 }
 
-- (void)registerForDismissEvent:(id)a3
+- (void)registerForDismissEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(LTUIVisualTranslationView *)self completion];
+  eventCopy = event;
+  completion = [(LTUIVisualTranslationView *)self completion];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __53__LTUIVisualTranslationView_registerForDismissEvent___block_invoke;
   v8[3] = &unk_279DD71B8;
-  v9 = v5;
-  v10 = v4;
-  v6 = v4;
-  v7 = v5;
+  v9 = completion;
+  v10 = eventCopy;
+  v6 = eventCopy;
+  v7 = completion;
   [(LTUIVisualTranslationView *)self setCompletion:v8];
 }
 
@@ -389,18 +389,18 @@ uint64_t __53__LTUIVisualTranslationView_registerForDismissEvent___block_invoke(
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)setZoomScale:(double)a3
+- (void)setZoomScale:(double)scale
 {
-  v4 = [(LTUIVisualTranslationView *)self translationView];
-  [v4 setZoomScale:a3];
+  translationView = [(LTUIVisualTranslationView *)self translationView];
+  [translationView setZoomScale:scale];
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v8 = _LTOSLogVisualTranslation();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -427,34 +427,34 @@ uint64_t __53__LTUIVisualTranslationView_registerForDismissEvent___block_invoke(
   [LTUIVisualTranslationView constrainToSuperview:self];
 }
 
-+ (void)constrainToSuperview:(id)a3
++ (void)constrainToSuperview:(id)superview
 {
   v22[4] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  superviewCopy = superview;
+  v4 = superviewCopy;
+  if (superviewCopy)
   {
-    v5 = [v3 superview];
+    superview = [superviewCopy superview];
 
-    if (v5)
+    if (superview)
     {
-      v6 = [v4 superview];
+      superview2 = [v4 superview];
       v16 = MEMORY[0x277CCAAD0];
-      v21 = [v4 topAnchor];
-      v20 = [v6 topAnchor];
-      v19 = [v21 constraintEqualToAnchor:v20];
+      topAnchor = [v4 topAnchor];
+      topAnchor2 = [superview2 topAnchor];
+      v19 = [topAnchor constraintEqualToAnchor:topAnchor2];
       v22[0] = v19;
-      v18 = [v4 bottomAnchor];
-      v17 = [v6 bottomAnchor];
-      v7 = [v18 constraintEqualToAnchor:v17];
+      bottomAnchor = [v4 bottomAnchor];
+      bottomAnchor2 = [superview2 bottomAnchor];
+      v7 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
       v22[1] = v7;
-      v8 = [v4 leadingAnchor];
-      v9 = [v6 leadingAnchor];
-      v10 = [v8 constraintEqualToAnchor:v9];
+      leadingAnchor = [v4 leadingAnchor];
+      leadingAnchor2 = [superview2 leadingAnchor];
+      v10 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
       v22[2] = v10;
-      v11 = [v4 trailingAnchor];
-      v12 = [v6 trailingAnchor];
-      v13 = [v11 constraintEqualToAnchor:v12];
+      trailingAnchor = [v4 trailingAnchor];
+      trailingAnchor2 = [superview2 trailingAnchor];
+      v13 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
       v22[3] = v13;
       v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v22 count:4];
       [v16 activateConstraints:v14];

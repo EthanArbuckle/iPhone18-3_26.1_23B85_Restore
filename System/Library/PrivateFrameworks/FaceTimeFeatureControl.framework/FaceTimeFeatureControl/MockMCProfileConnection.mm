@@ -9,7 +9,7 @@
 {
   v3 = *(&self->super.super.isa + OBJC_IVAR____TtC22FaceTimeFeatureControl23MockMCProfileConnection_onIsVideoConferencingRemoteControlAllowed);
   v2 = *(&self->super._observers + OBJC_IVAR____TtC22FaceTimeFeatureControl23MockMCProfileConnection_onIsVideoConferencingRemoteControlAllowed);
-  v4 = self;
+  selfCopy = self;
 
   LOBYTE(v3) = v3(v5);
 

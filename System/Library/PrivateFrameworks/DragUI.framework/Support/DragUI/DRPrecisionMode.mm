@@ -1,13 +1,13 @@
 @interface DRPrecisionMode
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGPoint)touchOffset;
 - (double)yAnchor;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation DRPrecisionMode
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   [v4 setDirection:{-[DRPrecisionMode direction](self, "direction")}];
@@ -15,18 +15,18 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [v5 direction];
-    if (v6 == [(DRPrecisionMode *)self direction])
+    v5 = equalCopy;
+    direction = [v5 direction];
+    if (direction == [(DRPrecisionMode *)self direction])
     {
-      v7 = [v5 orientation];
-      v8 = v7 == [(DRPrecisionMode *)self orientation];
+      orientation = [v5 orientation];
+      v8 = orientation == [(DRPrecisionMode *)self orientation];
     }
 
     else
@@ -45,9 +45,9 @@
 
 - (CGPoint)touchOffset
 {
-  v3 = [(DRPrecisionMode *)self direction];
+  direction = [(DRPrecisionMode *)self direction];
   x = 0.0;
-  if (v3 == 2)
+  if (direction == 2)
   {
     if (qword_1000634F0 != -1)
     {
@@ -61,7 +61,7 @@
     }
   }
 
-  else if (v3 == 1)
+  else if (direction == 1)
   {
     if (qword_1000634F0 != -1)
     {
@@ -80,7 +80,7 @@
   else
   {
     y = 0.0;
-    if (!v3)
+    if (!direction)
     {
       x = CGPointZero.x;
       y = CGPointZero.y;
@@ -89,9 +89,9 @@
 
   if ([(DRPrecisionMode *)self orientation])
   {
-    v7 = [(DRPrecisionMode *)self orientation];
+    orientation = [(DRPrecisionMode *)self orientation];
     v8 = 0.0;
-    if (v7 != 1)
+    if (orientation != 1)
     {
       if ([(DRPrecisionMode *)self orientation]== 4)
       {
@@ -105,9 +105,9 @@
 
       else
       {
-        v15 = [(DRPrecisionMode *)self orientation];
+        orientation2 = [(DRPrecisionMode *)self orientation];
         v8 = 3.14159265;
-        if (v15 != 2)
+        if (orientation2 != 2)
         {
           v8 = 0.0;
         }
@@ -143,8 +143,8 @@
 
 - (double)yAnchor
 {
-  v2 = [(DRPrecisionMode *)self direction];
-  if (v2 == 2)
+  direction = [(DRPrecisionMode *)self direction];
+  if (direction == 2)
   {
     if (qword_1000634F0 != -1)
     {
@@ -167,7 +167,7 @@
   else
   {
     result = 0.0;
-    if (v2 == 1)
+    if (direction == 1)
     {
       if (qword_1000634F0 != -1)
       {

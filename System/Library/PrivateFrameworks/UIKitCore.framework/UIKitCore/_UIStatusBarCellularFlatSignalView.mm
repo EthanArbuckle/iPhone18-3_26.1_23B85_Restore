@@ -1,23 +1,23 @@
 @interface _UIStatusBarCellularFlatSignalView
-+ (double)_heightForNormalBarAtIndex:(int64_t)a3 iconSize:(int64_t)a4;
++ (double)_heightForNormalBarAtIndex:(int64_t)index iconSize:(int64_t)size;
 @end
 
 @implementation _UIStatusBarCellularFlatSignalView
 
-+ (double)_heightForNormalBarAtIndex:(int64_t)a3 iconSize:(int64_t)a4
++ (double)_heightForNormalBarAtIndex:(int64_t)index iconSize:(int64_t)size
 {
   if (_UIGetSecondarySIMUnderBaseline())
   {
 
-    [a1 _barWidthForIconSize:a4];
+    [self _barWidthForIconSize:size];
   }
 
   else
   {
     result = 0.0;
-    if ((a4 - 1) <= 0x10)
+    if ((size - 1) <= 0x10)
     {
-      return dbl_18A681F48[a4 - 1];
+      return dbl_18A681F48[size - 1];
     }
   }
 

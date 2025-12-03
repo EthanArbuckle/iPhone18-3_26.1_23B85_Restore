@@ -1,21 +1,21 @@
 @interface UITextCompletionView
-- (BOOL)pointInside:(CGPoint)a3 forEvent:(__GSEvent *)a4;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside forEvent:(__GSEvent *)event;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (CGRect)_calculateRectForExpandedHitRegion;
-- (UITextCompletionView)initWithFrame:(CGRect)a3 string:(id)a4 type:(int)a5 edgeType:(int)a6;
-- (void)drawRect:(CGRect)a3;
+- (UITextCompletionView)initWithFrame:(CGRect)frame string:(id)string type:(int)type edgeType:(int)edgeType;
+- (void)drawRect:(CGRect)rect;
 @end
 
 @implementation UITextCompletionView
 
-- (UITextCompletionView)initWithFrame:(CGRect)a3 string:(id)a4 type:(int)a5 edgeType:(int)a6
+- (UITextCompletionView)initWithFrame:(CGRect)frame string:(id)string type:(int)type edgeType:(int)edgeType
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v13 = a4;
-  if (v13)
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  stringCopy = string;
+  if (stringCopy)
   {
     v14 = _documentTextFont();
   }
@@ -25,13 +25,13 @@
     v14 = 0;
   }
 
-  [v13 _legacy_sizeWithFont:v14 forWidth:2 lineBreakMode:3.40282347e38];
+  [stringCopy _legacy_sizeWithFont:v14 forWidth:2 lineBreakMode:3.40282347e38];
   v21.origin.x = x;
   v21.origin.y = y;
   v21.size.width = width;
   v21.size.height = height;
   v22 = CGRectInset(v21, 0.0, 0.0);
-  if ((a6 - 1) < 2)
+  if ((edgeType - 1) < 2)
   {
     v22.size.width = v22.size.width + v22.size.height * 0.68;
   }
@@ -43,12 +43,12 @@
   v16 = v15;
   if (v15)
   {
-    v15->_edgeType = a6;
-    v17 = [v13 copy];
+    v15->_edgeType = edgeType;
+    v17 = [stringCopy copy];
     string = v16->_string;
     v16->_string = v17;
 
-    v16->_type = a5;
+    v16->_type = type;
     objc_storeStrong(&v16->_textFont, v14);
     [(UIView *)v16 setOpaque:0];
     [(UIView *)v16 setUserInteractionEnabled:0];
@@ -57,10 +57,10 @@
   return v16;
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  height = a3.size.height;
-  [(UIView *)self bounds:a3.origin.x];
+  height = rect.size.height;
+  [(UIView *)self bounds:rect.origin.x];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -300,9 +300,9 @@ LABEL_43:
   return CGRectUnion(*&v15, *&v8);
 }
 
-- (BOOL)pointInside:(CGPoint)a3 forEvent:(__GSEvent *)a4
+- (BOOL)pointInside:(CGPoint)inside forEvent:(__GSEvent *)event
 {
-  [(UITextCompletionView *)self _calculateRectForExpandedHitRegion:a3.x];
+  [(UITextCompletionView *)self _calculateRectForExpandedHitRegion:inside.x];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -319,10 +319,10 @@ LABEL_43:
   return CGRectContainsPoint(*&v19, *&v16);
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   [(UITextCompletionView *)self _calculateRectForExpandedHitRegion];
   v10 = x;
   v11 = y;

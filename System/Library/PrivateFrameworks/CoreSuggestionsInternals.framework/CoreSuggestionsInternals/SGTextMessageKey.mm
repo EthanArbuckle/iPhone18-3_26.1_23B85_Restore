@@ -7,9 +7,9 @@
 - (id)description
 {
   v3 = objc_alloc(MEMORY[0x277CCACA8]);
-  v4 = [(SGMessageKey *)self source];
-  v5 = [(SGMessageKey *)self uniqueIdentifier];
-  v6 = [v3 initWithFormat:@"<SGTextMessageKey source=%@ uniqueIdentifier=%@>", v4, v5];
+  source = [(SGMessageKey *)self source];
+  uniqueIdentifier = [(SGMessageKey *)self uniqueIdentifier];
+  v6 = [v3 initWithFormat:@"<SGTextMessageKey source=%@ uniqueIdentifier=%@>", source, uniqueIdentifier];
 
   return v6;
 }

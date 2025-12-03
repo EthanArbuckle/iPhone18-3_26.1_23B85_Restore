@@ -1,18 +1,18 @@
 @interface DDUIService
 - (_TtC21DeviceDiscoveryUICore11DDUIService)init;
-- (void)startNearFieldServerWithLocalIdentity:(OS_sec_identity *)a3 listenerUUID:(NSUUID *)a4 remotePublicKey:(NSData *)a5 contactID:(NSString *)a6 deviceModel:(NSString *)a7 deviceName:(NSString *)a8 completionHandler:(id)a9;
-- (void)startServerWithCompletionHandler:(id)a3;
+- (void)startNearFieldServerWithLocalIdentity:(OS_sec_identity *)identity listenerUUID:(NSUUID *)d remotePublicKey:(NSData *)key contactID:(NSString *)iD deviceModel:(NSString *)model deviceName:(NSString *)name completionHandler:(id)handler;
+- (void)startServerWithCompletionHandler:(id)handler;
 - (void)stopNearFieldServer;
 @end
 
 @implementation DDUIService
 
-- (void)startServerWithCompletionHandler:(id)a3
+- (void)startServerWithCompletionHandler:(id)handler
 {
   v5 = (*(*(__swift_instantiateConcreteTypeFromMangledNameV2(&qword_27DB826F0, &qword_230F3DD10) - 8) + 64) + 15) & 0xFFFFFFFFFFFFFFF0;
   MEMORY[0x28223BE20]();
   v7 = &v14 - v6;
-  v8 = _Block_copy(a3);
+  v8 = _Block_copy(handler);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
   *(v9 + 24) = self;
@@ -28,23 +28,23 @@
   v12[3] = 0;
   v12[4] = &unk_230F3C818;
   v12[5] = v11;
-  v13 = self;
+  selfCopy = self;
   sub_230F17254(0, 0, v7, &unk_230F3C820, v12);
 }
 
-- (void)startNearFieldServerWithLocalIdentity:(OS_sec_identity *)a3 listenerUUID:(NSUUID *)a4 remotePublicKey:(NSData *)a5 contactID:(NSString *)a6 deviceModel:(NSString *)a7 deviceName:(NSString *)a8 completionHandler:(id)a9
+- (void)startNearFieldServerWithLocalIdentity:(OS_sec_identity *)identity listenerUUID:(NSUUID *)d remotePublicKey:(NSData *)key contactID:(NSString *)iD deviceModel:(NSString *)model deviceName:(NSString *)name completionHandler:(id)handler
 {
   v16 = (*(*(__swift_instantiateConcreteTypeFromMangledNameV2(&qword_27DB826F0, &qword_230F3DD10) - 8) + 64) + 15) & 0xFFFFFFFFFFFFFFF0;
   MEMORY[0x28223BE20]();
   v18 = &v30 - v17;
-  v19 = _Block_copy(a9);
+  v19 = _Block_copy(handler);
   v20 = swift_allocObject();
-  v20[2] = a3;
-  v20[3] = a4;
-  v20[4] = a5;
-  v20[5] = a6;
-  v20[6] = a7;
-  v20[7] = a8;
+  v20[2] = identity;
+  v20[3] = d;
+  v20[4] = key;
+  v20[5] = iD;
+  v20[6] = model;
+  v20[7] = name;
   v20[8] = v19;
   v20[9] = self;
   v21 = sub_230F39748();
@@ -60,18 +60,18 @@
   v23[4] = &unk_230F3C7D8;
   v23[5] = v22;
   swift_unknownObjectRetain();
-  v24 = a4;
-  v25 = a5;
-  v26 = a6;
-  v27 = a7;
-  v28 = a8;
-  v29 = self;
+  dCopy = d;
+  keyCopy = key;
+  iDCopy = iD;
+  modelCopy = model;
+  nameCopy = name;
+  selfCopy = self;
   sub_230F17254(0, 0, v18, &unk_230F3C7E8, v23);
 }
 
 - (void)stopNearFieldServer
 {
-  v2 = self;
+  selfCopy = self;
   DDUIService.stopNearFieldServer()();
 }
 

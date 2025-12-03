@@ -6,7 +6,7 @@
 
 - (void)runUntilIdleExit
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000137AC();
 }
 

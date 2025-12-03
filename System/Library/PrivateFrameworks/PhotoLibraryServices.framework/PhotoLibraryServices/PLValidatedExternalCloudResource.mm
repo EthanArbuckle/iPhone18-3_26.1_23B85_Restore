@@ -1,24 +1,24 @@
 @interface PLValidatedExternalCloudResource
-- (BOOL)isEqualToValidatedExternalResource:(id)a3;
-- (PLValidatedExternalCloudResource)initWithCloudResource:(id)a3;
-- (PLValidatedExternalCloudResource)initWithInternalResource:(id)a3;
+- (BOOL)isEqualToValidatedExternalResource:(id)resource;
+- (PLValidatedExternalCloudResource)initWithCloudResource:(id)resource;
+- (PLValidatedExternalCloudResource)initWithInternalResource:(id)resource;
 @end
 
 @implementation PLValidatedExternalCloudResource
 
-- (BOOL)isEqualToValidatedExternalResource:(id)a3
+- (BOOL)isEqualToValidatedExternalResource:(id)resource
 {
-  v4 = a3;
+  resourceCopy = resource;
   v18.receiver = self;
   v18.super_class = PLValidatedExternalCloudResource;
-  if ([(PLValidatedExternalResource *)&v18 isEqualToValidatedExternalResource:v4])
+  if ([(PLValidatedExternalResource *)&v18 isEqualToValidatedExternalResource:resourceCopy])
   {
     v5 = objc_opt_class();
     if (v5 == objc_opt_class())
     {
-      v8 = v4;
-      v9 = [(PLValidatedExternalCloudResource *)self cloudLocalState];
-      if (v9 != [v8 cloudLocalState] || (v10 = -[PLValidatedExternalCloudResource cplType](self, "cplType"), v10 != objc_msgSend(v8, "cplType")) || (v11 = -[PLValidatedExternalCloudResource sourceCplType](self, "sourceCplType"), v11 != objc_msgSend(v8, "sourceCplType")) || (-[PLValidatedExternalCloudResource fingerprint](self, "fingerprint"), v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "fingerprint"), v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v12, "isEqualToString:", v13), v13, v12, !v14))
+      v8 = resourceCopy;
+      cloudLocalState = [(PLValidatedExternalCloudResource *)self cloudLocalState];
+      if (cloudLocalState != [v8 cloudLocalState] || (v10 = -[PLValidatedExternalCloudResource cplType](self, "cplType"), v10 != objc_msgSend(v8, "cplType")) || (v11 = -[PLValidatedExternalCloudResource sourceCplType](self, "sourceCplType"), v11 != objc_msgSend(v8, "sourceCplType")) || (-[PLValidatedExternalCloudResource fingerprint](self, "fingerprint"), v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "fingerprint"), v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v12, "isEqualToString:", v13), v13, v12, !v14))
       {
         v6 = 0;
 LABEL_14:
@@ -26,14 +26,14 @@ LABEL_14:
         goto LABEL_4;
       }
 
-      v15 = [(PLValidatedExternalCloudResource *)self stableHash];
-      if (v15 || ([v8 stableHash], (v13 = objc_claimAutoreleasedReturnValue()) != 0))
+      stableHash = [(PLValidatedExternalCloudResource *)self stableHash];
+      if (stableHash || ([v8 stableHash], (v13 = objc_claimAutoreleasedReturnValue()) != 0))
       {
-        v16 = [(PLValidatedExternalCloudResource *)self stableHash];
-        v17 = [v8 stableHash];
-        v6 = [v16 isEqualToString:v17];
+        stableHash2 = [(PLValidatedExternalCloudResource *)self stableHash];
+        stableHash3 = [v8 stableHash];
+        v6 = [stableHash2 isEqualToString:stableHash3];
 
-        if (v15)
+        if (stableHash)
         {
 LABEL_17:
 
@@ -56,64 +56,64 @@ LABEL_4:
   return v6;
 }
 
-- (PLValidatedExternalCloudResource)initWithInternalResource:(id)a3
+- (PLValidatedExternalCloudResource)initWithInternalResource:(id)resource
 {
-  v4 = a3;
+  resourceCopy = resource;
   v13.receiver = self;
   v13.super_class = PLValidatedExternalCloudResource;
   v5 = [(PLValidatedExternalResource *)&v13 init];
   if (v5)
   {
-    -[PLValidatedExternalCloudResource setCloudLocalState:](v5, "setCloudLocalState:", [v4 cloudLocalState]);
-    v6 = [v4 cloudMasterDateCreated];
-    [(PLValidatedExternalCloudResource *)v5 setMasterDateCreated:v6];
+    -[PLValidatedExternalCloudResource setCloudLocalState:](v5, "setCloudLocalState:", [resourceCopy cloudLocalState]);
+    cloudMasterDateCreated = [resourceCopy cloudMasterDateCreated];
+    [(PLValidatedExternalCloudResource *)v5 setMasterDateCreated:cloudMasterDateCreated];
 
-    v7 = [v4 cloudLastOnDemandDownloadDate];
-    [(PLValidatedExternalCloudResource *)v5 setLastOnDemandDownloadDate:v7];
+    cloudLastOnDemandDownloadDate = [resourceCopy cloudLastOnDemandDownloadDate];
+    [(PLValidatedExternalCloudResource *)v5 setLastOnDemandDownloadDate:cloudLastOnDemandDownloadDate];
 
-    v8 = [v4 cloudLastPrefetchDate];
-    [(PLValidatedExternalCloudResource *)v5 setLastPrefetchDate:v8];
+    cloudLastPrefetchDate = [resourceCopy cloudLastPrefetchDate];
+    [(PLValidatedExternalCloudResource *)v5 setLastPrefetchDate:cloudLastPrefetchDate];
 
-    -[PLValidatedExternalCloudResource setPrefetchCount:](v5, "setPrefetchCount:", [v4 cloudPrefetchCount]);
-    v9 = [v4 cloudPrunedAt];
-    [(PLValidatedExternalCloudResource *)v5 setPrunedAt:v9];
+    -[PLValidatedExternalCloudResource setPrefetchCount:](v5, "setPrefetchCount:", [resourceCopy cloudPrefetchCount]);
+    cloudPrunedAt = [resourceCopy cloudPrunedAt];
+    [(PLValidatedExternalCloudResource *)v5 setPrunedAt:cloudPrunedAt];
 
-    -[PLValidatedExternalCloudResource setSourceCplType:](v5, "setSourceCplType:", [v4 cloudSourceType]);
-    v10 = [v4 fingerprint];
-    [(PLValidatedExternalCloudResource *)v5 setFingerprint:v10];
+    -[PLValidatedExternalCloudResource setSourceCplType:](v5, "setSourceCplType:", [resourceCopy cloudSourceType]);
+    fingerprint = [resourceCopy fingerprint];
+    [(PLValidatedExternalCloudResource *)v5 setFingerprint:fingerprint];
 
-    v11 = [v4 stableHash];
-    [(PLValidatedExternalCloudResource *)v5 setStableHash:v11];
+    stableHash = [resourceCopy stableHash];
+    [(PLValidatedExternalCloudResource *)v5 setStableHash:stableHash];
   }
 
   return v5;
 }
 
-- (PLValidatedExternalCloudResource)initWithCloudResource:(id)a3
+- (PLValidatedExternalCloudResource)initWithCloudResource:(id)resource
 {
-  v4 = a3;
+  resourceCopy = resource;
   v12.receiver = self;
   v12.super_class = PLValidatedExternalCloudResource;
   v5 = [(PLValidatedExternalResource *)&v12 init];
   if (v5)
   {
-    -[PLValidatedExternalCloudResource setCloudLocalState:](v5, "setCloudLocalState:", [v4 cloudLocalState]);
-    v6 = [v4 dateCreated];
-    [(PLValidatedExternalCloudResource *)v5 setMasterDateCreated:v6];
+    -[PLValidatedExternalCloudResource setCloudLocalState:](v5, "setCloudLocalState:", [resourceCopy cloudLocalState]);
+    dateCreated = [resourceCopy dateCreated];
+    [(PLValidatedExternalCloudResource *)v5 setMasterDateCreated:dateCreated];
 
-    v7 = [v4 lastOnDemandDownloadDate];
-    [(PLValidatedExternalCloudResource *)v5 setLastOnDemandDownloadDate:v7];
+    lastOnDemandDownloadDate = [resourceCopy lastOnDemandDownloadDate];
+    [(PLValidatedExternalCloudResource *)v5 setLastOnDemandDownloadDate:lastOnDemandDownloadDate];
 
-    v8 = [v4 lastPrefetchDate];
-    [(PLValidatedExternalCloudResource *)v5 setLastPrefetchDate:v8];
+    lastPrefetchDate = [resourceCopy lastPrefetchDate];
+    [(PLValidatedExternalCloudResource *)v5 setLastPrefetchDate:lastPrefetchDate];
 
-    -[PLValidatedExternalCloudResource setPrefetchCount:](v5, "setPrefetchCount:", [v4 prefetchCount]);
-    v9 = [v4 prunedAt];
-    [(PLValidatedExternalCloudResource *)v5 setPrunedAt:v9];
+    -[PLValidatedExternalCloudResource setPrefetchCount:](v5, "setPrefetchCount:", [resourceCopy prefetchCount]);
+    prunedAt = [resourceCopy prunedAt];
+    [(PLValidatedExternalCloudResource *)v5 setPrunedAt:prunedAt];
 
-    -[PLValidatedExternalCloudResource setSourceCplType:](v5, "setSourceCplType:", [v4 sourceType]);
-    v10 = [v4 fingerprint];
-    [(PLValidatedExternalCloudResource *)v5 setFingerprint:v10];
+    -[PLValidatedExternalCloudResource setSourceCplType:](v5, "setSourceCplType:", [resourceCopy sourceType]);
+    fingerprint = [resourceCopy fingerprint];
+    [(PLValidatedExternalCloudResource *)v5 setFingerprint:fingerprint];
   }
 
   return v5;

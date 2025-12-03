@@ -1,10 +1,10 @@
 @interface FBSSceneMessage
 + (id)message;
-- (FBSSceneMessage)initWithXPCDictionary:(id)a3;
-- (id)_initWithPayload:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (FBSSceneMessage)initWithXPCDictionary:(id)dictionary;
+- (id)_initWithPayload:(id)payload;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 @end
 
@@ -12,15 +12,15 @@
 
 + (id)message
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
 
-- (id)_initWithPayload:(id)a3
+- (id)_initWithPayload:(id)payload
 {
-  v5 = a3;
-  if (v5)
+  payloadCopy = payload;
+  if (payloadCopy)
   {
     NSClassFromString(&cfstr_Bskeyedsetting.isa);
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -34,9 +34,9 @@
   v6 = [(FBSSceneMessage *)&v10 init];
   if (v6)
   {
-    if (v5)
+    if (payloadCopy)
     {
-      v7 = [v5 mutableCopy];
+      v7 = [payloadCopy mutableCopy];
     }
 
     else
@@ -51,18 +51,18 @@
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(FBSSceneMessage *)self payload];
-  v6 = [v4 _initWithPayload:v5];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  payload = [(FBSSceneMessage *)self payload];
+  v6 = [v4 _initWithPayload:payload];
 
   return v6;
 }
 
-- (FBSSceneMessage)initWithXPCDictionary:(id)a3
+- (FBSSceneMessage)initWithXPCDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v6.receiver = self;
   v6.super_class = FBSSceneMessage;
   if ([(FBSSceneMessage *)&v6 init])
@@ -75,32 +75,32 @@
 
 - (id)succinctDescription
 {
-  v2 = [(FBSSceneMessage *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(FBSSceneMessage *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(FBSSceneMessage *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(FBSSceneMessage *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [(FBSSceneMessage *)self succinctDescriptionBuilder];
+  prefixCopy = prefix;
+  succinctDescriptionBuilder = [(FBSSceneMessage *)self succinctDescriptionBuilder];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __57__FBSSceneMessage_descriptionBuilderWithMultilinePrefix___block_invoke;
   v9[3] = &unk_1E76BCD60;
-  v6 = v5;
+  v6 = succinctDescriptionBuilder;
   v10 = v6;
-  v11 = self;
-  [v6 appendBodySectionWithName:0 multilinePrefix:v4 block:v9];
+  selfCopy = self;
+  [v6 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v9];
 
   v7 = v6;
   return v6;

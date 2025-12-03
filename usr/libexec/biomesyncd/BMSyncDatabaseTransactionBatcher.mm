@@ -1,7 +1,7 @@
 @interface BMSyncDatabaseTransactionBatcher
-- (BMSyncDatabaseTransactionBatcher)initWithDatabase:(id)a3 transcationBatchSize:(unint64_t)a4;
+- (BMSyncDatabaseTransactionBatcher)initWithDatabase:(id)database transcationBatchSize:(unint64_t)size;
 - (BOOL)_commitTransaction;
-- (BOOL)executeOperationWithBlock:(id)a3;
+- (BOOL)executeOperationWithBlock:(id)block;
 - (BOOL)markAllOperationsComplete;
 - (BOOL)markOperationComplete;
 - (BOOL)markOperationStarted;
@@ -9,25 +9,25 @@
 
 @implementation BMSyncDatabaseTransactionBatcher
 
-- (BMSyncDatabaseTransactionBatcher)initWithDatabase:(id)a3 transcationBatchSize:(unint64_t)a4
+- (BMSyncDatabaseTransactionBatcher)initWithDatabase:(id)database transcationBatchSize:(unint64_t)size
 {
-  v7 = a3;
+  databaseCopy = database;
   v11.receiver = self;
   v11.super_class = BMSyncDatabaseTransactionBatcher;
   v8 = [(BMSyncDatabaseTransactionBatcher *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_database, a3);
-    v9->_batchSize = a4;
+    objc_storeStrong(&v8->_database, database);
+    v9->_batchSize = size;
   }
 
   return v9;
 }
 
-- (BOOL)executeOperationWithBlock:(id)a3
+- (BOOL)executeOperationWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   while (1)
   {
     v5 = objc_autoreleasePoolPush();
@@ -47,7 +47,7 @@ LABEL_6:
       }
 
       [(BMSyncDatabase *)self->_database rollback];
-      v8 = 0;
+      commit = 0;
       goto LABEL_13;
     }
 
@@ -59,7 +59,7 @@ LABEL_6:
   {
     v7 = objc_autoreleasePoolPush();
     v26 = 0;
-    v4[2](v4, &v26);
+    blockCopy[2](blockCopy, &v26);
     if (v26 == 1)
     {
       break;
@@ -72,8 +72,8 @@ LABEL_6:
     }
   }
 
-  v8 = [(BMSyncDatabase *)self->_database commit];
-  if (!v8)
+  commit = [(BMSyncDatabase *)self->_database commit];
+  if (!commit)
   {
     v9 = __biome_log_for_category();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -88,13 +88,13 @@ LABEL_6:
 LABEL_13:
   objc_autoreleasePoolPop(v5);
 
-  return v8;
+  return commit;
 }
 
 - (BOOL)_commitTransaction
 {
-  v3 = [(BMSyncDatabase *)self->_database commit];
-  if (!v3)
+  commit = [(BMSyncDatabase *)self->_database commit];
+  if (!commit)
   {
     v4 = __biome_log_for_category();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -106,7 +106,7 @@ LABEL_13:
     [(BMSyncDatabase *)self->_database rollback];
   }
 
-  return v3;
+  return commit;
 }
 
 - (BOOL)markOperationStarted

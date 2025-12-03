@@ -1,7 +1,7 @@
 @interface NotificationRelay
 + (id)sharedRelay;
 - (NotificationRelay)init;
-- (void)relayFrameworkNotification:(id)a3;
+- (void)relayFrameworkNotification:(id)notification;
 @end
 
 @implementation NotificationRelay
@@ -12,7 +12,7 @@
   block[1] = 3221225472;
   block[2] = __32__NotificationRelay_sharedRelay__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedRelay_onceToken != -1)
   {
     dispatch_once(&sharedRelay_onceToken, block);
@@ -44,50 +44,50 @@ uint64_t __32__NotificationRelay_sharedRelay__block_invoke(uint64_t result)
   v2 = [(NotificationRelay *)&v7 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696ABB0] defaultCenter];
-    [v3 addObserver:v2 selector:sel_relayFrameworkNotification_ name:@"com.apple.mobiletimer-framework.preferences-and-notifications-changed-externally" object:0];
+    defaultCenter = [MEMORY[0x1E696ABB0] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_relayFrameworkNotification_ name:@"com.apple.mobiletimer-framework.preferences-and-notifications-changed-externally" object:0];
 
-    v4 = [MEMORY[0x1E696ABB0] defaultCenter];
-    [v4 addObserver:v2 selector:sel_relayFrameworkNotification_ name:@"com.apple.mobiletimer-framework.preferences-changed-externally" object:0];
+    defaultCenter2 = [MEMORY[0x1E696ABB0] defaultCenter];
+    [defaultCenter2 addObserver:v2 selector:sel_relayFrameworkNotification_ name:@"com.apple.mobiletimer-framework.preferences-changed-externally" object:0];
 
-    v5 = [MEMORY[0x1E696ABB0] defaultCenter];
-    [v5 addObserver:v2 selector:sel_relayFrameworkNotification_ name:@"com.apple.mobiletimer-framework.local-notifications-changed-externally" object:0];
+    defaultCenter3 = [MEMORY[0x1E696ABB0] defaultCenter];
+    [defaultCenter3 addObserver:v2 selector:sel_relayFrameworkNotification_ name:@"com.apple.mobiletimer-framework.local-notifications-changed-externally" object:0];
   }
 
   return v2;
 }
 
-- (void)relayFrameworkNotification:(id)a3
+- (void)relayFrameworkNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v15 = [v5 objectForKey:@"bundleIdentifier"];
+  notificationCopy = notification;
+  userInfo = [notificationCopy userInfo];
+  v15 = [userInfo objectForKey:@"bundleIdentifier"];
 
-  v6 = [v4 name];
+  name = [notificationCopy name];
 
-  v7 = [MEMORY[0x1E696AAE8] mainBundle];
-  v8 = [v7 bundleIdentifier];
-  v9 = [v15 isEqualToString:v8];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v9 = [v15 isEqualToString:bundleIdentifier];
 
   if (v9)
   {
     goto LABEL_13;
   }
 
-  if ([v6 isEqualToString:@"com.apple.mobiletimer-framework.preferences-and-notifications-changed-externally"])
+  if ([name isEqualToString:@"com.apple.mobiletimer-framework.preferences-and-notifications-changed-externally"])
   {
     v10 = 1;
     v11 = @"com.apple.mobiletimer-framework.preferences-and-notifications-changed";
     v12 = 1;
 LABEL_4:
-    v13 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v13 postNotificationName:v11 object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:v11 object:0];
 
     goto LABEL_11;
   }
 
-  v12 = [v6 isEqualToString:@"com.apple.mobiletimer-framework.preferences-changed-externally"];
-  v14 = [v6 isEqualToString:@"com.apple.mobiletimer-framework.local-notifications-changed-externally"];
+  v12 = [name isEqualToString:@"com.apple.mobiletimer-framework.preferences-changed-externally"];
+  v14 = [name isEqualToString:@"com.apple.mobiletimer-framework.local-notifications-changed-externally"];
   if (v12)
   {
     v11 = @"com.apple.mobiletimer-framework.preferences-changed";

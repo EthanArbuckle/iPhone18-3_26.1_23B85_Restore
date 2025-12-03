@@ -1,17 +1,17 @@
 @interface _LTBlockBasedInterruptionHandler
-- (void)didReceiveInterruptionFromHandler:(id)a3;
+- (void)didReceiveInterruptionFromHandler:(id)handler;
 @end
 
 @implementation _LTBlockBasedInterruptionHandler
 
-- (void)didReceiveInterruptionFromHandler:(id)a3
+- (void)didReceiveInterruptionFromHandler:(id)handler
 {
-  v4 = [(_LTBlockBasedInterruptionHandler *)self handler];
+  handler = [(_LTBlockBasedInterruptionHandler *)self handler];
 
-  if (v4)
+  if (handler)
   {
-    v5 = [(_LTBlockBasedInterruptionHandler *)self handler];
-    v5[2]();
+    handler2 = [(_LTBlockBasedInterruptionHandler *)self handler];
+    handler2[2]();
   }
 }
 

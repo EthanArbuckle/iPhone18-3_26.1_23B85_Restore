@@ -1,5 +1,5 @@
 @interface ParticipantGridViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_accessibilitySupplementaryFooterViews;
 - (id)_axBannerPresentationManager;
 - (id)_axMultiwayConversationViewController;
@@ -10,18 +10,18 @@
 
 @implementation ParticipantGridViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"ConversationKit.MultiwayViewController" hasInstanceMethod:@"bannerPresentationManager" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ConversationKit.MultiwayViewController" hasInstanceMethod:@"hasParticipantVideo" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"ConversationKit.BannerPresentationManager" hasInstanceMethod:@"inCallControlsVisible" withFullSignature:{"B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"ConversationKit.MultiwayViewController" hasInstanceMethod:@"bannerPresentationManager" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ConversationKit.MultiwayViewController" hasInstanceMethod:@"hasParticipantVideo" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"ConversationKit.BannerPresentationManager" hasInstanceMethod:@"inCallControlsVisible" withFullSignature:{"B", 0}];
 }
 
 - (id)accessibilityLabel
 {
-  v2 = [(ParticipantGridViewAccessibility *)self _axMultiwayConversationViewController];
-  v3 = [v2 safeBoolForKey:@"hasParticipantVideo"];
+  _axMultiwayConversationViewController = [(ParticipantGridViewAccessibility *)self _axMultiwayConversationViewController];
+  v3 = [_axMultiwayConversationViewController safeBoolForKey:@"hasParticipantVideo"];
 
   if (v3)
   {
@@ -40,8 +40,8 @@
 
 - (id)accessibilityHint
 {
-  v2 = [(ParticipantGridViewAccessibility *)self _axBannerPresentationManager];
-  if ([v2 safeBoolForKey:@"inCallControlsVisible"])
+  _axBannerPresentationManager = [(ParticipantGridViewAccessibility *)self _axBannerPresentationManager];
+  if ([_axBannerPresentationManager safeBoolForKey:@"inCallControlsVisible"])
   {
     v3 = @"facetime.video.hint.hide.controls";
   }
@@ -58,8 +58,8 @@
 
 - (id)accessibilityValue
 {
-  v2 = [(ParticipantGridViewAccessibility *)self _axBannerPresentationManager];
-  if ([v2 safeBoolForKey:@"inCallControlsVisible"])
+  _axBannerPresentationManager = [(ParticipantGridViewAccessibility *)self _axBannerPresentationManager];
+  if ([_axBannerPresentationManager safeBoolForKey:@"inCallControlsVisible"])
   {
     v3 = @"facetime.video.controls.shown";
   }
@@ -79,24 +79,24 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = [(ParticipantGridViewAccessibility *)self subviews];
+    subviews = [(ParticipantGridViewAccessibility *)self subviews];
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = ParticipantGridViewAccessibility;
-    v3 = [(ParticipantGridViewAccessibility *)&v5 _accessibilitySupplementaryFooterViews];
+    subviews = [(ParticipantGridViewAccessibility *)&v5 _accessibilitySupplementaryFooterViews];
   }
 
-  return v3;
+  return subviews;
 }
 
 - (id)_axBannerPresentationManager
 {
   v2 = [(ParticipantGridViewAccessibility *)self _accessibilityFindAncestor:&__block_literal_global_2 startWithSelf:1];
-  v3 = [v2 _accessibilityViewController];
-  v4 = [v3 safeValueForKey:@"bannerPresentationManager"];
+  _accessibilityViewController = [v2 _accessibilityViewController];
+  v4 = [_accessibilityViewController safeValueForKey:@"bannerPresentationManager"];
 
   return v4;
 }
@@ -113,9 +113,9 @@ uint64_t __64__ParticipantGridViewAccessibility__axBannerPresentationManager__bl
 - (id)_axMultiwayConversationViewController
 {
   v2 = [(ParticipantGridViewAccessibility *)self _accessibilityFindAncestor:&__block_literal_global_328 startWithSelf:1];
-  v3 = [v2 _accessibilityViewController];
+  _accessibilityViewController = [v2 _accessibilityViewController];
 
-  return v3;
+  return _accessibilityViewController;
 }
 
 uint64_t __73__ParticipantGridViewAccessibility__axMultiwayConversationViewController__block_invoke(uint64_t a1, void *a2)

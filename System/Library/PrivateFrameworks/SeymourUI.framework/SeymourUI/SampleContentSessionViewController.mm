@@ -1,7 +1,7 @@
 @interface SampleContentSessionViewController
-- (_TtC9SeymourUI34SampleContentSessionViewController)initWithCoder:(id)a3;
-- (_TtC9SeymourUI34SampleContentSessionViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)presentationControllerForPresentedViewController:(id)a3 presentingViewController:(id)a4 sourceViewController:(id)a5;
+- (_TtC9SeymourUI34SampleContentSessionViewController)initWithCoder:(id)coder;
+- (_TtC9SeymourUI34SampleContentSessionViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (id)presentationControllerForPresentedViewController:(id)controller presentingViewController:(id)viewController sourceViewController:(id)sourceViewController;
 - (unint64_t)supportedInterfaceOrientations;
 - (void)viewDidLoad;
 @end
@@ -10,13 +10,13 @@
 
 - (unint64_t)supportedInterfaceOrientations
 {
-  v2 = self;
+  selfCopy = self;
   v3 = SampleContentSessionViewController.supportedInterfaceOrientations.getter();
 
   return v3;
 }
 
-- (_TtC9SeymourUI34SampleContentSessionViewController)initWithCoder:(id)a3
+- (_TtC9SeymourUI34SampleContentSessionViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC9SeymourUI34SampleContentSessionViewController_overrideSupportedInterfaceOrientations) = 0;
   result = sub_20C13DE24();
@@ -33,19 +33,19 @@
   sub_20BDDA648();
 }
 
-- (_TtC9SeymourUI34SampleContentSessionViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC9SeymourUI34SampleContentSessionViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (id)presentationControllerForPresentedViewController:(id)a3 presentingViewController:(id)a4 sourceViewController:(id)a5
+- (id)presentationControllerForPresentedViewController:(id)controller presentingViewController:(id)viewController sourceViewController:(id)sourceViewController
 {
   v7 = objc_opt_self();
-  v8 = a3;
-  v9 = a4;
-  v10 = [v7 sheetPresentationControllerForPresentedController:v8 presentingController:v9];
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  v10 = [v7 sheetPresentationControllerForPresentedController:controllerCopy presentingController:viewControllerCopy];
   [v10 setPrefersPageSizing_];
   v11 = [objc_opt_self() smu:5.0 effectWithBlurRadius:?];
   [v10 setBackgroundBlurEffect_];

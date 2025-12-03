@@ -9,10 +9,10 @@
 - (uint64_t)isSameDayAsComponents:()BSTimeUtilities
 {
   v4 = a3;
-  v5 = [a1 day];
+  v5 = [self day];
   if (v5 == [v4 day])
   {
-    v6 = [a1 isSameMonthAsComponents:v4];
+    v6 = [self isSameMonthAsComponents:v4];
   }
 
   else
@@ -26,10 +26,10 @@
 - (uint64_t)isSameMonthAsComponents:()BSTimeUtilities
 {
   v4 = a3;
-  v5 = [a1 month];
-  if (v5 == [v4 month])
+  month = [self month];
+  if (month == [v4 month])
   {
-    v6 = [a1 isSameYearAsComponents:v4];
+    v6 = [self isSameYearAsComponents:v4];
   }
 
   else
@@ -43,10 +43,10 @@
 - (BOOL)isSameYearAsComponents:()BSTimeUtilities
 {
   v4 = a3;
-  v5 = [a1 year];
-  if (v5 == [v4 year])
+  year = [self year];
+  if (year == [v4 year])
   {
-    v6 = [a1 era];
+    v6 = [self era];
     v7 = v6 == [v4 era];
   }
 

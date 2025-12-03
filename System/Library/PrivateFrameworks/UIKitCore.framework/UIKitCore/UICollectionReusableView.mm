@@ -2,59 +2,59 @@
 - (BOOL)_disableGroupOpacityInAnimations;
 - (BOOL)_disableRasterizeInAnimations;
 - (BOOL)_isHiddenForReordering;
-- (BOOL)_isStyledAsHeaderOrFooterFromLayoutAttributes:(id)a3;
-- (UICollectionReusableView)initWithCoder:(id)a3;
-- (UICollectionReusableView)initWithFrame:(CGRect)a3;
+- (BOOL)_isStyledAsHeaderOrFooterFromLayoutAttributes:(id)attributes;
+- (UICollectionReusableView)initWithCoder:(id)coder;
+- (UICollectionReusableView)initWithFrame:(CGRect)frame;
 - (UICollectionView)_collectionView;
 - (UICollectionViewLayoutAttributes)preferredLayoutAttributesFittingAttributes:(UICollectionViewLayoutAttributes *)layoutAttributes;
 - (UIEdgeInsets)_concreteDefaultLayoutMargins;
 - (_WORD)_internalMaskView;
-- (id)_preferredLayoutAttributesFittingAttributes:(id)a3 isAnimatingExistingView:(BOOL)a4;
+- (id)_preferredLayoutAttributesFittingAttributes:(id)attributes isAnimatingExistingView:(BOOL)view;
 - (id)_updateAnimationCompletionBlocks;
-- (int64_t)_styleFromLayoutAttributes:(id)a3;
+- (int64_t)_styleFromLayoutAttributes:(id)attributes;
 - (void)_addBackdropViewForMaskingIfNeeded;
-- (void)_applyListEnvironmentTraitOverridesUsingNewListAttributes:(id)a3 previousListAttributes:(id)a4;
+- (void)_applyListEnvironmentTraitOverridesUsingNewListAttributes:(id)attributes previousListAttributes:(id)listAttributes;
 - (void)_clearUpdateAnimation;
 - (void)_invalidatePreferredAttributes;
-- (void)_notifyIsDisplaying:(BOOL)a3;
+- (void)_notifyIsDisplaying:(BOOL)displaying;
 - (void)_removeExistingBackdropViewForMasking;
-- (void)_setAutomaticIntrinsicContentSizeInvalidationEnabled:(BOOL)a3;
-- (void)_setBaseLayoutAttributes:(id)a3;
-- (void)_setHiddenForReuse:(BOOL)a3;
-- (void)_setInternalMaskView:(_WORD *)a1;
-- (void)_setIsBeingReused:(BOOL)a3;
-- (void)_setLayoutAttributes:(id)a3 force:(BOOL)a4;
-- (void)_setMaskView:(id)a3;
-- (void)_setScrollPocketContainerInteraction:(uint64_t)a1;
-- (void)_setShouldConstrainHeight:(BOOL)a3;
-- (void)_setShouldConstrainWidth:(BOOL)a3;
-- (void)_updateDefaultLayoutMarginsUsingAttributes:(id)a3;
-- (void)_updateMaskViewUsingAttributes:(id)a3;
-- (void)_updateMaskingUsingAttributes:(id)a3;
-- (void)_updateScrollPocketContainerInteractionUsingAttributes:(id)a3;
-- (void)_updateScrollPocketContributionUsingAttributes:(id)a3;
-- (void)_willRevealWithLayoutAttributes:(id)a3;
+- (void)_setAutomaticIntrinsicContentSizeInvalidationEnabled:(BOOL)enabled;
+- (void)_setBaseLayoutAttributes:(id)attributes;
+- (void)_setHiddenForReuse:(BOOL)reuse;
+- (void)_setInternalMaskView:(_WORD *)view;
+- (void)_setIsBeingReused:(BOOL)reused;
+- (void)_setLayoutAttributes:(id)attributes force:(BOOL)force;
+- (void)_setMaskView:(id)view;
+- (void)_setScrollPocketContainerInteraction:(uint64_t)interaction;
+- (void)_setShouldConstrainHeight:(BOOL)height;
+- (void)_setShouldConstrainWidth:(BOOL)width;
+- (void)_updateDefaultLayoutMarginsUsingAttributes:(id)attributes;
+- (void)_updateMaskViewUsingAttributes:(id)attributes;
+- (void)_updateMaskingUsingAttributes:(id)attributes;
+- (void)_updateScrollPocketContainerInteractionUsingAttributes:(id)attributes;
+- (void)_updateScrollPocketContributionUsingAttributes:(id)attributes;
+- (void)_willRevealWithLayoutAttributes:(id)attributes;
 - (void)didMoveToSuperview;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)invalidateIntrinsicContentSize;
 - (void)prepareForReuse;
-- (void)setTranslatesAutoresizingMaskIntoConstraints:(BOOL)a3;
+- (void)setTranslatesAutoresizingMaskIntoConstraints:(BOOL)constraints;
 @end
 
 @implementation UICollectionReusableView
 
 - (BOOL)_disableRasterizeInAnimations
 {
-  v2 = [(UIView *)self traitCollection];
-  v3 = [v2 _userInterfaceRenderingMode] == 2;
+  traitCollection = [(UIView *)self traitCollection];
+  v3 = [traitCollection _userInterfaceRenderingMode] == 2;
 
   return v3;
 }
 
 - (BOOL)_disableGroupOpacityInAnimations
 {
-  v2 = [(UIView *)self traitCollection];
-  v3 = [v2 _userInterfaceRenderingMode] == 2;
+  traitCollection = [(UIView *)self traitCollection];
+  v3 = [traitCollection _userInterfaceRenderingMode] == 2;
 
   return v3;
 }
@@ -106,19 +106,19 @@
 
 - (_WORD)_internalMaskView
 {
-  if (a1)
+  if (self)
   {
-    if ((a1[232] & 0x80) == 0)
+    if ((self[232] & 0x80) == 0)
     {
-      a1 = 0;
+      self = 0;
 
-      return a1;
+      return self;
     }
 
-    a1 = [(UIView *)a1 _safeMaskView];
+    self = [(UIView *)self _safeMaskView];
   }
 
-  return a1;
+  return self;
 }
 
 - (UICollectionView)_collectionView
@@ -145,8 +145,8 @@
   updateAnimationCount = self->_updateAnimationCount;
   if (updateAnimationCount <= 0)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"UICollectionViewCell.m" lineNumber:713 description:{@"unbalanced ending to update animation which apparently never began for this view (%@)", self}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UICollectionViewCell.m" lineNumber:713 description:{@"unbalanced ending to update animation which apparently never began for this view (%@)", self}];
 
     self->_updateAnimationCount = updateAnimationCount - 1;
   }
@@ -156,13 +156,13 @@
     self->_updateAnimationCount = updateAnimationCount - 1;
     if (updateAnimationCount == 1)
     {
-      v4 = [(UICollectionReusableView *)self _updateAnimationCompletionBlocks];
+      _updateAnimationCompletionBlocks = [(UICollectionReusableView *)self _updateAnimationCompletionBlocks];
       objc_setAssociatedObject(self, &_UpdateCompletionBlocksKey, 0, 1);
       v14 = 0u;
       v15 = 0u;
       v12 = 0u;
       v13 = 0u;
-      v5 = v4;
+      v5 = _updateAnimationCompletionBlocks;
       v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v6)
       {
@@ -193,11 +193,11 @@
 
 - (void)invalidateIntrinsicContentSize
 {
-  v3 = [(UICollectionReusableView *)self _collectionView];
-  v4 = v3;
-  if (v3)
+  _collectionView = [(UICollectionReusableView *)self _collectionView];
+  v4 = _collectionView;
+  if (_collectionView)
   {
-    [v3 _reusableViewDidInvalidateIntrinsicContentSize:self];
+    [_collectionView _reusableViewDidInvalidateIntrinsicContentSize:self];
   }
 
   else
@@ -224,25 +224,25 @@
 {
   v19 = *MEMORY[0x1E69E9840];
   *&self->_reusableViewFlags = *&self->_reusableViewFlags & 0xCFF9 | 2;
-  v3 = [(UIView *)self _safeMaskView];
-  if (v3)
+  _safeMaskView = [(UIView *)self _safeMaskView];
+  if (_safeMaskView)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       WeakRetained = objc_loadWeakRetained(&self->_collectionView);
-      v5 = [WeakRetained collectionViewLayout];
-      v6 = v5;
-      if (v5)
+      collectionViewLayout = [WeakRetained collectionViewLayout];
+      v6 = collectionViewLayout;
+      if (collectionViewLayout)
       {
-        v7 = [*(v5 + 136) currentSwipeOccurrence];
-        v8 = v7;
-        if (v7)
+        currentSwipeOccurrence = [*(collectionViewLayout + 136) currentSwipeOccurrence];
+        v8 = currentSwipeOccurrence;
+        if (currentSwipeOccurrence)
         {
-          v9 = [v7 swipedView];
-          v10 = [(UIView *)v9 _safeMaskView];
+          swipedView = [currentSwipeOccurrence swipedView];
+          _safeMaskView2 = [(UIView *)swipedView _safeMaskView];
 
-          if (v10 == v3)
+          if (_safeMaskView2 == _safeMaskView)
           {
             if (os_variant_has_internal_diagnostics())
             {
@@ -250,7 +250,7 @@
               if (os_log_type_enabled(v12, OS_LOG_TYPE_FAULT))
               {
                 v13 = 138412802;
-                v14 = self;
+                selfCopy2 = self;
                 v15 = 2112;
                 v16 = WeakRetained;
                 v17 = 2112;
@@ -265,7 +265,7 @@
               if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
               {
                 v13 = 138412802;
-                v14 = self;
+                selfCopy2 = self;
                 v15 = 2112;
                 v16 = WeakRetained;
                 v17 = 2112;
@@ -286,16 +286,16 @@
 
 - (id)_updateAnimationCompletionBlocks
 {
-  v1 = objc_getAssociatedObject(a1, &_UpdateCompletionBlocksKey);
+  v1 = objc_getAssociatedObject(self, &_UpdateCompletionBlocksKey);
 
   return v1;
 }
 
-- (void)setTranslatesAutoresizingMaskIntoConstraints:(BOOL)a3
+- (void)setTranslatesAutoresizingMaskIntoConstraints:(BOOL)constraints
 {
-  v3 = a3;
+  constraintsCopy = constraints;
   v14 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!constraints)
   {
     if ([(UIView *)self translatesAutoresizingMaskIntoConstraints])
     {
@@ -316,7 +316,7 @@
           *buf = 138412546;
           v11 = v8;
           v12 = 2112;
-          v13 = self;
+          selfCopy = self;
           _os_log_impl(&dword_188A29000, v6, OS_LOG_TYPE_ERROR, "Changing the translatesAutoresizingMaskIntoConstraints property of a %@ that is managed by a UICollectionView is not supported, and will result in incorrect self-sizing. View: %@", buf, 0x16u);
         }
       }
@@ -325,18 +325,18 @@
 
   v9.receiver = self;
   v9.super_class = UICollectionReusableView;
-  [(UIView *)&v9 setTranslatesAutoresizingMaskIntoConstraints:v3];
+  [(UIView *)&v9 setTranslatesAutoresizingMaskIntoConstraints:constraintsCopy];
 }
 
-- (UICollectionReusableView)initWithCoder:(id)a3
+- (UICollectionReusableView)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = UICollectionReusableView;
-  v5 = [(UIView *)&v10 initWithCoder:v4];
+  v5 = [(UIView *)&v10 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectForKey:@"UIReuseIdentifier"];
+    v6 = [coderCopy decodeObjectForKey:@"UIReuseIdentifier"];
     v7 = [v6 copy];
     reuseIdentifier = v5->_reuseIdentifier;
     v5->_reuseIdentifier = v7;
@@ -347,24 +347,24 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6.receiver = self;
   v6.super_class = UICollectionReusableView;
-  [(UIView *)&v6 encodeWithCoder:v4];
+  [(UIView *)&v6 encodeWithCoder:coderCopy];
   reuseIdentifier = self->_reuseIdentifier;
   if (reuseIdentifier)
   {
-    [v4 encodeObject:reuseIdentifier forKey:@"UIReuseIdentifier"];
+    [coderCopy encodeObject:reuseIdentifier forKey:@"UIReuseIdentifier"];
   }
 }
 
-- (UICollectionReusableView)initWithFrame:(CGRect)a3
+- (UICollectionReusableView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = UICollectionReusableView;
-  v3 = [(UIView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -374,9 +374,9 @@
   return v4;
 }
 
-- (void)_notifyIsDisplaying:(BOOL)a3
+- (void)_notifyIsDisplaying:(BOOL)displaying
 {
-  if (a3)
+  if (displaying)
   {
     v3 = 1024;
   }
@@ -389,11 +389,11 @@
   *&self->_reusableViewFlags = *&self->_reusableViewFlags & 0xFBFF | v3;
 }
 
-- (void)_setHiddenForReuse:(BOOL)a3
+- (void)_setHiddenForReuse:(BOOL)reuse
 {
-  v3 = a3;
+  reuseCopy = reuse;
   v25 = *MEMORY[0x1E69E9840];
-  if ([(UIView *)self _isHiddenForReuse]!= a3)
+  if ([(UIView *)self _isHiddenForReuse]!= reuse)
   {
     CategoryCachedImpl = __UILogGetCategoryCachedImpl("UICollectionViewCellReuse", &_MergedGlobals_91_0);
     if (*CategoryCachedImpl)
@@ -403,18 +403,18 @@
       {
         v8 = v7;
         v9 = objc_opt_class();
-        v10 = [(UICollectionReusableView *)self _layoutAttributes];
-        v11 = [(UICollectionReusableView *)self _collectionView];
+        _layoutAttributes = [(UICollectionReusableView *)self _layoutAttributes];
+        _collectionView = [(UICollectionReusableView *)self _collectionView];
         *buf = 138413314;
         v18 = v9;
         v19 = 2048;
-        v20 = self;
+        selfCopy2 = self;
         v21 = 1024;
-        *v22 = v3;
+        *v22 = reuseCopy;
         *&v22[4] = 2112;
-        *&v22[6] = v10;
+        *&v22[6] = _layoutAttributes;
         v23 = 2112;
-        v24 = v11;
+        v24 = _collectionView;
         _os_log_impl(&dword_188A29000, v8, OS_LOG_TYPE_ERROR, "[%@ %p] _setHiddenForReuse: Setting hidden for reuse:%d on cell with attributes:%@ in collection view: %@", buf, 0x30u);
       }
     }
@@ -427,13 +427,13 @@
       {
         v13 = v12;
         v14 = objc_opt_class();
-        v15 = [MEMORY[0x1E696AF00] callStackSymbols];
+        callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
         *buf = 138412802;
         v18 = v14;
         v19 = 2048;
-        v20 = self;
+        selfCopy2 = self;
         v21 = 2112;
-        *v22 = v15;
+        *v22 = callStackSymbols;
         _os_log_impl(&dword_188A29000, v13, OS_LOG_TYPE_ERROR, "[%@ %p] _setHiddenForReuse: Call stack: %@", buf, 0x20u);
       }
     }
@@ -441,7 +441,7 @@
 
   v16.receiver = self;
   v16.super_class = UICollectionReusableView;
-  [(UIView *)&v16 _setHiddenForReuse:v3];
+  [(UIView *)&v16 _setHiddenForReuse:reuseCopy];
 }
 
 - (BOOL)_isHiddenForReordering
@@ -454,73 +454,73 @@
   return self;
 }
 
-- (void)_setBaseLayoutAttributes:(id)a3
+- (void)_setBaseLayoutAttributes:(id)attributes
 {
-  v8 = a3;
+  attributesCopy = attributes;
   if (![(UICollectionViewLayoutAttributes *)self->_layoutAttributes isEqual:?])
   {
-    v4 = [v8 copy];
+    v4 = [attributesCopy copy];
     layoutAttributes = self->_layoutAttributes;
     self->_layoutAttributes = v4;
 
-    v6 = [(_UIKeyWindowSceneStack *)&self->_layoutAttributes->super.isa keyWindowSceneInStack];
+    keyWindowSceneInStack = [(_UIKeyWindowSceneStack *)&self->_layoutAttributes->super.isa keyWindowSceneInStack];
 
-    if (v6)
+    if (keyWindowSceneInStack)
     {
-      v7 = [(_UIKeyWindowSceneStack *)v8 keyWindowSceneInStack];
-      [(UICollectionReusableView *)self _setReuseIdentifier:v7];
+      keyWindowSceneInStack2 = [(_UIKeyWindowSceneStack *)attributesCopy keyWindowSceneInStack];
+      [(UICollectionReusableView *)self _setReuseIdentifier:keyWindowSceneInStack2];
     }
   }
 }
 
-- (void)_willRevealWithLayoutAttributes:(id)a3
+- (void)_willRevealWithLayoutAttributes:(id)attributes
 {
-  v5 = [(UICollectionViewLayoutAttributes *)a3 _existingListAttributes];
-  v4 = [(UICollectionViewLayoutAttributes *)&self->_layoutAttributes->super.isa _existingListAttributes];
-  [(UICollectionReusableView *)self _applyListEnvironmentTraitOverridesUsingNewListAttributes:v5 previousListAttributes:v4];
+  _existingListAttributes = [(UICollectionViewLayoutAttributes *)attributes _existingListAttributes];
+  _existingListAttributes2 = [(UICollectionViewLayoutAttributes *)&self->_layoutAttributes->super.isa _existingListAttributes];
+  [(UICollectionReusableView *)self _applyListEnvironmentTraitOverridesUsingNewListAttributes:_existingListAttributes previousListAttributes:_existingListAttributes2];
 }
 
-- (void)_setLayoutAttributes:(id)a3 force:(BOOL)a4
+- (void)_setLayoutAttributes:(id)attributes force:(BOOL)force
 {
-  v7 = a3;
-  if (a4 || !-[UICollectionViewLayoutAttributes isEqual:](self->_layoutAttributes, "isEqual:", v7) || ([v7 alpha], v9 = v8, -[UIView alpha](self, "alpha"), vabdd_f64(v9, v10) > 0.0001))
+  attributesCopy = attributes;
+  if (force || !-[UICollectionViewLayoutAttributes isEqual:](self->_layoutAttributes, "isEqual:", attributesCopy) || ([attributesCopy alpha], v9 = v8, -[UIView alpha](self, "alpha"), vabdd_f64(v9, v10) > 0.0001))
   {
     [(UICollectionViewLayoutAttributes *)self->_layoutAttributes size];
-    v11 = [(UICollectionViewLayoutAttributes *)&self->_layoutAttributes->super.isa _existingListAttributes];
-    v12 = [v7 copy];
+    _existingListAttributes = [(UICollectionViewLayoutAttributes *)&self->_layoutAttributes->super.isa _existingListAttributes];
+    v12 = [attributesCopy copy];
     layoutAttributes = self->_layoutAttributes;
     self->_layoutAttributes = v12;
 
-    v14 = [(_UIKeyWindowSceneStack *)&self->_layoutAttributes->super.isa keyWindowSceneInStack];
+    keyWindowSceneInStack = [(_UIKeyWindowSceneStack *)&self->_layoutAttributes->super.isa keyWindowSceneInStack];
 
-    if (v14)
+    if (keyWindowSceneInStack)
     {
-      v15 = [(_UIKeyWindowSceneStack *)v7 keyWindowSceneInStack];
-      [(UICollectionReusableView *)self _setReuseIdentifier:v15];
+      keyWindowSceneInStack2 = [(_UIKeyWindowSceneStack *)attributesCopy keyWindowSceneInStack];
+      [(UICollectionReusableView *)self _setReuseIdentifier:keyWindowSceneInStack2];
     }
 
-    v16 = [(UICollectionViewLayoutAttributes *)v7 _existingListAttributes];
-    [(UICollectionReusableView *)self _applyListEnvironmentTraitOverridesUsingNewListAttributes:v16 previousListAttributes:v11];
+    _existingListAttributes2 = [(UICollectionViewLayoutAttributes *)attributesCopy _existingListAttributes];
+    [(UICollectionReusableView *)self _applyListEnvironmentTraitOverridesUsingNewListAttributes:_existingListAttributes2 previousListAttributes:_existingListAttributes];
 
-    [v7 center];
+    [attributesCopy center];
     [(UIView *)self setCenter:?];
     if (dyld_program_sdk_at_least())
     {
-      [v7 bounds];
+      [attributesCopy bounds];
       v18 = v17;
       v20 = v19;
       v22 = v21;
       v24 = v23;
-      [v7 size];
+      [attributesCopy size];
       if (!_UISizeEqualToSizeWithPrecision(v22, v24, v25, v26, 0.0001))
       {
-        v27 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
         v48.width = v22;
         v48.height = v24;
         v28 = NSStringFromCGSize(v48);
-        [v7 size];
+        [attributesCopy size];
         v29 = NSStringFromCGSize(v49);
-        [v27 handleFailureInMethod:a2 object:self file:@"UICollectionViewCell.m" lineNumber:343 description:{@"UICollectionViewReusableView received malformed layout attributes. attributes.bounds.size (%@) and attributes.size (%@) must be equal. This is a client error. Layout attributes: %@\nView: %@", v28, v29, v7, self}];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"UICollectionViewCell.m" lineNumber:343 description:{@"UICollectionViewReusableView received malformed layout attributes. attributes.bounds.size (%@) and attributes.size (%@) must be equal. This is a client error. Layout attributes: %@\nView: %@", v28, v29, attributesCopy, self}];
       }
     }
 
@@ -529,17 +529,17 @@
       [(UIView *)self bounds];
       v18 = v30;
       v20 = v31;
-      [v7 size];
+      [attributesCopy size];
       v22 = v32;
       v24 = v33;
     }
 
     [(UIView *)self setBounds:v18, v20, v22, v24];
-    [v7 alpha];
+    [attributesCopy alpha];
     [(UIView *)self setAlpha:?];
-    if (v7)
+    if (attributesCopy)
     {
-      [v7 transform3D];
+      [attributesCopy transform3D];
     }
 
     else if (dyld_program_sdk_at_least())
@@ -579,12 +579,12 @@
     v39[2] = v42;
     v39[3] = v43;
     [(UIView *)self setTransform3D:v39];
-    [(UICollectionReusableView *)self _updateMaskingUsingAttributes:v7];
-    [(UICollectionReusableView *)self _updateMaskViewUsingAttributes:v7];
-    [(UICollectionReusableView *)self _updateScrollPocketContainerInteractionUsingAttributes:v7];
-    [(UICollectionReusableView *)self _updateDefaultLayoutMarginsUsingAttributes:v7];
-    [(UICollectionReusableView *)self _updateScrollPocketContributionUsingAttributes:v7];
-    [(UICollectionReusableView *)self applyLayoutAttributes:v7];
+    [(UICollectionReusableView *)self _updateMaskingUsingAttributes:attributesCopy];
+    [(UICollectionReusableView *)self _updateMaskViewUsingAttributes:attributesCopy];
+    [(UICollectionReusableView *)self _updateScrollPocketContainerInteractionUsingAttributes:attributesCopy];
+    [(UICollectionReusableView *)self _updateDefaultLayoutMarginsUsingAttributes:attributesCopy];
+    [(UICollectionReusableView *)self _updateScrollPocketContributionUsingAttributes:attributesCopy];
+    [(UICollectionReusableView *)self applyLayoutAttributes:attributesCopy];
     if (![(UICollectionReusableView *)self _isInUpdateAnimation]&& +[UIView _isInAnimationBlockWithAnimationsEnabled])
     {
       v38[0] = MEMORY[0x1E69E9820];
@@ -613,42 +613,42 @@ void __55__UICollectionReusableView__setLayoutAttributes_force___block_invoke(ui
   }
 }
 
-- (void)_applyListEnvironmentTraitOverridesUsingNewListAttributes:(id)a3 previousListAttributes:(id)a4
+- (void)_applyListEnvironmentTraitOverridesUsingNewListAttributes:(id)attributes previousListAttributes:(id)listAttributes
 {
-  if (a3 || !a4)
+  if (attributes || !listAttributes)
   {
-    if (!a3)
+    if (!attributes)
     {
       return;
     }
 
-    v5 = _UIListEnvironmentFromListStyle(*(a3 + 2));
-    v6 = [(UIView *)self _internalTraitOverrides];
-    [v6 setListEnvironment:v5];
+    v5 = _UIListEnvironmentFromListStyle(*(attributes + 2));
+    _internalTraitOverrides = [(UIView *)self _internalTraitOverrides];
+    [_internalTraitOverrides setListEnvironment:v5];
   }
 
   else
   {
-    v6 = [(UIView *)self _internalTraitOverrides];
-    [v6 removeTrait:objc_opt_class()];
+    _internalTraitOverrides = [(UIView *)self _internalTraitOverrides];
+    [_internalTraitOverrides removeTrait:objc_opt_class()];
   }
 }
 
-- (void)_updateMaskingUsingAttributes:(id)a3
+- (void)_updateMaskingUsingAttributes:(id)attributes
 {
-  v14 = a3;
-  v4 = [(UICollectionReusableView *)self _appliesLayoutAttributesMaskingToReusableView];
-  v5 = [(UIView *)self layer];
-  v6 = v14;
-  if (v14)
+  attributesCopy = attributes;
+  _appliesLayoutAttributesMaskingToReusableView = [(UICollectionReusableView *)self _appliesLayoutAttributesMaskingToReusableView];
+  layer = [(UIView *)self layer];
+  v6 = attributesCopy;
+  if (attributesCopy)
   {
     p_reusableViewFlags = &self->_reusableViewFlags;
     reusableViewFlags = self->_reusableViewFlags;
-    if (*&v4 & ((v14[36] & 0x10) >> 4))
+    if (*&_appliesLayoutAttributesMaskingToReusableView & ((attributesCopy[36] & 0x10) >> 4))
     {
       *p_reusableViewFlags = reusableViewFlags | 0x10;
-      [v5 setMasksToBounds:1];
-      v6 = v14;
+      [layer setMasksToBounds:1];
+      v6 = attributesCopy;
       reusableViewFlags = *p_reusableViewFlags;
 LABEL_8:
       v9 = (*(v6 + 72) >> 5) & 0xF;
@@ -664,8 +664,8 @@ LABEL_8:
 
   if ((reusableViewFlags & 0x10) != 0)
   {
-    [v5 setMasksToBounds:0];
-    v6 = v14;
+    [layer setMasksToBounds:0];
+    v6 = attributesCopy;
     reusableViewFlags = *p_reusableViewFlags & 0xFFEF;
     *p_reusableViewFlags = reusableViewFlags;
   }
@@ -677,24 +677,24 @@ LABEL_8:
 
   v9 = 0;
 LABEL_9:
-  if (v9 != 15 && v4)
+  if (v9 != 15 && _appliesLayoutAttributesMaskingToReusableView)
   {
     *p_reusableViewFlags = reusableViewFlags | 0x20;
-    [v5 setMaskedCorners:v9];
-    v6 = v14;
+    [layer setMaskedCorners:v9];
+    v6 = attributesCopy;
   }
 
   else if ((reusableViewFlags & 0x20) != 0)
   {
-    [v5 setMaskedCorners:15];
-    v6 = v14;
+    [layer setMaskedCorners:15];
+    v6 = attributesCopy;
     *p_reusableViewFlags &= ~0x20u;
   }
 
   if (v6)
   {
     v10 = *p_reusableViewFlags;
-    if (v6[39] != 0.0 && v4)
+    if (v6[39] != 0.0 && _appliesLayoutAttributesMaskingToReusableView)
     {
       *p_reusableViewFlags = v10 | 0x40;
       v11 = [UICornerRadius fixedRadius:?];
@@ -721,18 +721,18 @@ LABEL_9:
 LABEL_20:
 }
 
-- (void)_updateMaskViewUsingAttributes:(id)a3
+- (void)_updateMaskViewUsingAttributes:(id)attributes
 {
-  v4 = a3;
-  if ([(UICollectionViewLayoutAttributes *)v4 _hasMaskViewFrame])
+  attributesCopy = attributes;
+  if ([(UICollectionViewLayoutAttributes *)attributesCopy _hasMaskViewFrame])
   {
-    v5 = [(UIView *)self superview];
-    if (v4)
+    superview = [(UIView *)self superview];
+    if (attributesCopy)
     {
-      v6 = v4[30];
-      v7 = v4[31];
-      v8 = v4[32];
-      v9 = v4[33];
+      v6 = attributesCopy[30];
+      v7 = attributesCopy[31];
+      v8 = attributesCopy[32];
+      v9 = attributesCopy[33];
     }
 
     else
@@ -743,17 +743,17 @@ LABEL_20:
       v6 = 0.0;
     }
 
-    [(UIView *)self convertRect:v5 fromView:v6, v7, v8, v9];
+    [(UIView *)self convertRect:superview fromView:v6, v7, v8, v9];
     v11 = v10;
     v13 = v12;
     v15 = v14;
     v17 = v16;
-    v18 = [(UICollectionReusableView *)self _internalMaskView];
-    v19 = v18;
-    if (v18)
+    _internalMaskView = [(UICollectionReusableView *)self _internalMaskView];
+    v19 = _internalMaskView;
+    if (_internalMaskView)
     {
-      [v18 setFrame:{v11, v13, v15, v17}];
-      if (!v4)
+      [_internalMaskView setFrame:{v11, v13, v15, v17}];
+      if (!attributesCopy)
       {
         goto LABEL_22;
       }
@@ -764,7 +764,7 @@ LABEL_20:
       v21 = [[_UICollectionViewMaskView alloc] initWithFrame:v11, v13, v15, v17];
       [(UICollectionReusableView *)self _setInternalMaskView:v21];
 
-      if (!v4)
+      if (!attributesCopy)
       {
 LABEL_22:
 
@@ -772,7 +772,7 @@ LABEL_22:
       }
     }
 
-    if ((*(v4 + 289) & 4) != 0)
+    if ((*(attributesCopy + 289) & 4) != 0)
     {
       if (self->_updateAnimationCount < 1)
       {
@@ -797,20 +797,20 @@ LABEL_22:
         v31 = __59__UICollectionReusableView__updateMaskViewUsingAttributes___block_invoke;
         v32 = &unk_1E70FEF18;
         v33 = v19;
-        v34 = self;
+        selfCopy = self;
         v35 = v22;
         v23 = &v29;
         if (self->_updateAnimationCount <= 0)
         {
-          v28 = [MEMORY[0x1E696AAA8] currentHandler];
-          [v28 handleFailureInMethod:sel__addUpdateAnimationCompletionBlock_ object:self file:@"UICollectionViewCell.m" lineNumber:727 description:{@"UIKit internal bug: Attempting to add an update animation completion block without an inflight animation: %@", self, v29, v30, v31, v32}];
+          currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+          [currentHandler handleFailureInMethod:sel__addUpdateAnimationCompletionBlock_ object:self file:@"UICollectionViewCell.m" lineNumber:727 description:{@"UIKit internal bug: Attempting to add an update animation completion block without an inflight animation: %@", self, v29, v30, v31, v32}];
         }
 
-        v24 = [(UICollectionReusableView *)self _updateAnimationCompletionBlocks];
-        if (v24)
+        _updateAnimationCompletionBlocks = [(UICollectionReusableView *)self _updateAnimationCompletionBlocks];
+        if (_updateAnimationCompletionBlocks)
         {
           v25 = _Block_copy(v23);
-          [v24 addObject:v25];
+          [_updateAnimationCompletionBlocks addObject:v25];
         }
 
         else
@@ -826,9 +826,9 @@ LABEL_22:
     goto LABEL_22;
   }
 
-  v20 = [(UICollectionReusableView *)self _internalMaskView];
-  v5 = v20;
-  if (v20 && !*(v20 + 408))
+  _internalMaskView2 = [(UICollectionReusableView *)self _internalMaskView];
+  superview = _internalMaskView2;
+  if (_internalMaskView2 && !*(_internalMaskView2 + 408))
   {
     [(UICollectionReusableView *)self _setInternalMaskView:?];
   }
@@ -836,17 +836,17 @@ LABEL_22:
 LABEL_23:
 }
 
-- (void)_setInternalMaskView:(_WORD *)a1
+- (void)_setInternalMaskView:(_WORD *)view
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (view)
   {
-    v5 = a1[232];
+    v5 = view[232];
     if (v3)
     {
-      a1[232] = v5 | 0x80;
-      v6 = a1;
+      view[232] = v5 | 0x80;
+      viewCopy2 = view;
       v7 = v4;
     }
 
@@ -857,13 +857,13 @@ LABEL_23:
         goto LABEL_7;
       }
 
-      a1[232] = v5 & 0xFF7F;
-      v6 = a1;
+      view[232] = v5 & 0xFF7F;
+      viewCopy2 = view;
       v7 = 0;
       v4 = 0;
     }
 
-    [(UIView *)v6 _setSafeMaskView:v4];
+    [(UIView *)viewCopy2 _setSafeMaskView:v4];
     v4 = v7;
   }
 
@@ -902,12 +902,12 @@ void __59__UICollectionReusableView__updateMaskViewUsingAttributes___block_invok
   }
 }
 
-- (void)_setMaskView:(id)a3
+- (void)_setMaskView:(id)view
 {
   v5.receiver = self;
   v5.super_class = UICollectionReusableView;
   [(UIView *)&v5 _setMaskView:?];
-  if (a3)
+  if (view)
   {
     [(UICollectionReusableView *)self _addBackdropViewForMaskingIfNeeded];
   }
@@ -933,31 +933,31 @@ void __59__UICollectionReusableView__updateMaskViewUsingAttributes___block_invok
   }
 }
 
-- (BOOL)_isStyledAsHeaderOrFooterFromLayoutAttributes:(id)a3
+- (BOOL)_isStyledAsHeaderOrFooterFromLayoutAttributes:(id)attributes
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && (v3[36] & 3) == 0)
+  attributesCopy = attributes;
+  v4 = attributesCopy;
+  if (attributesCopy && (attributesCopy[36] & 3) == 0)
   {
     v7 = 1;
   }
 
   else
   {
-    v5 = [v3 indexPath];
-    v6 = [v5 item];
+    indexPath = [attributesCopy indexPath];
+    item = [indexPath item];
 
-    if (v6)
+    if (item)
     {
       v7 = 0;
     }
 
     else
     {
-      v8 = [(UICollectionViewLayoutAttributes *)v4 _existingListAttributes];
-      if (v8)
+      _existingListAttributes = [(UICollectionViewLayoutAttributes *)v4 _existingListAttributes];
+      if (_existingListAttributes)
       {
-        v7 = v8[8] & 1;
+        v7 = _existingListAttributes[8] & 1;
       }
 
       else
@@ -970,12 +970,12 @@ void __59__UICollectionReusableView__updateMaskViewUsingAttributes___block_invok
   return v7;
 }
 
-- (int64_t)_styleFromLayoutAttributes:(id)a3
+- (int64_t)_styleFromLayoutAttributes:(id)attributes
 {
-  v3 = [(UICollectionViewLayoutAttributes *)a3 _existingListAttributes];
-  if (v3)
+  _existingListAttributes = [(UICollectionViewLayoutAttributes *)attributes _existingListAttributes];
+  if (_existingListAttributes)
   {
-    v4 = v3[2];
+    v4 = _existingListAttributes[2];
   }
 
   else
@@ -986,14 +986,14 @@ void __59__UICollectionReusableView__updateMaskViewUsingAttributes___block_invok
   return v4;
 }
 
-- (void)_updateScrollPocketContainerInteractionUsingAttributes:(id)a3
+- (void)_updateScrollPocketContainerInteractionUsingAttributes:(id)attributes
 {
-  v15 = a3;
+  attributesCopy = attributes;
   v4 = _UIScrollPocketEnabled();
-  v5 = v15;
+  v5 = attributesCopy;
   if (v4)
   {
-    if (!v15)
+    if (!attributesCopy)
     {
       v6 = 0;
       if (self)
@@ -1005,7 +1005,7 @@ void __59__UICollectionReusableView__updateMaskViewUsingAttributes___block_invok
     }
 
     v6 = 0;
-    v7 = (*(v15 + 72) >> 11) & 0xF;
+    v7 = (*(attributesCopy + 72) >> 11) & 0xF;
     if (v7 <= 3)
     {
       if (v7 - 1 < 2)
@@ -1046,7 +1046,7 @@ LABEL_20:
             [(UICollectionReusableView *)self _setScrollPocketContainerInteraction:?];
 LABEL_30:
 
-            v5 = v15;
+            v5 = attributesCopy;
             goto LABEL_31;
           }
         }
@@ -1058,16 +1058,16 @@ LABEL_30:
           [(UICollectionReusableView *)self _setScrollPocketContainerInteraction:v13];
         }
 
-        v5 = v15;
+        v5 = attributesCopy;
         if (!v13)
         {
           goto LABEL_31;
         }
 
         [(_UIScrollPocketContainerInteraction *)v13 _setEdge:v6];
-        if (v15)
+        if (attributesCopy)
         {
-          v14 = v15[289] >> 7;
+          v14 = attributesCopy[289] >> 7;
         }
 
         else
@@ -1125,25 +1125,25 @@ LABEL_35:
 LABEL_31:
 }
 
-- (void)_setScrollPocketContainerInteraction:(uint64_t)a1
+- (void)_setScrollPocketContainerInteraction:(uint64_t)interaction
 {
-  if (a1)
+  if (interaction)
   {
-    objc_storeStrong((a1 + 480), a2);
+    objc_storeStrong((interaction + 480), a2);
   }
 }
 
-- (void)_updateScrollPocketContributionUsingAttributes:(id)a3
+- (void)_updateScrollPocketContributionUsingAttributes:(id)attributes
 {
-  v4 = a3;
+  attributesCopy = attributes;
   layoutAttributes = self->_layoutAttributes;
   if (layoutAttributes)
   {
     layoutFlags = layoutAttributes->_layoutFlags;
-    if (v4)
+    if (attributesCopy)
     {
       v7 = (*&layoutFlags >> 15) & 1;
-      v8 = v4[72];
+      v8 = attributesCopy[72];
       if (v7 == (v8 & 0x8000) >> 15)
       {
         goto LABEL_10;
@@ -1155,27 +1155,27 @@ LABEL_31:
       }
 
 LABEL_8:
-      v11 = v4;
-      v9 = [(UIView *)self traitOverrides];
+      v11 = attributesCopy;
+      traitOverrides = [(UIView *)self traitOverrides];
       v10 = objc_opt_self();
-      [v9 setNSIntegerValue:1 forTrait:v10];
+      [traitOverrides setNSIntegerValue:1 forTrait:v10];
       goto LABEL_9;
     }
 
     if ((*&layoutFlags & 0x8000) != 0)
     {
 LABEL_5:
-      v11 = v4;
-      v9 = [(UIView *)self _traitOverridesIfExist];
+      v11 = attributesCopy;
+      traitOverrides = [(UIView *)self _traitOverridesIfExist];
       v10 = objc_opt_self();
-      [v9 removeTrait:v10];
+      [traitOverrides removeTrait:v10];
 LABEL_9:
 
-      v4 = v11;
+      attributesCopy = v11;
     }
   }
 
-  else if (v4 && (*(v4 + 289) & 0x80) != 0)
+  else if (attributesCopy && (*(attributesCopy + 289) & 0x80) != 0)
   {
     goto LABEL_8;
   }
@@ -1183,14 +1183,14 @@ LABEL_9:
 LABEL_10:
 }
 
-- (void)_updateDefaultLayoutMarginsUsingAttributes:(id)a3
+- (void)_updateDefaultLayoutMarginsUsingAttributes:(id)attributes
 {
-  v4 = a3;
+  attributesCopy = attributes;
   reusableViewFlags = self->_reusableViewFlags;
   v6 = reusableViewFlags & 0x4000;
-  if (v4)
+  if (attributesCopy)
   {
-    v7 = (BYTE1(v4[9].top) >> 1) & 1;
+    v7 = (BYTE1(attributesCopy[9].top) >> 1) & 1;
   }
 
   else
@@ -1202,18 +1202,18 @@ LABEL_10:
   {
     if ((reusableViewFlags & 0x4000) != 0)
     {
-      if (v4)
+      if (attributesCopy)
       {
         v8 = &UIEdgeInsetsZero;
         p_bottom = &UIEdgeInsetsZero.bottom;
         p_left = &UIEdgeInsetsZero.left;
         p_right = &UIEdgeInsetsZero.right;
-        if ((BYTE1(v4[9].top) & 2) != 0)
+        if ((BYTE1(attributesCopy[9].top) & 2) != 0)
         {
-          p_right = &v4[10].right;
-          p_left = &v4[10].left;
-          p_bottom = &v4[10].bottom;
-          v8 = v4 + 10;
+          p_right = &attributesCopy[10].right;
+          p_left = &attributesCopy[10].left;
+          p_bottom = &attributesCopy[10].bottom;
+          v8 = attributesCopy + 10;
         }
 
         v13.f64[0] = v8->top;
@@ -1261,18 +1261,18 @@ LABEL_10:
     goto LABEL_22;
   }
 
-  if (v4)
+  if (attributesCopy)
   {
     v16 = &UIEdgeInsetsZero;
     v17 = &UIEdgeInsetsZero.bottom;
     v18 = &UIEdgeInsetsZero.left;
     v19 = &UIEdgeInsetsZero.right;
-    if ((BYTE1(v4[9].top) & 2) != 0)
+    if ((BYTE1(attributesCopy[9].top) & 2) != 0)
     {
-      v19 = &v4[10].right;
-      v18 = &v4[10].left;
-      v17 = &v4[10].bottom;
-      v16 = v4 + 10;
+      v19 = &attributesCopy[10].right;
+      v18 = &attributesCopy[10].left;
+      v17 = &attributesCopy[10].bottom;
+      v16 = attributesCopy + 10;
     }
 
     top = v16->top;
@@ -1304,9 +1304,9 @@ LABEL_23:
   MEMORY[0x1EEE66C38]();
 }
 
-- (void)_setAutomaticIntrinsicContentSizeInvalidationEnabled:(BOOL)a3
+- (void)_setAutomaticIntrinsicContentSizeInvalidationEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 0x8000;
   }
@@ -1319,9 +1319,9 @@ LABEL_23:
   *&self->_reusableViewFlags = v3 & 0x8000 | *&self->_reusableViewFlags & 0x7FFF;
 }
 
-- (void)_setIsBeingReused:(BOOL)a3
+- (void)_setIsBeingReused:(BOOL)reused
 {
-  if (a3)
+  if (reused)
   {
     v3 = 512;
   }
@@ -1334,20 +1334,20 @@ LABEL_23:
   *&self->_reusableViewFlags = *&self->_reusableViewFlags & 0xFDFF | v3;
 }
 
-- (id)_preferredLayoutAttributesFittingAttributes:(id)a3 isAnimatingExistingView:(BOOL)a4
+- (id)_preferredLayoutAttributesFittingAttributes:(id)attributes isAnimatingExistingView:(BOOL)view
 {
   v45 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  attributesCopy = attributes;
   *&self->_reusableViewFlags |= 0xCu;
   [(UIView *)self updateTraitsIfNeeded];
   kdebug_trace();
-  v7 = [(UICollectionReusableView *)self preferredLayoutAttributesFittingAttributes:v6];
+  v7 = [(UICollectionReusableView *)self preferredLayoutAttributesFittingAttributes:attributesCopy];
   kdebug_trace();
   if (!v7)
   {
-    v31 = [MEMORY[0x1E696AAA8] currentHandler];
-    v32 = [(UICollectionReusableView *)self _collectionView];
-    [v31 handleFailureInMethod:a2 object:self file:@"UICollectionViewCell.m" lineNumber:811 description:{@"Received nil preferred attributes from -preferredLayoutAttributesFittingAttributes: in view %@. Original attributes: %@. Collection view: %@", self, v6, v32}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    _collectionView = [(UICollectionReusableView *)self _collectionView];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UICollectionViewCell.m" lineNumber:811 description:{@"Received nil preferred attributes from -preferredLayoutAttributesFittingAttributes: in view %@. Original attributes: %@. Collection view: %@", self, attributesCopy, _collectionView}];
   }
 
   if (dyld_program_sdk_at_least())
@@ -1370,7 +1370,7 @@ LABEL_23:
       if (v25)
       {
 LABEL_11:
-        v27 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
         v47.origin.x = v9;
         v47.origin.y = v11;
         v47.size.width = v13;
@@ -1381,7 +1381,7 @@ LABEL_11:
         v48.size.width = v22;
         v48.size.height = v24;
         v29 = NSStringFromCGRect(v48);
-        [v27 handleFailureInMethod:a2 object:self file:@"UICollectionViewCell.m" lineNumber:830 description:{@"Rounding frame (%@) from preferred layout attributes resulted in a frame with one or more invalid members (%@).\nLayout attributes: %@\nView: %@", v28, v29, v7, self}];
+        [currentHandler2 handleFailureInMethod:a2 object:self file:@"UICollectionViewCell.m" lineNumber:830 description:{@"Rounding frame (%@) from preferred layout attributes resulted in a frame with one or more invalid members (%@).\nLayout attributes: %@\nView: %@", v28, v29, v7, self}];
 
         goto LABEL_13;
       }
@@ -1441,7 +1441,7 @@ LABEL_13:
       v41 = 2112;
       v42 = v7;
       v43 = 2112;
-      v44 = self;
+      selfCopy = self;
       _os_log_impl(&dword_188A29000, v34, OS_LOG_TYPE_ERROR, "Rounding frame (%@) from preferred layout attributes resulted in a frame with one or more invalid members (%@).\nLayout attributes: %@\nView: %@", buf, 0x2Au);
     }
 
@@ -1458,28 +1458,28 @@ LABEL_15:
 {
   v4 = layoutAttributes;
   WeakRetained = objc_loadWeakRetained(&self->_collectionView);
-  v6 = [WeakRetained collectionViewLayout];
+  collectionViewLayout = [WeakRetained collectionViewLayout];
 
-  if (v6)
+  if (collectionViewLayout)
   {
     v7 = objc_loadWeakRetained(&self->_collectionView);
-    v8 = [v7 collectionViewLayout];
-    v9 = [v8 _cellsShouldConferWithAutolayoutEngineForSizingInfo];
+    collectionViewLayout2 = [v7 collectionViewLayout];
+    _cellsShouldConferWithAutolayoutEngineForSizingInfo = [collectionViewLayout2 _cellsShouldConferWithAutolayoutEngineForSizingInfo];
 
-    if (!v9)
+    if (!_cellsShouldConferWithAutolayoutEngineForSizingInfo)
     {
       goto LABEL_14;
     }
   }
 
-  v10 = [(UICollectionReusableView *)self _shouldConstrainWidth];
-  v11 = [(UICollectionReusableView *)self _shouldConstrainHeight];
-  if (v10 && v11)
+  _shouldConstrainWidth = [(UICollectionReusableView *)self _shouldConstrainWidth];
+  _shouldConstrainHeight = [(UICollectionReusableView *)self _shouldConstrainHeight];
+  if (_shouldConstrainWidth && _shouldConstrainHeight)
   {
     goto LABEL_14;
   }
 
-  if (v10)
+  if (_shouldConstrainWidth)
   {
     v12 = 1000.0;
   }
@@ -1519,9 +1519,9 @@ LABEL_14:
   return v24;
 }
 
-- (void)_setShouldConstrainWidth:(BOOL)a3
+- (void)_setShouldConstrainWidth:(BOOL)width
 {
-  if (a3)
+  if (width)
   {
     v3 = 4096;
   }
@@ -1534,9 +1534,9 @@ LABEL_14:
   *&self->_reusableViewFlags = *&self->_reusableViewFlags & 0xEFFF | v3;
 }
 
-- (void)_setShouldConstrainHeight:(BOOL)a3
+- (void)_setShouldConstrainHeight:(BOOL)height
 {
-  if (a3)
+  if (height)
   {
     v3 = 0x2000;
   }

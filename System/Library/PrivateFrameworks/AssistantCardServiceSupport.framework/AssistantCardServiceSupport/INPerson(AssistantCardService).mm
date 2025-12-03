@@ -6,18 +6,18 @@
 
 - (id)acs_formattedPersonName
 {
-  v2 = [a1 displayName];
-  if ([v2 length])
+  displayName = [self displayName];
+  if ([displayName length])
   {
-    v3 = [a1 displayName];
+    displayName2 = [self displayName];
   }
 
   else
   {
-    v3 = 0;
+    displayName2 = 0;
   }
 
-  return v3;
+  return displayName2;
 }
 
 @end

@@ -1,5 +1,5 @@
 @interface _PLKDontAllowGroupOpacityOrGroupBlendingLayer
-+ (BOOL)needsDisplayForKey:(id)a3;
++ (BOOL)needsDisplayForKey:(id)key;
 - (_PLKDontAllowGroupOpacityOrGroupBlendingLayer)init;
 @end
 
@@ -24,11 +24,11 @@
   return v3;
 }
 
-+ (BOOL)needsDisplayForKey:(id)a3
++ (BOOL)needsDisplayForKey:(id)key
 {
-  v4.receiver = a1;
+  v4.receiver = self;
   v4.super_class = &OBJC_METACLASS____PLKDontAllowGroupOpacityOrGroupBlendingLayer;
-  return objc_msgSendSuper2(&v4, sel_needsDisplayForKey_, a3);
+  return objc_msgSendSuper2(&v4, sel_needsDisplayForKey_, key);
 }
 
 @end

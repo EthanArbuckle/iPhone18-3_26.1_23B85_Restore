@@ -1,14 +1,14 @@
 @interface MRShaderManager
-+ (id)shaderKeyForShaderID:(id)a3 andArguments:(id)a4;
++ (id)shaderKeyForShaderID:(id)d andArguments:(id)arguments;
 + (void)initialize;
 - (MRShaderManager)init;
-- (id)shaderForShaderID:(id)a3 inContext:(id)a4 withArguments:(id)a5;
-- (unsigned)_glShaderForID:(id)a3 inBaseContext:(id)a4 isFragmentShader:(BOOL)a5 withArguments:(id)a6;
+- (id)shaderForShaderID:(id)d inContext:(id)context withArguments:(id)arguments;
+- (unsigned)_glShaderForID:(id)d inBaseContext:(id)context isFragmentShader:(BOOL)shader withArguments:(id)arguments;
 - (void)cleanup;
 - (void)dealloc;
-- (void)forgetContext:(id)a3;
-- (void)registerShaderWithFragmentShaderSource:(id)a3 andVertexShaderName:(id)a4 forShaderID:(id)a5;
-- (void)registerVertexShaderWithVertexShaderSource:(id)a3 forShaderID:(id)a4;
+- (void)forgetContext:(id)context;
+- (void)registerShaderWithFragmentShaderSource:(id)source andVertexShaderName:(id)name forShaderID:(id)d;
+- (void)registerVertexShaderWithVertexShaderSource:(id)source forShaderID:(id)d;
 - (void)releaseResources;
 @end
 
@@ -16,7 +16,7 @@
 
 + (void)initialize
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___MRShaderManager;
   objc_msgSendSuper2(&v2, "initialize");
   if (!qword_1EF378)
@@ -75,7 +75,7 @@
     [(MRShaderManager *)v2 registerShaderWithFragmentShaderSource:@" \n\t\tDeclareTexture0; \n\t\tDeclareForeColorU; \n\t\tuniform lowp vec4\t\t\tedgeColor; \n\t\tuniform mediump vec2\t\tinvRadii; \n\t\tvoid main() \n\t\t{ \n\t\t\tlowp vec4 color = SampleTexture0; \n\t\t\tDoFilter0(color); \n\t\t\tcolor.a = 1.; \n\t\t\tgl_FragColor = uColor * mix(edgeColor andVertexShaderName:color forShaderID:SpriteEdgeSoftenerScalar(vTextureCoordinates0, invRadii)); \n\t\t} \n\t\t", @"VertexTexture0", @"PlainTextureSoftOpaque"];
     [(MRShaderManager *)v2 registerShaderWithFragmentShaderSource:@" \n\t\tDeclareTexture0; \n\t\tDeclareInSpriteCoordinates; \n\t\tDeclareForeColorU; \n\t\tuniform lowp vec4\t\t\tcolor; \n\t\tuniform lowp float\t\t\tlevel; \n\t\tvoid main() \n\t\t{ \n\t\t\tlowp vec4 c = SampleTexture0; \n\t\t\tDoFilter0(c); \n\t\t\tlowp float val = max(0. andVertexShaderName:vInSpriteCoordinates.y); \n\t\t\tgl_FragColor = mix(color forShaderID:c, val * val * val * level); \n\t\t} \n\t\t", @"VertexCoordinatesTexture0", @"GradientFadeToColor"];
     [(MRShaderManager *)v2 registerShaderWithFragmentShaderSource:@" \n\t\tDeclareTexture0; \n\t\tDeclareForeColorU; \n\t\tuniform lowp vec4\t\t\tcolor; \n\t\tuniform lowp float\t\t\tlevel; \n\t\tvoid main() \n\t\t{ \n\t\t\tlowp vec4 c = SampleTexture0; \n\t\t\tDoFilter0(c); \n\t\t\tgl_FragColor = uColor * mix(c andVertexShaderName:color forShaderID:level); \n\t\t} \n\t\t", @"VertexTexture0", @"FadeToColor"];
-    [(MRShaderManager *)v2 registerShaderWithFragmentShaderSource:@" \n\t\tDeclareTexture0; \n\t\tDeclareInSpriteCoordinates; \n\t\tDeclareForeColorU; \n\t\tuniform mediump vec2 borderSize andVertexShaderName:invRadii; \n\t\tuniform lowp vec4 borderColor; \n\t\tvoid main() \n\t\t{ \n\t\t\tmediump vec2 b1 = -.5 - borderSize; \n\t\t\tmediump vec2 a1 = .5 + borderSize - b1; \n\t\t\tmediump vec2 p1 = vInSpriteCoordinates * a1 + b1 forShaderID:absP1 = abs(p1); \n\t\t\tlowp vec4 color; \n\t\t\tif (all(lessThanEqual(absP1, vec2(.5)))) { \n\t\t\t\t\tmediump vec2 borderAlphaXY = 1. - (.5 - absP1) * invRadii; \n\t\t\t\t\tlowp float borderAlpha = clamp(max(borderAlphaXY.x, borderAlphaXY.y), 0., 1.); \n\t\t\t\t\tcolor = SampleTexture0; \n\t\t\t\t\tDoFilter0(color); \n\t\t\t\t\tcolor = mix(color, borderColor, borderAlpha); \n\t\t\t\t} \n\t\t\telse \n\t\t\t\tcolor = borderColor * SpriteEdgeSoftenerPremultiplied(vInSpriteCoordinates, invRadii); \n\t\t\tgl_FragColor = uColor * color; \n\t\t} \n\t\t", @"VertexCoordinatesTexture0", @"Border"];
+    [(MRShaderManager *)v2 registerShaderWithFragmentShaderSource:@" \n\t\tDeclareTexture0; \n\t\tDeclareInSpriteCoordinates; \n\t\tDeclareForeColorU; \n\t\tuniform mediump vec2 borderSize andVertexShaderName:invRadii; \n\t\tuniform lowp vec4 borderColor; \n\t\tvoid main() \n\t\t{ \n\t\t\tmediump vec2 b1 = -.5 - borderSize; \n\t\t\tmediump vec2 self = .5 + borderSize - b1; \n\t\t\tmediump vec2 p1 = vInSpriteCoordinates * self + b1 forShaderID:absP1 = abs(p1); \n\t\t\tlowp vec4 color; \n\t\t\tif (all(lessThanEqual(absP1, vec2(.5)))) { \n\t\t\t\t\tmediump vec2 borderAlphaXY = 1. - (.5 - absP1) * invRadii; \n\t\t\t\t\tlowp float borderAlpha = clamp(max(borderAlphaXY.x, borderAlphaXY.y), 0., 1.); \n\t\t\t\t\tcolor = SampleTexture0; \n\t\t\t\t\tDoFilter0(color); \n\t\t\t\t\tcolor = mix(color, borderColor, borderAlpha); \n\t\t\t\t} \n\t\t\telse \n\t\t\t\tcolor = borderColor * SpriteEdgeSoftenerPremultiplied(vInSpriteCoordinates, invRadii); \n\t\t\tgl_FragColor = uColor * color; \n\t\t} \n\t\t", @"VertexCoordinatesTexture0", @"Border"];
     [(MRShaderManager *)v2 registerShaderWithFragmentShaderSource:@" \n\t\tDeclareTexture0; /* image */ \n\t\tDeclareTexture1; /* mask */ \n\t\tDeclareForeColorU; \n\t\tvoid main() \n\t\t{ \n\t\t\tlowp vec4 color = SampleTexture0; \n\t\t\tDoFilter0(color); \n\t\t\tgl_FragColor = uColor * color * SampleTexture1; \n\t\t} \n\t\t" andVertexShaderName:@"VertexTexture01" forShaderID:@"Mask"];
     [(MRShaderManager *)v2 registerShaderWithFragmentShaderSource:@" \n\t\tDeclareTexture0; /* image */ \n\t\tDeclareTexture1; /* mask */ \n\t\tDeclareForeColorU; \n\t\tvoid main() \n\t\t{ \n\t\t\tlowp vec4 color = SampleTexture0; \n\t\t\tDoFilter0(color); \n\t\t\tcolor.a *= SampleTexture1.r; \n\t\t\tgl_FragColor = uColor * color; \n\t\t} \n\t\t" andVertexShaderName:@"VertexTexture01" forShaderID:@"AlphaMask"];
     [(MRShaderManager *)v2 registerShaderWithFragmentShaderSource:@" \n\t\tDeclareTexture0; /* image */ \n\t\tDeclareTexture1; /* mask */ \n\t\tDeclareForeColorU; \n\t\tvoid main() \n\t\t{ \n\t\t\tlowp vec4 color = SampleTexture0; \n\t\t\tDoFilter0(color); \n\t\t\tcolor *= SampleTexture1.a; \n\t\t\tgl_FragColor = uColor * color; \n\t\t} \n\t\t" andVertexShaderName:@"VertexTexture01" forShaderID:@"AlphaMaskPremultipliedOnlyAlpha"];
@@ -126,12 +126,12 @@
 
 - (void)releaseResources
 {
-  v3 = [(NSMutableDictionary *)self->mGLShadersPerContext allKeys];
+  allKeys = [(NSMutableDictionary *)self->mGLShadersPerContext allKeys];
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  v4 = [allKeys countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = v4;
@@ -143,7 +143,7 @@
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allKeys);
         }
 
         -[MRShaderManager forgetContext:](self, "forgetContext:", [*(*(&v8 + 1) + 8 * v7) object]);
@@ -151,7 +151,7 @@
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [allKeys countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v5);
@@ -161,18 +161,18 @@
   [(NSMutableDictionary *)self->mShadersPerContext removeAllObjects];
 }
 
-- (void)forgetContext:(id)a3
+- (void)forgetContext:(id)context
 {
-  if (a3 && [a3 baseContext] == a3)
+  if (context && [context baseContext] == context)
   {
     v5 = +[EAGLContext currentContext];
     v6 = v5;
-    if (v5 != [a3 glContext])
+    if (v5 != [context glContext])
     {
-      +[EAGLContext setCurrentContext:](EAGLContext, "setCurrentContext:", [a3 glContext]);
+      +[EAGLContext setCurrentContext:](EAGLContext, "setCurrentContext:", [context glContext]);
     }
 
-    v7 = [[MURetainingKey alloc] initWithObject:a3];
+    v7 = [[MURetainingKey alloc] initWithObject:context];
     mShadersPerContext = self->mShadersPerContext;
     objc_sync_enter(mShadersPerContext);
     [(NSMutableDictionary *)self->mShadersPerContext removeObjectForKey:v7];
@@ -217,17 +217,17 @@
   }
 }
 
-- (unsigned)_glShaderForID:(id)a3 inBaseContext:(id)a4 isFragmentShader:(BOOL)a5 withArguments:(id)a6
+- (unsigned)_glShaderForID:(id)d inBaseContext:(id)context isFragmentShader:(BOOL)shader withArguments:(id)arguments
 {
-  v7 = a5;
+  shaderCopy = shader;
   mGLShadersPerContext = self->mGLShadersPerContext;
   objc_sync_enter(mGLShadersPerContext);
-  v12 = [[MURetainingKey alloc] initWithObject:a4];
+  v12 = [[MURetainingKey alloc] initWithObject:context];
   v13 = [(NSMutableDictionary *)self->mGLShadersPerContext objectForKey:v12];
   v14 = v13;
   if (v13)
   {
-    Shader = [objc_msgSend(v13 objectForKey:{a3), "integerValue"}];
+    Shader = [objc_msgSend(v13 objectForKey:{d), "integerValue"}];
   }
 
   else
@@ -240,46 +240,46 @@
 
   if (!Shader)
   {
-    v16 = [a3 rangeOfString:@"|"];
-    v17 = a3;
+    v16 = [d rangeOfString:@"|"];
+    dCopy = d;
     if (v16 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v17 = [a3 substringToIndex:v16];
+      dCopy = [d substringToIndex:v16];
     }
 
-    v31 = [-[NSMutableDictionary objectForKey:](self->mShaderDescriptions objectForKey:{v17), "objectForKey:", @"source"}];
+    v31 = [-[NSMutableDictionary objectForKey:](self->mShaderDescriptions objectForKey:{dCopy), "objectForKey:", @"source"}];
     if (!v31)
     {
       goto LABEL_32;
     }
 
-    if (v7)
+    if (shaderCopy)
     {
       v30 = mGLShadersPerContext;
-      v29 = v7;
-      v18 = [objc_msgSend(@" \n\t\t" stringByAppendingFormat:@"#define ClampToBorder0 %d\n\t#define ClampToBorder1 %d\n\n", objc_msgSend(a6, "texture0ClampsToBorder"), objc_msgSend(a6, "texture1ClampsToBorder")), "stringByAppendingString:", &cfstr_DefineSampler2];
+      v29 = shaderCopy;
+      v18 = [objc_msgSend(@" \n\t\t" stringByAppendingFormat:@"#define ClampToBorder0 %d\n\t#define ClampToBorder1 %d\n\n", objc_msgSend(arguments, "texture0ClampsToBorder"), objc_msgSend(arguments, "texture1ClampsToBorder")), "stringByAppendingString:", &cfstr_DefineSampler2];
       v19 = objc_alloc_init(NSMutableSet);
       for (i = 0; i != 3; ++i)
       {
         if (i == 1)
         {
-          v21 = [a6 filter1];
+          filter1 = [arguments filter1];
         }
 
         else if (i)
         {
-          v21 = [a6 filter2];
+          filter1 = [arguments filter2];
         }
 
         else
         {
-          v21 = [a6 filter0];
+          filter1 = [arguments filter0];
         }
 
-        v22 = v21;
-        if (v21)
+        v22 = filter1;
+        if (filter1)
         {
-          v18 = [v18 stringByReplacingOccurrencesOfString:+[NSString stringWithFormat:](NSString withString:{"stringWithFormat:", @" Filter%d", i), v21}];
+          v18 = [v18 stringByReplacingOccurrencesOfString:+[NSString stringWithFormat:](NSString withString:{"stringWithFormat:", @" Filter%d", i), filter1}];
           if (([v19 containsObject:v22] & 1) == 0)
           {
             v23 = [(NSMutableDictionary *)self->mShaderDescriptions objectForKey:[NSString stringWithFormat:@"Filter%@", v22]];
@@ -295,7 +295,7 @@
 
       v24 = [v18 stringByAppendingString:v31];
       mGLShadersPerContext = v30;
-      v7 = v29;
+      shaderCopy = v29;
     }
 
     else
@@ -308,12 +308,12 @@
     {
       v25 = +[EAGLContext currentContext];
       v26 = v25;
-      if (v25 != [a4 glContext])
+      if (v25 != [context glContext])
       {
-        +[EAGLContext setCurrentContext:](EAGLContext, "setCurrentContext:", [a4 glContext]);
+        +[EAGLContext setCurrentContext:](EAGLContext, "setCurrentContext:", [context glContext]);
       }
 
-      if (v7)
+      if (shaderCopy)
       {
         v27 = 35632;
       }
@@ -326,7 +326,7 @@
       Shader = glCreateShader(v27);
       glShaderSource(Shader, 1, &string, 0);
       glCompileShader(Shader);
-      [v14 setObject:+[NSNumber numberWithInteger:](NSNumber forKey:{"numberWithInteger:", Shader), a3}];
+      [v14 setObject:+[NSNumber numberWithInteger:](NSNumber forKey:{"numberWithInteger:", Shader), d}];
       if (+[EAGLContext currentContext]!= v25)
       {
         [EAGLContext setCurrentContext:v25];
@@ -344,13 +344,13 @@ LABEL_32:
   return Shader;
 }
 
-- (id)shaderForShaderID:(id)a3 inContext:(id)a4 withArguments:(id)a5
+- (id)shaderForShaderID:(id)d inContext:(id)context withArguments:(id)arguments
 {
-  v9 = [a4 baseContext];
-  v10 = [MRShaderManager shaderKeyForShaderID:a3 andArguments:a5];
+  baseContext = [context baseContext];
+  v10 = [MRShaderManager shaderKeyForShaderID:d andArguments:arguments];
   mShadersPerContext = self->mShadersPerContext;
   objc_sync_enter(mShadersPerContext);
-  v12 = [[MURetainingKey alloc] initWithObject:v9];
+  v12 = [[MURetainingKey alloc] initWithObject:baseContext];
   v13 = [(NSMutableDictionary *)self->mShadersPerContext objectForKey:v12];
   v14 = v13;
   if (v13)
@@ -368,10 +368,10 @@ LABEL_32:
 
   if (!v15)
   {
-    v16 = [(MRShaderManager *)self _glShaderForID:v10 inBaseContext:v9 isFragmentShader:1 withArguments:a5];
+    v16 = [(MRShaderManager *)self _glShaderForID:v10 inBaseContext:baseContext isFragmentShader:1 withArguments:arguments];
     if (v16)
     {
-      v17 = [(NSMutableDictionary *)self->mShaderDescriptions objectForKey:a3];
+      v17 = [(NSMutableDictionary *)self->mShaderDescriptions objectForKey:d];
       v18 = [v17 objectForKey:@"vertexShader"];
       if (v18)
       {
@@ -383,7 +383,7 @@ LABEL_32:
         v19 = @"Vertex";
       }
 
-      v15 = [[MRShader alloc] initWithShaderID:a3 shaderKey:v10 description:v17 vertexShader:[(MRShaderManager *)self _glShaderForID:v19 inBaseContext:v9 isFragmentShader:0 withArguments:a5] andFragmentShader:v16 inContext:v9];
+      v15 = [[MRShader alloc] initWithShaderID:d shaderKey:v10 description:v17 vertexShader:[(MRShaderManager *)self _glShaderForID:v19 inBaseContext:baseContext isFragmentShader:0 withArguments:arguments] andFragmentShader:v16 inContext:baseContext];
       [v14 setObject:v15 forKey:v10];
     }
 
@@ -394,81 +394,81 @@ LABEL_32:
   }
 
   objc_sync_exit(mShadersPerContext);
-  [(MRShader *)v15 setUseContext:a4];
+  [(MRShader *)v15 setUseContext:context];
   return v15;
 }
 
-+ (id)shaderKeyForShaderID:(id)a3 andArguments:(id)a4
++ (id)shaderKeyForShaderID:(id)d andArguments:(id)arguments
 {
-  v6 = [a4 texture0ClampsToBorder];
-  if ([a4 texture1ClampsToBorder])
+  texture0ClampsToBorder = [arguments texture0ClampsToBorder];
+  if ([arguments texture1ClampsToBorder])
   {
-    v7 = v6 | 2;
+    v7 = texture0ClampsToBorder | 2;
   }
 
   else
   {
-    v7 = v6;
+    v7 = texture0ClampsToBorder;
   }
 
-  v8 = [a4 filter0];
-  v9 = [a4 filter1];
-  v10 = [a4 filter2];
-  v11 = [v8 length];
-  v12 = [v9 length];
+  filter0 = [arguments filter0];
+  filter1 = [arguments filter1];
+  filter2 = [arguments filter2];
+  v11 = [filter0 length];
+  v12 = [filter1 length];
   if (v11)
   {
-    if (v12 || [v10 length])
+    if (v12 || [filter2 length])
     {
-      return [NSString stringWithFormat:@"%@|%d|%@|%@|%@", a3, v7, v8, v9, v10];
+      return [NSString stringWithFormat:@"%@|%d|%@|%@|%@", d, v7, filter0, filter1, filter2];
     }
 
     else
     {
-      return [NSString stringWithFormat:@"%@|%d|%@", a3, v7, v8, v15, v16];
+      return [NSString stringWithFormat:@"%@|%d|%@", d, v7, filter0, v15, v16];
     }
   }
 
-  else if (v12 || [v10 length])
+  else if (v12 || [filter2 length])
   {
-    return [NSString stringWithFormat:@"%@|%d||%@|%@", a3, v7, v9, v10, v16];
+    return [NSString stringWithFormat:@"%@|%d||%@|%@", d, v7, filter1, filter2, v16];
   }
 
   else if (v7)
   {
-    return [NSString stringWithFormat:@"%@|%d", a3, v7, v14, v15, v16];
+    return [NSString stringWithFormat:@"%@|%d", d, v7, v14, v15, v16];
   }
 
   else
   {
-    return a3;
+    return d;
   }
 }
 
-- (void)registerVertexShaderWithVertexShaderSource:(id)a3 forShaderID:(id)a4
+- (void)registerVertexShaderWithVertexShaderSource:(id)source forShaderID:(id)d
 {
-  if ([(NSMutableDictionary *)self->mShaderDescriptions objectForKey:a4])
+  if ([(NSMutableDictionary *)self->mShaderDescriptions objectForKey:d])
   {
-    NSLog(@"### error: overriding vertex shader for shaderID '%@'", a4);
+    NSLog(@"### error: overriding vertex shader for shaderID '%@'", d);
   }
 
   mShaderDescriptions = self->mShaderDescriptions;
-  v8 = [NSDictionary dictionaryWithObjectsAndKeys:a3, @"source", 0];
+  v8 = [NSDictionary dictionaryWithObjectsAndKeys:source, @"source", 0];
 
-  [(NSMutableDictionary *)mShaderDescriptions setObject:v8 forKey:a4];
+  [(NSMutableDictionary *)mShaderDescriptions setObject:v8 forKey:d];
 }
 
-- (void)registerShaderWithFragmentShaderSource:(id)a3 andVertexShaderName:(id)a4 forShaderID:(id)a5
+- (void)registerShaderWithFragmentShaderSource:(id)source andVertexShaderName:(id)name forShaderID:(id)d
 {
-  if ([(NSMutableDictionary *)self->mShaderDescriptions objectForKey:a5])
+  if ([(NSMutableDictionary *)self->mShaderDescriptions objectForKey:d])
   {
-    NSLog(@"### error: overriding shader for shaderID '%@'", a5);
+    NSLog(@"### error: overriding shader for shaderID '%@'", d);
   }
 
   mShaderDescriptions = self->mShaderDescriptions;
-  v10 = [NSDictionary dictionaryWithObjectsAndKeys:a3, @"source", a4, @"vertexShader", 0];
+  v10 = [NSDictionary dictionaryWithObjectsAndKeys:source, @"source", name, @"vertexShader", 0];
 
-  [(NSMutableDictionary *)mShaderDescriptions setObject:v10 forKey:a5];
+  [(NSMutableDictionary *)mShaderDescriptions setObject:v10 forKey:d];
 }
 
 @end

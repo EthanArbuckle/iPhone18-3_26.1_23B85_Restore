@@ -1,23 +1,23 @@
 @interface GKRingBuffer
-- (BOOL)store:(char *)a3 numSamples:(unsigned int)a4 timestamp:(unsigned int)a5;
-- (GKRingBuffer)initWithCapacity:(unsigned int)a3 bytesPerFrame:(unsigned int)a4;
-- (int)fetch:(char *)a3 numSamples:(unsigned int)a4 timestamp:(unsigned int)a5;
-- (int)needsNewNumSamples:(unsigned int)a3 timestamp:(unsigned int)a4;
+- (BOOL)store:(char *)store numSamples:(unsigned int)samples timestamp:(unsigned int)timestamp;
+- (GKRingBuffer)initWithCapacity:(unsigned int)capacity bytesPerFrame:(unsigned int)frame;
+- (int)fetch:(char *)fetch numSamples:(unsigned int)samples timestamp:(unsigned int)timestamp;
+- (int)needsNewNumSamples:(unsigned int)samples timestamp:(unsigned int)timestamp;
 - (void)dealloc;
-- (void)increaseCapacity:(unsigned int)a3;
+- (void)increaseCapacity:(unsigned int)capacity;
 @end
 
 @implementation GKRingBuffer
 
-- (GKRingBuffer)initWithCapacity:(unsigned int)a3 bytesPerFrame:(unsigned int)a4
+- (GKRingBuffer)initWithCapacity:(unsigned int)capacity bytesPerFrame:(unsigned int)frame
 {
   v9 = *MEMORY[0x1E69E9840];
   v8.receiver = self;
   v8.super_class = GKRingBuffer;
   v6 = [(GKRingBuffer *)&v8 init];
   v6->endTime = 0;
-  v6->capacity = a3;
-  v6->bytesPerFrame = a4;
+  v6->capacity = capacity;
+  v6->bytesPerFrame = frame;
   operator new();
 }
 
@@ -37,7 +37,7 @@
   [(GKRingBuffer *)&v4 dealloc];
 }
 
-- (void)increaseCapacity:(unsigned int)a3
+- (void)increaseCapacity:(unsigned int)capacity
 {
   v15 = *MEMORY[0x1E69E9840];
   capacity = self->capacity;
@@ -69,15 +69,15 @@
 
   CARingBuffer::Fetch(self->ringBufRef, &v14, capacity, v13);
   CARingBuffer::Deallocate(self->ringBufRef);
-  CARingBuffer::Allocate(self->ringBufRef, 1, self->bytesPerFrame, a3);
+  CARingBuffer::Allocate(self->ringBufRef, 1, self->bytesPerFrame, capacity);
   CARingBuffer::Store(self->ringBufRef, &v14, self->capacity, v13);
-  self->capacity = a3;
+  self->capacity = capacity;
 }
 
-- (BOOL)store:(char *)a3 numSamples:(unsigned int)a4 timestamp:(unsigned int)a5
+- (BOOL)store:(char *)store numSamples:(unsigned int)samples timestamp:(unsigned int)timestamp
 {
   v13 = *MEMORY[0x1E69E9840];
-  if (2 * a4 > self->capacity)
+  if (2 * samples > self->capacity)
   {
     [(GKRingBuffer *)self increaseCapacity:?];
   }
@@ -86,22 +86,22 @@
   bytesPerFrame = self->bytesPerFrame;
   v12.mBuffers[0].mNumberChannels = 1;
   v12.mBuffers[0].mDataByteSize = bytesPerFrame;
-  v12.mBuffers[0].mData = a3;
-  v10 = CARingBuffer::Store(self->ringBufRef, &v12, a4, a5);
+  v12.mBuffers[0].mData = store;
+  v10 = CARingBuffer::Store(self->ringBufRef, &v12, samples, timestamp);
   if (!v10)
   {
-    self->endTime = a5 + a4;
+    self->endTime = timestamp + samples;
   }
 
   return v10 == 0;
 }
 
-- (int)needsNewNumSamples:(unsigned int)a3 timestamp:(unsigned int)a4
+- (int)needsNewNumSamples:(unsigned int)samples timestamp:(unsigned int)timestamp
 {
   endTime = self->endTime;
-  if (a4 + a3 >= endTime)
+  if (timestamp + samples >= endTime)
   {
-    return a4 + a3 - endTime;
+    return timestamp + samples - endTime;
   }
 
   else
@@ -110,24 +110,24 @@
   }
 }
 
-- (int)fetch:(char *)a3 numSamples:(unsigned int)a4 timestamp:(unsigned int)a5
+- (int)fetch:(char *)fetch numSamples:(unsigned int)samples timestamp:(unsigned int)timestamp
 {
   v13 = *MEMORY[0x1E69E9840];
-  if (2 * a4 > self->capacity)
+  if (2 * samples > self->capacity)
   {
     [(GKRingBuffer *)self increaseCapacity:?];
   }
 
   endTime = self->endTime;
-  result = a5 + a4 - endTime;
-  if (a5 + a4 <= endTime)
+  result = timestamp + samples - endTime;
+  if (timestamp + samples <= endTime)
   {
     *&v12.mNumberBuffers = 0xAAAAAAAA00000001;
     bytesPerFrame = self->bytesPerFrame;
     v12.mBuffers[0].mNumberChannels = 1;
     v12.mBuffers[0].mDataByteSize = bytesPerFrame;
-    v12.mBuffers[0].mData = a3;
-    if (CARingBuffer::Fetch(self->ringBufRef, &v12, a4, a5))
+    v12.mBuffers[0].mData = fetch;
+    if (CARingBuffer::Fetch(self->ringBufRef, &v12, samples, timestamp))
     {
       return -1;
     }

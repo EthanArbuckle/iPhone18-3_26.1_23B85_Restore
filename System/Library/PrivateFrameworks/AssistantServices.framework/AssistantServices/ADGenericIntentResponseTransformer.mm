@@ -1,19 +1,19 @@
 @interface ADGenericIntentResponseTransformer
-- (id)aceCommandForSiriResponse:(id)a3 responseError:(id)a4 forRequestCommand:(id)a5;
+- (id)aceCommandForSiriResponse:(id)response responseError:(id)error forRequestCommand:(id)command;
 @end
 
 @implementation ADGenericIntentResponseTransformer
 
-- (id)aceCommandForSiriResponse:(id)a3 responseError:(id)a4 forRequestCommand:(id)a5
+- (id)aceCommandForSiriResponse:(id)response responseError:(id)error forRequestCommand:(id)command
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  responseCopy = response;
+  errorCopy = error;
+  commandCopy = command;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v10 = objc_alloc_init(ADSiriRequestSucceededResponseTransformer);
-    v11 = [(ADSiriRequestSucceededResponseTransformer *)v10 aceCommandForSiriResponse:v7 responseError:v8 forRequestCommand:v9];
+    v11 = [(ADSiriRequestSucceededResponseTransformer *)v10 aceCommandForSiriResponse:responseCopy responseError:errorCopy forRequestCommand:commandCopy];
 
     goto LABEL_13;
   }
@@ -21,15 +21,15 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v12 = [v7 responseCode];
-    if (v12 == 2)
+    responseCode = [responseCopy responseCode];
+    if (responseCode == 2)
     {
       v13 = &SAIntentGroupIntentEnabledAppHasNoResultsErrorCode;
     }
 
     else
     {
-      if (v12 != 1)
+      if (responseCode != 1)
       {
         v15 = -1;
         goto LABEL_11;
@@ -40,7 +40,7 @@
 
     v15 = *v13;
 LABEL_11:
-    v14 = [v9 ad_aceResponseCommandRepresentationWithErrorCode:v15 reason:0];
+    v14 = [commandCopy ad_aceResponseCommandRepresentationWithErrorCode:v15 reason:0];
     goto LABEL_12;
   }
 

@@ -1,8 +1,8 @@
 @interface PKCloudResolveContext
-- (PKCloudResolveContext)initWithPKCloudPrinter:(id)a3 timeout:(double)a4 completionHandler:(id)a5;
+- (PKCloudResolveContext)initWithPKCloudPrinter:(id)printer timeout:(double)timeout completionHandler:(id)handler;
 - (id)description;
-- (void)_checkFound:(id)a3;
-- (void)_complete:(id)a3;
+- (void)_checkFound:(id)found;
+- (void)_complete:(id)_complete;
 - (void)_driveResolution;
 - (void)dealloc;
 - (void)start;
@@ -10,11 +10,11 @@
 
 @implementation PKCloudResolveContext
 
-- (PKCloudResolveContext)initWithPKCloudPrinter:(id)a3 timeout:(double)a4 completionHandler:(id)a5
+- (PKCloudResolveContext)initWithPKCloudPrinter:(id)printer timeout:(double)timeout completionHandler:(id)handler
 {
   v27 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a5;
+  printerCopy = printer;
+  handlerCopy = handler;
   v24.receiver = self;
   v24.super_class = PKCloudResolveContext;
   v11 = [(PKCloudResolveContext *)&v24 init];
@@ -25,15 +25,15 @@
     tag = v11->_tag;
     v11->_tag = v13;
 
-    v11->_timeout = a4;
-    objc_storeStrong(&v11->_icloudPrinter, a3);
-    v15 = MEMORY[0x25F8E4580](v10);
+    v11->_timeout = timeout;
+    objc_storeStrong(&v11->_icloudPrinter, printer);
+    v15 = MEMORY[0x25F8E4580](handlerCopy);
     completionHandler = v11->_completionHandler;
     v11->_completionHandler = v15;
 
-    v17 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     startTime = v11->_startTime;
-    v11->_startTime = v17;
+    v11->_startTime = date;
 
     v19 = dispatch_queue_create("com.apple.printing.reachable", 0);
     queue = v11->_queue;
@@ -52,26 +52,26 @@
   return v11;
 }
 
-- (void)_complete:(id)a3
+- (void)_complete:(id)_complete
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEAA8] date];
+  _completeCopy = _complete;
+  date = [MEMORY[0x277CBEAA8] date];
   v6 = _PKLogCategory(PKLogCategoryDiscovery[0]);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     tag = self->_tag;
-    [v5 timeIntervalSinceDate:self->_startTime];
+    [date timeIntervalSinceDate:self->_startTime];
     v9 = v8;
-    v10 = [v4 bonjourDisplayName];
+    bonjourDisplayName = [_completeCopy bonjourDisplayName];
     v11 = 138413058;
     v12 = tag;
     v13 = 2048;
     v14 = v9;
     v15 = 2048;
-    v16 = v4;
+    v16 = _completeCopy;
     v17 = 2112;
-    v18 = v10;
+    v18 = bonjourDisplayName;
     _os_log_impl(&dword_25F5FC000, v6, OS_LOG_TYPE_DEFAULT, "%@: FINISH after %.5fs - printer %p { %@ }", &v11, 0x2Au);
   }
 
@@ -84,12 +84,12 @@
   icloudPrinter = self->_icloudPrinter;
   if (icloudPrinter)
   {
-    v4 = [(PKiCloudPrinter *)icloudPrinter printerURLs];
-    if ([v4 count])
+    printerURLs = [(PKiCloudPrinter *)icloudPrinter printerURLs];
+    if ([printerURLs count])
     {
-      v5 = [v4 objectEnumerator];
+      objectEnumerator = [printerURLs objectEnumerator];
       enumerator = self->_enumerator;
-      self->_enumerator = v5;
+      self->_enumerator = objectEnumerator;
 
       [(PKCloudResolveContext *)self _driveResolution];
     }
@@ -127,11 +127,11 @@
 - (void)_driveResolution
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = [(NSEnumerator *)self->_enumerator nextObject];
-  if (v3)
+  nextObject = [(NSEnumerator *)self->_enumerator nextObject];
+  if (nextObject)
   {
     v4 = self->_queue;
-    if (([v3 hasPrefix:@"ipp:"] & 1) != 0 || objc_msgSend(v3, "hasPrefix:", @"ipps:"))
+    if (([nextObject hasPrefix:@"ipp:"] & 1) != 0 || objc_msgSend(nextObject, "hasPrefix:", @"ipps:"))
     {
       v5 = _PKLogCategory(PKLogCategoryDiscovery[0]);
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -140,7 +140,7 @@
         *buf = 138412547;
         v20 = tag;
         v21 = 2113;
-        v22 = v3;
+        v22 = nextObject;
         _os_log_impl(&dword_25F5FC000, v5, OS_LOG_TYPE_DEFAULT, "%@ CALL %{private}@", buf, 0x16u);
       }
 
@@ -151,7 +151,7 @@
       v17[3] = &unk_279A92D90;
       v18[0] = v4;
       v18[1] = self;
-      [PKPrinter printerWithName:v3 discoveryTimeout:v17 completionHandler:timeout];
+      [PKPrinter printerWithName:nextObject discoveryTimeout:v17 completionHandler:timeout];
       v8 = v18;
     }
 
@@ -164,11 +164,11 @@
         *buf = 138412547;
         v20 = v12;
         v21 = 2113;
-        v22 = v3;
+        v22 = nextObject;
         _os_log_impl(&dword_25F5FC000, v11, OS_LOG_TYPE_DEFAULT, "%@ CALL %{private}@", buf, 0x16u);
       }
 
-      v13 = [MEMORY[0x277CBEBC0] URLWithString:v3];
+      v13 = [MEMORY[0x277CBEBC0] URLWithString:nextObject];
       v14 = self->_timeout;
       v15[0] = MEMORY[0x277D85DD0];
       v15[1] = 3221225472;
@@ -225,12 +225,12 @@ void __41__PKCloudResolveContext__driveResolution__block_invoke_320(uint64_t a1,
   dispatch_async(v4, v6);
 }
 
-- (void)_checkFound:(id)a3
+- (void)_checkFound:(id)found
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  foundCopy = found;
+  v5 = foundCopy;
+  if (foundCopy)
   {
     queue = self->_queue;
     v9[0] = MEMORY[0x277D85DD0];
@@ -238,7 +238,7 @@ void __41__PKCloudResolveContext__driveResolution__block_invoke_320(uint64_t a1,
     v9[2] = __37__PKCloudResolveContext__checkFound___block_invoke;
     v9[3] = &unk_279A92DB8;
     v9[4] = self;
-    v10 = v4;
+    v10 = foundCopy;
     [v10 pollForPrinterStatusQueue:queue completionHandler:v9];
   }
 

@@ -1,5 +1,5 @@
 @interface AMSUIWebVerifyPaymentSetupFeatureAction
-- (AMSUIWebVerifyPaymentSetupFeatureAction)initWithJSObject:(id)a3 context:(id)a4;
+- (AMSUIWebVerifyPaymentSetupFeatureAction)initWithJSObject:(id)object context:(id)context;
 - (id)_checkCombinedAccount;
 - (id)_checkUpsellCardEnrollment;
 - (id)runAction;
@@ -7,15 +7,15 @@
 
 @implementation AMSUIWebVerifyPaymentSetupFeatureAction
 
-- (AMSUIWebVerifyPaymentSetupFeatureAction)initWithJSObject:(id)a3 context:(id)a4
+- (AMSUIWebVerifyPaymentSetupFeatureAction)initWithJSObject:(id)object context:(id)context
 {
-  v6 = a3;
+  objectCopy = object;
   v12.receiver = self;
   v12.super_class = AMSUIWebVerifyPaymentSetupFeatureAction;
-  v7 = [(AMSUIWebAction *)&v12 initWithJSObject:v6 context:a4];
+  v7 = [(AMSUIWebAction *)&v12 initWithJSObject:objectCopy context:context];
   if (v7)
   {
-    v8 = [v6 objectForKeyedSubscript:@"referrerIdentifier"];
+    v8 = [objectCopy objectForKeyedSubscript:@"referrerIdentifier"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -39,15 +39,15 @@
   v26 = *MEMORY[0x1E69E9840];
   v20.receiver = self;
   v20.super_class = AMSUIWebVerifyPaymentSetupFeatureAction;
-  v3 = [(AMSUIWebAction *)&v20 runAction];
-  v4 = [MEMORY[0x1E698C968] sharedWebUIConfig];
-  if (!v4)
+  runAction = [(AMSUIWebAction *)&v20 runAction];
+  mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedWebUIConfig];
+  if (!mEMORY[0x1E698C968])
   {
-    v4 = [MEMORY[0x1E698C968] sharedConfig];
+    mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
   }
 
-  v5 = [v4 OSLogObject];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v6 = objc_opt_class();
     v7 = AMSLogKey();
@@ -55,24 +55,24 @@
     v23 = v6;
     v24 = 2114;
     v25 = v7;
-    _os_log_impl(&dword_1BB036000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Verifying payment setup.", buf, 0x16u);
+    _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Verifying payment setup.", buf, 0x16u);
   }
 
   v8 = MEMORY[0x1E698C7F0];
-  v9 = [(AMSUIWebVerifyPaymentSetupFeatureAction *)self _checkUpsellCardEnrollment];
-  v21[0] = v9;
-  v10 = [(AMSUIWebVerifyPaymentSetupFeatureAction *)self _checkCombinedAccount];
-  v21[1] = v10;
+  _checkUpsellCardEnrollment = [(AMSUIWebVerifyPaymentSetupFeatureAction *)self _checkUpsellCardEnrollment];
+  v21[0] = _checkUpsellCardEnrollment;
+  _checkCombinedAccount = [(AMSUIWebVerifyPaymentSetupFeatureAction *)self _checkCombinedAccount];
+  v21[1] = _checkCombinedAccount;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:2];
   v12 = [v8 promiseWithAll:v11];
 
-  v13 = [v12 promiseAdapter];
+  promiseAdapter = [v12 promiseAdapter];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __52__AMSUIWebVerifyPaymentSetupFeatureAction_runAction__block_invoke;
   v19[3] = &unk_1E7F24CD8;
   v19[4] = self;
-  v14 = [v13 thenWithBlock:v19];
+  v14 = [promiseAdapter thenWithBlock:v19];
 
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
@@ -178,22 +178,22 @@ void __52__AMSUIWebVerifyPaymentSetupFeatureAction_runAction__block_invoke_16(ui
 
 - (id)_checkCombinedAccount
 {
-  v2 = [MEMORY[0x1E6959A48] ams_sharedAccountStore];
-  v3 = [v2 ams_isActiveAccountCombined];
+  ams_sharedAccountStore = [MEMORY[0x1E6959A48] ams_sharedAccountStore];
+  ams_isActiveAccountCombined = [ams_sharedAccountStore ams_isActiveAccountCombined];
 
   v4 = MEMORY[0x1E698C7F0];
-  if (v3)
+  if (ams_isActiveAccountCombined)
   {
-    v5 = [MEMORY[0x1E698C7F0] promiseWithSuccess];
+    promiseWithSuccess = [MEMORY[0x1E698C7F0] promiseWithSuccess];
   }
 
   else
   {
     v6 = AMSError();
-    v5 = [v4 promiseWithError:v6];
+    promiseWithSuccess = [v4 promiseWithError:v6];
   }
 
-  return v5;
+  return promiseWithSuccess;
 }
 
 - (id)_checkUpsellCardEnrollment

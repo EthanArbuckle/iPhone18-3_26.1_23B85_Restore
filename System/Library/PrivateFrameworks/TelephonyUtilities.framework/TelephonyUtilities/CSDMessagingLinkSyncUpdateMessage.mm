@@ -1,33 +1,33 @@
 @interface CSDMessagingLinkSyncUpdateMessage
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addLink:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addLink:(id)link;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CSDMessagingLinkSyncUpdateMessage
 
-- (void)addLink:(id)a3
+- (void)addLink:(id)link
 {
-  v4 = a3;
+  linkCopy = link;
   links = self->_links;
-  v8 = v4;
+  v8 = linkCopy;
   if (!links)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_links;
     self->_links = v6;
 
-    v4 = v8;
+    linkCopy = v8;
     links = self->_links;
   }
 
-  [(NSMutableArray *)links addObject:v4];
+  [(NSMutableArray *)links addObject:linkCopy];
 }
 
 - (id)description
@@ -35,8 +35,8 @@
   v7.receiver = self;
   v7.super_class = CSDMessagingLinkSyncUpdateMessage;
   v3 = [(CSDMessagingLinkSyncUpdateMessage *)&v7 description];
-  v4 = [(CSDMessagingLinkSyncUpdateMessage *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(CSDMessagingLinkSyncUpdateMessage *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -72,8 +72,8 @@
             objc_enumerationMutation(v6);
           }
 
-          v11 = [*(*(&v13 + 1) + 8 * i) dictionaryRepresentation];
-          [v5 addObject:v11];
+          dictionaryRepresentation = [*(*(&v13 + 1) + 8 * i) dictionaryRepresentation];
+          [v5 addObject:dictionaryRepresentation];
         }
 
         v8 = [(NSMutableArray *)v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -88,9 +88,9 @@
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     version = self->_version;
@@ -130,23 +130,23 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[4] = self->_version;
-    *(v4 + 20) |= 1u;
+    toCopy[4] = self->_version;
+    *(toCopy + 20) |= 1u;
   }
 
-  v9 = v4;
+  v9 = toCopy;
   if ([(CSDMessagingLinkSyncUpdateMessage *)self linksCount])
   {
     [v9 clearLinks];
-    v5 = [(CSDMessagingLinkSyncUpdateMessage *)self linksCount];
-    if (v5)
+    linksCount = [(CSDMessagingLinkSyncUpdateMessage *)self linksCount];
+    if (linksCount)
     {
-      v6 = v5;
+      v6 = linksCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(CSDMessagingLinkSyncUpdateMessage *)self linkAtIndex:i];
@@ -156,9 +156,9 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -186,7 +186,7 @@
           objc_enumerationMutation(v7);
         }
 
-        v12 = [*(*(&v14 + 1) + 8 * v11) copyWithZone:{a3, v14}];
+        v12 = [*(*(&v14 + 1) + 8 * v11) copyWithZone:{zone, v14}];
         [v6 addLink:v12];
 
         v11 = v11 + 1;
@@ -202,24 +202,24 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_9;
   }
 
-  v5 = *(v4 + 20);
+  v5 = *(equalCopy + 20);
   if (*&self->_has)
   {
-    if ((*(v4 + 20) & 1) == 0 || self->_version != *(v4 + 4))
+    if ((*(equalCopy + 20) & 1) == 0 || self->_version != *(equalCopy + 4))
     {
       goto LABEL_9;
     }
   }
 
-  else if (*(v4 + 20))
+  else if (*(equalCopy + 20))
   {
 LABEL_9:
     v7 = 0;
@@ -227,7 +227,7 @@ LABEL_9:
   }
 
   links = self->_links;
-  if (links | *(v4 + 1))
+  if (links | *(equalCopy + 1))
   {
     v7 = [(NSMutableArray *)links isEqual:?];
   }
@@ -257,13 +257,13 @@ LABEL_10:
   return [(NSMutableArray *)self->_links hash]^ v2;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 20))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 20))
   {
-    self->_version = *(v4 + 4);
+    self->_version = *(fromCopy + 4);
     *&self->_has |= 1u;
   }
 
@@ -271,7 +271,7 @@ LABEL_10:
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v6 = *(v4 + 1);
+  v6 = *(fromCopy + 1);
   v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {

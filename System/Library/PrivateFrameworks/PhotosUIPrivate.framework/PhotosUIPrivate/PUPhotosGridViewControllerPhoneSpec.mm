@@ -3,7 +3,7 @@
 - (UIEdgeInsets)gridContentInsets;
 - (int64_t)forceLoadInitialSectionCount;
 - (unsigned)thumbnailImageFormat;
-- (void)configureCollectionViewGridLayout:(id)a3 forWidth:(double)a4 safeAreaInsets:(UIEdgeInsets)a5;
+- (void)configureCollectionViewGridLayout:(id)layout forWidth:(double)width safeAreaInsets:(UIEdgeInsets)insets;
 @end
 
 @implementation PUPhotosGridViewControllerPhoneSpec
@@ -38,8 +38,8 @@
 
 - (int64_t)forceLoadInitialSectionCount
 {
-  v2 = [MEMORY[0x1E69DCEB0] px_mainScreen];
-  [v2 bounds];
+  px_mainScreen = [MEMORY[0x1E69DCEB0] px_mainScreen];
+  [px_mainScreen bounds];
   v4 = v3;
   v6 = v5;
 
@@ -71,22 +71,22 @@
   return vcvtpd_s64_f64(v4 / v10);
 }
 
-- (void)configureCollectionViewGridLayout:(id)a3 forWidth:(double)a4 safeAreaInsets:(UIEdgeInsets)a5
+- (void)configureCollectionViewGridLayout:(id)layout forWidth:(double)width safeAreaInsets:(UIEdgeInsets)insets
 {
-  right = a5.right;
-  bottom = a5.bottom;
-  left = a5.left;
-  top = a5.top;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
   v28.receiver = self;
   v28.super_class = PUPhotosGridViewControllerPhoneSpec;
-  v11 = a3;
-  [(PUPhotosGridViewControllerSpec *)&v28 configureCollectionViewGridLayout:v11 forWidth:a4 safeAreaInsets:top, left, bottom, right];
+  layoutCopy = layout;
+  [(PUPhotosGridViewControllerSpec *)&v28 configureCollectionViewGridLayout:layoutCopy forWidth:width safeAreaInsets:top, left, bottom, right];
   [(PUPhotosGridViewControllerPhoneSpec *)self gridContentInsets];
   v13 = v12;
   v15 = v14;
   v17 = v16;
   v19 = v18;
-  v20 = a4 - v14 - v18;
+  v20 = width - v14 - v18;
   v21 = [MEMORY[0x1E69C4548] photosGridLayoutColumnsForWidth:v20];
   v26 = 0.0;
   v27 = 0.0;
@@ -100,27 +100,27 @@
   v23 = v27;
   v24 = v15 + v26;
   v25 = v19 + v26;
-  [v11 setItemSize:?];
-  [v11 setInterItemSpacing:{v23, v23}];
-  [v11 setSectionContentInset:{v13, v24, v17, v25}];
-  [v11 setSectionTopPadding:9.5];
-  [v11 setGlobalTopPadding:0.0];
-  [v11 setGlobalBottomPadding:4.0];
-  [v11 setCropType:0];
-  [v11 setCropAmount:0.0];
+  [layoutCopy setItemSize:?];
+  [layoutCopy setInterItemSpacing:{v23, v23}];
+  [layoutCopy setSectionContentInset:{v13, v24, v17, v25}];
+  [layoutCopy setSectionTopPadding:9.5];
+  [layoutCopy setGlobalTopPadding:0.0];
+  [layoutCopy setGlobalBottomPadding:4.0];
+  [layoutCopy setCropType:0];
+  [layoutCopy setCropAmount:0.0];
 }
 
 - (unsigned)thumbnailImageFormat
 {
-  v4 = [(PUPhotosGridViewControllerSpec *)self sizeSubclass];
-  if ((v4 - 2) < 2)
+  sizeSubclass = [(PUPhotosGridViewControllerSpec *)self sizeSubclass];
+  if ((sizeSubclass - 2) < 2)
   {
-    v6 = [MEMORY[0x1E69BF248] defaultFormatChooser];
-    v7 = [v6 masterThumbnailFormat];
-    v5 = [v7 formatID];
+    defaultFormatChooser = [MEMORY[0x1E69BF248] defaultFormatChooser];
+    masterThumbnailFormat = [defaultFormatChooser masterThumbnailFormat];
+    formatID = [masterThumbnailFormat formatID];
   }
 
-  else if (v4 == 1)
+  else if (sizeSubclass == 1)
   {
     if (PUMainScreenScale_onceToken != -1)
     {
@@ -129,41 +129,41 @@
 
     if (*&PUMainScreenScale_screenScale <= 1.0)
     {
-      v5 = 3311;
+      formatID = 3311;
     }
 
     else
     {
-      v5 = 3319;
+      formatID = 3319;
     }
   }
 
   else
   {
-    if (!v4)
+    if (!sizeSubclass)
     {
-      v14 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v14 handleFailureInMethod:a2 object:self file:@"PUPhotosGridViewControllerSpec.m" lineNumber:137 description:@"Code which should be unreachable has been reached"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PUPhotosGridViewControllerSpec.m" lineNumber:137 description:@"Code which should be unreachable has been reached"];
 
       abort();
     }
 
-    v5 = 0;
+    formatID = 0;
   }
 
   v8 = +[PUPhotosGridSettings sharedInstance];
-  v9 = [v8 forceJPEGThumbnailsInDefaultGrid];
+  forceJPEGThumbnailsInDefaultGrid = [v8 forceJPEGThumbnailsInDefaultGrid];
 
-  if (!v9)
+  if (!forceJPEGThumbnailsInDefaultGrid)
   {
-    return v5;
+    return formatID;
   }
 
-  v10 = [MEMORY[0x1E69BF248] defaultFormatChooser];
-  v11 = [v10 masterThumbnailFormat];
-  v12 = [v11 formatID];
+  defaultFormatChooser2 = [MEMORY[0x1E69BF248] defaultFormatChooser];
+  masterThumbnailFormat2 = [defaultFormatChooser2 masterThumbnailFormat];
+  formatID2 = [masterThumbnailFormat2 formatID];
 
-  return v12;
+  return formatID2;
 }
 
 - (CGSize)baseInterItemSpacing

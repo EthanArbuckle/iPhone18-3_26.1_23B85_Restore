@@ -1,18 +1,18 @@
 @interface WDBloodPressureListDataProvider
-- (WDBloodPressureListDataProvider)initWithDisplayType:(id)a3 profile:(id)a4;
-- (id)predicateForType:(id)a3;
+- (WDBloodPressureListDataProvider)initWithDisplayType:(id)type profile:(id)profile;
+- (id)predicateForType:(id)type;
 - (id)sampleTypes;
-- (id)textForObject:(id)a3;
+- (id)textForObject:(id)object;
 @end
 
 @implementation WDBloodPressureListDataProvider
 
-- (WDBloodPressureListDataProvider)initWithDisplayType:(id)a3 profile:(id)a4
+- (WDBloodPressureListDataProvider)initWithDisplayType:(id)type profile:(id)profile
 {
   v12[2] = *MEMORY[0x277D85DE8];
   v11.receiver = self;
   v11.super_class = WDBloodPressureListDataProvider;
-  v4 = [(WDSampleListDataProvider *)&v11 initWithDisplayType:a3 profile:a4];
+  v4 = [(WDSampleListDataProvider *)&v11 initWithDisplayType:type profile:profile];
   if (v4)
   {
     v5 = [MEMORY[0x277CCD720] quantityTypeForIdentifier:*MEMORY[0x277CCC980]];
@@ -40,39 +40,39 @@
   return v3;
 }
 
-- (id)predicateForType:(id)a3
+- (id)predicateForType:(id)type
 {
-  v3 = a3;
+  typeCopy = type;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v5 = 0;
+    predicateForObjectsWithNoCorrelation = 0;
   }
 
   else
   {
-    v5 = [MEMORY[0x277CCD838] predicateForObjectsWithNoCorrelation];
+    predicateForObjectsWithNoCorrelation = [MEMORY[0x277CCD838] predicateForObjectsWithNoCorrelation];
   }
 
-  return v5;
+  return predicateForObjectsWithNoCorrelation;
 }
 
-- (id)textForObject:(id)a3
+- (id)textForObject:(id)object
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CCAB68] string];
+  objectCopy = object;
+  string = [MEMORY[0x277CCAB68] string];
   systolicAndDiastolicTypes = self->_systolicAndDiastolicTypes;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __49__WDBloodPressureListDataProvider_textForObject___block_invoke;
   v11[3] = &unk_2796E7FB0;
   v11[4] = self;
-  v12 = v4;
-  v13 = v5;
-  v7 = v5;
-  v8 = v4;
+  v12 = objectCopy;
+  v13 = string;
+  v7 = string;
+  v8 = objectCopy;
   [(NSArray *)systolicAndDiastolicTypes enumerateObjectsUsingBlock:v11];
   v9 = [v7 copy];
 

@@ -11,25 +11,25 @@
   v40.receiver = self;
   v40.super_class = WetNotificationViewController;
   [(WetNotificationViewController *)&v40 viewDidLoad];
-  v3 = [(WetNotificationViewController *)self extensionContext];
-  v4 = [v3 inputItems];
-  v5 = [v4 firstObject];
+  extensionContext = [(WetNotificationViewController *)self extensionContext];
+  inputItems = [extensionContext inputItems];
+  firstObject = [inputItems firstObject];
 
-  v6 = [v5 userInfo];
+  userInfo = [firstObject userInfo];
   v7 = +[NSBundle mainBundle];
-  v8 = safeBoolValue(v6, @"legacy");
-  v9 = safeBoolValue(v6, @"typeC");
-  v10 = safeBoolValue(v6, @"chargerConnected");
-  v11 = safeBoolValue(v6, @"reinsertion");
-  v39 = [(WetNotificationViewController *)self view];
+  v8 = safeBoolValue(userInfo, @"legacy");
+  v9 = safeBoolValue(userInfo, @"typeC");
+  v10 = safeBoolValue(userInfo, @"chargerConnected");
+  v11 = safeBoolValue(userInfo, @"reinsertion");
+  view = [(WetNotificationViewController *)self view];
   v12 = [UIImageView alloc];
   v13 = [UIImage imageNamed:@"titleImage"];
   v14 = [v12 initWithImage:v13];
   imageView = self->_imageView;
   self->_imageView = v14;
 
-  v16 = [(WetNotificationViewController *)self view];
-  [v16 addSubview:self->_imageView];
+  view2 = [(WetNotificationViewController *)self view];
+  [view2 addSubview:self->_imageView];
 
   if (v8)
   {
@@ -103,8 +103,8 @@ LABEL_17:
 
 LABEL_5:
   v21 = [UILabel alloc];
-  v22 = [(WetNotificationViewController *)self view];
-  [v22 bounds];
+  view3 = [(WetNotificationViewController *)self view];
+  [view3 bounds];
   v23 = [v21 initWithFrame:?];
   titleLabel = self->_titleLabel;
   self->_titleLabel = v23;
@@ -122,8 +122,8 @@ LABEL_5:
   [(UILabel *)self->_titleLabel setLineBreakMode:0];
   [(UILabel *)self->_titleLabel setNumberOfLines:2];
   [(UILabel *)self->_titleLabel sizeToFit];
-  v29 = [(WetNotificationViewController *)self view];
-  [v29 addSubview:self->_titleLabel];
+  view4 = [(WetNotificationViewController *)self view];
+  [view4 addSubview:self->_titleLabel];
 
   v30 = [[UILabel alloc] initWithFrame:{0.0, 0.0, 230.0, 3.40282347e38}];
   bodyLabel = self->_bodyLabel;
@@ -142,19 +142,19 @@ LABEL_5:
   [(UILabel *)self->_bodyLabel setLineBreakMode:0];
   [(UILabel *)self->_bodyLabel setNumberOfLines:0];
   [(UILabel *)self->_bodyLabel sizeToFit];
-  v36 = [(WetNotificationViewController *)self view];
-  [v36 addSubview:self->_bodyLabel];
+  view5 = [(WetNotificationViewController *)self view];
+  [view5 addSubview:self->_bodyLabel];
 }
 
 - (CGSize)preferredContentSize
 {
-  v3 = [(WetNotificationViewController *)self view];
+  view = [(WetNotificationViewController *)self view];
   [(UILabel *)self->_bodyLabel bounds];
   v5 = v4;
   [(UILabel *)self->_titleLabel bounds];
   v7 = v5 + v6;
   [(UIImageView *)self->_imageView bounds];
-  [v3 setFrame:{0.0, 0.0, 250.0, v7 + v8 + 59.0}];
+  [view setFrame:{0.0, 0.0, 250.0, v7 + v8 + 59.0}];
 
   [(UILabel *)self->_bodyLabel frame];
   v10 = v9 + 59.0;
@@ -170,8 +170,8 @@ LABEL_5:
 
 - (void)viewWillLayoutSubviews
 {
-  v3 = [(WetNotificationViewController *)self view];
-  [v3 bounds];
+  view = [(WetNotificationViewController *)self view];
+  [view bounds];
   v5 = v4;
 
   [(UIImageView *)self->_imageView bounds];

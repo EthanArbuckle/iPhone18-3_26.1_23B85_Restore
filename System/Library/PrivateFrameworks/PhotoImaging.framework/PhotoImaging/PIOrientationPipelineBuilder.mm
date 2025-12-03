@@ -1,19 +1,19 @@
 @interface PIOrientationPipelineBuilder
-- (BOOL)buildPipeline:(id)a3 error:(id *)a4;
+- (BOOL)buildPipeline:(id)pipeline error:(id *)error;
 - (PIOrientationPipelineBuilder)init;
-- (PIOrientationPipelineBuilder)initWithChannelFormat:(id)a3;
-- (id)_buildOrientationPipeline:(id)a3 input:(id)a4 adjustment:(id)a5 error:(id *)a6;
+- (PIOrientationPipelineBuilder)initWithChannelFormat:(id)format;
+- (id)_buildOrientationPipeline:(id)pipeline input:(id)input adjustment:(id)adjustment error:(id *)error;
 @end
 
 @implementation PIOrientationPipelineBuilder
 
-- (id)_buildOrientationPipeline:(id)a3 input:(id)a4 adjustment:(id)a5 error:(id *)a6
+- (id)_buildOrientationPipeline:(id)pipeline input:(id)input adjustment:(id)adjustment error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  pipelineCopy = pipeline;
+  inputCopy = input;
+  adjustmentCopy = adjustment;
   v12 = [MEMORY[0x1E69B39E8] name:@"value"];
-  v13 = [v11 subportMatching:v12];
+  v13 = [adjustmentCopy subportMatching:v12];
 
   if (v13)
   {
@@ -22,13 +22,13 @@
     v16[2] = __81__PIOrientationPipelineBuilder__buildOrientationPipeline_input_adjustment_error___block_invoke;
     v16[3] = &unk_1E82AA5D8;
     v17 = v13;
-    v14 = [v9 processContainer:v10 forEachComponent:v16 error:a6];
+    v14 = [pipelineCopy processContainer:inputCopy forEachComponent:v16 error:error];
   }
 
   else
   {
-    [MEMORY[0x1E69B3A48] notFoundError:@"Could not find orientation value subport" object:v11];
-    *a6 = v14 = 0;
+    [MEMORY[0x1E69B3A48] notFoundError:@"Could not find orientation value subport" object:adjustmentCopy];
+    *error = v14 = 0;
   }
 
   return v14;
@@ -67,36 +67,36 @@ id __81__PIOrientationPipelineBuilder__buildOrientationPipeline_input_adjustment
   return v10;
 }
 
-- (BOOL)buildPipeline:(id)a3 error:(id *)a4
+- (BOOL)buildPipeline:(id)pipeline error:(id *)error
 {
-  v5 = a3;
-  v6 = [MEMORY[0x1E69B3CA8] sharedRegistry];
-  v7 = [(PIOrientationPipelineBuilder *)self identifier];
-  v8 = [v6 schemaWithIdentifier:v7];
+  pipelineCopy = pipeline;
+  mEMORY[0x1E69B3CA8] = [MEMORY[0x1E69B3CA8] sharedRegistry];
+  identifier = [(PIOrientationPipelineBuilder *)self identifier];
+  v8 = [mEMORY[0x1E69B3CA8] schemaWithIdentifier:identifier];
 
   v28 = v8;
   v9 = [MEMORY[0x1E69B39D0] controlChannelWithSchema:v8 name:@"adjustment"];
   v33 = 0;
-  v10 = [v5 addInputChannel:v9 error:&v33];
+  v10 = [pipelineCopy addInputChannel:v9 error:&v33];
   v11 = v33;
 
   v12 = objc_alloc(MEMORY[0x1E69B39D0]);
-  v13 = [(PIOrientationPipelineBuilder *)self format];
-  v14 = [v12 initWithName:@"media" format:v13];
+  format = [(PIOrientationPipelineBuilder *)self format];
+  v14 = [v12 initWithName:@"media" format:format];
 
   v32 = 0;
-  v15 = [v5 addInputChannel:v14 error:&v32];
+  v15 = [pipelineCopy addInputChannel:v14 error:&v32];
   v16 = v32;
 
   v31 = 0;
-  v17 = [v5 addOutputChannel:v14 error:&v31];
+  v17 = [pipelineCopy addOutputChannel:v14 error:&v31];
   v18 = v31;
 
   if (v10 && v15 && v17)
   {
     v19 = MEMORY[0x1E69B39E0];
     v20 = [MEMORY[0x1E69B39E0] staticExpression:v10];
-    v21 = [v19 isNotNil:v20];
+    identifier2 = [v19 isNotNil:v20];
 
     v29[0] = MEMORY[0x1E69E9820];
     v29[1] = 3221225472;
@@ -104,10 +104,10 @@ id __81__PIOrientationPipelineBuilder__buildOrientationPipeline_input_adjustment
     v29[3] = &unk_1E82AB080;
     v29[4] = self;
     v30 = v10;
-    v22 = [v5 switchOn:v21 with:v15 block:v29 error:a4];
+    v22 = [pipelineCopy switchOn:identifier2 with:v15 block:v29 error:error];
     if (v22)
     {
-      v23 = [v5 connectInputPort:v17 toOutputPort:v22 error:a4];
+      v23 = [pipelineCopy connectInputPort:v17 toOutputPort:v22 error:error];
     }
 
     else
@@ -121,20 +121,20 @@ id __81__PIOrientationPipelineBuilder__buildOrientationPipeline_input_adjustment
   else
   {
     v24 = MEMORY[0x1E69B3A48];
-    v21 = [v5 identifier];
-    [v24 errorWithCode:1 reason:@"Failed to setup pipeline input and output ports" object:v21 underlyingError:v18];
+    identifier2 = [pipelineCopy identifier];
+    [v24 errorWithCode:1 reason:@"Failed to setup pipeline input and output ports" object:identifier2 underlyingError:v18];
     v23 = 0;
-    *a4 = v25 = v28;
+    *error = v25 = v28;
   }
 
   return v23;
 }
 
-- (PIOrientationPipelineBuilder)initWithChannelFormat:(id)a3
+- (PIOrientationPipelineBuilder)initWithChannelFormat:(id)format
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  formatCopy = format;
+  if (!formatCopy)
   {
     v9 = NUAssertLogger_20();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -156,8 +156,8 @@ id __81__PIOrientationPipelineBuilder__buildOrientationPipeline_input_adjustment
         v17 = dispatch_get_specific(*v11);
         v18 = MEMORY[0x1E696AF00];
         v19 = v17;
-        v20 = [v18 callStackSymbols];
-        v21 = [v20 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v18 callStackSymbols];
+        v21 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v24 = v17;
         v25 = 2114;
@@ -168,8 +168,8 @@ id __81__PIOrientationPipelineBuilder__buildOrientationPipeline_input_adjustment
 
     else if (v14)
     {
-      v15 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v16 = [v15 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v16 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v24 = v16;
       _os_log_error_impl(&dword_1C7694000, v13, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -178,7 +178,7 @@ id __81__PIOrientationPipelineBuilder__buildOrientationPipeline_input_adjustment
     _NUAssertFailHandler();
   }
 
-  v5 = v4;
+  v5 = formatCopy;
   v22.receiver = self;
   v22.super_class = PIOrientationPipelineBuilder;
   v6 = [(PIOrientationPipelineBuilder *)&v22 init];
@@ -229,8 +229,8 @@ LABEL_11:
           v20 = MEMORY[0x1E696AF00];
           v21 = specific;
           v22 = v18;
-          v23 = [v20 callStackSymbols];
-          v24 = [v23 componentsJoinedByString:@"\n"];
+          callStackSymbols = [v20 callStackSymbols];
+          v24 = [callStackSymbols componentsJoinedByString:@"\n"];
           *buf = 138543618;
           v27 = specific;
           v28 = 2114;
@@ -257,8 +257,8 @@ LABEL_11:
     {
       v14 = MEMORY[0x1E696AF00];
       v15 = v13;
-      v16 = [v14 callStackSymbols];
-      v17 = [v16 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [v14 callStackSymbols];
+      v17 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v27 = v17;
       _os_log_error_impl(&dword_1C7694000, v15, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);

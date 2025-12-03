@@ -1,6 +1,6 @@
 @interface _DKComplicationMonitor
 - (void)asyncUpdateCurrentActiveComplicationsContext;
-- (void)fetchActiveComplications:(id)a3;
+- (void)fetchActiveComplications:(id)complications;
 - (void)start;
 - (void)stop;
 @end
@@ -12,8 +12,8 @@
   if ([(_DKMonitor *)self instantMonitorNeedsActivation])
   {
     objc_initWeak(&location, self);
-    v3 = [(_DKMonitor *)self queue];
-    v4 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, v3);
+    queue = [(_DKMonitor *)self queue];
+    v4 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, queue);
     timer = self->_timer;
     self->_timer = v4;
 
@@ -33,20 +33,20 @@
     v15[3] = &unk_27856F1C8;
     objc_copyWeak(&v16, &location);
     v8 = MEMORY[0x22AA6AF50](v15);
-    v9 = [(_DKMonitor *)self queue];
-    notify_register_dispatch("com.apple.ClockKit.activeComplicationsChangedNotification", self->_tokens, v9, v8);
+    queue2 = [(_DKMonitor *)self queue];
+    notify_register_dispatch("com.apple.ClockKit.activeComplicationsChangedNotification", self->_tokens, queue2, v8);
 
-    v10 = [(_DKMonitor *)self queue];
-    notify_register_dispatch("com.apple.sockpuppet.complications.updated", &self->_tokens[1], v10, v8);
+    queue3 = [(_DKMonitor *)self queue];
+    notify_register_dispatch("com.apple.sockpuppet.complications.updated", &self->_tokens[1], queue3, v8);
 
-    v11 = [MEMORY[0x277D2BCF8] sharedInstance];
-    v12 = [v11 getPairedDevices];
+    mEMORY[0x277D2BCF8] = [MEMORY[0x277D2BCF8] sharedInstance];
+    getPairedDevices = [mEMORY[0x277D2BCF8] getPairedDevices];
 
-    if ([v12 count])
+    if ([getPairedDevices count])
     {
-      v13 = [(_DKMonitor *)self lastUpdate];
+      lastUpdate = [(_DKMonitor *)self lastUpdate];
 
-      if (!v13)
+      if (!lastUpdate)
       {
         v14[0] = MEMORY[0x277D85DD0];
         v14[1] = 3221225472;
@@ -77,13 +77,13 @@
   }
 }
 
-- (void)fetchActiveComplications:(id)a3
+- (void)fetchActiveComplications:(id)complications
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277D2BCF8] sharedInstance];
-  v6 = [v5 getActivePairedDevice];
+  complicationsCopy = complications;
+  mEMORY[0x277D2BCF8] = [MEMORY[0x277D2BCF8] sharedInstance];
+  getActivePairedDevice = [mEMORY[0x277D2BCF8] getActivePairedDevice];
 
-  if (v6)
+  if (getActivePairedDevice)
   {
     NRWatchOSVersionForRemoteDevice();
     IsGreaterThanOrEqual = NRVersionIsGreaterThanOrEqual();
@@ -107,8 +107,8 @@
       v9 = @"com.apple.sockpuppet.activeComplications";
     }
 
-    v10 = [objc_alloc(MEMORY[0x277D2BA58]) initWithDomain:v9 pairedDevice:v6];
-    v11 = [v10 synchronize];
+    v10 = [objc_alloc(MEMORY[0x277D2BA58]) initWithDomain:v9 pairedDevice:getActivePairedDevice];
+    synchronize = [v10 synchronize];
     v12 = [v10 objectForKey:v8];
 
     v19[0] = 0;
@@ -117,7 +117,7 @@
     v19[3] = __Block_byref_object_copy__1;
     v19[4] = __Block_byref_object_dispose__1;
     v20 = objc_opt_new();
-    v13 = [MEMORY[0x277CEAF80] sharedDeviceConnection];
+    mEMORY[0x277CEAF80] = [MEMORY[0x277CEAF80] sharedDeviceConnection];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __51___DKComplicationMonitor_fetchActiveComplications___block_invoke;
@@ -126,15 +126,15 @@
     v18 = v19;
     v14 = v12;
     v16 = v14;
-    v17 = v4;
-    [v13 enumerateInstalledApplicationsOnPairedDevice:v6 withBlock:v15];
+    v17 = complicationsCopy;
+    [mEMORY[0x277CEAF80] enumerateInstalledApplicationsOnPairedDevice:getActivePairedDevice withBlock:v15];
 
     _Block_object_dispose(v19, 8);
   }
 
   else
   {
-    (*(v4 + 2))(v4, MEMORY[0x277CBEBF8]);
+    (*(complicationsCopy + 2))(complicationsCopy, MEMORY[0x277CBEBF8]);
   }
 }
 

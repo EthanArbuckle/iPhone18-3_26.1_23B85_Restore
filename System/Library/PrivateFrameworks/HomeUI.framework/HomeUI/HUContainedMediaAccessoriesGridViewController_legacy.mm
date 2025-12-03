@@ -1,23 +1,23 @@
 @interface HUContainedMediaAccessoriesGridViewController_legacy
 - (HUContainedMediaAccessoriesGridViewControllerDelegate_legacy)mediaAccessoryGridDelegate;
-- (HUContainedMediaAccessoriesGridViewController_legacy)initWithMediaAccessoryContainerItem:(id)a3 isPresentedModally:(BOOL)a4 valueSource:(id)a5;
+- (HUContainedMediaAccessoriesGridViewController_legacy)initWithMediaAccessoryContainerItem:(id)item isPresentedModally:(BOOL)modally valueSource:(id)source;
 - (HUPresentationDelegate)presentationDelegate;
-- (id)detailsViewControllerForPresentationCoordinator:(id)a3 item:(id)a4;
-- (id)layoutOptionsForSection:(int64_t)a3;
-- (void)_done:(id)a3;
+- (id)detailsViewControllerForPresentationCoordinator:(id)coordinator item:(id)item;
+- (id)layoutOptionsForSection:(int64_t)section;
+- (void)_done:(id)_done;
 - (void)_updateRightBarButtons;
-- (void)itemManagerDidUpdate:(id)a3;
+- (void)itemManagerDidUpdate:(id)update;
 - (void)viewDidLoad;
 @end
 
 @implementation HUContainedMediaAccessoriesGridViewController_legacy
 
-- (HUContainedMediaAccessoriesGridViewController_legacy)initWithMediaAccessoryContainerItem:(id)a3 isPresentedModally:(BOOL)a4 valueSource:(id)a5
+- (HUContainedMediaAccessoriesGridViewController_legacy)initWithMediaAccessoryContainerItem:(id)item isPresentedModally:(BOOL)modally valueSource:(id)source
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [v9 copy];
-  v11 = [HUContainedServicesGridViewController_legacy itemManagerWithServiceContainerItem:0 shouldGroupByRoom:1 mediaItem:v9 valueSource:v8];
+  sourceCopy = source;
+  itemCopy = item;
+  v10 = [itemCopy copy];
+  v11 = [HUContainedServicesGridViewController_legacy itemManagerWithServiceContainerItem:0 shouldGroupByRoom:1 mediaItem:itemCopy valueSource:sourceCopy];
 
   v16.receiver = self;
   v16.super_class = HUContainedMediaAccessoriesGridViewController_legacy;
@@ -25,19 +25,19 @@
   v13 = v12;
   if (v12)
   {
-    v12->_presentedModally = a4;
+    v12->_presentedModally = modally;
     objc_storeStrong(&v12->_mediaAccessoryItem, v10);
-    v14 = [(HUItemCollectionViewController *)v13 itemManager];
-    [v14 setSourceItem:v13->_mediaAccessoryItem];
+    itemManager = [(HUItemCollectionViewController *)v13 itemManager];
+    [itemManager setSourceItem:v13->_mediaAccessoryItem];
   }
 
   return v13;
 }
 
-- (void)_done:(id)a3
+- (void)_done:(id)_done
 {
-  v5 = [(HUContainedMediaAccessoriesGridViewController_legacy *)self presentationDelegate];
-  v4 = [v5 finishPresentation:self animated:1];
+  presentationDelegate = [(HUContainedMediaAccessoriesGridViewController_legacy *)self presentationDelegate];
+  v4 = [presentationDelegate finishPresentation:self animated:1];
 }
 
 - (void)viewDidLoad
@@ -45,19 +45,19 @@
   v5.receiver = self;
   v5.super_class = HUContainedMediaAccessoriesGridViewController_legacy;
   [(HUServiceGridViewController *)&v5 viewDidLoad];
-  v3 = [MEMORY[0x277D75348] systemGroupedBackgroundColor];
-  v4 = [(HUContainedMediaAccessoriesGridViewController_legacy *)self collectionView];
-  [v4 setBackgroundColor:v3];
+  systemGroupedBackgroundColor = [MEMORY[0x277D75348] systemGroupedBackgroundColor];
+  collectionView = [(HUContainedMediaAccessoriesGridViewController_legacy *)self collectionView];
+  [collectionView setBackgroundColor:systemGroupedBackgroundColor];
 }
 
-- (id)layoutOptionsForSection:(int64_t)a3
+- (id)layoutOptionsForSection:(int64_t)section
 {
   v7.receiver = self;
   v7.super_class = HUContainedMediaAccessoriesGridViewController_legacy;
   v4 = [(HUServiceGridViewController *)&v7 layoutOptionsForSection:?];
   v5 = [v4 copy];
 
-  if (!a3)
+  if (!section)
   {
     [v5 sectionTitleMargin];
     [v5 setSectionTitleMargin:40.0];
@@ -66,26 +66,26 @@
   return v5;
 }
 
-- (id)detailsViewControllerForPresentationCoordinator:(id)a3 item:(id)a4
+- (id)detailsViewControllerForPresentationCoordinator:(id)coordinator item:(id)item
 {
-  v5 = a4;
-  v6 = [(HUContainedMediaAccessoriesGridViewController_legacy *)self mediaAccessoryGridDelegate];
-  v7 = [v6 detailsViewControllerForContainedMediaAccessoryGridViewController:self item:v5];
+  itemCopy = item;
+  mediaAccessoryGridDelegate = [(HUContainedMediaAccessoriesGridViewController_legacy *)self mediaAccessoryGridDelegate];
+  v7 = [mediaAccessoryGridDelegate detailsViewControllerForContainedMediaAccessoryGridViewController:self item:itemCopy];
 
-  if (!v7 || (-[HUContainedMediaAccessoriesGridViewController_legacy mediaAccessoryGridDelegate](self, "mediaAccessoryGridDelegate"), v8 = objc_claimAutoreleasedReturnValue(), [v8 detailsViewControllerForContainedMediaAccessoryGridViewController:self item:v5], v9 = objc_claimAutoreleasedReturnValue(), v8, !v9))
+  if (!v7 || (-[HUContainedMediaAccessoriesGridViewController_legacy mediaAccessoryGridDelegate](self, "mediaAccessoryGridDelegate"), v8 = objc_claimAutoreleasedReturnValue(), [v8 detailsViewControllerForContainedMediaAccessoryGridViewController:self item:itemCopy], v9 = objc_claimAutoreleasedReturnValue(), v8, !v9))
   {
-    NSLog(&cfstr_NoDetailsViewC.isa, v5);
+    NSLog(&cfstr_NoDetailsViewC.isa, itemCopy);
     v9 = 0;
   }
 
   return v9;
 }
 
-- (void)itemManagerDidUpdate:(id)a3
+- (void)itemManagerDidUpdate:(id)update
 {
   v4.receiver = self;
   v4.super_class = HUContainedMediaAccessoriesGridViewController_legacy;
-  [(HUItemCollectionViewController *)&v4 itemManagerDidUpdate:a3];
+  [(HUItemCollectionViewController *)&v4 itemManagerDidUpdate:update];
   [(HUContainedMediaAccessoriesGridViewController_legacy *)self _updateRightBarButtons];
 }
 
@@ -101,11 +101,11 @@
     v5 = 0;
   }
 
-  v3 = [(HUContainedMediaAccessoriesGridViewController_legacy *)self navigationItem];
-  [v3 setLeftBarButtonItem:0];
+  navigationItem = [(HUContainedMediaAccessoriesGridViewController_legacy *)self navigationItem];
+  [navigationItem setLeftBarButtonItem:0];
 
-  v4 = [(HUContainedMediaAccessoriesGridViewController_legacy *)self navigationItem];
-  [v4 setRightBarButtonItem:v5];
+  navigationItem2 = [(HUContainedMediaAccessoriesGridViewController_legacy *)self navigationItem];
+  [navigationItem2 setRightBarButtonItem:v5];
 }
 
 - (HUPresentationDelegate)presentationDelegate

@@ -1,11 +1,11 @@
 @interface MPMediaLibraryAlbumAppData
 - (MPMediaLibraryAlbumAppData)init;
-- (MPMediaLibraryAlbumAppData)initWithAppDataDictionary:(id)a3;
+- (MPMediaLibraryAlbumAppData)initWithAppDataDictionary:(id)dictionary;
 - (id)createAppDataDictionary;
-- (id)songPopularityForAdamID:(int64_t)a3;
-- (id)songPopularityForIdentifiers:(id)a3;
-- (void)setSongPopularity:(id)a3 forAdamID:(int64_t)a4;
-- (void)setSongPopularity:(id)a3 forIdentifierSet:(id)a4;
+- (id)songPopularityForAdamID:(int64_t)d;
+- (id)songPopularityForIdentifiers:(id)identifiers;
+- (void)setSongPopularity:(id)popularity forAdamID:(int64_t)d;
+- (void)setSongPopularity:(id)popularity forIdentifierSet:(id)set;
 @end
 
 @implementation MPMediaLibraryAlbumAppData
@@ -29,9 +29,9 @@
     }
 
     [(NSDictionary *)v3 setObject:v5 forKey:@"popularityDictionary"];
-    v7 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     dirtyPopularityDict = self->_dirtyPopularityDict;
-    self->_dirtyPopularityDict = v7;
+    self->_dirtyPopularityDict = dictionary;
 
     appDataDict = self->_appDataDict;
     self->_appDataDict = v3;
@@ -48,11 +48,11 @@
   return v6;
 }
 
-- (id)songPopularityForAdamID:(int64_t)a3
+- (id)songPopularityForAdamID:(int64_t)d
 {
-  if (a3)
+  if (d)
   {
-    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%lld", a3];
+    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%lld", d];
     v5 = [(NSMutableDictionary *)self->_dirtyPopularityDict objectForKey:v4];
     if (!v5)
     {
@@ -69,71 +69,71 @@
   return v5;
 }
 
-- (void)setSongPopularity:(id)a3 forAdamID:(int64_t)a4
+- (void)setSongPopularity:(id)popularity forAdamID:(int64_t)d
 {
-  if (a4)
+  if (d)
   {
     v6 = MEMORY[0x1E696AEC0];
-    v7 = a3;
-    v8 = [v6 stringWithFormat:@"%lld", a4];
-    [(NSMutableDictionary *)self->_dirtyPopularityDict setObject:v7 forKey:v8];
+    popularityCopy = popularity;
+    v8 = [v6 stringWithFormat:@"%lld", d];
+    [(NSMutableDictionary *)self->_dirtyPopularityDict setObject:popularityCopy forKey:v8];
   }
 }
 
-- (id)songPopularityForIdentifiers:(id)a3
+- (id)songPopularityForIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  v5 = [v4 universalStore];
-  v6 = -[MPMediaLibraryAlbumAppData songPopularityForAdamID:](self, "songPopularityForAdamID:", [v5 adamID]);
+  identifiersCopy = identifiers;
+  universalStore = [identifiersCopy universalStore];
+  v6 = -[MPMediaLibraryAlbumAppData songPopularityForAdamID:](self, "songPopularityForAdamID:", [universalStore adamID]);
 
   if (!v6)
   {
-    v7 = [v4 universalStore];
-    v6 = -[MPMediaLibraryAlbumAppData songPopularityForAdamID:](self, "songPopularityForAdamID:", [v7 purchasedAdamID]);
+    universalStore2 = [identifiersCopy universalStore];
+    v6 = -[MPMediaLibraryAlbumAppData songPopularityForAdamID:](self, "songPopularityForAdamID:", [universalStore2 purchasedAdamID]);
 
     if (!v6)
     {
-      v8 = [v4 universalStore];
-      v6 = -[MPMediaLibraryAlbumAppData songPopularityForAdamID:](self, "songPopularityForAdamID:", [v8 subscriptionAdamID]);
+      universalStore3 = [identifiersCopy universalStore];
+      v6 = -[MPMediaLibraryAlbumAppData songPopularityForAdamID:](self, "songPopularityForAdamID:", [universalStore3 subscriptionAdamID]);
     }
   }
 
   return v6;
 }
 
-- (void)setSongPopularity:(id)a3 forIdentifierSet:(id)a4
+- (void)setSongPopularity:(id)popularity forIdentifierSet:(id)set
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = [v6 universalStore];
-  v8 = [v7 adamID];
+  popularityCopy = popularity;
+  setCopy = set;
+  universalStore = [setCopy universalStore];
+  adamID = [universalStore adamID];
 
-  if (!v8)
+  if (!adamID)
   {
-    v9 = [v6 universalStore];
-    v8 = [v9 purchasedAdamID];
+    universalStore2 = [setCopy universalStore];
+    adamID = [universalStore2 purchasedAdamID];
 
-    if (!v8)
+    if (!adamID)
     {
-      v10 = [v6 universalStore];
-      v8 = [v10 subscriptionAdamID];
+      universalStore3 = [setCopy universalStore];
+      adamID = [universalStore3 subscriptionAdamID];
     }
   }
 
-  [(MPMediaLibraryAlbumAppData *)self setSongPopularity:v11 forAdamID:v8];
+  [(MPMediaLibraryAlbumAppData *)self setSongPopularity:popularityCopy forAdamID:adamID];
 }
 
-- (MPMediaLibraryAlbumAppData)initWithAppDataDictionary:(id)a3
+- (MPMediaLibraryAlbumAppData)initWithAppDataDictionary:(id)dictionary
 {
-  v5 = a3;
+  dictionaryCopy = dictionary;
   v6 = [(MPMediaLibraryAlbumAppData *)self init];
   if (v6)
   {
-    v7 = [v5 objectForKey:@"appDataDictionaryVersion"];
+    v7 = [dictionaryCopy objectForKey:@"appDataDictionaryVersion"];
     v8 = v7;
     if (v7 && [v7 intValue] == 2)
     {
-      objc_storeStrong(&v6->_appDataDict, a3);
+      objc_storeStrong(&v6->_appDataDict, dictionary);
     }
   }
 
@@ -151,9 +151,9 @@
     appDataDict = v2->_appDataDict;
     v2->_appDataDict = 0;
 
-    v5 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     dirtyPopularityDict = v3->_dirtyPopularityDict;
-    v3->_dirtyPopularityDict = v5;
+    v3->_dirtyPopularityDict = dictionary;
   }
 
   return v3;

@@ -6,11 +6,11 @@
 
 - (id)hf_stateDumpBuilderWithContext:()HFDebugging
 {
-  v4 = [HFStateDumpBuilder builderWithObject:a1 context:a3];
-  v5 = [a1 identifier];
-  [v4 appendObject:v5 withName:@"UUID" options:2];
+  v4 = [HFStateDumpBuilder builderWithObject:self context:a3];
+  identifier = [self identifier];
+  [v4 appendObject:identifier withName:@"UUID" options:2];
 
-  v6 = NSStringFromHMHomeInvitationState([a1 invitationState]);
+  v6 = NSStringFromHMHomeInvitationState([self invitationState]);
   [v4 setObject:v6 forKeyedSubscript:@"state"];
 
   return v4;

@@ -1,10 +1,10 @@
 @interface FBKSLaunchConfiguration
 - (FBKSLaunchConfiguration)init;
-- (void)setLocalizedAlertViewDeclineButtonTitle:(id)a3;
-- (void)setLocalizedAlertViewProceedButtonTitle:(id)a3;
-- (void)setLocalizedPromptMessage:(id)a3;
-- (void)setLocalizedPromptTitle:(id)a3;
-- (void)setPromptStyle:(int64_t)a3;
+- (void)setLocalizedAlertViewDeclineButtonTitle:(id)title;
+- (void)setLocalizedAlertViewProceedButtonTitle:(id)title;
+- (void)setLocalizedPromptMessage:(id)message;
+- (void)setLocalizedPromptTitle:(id)title;
+- (void)setPromptStyle:(int64_t)style;
 @end
 
 @implementation FBKSLaunchConfiguration
@@ -23,43 +23,43 @@
   return v2;
 }
 
-- (void)setPromptStyle:(int64_t)a3
+- (void)setPromptStyle:(int64_t)style
 {
-  self->_promptStyle = a3;
-  v4 = [(FBKSLaunchConfiguration *)self swiftObject];
-  [v4 setPromptStyle:a3];
+  self->_promptStyle = style;
+  swiftObject = [(FBKSLaunchConfiguration *)self swiftObject];
+  [swiftObject setPromptStyle:style];
 }
 
-- (void)setLocalizedPromptTitle:(id)a3
+- (void)setLocalizedPromptTitle:(id)title
 {
-  objc_storeStrong(&self->_localizedPromptTitle, a3);
-  v5 = a3;
-  v6 = [(FBKSLaunchConfiguration *)self swiftObject];
-  [v6 setLocalizedPromptTitle:v5];
+  objc_storeStrong(&self->_localizedPromptTitle, title);
+  titleCopy = title;
+  swiftObject = [(FBKSLaunchConfiguration *)self swiftObject];
+  [swiftObject setLocalizedPromptTitle:titleCopy];
 }
 
-- (void)setLocalizedPromptMessage:(id)a3
+- (void)setLocalizedPromptMessage:(id)message
 {
-  objc_storeStrong(&self->_localizedPromptMessage, a3);
-  v5 = a3;
-  v6 = [(FBKSLaunchConfiguration *)self swiftObject];
-  [v6 setLocalizedPromptMessage:v5];
+  objc_storeStrong(&self->_localizedPromptMessage, message);
+  messageCopy = message;
+  swiftObject = [(FBKSLaunchConfiguration *)self swiftObject];
+  [swiftObject setLocalizedPromptMessage:messageCopy];
 }
 
-- (void)setLocalizedAlertViewProceedButtonTitle:(id)a3
+- (void)setLocalizedAlertViewProceedButtonTitle:(id)title
 {
-  objc_storeStrong(&self->_localizedAlertViewProceedButtonTitle, a3);
-  v5 = a3;
-  v6 = [(FBKSLaunchConfiguration *)self swiftObject];
-  [v6 setLocalizedAlertViewProceedButtonTitle:v5];
+  objc_storeStrong(&self->_localizedAlertViewProceedButtonTitle, title);
+  titleCopy = title;
+  swiftObject = [(FBKSLaunchConfiguration *)self swiftObject];
+  [swiftObject setLocalizedAlertViewProceedButtonTitle:titleCopy];
 }
 
-- (void)setLocalizedAlertViewDeclineButtonTitle:(id)a3
+- (void)setLocalizedAlertViewDeclineButtonTitle:(id)title
 {
-  objc_storeStrong(&self->_localizedAlertViewDeclineButtonTitle, a3);
-  v5 = a3;
-  v6 = [(FBKSLaunchConfiguration *)self swiftObject];
-  [v6 setLocalizedAlertViewDeclineButtonTitle:v5];
+  objc_storeStrong(&self->_localizedAlertViewDeclineButtonTitle, title);
+  titleCopy = title;
+  swiftObject = [(FBKSLaunchConfiguration *)self swiftObject];
+  [swiftObject setLocalizedAlertViewDeclineButtonTitle:titleCopy];
 }
 
 @end

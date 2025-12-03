@@ -1,11 +1,11 @@
 @interface SBActionHandler
 + (id)sharedInstance;
 - (BOOL)_shouldPromptForSecureDrawViolations;
-- (void)_captureRadarAttachmentsWithCompletion:(id)a3;
-- (void)_executeRestartAction:(id)a3 fromProcess:(id)a4;
-- (void)_reportAndKillInsecureProcesses:(id)a3;
-- (void)addActionHandler:(id)a3;
-- (void)handleActions:(id)a3 origin:(id)a4 withResult:(id)a5;
+- (void)_captureRadarAttachmentsWithCompletion:(id)completion;
+- (void)_executeRestartAction:(id)action fromProcess:(id)process;
+- (void)_reportAndKillInsecureProcesses:(id)processes;
+- (void)addActionHandler:(id)handler;
+- (void)handleActions:(id)actions origin:(id)origin withResult:(id)result;
 @end
 
 @implementation SBActionHandler
@@ -32,24 +32,24 @@ uint64_t __33__SBActionHandler_sharedInstance__block_invoke()
   return kdebug_trace();
 }
 
-- (void)handleActions:(id)a3 origin:(id)a4 withResult:(id)a5
+- (void)handleActions:(id)actions origin:(id)origin withResult:(id)result
 {
   v131 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  actionsCopy = actions;
+  originCopy = origin;
+  resultCopy = result;
   v121[0] = MEMORY[0x277D85DD0];
   v121[1] = 3221225472;
   v121[2] = __51__SBActionHandler_handleActions_origin_withResult___block_invoke;
   v121[3] = &unk_2783B8B50;
-  v11 = v10;
+  v11 = resultCopy;
   v122 = v11;
   v12 = MEMORY[0x223D6F7F0](v121);
   v118[0] = MEMORY[0x277D85DD0];
   v118[1] = 3221225472;
   v118[2] = __51__SBActionHandler_handleActions_origin_withResult___block_invoke_2;
   v118[3] = &unk_2783B8B78;
-  v13 = v9;
+  v13 = originCopy;
   v119 = v13;
   v14 = v12;
   v120 = v14;
@@ -65,7 +65,7 @@ uint64_t __33__SBActionHandler_sharedInstance__block_invoke()
   v113 = 0u;
   v114 = 0u;
   v115 = 0u;
-  v18 = v8;
+  v18 = actionsCopy;
   v19 = [v18 countByEnumeratingWithState:&v112 objects:v130 count:16];
   v90 = v17;
   if (!v19)
@@ -89,7 +89,7 @@ LABEL_83:
   v75 = *MEMORY[0x277D67020];
   v82 = v13;
   v83 = *MEMORY[0x277D67000];
-  v86 = self;
+  selfCopy = self;
   v87 = v18;
   v21 = v17;
   v22 = v19;
@@ -135,7 +135,7 @@ LABEL_83:
         v107[2] = __51__SBActionHandler_handleActions_origin_withResult___block_invoke_4;
         v107[3] = &unk_2783A8ED8;
         v108 = v13;
-        v109 = self;
+        selfCopy2 = self;
         v110 = v24;
         v20 = (v21)[2](v21, v24, @"com.apple.frontboard.shutdown", v107);
 
@@ -155,11 +155,11 @@ LABEL_83:
             goto LABEL_77;
           }
 
-          v38 = [v24 locations];
+          locations = [v24 locations];
           v39 = +[SBWallpaperController sharedInstance];
-          v40 = [v39 wallpaperConfigurationManager];
+          wallpaperConfigurationManager = [v39 wallpaperConfigurationManager];
           v20 = 1;
-          [v40 wallpaperDidChangeForVariants:v38 shouldNotify:1];
+          [wallpaperConfigurationManager wallpaperDidChangeForVariants:locations shouldNotify:1];
 
           goto LABEL_64;
         }
@@ -187,12 +187,12 @@ LABEL_83:
         v46 = v33;
 
         v85 = v46;
-        v47 = [v46 persistedIdentifiers];
+        persistedIdentifiers = [v46 persistedIdentifiers];
         v91 = v32;
-        v84 = v47;
-        if (v47)
+        v84 = persistedIdentifiers;
+        if (persistedIdentifiers)
         {
-          v48 = v47;
+          v48 = persistedIdentifiers;
           v49 = [MEMORY[0x277CBEB58] set];
           v95 = 0u;
           v96 = 0u;
@@ -280,7 +280,7 @@ LABEL_83:
 LABEL_63:
 
             v20 = 1;
-            self = v86;
+            self = selfCopy;
 LABEL_64:
             v22 = v89;
             goto LABEL_77;
@@ -308,27 +308,27 @@ LABEL_64:
       }
 
       v25 = v24;
-      v26 = [v25 identifier];
+      identifier = [v25 identifier];
 
-      v27 = [v25 slot];
-      if ([v27 isEqualToString:v88])
+      slot = [v25 slot];
+      if ([slot isEqualToString:v88])
       {
-        v28 = [SBApp windowSceneManager];
-        v29 = [v28 activeDisplayWindowScene];
-        v30 = [v29 isContinuityDisplayWindowScene];
+        windowSceneManager = [SBApp windowSceneManager];
+        activeDisplayWindowScene = [windowSceneManager activeDisplayWindowScene];
+        isContinuityDisplayWindowScene = [activeDisplayWindowScene isContinuityDisplayWindowScene];
 
         v20 = 1;
-        if (v30)
+        if (isContinuityDisplayWindowScene)
         {
-          self = v86;
+          self = selfCopy;
 LABEL_73:
           v18 = v87;
           goto LABEL_74;
         }
 
-        self = v86;
+        self = selfCopy;
         v18 = v87;
-        if (!v26)
+        if (!identifier)
         {
           goto LABEL_74;
         }
@@ -337,15 +337,15 @@ LABEL_73:
       else
       {
 
-        if (!v26)
+        if (!identifier)
         {
           v20 = 1;
           goto LABEL_74;
         }
       }
 
-      v34 = [v25 slot];
-      v35 = [v34 isEqualToString:v88];
+      slot2 = [v25 slot];
+      v35 = [slot2 isEqualToString:v88];
 
       if (v35)
       {
@@ -381,14 +381,14 @@ LABEL_75:
         goto LABEL_67;
       }
 
-      v41 = [v25 slot];
-      v42 = [v41 isEqualToString:v80];
+      slot3 = [v25 slot];
+      v42 = [slot3 isEqualToString:v80];
 
       if (v42)
       {
-        v43 = [v25 identifier];
+        identifier2 = [v25 identifier];
 
-        if (v43)
+        if (identifier2)
         {
           v101[0] = MEMORY[0x277D85DD0];
           v101[1] = 3221225472;
@@ -418,22 +418,22 @@ LABEL_67:
         goto LABEL_68;
       }
 
-      v62 = [v25 slot];
-      if ([v62 isEqualToString:v76])
+      slot4 = [v25 slot];
+      if ([slot4 isEqualToString:v76])
       {
         goto LABEL_54;
       }
 
-      v63 = [v25 slot];
-      if ([v63 isEqualToString:v75])
+      slot5 = [v25 slot];
+      if ([slot5 isEqualToString:v75])
       {
 
 LABEL_54:
         goto LABEL_55;
       }
 
-      v71 = [v25 slot];
-      v72 = [v71 isEqualToString:v74];
+      slot6 = [v25 slot];
+      v72 = [slot6 isEqualToString:v74];
 
       if ((v72 & 1) == 0)
       {
@@ -648,49 +648,49 @@ void __51__SBActionHandler_handleActions_origin_withResult___block_invoke_9(uint
   }
 }
 
-- (void)addActionHandler:(id)a3
+- (void)addActionHandler:(id)handler
 {
-  v4 = a3;
-  if (v4)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     externalHandlers = self->_externalHandlers;
-    v8 = v4;
+    v8 = handlerCopy;
     if (!externalHandlers)
     {
-      v6 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+      weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
       v7 = self->_externalHandlers;
-      self->_externalHandlers = v6;
+      self->_externalHandlers = weakObjectsHashTable;
 
       externalHandlers = self->_externalHandlers;
     }
 
     [(NSHashTable *)externalHandlers addObject:v8];
-    v4 = v8;
+    handlerCopy = v8;
   }
 }
 
-- (void)_executeRestartAction:(id)a3 fromProcess:(id)a4
+- (void)_executeRestartAction:(id)action fromProcess:(id)process
 {
-  v16 = a3;
+  actionCopy = action;
   v4 = MEMORY[0x277CCACA8];
   v5 = FBSProcessPrettyDescription();
-  v6 = [v16 reason];
-  v7 = [v4 stringWithFormat:@"RestartTransitionRequest-(%@)-reason:%@", v5, v6];
+  reason = [actionCopy reason];
+  v7 = [v4 stringWithFormat:@"RestartTransitionRequest-(%@)-reason:%@", v5, reason];
 
   v8 = [SBRestartTransitionRequest alloc];
-  v9 = [v16 reason];
-  v10 = [(SBRestartTransitionRequest *)v8 initWithRequester:v7 reason:v9];
+  reason2 = [actionCopy reason];
+  v10 = [(SBRestartTransitionRequest *)v8 initWithRequester:v7 reason:reason2];
 
-  v11 = [v16 options];
-  v12 = v11;
-  if (v11)
+  options = [actionCopy options];
+  v12 = options;
+  if (options)
   {
     v13 = 2;
   }
 
   else
   {
-    v13 = (v11 >> 2) & 1;
+    v13 = (options >> 2) & 1;
   }
 
   [(SBRestartTransitionRequest *)v10 setRestartType:v13];
@@ -699,32 +699,32 @@ void __51__SBActionHandler_handleActions_origin_withResult___block_invoke_9(uint
     [(SBRestartTransitionRequest *)v10 setWantsPersistentSnapshot:1];
   }
 
-  v14 = [v16 targetURL];
-  [(SBRestartTransitionRequest *)v10 setApplicationLaunchURL:v14];
+  targetURL = [actionCopy targetURL];
+  [(SBRestartTransitionRequest *)v10 setApplicationLaunchURL:targetURL];
 
-  v15 = [SBApp restartManager];
-  [v15 restartWithTransitionRequest:v10];
+  restartManager = [SBApp restartManager];
+  [restartManager restartWithTransitionRequest:v10];
 }
 
-- (void)_reportAndKillInsecureProcesses:(id)a3
+- (void)_reportAndKillInsecureProcesses:(id)processes
 {
   v72 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 secureModeViolations];
+  processesCopy = processes;
+  secureModeViolations = [processesCopy secureModeViolations];
   v6 = SBLogWorkspace();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v71 = v4;
+    v71 = processesCopy;
     _os_log_impl(&dword_21ED4E000, v6, OS_LOG_TYPE_DEFAULT, "Received insecure drawing action %@", buf, 0xCu);
   }
 
-  v7 = [MEMORY[0x277D02C20] rootSettings];
-  if ([v7 killsInsecureDrawingApps])
+  rootSettings = [MEMORY[0x277D02C20] rootSettings];
+  if ([rootSettings killsInsecureDrawingApps])
   {
-    v39 = self;
-    v42 = v7;
-    v43 = v4;
+    selfCopy = self;
+    v42 = rootSettings;
+    v43 = processesCopy;
     v41 = getpid();
     v8 = objc_alloc_init(MEMORY[0x277CBEB58]);
     v45 = objc_alloc_init(MEMORY[0x277CBEB58]);
@@ -732,7 +732,7 @@ void __51__SBActionHandler_handleActions_origin_withResult___block_invoke_9(uint
     v65 = 0u;
     v66 = 0u;
     v67 = 0u;
-    obj = v5;
+    obj = secureModeViolations;
     v9 = [obj countByEnumeratingWithState:&v64 objects:v69 count:16];
     if (v9)
     {
@@ -748,12 +748,12 @@ void __51__SBActionHandler_handleActions_origin_withResult___block_invoke_9(uint
           }
 
           v13 = *(*(&v64 + 1) + 8 * i);
-          v14 = [v13 layerNamesByContext];
-          v15 = [v14 count];
+          layerNamesByContext = [v13 layerNamesByContext];
+          v15 = [layerNamesByContext count];
 
           if (v15)
           {
-            v16 = [v13 layerNamesByContext];
+            layerNamesByContext2 = [v13 layerNamesByContext];
             v60[0] = MEMORY[0x277D85DD0];
             v60[1] = 3221225472;
             v60[2] = __51__SBActionHandler__reportAndKillInsecureProcesses___block_invoke;
@@ -761,15 +761,15 @@ void __51__SBActionHandler_handleActions_origin_withResult___block_invoke_9(uint
             v61 = v8;
             v62 = v45;
             v63 = v13;
-            [v16 enumerateKeysAndObjectsUsingBlock:v60];
+            [layerNamesByContext2 enumerateKeysAndObjectsUsingBlock:v60];
 
-            v17 = v61;
+            processId = v61;
           }
 
           else
           {
-            v17 = [v13 processId];
-            [v45 addObject:v17];
+            processId = [v13 processId];
+            [v45 addObject:processId];
           }
         }
 
@@ -819,29 +819,29 @@ void __51__SBActionHandler_handleActions_origin_withResult___block_invoke_9(uint
     if (![v45 count])
     {
       v24 = +[SBDefaults localDefaults];
-      v25 = [v24 securityDefaults];
-      v26 = [v25 enableLayerBasedViewSecurity];
+      securityDefaults = [v24 securityDefaults];
+      enableLayerBasedViewSecurity = [securityDefaults enableLayerBasedViewSecurity];
 
-      if ((v26 & 1) == 0)
+      if ((enableLayerBasedViewSecurity & 1) == 0)
       {
         v32 = SBLogWorkspace();
-        v7 = v42;
+        rootSettings = v42;
         if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 0;
           _os_log_impl(&dword_21ED4E000, v32, OS_LOG_TYPE_DEFAULT, "Disregarding insecure drawing action because only layer-based violations were reported.", buf, 2u);
         }
 
-        v4 = v43;
+        processesCopy = v43;
         goto LABEL_42;
       }
     }
 
     v27 = +[SBDefaults localDefaults];
-    v28 = [v27 securityDefaults];
-    v29 = [v28 enableLayerBasedViewSecurity];
+    securityDefaults2 = [v27 securityDefaults];
+    enableLayerBasedViewSecurity2 = [securityDefaults2 enableLayerBasedViewSecurity];
 
-    if (v29)
+    if (enableLayerBasedViewSecurity2)
     {
       v30 = MEMORY[0x277CBEB98];
       v31 = [obj bs_map:&__block_literal_global_86_3];
@@ -853,7 +853,7 @@ void __51__SBActionHandler_handleActions_origin_withResult___block_invoke_9(uint
       v32 = v45;
     }
 
-    v7 = v42;
+    rootSettings = v42;
     v33 = MEMORY[0x277CBEB98];
     v34 = [MEMORY[0x277CCABB0] numberWithInt:v41];
     v35 = [v33 setWithObject:v34];
@@ -862,7 +862,7 @@ void __51__SBActionHandler_handleActions_origin_withResult___block_invoke_9(uint
     if (v36)
     {
       v37 = SBLogWorkspace();
-      v4 = v43;
+      processesCopy = v43;
       if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 0;
@@ -874,7 +874,7 @@ LABEL_40:
 
     else
     {
-      v4 = v43;
+      processesCopy = v43;
       if ([v32 count])
       {
         v46[0] = MEMORY[0x277D85DD0];
@@ -1373,39 +1373,39 @@ void __51__SBActionHandler__reportAndKillInsecureProcesses___block_invoke_114(vo
   if ([v2 isInternalInstall])
   {
     v3 = +[SBDefaults localDefaults];
-    v4 = [v3 securityDefaults];
-    v5 = [v4 reportSecureDrawViolations];
+    securityDefaults = [v3 securityDefaults];
+    reportSecureDrawViolations = [securityDefaults reportSecureDrawViolations];
   }
 
   else
   {
-    v5 = 0;
+    reportSecureDrawViolations = 0;
   }
 
-  return v5;
+  return reportSecureDrawViolations;
 }
 
-- (void)_captureRadarAttachmentsWithCompletion:(id)a3
+- (void)_captureRadarAttachmentsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if ([(SBActionHandler *)self _shouldPromptForSecureDrawViolations])
   {
     if (self->_capturingDisplayDump)
     {
-      v4[2](v4, 0, 1);
+      completionCopy[2](completionCopy, 0, 1);
     }
 
     else
     {
       self->_capturingDisplayDump = 1;
-      v5 = v4;
+      v5 = completionCopy;
       BKSDisplayServicesArchiveWithOptionsAndCompletion();
     }
   }
 
-  else if (v4)
+  else if (completionCopy)
   {
-    v4[2](v4, 0, 0);
+    completionCopy[2](completionCopy, 0, 0);
   }
 }
 

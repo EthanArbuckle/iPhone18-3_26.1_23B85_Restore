@@ -1,46 +1,46 @@
 @interface AVTGroupDial
-+ (double)estimatedContentWidthForTitleSizes:(id)a3;
-- (AVTGroupDial)initWithGroupItems:(id)a3 environment:(id)a4;
++ (double)estimatedContentWidthForTitleSizes:(id)sizes;
+- (AVTGroupDial)initWithGroupItems:(id)items environment:(id)environment;
 - (AVTGroupPickerDelegate)delegate;
-- (CGSize)cellSizeForItemAtIndex:(int64_t)a3;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
+- (CGSize)cellSizeForItemAtIndex:(int64_t)index;
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
 - (void)cacheTitleSizes;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path;
 - (void)layoutSubviews;
 - (void)reloadData;
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewWillBeginDragging:(id)a3;
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5;
-- (void)selectItemAtIndex:(int64_t)a3 updateScrollPosition:(BOOL)a4 animated:(BOOL)a5;
-- (void)setBounds:(CGRect)a3;
-- (void)setContentPadding:(double)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setSelectedGroupIndex:(int64_t)a3 animated:(BOOL)a4;
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewWillBeginDragging:(id)dragging;
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset;
+- (void)selectItemAtIndex:(int64_t)index updateScrollPosition:(BOOL)position animated:(BOOL)animated;
+- (void)setBounds:(CGRect)bounds;
+- (void)setContentPadding:(double)padding;
+- (void)setFrame:(CGRect)frame;
+- (void)setSelectedGroupIndex:(int64_t)index animated:(BOOL)animated;
 - (void)setupDial;
 - (void)setupMasking;
 - (void)startDiscoverability;
 - (void)stopDiscoverability;
 - (void)updateForEndingScroll;
-- (void)updateSelectedState:(BOOL)a3 forItemAtIndexPath:(id)a4 animated:(BOOL)a5;
+- (void)updateSelectedState:(BOOL)state forItemAtIndexPath:(id)path animated:(BOOL)animated;
 @end
 
 @implementation AVTGroupDial
 
-+ (double)estimatedContentWidthForTitleSizes:(id)a3
++ (double)estimatedContentWidthForTitleSizes:(id)sizes
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (v3 || (v11 = 0.0, ![0 count]))
+  sizesCopy = sizes;
+  if (sizesCopy || (v11 = 0.0, ![0 count]))
   {
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v4 = v3;
+    v4 = sizesCopy;
     v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v5)
     {
@@ -77,20 +77,20 @@
   return v11;
 }
 
-- (AVTGroupDial)initWithGroupItems:(id)a3 environment:(id)a4
+- (AVTGroupDial)initWithGroupItems:(id)items environment:(id)environment
 {
-  v7 = a3;
-  v8 = a4;
+  itemsCopy = items;
+  environmentCopy = environment;
   v13.receiver = self;
   v13.super_class = AVTGroupDial;
   v9 = [(AVTGroupDial *)&v13 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_environment, a4);
-    objc_storeStrong(&v10->_groupItems, a3);
-    v11 = [MEMORY[0x1E69DC888] clearColor];
-    [(AVTGroupDial *)v10 setBackgroundColor:v11];
+    objc_storeStrong(&v9->_environment, environment);
+    objc_storeStrong(&v10->_groupItems, items);
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(AVTGroupDial *)v10 setBackgroundColor:clearColor];
 
     [(AVTGroupDial *)v10 cacheTitleSizes];
     [(AVTGroupDial *)v10 setupDial];
@@ -120,8 +120,8 @@
 {
   v29 = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E695DF70];
-  v4 = [(AVTGroupDial *)self groupItems];
-  v5 = [v3 arrayWithCapacity:{objc_msgSend(v4, "count")}];
+  groupItems = [(AVTGroupDial *)self groupItems];
+  v5 = [v3 arrayWithCapacity:{objc_msgSend(groupItems, "count")}];
 
   v24 = 0u;
   v25 = 0u;
@@ -143,12 +143,12 @@
           objc_enumerationMutation(obj);
         }
 
-        v11 = [*(*(&v22 + 1) + 8 * i) localizedName];
+        localizedName = [*(*(&v22 + 1) + 8 * i) localizedName];
         v26 = v9;
-        v12 = [objc_opt_class() labelFont];
-        v27 = v12;
+        labelFont = [objc_opt_class() labelFont];
+        v27 = labelFont;
         v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v27 forKeys:&v26 count:1];
-        [v11 sizeWithAttributes:v13];
+        [localizedName sizeWithAttributes:v13];
         v15 = v14;
         v17 = v16;
 
@@ -182,8 +182,8 @@
 
   [(UICollectionView *)self->_collectionView setShowsVerticalScrollIndicator:0];
   [(UICollectionView *)self->_collectionView setShowsHorizontalScrollIndicator:0];
-  v6 = [MEMORY[0x1E69DC888] clearColor];
-  [(UICollectionView *)self->_collectionView setBackgroundColor:v6];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [(UICollectionView *)self->_collectionView setBackgroundColor:clearColor];
 
   [(UICollectionView *)self->_collectionView setContentInsetAdjustmentBehavior:2];
   [(UICollectionView *)self->_collectionView setDataSource:self];
@@ -196,8 +196,8 @@
   [(UICollectionView *)self->_collectionView setDecelerationRate:*MEMORY[0x1E69DE3A0]];
   v10 = [AVTCenteringCollectionViewDelegate alloc];
   v11 = self->_collectionView;
-  v12 = [(AVTGroupDial *)self environment];
-  v13 = [(AVTCenteringCollectionViewDelegate *)v10 initWithCollectionView:v11 delegate:self environment:v12];
+  environment = [(AVTGroupDial *)self environment];
+  v13 = [(AVTCenteringCollectionViewDelegate *)v10 initWithCollectionView:v11 delegate:self environment:environment];
   centeringCollectionViewDelegate = self->_centeringCollectionViewDelegate;
   self->_centeringCollectionViewDelegate = v13;
 
@@ -205,23 +205,23 @@
   cachedGroupTitleSizes = self->_cachedGroupTitleSizes;
   [(AVTGroupDial *)self bounds];
   v17 = [v15 shouldScrollGivenTitleSizes:cachedGroupTitleSizes fittingWidth:CGRectGetWidth(v21)];
-  v18 = self;
+  selfCopy = self;
   if (v17)
   {
-    v18 = self->_centeringCollectionViewDelegate;
+    selfCopy = self->_centeringCollectionViewDelegate;
   }
 
-  [(UICollectionView *)self->_collectionView setDelegate:v18];
+  [(UICollectionView *)self->_collectionView setDelegate:selfCopy];
   [(UICollectionView *)self->_collectionView setScrollEnabled:v17];
 }
 
-- (void)setContentPadding:(double)a3
+- (void)setContentPadding:(double)padding
 {
-  v5 = [(AVTGroupDial *)self collectionViewLayout];
-  [v5 setSectionInset:{a3, 0.0, a3, 0.0}];
+  collectionViewLayout = [(AVTGroupDial *)self collectionViewLayout];
+  [collectionViewLayout setSectionInset:{padding, 0.0, padding, 0.0}];
 
-  v6 = [(AVTGroupDial *)self collectionViewLayout];
-  [v6 invalidateLayout];
+  collectionViewLayout2 = [(AVTGroupDial *)self collectionViewLayout];
+  [collectionViewLayout2 invalidateLayout];
 }
 
 - (void)layoutSubviews
@@ -231,22 +231,22 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(AVTGroupDial *)self collectionView];
-  [v11 setFrame:{v4, v6, v8, v10}];
+  collectionView = [(AVTGroupDial *)self collectionView];
+  [collectionView setFrame:{v4, v6, v8, v10}];
 
   [(AVTGroupDial *)self cellSizeForItemAtIndex:0];
-  v12 = [(AVTGroupDial *)self groupItems];
-  -[AVTGroupDial cellSizeForItemAtIndex:](self, "cellSizeForItemAtIndex:", [v12 count] - 1);
+  groupItems = [(AVTGroupDial *)self groupItems];
+  -[AVTGroupDial cellSizeForItemAtIndex:](self, "cellSizeForItemAtIndex:", [groupItems count] - 1);
 
   v13 = objc_opt_class();
-  v14 = [(AVTGroupDial *)self cachedGroupTitleSizes];
+  cachedGroupTitleSizes = [(AVTGroupDial *)self cachedGroupTitleSizes];
   [(AVTGroupDial *)self bounds];
-  v15 = [v13 shouldScrollGivenTitleSizes:v14 fittingWidth:CGRectGetWidth(v52)];
+  v15 = [v13 shouldScrollGivenTitleSizes:cachedGroupTitleSizes fittingWidth:CGRectGetWidth(v52)];
 
   if (v15)
   {
-    v16 = [(AVTGroupDial *)self collectionView];
-    [v16 bounds];
+    collectionView2 = [(AVTGroupDial *)self collectionView];
+    [collectionView2 bounds];
     [AVTCenteringCollectionViewHelper insetsForBounds:"insetsForBounds:withFirstCellSize:lastCellSize:" withFirstCellSize:? lastCellSize:?];
     v18 = v17;
     v20 = v19;
@@ -258,12 +258,12 @@
     v28 = v27;
     v30 = v29;
     v32 = v31;
-    v33 = [(AVTGroupDial *)self maskingView];
-    [v33 setFrame:{v26, v28, v30, v32}];
+    maskingView = [(AVTGroupDial *)self maskingView];
+    [maskingView setFrame:{v26, v28, v30, v32}];
 
-    v34 = [(AVTGroupDial *)self centeringCollectionViewDelegate];
-    v35 = [(AVTGroupDial *)self collectionView];
-    [v35 setDelegate:v34];
+    centeringCollectionViewDelegate = [(AVTGroupDial *)self centeringCollectionViewDelegate];
+    collectionView3 = [(AVTGroupDial *)self collectionView];
+    [collectionView3 setDelegate:centeringCollectionViewDelegate];
   }
 
   else
@@ -271,20 +271,20 @@
     [(AVTGroupDial *)self bounds];
     v37 = v36;
     v38 = objc_opt_class();
-    v39 = [(AVTGroupDial *)self cachedGroupTitleSizes];
-    [v38 estimatedContentWidthForTitleSizes:v39];
+    cachedGroupTitleSizes2 = [(AVTGroupDial *)self cachedGroupTitleSizes];
+    [v38 estimatedContentWidthForTitleSizes:cachedGroupTitleSizes2];
     v20 = (v37 - v40) * 0.5;
 
     v18 = 0.0;
     [(AVTGroupDial *)self setMaskView:0];
-    v34 = [(AVTGroupDial *)self collectionView];
-    [v34 setDelegate:self];
+    centeringCollectionViewDelegate = [(AVTGroupDial *)self collectionView];
+    [centeringCollectionViewDelegate setDelegate:self];
     v22 = 0.0;
     v24 = v20;
   }
 
-  v41 = [(AVTGroupDial *)self collectionView];
-  [v41 contentInset];
+  collectionView4 = [(AVTGroupDial *)self collectionView];
+  [collectionView4 contentInset];
   if (v45 == v20 && v42 == v18 && v44 == v24)
   {
     v48 = v43;
@@ -299,21 +299,21 @@
   {
   }
 
-  v49 = [(AVTGroupDial *)self collectionView];
-  [v49 setContentInset:{v18, v20, v22, v24}];
+  collectionView5 = [(AVTGroupDial *)self collectionView];
+  [collectionView5 setContentInset:{v18, v20, v22, v24}];
 
 LABEL_14:
-  v50 = [(AVTGroupDial *)self currentSelectedItemIndex];
+  currentSelectedItemIndex = [(AVTGroupDial *)self currentSelectedItemIndex];
 
-  [(AVTGroupDial *)self selectItemAtIndex:v50 updateScrollPosition:v15 animated:0];
+  [(AVTGroupDial *)self selectItemAtIndex:currentSelectedItemIndex updateScrollPosition:v15 animated:0];
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(AVTGroupDial *)self frame];
   v22.origin.x = v8;
   v22.origin.y = v9;
@@ -329,28 +329,28 @@ LABEL_14:
     v18.super_class = AVTGroupDial;
     [(AVTGroupDial *)&v18 setFrame:x, y, width, height];
     v12 = objc_opt_class();
-    v13 = [(AVTGroupDial *)self cachedGroupTitleSizes];
+    cachedGroupTitleSizes = [(AVTGroupDial *)self cachedGroupTitleSizes];
     v21.origin.x = x;
     v21.origin.y = y;
     v21.size.width = width;
     v21.size.height = height;
-    v14 = [v12 shouldScrollGivenTitleSizes:v13 fittingWidth:CGRectGetWidth(v21)];
+    v14 = [v12 shouldScrollGivenTitleSizes:cachedGroupTitleSizes fittingWidth:CGRectGetWidth(v21)];
 
-    v15 = self;
+    selfCopy = self;
     if (v14)
     {
-      v15 = [(AVTGroupDial *)self centeringCollectionViewDelegate];
+      selfCopy = [(AVTGroupDial *)self centeringCollectionViewDelegate];
     }
 
-    v16 = [(AVTGroupDial *)self collectionView];
-    [v16 setDelegate:v15];
+    collectionView = [(AVTGroupDial *)self collectionView];
+    [collectionView setDelegate:selfCopy];
 
     if (v14)
     {
     }
 
-    v17 = [(AVTGroupDial *)self collectionView];
-    [v17 setScrollEnabled:v14];
+    collectionView2 = [(AVTGroupDial *)self collectionView];
+    [collectionView2 setScrollEnabled:v14];
   }
 
   else
@@ -361,12 +361,12 @@ LABEL_14:
   }
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(AVTGroupDial *)self bounds];
   v22.origin.x = v8;
   v22.origin.y = v9;
@@ -382,28 +382,28 @@ LABEL_14:
     v18.super_class = AVTGroupDial;
     [(AVTGroupDial *)&v18 setBounds:x, y, width, height];
     v12 = objc_opt_class();
-    v13 = [(AVTGroupDial *)self cachedGroupTitleSizes];
+    cachedGroupTitleSizes = [(AVTGroupDial *)self cachedGroupTitleSizes];
     v21.origin.x = x;
     v21.origin.y = y;
     v21.size.width = width;
     v21.size.height = height;
-    v14 = [v12 shouldScrollGivenTitleSizes:v13 fittingWidth:CGRectGetWidth(v21)];
+    v14 = [v12 shouldScrollGivenTitleSizes:cachedGroupTitleSizes fittingWidth:CGRectGetWidth(v21)];
 
-    v15 = self;
+    selfCopy = self;
     if (v14)
     {
-      v15 = [(AVTGroupDial *)self centeringCollectionViewDelegate];
+      selfCopy = [(AVTGroupDial *)self centeringCollectionViewDelegate];
     }
 
-    v16 = [(AVTGroupDial *)self collectionView];
-    [v16 setDelegate:v15];
+    collectionView = [(AVTGroupDial *)self collectionView];
+    [collectionView setDelegate:selfCopy];
 
     if (v14)
     {
     }
 
-    v17 = [(AVTGroupDial *)self collectionView];
-    [v17 setScrollEnabled:v14];
+    collectionView2 = [(AVTGroupDial *)self collectionView];
+    [collectionView2 setScrollEnabled:v14];
   }
 
   else
@@ -414,30 +414,30 @@ LABEL_14:
   }
 }
 
-- (void)setSelectedGroupIndex:(int64_t)a3 animated:(BOOL)a4
+- (void)setSelectedGroupIndex:(int64_t)index animated:(BOOL)animated
 {
-  if ((a3 & 0x8000000000000000) == 0)
+  if ((index & 0x8000000000000000) == 0)
   {
-    v4 = a4;
-    v7 = [(AVTGroupDial *)self groupItems];
-    v8 = [v7 count];
+    animatedCopy = animated;
+    groupItems = [(AVTGroupDial *)self groupItems];
+    v8 = [groupItems count];
 
-    if (v8 > a3)
+    if (v8 > index)
     {
-      v9 = [(AVTGroupDial *)self window];
+      window = [(AVTGroupDial *)self window];
 
-      if (v9)
+      if (window)
       {
         v10 = objc_opt_class();
-        v11 = [(AVTGroupDial *)self cachedGroupTitleSizes];
+        cachedGroupTitleSizes = [(AVTGroupDial *)self cachedGroupTitleSizes];
         [(AVTGroupDial *)self bounds];
-        -[AVTGroupDial selectItemAtIndex:updateScrollPosition:animated:](self, "selectItemAtIndex:updateScrollPosition:animated:", a3, [v10 shouldScrollGivenTitleSizes:v11 fittingWidth:CGRectGetWidth(v13)], v4);
+        -[AVTGroupDial selectItemAtIndex:updateScrollPosition:animated:](self, "selectItemAtIndex:updateScrollPosition:animated:", index, [v10 shouldScrollGivenTitleSizes:cachedGroupTitleSizes fittingWidth:CGRectGetWidth(v13)], animatedCopy);
       }
 
       else
       {
 
-        [(AVTGroupDial *)self setCurrentSelectedItemIndex:a3];
+        [(AVTGroupDial *)self setCurrentSelectedItemIndex:index];
       }
     }
   }
@@ -445,32 +445,32 @@ LABEL_14:
 
 - (void)startDiscoverability
 {
-  v3 = [(AVTGroupDial *)self groupItems];
-  v4 = [v3 count];
+  groupItems = [(AVTGroupDial *)self groupItems];
+  v4 = [groupItems count];
 
   if (v4 >= 2)
   {
     v5 = [(AVTGroupDial *)self selectedGroupIndex]+ 1;
-    v6 = [(AVTGroupDial *)self groupItems];
-    v7 = [v6 count];
+    groupItems2 = [(AVTGroupDial *)self groupItems];
+    v7 = [groupItems2 count];
 
     if (v5 >= v7)
     {
       v5 = [(AVTGroupDial *)self selectedGroupIndex]- 1;
     }
 
-    v8 = [(AVTGroupDial *)self shimmeringItemIndexPath];
-    v9 = [v8 item];
+    shimmeringItemIndexPath = [(AVTGroupDial *)self shimmeringItemIndexPath];
+    item = [shimmeringItemIndexPath item];
 
-    if (v9 != v5)
+    if (item != v5)
     {
       [(AVTGroupDial *)self stopDiscoverability];
       v10 = [MEMORY[0x1E696AC88] indexPathForItem:v5 inSection:0];
       [(AVTGroupDial *)self setShimmeringItemIndexPath:v10];
 
-      v11 = [(AVTGroupDial *)self collectionView];
-      v12 = [(AVTGroupDial *)self shimmeringItemIndexPath];
-      v13 = [v11 cellForItemAtIndexPath:v12];
+      collectionView = [(AVTGroupDial *)self collectionView];
+      shimmeringItemIndexPath2 = [(AVTGroupDial *)self shimmeringItemIndexPath];
+      v13 = [collectionView cellForItemAtIndexPath:shimmeringItemIndexPath2];
 
       [v13 startShimmering];
     }
@@ -479,13 +479,13 @@ LABEL_14:
 
 - (void)stopDiscoverability
 {
-  v3 = [(AVTGroupDial *)self shimmeringItemIndexPath];
+  shimmeringItemIndexPath = [(AVTGroupDial *)self shimmeringItemIndexPath];
 
-  if (v3)
+  if (shimmeringItemIndexPath)
   {
-    v4 = [(AVTGroupDial *)self collectionView];
-    v5 = [(AVTGroupDial *)self shimmeringItemIndexPath];
-    v6 = [v4 cellForItemAtIndexPath:v5];
+    collectionView = [(AVTGroupDial *)self collectionView];
+    shimmeringItemIndexPath2 = [(AVTGroupDial *)self shimmeringItemIndexPath];
+    v6 = [collectionView cellForItemAtIndexPath:shimmeringItemIndexPath2];
 
     [v6 stopShimmeringAnimated:1];
     [(AVTGroupDial *)self setShimmeringItemIndexPath:0];
@@ -495,19 +495,19 @@ LABEL_14:
 - (void)reloadData
 {
   [(AVTGroupDial *)self cacheTitleSizes];
-  v3 = [(AVTGroupDial *)self collectionView];
-  [v3 reloadData];
+  collectionView = [(AVTGroupDial *)self collectionView];
+  [collectionView reloadData];
 }
 
-- (CGSize)cellSizeForItemAtIndex:(int64_t)a3
+- (CGSize)cellSizeForItemAtIndex:(int64_t)index
 {
-  v5 = [(AVTGroupDial *)self cachedGroupTitleSizes];
-  v6 = [v5 count];
+  cachedGroupTitleSizes = [(AVTGroupDial *)self cachedGroupTitleSizes];
+  v6 = [cachedGroupTitleSizes count];
 
   if (v6)
   {
-    v7 = [(AVTGroupDial *)self cachedGroupTitleSizes];
-    v8 = [v7 objectAtIndexedSubscript:a3];
+    cachedGroupTitleSizes2 = [(AVTGroupDial *)self cachedGroupTitleSizes];
+    v8 = [cachedGroupTitleSizes2 objectAtIndexedSubscript:index];
 
     [v8 CGSizeValue];
     v10 = v9;
@@ -527,61 +527,61 @@ LABEL_14:
   return result;
 }
 
-- (void)selectItemAtIndex:(int64_t)a3 updateScrollPosition:(BOOL)a4 animated:(BOOL)a5
+- (void)selectItemAtIndex:(int64_t)index updateScrollPosition:(BOOL)position animated:(BOOL)animated
 {
-  if ((a3 & 0x8000000000000000) == 0)
+  if ((index & 0x8000000000000000) == 0)
   {
-    v5 = a5;
-    v6 = a4;
-    v9 = [(AVTGroupDial *)self groupItems];
-    v10 = [v9 count];
+    animatedCopy = animated;
+    positionCopy = position;
+    groupItems = [(AVTGroupDial *)self groupItems];
+    v10 = [groupItems count];
 
-    if (v10 > a3)
+    if (v10 > index)
     {
-      v11 = [(AVTGroupDial *)self currentSelectedItemIndex];
-      [(AVTGroupDial *)self setCurrentSelectedItemIndex:a3];
-      v26 = [MEMORY[0x1E696AC88] indexPathForItem:a3 inSection:0];
-      v12 = [MEMORY[0x1E696AC88] indexPathForItem:v11 inSection:0];
-      [(AVTGroupDial *)self updateSelectedState:0 forItemAtIndexPath:v12 animated:v5];
-      v13 = [(AVTGroupDial *)self collectionView];
-      [v13 selectItemAtIndexPath:v26 animated:v5 scrollPosition:0];
+      currentSelectedItemIndex = [(AVTGroupDial *)self currentSelectedItemIndex];
+      [(AVTGroupDial *)self setCurrentSelectedItemIndex:index];
+      v26 = [MEMORY[0x1E696AC88] indexPathForItem:index inSection:0];
+      v12 = [MEMORY[0x1E696AC88] indexPathForItem:currentSelectedItemIndex inSection:0];
+      [(AVTGroupDial *)self updateSelectedState:0 forItemAtIndexPath:v12 animated:animatedCopy];
+      collectionView = [(AVTGroupDial *)self collectionView];
+      [collectionView selectItemAtIndexPath:v26 animated:animatedCopy scrollPosition:0];
 
-      if (v6)
+      if (positionCopy)
       {
         [(AVTGroupDial *)self layoutIfNeeded];
-        v14 = [(AVTGroupDial *)self collectionView];
-        v15 = [v14 layoutAttributesForItemAtIndexPath:v26];
+        collectionView2 = [(AVTGroupDial *)self collectionView];
+        v15 = [collectionView2 layoutAttributesForItemAtIndexPath:v26];
 
         [v15 frame];
         UIRectGetCenter();
         v17 = v16;
         v19 = v18;
-        v20 = [(AVTGroupDial *)self collectionView];
-        [AVTCenteringCollectionViewHelper contentOffsetForCenteringPoint:v20 collectionView:v17, v19];
+        collectionView3 = [(AVTGroupDial *)self collectionView];
+        [AVTCenteringCollectionViewHelper contentOffsetForCenteringPoint:collectionView3 collectionView:v17, v19];
         v22 = v21;
         v24 = v23;
 
-        v25 = [(AVTGroupDial *)self collectionView];
-        [v25 setContentOffset:v5 animated:{v22, v24}];
+        collectionView4 = [(AVTGroupDial *)self collectionView];
+        [collectionView4 setContentOffset:animatedCopy animated:{v22, v24}];
       }
 
-      if (!v5 || v11 == [(AVTGroupDial *)self currentSelectedItemIndex])
+      if (!animatedCopy || currentSelectedItemIndex == [(AVTGroupDial *)self currentSelectedItemIndex])
       {
-        [(AVTGroupDial *)self updateSelectedState:1 forItemAtIndexPath:v26 animated:v5];
+        [(AVTGroupDial *)self updateSelectedState:1 forItemAtIndexPath:v26 animated:animatedCopy];
       }
     }
   }
 }
 
-- (void)updateSelectedState:(BOOL)a3 forItemAtIndexPath:(id)a4 animated:(BOOL)a5
+- (void)updateSelectedState:(BOOL)state forItemAtIndexPath:(id)path animated:(BOOL)animated
 {
-  v5 = a5;
-  v6 = a3;
-  v8 = a4;
-  v9 = [(AVTGroupDial *)self collectionView];
-  v10 = [v9 cellForItemAtIndexPath:v8];
+  animatedCopy = animated;
+  stateCopy = state;
+  pathCopy = path;
+  collectionView = [(AVTGroupDial *)self collectionView];
+  v10 = [collectionView cellForItemAtIndexPath:pathCopy];
 
-  [v10 setActiveItem:v6 animated:v5];
+  [v10 setActiveItem:stateCopy animated:animatedCopy];
 }
 
 - (void)updateForEndingScroll
@@ -589,31 +589,31 @@ LABEL_14:
   [(AVTGroupDial *)self setIsMoving:0];
   if ([(AVTGroupDial *)self hasFinalizedSelection])
   {
-    v3 = [(AVTGroupDial *)self collectionView];
-    [v3 contentOffset];
+    collectionView = [(AVTGroupDial *)self collectionView];
+    [collectionView contentOffset];
     v5 = v4;
     v7 = v6;
-    v8 = [(AVTGroupDial *)self collectionView];
-    v10 = [AVTCenteringCollectionViewHelper indexPathForNearestItemToCenterWithOffset:v8 collectionView:v5, v7];
+    collectionView2 = [(AVTGroupDial *)self collectionView];
+    v10 = [AVTCenteringCollectionViewHelper indexPathForNearestItemToCenterWithOffset:collectionView2 collectionView:v5, v7];
 
     -[AVTGroupDial setCurrentSelectedItemIndex:](self, "setCurrentSelectedItemIndex:", [v10 row]);
     [(AVTGroupDial *)self updateSelectedState:1 forItemAtIndexPath:v10 animated:1];
-    v9 = [(AVTGroupDial *)self delegate];
-    [v9 groupPicker:self didSelectGroupAtIndex:-[AVTGroupDial currentSelectedItemIndex](self tapped:{"currentSelectedItemIndex"), 0}];
+    delegate = [(AVTGroupDial *)self delegate];
+    [delegate groupPicker:self didSelectGroupAtIndex:-[AVTGroupDial currentSelectedItemIndex](self tapped:{"currentSelectedItemIndex"), 0}];
   }
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
-  v4 = [(AVTGroupDial *)self groupItems:a3];
+  v4 = [(AVTGroupDial *)self groupItems:view];
   v5 = [v4 count];
 
   return v5;
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path
 {
-  v6 = [a5 row];
+  v6 = [path row];
 
   [(AVTGroupDial *)self cellSizeForItemAtIndex:v6];
   result.height = v8;
@@ -621,35 +621,35 @@ LABEL_14:
   return result;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
+  pathCopy = path;
+  viewCopy = view;
   v8 = +[AVTGroupDialCell cellIdentifier];
-  v9 = [v7 dequeueReusableCellWithReuseIdentifier:v8 forIndexPath:v6];
+  v9 = [viewCopy dequeueReusableCellWithReuseIdentifier:v8 forIndexPath:pathCopy];
 
-  v10 = [(AVTGroupDial *)self groupItems];
-  v11 = [v6 row];
+  groupItems = [(AVTGroupDial *)self groupItems];
+  v11 = [pathCopy row];
 
-  v12 = [v10 objectAtIndexedSubscript:v11];
-  v13 = [v12 localizedName];
-  [v9 setString:v13];
+  v12 = [groupItems objectAtIndexedSubscript:v11];
+  localizedName = [v12 localizedName];
+  [v9 setString:localizedName];
 
   return v9;
 }
 
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path
 {
-  v7 = a4;
-  v8 = a5;
-  v13 = v7;
-  v9 = [v8 row];
-  v10 = [(AVTGroupDial *)self currentSelectedItemIndex];
-  [v13 setActiveItem:v9 == v10 animated:1];
-  if (v9 != v10)
+  cellCopy = cell;
+  pathCopy = path;
+  v13 = cellCopy;
+  v9 = [pathCopy row];
+  currentSelectedItemIndex = [(AVTGroupDial *)self currentSelectedItemIndex];
+  [v13 setActiveItem:v9 == currentSelectedItemIndex animated:1];
+  if (v9 != currentSelectedItemIndex)
   {
-    v11 = [(AVTGroupDial *)self shimmeringItemIndexPath];
-    v12 = [v8 isEqual:v11];
+    shimmeringItemIndexPath = [(AVTGroupDial *)self shimmeringItemIndexPath];
+    v12 = [pathCopy isEqual:shimmeringItemIndexPath];
 
     if (v12)
     {
@@ -658,7 +658,7 @@ LABEL_14:
   }
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
   [(AVTGroupDial *)self setIsMoving:1];
   [(AVTGroupDial *)self setHasFinalizedSelection:0];
@@ -666,41 +666,41 @@ LABEL_14:
   [(AVTGroupDial *)self stopDiscoverability];
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v16 = a3;
+  scrollCopy = scroll;
   v4 = objc_opt_class();
-  v5 = [(AVTGroupDial *)self cachedGroupTitleSizes];
+  cachedGroupTitleSizes = [(AVTGroupDial *)self cachedGroupTitleSizes];
   [(AVTGroupDial *)self bounds];
-  LODWORD(v4) = [v4 shouldScrollGivenTitleSizes:v5 fittingWidth:CGRectGetWidth(v18)];
+  LODWORD(v4) = [v4 shouldScrollGivenTitleSizes:cachedGroupTitleSizes fittingWidth:CGRectGetWidth(v18)];
 
   if (v4)
   {
-    if ([v16 avtui_isMoving])
+    if ([scrollCopy avtui_isMoving])
     {
       if (![(AVTGroupDial *)self hasFinalizedSelection])
       {
-        v6 = [(AVTGroupDial *)self currentSelectedItemIndex];
-        v7 = [(AVTGroupDial *)self centeringCollectionViewDelegate];
-        v8 = [v7 centerItemAttributes];
-        v9 = [v8 indexPath];
-        v10 = [v9 item];
+        currentSelectedItemIndex = [(AVTGroupDial *)self currentSelectedItemIndex];
+        centeringCollectionViewDelegate = [(AVTGroupDial *)self centeringCollectionViewDelegate];
+        centerItemAttributes = [centeringCollectionViewDelegate centerItemAttributes];
+        indexPath = [centerItemAttributes indexPath];
+        item = [indexPath item];
 
-        if (v6 != v10)
+        if (currentSelectedItemIndex != item)
         {
           v11 = [MEMORY[0x1E696AC88] indexPathForItem:-[AVTGroupDial currentSelectedItemIndex](self inSection:{"currentSelectedItemIndex"), 0}];
-          v12 = [(AVTGroupDial *)self centeringCollectionViewDelegate];
-          v13 = [v12 centerItemAttributes];
-          v14 = [v13 indexPath];
+          centeringCollectionViewDelegate2 = [(AVTGroupDial *)self centeringCollectionViewDelegate];
+          centerItemAttributes2 = [centeringCollectionViewDelegate2 centerItemAttributes];
+          indexPath2 = [centerItemAttributes2 indexPath];
 
           [(AVTGroupDial *)self updateSelectedState:0 forItemAtIndexPath:v11 animated:1];
-          v15 = [(AVTGroupDial *)self delegate];
-          [v15 groupPicker:self didDeselectGroupAtIndex:{-[AVTGroupDial currentSelectedItemIndex](self, "currentSelectedItemIndex")}];
+          delegate = [(AVTGroupDial *)self delegate];
+          [delegate groupPicker:self didDeselectGroupAtIndex:{-[AVTGroupDial currentSelectedItemIndex](self, "currentSelectedItemIndex")}];
 
-          if (([v16 isDecelerating] & 1) == 0)
+          if (([scrollCopy isDecelerating] & 1) == 0)
           {
-            -[AVTGroupDial setCurrentSelectedItemIndex:](self, "setCurrentSelectedItemIndex:", [v14 item]);
-            [(AVTGroupDial *)self updateSelectedState:1 forItemAtIndexPath:v14 animated:1];
+            -[AVTGroupDial setCurrentSelectedItemIndex:](self, "setCurrentSelectedItemIndex:", [indexPath2 item]);
+            [(AVTGroupDial *)self updateSelectedState:1 forItemAtIndexPath:indexPath2 animated:1];
           }
         }
       }
@@ -708,31 +708,31 @@ LABEL_14:
   }
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v12 = a4;
+  pathCopy = path;
   v5 = [MEMORY[0x1E696AC88] indexPathForItem:-[AVTGroupDial currentSelectedItemIndex](self inSection:{"currentSelectedItemIndex"), 0}];
-  -[AVTGroupDial setCurrentSelectedItemIndex:](self, "setCurrentSelectedItemIndex:", [v12 item]);
-  v6 = [v5 isEqual:v12];
+  -[AVTGroupDial setCurrentSelectedItemIndex:](self, "setCurrentSelectedItemIndex:", [pathCopy item]);
+  v6 = [v5 isEqual:pathCopy];
   [(AVTGroupDial *)self stopDiscoverability];
   if (v6)
   {
-    v7 = [(AVTGroupDial *)self delegate];
-    v8 = [v12 item];
+    delegate = [(AVTGroupDial *)self delegate];
+    item = [pathCopy item];
   }
 
   else
   {
     [(AVTGroupDial *)self updateSelectedState:0 forItemAtIndexPath:v5 animated:1];
-    v9 = [(AVTGroupDial *)self delegate];
-    [v9 groupPicker:self didDeselectGroupAtIndex:{objc_msgSend(v5, "item")}];
+    delegate2 = [(AVTGroupDial *)self delegate];
+    [delegate2 groupPicker:self didDeselectGroupAtIndex:{objc_msgSend(v5, "item")}];
 
-    [(AVTGroupDial *)self updateSelectedState:1 forItemAtIndexPath:v12 animated:1];
+    [(AVTGroupDial *)self updateSelectedState:1 forItemAtIndexPath:pathCopy animated:1];
     [(AVTGroupDial *)self setHasFinalizedSelection:1];
     v10 = objc_opt_class();
-    v11 = [(AVTGroupDial *)self cachedGroupTitleSizes];
+    cachedGroupTitleSizes = [(AVTGroupDial *)self cachedGroupTitleSizes];
     [(AVTGroupDial *)self bounds];
-    LOBYTE(v10) = [v10 shouldScrollGivenTitleSizes:v11 fittingWidth:CGRectGetWidth(v14)];
+    LOBYTE(v10) = [v10 shouldScrollGivenTitleSizes:cachedGroupTitleSizes fittingWidth:CGRectGetWidth(v14)];
 
     if (v10)
     {
@@ -740,33 +740,33 @@ LABEL_14:
       goto LABEL_7;
     }
 
-    v7 = [(AVTGroupDial *)self delegate];
-    v8 = [(AVTGroupDial *)self currentSelectedItemIndex];
+    delegate = [(AVTGroupDial *)self delegate];
+    item = [(AVTGroupDial *)self currentSelectedItemIndex];
   }
 
-  [v7 groupPicker:self didSelectGroupAtIndex:v8 tapped:1];
+  [delegate groupPicker:self didSelectGroupAtIndex:item tapped:1];
 
 LABEL_7:
 }
 
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset
 {
-  v10 = [MEMORY[0x1E696AC88] indexPathForItem:-[AVTGroupDial currentSelectedItemIndex](self inSection:{"currentSelectedItemIndex", a3, a4.x, a4.y), 0}];
+  v10 = [MEMORY[0x1E696AC88] indexPathForItem:-[AVTGroupDial currentSelectedItemIndex](self inSection:{"currentSelectedItemIndex", dragging, velocity.x, velocity.y), 0}];
   [(AVTGroupDial *)self updateSelectedState:0 forItemAtIndexPath:v10 animated:1];
-  v7 = [(AVTGroupDial *)self delegate];
-  [v7 groupPicker:self didDeselectGroupAtIndex:{-[AVTGroupDial currentSelectedItemIndex](self, "currentSelectedItemIndex")}];
+  delegate = [(AVTGroupDial *)self delegate];
+  [delegate groupPicker:self didDeselectGroupAtIndex:{-[AVTGroupDial currentSelectedItemIndex](self, "currentSelectedItemIndex")}];
 
-  v8 = [(AVTGroupDial *)self collectionView];
-  v9 = [AVTCenteringCollectionViewHelper indexPathForNearestItemToCenterWithOffset:v8 collectionView:a5->x, a5->y];
+  collectionView = [(AVTGroupDial *)self collectionView];
+  v9 = [AVTCenteringCollectionViewHelper indexPathForNearestItemToCenterWithOffset:collectionView collectionView:offset->x, offset->y];
 
   -[AVTGroupDial setCurrentSelectedItemIndex:](self, "setCurrentSelectedItemIndex:", [v9 item]);
   [(AVTGroupDial *)self updateSelectedState:1 forItemAtIndexPath:v9 animated:1];
   [(AVTGroupDial *)self setHasFinalizedSelection:1];
 }
 
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate
 {
-  if (!a4)
+  if (!decelerate)
   {
     [(AVTGroupDial *)self updateForEndingScroll];
   }

@@ -1,14 +1,14 @@
 @interface CycleStatisticsCell
 - (BOOL)isHighlighted;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC24MenstrualCyclesAppPlugin19CycleStatisticsCell)initWithCoder:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC24MenstrualCyclesAppPlugin19CycleStatisticsCell)initWithCoder:(id)coder;
 - (void)layoutSubviews;
-- (void)setHighlighted:(BOOL)a3;
+- (void)setHighlighted:(BOOL)highlighted;
 @end
 
 @implementation CycleStatisticsCell
 
-- (_TtC24MenstrualCyclesAppPlugin19CycleStatisticsCell)initWithCoder:(id)a3
+- (_TtC24MenstrualCyclesAppPlugin19CycleStatisticsCell)initWithCoder:(id)coder
 {
   v3 = self + OBJC_IVAR____TtC24MenstrualCyclesAppPlugin19CycleStatisticsCell_item;
   *v3 = 0u;
@@ -24,15 +24,15 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_29E191028();
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = self;
+  height = fits.height;
+  width = fits.width;
+  selfCopy = self;
   v6 = sub_29E1914CC(width, height);
   v8 = v7;
 
@@ -50,13 +50,13 @@
   return [(CycleStatisticsCell *)&v3 isHighlighted];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v5.receiver = self;
   v5.super_class = type metadata accessor for CycleStatisticsCell();
   v4 = v5.receiver;
-  [(CycleStatisticsCell *)&v5 setHighlighted:v3];
+  [(CycleStatisticsCell *)&v5 setHighlighted:highlightedCopy];
   sub_29E191890();
 }
 

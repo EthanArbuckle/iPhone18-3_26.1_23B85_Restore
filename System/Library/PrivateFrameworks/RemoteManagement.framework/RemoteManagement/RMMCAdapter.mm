@@ -1,35 +1,35 @@
 @interface RMMCAdapter
-+ (void)downloadDataAtURL:(id)a3 downloadURL:(id)a4 completionHandler:(id)a5;
-+ (void)fetchDataAtURL:(id)a3 completionHandler:(id)a4;
++ (void)downloadDataAtURL:(id)l downloadURL:(id)rL completionHandler:(id)handler;
++ (void)fetchDataAtURL:(id)l completionHandler:(id)handler;
 @end
 
 @implementation RMMCAdapter
 
-+ (void)fetchDataAtURL:(id)a3 completionHandler:(id)a4
++ (void)fetchDataAtURL:(id)l completionHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
+  lCopy = l;
+  handlerCopy = handler;
   v7 = +[RMLog mcAdapter];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    [RMMCAdapter fetchDataAtURL:v5 completionHandler:v7];
+    [RMMCAdapter fetchDataAtURL:lCopy completionHandler:v7];
   }
 
-  [MEMORY[0x1E69AD438] fetchDataAtURL:v5 completionHandler:v6];
+  [MEMORY[0x1E69AD438] fetchDataAtURL:lCopy completionHandler:handlerCopy];
 }
 
-+ (void)downloadDataAtURL:(id)a3 downloadURL:(id)a4 completionHandler:(id)a5
++ (void)downloadDataAtURL:(id)l downloadURL:(id)rL completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = a4;
+  lCopy = l;
+  handlerCopy = handler;
+  rLCopy = rL;
   v10 = +[RMLog mcAdapter];
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
-    [RMMCAdapter downloadDataAtURL:v7 downloadURL:v10 completionHandler:?];
+    [RMMCAdapter downloadDataAtURL:lCopy downloadURL:v10 completionHandler:?];
   }
 
-  [MEMORY[0x1E69AD438] downloadDataAtURL:v7 downloadURL:v9 completionHandler:v8];
+  [MEMORY[0x1E69AD438] downloadDataAtURL:lCopy downloadURL:rLCopy completionHandler:handlerCopy];
 }
 
 + (void)fetchDataAtURL:(uint64_t)a1 completionHandler:(NSObject *)a2 .cold.1(uint64_t a1, NSObject *a2)

@@ -1,14 +1,14 @@
 @interface PXMediaAnalysisVideoStabilizationRecipeSource
-+ (id)cachedRecipeForAsset:(id)a3;
-+ (void)cacheRecipe:(id)a3 forAsset:(id)a4;
-- (PXMediaAnalysisVideoStabilizationRecipeSource)initWithAsset:(id)a3 videoDimensions:(CGSize)a4;
-- (id)_loadStabilizationRecipe:(id *)a3 analysisType:(unint64_t *)a4;
++ (id)cachedRecipeForAsset:(id)asset;
++ (void)cacheRecipe:(id)recipe forAsset:(id)asset;
+- (PXMediaAnalysisVideoStabilizationRecipeSource)initWithAsset:(id)asset videoDimensions:(CGSize)dimensions;
+- (id)_loadStabilizationRecipe:(id *)recipe analysisType:(unint64_t *)type;
 - (id)analyticsPayload;
 @end
 
 @implementation PXMediaAnalysisVideoStabilizationRecipeSource
 
-- (id)_loadStabilizationRecipe:(id *)a3 analysisType:(unint64_t *)a4
+- (id)_loadStabilizationRecipe:(id *)recipe analysisType:(unint64_t *)type
 {
   v56[1] = *MEMORY[0x1E69E9840];
   v48 = 0;
@@ -17,16 +17,16 @@
   v51 = __Block_byref_object_copy__168811;
   v52 = __Block_byref_object_dispose__168812;
   v53 = 0;
-  v35 = [(PHAsset *)self->_asset localIdentifier];
+  localIdentifier = [(PHAsset *)self->_asset localIdentifier];
   v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v8 = [(PXVideoStabilizationRecipeSource *)self allowedAnalysisTypes];
-  if ((v8 & 2) != 0)
+  allowedAnalysisTypes = [(PXVideoStabilizationRecipeSource *)self allowedAnalysisTypes];
+  if ((allowedAnalysisTypes & 2) != 0)
   {
-    [v7 setObject:MEMORY[0x1E695E118] forKeyedSubscript:{@"GyroStabilization", v35}];
+    [v7 setObject:MEMORY[0x1E695E118] forKeyedSubscript:{@"GyroStabilization", localIdentifier}];
     [v7 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"AllowOnDemandGyro"];
   }
 
-  if (v8)
+  if (allowedAnalysisTypes)
   {
     [v7 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"PixelStabilization"];
     if ([(PXVideoStabilizationRecipeSource *)self allowsOnDemandPixelAnalysis])
@@ -35,7 +35,7 @@
     }
   }
 
-  v9 = [MEMORY[0x1E69AE230] sharedAnalysisService];
+  mEMORY[0x1E69AE230] = [MEMORY[0x1E69AE230] sharedAnalysisService];
   v42 = 0;
   v43 = &v42;
   v44 = 0x3032000000;
@@ -43,9 +43,9 @@
   v46 = __Block_byref_object_dispose__168812;
   v47 = 0;
   v10 = +[PXInlineVideoStabilizationSettings sharedInstance];
-  v11 = [v10 localCacheForMediaAnalysisRecipes];
+  localCacheForMediaAnalysisRecipes = [v10 localCacheForMediaAnalysisRecipes];
 
-  if (v11)
+  if (localCacheForMediaAnalysisRecipes)
   {
     v12 = [objc_opt_class() cachedRecipeForAsset:self->_asset];
     v13 = v43[5];
@@ -71,19 +71,19 @@
   v38 = v36;
   v17 = v15;
   v39 = v17;
-  v18 = [v9 requestVideoStabilizationForAssets:v16 withOptions:v7 progressHandler:0 andCompletionHandler:v37];
+  v18 = [mEMORY[0x1E69AE230] requestVideoStabilizationForAssets:v16 withOptions:v7 progressHandler:0 andCompletionHandler:v37];
 
   v19 = dispatch_time(0, 5000000000);
   if (dispatch_group_wait(v17, v19))
   {
-    [v9 cancelRequest:v18];
+    [mEMORY[0x1E69AE230] cancelRequest:v18];
     v20 = MEMORY[0x1E69E9C10];
     v21 = MEMORY[0x1E69E9C10];
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
-      v34 = [(PHAsset *)self->_asset uuid];
+      uuid = [(PHAsset *)self->_asset uuid];
       *buf = 138543362;
-      v55 = v34;
+      v55 = uuid;
       _os_log_error_impl(&dword_1A3C1C000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Video stabilization request timed out for asset %{public}@", buf, 0xCu);
     }
   }
@@ -105,18 +105,18 @@ LABEL_14:
     {
       v26 = v24;
       v27 = [v43[5] objectForKeyedSubscript:@"gyroStabilization"];
-      v28 = [v27 BOOLValue];
+      bOOLValue = [v27 BOOLValue];
 
-      v29 = [(PXVideoStabilizationRecipeSource *)self allowedAnalysisTypes];
+      allowedAnalysisTypes2 = [(PXVideoStabilizationRecipeSource *)self allowedAnalysisTypes];
       v30 = 0;
-      if (v28)
+      if (bOOLValue)
       {
-        v31 = v29 & 2;
+        v31 = allowedAnalysisTypes2 & 2;
       }
 
       else
       {
-        v31 = v29 & 1;
+        v31 = allowedAnalysisTypes2 & 1;
       }
     }
 
@@ -126,7 +126,7 @@ LABEL_14:
       v31 = 0;
     }
 
-    if (a4)
+    if (type)
     {
       goto LABEL_20;
     }
@@ -137,17 +137,17 @@ LABEL_14:
     v30 = [MEMORY[0x1E696ABC0] px_genericErrorWithUnderlyingError:v49[5] debugDescription:@"No recipe returned by MediaAnalysis"];
     v31 = 0;
     v24 = 0;
-    if (a4)
+    if (type)
     {
 LABEL_20:
-      *a4 = v31;
+      *type = v31;
     }
   }
 
-  if (a3)
+  if (recipe)
   {
     v32 = v30;
-    *a3 = v30;
+    *recipe = v30;
   }
 
   _Block_object_dispose(&v42, 8);
@@ -184,18 +184,18 @@ void __87__PXMediaAnalysisVideoStabilizationRecipeSource__loadStabilizationRecip
   return v4;
 }
 
-- (PXMediaAnalysisVideoStabilizationRecipeSource)initWithAsset:(id)a3 videoDimensions:(CGSize)a4
+- (PXMediaAnalysisVideoStabilizationRecipeSource)initWithAsset:(id)asset videoDimensions:(CGSize)dimensions
 {
-  height = a4.height;
-  width = a4.width;
-  v8 = a3;
+  height = dimensions.height;
+  width = dimensions.width;
+  assetCopy = asset;
   v12.receiver = self;
   v12.super_class = PXMediaAnalysisVideoStabilizationRecipeSource;
   v9 = [(PXVideoStabilizationRecipeSource *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_asset, a3);
+    objc_storeStrong(&v9->_asset, asset);
     v10->_videoDimensions.width = width;
     v10->_videoDimensions.height = height;
   }
@@ -203,52 +203,52 @@ void __87__PXMediaAnalysisVideoStabilizationRecipeSource__loadStabilizationRecip
   return v10;
 }
 
-+ (void)cacheRecipe:(id)a3 forAsset:(id)a4
++ (void)cacheRecipe:(id)recipe forAsset:(id)asset
 {
   v15[2] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  recipeCopy = recipe;
+  assetCopy = asset;
   if (cacheRecipe_forAsset__onceToken != -1)
   {
     dispatch_once(&cacheRecipe_forAsset__onceToken, &__block_literal_global_168888);
-    if (v5)
+    if (recipeCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_9:
     v12 = RecipeCache;
-    v13 = [v6 localIdentifier];
-    [v12 removeObjectForKey:v13];
+    localIdentifier = [assetCopy localIdentifier];
+    [v12 removeObjectForKey:localIdentifier];
 
     goto LABEL_10;
   }
 
-  if (!v5)
+  if (!recipeCopy)
   {
     goto LABEL_9;
   }
 
 LABEL_3:
   v14[0] = @"AdjustmentDate";
-  v7 = [v6 adjustmentTimestamp];
-  v8 = v7;
-  if (!v7)
+  adjustmentTimestamp = [assetCopy adjustmentTimestamp];
+  null = adjustmentTimestamp;
+  if (!adjustmentTimestamp)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
   v14[1] = @"Recipe";
-  v15[0] = v8;
-  v15[1] = v5;
+  v15[0] = null;
+  v15[1] = recipeCopy;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:v14 count:2];
-  if (!v7)
+  if (!adjustmentTimestamp)
   {
   }
 
   v10 = RecipeCache;
-  v11 = [v6 localIdentifier];
-  [v10 setObject:v9 forKey:v11];
+  localIdentifier2 = [assetCopy localIdentifier];
+  [v10 setObject:v9 forKey:localIdentifier2];
 
 LABEL_10:
 }
@@ -264,12 +264,12 @@ uint64_t __70__PXMediaAnalysisVideoStabilizationRecipeSource_cacheRecipe_forAsse
   return [v2 setNumberOfSlots:20];
 }
 
-+ (id)cachedRecipeForAsset:(id)a3
++ (id)cachedRecipeForAsset:(id)asset
 {
-  v3 = a3;
+  assetCopy = asset;
   v4 = RecipeCache;
-  v5 = [v3 localIdentifier];
-  v6 = [v4 objectForKey:v5];
+  localIdentifier = [assetCopy localIdentifier];
+  v6 = [v4 objectForKey:localIdentifier];
 
   if (!v6)
   {
@@ -278,11 +278,11 @@ uint64_t __70__PXMediaAnalysisVideoStabilizationRecipeSource_cacheRecipe_forAsse
   }
 
   v7 = [v6 objectForKeyedSubscript:@"AdjustmentDate"];
-  v8 = [MEMORY[0x1E695DFB0] null];
+  null = [MEMORY[0x1E695DFB0] null];
 
-  v9 = [v3 adjustmentTimestamp];
-  v10 = v9;
-  if (v7 == v8)
+  adjustmentTimestamp = [assetCopy adjustmentTimestamp];
+  v10 = adjustmentTimestamp;
+  if (v7 == null)
   {
 
     if (!v10)
@@ -295,7 +295,7 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v11 = [v9 isEqualToDate:v7];
+  v11 = [adjustmentTimestamp isEqualToDate:v7];
 
   if (!v11)
   {

@@ -1,11 +1,11 @@
 @interface SGPseudoEventKey
-+ (BOOL)isSupportedEntityType:(int64_t)a3;
++ (BOOL)isSupportedEntityType:(int64_t)type;
 - (BOOL)isDropoff;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToPseudoEventKey:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToPseudoEventKey:(id)key;
 - (NSString)description;
-- (SGPseudoEventKey)initWithGloballyUniqueId:(id)a3;
-- (SGPseudoEventKey)initWithSerialized:(id)a3;
+- (SGPseudoEventKey)initWithGloballyUniqueId:(id)id;
+- (SGPseudoEventKey)initWithSerialized:(id)serialized;
 - (id)alternativeKeysForEventKitQuery;
 @end
 
@@ -102,11 +102,11 @@ LABEL_11:
   return v2;
 }
 
-- (BOOL)isEqualToPseudoEventKey:(id)a3
+- (BOOL)isEqualToPseudoEventKey:(id)key
 {
   v4 = self->_groupId;
   v5 = v4;
-  if (v4 == *(a3 + 3))
+  if (v4 == *(key + 3))
   {
     v6 = 1;
   }
@@ -119,30 +119,30 @@ LABEL_11:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(SGPseudoEventKey *)self isEqualToPseudoEventKey:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(SGPseudoEventKey *)self isEqualToPseudoEventKey:v5];
   }
 
   return v6;
 }
 
-- (SGPseudoEventKey)initWithGloballyUniqueId:(id)a3
+- (SGPseudoEventKey)initWithGloballyUniqueId:(id)id
 {
-  v6 = a3;
-  if (!v6)
+  idCopy = id;
+  if (!idCopy)
   {
-    v10 = [MEMORY[0x277CCA890] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"SGPseudoEventKey.m" lineNumber:41 description:{@"Invalid parameter not satisfying: %@", @"globalId"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGPseudoEventKey.m" lineNumber:41 description:{@"Invalid parameter not satisfying: %@", @"globalId"}];
   }
 
   v11.receiver = self;
@@ -151,26 +151,26 @@ LABEL_11:
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_groupId, a3);
+    objc_storeStrong(&v7->_groupId, id);
   }
 
   return v8;
 }
 
-- (SGPseudoEventKey)initWithSerialized:(id)a3
+- (SGPseudoEventKey)initWithSerialized:(id)serialized
 {
-  v5 = a3;
-  if (!v5)
+  serializedCopy = serialized;
+  if (!serializedCopy)
   {
-    v10 = [MEMORY[0x277CCA890] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"SGPseudoEventKey.m" lineNumber:33 description:{@"Invalid parameter not satisfying: %@", @"serialized"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGPseudoEventKey.m" lineNumber:33 description:{@"Invalid parameter not satisfying: %@", @"serialized"}];
   }
 
   v6 = SGDelimitedStringsDeserialize();
   if ([v6 count] != 1)
   {
-    v11 = [MEMORY[0x277CCA890] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"SGPseudoEventKey.m" lineNumber:35 description:@"Invalid serialization"];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"SGPseudoEventKey.m" lineNumber:35 description:@"Invalid serialization"];
   }
 
   v7 = [v6 objectAtIndexedSubscript:0];
@@ -179,19 +179,19 @@ LABEL_11:
   return v8;
 }
 
-+ (BOOL)isSupportedEntityType:(int64_t)a3
++ (BOOL)isSupportedEntityType:(int64_t)type
 {
-  if (a3 >= 0x1C)
+  if (type >= 0x1C)
   {
-    v7 = [MEMORY[0x277CCA890] currentHandler];
-    [v7 handleFailureInMethod:a2 object:a1 file:@"SGPseudoEventKey.m" lineNumber:107 description:{@"Unknown entity type: %lu", a3}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGPseudoEventKey.m" lineNumber:107 description:{@"Unknown entity type: %lu", type}];
 
     LOBYTE(v4) = 0;
   }
 
   else
   {
-    v4 = 4u >> a3;
+    v4 = 4u >> type;
   }
 
   return v4 & 1;

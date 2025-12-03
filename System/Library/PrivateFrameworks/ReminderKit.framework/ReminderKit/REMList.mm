@@ -1,21 +1,21 @@
 @interface REMList
 + (REMObjectID)localAccountDefaultListID;
 + (REMObjectID)siriFoundInAppsListID;
-+ (id)fetchRequestWithPredicateDescriptor:(id)a3 sortDescriptors:(id)a4;
++ (id)fetchRequestWithPredicateDescriptor:(id)descriptor sortDescriptors:(id)descriptors;
 - (BOOL)canBeShared;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isOriginOfExistingTemplate;
 - (BOOL)isOwnedByMe;
 - (BOOL)isPinned;
 - (BOOL)isShared;
 - (BOOL)isUnsupported;
-- (BOOL)respondsToSelector:(SEL)a3;
+- (BOOL)respondsToSelector:(SEL)selector;
 - (BOOL)shouldUseExternalIdentifierAsDeletionKey;
 - (NSOrderedSet)reminderIDsOrdering;
 - (NSString)debugDescription;
 - (NSString)description;
 - (NSString)externalIdentifierForMarkedForDeletionObject;
-- (REMList)initWithStore:(id)a3 account:(id)a4 storage:(id)a5;
+- (REMList)initWithStore:(id)store account:(id)account storage:(id)storage;
 - (REMListAppearanceContext)appearanceContext;
 - (REMListCalDAVNotificationContext)calDAVNotificationContext;
 - (REMListGroceryContext)groceryContext;
@@ -23,19 +23,19 @@
 - (REMListShareeContext)shareeContext;
 - (REMListSublistContext)sublistContext;
 - (id)ekColor;
-- (id)fetchReminderWithExternalIdentifier:(id)a3 error:(id *)a4;
-- (id)fetchRemindersAndSubtasksWithError:(id *)a3;
-- (id)fetchRemindersCountWithError:(id *)a3;
-- (id)fetchRemindersWithError:(id *)a3;
-- (id)fetchRemindersWithExternalIdentifiers:(id)a3 error:(id *)a4;
+- (id)fetchReminderWithExternalIdentifier:(id)identifier error:(id *)error;
+- (id)fetchRemindersAndSubtasksWithError:(id *)error;
+- (id)fetchRemindersCountWithError:(id *)error;
+- (id)fetchRemindersWithError:(id *)error;
+- (id)fetchRemindersWithExternalIdentifiers:(id)identifiers error:(id *)error;
 - (id)formattedSharedOwnerName;
 - (id)optionalObjectID;
 - (id)sharingStatusText;
-- (id)valueForUndefinedKey:(id)a3;
+- (id)valueForUndefinedKey:(id)key;
 - (unint64_t)hash;
-- (void)hack_overrideReminderIDsOrderingWithOrderedObjectIDs:(id)a3;
+- (void)hack_overrideReminderIDsOrderingWithOrderedObjectIDs:(id)ds;
 - (void)reminderIDsOrdering;
-- (void)setValue:(id)a3 forUndefinedKey:(id)a4;
+- (void)setValue:(id)value forUndefinedKey:(id)key;
 - (void)shouldUseExternalIdentifierAsDeletionKey;
 @end
 
@@ -43,36 +43,36 @@
 
 - (BOOL)isPinned
 {
-  v2 = [(REMList *)self pinnedDate];
-  v3 = v2 != 0;
+  pinnedDate = [(REMList *)self pinnedDate];
+  v3 = pinnedDate != 0;
 
   return v3;
 }
 
 - (id)optionalObjectID
 {
-  v2 = [(REMList *)self storage];
-  v3 = [v2 optionalObjectID];
+  storage = [(REMList *)self storage];
+  optionalObjectID = [storage optionalObjectID];
 
-  return v3;
+  return optionalObjectID;
 }
 
 - (BOOL)isShared
 {
-  v2 = self;
-  v3 = [(REMList *)self sharees];
-  LOBYTE(v2) = +[REMList isSharedWithShareeCount:sharingStatus:](REMList, "isSharedWithShareeCount:sharingStatus:", [v3 count], -[REMList sharingStatus](v2, "sharingStatus"));
+  selfCopy = self;
+  sharees = [(REMList *)self sharees];
+  LOBYTE(selfCopy) = +[REMList isSharedWithShareeCount:sharingStatus:](REMList, "isSharedWithShareeCount:sharingStatus:", [sharees count], -[REMList sharingStatus](selfCopy, "sharingStatus"));
 
-  return v2;
+  return selfCopy;
 }
 
 - (REMListAppearanceContext)appearanceContext
 {
-  v3 = [(REMList *)self account];
-  v4 = [v3 capabilities];
-  v5 = [v4 supportsSubtasks];
+  account = [(REMList *)self account];
+  capabilities = [account capabilities];
+  supportsSubtasks = [capabilities supportsSubtasks];
 
-  if (v5)
+  if (supportsSubtasks)
   {
     v6 = [[REMListAppearanceContext alloc] initWithList:self];
   }
@@ -87,53 +87,53 @@
 
 - (BOOL)canBeShared
 {
-  v2 = [(REMList *)self account];
-  v3 = [v2 supportsSharingLists];
+  account = [(REMList *)self account];
+  supportsSharingLists = [account supportsSharingLists];
 
-  return v3;
+  return supportsSharingLists;
 }
 
 - (id)sharingStatusText
 {
-  v3 = [(REMList *)self shareeContext];
-  v4 = [(REMList *)self sharingStatus];
-  v5 = [(REMList *)self isShared];
-  v6 = v4 == 3 || v5;
-  if (v6 != 1 || v3 == 0)
+  shareeContext = [(REMList *)self shareeContext];
+  sharingStatus = [(REMList *)self sharingStatus];
+  isShared = [(REMList *)self isShared];
+  v6 = sharingStatus == 3 || isShared;
+  if (v6 != 1 || shareeContext == 0)
   {
     v8 = 0;
     goto LABEL_20;
   }
 
-  if (v4 == 3)
+  if (sharingStatus == 3)
   {
-    v9 = [(REMList *)self formattedSharedOwnerName];
+    formattedSharedOwnerName = [(REMList *)self formattedSharedOwnerName];
     v10 = MEMORY[0x1E696AEC0];
     v11 = 5;
 LABEL_17:
-    v12 = _REMGetLocalizedString(v11);
-    v14 = [v10 stringWithFormat:v12, v9];
+    firstObject = _REMGetLocalizedString(v11);
+    v14 = [v10 stringWithFormat:firstObject, formattedSharedOwnerName];
     goto LABEL_18;
   }
 
   if (![(REMList *)self isOwnedByMe])
   {
-    v9 = [(REMList *)self formattedSharedOwnerName];
+    formattedSharedOwnerName = [(REMList *)self formattedSharedOwnerName];
     v10 = MEMORY[0x1E696AEC0];
     v11 = 4;
     goto LABEL_17;
   }
 
-  v9 = [v3 shareesExcludingOwner];
-  v12 = [v9 firstObject];
-  v13 = [v9 count];
+  formattedSharedOwnerName = [shareeContext shareesExcludingOwner];
+  firstObject = [formattedSharedOwnerName firstObject];
+  v13 = [formattedSharedOwnerName count];
   if (v13 == 1)
   {
-    v16 = [v12 formattedName];
-    v17 = v16;
-    if (v16)
+    formattedName = [firstObject formattedName];
+    v17 = formattedName;
+    if (formattedName)
     {
-      v18 = v16;
+      v18 = formattedName;
     }
 
     else
@@ -150,11 +150,11 @@ LABEL_17:
 
   if (v13)
   {
-    v19 = [v12 formattedName];
-    v20 = v19;
-    if (v19)
+    formattedName2 = [firstObject formattedName];
+    v20 = formattedName2;
+    if (formattedName2)
     {
-      v21 = v19;
+      v21 = formattedName2;
     }
 
     else
@@ -164,7 +164,7 @@ LABEL_17:
 
     v22 = v21;
 
-    v25 = [v9 count] - 1;
+    v25 = [formattedSharedOwnerName count] - 1;
     v23 = MEMORY[0x1E696AEC0];
     v24 = _REMGetLocalizedString(3);
     v26 = v25;
@@ -186,11 +186,11 @@ LABEL_20:
 
 - (REMListShareeContext)shareeContext
 {
-  v3 = [(REMList *)self account];
-  v4 = [v3 capabilities];
-  v5 = [v4 supportsListSharees];
+  account = [(REMList *)self account];
+  capabilities = [account capabilities];
+  supportsListSharees = [capabilities supportsListSharees];
 
-  if (v5)
+  if (supportsListSharees)
   {
     v6 = [[REMListShareeContext alloc] initWithList:self];
   }
@@ -205,11 +205,11 @@ LABEL_20:
 
 - (REMListGroceryContext)groceryContext
 {
-  v3 = [(REMList *)self account];
-  v4 = [v3 capabilities];
-  v5 = [v4 supportsSections];
+  account = [(REMList *)self account];
+  capabilities = [account capabilities];
+  supportsSections = [capabilities supportsSections];
 
-  if (v5)
+  if (supportsSections)
   {
     v6 = [[REMListGroceryContext alloc] initWithList:self];
   }
@@ -354,11 +354,11 @@ id __101__REMList_REMDAChangeTrackingHelper_PrivateAdditions__rem_DA_deletedKeyF
   return v5;
 }
 
-+ (id)fetchRequestWithPredicateDescriptor:(id)a3 sortDescriptors:(id)a4
++ (id)fetchRequestWithPredicateDescriptor:(id)descriptor sortDescriptors:(id)descriptors
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[REMListFetchExecutor alloc] initWithPredicateDescriptor:v6 sortDescriptors:v5 options:0];
+  descriptorsCopy = descriptors;
+  descriptorCopy = descriptor;
+  v7 = [[REMListFetchExecutor alloc] initWithPredicateDescriptor:descriptorCopy sortDescriptors:descriptorsCopy options:0];
 
   v8 = [[REMFetchRequest alloc] initWithFetchExecutor:v7];
 
@@ -381,21 +381,21 @@ id __101__REMList_REMDAChangeTrackingHelper_PrivateAdditions__rem_DA_deletedKeyF
   return v3;
 }
 
-- (REMList)initWithStore:(id)a3 account:(id)a4 storage:(id)a5
+- (REMList)initWithStore:(id)store account:(id)account storage:(id)storage
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  storeCopy = store;
+  accountCopy = account;
+  storageCopy = storage;
   v15.receiver = self;
   v15.super_class = REMList;
   v12 = [(REMList *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_store, a3);
-    objc_storeStrong(&v13->_account, a4);
-    objc_storeStrong(&v13->_storage, a5);
-    -[REMListStorage setStoreGenerationIfNeeded:](v13->_storage, "setStoreGenerationIfNeeded:", [v9 storeGeneration]);
+    objc_storeStrong(&v12->_store, store);
+    objc_storeStrong(&v13->_account, account);
+    objc_storeStrong(&v13->_storage, storage);
+    -[REMListStorage setStoreGenerationIfNeeded:](v13->_storage, "setStoreGenerationIfNeeded:", [storeCopy storeGeneration]);
   }
 
   return v13;
@@ -418,11 +418,11 @@ id __101__REMList_REMDAChangeTrackingHelper_PrivateAdditions__rem_DA_deletedKeyF
 
 - (REMListCalDAVNotificationContext)calDAVNotificationContext
 {
-  v3 = [(REMList *)self account];
-  v4 = [v3 capabilities];
-  v5 = [v4 supportsCalDAVNotifications];
+  account = [(REMList *)self account];
+  capabilities = [account capabilities];
+  supportsCalDAVNotifications = [capabilities supportsCalDAVNotifications];
 
-  if (v5)
+  if (supportsCalDAVNotifications)
   {
     v6 = [[REMListCalDAVNotificationContext alloc] initWithList:self];
   }
@@ -437,11 +437,11 @@ id __101__REMList_REMDAChangeTrackingHelper_PrivateAdditions__rem_DA_deletedKeyF
 
 - (REMListSectionContext)sectionContext
 {
-  v3 = [(REMList *)self account];
-  v4 = [v3 capabilities];
-  v5 = [v4 supportsSections];
+  account = [(REMList *)self account];
+  capabilities = [account capabilities];
+  supportsSections = [capabilities supportsSections];
 
-  if (v5)
+  if (supportsSections)
   {
     v6 = [[REMListSectionContext alloc] initWithList:self];
   }
@@ -454,10 +454,10 @@ id __101__REMList_REMDAChangeTrackingHelper_PrivateAdditions__rem_DA_deletedKeyF
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v15 = 1;
   }
@@ -467,25 +467,25 @@ id __101__REMList_REMDAChangeTrackingHelper_PrivateAdditions__rem_DA_deletedKeyF
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(REMList *)v5 store];
-      v7 = [(REMList *)self store];
-      v8 = [v6 isEqual:v7];
+      v5 = equalCopy;
+      store = [(REMList *)v5 store];
+      store2 = [(REMList *)self store];
+      v8 = [store isEqual:store2];
 
       if (v8)
       {
-        v9 = [(REMList *)v5 account];
-        v10 = [(REMList *)self account];
-        v11 = v10;
-        if (v9 == v10)
+        account = [(REMList *)v5 account];
+        account2 = [(REMList *)self account];
+        v11 = account2;
+        if (account == account2)
         {
         }
 
         else
         {
-          v12 = [(REMList *)v5 account];
-          v13 = [(REMList *)self account];
-          v14 = [v12 isEqual:v13];
+          account3 = [(REMList *)v5 account];
+          account4 = [(REMList *)self account];
+          v14 = [account3 isEqual:account4];
 
           if (!v14)
           {
@@ -493,18 +493,18 @@ id __101__REMList_REMDAChangeTrackingHelper_PrivateAdditions__rem_DA_deletedKeyF
           }
         }
 
-        v16 = [(REMList *)v5 parentList];
-        v17 = [(REMList *)self parentList];
-        v18 = v17;
-        if (v16 == v17)
+        parentList = [(REMList *)v5 parentList];
+        parentList2 = [(REMList *)self parentList];
+        v18 = parentList2;
+        if (parentList == parentList2)
         {
         }
 
         else
         {
-          v19 = [(REMList *)v5 parentList];
-          v20 = [(REMList *)self parentList];
-          v21 = [v19 isEqual:v20];
+          parentList3 = [(REMList *)v5 parentList];
+          parentList4 = [(REMList *)self parentList];
+          v21 = [parentList3 isEqual:parentList4];
 
           if (!v21)
           {
@@ -512,9 +512,9 @@ id __101__REMList_REMDAChangeTrackingHelper_PrivateAdditions__rem_DA_deletedKeyF
           }
         }
 
-        v22 = [(REMList *)v5 storage];
-        v23 = [(REMList *)self storage];
-        v15 = [v22 isEqual:v23];
+        storage = [(REMList *)v5 storage];
+        storage2 = [(REMList *)self storage];
+        v15 = [storage isEqual:storage2];
 
         goto LABEL_15;
       }
@@ -536,8 +536,8 @@ LABEL_16:
 
 - (unint64_t)hash
 {
-  v2 = [(REMList *)self storage];
-  v3 = [v2 hash];
+  storage = [(REMList *)self storage];
+  v3 = [storage hash];
 
   return v3;
 }
@@ -546,8 +546,8 @@ LABEL_16:
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(REMList *)self storage];
-  v6 = [v3 stringWithFormat:@"<%@: %p %@>", v4, self, v5];
+  storage = [(REMList *)self storage];
+  v6 = [v3 stringWithFormat:@"<%@: %p %@>", v4, self, storage];
 
   return v6;
 }
@@ -556,8 +556,8 @@ LABEL_16:
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(REMList *)self storage];
-  v6 = [v5 debugDescription];
+  storage = [(REMList *)self storage];
+  v6 = [storage debugDescription];
   v7 = [v3 stringWithFormat:@"<%@: %p %@>", v4, self, v6];
 
   return v7;
@@ -565,53 +565,53 @@ LABEL_16:
 
 - (NSOrderedSet)reminderIDsOrdering
 {
-  v3 = [(REMList *)self storage];
-  v4 = [v3 reminderIDsMergeableOrdering];
+  storage = [(REMList *)self storage];
+  reminderIDsMergeableOrdering = [storage reminderIDsMergeableOrdering];
 
-  if (!v4)
+  if (!reminderIDsMergeableOrdering)
   {
     [(REMList *)self reminderIDsOrdering];
   }
 
-  v5 = [(REMList *)self storage];
-  v6 = [v5 reminderIDsMergeableOrdering];
+  storage2 = [(REMList *)self storage];
+  reminderIDsMergeableOrdering2 = [storage2 reminderIDsMergeableOrdering];
 
-  return v6;
+  return reminderIDsMergeableOrdering2;
 }
 
 - (id)ekColor
 {
-  v2 = [(REMList *)self storage];
-  v3 = [v2 ekColor];
+  storage = [(REMList *)self storage];
+  ekColor = [storage ekColor];
 
-  return v3;
+  return ekColor;
 }
 
 - (BOOL)isOwnedByMe
 {
-  v2 = [(REMList *)self sharingStatus];
+  sharingStatus = [(REMList *)self sharingStatus];
 
-  return [REMList isOwnedByMeWithSharingStatus:v2];
+  return [REMList isOwnedByMeWithSharingStatus:sharingStatus];
 }
 
 - (BOOL)isOriginOfExistingTemplate
 {
-  v2 = [(REMList *)self mostRecentTargetTemplateIdentifier];
-  v3 = v2 != 0;
+  mostRecentTargetTemplateIdentifier = [(REMList *)self mostRecentTargetTemplateIdentifier];
+  v3 = mostRecentTargetTemplateIdentifier != 0;
 
   return v3;
 }
 
-- (id)valueForUndefinedKey:(id)a3
+- (id)valueForUndefinedKey:(id)key
 {
-  v4 = a3;
-  v5 = [(REMList *)self storage];
-  v6 = [v5 valueForKey:v4];
+  keyCopy = key;
+  storage = [(REMList *)self storage];
+  v6 = [storage valueForKey:keyCopy];
 
   return v6;
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
   v7.receiver = self;
   v7.super_class = REMList;
@@ -622,76 +622,76 @@ LABEL_16:
 
   else
   {
-    v5 = [(REMList *)self storage];
+    storage = [(REMList *)self storage];
     v4 = objc_opt_respondsToSelector();
   }
 
   return v4 & 1;
 }
 
-- (void)setValue:(id)a3 forUndefinedKey:(id)a4
+- (void)setValue:(id)value forUndefinedKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(REMList *)self storage];
-  [v8 setValue:v7 forKey:v6];
+  keyCopy = key;
+  valueCopy = value;
+  storage = [(REMList *)self storage];
+  [storage setValue:valueCopy forKey:keyCopy];
 }
 
-- (id)fetchRemindersWithError:(id *)a3
+- (id)fetchRemindersWithError:(id *)error
 {
   v5 = [REMRemindersDataView alloc];
-  v6 = [(REMList *)self store];
-  v7 = [(REMRemindersDataView *)v5 initWithStore:v6];
+  store = [(REMList *)self store];
+  v7 = [(REMRemindersDataView *)v5 initWithStore:store];
 
-  v8 = [(REMList *)self objectID];
-  v9 = [(REMRemindersDataView *)v7 fetchRemindersWithListID:v8 includingSubtasks:0 includingCompleted:1 error:a3];
+  objectID = [(REMList *)self objectID];
+  v9 = [(REMRemindersDataView *)v7 fetchRemindersWithListID:objectID includingSubtasks:0 includingCompleted:1 error:error];
 
   return v9;
 }
 
-- (id)fetchRemindersAndSubtasksWithError:(id *)a3
+- (id)fetchRemindersAndSubtasksWithError:(id *)error
 {
   v5 = [REMRemindersDataView alloc];
-  v6 = [(REMList *)self store];
-  v7 = [(REMRemindersDataView *)v5 initWithStore:v6];
+  store = [(REMList *)self store];
+  v7 = [(REMRemindersDataView *)v5 initWithStore:store];
 
-  v8 = [(REMList *)self objectID];
-  v9 = [(REMRemindersDataView *)v7 fetchRemindersWithListID:v8 includingSubtasks:1 includingCompleted:1 error:a3];
+  objectID = [(REMList *)self objectID];
+  v9 = [(REMRemindersDataView *)v7 fetchRemindersWithListID:objectID includingSubtasks:1 includingCompleted:1 error:error];
 
   return v9;
 }
 
-- (id)fetchRemindersCountWithError:(id *)a3
+- (id)fetchRemindersCountWithError:(id *)error
 {
   v5 = [REMRemindersDataView alloc];
-  v6 = [(REMList *)self store];
-  v7 = [(REMRemindersDataView *)v5 initWithStore:v6];
+  store = [(REMList *)self store];
+  v7 = [(REMRemindersDataView *)v5 initWithStore:store];
 
-  v8 = [(REMList *)self objectID];
-  v9 = [(REMRemindersDataView *)v7 fetchRemindersCountWithListID:v8 includingCompleted:1 error:a3];
+  objectID = [(REMList *)self objectID];
+  v9 = [(REMRemindersDataView *)v7 fetchRemindersCountWithListID:objectID includingCompleted:1 error:error];
 
   return v9;
 }
 
 - (id)formattedSharedOwnerName
 {
-  v3 = [(REMList *)self sharedOwnerName];
-  v4 = v3;
-  if (v3)
+  sharedOwnerName = [(REMList *)self sharedOwnerName];
+  v4 = sharedOwnerName;
+  if (sharedOwnerName)
   {
-    v5 = v3;
+    v5 = sharedOwnerName;
   }
 
   else
   {
-    v6 = [(REMList *)self shareeContext];
-    v7 = [v6 sharedOwner];
+    shareeContext = [(REMList *)self shareeContext];
+    sharedOwner = [shareeContext sharedOwner];
 
-    v8 = [v7 formattedName];
-    v9 = v8;
-    if (v8)
+    formattedName = [sharedOwner formattedName];
+    v9 = formattedName;
+    if (formattedName)
     {
-      v10 = v8;
+      v10 = formattedName;
     }
 
     else
@@ -705,76 +705,76 @@ LABEL_16:
   return v5;
 }
 
-- (id)fetchReminderWithExternalIdentifier:(id)a3 error:(id *)a4
+- (id)fetchReminderWithExternalIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v7 = [REMRemindersDataView alloc];
-  v8 = [(REMList *)self store];
-  v9 = [(REMRemindersDataView *)v7 initWithStore:v8];
+  store = [(REMList *)self store];
+  v9 = [(REMRemindersDataView *)v7 initWithStore:store];
 
-  v10 = [(REMRemindersDataView *)v9 fetchReminderWithExternalIdentifier:v6 inList:self error:a4];
+  v10 = [(REMRemindersDataView *)v9 fetchReminderWithExternalIdentifier:identifierCopy inList:self error:error];
 
   return v10;
 }
 
-- (id)fetchRemindersWithExternalIdentifiers:(id)a3 error:(id *)a4
+- (id)fetchRemindersWithExternalIdentifiers:(id)identifiers error:(id *)error
 {
-  v6 = a3;
+  identifiersCopy = identifiers;
   v7 = [REMRemindersDataView alloc];
-  v8 = [(REMList *)self store];
-  v9 = [(REMRemindersDataView *)v7 initWithStore:v8];
+  store = [(REMList *)self store];
+  v9 = [(REMRemindersDataView *)v7 initWithStore:store];
 
-  v10 = [(REMRemindersDataView *)v9 fetchRemindersWithExternalIdentifiers:v6 inList:self error:a4];
+  v10 = [(REMRemindersDataView *)v9 fetchRemindersWithExternalIdentifiers:identifiersCopy inList:self error:error];
 
   return v10;
 }
 
 - (BOOL)isUnsupported
 {
-  v2 = [(REMList *)self storage];
-  v3 = [v2 isUnsupported];
+  storage = [(REMList *)self storage];
+  isUnsupported = [storage isUnsupported];
 
-  return v3;
+  return isUnsupported;
 }
 
 - (NSString)externalIdentifierForMarkedForDeletionObject
 {
-  v2 = [(REMList *)self externalIdentifier];
-  v3 = [REMExternalSyncMetadataUtils decodeExternalIdentifierForMarkedForDeletionObject:v2];
+  externalIdentifier = [(REMList *)self externalIdentifier];
+  v3 = [REMExternalSyncMetadataUtils decodeExternalIdentifierForMarkedForDeletionObject:externalIdentifier];
 
   return v3;
 }
 
 - (BOOL)shouldUseExternalIdentifierAsDeletionKey
 {
-  v3 = [(REMList *)self account];
+  account = [(REMList *)self account];
 
-  if (!v3)
+  if (!account)
   {
     [(REMList *)self shouldUseExternalIdentifierAsDeletionKey];
   }
 
-  v4 = [(REMList *)self account];
-  v5 = +[REMExternalSyncMetadataUtils shouldUseExternalIdentifierAsDeletionKeyWithAccountType:](REMExternalSyncMetadataUtils, "shouldUseExternalIdentifierAsDeletionKeyWithAccountType:", [v4 type]);
+  account2 = [(REMList *)self account];
+  v5 = +[REMExternalSyncMetadataUtils shouldUseExternalIdentifierAsDeletionKeyWithAccountType:](REMExternalSyncMetadataUtils, "shouldUseExternalIdentifierAsDeletionKeyWithAccountType:", [account2 type]);
 
   return v5;
 }
 
-- (void)hack_overrideReminderIDsOrderingWithOrderedObjectIDs:(id)a3
+- (void)hack_overrideReminderIDsOrderingWithOrderedObjectIDs:(id)ds
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dsCopy = ds;
   v5 = +[REMLogStore read];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v4, "count")}];
+    v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(dsCopy, "count")}];
     v9 = 138412290;
     v10 = v6;
     _os_log_impl(&dword_19A0DB000, v5, OS_LOG_TYPE_INFO, "hack_overrideReminderIDsOrderingWithOrderedObjectIDs: reminderIDsMergeableOrdering set {ids.count: %@}", &v9, 0xCu);
   }
 
-  v7 = [(REMList *)self storage];
-  [v7 setReminderIDsMergeableOrdering:v4];
+  storage = [(REMList *)self storage];
+  [storage setReminderIDsMergeableOrdering:dsCopy];
 
   v8 = *MEMORY[0x1E69E9840];
 }
@@ -812,7 +812,7 @@ void __101__REMList_REMDAChangeTrackingHelper_PrivateAdditions__rem_DA_deletedKe
   v2 = +[REMLogStore read];
   if (os_log_type_enabled(v2, OS_LOG_TYPE_FAULT))
   {
-    v4 = [a1 objectID];
+    objectID = [self objectID];
     OUTLINED_FUNCTION_0_8(&dword_19A0DB000, v5, v6, "rem_log_fault_if (self.storage.reminderIDsMergeableOrdering == nil) -- list.store.reminderIDsMergeableOrdering should not be nil {objectID: %{public}@}", v7, v8, v9, v10, 2u);
   }
 
@@ -825,7 +825,7 @@ void __101__REMList_REMDAChangeTrackingHelper_PrivateAdditions__rem_DA_deletedKe
   v2 = +[REMLogStore read];
   if (os_log_type_enabled(v2, OS_LOG_TYPE_FAULT))
   {
-    v4 = [a1 objectID];
+    objectID = [self objectID];
     OUTLINED_FUNCTION_0_8(&dword_19A0DB000, v5, v6, "rem_log_fault_if (self.account == nil) -- REMList.account is nil for -shouldUseExternalIdentifierAsDeletionKey {listID: %{public}@}", v7, v8, v9, v10, 2u);
   }
 

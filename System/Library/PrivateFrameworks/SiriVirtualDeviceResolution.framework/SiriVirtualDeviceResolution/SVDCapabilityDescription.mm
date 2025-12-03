@@ -1,21 +1,21 @@
 @interface SVDCapabilityDescription
-- (SVDCapabilityDescription)initWithBacking:(id)a3;
-- (SVDCapabilityDescription)initWithCoder:(id)a3;
-- (SVDCapabilityDescription)initWithKey:(id)a3 valueRangeWithLowerBound:(double)a4 upperBound:(double)a5;
-- (SVDCapabilityDescription)initWithKey:(id)a3 valueSet:(id)a4;
+- (SVDCapabilityDescription)initWithBacking:(id)backing;
+- (SVDCapabilityDescription)initWithCoder:(id)coder;
+- (SVDCapabilityDescription)initWithKey:(id)key valueRangeWithLowerBound:(double)bound upperBound:(double)upperBound;
+- (SVDCapabilityDescription)initWithKey:(id)key valueSet:(id)set;
 @end
 
 @implementation SVDCapabilityDescription
 
-- (SVDCapabilityDescription)initWithCoder:(id)a3
+- (SVDCapabilityDescription)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = SVDCapabilityDescription;
   v5 = [(SVDCapabilityDescription *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SVDCapabilityDescriptionBacking"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SVDCapabilityDescriptionBacking"];
     backing = v5->_backing;
     v5->_backing = v6;
   }
@@ -23,35 +23,35 @@
   return v5;
 }
 
-- (SVDCapabilityDescription)initWithBacking:(id)a3
+- (SVDCapabilityDescription)initWithBacking:(id)backing
 {
-  v5 = a3;
+  backingCopy = backing;
   v9.receiver = self;
   v9.super_class = SVDCapabilityDescription;
   v6 = [(SVDCapabilityDescription *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_backing, a3);
+    objc_storeStrong(&v6->_backing, backing);
   }
 
   return v7;
 }
 
-- (SVDCapabilityDescription)initWithKey:(id)a3 valueRangeWithLowerBound:(double)a4 upperBound:(double)a5
+- (SVDCapabilityDescription)initWithKey:(id)key valueRangeWithLowerBound:(double)bound upperBound:(double)upperBound
 {
-  v8 = a3;
-  v9 = [[_TtC27SiriVirtualDeviceResolution21CapabilityDescription alloc] initWithKey:v8 lowerbound:a4 upperbound:a5];
+  keyCopy = key;
+  v9 = [[_TtC27SiriVirtualDeviceResolution21CapabilityDescription alloc] initWithKey:keyCopy lowerbound:bound upperbound:upperBound];
 
   v10 = [(SVDCapabilityDescription *)self initWithBacking:v9];
   return v10;
 }
 
-- (SVDCapabilityDescription)initWithKey:(id)a3 valueSet:(id)a4
+- (SVDCapabilityDescription)initWithKey:(id)key valueSet:(id)set
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[_TtC27SiriVirtualDeviceResolution21CapabilityDescription alloc] initWithKey:v7 valueSet:v6];
+  setCopy = set;
+  keyCopy = key;
+  v8 = [[_TtC27SiriVirtualDeviceResolution21CapabilityDescription alloc] initWithKey:keyCopy valueSet:setCopy];
 
   v9 = [(SVDCapabilityDescription *)self initWithBacking:v8];
   return v9;

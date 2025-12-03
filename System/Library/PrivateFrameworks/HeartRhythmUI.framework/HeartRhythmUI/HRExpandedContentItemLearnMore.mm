@@ -1,21 +1,21 @@
 @interface HRExpandedContentItemLearnMore
-- (HRExpandedContentItemLearnMore)initWithURLIdentifier:(int64_t)a3 delegate:(id)a4;
+- (HRExpandedContentItemLearnMore)initWithURLIdentifier:(int64_t)identifier delegate:(id)delegate;
 - (HRLinkTextViewDelegate)delegate;
 @end
 
 @implementation HRExpandedContentItemLearnMore
 
-- (HRExpandedContentItemLearnMore)initWithURLIdentifier:(int64_t)a3 delegate:(id)a4
+- (HRExpandedContentItemLearnMore)initWithURLIdentifier:(int64_t)identifier delegate:(id)delegate
 {
-  v6 = a4;
+  delegateCopy = delegate;
   v10.receiver = self;
   v10.super_class = HRExpandedContentItemLearnMore;
   v7 = [(HRExpandedContentItemLearnMore *)&v10 init];
   v8 = v7;
   if (v7)
   {
-    v7->_urlIdentifier = a3;
-    objc_storeWeak(&v7->_delegate, v6);
+    v7->_urlIdentifier = identifier;
+    objc_storeWeak(&v7->_delegate, delegateCopy);
   }
 
   return v8;

@@ -1,78 +1,78 @@
 @interface PKSpendingSummary
 - (BOOL)isCurrentPeriod;
-- (BOOL)isEqual:(id)a3;
-- (PKSpendingSummary)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (PKSpendingSummary)initWithCoder:(id)coder;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKSpendingSummary
 
-- (PKSpendingSummary)initWithCoder:(id)a3
+- (PKSpendingSummary)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v41.receiver = self;
   v41.super_class = PKSpendingSummary;
   v5 = [(PKSpendingSummary *)&v41 init];
   if (v5)
   {
-    v5->_summaryType = [v4 decodeIntegerForKey:@"summaryType"];
-    v5->_summaryUnit = [v4 decodeIntegerForKey:@"summaryUnit"];
-    v5->_isLoading = [v4 decodeBoolForKey:@"isLoading"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"startDate"];
+    v5->_summaryType = [coderCopy decodeIntegerForKey:@"summaryType"];
+    v5->_summaryUnit = [coderCopy decodeIntegerForKey:@"summaryUnit"];
+    v5->_isLoading = [coderCopy decodeBoolForKey:@"isLoading"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"startDate"];
     startDate = v5->_startDate;
     v5->_startDate = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"endDate"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"endDate"];
     endDate = v5->_endDate;
     v5->_endDate = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"totalSpending"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"totalSpending"];
     totalSpending = v5->_totalSpending;
     v5->_totalSpending = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"previousTotalSpending"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"previousTotalSpending"];
     previousTotalSpending = v5->_previousTotalSpending;
     v5->_previousTotalSpending = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"previousMaxAmount"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"previousMaxAmount"];
     previousMaxAmount = v5->_previousMaxAmount;
     v5->_previousMaxAmount = v14;
 
     v16 = MEMORY[0x1E695DFD8];
     v17 = objc_opt_class();
     v18 = [v16 setWithObjects:{v17, objc_opt_class(), 0}];
-    v19 = [v4 decodeObjectOfClasses:v18 forKey:@"orderedSpendingCategories"];
+    v19 = [coderCopy decodeObjectOfClasses:v18 forKey:@"orderedSpendingCategories"];
     orderedSpendingCategories = v5->_orderedSpendingCategories;
     v5->_orderedSpendingCategories = v19;
 
     v21 = MEMORY[0x1E695DFD8];
     v22 = objc_opt_class();
     v23 = [v21 setWithObjects:{v22, objc_opt_class(), 0}];
-    v24 = [v4 decodeObjectOfClasses:v23 forKey:@"orderedSpendingPerMerchants"];
+    v24 = [coderCopy decodeObjectOfClasses:v23 forKey:@"orderedSpendingPerMerchants"];
     orderedSpendingPerMerchants = v5->_orderedSpendingPerMerchants;
     v5->_orderedSpendingPerMerchants = v24;
 
     v26 = MEMORY[0x1E695DFD8];
     v27 = objc_opt_class();
     v28 = [v26 setWithObjects:{v27, objc_opt_class(), 0}];
-    v29 = [v4 decodeObjectOfClasses:v28 forKey:@"insights"];
+    v29 = [coderCopy decodeObjectOfClasses:v28 forKey:@"insights"];
     insights = v5->_insights;
     v5->_insights = v29;
 
-    v31 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"rewards"];
+    v31 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"rewards"];
     rewards = v5->_rewards;
     v5->_rewards = v31;
 
     v33 = MEMORY[0x1E695DFD8];
     v34 = objc_opt_class();
     v35 = [v33 setWithObjects:{v34, objc_opt_class(), 0}];
-    v36 = [v4 decodeObjectOfClasses:v35 forKey:@"spendingsPerCalendarUnit"];
+    v36 = [coderCopy decodeObjectOfClasses:v35 forKey:@"spendingsPerCalendarUnit"];
     spendingsPerCalendarUnit = v5->_spendingsPerCalendarUnit;
     v5->_spendingsPerCalendarUnit = v36;
 
-    v38 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"interestCharged"];
+    v38 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"interestCharged"];
     interest = v5->_interest;
     v5->_interest = v38;
   }
@@ -80,29 +80,29 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   summaryType = self->_summaryType;
-  v5 = a3;
-  [v5 encodeInteger:summaryType forKey:@"summaryType"];
-  [v5 encodeInteger:self->_summaryUnit forKey:@"summaryUnit"];
-  [v5 encodeBool:self->_isLoading forKey:@"isLoading"];
-  [v5 encodeObject:self->_startDate forKey:@"startDate"];
-  [v5 encodeObject:self->_endDate forKey:@"endDate"];
-  [v5 encodeObject:self->_totalSpending forKey:@"totalSpending"];
-  [v5 encodeObject:self->_previousTotalSpending forKey:@"previousTotalSpending"];
-  [v5 encodeObject:self->_previousMaxAmount forKey:@"previousMaxAmount"];
-  [v5 encodeObject:self->_orderedSpendingCategories forKey:@"orderedSpendingCategories"];
-  [v5 encodeObject:self->_orderedSpendingPerMerchants forKey:@"orderedSpendingPerMerchants"];
-  [v5 encodeObject:self->_insights forKey:@"insights"];
-  [v5 encodeObject:self->_rewards forKey:@"rewards"];
-  [v5 encodeObject:self->_spendingsPerCalendarUnit forKey:@"spendingsPerCalendarUnit"];
-  [v5 encodeObject:self->_interest forKey:@"interestCharged"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:summaryType forKey:@"summaryType"];
+  [coderCopy encodeInteger:self->_summaryUnit forKey:@"summaryUnit"];
+  [coderCopy encodeBool:self->_isLoading forKey:@"isLoading"];
+  [coderCopy encodeObject:self->_startDate forKey:@"startDate"];
+  [coderCopy encodeObject:self->_endDate forKey:@"endDate"];
+  [coderCopy encodeObject:self->_totalSpending forKey:@"totalSpending"];
+  [coderCopy encodeObject:self->_previousTotalSpending forKey:@"previousTotalSpending"];
+  [coderCopy encodeObject:self->_previousMaxAmount forKey:@"previousMaxAmount"];
+  [coderCopy encodeObject:self->_orderedSpendingCategories forKey:@"orderedSpendingCategories"];
+  [coderCopy encodeObject:self->_orderedSpendingPerMerchants forKey:@"orderedSpendingPerMerchants"];
+  [coderCopy encodeObject:self->_insights forKey:@"insights"];
+  [coderCopy encodeObject:self->_rewards forKey:@"rewards"];
+  [coderCopy encodeObject:self->_spendingsPerCalendarUnit forKey:@"spendingsPerCalendarUnit"];
+  [coderCopy encodeObject:self->_interest forKey:@"interestCharged"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -110,7 +110,7 @@
   }
 
   startDate = self->_startDate;
-  v6 = v4[4];
+  v6 = equalCopy[4];
   if (startDate && v6)
   {
     if (([(NSDate *)startDate isEqual:?]& 1) == 0)
@@ -125,7 +125,7 @@
   }
 
   endDate = self->_endDate;
-  v8 = v4[5];
+  v8 = equalCopy[5];
   if (endDate && v8)
   {
     if (([(NSDate *)endDate isEqual:?]& 1) == 0)
@@ -140,7 +140,7 @@
   }
 
   totalSpending = self->_totalSpending;
-  v10 = v4[6];
+  v10 = equalCopy[6];
   if (!totalSpending || !v10)
   {
     if (totalSpending == v10)
@@ -159,7 +159,7 @@ LABEL_57:
   }
 
 LABEL_17:
-  v11 = v4[7];
+  v11 = equalCopy[7];
   v12 = self->_orderedSpendingCategories;
   v13 = v11;
   v14 = v13;
@@ -180,17 +180,17 @@ LABEL_33:
       {
         v17 = [(NSArray *)v12 objectAtIndexedSubscript:v16];
         v18 = [(NSArray *)v14 objectAtIndexedSubscript:v16];
-        v19 = [v17 totalAmount];
-        v20 = [v18 totalAmount];
-        v21 = v20;
-        if (v19 && v20)
+        totalAmount = [v17 totalAmount];
+        totalAmount2 = [v18 totalAmount];
+        v21 = totalAmount2;
+        if (totalAmount && totalAmount2)
         {
-          v22 = [v19 isEqual:v20];
+          v22 = [totalAmount isEqual:totalAmount2];
         }
 
         else
         {
-          v22 = v19 == v20;
+          v22 = totalAmount == totalAmount2;
         }
 
         if ((v22 & 1) == 0)
@@ -204,7 +204,7 @@ LABEL_33:
   }
 
   rewards = self->_rewards;
-  v24 = v4[12];
+  v24 = equalCopy[12];
   if (rewards && v24)
   {
     if (![(PKPaymentTransactionGroup *)rewards isEqual:?])
@@ -219,7 +219,7 @@ LABEL_33:
   }
 
   v25 = self->_totalSpending;
-  v26 = v4[6];
+  v26 = equalCopy[6];
   if (v25 && v26)
   {
     if (![(PKCurrencyAmount *)v25 isEqual:?])
@@ -234,7 +234,7 @@ LABEL_33:
   }
 
   previousMaxAmount = self->_previousMaxAmount;
-  v28 = v4[11];
+  v28 = equalCopy[11];
   if (previousMaxAmount && v28)
   {
     if (![(PKCurrencyAmount *)previousMaxAmount isEqual:?])
@@ -249,7 +249,7 @@ LABEL_33:
   }
 
   interest = self->_interest;
-  v30 = v4[13];
+  v30 = equalCopy[13];
   if (interest && v30)
   {
     if (![(PKPaymentTransactionGroup *)interest isEqual:?])
@@ -264,7 +264,7 @@ LABEL_33:
   }
 
   insights = self->_insights;
-  v32 = v4[9];
+  v32 = equalCopy[9];
   if (insights && v32)
   {
     if (![(PKSpendingInsightTrendCollection *)insights isEqual:?])
@@ -278,12 +278,12 @@ LABEL_33:
     goto LABEL_57;
   }
 
-  if (self->_isLoading != *(v4 + 9))
+  if (self->_isLoading != *(equalCopy + 9))
   {
     goto LABEL_57;
   }
 
-  v33 = self->_summaryType == v4[2];
+  v33 = self->_summaryType == equalCopy[2];
 LABEL_58:
 
   return v33;
@@ -316,8 +316,8 @@ LABEL_58:
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v14 + 1) + 8 * v8) totalAmount];
-        [v3 safelyAddObject:v9];
+        totalAmount = [*(*(&v14 + 1) + 8 * v8) totalAmount];
+        [v3 safelyAddObject:totalAmount];
 
         ++v8;
       }
@@ -367,8 +367,8 @@ LABEL_58:
 - (BOOL)isCurrentPeriod
 {
   endDate = self->_endDate;
-  v3 = [MEMORY[0x1E695DF00] date];
-  LOBYTE(endDate) = [(NSDate *)endDate compare:v3]== NSOrderedDescending;
+  date = [MEMORY[0x1E695DF00] date];
+  LOBYTE(endDate) = [(NSDate *)endDate compare:date]== NSOrderedDescending;
 
   return endDate;
 }

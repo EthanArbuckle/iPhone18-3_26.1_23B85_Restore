@@ -1,10 +1,10 @@
 @interface KTValidateSelfOperation
-- (BOOL)hasDeviceErrorForUri:(id)a3;
-- (BOOL)validateOptInStatusWithAccountKey:(id)a3 error:(id *)a4;
-- (id)ktLogData:(id)a3 accountKey:(id)a4;
+- (BOOL)hasDeviceErrorForUri:(id)uri;
+- (BOOL)validateOptInStatusWithAccountKey:(id)key error:(id *)error;
+- (id)ktLogData:(id)data accountKey:(id)key;
 - (void)fillStatus;
 - (void)groupStart;
-- (void)handleOperationResults:(id)a3;
+- (void)handleOperationResults:(id)results;
 @end
 
 @implementation KTValidateSelfOperation
@@ -14,8 +14,8 @@
   v3 = objc_alloc_init(NSOperation);
   [(KTValidateSelfOperation *)self setFinishedOp:v3];
 
-  v4 = [(KTValidateSelfOperation *)self finishedOp];
-  [(KTGroupOperation *)self dependOnBeforeGroupFinished:v4];
+  finishedOp = [(KTValidateSelfOperation *)self finishedOp];
+  [(KTGroupOperation *)self dependOnBeforeGroupFinished:finishedOp];
 
   if (qword_10038BCA0 != -1)
   {
@@ -30,26 +30,26 @@
   }
 
   objc_initWeak(buf, self);
-  v6 = [(KTValidateSelfOperation *)self deps];
-  v7 = [v6 smDataStore];
-  v8 = [(KTValidateSelfOperation *)self application];
+  deps = [(KTValidateSelfOperation *)self deps];
+  smDataStore = [deps smDataStore];
+  application = [(KTValidateSelfOperation *)self application];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100034D9C;
   v9[3] = &unk_1003196A8;
   objc_copyWeak(&v10, buf);
-  [v7 fetchSelfVerificationInfoForApplication:v8 complete:v9];
+  [smDataStore fetchSelfVerificationInfoForApplication:application complete:v9];
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(buf);
 }
 
-- (BOOL)hasDeviceErrorForUri:(id)a3
+- (BOOL)hasDeviceErrorForUri:(id)uri
 {
-  v4 = a3;
-  v5 = [(KTValidateSelfOperation *)self selfInfo];
-  v6 = [v5 uriToServerLoggableDatas];
-  v7 = [v6 objectForKeyedSubscript:v4];
+  uriCopy = uri;
+  selfInfo = [(KTValidateSelfOperation *)self selfInfo];
+  uriToServerLoggableDatas = [selfInfo uriToServerLoggableDatas];
+  v7 = [uriToServerLoggableDatas objectForKeyedSubscript:uriCopy];
 
   if (v7)
   {
@@ -57,8 +57,8 @@
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v8 = [v7 serverLoggableDatas];
-    v9 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    serverLoggableDatas = [v7 serverLoggableDatas];
+    v9 = [serverLoggableDatas countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v9)
     {
       v10 = *v14;
@@ -68,7 +68,7 @@
         {
           if (*v14 != v10)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(serverLoggableDatas);
           }
 
           if (![*(*(&v13 + 1) + 8 * i) result])
@@ -78,7 +78,7 @@
           }
         }
 
-        v9 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v9 = [serverLoggableDatas countByEnumeratingWithState:&v13 objects:v17 count:16];
         if (v9)
         {
           continue;
@@ -101,14 +101,14 @@ LABEL_12:
 
 - (void)fillStatus
 {
-  v2 = self;
+  selfCopy = self;
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
   obj = [(KTValidateSelfOperation *)self selfResults];
   v39 = [obj countByEnumeratingWithState:&v41 objects:v51 count:16];
-  v40 = v2;
+  v40 = selfCopy;
   if (v39)
   {
     v37 = *v42;
@@ -127,21 +127,21 @@ LABEL_12:
         }
 
         v6 = *(*(&v41 + 1) + 8 * v5);
-        v7 = [(KTValidateSelfOperation *)v2 selfResults];
-        v8 = [v7 objectForKeyedSubscript:v6];
+        selfResults = [(KTValidateSelfOperation *)selfCopy selfResults];
+        v8 = [selfResults objectForKeyedSubscript:v6];
 
-        v9 = [v8 unsignedIntegerValue];
-        v10 = [(KTValidateSelfOperation *)v2 selfInfo];
-        v11 = [v10 uriToServerLoggableDatas];
-        v12 = [v11 objectForKeyedSubscript:v6];
-        v13 = [v12 serverLoggableDatas];
+        unsignedIntegerValue = [v8 unsignedIntegerValue];
+        selfInfo = [(KTValidateSelfOperation *)selfCopy selfInfo];
+        uriToServerLoggableDatas = [selfInfo uriToServerLoggableDatas];
+        v12 = [uriToServerLoggableDatas objectForKeyedSubscript:v6];
+        serverLoggableDatas = [v12 serverLoggableDatas];
 
-        if (v9 == 1)
+        if (unsignedIntegerValue == 1)
         {
           v14 = 0;
         }
 
-        else if (v9)
+        else if (unsignedIntegerValue)
         {
           v14 = 2;
         }
@@ -153,8 +153,8 @@ LABEL_12:
 
         else
         {
-          v15 = [(KTValidateSelfOperation *)v40 selfErrors];
-          v16 = [v15 objectForKeyedSubscript:@"optIn"];
+          selfErrors = [(KTValidateSelfOperation *)v40 selfErrors];
+          v16 = [selfErrors objectForKeyedSubscript:@"optIn"];
 
           if (v16)
           {
@@ -188,13 +188,13 @@ LABEL_12:
 
         if (dword_1002D46B8[v14] <= dword_1002D46B8[v4])
         {
-          v20 = v13;
+          v20 = serverLoggableDatas;
 
           v38 = v20;
           v4 = v14;
         }
 
-        v2 = v40;
+        selfCopy = v40;
 
         v5 = v5 + 1;
       }
@@ -226,40 +226,40 @@ LABEL_12:
     v46 = v23;
     _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "ValidateSelf fillStatus: setting selfStatus to %@", buf, 0xCu);
 
-    v2 = v40;
+    selfCopy = v40;
   }
 
-  [(KTValidateSelfOperation *)v2 deps];
-  v25 = v24 = v2;
-  v26 = [v25 stateMonitor];
-  [v26 setSelfStatus:v4];
+  [(KTValidateSelfOperation *)selfCopy deps];
+  v25 = v24 = selfCopy;
+  stateMonitor = [v25 stateMonitor];
+  [stateMonitor setSelfStatus:v4];
 
-  v27 = [(KTValidateSelfOperation *)v24 deps];
-  v28 = [v27 stateMonitor];
-  [v28 setSelfDevices:v38];
+  deps = [(KTValidateSelfOperation *)v24 deps];
+  stateMonitor2 = [deps stateMonitor];
+  [stateMonitor2 setSelfDevices:v38];
 
-  v29 = [(KTValidateSelfOperation *)v24 deps];
-  v30 = [v29 stateMonitor];
-  v31 = [v30 statusFilled];
-  [v31 fulfill];
+  deps2 = [(KTValidateSelfOperation *)v24 deps];
+  stateMonitor3 = [deps2 stateMonitor];
+  statusFilled = [stateMonitor3 statusFilled];
+  [statusFilled fulfill];
 
   v32 = [[KTPendingFlag alloc] initWithFlag:@"StatusUpdate" delayInSeconds:1.0];
-  v33 = [(KTValidateSelfOperation *)v24 deps];
-  v34 = [v33 flagHandler];
-  [v34 handlePendingFlag:v32];
+  deps3 = [(KTValidateSelfOperation *)v24 deps];
+  flagHandler = [deps3 flagHandler];
+  [flagHandler handlePendingFlag:v32];
 }
 
-- (BOOL)validateOptInStatusWithAccountKey:(id)a3 error:(id *)a4
+- (BOOL)validateOptInStatusWithAccountKey:(id)key error:(id *)error
 {
-  v6 = a3;
-  v7 = [(KTValidateSelfOperation *)self transparentDatas];
-  v8 = [(KTValidateSelfOperation *)self ktLogData:v7 accountKey:v6];
+  keyCopy = key;
+  transparentDatas = [(KTValidateSelfOperation *)self transparentDatas];
+  v8 = [(KTValidateSelfOperation *)self ktLogData:transparentDatas accountKey:keyCopy];
 
-  v9 = [(KTValidateSelfOperation *)self deps];
-  v10 = [v9 cloudRecords];
-  v11 = [(KTValidateSelfOperation *)self application];
+  deps = [(KTValidateSelfOperation *)self deps];
+  cloudRecords = [deps cloudRecords];
+  application = [(KTValidateSelfOperation *)self application];
   v18 = 0;
-  v12 = [v10 evaluateKTLogData:v8 application:v11 error:&v18];
+  v12 = [cloudRecords evaluateKTLogData:v8 application:application error:&v18];
   v13 = v18;
 
   if (v12)
@@ -293,29 +293,29 @@ LABEL_12:
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "evaluateKTLogData failure: %@", buf, 0xCu);
     }
 
-    if (a4 && v13)
+    if (error && v13)
     {
       v16 = v13;
-      *a4 = v13;
+      *error = v13;
     }
   }
 
   return v12 != 0;
 }
 
-- (id)ktLogData:(id)a3 accountKey:(id)a4
+- (id)ktLogData:(id)data accountKey:(id)key
 {
-  v5 = a4;
-  v6 = a3;
+  keyCopy = key;
+  dataCopy = data;
   +[NSMutableDictionary dictionary];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_100037908;
   v12[3] = &unk_100319750;
-  v7 = v13 = v5;
+  v7 = v13 = keyCopy;
   v14 = v7;
-  v8 = v5;
-  [v6 enumerateKeysAndObjectsUsingBlock:v12];
+  v8 = keyCopy;
+  [dataCopy enumerateKeysAndObjectsUsingBlock:v12];
 
   v9 = v14;
   v10 = v7;
@@ -323,34 +323,34 @@ LABEL_12:
   return v7;
 }
 
-- (void)handleOperationResults:(id)a3
+- (void)handleOperationResults:(id)results
 {
-  v46 = a3;
-  v4 = [(KTValidateSelfOperation *)self selfInfo];
-  if (v4)
+  resultsCopy = results;
+  selfInfo = [(KTValidateSelfOperation *)self selfInfo];
+  if (selfInfo)
   {
-    v5 = [(KTValidateSelfOperation *)self transparentDatas];
-    if ([v5 count])
+    transparentDatas = [(KTValidateSelfOperation *)self transparentDatas];
+    if ([transparentDatas count])
     {
-      v6 = [(KTValidateSelfOperation *)self selfResults];
-      v7 = [v6 count];
+      selfResults = [(KTValidateSelfOperation *)self selfResults];
+      v7 = [selfResults count];
 
       if (v7)
       {
-        v47 = objc_alloc_init(KTSelfValidationDiagnostics);
-        v8 = [(KTValidateSelfOperation *)self selfInfo];
-        v9 = [v8 diagnosticsJsonDictionary];
-        [v47 setKtSelfVerificationInfoDiagnosticsJson:v9];
+        error2 = objc_alloc_init(KTSelfValidationDiagnostics);
+        selfInfo2 = [(KTValidateSelfOperation *)self selfInfo];
+        diagnosticsJsonDictionary = [selfInfo2 diagnosticsJsonDictionary];
+        [error2 setKtSelfVerificationInfoDiagnosticsJson:diagnosticsJsonDictionary];
 
-        v10 = [(KTValidateSelfOperation *)self selfInfo];
-        v11 = [v10 selfDeviceID];
-        v12 = [v11 kt_hexString];
-        [v47 setPushToken:v12];
+        selfInfo3 = [(KTValidateSelfOperation *)self selfInfo];
+        selfDeviceID = [selfInfo3 selfDeviceID];
+        kt_hexString = [selfDeviceID kt_hexString];
+        [error2 setPushToken:kt_hexString];
 
-        v13 = [(KTValidateSelfOperation *)self accountKeyServer];
-        LODWORD(v11) = [v13 haveIdentity];
+        accountKeyServer = [(KTValidateSelfOperation *)self accountKeyServer];
+        LODWORD(selfDeviceID) = [accountKeyServer haveIdentity];
 
-        if (v11)
+        if (selfDeviceID)
         {
           *buf = 0;
           *&buf[8] = buf;
@@ -364,19 +364,19 @@ LABEL_12:
           v61 = sub_100038288;
           v62 = sub_100038298;
           v63 = 0;
-          v14 = [(KTValidateSelfOperation *)self accountKeyServer];
+          accountKeyServer2 = [(KTValidateSelfOperation *)self accountKeyServer];
           v57[0] = _NSConcreteStackBlock;
           v57[1] = 3221225472;
           v57[2] = sub_1000382A0;
           v57[3] = &unk_100319798;
           v57[4] = buf;
           v57[5] = &v58;
-          [v14 signData:0 completionBlock:v57];
+          [accountKeyServer2 signData:0 completionBlock:v57];
 
           if (*(*&buf[8] + 40) && v59[5])
           {
-            [v47 setRawAccountKey:?];
-            [v47 setAccountKey:v59[5]];
+            [error2 setRawAccountKey:?];
+            [error2 setAccountKey:v59[5]];
           }
 
           _Block_object_dispose(&v58, 8);
@@ -390,8 +390,8 @@ LABEL_12:
         v56 = 0u;
         v53 = 0u;
         v54 = 0u;
-        v15 = [(KTValidateSelfOperation *)self selfInfo];
-        obj = [v15 uriToServerLoggableDatas];
+        selfInfo4 = [(KTValidateSelfOperation *)self selfInfo];
+        obj = [selfInfo4 uriToServerLoggableDatas];
 
         v16 = [obj countByEnumeratingWithState:&v53 objects:v64 count:16];
         if (!v16)
@@ -412,29 +412,29 @@ LABEL_12:
             }
 
             v18 = *(*(&v53 + 1) + 8 * i);
-            v19 = [(KTValidateSelfOperation *)self selfInfo];
-            v20 = [v19 uriToServerLoggableDatas];
-            v21 = [v20 objectForKeyedSubscript:v18];
+            selfInfo5 = [(KTValidateSelfOperation *)self selfInfo];
+            uriToServerLoggableDatas = [selfInfo5 uriToServerLoggableDatas];
+            v21 = [uriToServerLoggableDatas objectForKeyedSubscript:v18];
 
-            v22 = [(KTValidateSelfOperation *)self application];
-            v23 = [TransparencyApplication addApplicationPrefixForIdentifier:v22 uri:v18];
+            application = [(KTValidateSelfOperation *)self application];
+            v23 = [TransparencyApplication addApplicationPrefixForIdentifier:application uri:v18];
 
             v24 = objc_alloc_init(KTSelfValidationURIDiagnostics);
-            v25 = [v21 diagnosticsJsonDictionary];
-            [v24 setKtVerificationInfoDiagnosticsJson:v25];
+            diagnosticsJsonDictionary2 = [v21 diagnosticsJsonDictionary];
+            [v24 setKtVerificationInfoDiagnosticsJson:diagnosticsJsonDictionary2];
 
-            v26 = [v21 serverLoggableDatas];
-            [KTLoggableData combineLoggableDatasForUI:v52 byAdding:v26];
+            serverLoggableDatas = [v21 serverLoggableDatas];
+            [KTLoggableData combineLoggableDatasForUI:v52 byAdding:serverLoggableDatas];
 
-            v27 = [(KTValidateSelfOperation *)self selfResults];
-            v28 = [v27 objectForKeyedSubscript:v23];
+            selfResults2 = [(KTValidateSelfOperation *)self selfResults];
+            v28 = [selfResults2 objectForKeyedSubscript:v23];
 
-            v29 = [v28 intValue];
-            if (v29 > 1)
+            intValue = [v28 intValue];
+            if (intValue > 1)
             {
-              if (v29 != 3)
+              if (intValue != 3)
               {
-                if (v29 == 2)
+                if (intValue == 2)
                 {
                   v49 = 2;
                   v30 = @"Pending";
@@ -449,10 +449,10 @@ LABEL_12:
 
             else
             {
-              if (v29)
+              if (intValue)
               {
                 v30 = @"OK";
-                if (v29 == 1)
+                if (intValue == 1)
                 {
                   goto LABEL_24;
                 }
@@ -469,23 +469,23 @@ LABEL_21:
 
 LABEL_24:
             [v24 setResult:v30];
-            v31 = [(KTValidateSelfOperation *)self cachedTimes];
-            v32 = [v31 objectForKeyedSubscript:v23];
+            cachedTimes = [(KTValidateSelfOperation *)self cachedTimes];
+            v32 = [cachedTimes objectForKeyedSubscript:v23];
             [v24 setRequestTime:v32];
 
-            v33 = [(KTValidateSelfOperation *)self selfErrors];
-            v34 = [v33 objectForKeyedSubscript:v23];
+            selfErrors = [(KTValidateSelfOperation *)self selfErrors];
+            v34 = [selfErrors objectForKeyedSubscript:v23];
 
             if (v34)
             {
               [v24 setError:v34];
             }
 
-            v35 = [(KTValidateSelfOperation *)self transparentDatas];
-            v36 = [v35 objectForKeyedSubscript:v23];
+            transparentDatas2 = [(KTValidateSelfOperation *)self transparentDatas];
+            v36 = [transparentDatas2 objectForKeyedSubscript:v23];
 
-            v37 = [v36 diagnosticsJsonDictionary];
-            [v24 setTransparentDataDiagnosticsJson:v37];
+            diagnosticsJsonDictionary3 = [v36 diagnosticsJsonDictionary];
+            [v24 setTransparentDataDiagnosticsJson:diagnosticsJsonDictionary3];
 
             [v51 setObject:v24 forKeyedSubscript:v23];
           }
@@ -495,10 +495,10 @@ LABEL_24:
           {
 LABEL_36:
 
-            [v47 setUriToDiagnostics:v51];
-            v44 = [v52 allValues];
-            v45 = [(KTResultOperation *)self error];
-            v46[2](v46, v49, v47, v44, v45);
+            [error2 setUriToDiagnostics:v51];
+            allValues = [v52 allValues];
+            error = [(KTResultOperation *)self error];
+            resultsCopy[2](resultsCopy, v49, error2, allValues, error);
 
             goto LABEL_37;
           }
@@ -520,21 +520,21 @@ LABEL_36:
   if (os_log_type_enabled(qword_10038BCA8, OS_LOG_TYPE_DEFAULT))
   {
     v39 = v38;
-    v40 = [(KTValidateSelfOperation *)self selfInfo];
-    v41 = [(KTValidateSelfOperation *)self transparentDatas];
-    v42 = [v41 count];
-    v43 = [(KTValidateSelfOperation *)self selfResults];
+    selfInfo6 = [(KTValidateSelfOperation *)self selfInfo];
+    transparentDatas3 = [(KTValidateSelfOperation *)self transparentDatas];
+    v42 = [transparentDatas3 count];
+    selfResults3 = [(KTValidateSelfOperation *)self selfResults];
     *buf = 138412802;
-    *&buf[4] = v40;
+    *&buf[4] = selfInfo6;
     *&buf[12] = 1024;
     *&buf[14] = v42;
     *&buf[18] = 1024;
-    *&buf[20] = [v43 count];
+    *&buf[20] = [selfResults3 count];
     _os_log_impl(&_mh_execute_header, v39, OS_LOG_TYPE_DEFAULT, "missing inputdata: selfinfo: %@ transparentDatas: %d selfResults: %d", buf, 0x18u);
   }
 
-  v47 = [(KTResultOperation *)self error];
-  v46[2](v46, 0, 0, 0, v47);
+  error2 = [(KTResultOperation *)self error];
+  resultsCopy[2](resultsCopy, 0, 0, 0, error2);
 LABEL_37:
 }
 

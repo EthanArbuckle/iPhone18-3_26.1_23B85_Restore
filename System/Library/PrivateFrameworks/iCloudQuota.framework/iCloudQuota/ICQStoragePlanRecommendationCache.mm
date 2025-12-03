@@ -2,7 +2,7 @@
 + (id)sharedInstance;
 - (ICQStoragePlanRecommendationCache)init;
 - (id)extraQuotaNeeded;
-- (void)setExtraQuotaNeeded:(id)a3 expiry:(id)a4;
+- (void)setExtraQuotaNeeded:(id)needed expiry:(id)expiry;
 @end
 
 @implementation ICQStoragePlanRecommendationCache
@@ -41,17 +41,17 @@ uint64_t __51__ICQStoragePlanRecommendationCache_sharedInstance__block_invoke()
   return result;
 }
 
-- (void)setExtraQuotaNeeded:(id)a3 expiry:(id)a4
+- (void)setExtraQuotaNeeded:(id)needed expiry:(id)expiry
 {
-  v6 = a3;
-  v7 = a4;
+  neededCopy = needed;
+  expiryCopy = expiry;
   os_unfair_lock_lock(&self->_cacheLock);
   extraQuotaNeeded = self->_extraQuotaNeeded;
-  self->_extraQuotaNeeded = v6;
-  v9 = v6;
+  self->_extraQuotaNeeded = neededCopy;
+  v9 = neededCopy;
 
   expiry = self->_expiry;
-  self->_expiry = v7;
+  self->_expiry = expiryCopy;
 
   os_unfair_lock_unlock(&self->_cacheLock);
 }
@@ -60,8 +60,8 @@ uint64_t __51__ICQStoragePlanRecommendationCache_sharedInstance__block_invoke()
 {
   os_unfair_lock_lock(&self->_cacheLock);
   expiry = self->_expiry;
-  v4 = [MEMORY[0x277CBEAA8] date];
-  [(NSDate *)expiry timeIntervalSinceDate:v4];
+  date = [MEMORY[0x277CBEAA8] date];
+  [(NSDate *)expiry timeIntervalSinceDate:date];
   v6 = v5;
 
   if (v6 <= 0.0)

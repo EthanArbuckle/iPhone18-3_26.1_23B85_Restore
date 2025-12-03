@@ -1,10 +1,10 @@
 @interface MFFileArchiveEntry
-+ (MFFileArchiveEntry)archiveEntryWithCentralHeader:(CentralHeader *)a3 archiveData:(id)a4;
++ (MFFileArchiveEntry)archiveEntryWithCentralHeader:(CentralHeader *)header archiveData:(id)data;
 + (id)archiveEntry;
-- (MFFileArchiveEntry)initWithContents:(id)a3 path:(id)a4;
-- (MFFileArchiveEntry)initWithDirectoryPath:(id)a3;
+- (MFFileArchiveEntry)initWithContents:(id)contents path:(id)path;
+- (MFFileArchiveEntry)initWithDirectoryPath:(id)path;
 - (_NSRange)compressedRange;
-- (void)merge:(id)a3;
+- (void)merge:(id)merge;
 @end
 
 @implementation MFFileArchiveEntry
@@ -16,31 +16,31 @@
   return v2;
 }
 
-- (MFFileArchiveEntry)initWithContents:(id)a3 path:(id)a4
+- (MFFileArchiveEntry)initWithContents:(id)contents path:(id)path
 {
-  v7 = a3;
-  v8 = a4;
+  contentsCopy = contents;
+  pathCopy = path;
   v9 = [(MFFileArchiveEntry *)self init];
   if (v9)
   {
-    v10 = [v8 copy];
+    v10 = [pathCopy copy];
     path = v9->_path;
     v9->_path = v10;
 
-    objc_storeStrong(&v9->_contents, a3);
-    v9->_uncompressedSize = [v7 length];
+    objc_storeStrong(&v9->_contents, contents);
+    v9->_uncompressedSize = [contentsCopy length];
   }
 
   return v9;
 }
 
-- (MFFileArchiveEntry)initWithDirectoryPath:(id)a3
+- (MFFileArchiveEntry)initWithDirectoryPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v5 = [(MFFileArchiveEntry *)self init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [pathCopy copy];
     path = v5->_path;
     v5->_path = v6;
 
@@ -54,45 +54,45 @@
   return v5;
 }
 
-+ (MFFileArchiveEntry)archiveEntryWithCentralHeader:(CentralHeader *)a3 archiveData:(id)a4
++ (MFFileArchiveEntry)archiveEntryWithCentralHeader:(CentralHeader *)header archiveData:(id)data
 {
-  v5 = a4;
+  dataCopy = data;
   v6 = +[MFFileArchiveEntry archiveEntry];
   if (v6)
   {
-    v7 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithBytes:&a3->var17 + 2 length:a3->var11 encoding:4];
+    v7 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithBytes:&header->var17 + 2 length:header->var11 encoding:4];
     [v6 setPath:v7];
 
-    [v6 setUncompressedSize:a3->var10];
-    if (a3->var6 == 8)
+    [v6 setUncompressedSize:header->var10];
+    if (header->var6 == 8)
     {
       [v6 setIsDeflated:1];
     }
 
-    v8 = [v6 path];
-    v9 = [v8 length];
+    path = [v6 path];
+    v9 = [path length];
 
-    var12 = a3->var12;
+    var12 = header->var12;
     if ([v6 uncompressedSize])
     {
-      [v6 setCompressedRange:{v9 + var12 + *(&a3->var16 + 2) + 34, a3->var9}];
+      [v6 setCompressedRange:{v9 + var12 + *(&header->var16 + 2) + 34, header->var9}];
     }
 
-    v11 = [v6 compressedRange];
-    v13 = [v5 subdataWithRange:{v11, v12}];
+    compressedRange = [v6 compressedRange];
+    v13 = [dataCopy subdataWithRange:{compressedRange, v12}];
     [v6 setContents:v13];
   }
 
   return v6;
 }
 
-- (void)merge:(id)a3
+- (void)merge:(id)merge
 {
-  v4 = a3;
+  mergeCopy = merge;
   path = self->_path;
-  v12 = v4;
-  v6 = [v4 path];
-  LODWORD(path) = [(NSString *)path isEqualToString:v6];
+  v12 = mergeCopy;
+  path = [mergeCopy path];
+  LODWORD(path) = [(NSString *)path isEqualToString:path];
 
   if (path)
   {
@@ -124,8 +124,8 @@
     }
 
     self->_isDeflated = isDeflated;
-    v10 = [v12 contents];
-    if (v10)
+    contents = [v12 contents];
+    if (contents)
     {
       contents = [v12 contents];
     }
@@ -136,7 +136,7 @@
     }
 
     [(MFFileArchiveEntry *)self setContents:contents];
-    if (v10)
+    if (contents)
     {
     }
   }

@@ -1,13 +1,13 @@
 @interface BCBackgroundTaskAssertion
 + (BCBackgroundTaskAssertion)sharedAssertion;
 - (id)_init;
-- (void)_claimAssertionForIdentifier:(id)a3 description:(id)a4 signalBlock:(id)a5;
-- (void)_releaseAssertionForIdentifier:(id)a3 signalBlock:(id)a4;
-- (void)_releaseAssertionForTaskID:(unint64_t)a3;
+- (void)_claimAssertionForIdentifier:(id)identifier description:(id)description signalBlock:(id)block;
+- (void)_releaseAssertionForIdentifier:(id)identifier signalBlock:(id)block;
+- (void)_releaseAssertionForTaskID:(unint64_t)d;
 - (void)dealloc;
-- (void)dq_claimAssertionForIdentifier:(id)a3 description:(id)a4 signalBlock:(id)a5;
-- (void)dq_releaseAssertionForIdentifier:(id)a3 signalBlock:(id)a4;
-- (void)dq_releaseAssertionForTaskID:(unint64_t)a3;
+- (void)dq_claimAssertionForIdentifier:(id)identifier description:(id)description signalBlock:(id)block;
+- (void)dq_releaseAssertionForIdentifier:(id)identifier signalBlock:(id)block;
+- (void)dq_releaseAssertionForTaskID:(unint64_t)d;
 @end
 
 @implementation BCBackgroundTaskAssertion
@@ -62,12 +62,12 @@
   return v3;
 }
 
-- (void)_claimAssertionForIdentifier:(id)a3 description:(id)a4 signalBlock:(id)a5
+- (void)_claimAssertionForIdentifier:(id)identifier description:(id)description signalBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 length])
+  identifierCopy = identifier;
+  descriptionCopy = description;
+  blockCopy = block;
+  if ([identifierCopy length])
   {
     objc_initWeak(&location, self);
     queue = self->_queue;
@@ -76,9 +76,9 @@
     block[2] = sub_1376B8;
     block[3] = &unk_2C8768;
     objc_copyWeak(&v19, &location);
-    v16 = v8;
-    v17 = v9;
-    v18 = v10;
+    v16 = identifierCopy;
+    v17 = descriptionCopy;
+    v18 = blockCopy;
     dispatch_async(queue, block);
 
     objc_destroyWeak(&v19);
@@ -93,7 +93,7 @@
       sub_1EAF1C();
     }
 
-    v13 = objc_retainBlock(v10);
+    v13 = objc_retainBlock(blockCopy);
     v14 = v13;
     if (v13)
     {
@@ -102,11 +102,11 @@
   }
 }
 
-- (void)_releaseAssertionForIdentifier:(id)a3 signalBlock:(id)a4
+- (void)_releaseAssertionForIdentifier:(id)identifier signalBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 length])
+  identifierCopy = identifier;
+  blockCopy = block;
+  if ([identifierCopy length])
   {
     objc_initWeak(&location, self);
     queue = self->_queue;
@@ -115,8 +115,8 @@
     v12[2] = sub_137850;
     v12[3] = &unk_2C8EC0;
     objc_copyWeak(&v15, &location);
-    v13 = v6;
-    v14 = v7;
+    v13 = identifierCopy;
+    v14 = blockCopy;
     dispatch_async(queue, v12);
 
     objc_destroyWeak(&v15);
@@ -131,7 +131,7 @@
       sub_1EAF5C();
     }
 
-    v10 = objc_retainBlock(v7);
+    v10 = objc_retainBlock(blockCopy);
     v11 = v10;
     if (v10)
     {
@@ -140,9 +140,9 @@
   }
 }
 
-- (void)_releaseAssertionForTaskID:(unint64_t)a3
+- (void)_releaseAssertionForTaskID:(unint64_t)d
 {
-  if (UIBackgroundTaskInvalid != a3)
+  if (UIBackgroundTaskInvalid != d)
   {
     v10[5] = v3;
     v10[6] = v4;
@@ -153,20 +153,20 @@
     block[2] = sub_13796C;
     block[3] = &unk_2C9048;
     objc_copyWeak(v9, v10);
-    v9[1] = a3;
+    v9[1] = d;
     dispatch_async(queue, block);
     objc_destroyWeak(v9);
     objc_destroyWeak(v10);
   }
 }
 
-- (void)dq_claimAssertionForIdentifier:(id)a3 description:(id)a4 signalBlock:(id)a5
+- (void)dq_claimAssertionForIdentifier:(id)identifier description:(id)description signalBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(BCBackgroundTaskAssertion *)self queue];
-  dispatch_assert_queue_V2(v11);
+  identifierCopy = identifier;
+  descriptionCopy = description;
+  blockCopy = block;
+  queue = [(BCBackgroundTaskAssertion *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v27 = 0;
   v28 = &v27;
@@ -177,11 +177,11 @@
   v23[1] = 3221225472;
   v23[2] = sub_137C58;
   v23[3] = &unk_2C8838;
-  v13 = v8;
+  v13 = identifierCopy;
   v24 = v13;
-  v25 = self;
+  selfCopy = self;
   v26 = &v27;
-  v14 = [v12 beginBackgroundTaskWithName:v9 expirationHandler:v23];
+  v14 = [v12 beginBackgroundTaskWithName:descriptionCopy expirationHandler:v23];
 
   v28[3] = v14;
   v15 = BCIMLog();
@@ -193,19 +193,19 @@
     v33 = 2112;
     v34 = v13;
     v35 = 2112;
-    v36 = v9;
+    v36 = descriptionCopy;
     _os_log_impl(&dword_0, v15, OS_LOG_TYPE_INFO, "Background task assertion %lu taken for identifier %@ and description %@", buf, 0x20u);
   }
 
-  v17 = [(BCBackgroundTaskAssertion *)self taskIDs];
+  taskIDs = [(BCBackgroundTaskAssertion *)self taskIDs];
   v18 = [NSNumber numberWithUnsignedInteger:v28[3]];
-  [v17 addObject:v18];
+  [taskIDs addObject:v18];
 
-  v19 = [(BCBackgroundTaskAssertion *)self identifiersByTaskID];
+  identifiersByTaskID = [(BCBackgroundTaskAssertion *)self identifiersByTaskID];
   v20 = [NSNumber numberWithUnsignedInteger:v28[3]];
-  [v19 setObject:v13 forKeyedSubscript:v20];
+  [identifiersByTaskID setObject:v13 forKeyedSubscript:v20];
 
-  v21 = objc_retainBlock(v10);
+  v21 = objc_retainBlock(blockCopy);
   v22 = v21;
   if (v21)
   {
@@ -215,101 +215,101 @@
   _Block_object_dispose(&v27, 8);
 }
 
-- (void)dq_releaseAssertionForTaskID:(unint64_t)a3
+- (void)dq_releaseAssertionForTaskID:(unint64_t)d
 {
-  v5 = [(BCBackgroundTaskAssertion *)self queue];
-  dispatch_assert_queue_V2(v5);
+  queue = [(BCBackgroundTaskAssertion *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v6 = BCIMLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
-    v7 = [(BCBackgroundTaskAssertion *)self identifiersByTaskID];
-    v8 = [NSNumber numberWithUnsignedInteger:a3];
-    v9 = [v7 objectForKeyedSubscript:v8];
+    identifiersByTaskID = [(BCBackgroundTaskAssertion *)self identifiersByTaskID];
+    v8 = [NSNumber numberWithUnsignedInteger:d];
+    v9 = [identifiersByTaskID objectForKeyedSubscript:v8];
     v15 = 134218242;
-    v16 = a3;
+    dCopy = d;
     v17 = 2112;
     v18 = v9;
     _os_log_impl(&dword_0, v6, OS_LOG_TYPE_INFO, "Releasing background task assertion %lu for identifier %@.", &v15, 0x16u);
   }
 
   v10 = +[UIApplication jsa_sharedApplicationIfNotExtension];
-  [v10 endBackgroundTask:a3];
+  [v10 endBackgroundTask:d];
 
-  v11 = [(BCBackgroundTaskAssertion *)self taskIDs];
-  v12 = [NSNumber numberWithUnsignedInteger:a3];
-  [v11 removeObject:v12];
+  taskIDs = [(BCBackgroundTaskAssertion *)self taskIDs];
+  v12 = [NSNumber numberWithUnsignedInteger:d];
+  [taskIDs removeObject:v12];
 
-  v13 = [(BCBackgroundTaskAssertion *)self identifiersByTaskID];
-  v14 = [NSNumber numberWithUnsignedInteger:a3];
-  [v13 removeObjectForKey:v14];
+  identifiersByTaskID2 = [(BCBackgroundTaskAssertion *)self identifiersByTaskID];
+  v14 = [NSNumber numberWithUnsignedInteger:d];
+  [identifiersByTaskID2 removeObjectForKey:v14];
 }
 
-- (void)dq_releaseAssertionForIdentifier:(id)a3 signalBlock:(id)a4
+- (void)dq_releaseAssertionForIdentifier:(id)identifier signalBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(BCBackgroundTaskAssertion *)self queue];
-  dispatch_assert_queue_V2(v8);
+  identifierCopy = identifier;
+  blockCopy = block;
+  queue = [(BCBackgroundTaskAssertion *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v9 = [(BCBackgroundTaskAssertion *)self identifiersByTaskID];
-  v10 = [v9 allValues];
-  v11 = [v10 containsObject:v6];
+  identifiersByTaskID = [(BCBackgroundTaskAssertion *)self identifiersByTaskID];
+  allValues = [identifiersByTaskID allValues];
+  v11 = [allValues containsObject:identifierCopy];
 
   if (v11)
   {
-    v12 = [(BCBackgroundTaskAssertion *)self taskIDs];
-    v13 = [v12 objectEnumerator];
+    taskIDs = [(BCBackgroundTaskAssertion *)self taskIDs];
+    objectEnumerator = [taskIDs objectEnumerator];
 
-    v14 = [v13 nextObject];
-    if (!v14)
+    nextObject = [objectEnumerator nextObject];
+    if (!nextObject)
     {
       goto LABEL_7;
     }
 
     while (1)
     {
-      v15 = [(BCBackgroundTaskAssertion *)self identifiersByTaskID];
-      v16 = [v15 objectForKeyedSubscript:v14];
+      identifiersByTaskID2 = [(BCBackgroundTaskAssertion *)self identifiersByTaskID];
+      v16 = [identifiersByTaskID2 objectForKeyedSubscript:nextObject];
 
-      if ([v6 isEqualToString:v16])
+      if ([identifierCopy isEqualToString:v16])
       {
         break;
       }
 
-      v17 = [v13 nextObject];
+      nextObject2 = [objectEnumerator nextObject];
 
-      v14 = v17;
-      if (!v17)
+      nextObject = nextObject2;
+      if (!nextObject2)
       {
         goto LABEL_7;
       }
     }
 
-    v18 = [v14 unsignedIntegerValue];
+    unsignedIntegerValue = [nextObject unsignedIntegerValue];
 
-    if (v18 != UIBackgroundTaskInvalid)
+    if (unsignedIntegerValue != UIBackgroundTaskInvalid)
     {
       v22 = BCIMLog();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
       {
         v27 = 134218242;
-        v28 = v18;
+        v28 = unsignedIntegerValue;
         v29 = 2112;
-        v30 = v6;
+        v30 = identifierCopy;
         _os_log_impl(&dword_0, v22, OS_LOG_TYPE_INFO, "Releasing background task assertion %lu for identifier %@.", &v27, 0x16u);
       }
 
-      v23 = [(BCBackgroundTaskAssertion *)self identifiersByTaskID];
-      v24 = [NSNumber numberWithUnsignedInteger:v18];
-      [v23 removeObjectForKey:v24];
+      identifiersByTaskID3 = [(BCBackgroundTaskAssertion *)self identifiersByTaskID];
+      v24 = [NSNumber numberWithUnsignedInteger:unsignedIntegerValue];
+      [identifiersByTaskID3 removeObjectForKey:v24];
 
-      v25 = [(BCBackgroundTaskAssertion *)self taskIDs];
-      v26 = [NSNumber numberWithUnsignedInteger:v18];
-      [v25 removeObject:v26];
+      taskIDs2 = [(BCBackgroundTaskAssertion *)self taskIDs];
+      v26 = [NSNumber numberWithUnsignedInteger:unsignedIntegerValue];
+      [taskIDs2 removeObject:v26];
 
       v19 = +[UIApplication jsa_sharedApplicationIfNotExtension];
-      [v19 endBackgroundTask:v18];
+      [v19 endBackgroundTask:unsignedIntegerValue];
     }
 
     else
@@ -323,7 +323,7 @@ LABEL_7:
     }
   }
 
-  v20 = objc_retainBlock(v7);
+  v20 = objc_retainBlock(blockCopy);
   v21 = v20;
   if (v20)
   {

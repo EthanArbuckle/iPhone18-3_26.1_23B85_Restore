@@ -1,32 +1,32 @@
 @interface SFWebAppDataController
-- (SFWebAppDataController)initWithWebClipIdentifier:(id)a3;
-- (void)clearWebsiteDataWithCompletion:(id)a3;
+- (SFWebAppDataController)initWithWebClipIdentifier:(id)identifier;
+- (void)clearWebsiteDataWithCompletion:(id)completion;
 @end
 
 @implementation SFWebAppDataController
 
-- (SFWebAppDataController)initWithWebClipIdentifier:(id)a3
+- (SFWebAppDataController)initWithWebClipIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v10.receiver = self;
   v10.super_class = SFWebAppDataController;
   v6 = [(SFWebAppDataController *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_webClipIdentifier, a3);
+    objc_storeStrong(&v6->_webClipIdentifier, identifier);
     v8 = v7;
   }
 
   return v7;
 }
 
-- (void)clearWebsiteDataWithCompletion:(id)a3
+- (void)clearWebsiteDataWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v5 = v4;
+    v5 = completionCopy;
   }
 
   else
@@ -50,7 +50,7 @@
 
   else
   {
-    v9 = [(_UIAsyncInvocation *)self->_cancelViewServiceRequest invoke];
+    invoke = [(_UIAsyncInvocation *)self->_cancelViewServiceRequest invoke];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __57__SFWebAppDataController_clearWebsiteDataWithCompletion___block_invoke_3;

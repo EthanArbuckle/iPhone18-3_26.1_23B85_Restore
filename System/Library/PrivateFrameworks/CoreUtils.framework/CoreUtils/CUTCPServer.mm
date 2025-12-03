@@ -1,25 +1,25 @@
 @interface CUTCPServer
 - ($4FF8D77539A8BD95DCE0A545902499A9)interfaceAddress;
-- (BOOL)activateDirectAndReturnError:(id *)a3;
+- (BOOL)activateDirectAndReturnError:(id *)error;
 - (CUTCPServer)init;
 - (id)description;
 - (id)detailedDescription;
-- (void)_handleConnectionAccept:(int)a3;
-- (void)_handleConnectionInvalidated:(id)a3 addr:(id *)a4;
+- (void)_handleConnectionAccept:(int)accept;
+- (void)_handleConnectionInvalidated:(id)invalidated addr:(id *)addr;
 - (void)_invalidated;
-- (void)activateWithCompletion:(id)a3;
+- (void)activateWithCompletion:(id)completion;
 - (void)dealloc;
 - (void)invalidate;
-- (void)setInterfaceAddress:(id *)a3;
-- (void)setLabel:(id)a3;
+- (void)setInterfaceAddress:(id *)address;
+- (void)setLabel:(id)label;
 @end
 
 @implementation CUTCPServer
 
-- (void)setInterfaceAddress:(id *)a3
+- (void)setInterfaceAddress:(id *)address
 {
-  var0 = a3->var0;
-  *(&self->_interfaceAddress.v6.sin6_addr + 4) = *(&a3->var2.sin6_addr + 4);
+  var0 = address->var0;
+  *(&self->_interfaceAddress.v6.sin6_addr + 4) = *(&address->var2.sin6_addr + 4);
   self->_interfaceAddress.sa = var0;
 }
 
@@ -30,23 +30,23 @@
   return self;
 }
 
-- (void)_handleConnectionInvalidated:(id)a3 addr:(id *)a4
+- (void)_handleConnectionInvalidated:(id)invalidated addr:(id *)addr
 {
-  v6 = a3;
+  invalidatedCopy = invalidated;
   ucat = self->_ucat;
-  v14 = v6;
+  v14 = invalidatedCopy;
   if (ucat->var0 <= 30)
   {
     if (ucat->var0 != -1)
     {
 LABEL_3:
-      LogPrintF(ucat, "[CUTCPServer _handleConnectionInvalidated:addr:]", 0x1Eu, "Connection ended from %##a\n", v7, v8, v9, v10, a4);
-      v6 = v14;
+      LogPrintF(ucat, "[CUTCPServer _handleConnectionInvalidated:addr:]", 0x1Eu, "Connection ended from %##a\n", v7, v8, v9, v10, addr);
+      invalidatedCopy = v14;
       goto LABEL_5;
     }
 
     v12 = _LogCategory_Initialize(ucat, 0x1Eu);
-    v6 = v14;
+    invalidatedCopy = v14;
     if (v12)
     {
       ucat = self->_ucat;
@@ -55,7 +55,7 @@ LABEL_3:
   }
 
 LABEL_5:
-  [(NSMutableSet *)self->_connections removeObject:v6];
+  [(NSMutableSet *)self->_connections removeObject:invalidatedCopy];
   connectionEndedHandler = self->_connectionEndedHandler;
   if (connectionEndedHandler)
   {
@@ -63,11 +63,11 @@ LABEL_5:
   }
 }
 
-- (void)_handleConnectionAccept:(int)a3
+- (void)_handleConnectionAccept:(int)accept
 {
   memset(v37, 0, 28);
   v36 = 28;
-  v8 = accept(a3, v37, &v36);
+  v8 = accept(accept, v37, &v36);
   if ((v8 & 0x80000000) != 0)
   {
     if (*__error())
@@ -407,7 +407,7 @@ LABEL_6:
   return [*(v9 + 32) _invalidated];
 }
 
-- (BOOL)activateDirectAndReturnError:(id *)a3
+- (BOOL)activateDirectAndReturnError:(id *)error
 {
   v55 = -1;
   v56 = -1;
@@ -565,8 +565,8 @@ LABEL_26:
   bonjourAdvertiser = self->_bonjourAdvertiser;
   if (bonjourAdvertiser)
   {
-    v34 = [(CUBonjourAdvertiser *)bonjourAdvertiser label];
-    if (v34)
+    label = [(CUBonjourAdvertiser *)bonjourAdvertiser label];
+    if (label)
     {
     }
 
@@ -622,10 +622,10 @@ LABEL_46:
           }
         }
 
-        if (a3)
+        if (error)
         {
           v43 = v35;
-          *a3 = v35;
+          *error = v35;
         }
 
         goto LABEL_51;
@@ -667,17 +667,17 @@ uint64_t __44__CUTCPServer_activateDirectAndReturnError___block_invoke_4(uint64_
   return [v4 _invalidated];
 }
 
-- (void)activateWithCompletion:(id)a3
+- (void)activateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __38__CUTCPServer_activateWithCompletion___block_invoke;
   v7[3] = &unk_1E73A49A0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -694,13 +694,13 @@ void __38__CUTCPServer_activateWithCompletion___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
-  objc_storeStrong(&self->_label, a3);
-  v13 = a3;
+  objc_storeStrong(&self->_label, label);
+  labelCopy = label;
   v5 = qword_1EADEA5F8;
-  v6 = v13;
-  [v13 UTF8String];
+  v6 = labelCopy;
+  [labelCopy UTF8String];
   LogCategoryReplaceF(&self->_ucat, "%s-%s", v7, v8, v9, v10, v11, v12, v5);
 }
 

@@ -1,5 +1,5 @@
 @interface PKPassFaceViewCategoryVisualizationRendererState
-- (char)initWithCurrentRendererState:(void *)a1;
+- (char)initWithCurrentRendererState:(void *)state;
 - (void)dealloc;
 @end
 
@@ -13,14 +13,14 @@
   [(PKPassFaceViewCategoryVisualizationRendererState *)&v3 dealloc];
 }
 
-- (char)initWithCurrentRendererState:(void *)a1
+- (char)initWithCurrentRendererState:(void *)state
 {
-  if (!a1)
+  if (!state)
   {
     return 0;
   }
 
-  v7.receiver = a1;
+  v7.receiver = state;
   v7.super_class = PKPassFaceViewCategoryVisualizationRendererState;
   v3 = objc_msgSendSuper2(&v7, sel_init);
   if (v3)

@@ -1,5 +1,5 @@
 @interface CKDetailsControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)accessibilityPerformEscape;
 - (id)locationSendOrRequestCell;
 - (id)locationStartShareCell;
@@ -9,16 +9,16 @@
 
 @implementation CKDetailsControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CKDetailsController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"CKDetailsController" hasProperty:@"tableView" withType:"@"];
-  [v3 validateClass:@"CKDetailsController" hasInstanceMethod:@"screenShareContextButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKDetailsController" hasInstanceMethod:@"groupPhotoHeaderViewController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CNGroupIdentityHeaderViewController" hasInstanceMethod:@"actionButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKDetailsController" hasInstanceMethod:@"locationSendOrRequestCell" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKDetailsController" hasInstanceMethod:@"locationStartShareCell" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CKDetailsController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"CKDetailsController" hasProperty:@"tableView" withType:"@"];
+  [validationsCopy validateClass:@"CKDetailsController" hasInstanceMethod:@"screenShareContextButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKDetailsController" hasInstanceMethod:@"groupPhotoHeaderViewController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CNGroupIdentityHeaderViewController" hasInstanceMethod:@"actionButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKDetailsController" hasInstanceMethod:@"locationSendOrRequestCell" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKDetailsController" hasInstanceMethod:@"locationStartShareCell" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -46,20 +46,20 @@
     v11 = __62__CKDetailsControllerAccessibility_accessibilityPerformEscape__block_invoke;
     v12 = &unk_29F2B08B8;
     v13 = v5;
-    v14 = self;
+    selfCopy = self;
     AXPerformSafeBlock();
 
-    v6 = 1;
+    accessibilityPerformEscape = 1;
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = CKDetailsControllerAccessibility;
-    v6 = [(CKDetailsControllerAccessibility *)&v8 accessibilityPerformEscape];
+    accessibilityPerformEscape = [(CKDetailsControllerAccessibility *)&v8 accessibilityPerformEscape];
   }
 
-  return v6;
+  return accessibilityPerformEscape;
 }
 
 void __62__CKDetailsControllerAccessibility_accessibilityPerformEscape__block_invoke(uint64_t a1)
@@ -80,20 +80,20 @@ void __62__CKDetailsControllerAccessibility_accessibilityPerformEscape__block_in
 {
   v4.receiver = self;
   v4.super_class = CKDetailsControllerAccessibility;
-  v2 = [(CKDetailsControllerAccessibility *)&v4 locationSendOrRequestCell];
-  [v2 setAccessibilityTraits:*MEMORY[0x29EDC7F70]];
+  locationSendOrRequestCell = [(CKDetailsControllerAccessibility *)&v4 locationSendOrRequestCell];
+  [locationSendOrRequestCell setAccessibilityTraits:*MEMORY[0x29EDC7F70]];
 
-  return v2;
+  return locationSendOrRequestCell;
 }
 
 - (id)locationStartShareCell
 {
   v4.receiver = self;
   v4.super_class = CKDetailsControllerAccessibility;
-  v2 = [(CKDetailsControllerAccessibility *)&v4 locationStartShareCell];
-  [v2 setAccessibilityTraits:*MEMORY[0x29EDC7F70]];
+  locationStartShareCell = [(CKDetailsControllerAccessibility *)&v4 locationStartShareCell];
+  [locationStartShareCell setAccessibilityTraits:*MEMORY[0x29EDC7F70]];
 
-  return v2;
+  return locationStartShareCell;
 }
 
 @end

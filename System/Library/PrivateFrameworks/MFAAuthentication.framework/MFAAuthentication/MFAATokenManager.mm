@@ -1,12 +1,12 @@
 @interface MFAATokenManager
-+ (BOOL)isTokenValidForFeatures:(unint64_t)a3 token:(id)a4;
++ (BOOL)isTokenValidForFeatures:(unint64_t)features token:(id)token;
 + (id)sharedManager;
 - (MFAATokenManager)init;
 - (id)_init;
 - (void)_init;
-- (void)confirmActivationForAuthToken:(id)a3 withUUID:(id)a4 completionHandler:(id)a5;
-- (void)requestActivationForAuthToken:(id)a3 withUUID:(id)a4 completionHandler:(id)a5;
-- (void)requestMetadataForAuthToken:(id)a3 withUUID:(id)a4 requestedLocale:(id)a5 requestInfo:(id)a6 completionHandler:(id)a7;
+- (void)confirmActivationForAuthToken:(id)token withUUID:(id)d completionHandler:(id)handler;
+- (void)requestActivationForAuthToken:(id)token withUUID:(id)d completionHandler:(id)handler;
+- (void)requestMetadataForAuthToken:(id)token withUUID:(id)d requestedLocale:(id)locale requestInfo:(id)info completionHandler:(id)handler;
 @end
 
 @implementation MFAATokenManager
@@ -76,14 +76,14 @@
   return v6;
 }
 
-- (void)requestMetadataForAuthToken:(id)a3 withUUID:(id)a4 requestedLocale:(id)a5 requestInfo:(id)a6 completionHandler:(id)a7
+- (void)requestMetadataForAuthToken:(id)token withUUID:(id)d requestedLocale:(id)locale requestInfo:(id)info completionHandler:(id)handler
 {
   v46 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  tokenCopy = token;
+  dCopy = d;
+  localeCopy = locale;
+  infoCopy = info;
+  handlerCopy = handler;
   if (gLogObjects)
   {
     v17 = gNumLogObjects < 3;
@@ -134,46 +134,46 @@
 
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
   {
-    v22 = [v12 length];
-    v23 = [v14 localeIdentifier];
-    v24 = v23;
+    v22 = [tokenCopy length];
+    localeIdentifier = [localeCopy localeIdentifier];
+    v24 = localeIdentifier;
     *buf = 138479107;
     v25 = "YES";
     v36 = 2048;
-    v35 = v12;
-    if (!v16)
+    v35 = tokenCopy;
+    if (!handlerCopy)
     {
       v25 = "NO";
     }
 
     v37 = v22;
     v38 = 2112;
-    v39 = v13;
+    v39 = dCopy;
     v40 = 2112;
-    v41 = v23;
+    v41 = localeIdentifier;
     v42 = 2113;
-    v43 = v15;
+    v43 = infoCopy;
     v44 = 2080;
     v45 = v25;
     _os_log_impl(&dword_25627E000, v20, OS_LOG_TYPE_DEFAULT, "token: %{private}@, token.length: %lu, uuid: %@, requestedLocale: %@, requestInfo: %{private}@, completionHandler: %s", buf, 0x3Eu);
   }
 
-  if (v16)
+  if (handlerCopy)
   {
-    v26 = [(MFAATokenManager *)self xpcConnection];
+    xpcConnection = [(MFAATokenManager *)self xpcConnection];
     v32[0] = MEMORY[0x277D85DD0];
     v32[1] = 3221225472;
     v32[2] = __103__MFAATokenManager_requestMetadataForAuthToken_withUUID_requestedLocale_requestInfo_completionHandler___block_invoke;
     v32[3] = &unk_279831188;
-    v27 = v16;
+    v27 = handlerCopy;
     v33 = v27;
-    v28 = [v26 remoteObjectProxyWithErrorHandler:v32];
+    v28 = [xpcConnection remoteObjectProxyWithErrorHandler:v32];
     v30[0] = MEMORY[0x277D85DD0];
     v30[1] = 3221225472;
     v30[2] = __103__MFAATokenManager_requestMetadataForAuthToken_withUUID_requestedLocale_requestInfo_completionHandler___block_invoke_32;
     v30[3] = &unk_2798311B0;
     v31 = v27;
-    [v28 requestMetadataForToken:v12 withUUID:v13 requestedLocale:v14 requestInfo:v15 withReply:v30];
+    [v28 requestMetadataForToken:tokenCopy withUUID:dCopy requestedLocale:localeCopy requestInfo:infoCopy withReply:v30];
   }
 
   v29 = *MEMORY[0x277D85DE8];
@@ -218,12 +218,12 @@ void __103__MFAATokenManager_requestMetadataForAuthToken_withUUID_requestedLocal
   (*(v7 + 16))(v7, 0, 0, 0, v8);
 }
 
-- (void)requestActivationForAuthToken:(id)a3 withUUID:(id)a4 completionHandler:(id)a5
+- (void)requestActivationForAuthToken:(id)token withUUID:(id)d completionHandler:(id)handler
 {
   v31 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  tokenCopy = token;
+  dCopy = d;
+  handlerCopy = handler;
   if (gLogObjects)
   {
     v11 = gNumLogObjects < 3;
@@ -276,35 +276,35 @@ void __103__MFAATokenManager_requestMetadataForAuthToken_withUUID_requestedLocal
   {
     v16 = "YES";
     *buf = 138478339;
-    v26 = v8;
-    if (!v10)
+    v26 = tokenCopy;
+    if (!handlerCopy)
     {
       v16 = "NO";
     }
 
     v27 = 2112;
-    v28 = v9;
+    v28 = dCopy;
     v29 = 2080;
     v30 = v16;
     _os_log_impl(&dword_25627E000, v14, OS_LOG_TYPE_DEFAULT, "token: %{private}@, uuid: %@, completionHandler: %s", buf, 0x20u);
   }
 
-  if (v10)
+  if (handlerCopy)
   {
-    v17 = [(MFAATokenManager *)self xpcConnection];
+    xpcConnection = [(MFAATokenManager *)self xpcConnection];
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = __77__MFAATokenManager_requestActivationForAuthToken_withUUID_completionHandler___block_invoke;
     v23[3] = &unk_279831188;
-    v18 = v10;
+    v18 = handlerCopy;
     v24 = v18;
-    v19 = [v17 remoteObjectProxyWithErrorHandler:v23];
+    v19 = [xpcConnection remoteObjectProxyWithErrorHandler:v23];
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = __77__MFAATokenManager_requestActivationForAuthToken_withUUID_completionHandler___block_invoke_34;
     v21[3] = &unk_2798311D8;
     v22 = v18;
-    [v19 requestActivationForToken:v8 withUUID:v9 withReply:v21];
+    [v19 requestActivationForToken:tokenCopy withUUID:dCopy withReply:v21];
   }
 
   v20 = *MEMORY[0x277D85DE8];
@@ -349,12 +349,12 @@ void __77__MFAATokenManager_requestActivationForAuthToken_withUUID_completionHan
   (*(v7 + 16))(v7, 0, v8);
 }
 
-- (void)confirmActivationForAuthToken:(id)a3 withUUID:(id)a4 completionHandler:(id)a5
+- (void)confirmActivationForAuthToken:(id)token withUUID:(id)d completionHandler:(id)handler
 {
   v31 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  tokenCopy = token;
+  dCopy = d;
+  handlerCopy = handler;
   if (gLogObjects)
   {
     v11 = gNumLogObjects < 3;
@@ -407,35 +407,35 @@ void __77__MFAATokenManager_requestActivationForAuthToken_withUUID_completionHan
   {
     v16 = "YES";
     *buf = 138478339;
-    v26 = v8;
-    if (!v10)
+    v26 = tokenCopy;
+    if (!handlerCopy)
     {
       v16 = "NO";
     }
 
     v27 = 2112;
-    v28 = v9;
+    v28 = dCopy;
     v29 = 2080;
     v30 = v16;
     _os_log_impl(&dword_25627E000, v14, OS_LOG_TYPE_DEFAULT, "token: %{private}@, uuid: %@, completionHandler: %s", buf, 0x20u);
   }
 
-  if (v10)
+  if (handlerCopy)
   {
-    v17 = [(MFAATokenManager *)self xpcConnection];
+    xpcConnection = [(MFAATokenManager *)self xpcConnection];
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = __77__MFAATokenManager_confirmActivationForAuthToken_withUUID_completionHandler___block_invoke;
     v23[3] = &unk_279831188;
-    v18 = v10;
+    v18 = handlerCopy;
     v24 = v18;
-    v19 = [v17 remoteObjectProxyWithErrorHandler:v23];
+    v19 = [xpcConnection remoteObjectProxyWithErrorHandler:v23];
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = __77__MFAATokenManager_confirmActivationForAuthToken_withUUID_completionHandler___block_invoke_36;
     v21[3] = &unk_279831188;
     v22 = v18;
-    [v19 confirmActivationForToken:v8 withUUID:v9 withReply:v21];
+    [v19 confirmActivationForToken:tokenCopy withUUID:dCopy withReply:v21];
   }
 
   v20 = *MEMORY[0x277D85DE8];
@@ -486,7 +486,7 @@ void __77__MFAATokenManager_confirmActivationForAuthToken_withUUID_completionHan
   block[1] = 3221225472;
   block[2] = __33__MFAATokenManager_sharedManager__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedManager_once != -1)
   {
     dispatch_once(&sharedManager_once, block);
@@ -504,10 +504,10 @@ uint64_t __33__MFAATokenManager_sharedManager__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-+ (BOOL)isTokenValidForFeatures:(unint64_t)a3 token:(id)a4
++ (BOOL)isTokenValidForFeatures:(unint64_t)features token:(id)token
 {
   v30 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  tokenCopy = token;
   v24 = 0;
   v25 = &v24;
   v26 = 0x2020000000;
@@ -516,11 +516,11 @@ uint64_t __33__MFAATokenManager_sharedManager__block_invoke(uint64_t a1)
   v21 = &v20;
   v22 = 0x2020000000;
   v23 = 0;
-  if (v5 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  if (tokenCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v6 = v5;
-    v19[0] = [v5 bytes];
-    v19[1] = [v5 length];
+    v6 = tokenCopy;
+    v19[0] = [tokenCopy bytes];
+    v19[1] = [tokenCopy length];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __50__MFAATokenManager_isTokenValidForFeatures_token___block_invoke;
@@ -547,7 +547,7 @@ uint64_t __33__MFAATokenManager_sharedManager__block_invoke(uint64_t a1)
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v29 = a3;
+      featuresCopy = features;
       _os_log_impl(&dword_25627E000, v7, OS_LOG_TYPE_DEFAULT, "features: 0x%016lX", buf, 0xCu);
     }
 
@@ -580,18 +580,18 @@ uint64_t __33__MFAATokenManager_sharedManager__block_invoke(uint64_t a1)
       }
 
       *buf = 136315138;
-      v29 = v11;
+      featuresCopy = v11;
       _os_log_impl(&dword_25627E000, v9, OS_LOG_TYPE_DEFAULT, "foundProductCapabilities: %s", buf, 0xCu);
     }
 
     if (*(v21 + 24) == 1)
     {
-      v12 = (a3 & ~v25[3]) == 0;
+      v12 = (features & ~v25[3]) == 0;
     }
 
     else
     {
-      v12 = a3 < 2;
+      v12 = features < 2;
     }
 
     if (gLogObjects && gNumLogObjects >= 3)
@@ -619,7 +619,7 @@ uint64_t __33__MFAATokenManager_sharedManager__block_invoke(uint64_t a1)
       }
 
       *buf = 136315138;
-      v29 = v15;
+      featuresCopy = v15;
       _os_log_impl(&dword_25627E000, v13, OS_LOG_TYPE_DEFAULT, "tokenValidForFeatures: %s", buf, 0xCu);
     }
   }

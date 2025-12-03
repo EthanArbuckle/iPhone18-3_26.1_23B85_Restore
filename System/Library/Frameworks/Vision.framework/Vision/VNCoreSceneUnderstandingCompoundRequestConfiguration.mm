@@ -1,14 +1,14 @@
 @interface VNCoreSceneUnderstandingCompoundRequestConfiguration
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation VNCoreSceneUnderstandingCompoundRequestConfiguration
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = VNCoreSceneUnderstandingCompoundRequestConfiguration;
-  v4 = [(VNRequestConfiguration *)&v7 copyWithZone:a3];
+  v4 = [(VNRequestConfiguration *)&v7 copyWithZone:zone];
   v5 = v4;
   if (v4)
   {

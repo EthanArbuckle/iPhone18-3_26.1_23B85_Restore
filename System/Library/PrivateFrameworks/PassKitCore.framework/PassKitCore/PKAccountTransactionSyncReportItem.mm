@@ -1,34 +1,34 @@
 @interface PKAccountTransactionSyncReportItem
-- (BOOL)isEqual:(id)a3;
-- (PKAccountTransactionSyncReportItem)initWithCoder:(id)a3;
-- (PKAccountTransactionSyncReportItem)initWithTransactionServiceIdentifier:(id)a3 recordName:(id)a4 recordType:(id)a5 zoneName:(id)a6 altDSID:(id)a7;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (PKAccountTransactionSyncReportItem)initWithCoder:(id)coder;
+- (PKAccountTransactionSyncReportItem)initWithTransactionServiceIdentifier:(id)identifier recordName:(id)name recordType:(id)type zoneName:(id)zoneName altDSID:(id)d;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKAccountTransactionSyncReportItem
 
-- (PKAccountTransactionSyncReportItem)initWithTransactionServiceIdentifier:(id)a3 recordName:(id)a4 recordType:(id)a5 zoneName:(id)a6 altDSID:(id)a7
+- (PKAccountTransactionSyncReportItem)initWithTransactionServiceIdentifier:(id)identifier recordName:(id)name recordType:(id)type zoneName:(id)zoneName altDSID:(id)d
 {
-  v20 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  identifierCopy = identifier;
+  nameCopy = name;
+  typeCopy = type;
+  zoneNameCopy = zoneName;
+  dCopy = d;
   v21.receiver = self;
   v21.super_class = PKAccountTransactionSyncReportItem;
   v17 = [(PKAccountTransactionSyncReportItem *)&v21 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_transactionServiceIdentifier, a3);
-    objc_storeStrong(&v18->_recordName, a4);
-    objc_storeStrong(&v18->_recordType, a5);
-    objc_storeStrong(&v18->_zoneName, a6);
-    objc_storeStrong(&v18->_altDSID, a7);
+    objc_storeStrong(&v17->_transactionServiceIdentifier, identifier);
+    objc_storeStrong(&v18->_recordName, name);
+    objc_storeStrong(&v18->_recordType, type);
+    objc_storeStrong(&v18->_zoneName, zoneName);
+    objc_storeStrong(&v18->_altDSID, d);
   }
 
   return v18;
@@ -47,31 +47,31 @@
   return v4;
 }
 
-- (PKAccountTransactionSyncReportItem)initWithCoder:(id)a3
+- (PKAccountTransactionSyncReportItem)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = PKAccountTransactionSyncReportItem;
   v5 = [(PKAccountTransactionSyncReportItem *)&v17 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"transactionIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"transactionIdentifier"];
     transactionServiceIdentifier = v5->_transactionServiceIdentifier;
     v5->_transactionServiceIdentifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"recordIdentifier"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"recordIdentifier"];
     recordName = v5->_recordName;
     v5->_recordName = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"recordType"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"recordType"];
     recordType = v5->_recordType;
     v5->_recordType = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"zoneName"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"zoneName"];
     zoneName = v5->_zoneName;
     v5->_zoneName = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"altDSID"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"altDSID"];
     altDSID = v5->_altDSID;
     v5->_altDSID = v14;
   }
@@ -79,24 +79,24 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   transactionServiceIdentifier = self->_transactionServiceIdentifier;
-  v5 = a3;
-  [v5 encodeObject:transactionServiceIdentifier forKey:@"transactionIdentifier"];
-  [v5 encodeObject:self->_recordName forKey:@"recordIdentifier"];
-  [v5 encodeObject:self->_recordType forKey:@"recordType"];
-  [v5 encodeObject:self->_zoneName forKey:@"zoneName"];
-  [v5 encodeObject:self->_altDSID forKey:@"altDSID"];
+  coderCopy = coder;
+  [coderCopy encodeObject:transactionServiceIdentifier forKey:@"transactionIdentifier"];
+  [coderCopy encodeObject:self->_recordName forKey:@"recordIdentifier"];
+  [coderCopy encodeObject:self->_recordType forKey:@"recordType"];
+  [coderCopy encodeObject:self->_zoneName forKey:@"zoneName"];
+  [coderCopy encodeObject:self->_altDSID forKey:@"altDSID"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4[1];
+    v5 = equalCopy[1];
     v6 = self->_transactionServiceIdentifier;
     v7 = v5;
     v8 = v7;
@@ -120,7 +120,7 @@
       }
     }
 
-    v10 = v4[2];
+    v10 = equalCopy[2];
     v6 = self->_recordName;
     v11 = v10;
     v8 = v11;
@@ -144,7 +144,7 @@
       }
     }
 
-    v12 = v4[3];
+    v12 = equalCopy[3];
     v6 = self->_recordType;
     v13 = v12;
     v8 = v13;
@@ -168,7 +168,7 @@
       }
     }
 
-    v14 = v4[4];
+    v14 = equalCopy[4];
     v6 = self->_zoneName;
     v15 = v14;
     v8 = v15;
@@ -177,7 +177,7 @@
 
 LABEL_27:
       altDSID = self->_altDSID;
-      v17 = v4[5];
+      v17 = equalCopy[5];
       v6 = altDSID;
       v18 = v17;
       v8 = v18;
@@ -224,13 +224,13 @@ LABEL_33:
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  [v3 safelyAddObject:self->_transactionServiceIdentifier];
-  [v3 safelyAddObject:self->_recordName];
-  [v3 safelyAddObject:self->_recordType];
-  [v3 safelyAddObject:self->_zoneName];
-  [v3 safelyAddObject:self->_altDSID];
-  v4 = PKCombinedHash(17, v3);
+  array = [MEMORY[0x1E695DF70] array];
+  [array safelyAddObject:self->_transactionServiceIdentifier];
+  [array safelyAddObject:self->_recordName];
+  [array safelyAddObject:self->_recordType];
+  [array safelyAddObject:self->_zoneName];
+  [array safelyAddObject:self->_altDSID];
+  v4 = PKCombinedHash(17, array);
 
   return v4;
 }
@@ -248,26 +248,26 @@ LABEL_33:
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_transactionServiceIdentifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_transactionServiceIdentifier copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
-  v8 = [(NSString *)self->_recordName copyWithZone:a3];
+  v8 = [(NSString *)self->_recordName copyWithZone:zone];
   v9 = v5[2];
   v5[2] = v8;
 
-  v10 = [(NSString *)self->_recordType copyWithZone:a3];
+  v10 = [(NSString *)self->_recordType copyWithZone:zone];
   v11 = v5[3];
   v5[3] = v10;
 
-  v12 = [(NSString *)self->_zoneName copyWithZone:a3];
+  v12 = [(NSString *)self->_zoneName copyWithZone:zone];
   v13 = v5[4];
   v5[4] = v12;
 
-  v14 = [(NSString *)self->_altDSID copyWithZone:a3];
+  v14 = [(NSString *)self->_altDSID copyWithZone:zone];
   v15 = v5[5];
   v5[5] = v14;
 

@@ -8,13 +8,13 @@
 
 - (BOOL)nc_iconWouldUseApplicationIdentifierForFormat:()UserNotificationsUIKit
 {
-  v1 = [a1 _bestVariantForFormat:?];
-  v2 = [v1 imageData];
-  v3 = [v1 imagePath];
-  v4 = [v1 imageName];
-  v5 = [v1 bundlePath];
-  v6 = [v1 applicationIdentifier];
-  v7 = ![v2 length] && (!v4 || !v5) && !objc_msgSend(v3, "length") && objc_msgSend(v6, "length") != 0;
+  v1 = [self _bestVariantForFormat:?];
+  imageData = [v1 imageData];
+  imagePath = [v1 imagePath];
+  imageName = [v1 imageName];
+  bundlePath = [v1 bundlePath];
+  applicationIdentifier = [v1 applicationIdentifier];
+  v7 = ![imageData length] && (!imageName || !bundlePath) && !objc_msgSend(imagePath, "length") && objc_msgSend(applicationIdentifier, "length") != 0;
 
   return v7;
 }
@@ -31,7 +31,7 @@
   v15 = a4;
   v16 = a2;
   v17 = a5;
-  block[4] = a1;
+  block[4] = self;
   v12 = v10;
   dispatch_async(v11, block);
 }
@@ -39,35 +39,35 @@
 - (id)nc_imageForFormat:()UserNotificationsUIKit scale:userInterfaceStyle:usedUserInterfaceStyle:
 {
   v77 = *MEMORY[0x277D85DE8];
-  v9 = [a1 _bestVariantForFormat:?];
-  v10 = [v9 imageData];
-  v11 = [v9 imagePath];
-  v12 = [v9 imageName];
-  v13 = [v9 bundlePath];
-  v14 = [v9 applicationIdentifier];
-  v15 = [v9 systemImageName];
+  v9 = [self _bestVariantForFormat:?];
+  imageData = [v9 imageData];
+  imagePath = [v9 imagePath];
+  imageName = [v9 imageName];
+  bundlePath = [v9 bundlePath];
+  applicationIdentifier = [v9 applicationIdentifier];
+  systemImageName = [v9 systemImageName];
   v67 = [v9 uti];
-  v66 = [v9 dateComponentDetails];
-  v16 = [v9 isPrecomposed];
-  v68 = v15;
-  v69 = v14;
-  if (v12)
+  dateComponentDetails = [v9 dateComponentDetails];
+  isPrecomposed = [v9 isPrecomposed];
+  v68 = systemImageName;
+  v69 = applicationIdentifier;
+  if (imageName)
   {
-    v17 = v12;
+    v17 = imageName;
   }
 
   else
   {
-    v17 = v15;
+    v17 = systemImageName;
   }
 
-  v18 = [MEMORY[0x277CCACA8] stringWithFormat:@"sectionInfoIcon.%@.%@.%@.%@.%ld.%d", v17, v13, v11, v14, a4, v16];
-  v19 = [v10 length];
+  v18 = [MEMORY[0x277CCACA8] stringWithFormat:@"sectionInfoIcon.%@.%@.%@.%@.%ld.%d", v17, bundlePath, imagePath, applicationIdentifier, a4, isPrecomposed];
+  v19 = [imageData length];
   v70 = v18;
   if (v19)
   {
-    v20 = [MEMORY[0x277D755B8] imageWithData:v10 scale:a2];
-    if (v16)
+    v20 = [MEMORY[0x277D755B8] imageWithData:imageData scale:a2];
+    if (isPrecomposed)
     {
 LABEL_7:
       v22 = 0;
@@ -98,24 +98,24 @@ LABEL_62:
     goto LABEL_63;
   }
 
-  v64 = v11;
+  v64 = imagePath;
   v23 = +[NCUIMappedImageCache sharedCache];
   v20 = [v23 imageForKey:v18];
 
   if (v20)
   {
     v22 = 0;
-    v11 = v64;
+    imagePath = v64;
     goto LABEL_63;
   }
 
-  if (v12 && v13)
+  if (imageName && bundlePath)
   {
-    v24 = [MEMORY[0x277CCA8D8] bundleWithPath:v13];
-    v11 = v64;
+    v24 = [MEMORY[0x277CCA8D8] bundleWithPath:bundlePath];
+    imagePath = v64;
     if (v24)
     {
-      v25 = [MEMORY[0x277D755B8] imageNamed:v12 inBundle:v24];
+      v25 = [MEMORY[0x277D755B8] imageNamed:imageName inBundle:v24];
       if (v25)
       {
         v20 = v25;
@@ -130,7 +130,7 @@ LABEL_62:
           {
             v30 = v29;
             v24 = v62;
-            [BBSectionIcon(UserNotificationsUIKit) nc_imageForFormat:v12 scale:v30 userInterfaceStyle:v62 usedUserInterfaceStyle:?];
+            [BBSectionIcon(UserNotificationsUIKit) nc_imageForFormat:imageName scale:v30 userInterfaceStyle:v62 usedUserInterfaceStyle:?];
 LABEL_60:
 
             goto LABEL_61;
@@ -207,17 +207,17 @@ LABEL_83:
               {
 LABEL_84:
                 v59 = v47;
-                v60 = [v62 bundlePath];
+                bundlePath2 = [v62 bundlePath];
                 *buf = 134218498;
                 v72 = v61;
                 v73 = 2114;
-                v74 = v12;
+                v74 = imageName;
                 v75 = 2114;
-                v76 = v60;
+                v76 = bundlePath2;
                 _os_log_error_impl(&dword_21E77E000, v59, OS_LOG_TYPE_ERROR, "Notification icon is smaller than expanded size of %lf: %{public}@ in bundle %{public}@", buf, 0x20u);
 
                 v24 = v62;
-                v11 = v64;
+                imagePath = v64;
                 goto LABEL_60;
               }
             }
@@ -234,7 +234,7 @@ LABEL_84:
       v37 = *MEMORY[0x277D77DC0];
       if (os_log_type_enabled(*MEMORY[0x277D77DC0], OS_LOG_TYPE_ERROR))
       {
-        [BBSectionIcon(UserNotificationsUIKit) nc_imageForFormat:v12 scale:v37 userInterfaceStyle:v24 usedUserInterfaceStyle:?];
+        [BBSectionIcon(UserNotificationsUIKit) nc_imageForFormat:imageName scale:v37 userInterfaceStyle:v24 usedUserInterfaceStyle:?];
       }
     }
 
@@ -242,7 +242,7 @@ LABEL_84:
     goto LABEL_60;
   }
 
-  v11 = v64;
+  imagePath = v64;
   if ([v64 length])
   {
     v31 = [MEMORY[0x277D755B8] imageWithContentsOfFile:v64];
@@ -296,7 +296,7 @@ LABEL_52:
           }
 
 LABEL_61:
-          if (v16)
+          if (isPrecomposed)
           {
             goto LABEL_62;
           }
@@ -343,19 +343,19 @@ LABEL_64:
       goto LABEL_66;
     }
 
-    if ([v66 count])
+    if ([dateComponentDetails count])
     {
-      v63 = [v66 objectForKey:*MEMORY[0x277CE2108]];
-      v52 = [v66 objectForKey:*MEMORY[0x277CE2100]];
-      v53 = [v66 objectForKey:*MEMORY[0x277CE2110]];
-      v54 = [v53 integerValue];
+      v63 = [dateComponentDetails objectForKey:*MEMORY[0x277CE2108]];
+      v52 = [dateComponentDetails objectForKey:*MEMORY[0x277CE2100]];
+      v53 = [dateComponentDetails objectForKey:*MEMORY[0x277CE2110]];
+      integerValue = [v53 integerValue];
 
       v55 = [MEMORY[0x277CBEA80] calendarWithIdentifier:v52];
-      v56 = [MEMORY[0x277CBEAF8] autoupdatingCurrentLocale];
-      [v55 setLocale:v56];
+      autoupdatingCurrentLocale = [MEMORY[0x277CBEAF8] autoupdatingCurrentLocale];
+      [v55 setLocale:autoupdatingCurrentLocale];
 
-      v57 = v54;
-      v11 = v64;
+      v57 = integerValue;
+      imagePath = v64;
       v20 = _NCDateIconImageForDateComponentsWithFormat(a4, a5, v63, v55, v57);
 
       goto LABEL_7;

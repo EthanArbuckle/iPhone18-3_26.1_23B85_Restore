@@ -1,11 +1,11 @@
 @interface LACBiomeDialogEvent
 - (LACBiomeDialogEvent)init;
 - (id)description;
-- (void)addAction:(int64_t)a3 failing:(BOOL)a4;
-- (void)determineTimeSinceLastSystemUpdateWithCompletion:(id)a3;
-- (void)failedAuthenticationWithMechanism:(int64_t)a3;
-- (void)mergeBiomeEvent:(id)a3;
-- (void)startedAuthenticationWithMechanism:(int64_t)a3;
+- (void)addAction:(int64_t)action failing:(BOOL)failing;
+- (void)determineTimeSinceLastSystemUpdateWithCompletion:(id)completion;
+- (void)failedAuthenticationWithMechanism:(int64_t)mechanism;
+- (void)mergeBiomeEvent:(id)event;
+- (void)startedAuthenticationWithMechanism:(int64_t)mechanism;
 @end
 
 @implementation LACBiomeDialogEvent
@@ -38,88 +38,88 @@
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(LACBiomeDialogEvent *)self dialogID];
-  v5 = [(LACBiomeDialogEvent *)self bundleID];
+  dialogID = [(LACBiomeDialogEvent *)self dialogID];
+  bundleID = [(LACBiomeDialogEvent *)self bundleID];
   [(LACBiomeDialogEvent *)self timeSinceUpdate];
   v7 = v6;
-  v8 = [(LACBiomeDialogEvent *)self mechanisms];
-  v9 = [(LACBiomeDialogEvent *)self successfulMechanism];
-  v10 = [(LACBiomeDialogEvent *)self failedMechanisms];
-  v11 = [(LACBiomeDialogEvent *)self actions];
-  v12 = [v3 stringWithFormat:@"<LACBiomeDialogEvent dialogID: %@, bundleID: %@, timeSinceUpdate: %.0f, mechanisms: %@, successfulMechanism: %d, failedMechanisms: %@, actions: %@, failingAction: %d>", v4, v5, v7, v8, v9, v10, v11, -[LACBiomeDialogEvent failingAction](self, "failingAction")];
+  mechanisms = [(LACBiomeDialogEvent *)self mechanisms];
+  successfulMechanism = [(LACBiomeDialogEvent *)self successfulMechanism];
+  failedMechanisms = [(LACBiomeDialogEvent *)self failedMechanisms];
+  actions = [(LACBiomeDialogEvent *)self actions];
+  v12 = [v3 stringWithFormat:@"<LACBiomeDialogEvent dialogID: %@, bundleID: %@, timeSinceUpdate: %.0f, mechanisms: %@, successfulMechanism: %d, failedMechanisms: %@, actions: %@, failingAction: %d>", dialogID, bundleID, v7, mechanisms, successfulMechanism, failedMechanisms, actions, -[LACBiomeDialogEvent failingAction](self, "failingAction")];
 
   return v12;
 }
 
-- (void)startedAuthenticationWithMechanism:(int64_t)a3
+- (void)startedAuthenticationWithMechanism:(int64_t)mechanism
 {
-  v5 = [(LACBiomeDialogEvent *)self mechanisms];
-  v6 = [v5 lastObject];
-  v7 = [v6 integerValue];
+  mechanisms = [(LACBiomeDialogEvent *)self mechanisms];
+  lastObject = [mechanisms lastObject];
+  integerValue = [lastObject integerValue];
 
-  if (v7 != a3)
+  if (integerValue != mechanism)
   {
-    v11 = [(LACBiomeDialogEvent *)self mechanisms];
-    v8 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-    v9 = [v11 arrayByAddingObject:v8];
+    mechanisms2 = [(LACBiomeDialogEvent *)self mechanisms];
+    v8 = [MEMORY[0x1E696AD98] numberWithInteger:mechanism];
+    v9 = [mechanisms2 arrayByAddingObject:v8];
     mechanisms = self->_mechanisms;
     self->_mechanisms = v9;
   }
 }
 
-- (void)failedAuthenticationWithMechanism:(int64_t)a3
+- (void)failedAuthenticationWithMechanism:(int64_t)mechanism
 {
-  v8 = [(LACBiomeDialogEvent *)self failedMechanisms];
-  v5 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  v6 = [v8 arrayByAddingObject:v5];
+  failedMechanisms = [(LACBiomeDialogEvent *)self failedMechanisms];
+  v5 = [MEMORY[0x1E696AD98] numberWithInteger:mechanism];
+  v6 = [failedMechanisms arrayByAddingObject:v5];
   failedMechanisms = self->_failedMechanisms;
   self->_failedMechanisms = v6;
 }
 
-- (void)addAction:(int64_t)a3 failing:(BOOL)a4
+- (void)addAction:(int64_t)action failing:(BOOL)failing
 {
-  v4 = a4;
-  v7 = [(LACBiomeDialogEvent *)self actions];
-  v8 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  v9 = [v7 arrayByAddingObject:v8];
+  failingCopy = failing;
+  actions = [(LACBiomeDialogEvent *)self actions];
+  v8 = [MEMORY[0x1E696AD98] numberWithInteger:action];
+  v9 = [actions arrayByAddingObject:v8];
   actions = self->_actions;
   self->_actions = v9;
 
-  if (v4)
+  if (failingCopy)
   {
-    self->_failingAction = a3;
+    self->_failingAction = action;
   }
 }
 
-- (void)determineTimeSinceLastSystemUpdateWithCompletion:(id)a3
+- (void)determineTimeSinceLastSystemUpdateWithCompletion:(id)completion
 {
-  if (a3)
+  if (completion)
   {
-    (*(a3 + 2))(a3);
+    (*(completion + 2))(completion);
   }
 }
 
-- (void)mergeBiomeEvent:(id)a3
+- (void)mergeBiomeEvent:(id)event
 {
-  v13 = a3;
-  v4 = [v13 mechanisms];
-  v5 = [v4 arrayByAddingObjectsFromArray:self->_mechanisms];
+  eventCopy = event;
+  mechanisms = [eventCopy mechanisms];
+  v5 = [mechanisms arrayByAddingObjectsFromArray:self->_mechanisms];
   mechanisms = self->_mechanisms;
   self->_mechanisms = v5;
 
-  v7 = [v13 failedMechanisms];
-  v8 = [v7 arrayByAddingObjectsFromArray:self->_failedMechanisms];
+  failedMechanisms = [eventCopy failedMechanisms];
+  v8 = [failedMechanisms arrayByAddingObjectsFromArray:self->_failedMechanisms];
   failedMechanisms = self->_failedMechanisms;
   self->_failedMechanisms = v8;
 
-  v10 = [v13 actions];
-  v11 = [v10 arrayByAddingObjectsFromArray:self->_actions];
+  actions = [eventCopy actions];
+  v11 = [actions arrayByAddingObjectsFromArray:self->_actions];
   actions = self->_actions;
   self->_actions = v11;
 
   if (!self->_successfulMechanism)
   {
-    self->_successfulMechanism = [v13 successfulMechanism];
+    self->_successfulMechanism = [eventCopy successfulMechanism];
   }
 }
 

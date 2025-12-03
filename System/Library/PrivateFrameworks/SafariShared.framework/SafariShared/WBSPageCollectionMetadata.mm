@@ -1,5 +1,5 @@
 @interface WBSPageCollectionMetadata
-- (BOOL)writeMetadataJSONToURL:(id)a3 error:(id *)a4;
+- (BOOL)writeMetadataJSONToURL:(id)l error:(id *)error;
 - (CGSize)viewportSize;
 - (NSDictionary)dictionaryRepresentation;
 - (NSString)zipFileNameCandidate;
@@ -31,20 +31,20 @@
     v2->_osBuild = v7;
 
     v9 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.WebKit"];
-    v10 = [v9 safari_version];
+    safari_version = [v9 safari_version];
     webkitVersion = v2->_webkitVersion;
-    v2->_webkitVersion = v10;
+    v2->_webkitVersion = safari_version;
 
-    v12 = [MEMORY[0x1E696AAE8] mainBundle];
-    v13 = [v12 safari_version];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    safari_version2 = [mainBundle safari_version];
     safariVersion = v2->_safariVersion;
-    v2->_safariVersion = v13;
+    v2->_safariVersion = safari_version2;
 
     v2->_collectionMethod = 0;
-    v15 = [MEMORY[0x1E696AFB0] UUID];
-    v16 = [v15 UUIDString];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
     assetUUIDString = v2->_assetUUIDString;
-    v2->_assetUUIDString = v16;
+    v2->_assetUUIDString = uUIDString;
 
     v18 = v2;
   }
@@ -62,35 +62,35 @@
   v5 = [MEMORY[0x1E695DF00] now];
   v6 = [v3 stringFromDate:v5];
 
-  v7 = [(WBSPageCollectionMetadata *)self _languageAndRegion];
-  v8 = [v7 stringByReplacingOccurrencesOfString:@"_" withString:@"-"];
+  _languageAndRegion = [(WBSPageCollectionMetadata *)self _languageAndRegion];
+  v8 = [_languageAndRegion stringByReplacingOccurrencesOfString:@"_" withString:@"-"];
 
-  v9 = [(NSURL *)self->_url host];
-  v10 = [v9 safari_highLevelDomainFromHost];
+  host = [(NSURL *)self->_url host];
+  safari_highLevelDomainFromHost = [host safari_highLevelDomainFromHost];
 
   v11 = [MEMORY[0x1E696AB08] characterSetWithCharactersInString:@"0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz-."];
-  v12 = [v11 invertedSet];
-  v13 = [v10 componentsSeparatedByCharactersInSet:v12];
+  invertedSet = [v11 invertedSet];
+  v13 = [safari_highLevelDomainFromHost componentsSeparatedByCharactersInSet:invertedSet];
 
   v14 = [v13 safari_filterObjectsUsingBlock:&__block_literal_global_54];
   v15 = [v14 componentsJoinedByString:@"-"];
 
   v16 = MEMORY[0x1E696AEC0];
-  v17 = [(WBSPageCollectionMetadata *)self _campaignName];
-  v18 = [v16 stringWithFormat:@"%@_%@_%@_%@_%@.%@", v6, v8, v17, v15, self->_assetUUIDString, @"zip"];
+  _campaignName = [(WBSPageCollectionMetadata *)self _campaignName];
+  v18 = [v16 stringWithFormat:@"%@_%@_%@_%@_%@.%@", v6, v8, _campaignName, v15, self->_assetUUIDString, @"zip"];
 
   return v18;
 }
 
 - (id)_languageAndRegion
 {
-  v3 = [MEMORY[0x1E695DF58] currentLocale];
-  v4 = [v3 localeIdentifier];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  localeIdentifier = [currentLocale localeIdentifier];
 
   if (self->_collectionMethod != 1)
   {
-    v5 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v6 = [v5 objectForKey:@"SaveWebpageWithMetadataIntendedLanguageAndRegion"];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    v6 = [standardUserDefaults objectForKey:@"SaveWebpageWithMetadataIntendedLanguageAndRegion"];
 
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
@@ -101,7 +101,7 @@
 
     else
     {
-      v8 = v4;
+      v8 = localeIdentifier;
     }
 
     if (isKindOfClass)
@@ -111,14 +111,14 @@
 
     else
     {
-      v4 = 0;
+      localeIdentifier = 0;
       v9 = v6;
     }
 
-    v4 = v8;
+    localeIdentifier = v8;
   }
 
-  return v4;
+  return localeIdentifier;
 }
 
 - (id)_campaignName
@@ -130,8 +130,8 @@
 
   else
   {
-    v3 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v2 = [v3 objectForKey:@"SaveWebpageWithMetadataCampaignName"];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    v2 = [standardUserDefaults objectForKey:@"SaveWebpageWithMetadataCampaignName"];
 
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -146,8 +146,8 @@
 
 - (id)_workerID
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 stringForKey:@"SaveWebpageWithMetadataWorkerID"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults stringForKey:@"SaveWebpageWithMetadataWorkerID"];
 
   return v3;
 }
@@ -168,8 +168,8 @@
   v41[4] = @"safariVersion";
   safariVersion = self->_safariVersion;
   v41[5] = @"languageAndRegion";
-  v6 = [(WBSPageCollectionMetadata *)self _languageAndRegion];
-  v45 = v6;
+  _languageAndRegion = [(WBSPageCollectionMetadata *)self _languageAndRegion];
+  v45 = _languageAndRegion;
   v41[6] = @"collectionMethod";
   collectionMethod = self->_collectionMethod;
   v8 = @"SafariUnknown";
@@ -194,18 +194,18 @@
   v47 = assetUUIDString;
   v41[7] = @"assetUUID";
   v41[8] = @"campaignName";
-  v12 = [(WBSPageCollectionMetadata *)self _campaignName];
-  v48 = v12;
+  _campaignName = [(WBSPageCollectionMetadata *)self _campaignName];
+  v48 = _campaignName;
   v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v42 forKeys:v41 count:9];
   v14 = [v13 mutableCopy];
 
-  v15 = [(NSURL *)self->_url absoluteString];
-  v16 = v15 == 0;
+  absoluteString = [(NSURL *)self->_url absoluteString];
+  v16 = absoluteString == 0;
 
   if (!v16)
   {
-    v17 = [(NSURL *)self->_url absoluteString];
-    [v14 setObject:v17 forKeyedSubscript:@"url"];
+    absoluteString2 = [(NSURL *)self->_url absoluteString];
+    [v14 setObject:absoluteString2 forKeyedSubscript:@"url"];
   }
 
   indexFileName = self->_indexFileName;
@@ -232,14 +232,14 @@
     [v14 setObject:screenCaptureFileName forKeyedSubscript:@"screenCapture"];
   }
 
-  v22 = [(WBSPageCollectionMetadata *)self _workerID];
-  v23 = v22 == 0;
+  _workerID = [(WBSPageCollectionMetadata *)self _workerID];
+  v23 = _workerID == 0;
 
   if (!v23)
   {
     v39 = @"workerID";
-    v24 = [(WBSPageCollectionMetadata *)self _workerID];
-    v40 = v24;
+    _workerID2 = [(WBSPageCollectionMetadata *)self _workerID];
+    v40 = _workerID2;
     v25 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v40 forKeys:&v39 count:1];
     [v14 setObject:v25 forKeyedSubscript:@"diagnostics"];
   }
@@ -273,22 +273,22 @@
   return v14;
 }
 
-- (BOOL)writeMetadataJSONToURL:(id)a3 error:(id *)a4
+- (BOOL)writeMetadataJSONToURL:(id)l error:(id *)error
 {
-  v6 = a3;
-  v7 = [(WBSPageCollectionMetadata *)self dictionaryRepresentation];
+  lCopy = l;
+  dictionaryRepresentation = [(WBSPageCollectionMetadata *)self dictionaryRepresentation];
   v8 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v9 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v7 options:9 error:a4];
+  v9 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:9 error:error];
   v10 = [v8 initWithData:v9 encoding:4];
 
-  if (a4 && *a4)
+  if (error && *error)
   {
     v11 = 0;
   }
 
   else
   {
-    v11 = [v10 writeToURL:v6 atomically:0 encoding:4 error:a4];
+    v11 = [v10 writeToURL:lCopy atomically:0 encoding:4 error:error];
   }
 
   return v11;

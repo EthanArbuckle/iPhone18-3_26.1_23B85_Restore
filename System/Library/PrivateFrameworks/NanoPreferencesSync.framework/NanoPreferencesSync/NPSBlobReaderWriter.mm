@@ -1,26 +1,26 @@
 @interface NPSBlobReaderWriter
 - (BOOL)isFileGood;
-- (NPSBlobReaderWriter)initWithPathToCreateBlobFile:(id)a3;
-- (NPSBlobReaderWriter)initWithPathToLoadBlobFile:(id)a3;
+- (NPSBlobReaderWriter)initWithPathToCreateBlobFile:(id)file;
+- (NPSBlobReaderWriter)initWithPathToLoadBlobFile:(id)file;
 - (id)readBlob;
 - (void)close;
-- (void)writeBlob:(id)a3;
+- (void)writeBlob:(id)blob;
 @end
 
 @implementation NPSBlobReaderWriter
 
-- (NPSBlobReaderWriter)initWithPathToCreateBlobFile:(id)a3
+- (NPSBlobReaderWriter)initWithPathToCreateBlobFile:(id)file
 {
-  v4 = a3;
+  fileCopy = file;
   v5 = [(NPSBlobReaderWriter *)self init];
   if (v5)
   {
     v6 = +[NSFileManager defaultManager];
-    v7 = [v4 path];
-    [v6 createFileAtPath:v7 contents:0 attributes:0];
+    path = [fileCopy path];
+    [v6 createFileAtPath:path contents:0 attributes:0];
 
     v15 = 0;
-    v8 = [NSFileHandle fileHandleForWritingToURL:v4 error:&v15];
+    v8 = [NSFileHandle fileHandleForWritingToURL:fileCopy error:&v15];
     v9 = v15;
     fh = v5->_fh;
     v5->_fh = v8;
@@ -50,14 +50,14 @@ LABEL_8:
   return v13;
 }
 
-- (NPSBlobReaderWriter)initWithPathToLoadBlobFile:(id)a3
+- (NPSBlobReaderWriter)initWithPathToLoadBlobFile:(id)file
 {
-  v4 = a3;
+  fileCopy = file;
   v5 = [(NPSBlobReaderWriter *)self init];
   if (v5)
   {
     v13 = 0;
-    v6 = [NSFileHandle fileHandleForReadingFromURL:v4 error:&v13];
+    v6 = [NSFileHandle fileHandleForReadingFromURL:fileCopy error:&v13];
     v7 = v13;
     fh = v5->_fh;
     v5->_fh = v6;
@@ -87,18 +87,18 @@ LABEL_8:
   return v11;
 }
 
-- (void)writeBlob:(id)a3
+- (void)writeBlob:(id)blob
 {
-  v4 = a3;
-  v9 = [v4 length];
+  blobCopy = blob;
+  v9 = [blobCopy length];
   fh = self->_fh;
   v6 = [NSData dataWithBytes:&v9 length:4];
   [(NSFileHandle *)fh writeData:v6];
 
   v7 = self->_fh;
   self->_offset += 4;
-  [(NSFileHandle *)v7 writeData:v4];
-  v8 = [v4 length];
+  [(NSFileHandle *)v7 writeData:blobCopy];
+  v8 = [blobCopy length];
 
   self->_offset += v8;
 }
@@ -148,15 +148,15 @@ LABEL_8:
 
 - (BOOL)isFileGood
 {
-  v3 = [(NSFileHandle *)self->_fh offsetInFile];
+  offsetInFile = [(NSFileHandle *)self->_fh offsetInFile];
   offset = self->_offset;
   v5 = nps_daemon_log;
-  if (v3 == offset)
+  if (offsetInFile == offset)
   {
     if (os_log_type_enabled(nps_daemon_log, OS_LOG_TYPE_DEFAULT))
     {
       v7 = 134217984;
-      v8 = v3;
+      v8 = offsetInFile;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "File length is %ld bytes as expected", &v7, 0xCu);
     }
   }
@@ -166,7 +166,7 @@ LABEL_8:
     sub_100026CBC(v5);
   }
 
-  return v3 == offset;
+  return offsetInFile == offset;
 }
 
 @end

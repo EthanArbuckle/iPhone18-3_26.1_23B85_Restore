@@ -1,22 +1,22 @@
 @interface MOEventScreenTime
-- (MOEventScreenTime)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (MOEventScreenTime)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MOEventScreenTime
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   appCategoryUsages = self->_appCategoryUsages;
-  v5 = a3;
-  [v5 encodeObject:appCategoryUsages forKey:@"categoryUsages"];
-  [v5 encodeObject:self->_longestActivity forKey:@"longestActivity"];
+  coderCopy = coder;
+  [coderCopy encodeObject:appCategoryUsages forKey:@"categoryUsages"];
+  [coderCopy encodeObject:self->_longestActivity forKey:@"longestActivity"];
 }
 
-- (MOEventScreenTime)initWithCoder:(id)a3
+- (MOEventScreenTime)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = MOEventScreenTime;
   v5 = [(MOEventScreenTime *)&v13 init];
@@ -24,11 +24,11 @@
   {
     v6 = objc_opt_class();
     v7 = [NSSet setWithObjects:v6, objc_opt_class(), 0];
-    v8 = [v4 decodeObjectOfClasses:v7 forKey:@"categoryUsages"];
+    v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"categoryUsages"];
     appCategoryUsages = v5->_appCategoryUsages;
     v5->_appCategoryUsages = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"longestActivity"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"longestActivity"];
     longestActivity = v5->_longestActivity;
     v5->_longestActivity = v10;
   }
@@ -36,14 +36,14 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MOEventScreenTime);
-  v5 = [(MOEventScreenTime *)self appCategoryUsages];
-  [(MOEventScreenTime *)v4 setAppCategoryUsages:v5];
+  appCategoryUsages = [(MOEventScreenTime *)self appCategoryUsages];
+  [(MOEventScreenTime *)v4 setAppCategoryUsages:appCategoryUsages];
 
-  v6 = [(MOEventScreenTime *)self longestActivity];
-  [(MOEventScreenTime *)v4 setLongestActivity:v6];
+  longestActivity = [(MOEventScreenTime *)self longestActivity];
+  [(MOEventScreenTime *)v4 setLongestActivity:longestActivity];
 
   return v4;
 }

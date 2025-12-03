@@ -1,31 +1,31 @@
 @interface AVVisualAnalysisView
-- (AVVisualAnalysisView)initWithFrame:(CGRect)a3;
+- (AVVisualAnalysisView)initWithFrame:(CGRect)frame;
 - (AVVisualAnalysisViewDelegate)delegate;
 - (BOOL)hasSubjectToCopy;
-- (BOOL)imageAnalysisInteraction:(id)a3 shouldBeginAtPoint:(CGPoint)a4 forAnalysisType:(unint64_t)a5;
+- (BOOL)imageAnalysisInteraction:(id)interaction shouldBeginAtPoint:(CGPoint)point forAnalysisType:(unint64_t)type;
 - (VKImageAnalysisInteraction)imageAnalysisInteraction;
 - (id)_updateInteractionAnalysisTypes;
 - (id)_updateInteractionProgressIfNeeded;
-- (id)presentingViewControllerForImageAnalysisInteraction:(id)a3;
+- (id)presentingViewControllerForImageAnalysisInteraction:(id)interaction;
 - (void)_addInteractionIfNeeded;
 - (void)_removeInteractionIfNeeded;
 - (void)_updateActionInfoViewHiddenStateIfNeeded;
 - (void)copySubject;
-- (void)imageAnalysisInteraction:(id)a3 didRequestLiveTextButtonSelectedState:(BOOL)a4;
-- (void)imageAnalysisInteraction:(id)a3 didTapVisualSearchIndicatorWithNormalizedBoundingBox:(CGRect)a4;
-- (void)imageAnalysisInteraction:(id)a3 highlightSelectedItemsValueDidChange:(BOOL)a4;
-- (void)imageAnalysisInteraction:(id)a3 imageAnalysisButtonPressed:(id)a4;
-- (void)imageAnalysisInteraction:(id)a3 liveTextButtonDidChangeToVisible:(BOOL)a4;
-- (void)imageAnalysisInteraction:(id)a3 prepareForCalloutAction:(SEL)a4 competion:(id)a5;
-- (void)imageAnalysisInteractionDidCompleteSubjectAnalysis:(id)a3;
+- (void)imageAnalysisInteraction:(id)interaction didRequestLiveTextButtonSelectedState:(BOOL)state;
+- (void)imageAnalysisInteraction:(id)interaction didTapVisualSearchIndicatorWithNormalizedBoundingBox:(CGRect)box;
+- (void)imageAnalysisInteraction:(id)interaction highlightSelectedItemsValueDidChange:(BOOL)change;
+- (void)imageAnalysisInteraction:(id)interaction imageAnalysisButtonPressed:(id)pressed;
+- (void)imageAnalysisInteraction:(id)interaction liveTextButtonDidChangeToVisible:(BOOL)visible;
+- (void)imageAnalysisInteraction:(id)interaction prepareForCalloutAction:(SEL)action competion:(id)competion;
+- (void)imageAnalysisInteractionDidCompleteSubjectAnalysis:(id)analysis;
 - (void)resetSelection;
-- (void)setAnalysis:(id)a3;
-- (void)setAnalysisButtonBottomInset:(double)a3;
-- (void)setAnalysisTypes:(unint64_t)a3;
-- (void)setHasVisualLookupResults:(BOOL)a3;
-- (void)setHighlightsInteractableAreas:(BOOL)a3;
-- (void)setInteractionInProgress:(BOOL)a3;
-- (void)setWantsAnalysisButtonVisible:(BOOL)a3;
+- (void)setAnalysis:(id)analysis;
+- (void)setAnalysisButtonBottomInset:(double)inset;
+- (void)setAnalysisTypes:(unint64_t)types;
+- (void)setHasVisualLookupResults:(BOOL)results;
+- (void)setHighlightsInteractableAreas:(BOOL)areas;
+- (void)setInteractionInProgress:(BOOL)progress;
+- (void)setWantsAnalysisButtonVisible:(BOOL)visible;
 @end
 
 @implementation AVVisualAnalysisView
@@ -42,8 +42,8 @@
   if ([(AVVisualAnalysisView *)self hasSubjectToCopy])
   {
     imageAnalysisInteraction = self->_imageAnalysisInteraction;
-    v4 = [(VKImageAnalysisInteraction *)imageAnalysisInteraction allSubjectIndexes];
-    [(VKImageAnalysisInteraction *)imageAnalysisInteraction loadImageSubjectWithIndexes:v4 completion:&__block_literal_global_28917];
+    allSubjectIndexes = [(VKImageAnalysisInteraction *)imageAnalysisInteraction allSubjectIndexes];
+    [(VKImageAnalysisInteraction *)imageAnalysisInteraction loadImageSubjectWithIndexes:allSubjectIndexes completion:&__block_literal_global_28917];
   }
 }
 
@@ -68,21 +68,21 @@ void __35__AVVisualAnalysisView_copySubject__block_invoke(uint64_t a1, void *a2)
   }
 }
 
-- (void)setHasVisualLookupResults:(BOOL)a3
+- (void)setHasVisualLookupResults:(BOOL)results
 {
-  if (self->_hasVisualLookupResults != a3)
+  if (self->_hasVisualLookupResults != results)
   {
-    self->_hasVisualLookupResults = a3;
-    v5 = [(AVVisualAnalysisView *)self delegate];
-    [v5 visualAnalysisViewDidUpdateVisualLookupAvailability:self];
+    self->_hasVisualLookupResults = results;
+    delegate = [(AVVisualAnalysisView *)self delegate];
+    [delegate visualAnalysisViewDidUpdateVisualLookupAvailability:self];
   }
 }
 
-- (void)setAnalysisTypes:(unint64_t)a3
+- (void)setAnalysisTypes:(unint64_t)types
 {
-  if (self->_analysisTypes != a3)
+  if (self->_analysisTypes != types)
   {
-    self->_analysisTypes = a3;
+    self->_analysisTypes = types;
     [(AVVisualAnalysisView *)self setHasVisualLookupResults:[(VKCImageAnalysis *)self->_analysis hasResultsForAnalysisTypes:16]];
 
     [(AVVisualAnalysisView *)&self->super.super.super.isa _updateInteractionAnalysisTypes];
@@ -118,11 +118,11 @@ void __35__AVVisualAnalysisView_copySubject__block_invoke(uint64_t a1, void *a2)
   if (result)
   {
     v1 = result;
-    v2 = [result hasActiveTextSelection];
-    v3 = [v1 highlightsInteractableAreas];
+    hasActiveTextSelection = [result hasActiveTextSelection];
+    highlightsInteractableAreas = [v1 highlightsInteractableAreas];
     v4 = v1[55];
-    v5 = [v1[56] subjectInteractionInProgress];
-    v6 = (v2 | v3 | (v4 >> 3) | v5 | [v1[56] subjectHighlightActive]) & 1;
+    subjectInteractionInProgress = [v1[56] subjectInteractionInProgress];
+    v6 = (hasActiveTextSelection | highlightsInteractableAreas | (v4 >> 3) | subjectInteractionInProgress | [v1[56] subjectHighlightActive]) & 1;
 
     return [v1 setInteractionInProgress:v6];
   }
@@ -130,88 +130,88 @@ void __35__AVVisualAnalysisView_copySubject__block_invoke(uint64_t a1, void *a2)
   return result;
 }
 
-- (void)setInteractionInProgress:(BOOL)a3
+- (void)setInteractionInProgress:(BOOL)progress
 {
-  if (self->_interactionInProgress != a3)
+  if (self->_interactionInProgress != progress)
   {
-    v4 = a3;
-    self->_interactionInProgress = a3;
-    v5 = [(AVVisualAnalysisView *)self delegate];
-    [v5 visualAnalysisViewDidBeginInteraction:v4];
+    progressCopy = progress;
+    self->_interactionInProgress = progress;
+    delegate = [(AVVisualAnalysisView *)self delegate];
+    [delegate visualAnalysisViewDidBeginInteraction:progressCopy];
   }
 }
 
 - (BOOL)hasSubjectToCopy
 {
-  v3 = [(VKImageAnalysisInteraction *)self->_imageAnalysisInteraction isSubjectAnalysisComplete];
-  if (v3)
+  isSubjectAnalysisComplete = [(VKImageAnalysisInteraction *)self->_imageAnalysisInteraction isSubjectAnalysisComplete];
+  if (isSubjectAnalysisComplete)
   {
     [(VKImageAnalysisInteraction *)self->_imageAnalysisInteraction subjectFrame];
-    LOBYTE(v3) = !CGRectEqualToRect(v5, *MEMORY[0x1E695F050]);
+    LOBYTE(isSubjectAnalysisComplete) = !CGRectEqualToRect(v5, *MEMORY[0x1E695F050]);
   }
 
-  return v3;
+  return isSubjectAnalysisComplete;
 }
 
-- (void)setHighlightsInteractableAreas:(BOOL)a3
+- (void)setHighlightsInteractableAreas:(BOOL)areas
 {
-  v4 = [(AVVisualAnalysisView *)self analysisButton];
-  [v4 sendActionsForControlEvents:64];
+  analysisButton = [(AVVisualAnalysisView *)self analysisButton];
+  [analysisButton sendActionsForControlEvents:64];
 
   [(AVVisualAnalysisView *)&self->super.super.super.isa _updateInteractionProgressIfNeeded];
 }
 
-- (void)setWantsAnalysisButtonVisible:(BOOL)a3
+- (void)setWantsAnalysisButtonVisible:(BOOL)visible
 {
-  if (self->_wantsAnalysisButtonVisible != a3)
+  if (self->_wantsAnalysisButtonVisible != visible)
   {
-    self->_wantsAnalysisButtonVisible = a3;
+    self->_wantsAnalysisButtonVisible = visible;
     [(AVVisualAnalysisView *)self _updateActionInfoViewHiddenStateIfNeeded];
   }
 }
 
 - (void)_updateActionInfoViewHiddenStateIfNeeded
 {
-  if (a1)
+  if (self)
   {
-    if ([a1 highlightsSelectableItems])
+    if ([self highlightsSelectableItems])
     {
       v2 = 0;
     }
 
     else
     {
-      v2 = a1[409] ^ 1;
+      v2 = self[409] ^ 1;
     }
 
-    v3 = [a1 imageAnalysisInteraction];
-    [v3 setActionInfoViewHidden:v2 & 1];
+    imageAnalysisInteraction = [self imageAnalysisInteraction];
+    [imageAnalysisInteraction setActionInfoViewHidden:v2 & 1];
   }
 }
 
 - (void)_removeInteractionIfNeeded
 {
-  v3 = [(AVVisualAnalysisView *)self interactions];
-  v4 = [(AVVisualAnalysisView *)self imageAnalysisInteraction];
-  v5 = [v3 containsObject:v4];
+  interactions = [(AVVisualAnalysisView *)self interactions];
+  imageAnalysisInteraction = [(AVVisualAnalysisView *)self imageAnalysisInteraction];
+  v5 = [interactions containsObject:imageAnalysisInteraction];
 
   if (v5)
   {
-    v6 = [(AVVisualAnalysisView *)self imageAnalysisInteraction];
-    [(AVVisualAnalysisView *)self removeInteraction:v6];
+    imageAnalysisInteraction2 = [(AVVisualAnalysisView *)self imageAnalysisInteraction];
+    [(AVVisualAnalysisView *)self removeInteraction:imageAnalysisInteraction2];
   }
 }
 
 - (void)_addInteractionIfNeeded
 {
-  v3 = [(AVVisualAnalysisView *)self interactions];
-  v4 = [(AVVisualAnalysisView *)self imageAnalysisInteraction];
-  v5 = [v3 containsObject:v4];
+  interactions = [(AVVisualAnalysisView *)self interactions];
+  imageAnalysisInteraction = [(AVVisualAnalysisView *)self imageAnalysisInteraction];
+  v5 = [interactions containsObject:imageAnalysisInteraction];
 
   if ((v5 & 1) == 0)
   {
-    v6 = [(AVVisualAnalysisView *)self imageAnalysisInteraction];
-    [(AVVisualAnalysisView *)self addInteraction:v6];
+    imageAnalysisInteraction2 = [(AVVisualAnalysisView *)self imageAnalysisInteraction];
+    [(AVVisualAnalysisView *)self addInteraction:imageAnalysisInteraction2];
   }
 }
 
@@ -255,29 +255,29 @@ void __35__AVVisualAnalysisView_copySubject__block_invoke(uint64_t a1, void *a2)
   return imageAnalysisInteraction;
 }
 
-- (void)setAnalysisButtonBottomInset:(double)a3
+- (void)setAnalysisButtonBottomInset:(double)inset
 {
-  if (self->_analysisButtonBottomInset != a3)
+  if (self->_analysisButtonBottomInset != inset)
   {
-    self->_analysisButtonBottomInset = a3;
-    v5 = [(AVVisualAnalysisView *)self imageAnalysisInteraction];
-    [v5 setActionInfoEdgeInsets:{8.0, 8.0, a3, 8.0}];
+    self->_analysisButtonBottomInset = inset;
+    imageAnalysisInteraction = [(AVVisualAnalysisView *)self imageAnalysisInteraction];
+    [imageAnalysisInteraction setActionInfoEdgeInsets:{8.0, 8.0, inset, 8.0}];
 
-    v6 = [(AVVisualAnalysisView *)self imageAnalysisInteraction];
-    [v6 updateActionInfoLayout];
+    imageAnalysisInteraction2 = [(AVVisualAnalysisView *)self imageAnalysisInteraction];
+    [imageAnalysisInteraction2 updateActionInfoLayout];
   }
 }
 
-- (void)setAnalysis:(id)a3
+- (void)setAnalysis:(id)analysis
 {
-  v5 = a3;
-  if (self->_analysis != v5)
+  analysisCopy = analysis;
+  if (self->_analysis != analysisCopy)
   {
-    v8 = v5;
-    objc_storeStrong(&self->_analysis, a3);
+    v8 = analysisCopy;
+    objc_storeStrong(&self->_analysis, analysis);
     [(AVVisualAnalysisView *)self _addInteractionIfNeeded];
-    v6 = [(AVVisualAnalysisView *)self imageAnalysisInteraction];
-    [v6 setAnalysis:v8];
+    imageAnalysisInteraction = [(AVVisualAnalysisView *)self imageAnalysisInteraction];
+    [imageAnalysisInteraction setAnalysis:v8];
 
     [(AVVisualAnalysisView *)self _updateActionInfoViewHiddenStateIfNeeded];
     [(VKImageAnalysisInteraction *)self->_imageAnalysisInteraction updateActionInfoLayout];
@@ -289,19 +289,19 @@ void __35__AVVisualAnalysisView_copySubject__block_invoke(uint64_t a1, void *a2)
 
     else
     {
-      v7 = [(AVVisualAnalysisView *)self delegate];
-      [v7 visualAnalysisViewDidUpdateSubjectAvailability:self];
+      delegate = [(AVVisualAnalysisView *)self delegate];
+      [delegate visualAnalysisViewDidUpdateSubjectAvailability:self];
     }
 
-    v5 = v8;
+    analysisCopy = v8;
   }
 }
 
-- (AVVisualAnalysisView)initWithFrame:(CGRect)a3
+- (AVVisualAnalysisView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = AVVisualAnalysisView;
-  v3 = [(AVVisualAnalysisView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(AVVisualAnalysisView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = +[AVKitGlobalSettings shared];
@@ -311,63 +311,63 @@ void __35__AVVisualAnalysisView_copySubject__block_invoke(uint64_t a1, void *a2)
   return v3;
 }
 
-- (id)presentingViewControllerForImageAnalysisInteraction:(id)a3
+- (id)presentingViewControllerForImageAnalysisInteraction:(id)interaction
 {
-  v4 = [(AVVisualAnalysisView *)self delegate];
-  v5 = [v4 presentingViewControllerForVisualAnalysisView:self];
+  delegate = [(AVVisualAnalysisView *)self delegate];
+  v5 = [delegate presentingViewControllerForVisualAnalysisView:self];
 
   return v5;
 }
 
-- (void)imageAnalysisInteraction:(id)a3 didTapVisualSearchIndicatorWithNormalizedBoundingBox:(CGRect)a4
+- (void)imageAnalysisInteraction:(id)interaction didTapVisualSearchIndicatorWithNormalizedBoundingBox:(CGRect)box
 {
-  v5 = [(AVVisualAnalysisView *)self delegate:a3];
+  v5 = [(AVVisualAnalysisView *)self delegate:interaction];
   [v5 visualAnalysisViewDidTapVisualLookupIndicator:self];
 }
 
-- (void)imageAnalysisInteractionDidCompleteSubjectAnalysis:(id)a3
+- (void)imageAnalysisInteractionDidCompleteSubjectAnalysis:(id)analysis
 {
-  v4 = [(AVVisualAnalysisView *)self delegate];
-  [v4 visualAnalysisViewDidUpdateSubjectAvailability:self];
+  delegate = [(AVVisualAnalysisView *)self delegate];
+  [delegate visualAnalysisViewDidUpdateSubjectAvailability:self];
 }
 
-- (void)imageAnalysisInteraction:(id)a3 highlightSelectedItemsValueDidChange:(BOOL)a4
+- (void)imageAnalysisInteraction:(id)interaction highlightSelectedItemsValueDidChange:(BOOL)change
 {
   [(AVVisualAnalysisView *)self _updateActionInfoViewHiddenStateIfNeeded];
 
   [(AVVisualAnalysisView *)&self->super.super.super.isa _updateInteractionProgressIfNeeded];
 }
 
-- (void)imageAnalysisInteraction:(id)a3 didRequestLiveTextButtonSelectedState:(BOOL)a4
+- (void)imageAnalysisInteraction:(id)interaction didRequestLiveTextButtonSelectedState:(BOOL)state
 {
   [(AVVisualAnalysisView *)self _updateActionInfoViewHiddenStateIfNeeded];
 
   [(AVVisualAnalysisView *)&self->super.super.super.isa _updateInteractionProgressIfNeeded];
 }
 
-- (void)imageAnalysisInteraction:(id)a3 liveTextButtonDidChangeToVisible:(BOOL)a4
+- (void)imageAnalysisInteraction:(id)interaction liveTextButtonDidChangeToVisible:(BOOL)visible
 {
-  v4 = a4;
-  v6 = [(AVVisualAnalysisView *)self delegate];
-  [v6 visualAnalysisView:self didToggleAnalysisButtonVisibilityToVisible:v4];
+  visibleCopy = visible;
+  delegate = [(AVVisualAnalysisView *)self delegate];
+  [delegate visualAnalysisView:self didToggleAnalysisButtonVisibilityToVisible:visibleCopy];
 }
 
-- (void)imageAnalysisInteraction:(id)a3 prepareForCalloutAction:(SEL)a4 competion:(id)a5
+- (void)imageAnalysisInteraction:(id)interaction prepareForCalloutAction:(SEL)action competion:(id)competion
 {
-  v7 = a5;
-  v8 = [(AVVisualAnalysisView *)self delegate];
-  [v8 visualAnalysisView:self prepareForCalloutAction:a4 completion:v7];
+  competionCopy = competion;
+  delegate = [(AVVisualAnalysisView *)self delegate];
+  [delegate visualAnalysisView:self prepareForCalloutAction:action completion:competionCopy];
 }
 
-- (void)imageAnalysisInteraction:(id)a3 imageAnalysisButtonPressed:(id)a4
+- (void)imageAnalysisInteraction:(id)interaction imageAnalysisButtonPressed:(id)pressed
 {
-  v5 = [(AVVisualAnalysisView *)self delegate:a3];
+  v5 = [(AVVisualAnalysisView *)self delegate:interaction];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(AVVisualAnalysisView *)self delegate];
-    [v7 visualAnalysisViewDidPressAnalysisButton:self];
+    delegate = [(AVVisualAnalysisView *)self delegate];
+    [delegate visualAnalysisViewDidPressAnalysisButton:self];
   }
 
   [(AVVisualAnalysisView *)self _updateActionInfoViewHiddenStateIfNeeded];
@@ -375,24 +375,24 @@ void __35__AVVisualAnalysisView_copySubject__block_invoke(uint64_t a1, void *a2)
   [(AVVisualAnalysisView *)&self->super.super.super.isa _updateInteractionProgressIfNeeded];
 }
 
-- (BOOL)imageAnalysisInteraction:(id)a3 shouldBeginAtPoint:(CGPoint)a4 forAnalysisType:(unint64_t)a5
+- (BOOL)imageAnalysisInteraction:(id)interaction shouldBeginAtPoint:(CGPoint)point forAnalysisType:(unint64_t)type
 {
-  y = a4.y;
-  x = a4.x;
-  v8 = a3;
-  v9 = [(AVVisualAnalysisView *)self hasActiveTextSelection];
-  v10 = [v8 interactableItemExistsAtPoint:{x, y}];
-  v11 = [v8 imageSubjectExistsAtPoint:{x, y}];
+  y = point.y;
+  x = point.x;
+  interactionCopy = interaction;
+  hasActiveTextSelection = [(AVVisualAnalysisView *)self hasActiveTextSelection];
+  v10 = [interactionCopy interactableItemExistsAtPoint:{x, y}];
+  v11 = [interactionCopy imageSubjectExistsAtPoint:{x, y}];
 
-  v12 = [(AVVisualAnalysisView *)self delegate];
-  v13 = [v12 shouldBeginTouchInteractionForVisualAnalysisView:self];
+  delegate = [(AVVisualAnalysisView *)self delegate];
+  v13 = [delegate shouldBeginTouchInteractionForVisualAnalysisView:self];
 
-  if (v9)
+  if (hasActiveTextSelection)
   {
     [(AVVisualAnalysisView *)self resetSelection];
   }
 
-  v14 = v10 | v9;
+  v14 = v10 | hasActiveTextSelection;
   if (v11 && (!v13 || !self->_subjectLiftGestureEnabled))
   {
     v14 = 0;

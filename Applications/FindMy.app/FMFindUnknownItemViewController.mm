@@ -1,12 +1,12 @@
 @interface FMFindUnknownItemViewController
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path;
 - (void)handleContinueButton;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)traitCollectionDidChange:(id)change;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation FMFindUnknownItemViewController
@@ -21,17 +21,17 @@
   sub_100520504();
   v3 = objc_allocWithZone(UIBarButtonItem);
   v4 = [v3 initWithBarButtonSystemItem:24 target:v2 action:{"handleCloseButtonWithSender:", v9.receiver, v9.super_class}];
-  v5 = [v2 navigationItem];
-  [v5 setLeftBarButtonItem:v4];
+  navigationItem = [v2 navigationItem];
+  [navigationItem setLeftBarButtonItem:v4];
 
   sub_10052098C();
   sub_100520B30();
-  v6 = [v2 view];
-  if (v6)
+  view = [v2 view];
+  if (view)
   {
-    v7 = v6;
-    v8 = [objc_opt_self() systemBackgroundColor];
-    [v7 setBackgroundColor:v8];
+    v7 = view;
+    systemBackgroundColor = [objc_opt_self() systemBackgroundColor];
+    [v7 setBackgroundColor:systemBackgroundColor];
   }
 
   else
@@ -40,31 +40,31 @@
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_10051FEF4(a3);
+  selfCopy = self;
+  sub_10051FEF4(appear);
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_100520108(a3);
+  selfCopy = self;
+  sub_100520108(disappear);
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v9.receiver = self;
   v9.super_class = type metadata accessor for FMFindUnknownItemViewController();
   v4 = v9.receiver;
-  v5 = a3;
-  [(FMFindUnknownItemViewController *)&v9 traitCollectionDidChange:v5];
-  v6 = [v4 view];
-  if (v6)
+  changeCopy = change;
+  [(FMFindUnknownItemViewController *)&v9 traitCollectionDidChange:changeCopy];
+  view = [v4 view];
+  if (view)
   {
-    v7 = v6;
-    v8 = [objc_opt_self() systemBackgroundColor];
-    [v7 setBackgroundColor:v8];
+    v7 = view;
+    systemBackgroundColor = [objc_opt_self() systemBackgroundColor];
+    [v7 setBackgroundColor:systemBackgroundColor];
   }
 
   else
@@ -75,25 +75,25 @@
 
 - (void)handleContinueButton
 {
-  v2 = self;
+  selfCopy = self;
   sub_1005228F4();
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
   v3 = *(&self->super.super.super.super.isa + OBJC_IVAR____TtC6FindMy31FMFindUnknownItemViewController_scrollHandler);
   if (v3)
   {
-    v5 = a3;
-    v6 = self;
+    scrollCopy = scroll;
+    selfCopy = self;
     sub_100062900(v3);
-    v3(v5);
+    v3(scrollCopy);
 
     sub_10001835C(v3);
   }
 }
 
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path
 {
   v6 = type metadata accessor for IndexPath();
   v7 = *(v6 - 8);
@@ -103,8 +103,8 @@
   __chkstk_darwin(v10 - 8);
   v12 = &v20 - v11;
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v13 = a3;
-  v14 = self;
+  viewCopy = view;
+  selfCopy = self;
   sub_100524858(v9, v12);
 
   v15 = *(v7 + 8);
@@ -121,15 +121,15 @@
   return v17;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v6 = type metadata accessor for IndexPath();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v12 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v10 = a3;
-  v11 = self;
+  viewCopy = view;
+  selfCopy = self;
   sub_100528A18();
 
   (*(v7 + 8))(v9, v6);

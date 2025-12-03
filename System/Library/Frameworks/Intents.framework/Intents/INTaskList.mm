@@ -1,43 +1,43 @@
 @interface INTaskList
-+ (id)_intents_decodeWithJSONDecoder:(id)a3 codableDescription:(id)a4 from:(id)a5;
-- (BOOL)isEqual:(id)a3;
++ (id)_intents_decodeWithJSONDecoder:(id)decoder codableDescription:(id)description from:(id)from;
+- (BOOL)isEqual:(id)equal;
 - (INTaskList)init;
-- (INTaskList)initWithCoder:(id)a3;
+- (INTaskList)initWithCoder:(id)coder;
 - (INTaskList)initWithTitle:(INSpeakableString *)title tasks:(NSArray *)tasks groupName:(INSpeakableString *)groupName createdDateComponents:(NSDateComponents *)createdDateComponents modifiedDateComponents:(NSDateComponents *)modifiedDateComponents identifier:(NSString *)identifier;
-- (INTaskList)initWithTitle:(id)a3 tasks:(id)a4 groupName:(id)a5 taskListType:(int64_t)a6 createdDateComponents:(id)a7 modifiedDateComponents:(id)a8 identifier:(id)a9;
+- (INTaskList)initWithTitle:(id)title tasks:(id)tasks groupName:(id)name taskListType:(int64_t)type createdDateComponents:(id)components modifiedDateComponents:(id)dateComponents identifier:(id)identifier;
 - (id)_dictionaryRepresentation;
 - (id)_intents_cacheableObjects;
-- (id)_intents_encodeWithJSONEncoder:(id)a3 codableDescription:(id)a4;
-- (id)_intents_readableTitleWithLocalizer:(id)a3 metadata:(id)a4;
-- (id)descriptionAtIndent:(unint64_t)a3;
+- (id)_intents_encodeWithJSONEncoder:(id)encoder codableDescription:(id)description;
+- (id)_intents_readableTitleWithLocalizer:(id)localizer metadata:(id)metadata;
+- (id)descriptionAtIndent:(unint64_t)indent;
 - (unint64_t)hash;
-- (void)_intents_updateContainerWithCache:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_intents_updateContainerWithCache:(id)cache;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation INTaskList
 
-- (INTaskList)initWithTitle:(id)a3 tasks:(id)a4 groupName:(id)a5 taskListType:(int64_t)a6 createdDateComponents:(id)a7 modifiedDateComponents:(id)a8 identifier:(id)a9
+- (INTaskList)initWithTitle:(id)title tasks:(id)tasks groupName:(id)name taskListType:(int64_t)type createdDateComponents:(id)components modifiedDateComponents:(id)dateComponents identifier:(id)identifier
 {
-  v15 = a9;
-  v16 = a8;
-  v17 = a7;
-  v18 = a5;
-  v19 = a4;
-  v20 = a3;
-  v21 = [[INSpeakableString alloc] initWithSpokenPhrase:v20];
+  identifierCopy = identifier;
+  dateComponentsCopy = dateComponents;
+  componentsCopy = components;
+  nameCopy = name;
+  tasksCopy = tasks;
+  titleCopy = title;
+  v21 = [[INSpeakableString alloc] initWithSpokenPhrase:titleCopy];
 
-  v22 = [[INSpeakableString alloc] initWithSpokenPhrase:v18];
-  v23 = [(INTaskList *)self initWithTitle:v21 tasks:v19 groupName:v22 createdDateComponents:v17 modifiedDateComponents:v16 identifier:v15];
+  v22 = [[INSpeakableString alloc] initWithSpokenPhrase:nameCopy];
+  v23 = [(INTaskList *)self initWithTitle:v21 tasks:tasksCopy groupName:v22 createdDateComponents:componentsCopy modifiedDateComponents:dateComponentsCopy identifier:identifierCopy];
 
   return v23;
 }
 
-- (id)_intents_readableTitleWithLocalizer:(id)a3 metadata:(id)a4
+- (id)_intents_readableTitleWithLocalizer:(id)localizer metadata:(id)metadata
 {
-  v5 = a3;
-  v6 = [(INTaskList *)self title];
-  v7 = [v6 _intents_readableTitleWithLocalizer:v5];
+  localizerCopy = localizer;
+  title = [(INTaskList *)self title];
+  v7 = [title _intents_readableTitleWithLocalizer:localizerCopy];
 
   return v7;
 }
@@ -47,61 +47,61 @@
   v28[6] = *MEMORY[0x1E69E9840];
   v22 = @"title";
   title = self->_title;
-  v4 = title;
+  null = title;
   if (!title)
   {
-    v4 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v21 = v4;
-  v28[0] = v4;
+  v21 = null;
+  v28[0] = null;
   v23 = @"tasks";
   tasks = self->_tasks;
-  v6 = tasks;
+  null2 = tasks;
   if (!tasks)
   {
-    v6 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v20 = v6;
-  v28[1] = v6;
+  v20 = null2;
+  v28[1] = null2;
   v24 = @"groupName";
   groupName = self->_groupName;
-  v8 = groupName;
+  null3 = groupName;
   if (!groupName)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v18 = v8;
-  v28[2] = v8;
+  v18 = null3;
+  v28[2] = null3;
   v25 = @"createdDateComponents";
   createdDateComponents = self->_createdDateComponents;
-  v10 = createdDateComponents;
+  null4 = createdDateComponents;
   if (!createdDateComponents)
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v28[3] = v10;
+  v28[3] = null4;
   v26 = @"modifiedDateComponents";
   modifiedDateComponents = self->_modifiedDateComponents;
-  v12 = modifiedDateComponents;
+  null5 = modifiedDateComponents;
   if (!modifiedDateComponents)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v28[4] = v12;
+  v28[4] = null5;
   v27 = @"identifier";
   identifier = self->_identifier;
-  v14 = identifier;
+  null6 = identifier;
   if (!identifier)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null6 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v28[5] = v14;
+  v28[5] = null6;
   v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v28 forKeys:&v22 count:{6, v18}];
   if (identifier)
   {
@@ -178,87 +178,87 @@ LABEL_19:
   return v15;
 }
 
-- (id)descriptionAtIndent:(unint64_t)a3
+- (id)descriptionAtIndent:(unint64_t)indent
 {
   v5 = MEMORY[0x1E696AEC0];
   v11.receiver = self;
   v11.super_class = INTaskList;
   v6 = [(INTaskList *)&v11 description];
-  v7 = [(INTaskList *)self _dictionaryRepresentation];
-  v8 = [v7 descriptionAtIndent:a3];
+  _dictionaryRepresentation = [(INTaskList *)self _dictionaryRepresentation];
+  v8 = [_dictionaryRepresentation descriptionAtIndent:indent];
   v9 = [v5 stringWithFormat:@"%@ %@", v6, v8];
 
   return v9;
 }
 
-- (id)_intents_encodeWithJSONEncoder:(id)a3 codableDescription:(id)a4
+- (id)_intents_encodeWithJSONEncoder:(id)encoder codableDescription:(id)description
 {
   v5 = MEMORY[0x1E695DF90];
-  v6 = a3;
-  v7 = [v5 dictionary];
-  v8 = [v6 encodeObject:self->_title];
-  [v7 if_setObjectIfNonNil:v8 forKey:@"title"];
+  encoderCopy = encoder;
+  dictionary = [v5 dictionary];
+  v8 = [encoderCopy encodeObject:self->_title];
+  [dictionary if_setObjectIfNonNil:v8 forKey:@"title"];
 
-  v9 = [v6 encodeObject:self->_tasks];
-  [v7 if_setObjectIfNonNil:v9 forKey:@"tasks"];
+  v9 = [encoderCopy encodeObject:self->_tasks];
+  [dictionary if_setObjectIfNonNil:v9 forKey:@"tasks"];
 
-  v10 = [v6 encodeObject:self->_groupName];
-  [v7 if_setObjectIfNonNil:v10 forKey:@"groupName"];
+  v10 = [encoderCopy encodeObject:self->_groupName];
+  [dictionary if_setObjectIfNonNil:v10 forKey:@"groupName"];
 
-  v11 = [v6 encodeObject:self->_createdDateComponents];
-  [v7 if_setObjectIfNonNil:v11 forKey:@"createdDateComponents"];
+  v11 = [encoderCopy encodeObject:self->_createdDateComponents];
+  [dictionary if_setObjectIfNonNil:v11 forKey:@"createdDateComponents"];
 
-  v12 = [v6 encodeObject:self->_modifiedDateComponents];
-  [v7 if_setObjectIfNonNil:v12 forKey:@"modifiedDateComponents"];
+  v12 = [encoderCopy encodeObject:self->_modifiedDateComponents];
+  [dictionary if_setObjectIfNonNil:v12 forKey:@"modifiedDateComponents"];
 
-  v13 = [v6 encodeObject:self->_identifier];
+  v13 = [encoderCopy encodeObject:self->_identifier];
 
-  [v7 if_setObjectIfNonNil:v13 forKey:@"identifier"];
+  [dictionary if_setObjectIfNonNil:v13 forKey:@"identifier"];
 
-  return v7;
+  return dictionary;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   title = self->_title;
-  v5 = a3;
-  [v5 encodeObject:title forKey:@"title"];
-  [v5 encodeObject:self->_tasks forKey:@"tasks"];
-  [v5 encodeObject:self->_groupName forKey:@"groupName"];
-  [v5 encodeObject:self->_createdDateComponents forKey:@"createdDateComponents"];
-  [v5 encodeObject:self->_modifiedDateComponents forKey:@"modifiedDateComponents"];
-  [v5 encodeObject:self->_identifier forKey:@"identifier"];
+  coderCopy = coder;
+  [coderCopy encodeObject:title forKey:@"title"];
+  [coderCopy encodeObject:self->_tasks forKey:@"tasks"];
+  [coderCopy encodeObject:self->_groupName forKey:@"groupName"];
+  [coderCopy encodeObject:self->_createdDateComponents forKey:@"createdDateComponents"];
+  [coderCopy encodeObject:self->_modifiedDateComponents forKey:@"modifiedDateComponents"];
+  [coderCopy encodeObject:self->_identifier forKey:@"identifier"];
 }
 
-- (INTaskList)initWithCoder:(id)a3
+- (INTaskList)initWithCoder:(id)coder
 {
   v20[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"title"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"title"];
   v6 = MEMORY[0x1E695DFD8];
   v20[0] = objc_opt_class();
   v20[1] = objc_opt_class();
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:2];
   v8 = [v6 setWithArray:v7];
-  v9 = [v4 decodeObjectOfClasses:v8 forKey:@"tasks"];
+  v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"tasks"];
 
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"groupName"];
-  v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"createdDateComponents"];
-  v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"modifiedDateComponents"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"groupName"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"createdDateComponents"];
+  v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"modifiedDateComponents"];
   v13 = MEMORY[0x1E695DFD8];
   v14 = objc_opt_class();
   v15 = [v13 setWithObjects:{v14, objc_opt_class(), 0}];
-  v16 = [v4 decodeObjectOfClasses:v15 forKey:@"identifier"];
+  v16 = [coderCopy decodeObjectOfClasses:v15 forKey:@"identifier"];
 
   v17 = [(INTaskList *)self initWithTitle:v5 tasks:v9 groupName:v10 createdDateComponents:v11 modifiedDateComponents:v12 identifier:v16];
   v18 = *MEMORY[0x1E69E9840];
   return v17;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v12 = 1;
   }
@@ -268,7 +268,7 @@ LABEL_19:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       title = self->_title;
       v12 = 0;
       if (title == v5->_title || [(INSpeakableString *)title isEqual:?])
@@ -364,35 +364,35 @@ LABEL_19:
   return [(INTaskList *)&v3 init];
 }
 
-+ (id)_intents_decodeWithJSONDecoder:(id)a3 codableDescription:(id)a4 from:(id)a5
++ (id)_intents_decodeWithJSONDecoder:(id)decoder codableDescription:(id)description from:(id)from
 {
-  v7 = a3;
-  v8 = a5;
+  decoderCopy = decoder;
+  fromCopy = from;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v9 = objc_opt_class();
-    v10 = [v8 objectForKeyedSubscript:@"title"];
-    v11 = [v7 decodeObjectOfClass:v9 from:v10];
+    v10 = [fromCopy objectForKeyedSubscript:@"title"];
+    v11 = [decoderCopy decodeObjectOfClass:v9 from:v10];
 
     v12 = objc_opt_class();
-    v13 = [v8 objectForKeyedSubscript:@"tasks"];
-    v14 = [v7 decodeObjectsOfClass:v12 from:v13];
+    v13 = [fromCopy objectForKeyedSubscript:@"tasks"];
+    v14 = [decoderCopy decodeObjectsOfClass:v12 from:v13];
 
     v15 = objc_opt_class();
-    v16 = [v8 objectForKeyedSubscript:@"groupName"];
-    v17 = [v7 decodeObjectOfClass:v15 from:v16];
+    v16 = [fromCopy objectForKeyedSubscript:@"groupName"];
+    v17 = [decoderCopy decodeObjectOfClass:v15 from:v16];
 
     v18 = objc_opt_class();
-    v19 = [v8 objectForKeyedSubscript:@"createdDateComponents"];
-    v20 = [v7 decodeObjectOfClass:v18 from:v19];
+    v19 = [fromCopy objectForKeyedSubscript:@"createdDateComponents"];
+    v20 = [decoderCopy decodeObjectOfClass:v18 from:v19];
 
     v21 = objc_opt_class();
-    v22 = [v8 objectForKeyedSubscript:@"modifiedDateComponents"];
-    v23 = [v7 decodeObjectOfClass:v21 from:v22];
+    v22 = [fromCopy objectForKeyedSubscript:@"modifiedDateComponents"];
+    v23 = [decoderCopy decodeObjectOfClass:v21 from:v22];
 
-    v24 = [v8 objectForKeyedSubscript:@"identifier"];
-    v25 = [[a1 alloc] initWithTitle:v11 tasks:v14 groupName:v17 createdDateComponents:v20 modifiedDateComponents:v23 identifier:v24];
+    v24 = [fromCopy objectForKeyedSubscript:@"identifier"];
+    v25 = [[self alloc] initWithTitle:v11 tasks:v14 groupName:v17 createdDateComponents:v20 modifiedDateComponents:v23 identifier:v24];
   }
 
   else
@@ -403,16 +403,16 @@ LABEL_19:
   return v25;
 }
 
-- (void)_intents_updateContainerWithCache:(id)a3
+- (void)_intents_updateContainerWithCache:(id)cache
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  cacheCopy = cache;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(INTaskList *)self tasks];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  tasks = [(INTaskList *)self tasks];
+  v6 = [tasks countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -424,14 +424,14 @@ LABEL_19:
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(tasks);
         }
 
-        [*(*(&v11 + 1) + 8 * v9++) _intents_updateContainerWithCache:v4];
+        [*(*(&v11 + 1) + 8 * v9++) _intents_updateContainerWithCache:cacheCopy];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [tasks countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
@@ -448,8 +448,8 @@ LABEL_19:
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = [(INTaskList *)self tasks];
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  tasks = [(INTaskList *)self tasks];
+  v5 = [tasks countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -461,17 +461,17 @@ LABEL_19:
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(tasks);
         }
 
-        v9 = [*(*(&v14 + 1) + 8 * v8) _intents_cacheableObjects];
-        [v3 unionSet:v9];
+        _intents_cacheableObjects = [*(*(&v14 + 1) + 8 * v8) _intents_cacheableObjects];
+        [v3 unionSet:_intents_cacheableObjects];
 
         ++v8;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [tasks countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v6);

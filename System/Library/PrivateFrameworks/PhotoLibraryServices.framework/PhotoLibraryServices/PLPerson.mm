@@ -1,57 +1,57 @@
 @interface PLPerson
-+ (BOOL)_deleteObjectsWithFetchRequest:(id)a3 reason:(signed __int16)a4 moc:(id)a5 progress:(id)a6 error:(id *)a7;
-+ (BOOL)_detachFacesForPerson:(id)a3 reason:(signed __int16)a4 error:(id *)a5;
-+ (BOOL)person:(id)a3 isBetterMergeTargetThanPerson:(id)a4;
-+ (BOOL)resetAllInLibrary:(id)a3 error:(id *)a4;
-+ (PLPerson)personWithUUID:(id)a3 inManagedObjectContext:(id)a4;
-+ (id)_batchFetchPersonUUIDsByAssetUUIDWithAssetUUIDs:(id)a3 predicate:(id)a4 includedDetectionTypes:(id)a5 includeTemporalDetectedFaces:(BOOL)a6 inManagedObjectContext:(id)a7 error:(id *)a8;
++ (BOOL)_deleteObjectsWithFetchRequest:(id)request reason:(signed __int16)reason moc:(id)moc progress:(id)progress error:(id *)error;
++ (BOOL)_detachFacesForPerson:(id)person reason:(signed __int16)reason error:(id *)error;
++ (BOOL)person:(id)person isBetterMergeTargetThanPerson:(id)thanPerson;
++ (BOOL)resetAllInLibrary:(id)library error:(id *)error;
++ (PLPerson)personWithUUID:(id)d inManagedObjectContext:(id)context;
++ (id)_batchFetchPersonUUIDsByAssetUUIDWithAssetUUIDs:(id)ds predicate:(id)predicate includedDetectionTypes:(id)types includeTemporalDetectedFaces:(BOOL)faces inManagedObjectContext:(id)context error:(id *)error;
 + (id)_predicateForSupportedDetectionTypesForUpload;
 + (id)_predicateForSupportedVerifiedTypesForUpload;
 + (id)_predicateToBlockHiddenGraphTypesForUpload;
-+ (id)_stringFromContact:(id)a3 preferGivenName:(BOOL)a4;
-+ (id)createUnverifiedPersonInManagedObjectContext:(id)a3;
-+ (id)fetchDuplicatePersonUUIDsInManagedObjectContext:(id)a3 error:(id *)a4;
-+ (id)fetchFinalMergeTargetPersonForPersonWithUUID:(id)a3 context:(id)a4 predicate:(id)a5;
-+ (id)fetchMePersonInManagedObjectContext:(id)a3;
-+ (id)fetchPersonCountByAssetUUIDForAssetUUIDs:(id)a3 predicate:(id)a4 includedDetectionTypes:(id)a5 library:(id)a6 error:(id *)a7;
-+ (id)fetchPersonsWithUUIDs:(id)a3 managedObjectContext:(id)a4;
-+ (id)insertIntoManagedObjectContext:(id)a3 withPersonUUID:(id)a4 fullName:(id)a5 verifiedType:(int)a6;
-+ (id)insertIntoPhotoLibrary:(id)a3 withPersonUUID:(id)a4 fullName:(id)a5 verifiedType:(int)a6;
-+ (id)isEligibleForSearchIndexingPredicateForLibraryIdentifier:(int64_t)a3;
++ (id)_stringFromContact:(id)contact preferGivenName:(BOOL)name;
++ (id)createUnverifiedPersonInManagedObjectContext:(id)context;
++ (id)fetchDuplicatePersonUUIDsInManagedObjectContext:(id)context error:(id *)error;
++ (id)fetchFinalMergeTargetPersonForPersonWithUUID:(id)d context:(id)context predicate:(id)predicate;
++ (id)fetchMePersonInManagedObjectContext:(id)context;
++ (id)fetchPersonCountByAssetUUIDForAssetUUIDs:(id)ds predicate:(id)predicate includedDetectionTypes:(id)types library:(id)library error:(id *)error;
++ (id)fetchPersonsWithUUIDs:(id)ds managedObjectContext:(id)context;
++ (id)insertIntoManagedObjectContext:(id)context withPersonUUID:(id)d fullName:(id)name verifiedType:(int)type;
++ (id)insertIntoPhotoLibrary:(id)library withPersonUUID:(id)d fullName:(id)name verifiedType:(int)type;
++ (id)isEligibleForSearchIndexingPredicateForLibraryIdentifier:(int64_t)identifier;
 + (id)listOfSyncedProperties;
-+ (id)personsMatchingPredicate:(id)a3 fetchLimit:(unint64_t)a4 sortDescriptors:(id)a5 relationshipKeyPathsForPrefetching:(id)a6 inManagedObjectContext:(id)a7;
-+ (id)personsToPrefetchInManagedObjectContext:(id)a3;
-+ (id)personsToUploadInManagedObjectContext:(id)a3 limit:(int64_t)a4;
-+ (id)personsWithPersonUri:(id)a3 inManagedObjectContext:(id)a4;
-+ (id)personsWithPersonUris:(id)a3 inManagedObjectContext:(id)a4;
-+ (id)personsWithUUIDs:(id)a3 inManagedObjectContext:(id)a4;
-+ (id)predicateForIncludedDetectionTypes:(id)a3;
-+ (id)predicateForPersonsNeedingFaceCropGenerationForFaceObjectID:(id)a3;
++ (id)personsMatchingPredicate:(id)predicate fetchLimit:(unint64_t)limit sortDescriptors:(id)descriptors relationshipKeyPathsForPrefetching:(id)prefetching inManagedObjectContext:(id)context;
++ (id)personsToPrefetchInManagedObjectContext:(id)context;
++ (id)personsToUploadInManagedObjectContext:(id)context limit:(int64_t)limit;
++ (id)personsWithPersonUri:(id)uri inManagedObjectContext:(id)context;
++ (id)personsWithPersonUris:(id)uris inManagedObjectContext:(id)context;
++ (id)personsWithUUIDs:(id)ds inManagedObjectContext:(id)context;
++ (id)predicateForIncludedDetectionTypes:(id)types;
++ (id)predicateForPersonsNeedingFaceCropGenerationForFaceObjectID:(id)d;
 + (id)predicateForVisibleKeyFace;
 + (id)propertiesToFetch;
-+ (id)resetAllInLibrary:(id)a3 completion:(id)a4;
-+ (void)_resetMediaAnalysisAfterPersonResetInLibraryURL:(id)a3 resetPersons:(BOOL)a4 completion:(id)a5;
-+ (void)_setPersonResetInProgress:(BOOL)a3 context:(id)a4;
-+ (void)batchFetchAssociatedPersonByFaceGroupUUIDWithFaceGroupUUIDs:(id)a3 predicate:(id)a4 library:(id)a5 completion:(id)a6;
-+ (void)batchFetchPersonUUIDsByAssetUUIDWithAssetUUIDs:(id)a3 predicate:(id)a4 includedDetectionTypes:(id)a5 includeTemporalDetectedFaces:(BOOL)a6 inManagedObjectContext:(id)a7 completion:(id)a8;
-+ (void)batchFetchPersonsByAssetUUIDWithAssetUUIDs:(id)a3 predicate:(id)a4 includedDetectionTypes:(id)a5 library:(id)a6 completion:(id)a7;
-+ (void)createAssociatedPersonForFaceGroup:(id)a3;
-+ (void)enumerateAssetUUIDsForSearchIndexingWithDetectedFaceUUIDs:(id)a3 managedObjectContext:(id)a4 assetUUIDHandler:(id)a5;
-+ (void)enumerateAssetUUIDsForSearchIndexingWithPersonUUID:(id)a3 managedObjectContext:(id)a4 libraryIdentifier:(int64_t)a5 assetUUIDHandler:(id)a6;
-+ (void)resetCloudStateInPhotoLibrary:(id)a3;
-- (BOOL)_allowSyncOfChangeWithKey:(id)a3;
++ (id)resetAllInLibrary:(id)library completion:(id)completion;
++ (void)_resetMediaAnalysisAfterPersonResetInLibraryURL:(id)l resetPersons:(BOOL)persons completion:(id)completion;
++ (void)_setPersonResetInProgress:(BOOL)progress context:(id)context;
++ (void)batchFetchAssociatedPersonByFaceGroupUUIDWithFaceGroupUUIDs:(id)ds predicate:(id)predicate library:(id)library completion:(id)completion;
++ (void)batchFetchPersonUUIDsByAssetUUIDWithAssetUUIDs:(id)ds predicate:(id)predicate includedDetectionTypes:(id)types includeTemporalDetectedFaces:(BOOL)faces inManagedObjectContext:(id)context completion:(id)completion;
++ (void)batchFetchPersonsByAssetUUIDWithAssetUUIDs:(id)ds predicate:(id)predicate includedDetectionTypes:(id)types library:(id)library completion:(id)completion;
++ (void)createAssociatedPersonForFaceGroup:(id)group;
++ (void)enumerateAssetUUIDsForSearchIndexingWithDetectedFaceUUIDs:(id)ds managedObjectContext:(id)context assetUUIDHandler:(id)handler;
++ (void)enumerateAssetUUIDsForSearchIndexingWithPersonUUID:(id)d managedObjectContext:(id)context libraryIdentifier:(int64_t)identifier assetUUIDHandler:(id)handler;
++ (void)resetCloudStateInPhotoLibrary:(id)library;
+- (BOOL)_allowSyncOfChangeWithKey:(id)key;
 - (BOOL)_hideGraphPersonInsteadOfDelete;
 - (BOOL)_personResetIsInProgress;
-- (BOOL)_updateGroupMembershipFromEdges:(id)a3 mergeTarget:(id)a4 error:(id *)a5;
-- (BOOL)_updateSocialGroupMembershipWithPersonsToMerge:(id)a3 mergeTarget:(id)a4;
-- (BOOL)dedupeGraphPersons:(id)a3 error:(id *)a4;
-- (BOOL)deletePersonWithReason:(signed __int16)a3;
+- (BOOL)_updateGroupMembershipFromEdges:(id)edges mergeTarget:(id)target error:(id *)error;
+- (BOOL)_updateSocialGroupMembershipWithPersonsToMerge:(id)merge mergeTarget:(id)target;
+- (BOOL)dedupeGraphPersons:(id)persons error:(id *)error;
+- (BOOL)deletePersonWithReason:(signed __int16)reason;
 - (BOOL)isEligibleForSearchIndexing;
 - (BOOL)isSyncableChange;
 - (BOOL)isValidForPersistence;
 - (BOOL)shouldIndexOnAssetsForSearch;
 - (BOOL)supportsCloudUpload;
-- (BOOL)validateDetectionTypesForMergingWithPersons:(id)a3 error:(id *)a4;
+- (BOOL)validateDetectionTypesForMergingWithPersons:(id)persons error:(id *)error;
 - (NSSet)allDetectedFaces;
 - (id)cplPersonChange;
 - (id)debugLogDescription;
@@ -59,38 +59,38 @@
 - (id)edgesOut;
 - (id)faceGroupDescription;
 - (id)finalMergeTargetPerson;
-- (id)payloadForChangedKeys:(id)a3;
+- (id)payloadForChangedKeys:(id)keys;
 - (id)payloadID;
-- (id)payloadIDForTombstone:(id)a3;
-- (id)pickKeyFaceOptimalStateForContactDedupeWithPersons:(id)a3;
-- (id)pickOptimalStateForUserInitiatedMergeWithPersons:(id)a3 nominalTarget:(id)a4;
+- (id)payloadIDForTombstone:(id)tombstone;
+- (id)pickKeyFaceOptimalStateForContactDedupeWithPersons:(id)persons;
+- (id)pickOptimalStateForUserInitiatedMergeWithPersons:(id)persons nominalTarget:(id)target;
 - (id)reverseOrderedMergeTargetPersons;
 - (id)scopeIdentifier;
 - (id)scopedIdentifier;
 - (id)syncDescription;
-- (void)_basicMergePersons:(id)a3;
-- (void)_logMergeDetailsForPerson:(id)a3;
+- (void)_basicMergePersons:(id)persons;
+- (void)_logMergeDetailsForPerson:(id)person;
 - (void)_moveAllFacesToFinalMergeTarget;
 - (void)_removeSharedLibraryPeopleRulesForPerson;
-- (void)_signalBackgroundPersonNeededForPersonSyncWithJobFlags:(int64_t)a3;
+- (void)_signalBackgroundPersonNeededForPersonSyncWithJobFlags:(int64_t)flags;
 - (void)_updateSharedLibraryPeopleRulesForTombstone;
-- (void)applyCPLChangeForContactMatchingDictionary:(id)a3;
+- (void)applyCPLChangeForContactMatchingDictionary:(id)dictionary;
 - (void)assignDetectionTypeFromFaces;
-- (void)basicMergePersons:(id)a3;
-- (void)createUnverifiedPersonForRejectedFaceUUIDs:(id)a3 inManagedObjectContext:(id)a4;
+- (void)basicMergePersons:(id)persons;
+- (void)createUnverifiedPersonForRejectedFaceUUIDs:(id)ds inManagedObjectContext:(id)context;
 - (void)didSave;
 - (void)disconnectFaceGroup;
-- (void)mergePersons:(id)a3 withOptimalState:(id)a4;
-- (void)persistMetadataToFileSystemWithPathManager:(id)a3;
+- (void)mergePersons:(id)persons withOptimalState:(id)state;
+- (void)persistMetadataToFileSystemWithPathManager:(id)manager;
 - (void)prepareForDeletion;
-- (void)prepareForUserInitiatedMergeWithPersons:(id)a3;
-- (void)rejectFaceIfPossible:(id)a3 shouldCreateFaceCrop:(BOOL)a4;
-- (void)removePersistedFileSystemDataWithPathManager:(id)a3;
+- (void)prepareForUserInitiatedMergeWithPersons:(id)persons;
+- (void)rejectFaceIfPossible:(id)possible shouldCreateFaceCrop:(BOOL)crop;
+- (void)removePersistedFileSystemDataWithPathManager:(id)manager;
 - (void)resetAllFacesToDefault;
 - (void)resetFacesProcessing;
-- (void)setCPLSyncedMergeTarget:(id)a3;
-- (void)setEffectiveVerifiedType:(int)a3;
-- (void)setKeyFace:(id)a3 pickSource:(signed __int16)a4;
+- (void)setCPLSyncedMergeTarget:(id)target;
+- (void)setEffectiveVerifiedType:(int)type;
+- (void)setKeyFace:(id)face pickSource:(signed __int16)source;
 - (void)updateDetectionTypeIfNeeded;
 - (void)willSave;
 @end
@@ -105,12 +105,12 @@
   }
 
   v4 = objc_opt_class();
-  v5 = [(PLManagedObject *)self photoLibrary];
-  v6 = [v4 isEligibleForSearchIndexingPredicateForLibraryIdentifier:{+[PLSpotlightDonationUtilities wellKnownPhotoLibraryIdentifierFromPLPhotoLibrary:](PLSpotlightDonationUtilities, "wellKnownPhotoLibraryIdentifierFromPLPhotoLibrary:", v5)}];
+  photoLibrary = [(PLManagedObject *)self photoLibrary];
+  v6 = [v4 isEligibleForSearchIndexingPredicateForLibraryIdentifier:{+[PLSpotlightDonationUtilities wellKnownPhotoLibraryIdentifierFromPLPhotoLibrary:](PLSpotlightDonationUtilities, "wellKnownPhotoLibraryIdentifierFromPLPhotoLibrary:", photoLibrary)}];
   if ([v6 evaluateWithObject:self])
   {
-    v7 = [(PLPerson *)self fullName];
-    v3 = [v7 length] != 0;
+    fullName = [(PLPerson *)self fullName];
+    v3 = [fullName length] != 0;
   }
 
   else
@@ -123,38 +123,38 @@
 
 - (BOOL)shouldIndexOnAssetsForSearch
 {
-  v3 = [(PLPerson *)self verifiedType];
-  if (v3 != 1)
+  verifiedType = [(PLPerson *)self verifiedType];
+  if (verifiedType != 1)
   {
-    LOBYTE(v3) = [(PLPerson *)self verifiedType]== 2;
+    LOBYTE(verifiedType) = [(PLPerson *)self verifiedType]== 2;
   }
 
-  return v3;
+  return verifiedType;
 }
 
-+ (id)fetchPersonsWithUUIDs:(id)a3 managedObjectContext:(id)a4
++ (id)fetchPersonsWithUUIDs:(id)ds managedObjectContext:(id)context
 {
-  v6 = a3;
+  dsCopy = ds;
   v7 = MEMORY[0x1E695D5E0];
-  v8 = a4;
+  contextCopy = context;
   v9 = +[PLPerson entityName];
   v10 = [v7 fetchRequestWithEntityName:v9];
 
-  v11 = [a1 propertiesToFetch];
-  [v10 setPropertiesToFetch:v11];
+  propertiesToFetch = [self propertiesToFetch];
+  [v10 setPropertiesToFetch:propertiesToFetch];
 
   [v10 setIncludesPendingChanges:0];
-  if ([v6 count] >= 0x65)
+  if ([dsCopy count] >= 0x65)
   {
     [v10 setFetchBatchSize:100];
   }
 
-  v12 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K IN %@", @"personUUID", v6];
-  [v10 setPredicate:v12];
+  dsCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K IN %@", @"personUUID", dsCopy];
+  [v10 setPredicate:dsCopy];
 
-  [v10 setFetchLimit:{objc_msgSend(v6, "count")}];
+  [v10 setFetchLimit:{objc_msgSend(dsCopy, "count")}];
   v17 = 0;
-  v13 = [v8 executeFetchRequest:v10 error:&v17];
+  v13 = [contextCopy executeFetchRequest:v10 error:&v17];
 
   v14 = v17;
   if (v13)
@@ -181,13 +181,13 @@
   return v2;
 }
 
-+ (void)enumerateAssetUUIDsForSearchIndexingWithDetectedFaceUUIDs:(id)a3 managedObjectContext:(id)a4 assetUUIDHandler:(id)a5
++ (void)enumerateAssetUUIDsForSearchIndexingWithDetectedFaceUUIDs:(id)ds managedObjectContext:(id)context assetUUIDHandler:(id)handler
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = a5;
+  contextCopy = context;
+  handlerCopy = handler;
   v9 = MEMORY[0x1E695D5E0];
-  v10 = a3;
+  dsCopy = ds;
   v11 = +[PLDetectedFace entityName];
   v12 = [v9 fetchRequestWithEntityName:v11];
 
@@ -195,16 +195,16 @@
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:1];
   [v12 setRelationshipKeyPathsForPrefetching:v13];
 
-  v14 = [MEMORY[0x1E696AE18] predicateWithFormat:@"uuid IN %@", v10];
+  dsCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"uuid IN %@", dsCopy];
 
-  [v12 setPredicate:v14];
+  [v12 setPredicate:dsCopy];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __121__PLPerson_SearchIndex__enumerateAssetUUIDsForSearchIndexingWithDetectedFaceUUIDs_managedObjectContext_assetUUIDHandler___block_invoke;
   v17[3] = &unk_1E7570E20;
-  v18 = v8;
-  v15 = v8;
-  v16 = [v7 enumerateObjectsFromFetchRequest:v12 count:0 usingDefaultBatchSizeWithBlock:v17];
+  v18 = handlerCopy;
+  v15 = handlerCopy;
+  v16 = [contextCopy enumerateObjectsFromFetchRequest:v12 count:0 usingDefaultBatchSizeWithBlock:v17];
 }
 
 void __121__PLPerson_SearchIndex__enumerateAssetUUIDsForSearchIndexingWithDetectedFaceUUIDs_managedObjectContext_assetUUIDHandler___block_invoke(uint64_t a1, void *a2, uint64_t a3, uint64_t a4)
@@ -221,27 +221,27 @@ void __121__PLPerson_SearchIndex__enumerateAssetUUIDsForSearchIndexingWithDetect
   }
 }
 
-+ (void)enumerateAssetUUIDsForSearchIndexingWithPersonUUID:(id)a3 managedObjectContext:(id)a4 libraryIdentifier:(int64_t)a5 assetUUIDHandler:(id)a6
++ (void)enumerateAssetUUIDsForSearchIndexingWithPersonUUID:(id)d managedObjectContext:(id)context libraryIdentifier:(int64_t)identifier assetUUIDHandler:(id)handler
 {
   v56 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
-  v12 = [v9 length];
-  if (v11 && v10 && v12)
+  dCopy = d;
+  contextCopy = context;
+  handlerCopy = handler;
+  v12 = [dCopy length];
+  if (handlerCopy && contextCopy && v12)
   {
     v13 = +[PLPerson fetchRequest];
     [v13 setResultType:1];
-    v14 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K = %@", @"personUUID", v9];
-    [v13 setPredicate:v14];
+    dCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K = %@", @"personUUID", dCopy];
+    [v13 setPredicate:dCopy];
 
     v48 = 0;
-    v15 = [v10 executeFetchRequest:v13 error:&v48];
+    v15 = [contextCopy executeFetchRequest:v13 error:&v48];
     v16 = v48;
-    v17 = [v15 firstObject];
-    if (v17)
+    firstObject = [v15 firstObject];
+    if (firstObject)
     {
-      v43 = a5;
+      identifierCopy = identifier;
       v18 = MEMORY[0x1E695D5E0];
       v19 = +[PLDetectedFace entityName];
       v20 = [v18 fetchRequestWithEntityName:v19];
@@ -251,12 +251,12 @@ void __121__PLPerson_SearchIndex__enumerateAssetUUIDsForSearchIndexingWithDetect
       v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v51 count:1];
       [v20 setPropertiesToFetch:v21];
 
-      v44 = v17;
-      v22 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %@ OR %K == %@", @"personForFace", v17, @"personForTemporalDetectedFaces", v17];
+      v44 = firstObject;
+      v22 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %@ OR %K == %@", @"personForFace", firstObject, @"personForTemporalDetectedFaces", firstObject];
       [v20 setPredicate:v22];
 
       v47 = v16;
-      v23 = [v10 executeFetchRequest:v20 error:&v47];
+      v23 = [contextCopy executeFetchRequest:v20 error:&v47];
       v24 = v47;
 
       if (v23)
@@ -279,7 +279,7 @@ void __121__PLPerson_SearchIndex__enumerateAssetUUIDsForSearchIndexingWithDetect
         v31 = v25;
         v32 = [MEMORY[0x1E696AE18] predicateWithFormat:@"self IN %@", v25];
         v49[0] = v32;
-        v33 = [PLManagedAsset isEligibleForSearchIndexingPredicateForLibraryIdentifier:v43];
+        v33 = [PLManagedAsset isEligibleForSearchIndexingPredicateForLibraryIdentifier:identifierCopy];
         v49[1] = v33;
         v34 = [MEMORY[0x1E695DEC8] arrayWithObjects:v49 count:2];
         v35 = [v30 andPredicateWithSubpredicates:v34];
@@ -294,8 +294,8 @@ void __121__PLPerson_SearchIndex__enumerateAssetUUIDsForSearchIndexingWithDetect
         v45[1] = 3221225472;
         v45[2] = __132__PLPerson_SearchIndex__enumerateAssetUUIDsForSearchIndexingWithPersonUUID_managedObjectContext_libraryIdentifier_assetUUIDHandler___block_invoke_2;
         v45[3] = &unk_1E7570DF8;
-        v46 = v11;
-        v38 = [v10 enumerateObjectsFromFetchRequest:v28 count:0 usingDefaultBatchSizeWithBlock:v45];
+        v46 = handlerCopy;
+        v38 = [contextCopy enumerateObjectsFromFetchRequest:v28 count:0 usingDefaultBatchSizeWithBlock:v45];
 
         v24 = v41;
       }
@@ -307,14 +307,14 @@ void __121__PLPerson_SearchIndex__enumerateAssetUUIDsForSearchIndexingWithDetect
         if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
         {
           *buf = 138543618;
-          v53 = v9;
+          v53 = dCopy;
           v54 = 2112;
           v55 = v24;
           _os_log_impl(&dword_19BF1F000, v36, OS_LOG_TYPE_ERROR, "Failed to fetch asset IDs for person with UUID %{public}@. Error: %@", buf, 0x16u);
         }
       }
 
-      v17 = v44;
+      firstObject = v44;
     }
 
     else
@@ -323,7 +323,7 @@ void __121__PLPerson_SearchIndex__enumerateAssetUUIDsForSearchIndexingWithDetect
       if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543618;
-        v53 = v9;
+        v53 = dCopy;
         v54 = 2112;
         v55 = v16;
         _os_log_impl(&dword_19BF1F000, v20, OS_LOG_TYPE_ERROR, "Cannot find person with uuid %{public}@. Error: %@", buf, 0x16u);
@@ -340,9 +340,9 @@ void __132__PLPerson_SearchIndex__enumerateAssetUUIDsForSearchIndexingWithPerson
   (*(*(a1 + 32) + 16))();
 }
 
-+ (id)isEligibleForSearchIndexingPredicateForLibraryIdentifier:(int64_t)a3
++ (id)isEligibleForSearchIndexingPredicateForLibraryIdentifier:(int64_t)identifier
 {
-  if (a3 == 3)
+  if (identifier == 3)
   {
     [MEMORY[0x1E696AE18] predicateWithValue:0];
   }
@@ -356,20 +356,20 @@ void __132__PLPerson_SearchIndex__enumerateAssetUUIDsForSearchIndexingWithPerson
   return v3;
 }
 
-- (id)payloadIDForTombstone:(id)a3
+- (id)payloadIDForTombstone:(id)tombstone
 {
-  v3 = [a3 objectForKeyedSubscript:@"personUUID"];
+  v3 = [tombstone objectForKeyedSubscript:@"personUUID"];
   v4 = [PLJournalEntryPayloadIDFactory payloadIDWithUUIDString:v3];
 
   return v4;
 }
 
-- (id)payloadForChangedKeys:(id)a3
+- (id)payloadForChangedKeys:(id)keys
 {
-  v4 = a3;
+  keysCopy = keys;
   if ([(PLPerson *)self isValidForPersistence])
   {
-    v5 = [(PLManagedObjectJournalEntryPayload *)[PLPersonJournalEntryPayload alloc] initWithManagedObject:self changedKeys:v4];
+    v5 = [(PLManagedObjectJournalEntryPayload *)[PLPersonJournalEntryPayload alloc] initWithManagedObject:self changedKeys:keysCopy];
   }
 
   else
@@ -382,8 +382,8 @@ void __132__PLPerson_SearchIndex__enumerateAssetUUIDsForSearchIndexingWithPerson
 
 - (id)payloadID
 {
-  v2 = [(PLPerson *)self personUUID];
-  v3 = [PLJournalEntryPayloadIDFactory payloadIDWithUUIDString:v2];
+  personUUID = [(PLPerson *)self personUUID];
+  v3 = [PLJournalEntryPayloadIDFactory payloadIDWithUUIDString:personUUID];
 
   return v3;
 }
@@ -391,31 +391,31 @@ void __132__PLPerson_SearchIndex__enumerateAssetUUIDsForSearchIndexingWithPerson
 - (id)edgesIn
 {
   v2 = [PLGraphNode nodeForActingObject:self createIfMissing:0];
-  v3 = [v2 edgesIn];
+  edgesIn = [v2 edgesIn];
 
-  return v3;
+  return edgesIn;
 }
 
 - (id)edgesOut
 {
   v2 = [PLGraphNode nodeForActingObject:self createIfMissing:0];
-  v3 = [v2 edgesOut];
+  edgesOut = [v2 edgesOut];
 
-  return v3;
+  return edgesOut;
 }
 
 - (BOOL)_hideGraphPersonInsteadOfDelete
 {
   v25 = *MEMORY[0x1E69E9840];
-  v3 = [(PLPerson *)self verifiedType];
-  if (v3 == 2)
+  verifiedType = [(PLPerson *)self verifiedType];
+  if (verifiedType == 2)
   {
     v4 = PLBackendGetLog();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
-      v5 = [(PLPerson *)self personUUID];
+      personUUID = [(PLPerson *)self personUUID];
       *buf = 138543362;
-      v24 = v5;
+      v24 = personUUID;
       _os_log_impl(&dword_19BF1F000, v4, OS_LOG_TYPE_DEFAULT, "Hiding graph person instead of delete: %{public}@", buf, 0xCu);
     }
 
@@ -424,8 +424,8 @@ void __132__PLPerson_SearchIndex__enumerateAssetUUIDsForSearchIndexingWithPerson
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v6 = [(PLPerson *)self faceCrops];
-    v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+    faceCrops = [(PLPerson *)self faceCrops];
+    v7 = [faceCrops countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v7)
     {
       v8 = v7;
@@ -436,16 +436,16 @@ void __132__PLPerson_SearchIndex__enumerateAssetUUIDsForSearchIndexingWithPerson
         {
           if (*v19 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(faceCrops);
           }
 
           v11 = *(*(&v18 + 1) + 8 * i);
-          v12 = [v11 face];
-          v13 = v12;
-          if (v12)
+          face = [v11 face];
+          v13 = face;
+          if (face)
           {
-            v14 = [v12 managedObjectContext];
-            [v14 deleteObject:v13];
+            managedObjectContext = [face managedObjectContext];
+            [managedObjectContext deleteObject:v13];
           }
 
           if (![v11 state])
@@ -454,7 +454,7 @@ void __132__PLPerson_SearchIndex__enumerateAssetUUIDsForSearchIndexingWithPerson
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+        v8 = [faceCrops countByEnumeratingWithState:&v18 objects:v22 count:16];
       }
 
       while (v8);
@@ -467,30 +467,30 @@ void __132__PLPerson_SearchIndex__enumerateAssetUUIDsForSearchIndexingWithPerson
     [(PLPerson *)self setTemporalDetectedFaces:v16];
   }
 
-  return v3 == 2;
+  return verifiedType == 2;
 }
 
-- (BOOL)deletePersonWithReason:(signed __int16)a3
+- (BOOL)deletePersonWithReason:(signed __int16)reason
 {
-  v3 = a3;
+  reasonCopy = reason;
   *&v13[5] = *MEMORY[0x1E69E9840];
-  if (a3 != 6)
+  if (reason != 6)
   {
     v6 = PLBackendGetLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [(PLPerson *)self personUUID];
+      personUUID = [(PLPerson *)self personUUID];
       *buf = 67109378;
-      v13[0] = v3;
+      v13[0] = reasonCopy;
       LOWORD(v13[1]) = 2114;
-      *(&v13[1] + 2) = v7;
+      *(&v13[1] + 2) = personUUID;
       _os_log_impl(&dword_19BF1F000, v6, OS_LOG_TYPE_DEFAULT, "Delete person with reason %d: %{public}@", buf, 0x12u);
     }
   }
 
   if (![(PLPerson *)self isDeleted])
   {
-    *(&self->super._willSaveCallCount + 1) = v3;
+    *(&self->super._willSaveCallCount + 1) = reasonCopy;
     if (_os_feature_enabled_impl())
     {
       v10 = [PLSocialGroup deleteSocialGroupsHavingMember:self];
@@ -501,17 +501,17 @@ void __132__PLPerson_SearchIndex__enumerateAssetUUIDsForSearchIndexingWithPerson
       v10 = 1;
     }
 
-    if (v3 <= 9)
+    if (reasonCopy <= 9)
     {
-      if (((1 << v3) & 0x19E) != 0 || ((1 << v3) & 0x240) != 0)
+      if (((1 << reasonCopy) & 0x19E) != 0 || ((1 << reasonCopy) & 0x240) != 0)
       {
 LABEL_15:
-        v8 = [(PLPerson *)self managedObjectContext];
-        [v8 deleteObject:self];
+        managedObjectContext = [(PLPerson *)self managedObjectContext];
+        [managedObjectContext deleteObject:self];
         goto LABEL_16;
       }
 
-      if (v3 == 5)
+      if (reasonCopy == 5)
       {
         if ([(PLPerson *)self _hideGraphPersonInsteadOfDelete])
         {
@@ -522,23 +522,23 @@ LABEL_15:
       }
     }
 
-    if (v3)
+    if (reasonCopy)
     {
       return 0;
     }
 
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"PLPerson.m" lineNumber:2110 description:@"Invalid parameter not satisfying: %@", @"reason != PLPersonDeleteReasonNone"];
+    managedObjectContext = [MEMORY[0x1E696AAA8] currentHandler];
+    [managedObjectContext handleFailureInMethod:a2 object:self file:@"PLPerson.m" lineNumber:2110 description:@"Invalid parameter not satisfying: %@", @"reason != PLPersonDeleteReasonNone"];
     goto LABEL_8;
   }
 
-  v8 = PLBackendGetLog();
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+  managedObjectContext = PLBackendGetLog();
+  if (os_log_type_enabled(managedObjectContext, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(PLPerson *)self personUUID];
+    personUUID2 = [(PLPerson *)self personUUID];
     *buf = 138543362;
-    *v13 = v9;
-    _os_log_impl(&dword_19BF1F000, v8, OS_LOG_TYPE_DEFAULT, "Person already deleted: %{public}@", buf, 0xCu);
+    *v13 = personUUID2;
+    _os_log_impl(&dword_19BF1F000, managedObjectContext, OS_LOG_TYPE_DEFAULT, "Person already deleted: %{public}@", buf, 0xCu);
   }
 
 LABEL_8:
@@ -548,15 +548,15 @@ LABEL_16:
   return v10;
 }
 
-- (BOOL)dedupeGraphPersons:(id)a3 error:(id *)a4
+- (BOOL)dedupeGraphPersons:(id)persons error:(id *)error
 {
   v55 = *MEMORY[0x1E69E9840];
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
-  v6 = a3;
-  v7 = [v6 countByEnumeratingWithState:&v44 objects:v54 count:16];
+  personsCopy = persons;
+  v7 = [personsCopy countByEnumeratingWithState:&v44 objects:v54 count:16];
   if (v7)
   {
     v8 = v7;
@@ -567,15 +567,15 @@ LABEL_16:
       {
         if (*v45 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(personsCopy);
         }
 
         v11 = *(*(&v44 + 1) + 8 * i);
         if ([v11 verifiedType] != 2)
         {
           v18 = MEMORY[0x1E696AEC0];
-          v19 = [v11 personUUID];
-          v20 = [v18 stringWithFormat:@"Attempting to dedupe non-graph person (uuid = %@), caller should refetch persons and respond appropriately", v19];
+          personUUID = [v11 personUUID];
+          v20 = [v18 stringWithFormat:@"Attempting to dedupe non-graph person (uuid = %@), caller should refetch persons and respond appropriately", personUUID];
 
           v21 = MEMORY[0x1E696ABC0];
           v22 = *MEMORY[0x1E69BFF48];
@@ -589,7 +589,7 @@ LABEL_16:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v44 objects:v54 count:16];
+      v8 = [personsCopy countByEnumeratingWithState:&v44 objects:v54 count:16];
       if (v8)
       {
         continue;
@@ -601,7 +601,7 @@ LABEL_16:
 
   if ([(PLPerson *)self keyFacePickSource]!= 1)
   {
-    [v6 sortedArrayUsingComparator:&__block_literal_global_399_110682];
+    [personsCopy sortedArrayUsingComparator:&__block_literal_global_399_110682];
     v40 = 0u;
     v41 = 0u;
     v42 = 0u;
@@ -638,9 +638,9 @@ LABEL_12:
         }
       }
 
-      v26 = [v17 keyFace];
+      keyFace = [v17 keyFace];
 
-      if (!v26)
+      if (!keyFace)
       {
         goto LABEL_26;
       }
@@ -651,16 +651,16 @@ LABEL_12:
         if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v50 = v26;
+          v50 = keyFace;
           _os_log_impl(&dword_19BF1F000, v27, OS_LOG_TYPE_DEFAULT, "Dedupe target does not have a picked key face, assigning new picked key face %@", buf, 0xCu);
         }
       }
 
-      [(PLPerson *)self setKeyFace:v26 pickSource:1];
-      v28 = [(PLPerson *)self mutableFaces];
-      [v28 addObject:v26];
+      [(PLPerson *)self setKeyFace:keyFace pickSource:1];
+      mutableFaces = [(PLPerson *)self mutableFaces];
+      [mutableFaces addObject:keyFace];
 
-      [v26 fixPersonRelationshipsForFaceTorsoOrTemporal];
+      [keyFace fixPersonRelationshipsForFaceTorsoOrTemporal];
     }
 
     else
@@ -673,11 +673,11 @@ LABEL_26:
         goto LABEL_30;
       }
 
-      v26 = __CPLAssetsdOSLogDomain();
-      if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
+      keyFace = __CPLAssetsdOSLogDomain();
+      if (os_log_type_enabled(keyFace, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 0;
-        _os_log_impl(&dword_19BF1F000, v26, OS_LOG_TYPE_DEFAULT, "Unable to find picked key face from dedupe persons", buf, 2u);
+        _os_log_impl(&dword_19BF1F000, keyFace, OS_LOG_TYPE_DEFAULT, "Unable to find picked key face from dedupe persons", buf, 2u);
       }
     }
 
@@ -688,7 +688,7 @@ LABEL_30:
   v39 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v29 = v6;
+  v29 = personsCopy;
   v30 = [v29 countByEnumeratingWithState:&v36 objects:v48 count:16];
   if (v30)
   {
@@ -716,10 +716,10 @@ LABEL_30:
   v25 = 1;
 LABEL_39:
 
-  if (a4)
+  if (error)
   {
     v34 = v24;
-    *a4 = v24;
+    *error = v24;
   }
 
   return v25;
@@ -735,43 +735,43 @@ uint64_t __37__PLPerson_dedupeGraphPersons_error___block_invoke(uint64_t a1, voi
   return v7;
 }
 
-- (BOOL)validateDetectionTypesForMergingWithPersons:(id)a3 error:(id *)a4
+- (BOOL)validateDetectionTypesForMergingWithPersons:(id)persons error:(id *)error
 {
   v52 = *MEMORY[0x1E69E9840];
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v6 = a3;
-  v7 = [v6 countByEnumeratingWithState:&v37 objects:v51 count:16];
+  personsCopy = persons;
+  v7 = [personsCopy countByEnumeratingWithState:&v37 objects:v51 count:16];
   if (v7)
   {
     v8 = v7;
-    v35 = a4;
+    errorCopy = error;
     v9 = *v38;
     v10 = 0x1E755F000uLL;
     v11 = MEMORY[0x1E6994D48];
-    v36 = v6;
+    v36 = personsCopy;
     while (2)
     {
       for (i = 0; i != v8; ++i)
       {
         if (*v38 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(personsCopy);
         }
 
         v13 = *(*(&v37 + 1) + 8 * i);
-        v14 = [(PLPerson *)self detectionType];
-        if (v14 != [v13 detectionType])
+        detectionType = [(PLPerson *)self detectionType];
+        if (detectionType != [v13 detectionType])
         {
           if (-[PLPerson detectionType](self, "detectionType") == 1 && ([*(v10 + 3200) isPetDetectionType:{objc_msgSend(v13, "detectionType")}] & 1) != 0 || objc_msgSend(*(v10 + 3200), "isPetDetectionType:", -[PLPerson detectionType](self, "detectionType")) && objc_msgSend(v13, "detectionType") == 1)
           {
             v24 = MEMORY[0x1E696AEC0];
-            v25 = [(PLPerson *)self personUUID];
-            v26 = [(PLPerson *)self detectionType];
-            v27 = [v13 personUUID];
-            v28 = [v24 stringWithFormat:@"Preventing merge persons of different detection types: %@ (%hd) - %@ (%hd)", v25, v26, v27, objc_msgSend(v13, "detectionType")];
+            personUUID = [(PLPerson *)self personUUID];
+            detectionType2 = [(PLPerson *)self detectionType];
+            personUUID2 = [v13 personUUID];
+            v28 = [v24 stringWithFormat:@"Preventing merge persons of different detection types: %@ (%hd) - %@ (%hd)", personUUID, detectionType2, personUUID2, objc_msgSend(v13, "detectionType")];
 
             if ((*v11 & 1) == 0)
             {
@@ -790,10 +790,10 @@ uint64_t __37__PLPerson_dedupeGraphPersons_error___block_invoke(uint64_t a1, voi
             v50 = v28;
             v32 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v50 forKeys:&v49 count:1];
             v33 = [v30 errorWithDomain:v31 code:41005 userInfo:v32];
-            if (v35)
+            if (errorCopy)
             {
               v33 = v33;
-              *v35 = v33;
+              *errorCopy = v33;
             }
 
             v23 = 0;
@@ -805,35 +805,35 @@ uint64_t __37__PLPerson_dedupeGraphPersons_error___block_invoke(uint64_t a1, voi
             v15 = __CPLAssetsdOSLogDomain();
             if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
             {
-              v16 = [(PLPerson *)self personUUID];
-              v17 = [(PLPerson *)self detectionType];
+              personUUID3 = [(PLPerson *)self personUUID];
+              detectionType3 = [(PLPerson *)self detectionType];
               [v13 personUUID];
               v18 = v10;
               v19 = v8;
               v21 = v20 = v9;
-              v22 = [v13 detectionType];
+              detectionType4 = [v13 detectionType];
               *buf = 138544130;
-              v42 = v16;
+              v42 = personUUID3;
               v43 = 1024;
-              v44 = v17;
+              v44 = detectionType3;
               v45 = 2114;
               v46 = v21;
               v47 = 1024;
-              v48 = v22;
+              v48 = detectionType4;
               _os_log_impl(&dword_19BF1F000, v15, OS_LOG_TYPE_DEFAULT, "Merging persons of different detection types: %{public}@ (%hd) - %{public}@ (%hd)", buf, 0x22u);
 
               v9 = v20;
               v8 = v19;
               v10 = v18;
 
-              v6 = v36;
+              personsCopy = v36;
               v11 = MEMORY[0x1E6994D48];
             }
           }
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v37 objects:v51 count:16];
+      v8 = [personsCopy countByEnumeratingWithState:&v37 objects:v51 count:16];
       if (v8)
       {
         continue;
@@ -849,28 +849,28 @@ LABEL_25:
   return v23;
 }
 
-- (void)mergePersons:(id)a3 withOptimalState:(id)a4
+- (void)mergePersons:(id)persons withOptimalState:(id)state
 {
   v44 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v33 = a4;
+  personsCopy = persons;
+  stateCopy = state;
   context = objc_autoreleasePoolPush();
-  [(PLPerson *)self basicMergePersons:v6];
-  v31 = [(PLPerson *)self finalMergeTargetPerson];
-  v7 = [(PLPerson *)self mergeCandidates];
-  v8 = [v7 mutableCopy];
+  [(PLPerson *)self basicMergePersons:personsCopy];
+  finalMergeTargetPerson = [(PLPerson *)self finalMergeTargetPerson];
+  mergeCandidates = [(PLPerson *)self mergeCandidates];
+  v8 = [mergeCandidates mutableCopy];
 
-  v9 = [(PLPerson *)self mergeCandidatesWithConfidence];
-  v10 = [v9 mutableCopy];
+  mergeCandidatesWithConfidence = [(PLPerson *)self mergeCandidatesWithConfidence];
+  v10 = [mergeCandidatesWithConfidence mutableCopy];
 
-  v11 = [(PLPerson *)self invalidMergeCandidates];
-  v12 = [v11 mutableCopy];
+  invalidMergeCandidates = [(PLPerson *)self invalidMergeCandidates];
+  v12 = [invalidMergeCandidates mutableCopy];
 
   v40 = 0u;
   v41 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v13 = v6;
+  v13 = personsCopy;
   v14 = [v13 countByEnumeratingWithState:&v38 objects:v43 count:16];
   if (v14)
   {
@@ -886,17 +886,17 @@ LABEL_25:
         }
 
         v18 = *(*(&v38 + 1) + 8 * i);
-        v19 = [v18 mergeCandidates];
-        v20 = [v19 allObjects];
-        [v8 addObjectsFromArray:v20];
+        mergeCandidates2 = [v18 mergeCandidates];
+        allObjects = [mergeCandidates2 allObjects];
+        [v8 addObjectsFromArray:allObjects];
 
-        v21 = [v18 mergeCandidatesWithConfidence];
-        v22 = [v21 allObjects];
-        [v10 addObjectsFromArray:v22];
+        mergeCandidatesWithConfidence2 = [v18 mergeCandidatesWithConfidence];
+        allObjects2 = [mergeCandidatesWithConfidence2 allObjects];
+        [v10 addObjectsFromArray:allObjects2];
 
-        v23 = [v18 invalidMergeCandidates];
-        v24 = [v23 allObjects];
-        [v12 addObjectsFromArray:v24];
+        invalidMergeCandidates2 = [v18 invalidMergeCandidates];
+        allObjects3 = [invalidMergeCandidates2 allObjects];
+        [v12 addObjectsFromArray:allObjects3];
       }
 
       v15 = [v13 countByEnumeratingWithState:&v38 objects:v43 count:16];
@@ -905,9 +905,9 @@ LABEL_25:
     while (v15);
   }
 
-  [v8 removeObject:v31];
-  [v10 removeObject:v31];
-  [v12 removeObject:v31];
+  [v8 removeObject:finalMergeTargetPerson];
+  [v10 removeObject:finalMergeTargetPerson];
+  [v12 removeObject:finalMergeTargetPerson];
   v36 = 0u;
   v37 = 0u;
   v34 = 0u;
@@ -938,51 +938,51 @@ LABEL_25:
     while (v27);
   }
 
-  [v31 setMergeCandidates:v8];
-  [v31 setMergeCandidatesWithConfidence:v10];
-  [v31 setInvalidMergeCandidates:v25];
-  [v31 setValuesForKeysWithDictionary:v33];
+  [finalMergeTargetPerson setMergeCandidates:v8];
+  [finalMergeTargetPerson setMergeCandidatesWithConfidence:v10];
+  [finalMergeTargetPerson setInvalidMergeCandidates:v25];
+  [finalMergeTargetPerson setValuesForKeysWithDictionary:stateCopy];
 
   objc_autoreleasePoolPop(context);
 }
 
-- (void)basicMergePersons:(id)a3
+- (void)basicMergePersons:(id)persons
 {
-  v5 = a3;
-  v4 = [(PLPerson *)self finalMergeTargetPerson];
+  personsCopy = persons;
+  finalMergeTargetPerson = [(PLPerson *)self finalMergeTargetPerson];
   if (_os_feature_enabled_impl())
   {
-    [(PLPerson *)self _updateSocialGroupMembershipWithPersonsToMerge:v5 mergeTarget:v4];
+    [(PLPerson *)self _updateSocialGroupMembershipWithPersonsToMerge:personsCopy mergeTarget:finalMergeTargetPerson];
   }
 
-  [v4 _basicMergePersons:v5];
+  [finalMergeTargetPerson _basicMergePersons:personsCopy];
 }
 
-- (BOOL)_updateSocialGroupMembershipWithPersonsToMerge:(id)a3 mergeTarget:(id)a4
+- (BOOL)_updateSocialGroupMembershipWithPersonsToMerge:(id)merge mergeTarget:(id)target
 {
   v28[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PLPerson *)self managedObjectContext];
-  v9 = [v8 pl_graphCache];
+  mergeCopy = merge;
+  targetCopy = target;
+  managedObjectContext = [(PLPerson *)self managedObjectContext];
+  pl_graphCache = [managedObjectContext pl_graphCache];
 
-  v10 = [(PLPerson *)self managedObjectContext];
-  v11 = [v9 labelWithCode:1000 inContext:v10];
+  managedObjectContext2 = [(PLPerson *)self managedObjectContext];
+  v11 = [pl_graphCache labelWithCode:1000 inContext:managedObjectContext2];
 
   if (v11)
   {
     v12 = +[PLGraphEdge fetchRequest];
-    v13 = [MEMORY[0x1E696AE18] predicateWithFormat:@"(%K = %@) AND (%K in %@)", @"sourceNode.primaryLabel", v11, @"targetPerson", v6];
-    [v12 setPredicate:v13];
+    mergeCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"(%K = %@) AND (%K in %@)", @"sourceNode.primaryLabel", v11, @"targetPerson", mergeCopy];
+    [v12 setPredicate:mergeCopy];
 
     [v12 setResultType:0];
     v28[0] = @"sourceNode";
     v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v28 count:1];
     [v12 setRelationshipKeyPathsForPrefetching:v14];
 
-    v15 = [(PLPerson *)self managedObjectContext];
+    managedObjectContext3 = [(PLPerson *)self managedObjectContext];
     v25 = 0;
-    v16 = [v15 executeFetchRequest:v12 error:&v25];
+    v16 = [managedObjectContext3 executeFetchRequest:v12 error:&v25];
     v17 = v25;
 
     v18 = v16 != 0;
@@ -1000,7 +1000,7 @@ LABEL_25:
     if ([v16 count])
     {
       v24 = v17;
-      v20 = [(PLPerson *)self _updateGroupMembershipFromEdges:v16 mergeTarget:v7 error:&v24];
+      v20 = [(PLPerson *)self _updateGroupMembershipFromEdges:v16 mergeTarget:targetCopy error:&v24];
       v21 = v24;
 
       if (!v20)
@@ -1038,21 +1038,21 @@ LABEL_25:
   return v18;
 }
 
-- (BOOL)_updateGroupMembershipFromEdges:(id)a3 mergeTarget:(id)a4 error:(id *)a5
+- (BOOL)_updateGroupMembershipFromEdges:(id)edges mergeTarget:(id)target error:(id *)error
 {
   v41 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v32 = a4;
+  edgesCopy = edges;
+  targetCopy = target;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v8 = v7;
+  v8 = edgesCopy;
   v9 = [v8 countByEnumeratingWithState:&v36 objects:v40 count:16];
   if (v9)
   {
     v10 = v9;
-    v29 = a5;
+    errorCopy = error;
     v33 = 0;
     v11 = *v37;
     v31 = v8;
@@ -1067,14 +1067,14 @@ LABEL_25:
 
         v13 = *(*(&v36 + 1) + 8 * i);
         v14 = objc_autoreleasePoolPush();
-        v15 = [v13 sourceNode];
-        v16 = v15;
-        if (v15 && ([v15 isDeleted] & 1) == 0)
+        sourceNode = [v13 sourceNode];
+        v16 = sourceNode;
+        if (sourceNode && ([sourceNode isDeleted] & 1) == 0)
         {
           v17 = [(PLGraphNodeContainer *)PLSocialGroup newNodeContainerWithNode:v16];
-          v18 = [v13 targetPerson];
+          targetPerson = [v13 targetPerson];
           v35 = v33;
-          v19 = [v17 removeMember:v18 error:&v35];
+          v19 = [v17 removeMember:targetPerson error:&v35];
           v20 = v35;
 
           if (!v19)
@@ -1083,7 +1083,7 @@ LABEL_25:
           }
 
           v34 = v20;
-          v21 = [v17 addMember:v32 error:&v34];
+          v21 = [v17 addMember:targetCopy error:&v34];
           v33 = v34;
 
           if (!v21)
@@ -1095,11 +1095,11 @@ LABEL_18:
             v8 = v31;
 
             v26 = v20;
-            if (v29)
+            if (errorCopy)
             {
               v26 = v26;
               v25 = 0;
-              *v29 = v26;
+              *errorCopy = v26;
             }
 
             else
@@ -1111,13 +1111,13 @@ LABEL_18:
             goto LABEL_22;
           }
 
-          v22 = [v17 members];
-          v23 = [v22 count];
+          members = [v17 members];
+          v23 = [members count];
 
           if (v23 <= 1)
           {
-            v24 = [(PLPerson *)self managedObjectContext];
-            [v24 deleteObject:v16];
+            managedObjectContext = [(PLPerson *)self managedObjectContext];
+            [managedObjectContext deleteObject:v16];
           }
 
           v8 = v31;
@@ -1150,52 +1150,52 @@ LABEL_22:
   return v25;
 }
 
-- (void)_logMergeDetailsForPerson:(id)a3
+- (void)_logMergeDetailsForPerson:(id)person
 {
   v40 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 personUri];
-  if (!v5)
+  personCopy = person;
+  personUri = [personCopy personUri];
+  if (!personUri)
   {
     goto LABEL_4;
   }
 
-  v6 = v5;
-  v7 = [(PLPerson *)self personUri];
-  if (v7)
+  v6 = personUri;
+  personUri2 = [(PLPerson *)self personUri];
+  if (personUri2)
   {
-    v8 = v7;
-    v9 = [v4 personUri];
-    v10 = [(PLPerson *)self personUri];
-    v11 = [v9 isEqualToString:v10];
+    v8 = personUri2;
+    personUri3 = [personCopy personUri];
+    personUri4 = [(PLPerson *)self personUri];
+    v11 = [personUri3 isEqualToString:personUri4];
 
     if (v11)
     {
 LABEL_4:
-      v12 = [v4 contactMatchingDictionary];
-      v13 = [(PLPerson *)self contactMatchingDictionary];
+      contactMatchingDictionary = [personCopy contactMatchingDictionary];
+      contactMatchingDictionary2 = [(PLPerson *)self contactMatchingDictionary];
 
-      if (!v12)
+      if (!contactMatchingDictionary)
       {
-        if (v13)
+        if (contactMatchingDictionary2)
         {
           if ((*MEMORY[0x1E6994D48] & 1) == 0)
           {
-            v15 = __CPLAssetsdOSLogDomain();
-            if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+            personUUID9 = __CPLAssetsdOSLogDomain();
+            if (os_log_type_enabled(personUUID9, OS_LOG_TYPE_DEFAULT))
             {
-              v22 = [v4 personUUID];
-              v23 = [(PLPerson *)self personUUID];
-              v24 = [(PLPerson *)self contactMatchingDictionary];
-              v25 = [v24 allKeys];
-              v26 = [v25 componentsJoinedByString:{@", "}];
+              personUUID = [personCopy personUUID];
+              personUUID2 = [(PLPerson *)self personUUID];
+              contactMatchingDictionary3 = [(PLPerson *)self contactMatchingDictionary];
+              allKeys = [contactMatchingDictionary3 allKeys];
+              v26 = [allKeys componentsJoinedByString:{@", "}];
               v32 = 138543874;
-              v33 = v22;
+              v33 = personUUID;
               v34 = 2114;
-              v35 = v23;
+              v35 = personUUID2;
               v36 = 2114;
               v37 = v26;
-              _os_log_impl(&dword_19BF1F000, v15, OS_LOG_TYPE_DEFAULT, "Merging Persons: merge source %{public}@ has nil contactMatchingDictionary but target person %{public}@ has these keys: %{public}@", &v32, 0x20u);
+              _os_log_impl(&dword_19BF1F000, personUUID9, OS_LOG_TYPE_DEFAULT, "Merging Persons: merge source %{public}@ has nil contactMatchingDictionary but target person %{public}@ has these keys: %{public}@", &v32, 0x20u);
             }
 
             goto LABEL_14;
@@ -1204,55 +1204,55 @@ LABEL_4:
 
         else if ((*MEMORY[0x1E6994D48] & 1) == 0)
         {
-          v15 = __CPLAssetsdOSLogDomain();
-          if (!os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+          personUUID9 = __CPLAssetsdOSLogDomain();
+          if (!os_log_type_enabled(personUUID9, OS_LOG_TYPE_DEFAULT))
           {
             goto LABEL_14;
           }
 
-          v16 = [v4 personUUID];
-          v31 = [(PLPerson *)self personUUID];
+          personUUID3 = [personCopy personUUID];
+          personUUID4 = [(PLPerson *)self personUUID];
           v32 = 138543618;
-          v33 = v16;
+          v33 = personUUID3;
           v34 = 2114;
-          v35 = v31;
-          _os_log_impl(&dword_19BF1F000, v15, OS_LOG_TYPE_DEFAULT, "Merging Persons: %{public}@ -> %{public}@ both have nil contactMatchingDictionary", &v32, 0x16u);
+          v35 = personUUID4;
+          _os_log_impl(&dword_19BF1F000, personUUID9, OS_LOG_TYPE_DEFAULT, "Merging Persons: %{public}@ -> %{public}@ both have nil contactMatchingDictionary", &v32, 0x16u);
 
           goto LABEL_13;
         }
 
-        v12 = 0;
+        contactMatchingDictionary = 0;
         goto LABEL_15;
       }
 
-      if (!v13)
+      if (!contactMatchingDictionary2)
       {
         if (*MEMORY[0x1E6994D48])
         {
           goto LABEL_15;
         }
 
-        v15 = __CPLAssetsdOSLogDomain();
-        if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+        personUUID9 = __CPLAssetsdOSLogDomain();
+        if (os_log_type_enabled(personUUID9, OS_LOG_TYPE_DEFAULT))
         {
-          v27 = [(PLPerson *)self personUUID];
-          v28 = [v4 personUUID];
-          v29 = [v12 allKeys];
-          v30 = [v29 componentsJoinedByString:{@", "}];
+          personUUID5 = [(PLPerson *)self personUUID];
+          personUUID6 = [personCopy personUUID];
+          allKeys2 = [contactMatchingDictionary allKeys];
+          v30 = [allKeys2 componentsJoinedByString:{@", "}];
           v32 = 138543874;
-          v33 = v27;
+          v33 = personUUID5;
           v34 = 2114;
-          v35 = v28;
+          v35 = personUUID6;
           v36 = 2114;
           v37 = v30;
-          _os_log_impl(&dword_19BF1F000, v15, OS_LOG_TYPE_DEFAULT, "Merging Persons: target person %{public}@ has nil contactMatchingDictionary but merge source %{public}@ has these keys: %{public}@", &v32, 0x20u);
+          _os_log_impl(&dword_19BF1F000, personUUID9, OS_LOG_TYPE_DEFAULT, "Merging Persons: target person %{public}@ has nil contactMatchingDictionary but merge source %{public}@ has these keys: %{public}@", &v32, 0x20u);
         }
 
         goto LABEL_14;
       }
 
-      v14 = [(PLPerson *)self contactMatchingDictionary];
-      v15 = [PLContactStoreUtilitiesWorkaround compareContactMatchingDictionary:v12 withDictionary:v14];
+      contactMatchingDictionary4 = [(PLPerson *)self contactMatchingDictionary];
+      personUUID9 = [PLContactStoreUtilitiesWorkaround compareContactMatchingDictionary:contactMatchingDictionary withDictionary:contactMatchingDictionary4];
 
       if (*MEMORY[0x1E6994D48])
       {
@@ -1261,19 +1261,19 @@ LABEL_14:
         goto LABEL_15;
       }
 
-      v16 = __CPLAssetsdOSLogDomain();
-      if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
+      personUUID3 = __CPLAssetsdOSLogDomain();
+      if (os_log_type_enabled(personUUID3, OS_LOG_TYPE_DEFAULT))
       {
-        v17 = [v4 personUUID];
-        v18 = [(PLPerson *)self personUUID];
-        v19 = [PLContactStoreUtilitiesWorkaround comparisonDictionaryDescription:v15];
+        personUUID7 = [personCopy personUUID];
+        personUUID8 = [(PLPerson *)self personUUID];
+        v19 = [PLContactStoreUtilitiesWorkaround comparisonDictionaryDescription:personUUID9];
         v32 = 138543874;
-        v33 = v17;
+        v33 = personUUID7;
         v34 = 2114;
-        v35 = v18;
+        v35 = personUUID8;
         v36 = 2114;
         v37 = v19;
-        _os_log_impl(&dword_19BF1F000, v16, OS_LOG_TYPE_DEFAULT, "Merging Persons: %{public}@ -> %{public}@ comparing contactMatchingDictionary (left=tombstone : right=target) contents: %{public}@", &v32, 0x20u);
+        _os_log_impl(&dword_19BF1F000, personUUID3, OS_LOG_TYPE_DEFAULT, "Merging Persons: %{public}@ -> %{public}@ comparing contactMatchingDictionary (left=tombstone : right=target) contents: %{public}@", &v32, 0x20u);
       }
 
 LABEL_13:
@@ -1288,27 +1288,27 @@ LABEL_13:
 
   if ((*MEMORY[0x1E6994D48] & 1) == 0)
   {
-    v12 = __CPLAssetsdOSLogDomain();
-    if (!os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+    contactMatchingDictionary = __CPLAssetsdOSLogDomain();
+    if (!os_log_type_enabled(contactMatchingDictionary, OS_LOG_TYPE_ERROR))
     {
 LABEL_15:
 
       goto LABEL_16;
     }
 
-    v15 = [v4 personUUID];
-    v16 = [(PLPerson *)self personUUID];
-    v20 = [v4 personUri];
-    v21 = [(PLPerson *)self personUri];
+    personUUID9 = [personCopy personUUID];
+    personUUID3 = [(PLPerson *)self personUUID];
+    personUri5 = [personCopy personUri];
+    personUri6 = [(PLPerson *)self personUri];
     v32 = 138544130;
-    v33 = v15;
+    v33 = personUUID9;
     v34 = 2114;
-    v35 = v16;
+    v35 = personUUID3;
     v36 = 2114;
-    v37 = v20;
+    v37 = personUri5;
     v38 = 2114;
-    v39 = v21;
-    _os_log_impl(&dword_19BF1F000, v12, OS_LOG_TYPE_ERROR, "Merging Persons %{public}@ -> %{public}@ with different Contact identifiers: %{public}@ -> %{public}@", &v32, 0x2Au);
+    v39 = personUri6;
+    _os_log_impl(&dword_19BF1F000, contactMatchingDictionary, OS_LOG_TYPE_ERROR, "Merging Persons %{public}@ -> %{public}@ with different Contact identifiers: %{public}@ -> %{public}@", &v32, 0x2Au);
 
     goto LABEL_13;
   }
@@ -1316,18 +1316,18 @@ LABEL_15:
 LABEL_16:
 }
 
-- (void)_basicMergePersons:(id)a3
+- (void)_basicMergePersons:(id)persons
 {
   v176 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  personsCopy = persons;
   context = objc_autoreleasePoolPush();
-  v112 = [(PLPerson *)self managedObjectContext];
-  v119 = [MEMORY[0x1E695DF70] array];
+  managedObjectContext = [(PLPerson *)self managedObjectContext];
+  array = [MEMORY[0x1E695DF70] array];
   v153 = 0u;
   v154 = 0u;
   v155 = 0u;
   v156 = 0u;
-  v5 = v4;
+  v5 = personsCopy;
   v6 = [v5 countByEnumeratingWithState:&v153 objects:v175 count:16];
   if (v6)
   {
@@ -1344,9 +1344,9 @@ LABEL_16:
         }
 
         v11 = *(*(&v153 + 1) + 8 * i);
-        v12 = [(PLPerson *)self personUUID];
-        v13 = [v11 personUUID];
-        v14 = [v12 isEqualToString:v13];
+        personUUID = [(PLPerson *)self personUUID];
+        personUUID2 = [v11 personUUID];
+        v14 = [personUUID isEqualToString:personUUID2];
 
         if (v14)
         {
@@ -1355,9 +1355,9 @@ LABEL_16:
             v15 = __CPLAssetsdOSLogDomain();
             if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
             {
-              v16 = [(PLPerson *)self personUUID];
+              personUUID3 = [(PLPerson *)self personUUID];
               *buf = 138543362;
-              v165 = v16;
+              selfCopy = personUUID3;
               _os_log_impl(&dword_19BF1F000, v15, OS_LOG_TYPE_ERROR, "Person to merge should never be the same as the target person, aborting merge, personUUID = %{public}@", buf, 0xCu);
             }
           }
@@ -1381,7 +1381,7 @@ LABEL_16:
             v8 = 0;
           }
 
-          [v119 addObject:v11];
+          [array addObject:v11];
         }
       }
 
@@ -1391,18 +1391,18 @@ LABEL_16:
     while (v7);
   }
 
-  v17 = v119;
+  v17 = array;
   if ((*MEMORY[0x1E6994D48] & 1) == 0)
   {
     v18 = __CPLAssetsdOSLogDomain();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
       v19 = [v17 valueForKey:@"personUUID"];
-      v20 = [(PLPerson *)self personUUID];
+      personUUID4 = [(PLPerson *)self personUUID];
       *buf = 138543618;
-      v165 = v19;
+      selfCopy = v19;
       v166 = 2114;
-      v167 = v20;
+      v167 = personUUID4;
       _os_log_impl(&dword_19BF1F000, v18, OS_LOG_TYPE_DEFAULT, "Merging Person(s) %{public}@ to %{public}@", buf, 0x16u);
     }
   }
@@ -1430,16 +1430,16 @@ LABEL_16:
         }
 
         v26 = *(*(&v149 + 1) + 8 * j);
-        v27 = [v26 rejectedFaces];
-        v28 = [v27 valueForKey:@"objectID"];
+        rejectedFaces = [v26 rejectedFaces];
+        v28 = [rejectedFaces valueForKey:@"objectID"];
 
         [v120 unionSet:v28];
-        v29 = [v26 allDetectedFaces];
-        v30 = [v29 valueForKey:@"objectID"];
+        allDetectedFaces = [v26 allDetectedFaces];
+        v30 = [allDetectedFaces valueForKey:@"objectID"];
 
         [v21 unionSet:v30];
-        v31 = [v26 rejectedFacesNeedingFaceCrops];
-        v32 = [v31 valueForKey:@"objectID"];
+        rejectedFacesNeedingFaceCrops = [v26 rejectedFacesNeedingFaceCrops];
+        v32 = [rejectedFacesNeedingFaceCrops valueForKey:@"objectID"];
 
         [v118 unionSet:v32];
       }
@@ -1450,14 +1450,14 @@ LABEL_16:
     while (v23);
   }
 
-  v33 = [(PLPerson *)self allDetectedFaces];
-  v34 = [v33 valueForKey:@"objectID"];
+  allDetectedFaces2 = [(PLPerson *)self allDetectedFaces];
+  v34 = [allDetectedFaces2 valueForKey:@"objectID"];
 
-  v35 = [(PLPerson *)self rejectedFaces];
-  v36 = [v35 valueForKey:@"objectID"];
+  rejectedFaces2 = [(PLPerson *)self rejectedFaces];
+  v36 = [rejectedFaces2 valueForKey:@"objectID"];
 
-  v37 = [(PLPerson *)self rejectedFacesNeedingFaceCrops];
-  v38 = [v37 valueForKey:@"objectID"];
+  rejectedFacesNeedingFaceCrops2 = [(PLPerson *)self rejectedFacesNeedingFaceCrops];
+  v38 = [rejectedFacesNeedingFaceCrops2 valueForKey:@"objectID"];
 
   v116 = [v36 mutableCopy];
   [v116 intersectSet:v21];
@@ -1472,7 +1472,7 @@ LABEL_16:
   [v40 minusSet:v38];
   v109 = v34;
   [v40 minusSet:v34];
-  v41 = v112;
+  v41 = managedObjectContext;
   if ((*MEMORY[0x1E6994D48] & 1) == 0)
   {
     v42 = __CPLAssetsdOSLogDomain();
@@ -1484,9 +1484,9 @@ LABEL_16:
       v46 = [v39 count];
       v47 = v39;
       v48 = [v111 count];
-      v49 = [(PLPerson *)self personUUID];
+      personUUID5 = [(PLPerson *)self personUUID];
       *buf = 134219010;
-      v165 = v43;
+      selfCopy = v43;
       v166 = 2048;
       v167 = v45;
       v40 = v44;
@@ -1496,10 +1496,10 @@ LABEL_16:
       v171 = v48;
       v39 = v47;
       v172 = 2114;
-      v173 = v49;
+      v173 = personUUID5;
       _os_log_impl(&dword_19BF1F000, v42, OS_LOG_TYPE_DEFAULT, "Adding %lu faces, unreject %lu faces, adding %lu rejectedFaces, %lu rejectedFacesNeedingFaceCrops to %{public}@", buf, 0x34u);
 
-      v41 = v112;
+      v41 = managedObjectContext;
     }
   }
 
@@ -1523,8 +1523,8 @@ LABEL_16:
         }
 
         v55 = [v41 objectWithID:*(*(&v145 + 1) + 8 * k)];
-        v56 = [(PLPerson *)self mutableFaces];
-        [v56 addObject:v55];
+        mutableFaces = [(PLPerson *)self mutableFaces];
+        [mutableFaces addObject:v55];
 
         [v55 fixPersonRelationshipsForFaceTorsoOrTemporal];
       }
@@ -1555,8 +1555,8 @@ LABEL_16:
         }
 
         v61 = [v41 objectWithID:*(*(&v141 + 1) + 8 * m)];
-        v62 = [(PLPerson *)self mutableRejectedFaces];
-        [v62 removeObject:v61];
+        mutableRejectedFaces = [(PLPerson *)self mutableRejectedFaces];
+        [mutableRejectedFaces removeObject:v61];
       }
 
       v58 = [v117 countByEnumeratingWithState:&v141 objects:v162 count:16];
@@ -1585,8 +1585,8 @@ LABEL_16:
         }
 
         v67 = [v41 objectWithID:*(*(&v137 + 1) + 8 * n)];
-        v68 = [(PLPerson *)self mutableRejectedFaces];
-        [v68 addObject:v67];
+        mutableRejectedFaces2 = [(PLPerson *)self mutableRejectedFaces];
+        [mutableRejectedFaces2 addObject:v67];
       }
 
       v64 = [v114 countByEnumeratingWithState:&v137 objects:v161 count:16];
@@ -1615,8 +1615,8 @@ LABEL_16:
         }
 
         v73 = [v41 objectWithID:*(*(&v133 + 1) + 8 * ii)];
-        v74 = [(PLPerson *)self mutableRejectedFacesNeedingFaceCrops];
-        [v74 addObject:v73];
+        mutableRejectedFacesNeedingFaceCrops = [(PLPerson *)self mutableRejectedFacesNeedingFaceCrops];
+        [mutableRejectedFacesNeedingFaceCrops addObject:v73];
       }
 
       v70 = [v113 countByEnumeratingWithState:&v133 objects:v160 count:16];
@@ -1630,11 +1630,11 @@ LABEL_16:
     v75 = __CPLAssetsdOSLogDomain();
     if (os_log_type_enabled(v75, OS_LOG_TYPE_DEFAULT))
     {
-      v76 = [(PLPerson *)self personUUID];
-      v77 = [(PLPerson *)self faceCrops];
-      v78 = [v77 count];
+      personUUID6 = [(PLPerson *)self personUUID];
+      faceCrops = [(PLPerson *)self faceCrops];
+      v78 = [faceCrops count];
       *buf = 138543618;
-      v165 = v76;
+      selfCopy = personUUID6;
       v166 = 2048;
       v167 = v78;
       _os_log_impl(&dword_19BF1F000, v75, OS_LOG_TYPE_DEFAULT, "Person %{public}@ has %lu faceCrops before merging", buf, 0x16u);
@@ -1662,12 +1662,12 @@ LABEL_16:
         }
 
         v84 = *(*(&v129 + 1) + 8 * jj);
-        v85 = [v84 faceCrops];
+        faceCrops2 = [v84 faceCrops];
         v125 = 0u;
         v126 = 0u;
         v127 = 0u;
         v128 = 0u;
-        v86 = [v85 countByEnumeratingWithState:&v125 objects:v158 count:16];
+        v86 = [faceCrops2 countByEnumeratingWithState:&v125 objects:v158 count:16];
         if (v86)
         {
           v87 = v86;
@@ -1678,37 +1678,37 @@ LABEL_16:
             {
               if (*v126 != v88)
               {
-                objc_enumerationMutation(v85);
+                objc_enumerationMutation(faceCrops2);
               }
 
               [*(*(&v125 + 1) + 8 * kk) setState:0];
             }
 
-            v87 = [v85 countByEnumeratingWithState:&v125 objects:v158 count:16];
+            v87 = [faceCrops2 countByEnumeratingWithState:&v125 objects:v158 count:16];
           }
 
           while (v87);
         }
 
-        v90 = [v84 faceCrops];
-        v91 = [v90 allObjects];
+        faceCrops3 = [v84 faceCrops];
+        allObjects = [faceCrops3 allObjects];
 
         if ((*MEMORY[0x1E6994D48] & 1) == 0)
         {
           v92 = __CPLAssetsdOSLogDomain();
           if (os_log_type_enabled(v92, OS_LOG_TYPE_DEFAULT))
           {
-            v93 = [v91 count];
+            v93 = [allObjects count];
             *buf = 134218242;
-            v165 = v93;
+            selfCopy = v93;
             v166 = 2112;
             v167 = v84;
             _os_log_impl(&dword_19BF1F000, v92, OS_LOG_TYPE_DEFAULT, "Adding %lu faceCrops from %@", buf, 0x16u);
           }
         }
 
-        v94 = [(PLPerson *)self mutableFaceCrops];
-        [v94 addObjectsFromArray:v91];
+        mutableFaceCrops = [(PLPerson *)self mutableFaceCrops];
+        [mutableFaceCrops addObjectsFromArray:allObjects];
       }
 
       v81 = [v79 countByEnumeratingWithState:&v129 objects:v159 count:16];
@@ -1722,10 +1722,10 @@ LABEL_16:
     v95 = __CPLAssetsdOSLogDomain();
     if (os_log_type_enabled(v95, OS_LOG_TYPE_DEFAULT))
     {
-      v96 = [(PLPerson *)self faceCrops];
-      v97 = [v96 count];
+      faceCrops4 = [(PLPerson *)self faceCrops];
+      v97 = [faceCrops4 count];
       *buf = 138543618;
-      v165 = self;
+      selfCopy = self;
       v166 = 2048;
       v167 = v97;
       _os_log_impl(&dword_19BF1F000, v95, OS_LOG_TYPE_DEFAULT, "Person %{public}@ has %lu faceCrops after merging", buf, 0x16u);
@@ -1757,12 +1757,12 @@ LABEL_16:
           v104 = __CPLAssetsdOSLogDomain();
           if (os_log_type_enabled(v104, OS_LOG_TYPE_DEFAULT))
           {
-            v105 = [v103 personUUID];
-            v106 = [(PLPerson *)self personUUID];
+            personUUID7 = [v103 personUUID];
+            personUUID8 = [(PLPerson *)self personUUID];
             *buf = 138543618;
-            v165 = v105;
+            selfCopy = personUUID7;
             v166 = 2114;
-            v167 = v106;
+            v167 = personUUID8;
             _os_log_impl(&dword_19BF1F000, v104, OS_LOG_TYPE_DEFAULT, "Updating targetPerson for %{public}@ to %{public}@ after merging", buf, 0x16u);
           }
         }
@@ -1783,28 +1783,28 @@ LABEL_16:
 - (id)finalMergeTargetPerson
 {
   v15 = *MEMORY[0x1E69E9840];
-  v2 = self;
-  v3 = [(PLPerson *)v2 mergeTargetPerson];
-  v4 = [(PLPerson *)v2 mergeTargetPerson];
-  v5 = [v4 mergeTargetPerson];
+  selfCopy = self;
+  mergeTargetPerson = [(PLPerson *)selfCopy mergeTargetPerson];
+  mergeTargetPerson2 = [(PLPerson *)selfCopy mergeTargetPerson];
+  v4MergeTargetPerson = [mergeTargetPerson2 mergeTargetPerson];
 
-  if (v3)
+  if (mergeTargetPerson)
   {
-    v6 = v2;
-    while (v6 != v5)
+    v6 = selfCopy;
+    while (v6 != v4MergeTargetPerson)
     {
-      v7 = v3;
+      v7 = mergeTargetPerson;
 
-      v3 = [(PLPerson *)v7 mergeTargetPerson];
+      mergeTargetPerson = [(PLPerson *)v7 mergeTargetPerson];
 
-      v8 = [(PLPerson *)v5 mergeTargetPerson];
-      v9 = [v8 mergeTargetPerson];
+      v5MergeTargetPerson = [(PLPerson *)v4MergeTargetPerson mergeTargetPerson];
+      v8MergeTargetPerson = [v5MergeTargetPerson mergeTargetPerson];
 
       v6 = v7;
-      v5 = v9;
-      if (!v3)
+      v4MergeTargetPerson = v8MergeTargetPerson;
+      if (!mergeTargetPerson)
       {
-        v5 = v9;
+        v4MergeTargetPerson = v8MergeTargetPerson;
         v6 = v7;
         goto LABEL_11;
       }
@@ -1816,7 +1816,7 @@ LABEL_16:
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
         v13 = 138412290;
-        v14 = v2;
+        v14 = selfCopy;
         _os_log_impl(&dword_19BF1F000, v10, OS_LOG_TYPE_ERROR, "Looping merge target person %@", &v13, 0xCu);
       }
     }
@@ -1824,7 +1824,7 @@ LABEL_16:
 
   else
   {
-    v6 = v2;
+    v6 = selfCopy;
   }
 
 LABEL_11:
@@ -1833,11 +1833,11 @@ LABEL_11:
   return v6;
 }
 
-- (id)pickKeyFaceOptimalStateForContactDedupeWithPersons:(id)a3
+- (id)pickKeyFaceOptimalStateForContactDedupeWithPersons:(id)persons
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 arrayByAddingObject:self];
+  personsCopy = persons;
+  v5 = [personsCopy arrayByAddingObject:self];
   v6 = [v5 sortedArrayUsingComparator:&__block_literal_global_364_110738];
 
   v22 = 0u;
@@ -1860,13 +1860,13 @@ LABEL_3:
         objc_enumerationMutation(v7);
       }
 
-      v13 = [*(*(&v20 + 1) + 8 * v12) keyFace];
-      v14 = v13;
-      if (v13)
+      keyFace = [*(*(&v20 + 1) + 8 * v12) keyFace];
+      v14 = keyFace;
+      if (keyFace)
       {
         if (!v10)
         {
-          v10 = v13;
+          v10 = keyFace;
         }
 
         if ([v14 nameSource] == 3 || objc_msgSend(v14, "nameSource") == 1)
@@ -1928,14 +1928,14 @@ uint64_t __63__PLPerson_pickKeyFaceOptimalStateForContactDedupeWithPersons___blo
   return v7;
 }
 
-- (void)prepareForUserInitiatedMergeWithPersons:(id)a3
+- (void)prepareForUserInitiatedMergeWithPersons:(id)persons
 {
   v73 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PLPerson *)self managedObjectContext];
-  v50 = self;
-  v51 = v4;
-  v6 = [v4 arrayByAddingObject:self];
+  personsCopy = persons;
+  managedObjectContext = [(PLPerson *)self managedObjectContext];
+  selfCopy = self;
+  v51 = personsCopy;
+  v6 = [personsCopy arrayByAddingObject:self];
   v7 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K = %d", @"verifiedType", 2];
   v8 = [v6 filteredArrayUsingPredicate:v7];
 
@@ -1949,7 +1949,7 @@ uint64_t __63__PLPerson_pickKeyFaceOptimalStateForContactDedupeWithPersons___blo
 
   v65 = 0;
   v48 = v12;
-  v14 = [v5 executeFetchRequest:v12 error:&v65];
+  v14 = [managedObjectContext executeFetchRequest:v12 error:&v65];
   v15 = v65;
   v47 = v14;
   if (v14)
@@ -1977,7 +1977,7 @@ uint64_t __63__PLPerson_pickKeyFaceOptimalStateForContactDedupeWithPersons___blo
 
           v23 = *(*(&v61 + 1) + 8 * i);
           [v23 setPerson:0];
-          [v5 deleteObject:v23];
+          [managedObjectContext deleteObject:v23];
         }
 
         v18 = [v16 countByEnumeratingWithState:&v61 objects:v72 count:16];
@@ -2011,7 +2011,7 @@ uint64_t __63__PLPerson_pickKeyFaceOptimalStateForContactDedupeWithPersons___blo
   [v26 setPredicate:v27];
 
   v60 = v15;
-  v28 = [v5 executeFetchRequest:v26 error:&v60];
+  v28 = [managedObjectContext executeFetchRequest:v26 error:&v60];
   v29 = v60;
 
   v49 = v8;
@@ -2082,16 +2082,16 @@ uint64_t __63__PLPerson_pickKeyFaceOptimalStateForContactDedupeWithPersons___blo
         }
 
         v41 = *(*(&v52 + 1) + 8 * k);
-        v42 = [v41 keyFace];
-        v43 = [v42 nameSource];
+        keyFace = [v41 keyFace];
+        nameSource = [keyFace nameSource];
 
-        if (v43 != 1)
+        if (nameSource != 1)
         {
-          v44 = [v41 keyFace];
-          [v44 setEffectiveNameSource:1];
+          keyFace2 = [v41 keyFace];
+          [keyFace2 setEffectiveNameSource:1];
 
-          v45 = [v41 keyFace];
-          [v45 setConfirmedFaceCropGenerationState:1];
+          keyFace3 = [v41 keyFace];
+          [keyFace3 setConfirmedFaceCropGenerationState:1];
         }
       }
 
@@ -2101,29 +2101,29 @@ uint64_t __63__PLPerson_pickKeyFaceOptimalStateForContactDedupeWithPersons___blo
     while (v38);
   }
 
-  if ([(PLPerson *)v50 keyFacePickSource]!= 1)
+  if ([(PLPerson *)selfCopy keyFacePickSource]!= 1)
   {
-    [(PLPerson *)v50 setKeyFacePickSource:1];
+    [(PLPerson *)selfCopy setKeyFacePickSource:1];
   }
 }
 
 - (id)reverseOrderedMergeTargetPersons
 {
   v14 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v4 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-  v5 = [(PLPerson *)self mergeTargetPerson];
-  if (v5)
+  mergeTargetPerson = [(PLPerson *)self mergeTargetPerson];
+  if (mergeTargetPerson)
   {
-    v6 = v5;
+    v6 = mergeTargetPerson;
     while (![v4 containsObject:v6])
     {
       [v4 addObject:v6];
-      [v3 insertObject:v6 atIndex:0];
-      v7 = [v6 mergeTargetPerson];
+      [array insertObject:v6 atIndex:0];
+      mergeTargetPerson2 = [v6 mergeTargetPerson];
 
-      v6 = v7;
-      if (!v7)
+      v6 = mergeTargetPerson2;
+      if (!mergeTargetPerson2)
       {
         goto LABEL_9;
       }
@@ -2133,7 +2133,7 @@ uint64_t __63__PLPerson_pickKeyFaceOptimalStateForContactDedupeWithPersons___blo
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
       v10 = 138412546;
-      v11 = self;
+      selfCopy = self;
       v12 = 2112;
       v13 = v4;
       _os_log_impl(&dword_19BF1F000, v8, OS_LOG_TYPE_ERROR, "Found a looping merge target person for %@: %@", &v10, 0x16u);
@@ -2142,99 +2142,99 @@ uint64_t __63__PLPerson_pickKeyFaceOptimalStateForContactDedupeWithPersons___blo
 
 LABEL_9:
 
-  return v3;
+  return array;
 }
 
-- (id)pickOptimalStateForUserInitiatedMergeWithPersons:(id)a3 nominalTarget:(id)a4
+- (id)pickOptimalStateForUserInitiatedMergeWithPersons:(id)persons nominalTarget:(id)target
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 arrayByAddingObject:self];
+  personsCopy = persons;
+  targetCopy = target;
+  v8 = [personsCopy arrayByAddingObject:self];
   v9 = [v8 sortedArrayUsingComparator:&__block_literal_global_341];
   v10 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  if (v7)
+  if (targetCopy)
   {
-    v11 = v7;
+    lastObject = targetCopy;
   }
 
   else
   {
-    v11 = [v9 lastObject];
+    lastObject = [v9 lastObject];
   }
 
-  v12 = v11;
-  v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(v11, "manualOrder")}];
+  v12 = lastObject;
+  v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(lastObject, "manualOrder")}];
   [v10 setObject:v13 forKey:@"manualOrder"];
 
   v14 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v12, "type")}];
   [v10 setObject:v14 forKey:@"type"];
 
-  v15 = [v7 keyFace];
+  keyFace = [targetCopy keyFace];
 
-  if (v15)
+  if (keyFace)
   {
-    v16 = [v7 keyFace];
-    [v10 setObject:v16 forKey:@"keyFace"];
+    keyFace2 = [targetCopy keyFace];
+    [v10 setObject:keyFace2 forKey:@"keyFace"];
   }
 
-  v17 = [v7 fullName];
-  v18 = [v17 length];
+  fullName = [targetCopy fullName];
+  v18 = [fullName length];
 
   if (v18)
   {
-    v19 = [v7 fullName];
-    [v10 setObject:v19 forKey:@"fullName"];
+    fullName2 = [targetCopy fullName];
+    [v10 setObject:fullName2 forKey:@"fullName"];
 
-    v20 = [v7 displayName];
-    if (v20)
+    displayName = [targetCopy displayName];
+    if (displayName)
     {
-      [v10 setObject:v20 forKey:@"displayName"];
+      [v10 setObject:displayName forKey:@"displayName"];
     }
 
     else
     {
-      v21 = [MEMORY[0x1E695DFB0] null];
-      [v10 setObject:v21 forKey:@"displayName"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [v10 setObject:null forKey:@"displayName"];
     }
   }
 
-  v22 = [v7 contactMatchingDictionary];
-  if (v22)
+  contactMatchingDictionary = [targetCopy contactMatchingDictionary];
+  if (contactMatchingDictionary)
   {
 
     goto LABEL_14;
   }
 
-  v23 = [v7 personUri];
+  personUri = [targetCopy personUri];
 
-  if (v23)
+  if (personUri)
   {
 LABEL_14:
-    v24 = [v7 contactMatchingDictionary];
-    if (v24)
+    contactMatchingDictionary2 = [targetCopy contactMatchingDictionary];
+    if (contactMatchingDictionary2)
     {
-      [v10 setObject:v24 forKey:@"contactMatchingDictionary"];
+      [v10 setObject:contactMatchingDictionary2 forKey:@"contactMatchingDictionary"];
     }
 
     else
     {
-      v25 = [MEMORY[0x1E695DFB0] null];
-      [v10 setObject:v25 forKey:@"contactMatchingDictionary"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [v10 setObject:null2 forKey:@"contactMatchingDictionary"];
     }
 
-    v26 = [v7 personUri];
-    if (v26)
+    personUri2 = [targetCopy personUri];
+    if (personUri2)
     {
-      [v10 setObject:v26 forKey:@"personUri"];
+      [v10 setObject:personUri2 forKey:@"personUri"];
     }
 
     else
     {
-      v27 = [MEMORY[0x1E695DFB0] null];
-      [v10 setObject:v27 forKey:@"personUri"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [v10 setObject:null3 forKey:@"personUri"];
     }
 
-    if (v15 && v18)
+    if (keyFace && v18)
     {
       goto LABEL_38;
     }
@@ -2549,46 +2549,46 @@ LABEL_27:
 
 - (BOOL)_personResetIsInProgress
 {
-  v2 = [(PLPerson *)self managedObjectContext];
-  v3 = [v2 userInfo];
-  v4 = [v3 objectForKeyedSubscript:@"PLPersonReset"];
+  managedObjectContext = [(PLPerson *)self managedObjectContext];
+  userInfo = [managedObjectContext userInfo];
+  v4 = [userInfo objectForKeyedSubscript:@"PLPersonReset"];
   v5 = [v4 isEqual:MEMORY[0x1E695E118]];
 
   return v5;
 }
 
-- (void)removePersistedFileSystemDataWithPathManager:(id)a3
+- (void)removePersistedFileSystemDataWithPathManager:(id)manager
 {
-  v5 = a3;
-  v8 = v5;
-  if (!v5)
+  managerCopy = manager;
+  v8 = managerCopy;
+  if (!managerCopy)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"PLPerson.m" lineNumber:1138 description:{@"Invalid parameter not satisfying: %@", @"pathManager"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLPerson.m" lineNumber:1138 description:{@"Invalid parameter not satisfying: %@", @"pathManager"}];
 
-    v5 = 0;
+    managerCopy = 0;
   }
 
-  if ([v5 isDCIM])
+  if ([managerCopy isDCIM])
   {
     v6 = [[PLPersistedPersonMetadata alloc] initWithPLPerson:self pathManager:v8];
     [(PLPersistedPersonMetadata *)v6 removePersistedData];
   }
 }
 
-- (void)persistMetadataToFileSystemWithPathManager:(id)a3
+- (void)persistMetadataToFileSystemWithPathManager:(id)manager
 {
-  v5 = a3;
-  v8 = v5;
-  if (!v5)
+  managerCopy = manager;
+  v8 = managerCopy;
+  if (!managerCopy)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"PLPerson.m" lineNumber:1130 description:{@"Invalid parameter not satisfying: %@", @"pathManager"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLPerson.m" lineNumber:1130 description:{@"Invalid parameter not satisfying: %@", @"pathManager"}];
 
-    v5 = 0;
+    managerCopy = 0;
   }
 
-  if ([v5 isDCIM])
+  if ([managerCopy isDCIM])
   {
     v6 = [[PLPersistedPersonMetadata alloc] initWithPLPerson:self pathManager:v8];
     [(PLPersistedPersonMetadata *)v6 writePersistedData];
@@ -2602,16 +2602,16 @@ LABEL_27:
     return 0;
   }
 
-  v3 = [(PLPerson *)self personUUID];
-  v4 = v3 != 0;
+  personUUID = [(PLPerson *)self personUUID];
+  v4 = personUUID != 0;
 
   return v4;
 }
 
-- (void)_signalBackgroundPersonNeededForPersonSyncWithJobFlags:(int64_t)a3
+- (void)_signalBackgroundPersonNeededForPersonSyncWithJobFlags:(int64_t)flags
 {
-  v5 = [(PLPerson *)self managedObjectContext];
-  v6 = [PLPhotoLibrary isBackgroundProcessingEnabledWithManagedObjectContext:v5];
+  managedObjectContext = [(PLPerson *)self managedObjectContext];
+  v6 = [PLPhotoLibrary isBackgroundProcessingEnabledWithManagedObjectContext:managedObjectContext];
 
   if (v6)
   {
@@ -2624,18 +2624,18 @@ LABEL_27:
 
     if ((*(&self->super._willSaveCallCount + 3) & 1) == 0)
     {
-      v8 = [(PLPerson *)self personUUID];
-      v9 = [(PLPerson *)self managedObjectContext];
-      v10 = [PLBackgroundJobWorkItem insertBackgroundJobWorkItemWithIdentifier:v8 jobType:10 jobFlags:a3 inManagedObjectContext:v9];
+      personUUID = [(PLPerson *)self personUUID];
+      managedObjectContext2 = [(PLPerson *)self managedObjectContext];
+      v10 = [PLBackgroundJobWorkItem insertBackgroundJobWorkItemWithIdentifier:personUUID jobType:10 jobFlags:flags inManagedObjectContext:managedObjectContext2];
 
       *(&self->super._willSaveCallCount + 6) = 1;
-      v11 = [(PLManagedObject *)self photoLibrary];
-      v12 = [v11 libraryServicesManager];
+      photoLibrary = [(PLManagedObject *)self photoLibrary];
+      libraryServicesManager = [photoLibrary libraryServicesManager];
 
-      v13 = [v12 backgroundJobService];
-      v14 = [v12 libraryBundle];
+      backgroundJobService = [libraryServicesManager backgroundJobService];
+      libraryBundle = [libraryServicesManager libraryBundle];
       v15 = [PLBackgroundJobWorkerTypes workerTypesMaskForBackgroundJobType:10];
-      [v13 signalBackgroundProcessingNeededOnBundle:v14 workerTypes:v15];
+      [backgroundJobService signalBackgroundProcessingNeededOnBundle:libraryBundle workerTypes:v15];
     }
   }
 }
@@ -2644,8 +2644,8 @@ LABEL_27:
 {
   v20 = *MEMORY[0x1E69E9840];
   v3 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %d", @"autoSharePolicy", 2];
-  v4 = [(PLPerson *)self managedObjectContext];
-  v5 = [(PLShare *)PLLibraryScope sharesWithPredicate:v3 fetchLimit:0 inManagedObjectContext:v4];
+  managedObjectContext = [(PLPerson *)self managedObjectContext];
+  v5 = [(PLShare *)PLLibraryScope sharesWithPredicate:v3 fetchLimit:0 inManagedObjectContext:managedObjectContext];
 
   v17 = 0u;
   v18 = 0u;
@@ -2668,10 +2668,10 @@ LABEL_27:
         }
 
         v11 = *(*(&v15 + 1) + 8 * v10);
-        v12 = [(PLPerson *)self personUUID];
-        v13 = [(PLPerson *)self mergeTargetPerson];
-        v14 = [v13 personUUID];
-        [v11 updatePeopleRulesForTombstonePersonUUID:v12 replaceWithPersonUUID:v14];
+        personUUID = [(PLPerson *)self personUUID];
+        mergeTargetPerson = [(PLPerson *)self mergeTargetPerson];
+        personUUID2 = [mergeTargetPerson personUUID];
+        [v11 updatePeopleRulesForTombstonePersonUUID:personUUID replaceWithPersonUUID:personUUID2];
 
         ++v10;
       }
@@ -2684,11 +2684,11 @@ LABEL_27:
   }
 }
 
-- (void)setEffectiveVerifiedType:(int)a3
+- (void)setEffectiveVerifiedType:(int)type
 {
-  v3 = *&a3;
-  v5 = [(PLPerson *)self cloudVerifiedType];
-  if (v3 == 2 && v5 == 1)
+  v3 = *&type;
+  cloudVerifiedType = [(PLPerson *)self cloudVerifiedType];
+  if (v3 == 2 && cloudVerifiedType == 1)
   {
     v6 = PLPhotoKitGetLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -2711,24 +2711,24 @@ LABEL_27:
   }
 }
 
-- (void)rejectFaceIfPossible:(id)a3 shouldCreateFaceCrop:(BOOL)a4
+- (void)rejectFaceIfPossible:(id)possible shouldCreateFaceCrop:(BOOL)crop
 {
-  v4 = a4;
-  v9 = a3;
-  v6 = [(PLPerson *)self verifiedType];
-  v7 = v9;
-  if (v9)
+  cropCopy = crop;
+  possibleCopy = possible;
+  verifiedType = [(PLPerson *)self verifiedType];
+  v7 = possibleCopy;
+  if (possibleCopy)
   {
-    if (v6)
+    if (verifiedType)
     {
-      v8 = [(PLPerson *)self mutableRejectedFaces];
-      [v8 addObject:v9];
+      mutableRejectedFaces = [(PLPerson *)self mutableRejectedFaces];
+      [mutableRejectedFaces addObject:possibleCopy];
 
-      v7 = v9;
-      if (v4)
+      v7 = possibleCopy;
+      if (cropCopy)
       {
-        [v9 addRejectedPersonNeedingFaceCrops:self];
-        v7 = v9;
+        [possibleCopy addRejectedPersonNeedingFaceCrops:self];
+        v7 = possibleCopy;
       }
     }
   }
@@ -2763,8 +2763,8 @@ LABEL_27:
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v5 = [(PLPerson *)self detectedFaces];
-  v6 = [v5 countByEnumeratingWithState:&v29 objects:v57 count:16];
+  detectedFaces = [(PLPerson *)self detectedFaces];
+  v6 = [detectedFaces countByEnumeratingWithState:&v29 objects:v57 count:16];
   if (v6)
   {
     v7 = *v30;
@@ -2774,27 +2774,27 @@ LABEL_27:
       {
         if (*v30 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(detectedFaces);
         }
 
         (*(v4 + 2))(v4, *(*(&v29 + 1) + 8 * i), v58);
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v29 objects:v57 count:16];
+      v6 = [detectedFaces countByEnumeratingWithState:&v29 objects:v57 count:16];
     }
 
     while (v6);
   }
 
-  v9 = [(PLPerson *)self temporalDetectedFaces];
+  temporalDetectedFaces = [(PLPerson *)self temporalDetectedFaces];
   v10 = v39[3];
-  if (v10 < [v9 count])
+  if (v10 < [temporalDetectedFaces count])
   {
     v27 = 0u;
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v11 = v9;
+    v11 = temporalDetectedFaces;
     v12 = [v11 countByEnumeratingWithState:&v25 objects:v56 count:16];
     if (v12)
     {
@@ -2821,23 +2821,23 @@ LABEL_27:
   v15 = *(v35 + 12);
   if ((v15 - 3) < 2 || v15 == 1)
   {
-    v17 = [(PLPerson *)self detectionType];
-    if (*(v35 + 12) != v17)
+    detectionType = [(PLPerson *)self detectionType];
+    if (*(v35 + 12) != detectionType)
     {
       v18 = PLBackendGetLog();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
-        v19 = [(PLPerson *)self detectionType];
+        detectionType2 = [(PLPerson *)self detectionType];
         v20 = *(v35 + 12);
-        v21 = [(PLPerson *)self personUUID];
+        personUUID = [(PLPerson *)self personUUID];
         v22 = v39[3];
         v23 = v43[3];
         *buf = 67110146;
-        v47 = v19;
+        v47 = detectionType2;
         v48 = 1024;
         v49 = v20;
         v50 = 2114;
-        v51 = v21;
+        v51 = personUUID;
         v52 = 2048;
         v53 = v22;
         v54 = 2048;
@@ -2851,8 +2851,8 @@ LABEL_27:
 
   else if (v15 == 2)
   {
-    v24 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v24 handleFailureInMethod:a2 object:self file:@"PLPerson.m" lineNumber:704 description:{@"Invalid parameter not satisfying: %@", @"majorityDetectionType != PLDetectionTypePet"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLPerson.m" lineNumber:704 description:{@"Invalid parameter not satisfying: %@", @"majorityDetectionType != PLDetectionTypePet"}];
   }
 
   _Block_object_dispose(&v34, 8);
@@ -2885,22 +2885,22 @@ void __40__PLPerson_assignDetectionTypeFromFaces__block_invoke(void *a1, void *a
 - (void)resetFacesProcessing
 {
   v39 = *MEMORY[0x1E69E9840];
-  v3 = [(PLPerson *)self entity];
+  entity = [(PLPerson *)self entity];
   v4 = MEMORY[0x1E695D5B8];
   v5 = +[PLDetectedFace entityName];
-  v6 = [(PLPerson *)self managedObjectContext];
-  v7 = [v4 entityForName:v5 inManagedObjectContext:v6];
+  managedObjectContext = [(PLPerson *)self managedObjectContext];
+  v7 = [v4 entityForName:v5 inManagedObjectContext:managedObjectContext];
 
-  v27 = v3;
+  v27 = entity;
   v28 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v8 = [v3 relationshipsByName];
-  v9 = [v8 allValues];
+  relationshipsByName = [entity relationshipsByName];
+  allValues = [relationshipsByName allValues];
 
-  v10 = [v9 countByEnumeratingWithState:&v33 objects:v38 count:16];
+  v10 = [allValues countByEnumeratingWithState:&v33 objects:v38 count:16];
   if (v10)
   {
     v11 = v10;
@@ -2912,18 +2912,18 @@ void __40__PLPerson_assignDetectionTypeFromFaces__block_invoke(void *a1, void *a
       {
         if (*v34 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(allValues);
         }
 
         v14 = *(*(&v33 + 1) + 8 * v13);
         v15 = objc_autoreleasePoolPush();
-        v16 = [v14 destinationEntity];
-        v17 = [v16 isEqual:v7];
+        destinationEntity = [v14 destinationEntity];
+        v17 = [destinationEntity isEqual:v7];
 
         if (v17)
         {
-          v18 = [v14 name];
-          v19 = [(PLPerson *)self valueForKey:v18];
+          name = [v14 name];
+          v19 = [(PLPerson *)self valueForKey:name];
 
           if (v19)
           {
@@ -2944,7 +2944,7 @@ void __40__PLPerson_assignDetectionTypeFromFaces__block_invoke(void *a1, void *a
       }
 
       while (v11 != v13);
-      v11 = [v9 countByEnumeratingWithState:&v33 objects:v38 count:16];
+      v11 = [allValues countByEnumeratingWithState:&v33 objects:v38 count:16];
     }
 
     while (v11);
@@ -2989,12 +2989,12 @@ void __40__PLPerson_assignDetectionTypeFromFaces__block_invoke(void *a1, void *a
 - (void)resetAllFacesToDefault
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [(PLPerson *)self allDetectedFaces];
+  allDetectedFaces = [(PLPerson *)self allDetectedFaces];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v4 = [allDetectedFaces countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v4)
   {
     v5 = v4;
@@ -3005,7 +3005,7 @@ void __40__PLPerson_assignDetectionTypeFromFaces__block_invoke(void *a1, void *a
       {
         if (*v14 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allDetectedFaces);
         }
 
         v8 = *(*(&v13 + 1) + 8 * i);
@@ -3014,22 +3014,22 @@ void __40__PLPerson_assignDetectionTypeFromFaces__block_invoke(void *a1, void *a
         [v8 setAssociatedPerson:0];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v5 = [allDetectedFaces countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v5);
   }
 
-  v9 = [(PLPerson *)self rejectedFaces];
-  v10 = [v9 count];
+  rejectedFaces = [(PLPerson *)self rejectedFaces];
+  v10 = [rejectedFaces count];
 
   if (v10)
   {
-    v11 = [(PLPerson *)self mutableRejectedFaces];
-    [v11 removeAllObjects];
+    mutableRejectedFaces = [(PLPerson *)self mutableRejectedFaces];
+    [mutableRejectedFaces removeAllObjects];
 
-    v12 = [(PLPerson *)self mutableRejectedFacesNeedingFaceCrops];
-    [v12 removeAllObjects];
+    mutableRejectedFacesNeedingFaceCrops = [(PLPerson *)self mutableRejectedFacesNeedingFaceCrops];
+    [mutableRejectedFacesNeedingFaceCrops removeAllObjects];
   }
 }
 
@@ -3047,63 +3047,63 @@ void __40__PLPerson_assignDetectionTypeFromFaces__block_invoke(void *a1, void *a
 
 - (id)debugLogDescription
 {
-  v3 = [(PLPerson *)self fullName];
-  v4 = v3;
+  fullName = [(PLPerson *)self fullName];
+  v4 = fullName;
   v5 = @"<No Name>";
-  if (v3)
+  if (fullName)
   {
-    v5 = v3;
+    v5 = fullName;
   }
 
   v6 = v5;
 
-  v7 = [(PLPerson *)self displayName];
-  v8 = v7;
+  displayName = [(PLPerson *)self displayName];
+  v8 = displayName;
   v9 = @"<No Display Name>";
-  if (v7)
+  if (displayName)
   {
-    v9 = v7;
+    v9 = displayName;
   }
 
   v10 = v9;
 
   v11 = MEMORY[0x1E696AEC0];
-  v12 = [(PLPerson *)self personUUID];
-  v13 = [v11 stringWithFormat:@"%@ (%@) [%@]", v6, v10, v12];
+  personUUID = [(PLPerson *)self personUUID];
+  v13 = [v11 stringWithFormat:@"%@ (%@) [%@]", v6, v10, personUUID];
 
   return v13;
 }
 
-- (void)setKeyFace:(id)a3 pickSource:(signed __int16)a4
+- (void)setKeyFace:(id)face pickSource:(signed __int16)source
 {
-  if (a3)
+  if (face)
   {
-    v5 = a4;
+    sourceCopy = source;
   }
 
   else
   {
-    v5 = 0;
+    sourceCopy = 0;
   }
 
-  v6 = a3;
-  [(PLPerson *)self setKeyFacePickSource:v5];
-  [(PLPerson *)self setKeyFace:v6];
+  faceCopy = face;
+  [(PLPerson *)self setKeyFacePickSource:sourceCopy];
+  [(PLPerson *)self setKeyFace:faceCopy];
 }
 
 - (void)updateDetectionTypeIfNeeded
 {
-  v3 = [(PLPerson *)self verifiedType];
-  if ((v3 + 2) > 5 || ((1 << (v3 + 2)) & 0x27) == 0)
+  verifiedType = [(PLPerson *)self verifiedType];
+  if ((verifiedType + 2) > 5 || ((1 << (verifiedType + 2)) & 0x27) == 0)
   {
     [(PLPerson *)self assignDetectionTypeFromFaces];
     if (![(PLPerson *)self cloudDetectionType])
     {
       if ([(PLPerson *)self detectionType])
       {
-        v5 = [(PLPerson *)self detectionType];
+        detectionType = [(PLPerson *)self detectionType];
 
-        [(PLPerson *)self setCloudDetectionType:v5];
+        [(PLPerson *)self setCloudDetectionType:detectionType];
       }
     }
   }
@@ -3114,9 +3114,9 @@ void __40__PLPerson_assignDetectionTypeFromFaces__block_invoke(void *a1, void *a
   v3 = &self->super._willSaveCallCount + 2;
   if (*(&self->super._willSaveCallCount + 4) == 1)
   {
-    v4 = [(PLManagedObject *)self photoLibrary];
-    v5 = [v4 pathManager];
-    [(PLPerson *)self persistMetadataToFileSystemWithPathManager:v5];
+    photoLibrary = [(PLManagedObject *)self photoLibrary];
+    pathManager = [photoLibrary pathManager];
+    [(PLPerson *)self persistMetadataToFileSystemWithPathManager:pathManager];
 LABEL_5:
 
     *v3 = 0;
@@ -3126,9 +3126,9 @@ LABEL_5:
   v3 = (&self->super._willSaveCallCount + 5);
   if (*(&self->super._willSaveCallCount + 5) == 1)
   {
-    v4 = [(PLManagedObject *)self photoLibrary];
-    v5 = [v4 pathManager];
-    [(PLPerson *)self removePersistedFileSystemDataWithPathManager:v5];
+    photoLibrary = [(PLManagedObject *)self photoLibrary];
+    pathManager = [photoLibrary pathManager];
+    [(PLPerson *)self removePersistedFileSystemDataWithPathManager:pathManager];
     goto LABEL_5;
   }
 
@@ -3142,18 +3142,18 @@ LABEL_6:
   v81.receiver = self;
   v81.super_class = PLPerson;
   [(PLManagedObject *)&v81 willSave];
-  v3 = [(PLPerson *)self changedValues];
+  changedValues = [(PLPerson *)self changedValues];
   if (([(PLPerson *)self isDeleted]& 1) == 0)
   {
-    v4 = [v3 objectForKey:@"mergeTargetPerson"];
+    v4 = [changedValues objectForKey:@"mergeTargetPerson"];
     if ([(PLPerson *)self isEqual:v4])
     {
       v5 = PLBackendGetLog();
       if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
       {
-        v6 = [(PLPerson *)self personUUID];
+        personUUID = [(PLPerson *)self personUUID];
         *buf = 138412290;
-        v85 = v6;
+        v85 = personUUID;
         _os_log_impl(&dword_19BF1F000, v5, OS_LOG_TYPE_ERROR, "Attempted to set merge target to self (person uuid: %@), merge target reset to nil", buf, 0xCu);
       }
 
@@ -3167,16 +3167,16 @@ LABEL_6:
       goto LABEL_19;
     }
 
-    v7 = [MEMORY[0x1E695DFB0] null];
-    if (v4 != v7)
+    null = [MEMORY[0x1E695DFB0] null];
+    if (v4 != null)
     {
       v8 = _os_feature_enabled_impl();
 
       if (!v8)
       {
 LABEL_16:
-        v13 = [MEMORY[0x1E695DFB0] null];
-        v14 = [v13 isEqual:v4];
+        null2 = [MEMORY[0x1E695DFB0] null];
+        v14 = [null2 isEqual:v4];
 
         if ((v14 & 1) == 0 && [(PLPerson *)self verifiedType]!= -2)
         {
@@ -3187,35 +3187,35 @@ LABEL_16:
 LABEL_19:
         if ([(PLPerson *)self verifiedType]== -2)
         {
-          v15 = [(PLPerson *)self mergeCandidates];
-          v16 = [v15 count];
+          mergeCandidates = [(PLPerson *)self mergeCandidates];
+          v16 = [mergeCandidates count];
 
           if (v16)
           {
-            v17 = [(PLPerson *)self mutableMergeCandidates];
-            [v17 removeAllObjects];
+            mutableMergeCandidates = [(PLPerson *)self mutableMergeCandidates];
+            [mutableMergeCandidates removeAllObjects];
           }
 
-          v18 = [(PLPerson *)self mergeCandidatesWithConfidence];
-          v19 = [v18 count];
+          mergeCandidatesWithConfidence = [(PLPerson *)self mergeCandidatesWithConfidence];
+          v19 = [mergeCandidatesWithConfidence count];
 
           if (v19)
           {
-            v20 = [(PLPerson *)self mutableMergeCandidatesWithConfidence];
-            [v20 removeAllObjects];
+            mutableMergeCandidatesWithConfidence = [(PLPerson *)self mutableMergeCandidatesWithConfidence];
+            [mutableMergeCandidatesWithConfidence removeAllObjects];
           }
 
-          v21 = [(PLPerson *)self invalidMergeCandidates];
-          v22 = [v21 count];
+          invalidMergeCandidates = [(PLPerson *)self invalidMergeCandidates];
+          v22 = [invalidMergeCandidates count];
 
           if (v22)
           {
-            v23 = [(PLPerson *)self mutableInvalidMergeCandidates];
-            [v23 removeAllObjects];
+            mutableInvalidMergeCandidates = [(PLPerson *)self mutableInvalidMergeCandidates];
+            [mutableInvalidMergeCandidates removeAllObjects];
           }
 
-          v24 = [(PLPerson *)self detectedFaces];
-          v25 = [v24 count];
+          detectedFaces = [(PLPerson *)self detectedFaces];
+          v25 = [detectedFaces count];
 
           if (v25)
           {
@@ -3224,7 +3224,7 @@ LABEL_19:
         }
 
         [(PLPerson *)self disconnectFaceGroup];
-        v26 = [v3 objectForKey:@"mergeCandidatesWithConfidence"];
+        v26 = [changedValues objectForKey:@"mergeCandidatesWithConfidence"];
         v27 = v26;
         if (v26)
         {
@@ -3238,23 +3238,23 @@ LABEL_19:
           }
         }
 
-        v29 = [v3 objectForKeyedSubscript:@"type"];
+        v29 = [changedValues objectForKeyedSubscript:@"type"];
         if (v29 && [(PLPerson *)self type]== -1)
         {
           [(PLPerson *)self _removeSharedLibraryPeopleRulesForPerson];
           [PLSocialGroup rejectSocialGroupsHavingMember:self];
         }
 
-        v30 = [v3 objectForKeyedSubscript:@"verifiedType"];
+        v30 = [changedValues objectForKeyedSubscript:@"verifiedType"];
         if (!v30)
         {
           goto LABEL_50;
         }
 
         v31 = v30;
-        v32 = [(PLPerson *)self verifiedType];
+        verifiedType = [(PLPerson *)self verifiedType];
 
-        if (v32 != 1)
+        if (verifiedType != 1)
         {
           goto LABEL_50;
         }
@@ -3264,24 +3264,24 @@ LABEL_19:
         v33 = [MEMORY[0x1E695DEC8] arrayWithObjects:v83 count:2];
         v34 = [(PLPerson *)self committedValuesForKeys:v33];
 
-        v35 = [v34 objectForKeyedSubscript:@"type"];
-        if ([v35 intValue] == -1)
+        faceCrops = [v34 objectForKeyedSubscript:@"type"];
+        if ([faceCrops intValue] == -1)
         {
           v36 = [v34 objectForKeyedSubscript:@"verifiedType"];
-          v37 = [v36 intValue];
+          intValue = [v36 intValue];
 
-          if (v37 != 2 || [(PLPerson *)self type]== -1)
+          if (intValue != 2 || [(PLPerson *)self type]== -1)
           {
             goto LABEL_49;
           }
 
-          v76 = v3;
+          v76 = changedValues;
           v79 = 0u;
           v80 = 0u;
           v77 = 0u;
           v78 = 0u;
-          v35 = [(PLPerson *)self faceCrops];
-          v38 = [v35 countByEnumeratingWithState:&v77 objects:v82 count:16];
+          faceCrops = [(PLPerson *)self faceCrops];
+          v38 = [faceCrops countByEnumeratingWithState:&v77 objects:v82 count:16];
           if (v38)
           {
             v39 = v38;
@@ -3295,7 +3295,7 @@ LABEL_19:
               {
                 if (*v78 != v40)
                 {
-                  objc_enumerationMutation(v35);
+                  objc_enumerationMutation(faceCrops);
                 }
 
                 v42 = *(*(&v77 + 1) + 8 * i);
@@ -3304,12 +3304,12 @@ LABEL_19:
                 objc_autoreleasePoolPop(v43);
               }
 
-              v39 = [v35 countByEnumeratingWithState:&v77 objects:v82 count:16];
+              v39 = [faceCrops countByEnumeratingWithState:&v77 objects:v82 count:16];
             }
 
             while (v39);
             v4 = v75;
-            v3 = v76;
+            changedValues = v76;
             v34 = v73;
             v29 = v74;
           }
@@ -3322,10 +3322,10 @@ LABEL_50:
       }
 
       objc_opt_class();
-      v9 = [(PLPerson *)self managedObjectContext];
+      managedObjectContext = [(PLPerson *)self managedObjectContext];
       if (objc_opt_isKindOfClass())
       {
-        v10 = v9;
+        v10 = managedObjectContext;
       }
 
       else
@@ -3335,12 +3335,12 @@ LABEL_50:
 
       v11 = v10;
 
-      v12 = [v11 delayedSaveActions];
-      [v12 recordDeduplicationNeededForGroupsContainingMember:v4];
+      delayedSaveActions = [v11 delayedSaveActions];
+      [delayedSaveActions recordDeduplicationNeededForGroupsContainingMember:v4];
 
-      v7 = [v11 delayedSaveActions];
+      null = [v11 delayedSaveActions];
 
-      [v7 recordSocialGroupContainmentUpdateNeededForPerson:v4];
+      [null recordSocialGroupContainmentUpdateNeededForPerson:v4];
     }
 
     goto LABEL_16;
@@ -3355,18 +3355,18 @@ LABEL_51:
   v44 = [(PLPerson *)self managedObjectContext:v73];
   if ([(PLPerson *)self isDeleted]&& ((PLIsAssetsd() & 1) != 0 || MEMORY[0x19EAEE520]()))
   {
-    v45 = [(PLPerson *)self managedObjectContext];
-    [PLGraphNode cleanupDanglingNodeReferencesToDeletedActorsInContext:v45];
+    managedObjectContext2 = [(PLPerson *)self managedObjectContext];
+    [PLGraphNode cleanupDanglingNodeReferencesToDeletedActorsInContext:managedObjectContext2];
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     [PLDelayedSearchIndexUpdates recordPersonIfNeeded:self];
-    v46 = [v3 objectForKeyedSubscript:@"cloudLocalState"];
+    v46 = [changedValues objectForKeyedSubscript:@"cloudLocalState"];
     if (v46)
     {
-      v47 = [v3 count] != 1;
+      v47 = [changedValues count] != 1;
     }
 
     else
@@ -3374,7 +3374,7 @@ LABEL_51:
       v47 = 1;
     }
 
-    v48 = [v3 count] != 0 && v47;
+    v48 = [changedValues count] != 0 && v47;
     if ([(PLPerson *)self isDeleted]& 1) == 0 && [(PLPerson *)self isValidForPersistence]&& (([(PLPerson *)self isInserted]| v48))
     {
       v49 = 68;
@@ -3387,37 +3387,37 @@ LABEL_51:
         goto LABEL_69;
       }
 
-      v50 = [(PLPerson *)self personUUID];
-      v51 = v50;
-      if (((v50 != 0) & v48) == 0)
+      personUUID2 = [(PLPerson *)self personUUID];
+      v51 = personUUID2;
+      if (((personUUID2 != 0) & v48) == 0)
       {
 
 LABEL_69:
-        v53 = [v3 objectForKeyedSubscript:@"userFeedbacks"];
-        v54 = [v3 objectForKeyedSubscript:@"type"];
+        v53 = [changedValues objectForKeyedSubscript:@"userFeedbacks"];
+        v54 = [changedValues objectForKeyedSubscript:@"type"];
         v55 = v54;
         if (v53 || [v54 integerValue] == -1)
         {
           v56 = PLBackendGetLog();
           if (os_log_type_enabled(v56, OS_LOG_TYPE_INFO))
           {
-            v57 = [(PLPerson *)self personUUID];
+            personUUID3 = [(PLPerson *)self personUUID];
             *buf = 138543362;
-            v85 = v57;
+            v85 = personUUID3;
             _os_log_impl(&dword_19BF1F000, v56, OS_LOG_TYPE_INFO, "Updating featured content due to changes on user feedback for person %{public}@", buf, 0xCu);
           }
 
-          v58 = [v44 delayedSaveActions];
-          v59 = [(PLPerson *)self personUUID];
-          [v58 recordFeaturedContentUpdateNeededForPersonUUID:v59];
+          delayedSaveActions2 = [v44 delayedSaveActions];
+          personUUID4 = [(PLPerson *)self personUUID];
+          [delayedSaveActions2 recordFeaturedContentUpdateNeededForPersonUUID:personUUID4];
         }
 
         goto LABEL_75;
       }
 
-      v52 = [(PLPerson *)self isDeleted];
+      isDeleted = [(PLPerson *)self isDeleted];
 
-      if (v52)
+      if (isDeleted)
       {
         goto LABEL_69;
       }
@@ -3431,10 +3431,10 @@ LABEL_69:
 
 LABEL_75:
   v60 = MEMORY[0x1E695DFA8];
-  v61 = [(PLPerson *)self entity];
-  v62 = [v61 relationshipsByName];
-  v63 = [v62 allKeys];
-  v64 = [v60 setWithArray:v63];
+  entity = [(PLPerson *)self entity];
+  relationshipsByName = [entity relationshipsByName];
+  allKeys = [relationshipsByName allKeys];
+  v64 = [v60 setWithArray:allKeys];
 
   [v64 addObject:@"faceCount"];
   if (([(PLPerson *)self isInserted]& 1) != 0 || ([(PLPerson *)self isDeleted]& 1) != 0)
@@ -3445,16 +3445,16 @@ LABEL_75:
   else
   {
     v66 = MEMORY[0x1E695DFD8];
-    v67 = [v3 allKeys];
-    v68 = [v66 setWithArray:v67];
+    allKeys2 = [changedValues allKeys];
+    v68 = [v66 setWithArray:allKeys2];
     v65 = [v68 isSubsetOfSet:v64] ^ 1;
   }
 
-  v69 = [(PLManagedObject *)self photoLibrary];
-  v70 = [v69 libraryServicesManager];
-  v71 = [v70 wellKnownPhotoLibraryIdentifier];
+  photoLibrary = [(PLManagedObject *)self photoLibrary];
+  libraryServicesManager = [photoLibrary libraryServicesManager];
+  wellKnownPhotoLibraryIdentifier = [libraryServicesManager wellKnownPhotoLibraryIdentifier];
 
-  if (v65 && (v71 == 1 || MEMORY[0x19EAEE520]()))
+  if (v65 && (wellKnownPhotoLibraryIdentifier == 1 || MEMORY[0x19EAEE520]()))
   {
     if ([(PLPerson *)self isDeleted])
     {
@@ -3473,46 +3473,46 @@ LABEL_75:
 - (void)_moveAllFacesToFinalMergeTarget
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [(PLPerson *)self finalMergeTargetPerson];
-  v4 = v3;
-  if (v3 && v3 != self)
+  finalMergeTargetPerson = [(PLPerson *)self finalMergeTargetPerson];
+  v4 = finalMergeTargetPerson;
+  if (finalMergeTargetPerson && finalMergeTargetPerson != self)
   {
     v5 = PLPhotoKitGetLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [(PLPerson *)self personUUID];
-      v7 = [(PLPerson *)self detectedFaces];
-      v8 = [v7 count];
-      v9 = [(PLPerson *)v4 personUUID];
+      personUUID = [(PLPerson *)self personUUID];
+      detectedFaces = [(PLPerson *)self detectedFaces];
+      v8 = [detectedFaces count];
+      personUUID2 = [(PLPerson *)v4 personUUID];
       *buf = 138543874;
-      v13 = v6;
+      v13 = personUUID;
       v14 = 2048;
       v15 = v8;
       v16 = 2114;
-      v17 = v9;
+      v17 = personUUID2;
       _os_log_impl(&dword_19BF1F000, v5, OS_LOG_TYPE_DEFAULT, "Tombstone Person %{public}@ has %tu faces. Moving them to final merge target %{public}@", buf, 0x20u);
     }
 
-    v11 = self;
-    v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v11 count:1];
+    selfCopy = self;
+    v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:&selfCopy count:1];
     [(PLPerson *)v4 _basicMergePersons:v10];
   }
 }
 
-- (void)createUnverifiedPersonForRejectedFaceUUIDs:(id)a3 inManagedObjectContext:(id)a4
+- (void)createUnverifiedPersonForRejectedFaceUUIDs:(id)ds inManagedObjectContext:(id)context
 {
   v45 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  dsCopy = ds;
+  contextCopy = context;
+  if ([dsCopy count])
   {
-    v8 = [objc_opt_class() createUnverifiedPersonInManagedObjectContext:v7];
+    v8 = [objc_opt_class() createUnverifiedPersonInManagedObjectContext:contextCopy];
     v9 = MEMORY[0x1E695D5E0];
     v10 = +[PLDetectedFace entityName];
     v11 = [v9 fetchRequestWithEntityName:v10];
 
-    v12 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K in %@", @"uuid", v6];
-    [v11 setPredicate:v12];
+    dsCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K in %@", @"uuid", dsCopy];
+    [v11 setPredicate:dsCopy];
 
     v13 = objc_alloc_init(MEMORY[0x1E695DF90]);
     v37[0] = MEMORY[0x1E69E9820];
@@ -3524,13 +3524,13 @@ LABEL_75:
     v38 = v14;
     v15 = v13;
     v39 = v15;
-    v16 = [v7 enumerateObjectsFromFetchRequest:v11 usingDefaultBatchSizeWithBlock:v37];
+    v16 = [contextCopy enumerateObjectsFromFetchRequest:v11 usingDefaultBatchSizeWithBlock:v37];
     if ([v15 count])
     {
       v29 = v14;
       v30 = v11;
-      v31 = v7;
-      v32 = v6;
+      v31 = contextCopy;
+      v32 = dsCopy;
       v35 = 0u;
       v36 = 0u;
       v33 = 0u;
@@ -3541,7 +3541,7 @@ LABEL_75:
       {
         v19 = v18;
         v20 = 0;
-        v21 = 0;
+        shortValue = 0;
         v22 = *v34;
         do
         {
@@ -3554,12 +3554,12 @@ LABEL_75:
 
             v24 = *(*(&v33 + 1) + 8 * i);
             v25 = [v17 objectForKeyedSubscript:v24];
-            v26 = [v25 unsignedIntegerValue];
+            unsignedIntegerValue = [v25 unsignedIntegerValue];
 
-            if (v26 > v20)
+            if (unsignedIntegerValue > v20)
             {
-              v21 = [v24 shortValue];
-              v20 = v26;
+              shortValue = [v24 shortValue];
+              v20 = unsignedIntegerValue;
             }
           }
 
@@ -3571,24 +3571,24 @@ LABEL_75:
 
       else
       {
-        v21 = 0;
+        shortValue = 0;
       }
 
       v14 = v29;
-      [v29 setDetectionType:v21];
-      v7 = v31;
-      v6 = v32;
+      [v29 setDetectionType:shortValue];
+      contextCopy = v31;
+      dsCopy = v32;
       v11 = v30;
     }
 
     v27 = PLPhotoKitGetLog();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
     {
-      v28 = [v14 personUUID];
+      personUUID = [v14 personUUID];
       *buf = 138543618;
-      v41 = v28;
+      v41 = personUUID;
       v42 = 2114;
-      v43 = v6;
+      v43 = dsCopy;
       _os_log_impl(&dword_19BF1F000, v27, OS_LOG_TYPE_INFO, "Created unverified person %{public}@ for rejected face UUIDs %{public}@", buf, 0x16u);
     }
   }
@@ -3632,11 +3632,11 @@ void __78__PLPerson_createUnverifiedPersonForRejectedFaceUUIDs_inManagedObjectCo
 
 - (void)disconnectFaceGroup
 {
-  v3 = [(PLPerson *)self associatedFaceGroup];
-  if ([(PLPerson *)self verifiedType]&& v3)
+  associatedFaceGroup = [(PLPerson *)self associatedFaceGroup];
+  if ([(PLPerson *)self verifiedType]&& associatedFaceGroup)
   {
     [(PLPerson *)self setAssociatedFaceGroup:0];
-    [objc_opt_class() createAssociatedPersonForFaceGroup:v3];
+    [objc_opt_class() createAssociatedPersonForFaceGroup:associatedFaceGroup];
   }
 }
 
@@ -3644,8 +3644,8 @@ void __78__PLPerson_createUnverifiedPersonForRejectedFaceUUIDs_inManagedObjectCo
 {
   v18 = *MEMORY[0x1E69E9840];
   v3 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %d", @"autoSharePolicy", 2];
-  v4 = [(PLPerson *)self managedObjectContext];
-  v5 = [(PLShare *)PLLibraryScope sharesWithPredicate:v3 fetchLimit:0 inManagedObjectContext:v4];
+  managedObjectContext = [(PLPerson *)self managedObjectContext];
+  v5 = [(PLShare *)PLLibraryScope sharesWithPredicate:v3 fetchLimit:0 inManagedObjectContext:managedObjectContext];
 
   v15 = 0u;
   v16 = 0u;
@@ -3668,8 +3668,8 @@ void __78__PLPerson_createUnverifiedPersonForRejectedFaceUUIDs_inManagedObjectCo
         }
 
         v11 = *(*(&v13 + 1) + 8 * v10);
-        v12 = [(PLPerson *)self personUUID];
-        [v11 removePeopleRulesForPersonUUID:v12];
+        personUUID = [(PLPerson *)self personUUID];
+        [v11 removePeopleRulesForPersonUUID:personUUID];
 
         ++v10;
       }
@@ -3688,99 +3688,99 @@ void __78__PLPerson_createUnverifiedPersonForRejectedFaceUUIDs_inManagedObjectCo
   v13.receiver = self;
   v13.super_class = PLPerson;
   [(PLPerson *)&v13 prepareForDeletion];
-  v3 = [(PLPerson *)self managedObjectContext];
+  managedObjectContext = [(PLPerson *)self managedObjectContext];
   if ((PLIsAssetsd() & 1) != 0 || MEMORY[0x19EAEE520]())
   {
     [PLGraphNode registerDeletedNodeActorForDanglingNodeCleanup:self];
   }
 
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && ([v3 mergingChanges] & 1) == 0)
+  if ((objc_opt_isKindOfClass() & 1) != 0 && ([managedObjectContext mergingChanges] & 1) == 0)
   {
     v4 = PLBackendGetLog();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
-      v5 = [(PLPerson *)self personUUID];
+      personUUID = [(PLPerson *)self personUUID];
       *buf = 138543362;
-      v15 = v5;
+      v15 = personUUID;
       _os_log_impl(&dword_19BF1F000, v4, OS_LOG_TYPE_INFO, "prepareForDeletion of person %{public}@", buf, 0xCu);
     }
 
-    v6 = [v3 mergePolicy];
+    mergePolicy = [managedObjectContext mergePolicy];
     objc_opt_class();
-    if (((objc_opt_isKindOfClass() & 1) == 0 || ([v6 isResolvingConflicts] & 1) == 0) && !-[PLPerson _personResetIsInProgress](self, "_personResetIsInProgress") && -[PLPerson verifiedType](self, "verifiedType") == 2 && !*(&self->super._willSaveCallCount + 1))
+    if (((objc_opt_isKindOfClass() & 1) == 0 || ([mergePolicy isResolvingConflicts] & 1) == 0) && !-[PLPerson _personResetIsInProgress](self, "_personResetIsInProgress") && -[PLPerson verifiedType](self, "verifiedType") == 2 && !*(&self->super._willSaveCallCount + 1))
     {
       v7 = PLBackendGetLog();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
-        v8 = [(PLPerson *)self personUUID];
-        v9 = [v3 name];
+        personUUID2 = [(PLPerson *)self personUUID];
+        name = [managedObjectContext name];
         *buf = 138543618;
-        v15 = v8;
+        v15 = personUUID2;
         v16 = 2112;
-        v17 = v9;
+        v17 = name;
         _os_log_impl(&dword_19BF1F000, v7, OS_LOG_TYPE_DEFAULT, "Deleting graph person %{public}@ with unspecified reason in context %@", buf, 0x16u);
       }
     }
 
-    v10 = [(PLPerson *)self personUUID];
+    personUUID3 = [(PLPerson *)self personUUID];
 
-    if (v10)
+    if (personUUID3)
     {
-      v11 = [(PLManagedObject *)self photoLibrary];
-      v12 = [v11 pathManager];
-      [(PLPerson *)self removePersistedFileSystemDataWithPathManager:v12];
+      photoLibrary = [(PLManagedObject *)self photoLibrary];
+      pathManager = [photoLibrary pathManager];
+      [(PLPerson *)self removePersistedFileSystemDataWithPathManager:pathManager];
     }
 
-    [v3 recordCloudDeletionForObject:self];
+    [managedObjectContext recordCloudDeletionForObject:self];
   }
 }
 
 - (NSSet)allDetectedFaces
 {
-  v3 = [(PLPerson *)self detectedFaces];
-  v4 = [v3 mutableCopy];
+  detectedFaces = [(PLPerson *)self detectedFaces];
+  v4 = [detectedFaces mutableCopy];
 
-  v5 = [(PLPerson *)self temporalDetectedFaces];
-  [v4 unionSet:v5];
+  temporalDetectedFaces = [(PLPerson *)self temporalDetectedFaces];
+  [v4 unionSet:temporalDetectedFaces];
 
   v6 = [v4 copy];
 
   return v6;
 }
 
-+ (id)fetchFinalMergeTargetPersonForPersonWithUUID:(id)a3 context:(id)a4 predicate:(id)a5
++ (id)fetchFinalMergeTargetPersonForPersonWithUUID:(id)d context:(id)context predicate:(id)predicate
 {
   v30[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
-  v11 = [a1 fetchRequest];
+  dCopy = d;
+  predicateCopy = predicate;
+  contextCopy = context;
+  fetchRequest = [self fetchRequest];
   v30[0] = @"mergeTargetPerson.mergeTargetPerson.mergeTargetPerson.mergeTargetPerson.mergeTargetPerson";
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v30 count:1];
-  [v11 setRelationshipKeyPathsForPrefetching:v12];
+  [fetchRequest setRelationshipKeyPathsForPrefetching:v12];
 
-  v13 = [MEMORY[0x1E696AE18] predicateWithFormat:@"personUUID == %@", v8];
-  v14 = v13;
-  if (v9)
+  dCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"personUUID == %@", dCopy];
+  v14 = dCopy;
+  if (predicateCopy)
   {
     v15 = MEMORY[0x1E696AB28];
-    v29[0] = v9;
-    v29[1] = v13;
+    v29[0] = predicateCopy;
+    v29[1] = dCopy;
     v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v29 count:2];
     v17 = [v15 andPredicateWithSubpredicates:v16];
   }
 
   else
   {
-    v17 = v13;
+    v17 = dCopy;
   }
 
-  [v11 setPredicate:v17];
-  [v11 setReturnsObjectsAsFaults:0];
-  [v11 setFetchLimit:1];
+  [fetchRequest setPredicate:v17];
+  [fetchRequest setReturnsObjectsAsFaults:0];
+  [fetchRequest setFetchLimit:1];
   v24 = 0;
-  v18 = [v10 executeFetchRequest:v11 error:&v24];
+  v18 = [contextCopy executeFetchRequest:fetchRequest error:&v24];
 
   v19 = v24;
   if (!v18)
@@ -3789,38 +3789,38 @@ void __78__PLPerson_createUnverifiedPersonForRejectedFaceUUIDs_inManagedObjectCo
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v26 = v8;
+      v26 = dCopy;
       v27 = 2112;
       v28 = v19;
       _os_log_impl(&dword_19BF1F000, v20, OS_LOG_TYPE_ERROR, "Failed to fetch final merge target person with UUID %@: %@", buf, 0x16u);
     }
   }
 
-  v21 = [v18 firstObject];
-  v22 = [v21 finalMergeTargetPerson];
+  firstObject = [v18 firstObject];
+  finalMergeTargetPerson = [firstObject finalMergeTargetPerson];
 
-  return v22;
+  return finalMergeTargetPerson;
 }
 
-+ (BOOL)_detachFacesForPerson:(id)a3 reason:(signed __int16)a4 error:(id *)a5
++ (BOOL)_detachFacesForPerson:(id)person reason:(signed __int16)reason error:(id *)error
 {
-  v6 = a4;
+  reasonCopy = reason;
   v52[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  personCopy = person;
   v9 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v10 = [v8 managedObjectContext];
-  v11 = [v8 allDetectedFaces];
-  v12 = [v11 allObjects];
+  managedObjectContext = [personCopy managedObjectContext];
+  allDetectedFaces = [personCopy allDetectedFaces];
+  allObjects = [allDetectedFaces allObjects];
 
-  v13 = [v12 count];
+  v13 = [allObjects count];
   v14 = [MEMORY[0x1E696AE38] progressWithTotalUnitCount:v13];
   v15 = 0;
-  if (v6 == 6 && v13)
+  if (reasonCopy == 6 && v13)
   {
-    v15 = [a1 createUnverifiedPersonInManagedObjectContext:v10];
-    [v15 setDetectionType:{objc_msgSend(v8, "detectionType")}];
-    v16 = [v8 mdID];
-    [v15 setMdID:v16];
+    v15 = [self createUnverifiedPersonInManagedObjectContext:managedObjectContext];
+    [v15 setDetectionType:{objc_msgSend(personCopy, "detectionType")}];
+    mdID = [personCopy mdID];
+    [v15 setMdID:mdID];
   }
 
   v45[0] = MEMORY[0x1E69E9820];
@@ -3833,7 +3833,7 @@ void __78__PLPerson_createUnverifiedPersonForRejectedFaceUUIDs_inManagedObjectCo
   v47 = v18;
   v19 = v15;
   v48 = v19;
-  v20 = [v10 enumerateWithIncrementalSaveUsingObjects:v12 withBlock:v45];
+  v20 = [managedObjectContext enumerateWithIncrementalSaveUsingObjects:allObjects withBlock:v45];
   if ([v17 isCancelled] && !v20)
   {
     v21 = MEMORY[0x1E696ABC0];
@@ -3851,51 +3851,51 @@ void __78__PLPerson_createUnverifiedPersonForRejectedFaceUUIDs_inManagedObjectCo
     v43[2] = __47__PLPerson__detachFacesForPerson_reason_error___block_invoke_2;
     v43[3] = &unk_1E75770B8;
     v44 = v17;
-    v20 = [v10 enumerateWithIncrementalSaveUsingObjects:v18 withBlock:v43];
+    v20 = [managedObjectContext enumerateWithIncrementalSaveUsingObjects:v18 withBlock:v43];
   }
 
   if (v19)
   {
     v24 = +[PLKeyFaceManager sharedInstance];
-    v25 = [v19 personUUID];
+    personUUID = [v19 personUUID];
     [v19 photoLibrary];
     v42 = v19;
     v26 = v17;
-    v27 = v8;
+    v27 = personCopy;
     v28 = v18;
-    v29 = v12;
-    v30 = v10;
-    v32 = v31 = a5;
-    [v24 markPersonAsNeedingKeyFace:v25 photoLibrary:v32];
+    v29 = allObjects;
+    v30 = managedObjectContext;
+    v32 = v31 = error;
+    [v24 markPersonAsNeedingKeyFace:personUUID photoLibrary:v32];
 
-    a5 = v31;
-    v10 = v30;
-    v12 = v29;
+    error = v31;
+    managedObjectContext = v30;
+    allObjects = v29;
     v18 = v28;
-    v8 = v27;
+    personCopy = v27;
     v17 = v26;
     v19 = v42;
   }
 
   if ([v17 isCancelled] && !v20)
   {
-    v33 = a5;
+    errorCopy = error;
     v34 = MEMORY[0x1E696ABC0];
     v35 = *MEMORY[0x1E69BFF48];
     v49 = *MEMORY[0x1E696A278];
     v50 = @"Person reset cancelled while deleting verified faces";
     v36 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v50 forKeys:&v49 count:1];
     v37 = v34;
-    a5 = v33;
+    error = errorCopy;
     v20 = [v37 errorWithDomain:v35 code:41031 userInfo:v36];
   }
 
   v38 = v20;
   v39 = v38;
-  if (v20 && a5)
+  if (v20 && error)
   {
     v40 = v38;
-    *a5 = v39;
+    *error = v39;
   }
 
   return v20 == 0;
@@ -3941,15 +3941,15 @@ void __47__PLPerson__detachFacesForPerson_reason_error___block_invoke_2(uint64_t
   }
 }
 
-+ (BOOL)_deleteObjectsWithFetchRequest:(id)a3 reason:(signed __int16)a4 moc:(id)a5 progress:(id)a6 error:(id *)a7
++ (BOOL)_deleteObjectsWithFetchRequest:(id)request reason:(signed __int16)reason moc:(id)moc progress:(id)progress error:(id *)error
 {
   v53 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a5;
-  v32 = a6;
-  [v12 setFetchBatchSize:100];
+  requestCopy = request;
+  mocCopy = moc;
+  progressCopy = progress;
+  [requestCopy setFetchBatchSize:100];
   v40 = 0;
-  v14 = [v13 executeFetchRequest:v12 error:&v40];
+  v14 = [mocCopy executeFetchRequest:requestCopy error:&v40];
   v15 = v40;
   if (v14)
   {
@@ -3963,14 +3963,14 @@ void __47__PLPerson__detachFacesForPerson_reason_error___block_invoke_2(uint64_t
     v33[1] = 3221225472;
     v33[2] = __69__PLPerson__deleteObjectsWithFetchRequest_reason_moc_progress_error___block_invoke;
     v33[3] = &unk_1E7577068;
-    v16 = v32;
+    v16 = progressCopy;
     v34 = v16;
     v37 = v49;
-    v38 = a1;
-    v39 = a4;
-    v31 = v12;
+    selfCopy = self;
+    reasonCopy = reason;
+    v31 = requestCopy;
     v35 = v31;
-    v36 = v13;
+    v36 = mocCopy;
     v17 = [v36 enumerateWithIncrementalSaveUsingObjects:v14 withBlock:v33];
     v18 = v17;
     v19 = *(*&v49[8] + 40);
@@ -3985,9 +3985,9 @@ void __47__PLPerson__detachFacesForPerson_reason_error___block_invoke_2(uint64_t
       v21 = PLBackendGetLog();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
       {
-        v22 = [v31 entityName];
+        entityName = [v31 entityName];
         *buf = 138543874;
-        v42 = v22;
+        v42 = entityName;
         v43 = 2082;
         v44 = "+[PLPerson _deleteObjectsWithFetchRequest:reason:moc:progress:error:]";
         v45 = 2112;
@@ -3995,10 +3995,10 @@ void __47__PLPerson__detachFacesForPerson_reason_error___block_invoke_2(uint64_t
         _os_log_impl(&dword_19BF1F000, v21, OS_LOG_TYPE_ERROR, "Failed to delete %{public}@ in %{public}s %@", buf, 0x20u);
       }
 
-      if (a7)
+      if (error)
       {
         v23 = v20;
-        *a7 = v20;
+        *error = v20;
       }
 
       v24 = 0;
@@ -4017,9 +4017,9 @@ void __47__PLPerson__detachFacesForPerson_reason_error___block_invoke_2(uint64_t
     v25 = PLBackendGetLog();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
     {
-      v26 = [v12 entityName];
+      entityName2 = [requestCopy entityName];
       *v49 = 138543874;
-      *&v49[4] = v26;
+      *&v49[4] = entityName2;
       *&v49[12] = 2082;
       *&v49[14] = "+[PLPerson _deleteObjectsWithFetchRequest:reason:moc:progress:error:]";
       *&v49[22] = 2112;
@@ -4027,11 +4027,11 @@ void __47__PLPerson__detachFacesForPerson_reason_error___block_invoke_2(uint64_t
       _os_log_impl(&dword_19BF1F000, v25, OS_LOG_TYPE_ERROR, "Failed to fetch %{public}@ in %{public}s %@", v49, 0x20u);
     }
 
-    if (a7)
+    if (error)
     {
       v27 = v15;
       v24 = 0;
-      *a7 = v15;
+      *error = v15;
     }
 
     else
@@ -4081,23 +4081,23 @@ void __69__PLPerson__deleteObjectsWithFetchRequest_reason_moc_progress_error___b
   }
 }
 
-+ (void)_resetMediaAnalysisAfterPersonResetInLibraryURL:(id)a3 resetPersons:(BOOL)a4 completion:(id)a5
++ (void)_resetMediaAnalysisAfterPersonResetInLibraryURL:(id)l resetPersons:(BOOL)persons completion:(id)completion
 {
-  v6 = a4;
-  v8 = a3;
-  v7 = a5;
-  if (v6)
+  personsCopy = persons;
+  lCopy = l;
+  completionCopy = completion;
+  if (personsCopy)
   {
-    [PLMediaAnalysisServiceRequestAdapter requestResetPersons:0 photoLibraryURL:v8 completionHandler:v7];
+    [PLMediaAnalysisServiceRequestAdapter requestResetPersons:0 photoLibraryURL:lCopy completionHandler:completionCopy];
   }
 
-  [PLMediaAnalysisServiceRequestAdapter requestResetFaceClassificationModelForPhotoLibraryURL:v8 progressHandler:&__block_literal_global_324 completionHandler:v7];
+  [PLMediaAnalysisServiceRequestAdapter requestResetFaceClassificationModelForPhotoLibraryURL:lCopy progressHandler:&__block_literal_global_324 completionHandler:completionCopy];
 }
 
-+ (id)resetAllInLibrary:(id)a3 completion:(id)a4
++ (id)resetAllInLibrary:(id)library completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  libraryCopy = library;
+  completionCopy = completion;
   v57[0] = 0;
   v57[1] = v57;
   v57[2] = 0x2020000000;
@@ -4108,16 +4108,16 @@ void __69__PLPerson__deleteObjectsWithFetchRequest_reason_moc_progress_error___b
   v54 = __Block_byref_object_copy__110782;
   v55 = __Block_byref_object_dispose__110783;
   v56 = 0;
-  v8 = [v6 managedObjectContext];
-  [a1 _setPersonResetInProgress:1 context:v8];
+  managedObjectContext = [libraryCopy managedObjectContext];
+  [self _setPersonResetInProgress:1 context:managedObjectContext];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __41__PLPerson_resetAllInLibrary_completion___block_invoke;
   aBlock[3] = &unk_1E7576FA8;
-  v50 = a1;
-  v9 = v8;
+  selfCopy = self;
+  v9 = managedObjectContext;
   v48 = v9;
-  v10 = v7;
+  v10 = completionCopy;
   v49 = v10;
   v11 = _Block_copy(aBlock);
   v12 = +[PLPerson fetchRequest];
@@ -4139,7 +4139,7 @@ void __69__PLPerson__deleteObjectsWithFetchRequest_reason_moc_progress_error___b
   v15 = v12;
   v40 = v15;
   v42 = &v51;
-  [v6 performBlockAndWait:v38];
+  [libraryCopy performBlockAndWait:v38];
   if (v52[5])
   {
     v11[2](v11, 0);
@@ -4156,7 +4156,7 @@ void __69__PLPerson__deleteObjectsWithFetchRequest_reason_moc_progress_error___b
     v30[3] = &unk_1E7576FD0;
     v34 = &v43;
     v35 = v57;
-    v37 = a1;
+    selfCopy2 = self;
     v31 = v15;
     v32 = v14;
     v18 = v17;
@@ -4166,9 +4166,9 @@ void __69__PLPerson__deleteObjectsWithFetchRequest_reason_moc_progress_error___b
     v23[1] = 3221225472;
     v23[2] = __41__PLPerson_resetAllInLibrary_completion___block_invoke_318;
     v23[3] = &unk_1E7577020;
-    v24 = v6;
+    v24 = libraryCopy;
     v27 = v57;
-    v29 = a1;
+    selfCopy3 = self;
     v26 = v11;
     v28 = &v51;
     v19 = v22;
@@ -4302,16 +4302,16 @@ uint64_t __41__PLPerson_resetAllInLibrary_completion___block_invoke_2_320(uint64
   return [v2 stillAlive];
 }
 
-+ (void)_setPersonResetInProgress:(BOOL)a3 context:(id)a4
++ (void)_setPersonResetInProgress:(BOOL)progress context:(id)context
 {
-  v5 = a4;
+  contextCopy = context;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __46__PLPerson__setPersonResetInProgress_context___block_invoke;
   v7[3] = &unk_1E7576F80;
-  v9 = a3;
-  v8 = v5;
-  v6 = v5;
+  progressCopy = progress;
+  v8 = contextCopy;
+  v6 = contextCopy;
   [v6 performBlockAndWait:v7];
 }
 
@@ -4331,9 +4331,9 @@ void __46__PLPerson__setPersonResetInProgress_context___block_invoke(uint64_t a1
   }
 }
 
-+ (BOOL)resetAllInLibrary:(id)a3 error:(id *)a4
++ (BOOL)resetAllInLibrary:(id)library error:(id *)error
 {
-  v5 = a3;
+  libraryCopy = library;
   v24 = 0;
   v25 = &v24;
   v26 = 0x2020000000;
@@ -4344,16 +4344,16 @@ void __46__PLPerson__setPersonResetInProgress_context___block_invoke(uint64_t a1
   v21 = __Block_byref_object_copy__110782;
   v22 = __Block_byref_object_dispose__110783;
   v23 = 0;
-  v6 = [v5 managedObjectContext];
+  managedObjectContext = [libraryCopy managedObjectContext];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __36__PLPerson_resetAllInLibrary_error___block_invoke;
   v14[3] = &unk_1E7578870;
-  v7 = v6;
+  v7 = managedObjectContext;
   v15 = v7;
   v16 = &v24;
   v17 = &v18;
-  [v5 performTransactionAndWait:v14];
+  [libraryCopy performTransactionAndWait:v14];
   if (*(v25 + 24) == 1)
   {
     v10[0] = MEMORY[0x1E69E9820];
@@ -4363,12 +4363,12 @@ void __46__PLPerson__setPersonResetInProgress_context___block_invoke(uint64_t a1
     v11 = v7;
     v12 = &v24;
     v13 = &v18;
-    [v5 performBlockAndWait:v10];
+    [libraryCopy performBlockAndWait:v10];
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = v19[5];
+    *error = v19[5];
   }
 
   v8 = *(v25 + 24);
@@ -4510,30 +4510,30 @@ LABEL_11:
 LABEL_12:
 }
 
-+ (id)predicateForIncludedDetectionTypes:(id)a3
++ (id)predicateForIncludedDetectionTypes:(id)types
 {
-  v3 = a3;
-  if ([v3 containsObject:&unk_1F0FBED40])
+  typesCopy = types;
+  if ([typesCopy containsObject:&unk_1F0FBED40])
   {
-    v4 = [v3 containsObject:&unk_1F0FBED58];
+    v4 = [typesCopy containsObject:&unk_1F0FBED58];
 
     if (v4)
     {
-      v5 = 0;
+      typesCopy = 0;
     }
 
     else
     {
-      v5 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K >= %@", @"detectionType", &unk_1F0FBED40];
+      typesCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K >= %@", @"detectionType", &unk_1F0FBED40];
     }
   }
 
   else
   {
-    v5 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K IN %@", @"detectionType", v3];
+    typesCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K IN %@", @"detectionType", typesCopy];
   }
 
-  return v5;
+  return typesCopy;
 }
 
 + (id)predicateForVisibleKeyFace
@@ -4556,16 +4556,16 @@ LABEL_12:
   return v9;
 }
 
-+ (id)predicateForPersonsNeedingFaceCropGenerationForFaceObjectID:(id)a3
++ (id)predicateForPersonsNeedingFaceCropGenerationForFaceObjectID:(id)d
 {
   v33[2] = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E696AE18];
-  v4 = a3;
+  dCopy = d;
   v5 = [v3 predicateWithFormat:@"%K == %d", @"verifiedType", 1];
-  v27 = [MEMORY[0x1E696AE18] predicateWithFormat:@"SUBQUERY(%K, $f, $f == %@ AND $f.%K == %d AND ($f.%K == %d OR $f.%K == %d)).@count > 0", @"detectedFaces", v4, @"confirmedFaceCropGenerationState", 1, @"nameSource", 3, @"nameSource", 1];
+  v27 = [MEMORY[0x1E696AE18] predicateWithFormat:@"SUBQUERY(%K, $f, $f == %@ AND $f.%K == %d AND ($f.%K == %d OR $f.%K == %d)).@count > 0", @"detectedFaces", dCopy, @"confirmedFaceCropGenerationState", 1, @"nameSource", 3, @"nameSource", 1];
   v6 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %d", @"verifiedType", 2];
-  v7 = [MEMORY[0x1E696AE18] predicateWithFormat:@"SUBQUERY(%K, $f, $f == %@ AND $f.%K == %d AND $f.%K == %d).@count > 0", @"detectedFaces", v4, @"confirmedFaceCropGenerationState", 1, @"nameSource", 5];
-  v8 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%@ IN %K AND %@ IN %K", v4, @"rejectedFaces", v4, @"rejectedFacesNeedingFaceCrops"];
+  v7 = [MEMORY[0x1E696AE18] predicateWithFormat:@"SUBQUERY(%K, $f, $f == %@ AND $f.%K == %d AND $f.%K == %d).@count > 0", @"detectedFaces", dCopy, @"confirmedFaceCropGenerationState", 1, @"nameSource", 5];
+  v8 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%@ IN %K AND %@ IN %K", dCopy, @"rejectedFaces", dCopy, @"rejectedFacesNeedingFaceCrops"];
 
   v9 = MEMORY[0x1E696AB28];
   v28 = v5;
@@ -4604,20 +4604,20 @@ LABEL_12:
   return v24;
 }
 
-+ (id)_stringFromContact:(id)a3 preferGivenName:(BOOL)a4
++ (id)_stringFromContact:(id)contact preferGivenName:(BOOL)name
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = [v5 givenName];
-  v7 = v6;
-  if (v4 && [v6 length])
+  nameCopy = name;
+  contactCopy = contact;
+  givenName = [contactCopy givenName];
+  v7 = givenName;
+  if (nameCopy && [givenName length])
   {
     v8 = v7;
   }
 
   else
   {
-    v8 = [MEMORY[0x1E695CD80] stringFromContact:v5 style:0];
+    v8 = [MEMORY[0x1E695CD80] stringFromContact:contactCopy style:0];
   }
 
   v9 = v8;
@@ -4625,25 +4625,25 @@ LABEL_12:
   return v9;
 }
 
-+ (id)fetchMePersonInManagedObjectContext:(id)a3
++ (id)fetchMePersonInManagedObjectContext:(id)context
 {
   v17 = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E695D5E0];
-  v5 = a3;
+  contextCopy = context;
   v6 = +[PLPerson entityName];
   v7 = [v4 fetchRequestWithEntityName:v6];
 
-  v8 = [a1 predicateForMePerson];
-  [v7 setPredicate:v8];
+  predicateForMePerson = [self predicateForMePerson];
+  [v7 setPredicate:predicateForMePerson];
 
   [v7 setFetchLimit:1];
   v14 = 0;
-  v9 = [v5 executeFetchRequest:v7 error:&v14];
+  v9 = [contextCopy executeFetchRequest:v7 error:&v14];
 
   v10 = v14;
   if (v9)
   {
-    v11 = [v9 firstObject];
+    firstObject = [v9 firstObject];
   }
 
   else
@@ -4656,27 +4656,27 @@ LABEL_12:
       _os_log_impl(&dword_19BF1F000, v12, OS_LOG_TYPE_ERROR, "Fetch for me person failed: %@", buf, 0xCu);
     }
 
-    v11 = 0;
+    firstObject = 0;
   }
 
-  return v11;
+  return firstObject;
 }
 
-+ (void)batchFetchAssociatedPersonByFaceGroupUUIDWithFaceGroupUUIDs:(id)a3 predicate:(id)a4 library:(id)a5 completion:(id)a6
++ (void)batchFetchAssociatedPersonByFaceGroupUUIDWithFaceGroupUUIDs:(id)ds predicate:(id)predicate library:(id)library completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a6;
+  dsCopy = ds;
+  libraryCopy = library;
+  completionCopy = completion;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __101__PLPerson_batchFetchAssociatedPersonByFaceGroupUUIDWithFaceGroupUUIDs_predicate_library_completion___block_invoke;
   v14[3] = &unk_1E7576F38;
-  v15 = v9;
-  v16 = v8;
-  v17 = v10;
-  v11 = v8;
-  v12 = v10;
-  v13 = v9;
+  v15 = libraryCopy;
+  v16 = dsCopy;
+  v17 = completionCopy;
+  v11 = dsCopy;
+  v12 = completionCopy;
+  v13 = libraryCopy;
   [v13 performBlockAndWait:v14];
 }
 
@@ -4752,11 +4752,11 @@ void __101__PLPerson_batchFetchAssociatedPersonByFaceGroupUUIDWithFaceGroupUUIDs
   (*(*(v1 + 48) + 16))();
 }
 
-+ (id)fetchPersonCountByAssetUUIDForAssetUUIDs:(id)a3 predicate:(id)a4 includedDetectionTypes:(id)a5 library:(id)a6 error:(id *)a7
++ (id)fetchPersonCountByAssetUUIDForAssetUUIDs:(id)ds predicate:(id)predicate includedDetectionTypes:(id)types library:(id)library error:(id *)error
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  dsCopy = ds;
+  predicateCopy = predicate;
+  typesCopy = types;
   v35 = 0;
   v36 = &v35;
   v37 = 0x3032000000;
@@ -4769,28 +4769,28 @@ void __101__PLPerson_batchFetchAssociatedPersonByFaceGroupUUIDWithFaceGroupUUIDs
   v32 = __Block_byref_object_copy__110782;
   v33 = __Block_byref_object_dispose__110783;
   v34 = 0;
-  v14 = a6;
+  libraryCopy = library;
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __100__PLPerson_fetchPersonCountByAssetUUIDForAssetUUIDs_predicate_includedDetectionTypes_library_error___block_invoke;
   v22[3] = &unk_1E7576F10;
-  v15 = v14;
+  v15 = libraryCopy;
   v23 = v15;
-  v16 = v12;
+  v16 = predicateCopy;
   v24 = v16;
-  v17 = v11;
+  v17 = dsCopy;
   v25 = v17;
-  v18 = v13;
+  v18 = typesCopy;
   v26 = v18;
   v27 = &v29;
   v28 = &v35;
   [v15 performBlockAndWait:v22];
-  if (a7)
+  if (error)
   {
     v19 = v30[5];
     if (v19)
     {
-      *a7 = v19;
+      *error = v19;
     }
   }
 
@@ -5136,27 +5136,27 @@ LABEL_54:
 LABEL_55:
 }
 
-+ (void)batchFetchPersonsByAssetUUIDWithAssetUUIDs:(id)a3 predicate:(id)a4 includedDetectionTypes:(id)a5 library:(id)a6 completion:(id)a7
++ (void)batchFetchPersonsByAssetUUIDWithAssetUUIDs:(id)ds predicate:(id)predicate includedDetectionTypes:(id)types library:(id)library completion:(id)completion
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  dsCopy = ds;
+  predicateCopy = predicate;
+  typesCopy = types;
+  libraryCopy = library;
+  completionCopy = completion;
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __107__PLPerson_batchFetchPersonsByAssetUUIDWithAssetUUIDs_predicate_includedDetectionTypes_library_completion___block_invoke;
   v21[3] = &unk_1E7576EE8;
-  v22 = v14;
-  v23 = v11;
-  v24 = v13;
-  v25 = v12;
-  v26 = v15;
-  v16 = v11;
-  v17 = v13;
-  v18 = v12;
-  v19 = v15;
-  v20 = v14;
+  v22 = libraryCopy;
+  v23 = dsCopy;
+  v24 = typesCopy;
+  v25 = predicateCopy;
+  v26 = completionCopy;
+  v16 = dsCopy;
+  v17 = typesCopy;
+  v18 = predicateCopy;
+  v19 = completionCopy;
+  v20 = libraryCopy;
   [v20 performBlockAndWait:v21];
 }
 
@@ -5395,29 +5395,29 @@ LABEL_45:
   (*(v1[8] + 16))();
 }
 
-+ (void)batchFetchPersonUUIDsByAssetUUIDWithAssetUUIDs:(id)a3 predicate:(id)a4 includedDetectionTypes:(id)a5 includeTemporalDetectedFaces:(BOOL)a6 inManagedObjectContext:(id)a7 completion:(id)a8
++ (void)batchFetchPersonUUIDsByAssetUUIDWithAssetUUIDs:(id)ds predicate:(id)predicate includedDetectionTypes:(id)types includeTemporalDetectedFaces:(BOOL)faces inManagedObjectContext:(id)context completion:(id)completion
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a7;
-  v18 = a8;
+  dsCopy = ds;
+  predicateCopy = predicate;
+  typesCopy = types;
+  contextCopy = context;
+  completionCopy = completion;
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __155__PLPerson_batchFetchPersonUUIDsByAssetUUIDWithAssetUUIDs_predicate_includedDetectionTypes_includeTemporalDetectedFaces_inManagedObjectContext_completion___block_invoke;
   v24[3] = &unk_1E7576EC0;
-  v25 = v14;
-  v26 = v15;
-  v31 = a6;
-  v27 = v16;
-  v28 = v17;
-  v29 = v18;
-  v30 = a1;
-  v19 = v18;
-  v20 = v17;
-  v21 = v16;
-  v22 = v15;
-  v23 = v14;
+  v25 = dsCopy;
+  v26 = predicateCopy;
+  facesCopy = faces;
+  v27 = typesCopy;
+  v28 = contextCopy;
+  v29 = completionCopy;
+  selfCopy = self;
+  v19 = completionCopy;
+  v20 = contextCopy;
+  v21 = typesCopy;
+  v22 = predicateCopy;
+  v23 = dsCopy;
   [v20 performBlockAndWait:v24];
 }
 
@@ -5435,36 +5435,36 @@ void __155__PLPerson_batchFetchPersonUUIDsByAssetUUIDWithAssetUUIDs_predicate_in
   (*(*(a1 + 64) + 16))();
 }
 
-+ (id)_batchFetchPersonUUIDsByAssetUUIDWithAssetUUIDs:(id)a3 predicate:(id)a4 includedDetectionTypes:(id)a5 includeTemporalDetectedFaces:(BOOL)a6 inManagedObjectContext:(id)a7 error:(id *)a8
++ (id)_batchFetchPersonUUIDsByAssetUUIDWithAssetUUIDs:(id)ds predicate:(id)predicate includedDetectionTypes:(id)types includeTemporalDetectedFaces:(BOOL)faces inManagedObjectContext:(id)context error:(id *)error
 {
-  v10 = a6;
+  facesCopy = faces;
   v79[2] = *MEMORY[0x1E69E9840];
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  predicateCopy = predicate;
+  typesCopy = types;
+  contextCopy = context;
   v16 = MEMORY[0x1E695DF90];
-  v17 = a3;
-  v18 = [v16 dictionary];
+  dsCopy = ds;
+  dictionary = [v16 dictionary];
   v19 = MEMORY[0x1E695D5E0];
   v20 = +[PLManagedAsset entityName];
   v21 = [v19 fetchRequestWithEntityName:v20];
 
-  v22 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K IN %@", @"uuid", v17];
+  dsCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K IN %@", @"uuid", dsCopy];
 
-  [v21 setPredicate:v22];
+  [v21 setPredicate:dsCopy];
   [v21 setResultType:1];
   v70 = 0;
-  v62 = v15;
-  v23 = [v15 executeFetchRequest:v21 error:&v70];
+  v62 = contextCopy;
+  v23 = [contextCopy executeFetchRequest:v21 error:&v70];
   v24 = v70;
   if (v23)
   {
-    v58 = a8;
-    v59 = v18;
+    errorCopy = error;
+    v59 = dictionary;
     v25 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K IN %@", @"assetForFace", v23];
     v56 = v24;
     v57 = v23;
-    if (v10)
+    if (facesCopy)
     {
       v26 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K IN %@", @"assetForTemporalDetectedFaces", v23];
       v27 = MEMORY[0x1E696AB28];
@@ -5476,12 +5476,12 @@ void __155__PLPerson_batchFetchPersonUUIDsByAssetUUIDWithAssetUUIDs_predicate_in
       v25 = v29;
     }
 
-    v61 = v13;
-    if (v13)
+    v61 = predicateCopy;
+    if (predicateCopy)
     {
       v32 = MEMORY[0x1E696AB28];
       v78[0] = v25;
-      v78[1] = v13;
+      v78[1] = predicateCopy;
       v33 = [MEMORY[0x1E695DEC8] arrayWithObjects:v78 count:2];
       v30 = [v32 andPredicateWithSubpredicates:v33];
     }
@@ -5491,10 +5491,10 @@ void __155__PLPerson_batchFetchPersonUUIDsByAssetUUIDWithAssetUUIDs_predicate_in
       v30 = v25;
     }
 
-    v60 = v14;
-    if (v14)
+    v60 = typesCopy;
+    if (typesCopy)
     {
-      v34 = [PLDetectedFace predicateForIncludedDetectionTypes:v14];
+      v34 = [PLDetectedFace predicateForIncludedDetectionTypes:typesCopy];
       v35 = v34;
       if (v34)
       {
@@ -5524,7 +5524,7 @@ void __155__PLPerson_batchFetchPersonUUIDsByAssetUUIDWithAssetUUIDs_predicate_in
     v76[0] = v40;
     v76[1] = v42;
     v44 = [MEMORY[0x1E695DEC8] arrayWithObjects:v76 count:2];
-    if (v10)
+    if (facesCopy)
     {
       v45 = objc_alloc_init(MEMORY[0x1E695D5C8]);
       [v45 setName:@"temporalAssetUUID"];
@@ -5546,7 +5546,7 @@ void __155__PLPerson_batchFetchPersonUUIDsByAssetUUIDWithAssetUUIDs_predicate_in
       v44 = v50;
     }
 
-    v18 = v59;
+    dictionary = v59;
     [v39 setPropertiesToFetch:v44];
     [v39 setPredicate:v30];
     [v39 setResultType:2];
@@ -5583,10 +5583,10 @@ void __155__PLPerson_batchFetchPersonUUIDsByAssetUUIDWithAssetUUIDs_predicate_in
       }
     }
 
-    v14 = v60;
-    v13 = v61;
+    typesCopy = v60;
+    predicateCopy = v61;
     v23 = v57;
-    a8 = v58;
+    error = errorCopy;
   }
 
   else
@@ -5604,15 +5604,15 @@ void __155__PLPerson_batchFetchPersonUUIDsByAssetUUIDWithAssetUUIDs_predicate_in
     v31 = v24;
   }
 
-  if (a8)
+  if (error)
   {
     v53 = v31;
-    *a8 = v31;
+    *error = v31;
   }
 
-  v54 = v18;
+  v54 = dictionary;
 
-  return v18;
+  return dictionary;
 }
 
 void __151__PLPerson__batchFetchPersonUUIDsByAssetUUIDWithAssetUUIDs_predicate_includedDetectionTypes_includeTemporalDetectedFaces_inManagedObjectContext_error___block_invoke(uint64_t a1, void *a2)
@@ -5657,46 +5657,46 @@ void __151__PLPerson__batchFetchPersonUUIDsByAssetUUIDWithAssetUUIDs_predicate_i
   }
 }
 
-+ (id)createUnverifiedPersonInManagedObjectContext:(id)a3
++ (id)createUnverifiedPersonInManagedObjectContext:(id)context
 {
   v3 = MEMORY[0x1E696AFB0];
-  v4 = a3;
-  v5 = [v3 UUID];
-  v6 = [v5 UUIDString];
-  v7 = [PLPerson insertIntoManagedObjectContext:v4 withPersonUUID:v6 fullName:&stru_1F0F06D80 verifiedType:0];
+  contextCopy = context;
+  uUID = [v3 UUID];
+  uUIDString = [uUID UUIDString];
+  v7 = [PLPerson insertIntoManagedObjectContext:contextCopy withPersonUUID:uUIDString fullName:&stru_1F0F06D80 verifiedType:0];
 
   return v7;
 }
 
-+ (void)createAssociatedPersonForFaceGroup:(id)a3
++ (void)createAssociatedPersonForFaceGroup:(id)group
 {
-  if (a3)
+  if (group)
   {
-    v4 = a3;
-    v5 = [v4 managedObjectContext];
-    [a1 createAssociatedPersonForFaceGroup:v4 inManagedObjectContext:v5];
+    groupCopy = group;
+    managedObjectContext = [groupCopy managedObjectContext];
+    [self createAssociatedPersonForFaceGroup:groupCopy inManagedObjectContext:managedObjectContext];
   }
 }
 
-+ (id)personsWithUUIDs:(id)a3 inManagedObjectContext:(id)a4
++ (id)personsWithUUIDs:(id)ds inManagedObjectContext:(id)context
 {
   v6 = MEMORY[0x1E696AE18];
-  v7 = a4;
-  v8 = [v6 predicateWithFormat:@"personUUID IN %@", a3];
-  v9 = [a1 personsMatchingPredicate:v8 fetchLimit:0 sortDescriptors:0 relationshipKeyPathsForPrefetching:0 inManagedObjectContext:v7];
+  contextCopy = context;
+  v8 = [v6 predicateWithFormat:@"personUUID IN %@", ds];
+  v9 = [self personsMatchingPredicate:v8 fetchLimit:0 sortDescriptors:0 relationshipKeyPathsForPrefetching:0 inManagedObjectContext:contextCopy];
 
   return v9;
 }
 
-+ (id)personsWithPersonUris:(id)a3 inManagedObjectContext:(id)a4
++ (id)personsWithPersonUris:(id)uris inManagedObjectContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  urisCopy = uris;
+  contextCopy = context;
+  if (urisCopy)
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K IN %@", @"personUri", v6];
-    v10 = [a1 personsMatchingPredicate:v9 fetchLimit:0 sortDescriptors:0 relationshipKeyPathsForPrefetching:0 inManagedObjectContext:v7];
+    urisCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K IN %@", @"personUri", urisCopy];
+    v10 = [self personsMatchingPredicate:urisCopy fetchLimit:0 sortDescriptors:0 relationshipKeyPathsForPrefetching:0 inManagedObjectContext:contextCopy];
 
     objc_autoreleasePoolPop(v8);
   }
@@ -5709,37 +5709,37 @@ void __151__PLPerson__batchFetchPersonUUIDsByAssetUUIDWithAssetUUIDs_predicate_i
   return v10;
 }
 
-+ (id)personsWithPersonUri:(id)a3 inManagedObjectContext:(id)a4
++ (id)personsWithPersonUri:(id)uri inManagedObjectContext:(id)context
 {
   v13 = *MEMORY[0x1E69E9840];
-  v12 = a3;
+  uriCopy = uri;
   v6 = MEMORY[0x1E695DEC8];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 arrayWithObjects:&v12 count:1];
+  contextCopy = context;
+  uriCopy2 = uri;
+  v9 = [v6 arrayWithObjects:&uriCopy count:1];
 
-  v10 = [a1 personsWithPersonUris:v9 inManagedObjectContext:{v7, v12, v13}];
+  v10 = [self personsWithPersonUris:v9 inManagedObjectContext:{contextCopy, uriCopy, v13}];
 
   return v10;
 }
 
-+ (PLPerson)personWithUUID:(id)a3 inManagedObjectContext:(id)a4
++ (PLPerson)personWithUUID:(id)d inManagedObjectContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  dCopy = d;
+  contextCopy = context;
+  if (dCopy)
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = [MEMORY[0x1E696AE18] predicateWithFormat:@"personUUID == %@", v6];
-    v10 = [a1 personsMatchingPredicate:v9 fetchLimit:1 sortDescriptors:0 relationshipKeyPathsForPrefetching:0 inManagedObjectContext:v7];
+    dCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"personUUID == %@", dCopy];
+    v10 = [self personsMatchingPredicate:dCopy fetchLimit:1 sortDescriptors:0 relationshipKeyPathsForPrefetching:0 inManagedObjectContext:contextCopy];
     if ([v10 count])
     {
-      v11 = [v10 firstObject];
+      firstObject = [v10 firstObject];
     }
 
     else
     {
-      v11 = 0;
+      firstObject = 0;
     }
 
     objc_autoreleasePoolPop(v8);
@@ -5747,18 +5747,18 @@ void __151__PLPerson__batchFetchPersonUUIDsByAssetUUIDWithAssetUUIDs_predicate_i
 
   else
   {
-    v11 = 0;
+    firstObject = 0;
   }
 
-  return v11;
+  return firstObject;
 }
 
-+ (id)personsMatchingPredicate:(id)a3 fetchLimit:(unint64_t)a4 sortDescriptors:(id)a5 relationshipKeyPathsForPrefetching:(id)a6 inManagedObjectContext:(id)a7
++ (id)personsMatchingPredicate:(id)predicate fetchLimit:(unint64_t)limit sortDescriptors:(id)descriptors relationshipKeyPathsForPrefetching:(id)prefetching inManagedObjectContext:(id)context
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  predicateCopy = predicate;
+  descriptorsCopy = descriptors;
+  prefetchingCopy = prefetching;
+  contextCopy = context;
   v30 = 0;
   v31 = &v30;
   v32 = 0x3032000000;
@@ -5769,16 +5769,16 @@ void __151__PLPerson__batchFetchPersonUUIDsByAssetUUIDWithAssetUUIDs_predicate_i
   v22[1] = 3221225472;
   v22[2] = __122__PLPerson_personsMatchingPredicate_fetchLimit_sortDescriptors_relationshipKeyPathsForPrefetching_inManagedObjectContext___block_invoke;
   v22[3] = &unk_1E7576DF8;
-  v28 = a1;
-  v16 = v12;
+  selfCopy = self;
+  v16 = predicateCopy;
   v23 = v16;
-  v29 = a4;
-  v17 = v13;
+  limitCopy = limit;
+  v17 = descriptorsCopy;
   v24 = v17;
-  v18 = v14;
+  v18 = prefetchingCopy;
   v25 = v18;
   v27 = &v30;
-  v19 = v15;
+  v19 = contextCopy;
   v26 = v19;
   [v19 performBlockAndWait:v22];
   v20 = v31[5];
@@ -5838,57 +5838,57 @@ void __122__PLPerson_personsMatchingPredicate_fetchLimit_sortDescriptors_relatio
   }
 }
 
-+ (id)insertIntoManagedObjectContext:(id)a3 withPersonUUID:(id)a4 fullName:(id)a5 verifiedType:(int)a6
++ (id)insertIntoManagedObjectContext:(id)context withPersonUUID:(id)d fullName:(id)name verifiedType:(int)type
 {
-  v6 = *&a6;
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  if (v11)
+  v6 = *&type;
+  contextCopy = context;
+  dCopy = d;
+  nameCopy = name;
+  if (contextCopy)
   {
-    v14 = [a1 entityName];
-    [MEMORY[0x1E695D5B8] insertNewObjectForEntityForName:v14 inManagedObjectContext:v11];
+    entityName = [self entityName];
+    [MEMORY[0x1E695D5B8] insertNewObjectForEntityForName:entityName inManagedObjectContext:contextCopy];
   }
 
   else
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:a1 file:@"PLPerson.m" lineNumber:199 description:{@"Invalid parameter not satisfying: %@", @"moc"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLPerson.m" lineNumber:199 description:{@"Invalid parameter not satisfying: %@", @"moc"}];
 
-    v14 = [a1 entityName];
-    PLSafeInsertNewObjectForEntityForNameInManagedObjectContext(v14, 0, 0);
+    entityName = [self entityName];
+    PLSafeInsertNewObjectForEntityForNameInManagedObjectContext(entityName, 0, 0);
   }
   v15 = ;
 
-  [v15 setPersonUUID:v12];
-  [v15 setFullName:v13];
+  [v15 setPersonUUID:dCopy];
+  [v15 setFullName:nameCopy];
   [v15 setType:0];
   [v15 setEffectiveVerifiedType:v6];
 
   return v15;
 }
 
-+ (id)insertIntoPhotoLibrary:(id)a3 withPersonUUID:(id)a4 fullName:(id)a5 verifiedType:(int)a6
++ (id)insertIntoPhotoLibrary:(id)library withPersonUUID:(id)d fullName:(id)name verifiedType:(int)type
 {
-  v6 = *&a6;
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  if (!v11)
+  v6 = *&type;
+  libraryCopy = library;
+  dCopy = d;
+  nameCopy = name;
+  if (!libraryCopy)
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:a1 file:@"PLPerson.m" lineNumber:193 description:{@"Invalid parameter not satisfying: %@", @"library"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLPerson.m" lineNumber:193 description:{@"Invalid parameter not satisfying: %@", @"library"}];
   }
 
-  v14 = [v11 managedObjectContext];
-  v15 = [a1 insertIntoManagedObjectContext:v14 withPersonUUID:v12 fullName:v13 verifiedType:v6];
+  managedObjectContext = [libraryCopy managedObjectContext];
+  v15 = [self insertIntoManagedObjectContext:managedObjectContext withPersonUUID:dCopy fullName:nameCopy verifiedType:v6];
 
   return v15;
 }
 
-+ (id)fetchDuplicatePersonUUIDsInManagedObjectContext:(id)a3 error:(id *)a4
++ (id)fetchDuplicatePersonUUIDsInManagedObjectContext:(id)context error:(id *)error
 {
-  v5 = a3;
+  contextCopy = context;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
@@ -5905,17 +5905,17 @@ void __122__PLPerson_personsMatchingPredicate_fetchLimit_sortDescriptors_relatio
   v11[1] = 3221225472;
   v11[2] = __66__PLPerson_fetchDuplicatePersonUUIDsInManagedObjectContext_error___block_invoke;
   v11[3] = &unk_1E7578870;
-  v6 = v5;
+  v6 = contextCopy;
   v12 = v6;
   v13 = &v15;
   v14 = &v21;
   [v6 performBlockAndWait:v11];
   v7 = v16[5];
   v8 = v22[5];
-  if (!v7 && a4)
+  if (!v7 && error)
   {
     v8 = v8;
-    *a4 = v8;
+    *error = v8;
   }
 
   v9 = v16[5];
@@ -5988,50 +5988,50 @@ void __66__PLPerson_fetchDuplicatePersonUUIDsInManagedObjectContext_error___bloc
   return v4;
 }
 
-- (void)setCPLSyncedMergeTarget:(id)a3
+- (void)setCPLSyncedMergeTarget:(id)target
 {
   v24[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 finalMergeTargetPerson];
-  v6 = [(PLPerson *)self mergeTargetPerson];
+  targetCopy = target;
+  finalMergeTargetPerson = [targetCopy finalMergeTargetPerson];
+  mergeTargetPerson = [(PLPerson *)self mergeTargetPerson];
 
-  if (!v6)
+  if (!mergeTargetPerson)
   {
-    v7 = [(PLPerson *)self personUUID];
-    v8 = [v5 personUUID];
-    v9 = [v7 isEqualToString:v8];
+    personUUID = [(PLPerson *)self personUUID];
+    personUUID2 = [finalMergeTargetPerson personUUID];
+    v9 = [personUUID isEqualToString:personUUID2];
 
     if ((v9 & 1) == 0)
     {
-      v10 = [(PLPerson *)self keyFace];
-      v11 = [(PLPerson *)self keyFacePickSource];
+      keyFace = [(PLPerson *)self keyFace];
+      keyFacePickSource = [(PLPerson *)self keyFacePickSource];
       v24[0] = self;
       v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:1];
-      [v5 basicMergePersons:v12];
+      [finalMergeTargetPerson basicMergePersons:v12];
 
-      v13 = [v5 keyFace];
+      keyFace2 = [finalMergeTargetPerson keyFace];
 
-      if (!v13 && v10 && v11 == 1)
+      if (!keyFace2 && keyFace && keyFacePickSource == 1)
       {
         if ((*MEMORY[0x1E6994D48] & 1) == 0)
         {
           v14 = __CPLAssetsdOSLogDomain();
           if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
           {
-            v15 = [v5 personUUID];
-            v16 = [v10 uuid];
-            v17 = [(PLPerson *)self personUUID];
+            personUUID3 = [finalMergeTargetPerson personUUID];
+            uuid = [keyFace uuid];
+            personUUID4 = [(PLPerson *)self personUUID];
             v18 = 138543874;
-            v19 = v15;
+            selfCopy = personUUID3;
             v20 = 2114;
-            v21 = v16;
+            v21 = uuid;
             v22 = 2114;
-            v23 = v17;
+            v23 = personUUID4;
             _os_log_impl(&dword_19BF1F000, v14, OS_LOG_TYPE_DEFAULT, "Final merge target person %{public}@ missing key face, updating to key face %{public}@ from %{public}@", &v18, 0x20u);
           }
         }
 
-        [v5 setKeyFace:v10 pickSource:1];
+        [finalMergeTargetPerson setKeyFace:keyFace pickSource:1];
       }
 
       goto LABEL_14;
@@ -6039,14 +6039,14 @@ void __66__PLPerson_fetchDuplicatePersonUUIDsInManagedObjectContext_error___bloc
 
     if ((*MEMORY[0x1E6994D48] & 1) == 0)
     {
-      v10 = __CPLAssetsdOSLogDomain();
-      if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+      keyFace = __CPLAssetsdOSLogDomain();
+      if (os_log_type_enabled(keyFace, OS_LOG_TYPE_ERROR))
       {
         v18 = 138412546;
-        v19 = self;
+        selfCopy = self;
         v20 = 2112;
-        v21 = v4;
-        _os_log_impl(&dword_19BF1F000, v10, OS_LOG_TYPE_ERROR, "Unable to merge %@ to %@, final merge target personUUID is the same", &v18, 0x16u);
+        v21 = targetCopy;
+        _os_log_impl(&dword_19BF1F000, keyFace, OS_LOG_TYPE_ERROR, "Unable to merge %@ to %@, final merge target personUUID is the same", &v18, 0x16u);
       }
 
 LABEL_14:
@@ -6057,17 +6057,17 @@ LABEL_14:
 - (id)cplPersonChange
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = [(PLPerson *)self personUUID];
+  personUUID = [(PLPerson *)self personUUID];
 
-  if (v3)
+  if (personUUID)
   {
-    v4 = [(PLPerson *)self scopedIdentifier];
-    v5 = [MEMORY[0x1E6994B38] newChangeWithScopedIdentifier:v4 changeType:0];
-    v6 = [(PLPerson *)self fullName];
-    [v5 setFullName:v6];
+    scopedIdentifier = [(PLPerson *)self scopedIdentifier];
+    v5 = [MEMORY[0x1E6994B38] newChangeWithScopedIdentifier:scopedIdentifier changeType:0];
+    fullName = [(PLPerson *)self fullName];
+    [v5 setFullName:fullName];
 
-    v7 = [(PLPerson *)self displayName];
-    [v5 setDisplayName:v7];
+    displayName = [(PLPerson *)self displayName];
+    [v5 setDisplayName:displayName];
 
     [v5 setPersonType:{-[PLPerson type](self, "type")}];
     [v5 setManualSortOrder:{-[PLPerson manualOrder](self, "manualOrder")}];
@@ -6076,22 +6076,22 @@ LABEL_14:
       [v5 setAssetSortOrder:{-[PLPerson assetSortOrder](self, "assetSortOrder")}];
     }
 
-    v8 = [(PLPerson *)self contactMatchingDictionary];
-    [v5 setContactMatchingDictionary:v8];
+    contactMatchingDictionary = [(PLPerson *)self contactMatchingDictionary];
+    [v5 setContactMatchingDictionary:contactMatchingDictionary];
 
     if ([MEMORY[0x1E6994B38] serverSupportsGraphPeopleHome])
     {
-      v9 = [(PLPerson *)self cloudVerifiedType];
-      v10 = [(PLPerson *)self cloudDetectionType];
-      if (v9 == -2)
+      cloudVerifiedType = [(PLPerson *)self cloudVerifiedType];
+      cloudDetectionType = [(PLPerson *)self cloudDetectionType];
+      if (cloudVerifiedType == -2)
       {
         v12 = -2;
       }
 
       else
       {
-        v11 = v10;
-        if (v9 == 2)
+        v11 = cloudDetectionType;
+        if (cloudVerifiedType == 2)
         {
           if ([MEMORY[0x1E6994B38] serverSupportsDetectionType] && +[PLDetectionTrait isPetDetectionType:](PLDetectionTrait, "isPetDetectionType:", v11))
           {
@@ -6104,7 +6104,7 @@ LABEL_14:
           }
         }
 
-        else if (v9 == 1)
+        else if (cloudVerifiedType == 1)
         {
           if ([MEMORY[0x1E6994B38] serverSupportsDetectionType] && +[PLDetectionTrait isPetDetectionType:](PLDetectionTrait, "isPetDetectionType:", v11))
           {
@@ -6128,12 +6128,12 @@ LABEL_14:
 
     if ([MEMORY[0x1E6994B38] serverSupportsMergeTargetRef])
     {
-      v15 = [(PLPerson *)self mergeTargetPerson];
-      v16 = v15;
-      if (v15)
+      mergeTargetPerson = [(PLPerson *)self mergeTargetPerson];
+      v16 = mergeTargetPerson;
+      if (mergeTargetPerson)
       {
-        v17 = [v15 personUUID];
-        [v5 setMergeTargetPersonIdentifier:v17];
+        personUUID2 = [mergeTargetPerson personUUID];
+        [v5 setMergeTargetPersonIdentifier:personUUID2];
       }
     }
 
@@ -6154,7 +6154,7 @@ LABEL_14:
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v20 = self;
+        selfCopy = self;
         _os_log_impl(&dword_19BF1F000, v14, OS_LOG_TYPE_ERROR, "Trying to upload a person %@ without a personUUID, skipping", buf, 0xCu);
       }
     }
@@ -6168,58 +6168,58 @@ LABEL_14:
 - (id)scopedIdentifier
 {
   v3 = objc_alloc(MEMORY[0x1E6994BB8]);
-  v4 = [(PLPerson *)self scopeIdentifier];
-  v5 = [(PLPerson *)self personUUID];
-  v6 = [v3 initWithScopeIdentifier:v4 identifier:v5];
+  scopeIdentifier = [(PLPerson *)self scopeIdentifier];
+  personUUID = [(PLPerson *)self personUUID];
+  v6 = [v3 initWithScopeIdentifier:scopeIdentifier identifier:personUUID];
 
   return v6;
 }
 
 - (id)scopeIdentifier
 {
-  v2 = [(PLManagedObject *)self photoLibrary];
-  v3 = [v2 mainScopeIdentifier];
+  photoLibrary = [(PLManagedObject *)self photoLibrary];
+  mainScopeIdentifier = [photoLibrary mainScopeIdentifier];
 
-  return v3;
+  return mainScopeIdentifier;
 }
 
-- (void)applyCPLChangeForContactMatchingDictionary:(id)a3
+- (void)applyCPLChangeForContactMatchingDictionary:(id)dictionary
 {
   v28[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  [(PLPerson *)self setContactMatchingDictionary:v4];
-  if (v4 || [0 count])
+  dictionaryCopy = dictionary;
+  [(PLPerson *)self setContactMatchingDictionary:dictionaryCopy];
+  if (dictionaryCopy || [0 count])
   {
     v5 = objc_alloc_init(MEMORY[0x1E695CE18]);
     v28[0] = *MEMORY[0x1E695C258];
     v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v28 count:1];
-    v7 = [PLContactStoreUtilitiesWorkaround contactWithMatchingDictionary:v4 keysToFetch:v6 contactStore:v5];
+    v7 = [PLContactStoreUtilitiesWorkaround contactWithMatchingDictionary:dictionaryCopy keysToFetch:v6 contactStore:v5];
 
     if (v7)
     {
-      v8 = [(PLPerson *)self personUri];
-      if (!v8 || (v9 = v8, -[PLPerson personUri](self, "personUri"), v10 = objc_claimAutoreleasedReturnValue(), [v7 identifier], v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v10, "isEqualToString:", v11), v11, v10, v9, (v12 & 1) == 0))
+      personUri = [(PLPerson *)self personUri];
+      if (!personUri || (v9 = personUri, -[PLPerson personUri](self, "personUri"), v10 = objc_claimAutoreleasedReturnValue(), [v7 identifier], v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v10, "isEqualToString:", v11), v11, v10, v9, (v12 & 1) == 0))
       {
         if ((*MEMORY[0x1E6994D48] & 1) == 0)
         {
           v13 = __CPLAssetsdOSLogDomain();
           if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
           {
-            v14 = [(PLPerson *)self personUUID];
-            v15 = [v7 identifier];
-            v16 = [(PLPerson *)self personUri];
+            personUUID = [(PLPerson *)self personUUID];
+            identifier = [v7 identifier];
+            personUri2 = [(PLPerson *)self personUri];
             v22 = 138543874;
-            v23 = v14;
+            v23 = personUUID;
             v24 = 2114;
-            v25 = v15;
+            v25 = identifier;
             v26 = 2114;
-            v27 = v16;
+            v27 = personUri2;
             _os_log_impl(&dword_19BF1F000, v13, OS_LOG_TYPE_DEFAULT, "Setting contact ID of person %{public}@ to %{public}@ (was %{public}@)", &v22, 0x20u);
           }
         }
 
-        v17 = [v7 identifier];
-        [(PLPerson *)self setPersonUri:v17];
+        identifier2 = [v7 identifier];
+        [(PLPerson *)self setPersonUri:identifier2];
       }
     }
 
@@ -6230,9 +6230,9 @@ LABEL_14:
         v18 = __CPLAssetsdOSLogDomain();
         if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
         {
-          v19 = [(PLPerson *)self personUUID];
+          personUUID2 = [(PLPerson *)self personUUID];
           v22 = 138543362;
-          v23 = v19;
+          v23 = personUUID2;
           _os_log_impl(&dword_19BF1F000, v18, OS_LOG_TYPE_DEFAULT, "Reset contact ID of person %{public}@ to nil since we can't find the contact", &v22, 0xCu);
         }
       }
@@ -6248,9 +6248,9 @@ LABEL_14:
       v20 = __CPLAssetsdOSLogDomain();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
       {
-        v21 = [(PLPerson *)self personUUID];
+        personUUID3 = [(PLPerson *)self personUUID];
         v22 = 138543362;
-        v23 = v21;
+        v23 = personUUID3;
         _os_log_impl(&dword_19BF1F000, v20, OS_LOG_TYPE_DEFAULT, "Setting contact ID of person %{public}@ to nil since contactsMatchingDictionary on cloud record was nil", &v22, 0xCu);
       }
     }
@@ -6259,29 +6259,29 @@ LABEL_14:
   }
 }
 
-- (BOOL)_allowSyncOfChangeWithKey:(id)a3
+- (BOOL)_allowSyncOfChangeWithKey:(id)key
 {
-  if (![a3 isEqualToString:@"manualOrder"])
+  if (![key isEqualToString:@"manualOrder"])
   {
     return 1;
   }
 
-  v4 = [(PLPerson *)self cloudLocalState];
-  v5 = [(PLPerson *)self verifiedType];
-  v6 = [(PLPerson *)self manualOrder];
-  return v4 != 1 || v5 != 2 || v6 < 0x400;
+  cloudLocalState = [(PLPerson *)self cloudLocalState];
+  verifiedType = [(PLPerson *)self verifiedType];
+  manualOrder = [(PLPerson *)self manualOrder];
+  return cloudLocalState != 1 || verifiedType != 2 || manualOrder < 0x400;
 }
 
 - (BOOL)isSyncableChange
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [(PLPerson *)self changedValues];
+  changedValues = [(PLPerson *)self changedValues];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [objc_opt_class() listOfSyncedProperties];
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  listOfSyncedProperties = [objc_opt_class() listOfSyncedProperties];
+  v5 = [listOfSyncedProperties countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -6292,11 +6292,11 @@ LABEL_14:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(listOfSyncedProperties);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v3 objectForKey:v9];
+        v10 = [changedValues objectForKey:v9];
 
         if (v10 && [(PLPerson *)self _allowSyncOfChangeWithKey:v9])
         {
@@ -6305,7 +6305,7 @@ LABEL_14:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [listOfSyncedProperties countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v6)
       {
         continue;
@@ -6335,11 +6335,11 @@ LABEL_12:
   }
 
   v3 = MEMORY[0x1E696AB28];
-  v4 = [objc_opt_class() _predicateForSupportedVerifiedTypesForUpload];
-  v5 = [objc_opt_class() _predicateForSupportedDetectionTypesForUpload];
-  v11[1] = v5;
-  v6 = [objc_opt_class() _predicateToBlockHiddenGraphTypesForUpload];
-  v11[2] = v6;
+  _predicateForSupportedVerifiedTypesForUpload = [objc_opt_class() _predicateForSupportedVerifiedTypesForUpload];
+  _predicateForSupportedDetectionTypesForUpload = [objc_opt_class() _predicateForSupportedDetectionTypesForUpload];
+  v11[1] = _predicateForSupportedDetectionTypesForUpload;
+  _predicateToBlockHiddenGraphTypesForUpload = [objc_opt_class() _predicateToBlockHiddenGraphTypesForUpload];
+  v11[2] = _predicateToBlockHiddenGraphTypesForUpload;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:3];
   v8 = [v3 andPredicateWithSubpredicates:v7];
 
@@ -6347,32 +6347,32 @@ LABEL_12:
   return v9;
 }
 
-+ (BOOL)person:(id)a3 isBetterMergeTargetThanPerson:(id)a4
++ (BOOL)person:(id)person isBetterMergeTargetThanPerson:(id)thanPerson
 {
-  v5 = a4;
-  v6 = [a3 personUUID];
-  v7 = [v5 personUUID];
+  thanPersonCopy = thanPerson;
+  personUUID = [person personUUID];
+  personUUID2 = [thanPersonCopy personUUID];
 
-  LOBYTE(v5) = [v6 compare:v7] == -1;
-  return v5;
+  LOBYTE(thanPersonCopy) = [personUUID compare:personUUID2] == -1;
+  return thanPersonCopy;
 }
 
-+ (void)resetCloudStateInPhotoLibrary:(id)a3
++ (void)resetCloudStateInPhotoLibrary:(id)library
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  libraryCopy = library;
   v5 = objc_autoreleasePoolPush();
   v6 = objc_alloc(MEMORY[0x1E695D560]);
-  v7 = [a1 entityName];
-  v8 = [v6 initWithEntityName:v7];
+  entityName = [self entityName];
+  v8 = [v6 initWithEntityName:entityName];
 
   v9 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K != %d", @"cloudLocalState", 0];
   [v8 setResultType:2];
   [v8 setPropertiesToUpdate:&unk_1F0FC0820];
   [v8 setPredicate:v9];
-  v10 = [v4 managedObjectContext];
+  managedObjectContext = [libraryCopy managedObjectContext];
   v15 = 0;
-  v11 = [v10 executeRequest:v8 error:&v15];
+  v11 = [managedObjectContext executeRequest:v8 error:&v15];
   v12 = v15;
 
   if (v11)
@@ -6382,9 +6382,9 @@ LABEL_12:
       v13 = __CPLAssetsdOSLogDomain();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
-        v14 = [v11 result];
+        result = [v11 result];
         *buf = 138412290;
-        v17 = v14;
+        v17 = result;
         _os_log_impl(&dword_19BF1F000, v13, OS_LOG_TYPE_DEFAULT, "Batch updated %@ people", buf, 0xCu);
       }
 
@@ -6408,11 +6408,11 @@ LABEL_8:
   objc_autoreleasePoolPop(v5);
 }
 
-+ (id)personsToPrefetchInManagedObjectContext:(id)a3
++ (id)personsToPrefetchInManagedObjectContext:(id)context
 {
   v13[1] = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E696AE18];
-  v5 = a3;
+  contextCopy = context;
   v6 = [v4 predicateWithFormat:@"%K = %d AND %K != %d AND %K != NULL", @"verifiedType", 1, @"type", 0xFFFFFFFFLL, @"keyFace"];
   v7 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"type" ascending:0];
   v13[0] = v7;
@@ -6420,25 +6420,25 @@ LABEL_8:
 
   v12 = @"keyFace.assetForFace";
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v12 count:1];
-  v10 = [a1 personsMatchingPredicate:v6 fetchLimit:100 sortDescriptors:v8 relationshipKeyPathsForPrefetching:v9 inManagedObjectContext:v5];
+  v10 = [self personsMatchingPredicate:v6 fetchLimit:100 sortDescriptors:v8 relationshipKeyPathsForPrefetching:v9 inManagedObjectContext:contextCopy];
 
   return v10;
 }
 
-+ (id)personsToUploadInManagedObjectContext:(id)a3 limit:(int64_t)a4
++ (id)personsToUploadInManagedObjectContext:(id)context limit:(int64_t)limit
 {
   v20[4] = *MEMORY[0x1E69E9840];
   v6 = MEMORY[0x1E696AE18];
-  v7 = a3;
+  contextCopy = context;
   v8 = [v6 predicateWithFormat:@"%K == %d", @"cloudLocalState", 0];
   v9 = MEMORY[0x1E696AB28];
   v20[0] = v8;
-  v10 = [a1 _predicateForSupportedVerifiedTypesForUpload];
-  v20[1] = v10;
-  v11 = [a1 _predicateForSupportedDetectionTypesForUpload];
-  v20[2] = v11;
-  v12 = [a1 _predicateToBlockHiddenGraphTypesForUpload];
-  v20[3] = v12;
+  _predicateForSupportedVerifiedTypesForUpload = [self _predicateForSupportedVerifiedTypesForUpload];
+  v20[1] = _predicateForSupportedVerifiedTypesForUpload;
+  _predicateForSupportedDetectionTypesForUpload = [self _predicateForSupportedDetectionTypesForUpload];
+  v20[2] = _predicateForSupportedDetectionTypesForUpload;
+  _predicateToBlockHiddenGraphTypesForUpload = [self _predicateToBlockHiddenGraphTypesForUpload];
+  v20[3] = _predicateToBlockHiddenGraphTypesForUpload;
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:4];
   v14 = [v9 andPredicateWithSubpredicates:v13];
 
@@ -6446,7 +6446,7 @@ LABEL_8:
   v19 = v15;
   v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v19 count:1];
 
-  v17 = [a1 personsMatchingPredicate:v14 fetchLimit:a4 sortDescriptors:v16 relationshipKeyPathsForPrefetching:0 inManagedObjectContext:v7];
+  v17 = [self personsMatchingPredicate:v14 fetchLimit:limit sortDescriptors:v16 relationshipKeyPathsForPrefetching:0 inManagedObjectContext:contextCopy];
 
   return v17;
 }

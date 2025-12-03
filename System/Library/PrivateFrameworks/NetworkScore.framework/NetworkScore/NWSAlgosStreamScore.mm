@@ -1,10 +1,10 @@
 @interface NWSAlgosStreamScore
 + (id)streamScore;
-- (BOOL)restoreEventsFromFile:(id)a3 clear:(BOOL)a4;
-- (BOOL)saveEventsToFile:(id)a3;
+- (BOOL)restoreEventsFromFile:(id)file clear:(BOOL)clear;
+- (BOOL)saveEventsToFile:(id)file;
 - (NWSAlgosStreamScore)init;
-- (double)findTotalTime:(id)a3 debug:(BOOL)a4;
-- (id)scoreStreaming:(id)a3;
+- (double)findTotalTime:(id)time debug:(BOOL)debug;
+- (id)scoreStreaming:(id)streaming;
 - (void)clearStreamRows;
 - (void)dealloc;
 @end
@@ -64,10 +64,10 @@
   streamData[1] = v4;
 }
 
-- (double)findTotalTime:(id)a3 debug:(BOOL)a4
+- (double)findTotalTime:(id)time debug:(BOOL)debug
 {
-  v4 = a4;
-  v6 = a3;
+  debugCopy = debug;
+  timeCopy = time;
   AlgosScoreStreamFrameRow::AlgosScoreStreamFrameRow(v32, *self->streamData);
   AlgosScoreStreamFrameRow::AlgosScoreStreamFrameRow(v29, (*(self->streamData + 1) - 64));
   streamData = self->streamData;
@@ -115,19 +115,19 @@
 
   v14 = v30 - v33;
   v15 = [MEMORY[0x277CCABB0] numberWithDouble:v30 - v33];
-  [v6 setObject:v15 forKeyedSubscript:@"total-duration"];
+  [timeCopy setObject:v15 forKeyedSubscript:@"total-duration"];
 
   v16 = [MEMORY[0x277CCABB0] numberWithDouble:v12];
-  [v6 setObject:v16 forKeyedSubscript:@"stall-time"];
+  [timeCopy setObject:v16 forKeyedSubscript:@"stall-time"];
   v17 = fmax(v14 - v12, 0.1);
 
   v18 = [MEMORY[0x277CCABB0] numberWithDouble:v17];
-  [v6 setObject:v18 forKeyedSubscript:@"net-time"];
+  [timeCopy setObject:v18 forKeyedSubscript:@"net-time"];
 
   v19 = [MEMORY[0x277CCABB0] numberWithInt:v11];
-  [v6 setObject:v19 forKeyedSubscript:@"end-count"];
+  [timeCopy setObject:v19 forKeyedSubscript:@"end-count"];
 
-  if (v4)
+  if (debugCopy)
   {
     v20 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"duration: %1.3f, stall: %1.3f", *&v14, *&v12];
     v23[0] = MEMORY[0x277D85DD0];
@@ -153,10 +153,10 @@ uint64_t __43__NWSAlgosStreamScore_findTotalTime_debug___block_invoke(uint64_t a
   return fputs(v2, v1);
 }
 
-- (id)scoreStreaming:(id)a3
+- (id)scoreStreaming:(id)streaming
 {
   v138[3] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  streamingCopy = streaming;
   if (*self->streamData == *(self->streamData + 1))
   {
     v73 = 0;
@@ -164,14 +164,14 @@ uint64_t __43__NWSAlgosStreamScore_findTotalTime_debug___block_invoke(uint64_t a
 
   else
   {
-    if (!v4)
+    if (!streamingCopy)
     {
-      v4 = @"no-label";
+      streamingCopy = @"no-label";
     }
 
-    v98 = v4;
-    v108 = [MEMORY[0x277CBEB38] dictionary];
-    [(NWSAlgosStreamScore *)self findTotalTime:v108 debug:[(NWSAlgosStreamScore *)self debug]];
+    v98 = streamingCopy;
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    [(NWSAlgosStreamScore *)self findTotalTime:dictionary debug:[(NWSAlgosStreamScore *)self debug]];
     v95 = *v5.i64;
     streamData = self->streamData;
     v8 = *streamData;
@@ -447,13 +447,13 @@ LABEL_63:
 
             if (v13 == 2)
             {
-              v25 = [(NWSAlgosStreamScore *)self debug];
+              debug = [(NWSAlgosStreamScore *)self debug];
               v26.i64[1] = v109.i64[1];
               *v26.i64 = *v109.i64 + v24 * 75.0;
               v109 = v26;
               ++v106;
               v105 = v105 + v24 * 75.0;
-              if (v25)
+              if (debug)
               {
                 v27 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Fixed failure penalty: %1.2f\n", v24 * 75.0];
                 v116[0] = MEMORY[0x277D85DD0];
@@ -478,7 +478,7 @@ LABEL_63:
               v31 = v10;
             }
 
-            v33 = [(NWSAlgosStreamScore *)self debug];
+            debug2 = [(NWSAlgosStreamScore *)self debug];
             v34 = v29 - v30;
             v35 = v24 * (v34 / v95 * (v10 - v31) * 85.0);
             v102 = v102 + v35;
@@ -486,7 +486,7 @@ LABEL_63:
             *v36.i64 = *v109.i64 + v35;
             v109 = v36;
             ++v104;
-            if (v33)
+            if (debug2)
             {
               v37 = objc_alloc(MEMORY[0x277CCACA8]);
               v38 = [v37 initWithFormat:@"%1.2f: quality: %1.2f, deltat: %1.2f, pct: %1.2f%%, dscore: %1.2f, weight: %1.2f\n", *&v132, *&v31, *&v34, v34 / v95 * 100.0, *&v35, *&v24];
@@ -509,12 +509,12 @@ LABEL_63:
 
           else if (v13 == 4)
           {
-            v40 = [(NWSAlgosStreamScore *)self debug];
+            debug3 = [(NWSAlgosStreamScore *)self debug];
             v41.i64[1] = v109.i64[1];
             *v41.i64 = *v109.i64 + v24;
             v109 = v41;
             v103 = v103 + v24;
-            if (v40)
+            if (debug3)
             {
               v42 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Penalty imposed: %1.2f", *&v24];
               v112[0] = MEMORY[0x277D85DD0];
@@ -572,35 +572,35 @@ LABEL_84:
     v76 = log1p(fabs(*v109.i64) * 0.02);
     v77 = log1p(0.02);
     v78 = [MEMORY[0x277CCABB0] numberWithInt:HIDWORD(v101)];
-    [v108 setObject:v78 forKeyedSubscript:@"stall-count"];
+    [dictionary setObject:v78 forKeyedSubscript:@"stall-count"];
 
     v79 = [MEMORY[0x277CCABB0] numberWithInt:v101];
-    [v108 setObject:v79 forKeyedSubscript:@"startup-stalls"];
+    [dictionary setObject:v79 forKeyedSubscript:@"startup-stalls"];
 
     v80 = [MEMORY[0x277CCABB0] numberWithInt:v106];
-    [v108 setObject:v80 forKeyedSubscript:@"failures"];
+    [dictionary setObject:v80 forKeyedSubscript:@"failures"];
 
     v81 = [MEMORY[0x277CCABB0] numberWithDouble:v105];
-    [v108 setObject:v81 forKeyedSubscript:@"failure-penalty"];
+    [dictionary setObject:v81 forKeyedSubscript:@"failure-penalty"];
 
     v82 = [MEMORY[0x277CCABB0] numberWithInt:v104];
-    [v108 setObject:v82 forKeyedSubscript:@"tier-switches"];
+    [dictionary setObject:v82 forKeyedSubscript:@"tier-switches"];
 
     v83 = [MEMORY[0x277CCABB0] numberWithDouble:v103];
-    [v108 setObject:v83 forKeyedSubscript:@"direct-penalty"];
+    [dictionary setObject:v83 forKeyedSubscript:@"direct-penalty"];
 
     v84 = [MEMORY[0x277CCABB0] numberWithDouble:v100];
-    [v108 setObject:v84 forKeyedSubscript:@"stall-boost-penalty"];
+    [dictionary setObject:v84 forKeyedSubscript:@"stall-boost-penalty"];
 
     v85 = [MEMORY[0x277CCABB0] numberWithDouble:v99];
-    [v108 setObject:v85 forKeyedSubscript:@"stall-penalty"];
+    [dictionary setObject:v85 forKeyedSubscript:@"stall-penalty"];
 
     v86 = [MEMORY[0x277CCABB0] numberWithDouble:v102];
-    [v108 setObject:v86 forKeyedSubscript:@"quality-penalty"];
+    [dictionary setObject:v86 forKeyedSubscript:@"quality-penalty"];
 
-    [v108 setObject:@"streaming" forKeyedSubscript:@"type"];
+    [dictionary setObject:@"streaming" forKeyedSubscript:@"type"];
     v87 = [MEMORY[0x277CCABB0] numberWithBool:{-[NWSAlgosStreamScore music](self, "music")}];
-    [v108 setObject:v87 forKeyedSubscript:@"music"];
+    [dictionary setObject:v87 forKeyedSubscript:@"music"];
 
     *v88.i64 = v76 / v77;
     v89.f64[0] = NAN;
@@ -611,7 +611,7 @@ LABEL_84:
     v138[1] = v98;
     v137[1] = @"label";
     v137[2] = @"stats";
-    v138[2] = v108;
+    v138[2] = dictionary;
     v73 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v138 forKeys:v137 count:3];
   }
 
@@ -684,15 +684,15 @@ uint64_t __38__NWSAlgosStreamScore_scoreStreaming___block_invoke_8(uint64_t a1)
   return fputs(v2, v1);
 }
 
-- (BOOL)saveEventsToFile:(id)a3
+- (BOOL)saveEventsToFile:(id)file
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CCAA00] defaultManager];
-  v6 = [v5 createFileAtPath:v4 contents:0 attributes:0];
+  fileCopy = file;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v6 = [defaultManager createFileAtPath:fileCopy contents:0 attributes:0];
 
   if (v6)
   {
-    v7 = [MEMORY[0x277CCA9F8] fileHandleForWritingAtPath:v4];
+    v7 = [MEMORY[0x277CCA9F8] fileHandleForWritingAtPath:fileCopy];
     if (v7)
     {
       AlgosScoreStreamFrameRow::GetCSVHeader(1, &v24);
@@ -799,17 +799,17 @@ LABEL_20:
   return v18;
 }
 
-- (BOOL)restoreEventsFromFile:(id)a3 clear:(BOOL)a4
+- (BOOL)restoreEventsFromFile:(id)file clear:(BOOL)clear
 {
-  v4 = a4;
+  clearCopy = clear;
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (v4)
+  fileCopy = file;
+  if (clearCopy)
   {
     [(NWSAlgosStreamScore *)self clearStreamRows];
   }
 
-  v7 = [MEMORY[0x277CCA9F8] fileHandleForReadingAtPath:v6];
+  v7 = [MEMORY[0x277CCA9F8] fileHandleForReadingAtPath:fileCopy];
   v8 = v7;
   if (v7)
   {

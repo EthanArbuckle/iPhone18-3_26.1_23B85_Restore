@@ -1,25 +1,25 @@
 @interface AMSDeviceAccountPrivacyAcknowledgementTask
-- (AMSDeviceAccountPrivacyAcknowledgementTask)initWithAccount:(id)a3 bag:(id)a4;
-- (id)_presentEngagementRequest:(id)a3;
-- (id)_presentGDPREngagementRequestForAccount:(id)a3 bundleOwnerStatus:(BOOL)a4;
-- (id)_verifyGDPRStatusForAccount:(id)a3;
+- (AMSDeviceAccountPrivacyAcknowledgementTask)initWithAccount:(id)account bag:(id)bag;
+- (id)_presentEngagementRequest:(id)request;
+- (id)_presentGDPREngagementRequestForAccount:(id)account bundleOwnerStatus:(BOOL)status;
+- (id)_verifyGDPRStatusForAccount:(id)account;
 - (id)performPrivacyAcknowledgement;
 @end
 
 @implementation AMSDeviceAccountPrivacyAcknowledgementTask
 
-- (AMSDeviceAccountPrivacyAcknowledgementTask)initWithAccount:(id)a3 bag:(id)a4
+- (AMSDeviceAccountPrivacyAcknowledgementTask)initWithAccount:(id)account bag:(id)bag
 {
-  v7 = a3;
-  v8 = a4;
+  accountCopy = account;
+  bagCopy = bag;
   v12.receiver = self;
   v12.super_class = AMSDeviceAccountPrivacyAcknowledgementTask;
   v9 = [(AMSTask *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_account, a3);
-    objc_storeStrong(&v10->_bag, a4);
+    objc_storeStrong(&v9->_account, account);
+    objc_storeStrong(&v10->_bag, bag);
   }
 
   return v10;
@@ -68,17 +68,17 @@ uint64_t __75__AMSDeviceAccountPrivacyAcknowledgementTask_performPrivacyAcknowle
   return v6;
 }
 
-- (id)_verifyGDPRStatusForAccount:(id)a3
+- (id)_verifyGDPRStatusForAccount:(id)account
 {
   v43 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  accountCopy = account;
   v5 = objc_alloc_init(AMSBinaryPromise);
-  v6 = [v4 ams_isBundleOwner];
-  v7 = v6;
-  if (v6)
+  ams_isBundleOwner = [accountCopy ams_isBundleOwner];
+  v7 = ams_isBundleOwner;
+  if (ams_isBundleOwner)
   {
-    v8 = [v6 BOOLValue];
-    if (v8)
+    bOOLValue = [ams_isBundleOwner BOOLValue];
+    if (bOOLValue)
     {
       +[AMSAcknowledgePrivacyTask _appleBundleOwnerPrivacyIdentifier];
     }
@@ -88,7 +88,7 @@ uint64_t __75__AMSDeviceAccountPrivacyAcknowledgementTask_performPrivacyAcknowle
       +[AMSAcknowledgePrivacyTask _appleBundleHolderPrivacyIdentifier];
     }
     v15 = ;
-    v16 = [AMSAcknowledgePrivacyTask acknowledgementNeededForPrivacyIdentifier:v15 account:v4];
+    v16 = [AMSAcknowledgePrivacyTask acknowledgementNeededForPrivacyIdentifier:v15 account:accountCopy];
     v17 = +[AMSLogConfig sharedAccountsConfig];
     v18 = v17;
     if (v16)
@@ -98,13 +98,13 @@ uint64_t __75__AMSDeviceAccountPrivacyAcknowledgementTask_performPrivacyAcknowle
         v18 = +[AMSLogConfig sharedConfig];
       }
 
-      v19 = [v18 OSLogObject];
-      if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
+      oSLogObject = [v18 OSLogObject];
+      if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
       {
         v20 = objc_opt_class();
         AMSLogKey();
         v21 = v31 = self;
-        v22 = [v4 hashedDescription];
+        hashedDescription = [accountCopy hashedDescription];
         *buf = 138544130;
         v36 = v20;
         v37 = 2114;
@@ -112,19 +112,19 @@ uint64_t __75__AMSDeviceAccountPrivacyAcknowledgementTask_performPrivacyAcknowle
         v39 = 2114;
         v40 = v15;
         v41 = 2114;
-        v42 = v22;
-        _os_log_impl(&dword_192869000, v19, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Requesting gdpr presentation for id: %{public}@ for %{public}@", buf, 0x2Au);
+        v42 = hashedDescription;
+        _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Requesting gdpr presentation for id: %{public}@ for %{public}@", buf, 0x2Au);
 
         self = v31;
       }
 
-      v23 = [(AMSDeviceAccountPrivacyAcknowledgementTask *)self _presentGDPREngagementRequestForAccount:v4 bundleOwnerStatus:v8];
+      v23 = [(AMSDeviceAccountPrivacyAcknowledgementTask *)self _presentGDPREngagementRequestForAccount:accountCopy bundleOwnerStatus:bOOLValue];
       v32[0] = MEMORY[0x1E69E9820];
       v32[1] = 3221225472;
       v32[2] = __74__AMSDeviceAccountPrivacyAcknowledgementTask__verifyGDPRStatusForAccount___block_invoke;
       v32[3] = &unk_1E73B6C00;
       v32[4] = self;
-      v33 = v4;
+      v33 = accountCopy;
       v34 = v15;
       v24 = [v23 continueWithBlock:v32];
       [(AMSBinaryPromise *)v5 finishWithPromise:v24];
@@ -138,8 +138,8 @@ uint64_t __75__AMSDeviceAccountPrivacyAcknowledgementTask_performPrivacyAcknowle
         v18 = +[AMSLogConfig sharedConfig];
       }
 
-      v26 = [v18 OSLogObject];
-      if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
+      oSLogObject2 = [v18 OSLogObject];
+      if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
       {
         v27 = objc_opt_class();
         v28 = AMSLogKey();
@@ -147,7 +147,7 @@ uint64_t __75__AMSDeviceAccountPrivacyAcknowledgementTask_performPrivacyAcknowle
         v36 = v27;
         v37 = 2114;
         v38 = v28;
-        _os_log_impl(&dword_192869000, v26, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Skipping subscription bundle acknowledgement - already acknowledged", buf, 0x16u);
+        _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Skipping subscription bundle acknowledgement - already acknowledged", buf, 0x16u);
       }
 
       [(AMSBinaryPromise *)v5 finishWithSuccess];
@@ -163,8 +163,8 @@ uint64_t __75__AMSDeviceAccountPrivacyAcknowledgementTask_performPrivacyAcknowle
       v9 = +[AMSLogConfig sharedConfig];
     }
 
-    v10 = [v9 OSLogObject];
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    oSLogObject3 = [v9 OSLogObject];
+    if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_ERROR))
     {
       v11 = objc_opt_class();
       v12 = AMSLogKey();
@@ -172,7 +172,7 @@ uint64_t __75__AMSDeviceAccountPrivacyAcknowledgementTask_performPrivacyAcknowle
       v36 = v11;
       v37 = 2114;
       v38 = v12;
-      _os_log_impl(&dword_192869000, v10, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to determine bundle owner status", buf, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject3, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to determine bundle owner status", buf, 0x16u);
     }
 
     v13 = AMSError(7, @"Missing bundle owner status", 0, 0);
@@ -297,11 +297,11 @@ LABEL_24:
   return v13;
 }
 
-- (id)_presentGDPREngagementRequestForAccount:(id)a3 bundleOwnerStatus:(BOOL)a4
+- (id)_presentGDPREngagementRequestForAccount:(id)account bundleOwnerStatus:(BOOL)status
 {
-  v4 = a4;
+  statusCopy = status;
   v20[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  accountCopy = account;
   v7 = objc_opt_new();
   v8 = [(AMSDeviceAccountPrivacyAcknowledgementTask *)self bag];
   v9 = [v8 URLForKey:@"dynamic-ui-bundle-gdpr-url"];
@@ -324,12 +324,12 @@ LABEL_24:
   {
     v11 = objc_alloc_init(AMSEngagementRequest);
     [(AMSEngagementRequest *)v11 setSuppressInteractiveModalDismissal:1];
-    [(AMSEngagementRequest *)v11 setAccount:v6];
-    v12 = [v10 absoluteURL];
-    [(AMSEngagementRequest *)v11 setURL:v12];
+    [(AMSEngagementRequest *)v11 setAccount:accountCopy];
+    absoluteURL = [v10 absoluteURL];
+    [(AMSEngagementRequest *)v11 setURL:absoluteURL];
 
     v19[0] = @"bundleOwner";
-    v13 = [MEMORY[0x1E696AD98] numberWithBool:v4];
+    v13 = [MEMORY[0x1E696AD98] numberWithBool:statusCopy];
     v19[1] = @"context";
     v20[0] = v13;
     v20[1] = @"auth-plugin";
@@ -344,18 +344,18 @@ LABEL_24:
   return v16;
 }
 
-- (id)_presentEngagementRequest:(id)a3
+- (id)_presentEngagementRequest:(id)request
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  requestCopy = request;
   v5 = +[AMSLogConfig sharedAccountsConfig];
   if (!v5)
   {
     v5 = +[AMSLogConfig sharedConfig];
   }
 
-  v6 = [v5 OSLogObject];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v5 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v7 = objc_opt_class();
     v8 = AMSLogKey();
@@ -363,13 +363,13 @@ LABEL_24:
     v19 = v7;
     v20 = 2114;
     v21 = v8;
-    _os_log_impl(&dword_192869000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Presenting engagement to get GDPR consent", buf, 0x16u);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Presenting engagement to get GDPR consent", buf, 0x16u);
   }
 
   v9 = objc_opt_new();
-  v10 = [[AMSSystemEngagementTask alloc] initWithRequest:v4];
+  v10 = [[AMSSystemEngagementTask alloc] initWithRequest:requestCopy];
 
-  v11 = [(AMSSystemEngagementTask *)v10 present];
+  present = [(AMSSystemEngagementTask *)v10 present];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __72__AMSDeviceAccountPrivacyAcknowledgementTask__presentEngagementRequest___block_invoke;
@@ -377,7 +377,7 @@ LABEL_24:
   v16[4] = self;
   v12 = v9;
   v17 = v12;
-  [v11 addFinishBlock:v16];
+  [present addFinishBlock:v16];
 
   v13 = v17;
   v14 = v12;

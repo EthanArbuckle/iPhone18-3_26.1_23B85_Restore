@@ -1,38 +1,38 @@
 @interface _TUIRenderModelPageControl
-- (BOOL)isEqualToRenderModel:(id)a3;
-- (_TUIRenderModelPageControl)initWithStateToRenderModel:(id)a3 pressScale:(double)a4 touchInsets:(UIEdgeInsets)a5 identifier:(id)a6 pointer:(id)a7 scrollIdentifier:(id)a8 kind:(unint64_t)a9 hiddenWhenUnavailable:(BOOL)a10;
-- (id)_copyAppearanceWithFlags:(unint64_t)a3 statesCopyProc:(void *)a4;
+- (BOOL)isEqualToRenderModel:(id)model;
+- (_TUIRenderModelPageControl)initWithStateToRenderModel:(id)model pressScale:(double)scale touchInsets:(UIEdgeInsets)insets identifier:(id)identifier pointer:(id)pointer scrollIdentifier:(id)scrollIdentifier kind:(unint64_t)kind hiddenWhenUnavailable:(BOOL)self0;
+- (id)_copyAppearanceWithFlags:(unint64_t)flags statesCopyProc:(void *)proc;
 @end
 
 @implementation _TUIRenderModelPageControl
 
-- (_TUIRenderModelPageControl)initWithStateToRenderModel:(id)a3 pressScale:(double)a4 touchInsets:(UIEdgeInsets)a5 identifier:(id)a6 pointer:(id)a7 scrollIdentifier:(id)a8 kind:(unint64_t)a9 hiddenWhenUnavailable:(BOOL)a10
+- (_TUIRenderModelPageControl)initWithStateToRenderModel:(id)model pressScale:(double)scale touchInsets:(UIEdgeInsets)insets identifier:(id)identifier pointer:(id)pointer scrollIdentifier:(id)scrollIdentifier kind:(unint64_t)kind hiddenWhenUnavailable:(BOOL)self0
 {
-  right = a5.right;
-  bottom = a5.bottom;
-  left = a5.left;
-  top = a5.top;
-  v22 = a8;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  scrollIdentifierCopy = scrollIdentifier;
   v27.receiver = self;
   v27.super_class = _TUIRenderModelPageControl;
   v26 = 1;
-  v23 = [(TUIRenderModelInteractive *)&v27 initWithReuseIdentifier:@"TUIReuseIdentifierPageControlView" identifier:a6 style:0 elementStates:a3 imageModelIDToResource:0 actionHandler:0 viewState:a4 enabled:top pressScale:left touchInsets:bottom pointer:right focusStyle:0 menu:v26 name:a7, 0, 0, 0];
+  v23 = [(TUIRenderModelInteractive *)&v27 initWithReuseIdentifier:@"TUIReuseIdentifierPageControlView" identifier:identifier style:0 elementStates:model imageModelIDToResource:0 actionHandler:0 viewState:scale enabled:top pressScale:left touchInsets:bottom pointer:right focusStyle:0 menu:v26 name:pointer, 0, 0, 0];
   v24 = v23;
   if (v23)
   {
-    objc_storeStrong(&v23->_scrollIdentifier, a8);
-    v24->_actionKind = a9;
-    v24->_hiddenWhenUnavailable = a10;
+    objc_storeStrong(&v23->_scrollIdentifier, scrollIdentifier);
+    v24->_actionKind = kind;
+    v24->_hiddenWhenUnavailable = unavailable;
   }
 
   return v24;
 }
 
-- (BOOL)isEqualToRenderModel:(id)a3
+- (BOOL)isEqualToRenderModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   v5 = objc_opt_class();
-  v6 = TUIDynamicCast(v5, v4);
+  v6 = TUIDynamicCast(v5, modelCopy);
 
   v13.receiver = self;
   v13.super_class = _TUIRenderModelPageControl;
@@ -50,11 +50,11 @@
   return v11;
 }
 
-- (id)_copyAppearanceWithFlags:(unint64_t)a3 statesCopyProc:(void *)a4
+- (id)_copyAppearanceWithFlags:(unint64_t)flags statesCopyProc:(void *)proc
 {
   v7 = objc_alloc(objc_opt_class());
-  v8 = [(TUIRenderModelInteractive *)self stateToModel];
-  v9 = (a4)(v8, a3);
+  stateToModel = [(TUIRenderModelInteractive *)self stateToModel];
+  v9 = (proc)(stateToModel, flags);
   [(TUIRenderModelInteractive *)self pressScale];
   v11 = v10;
   [(TUIRenderModelInteractive *)self touchInsets];
@@ -62,10 +62,10 @@
   v15 = v14;
   v17 = v16;
   v19 = v18;
-  v20 = [(TUIRenderModelInteractive *)self identifier];
-  v21 = [(TUIRenderModelInteractive *)self pointer];
-  v22 = [(_TUIRenderModelPageControl *)self scrollIdentifier];
-  v23 = [v7 initWithStateToRenderModel:v9 pressScale:v20 touchInsets:v21 identifier:v22 pointer:-[_TUIRenderModelPageControl actionKind](self scrollIdentifier:"actionKind") kind:-[_TUIRenderModelPageControl hiddenWhenUnavailable](self hiddenWhenUnavailable:{"hiddenWhenUnavailable"), v11, v13, v15, v17, v19}];
+  identifier = [(TUIRenderModelInteractive *)self identifier];
+  pointer = [(TUIRenderModelInteractive *)self pointer];
+  scrollIdentifier = [(_TUIRenderModelPageControl *)self scrollIdentifier];
+  v23 = [v7 initWithStateToRenderModel:v9 pressScale:identifier touchInsets:pointer identifier:scrollIdentifier pointer:-[_TUIRenderModelPageControl actionKind](self scrollIdentifier:"actionKind") kind:-[_TUIRenderModelPageControl hiddenWhenUnavailable](self hiddenWhenUnavailable:{"hiddenWhenUnavailable"), v11, v13, v15, v17, v19}];
 
   TUIRenderModelCopyProperties(v23, self);
   return v23;

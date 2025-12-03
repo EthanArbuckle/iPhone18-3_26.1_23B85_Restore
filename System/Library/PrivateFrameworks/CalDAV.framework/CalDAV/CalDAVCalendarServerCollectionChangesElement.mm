@@ -1,36 +1,36 @@
 @interface CalDAVCalendarServerCollectionChangesElement
 - (id)copyParseRules;
-- (void)setCreatedItem:(id)a3;
-- (void)setDeletedItem:(id)a3;
-- (void)setUpdatedItem:(id)a3;
+- (void)setCreatedItem:(id)item;
+- (void)setDeletedItem:(id)item;
+- (void)setUpdatedItem:(id)item;
 @end
 
 @implementation CalDAVCalendarServerCollectionChangesElement
 
-- (void)setCreatedItem:(id)a3
+- (void)setCreatedItem:(id)item
 {
-  v4 = [a3 payloadAsString];
-  -[CalDAVCalendarServerCollectionChangesElement setCreated:](self, "setCreated:", [v4 integerValue]);
+  payloadAsString = [item payloadAsString];
+  -[CalDAVCalendarServerCollectionChangesElement setCreated:](self, "setCreated:", [payloadAsString integerValue]);
 }
 
-- (void)setUpdatedItem:(id)a3
+- (void)setUpdatedItem:(id)item
 {
-  v4 = [a3 payloadAsString];
-  -[CalDAVCalendarServerCollectionChangesElement setUpdated:](self, "setUpdated:", [v4 integerValue]);
+  payloadAsString = [item payloadAsString];
+  -[CalDAVCalendarServerCollectionChangesElement setUpdated:](self, "setUpdated:", [payloadAsString integerValue]);
 }
 
-- (void)setDeletedItem:(id)a3
+- (void)setDeletedItem:(id)item
 {
-  v4 = [a3 payloadAsString];
-  -[CalDAVCalendarServerCollectionChangesElement setDeleted:](self, "setDeleted:", [v4 integerValue]);
+  payloadAsString = [item payloadAsString];
+  -[CalDAVCalendarServerCollectionChangesElement setDeleted:](self, "setDeleted:", [payloadAsString integerValue]);
 }
 
 - (id)copyParseRules
 {
   v14.receiver = self;
   v14.super_class = CalDAVCalendarServerCollectionChangesElement;
-  v13 = [(CalDAVCalendarServerResourceChangeElement *)&v14 copyParseRules];
-  v12 = [v13 mutableCopy];
+  copyParseRules = [(CalDAVCalendarServerResourceChangeElement *)&v14 copyParseRules];
+  v12 = [copyParseRules mutableCopy];
   v11 = objc_alloc(MEMORY[0x277CBEAC0]);
   v2 = *MEMORY[0x277CFDE90];
   v3 = [MEMORY[0x277CFDC50] ruleWithMinimumNumber:0 maximumNumber:1 nameSpace:*MEMORY[0x277CFDE90] elementName:@"child-created" objectClass:objc_opt_class() setterMethod:sel_setCreatedItem_];

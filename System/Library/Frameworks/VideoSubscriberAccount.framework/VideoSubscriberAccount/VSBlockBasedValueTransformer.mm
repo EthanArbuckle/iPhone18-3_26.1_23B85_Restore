@@ -1,7 +1,7 @@
 @interface VSBlockBasedValueTransformer
 - (VSBlockBasedValueTransformer)init;
-- (id)reverseTransformedValue:(id)a3;
-- (id)transformedValue:(id)a3;
+- (id)reverseTransformedValue:(id)value;
+- (id)transformedValue:(id)value;
 @end
 
 @implementation VSBlockBasedValueTransformer
@@ -21,20 +21,20 @@
   return v2;
 }
 
-- (id)transformedValue:(id)a3
+- (id)transformedValue:(id)value
 {
-  v4 = a3;
-  v5 = [(VSBlockBasedValueTransformer *)self transformationBlock];
-  v6 = (v5)[2](v5, v4);
+  valueCopy = value;
+  transformationBlock = [(VSBlockBasedValueTransformer *)self transformationBlock];
+  v6 = (transformationBlock)[2](transformationBlock, valueCopy);
 
   return v6;
 }
 
-- (id)reverseTransformedValue:(id)a3
+- (id)reverseTransformedValue:(id)value
 {
-  v4 = a3;
-  v5 = [(VSBlockBasedValueTransformer *)self reverseTransformationBlock];
-  v6 = (v5)[2](v5, v4);
+  valueCopy = value;
+  reverseTransformationBlock = [(VSBlockBasedValueTransformer *)self reverseTransformationBlock];
+  v6 = (reverseTransformationBlock)[2](reverseTransformationBlock, valueCopy);
 
   return v6;
 }

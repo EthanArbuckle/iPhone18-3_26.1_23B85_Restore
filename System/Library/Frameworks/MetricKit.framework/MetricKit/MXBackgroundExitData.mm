@@ -1,97 +1,97 @@
 @interface MXBackgroundExitData
-- (MXBackgroundExitData)initWithCoder:(id)a3;
-- (MXBackgroundExitData)initWithNormalAppExitCount:(id)a3 memoryResourceLimitExitCount:(id)a4 cpuResourceLimitExitCount:(id)a5 badAccessExitCount:(id)a6 abnormalExitCount:(id)a7 illegalInstructionExitCount:(id)a8 appWatchDogExitCount:(id)a9 cumulativeSuspendedWithLockedFileExitCount:(id)a10 cumulativeBackgroundTaskAssertionTimeoutExitCount:(id)a11;
-- (MXBackgroundExitData)initWithNormalAppExitCount:(id)a3 memoryResourceLimitExitCount:(id)a4 cpuResourceLimitExitCount:(id)a5 memoryPressureExitCount:(id)a6 badAccessExitCount:(id)a7 abnormalExitCount:(id)a8 illegalInstructionExitCount:(id)a9 appWatchDogExitCount:(id)a10 cumulativeSuspendedWithLockedFileExitCount:(id)a11 cumulativeBackgroundTaskAssertionTimeoutExitCount:(id)a12;
-- (MXBackgroundExitData)initWithNormalAppExitCount:(unint64_t)a3 memoryResourceLimitExitCount:(unint64_t)a4 cpuResourceLimitExitCount:(unint64_t)a5 memoryPressureExitCount:(unint64_t)a6 badAccessExitCount:(unint64_t)a7 abnormalExitCount:(unint64_t)a8 illegalInstructionExitCount:(unint64_t)a9 appWatchDogExitCount:(unint64_t)a10 cumulativeSuspendedWithLockedFileExitCount:(unint64_t)a11 cumulativeBackgroundTaskAssertionTimeoutExitCount:(unint64_t)a12 cumulativeBackgroundURLSessionCompletionTimeoutExitCount:(unint64_t)a13 cumulativeBackgroundFetchCompletionTimeoutExitCount:(unint64_t)a14;
+- (MXBackgroundExitData)initWithCoder:(id)coder;
+- (MXBackgroundExitData)initWithNormalAppExitCount:(id)count memoryResourceLimitExitCount:(id)exitCount cpuResourceLimitExitCount:(id)limitExitCount badAccessExitCount:(id)accessExitCount abnormalExitCount:(id)abnormalExitCount illegalInstructionExitCount:(id)instructionExitCount appWatchDogExitCount:(id)dogExitCount cumulativeSuspendedWithLockedFileExitCount:(id)self0 cumulativeBackgroundTaskAssertionTimeoutExitCount:(id)self1;
+- (MXBackgroundExitData)initWithNormalAppExitCount:(id)count memoryResourceLimitExitCount:(id)exitCount cpuResourceLimitExitCount:(id)limitExitCount memoryPressureExitCount:(id)pressureExitCount badAccessExitCount:(id)accessExitCount abnormalExitCount:(id)abnormalExitCount illegalInstructionExitCount:(id)instructionExitCount appWatchDogExitCount:(id)self0 cumulativeSuspendedWithLockedFileExitCount:(id)self1 cumulativeBackgroundTaskAssertionTimeoutExitCount:(id)self2;
+- (MXBackgroundExitData)initWithNormalAppExitCount:(unint64_t)count memoryResourceLimitExitCount:(unint64_t)exitCount cpuResourceLimitExitCount:(unint64_t)limitExitCount memoryPressureExitCount:(unint64_t)pressureExitCount badAccessExitCount:(unint64_t)accessExitCount abnormalExitCount:(unint64_t)abnormalExitCount illegalInstructionExitCount:(unint64_t)instructionExitCount appWatchDogExitCount:(unint64_t)self0 cumulativeSuspendedWithLockedFileExitCount:(unint64_t)self1 cumulativeBackgroundTaskAssertionTimeoutExitCount:(unint64_t)self2 cumulativeBackgroundURLSessionCompletionTimeoutExitCount:(unint64_t)self3 cumulativeBackgroundFetchCompletionTimeoutExitCount:(unint64_t)self4;
 - (id)toDictionary;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MXBackgroundExitData
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   cumulativeNormalAppExitCount = self->_cumulativeNormalAppExitCount;
-  v5 = a3;
-  [v5 encodeInteger:cumulativeNormalAppExitCount forKey:@"cumulativeNormalAppExitCount"];
-  [v5 encodeInteger:self->_cumulativeMemoryResourceLimitExitCount forKey:@"cumulativeMemoryResourceLimitExitCount"];
-  [v5 encodeInteger:self->_cumulativeCPUResourceLimitExitCount forKey:@"cumulativeCPUResourceLimitExitCount"];
-  [v5 encodeInteger:self->_cumulativeMemoryPressureExitCount forKey:@"cumulativeMemoryPressureExitCount"];
-  [v5 encodeInteger:self->_cumulativeBadAccessExitCount forKey:@"cumulativeBadAccessExitCount"];
-  [v5 encodeInteger:self->_cumulativeAbnormalExitCount forKey:@"cumulativeAbnormalExitCount"];
-  [v5 encodeInteger:self->_cumulativeIllegalInstructionExitCount forKey:@"cumulativeIllegalInstructionExitCount"];
-  [v5 encodeInteger:self->_cumulativeAppWatchdogExitCount forKey:@"cumulativeAppWatchdogExitCount"];
-  [v5 encodeInteger:self->_cumulativeSuspendedWithLockedFileExitCount forKey:@"cumulativeSuspendedWithLockedFileExitCount"];
-  [v5 encodeInteger:self->_cumulativeBackgroundTaskAssertionTimeoutExitCount forKey:@"cumulativeBackgroundTaskAssertionTimeoutExitCount"];
-  [v5 encodeInteger:self->_cumulativeBackgroundURLSessionCompletionTimeoutExitCount forKey:@"cumulativeBackgroundURLSessionCompletionTimeoutExitCount"];
-  [v5 encodeInteger:self->_cumulativeBackgroundFetchCompletionTimeoutExitCount forKey:@"cumulativeBackgroundFetchCompletionTimeoutExitCount"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:cumulativeNormalAppExitCount forKey:@"cumulativeNormalAppExitCount"];
+  [coderCopy encodeInteger:self->_cumulativeMemoryResourceLimitExitCount forKey:@"cumulativeMemoryResourceLimitExitCount"];
+  [coderCopy encodeInteger:self->_cumulativeCPUResourceLimitExitCount forKey:@"cumulativeCPUResourceLimitExitCount"];
+  [coderCopy encodeInteger:self->_cumulativeMemoryPressureExitCount forKey:@"cumulativeMemoryPressureExitCount"];
+  [coderCopy encodeInteger:self->_cumulativeBadAccessExitCount forKey:@"cumulativeBadAccessExitCount"];
+  [coderCopy encodeInteger:self->_cumulativeAbnormalExitCount forKey:@"cumulativeAbnormalExitCount"];
+  [coderCopy encodeInteger:self->_cumulativeIllegalInstructionExitCount forKey:@"cumulativeIllegalInstructionExitCount"];
+  [coderCopy encodeInteger:self->_cumulativeAppWatchdogExitCount forKey:@"cumulativeAppWatchdogExitCount"];
+  [coderCopy encodeInteger:self->_cumulativeSuspendedWithLockedFileExitCount forKey:@"cumulativeSuspendedWithLockedFileExitCount"];
+  [coderCopy encodeInteger:self->_cumulativeBackgroundTaskAssertionTimeoutExitCount forKey:@"cumulativeBackgroundTaskAssertionTimeoutExitCount"];
+  [coderCopy encodeInteger:self->_cumulativeBackgroundURLSessionCompletionTimeoutExitCount forKey:@"cumulativeBackgroundURLSessionCompletionTimeoutExitCount"];
+  [coderCopy encodeInteger:self->_cumulativeBackgroundFetchCompletionTimeoutExitCount forKey:@"cumulativeBackgroundFetchCompletionTimeoutExitCount"];
 }
 
-- (MXBackgroundExitData)initWithCoder:(id)a3
+- (MXBackgroundExitData)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = MXBackgroundExitData;
   v5 = [(MXBackgroundExitData *)&v7 init];
   if (v5)
   {
-    v5->_cumulativeNormalAppExitCount = [v4 decodeIntegerForKey:@"cumulativeNormalAppExitCount"];
-    v5->_cumulativeMemoryResourceLimitExitCount = [v4 decodeIntegerForKey:@"cumulativeMemoryResourceLimitExitCount"];
-    v5->_cumulativeCPUResourceLimitExitCount = [v4 decodeIntegerForKey:@"cumulativeCPUResourceLimitExitCount"];
-    v5->_cumulativeMemoryPressureExitCount = [v4 decodeIntegerForKey:@"cumulativeMemoryPressureExitCount"];
-    v5->_cumulativeBadAccessExitCount = [v4 decodeIntegerForKey:@"cumulativeBadAccessExitCount"];
-    v5->_cumulativeAbnormalExitCount = [v4 decodeIntegerForKey:@"cumulativeAbnormalExitCount"];
-    v5->_cumulativeIllegalInstructionExitCount = [v4 decodeIntegerForKey:@"cumulativeIllegalInstructionExitCount"];
-    v5->_cumulativeAppWatchdogExitCount = [v4 decodeIntegerForKey:@"cumulativeAppWatchdogExitCount"];
-    v5->_cumulativeSuspendedWithLockedFileExitCount = [v4 decodeIntegerForKey:@"cumulativeSuspendedWithLockedFileExitCount"];
-    v5->_cumulativeBackgroundTaskAssertionTimeoutExitCount = [v4 decodeIntegerForKey:@"cumulativeBackgroundTaskAssertionTimeoutExitCount"];
-    v5->_cumulativeBackgroundURLSessionCompletionTimeoutExitCount = [v4 decodeIntegerForKey:@"cumulativeBackgroundURLSessionCompletionTimeoutExitCount"];
-    v5->_cumulativeBackgroundFetchCompletionTimeoutExitCount = [v4 decodeIntegerForKey:@"cumulativeBackgroundFetchCompletionTimeoutExitCount"];
+    v5->_cumulativeNormalAppExitCount = [coderCopy decodeIntegerForKey:@"cumulativeNormalAppExitCount"];
+    v5->_cumulativeMemoryResourceLimitExitCount = [coderCopy decodeIntegerForKey:@"cumulativeMemoryResourceLimitExitCount"];
+    v5->_cumulativeCPUResourceLimitExitCount = [coderCopy decodeIntegerForKey:@"cumulativeCPUResourceLimitExitCount"];
+    v5->_cumulativeMemoryPressureExitCount = [coderCopy decodeIntegerForKey:@"cumulativeMemoryPressureExitCount"];
+    v5->_cumulativeBadAccessExitCount = [coderCopy decodeIntegerForKey:@"cumulativeBadAccessExitCount"];
+    v5->_cumulativeAbnormalExitCount = [coderCopy decodeIntegerForKey:@"cumulativeAbnormalExitCount"];
+    v5->_cumulativeIllegalInstructionExitCount = [coderCopy decodeIntegerForKey:@"cumulativeIllegalInstructionExitCount"];
+    v5->_cumulativeAppWatchdogExitCount = [coderCopy decodeIntegerForKey:@"cumulativeAppWatchdogExitCount"];
+    v5->_cumulativeSuspendedWithLockedFileExitCount = [coderCopy decodeIntegerForKey:@"cumulativeSuspendedWithLockedFileExitCount"];
+    v5->_cumulativeBackgroundTaskAssertionTimeoutExitCount = [coderCopy decodeIntegerForKey:@"cumulativeBackgroundTaskAssertionTimeoutExitCount"];
+    v5->_cumulativeBackgroundURLSessionCompletionTimeoutExitCount = [coderCopy decodeIntegerForKey:@"cumulativeBackgroundURLSessionCompletionTimeoutExitCount"];
+    v5->_cumulativeBackgroundFetchCompletionTimeoutExitCount = [coderCopy decodeIntegerForKey:@"cumulativeBackgroundFetchCompletionTimeoutExitCount"];
   }
 
   return v5;
 }
 
-- (MXBackgroundExitData)initWithNormalAppExitCount:(id)a3 memoryResourceLimitExitCount:(id)a4 cpuResourceLimitExitCount:(id)a5 badAccessExitCount:(id)a6 abnormalExitCount:(id)a7 illegalInstructionExitCount:(id)a8 appWatchDogExitCount:(id)a9 cumulativeSuspendedWithLockedFileExitCount:(id)a10 cumulativeBackgroundTaskAssertionTimeoutExitCount:(id)a11
+- (MXBackgroundExitData)initWithNormalAppExitCount:(id)count memoryResourceLimitExitCount:(id)exitCount cpuResourceLimitExitCount:(id)limitExitCount badAccessExitCount:(id)accessExitCount abnormalExitCount:(id)abnormalExitCount illegalInstructionExitCount:(id)instructionExitCount appWatchDogExitCount:(id)dogExitCount cumulativeSuspendedWithLockedFileExitCount:(id)self0 cumulativeBackgroundTaskAssertionTimeoutExitCount:(id)self1
 {
-  v17 = a3;
-  v29 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
-  v22 = a9;
-  v23 = a10;
-  v24 = a11;
+  countCopy = count;
+  exitCountCopy = exitCount;
+  limitExitCountCopy = limitExitCount;
+  accessExitCountCopy = accessExitCount;
+  abnormalExitCountCopy = abnormalExitCount;
+  instructionExitCountCopy = instructionExitCount;
+  dogExitCountCopy = dogExitCount;
+  fileExitCountCopy = fileExitCount;
+  timeoutExitCountCopy = timeoutExitCount;
   v31.receiver = self;
   v31.super_class = MXBackgroundExitData;
   v25 = [(MXBackgroundExitData *)&v31 init];
-  v30 = v17;
+  v30 = countCopy;
   if (!v25)
   {
     goto LABEL_12;
   }
 
   v26 = 0;
-  if (!v17)
+  if (!countCopy)
   {
 LABEL_13:
-    v27 = v29;
+    v27 = exitCountCopy;
     goto LABEL_14;
   }
 
-  v27 = v29;
-  if (v29 && v18 && v19 && v20 && v21 && v22 && v23 && v24)
+  v27 = exitCountCopy;
+  if (exitCountCopy && limitExitCountCopy && accessExitCountCopy && abnormalExitCountCopy && instructionExitCountCopy && dogExitCountCopy && fileExitCountCopy && timeoutExitCountCopy)
   {
     v25->_cumulativeNormalAppExitCount = [v30 unsignedIntegerValue];
-    v25->_cumulativeMemoryResourceLimitExitCount = [v29 unsignedIntegerValue];
-    v25->_cumulativeCPUResourceLimitExitCount = [v18 unsignedIntegerValue];
-    v25->_cumulativeBadAccessExitCount = [v19 unsignedIntegerValue];
-    v25->_cumulativeAbnormalExitCount = [v20 unsignedIntegerValue];
-    v25->_cumulativeIllegalInstructionExitCount = [v21 unsignedIntegerValue];
-    v25->_cumulativeAppWatchdogExitCount = [v22 unsignedIntegerValue];
-    v25->_cumulativeSuspendedWithLockedFileExitCount = [v23 unsignedIntegerValue];
-    v25->_cumulativeBackgroundTaskAssertionTimeoutExitCount = [v24 unsignedIntegerValue];
+    v25->_cumulativeMemoryResourceLimitExitCount = [exitCountCopy unsignedIntegerValue];
+    v25->_cumulativeCPUResourceLimitExitCount = [limitExitCountCopy unsignedIntegerValue];
+    v25->_cumulativeBadAccessExitCount = [accessExitCountCopy unsignedIntegerValue];
+    v25->_cumulativeAbnormalExitCount = [abnormalExitCountCopy unsignedIntegerValue];
+    v25->_cumulativeIllegalInstructionExitCount = [instructionExitCountCopy unsignedIntegerValue];
+    v25->_cumulativeAppWatchdogExitCount = [dogExitCountCopy unsignedIntegerValue];
+    v25->_cumulativeSuspendedWithLockedFileExitCount = [fileExitCountCopy unsignedIntegerValue];
+    v25->_cumulativeBackgroundTaskAssertionTimeoutExitCount = [timeoutExitCountCopy unsignedIntegerValue];
 LABEL_12:
     v26 = v25;
     goto LABEL_13;
@@ -102,18 +102,18 @@ LABEL_14:
   return v26;
 }
 
-- (MXBackgroundExitData)initWithNormalAppExitCount:(id)a3 memoryResourceLimitExitCount:(id)a4 cpuResourceLimitExitCount:(id)a5 memoryPressureExitCount:(id)a6 badAccessExitCount:(id)a7 abnormalExitCount:(id)a8 illegalInstructionExitCount:(id)a9 appWatchDogExitCount:(id)a10 cumulativeSuspendedWithLockedFileExitCount:(id)a11 cumulativeBackgroundTaskAssertionTimeoutExitCount:(id)a12
+- (MXBackgroundExitData)initWithNormalAppExitCount:(id)count memoryResourceLimitExitCount:(id)exitCount cpuResourceLimitExitCount:(id)limitExitCount memoryPressureExitCount:(id)pressureExitCount badAccessExitCount:(id)accessExitCount abnormalExitCount:(id)abnormalExitCount illegalInstructionExitCount:(id)instructionExitCount appWatchDogExitCount:(id)self0 cumulativeSuspendedWithLockedFileExitCount:(id)self1 cumulativeBackgroundTaskAssertionTimeoutExitCount:(id)self2
 {
-  v30 = a3;
-  v29 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
-  v22 = a9;
-  v23 = a10;
-  v24 = a11;
-  v25 = a12;
+  countCopy = count;
+  exitCountCopy = exitCount;
+  limitExitCountCopy = limitExitCount;
+  pressureExitCountCopy = pressureExitCount;
+  accessExitCountCopy = accessExitCount;
+  abnormalExitCountCopy = abnormalExitCount;
+  instructionExitCountCopy = instructionExitCount;
+  dogExitCountCopy = dogExitCount;
+  fileExitCountCopy = fileExitCount;
+  timeoutExitCountCopy = timeoutExitCount;
   v31.receiver = self;
   v31.super_class = MXBackgroundExitData;
   v26 = [(MXBackgroundExitData *)&v31 init];
@@ -123,18 +123,18 @@ LABEL_14:
   }
 
   v27 = 0;
-  if (v19 && v30 && v29 && v18 && v20 && v21 && v22 && v23 && v24 && v25)
+  if (pressureExitCountCopy && countCopy && exitCountCopy && limitExitCountCopy && accessExitCountCopy && abnormalExitCountCopy && instructionExitCountCopy && dogExitCountCopy && fileExitCountCopy && timeoutExitCountCopy)
   {
-    v26->_cumulativeNormalAppExitCount = [v30 unsignedIntegerValue];
-    v26->_cumulativeMemoryResourceLimitExitCount = [v29 unsignedIntegerValue];
-    v26->_cumulativeCPUResourceLimitExitCount = [v18 unsignedIntegerValue];
-    v26->_cumulativeMemoryPressureExitCount = [v19 unsignedIntegerValue];
-    v26->_cumulativeBadAccessExitCount = [v20 unsignedIntegerValue];
-    v26->_cumulativeAbnormalExitCount = [v21 unsignedIntegerValue];
-    v26->_cumulativeIllegalInstructionExitCount = [v22 unsignedIntegerValue];
-    v26->_cumulativeAppWatchdogExitCount = [v23 unsignedIntegerValue];
-    v26->_cumulativeSuspendedWithLockedFileExitCount = [v24 unsignedIntegerValue];
-    v26->_cumulativeBackgroundTaskAssertionTimeoutExitCount = [v25 unsignedIntegerValue];
+    v26->_cumulativeNormalAppExitCount = [countCopy unsignedIntegerValue];
+    v26->_cumulativeMemoryResourceLimitExitCount = [exitCountCopy unsignedIntegerValue];
+    v26->_cumulativeCPUResourceLimitExitCount = [limitExitCountCopy unsignedIntegerValue];
+    v26->_cumulativeMemoryPressureExitCount = [pressureExitCountCopy unsignedIntegerValue];
+    v26->_cumulativeBadAccessExitCount = [accessExitCountCopy unsignedIntegerValue];
+    v26->_cumulativeAbnormalExitCount = [abnormalExitCountCopy unsignedIntegerValue];
+    v26->_cumulativeIllegalInstructionExitCount = [instructionExitCountCopy unsignedIntegerValue];
+    v26->_cumulativeAppWatchdogExitCount = [dogExitCountCopy unsignedIntegerValue];
+    v26->_cumulativeSuspendedWithLockedFileExitCount = [fileExitCountCopy unsignedIntegerValue];
+    v26->_cumulativeBackgroundTaskAssertionTimeoutExitCount = [timeoutExitCountCopy unsignedIntegerValue];
 LABEL_13:
     v27 = v26;
   }
@@ -142,25 +142,25 @@ LABEL_13:
   return v27;
 }
 
-- (MXBackgroundExitData)initWithNormalAppExitCount:(unint64_t)a3 memoryResourceLimitExitCount:(unint64_t)a4 cpuResourceLimitExitCount:(unint64_t)a5 memoryPressureExitCount:(unint64_t)a6 badAccessExitCount:(unint64_t)a7 abnormalExitCount:(unint64_t)a8 illegalInstructionExitCount:(unint64_t)a9 appWatchDogExitCount:(unint64_t)a10 cumulativeSuspendedWithLockedFileExitCount:(unint64_t)a11 cumulativeBackgroundTaskAssertionTimeoutExitCount:(unint64_t)a12 cumulativeBackgroundURLSessionCompletionTimeoutExitCount:(unint64_t)a13 cumulativeBackgroundFetchCompletionTimeoutExitCount:(unint64_t)a14
+- (MXBackgroundExitData)initWithNormalAppExitCount:(unint64_t)count memoryResourceLimitExitCount:(unint64_t)exitCount cpuResourceLimitExitCount:(unint64_t)limitExitCount memoryPressureExitCount:(unint64_t)pressureExitCount badAccessExitCount:(unint64_t)accessExitCount abnormalExitCount:(unint64_t)abnormalExitCount illegalInstructionExitCount:(unint64_t)instructionExitCount appWatchDogExitCount:(unint64_t)self0 cumulativeSuspendedWithLockedFileExitCount:(unint64_t)self1 cumulativeBackgroundTaskAssertionTimeoutExitCount:(unint64_t)self2 cumulativeBackgroundURLSessionCompletionTimeoutExitCount:(unint64_t)self3 cumulativeBackgroundFetchCompletionTimeoutExitCount:(unint64_t)self4
 {
   v21.receiver = self;
   v21.super_class = MXBackgroundExitData;
   result = [(MXBackgroundExitData *)&v21 init];
   if (result)
   {
-    result->_cumulativeNormalAppExitCount = a3;
-    result->_cumulativeMemoryResourceLimitExitCount = a4;
-    result->_cumulativeCPUResourceLimitExitCount = a5;
-    result->_cumulativeMemoryPressureExitCount = a6;
-    result->_cumulativeBadAccessExitCount = a7;
-    result->_cumulativeAbnormalExitCount = a8;
-    result->_cumulativeIllegalInstructionExitCount = a9;
-    result->_cumulativeAppWatchdogExitCount = a10;
-    result->_cumulativeSuspendedWithLockedFileExitCount = a11;
-    result->_cumulativeBackgroundTaskAssertionTimeoutExitCount = a12;
-    result->_cumulativeBackgroundFetchCompletionTimeoutExitCount = a14;
-    result->_cumulativeBackgroundURLSessionCompletionTimeoutExitCount = a13;
+    result->_cumulativeNormalAppExitCount = count;
+    result->_cumulativeMemoryResourceLimitExitCount = exitCount;
+    result->_cumulativeCPUResourceLimitExitCount = limitExitCount;
+    result->_cumulativeMemoryPressureExitCount = pressureExitCount;
+    result->_cumulativeBadAccessExitCount = accessExitCount;
+    result->_cumulativeAbnormalExitCount = abnormalExitCount;
+    result->_cumulativeIllegalInstructionExitCount = instructionExitCount;
+    result->_cumulativeAppWatchdogExitCount = dogExitCount;
+    result->_cumulativeSuspendedWithLockedFileExitCount = fileExitCount;
+    result->_cumulativeBackgroundTaskAssertionTimeoutExitCount = timeoutExitCount;
+    result->_cumulativeBackgroundFetchCompletionTimeoutExitCount = fetchCompletionTimeoutExitCount;
+    result->_cumulativeBackgroundURLSessionCompletionTimeoutExitCount = completionTimeoutExitCount;
   }
 
   return result;

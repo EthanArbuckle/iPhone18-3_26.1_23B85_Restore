@@ -1,47 +1,47 @@
 @interface FPFSChangeSubscription
-- (BOOL)activateWithError:(id *)a3;
-- (BOOL)didProcessBarrierEventUUID:(id)a3;
-- (FPFSChangeSubscription)initWithPath:(id)a3 fd:(int)a4 reader:(id)a5 sinceEventID:(unint64_t)a6 streamUUID:(id)a7 ignoreOwnEvents:(BOOL)a8 delegate:(id)a9 purpose:(id)a10;
+- (BOOL)activateWithError:(id *)error;
+- (BOOL)didProcessBarrierEventUUID:(id)d;
+- (FPFSChangeSubscription)initWithPath:(id)path fd:(int)fd reader:(id)reader sinceEventID:(unint64_t)d streamUUID:(id)iD ignoreOwnEvents:(BOOL)events delegate:(id)delegate purpose:(id)self0;
 - (FPFSChangeSubscriptionDelegate)delegate;
 - (id)description;
 - (id)waitableBarrier;
-- (void)didProcessEventID:(unint64_t)a3;
+- (void)didProcessEventID:(unint64_t)d;
 - (void)dispose;
 - (void)waitableBarrier;
 @end
 
 @implementation FPFSChangeSubscription
 
-- (FPFSChangeSubscription)initWithPath:(id)a3 fd:(int)a4 reader:(id)a5 sinceEventID:(unint64_t)a6 streamUUID:(id)a7 ignoreOwnEvents:(BOOL)a8 delegate:(id)a9 purpose:(id)a10
+- (FPFSChangeSubscription)initWithPath:(id)path fd:(int)fd reader:(id)reader sinceEventID:(unint64_t)d streamUUID:(id)iD ignoreOwnEvents:(BOOL)events delegate:(id)delegate purpose:(id)self0
 {
-  v15 = a3;
-  v16 = a5;
-  v17 = a7;
-  v18 = a9;
-  v19 = a10;
+  pathCopy = path;
+  readerCopy = reader;
+  iDCopy = iD;
+  delegateCopy = delegate;
+  purposeCopy = purpose;
   v25.receiver = self;
   v25.super_class = FPFSChangeSubscription;
   v20 = [(FPFSChangeSubscription *)&v25 init];
   if (v20)
   {
-    v21 = [v15 fp_realpath];
+    fp_realpath = [pathCopy fp_realpath];
     root = v20->_root;
-    v20->_root = v21;
+    v20->_root = fp_realpath;
 
-    v20->_rootfd = a4;
-    objc_storeWeak(&v20->_delegate, v18);
-    v20->_lastDeliveredEventID = a6;
-    objc_storeStrong(&v20->_eventStreamUUID, a7);
+    v20->_rootfd = fd;
+    objc_storeWeak(&v20->_delegate, delegateCopy);
+    v20->_lastDeliveredEventID = d;
+    objc_storeStrong(&v20->_eventStreamUUID, iD);
     v20->_state = 1;
-    objc_storeWeak(&v20->_weakReader, v16);
-    v20->_ignoreOwnEvents = a8;
-    objc_storeStrong(&v20->_purpose, a10);
+    objc_storeWeak(&v20->_weakReader, readerCopy);
+    v20->_ignoreOwnEvents = events;
+    objc_storeStrong(&v20->_purpose, purpose);
   }
 
   return v20;
 }
 
-- (BOOL)activateWithError:(id *)a3
+- (BOOL)activateWithError:(id *)error
 {
   if (self->_state == 1)
   {
@@ -55,12 +55,12 @@
         if ((fstat(rootfd, &v13) & 0x80000000) == 0 && (v13.st_mode & 0xF000) == 0x4000)
         {
           self->_rootFileID = v13.st_ino;
-          if ([WeakRetained activateSubscription:self error:a3])
+          if ([WeakRetained activateSubscription:self error:error])
           {
-            v7 = self;
-            objc_sync_enter(v7);
+            selfCopy = self;
+            objc_sync_enter(selfCopy);
             self->_state = 2;
-            objc_sync_exit(v7);
+            objc_sync_exit(selfCopy);
 
             v8 = 1;
 LABEL_17:
@@ -74,7 +74,7 @@ LABEL_16:
         }
       }
 
-      if (!a3)
+      if (!error)
       {
         goto LABEL_16;
       }
@@ -86,7 +86,7 @@ LABEL_16:
 
     else
     {
-      if (!a3)
+      if (!error)
       {
         goto LABEL_16;
       }
@@ -96,17 +96,17 @@ LABEL_16:
     }
 
     [v11 fp_errorWithPOSIXCode:v10];
-    *a3 = v8 = 0;
+    *error = v8 = 0;
     goto LABEL_17;
   }
 
-  if (!a3)
+  if (!error)
   {
     return 0;
   }
 
   [MEMORY[0x1E696ABC0] fp_errorWithPOSIXCode:35];
-  *a3 = v8 = 0;
+  *error = v8 = 0;
   return v8;
 }
 
@@ -133,45 +133,45 @@ LABEL_16:
   v4 = WeakRetained;
   if (WeakRetained && ([WeakRetained barrierFolderURL], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
   {
-    v6 = [MEMORY[0x1E696AFB0] UUID];
-    v7 = self;
-    objc_sync_enter(v7);
-    barrierGroup = v7->_barrierGroup;
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    barrierGroup = selfCopy->_barrierGroup;
     if (!barrierGroup)
     {
       v9 = dispatch_group_create();
-      v10 = v7->_barrierGroup;
-      v7->_barrierGroup = v9;
+      v10 = selfCopy->_barrierGroup;
+      selfCopy->_barrierGroup = v9;
 
-      dispatch_group_enter(v7->_barrierGroup);
+      dispatch_group_enter(selfCopy->_barrierGroup);
     }
 
-    objc_storeStrong(&v7->_notifyStreamUUID, v6);
-    v11 = v7->_barrierGroup;
-    objc_sync_exit(v7);
+    objc_storeStrong(&selfCopy->_notifyStreamUUID, uUID);
+    v11 = selfCopy->_barrierGroup;
+    objc_sync_exit(selfCopy);
 
     v12 = MEMORY[0x1E696AEC0];
-    v13 = [v6 UUIDString];
-    v14 = [v12 stringWithFormat:@".rendez-vous.%@.nosync", v13];
+    uUIDString = [uUID UUIDString];
+    v14 = [v12 stringWithFormat:@".rendez-vous.%@.nosync", uUIDString];
 
-    v15 = [v4 barrierFolderURL];
-    v16 = [v15 URLByAppendingPathComponent:v14];
+    barrierFolderURL = [v4 barrierFolderURL];
+    v16 = [barrierFolderURL URLByAppendingPathComponent:v14];
 
-    v17 = [v16 fileSystemRepresentation];
+    fileSystemRepresentation = [v16 fileSystemRepresentation];
     v27 = MEMORY[0x1E69E9820];
     v28 = 3221225472;
     v29 = __41__FPFSChangeSubscription_waitableBarrier__block_invoke;
     v30 = &__block_descriptor_40_e8_i12__0i8l;
-    v31 = v17;
+    v31 = fileSystemRepresentation;
     fpfs_openat();
-    v18 = [v4 delegationQueue];
+    delegationQueue = [v4 delegationQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __41__FPFSChangeSubscription_waitableBarrier__block_invoke_2;
     block[3] = &unk_1E83BE068;
     v19 = v16;
     v26 = v19;
-    dispatch_group_notify(v11, v18, block);
+    dispatch_group_notify(v11, delegationQueue, block);
 
     v20 = fp_current_or_default_log();
     v21 = os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG);
@@ -194,8 +194,8 @@ LABEL_16:
 
   else
   {
-    v6 = fp_current_or_default_log();
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
+    uUID = fp_current_or_default_log();
+    if (os_log_type_enabled(uUID, OS_LOG_TYPE_DEBUG))
     {
       [(FPFSChangeSubscription *)v4 waitableBarrier];
     }
@@ -213,35 +213,35 @@ uint64_t __41__FPFSChangeSubscription_waitableBarrier__block_invoke_2(uint64_t a
   return unlink(v1);
 }
 
-- (void)didProcessEventID:(unint64_t)a3
+- (void)didProcessEventID:(unint64_t)d
 {
-  if (a3)
+  if (d)
   {
-    self->_lastDeliveredEventID = a3;
+    self->_lastDeliveredEventID = d;
   }
 }
 
-- (BOOL)didProcessBarrierEventUUID:(id)a3
+- (BOOL)didProcessBarrierEventUUID:(id)d
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  notifyStreamUUID = v5->_notifyStreamUUID;
+  dCopy = d;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  notifyStreamUUID = selfCopy->_notifyStreamUUID;
   if (!notifyStreamUUID)
   {
     goto LABEL_8;
   }
 
-  if (v4)
+  if (dCopy)
   {
-    if ([(NSUUID *)notifyStreamUUID isEqual:v4])
+    if ([(NSUUID *)notifyStreamUUID isEqual:dCopy])
     {
-      notifyStreamUUID = v5->_notifyStreamUUID;
+      notifyStreamUUID = selfCopy->_notifyStreamUUID;
       goto LABEL_5;
     }
 
 LABEL_8:
-    objc_sync_exit(v5);
+    objc_sync_exit(selfCopy);
 
     v11 = 0;
     goto LABEL_9;
@@ -249,14 +249,14 @@ LABEL_8:
 
 LABEL_5:
   v7 = notifyStreamUUID;
-  dispatch_group_leave(v5->_barrierGroup);
-  barrierGroup = v5->_barrierGroup;
-  v5->_barrierGroup = 0;
+  dispatch_group_leave(selfCopy->_barrierGroup);
+  barrierGroup = selfCopy->_barrierGroup;
+  selfCopy->_barrierGroup = 0;
 
-  v9 = v5->_notifyStreamUUID;
-  v5->_notifyStreamUUID = 0;
+  v9 = selfCopy->_notifyStreamUUID;
+  selfCopy->_notifyStreamUUID = 0;
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
   v10 = fp_current_or_default_log();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
@@ -271,18 +271,18 @@ LABEL_9:
 
 - (void)dispose
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v2->_state = 4;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  selfCopy->_state = 4;
+  objc_sync_exit(selfCopy);
 
-  WeakRetained = objc_loadWeakRetained(&v2->_delegate);
-  [WeakRetained subscriptionHandleTermination:v2];
+  WeakRetained = objc_loadWeakRetained(&selfCopy->_delegate);
+  [WeakRetained subscriptionHandleTermination:selfCopy];
 
-  v4 = objc_loadWeakRetained(&v2->_weakReader);
-  [v4 disableSubscription:v2];
+  v4 = objc_loadWeakRetained(&selfCopy->_weakReader);
+  [v4 disableSubscription:selfCopy];
 
-  obj = v2;
+  obj = selfCopy;
   objc_sync_enter(obj);
   if (obj->_ownRootFD)
   {
@@ -290,8 +290,8 @@ LABEL_9:
     obj->_rootfd = -1;
   }
 
-  objc_storeWeak(&v2->_delegate, 0);
-  objc_storeWeak(&v2->_weakReader, 0);
+  objc_storeWeak(&selfCopy->_delegate, 0);
+  objc_storeWeak(&selfCopy->_weakReader, 0);
   objc_sync_exit(obj);
 }
 
@@ -306,7 +306,7 @@ LABEL_9:
 {
   v5 = *MEMORY[0x1E69E9840];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_debug_impl(&dword_1CEFC7000, a2, OS_LOG_TYPE_DEBUG, "[DEBUG] 🚧  no reader (%@) or associated barrier folder URL", &v3, 0xCu);
   v2 = *MEMORY[0x1E69E9840];
 }

@@ -1,42 +1,42 @@
 @interface NotesMigrationManager
-- (BOOL)areStoreMetadata:(id)a3 matchingEntityVersionsInModel:(id)a4;
-- (BOOL)migrateNotesStoreAtURL:(id)a3 storeType:(id)a4 managedObjectModel:(id)a5 options:(id)a6 error:(id *)a7;
-- (BOOL)migrateNotesStoreAtURL:(id)a3 storeType:(id)a4 options:(id)a5 sourceModel:(id)a6 destinationModel:(id)a7 mappingModel:(id)a8 error:(id *)a9;
+- (BOOL)areStoreMetadata:(id)metadata matchingEntityVersionsInModel:(id)model;
+- (BOOL)migrateNotesStoreAtURL:(id)l storeType:(id)type managedObjectModel:(id)model options:(id)options error:(id *)error;
+- (BOOL)migrateNotesStoreAtURL:(id)l storeType:(id)type options:(id)options sourceModel:(id)model destinationModel:(id)destinationModel mappingModel:(id)mappingModel error:(id *)error;
 @end
 
 @implementation NotesMigrationManager
 
-- (BOOL)areStoreMetadata:(id)a3 matchingEntityVersionsInModel:(id)a4
+- (BOOL)areStoreMetadata:(id)metadata matchingEntityVersionsInModel:(id)model
 {
-  v5 = a3;
-  v6 = [a4 entityVersionHashesByName];
-  v7 = [v5 objectForKey:*MEMORY[0x277CBE2F0]];
+  metadataCopy = metadata;
+  entityVersionHashesByName = [model entityVersionHashesByName];
+  v7 = [metadataCopy objectForKey:*MEMORY[0x277CBE2F0]];
 
-  LOBYTE(v5) = [v6 isEqual:v7];
-  return v5;
+  LOBYTE(metadataCopy) = [entityVersionHashesByName isEqual:v7];
+  return metadataCopy;
 }
 
-- (BOOL)migrateNotesStoreAtURL:(id)a3 storeType:(id)a4 managedObjectModel:(id)a5 options:(id)a6 error:(id *)a7
+- (BOOL)migrateNotesStoreAtURL:(id)l storeType:(id)type managedObjectModel:(id)model options:(id)options error:(id *)error
 {
   v58 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v45 = v12;
-  v16 = [MEMORY[0x277CBE4D8] metadataForPersistentStoreOfType:v13 URL:v12 error:a7];
+  lCopy = l;
+  typeCopy = type;
+  modelCopy = model;
+  optionsCopy = options;
+  v45 = lCopy;
+  v16 = [MEMORY[0x277CBE4D8] metadataForPersistentStoreOfType:typeCopy URL:lCopy error:error];
   if (!v16)
   {
     v17 = 0;
     goto LABEL_31;
   }
 
-  if (![(NotesMigrationManager *)self areStoreMetadata:v16 matchingEntityVersionsInModel:v14])
+  if (![(NotesMigrationManager *)self areStoreMetadata:v16 matchingEntityVersionsInModel:modelCopy])
   {
-    v44 = self;
-    v39 = v14;
+    selfCopy = self;
+    v39 = modelCopy;
     v18 = +[NotesMigrationMapping mappings];
-    v19 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v50 = 0u;
     v51 = 0u;
     v52 = 0u;
@@ -57,7 +57,7 @@ LABEL_7:
         }
 
         v25 = *(*(&v50 + 1) + 8 * v24);
-        [v19 insertObject:v25 atIndex:0];
+        [array insertObject:v25 atIndex:0];
         if ([v25 canMigrateStoreMetadata:v16])
         {
           break;
@@ -76,17 +76,17 @@ LABEL_7:
       }
     }
 
-    if ([v19 count] && (objc_msgSend(v19, "objectAtIndex:", 0), v26 = objc_claimAutoreleasedReturnValue(), v27 = objc_msgSend(v26, "canMigrateStoreMetadata:", v16), v26, (v27 & 1) != 0))
+    if ([array count] && (objc_msgSend(array, "objectAtIndex:", 0), v26 = objc_claimAutoreleasedReturnValue(), v27 = objc_msgSend(v26, "canMigrateStoreMetadata:", v16), v26, (v27 & 1) != 0))
     {
       v48 = 0u;
       v49 = 0u;
       v46 = 0u;
       v47 = 0u;
-      obj = v19;
+      obj = array;
       v42 = [obj countByEnumeratingWithState:&v46 objects:v54 count:16];
       if (v42)
       {
-        v43 = v15;
+        v43 = optionsCopy;
         v41 = *v47;
         while (2)
         {
@@ -101,17 +101,17 @@ LABEL_7:
 
             v30 = *(*(&v46 + 1) + 8 * v28);
             v31 = [v30 sourceModelForStoreMetadata:v29];
-            v32 = [v30 destinationModel];
+            destinationModel = [v30 destinationModel];
             v33 = [v30 mappingModelForStoreMetadata:v29];
-            if (![(NotesMigrationManager *)v44 migrateNotesStoreAtURL:v45 storeType:v13 options:v43 sourceModel:v31 destinationModel:v32 mappingModel:v33 error:a7])
+            if (![(NotesMigrationManager *)selfCopy migrateNotesStoreAtURL:v45 storeType:typeCopy options:v43 sourceModel:v31 destinationModel:destinationModel mappingModel:v33 error:error])
             {
 
               v16 = v29;
-              v15 = v43;
+              optionsCopy = v43;
               goto LABEL_27;
             }
 
-            v16 = [MEMORY[0x277CBE4D8] metadataForPersistentStoreOfType:v13 URL:v45 error:a7];
+            v16 = [MEMORY[0x277CBE4D8] metadataForPersistentStoreOfType:typeCopy URL:v45 error:error];
 
             if (!v16)
             {
@@ -135,7 +135,7 @@ LABEL_7:
         }
 
 LABEL_35:
-        v15 = v43;
+        optionsCopy = v43;
       }
 
       else
@@ -146,7 +146,7 @@ LABEL_35:
 
     else
     {
-      if (!a7)
+      if (!error)
       {
         v17 = 0;
         goto LABEL_30;
@@ -159,14 +159,14 @@ LABEL_35:
       v56 = v34;
       obj = v34;
       v31 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v56 forKeys:&v55 count:1];
-      *a7 = [v35 errorWithDomain:v36 code:101 userInfo:v31];
+      *error = [v35 errorWithDomain:v36 code:101 userInfo:v31];
 LABEL_27:
 
       v17 = 0;
     }
 
 LABEL_30:
-    v14 = v39;
+    modelCopy = v39;
     goto LABEL_31;
   }
 
@@ -177,20 +177,20 @@ LABEL_31:
   return v17;
 }
 
-- (BOOL)migrateNotesStoreAtURL:(id)a3 storeType:(id)a4 options:(id)a5 sourceModel:(id)a6 destinationModel:(id)a7 mappingModel:(id)a8 error:(id *)a9
+- (BOOL)migrateNotesStoreAtURL:(id)l storeType:(id)type options:(id)options sourceModel:(id)model destinationModel:(id)destinationModel mappingModel:(id)mappingModel error:(id *)error
 {
   v46[1] = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  if (v19)
+  lCopy = l;
+  typeCopy = type;
+  optionsCopy = options;
+  modelCopy = model;
+  destinationModelCopy = destinationModel;
+  mappingModelCopy = mappingModel;
+  if (mappingModelCopy)
   {
-    v41 = v15;
+    v41 = typeCopy;
     v20 = objc_alloc_init(MEMORY[0x277CCAA00]);
-    v21 = [v20 URLForDirectory:99 inDomain:1 appropriateForURL:v14 create:1 error:a9];
+    v21 = [v20 URLForDirectory:99 inDomain:1 appropriateForURL:lCopy create:1 error:error];
     if (v21)
     {
       v42[0] = MEMORY[0x277D85DD0];
@@ -199,18 +199,18 @@ LABEL_31:
       v42[3] = &unk_2799AC940;
       v38 = v20;
       v43 = v38;
-      v22 = v19;
+      v22 = mappingModelCopy;
       v23 = v21;
       v44 = v23;
       v24 = MEMORY[0x25F88B080](v42);
       [v23 URLByAppendingPathComponent:@"tmpDB.sqlite" isDirectory:0];
-      v26 = v25 = v17;
+      v26 = v25 = modelCopy;
       v40 = v25;
-      v27 = [objc_alloc(MEMORY[0x277CBE468]) initWithSourceModel:v25 destinationModel:v18];
+      v27 = [objc_alloc(MEMORY[0x277CBE468]) initWithSourceModel:v25 destinationModel:destinationModelCopy];
       v39 = v22;
-      if ([v27 migrateStoreFromURL:v14 type:v41 options:v16 withMappingModel:v22 toDestinationURL:v26 destinationType:v41 destinationOptions:v16 error:a9] && objc_msgSend(v38, "removeItemAtURL:error:", v14, a9))
+      if ([v27 migrateStoreFromURL:lCopy type:v41 options:optionsCopy withMappingModel:v22 toDestinationURL:v26 destinationType:v41 destinationOptions:optionsCopy error:error] && objc_msgSend(v38, "removeItemAtURL:error:", lCopy, error))
       {
-        v28 = [v38 moveItemAtURL:v26 toURL:v14 error:a9];
+        v28 = [v38 moveItemAtURL:v26 toURL:lCopy error:error];
       }
 
       else
@@ -220,8 +220,8 @@ LABEL_31:
 
       v24[2](v24);
 
-      v17 = v40;
-      v19 = v39;
+      modelCopy = v40;
+      mappingModelCopy = v39;
     }
 
     else
@@ -229,33 +229,33 @@ LABEL_31:
       v28 = 0;
     }
 
-    v15 = v41;
+    typeCopy = v41;
   }
 
   else
   {
-    if (!a9)
+    if (!error)
     {
       v28 = 0;
       goto LABEL_13;
     }
 
     v29 = MEMORY[0x277CCA9B8];
-    v30 = v14;
-    v31 = v16;
-    v32 = v18;
+    v30 = lCopy;
+    v31 = optionsCopy;
+    v32 = destinationModelCopy;
     v33 = *MEMORY[0x277D36168];
     v45 = *MEMORY[0x277D36170];
     v46[0] = @"No mapping model specified";
     v20 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v46 forKeys:&v45 count:1];
     v34 = v29;
-    v19 = 0;
+    mappingModelCopy = 0;
     v35 = v33;
-    v18 = v32;
-    v16 = v31;
-    v14 = v30;
+    destinationModelCopy = v32;
+    optionsCopy = v31;
+    lCopy = v30;
     [v34 errorWithDomain:v35 code:101 userInfo:v20];
-    *a9 = v28 = 0;
+    *error = v28 = 0;
   }
 
 LABEL_13:

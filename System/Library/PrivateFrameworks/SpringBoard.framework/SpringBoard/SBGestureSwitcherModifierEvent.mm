@@ -1,31 +1,31 @@
 @interface SBGestureSwitcherModifierEvent
-- (CGPoint)averageTouchVelocityOverTimeDuration:(double)a3;
+- (CGPoint)averageTouchVelocityOverTimeDuration:(double)duration;
 - (CGPoint)locationInContainerView;
 - (CGPoint)translationInContainerView;
 - (CGPoint)velocityInContainerView;
-- (SBGestureSwitcherModifierEvent)initWithGestureID:(id)a3 selectedAppLayout:(id)a4 gestureType:(int64_t)a5 phase:(unint64_t)a6 modifierFlags:(int64_t)a7;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
+- (SBGestureSwitcherModifierEvent)initWithGestureID:(id)d selectedAppLayout:(id)layout gestureType:(int64_t)type phase:(unint64_t)phase modifierFlags:(int64_t)flags;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
 @end
 
 @implementation SBGestureSwitcherModifierEvent
 
-- (SBGestureSwitcherModifierEvent)initWithGestureID:(id)a3 selectedAppLayout:(id)a4 gestureType:(int64_t)a5 phase:(unint64_t)a6 modifierFlags:(int64_t)a7
+- (SBGestureSwitcherModifierEvent)initWithGestureID:(id)d selectedAppLayout:(id)layout gestureType:(int64_t)type phase:(unint64_t)phase modifierFlags:(int64_t)flags
 {
-  v13 = a3;
-  v14 = a4;
+  dCopy = d;
+  layoutCopy = layout;
   v18.receiver = self;
   v18.super_class = SBGestureSwitcherModifierEvent;
   v15 = [(SBWindowingModifierActivity *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_gestureID, a3);
-    objc_storeStrong(&v16->_selectedAppLayout, a4);
-    v16->_gestureType = a5;
-    v16->_phase = a6;
+    objc_storeStrong(&v15->_gestureID, d);
+    objc_storeStrong(&v16->_selectedAppLayout, layout);
+    v16->_gestureType = type;
+    v16->_phase = phase;
     v16->_touchType = 0;
-    v16->_modifierFlags = a7;
+    v16->_modifierFlags = flags;
     v16->_mouseEvent = 0;
     v16->_pointerTouch = 0;
   }
@@ -33,11 +33,11 @@
   return v16;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v10.receiver = self;
   v10.super_class = SBGestureSwitcherModifierEvent;
-  v4 = [(SBChainableModifierEvent *)&v10 copyWithZone:a3];
+  v4 = [(SBChainableModifierEvent *)&v10 copyWithZone:zone];
   v5 = [(NSUUID *)self->_gestureID copy];
   v6 = *(v4 + 5);
   *(v4 + 5) = v5;
@@ -62,13 +62,13 @@
   return v4;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v13.receiver = self;
   v13.super_class = SBGestureSwitcherModifierEvent;
-  v4 = [(SBSwitcherModifierEvent *)&v13 descriptionBuilderWithMultilinePrefix:a3];
-  v5 = [(NSUUID *)self->_gestureID UUIDString];
-  [v4 appendString:v5 withName:@"gestureID"];
+  v4 = [(SBSwitcherModifierEvent *)&v13 descriptionBuilderWithMultilinePrefix:prefix];
+  uUIDString = [(NSUUID *)self->_gestureID UUIDString];
+  [v4 appendString:uUIDString withName:@"gestureID"];
 
   v6 = self->_phase - 1;
   if (v6 > 2)
@@ -86,15 +86,15 @@
   [v4 appendString:v8 withName:@"gestureType"];
 
   v9 = [v4 appendInteger:self->_modifierFlags withName:@"modifierFlags"];
-  v10 = [(SBAppLayout *)self->_selectedAppLayout succinctDescription];
-  v11 = [v4 appendObject:v10 withName:@"selectedAppLayout"];
+  succinctDescription = [(SBAppLayout *)self->_selectedAppLayout succinctDescription];
+  v11 = [v4 appendObject:succinctDescription withName:@"selectedAppLayout"];
 
   return v4;
 }
 
-- (CGPoint)averageTouchVelocityOverTimeDuration:(double)a3
+- (CGPoint)averageTouchVelocityOverTimeDuration:(double)duration
 {
-  [(SBGestureRecognizerTouchHistoryProviding *)self->_touchHistoryProvider averageTouchVelocityOverTimeDuration:a3];
+  [(SBGestureRecognizerTouchHistoryProviding *)self->_touchHistoryProvider averageTouchVelocityOverTimeDuration:duration];
   result.y = v4;
   result.x = v3;
   return result;

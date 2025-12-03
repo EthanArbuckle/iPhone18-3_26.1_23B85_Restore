@@ -1,22 +1,22 @@
 @interface MTVisualStyling
-- (MTVisualStyling)initWithCoreMaterialVisualStyling:(id)a3;
+- (MTVisualStyling)initWithCoreMaterialVisualStyling:(id)styling;
 - (UIColor)color;
 - (id)_layerConfig;
 - (id)visualEffect;
-- (void)applyToView:(id)a3 withColorBlock:(id)a4;
+- (void)applyToView:(id)view withColorBlock:(id)block;
 @end
 
 @implementation MTVisualStyling
 
 - (UIColor)color
 {
-  v3 = [(MTCoreMaterialVisualStyling *)self->_coreMaterialVisualStyling tintColorName];
-  if (![v3 length])
+  tintColorName = [(MTCoreMaterialVisualStyling *)self->_coreMaterialVisualStyling tintColorName];
+  if (![tintColorName length])
   {
     goto LABEL_7;
   }
 
-  v4 = NSSelectorFromString(v3);
+  v4 = NSSelectorFromString(tintColorName);
   if (!v4)
   {
     goto LABEL_7;
@@ -29,10 +29,10 @@
   }
 
   v6 = [MEMORY[0x277D75348] performSelector:v5];
-  v7 = [(MTCoreMaterialVisualStyling *)self->_coreMaterialVisualStyling tintColorUIStyle];
-  if (v7 >= 1)
+  tintColorUIStyle = [(MTCoreMaterialVisualStyling *)self->_coreMaterialVisualStyling tintColorUIStyle];
+  if (tintColorUIStyle >= 1)
   {
-    v8 = [MEMORY[0x277D75C80] traitCollectionWithUserInterfaceStyle:v7];
+    v8 = [MEMORY[0x277D75C80] traitCollectionWithUserInterfaceStyle:tintColorUIStyle];
     v9 = [v6 resolvedColorWithTraitCollection:v8];
 
     v6 = v9;
@@ -47,10 +47,10 @@ LABEL_7:
   return v6;
 }
 
-- (void)applyToView:(id)a3 withColorBlock:(id)a4
+- (void)applyToView:(id)view withColorBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  blockCopy = block;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
@@ -60,13 +60,13 @@ LABEL_7:
   v12[2] = __68__MTVisualStyling_VisualStylingSupport__applyToView_withColorBlock___block_invoke;
   v12[3] = &unk_27835D4C8;
   v14 = &v15;
-  v8 = v7;
+  v8 = blockCopy;
   v12[4] = self;
   v13 = v8;
   v9 = MEMORY[0x223D601D0](v12);
-  v10 = [(MTVisualStyling *)self _coreMaterialVisualStyling];
-  v11 = [v6 layer];
-  [v10 _applyToLayer:v11 withColorBlock:v9];
+  _coreMaterialVisualStyling = [(MTVisualStyling *)self _coreMaterialVisualStyling];
+  layer = [viewCopy layer];
+  [_coreMaterialVisualStyling _applyToLayer:layer withColorBlock:v9];
 
   if ((v16[3] & 1) == 0)
   {
@@ -104,16 +104,16 @@ void __68__MTVisualStyling_VisualStylingSupport__applyToView_withColorBlock___bl
   }
 }
 
-- (MTVisualStyling)initWithCoreMaterialVisualStyling:(id)a3
+- (MTVisualStyling)initWithCoreMaterialVisualStyling:(id)styling
 {
-  v5 = a3;
+  stylingCopy = styling;
   v9.receiver = self;
   v9.super_class = MTVisualStyling;
   v6 = [(MTVisualStyling *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_coreMaterialVisualStyling, a3);
+    objc_storeStrong(&v6->_coreMaterialVisualStyling, styling);
   }
 
   return v7;
@@ -160,13 +160,13 @@ void __68__MTVisualStyling_VisualStylingSupport__applyToView_withColorBlock___bl
 
 - (id)visualEffect
 {
-  v3 = [(MTCoreMaterialVisualStyling *)self->_coreMaterialVisualStyling _composedFilter];
-  v4 = [v3 type];
-  v5 = [v4 isEqualToString:*MEMORY[0x277CDA640]];
+  _composedFilter = [(MTCoreMaterialVisualStyling *)self->_coreMaterialVisualStyling _composedFilter];
+  type = [_composedFilter type];
+  v5 = [type isEqualToString:*MEMORY[0x277CDA640]];
 
   if (v5)
   {
-    v6 = [v3 valueForKey:*MEMORY[0x277CFFFB0]];
+    v6 = [_composedFilter valueForKey:*MEMORY[0x277CFFFB0]];
     v7 = v6;
     if (v6)
     {

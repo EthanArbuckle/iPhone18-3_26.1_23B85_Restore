@@ -1,42 +1,42 @@
 @interface PPTopicRecord
-+ (id)algorithmForName:(id)a3;
-+ (id)describeAlgorithm:(unint64_t)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToTopicRecord:(id)a3;
++ (id)algorithmForName:(id)name;
++ (id)describeAlgorithm:(unint64_t)algorithm;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToTopicRecord:(id)record;
 - (NSSet)featureNames;
-- (PPTopicRecord)initWithCoder:(id)a3;
+- (PPTopicRecord)initWithCoder:(id)coder;
 - (id)description;
-- (id)featureValueForName:(id)a3;
+- (id)featureValueForName:(id)name;
 - (id)identifier;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PPTopicRecord
 
 - (id)identifier
 {
-  v2 = [(PPTopic *)self->_topic clusterIdentifier];
-  v3 = v2;
-  if (v2)
+  clusterIdentifier = [(PPTopic *)self->_topic clusterIdentifier];
+  v3 = clusterIdentifier;
+  if (clusterIdentifier)
   {
-    v4 = v2;
+    uUIDString = clusterIdentifier;
   }
 
   else
   {
     v5 = objc_opt_new();
-    v4 = [v5 UUIDString];
+    uUIDString = [v5 UUIDString];
   }
 
-  return v4;
+  return uUIDString;
 }
 
-- (id)featureValueForName:(id)a3
+- (id)featureValueForName:(id)name
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"algorithm"])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"algorithm"])
   {
     v5 = MEMORY[0x1E695FE60];
     algorithm = self->_algorithm;
@@ -47,7 +47,7 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if ([v4 isEqualToString:@"initialScore"])
+  if ([nameCopy isEqualToString:@"initialScore"])
   {
     v8 = MEMORY[0x1E695FE60];
     initialScore = self->_initialScore;
@@ -56,59 +56,59 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if ([v4 isEqualToString:@"decayRate"])
+  if ([nameCopy isEqualToString:@"decayRate"])
   {
     v8 = MEMORY[0x1E695FE60];
     initialScore = self->_decayRate;
     goto LABEL_8;
   }
 
-  if ([v4 isEqualToString:@"isLocal"])
+  if ([nameCopy isEqualToString:@"isLocal"])
   {
     v5 = MEMORY[0x1E695FE60];
     algorithm = self->_isLocal;
     goto LABEL_3;
   }
 
-  if ([v4 isEqualToString:@"extractionAssetVersion"])
+  if ([nameCopy isEqualToString:@"extractionAssetVersion"])
   {
     v5 = MEMORY[0x1E695FE60];
     algorithm = self->_extractionAssetVersion;
     goto LABEL_3;
   }
 
-  if ([v4 isEqualToString:@"extractionOsBuild"])
+  if ([nameCopy isEqualToString:@"extractionOsBuild"])
   {
     v7 = [MEMORY[0x1E695FE60] featureValueWithString:self->_extractionOsBuild];
     goto LABEL_9;
   }
 
-  if ([v4 isEqualToString:@"sentimentScore"])
+  if ([nameCopy isEqualToString:@"sentimentScore"])
   {
     v5 = MEMORY[0x1E695FE60];
     algorithm = self->_bucketizedSentimentScore;
     goto LABEL_3;
   }
 
-  if ([v4 hasPrefix:@"topic_"])
+  if ([nameCopy hasPrefix:@"topic_"])
   {
     topic = self->_topic;
     v13 = @"topic_";
 LABEL_27:
-    v14 = [v4 substringFromIndex:{-[__CFString length](v13, "length")}];
+    v14 = [nameCopy substringFromIndex:{-[__CFString length](v13, "length")}];
     v10 = [topic featureValueForName:v14];
 
     goto LABEL_10;
   }
 
-  if ([v4 hasPrefix:@"meta_"])
+  if ([nameCopy hasPrefix:@"meta_"])
   {
     topic = self->_metadata;
     v13 = @"meta_";
     goto LABEL_27;
   }
 
-  if ([v4 hasPrefix:@"source_"])
+  if ([nameCopy hasPrefix:@"source_"])
   {
     topic = self->_source;
     v13 = @"source_";
@@ -167,17 +167,17 @@ void __29__PPTopicRecord_featureNames__block_invoke(uint64_t a1)
   objc_autoreleasePoolPop(v2);
 }
 
-- (BOOL)isEqualToTopicRecord:(id)a3
+- (BOOL)isEqualToTopicRecord:(id)record
 {
-  v4 = a3;
-  if (!v4)
+  recordCopy = record;
+  if (!recordCopy)
   {
     goto LABEL_22;
   }
 
   v5 = self->_topic;
   v6 = v5;
-  if (v5 == v4[1])
+  if (v5 == recordCopy[1])
   {
   }
 
@@ -195,7 +195,7 @@ LABEL_22:
 
   v8 = self->_source;
   v9 = v8;
-  if (v8 == v4[2])
+  if (v8 == recordCopy[2])
   {
   }
 
@@ -209,14 +209,14 @@ LABEL_22:
     }
   }
 
-  if (self->_algorithm != v4[3] || self->_initialScore != *(v4 + 4) || self->_decayRate != *(v4 + 5) || self->_isLocal != *(v4 + 48))
+  if (self->_algorithm != recordCopy[3] || self->_initialScore != *(recordCopy + 4) || self->_decayRate != *(recordCopy + 5) || self->_isLocal != *(recordCopy + 48))
   {
     goto LABEL_22;
   }
 
   v11 = self->_extractionOsBuild;
   v12 = v11;
-  if (v11 == v4[7])
+  if (v11 == recordCopy[7])
   {
   }
 
@@ -230,14 +230,14 @@ LABEL_22:
     }
   }
 
-  if (self->_extractionAssetVersion != *(v4 + 16) || self->_bucketizedSentimentScore != *(v4 + 80))
+  if (self->_extractionAssetVersion != *(recordCopy + 16) || self->_bucketizedSentimentScore != *(recordCopy + 80))
   {
     goto LABEL_22;
   }
 
   v14 = self->_metadata;
   v15 = v14;
-  if (v14 == v4[9])
+  if (v14 == recordCopy[9])
   {
     v16 = 1;
   }
@@ -251,18 +251,18 @@ LABEL_23:
   return v16;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PPTopicRecord *)self isEqualToTopicRecord:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PPTopicRecord *)self isEqualToTopicRecord:v5];
   }
 
   return v6;
@@ -289,7 +289,7 @@ LABEL_23:
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
   topic = self->_topic;
-  v5 = [(PPSource *)self->_source bundleId];
+  bundleId = [(PPSource *)self->_source bundleId];
   v6 = [PPTopicRecord describeAlgorithm:self->_algorithm];
   v7 = v6;
   v8 = @"false";
@@ -298,12 +298,12 @@ LABEL_23:
     v8 = @"true";
   }
 
-  v9 = [v3 initWithFormat:@"<PPTopicRecord t:%@ src:%@ a:'%@' is:%f dr:%f l:%@ eob:%@ eav:%u m:%@>", topic, v5, v6, *&self->_initialScore, *&self->_decayRate, v8, self->_extractionOsBuild, self->_extractionAssetVersion, self->_metadata];
+  v9 = [v3 initWithFormat:@"<PPTopicRecord t:%@ src:%@ a:'%@' is:%f dr:%f l:%@ eob:%@ eav:%u m:%@>", topic, bundleId, v6, *&self->_initialScore, *&self->_decayRate, v8, self->_extractionOsBuild, self->_extractionAssetVersion, self->_metadata];
 
   return v9;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_new();
   [v4 setTopic:self->_topic];
@@ -319,7 +319,7 @@ LABEL_23:
   return v4;
 }
 
-+ (id)algorithmForName:(id)a3
++ (id)algorithmForName:(id)name
 {
   v12[12] = *MEMORY[0x1E69E9840];
   v11[0] = @"ContextKit";
@@ -347,9 +347,9 @@ LABEL_23:
   v12[10] = &unk_1F1B46258;
   v12[11] = &unk_1F1B46270;
   v3 = MEMORY[0x1E695DF20];
-  v4 = a3;
+  nameCopy = name;
   v5 = [v3 dictionaryWithObjects:v12 forKeys:v11 count:12];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  v6 = [v5 objectForKeyedSubscript:nameCopy];
 
   if (v6)
   {
@@ -367,72 +367,72 @@ LABEL_23:
   return v7;
 }
 
-+ (id)describeAlgorithm:(unint64_t)a3
++ (id)describeAlgorithm:(unint64_t)algorithm
 {
-  if (a3 - 1 >= 0xC)
+  if (algorithm - 1 >= 0xC)
   {
-    v4 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"unknown (%lu)", a3];
-    v3 = [v4 _pas_stringBackedByUTF8CString];
+    algorithm = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"unknown (%lu)", algorithm];
+    _pas_stringBackedByUTF8CString = [algorithm _pas_stringBackedByUTF8CString];
   }
 
   else
   {
-    v3 = off_1E77F7CE8[a3 - 1];
+    _pas_stringBackedByUTF8CString = off_1E77F7CE8[algorithm - 1];
   }
 
-  return v3;
+  return _pas_stringBackedByUTF8CString;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   topic = self->_topic;
-  v5 = a3;
-  [v5 encodeObject:topic forKey:@"top"];
-  [v5 encodeObject:self->_source forKey:@"src"];
-  [v5 encodeInt32:LODWORD(self->_algorithm) forKey:@"alg"];
-  [v5 encodeDouble:@"score" forKey:self->_initialScore];
-  [v5 encodeDouble:@"dec" forKey:self->_decayRate];
-  [v5 encodeBool:self->_isLocal forKey:@"loc"];
-  [v5 encodeObject:self->_extractionOsBuild forKey:@"bld"];
-  [v5 encodeInt64:self->_extractionAssetVersion forKey:@"ast"];
-  [v5 encodeInt32:self->_bucketizedSentimentScore forKey:@"snt"];
-  [v5 encodeObject:self->_metadata forKey:@"met"];
+  coderCopy = coder;
+  [coderCopy encodeObject:topic forKey:@"top"];
+  [coderCopy encodeObject:self->_source forKey:@"src"];
+  [coderCopy encodeInt32:LODWORD(self->_algorithm) forKey:@"alg"];
+  [coderCopy encodeDouble:@"score" forKey:self->_initialScore];
+  [coderCopy encodeDouble:@"dec" forKey:self->_decayRate];
+  [coderCopy encodeBool:self->_isLocal forKey:@"loc"];
+  [coderCopy encodeObject:self->_extractionOsBuild forKey:@"bld"];
+  [coderCopy encodeInt64:self->_extractionAssetVersion forKey:@"ast"];
+  [coderCopy encodeInt32:self->_bucketizedSentimentScore forKey:@"snt"];
+  [coderCopy encodeObject:self->_metadata forKey:@"met"];
 }
 
-- (PPTopicRecord)initWithCoder:(id)a3
+- (PPTopicRecord)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v22.receiver = self;
   v22.super_class = PPTopicRecord;
   v5 = [(PPTopicRecord *)&v22 init];
   if (v5)
   {
     v6 = objc_opt_class();
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"top"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"top"];
     topic = v5->_topic;
     v5->_topic = v7;
 
     v9 = PPGetSourceInternPool();
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"src"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"src"];
     v11 = [v9 intern:v10];
     source = v5->_source;
     v5->_source = v11;
 
-    v5->_algorithm = [v4 decodeInt32ForKey:@"alg"];
-    [v4 decodeDoubleForKey:@"score"];
+    v5->_algorithm = [coderCopy decodeInt32ForKey:@"alg"];
+    [coderCopy decodeDoubleForKey:@"score"];
     v5->_initialScore = v13;
-    [v4 decodeDoubleForKey:@"dec"];
+    [coderCopy decodeDoubleForKey:@"dec"];
     v5->_decayRate = v14;
-    v5->_isLocal = [v4 decodeBoolForKey:@"loc"];
+    v5->_isLocal = [coderCopy decodeBoolForKey:@"loc"];
     v15 = PPGetStringInternPool();
-    v16 = [v4 decodeObjectOfClass:v6 forKey:@"bld"];
+    v16 = [coderCopy decodeObjectOfClass:v6 forKey:@"bld"];
     v17 = [v15 intern:v16];
     extractionOsBuild = v5->_extractionOsBuild;
     v5->_extractionOsBuild = v17;
 
-    v5->_extractionAssetVersion = [v4 decodeInt64ForKey:@"ast"];
-    v5->_bucketizedSentimentScore = [v4 decodeInt32ForKey:@"snt"];
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"met"];
+    v5->_extractionAssetVersion = [coderCopy decodeInt64ForKey:@"ast"];
+    v5->_bucketizedSentimentScore = [coderCopy decodeInt32ForKey:@"snt"];
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"met"];
     metadata = v5->_metadata;
     v5->_metadata = v19;
   }

@@ -1,28 +1,28 @@
 @interface MTAUtilities
 + (BOOL)isLandscape;
-+ (MTControlButtonAttributes)controlButtonAttributesForView:(SEL)a3 buttonCircleSize:(id)a4;
-+ (id)durationStringFromInterval:(double)a3;
-+ (id)pillButtonWithTitle:(id)a3;
-+ (id)sectionHeaderConfigurationWithTitle:(id)a3 isRTL:(BOOL)a4;
++ (MTControlButtonAttributes)controlButtonAttributesForView:(SEL)view buttonCircleSize:(id)size;
++ (id)durationStringFromInterval:(double)interval;
++ (id)pillButtonWithTitle:(id)title;
++ (id)sectionHeaderConfigurationWithTitle:(id)title isRTL:(BOOL)l;
 + (id)startTimerShortcutItem;
 + (id)stopTimerShortcutItem;
-+ (id)thinG2FontWithSize:(double)a3;
-+ (id)thinG2MonospacedDigitFontWithSize:(double)a3;
-+ (id)timerShortcutItemForType:(unint64_t)a3;
-+ (int64_t)estimatedSplitLayoutForWindowWidth:(double)a3;
-+ (void)updateTimerAppShortcutsForType:(unint64_t)a3;
++ (id)thinG2FontWithSize:(double)size;
++ (id)thinG2MonospacedDigitFontWithSize:(double)size;
++ (id)timerShortcutItemForType:(unint64_t)type;
++ (int64_t)estimatedSplitLayoutForWindowWidth:(double)width;
++ (void)updateTimerAppShortcutsForType:(unint64_t)type;
 @end
 
 @implementation MTAUtilities
 
-+ (MTControlButtonAttributes)controlButtonAttributesForView:(SEL)a3 buttonCircleSize:(id)a4
++ (MTControlButtonAttributes)controlButtonAttributesForView:(SEL)view buttonCircleSize:(id)size
 {
-  v25 = a4;
+  sizeCopy = size;
   v7 = MTUIShouldUseLargePadLayout();
-  v8 = [v25 traitCollection];
-  v9 = [v8 horizontalSizeClass];
+  traitCollection = [sizeCopy traitCollection];
+  horizontalSizeClass = [traitCollection horizontalSizeClass];
 
-  if (v9 == 2)
+  if (horizontalSizeClass == 2)
   {
     v10 = 1;
   }
@@ -32,7 +32,7 @@
     v10 = v7;
   }
 
-  [v25 bounds];
+  [sizeCopy bounds];
   v12 = v11;
   v14 = v13;
   v15 = +[UIScreen mainScreen];
@@ -57,11 +57,11 @@
 
   else
   {
-    [v25 bounds];
+    [sizeCopy bounds];
     fmin(Height * 0.542, CGRectGetWidth(v28));
-    [v25 safeAreaInsets];
+    [sizeCopy safeAreaInsets];
     [MTACircleButton buttonWidthForSize:0];
-    [v25 bounds];
+    [sizeCopy bounds];
     v18 = (v20 + -32.0) * 0.25;
     [MTACircleButton buttonWidthForSize:a5];
     if (v21 < v18)
@@ -90,13 +90,13 @@
   return result;
 }
 
-+ (id)pillButtonWithTitle:(id)a3
++ (id)pillButtonWithTitle:(id)title
 {
-  v3 = a3;
+  titleCopy = title;
   v4 = [UIButton buttonWithType:1];
   [v4 setRole:1];
   v5 = +[UIButtonConfiguration grayButtonConfiguration];
-  [v5 setTitle:v3];
+  [v5 setTitle:titleCopy];
 
   [v5 setButtonSize:2];
   [v5 setCornerStyle:4];
@@ -108,21 +108,21 @@
   return v4;
 }
 
-+ (id)thinG2FontWithSize:(double)a3
++ (id)thinG2FontWithSize:(double)size
 {
-  UIFontForLanguage = CTFontCreateUIFontForLanguage(0x66u, a3, 0);
+  UIFontForLanguage = CTFontCreateUIFontForLanguage(0x66u, size, 0);
   CopyOfSystemUIFontWithGrade = CTFontCreateCopyOfSystemUIFontWithGrade();
   CFRelease(UIFontForLanguage);
 
   return CopyOfSystemUIFontWithGrade;
 }
 
-+ (id)thinG2MonospacedDigitFontWithSize:(double)a3
++ (id)thinG2MonospacedDigitFontWithSize:(double)size
 {
   v4 = CTFontDescriptorCreateForUIType();
   CopyWithFeature = CTFontDescriptorCreateCopyWithFeature(v4, &off_1000B1968, &off_1000B1980);
   CFRelease(v4);
-  v6 = CTFontCreateWithFontDescriptor(CopyWithFeature, a3, 0);
+  v6 = CTFontCreateWithFontDescriptor(CopyWithFeature, size, 0);
   CFRelease(CopyWithFeature);
   CopyOfSystemUIFontWithGrade = CTFontCreateCopyOfSystemUIFontWithGrade();
   CFRelease(v6);
@@ -130,7 +130,7 @@
   return CopyOfSystemUIFontWithGrade;
 }
 
-+ (id)durationStringFromInterval:(double)a3
++ (id)durationStringFromInterval:(double)interval
 {
   if (qword_1000D2AA8 != -1)
   {
@@ -141,34 +141,34 @@
   [qword_1000D2AA0 setUnitsStyle:2];
   v4 = qword_1000D2AA0;
 
-  return [v4 stringFromTimeInterval:a3];
+  return [v4 stringFromTimeInterval:interval];
 }
 
 + (BOOL)isLandscape
 {
   v2 = +[UIApplication sharedApplication];
-  v3 = [v2 windows];
-  v4 = [v3 firstObject];
-  v5 = [v4 windowScene];
-  v6 = [v5 interfaceOrientation];
+  windows = [v2 windows];
+  firstObject = [windows firstObject];
+  windowScene = [firstObject windowScene];
+  interfaceOrientation = [windowScene interfaceOrientation];
 
-  return (v6 - 3) < 2;
+  return (interfaceOrientation - 3) < 2;
 }
 
-+ (id)sectionHeaderConfigurationWithTitle:(id)a3 isRTL:(BOOL)a4
++ (id)sectionHeaderConfigurationWithTitle:(id)title isRTL:(BOOL)l
 {
-  v4 = a4;
-  v5 = a3;
+  lCopy = l;
+  titleCopy = title;
   v6 = +[UIListContentConfiguration prominentInsetGroupedHeaderConfiguration];
-  v7 = [v6 textProperties];
-  v8 = [v7 font];
+  textProperties = [v6 textProperties];
+  font = [textProperties font];
 
-  v9 = [v6 textProperties];
-  v10 = [v9 color];
+  textProperties2 = [v6 textProperties];
+  color = [textProperties2 color];
 
   v11 = objc_alloc_init(NSMutableParagraphStyle);
   v12 = v11;
-  if (v4)
+  if (lCopy)
   {
     v13 = 2;
   }
@@ -184,36 +184,36 @@
   v15 = [NSAttributedString alloc];
   v19[0] = NSFontAttributeName;
   v19[1] = NSForegroundColorAttributeName;
-  v20[0] = v8;
-  v20[1] = v10;
+  v20[0] = font;
+  v20[1] = color;
   v19[2] = NSParagraphStyleAttributeName;
   v20[2] = v12;
   v16 = [NSDictionary dictionaryWithObjects:v20 forKeys:v19 count:3];
-  v17 = [v15 initWithString:v5 attributes:v16];
+  v17 = [v15 initWithString:titleCopy attributes:v16];
 
   [v14 setAttributedText:v17];
 
   return v14;
 }
 
-+ (int64_t)estimatedSplitLayoutForWindowWidth:(double)a3
++ (int64_t)estimatedSplitLayoutForWindowWidth:(double)width
 {
   v4 = +[UIScreen mainScreen];
   [v4 bounds];
   v6 = v5;
 
   v7 = v6 * 0.5;
-  if (v6 > a3 && v7 < a3)
+  if (v6 > width && v7 < width)
   {
     return 1;
   }
 
-  if (v7 + v6 / -3.0 * 0.25 > a3)
+  if (v7 + v6 / -3.0 * 0.25 > width)
   {
     return 2;
   }
 
-  if (v6 == a3)
+  if (v6 == width)
   {
     return 0;
   }
@@ -221,14 +221,14 @@
   return 3;
 }
 
-+ (void)updateTimerAppShortcutsForType:(unint64_t)a3
++ (void)updateTimerAppShortcutsForType:(unint64_t)type
 {
   v5 = +[UIApplication sharedApplication];
-  v6 = [v5 shortcutItems];
-  v10 = [v6 mutableCopy];
+  shortcutItems = [v5 shortcutItems];
+  v10 = [shortcutItems mutableCopy];
 
   v7 = [v10 indexOfObjectPassingTest:&stru_1000AE5B8];
-  v8 = [a1 timerShortcutItemForType:a3];
+  v8 = [self timerShortcutItemForType:type];
   if (v8)
   {
     if (v7 == 0x7FFFFFFFFFFFFFFFLL)
@@ -246,16 +246,16 @@
   }
 }
 
-+ (id)timerShortcutItemForType:(unint64_t)a3
++ (id)timerShortcutItemForType:(unint64_t)type
 {
-  if (a3)
+  if (type)
   {
-    [a1 stopTimerShortcutItem];
+    [self stopTimerShortcutItem];
   }
 
   else
   {
-    [a1 startTimerShortcutItem];
+    [self startTimerShortcutItem];
   }
   v3 = ;
 

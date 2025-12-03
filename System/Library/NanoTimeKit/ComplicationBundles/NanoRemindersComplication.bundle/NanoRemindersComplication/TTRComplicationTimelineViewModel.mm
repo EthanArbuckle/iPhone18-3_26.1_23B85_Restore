@@ -2,27 +2,27 @@
 - (CLKComplicationTemplate)lockedTemplate;
 - (CLKComplicationTemplate)privacyTemplate;
 - (CLKComplicationTimelineEntry)currentEntry;
-- (TTRComplicationTimelineViewModel)initWithTimelineModel:(id)a3 templateGenerator:(id)a4;
-- (id)_timelineEntriesForModelEntries:(id)a3;
-- (id)_timelineEntryForModelEntry:(id)a3;
-- (id)entriesAfterDate:(id)a3 limit:(unint64_t)a4;
-- (id)entriesInSameDayAsDate:(id)a3 limit:(unint64_t)a4;
+- (TTRComplicationTimelineViewModel)initWithTimelineModel:(id)model templateGenerator:(id)generator;
+- (id)_timelineEntriesForModelEntries:(id)entries;
+- (id)_timelineEntryForModelEntry:(id)entry;
+- (id)entriesAfterDate:(id)date limit:(unint64_t)limit;
+- (id)entriesInSameDayAsDate:(id)date limit:(unint64_t)limit;
 @end
 
 @implementation TTRComplicationTimelineViewModel
 
-- (TTRComplicationTimelineViewModel)initWithTimelineModel:(id)a3 templateGenerator:(id)a4
+- (TTRComplicationTimelineViewModel)initWithTimelineModel:(id)model templateGenerator:(id)generator
 {
-  v7 = a3;
-  v8 = a4;
+  modelCopy = model;
+  generatorCopy = generator;
   v12.receiver = self;
   v12.super_class = TTRComplicationTimelineViewModel;
   v9 = [(TTRComplicationTimelineViewModel *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_timelineModel, a3);
-    objc_storeStrong(&v10->_templateGenerator, a4);
+    objc_storeStrong(&v9->_timelineModel, model);
+    objc_storeStrong(&v10->_templateGenerator, generator);
   }
 
   return v10;
@@ -30,73 +30,73 @@
 
 - (CLKComplicationTemplate)lockedTemplate
 {
-  v2 = [(TTRComplicationTimelineViewModel *)self templateGenerator];
-  v3 = [v2 lockedTemplate];
+  templateGenerator = [(TTRComplicationTimelineViewModel *)self templateGenerator];
+  lockedTemplate = [templateGenerator lockedTemplate];
 
-  return v3;
+  return lockedTemplate;
 }
 
 - (CLKComplicationTemplate)privacyTemplate
 {
-  v2 = [(TTRComplicationTimelineViewModel *)self templateGenerator];
-  v3 = [v2 privacyTemplate];
+  templateGenerator = [(TTRComplicationTimelineViewModel *)self templateGenerator];
+  privacyTemplate = [templateGenerator privacyTemplate];
 
-  return v3;
+  return privacyTemplate;
 }
 
 - (CLKComplicationTimelineEntry)currentEntry
 {
-  v3 = [(TTRComplicationTimelineViewModel *)self timelineModel];
-  v4 = [v3 currentEntry];
-  v5 = [(TTRComplicationTimelineViewModel *)self _timelineEntryForModelEntry:v4];
+  timelineModel = [(TTRComplicationTimelineViewModel *)self timelineModel];
+  currentEntry = [timelineModel currentEntry];
+  v5 = [(TTRComplicationTimelineViewModel *)self _timelineEntryForModelEntry:currentEntry];
 
   return v5;
 }
 
-- (id)entriesAfterDate:(id)a3 limit:(unint64_t)a4
+- (id)entriesAfterDate:(id)date limit:(unint64_t)limit
 {
-  v6 = a3;
-  v7 = [(TTRComplicationTimelineViewModel *)self timelineModel];
-  v8 = [v7 entriesAfterDate:v6 limit:a4];
+  dateCopy = date;
+  timelineModel = [(TTRComplicationTimelineViewModel *)self timelineModel];
+  v8 = [timelineModel entriesAfterDate:dateCopy limit:limit];
 
   v9 = [(TTRComplicationTimelineViewModel *)self _timelineEntriesForModelEntries:v8];
 
   return v9;
 }
 
-- (id)entriesInSameDayAsDate:(id)a3 limit:(unint64_t)a4
+- (id)entriesInSameDayAsDate:(id)date limit:(unint64_t)limit
 {
-  v6 = a3;
-  v7 = [(TTRComplicationTimelineViewModel *)self timelineModel];
-  v8 = [v7 entriesInSameDayAsDate:v6 limit:a4];
+  dateCopy = date;
+  timelineModel = [(TTRComplicationTimelineViewModel *)self timelineModel];
+  v8 = [timelineModel entriesInSameDayAsDate:dateCopy limit:limit];
 
   v9 = [(TTRComplicationTimelineViewModel *)self _timelineEntriesForModelEntries:v8];
 
   return v9;
 }
 
-- (id)_timelineEntryForModelEntry:(id)a3
+- (id)_timelineEntryForModelEntry:(id)entry
 {
-  v4 = a3;
-  v5 = [(TTRComplicationTimelineViewModel *)self templateGenerator];
-  v6 = [v5 templateForTimelineModelEntry:v4];
+  entryCopy = entry;
+  templateGenerator = [(TTRComplicationTimelineViewModel *)self templateGenerator];
+  v6 = [templateGenerator templateForTimelineModelEntry:entryCopy];
 
-  v7 = [v4 startDate];
+  startDate = [entryCopy startDate];
 
-  v8 = [CLKComplicationTimelineEntry entryWithDate:v7 complicationTemplate:v6];
+  v8 = [CLKComplicationTimelineEntry entryWithDate:startDate complicationTemplate:v6];
 
   return v8;
 }
 
-- (id)_timelineEntriesForModelEntries:(id)a3
+- (id)_timelineEntriesForModelEntries:(id)entries
 {
-  v4 = a3;
+  entriesCopy = entries;
   v5 = objc_alloc_init(NSMutableArray);
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = v4;
+  v6 = entriesCopy;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {

@@ -13,9 +13,9 @@
 
   else if ([(PHAsset *)self mediaType]== 1)
   {
-    v4 = [(PHAsset *)self mediaSubtypes];
+    mediaSubtypes = [(PHAsset *)self mediaSubtypes];
     v3 = &MOPhotoResourceTypeLivePhoto;
-    if ((v4 & 8) == 0)
+    if ((mediaSubtypes & 8) == 0)
     {
       v3 = &MOPhotoResourceTypeStillPhoto;
     }

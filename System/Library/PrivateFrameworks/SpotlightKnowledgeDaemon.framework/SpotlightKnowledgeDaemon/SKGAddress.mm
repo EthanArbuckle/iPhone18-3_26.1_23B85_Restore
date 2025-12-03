@@ -1,29 +1,29 @@
 @interface SKGAddress
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSArray)synonyms;
 - (id)description;
 - (unint64_t)hash;
-- (void)addComponent:(id)a3;
+- (void)addComponent:(id)component;
 @end
 
 @implementation SKGAddress
 
-- (void)addComponent:(id)a3
+- (void)addComponent:(id)component
 {
-  v4 = a3;
+  componentCopy = component;
   components = self->_components;
-  v9 = v4;
+  v9 = componentCopy;
   if (!components)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_components;
     self->_components = v6;
 
-    v4 = v9;
+    componentCopy = v9;
     components = self->_components;
   }
 
-  if (([(NSMutableArray *)components containsObject:v4]& 1) == 0)
+  if (([(NSMutableArray *)components containsObject:componentCopy]& 1) == 0)
   {
     [(NSMutableArray *)self->_components addObject:v9];
     [(SKGEntity *)self score];
@@ -44,16 +44,16 @@
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(SKGAddress *)self address];
-    v7 = [v5 address];
-    if ([v6 isEqualToString:v7])
+    v5 = equalCopy;
+    address = [(SKGAddress *)self address];
+    address2 = [v5 address];
+    if ([address isEqualToString:address2])
     {
       v10.receiver = self;
       v10.super_class = SKGAddress;
@@ -76,9 +76,9 @@
 
 - (unint64_t)hash
 {
-  v2 = [(SKGAddress *)self address];
-  v3 = [v2 lowercaseString];
-  v4 = [v3 hash];
+  address = [(SKGAddress *)self address];
+  lowercaseString = [address lowercaseString];
+  v4 = [lowercaseString hash];
 
   return v4;
 }
@@ -87,9 +87,9 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(SKGAddress *)self address];
+  address = [(SKGAddress *)self address];
   [(SKGEntity *)self score];
-  v7 = [v3 stringWithFormat:@"<%@: %@ %f>", v4, v5, v6];
+  v7 = [v3 stringWithFormat:@"<%@: %@ %f>", v4, address, v6];
 
   return v7;
 }

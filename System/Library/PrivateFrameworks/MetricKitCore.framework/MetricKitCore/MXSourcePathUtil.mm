@@ -1,32 +1,32 @@
 @interface MXSourcePathUtil
-- (MXSourcePathUtil)initWithDateUtil:(id)a3 andStorageUtil:(id)a4;
-- (id)_filePathOfDiagnosticSourcePayloadForDate:(id)a3 andSourceDirectory:(id)a4;
-- (id)_filePathOfMetricSourcePayloadForDate:(id)a3 andSourceDirectory:(id)a4;
-- (id)_setupSourceDirectoryForSourceID:(int64_t)a3 andBundleID:(id)a4;
-- (id)_sourceDirectoryForSource:(int64_t)a3 andBundleID:(id)a4;
-- (id)filePathOfDiagnosticSourcePayloadForSourceID:(int64_t)a3 andBundleID:(id)a4 andDate:(id)a5;
-- (id)filePathOfMetricSourcePayloadForSourceID:(int64_t)a3 andBundleID:(id)a4 andDate:(id)a5;
-- (void)_removeFilesForSourceID:(int64_t)a3;
-- (void)_removeFilesForSourceID:(int64_t)a3 andClient:(id)a4;
-- (void)cleanDataDirectoryForSource:(int64_t)a3;
-- (void)cleanDiagnosticsDirectoryForSource:(int64_t)a3 andClient:(id)a4;
-- (void)removeDeliveredDiagnosticsForSourceID:(int64_t)a3 forDate:(id)a4;
+- (MXSourcePathUtil)initWithDateUtil:(id)util andStorageUtil:(id)storageUtil;
+- (id)_filePathOfDiagnosticSourcePayloadForDate:(id)date andSourceDirectory:(id)directory;
+- (id)_filePathOfMetricSourcePayloadForDate:(id)date andSourceDirectory:(id)directory;
+- (id)_setupSourceDirectoryForSourceID:(int64_t)d andBundleID:(id)iD;
+- (id)_sourceDirectoryForSource:(int64_t)source andBundleID:(id)d;
+- (id)filePathOfDiagnosticSourcePayloadForSourceID:(int64_t)d andBundleID:(id)iD andDate:(id)date;
+- (id)filePathOfMetricSourcePayloadForSourceID:(int64_t)d andBundleID:(id)iD andDate:(id)date;
+- (void)_removeFilesForSourceID:(int64_t)d;
+- (void)_removeFilesForSourceID:(int64_t)d andClient:(id)client;
+- (void)cleanDataDirectoryForSource:(int64_t)source;
+- (void)cleanDiagnosticsDirectoryForSource:(int64_t)source andClient:(id)client;
+- (void)removeDeliveredDiagnosticsForSourceID:(int64_t)d forDate:(id)date;
 @end
 
 @implementation MXSourcePathUtil
 
-- (MXSourcePathUtil)initWithDateUtil:(id)a3 andStorageUtil:(id)a4
+- (MXSourcePathUtil)initWithDateUtil:(id)util andStorageUtil:(id)storageUtil
 {
-  v7 = a3;
-  v8 = a4;
+  utilCopy = util;
+  storageUtilCopy = storageUtil;
   v14.receiver = self;
   v14.super_class = MXSourcePathUtil;
   v9 = [(MXSourcePathUtil *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_dateUtil, a3);
-    objc_storeStrong(&v10->_storageUtil, a4);
+    objc_storeStrong(&v9->_dateUtil, util);
+    objc_storeStrong(&v10->_storageUtil, storageUtil);
     v11 = os_log_create("com.apple.metrickit", "source.filepath.utility");
     logHandle = v10->_logHandle;
     v10->_logHandle = v11;
@@ -40,13 +40,13 @@
   return v10;
 }
 
-- (id)filePathOfMetricSourcePayloadForSourceID:(int64_t)a3 andBundleID:(id)a4 andDate:(id)a5
+- (id)filePathOfMetricSourcePayloadForSourceID:(int64_t)d andBundleID:(id)iD andDate:(id)date
 {
-  v8 = a5;
-  v9 = [(MXSourcePathUtil *)self _setupSourceDirectoryForSourceID:a3 andBundleID:a4];
+  dateCopy = date;
+  v9 = [(MXSourcePathUtil *)self _setupSourceDirectoryForSourceID:d andBundleID:iD];
   if (v9)
   {
-    v10 = [(MXSourcePathUtil *)self _filePathOfMetricSourcePayloadForDate:v8 andSourceDirectory:v9];
+    v10 = [(MXSourcePathUtil *)self _filePathOfMetricSourcePayloadForDate:dateCopy andSourceDirectory:v9];
   }
 
   else
@@ -57,13 +57,13 @@
   return v10;
 }
 
-- (id)filePathOfDiagnosticSourcePayloadForSourceID:(int64_t)a3 andBundleID:(id)a4 andDate:(id)a5
+- (id)filePathOfDiagnosticSourcePayloadForSourceID:(int64_t)d andBundleID:(id)iD andDate:(id)date
 {
-  v8 = a5;
-  v9 = [(MXSourcePathUtil *)self _setupSourceDirectoryForSourceID:a3 andBundleID:a4];
+  dateCopy = date;
+  v9 = [(MXSourcePathUtil *)self _setupSourceDirectoryForSourceID:d andBundleID:iD];
   if (v9)
   {
-    v10 = [(MXSourcePathUtil *)self _filePathOfDiagnosticSourcePayloadForDate:v8 andSourceDirectory:v9];
+    v10 = [(MXSourcePathUtil *)self _filePathOfDiagnosticSourcePayloadForDate:dateCopy andSourceDirectory:v9];
   }
 
   else
@@ -74,33 +74,33 @@
   return v10;
 }
 
-- (void)cleanDataDirectoryForSource:(int64_t)a3
+- (void)cleanDataDirectoryForSource:(int64_t)source
 {
-  if ((a3 - 2) <= 4)
+  if ((source - 2) <= 4)
   {
     [(MXSourcePathUtil *)self _removeFilesForSourceID:?];
   }
 }
 
-- (void)cleanDiagnosticsDirectoryForSource:(int64_t)a3 andClient:(id)a4
+- (void)cleanDiagnosticsDirectoryForSource:(int64_t)source andClient:(id)client
 {
-  if ((a3 - 3) <= 2)
+  if ((source - 3) <= 2)
   {
     [MXSourcePathUtil _removeFilesForSourceID:"_removeFilesForSourceID:andClient:" andClient:?];
   }
 }
 
-- (void)removeDeliveredDiagnosticsForSourceID:(int64_t)a3 forDate:(id)a4
+- (void)removeDeliveredDiagnosticsForSourceID:(int64_t)d forDate:(id)date
 {
-  v6 = a4;
-  v7 = [&unk_286A1BAA8 objectAtIndexedSubscript:a3];
+  dateCopy = date;
+  v7 = [&unk_286A1BAA8 objectAtIndexedSubscript:d];
   if (os_log_type_enabled(self->_logHandle, OS_LOG_TYPE_DEBUG))
   {
     [MXSourcePathUtil removeDeliveredDiagnosticsForSourceID:forDate:];
   }
 
-  v8 = [MEMORY[0x277D28708] containerPath];
-  v9 = [v8 stringByAppendingPathComponent:v7];
+  containerPath = [MEMORY[0x277D28708] containerPath];
+  v9 = [containerPath stringByAppendingPathComponent:v7];
   storageUtil = self->_storageUtil;
   v18 = 0;
   v11 = [(MXStorageUtilProtocol *)storageUtil filesFromDirectory:v9 error:&v18];
@@ -122,7 +122,7 @@
       [MXSourcePathUtil removeDeliveredDiagnosticsForSourceID:v11 forDate:?];
     }
 
-    v15 = [(MXDateUtil *)self->_dateUtil stringFromDate:v6];
+    v15 = [(MXDateUtil *)self->_dateUtil stringFromDate:dateCopy];
     v16 = self->_storageUtil;
     v17 = 0;
     [(MXStorageUtilProtocol *)v16 removeFiles:v11 withFilenameContainsSubstring:v15 fromDirectory:v9 error:&v17];
@@ -130,37 +130,37 @@
   }
 }
 
-- (id)_filePathOfMetricSourcePayloadForDate:(id)a3 andSourceDirectory:(id)a4
+- (id)_filePathOfMetricSourcePayloadForDate:(id)date andSourceDirectory:(id)directory
 {
   dateUtil = self->_dateUtil;
-  v6 = a4;
-  v7 = [(MXDateUtil *)dateUtil stringFromDate:a3];
+  directoryCopy = directory;
+  v7 = [(MXDateUtil *)dateUtil stringFromDate:date];
   v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"log-%@", v7];
-  v9 = [v6 stringByAppendingPathComponent:v8];
+  v9 = [directoryCopy stringByAppendingPathComponent:v8];
 
   return v9;
 }
 
-- (id)_filePathOfDiagnosticSourcePayloadForDate:(id)a3 andSourceDirectory:(id)a4
+- (id)_filePathOfDiagnosticSourcePayloadForDate:(id)date andSourceDirectory:(id)directory
 {
   dateUtil = self->_dateUtil;
-  v6 = a4;
-  v7 = [(MXDateUtil *)dateUtil stringFromDate:a3];
+  directoryCopy = directory;
+  v7 = [(MXDateUtil *)dateUtil stringFromDate:date];
   v8 = MEMORY[0x277CCACA8];
-  v9 = [MEMORY[0x277CCAD78] UUID];
-  v10 = [v9 UUIDString];
-  v11 = [v8 stringWithFormat:@"diag-log-%@-%@", v7, v10];
-  v12 = [v6 stringByAppendingPathComponent:v11];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
+  v11 = [v8 stringWithFormat:@"diag-log-%@-%@", v7, uUIDString];
+  v12 = [directoryCopy stringByAppendingPathComponent:v11];
 
   return v12;
 }
 
-- (id)_setupSourceDirectoryForSourceID:(int64_t)a3 andBundleID:(id)a4
+- (id)_setupSourceDirectoryForSourceID:(int64_t)d andBundleID:(id)iD
 {
-  v6 = [(MXSourcePathUtil *)self _sourceDirectoryForSource:a3 andBundleID:a4];
+  v6 = [(MXSourcePathUtil *)self _sourceDirectoryForSource:d andBundleID:iD];
   if ([(MXStorageUtilProtocol *)self->_storageUtil isDataExistAsDirectoryForPath:v6])
   {
-    if ((a3 & 0xFFFFFFFFFFFFFFFBLL) == 2)
+    if ((d & 0xFFFFFFFFFFFFFFFBLL) == 2)
     {
       if (os_log_type_enabled(self->_logHandle, OS_LOG_TYPE_DEBUG))
       {
@@ -197,41 +197,41 @@ LABEL_11:
   return v7;
 }
 
-- (id)_sourceDirectoryForSource:(int64_t)a3 andBundleID:(id)a4
+- (id)_sourceDirectoryForSource:(int64_t)source andBundleID:(id)d
 {
-  v5 = a4;
-  v6 = [&unk_286A1BAC0 objectAtIndexedSubscript:a3];
-  v7 = [MEMORY[0x277D28708] containerPath];
-  v8 = v7;
-  if ((a3 & 0xFFFFFFFFFFFFFFFBLL) == 2)
+  dCopy = d;
+  v6 = [&unk_286A1BAC0 objectAtIndexedSubscript:source];
+  containerPath = [MEMORY[0x277D28708] containerPath];
+  v8 = containerPath;
+  if ((source & 0xFFFFFFFFFFFFFFFBLL) == 2)
   {
-    v9 = [v7 stringByAppendingPathComponent:v6];
+    v9 = [containerPath stringByAppendingPathComponent:v6];
   }
 
-  else if ((a3 - 3) > 2)
+  else if ((source - 3) > 2)
   {
     v9 = 0;
   }
 
   else
   {
-    v10 = [v7 stringByAppendingPathComponent:v6];
-    v9 = [v10 stringByAppendingPathComponent:v5];
+    v10 = [containerPath stringByAppendingPathComponent:v6];
+    v9 = [v10 stringByAppendingPathComponent:dCopy];
   }
 
   return v9;
 }
 
-- (void)_removeFilesForSourceID:(int64_t)a3
+- (void)_removeFilesForSourceID:(int64_t)d
 {
-  v4 = [&unk_286A1BAD8 objectAtIndexedSubscript:a3];
+  v4 = [&unk_286A1BAD8 objectAtIndexedSubscript:d];
   if (os_log_type_enabled(self->_logHandle, OS_LOG_TYPE_DEBUG))
   {
     [MXSourcePathUtil removeDeliveredDiagnosticsForSourceID:forDate:];
   }
 
-  v5 = [MEMORY[0x277D28708] containerPath];
-  v6 = [v5 stringByAppendingPathComponent:v4];
+  containerPath = [MEMORY[0x277D28708] containerPath];
+  v6 = [containerPath stringByAppendingPathComponent:v4];
   storageUtil = self->_storageUtil;
   v14 = 0;
   v8 = [(MXStorageUtilProtocol *)storageUtil filesFromDirectory:v6 error:&v14];
@@ -260,18 +260,18 @@ LABEL_11:
   }
 }
 
-- (void)_removeFilesForSourceID:(int64_t)a3 andClient:(id)a4
+- (void)_removeFilesForSourceID:(int64_t)d andClient:(id)client
 {
-  v6 = a4;
-  v7 = [&unk_286A1BAF0 objectAtIndexedSubscript:a3];
+  clientCopy = client;
+  v7 = [&unk_286A1BAF0 objectAtIndexedSubscript:d];
   if (os_log_type_enabled(self->_logHandle, OS_LOG_TYPE_DEBUG))
   {
     [MXSourcePathUtil removeDeliveredDiagnosticsForSourceID:forDate:];
   }
 
-  v8 = [MEMORY[0x277D28708] containerPath];
-  v9 = [v8 stringByAppendingPathComponent:v7];
-  v10 = [v9 stringByAppendingPathComponent:v6];
+  containerPath = [MEMORY[0x277D28708] containerPath];
+  v9 = [containerPath stringByAppendingPathComponent:v7];
+  v10 = [v9 stringByAppendingPathComponent:clientCopy];
 
   storageUtil = self->_storageUtil;
   v18 = 0;

@@ -1,21 +1,21 @@
 @interface PGMemoryTriggerRecentSyndicatedAssets
-- (PGMemoryTriggerRecentSyndicatedAssets)initWithLoggingConnection:(id)a3 photoLibrary:(id)a4 momentNodesWithBlockedFeatureCache:(id)a5;
-- (id)resultsTriggeredWithContext:(id)a3 inGraph:(id)a4 progressReporter:(id)a5;
+- (PGMemoryTriggerRecentSyndicatedAssets)initWithLoggingConnection:(id)connection photoLibrary:(id)library momentNodesWithBlockedFeatureCache:(id)cache;
+- (id)resultsTriggeredWithContext:(id)context inGraph:(id)graph progressReporter:(id)reporter;
 @end
 
 @implementation PGMemoryTriggerRecentSyndicatedAssets
 
-- (id)resultsTriggeredWithContext:(id)a3 inGraph:(id)a4 progressReporter:(id)a5
+- (id)resultsTriggeredWithContext:(id)context inGraph:(id)graph progressReporter:(id)reporter
 {
   v83 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  contextCopy = context;
+  graphCopy = graph;
+  reporterCopy = reporter;
   v76 = 0;
   v77 = &v76;
   v78 = 0x2020000000;
   v79 = 0;
-  v11 = [v10 isCancelledWithProgress:0.0];
+  v11 = [reporterCopy isCancelledWithProgress:0.0];
   *(v77 + 24) = v11;
   if (v11)
   {
@@ -34,16 +34,16 @@ LABEL_25:
     goto LABEL_26;
   }
 
-  v13 = [(PGPhotoKitMemoryTrigger *)self photoLibrary];
-  v14 = v13 == 0;
+  photoLibrary = [(PGPhotoKitMemoryTrigger *)self photoLibrary];
+  v14 = photoLibrary == 0;
 
   if (v14)
   {
-    v35 = [(PGMemoryTrigger *)self loggingConnection];
-    if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
+    loggingConnection = [(PGMemoryTrigger *)self loggingConnection];
+    if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
     {
       *buf = 0;
-      _os_log_error_impl(&dword_22F0FC000, v35, OS_LOG_TYPE_ERROR, "[PGMemoryTriggerRecentSyndicatedAssets]: Trigger not available without a photo library.", buf, 2u);
+      _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "[PGMemoryTriggerRecentSyndicatedAssets]: Trigger not available without a photo library.", buf, 2u);
     }
 
     if (v77[3])
@@ -53,7 +53,7 @@ LABEL_25:
 
     else
     {
-      v37 = [v10 isCancelledWithProgress:1.0];
+      v37 = [reporterCopy isCancelledWithProgress:1.0];
       *(v77 + 24) = v37;
       if ((v37 & 1) == 0)
       {
@@ -76,14 +76,14 @@ LABEL_26:
     goto LABEL_59;
   }
 
-  v15 = [v8 localDate];
+  localDate = [contextCopy localDate];
   v16 = MEMORY[0x277D27690];
-  v17 = [v8 timeZone];
-  v18 = [v16 universalDateFromLocalDate:v15 inTimeZone:v17];
+  timeZone = [contextCopy timeZone];
+  v18 = [v16 universalDateFromLocalDate:localDate inTimeZone:timeZone];
 
   v64 = [MEMORY[0x277D27690] dateByAddingDays:-7 toDate:v18];
-  v19 = [(PGPhotoKitMemoryTrigger *)self photoLibrary];
-  v20 = [v19 librarySpecificFetchOptions];
+  photoLibrary2 = [(PGPhotoKitMemoryTrigger *)self photoLibrary];
+  librarySpecificFetchOptions = [photoLibrary2 librarySpecificFetchOptions];
 
   v63 = [MEMORY[0x277D3B248] predicateForIncludeMask:objc_msgSend(MEMORY[0x277D3B248] useIndex:{"maskForGuestAsset"), 1}];
   v62 = [MEMORY[0x277CCAC30] predicateWithFormat:@"dateCreated > %@ && dateCreated <= %@", v64, v18];
@@ -92,29 +92,29 @@ LABEL_26:
   v80[1] = v62;
   v22 = [MEMORY[0x277CBEA60] arrayWithObjects:v80 count:2];
   v23 = [v21 andPredicateWithSubpredicates:v22];
-  [v20 setInternalPredicate:v23];
+  [librarySpecificFetchOptions setInternalPredicate:v23];
 
-  [v20 setIncludeGuestAssets:1];
-  v61 = [MEMORY[0x277CD97A8] fetchAssetsWithOptions:v20];
+  [librarySpecificFetchOptions setIncludeGuestAssets:1];
+  v61 = [MEMORY[0x277CD97A8] fetchAssetsWithOptions:librarySpecificFetchOptions];
   v24 = [v61 count];
   if (v24)
   {
-    v25 = [(PGMemoryTrigger *)self loggingConnection];
-    if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
+    loggingConnection2 = [(PGMemoryTrigger *)self loggingConnection];
+    if (os_log_type_enabled(loggingConnection2, OS_LOG_TYPE_INFO))
     {
       *buf = 134217984;
       *v82 = v24;
-      _os_log_impl(&dword_22F0FC000, v25, OS_LOG_TYPE_INFO, "[PGMemoryTriggerRecentSyndicatedAssets]: Found %tu recent guest", buf, 0xCu);
+      _os_log_impl(&dword_22F0FC000, loggingConnection2, OS_LOG_TYPE_INFO, "[PGMemoryTriggerRecentSyndicatedAssets]: Found %tu recent guest", buf, 0xCu);
     }
 
-    v26 = [(PGPhotoKitMemoryTrigger *)self photoLibrary];
-    v60 = [v26 librarySpecificFetchOptions];
+    photoLibrary3 = [(PGPhotoKitMemoryTrigger *)self photoLibrary];
+    librarySpecificFetchOptions2 = [photoLibrary3 librarySpecificFetchOptions];
 
-    v57 = [MEMORY[0x277CD98F8] fetchMomentUUIDByAssetUUIDForAssets:v61 options:v60];
-    v59 = [v57 allValues];
-    if ([v59 count])
+    v57 = [MEMORY[0x277CD98F8] fetchMomentUUIDByAssetUUIDForAssets:v61 options:librarySpecificFetchOptions2];
+    allValues = [v57 allValues];
+    if ([allValues count])
     {
-      v58 = [PGGraphMomentNodeCollection momentNodesForArrayOfUUIDs:v59 inGraph:v9];
+      v58 = [PGGraphMomentNodeCollection momentNodesForArrayOfUUIDs:allValues inGraph:graphCopy];
       if ([v58 count])
       {
         v27 = [MEMORY[0x277CCAB58] indexSetWithIndex:1];
@@ -131,7 +131,7 @@ LABEL_26:
         v73[2] = __94__PGMemoryTriggerRecentSyndicatedAssets_resultsTriggeredWithContext_inGraph_progressReporter___block_invoke;
         v73[3] = &unk_278889448;
         v75 = &v76;
-        v51 = v10;
+        v51 = reporterCopy;
         v74 = v51;
         v32 = [v31 progressReporterWithProgressBlock:v73];
         v65[0] = MEMORY[0x277D85DD0];
@@ -142,8 +142,8 @@ LABEL_26:
         v66 = v53;
         v33 = v27;
         v67 = v33;
-        v68 = self;
-        v69 = v9;
+        selfCopy = self;
+        v69 = graphCopy;
         v54 = v32;
         v70 = v54;
         v72 = &v76;
@@ -165,10 +165,10 @@ LABEL_26:
           goto LABEL_55;
         }
 
-        v52 = [MEMORY[0x277D27690] dateByAddingDays:5 toDate:v15];
+        v52 = [MEMORY[0x277D27690] dateByAddingDays:5 toDate:localDate];
         v41 = objc_opt_class();
-        v42 = [v8 timeZone];
-        v43 = [v41 validityIntervalForLocalStartDate:v15 localEndDate:v52 timeZone:v42];
+        timeZone2 = [contextCopy timeZone];
+        v43 = [v41 validityIntervalForLocalStartDate:localDate localEndDate:v52 timeZone:timeZone2];
 
         if (v77[3])
         {
@@ -182,8 +182,8 @@ LABEL_26:
           if ((v46 & 1) == 0)
           {
             v47 = objc_opt_class();
-            v48 = [v56 allObjects];
-            v34 = [v47 memoryTriggerResultsForMemoryNodesArray:v48 withValidityInterval:v43];
+            allObjects = [v56 allObjects];
+            v34 = [v47 memoryTriggerResultsForMemoryNodesArray:allObjects withValidityInterval:v43];
 
 LABEL_54:
 LABEL_55:
@@ -205,12 +205,12 @@ LABEL_55:
         goto LABEL_54;
       }
 
-      v40 = [(PGMemoryTrigger *)self loggingConnection];
-      if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
+      loggingConnection3 = [(PGMemoryTrigger *)self loggingConnection];
+      if (os_log_type_enabled(loggingConnection3, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        *v82 = v59;
-        _os_log_impl(&dword_22F0FC000, v40, OS_LOG_TYPE_DEFAULT, "[PGMemoryTriggerRecentSyndicatedAssets]: Couldn't find moment node for moment UUIDs: %@", buf, 0xCu);
+        *v82 = allValues;
+        _os_log_impl(&dword_22F0FC000, loggingConnection3, OS_LOG_TYPE_DEFAULT, "[PGMemoryTriggerRecentSyndicatedAssets]: Couldn't find moment node for moment UUIDs: %@", buf, 0xCu);
       }
 
       if (v77[3])
@@ -220,7 +220,7 @@ LABEL_55:
 
       else
       {
-        v45 = [v10 isCancelledWithProgress:1.0];
+        v45 = [reporterCopy isCancelledWithProgress:1.0];
         *(v77 + 24) = v45;
         if ((v45 & 1) == 0)
         {
@@ -244,11 +244,11 @@ LABEL_56:
       goto LABEL_48;
     }
 
-    v38 = [(PGMemoryTrigger *)self loggingConnection];
-    if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
+    loggingConnection4 = [(PGMemoryTrigger *)self loggingConnection];
+    if (os_log_type_enabled(loggingConnection4, OS_LOG_TYPE_ERROR))
     {
       *buf = 0;
-      _os_log_error_impl(&dword_22F0FC000, v38, OS_LOG_TYPE_ERROR, "[PGMemoryTriggerRecentSyndicatedAssets]: Cannot find moments featuring the guest assets available", buf, 2u);
+      _os_log_error_impl(&dword_22F0FC000, loggingConnection4, OS_LOG_TYPE_ERROR, "[PGMemoryTriggerRecentSyndicatedAssets]: Cannot find moments featuring the guest assets available", buf, 2u);
     }
 
     if (v77[3])
@@ -258,7 +258,7 @@ LABEL_56:
 
     else
     {
-      v44 = [v10 isCancelledWithProgress:1.0];
+      v44 = [reporterCopy isCancelledWithProgress:1.0];
       *(v77 + 24) = v44;
       if ((v44 & 1) == 0)
       {
@@ -282,11 +282,11 @@ LABEL_57:
     goto LABEL_44;
   }
 
-  v36 = [(PGMemoryTrigger *)self loggingConnection];
-  if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
+  loggingConnection5 = [(PGMemoryTrigger *)self loggingConnection];
+  if (os_log_type_enabled(loggingConnection5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
-    _os_log_impl(&dword_22F0FC000, v36, OS_LOG_TYPE_DEFAULT, "[PGMemoryTriggerRecentSyndicatedAssets]: No recent guest assets available", buf, 2u);
+    _os_log_impl(&dword_22F0FC000, loggingConnection5, OS_LOG_TYPE_DEFAULT, "[PGMemoryTriggerRecentSyndicatedAssets]: No recent guest assets available", buf, 2u);
   }
 
   if (v77[3])
@@ -295,7 +295,7 @@ LABEL_57:
     goto LABEL_32;
   }
 
-  v39 = [v10 isCancelledWithProgress:1.0];
+  v39 = [reporterCopy isCancelledWithProgress:1.0];
   *(v77 + 24) = v39;
   if (v39)
   {
@@ -474,16 +474,16 @@ LABEL_18:
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (PGMemoryTriggerRecentSyndicatedAssets)initWithLoggingConnection:(id)a3 photoLibrary:(id)a4 momentNodesWithBlockedFeatureCache:(id)a5
+- (PGMemoryTriggerRecentSyndicatedAssets)initWithLoggingConnection:(id)connection photoLibrary:(id)library momentNodesWithBlockedFeatureCache:(id)cache
 {
-  v9 = a5;
+  cacheCopy = cache;
   v13.receiver = self;
   v13.super_class = PGMemoryTriggerRecentSyndicatedAssets;
-  v10 = [(PGPhotoKitMemoryTrigger *)&v13 initWithLoggingConnection:a3 photoLibrary:a4];
+  v10 = [(PGPhotoKitMemoryTrigger *)&v13 initWithLoggingConnection:connection photoLibrary:library];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_momentNodesWithBlockedFeatureCache, a5);
+    objc_storeStrong(&v10->_momentNodesWithBlockedFeatureCache, cache);
   }
 
   return v11;

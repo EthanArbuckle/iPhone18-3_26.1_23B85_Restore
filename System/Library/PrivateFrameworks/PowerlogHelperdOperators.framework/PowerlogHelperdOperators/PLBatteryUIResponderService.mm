@@ -1,20 +1,20 @@
 @interface PLBatteryUIResponderService
 + (void)load;
 - (BOOL)demoMode;
-- (double)endOfDayWithNow:(id)a3;
-- (double)endOfHourWithNow:(id)a3;
-- (id)constructResponseObjectFromType:(int64_t)a3;
-- (id)convertResponseToLegacyFormat:(id)a3;
-- (id)createCoalescedBreakdownWithResponse:(id)a3;
+- (double)endOfDayWithNow:(id)now;
+- (double)endOfHourWithNow:(id)now;
+- (id)constructResponseObjectFromType:(int64_t)type;
+- (id)convertResponseToLegacyFormat:(id)format;
+- (id)createCoalescedBreakdownWithResponse:(id)response;
 - (id)demoPath;
 - (id)possibleRequests;
 - (id)result;
 - (void)cleanup;
 - (void)coalesce;
-- (void)configure:(id)a3;
+- (void)configure:(id)configure;
 - (void)initOperatorDependancies;
 - (void)linkDependencies;
-- (void)prepareBreakdown:(id)a3 withDrainSummaries:(id)a4 withFullDayBreakdown:(id)a5 withDynamicBreakdown:(id)a6;
+- (void)prepareBreakdown:(id)breakdown withDrainSummaries:(id)summaries withFullDayBreakdown:(id)dayBreakdown withDynamicBreakdown:(id)dynamicBreakdown;
 - (void)result;
 - (void)run;
 @end
@@ -23,33 +23,33 @@
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___PLBatteryUIResponderService;
   objc_msgSendSuper2(&v2, sel_load);
 }
 
 - (void)initOperatorDependancies
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  [(PLBatteryUIResponderService *)self setRequestedObjects:v3];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  [(PLBatteryUIResponderService *)self setRequestedObjects:dictionary];
 
-  v4 = [MEMORY[0x277CBEB38] dictionary];
-  [(PLBatteryUIResponderService *)self setResponseCache:v4];
+  dictionary2 = [MEMORY[0x277CBEB38] dictionary];
+  [(PLBatteryUIResponderService *)self setResponseCache:dictionary2];
 
-  v5 = [MEMORY[0x277CBEB38] dictionary];
-  [(PLBatteryUIResponderService *)self setSharedUtilityCache:v5];
+  dictionary3 = [MEMORY[0x277CBEB38] dictionary];
+  [(PLBatteryUIResponderService *)self setSharedUtilityCache:dictionary3];
 
-  v6 = [MEMORY[0x277CBEB38] dictionary];
-  [(PLBatteryUIResponderService *)self setResultDictionary:v6];
+  dictionary4 = [MEMORY[0x277CBEB38] dictionary];
+  [(PLBatteryUIResponderService *)self setResultDictionary:dictionary4];
 
-  v7 = [MEMORY[0x277CBEB18] array];
-  [(PLBatteryUIResponderService *)self setOrderOfExecution:v7];
+  array = [MEMORY[0x277CBEB18] array];
+  [(PLBatteryUIResponderService *)self setOrderOfExecution:array];
 
   v8 = objc_alloc_init(MEMORY[0x277CCABD8]);
   [(PLBatteryUIResponderService *)self setOperationQueue:v8];
 
-  v9 = [(PLBatteryUIResponderService *)self operationQueue];
-  [v9 setMaxConcurrentOperationCount:1];
+  operationQueue = [(PLBatteryUIResponderService *)self operationQueue];
+  [operationQueue setMaxConcurrentOperationCount:1];
 
   [(PLBatteryUIResponderService *)self setShouldUseMidnightQueryRange:1];
   if ((_os_feature_enabled_impl() & 1) == 0)
@@ -162,42 +162,42 @@ LABEL_16:
     _os_log_impl(&dword_25EE51000, v3, OS_LOG_TYPE_INFO, "Responder Service: Cleaning up...", v9, 2u);
   }
 
-  v4 = [(PLBatteryUIResponderService *)self resultDictionary];
-  [v4 removeAllObjects];
+  resultDictionary = [(PLBatteryUIResponderService *)self resultDictionary];
+  [resultDictionary removeAllObjects];
 
-  v5 = [(PLBatteryUIResponderService *)self requestedObjects];
-  [v5 removeAllObjects];
+  requestedObjects = [(PLBatteryUIResponderService *)self requestedObjects];
+  [requestedObjects removeAllObjects];
 
-  v6 = [(PLBatteryUIResponderService *)self orderOfExecution];
-  [v6 removeAllObjects];
+  orderOfExecution = [(PLBatteryUIResponderService *)self orderOfExecution];
+  [orderOfExecution removeAllObjects];
 
-  v7 = [(PLBatteryUIResponderService *)self responseCache];
-  [v7 removeAllObjects];
+  responseCache = [(PLBatteryUIResponderService *)self responseCache];
+  [responseCache removeAllObjects];
 
-  v8 = [(PLBatteryUIResponderService *)self sharedUtilityCache];
-  [v8 removeAllObjects];
+  sharedUtilityCache = [(PLBatteryUIResponderService *)self sharedUtilityCache];
+  [sharedUtilityCache removeAllObjects];
 }
 
-- (void)configure:(id)a3
+- (void)configure:(id)configure
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  configureCopy = configure;
   v5 = PLLogCommon();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v10 = v4;
+    v10 = configureCopy;
     _os_log_impl(&dword_25EE51000, v5, OS_LOG_TYPE_INFO, "Responder Service: Received configuration %@", buf, 0xCu);
   }
 
-  [(PLBatteryUIResponderService *)self setConfiguration:v4];
-  v6 = [(PLBatteryUIResponderService *)self configuration];
+  [(PLBatteryUIResponderService *)self setConfiguration:configureCopy];
+  configuration = [(PLBatteryUIResponderService *)self configuration];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __41__PLBatteryUIResponderService_configure___block_invoke;
   v8[3] = &unk_279A5E430;
   v8[4] = self;
-  [v6 enumerateKeysAndObjectsUsingBlock:v8];
+  [configuration enumerateKeysAndObjectsUsingBlock:v8];
 
   v7 = *MEMORY[0x277D85DE8];
 }
@@ -259,18 +259,18 @@ void __41__PLBatteryUIResponderService_configure___block_invoke(uint64_t a1, voi
     _os_log_impl(&dword_25EE51000, v3, OS_LOG_TYPE_INFO, "Responder Service: Linking dependencies...", buf, 2u);
   }
 
-  v34 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   objc_initWeak(&location, self);
   v47 = 0u;
   v48 = 0u;
   v45 = 0u;
   v46 = 0u;
-  v4 = [(PLBatteryUIResponderService *)self requestedObjects];
-  v31 = [v4 countByEnumeratingWithState:&v45 objects:v53 count:16];
+  requestedObjects = [(PLBatteryUIResponderService *)self requestedObjects];
+  v31 = [requestedObjects countByEnumeratingWithState:&v45 objects:v53 count:16];
   if (v31)
   {
     v30 = *v46;
-    obj = v4;
+    obj = requestedObjects;
     do
     {
       for (i = 0; i != v31; ++i)
@@ -281,32 +281,32 @@ void __41__PLBatteryUIResponderService_configure___block_invoke(uint64_t a1, voi
         }
 
         v5 = *(*(&v45 + 1) + 8 * i);
-        v6 = [v34 objectForKeyedSubscript:{v5, obj}];
+        v6 = [dictionary objectForKeyedSubscript:{v5, obj}];
         v7 = v6 == 0;
 
         if (v7)
         {
-          v8 = [MEMORY[0x277CBEB18] array];
-          [v34 setObject:v8 forKeyedSubscript:v5];
+          array = [MEMORY[0x277CBEB18] array];
+          [dictionary setObject:array forKeyedSubscript:v5];
         }
 
-        v9 = [(PLBatteryUIResponderService *)self responseCache];
-        v10 = [v9 objectForKeyedSubscript:v5];
+        responseCache = [(PLBatteryUIResponderService *)self responseCache];
+        v10 = [responseCache objectForKeyedSubscript:v5];
         v11 = v10 == 0;
 
         if (v11)
         {
-          v12 = [MEMORY[0x277CBEB38] dictionary];
-          v13 = [(PLBatteryUIResponderService *)self responseCache];
-          [v13 setObject:v12 forKeyedSubscript:v5];
+          dictionary2 = [MEMORY[0x277CBEB38] dictionary];
+          responseCache2 = [(PLBatteryUIResponderService *)self responseCache];
+          [responseCache2 setObject:dictionary2 forKeyedSubscript:v5];
         }
 
         v43 = 0u;
         v44 = 0u;
         v42 = 0u;
         v41 = 0u;
-        v14 = [(PLBatteryUIResponderService *)self requestedObjects];
-        v33 = [v14 objectForKeyedSubscript:v5];
+        requestedObjects2 = [(PLBatteryUIResponderService *)self requestedObjects];
+        v33 = [requestedObjects2 objectForKeyedSubscript:v5];
 
         v15 = [v33 countByEnumeratingWithState:&v41 objects:v52 count:16];
         if (v15)
@@ -322,8 +322,8 @@ void __41__PLBatteryUIResponderService_configure___block_invoke(uint64_t a1, voi
               }
 
               v18 = *(*(&v41 + 1) + 8 * j);
-              v19 = [(PLBatteryUIResponderService *)self requestedObjects];
-              v20 = [v19 objectForKeyedSubscript:v5];
+              requestedObjects3 = [(PLBatteryUIResponderService *)self requestedObjects];
+              v20 = [requestedObjects3 objectForKeyedSubscript:v5];
               v21 = [v20 objectForKeyedSubscript:v18];
 
               if (v21)
@@ -339,7 +339,7 @@ void __41__PLBatteryUIResponderService_configure___block_invoke(uint64_t a1, voi
                 v38 = v21;
                 v39 = v5;
                 v23 = [v22 blockOperationWithBlock:v37];
-                v24 = [v34 objectForKeyedSubscript:v5];
+                v24 = [dictionary objectForKeyedSubscript:v5];
                 [v24 addObject:v23];
 
                 objc_destroyWeak(&v40);
@@ -353,7 +353,7 @@ void __41__PLBatteryUIResponderService_configure___block_invoke(uint64_t a1, voi
         }
       }
 
-      v4 = obj;
+      requestedObjects = obj;
       v31 = [obj countByEnumeratingWithState:&v45 objects:v53 count:16];
     }
 
@@ -364,19 +364,19 @@ void __41__PLBatteryUIResponderService_configure___block_invoke(uint64_t a1, voi
   if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v51 = v34;
+    v51 = dictionary;
     _os_log_impl(&dword_25EE51000, v25, OS_LOG_TYPE_INFO, "Responder Service: Constructed <Response Type, Execution Block(s)> map: %@", buf, 0xCu);
   }
 
-  v26 = [MEMORY[0x277CBEB18] array];
-  [(PLBatteryUIResponderService *)self setExecutionChain:v26];
+  array2 = [MEMORY[0x277CBEB18] array];
+  [(PLBatteryUIResponderService *)self setExecutionChain:array2];
 
   v35[0] = MEMORY[0x277D85DD0];
   v35[1] = 3221225472;
   v35[2] = __47__PLBatteryUIResponderService_linkDependencies__block_invoke_68;
   v35[3] = &unk_279A5EB70;
   v35[4] = self;
-  v27 = v34;
+  v27 = dictionary;
   v36 = v27;
   [v27 enumerateKeysAndObjectsUsingBlock:v35];
 
@@ -982,23 +982,23 @@ LABEL_73:
     if ([(PLBatteryUIResponderService *)self demoMode])
     {
       v3 = +[PLUtilities getLastBatteryTimestamp];
-      v4 = [v3 convertFromMonotonicToSystem];
+      convertFromMonotonicToSystem = [v3 convertFromMonotonicToSystem];
     }
 
     else
     {
-      v4 = [MEMORY[0x277CBEAA8] date];
+      convertFromMonotonicToSystem = [MEMORY[0x277CBEAA8] date];
     }
 
-    v20 = [MEMORY[0x277CBEA80] currentCalendar];
-    v21 = [v20 startOfDayForDate:v4];
+    currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+    v21 = [currentCalendar startOfDayForDate:convertFromMonotonicToSystem];
 
     v22 = [v21 dateByAddingTimeInterval:86400.0];
     v23 = MEMORY[0x277CCABB0];
     [v22 timeIntervalSince1970];
     v24 = [v23 numberWithDouble:?];
-    v25 = [(PLBatteryUIResponderService *)self resultDictionary];
-    [v25 setObject:v24 forKeyedSubscript:@"PLBatteryUIQueryTime"];
+    resultDictionary = [(PLBatteryUIResponderService *)self resultDictionary];
+    [resultDictionary setObject:v24 forKeyedSubscript:@"PLBatteryUIQueryTime"];
   }
 
   else
@@ -1006,28 +1006,28 @@ LABEL_73:
     if (![(PLBatteryUIResponderService *)self demoMode])
     {
       v8 = MEMORY[0x277CCABB0];
-      v9 = [MEMORY[0x277CBEAA8] date];
-      [v9 timeIntervalSince1970];
+      date = [MEMORY[0x277CBEAA8] date];
+      [date timeIntervalSince1970];
       v10 = [v8 numberWithDouble:?];
-      v11 = [(PLBatteryUIResponderService *)self resultDictionary];
-      [v11 setObject:v10 forKeyedSubscript:@"PLBatteryUIQueryTime"];
+      resultDictionary2 = [(PLBatteryUIResponderService *)self resultDictionary];
+      [resultDictionary2 setObject:v10 forKeyedSubscript:@"PLBatteryUIQueryTime"];
 
       goto LABEL_20;
     }
 
-    v4 = [MEMORY[0x277D3F180] objectForKey:@"BUI_DEMO_QUERY_TIME" forApplicationID:@"com.apple.powerlogd" synchronize:1];
+    convertFromMonotonicToSystem = [MEMORY[0x277D3F180] objectForKey:@"BUI_DEMO_QUERY_TIME" forApplicationID:@"com.apple.powerlogd" synchronize:1];
     v5 = [MEMORY[0x277D3F180] objectForKey:@"BUI_DEMO_QUERY_TIME_OFFSET" forApplicationID:@"com.apple.powerlogd" synchronize:1];
-    if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+    if (convertFromMonotonicToSystem && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      [v4 doubleValue];
+      [convertFromMonotonicToSystem doubleValue];
       v7 = v6;
     }
 
     else
     {
       v12 = +[PLUtilities getLastBatteryTimestamp];
-      v13 = [v12 convertFromMonotonicToSystem];
-      [v13 timeIntervalSince1970];
+      convertFromMonotonicToSystem2 = [v12 convertFromMonotonicToSystem];
+      [convertFromMonotonicToSystem2 timeIntervalSince1970];
       v7 = v14;
     }
 
@@ -1043,8 +1043,8 @@ LABEL_73:
     }
 
     v17 = [MEMORY[0x277CCABB0] numberWithDouble:v7 + v15];
-    v18 = [(PLBatteryUIResponderService *)self resultDictionary];
-    [v18 setObject:v17 forKeyedSubscript:@"PLBatteryUIQueryTime"];
+    resultDictionary3 = [(PLBatteryUIResponderService *)self resultDictionary];
+    [resultDictionary3 setObject:v17 forKeyedSubscript:@"PLBatteryUIQueryTime"];
 
     v19 = PLLogCommon();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
@@ -1058,23 +1058,23 @@ LABEL_20:
   v26 = PLLogCommon();
   if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
   {
-    v27 = [(PLBatteryUIResponderService *)self resultDictionary];
-    v28 = [v27 objectForKeyedSubscript:@"PLBatteryUIQueryTime"];
+    resultDictionary4 = [(PLBatteryUIResponderService *)self resultDictionary];
+    v28 = [resultDictionary4 objectForKeyedSubscript:@"PLBatteryUIQueryTime"];
     [v28 doubleValue];
     v36 = 134217984;
     v37 = v29;
     _os_log_impl(&dword_25EE51000, v26, OS_LOG_TYPE_INFO, "Responder Service: Query Time = %f", &v36, 0xCu);
   }
 
-  v30 = [(PLBatteryUIResponderService *)self operationQueue];
-  v31 = [(PLBatteryUIResponderService *)self executionChain];
-  [v30 addOperations:v31 waitUntilFinished:1];
+  operationQueue = [(PLBatteryUIResponderService *)self operationQueue];
+  executionChain = [(PLBatteryUIResponderService *)self executionChain];
+  [operationQueue addOperations:executionChain waitUntilFinished:1];
 
   v32 = PLLogCommon();
   if (os_log_type_enabled(v32, OS_LOG_TYPE_INFO))
   {
-    v33 = [(PLBatteryUIResponderService *)self orderOfExecution];
-    v34 = [v33 componentsJoinedByString:@" -> "];
+    orderOfExecution = [(PLBatteryUIResponderService *)self orderOfExecution];
+    v34 = [orderOfExecution componentsJoinedByString:@" -> "];
     v36 = 138412290;
     v37 = v34;
     _os_log_impl(&dword_25EE51000, v32, OS_LOG_TYPE_INFO, "Responder Service: Ran response objects in order: %@", &v36, 0xCu);
@@ -1085,17 +1085,17 @@ LABEL_20:
 
 - (void)coalesce
 {
-  v3 = [(PLBatteryUIResponderService *)self configuration];
+  configuration = [(PLBatteryUIResponderService *)self configuration];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __39__PLBatteryUIResponderService_coalesce__block_invoke;
   v18[3] = &unk_279A5E430;
   v18[4] = self;
-  [v3 enumerateKeysAndObjectsUsingBlock:v18];
+  [configuration enumerateKeysAndObjectsUsingBlock:v18];
 
   v4 = MEMORY[0x277CBEAA8];
-  v5 = [(PLBatteryUIResponderService *)self resultDictionary];
-  v6 = [v5 objectForKeyedSubscript:@"PLBatteryUIQueryTime"];
+  resultDictionary = [(PLBatteryUIResponderService *)self resultDictionary];
+  v6 = [resultDictionary objectForKeyedSubscript:@"PLBatteryUIQueryTime"];
   [v6 doubleValue];
   v7 = [v4 dateWithTimeIntervalSince1970:?];
 
@@ -1104,8 +1104,8 @@ LABEL_20:
     v8 = MEMORY[0x277CCABB0];
     [v7 timeIntervalSince1970];
     v9 = [v8 numberWithDouble:?];
-    v10 = [(PLBatteryUIResponderService *)self resultDictionary];
-    [v10 setObject:v9 forKeyedSubscript:@"endOfDay"];
+    resultDictionary2 = [(PLBatteryUIResponderService *)self resultDictionary];
+    [resultDictionary2 setObject:v9 forKeyedSubscript:@"endOfDay"];
 
     v11 = MEMORY[0x277CCABB0];
     [v7 timeIntervalSince1970];
@@ -1116,19 +1116,19 @@ LABEL_20:
     v12 = MEMORY[0x277CCABB0];
     [(PLBatteryUIResponderService *)self endOfDayWithNow:v7];
     v13 = [v12 numberWithDouble:?];
-    v14 = [(PLBatteryUIResponderService *)self resultDictionary];
-    [v14 setObject:v13 forKeyedSubscript:@"endOfDay"];
+    resultDictionary3 = [(PLBatteryUIResponderService *)self resultDictionary];
+    [resultDictionary3 setObject:v13 forKeyedSubscript:@"endOfDay"];
 
     v11 = MEMORY[0x277CCABB0];
     [(PLBatteryUIResponderService *)self endOfHourWithNow:v7];
   }
 
   v15 = [v11 numberWithDouble:?];
-  v16 = [(PLBatteryUIResponderService *)self resultDictionary];
-  [v16 setObject:v15 forKeyedSubscript:@"endOfHour"];
+  resultDictionary4 = [(PLBatteryUIResponderService *)self resultDictionary];
+  [resultDictionary4 setObject:v15 forKeyedSubscript:@"endOfHour"];
 
-  v17 = [(PLBatteryUIResponderService *)self resultDictionary];
-  [v17 setObject:&unk_28714B998 forKeyedSubscript:@"PLBatteryUIXPCVersionKey"];
+  resultDictionary5 = [(PLBatteryUIResponderService *)self resultDictionary];
+  [resultDictionary5 setObject:&unk_28714B998 forKeyedSubscript:@"PLBatteryUIXPCVersionKey"];
 }
 
 void __39__PLBatteryUIResponderService_coalesce__block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -1215,8 +1215,8 @@ void __39__PLBatteryUIResponderService_coalesce__block_invoke(uint64_t a1, uint6
     _os_log_impl(&dword_25EE51000, v3, OS_LOG_TYPE_INFO, "Responder Service: Converting response to legacy format...", buf, 2u);
   }
 
-  v4 = [(PLBatteryUIResponderService *)self resultDictionary];
-  v5 = [(PLBatteryUIResponderService *)self convertResponseToLegacyFormat:v4];
+  resultDictionary = [(PLBatteryUIResponderService *)self resultDictionary];
+  v5 = [(PLBatteryUIResponderService *)self convertResponseToLegacyFormat:resultDictionary];
 
   v6 = [v5 mutableCopy];
   [(PLBatteryUIResponderService *)self setResultDictionary:v6];
@@ -1230,8 +1230,8 @@ void __39__PLBatteryUIResponderService_coalesce__block_invoke(uint64_t a1, uint6
       _os_log_impl(&dword_25EE51000, v7, OS_LOG_TYPE_INFO, "Skipping write to plist", v43, 2u);
     }
 
-    v8 = [(PLBatteryUIResponderService *)self resultDictionary];
-    v9 = [v8 copy];
+    resultDictionary2 = [(PLBatteryUIResponderService *)self resultDictionary];
+    v9 = [resultDictionary2 copy];
     goto LABEL_31;
   }
 
@@ -1240,17 +1240,17 @@ void __39__PLBatteryUIResponderService_coalesce__block_invoke(uint64_t a1, uint6
   [PLUtilities createAndChownDirectoryIfDirectoryDoesNotExist:v11];
 
   v12 = +[PLUtilities containerPath];
-  v8 = [v12 stringByAppendingString:@"/Library/BatteryLife/Debug/"];
+  resultDictionary2 = [v12 stringByAppendingString:@"/Library/BatteryLife/Debug/"];
 
-  v13 = [(PLBatteryUIResponderService *)self requestingService];
+  requestingService = [(PLBatteryUIResponderService *)self requestingService];
 
-  if (v13)
+  if (requestingService)
   {
     v14 = MEMORY[0x277CCACA8];
-    v15 = [(PLBatteryUIResponderService *)self requestingService];
-    v16 = [v14 stringWithFormat:@"BatteryUI%@", v15];
+    requestingService2 = [(PLBatteryUIResponderService *)self requestingService];
+    v16 = [v14 stringWithFormat:@"BatteryUI%@", requestingService2];
 
-    v17 = [MEMORY[0x277CBEBC0] fileURLWithPath:v8 isDirectory:1];
+    v17 = [MEMORY[0x277CBEBC0] fileURLWithPath:resultDictionary2 isDirectory:1];
     v18 = [v17 URLByAppendingPathComponent:v16];
 
     [v18 URLByAppendingPathExtension:@"plist"];
@@ -1271,15 +1271,15 @@ void __39__PLBatteryUIResponderService_coalesce__block_invoke(uint64_t a1, uint6
     [PLBatteryUIResponderService result];
   }
 
-  v22 = [(PLBatteryUIResponderService *)self resultDictionary];
+  resultDictionary3 = [(PLBatteryUIResponderService *)self resultDictionary];
   v42 = 0;
-  v23 = [v22 writeToURL:v20 error:&v42];
+  v23 = [resultDictionary3 writeToURL:v20 error:&v42];
   v24 = v42;
 
   if (v23)
   {
-    v25 = [v20 path];
-    [PLUtilities setMobileOwnerForFile:v25];
+    path = [v20 path];
+    [PLUtilities setMobileOwnerForFile:path];
 
     v26 = PLLogCommon();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
@@ -1313,19 +1313,19 @@ void __39__PLBatteryUIResponderService_coalesce__block_invoke(uint64_t a1, uint6
   }
 
 LABEL_21:
-  v30 = [(PLBatteryUIResponderService *)self plistCopyDestination];
+  plistCopyDestination = [(PLBatteryUIResponderService *)self plistCopyDestination];
 
-  if (v30)
+  if (plistCopyDestination)
   {
-    v31 = v8;
-    v32 = [(PLBatteryUIResponderService *)self plistCopyDestination];
-    v33 = [PLUtilities PLCopyItemsFromPath:v31 toPath:v32];
+    v31 = resultDictionary2;
+    plistCopyDestination2 = [(PLBatteryUIResponderService *)self plistCopyDestination];
+    v33 = [PLUtilities PLCopyItemsFromPath:v31 toPath:plistCopyDestination2];
 
     if (v33)
     {
       v34 = MEMORY[0x277CBEBC0];
-      v35 = [v20 lastPathComponent];
-      v36 = [v31 stringByAppendingPathComponent:v35];
+      lastPathComponent = [v20 lastPathComponent];
+      v36 = [v31 stringByAppendingPathComponent:lastPathComponent];
       v37 = [v34 fileURLWithPath:v36];
       [PPSFileUtilities markAsPurgeable:v37 urgency:512 startDate:0];
 
@@ -1348,41 +1348,41 @@ LABEL_21:
     }
   }
 
-  v40 = [(PLBatteryUIResponderService *)self resultDictionary];
-  v9 = [v40 copy];
+  resultDictionary4 = [(PLBatteryUIResponderService *)self resultDictionary];
+  v9 = [resultDictionary4 copy];
 
 LABEL_31:
 
   return v9;
 }
 
-- (double)endOfDayWithNow:(id)a3
+- (double)endOfDayWithNow:(id)now
 {
   v3 = MEMORY[0x277CBEA80];
-  v4 = a3;
-  v5 = [v3 currentCalendar];
-  v6 = [v5 components:60 fromDate:v4];
+  nowCopy = now;
+  currentCalendar = [v3 currentCalendar];
+  v6 = [currentCalendar components:60 fromDate:nowCopy];
 
   v7 = [v6 valueForComponent:32];
   [v6 setValue:(v7 - fmod(v7 forComponent:{3.0) + 3.0), 32}];
-  v8 = [v5 dateFromComponents:v6];
-  v9 = [v8 convertFromSystemToMonotonic];
-  v10 = [v9 dateByAddingTimeInterval:-86400.0];
-  v11 = v9;
+  v8 = [currentCalendar dateFromComponents:v6];
+  convertFromSystemToMonotonic = [v8 convertFromSystemToMonotonic];
+  v10 = [convertFromSystemToMonotonic dateByAddingTimeInterval:-86400.0];
+  v11 = convertFromSystemToMonotonic;
   [v10 timeIntervalSince1970];
   v13 = v12;
   [v11 timeIntervalSince1970];
   v15 = v14;
 
   v16 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:v13 + v15 - v13];
-  v17 = [v16 convertFromMonotonicToSystem];
-  [v17 timeIntervalSince1970];
+  convertFromMonotonicToSystem = [v16 convertFromMonotonicToSystem];
+  [convertFromMonotonicToSystem timeIntervalSince1970];
   v19 = v18;
 
   return v19;
 }
 
-- (double)endOfHourWithNow:(id)a3
+- (double)endOfHourWithNow:(id)now
 {
   v3 = PLCalculateEndOfHourWithDate();
   [v3 timeIntervalSince1970];
@@ -1446,9 +1446,9 @@ LABEL_31:
   return v2;
 }
 
-- (id)constructResponseObjectFromType:(int64_t)a3
+- (id)constructResponseObjectFromType:(int64_t)type
 {
-  v5 = [(PLBatteryUIResponderService *)self possibleRequests];
+  possibleRequests = [(PLBatteryUIResponderService *)self possibleRequests];
   v6 = _os_feature_enabled_impl();
   v7 = PLLogCommon();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG);
@@ -1459,10 +1459,10 @@ LABEL_31:
       [PLBatteryUIResponderService constructResponseObjectFromType:];
     }
 
-    v9 = [v5 mutableCopy];
+    v9 = [possibleRequests mutableCopy];
     [v9 setObject:objc_opt_class() forKeyedSubscript:&unk_287147218];
-    v7 = v5;
-    v5 = v9;
+    v7 = possibleRequests;
+    possibleRequests = v9;
   }
 
   else if (v8)
@@ -1486,14 +1486,14 @@ LABEL_31:
     [PLBatteryUIResponderService constructResponseObjectFromType:];
   }
 
-  v13 = [v5 allKeys];
-  v14 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
-  v15 = [v13 containsObject:v14];
+  allKeys = [possibleRequests allKeys];
+  v14 = [MEMORY[0x277CCABB0] numberWithInteger:type];
+  v15 = [allKeys containsObject:v14];
 
   if (v15)
   {
-    v16 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
-    v17 = [v5 objectForKeyedSubscript:v16];
+    v16 = [MEMORY[0x277CCABB0] numberWithInteger:type];
+    v17 = [possibleRequests objectForKeyedSubscript:v16];
 
     v18 = objc_alloc_init(v17);
     v19 = objc_initWeak(&location, self);
@@ -1510,62 +1510,62 @@ LABEL_31:
   return v18;
 }
 
-- (id)convertResponseToLegacyFormat:(id)a3
+- (id)convertResponseToLegacyFormat:(id)format
 {
   v44 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB38] dictionary];
-  v6 = [v4 objectForKeyedSubscript:@"endOfHour"];
-  [v5 setObject:v6 forKeyedSubscript:@"endOfHour"];
+  formatCopy = format;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v6 = [formatCopy objectForKeyedSubscript:@"endOfHour"];
+  [dictionary setObject:v6 forKeyedSubscript:@"endOfHour"];
 
-  v7 = [v4 objectForKeyedSubscript:@"endOfDay"];
-  [v5 setObject:v7 forKeyedSubscript:@"endOfDay"];
+  v7 = [formatCopy objectForKeyedSubscript:@"endOfDay"];
+  [dictionary setObject:v7 forKeyedSubscript:@"endOfDay"];
 
-  v8 = [v4 objectForKeyedSubscript:@"PLBatteryUIXPCVersionKey"];
-  [v5 setObject:v8 forKeyedSubscript:@"PLBatteryUIXPCVersionKey"];
+  v8 = [formatCopy objectForKeyedSubscript:@"PLBatteryUIXPCVersionKey"];
+  [dictionary setObject:v8 forKeyedSubscript:@"PLBatteryUIXPCVersionKey"];
 
-  v9 = [v4 objectForKeyedSubscript:@"PLBatteryUIQueryTime"];
-  [v5 setObject:v9 forKeyedSubscript:@"PLBatteryUIQueryTime"];
+  v9 = [formatCopy objectForKeyedSubscript:@"PLBatteryUIQueryTime"];
+  [dictionary setObject:v9 forKeyedSubscript:@"PLBatteryUIQueryTime"];
 
-  v10 = [MEMORY[0x277CBEB38] dictionary];
-  [v5 setObject:v10 forKeyedSubscript:@"Breakdown"];
+  dictionary2 = [MEMORY[0x277CBEB38] dictionary];
+  [dictionary setObject:dictionary2 forKeyedSubscript:@"Breakdown"];
 
-  v11 = [MEMORY[0x277CBEB18] array];
-  v12 = [v5 objectForKeyedSubscript:@"Breakdown"];
-  [v12 setObject:v11 forKeyedSubscript:@"PLBatteryUISuggestionArrayKey"];
+  array = [MEMORY[0x277CBEB18] array];
+  v12 = [dictionary objectForKeyedSubscript:@"Breakdown"];
+  [v12 setObject:array forKeyedSubscript:@"PLBatteryUISuggestionArrayKey"];
 
-  v13 = [MEMORY[0x277CBEB38] dictionary];
-  [v5 setObject:v13 forKeyedSubscript:@"Graph"];
+  dictionary3 = [MEMORY[0x277CBEB38] dictionary];
+  [dictionary setObject:dictionary3 forKeyedSubscript:@"Graph"];
 
-  v14 = [MEMORY[0x277CBEB38] dictionary];
-  v15 = [v5 objectForKeyedSubscript:@"Graph"];
-  [v15 setObject:v14 forKeyedSubscript:@"PLBatteryUIGraph24hrs"];
+  dictionary4 = [MEMORY[0x277CBEB38] dictionary];
+  v15 = [dictionary objectForKeyedSubscript:@"Graph"];
+  [v15 setObject:dictionary4 forKeyedSubscript:@"PLBatteryUIGraph24hrs"];
 
-  v16 = [MEMORY[0x277CBEB18] array];
-  v17 = [v5 objectForKeyedSubscript:@"Graph"];
-  [v17 setObject:v16 forKeyedSubscript:@"PLBatteryUIGraphDays"];
+  array2 = [MEMORY[0x277CBEB18] array];
+  v17 = [dictionary objectForKeyedSubscript:@"Graph"];
+  [v17 setObject:array2 forKeyedSubscript:@"PLBatteryUIGraphDays"];
 
-  v18 = [MEMORY[0x277CBEB18] array];
-  v19 = [v5 objectForKeyedSubscript:@"Graph"];
-  [v19 setObject:v18 forKeyedSubscript:@"PLBatteryUIGraphDays24hrs"];
+  array3 = [MEMORY[0x277CBEB18] array];
+  v19 = [dictionary objectForKeyedSubscript:@"Graph"];
+  [v19 setObject:array3 forKeyedSubscript:@"PLBatteryUIGraphDays24hrs"];
 
-  v20 = [v5 objectForKeyedSubscript:@"Breakdown"];
+  v20 = [dictionary objectForKeyedSubscript:@"Breakdown"];
   [v20 setObject:&unk_287147230 forKeyedSubscript:@"PLBatteryUIDataDurationKey"];
 
-  v21 = [MEMORY[0x277CBEB18] array];
-  v22 = [v5 objectForKeyedSubscript:@"Breakdown"];
-  [v22 setObject:v21 forKeyedSubscript:@"PLBatteryUIUrsaIssuesKey"];
+  array4 = [MEMORY[0x277CBEB18] array];
+  v22 = [dictionary objectForKeyedSubscript:@"Breakdown"];
+  [v22 setObject:array4 forKeyedSubscript:@"PLBatteryUIUrsaIssuesKey"];
 
-  v23 = [(PLBatteryUIResponderService *)self configuration];
+  configuration = [(PLBatteryUIResponderService *)self configuration];
   v36 = MEMORY[0x277D85DD0];
   v37 = 3221225472;
   v38 = __61__PLBatteryUIResponderService_convertResponseToLegacyFormat___block_invoke;
   v39 = &unk_279A5EBC0;
-  v40 = v4;
-  v24 = v5;
+  v40 = formatCopy;
+  v24 = dictionary;
   v41 = v24;
-  v25 = v4;
-  [v23 enumerateKeysAndObjectsUsingBlock:&v36];
+  v25 = formatCopy;
+  [configuration enumerateKeysAndObjectsUsingBlock:&v36];
 
   if (_os_feature_enabled_impl())
   {
@@ -2242,35 +2242,35 @@ void __61__PLBatteryUIResponderService_convertResponseToLegacyFormat___block_inv
   [v9 setObject:v8 forKeyedSubscript:@"PLBatteryUIScreenOffTimeKey"];
 }
 
-- (id)createCoalescedBreakdownWithResponse:(id)a3
+- (id)createCoalescedBreakdownWithResponse:(id)response
 {
   v33[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"Breakdown"];
+  responseCopy = response;
+  v5 = [responseCopy objectForKeyedSubscript:@"Breakdown"];
   v6 = [v5 objectForKeyedSubscript:@"PLBatteryUIDailyFullDayBreakdown"];
   if (v6)
   {
     v7 = v6;
-    v8 = [v4 objectForKeyedSubscript:@"Graph"];
+    v8 = [responseCopy objectForKeyedSubscript:@"Graph"];
     v9 = [v8 objectForKeyedSubscript:@"PLBatteryUIGraphDays24hrs"];
 
     if (v9)
     {
-      v10 = [v4 objectForKeyedSubscript:@"Breakdown"];
+      v10 = [responseCopy objectForKeyedSubscript:@"Breakdown"];
       v11 = [v10 objectForKeyedSubscript:@"PLBatteryUIDailyFullDayBreakdown"];
 
-      v12 = [v4 objectForKeyedSubscript:@"Breakdown"];
+      v12 = [responseCopy objectForKeyedSubscript:@"Breakdown"];
       v13 = [v12 objectForKeyedSubscript:@"PLBatteryUIDailyDynamicDayBreakdown"];
 
-      v14 = [v4 objectForKeyedSubscript:@"PLBatteryUIUsageSummaryKey"];
-      v15 = [v4 objectForKeyedSubscript:@"Graph"];
+      v14 = [responseCopy objectForKeyedSubscript:@"PLBatteryUIUsageSummaryKey"];
+      v15 = [responseCopy objectForKeyedSubscript:@"Graph"];
       v16 = [v15 objectForKeyedSubscript:@"PLBatteryUIGraphDays24hrs"];
 
       v17 = [v13 count];
       if (v17)
       {
         *(&v31 + 1) = v14;
-        v30 = self;
+        selfCopy = self;
         if (v17 >= 8)
         {
           v18 = 8;
@@ -2292,7 +2292,7 @@ void __61__PLBatteryUIResponderService_convertResponseToLegacyFormat___block_inv
           v21 = 0;
           do
           {
-            v22 = [v4 objectForKeyedSubscript:@"Graph"];
+            v22 = [responseCopy objectForKeyedSubscript:@"Graph"];
             v23 = [v22 objectForKeyedSubscript:@"PLBatteryUIGraphDays24hrs"];
             v24 = [v23 count];
 
@@ -2318,7 +2318,7 @@ void __61__PLBatteryUIResponderService_convertResponseToLegacyFormat___block_inv
         v13 = v31;
         if (v31 != 0)
         {
-          [(PLBatteryUIResponderService *)v30 prepareBreakdown:v9 withDrainSummaries:*(&v31 + 1) withFullDayBreakdown:v11 withDynamicBreakdown:v31];
+          [(PLBatteryUIResponderService *)selfCopy prepareBreakdown:v9 withDrainSummaries:*(&v31 + 1) withFullDayBreakdown:v11 withDynamicBreakdown:v31];
         }
       }
 
@@ -2340,17 +2340,17 @@ void __61__PLBatteryUIResponderService_convertResponseToLegacyFormat___block_inv
   return v9;
 }
 
-- (void)prepareBreakdown:(id)a3 withDrainSummaries:(id)a4 withFullDayBreakdown:(id)a5 withDynamicBreakdown:(id)a6
+- (void)prepareBreakdown:(id)breakdown withDrainSummaries:(id)summaries withFullDayBreakdown:(id)dayBreakdown withDynamicBreakdown:(id)dynamicBreakdown
 {
   v153 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v99 = a5;
-  v103 = a6;
-  v96 = v9;
-  v108 = [v9 count];
-  v97 = v10;
-  v95 = [v10 objectAtIndexedSubscript:0];
+  breakdownCopy = breakdown;
+  summariesCopy = summaries;
+  dayBreakdownCopy = dayBreakdown;
+  dynamicBreakdownCopy = dynamicBreakdown;
+  v96 = breakdownCopy;
+  v108 = [breakdownCopy count];
+  v97 = summariesCopy;
+  v95 = [summariesCopy objectAtIndexedSubscript:0];
   v11 = objc_opt_new();
   v12 = 8;
   do
@@ -2369,14 +2369,14 @@ void __61__PLBatteryUIResponderService_convertResponseToLegacyFormat___block_inv
   v14 = v11;
   [v13 enumerateObjectsUsingBlock:v145];
 
-  v15 = [v14 reverseObjectEnumerator];
+  reverseObjectEnumerator = [v14 reverseObjectEnumerator];
 
-  v16 = [v15 allObjects];
-  v94 = [v16 mutableCopy];
+  allObjects = [reverseObjectEnumerator allObjects];
+  v94 = [allObjects mutableCopy];
 
   v93 = [v95 objectForKeyedSubscript:@"SummaryComparisonType"];
   v92 = [v95 objectForKeyedSubscript:@"SummaryDrainAverage"];
-  v104 = [v9 objectAtIndexedSubscript:v108 - 1];
+  v104 = [breakdownCopy objectAtIndexedSubscript:v108 - 1];
   [v104 setObject:v94 forKeyedSubscript:@"PLBatteryUIPreviousDrain"];
   [v104 setObject:v93 forKeyedSubscript:@"PLBatteryUIComparisonType"];
   [v104 setObject:v92 forKeyedSubscript:@"PLBatteryUIDrainAverage"];
@@ -2424,7 +2424,7 @@ void __61__PLBatteryUIResponderService_convertResponseToLegacyFormat___block_inv
           v133[4] = v20;
           v25 = v23;
           v134 = v25;
-          v135 = v103;
+          v135 = dynamicBreakdownCopy;
           v136 = &v137;
           [v135 enumerateObjectsUsingBlock:v133];
           [v22 setObject:v25 forKeyedSubscript:@"PLBatteryUIPreviousDrain"];
@@ -2492,7 +2492,7 @@ void __61__PLBatteryUIResponderService_convertResponseToLegacyFormat___block_inv
     while (v27);
   }
 
-  v39 = [v99 count];
+  v39 = [dayBreakdownCopy count];
   objb = objc_opt_new();
   v40 = (v39 - 3);
   if (v39 >= 3)
@@ -2505,7 +2505,7 @@ void __61__PLBatteryUIResponderService_convertResponseToLegacyFormat___block_inv
       do
       {
         v101 = v40;
-        v109 = [v99 objectAtIndexedSubscript:?];
+        v109 = [dayBreakdownCopy objectAtIndexedSubscript:?];
         v127 = 0u;
         v128 = 0u;
         v125 = 0u;
@@ -2532,9 +2532,9 @@ void __61__PLBatteryUIResponderService_convertResponseToLegacyFormat___block_inv
               {
                 v47 = MEMORY[0x277CCABB0];
                 v48 = [objb objectForKeyedSubscript:v44];
-                v49 = [v48 intValue];
+                intValue = [v48 intValue];
                 v50 = [v46 objectForKeyedSubscript:@"PLBatteryUIAppEnergyValueKey"];
-                v51 = [v47 numberWithInt:{objc_msgSend(v50, "intValue") + v49}];
+                v51 = [v47 numberWithInt:{objc_msgSend(v50, "intValue") + intValue}];
                 [objb setObject:v51 forKeyedSubscript:v44];
               }
             }
@@ -2650,7 +2650,7 @@ void __61__PLBatteryUIResponderService_convertResponseToLegacyFormat___block_inv
             }
           }
 
-          v79 = [v99 objectAtIndexedSubscript:v102];
+          v79 = [dayBreakdownCopy objectAtIndexedSubscript:v102];
           v115 = 0u;
           v116 = 0u;
           v113 = 0u;
@@ -2677,9 +2677,9 @@ void __61__PLBatteryUIResponderService_convertResponseToLegacyFormat___block_inv
                 {
                   v86 = MEMORY[0x277CCABB0];
                   v87 = [objb objectForKeyedSubscript:v83];
-                  v88 = [v87 intValue];
+                  intValue2 = [v87 intValue];
                   v89 = [v85 objectForKeyedSubscript:@"PLBatteryUIAppEnergyValueKey"];
-                  v90 = [v86 numberWithInt:{v88 - objc_msgSend(v89, "intValue")}];
+                  v90 = [v86 numberWithInt:{intValue2 - objc_msgSend(v89, "intValue")}];
                   [objb setObject:v90 forKeyedSubscript:v83];
                 }
               }
@@ -2857,7 +2857,7 @@ void __41__PLBatteryUIResponderService_configure___block_invoke_cold_1(uint64_t 
 - (void)result
 {
   v10 = *MEMORY[0x277D85DE8];
-  v1 = [a1 plistCopyDestination];
+  plistCopyDestination = [self plistCopyDestination];
   OUTLINED_FUNCTION_1();
   OUTLINED_FUNCTION_7_3(&dword_25EE51000, v2, v3, "Result copied to folder %@", v4, v5, v6, v7, v9);
 

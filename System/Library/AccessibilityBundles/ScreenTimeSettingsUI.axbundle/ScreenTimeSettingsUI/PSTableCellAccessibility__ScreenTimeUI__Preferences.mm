@@ -1,5 +1,5 @@
 @interface PSTableCellAccessibility__ScreenTimeUI__Preferences
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_accessibilityIsAlwaysAllowCell;
 - (BOOL)_accessibilityIsSTUIExpandable;
 - (BOOL)_accessibilityIsSTUIExpanded;
@@ -14,20 +14,20 @@
 
 @implementation PSTableCellAccessibility__ScreenTimeUI__Preferences
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"UITableViewCell" hasInstanceMethod:@"_accessibilityCellEditingControl" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PSIconMarginTableCell" isKindOfClass:@"PSTableCell"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"UITableViewCell" hasInstanceMethod:@"_accessibilityCellEditingControl" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PSIconMarginTableCell" isKindOfClass:@"PSTableCell"];
 }
 
 - (BOOL)_accessibilityIsAlwaysAllowCell
 {
   objc_opt_class();
   v2 = __UIAccessibilityCastAsClass();
-  v3 = [v2 specifier];
-  v4 = [v3 accessibilityIdentification];
-  v5 = [v4 isEqualToString:@"AXAlwaysAllowSpecifierIdentification"];
+  specifier = [v2 specifier];
+  accessibilityIdentification = [specifier accessibilityIdentification];
+  v5 = [accessibilityIdentification isEqualToString:@"AXAlwaysAllowSpecifierIdentification"];
 
   return v5;
 }
@@ -54,32 +54,32 @@
   LOBYTE(v34) = 0;
   objc_opt_class();
   v3 = __UIAccessibilityCastAsClass();
-  v4 = [v3 editingStyle];
-  if (v4 == 1)
+  editingStyle = [v3 editingStyle];
+  if (editingStyle == 1)
   {
     LOBYTE(v34) = 0;
     objc_opt_class();
-    v9 = [v3 _tableView];
+    _tableView = [v3 _tableView];
     v7 = __UIAccessibilityCastAsClass();
 
-    v10 = [v7 _swipeActionController];
+    _swipeActionController = [v7 _swipeActionController];
     if ([v7 conformsToProtocol:&unk_2A22D31B0])
     {
-      v11 = [v3 _accessibilityIndexPath];
-      if (v11)
+      _accessibilityIndexPath = [v3 _accessibilityIndexPath];
+      if (_accessibilityIndexPath)
       {
-        v12 = [v7 swipeActionController:v10 trailingSwipeConfigurationForItemAtIndexPath:v11];
-        v13 = [v12 actions];
-        if ([v13 count] == 1)
+        v12 = [v7 swipeActionController:_swipeActionController trailingSwipeConfigurationForItemAtIndexPath:_accessibilityIndexPath];
+        actions = [v12 actions];
+        if ([actions count] == 1)
         {
-          v14 = [v12 actions];
-          v15 = [v14 objectAtIndexedSubscript:0];
-          v16 = [v15 style];
+          actions2 = [v12 actions];
+          v15 = [actions2 objectAtIndexedSubscript:0];
+          style = [v15 style];
 
-          if (v16 == 1)
+          if (style == 1)
           {
-            v17 = [v12 actions];
-            v18 = [v17 objectAtIndexedSubscript:0];
+            actions3 = [v12 actions];
+            v18 = [actions3 objectAtIndexedSubscript:0];
 
             v34 = 0;
             v35 = &v34;
@@ -93,7 +93,7 @@
             v26 = v3;
             v27 = &v34;
             AXPerformSafeBlock();
-            v8 = *(v35 + 24);
+            accessibilityActivate = *(v35 + 24);
 
             _Block_object_dispose(&v34, 8);
             goto LABEL_5;
@@ -109,15 +109,15 @@
     goto LABEL_15;
   }
 
-  if (v4 != 2)
+  if (editingStyle != 2)
   {
 LABEL_15:
 
 LABEL_16:
     v20.receiver = self;
     v20.super_class = PSTableCellAccessibility__ScreenTimeUI__Preferences;
-    v8 = [(PSTableCellAccessibility__ScreenTimeUI__Preferences *)&v20 accessibilityActivate];
-    return v8 & 1;
+    accessibilityActivate = [(PSTableCellAccessibility__ScreenTimeUI__Preferences *)&v20 accessibilityActivate];
+    return accessibilityActivate & 1;
   }
 
   objc_opt_class();
@@ -136,29 +136,29 @@ LABEL_16:
   v32 = v7;
   v33 = &v34;
   AXPerformSafeBlock();
-  v8 = *(v35 + 24);
+  accessibilityActivate = *(v35 + 24);
 
   _Block_object_dispose(&v34, 8);
 LABEL_5:
 
-  return v8 & 1;
+  return accessibilityActivate & 1;
 }
 
 - (id)_privateAccessibilityCustomActions
 {
   if ([(PSTableCellAccessibility__ScreenTimeUI__Preferences *)self _accessibilityIsAlwaysAllowCell])
   {
-    v3 = MEMORY[0x29EDB8E90];
+    _privateAccessibilityCustomActions = MEMORY[0x29EDB8E90];
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = PSTableCellAccessibility__ScreenTimeUI__Preferences;
-    v3 = [(PSTableCellAccessibility__ScreenTimeUI__Preferences *)&v5 _privateAccessibilityCustomActions];
+    _privateAccessibilityCustomActions = [(PSTableCellAccessibility__ScreenTimeUI__Preferences *)&v5 _privateAccessibilityCustomActions];
   }
 
-  return v3;
+  return _privateAccessibilityCustomActions;
 }
 
 - (id)accessibilityHint
@@ -171,36 +171,36 @@ LABEL_5:
   v9 = 0;
   objc_opt_class();
   v3 = __UIAccessibilityCastAsClass();
-  v4 = [v3 editingStyle];
+  editingStyle = [v3 editingStyle];
 
-  if (v4 == 1)
+  if (editingStyle == 1)
   {
     v5 = @"remove.always.allowed.hint";
     goto LABEL_7;
   }
 
-  if (v4 != 2)
+  if (editingStyle != 2)
   {
 LABEL_5:
     v8.receiver = self;
     v8.super_class = PSTableCellAccessibility__ScreenTimeUI__Preferences;
-    v6 = [(PSTableCellAccessibility__ScreenTimeUI__Preferences *)&v8 accessibilityHint];
+    accessibilityHint = [(PSTableCellAccessibility__ScreenTimeUI__Preferences *)&v8 accessibilityHint];
     goto LABEL_8;
   }
 
   v5 = @"add.always.allowed.hint";
 LABEL_7:
-  v6 = accessibilityLocalizedString(v5);
+  accessibilityHint = accessibilityLocalizedString(v5);
 LABEL_8:
 
-  return v6;
+  return accessibilityHint;
 }
 
 - (id)_axSpecifier
 {
   objc_opt_class();
   v2 = __UIAccessibilityCastAsClass();
-  v3 = [v2 specifier];
+  specifier = [v2 specifier];
 
   objc_opt_class();
   v4 = __UIAccessibilityCastAsSafeCategory();
@@ -210,18 +210,18 @@ LABEL_8:
 
 - (BOOL)_accessibilityIsSTUIExpanded
 {
-  v2 = [(PSTableCellAccessibility__ScreenTimeUI__Preferences *)self _axSpecifier];
-  v3 = [v2 _accessibilityIsExpandedSTUICell];
+  _axSpecifier = [(PSTableCellAccessibility__ScreenTimeUI__Preferences *)self _axSpecifier];
+  _accessibilityIsExpandedSTUICell = [_axSpecifier _accessibilityIsExpandedSTUICell];
 
-  return v3;
+  return _accessibilityIsExpandedSTUICell;
 }
 
 - (BOOL)_accessibilityIsSTUIExpandable
 {
-  v2 = [(PSTableCellAccessibility__ScreenTimeUI__Preferences *)self _axSpecifier];
-  v3 = [v2 _accessibilityIsExpandableSTUICell];
+  _axSpecifier = [(PSTableCellAccessibility__ScreenTimeUI__Preferences *)self _axSpecifier];
+  _accessibilityIsExpandableSTUICell = [_axSpecifier _accessibilityIsExpandableSTUICell];
 
-  return v3;
+  return _accessibilityIsExpandableSTUICell;
 }
 
 - (id)accessibilityValue
@@ -244,7 +244,7 @@ LABEL_5:
 LABEL_7:
   v8.receiver = self;
   v8.super_class = PSTableCellAccessibility__ScreenTimeUI__Preferences;
-  v5 = [(PSTableCellAccessibility__ScreenTimeUI__Preferences *)&v8 accessibilityValue];
+  accessibilityValue = [(PSTableCellAccessibility__ScreenTimeUI__Preferences *)&v8 accessibilityValue];
   v6 = __AXStringForVariables();
 
   return v6;
@@ -263,15 +263,15 @@ LABEL_7:
   {
     v9.receiver = self;
     v9.super_class = PSTableCellAccessibility__ScreenTimeUI__Preferences;
-    v6 = [(PSTableCellAccessibility__ScreenTimeUI__Preferences *)&v9 accessibilityTraits];
-    v7 = [(PSTableCellAccessibility__ScreenTimeUI__Preferences *)self _accessibilityIsSTUIExpandable];
+    accessibilityTraits = [(PSTableCellAccessibility__ScreenTimeUI__Preferences *)&v9 accessibilityTraits];
+    _accessibilityIsSTUIExpandable = [(PSTableCellAccessibility__ScreenTimeUI__Preferences *)self _accessibilityIsSTUIExpandable];
     v8 = *MEMORY[0x29EDC7F70];
-    if (!v7)
+    if (!_accessibilityIsSTUIExpandable)
     {
       v8 = 0;
     }
 
-    return v8 | v6;
+    return v8 | accessibilityTraits;
   }
 }
 

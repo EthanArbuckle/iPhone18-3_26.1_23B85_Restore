@@ -1,14 +1,14 @@
 @interface WBSMetadataExtractor
 + (id)metadataExtractorScriptSource;
 - (JSContext)context;
-- (WBSMetadataExtractor)initWithWebProcessPlugInFrame:(id)a3 useNormalWorld:(BOOL)a4;
-- (id)_colorFromColorComponents:(id)a3;
-- (id)_resultForInvokingFunctionWithName:(id)a3;
+- (WBSMetadataExtractor)initWithWebProcessPlugInFrame:(id)frame useNormalWorld:(BOOL)world;
+- (id)_colorFromColorComponents:(id)components;
+- (id)_resultForInvokingFunctionWithName:(id)name;
 - (id)appleTouchIconURLs;
 - (id)faviconURLs;
-- (id)firstElementForSelector:(id)a3;
+- (id)firstElementForSelector:(id)selector;
 - (void)dealloc;
-- (void)getTemplateIconURL:(id *)a3 andColor:(id *)a4;
+- (void)getTemplateIconURL:(id *)l andColor:(id *)color;
 @end
 
 @implementation WBSMetadataExtractor
@@ -21,15 +21,15 @@
   return v3;
 }
 
-- (WBSMetadataExtractor)initWithWebProcessPlugInFrame:(id)a3 useNormalWorld:(BOOL)a4
+- (WBSMetadataExtractor)initWithWebProcessPlugInFrame:(id)frame useNormalWorld:(BOOL)world
 {
-  v7 = a3;
+  frameCopy = frame;
   v8 = [(WBSMetadataExtractor *)self init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_webProcessPlugInFrame, a3);
-    if (a4)
+    objc_storeStrong(&v8->_webProcessPlugInFrame, frame);
+    if (world)
     {
       [MEMORY[0x1E6985398] normalWorld];
     }
@@ -66,33 +66,33 @@
 
   else
   {
-    v5 = [(WBSMetadataExtractor *)self makeContext];
+    makeContext = [(WBSMetadataExtractor *)self makeContext];
     v6 = self->_context;
-    self->_context = v5;
+    self->_context = makeContext;
 
-    v7 = [objc_opt_class() metadataExtractorScriptSource];
-    v8 = [(JSContext *)self->_context evaluateScript:v7];
+    metadataExtractorScriptSource = [objc_opt_class() metadataExtractorScriptSource];
+    v8 = [(JSContext *)self->_context evaluateScript:metadataExtractorScriptSource];
     v3 = self->_context;
   }
 
   return v3;
 }
 
-- (id)_resultForInvokingFunctionWithName:(id)a3
+- (id)_resultForInvokingFunctionWithName:(id)name
 {
-  v4 = a3;
-  v5 = [(WBSMetadataExtractor *)self context];
-  v6 = [v5 globalObject];
-  v7 = [v6 valueForProperty:@"MetadataExtractorJS"];
+  nameCopy = name;
+  context = [(WBSMetadataExtractor *)self context];
+  globalObject = [context globalObject];
+  v7 = [globalObject valueForProperty:@"MetadataExtractorJS"];
 
-  if ([v7 isUndefined] & 1) != 0 || (objc_msgSend(v7, "valueForProperty:", v4), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "isUndefined"), v8, (v9))
+  if ([v7 isUndefined] & 1) != 0 || (objc_msgSend(v7, "valueForProperty:", nameCopy), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "isUndefined"), v8, (v9))
   {
     v10 = 0;
   }
 
   else
   {
-    v10 = [v7 invokeMethod:v4 withArguments:0];
+    v10 = [v7 invokeMethod:nameCopy withArguments:0];
   }
 
   return v10;
@@ -101,8 +101,8 @@
 - (id)appleTouchIconURLs
 {
   v2 = [(WBSMetadataExtractor *)self _resultForInvokingFunctionWithName:@"extractAppleTouchIconURLs"];
-  v3 = [v2 toArray];
-  v4 = [v3 safari_mapAndFilterObjectsUsingBlock:&__block_literal_global_25];
+  toArray = [v2 toArray];
+  v4 = [toArray safari_mapAndFilterObjectsUsingBlock:&__block_literal_global_25];
 
   return v4;
 }
@@ -137,13 +137,13 @@ id __42__WBSMetadataExtractor_appleTouchIconURLs__block_invoke(uint64_t a1, void
 {
   v18 = *MEMORY[0x1E69E9840];
   v2 = [(WBSMetadataExtractor *)self _resultForInvokingFunctionWithName:@"extractFaviconURLs"];
-  v3 = [v2 toArray];
-  v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v3, "count")}];
+  toArray = [v2 toArray];
+  v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(toArray, "count")}];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = v3;
+  v5 = toArray;
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
@@ -179,20 +179,20 @@ id __42__WBSMetadataExtractor_appleTouchIconURLs__block_invoke(uint64_t a1, void
   return v4;
 }
 
-- (id)_colorFromColorComponents:(id)a3
+- (id)_colorFromColorComponents:(id)components
 {
-  v3 = a3;
-  if ([v3 count] == 3)
+  componentsCopy = components;
+  if ([componentsCopy count] == 3)
   {
-    v4 = [v3 objectAtIndexedSubscript:0];
+    v4 = [componentsCopy objectAtIndexedSubscript:0];
     [v4 doubleValue];
     v6 = v5;
 
-    v7 = [v3 objectAtIndexedSubscript:1];
+    v7 = [componentsCopy objectAtIndexedSubscript:1];
     [v7 doubleValue];
     v9 = v8;
 
-    v10 = [v3 objectAtIndexedSubscript:2];
+    v10 = [componentsCopy objectAtIndexedSubscript:2];
     [v10 doubleValue];
     v12 = v11;
 
@@ -207,39 +207,39 @@ id __42__WBSMetadataExtractor_appleTouchIconURLs__block_invoke(uint64_t a1, void
   return v13;
 }
 
-- (void)getTemplateIconURL:(id *)a3 andColor:(id *)a4
+- (void)getTemplateIconURL:(id *)l andColor:(id *)color
 {
-  *a3 = 0;
-  *a4 = 0;
+  *l = 0;
+  *color = 0;
   v12 = [(WBSMetadataExtractor *)self _resultForInvokingFunctionWithName:@"extractTemplateIconURLAndColor"];
-  v7 = [v12 toDictionary];
-  v8 = v7;
-  if (v7)
+  toDictionary = [v12 toDictionary];
+  v8 = toDictionary;
+  if (toDictionary)
   {
-    v9 = [v7 safari_stringForKey:@"url"];
+    v9 = [toDictionary safari_stringForKey:@"url"];
     if ([v9 length])
     {
       v10 = [MEMORY[0x1E695DFF8] URLWithString:v9];
-      *a3 = v10;
+      *l = v10;
     }
 
     else
     {
-      *a3 = 0;
+      *l = 0;
     }
 
     v11 = [v8 safari_arrayForKey:@"color"];
-    *a4 = [(WBSMetadataExtractor *)self _colorFromColorComponents:v11];
+    *color = [(WBSMetadataExtractor *)self _colorFromColorComponents:v11];
   }
 }
 
-- (id)firstElementForSelector:(id)a3
+- (id)firstElementForSelector:(id)selector
 {
-  v4 = a3;
-  v5 = [(WBSMetadataExtractor *)self context];
-  v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"document.querySelector('%@')", v4];
+  selectorCopy = selector;
+  context = [(WBSMetadataExtractor *)self context];
+  selectorCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"document.querySelector('%@')", selectorCopy];
 
-  v7 = [v5 evaluateScript:v6];
+  v7 = [context evaluateScript:selectorCopy];
 
   return v7;
 }

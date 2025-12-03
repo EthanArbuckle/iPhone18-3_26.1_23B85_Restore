@@ -1,29 +1,29 @@
 @interface MTSleepSessionManager
-+ (id)sleepSampleWithInterval:(id)a3 sampleType:(int64_t)a4 metadata:(id)a5;
++ (id)sleepSampleWithInterval:(id)interval sampleType:(int64_t)type metadata:(id)metadata;
 - (BOOL)_hasUnprocessedSessions;
-- (MTSleepSessionManager)initWithAlarmStorage:(id)a3 sleepCoordinator:(id)a4 sleepSessionTracker:(id)a5;
+- (MTSleepSessionManager)initWithAlarmStorage:(id)storage sleepCoordinator:(id)coordinator sleepSessionTracker:(id)tracker;
 - (MTSleepSessionTrackerDelegate)sleepSessionTrackerDelegate;
 - (id)_unprocessedSessions;
 - (id)_writeSessionData;
-- (id)_writeSessions:(id)a3;
-- (id)writeSession:(id)a3;
+- (id)_writeSessions:(id)sessions;
+- (id)writeSession:(id)session;
 - (void)_removeSessionDataFile;
 - (void)_unprocessedSessions;
-- (void)archiveSession:(id)a3;
+- (void)archiveSession:(id)session;
 - (void)deviceFirstUnlocked;
 - (void)saveSessionData;
-- (void)sleepSessionTracker:(id)a3 sessionDidComplete:(id)a4;
+- (void)sleepSessionTracker:(id)tracker sessionDidComplete:(id)complete;
 - (void)waitForUnlock;
 @end
 
 @implementation MTSleepSessionManager
 
-- (MTSleepSessionManager)initWithAlarmStorage:(id)a3 sleepCoordinator:(id)a4 sleepSessionTracker:(id)a5
+- (MTSleepSessionManager)initWithAlarmStorage:(id)storage sleepCoordinator:(id)coordinator sleepSessionTracker:(id)tracker
 {
   v39 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  storageCopy = storage;
+  coordinatorCopy = coordinator;
+  trackerCopy = tracker;
   v31.receiver = self;
   v31.super_class = MTSleepSessionManager;
   v12 = [(MTSleepSessionManager *)&v31 init];
@@ -35,14 +35,14 @@
       *buf = 138543618;
       *&buf[4] = v12;
       *&buf[12] = 2114;
-      *&buf[14] = v11;
+      *&buf[14] = trackerCopy;
       _os_log_impl(&dword_1B1F9F000, v13, OS_LOG_TYPE_DEFAULT, "Initializing %{public}@ with tracker: %{public}@", buf, 0x16u);
     }
 
-    objc_storeStrong(&v12->_alarmStorage, a3);
-    objc_storeStrong(&v12->_sleepSessionTracker, a5);
+    objc_storeStrong(&v12->_alarmStorage, storage);
+    objc_storeStrong(&v12->_sleepSessionTracker, tracker);
     [(MTSleepSessionTracker *)v12->_sleepSessionTracker setSleepSessionTrackerDelegate:v12];
-    objc_storeWeak(&v12->_sleepSessionTrackerDelegate, v10);
+    objc_storeWeak(&v12->_sleepSessionTrackerDelegate, coordinatorCopy);
     v32 = 0;
     v33 = &v32;
     v34 = 0x2050000000;
@@ -65,15 +65,15 @@
     healthStore = v12->_healthStore;
     v12->_healthStore = v16;
 
-    v18 = [objc_opt_class() platformSpecificSourceBundleIdentifier];
-    [(HKHealthStore *)v12->_healthStore setSourceBundleIdentifier:v18];
+    platformSpecificSourceBundleIdentifier = [objc_opt_class() platformSpecificSourceBundleIdentifier];
+    [(HKHealthStore *)v12->_healthStore setSourceBundleIdentifier:platformSpecificSourceBundleIdentifier];
 
     [(HKHealthStore *)v12->_healthStore resume];
     v19 = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, 1uLL, 1);
-    v20 = [v19 firstObject];
-    v21 = [MEMORY[0x1E696AAE8] mainBundle];
-    v22 = [v21 bundleIdentifier];
-    v23 = [v20 stringByAppendingPathComponent:v22];
+    firstObject = [v19 firstObject];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
+    v23 = [firstObject stringByAppendingPathComponent:bundleIdentifier];
     archivedSessionDataPath = v12->_archivedSessionDataPath;
     v12->_archivedSessionDataPath = v23;
 
@@ -90,17 +90,17 @@
   return v12;
 }
 
-- (void)sleepSessionTracker:(id)a3 sessionDidComplete:(id)a4
+- (void)sleepSessionTracker:(id)tracker sessionDidComplete:(id)complete
 {
   v25 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  completeCopy = complete;
   v6 = MTLogForCategory(7);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v22 = self;
+    selfCopy5 = self;
     v23 = 2114;
-    v24 = v5;
+    v24 = completeCopy;
     _os_log_impl(&dword_1B1F9F000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@ sessionDidComplete: %{public}@", buf, 0x16u);
   }
 
@@ -110,10 +110,10 @@
   aBlock[3] = &unk_1E7B0E640;
   aBlock[4] = self;
   v7 = _Block_copy(aBlock);
-  if (([v5 needsAdditionalProcessing]& 1) == 0)
+  if (([completeCopy needsAdditionalProcessing]& 1) == 0)
   {
-    v8 = [v5 intervals];
-    v9 = [v8 count];
+    intervals = [completeCopy intervals];
+    v9 = [intervals count];
 
     if (!v9)
     {
@@ -121,13 +121,13 @@
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v22 = self;
+        selfCopy5 = self;
         _os_log_impl(&dword_1B1F9F000, v17, OS_LOG_TYPE_DEFAULT, "%{public}@ session has nothing to write", buf, 0xCu);
       }
 
-      v15 = [(MTSleepSessionManager *)self sleepSessionTrackerDelegate];
-      v18 = [(MTSleepSessionManager *)self sleepSessionTracker];
-      [v15 sleepSessionTracker:v18 sessionDidComplete:v5];
+      sleepSessionTrackerDelegate = [(MTSleepSessionManager *)self sleepSessionTrackerDelegate];
+      sleepSessionTracker = [(MTSleepSessionManager *)self sleepSessionTracker];
+      [sleepSessionTrackerDelegate sleepSessionTracker:sleepSessionTracker sessionDidComplete:completeCopy];
 
       goto LABEL_24;
     }
@@ -135,27 +135,27 @@
 
   if (+[MTDeviceListener hasBeenUnlockedSinceBoot])
   {
-    v10 = [v5 needsAdditionalProcessing];
+    needsAdditionalProcessing = [completeCopy needsAdditionalProcessing];
     v11 = MTLogForCategory(7);
     v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
-    if (v10)
+    if (needsAdditionalProcessing)
     {
       if (v12)
       {
         *buf = 138543362;
-        v22 = self;
+        selfCopy5 = self;
         _os_log_impl(&dword_1B1F9F000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@ session needs additional processing", buf, 0xCu);
       }
 
-      v13 = [(MTSleepSessionManager *)self sleepSessionTracker];
+      sleepSessionTracker2 = [(MTSleepSessionManager *)self sleepSessionTracker];
       if (objc_opt_respondsToSelector())
       {
-        v14 = [(MTSleepSessionManager *)self sleepSessionTracker];
-        v15 = [v14 processedSessionForSession:v5];
+        sleepSessionTracker3 = [(MTSleepSessionManager *)self sleepSessionTracker];
+        sleepSessionTrackerDelegate = [sleepSessionTracker3 processedSessionForSession:completeCopy];
 
-        if (v15)
+        if (sleepSessionTrackerDelegate)
         {
-          v7[2](v7, v15);
+          v7[2](v7, sleepSessionTrackerDelegate);
 LABEL_24:
 
           goto LABEL_25;
@@ -166,10 +166,10 @@ LABEL_24:
       {
       }
 
-      v15 = MTLogForCategory(7);
-      if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+      sleepSessionTrackerDelegate = MTLogForCategory(7);
+      if (os_log_type_enabled(sleepSessionTrackerDelegate, OS_LOG_TYPE_ERROR))
       {
-        [MTSleepSessionManager sleepSessionTracker:v15 sessionDidComplete:?];
+        [MTSleepSessionManager sleepSessionTracker:sleepSessionTrackerDelegate sessionDidComplete:?];
       }
 
       goto LABEL_24;
@@ -178,11 +178,11 @@ LABEL_24:
     if (v12)
     {
       *buf = 138543362;
-      v22 = self;
+      selfCopy5 = self;
       _os_log_impl(&dword_1B1F9F000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@ session is ready to write", buf, 0xCu);
     }
 
-    v7[2](v7, v5);
+    v7[2](v7, completeCopy);
   }
 
   else
@@ -191,11 +191,11 @@ LABEL_24:
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v22 = self;
+      selfCopy5 = self;
       _os_log_impl(&dword_1B1F9F000, v16, OS_LOG_TYPE_DEFAULT, "%{public}@ archiving session", buf, 0xCu);
     }
 
-    [(MTSleepSessionManager *)self archiveSession:v5];
+    [(MTSleepSessionManager *)self archiveSession:completeCopy];
     [(MTSleepSessionManager *)self waitForUnlock];
   }
 
@@ -252,11 +252,11 @@ void __64__MTSleepSessionManager_sleepSessionTracker_sessionDidComplete___block_
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)archiveSession:(id)a3
+- (void)archiveSession:(id)session
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  sessionCopy = session;
+  v5 = sessionCopy;
+  if (sessionCopy)
   {
     serializer = self->_serializer;
     v7[0] = MEMORY[0x1E69E9820];
@@ -264,7 +264,7 @@ void __64__MTSleepSessionManager_sleepSessionTracker_sessionDidComplete___block_
     v7[2] = __40__MTSleepSessionManager_archiveSession___block_invoke;
     v7[3] = &unk_1E7B0C928;
     v7[4] = self;
-    v8 = v4;
+    v8 = sessionCopy;
     [(NAScheduler *)serializer performBlock:v7];
   }
 }
@@ -372,9 +372,9 @@ LABEL_12:
   v26 = *MEMORY[0x1E69E9840];
 }
 
-- (id)writeSession:(id)a3
+- (id)writeSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   v5 = objc_opt_new();
   serializer = self->_serializer;
   v12[0] = MEMORY[0x1E69E9820];
@@ -382,10 +382,10 @@ LABEL_12:
   v12[2] = __38__MTSleepSessionManager_writeSession___block_invoke;
   v12[3] = &unk_1E7B0C9A0;
   v12[4] = self;
-  v13 = v4;
+  v13 = sessionCopy;
   v7 = v5;
   v14 = v7;
-  v8 = v4;
+  v8 = sessionCopy;
   [(NAScheduler *)serializer performBlock:v12];
   v9 = v14;
   v10 = v7;
@@ -490,12 +490,12 @@ LABEL_9:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138543362;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B1F9F000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ device hasn't been unlocked since boot.  Waiting for unlock...", &v6, 0xCu);
   }
 
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 addObserver:self selector:sel_deviceFirstUnlocked name:@"MTDeviceHasBeenUnlockedForFirstTime" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_deviceFirstUnlocked name:@"MTDeviceHasBeenUnlockedForFirstTime" object:0];
 
   v5 = *MEMORY[0x1E69E9840];
 }
@@ -555,9 +555,9 @@ void __44__MTSleepSessionManager_deviceFirstUnlocked__block_invoke_320(uint64_t 
 
 - (BOOL)_hasUnprocessedSessions
 {
-  v3 = [MEMORY[0x1E696AC08] defaultManager];
-  v4 = [(MTSleepSessionManager *)self archivedSessionDataFile];
-  v5 = [v3 fileExistsAtPath:v4 isDirectory:0];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  archivedSessionDataFile = [(MTSleepSessionManager *)self archivedSessionDataFile];
+  v5 = [defaultManager fileExistsAtPath:archivedSessionDataFile isDirectory:0];
 
   return v5;
 }
@@ -568,8 +568,8 @@ void __44__MTSleepSessionManager_deviceFirstUnlocked__block_invoke_320(uint64_t 
   if ([(MTSleepSessionManager *)self _hasUnprocessedSessions])
   {
     v3 = objc_alloc(MEMORY[0x1E695DEF0]);
-    v4 = [(MTSleepSessionManager *)self archivedSessionDataFile];
-    v5 = [v3 initWithContentsOfFile:v4];
+    archivedSessionDataFile = [(MTSleepSessionManager *)self archivedSessionDataFile];
+    v5 = [v3 initWithContentsOfFile:archivedSessionDataFile];
 
     if (v5)
     {
@@ -634,13 +634,13 @@ void __44__MTSleepSessionManager_deviceFirstUnlocked__block_invoke_320(uint64_t 
 
 - (id)_writeSessionData
 {
-  v3 = [(MTSleepSessionManager *)self _unprocessedSessions];
+  _unprocessedSessions = [(MTSleepSessionManager *)self _unprocessedSessions];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __42__MTSleepSessionManager__writeSessionData__block_invoke;
   v11[3] = &unk_1E7B0E690;
   v11[4] = self;
-  v4 = [v3 na_map:v11];
+  v4 = [_unprocessedSessions na_map:v11];
 
   v5 = [(MTSleepSessionManager *)self _writeSessions:v4];
   v9[0] = MEMORY[0x1E69E9820];
@@ -698,11 +698,11 @@ uint64_t __42__MTSleepSessionManager__writeSessionData__block_invoke_2(uint64_t 
   return result;
 }
 
-- (id)_writeSessions:(id)a3
+- (id)_writeSessions:(id)sessions
 {
   v71 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v52 = self;
+  sessionsCopy = sessions;
+  selfCopy = self;
   healthStore = self->_healthStore;
   HKObjectTypeClass = getHKObjectTypeClass();
   v7 = getHKCategoryTypeIdentifierSleepAnalysis();
@@ -714,30 +714,30 @@ uint64_t __42__MTSleepSessionManager__writeSessionData__block_invoke_2(uint64_t 
     v10 = MTLogForCategory(7);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      [(MTSleepSessionManager *)v52 _writeSessions:v10];
+      [(MTSleepSessionManager *)selfCopy _writeSessions:v10];
     }
 
     v11 = MEMORY[0x1E69B3780];
-    v12 = [MEMORY[0x1E696ABC0] na_genericError];
-    v13 = [v11 futureWithError:v12];
+    na_genericError = [MEMORY[0x1E696ABC0] na_genericError];
+    v13 = [v11 futureWithError:na_genericError];
   }
 
   else
   {
-    v12 = objc_opt_new();
+    na_genericError = objc_opt_new();
     v59 = 0u;
     v60 = 0u;
     v61 = 0u;
     v62 = 0u;
-    v46 = v4;
-    obj = v4;
+    v46 = sessionsCopy;
+    obj = sessionsCopy;
     v14 = [obj countByEnumeratingWithState:&v59 objects:v70 count:16];
     if (v14)
     {
       v15 = v14;
       v16 = *v60;
       v47 = *v60;
-      v48 = v12;
+      v48 = na_genericError;
       do
       {
         v17 = 0;
@@ -754,21 +754,21 @@ uint64_t __42__MTSleepSessionManager__writeSessionData__block_invoke_2(uint64_t 
           if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138543618;
-            v64 = v52;
+            v64 = selfCopy;
             v65 = 2112;
             v66 = v18;
             _os_log_impl(&dword_1B1F9F000, v19, OS_LOG_TYPE_DEFAULT, "%{public}@ Processing session: %@", buf, 0x16u);
           }
 
-          v20 = [(__CFString *)v18 startDate];
-          if (v20 && (v21 = v20, [(__CFString *)v18 endDate], v22 = objc_claimAutoreleasedReturnValue(), v22, v21, v22))
+          startDate = [(__CFString *)v18 startDate];
+          if (startDate && (v21 = startDate, [(__CFString *)v18 endDate], v22 = objc_claimAutoreleasedReturnValue(), v22, v21, v22))
           {
             v51 = v17;
             v23 = MTLogForCategory(7);
             if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138543618;
-              v64 = v52;
+              v64 = selfCopy;
               v65 = 2114;
               v66 = @"sleep session";
               _os_log_impl(&dword_1B1F9F000, v23, OS_LOG_TYPE_DEFAULT, "%{public}@ Creating HealthKit samples from %{public}@...", buf, 0x16u);
@@ -779,8 +779,8 @@ uint64_t __42__MTSleepSessionManager__writeSessionData__block_invoke_2(uint64_t 
             v56 = 0u;
             v57 = 0u;
             v58 = 0u;
-            v25 = [(__CFString *)v18 intervals];
-            v26 = [v25 countByEnumeratingWithState:&v55 objects:v69 count:16];
+            intervals = [(__CFString *)v18 intervals];
+            v26 = [intervals countByEnumeratingWithState:&v55 objects:v69 count:16];
             if (v26)
             {
               v27 = v26;
@@ -791,19 +791,19 @@ uint64_t __42__MTSleepSessionManager__writeSessionData__block_invoke_2(uint64_t 
                 {
                   if (*v56 != v28)
                   {
-                    objc_enumerationMutation(v25);
+                    objc_enumerationMutation(intervals);
                   }
 
                   v30 = *(*(&v55 + 1) + 8 * i);
                   v31 = objc_opt_class();
-                  v32 = [(__CFString *)v18 sampleType];
-                  v33 = [(__CFString *)v18 metadata];
-                  v34 = [v31 sleepSampleWithInterval:v30 sampleType:v32 metadata:v33];
+                  sampleType = [(__CFString *)v18 sampleType];
+                  metadata = [(__CFString *)v18 metadata];
+                  v34 = [v31 sleepSampleWithInterval:v30 sampleType:sampleType metadata:metadata];
 
                   [v24 na_safeAddObject:v34];
                 }
 
-                v27 = [v25 countByEnumeratingWithState:&v55 objects:v69 count:16];
+                v27 = [intervals countByEnumeratingWithState:&v55 objects:v69 count:16];
               }
 
               while (v27);
@@ -814,7 +814,7 @@ uint64_t __42__MTSleepSessionManager__writeSessionData__block_invoke_2(uint64_t 
             {
               v36 = [v24 count];
               *buf = 138543874;
-              v64 = v52;
+              v64 = selfCopy;
               v65 = 2048;
               v66 = v36;
               v67 = 2114;
@@ -823,14 +823,14 @@ uint64_t __42__MTSleepSessionManager__writeSessionData__block_invoke_2(uint64_t 
             }
 
             v37 = objc_opt_new();
-            v12 = v48;
+            na_genericError = v48;
             [v48 addObject:v37];
-            v38 = v52->_healthStore;
+            v38 = selfCopy->_healthStore;
             v53[0] = MEMORY[0x1E69E9820];
             v53[1] = 3221225472;
             v53[2] = __40__MTSleepSessionManager__writeSessions___block_invoke;
             v53[3] = &unk_1E7B0E6B8;
-            v53[4] = v52;
+            v53[4] = selfCopy;
             v53[5] = v18;
             v54 = v37;
             v39 = v37;
@@ -847,7 +847,7 @@ uint64_t __42__MTSleepSessionManager__writeSessionData__block_invoke_2(uint64_t 
             if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
             {
               *buf = 138543618;
-              v64 = v52;
+              v64 = selfCopy;
               v65 = 2112;
               v66 = v18;
               _os_log_error_impl(&dword_1B1F9F000, v24, OS_LOG_TYPE_ERROR, "%{public}@ Skipping session due to missing bedtime or wake time: %@", buf, 0x16u);
@@ -864,15 +864,15 @@ uint64_t __42__MTSleepSessionManager__writeSessionData__block_invoke_2(uint64_t 
       while (v15);
     }
 
-    v40 = +[MTScheduler serialSchedulerForObject:priority:](MTScheduler, "serialSchedulerForObject:priority:", v52, +[MTScheduler defaultPriority]);
-    serializer = v52->_serializer;
-    v52->_serializer = v40;
+    v40 = +[MTScheduler serialSchedulerForObject:priority:](MTScheduler, "serialSchedulerForObject:priority:", selfCopy, +[MTScheduler defaultPriority]);
+    serializer = selfCopy->_serializer;
+    selfCopy->_serializer = v40;
 
     v42 = MEMORY[0x1E69B3780];
     v43 = +[MTScheduler globalAsyncSchedulerWithPriority:](MTScheduler, "globalAsyncSchedulerWithPriority:", +[MTScheduler defaultPriority]);
-    v13 = [v42 combineAllFutures:v12 ignoringErrors:1 scheduler:v43];
+    v13 = [v42 combineAllFutures:na_genericError ignoringErrors:1 scheduler:v43];
 
-    v4 = v46;
+    sessionsCopy = v46;
   }
 
   v44 = *MEMORY[0x1E69E9840];
@@ -924,12 +924,12 @@ void __40__MTSleepSessionManager__writeSessions___block_invoke(void *a1, char a2
   v15 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)sleepSampleWithInterval:(id)a3 sampleType:(int64_t)a4 metadata:(id)a5
++ (id)sleepSampleWithInterval:(id)interval sampleType:(int64_t)type metadata:(id)metadata
 {
   v34 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  if (v8)
+  intervalCopy = interval;
+  metadataCopy = metadata;
+  if (intervalCopy)
   {
     HKObjectTypeClass = getHKObjectTypeClass();
     v11 = getHKCategoryTypeIdentifierSleepAnalysis();
@@ -937,7 +937,7 @@ void __40__MTSleepSessionManager__writeSessions___block_invoke(void *a1, char a2
 
     [v12 maximumAllowedDuration];
     v14 = v13;
-    [v8 duration];
+    [intervalCopy duration];
     if (v15 <= v14)
     {
       v27 = 0;
@@ -958,8 +958,8 @@ void __40__MTSleepSessionManager__writeSessions___block_invoke(void *a1, char a2
 
       v20 = v19;
       _Block_object_dispose(&v27, 8);
-      v16 = [v8 startDate];
-      v21 = [v8 endDate];
+      startDate = [intervalCopy startDate];
+      endDate = [intervalCopy endDate];
       v27 = 0;
       v28 = &v27;
       v29 = 0x2050000000;
@@ -978,23 +978,23 @@ void __40__MTSleepSessionManager__writeSessions___block_invoke(void *a1, char a2
 
       v23 = v22;
       _Block_object_dispose(&v27, 8);
-      v24 = [v22 localDevice];
-      v18 = [v19 categorySampleWithType:v12 value:a4 startDate:v16 endDate:v21 device:v24 metadata:v9];
+      localDevice = [v22 localDevice];
+      v18 = [v19 categorySampleWithType:v12 value:type startDate:startDate endDate:endDate device:localDevice metadata:metadataCopy];
     }
 
     else
     {
-      v16 = MTLogForCategory(7);
-      if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
+      startDate = MTLogForCategory(7);
+      if (os_log_type_enabled(startDate, OS_LOG_TYPE_DEFAULT))
       {
-        [v8 duration];
+        [intervalCopy duration];
         *buf = 138543874;
-        *&buf[4] = a1;
+        *&buf[4] = self;
         *&buf[12] = 2048;
         *&buf[14] = v17;
         *&buf[22] = 2048;
         v32 = v14;
-        _os_log_impl(&dword_1B1F9F000, v16, OS_LOG_TYPE_DEFAULT, "%{public}@ sleep interval: %f greater than allowed: %f. Will not be used", buf, 0x20u);
+        _os_log_impl(&dword_1B1F9F000, startDate, OS_LOG_TYPE_DEFAULT, "%{public}@ sleep interval: %f greater than allowed: %f. Will not be used", buf, 0x20u);
       }
 
       v18 = 0;
@@ -1007,7 +1007,7 @@ void __40__MTSleepSessionManager__writeSessions___block_invoke(void *a1, char a2
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      *&buf[4] = a1;
+      *&buf[4] = self;
       _os_log_impl(&dword_1B1F9F000, v12, OS_LOG_TYPE_DEFAULT, "%{public}@ Interval is nil.", buf, 0xCu);
     }
 
@@ -1058,7 +1058,7 @@ void __40__MTSleepSessionManager_archiveSession___block_invoke_cold_2(id *a1)
 - (void)_unprocessedSessions
 {
   v9 = *MEMORY[0x1E69E9840];
-  v1 = [a1 archivedSessionDataFile];
+  archivedSessionDataFile = [self archivedSessionDataFile];
   OUTLINED_FUNCTION_2_2();
   OUTLINED_FUNCTION_3_2(&dword_1B1F9F000, v2, v3, "%{public}@ no data found in file %{public}@", v4, v5, v6, v7, 2u);
 

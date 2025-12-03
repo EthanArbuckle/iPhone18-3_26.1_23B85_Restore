@@ -1,39 +1,39 @@
 @interface VNEntityIdentificationModelAlgorithmVIPv3
-- (BOOL)isEqual:(id)a3;
-- (VNEntityIdentificationModelAlgorithmVIPv3)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (VNEntityIdentificationModelAlgorithmVIPv3)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation VNEntityIdentificationModelAlgorithmVIPv3
 
-- (VNEntityIdentificationModelAlgorithmVIPv3)initWithCoder:(id)a3
+- (VNEntityIdentificationModelAlgorithmVIPv3)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = VNEntityIdentificationModelAlgorithmVIPv3;
-  v5 = [(VNEntityIdentificationModelAlgorithm *)&v7 initWithCoder:v4];
+  v5 = [(VNEntityIdentificationModelAlgorithm *)&v7 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_indexType = [v4 decodeIntegerForKey:@"indexType"];
+    v5->_indexType = [coderCopy decodeIntegerForKey:@"indexType"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = VNEntityIdentificationModelAlgorithmVIPv3;
-  v4 = a3;
-  [(VNEntityIdentificationModelAlgorithm *)&v5 encodeWithCoder:v4];
-  [v4 encodeInteger:self->_indexType forKey:{@"indexType", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(VNEntityIdentificationModelAlgorithm *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInteger:self->_indexType forKey:{@"indexType", v5.receiver, v5.super_class}];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -43,11 +43,11 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(VNEntityIdentificationModelAlgorithmVIPv3 *)self indexType];
-      v7 = [(VNEntityIdentificationModelAlgorithmVIPv3 *)v5 indexType];
+      v5 = equalCopy;
+      indexType = [(VNEntityIdentificationModelAlgorithmVIPv3 *)self indexType];
+      indexType2 = [(VNEntityIdentificationModelAlgorithmVIPv3 *)v5 indexType];
 
-      v8 = v6 == v7;
+      v8 = indexType == indexType2;
     }
 
     else
@@ -67,10 +67,10 @@
   v4 = [(VNEntityIdentificationModelAlgorithm *)&v9 description];
   v5 = [v3 initWithString:v4];
 
-  v6 = [(VNEntityIdentificationModelAlgorithmVIPv3 *)self indexType];
-  if (v6)
+  indexType = [(VNEntityIdentificationModelAlgorithmVIPv3 *)self indexType];
+  if (indexType)
   {
-    if (v6 != 1)
+    if (indexType != 1)
     {
       goto LABEL_6;
     }

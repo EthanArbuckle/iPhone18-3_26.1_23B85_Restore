@@ -1,20 +1,20 @@
 @interface MTHashAction
-- (MTHashAction)initWithField:(id)a3 configDictionary:(id)a4;
-- (id)hashOf:(id)a3 userId:(id)a4;
-- (id)performAction:(id)a3 context:(id)a4;
+- (MTHashAction)initWithField:(id)field configDictionary:(id)dictionary;
+- (id)hashOf:(id)of userId:(id)id;
+- (id)performAction:(id)action context:(id)context;
 @end
 
 @implementation MTHashAction
 
-- (MTHashAction)initWithField:(id)a3 configDictionary:(id)a4
+- (MTHashAction)initWithField:(id)field configDictionary:(id)dictionary
 {
-  v6 = a4;
+  dictionaryCopy = dictionary;
   v16.receiver = self;
   v16.super_class = MTHashAction;
-  v7 = [(MTTreatmentAction *)&v16 initWithField:a3 configDictionary:v6];
+  v7 = [(MTTreatmentAction *)&v16 initWithField:field configDictionary:dictionaryCopy];
   if (v7)
   {
-    v8 = [v6 objectForKeyedSubscript:@"scheme"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"scheme"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -37,9 +37,9 @@ LABEL_7:
 
     v10 = MEMORY[0x277CCACA8];
     v11 = +[MTFrameworkEnvironment sharedEnvironment];
-    v12 = [v11 hostProcessBundleIdentifier];
-    v13 = [(MTTreatmentAction *)v7 field];
-    v9 = [v10 stringWithFormat:@"%@.%lx", v12, objc_msgSend(v13, "hash")];
+    hostProcessBundleIdentifier = [v11 hostProcessBundleIdentifier];
+    field = [(MTTreatmentAction *)v7 field];
+    v9 = [v10 stringWithFormat:@"%@.%lx", hostProcessBundleIdentifier, objc_msgSend(field, "hash")];
 
     goto LABEL_7;
   }
@@ -49,19 +49,19 @@ LABEL_8:
   return v7;
 }
 
-- (id)hashOf:(id)a3 userId:(id)a4
+- (id)hashOf:(id)of userId:(id)id
 {
   v26[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  ofCopy = of;
+  idCopy = id;
   v8 = +[MTFrameworkEnvironment sharedEnvironment];
-  v9 = [v8 secretStore];
+  secretStore = [v8 secretStore];
 
-  v10 = [(MTHashAction *)self scheme];
+  scheme = [(MTHashAction *)self scheme];
   v25 = @"syncWaitTime";
   v26[0] = &unk_286A4C398;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v26 forKeys:&v25 count:1];
-  v12 = [v9 secretForScheme:v10 options:v11];
+  v12 = [secretStore secretForScheme:scheme options:v11];
   v22 = 0;
   v13 = [v12 resultWithTimeout:&v22 error:5.0];
   v14 = v22;
@@ -69,41 +69,41 @@ LABEL_8:
   if (v13)
   {
     v15 = MEMORY[0x277CCACA8];
-    v16 = [v13 value];
-    v17 = [v15 stringWithFormat:@"%@\n%@\n%@", v6, v16, v7];
+    value = [v13 value];
+    idCopy = [v15 stringWithFormat:@"%@\n%@\n%@", ofCopy, value, idCopy];
 
-    v18 = [v17 mt_SHA1Base62String];
+    mt_SHA1Base62String = [idCopy mt_SHA1Base62String];
   }
 
   else
   {
-    v17 = MTMetricsKitOSLog();
-    if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+    idCopy = MTMetricsKitOSLog();
+    if (os_log_type_enabled(idCopy, OS_LOG_TYPE_ERROR))
     {
-      v19 = [(MTHashAction *)self scheme];
+      scheme2 = [(MTHashAction *)self scheme];
       *buf = 138412290;
-      v24 = v19;
-      _os_log_impl(&dword_258F4B000, v17, OS_LOG_TYPE_ERROR, "MetricsKit: Failed to retrieve secret salt for scheme %@", buf, 0xCu);
+      v24 = scheme2;
+      _os_log_impl(&dword_258F4B000, idCopy, OS_LOG_TYPE_ERROR, "MetricsKit: Failed to retrieve secret salt for scheme %@", buf, 0xCu);
     }
 
-    v18 = 0;
+    mt_SHA1Base62String = 0;
   }
 
   v20 = *MEMORY[0x277D85DE8];
 
-  return v18;
+  return mt_SHA1Base62String;
 }
 
-- (id)performAction:(id)a3 context:(id)a4
+- (id)performAction:(id)action context:(id)context
 {
-  v6 = a4;
+  contextCopy = context;
   v14.receiver = self;
   v14.super_class = MTHashAction;
-  v7 = [(MTTreatmentAction *)&v14 performAction:a3 context:v6];
+  v7 = [(MTTreatmentAction *)&v14 performAction:action context:contextCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [v7 stringValue];
+    stringValue = [v7 stringValue];
   }
 
   else
@@ -118,18 +118,18 @@ LABEL_8:
       }
     }
 
-    v8 = [v7 description];
+    stringValue = [v7 description];
   }
 
-  v9 = v8;
+  v9 = stringValue;
 
   v7 = v9;
 LABEL_7:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = [v6 metrics];
-    v11 = [v10 objectForKey:@"userId"];
+    metrics = [contextCopy metrics];
+    v11 = [metrics objectForKey:@"userId"];
 
     v12 = [(MTHashAction *)self hashOf:v7 userId:v11];
   }

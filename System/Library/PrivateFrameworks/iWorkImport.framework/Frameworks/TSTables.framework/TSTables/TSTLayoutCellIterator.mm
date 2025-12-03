@@ -1,27 +1,27 @@
 @interface TSTLayoutCellIterator
-+ (BOOL)isNeededWithLayoutEngine:(id)a3 andRange:(TSUCellRect)a4;
-- (BOOL)getNextCellData:(id *)a3;
-- (TSTLayoutCellIterator)initWithLayout:(id)a3 range:(TSUCellRect)a4 flags:(unint64_t)a5 searchFlags:(unint64_t)a6;
-- (TSTLayoutCellIterator)initWithLayoutEngine:(id)a3 range:(TSUCellRect)a4 flags:(unint64_t)a5 searchFlags:(unint64_t)a6;
++ (BOOL)isNeededWithLayoutEngine:(id)engine andRange:(TSUCellRect)range;
+- (BOOL)getNextCellData:(id *)data;
+- (TSTLayoutCellIterator)initWithLayout:(id)layout range:(TSUCellRect)range flags:(unint64_t)flags searchFlags:(unint64_t)searchFlags;
+- (TSTLayoutCellIterator)initWithLayoutEngine:(id)engine range:(TSUCellRect)range flags:(unint64_t)flags searchFlags:(unint64_t)searchFlags;
 - (TSUCellRect)layoutRange;
 @end
 
 @implementation TSTLayoutCellIterator
 
-+ (BOOL)isNeededWithLayoutEngine:(id)a3 andRange:(TSUCellRect)a4
++ (BOOL)isNeededWithLayoutEngine:(id)engine andRange:(TSUCellRect)range
 {
-  v4 = a3;
-  if (objc_msgSend_isDynamicallyChangingContent(v4, v5, v6, v7, v8) & 1) != 0 || (objc_msgSend_isDynamicallyChangingRowOrColumnCount(v4, v9, v10, v11, v12) & 1) != 0 || (objc_msgSend_isDynamicallyHidingRowsCols(v4, v13, v14, v15, v16) & 1) != 0 || (objc_msgSend_isDynamicallyRemovingText(v4, v17, v18, v19, v20))
+  engineCopy = engine;
+  if (objc_msgSend_isDynamicallyChangingContent(engineCopy, v5, v6, v7, v8) & 1) != 0 || (objc_msgSend_isDynamicallyChangingRowOrColumnCount(engineCopy, v9, v10, v11, v12) & 1) != 0 || (objc_msgSend_isDynamicallyHidingRowsCols(engineCopy, v13, v14, v15, v16) & 1) != 0 || (objc_msgSend_isDynamicallyRemovingText(engineCopy, v17, v18, v19, v20))
   {
     LOBYTE(v25) = 1;
   }
 
   else
   {
-    v27 = objc_msgSend_tableInfo(v4, v21, v22, v23, v24);
+    v27 = objc_msgSend_tableInfo(engineCopy, v21, v22, v23, v24);
     v38.origin = objc_msgSend_range(v27, v28, v29, v30, v31);
     v38.size = v32;
-    v37.origin = objc_msgSend_cellRange(v4, v32, v33, v34, v35);
+    v37.origin = objc_msgSend_cellRange(engineCopy, v32, v33, v34, v35);
     v37.size = v36;
     v25 = TSUCellRect::contains(&v38, &v37) ^ 1;
   }
@@ -29,26 +29,26 @@
   return v25;
 }
 
-- (TSTLayoutCellIterator)initWithLayout:(id)a3 range:(TSUCellRect)a4 flags:(unint64_t)a5 searchFlags:(unint64_t)a6
+- (TSTLayoutCellIterator)initWithLayout:(id)layout range:(TSUCellRect)range flags:(unint64_t)flags searchFlags:(unint64_t)searchFlags
 {
-  size = a4.size;
-  origin = a4.origin;
-  v11 = objc_msgSend_layoutEngine(a3, a2, a3, *&a4.origin, *&a4.size);
-  v13 = objc_msgSend_initWithLayoutEngine_range_flags_searchFlags_(self, v12, v11, origin, size, a5, a6);
+  size = range.size;
+  origin = range.origin;
+  v11 = objc_msgSend_layoutEngine(layout, a2, layout, *&range.origin, *&range.size);
+  v13 = objc_msgSend_initWithLayoutEngine_range_flags_searchFlags_(self, v12, v11, origin, size, flags, searchFlags);
 
   return v13;
 }
 
-- (TSTLayoutCellIterator)initWithLayoutEngine:(id)a3 range:(TSUCellRect)a4 flags:(unint64_t)a5 searchFlags:(unint64_t)a6
+- (TSTLayoutCellIterator)initWithLayoutEngine:(id)engine range:(TSUCellRect)range flags:(unint64_t)flags searchFlags:(unint64_t)searchFlags
 {
-  size = a4.size;
-  origin = a4.origin;
-  v12 = a3;
-  v17 = objc_msgSend_cellRange(v12, v13, v14, v15, v16);
+  size = range.size;
+  origin = range.origin;
+  engineCopy = engine;
+  v17 = objc_msgSend_cellRange(engineCopy, v13, v14, v15, v16);
   v19 = sub_221119E0C(v17, v18, origin, size);
   v21 = v20;
-  v25 = objc_msgSend_tableInfo(v12, v20, v22, v23, v24);
-  self->_numberOfLayoutColumns = objc_msgSend_numberOfColumns(v12, v26, v27, v28, v29);
+  v25 = objc_msgSend_tableInfo(engineCopy, v20, v22, v23, v24);
+  self->_numberOfLayoutColumns = objc_msgSend_numberOfColumns(engineCopy, v26, v27, v28, v29);
   v34 = objc_msgSend_range(v25, v30, v31, v32, v33);
   v37 = sub_221119E0C(v19, v21, v34, v35);
   if (v19 == 0x7FFFFFFF || (v19 & 0xFFFF00000000) == 0x7FFF00000000 || !HIDWORD(v21) || !v21)
@@ -61,15 +61,15 @@
   v44 = objc_msgSend_range(v25, v40, v41, v42, v43);
   v80.receiver = self;
   v80.super_class = TSTLayoutCellIterator;
-  v46 = [(TSTCellIterator *)&v80 initWithTableInfo:v25 region:v39 flags:a5 | 1 searchFlags:a6 clampingRange:v44, v45];
+  v46 = [(TSTCellIterator *)&v80 initWithTableInfo:v25 region:v39 flags:flags | 1 searchFlags:searchFlags clampingRange:v44, v45];
 
   if (v46)
   {
-    objc_storeStrong(&v46->_layoutEngine, a3);
+    objc_storeStrong(&v46->_layoutEngine, engine);
     v46->_layoutRange.origin = v19;
     v46->_layoutRange.size = v21;
-    v46->_columnOrderReversed = (a5 & 4) != 0;
-    if ((a5 & 4) != 0)
+    v46->_columnOrderReversed = (flags & 4) != 0;
+    if ((flags & 4) != 0)
     {
       v19 = (v19 + (v21 << 32) + 0xFFFF00000000) & 0xFFFF00000000 | v19;
     }
@@ -85,18 +85,18 @@
     layoutCellData = v46->_layoutCellData;
     v46->_layoutCellData = v61;
 
-    v46->_isDynamicallyChangingContent = objc_msgSend_isDynamicallyChangingContent(v12, v63, v64, v65, v66);
-    v46->_isDynamicallyChangingRowOrColumnCount = objc_msgSend_isDynamicallyChangingRowOrColumnCount(v12, v67, v68, v69, v70);
-    v46->_isDynamicallyHidingRowsCols = objc_msgSend_isDynamicallyHidingRowsCols(v12, v71, v72, v73, v74);
-    v46->_isDynamicallyRemovingText = objc_msgSend_isDynamicallyRemovingText(v12, v75, v76, v77, v78);
+    v46->_isDynamicallyChangingContent = objc_msgSend_isDynamicallyChangingContent(engineCopy, v63, v64, v65, v66);
+    v46->_isDynamicallyChangingRowOrColumnCount = objc_msgSend_isDynamicallyChangingRowOrColumnCount(engineCopy, v67, v68, v69, v70);
+    v46->_isDynamicallyHidingRowsCols = objc_msgSend_isDynamicallyHidingRowsCols(engineCopy, v71, v72, v73, v74);
+    v46->_isDynamicallyRemovingText = objc_msgSend_isDynamicallyRemovingText(engineCopy, v75, v76, v77, v78);
   }
 
   return v46;
 }
 
-- (BOOL)getNextCellData:(id *)a3
+- (BOOL)getNextCellData:(id *)data
 {
-  v141 = objc_msgSend_layoutEngine(self, a2, a3, v3, v4);
+  v141 = objc_msgSend_layoutEngine(self, a2, data, v3, v4);
   numberOfLayoutColumns = self->_numberOfLayoutColumns;
   origin = self->_layoutRange.origin;
   size = self->_layoutRange.size;
@@ -379,8 +379,8 @@ LABEL_74:
       if (v77)
       {
 LABEL_75:
-        v133 = a3;
-        if (!a3)
+        dataCopy2 = data;
+        if (!data)
         {
           goto LABEL_80;
         }
@@ -400,15 +400,15 @@ LABEL_75:
     }
   }
 
-  v133 = a3;
-  if (!a3)
+  dataCopy2 = data;
+  if (!data)
   {
     goto LABEL_80;
   }
 
   v134 = 0;
 LABEL_79:
-  *v133 = v134;
+  *dataCopy2 = v134;
 LABEL_80:
 
   return v29 <= v140;

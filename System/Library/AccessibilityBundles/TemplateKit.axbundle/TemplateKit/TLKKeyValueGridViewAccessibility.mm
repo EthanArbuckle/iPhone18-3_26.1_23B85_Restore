@@ -1,15 +1,15 @@
 @interface TLKKeyValueGridViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityElements;
 @end
 
 @implementation TLKKeyValueGridViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"TLKKeyValueGridView" hasInstanceMethod:@"keyLabels" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"TLKKeyValueGridView" hasInstanceMethod:@"valueLabels" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"TLKKeyValueGridView" hasInstanceMethod:@"keyLabels" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"TLKKeyValueGridView" hasInstanceMethod:@"valueLabels" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityElements
@@ -23,7 +23,7 @@
 
   else
   {
-    v6 = [MEMORY[0x29EDB8DE8] array];
+    array = [MEMORY[0x29EDB8DE8] array];
     v7 = [(TLKKeyValueGridViewAccessibility *)self safeArrayForKey:@"keyLabels"];
     v8 = [(TLKKeyValueGridViewAccessibility *)self safeArrayForKey:@"valueLabels"];
     v12[0] = MEMORY[0x29EDCA5F8];
@@ -31,8 +31,8 @@
     v12[2] = __57__TLKKeyValueGridViewAccessibility_accessibilityElements__block_invoke;
     v12[3] = &unk_29F309C28;
     v13 = v8;
-    v14 = self;
-    v9 = v6;
+    selfCopy = self;
+    v9 = array;
     v15 = v9;
     v10 = v8;
     [v7 enumerateObjectsUsingBlock:v12];

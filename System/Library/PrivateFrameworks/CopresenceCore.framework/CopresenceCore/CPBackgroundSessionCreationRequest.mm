@@ -1,18 +1,18 @@
 @interface CPBackgroundSessionCreationRequest
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CPBackgroundSessionCreationRequest)init;
 - (NSString)description;
 - (int64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CPBackgroundSessionCreationRequest
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -21,7 +21,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = BackgroundSessionCreationRequest.isEqual(_:)(v8);
@@ -32,22 +32,22 @@
 
 - (int64_t)hash
 {
-  v2 = self;
+  selfCopy = self;
   v3 = BackgroundSessionCreationRequest.hash.getter();
 
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  BackgroundSessionCreationRequest.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  BackgroundSessionCreationRequest.encode(with:)(coderCopy);
 }
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   v3 = BackgroundSessionCreationRequest.description.getter();
   v5 = v4;
 

@@ -3,14 +3,14 @@
 - (BYBuddyDaemonCloudSyncClient)init;
 - (BYClientDaemonCloudSyncProtocol)delegate;
 - (void)cancelSync;
-- (void)cloudSyncProgressUpdate:(int64_t)a3 completedClients:(int64_t)a4 errors:(id)a5;
+- (void)cloudSyncProgressUpdate:(int64_t)update completedClients:(int64_t)clients errors:(id)errors;
 - (void)connectToDaemon;
-- (void)fetchCurrentSyncState:(id)a3;
-- (void)isSyncInProgress:(id)a3;
-- (void)needsToSync:(id)a3;
+- (void)fetchCurrentSyncState:(id)state;
+- (void)isSyncInProgress:(id)progress;
+- (void)needsToSync:(id)sync;
 - (void)startSync;
-- (void)syncCompletedWithErrors:(id)a3;
-- (void)syncProgress:(double)a3;
+- (void)syncCompletedWithErrors:(id)errors;
+- (void)syncProgress:(double)progress;
 @end
 
 @implementation BYBuddyDaemonCloudSyncClient
@@ -40,18 +40,18 @@
   return v2;
 }
 
-- (void)needsToSync:(id)a3
+- (void)needsToSync:(id)sync
 {
-  v4 = a3;
-  v6 = [(BYBuddyDaemonCloudSyncClient *)self connection];
-  v5 = [v6 remoteObjectProxy];
-  [v5 needsToSync:v4];
+  syncCopy = sync;
+  connection = [(BYBuddyDaemonCloudSyncClient *)self connection];
+  remoteObjectProxy = [connection remoteObjectProxy];
+  [remoteObjectProxy needsToSync:syncCopy];
 }
 
 - (void)startSync
 {
-  v3 = [(BYBuddyDaemonCloudSyncClient *)self connection];
-  v4 = [v3 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_0];
+  connection = [(BYBuddyDaemonCloudSyncClient *)self connection];
+  v4 = [connection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_0];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __41__BYBuddyDaemonCloudSyncClient_startSync__block_invoke_65;
@@ -108,8 +108,8 @@ uint64_t __41__BYBuddyDaemonCloudSyncClient_startSync__block_invoke_65(uint64_t 
 
 - (void)cancelSync
 {
-  v3 = [(BYBuddyDaemonCloudSyncClient *)self connection];
-  v4 = [v3 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_68];
+  connection = [(BYBuddyDaemonCloudSyncClient *)self connection];
+  v4 = [connection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_68];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __42__BYBuddyDaemonCloudSyncClient_cancelSync__block_invoke_69;
@@ -164,34 +164,34 @@ uint64_t __42__BYBuddyDaemonCloudSyncClient_cancelSync__block_invoke_69(uint64_t
   return [v2 setSyncDidComplete:0];
 }
 
-- (void)isSyncInProgress:(id)a3
+- (void)isSyncInProgress:(id)progress
 {
-  v4 = a3;
-  v5 = [(BYBuddyDaemonCloudSyncClient *)self connection];
-  v6 = [v5 remoteObjectProxy];
+  progressCopy = progress;
+  connection = [(BYBuddyDaemonCloudSyncClient *)self connection];
+  remoteObjectProxy = [connection remoteObjectProxy];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __49__BYBuddyDaemonCloudSyncClient_isSyncInProgress___block_invoke;
   v8[3] = &unk_1E7D028A0;
-  v9 = v4;
-  v7 = v4;
-  [v6 isSyncInProgress:v8];
+  v9 = progressCopy;
+  v7 = progressCopy;
+  [remoteObjectProxy isSyncInProgress:v8];
 }
 
-- (void)fetchCurrentSyncState:(id)a3
+- (void)fetchCurrentSyncState:(id)state
 {
-  v4 = a3;
-  v6 = [(BYBuddyDaemonCloudSyncClient *)self connection];
-  v5 = [v6 remoteObjectProxy];
-  [v5 isSyncInProgress:v4];
+  stateCopy = state;
+  connection = [(BYBuddyDaemonCloudSyncClient *)self connection];
+  remoteObjectProxy = [connection remoteObjectProxy];
+  [remoteObjectProxy isSyncInProgress:stateCopy];
 }
 
-- (void)cloudSyncProgressUpdate:(int64_t)a3 completedClients:(int64_t)a4 errors:(id)a5
+- (void)cloudSyncProgressUpdate:(int64_t)update completedClients:(int64_t)clients errors:(id)errors
 {
-  v8 = a5;
-  v10 = [(BYBuddyDaemonCloudSyncClient *)self connection];
-  v9 = [v10 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_72];
-  [v9 cloudSyncProgressUpdate:a3 completedClients:a4 errors:v8 completion:&__block_literal_global_75];
+  errorsCopy = errors;
+  connection = [(BYBuddyDaemonCloudSyncClient *)self connection];
+  v9 = [connection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_72];
+  [v9 cloudSyncProgressUpdate:update completedClients:clients errors:errorsCopy completion:&__block_literal_global_75];
 }
 
 void __80__BYBuddyDaemonCloudSyncClient_cloudSyncProgressUpdate_completedClients_errors___block_invoke(uint64_t a1, void *a2)
@@ -238,15 +238,15 @@ void __80__BYBuddyDaemonCloudSyncClient_cloudSyncProgressUpdate_completedClients
   [(BYBuddyDaemonCloudSyncClient *)self setConnection:v3];
 
   v4 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F30B4C38];
-  v5 = [(BYBuddyDaemonCloudSyncClient *)self connection];
-  [v5 setRemoteObjectInterface:v4];
+  connection = [(BYBuddyDaemonCloudSyncClient *)self connection];
+  [connection setRemoteObjectInterface:v4];
 
-  v6 = [objc_opt_class() clientInterface];
-  v7 = [(BYBuddyDaemonCloudSyncClient *)self connection];
-  [v7 setExportedInterface:v6];
+  clientInterface = [objc_opt_class() clientInterface];
+  connection2 = [(BYBuddyDaemonCloudSyncClient *)self connection];
+  [connection2 setExportedInterface:clientInterface];
 
-  v8 = [(BYBuddyDaemonCloudSyncClient *)self connection];
-  [v8 setExportedObject:self];
+  connection3 = [(BYBuddyDaemonCloudSyncClient *)self connection];
+  [connection3 setExportedObject:self];
 
   objc_initWeak(&location, self);
   v14[0] = MEMORY[0x1E69E9820];
@@ -255,8 +255,8 @@ void __80__BYBuddyDaemonCloudSyncClient_cloudSyncProgressUpdate_completedClients
   v14[3] = &unk_1E7D027F8;
   objc_copyWeak(&v15, &location);
   v14[4] = self;
-  v9 = [(BYBuddyDaemonCloudSyncClient *)self connection];
-  [v9 setInvalidationHandler:v14];
+  connection4 = [(BYBuddyDaemonCloudSyncClient *)self connection];
+  [connection4 setInvalidationHandler:v14];
 
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
@@ -264,11 +264,11 @@ void __80__BYBuddyDaemonCloudSyncClient_cloudSyncProgressUpdate_completedClients
   v12[3] = &unk_1E7D027F8;
   objc_copyWeak(&v13, &location);
   v12[4] = self;
-  v10 = [(BYBuddyDaemonCloudSyncClient *)self connection];
-  [v10 setInterruptionHandler:v12];
+  connection5 = [(BYBuddyDaemonCloudSyncClient *)self connection];
+  [connection5 setInterruptionHandler:v12];
 
-  v11 = [(BYBuddyDaemonCloudSyncClient *)self connection];
-  [v11 resume];
+  connection6 = [(BYBuddyDaemonCloudSyncClient *)self connection];
+  [connection6 resume];
 
   objc_destroyWeak(&v13);
   objc_destroyWeak(&v15);
@@ -321,18 +321,18 @@ void __47__BYBuddyDaemonCloudSyncClient_connectToDaemon__block_invoke_92(uint64_
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)syncProgress:(double)a3
+- (void)syncProgress:(double)progress
 {
-  v4 = [(BYBuddyDaemonCloudSyncClient *)self delegate];
-  [v4 syncProgress:a3];
+  delegate = [(BYBuddyDaemonCloudSyncClient *)self delegate];
+  [delegate syncProgress:progress];
 }
 
-- (void)syncCompletedWithErrors:(id)a3
+- (void)syncCompletedWithErrors:(id)errors
 {
-  v4 = a3;
+  errorsCopy = errors;
   [(BYBuddyDaemonCloudSyncClient *)self setSyncDidComplete:1];
-  v5 = [(BYBuddyDaemonCloudSyncClient *)self delegate];
-  [v5 syncCompletedWithErrors:v4];
+  delegate = [(BYBuddyDaemonCloudSyncClient *)self delegate];
+  [delegate syncCompletedWithErrors:errorsCopy];
 }
 
 - (BYClientDaemonCloudSyncProtocol)delegate

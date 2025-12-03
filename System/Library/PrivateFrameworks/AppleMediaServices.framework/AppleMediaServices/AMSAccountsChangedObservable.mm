@@ -3,14 +3,14 @@
 + (AMSAccountsChangedObservable)sharedLocalAccountInstance;
 + (NSPointerArray)createdObservables;
 + (OS_dispatch_queue)createdObservablesAccessQueue;
-+ (void)_processChangedAccount:(id)a3;
-- (BOOL)_shouldNotifyObserversForChangedAccount:(id)a3;
-- (id)_initWithAccount:(id)a3 accountTypeIdentifier:(id)a4;
-- (void)_accountStoreDidChange:(id)a3;
-- (void)_processChangedAccount:(id)a3;
++ (void)_processChangedAccount:(id)account;
+- (BOOL)_shouldNotifyObserversForChangedAccount:(id)account;
+- (id)_initWithAccount:(id)account accountTypeIdentifier:(id)identifier;
+- (void)_accountStoreDidChange:(id)change;
+- (void)_processChangedAccount:(id)account;
 - (void)dealloc;
-- (void)subscribe:(id)a3;
-- (void)unsubscribe:(id)a3;
+- (void)subscribe:(id)subscribe;
+- (void)unsubscribe:(id)unsubscribe;
 @end
 
 @implementation AMSAccountsChangedObservable
@@ -34,31 +34,31 @@ uint64_t __46__AMSAccountsChangedObservable_sharedInstance__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (id)_initWithAccount:(id)a3 accountTypeIdentifier:(id)a4
+- (id)_initWithAccount:(id)account accountTypeIdentifier:(id)identifier
 {
   v38 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  accountCopy = account;
+  identifierCopy = identifier;
   v32.receiver = self;
   v32.super_class = AMSAccountsChangedObservable;
   v9 = [(AMSAccountsChangedObservable *)&v32 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_account, a3);
-    if (v8)
+    objc_storeStrong(&v9->_account, account);
+    if (identifierCopy)
     {
-      v11 = v8;
+      v11 = identifierCopy;
       accountTypeIdentifier = v10->_accountTypeIdentifier;
       v10->_accountTypeIdentifier = v11;
     }
 
     else
     {
-      accountTypeIdentifier = [v7 accountType];
-      v13 = [accountTypeIdentifier identifier];
+      accountTypeIdentifier = [accountCopy accountType];
+      identifier = [accountTypeIdentifier identifier];
       v14 = v10->_accountTypeIdentifier;
-      v10->_accountTypeIdentifier = v13;
+      v10->_accountTypeIdentifier = identifier;
     }
 
     v10->_notificationsLock._os_unfair_lock_opaque = 0;
@@ -67,9 +67,9 @@ uint64_t __46__AMSAccountsChangedObservable_sharedInstance__block_invoke()
     v10->_observable = v15;
 
     v17 = +[AMSProcessInfo currentProcess];
-    v18 = [v17 isAccountsDaemon];
+    isAccountsDaemon = [v17 isAccountsDaemon];
 
-    if (v18)
+    if (isAccountsDaemon)
     {
       v19 = +[AMSLogConfig sharedAccountsConfig];
       if (!v19)
@@ -77,13 +77,13 @@ uint64_t __46__AMSAccountsChangedObservable_sharedInstance__block_invoke()
         v19 = +[AMSLogConfig sharedConfig];
       }
 
-      v20 = [v19 OSLogObject];
-      if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
+      oSLogObject = [v19 OSLogObject];
+      if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
       {
         v21 = objc_opt_class();
         LODWORD(buf) = 138543362;
         *(&buf + 4) = v21;
-        _os_log_impl(&dword_192869000, v20, OS_LOG_TYPE_DEBUG, "[%{public}@] Running in accountsd.", &buf, 0xCu);
+        _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEBUG, "[%{public}@] Running in accountsd.", &buf, 0xCu);
       }
 
       v22 = +[AMSAccountsChangedObservable createdObservablesAccessQueue];
@@ -103,15 +103,15 @@ uint64_t __46__AMSAccountsChangedObservable_sharedInstance__block_invoke()
       v25 = v24;
       dispatch_async(v22, &buf);
 
-      v26 = v31;
+      defaultCenter = v31;
     }
 
     else
     {
-      v26 = [MEMORY[0x1E696AD88] defaultCenter];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
       v27 = *MEMORY[0x1E69597D8];
-      v28 = [MEMORY[0x1E6959A48] ams_sharedAccountStore];
-      [v26 addObserver:v10 selector:sel__accountStoreDidChange_ name:v27 object:v28];
+      ams_sharedAccountStore = [MEMORY[0x1E6959A48] ams_sharedAccountStore];
+      [defaultCenter addObserver:v10 selector:sel__accountStoreDidChange_ name:v27 object:ams_sharedAccountStore];
     }
   }
 
@@ -126,8 +126,8 @@ void __71__AMSAccountsChangedObservable__initWithAccount_accountTypeIdentifier__
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = AMSAccountsChangedObservable;
@@ -137,9 +137,9 @@ void __71__AMSAccountsChangedObservable__initWithAccount_accountTypeIdentifier__
 + (NSPointerArray)createdObservables
 {
   v2 = +[AMSProcessInfo currentProcess];
-  v3 = [v2 isAccountsDaemon];
+  isAccountsDaemon = [v2 isAccountsDaemon];
 
-  if (v3)
+  if (isAccountsDaemon)
   {
     if (_MergedGlobals_81 != -1)
     {
@@ -167,9 +167,9 @@ uint64_t __50__AMSAccountsChangedObservable_createdObservables__block_invoke()
 + (OS_dispatch_queue)createdObservablesAccessQueue
 {
   v2 = +[AMSProcessInfo currentProcess];
-  v3 = [v2 isAccountsDaemon];
+  isAccountsDaemon = [v2 isAccountsDaemon];
 
-  if (v3)
+  if (isAccountsDaemon)
   {
     if (qword_1ED6E2690 != -1)
     {
@@ -197,22 +197,22 @@ uint64_t __61__AMSAccountsChangedObservable_createdObservablesAccessQueue__block
 + (AMSAccountsChangedObservable)sharedLocalAccountInstance
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E6959A48] ams_sharedAccountStore];
-  v4 = [v3 ams_localiTunesAccount];
+  ams_sharedAccountStore = [MEMORY[0x1E6959A48] ams_sharedAccountStore];
+  ams_localiTunesAccount = [ams_sharedAccountStore ams_localiTunesAccount];
 
-  if (v4)
+  if (ams_localiTunesAccount)
   {
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __58__AMSAccountsChangedObservable_sharedLocalAccountInstance__block_invoke;
     block[3] = &unk_1E73B3680;
-    v12 = v4;
+    v12 = ams_localiTunesAccount;
     if (qword_1ED6E26B0 != -1)
     {
       dispatch_once(&qword_1ED6E26B0, block);
     }
 
-    v5 = qword_1ED6E26B8;
+    sharedInstance = qword_1ED6E26B8;
   }
 
   else
@@ -223,8 +223,8 @@ uint64_t __61__AMSAccountsChangedObservable_createdObservablesAccessQueue__block
       v6 = +[AMSLogConfig sharedConfig];
     }
 
-    v7 = [v6 OSLogObject];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v6 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v8 = objc_opt_class();
       v9 = AMSLogKey();
@@ -232,13 +232,13 @@ uint64_t __61__AMSAccountsChangedObservable_createdObservablesAccessQueue__block
       v14 = v8;
       v15 = 2114;
       v16 = v9;
-      _os_log_impl(&dword_192869000, v7, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to fetch the local account.", buf, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to fetch the local account.", buf, 0x16u);
     }
 
-    v5 = [a1 sharedInstance];
+    sharedInstance = [self sharedInstance];
   }
 
-  return v5;
+  return sharedInstance;
 }
 
 uint64_t __58__AMSAccountsChangedObservable_sharedLocalAccountInstance__block_invoke(uint64_t a1)
@@ -248,26 +248,26 @@ uint64_t __58__AMSAccountsChangedObservable_sharedLocalAccountInstance__block_in
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)subscribe:(id)a3
+- (void)subscribe:(id)subscribe
 {
-  v4 = a3;
-  v5 = [(AMSAccountsChangedObservable *)self observable];
-  [v5 subscribe:v4];
+  subscribeCopy = subscribe;
+  observable = [(AMSAccountsChangedObservable *)self observable];
+  [observable subscribe:subscribeCopy];
 }
 
-- (void)unsubscribe:(id)a3
+- (void)unsubscribe:(id)unsubscribe
 {
-  v4 = a3;
-  v5 = [(AMSAccountsChangedObservable *)self observable];
-  [v5 unsubscribe:v4];
+  unsubscribeCopy = unsubscribe;
+  observable = [(AMSAccountsChangedObservable *)self observable];
+  [observable unsubscribe:unsubscribeCopy];
 }
 
-- (void)_accountStoreDidChange:(id)a3
+- (void)_accountStoreDidChange:(id)change
 {
   v74 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 userInfo];
-  v7 = [v6 objectForKeyedSubscript:*MEMORY[0x1E69598B8]];
+  changeCopy = change;
+  userInfo = [changeCopy userInfo];
+  v7 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E69598B8]];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -282,8 +282,8 @@ uint64_t __58__AMSAccountsChangedObservable_sharedLocalAccountInstance__block_in
 
   if ([v8 isEqualToString:*MEMORY[0x1E6959930]] & 1) != 0 || (objc_msgSend(v8, "isEqualToString:", *MEMORY[0x1E6959938]))
   {
-    v9 = [v5 userInfo];
-    v10 = [v9 objectForKeyedSubscript:*MEMORY[0x1E6959720]];
+    userInfo2 = [changeCopy userInfo];
+    v10 = [userInfo2 objectForKeyedSubscript:*MEMORY[0x1E6959720]];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -297,16 +297,16 @@ uint64_t __58__AMSAccountsChangedObservable_sharedLocalAccountInstance__block_in
     }
 
     v12 = +[AMSLogConfig sharedAccountsConfig];
-    v13 = v12;
+    ams_sharedAccountStore = v12;
     if (!v11)
     {
       if (!v12)
       {
-        v13 = +[AMSLogConfig sharedConfig];
+        ams_sharedAccountStore = +[AMSLogConfig sharedConfig];
       }
 
-      v20 = [v13 OSLogObject];
-      if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
+      oSLogObject = [ams_sharedAccountStore OSLogObject];
+      if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
       {
         v21 = AMSLogKey();
         v22 = MEMORY[0x1E696AEC0];
@@ -322,17 +322,17 @@ uint64_t __58__AMSAccountsChangedObservable_sharedLocalAccountInstance__block_in
         {
           [v22 stringWithFormat:@"%@: ", v23];
         }
-        v25 = ;
+        selfCopy = ;
         v57 = AMSHashIfNeeded(0);
         *buf = 138543618;
-        v69 = v25;
+        v69 = selfCopy;
         v70 = 2114;
         v71 = v57;
-        _os_log_impl(&dword_192869000, v20, OS_LOG_TYPE_DEBUG, "%{public}@Ignoring an ACAccountStoreDidChangeNotification. accountIdentifier = %{public}@", buf, 0x16u);
+        _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEBUG, "%{public}@Ignoring an ACAccountStoreDidChangeNotification. accountIdentifier = %{public}@", buf, 0x16u);
         if (v21)
         {
 
-          v25 = self;
+          selfCopy = self;
         }
       }
 
@@ -341,11 +341,11 @@ uint64_t __58__AMSAccountsChangedObservable_sharedLocalAccountInstance__block_in
 
     if (!v12)
     {
-      v13 = +[AMSLogConfig sharedConfig];
+      ams_sharedAccountStore = +[AMSLogConfig sharedConfig];
     }
 
-    v14 = [v13 OSLogObject];
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
+    oSLogObject2 = [ams_sharedAccountStore OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEBUG))
     {
       v15 = AMSLogKey();
       v16 = MEMORY[0x1E696AEC0];
@@ -364,7 +364,7 @@ uint64_t __58__AMSAccountsChangedObservable_sharedLocalAccountInstance__block_in
       v19 = ;
       *buf = 138543362;
       v69 = v19;
-      _os_log_impl(&dword_192869000, v14, OS_LOG_TYPE_DEBUG, "%{public}@Received an ACAccountStoreDidChangeNotification.", buf, 0xCu);
+      _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_DEBUG, "%{public}@Received an ACAccountStoreDidChangeNotification.", buf, 0xCu);
       if (v15)
       {
 
@@ -372,26 +372,26 @@ uint64_t __58__AMSAccountsChangedObservable_sharedLocalAccountInstance__block_in
       }
     }
 
-    v31 = [v5 object];
+    object = [changeCopy object];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v13 = v31;
+      ams_sharedAccountStore = object;
 
-      if (v13)
+      if (ams_sharedAccountStore)
       {
 LABEL_43:
-        v41 = [v13 _ams_fetchAccountWithIdentifier:v11];
+        v41 = [ams_sharedAccountStore _ams_fetchAccountWithIdentifier:v11];
         if (v41)
         {
-          v20 = v41;
+          oSLogObject = v41;
           v66[0] = MEMORY[0x1E69E9820];
           v66[1] = 3221225472;
           v66[2] = __55__AMSAccountsChangedObservable__accountStoreDidChange___block_invoke;
           v66[3] = &unk_1E73B36A8;
           v66[4] = self;
           v67 = v11;
-          [v20 addFinishBlock:v66];
+          [oSLogObject addFinishBlock:v66];
         }
 
         else
@@ -406,8 +406,8 @@ LABEL_43:
               v44 = +[AMSLogConfig sharedConfig];
             }
 
-            v45 = [v44 OSLogObject];
-            if (os_log_type_enabled(v45, OS_LOG_TYPE_ERROR))
+            oSLogObject3 = [v44 OSLogObject];
+            if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_ERROR))
             {
               v46 = AMSLogKey();
               v47 = MEMORY[0x1E696AEC0];
@@ -415,8 +415,8 @@ LABEL_43:
               v49 = v48;
               if (v46)
               {
-                v65 = AMSLogKey();
-                [v47 stringWithFormat:@"%@: [%@] ", v49, v65];
+                selfCopy2 = AMSLogKey();
+                [v47 stringWithFormat:@"%@: [%@] ", v49, selfCopy2];
               }
 
               else
@@ -424,7 +424,7 @@ LABEL_43:
                 [v47 stringWithFormat:@"%@: ", v48];
               }
               v50 = ;
-              v59 = AMSHashIfNeeded(v13);
+              v59 = AMSHashIfNeeded(ams_sharedAccountStore);
               v60 = AMSHashIfNeeded(v11);
               *buf = 138543874;
               v69 = v50;
@@ -432,17 +432,17 @@ LABEL_43:
               v71 = v59;
               v72 = 2114;
               v73 = v60;
-              _os_log_impl(&dword_192869000, v45, OS_LOG_TYPE_ERROR, "%{public}@Could not create account promise. accountStore = %{public}@ | accountIdentifier = %{public}@", buf, 0x20u);
+              _os_log_impl(&dword_192869000, oSLogObject3, OS_LOG_TYPE_ERROR, "%{public}@Could not create account promise. accountStore = %{public}@ | accountIdentifier = %{public}@", buf, 0x20u);
               if (v46)
               {
 
-                v50 = v65;
+                v50 = selfCopy2;
               }
             }
 
-            v61 = [MEMORY[0x1E696AD88] defaultCenter];
+            defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
             v62 = +[AMSLogConfig sharedAccountsConfig];
-            [v61 postNotificationName:@"com.apple.AppleMediaServicesTests.FaultLogged" object:v62 userInfo:0];
+            [defaultCenter postNotificationName:@"com.apple.AppleMediaServicesTests.FaultLogged" object:v62 userInfo:0];
           }
 
           else
@@ -452,8 +452,8 @@ LABEL_43:
               v44 = +[AMSLogConfig sharedConfig];
             }
 
-            v51 = [v44 OSLogObject];
-            if (os_log_type_enabled(v51, OS_LOG_TYPE_FAULT))
+            oSLogObject4 = [v44 OSLogObject];
+            if (os_log_type_enabled(oSLogObject4, OS_LOG_TYPE_FAULT))
             {
               v52 = AMSLogKey();
               v53 = MEMORY[0x1E696AEC0];
@@ -461,8 +461,8 @@ LABEL_43:
               v55 = v54;
               if (v52)
               {
-                v65 = AMSLogKey();
-                [v53 stringWithFormat:@"%@: [%@] ", v55, v65];
+                selfCopy2 = AMSLogKey();
+                [v53 stringWithFormat:@"%@: [%@] ", v55, selfCopy2];
               }
 
               else
@@ -470,7 +470,7 @@ LABEL_43:
                 [v53 stringWithFormat:@"%@: ", v54];
               }
               v56 = ;
-              v63 = AMSHashIfNeeded(v13);
+              v63 = AMSHashIfNeeded(ams_sharedAccountStore);
               v64 = AMSHashIfNeeded(v11);
               *buf = 138543874;
               v69 = v56;
@@ -478,16 +478,16 @@ LABEL_43:
               v71 = v63;
               v72 = 2114;
               v73 = v64;
-              _os_log_impl(&dword_192869000, v51, OS_LOG_TYPE_FAULT, "%{public}@Could not create account promise. accountStore = %{public}@ | accountIdentifier = %{public}@", buf, 0x20u);
+              _os_log_impl(&dword_192869000, oSLogObject4, OS_LOG_TYPE_FAULT, "%{public}@Could not create account promise. accountStore = %{public}@ | accountIdentifier = %{public}@", buf, 0x20u);
               if (v52)
               {
 
-                v56 = v65;
+                v56 = selfCopy2;
               }
             }
           }
 
-          v20 = 0;
+          oSLogObject = 0;
         }
 
 LABEL_75:
@@ -506,14 +506,14 @@ LABEL_75:
       v32 = +[AMSLogConfig sharedConfig];
     }
 
-    v33 = [v32 OSLogObject];
-    if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
+    oSLogObject5 = [v32 OSLogObject];
+    if (os_log_type_enabled(oSLogObject5, OS_LOG_TYPE_ERROR))
     {
       v34 = AMSLogKey();
       v35 = MEMORY[0x1E696AEC0];
       v36 = objc_opt_class();
       v37 = v36;
-      v65 = self;
+      selfCopy2 = self;
       if (v34)
       {
         v3 = AMSLogKey();
@@ -525,13 +525,13 @@ LABEL_75:
         [v35 stringWithFormat:@"%@: ", v36];
       }
       v38 = ;
-      v39 = [v5 object];
-      v40 = AMSHashIfNeeded(v39);
+      object2 = [changeCopy object];
+      v40 = AMSHashIfNeeded(object2);
       *buf = 138543618;
       v69 = v38;
       v70 = 2114;
       v71 = v40;
-      _os_log_impl(&dword_192869000, v33, OS_LOG_TYPE_ERROR, "%{public}@The notification’s object was not an ACAccountStore. object = %{public}@", buf, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject5, OS_LOG_TYPE_ERROR, "%{public}@The notification’s object was not an ACAccountStore. object = %{public}@", buf, 0x16u);
 
       if (v34)
       {
@@ -539,10 +539,10 @@ LABEL_75:
         v38 = v3;
       }
 
-      self = v65;
+      self = selfCopy2;
     }
 
-    v13 = [MEMORY[0x1E6959A48] ams_sharedAccountStore];
+    ams_sharedAccountStore = [MEMORY[0x1E6959A48] ams_sharedAccountStore];
     goto LABEL_43;
   }
 
@@ -552,8 +552,8 @@ LABEL_75:
     v11 = +[AMSLogConfig sharedConfig];
   }
 
-  v13 = [v11 OSLogObject];
-  if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
+  ams_sharedAccountStore = [v11 OSLogObject];
+  if (os_log_type_enabled(ams_sharedAccountStore, OS_LOG_TYPE_DEBUG))
   {
     v26 = AMSLogKey();
     v27 = MEMORY[0x1E696AEC0];
@@ -569,17 +569,17 @@ LABEL_75:
     {
       [v27 stringWithFormat:@"%@: ", v28];
     }
-    v30 = ;
+    selfCopy3 = ;
     v58 = AMSHashIfNeeded(v8);
     *buf = 138543618;
-    v69 = v30;
+    v69 = selfCopy3;
     v70 = 2114;
     v71 = v58;
-    _os_log_impl(&dword_192869000, v13, OS_LOG_TYPE_DEBUG, "%{public}@Ignoring an ACAccountStoreDidChangeNotification. accountType = %{public}@", buf, 0x16u);
+    _os_log_impl(&dword_192869000, ams_sharedAccountStore, OS_LOG_TYPE_DEBUG, "%{public}@Ignoring an ACAccountStoreDidChangeNotification. accountType = %{public}@", buf, 0x16u);
     if (v26)
     {
 
-      v30 = self;
+      selfCopy3 = self;
     }
   }
 
@@ -642,11 +642,11 @@ void __55__AMSAccountsChangedObservable__accountStoreDidChange___block_invoke(ui
   }
 }
 
-- (void)_processChangedAccount:(id)a3
+- (void)_processChangedAccount:(id)account
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(AMSAccountsChangedObservable *)self _shouldNotifyObserversForChangedAccount:v4];
+  accountCopy = account;
+  v5 = [(AMSAccountsChangedObservable *)self _shouldNotifyObserversForChangedAccount:accountCopy];
   v6 = +[AMSLogConfig sharedAccountsConfig];
   v7 = v6;
   if (v5)
@@ -656,24 +656,24 @@ void __55__AMSAccountsChangedObservable__accountStoreDidChange___block_invoke(ui
       v7 = +[AMSLogConfig sharedConfig];
     }
 
-    v8 = [(AMSAccountsChangedResult *)v7 OSLogObject];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
+    oSLogObject = [(AMSAccountsChangedResult *)v7 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
     {
       v9 = objc_opt_class();
       v10 = AMSLogKey();
-      v11 = AMSHashIfNeeded(v4);
+      v11 = AMSHashIfNeeded(accountCopy);
       v16 = 138543874;
       v17 = v9;
       v18 = 2114;
       v19 = v10;
       v20 = 2114;
       v21 = v11;
-      _os_log_impl(&dword_192869000, v8, OS_LOG_TYPE_DEBUG, "[%{public}@] [%{public}@] Notifying observers of a changed account. changedAccount = %{public}@", &v16, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEBUG, "[%{public}@] [%{public}@] Notifying observers of a changed account. changedAccount = %{public}@", &v16, 0x20u);
     }
 
-    v7 = [[AMSAccountsChangedResult alloc] initWithAccount:v4];
-    v12 = [(AMSAccountsChangedObservable *)self observable];
-    [v12 sendResult:v7];
+    v7 = [[AMSAccountsChangedResult alloc] initWithAccount:accountCopy];
+    observable = [(AMSAccountsChangedObservable *)self observable];
+    [observable sendResult:v7];
   }
 
   else
@@ -683,37 +683,37 @@ void __55__AMSAccountsChangedObservable__accountStoreDidChange___block_invoke(ui
       v7 = +[AMSLogConfig sharedConfig];
     }
 
-    v12 = [(AMSAccountsChangedResult *)v7 OSLogObject];
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
+    observable = [(AMSAccountsChangedResult *)v7 OSLogObject];
+    if (os_log_type_enabled(observable, OS_LOG_TYPE_DEBUG))
     {
       v13 = objc_opt_class();
       v14 = AMSLogKey();
-      v15 = AMSHashIfNeeded(v4);
+      v15 = AMSHashIfNeeded(accountCopy);
       v16 = 138543874;
       v17 = v13;
       v18 = 2114;
       v19 = v14;
       v20 = 2114;
       v21 = v15;
-      _os_log_impl(&dword_192869000, v12, OS_LOG_TYPE_DEBUG, "[%{public}@] [%{public}@] Ignoring a change account. account = %{public}@", &v16, 0x20u);
+      _os_log_impl(&dword_192869000, observable, OS_LOG_TYPE_DEBUG, "[%{public}@] [%{public}@] Ignoring a change account. account = %{public}@", &v16, 0x20u);
     }
   }
 }
 
-+ (void)_processChangedAccount:(id)a3
++ (void)_processChangedAccount:(id)account
 {
-  v3 = a3;
+  accountCopy = account;
   v4 = +[AMSProcessInfo currentProcess];
-  v5 = [v4 isAccountsDaemon];
+  isAccountsDaemon = [v4 isAccountsDaemon];
 
-  if (v5)
+  if (isAccountsDaemon)
   {
     v6 = +[AMSAccountsChangedObservable createdObservablesAccessQueue];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __55__AMSAccountsChangedObservable__processChangedAccount___block_invoke;
     v10[3] = &unk_1E73B3680;
-    v11 = v3;
+    v11 = accountCopy;
     v7 = v10;
     v8 = AMSLogKey();
     block[0] = MEMORY[0x1E69E9820];
@@ -751,20 +751,20 @@ void __55__AMSAccountsChangedObservable__processChangedAccount___block_invoke(ui
   [v5 compact];
 }
 
-- (BOOL)_shouldNotifyObserversForChangedAccount:(id)a3
+- (BOOL)_shouldNotifyObserversForChangedAccount:(id)account
 {
   v33 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(AMSAccountsChangedObservable *)self account];
-  if (v5)
+  accountCopy = account;
+  account = [(AMSAccountsChangedObservable *)self account];
+  if (account)
   {
   }
 
   else
   {
-    v6 = [(AMSAccountsChangedObservable *)self accountTypeIdentifier];
+    accountTypeIdentifier = [(AMSAccountsChangedObservable *)self accountTypeIdentifier];
 
-    if (!v6)
+    if (!accountTypeIdentifier)
     {
       v14 = +[AMSLogConfig sharedAccountsConfig];
       if (!v14)
@@ -772,8 +772,8 @@ void __55__AMSAccountsChangedObservable__processChangedAccount___block_invoke(ui
         v14 = +[AMSLogConfig sharedConfig];
       }
 
-      v15 = [v14 OSLogObject];
-      if (!os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
+      oSLogObject = [v14 OSLogObject];
+      if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
       {
         goto LABEL_24;
       }
@@ -789,14 +789,14 @@ void __55__AMSAccountsChangedObservable__processChangedAccount___block_invoke(ui
     }
   }
 
-  v7 = [(AMSAccountsChangedObservable *)self account];
-  if (v7)
+  account2 = [(AMSAccountsChangedObservable *)self account];
+  if (account2)
   {
-    v8 = v7;
-    v9 = [(AMSAccountsChangedObservable *)self account];
-    v10 = [v9 identifier];
-    v11 = [v4 identifier];
-    if ([v10 isEqualToString:v11])
+    v8 = account2;
+    account3 = [(AMSAccountsChangedObservable *)self account];
+    identifier = [account3 identifier];
+    identifier2 = [accountCopy identifier];
+    if ([identifier isEqualToString:identifier2])
     {
 
 LABEL_8:
@@ -806,8 +806,8 @@ LABEL_8:
         v14 = +[AMSLogConfig sharedConfig];
       }
 
-      v15 = [v14 OSLogObject];
-      if (!os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
+      oSLogObject = [v14 OSLogObject];
+      if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
       {
         goto LABEL_24;
       }
@@ -820,15 +820,15 @@ LABEL_8:
       v32 = v17;
       v18 = "[%{public}@] [%{public}@] The observable matches the changed account.";
 LABEL_23:
-      _os_log_impl(&dword_192869000, v15, OS_LOG_TYPE_DEBUG, v18, &v29, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEBUG, v18, &v29, 0x16u);
 
 LABEL_24:
       v26 = 1;
       goto LABEL_25;
     }
 
-    v12 = [(AMSAccountsChangedObservable *)self account];
-    v13 = [v12 ams_isDuplicate:v4];
+    account4 = [(AMSAccountsChangedObservable *)self account];
+    v13 = [account4 ams_isDuplicate:accountCopy];
 
     if (v13)
     {
@@ -836,14 +836,14 @@ LABEL_24:
     }
   }
 
-  v19 = [(AMSAccountsChangedObservable *)self accountTypeIdentifier];
-  if (v19)
+  accountTypeIdentifier2 = [(AMSAccountsChangedObservable *)self accountTypeIdentifier];
+  if (accountTypeIdentifier2)
   {
-    v20 = v19;
-    v21 = [(AMSAccountsChangedObservable *)self accountTypeIdentifier];
-    v22 = [v4 accountType];
-    v23 = [v22 identifier];
-    v24 = [v21 isEqualToString:v23];
+    v20 = accountTypeIdentifier2;
+    accountTypeIdentifier3 = [(AMSAccountsChangedObservable *)self accountTypeIdentifier];
+    accountType = [accountCopy accountType];
+    identifier3 = [accountType identifier];
+    v24 = [accountTypeIdentifier3 isEqualToString:identifier3];
 
     if (v24)
     {
@@ -853,8 +853,8 @@ LABEL_24:
         v14 = +[AMSLogConfig sharedConfig];
       }
 
-      v15 = [v14 OSLogObject];
-      if (!os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
+      oSLogObject = [v14 OSLogObject];
+      if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
       {
         goto LABEL_24;
       }

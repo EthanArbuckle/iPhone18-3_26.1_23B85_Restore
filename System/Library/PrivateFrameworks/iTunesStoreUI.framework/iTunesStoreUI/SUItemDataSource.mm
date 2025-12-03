@@ -1,29 +1,29 @@
 @interface SUItemDataSource
 + (id)sharedDataSource;
-+ (void)setSharedDataSource:(id)a3;
-- (id)_newDownloadForDocumentItem:(id)a3 storeOffer:(id)a4;
-- (id)_newDownloadForPodcastEpisode:(id)a3 storeOffer:(id)a4;
-- (id)_newDownloadMetadataForPodcastEpisode:(id)a3 storeOffer:(id)a4;
-- (id)_newTonePurchaseWithPurchase:(id)a3;
-- (id)_thumbnailImageForItem:(id)a3;
-- (id)newExternalDownloadWithItem:(id)a3 storeOffer:(id)a4;
-- (id)newItemWithItemDictionary:(id)a3;
-- (id)newPurchaseWithItem:(id)a3 storeOffer:(id)a4;
-- (id)typeStringForItemType:(int64_t)a3;
-- (int64_t)estimatedDiskSpaceNeededForItem:(id)a3 storeOffer:(id)a4;
-- (int64_t)itemTypeForItem:(id)a3;
-- (int64_t)itemTypeForTypeString:(id)a3;
++ (void)setSharedDataSource:(id)source;
+- (id)_newDownloadForDocumentItem:(id)item storeOffer:(id)offer;
+- (id)_newDownloadForPodcastEpisode:(id)episode storeOffer:(id)offer;
+- (id)_newDownloadMetadataForPodcastEpisode:(id)episode storeOffer:(id)offer;
+- (id)_newTonePurchaseWithPurchase:(id)purchase;
+- (id)_thumbnailImageForItem:(id)item;
+- (id)newExternalDownloadWithItem:(id)item storeOffer:(id)offer;
+- (id)newItemWithItemDictionary:(id)dictionary;
+- (id)newPurchaseWithItem:(id)item storeOffer:(id)offer;
+- (id)typeStringForItemType:(int64_t)type;
+- (int64_t)estimatedDiskSpaceNeededForItem:(id)item storeOffer:(id)offer;
+- (int64_t)itemTypeForItem:(id)item;
+- (int64_t)itemTypeForTypeString:(id)string;
 @end
 
 @implementation SUItemDataSource
 
-+ (void)setSharedDataSource:(id)a3
++ (void)setSharedDataSource:(id)source
 {
   _os_nospin_lock_lock();
-  if (__SharedInstance_3 != a3)
+  if (__SharedInstance_3 != source)
   {
 
-    __SharedInstance_3 = a3;
+    __SharedInstance_3 = source;
   }
 
   _os_nospin_lock_unlock();
@@ -44,10 +44,10 @@
   return v3;
 }
 
-- (int64_t)estimatedDiskSpaceNeededForItem:(id)a3 storeOffer:(id)a4
+- (int64_t)estimatedDiskSpaceNeededForItem:(id)item storeOffer:(id)offer
 {
-  v5 = [objc_msgSend(a4 "offerMedia")];
-  if ([a3 itemType] == 2000)
+  v5 = [objc_msgSend(offer "offerMedia")];
+  if ([item itemType] == 2000)
   {
     return (v5 * 2.5);
   }
@@ -58,12 +58,12 @@
   }
 }
 
-- (int64_t)itemTypeForItem:(id)a3
+- (int64_t)itemTypeForItem:(id)item
 {
-  result = -[SUItemDataSource itemTypeForTypeString:](self, "itemTypeForTypeString:", [a3 itemTypeString]);
+  result = -[SUItemDataSource itemTypeForTypeString:](self, "itemTypeForTypeString:", [item itemTypeString]);
   if (!result)
   {
-    v6 = [a3 stringValueForProperty:@"type"];
+    v6 = [item stringValueForProperty:@"type"];
 
     return [(SUItemDataSource *)self itemTypeForTypeString:v6];
   }
@@ -71,11 +71,11 @@
   return result;
 }
 
-- (int64_t)itemTypeForTypeString:(id)a3
+- (int64_t)itemTypeForTypeString:(id)string
 {
   v4 = &qword_1E8166560;
   v5 = 31;
-  while (![*(v4 - 1) isEqualToString:a3])
+  while (![*(v4 - 1) isEqualToString:string])
   {
     v4 += 2;
     if (!--v5)
@@ -87,18 +87,18 @@
   return *v4;
 }
 
-- (id)newExternalDownloadWithItem:(id)a3 storeOffer:(id)a4
+- (id)newExternalDownloadWithItem:(id)item storeOffer:(id)offer
 {
-  if ([a3 itemType] == 11 || (v7 = objc_msgSend(a3, "itemMediaKind"), objc_msgSend(v7, "isEqualToString:", *MEMORY[0x1E69D4CF0])))
+  if ([item itemType] == 11 || (v7 = objc_msgSend(item, "itemMediaKind"), objc_msgSend(v7, "isEqualToString:", *MEMORY[0x1E69D4CF0])))
   {
 
-    return [(SUItemDataSource *)self _newDownloadForDocumentItem:a3 storeOffer:a4];
+    return [(SUItemDataSource *)self _newDownloadForDocumentItem:item storeOffer:offer];
   }
 
-  else if ([a3 itemType] == 1007)
+  else if ([item itemType] == 1007)
   {
 
-    return [(SUItemDataSource *)self _newDownloadForPodcastEpisode:a3 storeOffer:a4];
+    return [(SUItemDataSource *)self _newDownloadForPodcastEpisode:item storeOffer:offer];
   }
 
   else
@@ -107,20 +107,20 @@
   }
 }
 
-- (id)newItemWithItemDictionary:(id)a3
+- (id)newItemWithItemDictionary:(id)dictionary
 {
-  v4 = [[SUItem alloc] initWithDictionary:a3];
+  v4 = [[SUItem alloc] initWithDictionary:dictionary];
   [(SUItem *)v4 setItemType:[(SUItemDataSource *)self itemTypeForItem:v4]];
   return v4;
 }
 
-- (id)newPurchaseWithItem:(id)a3 storeOffer:(id)a4
+- (id)newPurchaseWithItem:(id)item storeOffer:(id)offer
 {
-  if ([objc_msgSend(a4 "buyParameters")])
+  if ([objc_msgSend(offer "buyParameters")])
   {
-    v7 = [objc_alloc(MEMORY[0x1E69D4908]) initWithItemDictionary:{objc_msgSend(a3, "itemDictionary")}];
-    v8 = [objc_alloc(MEMORY[0x1E69D4998]) initWithItem:v7 offer:a4];
-    v9 = [(SUItemDataSource *)self _thumbnailImageForItem:a3];
+    v7 = [objc_alloc(MEMORY[0x1E69D4908]) initWithItemDictionary:{objc_msgSend(item, "itemDictionary")}];
+    v8 = [objc_alloc(MEMORY[0x1E69D4998]) initWithItem:v7 offer:offer];
+    v9 = [(SUItemDataSource *)self _thumbnailImageForItem:item];
     if (v9)
     {
       v10 = v9;
@@ -130,11 +130,11 @@
       [v8 setValue:v12 forDownloadProperty:*MEMORY[0x1E69D4C10]];
     }
 
-    v13 = [a3 itemType];
-    if (v8 && (v13 == 1011 || v13 == 1005))
+    itemType = [item itemType];
+    if (v8 && (itemType == 1011 || itemType == 1005))
     {
       v14 = [(SUItemDataSource *)self _newTonePurchaseWithPurchase:v8];
-      [v14 setAllowedToneStyles:{objc_msgSend(a4, "allowedToneStyles")}];
+      [v14 setAllowedToneStyles:{objc_msgSend(offer, "allowedToneStyles")}];
 
       return v14;
     }
@@ -142,18 +142,18 @@
 
   else
   {
-    [a3 itemType];
+    [item itemType];
     return 0;
   }
 
   return v8;
 }
 
-- (id)typeStringForItemType:(int64_t)a3
+- (id)typeStringForItemType:(int64_t)type
 {
   v3 = &qword_1E8166560;
   v4 = 31;
-  while (*v3 != a3)
+  while (*v3 != type)
   {
     v3 += 2;
     if (!--v4)
@@ -165,9 +165,9 @@
   return *(v3 - 1);
 }
 
-- (id)_newDownloadForDocumentItem:(id)a3 storeOffer:(id)a4
+- (id)_newDownloadForDocumentItem:(id)item storeOffer:(id)offer
 {
-  v6 = [objc_msgSend(a4 "offerMedia")];
+  v6 = [objc_msgSend(offer "offerMedia")];
   if (!v6)
   {
     return 0;
@@ -177,8 +177,8 @@
   v8 = objc_alloc_init(MEMORY[0x1E69D48C0]);
   v9 = [MEMORY[0x1E696AD98] numberWithBool:1];
   [v8 setValue:v9 forProperty:*MEMORY[0x1E69D4BC0]];
-  v10 = [objc_alloc(MEMORY[0x1E69D4908]) initWithItemDictionary:{objc_msgSend(a3, "itemDictionary")}];
-  v11 = [objc_alloc(MEMORY[0x1E69D48E8]) initWithItem:v10 offer:a4];
+  v10 = [objc_alloc(MEMORY[0x1E69D4908]) initWithItemDictionary:{objc_msgSend(item, "itemDictionary")}];
+  v11 = [objc_alloc(MEMORY[0x1E69D48E8]) initWithItem:v10 offer:offer];
   [v11 setKind:*MEMORY[0x1E69D4AD8]];
   [v8 setValuesWithStoreDownloadMetadata:v11];
 
@@ -189,9 +189,9 @@
   return v8;
 }
 
-- (id)_newDownloadForPodcastEpisode:(id)a3 storeOffer:(id)a4
+- (id)_newDownloadForPodcastEpisode:(id)episode storeOffer:(id)offer
 {
-  v7 = [objc_msgSend(a4 "offerMedia")];
+  v7 = [objc_msgSend(offer "offerMedia")];
   if (!v7)
   {
     return 0;
@@ -201,15 +201,15 @@
   v9 = objc_alloc_init(MEMORY[0x1E69D48C0]);
   v10 = [MEMORY[0x1E696AD98] numberWithBool:1];
   [v9 setValue:v10 forProperty:*MEMORY[0x1E69D4BC0]];
-  v11 = [(SUItemDataSource *)self _newDownloadMetadataForPodcastEpisode:a3 storeOffer:a4];
+  v11 = [(SUItemDataSource *)self _newDownloadMetadataForPodcastEpisode:episode storeOffer:offer];
   [v9 setValuesWithStoreDownloadMetadata:v11];
 
   v12 = objc_alloc(MEMORY[0x1E69D48C8]);
   v13 = [v12 initWithURLRequest:{objc_msgSend(MEMORY[0x1E695AC68], "requestWithURL:", v8)}];
   [v9 addAsset:v13 forType:*MEMORY[0x1E69D4AA0]];
 
-  v14 = [objc_msgSend(a3 "itemImageCollection")];
-  if (v14 || (v14 = [objc_msgSend(objc_msgSend(a3 "containerItem")]) != 0)
+  v14 = [objc_msgSend(episode "itemImageCollection")];
+  if (v14 || (v14 = [objc_msgSend(objc_msgSend(episode "containerItem")]) != 0)
   {
     v15 = v14;
     v16 = objc_alloc(MEMORY[0x1E69D48C8]);
@@ -217,8 +217,8 @@
     [v9 addAsset:v17 forType:*MEMORY[0x1E69D4A98]];
   }
 
-  v18 = [a3 stringValueForProperty:@"podcast-feed-url"];
-  if (v18 || (v18 = [objc_msgSend(a3 "containerItem")]) != 0)
+  v18 = [episode stringValueForProperty:@"podcast-feed-url"];
+  if (v18 || (v18 = [objc_msgSend(episode "containerItem")]) != 0)
   {
     v19 = v18;
     v20 = objc_alloc(MEMORY[0x1E69D48C8]);
@@ -229,9 +229,9 @@
   return v9;
 }
 
-- (id)_newDownloadMetadataForPodcastEpisode:(id)a3 storeOffer:(id)a4
+- (id)_newDownloadMetadataForPodcastEpisode:(id)episode storeOffer:(id)offer
 {
-  v7 = [objc_msgSend(a3 "itemDictionary")];
+  v7 = [objc_msgSend(episode "itemDictionary")];
   v8 = [v7 objectForKey:@"url"];
   if (v8)
   {
@@ -244,25 +244,25 @@
 
   if (![v7 objectForKey:@"podcast-feed-url"])
   {
-    v10 = [objc_msgSend(a3 "containerItem")];
+    v10 = [objc_msgSend(episode "containerItem")];
     if (v10)
     {
       [v7 setObject:v10 forKey:@"podcast-feed-url"];
     }
   }
 
-  v11 = [objc_msgSend(a4 "offerMedia")];
+  v11 = [objc_msgSend(offer "offerMedia")];
   if ((v11 & 0x8000000000000000) == 0)
   {
     [v7 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithInteger:", v11), @"duration"}];
   }
 
   v12 = [objc_alloc(MEMORY[0x1E69D48E8]) initWithDictionary:v7];
-  [v12 setItemIdentifier:{objc_msgSend(a3, "itemIdentifier")}];
-  [v12 setSubtitle:{objc_msgSend(a3, "artistName")}];
-  [v12 setThumbnailImageURL:{objc_msgSend(-[SUItemDataSource _thumbnailImageForItem:](self, "_thumbnailImageForItem:", a3), "URL")}];
-  [v12 setTitle:{objc_msgSend(a3, "unmodifiedTitle")}];
-  v13 = [objc_msgSend(a4 "playableMedia")];
+  [v12 setItemIdentifier:{objc_msgSend(episode, "itemIdentifier")}];
+  [v12 setSubtitle:{objc_msgSend(episode, "artistName")}];
+  [v12 setThumbnailImageURL:{objc_msgSend(-[SUItemDataSource _thumbnailImageForItem:](self, "_thumbnailImageForItem:", episode), "URL")}];
+  [v12 setTitle:{objc_msgSend(episode, "unmodifiedTitle")}];
+  v13 = [objc_msgSend(offer "playableMedia")];
   v14 = [v13 isEqualToString:*MEMORY[0x1E69D4D00]];
   v15 = MEMORY[0x1E69D4B10];
   if (!v14)
@@ -275,25 +275,25 @@
   return v12;
 }
 
-- (id)_newTonePurchaseWithPurchase:(id)a3
+- (id)_newTonePurchaseWithPurchase:(id)purchase
 {
   v4 = objc_alloc_init(MEMORY[0x1E69D49E8]);
-  [v4 setAccountIdentifier:{objc_msgSend(a3, "accountIdentifier")}];
-  [v4 setBuyParameters:{objc_msgSend(a3, "buyParameters")}];
-  [v4 setDownloadProperties:{objc_msgSend(a3, "downloadProperties")}];
+  [v4 setAccountIdentifier:{objc_msgSend(purchase, "accountIdentifier")}];
+  [v4 setBuyParameters:{objc_msgSend(purchase, "buyParameters")}];
+  [v4 setDownloadProperties:{objc_msgSend(purchase, "downloadProperties")}];
   return v4;
 }
 
-- (id)_thumbnailImageForItem:(id)a3
+- (id)_thumbnailImageForItem:(id)item
 {
-  v4 = [a3 itemImageCollection];
-  v5 = [objc_msgSend(a3 "containerItem")];
-  if ([a3 itemType] == 2000)
+  itemImageCollection = [item itemImageCollection];
+  v5 = [objc_msgSend(item "containerItem")];
+  if ([item itemType] == 2000)
   {
-    v6 = [a3 softwareType];
-    if ([v6 isEqualToString:*MEMORY[0x1E69D4C20]])
+    softwareType = [item softwareType];
+    if ([softwareType isEqualToString:*MEMORY[0x1E69D4C20]])
     {
-      v7 = [v4 imagesForKind:*MEMORY[0x1E69D4CD8]];
+      v7 = [itemImageCollection imagesForKind:*MEMORY[0x1E69D4CD8]];
     }
 
     else
@@ -303,7 +303,7 @@
 
     if (![v7 count])
     {
-      v7 = [v4 imagesForKind:*MEMORY[0x1E69D4CA0]];
+      v7 = [itemImageCollection imagesForKind:*MEMORY[0x1E69D4CA0]];
     }
 
     if ([v7 count])
@@ -313,13 +313,13 @@
     }
 
     v11 = 57.0;
-    v12 = v4;
+    v12 = itemImageCollection;
     v13 = 57.0;
   }
 
   else
   {
-    result = [v4 bestImageForSize:{88.0, 88.0}];
+    result = [itemImageCollection bestImageForSize:{88.0, 88.0}];
     if (result)
     {
       return result;
@@ -333,7 +333,7 @@
 
     v9 = *MEMORY[0x1E695F060];
     v10 = *(MEMORY[0x1E695F060] + 8);
-    result = [v4 bestImageForSize:{*MEMORY[0x1E695F060], v10}];
+    result = [itemImageCollection bestImageForSize:{*MEMORY[0x1E695F060], v10}];
     if (result)
     {
       return result;

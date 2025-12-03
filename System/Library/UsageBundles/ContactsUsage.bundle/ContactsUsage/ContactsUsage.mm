@@ -1,5 +1,5 @@
 @interface ContactsUsage
-- (float)sizeForCategory:(id)a3;
+- (float)sizeForCategory:(id)category;
 - (id)usageBundleApps;
 - (void)populateUsageBundleApps;
 @end
@@ -91,7 +91,7 @@
   return cachedBundleApps;
 }
 
-- (float)sizeForCategory:(id)a3
+- (float)sizeForCategory:(id)category
 {
   v3 = [NSNumber numberWithUnsignedLongLong:self->_totalSize];
   [v3 floatValue];

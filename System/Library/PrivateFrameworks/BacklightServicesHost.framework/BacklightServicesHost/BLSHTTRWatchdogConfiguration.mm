@@ -1,16 +1,16 @@
 @interface BLSHTTRWatchdogConfiguration
-- (void)setIdentifier:(id)a3;
+- (void)setIdentifier:(id)identifier;
 @end
 
 @implementation BLSHTTRWatchdogConfiguration
 
-- (void)setIdentifier:(id)a3
+- (void)setIdentifier:(id)identifier
 {
-  objc_storeStrong(&self->_identifier, a3);
-  v7 = a3;
-  v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@", @"blsh_ttr_watchdog_", v7];
+  objc_storeStrong(&self->_identifier, identifier);
+  identifierCopy = identifier;
+  identifierCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@", @"blsh_ttr_watchdog_", identifierCopy];
   timerIdentifier = self->_timerIdentifier;
-  self->_timerIdentifier = v5;
+  self->_timerIdentifier = identifierCopy;
 }
 
 @end

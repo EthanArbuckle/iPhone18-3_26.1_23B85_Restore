@@ -3,7 +3,7 @@
 + (void)initialize;
 - (AUSetupController)init;
 - (BOOL)dirty;
-- (BOOL)hasACPFeature:(unsigned int)a3;
+- (BOOL)hasACPFeature:(unsigned int)feature;
 - (BOOL)isMonitoring;
 - (BOOL)rememberBasePassword;
 - (BOOL)rememberWiFiPassword;
@@ -17,44 +17,44 @@
 - (id)snapshotChangedKeys;
 - (id)targetBaseInfoDict;
 - (id)validateAllSettingsAndGetErrors;
-- (id)validateSettingsAndGetErrors:(id)a3;
+- (id)validateSettingsAndGetErrors:(id)errors;
 - (int)busyState;
 - (int)cancelSetup;
 - (int)cancelTask;
-- (int)closeAllConnections:(BOOL)a3;
-- (int)copyValue:(id *)a3 forBSSetting:(int)a4;
-- (int)copyValue:(id *)a3 forSettingPath:(id)a4;
-- (int)getValue:(id *)a3 forBSSetting:(int)a4;
-- (int)getValue:(id *)a3 forSettingPath:(id)a4;
-- (int)ignoreProblemCode:(unsigned int)a3;
-- (int)readPropertyListFromBaseAsync:(id)a3;
-- (int)rpcDisconnectAllDiskUsersWithMessageAsync:(id)a3;
-- (int)rpcRefreshBSSettingAsync:(int)a3;
+- (int)closeAllConnections:(BOOL)connections;
+- (int)copyValue:(id *)value forBSSetting:(int)setting;
+- (int)copyValue:(id *)value forSettingPath:(id)path;
+- (int)getValue:(id *)value forBSSetting:(int)setting;
+- (int)getValue:(id *)value forSettingPath:(id)path;
+- (int)ignoreProblemCode:(unsigned int)code;
+- (int)readPropertyListFromBaseAsync:(id)async;
+- (int)rpcDisconnectAllDiskUsersWithMessageAsync:(id)async;
+- (int)rpcRefreshBSSettingAsync:(int)async;
 - (int)rpcRenewDHCPLeaseAsync;
-- (int)rpcStartRemoteBrowse:(id)a3 withService:(id)a4;
+- (int)rpcStartRemoteBrowse:(id)browse withService:(id)service;
 - (int)rpcSystemInterfacesAsync;
-- (int)rpcWPSAllowClientAsync:(id)a3;
-- (int)rpcWPSStartAsync:(BOOL)a3 dayPass:(BOOL)a4 timeout:(unsigned int)a5;
+- (int)rpcWPSAllowClientAsync:(id)async;
+- (int)rpcWPSStartAsync:(BOOL)async dayPass:(BOOL)pass timeout:(unsigned int)timeout;
 - (int)rpcWPSStopAsync;
-- (int)setMonitorForChanges:(BOOL)a3;
-- (int)setValue:(id)a3 forBSSetting:(int)a4;
-- (int)setValue:(id)a3 forSettingPath:(id)a4;
-- (int)setupFromAutoguessRecommendation:(id)a3 withOptions:(id)a4;
-- (int)setupWithTargetBaseStation:(id)a3 andSettings:(id)a4;
-- (int)setupWithTargetNetwork:(id)a3;
-- (int)snapshotPop:(BOOL)a3;
+- (int)setMonitorForChanges:(BOOL)changes;
+- (int)setValue:(id)value forBSSetting:(int)setting;
+- (int)setValue:(id)value forSettingPath:(id)path;
+- (int)setupFromAutoguessRecommendation:(id)recommendation withOptions:(id)options;
+- (int)setupWithTargetBaseStation:(id)station andSettings:(id)settings;
+- (int)setupWithTargetNetwork:(id)network;
+- (int)snapshotPop:(BOOL)pop;
 - (int)snapshotPush;
-- (int)stateForProblem:(unsigned int)a3;
-- (int)subclassAssistantCallback:(AssistantCallbackContext *)a3;
-- (int)taskArchiveDiskAsync:(id)a3;
-- (int)taskEraseDiskAsync:(id)a3;
+- (int)stateForProblem:(unsigned int)problem;
+- (int)subclassAssistantCallback:(AssistantCallbackContext *)callback;
+- (int)taskArchiveDiskAsync:(id)async;
+- (int)taskEraseDiskAsync:(id)async;
 - (int)taskRestartAsync;
-- (int)taskRestoreDefaultsAsync:(BOOL)a3;
+- (int)taskRestoreDefaultsAsync:(BOOL)async;
 - (int)taskState;
-- (int)taskUploadFirmwareAsync:(id)a3;
-- (int)unIgnoreProblemCode:(unsigned int)a3;
+- (int)taskUploadFirmwareAsync:(id)async;
+- (int)unIgnoreProblemCode:(unsigned int)code;
 - (int)updateKeychainWithPasswords;
-- (int)updateKeychainWithPasswordsWithStatus:(int)a3;
+- (int)updateKeychainWithPasswordsWithStatus:(int)status;
 - (int)updateSettingsAsync;
 - (int64_t)ethernetPortCount;
 - (int64_t)unignoredProblemCount;
@@ -64,23 +64,23 @@
 - (void)deleteKeychainWirelessPassword;
 - (void)handleBusyComplete;
 - (void)handleBusyStart;
-- (void)handleSetupComplete:(int)a3;
+- (void)handleSetupComplete:(int)complete;
 - (void)handleTaskComplete;
 - (void)loadKeychainBasePassword;
 - (void)loadKeychainWirelessPassword;
 - (void)logChangesToCCL;
 - (void)resetWiFiState;
 - (void)saveKeychainBasePassword;
-- (void)setBonjourRecord:(id)a3;
-- (void)setKeychainBasePassword:(id)a3;
-- (void)setKeychainDiskPassword:(id)a3;
-- (void)setKeychainWiFiPassword:(id)a3;
-- (void)setRememberBasePassword:(BOOL)a3;
-- (void)setRememberWiFiPassword:(BOOL)a3;
-- (void)setupUIConfigResult:(int)a3 withOptions:(id)a4;
+- (void)setBonjourRecord:(id)record;
+- (void)setKeychainBasePassword:(id)password;
+- (void)setKeychainDiskPassword:(id)password;
+- (void)setKeychainWiFiPassword:(id)password;
+- (void)setRememberBasePassword:(BOOL)password;
+- (void)setRememberWiFiPassword:(BOOL)password;
+- (void)setupUIConfigResult:(int)result withOptions:(id)options;
 - (void)setupWiFiState;
 - (void)snapshotResetAll;
-- (void)updateRememberKeychainFlagsButSkipBasePassword:(BOOL)a3;
+- (void)updateRememberKeychainFlagsButSkipBasePassword:(BOOL)password;
 - (void)updateRememberKeychainFlagsIfInitializing;
 @end
 
@@ -135,15 +135,15 @@
   [(AssistantCallbackController *)&v11 dealloc];
 }
 
-- (int)closeAllConnections:(BOOL)a3
+- (int)closeAllConnections:(BOOL)connections
 {
-  v7 = a3;
+  connectionsCopy = connections;
   if (dword_27E3818B0 <= 800 && (dword_27E3818B0 != -1 || sub_23EB74AC8(&dword_27E3818B0, 0x320u)))
   {
     sub_23EB75374(&dword_27E3818B0, "[AUSetupController closeAllConnections:]", 800, "\n", v3, v4, v5, v6, v25);
   }
 
-  if (!objc_msgSend_activeTask(self, a2, a3) || v7)
+  if (!objc_msgSend_activeTask(self, a2, connections) || connectionsCopy)
   {
     objc_msgSend_cancelPreviousPerformRequestsWithTarget_selector_object_(MEMORY[0x277D82BB8], v9, self, sel_handleCopyAllSettingsUpdateThread_, 0);
     objc_msgSend_cancelPreviousPerformRequestsWithTarget_selector_object_(MEMORY[0x277D82BB8], v10, self, sel_handleSettingsUpdate_, 0);
@@ -154,13 +154,13 @@
     if (configContext)
     {
       sub_23EBBD130(configContext, 0, 0, v11, v12, v13, v14, v15);
-      v7 = sub_23EBBCCF0(self->_configContext, v17, v18, v19, v20, v21, v22, v23);
+      connectionsCopy = sub_23EBBCCF0(self->_configContext, v17, v18, v19, v20, v21, v22, v23);
       self->_configContext = 0;
     }
 
     else
     {
-      v7 = 0;
+      connectionsCopy = 0;
     }
 
     objc_sync_exit(self);
@@ -168,12 +168,12 @@
     self->_lastHeardFromDevice = 0;
   }
 
-  return v7;
+  return connectionsCopy;
 }
 
-- (int)subclassAssistantCallback:(AssistantCallbackContext *)a3
+- (int)subclassAssistantCallback:(AssistantCallbackContext *)callback
 {
-  if (!a3)
+  if (!callback)
   {
     LODWORD(v13) = -6705;
     return v13;
@@ -181,15 +181,15 @@
 
   v52 = 0;
   v53 = 0;
-  sub_23EBEB494(a3, @"kBSAssistantCallback_Configuration_UIConfigSelector", &v53, v3, v4, v5, v6, v7);
+  sub_23EBEB494(callback, @"kBSAssistantCallback_Configuration_UIConfigSelector", &v53, v3, v4, v5, v6, v7);
   v12 = v13;
   LODWORD(v13) = 0;
   if (!v12 && v53)
   {
     v14 = objc_msgSend_integerValue(v53, v10, v11);
-    if (sub_23EBEB5B8(a3, @"kBSAssistantCallback_Configuration_UIConfigParamDict"))
+    if (sub_23EBEB5B8(callback, @"kBSAssistantCallback_Configuration_UIConfigParamDict"))
     {
-      sub_23EBEB494(a3, @"kBSAssistantCallback_Configuration_UIConfigParamDict", &v52, v17, v18, v19, v20, v21);
+      sub_23EBEB494(callback, @"kBSAssistantCallback_Configuration_UIConfigParamDict", &v52, v17, v18, v19, v20, v21);
       if (v13)
       {
         return v13;
@@ -228,7 +228,7 @@
           callbackContext = self->super._callbackContext;
           if (callbackContext)
           {
-            v48 = callbackContext == a3;
+            v48 = callbackContext == callback;
           }
 
           else
@@ -241,7 +241,7 @@
             goto LABEL_43;
           }
 
-          self->super._callbackContext = a3;
+          self->super._callbackContext = callback;
           v49 = objc_msgSend_uiConfigDelegate(self, v45, v46);
           objc_msgSend_setupUIConfigPrompt_paramDict_forController_(v49, v50, v14, v52, self);
         }
@@ -253,7 +253,7 @@ LABEL_42:
 
     else
     {
-      sub_23EBEB494(a3, @"kBSAssistantCallback_Configuration_UIConfigConnectionStatusOSStatus", &v53, v17, v18, v19, v20, v21);
+      sub_23EBEB494(callback, @"kBSAssistantCallback_Configuration_UIConfigConnectionStatusOSStatus", &v53, v17, v18, v19, v20, v21);
       if (!v13)
       {
         if (!v53)
@@ -273,26 +273,26 @@ LABEL_38:
         {
           if (v30)
           {
-            sub_23EBEB6CC(a3, -6757, v32, v33, v34, v35, v36, v37);
+            sub_23EBEB6CC(callback, -6757, v32, v33, v34, v35, v36, v37);
           }
 
           goto LABEL_42;
         }
 
         v39 = self->super._callbackContext;
-        if (!v39 || v39 == a3)
+        if (!v39 || v39 == callback)
         {
           if (v30)
           {
-            v40 = a3;
+            callbackCopy = callback;
           }
 
           else
           {
-            v40 = 0;
+            callbackCopy = 0;
           }
 
-          self->super._callbackContext = v40;
+          self->super._callbackContext = callbackCopy;
           v41 = objc_msgSend_uiConfigDelegate(self, v38, v32);
           objc_msgSend_setupUIConfigConnectionStatusUpdated_status_paramDict_forController_(v41, v42, v14, v30, v52, self);
           goto LABEL_42;
@@ -342,7 +342,7 @@ LABEL_43:
   }
 }
 
-- (int)setValue:(id)a3 forBSSetting:(int)a4
+- (int)setValue:(id)value forBSSetting:(int)setting
 {
   configContext = self->_configContext;
   if (!configContext)
@@ -356,7 +356,7 @@ LABEL_43:
   {
     if (v8)
     {
-      return sub_23EBB3DBC(v8, a4, a3);
+      return sub_23EBB3DBC(v8, setting, value);
     }
 
     else
@@ -368,21 +368,21 @@ LABEL_43:
   return result;
 }
 
-- (int)copyValue:(id *)a3 forBSSetting:(int)a4
+- (int)copyValue:(id *)value forBSSetting:(int)setting
 {
-  if (!a3)
+  if (!value)
   {
     return -6705;
   }
 
-  *a3 = 0;
+  *value = 0;
   configContext = self->_configContext;
   if (!configContext)
   {
     return -6718;
   }
 
-  if (!a4)
+  if (!setting)
   {
     return -6705;
   }
@@ -393,7 +393,7 @@ LABEL_43:
   {
     if (v8)
     {
-      return sub_23EBB3F30(v8, a4, a3);
+      return sub_23EBB3F30(v8, setting, value);
     }
 
     else
@@ -405,18 +405,18 @@ LABEL_43:
   return result;
 }
 
-- (int)getValue:(id *)a3 forBSSetting:(int)a4
+- (int)getValue:(id *)value forBSSetting:(int)setting
 {
-  v5 = objc_msgSend_copyValue_forBSSetting_(self, a2, a3, *&a4);
+  v5 = objc_msgSend_copyValue_forBSSetting_(self, a2, value, *&setting);
   if (!v5)
   {
-    v6 = *a3;
+    v6 = *value;
   }
 
   return v5;
 }
 
-- (int)setValue:(id)a3 forSettingPath:(id)a4
+- (int)setValue:(id)value forSettingPath:(id)path
 {
   configContext = self->_configContext;
   if (!configContext)
@@ -431,8 +431,8 @@ LABEL_43:
     v10 = v12;
     if (v12)
     {
-      v11 = objc_msgSend_UTF8String(a4, v8, v9);
-      return sub_23EBB3B84(v10, v11, a3);
+      v11 = objc_msgSend_UTF8String(path, v8, v9);
+      return sub_23EBB3B84(v10, v11, value);
     }
 
     else
@@ -444,21 +444,21 @@ LABEL_43:
   return result;
 }
 
-- (int)copyValue:(id *)a3 forSettingPath:(id)a4
+- (int)copyValue:(id *)value forSettingPath:(id)path
 {
-  if (!a3)
+  if (!value)
   {
     return -6705;
   }
 
-  *a3 = 0;
+  *value = 0;
   configContext = self->_configContext;
   if (!configContext)
   {
     return -6718;
   }
 
-  if (!a4)
+  if (!path)
   {
     return -6705;
   }
@@ -470,8 +470,8 @@ LABEL_43:
     v10 = v12;
     if (v12)
     {
-      v11 = objc_msgSend_UTF8String(a4, v8, v9);
-      return sub_23EBB3E20(v10, v11, a3);
+      v11 = objc_msgSend_UTF8String(path, v8, v9);
+      return sub_23EBB3E20(v10, v11, value);
     }
 
     else
@@ -483,18 +483,18 @@ LABEL_43:
   return result;
 }
 
-- (int)getValue:(id *)a3 forSettingPath:(id)a4
+- (int)getValue:(id *)value forSettingPath:(id)path
 {
-  v5 = objc_msgSend_copyValue_forSettingPath_(self, a2, a3, a4);
+  v5 = objc_msgSend_copyValue_forSettingPath_(self, a2, value, path);
   if (!v5)
   {
-    v6 = *a3;
+    v6 = *value;
   }
 
   return v5;
 }
 
-- (BOOL)hasACPFeature:(unsigned int)a3
+- (BOOL)hasACPFeature:(unsigned int)feature
 {
   configContext = self->_configContext;
   if (configContext)
@@ -510,7 +510,7 @@ LABEL_43:
       LOBYTE(configContext) = v6;
       if (v6)
       {
-        LOBYTE(configContext) = sub_23EBB4248(v6, a3);
+        LOBYTE(configContext) = sub_23EBB4248(v6, feature);
       }
     }
   }
@@ -518,7 +518,7 @@ LABEL_43:
   return configContext;
 }
 
-- (int)stateForProblem:(unsigned int)a3
+- (int)stateForProblem:(unsigned int)problem
 {
   configContext = self->_configContext;
   if (configContext)
@@ -538,7 +538,7 @@ LABEL_43:
         LODWORD(configContext) = sub_23EBB4248(v7, 1400460148);
         if (configContext)
         {
-          LODWORD(configContext) = sub_23EBB427C(v7, a3, &v6);
+          LODWORD(configContext) = sub_23EBB427C(v7, problem, &v6);
           if (configContext)
           {
             if (v6)
@@ -667,7 +667,7 @@ LABEL_43:
   return result;
 }
 
-- (id)validateSettingsAndGetErrors:(id)a3
+- (id)validateSettingsAndGetErrors:(id)errors
 {
   v7 = 0;
   result = self->_configContext;
@@ -684,7 +684,7 @@ LABEL_43:
       result = *v8;
       if (*v8)
       {
-        v5 = sub_23EBB4360(*v8, a3, &v7);
+        v5 = sub_23EBB4360(*v8, errors, &v7);
         result = v7;
         if (v5 != -6727)
         {
@@ -701,7 +701,7 @@ LABEL_43:
   return result;
 }
 
-- (int)ignoreProblemCode:(unsigned int)a3
+- (int)ignoreProblemCode:(unsigned int)code
 {
   configContext = self->_configContext;
   if (!configContext)
@@ -715,7 +715,7 @@ LABEL_43:
   {
     if (v6)
     {
-      return sub_23EBB42A0(v6, a3);
+      return sub_23EBB42A0(v6, code);
     }
 
     else
@@ -727,7 +727,7 @@ LABEL_43:
   return result;
 }
 
-- (int)unIgnoreProblemCode:(unsigned int)a3
+- (int)unIgnoreProblemCode:(unsigned int)code
 {
   configContext = self->_configContext;
   if (!configContext)
@@ -741,7 +741,7 @@ LABEL_43:
   {
     if (v6)
     {
-      return sub_23EBB42B4(v6, a3);
+      return sub_23EBB42B4(v6, code);
     }
 
     else
@@ -777,12 +777,12 @@ LABEL_43:
   return keychainDiskPassword;
 }
 
-- (void)setKeychainBasePassword:(id)a3
+- (void)setKeychainBasePassword:(id)password
 {
   keychainBasePassword = self->_keychainBasePassword;
   if (keychainBasePassword)
   {
-    v4 = keychainBasePassword == a3;
+    v4 = keychainBasePassword == password;
   }
 
   else
@@ -793,10 +793,10 @@ LABEL_43:
   if (!v4)
   {
     objc_sync_enter(self);
-    v7 = a3;
+    passwordCopy = password;
 
-    self->_keychainBasePassword = a3;
-    if (objc_msgSend_length(a3, v8, v9))
+    self->_keychainBasePassword = password;
+    if (objc_msgSend_length(password, v8, v9))
     {
       v12 = objc_msgSend_rememberBasePassword(self, v10, v11);
       objc_msgSend_setRememberBasePassword_(self, v13, v12);
@@ -811,12 +811,12 @@ LABEL_43:
   }
 }
 
-- (void)setKeychainWiFiPassword:(id)a3
+- (void)setKeychainWiFiPassword:(id)password
 {
   keychainWiFiPassword = self->_keychainWiFiPassword;
   if (keychainWiFiPassword)
   {
-    v4 = keychainWiFiPassword == a3;
+    v4 = keychainWiFiPassword == password;
   }
 
   else
@@ -827,7 +827,7 @@ LABEL_43:
   if (!v4)
   {
     objc_sync_enter(self);
-    if (objc_msgSend_length(a3, v7, v8))
+    if (objc_msgSend_length(password, v7, v8))
     {
       v11 = objc_msgSend_length(self->_keychainWiFiPassword, v9, v10) == 0;
     }
@@ -837,15 +837,15 @@ LABEL_43:
       v11 = 0;
     }
 
-    v12 = a3;
+    passwordCopy = password;
 
-    self->_keychainWiFiPassword = a3;
+    self->_keychainWiFiPassword = password;
     if (v11)
     {
       objc_msgSend_setRememberWiFiPassword_(self, v13, 1);
     }
 
-    else if (objc_msgSend_length(a3, v13, v14))
+    else if (objc_msgSend_length(password, v13, v14))
     {
       v17 = objc_msgSend_rememberWiFiPassword(self, v15, v16);
       objc_msgSend_setRememberWiFiPassword_(self, v18, v17);
@@ -860,12 +860,12 @@ LABEL_43:
   }
 }
 
-- (void)setKeychainDiskPassword:(id)a3
+- (void)setKeychainDiskPassword:(id)password
 {
   keychainDiskPassword = self->_keychainDiskPassword;
   if (keychainDiskPassword)
   {
-    v4 = keychainDiskPassword == a3;
+    v4 = keychainDiskPassword == password;
   }
 
   else
@@ -876,10 +876,10 @@ LABEL_43:
   if (!v4)
   {
     objc_sync_enter(self);
-    v7 = a3;
+    passwordCopy = password;
 
-    self->_keychainDiskPassword = a3;
-    if (objc_msgSend_length(a3, v8, v9))
+    self->_keychainDiskPassword = password;
+    if (objc_msgSend_length(password, v8, v9))
     {
       v12 = objc_msgSend_rememberDiskPassword(self, v10, v11);
       objc_msgSend_setRememberDiskPassword_(self, v13, v12);
@@ -894,7 +894,7 @@ LABEL_43:
   }
 }
 
-- (int)readPropertyListFromBaseAsync:(id)a3
+- (int)readPropertyListFromBaseAsync:(id)async
 {
   configContext = self->_configContext;
   if (!configContext)
@@ -902,7 +902,7 @@ LABEL_43:
     return -6718;
   }
 
-  result = sub_23EBBF76C(configContext, a3, a3, v3, v4, v5, v6, v7);
+  result = sub_23EBBF76C(configContext, async, async, v3, v4, v5, v6, v7);
   if (!result)
   {
     objc_msgSend_handleBusyStart(self, v11, v12);
@@ -964,12 +964,12 @@ LABEL_43:
   return sub_23EBB41E4(v3);
 }
 
-- (int)snapshotPop:(BOOL)a3
+- (int)snapshotPop:(BOOL)pop
 {
-  v3 = a3;
-  v4 = objc_msgSend_bsRef(self, a2, a3);
+  popCopy = pop;
+  v4 = objc_msgSend_bsRef(self, a2, pop);
 
-  return sub_23EBB41F4(v4, v3);
+  return sub_23EBB41F4(v4, popCopy);
 }
 
 - (id)bestKeychainMACAddress
@@ -1035,28 +1035,28 @@ LABEL_43:
   }
 }
 
-- (void)updateRememberKeychainFlagsButSkipBasePassword:(BOOL)a3
+- (void)updateRememberKeychainFlagsButSkipBasePassword:(BOOL)password
 {
-  if (!a3)
+  if (!password)
   {
-    objc_msgSend_loadKeychainBasePassword(self, a2, a3);
+    objc_msgSend_loadKeychainBasePassword(self, a2, password);
   }
 
-  MEMORY[0x2821F9670](self, sel_loadKeychainWirelessPassword, a3);
+  MEMORY[0x2821F9670](self, sel_loadKeychainWirelessPassword, password);
 }
 
-- (int)updateKeychainWithPasswordsWithStatus:(int)a3
+- (int)updateKeychainWithPasswordsWithStatus:(int)status
 {
-  if (a3 == -16)
+  if (status == -16)
   {
-    objc_msgSend_deleteKeychainBasePassword(self, a2, *&a3);
+    objc_msgSend_deleteKeychainBasePassword(self, a2, *&status);
     return 0;
   }
 
   else
   {
 
-    return objc_msgSend_updateKeychainWithPasswords(self, a2, *&a3);
+    return objc_msgSend_updateKeychainWithPasswords(self, a2, *&status);
   }
 }
 
@@ -1279,12 +1279,12 @@ LABEL_26:
   }
 }
 
-- (int)rpcStartRemoteBrowse:(id)a3 withService:(id)a4
+- (int)rpcStartRemoteBrowse:(id)browse withService:(id)service
 {
   configContext = self->_configContext;
   if (configContext)
   {
-    return sub_23EBB7B38(configContext, a3, a4, a4, v4, v5, v6, v7);
+    return sub_23EBB7B38(configContext, browse, service, service, v4, v5, v6, v7);
   }
 
   else
@@ -1293,12 +1293,12 @@ LABEL_26:
   }
 }
 
-- (int)rpcRefreshBSSettingAsync:(int)a3
+- (int)rpcRefreshBSSettingAsync:(int)async
 {
   configContext = self->_configContext;
   if (configContext)
   {
-    return sub_23EBB7F44(configContext, a3, *&a3, v3, v4, v5, v6, v7);
+    return sub_23EBB7F44(configContext, async, *&async, v3, v4, v5, v6, v7);
   }
 
   else
@@ -1307,12 +1307,12 @@ LABEL_26:
   }
 }
 
-- (int)rpcDisconnectAllDiskUsersWithMessageAsync:(id)a3
+- (int)rpcDisconnectAllDiskUsersWithMessageAsync:(id)async
 {
   configContext = self->_configContext;
   if (configContext)
   {
-    return sub_23EBB825C(configContext, a3, a3, v3, v4, v5, v6, v7);
+    return sub_23EBB825C(configContext, async, async, v3, v4, v5, v6, v7);
   }
 
   else
@@ -1335,12 +1335,12 @@ LABEL_26:
   }
 }
 
-- (int)rpcWPSStartAsync:(BOOL)a3 dayPass:(BOOL)a4 timeout:(unsigned int)a5
+- (int)rpcWPSStartAsync:(BOOL)async dayPass:(BOOL)pass timeout:(unsigned int)timeout
 {
   configContext = self->_configContext;
   if (configContext)
   {
-    return sub_23EBB86B0(configContext, a3, a4, *&a5, *&a5, v5, v6, v7);
+    return sub_23EBB86B0(configContext, async, pass, *&timeout, *&timeout, v5, v6, v7);
   }
 
   else
@@ -1363,12 +1363,12 @@ LABEL_26:
   }
 }
 
-- (int)rpcWPSAllowClientAsync:(id)a3
+- (int)rpcWPSAllowClientAsync:(id)async
 {
   configContext = self->_configContext;
   if (configContext)
   {
-    return sub_23EBB8CE8(configContext, a3, a3, v3, v4, v5, v6, v7);
+    return sub_23EBB8CE8(configContext, async, async, v3, v4, v5, v6, v7);
   }
 
   else
@@ -1434,16 +1434,16 @@ LABEL_26:
   return result;
 }
 
-- (int)taskRestoreDefaultsAsync:(BOOL)a3
+- (int)taskRestoreDefaultsAsync:(BOOL)async
 {
   if (!self->_configContext)
   {
     return -6718;
   }
 
-  v3 = a3;
+  asyncCopy = async;
   objc_msgSend_setActiveTask_(self, a2, 1);
-  result = sub_23EBB9E34(self->_configContext, v3, v5, v6, v7, v8, v9, v10);
+  result = sub_23EBB9E34(self->_configContext, asyncCopy, v5, v6, v7, v8, v9, v10);
   if (!result)
   {
     objc_msgSend_handleBusyStart(self, v12, v13);
@@ -1454,20 +1454,20 @@ LABEL_26:
   return result;
 }
 
-- (int)taskUploadFirmwareAsync:(id)a3
+- (int)taskUploadFirmwareAsync:(id)async
 {
   if (!self->_configContext)
   {
     return -6718;
   }
 
-  if (!a3)
+  if (!async)
   {
     return -6705;
   }
 
   objc_msgSend_setActiveTask_(self, a2, 1);
-  result = sub_23EBBAC3C(self->_configContext, a3, v5, v6, v7, v8, v9, v10);
+  result = sub_23EBBAC3C(self->_configContext, async, v5, v6, v7, v8, v9, v10);
   if (!result)
   {
     objc_msgSend_handleBusyStart(self, v12, v13);
@@ -1478,7 +1478,7 @@ LABEL_26:
   return result;
 }
 
-- (int)taskEraseDiskAsync:(id)a3
+- (int)taskEraseDiskAsync:(id)async
 {
   configContext = self->_configContext;
   if (!configContext)
@@ -1486,15 +1486,15 @@ LABEL_26:
     return -6718;
   }
 
-  if (a3)
+  if (async)
   {
-    return sub_23EBBBDE8(configContext, a3, a3, v3, v4, v5, v6, v7);
+    return sub_23EBBBDE8(configContext, async, async, v3, v4, v5, v6, v7);
   }
 
   return -6705;
 }
 
-- (int)taskArchiveDiskAsync:(id)a3
+- (int)taskArchiveDiskAsync:(id)async
 {
   configContext = self->_configContext;
   if (!configContext)
@@ -1502,19 +1502,19 @@ LABEL_26:
     return -6718;
   }
 
-  if (a3)
+  if (async)
   {
-    return sub_23EBBC3D0(configContext, a3, a3, v3, v4, v5, v6, v7);
+    return sub_23EBBC3D0(configContext, async, async, v3, v4, v5, v6, v7);
   }
 
   return -6705;
 }
 
-- (int)setMonitorForChanges:(BOOL)a3
+- (int)setMonitorForChanges:(BOOL)changes
 {
   if (self->_configContext)
   {
-    return sub_23EBC220C(self->_configContext, a3, self->_busy, v3, v4, v5, v6, v7);
+    return sub_23EBC220C(self->_configContext, changes, self->_busy, v3, v4, v5, v6, v7);
   }
 
   else
@@ -1550,12 +1550,12 @@ LABEL_26:
   return result;
 }
 
-- (void)setRememberBasePassword:(BOOL)a3
+- (void)setRememberBasePassword:(BOOL)password
 {
   configContext = self->_configContext;
   if (configContext)
   {
-    sub_23EBBED88(configContext, a3, a3, v3, v4, v5, v6, v7);
+    sub_23EBBED88(configContext, password, password, v3, v4, v5, v6, v7);
   }
 }
 
@@ -1573,12 +1573,12 @@ LABEL_26:
   return result;
 }
 
-- (void)setRememberWiFiPassword:(BOOL)a3
+- (void)setRememberWiFiPassword:(BOOL)password
 {
   configContext = self->_configContext;
   if (configContext)
   {
-    sub_23EBBEEE8(configContext, a3, a3, v3, v4, v5, v6, v7);
+    sub_23EBBEEE8(configContext, password, password, v3, v4, v5, v6, v7);
   }
 }
 
@@ -1595,17 +1595,17 @@ LABEL_26:
   return result;
 }
 
-- (void)setBonjourRecord:(id)a3
+- (void)setBonjourRecord:(id)record
 {
   if (dword_27E3818B0 <= 800 && (dword_27E3818B0 != -1 || sub_23EB74AC8(&dword_27E3818B0, 0x320u)))
   {
-    sub_23EB75374(&dword_27E3818B0, "[AUSetupController setBonjourRecord:]", 800, "record: %@\n", v3, v4, v5, v6, a3);
+    sub_23EB75374(&dword_27E3818B0, "[AUSetupController setBonjourRecord:]", 800, "record: %@\n", v3, v4, v5, v6, record);
   }
 
   if (self->_configContext)
   {
     objc_sync_enter(self);
-    if (a3)
+    if (record)
     {
       self->_needToNilBonjour = 0;
       goto LABEL_8;
@@ -1654,7 +1654,7 @@ LABEL_8:
         v16 = objc_msgSend_taskState(self, v9, v10);
         if (v16 == 6 || !v16)
         {
-          sub_23EBBCA7C(self->_configContext, a3);
+          sub_23EBBCA7C(self->_configContext, record);
         }
 
         goto LABEL_21;
@@ -1711,27 +1711,27 @@ LABEL_8:
   return result;
 }
 
-- (void)setupUIConfigResult:(int)a3 withOptions:(id)a4
+- (void)setupUIConfigResult:(int)result withOptions:(id)options
 {
   callbackContext = self->super._callbackContext;
   if (callbackContext)
   {
-    if (!a4 || (v11 = sub_23EBEB5E8(callbackContext, @"kBSAssistantCallback_Configuration_UIConfigResultsDict", a4, a4, v4, v5, v6, v7)) == 0)
+    if (!options || (resultCopy = sub_23EBEB5E8(callbackContext, @"kBSAssistantCallback_Configuration_UIConfigResultsDict", options, options, v4, v5, v6, v7)) == 0)
     {
-      v11 = a3;
+      resultCopy = result;
     }
 
     v12 = self->super._callbackContext;
     if (v12)
     {
-      sub_23EBEB6CC(v12, v11, *&a3, a4, v4, v5, v6, v7);
+      sub_23EBEB6CC(v12, resultCopy, *&result, options, v4, v5, v6, v7);
     }
   }
 
   self->super._callbackContext = 0;
 }
 
-- (int)setupFromAutoguessRecommendation:(id)a3 withOptions:(id)a4
+- (int)setupFromAutoguessRecommendation:(id)recommendation withOptions:(id)options
 {
   if (dword_27E3818B0 <= 800 && (dword_27E3818B0 != -1 || sub_23EB74AC8(&dword_27E3818B0, 0x320u)))
   {
@@ -1743,29 +1743,29 @@ LABEL_8:
     return -6718;
   }
 
-  if (!a3)
+  if (!recommendation)
   {
     return -6705;
   }
 
-  v11 = objc_msgSend_objectForKey_(a3, a2, @"BSAutoGuess_Recommendation");
+  v11 = objc_msgSend_objectForKey_(recommendation, a2, @"BSAutoGuess_Recommendation");
   objc_msgSend_setAutoGuessSetupRecommendation_(self, v12, v11);
   if (!self->_autoGuessSetupRecommendation)
   {
     return -6727;
   }
 
-  v15 = a4 ? objc_msgSend_dictionaryWithDictionary_(MEMORY[0x277CBEB38], v13, a4) : objc_msgSend_dictionary(MEMORY[0x277CBEB38], v13, v14);
+  v15 = options ? objc_msgSend_dictionaryWithDictionary_(MEMORY[0x277CBEB38], v13, options) : objc_msgSend_dictionary(MEMORY[0x277CBEB38], v13, v14);
   v18 = v15;
-  v19 = objc_msgSend_objectForKey_(a3, v16, @"BSAutoGuess_UnconfiguredBase");
-  v21 = objc_msgSend_objectForKey_(a3, v20, @"BSAutoGuess_UnconfiguredNetwork");
+  v19 = objc_msgSend_objectForKey_(recommendation, v16, @"BSAutoGuess_UnconfiguredBase");
+  v21 = objc_msgSend_objectForKey_(recommendation, v20, @"BSAutoGuess_UnconfiguredNetwork");
   if (!(v19 | v21))
   {
     return -6727;
   }
 
   v23 = v21;
-  v24 = objc_msgSend_objectForKey_(a3, v22, @"BSAutoGuess_UnconfiguredBaseSettings");
+  v24 = objc_msgSend_objectForKey_(recommendation, v22, @"BSAutoGuess_UnconfiguredBaseSettings");
   v32 = v24;
   if (v19)
   {
@@ -1803,7 +1803,7 @@ LABEL_8:
   }
 
   v44 = v41;
-  v45 = objc_msgSend_objectForKey_(a4, v42, @"kBSAutoGuessSetupOptionKey_BaseName");
+  v45 = objc_msgSend_objectForKey_(options, v42, @"kBSAutoGuessSetupOptionKey_BaseName");
   if (objc_msgSend_length(v45, v46, v47))
   {
     if (!v45)
@@ -1830,9 +1830,9 @@ LABEL_8:
 
   if ((objc_msgSend_isEqualToString_(self->_autoGuessSetupRecommendation, v48, @"BSSetupRecommend_OfferExtendWirelessly") & 1) != 0 || objc_msgSend_isEqualToString_(self->_autoGuessSetupRecommendation, v52, @"BSSetupRecommend_AskUserChooseBaseWireless"))
   {
-    v53 = objc_msgSend_objectForKey_(a4, v52, @"kBSAutoGuessSetupOptionKey_ExtendOption_JoinApple");
+    v53 = objc_msgSend_objectForKey_(options, v52, @"kBSAutoGuessSetupOptionKey_ExtendOption_JoinApple");
     v56 = objc_msgSend_BOOLValue(v53, v54, v55);
-    v58 = objc_msgSend_objectForKey_(a3, v57, @"BSAutoGuess_SourceBase");
+    v58 = objc_msgSend_objectForKey_(recommendation, v57, @"BSAutoGuess_SourceBase");
     if (v58)
     {
       objc_msgSend_setObject_forKey_(v18, v59, v58, @"kBSAutoGuessSetupOptionKey_SourceBase");
@@ -1853,7 +1853,7 @@ LABEL_8:
 
   if ((objc_msgSend_isEqualToString_(self->_autoGuessSetupRecommendation, v52, @"BSSetupRecommend_OfferExtendOverEthernet") & 1) != 0 || objc_msgSend_isEqualToString_(self->_autoGuessSetupRecommendation, v78, @"BSSetupRecommend_AskUserChooseBaseWired"))
   {
-    v79 = objc_msgSend_objectForKey_(a3, v78, @"BSAutoGuess_SourceBase");
+    v79 = objc_msgSend_objectForKey_(recommendation, v78, @"BSAutoGuess_SourceBase");
     if (v79)
     {
       objc_msgSend_setObject_forKey_(v18, v80, v79, @"kBSAutoGuessSetupOptionKey_SourceBase");
@@ -1865,7 +1865,7 @@ LABEL_8:
 
   if ((objc_msgSend_isEqualToString_(self->_autoGuessSetupRecommendation, v78, @"BSSetupRecommend_OfferCreate") & 1) != 0 || objc_msgSend_isEqualToString_(self->_autoGuessSetupRecommendation, v81, @"BSSetupRecommend_OfferReplaceSourceIsUnconfigurable"))
   {
-    v82 = objc_msgSend_objectForKey_(a4, v81, @"kBSAutoGuessSetupOptionKey_SkipInternetTests");
+    v82 = objc_msgSend_objectForKey_(options, v81, @"kBSAutoGuessSetupOptionKey_SkipInternetTests");
     objc_msgSend_BOOLValue(v82, v83, v84);
     result = sub_23EBBEF98(self->_configContext, 1, v85, v86, v87, v88, v89, v90);
     if (result)
@@ -1875,7 +1875,7 @@ LABEL_8:
 
     if (objc_msgSend_isEqualToString_(self->_autoGuessSetupRecommendation, v91, @"BSSetupRecommend_OfferReplaceSourceIsUnconfigurable"))
     {
-      v93 = objc_msgSend_objectForKey_(a3, v92, @"BSAutoGuess_SourceBase");
+      v93 = objc_msgSend_objectForKey_(recommendation, v92, @"BSAutoGuess_SourceBase");
       if (v93)
       {
         objc_msgSend_setObject_forKey_(v18, v94, v93, @"kBSAutoGuessSetupOptionKey_SourceBase");
@@ -1893,7 +1893,7 @@ LABEL_8:
   {
     if ((objc_msgSend_isEqualToString_(self->_autoGuessSetupRecommendation, v81, @"BSSetupRecommend_OfferJoinNetwork") & 1) != 0 || objc_msgSend_isEqualToString_(self->_autoGuessSetupRecommendation, v95, @"BSSetupRecommend_AskUserChooseNetworkToJoin"))
     {
-      v96 = objc_msgSend_objectForKey_(a3, v95, @"BSAutoGuess_SourceNetwork");
+      v96 = objc_msgSend_objectForKey_(recommendation, v95, @"BSAutoGuess_SourceNetwork");
       if (v96)
       {
         objc_msgSend_setObject_forKey_(v18, v97, v96, @"kBSAutoGuessSetupOptionKey_SourceNetwork");
@@ -1923,7 +1923,7 @@ LABEL_8:
 
     if (objc_msgSend_isEqualToString_(self->_autoGuessSetupRecommendation, v95, @"BSSetupRecommend_OfferRestore"))
     {
-      v106 = objc_msgSend_objectForKey_(a4, v104, @"kBSAutoGuessSetupOptionKey_ConfigChangeLogDict");
+      v106 = objc_msgSend_objectForKey_(options, v104, @"kBSAutoGuessSetupOptionKey_ConfigChangeLogDict");
       if (v106)
       {
         objc_msgSend_setObject_forKey_(v18, v105, v106, @"kBSAutoGuessSetupOptionKey_ConfigChangeLogDict");
@@ -1945,7 +1945,7 @@ LABEL_8:
         return -6735;
       }
 
-      v118 = objc_msgSend_objectForKey_(a3, v117, @"BSAutoGuess_SourceBase");
+      v118 = objc_msgSend_objectForKey_(recommendation, v117, @"BSAutoGuess_SourceBase");
       if (!v118)
       {
         return -6727;
@@ -1956,7 +1956,7 @@ LABEL_8:
       goto LABEL_41;
     }
 
-    v109 = objc_msgSend_objectForKey_(a4, v108, @"kBSAutoGuessSetupOptionKey_ConfigChangeLogDict");
+    v109 = objc_msgSend_objectForKey_(options, v108, @"kBSAutoGuessSetupOptionKey_ConfigChangeLogDict");
     if (!v109)
     {
       return -6727;
@@ -1977,7 +1977,7 @@ LABEL_41:
   if (!result)
   {
     configContext = self->_configContext;
-    v68 = objc_msgSend_objectForKey_(a4, v66, @"kBSAutoGuessSetupOptionKey_RecommendationIsAutomatic");
+    v68 = objc_msgSend_objectForKey_(options, v66, @"kBSAutoGuessSetupOptionKey_RecommendationIsAutomatic");
     v71 = objc_msgSend_BOOLValue(v68, v69, v70);
 
     return sub_23EBBF030(configContext, v71, v72, v73, v74, v75, v76, v77);
@@ -1986,7 +1986,7 @@ LABEL_41:
   return result;
 }
 
-- (int)setupWithTargetNetwork:(id)a3
+- (int)setupWithTargetNetwork:(id)network
 {
   configContext = self->_configContext;
   if (!configContext)
@@ -1994,15 +1994,15 @@ LABEL_41:
     return -6718;
   }
 
-  if (a3)
+  if (network)
   {
-    return sub_23EBBC8E4(configContext, a3, a3, v3, v4, v5, v6, v7);
+    return sub_23EBBC8E4(configContext, network, network, v3, v4, v5, v6, v7);
   }
 
   return -6705;
 }
 
-- (int)setupWithTargetBaseStation:(id)a3 andSettings:(id)a4
+- (int)setupWithTargetBaseStation:(id)station andSettings:(id)settings
 {
   configContext = self->_configContext;
   if (!configContext)
@@ -2010,9 +2010,9 @@ LABEL_41:
     return -6718;
   }
 
-  if (a3)
+  if (station)
   {
-    return sub_23EBBC998(configContext, a3, a4, a4, v4, v5, v6, v7);
+    return sub_23EBBC998(configContext, station, settings, settings, v4, v5, v6, v7);
   }
 
   return -6705;
@@ -2086,10 +2086,10 @@ LABEL_41:
   self->_scanningState = 0;
 }
 
-- (void)handleSetupComplete:(int)a3
+- (void)handleSetupComplete:(int)complete
 {
-  objc_msgSend_resetWiFiState(self, a2, *&a3);
-  if (!a3)
+  objc_msgSend_resetWiFiState(self, a2, *&complete);
+  if (!complete)
   {
     v7 = objc_msgSend_bonjourRecord(self, v5, v6);
     sub_23EC127B0(v7, 0, v8, v9, v10, v11, v12, v13);

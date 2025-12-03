@@ -1,14 +1,14 @@
 @interface DUXPCServerDelegate
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (DUXPCServerDelegate)initWithManager:(id)a3;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (DUXPCServerDelegate)initWithManager:(id)manager;
 @end
 
 @implementation DUXPCServerDelegate
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   v11 = objc_msgSend_interfaceWithProtocol_(MEMORY[0x277CCAE90], v8, &unk_28482E1E8, v9, v10);
   v12 = objc_autoreleasePoolPush();
   v13 = objc_alloc(MEMORY[0x277CBEB98]);
@@ -33,21 +33,21 @@
   v31[3] = &unk_2789A7CE0;
   v32 = v26;
   v28 = v26;
-  LOBYTE(v19) = objc_msgSend_shouldAcceptConnection_serviceName_whitelistedServerInterface_requestHandler_validateConnection_setupClientProxy_interruptionHandler_invalidationHandler_(DUXPCServerHelper, v29, v7, @"com.apple.TextUnderstanding.DocumentUnderstandingHarvesting", v11, v28, v27, v31, &unk_284815DF8, &unk_284815E18);
+  LOBYTE(v19) = objc_msgSend_shouldAcceptConnection_serviceName_whitelistedServerInterface_requestHandler_validateConnection_setupClientProxy_interruptionHandler_invalidationHandler_(DUXPCServerHelper, v29, connectionCopy, @"com.apple.TextUnderstanding.DocumentUnderstandingHarvesting", v11, v28, v27, v31, &unk_284815DF8, &unk_284815E18);
 
   return v19;
 }
 
-- (DUXPCServerDelegate)initWithManager:(id)a3
+- (DUXPCServerDelegate)initWithManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v9.receiver = self;
   v9.super_class = DUXPCServerDelegate;
   v6 = [(DUXPCServerDelegate *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_textUnderstandingManager, a3);
+    objc_storeStrong(&v6->_textUnderstandingManager, manager);
   }
 
   return v7;

@@ -1,11 +1,11 @@
 @interface SFContentBlockerState
-- (SFContentBlockerState)initWithCoder:(id)a3;
-- (SFContentBlockerState)initWithEnabledState:(BOOL)a3;
+- (SFContentBlockerState)initWithCoder:(id)coder;
+- (SFContentBlockerState)initWithEnabledState:(BOOL)state;
 @end
 
 @implementation SFContentBlockerState
 
-- (SFContentBlockerState)initWithEnabledState:(BOOL)a3
+- (SFContentBlockerState)initWithEnabledState:(BOOL)state
 {
   v8.receiver = self;
   v8.super_class = SFContentBlockerState;
@@ -13,16 +13,16 @@
   v5 = v4;
   if (v4)
   {
-    v4->_enabled = a3;
+    v4->_enabled = state;
     v6 = v4;
   }
 
   return v5;
 }
 
-- (SFContentBlockerState)initWithCoder:(id)a3
+- (SFContentBlockerState)initWithCoder:(id)coder
 {
-  v4 = [a3 decodeBoolForKey:@"enabled"];
+  v4 = [coder decodeBoolForKey:@"enabled"];
 
   return [(SFContentBlockerState *)self initWithEnabledState:v4];
 }

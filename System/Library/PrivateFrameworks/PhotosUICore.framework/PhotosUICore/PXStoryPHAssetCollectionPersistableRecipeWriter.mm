@@ -1,36 +1,36 @@
 @interface PXStoryPHAssetCollectionPersistableRecipeWriter
 - (PXStoryPHAssetCollectionPersistableRecipeWriter)init;
-- (PXStoryPHAssetCollectionPersistableRecipeWriter)initWithAssetCollection:(id)a3 referencePersons:(id)a4;
-- (id)writePersistableRecipe:(id)a3 assetEdits:(id)a4 undoManager:(id)a5 resultHandler:(id)a6;
+- (PXStoryPHAssetCollectionPersistableRecipeWriter)initWithAssetCollection:(id)collection referencePersons:(id)persons;
+- (id)writePersistableRecipe:(id)recipe assetEdits:(id)edits undoManager:(id)manager resultHandler:(id)handler;
 @end
 
 @implementation PXStoryPHAssetCollectionPersistableRecipeWriter
 
-- (id)writePersistableRecipe:(id)a3 assetEdits:(id)a4 undoManager:(id)a5 resultHandler:(id)a6
+- (id)writePersistableRecipe:(id)recipe assetEdits:(id)edits undoManager:(id)manager resultHandler:(id)handler
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  recipeCopy = recipe;
+  editsCopy = edits;
+  managerCopy = manager;
+  handlerCopy = handler;
   v15 = [MEMORY[0x1E696AE38] discreteProgressWithTotalUnitCount:2];
-  v16 = [(PXStoryPHAssetCollectionPersistableRecipeWriter *)self workQueue];
+  workQueue = [(PXStoryPHAssetCollectionPersistableRecipeWriter *)self workQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __111__PXStoryPHAssetCollectionPersistableRecipeWriter_writePersistableRecipe_assetEdits_undoManager_resultHandler___block_invoke;
   block[3] = &unk_1E7748800;
   v17 = v15;
   v26 = v17;
-  v27 = self;
-  v31 = v14;
+  selfCopy = self;
+  v31 = handlerCopy;
   v32 = a2;
-  v28 = v11;
-  v29 = v12;
-  v30 = v13;
-  v18 = v14;
-  v19 = v13;
-  v20 = v12;
-  v21 = v11;
-  dispatch_async(v16, block);
+  v28 = recipeCopy;
+  v29 = editsCopy;
+  v30 = managerCopy;
+  v18 = handlerCopy;
+  v19 = managerCopy;
+  v20 = editsCopy;
+  v21 = recipeCopy;
+  dispatch_async(workQueue, block);
 
   v22 = v31;
   v23 = v17;
@@ -181,20 +181,20 @@ void __111__PXStoryPHAssetCollectionPersistableRecipeWriter_writePersistableReci
   (*(*(a1 + 48) + 16))();
 }
 
-- (PXStoryPHAssetCollectionPersistableRecipeWriter)initWithAssetCollection:(id)a3 referencePersons:(id)a4
+- (PXStoryPHAssetCollectionPersistableRecipeWriter)initWithAssetCollection:(id)collection referencePersons:(id)persons
 {
-  v7 = a3;
-  v8 = a4;
+  collectionCopy = collection;
+  personsCopy = persons;
   if (self)
   {
-    objc_storeStrong(&self->_assetCollection, a3);
-    objc_storeStrong(&self->_referencePersons, a4);
+    objc_storeStrong(&self->_assetCollection, collection);
+    objc_storeStrong(&self->_referencePersons, persons);
     v9 = objc_opt_class();
     v10 = NSStringFromClass(v9);
-    v11 = [v10 UTF8String];
+    uTF8String = [v10 UTF8String];
     v12 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v13 = dispatch_queue_attr_make_with_qos_class(v12, QOS_CLASS_USER_INITIATED, 0);
-    v14 = dispatch_queue_create(v11, v13);
+    v14 = dispatch_queue_create(uTF8String, v13);
     workQueue = self->_workQueue;
     self->_workQueue = v14;
   }
@@ -204,8 +204,8 @@ void __111__PXStoryPHAssetCollectionPersistableRecipeWriter_writePersistableReci
 
 - (PXStoryPHAssetCollectionPersistableRecipeWriter)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXStoryPHAssetCollectionPersistableRecipeWriter.m" lineNumber:30 description:{@"%s is not available as initializer", "-[PXStoryPHAssetCollectionPersistableRecipeWriter init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryPHAssetCollectionPersistableRecipeWriter.m" lineNumber:30 description:{@"%s is not available as initializer", "-[PXStoryPHAssetCollectionPersistableRecipeWriter init]"}];
 
   abort();
 }

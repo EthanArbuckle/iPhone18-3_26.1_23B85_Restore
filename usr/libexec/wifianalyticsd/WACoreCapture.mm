@@ -1,6 +1,6 @@
 @interface WACoreCapture
 - (WACoreCapture)init;
-- (void)__dumpCoreCaptureLogsWithReason:(id)a3;
+- (void)__dumpCoreCaptureLogsWithReason:(id)reason;
 @end
 
 @implementation WACoreCapture
@@ -36,9 +36,9 @@
   return v2;
 }
 
-- (void)__dumpCoreCaptureLogsWithReason:(id)a3
+- (void)__dumpCoreCaptureLogsWithReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   v5 = WALogCategoryDefaultHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -47,7 +47,7 @@
     v12 = 1024;
     v13 = 62;
     v14 = 2112;
-    v15 = v4;
+    v15 = reasonCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:Called into __dumpCoreCaptureLogsWithReason: %@", buf, 0x1Cu);
   }
 
@@ -56,8 +56,8 @@
   block[1] = 3221225472;
   block[2] = sub_1000510C8;
   block[3] = &unk_1000ED880;
-  v9 = v4;
-  v7 = v4;
+  v9 = reasonCopy;
+  v7 = reasonCopy;
   dispatch_async(ccQueue, block);
 }
 

@@ -8,7 +8,7 @@
 
 - (CLLocationCoordinate2D)latLng
 {
-  v2 = self;
+  selfCopy = self;
   Location.latitude.getter();
   v4 = v3;
   Location.longitude.getter();
@@ -23,7 +23,7 @@
 
 - (int64_t)hash
 {
-  v2 = self;
+  selfCopy = self;
   v3 = Location.hashValue.getter();
 
   return v3;

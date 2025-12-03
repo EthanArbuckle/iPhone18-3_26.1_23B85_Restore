@@ -1,20 +1,20 @@
 @interface HDExtractionResultItemUnit
-- (BOOL)isEqual:(id)a3;
-- (HDExtractionResultItemUnit)initWithCoder:(id)a3;
-- (HDExtractionResultItemUnit)initWithMedicalRecord:(id)a3 clinicalRecord:(id)a4 downloadableAttachments:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (HDExtractionResultItemUnit)initWithCoder:(id)coder;
+- (HDExtractionResultItemUnit)initWithMedicalRecord:(id)record clinicalRecord:(id)clinicalRecord downloadableAttachments:(id)attachments;
 - (id)debugDescription;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HDExtractionResultItemUnit
 
-- (HDExtractionResultItemUnit)initWithMedicalRecord:(id)a3 clinicalRecord:(id)a4 downloadableAttachments:(id)a5
+- (HDExtractionResultItemUnit)initWithMedicalRecord:(id)record clinicalRecord:(id)clinicalRecord downloadableAttachments:(id)attachments
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v9)
+  recordCopy = record;
+  clinicalRecordCopy = clinicalRecord;
+  attachmentsCopy = attachments;
+  if (!recordCopy)
   {
     [HDExtractionResultItemUnit initWithMedicalRecord:a2 clinicalRecord:self downloadableAttachments:?];
   }
@@ -24,15 +24,15 @@
   v12 = [(HDExtractionResultItemUnit *)&v20 init];
   if (v12)
   {
-    v13 = [v9 copy];
+    v13 = [recordCopy copy];
     medicalRecord = v12->_medicalRecord;
     v12->_medicalRecord = v13;
 
-    v15 = [v10 copy];
+    v15 = [clinicalRecordCopy copy];
     clinicalRecord = v12->_clinicalRecord;
     v12->_clinicalRecord = v15;
 
-    v17 = [v11 copy];
+    v17 = [attachmentsCopy copy];
     downloadableAttachments = v12->_downloadableAttachments;
     v12->_downloadableAttachments = v17;
   }
@@ -40,10 +40,10 @@
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     LOBYTE(downloadableAttachments) = 1;
   }
@@ -53,22 +53,22 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       medicalRecord = self->_medicalRecord;
-      v7 = [(HDExtractionResultItemUnit *)v5 medicalRecord];
-      if (medicalRecord != v7)
+      medicalRecord = [(HDExtractionResultItemUnit *)v5 medicalRecord];
+      if (medicalRecord != medicalRecord)
       {
-        v8 = [(HDExtractionResultItemUnit *)v5 medicalRecord];
-        if (!v8)
+        medicalRecord2 = [(HDExtractionResultItemUnit *)v5 medicalRecord];
+        if (!medicalRecord2)
         {
           LOBYTE(downloadableAttachments) = 0;
           goto LABEL_27;
         }
 
-        v9 = v8;
+        v9 = medicalRecord2;
         v10 = self->_medicalRecord;
-        v11 = [(HDExtractionResultItemUnit *)v5 medicalRecord];
-        if (![(HKMedicalRecord *)v10 isEqual:v11])
+        medicalRecord3 = [(HDExtractionResultItemUnit *)v5 medicalRecord];
+        if (![(HKMedicalRecord *)v10 isEqual:medicalRecord3])
         {
           LOBYTE(downloadableAttachments) = 0;
 LABEL_26:
@@ -76,13 +76,13 @@ LABEL_26:
           goto LABEL_27;
         }
 
-        v27 = v11;
+        v27 = medicalRecord3;
         v28 = v9;
       }
 
       clinicalRecord = self->_clinicalRecord;
-      v14 = [(HDExtractionResultItemUnit *)v5 clinicalRecord];
-      if (clinicalRecord != v14)
+      clinicalRecord = [(HDExtractionResultItemUnit *)v5 clinicalRecord];
+      if (clinicalRecord != clinicalRecord)
       {
         downloadableAttachments = [(HDExtractionResultItemUnit *)v5 clinicalRecord];
         if (!downloadableAttachments)
@@ -91,17 +91,17 @@ LABEL_26:
         }
 
         v15 = self->_clinicalRecord;
-        v16 = [(HDExtractionResultItemUnit *)v5 clinicalRecord];
+        clinicalRecord2 = [(HDExtractionResultItemUnit *)v5 clinicalRecord];
         v17 = v15;
-        v18 = v16;
-        if (([(HKClinicalRecord *)v17 isEqual:v16]& 1) == 0)
+        v18 = clinicalRecord2;
+        if (([(HKClinicalRecord *)v17 isEqual:clinicalRecord2]& 1) == 0)
         {
 
           LOBYTE(downloadableAttachments) = 0;
 LABEL_25:
-          v11 = v27;
+          medicalRecord3 = v27;
           v9 = v28;
-          if (medicalRecord != v7)
+          if (medicalRecord != medicalRecord)
           {
             goto LABEL_26;
           }
@@ -116,19 +116,19 @@ LABEL_27:
       }
 
       downloadableAttachments = self->_downloadableAttachments;
-      v19 = [(HDExtractionResultItemUnit *)v5 downloadableAttachments];
-      LOBYTE(downloadableAttachments) = downloadableAttachments == v19;
+      downloadableAttachments = [(HDExtractionResultItemUnit *)v5 downloadableAttachments];
+      LOBYTE(downloadableAttachments) = downloadableAttachments == downloadableAttachments;
       if (!downloadableAttachments)
       {
-        v20 = [(HDExtractionResultItemUnit *)v5 downloadableAttachments];
-        if (v20)
+        downloadableAttachments2 = [(HDExtractionResultItemUnit *)v5 downloadableAttachments];
+        if (downloadableAttachments2)
         {
-          v21 = v20;
+          v21 = downloadableAttachments2;
           downloadableAttachments = self->_downloadableAttachments;
-          v22 = [(HDExtractionResultItemUnit *)v5 downloadableAttachments];
-          LOBYTE(downloadableAttachments) = [downloadableAttachments isEqualToArray:v22];
+          downloadableAttachments3 = [(HDExtractionResultItemUnit *)v5 downloadableAttachments];
+          LOBYTE(downloadableAttachments) = [downloadableAttachments isEqualToArray:downloadableAttachments3];
 
-          if (clinicalRecord != v14)
+          if (clinicalRecord != clinicalRecord)
           {
           }
 
@@ -136,7 +136,7 @@ LABEL_27:
         }
       }
 
-      if (clinicalRecord == v14)
+      if (clinicalRecord == clinicalRecord)
       {
 LABEL_22:
 
@@ -144,10 +144,10 @@ LABEL_22:
       }
 
 LABEL_20:
-      v11 = v27;
+      medicalRecord3 = v27;
 
       v9 = v28;
-      if (medicalRecord == v7)
+      if (medicalRecord == medicalRecord)
       {
         goto LABEL_27;
       }
@@ -184,36 +184,36 @@ LABEL_28:
   return v10;
 }
 
-- (HDExtractionResultItemUnit)initWithCoder:(id)a3
+- (HDExtractionResultItemUnit)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"medicalRecord"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"medicalRecord"];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"clinicalRecord"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"clinicalRecord"];
     v7 = [MEMORY[0x277CBEB98] hk_typesForArrayOf:objc_opt_class()];
-    v8 = [v4 decodeObjectOfClasses:v7 forKey:@"downloadableAttachments"];
+    v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"downloadableAttachments"];
     self = [(HDExtractionResultItemUnit *)self initWithMedicalRecord:v5 clinicalRecord:v6 downloadableAttachments:v8];
 
-    v9 = self;
+    selfCopy = self;
   }
 
   else
   {
-    [v4 hrs_failWithCocoaValueNotFoundError];
-    v9 = 0;
+    [coderCopy hrs_failWithCocoaValueNotFoundError];
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   medicalRecord = self->_medicalRecord;
-  v5 = a3;
-  [v5 encodeObject:medicalRecord forKey:@"medicalRecord"];
-  [v5 encodeObject:self->_clinicalRecord forKey:@"clinicalRecord"];
-  [v5 encodeObject:self->_downloadableAttachments forKey:@"downloadableAttachments"];
+  coderCopy = coder;
+  [coderCopy encodeObject:medicalRecord forKey:@"medicalRecord"];
+  [coderCopy encodeObject:self->_clinicalRecord forKey:@"clinicalRecord"];
+  [coderCopy encodeObject:self->_downloadableAttachments forKey:@"downloadableAttachments"];
 }
 
 - (void)initWithMedicalRecord:(uint64_t)a1 clinicalRecord:(uint64_t)a2 downloadableAttachments:.cold.1(uint64_t a1, uint64_t a2)

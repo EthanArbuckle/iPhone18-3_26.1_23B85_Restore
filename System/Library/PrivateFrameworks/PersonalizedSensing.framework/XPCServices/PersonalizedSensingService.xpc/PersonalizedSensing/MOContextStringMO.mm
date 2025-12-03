@@ -1,43 +1,43 @@
 @interface MOContextStringMO
-+ (id)managedObjectWithContextString:(id)a3 inManagedObjectContext:(id)a4;
-+ (void)updateManagedObject:(id)a3 withContextString:(id)a4 inManagedObjectContext:(id)a5;
++ (id)managedObjectWithContextString:(id)string inManagedObjectContext:(id)context;
++ (void)updateManagedObject:(id)object withContextString:(id)string inManagedObjectContext:(id)context;
 @end
 
 @implementation MOContextStringMO
 
-+ (id)managedObjectWithContextString:(id)a3 inManagedObjectContext:(id)a4
++ (id)managedObjectWithContextString:(id)string inManagedObjectContext:(id)context
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[MOContextStringMO alloc] initWithContext:v5];
-  [MOContextStringMO updateManagedObject:v7 withContextString:v6 inManagedObjectContext:v5];
+  contextCopy = context;
+  stringCopy = string;
+  v7 = [[MOContextStringMO alloc] initWithContext:contextCopy];
+  [MOContextStringMO updateManagedObject:v7 withContextString:stringCopy inManagedObjectContext:contextCopy];
 
   return v7;
 }
 
-+ (void)updateManagedObject:(id)a3 withContextString:(id)a4 inManagedObjectContext:(id)a5
++ (void)updateManagedObject:(id)object withContextString:(id)string inManagedObjectContext:(id)context
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v8 stringIdentifier];
-  [v7 setStringIdentifier:v10];
+  objectCopy = object;
+  stringCopy = string;
+  contextCopy = context;
+  stringIdentifier = [stringCopy stringIdentifier];
+  [objectCopy setStringIdentifier:stringIdentifier];
 
-  v11 = [v8 textString];
-  [v7 setTextString:v11];
+  textString = [stringCopy textString];
+  [objectCopy setTextString:textString];
 
-  [v7 setSource:{objc_msgSend(v8, "source")}];
-  [v7 setContentType:{objc_msgSend(v8, "contentType")}];
-  [v7 setPromptIndex:{objc_msgSend(v8, "promptIndex")}];
-  [v8 totalScore];
-  [v7 setTotalScore:?];
-  [v7 setContextDimensions:0];
+  [objectCopy setSource:{objc_msgSend(stringCopy, "source")}];
+  [objectCopy setContentType:{objc_msgSend(stringCopy, "contentType")}];
+  [objectCopy setPromptIndex:{objc_msgSend(stringCopy, "promptIndex")}];
+  [stringCopy totalScore];
+  [objectCopy setTotalScore:?];
+  [objectCopy setContextDimensions:0];
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v12 = [v8 contextDimensions];
-  v13 = [v12 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  contextDimensions = [stringCopy contextDimensions];
+  v13 = [contextDimensions countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v13)
   {
     v14 = v13;
@@ -49,17 +49,17 @@
       {
         if (*v19 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(contextDimensions);
         }
 
-        v17 = [MOContextDimensionMO managedObjectWithContextDimension:*(*(&v18 + 1) + 8 * v16) inManagedObjectContext:v9];
-        [v7 addContextDimensionsObject:v17];
+        v17 = [MOContextDimensionMO managedObjectWithContextDimension:*(*(&v18 + 1) + 8 * v16) inManagedObjectContext:contextCopy];
+        [objectCopy addContextDimensionsObject:v17];
 
         v16 = v16 + 1;
       }
 
       while (v14 != v16);
-      v14 = [v12 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v14 = [contextDimensions countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v14);

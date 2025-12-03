@@ -1,72 +1,72 @@
 @interface SFEmbeddingState
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (SFEmbeddingState)initWithCoder:(id)a3;
-- (SFEmbeddingState)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SFEmbeddingState)initWithCoder:(id)coder;
+- (SFEmbeddingState)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFEmbeddingState
 
-- (SFEmbeddingState)initWithProtobuf:(id)a3
+- (SFEmbeddingState)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
+  protobufCopy = protobuf;
   v12.receiver = self;
   v12.super_class = SFEmbeddingState;
   v5 = [(SFEmbeddingState *)&v12 init];
   if (v5)
   {
-    if ([v4 queryStatus])
+    if ([protobufCopy queryStatus])
     {
-      -[SFEmbeddingState setQueryStatus:](v5, "setQueryStatus:", [v4 queryStatus]);
+      -[SFEmbeddingState setQueryStatus:](v5, "setQueryStatus:", [protobufCopy queryStatus]);
     }
 
-    if ([v4 hasQueryEmbedding])
+    if ([protobufCopy hasQueryEmbedding])
     {
-      -[SFEmbeddingState setHasQueryEmbedding:](v5, "setHasQueryEmbedding:", [v4 hasQueryEmbedding]);
+      -[SFEmbeddingState setHasQueryEmbedding:](v5, "setHasQueryEmbedding:", [protobufCopy hasQueryEmbedding]);
     }
 
-    if ([v4 hasEmbeddingResults])
+    if ([protobufCopy hasEmbeddingResults])
     {
-      -[SFEmbeddingState setHasEmbeddingResults:](v5, "setHasEmbeddingResults:", [v4 hasEmbeddingResults]);
+      -[SFEmbeddingState setHasEmbeddingResults:](v5, "setHasEmbeddingResults:", [protobufCopy hasEmbeddingResults]);
     }
 
-    if ([v4 hasResults])
+    if ([protobufCopy hasResults])
     {
-      -[SFEmbeddingState setHasResults:](v5, "setHasResults:", [v4 hasResults]);
+      -[SFEmbeddingState setHasResults:](v5, "setHasResults:", [protobufCopy hasResults]);
     }
 
-    v6 = [v4 spotlightEmbeddingState];
+    spotlightEmbeddingState = [protobufCopy spotlightEmbeddingState];
 
-    if (v6)
+    if (spotlightEmbeddingState)
     {
       v7 = [SFSpotlightEmbeddingState alloc];
-      v8 = [v4 spotlightEmbeddingState];
-      v9 = [(SFSpotlightEmbeddingState *)v7 initWithProtobuf:v8];
+      spotlightEmbeddingState2 = [protobufCopy spotlightEmbeddingState];
+      v9 = [(SFSpotlightEmbeddingState *)v7 initWithProtobuf:spotlightEmbeddingState2];
       [(SFEmbeddingState *)v5 setSpotlightEmbeddingState:v9];
     }
 
-    if ([v4 hasSuppressedResults])
+    if ([protobufCopy hasSuppressedResults])
     {
-      -[SFEmbeddingState setHasSuppressedResults:](v5, "setHasSuppressedResults:", [v4 hasSuppressedResults]);
+      -[SFEmbeddingState setHasSuppressedResults:](v5, "setHasSuppressedResults:", [protobufCopy hasSuppressedResults]);
     }
 
-    if ([v4 hasKeywordResults])
+    if ([protobufCopy hasKeywordResults])
     {
-      -[SFEmbeddingState setHasKeywordResults:](v5, "setHasKeywordResults:", [v4 hasKeywordResults]);
+      -[SFEmbeddingState setHasKeywordResults:](v5, "setHasKeywordResults:", [protobufCopy hasKeywordResults]);
     }
 
-    if ([v4 hasHybridResults])
+    if ([protobufCopy hasHybridResults])
     {
-      -[SFEmbeddingState setHasHybridResults:](v5, "setHasHybridResults:", [v4 hasHybridResults]);
+      -[SFEmbeddingState setHasHybridResults:](v5, "setHasHybridResults:", [protobufCopy hasHybridResults]);
     }
 
-    if ([v4 hasMetadataResults])
+    if ([protobufCopy hasMetadataResults])
     {
-      -[SFEmbeddingState setHasMetadataResults:](v5, "setHasMetadataResults:", [v4 hasMetadataResults]);
+      -[SFEmbeddingState setHasMetadataResults:](v5, "setHasMetadataResults:", [protobufCopy hasMetadataResults]);
     }
 
     v10 = v5;
@@ -77,51 +77,51 @@
 
 - (unint64_t)hash
 {
-  v3 = [(SFEmbeddingState *)self queryStatus];
-  v4 = [(SFEmbeddingState *)self hasQueryEmbedding]^ v3;
-  v5 = [(SFEmbeddingState *)self hasEmbeddingResults];
-  v6 = v4 ^ v5 ^ [(SFEmbeddingState *)self hasResults];
-  v7 = [(SFEmbeddingState *)self spotlightEmbeddingState];
-  v8 = [v7 hash];
+  queryStatus = [(SFEmbeddingState *)self queryStatus];
+  v4 = [(SFEmbeddingState *)self hasQueryEmbedding]^ queryStatus;
+  hasEmbeddingResults = [(SFEmbeddingState *)self hasEmbeddingResults];
+  v6 = v4 ^ hasEmbeddingResults ^ [(SFEmbeddingState *)self hasResults];
+  spotlightEmbeddingState = [(SFEmbeddingState *)self spotlightEmbeddingState];
+  v8 = [spotlightEmbeddingState hash];
   v9 = v8 ^ [(SFEmbeddingState *)self hasSuppressedResults];
   v10 = v6 ^ v9 ^ [(SFEmbeddingState *)self hasKeywordResults];
-  v11 = [(SFEmbeddingState *)self hasHybridResults];
-  v12 = v11 ^ [(SFEmbeddingState *)self hasMetadataResults];
+  hasHybridResults = [(SFEmbeddingState *)self hasHybridResults];
+  v12 = hasHybridResults ^ [(SFEmbeddingState *)self hasMetadataResults];
 
   return v10 ^ v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
-  if (self == v6)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v12 = 1;
     goto LABEL_11;
   }
 
-  if (![(SFEmbeddingState *)v6 isMemberOfClass:objc_opt_class()])
+  if (![(SFEmbeddingState *)equalCopy isMemberOfClass:objc_opt_class()])
   {
     v12 = 0;
     goto LABEL_11;
   }
 
-  v7 = v6;
-  v8 = [(SFEmbeddingState *)self queryStatus];
-  if (v8 == [(SFEmbeddingState *)v7 queryStatus])
+  v7 = equalCopy;
+  queryStatus = [(SFEmbeddingState *)self queryStatus];
+  if (queryStatus == [(SFEmbeddingState *)v7 queryStatus])
   {
-    v9 = [(SFEmbeddingState *)self hasQueryEmbedding];
-    if (v9 == [(SFEmbeddingState *)v7 hasQueryEmbedding])
+    hasQueryEmbedding = [(SFEmbeddingState *)self hasQueryEmbedding];
+    if (hasQueryEmbedding == [(SFEmbeddingState *)v7 hasQueryEmbedding])
     {
-      v10 = [(SFEmbeddingState *)self hasEmbeddingResults];
-      if (v10 == [(SFEmbeddingState *)v7 hasEmbeddingResults])
+      hasEmbeddingResults = [(SFEmbeddingState *)self hasEmbeddingResults];
+      if (hasEmbeddingResults == [(SFEmbeddingState *)v7 hasEmbeddingResults])
       {
-        v11 = [(SFEmbeddingState *)self hasResults];
-        if (v11 == [(SFEmbeddingState *)v7 hasResults])
+        hasResults = [(SFEmbeddingState *)self hasResults];
+        if (hasResults == [(SFEmbeddingState *)v7 hasResults])
         {
-          v14 = [(SFEmbeddingState *)self spotlightEmbeddingState];
-          v15 = [(SFEmbeddingState *)v7 spotlightEmbeddingState];
-          if ((v14 != 0) == (v15 == 0))
+          spotlightEmbeddingState = [(SFEmbeddingState *)self spotlightEmbeddingState];
+          spotlightEmbeddingState2 = [(SFEmbeddingState *)v7 spotlightEmbeddingState];
+          if ((spotlightEmbeddingState != 0) == (spotlightEmbeddingState2 == 0))
           {
             v12 = 0;
 LABEL_23:
@@ -129,16 +129,16 @@ LABEL_23:
             goto LABEL_8;
           }
 
-          v16 = [(SFEmbeddingState *)self spotlightEmbeddingState];
-          if (!v16 || (-[SFEmbeddingState spotlightEmbeddingState](self, "spotlightEmbeddingState"), v3 = objc_claimAutoreleasedReturnValue(), -[SFEmbeddingState spotlightEmbeddingState](v7, "spotlightEmbeddingState"), v4 = objc_claimAutoreleasedReturnValue(), [v3 isEqual:v4]))
+          spotlightEmbeddingState3 = [(SFEmbeddingState *)self spotlightEmbeddingState];
+          if (!spotlightEmbeddingState3 || (-[SFEmbeddingState spotlightEmbeddingState](self, "spotlightEmbeddingState"), v3 = objc_claimAutoreleasedReturnValue(), -[SFEmbeddingState spotlightEmbeddingState](v7, "spotlightEmbeddingState"), v4 = objc_claimAutoreleasedReturnValue(), [v3 isEqual:v4]))
           {
-            v18 = [(SFEmbeddingState *)self hasSuppressedResults];
-            if (v18 == [(SFEmbeddingState *)v7 hasSuppressedResults]&& (v19 = [(SFEmbeddingState *)self hasKeywordResults], v19 == [(SFEmbeddingState *)v7 hasKeywordResults]) && (v20 = [(SFEmbeddingState *)self hasHybridResults], v20 == [(SFEmbeddingState *)v7 hasHybridResults]))
+            hasSuppressedResults = [(SFEmbeddingState *)self hasSuppressedResults];
+            if (hasSuppressedResults == [(SFEmbeddingState *)v7 hasSuppressedResults]&& (v19 = [(SFEmbeddingState *)self hasKeywordResults], v19 == [(SFEmbeddingState *)v7 hasKeywordResults]) && (v20 = [(SFEmbeddingState *)self hasHybridResults], v20 == [(SFEmbeddingState *)v7 hasHybridResults]))
             {
-              v21 = [(SFEmbeddingState *)self hasMetadataResults];
-              v17 = v21 ^ [(SFEmbeddingState *)v7 hasMetadataResults]^ 1;
+              hasMetadataResults = [(SFEmbeddingState *)self hasMetadataResults];
+              v17 = hasMetadataResults ^ [(SFEmbeddingState *)v7 hasMetadataResults]^ 1;
               v12 = v17;
-              if (!v16)
+              if (!spotlightEmbeddingState3)
               {
                 goto LABEL_22;
               }
@@ -148,7 +148,7 @@ LABEL_23:
             {
               LOBYTE(v17) = 0;
               v12 = 0;
-              if (!v16)
+              if (!spotlightEmbeddingState3)
               {
 LABEL_22:
 
@@ -176,15 +176,15 @@ LABEL_11:
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setQueryStatus:{-[SFEmbeddingState queryStatus](self, "queryStatus")}];
   [v4 setHasQueryEmbedding:{-[SFEmbeddingState hasQueryEmbedding](self, "hasQueryEmbedding")}];
   [v4 setHasEmbeddingResults:{-[SFEmbeddingState hasEmbeddingResults](self, "hasEmbeddingResults")}];
   [v4 setHasResults:{-[SFEmbeddingState hasResults](self, "hasResults")}];
-  v5 = [(SFEmbeddingState *)self spotlightEmbeddingState];
-  v6 = [v5 copy];
+  spotlightEmbeddingState = [(SFEmbeddingState *)self spotlightEmbeddingState];
+  v6 = [spotlightEmbeddingState copy];
   [v4 setSpotlightEmbeddingState:v6];
 
   [v4 setHasSuppressedResults:{-[SFEmbeddingState hasSuppressedResults](self, "hasSuppressedResults")}];
@@ -197,31 +197,31 @@ LABEL_11:
 - (NSData)jsonData
 {
   v2 = [[_SFPBEmbeddingState alloc] initWithFacade:self];
-  v3 = [(_SFPBEmbeddingState *)v2 jsonData];
+  jsonData = [(_SFPBEmbeddingState *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBEmbeddingState alloc] initWithFacade:self];
-  v3 = [(_SFPBEmbeddingState *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBEmbeddingState *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6 = [[_SFPBEmbeddingState alloc] initWithFacade:self];
-  v5 = [(_SFPBEmbeddingState *)v6 data];
-  [v4 encodeObject:v5 forKey:@"_backingStore"];
+  data = [(_SFPBEmbeddingState *)v6 data];
+  [coderCopy encodeObject:data forKey:@"_backingStore"];
 }
 
-- (SFEmbeddingState)initWithCoder:(id)a3
+- (SFEmbeddingState)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v6 = [[_SFPBEmbeddingState alloc] initWithData:v5];
   v7 = [(SFEmbeddingState *)self initWithProtobuf:v6];

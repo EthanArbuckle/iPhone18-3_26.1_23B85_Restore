@@ -1,75 +1,75 @@
 @interface OTControlCLI
-+ (id)annotateStatus:(id)a3;
-- (OTControlCLI)initWithOTControl:(id)a3;
-- (int)checkAndPrintEscrowRecords:(id)a3 error:(id)a4 json:(BOOL)a5;
-- (int)checkCustodianRecoveryKeyWithArguments:(id)a3 uuidString:(id)a4 timeout:(double)a5;
-- (int)checkInheritanceKeyWithArguments:(id)a3 uuidString:(id)a4 timeout:(double)a5;
-- (int)checkRecoveryKeyWithArguments:(id)a3;
-- (int)createCustodianRecoveryKeyWithArguments:(id)a3 uuidString:(id)a4 json:(BOOL)a5 timeout:(double)a6;
-- (int)createInheritanceKeyWithArguments:(id)a3 uuidString:(id)a4 json:(BOOL)a5 timeout:(double)a6;
-- (int)createInheritanceKeyWithClaimTokenAndWrappingKey:(id)a3 uuidString:(id)a4 claimToken:(id)a5 wrappingKey:(id)a6 json:(BOOL)a7 timeout:(double)a8;
-- (int)depart:(id)a3;
-- (int)disableWalrusWithArguments:(id)a3 timeout:(double)a4;
-- (int)disableWebAccessWithArguments:(id)a3 timeout:(double)a4;
-- (int)enableWalrusWithArguments:(id)a3 timeout:(double)a4;
-- (int)enableWebAccessWithArguments:(id)a3 timeout:(double)a4;
-- (int)escrowCheck:(id)a3 json:(BOOL)a4;
-- (int)fetchAccountSettingsWithArguments:(id)a3 json:(BOOL)a4;
-- (int)fetchAllBottles:(id)a3 control:(id)a4 overrideEscrowCache:(BOOL)a5;
-- (int)fetchTotalTrustedPeersWithArguments:(id)a3 json:(BOOL)a4;
-- (int)fetchTrustedFullPeersWithArguments:(id)a3 json:(BOOL)a4;
-- (int)fetchUserControllableViewsSyncStatus:(id)a3;
-- (int)generateInheritanceKeyWithArguments:(id)a3 json:(BOOL)a4 timeout:(double)a5;
-- (int)icscRepairResetWithArguments:(id)a3 json:(BOOL)a4;
-- (int)joinWithCustodianRecoveryKeyWithArguments:(id)a3 wrappingKey:(id)a4 wrappedKey:(id)a5 uuidString:(id)a6 timeout:(double)a7;
-- (int)joinWithInheritanceKeyWithArguments:(id)a3 wrappingKey:(id)a4 wrappedKey:(id)a5 uuidString:(id)a6 timeout:(double)a7;
-- (int)joinWithRecoveryKeyWithArguments:(id)a3 recoveryKey:(id)a4;
-- (int)performSilentEscrowRecovery:(id)a3 appleID:(id)a4 secret:(id)a5;
-- (int)preflightJoinWithCustodianRecoveryKeyWithArguments:(id)a3 wrappingKey:(id)a4 wrappedKey:(id)a5 uuidString:(id)a6 timeout:(double)a7;
-- (int)preflightJoinWithInheritanceKeyWithArguments:(id)a3 wrappingKey:(id)a4 wrappedKey:(id)a5 uuidString:(id)a6 timeout:(double)a7;
-- (int)preflightJoinWithRecoveryKeyWithArguments:(id)a3 recoveryKey:(id)a4;
-- (int)printAccountMetadataWithArguments:(id)a3 json:(BOOL)a4;
-- (int)recoverUsingBottleID:(id)a3 entropy:(id)a4 arguments:(id)a5 control:(id)a6;
-- (int)recreateInheritanceKeyWithArguments:(id)a3 uuidString:(id)a4 wrappingKey:(id)a5 wrappedKey:(id)a6 claimToken:(id)a7 json:(BOOL)a8 timeout:(double)a9;
-- (int)refetchCKKSPolicy:(id)a3;
-- (int)removeCustodianRecoveryKeyWithArguments:(id)a3 uuidString:(id)a4 timeout:(double)a5;
-- (int)removeInheritanceKeyWithArguments:(id)a3 uuidString:(id)a4 timeout:(double)a5;
-- (int)removeRecoveryKeyWithArguments:(id)a3;
-- (int)rerollWithArguments:(id)a3 json:(BOOL)a4;
-- (int)resetOctagon:(id)a3 idmsTargetContext:(id)a4 idmsCuttlefishPassword:(id)a5 notifyIdMS:(BOOL)a6 isDBRv2:(BOOL)a7 timeout:(double)a8;
-- (int)setMachineIDOverride:(id)a3 machineID:(id)a4 json:(BOOL)a5;
-- (int)setRecoveryKeyWithArguments:(id)a3;
-- (int)signIn:(id)a3;
-- (int)signOut:(id)a3;
-- (int)simulateReceivePush:(id)a3 json:(BOOL)a4;
-- (int)simulateReceiveTDLChangePush:(id)a3 json:(BOOL)a4;
-- (int)startOctagonStateMachine:(id)a3;
-- (int)status:(id)a3 json:(BOOL)a4;
-- (int)storeInheritanceKeyWithArguments:(id)a3 wrappingKey:(id)a4 wrappedKey:(id)a5 uuidString:(id)a6 timeout:(double)a7;
-- (int)tapToRadar:(id)a3 description:(id)a4 radar:(id)a5;
-- (int)tlkRecoverability:(id)a3;
-- (void)printCRKWithPeer:(id)a3 information:(id)a4 prefix:(id)a5;
-- (void)printPeer:(id)a3 prefix:(id)a4;
-- (void)printPeers:(id)a3 egoPeerID:(id)a4 informationOnPeers:(id)a5 informationOnCRKs:(id)a6;
++ (id)annotateStatus:(id)status;
+- (OTControlCLI)initWithOTControl:(id)control;
+- (int)checkAndPrintEscrowRecords:(id)records error:(id)error json:(BOOL)json;
+- (int)checkCustodianRecoveryKeyWithArguments:(id)arguments uuidString:(id)string timeout:(double)timeout;
+- (int)checkInheritanceKeyWithArguments:(id)arguments uuidString:(id)string timeout:(double)timeout;
+- (int)checkRecoveryKeyWithArguments:(id)arguments;
+- (int)createCustodianRecoveryKeyWithArguments:(id)arguments uuidString:(id)string json:(BOOL)json timeout:(double)timeout;
+- (int)createInheritanceKeyWithArguments:(id)arguments uuidString:(id)string json:(BOOL)json timeout:(double)timeout;
+- (int)createInheritanceKeyWithClaimTokenAndWrappingKey:(id)key uuidString:(id)string claimToken:(id)token wrappingKey:(id)wrappingKey json:(BOOL)json timeout:(double)timeout;
+- (int)depart:(id)depart;
+- (int)disableWalrusWithArguments:(id)arguments timeout:(double)timeout;
+- (int)disableWebAccessWithArguments:(id)arguments timeout:(double)timeout;
+- (int)enableWalrusWithArguments:(id)arguments timeout:(double)timeout;
+- (int)enableWebAccessWithArguments:(id)arguments timeout:(double)timeout;
+- (int)escrowCheck:(id)check json:(BOOL)json;
+- (int)fetchAccountSettingsWithArguments:(id)arguments json:(BOOL)json;
+- (int)fetchAllBottles:(id)bottles control:(id)control overrideEscrowCache:(BOOL)cache;
+- (int)fetchTotalTrustedPeersWithArguments:(id)arguments json:(BOOL)json;
+- (int)fetchTrustedFullPeersWithArguments:(id)arguments json:(BOOL)json;
+- (int)fetchUserControllableViewsSyncStatus:(id)status;
+- (int)generateInheritanceKeyWithArguments:(id)arguments json:(BOOL)json timeout:(double)timeout;
+- (int)icscRepairResetWithArguments:(id)arguments json:(BOOL)json;
+- (int)joinWithCustodianRecoveryKeyWithArguments:(id)arguments wrappingKey:(id)key wrappedKey:(id)wrappedKey uuidString:(id)string timeout:(double)timeout;
+- (int)joinWithInheritanceKeyWithArguments:(id)arguments wrappingKey:(id)key wrappedKey:(id)wrappedKey uuidString:(id)string timeout:(double)timeout;
+- (int)joinWithRecoveryKeyWithArguments:(id)arguments recoveryKey:(id)key;
+- (int)performSilentEscrowRecovery:(id)recovery appleID:(id)d secret:(id)secret;
+- (int)preflightJoinWithCustodianRecoveryKeyWithArguments:(id)arguments wrappingKey:(id)key wrappedKey:(id)wrappedKey uuidString:(id)string timeout:(double)timeout;
+- (int)preflightJoinWithInheritanceKeyWithArguments:(id)arguments wrappingKey:(id)key wrappedKey:(id)wrappedKey uuidString:(id)string timeout:(double)timeout;
+- (int)preflightJoinWithRecoveryKeyWithArguments:(id)arguments recoveryKey:(id)key;
+- (int)printAccountMetadataWithArguments:(id)arguments json:(BOOL)json;
+- (int)recoverUsingBottleID:(id)d entropy:(id)entropy arguments:(id)arguments control:(id)control;
+- (int)recreateInheritanceKeyWithArguments:(id)arguments uuidString:(id)string wrappingKey:(id)key wrappedKey:(id)wrappedKey claimToken:(id)token json:(BOOL)json timeout:(double)timeout;
+- (int)refetchCKKSPolicy:(id)policy;
+- (int)removeCustodianRecoveryKeyWithArguments:(id)arguments uuidString:(id)string timeout:(double)timeout;
+- (int)removeInheritanceKeyWithArguments:(id)arguments uuidString:(id)string timeout:(double)timeout;
+- (int)removeRecoveryKeyWithArguments:(id)arguments;
+- (int)rerollWithArguments:(id)arguments json:(BOOL)json;
+- (int)resetOctagon:(id)octagon idmsTargetContext:(id)context idmsCuttlefishPassword:(id)password notifyIdMS:(BOOL)s isDBRv2:(BOOL)rv2 timeout:(double)timeout;
+- (int)setMachineIDOverride:(id)override machineID:(id)d json:(BOOL)json;
+- (int)setRecoveryKeyWithArguments:(id)arguments;
+- (int)signIn:(id)in;
+- (int)signOut:(id)out;
+- (int)simulateReceivePush:(id)push json:(BOOL)json;
+- (int)simulateReceiveTDLChangePush:(id)push json:(BOOL)json;
+- (int)startOctagonStateMachine:(id)machine;
+- (int)status:(id)status json:(BOOL)json;
+- (int)storeInheritanceKeyWithArguments:(id)arguments wrappingKey:(id)key wrappedKey:(id)wrappedKey uuidString:(id)string timeout:(double)timeout;
+- (int)tapToRadar:(id)radar description:(id)description radar:(id)a5;
+- (int)tlkRecoverability:(id)recoverability;
+- (void)printCRKWithPeer:(id)peer information:(id)information prefix:(id)prefix;
+- (void)printPeer:(id)peer prefix:(id)prefix;
+- (void)printPeers:(id)peers egoPeerID:(id)d informationOnPeers:(id)onPeers informationOnCRKs:(id)ks;
 @end
 
 @implementation OTControlCLI
 
-- (int)fetchTrustedFullPeersWithArguments:(id)a3 json:(BOOL)a4
+- (int)fetchTrustedFullPeersWithArguments:(id)arguments json:(BOOL)json
 {
-  v6 = a3;
+  argumentsCopy = arguments;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
   v15 = 1;
-  v7 = [(OTControlCLI *)self control];
+  control = [(OTControlCLI *)self control];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100005378;
   v10[3] = &unk_1000247C0;
-  v11 = a4;
+  jsonCopy = json;
   v10[4] = &v12;
-  [v7 trustedFullPeers:v6 reply:v10];
+  [control trustedFullPeers:argumentsCopy reply:v10];
 
   v8 = *(v13 + 6);
   _Block_object_dispose(&v12, 8);
@@ -77,21 +77,21 @@
   return v8;
 }
 
-- (int)fetchTotalTrustedPeersWithArguments:(id)a3 json:(BOOL)a4
+- (int)fetchTotalTrustedPeersWithArguments:(id)arguments json:(BOOL)json
 {
-  v6 = a3;
+  argumentsCopy = arguments;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
   v15 = 1;
-  v7 = [(OTControlCLI *)self control];
+  control = [(OTControlCLI *)self control];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100005B60;
   v10[3] = &unk_1000247C0;
-  v11 = a4;
+  jsonCopy = json;
   v10[4] = &v12;
-  [v7 totalTrustedPeers:v6 reply:v10];
+  [control totalTrustedPeers:argumentsCopy reply:v10];
 
   v8 = *(v13 + 6);
   _Block_object_dispose(&v12, 8);
@@ -99,21 +99,21 @@
   return v8;
 }
 
-- (int)icscRepairResetWithArguments:(id)a3 json:(BOOL)a4
+- (int)icscRepairResetWithArguments:(id)arguments json:(BOOL)json
 {
-  v6 = a3;
+  argumentsCopy = arguments;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
   v15 = 1;
-  v7 = [(OTControlCLI *)self control];
+  control = [(OTControlCLI *)self control];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100005DCC;
   v10[3] = &unk_100024660;
-  v11 = a4;
+  jsonCopy = json;
   v10[4] = &v12;
-  [v7 icscRepairReset:v6 reply:v10];
+  [control icscRepairReset:argumentsCopy reply:v10];
 
   v8 = *(v13 + 6);
   _Block_object_dispose(&v12, 8);
@@ -121,21 +121,21 @@
   return v8;
 }
 
-- (int)rerollWithArguments:(id)a3 json:(BOOL)a4
+- (int)rerollWithArguments:(id)arguments json:(BOOL)json
 {
-  v6 = a3;
+  argumentsCopy = arguments;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
   v15 = 1;
-  v7 = [(OTControlCLI *)self control];
+  control = [(OTControlCLI *)self control];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100005FF4;
   v10[3] = &unk_100024660;
-  v11 = a4;
+  jsonCopy = json;
   v10[4] = &v12;
-  [v7 reroll:v6 reply:v10];
+  [control reroll:argumentsCopy reply:v10];
 
   v8 = *(v13 + 6);
   _Block_object_dispose(&v12, 8);
@@ -143,36 +143,36 @@
   return v8;
 }
 
-- (int)printAccountMetadataWithArguments:(id)a3 json:(BOOL)a4
+- (int)printAccountMetadataWithArguments:(id)arguments json:(BOOL)json
 {
-  v6 = a3;
-  v7 = [(OTControlCLI *)self control];
+  argumentsCopy = arguments;
+  control = [(OTControlCLI *)self control];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1000061C0;
   v9[3] = &unk_100024798;
-  v10 = a4;
-  [v7 getAccountMetadata:v6 reply:v9];
+  jsonCopy = json;
+  [control getAccountMetadata:argumentsCopy reply:v9];
 
   return 1;
 }
 
-- (int)setMachineIDOverride:(id)a3 machineID:(id)a4 json:(BOOL)a5
+- (int)setMachineIDOverride:(id)override machineID:(id)d json:(BOOL)json
 {
-  v8 = a3;
-  v9 = a4;
+  overrideCopy = override;
+  dCopy = d;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
   v18 = 1;
-  v10 = [(OTControlCLI *)self control];
+  control = [(OTControlCLI *)self control];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100006428;
   v13[3] = &unk_100024660;
-  v14 = a5;
+  jsonCopy = json;
   v13[4] = &v15;
-  [v10 setMachineIDOverride:v8 machineID:v9 reply:v13];
+  [control setMachineIDOverride:overrideCopy machineID:dCopy reply:v13];
 
   v11 = *(v16 + 6);
   _Block_object_dispose(&v15, 8);
@@ -180,21 +180,21 @@
   return v11;
 }
 
-- (int)fetchAccountSettingsWithArguments:(id)a3 json:(BOOL)a4
+- (int)fetchAccountSettingsWithArguments:(id)arguments json:(BOOL)json
 {
-  v6 = a3;
+  argumentsCopy = arguments;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
   v15 = 1;
-  v7 = [(OTControlCLI *)self control];
+  control = [(OTControlCLI *)self control];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100006914;
   v10[3] = &unk_100024778;
-  v11 = a4;
+  jsonCopy = json;
   v10[4] = &v12;
-  [v7 fetchAccountSettings:v6 reply:v10];
+  [control fetchAccountSettings:argumentsCopy reply:v10];
 
   v8 = *(v13 + 6);
   _Block_object_dispose(&v12, 8);
@@ -202,10 +202,10 @@
   return v8;
 }
 
-- (int)disableWalrusWithArguments:(id)a3 timeout:(double)a4
+- (int)disableWalrusWithArguments:(id)arguments timeout:(double)timeout
 {
-  v15 = a3;
-  v6 = [NSDate dateWithTimeIntervalSinceNow:a4];
+  argumentsCopy = arguments;
+  v6 = [NSDate dateWithTimeIntervalSinceNow:timeout];
   v24 = 0;
   v25 = &v24;
   v26 = 0x2020000000;
@@ -223,7 +223,7 @@
   do
   {
     *(v9 + 24) = 0;
-    v10 = [(OTControlCLI *)self control];
+    control = [(OTControlCLI *)self control];
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
     v16[2] = sub_100006D68;
@@ -232,7 +232,7 @@
     v17 = v11;
     v18 = &v20;
     v19 = &v24;
-    [v10 setAccountSetting:v15 setting:v7 reply:v16];
+    [control setAccountSetting:argumentsCopy setting:v7 reply:v16];
 
     v9 = v21;
   }
@@ -246,10 +246,10 @@
   return v12;
 }
 
-- (int)enableWalrusWithArguments:(id)a3 timeout:(double)a4
+- (int)enableWalrusWithArguments:(id)arguments timeout:(double)timeout
 {
-  v15 = a3;
-  v6 = [NSDate dateWithTimeIntervalSinceNow:a4];
+  argumentsCopy = arguments;
+  v6 = [NSDate dateWithTimeIntervalSinceNow:timeout];
   v24 = 0;
   v25 = &v24;
   v26 = 0x2020000000;
@@ -267,7 +267,7 @@
   do
   {
     *(v9 + 24) = 0;
-    v10 = [(OTControlCLI *)self control];
+    control = [(OTControlCLI *)self control];
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
     v16[2] = sub_10000702C;
@@ -276,7 +276,7 @@
     v17 = v11;
     v18 = &v20;
     v19 = &v24;
-    [v10 setAccountSetting:v15 setting:v7 reply:v16];
+    [control setAccountSetting:argumentsCopy setting:v7 reply:v16];
 
     v9 = v21;
   }
@@ -290,10 +290,10 @@
   return v12;
 }
 
-- (int)enableWebAccessWithArguments:(id)a3 timeout:(double)a4
+- (int)enableWebAccessWithArguments:(id)arguments timeout:(double)timeout
 {
-  v15 = a3;
-  v6 = [NSDate dateWithTimeIntervalSinceNow:a4];
+  argumentsCopy = arguments;
+  v6 = [NSDate dateWithTimeIntervalSinceNow:timeout];
   v24 = 0;
   v25 = &v24;
   v26 = 0x2020000000;
@@ -311,7 +311,7 @@
   do
   {
     *(v9 + 24) = 0;
-    v10 = [(OTControlCLI *)self control];
+    control = [(OTControlCLI *)self control];
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
     v16[2] = sub_1000072F0;
@@ -320,7 +320,7 @@
     v17 = v11;
     v18 = &v20;
     v19 = &v24;
-    [v10 setAccountSetting:v15 setting:v7 reply:v16];
+    [control setAccountSetting:argumentsCopy setting:v7 reply:v16];
 
     v9 = v21;
   }
@@ -334,10 +334,10 @@
   return v12;
 }
 
-- (int)disableWebAccessWithArguments:(id)a3 timeout:(double)a4
+- (int)disableWebAccessWithArguments:(id)arguments timeout:(double)timeout
 {
-  v15 = a3;
-  v6 = [NSDate dateWithTimeIntervalSinceNow:a4];
+  argumentsCopy = arguments;
+  v6 = [NSDate dateWithTimeIntervalSinceNow:timeout];
   v24 = 0;
   v25 = &v24;
   v26 = 0x2020000000;
@@ -355,7 +355,7 @@
   do
   {
     *(v9 + 24) = 0;
-    v10 = [(OTControlCLI *)self control];
+    control = [(OTControlCLI *)self control];
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
     v16[2] = sub_1000075B4;
@@ -364,7 +364,7 @@
     v17 = v11;
     v18 = &v20;
     v19 = &v24;
-    [v10 setAccountSetting:v15 setting:v7 reply:v16];
+    [control setAccountSetting:argumentsCopy setting:v7 reply:v16];
 
     v9 = v21;
   }
@@ -378,15 +378,15 @@
   return v12;
 }
 
-- (int)createInheritanceKeyWithClaimTokenAndWrappingKey:(id)a3 uuidString:(id)a4 claimToken:(id)a5 wrappingKey:(id)a6 json:(BOOL)a7 timeout:(double)a8
+- (int)createInheritanceKeyWithClaimTokenAndWrappingKey:(id)key uuidString:(id)string claimToken:(id)token wrappingKey:(id)wrappingKey json:(BOOL)json timeout:(double)timeout
 {
-  v26 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (v12)
+  keyCopy = key;
+  stringCopy = string;
+  tokenCopy = token;
+  wrappingKeyCopy = wrappingKey;
+  if (stringCopy)
   {
-    v15 = [[NSUUID alloc] initWithUUIDString:v12];
+    v15 = [[NSUUID alloc] initWithUUIDString:stringCopy];
     if (!v15)
     {
       v16 = 1;
@@ -400,7 +400,7 @@
     v15 = 0;
   }
 
-  v17 = [NSDate dateWithTimeIntervalSinceNow:a8];
+  v17 = [NSDate dateWithTimeIntervalSinceNow:timeout];
   v36 = 0;
   v37 = &v36;
   v38 = 0x2020000000;
@@ -409,18 +409,18 @@
   v33 = &v32;
   v34 = 0x2020000000;
   v35 = -86;
-  v18 = [[NSData alloc] initWithBase64EncodedString:v14 options:0];
+  v18 = [[NSData alloc] initWithBase64EncodedString:wrappingKeyCopy options:0];
   if (v18)
   {
-    v19 = [[NSData alloc] initWithBase64EncodedString:v13 options:0];
+    v19 = [[NSData alloc] initWithBase64EncodedString:tokenCopy options:0];
     if (v19)
     {
-      v23 = v14;
+      v23 = wrappingKeyCopy;
       v20 = v33;
       do
       {
         *(v20 + 24) = 0;
-        v21 = [(OTControlCLI *)self control];
+        control = [(OTControlCLI *)self control];
         v27[0] = _NSConcreteStackBlock;
         v27[1] = 3221225472;
         v27[2] = sub_100007968;
@@ -428,15 +428,15 @@
         v28 = v17;
         v29 = &v32;
         v30 = &v36;
-        v31 = a7;
-        [v21 createInheritanceKey:v26 uuid:v15 claimTokenData:v19 wrappingKeyData:v18 reply:v27];
+        jsonCopy = json;
+        [control createInheritanceKey:keyCopy uuid:v15 claimTokenData:v19 wrappingKeyData:v18 reply:v27];
 
         v20 = v33;
       }
 
       while ((v33[3] & 1) != 0);
       v16 = *(v37 + 6);
-      v14 = v23;
+      wrappingKeyCopy = v23;
     }
 
     else
@@ -459,16 +459,16 @@ LABEL_14:
   return v16;
 }
 
-- (int)recreateInheritanceKeyWithArguments:(id)a3 uuidString:(id)a4 wrappingKey:(id)a5 wrappedKey:(id)a6 claimToken:(id)a7 json:(BOOL)a8 timeout:(double)a9
+- (int)recreateInheritanceKeyWithArguments:(id)arguments uuidString:(id)string wrappingKey:(id)key wrappedKey:(id)wrappedKey claimToken:(id)token json:(BOOL)json timeout:(double)timeout
 {
-  v37 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  if (v16)
+  argumentsCopy = arguments;
+  stringCopy = string;
+  keyCopy = key;
+  wrappedKeyCopy = wrappedKey;
+  tokenCopy = token;
+  if (stringCopy)
   {
-    v20 = [[NSUUID alloc] initWithUUIDString:v16];
+    v20 = [[NSUUID alloc] initWithUUIDString:stringCopy];
     if (!v20)
     {
       v21 = 1;
@@ -482,7 +482,7 @@ LABEL_14:
     v20 = 0;
   }
 
-  v36 = [NSDate dateWithTimeIntervalSinceNow:a9];
+  v36 = [NSDate dateWithTimeIntervalSinceNow:timeout];
   v48 = 0;
   v49 = &v48;
   v50 = 0x2020000000;
@@ -491,13 +491,13 @@ LABEL_14:
   v45 = &v44;
   v46 = 0x2020000000;
   v47 = -86;
-  v22 = [[NSData alloc] initWithBase64EncodedString:v17 options:0];
+  v22 = [[NSData alloc] initWithBase64EncodedString:keyCopy options:0];
   if (v22)
   {
-    v23 = [[NSData alloc] initWithBase64EncodedString:v18 options:0];
+    v23 = [[NSData alloc] initWithBase64EncodedString:wrappedKeyCopy options:0];
     if (v23)
     {
-      v24 = [[NSData alloc] initWithBase64EncodedString:v19 options:0];
+      v24 = [[NSData alloc] initWithBase64EncodedString:tokenCopy options:0];
       if (v24)
       {
         v34 = v23;
@@ -513,7 +513,7 @@ LABEL_14:
           do
           {
             *(v27 + 24) = 0;
-            v28 = [(OTControlCLI *)self control];
+            control = [(OTControlCLI *)self control];
             v38[0] = _NSConcreteStackBlock;
             v38[1] = 3221225472;
             v38[2] = sub_100008000;
@@ -521,8 +521,8 @@ LABEL_14:
             v39 = v36;
             v40 = &v44;
             v41 = &v48;
-            v42 = a8;
-            [v28 recreateInheritanceKey:v37 uuid:v20 oldIK:v25 reply:v38];
+            jsonCopy = json;
+            [control recreateInheritanceKey:argumentsCopy uuid:v20 oldIK:v25 reply:v38];
 
             v27 = v45;
           }
@@ -571,11 +571,11 @@ LABEL_20:
   return v21;
 }
 
-- (int)checkInheritanceKeyWithArguments:(id)a3 uuidString:(id)a4 timeout:(double)a5
+- (int)checkInheritanceKeyWithArguments:(id)arguments uuidString:(id)string timeout:(double)timeout
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [NSDate dateWithTimeIntervalSinceNow:a5];
+  argumentsCopy = arguments;
+  stringCopy = string;
+  v10 = [NSDate dateWithTimeIntervalSinceNow:timeout];
   v25 = 0;
   v26 = &v25;
   v27 = 0x2020000000;
@@ -584,15 +584,15 @@ LABEL_20:
   v22 = &v21;
   v23 = 0x2020000000;
   v24 = -86;
-  v11 = [[NSUUID alloc] initWithUUIDString:v9];
+  v11 = [[NSUUID alloc] initWithUUIDString:stringCopy];
   if (v11)
   {
-    v16 = v9;
+    v16 = stringCopy;
     v12 = v22;
     do
     {
       *(v12 + 24) = 0;
-      v13 = [(OTControlCLI *)self control];
+      control = [(OTControlCLI *)self control];
       v17[0] = _NSConcreteStackBlock;
       v17[1] = 3221225472;
       v17[2] = sub_100008318;
@@ -600,14 +600,14 @@ LABEL_20:
       v18 = v10;
       v19 = &v21;
       v20 = &v25;
-      [v13 checkInheritanceKey:v8 uuid:v11 reply:v17];
+      [control checkInheritanceKey:argumentsCopy uuid:v11 reply:v17];
 
       v12 = v22;
     }
 
     while ((v22[3] & 1) != 0);
     v14 = *(v26 + 6);
-    v9 = v16;
+    stringCopy = v16;
   }
 
   else
@@ -622,11 +622,11 @@ LABEL_20:
   return v14;
 }
 
-- (int)removeInheritanceKeyWithArguments:(id)a3 uuidString:(id)a4 timeout:(double)a5
+- (int)removeInheritanceKeyWithArguments:(id)arguments uuidString:(id)string timeout:(double)timeout
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [NSDate dateWithTimeIntervalSinceNow:a5];
+  argumentsCopy = arguments;
+  stringCopy = string;
+  v10 = [NSDate dateWithTimeIntervalSinceNow:timeout];
   v25 = 0;
   v26 = &v25;
   v27 = 0x2020000000;
@@ -635,15 +635,15 @@ LABEL_20:
   v22 = &v21;
   v23 = 0x2020000000;
   v24 = -86;
-  v11 = [[NSUUID alloc] initWithUUIDString:v9];
+  v11 = [[NSUUID alloc] initWithUUIDString:stringCopy];
   if (v11)
   {
-    v16 = v9;
+    v16 = stringCopy;
     v12 = v22;
     do
     {
       *(v12 + 24) = 0;
-      v13 = [(OTControlCLI *)self control];
+      control = [(OTControlCLI *)self control];
       v17[0] = _NSConcreteStackBlock;
       v17[1] = 3221225472;
       v17[2] = sub_100008624;
@@ -651,14 +651,14 @@ LABEL_20:
       v18 = v10;
       v19 = &v21;
       v20 = &v25;
-      [v13 removeInheritanceKey:v8 uuid:v11 reply:v17];
+      [control removeInheritanceKey:argumentsCopy uuid:v11 reply:v17];
 
       v12 = v22;
     }
 
     while ((v22[3] & 1) != 0);
     v14 = *(v26 + 6);
-    v9 = v16;
+    stringCopy = v16;
   }
 
   else
@@ -673,13 +673,13 @@ LABEL_20:
   return v14;
 }
 
-- (int)preflightJoinWithInheritanceKeyWithArguments:(id)a3 wrappingKey:(id)a4 wrappedKey:(id)a5 uuidString:(id)a6 timeout:(double)a7
+- (int)preflightJoinWithInheritanceKeyWithArguments:(id)arguments wrappingKey:(id)key wrappedKey:(id)wrappedKey uuidString:(id)string timeout:(double)timeout
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = [NSDate dateWithTimeIntervalSinceNow:a7];
+  argumentsCopy = arguments;
+  keyCopy = key;
+  wrappedKeyCopy = wrappedKey;
+  stringCopy = string;
+  v16 = [NSDate dateWithTimeIntervalSinceNow:timeout];
   v40 = 0;
   v41 = &v40;
   v42 = 0x2020000000;
@@ -688,13 +688,13 @@ LABEL_20:
   v37 = &v36;
   v38 = 0x2020000000;
   v39 = -86;
-  v17 = [[NSData alloc] initWithBase64EncodedString:v13 options:0];
+  v17 = [[NSData alloc] initWithBase64EncodedString:keyCopy options:0];
   if (v17)
   {
-    v18 = [[NSData alloc] initWithBase64EncodedString:v14 options:0];
+    v18 = [[NSData alloc] initWithBase64EncodedString:wrappedKeyCopy options:0];
     if (v18)
     {
-      v19 = [[NSUUID alloc] initWithUUIDString:v15];
+      v19 = [[NSUUID alloc] initWithUUIDString:stringCopy];
       v20 = v19;
       if (v19)
       {
@@ -709,7 +709,7 @@ LABEL_20:
           do
           {
             *(v23 + 24) = 0;
-            v24 = [(OTControlCLI *)self control];
+            control = [(OTControlCLI *)self control];
             v31[0] = _NSConcreteStackBlock;
             v31[1] = 3221225472;
             v31[2] = sub_100008A54;
@@ -717,7 +717,7 @@ LABEL_20:
             v32 = v16;
             v33 = &v36;
             v34 = &v40;
-            [v24 preflightJoinWithInheritanceKey:v12 inheritanceKey:v21 reply:v31];
+            [control preflightJoinWithInheritanceKey:argumentsCopy inheritanceKey:v21 reply:v31];
 
             v23 = v37;
           }
@@ -764,13 +764,13 @@ LABEL_20:
   return v25;
 }
 
-- (int)joinWithInheritanceKeyWithArguments:(id)a3 wrappingKey:(id)a4 wrappedKey:(id)a5 uuidString:(id)a6 timeout:(double)a7
+- (int)joinWithInheritanceKeyWithArguments:(id)arguments wrappingKey:(id)key wrappedKey:(id)wrappedKey uuidString:(id)string timeout:(double)timeout
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = [NSDate dateWithTimeIntervalSinceNow:a7];
+  argumentsCopy = arguments;
+  keyCopy = key;
+  wrappedKeyCopy = wrappedKey;
+  stringCopy = string;
+  v16 = [NSDate dateWithTimeIntervalSinceNow:timeout];
   v40 = 0;
   v41 = &v40;
   v42 = 0x2020000000;
@@ -779,13 +779,13 @@ LABEL_20:
   v37 = &v36;
   v38 = 0x2020000000;
   v39 = -86;
-  v17 = [[NSData alloc] initWithBase64EncodedString:v13 options:0];
+  v17 = [[NSData alloc] initWithBase64EncodedString:keyCopy options:0];
   if (v17)
   {
-    v18 = [[NSData alloc] initWithBase64EncodedString:v14 options:0];
+    v18 = [[NSData alloc] initWithBase64EncodedString:wrappedKeyCopy options:0];
     if (v18)
     {
-      v19 = [[NSUUID alloc] initWithUUIDString:v15];
+      v19 = [[NSUUID alloc] initWithUUIDString:stringCopy];
       v20 = v19;
       if (v19)
       {
@@ -800,7 +800,7 @@ LABEL_20:
           do
           {
             *(v23 + 24) = 0;
-            v24 = [(OTControlCLI *)self control];
+            control = [(OTControlCLI *)self control];
             v31[0] = _NSConcreteStackBlock;
             v31[1] = 3221225472;
             v31[2] = sub_100008E84;
@@ -808,7 +808,7 @@ LABEL_20:
             v32 = v16;
             v33 = &v36;
             v34 = &v40;
-            [v24 joinWithInheritanceKey:v12 inheritanceKey:v21 reply:v31];
+            [control joinWithInheritanceKey:argumentsCopy inheritanceKey:v21 reply:v31];
 
             v23 = v37;
           }
@@ -855,13 +855,13 @@ LABEL_20:
   return v25;
 }
 
-- (int)storeInheritanceKeyWithArguments:(id)a3 wrappingKey:(id)a4 wrappedKey:(id)a5 uuidString:(id)a6 timeout:(double)a7
+- (int)storeInheritanceKeyWithArguments:(id)arguments wrappingKey:(id)key wrappedKey:(id)wrappedKey uuidString:(id)string timeout:(double)timeout
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = [NSDate dateWithTimeIntervalSinceNow:a7];
+  argumentsCopy = arguments;
+  keyCopy = key;
+  wrappedKeyCopy = wrappedKey;
+  stringCopy = string;
+  v16 = [NSDate dateWithTimeIntervalSinceNow:timeout];
   v39 = 0;
   v40 = &v39;
   v41 = 0x2020000000;
@@ -870,13 +870,13 @@ LABEL_20:
   v36 = &v35;
   v37 = 0x2020000000;
   v38 = -86;
-  v17 = [[NSData alloc] initWithBase64EncodedString:v13 options:0];
+  v17 = [[NSData alloc] initWithBase64EncodedString:keyCopy options:0];
   if (v17)
   {
-    v18 = [[NSData alloc] initWithBase64EncodedString:v14 options:0];
+    v18 = [[NSData alloc] initWithBase64EncodedString:wrappedKeyCopy options:0];
     if (v18)
     {
-      v19 = [[NSUUID alloc] initWithUUIDString:v15];
+      v19 = [[NSUUID alloc] initWithUUIDString:stringCopy];
       v20 = v19;
       if (v19)
       {
@@ -891,7 +891,7 @@ LABEL_20:
           do
           {
             *(v23 + 24) = 0;
-            v24 = [(OTControlCLI *)self control];
+            control = [(OTControlCLI *)self control];
             v30[0] = _NSConcreteStackBlock;
             v30[1] = 3221225472;
             v30[2] = sub_100009268;
@@ -899,7 +899,7 @@ LABEL_20:
             v31 = v16;
             v32 = &v35;
             v33 = &v39;
-            [v24 storeInheritanceKey:v12 ik:v21 reply:v30];
+            [control storeInheritanceKey:argumentsCopy ik:v21 reply:v30];
 
             v23 = v36;
           }
@@ -945,10 +945,10 @@ LABEL_20:
   return v25;
 }
 
-- (int)generateInheritanceKeyWithArguments:(id)a3 json:(BOOL)a4 timeout:(double)a5
+- (int)generateInheritanceKeyWithArguments:(id)arguments json:(BOOL)json timeout:(double)timeout
 {
-  v8 = a3;
-  v9 = [NSDate dateWithTimeIntervalSinceNow:a5];
+  argumentsCopy = arguments;
+  v9 = [NSDate dateWithTimeIntervalSinceNow:timeout];
   v24 = 0;
   v25 = &v24;
   v26 = 0x2020000000;
@@ -961,7 +961,7 @@ LABEL_20:
   do
   {
     *(v10 + 24) = 0;
-    v11 = [(OTControlCLI *)self control];
+    control = [(OTControlCLI *)self control];
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
     v15[2] = sub_1000094C8;
@@ -970,8 +970,8 @@ LABEL_20:
     v16 = v12;
     v17 = &v20;
     v18 = &v24;
-    v19 = a4;
-    [v11 generateInheritanceKey:v8 uuid:0 reply:v15];
+    jsonCopy = json;
+    [control generateInheritanceKey:argumentsCopy uuid:0 reply:v15];
 
     v10 = v21;
   }
@@ -984,13 +984,13 @@ LABEL_20:
   return v13;
 }
 
-- (int)createInheritanceKeyWithArguments:(id)a3 uuidString:(id)a4 json:(BOOL)a5 timeout:(double)a6
+- (int)createInheritanceKeyWithArguments:(id)arguments uuidString:(id)string json:(BOOL)json timeout:(double)timeout
 {
-  v18 = a3;
-  v10 = a4;
-  if (v10)
+  argumentsCopy = arguments;
+  stringCopy = string;
+  if (stringCopy)
   {
-    v11 = [[NSUUID alloc] initWithUUIDString:v10];
+    v11 = [[NSUUID alloc] initWithUUIDString:stringCopy];
     if (!v11)
     {
       v12 = 1;
@@ -1004,7 +1004,7 @@ LABEL_20:
     v11 = 0;
   }
 
-  v13 = [NSDate dateWithTimeIntervalSinceNow:a6];
+  v13 = [NSDate dateWithTimeIntervalSinceNow:timeout];
   v28 = 0;
   v29 = &v28;
   v30 = 0x2020000000;
@@ -1017,7 +1017,7 @@ LABEL_20:
   do
   {
     *(v14 + 24) = 0;
-    v15 = [(OTControlCLI *)self control];
+    control = [(OTControlCLI *)self control];
     v19[0] = _NSConcreteStackBlock;
     v19[1] = 3221225472;
     v19[2] = sub_1000097E0;
@@ -1026,8 +1026,8 @@ LABEL_20:
     v20 = v16;
     v21 = &v24;
     v22 = &v28;
-    v23 = a5;
-    [v15 createInheritanceKey:v18 uuid:v11 reply:v19];
+    jsonCopy = json;
+    [control createInheritanceKey:argumentsCopy uuid:v11 reply:v19];
 
     v14 = v25;
   }
@@ -1041,35 +1041,35 @@ LABEL_8:
   return v12;
 }
 
-- (int)preflightJoinWithRecoveryKeyWithArguments:(id)a3 recoveryKey:(id)a4
+- (int)preflightJoinWithRecoveryKeyWithArguments:(id)arguments recoveryKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  argumentsCopy = arguments;
+  keyCopy = key;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
   v17 = 1;
-  v8 = [(OTControlCLI *)self control];
+  control = [(OTControlCLI *)self control];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100009A24;
   v11[3] = &unk_100024728;
-  v9 = v7;
+  v9 = keyCopy;
   v12 = v9;
   v13 = &v14;
-  [v8 preflightRecoverOctagonUsingRecoveryKey:v6 recoveryKey:v9 reply:v11];
+  [control preflightRecoverOctagonUsingRecoveryKey:argumentsCopy recoveryKey:v9 reply:v11];
 
-  LODWORD(v8) = *(v15 + 6);
+  LODWORD(control) = *(v15 + 6);
   _Block_object_dispose(&v14, 8);
 
-  return v8;
+  return control;
 }
 
-- (int)checkRecoveryKeyWithArguments:(id)a3
+- (int)checkRecoveryKeyWithArguments:(id)arguments
 {
-  v3 = [a3 makeConfigurationContext];
+  makeConfigurationContext = [arguments makeConfigurationContext];
   v12 = 0;
-  v4 = [OTClique isRecoveryKeySet:v3 error:&v12];
+  v4 = [OTClique isRecoveryKeySet:makeConfigurationContext error:&v12];
   v5 = v12;
   v6 = v5;
   if (v5)
@@ -1096,33 +1096,33 @@ LABEL_8:
   return v9;
 }
 
-- (int)joinWithRecoveryKeyWithArguments:(id)a3 recoveryKey:(id)a4
+- (int)joinWithRecoveryKeyWithArguments:(id)arguments recoveryKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  argumentsCopy = arguments;
+  keyCopy = key;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
   v17 = 1;
-  v8 = [(OTControlCLI *)self control];
+  control = [(OTControlCLI *)self control];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100009CFC;
   v11[3] = &unk_100024700;
-  v9 = v7;
+  v9 = keyCopy;
   v12 = v9;
   v13 = &v14;
-  [v8 joinWithRecoveryKey:v6 recoveryKey:v9 reply:v11];
+  [control joinWithRecoveryKey:argumentsCopy recoveryKey:v9 reply:v11];
 
-  LODWORD(v8) = *(v15 + 6);
+  LODWORD(control) = *(v15 + 6);
   _Block_object_dispose(&v14, 8);
 
-  return v8;
+  return control;
 }
 
-- (int)setRecoveryKeyWithArguments:(id)a3
+- (int)setRecoveryKeyWithArguments:(id)arguments
 {
-  v4 = a3;
+  argumentsCopy = arguments;
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
@@ -1142,14 +1142,14 @@ LABEL_8:
 
   else
   {
-    v8 = [(OTControlCLI *)self control];
+    control = [(OTControlCLI *)self control];
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = sub_100009F38;
     v13[3] = &unk_100024700;
     v14 = v5;
     v15 = &v17;
-    [v8 createRecoveryKey:v4 recoveryKey:v14 reply:v13];
+    [control createRecoveryKey:argumentsCopy recoveryKey:v14 reply:v13];
 
     v9 = *(v18 + 6);
   }
@@ -1158,32 +1158,32 @@ LABEL_8:
   return v9;
 }
 
-- (int)removeRecoveryKeyWithArguments:(id)a3
+- (int)removeRecoveryKeyWithArguments:(id)arguments
 {
-  v4 = a3;
+  argumentsCopy = arguments;
   v8 = 0;
   v9 = &v8;
   v10 = 0x2020000000;
   v11 = 1;
-  v5 = [(OTControlCLI *)self control];
+  control = [(OTControlCLI *)self control];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10000A0DC;
   v7[3] = &unk_1000244C0;
   v7[4] = &v8;
-  [v5 removeRecoveryKey:v4 reply:v7];
+  [control removeRecoveryKey:argumentsCopy reply:v7];
 
-  LODWORD(v5) = *(v9 + 6);
+  LODWORD(control) = *(v9 + 6);
   _Block_object_dispose(&v8, 8);
 
-  return v5;
+  return control;
 }
 
-- (int)checkCustodianRecoveryKeyWithArguments:(id)a3 uuidString:(id)a4 timeout:(double)a5
+- (int)checkCustodianRecoveryKeyWithArguments:(id)arguments uuidString:(id)string timeout:(double)timeout
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [NSDate dateWithTimeIntervalSinceNow:a5];
+  argumentsCopy = arguments;
+  stringCopy = string;
+  v10 = [NSDate dateWithTimeIntervalSinceNow:timeout];
   v25 = 0;
   v26 = &v25;
   v27 = 0x2020000000;
@@ -1192,15 +1192,15 @@ LABEL_8:
   v22 = &v21;
   v23 = 0x2020000000;
   v24 = -86;
-  v11 = [[NSUUID alloc] initWithUUIDString:v9];
+  v11 = [[NSUUID alloc] initWithUUIDString:stringCopy];
   if (v11)
   {
-    v16 = v9;
+    v16 = stringCopy;
     v12 = v22;
     do
     {
       *(v12 + 24) = 0;
-      v13 = [(OTControlCLI *)self control];
+      control = [(OTControlCLI *)self control];
       v17[0] = _NSConcreteStackBlock;
       v17[1] = 3221225472;
       v17[2] = sub_10000A374;
@@ -1208,14 +1208,14 @@ LABEL_8:
       v18 = v10;
       v19 = &v21;
       v20 = &v25;
-      [v13 checkCustodianRecoveryKey:v8 uuid:v11 reply:v17];
+      [control checkCustodianRecoveryKey:argumentsCopy uuid:v11 reply:v17];
 
       v12 = v22;
     }
 
     while ((v22[3] & 1) != 0);
     v14 = *(v26 + 6);
-    v9 = v16;
+    stringCopy = v16;
   }
 
   else
@@ -1230,11 +1230,11 @@ LABEL_8:
   return v14;
 }
 
-- (int)removeCustodianRecoveryKeyWithArguments:(id)a3 uuidString:(id)a4 timeout:(double)a5
+- (int)removeCustodianRecoveryKeyWithArguments:(id)arguments uuidString:(id)string timeout:(double)timeout
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [NSDate dateWithTimeIntervalSinceNow:a5];
+  argumentsCopy = arguments;
+  stringCopy = string;
+  v10 = [NSDate dateWithTimeIntervalSinceNow:timeout];
   v25 = 0;
   v26 = &v25;
   v27 = 0x2020000000;
@@ -1243,15 +1243,15 @@ LABEL_8:
   v22 = &v21;
   v23 = 0x2020000000;
   v24 = -86;
-  v11 = [[NSUUID alloc] initWithUUIDString:v9];
+  v11 = [[NSUUID alloc] initWithUUIDString:stringCopy];
   if (v11)
   {
-    v16 = v9;
+    v16 = stringCopy;
     v12 = v22;
     do
     {
       *(v12 + 24) = 0;
-      v13 = [(OTControlCLI *)self control];
+      control = [(OTControlCLI *)self control];
       v17[0] = _NSConcreteStackBlock;
       v17[1] = 3221225472;
       v17[2] = sub_10000A680;
@@ -1259,14 +1259,14 @@ LABEL_8:
       v18 = v10;
       v19 = &v21;
       v20 = &v25;
-      [v13 removeCustodianRecoveryKey:v8 uuid:v11 reply:v17];
+      [control removeCustodianRecoveryKey:argumentsCopy uuid:v11 reply:v17];
 
       v12 = v22;
     }
 
     while ((v22[3] & 1) != 0);
     v14 = *(v26 + 6);
-    v9 = v16;
+    stringCopy = v16;
   }
 
   else
@@ -1281,13 +1281,13 @@ LABEL_8:
   return v14;
 }
 
-- (int)preflightJoinWithCustodianRecoveryKeyWithArguments:(id)a3 wrappingKey:(id)a4 wrappedKey:(id)a5 uuidString:(id)a6 timeout:(double)a7
+- (int)preflightJoinWithCustodianRecoveryKeyWithArguments:(id)arguments wrappingKey:(id)key wrappedKey:(id)wrappedKey uuidString:(id)string timeout:(double)timeout
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = [NSDate dateWithTimeIntervalSinceNow:a7];
+  argumentsCopy = arguments;
+  keyCopy = key;
+  wrappedKeyCopy = wrappedKey;
+  stringCopy = string;
+  v16 = [NSDate dateWithTimeIntervalSinceNow:timeout];
   v40 = 0;
   v41 = &v40;
   v42 = 0x2020000000;
@@ -1296,13 +1296,13 @@ LABEL_8:
   v37 = &v36;
   v38 = 0x2020000000;
   v39 = -86;
-  v17 = [[NSData alloc] initWithBase64EncodedString:v13 options:0];
+  v17 = [[NSData alloc] initWithBase64EncodedString:keyCopy options:0];
   if (v17)
   {
-    v18 = [[NSData alloc] initWithBase64EncodedString:v14 options:0];
+    v18 = [[NSData alloc] initWithBase64EncodedString:wrappedKeyCopy options:0];
     if (v18)
     {
-      v19 = [[NSUUID alloc] initWithUUIDString:v15];
+      v19 = [[NSUUID alloc] initWithUUIDString:stringCopy];
       v20 = v19;
       if (v19)
       {
@@ -1317,7 +1317,7 @@ LABEL_8:
           do
           {
             *(v23 + 24) = 0;
-            v24 = [(OTControlCLI *)self control];
+            control = [(OTControlCLI *)self control];
             v31[0] = _NSConcreteStackBlock;
             v31[1] = 3221225472;
             v31[2] = sub_10000AAB0;
@@ -1325,7 +1325,7 @@ LABEL_8:
             v32 = v16;
             v33 = &v36;
             v34 = &v40;
-            [v24 preflightJoinWithCustodianRecoveryKey:v12 custodianRecoveryKey:v21 reply:v31];
+            [control preflightJoinWithCustodianRecoveryKey:argumentsCopy custodianRecoveryKey:v21 reply:v31];
 
             v23 = v37;
           }
@@ -1372,13 +1372,13 @@ LABEL_8:
   return v25;
 }
 
-- (int)joinWithCustodianRecoveryKeyWithArguments:(id)a3 wrappingKey:(id)a4 wrappedKey:(id)a5 uuidString:(id)a6 timeout:(double)a7
+- (int)joinWithCustodianRecoveryKeyWithArguments:(id)arguments wrappingKey:(id)key wrappedKey:(id)wrappedKey uuidString:(id)string timeout:(double)timeout
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = [NSDate dateWithTimeIntervalSinceNow:a7];
+  argumentsCopy = arguments;
+  keyCopy = key;
+  wrappedKeyCopy = wrappedKey;
+  stringCopy = string;
+  v16 = [NSDate dateWithTimeIntervalSinceNow:timeout];
   v40 = 0;
   v41 = &v40;
   v42 = 0x2020000000;
@@ -1387,13 +1387,13 @@ LABEL_8:
   v37 = &v36;
   v38 = 0x2020000000;
   v39 = -86;
-  v17 = [[NSData alloc] initWithBase64EncodedString:v13 options:0];
+  v17 = [[NSData alloc] initWithBase64EncodedString:keyCopy options:0];
   if (v17)
   {
-    v18 = [[NSData alloc] initWithBase64EncodedString:v14 options:0];
+    v18 = [[NSData alloc] initWithBase64EncodedString:wrappedKeyCopy options:0];
     if (v18)
     {
-      v19 = [[NSUUID alloc] initWithUUIDString:v15];
+      v19 = [[NSUUID alloc] initWithUUIDString:stringCopy];
       v20 = v19;
       if (v19)
       {
@@ -1408,7 +1408,7 @@ LABEL_8:
           do
           {
             *(v23 + 24) = 0;
-            v24 = [(OTControlCLI *)self control];
+            control = [(OTControlCLI *)self control];
             v31[0] = _NSConcreteStackBlock;
             v31[1] = 3221225472;
             v31[2] = sub_10000AEE0;
@@ -1416,7 +1416,7 @@ LABEL_8:
             v32 = v16;
             v33 = &v36;
             v34 = &v40;
-            [v24 joinWithCustodianRecoveryKey:v12 custodianRecoveryKey:v21 reply:v31];
+            [control joinWithCustodianRecoveryKey:argumentsCopy custodianRecoveryKey:v21 reply:v31];
 
             v23 = v37;
           }
@@ -1463,13 +1463,13 @@ LABEL_8:
   return v25;
 }
 
-- (int)createCustodianRecoveryKeyWithArguments:(id)a3 uuidString:(id)a4 json:(BOOL)a5 timeout:(double)a6
+- (int)createCustodianRecoveryKeyWithArguments:(id)arguments uuidString:(id)string json:(BOOL)json timeout:(double)timeout
 {
-  v18 = a3;
-  v10 = a4;
-  if (v10)
+  argumentsCopy = arguments;
+  stringCopy = string;
+  if (stringCopy)
   {
-    v11 = [[NSUUID alloc] initWithUUIDString:v10];
+    v11 = [[NSUUID alloc] initWithUUIDString:stringCopy];
     if (!v11)
     {
       v12 = 1;
@@ -1483,7 +1483,7 @@ LABEL_8:
     v11 = 0;
   }
 
-  v13 = [NSDate dateWithTimeIntervalSinceNow:a6];
+  v13 = [NSDate dateWithTimeIntervalSinceNow:timeout];
   v28 = 0;
   v29 = &v28;
   v30 = 0x2020000000;
@@ -1496,7 +1496,7 @@ LABEL_8:
   do
   {
     *(v14 + 24) = 0;
-    v15 = [(OTControlCLI *)self control];
+    control = [(OTControlCLI *)self control];
     v19[0] = _NSConcreteStackBlock;
     v19[1] = 3221225472;
     v19[2] = sub_10000B1C4;
@@ -1505,8 +1505,8 @@ LABEL_8:
     v20 = v16;
     v21 = &v24;
     v22 = &v28;
-    v23 = a5;
-    [v15 createCustodianRecoveryKey:v18 uuid:v11 reply:v19];
+    jsonCopy = json;
+    [control createCustodianRecoveryKey:argumentsCopy uuid:v11 reply:v19];
 
     v14 = v25;
   }
@@ -1520,86 +1520,86 @@ LABEL_8:
   return v12;
 }
 
-- (int)fetchUserControllableViewsSyncStatus:(id)a3
+- (int)fetchUserControllableViewsSyncStatus:(id)status
 {
-  v4 = a3;
+  statusCopy = status;
   v8 = 0;
   v9 = &v8;
   v10 = 0x2020000000;
   v11 = 1;
-  v5 = [(OTControlCLI *)self control];
+  control = [(OTControlCLI *)self control];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10000B624;
   v7[3] = &unk_100024688;
   v7[4] = &v8;
-  [v5 fetchUserControllableViewsSyncStatus:v4 reply:v7];
+  [control fetchUserControllableViewsSyncStatus:statusCopy reply:v7];
 
-  LODWORD(v5) = *(v9 + 6);
+  LODWORD(control) = *(v9 + 6);
   _Block_object_dispose(&v8, 8);
 
-  return v5;
+  return control;
 }
 
-- (int)tapToRadar:(id)a3 description:(id)a4 radar:(id)a5
+- (int)tapToRadar:(id)radar description:(id)description radar:(id)a5
 {
-  v8 = a3;
-  v9 = a4;
+  radarCopy = radar;
+  descriptionCopy = description;
   v10 = a5;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
   v17 = 1;
-  v11 = [(OTControlCLI *)self control];
+  control = [(OTControlCLI *)self control];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_10000B9CC;
   v13[3] = &unk_1000244C0;
   v13[4] = &v14;
-  [v11 tapToRadar:v8 description:v9 radar:v10 reply:v13];
+  [control tapToRadar:radarCopy description:descriptionCopy radar:v10 reply:v13];
 
-  LODWORD(v11) = *(v15 + 6);
+  LODWORD(control) = *(v15 + 6);
   _Block_object_dispose(&v14, 8);
 
-  return v11;
+  return control;
 }
 
-- (int)refetchCKKSPolicy:(id)a3
+- (int)refetchCKKSPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v8 = 0;
   v9 = &v8;
   v10 = 0x2020000000;
   v11 = 1;
-  v5 = [(OTControlCLI *)self control];
+  control = [(OTControlCLI *)self control];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10000BB60;
   v7[3] = &unk_1000244C0;
   v7[4] = &v8;
-  [v5 refetchCKKSPolicy:v4 reply:v7];
+  [control refetchCKKSPolicy:policyCopy reply:v7];
 
-  LODWORD(v5) = *(v9 + 6);
+  LODWORD(control) = *(v9 + 6);
   _Block_object_dispose(&v8, 8);
 
-  return v5;
+  return control;
 }
 
-- (int)simulateReceiveTDLChangePush:(id)a3 json:(BOOL)a4
+- (int)simulateReceiveTDLChangePush:(id)push json:(BOOL)json
 {
-  v6 = a3;
+  pushCopy = push;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
   v15 = 1;
-  v7 = [(OTControlCLI *)self control];
+  control = [(OTControlCLI *)self control];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10000BCFC;
   v10[3] = &unk_100024660;
-  v11 = a4;
+  jsonCopy = json;
   v10[4] = &v12;
-  [v7 simulateReceiveTDLChangePush:v6 reply:v10];
+  [control simulateReceiveTDLChangePush:pushCopy reply:v10];
 
   v8 = *(v13 + 6);
   _Block_object_dispose(&v12, 8);
@@ -1607,21 +1607,21 @@ LABEL_8:
   return v8;
 }
 
-- (int)simulateReceivePush:(id)a3 json:(BOOL)a4
+- (int)simulateReceivePush:(id)push json:(BOOL)json
 {
-  v6 = a3;
+  pushCopy = push;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
   v15 = 1;
-  v7 = [(OTControlCLI *)self control];
+  control = [(OTControlCLI *)self control];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10000BF24;
   v10[3] = &unk_100024660;
-  v11 = a4;
+  jsonCopy = json;
   v10[4] = &v12;
-  [v7 simulateReceivePush:v6 reply:v10];
+  [control simulateReceivePush:pushCopy reply:v10];
 
   v8 = *(v13 + 6);
   _Block_object_dispose(&v12, 8);
@@ -1629,21 +1629,21 @@ LABEL_8:
   return v8;
 }
 
-- (int)escrowCheck:(id)a3 json:(BOOL)a4
+- (int)escrowCheck:(id)check json:(BOOL)json
 {
-  v6 = a3;
+  checkCopy = check;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
   v15 = 1;
-  v7 = [(OTControlCLI *)self control];
+  control = [(OTControlCLI *)self control];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10000C150;
   v10[3] = &unk_100024638;
-  v11 = a4;
+  jsonCopy = json;
   v10[4] = &v12;
-  [v7 escrowCheck:v6 isBackgroundCheck:0 reply:v10];
+  [control escrowCheck:checkCopy isBackgroundCheck:0 reply:v10];
 
   v8 = *(v13 + 6);
   _Block_object_dispose(&v12, 8);
@@ -1651,11 +1651,11 @@ LABEL_8:
   return v8;
 }
 
-- (int)fetchAllBottles:(id)a3 control:(id)a4 overrideEscrowCache:(BOOL)a5
+- (int)fetchAllBottles:(id)bottles control:(id)control overrideEscrowCache:(BOOL)cache
 {
-  v5 = a5;
-  v7 = a3;
-  v8 = a4;
+  cacheCopy = cache;
+  bottlesCopy = bottles;
+  controlCopy = control;
   v37 = 0;
   v38 = &v37;
   v39 = 0x2020000000;
@@ -1683,7 +1683,7 @@ LABEL_8:
   v17[1] = 3221225472;
   v17[2] = sub_10000C874;
   v17[3] = &unk_100024588;
-  if (v5)
+  if (cacheCopy)
   {
     v10 = 2;
   }
@@ -1699,7 +1699,7 @@ LABEL_8:
   v22 = &v23;
   v11 = v9;
   v18 = v11;
-  [v8 fetchAllViableBottles:v7 source:v10 reply:v17];
+  [controlCopy fetchAllViableBottles:bottlesCopy source:v10 reply:v17];
   v12 = dispatch_time(0, 60000000000);
   if (dispatch_semaphore_wait(v11, v12))
   {
@@ -1729,12 +1729,12 @@ LABEL_8:
   return v14;
 }
 
-- (int)recoverUsingBottleID:(id)a3 entropy:(id)a4 arguments:(id)a5 control:(id)a6
+- (int)recoverUsingBottleID:(id)d entropy:(id)entropy arguments:(id)arguments control:(id)control
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  dCopy = d;
+  entropyCopy = entropy;
+  argumentsCopy = arguments;
+  controlCopy = control;
   v23 = 0;
   v24 = &v23;
   v25 = 0x2020000000;
@@ -1745,11 +1745,11 @@ LABEL_8:
   v19[2] = sub_10000CC1C;
   v19[3] = &unk_100024560;
   v22 = &v23;
-  v14 = v9;
+  v14 = dCopy;
   v20 = v14;
   v15 = v13;
   v21 = v15;
-  [v12 restoreFromBottle:v11 entropy:v10 bottleID:v14 reply:v19];
+  [controlCopy restoreFromBottle:argumentsCopy entropy:entropyCopy bottleID:v14 reply:v19];
   v16 = dispatch_time(0, 60000000000);
   if (dispatch_semaphore_wait(v15, v16))
   {
@@ -1762,10 +1762,10 @@ LABEL_8:
   return v17;
 }
 
-- (int)status:(id)a3 json:(BOOL)a4
+- (int)status:(id)status json:(BOOL)json
 {
-  v4 = a4;
-  v6 = a3;
+  jsonCopy = json;
+  statusCopy = status;
   v24 = 0;
   v25 = &v24;
   v26 = 0x2020000000;
@@ -1776,7 +1776,7 @@ LABEL_8:
   v9 = v8;
   if (v8)
   {
-    if (v4)
+    if (jsonCopy)
     {
       v28 = @"error";
       v10 = [v8 description];
@@ -1798,17 +1798,17 @@ LABEL_8:
 
   else
   {
-    v12 = [(OTControlCLI *)self control];
-    v13 = [v7 xpcFd];
+    control = [(OTControlCLI *)self control];
+    xpcFd = [v7 xpcFd];
     v18[0] = _NSConcreteStackBlock;
     v18[1] = 3221225472;
     v18[2] = sub_10000CF28;
     v18[3] = &unk_100024538;
-    v22 = v4;
-    v20 = self;
+    v22 = jsonCopy;
+    selfCopy = self;
     v21 = &v24;
     v19 = v7;
-    [v12 status:v6 xpcFd:v13 reply:v18];
+    [control status:statusCopy xpcFd:xpcFd reply:v18];
 
     v14 = *(v25 + 6);
   }
@@ -1817,18 +1817,18 @@ LABEL_8:
   return v14;
 }
 
-- (int)tlkRecoverability:(id)a3
+- (int)tlkRecoverability:(id)recoverability
 {
-  v3 = a3;
+  recoverabilityCopy = recoverability;
   v4 = [OTClique alloc];
-  v5 = [v3 makeConfigurationContext];
-  v6 = [v4 initWithContextData:v5];
+  makeConfigurationContext = [recoverabilityCopy makeConfigurationContext];
+  v6 = [v4 initWithContextData:makeConfigurationContext];
 
   if (v6)
   {
-    v7 = [v3 makeConfigurationContext];
+    makeConfigurationContext2 = [recoverabilityCopy makeConfigurationContext];
     v54 = 0;
-    v8 = [OTClique fetchAllEscrowRecords:v7 error:&v54];
+    v8 = [OTClique fetchAllEscrowRecords:makeConfigurationContext2 error:&v54];
     v9 = v54;
 
     if (!v8 || v9)
@@ -1849,7 +1849,7 @@ LABEL_8:
       if (v43)
       {
         v36 = v8;
-        v37 = v3;
+        v37 = recoverabilityCopy;
         v11 = *v51;
         v40 = v6;
         v41 = 1;
@@ -1874,8 +1874,8 @@ LABEL_8:
               v48 = 0u;
               v45 = 0u;
               v46 = 0u;
-              v18 = v14;
-              v26 = [v18 countByEnumeratingWithState:&v45 objects:v55 count:16];
+              recordId2 = v14;
+              v26 = [recordId2 countByEnumeratingWithState:&v45 objects:v55 count:16];
               if (v26)
               {
                 v27 = v26;
@@ -1887,15 +1887,15 @@ LABEL_8:
                   {
                     if (*v46 != v28)
                     {
-                      objc_enumerationMutation(v18);
+                      objc_enumerationMutation(recordId2);
                     }
 
                     v30 = *(*(&v45 + 1) + 8 * j);
-                    v31 = [v13 recordId];
-                    printf("%s has recoverable view: %s\n", [v31 UTF8String], objc_msgSend(v30, "UTF8String"));
+                    recordId = [v13 recordId];
+                    printf("%s has recoverable view: %s\n", [recordId UTF8String], objc_msgSend(v30, "UTF8String"));
                   }
 
-                  v27 = [v18 countByEnumeratingWithState:&v45 objects:v55 count:16];
+                  v27 = [recordId2 countByEnumeratingWithState:&v45 objects:v55 count:16];
                 }
 
                 while (v27);
@@ -1916,17 +1916,17 @@ LABEL_8:
             {
               v44 = v14;
               v17 = __stderrp;
-              v18 = [v13 recordId];
-              v19 = [v18 UTF8String];
+              recordId2 = [v13 recordId];
+              uTF8String = [recordId2 UTF8String];
               [v15 description];
               v20 = v11;
               v21 = v6;
               v22 = v10;
               v24 = v23 = v15;
-              v35 = [v24 UTF8String];
+              uTF8String2 = [v24 UTF8String];
               v25 = v17;
               v14 = v44;
-              fprintf(v25, "%s Failed TLK recoverability check: %s\n", v19, v35);
+              fprintf(v25, "%s Failed TLK recoverability check: %s\n", uTF8String, uTF8String2);
 
               v15 = v23;
               v10 = v22;
@@ -1940,7 +1940,7 @@ LABEL_8:
 
         while (v43);
         v8 = v36;
-        v3 = v37;
+        recoverabilityCopy = v37;
         v9 = 0;
         v32 = v41;
         goto LABEL_30;
@@ -1960,41 +1960,41 @@ LABEL_31:
   return v32;
 }
 
-- (int)performSilentEscrowRecovery:(id)a3 appleID:(id)a4 secret:(id)a5
+- (int)performSilentEscrowRecovery:(id)recovery appleID:(id)d secret:(id)secret
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = a4;
+  recoveryCopy = recovery;
+  secretCopy = secret;
+  dCopy = d;
   v10 = objc_alloc_init(OTICDPRecordContext);
   v11 = objc_alloc_init(OTCDPRecoveryInformation);
   [v10 setCdpInfo:v11];
 
-  v12 = [v10 cdpInfo];
-  [v12 setRecoverySecret:v8];
+  cdpInfo = [v10 cdpInfo];
+  [cdpInfo setRecoverySecret:secretCopy];
 
-  v13 = [v10 cdpInfo];
-  [v13 setContainsIcdpData:1];
+  cdpInfo2 = [v10 cdpInfo];
+  [cdpInfo2 setContainsIcdpData:1];
 
-  v14 = [v10 cdpInfo];
-  [v14 setSilentRecoveryAttempt:1];
+  cdpInfo3 = [v10 cdpInfo];
+  [cdpInfo3 setSilentRecoveryAttempt:1];
 
-  v15 = [v10 cdpInfo];
-  [v15 setUsesMultipleIcsc:1];
+  cdpInfo4 = [v10 cdpInfo];
+  [cdpInfo4 setUsesMultipleIcsc:1];
 
   v16 = objc_alloc_init(OTEscrowAuthenticationInformation);
   [v10 setAuthInfo:v16];
 
-  v17 = [v10 authInfo];
-  [v17 setAuthenticationAppleid:v9];
+  authInfo = [v10 authInfo];
+  [authInfo setAuthenticationAppleid:dCopy];
 
-  v18 = sub_100004E60(v9, 0);
+  v18 = sub_100004E60(dCopy, 0);
 
-  v19 = [v10 authInfo];
-  [v19 setAuthenticationPassword:v18];
+  authInfo2 = [v10 authInfo];
+  [authInfo2 setAuthenticationPassword:v18];
 
-  v20 = [v7 makeConfigurationContext];
+  makeConfigurationContext = [recoveryCopy makeConfigurationContext];
   v31 = 0;
-  v21 = [OTClique fetchEscrowRecords:v20 error:&v31];
+  v21 = [OTClique fetchEscrowRecords:makeConfigurationContext error:&v31];
   v22 = v31;
 
   if (!v21 || v22)
@@ -2007,9 +2007,9 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v23 = [v7 makeConfigurationContext];
+  makeConfigurationContext2 = [recoveryCopy makeConfigurationContext];
   v30 = 0;
-  v24 = [OTClique performSilentEscrowRecovery:v23 cdpContext:v10 allRecords:v21 error:&v30];
+  v24 = [OTClique performSilentEscrowRecovery:makeConfigurationContext2 cdpContext:v10 allRecords:v21 error:&v30];
   v22 = v30;
 
   if (!v24 || v22)
@@ -2028,18 +2028,18 @@ LABEL_9:
   return v25;
 }
 
-- (int)checkAndPrintEscrowRecords:(id)a3 error:(id)a4 json:(BOOL)a5
+- (int)checkAndPrintEscrowRecords:(id)records error:(id)error json:(BOOL)json
 {
-  v5 = a5;
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (!v7 || v8)
+  jsonCopy = json;
+  recordsCopy = records;
+  errorCopy = error;
+  v9 = errorCopy;
+  if (!recordsCopy || errorCopy)
   {
-    if (v5)
+    if (jsonCopy)
     {
       v56 = @"error";
-      v34 = [v8 description];
+      v34 = [errorCopy description];
       v57 = v34;
       v35 = 1;
       v36 = [NSDictionary dictionaryWithObjects:&v57 forKeys:&v56 count:1];
@@ -2049,7 +2049,7 @@ LABEL_9:
     else
     {
       v37 = __stderrp;
-      v38 = [v8 description];
+      v38 = [errorCopy description];
       fprintf(v37, "fetching escrow records failed: %s\n", [v38 UTF8String]);
 
       v35 = 1;
@@ -2058,11 +2058,11 @@ LABEL_9:
 
   else
   {
-    v44 = v5;
-    if (!v5)
+    v44 = jsonCopy;
+    if (!jsonCopy)
     {
-      v10 = [v7 count];
-      v11 = [v7 count];
+      v10 = [recordsCopy count];
+      v11 = [recordsCopy count];
       v12 = "s";
       if (v11 == 1)
       {
@@ -2077,8 +2077,8 @@ LABEL_9:
     v53 = 0u;
     v54 = 0u;
     v55 = 0u;
-    v45 = v7;
-    obj = v7;
+    v45 = recordsCopy;
+    obj = recordsCopy;
     v14 = [obj countByEnumeratingWithState:&v52 objects:v61 count:16];
     if (v14)
     {
@@ -2095,38 +2095,38 @@ LABEL_9:
           }
 
           v18 = *(*(&v52 + 1) + 8 * v17);
-          v19 = [v18 escrowInformationMetadata];
-          v20 = [v19 peerInfo];
-          if (!v20)
+          escrowInformationMetadata = [v18 escrowInformationMetadata];
+          peerInfo = [escrowInformationMetadata peerInfo];
+          if (!peerInfo)
           {
 
 LABEL_17:
-            v28 = [v18 recordId];
+            recordId = [v18 recordId];
 LABEL_18:
-            v29 = v28;
-            [v13 addObject:v28];
+            v29 = recordId;
+            [v13 addObject:recordId];
 
             goto LABEL_19;
           }
 
-          v21 = v20;
-          v22 = [v18 escrowInformationMetadata];
-          v23 = [v22 peerInfo];
-          v24 = [v23 bytes];
+          v21 = peerInfo;
+          escrowInformationMetadata2 = [v18 escrowInformationMetadata];
+          peerInfo2 = [escrowInformationMetadata2 peerInfo];
+          bytes = [peerInfo2 bytes];
 
-          if (!v24)
+          if (!bytes)
           {
             goto LABEL_17;
           }
 
           v51 = 0;
-          v25 = [v18 escrowInformationMetadata];
-          v26 = [v25 peerInfo];
+          escrowInformationMetadata3 = [v18 escrowInformationMetadata];
+          peerInfo3 = [escrowInformationMetadata3 peerInfo];
           v27 = SOSPeerInfoCreateFromData();
 
           if (v27)
           {
-            v28 = SOSPeerInfoGetPeerID();
+            recordId = SOSPeerInfoGetPeerID();
             goto LABEL_18;
           }
 
@@ -2152,7 +2152,7 @@ LABEL_19:
       v60 = v13;
       v33 = [NSDictionary dictionaryWithObjects:&v60 forKeys:&v59 count:1];
       sub_1000054EC(v33);
-      v7 = v45;
+      recordsCopy = v45;
     }
 
     else
@@ -2163,7 +2163,7 @@ LABEL_19:
       v48 = 0u;
       v33 = v13;
       v39 = [v33 countByEnumeratingWithState:&v47 objects:v58 count:16];
-      v7 = v45;
+      recordsCopy = v45;
       if (v39)
       {
         v40 = v39;
@@ -2194,17 +2194,17 @@ LABEL_19:
   return v35;
 }
 
-- (void)printPeers:(id)a3 egoPeerID:(id)a4 informationOnPeers:(id)a5 informationOnCRKs:(id)a6
+- (void)printPeers:(id)peers egoPeerID:(id)d informationOnPeers:(id)onPeers informationOnCRKs:(id)ks
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v23 = a6;
+  peersCopy = peers;
+  dCopy = d;
+  onPeersCopy = onPeers;
+  ksCopy = ks;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v13 = [v10 countByEnumeratingWithState:&v24 objects:v28 count:16];
+  v13 = [peersCopy countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v13)
   {
     v14 = v13;
@@ -2215,33 +2215,33 @@ LABEL_19:
       {
         if (*v25 != v15)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(peersCopy);
         }
 
         v17 = *(*(&v24 + 1) + 8 * i);
-        v18 = [v12 objectForKeyedSubscript:v17];
+        v18 = [onPeersCopy objectForKeyedSubscript:v17];
         if (v18)
         {
-          if ([v17 isEqualToString:v11])
+          if ([v17 isEqualToString:dCopy])
           {
-            v19 = self;
+            selfCopy2 = self;
             v20 = v18;
             v21 = @"    Self: ";
           }
 
           else
           {
-            v19 = self;
+            selfCopy2 = self;
             v20 = v18;
             v21 = @"    Peer: ";
           }
 
-          [(OTControlCLI *)v19 printPeer:v20 prefix:v21];
+          [(OTControlCLI *)selfCopy2 printPeer:v20 prefix:v21];
         }
 
         else
         {
-          v22 = [v23 objectForKeyedSubscript:v17];
+          v22 = [ksCopy objectForKeyedSubscript:v17];
           if (v22)
           {
             [(OTControlCLI *)self printCRKWithPeer:v17 information:v22 prefix:@"    CRK: "];
@@ -2254,87 +2254,87 @@ LABEL_19:
         }
       }
 
-      v14 = [v10 countByEnumeratingWithState:&v24 objects:v28 count:16];
+      v14 = [peersCopy countByEnumeratingWithState:&v24 objects:v28 count:16];
     }
 
     while (v14);
   }
 }
 
-- (void)printCRKWithPeer:(id)a3 information:(id)a4 prefix:(id)a5
+- (void)printCRKWithPeer:(id)peer information:(id)information prefix:(id)prefix
 {
-  v15 = a3;
-  v7 = a5;
-  v8 = a4;
-  v9 = [v8 objectForKeyedSubscript:@"uuid"];
-  v10 = [v8 objectForKeyedSubscript:@"kind"];
+  peerCopy = peer;
+  prefixCopy = prefix;
+  informationCopy = information;
+  v9 = [informationCopy objectForKeyedSubscript:@"uuid"];
+  v10 = [informationCopy objectForKeyedSubscript:@"kind"];
 
-  if (v7)
+  if (prefixCopy)
   {
-    v11 = [v7 UTF8String];
+    uTF8String = [prefixCopy UTF8String];
   }
 
   else
   {
-    v11 = "";
+    uTF8String = "";
   }
 
-  v12 = [v15 UTF8String];
-  v13 = [v9 UTF8String];
+  uTF8String2 = [peerCopy UTF8String];
+  uTF8String3 = [v9 UTF8String];
   if (v10)
   {
-    v14 = [v10 UTF8String];
+    uTF8String4 = [v10 UTF8String];
   }
 
   else
   {
-    v14 = "-";
+    uTF8String4 = "-";
   }
 
-  printf("%s%s uuid: %s kind: %s\n", v11, v12, v13, v14);
+  printf("%s%s uuid: %s kind: %s\n", uTF8String, uTF8String2, uTF8String3, uTF8String4);
 }
 
-- (void)printPeer:(id)a3 prefix:(id)a4
+- (void)printPeer:(id)peer prefix:(id)prefix
 {
-  v18 = a4;
-  v5 = a3;
-  v6 = [v5 objectForKeyedSubscript:@"peerID"];
-  v7 = [v5 objectForKeyedSubscript:@"permanentInfo"];
+  prefixCopy = prefix;
+  peerCopy = peer;
+  v6 = [peerCopy objectForKeyedSubscript:@"peerID"];
+  v7 = [peerCopy objectForKeyedSubscript:@"permanentInfo"];
   v8 = [v7 objectForKeyedSubscript:@"model_id"];
 
-  v9 = [v5 objectForKeyedSubscript:@"permanentInfo"];
+  v9 = [peerCopy objectForKeyedSubscript:@"permanentInfo"];
   v17 = [v9 objectForKeyedSubscript:@"epoch"];
 
-  v10 = [v5 objectForKeyedSubscript:@"stableInfo"];
+  v10 = [peerCopy objectForKeyedSubscript:@"stableInfo"];
   v11 = [v10 objectForKeyedSubscript:@"device_name"];
 
-  v12 = [v5 objectForKeyedSubscript:@"stableInfo"];
+  v12 = [peerCopy objectForKeyedSubscript:@"stableInfo"];
   v13 = [v12 objectForKeyedSubscript:@"serial_number"];
 
-  v14 = [v5 objectForKeyedSubscript:@"stableInfo"];
+  v14 = [peerCopy objectForKeyedSubscript:@"stableInfo"];
 
   v15 = [v14 objectForKeyedSubscript:@"os_version"];
 
-  if (v18)
+  if (prefixCopy)
   {
-    v16 = [v18 UTF8String];
+    uTF8String = [prefixCopy UTF8String];
   }
 
   else
   {
-    v16 = "";
+    uTF8String = "";
   }
 
-  printf("%s%s hw:'%s' name:'%s' serial: '%s' os:'%s' epoch:%d\n", v16, [v6 UTF8String], objc_msgSend(v8, "UTF8String"), objc_msgSend(v11, "UTF8String"), objc_msgSend(v13, "UTF8String"), objc_msgSend(v15, "UTF8String"), objc_msgSend(v17, "intValue"));
+  printf("%s%s hw:'%s' name:'%s' serial: '%s' os:'%s' epoch:%d\n", uTF8String, [v6 UTF8String], objc_msgSend(v8, "UTF8String"), objc_msgSend(v11, "UTF8String"), objc_msgSend(v13, "UTF8String"), objc_msgSend(v15, "UTF8String"), objc_msgSend(v17, "intValue"));
 }
 
-- (int)resetOctagon:(id)a3 idmsTargetContext:(id)a4 idmsCuttlefishPassword:(id)a5 notifyIdMS:(BOOL)a6 isDBRv2:(BOOL)a7 timeout:(double)a8
+- (int)resetOctagon:(id)octagon idmsTargetContext:(id)context idmsCuttlefishPassword:(id)password notifyIdMS:(BOOL)s isDBRv2:(BOOL)rv2 timeout:(double)timeout
 {
-  v23 = a6;
-  v12 = a3;
-  v26 = a4;
-  v25 = a5;
-  v22 = [NSDate dateWithTimeIntervalSinceNow:a8];
+  sCopy = s;
+  octagonCopy = octagon;
+  contextCopy = context;
+  passwordCopy = password;
+  v22 = [NSDate dateWithTimeIntervalSinceNow:timeout];
   v44 = 0;
   v45 = &v44;
   v46 = 0x2020000000;
@@ -2355,31 +2355,31 @@ LABEL_19:
   v32[3] = sub_100005028;
   v32[4] = sub_100005038;
   v33 = 0;
-  v13 = [(OTControlCLI *)self control];
+  control = [(OTControlCLI *)self control];
   v31[0] = _NSConcreteStackBlock;
   v31[1] = 3221225472;
   v31[2] = sub_10000F358;
   v31[3] = &unk_1000244E8;
   v31[4] = &v34;
   v31[5] = v32;
-  [v13 fetchAccountWideSettingsWithForceFetch:1 arguments:v12 reply:v31];
+  [control fetchAccountWideSettingsWithForceFetch:1 arguments:octagonCopy reply:v31];
 
   if ([v35[5] hasWalrus])
   {
-    v14 = [v35[5] walrus];
-    v15 = [v14 enabled];
+    walrus = [v35[5] walrus];
+    enabled = [walrus enabled];
   }
 
   else
   {
-    v15 = 0;
+    enabled = 0;
   }
 
   v16 = v41;
   do
   {
     *(v16 + 24) = 0;
-    v17 = [(OTControlCLI *)self control];
+    control2 = [(OTControlCLI *)self control];
     v27[0] = _NSConcreteStackBlock;
     v27[1] = 3221225472;
     v27[2] = sub_10000F3E0;
@@ -2388,9 +2388,9 @@ LABEL_19:
     v28 = v18;
     v29 = &v40;
     v30 = &v44;
-    BYTE1(v21) = v15;
-    LOBYTE(v21) = a7;
-    [v17 resetAndEstablish:v12 resetReason:1 idmsTargetContext:v26 idmsCuttlefishPassword:v25 notifyIdMS:v23 accountSettings:0 isGuitarfish:v21 accountIsW:v27 reply:?];
+    BYTE1(v21) = enabled;
+    LOBYTE(v21) = rv2;
+    [control2 resetAndEstablish:octagonCopy resetReason:1 idmsTargetContext:contextCopy idmsCuttlefishPassword:passwordCopy notifyIdMS:sCopy accountSettings:0 isGuitarfish:v21 accountIsW:v27 reply:?];
 
     v16 = v41;
   }
@@ -2406,27 +2406,27 @@ LABEL_19:
   return v19;
 }
 
-- (int)depart:(id)a3
+- (int)depart:(id)depart
 {
-  v4 = a3;
+  departCopy = depart;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
   v18 = 1;
-  v5 = [(OTControlCLI *)self control];
+  control = [(OTControlCLI *)self control];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_10000F690;
   v14[3] = &unk_1000244C0;
   v14[4] = &v15;
-  [v5 leaveClique:v4 reply:v14];
+  [control leaveClique:departCopy reply:v14];
 
   v6 = [AAFAnalyticsEventSecurity alloc];
-  v7 = [v4 altDSID];
-  v8 = [v4 flowID];
-  v9 = [v4 deviceSessionID];
+  altDSID = [departCopy altDSID];
+  flowID = [departCopy flowID];
+  deviceSessionID = [departCopy deviceSessionID];
   LOBYTE(v13) = 1;
-  v10 = [v6 initWithKeychainCircleMetrics:0 altDSID:v7 flowID:v8 deviceSessionID:v9 eventName:kSecurityRTCEventNameOctagonTrustLost testsAreEnabled:0 canSendMetrics:v13 category:kSecurityRTCEventCategoryAccountDataAccessRecovery];
+  v10 = [v6 initWithKeychainCircleMetrics:0 altDSID:altDSID flowID:flowID deviceSessionID:deviceSessionID eventName:kSecurityRTCEventNameOctagonTrustLost testsAreEnabled:0 canSendMetrics:v13 category:kSecurityRTCEventCategoryAccountDataAccessRecovery];
 
   v11 = [NSError errorWithDomain:kSecurityRTCErrorDomain code:7 description:@"CLI invoked departure"];
   [v10 sendMetricWithResult:1 error:v11];
@@ -2437,88 +2437,88 @@ LABEL_19:
   return v11;
 }
 
-- (int)signOut:(id)a3
+- (int)signOut:(id)out
 {
-  v4 = a3;
+  outCopy = out;
   v8 = 0;
   v9 = &v8;
   v10 = 0x2020000000;
   v11 = 1;
-  v5 = [(OTControlCLI *)self control];
+  control = [(OTControlCLI *)self control];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10000F824;
   v7[3] = &unk_1000244C0;
   v7[4] = &v8;
-  [v5 appleAccountSignedOut:v4 reply:v7];
+  [control appleAccountSignedOut:outCopy reply:v7];
 
-  LODWORD(v5) = *(v9 + 6);
+  LODWORD(control) = *(v9 + 6);
   _Block_object_dispose(&v8, 8);
 
-  return v5;
+  return control;
 }
 
-- (int)signIn:(id)a3
+- (int)signIn:(id)in
 {
-  v4 = a3;
+  inCopy = in;
   v8 = 0;
   v9 = &v8;
   v10 = 0x2020000000;
   v11 = 1;
-  v5 = [(OTControlCLI *)self control];
+  control = [(OTControlCLI *)self control];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10000F9B8;
   v7[3] = &unk_1000244C0;
   v7[4] = &v8;
-  [v5 appleAccountSignedIn:v4 reply:v7];
+  [control appleAccountSignedIn:inCopy reply:v7];
 
-  LODWORD(v5) = *(v9 + 6);
+  LODWORD(control) = *(v9 + 6);
   _Block_object_dispose(&v8, 8);
 
-  return v5;
+  return control;
 }
 
-- (int)startOctagonStateMachine:(id)a3
+- (int)startOctagonStateMachine:(id)machine
 {
-  v4 = a3;
+  machineCopy = machine;
   v8 = 0;
   v9 = &v8;
   v10 = 0x2020000000;
   v11 = 1;
-  v5 = [(OTControlCLI *)self control];
+  control = [(OTControlCLI *)self control];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10000FB4C;
   v7[3] = &unk_1000244C0;
   v7[4] = &v8;
-  [v5 startOctagonStateMachine:v4 reply:v7];
+  [control startOctagonStateMachine:machineCopy reply:v7];
 
-  LODWORD(v5) = *(v9 + 6);
+  LODWORD(control) = *(v9 + 6);
   _Block_object_dispose(&v8, 8);
 
-  return v5;
+  return control;
 }
 
-- (OTControlCLI)initWithOTControl:(id)a3
+- (OTControlCLI)initWithOTControl:(id)control
 {
-  v5 = a3;
+  controlCopy = control;
   v9.receiver = self;
   v9.super_class = OTControlCLI;
   v6 = [(OTControlCLI *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_control, a3);
+    objc_storeStrong(&v6->_control, control);
   }
 
   return v7;
 }
 
-+ (id)annotateStatus:(id)a3
++ (id)annotateStatus:(id)status
 {
-  v3 = a3;
-  v4 = [NSMutableDictionary dictionaryWithDictionary:v3];
+  statusCopy = status;
+  v4 = [NSMutableDictionary dictionaryWithDictionary:statusCopy];
   v5 = [v4 objectForKeyedSubscript:@"contextDump"];
 
   if (v5)
@@ -2569,7 +2569,7 @@ LABEL_19:
         {
           v30 = v9;
           v32 = v4;
-          v33 = v3;
+          v33 = statusCopy;
           v21 = +[NSMutableArray array];
           v35 = 0u;
           v36 = 0u;
@@ -2617,31 +2617,31 @@ LABEL_19:
           v4 = v32;
           v15 = v32;
 
-          v3 = v33;
+          statusCopy = v33;
           v9 = v30;
         }
 
         else
         {
-          v15 = v3;
+          v15 = statusCopy;
         }
       }
 
       else
       {
-        v15 = v3;
+        v15 = statusCopy;
       }
     }
 
     else
     {
-      v15 = v3;
+      v15 = statusCopy;
     }
   }
 
   else
   {
-    v15 = v3;
+    v15 = statusCopy;
   }
 
   return v15;

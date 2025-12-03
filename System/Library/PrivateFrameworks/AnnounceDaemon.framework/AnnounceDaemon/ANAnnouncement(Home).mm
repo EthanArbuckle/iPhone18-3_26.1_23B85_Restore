@@ -8,8 +8,8 @@
 - (id)announcerNameInHome:()Home
 {
   v4 = a3;
-  v5 = [a1 announcer];
-  v6 = [v5 nameInHome:v4];
+  announcer = [self announcer];
+  v6 = [announcer nameInHome:v4];
 
   return v6;
 }
@@ -40,13 +40,13 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v14 + 1) + 8 * i) announcer];
-          if ([v4 containsObject:v10])
+          announcer = [*(*(&v14 + 1) + 8 * i) announcer];
+          if ([v4 containsObject:announcer])
           {
-            [v4 removeObject:v10];
+            [v4 removeObject:announcer];
           }
 
-          [v4 addObject:v10];
+          [v4 addObject:announcer];
         }
 
         v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -55,17 +55,17 @@
       while (v7);
     }
 
-    v11 = [v4 array];
+    array = [v4 array];
   }
 
   else
   {
-    v11 = MEMORY[0x277CBEBF8];
+    array = MEMORY[0x277CBEBF8];
   }
 
   v12 = *MEMORY[0x277D85DE8];
 
-  return v11;
+  return array;
 }
 
 @end

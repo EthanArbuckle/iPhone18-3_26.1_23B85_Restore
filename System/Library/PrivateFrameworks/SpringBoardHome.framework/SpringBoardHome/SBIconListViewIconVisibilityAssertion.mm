@@ -1,7 +1,7 @@
 @interface SBIconListViewIconVisibilityAssertion
-- (SBIconListViewIconVisibilityAssertion)initWithListView:(id)a3 reason:(id)a4;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (SBIconListViewIconVisibilityAssertion)initWithListView:(id)view reason:(id)reason;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (void)dealloc;
 - (void)invalidate;
@@ -9,18 +9,18 @@
 
 @implementation SBIconListViewIconVisibilityAssertion
 
-- (SBIconListViewIconVisibilityAssertion)initWithListView:(id)a3 reason:(id)a4
+- (SBIconListViewIconVisibilityAssertion)initWithListView:(id)view reason:(id)reason
 {
-  v7 = a3;
-  v8 = a4;
+  viewCopy = view;
+  reasonCopy = reason;
   v14.receiver = self;
   v14.super_class = SBIconListViewIconVisibilityAssertion;
   v9 = [(SBIconListViewIconVisibilityAssertion *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_listView, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_listView, view);
+    v11 = [reasonCopy copy];
     reason = v10->_reason;
     v10->_reason = v11;
   }
@@ -49,8 +49,8 @@
 {
   if (![(SBIconListViewIconVisibilityAssertion *)self isInvalidated])
   {
-    v3 = [(SBIconListViewIconVisibilityAssertion *)self listView];
-    [v3 removeShowAllIconsAssertion:self];
+    listView = [(SBIconListViewIconVisibilityAssertion *)self listView];
+    [listView removeShowAllIconsAssertion:self];
 
     [(SBIconListViewIconVisibilityAssertion *)self setInvalidated:1];
   }
@@ -58,30 +58,30 @@
 
 - (id)succinctDescription
 {
-  v2 = [(SBIconListViewIconVisibilityAssertion *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBIconListViewIconVisibilityAssertion *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBIconListViewIconVisibilityAssertion *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBIconListViewIconVisibilityAssertion *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = [(SBIconListViewIconVisibilityAssertion *)self succinctDescriptionBuilder];
-  v5 = [(SBIconListViewIconVisibilityAssertion *)self reason];
-  v6 = [v4 appendObject:v5 withName:@"reason"];
+  succinctDescriptionBuilder = [(SBIconListViewIconVisibilityAssertion *)self succinctDescriptionBuilder];
+  reason = [(SBIconListViewIconVisibilityAssertion *)self reason];
+  v6 = [succinctDescriptionBuilder appendObject:reason withName:@"reason"];
 
-  v7 = [(SBIconListViewIconVisibilityAssertion *)self listView];
-  v8 = [v4 appendPointer:v7 withName:@"listView"];
+  listView = [(SBIconListViewIconVisibilityAssertion *)self listView];
+  v8 = [succinctDescriptionBuilder appendPointer:listView withName:@"listView"];
 
-  return v4;
+  return succinctDescriptionBuilder;
 }
 
 @end

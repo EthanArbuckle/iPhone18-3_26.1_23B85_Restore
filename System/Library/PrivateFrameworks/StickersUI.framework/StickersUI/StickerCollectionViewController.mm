@@ -1,29 +1,29 @@
 @interface StickerCollectionViewController
-- (BOOL)collectionView:(id)a3 canMoveItemAtIndexPath:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (CGRect)editMenuInteraction:(id)a3 targetRectForConfiguration:(id)a4;
-- (_TtC10StickersUI31StickerCollectionViewController)initWithCollectionViewLayout:(id)a3;
-- (_TtC10StickersUI31StickerCollectionViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (BOOL)collectionView:(id)view canMoveItemAtIndexPath:(id)path;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (CGRect)editMenuInteraction:(id)interaction targetRectForConfiguration:(id)configuration;
+- (_TtC10StickersUI31StickerCollectionViewController)initWithCollectionViewLayout:(id)layout;
+- (_TtC10StickersUI31StickerCollectionViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (_TtP10StickersUI38StickerProvidingViewControllerDelegate_)delegate;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (id)collectionView:(id)a3 targetIndexPathForMoveOfItemFromOriginalIndexPath:(id)a4 atCurrentIndexPath:(id)a5 toProposedIndexPath:(id)a6;
-- (id)editMenuInteraction:(id)a3 menuForConfiguration:(id)a4 suggestedActions:(id)a5;
-- (void)avtStickerRecentRenderedWithIdentifier:(id)a3 localizedDescription:(id)a4 image:(id)a5 url:(id)a6 avatarRecordIdentifier:(id)a7 stickerConfigurationIdentifier:(id)a8;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (id)collectionView:(id)view targetIndexPathForMoveOfItemFromOriginalIndexPath:(id)path atCurrentIndexPath:(id)indexPath toProposedIndexPath:(id)proposedIndexPath;
+- (id)editMenuInteraction:(id)interaction menuForConfiguration:(id)configuration suggestedActions:(id)actions;
+- (void)avtStickerRecentRenderedWithIdentifier:(id)identifier localizedDescription:(id)description image:(id)image url:(id)url avatarRecordIdentifier:(id)recordIdentifier stickerConfigurationIdentifier:(id)configurationIdentifier;
 - (void)avtStickerRecentStoreDidChange;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 prefetchItemsAtIndexPaths:(id)a4;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view prefetchItemsAtIndexPaths:(id)paths;
 - (void)dealloc;
-- (void)editMenuInteraction:(id)a3 willDismissMenuForConfiguration:(id)a4 animator:(id)a5;
-- (void)handleLongPress:(id)a3;
-- (void)handleTap:(id)a3;
+- (void)editMenuInteraction:(id)interaction willDismissMenuForConfiguration:(id)configuration animator:(id)animator;
+- (void)handleLongPress:(id)press;
+- (void)handleTap:(id)tap;
 - (void)makeStickerFromPhotoPicker;
 - (void)photoPickerDidDismiss;
-- (void)setDelegate:(id)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)setDelegate:(id)delegate;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation StickerCollectionViewController
@@ -36,10 +36,10 @@
   return Strong;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_26BA55294();
 }
 
@@ -48,16 +48,16 @@
   v11.receiver = self;
   v11.super_class = type metadata accessor for StickerCollectionViewController(0);
   v2 = v11.receiver;
-  v3 = [(StickerCollectionViewController *)&v11 viewDidLoad];
+  viewDidLoad = [(StickerCollectionViewController *)&v11 viewDidLoad];
   v4 = MEMORY[0x277D85000];
-  v5 = (*((*MEMORY[0x277D85000] & *v2) + 0x470))(v3);
+  v5 = (*((*MEMORY[0x277D85000] & *v2) + 0x470))(viewDidLoad);
   (*((*v4 & *v2) + 0x490))(v5);
   sub_26BA586CC();
   (*((*v4 & *v2) + 0x478))(v6, v7);
-  v8 = [v2 view];
-  if (v8)
+  view = [v2 view];
+  if (view)
   {
-    v9 = v8;
+    v9 = view;
     type metadata accessor for KeylineView();
     v10 = sub_26BA84138(v9);
     (*((*v4 & *v2) + 0x438))(v10);
@@ -72,29 +72,29 @@
 - (void)dealloc
 {
   v2 = *((*MEMORY[0x277D85000] & *self) + 0x480);
-  v3 = self;
+  selfCopy = self;
   v2();
-  v4.receiver = v3;
+  v4.receiver = selfCopy;
   v4.super_class = type metadata accessor for StickerCollectionViewController(0);
   [(StickerCollectionViewController *)&v4 dealloc];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v10.receiver = self;
   v10.super_class = type metadata accessor for StickerCollectionViewController(0);
   v4 = v10.receiver;
-  v5 = [(StickerCollectionViewController *)&v10 viewWillAppear:v3];
+  v5 = [(StickerCollectionViewController *)&v10 viewWillAppear:appearCopy];
   v6 = MEMORY[0x277D85000];
   v7 = *(*((*MEMORY[0x277D85000] & *v4) + 0x398))(v5);
   (*(v7 + 416))(v4, &off_287C6F538);
 
-  v8 = [v4 collectionView];
-  if (v8)
+  collectionView = [v4 collectionView];
+  if (collectionView)
   {
-    v9 = v8;
-    [v8 reloadData];
+    v9 = collectionView;
+    [collectionView reloadData];
 
     (*((*v6 & *v4) + 0x220))(1);
   }
@@ -105,63 +105,63 @@
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_26BA591F4(a3);
+  selfCopy = self;
+  sub_26BA591F4(disappear);
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v4.receiver = self;
   v4.super_class = type metadata accessor for StickerCollectionViewController(0);
-  [(StickerCollectionViewController *)&v4 viewDidDisappear:v3];
+  [(StickerCollectionViewController *)&v4 viewDidDisappear:disappearCopy];
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_26BA595EC();
 }
 
 - (void)photoPickerDidDismiss
 {
-  v2 = self;
+  selfCopy = self;
   sub_26BA5A478();
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
   v6 = sub_26BA9AE2C();
   v7 = *(v6 - 8);
   MEMORY[0x28223BE20](v6);
   v9 = &v12 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_26BA9ADDC();
-  v10 = a3;
-  v11 = self;
-  sub_26BA5F41C(v10, v9);
+  viewCopy = view;
+  selfCopy = self;
+  sub_26BA5F41C(viewCopy, v9);
 
   (*(v7 + 8))(v9, v6);
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
   v6 = sub_26BA9AE2C();
   v7 = *(v6 - 8);
   MEMORY[0x28223BE20](v6);
   v9 = &v14 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_26BA9ADDC();
-  v10 = a3;
-  v11 = self;
-  v12 = sub_26BA5FAEC(v10, v9);
+  viewCopy = view;
+  selfCopy = self;
+  v12 = sub_26BA5FAEC(viewCopy, v9);
 
   (*(v7 + 8))(v9, v6);
 
   return v12;
 }
 
-- (id)collectionView:(id)a3 targetIndexPathForMoveOfItemFromOriginalIndexPath:(id)a4 atCurrentIndexPath:(id)a5 toProposedIndexPath:(id)a6
+- (id)collectionView:(id)view targetIndexPathForMoveOfItemFromOriginalIndexPath:(id)path atCurrentIndexPath:(id)indexPath toProposedIndexPath:(id)proposedIndexPath
 {
   v7 = sub_26BA9AE2C();
   v8 = *(v7 - 8);
@@ -177,7 +177,7 @@
   sub_26BA9ADDC();
   sub_26BA9ADDC();
   v20 = *((*MEMORY[0x277D85000] & *self) + 0x3D0);
-  v21 = self;
+  selfCopy = self;
   if (v20())
   {
     v22 = sub_26BA9ADFC();
@@ -213,25 +213,25 @@
 
 - (void)makeStickerFromPhotoPicker
 {
-  v2 = self;
+  selfCopy = self;
   sub_26BA617A8();
 }
 
-- (_TtC10StickersUI31StickerCollectionViewController)initWithCollectionViewLayout:(id)a3
+- (_TtC10StickersUI31StickerCollectionViewController)initWithCollectionViewLayout:(id)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC10StickersUI31StickerCollectionViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC10StickersUI31StickerCollectionViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)avtStickerRecentRenderedWithIdentifier:(id)a3 localizedDescription:(id)a4 image:(id)a5 url:(id)a6 avatarRecordIdentifier:(id)a7 stickerConfigurationIdentifier:(id)a8
+- (void)avtStickerRecentRenderedWithIdentifier:(id)identifier localizedDescription:(id)description image:(id)image url:(id)url avatarRecordIdentifier:(id)recordIdentifier stickerConfigurationIdentifier:(id)configurationIdentifier
 {
   v10 = sub_26BA9ACCC();
   v11 = *(v10 - 8);
@@ -243,8 +243,8 @@
   v17 = &v20 - ((v16 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_26BA9AD3C();
   sub_26BA9AC7C();
-  v18 = a5;
-  v19 = self;
+  imageCopy = image;
+  selfCopy = self;
   sub_26BA726A0(v17);
 
   (*(v11 + 8))(v13, v10);
@@ -253,43 +253,43 @@
 
 - (void)avtStickerRecentStoreDidChange
 {
-  v2 = self;
+  selfCopy = self;
   StickerCollectionViewController.avtStickerRecentStoreDidChange()();
 }
 
-- (void)collectionView:(id)a3 prefetchItemsAtIndexPaths:(id)a4
+- (void)collectionView:(id)view prefetchItemsAtIndexPaths:(id)paths
 {
   sub_26BA9AE2C();
   v5 = sub_26BA9B7FC();
   v6 = *((*MEMORY[0x277D85000] & *self) + 0x398);
-  v7 = self;
+  selfCopy = self;
   v8 = *v6();
   (*(v8 + 504))(v5);
 }
 
-- (void)handleLongPress:(id)a3
+- (void)handleLongPress:(id)press
 {
-  v4 = a3;
-  v5 = self;
-  sub_26BA6ECE4(v4);
+  pressCopy = press;
+  selfCopy = self;
+  sub_26BA6ECE4(pressCopy);
 }
 
-- (id)editMenuInteraction:(id)a3 menuForConfiguration:(id)a4 suggestedActions:(id)a5
+- (id)editMenuInteraction:(id)interaction menuForConfiguration:(id)configuration suggestedActions:(id)actions
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
-  v10 = sub_26BA73284(v8);
+  interactionCopy = interaction;
+  configurationCopy = configuration;
+  selfCopy = self;
+  v10 = sub_26BA73284(configurationCopy);
 
   return v10;
 }
 
-- (CGRect)editMenuInteraction:(id)a3 targetRectForConfiguration:(id)a4
+- (CGRect)editMenuInteraction:(id)interaction targetRectForConfiguration:(id)configuration
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_26BA750D4(v7);
+  interactionCopy = interaction;
+  configurationCopy = configuration;
+  selfCopy = self;
+  sub_26BA750D4(configurationCopy);
   v10 = v9;
   v12 = v11;
   v14 = v13;
@@ -306,25 +306,25 @@
   return result;
 }
 
-- (void)editMenuInteraction:(id)a3 willDismissMenuForConfiguration:(id)a4 animator:(id)a5
+- (void)editMenuInteraction:(id)interaction willDismissMenuForConfiguration:(id)configuration animator:(id)animator
 {
-  v7 = a3;
-  v8 = a4;
+  interactionCopy = interaction;
+  configurationCopy = configuration;
   swift_unknownObjectRetain();
-  v9 = self;
+  selfCopy = self;
   _s10StickersUI31StickerCollectionViewControllerC19editMenuInteraction_011willDismissH3For8animatorySo06UIEdithI0C_So0nH13ConfigurationCSo0nhI9Animating_ptF_0();
 
   swift_unknownObjectRelease();
 }
 
-- (void)handleTap:(id)a3
+- (void)handleTap:(id)tap
 {
-  v4 = a3;
-  v5 = self;
-  sub_26BA6F520(v4);
+  tapCopy = tap;
+  selfCopy = self;
+  sub_26BA6F520(tapCopy);
 }
 
-- (BOOL)collectionView:(id)a3 canMoveItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view canMoveItemAtIndexPath:(id)path
 {
   v5 = sub_26BA9AE2C();
   v6 = *(v5 - 8);
@@ -332,19 +332,19 @@
   v8 = &v13 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_26BA9ADDC();
   v9 = *((*MEMORY[0x277D85000] & *self) + 0x4A8);
-  v10 = self;
+  selfCopy = self;
   v11 = v9(v8);
 
   (*(v6 + 8))(v8, v5);
   return (v11 & 1) == 0;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = _s10StickersUI31StickerCollectionViewControllerC17gestureRecognizer_13shouldReceiveSbSo09UIGestureH0C_So7UITouchCtF_0(v6);
+  recognizerCopy = recognizer;
+  touchCopy = touch;
+  selfCopy = self;
+  v9 = _s10StickersUI31StickerCollectionViewControllerC17gestureRecognizer_13shouldReceiveSbSo09UIGestureH0C_So7UITouchCtF_0(recognizerCopy);
 
   return v9 & 1;
 }

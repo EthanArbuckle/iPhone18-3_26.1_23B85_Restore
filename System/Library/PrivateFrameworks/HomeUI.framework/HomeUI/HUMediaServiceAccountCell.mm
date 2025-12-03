@@ -1,33 +1,33 @@
 @interface HUMediaServiceAccountCell
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5;
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority;
 - (HFItem)item;
-- (HUMediaServiceAccountCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (HUMediaServiceAccountCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)layoutSubviews;
-- (void)setItem:(id)a3;
-- (void)updateUIWithAnimation:(BOOL)a3;
+- (void)setItem:(id)item;
+- (void)updateUIWithAnimation:(BOOL)animation;
 @end
 
 @implementation HUMediaServiceAccountCell
 
-- (HUMediaServiceAccountCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (HUMediaServiceAccountCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v12.receiver = self;
   v12.super_class = HUMediaServiceAccountCell;
-  v4 = [(HUMediaServiceAccountCell *)&v12 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(HUMediaServiceAccountCell *)&v12 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
     [(HUMediaServiceAccountCell *)v4 setSelectionStyle:0];
     [(HUMediaServiceAccountCell *)v5 setUserInteractionEnabled:0];
     v6 = [HUMediaServiceAccountView alloc];
-    v7 = [(HUMediaServiceAccountCell *)v5 contentView];
-    [v7 bounds];
+    contentView = [(HUMediaServiceAccountCell *)v5 contentView];
+    [contentView bounds];
     v8 = [(HUMediaServiceAccountView *)v6 initWithFrame:?];
     mediaServiceAccountView = v5->_mediaServiceAccountView;
     v5->_mediaServiceAccountView = v8;
 
-    v10 = [(HUMediaServiceAccountCell *)v5 contentView];
-    [v10 addSubview:v5->_mediaServiceAccountView];
+    contentView2 = [(HUMediaServiceAccountCell *)v5 contentView];
+    [contentView2 addSubview:v5->_mediaServiceAccountView];
   }
 
   return v5;
@@ -38,24 +38,24 @@
   v13.receiver = self;
   v13.super_class = HUMediaServiceAccountCell;
   [(HUMediaServiceAccountCell *)&v13 layoutSubviews];
-  v3 = [(HUMediaServiceAccountCell *)self contentView];
-  [v3 bounds];
+  contentView = [(HUMediaServiceAccountCell *)self contentView];
+  [contentView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(HUMediaServiceAccountCell *)self mediaServiceAccountView];
-  [v12 setFrame:{v5, v7, v9, v11}];
+  mediaServiceAccountView = [(HUMediaServiceAccountCell *)self mediaServiceAccountView];
+  [mediaServiceAccountView setFrame:{v5, v7, v9, v11}];
 }
 
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority
 {
-  height = a3.height;
-  width = a3.width;
-  v9 = [(HUMediaServiceAccountCell *)self mediaServiceAccountView];
-  *&v10 = a4;
-  *&v11 = a5;
-  [v9 systemLayoutSizeFittingSize:width withHorizontalFittingPriority:height verticalFittingPriority:{v10, v11}];
+  height = size.height;
+  width = size.width;
+  mediaServiceAccountView = [(HUMediaServiceAccountCell *)self mediaServiceAccountView];
+  *&v10 = priority;
+  *&v11 = fittingPriority;
+  [mediaServiceAccountView systemLayoutSizeFittingSize:width withHorizontalFittingPriority:height verticalFittingPriority:{v10, v11}];
   v13 = v12;
   v15 = v14;
 
@@ -68,24 +68,24 @@
 
 - (HFItem)item
 {
-  v2 = [(HUMediaServiceAccountCell *)self mediaServiceAccountView];
-  v3 = [v2 item];
+  mediaServiceAccountView = [(HUMediaServiceAccountCell *)self mediaServiceAccountView];
+  item = [mediaServiceAccountView item];
 
-  return v3;
+  return item;
 }
 
-- (void)setItem:(id)a3
+- (void)setItem:(id)item
 {
-  v4 = a3;
-  v5 = [(HUMediaServiceAccountCell *)self mediaServiceAccountView];
-  [v5 setItem:v4];
+  itemCopy = item;
+  mediaServiceAccountView = [(HUMediaServiceAccountCell *)self mediaServiceAccountView];
+  [mediaServiceAccountView setItem:itemCopy];
 }
 
-- (void)updateUIWithAnimation:(BOOL)a3
+- (void)updateUIWithAnimation:(BOOL)animation
 {
-  v3 = a3;
-  v4 = [(HUMediaServiceAccountCell *)self mediaServiceAccountView];
-  [v4 updateUIWithAnimation:v3];
+  animationCopy = animation;
+  mediaServiceAccountView = [(HUMediaServiceAccountCell *)self mediaServiceAccountView];
+  [mediaServiceAccountView updateUIWithAnimation:animationCopy];
 }
 
 @end

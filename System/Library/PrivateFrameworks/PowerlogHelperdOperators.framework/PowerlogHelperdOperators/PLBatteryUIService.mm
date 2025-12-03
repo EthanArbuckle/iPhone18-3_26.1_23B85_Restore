@@ -1,27 +1,27 @@
 @interface PLBatteryUIService
 + (void)load;
-- (BOOL)dateIntervals:(id)a3 containDate:(id)a4;
+- (BOOL)dateIntervals:(id)intervals containDate:(id)date;
 - (BOOL)demoMode;
-- (BOOL)isAppEntryValidForAdjustment:(id)a3 withQueryType:(int)a4;
+- (BOOL)isAppEntryValidForAdjustment:(id)adjustment withQueryType:(int)type;
 - (BOOL)writeOutputDemo;
 - (PLBatteryUIService)init;
-- (_PLTimeIntervalRange)getDataRangeWithNow:(id)a3;
-- (_PLTimeIntervalRange)getlastDayRangeWithNow:(id)a3 withNowSystem:(id)a4;
-- (_PLTimeIntervalRange)getlastXDayRangeWithNow:(id)a3 withNowSystem:(id)a4;
-- (double)adjustScreenOffTimeSecsWithGraphValue:(double)a3 withGraphScreenOnSecs:(double)a4 queryType:(int)a5 andBreakdownEntries:(id)a6;
-- (double)adjustScreenOnTimeSecsWithGraphValue:(double)a3 queryType:(int)a4 andBreakdownEntries:(id)a5;
-- (id)batteryBreakdownAndGraphWithPayload:(id)a3;
-- (id)batteryBreakdownWithPayload:(id)a3 withDayRange:(_PLTimeIntervalRange)a4 withXDayRange:(_PLTimeIntervalRange)a5 withDataRange:(_PLTimeIntervalRange)a6;
-- (id)batteryLevelsAndChargingIntervalsInRange:(_PLTimeIntervalRange)a3 withDataRange:(_PLTimeIntervalRange)a4;
-- (id)dateAndBatteryLevelPointsInRange:(_PLTimeIntervalRange)a3;
+- (_PLTimeIntervalRange)getDataRangeWithNow:(id)now;
+- (_PLTimeIntervalRange)getlastDayRangeWithNow:(id)now withNowSystem:(id)system;
+- (_PLTimeIntervalRange)getlastXDayRangeWithNow:(id)now withNowSystem:(id)system;
+- (double)adjustScreenOffTimeSecsWithGraphValue:(double)value withGraphScreenOnSecs:(double)secs queryType:(int)type andBreakdownEntries:(id)entries;
+- (double)adjustScreenOnTimeSecsWithGraphValue:(double)value queryType:(int)type andBreakdownEntries:(id)entries;
+- (id)batteryBreakdownAndGraphWithPayload:(id)payload;
+- (id)batteryBreakdownWithPayload:(id)payload withDayRange:(_PLTimeIntervalRange)range withXDayRange:(_PLTimeIntervalRange)dayRange withDataRange:(_PLTimeIntervalRange)dataRange;
+- (id)batteryLevelsAndChargingIntervalsInRange:(_PLTimeIntervalRange)range withDataRange:(_PLTimeIntervalRange)dataRange;
+- (id)dateAndBatteryLevelPointsInRange:(_PLTimeIntervalRange)range;
 - (id)demoModePath;
-- (id)entriesInRange:(_PLTimeIntervalRange)a3 fromEntries:(id)a4;
-- (id)generateTapBucketsForBucketSize:(int)a3 withNumberOfBuckets:(int)a4 withNowTime:(id)a5 withDrainThreshold:(double)a6 withQueryType:(int)a7 withDataRange:(_PLTimeIntervalRange)a8;
-- (id)getLPMIntervalsSpanningRange:(_PLTimeIntervalRange)a3;
+- (id)entriesInRange:(_PLTimeIntervalRange)range fromEntries:(id)entries;
+- (id)generateTapBucketsForBucketSize:(int)size withNumberOfBuckets:(int)buckets withNowTime:(id)time withDrainThreshold:(double)threshold withQueryType:(int)type withDataRange:(_PLTimeIntervalRange)range;
+- (id)getLPMIntervalsSpanningRange:(_PLTimeIntervalRange)range;
 - (id)getLastChargeData;
-- (id)lastXDaysWithRange:(_PLTimeIntervalRange)a3 withDataRange:(_PLTimeIntervalRange)a4 withQueryType:(int)a5 andBatteryBreakdown:(id)a6;
-- (id)modelsWithPayload:(id)a3;
-- (id)screenTimeInRange:(_PLTimeIntervalRange)a3 withBucketSize:(double)a4 withNumBuckets:(int)a5 withDataRange:(_PLTimeIntervalRange)a6 withQueryType:(int)a7 andBatteryBreakdown:(id)a8;
+- (id)lastXDaysWithRange:(_PLTimeIntervalRange)range withDataRange:(_PLTimeIntervalRange)dataRange withQueryType:(int)type andBatteryBreakdown:(id)breakdown;
+- (id)modelsWithPayload:(id)payload;
+- (id)screenTimeInRange:(_PLTimeIntervalRange)range withBucketSize:(double)size withNumBuckets:(int)buckets withDataRange:(_PLTimeIntervalRange)dataRange withQueryType:(int)type andBatteryBreakdown:(id)breakdown;
 - (void)demoModePath;
 - (void)getLastChargeData;
 - (void)initOperatorDependancies;
@@ -33,7 +33,7 @@
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___PLBatteryUIService;
   objc_msgSendSuper2(&v2, sel_load);
 }
@@ -42,7 +42,7 @@
 {
   if (([MEMORY[0x277D3F208] isHomePod] & 1) != 0 || +[PLUtilities isPerfPowerMetricd](PLUtilities, "isPerfPowerMetricd"))
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -50,10 +50,10 @@
     v5.receiver = self;
     v5.super_class = PLBatteryUIService;
     self = [(PLOperator *)&v5 init];
-    v3 = self;
+    selfCopy = self;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 - (void)initOperatorDependancies
@@ -178,19 +178,19 @@ uint64_t __46__PLBatteryUIService_initOperatorDependancies__block_invoke_2_43(ui
   return result;
 }
 
-- (_PLTimeIntervalRange)getlastDayRangeWithNow:(id)a3 withNowSystem:(id)a4
+- (_PLTimeIntervalRange)getlastDayRangeWithNow:(id)now withNowSystem:(id)system
 {
   v37 = *MEMORY[0x277D85DE8];
-  v4 = a4;
-  v5 = [MEMORY[0x277CBEA80] currentCalendar];
-  v6 = [v5 components:60 fromDate:v4];
+  systemCopy = system;
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  v6 = [currentCalendar components:60 fromDate:systemCopy];
   v7 = [v6 valueForComponent:32];
   v8 = PLLogCommon();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    v30 = [v5 dateFromComponents:v6];
+    v30 = [currentCalendar dateFromComponents:v6];
     *buf = 138412802;
-    v32 = v4;
+    v32 = systemCopy;
     v33 = 2112;
     v34 = v30;
     v35 = 2048;
@@ -212,16 +212,16 @@ uint64_t __46__PLBatteryUIService_initOperatorDependancies__block_invoke_2_43(ui
   }
 
   [v6 setValue:v10 forComponent:32];
-  v12 = [v5 dateFromComponents:v6];
+  v12 = [currentCalendar dateFromComponents:v6];
   v13 = PLLogCommon();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
     [PLBatteryUIService getlastDayRangeWithNow:withNowSystem:];
   }
 
-  v14 = [v12 convertFromSystemToMonotonic];
-  v15 = [v14 dateByAddingTimeInterval:-86400.0];
-  v16 = v14;
+  convertFromSystemToMonotonic = [v12 convertFromSystemToMonotonic];
+  v15 = [convertFromSystemToMonotonic dateByAddingTimeInterval:-86400.0];
+  v16 = convertFromSystemToMonotonic;
   [v15 timeIntervalSince1970];
   v18 = v17;
   [v16 timeIntervalSince1970];
@@ -249,14 +249,14 @@ uint64_t __46__PLBatteryUIService_initOperatorDependancies__block_invoke_2_43(ui
   return result;
 }
 
-- (_PLTimeIntervalRange)getlastXDayRangeWithNow:(id)a3 withNowSystem:(id)a4
+- (_PLTimeIntervalRange)getlastXDayRangeWithNow:(id)now withNowSystem:(id)system
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a4;
-  v5 = [MEMORY[0x277CBEAA8] nearestMidnightAfterDate:v4];
-  v6 = [v5 convertFromSystemToMonotonic];
-  v7 = [v6 dateByAddingTimeInterval:-864000.0];
-  v8 = v6;
+  systemCopy = system;
+  v5 = [MEMORY[0x277CBEAA8] nearestMidnightAfterDate:systemCopy];
+  convertFromSystemToMonotonic = [v5 convertFromSystemToMonotonic];
+  v7 = [convertFromSystemToMonotonic dateByAddingTimeInterval:-864000.0];
+  v8 = convertFromSystemToMonotonic;
   [v7 timeIntervalSince1970];
   v10 = v9;
   [v8 timeIntervalSince1970];
@@ -266,7 +266,7 @@ uint64_t __46__PLBatteryUIService_initOperatorDependancies__block_invoke_2_43(ui
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412802;
-    v24 = v4;
+    v24 = systemCopy;
     v25 = 2112;
     v26 = v5;
     v27 = 2112;
@@ -297,19 +297,19 @@ uint64_t __46__PLBatteryUIService_initOperatorDependancies__block_invoke_2_43(ui
   return result;
 }
 
-- (_PLTimeIntervalRange)getDataRangeWithNow:(id)a3
+- (_PLTimeIntervalRange)getDataRangeWithNow:(id)now
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  nowCopy = now;
   v5 = *MEMORY[0x277D3F5B8];
   v6 = [(PLOperator *)PLAppTimeService entryKeyForType:*MEMORY[0x277D3F5B8] andName:@"UsageTime"];
   v36 = [MEMORY[0x277D3F128] entryKeyForType:v5 andName:*MEMORY[0x277D3F318]];
-  v7 = [(PLOperator *)self storage];
-  v8 = [v7 firstEntryForKey:v6];
+  storage = [(PLOperator *)self storage];
+  v8 = [storage firstEntryForKey:v6];
 
   if (v8)
   {
-    v9 = [v8 entryDate];
+    entryDate = [v8 entryDate];
     v10 = PLLogCommon();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
@@ -325,15 +325,15 @@ uint64_t __46__PLBatteryUIService_initOperatorDependancies__block_invoke_2_43(ui
       [PLBatteryUIService getDataRangeWithNow:];
     }
 
-    v9 = v4;
+    entryDate = nowCopy;
   }
 
-  v12 = [(PLOperator *)self storage];
-  v13 = [v12 firstEntryForKey:v36];
+  storage2 = [(PLOperator *)self storage];
+  v13 = [storage2 firstEntryForKey:v36];
 
   if (v13)
   {
-    v14 = [v13 entryDate];
+    entryDate2 = [v13 entryDate];
     v15 = PLLogCommon();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
     {
@@ -349,11 +349,11 @@ uint64_t __46__PLBatteryUIService_initOperatorDependancies__block_invoke_2_43(ui
       [PLBatteryUIService getDataRangeWithNow:];
     }
 
-    v14 = v4;
+    entryDate2 = nowCopy;
   }
 
-  v17 = [v14 laterDate:v9];
-  v18 = v4;
+  v17 = [entryDate2 laterDate:entryDate];
+  v18 = nowCopy;
   [v17 timeIntervalSince1970];
   v20 = v19;
   [v18 timeIntervalSince1970];
@@ -367,14 +367,14 @@ uint64_t __46__PLBatteryUIService_initOperatorDependancies__block_invoke_2_43(ui
     v35 = v8;
     [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:v20];
     v26 = v13;
-    v27 = v9;
+    v27 = entryDate;
     v29 = v28 = v6;
     v30 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:v20 + v23];
     v31 = [v25 stringWithFormat:@"Start: %@, End %@", v29, v30];
 
     v8 = v35;
     v6 = v28;
-    v9 = v27;
+    entryDate = v27;
     v13 = v26;
     *buf = 138412290;
     v38 = v31;
@@ -389,43 +389,43 @@ uint64_t __46__PLBatteryUIService_initOperatorDependancies__block_invoke_2_43(ui
   return result;
 }
 
-- (id)batteryBreakdownAndGraphWithPayload:(id)a3
+- (id)batteryBreakdownAndGraphWithPayload:(id)payload
 {
   v74 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  payloadCopy = payload;
   if ([(PLBatteryUIService *)self demoMode])
   {
-    v5 = [(PLBatteryUIService *)self demoModePath];
+    demoModePath = [(PLBatteryUIService *)self demoModePath];
     v6 = PLLogCommon();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v73 = v5;
+      v73 = demoModePath;
       _os_log_impl(&dword_25EE51000, v6, OS_LOG_TYPE_INFO, "BUI Demo mode enabled, using plist at %@", buf, 0xCu);
     }
 
-    v7 = [MEMORY[0x277CBEAC0] dictionaryWithContentsOfFile:v5];
-    v8 = v7;
+    v7 = [MEMORY[0x277CBEAC0] dictionaryWithContentsOfFile:demoModePath];
+    convertFromMonotonicToSystem = v7;
     if (v7)
     {
-      v9 = [v7 mutableCopy];
+      dictionary = [v7 mutableCopy];
     }
 
     else
     {
-      v9 = 0;
+      dictionary = 0;
     }
   }
 
   else
   {
-    v5 = [MEMORY[0x277CBEAA8] monotonicDate];
-    v8 = [v5 convertFromMonotonicToSystem];
+    demoModePath = [MEMORY[0x277CBEAA8] monotonicDate];
+    convertFromMonotonicToSystem = [demoModePath convertFromMonotonicToSystem];
     v10 = PLLogCommon();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v73 = v8;
+      v73 = convertFromMonotonicToSystem;
       _os_log_impl(&dword_25EE51000, v10, OS_LOG_TYPE_INFO, "Received xpc request at system time: %@", buf, 0xCu);
     }
 
@@ -435,46 +435,46 @@ uint64_t __46__PLBatteryUIService_initOperatorDependancies__block_invoke_2_43(ui
       [PLBatteryUIService batteryBreakdownAndGraphWithPayload:];
     }
 
-    [(PLBatteryUIService *)self getlastDayRangeWithNow:v5 withNowSystem:v8];
+    [(PLBatteryUIService *)self getlastDayRangeWithNow:demoModePath withNowSystem:convertFromMonotonicToSystem];
     v13 = v12;
     v15 = v14;
-    [(PLBatteryUIService *)self getlastXDayRangeWithNow:v5 withNowSystem:v8];
+    [(PLBatteryUIService *)self getlastXDayRangeWithNow:demoModePath withNowSystem:convertFromMonotonicToSystem];
     v17 = v16;
     v19 = v18;
-    [(PLBatteryUIService *)self getDataRangeWithNow:v5];
+    [(PLBatteryUIService *)self getDataRangeWithNow:demoModePath];
     v21 = v20;
     v23 = v22;
     v24 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:v13 + v15];
-    v25 = [v24 convertFromMonotonicToSystem];
-    [v25 timeIntervalSince1970];
+    convertFromMonotonicToSystem2 = [v24 convertFromMonotonicToSystem];
+    [convertFromMonotonicToSystem2 timeIntervalSince1970];
     v27 = v26;
 
-    v9 = [MEMORY[0x277CBEB38] dictionary];
-    [v9 setObject:&unk_28714B108 forKeyedSubscript:@"PLBatteryUIXPCVersionKey"];
-    v28 = [(PLBatteryUIService *)self batteryBreakdownWithPayload:v4 withDayRange:v13 withXDayRange:v15 withDataRange:v17, v19, v21, v23];
-    [v9 setObject:v28 forKeyedSubscript:@"Breakdown"];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    [dictionary setObject:&unk_28714B108 forKeyedSubscript:@"PLBatteryUIXPCVersionKey"];
+    v28 = [(PLBatteryUIService *)self batteryBreakdownWithPayload:payloadCopy withDayRange:v13 withXDayRange:v15 withDataRange:v17, v19, v21, v23];
+    [dictionary setObject:v28 forKeyedSubscript:@"Breakdown"];
 
-    v70 = v4;
-    v29 = [v4 objectForKeyedSubscript:@"PLBatteryUIQueryTypeKey"];
-    v30 = [v29 intValue];
-    v31 = [v9 objectForKeyedSubscript:@"Breakdown"];
-    v32 = [(PLBatteryUIService *)self modelsForGraphWithDayRange:v30 withXDayRange:v31 withDataRange:v13 withQueryType:v15 andBatteryBreakdown:v17, v19, v21, v23];
-    [v9 setObject:v32 forKeyedSubscript:@"Graph"];
+    v70 = payloadCopy;
+    v29 = [payloadCopy objectForKeyedSubscript:@"PLBatteryUIQueryTypeKey"];
+    intValue = [v29 intValue];
+    v31 = [dictionary objectForKeyedSubscript:@"Breakdown"];
+    v32 = [(PLBatteryUIService *)self modelsForGraphWithDayRange:intValue withXDayRange:v31 withDataRange:v13 withQueryType:v15 andBatteryBreakdown:v17, v19, v21, v23];
+    [dictionary setObject:v32 forKeyedSubscript:@"Graph"];
 
     v33 = [MEMORY[0x277CCABB0] numberWithDouble:v27];
-    [v9 setObject:v33 forKeyedSubscript:@"endOfDay"];
+    [dictionary setObject:v33 forKeyedSubscript:@"endOfDay"];
 
-    [v8 timeIntervalSince1970];
+    [convertFromMonotonicToSystem timeIntervalSince1970];
     v34 = [MEMORY[0x277CCABB0] numberWithDouble:?];
-    [v9 setObject:v34 forKeyedSubscript:@"PLBatteryUIQueryTime"];
+    [dictionary setObject:v34 forKeyedSubscript:@"PLBatteryUIQueryTime"];
 
-    v35 = [(PLBatteryUIService *)self getLastChargeData];
-    if (v35)
+    getLastChargeData = [(PLBatteryUIService *)self getLastChargeData];
+    if (getLastChargeData)
     {
-      [v9 setObject:v35 forKeyedSubscript:@"PLBatteryUILastChargeKey"];
+      [dictionary setObject:getLastChargeData forKeyedSubscript:@"PLBatteryUILastChargeKey"];
     }
 
-    v69 = v35;
+    v69 = getLastChargeData;
     v36 = PLLogCommon();
     if (os_log_type_enabled(v36, OS_LOG_TYPE_INFO))
     {
@@ -529,17 +529,17 @@ uint64_t __46__PLBatteryUIService_initOperatorDependancies__block_invoke_2_43(ui
     }
 
     v71 = 0;
-    v54 = [v9 writeToURL:v52 error:&v71];
+    v54 = [dictionary writeToURL:v52 error:&v71];
     v55 = v71;
     if (v54)
     {
       v68 = v44;
-      v56 = v8;
+      v56 = convertFromMonotonicToSystem;
       v57 = v55;
       v58 = v45;
       v59 = v47;
-      v60 = [v52 path];
-      [PLUtilities setMobileOwnerForFile:v60];
+      path = [v52 path];
+      [PLUtilities setMobileOwnerForFile:path];
 
       v61 = PLLogCommon();
       v47 = v59;
@@ -550,7 +550,7 @@ uint64_t __46__PLBatteryUIService_initOperatorDependancies__block_invoke_2_43(ui
 
       v45 = v58;
       v55 = v57;
-      v8 = v56;
+      convertFromMonotonicToSystem = v56;
       v44 = v68;
     }
 
@@ -588,8 +588,8 @@ uint64_t __46__PLBatteryUIService_initOperatorDependancies__block_invoke_2_43(ui
           [PLBatteryUIService batteryBreakdownAndGraphWithPayload:];
         }
 
-        v64 = v9;
-        v9 = 0;
+        v64 = dictionary;
+        dictionary = 0;
       }
 
       v65 = v69;
@@ -600,24 +600,24 @@ uint64_t __46__PLBatteryUIService_initOperatorDependancies__block_invoke_2_43(ui
       v65 = v69;
     }
 
-    v4 = v70;
+    payloadCopy = v70;
   }
 
   v66 = *MEMORY[0x277D85DE8];
 
-  return v9;
+  return dictionary;
 }
 
-- (id)batteryBreakdownWithPayload:(id)a3 withDayRange:(_PLTimeIntervalRange)a4 withXDayRange:(_PLTimeIntervalRange)a5 withDataRange:(_PLTimeIntervalRange)a6
+- (id)batteryBreakdownWithPayload:(id)payload withDayRange:(_PLTimeIntervalRange)range withXDayRange:(_PLTimeIntervalRange)dayRange withDataRange:(_PLTimeIntervalRange)dataRange
 {
-  length = a6.length;
-  location = a6.location;
-  v8 = a5.length;
-  v9 = a5.location;
-  v10 = a4.length;
-  v11 = a4.location;
+  length = dataRange.length;
+  location = dataRange.location;
+  v8 = dayRange.length;
+  v9 = dayRange.location;
+  v10 = range.length;
+  v11 = range.location;
   v100 = *MEMORY[0x277D85DE8];
-  v13 = a3;
+  payloadCopy = payload;
   [(PLBatteryUIService *)self incrementAggdKey];
   v14 = v11 + v10;
   if (v11 < location && v14 > location)
@@ -755,9 +755,9 @@ LABEL_34:
     _os_log_impl(&dword_25EE51000, v36, OS_LOG_TYPE_INFO, "xDay: %@ -> %@", buf, 0x16u);
   }
 
-  v47 = [v13 objectForKeyedSubscript:@"PLBatteryUIQueryTypeKey"];
+  v47 = [payloadCopy objectForKeyedSubscript:@"PLBatteryUIQueryTypeKey"];
 
-  v48 = [v47 intValue];
+  intValue = [v47 intValue];
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
     v49 = objc_opt_class();
@@ -773,12 +773,12 @@ LABEL_34:
 
     if (batteryBreakdownWithPayload_withDayRange_withXDayRange_withDataRange__classDebugEnabled == 1)
     {
-      v50 = [MEMORY[0x277CCACA8] stringWithFormat:@"queryType=%i", v48];
+      v50 = [MEMORY[0x277CCACA8] stringWithFormat:@"queryType=%i", intValue];
       v51 = MEMORY[0x277D3F178];
       v52 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLBatteryUIService.m"];
-      v53 = [v52 lastPathComponent];
+      lastPathComponent = [v52 lastPathComponent];
       v54 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBatteryUIService batteryBreakdownWithPayload:withDayRange:withXDayRange:withDataRange:]"];
-      [v51 logMessage:v50 fromFile:v53 fromFunction:v54 fromLineNumber:296];
+      [v51 logMessage:v50 fromFile:lastPathComponent fromFunction:v54 fromLineNumber:296];
 
       v55 = PLLogCommon();
       if (os_log_type_enabled(v55, OS_LOG_TYPE_DEBUG))
@@ -788,7 +788,7 @@ LABEL_34:
     }
   }
 
-  v56 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v57 = PLLogCommon();
   if (os_log_type_enabled(v57, OS_LOG_TYPE_INFO))
   {
@@ -796,8 +796,8 @@ LABEL_34:
     _os_log_impl(&dword_25EE51000, v57, OS_LOG_TYPE_INFO, "Computing last day breakdown", buf, 2u);
   }
 
-  v58 = [(PLBatteryBreakdownService *)self batteryBreakdownWithTimeRange:v48 withDataRange:v11 withEntryTimeInterval:v90 withQueryType:location, length, 3600.0];
-  [v56 setObject:v58 forKeyedSubscript:@"PLBatteryUIQueryRangeDayKey"];
+  v58 = [(PLBatteryBreakdownService *)self batteryBreakdownWithTimeRange:intValue withDataRange:v11 withEntryTimeInterval:v90 withQueryType:location, length, 3600.0];
+  [dictionary setObject:v58 forKeyedSubscript:@"PLBatteryUIQueryRangeDayKey"];
   v59 = PLLogCommon();
   if (os_log_type_enabled(v59, OS_LOG_TYPE_INFO))
   {
@@ -805,8 +805,8 @@ LABEL_34:
     _os_log_impl(&dword_25EE51000, v59, OS_LOG_TYPE_INFO, "Computing week breakdown", buf, 2u);
   }
 
-  v60 = [(PLBatteryBreakdownService *)self batteryBreakdownWithTimeRange:v48 withDataRange:v9 withEntryTimeInterval:v91 withQueryType:location, length, 3600.0];
-  [v56 setObject:v60 forKeyedSubscript:@"PLBatteryUIQueryRangeWeekKey"];
+  v60 = [(PLBatteryBreakdownService *)self batteryBreakdownWithTimeRange:intValue withDataRange:v9 withEntryTimeInterval:v91 withQueryType:location, length, 3600.0];
+  [dictionary setObject:v60 forKeyedSubscript:@"PLBatteryUIQueryRangeWeekKey"];
 
   v61 = PLLogCommon();
   if (os_log_type_enabled(v61, OS_LOG_TYPE_INFO))
@@ -817,8 +817,8 @@ LABEL_34:
 
   v62 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:v92];
   [(PLBatteryBreakdownService *)self totalSumEnergyRatioCutOff];
-  v64 = [(PLBatteryUIService *)self generateTapBucketsForBucketSize:3600 withNumberOfBuckets:24 withNowTime:v62 withDrainThreshold:v48 withQueryType:v63 / 24.0 withDataRange:location, length];
-  [v56 setObject:v64 forKeyedSubscript:@"PLBatteryUIQueryRangeDayTapKey"];
+  v64 = [(PLBatteryUIService *)self generateTapBucketsForBucketSize:3600 withNumberOfBuckets:24 withNowTime:v62 withDrainThreshold:intValue withQueryType:v63 / 24.0 withDataRange:location, length];
+  [dictionary setObject:v64 forKeyedSubscript:@"PLBatteryUIQueryRangeDayTapKey"];
 
   v65 = PLLogCommon();
   if (os_log_type_enabled(v65, OS_LOG_TYPE_INFO))
@@ -829,8 +829,8 @@ LABEL_34:
 
   v66 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:v93];
   [(PLBatteryBreakdownService *)self totalSumEnergyRatioCutOff];
-  v67 = [PLBatteryUIService generateTapBucketsForBucketSize:"generateTapBucketsForBucketSize:withNumberOfBuckets:withNowTime:withDrainThreshold:withQueryType:withDataRange:" withNumberOfBuckets:86400 withNowTime:10 withDrainThreshold:v66 withQueryType:v48 withDataRange:?];
-  [v56 setObject:v67 forKeyedSubscript:@"PLBatteryUIQueryRangeWeekTapKey"];
+  v67 = [PLBatteryUIService generateTapBucketsForBucketSize:"generateTapBucketsForBucketSize:withNumberOfBuckets:withNowTime:withDrainThreshold:withQueryType:withDataRange:" withNumberOfBuckets:86400 withNowTime:10 withDrainThreshold:v66 withQueryType:intValue withDataRange:?];
+  [dictionary setObject:v67 forKeyedSubscript:@"PLBatteryUIQueryRangeWeekTapKey"];
 
   v68 = PLLogCommon();
   if (os_log_type_enabled(v68, OS_LOG_TYPE_INFO))
@@ -841,21 +841,21 @@ LABEL_34:
 
   v69 = [v58 objectForKeyedSubscript:@"PLBatteryUIAppArrayKey"];
   v70 = [(PLBatteryBreakdownService *)self suggestionsWithEnergyEntries:v69];
-  [v56 setObject:v70 forKeyedSubscript:@"PLBatteryUISuggestionArrayKey"];
+  [dictionary setObject:v70 forKeyedSubscript:@"PLBatteryUISuggestionArrayKey"];
 
   v71 = MEMORY[0x277CBEAA8];
   v72 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:v22];
-  v73 = [v72 convertFromMonotonicToSystem];
-  v74 = [v71 nearestMidnightBeforeDate:v73];
+  convertFromMonotonicToSystem = [v72 convertFromMonotonicToSystem];
+  v74 = [v71 nearestMidnightBeforeDate:convertFromMonotonicToSystem];
 
   v75 = MEMORY[0x277CBEAA8];
   v76 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:v22 + v23];
-  v77 = [v76 convertFromMonotonicToSystem];
-  v78 = [v75 nearestMidnightAfterDate:v77];
+  convertFromMonotonicToSystem2 = [v76 convertFromMonotonicToSystem];
+  v78 = [v75 nearestMidnightAfterDate:convertFromMonotonicToSystem2];
 
   [v78 timeIntervalSinceDate:v74];
   v79 = [MEMORY[0x277CCABB0] numberWithDouble:?];
-  [v56 setObject:v79 forKeyedSubscript:@"PLBatteryUIDataDurationKey"];
+  [dictionary setObject:v79 forKeyedSubscript:@"PLBatteryUIDataDurationKey"];
 
   v80 = PLLogCommon();
   if (os_log_type_enabled(v80, OS_LOG_TYPE_DEBUG))
@@ -879,12 +879,12 @@ LABEL_34:
 
     if (batteryBreakdownWithPayload_withDayRange_withXDayRange_withDataRange__classDebugEnabled_122 == 1)
     {
-      v82 = [MEMORY[0x277CCACA8] stringWithFormat:@"batteryBreakdown=%@", v56];
+      v82 = [MEMORY[0x277CCACA8] stringWithFormat:@"batteryBreakdown=%@", dictionary];
       v83 = MEMORY[0x277D3F178];
       v84 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLBatteryUIService.m"];
-      v85 = [v84 lastPathComponent];
+      lastPathComponent2 = [v84 lastPathComponent];
       v86 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBatteryUIService batteryBreakdownWithPayload:withDayRange:withXDayRange:withDataRange:]"];
-      [v83 logMessage:v82 fromFile:v85 fromFunction:v86 fromLineNumber:343];
+      [v83 logMessage:v82 fromFile:lastPathComponent2 fromFunction:v86 fromLineNumber:343];
 
       v87 = PLLogCommon();
       if (os_log_type_enabled(v87, OS_LOG_TYPE_DEBUG))
@@ -896,7 +896,7 @@ LABEL_34:
 
   v88 = *MEMORY[0x277D85DE8];
 
-  return v56;
+  return dictionary;
 }
 
 uint64_t __91__PLBatteryUIService_batteryBreakdownWithPayload_withDayRange_withXDayRange_withDataRange___block_invoke(uint64_t a1)
@@ -913,22 +913,22 @@ uint64_t __91__PLBatteryUIService_batteryBreakdownWithPayload_withDayRange_withX
   return result;
 }
 
-- (id)generateTapBucketsForBucketSize:(int)a3 withNumberOfBuckets:(int)a4 withNowTime:(id)a5 withDrainThreshold:(double)a6 withQueryType:(int)a7 withDataRange:(_PLTimeIntervalRange)a8
+- (id)generateTapBucketsForBucketSize:(int)size withNumberOfBuckets:(int)buckets withNowTime:(id)time withDrainThreshold:(double)threshold withQueryType:(int)type withDataRange:(_PLTimeIntervalRange)range
 {
-  length = a8.length;
-  location = a8.location;
+  length = range.length;
+  location = range.location;
   v46 = *MEMORY[0x277D85DE8];
-  v14 = a5;
+  timeCopy = time;
   v15 = objc_opt_new();
-  if (a4 >= 1)
+  if (buckets >= 1)
   {
     v16 = 0;
     v17 = 0;
-    v33 = v14;
+    v33 = timeCopy;
     do
     {
-      v18 = [v14 dateByAddingTimeInterval:v16];
-      v19 = [v18 dateByAddingTimeInterval:-a3];
+      v18 = [timeCopy dateByAddingTimeInterval:v16];
+      v19 = [v18 dateByAddingTimeInterval:-size];
       v20 = v18;
       [v19 timeIntervalSince1970];
       v22 = v21;
@@ -944,42 +944,42 @@ uint64_t __91__PLBatteryUIService_batteryBreakdownWithPayload_withDayRange_withX
         v28 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:v22 + v25];
         v36 = [v35 stringWithFormat:@"Start: %@, End %@", v34, v28];
 
-        v14 = v33;
+        timeCopy = v33;
         *buf = 67109890;
         v39 = v17;
         v40 = 1024;
-        v41 = a4 - 1;
+        v41 = buckets - 1;
         v42 = 1024;
-        v43 = a3;
+        sizeCopy = size;
         v44 = 2112;
         v45 = v36;
         _os_log_debug_impl(&dword_25EE51000, v26, OS_LOG_TYPE_DEBUG, "Generating tap bucket %d (of %d) of size %d with lastTapRange %@", buf, 0x1Eu);
       }
 
-      v27 = [(PLBatteryBreakdownService *)self batteryBreakdownWithTimeRange:a7 withDataRange:v22 withEntryTimeInterval:v25 withQueryType:location withTotalSumEnergyRatioCutOff:length, 3600.0, a6];
-      [v15 addObject:v27];
+      threshold = [(PLBatteryBreakdownService *)self batteryBreakdownWithTimeRange:type withDataRange:v22 withEntryTimeInterval:v25 withQueryType:location withTotalSumEnergyRatioCutOff:length, 3600.0, threshold];
+      [v15 addObject:threshold];
 
       ++v17;
-      v16 -= a3;
+      v16 -= size;
     }
 
-    while (a4 != v17);
+    while (buckets != v17);
   }
 
-  v29 = [v15 reverseObjectEnumerator];
-  v30 = [v29 allObjects];
+  reverseObjectEnumerator = [v15 reverseObjectEnumerator];
+  allObjects = [reverseObjectEnumerator allObjects];
 
   v31 = *MEMORY[0x277D85DE8];
 
-  return v30;
+  return allObjects;
 }
 
-- (id)modelsWithPayload:(id)a3
+- (id)modelsWithPayload:(id)payload
 {
   v40[3] = *MEMORY[0x277D85DE8];
-  v4 = [MEMORY[0x277CBEAA8] monotonicDate];
-  v5 = [MEMORY[0x277CBEAA8] dateWithTimeInterval:v4 sinceDate:-604800.0];
-  v6 = v4;
+  monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
+  v5 = [MEMORY[0x277CBEAA8] dateWithTimeInterval:monotonicDate sinceDate:-604800.0];
+  v6 = monotonicDate;
   [v5 timeIntervalSince1970];
   v8 = v7;
   [v6 timeIntervalSince1970];
@@ -1001,12 +1001,12 @@ uint64_t __91__PLBatteryUIService_batteryBreakdownWithPayload_withDayRange_withX
     v13 = [MEMORY[0x277CBEA60] arrayWithObjects:&v36 count:1];
     v38[0] = v13;
     v37[1] = @"ModelMinDate";
-    v14 = [v11 firstObject];
-    v15 = [v14 objectAtIndexedSubscript:0];
+    firstObject = [v11 firstObject];
+    v15 = [firstObject objectAtIndexedSubscript:0];
     v38[1] = v15;
     v37[2] = @"ModelMaxDate";
-    v16 = [v11 lastObject];
-    v17 = [v16 objectAtIndexedSubscript:0];
+    lastObject = [v11 lastObject];
+    v17 = [lastObject objectAtIndexedSubscript:0];
     v38[2] = v17;
     v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v38 forKeys:v37 count:3];
 
@@ -1029,9 +1029,9 @@ uint64_t __91__PLBatteryUIService_batteryBreakdownWithPayload_withDayRange_withX
         v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"models=%@", v18];
         v21 = MEMORY[0x277D3F178];
         v22 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLBatteryUIService.m"];
-        v23 = [v22 lastPathComponent];
+        lastPathComponent = [v22 lastPathComponent];
         v24 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBatteryUIService modelsWithPayload:]"];
-        [v21 logMessage:v20 fromFile:v23 fromFunction:v24 fromLineNumber:392];
+        [v21 logMessage:v20 fromFile:lastPathComponent fromFunction:v24 fromLineNumber:392];
 
         v25 = PLLogCommon();
         if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
@@ -1069,9 +1069,9 @@ LABEL_16:
         v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"dateAndBatteryLevelPoints is nil or empty!"];
         v27 = MEMORY[0x277D3F178];
         v28 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLBatteryUIService.m"];
-        v29 = [v28 lastPathComponent];
+        lastPathComponent2 = [v28 lastPathComponent];
         v30 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBatteryUIService modelsWithPayload:]"];
-        [v27 logMessage:v20 fromFile:v29 fromFunction:v30 fromLineNumber:383];
+        [v27 logMessage:v20 fromFile:lastPathComponent2 fromFunction:v30 fromLineNumber:383];
 
         v25 = PLLogCommon();
         if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
@@ -1106,18 +1106,18 @@ uint64_t __40__PLBatteryUIService_modelsWithPayload___block_invoke_158(uint64_t 
   return result;
 }
 
-- (id)dateAndBatteryLevelPointsInRange:(_PLTimeIntervalRange)a3
+- (id)dateAndBatteryLevelPointsInRange:(_PLTimeIntervalRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v43 = *MEMORY[0x277D85DE8];
   if (dateAndBatteryLevelPointsInRange__onceToken != -1)
   {
     [PLBatteryUIService dateAndBatteryLevelPointsInRange:];
   }
 
-  v6 = [(PLOperator *)self storage];
-  v7 = [v6 entriesForKey:dateAndBatteryLevelPointsInRange__batteryUIEntryKey inTimeRange:0 withFilters:{location, length}];
+  storage = [(PLOperator *)self storage];
+  v7 = [storage entriesForKey:dateAndBatteryLevelPointsInRange__batteryUIEntryKey inTimeRange:0 withFilters:{location, length}];
 
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
@@ -1137,9 +1137,9 @@ uint64_t __40__PLBatteryUIService_modelsWithPayload___block_invoke_158(uint64_t 
       v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"batteryEntries=%@", v7];
       v10 = MEMORY[0x277D3F178];
       v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLBatteryUIService.m"];
-      v12 = [v11 lastPathComponent];
+      lastPathComponent = [v11 lastPathComponent];
       v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBatteryUIService dateAndBatteryLevelPointsInRange:]"];
-      [v10 logMessage:v9 fromFile:v12 fromFunction:v13 fromLineNumber:408];
+      [v10 logMessage:v9 fromFile:lastPathComponent fromFunction:v13 fromLineNumber:408];
 
       v14 = PLLogCommon();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
@@ -1149,7 +1149,7 @@ uint64_t __40__PLBatteryUIService_modelsWithPayload___block_invoke_158(uint64_t 
     }
   }
 
-  v15 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
@@ -1170,14 +1170,14 @@ uint64_t __40__PLBatteryUIService_modelsWithPayload___block_invoke_158(uint64_t 
         }
 
         v20 = *(*(&v36 + 1) + 8 * i);
-        v21 = [v20 entryDate];
-        v22 = [v21 convertFromMonotonicToSystem];
-        v41[0] = v22;
+        entryDate = [v20 entryDate];
+        convertFromMonotonicToSystem = [entryDate convertFromMonotonicToSystem];
+        v41[0] = convertFromMonotonicToSystem;
         v23 = [v20 objectForKeyedSubscript:@"Level"];
         v41[1] = v23;
         v24 = [MEMORY[0x277CBEA60] arrayWithObjects:v41 count:2];
 
-        [v15 addObject:v24];
+        [array addObject:v24];
       }
 
       v17 = [obj countByEnumeratingWithState:&v36 objects:v42 count:16];
@@ -1201,12 +1201,12 @@ uint64_t __40__PLBatteryUIService_modelsWithPayload___block_invoke_158(uint64_t 
 
     if (dateAndBatteryLevelPointsInRange__classDebugEnabled_170 == 1)
     {
-      v26 = [MEMORY[0x277CCACA8] stringWithFormat:@"dateAndBatteryLevelPoints=%@", v15];
+      v26 = [MEMORY[0x277CCACA8] stringWithFormat:@"dateAndBatteryLevelPoints=%@", array];
       v27 = MEMORY[0x277D3F178];
       v28 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLBatteryUIService.m"];
-      v29 = [v28 lastPathComponent];
+      lastPathComponent2 = [v28 lastPathComponent];
       v30 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBatteryUIService dateAndBatteryLevelPointsInRange:]"];
-      [v27 logMessage:v26 fromFile:v29 fromFunction:v30 fromLineNumber:418];
+      [v27 logMessage:v26 fromFile:lastPathComponent2 fromFunction:v30 fromLineNumber:418];
 
       v31 = PLLogCommon();
       if (os_log_type_enabled(v31, OS_LOG_TYPE_DEBUG))
@@ -1218,7 +1218,7 @@ uint64_t __40__PLBatteryUIService_modelsWithPayload___block_invoke_158(uint64_t 
 
   v32 = *MEMORY[0x277D85DE8];
 
-  return v15;
+  return array;
 }
 
 uint64_t __55__PLBatteryUIService_dateAndBatteryLevelPointsInRange___block_invoke()
@@ -1265,9 +1265,9 @@ uint64_t __55__PLBatteryUIService_dateAndBatteryLevelPointsInRange___block_invok
       v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"Response %@", v4, block, v13, v14, v15, v16];
       v7 = MEMORY[0x277D3F178];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLBatteryUIService.m"];
-      v9 = [v8 lastPathComponent];
+      lastPathComponent = [v8 lastPathComponent];
       v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBatteryUIService testUIQuery]"];
-      [v7 logMessage:v6 fromFile:v9 fromFunction:v10 fromLineNumber:482];
+      [v7 logMessage:v6 fromFile:lastPathComponent fromFunction:v10 fromLineNumber:482];
 
       v11 = PLLogCommon();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -1411,15 +1411,15 @@ uint64_t __37__PLBatteryUIService_writeOutputDemo__block_invoke()
     v9 = MEMORY[0x277CBEAA8];
     [v5 doubleValue];
     v10 = [v9 dateWithTimeIntervalSince1970:?];
-    v11 = [v4 intValue];
-    if (v11 >= 100)
+    intValue = [v4 intValue];
+    if (intValue >= 100)
     {
       v12 = 100;
     }
 
     else
     {
-      v12 = v11;
+      v12 = intValue;
     }
 
     if (v12 <= 1)
@@ -1434,8 +1434,8 @@ uint64_t __37__PLBatteryUIService_writeOutputDemo__block_invoke()
 
     v20[0] = @"PLBatteryUITimestampKey";
     v14 = MEMORY[0x277CCABB0];
-    v15 = [v10 convertFromMonotonicToSystem];
-    [v15 timeIntervalSince1970];
+    convertFromMonotonicToSystem = [v10 convertFromMonotonicToSystem];
+    [convertFromMonotonicToSystem timeIntervalSince1970];
     v16 = [v14 numberWithDouble:?];
     v20[1] = @"PLBatteryUILevelKey";
     v21[0] = v16;
@@ -1449,10 +1449,10 @@ uint64_t __37__PLBatteryUIService_writeOutputDemo__block_invoke()
   return v8;
 }
 
-- (id)getLPMIntervalsSpanningRange:(_PLTimeIntervalRange)a3
+- (id)getLPMIntervalsSpanningRange:(_PLTimeIntervalRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v56[1] = *MEMORY[0x277D85DE8];
   v6 = PLLogCommon();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
@@ -1465,11 +1465,11 @@ uint64_t __37__PLBatteryUIService_writeOutputDemo__block_invoke()
   v9 = [MEMORY[0x277CCABB0] numberWithDouble:location];
   v10 = [v8 initWithKey:@"timestamp" withValue:v9 withComparisonOperation:5];
 
-  v11 = [(PLOperator *)self storage];
+  storage = [(PLOperator *)self storage];
   v45 = v10;
   v56[0] = v10;
   v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v56 count:1];
-  v13 = [v11 lastEntryForKey:@"PLDuetService_EventForward_BatterySaverMode" withComparisons:v12 isSingleton:0];
+  v13 = [storage lastEntryForKey:@"PLDuetService_EventForward_BatterySaverMode" withComparisons:v12 isSingleton:0];
 
   if (!v13)
   {
@@ -1477,7 +1477,7 @@ uint64_t __37__PLBatteryUIService_writeOutputDemo__block_invoke()
   }
 
   v14 = [v13 objectForKeyedSubscript:@"Value"];
-  v15 = [v14 BOOLValue];
+  bOOLValue = [v14 BOOLValue];
 
   v16 = PLLogCommon();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
@@ -1485,7 +1485,7 @@ uint64_t __37__PLBatteryUIService_writeOutputDemo__block_invoke()
     [PLBatteryUIService getLPMIntervalsSpanningRange:];
   }
 
-  if (v15)
+  if (bOOLValue)
   {
     v17 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:location];
     v18 = 1;
@@ -1500,16 +1500,16 @@ LABEL_8:
 
   v44 = v13;
   v46 = v7;
-  v19 = [(PLOperator *)self storage];
-  v20 = [v19 entriesForKey:@"PLDuetService_EventForward_BatterySaverMode" inTimeRange:0 withFilters:{location, length}];
+  storage2 = [(PLOperator *)self storage];
+  v20 = [storage2 entriesForKey:@"PLDuetService_EventForward_BatterySaverMode" inTimeRange:0 withFilters:{location, length}];
 
   v51 = 0u;
   v52 = 0u;
   v49 = 0u;
   v50 = 0u;
   v43 = v20;
-  v21 = [v20 reverseObjectEnumerator];
-  v22 = [v21 countByEnumeratingWithState:&v49 objects:v55 count:16];
+  reverseObjectEnumerator = [v20 reverseObjectEnumerator];
+  v22 = [reverseObjectEnumerator countByEnumeratingWithState:&v49 objects:v55 count:16];
   if (v22)
   {
     v23 = v22;
@@ -1520,24 +1520,24 @@ LABEL_8:
       {
         if (*v50 != v24)
         {
-          objc_enumerationMutation(v21);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
         v26 = *(*(&v49 + 1) + 8 * i);
         v27 = [v26 objectForKeyedSubscript:@"Value"];
-        v28 = [v27 BOOLValue];
+        bOOLValue2 = [v27 BOOLValue];
 
         v29 = PLLogCommon();
         if (os_log_type_enabled(v29, OS_LOG_TYPE_DEBUG))
         {
           *buf = 67109378;
-          LODWORD(v54[0]) = v28;
+          LODWORD(v54[0]) = bOOLValue2;
           WORD2(v54[0]) = 2112;
           *(v54 + 6) = v26;
           _os_log_debug_impl(&dword_25EE51000, v29, OS_LOG_TYPE_DEBUG, "LPM Entry: %d %@", buf, 0x12u);
         }
 
-        if ((v18 & 1) == v28)
+        if ((v18 & 1) == bOOLValue2)
         {
           v30 = PLLogCommon();
           if (os_log_type_enabled(v30, OS_LOG_TYPE_DEBUG))
@@ -1546,7 +1546,7 @@ LABEL_8:
           }
         }
 
-        else if (v28)
+        else if (bOOLValue2)
         {
           [v26 entryDate];
           v30 = v17;
@@ -1556,8 +1556,8 @@ LABEL_8:
         else
         {
           v31 = objc_alloc(MEMORY[0x277CCA970]);
-          v32 = [v26 entryDate];
-          v30 = [v31 initWithStartDate:v17 endDate:v32];
+          entryDate = [v26 entryDate];
+          v30 = [v31 initWithStartDate:v17 endDate:entryDate];
 
           [v46 addObject:v30];
           v33 = PLLogCommon();
@@ -1573,7 +1573,7 @@ LABEL_8:
         }
       }
 
-      v23 = [v21 countByEnumeratingWithState:&v49 objects:v55 count:16];
+      v23 = [reverseObjectEnumerator countByEnumeratingWithState:&v49 objects:v55 count:16];
     }
 
     while (v23);
@@ -1612,20 +1612,20 @@ LABEL_8:
   return v46;
 }
 
-- (BOOL)dateIntervals:(id)a3 containDate:(id)a4
+- (BOOL)dateIntervals:(id)intervals containDate:(id)date
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
+  intervalsCopy = intervals;
+  dateCopy = date;
+  v7 = dateCopy;
   LOBYTE(v8) = 0;
-  if (v5 && v6)
+  if (intervalsCopy && dateCopy)
   {
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v9 = v5;
+    v9 = intervalsCopy;
     v8 = [v9 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v8)
     {
@@ -1663,26 +1663,26 @@ LABEL_13:
   return v8;
 }
 
-- (id)batteryLevelsAndChargingIntervalsInRange:(_PLTimeIntervalRange)a3 withDataRange:(_PLTimeIntervalRange)a4
+- (id)batteryLevelsAndChargingIntervalsInRange:(_PLTimeIntervalRange)range withDataRange:(_PLTimeIntervalRange)dataRange
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v158[2] = *MEMORY[0x277D85DE8];
-  v6 = a3.location + a3.length;
-  if (location >= a4.location || v6 <= a4.location)
+  v6 = range.location + range.length;
+  if (location >= dataRange.location || v6 <= dataRange.location)
   {
-    v11 = a4.location + a4.length;
-    if (a4.location >= location || v11 <= location)
+    v11 = dataRange.location + dataRange.length;
+    if (dataRange.location >= location || v11 <= location)
     {
       v9 = 0.0;
-      if (location != a4.location || length <= 0.0)
+      if (location != dataRange.location || length <= 0.0)
       {
         v10 = 0.0;
         goto LABEL_20;
       }
 
       v10 = 0.0;
-      if (a4.length <= 0.0)
+      if (dataRange.length <= 0.0)
       {
         goto LABEL_20;
       }
@@ -1691,17 +1691,17 @@ LABEL_13:
 
   else
   {
-    v11 = a4.location + a4.length;
+    v11 = dataRange.location + dataRange.length;
   }
 
-  if (location >= a4.location)
+  if (location >= dataRange.location)
   {
     v9 = location;
   }
 
   else
   {
-    v9 = a4.location;
+    v9 = dataRange.location;
   }
 
   if (v6 >= v11)
@@ -1727,13 +1727,13 @@ LABEL_20:
   v17 = [v15 initWithKey:@"timestamp" withValue:v16 withComparisonOperation:5];
 
   v18 = [objc_alloc(MEMORY[0x277D3F260]) initWithKey:@"Level" withValue:&unk_287145568 withComparisonOperation:3];
-  v19 = [(PLOperator *)self storage];
+  storage = [(PLOperator *)self storage];
   v123 = v18;
   v124 = v17;
   v158[0] = v17;
   v158[1] = v18;
   v20 = [MEMORY[0x277CBEA60] arrayWithObjects:v158 count:2];
-  v21 = [v19 lastEntryForKey:v13 withComparisons:v20 isSingleton:0];
+  v21 = [storage lastEntryForKey:v13 withComparisons:v20 isSingleton:0];
 
   if (v21)
   {
@@ -1753,8 +1753,8 @@ LABEL_20:
   }
 
   v137 = [(PLBatteryUIService *)self getLPMIntervalsSpanningRange:location, length];
-  v25 = [(PLOperator *)self storage];
-  v26 = [v25 entriesForKey:v13 inTimeRange:0 withFilters:{v9, v10}];
+  storage2 = [(PLOperator *)self storage];
+  v26 = [storage2 entriesForKey:v13 inTimeRange:0 withFilters:{v9, v10}];
 
   v27 = PLLogCommon();
   if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
@@ -1790,8 +1790,8 @@ LABEL_20:
   v143 = 0u;
   v144 = 0u;
   v127 = v26;
-  v30 = [v26 reverseObjectEnumerator];
-  v31 = [v30 countByEnumeratingWithState:&v143 objects:v157 count:16];
+  reverseObjectEnumerator = [v26 reverseObjectEnumerator];
+  v31 = [reverseObjectEnumerator countByEnumeratingWithState:&v143 objects:v157 count:16];
   v126 = v14;
   if (v31)
   {
@@ -1804,17 +1804,17 @@ LABEL_20:
       {
         if (*v144 != v33)
         {
-          objc_enumerationMutation(v30);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
         v36 = *(*(&v143 + 1) + 8 * i);
         v37 = [v36 objectForKeyedSubscript:@"Level"];
-        v38 = [v37 intValue];
+        intValue = [v37 intValue];
 
-        if (v38 < 0)
+        if (intValue < 0)
         {
-          v41 = PLLogCommon();
-          if (os_log_type_enabled(v41, OS_LOG_TYPE_DEBUG))
+          entryDate = PLLogCommon();
+          if (os_log_type_enabled(entryDate, OS_LOG_TYPE_DEBUG))
           {
             [PLBatteryUIService batteryLevelsAndChargingIntervalsInRange:v156 withDataRange:v36];
           }
@@ -1823,17 +1823,17 @@ LABEL_20:
         else
         {
           v39 = [v36 objectForKeyedSubscript:@"IsCharging"];
-          v40 = [v39 BOOLValue];
+          bOOLValue = [v39 BOOLValue];
 
-          if ((v23 & 1) == v40)
+          if ((v23 & 1) == bOOLValue)
           {
             continue;
           }
 
-          if (v40)
+          if (bOOLValue)
           {
-            v41 = [v36 entryDate];
-            [v41 timeIntervalSinceDate:v134];
+            entryDate = [v36 entryDate];
+            [entryDate timeIntervalSinceDate:v134];
             v34 = v42;
             LOBYTE(v23) = 1;
           }
@@ -1843,17 +1843,17 @@ LABEL_20:
             v43 = [MEMORY[0x277CCABB0] numberWithInt:v34];
             v155[0] = v43;
             v44 = MEMORY[0x277CCABB0];
-            v45 = [v36 entryDate];
-            [v45 timeIntervalSinceDate:v134];
+            entryDate2 = [v36 entryDate];
+            [entryDate2 timeIntervalSinceDate:v134];
             v47 = [v44 numberWithInt:v46];
             v155[1] = v47;
-            v41 = [MEMORY[0x277CBEA60] arrayWithObjects:v155 count:2];
+            entryDate = [MEMORY[0x277CBEA60] arrayWithObjects:v155 count:2];
 
             v23 = PLLogCommon();
             if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
             {
-              v48 = [v41 objectAtIndexedSubscript:0];
-              v49 = [v41 objectAtIndexedSubscript:1];
+              v48 = [entryDate objectAtIndexedSubscript:0];
+              v49 = [entryDate objectAtIndexedSubscript:1];
               *buf = 138412546;
               *v151 = v48;
               *&v151[8] = 2112;
@@ -1861,13 +1861,13 @@ LABEL_20:
               _os_log_debug_impl(&dword_25EE51000, v23, OS_LOG_TYPE_DEBUG, "Created charging interval: [%@ %@]", buf, 0x16u);
             }
 
-            [v131 addObject:v41];
+            [v131 addObject:entryDate];
             LOBYTE(v23) = 0;
           }
         }
       }
 
-      v32 = [v30 countByEnumeratingWithState:&v143 objects:v157 count:16];
+      v32 = [reverseObjectEnumerator countByEnumeratingWithState:&v143 objects:v157 count:16];
       if (!v32)
       {
 
@@ -1888,12 +1888,12 @@ LABEL_20:
   {
     v51 = 0;
 LABEL_57:
-    v52 = [v127 firstObject];
-    v53 = v52;
-    if (v52)
+    firstObject = [v127 firstObject];
+    v53 = firstObject;
+    if (firstObject)
     {
-      v54 = [v52 entryDate];
-      [v54 timeIntervalSinceDate:v134];
+      entryDate3 = [firstObject entryDate];
+      [entryDate3 timeIntervalSinceDate:v134];
       v56 = v55;
 
       v57 = [MEMORY[0x277CCABB0] numberWithInt:v51];
@@ -1946,12 +1946,12 @@ LABEL_62:
       v114 = MEMORY[0x277CCACA8];
       v115 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:v66];
       v116 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:v66 + 900.0];
-      v117 = [v114 stringWithFormat:@"Start: %@, End %@", v115, v116];
+      v116 = [v114 stringWithFormat:@"Start: %@, End %@", v115, v116];
 
       *buf = 67109378;
       *v151 = v130;
       *&v151[4] = 2112;
-      *&v151[6] = v117;
+      *&v151[6] = v116;
       _os_log_debug_impl(&dword_25EE51000, v67, OS_LOG_TYPE_DEBUG, "Calculating battery entries for bucket %d in range %@", buf, 0x12u);
     }
 
@@ -1988,15 +1988,15 @@ LABEL_62:
 
             v76 = *(*(&v139 + 1) + 8 * j);
             v77 = [v76 objectForKeyedSubscript:@"Level"];
-            v78 = [v77 intValue];
+            intValue2 = [v77 intValue];
 
-            if ((v78 & 0x80000000) == 0)
+            if ((intValue2 & 0x80000000) == 0)
             {
-              v79 = [v76 entryDate];
-              v80 = [(PLBatteryUIService *)self dateIntervals:v137 containDate:v79];
+              entryDate4 = [v76 entryDate];
+              v80 = [(PLBatteryUIService *)self dateIntervals:v137 containDate:entryDate4];
 
               v81 = [v76 objectForKeyedSubscript:@"IsCharging"];
-              v82 = [v81 BOOLValue];
+              bOOLValue2 = [v81 BOOLValue];
 
               v83 = [v76 objectForKeyedSubscript:@"Level"];
 
@@ -2006,10 +2006,10 @@ LABEL_62:
                 [v135 addObject:v84];
 
                 v85 = [v76 objectForKeyedSubscript:@"Level"];
-                v86 = [v85 intValue];
+                intValue3 = [v85 intValue];
 
                 v87 = v73 | 8;
-                if (!v82)
+                if (!bOOLValue2)
                 {
                   v87 = v73;
                 }
@@ -2019,7 +2019,7 @@ LABEL_62:
                   v87 |= 4uLL;
                 }
 
-                if (v86 > v133)
+                if (intValue3 > v133)
                 {
                   v73 = v87;
                 }
@@ -2033,7 +2033,7 @@ LABEL_62:
               else
               {
                 v88 = 9;
-                if (!v82)
+                if (!bOOLValue2)
                 {
                   v88 = 1;
                 }
@@ -2120,11 +2120,11 @@ LABEL_62:
         v98 = v97;
         v99 = [v126 objectAtIndexedSubscript:v132];
         v100 = [v99 objectAtIndexedSubscript:1];
-        v101 = [v100 intValue];
+        intValue4 = [v100 intValue];
 
         if (v132 + 1 < v130)
         {
-          v102 = v101;
+          v102 = intValue4;
           v103 = (v98 - v96) / v92;
           v104 = v132 + 1;
           v105 = 1;
@@ -2132,8 +2132,8 @@ LABEL_62:
           {
             v106 = [MEMORY[0x277CCABB0] numberWithDouble:floor(v96 + v103 * v105)];
             v149[0] = v106;
-            v107 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v73 & v102];
-            v149[1] = v107;
+            v102 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v73 & v102];
+            v149[1] = v102;
             v108 = [MEMORY[0x277CBEA60] arrayWithObjects:v149 count:2];
 
             [v126 setObject:v108 atIndexedSubscript:v104];
@@ -2180,14 +2180,14 @@ LABEL_62:
   return v118;
 }
 
-- (id)screenTimeInRange:(_PLTimeIntervalRange)a3 withBucketSize:(double)a4 withNumBuckets:(int)a5 withDataRange:(_PLTimeIntervalRange)a6 withQueryType:(int)a7 andBatteryBreakdown:(id)a8
+- (id)screenTimeInRange:(_PLTimeIntervalRange)range withBucketSize:(double)size withNumBuckets:(int)buckets withDataRange:(_PLTimeIntervalRange)dataRange withQueryType:(int)type andBatteryBreakdown:(id)breakdown
 {
-  length = a6.length;
-  location = a6.location;
-  v12 = a3.length;
-  v13 = a3.location;
+  length = dataRange.length;
+  location = dataRange.location;
+  v12 = range.length;
+  v13 = range.location;
   v125 = *MEMORY[0x277D85DE8];
-  v100 = a8;
+  breakdownCopy = breakdown;
   v14 = v13 + -1800.0;
   v15 = location + length;
   if (location >= v13 + -1800.0 || v15 <= v14)
@@ -2233,9 +2233,9 @@ LABEL_62:
   v19 = v15 - v18;
 LABEL_20:
   v21 = [(PLOperator *)PLAppTimeService entryKeyForType:*MEMORY[0x277D3F5B8] andName:@"UsageTime", v15, v20];
-  v22 = [(PLOperator *)self storage];
+  storage = [(PLOperator *)self storage];
   v96 = v21;
-  v23 = [v22 entriesForKey:v21 inTimeRange:0 withFilters:{v18, v19}];
+  v23 = [storage entriesForKey:v21 inTimeRange:0 withFilters:{v18, v19}];
 
   v24 = PLLogCommon();
   if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
@@ -2248,9 +2248,9 @@ LABEL_20:
   v104 = objc_opt_new();
   v26 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:v12 + v14];
   v99 = v23;
-  v27 = self;
+  selfCopy2 = self;
   v97 = v25;
-  if (a5 < 1)
+  if (buckets < 1)
   {
     v74 = 0;
     v73 = 0.0;
@@ -2262,10 +2262,10 @@ LABEL_20:
     v107 = 0;
     v108 = 0;
     v106 = 0;
-    v103 = a5;
+    bucketsCopy = buckets;
     do
     {
-      v28 = [v26 dateByAddingTimeInterval:-a4];
+      v28 = [v26 dateByAddingTimeInterval:-size];
       v29 = v26;
       [v28 timeIntervalSince1970];
       v31 = v30;
@@ -2273,7 +2273,7 @@ LABEL_20:
       v33 = v32;
 
       v34 = v33 - v31;
-      v35 = [(PLBatteryUIService *)v27 entriesInRange:v23 fromEntries:v31, v34];
+      v35 = [(PLBatteryUIService *)selfCopy2 entriesInRange:v23 fromEntries:v31, v34];
       v36 = PLLogCommon();
       if (os_log_type_enabled(v36, OS_LOG_TYPE_DEBUG))
       {
@@ -2379,15 +2379,15 @@ LABEL_20:
           v53 = 0.0;
         }
 
-        if (v53 <= a4)
+        if (v53 <= size)
         {
           v55 = v35;
         }
 
         else
         {
-          v44 = (v44 * a4 / v53);
-          v43 = (v43 * a4 / v53);
+          v44 = (v44 * size / v53);
+          v43 = (v43 * size / v53);
           v54 = PLLogCommon();
           if (os_log_type_enabled(v54, OS_LOG_TYPE_DEBUG))
           {
@@ -2403,15 +2403,15 @@ LABEL_20:
 
         HIDWORD(v107) += v44;
         LODWORD(v107) = v43 + v107;
-        v56 = [v100 objectForKeyedSubscript:@"PLBatteryUIQueryRangeDayTapKey"];
-        v57 = [v56 objectAtIndexedSubscript:23 - v108];
-        v58 = [v57 objectForKeyedSubscript:@"PLBatteryUIAppArrayKey"];
+        v56 = [breakdownCopy objectForKeyedSubscript:@"PLBatteryUIQueryRangeDayTapKey"];
+        v108 = [v56 objectAtIndexedSubscript:23 - v108];
+        v58 = [v108 objectForKeyedSubscript:@"PLBatteryUIAppArrayKey"];
 
         v59 = v44;
-        v27 = self;
-        [(PLBatteryUIService *)self adjustScreenOnTimeSecsWithGraphValue:a7 queryType:v58 andBreakdownEntries:v59];
+        selfCopy2 = self;
+        [(PLBatteryUIService *)self adjustScreenOnTimeSecsWithGraphValue:type queryType:v58 andBreakdownEntries:v59];
         v61 = v60;
-        [(PLBatteryUIService *)self adjustScreenOffTimeSecsWithGraphValue:a7 withGraphScreenOnSecs:v58 queryType:v43 andBreakdownEntries:v61];
+        [(PLBatteryUIService *)self adjustScreenOffTimeSecsWithGraphValue:type withGraphScreenOnSecs:v58 queryType:v43 andBreakdownEntries:v61];
         v63 = v62;
         v64 = [MEMORY[0x277CCABB0] numberWithInt:v61];
         [v25 addObject:v64];
@@ -2455,12 +2455,12 @@ LABEL_20:
         [v104 addObject:&unk_287145580];
       }
 
-      v26 = [v29 dateByAddingTimeInterval:-a4];
+      v26 = [v29 dateByAddingTimeInterval:-size];
 
       ++v108;
     }
 
-    while (v108 != v103);
+    while (v108 != bucketsCopy);
     v72 = SHIDWORD(v107);
     v73 = v107;
     v74 = v106;
@@ -2488,27 +2488,27 @@ LABEL_20:
     [PLBatteryUIService screenTimeInRange:withBucketSize:withNumBuckets:withDataRange:withQueryType:andBatteryBreakdown:];
   }
 
-  v79 = [v100 objectForKeyedSubscript:@"PLBatteryUIQueryRangeDayKey"];
+  v79 = [breakdownCopy objectForKeyedSubscript:@"PLBatteryUIQueryRangeDayKey"];
   v80 = [v79 objectForKeyedSubscript:@"PLBatteryUIAppArrayKey"];
 
-  [(PLBatteryUIService *)self adjustScreenOnTimeSecsWithGraphValue:a7 queryType:v80 andBreakdownEntries:v72];
+  [(PLBatteryUIService *)self adjustScreenOnTimeSecsWithGraphValue:type queryType:v80 andBreakdownEntries:v72];
   v82 = v81;
-  [(PLBatteryUIService *)self adjustScreenOffTimeSecsWithGraphValue:a7 withGraphScreenOnSecs:v80 queryType:v73 andBreakdownEntries:v82];
+  [(PLBatteryUIService *)self adjustScreenOffTimeSecsWithGraphValue:type withGraphScreenOnSecs:v80 queryType:v73 andBreakdownEntries:v82];
   v84 = v83;
   v117[0] = @"PLBatteryUIGraphHourly";
-  v85 = [v25 reverseObjectEnumerator];
-  v86 = [v85 allObjects];
+  reverseObjectEnumerator = [v25 reverseObjectEnumerator];
+  allObjects = [reverseObjectEnumerator allObjects];
   v117[1] = @"PLBatteryUIGraphTotal";
-  v118[0] = v86;
+  v118[0] = allObjects;
   v87 = [MEMORY[0x277CCABB0] numberWithInt:v82];
   v118[1] = v87;
   v88 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v118 forKeys:v117 count:2];
 
   v115[0] = @"PLBatteryUIGraphHourly";
-  v89 = [v104 reverseObjectEnumerator];
-  v90 = [v89 allObjects];
+  reverseObjectEnumerator2 = [v104 reverseObjectEnumerator];
+  allObjects2 = [reverseObjectEnumerator2 allObjects];
   v115[1] = @"PLBatteryUIGraphTotal";
-  v116[0] = v90;
+  v116[0] = allObjects2;
   v91 = [MEMORY[0x277CCABB0] numberWithInt:v84];
   v116[1] = v91;
   v92 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v116 forKeys:v115 count:2];
@@ -2522,18 +2522,18 @@ LABEL_20:
   return v93;
 }
 
-- (id)entriesInRange:(_PLTimeIntervalRange)a3 fromEntries:(id)a4
+- (id)entriesInRange:(_PLTimeIntervalRange)range fromEntries:(id)entries
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  entriesCopy = entries;
   v7 = objc_opt_new();
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v8 = v6;
+  v8 = entriesCopy;
   v9 = [v8 countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v9)
   {
@@ -2550,11 +2550,11 @@ LABEL_20:
         }
 
         v14 = *(*(&v22 + 1) + 8 * i);
-        v15 = [v14 entryDate];
-        if (v15)
+        entryDate = [v14 entryDate];
+        if (entryDate)
         {
-          v16 = v15;
-          [v15 timeIntervalSince1970];
+          v16 = entryDate;
+          [entryDate timeIntervalSince1970];
           v18 = v17;
 
           if (location <= v18 && v18 < v12)
@@ -2575,14 +2575,14 @@ LABEL_20:
   return v7;
 }
 
-- (id)lastXDaysWithRange:(_PLTimeIntervalRange)a3 withDataRange:(_PLTimeIntervalRange)a4 withQueryType:(int)a5 andBatteryBreakdown:(id)a6
+- (id)lastXDaysWithRange:(_PLTimeIntervalRange)range withDataRange:(_PLTimeIntervalRange)dataRange withQueryType:(int)type andBatteryBreakdown:(id)breakdown
 {
-  length = a4.length;
-  location = a4.location;
-  v8 = a3.length;
-  v9 = a3.location;
+  length = dataRange.length;
+  location = dataRange.location;
+  v8 = range.length;
+  v9 = range.location;
   v124 = *MEMORY[0x277D85DE8];
-  v96 = a6;
+  breakdownCopy = breakdown;
   v10 = v9 + -1800.0;
   v11 = v8 + v9 + -1800.0;
   v12 = v10 >= location || v11 <= location;
@@ -2637,13 +2637,13 @@ LABEL_16:
 LABEL_23:
   v18 = *MEMORY[0x277D3F5B8];
   v19 = [(PLOperator *)PLBatteryAgent entryKeyForType:*MEMORY[0x277D3F5B8] andName:@"UILevel"];
-  v20 = [(PLOperator *)self storage];
-  v98 = [v20 entriesForKey:v19 inTimeRange:0 withFilters:{v14, v15}];
+  storage = [(PLOperator *)self storage];
+  v98 = [storage entriesForKey:v19 inTimeRange:0 withFilters:{v14, v15}];
 
   v21 = [(PLOperator *)PLAppTimeService entryKeyForType:v18 andName:@"UsageTime"];
-  v22 = [(PLOperator *)self storage];
+  storage2 = [(PLOperator *)self storage];
   v93 = v21;
-  v97 = [v22 entriesForKey:v21 inTimeRange:0 withFilters:{v14, v15}];
+  v97 = [storage2 entriesForKey:v21 inTimeRange:0 withFilters:{v14, v15}];
 
   v23 = PLLogCommon();
   if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
@@ -2870,13 +2870,13 @@ LABEL_23:
       _os_log_impl(&dword_25EE51000, v69, OS_LOG_TYPE_INFO, "Total screen buckets with info: %d", buf, 8u);
     }
 
-    v70 = [v96 objectForKeyedSubscript:@"PLBatteryUIQueryRangeWeekTapKey"];
-    v71 = [v70 objectAtIndexedSubscript:9 - v103];
-    v72 = [v71 objectForKeyedSubscript:@"PLBatteryUIAppArrayKey"];
+    v70 = [breakdownCopy objectForKeyedSubscript:@"PLBatteryUIQueryRangeWeekTapKey"];
+    v103 = [v70 objectAtIndexedSubscript:9 - v103];
+    v72 = [v103 objectForKeyedSubscript:@"PLBatteryUIAppArrayKey"];
 
-    [(PLBatteryUIService *)self adjustScreenOnTimeSecsWithGraphValue:a5 queryType:v72 andBreakdownEntries:v54];
+    [(PLBatteryUIService *)self adjustScreenOnTimeSecsWithGraphValue:type queryType:v72 andBreakdownEntries:v54];
     v74 = v73;
-    [(PLBatteryUIService *)self adjustScreenOffTimeSecsWithGraphValue:a5 withGraphScreenOnSecs:v72 queryType:v52 andBreakdownEntries:v74];
+    [(PLBatteryUIService *)self adjustScreenOffTimeSecsWithGraphValue:type withGraphScreenOnSecs:v72 queryType:v52 andBreakdownEntries:v74];
     v76 = v75;
     v77 = objc_opt_new();
     v118 = @"PLBatteryUIGraphTotal";
@@ -2901,26 +2901,26 @@ LABEL_23:
   }
 
   while (v103 != 10);
-  v89 = [v95 reverseObjectEnumerator];
-  v90 = [v89 allObjects];
+  reverseObjectEnumerator = [v95 reverseObjectEnumerator];
+  allObjects = [reverseObjectEnumerator allObjects];
 
   v91 = *MEMORY[0x277D85DE8];
 
-  return v90;
+  return allObjects;
 }
 
-- (double)adjustScreenOnTimeSecsWithGraphValue:(double)a3 queryType:(int)a4 andBreakdownEntries:(id)a5
+- (double)adjustScreenOnTimeSecsWithGraphValue:(double)value queryType:(int)type andBreakdownEntries:(id)entries
 {
   v27 = *MEMORY[0x277D85DE8];
-  v8 = a5;
-  v9 = v8;
-  v10 = 0.0;
-  if (v8)
+  entriesCopy = entries;
+  v9 = entriesCopy;
+  valueCopy = 0.0;
+  if (entriesCopy)
   {
-    if ([v8 count])
+    if ([entriesCopy count])
     {
-      v10 = a3;
-      if (!a4)
+      valueCopy = value;
+      if (!type)
       {
         v24 = 0u;
         v25 = 0u;
@@ -2932,7 +2932,7 @@ LABEL_23:
         {
           v13 = v12;
           v14 = *v23;
-          v10 = 0.0;
+          valueCopy = 0.0;
           do
           {
             for (i = 0; i != v13; ++i)
@@ -2950,7 +2950,7 @@ LABEL_23:
                 [(PLBatteryUIService *)self floorSeconds:?];
                 v19 = v18;
 
-                v10 = v10 + v19;
+                valueCopy = valueCopy + v19;
               }
             }
 
@@ -2962,27 +2962,27 @@ LABEL_23:
 
         else
         {
-          v10 = 0.0;
+          valueCopy = 0.0;
         }
       }
     }
   }
 
   v20 = *MEMORY[0x277D85DE8];
-  return v10;
+  return valueCopy;
 }
 
-- (double)adjustScreenOffTimeSecsWithGraphValue:(double)a3 withGraphScreenOnSecs:(double)a4 queryType:(int)a5 andBreakdownEntries:(id)a6
+- (double)adjustScreenOffTimeSecsWithGraphValue:(double)value withGraphScreenOnSecs:(double)secs queryType:(int)type andBreakdownEntries:(id)entries
 {
   v33 = *MEMORY[0x277D85DE8];
-  v10 = a6;
-  v11 = v10;
-  v12 = 0.0;
-  if (v10 && [v10 count])
+  entriesCopy = entries;
+  v11 = entriesCopy;
+  valueCopy = 0.0;
+  if (entriesCopy && [entriesCopy count])
   {
-    if (a5)
+    if (type)
     {
-      v12 = a3;
+      valueCopy = value;
     }
 
     else
@@ -3036,39 +3036,39 @@ LABEL_23:
         v18 = 0.0;
       }
 
-      if (v18 >= a3)
+      if (v18 >= value)
       {
-        v25 = a3;
+        valueCopy2 = value;
       }
 
       else
       {
-        v25 = v18;
+        valueCopy2 = v18;
       }
 
-      if (v25 >= v17 - a4)
+      if (valueCopy2 >= v17 - secs)
       {
-        v12 = v25;
+        valueCopy = valueCopy2;
       }
 
       else
       {
-        v12 = v17 - a4;
+        valueCopy = v17 - secs;
       }
     }
   }
 
   v26 = *MEMORY[0x277D85DE8];
-  return v12;
+  return valueCopy;
 }
 
-- (BOOL)isAppEntryValidForAdjustment:(id)a3 withQueryType:(int)a4
+- (BOOL)isAppEntryValidForAdjustment:(id)adjustment withQueryType:(int)type
 {
-  v5 = a3;
-  v6 = v5;
-  if (a4 != 3)
+  adjustmentCopy = adjustment;
+  v6 = adjustmentCopy;
+  if (type != 3)
   {
-    v7 = [v5 objectForKeyedSubscript:@"PLBatteryUIAppEnergyValueKey"];
+    v7 = [adjustmentCopy objectForKeyedSubscript:@"PLBatteryUIAppEnergyValueKey"];
     [v7 floatValue];
     if ((v8 + 0.5) < 1)
     {
@@ -3098,9 +3098,9 @@ LABEL_23:
   else
   {
     v16 = [v6 objectForKeyedSubscript:@"PLBatteryUIAppTypeKey"];
-    v17 = [v16 intValue];
+    intValue = [v16 intValue];
 
-    if (v17 != 2)
+    if (intValue != 2)
     {
       v18 = 1;
       goto LABEL_10;

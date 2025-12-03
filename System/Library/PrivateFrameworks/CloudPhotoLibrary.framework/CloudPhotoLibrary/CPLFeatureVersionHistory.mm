@@ -1,21 +1,21 @@
 @interface CPLFeatureVersionHistory
-- (BOOL)isEqual:(id)a3;
-- (CPLFeatureVersionHistory)initWithCoder:(id)a3;
-- (CPLFeatureVersionHistory)initWithCurrentFeatureVersion:(int64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (CPLFeatureVersionHistory)initWithCoder:(id)coder;
+- (CPLFeatureVersionHistory)initWithCurrentFeatureVersion:(int64_t)version;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)syncAnchorForFeatureVersion:(int64_t)a3;
-- (int64_t)featureVersionForSyncAnchor:(id)a3;
-- (void)addSyncAnchor:(id)a3 forFeatureVersion:(int64_t)a4;
-- (void)encodeWithCoder:(id)a3;
-- (void)enumerateHistoryWithBlock:(id)a3;
+- (id)syncAnchorForFeatureVersion:(int64_t)version;
+- (int64_t)featureVersionForSyncAnchor:(id)anchor;
+- (void)addSyncAnchor:(id)anchor forFeatureVersion:(int64_t)version;
+- (void)encodeWithCoder:(id)coder;
+- (void)enumerateHistoryWithBlock:(id)block;
 @end
 
 @implementation CPLFeatureVersionHistory
 
-- (void)enumerateHistoryWithBlock:(id)a3
+- (void)enumerateHistoryWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   if ((self->_currentFeatureVersion & 0x8000000000000000) == 0)
   {
     v5 = -1;
@@ -29,7 +29,7 @@
       if (v8)
       {
         v9 = 0;
-        v4[2](v4, v5, v8, &v9);
+        blockCopy[2](blockCopy, v5, v8, &v9);
         if (v9)
         {
           break;
@@ -50,8 +50,8 @@ LABEL_8:
 {
   v25 = *MEMORY[0x1E69E9840];
   v3 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"<%@ %ld", objc_opt_class(), self->_currentFeatureVersion];
-  v4 = [(NSMutableDictionary *)self->_versionToAnchor allKeys];
-  v5 = [v4 sortedArrayUsingSelector:sel_compare_];
+  allKeys = [(NSMutableDictionary *)self->_versionToAnchor allKeys];
+  v5 = [allKeys sortedArrayUsingSelector:sel_compare_];
 
   v22 = 0u;
   v23 = 0u;
@@ -74,12 +74,12 @@ LABEL_8:
         }
 
         v11 = *(*(&v20 + 1) + 8 * i);
-        v12 = [v11 integerValue];
+        integerValue = [v11 integerValue];
         v13 = [(NSMutableDictionary *)self->_versionToAnchor objectForKeyedSubscript:v11];
         v14 = [(NSMutableDictionary *)self->_anchorToVersion objectForKeyedSubscript:v13];
-        v15 = [v14 integerValue];
+        integerValue2 = [v14 integerValue];
         v16 = "-";
-        if (v15 == v12)
+        if (integerValue2 == integerValue)
         {
           v16 = ", ";
         }
@@ -89,7 +89,7 @@ LABEL_8:
           v16 = " anchors: ";
         }
 
-        [v3 appendFormat:@"%s%ld", v16, v12];
+        [v3 appendFormat:@"%s%ld", v16, integerValue];
 
         v8 = 0;
       }
@@ -107,49 +107,49 @@ LABEL_8:
   return v3;
 }
 
-- (int64_t)featureVersionForSyncAnchor:(id)a3
+- (int64_t)featureVersionForSyncAnchor:(id)anchor
 {
-  v3 = [(NSMutableDictionary *)self->_anchorToVersion objectForKeyedSubscript:a3];
+  v3 = [(NSMutableDictionary *)self->_anchorToVersion objectForKeyedSubscript:anchor];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 integerValue];
+    integerValue = [v3 integerValue];
   }
 
   else
   {
-    v5 = 0x7FFFFFFFFFFFFFFFLL;
+    integerValue = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  return v5;
+  return integerValue;
 }
 
-- (id)syncAnchorForFeatureVersion:(int64_t)a3
+- (id)syncAnchorForFeatureVersion:(int64_t)version
 {
   versionToAnchor = self->_versionToAnchor;
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:version];
   v5 = [(NSMutableDictionary *)versionToAnchor objectForKeyedSubscript:v4];
 
   return v5;
 }
 
-- (void)addSyncAnchor:(id)a3 forFeatureVersion:(int64_t)a4
+- (void)addSyncAnchor:(id)anchor forFeatureVersion:(int64_t)version
 {
-  v9 = [a3 copy];
-  v6 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+  v9 = [anchor copy];
+  v6 = [MEMORY[0x1E696AD98] numberWithInteger:version];
   [(NSMutableDictionary *)self->_versionToAnchor setObject:v9 forKeyedSubscript:v6];
   v7 = [(NSMutableDictionary *)self->_anchorToVersion objectForKeyedSubscript:v9];
   v8 = v7;
-  if (!v7 || [v7 integerValue] > a4)
+  if (!v7 || [v7 integerValue] > version)
   {
     [(NSMutableDictionary *)self->_anchorToVersion setObject:v6 forKeyedSubscript:v9];
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -157,10 +157,10 @@ LABEL_8:
   else
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && self->_currentFeatureVersion == v4->_currentFeatureVersion)
+    if ((objc_opt_isKindOfClass() & 1) != 0 && self->_currentFeatureVersion == equalCopy->_currentFeatureVersion)
     {
       v5 = self->_versionToAnchor;
-      v6 = v4->_versionToAnchor;
+      v6 = equalCopy->_versionToAnchor;
       v7 = v6;
       v8 = v5 && v6 && ([v5 isEqual:v6] & 1) != 0 || (v5 | v7) == 0;
     }
@@ -174,7 +174,7 @@ LABEL_8:
   return v8;
 }
 
-- (CPLFeatureVersionHistory)initWithCurrentFeatureVersion:(int64_t)a3
+- (CPLFeatureVersionHistory)initWithCurrentFeatureVersion:(int64_t)version
 {
   v11.receiver = self;
   v11.super_class = CPLFeatureVersionHistory;
@@ -182,7 +182,7 @@ LABEL_8:
   v5 = v4;
   if (v4)
   {
-    v4->_currentFeatureVersion = a3;
+    v4->_currentFeatureVersion = version;
     v6 = objc_alloc_init(MEMORY[0x1E695DF90]);
     anchorToVersion = v5->_anchorToVersion;
     v5->_anchorToVersion = v6;
@@ -195,7 +195,7 @@ LABEL_8:
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[CPLFeatureVersionHistory alloc] initWithCurrentFeatureVersion:self->_currentFeatureVersion];
   v5 = [(NSMutableDictionary *)self->_versionToAnchor copy];
@@ -209,18 +209,18 @@ LABEL_8:
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   currentFeatureVersion = self->_currentFeatureVersion;
-  v5 = a3;
-  [v5 encodeInteger:currentFeatureVersion forKey:@"current"];
-  [v5 encodeObject:self->_versionToAnchor forKey:@"versions"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:currentFeatureVersion forKey:@"current"];
+  [coderCopy encodeObject:self->_versionToAnchor forKey:@"versions"];
 }
 
-- (CPLFeatureVersionHistory)initWithCoder:(id)a3
+- (CPLFeatureVersionHistory)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = -[CPLFeatureVersionHistory initWithCurrentFeatureVersion:](self, "initWithCurrentFeatureVersion:", [v4 decodeIntegerForKey:@"current"]);
+  coderCopy = coder;
+  v5 = -[CPLFeatureVersionHistory initWithCurrentFeatureVersion:](self, "initWithCurrentFeatureVersion:", [coderCopy decodeIntegerForKey:@"current"]);
   if (v5)
   {
     if (initWithCoder__onceToken_20439 != -1)
@@ -228,7 +228,7 @@ LABEL_8:
       dispatch_once(&initWithCoder__onceToken_20439, &__block_literal_global_20440);
     }
 
-    v6 = [v4 decodeObjectOfClasses:initWithCoder__versionsClasses forKey:@"versions"];
+    v6 = [coderCopy decodeObjectOfClasses:initWithCoder__versionsClasses forKey:@"versions"];
     v15 = 0;
     v16 = &v15;
     v17 = 0x2020000000;

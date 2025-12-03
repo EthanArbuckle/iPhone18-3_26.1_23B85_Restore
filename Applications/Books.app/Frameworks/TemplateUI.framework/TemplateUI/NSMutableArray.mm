@@ -1,20 +1,20 @@
 @interface NSMutableArray
-+ (id)tui_stackWithObjectsFromArray:(id)a3;
++ (id)tui_stackWithObjectsFromArray:(id)array;
 - (id)tui_pop;
-- (void)tui_push:(id)a3;
-- (void)tui_pushObjectsFromArray:(id)a3;
+- (void)tui_push:(id)tui_push;
+- (void)tui_pushObjectsFromArray:(id)array;
 @end
 
 @implementation NSMutableArray
 
-+ (id)tui_stackWithObjectsFromArray:(id)a3
++ (id)tui_stackWithObjectsFromArray:(id)array
 {
-  v3 = a3;
-  if ([v3 count])
+  arrayCopy = array;
+  if ([arrayCopy count])
   {
-    v4 = [v3 reverseObjectEnumerator];
-    v5 = [v4 allObjects];
-    v6 = [NSMutableArray arrayWithArray:v5];
+    reverseObjectEnumerator = [arrayCopy reverseObjectEnumerator];
+    allObjects = [reverseObjectEnumerator allObjects];
+    v6 = [NSMutableArray arrayWithArray:allObjects];
   }
 
   else
@@ -25,20 +25,20 @@
   return v6;
 }
 
-- (void)tui_pushObjectsFromArray:(id)a3
+- (void)tui_pushObjectsFromArray:(id)array
 {
-  v6 = a3;
-  if ([v6 count])
+  arrayCopy = array;
+  if ([arrayCopy count])
   {
-    v4 = [v6 reverseObjectEnumerator];
-    v5 = [v4 allObjects];
-    [(NSMutableArray *)self addObjectsFromArray:v5];
+    reverseObjectEnumerator = [arrayCopy reverseObjectEnumerator];
+    allObjects = [reverseObjectEnumerator allObjects];
+    [(NSMutableArray *)self addObjectsFromArray:allObjects];
   }
 }
 
-- (void)tui_push:(id)a3
+- (void)tui_push:(id)tui_push
 {
-  if (a3)
+  if (tui_push)
   {
     [(NSMutableArray *)self addObject:?];
   }
@@ -46,13 +46,13 @@
 
 - (id)tui_pop
 {
-  v3 = [(NSMutableArray *)self lastObject];
-  if (v3)
+  lastObject = [(NSMutableArray *)self lastObject];
+  if (lastObject)
   {
     [(NSMutableArray *)self removeLastObject];
   }
 
-  return v3;
+  return lastObject;
 }
 
 @end

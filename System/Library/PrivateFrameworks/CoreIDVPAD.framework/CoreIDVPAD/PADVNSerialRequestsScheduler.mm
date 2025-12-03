@@ -1,13 +1,13 @@
 @interface PADVNSerialRequestsScheduler
 - (PADVNSerialRequestsScheduler)init;
-- (PADVNSerialRequestsScheduler)initWithQueue:(id)a3;
-- (void)_dispatchVisionRequestForFrame:(id)a3;
+- (PADVNSerialRequestsScheduler)initWithQueue:(id)queue;
+- (void)_dispatchVisionRequestForFrame:(id)frame;
 - (void)_reset;
-- (void)analyzeObservationComposite:(id)a3;
-- (void)handleResultForRequest:(id)a3 error:(id)a4;
+- (void)analyzeObservationComposite:(id)composite;
+- (void)handleResultForRequest:(id)request error:(id)error;
 - (void)invalidate;
-- (void)processFrame:(id)a3;
-- (void)waitForCurrentFrameProcessingWithCompletion:(id)a3;
+- (void)processFrame:(id)frame;
+- (void)waitForCurrentFrameProcessingWithCompletion:(id)completion;
 @end
 
 @implementation PADVNSerialRequestsScheduler
@@ -31,26 +31,26 @@
   return v2;
 }
 
-- (PADVNSerialRequestsScheduler)initWithQueue:(id)a3
+- (PADVNSerialRequestsScheduler)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v9.receiver = self;
   v9.super_class = PADVNSerialRequestsScheduler;
   v6 = [(PADVNSerialRequestsScheduler *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_queue, a3);
+    objc_storeStrong(&v6->_queue, queue);
     [(PADVNSerialRequestsScheduler *)v7 _reset];
   }
 
   return v7;
 }
 
-- (void)processFrame:(id)a3
+- (void)processFrame:(id)frame
 {
-  v4 = a3;
-  v5 = v4;
+  frameCopy = frame;
+  v5 = frameCopy;
   if (self->_remainingRequests)
   {
   }
@@ -83,27 +83,27 @@ uint64_t __45__PADVNSerialRequestsScheduler_processFrame___block_invoke(uint64_t
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)waitForCurrentFrameProcessingWithCompletion:(id)a3
+- (void)waitForCurrentFrameProcessingWithCompletion:(id)completion
 {
   if (self->_isProcessingFrame)
   {
-    self->_currentFrameProcessingCompletion = _Block_copy(a3);
+    self->_currentFrameProcessingCompletion = _Block_copy(completion);
 
     MEMORY[0x2821F96F8]();
   }
 
   else
   {
-    v4 = *(a3 + 2);
+    v4 = *(completion + 2);
 
-    v4(a3);
+    v4(completion);
   }
 }
 
-- (void)_dispatchVisionRequestForFrame:(id)a3
+- (void)_dispatchVisionRequestForFrame:(id)frame
 {
   v42 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  frameCopy = frame;
   dispatch_assert_queue_V2(self->_queue);
   if (self->_remainingRequests)
   {
@@ -117,7 +117,7 @@ uint64_t __45__PADVNSerialRequestsScheduler_processFrame___block_invoke(uint64_t
   v38[2] = __63__PADVNSerialRequestsScheduler__dispatchVisionRequestForFrame___block_invoke;
   v38[3] = &unk_278E83738;
   objc_copyWeak(&v39, &location);
-  v5 = [(PADVNSerialRequestsScheduler *)self requestsForFrame:v4 handler:v38];
+  v5 = [(PADVNSerialRequestsScheduler *)self requestsForFrame:frameCopy handler:v38];
   requests = self->_requests;
   self->_requests = v5;
 
@@ -178,13 +178,13 @@ uint64_t __45__PADVNSerialRequestsScheduler_processFrame___block_invoke(uint64_t
   objc_copyWeak(&v33, &location);
   v18 = v10;
   v31 = v18;
-  v19 = v4;
+  v19 = frameCopy;
   v32 = v19;
   dispatch_async(queue, block);
   v20 = objc_alloc(MEMORY[0x277CE2D50]);
-  v21 = [v19 buffer];
-  v22 = [v19 orientation];
-  v23 = [v20 initWithCVPixelBuffer:v21 orientation:v22 options:MEMORY[0x277CBEC10]];
+  buffer = [v19 buffer];
+  orientation = [v19 orientation];
+  v23 = [v20 initWithCVPixelBuffer:buffer orientation:orientation options:MEMORY[0x277CBEC10]];
   v29 = 0;
   v24 = [v23 performRequests:v9 error:&v29];
   v25 = v29;
@@ -290,16 +290,16 @@ void __63__PADVNSerialRequestsScheduler__dispatchVisionRequestForFrame___block_i
   }
 }
 
-- (void)handleResultForRequest:(id)a3 error:(id)a4
+- (void)handleResultForRequest:(id)request error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  requestCopy = request;
+  errorCopy = error;
+  v8 = errorCopy;
   --self->_remainingRequests;
-  if (v7)
+  if (errorCopy)
   {
     v9 = recentlyLoggedError;
-    v10 = [v7 debugDescription];
+    v10 = [errorCopy debugDescription];
     LOBYTE(v9) = [v9 isEqualToString:v10];
 
     if ((v9 & 1) == 0)
@@ -307,7 +307,7 @@ void __63__PADVNSerialRequestsScheduler__dispatchVisionRequestForFrame___block_i
       v11 = os_log_create("com.apple.CoreIDV", "RGBLiveness");
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
-        [(PADVNSerialRequestsScheduler *)v6 handleResultForRequest:v8 error:v11];
+        [(PADVNSerialRequestsScheduler *)requestCopy handleResultForRequest:v8 error:v11];
       }
 
       v12 = [v8 debugDescription];
@@ -315,7 +315,7 @@ void __63__PADVNSerialRequestsScheduler__dispatchVisionRequestForFrame___block_i
       recentlyLoggedError = v12;
     }
 
-    objc_storeStrong(&self->_requestError, a4);
+    objc_storeStrong(&self->_requestError, error);
   }
 
   if (self->_requestError)
@@ -331,7 +331,7 @@ LABEL_19:
 
   else if (self->_currentObservationComposite)
   {
-    requestError = [(PADVNSerialRequestsScheduler *)self observationsFromRequest:v6];
+    requestError = [(PADVNSerialRequestsScheduler *)self observationsFromRequest:requestCopy];
     if (requestError)
     {
       hasLoggedObservationError = 0;
@@ -348,8 +348,8 @@ LABEL_19:
         v19 = self->_currentObservationComposite;
         self->_currentObservationComposite = 0;
 
-        v20 = [(PADVNSerialRequestsScheduler *)self observationCompositeSetSize];
-        if ([(NSMutableArray *)self->_currentObservationCompositeSet count]== v20)
+        observationCompositeSetSize = [(PADVNSerialRequestsScheduler *)self observationCompositeSetSize];
+        if ([(NSMutableArray *)self->_currentObservationCompositeSet count]== observationCompositeSetSize)
         {
           [(PADVNSerialRequestsScheduler *)self analyzeObservationCompositeSet:self->_currentObservationCompositeSet];
           [(NSMutableArray *)self->_currentObservationCompositeSet removeObjectAtIndex:0];
@@ -362,7 +362,7 @@ LABEL_19:
       v21 = os_log_create("com.apple.CoreIDV", "RGBLiveness");
       if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
       {
-        [PADVNSerialRequestsScheduler handleResultForRequest:v6 error:v21];
+        [PADVNSerialRequestsScheduler handleResultForRequest:requestCopy error:v21];
       }
 
       hasLoggedObservationError = 1;
@@ -372,13 +372,13 @@ LABEL_19:
   }
 }
 
-- (void)analyzeObservationComposite:(id)a3
+- (void)analyzeObservationComposite:(id)composite
 {
   self->_isProcessingFrame = 0;
   currentFrameProcessingCompletion = self->_currentFrameProcessingCompletion;
   if (currentFrameProcessingCompletion)
   {
-    currentFrameProcessingCompletion[2](currentFrameProcessingCompletion, a2, a3);
+    currentFrameProcessingCompletion[2](currentFrameProcessingCompletion, a2, composite);
     v5 = self->_currentFrameProcessingCompletion;
     self->_currentFrameProcessingCompletion = 0;
   }

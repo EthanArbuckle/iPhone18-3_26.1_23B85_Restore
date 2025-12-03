@@ -1,47 +1,47 @@
 @interface StrokeGestureRecognizer
-- (_TtC19ContactlessReaderUI23StrokeGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4;
+- (_TtC19ContactlessReaderUI23StrokeGestureRecognizer)initWithTarget:(id)target action:(SEL)action;
 - (void)reset;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation StrokeGestureRecognizer
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   sub_243F82C38();
   sub_243F82C84();
   v6 = sub_2440D33E0();
-  v7 = a4;
-  v8 = self;
+  eventCopy = event;
+  selfCopy = self;
   sub_243F81378(v6);
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
   sub_243F82C38();
   sub_243F82C84();
   v6 = sub_2440D33E0();
   v7 = *((*MEMORY[0x277D85000] & self->super.super.isa) + 0x100);
-  v8 = a4;
-  v9 = self;
-  LOBYTE(a4) = v7(v6, a4);
+  eventCopy = event;
+  selfCopy = self;
+  LOBYTE(event) = v7(v6, event);
 
-  if ((a4 & 1) != 0 && [(StrokeGestureRecognizer *)v9 state]== 1)
+  if ((event & 1) != 0 && [(StrokeGestureRecognizer *)selfCopy state]== 1)
   {
-    [(StrokeGestureRecognizer *)v9 setState:2];
+    [(StrokeGestureRecognizer *)selfCopy setState:2];
   }
 }
 
 - (void)reset
 {
-  v2 = self;
+  selfCopy = self;
   sub_243F81A2C();
 }
 
-- (_TtC19ContactlessReaderUI23StrokeGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4
+- (_TtC19ContactlessReaderUI23StrokeGestureRecognizer)initWithTarget:(id)target action:(SEL)action
 {
-  if (a3)
+  if (target)
   {
     swift_unknownObjectRetain();
     sub_2440D36C0();
@@ -53,7 +53,7 @@
     memset(v6, 0, sizeof(v6));
   }
 
-  return sub_243F81B40(v6, a4);
+  return sub_243F81B40(v6, action);
 }
 
 @end

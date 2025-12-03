@@ -1,8 +1,8 @@
 @interface ATXActivitySuggestionsFeedbackHistogramHelper
-+ (id)histogramBundleIdForModeWithUUID:(id)a3 modeType:(int)a4 origin:(int)a5 originAnchorType:(id)a6;
++ (id)histogramBundleIdForModeWithUUID:(id)d modeType:(int)type origin:(int)origin originAnchorType:(id)anchorType;
 - (ATXActivitySuggestionsFeedbackHistogramHelper)init;
-- (ATXActivitySuggestionsFeedbackHistogramHelper)initWithFeedbackCategoricalHistogram:(id)a3;
-- (void)updateFeedbackHistogramWithEvent:(id)a3;
+- (ATXActivitySuggestionsFeedbackHistogramHelper)initWithFeedbackCategoricalHistogram:(id)histogram;
+- (void)updateFeedbackHistogramWithEvent:(id)event;
 @end
 
 @implementation ATXActivitySuggestionsFeedbackHistogramHelper
@@ -16,48 +16,48 @@
   return v5;
 }
 
-- (ATXActivitySuggestionsFeedbackHistogramHelper)initWithFeedbackCategoricalHistogram:(id)a3
+- (ATXActivitySuggestionsFeedbackHistogramHelper)initWithFeedbackCategoricalHistogram:(id)histogram
 {
-  v5 = a3;
+  histogramCopy = histogram;
   v9.receiver = self;
   v9.super_class = ATXActivitySuggestionsFeedbackHistogramHelper;
   v6 = [(ATXActivitySuggestionsFeedbackHistogramHelper *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_feedbackCategoricalHistogram, a3);
+    objc_storeStrong(&v6->_feedbackCategoricalHistogram, histogram);
   }
 
   return v7;
 }
 
-- (void)updateFeedbackHistogramWithEvent:(id)a3
+- (void)updateFeedbackHistogramWithEvent:(id)event
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 location]== 1)
+  eventCopy = event;
+  if ([eventCopy location]== 1)
   {
-    v25 = self;
+    selfCopy = self;
     v5 = objc_opt_class();
-    v6 = [v4 activity];
-    v7 = [v6 modeUUID];
-    v8 = [v4 activity];
-    [v8 activityType];
+    activity = [eventCopy activity];
+    modeUUID = [activity modeUUID];
+    activity2 = [eventCopy activity];
+    [activity2 activityType];
     v9 = ATXActivityTypeToBMUserFocusInferredModeType();
-    v10 = [v4 activity];
-    [v10 origin];
+    activity3 = [eventCopy activity];
+    [activity3 origin];
     v11 = BMUserFocusInferredModeOriginFromLegacy();
-    v12 = [v4 activity];
-    v13 = [v12 originAnchorType];
-    v14 = [v5 histogramBundleIdForModeWithUUID:v7 modeType:v9 origin:v11 originAnchorType:v13];
+    activity4 = [eventCopy activity];
+    originAnchorType = [activity4 originAnchorType];
+    v14 = [v5 histogramBundleIdForModeWithUUID:modeUUID modeType:v9 origin:v11 originAnchorType:originAnchorType];
 
-    v15 = [v4 eventType];
-    switch(v15)
+    eventType = [eventCopy eventType];
+    switch(eventType)
     {
       case 3:
-        feedbackCategoricalHistogram = v25->_feedbackCategoricalHistogram;
-        v23 = [v4 eventDate];
-        [(_ATXAppLaunchCategoricalHistogram *)feedbackCategoricalHistogram addLaunchWithBundleId:v14 date:v23 category:@"rejected"];
+        feedbackCategoricalHistogram = selfCopy->_feedbackCategoricalHistogram;
+        eventDate = [eventCopy eventDate];
+        [(_ATXAppLaunchCategoricalHistogram *)feedbackCategoricalHistogram addLaunchWithBundleId:v14 date:eventDate category:@"rejected"];
 
         v18 = __atxlog_handle_modes();
         if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
@@ -72,9 +72,9 @@
 
         goto LABEL_14;
       case 2:
-        v20 = v25->_feedbackCategoricalHistogram;
-        v21 = [v4 eventDate];
-        [(_ATXAppLaunchCategoricalHistogram *)v20 addLaunchWithBundleId:v14 date:v21 category:@"accepted"];
+        v20 = selfCopy->_feedbackCategoricalHistogram;
+        eventDate2 = [eventCopy eventDate];
+        [(_ATXAppLaunchCategoricalHistogram *)v20 addLaunchWithBundleId:v14 date:eventDate2 category:@"accepted"];
 
         v18 = __atxlog_handle_modes();
         if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
@@ -91,9 +91,9 @@ LABEL_14:
 
         break;
       case 0:
-        v16 = v25->_feedbackCategoricalHistogram;
-        v17 = [v4 eventDate];
-        [(_ATXAppLaunchCategoricalHistogram *)v16 addLaunchWithBundleId:v14 date:v17 category:@"suggested"];
+        v16 = selfCopy->_feedbackCategoricalHistogram;
+        eventDate3 = [eventCopy eventDate];
+        [(_ATXAppLaunchCategoricalHistogram *)v16 addLaunchWithBundleId:v14 date:eventDate3 category:@"suggested"];
 
         v18 = __atxlog_handle_modes();
         if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
@@ -120,7 +120,7 @@ LABEL_13:
       *buf = 136315394;
       v27 = "[ATXActivitySuggestionsFeedbackHistogramHelper updateFeedbackHistogramWithEvent:]";
       v28 = 2112;
-      v29 = v4;
+      v29 = eventCopy;
       _os_log_impl(&dword_2263AA000, v14, OS_LOG_TYPE_DEFAULT, "%s: skipping feedback event since it does not pertain to lock screen: %@", buf, 0x16u);
     }
   }
@@ -128,16 +128,16 @@ LABEL_13:
   v24 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)histogramBundleIdForModeWithUUID:(id)a3 modeType:(int)a4 origin:(int)a5 originAnchorType:(id)a6
++ (id)histogramBundleIdForModeWithUUID:(id)d modeType:(int)type origin:(int)origin originAnchorType:(id)anchorType
 {
   v7 = MEMORY[0x277CCACA8];
-  v8 = a6;
-  v9 = a3;
+  anchorTypeCopy = anchorType;
+  dCopy = d;
   v10 = [v7 alloc];
   v11 = BMUserFocusInferredModeTypeToLegacy();
-  v12 = [v10 initWithFormat:@"%@:%lu:%lu:%@", v9, v11, BMUserFocusInferredModeOriginToLegacy(), v8];
+  anchorTypeCopy = [v10 initWithFormat:@"%@:%lu:%lu:%@", dCopy, v11, BMUserFocusInferredModeOriginToLegacy(), anchorTypeCopy];
 
-  return v12;
+  return anchorTypeCopy;
 }
 
 @end

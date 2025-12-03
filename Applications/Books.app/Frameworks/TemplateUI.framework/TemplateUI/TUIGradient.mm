@@ -1,13 +1,13 @@
 @interface TUIGradient
-+ (unint64_t)directionFromString:(id)a3;
++ (unint64_t)directionFromString:(id)string;
 @end
 
 @implementation TUIGradient
 
-+ (unint64_t)directionFromString:(id)a3
++ (unint64_t)directionFromString:(id)string
 {
-  v3 = a3;
-  v4 = v3;
+  stringCopy = string;
+  v4 = stringCopy;
   if (qword_2E6320 != -1)
   {
     sub_19A05C();
@@ -17,21 +17,21 @@
     }
 
 LABEL_5:
-    v6 = 0;
+    unsignedIntegerValue = 0;
     goto LABEL_6;
   }
 
-  if (!v3)
+  if (!stringCopy)
   {
     goto LABEL_5;
   }
 
 LABEL_3:
   v5 = [qword_2E6318 objectForKeyedSubscript:v4];
-  v6 = [v5 unsignedIntegerValue];
+  unsignedIntegerValue = [v5 unsignedIntegerValue];
 
 LABEL_6:
-  return v6;
+  return unsignedIntegerValue;
 }
 
 @end

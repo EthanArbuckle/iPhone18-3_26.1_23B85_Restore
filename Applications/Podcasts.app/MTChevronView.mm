@@ -1,7 +1,7 @@
 @interface MTChevronView
 + (id)chevronImage;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (MTChevronView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (MTChevronView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
@@ -19,22 +19,22 @@
   return v3;
 }
 
-- (MTChevronView)initWithFrame:(CGRect)a3
+- (MTChevronView)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = MTChevronView;
-  v3 = [(MTChevronView *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MTChevronView *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [objc_opt_class() chevronImage];
-    v5 = [[UIImageView alloc] initWithImage:v4];
+    chevronImage = [objc_opt_class() chevronImage];
+    v5 = [[UIImageView alloc] initWithImage:chevronImage];
     [(MTChevronView *)v3 setImageView:v5];
 
-    v6 = [(MTChevronView *)v3 imageView];
-    [v6 sizeToFit];
+    imageView = [(MTChevronView *)v3 imageView];
+    [imageView sizeToFit];
 
-    v7 = [(MTChevronView *)v3 imageView];
-    [(MTChevronView *)v3 addSubview:v7];
+    imageView2 = [(MTChevronView *)v3 imageView];
+    [(MTChevronView *)v3 addSubview:imageView2];
   }
 
   return v3;
@@ -45,24 +45,24 @@
   v13.receiver = self;
   v13.super_class = MTChevronView;
   [(MTChevronView *)&v13 layoutSubviews];
-  v3 = [(MTChevronView *)self imageView];
-  [v3 bounds];
+  imageView = [(MTChevronView *)self imageView];
+  [imageView bounds];
   [(MTChevronView *)self bounds];
   CGRectCenterRectInRect();
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(MTChevronView *)self imageView];
-  [v12 setFrame:{v5, v7, v9, v11}];
+  imageView2 = [(MTChevronView *)self imageView];
+  [imageView2 setFrame:{v5, v7, v9, v11}];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [(MTChevronView *)self imageView];
-  [v5 sizeThatFits:{width, height}];
+  height = fits.height;
+  width = fits.width;
+  imageView = [(MTChevronView *)self imageView];
+  [imageView sizeThatFits:{width, height}];
   v7 = v6;
   v9 = v8;
 

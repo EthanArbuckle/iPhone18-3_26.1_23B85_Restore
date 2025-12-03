@@ -9,16 +9,16 @@
 
 - (BOOL)isCompactFlowPresentation
 {
-  v3 = [(THWSceneLayout *)self delegate];
+  delegate = [(THWSceneLayout *)self delegate];
 
-  return [(THWWidgetLayoutDelegate *)v3 widgetLayoutIsCompactFlow:self];
+  return [(THWWidgetLayoutDelegate *)delegate widgetLayoutIsCompactFlow:self];
 }
 
 - (BOOL)isReflowablePresentation
 {
-  v3 = [(THWSceneLayout *)self delegate];
+  delegate = [(THWSceneLayout *)self delegate];
 
-  return [(THWWidgetLayoutDelegate *)v3 widgetLayoutIsReflowablePresentation:self];
+  return [(THWWidgetLayoutDelegate *)delegate widgetLayoutIsReflowablePresentation:self];
 }
 
 - (void)updateChildrenFromInfo

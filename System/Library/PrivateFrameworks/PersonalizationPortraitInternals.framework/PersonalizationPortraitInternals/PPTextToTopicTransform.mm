@@ -3,10 +3,10 @@
 - (BOOL)_updateFromAssetData;
 - (float)threshold;
 - (id)_init;
-- (id)_initWithVocabulary:(id)a3 weights:(id)a4;
+- (id)_initWithVocabulary:(id)vocabulary weights:(id)weights;
 - (unint64_t)outputTopicCount;
 - (void)dealloc;
-- (void)iterateTopicsForText:(id)a3 block:(id)a4;
+- (void)iterateTopicsForText:(id)text block:(id)block;
 @end
 
 @implementation PPTextToTopicTransform
@@ -36,21 +36,21 @@ uint64_t __42__PPTextToTopicTransform_outputTopicCount__block_invoke(uint64_t a1
   return result;
 }
 
-- (void)iterateTopicsForText:(id)a3 block:(id)a4
+- (void)iterateTopicsForText:(id)text block:(id)block
 {
-  v7 = a3;
-  v8 = a4;
+  textCopy = text;
+  blockCopy = block;
   lock = self->_lock;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __53__PPTextToTopicTransform_iterateTopicsForText_block___block_invoke;
   v12[3] = &unk_2789752F8;
   v12[4] = self;
-  v13 = v7;
-  v14 = v8;
+  v13 = textCopy;
+  v14 = blockCopy;
   v15 = a2;
-  v10 = v8;
-  v11 = v7;
+  v10 = blockCopy;
+  v11 = textCopy;
   [(_PASLock *)lock runWithLockAcquired:v12];
 }
 
@@ -247,10 +247,10 @@ uint64_t __35__PPTextToTopicTransform_threshold__block_invoke(uint64_t a1, uint6
   [(PPTextToTopicTransform *)&v4 dealloc];
 }
 
-- (id)_initWithVocabulary:(id)a3 weights:(id)a4
+- (id)_initWithVocabulary:(id)vocabulary weights:(id)weights
 {
-  v7 = a3;
-  v8 = a4;
+  vocabularyCopy = vocabulary;
+  weightsCopy = weights;
   v21.receiver = self;
   v21.super_class = PPTextToTopicTransform;
   v9 = [(PPTextToTopicTransform *)&v21 init];
@@ -262,8 +262,8 @@ uint64_t __35__PPTextToTopicTransform_threshold__block_invoke(uint64_t a1, uint6
     lock = v9->_lock;
     v9->_lock = v12;
 
-    objc_storeStrong(&v9->_vocabularyPath, a3);
-    objc_storeStrong(&v9->_weightsPath, a4);
+    objc_storeStrong(&v9->_vocabularyPath, vocabulary);
+    objc_storeStrong(&v9->_weightsPath, weights);
     mappingId = v9->_mappingId;
     v9->_mappingId = @"high-level-topics-extraction";
 
@@ -298,16 +298,16 @@ void __54__PPTextToTopicTransform__initWithVocabulary_weights___block_invoke(uin
 - (BOOL)_updateFromAssetData
 {
   v20 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
-    v2 = [objc_alloc(MEMORY[0x277D42558]) initWithPath:a1[3]];
+    v2 = [objc_alloc(MEMORY[0x277D42558]) initWithPath:self[3]];
     if (v2)
     {
-      v3 = [[PPTopicTransform alloc] initWithPath:a1[4] mappingId:a1[5]];
+      v3 = [[PPTopicTransform alloc] initWithPath:self[4] mappingId:self[5]];
       v4 = v3 != 0;
       if (v3)
       {
-        v5 = a1[1];
+        v5 = self[1];
         v13[0] = MEMORY[0x277D85DD0];
         v13[1] = 3221225472;
         v13[2] = __46__PPTextToTopicTransform__updateFromAssetData__block_invoke;
@@ -324,7 +324,7 @@ void __54__PPTextToTopicTransform__initWithVocabulary_weights___block_invoke(uin
         v6 = pp_topics_log_handle();
         if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
         {
-          v11 = a1[4];
+          v11 = self[4];
           v12 = NSStringFromSelector(sel__updateFromAssetData);
           *buf = 138412546;
           v17 = v11;
@@ -340,7 +340,7 @@ void __54__PPTextToTopicTransform__initWithVocabulary_weights___block_invoke(uin
       v3 = pp_default_log_handle();
       if (os_log_type_enabled(&v3->super, OS_LOG_TYPE_ERROR))
       {
-        v9 = a1[3];
+        v9 = self[3];
         v10 = NSStringFromSelector(sel__updateFromAssetData);
         *buf = 138412546;
         v17 = v9;
@@ -404,16 +404,16 @@ void __46__PPTextToTopicTransform__updateFromAssetData__block_invoke(uint64_t a1
     }
 
 LABEL_9:
-    v8 = 0;
+    selfCopy = 0;
     goto LABEL_10;
   }
 
   self = [(PPTextToTopicTransform *)self _initWithVocabulary:v5 weights:v7];
-  v8 = self;
+  selfCopy = self;
 LABEL_10:
 
   v11 = *MEMORY[0x277D85DE8];
-  return v8;
+  return selfCopy;
 }
 
 + (PPTextToTopicTransform)sharedInstance

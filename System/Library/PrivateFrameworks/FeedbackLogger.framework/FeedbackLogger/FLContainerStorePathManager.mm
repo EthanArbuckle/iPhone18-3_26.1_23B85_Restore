@@ -1,22 +1,22 @@
 @interface FLContainerStorePathManager
 - (FLContainerStorePathManager)init;
-- (id)containerPathForStoreId:(id)a3;
-- (id)performXPCForContainerPathForStoreId:(id)a3;
+- (id)containerPathForStoreId:(id)id;
+- (id)performXPCForContainerPathForStoreId:(id)id;
 - (void)dealloc;
 @end
 
 @implementation FLContainerStorePathManager
 
-- (id)performXPCForContainerPathForStoreId:(id)a3
+- (id)performXPCForContainerPathForStoreId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
   v23 = __Block_byref_object_copy__403;
   v24 = __Block_byref_object_dispose__404;
-  v5 = [(FLContainerStorePathManager *)self storeIdToContainerPathMap];
-  v25 = [v5 objectForKeyedSubscript:v4];
+  storeIdToContainerPathMap = [(FLContainerStorePathManager *)self storeIdToContainerPathMap];
+  v25 = [storeIdToContainerPathMap objectForKeyedSubscript:idCopy];
 
   v6 = v21[5];
   if (v6)
@@ -24,14 +24,14 @@
     goto LABEL_8;
   }
 
-  v7 = [MEMORY[0x277CBEAA8] date];
-  v8 = [(FLContainerStorePathManager *)self storeIdToLastSandboxExtensionRequestMap];
-  v9 = [v8 objectForKeyedSubscript:v4];
+  date = [MEMORY[0x277CBEAA8] date];
+  storeIdToLastSandboxExtensionRequestMap = [(FLContainerStorePathManager *)self storeIdToLastSandboxExtensionRequestMap];
+  v9 = [storeIdToLastSandboxExtensionRequestMap objectForKeyedSubscript:idCopy];
 
-  if (!v9 || ([v7 timeIntervalSinceDate:v9], v10 >= 1.0))
+  if (!v9 || ([date timeIntervalSinceDate:v9], v10 >= 1.0))
   {
-    v13 = [(FLContainerStorePathManager *)self storeIdToLastSandboxExtensionRequestMap];
-    [v13 setObject:v7 forKeyedSubscript:v4];
+    storeIdToLastSandboxExtensionRequestMap2 = [(FLContainerStorePathManager *)self storeIdToLastSandboxExtensionRequestMap];
+    [storeIdToLastSandboxExtensionRequestMap2 setObject:date forKeyedSubscript:idCopy];
 
     v14 = objc_alloc_init(FeedbackLoggerFBFClient);
     v16[0] = MEMORY[0x277D85DD0];
@@ -39,7 +39,7 @@
     v16[2] = __68__FLContainerStorePathManager_performXPCForContainerPathForStoreId___block_invoke;
     v16[3] = &unk_278FF8C80;
     v16[4] = self;
-    v17 = v4;
+    v17 = idCopy;
     v18 = &v20;
     [(FeedbackLoggerFBFClient *)v14 requestSandboxExtensionForBundleID:v17 completion:v16];
 
@@ -125,11 +125,11 @@ LABEL_9:
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (id)containerPathForStoreId:(id)a3
+- (id)containerPathForStoreId:(id)id
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(FLContainerStorePathManager *)self performXPCForContainerPathForStoreId:v4];
+  idCopy = id;
+  v5 = [(FLContainerStorePathManager *)self performXPCForContainerPathForStoreId:idCopy];
   if (!v5)
   {
     v7 = 0;
@@ -145,7 +145,7 @@ LABEL_9:
         _os_log_impl(&dword_24AB3F000, v8, OS_LOG_TYPE_DEFAULT, "Retrying xpc (%ld attempt) sandbox extension.", buf, 0xCu);
       }
 
-      v9 = [(FLContainerStorePathManager *)self performXPCForContainerPathForStoreId:v4];
+      v9 = [(FLContainerStorePathManager *)self performXPCForContainerPathForStoreId:idCopy];
       v5 = v9;
       if (v7 > 1)
       {
@@ -170,8 +170,8 @@ LABEL_9:
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [(FLContainerStorePathManager *)self sandboxExtensionTokens];
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  sandboxExtensionTokens = [(FLContainerStorePathManager *)self sandboxExtensionTokens];
+  v4 = [sandboxExtensionTokens countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -183,7 +183,7 @@ LABEL_9:
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(sandboxExtensionTokens);
         }
 
         [*(*(&v10 + 1) + 8 * v7) intValue];
@@ -192,7 +192,7 @@ LABEL_9:
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [sandboxExtensionTokens countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);
@@ -211,17 +211,17 @@ LABEL_9:
   v2 = [(FLContainerStorePathManager *)&v12 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     storeIdToContainerPathMap = v2->_storeIdToContainerPathMap;
-    v2->_storeIdToContainerPathMap = v3;
+    v2->_storeIdToContainerPathMap = dictionary;
 
-    v5 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     sandboxExtensionTokens = v2->_sandboxExtensionTokens;
-    v2->_sandboxExtensionTokens = v5;
+    v2->_sandboxExtensionTokens = array;
 
-    v7 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     storeIdToLastSandboxExtensionRequestMap = v2->_storeIdToLastSandboxExtensionRequestMap;
-    v2->_storeIdToLastSandboxExtensionRequestMap = v7;
+    v2->_storeIdToLastSandboxExtensionRequestMap = dictionary2;
 
     v9 = flLogForObject(v2);
     log = v2->_log;

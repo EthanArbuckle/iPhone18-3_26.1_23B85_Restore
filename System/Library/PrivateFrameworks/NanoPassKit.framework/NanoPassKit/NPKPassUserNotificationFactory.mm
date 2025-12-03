@@ -1,43 +1,43 @@
 @interface NPKPassUserNotificationFactory
-- (NPKPassUserNotificationFactory)initWithDataSource:(id)a3;
+- (NPKPassUserNotificationFactory)initWithDataSource:(id)source;
 - (NPKPassUserNotificationFactoryDataSource)dataSource;
-- (id)passNotificationWithType:(unint64_t)a3 passUniqueID:(id)a4;
+- (id)passNotificationWithType:(unint64_t)type passUniqueID:(id)d;
 @end
 
 @implementation NPKPassUserNotificationFactory
 
-- (NPKPassUserNotificationFactory)initWithDataSource:(id)a3
+- (NPKPassUserNotificationFactory)initWithDataSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   v8.receiver = self;
   v8.super_class = NPKPassUserNotificationFactory;
   v5 = [(NPKPassUserNotificationFactory *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_dataSource, v4);
+    objc_storeWeak(&v5->_dataSource, sourceCopy);
   }
 
   return v6;
 }
 
-- (id)passNotificationWithType:(unint64_t)a3 passUniqueID:(id)a4
+- (id)passNotificationWithType:(unint64_t)type passUniqueID:(id)d
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [(NPKPassUserNotificationFactory *)self dataSource];
-  v8 = [(NPKUserNotificationExpressModeEnabled *)v7 passWithUniqueID:v6];
+  dCopy = d;
+  dataSource = [(NPKPassUserNotificationFactory *)self dataSource];
+  v8 = [(NPKUserNotificationExpressModeEnabled *)dataSource passWithUniqueID:dCopy];
 
   if (v8)
   {
-    if (a3 < 2)
+    if (type < 2)
     {
       v9 = [NPKUserNotificationExpressModeEnabled alloc];
       v10 = v8;
       v11 = 0;
     }
 
-    else if (a3 == 2)
+    else if (type == 2)
     {
       v9 = [NPKUserNotificationExpressModeEnabled alloc];
       v10 = v8;
@@ -46,7 +46,7 @@
 
     else
     {
-      if (a3 != 3)
+      if (type != 3)
       {
         goto LABEL_14;
       }
@@ -56,7 +56,7 @@
       v11 = 2;
     }
 
-    v7 = [(NPKUserNotificationExpressModeEnabled *)v9 initWithPass:v10 expressNotificationType:v11];
+    dataSource = [(NPKUserNotificationExpressModeEnabled *)v9 initWithPass:v10 expressNotificationType:v11];
   }
 
   else
@@ -70,19 +70,19 @@
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
         v17 = 138412290;
-        v18 = v6;
+        v18 = dCopy;
         _os_log_impl(&dword_25B300000, v14, OS_LOG_TYPE_DEFAULT, "Warning: Fail to find pass for notification with uniqueID:%@", &v17, 0xCu);
       }
     }
 
-    v7 = 0;
+    dataSource = 0;
   }
 
 LABEL_14:
 
   v15 = *MEMORY[0x277D85DE8];
 
-  return v7;
+  return dataSource;
 }
 
 - (NPKPassUserNotificationFactoryDataSource)dataSource
@@ -91,15 +91,15 @@ LABEL_14:
   v3 = WeakRetained;
   if (WeakRetained)
   {
-    v4 = WeakRetained;
+    mEMORY[0x277D37FC0] = WeakRetained;
   }
 
   else
   {
-    v4 = [MEMORY[0x277D37FC0] sharedInstance];
+    mEMORY[0x277D37FC0] = [MEMORY[0x277D37FC0] sharedInstance];
   }
 
-  v5 = v4;
+  v5 = mEMORY[0x277D37FC0];
 
   return v5;
 }

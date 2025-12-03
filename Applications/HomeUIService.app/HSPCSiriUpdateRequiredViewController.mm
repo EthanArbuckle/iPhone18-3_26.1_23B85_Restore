@@ -1,13 +1,13 @@
 @interface HSPCSiriUpdateRequiredViewController
-- (HSPCSiriUpdateRequiredViewController)initWithCoordinator:(id)a3 config:(id)a4;
+- (HSPCSiriUpdateRequiredViewController)initWithCoordinator:(id)coordinator config:(id)config;
 @end
 
 @implementation HSPCSiriUpdateRequiredViewController
 
-- (HSPCSiriUpdateRequiredViewController)initWithCoordinator:(id)a3 config:(id)a4
+- (HSPCSiriUpdateRequiredViewController)initWithCoordinator:(id)coordinator config:(id)config
 {
-  v7 = a3;
-  v8 = a4;
+  coordinatorCopy = coordinator;
+  configCopy = config;
   v9 = [UIImageView alloc];
   v10 = HUImageNamed();
   v11 = [v9 initWithImage:v10];
@@ -19,8 +19,8 @@
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_config, a4);
-    objc_storeStrong(&v13->_coordinator, a3);
+    objc_storeStrong(&v12->_config, config);
+    objc_storeStrong(&v13->_coordinator, coordinator);
     v14 = HULocalizedString();
     [(HSPCSiriUpdateRequiredViewController *)v13 setTitle:v14];
 

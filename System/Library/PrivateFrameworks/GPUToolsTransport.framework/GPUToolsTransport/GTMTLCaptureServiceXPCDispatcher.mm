@@ -1,22 +1,22 @@
 @interface GTMTLCaptureServiceXPCDispatcher
-- (GTMTLCaptureServiceXPCDispatcher)initWithService:(id)a3 properties:(id)a4 notifyConnection:(id)a5;
-- (void)broadcastDisconnect:(id)a3 replyConnection:(id)a4;
-- (void)deregisterObserver_:(id)a3 replyConnection:(id)a4;
-- (void)nextRequestID:(id)a3 replyConnection:(id)a4;
-- (void)query_:(id)a3 replyConnection:(id)a4;
-- (void)registerObserver_:(id)a3 replyConnection:(id)a4;
-- (void)startWithDescriptor_completionHandler_:(id)a3 replyConnection:(id)a4;
-- (void)update_:(id)a3 replyConnection:(id)a4;
+- (GTMTLCaptureServiceXPCDispatcher)initWithService:(id)service properties:(id)properties notifyConnection:(id)connection;
+- (void)broadcastDisconnect:(id)disconnect replyConnection:(id)connection;
+- (void)deregisterObserver_:(id)observer_ replyConnection:(id)connection;
+- (void)nextRequestID:(id)d replyConnection:(id)connection;
+- (void)query_:(id)query_ replyConnection:(id)connection;
+- (void)registerObserver_:(id)observer_ replyConnection:(id)connection;
+- (void)startWithDescriptor_completionHandler_:(id)handler_ replyConnection:(id)connection;
+- (void)update_:(id)update_ replyConnection:(id)connection;
 @end
 
 @implementation GTMTLCaptureServiceXPCDispatcher
 
-- (GTMTLCaptureServiceXPCDispatcher)initWithService:(id)a3 properties:(id)a4 notifyConnection:(id)a5
+- (GTMTLCaptureServiceXPCDispatcher)initWithService:(id)service properties:(id)properties notifyConnection:(id)connection
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = [a4 protocolMethods];
-  v12 = [v11 mutableCopy];
+  serviceCopy = service;
+  connectionCopy = connection;
+  protocolMethods = [properties protocolMethods];
+  v12 = [protocolMethods mutableCopy];
 
   [v12 addObject:@"broadcastDisconnect"];
   v22.receiver = self;
@@ -24,62 +24,62 @@
   v13 = [(GTXPCDispatcher *)&v22 initWithProtocolMethods:v12];
   if (v13)
   {
-    v14 = allServices(v10);
+    v14 = allServices(connectionCopy);
     v15 = filteredArrayByService(v14, &unk_2860EEDF0);
-    v16 = [v15 firstObject];
+    firstObject = [v15 firstObject];
 
     v17 = [GTURLAccessProviderXPCProxy alloc];
-    v18 = [v16 serviceProperties];
-    v19 = [(GTURLAccessProviderXPCProxy *)v17 initWithConnection:v10 remoteProperties:v18];
+    serviceProperties = [firstObject serviceProperties];
+    v19 = [(GTURLAccessProviderXPCProxy *)v17 initWithConnection:connectionCopy remoteProperties:serviceProperties];
     urlService = v13->_urlService;
     v13->_urlService = v19;
 
-    objc_storeStrong(&v13->_implInstance, a3);
+    objc_storeStrong(&v13->_implInstance, service);
   }
 
   return v13;
 }
 
-- (void)registerObserver_:(id)a3 replyConnection:(id)a4
+- (void)registerObserver_:(id)observer_ replyConnection:(id)connection
 {
-  v6 = a4;
-  v7 = a3;
-  v10 = [(GTServiceObserver *)[GTMTLCaptureServiceObserver alloc] initWithMessage:v7 notifyConnection:v6];
+  connectionCopy = connection;
+  observer_Copy = observer_;
+  v10 = [(GTServiceObserver *)[GTMTLCaptureServiceObserver alloc] initWithMessage:observer_Copy notifyConnection:connectionCopy];
   v8 = [(GTMTLCaptureService *)self->_implInstance registerObserver:v10];
-  v9 = gt_xpc_dictionary_create_reply(v7);
+  v9 = gt_xpc_dictionary_create_reply(observer_Copy);
 
   xpc_dictionary_set_uint64(v9, "observerId", v8);
-  [v6 sendMessage:v9];
+  [connectionCopy sendMessage:v9];
 }
 
-- (void)deregisterObserver_:(id)a3 replyConnection:(id)a4
+- (void)deregisterObserver_:(id)observer_ replyConnection:(id)connection
 {
-  v6 = a4;
-  v7 = a3;
-  [(GTMTLCaptureService *)self->_implInstance deregisterObserver:xpc_dictionary_get_uint64(v7, "observerId")];
-  v8 = gt_xpc_dictionary_create_reply(v7);
+  connectionCopy = connection;
+  observer_Copy = observer_;
+  [(GTMTLCaptureService *)self->_implInstance deregisterObserver:xpc_dictionary_get_uint64(observer_Copy, "observerId")];
+  v8 = gt_xpc_dictionary_create_reply(observer_Copy);
 
-  [v6 sendMessage:v8];
+  [connectionCopy sendMessage:v8];
 }
 
-- (void)broadcastDisconnect:(id)a3 replyConnection:(id)a4
+- (void)broadcastDisconnect:(id)disconnect replyConnection:(id)connection
 {
-  v6 = a4;
-  v7 = xpc_dictionary_get_array(a3, "_pathHistory");
-  [(GTMTLCaptureService *)self->_implInstance deregisterObserversForConnection:v6 path:v7];
+  connectionCopy = connection;
+  v7 = xpc_dictionary_get_array(disconnect, "_pathHistory");
+  [(GTMTLCaptureService *)self->_implInstance deregisterObserversForConnection:connectionCopy path:v7];
 }
 
-- (void)startWithDescriptor_completionHandler_:(id)a3 replyConnection:(id)a4
+- (void)startWithDescriptor_completionHandler_:(id)handler_ replyConnection:(id)connection
 {
-  v6 = a4;
+  connectionCopy = connection;
   v7 = MEMORY[0x277CBEB98];
-  v8 = a3;
+  handler_Copy = handler_;
   v9 = [v7 alloc];
   v10 = objc_opt_class();
   v11 = objc_opt_class();
   v12 = [v9 initWithObjects:{v10, v11, objc_opt_class(), 0}];
-  nsobject_classes = xpc_dictionary_get_nsobject_classes(v8, "descriptor", v12);
-  v14 = gt_xpc_dictionary_create_reply(v8);
+  nsobject_classes = xpc_dictionary_get_nsobject_classes(handler_Copy, "descriptor", v12);
+  v14 = gt_xpc_dictionary_create_reply(handler_Copy);
 
   objc_initWeak(&location, self->_urlService);
   implInstance = self->_implInstance;
@@ -89,8 +89,8 @@
   v19[3] = &unk_279661A70;
   objc_copyWeak(&v22, &location);
   v20 = v14;
-  v21 = v6;
-  v16 = v6;
+  v21 = connectionCopy;
+  v16 = connectionCopy;
   v17 = v14;
   v18 = [(GTMTLCaptureService *)implInstance startWithDescriptor:nsobject_classes completionHandler:v19];
 
@@ -137,28 +137,28 @@ void __91__GTMTLCaptureServiceXPCDispatcher_startWithDescriptor_completionHandle
   [a1[5] sendMessage:a1[4]];
 }
 
-- (void)update_:(id)a3 replyConnection:(id)a4
+- (void)update_:(id)update_ replyConnection:(id)connection
 {
-  v6 = DispatchCaptureBatchRequest(a4, a3);
+  v6 = DispatchCaptureBatchRequest(connection, update_);
   v5 = [(GTMTLCaptureService *)self->_implInstance update:v6];
 }
 
-- (void)query_:(id)a3 replyConnection:(id)a4
+- (void)query_:(id)query_ replyConnection:(id)connection
 {
-  v6 = DispatchCaptureBatchRequest(a4, a3);
+  v6 = DispatchCaptureBatchRequest(connection, query_);
   v5 = [(GTMTLCaptureService *)self->_implInstance query:v6];
 }
 
-- (void)nextRequestID:(id)a3 replyConnection:(id)a4
+- (void)nextRequestID:(id)d replyConnection:(id)connection
 {
   implInstance = self->_implInstance;
-  v6 = a4;
-  v7 = a3;
-  v8 = [(GTMTLCaptureService *)implInstance nextRequestID];
-  xdict = gt_xpc_dictionary_create_reply(v7);
+  connectionCopy = connection;
+  dCopy = d;
+  nextRequestID = [(GTMTLCaptureService *)implInstance nextRequestID];
+  xdict = gt_xpc_dictionary_create_reply(dCopy);
 
-  xpc_dictionary_set_uint64(xdict, "requestID", v8);
-  [v6 sendMessage:xdict];
+  xpc_dictionary_set_uint64(xdict, "requestID", nextRequestID);
+  [connectionCopy sendMessage:xdict];
 }
 
 @end

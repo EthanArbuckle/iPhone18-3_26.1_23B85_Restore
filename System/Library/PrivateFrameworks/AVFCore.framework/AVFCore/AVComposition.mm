@@ -1,9 +1,9 @@
 @interface AVComposition
 - (AVComposition)init;
-- (AVComposition)initWithCoder:(id)a3;
+- (AVComposition)initWithCoder:(id)coder;
 - (AVCompositionTrack)trackWithTrackID:(CMPersistentTrackID)trackID;
 - (BOOL)_clientProvidesNaturalSize;
-- (BOOL)_setURLAssetInitializationOptions:(id)a3 error:(id *)a4;
+- (BOOL)_setURLAssetInitializationOptions:(id)options error:(id *)error;
 - (BOOL)isDefunct;
 - (CGSize)naturalSize;
 - (NSArray)tracks;
@@ -12,16 +12,16 @@
 - (NSDictionary)URLAssetInitializationOptions;
 - (OpaqueFigAsset)_figAsset;
 - (OpaqueFigFormatReader)_copyFormatReader;
-- (id)_initWithComposition:(id)a3;
+- (id)_initWithComposition:(id)composition;
 - (id)_mediaSelectionGroupDictionaries;
 - (id)_mutableTracks;
-- (id)_newTrackForIndex:(int64_t)a3;
+- (id)_newTrackForIndex:(int64_t)index;
 - (id)description;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (int)_createEmptyMutableCompositionIfNeeded;
 - (void)_loadAssetInspectorAndLoaderOnce;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AVComposition
@@ -42,7 +42,7 @@
   }
 }
 
-- (id)_initWithComposition:(id)a3
+- (id)_initWithComposition:(id)composition
 {
   v12.receiver = self;
   v12.super_class = AVComposition;
@@ -69,15 +69,15 @@
   v4->_priv->formatReader = 0;
   v4->_priv->figAsset = 0;
   v4->_priv->naturalSize = *MEMORY[0x1E695F060];
-  if ([a3 _mutableComposition])
+  if ([composition _mutableComposition])
   {
-    v6 = [a3 _mutableComposition];
+    _mutableComposition = [composition _mutableComposition];
     priv = v4->_priv;
     v8 = *(*(CMBaseObjectGetVTable() + 16) + 8);
     if (v8)
     {
-      v9 = v8(*MEMORY[0x1E695E480], v6, &priv->mutableComposition);
-      if (!a3)
+      _createEmptyMutableCompositionIfNeeded = v8(*MEMORY[0x1E695E480], _mutableComposition, &priv->mutableComposition);
+      if (!composition)
       {
         goto LABEL_11;
       }
@@ -90,27 +90,27 @@ LABEL_12:
     return 0;
   }
 
-  v9 = [(AVComposition *)v4 _createEmptyMutableCompositionIfNeeded];
-  if (!a3)
+  _createEmptyMutableCompositionIfNeeded = [(AVComposition *)v4 _createEmptyMutableCompositionIfNeeded];
+  if (!composition)
   {
     goto LABEL_11;
   }
 
 LABEL_8:
-  if (!v9)
+  if (!_createEmptyMutableCompositionIfNeeded)
   {
-    v10 = *(a3 + 2);
+    v10 = *(composition + 2);
     if (v10)
     {
       v4->_priv->naturalSize = v10[4];
-      v4->_priv->URLAssetInitializationOptions = [*(*(a3 + 2) + 80) copy];
+      v4->_priv->URLAssetInitializationOptions = [*(*(composition + 2) + 80) copy];
     }
 
     return v4;
   }
 
 LABEL_11:
-  if (v9)
+  if (_createEmptyMutableCompositionIfNeeded)
   {
     goto LABEL_12;
   }
@@ -272,18 +272,18 @@ uint64_t __26__AVComposition__figAsset__block_invoke(uint64_t a1)
   return result;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [AVMutableComposition allocWithZone:a3];
+  v4 = [AVMutableComposition allocWithZone:zone];
 
   return [(AVMutableComposition *)v4 _initWithComposition:self];
 }
 
-- (id)_newTrackForIndex:(int64_t)a3
+- (id)_newTrackForIndex:(int64_t)index
 {
   v5 = [AVCompositionTrack alloc];
 
-  return [(AVAssetTrack *)v5 _initWithAsset:self trackIndex:a3];
+  return [(AVAssetTrack *)v5 _initWithAsset:self trackIndex:index];
 }
 
 - (id)_mutableTracks
@@ -442,13 +442,13 @@ LABEL_12:
   return mutableComposition;
 }
 
-- (BOOL)_setURLAssetInitializationOptions:(id)a3 error:(id *)a4
+- (BOOL)_setURLAssetInitializationOptions:(id)options error:(id *)error
 {
-  v6 = [a3 copy];
+  v6 = [options copy];
 
   self->_priv->URLAssetInitializationOptions = v6;
   v14 = 0;
-  v7 = [AVURLAsset _getFigAssetCreationOptionsFromURLAssetInitializationOptions:v6 assetLoggingIdentifier:0 figAssetCreationFlags:&v14 error:a4];
+  v7 = [AVURLAsset _getFigAssetCreationOptionsFromURLAssetInitializationOptions:v6 assetLoggingIdentifier:0 figAssetCreationFlags:&v14 error:error];
   if (v7)
   {
     [(AVComposition *)self _mutableComposition];
@@ -526,7 +526,7 @@ LABEL_12:
   return v5 == 1;
 }
 
-- (AVComposition)initWithCoder:(id)a3
+- (AVComposition)initWithCoder:(id)coder
 {
   v86 = *MEMORY[0x1E69E9840];
   v81 = [[AVTelemetryInterval alloc] initAndStartWith:18];
@@ -536,12 +536,12 @@ LABEL_12:
   v7 = objc_opt_class();
   v8 = objc_opt_class();
   v9 = objc_opt_class();
-  obj = [a3 decodeObjectOfClasses:objc_msgSend(v4 forKey:{"setWithObjects:", v5, v6, v7, v8, v9, objc_opt_class(), 0), @"tracks"}];
+  obj = [coder decodeObjectOfClasses:objc_msgSend(v4 forKey:{"setWithObjects:", v5, v6, v7, v8, v9, objc_opt_class(), 0), @"tracks"}];
   v10 = MEMORY[0x1E695DFD8];
   v11 = objc_opt_class();
   v12 = objc_opt_class();
-  v13 = [a3 decodeObjectOfClasses:objc_msgSend(v10 forKey:{"setWithObjects:", v11, v12, objc_opt_class(), 0), @"naturalSize"}];
-  v60 = +[AVMutableComposition compositionWithURLAssetInitializationOptions:](AVMutableComposition, "compositionWithURLAssetInitializationOptions:", [a3 decodeObjectOfClasses:+[AVURLAsset _initializationOptionsClasses](AVURLAsset forKey:{"_initializationOptionsClasses"), @"URLAssetInitializationOptions"}]);
+  v13 = [coder decodeObjectOfClasses:objc_msgSend(v10 forKey:{"setWithObjects:", v11, v12, objc_opt_class(), 0), @"naturalSize"}];
+  v60 = +[AVMutableComposition compositionWithURLAssetInitializationOptions:](AVMutableComposition, "compositionWithURLAssetInitializationOptions:", [coder decodeObjectOfClasses:+[AVURLAsset _initializationOptionsClasses](AVURLAsset forKey:{"_initializationOptionsClasses"), @"URLAssetInitializationOptions"}]);
   if (v13)
   {
     size = *MEMORY[0x1E695F060];
@@ -555,7 +555,7 @@ LABEL_12:
   v15 = objc_opt_class();
   v16 = objc_opt_class();
   v17 = objc_opt_class();
-  v18 = [a3 decodeObjectOfClasses:objc_msgSend(v14 forKey:{"setWithObjects:", v15, v16, v17, objc_opt_class(), 0), @"compositionMetadataArray"}];
+  v18 = [coder decodeObjectOfClasses:objc_msgSend(v14 forKey:{"setWithObjects:", v15, v16, v17, objc_opt_class(), 0), @"compositionMetadataArray"}];
   v19 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v18, "count")}];
   v79 = 0u;
   v80 = 0u;
@@ -782,18 +782,18 @@ LABEL_48:
   return v55;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v76 = *MEMORY[0x1E69E9840];
   v69 = [[AVTelemetryInterval alloc] initAndStartWith:19];
-  v5 = [(AVComposition *)self tracks];
-  v45 = [MEMORY[0x1E695DF70] arrayWithCapacity:{-[NSArray count](v5, "count")}];
-  v43 = a3;
+  tracks = [(AVComposition *)self tracks];
+  v45 = [MEMORY[0x1E695DF70] arrayWithCapacity:{-[NSArray count](tracks, "count")}];
+  coderCopy = coder;
   v67 = 0u;
   v68 = 0u;
   v65 = 0u;
   v66 = 0u;
-  v6 = [(NSArray *)v5 countByEnumeratingWithState:&v65 objects:v75 count:16];
+  v6 = [(NSArray *)tracks countByEnumeratingWithState:&v65 objects:v75 count:16];
   if (v6)
   {
     v44 = *v66;
@@ -805,32 +805,32 @@ LABEL_48:
       {
         if (*v66 != v44)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(tracks);
         }
 
         v47 = v7;
         v8 = *(*(&v65 + 1) + 8 * v7);
         v9 = MEMORY[0x1E695DF90];
-        v10 = [v8 mediaType];
+        mediaType = [v8 mediaType];
         v11 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v8, "trackID")}];
-        v12 = [v8 segments];
-        v13 = [v9 dictionaryWithObjectsAndKeys:{v10, @"mediaType", v11, @"trackID", v12, @"segments", objc_msgSend(MEMORY[0x1E696AD98], "numberWithBool:", objc_msgSend(v8, "isEnabled")), @"isEnabled", 0}];
-        v14 = [v8 naturalTimeScale];
-        if (v14)
+        segments = [v8 segments];
+        v13 = [v9 dictionaryWithObjectsAndKeys:{mediaType, @"mediaType", v11, @"trackID", segments, @"segments", objc_msgSend(MEMORY[0x1E696AD98], "numberWithBool:", objc_msgSend(v8, "isEnabled")), @"isEnabled", 0}];
+        naturalTimeScale = [v8 naturalTimeScale];
+        if (naturalTimeScale)
         {
-          [v13 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithInteger:", v14), @"naturalTimeScale"}];
+          [v13 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithInteger:", naturalTimeScale), @"naturalTimeScale"}];
         }
 
-        v15 = [v8 languageCode];
-        if (v15)
+        languageCode = [v8 languageCode];
+        if (languageCode)
         {
-          [v13 setObject:v15 forKey:@"languageCode"];
+          [v13 setObject:languageCode forKey:@"languageCode"];
         }
 
-        v16 = [v8 extendedLanguageTag];
-        if (v16)
+        extendedLanguageTag = [v8 extendedLanguageTag];
+        if (extendedLanguageTag)
         {
-          [v13 setObject:v16 forKey:@"extendedLanguageTag"];
+          [v13 setObject:extendedLanguageTag forKey:@"extendedLanguageTag"];
         }
 
         memset(&v64, 0, sizeof(v64));
@@ -856,21 +856,21 @@ LABEL_48:
           [v13 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithFloat:"), @"preferredVolume"}];
         }
 
-        v19 = [v8 alternateGroupID];
-        if (v19)
+        alternateGroupID = [v8 alternateGroupID];
+        if (alternateGroupID)
         {
-          [v13 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithInteger:", v19), @"alternateGroupID"}];
+          [v13 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithInteger:", alternateGroupID), @"alternateGroupID"}];
         }
 
         v49 = v13;
-        v20 = [v8 formatDescriptionReplacements];
-        v21 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v20, "count")}];
+        formatDescriptionReplacements = [v8 formatDescriptionReplacements];
+        v21 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(formatDescriptionReplacements, "count")}];
         v48 = v8;
         v60 = 0u;
         v61 = 0u;
         v58 = 0u;
         v59 = 0u;
-        v22 = [v20 countByEnumeratingWithState:&v58 objects:v74 count:16];
+        v22 = [formatDescriptionReplacements countByEnumeratingWithState:&v58 objects:v74 count:16];
         if (v22)
         {
           v23 = *v59;
@@ -880,7 +880,7 @@ LABEL_48:
             {
               if (*v59 != v23)
               {
-                objc_enumerationMutation(v20);
+                objc_enumerationMutation(formatDescriptionReplacements);
               }
 
               v25 = *(*(&v58 + 1) + 8 * i);
@@ -907,7 +907,7 @@ LABEL_48:
               }
             }
 
-            v22 = [v20 countByEnumeratingWithState:&v58 objects:v74 count:16];
+            v22 = [formatDescriptionReplacements countByEnumeratingWithState:&v58 objects:v74 count:16];
           }
 
           while (v22);
@@ -918,13 +918,13 @@ LABEL_48:
           [v49 setObject:v21 forKey:@"formatDescriptionReplacements"];
         }
 
-        v30 = [v48 metadata];
-        v31 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v30, "count")}];
+        metadata = [v48 metadata];
+        v31 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(metadata, "count")}];
         v56 = 0u;
         v57 = 0u;
         v54 = 0u;
         v55 = 0u;
-        v32 = [v30 countByEnumeratingWithState:&v54 objects:v71 count:16];
+        v32 = [metadata countByEnumeratingWithState:&v54 objects:v71 count:16];
         if (v32)
         {
           v33 = *v55;
@@ -934,17 +934,17 @@ LABEL_48:
             {
               if (*v55 != v33)
               {
-                objc_enumerationMutation(v30);
+                objc_enumerationMutation(metadata);
               }
 
-              v35 = [*(*(&v54 + 1) + 8 * j) _figMetadataDictionary];
-              if (v35)
+              _figMetadataDictionary = [*(*(&v54 + 1) + 8 * j) _figMetadataDictionary];
+              if (_figMetadataDictionary)
               {
-                [v31 addObject:v35];
+                [v31 addObject:_figMetadataDictionary];
               }
             }
 
-            v32 = [v30 countByEnumeratingWithState:&v54 objects:v71 count:16];
+            v32 = [metadata countByEnumeratingWithState:&v54 objects:v71 count:16];
           }
 
           while (v32);
@@ -960,32 +960,32 @@ LABEL_48:
       }
 
       while (v47 + 1 != v46);
-      v6 = [(NSArray *)v5 countByEnumeratingWithState:&v65 objects:v75 count:16];
+      v6 = [(NSArray *)tracks countByEnumeratingWithState:&v65 objects:v75 count:16];
     }
 
     while (v6);
   }
 
-  [v43 encodeObject:v45 forKey:@"tracks"];
+  [coderCopy encodeObject:v45 forKey:@"tracks"];
   if ([(AVComposition *)self _clientProvidesNaturalSize])
   {
     [(AVComposition *)self naturalSize];
-    [v43 encodeObject:CGSizeCreateDictionaryRepresentation(v77) forKey:@"naturalSize"];
+    [coderCopy encodeObject:CGSizeCreateDictionaryRepresentation(v77) forKey:@"naturalSize"];
   }
 
-  v36 = [(AVComposition *)self URLAssetInitializationOptions];
-  if ([(NSDictionary *)v36 count])
+  uRLAssetInitializationOptions = [(AVComposition *)self URLAssetInitializationOptions];
+  if ([(NSDictionary *)uRLAssetInitializationOptions count])
   {
-    [v43 encodeObject:v36 forKey:@"URLAssetInitializationOptions"];
+    [coderCopy encodeObject:uRLAssetInitializationOptions forKey:@"URLAssetInitializationOptions"];
   }
 
-  v37 = [(AVAsset *)self metadata];
-  v38 = [MEMORY[0x1E695DF70] arrayWithCapacity:{-[NSArray count](v37, "count")}];
+  metadata2 = [(AVAsset *)self metadata];
+  v38 = [MEMORY[0x1E695DF70] arrayWithCapacity:{-[NSArray count](metadata2, "count")}];
   v52 = 0u;
   v53 = 0u;
   v50 = 0u;
   v51 = 0u;
-  v39 = [(NSArray *)v37 countByEnumeratingWithState:&v50 objects:v70 count:16];
+  v39 = [(NSArray *)metadata2 countByEnumeratingWithState:&v50 objects:v70 count:16];
   if (v39)
   {
     v40 = *v51;
@@ -995,17 +995,17 @@ LABEL_48:
       {
         if (*v51 != v40)
         {
-          objc_enumerationMutation(v37);
+          objc_enumerationMutation(metadata2);
         }
 
-        v42 = [*(*(&v50 + 1) + 8 * k) _figMetadataDictionary];
-        if (v42)
+        _figMetadataDictionary2 = [*(*(&v50 + 1) + 8 * k) _figMetadataDictionary];
+        if (_figMetadataDictionary2)
         {
-          [v38 addObject:v42];
+          [v38 addObject:_figMetadataDictionary2];
         }
       }
 
-      v39 = [(NSArray *)v37 countByEnumeratingWithState:&v50 objects:v70 count:16];
+      v39 = [(NSArray *)metadata2 countByEnumeratingWithState:&v50 objects:v70 count:16];
     }
 
     while (v39);
@@ -1013,7 +1013,7 @@ LABEL_48:
 
   if ([v38 count])
   {
-    [v43 encodeObject:v38 forKey:@"compositionMetadataArray"];
+    [coderCopy encodeObject:v38 forKey:@"compositionMetadataArray"];
   }
 
   AVTelemetryIntervalEnd(&v69);

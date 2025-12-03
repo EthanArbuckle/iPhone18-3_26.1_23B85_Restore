@@ -1,10 +1,10 @@
 @interface VOSGestureCategory
-+ (BOOL)isFlickGesture:(id)a3;
-+ (BOOL)isRotateGesture:(id)a3;
-+ (BOOL)isScrubGesture:(id)a3;
-+ (BOOL)isSplitFlickGesture:(id)a3;
-+ (BOOL)isTapAndHoldGesture:(id)a3;
-+ (BOOL)isTapGesture:(id)a3;
++ (BOOL)isFlickGesture:(id)gesture;
++ (BOOL)isRotateGesture:(id)gesture;
++ (BOOL)isScrubGesture:(id)gesture;
++ (BOOL)isSplitFlickGesture:(id)gesture;
++ (BOOL)isTapAndHoldGesture:(id)gesture;
++ (BOOL)isTapGesture:(id)gesture;
 + (NSArray)allCategories;
 + (VOSGestureCategory)backTaps;
 + (VOSGestureCategory)fiveFingerTaps;
@@ -25,10 +25,10 @@
 + (VOSGestureCategory)twoFingerSplitFlicks;
 + (VOSGestureCategory)twoFingerTapAndHolds;
 + (VOSGestureCategory)twoFingerTaps;
-- (BOOL)containsGesture:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)containsGesture:(id)gesture;
+- (BOOL)isEqual:(id)equal;
 - (VOSGestureCategory)init;
-- (VOSGestureCategory)initWithGestures:(id)a3 localizedCategoryName:(id)a4;
+- (VOSGestureCategory)initWithGestures:(id)gestures localizedCategoryName:(id)name;
 - (unint64_t)hash;
 @end
 
@@ -483,18 +483,18 @@
   return v10;
 }
 
-- (VOSGestureCategory)initWithGestures:(id)a3 localizedCategoryName:(id)a4
+- (VOSGestureCategory)initWithGestures:(id)gestures localizedCategoryName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  gesturesCopy = gestures;
+  nameCopy = name;
   v11.receiver = self;
   v11.super_class = VOSGestureCategory;
   v8 = [(VOSGestureCategory *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    [(VOSGestureCategory *)v8 setLocalizedCategoryName:v7];
-    [(VOSGestureCategory *)v9 setGestures:v6];
+    [(VOSGestureCategory *)v8 setLocalizedCategoryName:nameCopy];
+    [(VOSGestureCategory *)v9 setGestures:gesturesCopy];
   }
 
   return v9;
@@ -502,23 +502,23 @@
 
 - (VOSGestureCategory)init
 {
-  v3 = [MEMORY[0x277CBEA60] array];
-  v4 = [(VOSGestureCategory *)self initWithGestures:v3 localizedCategoryName:&stru_283729578];
+  array = [MEMORY[0x277CBEA60] array];
+  v4 = [(VOSGestureCategory *)self initWithGestures:array localizedCategoryName:&stru_283729578];
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(VOSGestureCategory *)self gestures];
-    v7 = [v5 gestures];
+    v5 = equalCopy;
+    gestures = [(VOSGestureCategory *)self gestures];
+    gestures2 = [v5 gestures];
 
-    v8 = [v6 isEqualToArray:v7];
+    v8 = [gestures isEqualToArray:gestures2];
   }
 
   else
@@ -536,8 +536,8 @@
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v2 = [(VOSGestureCategory *)self gestures];
-  v3 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  gestures = [(VOSGestureCategory *)self gestures];
+  v3 = [gestures countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v3)
   {
     v4 = v3;
@@ -549,13 +549,13 @@
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(gestures);
         }
 
         v5 ^= [*(*(&v10 + 1) + 8 * i) hash];
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v4 = [gestures countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v4);
@@ -570,44 +570,44 @@
   return v5;
 }
 
-- (BOOL)containsGesture:(id)a3
+- (BOOL)containsGesture:(id)gesture
 {
-  v4 = a3;
-  v5 = [(VOSGestureCategory *)self gestures];
-  v6 = [v5 containsObject:v4];
+  gestureCopy = gesture;
+  gestures = [(VOSGestureCategory *)self gestures];
+  v6 = [gestures containsObject:gestureCopy];
 
   return v6;
 }
 
-+ (BOOL)isFlickGesture:(id)a3
++ (BOOL)isFlickGesture:(id)gesture
 {
-  v4 = a3;
-  v5 = [a1 oneFingerFlicks];
-  if ([v5 containsGesture:v4])
+  gestureCopy = gesture;
+  oneFingerFlicks = [self oneFingerFlicks];
+  if ([oneFingerFlicks containsGesture:gestureCopy])
   {
     v6 = 1;
   }
 
   else
   {
-    v7 = [a1 twoFingerFlicks];
-    if ([v7 containsGesture:v4])
+    twoFingerFlicks = [self twoFingerFlicks];
+    if ([twoFingerFlicks containsGesture:gestureCopy])
     {
       v6 = 1;
     }
 
     else
     {
-      v8 = [a1 threeFingerFlicks];
-      if ([v8 containsGesture:v4])
+      threeFingerFlicks = [self threeFingerFlicks];
+      if ([threeFingerFlicks containsGesture:gestureCopy])
       {
         v6 = 1;
       }
 
       else
       {
-        v9 = [a1 fourFingerFlicks];
-        v6 = [v9 containsGesture:v4];
+        fourFingerFlicks = [self fourFingerFlicks];
+        v6 = [fourFingerFlicks containsGesture:gestureCopy];
       }
     }
   }
@@ -615,43 +615,43 @@
   return v6;
 }
 
-+ (BOOL)isTapGesture:(id)a3
++ (BOOL)isTapGesture:(id)gesture
 {
-  v4 = a3;
-  v5 = [a1 oneFingerTaps];
-  if ([v5 containsGesture:v4])
+  gestureCopy = gesture;
+  oneFingerTaps = [self oneFingerTaps];
+  if ([oneFingerTaps containsGesture:gestureCopy])
   {
     v6 = 1;
   }
 
   else
   {
-    v7 = [a1 twoFingerTaps];
-    if ([v7 containsGesture:v4])
+    twoFingerTaps = [self twoFingerTaps];
+    if ([twoFingerTaps containsGesture:gestureCopy])
     {
       v6 = 1;
     }
 
     else
     {
-      v8 = [a1 threeFingerTaps];
-      if ([v8 containsGesture:v4])
+      threeFingerTaps = [self threeFingerTaps];
+      if ([threeFingerTaps containsGesture:gestureCopy])
       {
         v6 = 1;
       }
 
       else
       {
-        v9 = [a1 fourFingerTaps];
-        if ([v9 containsGesture:v4])
+        fourFingerTaps = [self fourFingerTaps];
+        if ([fourFingerTaps containsGesture:gestureCopy])
         {
           v6 = 1;
         }
 
         else
         {
-          v10 = [a1 fiveFingerTaps];
-          v6 = [v10 containsGesture:v4];
+          fiveFingerTaps = [self fiveFingerTaps];
+          v6 = [fiveFingerTaps containsGesture:gestureCopy];
         }
       }
     }
@@ -660,64 +660,64 @@
   return v6;
 }
 
-+ (BOOL)isRotateGesture:(id)a3
++ (BOOL)isRotateGesture:(id)gesture
 {
-  v4 = a3;
-  v5 = [a1 twoFingerRotates];
-  v6 = [v5 containsGesture:v4];
+  gestureCopy = gesture;
+  twoFingerRotates = [self twoFingerRotates];
+  v6 = [twoFingerRotates containsGesture:gestureCopy];
 
   return v6;
 }
 
-+ (BOOL)isScrubGesture:(id)a3
++ (BOOL)isScrubGesture:(id)gesture
 {
-  v4 = a3;
-  v5 = [a1 twoFingerScrubs];
-  v6 = [v5 containsGesture:v4];
+  gestureCopy = gesture;
+  twoFingerScrubs = [self twoFingerScrubs];
+  v6 = [twoFingerScrubs containsGesture:gestureCopy];
 
   return v6;
 }
 
-+ (BOOL)isTapAndHoldGesture:(id)a3
++ (BOOL)isTapAndHoldGesture:(id)gesture
 {
-  v4 = a3;
-  v5 = [a1 oneFingerTapAndHolds];
-  if ([v5 containsGesture:v4])
+  gestureCopy = gesture;
+  oneFingerTapAndHolds = [self oneFingerTapAndHolds];
+  if ([oneFingerTapAndHolds containsGesture:gestureCopy])
   {
     v6 = 1;
   }
 
   else
   {
-    v7 = [a1 twoFingerTapAndHolds];
-    if ([v7 containsGesture:v4])
+    twoFingerTapAndHolds = [self twoFingerTapAndHolds];
+    if ([twoFingerTapAndHolds containsGesture:gestureCopy])
     {
       v6 = 1;
     }
 
     else
     {
-      v8 = [a1 threeFingerTapAndHolds];
-      v6 = [v8 containsGesture:v4];
+      threeFingerTapAndHolds = [self threeFingerTapAndHolds];
+      v6 = [threeFingerTapAndHolds containsGesture:gestureCopy];
     }
   }
 
   return v6;
 }
 
-+ (BOOL)isSplitFlickGesture:(id)a3
++ (BOOL)isSplitFlickGesture:(id)gesture
 {
-  v4 = a3;
-  v5 = [a1 oneFingerSplitFlicks];
-  if ([v5 containsGesture:v4])
+  gestureCopy = gesture;
+  oneFingerSplitFlicks = [self oneFingerSplitFlicks];
+  if ([oneFingerSplitFlicks containsGesture:gestureCopy])
   {
     v6 = 1;
   }
 
   else
   {
-    v7 = [a1 twoFingerSplitFlicks];
-    v6 = [v7 containsGesture:v4];
+    twoFingerSplitFlicks = [self twoFingerSplitFlicks];
+    v6 = [twoFingerSplitFlicks containsGesture:gestureCopy];
   }
 
   return v6;

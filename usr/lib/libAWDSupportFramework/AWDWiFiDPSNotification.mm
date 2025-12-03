@@ -1,17 +1,17 @@
 @interface AWDWiFiDPSNotification
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsSymptom:(id)a3;
+- (int)StringAsSymptom:(id)symptom;
 - (int)symptom;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasFacetimeCallInProgress:(BOOL)a3;
-- (void)setHasProblemAC:(BOOL)a3;
-- (void)setHasSymptom:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasFacetimeCallInProgress:(BOOL)progress;
+- (void)setHasProblemAC:(BOOL)c;
+- (void)setHasSymptom:(BOOL)symptom;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDWiFiDPSNotification
@@ -29,9 +29,9 @@
   }
 }
 
-- (void)setHasSymptom:(BOOL)a3
+- (void)setHasSymptom:(BOOL)symptom
 {
-  if (a3)
+  if (symptom)
   {
     v3 = 4;
   }
@@ -44,29 +44,29 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (int)StringAsSymptom:(id)a3
+- (int)StringAsSymptom:(id)symptom
 {
-  if ([a3 isEqualToString:@"kDriverDetectedStall"])
+  if ([symptom isEqualToString:@"kDriverDetectedStall"])
   {
     return 0;
   }
 
-  if ([a3 isEqualToString:@"kDriverDetectedSlow"])
+  if ([symptom isEqualToString:@"kDriverDetectedSlow"])
   {
     return 1;
   }
 
-  if ([a3 isEqualToString:@"kUserToggleOff"])
+  if ([symptom isEqualToString:@"kUserToggleOff"])
   {
     return 2;
   }
 
-  if ([a3 isEqualToString:@"kUserToggleOn"])
+  if ([symptom isEqualToString:@"kUserToggleOn"])
   {
     return 3;
   }
 
-  if ([a3 isEqualToString:@"kSymptomsdTrigger"])
+  if ([symptom isEqualToString:@"kSymptomsdTrigger"])
   {
     return 4;
   }
@@ -74,9 +74,9 @@
   return 0;
 }
 
-- (void)setHasProblemAC:(BOOL)a3
+- (void)setHasProblemAC:(BOOL)c
 {
-  if (a3)
+  if (c)
   {
     v3 = 2;
   }
@@ -89,9 +89,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasFacetimeCallInProgress:(BOOL)a3
+- (void)setHasFacetimeCallInProgress:(BOOL)progress
 {
-  if (a3)
+  if (progress)
   {
     v3 = 8;
   }
@@ -113,11 +113,11 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   has = self->_has;
   if (has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -128,10 +128,10 @@ LABEL_3:
       }
 
 LABEL_12:
-      [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_problemAC), @"problemAC"}];
+      [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_problemAC), @"problemAC"}];
       if ((*&self->_has & 8) == 0)
       {
-        return v3;
+        return dictionary;
       }
 
       goto LABEL_5;
@@ -154,7 +154,7 @@ LABEL_12:
     v7 = off_29EE33258[symptom];
   }
 
-  [v3 setObject:v7 forKey:@"symptom"];
+  [dictionary setObject:v7 forKey:@"symptom"];
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -165,13 +165,13 @@ LABEL_4:
   if ((has & 8) != 0)
   {
 LABEL_5:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_facetimeCallInProgress), @"facetimeCallInProgress"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_facetimeCallInProgress), @"facetimeCallInProgress"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   has = self->_has;
   if (has)
@@ -224,13 +224,13 @@ LABEL_9:
   PBDataWriterWriteBOOLField();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if (has)
   {
-    *(a3 + 1) = self->_timestamp;
-    *(a3 + 28) |= 1u;
+    *(to + 1) = self->_timestamp;
+    *(to + 28) |= 1u;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -249,8 +249,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(a3 + 5) = self->_symptom;
-  *(a3 + 28) |= 4u;
+  *(to + 5) = self->_symptom;
+  *(to + 28) |= 4u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -261,23 +261,23 @@ LABEL_4:
     }
 
 LABEL_9:
-    *(a3 + 24) = self->_facetimeCallInProgress;
-    *(a3 + 28) |= 8u;
+    *(to + 24) = self->_facetimeCallInProgress;
+    *(to + 28) |= 8u;
     return;
   }
 
 LABEL_8:
-  *(a3 + 4) = self->_problemAC;
-  *(a3 + 28) |= 2u;
+  *(to + 4) = self->_problemAC;
+  *(to + 28) |= 2u;
   if ((*&self->_has & 8) != 0)
   {
     goto LABEL_9;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if (has)
   {
@@ -329,54 +329,54 @@ LABEL_5:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     if (*&self->_has)
     {
-      if ((*(a3 + 28) & 1) == 0 || self->_timestamp != *(a3 + 1))
+      if ((*(equal + 28) & 1) == 0 || self->_timestamp != *(equal + 1))
       {
         goto LABEL_19;
       }
     }
 
-    else if (*(a3 + 28))
+    else if (*(equal + 28))
     {
       goto LABEL_19;
     }
 
     if ((*&self->_has & 4) != 0)
     {
-      if ((*(a3 + 28) & 4) == 0 || self->_symptom != *(a3 + 5))
+      if ((*(equal + 28) & 4) == 0 || self->_symptom != *(equal + 5))
       {
         goto LABEL_19;
       }
     }
 
-    else if ((*(a3 + 28) & 4) != 0)
+    else if ((*(equal + 28) & 4) != 0)
     {
       goto LABEL_19;
     }
 
     if ((*&self->_has & 2) != 0)
     {
-      if ((*(a3 + 28) & 2) == 0 || self->_problemAC != *(a3 + 4))
+      if ((*(equal + 28) & 2) == 0 || self->_problemAC != *(equal + 4))
       {
         goto LABEL_19;
       }
     }
 
-    else if ((*(a3 + 28) & 2) != 0)
+    else if ((*(equal + 28) & 2) != 0)
     {
       goto LABEL_19;
     }
 
-    LOBYTE(v5) = (*(a3 + 28) & 8) == 0;
+    LOBYTE(v5) = (*(equal + 28) & 8) == 0;
     if ((*&self->_has & 8) != 0)
     {
-      if ((*(a3 + 28) & 8) == 0)
+      if ((*(equal + 28) & 8) == 0)
       {
 LABEL_19:
         LOBYTE(v5) = 0;
@@ -385,13 +385,13 @@ LABEL_19:
 
       if (self->_facetimeCallInProgress)
       {
-        if ((*(a3 + 24) & 1) == 0)
+        if ((*(equal + 24) & 1) == 0)
         {
           goto LABEL_19;
         }
       }
 
-      else if (*(a3 + 24))
+      else if (*(equal + 24))
       {
         goto LABEL_19;
       }
@@ -457,14 +457,14 @@ LABEL_5:
   return v3 ^ v2 ^ v4 ^ v5;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v3 = *(a3 + 28);
+  v3 = *(from + 28);
   if (v3)
   {
-    self->_timestamp = *(a3 + 1);
+    self->_timestamp = *(from + 1);
     *&self->_has |= 1u;
-    v3 = *(a3 + 28);
+    v3 = *(from + 28);
     if ((v3 & 4) == 0)
     {
 LABEL_3:
@@ -477,14 +477,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(a3 + 28) & 4) == 0)
+  else if ((*(from + 28) & 4) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_symptom = *(a3 + 5);
+  self->_symptom = *(from + 5);
   *&self->_has |= 4u;
-  v3 = *(a3 + 28);
+  v3 = *(from + 28);
   if ((v3 & 2) == 0)
   {
 LABEL_4:
@@ -494,15 +494,15 @@ LABEL_4:
     }
 
 LABEL_9:
-    self->_facetimeCallInProgress = *(a3 + 24);
+    self->_facetimeCallInProgress = *(from + 24);
     *&self->_has |= 8u;
     return;
   }
 
 LABEL_8:
-  self->_problemAC = *(a3 + 4);
+  self->_problemAC = *(from + 4);
   *&self->_has |= 2u;
-  if ((*(a3 + 28) & 8) != 0)
+  if ((*(from + 28) & 8) != 0)
   {
     goto LABEL_9;
   }

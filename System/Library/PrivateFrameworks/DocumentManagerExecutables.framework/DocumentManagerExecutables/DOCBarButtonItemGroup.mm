@@ -1,15 +1,15 @@
 @interface DOCBarButtonItemGroup
 - (BOOL)isHidden;
 - (NSArray)barButtonItems;
-- (_TtC26DocumentManagerExecutables21DOCBarButtonItemGroup)initWithBarButtonItems:(id)a3 representativeItem:(id)a4;
-- (_TtC26DocumentManagerExecutables21DOCBarButtonItemGroup)initWithCoder:(id)a3;
-- (void)setBarButtonItems:(id)a3;
-- (void)setHidden:(BOOL)a3;
+- (_TtC26DocumentManagerExecutables21DOCBarButtonItemGroup)initWithBarButtonItems:(id)items representativeItem:(id)item;
+- (_TtC26DocumentManagerExecutables21DOCBarButtonItemGroup)initWithCoder:(id)coder;
+- (void)setBarButtonItems:(id)items;
+- (void)setHidden:(BOOL)hidden;
 @end
 
 @implementation DOCBarButtonItemGroup
 
-- (_TtC26DocumentManagerExecutables21DOCBarButtonItemGroup)initWithCoder:(id)a3
+- (_TtC26DocumentManagerExecutables21DOCBarButtonItemGroup)initWithCoder:(id)coder
 {
   *(&self->super.super.isa + OBJC_IVAR____TtC26DocumentManagerExecutables21DOCBarButtonItemGroup_autoHideIfItemsHidden) = 1;
   *(&self->super.super.isa + OBJC_IVAR____TtC26DocumentManagerExecutables21DOCBarButtonItemGroup__isHiddenExternalClientSetting) = 0;
@@ -20,12 +20,12 @@
   return result;
 }
 
-- (_TtC26DocumentManagerExecutables21DOCBarButtonItemGroup)initWithBarButtonItems:(id)a3 representativeItem:(id)a4
+- (_TtC26DocumentManagerExecutables21DOCBarButtonItemGroup)initWithBarButtonItems:(id)items representativeItem:(id)item
 {
   type metadata accessor for UIBarButtonItem();
   v5 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v6 = a4;
-  return DOCBarButtonItemGroup.init(barButtonItems:representativeItem:)(v5, a4);
+  itemCopy = item;
+  return DOCBarButtonItemGroup.init(barButtonItems:representativeItem:)(v5, item);
 }
 
 - (NSArray)barButtonItems
@@ -44,11 +44,11 @@
   return isa;
 }
 
-- (void)setBarButtonItems:(id)a3
+- (void)setBarButtonItems:(id)items
 {
   type metadata accessor for UIBarButtonItem();
   static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v4 = self;
+  selfCopy = self;
   DOCBarButtonItemGroup.barButtonItems.setter();
 }
 
@@ -59,18 +59,18 @@
   return [(UIBarButtonItemGroup *)&v3 isHidden];
 }
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
-  v3 = a3;
+  hiddenCopy = hidden;
   v5 = type metadata accessor for DOCBarButtonItemGroup();
   v9.receiver = self;
   v9.super_class = v5;
-  v6 = self;
-  v7 = [(UIBarButtonItemGroup *)&v9 isHidden];
-  v8.receiver = v6;
+  selfCopy = self;
+  isHidden = [(UIBarButtonItemGroup *)&v9 isHidden];
+  v8.receiver = selfCopy;
   v8.super_class = v5;
-  [(UIBarButtonItemGroup *)&v8 setHidden:v3];
-  DOCBarButtonItemGroup.isHidden.didset(v7);
+  [(UIBarButtonItemGroup *)&v8 setHidden:hiddenCopy];
+  DOCBarButtonItemGroup.isHidden.didset(isHidden);
 }
 
 @end

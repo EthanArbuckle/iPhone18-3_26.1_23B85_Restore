@@ -1,16 +1,16 @@
 @interface GEOMAResourceInfo
-+ (id)baseURLForType:(unint64_t)a3;
++ (id)baseURLForType:(unint64_t)type;
 + (id)maResourcesFolder;
 - (BOOL)isExpired;
-- (GEOMAResourceInfo)initWithType:(unint64_t)a3 overrides:(id)a4;
+- (GEOMAResourceInfo)initWithType:(unint64_t)type overrides:(id)overrides;
 - (double)lastAccessedTime;
 - (id)_backgroundDownloadOptions;
 - (id)baseURL;
 - (id)description;
 - (id)installedResources;
 - (id)query;
-- (void)_listResources:(BOOL)a3 queue:(id)a4 results:(id)a5;
-- (void)listResources:(BOOL)a3 queue:(id)a4 results:(id)a5;
+- (void)_listResources:(BOOL)resources queue:(id)queue results:(id)results;
+- (void)listResources:(BOOL)resources queue:(id)queue results:(id)results;
 - (void)updateLastAccessedTime;
 @end
 
@@ -38,25 +38,25 @@
   return v7;
 }
 
-- (void)_listResources:(BOOL)a3 queue:(id)a4 results:(id)a5
+- (void)_listResources:(BOOL)resources queue:(id)queue results:(id)results
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = self;
-  v11 = [(GEOMAResourceInfo *)v10 installedResources];
-  v12 = v11;
-  if (a3 || ![v11 count])
+  queueCopy = queue;
+  resultsCopy = results;
+  selfCopy = self;
+  installedResources = [(GEOMAResourceInfo *)selfCopy installedResources];
+  v12 = installedResources;
+  if (resources || ![installedResources count])
   {
-    [(GEOMAResourceInfo *)v10 query];
+    [(GEOMAResourceInfo *)selfCopy query];
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
     v15[2] = sub_100037240;
     v15[3] = &unk_100082C28;
-    v16 = v15[4] = v10;
-    v17 = v8;
+    v16 = v15[4] = selfCopy;
+    v17 = queueCopy;
     v18 = v12;
-    v20 = v9;
-    v19 = v10;
+    v20 = resultsCopy;
+    v19 = selfCopy;
     v14 = v16;
     [v14 queryMetaDataWithError:v15];
   }
@@ -67,21 +67,21 @@
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
       *buf = 138478083;
-      v22 = v10;
+      v22 = selfCopy;
       v23 = 2113;
       v24 = v12;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "MA query found installed resources and checkForUpdates = NO; %{private}@ resources: %{private}@", buf, 0x16u);
     }
 
     v14 = [v12 sortedArrayUsingSelector:"compare:"];
-    (*(v9 + 2))(v9, 0, v14, 0);
+    (*(resultsCopy + 2))(resultsCopy, 0, v14, 0);
   }
 }
 
-- (void)listResources:(BOOL)a3 queue:(id)a4 results:(id)a5
+- (void)listResources:(BOOL)resources queue:(id)queue results:(id)results
 {
-  v8 = a4;
-  v9 = a5;
+  queueCopy = queue;
+  resultsCopy = results;
   if (([(GEOMAResourceInfo *)self conformsToProtocol:&OBJC_PROTOCOL___GEOMAResourceInfo]& 1) != 0)
   {
     v10[0] = _NSConcreteStackBlock;
@@ -89,9 +89,9 @@
     v10[2] = sub_100037748;
     v10[3] = &unk_100082BB0;
     v10[4] = self;
-    v13 = a3;
-    v11 = v8;
-    v12 = v9;
+    resourcesCopy = resources;
+    v11 = queueCopy;
+    v12 = resultsCopy;
     dispatch_async(v11, v10);
   }
 
@@ -106,16 +106,16 @@
 {
   if (([(GEOMAResourceInfo *)self conformsToProtocol:&OBJC_PROTOCOL___GEOMAResourceInfo]& 1) != 0)
   {
-    v3 = self;
+    selfCopy = self;
     +[NSMutableArray array];
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_1000378A4;
     v9[3] = &unk_100083A30;
-    v9[4] = v3;
-    v4 = v10 = v3;
+    v9[4] = selfCopy;
+    v4 = v10 = selfCopy;
     v11 = v4;
-    v5 = v3;
+    v5 = selfCopy;
     [GEOMAResource onFileAccessQueueSync:v9];
     v6 = v11;
     v7 = v4;
@@ -156,21 +156,21 @@
   v4 = v3;
   _Block_object_dispose(&v21, 8);
   v5 = [v4 alloc];
-  v6 = [objc_opt_class() _defaultQueryType];
-  v7 = [v5 initWithType:v6];
+  _defaultQueryType = [objc_opt_class() _defaultQueryType];
+  v7 = [v5 initWithType:_defaultQueryType];
 
   queryParameters = self->_queryParameters;
   if (queryParameters)
   {
-    v9 = queryParameters;
+    _defaultQueryParameters = queryParameters;
   }
 
   else
   {
-    v9 = [objc_opt_class() _defaultQueryParameters];
+    _defaultQueryParameters = [objc_opt_class() _defaultQueryParameters];
   }
 
-  v10 = v9;
+  v10 = _defaultQueryParameters;
   v15 = _NSConcreteStackBlock;
   v16 = 3221225472;
   v17 = sub_100037CF4;
@@ -200,10 +200,10 @@
 {
   if (([(GEOMAResourceInfo *)self conformsToProtocol:&OBJC_PROTOCOL___GEOMAResourceInfo]& 1) != 0)
   {
-    v3 = self;
-    [(GEOMAResourceInfo *)v3 lastAccessedTime];
+    selfCopy = self;
+    [(GEOMAResourceInfo *)selfCopy lastAccessedTime];
     v5 = v4;
-    [(GEOMAResourceInfo *)v3 timeToLive];
+    [(GEOMAResourceInfo *)selfCopy timeToLive];
     v7 = v6;
 
     v8 = +[NSDate date];
@@ -227,17 +227,17 @@
 
 - (void)updateLastAccessedTime
 {
-  v3 = [(GEOMAResourceInfo *)self baseURL];
-  v2 = v3;
-  utimes([v3 fileSystemRepresentation], 0);
+  baseURL = [(GEOMAResourceInfo *)self baseURL];
+  v2 = baseURL;
+  utimes([baseURL fileSystemRepresentation], 0);
 }
 
 - (double)lastAccessedTime
 {
-  v2 = [(GEOMAResourceInfo *)self baseURL];
+  baseURL = [(GEOMAResourceInfo *)self baseURL];
   v13 = 0;
   v12 = 0;
-  v3 = [v2 getResourceValue:&v13 forKey:NSURLContentModificationDateKey error:&v12];
+  v3 = [baseURL getResourceValue:&v13 forKey:NSURLContentModificationDateKey error:&v12];
   v4 = v13;
   v5 = v12;
   if (v3)
@@ -252,7 +252,7 @@
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
       *buf = 138478083;
-      v15 = v2;
+      v15 = baseURL;
       v16 = 2112;
       v17 = v5;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_ERROR, "Unable to read modification time for resource %{private}@: %@", buf, 0x16u);
@@ -274,21 +274,21 @@
   return [v3 baseURLForType:type];
 }
 
-- (GEOMAResourceInfo)initWithType:(unint64_t)a3 overrides:(id)a4
+- (GEOMAResourceInfo)initWithType:(unint64_t)type overrides:(id)overrides
 {
-  v6 = a4;
+  overridesCopy = overrides;
   v18.receiver = self;
   v18.super_class = GEOMAResourceInfo;
   v7 = [(GEOMAResourceInfo *)&v18 init];
   v8 = v7;
   if (v7)
   {
-    v7->_type = a3;
-    v9 = [objc_opt_class() _defaultQueryParameters];
-    v10 = v9;
-    if (v6)
+    v7->_type = type;
+    _defaultQueryParameters = [objc_opt_class() _defaultQueryParameters];
+    v10 = _defaultQueryParameters;
+    if (overridesCopy)
     {
-      v11 = [(NSDictionary *)v9 mutableCopy];
+      v11 = [(NSDictionary *)_defaultQueryParameters mutableCopy];
 
       v16[0] = _NSConcreteStackBlock;
       v16[1] = 3221225472;
@@ -296,7 +296,7 @@
       v16[3] = &unk_100082B68;
       v17 = v11;
       v12 = v11;
-      [v6 enumerateKeysAndObjectsUsingBlock:v16];
+      [overridesCopy enumerateKeysAndObjectsUsingBlock:v16];
       v13 = [(NSDictionary *)v12 copy];
       queryParameters = v8->_queryParameters;
       v8->_queryParameters = v13;
@@ -305,24 +305,24 @@
     else
     {
       v12 = v8->_queryParameters;
-      v8->_queryParameters = v9;
+      v8->_queryParameters = _defaultQueryParameters;
     }
   }
 
   return v8;
 }
 
-+ (id)baseURLForType:(unint64_t)a3
++ (id)baseURLForType:(unint64_t)type
 {
-  v4 = [a1 maResourcesFolder];
-  v5 = v4;
+  maResourcesFolder = [self maResourcesFolder];
+  v5 = maResourcesFolder;
   v6 = @"territories";
-  if (a3 != 1)
+  if (type != 1)
   {
     v6 = 0;
   }
 
-  if (a3)
+  if (type)
   {
     v7 = v6;
   }
@@ -332,7 +332,7 @@
     v7 = @"metroRegions";
   }
 
-  v8 = [v4 URLByAppendingPathComponent:v7 isDirectory:1];
+  v8 = [maResourcesFolder URLByAppendingPathComponent:v7 isDirectory:1];
 
   return v8;
 }

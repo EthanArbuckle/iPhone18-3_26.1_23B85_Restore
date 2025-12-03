@@ -87,23 +87,23 @@ uint64_t __54__NUHDRMultiplyGainMapFilter_gainMapLogMultiplyKernel__block_invoke
 - (id)outputImage
 {
   v29[3] = *MEMORY[0x1E69E9840];
-  v3 = [(NUHDRMultiplyGainMapFilter *)self inputImage];
-  v4 = [(NUHDRMultiplyGainMapFilter *)self inputGainMap];
-  v5 = v4;
+  inputImage = [(NUHDRMultiplyGainMapFilter *)self inputImage];
+  inputGainMap = [(NUHDRMultiplyGainMapFilter *)self inputGainMap];
+  v5 = inputGainMap;
   v6 = 0;
-  if (v3 && v4)
+  if (inputImage && inputGainMap)
   {
-    v7 = [(NUHDRMultiplyGainMapFilter *)self inputPreserveColor];
-    v8 = [v7 BOOLValue];
+    inputPreserveColor = [(NUHDRMultiplyGainMapFilter *)self inputPreserveColor];
+    bOOLValue = [inputPreserveColor BOOLValue];
 
-    v9 = [(NUHDRMultiplyGainMapFilter *)self inputMixFactor];
-    [v9 floatValue];
+    inputMixFactor = [(NUHDRMultiplyGainMapFilter *)self inputMixFactor];
+    [inputMixFactor floatValue];
     v11 = v10;
 
     v12 = objc_opt_class();
     if (v11 == 0.0)
     {
-      if (v8)
+      if (bOOLValue)
       {
         [v12 gainMapMultiplyRGBKernel];
       }
@@ -114,7 +114,7 @@ uint64_t __54__NUHDRMultiplyGainMapFilter_gainMapLogMultiplyKernel__block_invoke
       }
     }
 
-    else if (v8)
+    else if (bOOLValue)
     {
       [v12 gainMapLogMultiplyRGBKernel];
     }
@@ -128,9 +128,9 @@ uint64_t __54__NUHDRMultiplyGainMapFilter_gainMapLogMultiplyKernel__block_invoke
     [v5 extent];
     v16 = v15;
     v18 = v17;
-    [v3 extent];
+    [inputImage extent];
     CGAffineTransformMakeScale(&v27, v16 / v19, v18 / v20);
-    v21 = [v3 imageByApplyingTransform:&v27];
+    v21 = [inputImage imageByApplyingTransform:&v27];
     v23 = v21;
     if (v11 == 0.0)
     {

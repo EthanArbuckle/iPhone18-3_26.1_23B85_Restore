@@ -1,16 +1,16 @@
 @interface MDMRequestLogOutUserCommand
 + (id)request;
 + (unint64_t)requiredAccessRights;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializeWithType:(signed __int16)a3;
-- (void)processRequest:(id)a3 completionHandler:(id)a4;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializeWithType:(signed __int16)type;
+- (void)processRequest:(id)request completionHandler:(id)handler;
 @end
 
 @implementation MDMRequestLogOutUserCommand
 
 + (unint64_t)requiredAccessRights
 {
-  v3.receiver = a1;
+  v3.receiver = self;
   v3.super_class = &OBJC_METACLASS___MDMRequestLogOutUserCommand;
   return objc_msgSendSuper2(&v3, sel_requiredAccessRights);
 }
@@ -22,7 +22,7 @@
   return v2;
 }
 
-- (id)serializeWithType:(signed __int16)a3
+- (id)serializeWithType:(signed __int16)type
 {
   v3 = objc_opt_new();
   v4 = [v3 copy];
@@ -30,17 +30,17 @@
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4.receiver = self;
   v4.super_class = MDMRequestLogOutUserCommand;
-  return [(RMModelPayloadBase *)&v4 copyWithZone:a3];
+  return [(RMModelPayloadBase *)&v4 copyWithZone:zone];
 }
 
-- (void)processRequest:(id)a3 completionHandler:(id)a4
+- (void)processRequest:(id)request completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
   v27 = 0;
   v28 = &v27;
   v29 = 0x3032000000;
@@ -53,11 +53,11 @@
   v24 = __Block_byref_object_copy__8;
   v25 = __Block_byref_object_dispose__8;
   v26 = 0;
-  v8 = [MEMORY[0x277D77BF8] sharedManager];
-  v9 = [v8 currentUser];
-  v10 = [v9 isLoginUser];
+  mEMORY[0x277D77BF8] = [MEMORY[0x277D77BF8] sharedManager];
+  currentUser = [mEMORY[0x277D77BF8] currentUser];
+  isLoginUser = [currentUser isLoginUser];
 
-  if (v10)
+  if (isLoginUser)
   {
     v11 = MEMORY[0x277CCA9B8];
     v12 = DMCErrorArray();
@@ -69,7 +69,7 @@
     v16 = v28[5];
     v28[5] = v15;
 
-    v7[2](v7, v28[5]);
+    handlerCopy[2](handlerCopy, v28[5]);
   }
 
   else
@@ -81,8 +81,8 @@
     v19 = &v21;
     v20 = &v27;
     v17[4] = self;
-    v18 = v7;
-    [v8 switchToLoginUserWithCompletionHandler:v17];
+    v18 = handlerCopy;
+    [mEMORY[0x277D77BF8] switchToLoginUserWithCompletionHandler:v17];
   }
 
   _Block_object_dispose(&v21, 8);

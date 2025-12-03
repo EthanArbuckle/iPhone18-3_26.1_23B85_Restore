@@ -1,21 +1,21 @@
 @interface CNPreviousFamilyNameDescription
-- (BOOL)abPropertyID:(int *)a3;
-- (BOOL)canUnifyValue:(id)a3 withValue:(id)a4;
-- (BOOL)isEqualForContact:(id)a3 other:(id)a4;
-- (void)decodeUsingCoder:(id)a3 contact:(id)a4;
+- (BOOL)abPropertyID:(int *)d;
+- (BOOL)canUnifyValue:(id)value withValue:(id)withValue;
+- (BOOL)isEqualForContact:(id)contact other:(id)other;
+- (void)decodeUsingCoder:(id)coder contact:(id)contact;
 @end
 
 @implementation CNPreviousFamilyNameDescription
 
-- (BOOL)isEqualForContact:(id)a3 other:(id)a4
+- (BOOL)isEqualForContact:(id)contact other:(id)other
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 previousFamilyName];
-  if (!v8)
+  contactCopy = contact;
+  otherCopy = other;
+  previousFamilyName = [contactCopy previousFamilyName];
+  if (!previousFamilyName)
   {
-    v4 = [v7 previousFamilyName];
-    if (!v4)
+    previousFamilyName2 = [otherCopy previousFamilyName];
+    if (!previousFamilyName2)
     {
       v11 = 1;
 LABEL_6:
@@ -24,11 +24,11 @@ LABEL_6:
     }
   }
 
-  v9 = [v6 previousFamilyName];
-  v10 = [v7 previousFamilyName];
-  v11 = [v9 isEqual:v10];
+  previousFamilyName3 = [contactCopy previousFamilyName];
+  previousFamilyName4 = [otherCopy previousFamilyName];
+  v11 = [previousFamilyName3 isEqual:previousFamilyName4];
 
-  if (!v8)
+  if (!previousFamilyName)
   {
     goto LABEL_6;
   }
@@ -38,50 +38,50 @@ LABEL_7:
   return v11;
 }
 
-- (void)decodeUsingCoder:(id)a3 contact:(id)a4
+- (void)decodeUsingCoder:(id)coder contact:(id)contact
 {
-  v5 = a4;
-  v6 = a3;
-  v9 = [v6 decodeObjectOfClass:objc_opt_class() forKey:@"_previousFamilyName"];
+  contactCopy = contact;
+  coderCopy = coder;
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_previousFamilyName"];
 
   v7 = [v9 copy];
-  v8 = v5[9];
-  v5[9] = v7;
+  v8 = contactCopy[9];
+  contactCopy[9] = v7;
 }
 
-- (BOOL)canUnifyValue:(id)a3 withValue:(id)a4
+- (BOOL)canUnifyValue:(id)value withValue:(id)withValue
 {
-  if (a3)
+  if (value)
   {
-    v4 = a3;
+    valueCopy = value;
   }
 
   else
   {
-    v4 = &stru_1F094DAB0;
+    valueCopy = &stru_1F094DAB0;
   }
 
-  if (a4)
+  if (withValue)
   {
-    v5 = a4;
+    withValueCopy = withValue;
   }
 
   else
   {
-    v5 = &stru_1F094DAB0;
+    withValueCopy = &stru_1F094DAB0;
   }
 
-  return [(__CFString *)v4 localizedCaseInsensitiveCompare:v5]== 0;
+  return [(__CFString *)valueCopy localizedCaseInsensitiveCompare:withValueCopy]== 0;
 }
 
-- (BOOL)abPropertyID:(int *)a3
+- (BOOL)abPropertyID:(int *)d
 {
-  if (a3)
+  if (d)
   {
-    *a3 = *MEMORY[0x1E698A588];
+    *d = *MEMORY[0x1E698A588];
   }
 
-  return a3 != 0;
+  return d != 0;
 }
 
 @end

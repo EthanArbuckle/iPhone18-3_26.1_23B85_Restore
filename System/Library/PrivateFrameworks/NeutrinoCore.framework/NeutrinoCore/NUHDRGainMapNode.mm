@@ -1,34 +1,34 @@
 @interface NUHDRGainMapNode
-- (NUHDRGainMapNode)initWithInput:(id)a3 contentHeadroom:(double)a4 displayHeadroom:(double)a5;
-- (NUHDRGainMapNode)initWithSettings:(id)a3 inputs:(id)a4;
-- (id)nodeByReplayingAgainstCache:(id)a3 pipelineState:(id)a4 error:(id *)a5;
+- (NUHDRGainMapNode)initWithInput:(id)input contentHeadroom:(double)headroom displayHeadroom:(double)displayHeadroom;
+- (NUHDRGainMapNode)initWithSettings:(id)settings inputs:(id)inputs;
+- (id)nodeByReplayingAgainstCache:(id)cache pipelineState:(id)state error:(id *)error;
 @end
 
 @implementation NUHDRGainMapNode
 
-- (id)nodeByReplayingAgainstCache:(id)a3 pipelineState:(id)a4 error:(id *)a5
+- (id)nodeByReplayingAgainstCache:(id)cache pipelineState:(id)state error:(id *)error
 {
   v45[2] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = [(NURenderNode *)self inputs];
-  v11 = [v10 objectForKeyedSubscript:*MEMORY[0x1E695FAB0]];
+  cacheCopy = cache;
+  stateCopy = state;
+  inputs = [(NURenderNode *)self inputs];
+  v11 = [inputs objectForKeyedSubscript:*MEMORY[0x1E695FAB0]];
 
-  v12 = [v11 nodeByReplayingAgainstCache:v8 pipelineState:v9 error:a5];
+  v12 = [v11 nodeByReplayingAgainstCache:cacheCopy pipelineState:stateCopy error:error];
   if (v12)
   {
-    if ([v9 auxiliaryImageType] == 1)
+    if ([stateCopy auxiliaryImageType] == 1)
     {
-      v13 = [v11 imageProperties:a5];
+      v13 = [v11 imageProperties:error];
       v14 = v13;
       if (v13)
       {
         if ([v13 hasGainMap] && (objc_msgSend(v14, "gainMapHeadroom"), v15 > 1.0))
         {
-          v16 = [v9 copy];
+          v16 = [stateCopy copy];
           [v16 setAuxiliaryImageType:7];
           v43 = 0;
-          v17 = [v11 nodeByReplayingAgainstCache:v8 pipelineState:v16 error:&v43];
+          v17 = [v11 nodeByReplayingAgainstCache:cacheCopy pipelineState:v16 error:&v43];
           v18 = v43;
           v42 = v17;
           if (v17)
@@ -43,20 +43,20 @@
             [v23 doubleValue];
             v25 = v24;
 
-            v26 = [(NURenderNode *)self settings];
-            v27 = [v26 objectForKeyedSubscript:@"contentHeadroom"];
+            settings = [(NURenderNode *)self settings];
+            v27 = [settings objectForKeyedSubscript:@"contentHeadroom"];
             [v27 doubleValue];
             v29 = v28;
 
             v30 = [MEMORY[0x1E696AD98] numberWithDouble:{fmin(v29, v25)}];
             [v21 setObject:v30 forKeyedSubscript:@"inputHeadroom"];
 
-            v31 = [v14 flexRangeProperties];
-            [v21 setObject:v31 forKeyedSubscript:@"flexRangeProperties"];
+            flexRangeProperties = [v14 flexRangeProperties];
+            [v21 setObject:flexRangeProperties forKeyedSubscript:@"flexRangeProperties"];
 
-            v32 = [v14 flexRangeProperties];
-            v33 = [v32 alternateColorSpace];
-            [v21 setObject:v33 forKeyedSubscript:@"inputColorSpace"];
+            flexRangeProperties2 = [v14 flexRangeProperties];
+            alternateColorSpace = [flexRangeProperties2 alternateColorSpace];
+            [v21 setObject:alternateColorSpace forKeyedSubscript:@"inputColorSpace"];
 
             v34 = [NUFilterNode alloc];
             v44[0] = @"inputImage";
@@ -66,8 +66,8 @@
             v35 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v45 forKeys:v44 count:2];
             v36 = [(NUFilterNode *)v34 initWithFilterName:@"NUHDRApplyGainMapFilter" settings:v21 inputs:v35];
 
-            v37 = [(NURenderNode *)v36 inputs];
-            v38 = [(NURenderNode *)v36 resolvedNodeWithCachedInputs:v37 cache:v8 pipelineState:v9 error:a5];
+            inputs2 = [(NURenderNode *)v36 inputs];
+            v38 = [(NURenderNode *)v36 resolvedNodeWithCachedInputs:inputs2 cache:cacheCopy pipelineState:stateCopy error:error];
 
             v18 = v40;
             v16 = v41;
@@ -76,7 +76,7 @@
           else
           {
             [NUError errorWithCode:1 reason:@"Failed to evaluate gain map image" object:v11 underlyingError:v43];
-            *a5 = v38 = 0;
+            *error = v38 = 0;
           }
         }
 
@@ -106,11 +106,11 @@
   return v38;
 }
 
-- (NUHDRGainMapNode)initWithSettings:(id)a3 inputs:(id)a4
+- (NUHDRGainMapNode)initWithSettings:(id)settings inputs:(id)inputs
 {
   v38 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  settingsCopy = settings;
+  inputsCopy = inputs;
   if (_NULogOnceToken != -1)
   {
     dispatch_once(&_NULogOnceToken, &__block_literal_global_311);
@@ -154,8 +154,8 @@ LABEL_8:
     {
       v17 = MEMORY[0x1E696AF00];
       v18 = v16;
-      v19 = [v17 callStackSymbols];
-      v20 = [v19 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v17 callStackSymbols];
+      v20 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v35 = v20;
       _os_log_error_impl(&dword_1C0184000, v18, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -171,8 +171,8 @@ LABEL_8:
     v23 = MEMORY[0x1E696AF00];
     v24 = specific;
     v25 = v21;
-    v26 = [v23 callStackSymbols];
-    v27 = [v26 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v23 callStackSymbols];
+    v27 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v35 = specific;
     v36 = 2114;
@@ -188,11 +188,11 @@ LABEL_14:
   _NUAssertFailHandler("[NUHDRGainMapNode initWithSettings:inputs:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NUHDRGainMapNode.m", 59, @"Initializer not available: [%@ %@], use designated initializer instead.", v30, v31, v32, v33, v29);
 }
 
-- (NUHDRGainMapNode)initWithInput:(id)a3 contentHeadroom:(double)a4 displayHeadroom:(double)a5
+- (NUHDRGainMapNode)initWithInput:(id)input contentHeadroom:(double)headroom displayHeadroom:(double)displayHeadroom
 {
   v73 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  if (!v8)
+  inputCopy = input;
+  if (!inputCopy)
   {
     v16 = NUAssertLogger_11533();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -213,8 +213,8 @@ LABEL_14:
         v37 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v38 = MEMORY[0x1E696AF00];
         v39 = v37;
-        v40 = [v38 callStackSymbols];
-        v41 = [v40 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v38 callStackSymbols];
+        v41 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v70 = v37;
         v71 = 2114;
@@ -225,8 +225,8 @@ LABEL_14:
 
     else if (v20)
     {
-      v21 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v22 = [v21 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v22 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v70 = v22;
       _os_log_error_impl(&dword_1C0184000, v19, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -235,7 +235,7 @@ LABEL_14:
     _NUAssertFailHandler("[NUHDRGainMapNode initWithInput:contentHeadroom:displayHeadroom:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NUHDRGainMapNode.m", 46, @"Invalid parameter not satisfying: %s", v42, v43, v44, v45, "input != nil");
   }
 
-  if (a4 < 1.0)
+  if (headroom < 1.0)
   {
     v23 = NUAssertLogger_11533();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
@@ -256,8 +256,8 @@ LABEL_14:
         v46 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v47 = MEMORY[0x1E696AF00];
         v48 = v46;
-        v49 = [v47 callStackSymbols];
-        v50 = [v49 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v47 callStackSymbols];
+        v50 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v70 = v46;
         v71 = 2114;
@@ -268,8 +268,8 @@ LABEL_14:
 
     else if (v27)
     {
-      v28 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v29 = [v28 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v29 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v70 = v29;
       _os_log_error_impl(&dword_1C0184000, v26, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -278,7 +278,7 @@ LABEL_14:
     _NUAssertFailHandler("[NUHDRGainMapNode initWithInput:contentHeadroom:displayHeadroom:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NUHDRGainMapNode.m", 47, @"Invalid parameter not satisfying: %s", v51, v52, v53, v54, "contentHeadroom >= 1.0");
   }
 
-  if (a5 < 1.0)
+  if (displayHeadroom < 1.0)
   {
     v30 = NUAssertLogger_11533();
     if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
@@ -299,8 +299,8 @@ LABEL_14:
         v55 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v56 = MEMORY[0x1E696AF00];
         v57 = v55;
-        v58 = [v56 callStackSymbols];
-        v59 = [v58 componentsJoinedByString:@"\n"];
+        callStackSymbols5 = [v56 callStackSymbols];
+        v59 = [callStackSymbols5 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v70 = v55;
         v71 = 2114;
@@ -311,8 +311,8 @@ LABEL_14:
 
     else if (v34)
     {
-      v35 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v36 = [v35 componentsJoinedByString:@"\n"];
+      callStackSymbols6 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v36 = [callStackSymbols6 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v70 = v36;
       _os_log_error_impl(&dword_1C0184000, v33, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -321,12 +321,12 @@ LABEL_14:
     _NUAssertFailHandler("[NUHDRGainMapNode initWithInput:contentHeadroom:displayHeadroom:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NUHDRGainMapNode.m", 48, @"Invalid parameter not satisfying: %s", v60, v61, v62, v63, "displayHeadroom >= 1.0");
   }
 
-  v9 = v8;
+  v9 = inputCopy;
   v67[0] = @"contentHeadroom";
-  v10 = [MEMORY[0x1E696AD98] numberWithDouble:a4];
+  v10 = [MEMORY[0x1E696AD98] numberWithDouble:headroom];
   v67[1] = @"displayHeadroom";
   v68[0] = v10;
-  v11 = [MEMORY[0x1E696AD98] numberWithDouble:a5];
+  v11 = [MEMORY[0x1E696AD98] numberWithDouble:displayHeadroom];
   v68[1] = v11;
   v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v68 forKeys:v67 count:2];
   v65 = *MEMORY[0x1E695FAB0];

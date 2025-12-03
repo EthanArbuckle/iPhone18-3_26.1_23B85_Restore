@@ -1,19 +1,19 @@
 @interface DisplayAlertButton
 - (BOOL)isHighlighted;
 - (BOOL)isSelected;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setSelected:(BOOL)a3;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setSelected:(BOOL)selected;
 @end
 
 @implementation DisplayAlertButton
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = self;
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
+  selfCopy = self;
   v9 = sub_100021F74(x, y);
 
   return v9;
@@ -21,30 +21,30 @@
 
 - (BOOL)isHighlighted
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1000222A4(&selRef_isHighlighted);
 
   return v3 & 1;
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v4 = self;
-  sub_10002233C(a3, &selRef_setHighlighted_);
+  selfCopy = self;
+  sub_10002233C(highlighted, &selRef_setHighlighted_);
 }
 
 - (BOOL)isSelected
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1000222A4(&selRef_isSelected);
 
   return v3 & 1;
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  v4 = self;
-  sub_10002233C(a3, &selRef_setSelected_);
+  selfCopy = self;
+  sub_10002233C(selected, &selRef_setSelected_);
 }
 
 @end

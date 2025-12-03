@@ -1,13 +1,13 @@
 @interface ATXLocationManagerRoutineCR
-+ (id)closestLOI:(id)a3 toLocation:(id)a4;
++ (id)closestLOI:(id)i toLocation:(id)location;
 - (ATXLocationManagerRoutineCR)init;
-- (ATXLocationManagerRoutineCR)initWithRoutineManager:(id)a3;
-- (unint64_t)fetchRoutineModeFromLocation:(id)a3;
-- (void)fetchClosestLOIWithinDistance:(double)a3 ofLocation:(id)a4 reply:(id)a5;
-- (void)fetchLOILocationOfType:(int64_t)a3 reply:(id)a4;
-- (void)fetchLOIVisitedDuring:(id)a3 reply:(id)a4;
-- (void)fetchNextPredictedLOIFromLocation:(id)a3 startDate:(id)a4 timeInterval:(double)a5 requireHighConfidence:(BOOL)a6 reply:(id)a7;
-- (void)fetchPredictedExitDatesFromLocation:(id)a3 onDate:(id)a4 requireHighConfidence:(BOOL)a5 reply:(id)a6;
+- (ATXLocationManagerRoutineCR)initWithRoutineManager:(id)manager;
+- (unint64_t)fetchRoutineModeFromLocation:(id)location;
+- (void)fetchClosestLOIWithinDistance:(double)distance ofLocation:(id)location reply:(id)reply;
+- (void)fetchLOILocationOfType:(int64_t)type reply:(id)reply;
+- (void)fetchLOIVisitedDuring:(id)during reply:(id)reply;
+- (void)fetchNextPredictedLOIFromLocation:(id)location startDate:(id)date timeInterval:(double)interval requireHighConfidence:(BOOL)confidence reply:(id)reply;
+- (void)fetchPredictedExitDatesFromLocation:(id)location onDate:(id)date requireHighConfidence:(BOOL)confidence reply:(id)reply;
 @end
 
 @implementation ATXLocationManagerRoutineCR
@@ -20,35 +20,35 @@
   return v4;
 }
 
-- (ATXLocationManagerRoutineCR)initWithRoutineManager:(id)a3
+- (ATXLocationManagerRoutineCR)initWithRoutineManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v9.receiver = self;
   v9.super_class = ATXLocationManagerRoutineCR;
   v6 = [(ATXLocationManagerRoutineCR *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_routineManager, a3);
+    objc_storeStrong(&v6->_routineManager, manager);
   }
 
   return v7;
 }
 
-- (void)fetchClosestLOIWithinDistance:(double)a3 ofLocation:(id)a4 reply:(id)a5
+- (void)fetchClosestLOIWithinDistance:(double)distance ofLocation:(id)location reply:(id)reply
 {
-  v8 = a4;
-  v9 = a5;
+  locationCopy = location;
+  replyCopy = reply;
   routineManager = self->_routineManager;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __78__ATXLocationManagerRoutineCR_fetchClosestLOIWithinDistance_ofLocation_reply___block_invoke;
   v13[3] = &unk_279AB7E40;
-  v14 = v8;
-  v15 = v9;
-  v11 = v8;
-  v12 = v9;
-  [(RTRoutineManager *)routineManager fetchLocationsOfInterestWithinDistance:v11 ofLocation:v13 withHandler:a3];
+  v14 = locationCopy;
+  v15 = replyCopy;
+  v11 = locationCopy;
+  v12 = replyCopy;
+  [(RTRoutineManager *)routineManager fetchLocationsOfInterestWithinDistance:v11 ofLocation:v13 withHandler:distance];
 }
 
 void __78__ATXLocationManagerRoutineCR_fetchClosestLOIWithinDistance_ofLocation_reply___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3)
@@ -69,17 +69,17 @@ void __78__ATXLocationManagerRoutineCR_fetchClosestLOIWithinDistance_ofLocation_
   }
 }
 
-- (void)fetchLOILocationOfType:(int64_t)a3 reply:(id)a4
+- (void)fetchLOILocationOfType:(int64_t)type reply:(id)reply
 {
-  v6 = a4;
+  replyCopy = reply;
   routineManager = self->_routineManager;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __60__ATXLocationManagerRoutineCR_fetchLOILocationOfType_reply___block_invoke;
   v9[3] = &unk_279AB7E68;
-  v10 = v6;
-  v8 = v6;
-  [(RTRoutineManager *)routineManager fetchLocationsOfInterestOfType:a3 withHandler:v9];
+  v10 = replyCopy;
+  v8 = replyCopy;
+  [(RTRoutineManager *)routineManager fetchLocationsOfInterestOfType:type withHandler:v9];
 }
 
 void __60__ATXLocationManagerRoutineCR_fetchLOILocationOfType_reply___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -115,21 +115,21 @@ void __60__ATXLocationManagerRoutineCR_fetchLOILocationOfType_reply___block_invo
   }
 }
 
-- (void)fetchLOIVisitedDuring:(id)a3 reply:(id)a4
+- (void)fetchLOIVisitedDuring:(id)during reply:(id)reply
 {
-  v6 = a4;
+  replyCopy = reply;
   routineManager = self->_routineManager;
-  v8 = a3;
-  v9 = [v8 startDate];
-  v10 = [v8 endDate];
+  duringCopy = during;
+  startDate = [duringCopy startDate];
+  endDate = [duringCopy endDate];
 
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __59__ATXLocationManagerRoutineCR_fetchLOIVisitedDuring_reply___block_invoke;
   v12[3] = &unk_279AB7E68;
-  v13 = v6;
-  v11 = v6;
-  [(RTRoutineManager *)routineManager fetchLocationsOfInterestVisitedBetweenStartDate:v9 endDate:v10 withHandler:v12];
+  v13 = replyCopy;
+  v11 = replyCopy;
+  [(RTRoutineManager *)routineManager fetchLocationsOfInterestVisitedBetweenStartDate:startDate endDate:endDate withHandler:v12];
 }
 
 void __59__ATXLocationManagerRoutineCR_fetchLOIVisitedDuring_reply___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -184,18 +184,18 @@ void __59__ATXLocationManagerRoutineCR_fetchLOIVisitedDuring_reply___block_invok
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fetchNextPredictedLOIFromLocation:(id)a3 startDate:(id)a4 timeInterval:(double)a5 requireHighConfidence:(BOOL)a6 reply:(id)a7
+- (void)fetchNextPredictedLOIFromLocation:(id)location startDate:(id)date timeInterval:(double)interval requireHighConfidence:(BOOL)confidence reply:(id)reply
 {
-  v12 = a7;
+  replyCopy = reply;
   routineManager = self->_routineManager;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __116__ATXLocationManagerRoutineCR_fetchNextPredictedLOIFromLocation_startDate_timeInterval_requireHighConfidence_reply___block_invoke;
   v15[3] = &unk_279AB7EB8;
-  v16 = v12;
-  v17 = a6;
-  v14 = v12;
-  [(RTRoutineManager *)routineManager fetchNextPredictedLocationsOfInterestFromLocation:a3 startDate:a4 timeInterval:v15 withHandler:a5];
+  v16 = replyCopy;
+  confidenceCopy = confidence;
+  v14 = replyCopy;
+  [(RTRoutineManager *)routineManager fetchNextPredictedLocationsOfInterestFromLocation:location startDate:date timeInterval:v15 withHandler:interval];
 }
 
 void __116__ATXLocationManagerRoutineCR_fetchNextPredictedLOIFromLocation_startDate_timeInterval_requireHighConfidence_reply___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -308,18 +308,18 @@ void __116__ATXLocationManagerRoutineCR_fetchNextPredictedLOIFromLocation_startD
   }
 }
 
-- (void)fetchPredictedExitDatesFromLocation:(id)a3 onDate:(id)a4 requireHighConfidence:(BOOL)a5 reply:(id)a6
+- (void)fetchPredictedExitDatesFromLocation:(id)location onDate:(id)date requireHighConfidence:(BOOL)confidence reply:(id)reply
 {
-  v10 = a6;
+  replyCopy = reply;
   routineManager = self->_routineManager;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __102__ATXLocationManagerRoutineCR_fetchPredictedExitDatesFromLocation_onDate_requireHighConfidence_reply___block_invoke;
   v13[3] = &unk_279AB7EB8;
-  v14 = v10;
-  v15 = a5;
-  v12 = v10;
-  [(RTRoutineManager *)routineManager fetchPredictedExitDatesFromLocation:a3 onDate:a4 withHandler:v13];
+  v14 = replyCopy;
+  confidenceCopy = confidence;
+  v12 = replyCopy;
+  [(RTRoutineManager *)routineManager fetchPredictedExitDatesFromLocation:location onDate:date withHandler:v13];
 }
 
 void __102__ATXLocationManagerRoutineCR_fetchPredictedExitDatesFromLocation_onDate_requireHighConfidence_reply___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -397,9 +397,9 @@ void __102__ATXLocationManagerRoutineCR_fetchPredictedExitDatesFromLocation_onDa
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (unint64_t)fetchRoutineModeFromLocation:(id)a3
+- (unint64_t)fetchRoutineModeFromLocation:(id)location
 {
-  v4 = a3;
+  locationCopy = location;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
@@ -413,7 +413,7 @@ void __102__ATXLocationManagerRoutineCR_fetchPredictedExitDatesFromLocation_onDa
   v15 = &v16;
   v7 = v5;
   v14 = v7;
-  [(RTRoutineManager *)routineManager fetchRoutineModeFromLocation:v4 withHandler:&v10];
+  [(RTRoutineManager *)routineManager fetchRoutineModeFromLocation:locationCopy withHandler:&v10];
   [MEMORY[0x277D425A0] waitForSemaphore:v7 timeoutSeconds:0 onAcquire:&__block_literal_global_4 onTimeout:{1.0, v10, v11, v12, v13}];
   v8 = v17[3];
 
@@ -466,17 +466,17 @@ void __60__ATXLocationManagerRoutineCR_fetchRoutineModeFromLocation___block_invo
   }
 }
 
-+ (id)closestLOI:(id)a3 toLocation:(id)a4
++ (id)closestLOI:(id)i toLocation:(id)location
 {
   v32 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  iCopy = i;
+  locationCopy = location;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  obj = v5;
-  v7 = [v5 countByEnumeratingWithState:&v27 objects:v31 count:16];
+  obj = iCopy;
+  v7 = [iCopy countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v7)
   {
     v8 = v7;
@@ -494,14 +494,14 @@ void __60__ATXLocationManagerRoutineCR_fetchRoutineModeFromLocation___block_invo
 
         v13 = *(*(&v27 + 1) + 8 * i);
         v14 = objc_alloc(MEMORY[0x277CE41F8]);
-        v15 = [v13 location];
-        [v15 latitude];
+        location = [v13 location];
+        [location latitude];
         v17 = v16;
-        v18 = [v13 location];
-        [v18 longitude];
+        location2 = [v13 location];
+        [location2 longitude];
         v20 = [v14 initWithLatitude:v17 longitude:v19];
 
-        [v6 distanceFromLocation:v20];
+        [locationCopy distanceFromLocation:v20];
         if (v21 < v11)
         {
           v22 = v21;

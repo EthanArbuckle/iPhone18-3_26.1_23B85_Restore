@@ -1,16 +1,16 @@
 @interface OAXBaseTypes
-+ (CGPoint)readPoint2DFromXmlNode:(_xmlNode *)a3;
-+ (CGSize)readSize2DFromXmlNode:(_xmlNode *)a3;
-+ (id)readPoint3DFromXmlNode:(_xmlNode *)a3;
-+ (id)readRelativeRectFromXmlNode:(_xmlNode *)a3;
-+ (id)readRotation3DFromXmlNode:(_xmlNode *)a3;
-+ (id)readVector3DFromXmlNode:(_xmlNode *)a3;
++ (CGPoint)readPoint2DFromXmlNode:(_xmlNode *)node;
++ (CGSize)readSize2DFromXmlNode:(_xmlNode *)node;
++ (id)readPoint3DFromXmlNode:(_xmlNode *)node;
++ (id)readRelativeRectFromXmlNode:(_xmlNode *)node;
++ (id)readRotation3DFromXmlNode:(_xmlNode *)node;
++ (id)readVector3DFromXmlNode:(_xmlNode *)node;
 + (id)rectAlignmentEnumMap;
-+ (id)stringForRectAlignment:(int)a3;
-+ (int)readRectAlignmentFromXmlNode:(_xmlNode *)a3 name:(const char *)a4;
++ (id)stringForRectAlignment:(int)alignment;
++ (int)readRectAlignmentFromXmlNode:(_xmlNode *)node name:(const char *)name;
 + (void)rectAlignmentEnumMap;
-+ (void)writeRectAlignment:(int)a3 to:(id)a4;
-+ (void)writeRelativeRect:(id)a3 to:(id)a4;
++ (void)writeRectAlignment:(int)alignment to:(id)to;
++ (void)writeRelativeRect:(id)rect to:(id)to;
 @end
 
 @implementation OAXBaseTypes
@@ -34,11 +34,11 @@
   return v2;
 }
 
-+ (CGPoint)readPoint2DFromXmlNode:(_xmlNode *)a3
++ (CGPoint)readPoint2DFromXmlNode:(_xmlNode *)node
 {
-  [a1 readRequiredLengthFromXmlNode:a3 name:"x"];
+  [self readRequiredLengthFromXmlNode:node name:"x"];
   v6 = v5;
-  [a1 readRequiredLengthFromXmlNode:a3 name:"y"];
+  [self readRequiredLengthFromXmlNode:node name:"y"];
   v8 = v7;
   v9 = v6;
   result.y = v8;
@@ -46,11 +46,11 @@
   return result;
 }
 
-+ (CGSize)readSize2DFromXmlNode:(_xmlNode *)a3
++ (CGSize)readSize2DFromXmlNode:(_xmlNode *)node
 {
-  [a1 readRequiredLengthFromXmlNode:a3 name:"cx"];
+  [self readRequiredLengthFromXmlNode:node name:"cx"];
   v6 = v5;
-  [a1 readRequiredLengthFromXmlNode:a3 name:"cy"];
+  [self readRequiredLengthFromXmlNode:node name:"cy"];
   v8 = v7;
   v9 = v6;
   result.height = v8;
@@ -58,17 +58,17 @@
   return result;
 }
 
-+ (id)readRelativeRectFromXmlNode:(_xmlNode *)a3
++ (id)readRelativeRectFromXmlNode:(_xmlNode *)node
 {
-  if (a3)
+  if (node)
   {
-    [a1 readOptionalFractionFromXmlNode:a3 name:"l"];
+    [self readOptionalFractionFromXmlNode:node name:"l"];
     v6 = v5;
-    [a1 readOptionalFractionFromXmlNode:a3 name:"t"];
+    [self readOptionalFractionFromXmlNode:node name:"t"];
     v8 = v7;
-    [a1 readOptionalFractionFromXmlNode:a3 name:"r"];
+    [self readOptionalFractionFromXmlNode:node name:"r"];
     v10 = v9;
-    [a1 readOptionalFractionFromXmlNode:a3 name:"b"];
+    [self readOptionalFractionFromXmlNode:node name:"b"];
     v12 = v11;
   }
 
@@ -90,63 +90,63 @@
   return v18;
 }
 
-+ (id)stringForRectAlignment:(int)a3
++ (id)stringForRectAlignment:(int)alignment
 {
-  v3 = *&a3;
-  v4 = [a1 rectAlignmentEnumMap];
-  v5 = [v4 stringForValue:v3];
+  v3 = *&alignment;
+  rectAlignmentEnumMap = [self rectAlignmentEnumMap];
+  v5 = [rectAlignmentEnumMap stringForValue:v3];
 
   return v5;
 }
 
-+ (void)writeRelativeRect:(id)a3 to:(id)a4
++ (void)writeRelativeRect:(id)rect to:(id)to
 {
-  v30 = a3;
-  v5 = a4;
+  rectCopy = rect;
+  toCopy = to;
   v6 = MEMORY[0x277CCABB0];
-  [v30 left];
+  [rectCopy left];
   *&v8 = v7 * 100000.0;
   v9 = [v6 numberWithFloat:v8];
-  v10 = [v9 longValue];
+  longValue = [v9 longValue];
 
-  v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", v10];
-  [v5 writeOAAttribute:@"l" content:v11];
+  v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", longValue];
+  [toCopy writeOAAttribute:@"l" content:v11];
 
   v12 = MEMORY[0x277CCABB0];
-  [v30 top];
+  [rectCopy top];
   *&v14 = v13 * 100000.0;
   v15 = [v12 numberWithFloat:v14];
-  v16 = [v15 longValue];
+  longValue2 = [v15 longValue];
 
-  v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", v16];
-  [v5 writeOAAttribute:@"t" content:v17];
+  v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", longValue2];
+  [toCopy writeOAAttribute:@"t" content:v17];
 
   v18 = MEMORY[0x277CCABB0];
-  [v30 right];
+  [rectCopy right];
   *&v20 = v19 * 100000.0;
   v21 = [v18 numberWithFloat:v20];
-  v22 = [v21 longValue];
+  longValue3 = [v21 longValue];
 
-  v23 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", v22];
-  [v5 writeOAAttribute:@"r" content:v23];
+  v23 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", longValue3];
+  [toCopy writeOAAttribute:@"r" content:v23];
 
   v24 = MEMORY[0x277CCABB0];
-  [v30 bottom];
+  [rectCopy bottom];
   *&v26 = v25 * 100000.0;
   v27 = [v24 numberWithFloat:v26];
-  v28 = [v27 longValue];
+  longValue4 = [v27 longValue];
 
-  v29 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", v28];
-  [v5 writeOAAttribute:@"b" content:v29];
+  v29 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", longValue4];
+  [toCopy writeOAAttribute:@"b" content:v29];
 }
 
-+ (int)readRectAlignmentFromXmlNode:(_xmlNode *)a3 name:(const char *)a4
++ (int)readRectAlignmentFromXmlNode:(_xmlNode *)node name:(const char *)name
 {
-  v5 = CXDefaultStringAttribute(a3, CXNoNamespace, a4, 0);
+  v5 = CXDefaultStringAttribute(node, CXNoNamespace, name, 0);
   if (v5)
   {
-    v6 = [a1 rectAlignmentEnumMap];
-    v7 = [v6 valueForString:v5];
+    rectAlignmentEnumMap = [self rectAlignmentEnumMap];
+    v7 = [rectAlignmentEnumMap valueForString:v5];
   }
 
   else
@@ -157,23 +157,23 @@
   return v7;
 }
 
-+ (void)writeRectAlignment:(int)a3 to:(id)a4
++ (void)writeRectAlignment:(int)alignment to:(id)to
 {
-  v4 = *&a3;
-  v8 = a4;
-  v6 = [a1 rectAlignmentEnumMap];
-  v7 = [v6 stringForValue:v4];
+  v4 = *&alignment;
+  toCopy = to;
+  rectAlignmentEnumMap = [self rectAlignmentEnumMap];
+  v7 = [rectAlignmentEnumMap stringForValue:v4];
 
-  [v8 writeOAAttribute:@"algn" content:v7];
+  [toCopy writeOAAttribute:@"algn" content:v7];
 }
 
-+ (id)readVector3DFromXmlNode:(_xmlNode *)a3
++ (id)readVector3DFromXmlNode:(_xmlNode *)node
 {
-  [a1 readRequiredLengthFromXmlNode:a3 name:"dx"];
+  [self readRequiredLengthFromXmlNode:node name:"dx"];
   v6 = v5;
-  [a1 readRequiredLengthFromXmlNode:a3 name:"dy"];
+  [self readRequiredLengthFromXmlNode:node name:"dy"];
   v8 = v7;
-  [a1 readRequiredLengthFromXmlNode:a3 name:"dz"];
+  [self readRequiredLengthFromXmlNode:node name:"dz"];
   v10 = v9;
   v11 = [OADVector3D alloc];
   LODWORD(v12) = v6;
@@ -184,13 +184,13 @@
   return v15;
 }
 
-+ (id)readPoint3DFromXmlNode:(_xmlNode *)a3
++ (id)readPoint3DFromXmlNode:(_xmlNode *)node
 {
-  [a1 readRequiredLengthFromXmlNode:a3 name:"x"];
+  [self readRequiredLengthFromXmlNode:node name:"x"];
   v6 = v5;
-  [a1 readRequiredLengthFromXmlNode:a3 name:"y"];
+  [self readRequiredLengthFromXmlNode:node name:"y"];
   v8 = v7;
-  [a1 readRequiredLengthFromXmlNode:a3 name:"z"];
+  [self readRequiredLengthFromXmlNode:node name:"z"];
   v10 = v9;
   v11 = [OADPoint3D alloc];
   LODWORD(v12) = v6;
@@ -201,13 +201,13 @@
   return v15;
 }
 
-+ (id)readRotation3DFromXmlNode:(_xmlNode *)a3
++ (id)readRotation3DFromXmlNode:(_xmlNode *)node
 {
-  [a1 readRequiredAngleFromXmlNode:a3 name:"lat"];
+  [self readRequiredAngleFromXmlNode:node name:"lat"];
   v6 = v5;
-  [a1 readRequiredAngleFromXmlNode:a3 name:"lon"];
+  [self readRequiredAngleFromXmlNode:node name:"lon"];
   v8 = v7;
-  [a1 readRequiredAngleFromXmlNode:a3 name:"rev"];
+  [self readRequiredAngleFromXmlNode:node name:"rev"];
   v10 = v9;
   v11 = [OADRotation3D alloc];
   *&v12 = v6;

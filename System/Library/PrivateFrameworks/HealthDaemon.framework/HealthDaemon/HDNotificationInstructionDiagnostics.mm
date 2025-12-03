@@ -1,20 +1,20 @@
 @interface HDNotificationInstructionDiagnostics
-- (BOOL)enumerateAllNotificationInstructionsWithError:(id *)a3 enumerationHandler:(id)a4;
-- (HDNotificationInstructionDiagnostics)initWithProfile:(id)a3;
+- (BOOL)enumerateAllNotificationInstructionsWithError:(id *)error enumerationHandler:(id)handler;
+- (HDNotificationInstructionDiagnostics)initWithProfile:(id)profile;
 @end
 
 @implementation HDNotificationInstructionDiagnostics
 
-- (HDNotificationInstructionDiagnostics)initWithProfile:(id)a3
+- (HDNotificationInstructionDiagnostics)initWithProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   v10.receiver = self;
   v10.super_class = HDNotificationInstructionDiagnostics;
   v5 = [(HDNotificationInstructionDiagnostics *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_profile, v4);
+    objc_storeWeak(&v5->_profile, profileCopy);
     v7 = objc_alloc_init(MEMORY[0x277CCAA68]);
     formatter = v6->_formatter;
     v6->_formatter = v7;
@@ -23,21 +23,21 @@
   return v6;
 }
 
-- (BOOL)enumerateAllNotificationInstructionsWithError:(id *)a3 enumerationHandler:(id)a4
+- (BOOL)enumerateAllNotificationInstructionsWithError:(id *)error enumerationHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v8 = [WeakRetained database];
+  database = [WeakRetained database];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __105__HDNotificationInstructionDiagnostics_enumerateAllNotificationInstructionsWithError_enumerationHandler___block_invoke;
   v11[3] = &unk_278614AB8;
   v11[4] = self;
-  v12 = v6;
-  v9 = v6;
-  LOBYTE(a3) = [(HDHealthEntity *)HDNotificationInstructionEntity performReadTransactionWithHealthDatabase:v8 error:a3 block:v11];
+  v12 = handlerCopy;
+  v9 = handlerCopy;
+  LOBYTE(error) = [(HDHealthEntity *)HDNotificationInstructionEntity performReadTransactionWithHealthDatabase:database error:error block:v11];
 
-  return a3;
+  return error;
 }
 
 BOOL __105__HDNotificationInstructionDiagnostics_enumerateAllNotificationInstructionsWithError_enumerationHandler___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3)

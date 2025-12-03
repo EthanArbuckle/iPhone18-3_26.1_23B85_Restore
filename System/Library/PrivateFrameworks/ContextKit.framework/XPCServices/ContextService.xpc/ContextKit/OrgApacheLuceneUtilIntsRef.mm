@@ -1,24 +1,24 @@
 @interface OrgApacheLuceneUtilIntsRef
 + (void)initialize;
-- (BOOL)intsEqualsWithOrgApacheLuceneUtilIntsRef:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)intsEqualsWithOrgApacheLuceneUtilIntsRef:(id)ref;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isValid;
 - (NSString)description;
-- (OrgApacheLuceneUtilIntsRef)initWithIntArray:(id)a3 withInt:(int)a4 withInt:(int)a5;
+- (OrgApacheLuceneUtilIntsRef)initWithIntArray:(id)array withInt:(int)int withInt:(int)withInt;
 - (id)clone;
-- (id)copyWithZone:(_NSZone *)a3;
-- (int)compareToWithId:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (int)compareToWithId:(id)id;
 - (unint64_t)hash;
 - (void)dealloc;
 @end
 
 @implementation OrgApacheLuceneUtilIntsRef
 
-- (OrgApacheLuceneUtilIntsRef)initWithIntArray:(id)a3 withInt:(int)a4 withInt:(int)a5
+- (OrgApacheLuceneUtilIntsRef)initWithIntArray:(id)array withInt:(int)int withInt:(int)withInt
 {
-  JreStrongAssign(&self->ints_, a3);
-  self->offset_ = a4;
-  self->length_ = a5;
+  JreStrongAssign(&self->ints_, array);
+  self->offset_ = int;
+  self->length_ = withInt;
   return self;
 }
 
@@ -64,9 +64,9 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (!a3)
+  if (!equal)
   {
     return 0;
   }
@@ -83,18 +83,18 @@
     JreThrowClassCastException();
   }
 
-  return [(OrgApacheLuceneUtilIntsRef *)self intsEqualsWithOrgApacheLuceneUtilIntsRef:a3];
+  return [(OrgApacheLuceneUtilIntsRef *)self intsEqualsWithOrgApacheLuceneUtilIntsRef:equal];
 }
 
-- (BOOL)intsEqualsWithOrgApacheLuceneUtilIntsRef:(id)a3
+- (BOOL)intsEqualsWithOrgApacheLuceneUtilIntsRef:(id)ref
 {
-  if (!a3)
+  if (!ref)
   {
     goto LABEL_21;
   }
 
   length = self->length_;
-  if (length != *(a3 + 5))
+  if (length != *(ref + 5))
   {
     return 0;
   }
@@ -103,8 +103,8 @@
   v6 = offset + length;
   if (offset < v6)
   {
-    v7 = *(a3 + 1);
-    v8 = *(a3 + 4);
+    v7 = *(ref + 1);
+    v8 = *(ref + 4);
     v9 = v6;
     while (1)
     {
@@ -149,10 +149,10 @@ LABEL_21:
   return 1;
 }
 
-- (int)compareToWithId:(id)a3
+- (int)compareToWithId:(id)id
 {
   objc_opt_class();
-  if (!a3)
+  if (!id)
   {
     if (self)
     {
@@ -168,17 +168,17 @@ LABEL_28:
     JreThrowClassCastException();
   }
 
-  if (self == a3)
+  if (self == id)
   {
     return 0;
   }
 
   ints = self->ints_;
-  v7 = *(a3 + 1);
+  v7 = *(id + 1);
   offset = self->offset_;
-  v21 = self;
-  v9 = *(a3 + 4);
-  v10 = JavaLangMath_minWithInt_withInt_(self->length_, *(a3 + 5));
+  selfCopy = self;
+  v9 = *(id + 4);
+  v10 = JavaLangMath_minWithInt_withInt_(self->length_, *(id + 5));
   v11 = v10 + offset;
   if (offset > v10 + offset)
   {
@@ -242,7 +242,7 @@ LABEL_28:
     }
   }
 
-  return v21->length_ - *(a3 + 5);
+  return selfCopy->length_ - *(id + 5);
 }
 
 - (NSString)description
@@ -360,16 +360,16 @@ LABEL_16:
   [(OrgApacheLuceneUtilIntsRef *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v3 = [(OrgApacheLuceneUtilIntsRef *)self clone];
+  clone = [(OrgApacheLuceneUtilIntsRef *)self clone];
 
-  return v3;
+  return clone;
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     JreStrongAssignAndConsume(&OrgApacheLuceneUtilIntsRef_EMPTY_INTS_, [IOSIntArray newArrayWithLength:0]);
     atomic_store(1u, OrgApacheLuceneUtilIntsRef__initialized);

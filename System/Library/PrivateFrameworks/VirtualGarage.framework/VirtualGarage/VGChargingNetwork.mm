@@ -1,41 +1,41 @@
 @interface VGChargingNetwork
-- (BOOL)isEqual:(id)a3;
-- (VGChargingNetwork)initWithBrandInfoMapping:(id)a3;
-- (VGChargingNetwork)initWithChargingNetworkStorage:(id)a3;
-- (VGChargingNetwork)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (VGChargingNetwork)initWithBrandInfoMapping:(id)mapping;
+- (VGChargingNetwork)initWithChargingNetworkStorage:(id)storage;
+- (VGChargingNetwork)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation VGChargingNetwork
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [v4 globalBrandID] == self->_globalBrandID;
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [equalCopy globalBrandID] == self->_globalBrandID;
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   globalBrandID = self->_globalBrandID;
-  v5 = a3;
-  [v5 encodeInt64:globalBrandID forKey:@"_globalBrandID"];
-  [v5 encodeObject:self->_name forKey:@"_name"];
+  coderCopy = coder;
+  [coderCopy encodeInt64:globalBrandID forKey:@"_globalBrandID"];
+  [coderCopy encodeObject:self->_name forKey:@"_name"];
 }
 
-- (VGChargingNetwork)initWithCoder:(id)a3
+- (VGChargingNetwork)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = VGChargingNetwork;
   v5 = [(VGChargingNetwork *)&v9 init];
   if (v5)
   {
-    v5->_globalBrandID = [v4 decodeInt64ForKey:@"_globalBrandID"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_name"];
+    v5->_globalBrandID = [coderCopy decodeInt64ForKey:@"_globalBrandID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_name"];
     name = v5->_name;
     v5->_name = v6;
   }
@@ -43,7 +43,7 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(VGChargingNetwork);
   v4->_globalBrandID = self->_globalBrandID;
@@ -54,27 +54,27 @@
   return v4;
 }
 
-- (VGChargingNetwork)initWithChargingNetworkStorage:(id)a3
+- (VGChargingNetwork)initWithChargingNetworkStorage:(id)storage
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 hasIdentifier])
+  storageCopy = storage;
+  if ([storageCopy hasIdentifier])
   {
     v13.receiver = self;
     v13.super_class = VGChargingNetwork;
     v5 = [(VGChargingNetwork *)&v13 init];
     if (v5)
     {
-      v6 = [v4 name];
-      v7 = [v6 copy];
+      name = [storageCopy name];
+      v7 = [name copy];
       name = v5->_name;
       v5->_name = v7;
 
-      v5->_globalBrandID = [v4 identifier];
+      v5->_globalBrandID = [storageCopy identifier];
     }
 
     self = v5;
-    v9 = self;
+    selfCopy = self;
   }
 
   else
@@ -83,33 +83,33 @@
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v15 = v4;
+      v15 = storageCopy;
       _os_log_impl(&dword_270EC1000, v10, OS_LOG_TYPE_ERROR, "Failed to initialize a network with storage: %@", buf, 0xCu);
     }
 
-    v9 = 0;
+    selfCopy = 0;
   }
 
   v11 = *MEMORY[0x277D85DE8];
-  return v9;
+  return selfCopy;
 }
 
-- (VGChargingNetwork)initWithBrandInfoMapping:(id)a3
+- (VGChargingNetwork)initWithBrandInfoMapping:(id)mapping
 {
-  v31 = self;
+  selfCopy = self;
   v41 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEAF8] currentLocale];
-  v5 = [v4 countryCode];
-  v6 = [v5 lowercaseString];
+  mappingCopy = mapping;
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  countryCode = [currentLocale countryCode];
+  lowercaseString = [countryCode lowercaseString];
 
   v36 = 0u;
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v32 = v3;
-  v7 = [v3 scopedBrandInfos];
-  v8 = [v7 countByEnumeratingWithState:&v34 objects:v40 count:16];
+  v32 = mappingCopy;
+  scopedBrandInfos = [mappingCopy scopedBrandInfos];
+  v8 = [scopedBrandInfos countByEnumeratingWithState:&v34 objects:v40 count:16];
   if (v8)
   {
     v9 = v8;
@@ -121,20 +121,20 @@ LABEL_3:
     {
       if (*v35 != v11)
       {
-        objc_enumerationMutation(v7);
+        objc_enumerationMutation(scopedBrandInfos);
       }
 
       v13 = *(*(&v34 + 1) + 8 * v12);
-      v14 = [v13 isoCountryCode];
-      v15 = [v6 isEqualToString:v14];
+      isoCountryCode = [v13 isoCountryCode];
+      v15 = [lowercaseString isEqualToString:isoCountryCode];
 
       if (v15)
       {
         break;
       }
 
-      v16 = [v13 isoCountryCode];
-      v17 = [@"global" isEqualToString:v16];
+      isoCountryCode2 = [v13 isoCountryCode];
+      v17 = [@"global" isEqualToString:isoCountryCode2];
 
       if (v17)
       {
@@ -145,7 +145,7 @@ LABEL_3:
 
       if (v9 == ++v12)
       {
-        v9 = [v7 countByEnumeratingWithState:&v34 objects:v40 count:16];
+        v9 = [scopedBrandInfos countByEnumeratingWithState:&v34 objects:v40 count:16];
         if (v9)
         {
           goto LABEL_3;
@@ -157,7 +157,7 @@ LABEL_3:
 
     v19 = v13;
 
-    v21 = v31;
+    v21 = selfCopy;
     v20 = v32;
     if (v19)
     {
@@ -170,7 +170,7 @@ LABEL_3:
     v10 = 0;
 LABEL_15:
 
-    v21 = v31;
+    v21 = selfCopy;
     v20 = v32;
   }
 
@@ -186,8 +186,8 @@ LABEL_15:
   v19 = v10;
 LABEL_19:
   v23 = MEMORY[0x277D0EB70];
-  v24 = [v19 localizedNames];
-  v25 = [v23 bestStringForCurrentLocale:v24 fallbackToFirstAvailable:1];
+  localizedNames = [v19 localizedNames];
+  v25 = [v23 bestStringForCurrentLocale:localizedNames fallbackToFirstAvailable:1];
 
   if (v25)
   {

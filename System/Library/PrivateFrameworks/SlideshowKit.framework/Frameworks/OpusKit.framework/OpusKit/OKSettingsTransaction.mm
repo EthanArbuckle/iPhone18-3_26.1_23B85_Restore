@@ -1,9 +1,9 @@
 @interface OKSettingsTransaction
 - (OKSettingsTransaction)init;
 - (void)dealloc;
-- (void)mergeWithTransaction:(id)a3;
-- (void)registerTransactionItem:(id)a3;
-- (void)registerUpdateBlock:(id)a3 forKey:(id)a4;
+- (void)mergeWithTransaction:(id)transaction;
+- (void)registerTransactionItem:(id)item;
+- (void)registerUpdateBlock:(id)block forKey:(id)key;
 @end
 
 @implementation OKSettingsTransaction
@@ -43,34 +43,34 @@
   [(OKSettingsTransaction *)&v5 dealloc];
 }
 
-- (void)registerUpdateBlock:(id)a3 forKey:(id)a4
+- (void)registerUpdateBlock:(id)block forKey:(id)key
 {
   objc_sync_enter(self);
-  if (![(NSMutableDictionary *)self->_itemsByKey objectForKey:a4])
+  if (![(NSMutableDictionary *)self->_itemsByKey objectForKey:key])
   {
     v7 = objc_alloc_init(OKSettingsTransactionItem);
-    [(OKSettingsTransactionItem *)v7 setUpdateBlock:a3];
-    [(OKSettingsTransactionItem *)v7 setKey:a4];
+    [(OKSettingsTransactionItem *)v7 setUpdateBlock:block];
+    [(OKSettingsTransactionItem *)v7 setKey:key];
     [(NSMutableArray *)self->_items addObject:v7];
-    [(NSMutableDictionary *)self->_itemsByKey setObject:v7 forKey:a4];
+    [(NSMutableDictionary *)self->_itemsByKey setObject:v7 forKey:key];
   }
 
   objc_sync_exit(self);
 }
 
-- (void)registerTransactionItem:(id)a3
+- (void)registerTransactionItem:(id)item
 {
   objc_sync_enter(self);
-  if (!-[NSMutableDictionary objectForKey:](self->_itemsByKey, "objectForKey:", [a3 key]))
+  if (!-[NSMutableDictionary objectForKey:](self->_itemsByKey, "objectForKey:", [item key]))
   {
-    [(NSMutableArray *)self->_items addObject:a3];
-    -[NSMutableDictionary setObject:forKey:](self->_itemsByKey, "setObject:forKey:", a3, [a3 key]);
+    [(NSMutableArray *)self->_items addObject:item];
+    -[NSMutableDictionary setObject:forKey:](self->_itemsByKey, "setObject:forKey:", item, [item key]);
   }
 
   objc_sync_exit(self);
 }
 
-- (void)mergeWithTransaction:(id)a3
+- (void)mergeWithTransaction:(id)transaction
 {
   v14 = *MEMORY[0x277D85DE8];
   objc_sync_enter(self);
@@ -78,8 +78,8 @@
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [a3 items];
-  v6 = [v5 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  items = [transaction items];
+  v6 = [items countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v6)
   {
     v7 = *v10;
@@ -90,14 +90,14 @@
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(items);
         }
 
         [(OKSettingsTransaction *)self registerTransactionItem:*(*(&v9 + 1) + 8 * v8++)];
       }
 
       while (v6 != v8);
-      v6 = [v5 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [items countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);

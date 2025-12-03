@@ -1,5 +1,5 @@
 @interface AMSUIPaymentSetupViewController
-- (AMSUIPaymentSetupViewController)initWithPaymentSetupRequest:(id)a3;
+- (AMSUIPaymentSetupViewController)initWithPaymentSetupRequest:(id)request;
 - (AMSUIPaymentSetupViewControllerDelegate)delegate;
 - (void)_setup;
 - (void)loadView;
@@ -7,16 +7,16 @@
 
 @implementation AMSUIPaymentSetupViewController
 
-- (AMSUIPaymentSetupViewController)initWithPaymentSetupRequest:(id)a3
+- (AMSUIPaymentSetupViewController)initWithPaymentSetupRequest:(id)request
 {
-  v5 = a3;
+  requestCopy = request;
   v9.receiver = self;
   v9.super_class = AMSUIPaymentSetupViewController;
   v6 = [(AMSUIPaymentSetupViewController *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_paymentSetupRequest, a3);
+    objc_storeStrong(&v6->_paymentSetupRequest, request);
     [(AMSUIPaymentSetupViewController *)v7 _setup];
   }
 
@@ -27,8 +27,8 @@
 {
   [(AMSUIPaymentSetupViewController *)self setModalPresentationStyle:5];
   v3 = objc_alloc(getPKPaymentSetupViewControllerClass[0]());
-  v6 = [(AMSUIPaymentSetupViewController *)self paymentSetupRequest];
-  v4 = [v3 initWithPaymentSetupRequest:v6];
+  paymentSetupRequest = [(AMSUIPaymentSetupViewController *)self paymentSetupRequest];
+  v4 = [v3 initWithPaymentSetupRequest:paymentSetupRequest];
   childViewController = self->_childViewController;
   self->_childViewController = v4;
 }
@@ -36,8 +36,8 @@
 - (void)loadView
 {
   v4 = objc_alloc_init(MEMORY[0x1E69DD250]);
-  v3 = [MEMORY[0x1E69DC888] clearColor];
-  [v4 setBackgroundColor:v3];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [v4 setBackgroundColor:clearColor];
 
   [v4 setUserInteractionEnabled:0];
   [(AMSUIPaymentSetupViewController *)self setView:v4];

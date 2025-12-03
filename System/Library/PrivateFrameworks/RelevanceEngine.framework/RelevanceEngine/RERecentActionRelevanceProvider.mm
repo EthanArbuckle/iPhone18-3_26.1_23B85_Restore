@@ -1,45 +1,45 @@
 @interface RERecentActionRelevanceProvider
-- (BOOL)isEqual:(id)a3;
-- (RERecentActionRelevanceProvider)initWithBundleIdentifier:(id)a3 actionIdentifier:(unint64_t)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (RERecentActionRelevanceProvider)initWithBundleIdentifier:(id)identifier actionIdentifier:(unint64_t)actionIdentifier;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)_hash;
 @end
 
 @implementation RERecentActionRelevanceProvider
 
-- (RERecentActionRelevanceProvider)initWithBundleIdentifier:(id)a3 actionIdentifier:(unint64_t)a4
+- (RERecentActionRelevanceProvider)initWithBundleIdentifier:(id)identifier actionIdentifier:(unint64_t)actionIdentifier
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v11.receiver = self;
   v11.super_class = RERecentActionRelevanceProvider;
   v7 = [(RERelevanceProvider *)&v11 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [identifierCopy copy];
     bundleIdentifier = v7->_bundleIdentifier;
     v7->_bundleIdentifier = v8;
 
-    v7->_actionIdentifier = a4;
+    v7->_actionIdentifier = actionIdentifier;
   }
 
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = RERecentActionRelevanceProvider;
-  v4 = [(RERelevanceProvider *)&v6 copyWithZone:a3];
+  v4 = [(RERelevanceProvider *)&v6 copyWithZone:zone];
   *(v4 + 5) = self->_actionIdentifier;
   objc_storeStrong(v4 + 4, self->_bundleIdentifier);
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v10 = 1;
   }
@@ -48,12 +48,12 @@
   {
     v12.receiver = self;
     v12.super_class = RERecentActionRelevanceProvider;
-    if ([(RERelevanceProvider *)&v12 isEqual:v4])
+    if ([(RERelevanceProvider *)&v12 isEqual:equalCopy])
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v5 = v4;
+        v5 = equalCopy;
         bundleIdentifier = v5->_bundleIdentifier;
         v7 = self->_bundleIdentifier;
         v8 = v7;
@@ -91,8 +91,8 @@ LABEL_12:
 {
   v5.receiver = self;
   v5.super_class = RERecentActionRelevanceProvider;
-  v3 = [(RERelevanceProvider *)&v5 _hash];
-  return [(NSString *)self->_bundleIdentifier hash]^ v3 ^ self->_actionIdentifier;
+  _hash = [(RERelevanceProvider *)&v5 _hash];
+  return [(NSString *)self->_bundleIdentifier hash]^ _hash ^ self->_actionIdentifier;
 }
 
 - (id)description

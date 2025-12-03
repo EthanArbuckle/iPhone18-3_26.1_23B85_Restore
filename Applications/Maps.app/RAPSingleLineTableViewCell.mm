@@ -1,5 +1,5 @@
 @interface RAPSingleLineTableViewCell
-- (RAPSingleLineTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (RAPSingleLineTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)_contentSizeChanged;
 - (void)_setupConstraints;
 - (void)_setupSubviews;
@@ -11,12 +11,12 @@
 
 - (void)_updateConstraints
 {
-  v3 = [(UILabel *)self->_textLabel font];
-  [v3 _scaledValueForValue:33.0];
+  font = [(UILabel *)self->_textLabel font];
+  [font _scaledValueForValue:33.0];
   [(NSLayoutConstraint *)self->_topToFirstBaselineConstraint setConstant:?];
 
-  v4 = [(UILabel *)self->_textLabel font];
-  [v4 _scaledValueForValue:-22.0];
+  font2 = [(UILabel *)self->_textLabel font];
+  [font2 _scaledValueForValue:-22.0];
   [(NSLayoutConstraint *)self->_lastBaselineToBottomConstraint setConstant:?];
 }
 
@@ -35,30 +35,30 @@
 
 - (void)_setupConstraints
 {
-  v3 = [(RAPSingleLineTableViewCell *)self contentView];
-  v4 = [(UILabel *)self->_textLabel firstBaselineAnchor];
-  v5 = [v3 topAnchor];
-  v6 = [(UILabel *)self->_textLabel font];
-  [v6 _scaledValueForValue:33.0];
-  v7 = [v4 constraintEqualToAnchor:v5 constant:?];
+  contentView = [(RAPSingleLineTableViewCell *)self contentView];
+  firstBaselineAnchor = [(UILabel *)self->_textLabel firstBaselineAnchor];
+  topAnchor = [contentView topAnchor];
+  font = [(UILabel *)self->_textLabel font];
+  [font _scaledValueForValue:33.0];
+  v7 = [firstBaselineAnchor constraintEqualToAnchor:topAnchor constant:?];
   topToFirstBaselineConstraint = self->_topToFirstBaselineConstraint;
   self->_topToFirstBaselineConstraint = v7;
 
-  v9 = [(UILabel *)self->_textLabel lastBaselineAnchor];
-  v10 = [v3 bottomAnchor];
-  v11 = [(UILabel *)self->_textLabel font];
-  [v11 _scaledValueForValue:-22.0];
-  v12 = [v9 constraintEqualToAnchor:v10 constant:?];
+  lastBaselineAnchor = [(UILabel *)self->_textLabel lastBaselineAnchor];
+  bottomAnchor = [contentView bottomAnchor];
+  font2 = [(UILabel *)self->_textLabel font];
+  [font2 _scaledValueForValue:-22.0];
+  v12 = [lastBaselineAnchor constraintEqualToAnchor:bottomAnchor constant:?];
   lastBaselineToBottomConstraint = self->_lastBaselineToBottomConstraint;
   self->_lastBaselineToBottomConstraint = v12;
 
-  v14 = [(UILabel *)self->_textLabel leadingAnchor];
-  v15 = [v3 leadingAnchor];
-  v16 = [v14 constraintEqualToAnchor:v15 constant:15.0];
+  leadingAnchor = [(UILabel *)self->_textLabel leadingAnchor];
+  leadingAnchor2 = [contentView leadingAnchor];
+  v16 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:15.0];
   v22[0] = v16;
-  v17 = [(UILabel *)self->_textLabel trailingAnchor];
-  v18 = [v3 trailingAnchor];
-  v19 = [v17 constraintEqualToAnchor:v18 constant:-15.0];
+  trailingAnchor = [(UILabel *)self->_textLabel trailingAnchor];
+  trailingAnchor2 = [contentView trailingAnchor];
+  v19 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-15.0];
   v20 = self->_topToFirstBaselineConstraint;
   v22[1] = v19;
   v22[2] = v20;
@@ -72,17 +72,17 @@
   [(UILabel *)self->_textLabel setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UILabel *)self->_textLabel setNumberOfLines:0];
   [(UILabel *)self->_textLabel setAccessibilityIdentifier:@"TextLabel"];
-  v3 = [(RAPSingleLineTableViewCell *)self contentView];
-  [v3 addSubview:self->_textLabel];
+  contentView = [(RAPSingleLineTableViewCell *)self contentView];
+  [contentView addSubview:self->_textLabel];
 
   [(RAPSingleLineTableViewCell *)self _updateFonts];
 }
 
-- (RAPSingleLineTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (RAPSingleLineTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v11.receiver = self;
   v11.super_class = RAPSingleLineTableViewCell;
-  v4 = [(RAPSingleLineTableViewCell *)&v11 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(RAPSingleLineTableViewCell *)&v11 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = objc_opt_class();

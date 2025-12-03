@@ -1,31 +1,31 @@
 @interface LegacyAudioSystemController
-+ (BOOL)setCode:(int64_t)a3 forError:(id *)a4;
++ (BOOL)setCode:(int64_t)code forError:(id *)error;
 - (BOOL)confirmDeviceDocked;
 - (BOOL)isDockRequired;
 - (void)cancel;
 - (void)cleanUpPlayResults;
-- (void)failedToExecuteWithError:(id)a3;
-- (void)receivedNotification:(id)a3;
+- (void)failedToExecuteWithError:(id)error;
+- (void)receivedNotification:(id)notification;
 - (void)restoreAccesibilityStateIfRequired;
 - (void)restoreOriginalVolumes;
 - (void)saveOriginalVolumes;
 - (void)setAccessibilityStateIfRequired;
 - (void)setUpEventNotifications;
-- (void)setupWithInputs:(id)a3 responder:(id)a4;
+- (void)setupWithInputs:(id)inputs responder:(id)responder;
 - (void)start;
 - (void)teardown;
 @end
 
 @implementation LegacyAudioSystemController
 
-- (void)setupWithInputs:(id)a3 responder:(id)a4
+- (void)setupWithInputs:(id)inputs responder:(id)responder
 {
-  v6 = a3;
-  v7 = a4;
-  v31 = v6;
-  [(LegacyAudioSystemController *)self setInputs:v6];
-  v36 = v7;
-  [(LegacyAudioSystemController *)self setDiagnosticResponder:v7];
+  inputsCopy = inputs;
+  responderCopy = responder;
+  v31 = inputsCopy;
+  [(LegacyAudioSystemController *)self setInputs:inputsCopy];
+  v36 = responderCopy;
+  [(LegacyAudioSystemController *)self setDiagnosticResponder:responderCopy];
   if ([(LegacyAudioSystemController *)self isDockRequired]&& ![(LegacyAudioSystemController *)self confirmDeviceDocked])
   {
     v53 = 0;
@@ -37,7 +37,7 @@
   else
   {
     [(LegacyAudioSystemController *)self setAccessibilityStateIfRequired];
-    [v7 enableVolumeHUD:0];
+    [responderCopy enableVolumeHUD:0];
     v34 = dispatch_semaphore_create(0);
     v8 = +[NSMutableDictionary dictionary];
     [(LegacyAudioSystemController *)self setFileNameToURL:v8];
@@ -49,8 +49,8 @@
     v52 = 0u;
     v50 = 0u;
     v49 = 0u;
-    v10 = [(LegacyAudioSystemController *)self inputs];
-    obj = [v10 requiredFiles];
+    inputs = [(LegacyAudioSystemController *)self inputs];
+    obj = [inputs requiredFiles];
 
     v11 = [obj countByEnumeratingWithState:&v49 objects:v58 count:16];
     if (v11)
@@ -79,8 +79,8 @@
           }
 
           v18 = +[NSUUID UUID];
-          v19 = [v18 UUIDString];
-          v13 = [v35 URLByAppendingPathComponent:v19];
+          uUIDString = [v18 UUIDString];
+          v13 = [v35 URLByAppendingPathComponent:uUIDString];
 
           v43 = 0;
           v44 = &v43;
@@ -114,8 +114,8 @@
 
             if (v23)
             {
-              v25 = [(LegacyAudioSystemController *)self fileNameToURL];
-              [v25 setObject:v13 forKeyedSubscript:v17];
+              fileNameToURL = [(LegacyAudioSystemController *)self fileNameToURL];
+              [fileNameToURL setObject:v13 forKeyedSubscript:v17];
 
               v26 = 1;
               v14 = v24;
@@ -204,16 +204,16 @@ LABEL_27:
   dispatch_async(v3, block);
 }
 
-- (void)failedToExecuteWithError:(id)a3
+- (void)failedToExecuteWithError:(id)error
 {
-  v4 = a3;
-  v5 = [(LegacyAudioSystemController *)self result];
-  [v5 setData:&__NSDictionary0__struct];
+  errorCopy = error;
+  result = [(LegacyAudioSystemController *)self result];
+  [result setData:&__NSDictionary0__struct];
 
-  v6 = [v4 code];
-  v7 = [NSNumber numberWithInteger:v6];
-  v8 = [(LegacyAudioSystemController *)self result];
-  [v8 setStatusCode:v7];
+  code = [errorCopy code];
+  v7 = [NSNumber numberWithInteger:code];
+  result2 = [(LegacyAudioSystemController *)self result];
+  [result2 setStatusCode:v7];
 
   [(LegacyAudioSystemController *)self cancel];
 
@@ -306,23 +306,23 @@ LABEL_27:
   [(LegacyAudioSystemController *)self setAudioSessionInterruptDetector:v4];
 
   v5 = [DAAccessoryDisconnectDetector alloc];
-  v6 = [(LegacyAudioSystemController *)self inputs];
-  v7 = [v6 accessoryModelNumbers];
-  v8 = [(DAAccessoryDisconnectDetector *)v5 initWithModelNumbers:v7];
+  inputs = [(LegacyAudioSystemController *)self inputs];
+  accessoryModelNumbers = [inputs accessoryModelNumbers];
+  v8 = [(DAAccessoryDisconnectDetector *)v5 initWithModelNumbers:accessoryModelNumbers];
   [(LegacyAudioSystemController *)self setAccessoryDisconnectDetector:v8];
 
   v9 = objc_alloc_init(DAHeadphonesDetector);
   [(LegacyAudioSystemController *)self setHeadphoneDetector:v9];
 
-  v10 = [(LegacyAudioSystemController *)self inputs];
-  v11 = [v10 xComponentAccelThreshold];
+  inputs2 = [(LegacyAudioSystemController *)self inputs];
+  xComponentAccelThreshold = [inputs2 xComponentAccelThreshold];
 
-  if (v11)
+  if (xComponentAccelThreshold)
   {
     v12 = [DAOrientationDetector alloc];
-    v13 = [(LegacyAudioSystemController *)self inputs];
-    v14 = [v13 xComponentAccelThreshold];
-    v15 = [(DAOrientationDetector *)v12 initWithxThreshold:v14 zThreshold:&off_100010870];
+    inputs3 = [(LegacyAudioSystemController *)self inputs];
+    xComponentAccelThreshold2 = [inputs3 xComponentAccelThreshold];
+    v15 = [(DAOrientationDetector *)v12 initWithxThreshold:xComponentAccelThreshold2 zThreshold:&off_100010870];
     [(LegacyAudioSystemController *)self setOrientationDetector:v15];
   }
 
@@ -360,32 +360,32 @@ LABEL_27:
     while (v19);
   }
 
-  v22 = [(LegacyAudioSystemController *)self motionDetector];
-  [v22 start];
+  motionDetector = [(LegacyAudioSystemController *)self motionDetector];
+  [motionDetector start];
 
-  v23 = [(LegacyAudioSystemController *)self audioSessionInterruptDetector];
-  [v23 start];
+  audioSessionInterruptDetector = [(LegacyAudioSystemController *)self audioSessionInterruptDetector];
+  [audioSessionInterruptDetector start];
 
-  v24 = [(LegacyAudioSystemController *)self accessoryDisconnectDetector];
-  [v24 start];
+  accessoryDisconnectDetector = [(LegacyAudioSystemController *)self accessoryDisconnectDetector];
+  [accessoryDisconnectDetector start];
 
-  v25 = [(LegacyAudioSystemController *)self headphoneDetector];
-  [v25 start];
+  headphoneDetector = [(LegacyAudioSystemController *)self headphoneDetector];
+  [headphoneDetector start];
 
-  v26 = [(LegacyAudioSystemController *)self orientationDetector];
+  orientationDetector = [(LegacyAudioSystemController *)self orientationDetector];
 
-  if (v26)
+  if (orientationDetector)
   {
-    v27 = [(LegacyAudioSystemController *)self orientationDetector];
-    [v27 start];
+    orientationDetector2 = [(LegacyAudioSystemController *)self orientationDetector];
+    [orientationDetector2 start];
   }
 }
 
-- (void)receivedNotification:(id)a3
+- (void)receivedNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [v4 name];
-  v6 = [v5 isEqualToString:@"HeadphonesConnectedNotification"];
+  notificationCopy = notification;
+  name = [notificationCopy name];
+  v6 = [name isEqualToString:@"HeadphonesConnectedNotification"];
 
   if (v6)
   {
@@ -395,8 +395,8 @@ LABEL_27:
     goto LABEL_21;
   }
 
-  v8 = [v4 name];
-  v9 = [v8 isEqualToString:@"MotionDetectedNotification"];
+  name2 = [notificationCopy name];
+  v9 = [name2 isEqualToString:@"MotionDetectedNotification"];
 
   if (v9)
   {
@@ -406,13 +406,13 @@ LABEL_27:
     goto LABEL_21;
   }
 
-  v10 = [v4 name];
-  if (![v10 isEqualToString:@"AccessoryDisconnectedNotification"])
+  name3 = [notificationCopy name];
+  if (![name3 isEqualToString:@"AccessoryDisconnectedNotification"])
   {
 
 LABEL_17:
-    v20 = [v4 name];
-    v21 = [v20 isEqualToString:@"AudioSessionInterruptNotification"];
+    name4 = [notificationCopy name];
+    v21 = [name4 isEqualToString:@"AudioSessionInterruptNotification"];
 
     if (v21)
     {
@@ -423,8 +423,8 @@ LABEL_17:
 
     else
     {
-      v22 = [v4 name];
-      v23 = [v22 isEqualToString:@"IncorrectOrientationNotification"];
+      name5 = [notificationCopy name];
+      v23 = [name5 isEqualToString:@"IncorrectOrientationNotification"];
 
       if (!v23)
       {
@@ -444,24 +444,24 @@ LABEL_22:
     goto LABEL_23;
   }
 
-  v11 = [(LegacyAudioSystemController *)self isDockRequired];
+  isDockRequired = [(LegacyAudioSystemController *)self isDockRequired];
 
-  if (!v11)
+  if (!isDockRequired)
   {
     goto LABEL_17;
   }
 
-  v12 = [v4 userInfo];
-  v13 = [v12 objectForKeyedSubscript:@"accessoryModelNumber"];
+  userInfo = [notificationCopy userInfo];
+  v13 = [userInfo objectForKeyedSubscript:@"accessoryModelNumber"];
 
   v30 = 0u;
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v14 = [(LegacyAudioSystemController *)self inputs];
-  v15 = [v14 accessoryModelNumbers];
+  inputs = [(LegacyAudioSystemController *)self inputs];
+  accessoryModelNumbers = [inputs accessoryModelNumbers];
 
-  v16 = [v15 countByEnumeratingWithState:&v28 objects:v34 count:16];
+  v16 = [accessoryModelNumbers countByEnumeratingWithState:&v28 objects:v34 count:16];
   if (v16)
   {
     v17 = v16;
@@ -473,7 +473,7 @@ LABEL_22:
       {
         if (*v29 != v18)
         {
-          objc_enumerationMutation(v15);
+          objc_enumerationMutation(accessoryModelNumbers);
         }
 
         if ([*(*(&v28 + 1) + 8 * v19) isEqualToString:v13])
@@ -490,7 +490,7 @@ LABEL_22:
       }
 
       while (v17 != v19);
-      v17 = [v15 countByEnumeratingWithState:&v28 objects:v34 count:16];
+      v17 = [accessoryModelNumbers countByEnumeratingWithState:&v28 objects:v34 count:16];
       if (v17)
       {
         continue;
@@ -510,9 +510,9 @@ LABEL_23:
   v18 = 0u;
   v19 = 0u;
   v3 = +[EAAccessoryManager sharedAccessoryManager];
-  v4 = [v3 connectedAccessories];
+  connectedAccessories = [v3 connectedAccessories];
 
-  v5 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v5 = [connectedAccessories countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v5)
   {
     v6 = v5;
@@ -524,19 +524,19 @@ LABEL_23:
       {
         if (*v17 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(connectedAccessories);
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
-        v11 = [(LegacyAudioSystemController *)self inputs];
-        v12 = [v11 accessoryModelNumbers];
-        v13 = [v10 modelNumber];
-        v14 = [v12 containsObject:v13];
+        inputs = [(LegacyAudioSystemController *)self inputs];
+        accessoryModelNumbers = [inputs accessoryModelNumbers];
+        modelNumber = [v10 modelNumber];
+        v14 = [accessoryModelNumbers containsObject:modelNumber];
 
         v7 |= v14;
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v6 = [connectedAccessories countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v6);
@@ -552,79 +552,79 @@ LABEL_23:
 
 - (BOOL)isDockRequired
 {
-  v2 = [(LegacyAudioSystemController *)self inputs];
-  v3 = [v2 accessoryModelNumbers];
-  v4 = [v3 count] != 0;
+  inputs = [(LegacyAudioSystemController *)self inputs];
+  accessoryModelNumbers = [inputs accessoryModelNumbers];
+  v4 = [accessoryModelNumbers count] != 0;
 
   return v4;
 }
 
-+ (BOOL)setCode:(int64_t)a3 forError:(id *)a4
++ (BOOL)setCode:(int64_t)code forError:(id *)error
 {
-  if (a4)
+  if (error)
   {
-    *a4 = [NSError errorWithDomain:@"DAAudioQualityErrorDomain" code:a3 userInfo:0];
+    *error = [NSError errorWithDomain:@"DAAudioQualityErrorDomain" code:code userInfo:0];
   }
 
-  return a4 != 0;
+  return error != 0;
 }
 
 - (void)cancel
 {
-  v2 = [(LegacyAudioSystemController *)self audioDevice];
-  [v2 cancel];
+  audioDevice = [(LegacyAudioSystemController *)self audioDevice];
+  [audioDevice cancel];
 }
 
 - (void)teardown
 {
   [(LegacyAudioSystemController *)self restoreAccesibilityStateIfRequired];
   [(LegacyAudioSystemController *)self restoreOriginalVolumes];
-  v3 = [(LegacyAudioSystemController *)self motionDetector];
+  motionDetector = [(LegacyAudioSystemController *)self motionDetector];
 
-  if (v3)
+  if (motionDetector)
   {
-    v4 = [(LegacyAudioSystemController *)self motionDetector];
-    [v4 stop];
+    motionDetector2 = [(LegacyAudioSystemController *)self motionDetector];
+    [motionDetector2 stop];
 
     [(LegacyAudioSystemController *)self setMotionDetector:0];
   }
 
-  v5 = [(LegacyAudioSystemController *)self audioSessionInterruptDetector];
+  audioSessionInterruptDetector = [(LegacyAudioSystemController *)self audioSessionInterruptDetector];
 
-  if (v5)
+  if (audioSessionInterruptDetector)
   {
-    v6 = [(LegacyAudioSystemController *)self audioSessionInterruptDetector];
-    [v6 stop];
+    audioSessionInterruptDetector2 = [(LegacyAudioSystemController *)self audioSessionInterruptDetector];
+    [audioSessionInterruptDetector2 stop];
 
     [(LegacyAudioSystemController *)self setAudioSessionInterruptDetector:0];
   }
 
-  v7 = [(LegacyAudioSystemController *)self orientationDetector];
+  orientationDetector = [(LegacyAudioSystemController *)self orientationDetector];
 
-  if (v7)
+  if (orientationDetector)
   {
-    v8 = [(LegacyAudioSystemController *)self orientationDetector];
-    [v8 stop];
+    orientationDetector2 = [(LegacyAudioSystemController *)self orientationDetector];
+    [orientationDetector2 stop];
 
     [(LegacyAudioSystemController *)self setOrientationDetector:0];
   }
 
-  v9 = [(LegacyAudioSystemController *)self accessoryDisconnectDetector];
+  accessoryDisconnectDetector = [(LegacyAudioSystemController *)self accessoryDisconnectDetector];
 
-  if (v9)
+  if (accessoryDisconnectDetector)
   {
-    v10 = [(LegacyAudioSystemController *)self accessoryDisconnectDetector];
-    [v10 stop];
+    accessoryDisconnectDetector2 = [(LegacyAudioSystemController *)self accessoryDisconnectDetector];
+    [accessoryDisconnectDetector2 stop];
 
     [(LegacyAudioSystemController *)self setAccessoryDisconnectDetector:0];
   }
 
-  v11 = [(LegacyAudioSystemController *)self headphoneDetector];
+  headphoneDetector = [(LegacyAudioSystemController *)self headphoneDetector];
 
-  if (v11)
+  if (headphoneDetector)
   {
-    v12 = [(LegacyAudioSystemController *)self headphoneDetector];
-    [v12 stop];
+    headphoneDetector2 = [(LegacyAudioSystemController *)self headphoneDetector];
+    [headphoneDetector2 stop];
 
     [(LegacyAudioSystemController *)self setHeadphoneDetector:0];
   }
@@ -633,8 +633,8 @@ LABEL_23:
   [v13 removeObserver:self];
 
   [(LegacyAudioSystemController *)self cleanUpPlayResults];
-  v14 = [(LegacyAudioSystemController *)self diagnosticResponder];
-  [v14 enableVolumeHUD:1];
+  diagnosticResponder = [(LegacyAudioSystemController *)self diagnosticResponder];
+  [diagnosticResponder enableVolumeHUD:1];
 }
 
 - (void)restoreAccesibilityStateIfRequired
@@ -647,8 +647,8 @@ LABEL_23:
 
   if ([(LegacyAudioSystemController *)self balanceChanged])
   {
-    v3 = [(LegacyAudioSystemController *)self originalBalance];
-    [v3 floatValue];
+    originalBalance = [(LegacyAudioSystemController *)self originalBalance];
+    [originalBalance floatValue];
     _AXSSetLeftRightAudioBalance();
   }
 }

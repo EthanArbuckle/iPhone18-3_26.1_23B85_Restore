@@ -1,13 +1,13 @@
 @interface SNSoundActionsResult
 - ($E36B78CDAC119E0352F6B513F3BB0FF8)timeRange;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (NSString)name;
-- (id)copyWithZone:(void *)a3;
+- (id)copyWithZone:(void *)zone;
 - (int64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setName:(id)a3;
-- (void)setTimeRange:(id *)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setName:(id)name;
+- (void)setTimeRange:(id *)range;
 @end
 
 @implementation SNSoundActionsResult
@@ -27,13 +27,13 @@
   return result;
 }
 
-- (void)setTimeRange:(id *)a3
+- (void)setTimeRange:(id *)range
 {
-  var3 = a3->var1.var3;
-  v4[0] = a3->var0.var0;
-  v4[1] = *&a3->var0.var1;
-  v5 = *&a3->var0.var3;
-  v6 = *&a3->var1.var1;
+  var3 = range->var1.var3;
+  v4[0] = range->var0.var0;
+  v4[1] = *&range->var0.var1;
+  v5 = *&range->var0.var3;
+  v6 = *&range->var1.var1;
   v7 = var3;
   SNSoundActionsResult.timeRange.setter(v4);
 }
@@ -46,17 +46,17 @@
   return v2;
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
   v4 = sub_1C9A924A8();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   SNSoundActionsResult.name.setter(v4, v6);
 }
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
-  v3 = self;
+  selfCopy = self;
   SNSoundActionsResult.copy(with:)(v6);
 
   sub_1C97A5A8C(v6, v6[3]);
@@ -67,17 +67,17 @@
 
 - (int64_t)hash
 {
-  v2 = self;
+  selfCopy = self;
   v3 = SNSoundActionsResult.hash.getter();
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_1C9A93318();
     swift_unknownObjectRelease();
@@ -86,7 +86,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = SNSoundActionsResult.isEqual(_:)(v8);
@@ -95,16 +95,16 @@
   return v6 & 1;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  SNSoundActionsResult.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  SNSoundActionsResult.encode(with:)(coderCopy);
 }
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   SNSoundActionsResult.description.getter();
 
   v3 = sub_1C9A92478();

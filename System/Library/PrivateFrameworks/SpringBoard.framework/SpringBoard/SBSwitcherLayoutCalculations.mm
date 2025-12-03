@@ -1,7 +1,7 @@
 @interface SBSwitcherLayoutCalculations
 - (CGRect)frame;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 @end
 
@@ -9,27 +9,27 @@
 
 - (id)succinctDescription
 {
-  v2 = [(SBSwitcherLayoutCalculations *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBSwitcherLayoutCalculations *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBSwitcherLayoutCalculations *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBSwitcherLayoutCalculations *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = [(SBSwitcherLayoutCalculations *)self succinctDescriptionBuilder];
-  v5 = [v4 appendRect:@"frame" withName:{self->_frame.origin.x, self->_frame.origin.y, self->_frame.size.width, self->_frame.size.height}];
-  v6 = [v4 appendFloat:@"scale" withName:3 decimalPrecision:self->_scale];
+  succinctDescriptionBuilder = [(SBSwitcherLayoutCalculations *)self succinctDescriptionBuilder];
+  v5 = [succinctDescriptionBuilder appendRect:@"frame" withName:{self->_frame.origin.x, self->_frame.origin.y, self->_frame.size.width, self->_frame.size.height}];
+  v6 = [succinctDescriptionBuilder appendFloat:@"scale" withName:3 decimalPrecision:self->_scale];
 
-  return v4;
+  return succinctDescriptionBuilder;
 }
 
 - (CGRect)frame

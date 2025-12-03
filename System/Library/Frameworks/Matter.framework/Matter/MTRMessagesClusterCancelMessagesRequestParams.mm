@@ -1,8 +1,8 @@
 @interface MTRMessagesClusterCancelMessagesRequestParams
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3;
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader;
 - (MTRMessagesClusterCancelMessagesRequestParams)init;
-- (id)_encodeAsDataValue:(id *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_encodeAsDataValue:(id *)value;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -15,9 +15,9 @@
   v2 = [(MTRMessagesClusterCancelMessagesRequestParams *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEA60] array];
+    array = [MEMORY[0x277CBEA60] array];
     messageIDs = v2->_messageIDs;
-    v2->_messageIDs = v3;
+    v2->_messageIDs = array;
 
     timedInvokeTimeoutMs = v2->_timedInvokeTimeoutMs;
     v2->_timedInvokeTimeoutMs = 0;
@@ -29,17 +29,17 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRMessagesClusterCancelMessagesRequestParams);
-  v5 = [(MTRMessagesClusterCancelMessagesRequestParams *)self messageIDs];
-  [(MTRMessagesClusterCancelMessagesRequestParams *)v4 setMessageIDs:v5];
+  messageIDs = [(MTRMessagesClusterCancelMessagesRequestParams *)self messageIDs];
+  [(MTRMessagesClusterCancelMessagesRequestParams *)v4 setMessageIDs:messageIDs];
 
-  v6 = [(MTRMessagesClusterCancelMessagesRequestParams *)self timedInvokeTimeoutMs];
-  [(MTRMessagesClusterCancelMessagesRequestParams *)v4 setTimedInvokeTimeoutMs:v6];
+  timedInvokeTimeoutMs = [(MTRMessagesClusterCancelMessagesRequestParams *)self timedInvokeTimeoutMs];
+  [(MTRMessagesClusterCancelMessagesRequestParams *)v4 setTimedInvokeTimeoutMs:timedInvokeTimeoutMs];
 
-  v7 = [(MTRMessagesClusterCancelMessagesRequestParams *)self serverSideProcessingTimeout];
-  [(MTRMessagesClusterCancelMessagesRequestParams *)v4 setServerSideProcessingTimeout:v7];
+  serverSideProcessingTimeout = [(MTRMessagesClusterCancelMessagesRequestParams *)self serverSideProcessingTimeout];
+  [(MTRMessagesClusterCancelMessagesRequestParams *)v4 setServerSideProcessingTimeout:serverSideProcessingTimeout];
 
   return v4;
 }
@@ -54,15 +54,15 @@
   return v6;
 }
 
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader
 {
   v24 = *MEMORY[0x277D85DE8];
   v18 = 0uLL;
   v17[0] = 0;
   v17[1] = 0;
   v16 = v17;
-  v4 = [(MTRMessagesClusterCancelMessagesRequestParams *)self messageIDs];
-  v5 = [v4 count] == 0;
+  messageIDs = [(MTRMessagesClusterCancelMessagesRequestParams *)self messageIDs];
+  v5 = [messageIDs count] == 0;
 
   if (!v5)
   {
@@ -89,8 +89,8 @@
 
     else
     {
-      sub_238DD2F90(a3, &v15);
-      v6 = sub_2393C7114(a3, 21, 256);
+      sub_238DD2F90(reader, &v15);
+      v6 = sub_2393C7114(reader, 21, 256);
       v9 = v14;
       v8 = v6;
     }
@@ -119,19 +119,19 @@
   return result;
 }
 
-- (id)_encodeAsDataValue:(id *)a3
+- (id)_encodeAsDataValue:(id *)value
 {
   v5 = sub_2393C5AAC(v12);
   v13 = 0;
   v7 = [(MTRMessagesClusterCancelMessagesRequestParams *)self _encodeToTLVReader:v12, v5];
   if (v7)
   {
-    if (a3)
+    if (value)
     {
       v8 = sub_23921C1E4(MTRError, v7, v6);
       v9 = 0;
 LABEL_7:
-      *a3 = v8;
+      *value = v8;
       goto LABEL_9;
     }
 
@@ -142,7 +142,7 @@ LABEL_7:
   {
     v10 = sub_238EE60DC(v12, 0);
     v9 = v10;
-    if (a3 && !v10)
+    if (value && !v10)
     {
       v8 = sub_23921C1E4(MTRError, 0x423C00000003, "/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/zap-generated/MTRCommandPayloadsObjc.mm");
       goto LABEL_7;

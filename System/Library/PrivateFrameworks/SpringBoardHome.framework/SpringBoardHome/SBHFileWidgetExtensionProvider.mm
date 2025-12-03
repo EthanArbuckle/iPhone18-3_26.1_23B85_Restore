@@ -1,9 +1,9 @@
 @interface SBHFileWidgetExtensionProvider
-- (BOOL)_extensionHasTransparencyEntitlement:(id)a3;
+- (BOOL)_extensionHasTransparencyEntitlement:(id)entitlement;
 - (SBHFileWidgetExtensionProvider)init;
-- (id)filesWidgetViewControllerWithConfiguration:(id)a3;
-- (void)_setupHostViewController:(id)a3;
-- (void)setWidgetConfiguration:(id)a3;
+- (id)filesWidgetViewControllerWithConfiguration:(id)configuration;
+- (void)_setupHostViewController:(id)controller;
+- (void)setWidgetConfiguration:(id)configuration;
 @end
 
 @implementation SBHFileWidgetExtensionProvider
@@ -16,42 +16,42 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [(SBHRecentsDocumentExtensionProvider *)v2 extension];
-    if (v4)
+    extension = [(SBHRecentsDocumentExtensionProvider *)v2 extension];
+    if (extension)
     {
-      v3->_widgetHasTransparentBackground = [(SBHFileWidgetExtensionProvider *)v3 _extensionHasTransparencyEntitlement:v4];
+      v3->_widgetHasTransparentBackground = [(SBHFileWidgetExtensionProvider *)v3 _extensionHasTransparencyEntitlement:extension];
     }
   }
 
   return v3;
 }
 
-- (id)filesWidgetViewControllerWithConfiguration:(id)a3
+- (id)filesWidgetViewControllerWithConfiguration:(id)configuration
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(SBHRecentsDocumentExtensionProvider *)self wrappingViewController];
-  v6 = [(SBHRecentsDocumentExtensionProvider *)self hostViewController];
+  configurationCopy = configuration;
+  wrappingViewController = [(SBHRecentsDocumentExtensionProvider *)self wrappingViewController];
+  hostViewController = [(SBHRecentsDocumentExtensionProvider *)self hostViewController];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __77__SBHFileWidgetExtensionProvider_filesWidgetViewControllerWithConfiguration___block_invoke;
   aBlock[3] = &unk_1E808B820;
-  v7 = v4;
+  v7 = configurationCopy;
   v32 = v7;
   v8 = _Block_copy(aBlock);
-  if (v6)
+  if (hostViewController)
   {
-    v9 = [(SBHRecentsDocumentExtensionProvider *)self remoteService];
-    v8[2](v8, v9);
+    remoteService = [(SBHRecentsDocumentExtensionProvider *)self remoteService];
+    v8[2](v8, remoteService);
 
     v27 = 0u;
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v33[0] = v5;
-    v33[1] = v6;
-    v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v33 count:{2, 0}];
-    v11 = [v10 countByEnumeratingWithState:&v25 objects:v34 count:16];
+    v33[0] = wrappingViewController;
+    v33[1] = hostViewController;
+    extension = [MEMORY[0x1E695DEC8] arrayWithObjects:v33 count:{2, 0}];
+    v11 = [extension countByEnumeratingWithState:&v25 objects:v34 count:16];
     if (v11)
     {
       v12 = v11;
@@ -62,21 +62,21 @@
         {
           if (*v26 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(extension);
           }
 
-          v15 = [*(*(&v25 + 1) + 8 * i) view];
-          [v15 frame];
+          view = [*(*(&v25 + 1) + 8 * i) view];
+          [view frame];
           v17 = v16;
           v19 = v18;
           [(SBHRecentsDocumentExtensionProvider *)self compactPreferredContentSize];
-          [v15 setFrame:{v17, v19, v20, v21}];
-          [v15 setNeedsLayout];
-          [v15 setNeedsUpdateConstraints];
-          [v15 layoutIfNeeded];
+          [view setFrame:{v17, v19, v20, v21}];
+          [view setNeedsLayout];
+          [view setNeedsUpdateConstraints];
+          [view layoutIfNeeded];
         }
 
-        v12 = [v10 countByEnumeratingWithState:&v25 objects:v34 count:16];
+        v12 = [extension countByEnumeratingWithState:&v25 objects:v34 count:16];
       }
 
       while (v12);
@@ -85,8 +85,8 @@
 
   else
   {
-    v10 = [(SBHRecentsDocumentExtensionProvider *)self extension];
-    if (v10)
+    extension = [(SBHRecentsDocumentExtensionProvider *)self extension];
+    if (extension)
     {
       [(SBHRecentsDocumentExtensionProvider *)self _loadRemoteViewControllerWithConfiguration:v8];
     }
@@ -109,39 +109,39 @@
     }
   }
 
-  v23 = v5;
-  return v5;
+  v23 = wrappingViewController;
+  return wrappingViewController;
 }
 
-- (void)setWidgetConfiguration:(id)a3
+- (void)setWidgetConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [(SBHRecentsDocumentExtensionProvider *)self remoteService];
-  [v5 _updateForWidgetConfiguration:v4];
+  configurationCopy = configuration;
+  remoteService = [(SBHRecentsDocumentExtensionProvider *)self remoteService];
+  [remoteService _updateForWidgetConfiguration:configurationCopy];
 }
 
-- (void)_setupHostViewController:(id)a3
+- (void)_setupHostViewController:(id)controller
 {
   v4.receiver = self;
   v4.super_class = SBHFileWidgetExtensionProvider;
-  v3 = a3;
-  [(SBHRecentsDocumentExtensionProvider *)&v4 _setupHostViewController:v3];
-  [v3 setServiceViewShouldShareTouchesWithHost:{1, v4.receiver, v4.super_class}];
+  controllerCopy = controller;
+  [(SBHRecentsDocumentExtensionProvider *)&v4 _setupHostViewController:controllerCopy];
+  [controllerCopy setServiceViewShouldShareTouchesWithHost:{1, v4.receiver, v4.super_class}];
 }
 
-- (BOOL)_extensionHasTransparencyEntitlement:(id)a3
+- (BOOL)_extensionHasTransparencyEntitlement:(id)entitlement
 {
   v3 = MEMORY[0x1E69635D0];
-  v4 = a3;
+  entitlementCopy = entitlement;
   v5 = [v3 alloc];
-  v6 = [v4 identifier];
+  identifier = [entitlementCopy identifier];
 
-  v7 = [v5 initWithBundleIdentifier:v6 error:0];
-  v8 = [v7 entitlements];
-  v9 = [v8 objectForKey:@"com.apple.springboard.temporary.files-widget-transparency" ofClass:objc_opt_class()];
-  v10 = [v9 BOOLValue];
+  v7 = [v5 initWithBundleIdentifier:identifier error:0];
+  entitlements = [v7 entitlements];
+  v9 = [entitlements objectForKey:@"com.apple.springboard.temporary.files-widget-transparency" ofClass:objc_opt_class()];
+  bOOLValue = [v9 BOOLValue];
 
-  return v10;
+  return bOOLValue;
 }
 
 @end

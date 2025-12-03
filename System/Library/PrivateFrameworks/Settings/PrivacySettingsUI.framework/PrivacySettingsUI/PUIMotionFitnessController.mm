@@ -4,7 +4,7 @@
 - (id)loadSensorKitSpecifiersProvider;
 - (id)specifiers;
 - (void)provideNavigationDonations;
-- (void)setFitnessTrackingEnabled:(id)a3 forSpecifier:(id)a4;
+- (void)setFitnessTrackingEnabled:(id)enabled forSpecifier:(id)specifier;
 @end
 
 @implementation PUIMotionFitnessController
@@ -15,57 +15,57 @@
   v4 = *(&self->super.super.super.super.super.super.isa + v3);
   if (!v4)
   {
-    v5 = [(PUIMotionFitnessController *)self isFitnessTrackingEnabledFromTCC];
-    v6 = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
+    isFitnessTrackingEnabledFromTCC = [(PUIMotionFitnessController *)self isFitnessTrackingEnabledFromTCC];
+    emptyGroupSpecifier = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
     v7 = *MEMORY[0x277D3FFB8];
-    [v6 setProperty:@"FITNESS_TRACKING_GROUP" forKey:*MEMORY[0x277D3FFB8]];
+    [emptyGroupSpecifier setProperty:@"FITNESS_TRACKING_GROUP" forKey:*MEMORY[0x277D3FFB8]];
     v8 = PUI_LocalizedStringForPrivacy(@"FITNESS_TRACKING_PRIVACY");
-    [v6 setProperty:v8 forKey:*MEMORY[0x277D3FF88]];
+    [emptyGroupSpecifier setProperty:v8 forKey:*MEMORY[0x277D3FF88]];
 
     v9 = MEMORY[0x277D3FAD8];
     v10 = PUI_LocalizedStringForPrivacy(@"FITNESS_TRACKING");
     v11 = [v9 preferenceSpecifierNamed:v10 target:self set:sel_setFitnessTrackingEnabled_forSpecifier_ get:sel_isFitnessTrackingEnabled_ detail:0 cell:6 edit:0];
 
     [v11 setProperty:@"FITNESS_TRACKING_MASTER" forKey:v7];
-    v12 = [MEMORY[0x277CCABB0] numberWithBool:v5];
+    v12 = [MEMORY[0x277CCABB0] numberWithBool:isFitnessTrackingEnabledFromTCC];
     [v11 setProperty:v12 forKey:*MEMORY[0x277D401A8]];
 
-    if (v5)
+    if (isFitnessTrackingEnabledFromTCC)
     {
       v22.receiver = self;
       v22.super_class = PUIMotionFitnessController;
-      v13 = [(PUITCCAccessController *)&v22 specifiers];
+      specifiers = [(PUITCCAccessController *)&v22 specifiers];
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
         [PUIMotionFitnessController specifiers];
       }
 
-      [v13 insertObject:v6 atIndex:0];
-      [v13 insertObject:v11 atIndex:1];
-      v14 = [MEMORY[0x277D75418] currentDevice];
-      v15 = [v14 sf_isiPhone];
+      [specifiers insertObject:emptyGroupSpecifier atIndex:0];
+      [specifiers insertObject:v11 atIndex:1];
+      currentDevice = [MEMORY[0x277D75418] currentDevice];
+      sf_isiPhone = [currentDevice sf_isiPhone];
 
-      if (v15)
+      if (sf_isiPhone)
       {
-        v16 = [(PUIMotionFitnessController *)self loadSensorKitSpecifiersProvider];
+        loadSensorKitSpecifiersProvider = [(PUIMotionFitnessController *)self loadSensorKitSpecifiersProvider];
         sensorKitSpecifiersProvider = self->_sensorKitSpecifiersProvider;
-        self->_sensorKitSpecifiersProvider = v16;
+        self->_sensorKitSpecifiersProvider = loadSensorKitSpecifiersProvider;
 
         v18 = [(SRRelatedSettingsProvider *)self->_sensorKitSpecifiersProvider specifiersForRelatedSettings:@"Motion"];
         if (v18)
         {
-          [v13 addObjectsFromArray:v18];
+          [specifiers addObjectsFromArray:v18];
         }
       }
 
       v19 = *(&self->super.super.super.super.super.super.isa + v3);
-      *(&self->super.super.super.super.super.super.isa + v3) = v13;
+      *(&self->super.super.super.super.super.super.isa + v3) = specifiers;
     }
 
     else
     {
-      v20 = [objc_alloc(MEMORY[0x277CBEA60]) initWithObjects:{v6, v11, 0}];
+      v20 = [objc_alloc(MEMORY[0x277CBEA60]) initWithObjects:{emptyGroupSpecifier, v11, 0}];
       v19 = *(&self->super.super.super.super.super.super.isa + v3);
       *(&self->super.super.super.super.super.super.isa + v3) = v20;
     }
@@ -80,15 +80,15 @@
 {
   v14[1] = *MEMORY[0x277D85DE8];
   v3 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-  v4 = [v3 bundleURL];
+  bundleURL = [v3 bundleURL];
 
   v5 = objc_alloc(MEMORY[0x277CCAEB8]);
-  v6 = [MEMORY[0x277CBEAF8] currentLocale];
-  v7 = [v5 initWithKey:@"MOTION" table:@"Privacy" locale:v6 bundleURL:v4];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  v7 = [v5 initWithKey:@"MOTION" table:@"Privacy" locale:currentLocale bundleURL:bundleURL];
 
   v8 = objc_alloc(MEMORY[0x277CCAEB8]);
-  v9 = [MEMORY[0x277CBEAF8] currentLocale];
-  v10 = [v8 initWithKey:@"PRIVACY" table:@"Privacy" locale:v9 bundleURL:v4];
+  currentLocale2 = [MEMORY[0x277CBEAF8] currentLocale];
+  v10 = [v8 initWithKey:@"PRIVACY" table:@"Privacy" locale:currentLocale2 bundleURL:bundleURL];
 
   v14[0] = v10;
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:1];
@@ -134,17 +134,17 @@
 
   v9.receiver = self;
   v9.super_class = PUIMotionFitnessController;
-  v6 = [(PUITCCAccessController *)&v9 specifiers];
+  specifiers = [(PUITCCAccessController *)&v9 specifiers];
   v7 = *(&self->super.super.super.super.super.super.isa + v3);
   *(&self->super.super.super.super.super.super.isa + v3) = v4;
 
-  return v6;
+  return specifiers;
 }
 
 - (BOOL)isFitnessTrackingEnabledFromTCC
 {
   v7 = 0;
-  v2 = [(PUITCCAccessController *)self serviceKey];
+  serviceKey = [(PUITCCAccessController *)self serviceKey];
   Override = TCCAccessGetOverride();
 
   if (!Override)
@@ -160,43 +160,43 @@
   return v7 == 0;
 }
 
-- (void)setFitnessTrackingEnabled:(id)a3 forSpecifier:(id)a4
+- (void)setFitnessTrackingEnabled:(id)enabled forSpecifier:(id)specifier
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  enabledCopy = enabled;
+  specifierCopy = specifier;
   v8 = *MEMORY[0x277D401A8];
-  v9 = [v7 propertyForKey:*MEMORY[0x277D401A8]];
-  if (([v6 isEqual:v9] & 1) == 0)
+  v9 = [specifierCopy propertyForKey:*MEMORY[0x277D401A8]];
+  if (([enabledCopy isEqual:v9] & 1) == 0)
   {
-    v10 = [v6 BOOLValue];
+    bOOLValue = [enabledCopy BOOLValue];
     v11 = _PUILoggingFacility();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       v20 = 136315394;
       v21 = "[PUIMotionFitnessController setFitnessTrackingEnabled:forSpecifier:]";
       v22 = 1024;
-      v23 = v10;
+      v23 = bOOLValue;
       _os_log_impl(&dword_2657FE000, v11, OS_LOG_TYPE_DEFAULT, "%s - enable: %d", &v20, 0x12u);
     }
 
-    v12 = [(PUITCCAccessController *)self serviceKey];
+    serviceKey = [(PUITCCAccessController *)self serviceKey];
     v13 = TCCAccessSetOverride();
 
     if (v13)
     {
-      [v7 setProperty:v6 forKey:v8];
-      if (v10)
+      [specifierCopy setProperty:enabledCopy forKey:v8];
+      if (bOOLValue)
       {
-        v14 = [(PUIMotionFitnessController *)self _appSpecifiers];
-        [(PUIMotionFitnessController *)self insertContiguousSpecifiers:v14 afterSpecifier:v7 animated:1];
+        _appSpecifiers = [(PUIMotionFitnessController *)self _appSpecifiers];
+        [(PUIMotionFitnessController *)self insertContiguousSpecifiers:_appSpecifiers afterSpecifier:specifierCopy animated:1];
       }
 
       else
       {
-        v18 = [(PUIMotionFitnessController *)self indexOfSpecifier:v7]+ 1;
-        v14 = [*(&self->super.super.super.super.super.super.isa + *MEMORY[0x277D3FC48]) subarrayWithRange:{v18, objc_msgSend(*(&self->super.super.super.super.super.super.isa + *MEMORY[0x277D3FC48]), "count") - v18}];
-        [(PUIMotionFitnessController *)self removeContiguousSpecifiers:v14 animated:1];
+        v18 = [(PUIMotionFitnessController *)self indexOfSpecifier:specifierCopy]+ 1;
+        _appSpecifiers = [*(&self->super.super.super.super.super.super.isa + *MEMORY[0x277D3FC48]) subarrayWithRange:{v18, objc_msgSend(*(&self->super.super.super.super.super.super.isa + *MEMORY[0x277D3FC48]), "count") - v18}];
+        [(PUIMotionFitnessController *)self removeContiguousSpecifiers:_appSpecifiers animated:1];
       }
 
       goto LABEL_15;
@@ -204,7 +204,7 @@
 
     v15 = _PUILoggingFacility();
     v16 = os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT);
-    if (v10)
+    if (bOOLValue)
     {
       if (v16)
       {
@@ -222,8 +222,8 @@ LABEL_13:
       goto LABEL_13;
     }
 
-    v14 = [v7 propertyForKey:*MEMORY[0x277D3FEB0]];
-    [v14 setOn:objc_msgSend(v9 animated:{"BOOLValue"), 1}];
+    _appSpecifiers = [specifierCopy propertyForKey:*MEMORY[0x277D3FEB0]];
+    [_appSpecifiers setOn:objc_msgSend(v9 animated:{"BOOLValue"), 1}];
 LABEL_15:
   }
 

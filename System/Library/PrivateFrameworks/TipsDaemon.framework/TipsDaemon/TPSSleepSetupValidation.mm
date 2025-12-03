@@ -1,13 +1,13 @@
 @interface TPSSleepSetupValidation
-- (void)validateWithCompletion:(id)a3;
+- (void)validateWithCompletion:(id)completion;
 @end
 
 @implementation TPSSleepSetupValidation
 
-- (void)validateWithCompletion:(id)a3
+- (void)validateWithCompletion:(id)completion
 {
   v4 = MEMORY[0x277D62528];
-  v5 = a3;
+  completionCopy = completion;
   v6 = objc_alloc_init(v4);
   v14 = 0;
   v7 = [v6 currentSleepScheduleWithError:&v14];
@@ -15,31 +15,31 @@
   v9 = v8;
   if (v7)
   {
-    v10 = [v7 isEnabled];
-    v11 = v10 ^ [(TPSTargetingValidation *)self BOOLValue]^ 1;
+    isEnabled = [v7 isEnabled];
+    v11 = isEnabled ^ [(TPSTargetingValidation *)self BOOLValue]^ 1;
   }
 
   else
   {
     if (v8)
     {
-      v12 = [MEMORY[0x277D71778] targeting];
-      if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
+      targeting = [MEMORY[0x277D71778] targeting];
+      if (os_log_type_enabled(targeting, OS_LOG_TYPE_DEBUG))
       {
-        [(TPSSleepSetupValidation *)v9 validateWithCompletion:v12];
+        [(TPSSleepSetupValidation *)v9 validateWithCompletion:targeting];
       }
     }
 
     v11 = 0;
   }
 
-  v13 = [MEMORY[0x277D71778] targeting];
-  if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
+  targeting2 = [MEMORY[0x277D71778] targeting];
+  if (os_log_type_enabled(targeting2, OS_LOG_TYPE_DEBUG))
   {
-    [(TPSDictationLanguageValidation *)self validateWithCompletion:v11, v13];
+    [(TPSDictationLanguageValidation *)self validateWithCompletion:v11, targeting2];
   }
 
-  v5[2](v5, v11, 0);
+  completionCopy[2](completionCopy, v11, 0);
 }
 
 - (void)validateWithCompletion:(uint64_t)a1 .cold.1(uint64_t a1, NSObject *a2)

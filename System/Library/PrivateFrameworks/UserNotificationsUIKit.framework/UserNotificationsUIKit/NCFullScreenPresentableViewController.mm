@@ -1,60 +1,60 @@
 @interface NCFullScreenPresentableViewController
 - (BOOL)isStaticContentLoadingComplete;
-- (CGSize)preferredContentSizeWithPresentationSize:(CGSize)a3 containerSize:(CGSize)a4;
-- (NCFullScreenPresentableViewController)initWithNotificationRequest:(id)a3;
+- (CGSize)preferredContentSizeWithPresentationSize:(CGSize)size containerSize:(CGSize)containerSize;
+- (NCFullScreenPresentableViewController)initWithNotificationRequest:(id)request;
 - (NCFullScreenPresentableViewControllerDelegate)delegate;
 - (NCNotificationStaticContentProviding)staticContentProvider;
 - (NSDictionary)notificationUsageTrackingState;
 - (NSSet)activeTransitionBlockingAssertions;
 - (NSString)requesterIdentifier;
-- (double)_rubberbandedTranslationForTranslation:(double)a3;
-- (id)_backgroundAnimationSettingsForStage:(int64_t)a3;
-- (id)activeTransitionBlockingAssertionForReason:(id)a3;
-- (id)requestTransitionBlockingAssertionWithReason:(id)a3;
+- (double)_rubberbandedTranslationForTranslation:(double)translation;
+- (id)_backgroundAnimationSettingsForStage:(int64_t)stage;
+- (id)activeTransitionBlockingAssertionForReason:(id)reason;
+- (id)requestTransitionBlockingAssertionWithReason:(id)reason;
 - (int64_t)bannerStage;
-- (void)_animateDismissalWithAdditionalAnimations:(id)a3 completion:(id)a4;
-- (void)_animateTransitionToDetailStateForTrigger:(int64_t)a3;
-- (void)_askDelegateToExecuteAction:(id)a3 withParameters:(id)a4 animated:(BOOL)a5;
+- (void)_animateDismissalWithAdditionalAnimations:(id)animations completion:(id)completion;
+- (void)_animateTransitionToDetailStateForTrigger:(int64_t)trigger;
+- (void)_askDelegateToExecuteAction:(id)action withParameters:(id)parameters animated:(BOOL)animated;
 - (void)_configureBackgroundMaterialViewIfNecessary;
 - (void)_configureBackgroundOpaqueViewIfNecessary;
 - (void)_configureBannerViewIfNecessary;
-- (void)_enumerateObserversRespondingToSelector:(SEL)a3 usingBlock:(id)a4;
-- (void)_executeDefaultAction:(BOOL)a3;
+- (void)_enumerateObserversRespondingToSelector:(SEL)selector usingBlock:(id)block;
+- (void)_executeDefaultAction:(BOOL)action;
 - (void)_handleBannerContentTap;
 - (void)_invalidateDetailStageTransitionTimerIfNecessary;
-- (void)_requestDismissalWithReason:(id)a3;
+- (void)_requestDismissalWithReason:(id)reason;
 - (void)_startDetailStageTransitionTimerIfNecessary;
-- (void)addPresentableObserver:(id)a3;
-- (void)animateTransition:(id)a3;
-- (void)draggingDidBeginWithGestureProxy:(id)a3;
+- (void)addPresentableObserver:(id)observer;
+- (void)animateTransition:(id)transition;
+- (void)draggingDidBeginWithGestureProxy:(id)proxy;
 - (void)invalidateStaticContent;
-- (void)loadStaticContentWithCompletion:(id)a3;
+- (void)loadStaticContentWithCompletion:(id)completion;
 - (void)loadView;
-- (void)presentableDidAppearAsBanner:(id)a3;
-- (void)presentableDidDisappearAsBanner:(id)a3 withReason:(id)a4;
-- (void)presentableWillAppearAsBanner:(id)a3;
-- (void)presentableWillDisappearAsBanner:(id)a3 withReason:(id)a4;
-- (void)removePresentableObserver:(id)a3;
-- (void)userInteractionDidEndForBannerForPresentable:(id)a3;
-- (void)userInteractionWillBeginForBannerForPresentable:(id)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)presentableDidAppearAsBanner:(id)banner;
+- (void)presentableDidDisappearAsBanner:(id)banner withReason:(id)reason;
+- (void)presentableWillAppearAsBanner:(id)banner;
+- (void)presentableWillDisappearAsBanner:(id)banner withReason:(id)reason;
+- (void)removePresentableObserver:(id)observer;
+- (void)userInteractionDidEndForBannerForPresentable:(id)presentable;
+- (void)userInteractionWillBeginForBannerForPresentable:(id)presentable;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewIsAppearing:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewIsAppearing:(BOOL)appearing;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation NCFullScreenPresentableViewController
 
-- (NCFullScreenPresentableViewController)initWithNotificationRequest:(id)a3
+- (NCFullScreenPresentableViewController)initWithNotificationRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v11.receiver = self;
   v11.super_class = NCFullScreenPresentableViewController;
   v5 = [(NCFullScreenPresentableViewController *)&v11 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [requestCopy copy];
     notificationRequest = v5->_notificationRequest;
     v5->_notificationRequest = v6;
 
@@ -84,42 +84,42 @@
 {
   if ([(NCFullScreenPresentableViewController *)self isViewLoaded])
   {
-    v3 = [(NCFullScreenStagingBannerView *)self->_bannerView staticContentProvider];
+    staticContentProvider = [(NCFullScreenStagingBannerView *)self->_bannerView staticContentProvider];
   }
 
   else
   {
-    v3 = 0;
+    staticContentProvider = 0;
   }
 
-  return v3;
+  return staticContentProvider;
 }
 
 - (BOOL)isStaticContentLoadingComplete
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NCFullScreenPresentableViewController *)v2 staticContentProvider];
-  if (v3)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  staticContentProvider = [(NCFullScreenPresentableViewController *)selfCopy staticContentProvider];
+  if (staticContentProvider)
   {
     if (objc_opt_respondsToSelector())
     {
-      v4 = [v3 isImageAssetLoadingComplete];
+      isImageAssetLoadingComplete = [staticContentProvider isImageAssetLoadingComplete];
     }
 
     else
     {
-      v4 = 1;
+      isImageAssetLoadingComplete = 1;
     }
   }
 
   else
   {
-    v4 = 0;
+    isImageAssetLoadingComplete = 0;
   }
 
-  objc_sync_exit(v2);
-  return v4;
+  objc_sync_exit(selfCopy);
+  return isImageAssetLoadingComplete;
 }
 
 - (void)invalidateStaticContent
@@ -130,8 +130,8 @@
     if ((objc_opt_respondsToSelector() & 1) == 0 || ([WeakRetained notificationRequestPresenter:self staticContentProviderForNotificationRequest:self->_notificationRequest], (v6 = objc_claimAutoreleasedReturnValue()) == 0))
     {
       v4 = [NCNotificationRequestFullScreenContentProvider alloc];
-      v5 = [(NCFullScreenPresentableViewController *)self notificationRequest];
-      v6 = [(NCNotificationRequestCoalescingContentProvider *)v4 initWithNotificationRequest:v5];
+      notificationRequest = [(NCFullScreenPresentableViewController *)self notificationRequest];
+      v6 = [(NCNotificationRequestCoalescingContentProvider *)v4 initWithNotificationRequest:notificationRequest];
     }
 
     [(NCNotificationRequestContentProvider *)v6 setDelegate:self];
@@ -139,27 +139,27 @@
   }
 }
 
-- (void)loadStaticContentWithCompletion:(id)a3
+- (void)loadStaticContentWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if (![(NCFullScreenPresentableViewController *)v5 isStaticContentLoadingComplete])
+  completionCopy = completion;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (![(NCFullScreenPresentableViewController *)selfCopy isStaticContentLoadingComplete])
   {
-    [(NCFullScreenPresentableViewController *)v5 loadViewIfNeeded];
-    v6 = [(NCFullScreenPresentableViewController *)v5 staticContentProvider];
+    [(NCFullScreenPresentableViewController *)selfCopy loadViewIfNeeded];
+    staticContentProvider = [(NCFullScreenPresentableViewController *)selfCopy staticContentProvider];
     if (objc_opt_respondsToSelector())
     {
       v7[0] = MEMORY[0x277D85DD0];
       v7[1] = 3221225472;
       v7[2] = __73__NCFullScreenPresentableViewController_loadStaticContentWithCompletion___block_invoke;
       v7[3] = &unk_27836FF88;
-      v8 = v4;
-      [v6 loadImageAssetsWithCompletion:v7];
+      v8 = completionCopy;
+      [staticContentProvider loadImageAssetsWithCompletion:v7];
     }
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 uint64_t __73__NCFullScreenPresentableViewController_loadStaticContentWithCompletion___block_invoke(uint64_t a1)
@@ -176,8 +176,8 @@ uint64_t __73__NCFullScreenPresentableViewController_loadStaticContentWithComple
 - (void)loadView
 {
   v3 = [_NCFullScreenPresentableViewControllerView alloc];
-  v5 = [MEMORY[0x277D759A0] mainScreen];
-  [v5 bounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   v4 = [(_NCFullScreenPresentableViewControllerView *)v3 initWithFrame:?];
   [(NCFullScreenPresentableViewController *)self setView:v4];
 }
@@ -190,27 +190,27 @@ uint64_t __73__NCFullScreenPresentableViewController_loadStaticContentWithComple
   [(NCFullScreenPresentableViewController *)self _configureBackgroundMaterialViewIfNecessary];
   [(NCFullScreenPresentableViewController *)self _configureBackgroundOpaqueViewIfNecessary];
   [(NCFullScreenPresentableViewController *)self _configureBannerViewIfNecessary];
-  v3 = [(NCFullScreenPresentableViewController *)self view];
-  [v3 setAccessibilityIdentifier:@"nc-full-screen-presentable-view"];
+  view = [(NCFullScreenPresentableViewController *)self view];
+  [view setAccessibilityIdentifier:@"nc-full-screen-presentable-view"];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = NCFullScreenPresentableViewController;
-  [(NCFullScreenPresentableViewController *)&v6 viewWillAppear:a3];
-  v4 = [(NCFullScreenPresentableViewController *)self view];
-  v5 = [v4 layer];
+  [(NCFullScreenPresentableViewController *)&v6 viewWillAppear:appear];
+  view = [(NCFullScreenPresentableViewController *)self view];
+  layer = [view layer];
 
-  [v5 setAllowsHitTesting:1];
-  [v5 setHitTestsAsOpaque:1];
+  [layer setAllowsHitTesting:1];
+  [layer setHitTestsAsOpaque:1];
 }
 
-- (void)viewIsAppearing:(BOOL)a3
+- (void)viewIsAppearing:(BOOL)appearing
 {
   v9.receiver = self;
   v9.super_class = NCFullScreenPresentableViewController;
-  [(NCFullScreenPresentableViewController *)&v9 viewIsAppearing:a3];
+  [(NCFullScreenPresentableViewController *)&v9 viewIsAppearing:appearing];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __57__NCFullScreenPresentableViewController_viewIsAppearing___block_invoke;
@@ -241,30 +241,30 @@ void __57__NCFullScreenPresentableViewController_viewIsAppearing___block_invoke_
   [WeakRetained _startDetailStageTransitionTimerIfNecessary];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v6.receiver = self;
   v6.super_class = NCFullScreenPresentableViewController;
-  [(NCFullScreenPresentableViewController *)&v6 viewWillDisappear:a3];
-  v4 = [(NCFullScreenPresentableViewController *)self view];
-  v5 = [v4 layer];
-  [v5 setAllowsHitTesting:0];
+  [(NCFullScreenPresentableViewController *)&v6 viewWillDisappear:disappear];
+  view = [(NCFullScreenPresentableViewController *)self view];
+  layer = [view layer];
+  [layer setAllowsHitTesting:0];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v15 = *MEMORY[0x277D85DE8];
   v13.receiver = self;
   v13.super_class = NCFullScreenPresentableViewController;
-  [(NCFullScreenPresentableViewController *)&v13 viewDidDisappear:a3];
-  v4 = self;
-  objc_sync_enter(v4);
+  [(NCFullScreenPresentableViewController *)&v13 viewDidDisappear:disappear];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [(NCFullScreenPresentableViewController *)v4 activeTransitionBlockingAssertions];
-  v6 = [v5 countByEnumeratingWithState:&v9 objects:v14 count:16];
+  activeTransitionBlockingAssertions = [(NCFullScreenPresentableViewController *)selfCopy activeTransitionBlockingAssertions];
+  v6 = [activeTransitionBlockingAssertions countByEnumeratingWithState:&v9 objects:v14 count:16];
   if (v6)
   {
     v7 = *v10;
@@ -275,25 +275,25 @@ void __57__NCFullScreenPresentableViewController_viewIsAppearing___block_invoke_
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(activeTransitionBlockingAssertions);
         }
 
         [*(*(&v9 + 1) + 8 * v8++) invalidateWithReason:@"fullScreenPresentable.invalidationReason.dismissed"];
       }
 
       while (v6 != v8);
-      v6 = [v5 countByEnumeratingWithState:&v9 objects:v14 count:16];
+      v6 = [activeTransitionBlockingAssertions countByEnumeratingWithState:&v9 objects:v14 count:16];
     }
 
     while (v6);
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (CGSize)preferredContentSizeWithPresentationSize:(CGSize)a3 containerSize:(CGSize)a4
+- (CGSize)preferredContentSizeWithPresentationSize:(CGSize)size containerSize:(CGSize)containerSize
 {
-  [(NCFullScreenPresentableViewController *)self setPreferredContentSize:a4.width, a4.height];
+  [(NCFullScreenPresentableViewController *)self setPreferredContentSize:containerSize.width, containerSize.height];
 
   [(NCFullScreenPresentableViewController *)self preferredContentSize];
   result.height = v6;
@@ -321,9 +321,9 @@ void __60__NCFullScreenPresentableViewController_requesterIdentifier__block_invo
   requesterIdentifier___requesterIdentifier = v0;
 }
 
-- (void)draggingDidBeginWithGestureProxy:(id)a3
+- (void)draggingDidBeginWithGestureProxy:(id)proxy
 {
-  v4 = a3;
+  proxyCopy = proxy;
   objc_initWeak(&location, self);
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
@@ -331,7 +331,7 @@ void __60__NCFullScreenPresentableViewController_requesterIdentifier__block_invo
   v5[3] = &unk_278371260;
   objc_copyWeak(&v6, &location);
   v5[4] = self;
-  [v4 setActionHandler:v5];
+  [proxyCopy setActionHandler:v5];
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
 }
@@ -535,110 +535,110 @@ void __74__NCFullScreenPresentableViewController_draggingDidBeginWithGestureProx
   }
 }
 
-- (void)presentableWillAppearAsBanner:(id)a3
+- (void)presentableWillAppearAsBanner:(id)banner
 {
-  v4 = a3;
+  bannerCopy = banner;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __71__NCFullScreenPresentableViewController_presentableWillAppearAsBanner___block_invoke;
   v6[3] = &unk_278371380;
-  v7 = v4;
-  v5 = v4;
+  v7 = bannerCopy;
+  v5 = bannerCopy;
   [(NCFullScreenPresentableViewController *)self _enumerateObserversRespondingToSelector:sel_presentableWillAppearAsBanner_ usingBlock:v6];
 }
 
-- (void)presentableDidAppearAsBanner:(id)a3
+- (void)presentableDidAppearAsBanner:(id)banner
 {
-  v4 = a3;
+  bannerCopy = banner;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __70__NCFullScreenPresentableViewController_presentableDidAppearAsBanner___block_invoke;
   v6[3] = &unk_278371380;
-  v7 = v4;
-  v5 = v4;
+  v7 = bannerCopy;
+  v5 = bannerCopy;
   [(NCFullScreenPresentableViewController *)self _enumerateObserversRespondingToSelector:sel_presentableDidAppearAsBanner_ usingBlock:v6];
 }
 
-- (void)presentableWillDisappearAsBanner:(id)a3 withReason:(id)a4
+- (void)presentableWillDisappearAsBanner:(id)banner withReason:(id)reason
 {
-  v6 = a3;
-  v7 = a4;
+  bannerCopy = banner;
+  reasonCopy = reason;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __85__NCFullScreenPresentableViewController_presentableWillDisappearAsBanner_withReason___block_invoke;
   v10[3] = &unk_2783713A8;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = bannerCopy;
+  v12 = reasonCopy;
+  v8 = reasonCopy;
+  v9 = bannerCopy;
   [(NCFullScreenPresentableViewController *)self _enumerateObserversRespondingToSelector:sel_presentableWillDisappearAsBanner_withReason_ usingBlock:v10];
 }
 
-- (void)presentableDidDisappearAsBanner:(id)a3 withReason:(id)a4
+- (void)presentableDidDisappearAsBanner:(id)banner withReason:(id)reason
 {
-  v6 = a3;
-  v7 = a4;
+  bannerCopy = banner;
+  reasonCopy = reason;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __84__NCFullScreenPresentableViewController_presentableDidDisappearAsBanner_withReason___block_invoke;
   v10[3] = &unk_2783713A8;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = bannerCopy;
+  v12 = reasonCopy;
+  v8 = reasonCopy;
+  v9 = bannerCopy;
   [(NCFullScreenPresentableViewController *)self _enumerateObserversRespondingToSelector:sel_presentableDidDisappearAsBanner_withReason_ usingBlock:v10];
 }
 
-- (void)userInteractionWillBeginForBannerForPresentable:(id)a3
+- (void)userInteractionWillBeginForBannerForPresentable:(id)presentable
 {
-  v4 = a3;
+  presentableCopy = presentable;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __89__NCFullScreenPresentableViewController_userInteractionWillBeginForBannerForPresentable___block_invoke;
   v6[3] = &unk_278371380;
-  v7 = v4;
-  v5 = v4;
+  v7 = presentableCopy;
+  v5 = presentableCopy;
   [(NCFullScreenPresentableViewController *)self _enumerateObserversRespondingToSelector:sel_userInteractionWillBeginForBannerForPresentable_ usingBlock:v6];
 }
 
-- (void)userInteractionDidEndForBannerForPresentable:(id)a3
+- (void)userInteractionDidEndForBannerForPresentable:(id)presentable
 {
-  v4 = a3;
+  presentableCopy = presentable;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __86__NCFullScreenPresentableViewController_userInteractionDidEndForBannerForPresentable___block_invoke;
   v6[3] = &unk_278371380;
-  v7 = v4;
-  v5 = v4;
+  v7 = presentableCopy;
+  v5 = presentableCopy;
   [(NCFullScreenPresentableViewController *)self _enumerateObserversRespondingToSelector:sel_userInteractionDidEndForBannerForPresentable_ usingBlock:v6];
 }
 
-- (void)addPresentableObserver:(id)a3
+- (void)addPresentableObserver:(id)observer
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  observerCopy = observer;
+  v5 = observerCopy;
+  if (observerCopy)
   {
     observers = self->_observers;
     v9 = v5;
     if (!observers)
     {
-      v7 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+      weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
       v8 = self->_observers;
-      self->_observers = v7;
+      self->_observers = weakObjectsHashTable;
 
       observers = self->_observers;
     }
 
-    v4 = [(NSHashTable *)observers addObject:v9];
+    observerCopy = [(NSHashTable *)observers addObject:v9];
   }
 
-  MEMORY[0x2821F96F8](v4);
+  MEMORY[0x2821F96F8](observerCopy);
 }
 
-- (void)removePresentableObserver:(id)a3
+- (void)removePresentableObserver:(id)observer
 {
-  if (a3)
+  if (observer)
   {
     observers = self->_observers;
     if (observers)
@@ -667,14 +667,14 @@ void __74__NCFullScreenPresentableViewController_draggingDidBeginWithGestureProx
 - (NSSet)activeTransitionBlockingAssertions
 {
   v15 = *MEMORY[0x277D85DE8];
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v3 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v12 = 0u;
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v4 = v2->_reasonsToTransitionBlockingAssertions;
+  v4 = selfCopy->_reasonsToTransitionBlockingAssertions;
   v5 = [(NSMapTable *)v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
@@ -688,7 +688,7 @@ void __74__NCFullScreenPresentableViewController_draggingDidBeginWithGestureProx
           objc_enumerationMutation(v4);
         }
 
-        v8 = [(NSMapTable *)v2->_reasonsToTransitionBlockingAssertions objectForKey:*(*(&v10 + 1) + 8 * i), v10];
+        v8 = [(NSMapTable *)selfCopy->_reasonsToTransitionBlockingAssertions objectForKey:*(*(&v10 + 1) + 8 * i), v10];
         if ([v8 isValid])
         {
           [v3 addObject:v8];
@@ -701,62 +701,62 @@ void __74__NCFullScreenPresentableViewController_draggingDidBeginWithGestureProx
     while (v5);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (id)requestTransitionBlockingAssertionWithReason:(id)a3
+- (id)requestTransitionBlockingAssertionWithReason:(id)reason
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 length])
+  reasonCopy = reason;
+  if ([reasonCopy length])
   {
-    v5 = self;
-    objc_sync_enter(v5);
-    v6 = [(NCFullScreenPresentableViewController *)v5 activeTransitionBlockingAssertionForReason:v4];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v6 = [(NCFullScreenPresentableViewController *)selfCopy activeTransitionBlockingAssertionForReason:reasonCopy];
     if (!v6)
     {
       v7 = *MEMORY[0x277D77DB0];
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
-        v8 = [(NCNotificationRequest *)v5->_notificationRequest notificationIdentifier];
-        v9 = [v8 un_logDigest];
+        notificationIdentifier = [(NCNotificationRequest *)selfCopy->_notificationRequest notificationIdentifier];
+        un_logDigest = [notificationIdentifier un_logDigest];
         *buf = 138543618;
-        v17 = v9;
+        v17 = un_logDigest;
         v18 = 2114;
-        v19 = v4;
+        v19 = reasonCopy;
         _os_log_impl(&dword_21E77E000, v7, OS_LOG_TYPE_DEFAULT, "New transition blocking assertion requested for full screen presentable view controller for request '%{public}@' with reason '%{public}@' – invalidating detail stage transition timer", buf, 0x16u);
       }
 
-      [(NCFullScreenPresentableViewController *)v5 _invalidateDetailStageTransitionTimerIfNecessary];
-      if (!v5->_reasonsToTransitionBlockingAssertions)
+      [(NCFullScreenPresentableViewController *)selfCopy _invalidateDetailStageTransitionTimerIfNecessary];
+      if (!selfCopy->_reasonsToTransitionBlockingAssertions)
       {
-        v10 = [MEMORY[0x277CCAB00] strongToWeakObjectsMapTable];
-        reasonsToTransitionBlockingAssertions = v5->_reasonsToTransitionBlockingAssertions;
-        v5->_reasonsToTransitionBlockingAssertions = v10;
+        strongToWeakObjectsMapTable = [MEMORY[0x277CCAB00] strongToWeakObjectsMapTable];
+        reasonsToTransitionBlockingAssertions = selfCopy->_reasonsToTransitionBlockingAssertions;
+        selfCopy->_reasonsToTransitionBlockingAssertions = strongToWeakObjectsMapTable;
       }
 
-      v6 = [[NCAssertion alloc] initWithInstantiationReason:v4];
-      objc_initWeak(buf, v5);
+      v6 = [[NCAssertion alloc] initWithInstantiationReason:reasonCopy];
+      objc_initWeak(buf, selfCopy);
       v14[0] = MEMORY[0x277D85DD0];
       v14[1] = 3221225472;
       v14[2] = __86__NCFullScreenPresentableViewController_requestTransitionBlockingAssertionWithReason___block_invoke;
       v14[3] = &unk_27836F450;
       objc_copyWeak(&v15, buf);
       [(NCAssertion *)v6 addInvalidationBlock:v14];
-      [(NSMapTable *)v5->_reasonsToTransitionBlockingAssertions setObject:v6 forKey:v4];
-      WeakRetained = objc_loadWeakRetained(&v5->_delegate);
+      [(NSMapTable *)selfCopy->_reasonsToTransitionBlockingAssertions setObject:v6 forKey:reasonCopy];
+      WeakRetained = objc_loadWeakRetained(&selfCopy->_delegate);
       if (objc_opt_respondsToSelector())
       {
-        [WeakRetained notificationRequestPresenter:v5 didVendTransitionBlockingAssertion:v6];
+        [WeakRetained notificationRequestPresenter:selfCopy didVendTransitionBlockingAssertion:v6];
       }
 
       objc_destroyWeak(&v15);
       objc_destroyWeak(buf);
     }
 
-    objc_sync_exit(v5);
+    objc_sync_exit(selfCopy);
   }
 
   else
@@ -789,15 +789,15 @@ void __86__NCFullScreenPresentableViewController_requestTransitionBlockingAssert
   [WeakRetained _startDetailStageTransitionTimerIfNecessary];
 }
 
-- (id)activeTransitionBlockingAssertionForReason:(id)a3
+- (id)activeTransitionBlockingAssertionForReason:(id)reason
 {
-  v4 = a3;
-  if ([v4 length])
+  reasonCopy = reason;
+  if ([reasonCopy length])
   {
-    v5 = self;
-    objc_sync_enter(v5);
-    v6 = [(NSMapTable *)v5->_reasonsToTransitionBlockingAssertions objectForKey:v4];
-    objc_sync_exit(v5);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v6 = [(NSMapTable *)selfCopy->_reasonsToTransitionBlockingAssertions objectForKey:reasonCopy];
+    objc_sync_exit(selfCopy);
   }
 
   else
@@ -808,9 +808,9 @@ void __86__NCFullScreenPresentableViewController_requestTransitionBlockingAssert
   return v6;
 }
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
-  v4 = a3;
+  transitionCopy = transition;
   if ([(NCFullScreenPresentableViewController *)self bs_isDisappearingOrDisappeared])
   {
     objc_initWeak(&location, self);
@@ -820,7 +820,7 @@ void __86__NCFullScreenPresentableViewController_requestTransitionBlockingAssert
     v12[2] = __59__NCFullScreenPresentableViewController_animateTransition___block_invoke;
     v12[3] = &unk_278370A90;
     objc_copyWeak(&v14, &location);
-    v13 = v4;
+    v13 = transitionCopy;
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __59__NCFullScreenPresentableViewController_animateTransition___block_invoke_2;
@@ -838,7 +838,7 @@ void __86__NCFullScreenPresentableViewController_requestTransitionBlockingAssert
     v8[1] = 3221225472;
     v8[2] = __59__NCFullScreenPresentableViewController_animateTransition___block_invoke_3;
     v8[3] = &unk_27836F6A8;
-    v9 = v4;
+    v9 = transitionCopy;
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __59__NCFullScreenPresentableViewController_animateTransition___block_invoke_4;
@@ -873,22 +873,22 @@ uint64_t __59__NCFullScreenPresentableViewController_animateTransition___block_i
   return result;
 }
 
-- (id)_backgroundAnimationSettingsForStage:(int64_t)a3
+- (id)_backgroundAnimationSettingsForStage:(int64_t)stage
 {
   v4 = +[NCUNUIKitPrototypeDomain rootSettings];
   v5 = v4;
-  switch(a3)
+  switch(stage)
   {
     case 3:
-      v6 = [v4 dismissBackgroundSettings];
+      dismissBackgroundSettings = [v4 dismissBackgroundSettings];
       goto LABEL_7;
     case 2:
-      v6 = [v4 detailBackgroundSettings];
+      dismissBackgroundSettings = [v4 detailBackgroundSettings];
       goto LABEL_7;
     case 1:
-      v6 = [v4 briefBackgroundSettings];
+      dismissBackgroundSettings = [v4 briefBackgroundSettings];
 LABEL_7:
-      v7 = v6;
+      v7 = dismissBackgroundSettings;
       goto LABEL_9;
   }
 
@@ -898,7 +898,7 @@ LABEL_9:
   return v7;
 }
 
-- (void)_animateTransitionToDetailStateForTrigger:(int64_t)a3
+- (void)_animateTransitionToDetailStateForTrigger:(int64_t)trigger
 {
   v25 = *MEMORY[0x277D85DE8];
   if ([(NCFullScreenStagingBannerView *)self->_bannerView stage]> 1)
@@ -908,10 +908,10 @@ LABEL_9:
     {
       notificationRequest = self->_notificationRequest;
       v13 = v11;
-      v14 = [(NCNotificationRequest *)notificationRequest notificationIdentifier];
-      v15 = [v14 un_logDigest];
+      notificationIdentifier = [(NCNotificationRequest *)notificationRequest notificationIdentifier];
+      un_logDigest = [notificationIdentifier un_logDigest];
       *buf = 138543362;
-      v24 = v15;
+      v24 = un_logDigest;
       _os_log_impl(&dword_21E77E000, v13, OS_LOG_TYPE_DEFAULT, "Notification request '%{public}@' is already at least at detail stage – aborting transition attempt", buf, 0xCu);
     }
   }
@@ -926,18 +926,18 @@ LABEL_9:
     objc_copyWeak(&v21, &location);
     aBlock[4] = self;
     v5 = _Block_copy(aBlock);
-    v6 = [(NCNotificationRequest *)self->_notificationRequest options];
-    v7 = [v6 revealsAdditionalContentOnPresentation];
+    options = [(NCNotificationRequest *)self->_notificationRequest options];
+    revealsAdditionalContentOnPresentation = [options revealsAdditionalContentOnPresentation];
 
-    if (v7)
+    if (revealsAdditionalContentOnPresentation)
     {
       v8 = *MEMORY[0x277D77DB0];
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
-        v9 = [(NCNotificationRequest *)self->_notificationRequest notificationIdentifier];
-        v10 = [v9 un_logDigest];
+        notificationIdentifier2 = [(NCNotificationRequest *)self->_notificationRequest notificationIdentifier];
+        un_logDigest2 = [notificationIdentifier2 un_logDigest];
         *buf = 138543362;
-        v24 = v10;
+        v24 = un_logDigest2;
         _os_log_impl(&dword_21E77E000, v8, OS_LOG_TYPE_DEFAULT, "Notification request '%{public}@' specifies revealing additional content on presentation – transitioning to detail stage", buf, 0xCu);
       }
 
@@ -946,10 +946,10 @@ LABEL_9:
 
     else
     {
-      v16 = [(NCFullScreenPresentableViewController *)self delegate];
+      delegate = [(NCFullScreenPresentableViewController *)self delegate];
       if (objc_opt_respondsToSelector())
       {
-        [v16 notificationRequestPresenter:self shouldTransitionToStage:@"fullScreenPresentable.presentingStage.detail" forTrigger:a3 completionBlock:v5];
+        [delegate notificationRequestPresenter:self shouldTransitionToStage:@"fullScreenPresentable.presentingStage.detail" forTrigger:trigger completionBlock:v5];
       }
 
       else
@@ -957,10 +957,10 @@ LABEL_9:
         v17 = *MEMORY[0x277D77DB0];
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
         {
-          v18 = [(NCNotificationRequest *)self->_notificationRequest notificationIdentifier];
-          v19 = [v18 un_logDigest];
+          notificationIdentifier3 = [(NCNotificationRequest *)self->_notificationRequest notificationIdentifier];
+          un_logDigest3 = [notificationIdentifier3 un_logDigest];
           *buf = 138543362;
-          v24 = v19;
+          v24 = un_logDigest3;
           _os_log_impl(&dword_21E77E000, v17, OS_LOG_TYPE_DEFAULT, "Delegate for full screen presentable view controller for request '%{public}@' doesn't respond to selector – denying transition to detail stage", buf, 0xCu);
         }
 
@@ -1024,10 +1024,10 @@ void __83__NCFullScreenPresentableViewController__animateTransitionToDetailState
   [v1 setAlpha:1.0];
 }
 
-- (void)_animateDismissalWithAdditionalAnimations:(id)a3 completion:(id)a4
+- (void)_animateDismissalWithAdditionalAnimations:(id)animations completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  animationsCopy = animations;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v8 = BSEqualStrings();
   aBlock[0] = MEMORY[0x277D85DD0];
@@ -1036,7 +1036,7 @@ void __83__NCFullScreenPresentableViewController__animateTransitionToDetailState
   aBlock[3] = &unk_2783713D0;
   objc_copyWeak(&v24, &location);
   v25 = v8;
-  v9 = v6;
+  v9 = animationsCopy;
   v23 = v9;
   v10 = _Block_copy(aBlock);
   v20[0] = MEMORY[0x277D85DD0];
@@ -1048,12 +1048,12 @@ void __83__NCFullScreenPresentableViewController__animateTransitionToDetailState
   if (v8)
   {
     v12 = +[NCUNUIKitPrototypeDomain rootSettings];
-    v13 = [v12 interactiveDismissalAutomaticSettings];
-    NCPerformActionsAnimatingIfNecessary(v13, v10, 0);
+    interactiveDismissalAutomaticSettings = [v12 interactiveDismissalAutomaticSettings];
+    NCPerformActionsAnimatingIfNecessary(interactiveDismissalAutomaticSettings, v10, 0);
 
     v14 = +[NCUNUIKitPrototypeDomain rootSettings];
-    v15 = [v14 interactiveDismissalBackgoundSettings];
-    NCPerformActionsAnimatingIfNecessary(v15, v11, v7);
+    interactiveDismissalBackgoundSettings = [v14 interactiveDismissalBackgoundSettings];
+    NCPerformActionsAnimatingIfNecessary(interactiveDismissalBackgoundSettings, v11, completionCopy);
   }
 
   else
@@ -1067,7 +1067,7 @@ void __83__NCFullScreenPresentableViewController__animateTransitionToDetailState
     v19 = v11;
     NCPerformActionsAnimatingIfNecessary(v16, v17, 0);
 
-    [(NCFullScreenStagingBannerView *)self->_bannerView transitionToStage:3 completion:v7];
+    [(NCFullScreenStagingBannerView *)self->_bannerView transitionToStage:3 completion:completionCopy];
     v14 = v18;
   }
 
@@ -1122,8 +1122,8 @@ uint64_t __94__NCFullScreenPresentableViewController__animateDismissalWithAdditi
   v21 = *MEMORY[0x277D85DE8];
   if (!self->_detailStageTransitionTimer && [(NCFullScreenStagingBannerView *)self->_bannerView stage]<= 1 && !self->_panning)
   {
-    v3 = [(NCFullScreenPresentableViewController *)self activeTransitionBlockingAssertions];
-    v4 = [v3 count];
+    activeTransitionBlockingAssertions = [(NCFullScreenPresentableViewController *)self activeTransitionBlockingAssertions];
+    v4 = [activeTransitionBlockingAssertions count];
 
     if (!v4)
     {
@@ -1132,10 +1132,10 @@ uint64_t __94__NCFullScreenPresentableViewController__animateDismissalWithAdditi
       {
         notificationRequest = self->_notificationRequest;
         v7 = v5;
-        v8 = [(NCNotificationRequest *)notificationRequest notificationIdentifier];
-        v9 = [v8 un_logDigest];
+        notificationIdentifier = [(NCNotificationRequest *)notificationRequest notificationIdentifier];
+        un_logDigest = [notificationIdentifier un_logDigest];
         *buf = 138543362;
-        v20 = v9;
+        v20 = un_logDigest;
         _os_log_impl(&dword_21E77E000, v7, OS_LOG_TYPE_DEFAULT, "Starting transition timer for full screen presentable view controller for request '%{public}@'", buf, 0xCu);
       }
 
@@ -1220,10 +1220,10 @@ void __84__NCFullScreenPresentableViewController__startDetailStageTransitionTime
   {
     notificationRequest = self->_notificationRequest;
     v5 = v3;
-    v6 = [(NCNotificationRequest *)notificationRequest notificationIdentifier];
-    v7 = [v6 un_logDigest];
+    notificationIdentifier = [(NCNotificationRequest *)notificationRequest notificationIdentifier];
+    un_logDigest = [notificationIdentifier un_logDigest];
     v9 = 138543362;
-    v10 = v7;
+    v10 = un_logDigest;
     _os_log_impl(&dword_21E77E000, v5, OS_LOG_TYPE_DEFAULT, "Invalidating transition timer for full screen presentable view controller for request '%{public}@'", &v9, 0xCu);
   }
 
@@ -1232,11 +1232,11 @@ void __84__NCFullScreenPresentableViewController__startDetailStageTransitionTime
   self->_detailStageTransitionTimer = 0;
 }
 
-- (void)_enumerateObserversRespondingToSelector:(SEL)a3 usingBlock:(id)a4
+- (void)_enumerateObserversRespondingToSelector:(SEL)selector usingBlock:(id)block
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  if (v5 && [(NSHashTable *)self->_observers count])
+  blockCopy = block;
+  if (blockCopy && [(NSHashTable *)self->_observers count])
   {
     v14 = 0u;
     v15 = 0u;
@@ -1261,7 +1261,7 @@ void __84__NCFullScreenPresentableViewController__startDetailStageTransitionTime
           v11 = *(*(&v12 + 1) + 8 * v10);
           if (objc_opt_respondsToSelector())
           {
-            v5[2](v5, v11);
+            blockCopy[2](blockCopy, v11);
           }
 
           ++v10;
@@ -1287,11 +1287,11 @@ void __84__NCFullScreenPresentableViewController__startDetailStageTransitionTime
     self->_backgroundMaterialView = v5;
 
     [(MTMaterialView *)self->_backgroundMaterialView setUseBuiltInAlphaTransformerAndBackdropScaleAdjustment:1];
-    v8 = [(NCFullScreenPresentableViewController *)self view];
+    view = [(NCFullScreenPresentableViewController *)self view];
     v7 = self->_backgroundMaterialView;
-    [v8 bounds];
+    [view bounds];
     [(MTMaterialView *)v7 setFrame:?];
-    [v8 insertSubview:self->_backgroundMaterialView atIndex:0];
+    [view insertSubview:self->_backgroundMaterialView atIndex:0];
     [(MTMaterialView *)self->_backgroundMaterialView setAutoresizingMask:18];
   }
 }
@@ -1300,27 +1300,27 @@ void __84__NCFullScreenPresentableViewController__startDetailStageTransitionTime
 {
   if (!self->_backgroundOpaqueView)
   {
-    v9 = [(NCFullScreenPresentableViewController *)self view];
+    view = [(NCFullScreenPresentableViewController *)self view];
     v3 = [_NCFullScreenPresentableViewControllerOpaqueBackgroundView alloc];
-    [v9 bounds];
+    [view bounds];
     v4 = [(_NCFullScreenPresentableViewControllerOpaqueBackgroundView *)v3 initWithFrame:?];
     backgroundOpaqueView = self->_backgroundOpaqueView;
     self->_backgroundOpaqueView = v4;
 
     v6 = self->_backgroundOpaqueView;
-    v7 = [MEMORY[0x277D75348] systemBlackColor];
-    [(UIView *)v6 setBackgroundColor:v7];
+    systemBlackColor = [MEMORY[0x277D75348] systemBlackColor];
+    [(UIView *)v6 setBackgroundColor:systemBlackColor];
 
     [(UIView *)self->_backgroundOpaqueView setAlpha:0.0];
     v8 = self->_backgroundOpaqueView;
     if (self->_backgroundMaterialView)
     {
-      [v9 insertSubview:v8 aboveSubview:?];
+      [view insertSubview:v8 aboveSubview:?];
     }
 
     else
     {
-      [v9 insertSubview:v8 atIndex:?];
+      [view insertSubview:v8 atIndex:?];
     }
 
     [(UIView *)self->_backgroundOpaqueView setAutoresizingMask:18];
@@ -1364,8 +1364,8 @@ void __84__NCFullScreenPresentableViewController__startDetailStageTransitionTime
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v13 = [(NCFullScreenStagingBannerView *)self->_bannerView requiredVisualStyleCategories];
-    v14 = [v13 countByEnumeratingWithState:&v22 objects:v31 count:16];
+    requiredVisualStyleCategories = [(NCFullScreenStagingBannerView *)self->_bannerView requiredVisualStyleCategories];
+    v14 = [requiredVisualStyleCategories countByEnumeratingWithState:&v22 objects:v31 count:16];
     if (v14)
     {
       v15 = *v23;
@@ -1376,29 +1376,29 @@ void __84__NCFullScreenPresentableViewController__startDetailStageTransitionTime
         {
           if (*v23 != v15)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(requiredVisualStyleCategories);
           }
 
-          v17 = [*(*(&v22 + 1) + 8 * v16) integerValue];
+          integerValue = [*(*(&v22 + 1) + 8 * v16) integerValue];
           v18 = self->_bannerView;
-          v19 = [(MTMaterialView *)self->_backgroundMaterialView visualStylingProviderForCategory:v17];
-          [(NCFullScreenStagingBannerView *)v18 setVisualStylingProvider:v19 forCategory:v17];
+          v19 = [(MTMaterialView *)self->_backgroundMaterialView visualStylingProviderForCategory:integerValue];
+          [(NCFullScreenStagingBannerView *)v18 setVisualStylingProvider:v19 forCategory:integerValue];
 
           ++v16;
         }
 
         while (v14 != v16);
-        v14 = [v13 countByEnumeratingWithState:&v22 objects:v31 count:16];
+        v14 = [requiredVisualStyleCategories countByEnumeratingWithState:&v22 objects:v31 count:16];
       }
 
       while (v14);
     }
 
-    v20 = [(NCFullScreenPresentableViewController *)self view];
+    view = [(NCFullScreenPresentableViewController *)self view];
     v21 = self->_bannerView;
-    [v20 bounds];
+    [view bounds];
     [(NCFullScreenStagingBannerView *)v21 setFrame:?];
-    [v20 addSubview:self->_bannerView];
+    [view addSubview:self->_bannerView];
     [(NCFullScreenStagingBannerView *)self->_bannerView setAutoresizingMask:18];
     [(NCFullScreenPresentableViewController *)self invalidateStaticContent];
 
@@ -1420,56 +1420,56 @@ void __72__NCFullScreenPresentableViewController__configureBannerViewIfNecessary
   [WeakRetained _handleBannerDefaultTap];
 }
 
-- (void)_askDelegateToExecuteAction:(id)a3 withParameters:(id)a4 animated:(BOOL)a5
+- (void)_askDelegateToExecuteAction:(id)action withParameters:(id)parameters animated:(BOOL)animated
 {
-  v17 = a3;
-  v7 = a4;
-  if (v17)
+  actionCopy = action;
+  parametersCopy = parameters;
+  if (actionCopy)
   {
-    v8 = [(NCNotificationRequest *)self->_notificationRequest userNotification];
-    if (v8)
+    userNotification = [(NCNotificationRequest *)self->_notificationRequest userNotification];
+    if (userNotification)
     {
-      v9 = [v7 mutableCopy];
+      v9 = [parametersCopy mutableCopy];
       v10 = v9;
       if (v9)
       {
-        v11 = v9;
+        dictionary = v9;
       }
 
       else
       {
-        v11 = [MEMORY[0x277CBEB38] dictionary];
+        dictionary = [MEMORY[0x277CBEB38] dictionary];
       }
 
-      v12 = v11;
+      v12 = dictionary;
 
-      v13 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v8 requiringSecureCoding:1 error:0];
+      v13 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:userNotification requiringSecureCoding:1 error:0];
       [v12 setValue:v13 forKey:*MEMORY[0x277CE2178]];
       v14 = [v12 copy];
 
-      v7 = v14;
+      parametersCopy = v14;
     }
 
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     if (objc_opt_respondsToSelector())
     {
-      v16 = [(NCFullScreenPresentableViewController *)self delegate];
-      [v16 notificationRequestPresenter:self executeAction:v17 withParameters:v7 completion:0];
+      delegate = [(NCFullScreenPresentableViewController *)self delegate];
+      [delegate notificationRequestPresenter:self executeAction:actionCopy withParameters:parametersCopy completion:0];
     }
   }
 }
 
-- (void)_executeDefaultAction:(BOOL)a3
+- (void)_executeDefaultAction:(BOOL)action
 {
-  v3 = a3;
-  v4 = [(NCFullScreenStagingBannerView *)self->_bannerView staticContentProvider];
-  v6 = [v4 defaultAction];
+  actionCopy = action;
+  staticContentProvider = [(NCFullScreenStagingBannerView *)self->_bannerView staticContentProvider];
+  defaultAction = [staticContentProvider defaultAction];
 
-  v5 = v6;
-  if (v6)
+  v5 = defaultAction;
+  if (defaultAction)
   {
-    (*(v6 + 16))(v6, v3);
-    v5 = v6;
+    (*(defaultAction + 16))(defaultAction, actionCopy);
+    v5 = defaultAction;
   }
 }
 
@@ -1478,21 +1478,21 @@ void __72__NCFullScreenPresentableViewController__configureBannerViewIfNecessary
   v21 = *MEMORY[0x277D85DE8];
   v3 = +[NCNotificationEventTracker sharedInstance];
   notificationRequest = self->_notificationRequest;
-  v5 = [(NCFullScreenPresentableViewController *)self notificationUsageTrackingState];
-  [v3 shortLookDefaultActionInvokedWithTrigger:0 forNotificationRequest:notificationRequest withState:v5];
+  notificationUsageTrackingState = [(NCFullScreenPresentableViewController *)self notificationUsageTrackingState];
+  [v3 shortLookDefaultActionInvokedWithTrigger:0 forNotificationRequest:notificationRequest withState:notificationUsageTrackingState];
 
-  v6 = [(NCFullScreenPresentableViewController *)self delegate];
-  if ((objc_opt_respondsToSelector() & 1) != 0 && [v6 fullScreenPresentableViewControllerShouldTransitionToDetailStageOnTap:self] && -[NCFullScreenStagingBannerView stage](self->_bannerView, "stage") != 2)
+  delegate = [(NCFullScreenPresentableViewController *)self delegate];
+  if ((objc_opt_respondsToSelector() & 1) != 0 && [delegate fullScreenPresentableViewControllerShouldTransitionToDetailStageOnTap:self] && -[NCFullScreenStagingBannerView stage](self->_bannerView, "stage") != 2)
   {
     v7 = *MEMORY[0x277D77DB0];
     if (os_log_type_enabled(*MEMORY[0x277D77DB0], OS_LOG_TYPE_DEFAULT))
     {
       v8 = self->_notificationRequest;
       v9 = v7;
-      v10 = [(NCNotificationRequest *)v8 notificationIdentifier];
-      v11 = [v10 un_logDigest];
+      notificationIdentifier = [(NCNotificationRequest *)v8 notificationIdentifier];
+      un_logDigest = [notificationIdentifier un_logDigest];
       v19 = 138543362;
-      v20 = v11;
+      v20 = un_logDigest;
       _os_log_impl(&dword_21E77E000, v9, OS_LOG_TYPE_DEFAULT, "Notification request presenter tap performing transition to detail stage for request '%{public}@'", &v19, 0xCu);
     }
 
@@ -1502,20 +1502,20 @@ void __72__NCFullScreenPresentableViewController__configureBannerViewIfNecessary
 
   else
   {
-    v12 = [(NCFullScreenStagingBannerView *)self->_bannerView staticContentProvider];
-    v13 = [v12 defaultAction];
+    staticContentProvider = [(NCFullScreenStagingBannerView *)self->_bannerView staticContentProvider];
+    defaultAction = [staticContentProvider defaultAction];
 
-    if (v13)
+    if (defaultAction)
     {
       v14 = *MEMORY[0x277D77DB0];
       if (os_log_type_enabled(*MEMORY[0x277D77DB0], OS_LOG_TYPE_DEFAULT))
       {
         v15 = self->_notificationRequest;
         v16 = v14;
-        v17 = [(NCNotificationRequest *)v15 notificationIdentifier];
-        v18 = [v17 un_logDigest];
+        notificationIdentifier2 = [(NCNotificationRequest *)v15 notificationIdentifier];
+        un_logDigest2 = [notificationIdentifier2 un_logDigest];
         v19 = 138543362;
-        v20 = v18;
+        v20 = un_logDigest2;
         _os_log_impl(&dword_21E77E000, v16, OS_LOG_TYPE_DEFAULT, "Notification request presenter tap performing default action for request '%{public}@'", &v19, 0xCu);
       }
 
@@ -1524,21 +1524,21 @@ void __72__NCFullScreenPresentableViewController__configureBannerViewIfNecessary
   }
 }
 
-- (void)_requestDismissalWithReason:(id)a3
+- (void)_requestDismissalWithReason:(id)reason
 {
-  v6 = a3;
-  objc_storeStrong(&self->_dismissalRequestReason, a3);
+  reasonCopy = reason;
+  objc_storeStrong(&self->_dismissalRequestReason, reason);
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained fullScreenPresentableViewController:self requestsDismissalWithReason:v6];
+    [WeakRetained fullScreenPresentableViewController:self requestsDismissalWithReason:reasonCopy];
   }
 }
 
-- (double)_rubberbandedTranslationForTranslation:(double)a3
+- (double)_rubberbandedTranslationForTranslation:(double)translation
 {
-  v5 = [(NCFullScreenPresentableViewController *)self view];
-  [v5 bounds];
+  view = [(NCFullScreenPresentableViewController *)self view];
+  [view bounds];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -1557,7 +1557,7 @@ void __72__NCFullScreenPresentableViewController__configureBannerViewIfNecessary
   v22 = v17;
   v23 = v19;
   v24 = rect;
-  if (a3 <= 0.0)
+  if (translation <= 0.0)
   {
     CGRectGetMinY(*&v21);
   }
@@ -1574,7 +1574,7 @@ void __72__NCFullScreenPresentableViewController__configureBannerViewIfNecessary
   [v26 interactiveDismissalRubberbandingRange];
 
   BSUIConstrainValueToIntervalWithRubberBand();
-  if (a3 < 0.0)
+  if (translation < 0.0)
   {
     v28 = -v27;
   }

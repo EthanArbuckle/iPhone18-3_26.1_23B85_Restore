@@ -1,52 +1,52 @@
 @interface PKPeerPaymentRemoteMessagesComposer
 - (BOOL)_recipientFoundInContacts;
-- (PKPeerPaymentRemoteMessagesComposer)initWithPeerPaymentController:(id)a3 presentingViewController:(id)a4 actionType:(int64_t)a5 sourceType:(unint64_t)a6;
-- (void)_confirmPaymentMessageInsertionWithQuote:(id)a3 completion:(id)a4;
-- (void)_handleError:(id)a3;
-- (void)_insertPaymentMessageWithQuote:(id)a3 completion:(id)a4;
-- (void)_insertRequestMessageWithAmount:(id)a3 completion:(id)a4;
-- (void)_presentPeerPaymentMessage:(id)a3 completion:(id)a4;
-- (void)_showAlertForInvalidRecipientWithName:(id)a3 statusReason:(unint64_t)a4 completion:(id)a5;
-- (void)_showAlertForInvalidStateIfNeededWithCompletion:(id)a3;
-- (void)presentRemoteMessageComposerWithAmount:(id)a3 requestToken:(id)a4 memo:(id)a5 sessionID:(id)a6 overViewController:(id)a7 completion:(id)a8;
-- (void)presentRemoteMessageComposerWithRecurringPayment:(id)a3 overViewController:(id)a4 completion:(id)a5;
-- (void)validateRecipientWithAddress:(id)a3 completion:(id)a4;
+- (PKPeerPaymentRemoteMessagesComposer)initWithPeerPaymentController:(id)controller presentingViewController:(id)viewController actionType:(int64_t)type sourceType:(unint64_t)sourceType;
+- (void)_confirmPaymentMessageInsertionWithQuote:(id)quote completion:(id)completion;
+- (void)_handleError:(id)error;
+- (void)_insertPaymentMessageWithQuote:(id)quote completion:(id)completion;
+- (void)_insertRequestMessageWithAmount:(id)amount completion:(id)completion;
+- (void)_presentPeerPaymentMessage:(id)message completion:(id)completion;
+- (void)_showAlertForInvalidRecipientWithName:(id)name statusReason:(unint64_t)reason completion:(id)completion;
+- (void)_showAlertForInvalidStateIfNeededWithCompletion:(id)completion;
+- (void)presentRemoteMessageComposerWithAmount:(id)amount requestToken:(id)token memo:(id)memo sessionID:(id)d overViewController:(id)controller completion:(id)completion;
+- (void)presentRemoteMessageComposerWithRecurringPayment:(id)payment overViewController:(id)controller completion:(id)completion;
+- (void)validateRecipientWithAddress:(id)address completion:(id)completion;
 @end
 
 @implementation PKPeerPaymentRemoteMessagesComposer
 
-- (PKPeerPaymentRemoteMessagesComposer)initWithPeerPaymentController:(id)a3 presentingViewController:(id)a4 actionType:(int64_t)a5 sourceType:(unint64_t)a6
+- (PKPeerPaymentRemoteMessagesComposer)initWithPeerPaymentController:(id)controller presentingViewController:(id)viewController actionType:(int64_t)type sourceType:(unint64_t)sourceType
 {
-  v11 = a3;
-  v12 = a4;
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
   v16.receiver = self;
   v16.super_class = PKPeerPaymentRemoteMessagesComposer;
   v13 = [(PKPeerPaymentRemoteMessagesComposer *)&v16 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_peerPaymentController, a3);
-    objc_storeWeak(&v14->_presentingViewController, v12);
-    v14->_actionType = a5;
-    v14->_sourceType = a6;
+    objc_storeStrong(&v13->_peerPaymentController, controller);
+    objc_storeWeak(&v14->_presentingViewController, viewControllerCopy);
+    v14->_actionType = type;
+    v14->_sourceType = sourceType;
   }
 
   return v14;
 }
 
-- (void)validateRecipientWithAddress:(id)a3 completion:(id)a4
+- (void)validateRecipientWithAddress:(id)address completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  addressCopy = address;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __79__PKPeerPaymentRemoteMessagesComposer_validateRecipientWithAddress_completion___block_invoke;
   v10[3] = &unk_1E801BE40;
   objc_copyWeak(&v13, &location);
-  v8 = v6;
+  v8 = addressCopy;
   v11 = v8;
-  v9 = v7;
+  v9 = completionCopy;
   v12 = v9;
   [(PKPeerPaymentRemoteMessagesComposer *)self _showAlertForInvalidStateIfNeededWithCompletion:v10];
 
@@ -202,22 +202,22 @@ LABEL_11:
 LABEL_17:
 }
 
-- (void)presentRemoteMessageComposerWithAmount:(id)a3 requestToken:(id)a4 memo:(id)a5 sessionID:(id)a6 overViewController:(id)a7 completion:(id)a8
+- (void)presentRemoteMessageComposerWithAmount:(id)amount requestToken:(id)token memo:(id)memo sessionID:(id)d overViewController:(id)controller completion:(id)completion
 {
   v41 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  objc_storeStrong(&self->_memo, a5);
-  objc_storeStrong(&self->_requestToken, a4);
-  objc_storeWeak(&self->_presentingViewController, v18);
-  if (v17)
+  amountCopy = amount;
+  tokenCopy = token;
+  memoCopy = memo;
+  dCopy = d;
+  controllerCopy = controller;
+  completionCopy = completion;
+  objc_storeStrong(&self->_memo, memo);
+  objc_storeStrong(&self->_requestToken, token);
+  objc_storeWeak(&self->_presentingViewController, controllerCopy);
+  if (dCopy)
   {
     v20 = objc_alloc(MEMORY[0x1E6973F38]);
-    v21 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:v17];
+    v21 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:dCopy];
     v22 = [v20 initWithIdentifier:v21];
     session = self->_session;
     self->_session = v22;
@@ -247,8 +247,8 @@ LABEL_17:
       v35[2] = __136__PKPeerPaymentRemoteMessagesComposer_presentRemoteMessageComposerWithAmount_requestToken_memo_sessionID_overViewController_completion___block_invoke;
       v35[3] = &unk_1E8010FF8;
       objc_copyWeak(&v37, &location);
-      v36 = v19;
-      [(PKPeerPaymentController *)peerPaymentController quoteWithAmount:v14 source:v26 requestToken:v15 alternateFundingSource:0 preserveCurrentBalance:0 recurringPaymentIdentifier:0 frequency:0 startDate:0 threshold:0 completion:v35];
+      v36 = completionCopy;
+      [(PKPeerPaymentController *)peerPaymentController quoteWithAmount:amountCopy source:v26 requestToken:tokenCopy alternateFundingSource:0 preserveCurrentBalance:0 recurringPaymentIdentifier:0 frequency:0 startDate:0 threshold:0 completion:v35];
 
       objc_destroyWeak(&v37);
     }
@@ -284,8 +284,8 @@ LABEL_17:
     v31[2] = __136__PKPeerPaymentRemoteMessagesComposer_presentRemoteMessageComposerWithAmount_requestToken_memo_sessionID_overViewController_completion___block_invoke_3;
     v31[3] = &unk_1E8020F30;
     objc_copyWeak(&v34, &location);
-    v32 = v14;
-    v33 = v19;
+    v32 = amountCopy;
+    v33 = completionCopy;
     [(PKPeerPaymentController *)v27 formalRequestTokenForAmount:v32 source:sourceType completion:v31];
 
     objc_destroyWeak(&v34);
@@ -440,28 +440,28 @@ LABEL_9:
 LABEL_13:
 }
 
-- (void)presentRemoteMessageComposerWithRecurringPayment:(id)a3 overViewController:(id)a4 completion:(id)a5
+- (void)presentRemoteMessageComposerWithRecurringPayment:(id)payment overViewController:(id)controller completion:(id)completion
 {
   v34 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v25 = a4;
-  v26 = a5;
-  objc_storeWeak(&self->_presentingViewController, v25);
+  paymentCopy = payment;
+  controllerCopy = controller;
+  completionCopy = completion;
+  objc_storeWeak(&self->_presentingViewController, controllerCopy);
   objc_initWeak(&location, self);
   actionType = self->_actionType;
   if (actionType == 2)
   {
-    objc_storeStrong(&self->_recurringPayment, a3);
-    v11 = [v9 amount];
-    v12 = [v9 currency];
+    objc_storeStrong(&self->_recurringPayment, payment);
+    amount = [paymentCopy amount];
+    currency = [paymentCopy currency];
     v13 = PKCurrencyAmountMake();
 
-    v14 = [MEMORY[0x1E69B8A58] sharedInstance];
-    v15 = [v9 fundingSource];
-    v16 = [v15 fpanIdentifier];
-    v24 = [v14 passWithFPANIdentifier:v16];
+    mEMORY[0x1E69B8A58] = [MEMORY[0x1E69B8A58] sharedInstance];
+    fundingSource = [paymentCopy fundingSource];
+    fpanIdentifier = [fundingSource fpanIdentifier];
+    v24 = [mEMORY[0x1E69B8A58] passWithFPANIdentifier:fpanIdentifier];
 
-    if ([v9 usesAppleCashBalance])
+    if ([paymentCopy usesAppleCashBalance])
     {
       v17 = 2;
     }
@@ -484,18 +484,18 @@ LABEL_13:
     }
 
     peerPaymentController = self->_peerPaymentController;
-    v21 = [v9 identifier];
-    v22 = [v9 frequency];
-    v23 = [v9 startDate];
+    identifier = [paymentCopy identifier];
+    frequency = [paymentCopy frequency];
+    startDate = [paymentCopy startDate];
     v27[0] = MEMORY[0x1E69E9820];
     v27[1] = 3221225472;
     v27[2] = __118__PKPeerPaymentRemoteMessagesComposer_presentRemoteMessageComposerWithRecurringPayment_overViewController_completion___block_invoke;
     v27[3] = &unk_1E8020F80;
     objc_copyWeak(&v30, &location);
     v27[4] = self;
-    v28 = v9;
-    v29 = v26;
-    [(PKPeerPaymentController *)peerPaymentController quoteWithAmount:v13 source:v19 requestToken:0 alternateFundingSource:v24 preserveCurrentBalance:v17 recurringPaymentIdentifier:v21 frequency:v22 startDate:v23 threshold:0 completion:v27];
+    v28 = paymentCopy;
+    v29 = completionCopy;
+    [(PKPeerPaymentController *)peerPaymentController quoteWithAmount:v13 source:v19 requestToken:0 alternateFundingSource:v24 preserveCurrentBalance:v17 recurringPaymentIdentifier:identifier frequency:frequency startDate:startDate threshold:0 completion:v27];
 
     objc_destroyWeak(&v30);
   }
@@ -605,9 +605,9 @@ LABEL_10:
 LABEL_14:
 }
 
-- (void)_showAlertForInvalidStateIfNeededWithCompletion:(id)a3
+- (void)_showAlertForInvalidStateIfNeededWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = objc_alloc_init(MEMORY[0x1E695DF90]);
   if (!PKNetworkConnectivityAvailable())
   {
@@ -650,13 +650,13 @@ LABEL_9:
     v12[1] = 3221225472;
     v12[2] = __87__PKPeerPaymentRemoteMessagesComposer__showAlertForInvalidStateIfNeededWithCompletion___block_invoke;
     v12[3] = &unk_1E8012220;
-    v13 = v3;
+    v13 = completionCopy;
     [v11 presentNotificationWithParameters:v4 responseHandler:v12];
   }
 
   else
   {
-    (*(v3 + 2))(v3, 1);
+    (*(completionCopy + 2))(completionCopy, 1);
   }
 }
 
@@ -671,17 +671,17 @@ uint64_t __87__PKPeerPaymentRemoteMessagesComposer__showAlertForInvalidStateIfNe
   return result;
 }
 
-- (void)_showAlertForInvalidRecipientWithName:(id)a3 statusReason:(unint64_t)a4 completion:(id)a5
+- (void)_showAlertForInvalidRecipientWithName:(id)name statusReason:(unint64_t)reason completion:(id)completion
 {
-  v7 = a3;
-  v8 = a5;
+  nameCopy = name;
+  completionCopy = completion;
   v9 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  if (a4 < 2)
+  if (reason < 2)
   {
     v10 = PKLocalizedPeerPaymentString(&cfstr_PeerPaymentInv.isa);
     [v9 setObject:v10 forKeyedSubscript:*MEMORY[0x1E695EE58]];
 
-    v11 = PKLocalizedPeerPaymentString(&cfstr_PeerPaymentInv_0.isa, &stru_1F3BD5BF0.isa, v7);
+    v11 = PKLocalizedPeerPaymentString(&cfstr_PeerPaymentInv_0.isa, &stru_1F3BD5BF0.isa, nameCopy);
     v12 = &__block_literal_global_101;
     v13 = MEMORY[0x1E69BAED0];
 LABEL_6:
@@ -694,7 +694,7 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  if (a4 == 2)
+  if (reason == 2)
   {
     v14 = PKLocalizedPeerPaymentString(&cfstr_PeerPaymentInv.isa);
     [v9 setObject:v14 forKeyedSubscript:*MEMORY[0x1E695EE58]];
@@ -713,8 +713,8 @@ LABEL_7:
   v18[2] = __101__PKPeerPaymentRemoteMessagesComposer__showAlertForInvalidRecipientWithName_statusReason_completion___block_invoke_4;
   v18[3] = &unk_1E8020FA8;
   v19 = v12;
-  v20 = v8;
-  v17 = v8;
+  v20 = completionCopy;
+  v17 = completionCopy;
   [v16 presentNotificationWithParameters:v9 responseHandler:v18];
 }
 
@@ -740,26 +740,26 @@ uint64_t __101__PKPeerPaymentRemoteMessagesComposer__showAlertForInvalidRecipien
 {
   v6 = 0;
   peerPaymentController = self->_peerPaymentController;
-  v3 = [(PKPeerPaymentRecipient *)self->_recipient conversationAddress];
-  v4 = [(PKPeerPaymentController *)peerPaymentController displayNameForRecipientAddress:v3 foundInContacts:&v6];
+  conversationAddress = [(PKPeerPaymentRecipient *)self->_recipient conversationAddress];
+  v4 = [(PKPeerPaymentController *)peerPaymentController displayNameForRecipientAddress:conversationAddress foundInContacts:&v6];
 
   return v6;
 }
 
-- (void)_confirmPaymentMessageInsertionWithQuote:(id)a3 completion:(id)a4
+- (void)_confirmPaymentMessageInsertionWithQuote:(id)quote completion:(id)completion
 {
   v37 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  quoteCopy = quote;
+  completionCopy = completion;
   v8 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v36 = v6;
+    v36 = quoteCopy;
     _os_log_impl(&dword_1BD026000, v8, OS_LOG_TYPE_DEFAULT, "Peer Payment Wallet: Confirm payment message insertion with peer payment quote: %@", buf, 0xCu);
   }
 
-  if (![v6 riskLevel])
+  if (![quoteCopy riskLevel])
   {
     if (-[PKPeerPaymentRemoteMessagesComposer _recipientFoundInContacts](self, "_recipientFoundInContacts") || (-[PKPeerPaymentController account](self->_peerPaymentController, "account"), v11 = objc_claimAutoreleasedReturnValue(), v12 = [v11 sendRestrictionType] == 2, v11, !v12))
     {
@@ -820,8 +820,8 @@ uint64_t __101__PKPeerPaymentRemoteMessagesComposer__showAlertForInvalidRecipien
       v27 = v20;
       v28 = v17;
       v30[1] = v19;
-      v26 = v6;
-      v29 = v7;
+      v26 = quoteCopy;
+      v29 = completionCopy;
       [v24 presentNotificationWithParameters:v13 responseHandler:v25];
 
       objc_destroyWeak(v30);
@@ -831,7 +831,7 @@ uint64_t __101__PKPeerPaymentRemoteMessagesComposer__showAlertForInvalidRecipien
     }
 
 LABEL_13:
-    [(PKPeerPaymentRemoteMessagesComposer *)self _insertPaymentMessageWithQuote:v6 completion:v7];
+    [(PKPeerPaymentRemoteMessagesComposer *)self _insertPaymentMessageWithQuote:quoteCopy completion:completionCopy];
     goto LABEL_14;
   }
 
@@ -841,8 +841,8 @@ LABEL_13:
   v31[2] = __91__PKPeerPaymentRemoteMessagesComposer__confirmPaymentMessageInsertionWithQuote_completion___block_invoke;
   v31[3] = &unk_1E801BE40;
   objc_copyWeak(&v34, buf);
-  v32 = v6;
-  v33 = v7;
+  v32 = quoteCopy;
+  v33 = completionCopy;
   v9 = [PKPeerPaymentFraudUIFactory fraudUIViewControllerForQuote:v32 continuationHandler:v31];
   WeakRetained = objc_loadWeakRetained(&self->_presentingViewController);
   [WeakRetained presentViewController:v9 animated:1 completion:0];
@@ -921,25 +921,25 @@ LABEL_7:
 LABEL_13:
 }
 
-- (void)_insertPaymentMessageWithQuote:(id)a3 completion:(id)a4
+- (void)_insertPaymentMessageWithQuote:(id)quote completion:(id)completion
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  quoteCopy = quote;
+  completionCopy = completion;
   v8 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v21 = 138412290;
-    v22 = v6;
+    v22 = quoteCopy;
     _os_log_impl(&dword_1BD026000, v8, OS_LOG_TYPE_DEFAULT, "Peer Payment Wallet: Insert payment message with peer payment quote: %@", &v21, 0xCu);
   }
 
-  v9 = [v6 totalReceiveAmount];
-  v10 = [v6 totalReceiveAmountCurrency];
-  v11 = PKCurrencyAmountCreate(v9, v10);
+  totalReceiveAmount = [quoteCopy totalReceiveAmount];
+  totalReceiveAmountCurrency = [quoteCopy totalReceiveAmountCurrency];
+  v11 = PKCurrencyAmountCreate(totalReceiveAmount, totalReceiveAmountCurrency);
 
-  v12 = [v6 isRecurringPayment];
-  if (v12)
+  isRecurringPayment = [quoteCopy isRecurringPayment];
+  if (isRecurringPayment)
   {
     v13 = 3;
   }
@@ -956,11 +956,11 @@ LABEL_13:
 
   v16 = [[PKPeerPaymentMessage alloc] initWithType:v13 session:self->_session];
   [(PKPeerPaymentMessage *)v16 setCurrencyAmount:v11];
-  v17 = [(PKPeerPaymentController *)self->_peerPaymentController senderPhoneOrEmail];
-  [(PKPeerPaymentMessage *)v16 setSenderAddress:v17];
+  senderPhoneOrEmail = [(PKPeerPaymentController *)self->_peerPaymentController senderPhoneOrEmail];
+  [(PKPeerPaymentMessage *)v16 setSenderAddress:senderPhoneOrEmail];
 
-  v18 = [(PKPeerPaymentRecipient *)self->_recipient normalizedAddress];
-  [(PKPeerPaymentMessage *)v16 setRecipientAddress:v18];
+  normalizedAddress = [(PKPeerPaymentRecipient *)self->_recipient normalizedAddress];
+  [(PKPeerPaymentMessage *)v16 setRecipientAddress:normalizedAddress];
 
   [(PKPeerPaymentMessage *)v16 setLocalProperties:v14];
   if (self->_memo)
@@ -973,30 +973,30 @@ LABEL_13:
     [(PKPeerPaymentMessage *)v16 setRequestToken:?];
   }
 
-  if (v12)
+  if (isRecurringPayment)
   {
-    v19 = [v6 startDate];
-    [(PKPeerPaymentMessage *)v16 setRecurringPaymentStartDate:v19];
+    startDate = [quoteCopy startDate];
+    [(PKPeerPaymentMessage *)v16 setRecurringPaymentStartDate:startDate];
 
-    -[PKPeerPaymentMessage setRecurringPaymentFrequency:](v16, "setRecurringPaymentFrequency:", [v6 frequency]);
-    v20 = [(PKPeerPaymentRecurringPayment *)self->_recurringPayment memo];
-    [(PKPeerPaymentMessage *)v16 setRecurringPaymentMemo:v20];
+    -[PKPeerPaymentMessage setRecurringPaymentFrequency:](v16, "setRecurringPaymentFrequency:", [quoteCopy frequency]);
+    memo = [(PKPeerPaymentRecurringPayment *)self->_recurringPayment memo];
+    [(PKPeerPaymentMessage *)v16 setRecurringPaymentMemo:memo];
   }
 
-  [(PKPeerPaymentRemoteMessagesComposer *)self _presentPeerPaymentMessage:v16 completion:v7];
+  [(PKPeerPaymentRemoteMessagesComposer *)self _presentPeerPaymentMessage:v16 completion:completionCopy];
 }
 
-- (void)_insertRequestMessageWithAmount:(id)a3 completion:(id)a4
+- (void)_insertRequestMessageWithAmount:(id)amount completion:(id)completion
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  amountCopy = amount;
+  completionCopy = completion;
   v8 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     requestToken = self->_requestToken;
     v15 = 138412546;
-    v16 = v6;
+    v16 = amountCopy;
     v17 = 2112;
     v18 = requestToken;
     _os_log_impl(&dword_1BD026000, v8, OS_LOG_TYPE_DEFAULT, "Peer Payment Wallet: Insert request with amount: %@ requestToken: %@", &v15, 0x16u);
@@ -1008,13 +1008,13 @@ LABEL_13:
   [v10 setAnalyticsSessionToken:v11];
 
   v12 = [[PKPeerPaymentMessage alloc] initWithType:2 session:self->_session];
-  [(PKPeerPaymentMessage *)v12 setCurrencyAmount:v6];
+  [(PKPeerPaymentMessage *)v12 setCurrencyAmount:amountCopy];
   [(PKPeerPaymentMessage *)v12 setRequestToken:self->_requestToken];
-  v13 = [(PKPeerPaymentController *)self->_peerPaymentController senderPhoneOrEmail];
-  [(PKPeerPaymentMessage *)v12 setSenderAddress:v13];
+  senderPhoneOrEmail = [(PKPeerPaymentController *)self->_peerPaymentController senderPhoneOrEmail];
+  [(PKPeerPaymentMessage *)v12 setSenderAddress:senderPhoneOrEmail];
 
-  v14 = [(PKPeerPaymentRecipient *)self->_recipient normalizedAddress];
-  [(PKPeerPaymentMessage *)v12 setRecipientAddress:v14];
+  normalizedAddress = [(PKPeerPaymentRecipient *)self->_recipient normalizedAddress];
+  [(PKPeerPaymentMessage *)v12 setRecipientAddress:normalizedAddress];
 
   [(PKPeerPaymentMessage *)v12 setLocalProperties:v10];
   if (self->_memo)
@@ -1022,17 +1022,17 @@ LABEL_13:
     [(PKPeerPaymentMessage *)v12 setMemo:?];
   }
 
-  [(PKPeerPaymentRemoteMessagesComposer *)self _presentPeerPaymentMessage:v12 completion:v7];
+  [(PKPeerPaymentRemoteMessagesComposer *)self _presentPeerPaymentMessage:v12 completion:completionCopy];
 }
 
-- (void)_presentPeerPaymentMessage:(id)a3 completion:(id)a4
+- (void)_presentPeerPaymentMessage:(id)message completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  completionCopy = completion;
   v8 = +[PKMessagesAppSharedContext sharedContext];
-  v9 = [(PKPeerPaymentController *)self->_peerPaymentController externalizedControllerState];
-  v10 = [v6 identifier];
-  [v8 persistExternalizedControllerState:v9 forMessageIdentifier:v10];
+  externalizedControllerState = [(PKPeerPaymentController *)self->_peerPaymentController externalizedControllerState];
+  identifier = [messageCopy identifier];
+  [v8 persistExternalizedControllerState:externalizedControllerState forMessageIdentifier:identifier];
 
   objc_initWeak(&location, self);
   v13[0] = MEMORY[0x1E69E9820];
@@ -1040,10 +1040,10 @@ LABEL_13:
   v13[2] = __77__PKPeerPaymentRemoteMessagesComposer__presentPeerPaymentMessage_completion___block_invoke;
   v13[3] = &unk_1E80111F8;
   objc_copyWeak(&v16, &location);
-  v14 = v6;
-  v15 = v7;
-  v11 = v7;
-  v12 = v6;
+  v14 = messageCopy;
+  v15 = completionCopy;
+  v11 = completionCopy;
+  v12 = messageCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v13);
 
   objc_destroyWeak(&v16);
@@ -1140,13 +1140,13 @@ uint64_t __77__PKPeerPaymentRemoteMessagesComposer__presentPeerPaymentMessage_co
   return result;
 }
 
-- (void)_handleError:(id)a3
+- (void)_handleError:(id)error
 {
   v3 = MEMORY[0x1E69B8F28];
-  v4 = a3;
-  v5 = [v3 displayableErrorForError:v4];
+  errorCopy = error;
+  v5 = [v3 displayableErrorForError:errorCopy];
   v6 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v7 = [MEMORY[0x1E69B8540] pageTagForAppleCashSenderError:v4];
+  v7 = [MEMORY[0x1E69B8540] pageTagForAppleCashSenderError:errorCopy];
 
   [MEMORY[0x1E69B8540] reportAppleCashSenderErrorPage:v7];
   v8 = MEMORY[0x1E695E118];
@@ -1169,18 +1169,18 @@ uint64_t __77__PKPeerPaymentRemoteMessagesComposer__presentPeerPaymentMessage_co
   v13 = v7;
   v30 = v13;
   v14 = _Block_copy(aBlock);
-  v15 = [v5 localizedRecoveryOptions];
-  v16 = [v15 firstObject];
+  localizedRecoveryOptions = [v5 localizedRecoveryOptions];
+  firstObject = [localizedRecoveryOptions firstObject];
 
-  v17 = [v5 userInfo];
-  v18 = [v17 objectForKeyedSubscript:*MEMORY[0x1E69BB898]];
+  userInfo = [v5 userInfo];
+  v18 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E69BB898]];
 
-  if (v16 && v18)
+  if (firstObject && v18)
   {
     v19 = PKLocalizedString(&cfstr_CancelButtonTi.isa);
     [v6 setObject:v19 forKeyedSubscript:v12];
 
-    [v6 setObject:v16 forKeyedSubscript:*MEMORY[0x1E695EE98]];
+    [v6 setObject:firstObject forKeyedSubscript:*MEMORY[0x1E695EE98]];
     v27[0] = MEMORY[0x1E69E9820];
     v27[1] = 3221225472;
     v27[2] = __52__PKPeerPaymentRemoteMessagesComposer__handleError___block_invoke_2;

@@ -1,19 +1,19 @@
 @interface TSCH3DBarResourceCacheItem
-+ (id)itemWithExtrusionSetting:(const BarExtrusionSetting *)a3;
-- (TSCH3DBarResourceCacheItem)initWithExtrusionSetting:(const BarExtrusionSetting *)a3;
++ (id)itemWithExtrusionSetting:(const BarExtrusionSetting *)setting;
+- (TSCH3DBarResourceCacheItem)initWithExtrusionSetting:(const BarExtrusionSetting *)setting;
 @end
 
 @implementation TSCH3DBarResourceCacheItem
 
-+ (id)itemWithExtrusionSetting:(const BarExtrusionSetting *)a3
++ (id)itemWithExtrusionSetting:(const BarExtrusionSetting *)setting
 {
-  v4 = [a1 alloc];
-  v9 = objc_msgSend_initWithExtrusionSetting_(v4, v5, v6, v7, v8, a3);
+  v4 = [self alloc];
+  v9 = objc_msgSend_initWithExtrusionSetting_(v4, v5, v6, v7, v8, setting);
 
   return v9;
 }
 
-- (TSCH3DBarResourceCacheItem)initWithExtrusionSetting:(const BarExtrusionSetting *)a3
+- (TSCH3DBarResourceCacheItem)initWithExtrusionSetting:(const BarExtrusionSetting *)setting
 {
   v63.receiver = self;
   v63.super_class = TSCH3DBarResourceCacheItem;
@@ -25,15 +25,15 @@
     v4->_barGeometry = v5;
 
     v7 = v4->_barGeometry;
-    v8 = *&a3->details.crossSection.adaptiveThreshold;
-    v60[0] = *&a3->size;
+    v8 = *&setting->details.crossSection.adaptiveThreshold;
+    v60[0] = *&setting->size;
     v60[1] = v8;
-    v9 = *&a3->details.spine.stride;
-    v61 = *&a3->details.spine.bevelHeight;
+    v9 = *&setting->details.spine.stride;
+    v61 = *&setting->details.spine.bevelHeight;
     v62 = v9;
     objc_msgSend_setExtrusionSetting_(v7, v10, *&v61, *&v9, v11, v60);
     objc_msgSend_generateArrays(v4->_barGeometry, v12, v13, v14, v15);
-    if (a3->isCylindrical)
+    if (setting->isCylindrical)
     {
       sub_2761EECB8(v60, v16, v17);
       v22 = objc_msgSend_generatorWithBBox_(TSCH3DTexCoordGenerationCylinder, v18, v19, v20, v21, v60);

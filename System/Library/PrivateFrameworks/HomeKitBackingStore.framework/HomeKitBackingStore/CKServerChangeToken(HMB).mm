@@ -6,8 +6,8 @@
 
 - (id)hmbDescription
 {
-  v1 = [a1 data];
-  v2 = [v1 base64EncodedStringWithOptions:0];
+  data = [self data];
+  v2 = [data base64EncodedStringWithOptions:0];
 
   return v2;
 }

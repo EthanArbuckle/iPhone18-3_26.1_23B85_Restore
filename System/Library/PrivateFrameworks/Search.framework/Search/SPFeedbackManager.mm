@@ -1,12 +1,12 @@
 @interface SPFeedbackManager
 + (id)sharedManager;
-+ (void)bumpPriorityOnQueue:(id)a3 withCompletion:(id)a4;
-+ (void)flushFeedbackWithCompletion:(id)a3;
++ (void)bumpPriorityOnQueue:(id)queue withCompletion:(id)completion;
++ (void)flushFeedbackWithCompletion:(id)completion;
 - (BOOL)isParsecFeedbackEnabled;
 - (SPFeedbackManager)init;
-- (void)_sendFeedback:(id)a3 type:(int64_t)a4;
-- (void)_sendFeedback:(id)a3 type:(int64_t)a4 queryId:(unint64_t)a5;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)_sendFeedback:(id)feedback type:(int64_t)type;
+- (void)_sendFeedback:(id)feedback type:(int64_t)type queryId:(unint64_t)id;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)updateNeedsToDisplayFirstTimeView;
 - (void)updateParsecEnabled;
 @end
@@ -84,10 +84,10 @@ void __54__SPFeedbackManager_updateNeedsToDisplayFirstTimeView__block_invoke(uin
     [(SPFeedbackManager *)v2 setDefaultsCenter:v7];
     [(SPFeedbackManager *)v2 updateNeedsToDisplayFirstTimeView];
     [(SPFeedbackManager *)v2 updateParsecEnabled];
-    v8 = [MEMORY[0x1E696AAE8] mainBundle];
-    v9 = [v8 bundleIdentifier];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
     clientBundleID = v2->_clientBundleID;
-    v2->_clientBundleID = v9;
+    v2->_clientBundleID = bundleIdentifier;
 
     v2->_clientRankAndBlend = _os_feature_enabled_impl();
     if ([(NSString *)v2->_clientBundleID hasPrefix:@"com.apple.omniSearch"]|| [(NSString *)v2->_clientBundleID hasPrefix:@"com.apple.intelligenceflow"])
@@ -134,19 +134,19 @@ void __40__SPFeedbackManager_updateParsecEnabled__block_invoke(uint64_t a1)
   [v9 setParsecEnabled:v8];
 }
 
-+ (void)flushFeedbackWithCompletion:(id)a3
++ (void)flushFeedbackWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = +[SPFeedbackManager sharedManager];
-  v6 = [v5 feedbackQueue];
+  feedbackQueue = [v5 feedbackQueue];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __49__SPFeedbackManager_flushFeedbackWithCompletion___block_invoke;
   v8[3] = &unk_1E82F9420;
-  v9 = v4;
-  v10 = a1;
-  v7 = v4;
-  [a1 bumpPriorityOnQueue:v6 withCompletion:v8];
+  v9 = completionCopy;
+  selfCopy = self;
+  v7 = completionCopy;
+  [self bumpPriorityOnQueue:feedbackQueue withCompletion:v8];
 }
 
 void __49__SPFeedbackManager_flushFeedbackWithCompletion___block_invoke(uint64_t a1)
@@ -173,33 +173,33 @@ void __49__SPFeedbackManager_flushFeedbackWithCompletion___block_invoke_2(uint64
   [v2 barrierOnXPC:v3];
 }
 
-+ (void)bumpPriorityOnQueue:(id)a3 withCompletion:(id)a4
++ (void)bumpPriorityOnQueue:(id)queue withCompletion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __56__SPFeedbackManager_bumpPriorityOnQueue_withCompletion___block_invoke;
   block[3] = &unk_1E82F93F8;
-  v10 = v5;
-  v6 = v5;
-  v7 = a3;
+  v10 = completionCopy;
+  v6 = completionCopy;
+  queueCopy = queue;
   v8 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, QOS_CLASS_USER_INITIATED, 0, block);
-  dispatch_async(v7, v8);
+  dispatch_async(queueCopy, v8);
 }
 
-- (void)_sendFeedback:(id)a3 type:(int64_t)a4 queryId:(unint64_t)a5
+- (void)_sendFeedback:(id)feedback type:(int64_t)type queryId:(unint64_t)id
 {
-  v8 = a3;
+  feedbackCopy = feedback;
   feedbackQueue = self->_feedbackQueue;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __48__SPFeedbackManager__sendFeedback_type_queryId___block_invoke;
   v11[3] = &unk_1E82F8FC8;
   v11[4] = self;
-  v12 = v8;
-  v13 = a5;
-  v14 = a4;
-  v10 = v8;
+  v12 = feedbackCopy;
+  idCopy = id;
+  typeCopy = type;
+  v10 = feedbackCopy;
   dispatch_async(feedbackQueue, v11);
 }
 
@@ -449,23 +449,23 @@ LABEL_49:
   v52 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_sendFeedback:(id)a3 type:(int64_t)a4
+- (void)_sendFeedback:(id)feedback type:(int64_t)type
 {
-  v6 = a3;
-  -[SPFeedbackManager _sendFeedback:type:queryId:](self, "_sendFeedback:type:queryId:", v6, a4, [v6 queryId]);
+  feedbackCopy = feedback;
+  -[SPFeedbackManager _sendFeedback:type:queryId:](self, "_sendFeedback:type:queryId:", feedbackCopy, type, [feedbackCopy queryId]);
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if ([v10 isEqualToString:@"SPUISearchFirstTimeShowCount"])
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if ([pathCopy isEqualToString:@"SPUISearchFirstTimeShowCount"])
   {
     [(SPFeedbackManager *)self updateNeedsToDisplayFirstTimeView];
   }
 
-  else if ([v10 isEqualToString:@"SBSearchDisabledDomains"])
+  else if ([pathCopy isEqualToString:@"SBSearchDisabledDomains"])
   {
     [(SPFeedbackManager *)self updateParsecEnabled];
   }
@@ -478,7 +478,7 @@ LABEL_49:
     {
       v13.receiver = self;
       v13.super_class = SPFeedbackManager;
-      [(SPFeedbackManager *)&v13 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+      [(SPFeedbackManager *)&v13 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
     }
   }
 }

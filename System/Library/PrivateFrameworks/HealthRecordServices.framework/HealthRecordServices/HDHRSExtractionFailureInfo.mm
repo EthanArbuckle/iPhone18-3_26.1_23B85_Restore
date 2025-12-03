@@ -1,9 +1,9 @@
 @interface HDHRSExtractionFailureInfo
 - (HDHRSExtractionFailureInfo)init;
-- (HDHRSExtractionFailureInfo)initWithCoder:(id)a3;
+- (HDHRSExtractionFailureInfo)initWithCoder:(id)coder;
 - (NSArray)failureRecords;
 - (id)description;
-- (void)addFailureRecord:(id)a3;
+- (void)addFailureRecord:(id)record;
 @end
 
 @implementation HDHRSExtractionFailureInfo
@@ -15,16 +15,16 @@
   return [(HDHRSExtractionFailureInfo *)&v3 init];
 }
 
-- (HDHRSExtractionFailureInfo)initWithCoder:(id)a3
+- (HDHRSExtractionFailureInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = HDHRSExtractionFailureInfo;
   v5 = [(HDHRSExtractionFailureInfo *)&v10 init];
   if (v5)
   {
     v6 = [MEMORY[0x277CBEB98] hk_typesForArrayOf:objc_opt_class()];
-    v7 = [v4 decodeObjectOfClasses:v6 forKey:@"FailureRecords"];
+    v7 = [coderCopy decodeObjectOfClasses:v6 forKey:@"FailureRecords"];
     failureRecords = v5->_failureRecords;
     v5->_failureRecords = v7;
   }
@@ -32,22 +32,22 @@
   return v5;
 }
 
-- (void)addFailureRecord:(id)a3
+- (void)addFailureRecord:(id)record
 {
-  v4 = a3;
+  recordCopy = record;
   failureRecords = self->_failureRecords;
-  v8 = v4;
+  v8 = recordCopy;
   if (!failureRecords)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_failureRecords;
     self->_failureRecords = v6;
 
-    v4 = v8;
+    recordCopy = v8;
     failureRecords = self->_failureRecords;
   }
 
-  [(NSMutableArray *)failureRecords addObject:v4];
+  [(NSMutableArray *)failureRecords addObject:recordCopy];
 }
 
 - (NSArray)failureRecords

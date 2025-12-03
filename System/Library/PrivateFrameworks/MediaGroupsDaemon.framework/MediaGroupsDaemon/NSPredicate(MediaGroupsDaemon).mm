@@ -8,8 +8,8 @@
 
 - (uint64_t)mg_containsCurrentDevice
 {
-  v1 = [a1 predicateFormat];
-  v2 = [v1 containsString:@"$CURRENT_"];
+  predicateFormat = [self predicateFormat];
+  v2 = [predicateFormat containsString:@"$CURRENT_"];
 
   return v2;
 }
@@ -17,8 +17,8 @@
 - (BOOL)mg_containsContainment
 {
   v2 = [MEMORY[0x277CCAC68] regularExpressionWithPattern:@"\\ASUBQUERY\\(\\$CONTAINMENT_MAP\\[.+?\\] options:\\$container error:{identifier IN \\$container\\)\\[SIZE\\] > 0\\z", 0, 0}];
-  v3 = [a1 predicateFormat];
-  v4 = [v2 numberOfMatchesInString:v3 options:0 range:{0, objc_msgSend(v3, "length")}] == 1;
+  predicateFormat = [self predicateFormat];
+  v4 = [v2 numberOfMatchesInString:predicateFormat options:0 range:{0, objc_msgSend(predicateFormat, "length")}] == 1;
 
   return v4;
 }
@@ -29,23 +29,23 @@
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v10 = v4[2](v4, a1);
+    v10 = v4[2](v4, self);
     goto LABEL_12;
   }
 
-  v5 = a1;
-  v6 = [v5 compoundPredicateType];
-  v7 = [v5 subpredicates];
+  selfCopy = self;
+  compoundPredicateType = [selfCopy compoundPredicateType];
+  subpredicates = [selfCopy subpredicates];
   v8 = 0;
   v9 = 0;
-  v10 = v6 == 2;
+  v10 = compoundPredicateType == 2;
   while (1)
   {
     v11 = v8;
-    v8 = [v7 objectAtIndex:v9];
+    v8 = [subpredicates objectAtIndex:v9];
 
     v12 = [v8 mg_evaluateConstraint:v4];
-    if (v6 != 2)
+    if (compoundPredicateType != 2)
     {
       break;
     }
@@ -57,7 +57,7 @@
     }
 
 LABEL_7:
-    if (++v9 >= [v7 count])
+    if (++v9 >= [subpredicates count])
     {
       goto LABEL_11;
     }

@@ -7,8 +7,8 @@
 
 - (uint64_t)mf_lineBreakBeforeIndex:()FormatFlowedSupportInternal withinRange:
 {
-  v6 = [(__CFString *)a1 length]- a4;
-  if (CFStringGetCharactersPtr(a1))
+  v6 = [(__CFString *)self length]- a4;
+  if (CFStringGetCharactersPtr(self))
   {
     v7 = 0;
   }
@@ -18,7 +18,7 @@
     v7 = malloc_type_malloc(2 * v6, 0x1000040BDFB0063uLL);
     v12.location = a4;
     v12.length = v6;
-    CFStringGetCharacters(a1, v12, v7);
+    CFStringGetCharacters(self, v12, v7);
   }
 
   _GetTextBreakLocale();
@@ -47,8 +47,8 @@
   }
 
   v6 = a3 + 1;
-  v7 = [(__CFString *)a1 length]- (a3 + 1);
-  if (CFStringGetCharactersPtr(a1))
+  v7 = [(__CFString *)self length]- (a3 + 1);
+  if (CFStringGetCharactersPtr(self))
   {
     v8 = 0;
   }
@@ -58,7 +58,7 @@
     v10 = malloc_type_malloc(2 * v7, 0x1000040BDFB0063uLL);
     v14.location = v6;
     v14.length = v7;
-    CFStringGetCharacters(a1, v14, v10);
+    CFStringGetCharacters(self, v14, v10);
     v8 = v10;
   }
 

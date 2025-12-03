@@ -1,20 +1,20 @@
 @interface PRAttachedAccessoryMonitor
 - (BOOL)startMonitoring;
-- (PRAttachedAccessoryMonitor)initWithQueue:(id)a3;
+- (PRAttachedAccessoryMonitor)initWithQueue:(id)queue;
 - (id).cxx_construct;
-- (void)accessoryConnected:(id)a3;
-- (void)accessoryConnectionDetached:(id)a3;
-- (void)accessoryDisconnected:(id)a3;
-- (void)accessoryEndpointAttached:(id)a3 transportType:(int)a4 protocol:(int)a5 properties:(id)a6 forConnection:(id)a7;
+- (void)accessoryConnected:(id)connected;
+- (void)accessoryConnectionDetached:(id)detached;
+- (void)accessoryDisconnected:(id)disconnected;
+- (void)accessoryEndpointAttached:(id)attached transportType:(int)type protocol:(int)protocol properties:(id)properties forConnection:(id)connection;
 - (void)initAccessoryListener;
 @end
 
 @implementation PRAttachedAccessoryMonitor
 
-- (PRAttachedAccessoryMonitor)initWithQueue:(id)a3
+- (PRAttachedAccessoryMonitor)initWithQueue:(id)queue
 {
-  v6 = a3;
-  if (!v6)
+  queueCopy = queue;
+  if (!queueCopy)
   {
     v12 = +[NSAssertionHandler currentHandler];
     [v12 handleFailureInMethod:a2 object:self file:@"PRAttachedAccessoryMonitor.mm" lineNumber:64 description:{@"Invalid parameter not satisfying: %@", @"queue"}];
@@ -26,7 +26,7 @@
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_queue, a3);
+    objc_storeStrong(&v7->_queue, queue);
     v8->_monitoring = 0;
     v9 = objc_opt_new();
     fConnectedACCAccessoryUUIDs = v8->fConnectedACCAccessoryUUIDs;
@@ -64,12 +64,12 @@
   fNotificationCenter = self->fNotificationCenter;
   self->fNotificationCenter = v5;
 
-  v7 = [(EAAccessoryManager *)self->fAccessoryManager connectedAccessories];
+  connectedAccessories = [(EAAccessoryManager *)self->fAccessoryManager connectedAccessories];
   v8 = qword_1009F7408;
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v20 = [v7 count];
+    v20 = [connectedAccessories count];
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "examining %lu connected accessories", buf, 0xCu);
   }
 
@@ -77,7 +77,7 @@
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v9 = v7;
+  v9 = connectedAccessories;
   v10 = [v9 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v10)
   {
@@ -109,40 +109,40 @@
   [v13 registerDelegate:self];
 }
 
-- (void)accessoryConnected:(id)a3
+- (void)accessoryConnected:(id)connected
 {
-  v4 = a3;
+  connectedCopy = connected;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100369284;
   v7[3] = &unk_10098A2E8;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = connectedCopy;
+  selfCopy = self;
+  v6 = connectedCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)accessoryDisconnected:(id)a3
+- (void)accessoryDisconnected:(id)disconnected
 {
-  v4 = a3;
+  disconnectedCopy = disconnected;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100369434;
   v7[3] = &unk_10098A2E8;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = disconnectedCopy;
+  selfCopy = self;
+  v6 = disconnectedCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)accessoryEndpointAttached:(id)a3 transportType:(int)a4 protocol:(int)a5 properties:(id)a6 forConnection:(id)a7
+- (void)accessoryEndpointAttached:(id)attached transportType:(int)type protocol:(int)protocol properties:(id)properties forConnection:(id)connection
 {
-  v11 = a3;
-  v12 = a6;
-  v13 = a7;
-  v14 = [v12 objectForKey:kACCProperties_Endpoint_NFC_Type];
+  attachedCopy = attached;
+  propertiesCopy = properties;
+  connectionCopy = connection;
+  v14 = [propertiesCopy objectForKey:kACCProperties_Endpoint_NFC_Type];
   if (!v14)
   {
     goto LABEL_39;
@@ -154,17 +154,17 @@
     goto LABEL_39;
   }
 
-  v15 = [v14 intValue];
-  if (v15 <= 0x4B)
+  intValue = [v14 intValue];
+  if (intValue <= 0x4B)
   {
-    if (v15 <= 65)
+    if (intValue <= 65)
     {
-      if (!v15)
+      if (!intValue)
       {
         goto LABEL_39;
       }
 
-      if (v15 == 57)
+      if (intValue == 57)
       {
         v16 = 9;
         goto LABEL_28;
@@ -173,7 +173,7 @@
 
     else
     {
-      switch(v15)
+      switch(intValue)
       {
         case 'B':
           v16 = 8;
@@ -188,9 +188,9 @@
     }
   }
 
-  else if (v15 > 83)
+  else if (intValue > 83)
   {
-    switch(v15)
+    switch(intValue)
     {
       case 'T':
         v16 = 11;
@@ -206,7 +206,7 @@
 
   else
   {
-    switch(v15)
+    switch(intValue)
     {
       case 'L':
         v16 = 5;
@@ -222,20 +222,20 @@
 
   v16 = 999;
 LABEL_28:
-  if (v13)
+  if (connectionCopy)
   {
-    [(NSMutableSet *)self->fConnectedACCAccessoryUUIDs addObject:v13];
-    sub_100004A08(v23, [v13 UTF8String]);
+    [(NSMutableSet *)self->fConnectedACCAccessoryUUIDs addObject:connectionCopy];
+    sub_100004A08(v23, [connectionCopy UTF8String]);
     *buf = v23;
     *(sub_100369B40(&self->fConnectedACCAccessoryTypes.__table_.__bucket_list_.__ptr_, v23) + 10) = v16;
     v17 = qword_1009F7408;
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
-      v18 = kACCEndpoint_TransportType_Strings[a4];
+      v18 = kACCEndpoint_TransportType_Strings[type];
       sub_10041C9CC();
       v19 = v22 >= 0 ? &__p : __p;
       *buf = 138412802;
-      *&buf[4] = v12;
+      *&buf[4] = propertiesCopy;
       v26 = 2080;
       v27 = v18;
       v28 = 2080;
@@ -262,17 +262,17 @@ LABEL_28:
 LABEL_39:
 }
 
-- (void)accessoryConnectionDetached:(id)a3
+- (void)accessoryConnectionDetached:(id)detached
 {
-  v4 = a3;
-  v5 = [(NSMutableSet *)self->fConnectedACCAccessoryUUIDs member:v4];
+  detachedCopy = detached;
+  v5 = [(NSMutableSet *)self->fConnectedACCAccessoryUUIDs member:detachedCopy];
   v6 = v5;
-  if (v4)
+  if (detachedCopy)
   {
     if (v5)
     {
-      [(NSMutableSet *)self->fConnectedACCAccessoryUUIDs removeObject:v4];
-      sub_100004A08(v15, [v4 UTF8String]);
+      [(NSMutableSet *)self->fConnectedACCAccessoryUUIDs removeObject:detachedCopy];
+      sub_100004A08(v15, [detachedCopy UTF8String]);
       v7 = sub_100021998(&self->fConnectedACCAccessoryTypes.__table_.__bucket_list_.__ptr_, v15);
       if (v7)
       {
@@ -291,7 +291,7 @@ LABEL_39:
         sub_10041C9CC();
         v11 = v14 >= 0 ? &__p : __p;
         *buf = 138412546;
-        v18 = v4;
+        v18 = detachedCopy;
         v19 = 2080;
         v20 = v11;
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "regulatory,acc,Accessory detached: UUID: %@, accessory_type: %s.", buf, 0x16u);
@@ -318,7 +318,7 @@ LABEL_39:
       v9 = qword_1009F7408;
       if (os_log_type_enabled(qword_1009F7408, OS_LOG_TYPE_ERROR))
       {
-        sub_1004C3DA8(v4, v9);
+        sub_1004C3DA8(detachedCopy, v9);
       }
     }
   }

@@ -5,7 +5,7 @@
 - (id)description;
 - (void)dealloc;
 - (void)isValid;
-- (void)setAudioFormat:(AudioStreamBasicDescription *)a3;
+- (void)setAudioFormat:(AudioStreamBasicDescription *)format;
 @end
 
 @implementation VCAudioInjectorConfig
@@ -116,11 +116,11 @@
   return self;
 }
 
-- (void)setAudioFormat:(AudioStreamBasicDescription *)a3
+- (void)setAudioFormat:(AudioStreamBasicDescription *)format
 {
-  v3 = *&a3->mSampleRate;
-  v4 = *&a3->mBytesPerPacket;
-  *&self->_audioFormat.mBitsPerChannel = *&a3->mBitsPerChannel;
+  v3 = *&format->mSampleRate;
+  v4 = *&format->mBytesPerPacket;
+  *&self->_audioFormat.mBitsPerChannel = *&format->mBitsPerChannel;
   *&self->_audioFormat.mSampleRate = v3;
   *&self->_audioFormat.mBytesPerPacket = v4;
 }

@@ -1,13 +1,13 @@
 @interface NEPathController
 + (id)copyAggregatePathRules;
-- (BOOL)checkValidityAndCollectErrors:(id)a3;
+- (BOOL)checkValidityAndCollectErrors:(id)errors;
 - (BOOL)hasNonDefaultRules;
-- (BOOL)removePathRuleBySigningIdentifier:(id)a3;
-- (NEPathController)initWithCoder:(id)a3;
-- (id)copyPathRuleBySigningIdentifier:(id)a3;
+- (BOOL)removePathRuleBySigningIdentifier:(id)identifier;
+- (NEPathController)initWithCoder:(id)coder;
+- (id)copyPathRuleBySigningIdentifier:(id)identifier;
 - (id)copyPathRuleSigningIdentifiers;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NEPathController
@@ -99,8 +99,8 @@ LABEL_19:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v2 = [(NEPathController *)self pathRules];
-  v3 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  pathRules = [(NEPathController *)self pathRules];
+  v3 = [pathRules countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v3)
   {
     v4 = v3;
@@ -111,7 +111,7 @@ LABEL_19:
       {
         if (*v12 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(pathRules);
         }
 
         v7 = *(*(&v11 + 1) + 8 * i);
@@ -122,7 +122,7 @@ LABEL_19:
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v4 = [pathRules countByEnumeratingWithState:&v11 objects:v15 count:16];
       v8 = 0;
       if (v4)
       {
@@ -148,15 +148,15 @@ LABEL_16:
 {
   v20 = *MEMORY[0x1E69E9840];
   v3 = objc_alloc(MEMORY[0x1E695DF70]);
-  v4 = [(NEPathController *)self pathRules];
-  v5 = [v3 initWithCapacity:{objc_msgSend(v4, "count")}];
+  pathRules = [(NEPathController *)self pathRules];
+  v5 = [v3 initWithCapacity:{objc_msgSend(pathRules, "count")}];
 
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [(NEPathController *)self pathRules];
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  pathRules2 = [(NEPathController *)self pathRules];
+  v7 = [pathRules2 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -168,17 +168,17 @@ LABEL_16:
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(pathRules2);
         }
 
-        v11 = [*(*(&v15 + 1) + 8 * v10) matchSigningIdentifier];
-        [v5 addObject:v11];
+        matchSigningIdentifier = [*(*(&v15 + 1) + 8 * v10) matchSigningIdentifier];
+        [v5 addObject:matchSigningIdentifier];
 
         ++v10;
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [pathRules2 countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v8);
@@ -189,12 +189,12 @@ LABEL_16:
   return v12;
 }
 
-- (BOOL)removePathRuleBySigningIdentifier:(id)a3
+- (BOOL)removePathRuleBySigningIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = objc_alloc(MEMORY[0x1E695DF70]);
-  v6 = [(NEPathController *)self pathRules];
-  v7 = [v5 initWithArray:v6];
+  pathRules = [(NEPathController *)self pathRules];
+  v7 = [v5 initWithArray:pathRules];
 
   if ([v7 count])
   {
@@ -202,8 +202,8 @@ LABEL_16:
     while (1)
     {
       v9 = [v7 objectAtIndex:v8];
-      v10 = [v9 matchSigningIdentifier];
-      v11 = [v10 isEqualToString:v4];
+      matchSigningIdentifier = [v9 matchSigningIdentifier];
+      v11 = [matchSigningIdentifier isEqualToString:identifierCopy];
 
       if (v11)
       {
@@ -231,16 +231,16 @@ LABEL_5:
   return v12;
 }
 
-- (id)copyPathRuleBySigningIdentifier:(id)a3
+- (id)copyPathRuleBySigningIdentifier:(id)identifier
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(NEPathController *)self pathRules];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  pathRules = [(NEPathController *)self pathRules];
+  v6 = [pathRules countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = *v15;
@@ -250,12 +250,12 @@ LABEL_5:
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(pathRules);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 matchSigningIdentifier];
-        v11 = [v10 isEqualToString:v4];
+        matchSigningIdentifier = [v9 matchSigningIdentifier];
+        v11 = [matchSigningIdentifier isEqualToString:identifierCopy];
 
         if (v11)
         {
@@ -264,7 +264,7 @@ LABEL_5:
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [pathRules countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v6)
       {
         continue;
@@ -280,20 +280,20 @@ LABEL_11:
   return v6;
 }
 
-- (BOOL)checkValidityAndCollectErrors:(id)a3
+- (BOOL)checkValidityAndCollectErrors:(id)errors
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(NEPathController *)self pathRules];
+  errorsCopy = errors;
+  pathRules = [(NEPathController *)self pathRules];
 
-  if (v5)
+  if (pathRules)
   {
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v6 = [(NEPathController *)self pathRules];
-    v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    pathRules2 = [(NEPathController *)self pathRules];
+    v7 = [pathRules2 countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v7)
     {
       v8 = v7;
@@ -305,24 +305,24 @@ LABEL_11:
         {
           if (*v16 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(pathRules2);
           }
 
           v12 = *(*(&v15 + 1) + 8 * i);
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v10 &= [v12 checkValidityAndCollectErrors:v4];
+            v10 &= [v12 checkValidityAndCollectErrors:errorsCopy];
           }
 
           else
           {
-            [NEConfiguration addError:v4 toList:?];
+            [NEConfiguration addError:errorsCopy toList:?];
             v10 = 0;
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v8 = [pathRules2 countByEnumeratingWithState:&v15 objects:v19 count:16];
       }
 
       while (v8);
@@ -343,17 +343,17 @@ LABEL_11:
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[NEPathController allocWithZone:?]];
   [(NEPathController *)v4 setEnabled:[(NEPathController *)self isEnabled]];
-  v5 = [(NEPathController *)self pathRules];
+  pathRules = [(NEPathController *)self pathRules];
 
-  if (v5)
+  if (pathRules)
   {
     v7 = objc_alloc(MEMORY[0x1E695DEC8]);
-    v8 = [(NEPathController *)self pathRules];
-    v9 = [v7 initWithArray:v8 copyItems:1];
+    pathRules2 = [(NEPathController *)self pathRules];
+    v9 = [v7 initWithArray:pathRules2 copyItems:1];
     [(NEPathController *)v4 setPathRules:v9];
   }
 
@@ -373,12 +373,12 @@ LABEL_11:
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
-  [v7 encodeBool:-[NEPathController isEnabled](self forKey:{"isEnabled"), @"Enabled"}];
-  v4 = [(NEPathController *)self pathRules];
-  [v7 encodeObject:v4 forKey:@"Rules"];
+  coderCopy = coder;
+  [coderCopy encodeBool:-[NEPathController isEnabled](self forKey:{"isEnabled"), @"Enabled"}];
+  pathRules = [(NEPathController *)self pathRules];
+  [coderCopy encodeObject:pathRules forKey:@"Rules"];
 
   if (self)
   {
@@ -390,25 +390,25 @@ LABEL_11:
     Property = 0;
   }
 
-  [v7 encodeObject:Property forKey:@"PayloadAppRules"];
-  [v7 encodeInteger:-[NEPathController cellularFallbackFlags](self forKey:{"cellularFallbackFlags"), @"cellularFallbackFlags"}];
-  [v7 encodeBool:-[NEPathController ignoreRouteRules](self forKey:{"ignoreRouteRules"), @"IgnoreRouteRules"}];
-  [v7 encodeBool:-[NEPathController ignoreFallback](self forKey:{"ignoreFallback"), @"IgnoreFallback"}];
+  [coderCopy encodeObject:Property forKey:@"PayloadAppRules"];
+  [coderCopy encodeInteger:-[NEPathController cellularFallbackFlags](self forKey:{"cellularFallbackFlags"), @"cellularFallbackFlags"}];
+  [coderCopy encodeBool:-[NEPathController ignoreRouteRules](self forKey:{"ignoreRouteRules"), @"IgnoreRouteRules"}];
+  [coderCopy encodeBool:-[NEPathController ignoreFallback](self forKey:{"ignoreFallback"), @"IgnoreFallback"}];
 }
 
-- (NEPathController)initWithCoder:(id)a3
+- (NEPathController)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v19.receiver = self;
   v19.super_class = NEPathController;
   v5 = [(NEPathController *)&v19 init];
   if (v5)
   {
-    v5->_enabled = [v4 decodeBoolForKey:@"Enabled"];
+    v5->_enabled = [coderCopy decodeBoolForKey:@"Enabled"];
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"Rules"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"Rules"];
     pathRules = v5->_pathRules;
     v5->_pathRules = v9;
 
@@ -417,13 +417,13 @@ LABEL_11:
     v13 = objc_opt_class();
     v14 = objc_opt_class();
     v15 = [v11 setWithObjects:{v12, v13, v14, objc_opt_class(), 0}];
-    v16 = [v4 decodeObjectOfClasses:v15 forKey:@"PayloadAppRules"];
+    v16 = [coderCopy decodeObjectOfClasses:v15 forKey:@"PayloadAppRules"];
     payloadAppRules = v5->_payloadAppRules;
     v5->_payloadAppRules = v16;
 
-    v5->_cellularFallbackFlags = [v4 decodeIntegerForKey:@"cellularFallbackFlags"];
-    v5->_ignoreRouteRules = [v4 decodeBoolForKey:@"IgnoreRouteRules"];
-    v5->_ignoreFallback = [v4 decodeBoolForKey:@"IgnoreFallback"];
+    v5->_cellularFallbackFlags = [coderCopy decodeIntegerForKey:@"cellularFallbackFlags"];
+    v5->_ignoreRouteRules = [coderCopy decodeBoolForKey:@"IgnoreRouteRules"];
+    v5->_ignoreFallback = [coderCopy decodeBoolForKey:@"IgnoreFallback"];
   }
 
   return v5;

@@ -1,19 +1,19 @@
 @interface VCPBackwarp
-- (VCPBackwarp)initWithDevice:(id)a3;
+- (VCPBackwarp)initWithDevice:(id)device;
 - (int)configureGPU;
-- (int)encodeToCommandBuffer:(id)a3 input:(id)a4 output:(id)a5 flow:(id)a6 upscaledFlow:(id)a7;
+- (int)encodeToCommandBuffer:(id)buffer input:(id)input output:(id)output flow:(id)flow upscaledFlow:(id)upscaledFlow;
 @end
 
 @implementation VCPBackwarp
 
-- (VCPBackwarp)initWithDevice:(id)a3
+- (VCPBackwarp)initWithDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v11.receiver = self;
   v11.super_class = VCPBackwarp;
   v6 = [(VCPBackwarp *)&v11 init];
   v7 = v6;
-  if (v6 && (objc_storeStrong(&v6->_device, a3), [(VCPBackwarp *)v7 configureGPU]))
+  if (v6 && (objc_storeStrong(&v6->_device, device), [(VCPBackwarp *)v7 configureGPU]))
   {
     v8 = 0;
   }
@@ -30,10 +30,10 @@
 
 - (int)configureGPU
 {
-  v3 = [MEMORY[0x1E696AAE8] vcp_mediaAnalysisBundle];
+  vcp_mediaAnalysisBundle = [MEMORY[0x1E696AAE8] vcp_mediaAnalysisBundle];
   device = self->_device;
   v16 = 0;
-  v5 = [(MTLDevice *)device newDefaultLibraryWithBundle:v3 error:&v16];
+  v5 = [(MTLDevice *)device newDefaultLibraryWithBundle:vcp_mediaAnalysisBundle error:&v16];
   v6 = v16;
   mtlLibrary = self->_mtlLibrary;
   self->_mtlLibrary = v5;
@@ -70,39 +70,39 @@
   return v13;
 }
 
-- (int)encodeToCommandBuffer:(id)a3 input:(id)a4 output:(id)a5 flow:(id)a6 upscaledFlow:(id)a7
+- (int)encodeToCommandBuffer:(id)buffer input:(id)input output:(id)output flow:(id)flow upscaledFlow:(id)upscaledFlow
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = v16;
+  bufferCopy = buffer;
+  inputCopy = input;
+  outputCopy = output;
+  flowCopy = flow;
+  upscaledFlowCopy = upscaledFlow;
+  v17 = upscaledFlowCopy;
   v18 = -50;
-  if (v13 && v14 && v15 && v16)
+  if (inputCopy && outputCopy && flowCopy && upscaledFlowCopy)
   {
-    v19 = [v12 computeCommandEncoder];
-    if (v19)
+    computeCommandEncoder = [bufferCopy computeCommandEncoder];
+    if (computeCommandEncoder)
     {
-      v20 = [v17 width];
-      v21 = [v15 width];
+      width = [v17 width];
+      width2 = [flowCopy width];
       v22 = [(MTLDevice *)self->_device newBufferWithLength:4 options:0];
-      *[v22 contents] = v20 / v21;
-      v23 = [v13 width];
-      v24 = [v13 height];
-      [v19 setComputePipelineState:self->_backwarpKernel];
-      [v19 setTexture:v13 atIndex:0];
-      [v19 setTexture:v14 atIndex:1];
-      [v19 setTexture:v15 atIndex:2];
-      [v19 setTexture:v17 atIndex:3];
-      [v19 setBuffer:v22 offset:0 atIndex:0];
-      v28[0] = (v23 + 15) >> 4;
-      v28[1] = (v24 + 15) >> 4;
+      *[v22 contents] = width / width2;
+      width3 = [inputCopy width];
+      height = [inputCopy height];
+      [computeCommandEncoder setComputePipelineState:self->_backwarpKernel];
+      [computeCommandEncoder setTexture:inputCopy atIndex:0];
+      [computeCommandEncoder setTexture:outputCopy atIndex:1];
+      [computeCommandEncoder setTexture:flowCopy atIndex:2];
+      [computeCommandEncoder setTexture:v17 atIndex:3];
+      [computeCommandEncoder setBuffer:v22 offset:0 atIndex:0];
+      v28[0] = (width3 + 15) >> 4;
+      v28[1] = (height + 15) >> 4;
       v28[2] = 1;
       v26 = vdupq_n_s64(0x10uLL);
       v27 = 1;
-      [v19 dispatchThreadgroups:v28 threadsPerThreadgroup:&v26];
-      [v19 endEncoding];
+      [computeCommandEncoder dispatchThreadgroups:v28 threadsPerThreadgroup:&v26];
+      [computeCommandEncoder endEncoding];
 
       v18 = 0;
     }

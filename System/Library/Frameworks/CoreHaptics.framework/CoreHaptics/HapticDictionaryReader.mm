@@ -1,22 +1,22 @@
 @interface HapticDictionaryReader
-- (BOOL)parseEventsAndParameters:(id)a3 withBaseURL:(id)a4 reply:(id)a5;
-- (id)parseConfiguration:(id)a3 error:(id *)a4;
-- (id)parseEvent:(id)a3 withBaseURL:(id)a4;
-- (id)parseEventParams:(id)a3;
-- (id)parseParam:(id)a3;
-- (id)parseParamCurve:(id)a3;
-- (id)parseParamCurveControlPoints:(id)a3;
-- (id)readAndVerifyVersion:(id)a3 error:(id *)a4;
-- (id)scanForEmbeddedResources:(id)a3;
+- (BOOL)parseEventsAndParameters:(id)parameters withBaseURL:(id)l reply:(id)reply;
+- (id)parseConfiguration:(id)configuration error:(id *)error;
+- (id)parseEvent:(id)event withBaseURL:(id)l;
+- (id)parseEventParams:(id)params;
+- (id)parseParam:(id)param;
+- (id)parseParamCurve:(id)curve;
+- (id)parseParamCurveControlPoints:(id)points;
+- (id)readAndVerifyVersion:(id)version error:(id *)error;
+- (id)scanForEmbeddedResources:(id)resources;
 @end
 
 @implementation HapticDictionaryReader
 
-- (id)readAndVerifyVersion:(id)a3 error:(id *)a4
+- (id)readAndVerifyVersion:(id)version error:(id *)error
 {
   v29 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [v5 objectForKey:CHHapticPatternKeyVersion];
+  versionCopy = version;
+  v6 = [versionCopy objectForKey:CHHapticPatternKeyVersion];
   if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     if (kHAPIScope)
@@ -112,9 +112,9 @@ LABEL_30:
     }
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.CoreHaptics" code:-4809 userInfo:0];
+    *error = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.CoreHaptics" code:-4809 userInfo:0];
   }
 
   v9 = v6;
@@ -126,16 +126,16 @@ LABEL_19:
   return v6;
 }
 
-- (id)parseConfiguration:(id)a3 error:(id *)a4
+- (id)parseConfiguration:(id)configuration error:(id *)error
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB38] dictionary];
-  v6 = [v4 objectForKey:CHHapticPatternKeyConfiguration];
+  configurationCopy = configuration;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v6 = [configurationCopy objectForKey:CHHapticPatternKeyConfiguration];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __51__HapticDictionaryReader_parseConfiguration_error___block_invoke;
   v9[3] = &unk_2781C8F70;
-  v7 = v5;
+  v7 = dictionary;
   v10 = v7;
   [v6 enumerateKeysAndObjectsUsingBlock:v9];
 
@@ -320,10 +320,10 @@ LABEL_44:
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (id)scanForEmbeddedResources:(id)a3
+- (id)scanForEmbeddedResources:(id)resources
 {
   v23 = *MEMORY[0x277D85DE8];
-  [a3 objectForKey:CHHapticPatternKeyPattern];
+  [resources objectForKey:CHHapticPatternKeyPattern];
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
@@ -463,14 +463,14 @@ LABEL_21:
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)parseEventsAndParameters:(id)a3 withBaseURL:(id)a4 reply:(id)a5
+- (BOOL)parseEventsAndParameters:(id)parameters withBaseURL:(id)l reply:(id)reply
 {
   v53 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v27 = a4;
-  v25 = a5;
-  v24 = v8;
-  v9 = [v8 objectForKey:CHHapticPatternKeyPattern];
+  parametersCopy = parameters;
+  lCopy = l;
+  replyCopy = reply;
+  v24 = parametersCopy;
+  v9 = [parametersCopy objectForKey:CHHapticPatternKeyPattern];
   v23 = v9;
   if (v9)
   {
@@ -504,7 +504,7 @@ LABEL_7:
   }
 
   v10 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.CoreHaptics" code:-4814 userInfo:{0, 0}];
-  (*(v25 + 2))(v25, 0, 0, 0, v10);
+  (*(replyCopy + 2))(replyCopy, 0, 0, 0, v10);
 LABEL_11:
   v28 = objc_alloc_init(MEMORY[0x277CBEB18]);
   *buf = 0;
@@ -543,7 +543,7 @@ LABEL_11:
         v29[2] = __69__HapticDictionaryReader_parseEventsAndParameters_withBaseURL_reply___block_invoke;
         v29[3] = &unk_2781C90F8;
         v29[4] = self;
-        v30 = v27;
+        v30 = lCopy;
         v31 = v28;
         v32 = buf;
         v33 = &v38;
@@ -566,7 +566,7 @@ LABEL_11:
 LABEL_30:
         v18 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.CoreHaptics" code:-4814 userInfo:{0, v23}];
 
-        (*(v25 + 2))(v25, 0, 0, 0, v18);
+        (*(replyCopy + 2))(replyCopy, 0, 0, 0, v18);
         v17 = 0;
         goto LABEL_22;
       }
@@ -592,7 +592,7 @@ LABEL_30:
     goto LABEL_30;
   }
 
-  (*(v25 + 2))(v25, v28, *(*&buf[8] + 40), v39[5], 0);
+  (*(replyCopy + 2))(replyCopy, v28, *(*&buf[8] + 40), v39[5], 0);
   v17 = 1;
   v18 = v10;
 LABEL_22:
@@ -649,10 +649,10 @@ void __69__HapticDictionaryReader_parseEventsAndParameters_withBaseURL_reply___b
 LABEL_12:
 }
 
-- (id)parseEvent:(id)a3 withBaseURL:(id)a4
+- (id)parseEvent:(id)event withBaseURL:(id)l
 {
   v61 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  lCopy = l;
   v51 = 0;
   v52 = &v51;
   v53 = 0x3032000000;
@@ -689,7 +689,7 @@ LABEL_12:
   v30[5] = &v51;
   v30[8] = &v39;
   v30[9] = &v45;
-  [a3 enumerateKeysAndObjectsUsingBlock:v30];
+  [event enumerateKeysAndObjectsUsingBlock:v30];
   v7 = v52[5];
   if (!v7)
   {
@@ -846,7 +846,7 @@ LABEL_35:
       goto LABEL_36;
     }
 
-    v15 = FullURLPathFromURL(v13, v6);
+    v15 = FullURLPathFromURL(v13, lCopy);
     if (!v15)
     {
       v16 = CALog::LogObjIfEnabled(1, kHAPIScope, v14);
@@ -959,16 +959,16 @@ LABEL_17:
 LABEL_8:
 }
 
-- (id)parseEventParams:(id)a3
+- (id)parseEventParams:(id)params
 {
   v31 = *MEMORY[0x277D85DE8];
-  v18 = a3;
+  paramsCopy = params;
   v3 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  obj = v18;
+  obj = paramsCopy;
   v4 = [obj countByEnumeratingWithState:&v20 objects:v30 count:16];
   if (v4)
   {
@@ -1066,10 +1066,10 @@ LABEL_23:
   return v3;
 }
 
-- (id)parseParam:(id)a3
+- (id)parseParam:(id)param
 {
   v36 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  paramCopy = param;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
@@ -1091,7 +1091,7 @@ LABEL_23:
   v13[4] = &v22;
   v13[5] = &v18;
   v13[6] = &v14;
-  [v3 enumerateKeysAndObjectsUsingBlock:v13];
+  [paramCopy enumerateKeysAndObjectsUsingBlock:v13];
   if (!v23[5] || v19[3] == -1.0)
   {
     if (kHAPIScope)
@@ -1189,7 +1189,7 @@ LABEL_6:
 LABEL_8:
 }
 
-- (id)parseParamCurve:(id)a3
+- (id)parseParamCurve:(id)curve
 {
   v36 = *MEMORY[0x277D85DE8];
   v22 = 0;
@@ -1216,7 +1216,7 @@ LABEL_8:
   v11[7] = &v12;
   v11[4] = self;
   v11[5] = &v22;
-  [a3 enumerateKeysAndObjectsUsingBlock:v11];
+  [curve enumerateKeysAndObjectsUsingBlock:v11];
   if (!v23[5] || v19[3] == -1.0)
   {
     if (kHAPIScope)
@@ -1310,20 +1310,20 @@ void __42__HapticDictionaryReader_parseParamCurve___block_invoke(uint64_t a1, vo
 LABEL_8:
 }
 
-- (id)parseParamCurveControlPoints:(id)a3
+- (id)parseParamCurveControlPoints:(id)points
 {
   v36 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  pointsCopy = points;
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v27 = 0u;
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  obj = v3;
+  obj = pointsCopy;
   v5 = [obj countByEnumeratingWithState:&v25 objects:v35 count:16];
   if (v5)
   {
-    v23 = v3;
+    v23 = pointsCopy;
     v6 = *v26;
 LABEL_3:
     v7 = 0;

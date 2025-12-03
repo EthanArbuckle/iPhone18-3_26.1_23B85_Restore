@@ -1,23 +1,23 @@
 @interface REMSaveRequestTrackedValueContainer
 - (REMSaveRequestTrackedValue)weakValue;
-- (REMSaveRequestTrackedValueContainer)initWithValue:(id)a3;
-- (id)valueForSaveRequest:(id)a3;
+- (REMSaveRequestTrackedValueContainer)initWithValue:(id)value;
+- (id)valueForSaveRequest:(id)request;
 - (id)valueWithoutPerformingCopy;
 @end
 
 @implementation REMSaveRequestTrackedValueContainer
 
-- (REMSaveRequestTrackedValueContainer)initWithValue:(id)a3
+- (REMSaveRequestTrackedValueContainer)initWithValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   v10.receiver = self;
   v10.super_class = REMSaveRequestTrackedValueContainer;
   v5 = [(REMSaveRequestTrackedValueContainer *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_weakValue, v4);
-    v7 = [v4 shallowCopyWithSaveRequest:0];
+    objc_storeWeak(&v5->_weakValue, valueCopy);
+    v7 = [valueCopy shallowCopyWithSaveRequest:0];
     v8 = v6->_template;
     v6->_template = v7;
   }
@@ -25,30 +25,30 @@
   return v6;
 }
 
-- (id)valueForSaveRequest:(id)a3
+- (id)valueForSaveRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(REMSaveRequestTrackedValueContainer *)self weakValue];
-  if (!v5)
+  requestCopy = request;
+  weakValue = [(REMSaveRequestTrackedValueContainer *)self weakValue];
+  if (!weakValue)
   {
-    v6 = [(REMSaveRequestTrackedValueContainer *)self template];
-    v5 = [v6 shallowCopyWithSaveRequest:v4];
+    template = [(REMSaveRequestTrackedValueContainer *)self template];
+    weakValue = [template shallowCopyWithSaveRequest:requestCopy];
 
-    [(REMSaveRequestTrackedValueContainer *)self setWeakValue:v5];
+    [(REMSaveRequestTrackedValueContainer *)self setWeakValue:weakValue];
   }
 
-  return v5;
+  return weakValue;
 }
 
 - (id)valueWithoutPerformingCopy
 {
-  v3 = [(REMSaveRequestTrackedValueContainer *)self weakValue];
-  if (!v3)
+  weakValue = [(REMSaveRequestTrackedValueContainer *)self weakValue];
+  if (!weakValue)
   {
-    v3 = [(REMSaveRequestTrackedValueContainer *)self template];
+    weakValue = [(REMSaveRequestTrackedValueContainer *)self template];
   }
 
-  return v3;
+  return weakValue;
 }
 
 - (REMSaveRequestTrackedValue)weakValue

@@ -1,12 +1,12 @@
 @interface FPSandboxingURLWrapper
-+ (FPSandboxingURLWrapper)wrapperWithSecurityScopedURL:(id)a3;
-+ (FPSandboxingURLWrapper)wrapperWithURL:(id)a3 readonly:(BOOL)a4 error:(id *)a5;
-+ (void)assembleURL:(id)a3 sandbox:(id)a4 physicalURL:(id)a5 physicalSandbox:(id)a6;
++ (FPSandboxingURLWrapper)wrapperWithSecurityScopedURL:(id)l;
++ (FPSandboxingURLWrapper)wrapperWithURL:(id)l readonly:(BOOL)readonly error:(id *)error;
++ (void)assembleURL:(id)l sandbox:(id)sandbox physicalURL:(id)rL physicalSandbox:(id)physicalSandbox;
 - (FPSandboxingURLWrapper)init;
-- (FPSandboxingURLWrapper)initWithCoder:(id)a3;
+- (FPSandboxingURLWrapper)initWithCoder:(id)coder;
 - (id)_init;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation FPSandboxingURLWrapper
@@ -31,26 +31,26 @@
   return [(FPSandboxingURLWrapper *)&v3 init];
 }
 
-+ (FPSandboxingURLWrapper)wrapperWithURL:(id)a3 readonly:(BOOL)a4 error:(id *)a5
++ (FPSandboxingURLWrapper)wrapperWithURL:(id)l readonly:(BOOL)readonly error:(id *)error
 {
   v5 = MEMORY[0x1E69E9BA8];
-  if (!a4)
+  if (!readonly)
   {
     v5 = MEMORY[0x1E69E9BB0];
   }
 
-  return [a1 wrapperWithURL:a3 extensionClass:*v5 error:a5];
+  return [self wrapperWithURL:l extensionClass:*v5 error:error];
 }
 
-+ (FPSandboxingURLWrapper)wrapperWithSecurityScopedURL:(id)a3
++ (FPSandboxingURLWrapper)wrapperWithSecurityScopedURL:(id)l
 {
-  v5 = a3;
-  v6 = [[FPSandboxingURLWrapper alloc] _init];
-  [v6 setUrl:v5];
-  v7 = MEMORY[0x1AC593480](v5);
+  lCopy = l;
+  _init = [[FPSandboxingURLWrapper alloc] _init];
+  [_init setUrl:lCopy];
+  v7 = MEMORY[0x1AC593480](lCopy);
 
-  [v6 setScope:v7];
-  v8 = [v6 url];
+  [_init setScope:v7];
+  v8 = [_init url];
   v20 = 0;
   v19 = 0;
   v9 = [v8 getResourceValue:&v20 forKey:@"FPOriginalDocumentURL" error:&v19];
@@ -73,23 +73,23 @@
     v13 = [FPSandboxingURLWrapper wrapperWithURL:v10 readonly:0 error:&v18];
     v14 = v18;
 
-    [v6 setOriginalDocumentURLWrapper:v13];
+    [_init setOriginalDocumentURLWrapper:v13];
     v11 = v14;
   }
 
-  v15 = [v6 scope];
+  scope = [_init scope];
 
-  if (!v15)
+  if (!scope)
   {
-    v16 = [v6 scope];
+    scope2 = [_init scope];
 
-    if (!v16)
+    if (!scope2)
     {
-      [(FPSandboxingURLWrapper *)a2 wrapperWithSecurityScopedURL:a1];
+      [(FPSandboxingURLWrapper *)a2 wrapperWithSecurityScopedURL:self];
     }
   }
 
-  return v6;
+  return _init;
 }
 
 - (id)description
@@ -97,37 +97,37 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = [(FPSandboxingURLWrapper *)self url];
-  v6 = [v5 fp_shortDescription];
-  v7 = [(FPSandboxingURLWrapper *)self promiseURL];
-  v8 = [v7 fp_shortDescription];
-  v9 = [v3 stringWithFormat:@"<%@: %p url: %@ promiseURL: %@>", v4, self, v6, v8];
+  fp_shortDescription = [v5 fp_shortDescription];
+  promiseURL = [(FPSandboxingURLWrapper *)self promiseURL];
+  fp_shortDescription2 = [promiseURL fp_shortDescription];
+  v9 = [v3 stringWithFormat:@"<%@: %p url: %@ promiseURL: %@>", v4, self, fp_shortDescription, fp_shortDescription2];
 
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(FPSandboxingURLWrapper *)self url];
-  [v4 encodeObject:v5 forKey:@"NSURL"];
+  [coderCopy encodeObject:v5 forKey:@"NSURL"];
 
-  v6 = [(FPSandboxingURLWrapper *)self scope];
-  [v4 encodeObject:v6 forKey:@"NSURLScope"];
+  scope = [(FPSandboxingURLWrapper *)self scope];
+  [coderCopy encodeObject:scope forKey:@"NSURLScope"];
 
-  v7 = [(FPSandboxingURLWrapper *)self promiseURL];
+  promiseURL = [(FPSandboxingURLWrapper *)self promiseURL];
 
-  if (v7)
+  if (promiseURL)
   {
-    v8 = [(FPSandboxingURLWrapper *)self promiseURL];
-    [v4 encodeObject:v8 forKey:@"NSPromise"];
+    promiseURL2 = [(FPSandboxingURLWrapper *)self promiseURL];
+    [coderCopy encodeObject:promiseURL2 forKey:@"NSPromise"];
 
-    v9 = [(FPSandboxingURLWrapper *)self promiseScope];
-    [v4 encodeObject:v9 forKey:@"NSPromiseScope"];
+    promiseScope = [(FPSandboxingURLWrapper *)self promiseScope];
+    [coderCopy encodeObject:promiseScope forKey:@"NSPromiseScope"];
   }
 
-  v10 = [(FPSandboxingURLWrapper *)self originalDocumentURLWrapper];
+  originalDocumentURLWrapper = [(FPSandboxingURLWrapper *)self originalDocumentURLWrapper];
 
-  if (!v10)
+  if (!originalDocumentURLWrapper)
   {
     v11 = [(FPSandboxingURLWrapper *)self url];
     v20 = 0;
@@ -147,55 +147,55 @@
     }
   }
 
-  v17 = [(FPSandboxingURLWrapper *)self originalDocumentURLWrapper];
+  originalDocumentURLWrapper2 = [(FPSandboxingURLWrapper *)self originalDocumentURLWrapper];
 
-  if (v17)
+  if (originalDocumentURLWrapper2)
   {
-    v18 = [(FPSandboxingURLWrapper *)self originalDocumentURLWrapper];
-    [v4 encodeObject:v18 forKey:@"FPOriginalDocumentURL"];
+    originalDocumentURLWrapper3 = [(FPSandboxingURLWrapper *)self originalDocumentURLWrapper];
+    [coderCopy encodeObject:originalDocumentURLWrapper3 forKey:@"FPOriginalDocumentURL"];
   }
 }
 
-+ (void)assembleURL:(id)a3 sandbox:(id)a4 physicalURL:(id)a5 physicalSandbox:(id)a6
++ (void)assembleURL:(id)l sandbox:(id)sandbox physicalURL:(id)rL physicalSandbox:(id)physicalSandbox
 {
-  v12 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
-  if (v12)
+  lCopy = l;
+  sandboxCopy = sandbox;
+  rLCopy = rL;
+  physicalSandboxCopy = physicalSandbox;
+  if (lCopy)
   {
-    if (v9)
+    if (sandboxCopy)
     {
-      MEMORY[0x1AC593440](v12, v9);
+      MEMORY[0x1AC593440](lCopy, sandboxCopy);
     }
 
-    if (v10 && v11)
+    if (rLCopy && physicalSandboxCopy)
     {
-      MEMORY[0x1AC593440](v10, v11);
+      MEMORY[0x1AC593440](rLCopy, physicalSandboxCopy);
     }
 
     _CFURLPromiseSetPhysicalURL();
   }
 }
 
-- (FPSandboxingURLWrapper)initWithCoder:(id)a3
+- (FPSandboxingURLWrapper)initWithCoder:(id)coder
 {
-  v5 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = FPSandboxingURLWrapper;
   v6 = [(FPSandboxingURLWrapper *)&v16 init];
   if (v6)
   {
-    v7 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"NSURL"];
-    v8 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"NSPromise"];
-    v9 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"FPOriginalDocumentURL"];
-    v10 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"NSURLScope"];
-    v11 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"NSPromiseScope"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"NSURL"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"NSPromise"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"FPOriginalDocumentURL"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"NSURLScope"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"NSPromiseScope"];
     [objc_opt_class() assembleURL:v7 sandbox:v10 physicalURL:v8 physicalSandbox:v11];
     if (!v7)
     {
-      v12 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v12 handleFailureInMethod:a2 object:v6 file:@"FPSandboxingURLWrapper.m" lineNumber:207 description:@"tried to unarchive a wrapper with nil url"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v6 file:@"FPSandboxingURLWrapper.m" lineNumber:207 description:@"tried to unarchive a wrapper with nil url"];
     }
 
     [(FPSandboxingURLWrapper *)v6 setUrl:v7];

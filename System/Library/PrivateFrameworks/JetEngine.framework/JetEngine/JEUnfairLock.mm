@@ -7,7 +7,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() != a1)
+  if (objc_opt_class() != self)
   {
     v2 = MEMORY[0x1E695DF30];
     v3 = *MEMORY[0x1E695D930];

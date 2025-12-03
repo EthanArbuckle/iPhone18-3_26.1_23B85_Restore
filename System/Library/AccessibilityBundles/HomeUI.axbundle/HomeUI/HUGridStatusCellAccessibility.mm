@@ -1,16 +1,16 @@
 @interface HUGridStatusCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 - (unint64_t)accessibilityTraits;
 @end
 
 @implementation HUGridStatusCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"HFItem"];
-  [v3 validateClass:@"HUGridStatusCell" hasInstanceMethod:@"item" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"HFItem"];
+  [validationsCopy validateClass:@"HUGridStatusCell" hasInstanceMethod:@"item" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel
@@ -19,22 +19,22 @@
   v3 = [(HUGridStatusCellAccessibility *)self safeValueForKey:@"item"];
   v4 = __UIAccessibilityCastAsClass();
 
-  v5 = [v4 latestResults];
-  v6 = [v5 objectForKeyedSubscript:*MEMORY[0x29EDC5320]];
+  latestResults = [v4 latestResults];
+  v6 = [latestResults objectForKeyedSubscript:*MEMORY[0x29EDC5320]];
   v7 = __UIAccessibilitySafeClass();
 
-  v8 = [v7 midValue];
-  v9 = [v8 integerValue];
+  midValue = [v7 midValue];
+  integerValue = [midValue integerValue];
 
-  v10 = [v5 objectForKeyedSubscript:*MEMORY[0x29EDC5328]];
-  if (v9 == 0x7FFFFFFFFFFFFFFFLL)
+  v10 = [latestResults objectForKeyedSubscript:*MEMORY[0x29EDC5328]];
+  if (integerValue == 0x7FFFFFFFFFFFFFFFLL)
   {
     accessibilityHomeUILocalizedString(@"unknown.percent");
   }
 
   else
   {
-    [v5 objectForKeyedSubscript:*MEMORY[0x29EDC5308]];
+    [latestResults objectForKeyedSubscript:*MEMORY[0x29EDC5308]];
   }
   v13 = ;
   v11 = __UIAXStringForVariables();

@@ -1,26 +1,26 @@
 @interface PBUILivePhotoPlayerView
-+ (PBUILivePhotoPlayerView)playerViewWithRewindPlaybackStyle:(BOOL)a3;
++ (PBUILivePhotoPlayerView)playerViewWithRewindPlaybackStyle:(BOOL)style;
 - (PBUILivePhotoPlayerViewDelegate)delegate;
 - (UIGestureRecognizer)gestureRecognizer;
-- (id)videoPlayerForPlayer:(id)a3;
+- (id)videoPlayerForPlayer:(id)player;
 - (int64_t)playbackState;
-- (void)_common_configurePlayer:(id)a3;
-- (void)_common_configurePlayerView:(id)a3;
-- (void)_handlePlaybackGesture:(id)a3;
-- (void)_setInteracting:(BOOL)a3;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)prepareWithPhoto:(CGImage *)a3 videoAsset:(id)a4 photoTime:(double)a5 photoEXIFOrientation:(int)a6;
-- (void)setContentMode:(int64_t)a3;
-- (void)startPlaybackWithReason:(id)a3;
-- (void)stopPlaybackWithReason:(id)a3;
+- (void)_common_configurePlayer:(id)player;
+- (void)_common_configurePlayerView:(id)view;
+- (void)_handlePlaybackGesture:(id)gesture;
+- (void)_setInteracting:(BOOL)interacting;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)prepareWithPhoto:(CGImage *)photo videoAsset:(id)asset photoTime:(double)time photoEXIFOrientation:(int)orientation;
+- (void)setContentMode:(int64_t)mode;
+- (void)startPlaybackWithReason:(id)reason;
+- (void)stopPlaybackWithReason:(id)reason;
 @end
 
 @implementation PBUILivePhotoPlayerView
 
-+ (PBUILivePhotoPlayerView)playerViewWithRewindPlaybackStyle:(BOOL)a3
++ (PBUILivePhotoPlayerView)playerViewWithRewindPlaybackStyle:(BOOL)style
 {
   v3 = off_278361590;
-  if (!a3)
+  if (!style)
   {
     v3 = off_278361588;
   }
@@ -30,10 +30,10 @@
   return v4;
 }
 
-- (void)prepareWithPhoto:(CGImage *)a3 videoAsset:(id)a4 photoTime:(double)a5 photoEXIFOrientation:(int)a6
+- (void)prepareWithPhoto:(CGImage *)photo videoAsset:(id)asset photoTime:(double)time photoEXIFOrientation:(int)orientation
 {
-  v6 = *&a6;
-  v10 = a4;
+  v6 = *&orientation;
+  assetCopy = asset;
   v33 = 0;
   v34 = &v33;
   v35 = 0x2050000000;
@@ -52,14 +52,14 @@
 
   v12 = v11;
   _Block_object_dispose(&v33, 8);
-  v13 = [[v11 alloc] initWithVideoAsset:v10 photo:a3 photoTime:v6 photoEXIFOrientation:a5];
-  v14 = [MEMORY[0x277D759A0] mainScreen];
-  [v14 bounds];
+  v13 = [[v11 alloc] initWithVideoAsset:assetCopy photo:photo photoTime:v6 photoEXIFOrientation:time];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   v29 = v16;
   v30 = v15;
 
-  v17 = [MEMORY[0x277D759A0] mainScreen];
-  [v17 scale];
+  mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen2 scale];
   v19 = v18;
 
   CGAffineTransformMakeScale(&v32, v19, v19);
@@ -91,93 +91,93 @@
   v24 = [v22 playerItemWithAsset:v13 targetSize:*&v31];
   [v24 registerChangeObserver:self context:PlayerItemObservationContext];
   [(PBUILivePhotoPlayerView *)self _subclass_updatePlayerItemForUse:v24];
-  v25 = [(PBUILivePhotoPlayerView *)self _playerUIView];
-  v26 = [v25 player];
-  [v26 setPlayerItem:v24];
+  _playerUIView = [(PBUILivePhotoPlayerView *)self _playerUIView];
+  player = [_playerUIView player];
+  [player setPlayerItem:v24];
 }
 
-- (void)startPlaybackWithReason:(id)a3
+- (void)startPlaybackWithReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   forcePlaybackReasons = self->_forcePlaybackReasons;
-  v8 = v4;
+  v8 = reasonCopy;
   if (!forcePlaybackReasons)
   {
     v6 = [MEMORY[0x277CBEB58] set];
     v7 = self->_forcePlaybackReasons;
     self->_forcePlaybackReasons = v6;
 
-    v4 = v8;
+    reasonCopy = v8;
     forcePlaybackReasons = self->_forcePlaybackReasons;
   }
 
-  [(NSMutableSet *)forcePlaybackReasons addObject:v4];
+  [(NSMutableSet *)forcePlaybackReasons addObject:reasonCopy];
   [(PBUILivePhotoPlayerView *)self _subclass_updateForForcingPlayback:[(PBUILivePhotoPlayerView *)self _isForcingPlayback]];
 }
 
-- (void)stopPlaybackWithReason:(id)a3
+- (void)stopPlaybackWithReason:(id)reason
 {
-  [(NSMutableSet *)self->_forcePlaybackReasons removeObject:a3];
-  v4 = [(PBUILivePhotoPlayerView *)self _isForcingPlayback];
+  [(NSMutableSet *)self->_forcePlaybackReasons removeObject:reason];
+  _isForcingPlayback = [(PBUILivePhotoPlayerView *)self _isForcingPlayback];
 
-  [(PBUILivePhotoPlayerView *)self _subclass_updateForForcingPlayback:v4];
+  [(PBUILivePhotoPlayerView *)self _subclass_updateForForcingPlayback:_isForcingPlayback];
 }
 
-- (void)setContentMode:(int64_t)a3
+- (void)setContentMode:(int64_t)mode
 {
   v6.receiver = self;
   v6.super_class = PBUILivePhotoPlayerView;
   [(PBUILivePhotoPlayerView *)&v6 setContentMode:?];
-  v5 = [(PBUILivePhotoPlayerView *)self _playerUIView];
-  [v5 setContentMode:a3];
+  _playerUIView = [(PBUILivePhotoPlayerView *)self _playerUIView];
+  [_playerUIView setContentMode:mode];
 }
 
-- (void)_common_configurePlayer:(id)a3
+- (void)_common_configurePlayer:(id)player
 {
-  v4 = a3;
-  [v4 setAudioEnabled:0];
-  [v4 registerChangeObserver:self context:PlayerObservationContext];
-  [v4 setDelegate:self];
+  playerCopy = player;
+  [playerCopy setAudioEnabled:0];
+  [playerCopy registerChangeObserver:self context:PlayerObservationContext];
+  [playerCopy setDelegate:self];
 }
 
-- (void)_common_configurePlayerView:(id)a3
+- (void)_common_configurePlayerView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   [(PBUILivePhotoPlayerView *)self bounds];
-  [v4 setFrame:?];
-  [v4 setAutoresizingMask:18];
-  [(PBUILivePhotoPlayerView *)self addSubview:v4];
+  [viewCopy setFrame:?];
+  [viewCopy setAutoresizingMask:18];
+  [(PBUILivePhotoPlayerView *)self addSubview:viewCopy];
 
-  v5 = [(PBUILivePhotoPlayerView *)self gestureRecognizer];
-  [v5 addTarget:self action:sel__handlePlaybackGesture_];
+  gestureRecognizer = [(PBUILivePhotoPlayerView *)self gestureRecognizer];
+  [gestureRecognizer addTarget:self action:sel__handlePlaybackGesture_];
 }
 
-- (void)_setInteracting:(BOOL)a3
+- (void)_setInteracting:(BOOL)interacting
 {
-  if (self->_interacting != a3)
+  if (self->_interacting != interacting)
   {
-    self->_interacting = a3;
-    v5 = [(PBUILivePhotoPlayerView *)self delegate];
+    self->_interacting = interacting;
+    delegate = [(PBUILivePhotoPlayerView *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      [v5 playerViewIsInteractingDidChange:self];
+      [delegate playerViewIsInteractingDidChange:self];
     }
   }
 }
 
-- (void)_handlePlaybackGesture:(id)a3
+- (void)_handlePlaybackGesture:(id)gesture
 {
-  v4 = ([a3 state] - 1) < 2;
+  v4 = ([gesture state] - 1) < 2;
 
   [(PBUILivePhotoPlayerView *)self _setInteracting:v4];
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = [(PBUILivePhotoPlayerView *)self delegate];
-  if (PlayerObservationContext != a5)
+  changeCopy = change;
+  observableCopy = observable;
+  delegate = [(PBUILivePhotoPlayerView *)self delegate];
+  if (PlayerObservationContext != context)
   {
     goto LABEL_2;
   }
@@ -202,7 +202,7 @@
   _Block_object_dispose(&v20, 8);
   if (objc_opt_isKindOfClass())
   {
-    if ((v6 & 0x10) == 0)
+    if ((changeCopy & 0x10) == 0)
     {
       goto LABEL_2;
     }
@@ -229,24 +229,24 @@
   v13 = v12;
   _Block_object_dispose(&v20, 8);
   isKindOfClass = objc_opt_isKindOfClass();
-  if (v6 & 8) != 0 && (isKindOfClass)
+  if (changeCopy & 8) != 0 && (isKindOfClass)
   {
 LABEL_12:
     if (objc_opt_respondsToSelector())
     {
-      [v9 playerViewPlaybackStateDidChange:self];
+      [delegate playerViewPlaybackStateDidChange:self];
     }
   }
 
 LABEL_2:
 }
 
-- (id)videoPlayerForPlayer:(id)a3
+- (id)videoPlayerForPlayer:(id)player
 {
-  v4 = [(PBUILivePhotoPlayerView *)self delegate];
+  delegate = [(PBUILivePhotoPlayerView *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v5 = [v4 videoPlayerForPlayerView:self];
+    v5 = [delegate videoPlayerForPlayerView:self];
   }
 
   else

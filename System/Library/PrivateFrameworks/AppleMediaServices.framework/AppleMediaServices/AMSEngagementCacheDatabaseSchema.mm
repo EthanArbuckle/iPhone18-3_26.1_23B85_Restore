@@ -1,27 +1,27 @@
 @interface AMSEngagementCacheDatabaseSchema
-+ (BOOL)createOrUpdateSchemaUsingConnection:(id)a3 error:(id *)a4;
-+ (void)_migrateVersion0to1WithMigration:(id)a3;
++ (BOOL)createOrUpdateSchemaUsingConnection:(id)connection error:(id *)error;
++ (void)_migrateVersion0to1WithMigration:(id)migration;
 @end
 
 @implementation AMSEngagementCacheDatabaseSchema
 
-+ (BOOL)createOrUpdateSchemaUsingConnection:(id)a3 error:(id *)a4
++ (BOOL)createOrUpdateSchemaUsingConnection:(id)connection error:(id *)error
 {
   v29 = *MEMORY[0x1E69E9840];
-  v22 = a3;
-  v6 = [[AMSSQLiteSchema alloc] initWithConnection:v22];
-  v7 = [(AMSSQLiteSchema *)v6 currentUserVersion];
+  connectionCopy = connection;
+  v6 = [[AMSSQLiteSchema alloc] initWithConnection:connectionCopy];
+  currentUserVersion = [(AMSSQLiteSchema *)v6 currentUserVersion];
   v8 = 0;
   while (1)
   {
-    if (v7 > 0)
+    if (currentUserVersion > 0)
     {
       v16 = 1;
-      v17 = v22;
+      v17 = connectionCopy;
       goto LABEL_22;
     }
 
-    if (v7)
+    if (currentUserVersion)
     {
       goto LABEL_6;
     }
@@ -31,7 +31,7 @@
     v24[1] = 3221225472;
     v24[2] = __78__AMSEngagementCacheDatabaseSchema_createOrUpdateSchemaUsingConnection_error___block_invoke;
     v24[3] = &__block_descriptor_40_e34_v16__0__AMSSQLiteSchemaMigration_8l;
-    v24[4] = a1;
+    v24[4] = self;
     v9 = [(AMSSQLiteSchema *)v6 migrateToVersion:1 usingBlock:v24 error:&v23];
     v10 = v23;
 
@@ -42,9 +42,9 @@
 
     v8 = v10;
 LABEL_6:
-    v11 = [(AMSSQLiteSchema *)v6 currentUserVersion];
-    v12 = v11 == v7;
-    v7 = v11;
+    currentUserVersion2 = [(AMSSQLiteSchema *)v6 currentUserVersion];
+    v12 = currentUserVersion2 == currentUserVersion;
+    currentUserVersion = currentUserVersion2;
     if (v12)
     {
       v13 = +[AMSLogConfig sharedConfig];
@@ -53,13 +53,13 @@ LABEL_6:
         v13 = +[AMSLogConfig sharedConfig];
       }
 
-      v14 = [v13 OSLogObject];
-      if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+      oSLogObject = [v13 OSLogObject];
+      if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
       {
         v15 = objc_opt_class();
         *buf = 138543362;
         v26 = v15;
-        _os_log_impl(&dword_192869000, v14, OS_LOG_TYPE_ERROR, "%{public}@: Failed to update Engagement cache database scheme. User version did not change", buf, 0xCu);
+        _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: Failed to update Engagement cache database scheme. User version did not change", buf, 0xCu);
       }
 
       v16 = 1;
@@ -68,10 +68,10 @@ LABEL_6:
     }
   }
 
-  if (a4)
+  if (error)
   {
     v18 = v10;
-    *a4 = v10;
+    *error = v10;
   }
 
   v13 = +[AMSLogConfig sharedConfig];
@@ -80,8 +80,8 @@ LABEL_6:
     v13 = +[AMSLogConfig sharedConfig];
   }
 
-  v14 = [v13 OSLogObject];
-  if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+  oSLogObject = [v13 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
   {
     v19 = objc_opt_class();
     v20 = AMSLogableError(v10);
@@ -89,12 +89,12 @@ LABEL_6:
     v26 = v19;
     v27 = 2114;
     v28 = v20;
-    _os_log_impl(&dword_192869000, v14, OS_LOG_TYPE_ERROR, "%{public}@: Failed to update Engagement cache database scheme. Success = NO. Error = %{public}@", buf, 0x16u);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: Failed to update Engagement cache database scheme. Success = NO. Error = %{public}@", buf, 0x16u);
   }
 
   v16 = 0;
 LABEL_21:
-  v17 = v22;
+  v17 = connectionCopy;
 
   v8 = v10;
 LABEL_22:
@@ -102,12 +102,12 @@ LABEL_22:
   return v16;
 }
 
-+ (void)_migrateVersion0to1WithMigration:(id)a3
++ (void)_migrateVersion0to1WithMigration:(id)migration
 {
-  v3 = a3;
-  [v3 executeStatement:@"PRAGMA auto_vacuum = 2;"];
+  migrationCopy = migration;
+  [migrationCopy executeStatement:@"PRAGMA auto_vacuum = 2;"];
   v4 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"CREATE TABLE IF NOT EXISTS %@(  %@ BLOB, %@ REAL, %@ BLOB, %@ INTEGER PRIMARY KEY);", @"responses", @"data", @"expiration", @"filter", @"identifier"];
-  [v3 executeStatement:v4];
+  [migrationCopy executeStatement:v4];
 }
 
 @end

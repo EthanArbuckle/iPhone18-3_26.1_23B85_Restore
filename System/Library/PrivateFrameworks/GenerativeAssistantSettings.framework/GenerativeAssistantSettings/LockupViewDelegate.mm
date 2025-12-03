@@ -1,7 +1,7 @@
 @interface LockupViewDelegate
 - (_TtC27GenerativeAssistantSettings18LockupViewDelegate)init;
-- (void)lockupView:(id)a3 didFailRequestWithError:(id)a4;
-- (void)lockupViewDidFinishRequest:(id)a3;
+- (void)lockupView:(id)view didFailRequestWithError:(id)error;
+- (void)lockupViewDidFinishRequest:(id)request;
 @end
 
 @implementation LockupViewDelegate
@@ -22,7 +22,7 @@
   return [(LockupViewDelegate *)&v11 init];
 }
 
-- (void)lockupView:(id)a3 didFailRequestWithError:(id)a4
+- (void)lockupView:(id)view didFailRequestWithError:(id)error
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27D0553D8, &qword_2230C4D30);
   v6 = *(*(v5 - 8) + 64);
@@ -34,14 +34,14 @@
   v10[2] = 0;
   v10[3] = 0;
   v10[4] = self;
-  v11 = self;
+  selfCopy = self;
   sub_2230BEA64(0, 0, v8, &unk_2230C64A0, v10);
 }
 
-- (void)lockupViewDidFinishRequest:(id)a3
+- (void)lockupViewDidFinishRequest:(id)request
 {
-  v4 = a3;
-  v5 = self;
+  requestCopy = request;
+  selfCopy = self;
   sub_2230BFCB4();
 }
 

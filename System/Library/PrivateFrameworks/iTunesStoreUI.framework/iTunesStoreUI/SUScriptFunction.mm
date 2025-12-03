@@ -1,14 +1,14 @@
 @interface SUScriptFunction
-- (BOOL)callWithArguments:(id)a3 completionBlock:(id)a4;
+- (BOOL)callWithArguments:(id)arguments completionBlock:(id)block;
 - (SUScriptFunction)init;
-- (SUScriptFunction)initWithScriptObject:(id)a3;
+- (SUScriptFunction)initWithScriptObject:(id)object;
 - (WebScriptObject)scriptObject;
-- (id)_copyAdjustedArgumentsForArguments:(id)a3;
-- (id)callSynchronouslyWithArguments:(id)a3;
+- (id)_copyAdjustedArgumentsForArguments:(id)arguments;
+- (id)callSynchronouslyWithArguments:(id)arguments;
 - (id)thisObject;
 - (void)dealloc;
-- (void)setScriptObject:(id)a3;
-- (void)setThisObject:(id)a3;
+- (void)setScriptObject:(id)object;
+- (void)setThisObject:(id)object;
 @end
 
 @implementation SUScriptFunction
@@ -26,30 +26,30 @@
   return v2;
 }
 
-- (SUScriptFunction)initWithScriptObject:(id)a3
+- (SUScriptFunction)initWithScriptObject:(id)object
 {
   v18 = *MEMORY[0x1E69E9840];
   v4 = [(SUScriptFunction *)self init];
   if (v4)
   {
-    if (a3)
+    if (object)
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        v5 = [MEMORY[0x1E69D4938] sharedConfig];
-        v6 = [v5 shouldLog];
-        if ([v5 shouldLogToDisk])
+        mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+        shouldLog = [mEMORY[0x1E69D4938] shouldLog];
+        if ([mEMORY[0x1E69D4938] shouldLogToDisk])
         {
-          v7 = v6 | 2;
+          v7 = shouldLog | 2;
         }
 
         else
         {
-          v7 = v6;
+          v7 = shouldLog;
         }
 
-        if (!os_log_type_enabled([v5 OSLogObject], OS_LOG_TYPE_FAULT))
+        if (!os_log_type_enabled([mEMORY[0x1E69D4938] OSLogObject], OS_LOG_TYPE_FAULT))
         {
           v7 &= 2u;
         }
@@ -74,11 +74,11 @@
         }
 
         [MEMORY[0x1E69E2F88] throwException:{@"Invalid argument", v12}];
-        a3 = 0;
+        object = 0;
       }
     }
 
-    v4->_function = a3;
+    v4->_function = object;
   }
 
   return v4;
@@ -91,16 +91,16 @@
   [(SUScriptFunction *)&v3 dealloc];
 }
 
-- (BOOL)callWithArguments:(id)a3 completionBlock:(id)a4
+- (BOOL)callWithArguments:(id)arguments completionBlock:(id)block
 {
-  v6 = [(SUScriptFunction *)self scriptObject];
-  if (v6)
+  scriptObject = [(SUScriptFunction *)self scriptObject];
+  if (scriptObject)
   {
-    v7 = [(SUScriptFunction *)self _copyAdjustedArgumentsForArguments:a3];
+    v7 = [(SUScriptFunction *)self _copyAdjustedArgumentsForArguments:arguments];
     WebThreadRun();
   }
 
-  return v6 != 0;
+  return scriptObject != 0;
 }
 
 void __54__SUScriptFunction_callWithArguments_completionBlock___block_invoke(uint64_t a1)
@@ -119,7 +119,7 @@ void __54__SUScriptFunction_callWithArguments_completionBlock___block_invoke(uin
   }
 }
 
-- (id)callSynchronouslyWithArguments:(id)a3
+- (id)callSynchronouslyWithArguments:(id)arguments
 {
   result = [(SUScriptFunction *)self scriptObject];
   if (result)
@@ -130,7 +130,7 @@ void __54__SUScriptFunction_callWithArguments_completionBlock___block_invoke(uin
       WebThreadLock();
     }
 
-    v7 = [(SUScriptFunction *)self _copyAdjustedArgumentsForArguments:a3];
+    v7 = [(SUScriptFunction *)self _copyAdjustedArgumentsForArguments:arguments];
     v8 = [v6 callWebScriptMethod:@"call" withArguments:v7];
 
     return v8;
@@ -147,23 +147,23 @@ void __54__SUScriptFunction_callWithArguments_completionBlock___block_invoke(uin
   return v3;
 }
 
-- (void)setScriptObject:(id)a3
+- (void)setScriptObject:(id)object
 {
   [(SUScriptFunction *)self lock];
   function = self->_function;
-  if (function != a3)
+  if (function != object)
   {
 
-    self->_function = a3;
+    self->_function = object;
   }
 
   [(SUScriptFunction *)self unlock];
 }
 
-- (void)setThisObject:(id)a3
+- (void)setThisObject:(id)object
 {
   [(SUScriptFunction *)self lock];
-  self->_thisObject = a3;
+  self->_thisObject = object;
 
   [(SUScriptFunction *)self unlock];
 }
@@ -176,16 +176,16 @@ void __54__SUScriptFunction_callWithArguments_completionBlock___block_invoke(uin
   return v3;
 }
 
-- (id)_copyAdjustedArgumentsForArguments:(id)a3
+- (id)_copyAdjustedArgumentsForArguments:(id)arguments
 {
-  v5 = a3;
-  v6 = [(SUScriptFunction *)self thisObject];
-  if (v6)
+  argumentsCopy = arguments;
+  thisObject = [(SUScriptFunction *)self thisObject];
+  if (thisObject)
   {
-    v7 = v6;
-    if (a3)
+    v7 = thisObject;
+    if (arguments)
     {
-      v8 = [a3 mutableCopy];
+      v8 = [arguments mutableCopy];
     }
 
     else
@@ -199,7 +199,7 @@ void __54__SUScriptFunction_callWithArguments_completionBlock___block_invoke(uin
     return v9;
   }
 
-  return v5;
+  return argumentsCopy;
 }
 
 @end

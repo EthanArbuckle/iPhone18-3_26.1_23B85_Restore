@@ -1,41 +1,41 @@
 @interface MBScreenTimePlugin
-- (id)startingBackupWithEngine:(id)a3;
-- (id)startingRestoreWithPolicy:(id)a3 engine:(id)a4;
-- (void)_updatePathsForHomeDomainWithEngine:(id)a3;
+- (id)startingBackupWithEngine:(id)engine;
+- (id)startingRestoreWithPolicy:(id)policy engine:(id)engine;
+- (void)_updatePathsForHomeDomainWithEngine:(id)engine;
 @end
 
 @implementation MBScreenTimePlugin
 
-- (id)startingBackupWithEngine:(id)a3
+- (id)startingBackupWithEngine:(id)engine
 {
-  v4 = a3;
+  engineCopy = engine;
   if (!MBIsInternalInstall() || (+[MBBehaviorOptions sharedOptions](MBBehaviorOptions, "sharedOptions"), v5 = objc_claimAutoreleasedReturnValue(), [v5 domainsToBackUpRegex], v6 = objc_claimAutoreleasedReturnValue(), v6, v5, !v6))
   {
-    if ([v4 isDeviceTransferEngine])
+    if ([engineCopy isDeviceTransferEngine])
     {
-      [(MBScreenTimePlugin *)self _updatePathsForHomeDomainWithEngine:v4];
+      [(MBScreenTimePlugin *)self _updatePathsForHomeDomainWithEngine:engineCopy];
     }
   }
 
   return 0;
 }
 
-- (id)startingRestoreWithPolicy:(id)a3 engine:(id)a4
+- (id)startingRestoreWithPolicy:(id)policy engine:(id)engine
 {
-  v5 = a4;
-  if ([v5 isDeviceTransferEngine])
+  engineCopy = engine;
+  if ([engineCopy isDeviceTransferEngine])
   {
-    [(MBScreenTimePlugin *)self _updatePathsForHomeDomainWithEngine:v5];
+    [(MBScreenTimePlugin *)self _updatePathsForHomeDomainWithEngine:engineCopy];
   }
 
   return 0;
 }
 
-- (void)_updatePathsForHomeDomainWithEngine:(id)a3
+- (void)_updatePathsForHomeDomainWithEngine:(id)engine
 {
-  v3 = a3;
-  v4 = [v3 domainManager];
-  v5 = [v4 domainForName:@"HomeDomain"];
+  engineCopy = engine;
+  domainManager = [engineCopy domainManager];
+  v5 = [domainManager domainForName:@"HomeDomain"];
 
   if (!v5)
   {
@@ -43,13 +43,13 @@
   }
 
   v6 = [v5 standardizedRelativePathFor:@"Library/Application Support/com.apple.remotemanagementd"];
-  v7 = [v5 relativePathsNotToBackup];
-  v8 = [v7 containsObject:v6];
+  relativePathsNotToBackup = [v5 relativePathsNotToBackup];
+  v8 = [relativePathsNotToBackup containsObject:v6];
 
   if (v8)
   {
-    v9 = [v5 relativePathsNotToBackup];
-    v10 = [v9 mutableCopy];
+    relativePathsNotToBackup2 = [v5 relativePathsNotToBackup];
+    v10 = [relativePathsNotToBackup2 mutableCopy];
 
     v11 = MBGetDefaultLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -68,12 +68,12 @@
     [v5 setRelativePathsNotToBackup:v10];
   }
 
-  v12 = [v5 relativePathsToBackupAndRestore];
+  relativePathsToBackupAndRestore = [v5 relativePathsToBackupAndRestore];
 
-  if (v12)
+  if (relativePathsToBackupAndRestore)
   {
-    v13 = [v5 relativePathsToBackupAndRestore];
-    v14 = [v13 mutableCopy];
+    relativePathsToBackupAndRestore2 = [v5 relativePathsToBackupAndRestore];
+    v14 = [relativePathsToBackupAndRestore2 mutableCopy];
   }
 
   else
@@ -94,12 +94,12 @@
 
   [v14 addObject:@"Library/Application Support/com.apple.remotemanagementd"];
   [v5 setRelativePathsToBackupAndRestore:v14];
-  v16 = [v5 relativePathsToIgnoreExclusionsForDrive];
+  relativePathsToIgnoreExclusionsForDrive = [v5 relativePathsToIgnoreExclusionsForDrive];
 
-  if (v16)
+  if (relativePathsToIgnoreExclusionsForDrive)
   {
-    v17 = [v5 relativePathsToIgnoreExclusionsForDrive];
-    v18 = [v17 mutableCopy];
+    relativePathsToIgnoreExclusionsForDrive2 = [v5 relativePathsToIgnoreExclusionsForDrive];
+    v18 = [relativePathsToIgnoreExclusionsForDrive2 mutableCopy];
   }
 
   else

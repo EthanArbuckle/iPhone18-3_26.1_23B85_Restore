@@ -23,71 +23,71 @@
   [(PUIDPointerSettings *)self setUnderlayingPointerPressedScaleFactor:1.02];
   [(PUIDPointerSettings *)self setVisibleToHiddenPointerScale:0.96];
   [(PUIDPointerSettings *)self setVisibleToHiddenPointerBlurRadius:1.5];
-  v3 = [(PUIDPointerSettings *)self visibleToHiddenAnimationSettings];
-  [v3 setDefaultValues];
+  visibleToHiddenAnimationSettings = [(PUIDPointerSettings *)self visibleToHiddenAnimationSettings];
+  [visibleToHiddenAnimationSettings setDefaultValues];
 
-  v4 = [(PUIDPointerSettings *)self visibleToHiddenAnimationSettings];
-  [v4 setDampingRatio:1.0];
+  visibleToHiddenAnimationSettings2 = [(PUIDPointerSettings *)self visibleToHiddenAnimationSettings];
+  [visibleToHiddenAnimationSettings2 setDampingRatio:1.0];
 
-  v5 = [(PUIDPointerSettings *)self visibleToHiddenAnimationSettings];
-  [v5 setResponse:0.5];
+  visibleToHiddenAnimationSettings3 = [(PUIDPointerSettings *)self visibleToHiddenAnimationSettings];
+  [visibleToHiddenAnimationSettings3 setResponse:0.5];
 
-  v6 = [(PUIDPointerSettings *)self visibleToHiddenScaleAnimationSettings];
-  [v6 setDefaultValues];
+  visibleToHiddenScaleAnimationSettings = [(PUIDPointerSettings *)self visibleToHiddenScaleAnimationSettings];
+  [visibleToHiddenScaleAnimationSettings setDefaultValues];
 
-  v7 = [(PUIDPointerSettings *)self visibleToHiddenScaleAnimationSettings];
-  [v7 setDampingRatio:1.0];
+  visibleToHiddenScaleAnimationSettings2 = [(PUIDPointerSettings *)self visibleToHiddenScaleAnimationSettings];
+  [visibleToHiddenScaleAnimationSettings2 setDampingRatio:1.0];
 
-  v8 = [(PUIDPointerSettings *)self visibleToHiddenScaleAnimationSettings];
-  [v8 setResponse:0.5];
+  visibleToHiddenScaleAnimationSettings3 = [(PUIDPointerSettings *)self visibleToHiddenScaleAnimationSettings];
+  [visibleToHiddenScaleAnimationSettings3 setResponse:0.5];
 
   [(PUIDPointerSettings *)self setHiddenToVisiblePointerScale:1.75];
   [(PUIDPointerSettings *)self setHiddenToVisiblePointerBlurRadius:10.0];
   [(PUIDPointerSettings *)self setSupportsTeleporting:0];
-  v9 = [(PUIDPointerSettings *)self hiddenToVisibleAnimationSettings];
-  [v9 setDefaultValues];
+  hiddenToVisibleAnimationSettings = [(PUIDPointerSettings *)self hiddenToVisibleAnimationSettings];
+  [hiddenToVisibleAnimationSettings setDefaultValues];
 
-  v10 = [(PUIDPointerSettings *)self hiddenToVisibleAnimationSettings];
-  [v10 setDampingRatio:1.0];
+  hiddenToVisibleAnimationSettings2 = [(PUIDPointerSettings *)self hiddenToVisibleAnimationSettings];
+  [hiddenToVisibleAnimationSettings2 setDampingRatio:1.0];
 
-  v11 = [(PUIDPointerSettings *)self hiddenToVisibleAnimationSettings];
-  [v11 setResponse:0.2];
+  hiddenToVisibleAnimationSettings3 = [(PUIDPointerSettings *)self hiddenToVisibleAnimationSettings];
+  [hiddenToVisibleAnimationSettings3 setResponse:0.2];
 
-  v12 = [(PUIDPointerSettings *)self hiddenToVisibleScaleAnimationSettings];
-  [v12 setDefaultValues];
+  hiddenToVisibleScaleAnimationSettings = [(PUIDPointerSettings *)self hiddenToVisibleScaleAnimationSettings];
+  [hiddenToVisibleScaleAnimationSettings setDefaultValues];
 
-  v13 = [(PUIDPointerSettings *)self hiddenToVisibleScaleAnimationSettings];
-  [v13 setDampingRatio:1.0];
+  hiddenToVisibleScaleAnimationSettings2 = [(PUIDPointerSettings *)self hiddenToVisibleScaleAnimationSettings];
+  [hiddenToVisibleScaleAnimationSettings2 setDampingRatio:1.0];
 
-  v14 = [(PUIDPointerSettings *)self hiddenToVisibleScaleAnimationSettings];
-  [v14 setResponse:0.15];
+  hiddenToVisibleScaleAnimationSettings3 = [(PUIDPointerSettings *)self hiddenToVisibleScaleAnimationSettings];
+  [hiddenToVisibleScaleAnimationSettings3 setResponse:0.15];
 
-  v15 = [(PUIDPointerSettings *)self visibleToHiddenTeleportingAnimationSettings];
-  [v15 setDefaultValues];
+  visibleToHiddenTeleportingAnimationSettings = [(PUIDPointerSettings *)self visibleToHiddenTeleportingAnimationSettings];
+  [visibleToHiddenTeleportingAnimationSettings setDefaultValues];
 
-  v16 = [(PUIDPointerSettings *)self visibleToHiddenTeleportingAnimationSettings];
-  [v16 setDampingRatio:1.0];
+  visibleToHiddenTeleportingAnimationSettings2 = [(PUIDPointerSettings *)self visibleToHiddenTeleportingAnimationSettings];
+  [visibleToHiddenTeleportingAnimationSettings2 setDampingRatio:1.0];
 
-  v17 = [(PUIDPointerSettings *)self visibleToHiddenTeleportingAnimationSettings];
-  [v17 setResponse:0.1];
+  visibleToHiddenTeleportingAnimationSettings3 = [(PUIDPointerSettings *)self visibleToHiddenTeleportingAnimationSettings];
+  [visibleToHiddenTeleportingAnimationSettings3 setResponse:0.1];
 
-  v18 = [(PUIDPointerSettings *)self hiddenToVisibleTeleportingAnimationSettings];
-  [v18 setDefaultValues];
+  hiddenToVisibleTeleportingAnimationSettings = [(PUIDPointerSettings *)self hiddenToVisibleTeleportingAnimationSettings];
+  [hiddenToVisibleTeleportingAnimationSettings setDefaultValues];
 
-  v19 = [(PUIDPointerSettings *)self hiddenToVisibleTeleportingAnimationSettings];
-  [v19 setDampingRatio:0.5];
+  hiddenToVisibleTeleportingAnimationSettings2 = [(PUIDPointerSettings *)self hiddenToVisibleTeleportingAnimationSettings];
+  [hiddenToVisibleTeleportingAnimationSettings2 setDampingRatio:0.5];
 
-  v20 = [(PUIDPointerSettings *)self hiddenToVisibleTeleportingAnimationSettings];
-  [v20 setResponse:0.1];
+  hiddenToVisibleTeleportingAnimationSettings3 = [(PUIDPointerSettings *)self hiddenToVisibleTeleportingAnimationSettings];
+  [hiddenToVisibleTeleportingAnimationSettings3 setResponse:0.1];
 
-  v21 = [(PUIDPointerSettings *)self pressedScaleAnimationSettings];
-  [v21 setDefaultValues];
+  pressedScaleAnimationSettings = [(PUIDPointerSettings *)self pressedScaleAnimationSettings];
+  [pressedScaleAnimationSettings setDefaultValues];
 
-  v22 = [(PUIDPointerSettings *)self pressedScaleAnimationSettings];
-  [v22 setDampingRatio:1.0];
+  pressedScaleAnimationSettings2 = [(PUIDPointerSettings *)self pressedScaleAnimationSettings];
+  [pressedScaleAnimationSettings2 setDampingRatio:1.0];
 
-  v23 = [(PUIDPointerSettings *)self pressedScaleAnimationSettings];
-  [v23 setResponse:0.11];
+  pressedScaleAnimationSettings3 = [(PUIDPointerSettings *)self pressedScaleAnimationSettings];
+  [pressedScaleAnimationSettings3 setResponse:0.11];
 
   [(PUIDPointerSettings *)self setTapToClickButtonDownTime:0.073];
   [(PUIDPointerSettings *)self setDelayBeforeUnhidingOnTrackpadTouchDown:0.125];
@@ -102,24 +102,24 @@
   [(PUIDPointerSettings *)self setSpecularStandardLongestSideBaseMultiplier:0.05];
   [(PUIDPointerSettings *)self setSpecularProminentOpacityMultiplier:0.08];
   [(PUIDPointerSettings *)self setSpecularProminentLongestSideBaseMultiplier:0.05];
-  v24 = [(PUIDPointerSettings *)self specularOpacityAnimationSettings];
-  [v24 setDefaultValues];
+  specularOpacityAnimationSettings = [(PUIDPointerSettings *)self specularOpacityAnimationSettings];
+  [specularOpacityAnimationSettings setDefaultValues];
 
-  v25 = [(PUIDPointerSettings *)self specularOpacityAnimationSettings];
-  [v25 setDampingRatio:1.0];
+  specularOpacityAnimationSettings2 = [(PUIDPointerSettings *)self specularOpacityAnimationSettings];
+  [specularOpacityAnimationSettings2 setDampingRatio:1.0];
 
-  v26 = [(PUIDPointerSettings *)self specularOpacityAnimationSettings];
-  [v26 setResponse:0.17];
+  specularOpacityAnimationSettings3 = [(PUIDPointerSettings *)self specularOpacityAnimationSettings];
+  [specularOpacityAnimationSettings3 setResponse:0.17];
 
   [(PUIDPointerSettings *)self setCustomMorphInitialVelocityProgressMultiplier:20.0];
-  v27 = [(PUIDPointerSettings *)self customShapeMorphAnimationSettings];
-  [v27 setDefaultValues];
+  customShapeMorphAnimationSettings = [(PUIDPointerSettings *)self customShapeMorphAnimationSettings];
+  [customShapeMorphAnimationSettings setDefaultValues];
 
-  v28 = [(PUIDPointerSettings *)self customShapeMorphAnimationSettings];
-  [v28 setDampingRatio:1.0];
+  customShapeMorphAnimationSettings2 = [(PUIDPointerSettings *)self customShapeMorphAnimationSettings];
+  [customShapeMorphAnimationSettings2 setDampingRatio:1.0];
 
-  v29 = [(PUIDPointerSettings *)self customShapeMorphAnimationSettings];
-  [v29 setResponse:0.24];
+  customShapeMorphAnimationSettings3 = [(PUIDPointerSettings *)self customShapeMorphAnimationSettings];
+  [customShapeMorphAnimationSettings3 setResponse:0.24];
 
   [(PUIDPointerSettings *)self setDecelerationEnabled:1];
   [(PUIDPointerSettings *)self setMinimumVelocityThresholdForDeceleration:1000.0];
@@ -136,151 +136,151 @@
   [(PUIDPointerSettings *)self setAutomaticRegionExitDelayInterval:0.2];
   [(PUIDPointerSettings *)self setPointerSlipEnabled:1];
   [(PUIDPointerSettings *)self setRampingMinimumSlipThreshold:0.15];
-  v30 = [(PUIDPointerSettings *)self standardShapeAnimationSettings];
-  [v30 setDefaultValues];
+  standardShapeAnimationSettings = [(PUIDPointerSettings *)self standardShapeAnimationSettings];
+  [standardShapeAnimationSettings setDefaultValues];
 
-  v31 = [(PUIDPointerSettings *)self standardShapeAnimationSettings];
-  [v31 setDampingRatio:0.9];
+  standardShapeAnimationSettings2 = [(PUIDPointerSettings *)self standardShapeAnimationSettings];
+  [standardShapeAnimationSettings2 setDampingRatio:0.9];
 
-  v32 = [(PUIDPointerSettings *)self standardShapeAnimationSettings];
-  [v32 setResponse:0.175];
+  standardShapeAnimationSettings3 = [(PUIDPointerSettings *)self standardShapeAnimationSettings];
+  [standardShapeAnimationSettings3 setResponse:0.175];
 
-  v33 = [(PUIDPointerSettings *)self zTransitionOpacityAnimationSettings];
-  [v33 setDefaultValues];
+  zTransitionOpacityAnimationSettings = [(PUIDPointerSettings *)self zTransitionOpacityAnimationSettings];
+  [zTransitionOpacityAnimationSettings setDefaultValues];
 
-  v34 = [(PUIDPointerSettings *)self zTransitionOpacityAnimationSettings];
-  [v34 setDampingRatio:1.0];
+  zTransitionOpacityAnimationSettings2 = [(PUIDPointerSettings *)self zTransitionOpacityAnimationSettings];
+  [zTransitionOpacityAnimationSettings2 setDampingRatio:1.0];
 
-  v35 = [(PUIDPointerSettings *)self zTransitionOpacityAnimationSettings];
-  [v35 setResponse:0.15];
+  zTransitionOpacityAnimationSettings3 = [(PUIDPointerSettings *)self zTransitionOpacityAnimationSettings];
+  [zTransitionOpacityAnimationSettings3 setResponse:0.15];
 
-  v36 = [(PUIDPointerSettings *)self systemPointerPositionAnimationSettings];
-  [v36 setDefaultValues];
+  systemPointerPositionAnimationSettings = [(PUIDPointerSettings *)self systemPointerPositionAnimationSettings];
+  [systemPointerPositionAnimationSettings setDefaultValues];
 
-  v37 = [(PUIDPointerSettings *)self systemPointerPositionAnimationSettings];
-  [v37 setDampingRatio:1.0];
+  systemPointerPositionAnimationSettings2 = [(PUIDPointerSettings *)self systemPointerPositionAnimationSettings];
+  [systemPointerPositionAnimationSettings2 setDampingRatio:1.0];
 
-  v38 = [(PUIDPointerSettings *)self systemPointerPositionAnimationSettings];
-  [v38 setResponse:0.017];
+  systemPointerPositionAnimationSettings3 = [(PUIDPointerSettings *)self systemPointerPositionAnimationSettings];
+  [systemPointerPositionAnimationSettings3 setResponse:0.017];
 
-  v39 = [(PUIDPointerSettings *)self systemPointerPositionHighQualityFrequencyAnimationSettings];
-  [v39 setDefaultValues];
+  systemPointerPositionHighQualityFrequencyAnimationSettings = [(PUIDPointerSettings *)self systemPointerPositionHighQualityFrequencyAnimationSettings];
+  [systemPointerPositionHighQualityFrequencyAnimationSettings setDefaultValues];
 
-  v40 = [(PUIDPointerSettings *)self systemPointerPositionHighQualityFrequencyAnimationSettings];
-  [v40 setDampingRatio:1.0];
+  systemPointerPositionHighQualityFrequencyAnimationSettings2 = [(PUIDPointerSettings *)self systemPointerPositionHighQualityFrequencyAnimationSettings];
+  [systemPointerPositionHighQualityFrequencyAnimationSettings2 setDampingRatio:1.0];
 
-  v41 = [(PUIDPointerSettings *)self systemPointerPositionHighQualityFrequencyAnimationSettings];
-  [v41 setResponse:0.0];
+  systemPointerPositionHighQualityFrequencyAnimationSettings3 = [(PUIDPointerSettings *)self systemPointerPositionHighQualityFrequencyAnimationSettings];
+  [systemPointerPositionHighQualityFrequencyAnimationSettings3 setResponse:0.0];
 
-  v42 = [(PUIDPointerSettings *)self focusedPointerPositionAnimationSettings];
-  [v42 setDefaultValues];
+  focusedPointerPositionAnimationSettings = [(PUIDPointerSettings *)self focusedPointerPositionAnimationSettings];
+  [focusedPointerPositionAnimationSettings setDefaultValues];
 
-  v43 = [(PUIDPointerSettings *)self focusedPointerPositionAnimationSettings];
-  [v43 setDampingRatio:1.0];
+  focusedPointerPositionAnimationSettings2 = [(PUIDPointerSettings *)self focusedPointerPositionAnimationSettings];
+  [focusedPointerPositionAnimationSettings2 setDampingRatio:1.0];
 
-  v44 = [(PUIDPointerSettings *)self focusedPointerPositionAnimationSettings];
-  [v44 setResponse:0.14];
+  focusedPointerPositionAnimationSettings3 = [(PUIDPointerSettings *)self focusedPointerPositionAnimationSettings];
+  [focusedPointerPositionAnimationSettings3 setResponse:0.14];
 
-  v45 = [(PUIDPointerSettings *)self textContentPointerPositionAnimationSettings];
-  [v45 setDefaultValues];
+  textContentPointerPositionAnimationSettings = [(PUIDPointerSettings *)self textContentPointerPositionAnimationSettings];
+  [textContentPointerPositionAnimationSettings setDefaultValues];
 
-  v46 = [(PUIDPointerSettings *)self textContentPointerPositionAnimationSettings];
-  [v46 setDampingRatio:1.0];
+  textContentPointerPositionAnimationSettings2 = [(PUIDPointerSettings *)self textContentPointerPositionAnimationSettings];
+  [textContentPointerPositionAnimationSettings2 setDampingRatio:1.0];
 
-  v47 = [(PUIDPointerSettings *)self textContentPointerPositionAnimationSettings];
-  [v47 setResponse:0.075];
+  textContentPointerPositionAnimationSettings3 = [(PUIDPointerSettings *)self textContentPointerPositionAnimationSettings];
+  [textContentPointerPositionAnimationSettings3 setResponse:0.075];
 
-  v48 = [(PUIDPointerSettings *)self focusedContentPositionAnimationSettings];
-  [v48 setDefaultValues];
+  focusedContentPositionAnimationSettings = [(PUIDPointerSettings *)self focusedContentPositionAnimationSettings];
+  [focusedContentPositionAnimationSettings setDefaultValues];
 
-  v49 = [(PUIDPointerSettings *)self focusedContentPositionAnimationSettings];
-  [v49 setDampingRatio:1.0];
+  focusedContentPositionAnimationSettings2 = [(PUIDPointerSettings *)self focusedContentPositionAnimationSettings];
+  [focusedContentPositionAnimationSettings2 setDampingRatio:1.0];
 
-  v50 = [(PUIDPointerSettings *)self focusedContentPositionAnimationSettings];
-  [v50 setResponse:0.25];
+  focusedContentPositionAnimationSettings3 = [(PUIDPointerSettings *)self focusedContentPositionAnimationSettings];
+  [focusedContentPositionAnimationSettings3 setResponse:0.25];
 
-  v51 = [(PUIDPointerSettings *)self visibleIntensityAnimationSettings];
-  [v51 setDefaultValues];
+  visibleIntensityAnimationSettings = [(PUIDPointerSettings *)self visibleIntensityAnimationSettings];
+  [visibleIntensityAnimationSettings setDefaultValues];
 
-  v52 = [(PUIDPointerSettings *)self visibleIntensityAnimationSettings];
-  [v52 setDampingRatio:1.0];
+  visibleIntensityAnimationSettings2 = [(PUIDPointerSettings *)self visibleIntensityAnimationSettings];
+  [visibleIntensityAnimationSettings2 setDampingRatio:1.0];
 
-  v53 = [(PUIDPointerSettings *)self visibleIntensityAnimationSettings];
-  [v53 setResponse:0.15];
+  visibleIntensityAnimationSettings3 = [(PUIDPointerSettings *)self visibleIntensityAnimationSettings];
+  [visibleIntensityAnimationSettings3 setResponse:0.15];
 
-  v54 = [(PUIDPointerSettings *)self rampingExitAnimationSettings];
-  [v54 setDefaultValues];
+  rampingExitAnimationSettings = [(PUIDPointerSettings *)self rampingExitAnimationSettings];
+  [rampingExitAnimationSettings setDefaultValues];
 
-  v55 = [(PUIDPointerSettings *)self rampingExitAnimationSettings];
-  [v55 setDampingRatio:1.0];
+  rampingExitAnimationSettings2 = [(PUIDPointerSettings *)self rampingExitAnimationSettings];
+  [rampingExitAnimationSettings2 setDampingRatio:1.0];
 
-  v56 = [(PUIDPointerSettings *)self rampingExitAnimationSettings];
-  [v56 setResponse:0.125];
+  rampingExitAnimationSettings3 = [(PUIDPointerSettings *)self rampingExitAnimationSettings];
+  [rampingExitAnimationSettings3 setResponse:0.125];
 
-  v57 = [(PUIDPointerSettings *)self materialTransitionAnimationSettings];
-  [v57 setDefaultValues];
+  materialTransitionAnimationSettings = [(PUIDPointerSettings *)self materialTransitionAnimationSettings];
+  [materialTransitionAnimationSettings setDefaultValues];
 
-  v58 = [(PUIDPointerSettings *)self materialTransitionAnimationSettings];
-  [v58 setDampingRatio:1.0];
+  materialTransitionAnimationSettings2 = [(PUIDPointerSettings *)self materialTransitionAnimationSettings];
+  [materialTransitionAnimationSettings2 setDampingRatio:1.0];
 
-  v59 = [(PUIDPointerSettings *)self materialTransitionAnimationSettings];
-  [v59 setResponse:0.5];
+  materialTransitionAnimationSettings3 = [(PUIDPointerSettings *)self materialTransitionAnimationSettings];
+  [materialTransitionAnimationSettings3 setResponse:0.5];
 
-  v60 = [(PUIDPointerSettings *)self recenteringAnimationSettings];
-  [v60 setAnimationType:1];
+  recenteringAnimationSettings = [(PUIDPointerSettings *)self recenteringAnimationSettings];
+  [recenteringAnimationSettings setAnimationType:1];
 
-  v61 = [(PUIDPointerSettings *)self recenteringAnimationSettings];
-  [v61 setDelay:0.0];
+  recenteringAnimationSettings2 = [(PUIDPointerSettings *)self recenteringAnimationSettings];
+  [recenteringAnimationSettings2 setDelay:0.0];
 
-  v62 = [(PUIDPointerSettings *)self recenteringAnimationSettings];
-  [v62 setDuration:0.5];
+  recenteringAnimationSettings3 = [(PUIDPointerSettings *)self recenteringAnimationSettings];
+  [recenteringAnimationSettings3 setDuration:0.5];
 
-  v63 = [(PUIDPointerSettings *)self recenteringAnimationSettings];
-  [v63 setMass:1.0];
+  recenteringAnimationSettings4 = [(PUIDPointerSettings *)self recenteringAnimationSettings];
+  [recenteringAnimationSettings4 setMass:1.0];
 
-  v64 = [(PUIDPointerSettings *)self recenteringAnimationSettings];
-  [v64 setStiffness:3262.0];
+  recenteringAnimationSettings5 = [(PUIDPointerSettings *)self recenteringAnimationSettings];
+  [recenteringAnimationSettings5 setStiffness:3262.0];
 
-  v65 = [(PUIDPointerSettings *)self recenteringAnimationSettings];
-  [v65 setDamping:114.0];
+  recenteringAnimationSettings6 = [(PUIDPointerSettings *)self recenteringAnimationSettings];
+  [recenteringAnimationSettings6 setDamping:114.0];
 
-  v66 = [(PUIDPointerSettings *)self recenteringAnimationSettings];
-  [v66 setCurve:0];
+  recenteringAnimationSettings7 = [(PUIDPointerSettings *)self recenteringAnimationSettings];
+  [recenteringAnimationSettings7 setCurve:0];
 
-  v67 = [(PUIDPointerSettings *)self mouseRecenteringAnimationSettings];
-  [v67 setAnimationType:1];
+  mouseRecenteringAnimationSettings = [(PUIDPointerSettings *)self mouseRecenteringAnimationSettings];
+  [mouseRecenteringAnimationSettings setAnimationType:1];
 
-  v68 = [(PUIDPointerSettings *)self mouseRecenteringAnimationSettings];
-  [v68 setDelay:0.0];
+  mouseRecenteringAnimationSettings2 = [(PUIDPointerSettings *)self mouseRecenteringAnimationSettings];
+  [mouseRecenteringAnimationSettings2 setDelay:0.0];
 
-  v69 = [(PUIDPointerSettings *)self mouseRecenteringAnimationSettings];
-  [v69 setDuration:0.5];
+  mouseRecenteringAnimationSettings3 = [(PUIDPointerSettings *)self mouseRecenteringAnimationSettings];
+  [mouseRecenteringAnimationSettings3 setDuration:0.5];
 
-  v70 = [(PUIDPointerSettings *)self mouseRecenteringAnimationSettings];
-  [v70 setMass:1.0];
+  mouseRecenteringAnimationSettings4 = [(PUIDPointerSettings *)self mouseRecenteringAnimationSettings];
+  [mouseRecenteringAnimationSettings4 setMass:1.0];
 
-  v71 = [(PUIDPointerSettings *)self mouseRecenteringAnimationSettings];
-  [v71 setStiffness:218.0];
+  mouseRecenteringAnimationSettings5 = [(PUIDPointerSettings *)self mouseRecenteringAnimationSettings];
+  [mouseRecenteringAnimationSettings5 setStiffness:218.0];
 
-  v72 = [(PUIDPointerSettings *)self mouseRecenteringAnimationSettings];
-  [v72 setDamping:28.0];
+  mouseRecenteringAnimationSettings6 = [(PUIDPointerSettings *)self mouseRecenteringAnimationSettings];
+  [mouseRecenteringAnimationSettings6 setDamping:28.0];
 
-  v73 = [(PUIDPointerSettings *)self mouseRecenteringAnimationSettings];
-  [v73 setCurve:0];
+  mouseRecenteringAnimationSettings7 = [(PUIDPointerSettings *)self mouseRecenteringAnimationSettings];
+  [mouseRecenteringAnimationSettings7 setCurve:0];
 
   [(PUIDPointerSettings *)self setFlexibleRectIntensityReductionRange:300.0];
   [(PUIDPointerSettings *)self setMinFlexibleRectDarkLuminanceIntensity:0.25];
   [(PUIDPointerSettings *)self setMinFlexibleRectLightLuminanceIntensity:0.325];
   [(PUIDPointerSettings *)self setAllowPositionToPositionAnimations:1];
   [(PUIDPointerSettings *)self setPositionToPositionAnimationThreshold:90.0];
-  v74 = [(PUIDPointerSettings *)self pointerAccessoryAnimationSettings];
-  [v74 setDefaultValues];
+  pointerAccessoryAnimationSettings = [(PUIDPointerSettings *)self pointerAccessoryAnimationSettings];
+  [pointerAccessoryAnimationSettings setDefaultValues];
 
-  v75 = [(PUIDPointerSettings *)self pointerAccessoryAnimationSettings];
-  [v75 setDampingRatio:1.0];
+  pointerAccessoryAnimationSettings2 = [(PUIDPointerSettings *)self pointerAccessoryAnimationSettings];
+  [pointerAccessoryAnimationSettings2 setDampingRatio:1.0];
 
-  v76 = [(PUIDPointerSettings *)self pointerAccessoryAnimationSettings];
-  [v76 setResponse:0.3];
+  pointerAccessoryAnimationSettings3 = [(PUIDPointerSettings *)self pointerAccessoryAnimationSettings];
+  [pointerAccessoryAnimationSettings3 setResponse:0.3];
 
   [(PUIDPointerSettings *)self setShakeToFindWiggleCount:8];
   [(PUIDPointerSettings *)self setShakeToFindGestureInterval:0.1];
@@ -289,23 +289,23 @@
   [(PUIDPointerSettings *)self setShakeToFindMaxScaleUpFactor:5.0];
   [(PUIDPointerSettings *)self setShakeToFindSlopeVarianceThreshold:0.2];
   [(PUIDPointerSettings *)self setShakeToFindScaleUpdateInterval:0.00833333333];
-  v77 = [(PUIDPointerSettings *)self shakeToFindExpansionAnimationSettings];
-  [v77 setDefaultValues];
+  shakeToFindExpansionAnimationSettings = [(PUIDPointerSettings *)self shakeToFindExpansionAnimationSettings];
+  [shakeToFindExpansionAnimationSettings setDefaultValues];
 
-  v78 = [(PUIDPointerSettings *)self shakeToFindExpansionAnimationSettings];
-  [v78 setDampingRatio:1.0];
+  shakeToFindExpansionAnimationSettings2 = [(PUIDPointerSettings *)self shakeToFindExpansionAnimationSettings];
+  [shakeToFindExpansionAnimationSettings2 setDampingRatio:1.0];
 
-  v79 = [(PUIDPointerSettings *)self shakeToFindExpansionAnimationSettings];
-  [v79 setResponse:0.2];
+  shakeToFindExpansionAnimationSettings3 = [(PUIDPointerSettings *)self shakeToFindExpansionAnimationSettings];
+  [shakeToFindExpansionAnimationSettings3 setResponse:0.2];
 
-  v80 = [(PUIDPointerSettings *)self shakeToFindContractionAnimationSettings];
-  [v80 setDefaultValues];
+  shakeToFindContractionAnimationSettings = [(PUIDPointerSettings *)self shakeToFindContractionAnimationSettings];
+  [shakeToFindContractionAnimationSettings setDefaultValues];
 
-  v81 = [(PUIDPointerSettings *)self shakeToFindContractionAnimationSettings];
-  [v81 setDampingRatio:1.0];
+  shakeToFindContractionAnimationSettings2 = [(PUIDPointerSettings *)self shakeToFindContractionAnimationSettings];
+  [shakeToFindContractionAnimationSettings2 setDampingRatio:1.0];
 
-  v82 = [(PUIDPointerSettings *)self shakeToFindContractionAnimationSettings];
-  [v82 setResponse:0.2];
+  shakeToFindContractionAnimationSettings3 = [(PUIDPointerSettings *)self shakeToFindContractionAnimationSettings];
+  [shakeToFindContractionAnimationSettings3 setResponse:0.2];
 
   [(PUIDPointerSettings *)self setShowDebugColors:0];
 }

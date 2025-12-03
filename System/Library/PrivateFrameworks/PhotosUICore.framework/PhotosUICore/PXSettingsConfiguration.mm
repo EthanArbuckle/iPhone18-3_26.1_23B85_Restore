@@ -1,59 +1,59 @@
 @interface PXSettingsConfiguration
-+ (id)configurationsFromSharableString:(id)a3;
-+ (id)sharableStringForConfigurations:(id)a3;
++ (id)configurationsFromSharableString:(id)string;
++ (id)sharableStringForConfigurations:(id)configurations;
 - (PXSettingsConfiguration)init;
-- (PXSettingsConfiguration)initWithCoder:(id)a3;
-- (PXSettingsConfiguration)initWithName:(id)a3 settings:(id)a4;
-- (PXSettingsConfiguration)initWithName:(id)a3 settings:(id)a4 archive:(id)a5;
-- (id)copyWithName:(id)a3;
+- (PXSettingsConfiguration)initWithCoder:(id)coder;
+- (PXSettingsConfiguration)initWithName:(id)name settings:(id)settings;
+- (PXSettingsConfiguration)initWithName:(id)name settings:(id)settings archive:(id)archive;
+- (id)copyWithName:(id)name;
 - (id)copyWithUpdatedSettingsValues;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PXSettingsConfiguration
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(PXSettingsConfiguration *)self name];
-  [v4 encodeObject:v5 forKey:@"name"];
+  coderCopy = coder;
+  name = [(PXSettingsConfiguration *)self name];
+  [coderCopy encodeObject:name forKey:@"name"];
 
-  v6 = [(PXSettingsConfiguration *)self settings];
+  settings = [(PXSettingsConfiguration *)self settings];
   v7 = objc_opt_class();
   v8 = NSStringFromClass(v7);
-  [v4 encodeObject:v8 forKey:@"settingsClass"];
+  [coderCopy encodeObject:v8 forKey:@"settingsClass"];
 
-  v9 = [(PXSettingsConfiguration *)self archive];
-  [v4 encodeObject:v9 forKey:@"archive"];
+  archive = [(PXSettingsConfiguration *)self archive];
+  [coderCopy encodeObject:archive forKey:@"archive"];
 }
 
 - (id)copyWithUpdatedSettingsValues
 {
   v3 = objc_alloc(objc_opt_class());
-  v4 = [(PXSettingsConfiguration *)self name];
-  v5 = [(PXSettingsConfiguration *)self settings];
-  v6 = [v3 initWithName:v4 settings:v5];
+  name = [(PXSettingsConfiguration *)self name];
+  settings = [(PXSettingsConfiguration *)self settings];
+  v6 = [v3 initWithName:name settings:settings];
 
   return v6;
 }
 
-- (id)copyWithName:(id)a3
+- (id)copyWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v5 = objc_alloc(objc_opt_class());
-  v6 = [(PXSettingsConfiguration *)self settings];
-  v7 = [(PXSettingsConfiguration *)self archive];
-  v8 = [v5 initWithName:v4 settings:v6 archive:v7];
+  settings = [(PXSettingsConfiguration *)self settings];
+  archive = [(PXSettingsConfiguration *)self archive];
+  v8 = [v5 initWithName:nameCopy settings:settings archive:archive];
 
   return v8;
 }
 
-- (PXSettingsConfiguration)initWithCoder:(id)a3
+- (PXSettingsConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"settingsClass"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"archive"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"settingsClass"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"archive"];
 
   if (!v6 || (v8 = NSClassFromString(v6), ![(objc_class *)v8 isSubclassOfClass:objc_opt_class()]))
   {
@@ -64,35 +64,35 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v9 = [(objc_class *)v8 sharedInstance];
-  v10 = v9;
-  if (!v5 || !v9 || !v7)
+  sharedInstance = [(objc_class *)v8 sharedInstance];
+  v10 = sharedInstance;
+  if (!v5 || !sharedInstance || !v7)
   {
     goto LABEL_8;
   }
 
-  v11 = [(PXSettingsConfiguration *)self initWithName:v5 settings:v9 archive:v7];
+  v11 = [(PXSettingsConfiguration *)self initWithName:v5 settings:sharedInstance archive:v7];
 LABEL_9:
 
   return v11;
 }
 
-- (PXSettingsConfiguration)initWithName:(id)a3 settings:(id)a4 archive:(id)a5
+- (PXSettingsConfiguration)initWithName:(id)name settings:(id)settings archive:(id)archive
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  nameCopy = name;
+  settingsCopy = settings;
+  archiveCopy = archive;
   v17.receiver = self;
   v17.super_class = PXSettingsConfiguration;
   v11 = [(PXSettingsConfiguration *)&v17 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [nameCopy copy];
     name = v11->_name;
     v11->_name = v12;
 
-    objc_storeStrong(&v11->_settings, a4);
-    v14 = [v10 copy];
+    objc_storeStrong(&v11->_settings, settings);
+    v14 = [archiveCopy copy];
     archive = v11->_archive;
     v11->_archive = v14;
   }
@@ -100,30 +100,30 @@ LABEL_9:
   return v11;
 }
 
-- (PXSettingsConfiguration)initWithName:(id)a3 settings:(id)a4
+- (PXSettingsConfiguration)initWithName:(id)name settings:(id)settings
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v6 archiveDictionary];
-  v9 = [(PXSettingsConfiguration *)self initWithName:v7 settings:v6 archive:v8];
+  settingsCopy = settings;
+  nameCopy = name;
+  archiveDictionary = [settingsCopy archiveDictionary];
+  v9 = [(PXSettingsConfiguration *)self initWithName:nameCopy settings:settingsCopy archive:archiveDictionary];
 
   return v9;
 }
 
 - (PXSettingsConfiguration)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXSettingsConfiguration.m" lineNumber:29 description:{@"%s is not available as initializer", "-[PXSettingsConfiguration init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXSettingsConfiguration.m" lineNumber:29 description:{@"%s is not available as initializer", "-[PXSettingsConfiguration init]"}];
 
   abort();
 }
 
-+ (id)configurationsFromSharableString:(id)a3
++ (id)configurationsFromSharableString:(id)string
 {
   v41 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  stringCopy = string;
   v4 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"\n%@\n", @"========="];
-  v5 = [v3 componentsSeparatedByString:v4];
+  v5 = [stringCopy componentsSeparatedByString:v4];
   if ([v5 count] < 2)
   {
     v7 = 0;
@@ -154,7 +154,7 @@ LABEL_29:
       v29 = v7;
       v30 = v5;
       v31 = v4;
-      v32 = v3;
+      v32 = stringCopy;
       v33 = objc_alloc_init(MEMORY[0x1E695DF70]);
       v35 = 0u;
       v36 = 0u;
@@ -192,40 +192,40 @@ LABEL_29:
           v19 = [v16 objectForKeyedSubscript:@"archive"];
           if (!v18)
           {
-            v21 = 0;
+            sharedInstance = 0;
 LABEL_23:
             NSLog(&cfstr_MalformedConfi.isa, v16);
-            v23 = v19;
+            archiveDictionary = v19;
             goto LABEL_24;
           }
 
           v20 = NSClassFromString(v18);
           if ([(objc_class *)v20 isSubclassOfClass:objc_opt_class()])
           {
-            v21 = [(objc_class *)v20 sharedInstance];
+            sharedInstance = [(objc_class *)v20 sharedInstance];
           }
 
           else
           {
-            v21 = 0;
+            sharedInstance = 0;
           }
 
           v22 = [(objc_class *)v20 settingsFromArchiveDictionary:v19];
-          v23 = [v22 archiveDictionary];
+          archiveDictionary = [v22 archiveDictionary];
 
           if (!v17)
           {
-            v19 = v23;
+            v19 = archiveDictionary;
             goto LABEL_23;
           }
 
-          if (!v21 || !v23)
+          if (!sharedInstance || !archiveDictionary)
           {
-            v19 = v23;
+            v19 = archiveDictionary;
             goto LABEL_23;
           }
 
-          v24 = [[PXSettingsConfiguration alloc] initWithName:v17 settings:v21 archive:v23];
+          v24 = [[PXSettingsConfiguration alloc] initWithName:v17 settings:sharedInstance archive:archiveDictionary];
           [v33 addObject:v24];
 
 LABEL_24:
@@ -237,7 +237,7 @@ LABEL_24:
 LABEL_27:
 
           v4 = v31;
-          v3 = v32;
+          stringCopy = v32;
           v7 = v29;
           v5 = v30;
           v9 = v27;
@@ -264,16 +264,16 @@ LABEL_34:
   return v33;
 }
 
-+ (id)sharableStringForConfigurations:(id)a3
++ (id)sharableStringForConfigurations:(id)configurations
 {
   v33 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  configurationsCopy = configurations;
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v5 = v3;
+  v5 = configurationsCopy;
   v6 = [v5 countByEnumeratingWithState:&v26 objects:v32 count:16];
   if (v6)
   {
@@ -290,16 +290,16 @@ LABEL_34:
 
         v10 = *(*(&v26 + 1) + 8 * i);
         v30[0] = @"name";
-        v11 = [v10 name];
-        v31[0] = v11;
+        name = [v10 name];
+        v31[0] = name;
         v30[1] = @"settingsClass";
-        v12 = [v10 settings];
+        settings = [v10 settings];
         v13 = objc_opt_class();
         v14 = NSStringFromClass(v13);
         v31[1] = v14;
         v30[2] = @"archive";
-        v15 = [v10 archive];
-        v31[2] = v15;
+        archive = [v10 archive];
+        v31[2] = archive;
         v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v31 forKeys:v30 count:3];
         [v4 addObject:v16];
       }
@@ -315,8 +315,8 @@ LABEL_34:
   v18 = v25;
   if (!v17)
   {
-    v22 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v22 handleFailureInMethod:a2 object:a1 file:@"PXSettingsConfiguration.m" lineNumber:86 description:{@"failed to serialize configurations: %@", v18}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSettingsConfiguration.m" lineNumber:86 description:{@"failed to serialize configurations: %@", v18}];
   }
 
   v19 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:v17 encoding:4];

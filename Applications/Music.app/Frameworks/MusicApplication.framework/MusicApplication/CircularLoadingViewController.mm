@@ -1,6 +1,6 @@
 @interface CircularLoadingViewController
-- (_TtC16MusicApplication29CircularLoadingViewController)initWithCoder:(id)a3;
-- (_TtC16MusicApplication29CircularLoadingViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC16MusicApplication29CircularLoadingViewController)initWithCoder:(id)coder;
+- (_TtC16MusicApplication29CircularLoadingViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLoad;
 @end
 
@@ -8,45 +8,45 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_D5F78();
 }
 
-- (_TtC16MusicApplication29CircularLoadingViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC16MusicApplication29CircularLoadingViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   ObjectType = swift_getObjectType();
-  if (a3)
+  if (name)
   {
     sub_AB92A0();
     *(&self->super.super.super.isa + OBJC_IVAR____TtC16MusicApplication29CircularLoadingViewController_circleLayer) = 0;
     *(&self->super.super.super.isa + OBJC_IVAR____TtC16MusicApplication29CircularLoadingViewController_progressLayer) = 0;
-    v8 = a4;
-    a3 = sub_AB9260();
+    bundleCopy = bundle;
+    name = sub_AB9260();
   }
 
   else
   {
     *(&self->super.super.super.isa + OBJC_IVAR____TtC16MusicApplication29CircularLoadingViewController_circleLayer) = 0;
     *(&self->super.super.super.isa + OBJC_IVAR____TtC16MusicApplication29CircularLoadingViewController_progressLayer) = 0;
-    v9 = a4;
+    bundleCopy2 = bundle;
   }
 
   v12.receiver = self;
   v12.super_class = ObjectType;
-  v10 = [(CircularLoadingViewController *)&v12 initWithNibName:a3 bundle:a4];
+  v10 = [(CircularLoadingViewController *)&v12 initWithNibName:name bundle:bundle];
 
   return v10;
 }
 
-- (_TtC16MusicApplication29CircularLoadingViewController)initWithCoder:(id)a3
+- (_TtC16MusicApplication29CircularLoadingViewController)initWithCoder:(id)coder
 {
   ObjectType = swift_getObjectType();
   *(&self->super.super.super.isa + OBJC_IVAR____TtC16MusicApplication29CircularLoadingViewController_circleLayer) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC16MusicApplication29CircularLoadingViewController_progressLayer) = 0;
   v9.receiver = self;
   v9.super_class = ObjectType;
-  v6 = a3;
-  v7 = [(CircularLoadingViewController *)&v9 initWithCoder:v6];
+  coderCopy = coder;
+  v7 = [(CircularLoadingViewController *)&v9 initWithCoder:coderCopy];
 
   return v7;
 }

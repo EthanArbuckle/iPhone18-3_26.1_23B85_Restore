@@ -23,16 +23,16 @@
 
 + (id)wf_shortcutsDirectoryURL
 {
-  v1 = [a1 wf_realLibraryDirectoryURL];
-  v2 = [v1 URLByAppendingPathComponent:@"Shortcuts" isDirectory:1];
+  wf_realLibraryDirectoryURL = [self wf_realLibraryDirectoryURL];
+  v2 = [wf_realLibraryDirectoryURL URLByAppendingPathComponent:@"Shortcuts" isDirectory:1];
 
   return v2;
 }
 
 + (id)wf_realLibraryDirectoryURL
 {
-  v1 = [a1 wf_realHomeDirectoryURL];
-  v2 = [v1 URLByAppendingPathComponent:@"Library" isDirectory:1];
+  wf_realHomeDirectoryURL = [self wf_realHomeDirectoryURL];
+  v2 = [wf_realHomeDirectoryURL URLByAppendingPathComponent:@"Library" isDirectory:1];
 
   return v2;
 }
@@ -47,8 +47,8 @@
 
 - (BOOL)wf_fileIsShortcutsOwned
 {
-  v2 = [MEMORY[0x277CBEBC0] wf_shortcutsDirectoryURL];
-  v3 = ([a1 wf_proposedFileIsContainedByDirectoryAtURL:v2] & 1) != 0 || +[WFTemporaryFileManager isTemporaryFile:](WFTemporaryFileManager, "isTemporaryFile:", a1);
+  wf_shortcutsDirectoryURL = [MEMORY[0x277CBEBC0] wf_shortcutsDirectoryURL];
+  v3 = ([self wf_proposedFileIsContainedByDirectoryAtURL:wf_shortcutsDirectoryURL] & 1) != 0 || +[WFTemporaryFileManager isTemporaryFile:](WFTemporaryFileManager, "isTemporaryFile:", self);
 
   return v3;
 }
@@ -56,7 +56,7 @@
 - (uint64_t)wf_fileIsOnSameVolumeAsURL:()DCFileUtilities
 {
   v4 = a3;
-  v5 = WFExistingFileFromURL(a1);
+  v5 = WFExistingFileFromURL(self);
   v6 = WFExistingFileFromURL(v4);
 
   v7 = 0;
@@ -85,13 +85,13 @@
 - (BOOL)wf_proposedFileIsContainedByDirectoryAtURL:()DCFileUtilities
 {
   v4 = a3;
-  v5 = WFExistingFileFromURL(a1);
+  v5 = WFExistingFileFromURL(self);
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 URLByResolvingSymlinksInPath];
-    v8 = [v4 URLByResolvingSymlinksInPath];
-    v9 = [v7 wf_relationshipToDirectoryAtURL:v8] < 2;
+    uRLByResolvingSymlinksInPath = [v5 URLByResolvingSymlinksInPath];
+    uRLByResolvingSymlinksInPath2 = [v4 URLByResolvingSymlinksInPath];
+    v9 = [uRLByResolvingSymlinksInPath wf_relationshipToDirectoryAtURL:uRLByResolvingSymlinksInPath2] < 2;
   }
 
   else
@@ -104,33 +104,33 @@
 
 - (__CFString)wf_relativePathFromURL:()DCFileUtilities
 {
-  v4 = [a3 path];
-  v5 = [a1 path];
+  path = [a3 path];
+  path2 = [self path];
   v6 = 0;
-  if (v5 && v4)
+  if (path2 && path)
   {
-    if ([v4 isEqualToString:v5])
+    if ([path isEqualToString:path2])
     {
       v6 = &stru_282F53518;
       goto LABEL_18;
     }
 
-    if ([v4 hasPrefix:v5])
+    if ([path hasPrefix:path2])
     {
-      v7 = [v5 length];
-      v8 = v4;
+      v7 = [path2 length];
+      v8 = path;
     }
 
     else
     {
-      if (![v5 hasPrefix:v4])
+      if (![path2 hasPrefix:path])
       {
         v6 = 0;
         goto LABEL_18;
       }
 
-      v7 = [v4 length];
-      v8 = v5;
+      v7 = [path length];
+      v8 = path2;
     }
 
     v9 = [v8 substringFromIndex:v7];
@@ -166,11 +166,11 @@ LABEL_18:
   v9 = 0;
   v4 = MEMORY[0x277CCAA00];
   v5 = a3;
-  v6 = [v4 defaultManager];
+  defaultManager = [v4 defaultManager];
   v8 = 0;
-  LODWORD(a1) = [v6 getRelationship:&v9 ofDirectoryAtURL:v5 toItemAtURL:a1 error:&v8];
+  LODWORD(self) = [defaultManager getRelationship:&v9 ofDirectoryAtURL:v5 toItemAtURL:self error:&v8];
 
-  if (a1)
+  if (self)
   {
     return v9;
   }
@@ -183,11 +183,11 @@ LABEL_18:
 
 - (id)wf_fileSize
 {
-  if ([a1 isFileURL])
+  if ([self isFileURL])
   {
-    v2 = [MEMORY[0x277CCAA00] defaultManager];
-    v3 = [a1 path];
-    v4 = [v2 attributesOfItemAtPath:v3 error:0];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    path = [self path];
+    v4 = [defaultManager attributesOfItemAtPath:path error:0];
     v5 = [v4 objectForKey:*MEMORY[0x277CCA1C0]];
   }
 
@@ -204,13 +204,13 @@ LABEL_18:
   v4 = a3;
   if (!v4)
   {
-    v8 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[NSURL(DCFileUtilities) wf_fileHasExtendedAttribute:]"];
-    [v8 handleFailureInFunction:v9 file:@"NSURL+DCFileUtilities.m" lineNumber:98 description:{@"Invalid parameter not satisfying: %@", @"attributeName"}];
+    [currentHandler handleFailureInFunction:v9 file:@"NSURL+DCFileUtilities.m" lineNumber:98 description:{@"Invalid parameter not satisfying: %@", @"attributeName"}];
   }
 
-  v5 = [a1 path];
-  v6 = getxattr([v5 UTF8String], objc_msgSend(v4, "UTF8String"), 0, 0, 0, 0);
+  path = [self path];
+  v6 = getxattr([path UTF8String], objc_msgSend(v4, "UTF8String"), 0, 0, 0, 0);
 
   return v6 >= 0;
 }
@@ -220,7 +220,7 @@ LABEL_18:
   v3 = a3[1];
   v5[0] = *a3;
   v5[1] = v3;
-  return [a1 wf_sandboxAllowsOperation:"file-write-data" withAuditToken:v5];
+  return [self wf_sandboxAllowsOperation:"file-write-data" withAuditToken:v5];
 }
 
 - (uint64_t)wf_sandboxAllowsReadingFileWithAuditToken:()DCFileUtilities
@@ -228,7 +228,7 @@ LABEL_18:
   v3 = a3[1];
   v5[0] = *a3;
   v5[1] = v3;
-  return [a1 wf_sandboxAllowsOperation:"file-read-data" withAuditToken:v5];
+  return [self wf_sandboxAllowsOperation:"file-read-data" withAuditToken:v5];
 }
 
 - (BOOL)wf_sandboxAllowsOperation:()DCFileUtilities
@@ -240,43 +240,43 @@ LABEL_18:
   }
 
   getpid();
-  [a1 fileSystemRepresentation];
+  [self fileSystemRepresentation];
   return sandbox_check() == 0;
 }
 
 - (uint64_t)wf_fileIsDirectory
 {
   v6 = 0;
-  v2 = [MEMORY[0x277CCAA00] defaultManager];
-  v3 = [a1 path];
-  v4 = [v2 fileExistsAtPath:v3 isDirectory:&v6];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  path = [self path];
+  v4 = [defaultManager fileExistsAtPath:path isDirectory:&v6];
 
   return (v4 & v6);
 }
 
 - (uint64_t)wf_fileIsWritable
 {
-  v2 = [MEMORY[0x277CCAA00] defaultManager];
-  v3 = [a1 path];
-  v4 = [v2 isWritableFileAtPath:v3];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  path = [self path];
+  v4 = [defaultManager isWritableFileAtPath:path];
 
   return v4;
 }
 
 - (uint64_t)wf_fileIsReadable
 {
-  v2 = [MEMORY[0x277CCAA00] defaultManager];
-  v3 = [a1 path];
-  v4 = [v2 isReadableFileAtPath:v3];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  path = [self path];
+  v4 = [defaultManager isReadableFileAtPath:path];
 
   return v4;
 }
 
 - (uint64_t)wf_fileExists
 {
-  v2 = [MEMORY[0x277CCAA00] defaultManager];
-  v3 = [a1 path];
-  v4 = [v2 fileExistsAtPath:v3];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  path = [self path];
+  v4 = [defaultManager fileExistsAtPath:path];
 
   return v4;
 }

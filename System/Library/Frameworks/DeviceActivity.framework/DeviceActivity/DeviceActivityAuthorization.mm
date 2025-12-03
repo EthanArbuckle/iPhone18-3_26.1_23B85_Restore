@@ -1,5 +1,5 @@
 @interface DeviceActivityAuthorization
-+ (BOOL)isAuthorized:(id)a3;
++ (BOOL)isAuthorized:(id)authorized;
 + (BOOL)sharingEnabled;
 + (NSArray)authorizedClientIdentifiers;
 - (_TtC14DeviceActivity27DeviceActivityAuthorization)init;
@@ -7,7 +7,7 @@
 
 @implementation DeviceActivityAuthorization
 
-+ (BOOL)isAuthorized:(id)a3
++ (BOOL)isAuthorized:(id)authorized
 {
   v3 = sub_238031EA4();
   v5 = _s14DeviceActivity0aB13AuthorizationC12isAuthorizedySbSSFZ_0(v3, v4);
@@ -22,10 +22,10 @@
     swift_once();
   }
 
-  v2 = [qword_280C356F8 deviceActivity];
-  v3 = [v2 allowedClients];
+  deviceActivity = [qword_280C356F8 deviceActivity];
+  allowedClients = [deviceActivity allowedClients];
 
-  if (v3)
+  if (allowedClients)
   {
     sub_237FBDA34();
     sub_237FBDA80();
@@ -46,17 +46,17 @@
     swift_once();
   }
 
-  v2 = [qword_280C356F8 deviceActivity];
-  v3 = [v2 shareAcrossDevices];
+  deviceActivity = [qword_280C356F8 deviceActivity];
+  shareAcrossDevices = [deviceActivity shareAcrossDevices];
 
-  if (!v3)
+  if (!shareAcrossDevices)
   {
     return 1;
   }
 
-  v4 = [v3 BOOLValue];
+  bOOLValue = [shareAcrossDevices BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (_TtC14DeviceActivity27DeviceActivityAuthorization)init

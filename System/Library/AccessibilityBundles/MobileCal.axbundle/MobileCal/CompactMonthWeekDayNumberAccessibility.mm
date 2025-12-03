@@ -1,40 +1,40 @@
 @interface CompactMonthWeekDayNumberAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_accessibilityIsSpeakThisElement;
 - (BOOL)_prefersFocusContainment;
 - (BOOL)canBecomeFocused;
-- (BOOL)conformsToProtocol:(id)a3;
+- (BOOL)conformsToProtocol:(id)protocol;
 - (BOOL)isAccessibilityElement;
 - (CGRect)accessibilityFrame;
 - (NSString)focusGroupIdentifier;
 - (id)_axCalendarModel;
 - (id)_axEventStore;
-- (id)_axStringForNumberOfEvents:(unint64_t)a3;
+- (id)_axStringForNumberOfEvents:(unint64_t)events;
 - (id)_preferredFocusRegionCoordinateSpace;
 - (id)accessibilityCustomContent;
 - (id)accessibilityLabel;
 - (id)accessibilityUserInputLabels;
 - (id)accessibilityValue;
-- (id)focusItemsInRect:(CGRect)a3;
+- (id)focusItemsInRect:(CGRect)rect;
 - (unint64_t)accessibilityTraits;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
 - (void)setNeedsFocusUpdate;
 - (void)updateFocusIfNeeded;
 @end
 
 @implementation CompactMonthWeekDayNumberAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CompactWidthMonthViewController"];
-  [v3 validateClass:@"CompactMonthWeekView"];
-  [v3 validateClass:@"CompactMonthWeekView" hasInstanceVariable:@"_today" withType:"CompactMonthWeekDayNumber"];
-  [v3 validateClass:@"CompactWidthMonthViewController" hasInstanceVariable:@"_model" withType:"CUIKCalendarModel"];
-  [v3 validateClass:@"CompactMonthWeekDayNumber" hasInstanceMethod:@"calendarDate" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CompactMonthWeekDayNumber" hasInstanceMethod:@"attachedTodayCircle" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CompactMonthWeekTodayCircle" hasInstanceMethod:@"drawCircle" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"CompactMonthWeekDayNumber" hasInstanceMethod:@"frame" withFullSignature:{"{CGRect={CGPoint=dd}{CGSize=dd}}", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CompactWidthMonthViewController"];
+  [validationsCopy validateClass:@"CompactMonthWeekView"];
+  [validationsCopy validateClass:@"CompactMonthWeekView" hasInstanceVariable:@"_today" withType:"CompactMonthWeekDayNumber"];
+  [validationsCopy validateClass:@"CompactWidthMonthViewController" hasInstanceVariable:@"_model" withType:"CUIKCalendarModel"];
+  [validationsCopy validateClass:@"CompactMonthWeekDayNumber" hasInstanceMethod:@"calendarDate" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CompactMonthWeekDayNumber" hasInstanceMethod:@"attachedTodayCircle" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CompactMonthWeekTodayCircle" hasInstanceMethod:@"drawCircle" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"CompactMonthWeekDayNumber" hasInstanceMethod:@"frame" withFullSignature:{"{CGRect={CGPoint=dd}{CGSize=dd}}", 0}];
 }
 
 - (BOOL)isAccessibilityElement
@@ -47,7 +47,7 @@
 
 - (CGRect)accessibilityFrame
 {
-  v3 = [(CompactMonthWeekDayNumberAccessibility *)self accessibilityContainer];
+  accessibilityContainer = [(CompactMonthWeekDayNumberAccessibility *)self accessibilityContainer];
   v4 = [(CompactMonthWeekDayNumberAccessibility *)self safeValueForKey:@"layer"];
   v5 = [v4 safeValueForKey:@"frame"];
   [v5 CGRectValue];
@@ -71,8 +71,8 @@
   v4 = [v3 safeValueForKey:@"date"];
   v5 = _AXGetStringsForDate(v4);
 
-  v6 = [(CompactMonthWeekDayNumberAccessibility *)self accessibilityContainer];
-  v7 = [v6 safeValueForKey:@"_today"];
+  accessibilityContainer = [(CompactMonthWeekDayNumberAccessibility *)self accessibilityContainer];
+  v7 = [accessibilityContainer safeValueForKey:@"_today"];
 
   if (v7 == self)
   {
@@ -118,11 +118,11 @@
   {
     objc_opt_class();
     v3 = __UIAccessibilityCastAsSafeCategory();
-    v4 = [v3 _accessibilityMonthViewController];
+    _accessibilityMonthViewController = [v3 _accessibilityMonthViewController];
 
-    if (v4)
+    if (_accessibilityMonthViewController)
     {
-      v5 = [v4 safeValueForKey:@"_model"];
+      v5 = [_accessibilityMonthViewController safeValueForKey:@"_model"];
     }
 
     else
@@ -142,45 +142,45 @@
 
 - (id)_axEventStore
 {
-  v2 = [(CompactMonthWeekDayNumberAccessibility *)self _axCalendarModel];
-  v3 = [v2 safeValueForKey:@"eventStore"];
+  _axCalendarModel = [(CompactMonthWeekDayNumberAccessibility *)self _axCalendarModel];
+  v3 = [_axCalendarModel safeValueForKey:@"eventStore"];
 
   return v3;
 }
 
-- (id)_axStringForNumberOfEvents:(unint64_t)a3
+- (id)_axStringForNumberOfEvents:(unint64_t)events
 {
   v4 = MEMORY[0x29EDBA0F8];
   v5 = accessibilityLocalizedString(@"event.count");
-  v6 = [v4 localizedStringWithFormat:v5, a3];
+  events = [v4 localizedStringWithFormat:v5, events];
 
-  return v6;
+  return events;
 }
 
 - (id)accessibilityValue
 {
-  v3 = [(CompactMonthWeekDayNumberAccessibility *)self _axEventStore];
-  v4 = [(CompactMonthWeekDayNumberAccessibility *)self _axCalendarModel];
-  v5 = [v4 safeValueForKey:@"selectedCalendars"];
+  _axEventStore = [(CompactMonthWeekDayNumberAccessibility *)self _axEventStore];
+  _axCalendarModel = [(CompactMonthWeekDayNumberAccessibility *)self _axCalendarModel];
+  v5 = [_axCalendarModel safeValueForKey:@"selectedCalendars"];
 
   v6 = [(CompactMonthWeekDayNumberAccessibility *)self safeValueForKey:@"calendarDate"];
   if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v7 = [v6 components];
-    [v7 setHour:0];
-    [v7 setMinute:0];
-    [v7 setSecond:0];
+    components = [v6 components];
+    [components setHour:0];
+    [components setMinute:0];
+    [components setSecond:0];
     v8 = MEMORY[0x29EDC0AC0];
-    v9 = [v3 timeZone];
-    v10 = [v8 calendarDateWithDateComponents:v7 timeZone:v9];
+    timeZone = [_axEventStore timeZone];
+    v10 = [v8 calendarDateWithDateComponents:components timeZone:timeZone];
 
     v18 = [v10 calendarDateByAddingDays:1];
-    v11 = [v10 date];
-    v12 = [v18 date];
-    v13 = [v5 allObjects];
-    v14 = [v3 predicateForEventsWithStartDate:v11 endDate:v12 calendars:v13];
+    date = [v10 date];
+    date2 = [v18 date];
+    allObjects = [v5 allObjects];
+    v14 = [_axEventStore predicateForEventsWithStartDate:date endDate:date2 calendars:allObjects];
 
-    v15 = [v3 eventsMatchingPredicate:v14];
+    v15 = [_axEventStore eventsMatchingPredicate:v14];
     v16 = -[CompactMonthWeekDayNumberAccessibility _axStringForNumberOfEvents:](self, "_axStringForNumberOfEvents:", [v15 count]);
   }
 
@@ -196,15 +196,15 @@
 {
   v54 = *MEMORY[0x29EDCA608];
   v3 = accessibilityLocalizedString(@"event.calendars.none");
-  v4 = [(CompactMonthWeekDayNumberAccessibility *)self _axEventStore];
-  v5 = [(CompactMonthWeekDayNumberAccessibility *)self _axCalendarModel];
-  v6 = [v5 safeValueForKey:@"selectedCalendars"];
+  _axEventStore = [(CompactMonthWeekDayNumberAccessibility *)self _axEventStore];
+  _axCalendarModel = [(CompactMonthWeekDayNumberAccessibility *)self _axCalendarModel];
+  v6 = [_axCalendarModel safeValueForKey:@"selectedCalendars"];
 
   v7 = objc_opt_new();
   v8 = objc_opt_new();
   v9 = [(CompactMonthWeekDayNumberAccessibility *)self safeValueForKey:@"calendarDate"];
   v46 = v6;
-  v47 = v4;
+  v47 = _axEventStore;
   v45 = v9;
   if (v9)
   {
@@ -213,25 +213,25 @@
     if (objc_opt_isKindOfClass())
     {
       v44 = v3;
-      v11 = [v10 allComponents];
-      [v11 setHour:0];
-      [v11 setMinute:0];
-      [v11 setSecond:0];
+      allComponents = [v10 allComponents];
+      [allComponents setHour:0];
+      [allComponents setMinute:0];
+      [allComponents setSecond:0];
       v12 = MEMORY[0x29EDC0AC0];
-      v13 = [v4 timeZone];
-      v43 = v11;
-      v14 = [v12 calendarDateWithDateComponents:v11 timeZone:v13];
+      timeZone = [_axEventStore timeZone];
+      v43 = allComponents;
+      v14 = [v12 calendarDateWithDateComponents:allComponents timeZone:timeZone];
 
       v15 = [v14 calendarDateByAddingDays:1];
       v42 = v14;
-      v16 = [v14 date];
+      date = [v14 date];
       v41 = v15;
-      v17 = [v15 date];
-      v18 = [v6 allObjects];
-      v19 = [v4 predicateForEventsWithStartDate:v16 endDate:v17 calendars:v18];
+      date2 = [v15 date];
+      allObjects = [v6 allObjects];
+      v19 = [_axEventStore predicateForEventsWithStartDate:date endDate:date2 calendars:allObjects];
 
       v40 = v19;
-      v20 = [v4 eventsMatchingPredicate:v19];
+      v20 = [_axEventStore eventsMatchingPredicate:v19];
       v48 = 0u;
       v49 = 0u;
       v50 = 0u;
@@ -251,12 +251,12 @@
             }
 
             v25 = *(*(&v48 + 1) + 8 * i);
-            v26 = [v25 calendar];
-            v27 = [v26 title];
-            [v7 addObject:v27];
+            calendar = [v25 calendar];
+            title = [calendar title];
+            [v7 addObject:title];
 
-            v28 = [v25 title];
-            [v8 addObject:v28];
+            title2 = [v25 title];
+            [v8 addObject:title2];
           }
 
           v22 = [v20 countByEnumeratingWithState:&v48 objects:v53 count:16];
@@ -265,8 +265,8 @@
         while (v22);
       }
 
-      v29 = [v7 allObjects];
-      v3 = [v29 componentsJoinedByString:{@", "}];
+      allObjects2 = [v7 allObjects];
+      v3 = [allObjects2 componentsJoinedByString:{@", "}];
     }
   }
 
@@ -287,9 +287,9 @@
 
 - (BOOL)_accessibilityIsSpeakThisElement
 {
-  v2 = [(CompactMonthWeekDayNumberAccessibility *)self accessibilityValue];
+  accessibilityValue = [(CompactMonthWeekDayNumberAccessibility *)self accessibilityValue];
   v3 = accessibilityLocalizedString(@"event.count.none");
-  v4 = [v2 isEqualToString:v3];
+  v4 = [accessibilityValue isEqualToString:v3];
 
   return v4 ^ 1;
 }
@@ -298,18 +298,18 @@
 {
   v9.receiver = self;
   v9.super_class = CompactMonthWeekDayNumberAccessibility;
-  v3 = [(CompactMonthWeekDayNumberAccessibility *)&v9 focusGroupIdentifier];
-  if (v3 || (-[CompactMonthWeekDayNumberAccessibility _accessibilityParentView](self, "_accessibilityParentView"), v4 = objc_claimAutoreleasedReturnValue(), [v4 safeValueForKey:@"_containingScrollView"], v5 = objc_claimAutoreleasedReturnValue(), v5, v4, v5))
+  focusGroupIdentifier = [(CompactMonthWeekDayNumberAccessibility *)&v9 focusGroupIdentifier];
+  if (focusGroupIdentifier || (-[CompactMonthWeekDayNumberAccessibility _accessibilityParentView](self, "_accessibilityParentView"), v4 = objc_claimAutoreleasedReturnValue(), [v4 safeValueForKey:@"_containingScrollView"], v5 = objc_claimAutoreleasedReturnValue(), v5, v4, v5))
   {
-    v6 = v3;
+    _accessibilityDefaultFocusGroupIdentifier = focusGroupIdentifier;
   }
 
   else
   {
-    v6 = [(CompactMonthWeekDayNumberAccessibility *)self _accessibilityDefaultFocusGroupIdentifier];
+    _accessibilityDefaultFocusGroupIdentifier = [(CompactMonthWeekDayNumberAccessibility *)self _accessibilityDefaultFocusGroupIdentifier];
   }
 
-  v7 = v6;
+  v7 = _accessibilityDefaultFocusGroupIdentifier;
 
   return v7;
 }
@@ -328,17 +328,17 @@
   [(CompactMonthWeekDayNumberAccessibility *)self _updateFocusLayerFrame];
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
-  v6 = a3;
+  contextCopy = context;
   v8[0] = MEMORY[0x29EDCA5F8];
   v8[1] = 3221225472;
   v8[2] = __111__CompactMonthWeekDayNumberAccessibility_UIFocusConformance__didUpdateFocusInContext_withAnimationCoordinator___block_invoke;
   v8[3] = &unk_29F2D2918;
-  v9 = v6;
-  v10 = self;
-  v7 = v6;
-  [a4 addCoordinatedAnimations:v8 completion:0];
+  v9 = contextCopy;
+  selfCopy = self;
+  v7 = contextCopy;
+  [coordinator addCoordinatedAnimations:v8 completion:0];
 }
 
 uint64_t __111__CompactMonthWeekDayNumberAccessibility_UIFocusConformance__didUpdateFocusInContext_withAnimationCoordinator___block_invoke(uint64_t a1)
@@ -371,28 +371,28 @@ LABEL_7:
 
 - (BOOL)canBecomeFocused
 {
-  v3 = [(CompactMonthWeekDayNumberAccessibility *)self isAccessibilityElement];
-  if (v3)
+  isAccessibilityElement = [(CompactMonthWeekDayNumberAccessibility *)self isAccessibilityElement];
+  if (isAccessibilityElement)
   {
 
-    LOBYTE(v3) = [(CompactMonthWeekDayNumberAccessibility *)self accessibilityRespondsToUserInteraction];
+    LOBYTE(isAccessibilityElement) = [(CompactMonthWeekDayNumberAccessibility *)self accessibilityRespondsToUserInteraction];
   }
 
-  return v3;
+  return isAccessibilityElement;
 }
 
 - (id)_preferredFocusRegionCoordinateSpace
 {
-  v2 = [(CompactMonthWeekDayNumberAccessibility *)self _accessibilityParentView];
-  v3 = [v2 _screen];
-  v4 = [v3 coordinateSpace];
+  _accessibilityParentView = [(CompactMonthWeekDayNumberAccessibility *)self _accessibilityParentView];
+  _screen = [_accessibilityParentView _screen];
+  coordinateSpace = [_screen coordinateSpace];
 
-  return v4;
+  return coordinateSpace;
 }
 
-- (id)focusItemsInRect:(CGRect)a3
+- (id)focusItemsInRect:(CGRect)rect
 {
-  v4 = [(CompactMonthWeekDayNumberAccessibility *)self accessibilityElements:a3.origin.x];
+  v4 = [(CompactMonthWeekDayNumberAccessibility *)self accessibilityElements:rect.origin.x];
   if (v4)
   {
     v12[0] = MEMORY[0x29EDCA5F8];
@@ -484,9 +484,9 @@ uint64_t __79__CompactMonthWeekDayNumberAccessibility_UIFocusConformance__focusI
   return [(CompactMonthWeekDayNumberAccessibility *)self shouldGroupAccessibilityChildren];
 }
 
-- (BOOL)conformsToProtocol:(id)a3
+- (BOOL)conformsToProtocol:(id)protocol
 {
-  if (&unk_2A22145C8 == a3 || &unk_2A2214290 == a3 || &unk_2A2214720 == a3 || &unk_2A2214B48 == a3)
+  if (&unk_2A22145C8 == protocol || &unk_2A2214290 == protocol || &unk_2A2214720 == protocol || &unk_2A2214B48 == protocol)
   {
     return 1;
   }

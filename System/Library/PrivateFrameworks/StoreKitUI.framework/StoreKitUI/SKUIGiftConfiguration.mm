@@ -1,25 +1,25 @@
 @interface SKUIGiftConfiguration
-- (SKUIGiftConfiguration)initWithOperationQueue:(id)a3 clientContext:(id)a4;
+- (SKUIGiftConfiguration)initWithOperationQueue:(id)queue clientContext:(id)context;
 - (_NSRange)giftAmountRange;
-- (id)charityForIdentifier:(id)a3;
-- (id)logoImageForCharity:(id)a3;
-- (void)_finishLoadAccountInfoWithResponse:(id)a3 error:(id)a4 block:(id)a5;
-- (void)_finishLoadWithResponse:(id)a3 error:(id)a4 block:(id)a5;
+- (id)charityForIdentifier:(id)identifier;
+- (id)logoImageForCharity:(id)charity;
+- (void)_finishLoadAccountInfoWithResponse:(id)response error:(id)error block:(id)block;
+- (void)_finishLoadWithResponse:(id)response error:(id)error block:(id)block;
 - (void)_loadThemeImages;
-- (void)_setHeaderImage:(id)a3 forTheme:(id)a4;
-- (void)_setLogoImage:(id)a3 forCharity:(id)a4;
-- (void)addObserver:(id)a3;
-- (void)loadConfigurationWithCompletionBlock:(id)a3;
-- (void)loadLogoForCharity:(id)a3;
-- (void)removeObserver:(id)a3;
+- (void)_setHeaderImage:(id)image forTheme:(id)theme;
+- (void)_setLogoImage:(id)image forCharity:(id)charity;
+- (void)addObserver:(id)observer;
+- (void)loadConfigurationWithCompletionBlock:(id)block;
+- (void)loadLogoForCharity:(id)charity;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation SKUIGiftConfiguration
 
-- (SKUIGiftConfiguration)initWithOperationQueue:(id)a3 clientContext:(id)a4
+- (SKUIGiftConfiguration)initWithOperationQueue:(id)queue clientContext:(id)context
 {
-  v7 = a3;
-  v8 = a4;
+  queueCopy = queue;
+  contextCopy = context;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     [SKUIGiftConfiguration initWithOperationQueue:clientContext:];
@@ -31,16 +31,16 @@
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_clientContext, a4);
-    objc_storeStrong(&v10->_operationQueue, a3);
+    objc_storeStrong(&v9->_clientContext, context);
+    objc_storeStrong(&v10->_operationQueue, queue);
   }
 
   return v10;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  objc_initWeak(&location, a3);
+  objc_initWeak(&location, observer);
   observers = self->_observers;
   if (!observers)
   {
@@ -57,10 +57,10 @@
   objc_destroyWeak(&location);
 }
 
-- (id)charityForIdentifier:(id)a3
+- (id)charityForIdentifier:(id)identifier
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -80,8 +80,8 @@
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 identifier];
-        v11 = [v10 isEqualToString:v4];
+        identifier = [v9 identifier];
+        v11 = [identifier isEqualToString:identifierCopy];
 
         if (v11)
         {
@@ -105,23 +105,23 @@ LABEL_11:
   return v6;
 }
 
-- (void)loadConfigurationWithCompletionBlock:(id)a3
+- (void)loadConfigurationWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = self->_operationQueue;
   objc_initWeak(&location, self);
-  v6 = [(SKUIClientContext *)self->_clientContext URLBag];
+  uRLBag = [(SKUIClientContext *)self->_clientContext URLBag];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __62__SKUIGiftConfiguration_loadConfigurationWithCompletionBlock___block_invoke;
   v9[3] = &unk_2781FFDE0;
-  v7 = v4;
+  v7 = blockCopy;
   v11 = v7;
   v9[4] = self;
   objc_copyWeak(&v12, &location);
   v8 = v5;
   v10 = v8;
-  [v6 loadValueForKey:@"giftPageData" completionBlock:v9];
+  [uRLBag loadValueForKey:@"giftPageData" completionBlock:v9];
 
   objc_destroyWeak(&v12);
   objc_destroyWeak(&location);
@@ -184,17 +184,17 @@ void __62__SKUIGiftConfiguration_loadConfigurationWithCompletionBlock___block_in
   [WeakRetained _finishLoadWithResponse:*(a1 + 32) error:*(a1 + 40) block:*(a1 + 48)];
 }
 
-- (void)loadLogoForCharity:(id)a3
+- (void)loadLogoForCharity:(id)charity
 {
-  v4 = a3;
+  charityCopy = charity;
   charityImages = self->_charityImages;
-  v6 = [v4 identifier];
-  v7 = [(NSMutableDictionary *)charityImages objectForKey:v6];
+  identifier = [charityCopy identifier];
+  v7 = [(NSMutableDictionary *)charityImages objectForKey:identifier];
 
   if (!v7)
   {
-    v8 = [v4 logoArtwork];
-    v9 = [v8 URL];
+    logoArtwork = [charityCopy logoArtwork];
+    v9 = [logoArtwork URL];
 
     if (v9)
     {
@@ -209,7 +209,7 @@ void __62__SKUIGiftConfiguration_loadConfigurationWithCompletionBlock___block_in
       v12[2] = __44__SKUIGiftConfiguration_loadLogoForCharity___block_invoke;
       v12[3] = &unk_2781FFE08;
       objc_copyWeak(&v14, &location);
-      v13 = v4;
+      v13 = charityCopy;
       [v10 setOutputBlock:v12];
       [(NSOperationQueue *)self->_operationQueue addOperation:v10];
 
@@ -243,35 +243,35 @@ void __44__SKUIGiftConfiguration_loadLogoForCharity___block_invoke_2(uint64_t a1
   [WeakRetained _setLogoImage:*(a1 + 32) forCharity:*(a1 + 40)];
 }
 
-- (id)logoImageForCharity:(id)a3
+- (id)logoImageForCharity:(id)charity
 {
   charityImages = self->_charityImages;
-  v4 = [a3 identifier];
-  v5 = [(NSMutableDictionary *)charityImages objectForKey:v4];
+  identifier = [charity identifier];
+  v5 = [(NSMutableDictionary *)charityImages objectForKey:identifier];
 
   return v5;
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
   observers = self->_observers;
-  v4 = a3;
-  [(NSHashTable *)observers removeObject:v4];
+  observerCopy = observer;
+  [(NSHashTable *)observers removeObject:observerCopy];
 }
 
-- (void)_finishLoadWithResponse:(id)a3 error:(id)a4 block:(id)a5
+- (void)_finishLoadWithResponse:(id)response error:(id)error block:(id)block
 {
   v99 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  responseCopy = response;
+  errorCopy = error;
+  blockCopy = block;
   objc_opt_class();
-  v79 = v7;
-  v72 = v8;
+  v79 = responseCopy;
+  v72 = errorCopy;
   if (objc_opt_isKindOfClass())
   {
-    v70 = v9;
-    v71 = [v7 objectForKey:@"charities"];
+    v70 = blockCopy;
+    v71 = [responseCopy objectForKey:@"charities"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -375,8 +375,8 @@ void __44__SKUIGiftConfiguration_loadLogoForCharity___block_invoke_2(uint64_t a1
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v26 = [MEMORY[0x277D75418] currentDevice];
-        v27 = [v26 userInterfaceIdiom] == 1;
+        currentDevice = [MEMORY[0x277D75418] currentDevice];
+        v27 = [currentDevice userInterfaceIdiom] == 1;
 
         if (v27)
         {
@@ -570,12 +570,12 @@ void __44__SKUIGiftConfiguration_loadLogoForCharity___block_invoke_2(uint64_t a1
       v70[2](v70, 1, 0);
     }
 
-    v9 = v70;
+    blockCopy = v70;
   }
 
   else
   {
-    (*(v9 + 2))(v9, 0, v8);
+    (*(blockCopy + 2))(blockCopy, 0, errorCopy);
   }
 }
 
@@ -604,30 +604,30 @@ void __61__SKUIGiftConfiguration__finishLoadWithResponse_error_block___block_inv
   [WeakRetained _finishLoadAccountInfoWithResponse:*(a1 + 32) error:*(a1 + 40) block:*(a1 + 48)];
 }
 
-- (void)_finishLoadAccountInfoWithResponse:(id)a3 error:(id)a4 block:(id)a5
+- (void)_finishLoadAccountInfoWithResponse:(id)response error:(id)error block:(id)block
 {
-  v14 = a3;
-  v8 = a4;
-  v9 = a5;
+  responseCopy = response;
+  errorCopy = error;
+  blockCopy = block;
   objc_opt_class();
-  v10 = v8;
+  v10 = errorCopy;
   if (objc_opt_isKindOfClass())
   {
-    v11 = [v14 objectForKey:@"status"];
-    v10 = v8;
+    v11 = [responseCopy objectForKey:@"status"];
+    v10 = errorCopy;
     if (objc_opt_respondsToSelector())
     {
-      v10 = v8;
+      v10 = errorCopy;
       if (![v11 integerValue])
       {
-        v12 = [v14 objectForKey:@"senderEmail"];
+        v12 = [responseCopy objectForKey:@"senderEmail"];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
           objc_storeStrong(&self->_senderEmailAddress, v12);
         }
 
-        v13 = [v14 objectForKey:@"fromName"];
+        v13 = [responseCopy objectForKey:@"fromName"];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
@@ -639,7 +639,7 @@ void __61__SKUIGiftConfiguration__finishLoadWithResponse_error_block___block_inv
     }
   }
 
-  (v9)[2](v9, 1, v10);
+  (blockCopy)[2](blockCopy, 1, v10);
 }
 
 - (void)_loadThemeImages
@@ -664,23 +664,23 @@ void __61__SKUIGiftConfiguration__finishLoadWithResponse_error_block___block_inv
         }
 
         v7 = *(*(&v17 + 1) + 8 * i);
-        v8 = [v7 headerImageURL];
-        v9 = [v7 headerImage];
-        if (v9)
+        headerImageURL = [v7 headerImageURL];
+        headerImage = [v7 headerImage];
+        if (headerImage)
         {
           v10 = 1;
         }
 
         else
         {
-          v10 = v8 == 0;
+          v10 = headerImageURL == 0;
         }
 
         v11 = !v10;
 
         if (v11)
         {
-          v12 = [objc_alloc(MEMORY[0x277D69CD8]) initWithURL:v8];
+          v12 = [objc_alloc(MEMORY[0x277D69CD8]) initWithURL:headerImageURL];
           v13 = +[(SSVURLDataConsumer *)SKUIImageDataConsumer];
           [v12 setDataConsumer:v13];
 
@@ -732,20 +732,20 @@ void __41__SKUIGiftConfiguration__loadThemeImages__block_invoke_2(uint64_t a1)
   [WeakRetained _setHeaderImage:*(a1 + 32) forTheme:*(a1 + 40)];
 }
 
-- (void)_setHeaderImage:(id)a3 forTheme:(id)a4
+- (void)_setHeaderImage:(id)image forTheme:(id)theme
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([(NSArray *)self->_themes indexOfObjectIdenticalTo:v7]!= 0x7FFFFFFFFFFFFFFFLL)
+  imageCopy = image;
+  themeCopy = theme;
+  if ([(NSArray *)self->_themes indexOfObjectIdenticalTo:themeCopy]!= 0x7FFFFFFFFFFFFFFFLL)
   {
-    v8 = [(NSHashTable *)self->_observers allObjects];
-    [v7 setHeaderImage:v6];
+    allObjects = [(NSHashTable *)self->_observers allObjects];
+    [themeCopy setHeaderImage:imageCopy];
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v9 = v8;
+    v9 = allObjects;
     v10 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v10)
     {
@@ -763,7 +763,7 @@ void __41__SKUIGiftConfiguration__loadThemeImages__block_invoke_2(uint64_t a1)
           v14 = *(*(&v15 + 1) + 8 * i);
           if (objc_opt_respondsToSelector())
           {
-            [v14 giftConfigurationController:self didLoadImageForTheme:{v7, v15}];
+            [v14 giftConfigurationController:self didLoadImageForTheme:{themeCopy, v15}];
           }
         }
 
@@ -775,12 +775,12 @@ void __41__SKUIGiftConfiguration__loadThemeImages__block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)_setLogoImage:(id)a3 forCharity:(id)a4
+- (void)_setLogoImage:(id)image forCharity:(id)charity
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([(NSArray *)self->_charities indexOfObjectIdenticalTo:v7]!= 0x7FFFFFFFFFFFFFFFLL)
+  imageCopy = image;
+  charityCopy = charity;
+  if ([(NSArray *)self->_charities indexOfObjectIdenticalTo:charityCopy]!= 0x7FFFFFFFFFFFFFFFLL)
   {
     charityImages = self->_charityImages;
     if (!charityImages)
@@ -792,15 +792,15 @@ void __41__SKUIGiftConfiguration__loadThemeImages__block_invoke_2(uint64_t a1)
       charityImages = self->_charityImages;
     }
 
-    v11 = [v7 identifier];
-    [(NSMutableDictionary *)charityImages setObject:v6 forKey:v11];
+    identifier = [charityCopy identifier];
+    [(NSMutableDictionary *)charityImages setObject:imageCopy forKey:identifier];
 
-    v12 = [(NSHashTable *)self->_observers allObjects];
+    allObjects = [(NSHashTable *)self->_observers allObjects];
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v13 = [v12 countByEnumeratingWithState:&v18 objects:v22 count:16];
+    v13 = [allObjects countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v13)
     {
       v14 = v13;
@@ -811,17 +811,17 @@ void __41__SKUIGiftConfiguration__loadThemeImages__block_invoke_2(uint64_t a1)
         {
           if (*v19 != v15)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(allObjects);
           }
 
           v17 = *(*(&v18 + 1) + 8 * i);
           if (objc_opt_respondsToSelector())
           {
-            [v17 giftConfigurationController:self didLoadLogoForCharity:v7];
+            [v17 giftConfigurationController:self didLoadLogoForCharity:charityCopy];
           }
         }
 
-        v14 = [v12 countByEnumeratingWithState:&v18 objects:v22 count:16];
+        v14 = [allObjects countByEnumeratingWithState:&v18 objects:v22 count:16];
       }
 
       while (v14);

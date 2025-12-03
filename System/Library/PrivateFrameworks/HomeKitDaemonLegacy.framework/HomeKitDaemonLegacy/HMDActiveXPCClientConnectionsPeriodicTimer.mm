@@ -1,16 +1,16 @@
 @interface HMDActiveXPCClientConnectionsPeriodicTimer
 + (id)logCategory;
-- (HMDActiveXPCClientConnectionsPeriodicTimer)initWithTimeInterval:(double)a3 logIdentifier:(id)a4 workQueue:(id)a5;
-- (HMDActiveXPCClientConnectionsPeriodicTimer)initWithTimer:(id)a3 clientConnectionsManager:(id)a4 logIdentifier:(id)a5 workQueue:(id)a6;
+- (HMDActiveXPCClientConnectionsPeriodicTimer)initWithTimeInterval:(double)interval logIdentifier:(id)identifier workQueue:(id)queue;
+- (HMDActiveXPCClientConnectionsPeriodicTimer)initWithTimer:(id)timer clientConnectionsManager:(id)manager logIdentifier:(id)identifier workQueue:(id)queue;
 - (HMDActiveXPCClientConnectionsPeriodicTimerDelegate)delegate;
 - (NSSet)clientConnections;
 - (void)_configure;
 - (void)_updateTimer;
-- (void)addClientConnection:(id)a3;
-- (void)clientConnectionsManager:(id)a3 didHandleActivationForClientConnection:(id)a4;
-- (void)clientConnectionsManager:(id)a3 didHandleDeactivationForClientConnection:(id)a4;
-- (void)removeClientConnection:(id)a3;
-- (void)timerDidFire:(id)a3;
+- (void)addClientConnection:(id)connection;
+- (void)clientConnectionsManager:(id)manager didHandleActivationForClientConnection:(id)connection;
+- (void)clientConnectionsManager:(id)manager didHandleDeactivationForClientConnection:(id)connection;
+- (void)removeClientConnection:(id)connection;
+- (void)timerDidFire:(id)fire;
 @end
 
 @implementation HMDActiveXPCClientConnectionsPeriodicTimer
@@ -22,19 +22,19 @@
   return WeakRetained;
 }
 
-- (void)timerDidFire:(id)a3
+- (void)timerDidFire:(id)fire
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDActiveXPCClientConnectionsPeriodicTimer *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  fireCopy = fire;
+  workQueue = [(HMDActiveXPCClientConnectionsPeriodicTimer *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v6 = [(HMDActiveXPCClientConnectionsPeriodicTimer *)self timer];
+  timer = [(HMDActiveXPCClientConnectionsPeriodicTimer *)self timer];
 
-  if (v6 == v4)
+  if (timer == fireCopy)
   {
     v7 = objc_autoreleasePoolPush();
-    v8 = self;
+    selfCopy = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
@@ -45,24 +45,24 @@
     }
 
     objc_autoreleasePoolPop(v7);
-    v11 = [(HMDActiveXPCClientConnectionsPeriodicTimer *)v8 delegate];
-    [v11 clientConnectionsTimerDidFire:v8];
+    delegate = [(HMDActiveXPCClientConnectionsPeriodicTimer *)selfCopy delegate];
+    [delegate clientConnectionsTimerDidFire:selfCopy];
   }
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)clientConnectionsManager:(id)a3 didHandleDeactivationForClientConnection:(id)a4
+- (void)clientConnectionsManager:(id)manager didHandleDeactivationForClientConnection:(id)connection
 {
-  v5 = [(HMDActiveXPCClientConnectionsPeriodicTimer *)self workQueue:a3];
+  v5 = [(HMDActiveXPCClientConnectionsPeriodicTimer *)self workQueue:manager];
   dispatch_assert_queue_V2(v5);
 
   [(HMDActiveXPCClientConnectionsPeriodicTimer *)self _updateTimer];
 }
 
-- (void)clientConnectionsManager:(id)a3 didHandleActivationForClientConnection:(id)a4
+- (void)clientConnectionsManager:(id)manager didHandleActivationForClientConnection:(id)connection
 {
-  v5 = [(HMDActiveXPCClientConnectionsPeriodicTimer *)self workQueue:a3];
+  v5 = [(HMDActiveXPCClientConnectionsPeriodicTimer *)self workQueue:manager];
   dispatch_assert_queue_V2(v5);
 
   [(HMDActiveXPCClientConnectionsPeriodicTimer *)self _updateTimer];
@@ -71,14 +71,14 @@
 - (void)_updateTimer
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDActiveXPCClientConnectionsPeriodicTimer *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMDActiveXPCClientConnectionsPeriodicTimer *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v4 = [(HMDActiveXPCClientConnectionsPeriodicTimer *)self clientConnections];
-  v5 = [v4 na_any:&__block_literal_global_87021];
+  clientConnections = [(HMDActiveXPCClientConnectionsPeriodicTimer *)self clientConnections];
+  v5 = [clientConnections na_any:&__block_literal_global_87021];
 
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_INFO);
   if (v5)
@@ -92,11 +92,11 @@
     }
 
     objc_autoreleasePoolPop(v6);
-    v11 = [(HMDActiveXPCClientConnectionsPeriodicTimer *)v7 timer];
-    [v11 resume];
+    timer = [(HMDActiveXPCClientConnectionsPeriodicTimer *)selfCopy timer];
+    [timer resume];
 
-    v12 = [(HMDActiveXPCClientConnectionsPeriodicTimer *)v7 delegate];
-    [v12 clientConnectionsTimerDidFire:v7];
+    delegate = [(HMDActiveXPCClientConnectionsPeriodicTimer *)selfCopy delegate];
+    [delegate clientConnectionsTimerDidFire:selfCopy];
   }
 
   else
@@ -110,8 +110,8 @@
     }
 
     objc_autoreleasePoolPop(v6);
-    v12 = [(HMDActiveXPCClientConnectionsPeriodicTimer *)v7 timer];
-    [v12 suspend];
+    delegate = [(HMDActiveXPCClientConnectionsPeriodicTimer *)selfCopy timer];
+    [delegate suspend];
   }
 
   v14 = *MEMORY[0x277D85DE8];
@@ -119,89 +119,89 @@
 
 - (void)_configure
 {
-  v3 = [(HMDActiveXPCClientConnectionsPeriodicTimer *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMDActiveXPCClientConnectionsPeriodicTimer *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v4 = [(HMDActiveXPCClientConnectionsPeriodicTimer *)self clientConnectionsManager];
-  v5 = [v4 delegate];
+  clientConnectionsManager = [(HMDActiveXPCClientConnectionsPeriodicTimer *)self clientConnectionsManager];
+  delegate = [clientConnectionsManager delegate];
 
-  if (!v5)
+  if (!delegate)
   {
-    v6 = [(HMDActiveXPCClientConnectionsPeriodicTimer *)self clientConnectionsManager];
-    [v6 setDelegate:self];
+    clientConnectionsManager2 = [(HMDActiveXPCClientConnectionsPeriodicTimer *)self clientConnectionsManager];
+    [clientConnectionsManager2 setDelegate:self];
 
-    v7 = [(HMDActiveXPCClientConnectionsPeriodicTimer *)self clientConnectionsManager];
-    [v7 configure];
+    clientConnectionsManager3 = [(HMDActiveXPCClientConnectionsPeriodicTimer *)self clientConnectionsManager];
+    [clientConnectionsManager3 configure];
 
-    v8 = [(HMDActiveXPCClientConnectionsPeriodicTimer *)self timer];
-    [v8 setDelegate:self];
+    timer = [(HMDActiveXPCClientConnectionsPeriodicTimer *)self timer];
+    [timer setDelegate:self];
 
-    v10 = [(HMDActiveXPCClientConnectionsPeriodicTimer *)self workQueue];
-    v9 = [(HMDActiveXPCClientConnectionsPeriodicTimer *)self timer];
-    [v9 setDelegateQueue:v10];
+    workQueue2 = [(HMDActiveXPCClientConnectionsPeriodicTimer *)self workQueue];
+    timer2 = [(HMDActiveXPCClientConnectionsPeriodicTimer *)self timer];
+    [timer2 setDelegateQueue:workQueue2];
   }
 }
 
-- (void)removeClientConnection:(id)a3
+- (void)removeClientConnection:(id)connection
 {
-  v4 = a3;
-  v5 = [(HMDActiveXPCClientConnectionsPeriodicTimer *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  connectionCopy = connection;
+  workQueue = [(HMDActiveXPCClientConnectionsPeriodicTimer *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v6 = [(HMDActiveXPCClientConnectionsPeriodicTimer *)self clientConnectionsManager];
-  [v6 removeClientConnection:v4];
+  clientConnectionsManager = [(HMDActiveXPCClientConnectionsPeriodicTimer *)self clientConnectionsManager];
+  [clientConnectionsManager removeClientConnection:connectionCopy];
 }
 
-- (void)addClientConnection:(id)a3
+- (void)addClientConnection:(id)connection
 {
-  v4 = a3;
-  v5 = [(HMDActiveXPCClientConnectionsPeriodicTimer *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  connectionCopy = connection;
+  workQueue = [(HMDActiveXPCClientConnectionsPeriodicTimer *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   [(HMDActiveXPCClientConnectionsPeriodicTimer *)self _configure];
-  v6 = [(HMDActiveXPCClientConnectionsPeriodicTimer *)self clientConnectionsManager];
-  [v6 addClientConnection:v4];
+  clientConnectionsManager = [(HMDActiveXPCClientConnectionsPeriodicTimer *)self clientConnectionsManager];
+  [clientConnectionsManager addClientConnection:connectionCopy];
 }
 
 - (NSSet)clientConnections
 {
-  v3 = [(HMDActiveXPCClientConnectionsPeriodicTimer *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMDActiveXPCClientConnectionsPeriodicTimer *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v4 = [(HMDActiveXPCClientConnectionsPeriodicTimer *)self clientConnectionsManager];
-  v5 = [v4 clientConnections];
+  clientConnectionsManager = [(HMDActiveXPCClientConnectionsPeriodicTimer *)self clientConnectionsManager];
+  clientConnections = [clientConnectionsManager clientConnections];
 
-  return v5;
+  return clientConnections;
 }
 
-- (HMDActiveXPCClientConnectionsPeriodicTimer)initWithTimer:(id)a3 clientConnectionsManager:(id)a4 logIdentifier:(id)a5 workQueue:(id)a6
+- (HMDActiveXPCClientConnectionsPeriodicTimer)initWithTimer:(id)timer clientConnectionsManager:(id)manager logIdentifier:(id)identifier workQueue:(id)queue
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (!v11)
+  timerCopy = timer;
+  managerCopy = manager;
+  identifierCopy = identifier;
+  queueCopy = queue;
+  if (!timerCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_9;
   }
 
-  if (!v12)
+  if (!managerCopy)
   {
 LABEL_9:
     _HMFPreconditionFailure();
     goto LABEL_10;
   }
 
-  if (!v13)
+  if (!identifierCopy)
   {
 LABEL_10:
     _HMFPreconditionFailure();
     goto LABEL_11;
   }
 
-  v15 = v14;
-  if (!v14)
+  v15 = queueCopy;
+  if (!queueCopy)
   {
 LABEL_11:
     v21 = _HMFPreconditionFailure();
@@ -214,26 +214,26 @@ LABEL_11:
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_timer, a3);
-    v18 = [v13 copy];
+    objc_storeStrong(&v16->_timer, timer);
+    v18 = [identifierCopy copy];
     logIdentifier = v17->_logIdentifier;
     v17->_logIdentifier = v18;
 
-    objc_storeStrong(&v17->_workQueue, a6);
-    objc_storeStrong(&v17->_clientConnectionsManager, a4);
+    objc_storeStrong(&v17->_workQueue, queue);
+    objc_storeStrong(&v17->_clientConnectionsManager, manager);
   }
 
   return v17;
 }
 
-- (HMDActiveXPCClientConnectionsPeriodicTimer)initWithTimeInterval:(double)a3 logIdentifier:(id)a4 workQueue:(id)a5
+- (HMDActiveXPCClientConnectionsPeriodicTimer)initWithTimeInterval:(double)interval logIdentifier:(id)identifier workQueue:(id)queue
 {
   v8 = MEMORY[0x277D0F920];
-  v9 = a5;
-  v10 = a4;
-  v11 = [[v8 alloc] initWithTimeInterval:4 options:a3];
-  v12 = [[HMDActiveXPCClientConnectionsManager alloc] initWithLogIdentifier:v10 workQueue:v9];
-  v13 = [(HMDActiveXPCClientConnectionsPeriodicTimer *)self initWithTimer:v11 clientConnectionsManager:v12 logIdentifier:v10 workQueue:v9];
+  queueCopy = queue;
+  identifierCopy = identifier;
+  v11 = [[v8 alloc] initWithTimeInterval:4 options:interval];
+  v12 = [[HMDActiveXPCClientConnectionsManager alloc] initWithLogIdentifier:identifierCopy workQueue:queueCopy];
+  v13 = [(HMDActiveXPCClientConnectionsPeriodicTimer *)self initWithTimer:v11 clientConnectionsManager:v12 logIdentifier:identifierCopy workQueue:queueCopy];
 
   return v13;
 }

@@ -7,8 +7,8 @@
 - (BOOL)isOpen;
 - (BOOL)readIntoBuffer:(AVAudioPCMBuffer *)buffer error:(NSError *)outError;
 - (BOOL)writeFromBuffer:(const AVAudioPCMBuffer *)buffer error:(NSError *)outError;
-- (id)initForReadingFromExtAudioFile:(OpaqueExtAudioFile *)a3 commonFormat:(unint64_t)a4 interleaved:(BOOL)a5 error:(id *)a6;
-- (id)initSecondaryReader:(id)a3 format:(id)a4 error:(id *)a5;
+- (id)initForReadingFromExtAudioFile:(OpaqueExtAudioFile *)file commonFormat:(unint64_t)format interleaved:(BOOL)interleaved error:(id *)error;
+- (id)initSecondaryReader:(id)reader format:(id)format error:(id *)error;
 - (void)close;
 - (void)dealloc;
 - (void)setFramePosition:(AVAudioFramePosition)framePosition;
@@ -146,12 +146,12 @@
 
 - (BOOL)isOpen
 {
-  v2 = self;
+  selfCopy = self;
   ptr = self->_impl.__ptr_;
   os_unfair_lock_lock(ptr + 18);
-  LOBYTE(v2) = *(v2->_impl.__ptr_ + 1) != 0;
+  LOBYTE(selfCopy) = *(selfCopy->_impl.__ptr_ + 1) != 0;
   os_unfair_lock_unlock(ptr + 18);
-  return v2;
+  return selfCopy;
 }
 
 - (void)close
@@ -181,10 +181,10 @@
   [(AVAudioFile *)&v3 dealloc];
 }
 
-- (id)initSecondaryReader:(id)a3 format:(id)a4 error:(id *)a5
+- (id)initSecondaryReader:(id)reader format:(id)format error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  readerCopy = reader;
+  formatCopy = format;
   v12.receiver = self;
   v12.super_class = AVAudioFile;
   if ([(AVAudioFile *)&v12 init])
@@ -192,10 +192,10 @@
     operator new();
   }
 
-  if (a5)
+  if (error)
   {
     v10 = 0;
-    *a5 = 0;
+    *error = 0;
   }
 
   return 0;
@@ -221,7 +221,7 @@
   return 0;
 }
 
-- (id)initForReadingFromExtAudioFile:(OpaqueExtAudioFile *)a3 commonFormat:(unint64_t)a4 interleaved:(BOOL)a5 error:(id *)a6
+- (id)initForReadingFromExtAudioFile:(OpaqueExtAudioFile *)file commonFormat:(unint64_t)format interleaved:(BOOL)interleaved error:(id *)error
 {
   v9.receiver = self;
   v9.super_class = AVAudioFile;
@@ -230,10 +230,10 @@
     operator new();
   }
 
-  if (a6)
+  if (error)
   {
     v7 = 0;
-    *a6 = 0;
+    *error = 0;
   }
 
   return 0;

@@ -1,14 +1,14 @@
 @interface SiriRestorationAction
-- (SiriRestorationAction)initWithResetUI:(BOOL)a3 compatibleWithNavigation:(BOOL)a4;
+- (SiriRestorationAction)initWithResetUI:(BOOL)i compatibleWithNavigation:(BOOL)navigation;
 @end
 
 @implementation SiriRestorationAction
 
-- (SiriRestorationAction)initWithResetUI:(BOOL)a3 compatibleWithNavigation:(BOOL)a4
+- (SiriRestorationAction)initWithResetUI:(BOOL)i compatibleWithNavigation:(BOOL)navigation
 {
   v7.receiver = self;
   v7.super_class = SiriRestorationAction;
-  v4 = [(URLRestorationAction *)&v7 initWithResetUI:a3 compatibleWithNavigation:a4];
+  v4 = [(URLRestorationAction *)&v7 initWithResetUI:i compatibleWithNavigation:navigation];
   v5 = v4;
   if (v4)
   {

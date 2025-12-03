@@ -1,10 +1,10 @@
 @interface ICQDeviceIdentificationView
 + (void)initialize;
-- (ICQDeviceIdentificationView)initWithFrame:(CGRect)a3 deviceName:(id)a4 deviceIdentifier:(id)a5 imageURL:(id)a6 isCurrentDevice:(BOOL)a7;
+- (ICQDeviceIdentificationView)initWithFrame:(CGRect)frame deviceName:(id)name deviceIdentifier:(id)identifier imageURL:(id)l isCurrentDevice:(BOOL)device;
 - (void)layoutSubviews;
-- (void)loadImageForDeviceIdentifier:(id)a3 URL:(id)a4;
-- (void)setDeviceImage:(id)a3;
-- (void)setFrame:(CGRect)a3;
+- (void)loadImageForDeviceIdentifier:(id)identifier URL:(id)l;
+- (void)setDeviceImage:(id)image;
+- (void)setFrame:(CGRect)frame;
 - (void)sizeToFit;
 @end
 
@@ -12,17 +12,17 @@
 
 + (void)initialize
 {
-  v2 = [MEMORY[0x277D75418] currentDevice];
-  v3 = [v2 sf_isiPad];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  sf_isiPad = [currentDevice sf_isiPad];
 
   v4 = 20.0;
-  if (v3)
+  if (sf_isiPad)
   {
     v4 = 25.0;
   }
 
   v5 = 3.0;
-  if (v3)
+  if (sf_isiPad)
   {
     v5 = 10.0;
   }
@@ -32,84 +32,84 @@
   kImageTextPadding = *&v5;
 }
 
-- (ICQDeviceIdentificationView)initWithFrame:(CGRect)a3 deviceName:(id)a4 deviceIdentifier:(id)a5 imageURL:(id)a6 isCurrentDevice:(BOOL)a7
+- (ICQDeviceIdentificationView)initWithFrame:(CGRect)frame deviceName:(id)name deviceIdentifier:(id)identifier imageURL:(id)l isCurrentDevice:(BOOL)device
 {
-  v7 = a7;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
+  deviceCopy = device;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  nameCopy = name;
+  identifierCopy = identifier;
+  lCopy = l;
   v43.receiver = self;
   v43.super_class = ICQDeviceIdentificationView;
-  v18 = [(ICQDeviceIdentificationView *)&v43 initWithFrame:x, y, width, height];
-  if (v18)
+  height = [(ICQDeviceIdentificationView *)&v43 initWithFrame:x, y, width, height];
+  if (height)
   {
-    v19 = [MEMORY[0x277D75348] clearColor];
-    [(ICQDeviceIdentificationView *)v18 setBackgroundColor:v19];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(ICQDeviceIdentificationView *)height setBackgroundColor:clearColor];
 
-    *&v18->_topMargin = kTopMargin;
-    *&v18->_bottomMargin = kBottomMargin;
-    v18->_leftExtraMargin = 0.0;
-    *&v18->_imageTextPadding = kImageTextPadding;
+    *&height->_topMargin = kTopMargin;
+    *&height->_bottomMargin = kBottomMargin;
+    height->_leftExtraMargin = 0.0;
+    *&height->_imageTextPadding = kImageTextPadding;
     v20 = objc_alloc_init(MEMORY[0x277D755E8]);
-    deviceImageView = v18->_deviceImageView;
-    v18->_deviceImageView = v20;
+    deviceImageView = height->_deviceImageView;
+    height->_deviceImageView = v20;
 
     v22 = objc_alloc_init(MEMORY[0x277D756B8]);
-    deviceNameLabel = v18->_deviceNameLabel;
-    v18->_deviceNameLabel = v22;
+    deviceNameLabel = height->_deviceNameLabel;
+    height->_deviceNameLabel = v22;
 
-    v24 = v18->_deviceNameLabel;
+    v24 = height->_deviceNameLabel;
     v25 = [MEMORY[0x277D74300] boldSystemFontOfSize:18.0];
     [(UILabel *)v24 setFont:v25];
 
-    [(UILabel *)v18->_deviceNameLabel setText:v15];
-    v26 = v18->_deviceNameLabel;
-    v27 = [MEMORY[0x277D75348] labelColor];
-    [(UILabel *)v26 setTextColor:v27];
+    [(UILabel *)height->_deviceNameLabel setText:nameCopy];
+    v26 = height->_deviceNameLabel;
+    labelColor = [MEMORY[0x277D75348] labelColor];
+    [(UILabel *)v26 setTextColor:labelColor];
 
-    v28 = v18->_deviceNameLabel;
-    v29 = [MEMORY[0x277D75348] clearColor];
-    [(UILabel *)v28 setBackgroundColor:v29];
+    v28 = height->_deviceNameLabel;
+    clearColor2 = [MEMORY[0x277D75348] clearColor];
+    [(UILabel *)v28 setBackgroundColor:clearColor2];
 
-    [(UILabel *)v18->_deviceNameLabel setLineBreakMode:4];
-    [(UILabel *)v18->_deviceNameLabel setNumberOfLines:2];
-    [(ICQDeviceIdentificationView *)v18 addSubview:v18->_deviceNameLabel];
-    if (v7)
+    [(UILabel *)height->_deviceNameLabel setLineBreakMode:4];
+    [(UILabel *)height->_deviceNameLabel setNumberOfLines:2];
+    [(ICQDeviceIdentificationView *)height addSubview:height->_deviceNameLabel];
+    if (deviceCopy)
     {
       v30 = objc_alloc_init(MEMORY[0x277D756B8]);
-      deviceModelLabel = v18->_deviceModelLabel;
-      v18->_deviceModelLabel = v30;
+      deviceModelLabel = height->_deviceModelLabel;
+      height->_deviceModelLabel = v30;
 
-      v32 = v18->_deviceModelLabel;
+      v32 = height->_deviceModelLabel;
       v33 = [MEMORY[0x277D74300] systemFontOfSize:14.0];
       [(UILabel *)v32 setFont:v33];
 
-      v34 = v18->_deviceModelLabel;
+      v34 = height->_deviceModelLabel;
       v35 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v36 = [MEMORY[0x277D75418] modelSpecificLocalizedStringKeyForKey:@"THIS_DEVICE"];
       v37 = [v35 localizedStringForKey:v36 value:&stru_28844FC60 table:@"Backup"];
       [(UILabel *)v34 setText:v37];
 
-      v38 = v18->_deviceModelLabel;
-      v39 = [MEMORY[0x277D75348] labelColor];
-      [(UILabel *)v38 setTextColor:v39];
+      v38 = height->_deviceModelLabel;
+      labelColor2 = [MEMORY[0x277D75348] labelColor];
+      [(UILabel *)v38 setTextColor:labelColor2];
 
-      v40 = v18->_deviceModelLabel;
-      v41 = [MEMORY[0x277D75348] clearColor];
-      [(UILabel *)v40 setBackgroundColor:v41];
+      v40 = height->_deviceModelLabel;
+      clearColor3 = [MEMORY[0x277D75348] clearColor];
+      [(UILabel *)v40 setBackgroundColor:clearColor3];
 
-      [(ICQDeviceIdentificationView *)v18 addSubview:v18->_deviceModelLabel];
+      [(ICQDeviceIdentificationView *)height addSubview:height->_deviceModelLabel];
     }
 
-    [(ICQDeviceIdentificationView *)v18 loadImageForDeviceIdentifier:v16 URL:v17];
-    [(ICQDeviceIdentificationView *)v18 addSubview:v18->_deviceImageView];
+    [(ICQDeviceIdentificationView *)height loadImageForDeviceIdentifier:identifierCopy URL:lCopy];
+    [(ICQDeviceIdentificationView *)height addSubview:height->_deviceImageView];
   }
 
-  return v18;
+  return height;
 }
 
 - (void)sizeToFit
@@ -119,9 +119,9 @@
   [(ICQDeviceIdentificationView *)self setBounds:?];
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  if (a3.origin.x == 0.0)
+  if (frame.origin.x == 0.0)
   {
     v6 = v3;
     v7 = v4;
@@ -131,11 +131,11 @@
   }
 }
 
-- (void)loadImageForDeviceIdentifier:(id)a3 URL:(id)a4
+- (void)loadImageForDeviceIdentifier:(id)identifier URL:(id)l
 {
-  v6 = a4;
-  v7 = [a3 lowercaseString];
-  if (v7)
+  lCopy = l;
+  lowercaseString = [identifier lowercaseString];
+  if (lowercaseString)
   {
     v8 = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, 1uLL, 1);
     v9 = [v8 objectAtIndex:0];
@@ -146,12 +146,12 @@
     v9 = 0;
   }
 
-  v10 = [MEMORY[0x277CCA8D8] mainBundle];
-  v11 = [v10 bundleIdentifier];
-  v12 = v11;
-  if (v11)
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v12 = bundleIdentifier;
+  if (bundleIdentifier)
   {
-    v13 = v11;
+    v13 = bundleIdentifier;
   }
 
   else
@@ -161,7 +161,7 @@
 
   v14 = [v9 stringByAppendingPathComponent:v13];
 
-  v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"deviceImage_%@.png", v7];
+  v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"deviceImage_%@.png", lowercaseString];
   v16 = [v14 stringByAppendingPathComponent:v15];
 
   v17 = dispatch_get_global_queue(0, 0);
@@ -170,11 +170,11 @@
   block[2] = __64__ICQDeviceIdentificationView_loadImageForDeviceIdentifier_URL___block_invoke;
   block[3] = &unk_27A65BFD0;
   v22 = v16;
-  v23 = v6;
-  v24 = self;
+  v23 = lCopy;
+  selfCopy = self;
   v25 = v14;
   v18 = v14;
-  v19 = v6;
+  v19 = lCopy;
   v20 = v16;
   dispatch_async(v17, block);
 }
@@ -210,9 +210,9 @@ void __64__ICQDeviceIdentificationView_loadImageForDeviceIdentifier_URL___block_
   }
 }
 
-- (void)setDeviceImage:(id)a3
+- (void)setDeviceImage:(id)image
 {
-  [(UIImageView *)self->_deviceImageView setImage:a3];
+  [(UIImageView *)self->_deviceImageView setImage:image];
 
   [(ICQDeviceIdentificationView *)self setNeedsLayout];
 }
@@ -223,8 +223,8 @@ void __64__ICQDeviceIdentificationView_loadImageForDeviceIdentifier_URL___block_
   v4 = v3;
   if ([MEMORY[0x277D7F3E0] isSolariumFeatureFlagEnabled])
   {
-    v5 = [(ICQDeviceIdentificationView *)self superview];
-    [v5 layoutMargins];
+    superview = [(ICQDeviceIdentificationView *)self superview];
+    [superview layoutMargins];
     v4 = v6;
 
     self->_leftExtraMargin = 0.0;
@@ -235,10 +235,10 @@ void __64__ICQDeviceIdentificationView_loadImageForDeviceIdentifier_URL___block_
   v10 = v9;
   v12 = v11;
   v14 = v13;
-  v15 = [(ICQDeviceIdentificationView *)self _shouldReverseLayoutDirection];
+  _shouldReverseLayoutDirection = [(ICQDeviceIdentificationView *)self _shouldReverseLayoutDirection];
   v16 = v4 + self->_leftExtraMargin;
   rect = v10;
-  if (v15)
+  if (_shouldReverseLayoutDirection)
   {
     v43.origin.x = v8;
     v43.origin.y = v10;
@@ -252,7 +252,7 @@ void __64__ICQDeviceIdentificationView_loadImageForDeviceIdentifier_URL___block_
   v18 = v4 + self->_leftExtraMargin + 60.0 + self->_imageTextPadding;
   v19 = v12 - v18;
   v39 = v8;
-  if (v15)
+  if (_shouldReverseLayoutDirection)
   {
     v44.origin.x = v8;
     v44.origin.y = v10;
@@ -279,7 +279,7 @@ void __64__ICQDeviceIdentificationView_loadImageForDeviceIdentifier_URL___block_
   [(UILabel *)self->_deviceNameLabel sizeThatFits:v19, 1.79769313e308];
   v24 = v23;
   v26 = v25;
-  if (v15)
+  if (_shouldReverseLayoutDirection)
   {
     v48.origin.x = v18;
     v48.origin.y = v17;
@@ -307,7 +307,7 @@ void __64__ICQDeviceIdentificationView_loadImageForDeviceIdentifier_URL___block_
     v34 = v33;
     v36 = v35;
     v37 = self->_imageTextPadding + v4 + self->_leftExtraMargin + 60.0;
-    if (v15)
+    if (_shouldReverseLayoutDirection)
     {
       v49.origin.x = v40;
       v49.origin.y = rect;

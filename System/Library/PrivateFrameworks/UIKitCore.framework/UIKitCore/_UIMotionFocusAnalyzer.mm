@@ -1,31 +1,31 @@
 @interface _UIMotionFocusAnalyzer
 - (void)reset;
-- (void)updateWithEvent:(id)a3;
+- (void)updateWithEvent:(id)event;
 @end
 
 @implementation _UIMotionFocusAnalyzer
 
-- (void)updateWithEvent:(id)a3
+- (void)updateWithEvent:(id)event
 {
-  v9 = a3;
-  if (v9)
+  eventCopy = event;
+  if (eventCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [v9 focusPosition];
+      [eventCopy focusPosition];
       v5 = v4;
       v7 = v6;
-      v8 = [(_UIMotionAnalyzer *)self viewerRelativeDevicePose];
-      [v8 setViewerOffset:{v5, v7}];
+      viewerRelativeDevicePose = [(_UIMotionAnalyzer *)self viewerRelativeDevicePose];
+      [viewerRelativeDevicePose setViewerOffset:{v5, v7}];
     }
   }
 }
 
 - (void)reset
 {
-  v2 = [(_UIMotionAnalyzer *)self viewerRelativeDevicePose];
-  [v2 _reset];
+  viewerRelativeDevicePose = [(_UIMotionAnalyzer *)self viewerRelativeDevicePose];
+  [viewerRelativeDevicePose _reset];
 }
 
 @end

@@ -2,14 +2,14 @@
 + (id)allowedDecodableClasses;
 + (id)emptyResponse;
 - (AXPTranslationObject)translationResponse;
-- (AXPTranslatorResponse)initWithCoder:(id)a3;
+- (AXPTranslatorResponse)initWithCoder:(id)coder;
 - (BOOL)BOOLResponse;
 - (NSArray)translationsResponse;
 - (NSArray)treeDumpResponse;
 - (NSString)treeDumpType;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AXPTranslatorResponse
@@ -21,42 +21,42 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_new();
-  v6 = [(AXPTranslatorResponse *)self resultData];
-  [v5 setResultData:v6];
+  resultData = [(AXPTranslatorResponse *)self resultData];
+  [v5 setResultData:resultData];
 
   [v5 setError:{-[AXPTranslatorResponse error](self, "error")}];
   [v5 setAttribute:{-[AXPTranslatorResponse attribute](self, "attribute")}];
   [v5 setNotification:{-[AXPTranslatorResponse notification](self, "notification")}];
   [v5 setAssociatedRequestType:{-[AXPTranslatorResponse associatedRequestType](self, "associatedRequestType")}];
-  v7 = [(AXPTranslatorResponse *)self associatedNotificationObject];
-  v8 = [v7 copyWithZone:a3];
+  associatedNotificationObject = [(AXPTranslatorResponse *)self associatedNotificationObject];
+  v8 = [associatedNotificationObject copyWithZone:zone];
   [v5 setAssociatedNotificationObject:v8];
 
-  v9 = [(AXPTranslatorResponse *)self associatedTranslationObject];
-  v10 = [v9 copyWithZone:a3];
+  associatedTranslationObject = [(AXPTranslatorResponse *)self associatedTranslationObject];
+  v10 = [associatedTranslationObject copyWithZone:zone];
   [v5 setAssociatedTranslationObject:v10];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(AXPTranslatorResponse *)self resultData];
-  [v4 encodeObject:v5 forKey:@"resultData"];
+  coderCopy = coder;
+  resultData = [(AXPTranslatorResponse *)self resultData];
+  [coderCopy encodeObject:resultData forKey:@"resultData"];
 
-  [v4 encodeInteger:-[AXPTranslatorResponse error](self forKey:{"error"), @"error"}];
-  [v4 encodeInteger:-[AXPTranslatorResponse attribute](self forKey:{"attribute"), @"attribute"}];
-  [v4 encodeInteger:-[AXPTranslatorResponse notification](self forKey:{"notification"), @"notification"}];
-  [v4 encodeInteger:-[AXPTranslatorResponse associatedRequestType](self forKey:{"associatedRequestType"), @"associatedRequestType"}];
-  v6 = [(AXPTranslatorResponse *)self associatedNotificationObject];
-  [v4 encodeObject:v6 forKey:@"associatedNotificationObject"];
+  [coderCopy encodeInteger:-[AXPTranslatorResponse error](self forKey:{"error"), @"error"}];
+  [coderCopy encodeInteger:-[AXPTranslatorResponse attribute](self forKey:{"attribute"), @"attribute"}];
+  [coderCopy encodeInteger:-[AXPTranslatorResponse notification](self forKey:{"notification"), @"notification"}];
+  [coderCopy encodeInteger:-[AXPTranslatorResponse associatedRequestType](self forKey:{"associatedRequestType"), @"associatedRequestType"}];
+  associatedNotificationObject = [(AXPTranslatorResponse *)self associatedNotificationObject];
+  [coderCopy encodeObject:associatedNotificationObject forKey:@"associatedNotificationObject"];
 
-  v7 = [(AXPTranslatorResponse *)self associatedTranslationObject];
-  [v4 encodeObject:v7 forKey:@"associatedTranslationObject"];
+  associatedTranslationObject = [(AXPTranslatorResponse *)self associatedTranslationObject];
+  [coderCopy encodeObject:associatedTranslationObject forKey:@"associatedTranslationObject"];
 }
 
 + (id)allowedDecodableClasses
@@ -65,7 +65,7 @@
   block[1] = 3221225472;
   block[2] = __48__AXPTranslatorResponse_allowedDecodableClasses__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (allowedDecodableClasses_onceToken_1 != -1)
   {
     dispatch_once(&allowedDecodableClasses_onceToken_1, block);
@@ -95,24 +95,24 @@ void __48__AXPTranslatorResponse_allowedDecodableClasses__block_invoke(uint64_t 
   allowedDecodableClasses_Allowed_1 = v12;
 }
 
-- (AXPTranslatorResponse)initWithCoder:(id)a3
+- (AXPTranslatorResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_new();
-  v6 = [objc_opt_class() allowedDecodableClasses];
-  v7 = [v4 decodeObjectOfClasses:v6 forKey:@"resultData"];
+  allowedDecodableClasses = [objc_opt_class() allowedDecodableClasses];
+  v7 = [coderCopy decodeObjectOfClasses:allowedDecodableClasses forKey:@"resultData"];
   [(AXPTranslatorResponse *)v5 setResultData:v7];
 
-  -[AXPTranslatorResponse setError:](v5, "setError:", [v4 decodeIntegerForKey:@"error"]);
-  -[AXPTranslatorResponse setAttribute:](v5, "setAttribute:", [v4 decodeIntegerForKey:@"attribute"]);
-  -[AXPTranslatorResponse setNotification:](v5, "setNotification:", [v4 decodeIntegerForKey:@"notification"]);
-  -[AXPTranslatorResponse setAssociatedRequestType:](v5, "setAssociatedRequestType:", [v4 decodeIntegerForKey:@"associatedRequestType"]);
-  v8 = [objc_opt_class() allowedDecodableClasses];
-  v9 = [v4 decodeObjectOfClasses:v8 forKey:@"associatedNotificationObject"];
+  -[AXPTranslatorResponse setError:](v5, "setError:", [coderCopy decodeIntegerForKey:@"error"]);
+  -[AXPTranslatorResponse setAttribute:](v5, "setAttribute:", [coderCopy decodeIntegerForKey:@"attribute"]);
+  -[AXPTranslatorResponse setNotification:](v5, "setNotification:", [coderCopy decodeIntegerForKey:@"notification"]);
+  -[AXPTranslatorResponse setAssociatedRequestType:](v5, "setAssociatedRequestType:", [coderCopy decodeIntegerForKey:@"associatedRequestType"]);
+  allowedDecodableClasses2 = [objc_opt_class() allowedDecodableClasses];
+  v9 = [coderCopy decodeObjectOfClasses:allowedDecodableClasses2 forKey:@"associatedNotificationObject"];
   [(AXPTranslatorResponse *)v5 setAssociatedNotificationObject:v9];
 
-  v10 = [objc_opt_class() allowedDecodableClasses];
-  v11 = [v4 decodeObjectOfClasses:v10 forKey:@"associatedTranslationObject"];
+  allowedDecodableClasses3 = [objc_opt_class() allowedDecodableClasses];
+  v11 = [coderCopy decodeObjectOfClasses:allowedDecodableClasses3 forKey:@"associatedTranslationObject"];
 
   [(AXPTranslatorResponse *)v5 setAssociatedTranslationObject:v11];
   return v5;
@@ -120,26 +120,26 @@ void __48__AXPTranslatorResponse_allowedDecodableClasses__block_invoke(uint64_t 
 
 - (AXPTranslationObject)translationResponse
 {
-  v3 = [(AXPTranslatorResponse *)self resultData];
+  resultData = [(AXPTranslatorResponse *)self resultData];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v5 = [(AXPTranslatorResponse *)self resultData];
+    resultData2 = [(AXPTranslatorResponse *)self resultData];
   }
 
   else
   {
-    v5 = 0;
+    resultData2 = 0;
   }
 
-  return v5;
+  return resultData2;
 }
 
 - (NSArray)translationsResponse
 {
-  v3 = [(AXPTranslatorResponse *)self resultData];
+  resultData = [(AXPTranslatorResponse *)self resultData];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -148,24 +148,24 @@ void __48__AXPTranslatorResponse_allowedDecodableClasses__block_invoke(uint64_t 
     goto LABEL_4;
   }
 
-  v5 = [(AXPTranslatorResponse *)self resultData];
-  v6 = [v5 count];
-  v7 = [(AXPTranslatorResponse *)self resultData];
-  v8 = [v7 indexesOfObjectsPassingTest:&__block_literal_global_3];
+  resultData2 = [(AXPTranslatorResponse *)self resultData];
+  v6 = [resultData2 count];
+  resultData3 = [(AXPTranslatorResponse *)self resultData];
+  v8 = [resultData3 indexesOfObjectsPassingTest:&__block_literal_global_3];
   v9 = [v8 count];
 
   if (v6 == v9)
   {
-    v10 = [(AXPTranslatorResponse *)self resultData];
+    resultData4 = [(AXPTranslatorResponse *)self resultData];
   }
 
   else
   {
 LABEL_4:
-    v10 = 0;
+    resultData4 = 0;
   }
 
-  return v10;
+  return resultData4;
 }
 
 uint64_t __45__AXPTranslatorResponse_translationsResponse__block_invoke(uint64_t a1, void *a2)
@@ -179,7 +179,7 @@ uint64_t __45__AXPTranslatorResponse_translationsResponse__block_invoke(uint64_t
 
 - (BOOL)BOOLResponse
 {
-  v3 = [(AXPTranslatorResponse *)self resultData];
+  resultData = [(AXPTranslatorResponse *)self resultData];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -188,15 +188,15 @@ uint64_t __45__AXPTranslatorResponse_translationsResponse__block_invoke(uint64_t
     return 0;
   }
 
-  v5 = [(AXPTranslatorResponse *)self resultData];
-  v6 = [v5 BOOLValue];
+  resultData2 = [(AXPTranslatorResponse *)self resultData];
+  bOOLValue = [resultData2 BOOLValue];
 
-  return v6;
+  return bOOLValue;
 }
 
 - (NSString)treeDumpType
 {
-  v3 = [(AXPTranslatorResponse *)self resultData];
+  resultData = [(AXPTranslatorResponse *)self resultData];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -205,8 +205,8 @@ uint64_t __45__AXPTranslatorResponse_translationsResponse__block_invoke(uint64_t
     goto LABEL_5;
   }
 
-  v5 = [(AXPTranslatorResponse *)self resultData];
-  v6 = [v5 objectForKey:@"treeDumpType"];
+  resultData2 = [(AXPTranslatorResponse *)self resultData];
+  v6 = [resultData2 objectForKey:@"treeDumpType"];
 
   if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
@@ -220,7 +220,7 @@ LABEL_5:
 
 - (NSArray)treeDumpResponse
 {
-  v3 = [(AXPTranslatorResponse *)self resultData];
+  resultData = [(AXPTranslatorResponse *)self resultData];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -229,8 +229,8 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  v5 = [(AXPTranslatorResponse *)self resultData];
-  v6 = [v5 objectForKey:@"treeDump"];
+  resultData2 = [(AXPTranslatorResponse *)self resultData];
+  v6 = [resultData2 objectForKey:@"treeDump"];
 
   if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
@@ -248,12 +248,12 @@ LABEL_5:
   v12.receiver = self;
   v12.super_class = AXPTranslatorResponse;
   v4 = [(AXPTranslatorResponse *)&v12 description];
-  v5 = [(AXPTranslatorResponse *)self resultData];
+  resultData = [(AXPTranslatorResponse *)self resultData];
   v6 = _AXPAttributeToString([(AXPTranslatorResponse *)self attribute]);
   v7 = _AXPNotificationToString([(AXPTranslatorResponse *)self notification]);
-  v8 = [(AXPTranslatorResponse *)self associatedRequestType];
-  v9 = [(AXPTranslatorResponse *)self associatedTranslationObject];
-  v10 = [v3 stringWithFormat:@"%@: %@ [maybe attribute: %@] [maybe notification: %@] [maybe associatedRequestType: %d] [maybe associatedTranslationObj: %@]", v4, v5, v6, v7, v8, v9];
+  associatedRequestType = [(AXPTranslatorResponse *)self associatedRequestType];
+  associatedTranslationObject = [(AXPTranslatorResponse *)self associatedTranslationObject];
+  v10 = [v3 stringWithFormat:@"%@: %@ [maybe attribute: %@] [maybe notification: %@] [maybe associatedRequestType: %d] [maybe associatedTranslationObj: %@]", v4, resultData, v6, v7, associatedRequestType, associatedTranslationObject];
 
   return v10;
 }

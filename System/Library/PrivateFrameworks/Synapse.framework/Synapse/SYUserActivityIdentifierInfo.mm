@@ -1,20 +1,20 @@
 @interface SYUserActivityIdentifierInfo
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToActivityIdentifierInfo:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToActivityIdentifierInfo:(id)info;
 - (NSString)description;
-- (SYUserActivityIdentifierInfo)initWithActivityType:(id)a3;
-- (SYUserActivityIdentifierInfo)initWithCoder:(id)a3;
-- (SYUserActivityIdentifierInfo)initWithUserActivity:(id)a3;
+- (SYUserActivityIdentifierInfo)initWithActivityType:(id)type;
+- (SYUserActivityIdentifierInfo)initWithCoder:(id)coder;
+- (SYUserActivityIdentifierInfo)initWithUserActivity:(id)activity;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SYUserActivityIdentifierInfo
 
-- (SYUserActivityIdentifierInfo)initWithActivityType:(id)a3
+- (SYUserActivityIdentifierInfo)initWithActivityType:(id)type
 {
-  v5 = a3;
-  if (!v5)
+  typeCopy = type;
+  if (!typeCopy)
   {
     [(SYUserActivityIdentifierInfo *)a2 initWithActivityType:?];
   }
@@ -24,7 +24,7 @@
   v6 = [(SYUserActivityIdentifierInfo *)&v10 init];
   if (v6)
   {
-    v7 = [v5 copy];
+    v7 = [typeCopy copy];
     activityType = v6->_activityType;
     v6->_activityType = v7;
   }
@@ -32,31 +32,31 @@
   return v6;
 }
 
-- (SYUserActivityIdentifierInfo)initWithUserActivity:(id)a3
+- (SYUserActivityIdentifierInfo)initWithUserActivity:(id)activity
 {
-  v4 = a3;
-  v5 = [v4 activityType];
-  v6 = [(SYUserActivityIdentifierInfo *)self initWithActivityType:v5];
+  activityCopy = activity;
+  activityType = [activityCopy activityType];
+  v6 = [(SYUserActivityIdentifierInfo *)self initWithActivityType:activityType];
 
   if (v6)
   {
-    v7 = [v4 webpageURL];
-    v8 = [v7 copy];
+    webpageURL = [activityCopy webpageURL];
+    v8 = [webpageURL copy];
     webpageURL = v6->_webpageURL;
     v6->_webpageURL = v8;
 
-    v10 = [v4 _canonicalURL];
-    v11 = [v10 copy];
+    _canonicalURL = [activityCopy _canonicalURL];
+    v11 = [_canonicalURL copy];
     canonicalURL = v6->_canonicalURL;
     v6->_canonicalURL = v11;
 
-    v13 = [v4 targetContentIdentifier];
-    v14 = [v13 copy];
+    targetContentIdentifier = [activityCopy targetContentIdentifier];
+    v14 = [targetContentIdentifier copy];
     targetContentIdentifier = v6->_targetContentIdentifier;
     v6->_targetContentIdentifier = v14;
 
-    v16 = [v4 persistentIdentifier];
-    v17 = [v16 copy];
+    persistentIdentifier = [activityCopy persistentIdentifier];
+    v17 = [persistentIdentifier copy];
     persistentIdentifier = v6->_persistentIdentifier;
     v6->_persistentIdentifier = v17;
   }
@@ -69,13 +69,13 @@
   v21.receiver = self;
   v21.super_class = SYUserActivityIdentifierInfo;
   v20 = [(SYUserActivityIdentifierInfo *)&v21 description];
-  v19 = [(SYUserActivityIdentifierInfo *)self activityType];
-  v3 = [(SYUserActivityIdentifierInfo *)self webpageURL];
-  v4 = [v3 absoluteString];
-  v5 = v4;
-  if (v4)
+  activityType = [(SYUserActivityIdentifierInfo *)self activityType];
+  webpageURL = [(SYUserActivityIdentifierInfo *)self webpageURL];
+  absoluteString = [webpageURL absoluteString];
+  v5 = absoluteString;
+  if (absoluteString)
   {
-    v6 = v4;
+    v6 = absoluteString;
   }
 
   else
@@ -83,12 +83,12 @@
     v6 = &stru_2838DFF18;
   }
 
-  v7 = [(SYUserActivityIdentifierInfo *)self canonicalURL];
-  v8 = [v7 absoluteString];
-  v9 = v8;
-  if (v8)
+  canonicalURL = [(SYUserActivityIdentifierInfo *)self canonicalURL];
+  absoluteString2 = [canonicalURL absoluteString];
+  v9 = absoluteString2;
+  if (absoluteString2)
   {
-    v10 = v8;
+    v10 = absoluteString2;
   }
 
   else
@@ -96,11 +96,11 @@
     v10 = &stru_2838DFF18;
   }
 
-  v11 = [(SYUserActivityIdentifierInfo *)self targetContentIdentifier];
-  v12 = v11;
-  if (v11)
+  targetContentIdentifier = [(SYUserActivityIdentifierInfo *)self targetContentIdentifier];
+  v12 = targetContentIdentifier;
+  if (targetContentIdentifier)
   {
-    v13 = v11;
+    v13 = targetContentIdentifier;
   }
 
   else
@@ -108,11 +108,11 @@
     v13 = &stru_2838DFF18;
   }
 
-  v14 = [(SYUserActivityIdentifierInfo *)self persistentIdentifier];
-  v15 = v14;
-  if (v14)
+  persistentIdentifier = [(SYUserActivityIdentifierInfo *)self persistentIdentifier];
+  v15 = persistentIdentifier;
+  if (persistentIdentifier)
   {
-    v16 = v14;
+    v16 = persistentIdentifier;
   }
 
   else
@@ -120,63 +120,63 @@
     v16 = &stru_2838DFF18;
   }
 
-  v17 = [v20 stringByAppendingFormat:@" activityType: %@, webpageURL: %@, canonicalURL: %@, targetContentID: %@, persistendID: %@", v19, v6, v10, v13, v16];
+  v17 = [v20 stringByAppendingFormat:@" activityType: %@, webpageURL: %@, canonicalURL: %@, targetContentID: %@, persistendID: %@", activityType, v6, v10, v13, v16];
 
   return v17;
 }
 
-- (BOOL)isEqualToActivityIdentifierInfo:(id)a3
+- (BOOL)isEqualToActivityIdentifierInfo:(id)info
 {
-  v5 = a3;
+  infoCopy = info;
   activityType = self->_activityType;
-  v7 = [v5 activityType];
-  LODWORD(activityType) = [(NSString *)activityType isEqualToString:v7];
+  activityType = [infoCopy activityType];
+  LODWORD(activityType) = [(NSString *)activityType isEqualToString:activityType];
 
   if (activityType)
   {
     webpageURL = self->_webpageURL;
-    v9 = [v5 webpageURL];
-    if (webpageURL != v9)
+    webpageURL = [infoCopy webpageURL];
+    if (webpageURL != webpageURL)
     {
-      v10 = [v5 webpageURL];
-      if (!v10)
+      webpageURL2 = [infoCopy webpageURL];
+      if (!webpageURL2)
       {
-        LOBYTE(v13) = 0;
+        LOBYTE(canonicalURL3) = 0;
         goto LABEL_36;
       }
 
-      v3 = v10;
+      v3 = webpageURL2;
       v11 = self->_webpageURL;
-      v12 = [v5 webpageURL];
-      if (![(NSURL *)v11 isEqual:v12])
+      webpageURL3 = [infoCopy webpageURL];
+      if (![(NSURL *)v11 isEqual:webpageURL3])
       {
-        LOBYTE(v13) = 0;
+        LOBYTE(canonicalURL3) = 0;
 LABEL_35:
 
         goto LABEL_36;
       }
 
-      v38 = v12;
+      v38 = webpageURL3;
     }
 
     canonicalURL = self->_canonicalURL;
-    v15 = [v5 canonicalURL];
-    if (canonicalURL == v15)
+    canonicalURL = [infoCopy canonicalURL];
+    if (canonicalURL == canonicalURL)
     {
       v37 = canonicalURL;
     }
 
     else
     {
-      v16 = [v5 canonicalURL];
-      if (!v16)
+      canonicalURL2 = [infoCopy canonicalURL];
+      if (!canonicalURL2)
       {
-        LOBYTE(v13) = 0;
+        LOBYTE(canonicalURL3) = 0;
 LABEL_33:
 
 LABEL_34:
-        v12 = v38;
-        if (webpageURL != v9)
+        webpageURL3 = v38;
+        if (webpageURL != webpageURL)
         {
           goto LABEL_35;
         }
@@ -186,39 +186,39 @@ LABEL_36:
         goto LABEL_37;
       }
 
-      v17 = v16;
+      v17 = canonicalURL2;
       v18 = self->_canonicalURL;
-      v13 = [v5 canonicalURL];
-      if (([(NSURL *)v18 isEqual:v13]& 1) == 0)
+      canonicalURL3 = [infoCopy canonicalURL];
+      if (([(NSURL *)v18 isEqual:canonicalURL3]& 1) == 0)
       {
 
-        LOBYTE(v13) = 0;
+        LOBYTE(canonicalURL3) = 0;
         goto LABEL_34;
       }
 
       v37 = canonicalURL;
-      v34 = v13;
+      v34 = canonicalURL3;
       v35 = v17;
     }
 
     targetContentIdentifier = self->_targetContentIdentifier;
-    v20 = [v5 targetContentIdentifier];
-    if (targetContentIdentifier == v20)
+    targetContentIdentifier = [infoCopy targetContentIdentifier];
+    if (targetContentIdentifier == targetContentIdentifier)
     {
       v36 = v3;
     }
 
     else
     {
-      v13 = [v5 targetContentIdentifier];
-      if (!v13)
+      canonicalURL3 = [infoCopy targetContentIdentifier];
+      if (!canonicalURL3)
       {
 LABEL_26:
 
 LABEL_30:
         v30 = v37;
 LABEL_31:
-        if (v30 != v15)
+        if (v30 != canonicalURL)
         {
         }
 
@@ -226,35 +226,35 @@ LABEL_31:
       }
 
       v21 = self->_targetContentIdentifier;
-      v22 = [v5 targetContentIdentifier];
+      targetContentIdentifier2 = [infoCopy targetContentIdentifier];
       v23 = v21;
-      v24 = v22;
-      if (![(NSString *)v23 isEqualToString:v22])
+      v24 = targetContentIdentifier2;
+      if (![(NSString *)v23 isEqualToString:targetContentIdentifier2])
       {
 
-        LOBYTE(v13) = 0;
+        LOBYTE(canonicalURL3) = 0;
         goto LABEL_30;
       }
 
       v32 = v24;
-      v33 = v13;
+      v33 = canonicalURL3;
       v36 = v3;
     }
 
     persistentIdentifier = self->_persistentIdentifier;
-    v26 = [v5 persistentIdentifier];
-    LOBYTE(v13) = persistentIdentifier == v26;
-    if (persistentIdentifier != v26)
+    persistentIdentifier = [infoCopy persistentIdentifier];
+    LOBYTE(canonicalURL3) = persistentIdentifier == persistentIdentifier;
+    if (persistentIdentifier != persistentIdentifier)
     {
-      v27 = [v5 persistentIdentifier];
-      if (v27)
+      persistentIdentifier2 = [infoCopy persistentIdentifier];
+      if (persistentIdentifier2)
       {
-        v28 = v27;
-        v13 = self->_persistentIdentifier;
-        v29 = [v5 persistentIdentifier];
-        LOBYTE(v13) = [v13 isEqualToString:v29];
+        v28 = persistentIdentifier2;
+        canonicalURL3 = self->_persistentIdentifier;
+        persistentIdentifier3 = [infoCopy persistentIdentifier];
+        LOBYTE(canonicalURL3) = [canonicalURL3 isEqualToString:persistentIdentifier3];
 
-        if (targetContentIdentifier != v20)
+        if (targetContentIdentifier != targetContentIdentifier)
         {
         }
 
@@ -262,7 +262,7 @@ LABEL_31:
       }
     }
 
-    if (targetContentIdentifier == v20)
+    if (targetContentIdentifier == targetContentIdentifier)
     {
 LABEL_27:
 
@@ -275,39 +275,39 @@ LABEL_27:
     goto LABEL_26;
   }
 
-  LOBYTE(v13) = 0;
+  LOBYTE(canonicalURL3) = 0;
 LABEL_37:
 
-  return v13;
+  return canonicalURL3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(SYUserActivityIdentifierInfo *)self isEqualToActivityIdentifierInfo:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(SYUserActivityIdentifierInfo *)self isEqualToActivityIdentifierInfo:equalCopy];
 
   return v5;
 }
 
 - (unint64_t)hash
 {
-  v3 = [(SYUserActivityIdentifierInfo *)self activityType];
-  v4 = [v3 hash];
-  v5 = [(SYUserActivityIdentifierInfo *)self webpageURL];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(SYUserActivityIdentifierInfo *)self targetContentIdentifier];
-  v8 = [v7 hash];
-  v9 = [(SYUserActivityIdentifierInfo *)self persistentIdentifier];
-  v10 = v8 ^ [v9 hash];
+  activityType = [(SYUserActivityIdentifierInfo *)self activityType];
+  v4 = [activityType hash];
+  webpageURL = [(SYUserActivityIdentifierInfo *)self webpageURL];
+  v6 = [webpageURL hash] ^ v4;
+  targetContentIdentifier = [(SYUserActivityIdentifierInfo *)self targetContentIdentifier];
+  v8 = [targetContentIdentifier hash];
+  persistentIdentifier = [(SYUserActivityIdentifierInfo *)self persistentIdentifier];
+  v10 = v8 ^ [persistentIdentifier hash];
 
   return v6 ^ v10;
 }
 
-- (SYUserActivityIdentifierInfo)initWithCoder:(id)a3
+- (SYUserActivityIdentifierInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"activityType"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"activityType"];
   v6 = v5;
   v7 = &stru_2838DFF18;
   if (v5)
@@ -320,19 +320,19 @@ LABEL_37:
   v9 = [(SYUserActivityIdentifierInfo *)self initWithActivityType:v8];
   if (v9)
   {
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"webpageURL"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"webpageURL"];
     webpageURL = v9->_webpageURL;
     v9->_webpageURL = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"canonicalURL"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"canonicalURL"];
     canonicalURL = v9->_canonicalURL;
     v9->_canonicalURL = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"targetContentIdentifier"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"targetContentIdentifier"];
     targetContentIdentifier = v9->_targetContentIdentifier;
     v9->_targetContentIdentifier = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"persistentIdentifier"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"persistentIdentifier"];
     persistentIdentifier = v9->_persistentIdentifier;
     v9->_persistentIdentifier = v16;
   }
@@ -340,23 +340,23 @@ LABEL_37:
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(SYUserActivityIdentifierInfo *)self activityType];
-  [v4 encodeObject:v5 forKey:@"activityType"];
+  coderCopy = coder;
+  activityType = [(SYUserActivityIdentifierInfo *)self activityType];
+  [coderCopy encodeObject:activityType forKey:@"activityType"];
 
-  v6 = [(SYUserActivityIdentifierInfo *)self webpageURL];
-  [v4 encodeObject:v6 forKey:@"webpageURL"];
+  webpageURL = [(SYUserActivityIdentifierInfo *)self webpageURL];
+  [coderCopy encodeObject:webpageURL forKey:@"webpageURL"];
 
-  v7 = [(SYUserActivityIdentifierInfo *)self canonicalURL];
-  [v4 encodeObject:v7 forKey:@"canonicalURL"];
+  canonicalURL = [(SYUserActivityIdentifierInfo *)self canonicalURL];
+  [coderCopy encodeObject:canonicalURL forKey:@"canonicalURL"];
 
-  v8 = [(SYUserActivityIdentifierInfo *)self targetContentIdentifier];
-  [v4 encodeObject:v8 forKey:@"targetContentIdentifier"];
+  targetContentIdentifier = [(SYUserActivityIdentifierInfo *)self targetContentIdentifier];
+  [coderCopy encodeObject:targetContentIdentifier forKey:@"targetContentIdentifier"];
 
-  v9 = [(SYUserActivityIdentifierInfo *)self persistentIdentifier];
-  [v4 encodeObject:v9 forKey:@"persistentIdentifier"];
+  persistentIdentifier = [(SYUserActivityIdentifierInfo *)self persistentIdentifier];
+  [coderCopy encodeObject:persistentIdentifier forKey:@"persistentIdentifier"];
 }
 
 - (void)initWithActivityType:(uint64_t)a1 .cold.1(uint64_t a1, uint64_t a2)

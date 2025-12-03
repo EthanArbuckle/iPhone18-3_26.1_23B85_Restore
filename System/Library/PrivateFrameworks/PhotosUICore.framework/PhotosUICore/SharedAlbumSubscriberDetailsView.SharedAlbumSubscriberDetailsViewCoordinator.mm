@@ -9,19 +9,19 @@
 
 - (void)displayConfirmationForSubscriberRemoval
 {
-  v2 = self;
+  selfCopy = self;
   sub_1A404E280();
 }
 
 - (void)resendInvitation
 {
-  v2 = self;
+  selfCopy = self;
   sub_1A404EDBC();
 }
 
 - (void)removeSubscriber
 {
-  v2 = self;
+  selfCopy = self;
   sub_1A404F7C8();
 }
 

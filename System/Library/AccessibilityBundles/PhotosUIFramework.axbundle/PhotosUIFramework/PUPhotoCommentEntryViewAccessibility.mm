@@ -1,25 +1,25 @@
 @interface PUPhotoCommentEntryViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (PUPhotoCommentEntryViewAccessibility)initWithFrame:(CGRect)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (PUPhotoCommentEntryViewAccessibility)initWithFrame:(CGRect)frame;
 @end
 
 @implementation PUPhotoCommentEntryViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PUPhotoCommentEntryView" hasInstanceMethod:@"textView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PUPhotoCommentEntryView" hasInstanceMethod:@"placeholderLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PUPhotoCommentEntryView" hasInstanceMethod:@"postButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"UILabel" hasInstanceMethod:@"text" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PUPhotoCommentEntryView" hasInstanceMethod:@"initWithFrame:" withFullSignature:{"@", "{CGRect={CGPoint=dd}{CGSize=dd}}", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PUPhotoCommentEntryView" hasInstanceMethod:@"textView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PUPhotoCommentEntryView" hasInstanceMethod:@"placeholderLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PUPhotoCommentEntryView" hasInstanceMethod:@"postButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"UILabel" hasInstanceMethod:@"text" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PUPhotoCommentEntryView" hasInstanceMethod:@"initWithFrame:" withFullSignature:{"@", "{CGRect={CGPoint=dd}{CGSize=dd}}", 0}];
 }
 
-- (PUPhotoCommentEntryViewAccessibility)initWithFrame:(CGRect)a3
+- (PUPhotoCommentEntryViewAccessibility)initWithFrame:(CGRect)frame
 {
   v11.receiver = self;
   v11.super_class = PUPhotoCommentEntryViewAccessibility;
-  v3 = [(PUPhotoCommentEntryViewAccessibility *)&v11 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PUPhotoCommentEntryViewAccessibility *)&v11 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   objc_opt_class();
   v4 = [(PUPhotoCommentEntryViewAccessibility *)v3 safeValueForKey:@"placeholderLabel"];
   v5 = [v4 safeValueForKey:@"text"];

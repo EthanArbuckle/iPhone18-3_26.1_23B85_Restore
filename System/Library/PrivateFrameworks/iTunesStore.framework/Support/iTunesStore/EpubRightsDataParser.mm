@@ -1,20 +1,20 @@
 @interface EpubRightsDataParser
-- (EpubRightsDataParser)initWithXMLData:(id)a3;
+- (EpubRightsDataParser)initWithXMLData:(id)data;
 - (void)dealloc;
-- (void)parser:(id)a3 didEndElement:(id)a4 namespaceURI:(id)a5 qualifiedName:(id)a6;
-- (void)parser:(id)a3 foundCharacters:(id)a4;
+- (void)parser:(id)parser didEndElement:(id)element namespaceURI:(id)i qualifiedName:(id)name;
+- (void)parser:(id)parser foundCharacters:(id)characters;
 @end
 
 @implementation EpubRightsDataParser
 
-- (EpubRightsDataParser)initWithXMLData:(id)a3
+- (EpubRightsDataParser)initWithXMLData:(id)data
 {
   v7.receiver = self;
   v7.super_class = EpubRightsDataParser;
   v4 = [(EpubRightsDataParser *)&v7 init];
   if (v4)
   {
-    v5 = [[NSXMLParser alloc] initWithData:a3];
+    v5 = [[NSXMLParser alloc] initWithData:data];
     [v5 setDelegate:v4];
     [v5 parse];
   }
@@ -29,7 +29,7 @@
   [(EpubRightsDataParser *)&v3 dealloc];
 }
 
-- (void)parser:(id)a3 foundCharacters:(id)a4
+- (void)parser:(id)parser foundCharacters:(id)characters
 {
   if (self->_isSinfElement)
   {
@@ -40,11 +40,11 @@
       self->_buffer = buffer;
     }
 
-    [(NSMutableString *)buffer appendString:a4];
+    [(NSMutableString *)buffer appendString:characters];
   }
 }
 
-- (void)parser:(id)a3 didEndElement:(id)a4 namespaceURI:(id)a5 qualifiedName:(id)a6
+- (void)parser:(id)parser didEndElement:(id)element namespaceURI:(id)i qualifiedName:(id)name
 {
   if (self->_isSinfElement)
   {

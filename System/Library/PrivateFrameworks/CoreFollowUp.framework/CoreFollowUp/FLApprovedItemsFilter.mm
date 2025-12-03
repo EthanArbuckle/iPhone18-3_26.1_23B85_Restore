@@ -1,7 +1,7 @@
 @interface FLApprovedItemsFilter
 + (id)sharedFilter;
-- (BOOL)overrideGroupRestrictionsForItem:(id)a3;
-- (unint64_t)approvalStatusForItem:(id)a3;
+- (BOOL)overrideGroupRestrictionsForItem:(id)item;
+- (unint64_t)approvalStatusForItem:(id)item;
 @end
 
 @implementation FLApprovedItemsFilter
@@ -35,33 +35,33 @@ uint64_t __37__FLApprovedItemsFilter_sharedFilter__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (unint64_t)approvalStatusForItem:(id)a3
+- (unint64_t)approvalStatusForItem:(id)item
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  itemCopy = item;
   v5 = +[FLEnvironment currentEnvironment];
-  v6 = [v5 shouldHideAllFollowUps];
+  shouldHideAllFollowUps = [v5 shouldHideAllFollowUps];
 
-  if ((v6 & 1) == 0)
+  if ((shouldHideAllFollowUps & 1) == 0)
   {
-    v8 = [v4 uniqueIdentifier];
-    v9 = [v4 clientIdentifier];
-    v10 = v9;
-    if (v8 && v9)
+    uniqueIdentifier = [itemCopy uniqueIdentifier];
+    clientIdentifier = [itemCopy clientIdentifier];
+    v10 = clientIdentifier;
+    if (uniqueIdentifier && clientIdentifier)
     {
-      if (-[NSSet containsObject:](self->_approvedClientIdentifiers, "containsObject:", v9) || -[NSSet containsObject:](self->_approvedItemIdentifiers, "containsObject:", v8) || (approvedItemIdentifiers = self->_approvedItemIdentifiers, [v4 typeIdentifier], v12 = objc_claimAutoreleasedReturnValue(), LODWORD(approvedItemIdentifiers) = -[NSSet containsObject:](approvedItemIdentifiers, "containsObject:", v12), v12, approvedItemIdentifiers))
+      if (-[NSSet containsObject:](self->_approvedClientIdentifiers, "containsObject:", clientIdentifier) || -[NSSet containsObject:](self->_approvedItemIdentifiers, "containsObject:", uniqueIdentifier) || (approvedItemIdentifiers = self->_approvedItemIdentifiers, [itemCopy typeIdentifier], v12 = objc_claimAutoreleasedReturnValue(), LODWORD(approvedItemIdentifiers) = -[NSSet containsObject:](approvedItemIdentifiers, "containsObject:", v12), v12, approvedItemIdentifiers))
       {
         v13 = [FLGroupViewModelImpl alloc];
-        v14 = [v4 groupIdentifier];
-        v15 = [(FLGroupViewModelImpl *)v13 initWithIdentifier:v14];
+        groupIdentifier = [itemCopy groupIdentifier];
+        v15 = [(FLGroupViewModelImpl *)v13 initWithIdentifier:groupIdentifier];
 
-        if ([v15 restrictionEnabled]&& ![(FLApprovedItemsFilter *)self overrideGroupRestrictionsForItem:v4])
+        if ([v15 restrictionEnabled]&& ![(FLApprovedItemsFilter *)self overrideGroupRestrictionsForItem:itemCopy])
         {
           v16 = _FLLogSystem();
           if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
           {
             v19 = 138412290;
-            v20 = v4;
+            v20 = itemCopy;
             _os_log_impl(&dword_22E696000, v16, OS_LOG_TYPE_DEFAULT, "Item rejected due to group restriction: %@", &v19, 0xCu);
           }
 
@@ -74,7 +74,7 @@ uint64_t __37__FLApprovedItemsFilter_sharedFilter__block_invoke()
           if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
           {
             v19 = 138412290;
-            v20 = v4;
+            v20 = itemCopy;
             _os_log_impl(&dword_22E696000, v16, OS_LOG_TYPE_DEFAULT, "Item approved: %@", &v19, 0xCu);
           }
 
@@ -87,7 +87,7 @@ uint64_t __37__FLApprovedItemsFilter_sharedFilter__block_invoke()
       v15 = _FLLogSystem();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
       {
-        [(FLApprovedItemsFilter *)v4 approvalStatusForItem:v15];
+        [(FLApprovedItemsFilter *)itemCopy approvalStatusForItem:v15];
       }
     }
 
@@ -96,7 +96,7 @@ uint64_t __37__FLApprovedItemsFilter_sharedFilter__block_invoke()
       v15 = _FLLogSystem();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
       {
-        [(FLApprovedItemsFilter *)v4 approvalStatusForItem:v15];
+        [(FLApprovedItemsFilter *)itemCopy approvalStatusForItem:v15];
       }
     }
 
@@ -113,16 +113,16 @@ LABEL_21:
   return v7;
 }
 
-- (BOOL)overrideGroupRestrictionsForItem:(id)a3
+- (BOOL)overrideGroupRestrictionsForItem:(id)item
 {
   v10 = *MEMORY[0x277D85DE8];
   v9 = @"com.apple.AAFollowUpIdentifier.RenewCredentials";
   v3 = MEMORY[0x277CBEA60];
-  v4 = a3;
+  itemCopy = item;
   v5 = [v3 arrayWithObjects:&v9 count:1];
-  v6 = [v4 uniqueIdentifier];
+  uniqueIdentifier = [itemCopy uniqueIdentifier];
 
-  LOBYTE(v3) = [v5 containsObject:v6];
+  LOBYTE(v3) = [v5 containsObject:uniqueIdentifier];
   v7 = *MEMORY[0x277D85DE8];
   return v3;
 }

@@ -1,24 +1,24 @@
 @interface WRWorkflow
-+ (WRWorkflow)workflowWithName:(id)a3;
-+ (WRWorkflow)workflowWithPlist:(id)a3 checkForOverrides:(BOOL)a4 error:(id *)a5;
++ (WRWorkflow)workflowWithName:(id)name;
++ (WRWorkflow)workflowWithPlist:(id)plist checkForOverrides:(BOOL)overrides error:(id *)error;
 + (id)allWorkflows;
-+ (id)makeOverridePlistDirectoryWithError:(id *)a3;
++ (id)makeOverridePlistDirectoryWithError:(id *)error;
 + (id)plistDirectory;
 + (uint64_t)diagnosticsEnabled;
 + (uint64_t)telemetryEnabled;
 + (void)allWorkflows;
 + (void)diagnosticsEnabled;
 + (void)plistDirectory;
-- (BOOL)hasChangesRelativeTo:(id)a3;
+- (BOOL)hasChangesRelativeTo:(id)to;
 - (BOOL)hasOverallDiagnosticThresholdInterval;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (double)overallDiagnosticThresholdIntervalSeconds;
 - (id)debugDescription;
 - (id)encodedDict;
-- (id)initWithPlist:(char)a3 telemetryEnabled:(int)a4 diagnosticsEnabled:(int)a5 checkForOverrides:(uint64_t *)a6 error:;
-- (id)wrsignpostForSignpostObject:(uint64_t)a1;
-- (id)wrsignpostWithName:(uint64_t)a1;
-- (int64_t)compare:(id)a3;
+- (id)initWithPlist:(char)plist telemetryEnabled:(int)enabled diagnosticsEnabled:(int)diagnosticsEnabled checkForOverrides:(uint64_t *)overrides error:;
+- (id)wrsignpostForSignpostObject:(uint64_t)object;
+- (id)wrsignpostWithName:(uint64_t)name;
+- (int64_t)compare:(id)compare;
 - (unint64_t)hash;
 @end
 
@@ -33,9 +33,9 @@
   v2 = v1;
   if (v0)
   {
-    v3 = [v0 BOOLValue];
+    bOOLValue = [v0 BOOLValue];
 LABEL_10:
-    v6 = v3;
+    v6 = bOOLValue;
     goto LABEL_11;
   }
 
@@ -53,7 +53,7 @@ LABEL_10:
 
   if ((WRIsSeedBuild() & 1) == 0)
   {
-    v3 = WRIsAppleInternal();
+    bOOLValue = WRIsAppleInternal();
     goto LABEL_10;
   }
 
@@ -72,7 +72,7 @@ LABEL_11:
   v2 = v1;
   if (v0)
   {
-    v3 = [v0 BOOLValue];
+    bOOLValue = [v0 BOOLValue];
   }
 
   else
@@ -89,18 +89,18 @@ LABEL_11:
       *__error() = v4;
     }
 
-    v3 = 1;
+    bOOLValue = 1;
   }
 
-  return v3;
+  return bOOLValue;
 }
 
 + (id)plistDirectory
 {
   objc_opt_self();
   v0 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-  v1 = [v0 resourceURL];
-  if (!v1)
+  resourceURL = [v0 resourceURL];
+  if (!resourceURL)
   {
     v2 = *__error();
     v3 = _wrlog();
@@ -112,19 +112,19 @@ LABEL_11:
     *__error() = v2;
   }
 
-  v4 = [MEMORY[0x277CBEBC0] fileURLWithPath:@"WorkflowPlists" relativeToURL:v1];
+  v4 = [MEMORY[0x277CBEBC0] fileURLWithPath:@"WorkflowPlists" relativeToURL:resourceURL];
 
   return v4;
 }
 
-+ (id)makeOverridePlistDirectoryWithError:(id *)a3
++ (id)makeOverridePlistDirectoryWithError:(id *)error
 {
   if (geteuid())
   {
-    if (a3)
+    if (error)
     {
       [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA050] code:513 userInfo:0];
-      *a3 = v5 = 0;
+      *error = v5 = 0;
     }
 
     else
@@ -135,14 +135,14 @@ LABEL_11:
 
   else
   {
-    v6 = [a1 overridePlistDirectory];
-    v7 = [MEMORY[0x277CCAA00] defaultManager];
-    v8 = [v7 createDirectoryAtURL:v6 withIntermediateDirectories:1 attributes:0 error:a3];
+    overridePlistDirectory = [self overridePlistDirectory];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    v8 = [defaultManager createDirectoryAtURL:overridePlistDirectory withIntermediateDirectories:1 attributes:0 error:error];
 
     v5 = 0;
     if (v8)
     {
-      v5 = v6;
+      v5 = overridePlistDirectory;
     }
   }
 
@@ -169,10 +169,10 @@ LABEL_11:
   v54 = v4;
   v75 = v54;
   v7 = MEMORY[0x277C5A9A0](v73);
-  v8 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v9 = +[WRWorkflow overridePlistDirectory];
-  v10 = [MEMORY[0x277CBEA60] array];
-  v11 = [v8 enumeratorAtURL:v9 includingPropertiesForKeys:v10 options:5 errorHandler:&__block_literal_global_2];
+  array = [MEMORY[0x277CBEA60] array];
+  v11 = [defaultManager enumeratorAtURL:v9 includingPropertiesForKeys:array options:5 errorHandler:&__block_literal_global_2];
 
   v71 = 0u;
   v72 = 0u;
@@ -202,10 +202,10 @@ LABEL_11:
     while (v14);
   }
 
-  v17 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
   v18 = +[WRWorkflow plistDirectory];
-  v19 = [MEMORY[0x277CBEA60] array];
-  v20 = [v17 enumeratorAtURL:v18 includingPropertiesForKeys:v19 options:5 errorHandler:0];
+  array2 = [MEMORY[0x277CBEA60] array];
+  v20 = [defaultManager2 enumeratorAtURL:v18 includingPropertiesForKeys:array2 options:5 errorHandler:0];
 
   v68 = 0u;
   v66 = 0u;
@@ -276,12 +276,12 @@ LABEL_11:
 
         if (!v37)
         {
-          v41 = [v28 domain];
-          if ([v41 isEqualToString:@"WorkflowResponsivenessError"])
+          domain = [v28 domain];
+          if ([domain isEqualToString:@"WorkflowResponsivenessError"])
           {
-            v42 = [v28 code];
+            code = [v28 code];
 
-            if (v42 == 3)
+            if (code == 3)
             {
               v43 = *__error();
               v44 = _wrlog();
@@ -325,9 +325,9 @@ LABEL_34:
           v39 = _wrlog();
           if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
           {
-            v40 = [v37 name];
+            name = [v37 name];
             *buf = 138543362;
-            v79 = v40;
+            v79 = name;
             _os_log_impl(&dword_2746E5000, v39, OS_LOG_TYPE_DEFAULT, "%{public}@: New workflow is duplicate of existing workflow (whose settings are already overridden)", buf, 0xCu);
           }
 
@@ -568,42 +568,42 @@ LABEL_33:
   v30 = *MEMORY[0x277D85DE8];
 }
 
-- (id)initWithPlist:(char)a3 telemetryEnabled:(int)a4 diagnosticsEnabled:(int)a5 checkForOverrides:(uint64_t *)a6 error:
+- (id)initWithPlist:(char)plist telemetryEnabled:(int)enabled diagnosticsEnabled:(int)diagnosticsEnabled checkForOverrides:(uint64_t *)overrides error:
 {
   v406 = *MEMORY[0x277D85DE8];
   v301 = a2;
-  if (!a1)
+  if (!self)
   {
     v32 = 0;
     goto LABEL_180;
   }
 
   v384 = 0;
-  if (a6)
+  if (overrides)
   {
-    v300 = a6;
-    *a6 = 0;
+    overridesCopy = overrides;
+    *overrides = 0;
   }
 
   else
   {
-    v300 = &v384;
+    overridesCopy = &v384;
   }
 
-  v383.receiver = a1;
+  v383.receiver = self;
   v383.super_class = WRWorkflow;
   v302 = objc_msgSendSuper2(&v383, sel_init);
 
   if (v302)
   {
     v18 = WRCheckForBadWorkflowDict(v301);
-    *v300 = v18;
+    *overridesCopy = v18;
     if (!v18)
     {
       v297 = [v301 objectForKeyedSubscript:@"name"];
       if (!v297)
       {
-        [(WRWorkflow *)v300 initWithPlist:v19 telemetryEnabled:v20 diagnosticsEnabled:v21 checkForOverrides:v22 error:v23, v24];
+        [(WRWorkflow *)overridesCopy initWithPlist:v19 telemetryEnabled:v20 diagnosticsEnabled:v21 checkForOverrides:v22 error:v23, v24];
         v32 = 0;
         goto LABEL_178;
       }
@@ -611,14 +611,14 @@ LABEL_33:
       if ([WRWorkflowEventTracker isReservedWorkflowName:v297])
       {
         WRMakeError(8, @"Workflow name is reserved: %@", v26, v27, v28, v29, v30, v31, v297);
-        *v300 = v32 = 0;
+        *overridesCopy = v32 = 0;
 LABEL_178:
 
         goto LABEL_179;
       }
 
       v33 = v297;
-      if (a5)
+      if (diagnosticsEnabled)
       {
         v382 = 0;
         v280 = WROverrideTelemetryEnablementForWorkflow(v297, &v382);
@@ -626,11 +626,11 @@ LABEL_178:
         if (v280)
         {
           v298 = v34;
-          v35 = [v280 BOOLValue];
+          bOOLValue = [v280 BOOLValue];
           v36 = *__error();
           v37 = _wrlog();
           v38 = os_log_type_enabled(v37, OS_LOG_TYPE_INFO);
-          if (v35)
+          if (bOOLValue)
           {
             if (v38)
             {
@@ -662,7 +662,7 @@ LABEL_27:
             v46 = v302[8];
             v302[8] = v45;
 
-            if (a5)
+            if (diagnosticsEnabled)
             {
 
               v377 = 0;
@@ -702,7 +702,7 @@ LABEL_27:
             {
             }
 
-            if (a5)
+            if (diagnosticsEnabled)
             {
 
               v376 = 0;
@@ -711,7 +711,7 @@ LABEL_27:
               v298 = v55;
               if (v54)
               {
-                a4 = [v54 BOOLValue];
+                enabled = [v54 BOOLValue];
               }
 
               else if (v55)
@@ -728,11 +728,11 @@ LABEL_27:
             }
 
             v64 = objc_opt_class();
-            v65 = DictGetArrayOfClass(v301, @"diagnostics", v64, v300);
+            v65 = DictGetArrayOfClass(v301, @"diagnostics", v64, overridesCopy);
             v274 = v65;
-            if (v65 || !*v300)
+            if (v65 || !*overridesCopy)
             {
-              v66 = [WRDiagnostic diagnosticsForWorkflowName:v297 signpostName:0 diagnosticDicts:v65 diagnosticsEnabled:a4 checkForOverrides:a5 error:v300];
+              v66 = [WRDiagnostic diagnosticsForWorkflowName:v297 signpostName:0 diagnosticDicts:v65 diagnosticsEnabled:enabled checkForOverrides:diagnosticsEnabled error:overridesCopy];
               v67 = v302[6];
               v302[6] = v66;
 
@@ -777,7 +777,7 @@ LABEL_27:
                 v268 = 0;
 LABEL_65:
 
-                v72 = v300;
+                v72 = overridesCopy;
 LABEL_66:
                 v73 = objc_opt_class();
                 v80 = DictGetArrayOfClass(v301, @"signposts", v73, v72);
@@ -793,7 +793,7 @@ LABEL_175:
                   }
 
                   WRMakeError(7, @"No signposts in plist", v74, v75, v76, v77, v78, v79, v264);
-                  *v300 = v32 = 0;
+                  *overridesCopy = v32 = 0;
 LABEL_174:
                   v80 = v273;
                   goto LABEL_175;
@@ -816,8 +816,8 @@ LABEL_174:
                 v351[2] = __88__WRWorkflow_initWithPlist_telemetryEnabled_diagnosticsEnabled_checkForOverrides_error___block_invoke;
                 v351[3] = &unk_279EE3730;
                 v358 = &v368;
-                v362 = a4;
-                v363 = a5;
+                enabledCopy = enabled;
+                diagnosticsEnabledCopy = diagnosticsEnabled;
                 v278 = v297;
                 v352 = v278;
                 p_buf = &buf;
@@ -857,14 +857,14 @@ LABEL_174:
 
                     v87 = *(*(&v347 + 1) + 8 * j);
                     v88 = WRCheckForBadSignpostDict(v87);
-                    *v300 = v88;
+                    *overridesCopy = v88;
                     if (v88)
                     {
                       goto LABEL_134;
                     }
 
                     v89 = [v87 objectForKeyedSubscript:@"name"];
-                    if (a5)
+                    if (diagnosticsEnabled)
                     {
                       v346 = 0;
                       v90 = WROverrideForSignpost(v278, v89, &v346);
@@ -908,13 +908,13 @@ LABEL_174:
                     v97 = v96;
                     if (v96)
                     {
-                      v98 = [v96 domain];
-                      if (![v98 isEqualToString:@"WorkflowResponsivenessError"])
+                      domain = [v96 domain];
+                      if (![domain isEqualToString:@"WorkflowResponsivenessError"])
                       {
 
 LABEL_133:
                         v123 = v97;
-                        *v300 = v97;
+                        *overridesCopy = v97;
 
 LABEL_134:
 LABEL_135:
@@ -950,7 +950,7 @@ LABEL_135:
                 while (v85);
 LABEL_91:
 
-                if (a5)
+                if (diagnosticsEnabled)
                 {
 
                   v345 = 0;
@@ -1005,8 +1005,8 @@ LABEL_112:
                               goto LABEL_123;
                             }
 
-                            v119 = [v118 domain];
-                            if ([v119 isEqualToString:@"WorkflowResponsivenessError"])
+                            domain2 = [v118 domain];
+                            if ([domain2 isEqualToString:@"WorkflowResponsivenessError"])
                             {
                               v120 = [v118 code] == 3;
 
@@ -1060,8 +1060,8 @@ LABEL_122:
                                 objc_enumerationMutation(v109);
                               }
 
-                              v114 = [*(*(&v337 + 1) + 8 * m) name];
-                              v115 = [v114 isEqualToString:v108];
+                              name = [*(*(&v337 + 1) + 8 * m) name];
+                              v115 = [name isEqualToString:v108];
 
                               v111 |= v115;
                             }
@@ -1173,19 +1173,19 @@ LABEL_156:
                       {
                         if ([v276 hasMaximumEventDuration])
                         {
-                          v166 = [v285 firstObject];
-                          [v166 name];
+                          firstObject = [v285 firstObject];
+                          [firstObject name];
 
                           v167 = *__error();
                           v168 = _wrlog();
                           if (os_log_type_enabled(v168, OS_LOG_TYPE_DEBUG))
                           {
-                            v169 = [v166 name];
-                            [WRWorkflow initWithPlist:v278 telemetryEnabled:v169 diagnosticsEnabled:v395 checkForOverrides:v168 error:?];
+                            name2 = [firstObject name];
+                            [WRWorkflow initWithPlist:v278 telemetryEnabled:name2 diagnosticsEnabled:v395 checkForOverrides:v168 error:?];
                           }
 
                           *__error() = v167;
-                          [(WRSignpost *)v166 setEventIdentifierIsSignpostID:?];
+                          [(WRSignpost *)firstObject setEventIdentifierIsSignpostID:?];
                           *(v276 + 8) = 1;
 
                           goto LABEL_192;
@@ -1234,13 +1234,13 @@ LABEL_156:
                             }
 
                             v159 = *(*(&v333 + 1) + 8 * n);
-                            v160 = [v159 eventIdentifierFieldName];
-                            v161 = v160 == 0;
+                            eventIdentifierFieldName = [v159 eventIdentifierFieldName];
+                            v161 = eventIdentifierFieldName == 0;
 
                             if (v161)
                             {
-                              v170 = [v159 name];
-                              *v300 = WRMakeError(7, @"Workflow supports concurrent events, but start signpost %@ has no event identifier field name", v171, v172, v173, v174, v175, v176, v170);
+                              name3 = [v159 name];
+                              *overridesCopy = WRMakeError(7, @"Workflow supports concurrent events, but start signpost %@ has no event identifier field name", v171, v172, v173, v174, v175, v176, name3);
 
                               goto LABEL_135;
                             }
@@ -1321,15 +1321,15 @@ LABEL_192:
                                   }
 
                                   v193 = *(*(&v323 + 1) + 8 * jj);
-                                  v194 = [v193 individuationFieldName];
-                                  v195 = [v194 isEqualToString:v188];
+                                  individuationFieldName = [v193 individuationFieldName];
+                                  v195 = [individuationFieldName isEqualToString:v188];
 
                                   if (v195)
                                   {
                                     v196 = v302[8];
-                                    v197 = [v193 subsystem];
-                                    v198 = [v193 category];
-                                    [v196 addSubsystem:v197 category:v198];
+                                    subsystem = [v193 subsystem];
+                                    category = [v193 category];
+                                    [v196 addSubsystem:subsystem category:category];
                                   }
                                 }
 
@@ -1393,8 +1393,8 @@ LABEL_219:
                           v210 = *(*(&v319 + 1) + 8 * v209);
                           if ([v210 triggerEventTimeout] && (objc_msgSend(v276, "hasMaximumEventDuration") & 1) == 0)
                           {
-                            v236 = [v210 name];
-                            v257 = WRMakeError(8, @"Workflow diagnostic %@ has event timeout threshold, but workflow has no maximum duration", v251, v252, v253, v254, v255, v256, v236);
+                            name4 = [v210 name];
+                            v257 = WRMakeError(8, @"Workflow diagnostic %@ has event timeout threshold, but workflow has no maximum duration", v251, v252, v253, v254, v255, v256, name4);
                             goto LABEL_269;
                           }
 
@@ -1403,9 +1403,9 @@ LABEL_219:
                             break;
                           }
 
-                          v211 = [v210 reportOtherSignpostWithName];
+                          reportOtherSignpostWithName = [v210 reportOtherSignpostWithName];
 
-                          if (v211)
+                          if (reportOtherSignpostWithName)
                           {
                             v317 = 0u;
                             v318 = 0u;
@@ -1425,9 +1425,9 @@ LABEL_219:
                                     objc_enumerationMutation(v212);
                                   }
 
-                                  v216 = [*(*(&v315 + 1) + 8 * kk) name];
-                                  v217 = [v210 reportOtherSignpostWithName];
-                                  v218 = [v216 isEqualToString:v217];
+                                  name5 = [*(*(&v315 + 1) + 8 * kk) name];
+                                  reportOtherSignpostWithName2 = [v210 reportOtherSignpostWithName];
+                                  v218 = [name5 isEqualToString:reportOtherSignpostWithName2];
 
                                   if (v218)
                                   {
@@ -1446,9 +1446,9 @@ LABEL_219:
                               }
                             }
 
-                            v236 = [v210 name];
-                            v265 = [v210 reportOtherSignpostWithName];
-                            *v300 = WRMakeError(8, @"Workflow diagnostic %@ reports signpost %@, but no such signpost exists", v237, v238, v239, v240, v241, v242, v236);
+                            name4 = [v210 name];
+                            reportOtherSignpostWithName3 = [v210 reportOtherSignpostWithName];
+                            *overridesCopy = WRMakeError(8, @"Workflow diagnostic %@ reports signpost %@, but no such signpost exists", v237, v238, v239, v240, v241, v242, name4);
 
                             goto LABEL_270;
                           }
@@ -1466,10 +1466,10 @@ LABEL_237:
                           }
                         }
 
-                        v236 = [v210 name];
-                        v257 = WRMakeError(8, @"Workflow diagnostic %@ omits network-bound work, but no network-bound signposts", v258, v259, v260, v261, v262, v263, v236);
+                        name4 = [v210 name];
+                        v257 = WRMakeError(8, @"Workflow diagnostic %@ omits network-bound work, but no network-bound signposts", v258, v259, v260, v261, v262, v263, name4);
 LABEL_269:
-                        *v300 = v257;
+                        *overridesCopy = v257;
 LABEL_270:
 
 LABEL_271:
@@ -1505,11 +1505,11 @@ LABEL_239:
                             v308 = 0u;
                             v309 = 0u;
                             v310 = 0u;
-                            v223 = [v222 diagnostics];
-                            v224 = [v223 countByEnumeratingWithState:&v307 objects:v386 count:16];
+                            diagnostics = [v222 diagnostics];
+                            v224 = [diagnostics countByEnumeratingWithState:&v307 objects:v386 count:16];
                             v279 = v222;
                             v277 = v221;
-                            v291 = v223;
+                            v291 = diagnostics;
                             if (v224)
                             {
                               v296 = *v308;
@@ -1525,9 +1525,9 @@ LABEL_239:
                                   }
 
                                   v227 = *(*(&v307 + 1) + 8 * v225);
-                                  v228 = [v227 reportOtherSignpostWithName];
+                                  reportOtherSignpostWithName4 = [v227 reportOtherSignpostWithName];
 
-                                  if (v228)
+                                  if (reportOtherSignpostWithName4)
                                   {
                                     v305 = 0u;
                                     v306 = 0u;
@@ -1547,9 +1547,9 @@ LABEL_239:
                                             objc_enumerationMutation(v229);
                                           }
 
-                                          v233 = [*(*(&v303 + 1) + 8 * mm) name];
-                                          v234 = [v227 reportOtherSignpostWithName];
-                                          v235 = [v233 isEqualToString:v234];
+                                          name6 = [*(*(&v303 + 1) + 8 * mm) name];
+                                          reportOtherSignpostWithName5 = [v227 reportOtherSignpostWithName];
+                                          v235 = [name6 isEqualToString:reportOtherSignpostWithName5];
 
                                           if (v235)
                                           {
@@ -1568,10 +1568,10 @@ LABEL_239:
                                       }
                                     }
 
-                                    v243 = [v279 name];
-                                    v244 = [v227 name];
-                                    v266 = [v227 reportOtherSignpostWithName];
-                                    *v300 = WRMakeError(8, @"Signpost %@ diagnostic %@ reports other signpost %@, but no such signpost exists", v245, v246, v247, v248, v249, v250, v243);
+                                    name7 = [v279 name];
+                                    name8 = [v227 name];
+                                    reportOtherSignpostWithName6 = [v227 reportOtherSignpostWithName];
+                                    *overridesCopy = WRMakeError(8, @"Signpost %@ diagnostic %@ reports other signpost %@, but no such signpost exists", v245, v246, v247, v248, v249, v250, name7);
 
                                     goto LABEL_271;
                                   }
@@ -1617,7 +1617,7 @@ LABEL_173:
                     v147 = WRMakeError(7, @"Workflow supports concurrent events, but has no maximum_duration (required by concurrent events)", v149, v150, v151, v152, v153, v154, v264);
 LABEL_172:
                     v32 = 0;
-                    *v300 = v147;
+                    *overridesCopy = v147;
                     goto LABEL_173;
                   }
 
@@ -1648,8 +1648,8 @@ LABEL_153:
                 goto LABEL_156;
               }
 
-              v72 = v300;
-              if (!*v300)
+              v72 = overridesCopy;
+              if (!*overridesCopy)
               {
                 v268 = 0;
                 goto LABEL_66;
@@ -1673,7 +1673,7 @@ LABEL_176:
           }
 
           *__error() = v36;
-          *v300 = WRMakeError(3, @"Workflow disabled by override", v56, v57, v58, v59, v60, v61, v264);
+          *overridesCopy = WRMakeError(3, @"Workflow disabled by override", v56, v57, v58, v59, v60, v61, v264);
 
           goto LABEL_45;
         }
@@ -1699,13 +1699,13 @@ LABEL_176:
       }
 
       v298 = v34;
-      if (a3)
+      if (plist)
       {
         v280 = 0;
         goto LABEL_27;
       }
 
-      [(WRWorkflow *)v300 initWithPlist:v25 telemetryEnabled:v26 diagnosticsEnabled:v27 checkForOverrides:v28 error:v29, v30, v31];
+      [(WRWorkflow *)overridesCopy initWithPlist:v25 telemetryEnabled:v26 diagnosticsEnabled:v27 checkForOverrides:v28 error:v29, v30, v31];
 LABEL_45:
       v32 = 0;
 LABEL_177:
@@ -1716,7 +1716,7 @@ LABEL_177:
 
   else
   {
-    [(WRWorkflow *)v300 initWithPlist:v11 telemetryEnabled:v12 diagnosticsEnabled:v13 checkForOverrides:v14 error:v15, v16, v17];
+    [(WRWorkflow *)overridesCopy initWithPlist:v11 telemetryEnabled:v12 diagnosticsEnabled:v13 checkForOverrides:v14 error:v15, v16, v17];
   }
 
   v32 = 0;
@@ -1742,10 +1742,10 @@ uint64_t __26__WRWorkflow_allWorkflows__block_invoke_13(uint64_t a1, void *a2, v
   return 1;
 }
 
-+ (WRWorkflow)workflowWithName:(id)a3
++ (WRWorkflow)workflowWithName:(id)name
 {
   v74 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  nameCopy = name;
   v4 = +[WRWorkflow telemetryEnabled];
   v5 = +[WRWorkflow diagnosticsEnabled];
   v65 = 0;
@@ -1756,7 +1756,7 @@ uint64_t __26__WRWorkflow_allWorkflows__block_invoke_13(uint64_t a1, void *a2, v
   v60[1] = 3221225472;
   v60[2] = __31__WRWorkflow_workflowWithName___block_invoke;
   v60[3] = &unk_279EE3708;
-  v45 = v3;
+  v45 = nameCopy;
   v61 = v45;
   v62 = &v65;
   v43 = v5;
@@ -1764,10 +1764,10 @@ uint64_t __26__WRWorkflow_allWorkflows__block_invoke_13(uint64_t a1, void *a2, v
   v63 = v4;
   v64 = v5;
   v6 = MEMORY[0x277C5A9A0](v60);
-  v7 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v8 = +[WRWorkflow overridePlistDirectory];
-  v9 = [MEMORY[0x277CBEA60] array];
-  v10 = [v7 enumeratorAtURL:v8 includingPropertiesForKeys:v9 options:5 errorHandler:0];
+  array = [MEMORY[0x277CBEA60] array];
+  v10 = [defaultManager enumeratorAtURL:v8 includingPropertiesForKeys:array options:5 errorHandler:0];
 
   v58 = 0u;
   v59 = 0u;
@@ -1801,10 +1801,10 @@ uint64_t __26__WRWorkflow_allWorkflows__block_invoke_13(uint64_t a1, void *a2, v
     while (v12);
   }
 
-  v16 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
   v17 = +[WRWorkflow plistDirectory];
-  v18 = [MEMORY[0x277CBEA60] array];
-  v19 = [v16 enumeratorAtURL:v17 includingPropertiesForKeys:v18 options:5 errorHandler:0];
+  array2 = [MEMORY[0x277CBEA60] array];
+  v19 = [defaultManager2 enumeratorAtURL:v17 includingPropertiesForKeys:array2 options:5 errorHandler:0];
 
   v55 = 0u;
   v53 = 0u;
@@ -1904,8 +1904,8 @@ LABEL_51:
       goto LABEL_31;
     }
 
-    v37 = [v33 domain];
-    if ([v37 isEqualToString:@"WorkflowResponsivenessError"])
+    domain = [v33 domain];
+    if ([domain isEqualToString:@"WorkflowResponsivenessError"])
     {
       v38 = [v33 code] == 3;
 
@@ -2117,53 +2117,53 @@ LABEL_33:
   return v18;
 }
 
-+ (WRWorkflow)workflowWithPlist:(id)a3 checkForOverrides:(BOOL)a4 error:(id *)a5
++ (WRWorkflow)workflowWithPlist:(id)plist checkForOverrides:(BOOL)overrides error:(id *)error
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = [v8 lastPathComponent];
-  v10 = [v9 stringByDeletingPathExtension];
+  overridesCopy = overrides;
+  plistCopy = plist;
+  lastPathComponent = [plistCopy lastPathComponent];
+  stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
 
   v11 = objc_alloc(MEMORY[0x277CBEAC0]);
-  v12 = [MEMORY[0x277CBEBC0] fileURLWithPath:v8];
+  v12 = [MEMORY[0x277CBEBC0] fileURLWithPath:plistCopy];
 
-  v13 = [v11 initWithContentsOfURL:v12 error:a5];
+  v13 = [v11 initWithContentsOfURL:v12 error:error];
   if (!v13)
   {
     v15 = 0;
     goto LABEL_8;
   }
 
-  v14 = [(WRWorkflow *)[a1 alloc] initWithPlist:v13 telemetryEnabled:1 diagnosticsEnabled:1 checkForOverrides:v6 error:a5];
+  v14 = [(WRWorkflow *)[self alloc] initWithPlist:v13 telemetryEnabled:1 diagnosticsEnabled:1 checkForOverrides:overridesCopy error:error];
   v15 = v14;
   if (!v14)
   {
 LABEL_8:
-    a5 = 0;
+    error = 0;
     goto LABEL_9;
   }
 
-  v16 = [v14 name];
-  v17 = [v16 isEqual:v10];
+  name = [v14 name];
+  v17 = [name isEqual:stringByDeletingPathExtension];
 
   if (v17)
   {
     v15 = v15;
-    a5 = v15;
+    error = v15;
     goto LABEL_9;
   }
 
-  if (a5)
+  if (error)
   {
-    v25 = [v15 name];
-    *a5 = WRMakeError(8, @"Filename %@ doesn't match workflow name %@", v18, v19, v20, v21, v22, v23, v10);
+    name2 = [v15 name];
+    *error = WRMakeError(8, @"Filename %@ doesn't match workflow name %@", v18, v19, v20, v21, v22, v23, stringByDeletingPathExtension);
 
     goto LABEL_8;
   }
 
 LABEL_9:
 
-  return a5;
+  return error;
 }
 
 id __88__WRWorkflow_initWithPlist_telemetryEnabled_diagnosticsEnabled_checkForOverrides_error___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -2604,8 +2604,8 @@ LABEL_9:
 {
   v85 = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277CBEB38]);
-  v4 = [(WRWorkflow *)self name];
-  v5 = [v3 initWithObjectsAndKeys:{v4, @"name", 0}];
+  name = [(WRWorkflow *)self name];
+  v5 = [v3 initWithObjectsAndKeys:{name, @"name", 0}];
 
   if ([(WRWorkflow *)self hasMaximumEventDuration])
   {
@@ -2615,13 +2615,13 @@ LABEL_9:
     [v5 setObject:v7 forKeyedSubscript:@"maximum_duration"];
   }
 
-  v8 = [(WRWorkflow *)self contextualTelemetryRawValue];
+  contextualTelemetryRawValue = [(WRWorkflow *)self contextualTelemetryRawValue];
   v58 = v5;
-  [v5 setObject:v8 forKeyedSubscript:0x288387E18];
+  [v5 setObject:contextualTelemetryRawValue forKeyedSubscript:0x288387E18];
 
   v9 = objc_alloc(MEMORY[0x277CBEB18]);
-  v10 = [(WRWorkflow *)self allSignposts];
-  v62 = [v9 initWithCapacity:{objc_msgSend(v10, "count")}];
+  allSignposts = [(WRWorkflow *)self allSignposts];
+  v62 = [v9 initWithCapacity:{objc_msgSend(allSignposts, "count")}];
 
   v79 = 0u;
   v80 = 0u;
@@ -2632,7 +2632,7 @@ LABEL_9:
   if (v63)
   {
     v60 = *v78;
-    v61 = self;
+    selfCopy = self;
     do
     {
       v11 = 0;
@@ -2646,13 +2646,13 @@ LABEL_9:
         v64 = v11;
         v12 = *(*(&v77 + 1) + 8 * v11);
         v13 = objc_alloc(MEMORY[0x277CBEB38]);
-        v14 = [v12 name];
-        v15 = [v12 subsystem];
-        v16 = [v12 category];
-        v17 = [v13 initWithObjectsAndKeys:{v14, @"name", v15, @"subsystem", v16, @"category", 0}];
+        name2 = [v12 name];
+        subsystem = [v12 subsystem];
+        category = [v12 category];
+        v17 = [v13 initWithObjectsAndKeys:{name2, @"name", subsystem, @"subsystem", category, @"category", 0}];
 
-        v18 = [(WRWorkflow *)self startSignposts];
-        v19 = [v18 indexOfObjectIdenticalTo:v12];
+        startSignposts = [(WRWorkflow *)self startSignposts];
+        v19 = [startSignposts indexOfObjectIdenticalTo:v12];
 
         if (v19 != 0x7FFFFFFFFFFFFFFFLL)
         {
@@ -2663,8 +2663,8 @@ LABEL_9:
         v76 = 0u;
         v73 = 0u;
         v74 = 0u;
-        v20 = [(WRWorkflow *)self endSignpostGroups];
-        v21 = [v20 countByEnumeratingWithState:&v73 objects:v83 count:16];
+        endSignpostGroups = [(WRWorkflow *)self endSignpostGroups];
+        v21 = [endSignpostGroups countByEnumeratingWithState:&v73 objects:v83 count:16];
         if (v21)
         {
           v22 = v21;
@@ -2676,7 +2676,7 @@ LABEL_9:
             {
               if (*v74 != v24)
               {
-                objc_enumerationMutation(v20);
+                objc_enumerationMutation(endSignpostGroups);
               }
 
               v26 = *(*(&v73 + 1) + 8 * i);
@@ -2696,38 +2696,38 @@ LABEL_9:
               }
             }
 
-            v22 = [v20 countByEnumeratingWithState:&v73 objects:v83 count:16];
+            v22 = [endSignpostGroups countByEnumeratingWithState:&v73 objects:v83 count:16];
           }
 
           while (v22);
         }
 
-        v28 = [v12 individuationFieldName];
-        [v17 setObject:v28 forKeyedSubscript:@"individuation_field_name"];
+        individuationFieldName = [v12 individuationFieldName];
+        [v17 setObject:individuationFieldName forKeyedSubscript:@"individuation_field_name"];
 
-        v29 = [v12 environmentFieldNames];
-        [v17 setObject:v29 forKeyedSubscript:@"environment_field_names"];
+        environmentFieldNames = [v12 environmentFieldNames];
+        [v17 setObject:environmentFieldNames forKeyedSubscript:@"environment_field_names"];
 
         if ([v12 networkBound])
         {
           [v17 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"network_bound"];
         }
 
-        v30 = [v12 diagnostics];
-        v31 = [v30 count];
+        diagnostics = [v12 diagnostics];
+        v31 = [diagnostics count];
 
         if (v31)
         {
           v32 = objc_alloc(MEMORY[0x277CBEB18]);
-          v33 = [v12 diagnostics];
-          v34 = [v32 initWithCapacity:{objc_msgSend(v33, "count")}];
+          diagnostics2 = [v12 diagnostics];
+          v34 = [v32 initWithCapacity:{objc_msgSend(diagnostics2, "count")}];
 
           v71 = 0u;
           v72 = 0u;
           v69 = 0u;
           v70 = 0u;
-          v35 = [v12 diagnostics];
-          v36 = [v35 countByEnumeratingWithState:&v69 objects:v82 count:16];
+          diagnostics3 = [v12 diagnostics];
+          v36 = [diagnostics3 countByEnumeratingWithState:&v69 objects:v82 count:16];
           if (v36)
           {
             v37 = v36;
@@ -2738,14 +2738,14 @@ LABEL_9:
               {
                 if (*v70 != v38)
                 {
-                  objc_enumerationMutation(v35);
+                  objc_enumerationMutation(diagnostics3);
                 }
 
-                v40 = [*(*(&v69 + 1) + 8 * j) encodedDict];
-                [v34 addObject:v40];
+                encodedDict = [*(*(&v69 + 1) + 8 * j) encodedDict];
+                [v34 addObject:encodedDict];
               }
 
-              v37 = [v35 countByEnumeratingWithState:&v69 objects:v82 count:16];
+              v37 = [diagnostics3 countByEnumeratingWithState:&v69 objects:v82 count:16];
             }
 
             while (v37);
@@ -2758,7 +2758,7 @@ LABEL_9:
         [v62 addObject:v17];
 
         v11 = v64 + 1;
-        self = v61;
+        self = selfCopy;
       }
 
       while (v64 + 1 != v63);
@@ -2771,21 +2771,21 @@ LABEL_9:
   v42 = [v62 copy];
   [v58 setObject:v42 forKeyedSubscript:@"signposts"];
 
-  v43 = [(WRWorkflow *)self workflowDiagnostics];
-  v44 = [v43 count];
+  workflowDiagnostics = [(WRWorkflow *)self workflowDiagnostics];
+  v44 = [workflowDiagnostics count];
 
   if (v44)
   {
     v45 = objc_alloc(MEMORY[0x277CBEB18]);
-    v46 = [(WRWorkflow *)self workflowDiagnostics];
-    v47 = [v45 initWithCapacity:{objc_msgSend(v46, "count")}];
+    workflowDiagnostics2 = [(WRWorkflow *)self workflowDiagnostics];
+    v47 = [v45 initWithCapacity:{objc_msgSend(workflowDiagnostics2, "count")}];
 
     v67 = 0u;
     v68 = 0u;
     v65 = 0u;
     v66 = 0u;
-    v48 = [(WRWorkflow *)self workflowDiagnostics];
-    v49 = [v48 countByEnumeratingWithState:&v65 objects:v81 count:16];
+    workflowDiagnostics3 = [(WRWorkflow *)self workflowDiagnostics];
+    v49 = [workflowDiagnostics3 countByEnumeratingWithState:&v65 objects:v81 count:16];
     if (v49)
     {
       v50 = v49;
@@ -2796,14 +2796,14 @@ LABEL_9:
         {
           if (*v66 != v51)
           {
-            objc_enumerationMutation(v48);
+            objc_enumerationMutation(workflowDiagnostics3);
           }
 
-          v53 = [*(*(&v65 + 1) + 8 * k) encodedDict];
-          [v47 addObject:v53];
+          encodedDict2 = [*(*(&v65 + 1) + 8 * k) encodedDict];
+          [v47 addObject:encodedDict2];
         }
 
-        v50 = [v48 countByEnumeratingWithState:&v65 objects:v81 count:16];
+        v50 = [workflowDiagnostics3 countByEnumeratingWithState:&v65 objects:v81 count:16];
       }
 
       while (v50);
@@ -2820,43 +2820,43 @@ LABEL_9:
   return v55;
 }
 
-- (BOOL)hasChangesRelativeTo:(id)a3
+- (BOOL)hasChangesRelativeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   [(WRWorkflow *)self maximumEventDuration];
   v6 = v5;
-  [v4 maximumEventDuration];
+  [toCopy maximumEventDuration];
   if (v6 != v7)
   {
     goto LABEL_36;
   }
 
-  v8 = [(WRWorkflow *)self contextualTelemetryRawValue];
-  v9 = [v4 contextualTelemetryRawValue];
-  if ((v8 != 0) == (v9 == 0))
+  contextualTelemetryRawValue = [(WRWorkflow *)self contextualTelemetryRawValue];
+  contextualTelemetryRawValue2 = [toCopy contextualTelemetryRawValue];
+  if ((contextualTelemetryRawValue != 0) == (contextualTelemetryRawValue2 == 0))
   {
     goto LABEL_35;
   }
 
-  v10 = [(WRWorkflow *)self contextualTelemetryRawValue];
-  if (!v10)
+  contextualTelemetryRawValue3 = [(WRWorkflow *)self contextualTelemetryRawValue];
+  if (!contextualTelemetryRawValue3)
   {
     goto LABEL_8;
   }
 
-  v11 = v10;
-  v12 = [v4 contextualTelemetryRawValue];
-  if (!v12)
+  v11 = contextualTelemetryRawValue3;
+  contextualTelemetryRawValue4 = [toCopy contextualTelemetryRawValue];
+  if (!contextualTelemetryRawValue4)
   {
 
 LABEL_8:
     goto LABEL_9;
   }
 
-  v13 = v12;
-  v14 = [(WRWorkflow *)self contextualTelemetryRawValue];
-  v15 = [v4 contextualTelemetryRawValue];
-  v16 = [v14 isEqualToString:v15];
+  v13 = contextualTelemetryRawValue4;
+  contextualTelemetryRawValue5 = [(WRWorkflow *)self contextualTelemetryRawValue];
+  contextualTelemetryRawValue6 = [toCopy contextualTelemetryRawValue];
+  v16 = [contextualTelemetryRawValue5 isEqualToString:contextualTelemetryRawValue6];
 
   if ((v16 & 1) == 0)
   {
@@ -2864,70 +2864,70 @@ LABEL_8:
   }
 
 LABEL_9:
-  v17 = [(WRWorkflow *)self workflowDiagnostics];
-  v18 = [v17 count];
-  v19 = [v4 workflowDiagnostics];
-  v20 = [v19 count];
+  workflowDiagnostics = [(WRWorkflow *)self workflowDiagnostics];
+  v18 = [workflowDiagnostics count];
+  workflowDiagnostics2 = [toCopy workflowDiagnostics];
+  v20 = [workflowDiagnostics2 count];
 
   if (v18 == v20)
   {
-    v21 = [(WRWorkflow *)self workflowDiagnostics];
-    v22 = [v21 count];
+    workflowDiagnostics3 = [(WRWorkflow *)self workflowDiagnostics];
+    v22 = [workflowDiagnostics3 count];
 
     if (v22)
     {
       v23 = 0;
       do
       {
-        v24 = [(WRWorkflow *)self workflowDiagnostics];
-        v25 = [v24 objectAtIndexedSubscript:v23];
+        workflowDiagnostics4 = [(WRWorkflow *)self workflowDiagnostics];
+        v25 = [workflowDiagnostics4 objectAtIndexedSubscript:v23];
 
-        v26 = [v4 workflowDiagnostics];
-        v27 = [v26 objectAtIndexedSubscript:v23];
+        workflowDiagnostics5 = [toCopy workflowDiagnostics];
+        v27 = [workflowDiagnostics5 objectAtIndexedSubscript:v23];
 
-        LOBYTE(v26) = [v25 isEqual:v27];
-        if ((v26 & 1) == 0)
+        LOBYTE(workflowDiagnostics5) = [v25 isEqual:v27];
+        if ((workflowDiagnostics5 & 1) == 0)
         {
           goto LABEL_36;
         }
 
         ++v23;
-        v28 = [(WRWorkflow *)self workflowDiagnostics];
-        v29 = [v28 count];
+        workflowDiagnostics6 = [(WRWorkflow *)self workflowDiagnostics];
+        v29 = [workflowDiagnostics6 count];
       }
 
       while (v23 < v29);
     }
 
-    v30 = [(WRWorkflow *)self allSignposts];
-    v31 = [v30 count];
-    v32 = [v4 allSignposts];
-    v33 = [v32 count];
+    allSignposts = [(WRWorkflow *)self allSignposts];
+    v31 = [allSignposts count];
+    allSignposts2 = [toCopy allSignposts];
+    v33 = [allSignposts2 count];
 
     if (v31 == v33)
     {
-      v34 = [(WRWorkflow *)self allSignposts];
-      v35 = [v34 count];
+      allSignposts3 = [(WRWorkflow *)self allSignposts];
+      v35 = [allSignposts3 count];
 
       if (v35)
       {
         v36 = 0;
         while (1)
         {
-          v37 = [(WRWorkflow *)self allSignposts];
-          v8 = [v37 objectAtIndexedSubscript:v36];
+          allSignposts4 = [(WRWorkflow *)self allSignposts];
+          contextualTelemetryRawValue = [allSignposts4 objectAtIndexedSubscript:v36];
 
-          v38 = [v4 allSignposts];
-          v9 = [v38 objectAtIndexedSubscript:v36];
+          allSignposts5 = [toCopy allSignposts];
+          contextualTelemetryRawValue2 = [allSignposts5 objectAtIndexedSubscript:v36];
 
-          if (![v8 isEqual:v9] || (-[WRSignpost hasChangesRelativeTo:](v8, v9) & 1) != 0)
+          if (![contextualTelemetryRawValue isEqual:contextualTelemetryRawValue2] || (-[WRSignpost hasChangesRelativeTo:](contextualTelemetryRawValue, contextualTelemetryRawValue2) & 1) != 0)
           {
             break;
           }
 
           ++v36;
-          v39 = [(WRWorkflow *)self allSignposts];
-          v40 = [v39 count];
+          allSignposts6 = [(WRWorkflow *)self allSignposts];
+          v40 = [allSignposts6 count];
 
           if (v36 >= v40)
           {
@@ -2941,50 +2941,50 @@ LABEL_35:
       }
 
 LABEL_20:
-      v41 = [(WRWorkflow *)self startSignposts];
-      v42 = [v41 count];
-      v43 = [v4 startSignposts];
-      v44 = [v43 count];
+      startSignposts = [(WRWorkflow *)self startSignposts];
+      v42 = [startSignposts count];
+      startSignposts2 = [toCopy startSignposts];
+      v44 = [startSignposts2 count];
 
       if (v42 == v44)
       {
-        v45 = [(WRWorkflow *)self startSignposts];
-        v46 = [v45 count];
+        startSignposts3 = [(WRWorkflow *)self startSignposts];
+        v46 = [startSignposts3 count];
 
         if (v46)
         {
           v47 = 0;
           do
           {
-            v48 = [(WRWorkflow *)self startSignposts];
-            v49 = [v48 objectAtIndexedSubscript:v47];
+            startSignposts4 = [(WRWorkflow *)self startSignposts];
+            v49 = [startSignposts4 objectAtIndexedSubscript:v47];
 
-            v50 = [v4 startSignposts];
-            v51 = [v50 objectAtIndexedSubscript:v47];
+            startSignposts5 = [toCopy startSignposts];
+            v51 = [startSignposts5 objectAtIndexedSubscript:v47];
 
-            LOBYTE(v50) = [v49 isEqual:v51];
-            if ((v50 & 1) == 0)
+            LOBYTE(startSignposts5) = [v49 isEqual:v51];
+            if ((startSignposts5 & 1) == 0)
             {
               goto LABEL_36;
             }
 
             ++v47;
-            v52 = [(WRWorkflow *)self startSignposts];
-            v53 = [v52 count];
+            startSignposts6 = [(WRWorkflow *)self startSignposts];
+            v53 = [startSignposts6 count];
           }
 
           while (v47 < v53);
         }
 
-        v54 = [(WRWorkflow *)self endSignpostGroups];
-        v55 = [v54 count];
-        v56 = [v4 endSignpostGroups];
-        v57 = [v56 count];
+        endSignpostGroups = [(WRWorkflow *)self endSignpostGroups];
+        v55 = [endSignpostGroups count];
+        endSignpostGroups2 = [toCopy endSignpostGroups];
+        v57 = [endSignpostGroups2 count];
 
         if (v55 == v57)
         {
-          v58 = [(WRWorkflow *)self endSignpostGroups];
-          v59 = [v58 count];
+          endSignpostGroups3 = [(WRWorkflow *)self endSignpostGroups];
+          v59 = [endSignpostGroups3 count];
 
           if (!v59)
           {
@@ -2995,25 +2995,25 @@ LABEL_20:
           v60 = 0;
           while (1)
           {
-            v61 = [(WRWorkflow *)self endSignpostGroups];
-            v8 = [v61 objectAtIndexedSubscript:v60];
+            endSignpostGroups4 = [(WRWorkflow *)self endSignpostGroups];
+            contextualTelemetryRawValue = [endSignpostGroups4 objectAtIndexedSubscript:v60];
 
-            v62 = [v4 endSignpostGroups];
-            v9 = [v62 objectAtIndexedSubscript:v60];
+            endSignpostGroups5 = [toCopy endSignpostGroups];
+            contextualTelemetryRawValue2 = [endSignpostGroups5 objectAtIndexedSubscript:v60];
 
-            v63 = [v8 count];
-            if (v63 != [v9 count])
+            v63 = [contextualTelemetryRawValue count];
+            if (v63 != [contextualTelemetryRawValue2 count])
             {
               goto LABEL_35;
             }
 
-            if ([v8 count])
+            if ([contextualTelemetryRawValue count])
             {
               v64 = 0;
               do
               {
-                v65 = [v8 objectAtIndexedSubscript:v64];
-                v66 = [v9 objectAtIndexedSubscript:v64];
+                v65 = [contextualTelemetryRawValue objectAtIndexedSubscript:v64];
+                v66 = [contextualTelemetryRawValue2 objectAtIndexedSubscript:v64];
                 v67 = [v65 isEqual:v66];
 
                 if ((v67 & 1) == 0)
@@ -3022,12 +3022,12 @@ LABEL_20:
                 }
               }
 
-              while (++v64 < [v8 count]);
+              while (++v64 < [contextualTelemetryRawValue count]);
             }
 
             ++v60;
-            v68 = [(WRWorkflow *)self endSignpostGroups];
-            v69 = [v68 count];
+            endSignpostGroups6 = [(WRWorkflow *)self endSignpostGroups];
+            v69 = [endSignpostGroups6 count];
 
             v70 = 0;
             if (v60 >= v69)
@@ -3047,10 +3047,10 @@ LABEL_37:
   return v70;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -3060,11 +3060,11 @@ LABEL_37:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(WRWorkflow *)self name];
-      v7 = [(WRWorkflow *)v5 name];
+      v5 = equalCopy;
+      name = [(WRWorkflow *)self name];
+      name2 = [(WRWorkflow *)v5 name];
 
-      v8 = [v6 isEqual:v7];
+      v8 = [name isEqual:name2];
     }
 
     else
@@ -3078,19 +3078,19 @@ LABEL_37:
 
 - (unint64_t)hash
 {
-  v2 = [(WRWorkflow *)self name];
-  v3 = [v2 hash];
+  name = [(WRWorkflow *)self name];
+  v3 = [name hash];
 
   return v3;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
-  v5 = [(WRWorkflow *)self name];
-  v6 = [v4 name];
+  compareCopy = compare;
+  name = [(WRWorkflow *)self name];
+  name2 = [compareCopy name];
 
-  v7 = [v5 compare:v6];
+  v7 = [name compare:name2];
   return v7;
 }
 
@@ -3108,8 +3108,8 @@ LABEL_37:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v2 = [(WRWorkflow *)self workflowDiagnostics];
-  v3 = [v2 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  workflowDiagnostics = [(WRWorkflow *)self workflowDiagnostics];
+  v3 = [workflowDiagnostics countByEnumeratingWithState:&v12 objects:v16 count:16];
   v4 = 0.0;
   if (v3)
   {
@@ -3121,7 +3121,7 @@ LABEL_37:
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(workflowDiagnostics);
         }
 
         v8 = *(*(&v12 + 1) + 8 * i);
@@ -3133,7 +3133,7 @@ LABEL_37:
         }
       }
 
-      v5 = [v2 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [workflowDiagnostics countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v5)
       {
         continue;
@@ -3156,8 +3156,8 @@ LABEL_11:
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(WRWorkflow *)self workflowDiagnostics];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  workflowDiagnostics = [(WRWorkflow *)self workflowDiagnostics];
+  v3 = [workflowDiagnostics countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = *v9;
@@ -3167,7 +3167,7 @@ LABEL_11:
       {
         if (*v9 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(workflowDiagnostics);
         }
 
         if ([*(*(&v8 + 1) + 8 * i) hasTriggerThresholdDurationSingle])
@@ -3177,7 +3177,7 @@ LABEL_11:
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v3 = [workflowDiagnostics countByEnumeratingWithState:&v8 objects:v12 count:16];
       if (v3)
       {
         continue;
@@ -3193,13 +3193,13 @@ LABEL_11:
   return v3;
 }
 
-- (id)wrsignpostWithName:(uint64_t)a1
+- (id)wrsignpostWithName:(uint64_t)name
 {
   v16 = *MEMORY[0x277D85DE8];
   v3 = a2;
-  if (a1)
+  if (name)
   {
-    v4 = [OUTLINED_FUNCTION_13_0() allSignposts];
+    allSignposts = [OUTLINED_FUNCTION_13_0() allSignposts];
     OUTLINED_FUNCTION_76();
     v6 = [v5 countByEnumeratingWithState:? objects:? count:?];
     if (v6)
@@ -3211,12 +3211,12 @@ LABEL_11:
         {
           if (*v15 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(allSignposts);
           }
 
           v9 = *(v14 + 8 * i);
-          v10 = [v9 name];
-          v11 = [v10 isEqualToString:v3];
+          name = [v9 name];
+          v11 = [name isEqualToString:v3];
 
           if (v11)
           {
@@ -3226,7 +3226,7 @@ LABEL_11:
         }
 
         OUTLINED_FUNCTION_76();
-        v6 = [v4 countByEnumeratingWithState:? objects:? count:?];
+        v6 = [allSignposts countByEnumeratingWithState:? objects:? count:?];
         if (v6)
         {
           continue;
@@ -3249,13 +3249,13 @@ LABEL_12:
   return v6;
 }
 
-- (id)wrsignpostForSignpostObject:(uint64_t)a1
+- (id)wrsignpostForSignpostObject:(uint64_t)object
 {
   v14 = *MEMORY[0x277D85DE8];
   v3 = a2;
-  if (a1)
+  if (object)
   {
-    v4 = [OUTLINED_FUNCTION_13_0() allSignposts];
+    allSignposts = [OUTLINED_FUNCTION_13_0() allSignposts];
     OUTLINED_FUNCTION_76();
     v6 = [v5 countByEnumeratingWithState:? objects:? count:?];
     if (v6)
@@ -3267,7 +3267,7 @@ LABEL_12:
         {
           if (*v13 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(allSignposts);
           }
 
           v9 = *(v12 + 8 * i);
@@ -3279,7 +3279,7 @@ LABEL_12:
         }
 
         OUTLINED_FUNCTION_76();
-        v6 = [v4 countByEnumeratingWithState:? objects:? count:?];
+        v6 = [allSignposts countByEnumeratingWithState:? objects:? count:?];
         if (v6)
         {
           continue;

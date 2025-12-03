@@ -1,5 +1,5 @@
 @interface WFPortalContext
-- (WFPortalContext)initWithCaptiveProfile:(id)a3 anqpVenueURLs:(id)a4;
+- (WFPortalContext)initWithCaptiveProfile:(id)profile anqpVenueURLs:(id)ls;
 - (id)fullPortalURLString;
 - (id)portalHostnameForDisplay;
 @end
@@ -8,9 +8,9 @@
 
 - (id)fullPortalURLString
 {
-  v3 = [(WFPortalContext *)self venueInfoURL];
+  venueInfoURL = [(WFPortalContext *)self venueInfoURL];
 
-  if (v3)
+  if (venueInfoURL)
   {
     [(WFPortalContext *)self venueInfoURL];
   }
@@ -24,17 +24,17 @@
   return v4;
 }
 
-- (WFPortalContext)initWithCaptiveProfile:(id)a3 anqpVenueURLs:(id)a4
+- (WFPortalContext)initWithCaptiveProfile:(id)profile anqpVenueURLs:(id)ls
 {
   v45 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  profileCopy = profile;
+  lsCopy = ls;
   v38.receiver = self;
   v38.super_class = WFPortalContext;
   v8 = [(WFPortalContext *)&v38 init];
   if (v8)
   {
-    if (v7 && [(NSString *)v7 count])
+    if (lsCopy && [(NSString *)lsCopy count])
     {
       v9 = WFLogForCategory(0);
       v10 = OSLogForWFLogLevel(3uLL);
@@ -43,22 +43,22 @@
         v39 = 136315394;
         v40 = "[WFPortalContext initWithCaptiveProfile:anqpVenueURLs:]";
         v41 = 2112;
-        v42 = v7;
+        v42 = lsCopy;
         OUTLINED_FUNCTION_0();
         _os_log_impl(v11, v12, v13, v14, v15, 0x16u);
       }
 
-      p_super = [(NSString *)v7 firstObject];
+      p_super = [(NSString *)lsCopy firstObject];
       [(WFPortalContext *)v8 setVenueInfoURL:p_super];
     }
 
-    else if (v6)
+    else if (profileCopy)
     {
-      v17 = [v6 objectForKey:*MEMORY[0x277CF7F98]];
+      v17 = [profileCopy objectForKey:*MEMORY[0x277CF7F98]];
       venueInfoURL = v8->_venueInfoURL;
       v8->_venueInfoURL = v17;
 
-      v19 = [v6 objectForKey:*MEMORY[0x277CF7F88]];
+      v19 = [profileCopy objectForKey:*MEMORY[0x277CF7F88]];
       userPortalURL = v8->_userPortalURL;
       v8->_userPortalURL = v19;
 
@@ -108,16 +108,16 @@
 - (id)portalHostnameForDisplay
 {
   v15 = *MEMORY[0x277D85DE8];
-  v2 = [(WFPortalContext *)self fullPortalURLString];
-  if (!v2)
+  fullPortalURLString = [(WFPortalContext *)self fullPortalURLString];
+  if (!fullPortalURLString)
   {
 LABEL_10:
     v4 = 0;
-    v5 = 0;
+    host = 0;
     goto LABEL_4;
   }
 
-  v3 = [objc_alloc(MEMORY[0x277CCACE0]) initWithString:v2];
+  v3 = [objc_alloc(MEMORY[0x277CCACE0]) initWithString:fullPortalURLString];
   if (!v3)
   {
     v9 = WFLogForCategory(0);
@@ -127,7 +127,7 @@ LABEL_10:
       v11 = 136315394;
       v12 = "[WFPortalContext portalHostnameForDisplay]";
       v13 = 2112;
-      v14 = v2;
+      v14 = fullPortalURLString;
       _os_log_impl(&dword_273ECD000, v9, v10, "%s: urlComponents nil for URL %@", &v11, 0x16u);
     }
 
@@ -135,12 +135,12 @@ LABEL_10:
   }
 
   v4 = v3;
-  v5 = [v3 host];
+  host = [v3 host];
 LABEL_4:
-  v6 = v5;
+  v6 = host;
 
   v7 = *MEMORY[0x277D85DE8];
-  return v5;
+  return host;
 }
 
 @end

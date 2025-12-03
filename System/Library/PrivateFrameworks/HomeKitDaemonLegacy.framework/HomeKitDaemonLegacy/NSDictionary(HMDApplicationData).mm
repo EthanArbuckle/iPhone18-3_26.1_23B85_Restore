@@ -7,7 +7,7 @@
 - (id)hmd_appDataDictionaryWithError:()HMDApplicationData
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = [a1 objectForKeyedSubscript:@"kAppDataInformationKey"];
+  v5 = [self objectForKeyedSubscript:@"kAppDataInformationKey"];
   if (v5)
   {
     v6 = HMFApproximateSizeOfPlistValue();
@@ -19,7 +19,7 @@
     else
     {
       v7 = objc_autoreleasePoolPush();
-      v8 = a1;
+      selfCopy = self;
       v9 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {

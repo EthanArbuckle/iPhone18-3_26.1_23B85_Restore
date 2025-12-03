@@ -1,11 +1,11 @@
 @interface ETPKiss
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ETPKiss
@@ -16,20 +16,20 @@
   v8.receiver = self;
   v8.super_class = ETPKiss;
   v4 = [(ETPKiss *)&v8 description];
-  v5 = [(ETPKiss *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ETPKiss *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   delays = self->_delays;
   if (delays)
   {
-    [v3 setObject:delays forKey:@"delays"];
+    [dictionary setObject:delays forKey:@"delays"];
   }
 
   points = self->_points;
@@ -47,54 +47,54 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_delays)
   {
     PBDataWriterWriteDataField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_points)
   {
     PBDataWriterWriteDataField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_angles)
   {
     PBDataWriterWriteDataField();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSData *)self->_delays copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSData *)self->_delays copyWithZone:zone];
   v7 = v5[2];
   v5[2] = v6;
 
-  v8 = [(NSData *)self->_points copyWithZone:a3];
+  v8 = [(NSData *)self->_points copyWithZone:zone];
   v9 = v5[3];
   v5[3] = v8;
 
-  v10 = [(NSData *)self->_angles copyWithZone:a3];
+  v10 = [(NSData *)self->_angles copyWithZone:zone];
   v11 = v5[1];
   v5[1] = v10;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((delays = self->_delays, !(delays | v4[2])) || -[NSData isEqual:](delays, "isEqual:")) && ((points = self->_points, !(points | v4[3])) || -[NSData isEqual:](points, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((delays = self->_delays, !(delays | equalCopy[2])) || -[NSData isEqual:](delays, "isEqual:")) && ((points = self->_points, !(points | equalCopy[3])) || -[NSData isEqual:](points, "isEqual:")))
   {
     angles = self->_angles;
-    if (angles | v4[1])
+    if (angles | equalCopy[1])
     {
       v8 = [(NSData *)angles isEqual:?];
     }
@@ -120,26 +120,26 @@
   return v4 ^ [(NSData *)self->_angles hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4[2])
+  fromCopy = from;
+  v5 = fromCopy;
+  if (fromCopy[2])
   {
     [(ETPKiss *)self setDelays:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[3])
+  if (fromCopy[3])
   {
     [(ETPKiss *)self setPoints:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[1])
+  if (fromCopy[1])
   {
     [(ETPKiss *)self setAngles:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 }
 

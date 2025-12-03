@@ -1,28 +1,28 @@
 @interface SBHWidgetStackViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (BOOL)_accessibilityScrollToWidgetNext:(BOOL)a3;
-- (BOOL)accessibilityScroll:(int64_t)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (BOOL)_accessibilityScrollToWidgetNext:(BOOL)next;
+- (BOOL)accessibilityScroll:(int64_t)scroll;
 - (id)accessibilityCustomActions;
-- (id)accessibilityScrollStatusForScrollView:(id)a3;
+- (id)accessibilityScrollStatusForScrollView:(id)view;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation SBHWidgetStackViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SBHWidgetStackViewController" hasInstanceMethod:@"pageControl" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBHWidgetStackViewController" hasInstanceMethod:@"scrollView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBHWidgetStackViewController" hasInstanceMethod:@"icon" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBHWidgetStackViewController" hasInstanceMethod:@"scrollViewDidEndScrolling:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"SBHWidgetStackViewController" hasInstanceMethod:@"_updateActiveWidgetIndexAndScrollViewContentOffset" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"SBLeafIcon" hasInstanceMethod:@"iconDataSources" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBLeafIcon" hasInstanceMethod:@"activeDataSource" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBWidgetIcon" isKindOfClass:@"SBLeafIcon"];
-  [v3 validateClass:@"_UIScenePresentationView"];
-  [v3 validateClass:@"SBHWidget" hasInstanceMethod:@"displayName" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBHSiriSuggestionsElement" hasInstanceMethod:@"displayName" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SBHWidgetStackViewController" hasInstanceMethod:@"pageControl" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBHWidgetStackViewController" hasInstanceMethod:@"scrollView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBHWidgetStackViewController" hasInstanceMethod:@"icon" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBHWidgetStackViewController" hasInstanceMethod:@"scrollViewDidEndScrolling:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"SBHWidgetStackViewController" hasInstanceMethod:@"_updateActiveWidgetIndexAndScrollViewContentOffset" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"SBLeafIcon" hasInstanceMethod:@"iconDataSources" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBLeafIcon" hasInstanceMethod:@"activeDataSource" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBWidgetIcon" isKindOfClass:@"SBLeafIcon"];
+  [validationsCopy validateClass:@"_UIScenePresentationView"];
+  [validationsCopy validateClass:@"SBHWidget" hasInstanceMethod:@"displayName" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBHSiriSuggestionsElement" hasInstanceMethod:@"displayName" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -64,9 +64,9 @@
   return v6;
 }
 
-- (BOOL)_accessibilityScrollToWidgetNext:(BOOL)a3
+- (BOOL)_accessibilityScrollToWidgetNext:(BOOL)next
 {
-  v3 = a3;
+  nextCopy = next;
   AXPerformSafeBlock();
   objc_opt_class();
   v5 = [(SBHWidgetStackViewControllerAccessibility *)self safeUIViewForKey:@"scrollView"];
@@ -74,7 +74,7 @@
 
   [v6 setIsAccessibilityElement:1];
   UIAccessibilityPostNotification(*MEMORY[0x29EDC7488], v6);
-  if (v3)
+  if (nextCopy)
   {
     [v6 accessibilityScrollDownPage];
   }
@@ -101,7 +101,7 @@ void __78__SBHWidgetStackViewControllerAccessibility__accessibilityScrollToWidge
   UIAccessibilityPostNotification(*MEMORY[0x29EDC7ED8], v2);
 }
 
-- (BOOL)accessibilityScroll:(int64_t)a3
+- (BOOL)accessibilityScroll:(int64_t)scroll
 {
   v5 = [(SBHWidgetStackViewControllerAccessibility *)self safeValueForKey:@"icon"];
   v6 = [v5 safeArrayForKey:@"iconDataSources"];
@@ -112,9 +112,9 @@ void __78__SBHWidgetStackViewControllerAccessibility__accessibilityScrollToWidge
     goto LABEL_7;
   }
 
-  if (a3 != 4)
+  if (scroll != 4)
   {
-    if (a3 == 3)
+    if (scroll == 3)
     {
 
       return [(SBHWidgetStackViewControllerAccessibility *)self _accessibilityScrollToPreviousWidget];
@@ -123,13 +123,13 @@ void __78__SBHWidgetStackViewControllerAccessibility__accessibilityScrollToWidge
 LABEL_7:
     v9.receiver = self;
     v9.super_class = SBHWidgetStackViewControllerAccessibility;
-    return [(SBHWidgetStackViewControllerAccessibility *)&v9 accessibilityScroll:a3];
+    return [(SBHWidgetStackViewControllerAccessibility *)&v9 accessibilityScroll:scroll];
   }
 
   return [(SBHWidgetStackViewControllerAccessibility *)self _accessibilityScrollToNextWidget];
 }
 
-- (id)accessibilityScrollStatusForScrollView:(id)a3
+- (id)accessibilityScrollStatusForScrollView:(id)view
 {
   v3 = [(SBHWidgetStackViewControllerAccessibility *)self safeValueForKey:@"icon"];
   v4 = [v3 safeArrayForKey:@"iconDataSources"];

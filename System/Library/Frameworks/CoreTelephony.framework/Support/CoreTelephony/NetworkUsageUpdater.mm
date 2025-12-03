@@ -1,18 +1,18 @@
 @interface NetworkUsageUpdater
-- (NetworkUsageUpdater)initWithHandler:(shared_ptr<NetworkUsageUpdaterCollector::UsageHandler>)a3;
+- (NetworkUsageUpdater)initWithHandler:(shared_ptr<NetworkUsageUpdaterCollector::UsageHandler>)handler;
 - (id).cxx_construct;
-- (void)statsManager:(id)a3 didReceiveNWSnapshot:(id)a4;
-- (void)statsManager:(id)a3 thresholdReachedOn:(unsigned int)a4;
+- (void)statsManager:(id)manager didReceiveNWSnapshot:(id)snapshot;
+- (void)statsManager:(id)manager thresholdReachedOn:(unsigned int)on;
 @end
 
 @implementation NetworkUsageUpdater
 
-- (NetworkUsageUpdater)initWithHandler:(shared_ptr<NetworkUsageUpdaterCollector::UsageHandler>)a3
+- (NetworkUsageUpdater)initWithHandler:(shared_ptr<NetworkUsageUpdaterCollector::UsageHandler>)handler
 {
-  ptr = a3.__ptr_;
+  ptr = handler.__ptr_;
   v10.receiver = self;
   v10.super_class = NetworkUsageUpdater;
-  v4 = [(NetworkUsageUpdater *)&v10 init:a3.__ptr_];
+  v4 = [(NetworkUsageUpdater *)&v10 init:handler.__ptr_];
   v5 = v4;
   if (v4)
   {
@@ -35,14 +35,14 @@
   return v5;
 }
 
-- (void)statsManager:(id)a3 didReceiveNWSnapshot:(id)a4
+- (void)statsManager:(id)manager didReceiveNWSnapshot:(id)snapshot
 {
-  v11 = a4;
+  snapshotCopy = snapshot;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     ptr = self->fHandler.__ptr_;
-    v6 = v11;
+    v6 = snapshotCopy;
     v7 = *(ptr + 1);
     if (v7)
     {
@@ -66,7 +66,7 @@
   }
 }
 
-- (void)statsManager:(id)a3 thresholdReachedOn:(unsigned int)a4
+- (void)statsManager:(id)manager thresholdReachedOn:(unsigned int)on
 {
   ptr = self->fHandler.__ptr_;
   v5 = *(ptr + 1);

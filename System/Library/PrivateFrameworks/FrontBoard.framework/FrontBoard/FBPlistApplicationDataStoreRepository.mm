@@ -1,51 +1,51 @@
 @interface FBPlistApplicationDataStoreRepository
-- (BOOL)_isEligibleForSaving:(id)a3;
-- (BOOL)containsKey:(id)a3 forApplication:(id)a4;
+- (BOOL)_isEligibleForSaving:(id)saving;
+- (BOOL)containsKey:(id)key forApplication:(id)application;
 - (BOOL)isDirty;
 - (FBApplicationDataStoreRepositoryDelegate)delegate;
-- (FBPlistApplicationDataStoreRepository)initWithStorePath:(id)a3;
-- (id)_stateQueue_addStoreForIdentifierIfNecessary:(id)a3;
-- (id)_stateQueue_objectForKey:(id)a3 forIdentifier:(id)a4;
-- (id)_stateQueue_objectsForKeys:(id)a3;
-- (id)_stateQueue_storeForIdentifier:(id)a3;
-- (id)allObjectsForKeys:(id)a3;
+- (FBPlistApplicationDataStoreRepository)initWithStorePath:(id)path;
+- (id)_stateQueue_addStoreForIdentifierIfNecessary:(id)necessary;
+- (id)_stateQueue_objectForKey:(id)key forIdentifier:(id)identifier;
+- (id)_stateQueue_objectsForKeys:(id)keys;
+- (id)_stateQueue_storeForIdentifier:(id)identifier;
+- (id)allObjectsForKeys:(id)keys;
 - (id)applicationIdentifiersWithState;
-- (id)keysForApplication:(id)a3;
-- (id)migrateIdentifier:(id)a3 toIdentifier:(id)a4;
-- (id)objectForKey:(id)a3 forApplication:(id)a4;
+- (id)keysForApplication:(id)application;
+- (id)migrateIdentifier:(id)identifier toIdentifier:(id)toIdentifier;
+- (id)objectForKey:(id)key forApplication:(id)application;
 - (void)_load;
-- (void)_notifyDelegateOfChangeForKeys:(id)a3 application:(id)a4;
-- (void)_notifyDelegateOfStoreInvalidationForIdentifier:(id)a3;
+- (void)_notifyDelegateOfChangeForKeys:(id)keys application:(id)application;
+- (void)_notifyDelegateOfStoreInvalidationForIdentifier:(id)identifier;
 - (void)_stateQueue_markDirty;
-- (void)_stateQueue_removeStoreForIdentifier:(id)a3;
+- (void)_stateQueue_removeStoreForIdentifier:(id)identifier;
 - (void)_writeQueue_flushSynchronously;
 - (void)beginBatchedUpdate;
 - (void)dealloc;
 - (void)endBatchedUpdate;
 - (void)flushSynchronously;
-- (void)removeAllObjectsForApplication:(id)a3;
-- (void)removeObjectForKey:(id)a3 forApplication:(id)a4;
-- (void)removeObjectsForKeys:(id)a3 forApplication:(id)a4;
-- (void)setObject:(id)a3 forKey:(id)a4 forApplication:(id)a5;
+- (void)removeAllObjectsForApplication:(id)application;
+- (void)removeObjectForKey:(id)key forApplication:(id)application;
+- (void)removeObjectsForKeys:(id)keys forApplication:(id)application;
+- (void)setObject:(id)object forKey:(id)key forApplication:(id)application;
 @end
 
 @implementation FBPlistApplicationDataStoreRepository
 
-- (FBPlistApplicationDataStoreRepository)initWithStorePath:(id)a3
+- (FBPlistApplicationDataStoreRepository)initWithStorePath:(id)path
 {
-  v6 = a3;
+  pathCopy = path;
   v16.receiver = self;
   v16.super_class = FBPlistApplicationDataStoreRepository;
   v7 = [(FBPlistApplicationDataStoreRepository *)&v16 init];
   v8 = v7;
   if (v7)
   {
-    if (!v6)
+    if (!pathCopy)
     {
       [(FBPlistApplicationDataStoreRepository *)a2 initWithStorePath:v7];
     }
 
-    objc_storeStrong(&v7->_storeURL, a3);
+    objc_storeStrong(&v7->_storeURL, path);
     Serial = BSDispatchQueueCreateSerial();
     stateQueue = v8->_stateQueue;
     v8->_stateQueue = Serial;
@@ -125,7 +125,7 @@ void __48__FBPlistApplicationDataStoreRepository_dealloc__block_invoke(uint64_t 
   v9 = 0x3032000000;
   v10 = __Block_byref_object_copy__1;
   v11 = __Block_byref_object_dispose__1;
-  v12 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   stateQueue = self->_stateQueue;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
@@ -151,11 +151,11 @@ void __72__FBPlistApplicationDataStoreRepository_applicationIdentifiersWithState
   }
 }
 
-- (id)keysForApplication:(id)a3
+- (id)keysForApplication:(id)application
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  applicationCopy = application;
+  v5 = applicationCopy;
+  if (applicationCopy)
   {
     v12 = 0;
     v13 = &v12;
@@ -169,7 +169,7 @@ void __72__FBPlistApplicationDataStoreRepository_applicationIdentifiersWithState
     block[2] = __60__FBPlistApplicationDataStoreRepository_keysForApplication___block_invoke;
     block[3] = &unk_1E783BF70;
     block[4] = self;
-    v10 = v4;
+    v10 = applicationCopy;
     v11 = &v12;
     dispatch_sync(stateQueue, block);
     v7 = v13[5];
@@ -200,21 +200,21 @@ void __60__FBPlistApplicationDataStoreRepository_keysForApplication___block_invo
   }
 }
 
-- (BOOL)containsKey:(id)a3 forApplication:(id)a4
+- (BOOL)containsKey:(id)key forApplication:(id)application
 {
-  v4 = [(FBPlistApplicationDataStoreRepository *)self objectForKey:a3 forApplication:a4];
+  v4 = [(FBPlistApplicationDataStoreRepository *)self objectForKey:key forApplication:application];
   v5 = v4 != 0;
 
   return v5;
 }
 
-- (id)objectForKey:(id)a3 forApplication:(id)a4
+- (id)objectForKey:(id)key forApplication:(id)application
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  keyCopy = key;
+  applicationCopy = application;
+  v8 = applicationCopy;
   v9 = 0;
-  if (v6 && v7)
+  if (keyCopy && applicationCopy)
   {
     v16 = 0;
     v17 = &v16;
@@ -229,7 +229,7 @@ void __60__FBPlistApplicationDataStoreRepository_keysForApplication___block_invo
     v12[3] = &unk_1E783BF98;
     v15 = &v16;
     v12[4] = self;
-    v13 = v6;
+    v13 = keyCopy;
     v14 = v8;
     dispatch_sync(stateQueue, v12);
     v9 = v17[5];
@@ -248,10 +248,10 @@ void __69__FBPlistApplicationDataStoreRepository_objectForKey_forApplication___b
   *(v3 + 40) = v2;
 }
 
-- (id)allObjectsForKeys:(id)a3
+- (id)allObjectsForKeys:(id)keys
 {
-  v4 = a3;
-  if ([v4 count])
+  keysCopy = keys;
+  if ([keysCopy count])
   {
     v11 = 0;
     v12 = &v11;
@@ -266,7 +266,7 @@ void __69__FBPlistApplicationDataStoreRepository_objectForKey_forApplication___b
     block[3] = &unk_1E783BFC0;
     v10 = &v11;
     block[4] = self;
-    v9 = v4;
+    v9 = keysCopy;
     dispatch_sync(stateQueue, block);
     v6 = v12[5];
 
@@ -289,17 +289,17 @@ void __59__FBPlistApplicationDataStoreRepository_allObjectsForKeys___block_invok
   *(v3 + 40) = v2;
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4 forApplication:(id)a5
+- (void)setObject:(id)object forKey:(id)key forApplication:(id)application
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v8)
+  objectCopy = object;
+  keyCopy = key;
+  applicationCopy = application;
+  v11 = applicationCopy;
+  if (objectCopy)
   {
-    if (v9 && v10 && [(FBPlistApplicationDataStoreRepository *)self _isEligibleForSaving:v8])
+    if (keyCopy && applicationCopy && [(FBPlistApplicationDataStoreRepository *)self _isEligibleForSaving:objectCopy])
     {
-      v12 = [v8 copy];
+      v12 = [objectCopy copy];
       stateQueue = self->_stateQueue;
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
@@ -307,8 +307,8 @@ void __59__FBPlistApplicationDataStoreRepository_allObjectsForKeys___block_invok
       block[3] = &unk_1E783BFE8;
       block[4] = self;
       v16 = v11;
-      v17 = v8;
-      v18 = v9;
+      v17 = objectCopy;
+      v18 = keyCopy;
       v19 = v12;
       v14 = v12;
       dispatch_async(stateQueue, block);
@@ -317,7 +317,7 @@ void __59__FBPlistApplicationDataStoreRepository_allObjectsForKeys___block_invok
 
   else
   {
-    [(FBPlistApplicationDataStoreRepository *)self removeObjectForKey:v9 forApplication:v10];
+    [(FBPlistApplicationDataStoreRepository *)self removeObjectForKey:keyCopy forApplication:applicationCopy];
   }
 }
 
@@ -377,25 +377,25 @@ LABEL_14:
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeObjectForKey:(id)a3 forApplication:(id)a4
+- (void)removeObjectForKey:(id)key forApplication:(id)application
 {
-  if (a3 && a4)
+  if (key && application)
   {
     v6 = MEMORY[0x1E695DEC8];
-    v7 = a4;
-    v8 = [v6 arrayWithObject:a3];
-    [(FBPlistApplicationDataStoreRepository *)self removeObjectsForKeys:v8 forApplication:v7];
+    applicationCopy = application;
+    v8 = [v6 arrayWithObject:key];
+    [(FBPlistApplicationDataStoreRepository *)self removeObjectsForKeys:v8 forApplication:applicationCopy];
   }
 }
 
-- (void)removeObjectsForKeys:(id)a3 forApplication:(id)a4
+- (void)removeObjectsForKeys:(id)keys forApplication:(id)application
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  keysCopy = keys;
+  applicationCopy = application;
+  if (keysCopy)
   {
-    v8 = [v6 count];
-    if (v7)
+    v8 = [keysCopy count];
+    if (applicationCopy)
     {
       if (v8)
       {
@@ -405,8 +405,8 @@ LABEL_14:
         block[2] = __77__FBPlistApplicationDataStoreRepository_removeObjectsForKeys_forApplication___block_invoke;
         block[3] = &unk_1E783B300;
         block[4] = self;
-        v11 = v7;
-        v12 = v6;
+        v11 = applicationCopy;
+        v12 = keysCopy;
         dispatch_async(stateQueue, block);
       }
     }
@@ -445,11 +445,11 @@ void __77__FBPlistApplicationDataStoreRepository_removeObjectsForKeys_forApplica
   }
 }
 
-- (void)removeAllObjectsForApplication:(id)a3
+- (void)removeAllObjectsForApplication:(id)application
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  applicationCopy = application;
+  v5 = applicationCopy;
+  if (applicationCopy)
   {
     stateQueue = self->_stateQueue;
     v7[0] = MEMORY[0x1E69E9820];
@@ -457,7 +457,7 @@ void __77__FBPlistApplicationDataStoreRepository_removeObjectsForKeys_forApplica
     v7[2] = __72__FBPlistApplicationDataStoreRepository_removeAllObjectsForApplication___block_invoke;
     v7[3] = &unk_1E783B240;
     v7[4] = self;
-    v8 = v4;
+    v8 = applicationCopy;
     dispatch_async(stateQueue, v7);
   }
 }
@@ -518,10 +518,10 @@ void __57__FBPlistApplicationDataStoreRepository_endBatchedUpdate__block_invoke(
   }
 }
 
-- (id)migrateIdentifier:(id)a3 toIdentifier:(id)a4
+- (id)migrateIdentifier:(id)identifier toIdentifier:(id)toIdentifier
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  toIdentifierCopy = toIdentifier;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -534,11 +534,11 @@ void __57__FBPlistApplicationDataStoreRepository_endBatchedUpdate__block_invoke(
   v13[2] = __72__FBPlistApplicationDataStoreRepository_migrateIdentifier_toIdentifier___block_invoke;
   v13[3] = &unk_1E783C038;
   v13[4] = self;
-  v14 = v6;
-  v15 = v7;
+  v14 = identifierCopy;
+  v15 = toIdentifierCopy;
   v16 = &v17;
-  v9 = v7;
-  v10 = v6;
+  v9 = toIdentifierCopy;
+  v10 = identifierCopy;
   dispatch_sync(stateQueue, v13);
   v11 = v18[5];
 
@@ -598,10 +598,10 @@ void __72__FBPlistApplicationDataStoreRepository_migrateIdentifier_toIdentifier_
   }
 }
 
-- (BOOL)_isEligibleForSaving:(id)a3
+- (BOOL)_isEligibleForSaving:(id)saving
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  savingCopy = saving;
   if (_isEligibleForSaving__onceToken != -1)
   {
     [FBPlistApplicationDataStoreRepository _isEligibleForSaving:];
@@ -696,17 +696,17 @@ void __46__FBPlistApplicationDataStoreRepository__load__block_invoke(uint64_t a1
   objc_autoreleasePoolPop(v2);
 }
 
-- (id)_stateQueue_objectForKey:(id)a3 forIdentifier:(id)a4
+- (id)_stateQueue_objectForKey:(id)key forIdentifier:(id)identifier
 {
-  v6 = a3;
+  keyCopy = key;
   stateQueue = self->_stateQueue;
-  v8 = a4;
+  identifierCopy = identifier;
   dispatch_assert_queue_V2(stateQueue);
-  v9 = [(FBPlistApplicationDataStoreRepository *)self _stateQueue_storeForIdentifier:v8];
+  v9 = [(FBPlistApplicationDataStoreRepository *)self _stateQueue_storeForIdentifier:identifierCopy];
 
   if (v9)
   {
-    v10 = [v9 objectForKey:v6];
+    v10 = [v9 objectForKey:keyCopy];
   }
 
   else
@@ -717,18 +717,18 @@ void __46__FBPlistApplicationDataStoreRepository__load__block_invoke(uint64_t a1
   return v10;
 }
 
-- (id)_stateQueue_objectsForKeys:(id)a3
+- (id)_stateQueue_objectsForKeys:(id)keys
 {
   v25 = *MEMORY[0x1E69E9840];
-  v19 = a3;
+  keysCopy = keys;
   dispatch_assert_queue_V2(self->_stateQueue);
-  v18 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v4 = [(NSMutableDictionary *)self->_state allKeys];
-  v5 = [v4 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  allKeys = [(NSMutableDictionary *)self->_state allKeys];
+  v5 = [allKeys countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v5)
   {
     v6 = v5;
@@ -739,7 +739,7 @@ void __46__FBPlistApplicationDataStoreRepository__load__block_invoke(uint64_t a1
       {
         if (*v21 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allKeys);
         }
 
         v9 = *(*(&v20 + 1) + 8 * i);
@@ -747,18 +747,18 @@ void __46__FBPlistApplicationDataStoreRepository__load__block_invoke(uint64_t a1
         v11 = v10;
         if (v10)
         {
-          v12 = [v10 dictionaryWithValuesForKeys:v19];
+          v12 = [v10 dictionaryWithValuesForKeys:keysCopy];
           v13 = [v12 mutableCopy];
 
-          v14 = [MEMORY[0x1E695DFB0] null];
-          v15 = [v13 allKeysForObject:v14];
+          null = [MEMORY[0x1E695DFB0] null];
+          v15 = [v13 allKeysForObject:null];
 
           [v13 removeObjectsForKeys:v15];
-          [v18 setObject:v13 forKey:v9];
+          [dictionary setObject:v13 forKey:v9];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v6 = [allKeys countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v6);
@@ -766,45 +766,45 @@ void __46__FBPlistApplicationDataStoreRepository__load__block_invoke(uint64_t a1
 
   v16 = *MEMORY[0x1E69E9840];
 
-  return v18;
+  return dictionary;
 }
 
-- (id)_stateQueue_storeForIdentifier:(id)a3
+- (id)_stateQueue_storeForIdentifier:(id)identifier
 {
   stateQueue = self->_stateQueue;
-  v5 = a3;
+  identifierCopy = identifier;
   dispatch_assert_queue_V2(stateQueue);
-  v6 = [(NSMutableDictionary *)self->_state bs_safeObjectForKey:v5 ofType:objc_opt_class()];
+  v6 = [(NSMutableDictionary *)self->_state bs_safeObjectForKey:identifierCopy ofType:objc_opt_class()];
 
   return v6;
 }
 
-- (id)_stateQueue_addStoreForIdentifierIfNecessary:(id)a3
+- (id)_stateQueue_addStoreForIdentifierIfNecessary:(id)necessary
 {
-  v4 = a3;
+  necessaryCopy = necessary;
   dispatch_assert_queue_V2(self->_stateQueue);
-  v5 = [(FBPlistApplicationDataStoreRepository *)self _stateQueue_storeForIdentifier:v4];
+  v5 = [(FBPlistApplicationDataStoreRepository *)self _stateQueue_storeForIdentifier:necessaryCopy];
   if (!v5)
   {
     v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    [(NSMutableDictionary *)self->_state setObject:v5 forKey:v4];
+    [(NSMutableDictionary *)self->_state setObject:v5 forKey:necessaryCopy];
     [(FBPlistApplicationDataStoreRepository *)self _stateQueue_markDirty];
   }
 
   return v5;
 }
 
-- (void)_stateQueue_removeStoreForIdentifier:(id)a3
+- (void)_stateQueue_removeStoreForIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   dispatch_assert_queue_V2(self->_stateQueue);
-  v4 = [(NSMutableDictionary *)self->_state objectForKey:v5];
+  v4 = [(NSMutableDictionary *)self->_state objectForKey:identifierCopy];
 
   if (v4)
   {
-    [(NSMutableDictionary *)self->_state removeObjectForKey:v5];
+    [(NSMutableDictionary *)self->_state removeObjectForKey:identifierCopy];
     [(FBPlistApplicationDataStoreRepository *)self _stateQueue_markDirty];
-    [(FBPlistApplicationDataStoreRepository *)self _notifyDelegateOfStoreInvalidationForIdentifier:v5];
+    [(FBPlistApplicationDataStoreRepository *)self _notifyDelegateOfStoreInvalidationForIdentifier:identifierCopy];
   }
 }
 
@@ -856,19 +856,19 @@ void __62__FBPlistApplicationDataStoreRepository__stateQueue_markDirty__block_in
     dispatch_sync(stateQueue, v10);
     if (v12[5])
     {
-      v5 = [(NSURL *)self->_storeURL path];
-      v6 = [v5 stringByDeletingLastPathComponent];
+      path = [(NSURL *)self->_storeURL path];
+      stringByDeletingLastPathComponent = [path stringByDeletingLastPathComponent];
       v7 = objc_alloc_init(MEMORY[0x1E696AC08]);
-      if (([v7 fileExistsAtPath:v6] & 1) == 0)
+      if (([v7 fileExistsAtPath:stringByDeletingLastPathComponent] & 1) == 0)
       {
-        [v7 createDirectoryAtPath:v6 withIntermediateDirectories:1 attributes:0 error:0];
+        [v7 createDirectoryAtPath:stringByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:0];
         v17 = *MEMORY[0x1E696A3A0];
         v18[0] = *MEMORY[0x1E696A3A8];
         v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:&v17 count:1];
-        [v7 setAttributes:v8 ofItemAtPath:v6 error:0];
+        [v7 setAttributes:v8 ofItemAtPath:stringByDeletingLastPathComponent error:0];
       }
 
-      [v12[5] writeToFile:v5 options:268435457 error:0];
+      [v12[5] writeToFile:path options:268435457 error:0];
     }
 
     _Block_object_dispose(&v11, 8);
@@ -900,20 +900,20 @@ void __71__FBPlistApplicationDataStoreRepository__writeQueue_flushSynchronously_
   }
 }
 
-- (void)_notifyDelegateOfChangeForKeys:(id)a3 application:(id)a4
+- (void)_notifyDelegateOfChangeForKeys:(id)keys application:(id)application
 {
-  v6 = a3;
-  v7 = a4;
+  keysCopy = keys;
+  applicationCopy = application;
   calloutQueue = self->_calloutQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __84__FBPlistApplicationDataStoreRepository__notifyDelegateOfChangeForKeys_application___block_invoke;
   block[3] = &unk_1E783B300;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = keysCopy;
+  v13 = applicationCopy;
+  v9 = applicationCopy;
+  v10 = keysCopy;
   dispatch_async(calloutQueue, block);
 }
 
@@ -923,17 +923,17 @@ void __84__FBPlistApplicationDataStoreRepository__notifyDelegateOfChangeForKeys_
   [v2 objectChangedForKeys:*(a1 + 40) application:*(a1 + 48)];
 }
 
-- (void)_notifyDelegateOfStoreInvalidationForIdentifier:(id)a3
+- (void)_notifyDelegateOfStoreInvalidationForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   calloutQueue = self->_calloutQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __89__FBPlistApplicationDataStoreRepository__notifyDelegateOfStoreInvalidationForIdentifier___block_invoke;
   v7[3] = &unk_1E783B240;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = identifierCopy;
+  v6 = identifierCopy;
   dispatch_async(calloutQueue, v7);
 }
 

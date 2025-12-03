@@ -1,29 +1,29 @@
 @interface ICUlyssesGetSheetAction
 - (id)outputContentClasses;
-- (void)performActionWithInput:(id)a3 parameters:(id)a4 userInterface:(id)a5 successHandler:(id)a6 errorHandler:(id)a7;
+- (void)performActionWithInput:(id)input parameters:(id)parameters userInterface:(id)interface successHandler:(id)handler errorHandler:(id)errorHandler;
 @end
 
 @implementation ICUlyssesGetSheetAction
 
-- (void)performActionWithInput:(id)a3 parameters:(id)a4 userInterface:(id)a5 successHandler:(id)a6 errorHandler:(id)a7
+- (void)performActionWithInput:(id)input parameters:(id)parameters userInterface:(id)interface successHandler:(id)handler errorHandler:(id)errorHandler
 {
-  v12 = a6;
-  v13 = a7;
+  handlerCopy = handler;
+  errorHandlerCopy = errorHandler;
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __103__ICUlyssesGetSheetAction_performActionWithInput_parameters_userInterface_successHandler_errorHandler___block_invoke;
   v19[3] = &unk_278C1C568;
-  v20 = v12;
+  v20 = handlerCopy;
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __103__ICUlyssesGetSheetAction_performActionWithInput_parameters_userInterface_successHandler_errorHandler___block_invoke_3;
   v17[3] = &unk_278C20008;
-  v18 = v13;
+  v18 = errorHandlerCopy;
   v16.receiver = self;
   v16.super_class = ICUlyssesGetSheetAction;
-  v14 = v13;
-  v15 = v12;
-  [(WFInterchangeSchemeAction *)&v16 performActionWithInput:a3 parameters:a4 userInterface:a5 successHandler:v19 errorHandler:v17];
+  v14 = errorHandlerCopy;
+  v15 = handlerCopy;
+  [(WFInterchangeSchemeAction *)&v16 performActionWithInput:input parameters:parameters userInterface:interface successHandler:v19 errorHandler:v17];
 }
 
 void __103__ICUlyssesGetSheetAction_performActionWithInput_parameters_userInterface_successHandler_errorHandler___block_invoke(uint64_t a1, void *a2, int a3)

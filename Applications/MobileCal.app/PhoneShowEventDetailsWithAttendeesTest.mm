@@ -1,6 +1,6 @@
 @interface PhoneShowEventDetailsWithAttendeesTest
-- (void)_attendeesDidFinishLoading:(id)a3;
-- (void)_detailViewControllerAppeared:(id)a3;
+- (void)_attendeesDidFinishLoading:(id)loading;
+- (void)_detailViewControllerAppeared:(id)appeared;
 - (void)runTest;
 @end
 
@@ -8,10 +8,10 @@
 
 - (void)runTest
 {
-  v3 = [objc_opt_class() testName];
-  v4 = [(ApplicationTest *)self application];
-  v5 = [v4 rootNavigationController];
-  v6 = [v5 resetToDayView];
+  testName = [objc_opt_class() testName];
+  application = [(ApplicationTest *)self application];
+  rootNavigationController = [application rootNavigationController];
+  resetToDayView = [rootNavigationController resetToDayView];
 
   v7 = [(ShowEventDetailsTest *)self createTestEvent:@"Test Event with Attendees" numAttendees:[(PhoneShowEventDetailsWithAttendeesTest *)self numAttendees]];
   v8 = v7;
@@ -25,51 +25,51 @@
       block[2] = sub_1000332C0;
       block[3] = &unk_10020F2E0;
       block[4] = self;
-      v16 = v3;
+      v16 = testName;
       v17 = v8;
       dispatch_after(v14, &_dispatch_main_q, block);
 
       goto LABEL_7;
     }
 
-    v9 = [(ApplicationTest *)self application];
-    [v9 startedTest:v3];
+    application2 = [(ApplicationTest *)self application];
+    [application2 startedTest:testName];
 
-    v10 = [(ApplicationTest *)self application];
+    application3 = [(ApplicationTest *)self application];
     v11 = @"Failed to save event";
   }
 
   else
   {
-    v12 = [(ApplicationTest *)self application];
-    [v12 startedTest:v3];
+    application4 = [(ApplicationTest *)self application];
+    [application4 startedTest:testName];
 
-    v10 = [(ApplicationTest *)self application];
+    application3 = [(ApplicationTest *)self application];
     v11 = @"Failed to create event";
   }
 
   v13 = [NSString stringWithFormat:v11];
-  [v10 failedTest:v3 withFailure:v13];
+  [application3 failedTest:testName withFailure:v13];
 
 LABEL_7:
 }
 
-- (void)_detailViewControllerAppeared:(id)a3
+- (void)_detailViewControllerAppeared:(id)appeared
 {
   self->_eventDetailsDidAppear = 1;
-  v9 = [objc_opt_class() testName];
-  v4 = [(PhoneShowEventDetailsWithAttendeesTest *)self shouldWaitForAttendeeLoading];
-  v5 = [(ApplicationTest *)self application];
-  v6 = v5;
-  if (v4)
+  testName = [objc_opt_class() testName];
+  shouldWaitForAttendeeLoading = [(PhoneShowEventDetailsWithAttendeesTest *)self shouldWaitForAttendeeLoading];
+  application = [(ApplicationTest *)self application];
+  v6 = application;
+  if (shouldWaitForAttendeeLoading)
   {
-    v7 = [(PhoneShowEventDetailsWithAttendeesTest *)self eventDetailsDidShowSubtestName];
-    [v6 finishedSubTest:v7 forTest:v9];
+    eventDetailsDidShowSubtestName = [(PhoneShowEventDetailsWithAttendeesTest *)self eventDetailsDidShowSubtestName];
+    [v6 finishedSubTest:eventDetailsDidShowSubtestName forTest:testName];
   }
 
   else
   {
-    [v5 finishedTest:v9 extraResults:0];
+    [application finishedTest:testName extraResults:0];
 
     [(ShowEventDetailsTest *)self cleanUp];
   }
@@ -78,16 +78,16 @@ LABEL_7:
   [v8 removeObserver:self name:EKEventViewControllerDidAppearNotification object:0];
 }
 
-- (void)_attendeesDidFinishLoading:(id)a3
+- (void)_attendeesDidFinishLoading:(id)loading
 {
   if (!self->_eventDetailsDidAppear)
   {
     [(PhoneShowEventDetailsWithAttendeesTest *)self _detailViewControllerAppeared:0];
   }
 
-  v6 = [objc_opt_class() testName];
-  v4 = [(ApplicationTest *)self application];
-  [v4 finishedTest:v6 extraResults:0];
+  testName = [objc_opt_class() testName];
+  application = [(ApplicationTest *)self application];
+  [application finishedTest:testName extraResults:0];
 
   v5 = +[NSNotificationCenter defaultCenter];
   [v5 removeObserver:self name:EKEventDetailsDidFinishLoadingAttendeesNotification object:0];

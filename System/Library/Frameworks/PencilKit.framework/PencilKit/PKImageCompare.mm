@@ -1,30 +1,30 @@
 @interface PKImageCompare
-+ ($1D51C095076032EFA7EEE424D0344599)compareImage:(SEL)a3 toMasterImage:(CGImage *)a4 filename:(CGImage *)a5 differenceImageOutputPath:(id)a6 diffWhite:(id)a7 stdDevThreshold:(BOOL)a8;
-+ (BOOL)saveImage:(CGImage *)a3 toPath:(id)a4;
-+ (id)filterImage:(CGImage *)a3;
++ ($1D51C095076032EFA7EEE424D0344599)compareImage:(SEL)image toMasterImage:(CGImage *)masterImage filename:(CGImage *)filename differenceImageOutputPath:(id)path diffWhite:(id)white stdDevThreshold:(BOOL)threshold;
++ (BOOL)saveImage:(CGImage *)image toPath:(id)path;
++ (id)filterImage:(CGImage *)image;
 @end
 
 @implementation PKImageCompare
 
-+ (id)filterImage:(CGImage *)a3
++ (id)filterImage:(CGImage *)image
 {
-  v3 = [objc_alloc(MEMORY[0x1E695F658]) initWithCGImage:a3];
+  v3 = [objc_alloc(MEMORY[0x1E695F658]) initWithCGImage:image];
   v4 = [v3 imageByApplyingGaussianBlurWithSigma:2.0];
 
   return v4;
 }
 
-+ ($1D51C095076032EFA7EEE424D0344599)compareImage:(SEL)a3 toMasterImage:(CGImage *)a4 filename:(CGImage *)a5 differenceImageOutputPath:(id)a6 diffWhite:(id)a7 stdDevThreshold:(BOOL)a8
++ ($1D51C095076032EFA7EEE424D0344599)compareImage:(SEL)image toMasterImage:(CGImage *)masterImage filename:(CGImage *)filename differenceImageOutputPath:(id)path diffWhite:(id)white stdDevThreshold:(BOOL)threshold
 {
-  v10 = a8;
+  thresholdCopy = threshold;
   v40 = *MEMORY[0x1E69E9840];
-  v16 = a6;
-  v17 = a7;
-  v18 = v16;
-  if (!a5)
+  pathCopy = path;
+  whiteCopy = white;
+  v18 = pathCopy;
+  if (!filename)
   {
     NSLog(&cfstr_NoValidMasterI.isa);
-    if (a4)
+    if (masterImage)
     {
       goto LABEL_10;
     }
@@ -34,19 +34,19 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if (!a4)
+  if (!masterImage)
   {
     goto LABEL_9;
   }
 
   v33 = 0;
-  Width = CGImageGetWidth(a5);
-  Height = CGImageGetHeight(a5);
-  v21 = CGImageGetWidth(a4);
-  v22 = CGImageGetHeight(a4);
+  Width = CGImageGetWidth(filename);
+  Height = CGImageGetHeight(filename);
+  v21 = CGImageGetWidth(masterImage);
+  v22 = CGImageGetHeight(masterImage);
   if (Width == v21 && Height == v22)
   {
-    v28 = createDiffImageIfImageComparisonFails(a4, a5, v10, &v39, &v38, &v36, &v34, &v33, a9);
+    v28 = createDiffImageIfImageComparisonFails(masterImage, filename, thresholdCopy, &v39, &v38, &v36, &v34, &v33, a9);
     v29 = v28;
     if (v33)
     {
@@ -76,16 +76,16 @@ LABEL_9:
       }
 
       NSLog(&cfstr_MismatchExceed.isa, 0, *&v36.f64[0], v34.i64[0], *&v36.f64[1], v34.i64[1], v37, v35, *(&v37 + 1), *(&v35 + 1), v39.u32[0], v38.u32[0], v39.u32[1], v38.u32[1], v39.u32[2], v38.u32[2], v39.u32[3], v38.u32[3]);
-      if (v17)
+      if (whiteCopy)
       {
-        if ([a2 saveImage:v29 toPath:v17])
+        if ([a2 saveImage:v29 toPath:whiteCopy])
         {
-          NSLog(&cfstr_WroteDiffImage.isa, v17);
+          NSLog(&cfstr_WroteDiffImage.isa, whiteCopy);
         }
 
         else
         {
-          NSLog(&cfstr_ErrorWritingDi.isa, v17);
+          NSLog(&cfstr_ErrorWritingDi.isa, whiteCopy);
         }
       }
     }
@@ -107,8 +107,8 @@ LABEL_23:
   }
 
   v24 = [PKImageCompare stringFromSize:v21];
-  v25 = [PKImageCompare stringFromSize:Width, Height];
-  NSLog(&cfstr_ImageSizeMisma.isa, 0, v24, v25);
+  height = [PKImageCompare stringFromSize:Width, Height];
+  NSLog(&cfstr_ImageSizeMisma.isa, 0, v24, height);
 
 LABEL_10:
   *&retstr->var4 = 0u;
@@ -125,12 +125,12 @@ LABEL_11:
   return result;
 }
 
-+ (BOOL)saveImage:(CGImage *)a3 toPath:(id)a4
++ (BOOL)saveImage:(CGImage *)image toPath:(id)path
 {
   v21[2] = *MEMORY[0x1E69E9840];
-  v5 = [MEMORY[0x1E695DFF8] fileURLWithPath:a4];
-  v6 = [*MEMORY[0x1E6982F28] identifier];
-  v7 = CGImageDestinationCreateWithURL(v5, v6, 1uLL, 0);
+  v5 = [MEMORY[0x1E695DFF8] fileURLWithPath:path];
+  identifier = [*MEMORY[0x1E6982F28] identifier];
+  v7 = CGImageDestinationCreateWithURL(v5, identifier, 1uLL, 0);
 
   if (!v7)
   {
@@ -156,7 +156,7 @@ LABEL_11:
 
   if (Mutable)
   {
-    CGImageDestinationAddImageAndMetadata(v7, a3, Mutable, v15);
+    CGImageDestinationAddImageAndMetadata(v7, image, Mutable, v15);
     CFRelease(Mutable);
     v16 = CGImageDestinationFinalize(v7);
     CFRelease(v7);

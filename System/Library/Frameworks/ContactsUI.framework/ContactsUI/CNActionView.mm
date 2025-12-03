@@ -1,49 +1,49 @@
 @interface CNActionView
-+ (CGSize)minimumSizeForStyle:(int64_t)a3;
++ (CGSize)minimumSizeForStyle:(int64_t)style;
 + (double)minimumPillDimension;
-+ (id)colorByIncreasingBrightnessComponentByPercentage:(double)a3 ofColor:(id)a4;
-+ (id)titleFontForStyle:(int64_t)a3;
-+ (void)fadeInView:(id)a3;
++ (id)colorByIncreasingBrightnessComponentByPercentage:(double)percentage ofColor:(id)color;
++ (id)titleFontForStyle:(int64_t)style;
++ (void)fadeInView:(id)view;
 - (BOOL)shouldShowDisambiguation;
 - (CGSize)intrinsicContentSize;
-- (CGSize)platterViewMinimumLayoutSizeForStyle:(int64_t)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CNActionView)initWithFrame:(CGRect)a3;
+- (CGSize)platterViewMinimumLayoutSizeForStyle:(int64_t)style;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CNActionView)initWithFrame:(CGRect)frame;
 - (CNActionViewDelegate)actionDelegate;
 - (UIFont)titleFont;
-- (id)colorByAdjustingColorToHighlightState:(id)a3;
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4;
-- (id)contextMenuInteraction:(id)a3 previewForHighlightingMenuWithConfiguration:(id)a4;
+- (id)colorByAdjustingColorToHighlightState:(id)state;
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location;
+- (id)contextMenuInteraction:(id)interaction previewForHighlightingMenuWithConfiguration:(id)configuration;
 - (id)sourceViewForContextMenuPreview;
 - (void)applyDefaultLabelContainerMetrics;
 - (void)applyRoundedRectMargins;
-- (void)containerViewDidLayoutArrangedSubviews:(id)a3;
-- (void)contextMenuInteraction:(id)a3 willDisplayMenuForConfiguration:(id)a4 animator:(id)a5;
-- (void)contextMenuInteraction:(id)a3 willEndForConfiguration:(id)a4 animator:(id)a5;
+- (void)containerViewDidLayoutArrangedSubviews:(id)subviews;
+- (void)contextMenuInteraction:(id)interaction willDisplayMenuForConfiguration:(id)configuration animator:(id)animator;
+- (void)contextMenuInteraction:(id)interaction willEndForConfiguration:(id)configuration animator:(id)animator;
 - (void)didMoveToWindow;
 - (void)handleTapGesture;
 - (void)layoutSubviews;
-- (void)setActionDelegate:(id)a3;
-- (void)setDisabled:(BOOL)a3 animated:(BOOL)a4;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setHighlighted:(BOOL)a3 animated:(BOOL)a4;
-- (void)setImage:(id)a3;
-- (void)setPosterTintColor:(id)a3;
-- (void)setStyle:(int64_t)a3;
-- (void)setTitle:(id)a3;
-- (void)setVisualEffectViewCaptureView:(id)a3;
+- (void)setActionDelegate:(id)delegate;
+- (void)setDisabled:(BOOL)disabled animated:(BOOL)animated;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated;
+- (void)setImage:(id)image;
+- (void)setPosterTintColor:(id)color;
+- (void)setStyle:(int64_t)style;
+- (void)setTitle:(id)title;
+- (void)setVisualEffectViewCaptureView:(id)view;
 - (void)tintColorDidChange;
-- (void)tlk_updateForAppearance:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)tlk_updateForAppearance:(id)appearance;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateBackground;
 - (void)updateBackgroundForVibrantRoundedRect;
 - (void)updateImage;
-- (void)updateImageViewStateAnimated:(BOOL)a3;
+- (void)updateImageViewStateAnimated:(BOOL)animated;
 - (void)updateLabelArrangedSubviews;
-- (void)updateLabelStateAnimated:(BOOL)a3;
-- (void)updatePlatterViewStateAnimated:(BOOL)a3;
+- (void)updateLabelStateAnimated:(BOOL)animated;
+- (void)updatePlatterViewStateAnimated:(BOOL)animated;
 - (void)updateTitleLabelFont;
-- (void)updateWithMenuItems:(id)a3;
+- (void)updateWithMenuItems:(id)items;
 @end
 
 @implementation CNActionView
@@ -55,60 +55,60 @@
   return WeakRetained;
 }
 
-- (void)updateWithMenuItems:(id)a3
+- (void)updateWithMenuItems:(id)items
 {
-  v4 = a3;
-  v6 = [(CNActionView *)self actionMenuHelper];
-  v5 = [(CNActionView *)self contextMenuInteraction];
-  [v6 updateWithMenuItems:v4 contextMenuInteraction:v5];
+  itemsCopy = items;
+  actionMenuHelper = [(CNActionView *)self actionMenuHelper];
+  contextMenuInteraction = [(CNActionView *)self contextMenuInteraction];
+  [actionMenuHelper updateWithMenuItems:itemsCopy contextMenuInteraction:contextMenuInteraction];
 }
 
-- (void)contextMenuInteraction:(id)a3 willEndForConfiguration:(id)a4 animator:(id)a5
+- (void)contextMenuInteraction:(id)interaction willEndForConfiguration:(id)configuration animator:(id)animator
 {
   v7.receiver = self;
   v7.super_class = CNActionView;
-  [(CNActionView *)&v7 contextMenuInteraction:a3 willEndForConfiguration:a4 animator:a5];
-  v6 = [(CNActionView *)self actionMenuHelper];
-  [v6 willDismissMenu];
+  [(CNActionView *)&v7 contextMenuInteraction:interaction willEndForConfiguration:configuration animator:animator];
+  actionMenuHelper = [(CNActionView *)self actionMenuHelper];
+  [actionMenuHelper willDismissMenu];
 }
 
-- (void)contextMenuInteraction:(id)a3 willDisplayMenuForConfiguration:(id)a4 animator:(id)a5
+- (void)contextMenuInteraction:(id)interaction willDisplayMenuForConfiguration:(id)configuration animator:(id)animator
 {
   v10.receiver = self;
   v10.super_class = CNActionView;
-  v8 = a3;
-  [(CNActionView *)&v10 contextMenuInteraction:v8 willDisplayMenuForConfiguration:a4 animator:a5];
+  interactionCopy = interaction;
+  [(CNActionView *)&v10 contextMenuInteraction:interactionCopy willDisplayMenuForConfiguration:configuration animator:animator];
   v9 = [(CNActionView *)self actionMenuHelper:v10.receiver];
-  [v9 willDisplayMenuWithContextMenuInteraction:v8];
+  [v9 willDisplayMenuWithContextMenuInteraction:interactionCopy];
 }
 
 - (id)sourceViewForContextMenuPreview
 {
   if ([(CNActionView *)self style]== 7 || [(CNActionView *)self style]== 6 || [(CNActionView *)self style]== 11 || [(CNActionView *)self style]== 10)
   {
-    v3 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v3 = [(CNActionView *)self imageView];
+    selfCopy = [(CNActionView *)self imageView];
   }
 
-  return v3;
+  return selfCopy;
 }
 
-- (id)contextMenuInteraction:(id)a3 previewForHighlightingMenuWithConfiguration:(id)a4
+- (id)contextMenuInteraction:(id)interaction previewForHighlightingMenuWithConfiguration:(id)configuration
 {
-  v5 = [(CNActionView *)self sourceViewForContextMenuPreview:a3];
+  v5 = [(CNActionView *)self sourceViewForContextMenuPreview:interaction];
   v10 = v5;
   if (v5)
   {
-    v11 = [v5 window];
+    window = [v5 window];
 
-    if (v11)
+    if (window)
     {
-      v16 = [(CNActionView *)self actionMenuHelper];
-      v17 = [v16 targetedPreviewForSourceView:v10];
+      actionMenuHelper = [(CNActionView *)self actionMenuHelper];
+      v17 = [actionMenuHelper targetedPreviewForSourceView:v10];
 
       goto LABEL_7;
     }
@@ -127,21 +127,21 @@ LABEL_7:
   return v17;
 }
 
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location
 {
-  if ([(CNActionView *)self shouldShowDisambiguation:a3])
+  if ([(CNActionView *)self shouldShowDisambiguation:interaction])
   {
-    v5 = [(CNActionView *)self actionMenuHelper];
+    actionMenuHelper = [(CNActionView *)self actionMenuHelper];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __70__CNActionView_contextMenuInteraction_configurationForMenuAtLocation___block_invoke;
     v11[3] = &unk_1E74E6A88;
     v11[4] = self;
-    v6 = [v5 configurationActionProviderWithActionBlock:v11];
+    v6 = [actionMenuHelper configurationActionProviderWithActionBlock:v11];
 
     v7 = MEMORY[0x1E69DC8D8];
-    v8 = [(CNActionView *)self type];
-    v9 = [v7 configurationWithIdentifier:v8 previewProvider:0 actionProvider:v6];
+    type = [(CNActionView *)self type];
+    v9 = [v7 configurationWithIdentifier:type previewProvider:0 actionProvider:v6];
   }
 
   else
@@ -158,30 +158,30 @@ void __70__CNActionView_contextMenuInteraction_configurationForMenuAtLocation___
   [v2 didPressActionView:*(a1 + 32) longPress:1];
 }
 
-- (void)containerViewDidLayoutArrangedSubviews:(id)a3
+- (void)containerViewDidLayoutArrangedSubviews:(id)subviews
 {
-  v4 = [(CNActionView *)self platterView];
-  [v4 frame];
+  platterView = [(CNActionView *)self platterView];
+  [platterView frame];
   v6 = v5 * 0.5;
-  v7 = [(CNActionView *)self platterView];
-  v8 = [v7 layer];
-  [v8 setCornerRadius:v6];
+  platterView2 = [(CNActionView *)self platterView];
+  layer = [platterView2 layer];
+  [layer setCornerRadius:v6];
 
   v9 = *MEMORY[0x1E69796E8];
-  v10 = [(CNActionView *)self platterView];
-  v11 = [v10 layer];
-  [v11 setCornerCurve:v9];
+  platterView3 = [(CNActionView *)self platterView];
+  layer2 = [platterView3 layer];
+  [layer2 setCornerCurve:v9];
 
-  v12 = [(CNActionView *)self vibrantPlatterView];
-  [v12 frame];
+  vibrantPlatterView = [(CNActionView *)self vibrantPlatterView];
+  [vibrantPlatterView frame];
   v14 = v13 * 0.5;
-  v15 = [(CNActionView *)self vibrantPlatterView];
-  v16 = [v15 layer];
-  [v16 setCornerRadius:v14];
+  vibrantPlatterView2 = [(CNActionView *)self vibrantPlatterView];
+  layer3 = [vibrantPlatterView2 layer];
+  [layer3 setCornerRadius:v14];
 
-  v18 = [(CNActionView *)self vibrantPlatterView];
-  v17 = [v18 layer];
-  [v17 setCornerCurve:v9];
+  vibrantPlatterView3 = [(CNActionView *)self vibrantPlatterView];
+  layer4 = [vibrantPlatterView3 layer];
+  [layer4 setCornerCurve:v9];
 }
 
 - (void)layoutSubviews
@@ -194,13 +194,13 @@ void __70__CNActionView_contextMenuInteraction_configurationForMenuAtLocation___
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(CNActionView *)self vibrantBackgroundView];
-  [v11 setFrame:{v4, v6, v8, v10}];
+  vibrantBackgroundView = [(CNActionView *)self vibrantBackgroundView];
+  [vibrantBackgroundView setFrame:{v4, v6, v8, v10}];
 
-  LODWORD(v11) = self->_swiftUIContactCardEnabled;
+  LODWORD(vibrantBackgroundView) = self->_swiftUIContactCardEnabled;
   [(CNActionView *)self bounds];
   v16 = v15;
-  if (v11 == 1)
+  if (vibrantBackgroundView == 1)
   {
     [(CNActionView *)self bounds];
     v18 = v17;
@@ -253,44 +253,44 @@ void __70__CNActionView_contextMenuInteraction_configurationForMenuAtLocation___
     v20 = v14;
   }
 
-  v29 = [(CNActionView *)self colorMatrixView];
-  [v29 setFrame:{v27, v28, v16, v20}];
+  colorMatrixView = [(CNActionView *)self colorMatrixView];
+  [colorMatrixView setFrame:{v27, v28, v16, v20}];
 
   if (self->_swiftUIContactCardEnabled)
   {
-    v30 = [(CNActionView *)self colorMatrixView];
-    [v30 frame];
+    colorMatrixView2 = [(CNActionView *)self colorMatrixView];
+    [colorMatrixView2 frame];
     v32 = v31 * 0.5;
-    v33 = [(CNActionView *)self colorMatrixView];
-    v34 = [v33 layer];
-    [v34 setCornerRadius:v32];
+    colorMatrixView3 = [(CNActionView *)self colorMatrixView];
+    layer = [colorMatrixView3 layer];
+    [layer setCornerRadius:v32];
   }
 }
 
 - (void)handleTapGesture
 {
-  v3 = [(CNActionView *)self actionDelegate];
+  actionDelegate = [(CNActionView *)self actionDelegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(CNActionView *)self actionDelegate];
-    [v5 didPressActionView:self longPress:0];
+    actionDelegate2 = [(CNActionView *)self actionDelegate];
+    [actionDelegate2 didPressActionView:self longPress:0];
   }
 }
 
 - (void)updateTitleLabelFont
 {
-  v3 = [(CNActionView *)self titleLabel];
+  titleLabel = [(CNActionView *)self titleLabel];
 
-  if (v3)
+  if (titleLabel)
   {
     v4 = [objc_opt_class() titleFontForStyle:{-[CNActionView style](self, "style")}];
     [(CNActionView *)self setTitleFont:v4];
 
-    v6 = [(CNActionView *)self titleFont];
-    v5 = [(CNActionView *)self titleLabel];
-    [v5 setFont:v6];
+    titleFont = [(CNActionView *)self titleFont];
+    titleLabel2 = [(CNActionView *)self titleLabel];
+    [titleLabel2 setFont:titleFont];
   }
 }
 
@@ -299,27 +299,27 @@ void __70__CNActionView_contextMenuInteraction_configurationForMenuAtLocation___
   titleFont = self->_titleFont;
   if (titleFont)
   {
-    v3 = titleFont;
+    defaultTitleFont = titleFont;
   }
 
   else
   {
-    v3 = [objc_opt_class() defaultTitleFont];
+    defaultTitleFont = [objc_opt_class() defaultTitleFont];
   }
 
-  return v3;
+  return defaultTitleFont;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v5 = a3;
-  if (self->_title != v5)
+  titleCopy = title;
+  if (self->_title != titleCopy)
   {
-    v9 = v5;
-    objc_storeStrong(&self->_title, a3);
-    v6 = [(CNActionView *)self titleLabel];
+    v9 = titleCopy;
+    objc_storeStrong(&self->_title, title);
+    titleLabel = [(CNActionView *)self titleLabel];
 
-    if (!v6)
+    if (!titleLabel)
     {
       v7 = objc_opt_new();
       [v7 setNumberOfLines:1];
@@ -339,54 +339,54 @@ void __70__CNActionView_contextMenuInteraction_configurationForMenuAtLocation___
     }
 
     [(CNActionView *)self updateLabelStateAnimated:0];
-    v5 = v9;
+    titleCopy = v9;
   }
 }
 
 - (void)updateImage
 {
-  v3 = [(CNActionView *)self style];
-  if ((v3 - 10) < 2)
+  style = [(CNActionView *)self style];
+  if ((style - 10) < 2)
   {
-    v11 = [(CNActionView *)self image];
+    image = [(CNActionView *)self image];
     v7 = MEMORY[0x1E69DCAD8];
-    v5 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDDC8]];
-    v6 = [v7 configurationWithFont:v5];
+    titleFont = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDDC8]];
+    v6 = [v7 configurationWithFont:titleFont];
     goto LABEL_5;
   }
 
-  if ((v3 - 8) <= 1)
+  if ((style - 8) <= 1)
   {
-    v11 = [(CNActionView *)self image];
+    image = [(CNActionView *)self image];
     v4 = MEMORY[0x1E69DCAD8];
-    v5 = [(CNActionView *)self titleFont];
-    [v5 pointSize];
+    titleFont = [(CNActionView *)self titleFont];
+    [titleFont pointSize];
     v6 = [v4 configurationWithPointSize:?];
 LABEL_5:
     v8 = v6;
-    v9 = [v11 imageWithConfiguration:v6];
-    v10 = [(CNActionView *)self imageView];
-    [v10 setImage:v9];
+    v9 = [image imageWithConfiguration:v6];
+    imageView = [(CNActionView *)self imageView];
+    [imageView setImage:v9];
 
     goto LABEL_6;
   }
 
-  v11 = [(CNActionView *)self image];
-  v5 = [(CNActionView *)self imageView];
-  [v5 setImage:v11];
+  image = [(CNActionView *)self image];
+  titleFont = [(CNActionView *)self imageView];
+  [titleFont setImage:image];
 LABEL_6:
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v5 = a3;
-  if (self->_image != v5)
+  imageCopy = image;
+  if (self->_image != imageCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_image, a3);
+    v6 = imageCopy;
+    objc_storeStrong(&self->_image, image);
     [(CNActionView *)self updateImage];
     [(CNActionView *)self updateImageViewStateAnimated:0];
-    v5 = v6;
+    imageCopy = v6;
   }
 }
 
@@ -394,24 +394,24 @@ LABEL_6:
 {
   if (([(CNActionView *)self style]& 0xFFFFFFFFFFFFFFFELL) == 8)
   {
-    v3 = [(CNActionView *)self containerView];
-    v4 = [(CNActionView *)self titleLabel];
-    [v3 removeArrangedSubview:v4];
+    containerView = [(CNActionView *)self containerView];
+    titleLabel = [(CNActionView *)self titleLabel];
+    [containerView removeArrangedSubview:titleLabel];
 
     [(CNActionView *)self horizontalContentView];
   }
 
   else
   {
-    v5 = [(CNActionView *)self horizontalContentView];
-    v6 = [(CNActionView *)self titleLabel];
-    [v5 removeArrangedSubview:v6];
+    horizontalContentView = [(CNActionView *)self horizontalContentView];
+    titleLabel2 = [(CNActionView *)self titleLabel];
+    [horizontalContentView removeArrangedSubview:titleLabel2];
 
     [(CNActionView *)self containerView];
   }
   v8 = ;
-  v7 = [(CNActionView *)self titleLabel];
-  [v8 addArrangedSubview:v7];
+  titleLabel3 = [(CNActionView *)self titleLabel];
+  [v8 addArrangedSubview:titleLabel3];
 }
 
 - (void)applyDefaultLabelContainerMetrics
@@ -420,53 +420,53 @@ LABEL_6:
   v4 = *(MEMORY[0x1E69DDCE0] + 8);
   v5 = *(MEMORY[0x1E69DDCE0] + 16);
   v6 = *(MEMORY[0x1E69DDCE0] + 24);
-  v7 = [(CNActionView *)self horizontalContentView];
-  [v7 setLayoutMargins:{v3, v4, v5, v6}];
+  horizontalContentView = [(CNActionView *)self horizontalContentView];
+  [horizontalContentView setLayoutMargins:{v3, v4, v5, v6}];
 
-  v8 = [(CNActionView *)self title];
-  v9 = [(CNActionView *)self titleLabel];
-  [v9 setText:v8];
+  title = [(CNActionView *)self title];
+  titleLabel = [(CNActionView *)self titleLabel];
+  [titleLabel setText:title];
 
-  v10 = [(CNActionView *)self containerView];
-  [v10 setAlignment:3];
+  containerView = [(CNActionView *)self containerView];
+  [containerView setAlignment:3];
 
-  v11 = [(CNActionView *)self titleLabel];
-  [v11 setHidden:0];
+  titleLabel2 = [(CNActionView *)self titleLabel];
+  [titleLabel2 setHidden:0];
 
   if (([MEMORY[0x1E69DB878] ab_preferredContentSizeCategoryIsAccessibilityCategory] & 1) == 0)
   {
     v12 = *MEMORY[0x1E698B6F8];
-    v13 = [(CNActionView *)self titleLabel];
-    [v13 setMaximumLayoutSize:{66.0, v12}];
+    titleLabel3 = [(CNActionView *)self titleLabel];
+    [titleLabel3 setMaximumLayoutSize:{66.0, v12}];
   }
 }
 
-- (void)updateLabelStateAnimated:(BOOL)a3
+- (void)updateLabelStateAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(CNActionView *)self titleLabel];
+  animatedCopy = animated;
+  titleLabel = [(CNActionView *)self titleLabel];
 
-  if (!v5)
+  if (!titleLabel)
   {
     return;
   }
 
-  v6 = [(CNActionView *)self titleLabel];
-  v7 = [(CNActionView *)self title];
-  [v6 setText:v7];
+  titleLabel2 = [(CNActionView *)self titleLabel];
+  title = [(CNActionView *)self title];
+  [titleLabel2 setText:title];
 
-  v8 = [(CNActionView *)self style];
-  if (v8 <= 7)
+  style = [(CNActionView *)self style];
+  if (style <= 7)
   {
-    if (v8 <= 3)
+    if (style <= 3)
     {
-      if ((v8 - 2) >= 2)
+      if ((style - 2) >= 2)
       {
-        if (v8 == 1 && [(CNActionView *)self disabled])
+        if (style == 1 && [(CNActionView *)self disabled])
         {
-          v9 = [objc_opt_class() contentColorForDisabledVibrantDarkState];
+          contentColorForDisabledVibrantDarkState = [objc_opt_class() contentColorForDisabledVibrantDarkState];
 LABEL_32:
-          v31 = v9;
+          v31 = contentColorForDisabledVibrantDarkState;
           goto LABEL_33;
         }
 
@@ -476,23 +476,23 @@ LABEL_32:
       goto LABEL_20;
     }
 
-    if (v8 == 4)
+    if (style == 4)
     {
 LABEL_18:
       if ([(CNActionView *)self disabled])
       {
-        v9 = [objc_opt_class() contentColorForDisabledBoldState];
+        contentColorForDisabledVibrantDarkState = [objc_opt_class() contentColorForDisabledBoldState];
         goto LABEL_32;
       }
 
 LABEL_31:
-      v9 = [(UIView *)self tintColorOverride];
+      contentColorForDisabledVibrantDarkState = [(UIView *)self tintColorOverride];
       goto LABEL_32;
     }
 
-    if (v8 != 6)
+    if (style != 6)
     {
-      if (v8 != 7)
+      if (style != 7)
       {
         goto LABEL_31;
       }
@@ -515,20 +515,20 @@ LABEL_20:
 LABEL_23:
     v31 = [v11 colorForProminence:v12];
 
-    v10 = [MEMORY[0x1E69D9108] bestAppearanceForView:self];
-    v13 = [(CNActionView *)self titleLabel];
-    [v10 enableAppearanceForView:v13];
+    posterTintColor = [MEMORY[0x1E69D9108] bestAppearanceForView:self];
+    titleLabel3 = [(CNActionView *)self titleLabel];
+    [posterTintColor enableAppearanceForView:titleLabel3];
 
     goto LABEL_24;
   }
 
-  if (v8 <= 9)
+  if (style <= 9)
   {
-    if (v8 == 8)
+    if (style == 8)
     {
       if ([(CNActionView *)self disabled])
       {
-        v9 = +[CNUIColorRepository quickActionContentColorDisabledPill];
+        contentColorForDisabledVibrantDarkState = +[CNUIColorRepository quickActionContentColorDisabledPill];
         goto LABEL_32;
       }
 
@@ -549,20 +549,20 @@ LABEL_23:
     goto LABEL_23;
   }
 
-  if (v8 == 12 || v8 == 11)
+  if (style == 12 || style == 11)
   {
     goto LABEL_20;
   }
 
-  if (v8 != 10)
+  if (style != 10)
   {
     goto LABEL_31;
   }
 
-  v10 = [(CNActionView *)self posterTintColor];
+  posterTintColor = [(CNActionView *)self posterTintColor];
   if ([(CNActionView *)self disabled])
   {
-    [v10 colorWithAlphaComponent:0.2];
+    [posterTintColor colorWithAlphaComponent:0.2];
   }
 
   else
@@ -573,15 +573,15 @@ LABEL_23:
 LABEL_24:
 
 LABEL_33:
-  v14 = [(CNActionView *)self titleLabel];
-  [v14 setTextColor:v31];
+  titleLabel4 = [(CNActionView *)self titleLabel];
+  [titleLabel4 setTextColor:v31];
 
   [(CNActionView *)self updateLabelArrangedSubviews];
-  v15 = [(CNActionView *)self title];
-  if (v15)
+  title2 = [(CNActionView *)self title];
+  if (title2)
   {
-    v16 = [(CNActionView *)self title];
-    v17 = [v16 length] == 0;
+    title3 = [(CNActionView *)self title];
+    v17 = [title3 length] == 0;
   }
 
   else
@@ -598,25 +598,25 @@ LABEL_33:
 
     else
     {
-      v18 = [(CNActionView *)self horizontalContentView];
-      [v18 setLayoutMargins:{0.0, 14.0, 0.0, 14.0}];
+      horizontalContentView = [(CNActionView *)self horizontalContentView];
+      [horizontalContentView setLayoutMargins:{0.0, 14.0, 0.0, 14.0}];
 
-      v19 = [(CNActionView *)self title];
-      v20 = [v19 localizedCapitalizedString];
-      v21 = [(CNActionView *)self titleLabel];
-      [v21 setText:v20];
+      title4 = [(CNActionView *)self title];
+      localizedCapitalizedString = [title4 localizedCapitalizedString];
+      titleLabel5 = [(CNActionView *)self titleLabel];
+      [titleLabel5 setText:localizedCapitalizedString];
 
       v22 = *MEMORY[0x1E698B700];
       v23 = *(MEMORY[0x1E698B700] + 8);
-      v24 = [(CNActionView *)self titleLabel];
-      [v24 setMaximumLayoutSize:{v22, v23}];
+      titleLabel6 = [(CNActionView *)self titleLabel];
+      [titleLabel6 setMaximumLayoutSize:{v22, v23}];
     }
 
-    v25 = [(CNActionView *)self titleLabel];
-    [v25 setHidden:v17];
+    titleLabel7 = [(CNActionView *)self titleLabel];
+    [titleLabel7 setHidden:v17];
 
-    v26 = [(CNActionView *)self containerView];
-    [v26 setAlignment:0];
+    containerView = [(CNActionView *)self containerView];
+    [containerView setAlignment:0];
   }
 
   else
@@ -624,40 +624,40 @@ LABEL_33:
     [(CNActionView *)self applyDefaultLabelContainerMetrics];
   }
 
-  v27 = [(CNActionView *)self titleFont];
-  v28 = [(CNActionView *)self titleLabel];
-  [v28 setFont:v27];
+  titleFont = [(CNActionView *)self titleFont];
+  titleLabel8 = [(CNActionView *)self titleLabel];
+  [titleLabel8 setFont:titleFont];
 
-  if (v3)
+  if (animatedCopy)
   {
     v29 = objc_opt_class();
-    v30 = [(CNActionView *)self titleLabel];
-    [v29 fadeInView:v30];
+    titleLabel9 = [(CNActionView *)self titleLabel];
+    [v29 fadeInView:titleLabel9];
   }
 }
 
-- (void)updateImageViewStateAnimated:(BOOL)a3
+- (void)updateImageViewStateAnimated:(BOOL)animated
 {
-  v4 = [(CNActionView *)self window];
+  window = [(CNActionView *)self window];
 
-  if (!v4)
+  if (!window)
   {
     return;
   }
 
-  v5 = [(CNActionView *)self style];
-  if (v5 <= 6)
+  style = [(CNActionView *)self style];
+  if (style <= 6)
   {
-    if (v5 <= 3)
+    if (style <= 3)
     {
-      if ((v5 - 2) >= 2)
+      if ((style - 2) >= 2)
       {
-        if (v5 != 1)
+        if (style != 1)
         {
 LABEL_34:
           if (![(CNActionView *)self disabled])
           {
-            v10 = +[CNUIColorRepository quickActionContentColor];
+            contentColorForDisabledVibrantDarkState = +[CNUIColorRepository quickActionContentColor];
             goto LABEL_38;
           }
 
@@ -667,9 +667,9 @@ LABEL_34:
 LABEL_20:
         if ([(CNActionView *)self disabled])
         {
-          v10 = [objc_opt_class() contentColorForDisabledVibrantDarkState];
+          contentColorForDisabledVibrantDarkState = [objc_opt_class() contentColorForDisabledVibrantDarkState];
 LABEL_38:
-          v14 = v10;
+          v14 = contentColorForDisabledVibrantDarkState;
           goto LABEL_39;
         }
 
@@ -677,28 +677,28 @@ LABEL_38:
       }
 
 LABEL_16:
-      v6 = [MEMORY[0x1E69D9108] bestAppearanceForView:self];
-      v7 = [v6 primaryButtonColor];
+      tintColorOverride = [MEMORY[0x1E69D9108] bestAppearanceForView:self];
+      primaryButtonColor = [tintColorOverride primaryButtonColor];
       if ([(CNActionView *)self disabled])
       {
-        v8 = [v7 colorWithAlphaComponent:0.3];
+        v8 = [primaryButtonColor colorWithAlphaComponent:0.3];
       }
 
       else
       {
-        v8 = v7;
+        v8 = primaryButtonColor;
       }
 
       v14 = v8;
-      v9 = [(CNActionView *)self imageView];
-      [v6 enableAppearanceForView:v9];
+      imageView = [(CNActionView *)self imageView];
+      [tintColorOverride enableAppearanceForView:imageView];
 
       goto LABEL_33;
     }
 
-    if (v5 != 4)
+    if (style != 4)
     {
-      if (v5 == 5)
+      if (style == 5)
       {
         goto LABEL_20;
       }
@@ -708,35 +708,35 @@ LABEL_16:
 
     if (![(CNActionView *)self disabled])
     {
-      v10 = +[CNUIColorRepository quickActionContentColorEnabled];
+      contentColorForDisabledVibrantDarkState = +[CNUIColorRepository quickActionContentColorEnabled];
       goto LABEL_38;
     }
 
 LABEL_35:
-    v10 = [objc_opt_class() contentColorForDisabledBoldState];
+    contentColorForDisabledVibrantDarkState = [objc_opt_class() contentColorForDisabledBoldState];
     goto LABEL_38;
   }
 
-  if (v5 > 9)
+  if (style > 9)
   {
-    if ((v5 - 11) >= 2)
+    if ((style - 11) >= 2)
     {
-      if (v5 != 10)
+      if (style != 10)
       {
         goto LABEL_34;
       }
 
-      v11 = [(CNActionView *)self posterTintColor];
-      v6 = [(CNActionView *)self colorByAdjustingColorToHighlightState:v11];
+      posterTintColor = [(CNActionView *)self posterTintColor];
+      tintColorOverride = [(CNActionView *)self colorByAdjustingColorToHighlightState:posterTintColor];
 
       if ([(CNActionView *)self disabled])
       {
-        v12 = [v6 colorWithAlphaComponent:0.2];
+        v12 = [tintColorOverride colorWithAlphaComponent:0.2];
       }
 
       else
       {
-        v12 = v6;
+        v12 = tintColorOverride;
       }
 
       goto LABEL_32;
@@ -745,7 +745,7 @@ LABEL_35:
     goto LABEL_16;
   }
 
-  if (v5 == 7)
+  if (style == 7)
   {
     if ([(CNActionView *)self disabled])
     {
@@ -755,53 +755,53 @@ LABEL_35:
 
   else
   {
-    if (v5 != 8)
+    if (style != 8)
     {
       goto LABEL_16;
     }
 
     if ([(CNActionView *)self disabled])
     {
-      v10 = +[CNUIColorRepository quickActionContentColorDisabledPill];
+      contentColorForDisabledVibrantDarkState = +[CNUIColorRepository quickActionContentColorDisabledPill];
       goto LABEL_38;
     }
   }
 
 LABEL_31:
-  v6 = [(UIView *)self tintColorOverride];
-  v12 = [(CNActionView *)self colorByAdjustingColorToHighlightState:v6];
+  tintColorOverride = [(UIView *)self tintColorOverride];
+  v12 = [(CNActionView *)self colorByAdjustingColorToHighlightState:tintColorOverride];
 LABEL_32:
   v14 = v12;
 LABEL_33:
 
 LABEL_39:
-  v13 = [(CNActionView *)self imageView];
-  [v13 setTintColor:v14];
+  imageView2 = [(CNActionView *)self imageView];
+  [imageView2 setTintColor:v14];
 }
 
-- (void)updatePlatterViewStateAnimated:(BOOL)a3
+- (void)updatePlatterViewStateAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(CNActionView *)self window];
+  animatedCopy = animated;
+  window = [(CNActionView *)self window];
 
-  if (!v5 || [(CNActionView *)self style]== 6 || [(CNActionView *)self style]== 11 || [(CNActionView *)self style]== 10)
+  if (!window || [(CNActionView *)self style]== 6 || [(CNActionView *)self style]== 11 || [(CNActionView *)self style]== 10)
   {
     return;
   }
 
   v6 = [(CNActionView *)self style]== 3 || [(CNActionView *)self style]== 2 || [(CNActionView *)self style]== 9 || [(CNActionView *)self style]== 12;
-  v7 = [(CNActionView *)self platterView];
-  [v7 setHidden:v6];
+  platterView = [(CNActionView *)self platterView];
+  [platterView setHidden:v6];
 
-  v8 = [(CNActionView *)self vibrantPlatterView];
-  [v8 setHidden:v6 ^ 1];
+  vibrantPlatterView = [(CNActionView *)self vibrantPlatterView];
+  [vibrantPlatterView setHidden:v6 ^ 1];
 
-  v9 = [(CNActionView *)self style];
-  if (v9 > 4)
+  style = [(CNActionView *)self style];
+  if (style > 4)
   {
-    if (v9 > 8)
+    if (style > 8)
     {
-      if (v9 == 9 || v9 == 12)
+      if (style == 9 || style == 12)
       {
         goto LABEL_21;
       }
@@ -809,66 +809,66 @@ LABEL_39:
 
     else
     {
-      if (v9 == 5)
+      if (style == 5)
       {
         goto LABEL_28;
       }
 
-      if (v9 == 7)
+      if (style == 7)
       {
-        v16 = [MEMORY[0x1E69DC888] clearColor];
-        v17 = [(CNActionView *)self platterView];
-        [v17 setBackgroundColor:v16];
+        clearColor = [MEMORY[0x1E69DC888] clearColor];
+        platterView2 = [(CNActionView *)self platterView];
+        [platterView2 setBackgroundColor:clearColor];
 
-        v18 = [(CNActionView *)self platterView];
-        v19 = [v18 layer];
-        [v19 setBorderWidth:0.0];
+        platterView3 = [(CNActionView *)self platterView];
+        layer = [platterView3 layer];
+        [layer setBorderWidth:0.0];
 
-        v20 = [(CNActionView *)self platterView];
-        v21 = [v20 layer];
-        [v21 setCompositingFilter:0];
+        platterView4 = [(CNActionView *)self platterView];
+        layer2 = [platterView4 layer];
+        [layer2 setCompositingFilter:0];
 
         goto LABEL_40;
       }
     }
 
 LABEL_30:
-    v36 = [(CNActionView *)self platterView];
-    v37 = [v36 layer];
-    [v37 setBorderWidth:1.0];
+    platterView5 = [(CNActionView *)self platterView];
+    layer3 = [platterView5 layer];
+    [layer3 setBorderWidth:1.0];
 
     v38 = +[CNContactStyle currentStyle];
-    v39 = [v38 transportBackgroundColor];
-    v40 = [(CNActionView *)self colorByAdjustingColorToHighlightState:v39];
-    v41 = [(CNActionView *)self platterView];
-    [v41 setBackgroundColor:v40];
+    transportBackgroundColor = [v38 transportBackgroundColor];
+    v40 = [(CNActionView *)self colorByAdjustingColorToHighlightState:transportBackgroundColor];
+    platterView6 = [(CNActionView *)self platterView];
+    [platterView6 setBackgroundColor:v40];
 
     v42 = +[CNContactStyle currentStyle];
-    v43 = [v42 transportBorderColor];
-    v44 = [(CNActionView *)self colorByAdjustingColorToHighlightState:v43];
-    v45 = [v44 CGColor];
-    v46 = [(CNActionView *)self platterView];
-    v47 = [v46 layer];
-    [v47 setBorderColor:v45];
+    transportBorderColor = [v42 transportBorderColor];
+    v44 = [(CNActionView *)self colorByAdjustingColorToHighlightState:transportBorderColor];
+    cGColor = [v44 CGColor];
+    platterView7 = [(CNActionView *)self platterView];
+    layer4 = [platterView7 layer];
+    [layer4 setBorderColor:cGColor];
 
-    v48 = [(CNActionView *)self platterView];
-    v49 = [v48 layer];
-    [v49 setCompositingFilter:0];
+    platterView8 = [(CNActionView *)self platterView];
+    layer5 = [platterView8 layer];
+    [layer5 setCompositingFilter:0];
 
-    v33 = [(CNActionView *)self layer];
-    v20 = v33;
+    layer6 = [(CNActionView *)self layer];
+    platterView4 = layer6;
     v34 = 1;
 LABEL_27:
-    [v33 setAllowsGroupBlending:v34];
+    [layer6 setAllowsGroupBlending:v34];
     goto LABEL_40;
   }
 
-  if ((v9 - 2) < 2)
+  if ((style - 2) < 2)
   {
 LABEL_21:
-    v22 = [(CNActionView *)self vibrantPlatterView];
+    vibrantPlatterView2 = [(CNActionView *)self vibrantPlatterView];
 
-    if (!v22)
+    if (!vibrantPlatterView2)
     {
       v23 = objc_opt_new();
       [(CNActionView *)self setVibrantPlatterView:v23];
@@ -876,12 +876,12 @@ LABEL_21:
       [(CNActionView *)self platterViewMinimumLayoutSizeForStyle:[(CNActionView *)self style]];
       v25 = v24;
       v27 = v26;
-      v28 = [(CNActionView *)self vibrantPlatterView];
-      [v28 setMinimumLayoutSize:{v25, v27}];
+      vibrantPlatterView3 = [(CNActionView *)self vibrantPlatterView];
+      [vibrantPlatterView3 setMinimumLayoutSize:{v25, v27}];
 
-      v29 = [(CNActionView *)self platterBoxView];
-      v30 = [(CNActionView *)self vibrantPlatterView];
-      [v29 insertArrangedSubview:v30 atIndex:0];
+      platterBoxView = [(CNActionView *)self platterBoxView];
+      vibrantPlatterView4 = [(CNActionView *)self vibrantPlatterView];
+      [platterBoxView insertArrangedSubview:vibrantPlatterView4 atIndex:0];
     }
 
     if ([(CNActionView *)self isHighlighted])
@@ -894,63 +894,63 @@ LABEL_21:
       v31 = 3;
     }
 
-    v32 = [(CNActionView *)self vibrantPlatterView];
-    [v32 setProminence:v31];
+    vibrantPlatterView5 = [(CNActionView *)self vibrantPlatterView];
+    [vibrantPlatterView5 setProminence:v31];
 
-    v33 = [(CNActionView *)self layer];
-    v20 = v33;
+    layer6 = [(CNActionView *)self layer];
+    platterView4 = layer6;
     v34 = 0;
     goto LABEL_27;
   }
 
-  if (v9)
+  if (style)
   {
-    if (v9 == 4)
+    if (style == 4)
     {
       if ([(CNActionView *)self disabled])
       {
-        v10 = [MEMORY[0x1E69DC888] clearColor];
-        v11 = [(CNActionView *)self platterView];
-        [v11 setBackgroundColor:v10];
+        clearColor2 = [MEMORY[0x1E69DC888] clearColor];
+        platterView9 = [(CNActionView *)self platterView];
+        [platterView9 setBackgroundColor:clearColor2];
 
-        v12 = [(CNActionView *)self platterView];
-        v13 = [v12 layer];
-        [v13 setBorderWidth:1.0];
+        platterView10 = [(CNActionView *)self platterView];
+        layer7 = [platterView10 layer];
+        [layer7 setBorderWidth:1.0];
 
-        v14 = [objc_opt_class() borderColorForDisabledBoldState];
-        v15 = [v14 CGColor];
+        borderColorForDisabledBoldState = [objc_opt_class() borderColorForDisabledBoldState];
+        cGColor2 = [borderColorForDisabledBoldState CGColor];
       }
 
       else
       {
         v50 = +[CNContactStyle currentStyle];
-        v51 = [v50 transportBoldBackgroundColor];
-        v52 = v51;
-        if (v51)
+        transportBoldBackgroundColor = [v50 transportBoldBackgroundColor];
+        v52 = transportBoldBackgroundColor;
+        if (transportBoldBackgroundColor)
         {
-          v53 = v51;
+          tintColorOverride = transportBoldBackgroundColor;
         }
 
         else
         {
-          v53 = [(UIView *)self tintColorOverride];
+          tintColorOverride = [(UIView *)self tintColorOverride];
         }
 
-        v14 = v53;
+        borderColorForDisabledBoldState = tintColorOverride;
 
-        v54 = [(CNActionView *)self platterView];
-        [v54 setBackgroundColor:v14];
+        platterView11 = [(CNActionView *)self platterView];
+        [platterView11 setBackgroundColor:borderColorForDisabledBoldState];
 
-        v55 = [(CNActionView *)self platterView];
-        v56 = [v55 layer];
-        [v56 setBorderWidth:0.0];
+        platterView12 = [(CNActionView *)self platterView];
+        layer8 = [platterView12 layer];
+        [layer8 setBorderWidth:0.0];
 
-        v15 = 0;
+        cGColor2 = 0;
       }
 
-      v57 = [(CNActionView *)self platterView];
-      v58 = [v57 layer];
-      [v58 setBorderColor:v15];
+      platterView13 = [(CNActionView *)self platterView];
+      layer9 = [platterView13 layer];
+      [layer9 setBorderColor:cGColor2];
 
       goto LABEL_36;
     }
@@ -959,9 +959,9 @@ LABEL_21:
   }
 
 LABEL_28:
-  v14 = [MEMORY[0x1E69DC888] clearColor];
-  v35 = [(CNActionView *)self platterView];
-  [v35 setBackgroundColor:v14];
+  borderColorForDisabledBoldState = [MEMORY[0x1E69DC888] clearColor];
+  platterView14 = [(CNActionView *)self platterView];
+  [platterView14 setBackgroundColor:borderColorForDisabledBoldState];
 
 LABEL_36:
   if ([(CNActionView *)self isHighlighted])
@@ -974,39 +974,39 @@ LABEL_36:
     v59 = 1.0;
   }
 
-  v20 = [(CNActionView *)self platterView];
-  [v20 setAlpha:v59];
+  platterView4 = [(CNActionView *)self platterView];
+  [platterView4 setAlpha:v59];
 LABEL_40:
 
-  if (v3)
+  if (animatedCopy)
   {
     v60 = objc_opt_class();
-    v61 = [(CNActionView *)self platterView];
-    [v60 fadeInView:v61];
+    platterView15 = [(CNActionView *)self platterView];
+    [v60 fadeInView:platterView15];
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(CNActionView *)self title];
-  if (v6)
+  height = fits.height;
+  width = fits.width;
+  title = [(CNActionView *)self title];
+  if (title)
   {
-    v7 = v6;
-    v8 = [(CNActionView *)self titleLabel];
-    v9 = [v8 text];
+    v7 = title;
+    titleLabel = [(CNActionView *)self titleLabel];
+    text = [titleLabel text];
 
-    if (!v9)
+    if (!text)
     {
-      v10 = [(CNActionView *)self titleLabel];
-      v11 = [(CNActionView *)self title];
-      [v10 setText:v11];
+      titleLabel2 = [(CNActionView *)self titleLabel];
+      title2 = [(CNActionView *)self title];
+      [titleLabel2 setText:title2];
     }
   }
 
-  v12 = [(CNActionView *)self containerView];
-  [v12 sizeThatFits:{width, height}];
+  containerView = [(CNActionView *)self containerView];
+  [containerView sizeThatFits:{width, height}];
   v14 = v13;
   v16 = v15;
 
@@ -1019,8 +1019,8 @@ LABEL_40:
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = [(CNActionView *)self containerView];
-  [v2 effectiveLayoutSizeFittingSize:{*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)}];
+  containerView = [(CNActionView *)self containerView];
+  [containerView effectiveLayoutSizeFittingSize:{*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)}];
   v4 = v3;
   v6 = v5;
 
@@ -1031,23 +1031,23 @@ LABEL_40:
   return result;
 }
 
-- (void)tlk_updateForAppearance:(id)a3
+- (void)tlk_updateForAppearance:(id)appearance
 {
   v4.receiver = self;
   v4.super_class = CNActionView;
-  [(CNActionView *)&v4 tlk_updateForAppearance:a3];
+  [(CNActionView *)&v4 tlk_updateForAppearance:appearance];
   [(CNActionView *)self updateLabelStateAnimated:0];
   [(CNActionView *)self updateImageViewStateAnimated:0];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v9.receiver = self;
   v9.super_class = CNActionView;
-  [(CNActionView *)&v9 traitCollectionDidChange:v4];
-  v5 = [(CNActionView *)self traitCollection];
-  if ([v5 hasDifferentColorAppearanceComparedToTraitCollection:v4])
+  [(CNActionView *)&v9 traitCollectionDidChange:changeCopy];
+  traitCollection = [(CNActionView *)self traitCollection];
+  if ([traitCollection hasDifferentColorAppearanceComparedToTraitCollection:changeCopy])
   {
 
 LABEL_4:
@@ -1055,11 +1055,11 @@ LABEL_4:
     goto LABEL_5;
   }
 
-  v6 = [(CNActionView *)self traitCollection];
-  v7 = [v6 _vibrancy];
-  v8 = [v4 _vibrancy];
+  traitCollection2 = [(CNActionView *)self traitCollection];
+  _vibrancy = [traitCollection2 _vibrancy];
+  _vibrancy2 = [changeCopy _vibrancy];
 
-  if (v7 != v8)
+  if (_vibrancy != _vibrancy2)
   {
     goto LABEL_4;
   }
@@ -1086,12 +1086,12 @@ LABEL_5:
   [(CNActionView *)self invalidateIntrinsicContentSize];
 }
 
-- (CGSize)platterViewMinimumLayoutSizeForStyle:(int64_t)a3
+- (CGSize)platterViewMinimumLayoutSizeForStyle:(int64_t)style
 {
   v3 = 37.0;
-  if (a3 <= 0xB)
+  if (style <= 0xB)
   {
-    if (((1 << a3) & 0xCC0) != 0)
+    if (((1 << style) & 0xCC0) != 0)
     {
       v3 = 24.0;
       if ([MEMORY[0x1E69DB878] ab_preferredContentSizeCategoryIsAccessibilityCategory])
@@ -1100,7 +1100,7 @@ LABEL_5:
       }
     }
 
-    else if (((1 << a3) & 0x300) != 0)
+    else if (((1 << style) & 0x300) != 0)
     {
       [objc_opt_class() minimumPillDimension];
       v3 = v5;
@@ -1116,25 +1116,25 @@ LABEL_5:
 
 - (void)applyRoundedRectMargins
 {
-  v3 = [(CNActionView *)self containerView];
-  [v3 setLayoutMarginsRelativeArrangement:1];
+  containerView = [(CNActionView *)self containerView];
+  [containerView setLayoutMarginsRelativeArrangement:1];
 
   if ([MEMORY[0x1E69DB878] ab_preferredContentSizeCategoryIsAccessibilityCategory])
   {
-    v10 = [(UIView *)self _cnui_contactStyle];
-    [v10 sectionContentInset];
+    _cnui_contactStyle = [(UIView *)self _cnui_contactStyle];
+    [_cnui_contactStyle sectionContentInset];
     v5 = v4;
-    v6 = [(UIView *)self _cnui_contactStyle];
-    [v6 sectionContentInset];
+    _cnui_contactStyle2 = [(UIView *)self _cnui_contactStyle];
+    [_cnui_contactStyle2 sectionContentInset];
     v8 = v7;
-    v9 = [(CNActionView *)self containerView];
-    [v9 setLayoutMargins:{9.5, v5, 9.5, v8}];
+    containerView2 = [(CNActionView *)self containerView];
+    [containerView2 setLayoutMargins:{9.5, v5, 9.5, v8}];
   }
 
   else
   {
-    v10 = [(CNActionView *)self containerView];
-    [v10 setLayoutMargins:{9.5, 4.0, 9.5, 4.0}];
+    _cnui_contactStyle = [(CNActionView *)self containerView];
+    [_cnui_contactStyle setLayoutMargins:{9.5, 4.0, 9.5, 4.0}];
   }
 }
 
@@ -1142,37 +1142,37 @@ LABEL_5:
 {
   [(CNActionView *)self applyRoundedRectMargins];
   [(CNActionView *)self setBackgroundColor:0];
-  v3 = [(CNActionView *)self layer];
-  [v3 setCornerRadius:0.0];
+  layer = [(CNActionView *)self layer];
+  [layer setCornerRadius:0.0];
 
-  v4 = [(CNActionView *)self layer];
-  [v4 setBorderWidth:0.0];
+  layer2 = [(CNActionView *)self layer];
+  [layer2 setBorderWidth:0.0];
 
-  v5 = [(CNActionView *)self layer];
-  [v5 setBorderColor:0];
+  layer3 = [(CNActionView *)self layer];
+  [layer3 setBorderColor:0];
 
-  v6 = [(CNActionView *)self vibrantBackgroundView];
+  vibrantBackgroundView = [(CNActionView *)self vibrantBackgroundView];
 
-  if (!v6)
+  if (!vibrantBackgroundView)
   {
     v7 = [objc_alloc(MEMORY[0x1E69D91C8]) initWithProminence:3];
     [(CNActionView *)self setVibrantBackgroundView:v7];
 
-    v8 = [(CNActionView *)self vibrantBackgroundView];
-    [v8 setUserInteractionEnabled:0];
+    vibrantBackgroundView2 = [(CNActionView *)self vibrantBackgroundView];
+    [vibrantBackgroundView2 setUserInteractionEnabled:0];
 
-    v9 = [(CNActionView *)self vibrantBackgroundView];
-    v10 = [v9 layer];
-    [v10 setCornerRadius:20.0];
+    vibrantBackgroundView3 = [(CNActionView *)self vibrantBackgroundView];
+    layer4 = [vibrantBackgroundView3 layer];
+    [layer4 setCornerRadius:20.0];
 
     v11 = *MEMORY[0x1E69796E8];
-    v12 = [(CNActionView *)self vibrantBackgroundView];
-    v13 = [v12 layer];
-    [v13 setCornerCurve:v11];
+    vibrantBackgroundView4 = [(CNActionView *)self vibrantBackgroundView];
+    layer5 = [vibrantBackgroundView4 layer];
+    [layer5 setCornerCurve:v11];
 
-    v14 = [(CNActionView *)self vibrantBackgroundView];
-    v15 = [(CNActionView *)self containerView];
-    [(CNActionView *)self insertSubview:v14 belowSubview:v15];
+    vibrantBackgroundView5 = [(CNActionView *)self vibrantBackgroundView];
+    containerView = [(CNActionView *)self containerView];
+    [(CNActionView *)self insertSubview:vibrantBackgroundView5 belowSubview:containerView];
 
     [(CNActionView *)self setNeedsLayout];
   }
@@ -1187,76 +1187,76 @@ LABEL_5:
     v16 = 3;
   }
 
-  v17 = [(CNActionView *)self vibrantBackgroundView];
-  [v17 setProminence:v16];
+  vibrantBackgroundView6 = [(CNActionView *)self vibrantBackgroundView];
+  [vibrantBackgroundView6 setProminence:v16];
 
-  v18 = [(CNActionView *)self vibrantBackgroundView];
-  [v18 setHidden:0];
+  vibrantBackgroundView7 = [(CNActionView *)self vibrantBackgroundView];
+  [vibrantBackgroundView7 setHidden:0];
 
-  v19 = [(CNActionView *)self vibrantPlatterView];
-  [v19 setHidden:1];
+  vibrantPlatterView = [(CNActionView *)self vibrantPlatterView];
+  [vibrantPlatterView setHidden:1];
 }
 
 - (void)updateBackground
 {
   v40[2] = *MEMORY[0x1E69E9840];
-  v3 = [(CNActionView *)self style];
-  if (v3 <= 9)
+  style = [(CNActionView *)self style];
+  if (style <= 9)
   {
-    if (v3 != 6)
+    if (style != 6)
     {
-      if (v3 == 7)
+      if (style == 7)
       {
         [(CNActionView *)self applyRoundedRectMargins];
-        v4 = [(CNActionView *)self layer];
-        [v4 setCornerRadius:20.0];
+        layer = [(CNActionView *)self layer];
+        [layer setCornerRadius:20.0];
 
         v5 = *MEMORY[0x1E69796E8];
-        v6 = [(CNActionView *)self layer];
-        [v6 setCornerCurve:v5];
+        layer2 = [(CNActionView *)self layer];
+        [layer2 setCornerCurve:v5];
 
-        v7 = [(CNActionView *)self layer];
-        [v7 setBorderWidth:0.5];
+        layer3 = [(CNActionView *)self layer];
+        [layer3 setBorderWidth:0.5];
 
         v8 = +[CNUIColorRepository quickActionViewRoundedRectBorderColor];
-        v9 = [v8 CGColor];
-        v10 = [(CNActionView *)self layer];
-        [v10 setBorderColor:v9];
+        cGColor = [v8 CGColor];
+        layer4 = [(CNActionView *)self layer];
+        [layer4 setBorderColor:cGColor];
 
-        v11 = +[CNUIColorRepository quickActionViewRoundedRectBackgroundColor];
-        [(CNActionView *)self setBackgroundColor:v11];
+        layer7 = +[CNUIColorRepository quickActionViewRoundedRectBackgroundColor];
+        [(CNActionView *)self setBackgroundColor:layer7];
 LABEL_16:
 
-        v38 = [(CNActionView *)self vibrantBackgroundView];
-        [v38 setHidden:1];
+        vibrantBackgroundView = [(CNActionView *)self vibrantBackgroundView];
+        [vibrantBackgroundView setHidden:1];
 
         return;
       }
 
 LABEL_15:
-      v18 = [(CNActionView *)self containerView];
-      [v18 setLayoutMarginsRelativeArrangement:0];
+      containerView = [(CNActionView *)self containerView];
+      [containerView setLayoutMarginsRelativeArrangement:0];
 
       [(CNActionView *)self setBackgroundColor:0];
-      v19 = [(CNActionView *)self layer];
-      [v19 setCornerRadius:0.0];
+      layer5 = [(CNActionView *)self layer];
+      [layer5 setCornerRadius:0.0];
 
-      v20 = [(CNActionView *)self layer];
-      [v20 setBorderWidth:0.0];
+      layer6 = [(CNActionView *)self layer];
+      [layer6 setBorderWidth:0.0];
 
-      v11 = [(CNActionView *)self layer];
-      [v11 setBorderColor:0];
+      layer7 = [(CNActionView *)self layer];
+      [layer7 setBorderColor:0];
       goto LABEL_16;
     }
 
     goto LABEL_9;
   }
 
-  if (v3 != 10)
+  if (style != 10)
   {
-    if (v3 != 11)
+    if (style != 11)
     {
-      if (v3 == 12)
+      if (style == 12)
       {
         return;
       }
@@ -1271,9 +1271,9 @@ LABEL_9:
   }
 
   [(CNActionView *)self applyRoundedRectMargins];
-  v12 = [(CNActionView *)self colorMatrixView];
+  colorMatrixView = [(CNActionView *)self colorMatrixView];
 
-  if (!v12)
+  if (!colorMatrixView)
   {
     swiftUIContactCardEnabled = self->_swiftUIContactCardEnabled;
     v14 = objc_alloc(MEMORY[0x1E69DD298]);
@@ -1289,18 +1289,18 @@ LABEL_9:
       v17 = [v14 initWithEffect:0];
     }
 
-    v21 = [v17 layer];
-    [v21 setCornerRadius:20.0];
+    layer8 = [v17 layer];
+    [layer8 setCornerRadius:20.0];
 
     v22 = *MEMORY[0x1E69796E8];
-    v23 = [v17 layer];
-    [v23 setCornerCurve:v22];
+    layer9 = [v17 layer];
+    [layer9 setCornerCurve:v22];
 
     [v17 setClipsToBounds:1];
     [v17 setUserInteractionEnabled:0];
     [v17 _setGroupName:@"CNQuickActionsCaptureGroup"];
-    v24 = [(CNActionView *)self containerView];
-    [(CNActionView *)self insertSubview:v17 belowSubview:v24];
+    containerView2 = [(CNActionView *)self containerView];
+    [(CNActionView *)self insertSubview:v17 belowSubview:containerView2];
 
     [(CNActionView *)self setColorMatrixView:v17];
   }
@@ -1317,8 +1317,8 @@ LABEL_9:
     v40[0] = v25;
     v40[1] = v26;
     v27 = [MEMORY[0x1E695DEC8] arrayWithObjects:v40 count:2];
-    v28 = [(CNActionView *)self colorMatrixView];
-    [v28 setBackgroundEffects:v27];
+    colorMatrixView2 = [(CNActionView *)self colorMatrixView];
+    [colorMatrixView2 setBackgroundEffects:v27];
   }
 
   [(CNActionView *)self bounds];
@@ -1326,30 +1326,30 @@ LABEL_9:
   v32 = v31;
   v34 = v33;
   v36 = v35;
-  v37 = [(CNActionView *)self colorMatrixView];
-  [v37 setFrame:{v30, v32, v34, v36}];
+  colorMatrixView3 = [(CNActionView *)self colorMatrixView];
+  [colorMatrixView3 setFrame:{v30, v32, v34, v36}];
 }
 
-- (void)setVisualEffectViewCaptureView:(id)a3
+- (void)setVisualEffectViewCaptureView:(id)view
 {
-  if (self->_visualEffectViewCaptureView != a3)
+  if (self->_visualEffectViewCaptureView != view)
   {
-    v5 = a3;
-    v6 = [(CNActionView *)self colorMatrixView];
-    [v6 _setCaptureView:v5];
+    viewCopy = view;
+    colorMatrixView = [(CNActionView *)self colorMatrixView];
+    [colorMatrixView _setCaptureView:viewCopy];
 
-    v7 = [(CNActionView *)self colorMatrixView];
-    [v7 _setGroupName:@"CNQuickActionsCaptureGroup"];
+    colorMatrixView2 = [(CNActionView *)self colorMatrixView];
+    [colorMatrixView2 _setGroupName:@"CNQuickActionsCaptureGroup"];
   }
 }
 
-- (void)setPosterTintColor:(id)a3
+- (void)setPosterTintColor:(id)color
 {
-  v4 = a3;
-  v7 = v4;
-  if (v4)
+  colorCopy = color;
+  v7 = colorCopy;
+  if (colorCopy)
   {
-    v5 = v4;
+    v5 = colorCopy;
   }
 
   else
@@ -1368,90 +1368,90 @@ LABEL_9:
   }
 }
 
-- (void)setStyle:(int64_t)a3
+- (void)setStyle:(int64_t)style
 {
-  if (self->_style != a3)
+  if (self->_style != style)
   {
-    self->_style = a3;
+    self->_style = style;
     [(CNActionView *)self updatePlatterViewStateAnimated:0];
     [(CNActionView *)self updateTitleLabelFont];
     [(CNActionView *)self tlk_updateWithCurrentAppearance];
     [(CNActionView *)self updateImage];
-    [(CNActionView *)self platterViewMinimumLayoutSizeForStyle:a3];
+    [(CNActionView *)self platterViewMinimumLayoutSizeForStyle:style];
     v7 = v6;
     v9 = v8;
-    v10 = [(CNActionView *)self platterView];
-    [v10 setMinimumLayoutSize:{v7, v9}];
+    platterView = [(CNActionView *)self platterView];
+    [platterView setMinimumLayoutSize:{v7, v9}];
 
-    [(CNActionView *)self platterViewMinimumLayoutSizeForStyle:a3];
+    [(CNActionView *)self platterViewMinimumLayoutSizeForStyle:style];
     v12 = v11;
     v14 = v13;
-    v15 = [(CNActionView *)self vibrantPlatterView];
-    [v15 setMinimumLayoutSize:{v12, v14}];
+    vibrantPlatterView = [(CNActionView *)self vibrantPlatterView];
+    [vibrantPlatterView setMinimumLayoutSize:{v12, v14}];
 
-    v16 = [(CNActionView *)self platterView];
-    [v16 minimumLayoutSize];
+    platterView2 = [(CNActionView *)self platterView];
+    [platterView2 minimumLayoutSize];
     v18 = v17;
-    v19 = [(CNActionView *)self platterView];
-    [v19 minimumLayoutSize];
+    platterView3 = [(CNActionView *)self platterView];
+    [platterView3 minimumLayoutSize];
     v21 = v20;
-    v22 = [(CNActionView *)self horizontalContentView];
-    [v22 setFrame:{0.0, 0.0, v18, v21}];
+    horizontalContentView = [(CNActionView *)self horizontalContentView];
+    [horizontalContentView setFrame:{0.0, 0.0, v18, v21}];
 
     [(CNActionView *)self updateBackground];
   }
 }
 
-- (void)setHighlighted:(BOOL)a3 animated:(BOOL)a4
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v7.receiver = self;
   v7.super_class = CNActionView;
   [(CNActionView *)&v7 setHighlighted:?];
-  if (![(CNActionView *)self disabled]|| !a3)
+  if (![(CNActionView *)self disabled]|| !highlighted)
   {
-    [(CNActionView *)self updatePlatterViewStateAnimated:v4];
-    [(CNActionView *)self updateImageViewStateAnimated:v4];
+    [(CNActionView *)self updatePlatterViewStateAnimated:animatedCopy];
+    [(CNActionView *)self updateImageViewStateAnimated:animatedCopy];
   }
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
   v4.receiver = self;
   v4.super_class = CNActionView;
-  [(CNActionView *)&v4 setHighlighted:a3];
+  [(CNActionView *)&v4 setHighlighted:highlighted];
   [(CNActionView *)self updatePlatterViewStateAnimated:0];
   [(CNActionView *)self updateImageViewStateAnimated:0];
   [(CNActionView *)self updateBackground];
 }
 
-- (void)setDisabled:(BOOL)a3 animated:(BOOL)a4
+- (void)setDisabled:(BOOL)disabled animated:(BOOL)animated
 {
-  v4 = a3;
-  if (self->_disabled != a3)
+  disabledCopy = disabled;
+  if (self->_disabled != disabled)
   {
-    v6 = a4;
-    self->_disabled = a3;
-    [(CNActionView *)self setUserInteractionEnabled:!a3];
-    [(CNActionView *)self setHighlighted:0 animated:v6];
-    [(CNActionView *)self updatePlatterViewStateAnimated:v6];
+    animatedCopy = animated;
+    self->_disabled = disabled;
+    [(CNActionView *)self setUserInteractionEnabled:!disabled];
+    [(CNActionView *)self setHighlighted:0 animated:animatedCopy];
+    [(CNActionView *)self updatePlatterViewStateAnimated:animatedCopy];
     [(CNActionView *)self tlk_updateWithCurrentAppearance];
   }
 
-  if (v4)
+  if (disabledCopy)
   {
     if (([(CNActionView *)self isContextMenuInteractionEnabled]& 1) == 0)
     {
       return;
     }
 
-    v7 = 0;
+    shouldShowDisambiguation = 0;
   }
 
   else
   {
-    v7 = [(CNActionView *)self shouldShowDisambiguation];
-    if (v7 == [(CNActionView *)self isContextMenuInteractionEnabled])
+    shouldShowDisambiguation = [(CNActionView *)self shouldShowDisambiguation];
+    if (shouldShowDisambiguation == [(CNActionView *)self isContextMenuInteractionEnabled])
     {
       return;
     }
@@ -1459,16 +1459,16 @@ LABEL_9:
 
   if ([(CNActionView *)self isContextMenuInteractionEnabled])
   {
-    v8 = [(CNActionView *)self contextMenuInteraction];
-    [v8 dismissMenu];
+    contextMenuInteraction = [(CNActionView *)self contextMenuInteraction];
+    [contextMenuInteraction dismissMenu];
   }
 
-  [(CNActionView *)self setContextMenuInteractionEnabled:v7];
+  [(CNActionView *)self setContextMenuInteractionEnabled:shouldShowDisambiguation];
 }
 
-- (void)setActionDelegate:(id)a3
+- (void)setActionDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_actionDelegate);
 
   v6 = obj;
@@ -1477,15 +1477,15 @@ LABEL_9:
     objc_storeWeak(&self->_actionDelegate, obj);
     if ([(CNActionView *)self isContextMenuInteractionEnabled])
     {
-      v7 = [(CNActionView *)self shouldShowDisambiguation];
+      shouldShowDisambiguation = [(CNActionView *)self shouldShowDisambiguation];
     }
 
     else
     {
-      v7 = 0;
+      shouldShowDisambiguation = 0;
     }
 
-    v5 = [(CNActionView *)self setContextMenuInteractionEnabled:v7];
+    v5 = [(CNActionView *)self setContextMenuInteractionEnabled:shouldShowDisambiguation];
     v6 = obj;
   }
 
@@ -1494,7 +1494,7 @@ LABEL_9:
 
 - (BOOL)shouldShowDisambiguation
 {
-  v3 = [(CNActionView *)self actionDelegate];
+  actionDelegate = [(CNActionView *)self actionDelegate];
   v4 = objc_opt_respondsToSelector();
 
   if ((v4 & 1) == 0)
@@ -1502,18 +1502,18 @@ LABEL_9:
     return 1;
   }
 
-  v5 = [(CNActionView *)self actionDelegate];
-  v6 = [v5 actionViewShouldPresentDisambiguationUI:self];
+  actionDelegate2 = [(CNActionView *)self actionDelegate];
+  v6 = [actionDelegate2 actionViewShouldPresentDisambiguationUI:self];
 
   return v6;
 }
 
-- (CNActionView)initWithFrame:(CGRect)a3
+- (CNActionView)initWithFrame:(CGRect)frame
 {
   v34[1] = *MEMORY[0x1E69E9840];
   v32.receiver = self;
   v32.super_class = CNActionView;
-  v3 = [(CNActionView *)&v32 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CNActionView *)&v32 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -1591,21 +1591,21 @@ LABEL_9:
     posterTintColor = v4->_posterTintColor;
     v4->_posterTintColor = v27;
 
-    v29 = [MEMORY[0x1E69966E8] currentEnvironment];
-    v30 = [v29 featureFlags];
-    v4->_swiftUIContactCardEnabled = [v30 isFeatureEnabled:11];
+    currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+    featureFlags = [currentEnvironment featureFlags];
+    v4->_swiftUIContactCardEnabled = [featureFlags isFeatureEnabled:11];
   }
 
   return v4;
 }
 
-- (id)colorByAdjustingColorToHighlightState:(id)a3
+- (id)colorByAdjustingColorToHighlightState:(id)state
 {
-  v4 = a3;
-  v5 = [(CNActionView *)self style];
+  stateCopy = state;
+  style = [(CNActionView *)self style];
   if (([(CNActionView *)self isHighlighted]& 1) != 0)
   {
-    if (v5 == 1)
+    if (style == 1)
     {
       v6 = -0.100000001;
     }
@@ -1615,12 +1615,12 @@ LABEL_9:
       v6 = 0.0;
     }
 
-    v7 = [objc_opt_class() colorByIncreasingBrightnessComponentByPercentage:v4 ofColor:v6];
+    v7 = [objc_opt_class() colorByIncreasingBrightnessComponentByPercentage:stateCopy ofColor:v6];
   }
 
   else
   {
-    v7 = v4;
+    v7 = stateCopy;
   }
 
   v8 = v7;
@@ -1628,12 +1628,12 @@ LABEL_9:
   return v8;
 }
 
-+ (CGSize)minimumSizeForStyle:(int64_t)a3
++ (CGSize)minimumSizeForStyle:(int64_t)style
 {
   v3 = *MEMORY[0x1E698B6F8];
-  if ((a3 & 0xFFFFFFFFFFFFFFFELL) == 8)
+  if ((style & 0xFFFFFFFFFFFFFFFELL) == 8)
   {
-    [a1 minimumPillDimension];
+    [self minimumPillDimension];
     v5 = v4;
   }
 
@@ -1648,16 +1648,16 @@ LABEL_9:
   return result;
 }
 
-+ (id)titleFontForStyle:(int64_t)a3
++ (id)titleFontForStyle:(int64_t)style
 {
-  if ((a3 - 8) > 3)
+  if ((style - 8) > 3)
   {
     v4 = MEMORY[0x1E69DDD10];
   }
 
   else
   {
-    v4 = qword_1E74E2C50[a3 - 8];
+    v4 = qword_1E74E2C50[style - 8];
   }
 
   v5 = *v4;
@@ -1685,33 +1685,33 @@ LABEL_9:
   }
 }
 
-+ (void)fadeInView:(id)a3
++ (void)fadeInView:(id)view
 {
   v3 = MEMORY[0x1E6979538];
-  v4 = a3;
-  v6 = [v3 animation];
-  [v6 setDuration:0.2];
-  v5 = [v4 layer];
+  viewCopy = view;
+  animation = [v3 animation];
+  [animation setDuration:0.2];
+  layer = [viewCopy layer];
 
-  [v5 addAnimation:v6 forKey:0];
+  [layer addAnimation:animation forKey:0];
 }
 
-+ (id)colorByIncreasingBrightnessComponentByPercentage:(double)a3 ofColor:(id)a4
++ (id)colorByIncreasingBrightnessComponentByPercentage:(double)percentage ofColor:(id)color
 {
-  v5 = a4;
-  if (v5)
+  colorCopy = color;
+  if (colorCopy)
   {
-    v6 = [MEMORY[0x1E69DC888] clearColor];
-    v7 = [v5 isEqual:v6];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    v7 = [colorCopy isEqual:clearColor];
 
-    if (v7 || fabs(a3) > 1.0 || (v13 = 0.0, v14 = 0.0, v11 = 0.0, v12 = 0.0, ([v5 getHue:&v14 saturation:&v13 brightness:&v12 alpha:&v11] & 1) == 0))
+    if (v7 || fabs(percentage) > 1.0 || (v13 = 0.0, v14 = 0.0, v11 = 0.0, v12 = 0.0, ([colorCopy getHue:&v14 saturation:&v13 brightness:&v12 alpha:&v11] & 1) == 0))
     {
-      v8 = v5;
+      v8 = colorCopy;
     }
 
     else
     {
-      v12 = fmin((a3 + 1.0) * v12, 1.0);
+      v12 = fmin((percentage + 1.0) * v12, 1.0);
       if (v11 < 0.1)
       {
         v11 = v11 + 0.100000001;

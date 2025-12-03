@@ -1,18 +1,18 @@
 @interface CMDictArchiveManager
-- (CMDictArchiveManager)initWithName:(id)a3 resourcePathPrefix:(id)a4;
-- (id)copyDictionaryWithSizeInfos:(BOOL)a3;
-- (id)copyResourceWithName:(id)a3 type:(int)a4;
-- (void)pushCssToPath:(id)a3;
-- (void)pushData:(id)a3 toPath:(id)a4;
-- (void)pushText:(id)a3 toPath:(id)a4;
+- (CMDictArchiveManager)initWithName:(id)name resourcePathPrefix:(id)prefix;
+- (id)copyDictionaryWithSizeInfos:(BOOL)infos;
+- (id)copyResourceWithName:(id)name type:(int)type;
+- (void)pushCssToPath:(id)path;
+- (void)pushData:(id)data toPath:(id)path;
+- (void)pushText:(id)text toPath:(id)path;
 @end
 
 @implementation CMDictArchiveManager
 
-- (CMDictArchiveManager)initWithName:(id)a3 resourcePathPrefix:(id)a4
+- (CMDictArchiveManager)initWithName:(id)name resourcePathPrefix:(id)prefix
 {
-  v7 = a3;
-  v8 = a4;
+  nameCopy = name;
+  prefixCopy = prefix;
   v15.receiver = self;
   v15.super_class = CMDictArchiveManager;
   v9 = [(CMStylingArchiveManager *)&v15 init];
@@ -26,9 +26,9 @@
     mResources = v9->mResources;
     v9->mResources = v12;
 
-    objc_storeStrong(&v9->mPrefix, a4);
-    objc_storeStrong(&v9->mResourceUrlProtocol, a4);
-    objc_storeStrong(&v9->mName, a3);
+    objc_storeStrong(&v9->mPrefix, prefix);
+    objc_storeStrong(&v9->mResourceUrlProtocol, prefix);
+    objc_storeStrong(&v9->mName, name);
     v9->mIsFrameset = 0;
     v9->super.super.mIsThumbnail = 0;
   }
@@ -36,29 +36,29 @@
   return v9;
 }
 
-- (id)copyResourceWithName:(id)a3 type:(int)a4
+- (id)copyResourceWithName:(id)name type:(int)type
 {
-  v5 = a3;
+  nameCopy = name;
   v6 = objc_alloc_init(MEMORY[0x277CBEB28]);
-  [(NSMutableDictionary *)self->mResources setObject:v6 forKey:v5];
+  [(NSMutableDictionary *)self->mResources setObject:v6 forKey:nameCopy];
   v7 = 2;
   if (self->mIsFrameset)
   {
     v7 = 3;
   }
 
-  v8 = [*(&self->super.super.super.isa + OBJC_IVAR___CMDictArchiveManager_mMainHtml[v7]) stringByAppendingString:v5];
+  v8 = [*(&self->super.super.super.isa + OBJC_IVAR___CMDictArchiveManager_mMainHtml[v7]) stringByAppendingString:nameCopy];
 
   return v8;
 }
 
-- (void)pushData:(id)a3 toPath:(id)a4
+- (void)pushData:(id)data toPath:(id)path
 {
-  v12 = a3;
-  v6 = a4;
-  if (![(CMArchiveManager *)self progressiveMappingIsPausedOnPath:v6])
+  dataCopy = data;
+  pathCopy = path;
+  if (![(CMArchiveManager *)self progressiveMappingIsPausedOnPath:pathCopy])
   {
-    v7 = v6;
+    v7 = pathCopy;
     v8 = 2;
     if (self->mIsFrameset)
     {
@@ -74,38 +74,38 @@
     }
 
     v11 = [(NSMutableDictionary *)self->mResources objectForKey:v7];
-    [v11 appendData:v12];
+    [v11 appendData:dataCopy];
   }
 }
 
-- (void)pushText:(id)a3 toPath:(id)a4
+- (void)pushText:(id)text toPath:(id)path
 {
-  v8 = a3;
-  v6 = a4;
-  if (![(CMArchiveManager *)self progressiveMappingIsPausedOnPath:v6])
+  textCopy = text;
+  pathCopy = path;
+  if (![(CMArchiveManager *)self progressiveMappingIsPausedOnPath:pathCopy])
   {
-    if (v6)
+    if (pathCopy)
     {
-      v7 = [v8 dataUsingEncoding:4];
-      [(CMDictArchiveManager *)self pushData:v7 toPath:v6];
+      v7 = [textCopy dataUsingEncoding:4];
+      [(CMDictArchiveManager *)self pushData:v7 toPath:pathCopy];
     }
 
     else
     {
-      [(NSMutableString *)self->mMainHtml appendString:v8];
+      [(NSMutableString *)self->mMainHtml appendString:textCopy];
     }
   }
 }
 
-- (id)copyDictionaryWithSizeInfos:(BOOL)a3
+- (id)copyDictionaryWithSizeInfos:(BOOL)infos
 {
-  v3 = a3;
+  infosCopy = infos;
   v5 = objc_alloc(MEMORY[0x277CBEAC0]);
   mMainHtml = self->mMainHtml;
   mResources = self->mResources;
   v8 = HTMLMainContent;
   v9 = HTMLResources;
-  if (v3)
+  if (infosCopy)
   {
     v10 = [MEMORY[0x277CCABB0] numberWithInt:self->super.super.mHeight];
     v16 = HTMLHeight;
@@ -124,15 +124,15 @@
   return v14;
 }
 
-- (void)pushCssToPath:(id)a3
+- (void)pushCssToPath:(id)path
 {
-  v5 = a3;
+  pathCopy = path;
   if (![(CMArchiveManager *)self progressiveMappingIsPausedOnPath:?])
   {
-    v4 = [(CMStylingArchiveManager *)self commitStylesheet];
-    if (v4)
+    commitStylesheet = [(CMStylingArchiveManager *)self commitStylesheet];
+    if (commitStylesheet)
     {
-      [(CMDictArchiveManager *)self pushText:v4 toPath:v5];
+      [(CMDictArchiveManager *)self pushText:commitStylesheet toPath:pathCopy];
     }
   }
 }

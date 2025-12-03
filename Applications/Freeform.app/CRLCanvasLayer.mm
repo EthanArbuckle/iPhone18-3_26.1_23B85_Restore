@@ -1,43 +1,43 @@
 @interface CRLCanvasLayer
 + (id)zoomAnimationDefaultCAAnimation;
 - (BOOL)centeredInScrollView;
-- (CGPoint)contentOffsetForUnscaledContentCenter:(CGPoint)a3;
-- (CGPoint)p_scrollViewContentOffsetForUnscaledContentCenter:(CGPoint)a3 viewScale:(double)a4 contentInset:(UIEdgeInsets)a5;
+- (CGPoint)contentOffsetForUnscaledContentCenter:(CGPoint)center;
+- (CGPoint)p_scrollViewContentOffsetForUnscaledContentCenter:(CGPoint)center viewScale:(double)scale contentInset:(UIEdgeInsets)inset;
 - (CGPoint)unscaledContentCenter;
-- (CGRect)p_fixedScaledBoundsForScrollViewSize:(CGSize)a3 viewScale:(double)a4 contentInset:(UIEdgeInsets)a5;
+- (CGRect)p_fixedScaledBoundsForScrollViewSize:(CGSize)size viewScale:(double)scale contentInset:(UIEdgeInsets)inset;
 - (CGSize)unscaledSize;
 - (CRLCanvasLayer)init;
-- (CRLCanvasLayer)initWithCoder:(id)a3;
+- (CRLCanvasLayer)initWithCoder:(id)coder;
 - (CRLCanvasView)canvasView;
 - (CRLInteractiveCanvasController)controller;
 - (UIEdgeInsets)contentInset;
 - (_TtC8Freeform24CRLCanvasBackgroundLayer)associatedBackgroundLayer;
 - (id)beginAnimatingViewScaleExternally;
 - (id)crl_sublayersForTilingLayerSupport;
-- (void)animateToViewScale:(double)a3 contentCenter:(CGPoint)a4 contentInset:(UIEdgeInsets)a5 animation:(id)a6 completionBlock:(id)a7;
-- (void)animateToViewScale:(double)a3 contentCenter:(CGPoint)a4 contentInset:(UIEdgeInsets)a5 duration:(double)a6 completionBlock:(id)a7;
-- (void)endAnimatingViewScaleExternallyWithToken:(id)a3;
+- (void)animateToViewScale:(double)scale contentCenter:(CGPoint)center contentInset:(UIEdgeInsets)inset animation:(id)animation completionBlock:(id)block;
+- (void)animateToViewScale:(double)scale contentCenter:(CGPoint)center contentInset:(UIEdgeInsets)inset duration:(double)duration completionBlock:(id)block;
+- (void)endAnimatingViewScaleExternallyWithToken:(id)token;
 - (void)fixFrameAndScrollView;
 - (void)layoutIfNeededIgnoringDisabledLayout;
 - (void)layoutSublayers;
 - (void)p_commonInit;
 - (void)p_fixFrameAndScrollView;
-- (void)p_scrollViewContentInsetDidChange:(id)a3;
-- (void)p_scrollViewSafeAreaInsetsDidChange:(id)a3;
+- (void)p_scrollViewContentInsetDidChange:(id)change;
+- (void)p_scrollViewSafeAreaInsetsDidChange:(id)change;
 - (void)p_setEnclosingScrollViewZoomParameters;
-- (void)p_setViewScale:(double)a3;
-- (void)p_setViewScale:(double)a3 preservingScrollOffset:(BOOL)a4;
-- (void)setAllowsPinchZoom:(BOOL)a3;
-- (void)setBounds:(CGRect)a3;
-- (void)setCenteredInScrollView:(BOOL)a3;
-- (void)setController:(id)a3;
-- (void)setHorizontallyCenteredInScrollView:(BOOL)a3 verticallyCenteredInScrollView:(BOOL)a4 fixFrame:(BOOL)a5;
-- (void)setMaximumPinchViewScale:(double)a3;
-- (void)setMinimumPinchViewScale:(double)a3;
+- (void)p_setViewScale:(double)scale;
+- (void)p_setViewScale:(double)scale preservingScrollOffset:(BOOL)offset;
+- (void)setAllowsPinchZoom:(BOOL)zoom;
+- (void)setBounds:(CGRect)bounds;
+- (void)setCenteredInScrollView:(BOOL)view;
+- (void)setController:(id)controller;
+- (void)setHorizontallyCenteredInScrollView:(BOOL)view verticallyCenteredInScrollView:(BOOL)scrollView fixFrame:(BOOL)frame;
+- (void)setMaximumPinchViewScale:(double)scale;
+- (void)setMinimumPinchViewScale:(double)scale;
 - (void)setNeedsLayout;
-- (void)setScrollViewFrameMaintainingApparentScrollPosition:(CGRect)a3 animated:(BOOL)a4;
-- (void)setUnscaledSize:(CGSize)a3 fixFrame:(BOOL)a4;
-- (void)setViewScale:(double)a3 andScrollViewFrame:(CGRect)a4 maintainPosition:(BOOL)a5 animated:(BOOL)a6;
+- (void)setScrollViewFrameMaintainingApparentScrollPosition:(CGRect)position animated:(BOOL)animated;
+- (void)setUnscaledSize:(CGSize)size fixFrame:(BOOL)frame;
+- (void)setViewScale:(double)scale andScrollViewFrame:(CGRect)frame maintainPosition:(BOOL)position animated:(BOOL)animated;
 - (void)teardown;
 - (void)updateCanvasEdgeLayersIfNecessary;
 @end
@@ -110,11 +110,11 @@
   return v3;
 }
 
-- (CRLCanvasLayer)initWithCoder:(id)a3
+- (CRLCanvasLayer)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = CRLCanvasLayer;
-  v3 = [(CRLCanvasLayer *)&v6 initWithCoder:a3];
+  v3 = [(CRLCanvasLayer *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -124,9 +124,9 @@
   return v4;
 }
 
-- (void)setController:(id)a3
+- (void)setController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   WeakRetained = objc_loadWeakRetained(&self->mController);
 
   if (WeakRetained)
@@ -162,17 +162,17 @@
 
   if (!v9)
   {
-    v10 = objc_storeWeak(&self->mController, v4);
+    v10 = objc_storeWeak(&self->mController, controllerCopy);
     width = self->mUnscaledSize.width;
     height = self->mUnscaledSize.height;
     v13 = v10;
-    v14 = [v4 canvas];
-    [v14 setUnscaledSize:{width, height}];
+    canvas = [controllerCopy canvas];
+    [canvas setUnscaledSize:{width, height}];
 
     mViewScale = self->mViewScale;
     v16 = objc_loadWeakRetained(&self->mController);
-    v17 = [v16 canvas];
-    [v17 setViewScale:mViewScale];
+    canvas2 = [v16 canvas];
+    [canvas2 setViewScale:mViewScale];
   }
 }
 
@@ -189,23 +189,23 @@
   [v4 removeObserver:self];
 }
 
-- (void)setUnscaledSize:(CGSize)a3 fixFrame:(BOOL)a4
+- (void)setUnscaledSize:(CGSize)size fixFrame:(BOOL)frame
 {
-  if (a3.width > 0.0)
+  if (size.width > 0.0)
   {
-    height = a3.height;
-    if (a3.height > 0.0)
+    height = size.height;
+    if (size.height > 0.0)
     {
-      width = a3.width;
-      if (a3.width != self->mUnscaledSize.width || a3.height != self->mUnscaledSize.height)
+      width = size.width;
+      if (size.width != self->mUnscaledSize.width || size.height != self->mUnscaledSize.height)
       {
-        v8 = a4;
-        self->mUnscaledSize = a3;
+        frameCopy = frame;
+        self->mUnscaledSize = size;
         WeakRetained = objc_loadWeakRetained(&self->mController);
-        v10 = [WeakRetained canvas];
-        [v10 setUnscaledSize:{width, height}];
+        canvas = [WeakRetained canvas];
+        [canvas setUnscaledSize:{width, height}];
 
-        if (v8)
+        if (frameCopy)
         {
           [(CRLCanvasLayer *)self fixFrameAndScrollView];
           v11 = objc_loadWeakRetained(&self->mController);
@@ -218,23 +218,23 @@
 
 - (BOOL)centeredInScrollView
 {
-  v3 = [(CRLCanvasLayer *)self horizontallyCenteredInScrollView];
-  if (v3)
+  horizontallyCenteredInScrollView = [(CRLCanvasLayer *)self horizontallyCenteredInScrollView];
+  if (horizontallyCenteredInScrollView)
   {
 
-    LOBYTE(v3) = [(CRLCanvasLayer *)self verticallyCenteredInScrollView];
+    LOBYTE(horizontallyCenteredInScrollView) = [(CRLCanvasLayer *)self verticallyCenteredInScrollView];
   }
 
-  return v3;
+  return horizontallyCenteredInScrollView;
 }
 
-- (void)setCenteredInScrollView:(BOOL)a3
+- (void)setCenteredInScrollView:(BOOL)view
 {
-  if (self->mHorizontallyCenteredInScrollView != a3)
+  if (self->mHorizontallyCenteredInScrollView != view)
   {
-    self->mHorizontallyCenteredInScrollView = a3;
+    self->mHorizontallyCenteredInScrollView = view;
     p_mVerticallyCenteredInScrollView = &self->mVerticallyCenteredInScrollView;
-    if (self->mVerticallyCenteredInScrollView == a3)
+    if (self->mVerticallyCenteredInScrollView == view)
     {
 LABEL_6:
       [(CRLCanvasLayer *)self fixFrameAndScrollView];
@@ -242,28 +242,28 @@ LABEL_6:
     }
 
 LABEL_5:
-    *p_mVerticallyCenteredInScrollView = a3;
+    *p_mVerticallyCenteredInScrollView = view;
     goto LABEL_6;
   }
 
   p_mVerticallyCenteredInScrollView = &self->mVerticallyCenteredInScrollView;
-  if (self->mVerticallyCenteredInScrollView != a3)
+  if (self->mVerticallyCenteredInScrollView != view)
   {
     goto LABEL_5;
   }
 }
 
-- (void)setHorizontallyCenteredInScrollView:(BOOL)a3 verticallyCenteredInScrollView:(BOOL)a4 fixFrame:(BOOL)a5
+- (void)setHorizontallyCenteredInScrollView:(BOOL)view verticallyCenteredInScrollView:(BOOL)scrollView fixFrame:(BOOL)frame
 {
   mHorizontallyCenteredInScrollView = self->mHorizontallyCenteredInScrollView;
-  if (mHorizontallyCenteredInScrollView != a3)
+  if (mHorizontallyCenteredInScrollView != view)
   {
-    self->mHorizontallyCenteredInScrollView = a3;
+    self->mHorizontallyCenteredInScrollView = view;
   }
 
-  if (self->mVerticallyCenteredInScrollView == a4)
+  if (self->mVerticallyCenteredInScrollView == scrollView)
   {
-    if (mHorizontallyCenteredInScrollView != a3 && a5)
+    if (mHorizontallyCenteredInScrollView != view && frame)
     {
       goto LABEL_8;
     }
@@ -271,8 +271,8 @@ LABEL_5:
 
   else
   {
-    self->mVerticallyCenteredInScrollView = a4;
-    if (a5)
+    self->mVerticallyCenteredInScrollView = scrollView;
+    if (frame)
     {
 LABEL_8:
       [(CRLCanvasLayer *)self fixFrameAndScrollView];
@@ -296,28 +296,28 @@ LABEL_8:
 
 - (void)setNeedsLayout
 {
-  v3 = [(CRLCanvasLayer *)self needsLayout];
+  needsLayout = [(CRLCanvasLayer *)self needsLayout];
   v6.receiver = self;
   v6.super_class = CRLCanvasLayer;
   [(CRLCanvasLayer *)&v6 setNeedsLayout];
-  if ((v3 & 1) == 0)
+  if ((needsLayout & 1) == 0)
   {
     WeakRetained = objc_loadWeakRetained(&self->mController);
-    v5 = [WeakRetained i_currentlySuppressingLayerUpdates];
+    i_currentlySuppressingLayerUpdates = [WeakRetained i_currentlySuppressingLayerUpdates];
 
-    if ((v5 & 1) == 0)
+    if ((i_currentlySuppressingLayerUpdates & 1) == 0)
     {
       [(CRLCanvasLayer *)self crl_setNeedsLayoutForTilingLayers];
     }
   }
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(CRLCanvasLayer *)self bounds];
   v15.origin.x = v8;
   v15.origin.y = v9;
@@ -344,8 +344,8 @@ LABEL_8:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(CRLCanvasLayer *)self sublayers];
-  v5 = [v4 copy];
+  sublayers = [(CRLCanvasLayer *)self sublayers];
+  v5 = [sublayers copy];
 
   v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
@@ -399,9 +399,9 @@ LABEL_8:
     [v7 setViewScale:v6];
 
     v8 = objc_loadWeakRetained(&self->mAssociatedBackgroundLayer);
-    v9 = [v8 scalesWithCanvas];
+    scalesWithCanvas = [v8 scalesWithCanvas];
 
-    if ((v9 & 1) == 0)
+    if ((scalesWithCanvas & 1) == 0)
     {
       [(CRLCanvasLayer *)self fixFrameAndScrollView];
     }
@@ -413,63 +413,63 @@ LABEL_8:
 - (CRLCanvasView)canvasView
 {
   WeakRetained = objc_loadWeakRetained(&self->mController);
-  v3 = [WeakRetained layerHost];
-  v4 = [v3 canvasView];
+  layerHost = [WeakRetained layerHost];
+  canvasView = [layerHost canvasView];
 
-  return v4;
+  return canvasView;
 }
 
-- (void)setAllowsPinchZoom:(BOOL)a3
+- (void)setAllowsPinchZoom:(BOOL)zoom
 {
-  if (self->mAllowsPinchZoom != a3)
+  if (self->mAllowsPinchZoom != zoom)
   {
-    self->mAllowsPinchZoom = a3;
+    self->mAllowsPinchZoom = zoom;
     WeakRetained = objc_loadWeakRetained(&self->mController);
-    v6 = [WeakRetained layerHost];
-    v7 = [v6 asiOSCVC];
-    [v7 i_updateZoomGestureRecognizer];
+    layerHost = [WeakRetained layerHost];
+    asiOSCVC = [layerHost asiOSCVC];
+    [asiOSCVC i_updateZoomGestureRecognizer];
 
     [(CRLCanvasLayer *)self p_setEnclosingScrollViewZoomParameters];
   }
 }
 
-- (void)setMinimumPinchViewScale:(double)a3
+- (void)setMinimumPinchViewScale:(double)scale
 {
-  if (self->mMinimumPinchViewScale != a3)
+  if (self->mMinimumPinchViewScale != scale)
   {
-    self->mMinimumPinchViewScale = a3;
+    self->mMinimumPinchViewScale = scale;
     [(CRLCanvasLayer *)self p_setEnclosingScrollViewZoomParameters];
   }
 }
 
-- (void)setMaximumPinchViewScale:(double)a3
+- (void)setMaximumPinchViewScale:(double)scale
 {
-  if (self->mMaximumPinchViewScale != a3)
+  if (self->mMaximumPinchViewScale != scale)
   {
-    self->mMaximumPinchViewScale = a3;
+    self->mMaximumPinchViewScale = scale;
     [(CRLCanvasLayer *)self p_setEnclosingScrollViewZoomParameters];
   }
 }
 
 - (CGPoint)unscaledContentCenter
 {
-  v3 = [(CRLCanvasLayer *)self canvasView];
-  v4 = [v3 enclosingScrollView];
+  canvasView = [(CRLCanvasLayer *)self canvasView];
+  enclosingScrollView = [canvasView enclosingScrollView];
 
-  if (v4)
+  if (enclosingScrollView)
   {
-    [v4 bounds];
+    [enclosingScrollView bounds];
     v6 = v5;
     v8 = v7;
     v10 = v9;
     v12 = v11;
-    [v4 adjustedContentInset];
+    [enclosingScrollView adjustedContentInset];
     v14 = v6 + v13;
     v16 = v8 + v15;
     v18 = v10 - (v13 + v17);
     v20 = v12 - (v15 + v19);
-    v21 = [(CRLCanvasLayer *)self canvasView];
-    [v21 convertPoint:v4 fromView:{sub_100120414(v14, v16, v18, v20)}];
+    canvasView2 = [(CRLCanvasLayer *)self canvasView];
+    [canvasView2 convertPoint:enclosingScrollView fromView:{sub_100120414(v14, v16, v18, v20)}];
     v23 = v22;
     v25 = v24;
 
@@ -490,10 +490,10 @@ LABEL_8:
   return result;
 }
 
-- (CGPoint)contentOffsetForUnscaledContentCenter:(CGPoint)a3
+- (CGPoint)contentOffsetForUnscaledContentCenter:(CGPoint)center
 {
-  y = a3.y;
-  x = a3.x;
+  y = center.y;
+  x = center.x;
   mViewScale = self->mViewScale;
   [(CRLCanvasLayer *)self contentInset];
 
@@ -503,41 +503,41 @@ LABEL_8:
   return result;
 }
 
-- (CGPoint)p_scrollViewContentOffsetForUnscaledContentCenter:(CGPoint)a3 viewScale:(double)a4 contentInset:(UIEdgeInsets)a5
+- (CGPoint)p_scrollViewContentOffsetForUnscaledContentCenter:(CGPoint)center viewScale:(double)scale contentInset:(UIEdgeInsets)inset
 {
-  right = a5.right;
-  bottom = a5.bottom;
-  left = a5.left;
-  top = a5.top;
-  y = a3.y;
-  x = a3.x;
-  v13 = [(CRLCanvasLayer *)self canvasView];
-  v14 = [v13 enclosingScrollView];
+  right = inset.right;
+  bottom = inset.bottom;
+  left = inset.left;
+  top = inset.top;
+  y = center.y;
+  x = center.x;
+  canvasView = [(CRLCanvasLayer *)self canvasView];
+  enclosingScrollView = [canvasView enclosingScrollView];
 
-  if (v14)
+  if (enclosingScrollView)
   {
     rect_16 = x;
     rect_24 = y;
     WeakRetained = objc_loadWeakRetained(&self->mController);
-    [WeakRetained unobscuredFrameOfView:v14];
+    [WeakRetained unobscuredFrameOfView:enclosingScrollView];
     v17 = v16;
     v19 = v18;
 
-    [(CRLCanvasLayer *)self p_fixedScaledBoundsForScrollViewSize:v17 viewScale:v19 contentInset:a4, top, left, bottom, right];
+    [(CRLCanvasLayer *)self p_fixedScaledBoundsForScrollViewSize:v17 viewScale:v19 contentInset:scale, top, left, bottom, right];
     rect_8 = v20;
     v21 = objc_loadWeakRetained(&self->mController);
-    v22 = [v21 shouldCanvasScrollingSizeGrowToFitBoardContent];
+    shouldCanvasScrollingSizeGrowToFitBoardContent = [v21 shouldCanvasScrollingSizeGrowToFitBoardContent];
 
-    if (!v22)
+    if (!shouldCanvasScrollingSizeGrowToFitBoardContent)
     {
-      sub_10011F340(self->mUnscaledSize.width, self->mUnscaledSize.height, a4);
+      sub_10011F340(self->mUnscaledSize.width, self->mUnscaledSize.height, scale);
     }
 
     rect = sub_10011ECB4();
     v24 = v23;
     v26 = v25;
     v28 = v27;
-    v29 = sub_10011F340(rect_16, rect_24, a4);
+    v29 = sub_10011F340(rect_16, rect_24, scale);
     v31 = sub_10011F31C(v29, v30, rect_8);
     v33 = v32;
     v34 = -0.5;
@@ -567,7 +567,7 @@ LABEL_8:
       v35 = sub_1004C3240(v40, MinY, v28 - v19);
     }
 
-    [v14 adjustedContentInset];
+    [enclosingScrollView adjustedContentInset];
     v43 = v36 - v42;
     v45 = v35 - v44;
   }
@@ -585,33 +585,33 @@ LABEL_8:
   return result;
 }
 
-- (void)setViewScale:(double)a3 andScrollViewFrame:(CGRect)a4 maintainPosition:(BOOL)a5 animated:(BOOL)a6
+- (void)setViewScale:(double)scale andScrollViewFrame:(CGRect)frame maintainPosition:(BOOL)position animated:(BOOL)animated
 {
-  v6 = a6;
-  v7 = a5;
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v14 = [(CRLCanvasLayer *)self canvasView];
-  v31 = [v14 enclosingScrollView];
+  animatedCopy = animated;
+  positionCopy = position;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  canvasView = [(CRLCanvasLayer *)self canvasView];
+  enclosingScrollView = [canvasView enclosingScrollView];
 
-  if (v6)
+  if (animatedCopy)
   {
-    if (v31)
+    if (enclosingScrollView)
     {
-      [v31 frame];
+      [enclosingScrollView frame];
       v35.origin.x = x;
       v35.origin.y = y;
       v35.size.width = width;
       v35.size.height = height;
       if (!CGRectEqualToRect(v33, v35))
       {
-        [v31 setFrame:{x, y, width, height}];
+        [enclosingScrollView setFrame:{x, y, width, height}];
       }
     }
 
-    if (v7)
+    if (positionCopy)
     {
       [(CRLCanvasLayer *)self unscaledContentCenter];
       v16 = v15;
@@ -625,14 +625,14 @@ LABEL_8:
     }
 
     [(CRLCanvasLayer *)self contentInset];
-    [(CRLCanvasLayer *)self animateToViewScale:0 contentCenter:a3 contentInset:v16 duration:v18 completionBlock:v20, v21, v22, v23, 0.2];
+    [(CRLCanvasLayer *)self animateToViewScale:0 contentCenter:scale contentInset:v16 duration:v18 completionBlock:v20, v21, v22, v23, 0.2];
   }
 
   else
   {
-    if (v31 && ([v31 frame], v36.origin.x = x, v36.origin.y = y, v36.size.width = width, v36.size.height = height, !CGRectEqualToRect(v34, v36)))
+    if (enclosingScrollView && ([enclosingScrollView frame], v36.origin.x = x, v36.origin.y = y, v36.size.width = width, v36.size.height = height, !CGRectEqualToRect(v34, v36)))
     {
-      [v31 setFrame:{x, y, width, height}];
+      [enclosingScrollView setFrame:{x, y, width, height}];
       v19 = 1;
     }
 
@@ -645,19 +645,19 @@ LABEL_8:
     v25 = v24;
     v27 = v26;
     mViewScale = self->mViewScale;
-    if (mViewScale != a3)
+    if (mViewScale != scale)
     {
-      [(CRLCanvasLayer *)self p_setViewScale:a3];
+      [(CRLCanvasLayer *)self p_setViewScale:scale];
     }
 
     [(CRLCanvasLayer *)self fixFrameAndScrollView];
-    if (v7)
+    if (positionCopy)
     {
       [(CRLCanvasLayer *)self contentOffsetForUnscaledContentCenter:v25, v27];
-      [v31 setContentOffset:0 animated:?];
+      [enclosingScrollView setContentOffset:0 animated:?];
     }
 
-    if (mViewScale != a3)
+    if (mViewScale != scale)
     {
       WeakRetained = objc_loadWeakRetained(&self->mController);
       [WeakRetained i_viewScaleDidChange];
@@ -671,38 +671,38 @@ LABEL_8:
   }
 }
 
-- (void)animateToViewScale:(double)a3 contentCenter:(CGPoint)a4 contentInset:(UIEdgeInsets)a5 duration:(double)a6 completionBlock:(id)a7
+- (void)animateToViewScale:(double)scale contentCenter:(CGPoint)center contentInset:(UIEdgeInsets)inset duration:(double)duration completionBlock:(id)block
 {
-  right = a5.right;
-  bottom = a5.bottom;
-  left = a5.left;
-  top = a5.top;
-  y = a4.y;
-  x = a4.x;
-  v16 = a7;
+  right = inset.right;
+  bottom = inset.bottom;
+  left = inset.left;
+  top = inset.top;
+  y = center.y;
+  x = center.x;
+  blockCopy = block;
   v17 = +[CRLCanvasLayer zoomAnimationDefaultCAAnimation];
-  [v17 setDuration:a6];
-  [(CRLCanvasLayer *)self animateToViewScale:v17 contentCenter:v16 contentInset:a3 animation:x completionBlock:y, top, left, bottom, right];
+  [v17 setDuration:duration];
+  [(CRLCanvasLayer *)self animateToViewScale:v17 contentCenter:blockCopy contentInset:scale animation:x completionBlock:y, top, left, bottom, right];
 }
 
-- (void)animateToViewScale:(double)a3 contentCenter:(CGPoint)a4 contentInset:(UIEdgeInsets)a5 animation:(id)a6 completionBlock:(id)a7
+- (void)animateToViewScale:(double)scale contentCenter:(CGPoint)center contentInset:(UIEdgeInsets)inset animation:(id)animation completionBlock:(id)block
 {
-  right = a5.right;
-  bottom = a5.bottom;
-  left = a5.left;
-  top = a5.top;
-  y = a4.y;
-  x = a4.x;
-  v97 = a6;
-  v13 = a7;
-  v14 = [(CRLCanvasLayer *)self canvasView];
-  v15 = [v14 enclosingScrollView];
+  right = inset.right;
+  bottom = inset.bottom;
+  left = inset.left;
+  top = inset.top;
+  y = center.y;
+  x = center.x;
+  animationCopy = animation;
+  blockCopy = block;
+  canvasView = [(CRLCanvasLayer *)self canvasView];
+  enclosingScrollView = [canvasView enclosingScrollView];
 
-  if (a3 <= 0.0 || self->mViewScale == a3 && ([(CRLCanvasLayer *)self contentInset], left == v50) && top == v47 && right == v49 && bottom == v48 && ([(CRLCanvasLayer *)self unscaledContentCenter], sub_10011ED38(x, y, v51, v52)) && !self->mViewScaleAnimationCount)
+  if (scale <= 0.0 || self->mViewScale == scale && ([(CRLCanvasLayer *)self contentInset], left == v50) && top == v47 && right == v49 && bottom == v48 && ([(CRLCanvasLayer *)self unscaledContentCenter], sub_10011ED38(x, y, v51, v52)) && !self->mViewScaleAnimationCount)
   {
-    if (v13)
+    if (blockCopy)
     {
-      v13[2](v13, self->mViewScaleAnimationCount == 0);
+      blockCopy[2](blockCopy, self->mViewScaleAnimationCount == 0);
     }
   }
 
@@ -717,18 +717,18 @@ LABEL_8:
     }
 
     v18 = objc_loadWeakRetained(&self->mController);
-    v19 = a3;
-    [v18 i_viewDidZoomToViewScale:0 notify:a3];
+    scaleCopy = scale;
+    [v18 i_viewDidZoomToViewScale:0 notify:scale];
 
-    v20 = [(CRLCanvasLayer *)self isLayoutDisabled];
+    isLayoutDisabled = [(CRLCanvasLayer *)self isLayoutDisabled];
     [(CRLCanvasLayer *)self setDisableLayout:1];
-    v21 = v97;
-    if (!v97)
+    v21 = animationCopy;
+    if (!animationCopy)
     {
       v21 = +[CRLCanvasLayer zoomAnimationDefaultCAAnimation];
     }
 
-    v97 = v21;
+    animationCopy = v21;
     [v21 duration];
     v81 = v22;
     v88 = *&CGAffineTransformIdentity.c;
@@ -748,20 +748,20 @@ LABEL_8:
     v85 = left;
     v86 = x;
     v82 = top;
-    if (v15)
+    if (enclosingScrollView)
     {
       v30 = sub_10011F31C(CGPointZero.x, CGPointZero.y, v23);
       v79 = v31;
       v80 = v30;
-      [v15 frame];
-      [(CRLCanvasLayer *)self p_fixedScaledBoundsForScrollViewSize:v32 viewScale:v33 contentInset:v19, top, left, bottom, right];
+      [enclosingScrollView frame];
+      [(CRLCanvasLayer *)self p_fixedScaledBoundsForScrollViewSize:v32 viewScale:v33 contentInset:scaleCopy, top, left, bottom, right];
       v35 = v34;
-      [(CRLCanvasLayer *)self p_scrollViewContentOffsetForUnscaledContentCenter:x viewScale:y contentInset:v19, top, left, bottom, right];
+      [(CRLCanvasLayer *)self p_scrollViewContentOffsetForUnscaledContentCenter:x viewScale:y contentInset:scaleCopy, top, left, bottom, right];
       v37 = v36;
       v39 = v38;
       v92 = sub_10011F31C(CGPointZero.x, v91, v35);
       v41 = v40;
-      [v15 contentOffset];
+      [enclosingScrollView contentOffset];
       v29 = sub_10011F31C(v80, v79, v42);
       v44 = v43;
       v45 = sub_10011F31C(v92, v41, v37);
@@ -782,7 +782,7 @@ LABEL_8:
     CGAffineTransformTranslate(&v119, &v117, v45 - v29, v46 - v44);
     mViewScale = self->mViewScale;
     memset(&v118, 0, sizeof(v118));
-    CGAffineTransformMakeScale(&v118, v19 / mViewScale, v19 / mViewScale);
+    CGAffineTransformMakeScale(&v118, scaleCopy / mViewScale, scaleCopy / mViewScale);
     [(CRLCanvasLayer *)self anchorPoint];
     v55 = v54;
     v57 = v56;
@@ -835,7 +835,7 @@ LABEL_8:
     v114[2] = sub_10014ED4C;
     v114[3] = &unk_1018402E8;
     v114[4] = self;
-    v116 = v20;
+    v116 = isLayoutDisabled;
     v62 = objc_retainBlock(v114);
     objc_initWeak(&location, self);
     v110[0] = _NSConcreteStackBlock;
@@ -843,8 +843,8 @@ LABEL_8:
     v110[2] = sub_10014EDBC;
     v110[3] = &unk_101840310;
     objc_copyWeak(v112, &location);
-    v111 = v13;
-    v112[1] = *&v19;
+    v111 = blockCopy;
+    v112[1] = *&scaleCopy;
     v112[2] = *&v82;
     v112[3] = *&v85;
     v112[4] = *&bottom;
@@ -878,7 +878,7 @@ LABEL_8:
         *&t1.m21 = *&self->mAnimateToViewScaleCurrentTransform.tx;
       }
 
-      v96 = v15;
+      v96 = enclosingScrollView;
       v67 = [CRLDisplayLink alloc];
       v101[0] = _NSConcreteStackBlock;
       v101[1] = 3221225472;
@@ -887,7 +887,7 @@ LABEL_8:
       v103[1] = v81;
       objc_copyWeak(v103, &location);
       v103[2] = *&v64;
-      v68 = v97;
+      v68 = animationCopy;
       v102 = v68;
       v104 = v119;
       v105 = *&t1.m11;
@@ -909,16 +909,16 @@ LABEL_8:
       [v71 beginAnimations:&stru_1018BCA28];
 
       v72 = objc_loadWeakRetained(&self->mController);
-      v73 = [v72 i_currentAnimation];
-      [v73 setDuration:*&v81];
+      i_currentAnimation = [v72 i_currentAnimation];
+      [i_currentAnimation setDuration:*&v81];
 
       v74 = objc_loadWeakRetained(&self->mController);
-      v75 = [v74 i_currentAnimation];
-      [v75 setAnimation:v68 forLayer:self forKey:@"transform"];
+      i_currentAnimation2 = [v74 i_currentAnimation];
+      [i_currentAnimation2 setAnimation:v68 forLayer:self forKey:@"transform"];
 
       v76 = objc_loadWeakRetained(&self->mController);
-      v77 = [v76 i_currentAnimation];
-      [v77 setCompletionBlock:v70];
+      i_currentAnimation3 = [v76 i_currentAnimation];
+      [i_currentAnimation3 setCompletionBlock:v70];
 
       (v62[2])(v62);
       v78 = objc_loadWeakRetained(&self->mController);
@@ -928,7 +928,7 @@ LABEL_8:
       objc_destroyWeak(&t2);
 
       objc_destroyWeak(v103);
-      v15 = v96;
+      enclosingScrollView = v96;
     }
 
     objc_destroyWeak(v112);
@@ -945,10 +945,10 @@ LABEL_8:
   return v3;
 }
 
-- (void)endAnimatingViewScaleExternallyWithToken:(id)a3
+- (void)endAnimatingViewScaleExternallyWithToken:(id)token
 {
-  v4 = a3;
-  if (v4)
+  tokenCopy = token;
+  if (tokenCopy)
   {
     mViewScaleAnimationCount = self->mViewScaleAnimationCount;
     if (mViewScaleAnimationCount)
@@ -985,7 +985,7 @@ LABEL_8:
       [CRLAssertionHandler handleFailureInFunction:v10 file:v11 lineNumber:778 isFatal:0 description:"Trying to end animating view scale without a matching call to begin."];
     }
 
-    [(CRLTraceableResource *)self->mExternalViewScaleAnimationResource didRelinquishResourceWithToken:v4];
+    [(CRLTraceableResource *)self->mExternalViewScaleAnimationResource didRelinquishResourceWithToken:tokenCopy];
   }
 
   else
@@ -1018,51 +1018,51 @@ LABEL_8:
   }
 }
 
-- (void)setScrollViewFrameMaintainingApparentScrollPosition:(CGRect)a3 animated:(BOOL)a4
+- (void)setScrollViewFrameMaintainingApparentScrollPosition:(CGRect)position animated:(BOOL)animated
 {
-  v4 = a4;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = [(CRLCanvasLayer *)self canvasView];
-  v23 = [v10 enclosingScrollView];
+  animatedCopy = animated;
+  height = position.size.height;
+  width = position.size.width;
+  y = position.origin.y;
+  x = position.origin.x;
+  canvasView = [(CRLCanvasLayer *)self canvasView];
+  enclosingScrollView = [canvasView enclosingScrollView];
 
-  if (v23)
+  if (enclosingScrollView)
   {
-    [v23 frame];
+    [enclosingScrollView frame];
     v26.origin.x = x;
     v26.origin.y = y;
     v26.size.width = width;
     v26.size.height = height;
     if (!CGRectEqualToRect(v25, v26))
     {
-      v11 = [(CRLCanvasLayer *)self canvasView];
-      [v23 bounds];
-      [v11 convertPoint:v23 fromView:{sub_100120414(v12, v13, v14, v15)}];
+      canvasView2 = [(CRLCanvasLayer *)self canvasView];
+      [enclosingScrollView bounds];
+      [canvasView2 convertPoint:enclosingScrollView fromView:{sub_100120414(v12, v13, v14, v15)}];
       v17 = v16;
       v19 = v18;
 
       v20 = sub_10011F340(v17, v19, 1.0 / self->mViewScale);
       v22 = v21;
-      [v23 setFrame:{x, y, width, height}];
+      [enclosingScrollView setFrame:{x, y, width, height}];
       [(CRLCanvasLayer *)self contentOffsetForUnscaledContentCenter:v20, v22];
-      [v23 setContentOffset:v4 animated:?];
+      [enclosingScrollView setContentOffset:animatedCopy animated:?];
     }
   }
 
   [(CRLCanvasLayer *)self fixFrameAndScrollView];
 }
 
-- (void)p_setViewScale:(double)a3
+- (void)p_setViewScale:(double)scale
 {
   [(CRLCanvasLayer *)self willChangeValueForKey:@"viewScale"];
-  self->mViewScale = a3;
+  self->mViewScale = scale;
   [(CRLCanvasLayer *)self didChangeValueForKey:@"viewScale"];
   mViewScale = self->mViewScale;
   WeakRetained = objc_loadWeakRetained(&self->mController);
-  v7 = [WeakRetained canvas];
-  [v7 setViewScale:mViewScale];
+  canvas = [WeakRetained canvas];
+  [canvas setViewScale:mViewScale];
 
   v8 = self->mViewScale;
   mCanvasBackgroundLayer = self->mCanvasBackgroundLayer;
@@ -1070,12 +1070,12 @@ LABEL_8:
   [(CRLCanvasBackgroundLayer *)mCanvasBackgroundLayer setViewScale:v8];
 }
 
-- (void)p_setViewScale:(double)a3 preservingScrollOffset:(BOOL)a4
+- (void)p_setViewScale:(double)scale preservingScrollOffset:(BOOL)offset
 {
   mViewScale = self->mViewScale;
-  if (a3 > 0.0 && mViewScale != a3)
+  if (scale > 0.0 && mViewScale != scale)
   {
-    if (a4 && (-[CRLCanvasLayer canvasView](self, "canvasView", mViewScale), v8 = objc_claimAutoreleasedReturnValue(), [v8 enclosingScrollView], v24 = objc_claimAutoreleasedReturnValue(), v8, v24))
+    if (offset && (-[CRLCanvasLayer canvasView](self, "canvasView", mViewScale), v8 = objc_claimAutoreleasedReturnValue(), [v8 enclosingScrollView], v24 = objc_claimAutoreleasedReturnValue(), v8, v24))
     {
       [v24 contentOffset];
       v10 = v9;
@@ -1094,11 +1094,11 @@ LABEL_8:
       v13 = 1;
     }
 
-    [(CRLCanvasLayer *)self p_setViewScale:a3];
+    [(CRLCanvasLayer *)self p_setViewScale:scale];
     WeakRetained = objc_loadWeakRetained(&self->mController);
-    v19 = [WeakRetained shouldCanvasScrollingSizeGrowToFitBoardContent];
+    shouldCanvasScrollingSizeGrowToFitBoardContent = [WeakRetained shouldCanvasScrollingSizeGrowToFitBoardContent];
 
-    if (v19)
+    if (shouldCanvasScrollingSizeGrowToFitBoardContent)
     {
       v20 = objc_loadWeakRetained(&self->mController);
       [v20 i_canvasDidUpdateVisibleBounds];
@@ -1119,21 +1119,21 @@ LABEL_8:
 
 - (void)p_setEnclosingScrollViewZoomParameters
 {
-  v2 = [(CRLCanvasLayer *)self canvasView];
-  v3 = [v2 enclosingScrollView];
+  canvasView = [(CRLCanvasLayer *)self canvasView];
+  enclosingScrollView = [canvasView enclosingScrollView];
 
-  if (v3)
+  if (enclosingScrollView)
   {
-    [v3 setMinimumZoomScale:1.0];
-    [v3 setMaximumZoomScale:1.0];
-    [v3 setZoomScale:1.0];
+    [enclosingScrollView setMinimumZoomScale:1.0];
+    [enclosingScrollView setMaximumZoomScale:1.0];
+    [enclosingScrollView setZoomScale:1.0];
   }
 }
 
-- (CGRect)p_fixedScaledBoundsForScrollViewSize:(CGSize)a3 viewScale:(double)a4 contentInset:(UIEdgeInsets)a5
+- (CGRect)p_fixedScaledBoundsForScrollViewSize:(CGSize)size viewScale:(double)scale contentInset:(UIEdgeInsets)inset
 {
-  left = a5.left;
-  top = a5.top;
+  left = inset.left;
+  top = inset.top;
   p_mUnscaledSize = &self->mUnscaledSize;
   if (self->mUnscaledSize.width == CGSizeZero.width && self->mUnscaledSize.height == CGSizeZero.height)
   {
@@ -1145,19 +1145,19 @@ LABEL_8:
 
   else
   {
-    r2 = a5.right;
-    r2_8 = a5.bottom;
+    r2 = inset.right;
+    r2_8 = inset.bottom;
     v10 = sub_10011ECB4();
     v12 = v11;
     v14 = v13;
     v16 = v15;
     WeakRetained = objc_loadWeakRetained(&self->mController);
-    v18 = [WeakRetained canvas];
-    v19 = [v18 isAnchoredAtRight];
+    canvas = [WeakRetained canvas];
+    isAnchoredAtRight = [canvas isAnchoredAtRight];
 
     r2_16 = left;
     r2_24 = top;
-    if (v19)
+    if (isAnchoredAtRight)
     {
       CGAffineTransformMakeScale(v116, -1.0, 1.0);
       v118.origin.x = v10;
@@ -1172,7 +1172,7 @@ LABEL_8:
     }
 
     v20 = objc_loadWeakRetained(&self->mController);
-    [v20 growUnscaledCanvasLayerRect:v10 withViewScale:{v12, v14, v16, a4}];
+    [v20 growUnscaledCanvasLayerRect:v10 withViewScale:{v12, v14, v16, scale}];
     v22 = v21;
     v24 = v23;
     v26 = v25;
@@ -1245,38 +1245,38 @@ LABEL_8:
       v28 = v16;
     }
 
-    v36 = r2_16 + sub_10011FFD8(v22, v24, v26, v28, a4);
+    v36 = r2_16 + sub_10011FFD8(v22, v24, v26, v28, scale);
     v38 = r2_24 + v37;
     v39 = r2_16 + r2;
     v41 = v40 - (r2_16 + r2);
     v42 = r2_24 + r2_8;
     v44 = v43 - (r2_24 + r2_8);
-    v45 = [(CRLCanvasLayer *)self canvasView];
-    v46 = [v45 enclosingScrollView];
+    canvasView = [(CRLCanvasLayer *)self canvasView];
+    enclosingScrollView = [canvasView enclosingScrollView];
 
-    if (v46)
+    if (enclosingScrollView)
     {
       v47 = objc_loadWeakRetained(&self->mController);
-      v48 = [v47 shouldResizeCanvasToScrollView];
+      shouldResizeCanvasToScrollView = [v47 shouldResizeCanvasToScrollView];
 
-      if (v48)
+      if (shouldResizeCanvasToScrollView)
       {
         v103 = v44;
         v104 = v41;
         r2a = v36;
         r2_8a = v38;
         v49 = objc_loadWeakRetained(&self->mController);
-        v50 = [v49 canvas];
-        [v50 contentsScale];
+        canvas2 = [v49 canvas];
+        [canvas2 contentsScale];
         v102 = v51;
 
         v52 = sub_10011ECB4();
         v54 = v53;
         v56 = v55;
-        [v46 scrollableAreaContentInsets];
+        [enclosingScrollView scrollableAreaContentInsets];
         v59 = v54 - (v57 + v58);
         v62 = v56 - (v60 + v61);
-        v63 = sub_10011FFD8(v107, v12, v106, v105, a4);
+        v63 = sub_10011FFD8(v107, v12, v106, v105, scale);
         v115 = v64;
         v65 = r2_16 + v63;
         v67 = v66 - v39;
@@ -1294,11 +1294,11 @@ LABEL_8:
         {
           v73 = v71;
           v74 = v72;
-          v75 = [(CRLCanvasLayer *)self controller];
-          v76 = [v75 canvas];
-          v77 = [v76 isAnchoredAtRight];
+          controller = [(CRLCanvasLayer *)self controller];
+          canvas3 = [controller canvas];
+          isAnchoredAtRight2 = [canvas3 isAnchoredAtRight];
 
-          if (v77)
+          if (isAnchoredAtRight2)
           {
             v65 = v65 - v73;
           }
@@ -1347,8 +1347,8 @@ LABEL_8:
     }
 
     v87 = objc_loadWeakRetained(&self->mController);
-    v88 = [v87 canvas];
-    [v88 contentsScale];
+    canvas4 = [v87 canvas];
+    [canvas4 contentsScale];
     x = sub_1001221E8(v36, v38, v41, v44, v89);
     y = v90;
     width = v91;
@@ -1368,8 +1368,8 @@ LABEL_8:
 
 - (void)p_fixFrameAndScrollView
 {
-  v3 = [(CRLCanvasLayer *)self controller];
-  [v3 contentOffset];
+  controller = [(CRLCanvasLayer *)self controller];
+  [controller contentOffset];
   v5 = v4;
   v7 = v6;
 
@@ -1385,8 +1385,8 @@ LABEL_8:
   v23 = v22;
   v25 = v24;
 
-  v74 = [(CRLCanvasLayer *)self canvasView];
-  [v74 bounds];
+  canvasView = [(CRLCanvasLayer *)self canvasView];
+  [canvasView bounds];
   v77.origin.x = v26;
   v77.origin.y = v27;
   v77.size.width = v28;
@@ -1397,32 +1397,32 @@ LABEL_8:
   v76.size.height = v25;
   if (!CGRectEqualToRect(v76, v77) || (v30 = objc_loadWeakRetained(&self->mController), v31 = [v30 currentlyScrolling], v30, (v31 & 1) == 0))
   {
-    [v74 setBounds:{v19, v21, v23, v25}];
+    [canvasView setBounds:{v19, v21, v23, v25}];
     v32 = sub_10011ECB4();
     [(CRLCanvasLayer *)self setPosition:sub_100120414(v32, v33, v34, v35)];
-    v36 = [(CRLCanvasLayer *)self canvasView];
-    v37 = [v36 enclosingScrollView];
+    canvasView2 = [(CRLCanvasLayer *)self canvasView];
+    enclosingScrollView = [canvasView2 enclosingScrollView];
 
-    v38 = [(CRLCanvasLayer *)self controller];
-    v39 = [v38 i_shouldAttemptToPreserveContentOffsetAfterFixFrame];
+    controller2 = [(CRLCanvasLayer *)self controller];
+    i_shouldAttemptToPreserveContentOffsetAfterFixFrame = [controller2 i_shouldAttemptToPreserveContentOffsetAfterFixFrame];
 
-    if (v39)
+    if (i_shouldAttemptToPreserveContentOffsetAfterFixFrame)
     {
-      v40 = [(CRLCanvasLayer *)self controller];
-      v41 = [v40 canvas];
-      v42 = [v41 isAnchoredAtRight];
+      controller3 = [(CRLCanvasLayer *)self controller];
+      canvas = [controller3 canvas];
+      isAnchoredAtRight = [canvas isAnchoredAtRight];
 
-      v43 = [(CRLCanvasLayer *)self controller];
-      v44 = v43;
-      if (v42)
+      controller4 = [(CRLCanvasLayer *)self controller];
+      v44 = controller4;
+      if (isAnchoredAtRight)
       {
-        [v43 contentOffset];
+        [controller4 contentOffset];
         v7 = v45;
 
-        [v37 scrollableAreaBounds];
+        [enclosingScrollView scrollableAreaBounds];
         v47 = v46;
         v49 = v48;
-        [v37 adjustedContentInset];
+        [enclosingScrollView adjustedContentInset];
         v52 = v47 - (v50 + v51);
         v55 = v49 - (v53 + v54);
         [(CRLCanvasLayer *)self viewScale];
@@ -1435,24 +1435,24 @@ LABEL_8:
 
       else
       {
-        v62 = [v43 shouldCanvasScrollingSizeGrowToFitBoardContent];
+        shouldCanvasScrollingSizeGrowToFitBoardContent = [controller4 shouldCanvasScrollingSizeGrowToFitBoardContent];
 
-        if (v62)
+        if (shouldCanvasScrollingSizeGrowToFitBoardContent)
         {
           v61 = v5;
         }
 
         else
         {
-          [v37 contentSize];
+          [enclosingScrollView contentSize];
           v64 = v63;
-          [v37 scrollableAreaBounds];
+          [enclosingScrollView scrollableAreaBounds];
           v66 = v64 - v65;
-          v67 = [v37 contentView];
-          [v74 convertPoint:v67 fromView:{v66, 0.0}];
+          contentView = [enclosingScrollView contentView];
+          [canvasView convertPoint:contentView fromView:{v66, 0.0}];
           v69 = v68;
 
-          [v37 adjustedContentInset];
+          [enclosingScrollView adjustedContentInset];
           v71 = v69 + v70;
           [(CRLCanvasLayer *)self viewScale];
           v61 = v71 / v72;
@@ -1464,14 +1464,14 @@ LABEL_8:
         v5 = v61;
       }
 
-      v73 = [(CRLCanvasLayer *)self controller];
-      [v73 setContentOffset:@"CRLCanvasLayerFixFrameInteractionSource" source:0 scrollOptions:{v5, v7}];
+      controller5 = [(CRLCanvasLayer *)self controller];
+      [controller5 setContentOffset:@"CRLCanvasLayerFixFrameInteractionSource" source:0 scrollOptions:{v5, v7}];
     }
 
-    if (v37)
+    if (enclosingScrollView)
     {
-      [v37 setZoomScale:1.0];
-      [v37 setContentSize:{v23, v25}];
+      [enclosingScrollView setZoomScale:1.0];
+      [enclosingScrollView setContentSize:{v23, v25}];
     }
   }
 }
@@ -1484,15 +1484,15 @@ LABEL_8:
   right = self->mContentInset.right;
   if ([(CRLCanvasLayer *)self shouldExtendBeyondSafeArea])
   {
-    v7 = [(CRLCanvasLayer *)self canvasView];
-    v8 = [v7 enclosingScrollView];
+    canvasView = [(CRLCanvasLayer *)self canvasView];
+    enclosingScrollView = [canvasView enclosingScrollView];
 
-    [v8 adjustedContentInset];
+    [enclosingScrollView adjustedContentInset];
     v10 = v9;
     v12 = v11;
     v14 = v13;
     v16 = v15;
-    [v8 safeAreaInsets];
+    [enclosingScrollView safeAreaInsets];
     top = top - fmax(v17 - v10, 0.0);
     left = left - fmax(v18 - v12, 0.0);
     bottom = bottom - fmax(v19 - v14, 0.0);
@@ -1510,16 +1510,16 @@ LABEL_8:
   return result;
 }
 
-- (void)p_scrollViewSafeAreaInsetsDidChange:(id)a3
+- (void)p_scrollViewSafeAreaInsetsDidChange:(id)change
 {
-  v7 = [a3 object];
-  v4 = [(CRLCanvasLayer *)self canvasView];
-  v5 = [v4 enclosingScrollView];
-  if (v7 == v5)
+  object = [change object];
+  canvasView = [(CRLCanvasLayer *)self canvasView];
+  enclosingScrollView = [canvasView enclosingScrollView];
+  if (object == enclosingScrollView)
   {
-    v6 = [(CRLCanvasLayer *)self shouldExtendBeyondSafeArea];
+    shouldExtendBeyondSafeArea = [(CRLCanvasLayer *)self shouldExtendBeyondSafeArea];
 
-    if (v6)
+    if (shouldExtendBeyondSafeArea)
     {
 
       [(CRLCanvasLayer *)self fixFrameAndScrollView];
@@ -1531,17 +1531,17 @@ LABEL_8:
   }
 }
 
-- (void)p_scrollViewContentInsetDidChange:(id)a3
+- (void)p_scrollViewContentInsetDidChange:(id)change
 {
-  v8 = [a3 object];
-  v4 = [(CRLCanvasLayer *)self canvasView];
-  v5 = [v4 enclosingScrollView];
-  if (v8 == v5 && [(CRLCanvasLayer *)self shouldExtendBeyondSafeArea])
+  object = [change object];
+  canvasView = [(CRLCanvasLayer *)self canvasView];
+  enclosingScrollView = [canvasView enclosingScrollView];
+  if (object == enclosingScrollView && [(CRLCanvasLayer *)self shouldExtendBeyondSafeArea])
   {
-    v6 = [(CRLCanvasLayer *)self controller];
-    v7 = [v6 animatingViewScale];
+    controller = [(CRLCanvasLayer *)self controller];
+    animatingViewScale = [controller animatingViewScale];
 
-    if ((v7 & 1) == 0)
+    if ((animatingViewScale & 1) == 0)
     {
 
       [(CRLCanvasLayer *)self fixFrameAndScrollView];
@@ -1556,10 +1556,10 @@ LABEL_8:
 - (void)updateCanvasEdgeLayersIfNecessary
 {
   WeakRetained = objc_loadWeakRetained(&self->mAssociatedBackgroundLayer);
-  v4 = [WeakRetained scalesWithCanvas];
+  scalesWithCanvas = [WeakRetained scalesWithCanvas];
 
   mLeftEdgeLayer = self->mLeftEdgeLayer;
-  if (v4)
+  if (scalesWithCanvas)
   {
     if (mLeftEdgeLayer)
     {
@@ -1597,9 +1597,9 @@ LABEL_8:
     [v14 setAnchorPoint:{CGPointZero.x, y}];
 
     v15 = objc_loadWeakRetained(&self->mController);
-    v16 = [v15 canvasView];
-    v17 = [v16 enclosingScrollView];
-    [v17 scrollableAreaContentInsets];
+    canvasView = [v15 canvasView];
+    enclosingScrollView = [canvasView enclosingScrollView];
+    [enclosingScrollView scrollableAreaContentInsets];
     v19 = v18;
     v21 = v20;
     v23 = v22;
@@ -1665,9 +1665,9 @@ LABEL_8:
     v53 = v52;
     v55 = v54;
     v56 = objc_loadWeakRetained(&self->mController);
-    v57 = [v56 canvasEdgeBackgroundColor];
+    canvasEdgeBackgroundColor = [v56 canvasEdgeBackgroundColor];
 
-    [(CALayer *)self->mLeftEdgeLayer setBackgroundColor:v57];
+    [(CALayer *)self->mLeftEdgeLayer setBackgroundColor:canvasEdgeBackgroundColor];
     v75.origin.x = v49;
     v75.origin.y = v51;
     v75.size.width = v53;
@@ -1684,7 +1684,7 @@ LABEL_8:
     v77.size.height = v55;
     CGRectGetHeight(v77);
     [(CALayer *)self->mLeftEdgeLayer setFrame:v58, v59];
-    [(CALayer *)self->mRightEdgeLayer setBackgroundColor:v57];
+    [(CALayer *)self->mRightEdgeLayer setBackgroundColor:canvasEdgeBackgroundColor];
     v78.origin.x = v49;
     v78.origin.y = v51;
     v78.size.width = v53;
@@ -1700,7 +1700,7 @@ LABEL_8:
     v80.size.width = v53;
     v80.size.height = v55;
     [(CALayer *)self->mRightEdgeLayer setFrame:MaxX, v61, 5000.0, CGRectGetHeight(v80) + 10000.0];
-    [(CALayer *)self->mTopEdgeLayer setBackgroundColor:v57];
+    [(CALayer *)self->mTopEdgeLayer setBackgroundColor:canvasEdgeBackgroundColor];
     v81.origin.x = v49;
     v81.origin.y = v51;
     v81.size.width = v53;
@@ -1712,9 +1712,9 @@ LABEL_8:
     v82.size.height = v55;
     v62 = CGRectGetMinY(v82) + -5000.0;
     v63 = objc_loadWeakRetained(&self->mController);
-    v64 = [v63 canvasView];
-    v65 = [v64 enclosingScrollView];
-    [v65 scrollableAreaContentInsets];
+    canvasView2 = [v63 canvasView];
+    enclosingScrollView2 = [canvasView2 enclosingScrollView];
+    [enclosingScrollView2 scrollableAreaContentInsets];
     v67 = v62 - v66;
     v83.origin.x = v49;
     v83.origin.y = v51;
@@ -1722,7 +1722,7 @@ LABEL_8:
     v83.size.height = v55;
     [(CALayer *)self->mTopEdgeLayer setFrame:v72, v67, CGRectGetWidth(v83) + 10000.0, 5000.0];
 
-    [(CALayer *)self->mBottomEdgeLayer setBackgroundColor:v57];
+    [(CALayer *)self->mBottomEdgeLayer setBackgroundColor:canvasEdgeBackgroundColor];
     v84.origin.x = v49;
     v84.origin.y = v51;
     v84.size.width = v53;

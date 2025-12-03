@@ -1,14 +1,14 @@
 @interface PSSGMessageRegister
-+ (id)messageWithSessionName:(id)a3;
++ (id)messageWithSessionName:(id)name;
 - ($995AEC83619B72959345773A9004CE00)serialize;
 @end
 
 @implementation PSSGMessageRegister
 
-+ (id)messageWithSessionName:(id)a3
++ (id)messageWithSessionName:(id)name
 {
-  v3 = a3;
-  v4 = [PSSGMessageRegister messageWithSessionName:v3 pid:getpid()];
+  nameCopy = name;
+  v4 = [PSSGMessageRegister messageWithSessionName:nameCopy pid:getpid()];
 
   return v4;
 }
@@ -17,9 +17,9 @@
 {
   v5.receiver = self;
   v5.super_class = PSSGMessageRegister;
-  v3 = [(PSSGMessageBase *)&v5 serialize];
-  v3->var1 = [(PSSGMessageRegister *)self pid];
-  return v3;
+  serialize = [(PSSGMessageBase *)&v5 serialize];
+  serialize->var1 = [(PSSGMessageRegister *)self pid];
+  return serialize;
 }
 
 @end

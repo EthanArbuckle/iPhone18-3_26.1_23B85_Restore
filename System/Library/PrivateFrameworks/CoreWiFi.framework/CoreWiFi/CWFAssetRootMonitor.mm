@@ -1,23 +1,23 @@
 @interface CWFAssetRootMonitor
 - (CWFAssetRootMonitorDelegate)delegate;
-- (id)initMonitorWithPath:(id)a3;
+- (id)initMonitorWithPath:(id)path;
 - (void)checkForChanges;
-- (void)checkForDeletedPath:(id)a3;
+- (void)checkForDeletedPath:(id)path;
 - (void)dealloc;
 - (void)handleUpdatedPaths;
-- (void)printDictionaryDifferences:(id)a3 dictTwo:(id)a4;
+- (void)printDictionaryDifferences:(id)differences dictTwo:(id)two;
 - (void)scheduleTimer;
 - (void)startMonitoring;
-- (void)startMonitoringPath:(id)a3;
+- (void)startMonitoringPath:(id)path;
 - (void)stopMonitoringStream;
 @end
 
 @implementation CWFAssetRootMonitor
 
-- (id)initMonitorWithPath:(id)a3
+- (id)initMonitorWithPath:(id)path
 {
   v40 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  pathCopy = path;
   v31.receiver = self;
   v31.super_class = CWFAssetRootMonitor;
   v6 = [(CWFAssetRootMonitor *)&v31 init];
@@ -41,10 +41,10 @@
     goto LABEL_4;
   }
 
-  objc_storeStrong(&v6->monitoredPath, a3);
-  v8 = [v5 stringByDeletingLastPathComponent];
+  objc_storeStrong(&v6->monitoredPath, path);
+  stringByDeletingLastPathComponent = [pathCopy stringByDeletingLastPathComponent];
   monitoredParentPath = v7->monitoredParentPath;
-  v7->monitoredParentPath = v8;
+  v7->monitoredParentPath = stringByDeletingLastPathComponent;
 
   v10 = [MEMORY[0x1E695DFA8] set];
   pathsUpdated = v7->pathsUpdated;
@@ -58,13 +58,13 @@
   pathsExistingAtLastCheck = v7->pathsExistingAtLastCheck;
   v7->pathsExistingAtLastCheck = v14;
 
-  v16 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   pathsFileAttributes = v7->pathsFileAttributes;
-  v7->pathsFileAttributes = v16;
+  v7->pathsFileAttributes = dictionary;
 
-  v18 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary2 = [MEMORY[0x1E695DF90] dictionary];
   pathsFileAttributesAtLastCheck = v7->pathsFileAttributesAtLastCheck;
-  v7->pathsFileAttributesAtLastCheck = v18;
+  v7->pathsFileAttributesAtLastCheck = dictionary2;
 
   v7->pathPollingInterval = 600;
   v20 = dispatch_queue_create("com.apple.wifi.CWFAssetRootMonitor", 0);
@@ -168,12 +168,12 @@ LABEL_5:
 - (void)checkForChanges
 {
   v35 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v4 = [v3 objectForKey:@"RootMonitorCheckPath"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v4 = [standardUserDefaults objectForKey:@"RootMonitorCheckPath"];
 
   if (v4)
   {
-    v5 = [v3 stringForKey:@"RootMonitorCheckPath"];
+    v5 = [standardUserDefaults stringForKey:@"RootMonitorCheckPath"];
     if (![(NSString *)self->monitoredPath isEqualToString:v5])
     {
       v6 = CWFGetOTAOSLog();
@@ -193,9 +193,9 @@ LABEL_5:
       }
 
       objc_storeStrong(&self->monitoredPath, v5);
-      v7 = [v5 stringByDeletingLastPathComponent];
+      stringByDeletingLastPathComponent = [v5 stringByDeletingLastPathComponent];
       monitoredParentPath = self->monitoredParentPath;
-      self->monitoredParentPath = v7;
+      self->monitoredParentPath = stringByDeletingLastPathComponent;
 
       v9 = CWFGetOTAOSLog();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -256,11 +256,11 @@ LABEL_5:
     }
   }
 
-  v15 = [v3 objectForKey:@"RootMonitorCheckInterval_s"];
+  v15 = [standardUserDefaults objectForKey:@"RootMonitorCheckInterval_s"];
 
   if (v15)
   {
-    v16 = [v3 integerForKey:@"RootMonitorCheckInterval_s"];
+    v16 = [standardUserDefaults integerForKey:@"RootMonitorCheckInterval_s"];
     if (self->pathPollingInterval != v16)
     {
       v17 = v16;
@@ -307,8 +307,8 @@ LABEL_5:
     }
   }
 
-  v22 = [MEMORY[0x1E696AC08] defaultManager];
-  v23 = [v22 fileExistsAtPath:self->monitoredPath isDirectory:0];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v23 = [defaultManager fileExistsAtPath:self->monitoredPath isDirectory:0];
 
   if (v23)
   {
@@ -326,27 +326,27 @@ LABEL_5:
   v24 = *MEMORY[0x1E69E9840];
 }
 
-- (void)startMonitoringPath:(id)a3
+- (void)startMonitoringPath:(id)path
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E696AC08] defaultManager];
-  v6 = [v5 enumeratorAtPath:v4];
+  pathCopy = path;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v6 = [defaultManager enumeratorAtPath:pathCopy];
   [(NSMutableSet *)self->pathsExisting removeAllObjects];
   [(NSMutableDictionary *)self->pathsFileAttributes removeAllObjects];
-  v7 = [v6 nextObject];
-  if (v7)
+  nextObject = [v6 nextObject];
+  if (nextObject)
   {
-    v9 = v7;
+    v9 = nextObject;
     v10 = 0;
     *&v8 = 136447234;
     v18 = v8;
     do
     {
       v11 = v10;
-      v12 = [v4 stringByAppendingPathComponent:{v9, v18}];
+      v12 = [pathCopy stringByAppendingPathComponent:{v9, v18}];
       v19 = v10;
-      v13 = [v5 attributesOfItemAtPath:v12 error:&v19];
+      v13 = [defaultManager attributesOfItemAtPath:v12 error:&v19];
       v10 = v19;
 
       if (v10)
@@ -354,7 +354,7 @@ LABEL_5:
         v14 = CWFGetOTAOSLog();
         if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
         {
-          v15 = [v10 localizedDescription];
+          localizedDescription = [v10 localizedDescription];
           *buf = v18;
           v21 = "[CWFAssetRootMonitor startMonitoringPath:]";
           v22 = 1024;
@@ -364,7 +364,7 @@ LABEL_5:
           v26 = 2112;
           v27 = v12;
           v28 = 2112;
-          v29 = v15;
+          v29 = localizedDescription;
           _os_log_impl(&dword_1E0BBF000, v14, OS_LOG_TYPE_ERROR, "%{public}s::%d:%s: Error accessing attributesOfItemAtPath %@ : %@", buf, 0x30u);
         }
       }
@@ -381,34 +381,34 @@ LABEL_5:
         [(NSMutableDictionary *)self->pathsFileAttributes setObject:v13 forKeyedSubscript:v12];
       }
 
-      v16 = [v6 nextObject];
+      nextObject2 = [v6 nextObject];
 
-      v9 = v16;
+      v9 = nextObject2;
     }
 
-    while (v16);
+    while (nextObject2);
   }
 
-  [(CWFAssetRootMonitor *)self checkForDeletedPath:v4];
+  [(CWFAssetRootMonitor *)self checkForDeletedPath:pathCopy];
 
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)printDictionaryDifferences:(id)a3 dictTwo:(id)a4
+- (void)printDictionaryDifferences:(id)differences dictTwo:(id)two
 {
   v41 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  differencesCopy = differences;
+  twoCopy = two;
   v7 = MEMORY[0x1E695DFA8];
-  v8 = [v5 allKeys];
-  v9 = [v7 setWithArray:v8];
+  allKeys = [differencesCopy allKeys];
+  v9 = [v7 setWithArray:allKeys];
 
-  v10 = [v6 allKeys];
-  [v9 addObjectsFromArray:v10];
+  allKeys2 = [twoCopy allKeys];
+  [v9 addObjectsFromArray:allKeys2];
 
   v23 = v9;
-  v11 = [v9 allObjects];
-  v12 = [v11 sortedArrayUsingSelector:sel_compare_];
+  allObjects = [v9 allObjects];
+  v12 = [allObjects sortedArrayUsingSelector:sel_compare_];
 
   v26 = 0u;
   v27 = 0u;
@@ -430,8 +430,8 @@ LABEL_5:
         }
 
         v18 = *(*(&v24 + 1) + 8 * i);
-        v19 = [v5 objectForKeyedSubscript:v18];
-        v20 = [v6 objectForKeyedSubscript:v18];
+        v19 = [differencesCopy objectForKeyedSubscript:v18];
+        v20 = [twoCopy objectForKeyedSubscript:v18];
         if (([v19 isEqual:v20] & 1) == 0)
         {
           v21 = CWFGetOTAOSLog();
@@ -463,7 +463,7 @@ LABEL_5:
   v22 = *MEMORY[0x1E69E9840];
 }
 
-- (void)checkForDeletedPath:(id)a3
+- (void)checkForDeletedPath:(id)path
 {
   v17 = *MEMORY[0x1E69E9840];
   v4 = [MEMORY[0x1E695DFA8] setWithSet:self->pathsExistingAtLastCheck];
@@ -505,7 +505,7 @@ LABEL_5:
 - (void)handleUpdatedPaths
 {
   v52 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v34 = [MEMORY[0x1E695DFA8] set];
   v4 = [MEMORY[0x1E695DFA8] set];
   v33 = [MEMORY[0x1E695DFA8] set];
@@ -515,7 +515,7 @@ LABEL_5:
   v40 = 0u;
   v5 = self->pathsUpdated;
   v6 = [(NSMutableSet *)v5 countByEnumeratingWithState:&v37 objects:v51 count:16];
-  v32 = self;
+  selfCopy = self;
   v35 = v4;
   if (v6)
   {
@@ -533,14 +533,14 @@ LABEL_5:
         }
 
         v11 = *(*(&v37 + 1) + 8 * i);
-        if (![v3 fileExistsAtPath:{v11, v31}])
+        if (![defaultManager fileExistsAtPath:{v11, v31}])
         {
           [v4 addObject:v11];
           continue;
         }
 
         v36 = 0;
-        v12 = [v3 attributesOfItemAtPath:v11 error:&v36];
+        v12 = [defaultManager attributesOfItemAtPath:v11 error:&v36];
         v13 = v36;
         v14 = [(NSMutableDictionary *)self->pathsFileAttributesAtLastCheck objectForKeyedSubscript:v11];
         if (v14)
@@ -563,7 +563,7 @@ LABEL_5:
               _os_log_impl(&dword_1E0BBF000, v15, OS_LOG_TYPE_ERROR, "%{public}s::%d:handleUpdatedPaths ERROR processing pathsUpdated path %@ attr %@ prevAttr %@", buf, 0x30u);
             }
 
-            self = v32;
+            self = selfCopy;
             goto LABEL_16;
           }
 
@@ -634,20 +634,20 @@ LABEL_16:
 
   if ([v34 count] || objc_msgSend(v4, "count") || objc_msgSend(v33, "count"))
   {
-    v20 = [(CWFAssetRootMonitor *)self delegate];
+    delegate = [(CWFAssetRootMonitor *)self delegate];
     v21 = MEMORY[0x1E695DF70];
-    v22 = [v34 allObjects];
-    v23 = [v21 arrayWithArray:v22];
+    allObjects = [v34 allObjects];
+    v23 = [v21 arrayWithArray:allObjects];
     v24 = MEMORY[0x1E695DF70];
-    v25 = [v4 allObjects];
-    v26 = [v24 arrayWithArray:v25];
+    allObjects2 = [v4 allObjects];
+    v26 = [v24 arrayWithArray:allObjects2];
     v27 = MEMORY[0x1E695DF70];
-    v28 = [v33 allObjects];
-    v29 = [v27 arrayWithArray:v28];
-    [v20 rootMonitorDetectedAdd:v23 deleted:v26 updated:v29];
+    allObjects3 = [v33 allObjects];
+    v29 = [v27 arrayWithArray:allObjects3];
+    [delegate rootMonitorDetectedAdd:v23 deleted:v26 updated:v29];
 
     v4 = v35;
-    self = v32;
+    self = selfCopy;
   }
 
   [(NSMutableSet *)self->pathsUpdated removeAllObjects];

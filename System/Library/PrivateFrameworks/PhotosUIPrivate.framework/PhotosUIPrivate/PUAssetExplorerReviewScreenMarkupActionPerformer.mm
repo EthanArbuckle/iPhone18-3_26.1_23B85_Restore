@@ -1,33 +1,33 @@
 @interface PUAssetExplorerReviewScreenMarkupActionPerformer
-+ (BOOL)shouldEnableOnAsset:(id)a3 inAssetCollection:(id)a4;
++ (BOOL)shouldEnableOnAsset:(id)asset inAssetCollection:(id)collection;
 - (PUPhotoMarkupViewControllerObserver)markupObserver;
-- (void)_presentMarkupViewControllerForReviewAsset:(id)a3;
+- (void)_presentMarkupViewControllerForReviewAsset:(id)asset;
 - (void)performUserInteractionTask;
 @end
 
 @implementation PUAssetExplorerReviewScreenMarkupActionPerformer
 
-+ (BOOL)shouldEnableOnAsset:(id)a3 inAssetCollection:(id)a4
++ (BOOL)shouldEnableOnAsset:(id)asset inAssetCollection:(id)collection
 {
-  v4 = a3;
-  v5 = [v4 isTemporaryPlaceholder];
-  v6 = [v4 isAnimatedImage];
-  v7 = [v4 playbackStyle];
-  v8 = [v4 mediaType];
-  v9 = [v4 mediaSubtypes];
+  assetCopy = asset;
+  isTemporaryPlaceholder = [assetCopy isTemporaryPlaceholder];
+  isAnimatedImage = [assetCopy isAnimatedImage];
+  playbackStyle = [assetCopy playbackStyle];
+  mediaType = [assetCopy mediaType];
+  mediaSubtypes = [assetCopy mediaSubtypes];
 
-  v11 = (v9 & 0x400) == 0 && v8 != 2;
-  if (v7 == 5)
+  v11 = (mediaSubtypes & 0x400) == 0 && mediaType != 2;
+  if (playbackStyle == 5)
   {
     v11 = 0;
   }
 
-  if (v6)
+  if (isAnimatedImage)
   {
     v11 = 0;
   }
 
-  return (v5 & 1) == 0 && v11;
+  return (isTemporaryPlaceholder & 1) == 0 && v11;
 }
 
 - (PUPhotoMarkupViewControllerObserver)markupObserver
@@ -37,17 +37,17 @@
   return WeakRetained;
 }
 
-- (void)_presentMarkupViewControllerForReviewAsset:(id)a3
+- (void)_presentMarkupViewControllerForReviewAsset:(id)asset
 {
-  v4 = a3;
+  assetCopy = asset;
   v7 = objc_alloc_init(PUReviewAssetsMediaProvider);
-  v5 = [[PUPhotoMarkupViewController alloc] initWithReviewAsset:v4 mediaProvider:v7];
+  v5 = [[PUPhotoMarkupViewController alloc] initWithReviewAsset:assetCopy mediaProvider:v7];
 
   [(PUPhotoMarkupViewController *)v5 setModalPresentationStyle:0];
-  v6 = [(PUAssetExplorerReviewScreenMarkupActionPerformer *)self markupObserver];
-  if (v6)
+  markupObserver = [(PUAssetExplorerReviewScreenMarkupActionPerformer *)self markupObserver];
+  if (markupObserver)
   {
-    [(PUPhotoMarkupViewController *)v5 registerObserver:v6];
+    [(PUPhotoMarkupViewController *)v5 registerObserver:markupObserver];
   }
 
   [(PUAssetActionPerformer *)self completeUserInteractionTaskWithSuccess:[(PUAssetActionPerformer *)self presentViewController:v5] error:0];
@@ -56,21 +56,21 @@
 - (void)performUserInteractionTask
 {
   [(PUAssetExplorerReviewScreenActionPerformer *)self executePerformUserInteractionTaskBlock];
-  v4 = [(PUAssetActionPerformer *)self assets];
-  if ([v4 count] != 1)
+  assets = [(PUAssetActionPerformer *)self assets];
+  if ([assets count] != 1)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"PUAssetExplorerReviewScreenMarkupActionPerformer.m" lineNumber:51 description:@"There can be only one asset in a markup action"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUAssetExplorerReviewScreenMarkupActionPerformer.m" lineNumber:51 description:@"There can be only one asset in a markup action"];
   }
 
-  v5 = [v4 firstObject];
-  v6 = [(PUAssetExplorerReviewScreenMarkupActionPerformer *)self reviewAssetProvider];
+  firstObject = [assets firstObject];
+  reviewAssetProvider = [(PUAssetExplorerReviewScreenMarkupActionPerformer *)self reviewAssetProvider];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __78__PUAssetExplorerReviewScreenMarkupActionPerformer_performUserInteractionTask__block_invoke;
   v8[3] = &unk_1E7B755D8;
   v8[4] = self;
-  [(PUAssetExplorerReviewScreenActionPerformer *)self requestReviewAssetForDisplayAsset:v5 reviewAssetProvider:v6 completionHandler:v8];
+  [(PUAssetExplorerReviewScreenActionPerformer *)self requestReviewAssetForDisplayAsset:firstObject reviewAssetProvider:reviewAssetProvider completionHandler:v8];
 }
 
 void __78__PUAssetExplorerReviewScreenMarkupActionPerformer_performUserInteractionTask__block_invoke(uint64_t a1, uint64_t a2, uint64_t a3, void *a4, void *a5)

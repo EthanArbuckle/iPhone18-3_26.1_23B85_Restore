@@ -1,7 +1,7 @@
 @interface SBKeyboardFocusPolicyEnforcerPipeline
 - (SBKeyboardFocusPolicyEnforcerPipeline)init;
-- (SBKeyboardFocusPolicyEnforcerPipeline)initWithEnforcers:(id)a3;
-- (void)enforce:(id)a3;
+- (SBKeyboardFocusPolicyEnforcerPipeline)initWithEnforcers:(id)enforcers;
+- (void)enforce:(id)enforce;
 - (void)invalidate;
 - (void)stopEnforcing;
 @end
@@ -23,15 +23,15 @@
   return v2;
 }
 
-- (SBKeyboardFocusPolicyEnforcerPipeline)initWithEnforcers:(id)a3
+- (SBKeyboardFocusPolicyEnforcerPipeline)initWithEnforcers:(id)enforcers
 {
-  v4 = a3;
+  enforcersCopy = enforcers;
   v9.receiver = self;
   v9.super_class = SBKeyboardFocusPolicyEnforcerPipeline;
   v5 = [(SBKeyboardFocusPolicyEnforcerPipeline *)&v9 init];
   if (v5)
   {
-    v6 = [objc_alloc(MEMORY[0x277CBEB18]) initWithArray:v4];
+    v6 = [objc_alloc(MEMORY[0x277CBEB18]) initWithArray:enforcersCopy];
     policyEnforcers = v5->_policyEnforcers;
     v5->_policyEnforcers = v6;
   }
@@ -39,12 +39,12 @@
   return v5;
 }
 
-- (void)enforce:(id)a3
+- (void)enforce:(id)enforce
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CF0668] sharedInstance];
-  v6 = [v5 transactionAssertionWithReason:@"SBKeyboardFocusPolicyEnforcerPipeline"];
+  enforceCopy = enforce;
+  mEMORY[0x277CF0668] = [MEMORY[0x277CF0668] sharedInstance];
+  v6 = [mEMORY[0x277CF0668] transactionAssertionWithReason:@"SBKeyboardFocusPolicyEnforcerPipeline"];
 
   v14 = 0u;
   v15 = 0u;
@@ -66,7 +66,7 @@
           objc_enumerationMutation(v7);
         }
 
-        [*(*(&v12 + 1) + 8 * v11++) enforce:{v4, v12}];
+        [*(*(&v12 + 1) + 8 * v11++) enforce:{enforceCopy, v12}];
       }
 
       while (v9 != v11);
@@ -82,8 +82,8 @@
 - (void)stopEnforcing
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CF0668] sharedInstance];
-  v4 = [v3 transactionAssertionWithReason:@"SBKeyboardFocusPolicyEnforcerPipeline"];
+  mEMORY[0x277CF0668] = [MEMORY[0x277CF0668] sharedInstance];
+  v4 = [mEMORY[0x277CF0668] transactionAssertionWithReason:@"SBKeyboardFocusPolicyEnforcerPipeline"];
 
   v12 = 0u;
   v13 = 0u;

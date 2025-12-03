@@ -12,9 +12,9 @@
 - (id)rightIconProperties;
 - (int64_t)leftAccessoryType;
 - (int64_t)rightAccessoryType;
-- (void)applyToAllCaptions:(id)a3;
+- (void)applyToAllCaptions:(id)captions;
 - (void)removeAllIcons;
-- (void)setButtonCaption:(id)a3;
+- (void)setButtonCaption:(id)caption;
 @end
 
 @implementation LPCaptionBarPresentationProperties
@@ -93,13 +93,13 @@
   return belowBottom;
 }
 
-- (void)applyToAllCaptions:(id)a3
+- (void)applyToAllCaptions:(id)captions
 {
-  v4 = a3;
+  captionsCopy = captions;
   [(LPCaptionRowPresentationProperties *)self->_aboveTop applyToAllCaptions:?];
-  [(LPCaptionRowPresentationProperties *)self->_top applyToAllCaptions:v4];
-  [(LPCaptionRowPresentationProperties *)self->_bottom applyToAllCaptions:v4];
-  [(LPCaptionRowPresentationProperties *)self->_belowBottom applyToAllCaptions:v4];
+  [(LPCaptionRowPresentationProperties *)self->_top applyToAllCaptions:captionsCopy];
+  [(LPCaptionRowPresentationProperties *)self->_bottom applyToAllCaptions:captionsCopy];
+  [(LPCaptionRowPresentationProperties *)self->_belowBottom applyToAllCaptions:captionsCopy];
 }
 
 - (void)removeAllIcons
@@ -211,14 +211,14 @@
   }
 }
 
-- (void)setButtonCaption:(id)a3
+- (void)setButtonCaption:(id)caption
 {
-  v6 = a3;
+  captionCopy = caption;
   v4 = objc_alloc_init(LPCaptionButtonPresentationProperties);
   button = self->_button;
   self->_button = v4;
 
-  [(LPCaptionButtonPresentationProperties *)self->_button setText:v6];
+  [(LPCaptionButtonPresentationProperties *)self->_button setText:captionCopy];
   [(LPCaptionButtonPresentationProperties *)self->_button setType:1];
 }
 

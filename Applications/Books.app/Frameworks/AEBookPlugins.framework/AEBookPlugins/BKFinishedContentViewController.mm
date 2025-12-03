@@ -1,27 +1,27 @@
 @interface BKFinishedContentViewController
 - (BKFinishedContentViewController)init;
-- (BKFinishedContentViewController)initWithCoder:(id)a3;
-- (BKFinishedContentViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (CGRect)cachedRectForAnnotation:(id)a3;
-- (CGRect)cachedVisibleRectForAnnotation:(id)a3;
+- (BKFinishedContentViewController)initWithCoder:(id)coder;
+- (BKFinishedContentViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (CGRect)cachedRectForAnnotation:(id)annotation;
+- (CGRect)cachedVisibleRectForAnnotation:(id)annotation;
 - (CGSize)contentSize;
 - (id)currentLocation;
 - (id)styleManager;
-- (void)_didChangeStyle:(id)a3;
+- (void)_didChangeStyle:(id)style;
 - (void)dealloc;
-- (void)finishedPressed:(id)a3;
+- (void)finishedPressed:(id)pressed;
 - (void)releaseViews;
-- (void)setContentScale:(double)a3;
-- (void)setTheme:(id)a3 force:(BOOL)a4;
+- (void)setContentScale:(double)scale;
+- (void)setTheme:(id)theme force:(BOOL)force;
 - (void)updateAppearance;
 - (void)updateButtonAppearance;
 - (void)updateButtonTitle;
 - (void)updateFonts;
 - (void)updateViewConstraints;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)viewWillLayoutSubviews;
 @end
 
@@ -41,11 +41,11 @@
   return v3;
 }
 
-- (BKFinishedContentViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (BKFinishedContentViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v7.receiver = self;
   v7.super_class = BKFinishedContentViewController;
-  v4 = [(BKViewController *)&v7 initWithNibName:a3 bundle:a4];
+  v4 = [(BKViewController *)&v7 initWithNibName:name bundle:bundle];
   v5 = v4;
   if (v4)
   {
@@ -55,11 +55,11 @@
   return v5;
 }
 
-- (BKFinishedContentViewController)initWithCoder:(id)a3
+- (BKFinishedContentViewController)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = BKFinishedContentViewController;
-  v3 = [(BKFinishedContentViewController *)&v6 initWithCoder:a3];
+  v3 = [(BKFinishedContentViewController *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -103,60 +103,60 @@
   [(BKContentViewController *)&v6 viewDidLoad];
   v3 = [UIImageSymbolConfiguration configurationWithPointSize:103.0];
   v4 = [UIImage systemImageNamed:@"checkmark.circle.fill" withConfiguration:v3];
-  v5 = [(BKFinishedContentViewController *)self checkmarkImageView];
-  [v5 setImage:v4];
+  checkmarkImageView = [(BKFinishedContentViewController *)self checkmarkImageView];
+  [checkmarkImageView setImage:v4];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v26.receiver = self;
   v26.super_class = BKFinishedContentViewController;
-  [(BKFinishedContentViewController *)&v26 viewWillAppear:a3];
+  [(BKFinishedContentViewController *)&v26 viewWillAppear:appear];
   v4 = +[NSNotificationCenter defaultCenter];
   v5 = BKStyleManagerDidChangeStyleNotification[0];
-  v6 = [(BKFinishedContentViewController *)self styleManager];
-  [v4 addObserver:self selector:"_didChangeStyle:" name:v5 object:v6];
+  styleManager = [(BKFinishedContentViewController *)self styleManager];
+  [v4 addObserver:self selector:"_didChangeStyle:" name:v5 object:styleManager];
 
   [(BKFinishedContentViewController *)self updateFonts];
   [(BKFinishedContentViewController *)self updateAppearance];
-  v7 = [(BKFinishedContentViewController *)self view];
-  [v7 layoutIfNeeded];
+  view = [(BKFinishedContentViewController *)self view];
+  [view layoutIfNeeded];
 
   [(BKFinishedContentViewController *)self updateButtonAppearance];
-  v8 = [(BKFinishedContentViewController *)self view];
-  v25 = [(BKFinishedContentViewController *)self bodyLabel];
-  v24 = [v25 leadingAnchor];
-  v23 = [v8 leadingAnchor];
-  v22 = [v24 constraintEqualToAnchor:v23 constant:45.0];
+  view2 = [(BKFinishedContentViewController *)self view];
+  bodyLabel = [(BKFinishedContentViewController *)self bodyLabel];
+  leadingAnchor = [bodyLabel leadingAnchor];
+  leadingAnchor2 = [view2 leadingAnchor];
+  v22 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:45.0];
   v27[0] = v22;
-  v21 = [(BKFinishedContentViewController *)self bodyLabel];
-  v20 = [v21 trailingAnchor];
-  v19 = [v8 trailingAnchor];
-  v18 = [v20 constraintEqualToAnchor:v19 constant:-45.0];
+  bodyLabel2 = [(BKFinishedContentViewController *)self bodyLabel];
+  trailingAnchor = [bodyLabel2 trailingAnchor];
+  trailingAnchor2 = [view2 trailingAnchor];
+  v18 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-45.0];
   v27[1] = v18;
-  v9 = [(BKFinishedContentViewController *)self titleLabel];
-  v10 = [v9 leadingAnchor];
-  v11 = [v8 leadingAnchor];
-  v12 = [v10 constraintEqualToAnchor:v11 constant:45.0];
+  titleLabel = [(BKFinishedContentViewController *)self titleLabel];
+  leadingAnchor3 = [titleLabel leadingAnchor];
+  leadingAnchor4 = [view2 leadingAnchor];
+  v12 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:45.0];
   v27[2] = v12;
-  v13 = [(BKFinishedContentViewController *)self titleLabel];
-  v14 = [v13 trailingAnchor];
-  v15 = [v8 trailingAnchor];
-  v16 = [v14 constraintEqualToAnchor:v15 constant:-45.0];
+  titleLabel2 = [(BKFinishedContentViewController *)self titleLabel];
+  trailingAnchor3 = [titleLabel2 trailingAnchor];
+  trailingAnchor4 = [view2 trailingAnchor];
+  v16 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4 constant:-45.0];
   v27[3] = v16;
   v17 = [NSArray arrayWithObjects:v27 count:4];
   [NSLayoutConstraint activateConstraints:v17];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v7.receiver = self;
   v7.super_class = BKFinishedContentViewController;
-  [(BKContentViewController *)&v7 viewDidDisappear:a3];
+  [(BKContentViewController *)&v7 viewDidDisappear:disappear];
   v4 = +[NSNotificationCenter defaultCenter];
   v5 = BKStyleManagerDidChangeStyleNotification[0];
-  v6 = [(BKFinishedContentViewController *)self styleManager];
-  [v4 removeObserver:self name:v5 object:v6];
+  styleManager = [(BKFinishedContentViewController *)self styleManager];
+  [v4 removeObserver:self name:v5 object:styleManager];
 }
 
 - (void)viewWillLayoutSubviews
@@ -175,24 +175,24 @@
   [(BKFinishedContentViewController *)self updateButtonAppearance];
 }
 
-- (void)finishedPressed:(id)a3
+- (void)finishedPressed:(id)pressed
 {
-  v6 = [(BKContentViewController *)self delegate];
+  delegate = [(BKContentViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [(BKContentViewController *)self book];
-    v5 = [v4 assetID];
+    book = [(BKContentViewController *)self book];
+    assetID = [book assetID];
 
-    [v6 contentViewController:self setFinishedAndCloseForAssetID:v5];
+    [delegate contentViewController:self setFinishedAndCloseForAssetID:assetID];
   }
 }
 
 - (void)updateButtonTitle
 {
-  v3 = [(BKFinishedContentViewController *)self im_isCompactWidth];
+  im_isCompactWidth = [(BKFinishedContentViewController *)self im_isCompactWidth];
   v4 = AEBundle();
   v5 = v4;
-  if (v3)
+  if (im_isCompactWidth)
   {
     v6 = @"Finished";
   }
@@ -204,13 +204,13 @@
 
   v8 = [v4 localizedStringForKey:v6 value:&stru_1E7188 table:0];
 
-  v7 = [(BKFinishedContentViewController *)self finishedButton];
-  [v7 setTitle:v8 forState:0];
+  finishedButton = [(BKFinishedContentViewController *)self finishedButton];
+  [finishedButton setTitle:v8 forState:0];
 }
 
 - (void)updateButtonAppearance
 {
-  v10 = [(BKFinishedContentViewController *)self finishedButton];
+  finishedButton = [(BKFinishedContentViewController *)self finishedButton];
   [(BKFinishedContentViewController *)self contentScale];
   v4 = 40.0;
   v5 = v3 * 40.0;
@@ -230,11 +230,11 @@
     v4 = v5;
   }
 
-  [v10 setContentEdgeInsets:{v7, v4, v7, v4}];
-  [v10 frame];
+  [finishedButton setContentEdgeInsets:{v7, v4, v7, v4}];
+  [finishedButton frame];
   v8 = CGRectGetHeight(v12) * 0.5;
-  v9 = [v10 layer];
-  [v9 setCornerRadius:v8];
+  layer = [finishedButton layer];
+  [layer setCornerRadius:v8];
 }
 
 - (void)updateViewConstraints
@@ -242,18 +242,18 @@
   v39.receiver = self;
   v39.super_class = BKFinishedContentViewController;
   [(BKFinishedContentViewController *)&v39 updateViewConstraints];
-  v3 = [(BKFinishedContentViewController *)self traitCollection];
-  v4 = [v3 horizontalSizeClass];
+  traitCollection = [(BKFinishedContentViewController *)self traitCollection];
+  horizontalSizeClass = [traitCollection horizontalSizeClass];
 
-  v5 = [(BKFinishedContentViewController *)self traitCollection];
-  v6 = [v5 verticalSizeClass];
+  traitCollection2 = [(BKFinishedContentViewController *)self traitCollection];
+  verticalSizeClass = [traitCollection2 verticalSizeClass];
 
-  if (v4 == &dword_0 + 1)
+  if (horizontalSizeClass == &dword_0 + 1)
   {
-    if (v6 == &dword_0 + 1)
+    if (verticalSizeClass == &dword_0 + 1)
     {
-      v7 = [(BKContentViewController *)self delegate];
-      if (objc_opt_respondsToSelector() & 1) != 0 && ([v7 hasSpreadPagesForContentViewController:self])
+      delegate = [(BKContentViewController *)self delegate];
+      if (objc_opt_respondsToSelector() & 1) != 0 && ([delegate hasSpreadPagesForContentViewController:self])
       {
         v8 = 24.0;
         v9 = 16.0;
@@ -267,8 +267,8 @@
 
         if (v19 >= 2)
         {
-          v20 = [(BKFinishedContentViewController *)self view];
-          [v20 bounds];
+          view = [(BKFinishedContentViewController *)self view];
+          [view bounds];
           Height = CGRectGetHeight(v41);
 
           v22 = Height > 320.0;
@@ -308,8 +308,8 @@
 
     else
     {
-      v15 = [(BKFinishedContentViewController *)self view];
-      [v15 bounds];
+      view2 = [(BKFinishedContentViewController *)self view];
+      [view2 bounds];
       Width = CGRectGetWidth(v40);
 
       v17 = Width > 320.0;
@@ -362,7 +362,7 @@
     v11 = 24.0;
     v12 = 120.0;
     v13 = 47.0;
-    if (v6 == &dword_0 + 1)
+    if (verticalSizeClass == &dword_0 + 1)
     {
       v9 = 16.0;
     }
@@ -372,7 +372,7 @@
       v9 = 32.0;
     }
 
-    if (v6 == &dword_0 + 1)
+    if (verticalSizeClass == &dword_0 + 1)
     {
       v10 = 16.0;
     }
@@ -382,7 +382,7 @@
       v10 = 24.0;
     }
 
-    if (v6 == &dword_0 + 1)
+    if (verticalSizeClass == &dword_0 + 1)
     {
       v8 = 24.0;
     }
@@ -392,7 +392,7 @@
       v8 = 47.0;
     }
 
-    if (v6 == &dword_0 + 1)
+    if (verticalSizeClass == &dword_0 + 1)
     {
       v14 = 44.0;
     }
@@ -426,40 +426,40 @@
     v14 = v25;
   }
 
-  v30 = [(BKFinishedContentViewController *)self checkmarkWidthConstraint];
-  [v30 setConstant:v14];
+  checkmarkWidthConstraint = [(BKFinishedContentViewController *)self checkmarkWidthConstraint];
+  [checkmarkWidthConstraint setConstant:v14];
 
-  v31 = [(BKFinishedContentViewController *)self checkmarkHeightConstraint];
-  [v31 setConstant:v14];
+  checkmarkHeightConstraint = [(BKFinishedContentViewController *)self checkmarkHeightConstraint];
+  [checkmarkHeightConstraint setConstant:v14];
 
-  v32 = [(BKFinishedContentViewController *)self checkmarkTopConstraint];
-  [v32 setConstant:v29];
+  checkmarkTopConstraint = [(BKFinishedContentViewController *)self checkmarkTopConstraint];
+  [checkmarkTopConstraint setConstant:v29];
 
-  v33 = [(BKFinishedContentViewController *)self titleTopConstraint];
-  [v33 setConstant:v8];
+  titleTopConstraint = [(BKFinishedContentViewController *)self titleTopConstraint];
+  [titleTopConstraint setConstant:v8];
 
-  v34 = [(BKFinishedContentViewController *)self bodyTopConstraint];
-  [v34 setConstant:v10];
+  bodyTopConstraint = [(BKFinishedContentViewController *)self bodyTopConstraint];
+  [bodyTopConstraint setConstant:v10];
 
-  v35 = [(BKFinishedContentViewController *)self finishedButtonTopConstraint];
-  [v35 setConstant:v9];
+  finishedButtonTopConstraint = [(BKFinishedContentViewController *)self finishedButtonTopConstraint];
+  [finishedButtonTopConstraint setConstant:v9];
 
-  v36 = [(BKFinishedContentViewController *)self finishedButtonBottomConstraint];
-  [v36 setConstant:30.0];
+  finishedButtonBottomConstraint = [(BKFinishedContentViewController *)self finishedButtonBottomConstraint];
+  [finishedButtonBottomConstraint setConstant:30.0];
 
-  v37 = [(BKFinishedContentViewController *)self finishedButtonLeadingConstraint];
-  [v37 setConstant:v29];
+  finishedButtonLeadingConstraint = [(BKFinishedContentViewController *)self finishedButtonLeadingConstraint];
+  [finishedButtonLeadingConstraint setConstant:v29];
 
-  v38 = [(BKFinishedContentViewController *)self finishedButtonTrailingConstraint];
-  [v38 setConstant:v29];
+  finishedButtonTrailingConstraint = [(BKFinishedContentViewController *)self finishedButtonTrailingConstraint];
+  [finishedButtonTrailingConstraint setConstant:v29];
 }
 
 - (id)styleManager
 {
-  v2 = [(BKContentViewController *)self book];
-  v3 = [v2 styleManager];
+  book = [(BKContentViewController *)self book];
+  styleManager = [book styleManager];
 
-  return v3;
+  return styleManager;
 }
 
 - (void)updateFonts
@@ -467,19 +467,19 @@
   v3 = 1.0;
   if (![(BKFinishedContentViewController *)self fixedLayout])
   {
-    v4 = [(BKFinishedContentViewController *)self styleManager];
-    [v4 fontSize];
+    styleManager = [(BKFinishedContentViewController *)self styleManager];
+    [styleManager fontSize];
     v6 = v5;
 
     if (v6 > 0.0)
     {
-      v7 = [(BKFinishedContentViewController *)self im_isCompactWidth];
+      im_isCompactWidth = [(BKFinishedContentViewController *)self im_isCompactWidth];
       LODWORD(v8) = 1.5;
-      if (v7)
+      if (im_isCompactWidth)
       {
-        v9 = [(BKFinishedContentViewController *)self im_isCompactHeight];
+        im_isCompactHeight = [(BKFinishedContentViewController *)self im_isCompactHeight];
         LODWORD(v8) = 1.5;
-        if (v9)
+        if (im_isCompactHeight)
         {
           *&v8 = 1.25;
         }
@@ -506,25 +506,25 @@
     v12 = v3 * v11;
   }
 
-  v21 = [(BKFinishedContentViewController *)self titleLabel];
+  titleLabel = [(BKFinishedContentViewController *)self titleLabel];
   v13 = [TUIFontSpec fontSpecWithPostscriptName:@"BooksSerif-Heavy" size:v12 * 24.0];
-  v14 = [v13 font];
-  [v21 setFont:v14];
+  font = [v13 font];
+  [titleLabel setFont:font];
 
-  v15 = [(BKFinishedContentViewController *)self bodyLabel];
+  bodyLabel = [(BKFinishedContentViewController *)self bodyLabel];
   v16 = [UIFont systemFontOfSize:v12 * 13.0];
-  [v15 setFont:v16];
+  [bodyLabel setFont:v16];
 
-  v17 = [(BKFinishedContentViewController *)self finishedButton];
+  finishedButton = [(BKFinishedContentViewController *)self finishedButton];
   v18 = [UIFont boldSystemFontOfSize:v12 * 15.0];
-  v19 = [v17 titleLabel];
-  [v19 setFont:v18];
+  titleLabel2 = [finishedButton titleLabel];
+  [titleLabel2 setFont:v18];
 
-  v20 = [(BKFinishedContentViewController *)self view];
-  [v20 setNeedsUpdateConstraints];
+  view = [(BKFinishedContentViewController *)self view];
+  [view setNeedsUpdateConstraints];
 }
 
-- (void)_didChangeStyle:(id)a3
+- (void)_didChangeStyle:(id)style
 {
   if (!+[NSThread isMainThread])
   {
@@ -532,8 +532,8 @@
   }
 
   [(BKFinishedContentViewController *)self updateFonts];
-  v4 = [(BKFinishedContentViewController *)self view];
-  [v4 layoutIfNeeded];
+  view = [(BKFinishedContentViewController *)self view];
+  [view layoutIfNeeded];
 
   [(BKFinishedContentViewController *)self updateButtonAppearance];
 }
@@ -542,8 +542,8 @@
 {
   if ([(BKFinishedContentViewController *)self isViewLoaded])
   {
-    v22 = [(BKFinishedContentViewController *)self themePage];
-    v3 = [v22 backgroundColorForTraitEnvironment:self];
+    themePage = [(BKFinishedContentViewController *)self themePage];
+    v3 = [themePage backgroundColorForTraitEnvironment:self];
     v4 = v3;
     if (v3)
     {
@@ -557,18 +557,18 @@
 
     v6 = v5;
 
-    v7 = [(BKFinishedContentViewController *)self view];
-    [v7 setBackgroundColor:v6];
+    view = [(BKFinishedContentViewController *)self view];
+    [view setBackgroundColor:v6];
 
-    v8 = [v22 finishedCheckmarkColor];
-    v9 = [(BKFinishedContentViewController *)self checkmarkImageView];
-    [v9 setTintColor:v8];
+    finishedCheckmarkColor = [themePage finishedCheckmarkColor];
+    checkmarkImageView = [(BKFinishedContentViewController *)self checkmarkImageView];
+    [checkmarkImageView setTintColor:finishedCheckmarkColor];
 
-    v10 = [v22 contentTextColor];
-    v11 = v10;
-    if (v10)
+    contentTextColor = [themePage contentTextColor];
+    v11 = contentTextColor;
+    if (contentTextColor)
     {
-      v12 = v10;
+      v12 = contentTextColor;
     }
 
     else
@@ -578,17 +578,17 @@
 
     v13 = v12;
 
-    v14 = [(BKFinishedContentViewController *)self titleLabel];
-    [v14 setTextColor:v13];
+    titleLabel = [(BKFinishedContentViewController *)self titleLabel];
+    [titleLabel setTextColor:v13];
 
-    v15 = [(BKFinishedContentViewController *)self bodyLabel];
-    [v15 setTextColor:v13];
+    bodyLabel = [(BKFinishedContentViewController *)self bodyLabel];
+    [bodyLabel setTextColor:v13];
 
-    v16 = [v22 buttonColor];
-    v17 = v16;
-    if (v16)
+    buttonColor = [themePage buttonColor];
+    v17 = buttonColor;
+    if (buttonColor)
     {
-      v18 = v16;
+      v18 = buttonColor;
     }
 
     else
@@ -599,46 +599,46 @@
     v19 = v18;
 
     v20 = +[UIColor whiteColor];
-    v21 = [(BKFinishedContentViewController *)self finishedButton];
-    [v21 setFrameWidth:0.0];
-    [v21 setFrameColor:v19];
-    [v21 setNormalBackgroundColor:v19];
-    [v21 setHighlightBackgroundColor:v6];
-    [v21 setTitleColor:v20 forState:0];
-    [v21 setTitleColor:v19 forState:1];
+    finishedButton = [(BKFinishedContentViewController *)self finishedButton];
+    [finishedButton setFrameWidth:0.0];
+    [finishedButton setFrameColor:v19];
+    [finishedButton setNormalBackgroundColor:v19];
+    [finishedButton setHighlightBackgroundColor:v6];
+    [finishedButton setTitleColor:v20 forState:0];
+    [finishedButton setTitleColor:v19 forState:1];
   }
 }
 
-- (void)setTheme:(id)a3 force:(BOOL)a4
+- (void)setTheme:(id)theme force:(BOOL)force
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(BKFinishedContentViewController *)self theme];
-  v8 = [v6 isEqual:v7];
+  forceCopy = force;
+  themeCopy = theme;
+  theme = [(BKFinishedContentViewController *)self theme];
+  v8 = [themeCopy isEqual:theme];
 
-  if (!v8 || v4)
+  if (!v8 || forceCopy)
   {
     v9.receiver = self;
     v9.super_class = BKFinishedContentViewController;
-    [(BKContentViewController *)&v9 setTheme:v6 force:v4];
+    [(BKContentViewController *)&v9 setTheme:themeCopy force:forceCopy];
     [(BKFinishedContentViewController *)self updateAppearance];
   }
 }
 
-- (void)setContentScale:(double)a3
+- (void)setContentScale:(double)scale
 {
-  if (self->_contentScale != a3)
+  if (self->_contentScale != scale)
   {
-    self->_contentScale = a3;
+    self->_contentScale = scale;
     [(BKFinishedContentViewController *)self updateFonts];
-    v5 = [(BKFinishedContentViewController *)self view];
-    [v5 layoutIfNeeded];
+    view = [(BKFinishedContentViewController *)self view];
+    [view layoutIfNeeded];
 
     [(BKFinishedContentViewController *)self updateButtonAppearance];
   }
 }
 
-- (CGRect)cachedRectForAnnotation:(id)a3
+- (CGRect)cachedRectForAnnotation:(id)annotation
 {
   x = CGRectZero.origin.x;
   y = CGRectZero.origin.y;
@@ -651,7 +651,7 @@
   return result;
 }
 
-- (CGRect)cachedVisibleRectForAnnotation:(id)a3
+- (CGRect)cachedVisibleRectForAnnotation:(id)annotation
 {
   x = CGRectZero.origin.x;
   y = CGRectZero.origin.y;

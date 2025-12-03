@@ -6,7 +6,7 @@
 
 - (uint64_t)attachmentSchemaVersion
 {
-  if ([a1 code] == 257)
+  if ([self code] == 257)
   {
     return 1;
   }

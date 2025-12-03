@@ -1,16 +1,16 @@
 @interface HMDResidentSyncCodingContext
-- (BOOL)_shouldExcludeForRestrictedGuestObject:(id)a3 context:(id)a4;
-- (HMDResidentSyncCodingContext)initWithTargetUser:(id)a3 targetIsResident:(BOOL)a4 targetDeviceAddress:(id)a5;
+- (BOOL)_shouldExcludeForRestrictedGuestObject:(id)object context:(id)context;
+- (HMDResidentSyncCodingContext)initWithTargetUser:(id)user targetIsResident:(BOOL)resident targetDeviceAddress:(id)address;
 @end
 
 @implementation HMDResidentSyncCodingContext
 
-- (BOOL)_shouldExcludeForRestrictedGuestObject:(id)a3 context:(id)a4
+- (BOOL)_shouldExcludeForRestrictedGuestObject:(id)object context:(id)context
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
+  objectCopy = object;
+  contextCopy = context;
+  v8 = objectCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -26,7 +26,7 @@
 
   if (v10)
   {
-    v11 = v7;
+    v11 = contextCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -42,10 +42,10 @@
 
     if (v13)
     {
-      v14 = [v13 targetUser];
-      v15 = [v14 isRestrictedGuest];
+      targetUser = [v13 targetUser];
+      isRestrictedGuest = [targetUser isRestrictedGuest];
 
-      if (v15)
+      if (isRestrictedGuest)
       {
         v16 = [v10 shouldIncludeForRestrictedGuestWithContext:v13] ^ 1;
 LABEL_16:
@@ -57,7 +57,7 @@ LABEL_16:
     else
     {
       v17 = objc_autoreleasePoolPush();
-      v18 = self;
+      selfCopy = self;
       v19 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
       {
@@ -83,12 +83,12 @@ LABEL_17:
   return v16;
 }
 
-- (HMDResidentSyncCodingContext)initWithTargetUser:(id)a3 targetIsResident:(BOOL)a4 targetDeviceAddress:(id)a5
+- (HMDResidentSyncCodingContext)initWithTargetUser:(id)user targetIsResident:(BOOL)resident targetDeviceAddress:(id)address
 {
-  v6 = a4;
-  v9 = a3;
-  v10 = a5;
-  if (v6 && ([v9 isOwner] & 1) == 0)
+  residentCopy = resident;
+  userCopy = user;
+  addressCopy = address;
+  if (residentCopy && ([userCopy isOwner] & 1) == 0)
   {
     v14 = _HMFPreconditionFailure();
     return [(_MKFZone *)v14 shouldIncludeForRestrictedGuestWithContext:v15, v16];
@@ -102,9 +102,9 @@ LABEL_17:
     v12 = v11;
     if (v11)
     {
-      objc_storeStrong(&v11->_targetUser, a3);
-      v12->_targetIsResident = v6;
-      objc_storeStrong(&v12->_targetDeviceAddress, a5);
+      objc_storeStrong(&v11->_targetUser, user);
+      v12->_targetIsResident = residentCopy;
+      objc_storeStrong(&v12->_targetDeviceAddress, address);
     }
 
     return v12;

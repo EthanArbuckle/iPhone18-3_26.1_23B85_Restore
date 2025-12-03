@@ -12,7 +12,7 @@
   block[1] = 3221225472;
   block[2] = sub_10000F2E8;
   block[3] = &unk_10068EEE8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1006D7CB8 != -1)
   {
     dispatch_once(&qword_1006D7CB8, block);
@@ -33,10 +33,10 @@
 - (id)email
 {
   v2 = objc_alloc_init(ACAccountStore);
-  v3 = [v2 aa_primaryAppleAccount];
-  v4 = [v3 aa_primaryEmail];
+  aa_primaryAppleAccount = [v2 aa_primaryAppleAccount];
+  aa_primaryEmail = [aa_primaryAppleAccount aa_primaryEmail];
 
-  return v4;
+  return aa_primaryEmail;
 }
 
 @end

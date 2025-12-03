@@ -1,6 +1,6 @@
 @interface FMDCommandHandlerIdentityV5
 - (void)handleCommand;
-- (void)sendAckWithCompletion:(id)a3;
+- (void)sendAckWithCompletion:(id)completion;
 @end
 
 @implementation FMDCommandHandlerIdentityV5
@@ -13,24 +13,24 @@
   v4 = +[FMDStartupRegisterManager sharedInstance];
   [v4 eventDidOccur:11];
 
-  v5 = [(FMDCommandHandler *)self commandParams];
-  v6 = [v5 objectForKeyedSubscript:@"timeoutInSec"];
+  commandParams = [(FMDCommandHandler *)self commandParams];
+  v6 = [commandParams objectForKeyedSubscript:@"timeoutInSec"];
   if (v6)
   {
-    v7 = [(FMDCommandHandler *)self commandParams];
-    v8 = [v7 objectForKeyedSubscript:@"timeoutInSec"];
-    v9 = [v8 integerValue];
+    commandParams2 = [(FMDCommandHandler *)self commandParams];
+    v8 = [commandParams2 objectForKeyedSubscript:@"timeoutInSec"];
+    integerValue = [v8 integerValue];
   }
 
   else
   {
-    v9 = 60;
+    integerValue = 60;
   }
 
-  v10 = [(FMDCommandHandler *)self commandParams];
-  v11 = [v10 objectForKeyedSubscript:@"id"];
+  commandParams3 = [(FMDCommandHandler *)self commandParams];
+  v11 = [commandParams3 objectForKeyedSubscript:@"id"];
 
-  v12 = [[FMDIdentityInfo alloc] initWithVersion:5 timeoutIntervalInSec:v9 commandID:v11];
+  v12 = [[FMDIdentityInfo alloc] initWithVersion:5 timeoutIntervalInSec:integerValue commandID:v11];
   v13 = dispatch_time(0, 1000000000);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -50,27 +50,27 @@
   [(FMDCommandHandler *)self didHandleCommandWithAckData:0];
 }
 
-- (void)sendAckWithCompletion:(id)a3
+- (void)sendAckWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(FMDCommandHandler *)self commandParams];
-  v6 = [v5 objectForKeyedSubscript:@"ackURL"];
+  completionCopy = completion;
+  commandParams = [(FMDCommandHandler *)self commandParams];
+  v6 = [commandParams objectForKeyedSubscript:@"ackURL"];
 
-  v7 = [(FMDCommandHandler *)self provider];
+  provider = [(FMDCommandHandler *)self provider];
   if (v6)
   {
     v8 = [NSURL URLWithString:v6];
     v9 = [FMDRequestAckIdentity alloc];
-    v10 = [(FMDCommandHandler *)self commandParams];
-    v11 = [(FMDRequestAckIdentity *)v9 initWithProvider:v7 identityCommand:v10 commandFailureReason:0 ackURL:v8];
+    commandParams2 = [(FMDCommandHandler *)self commandParams];
+    v11 = [(FMDRequestAckIdentity *)v9 initWithProvider:provider identityCommand:commandParams2 commandFailureReason:0 ackURL:v8];
 
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = sub_10017E840;
     v13[3] = &unk_1002CD1D0;
-    v14 = v4;
+    v14 = completionCopy;
     [(FMDRequest *)v11 setCompletionHandler:v13];
-    [v7 enqueueRequest:v11];
+    [provider enqueueRequest:v11];
   }
 
   else

@@ -1,5 +1,5 @@
 @interface MUAddMissingDataLabeledValue
-- (MUAddMissingDataLabeledValue)initWithType:(int64_t)a3;
+- (MUAddMissingDataLabeledValue)initWithType:(int64_t)type;
 - (NSString)titleString;
 - (NSString)valueString;
 - (id)analyticsButtonValue;
@@ -7,14 +7,14 @@
 
 @implementation MUAddMissingDataLabeledValue
 
-- (MUAddMissingDataLabeledValue)initWithType:(int64_t)a3
+- (MUAddMissingDataLabeledValue)initWithType:(int64_t)type
 {
   v5.receiver = self;
   v5.super_class = MUAddMissingDataLabeledValue;
   result = [(MUAddMissingDataLabeledValue *)&v5 init];
   if (result)
   {
-    result->_type = a3;
+    result->_type = type;
   }
 
   return result;
@@ -54,15 +54,15 @@
 
 - (id)analyticsButtonValue
 {
-  v2 = [(MUAddMissingDataLabeledValue *)self type];
-  if ((v2 - 2) > 2)
+  type = [(MUAddMissingDataLabeledValue *)self type];
+  if ((type - 2) > 2)
   {
     v3 = 0;
   }
 
   else
   {
-    v3 = dword_1C587A180[v2 - 2];
+    v3 = dword_1C587A180[type - 2];
   }
 
   v4 = MEMORY[0x1E69A24B0];

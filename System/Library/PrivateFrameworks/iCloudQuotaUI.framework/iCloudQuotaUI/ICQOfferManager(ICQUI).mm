@@ -19,17 +19,17 @@
   }
 
   v12 = objc_alloc(MEMORY[0x277CBEAA8]);
-  v13 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v13 doubleForKey:@"lastiCloudAppLaunchCheck"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults doubleForKey:@"lastiCloudAppLaunchCheck"];
   v14 = [v12 initWithTimeIntervalSince1970:?];
 
   [v14 timeIntervalSinceNow];
   if (v15 <= -172800.0)
   {
-    v17 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    standardUserDefaults2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
     v18 = [MEMORY[0x277CBEAA8] now];
     [v18 timeIntervalSince1970];
-    [v17 setDouble:@"lastiCloudAppLaunchCheck" forKey:?];
+    [standardUserDefaults2 setDouble:@"lastiCloudAppLaunchCheck" forKey:?];
 
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
@@ -37,9 +37,9 @@
     v19[3] = &unk_27A65C0F8;
     v20 = v9;
     v21 = v8;
-    v22 = a1;
+    selfCopy = self;
     v23 = v10;
-    [a1 getOfferForBundleIdentifier:v21 completion:v19];
+    [self getOfferForBundleIdentifier:v21 completion:v19];
   }
 
   else
@@ -59,11 +59,11 @@
 {
   v19 = *MEMORY[0x277D85DE8];
   v4 = a3;
-  v5 = [a1 flowManager];
+  flowManager = [self flowManager];
 
   v6 = _ICQGetLogSystem();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
-  if (v5 == v4)
+  if (flowManager == v4)
   {
     if (v7)
     {
@@ -73,10 +73,10 @@
       _os_log_impl(&dword_275623000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@ UpgradeFlowManager did cancel", &v13, 0xCu);
     }
 
-    v12 = [a1 flowManager];
-    [v12 setDelegate:0];
+    flowManager2 = [self flowManager];
+    [flowManager2 setDelegate:0];
 
-    [a1 setFlowManager:0];
+    [self setFlowManager:0];
   }
 
   else
@@ -85,13 +85,13 @@
     {
       v8 = objc_opt_class();
       v9 = v8;
-      v10 = [a1 flowManager];
+      flowManager3 = [self flowManager];
       v13 = 138543874;
       v14 = v8;
       v15 = 2112;
       v16 = v4;
       v17 = 2112;
-      v18 = v10;
+      v18 = flowManager3;
       _os_log_impl(&dword_275623000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@ UpgradeFlowManager did cancel for manager %@ instead of %@", &v13, 0x20u);
     }
   }
@@ -101,11 +101,11 @@
 {
   v18 = *MEMORY[0x277D85DE8];
   v4 = a3;
-  v5 = [a1 flowManager];
+  flowManager = [self flowManager];
 
   v6 = _ICQGetLogSystem();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
-  if (v5 == v4)
+  if (flowManager == v4)
   {
     if (v7)
     {
@@ -115,7 +115,7 @@
       _os_log_impl(&dword_275623000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@ UpgradeFlowManager did complete", &v12, 0xCu);
     }
 
-    [a1 setFlowManager:0];
+    [self setFlowManager:0];
   }
 
   else
@@ -124,13 +124,13 @@
     {
       v8 = objc_opt_class();
       v9 = v8;
-      v10 = [a1 flowManager];
+      flowManager2 = [self flowManager];
       v12 = 138543874;
       v13 = v8;
       v14 = 2112;
       v15 = v4;
       v16 = 2112;
-      v17 = v10;
+      v17 = flowManager2;
       _os_log_impl(&dword_275623000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@ UpgradeFlowManager did complete for manager %@ instead of %@", &v12, 0x20u);
     }
   }

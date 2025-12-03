@@ -1,61 +1,61 @@
 @interface CBDiscovery
-+ (id)devicesWithDiscoveryFlags:(unint64_t)a3 endpoint:(id)a4 error:(id *)a5;
++ (id)devicesWithDiscoveryFlags:(unint64_t)flags endpoint:(id)endpoint error:(id *)error;
 - (BOOL)needsAdvertisingAddress;
 - (BOOL)needsBLEScan;
 - (BOOL)needsIdentify;
-- (BOOL)updateWithCBDiscovery:(id)a3;
+- (BOOL)updateWithCBDiscovery:(id)discovery;
 - (CBDiscovery)init;
-- (CBDiscovery)initWithXPCObject:(id)a3 error:(id *)a4;
+- (CBDiscovery)initWithXPCObject:(id)object error:(id *)error;
 - (NSArray)discoveredDevices;
 - (OS_xpc_object)xpcSubscriberRepresentation;
 - (id)_ensureXPCStarted;
-- (id)descriptionWithLevel:(int)a3;
-- (id)xpcAuthFlagsCreateWithDeviceFlags:(unint64_t)a3;
-- (unint64_t)updateWithXPCSubscriberInfo:(id)a3;
+- (id)descriptionWithLevel:(int)level;
+- (id)xpcAuthFlagsCreateWithDeviceFlags:(unint64_t)flags;
+- (unint64_t)updateWithXPCSubscriberInfo:(id)info;
 - (void)_activate;
 - (void)_activateDirectStart;
-- (void)_activateXPCCompleted:(id)a3;
-- (void)_activateXPCStart:(BOOL)a3;
+- (void)_activateXPCCompleted:(id)completed;
+- (void)_activateXPCStart:(BOOL)start;
 - (void)_interrupted;
 - (void)_invalidate;
 - (void)_invalidated;
 - (void)_lostAllDevices;
 - (void)_update;
-- (void)_updateIfNeededWithBlock:(id)a3;
-- (void)_xpcReceivedDeviceFound:(id)a3;
-- (void)_xpcReceivedDeviceLost:(id)a3;
-- (void)_xpcReceivedDevicesBuffered:(id)a3;
-- (void)_xpcReceivedMessage:(id)a3;
-- (void)_xpcReceivedPowerStateChanged:(id)a3;
-- (void)_xpcReceivedSystemOverrideChanged:(id)a3;
-- (void)activateWithCompletion:(id)a3;
-- (void)addDiscoveryType:(int)a3;
+- (void)_updateIfNeededWithBlock:(id)block;
+- (void)_xpcReceivedDeviceFound:(id)found;
+- (void)_xpcReceivedDeviceLost:(id)lost;
+- (void)_xpcReceivedDevicesBuffered:(id)buffered;
+- (void)_xpcReceivedMessage:(id)message;
+- (void)_xpcReceivedPowerStateChanged:(id)changed;
+- (void)_xpcReceivedSystemOverrideChanged:(id)changed;
+- (void)activateWithCompletion:(id)completion;
+- (void)addDiscoveryType:(int)type;
 - (void)clearDuplicateFilterCache;
 - (void)dealloc;
-- (void)devicesMatchingPropertiesOn:(id)a3 exactMatch:(BOOL)a4 completionHandler:(id)a5;
-- (void)encodeWithXPCObject:(id)a3;
+- (void)devicesMatchingPropertiesOn:(id)on exactMatch:(BOOL)match completionHandler:(id)handler;
+- (void)encodeWithXPCObject:(id)object;
 - (void)finish;
-- (void)injectAOPBufAdv:(id)a3;
+- (void)injectAOPBufAdv:(id)adv;
 - (void)invalidate;
 - (void)removeAllDiscoveryTypes;
-- (void)removeDiscoveryType:(int)a3;
-- (void)reportMockDeviceFound:(id)a3;
-- (void)reportMockDeviceLost:(id)a3;
-- (void)setAuthFlags:(unint64_t)a3;
-- (void)setAuthFlagsExcluded:(unint64_t)a3;
-- (void)setBleScanRate:(int)a3;
-- (void)setBleScanRateScreenOff:(int)a3;
-- (void)setBufferedConfigsForAOP:(id)a3;
-- (void)setDeviceFilter:(id)a3;
-- (void)setDiscoveryFlags:(unint64_t)a3;
-- (void)setLabel:(id)a3;
-- (void)setOobKeys:(id)a3;
-- (void)setServiceUUIDs:(id)a3;
-- (void)setSoftwareUpdatePayloads:(id)a3;
-- (void)setSpatialInteractionFilter:(id)a3;
-- (void)setUseCase:(unsigned int)a3;
-- (void)setUseCaseClientIDs:(id)a3;
-- (void)xpcReceivedMessage:(id)a3;
+- (void)removeDiscoveryType:(int)type;
+- (void)reportMockDeviceFound:(id)found;
+- (void)reportMockDeviceLost:(id)lost;
+- (void)setAuthFlags:(unint64_t)flags;
+- (void)setAuthFlagsExcluded:(unint64_t)excluded;
+- (void)setBleScanRate:(int)rate;
+- (void)setBleScanRateScreenOff:(int)off;
+- (void)setBufferedConfigsForAOP:(id)p;
+- (void)setDeviceFilter:(id)filter;
+- (void)setDiscoveryFlags:(unint64_t)flags;
+- (void)setLabel:(id)label;
+- (void)setOobKeys:(id)keys;
+- (void)setServiceUUIDs:(id)ds;
+- (void)setSoftwareUpdatePayloads:(id)payloads;
+- (void)setSpatialInteractionFilter:(id)filter;
+- (void)setUseCase:(unsigned int)case;
+- (void)setUseCaseClientIDs:(id)ds;
+- (void)xpcReceivedMessage:(id)message;
 @end
 
 @implementation CBDiscovery
@@ -216,37 +216,37 @@ LABEL_31:
 
 - (id)_ensureXPCStarted
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_xpcCnx;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_xpcCnx;
   if (!v3)
   {
-    v4 = v2->_testListenerEndpoint;
+    v4 = selfCopy->_testListenerEndpoint;
     v5 = v4;
     if (v4)
     {
       mach_service = xpc_connection_create_from_endpoint(v4);
-      xpc_connection_set_target_queue(mach_service, v2->_dispatchQueue);
+      xpc_connection_set_target_queue(mach_service, selfCopy->_dispatchQueue);
     }
 
     else
     {
-      mach_service = xpc_connection_create_mach_service("com.apple.bluetooth.xpc", v2->_dispatchQueue, 0);
+      mach_service = xpc_connection_create_mach_service("com.apple.bluetooth.xpc", selfCopy->_dispatchQueue, 0);
     }
 
-    objc_storeStrong(&v2->_xpcCnx, mach_service);
+    objc_storeStrong(&selfCopy->_xpcCnx, mach_service);
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __32__CBDiscovery__ensureXPCStarted__block_invoke;
     v8[3] = &unk_1E811D620;
-    v8[4] = v2;
+    v8[4] = selfCopy;
     v3 = mach_service;
     v9 = v3;
     xpc_connection_set_event_handler(v3, v8);
     xpc_connection_activate(v3);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
@@ -307,23 +307,23 @@ BOOL __38__CBDiscovery_removeAllDiscoveryTypes__block_invoke(uint64_t a1)
 
 - (NSArray)discoveredDevices
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_deviceMap;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_deviceMap;
   v4 = v3;
   if (v3)
   {
-    v5 = [(NSMutableDictionary *)v3 allValues];
+    allValues = [(NSMutableDictionary *)v3 allValues];
   }
 
   else
   {
-    v5 = MEMORY[0x1E695E0F0];
+    allValues = MEMORY[0x1E695E0F0];
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  return v5;
+  return allValues;
 }
 
 - (void)dealloc
@@ -347,14 +347,14 @@ BOOL __38__CBDiscovery_removeAllDiscoveryTypes__block_invoke(uint64_t a1)
   [(CBDiscovery *)&v6 dealloc];
 }
 
-- (void)encodeWithXPCObject:(id)a3
+- (void)encodeWithXPCObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   authFlags = self->_authFlags;
-  xdict = v4;
+  xdict = objectCopy;
   if (authFlags)
   {
-    xpc_dictionary_set_uint64(v4, "auFl", authFlags);
+    xpc_dictionary_set_uint64(objectCopy, "auFl", authFlags);
   }
 
   authFlagsExcluded = self->_authFlagsExcluded;
@@ -466,7 +466,7 @@ BOOL __38__CBDiscovery_removeAllDiscoveryTypes__block_invoke(uint64_t a1)
   CUXPCEncodeNSArrayOfObjects();
 }
 
-- (id)descriptionWithLevel:(int)a3
+- (id)descriptionWithLevel:(int)level
 {
   v62 = 0;
   NSAppendPrintF_safe();
@@ -670,14 +670,14 @@ BOOL __38__CBDiscovery_removeAllDiscoveryTypes__block_invoke(uint64_t a1)
   return v12;
 }
 
-- (void)setAuthFlags:(unint64_t)a3
+- (void)setAuthFlags:(unint64_t)flags
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __28__CBDiscovery_setAuthFlags___block_invoke;
   v3[3] = &unk_1E811D5A8;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = flags;
   [(CBDiscovery *)self _updateIfNeededWithBlock:v3];
 }
 
@@ -694,14 +694,14 @@ BOOL __28__CBDiscovery_setAuthFlags___block_invoke(uint64_t a1)
   return v1 != v3;
 }
 
-- (void)setAuthFlagsExcluded:(unint64_t)a3
+- (void)setAuthFlagsExcluded:(unint64_t)excluded
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __36__CBDiscovery_setAuthFlagsExcluded___block_invoke;
   v3[3] = &unk_1E811D5A8;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = excluded;
   [(CBDiscovery *)self _updateIfNeededWithBlock:v3];
 }
 
@@ -718,13 +718,13 @@ BOOL __36__CBDiscovery_setAuthFlagsExcluded___block_invoke(uint64_t a1)
   return v1 != v3;
 }
 
-- (void)setBleScanRate:(int)a3
+- (void)setBleScanRate:(int)rate
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __30__CBDiscovery_setBleScanRate___block_invoke;
   v3[3] = &unk_1E811D508;
-  v4 = a3;
+  rateCopy = rate;
   v3[4] = self;
   [(CBDiscovery *)self _updateIfNeededWithBlock:v3];
 }
@@ -742,13 +742,13 @@ BOOL __30__CBDiscovery_setBleScanRate___block_invoke(uint64_t a1)
   return v1 != v3;
 }
 
-- (void)setBleScanRateScreenOff:(int)a3
+- (void)setBleScanRateScreenOff:(int)off
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __39__CBDiscovery_setBleScanRateScreenOff___block_invoke;
   v3[3] = &unk_1E811D508;
-  v4 = a3;
+  offCopy = off;
   v3[4] = self;
   [(CBDiscovery *)self _updateIfNeededWithBlock:v3];
 }
@@ -766,15 +766,15 @@ BOOL __39__CBDiscovery_setBleScanRateScreenOff___block_invoke(uint64_t a1)
   return v1 != v3;
 }
 
-- (void)setDeviceFilter:(id)a3
+- (void)setDeviceFilter:(id)filter
 {
-  v4 = [a3 copy];
+  v4 = [filter copy];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __31__CBDiscovery_setDeviceFilter___block_invoke;
   v6[3] = &unk_1E811D558;
   v7 = v4;
-  v8 = self;
+  selfCopy = self;
   v5 = v4;
   [(CBDiscovery *)self _updateIfNeededWithBlock:v6];
 }
@@ -816,14 +816,14 @@ BOOL __31__CBDiscovery_setDeviceFilter___block_invoke(uint64_t a1)
   return v5;
 }
 
-- (void)setDiscoveryFlags:(unint64_t)a3
+- (void)setDiscoveryFlags:(unint64_t)flags
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __33__CBDiscovery_setDiscoveryFlags___block_invoke;
   v3[3] = &unk_1E811D5A8;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = flags;
   [(CBDiscovery *)self _updateIfNeededWithBlock:v3];
 }
 
@@ -840,14 +840,14 @@ BOOL __33__CBDiscovery_setDiscoveryFlags___block_invoke(uint64_t a1)
   return v1 != v3;
 }
 
-- (void)addDiscoveryType:(int)a3
+- (void)addDiscoveryType:(int)type
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __32__CBDiscovery_addDiscoveryType___block_invoke;
   v3[3] = &unk_1E811D508;
   v3[4] = self;
-  v4 = a3;
+  typeCopy = type;
   [(CBDiscovery *)self _updateIfNeededWithBlock:v3];
 }
 
@@ -907,14 +907,14 @@ void __40__CBDiscovery_clearDuplicateFilterCache__block_invoke(uint64_t a1)
   }
 }
 
-- (void)removeDiscoveryType:(int)a3
+- (void)removeDiscoveryType:(int)type
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __35__CBDiscovery_removeDiscoveryType___block_invoke;
   v3[3] = &unk_1E811D508;
   v3[4] = self;
-  v4 = a3;
+  typeCopy = type;
   [(CBDiscovery *)self _updateIfNeededWithBlock:v3];
 }
 
@@ -940,24 +940,24 @@ uint64_t __35__CBDiscovery_removeDiscoveryType___block_invoke(uint64_t a1)
   return 1;
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
-  objc_storeStrong(&self->_label, a3);
-  v5 = a3;
-  v4 = v5;
-  [v5 UTF8String];
+  objc_storeStrong(&self->_label, label);
+  labelCopy = label;
+  v4 = labelCopy;
+  [labelCopy UTF8String];
   LogCategoryReplaceF();
 }
 
-- (void)setOobKeys:(id)a3
+- (void)setOobKeys:(id)keys
 {
-  v4 = [a3 copy];
+  v4 = [keys copy];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __26__CBDiscovery_setOobKeys___block_invoke;
   v6[3] = &unk_1E811D558;
   v7 = v4;
-  v8 = self;
+  selfCopy = self;
   v5 = v4;
   [(CBDiscovery *)self _updateIfNeededWithBlock:v6];
 }
@@ -999,15 +999,15 @@ BOOL __26__CBDiscovery_setOobKeys___block_invoke(uint64_t a1)
   return v5;
 }
 
-- (void)setServiceUUIDs:(id)a3
+- (void)setServiceUUIDs:(id)ds
 {
-  v4 = [a3 copy];
+  v4 = [ds copy];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __31__CBDiscovery_setServiceUUIDs___block_invoke;
   v6[3] = &unk_1E811D558;
   v7 = v4;
-  v8 = self;
+  selfCopy = self;
   v5 = v4;
   [(CBDiscovery *)self _updateIfNeededWithBlock:v6];
 }
@@ -1049,15 +1049,15 @@ BOOL __31__CBDiscovery_setServiceUUIDs___block_invoke(uint64_t a1)
   return v5;
 }
 
-- (void)setSoftwareUpdatePayloads:(id)a3
+- (void)setSoftwareUpdatePayloads:(id)payloads
 {
-  v4 = [a3 copy];
+  v4 = [payloads copy];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __41__CBDiscovery_setSoftwareUpdatePayloads___block_invoke;
   v6[3] = &unk_1E811D558;
   v7 = v4;
-  v8 = self;
+  selfCopy = self;
   v5 = v4;
   [(CBDiscovery *)self _updateIfNeededWithBlock:v6];
 }
@@ -1099,15 +1099,15 @@ BOOL __41__CBDiscovery_setSoftwareUpdatePayloads___block_invoke(uint64_t a1)
   return v5;
 }
 
-- (void)setSpatialInteractionFilter:(id)a3
+- (void)setSpatialInteractionFilter:(id)filter
 {
-  v4 = [a3 copy];
+  v4 = [filter copy];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __43__CBDiscovery_setSpatialInteractionFilter___block_invoke;
   v6[3] = &unk_1E811D558;
   v7 = v4;
-  v8 = self;
+  selfCopy = self;
   v5 = v4;
   [(CBDiscovery *)self _updateIfNeededWithBlock:v6];
 }
@@ -1149,15 +1149,15 @@ BOOL __43__CBDiscovery_setSpatialInteractionFilter___block_invoke(uint64_t a1)
   return v5;
 }
 
-- (void)setBufferedConfigsForAOP:(id)a3
+- (void)setBufferedConfigsForAOP:(id)p
 {
-  v4 = [a3 copy];
+  v4 = [p copy];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __40__CBDiscovery_setBufferedConfigsForAOP___block_invoke;
   v6[3] = &unk_1E811D558;
   v7 = v4;
-  v8 = self;
+  selfCopy = self;
   v5 = v4;
   [(CBDiscovery *)self _updateIfNeededWithBlock:v6];
 }
@@ -1199,13 +1199,13 @@ BOOL __40__CBDiscovery_setBufferedConfigsForAOP___block_invoke(uint64_t a1)
   return v5;
 }
 
-- (void)setUseCase:(unsigned int)a3
+- (void)setUseCase:(unsigned int)case
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __26__CBDiscovery_setUseCase___block_invoke;
   v3[3] = &unk_1E811D508;
-  v4 = a3;
+  caseCopy = case;
   v3[4] = self;
   [(CBDiscovery *)self _updateIfNeededWithBlock:v3];
 }
@@ -1223,15 +1223,15 @@ BOOL __26__CBDiscovery_setUseCase___block_invoke(uint64_t a1)
   return v1 != v3;
 }
 
-- (void)setUseCaseClientIDs:(id)a3
+- (void)setUseCaseClientIDs:(id)ds
 {
-  v4 = [a3 copy];
+  v4 = [ds copy];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __35__CBDiscovery_setUseCaseClientIDs___block_invoke;
   v6[3] = &unk_1E811D558;
   v7 = v4;
-  v8 = self;
+  selfCopy = self;
   v5 = v4;
   [(CBDiscovery *)self _updateIfNeededWithBlock:v6];
 }
@@ -1273,18 +1273,18 @@ BOOL __35__CBDiscovery_setUseCaseClientIDs___block_invoke(uint64_t a1)
   return v5;
 }
 
-- (BOOL)updateWithCBDiscovery:(id)a3
+- (BOOL)updateWithCBDiscovery:(id)discovery
 {
-  v4 = a3;
-  v5 = [v4 bleRSSIThresholdOrder];
+  discoveryCopy = discovery;
+  bleRSSIThresholdOrder = [discoveryCopy bleRSSIThresholdOrder];
   bleRSSIThresholdOrder = self->_bleRSSIThresholdOrder;
-  v7 = v5 != bleRSSIThresholdOrder;
-  if (v5 == bleRSSIThresholdOrder)
+  v7 = bleRSSIThresholdOrder != bleRSSIThresholdOrder;
+  if (bleRSSIThresholdOrder == bleRSSIThresholdOrder)
   {
     v9 = 0;
-    v12 = [v4 bleRSSIThresholdHint];
+    bleRSSIThresholdHint = [discoveryCopy bleRSSIThresholdHint];
     bleRSSIThresholdHint = self->_bleRSSIThresholdHint;
-    if (v12 == self->_bleRSSIThresholdHint)
+    if (bleRSSIThresholdHint == self->_bleRSSIThresholdHint)
     {
       goto LABEL_6;
     }
@@ -1293,31 +1293,31 @@ BOOL __35__CBDiscovery_setUseCaseClientIDs___block_invoke(uint64_t a1)
   }
 
   v8 = CUPrintFlags32();
-  [v4 bleRSSIThresholdOrder];
+  [discoveryCopy bleRSSIThresholdOrder];
   v145 = CUPrintFlags32();
   CUAppendF();
   v9 = 0;
 
-  self->_bleRSSIThresholdOrder = [v4 bleRSSIThresholdOrder];
-  v10 = [v4 bleRSSIThresholdHint];
+  self->_bleRSSIThresholdOrder = [discoveryCopy bleRSSIThresholdOrder];
+  bleRSSIThresholdHint2 = [discoveryCopy bleRSSIThresholdHint];
   bleRSSIThresholdHint = self->_bleRSSIThresholdHint;
-  if (v10 != self->_bleRSSIThresholdHint)
+  if (bleRSSIThresholdHint2 != self->_bleRSSIThresholdHint)
   {
 LABEL_5:
     v135 = bleRSSIThresholdHint;
-    v146 = [v4 bleRSSIThresholdHint];
+    bleRSSIThresholdHint3 = [discoveryCopy bleRSSIThresholdHint];
     CUAppendF();
     v13 = v9;
 
-    self->_bleRSSIThresholdHint = [v4 bleRSSIThresholdHint];
+    self->_bleRSSIThresholdHint = [discoveryCopy bleRSSIThresholdHint];
     v7 = 1;
     v9 = v13;
   }
 
 LABEL_6:
-  v14 = [v4 bleScanRate];
+  bleScanRate = [discoveryCopy bleScanRate];
   bleScanRate = self->_bleScanRate;
-  if (v14 != bleScanRate)
+  if (bleScanRate != bleScanRate)
   {
     if (bleScanRate > 34)
     {
@@ -1326,8 +1326,8 @@ LABEL_6:
         if (bleScanRate == 50)
         {
           v18 = "High";
-          v19 = [v4 bleScanRate];
-          if (v19 > 34)
+          bleScanRate2 = [discoveryCopy bleScanRate];
+          if (bleScanRate2 > 34)
           {
             goto LABEL_45;
           }
@@ -1341,8 +1341,8 @@ LABEL_6:
         }
 
         v18 = "Max";
-        v19 = [v4 bleScanRate];
-        if (v19 <= 34)
+        bleScanRate2 = [discoveryCopy bleScanRate];
+        if (bleScanRate2 <= 34)
         {
           goto LABEL_35;
         }
@@ -1351,8 +1351,8 @@ LABEL_6:
       else if (bleScanRate == 35)
       {
         v18 = "MediumLow";
-        v19 = [v4 bleScanRate];
-        if (v19 <= 34)
+        bleScanRate2 = [discoveryCopy bleScanRate];
+        if (bleScanRate2 <= 34)
         {
           goto LABEL_35;
         }
@@ -1366,8 +1366,8 @@ LABEL_6:
         }
 
         v18 = "Medium";
-        v19 = [v4 bleScanRate];
-        if (v19 <= 34)
+        bleScanRate2 = [discoveryCopy bleScanRate];
+        if (bleScanRate2 <= 34)
         {
           goto LABEL_35;
         }
@@ -1379,8 +1379,8 @@ LABEL_6:
       if (bleScanRate == 20)
       {
         v18 = "Background";
-        v19 = [v4 bleScanRate];
-        if (v19 <= 34)
+        bleScanRate2 = [discoveryCopy bleScanRate];
+        if (bleScanRate2 <= 34)
         {
           goto LABEL_35;
         }
@@ -1394,8 +1394,8 @@ LABEL_6:
         }
 
         v18 = "Low";
-        v19 = [v4 bleScanRate];
-        if (v19 <= 34)
+        bleScanRate2 = [discoveryCopy bleScanRate];
+        if (bleScanRate2 <= 34)
         {
           goto LABEL_35;
         }
@@ -1409,22 +1409,22 @@ LABEL_6:
         if (bleScanRate == 10)
         {
           v18 = "Periodic";
-          v19 = [v4 bleScanRate];
-          if (v19 > 34)
+          bleScanRate2 = [discoveryCopy bleScanRate];
+          if (bleScanRate2 > 34)
           {
             goto LABEL_45;
           }
 
 LABEL_35:
-          if (v19 > 19)
+          if (bleScanRate2 > 19)
           {
-            if (v19 == 20)
+            if (bleScanRate2 == 20)
             {
               v20 = "Background";
               goto LABEL_55;
             }
 
-            if (v19 == 30)
+            if (bleScanRate2 == 30)
             {
               v20 = "Low";
               goto LABEL_55;
@@ -1433,13 +1433,13 @@ LABEL_35:
 
           else
           {
-            if (!v19)
+            if (!bleScanRate2)
             {
               v20 = "Default";
               goto LABEL_55;
             }
 
-            if (v19 == 10)
+            if (bleScanRate2 == 10)
             {
               v20 = "Periodic";
               goto LABEL_55;
@@ -1451,8 +1451,8 @@ LABEL_35:
 
 LABEL_44:
         v18 = "?";
-        v19 = [v4 bleScanRate];
-        if (v19 > 34)
+        bleScanRate2 = [discoveryCopy bleScanRate];
+        if (bleScanRate2 > 34)
         {
           goto LABEL_45;
         }
@@ -1461,23 +1461,23 @@ LABEL_44:
       }
 
       v18 = "Default";
-      v19 = [v4 bleScanRate];
-      if (v19 <= 34)
+      bleScanRate2 = [discoveryCopy bleScanRate];
+      if (bleScanRate2 <= 34)
       {
         goto LABEL_35;
       }
     }
 
 LABEL_45:
-    if (v19 > 49)
+    if (bleScanRate2 > 49)
     {
-      if (v19 == 50)
+      if (bleScanRate2 == 50)
       {
         v20 = "High";
         goto LABEL_55;
       }
 
-      if (v19 == 60)
+      if (bleScanRate2 == 60)
       {
         v20 = "Max";
         goto LABEL_55;
@@ -1486,13 +1486,13 @@ LABEL_45:
 
     else
     {
-      if (v19 == 35)
+      if (bleScanRate2 == 35)
       {
         v20 = "MediumLow";
         goto LABEL_55;
       }
 
-      if (v19 == 40)
+      if (bleScanRate2 == 40)
       {
         v20 = "Medium";
         goto LABEL_55;
@@ -1506,12 +1506,12 @@ LABEL_55:
     CUAppendF();
     v21 = v9;
 
-    self->_bleScanRate = [v4 bleScanRate];
+    self->_bleScanRate = [discoveryCopy bleScanRate];
     v7 = 1;
     v9 = v21;
-    v22 = [v4 bleScanRateScreenOff];
+    bleScanRateScreenOff = [discoveryCopy bleScanRateScreenOff];
     bleScanRateScreenOff = self->_bleScanRateScreenOff;
-    if (v22 == bleScanRateScreenOff)
+    if (bleScanRateScreenOff == bleScanRateScreenOff)
     {
       goto LABEL_103;
     }
@@ -1524,8 +1524,8 @@ LABEL_56:
         if (bleScanRateScreenOff == 50)
         {
           v23 = "High";
-          v24 = [v4 bleScanRateScreenOff];
-          if (v24 > 34)
+          bleScanRateScreenOff2 = [discoveryCopy bleScanRateScreenOff];
+          if (bleScanRateScreenOff2 > 34)
           {
             goto LABEL_92;
           }
@@ -1539,8 +1539,8 @@ LABEL_56:
         }
 
         v23 = "Max";
-        v24 = [v4 bleScanRateScreenOff];
-        if (v24 <= 34)
+        bleScanRateScreenOff2 = [discoveryCopy bleScanRateScreenOff];
+        if (bleScanRateScreenOff2 <= 34)
         {
           goto LABEL_82;
         }
@@ -1549,8 +1549,8 @@ LABEL_56:
       else if (bleScanRateScreenOff == 35)
       {
         v23 = "MediumLow";
-        v24 = [v4 bleScanRateScreenOff];
-        if (v24 <= 34)
+        bleScanRateScreenOff2 = [discoveryCopy bleScanRateScreenOff];
+        if (bleScanRateScreenOff2 <= 34)
         {
           goto LABEL_82;
         }
@@ -1564,8 +1564,8 @@ LABEL_56:
         }
 
         v23 = "Medium";
-        v24 = [v4 bleScanRateScreenOff];
-        if (v24 <= 34)
+        bleScanRateScreenOff2 = [discoveryCopy bleScanRateScreenOff];
+        if (bleScanRateScreenOff2 <= 34)
         {
           goto LABEL_82;
         }
@@ -1577,8 +1577,8 @@ LABEL_56:
       if (bleScanRateScreenOff == 20)
       {
         v23 = "Background";
-        v24 = [v4 bleScanRateScreenOff];
-        if (v24 <= 34)
+        bleScanRateScreenOff2 = [discoveryCopy bleScanRateScreenOff];
+        if (bleScanRateScreenOff2 <= 34)
         {
           goto LABEL_82;
         }
@@ -1592,8 +1592,8 @@ LABEL_56:
         }
 
         v23 = "Low";
-        v24 = [v4 bleScanRateScreenOff];
-        if (v24 <= 34)
+        bleScanRateScreenOff2 = [discoveryCopy bleScanRateScreenOff];
+        if (bleScanRateScreenOff2 <= 34)
         {
           goto LABEL_82;
         }
@@ -1607,23 +1607,23 @@ LABEL_56:
         if (bleScanRateScreenOff == 10)
         {
           v23 = "Periodic";
-          v24 = [v4 bleScanRateScreenOff];
-          if (v24 > 34)
+          bleScanRateScreenOff2 = [discoveryCopy bleScanRateScreenOff];
+          if (bleScanRateScreenOff2 > 34)
           {
             goto LABEL_92;
           }
 
 LABEL_82:
-          if (v24 > 19)
+          if (bleScanRateScreenOff2 > 19)
           {
-            if (v24 == 20)
+            if (bleScanRateScreenOff2 == 20)
             {
               v25 = "Background";
             }
 
             else
             {
-              if (v24 != 30)
+              if (bleScanRateScreenOff2 != 30)
               {
                 goto LABEL_101;
               }
@@ -1632,9 +1632,9 @@ LABEL_82:
             }
           }
 
-          else if (v24)
+          else if (bleScanRateScreenOff2)
           {
-            if (v24 != 10)
+            if (bleScanRateScreenOff2 != 10)
             {
               goto LABEL_101;
             }
@@ -1652,7 +1652,7 @@ LABEL_102:
           CUAppendF();
           v26 = v9;
 
-          self->_bleScanRateScreenOff = [v4 bleScanRateScreenOff];
+          self->_bleScanRateScreenOff = [discoveryCopy bleScanRateScreenOff];
           v7 = 1;
           v9 = v26;
           goto LABEL_103;
@@ -1660,8 +1660,8 @@ LABEL_102:
 
 LABEL_91:
         v23 = "?";
-        v24 = [v4 bleScanRateScreenOff];
-        if (v24 > 34)
+        bleScanRateScreenOff2 = [discoveryCopy bleScanRateScreenOff];
+        if (bleScanRateScreenOff2 > 34)
         {
           goto LABEL_92;
         }
@@ -1670,23 +1670,23 @@ LABEL_91:
       }
 
       v23 = "Default";
-      v24 = [v4 bleScanRateScreenOff];
-      if (v24 <= 34)
+      bleScanRateScreenOff2 = [discoveryCopy bleScanRateScreenOff];
+      if (bleScanRateScreenOff2 <= 34)
       {
         goto LABEL_82;
       }
     }
 
 LABEL_92:
-    if (v24 > 49)
+    if (bleScanRateScreenOff2 > 49)
     {
-      if (v24 == 50)
+      if (bleScanRateScreenOff2 == 50)
       {
         v25 = "High";
         goto LABEL_102;
       }
 
-      if (v24 == 60)
+      if (bleScanRateScreenOff2 == 60)
       {
         v25 = "Max";
         goto LABEL_102;
@@ -1695,13 +1695,13 @@ LABEL_92:
 
     else
     {
-      if (v24 == 35)
+      if (bleScanRateScreenOff2 == 35)
       {
         v25 = "MediumLow";
         goto LABEL_102;
       }
 
-      if (v24 == 40)
+      if (bleScanRateScreenOff2 == 40)
       {
         v25 = "Medium";
         goto LABEL_102;
@@ -1713,17 +1713,17 @@ LABEL_101:
     goto LABEL_102;
   }
 
-  v16 = [v4 bleScanRateScreenOff];
+  bleScanRateScreenOff3 = [discoveryCopy bleScanRateScreenOff];
   bleScanRateScreenOff = self->_bleScanRateScreenOff;
-  if (v16 != bleScanRateScreenOff)
+  if (bleScanRateScreenOff3 != bleScanRateScreenOff)
   {
     goto LABEL_56;
   }
 
 LABEL_103:
-  v27 = [v4 deviceFilter];
+  deviceFilter = [discoveryCopy deviceFilter];
   deviceFilter = self->_deviceFilter;
-  v29 = v27;
+  v29 = deviceFilter;
   v30 = deviceFilter;
   if (v29 == v30)
   {
@@ -1738,7 +1738,7 @@ LABEL_103:
 
       if (v32)
       {
-        if ([v4 discoveryFlags] == self->_discoveryFlags)
+        if ([discoveryCopy discoveryFlags] == self->_discoveryFlags)
         {
           goto LABEL_108;
         }
@@ -1753,51 +1753,51 @@ LABEL_103:
 
     v45 = self->_deviceFilter;
     v46 = CUPrintNSObjectOneLine();
-    v47 = [v4 deviceFilter];
+    deviceFilter2 = [discoveryCopy deviceFilter];
     v151 = CUPrintNSObjectOneLine();
     CUAppendF();
     v48 = v9;
 
-    v49 = [v4 deviceFilter];
+    deviceFilter3 = [discoveryCopy deviceFilter];
     v29 = self->_deviceFilter;
-    self->_deviceFilter = v49;
+    self->_deviceFilter = deviceFilter3;
     v7 = 1;
     v9 = v48;
   }
 
-  if ([v4 discoveryFlags] != self->_discoveryFlags)
+  if ([discoveryCopy discoveryFlags] != self->_discoveryFlags)
   {
 LABEL_107:
     v33 = CUPrintFlags64();
-    [v4 discoveryFlags];
+    [discoveryCopy discoveryFlags];
     v149 = CUPrintFlags64();
     CUAppendF();
     v34 = v9;
 
-    self->_discoveryFlags = [v4 discoveryFlags];
+    self->_discoveryFlags = [discoveryCopy discoveryFlags];
     v7 = 1;
     v9 = v34;
   }
 
 LABEL_108:
-  if (*(v4 + 41) != *self->_discoveryTypesInternal.bitArray || *(v4 + 45) != *&self->_discoveryTypesInternal.bitArray[4])
+  if (*(discoveryCopy + 41) != *self->_discoveryTypesInternal.bitArray || *(discoveryCopy + 45) != *&self->_discoveryTypesInternal.bitArray[4])
   {
     v36 = CBDiscoveryTypesToString(&self->_discoveryTypesInternal);
-    CBDiscoveryTypesToString((v4 + 41));
+    CBDiscoveryTypesToString((discoveryCopy + 41));
     v144 = v134 = v36;
     CUAppendF();
     v37 = v9;
 
-    v38 = *(v4 + 41);
-    *&self->_discoveryTypesInternal.bitArray[4] = *(v4 + 45);
+    v38 = *(discoveryCopy + 41);
+    *&self->_discoveryTypesInternal.bitArray[4] = *(discoveryCopy + 45);
     *self->_discoveryTypesInternal.bitArray = v38;
     v7 = 1;
     v9 = v37;
   }
 
-  v39 = [v4 oobKeys];
+  oobKeys = [discoveryCopy oobKeys];
   oobKeys = self->_oobKeys;
-  v41 = v39;
+  v41 = oobKeys;
   v42 = oobKeys;
   if (v41 == v42)
   {
@@ -1820,23 +1820,23 @@ LABEL_125:
 LABEL_124:
     v50 = self->_oobKeys;
     v51 = CUPrintNSObjectOneLine();
-    v52 = [v4 oobKeys];
+    oobKeys2 = [discoveryCopy oobKeys];
     v152 = CUPrintNSObjectOneLine();
     CUAppendF();
     v53 = v9;
 
-    v54 = [v4 oobKeys];
+    oobKeys3 = [discoveryCopy oobKeys];
     v41 = self->_oobKeys;
-    self->_oobKeys = v54;
+    self->_oobKeys = oobKeys3;
     v7 = 1;
     v9 = v53;
     goto LABEL_125;
   }
 
 LABEL_126:
-  v55 = [v4 serviceUUIDs];
+  serviceUUIDs = [discoveryCopy serviceUUIDs];
   serviceUUIDs = self->_serviceUUIDs;
-  v57 = v55;
+  v57 = serviceUUIDs;
   v58 = serviceUUIDs;
   if (v57 == v58)
   {
@@ -1859,23 +1859,23 @@ LABEL_133:
 LABEL_132:
     v61 = self->_serviceUUIDs;
     v62 = CUPrintNSObjectOneLine();
-    v63 = [v4 serviceUUIDs];
+    serviceUUIDs2 = [discoveryCopy serviceUUIDs];
     v153 = CUPrintNSObjectOneLine();
     CUAppendF();
     v64 = v9;
 
-    v65 = [v4 serviceUUIDs];
+    serviceUUIDs3 = [discoveryCopy serviceUUIDs];
     v57 = self->_serviceUUIDs;
-    self->_serviceUUIDs = v65;
+    self->_serviceUUIDs = serviceUUIDs3;
     v7 = 1;
     v9 = v64;
     goto LABEL_133;
   }
 
 LABEL_134:
-  v66 = [v4 softwareUpdatePayloads];
+  softwareUpdatePayloads = [discoveryCopy softwareUpdatePayloads];
   softwareUpdatePayloads = self->_softwareUpdatePayloads;
-  v68 = v66;
+  v68 = softwareUpdatePayloads;
   v69 = softwareUpdatePayloads;
   if (v68 == v69)
   {
@@ -1890,9 +1890,9 @@ LABEL_134:
 
       if (v71)
       {
-        v72 = [v4 useCase];
+        useCase = [discoveryCopy useCase];
         useCase = self->_useCase;
-        if (v72 == useCase)
+        if (useCase == useCase)
         {
           goto LABEL_139;
         }
@@ -1907,37 +1907,37 @@ LABEL_134:
 
     v106 = self->_softwareUpdatePayloads;
     v107 = CUPrintNSObjectOneLine();
-    v108 = [v4 softwareUpdatePayloads];
+    softwareUpdatePayloads2 = [discoveryCopy softwareUpdatePayloads];
     v157 = CUPrintNSObjectOneLine();
     CUAppendF();
     v109 = v9;
 
-    v110 = [v4 softwareUpdatePayloads];
+    softwareUpdatePayloads3 = [discoveryCopy softwareUpdatePayloads];
     v68 = self->_softwareUpdatePayloads;
-    self->_softwareUpdatePayloads = v110;
+    self->_softwareUpdatePayloads = softwareUpdatePayloads3;
     v7 = 1;
     v9 = v109;
   }
 
-  v72 = [v4 useCase];
+  useCase = [discoveryCopy useCase];
   useCase = self->_useCase;
-  if (v72 != useCase)
+  if (useCase != useCase)
   {
 LABEL_138:
     v136 = CBUseCaseToString_0(useCase);
-    v150 = CBUseCaseToString_0(v72);
+    v150 = CBUseCaseToString_0(useCase);
     CUAppendF();
     v74 = v9;
 
-    self->_useCase = v72;
+    self->_useCase = useCase;
     v7 = 1;
     v9 = v74;
   }
 
 LABEL_139:
-  v75 = [v4 useCaseClientIDs];
+  useCaseClientIDs = [discoveryCopy useCaseClientIDs];
   useCaseClientIDs = self->_useCaseClientIDs;
-  v77 = v75;
+  v77 = useCaseClientIDs;
   v78 = useCaseClientIDs;
   if (v77 == v78)
   {
@@ -1954,9 +1954,9 @@ LABEL_139:
 
       if (v80)
       {
-        v81 = [v4 bleSensorRssiIncreaseScanThreshold];
+        bleSensorRssiIncreaseScanThreshold = [discoveryCopy bleSensorRssiIncreaseScanThreshold];
         bleSensorRssiIncreaseScanThreshold = self->_bleSensorRssiIncreaseScanThreshold;
-        if (v81 == self->_bleSensorRssiIncreaseScanThreshold)
+        if (bleSensorRssiIncreaseScanThreshold == self->_bleSensorRssiIncreaseScanThreshold)
         {
           goto LABEL_143;
         }
@@ -1983,14 +1983,14 @@ LABEL_139:
     v9 = v113;
   }
 
-  v115 = [v4 bleSensorRssiIncreaseScanThreshold];
+  bleSensorRssiIncreaseScanThreshold2 = [discoveryCopy bleSensorRssiIncreaseScanThreshold];
   bleSensorRssiIncreaseScanThreshold = self->_bleSensorRssiIncreaseScanThreshold;
-  if (v115 == self->_bleSensorRssiIncreaseScanThreshold)
+  if (bleSensorRssiIncreaseScanThreshold2 == self->_bleSensorRssiIncreaseScanThreshold)
   {
 LABEL_143:
-    v83 = [v4 bleSensorEnableRssiIncreaseScan];
+    bleSensorEnableRssiIncreaseScan = [discoveryCopy bleSensorEnableRssiIncreaseScan];
     bleSensorEnableRssiIncreaseScan = self->_bleSensorEnableRssiIncreaseScan;
-    if (bleSensorEnableRssiIncreaseScan == v83)
+    if (bleSensorEnableRssiIncreaseScan == bleSensorEnableRssiIncreaseScan)
     {
       goto LABEL_144;
     }
@@ -1999,23 +1999,23 @@ LABEL_143:
   }
 
 LABEL_168:
-  v116 = [v4 bleSensorRssiIncreaseScanThreshold];
+  bleSensorRssiIncreaseScanThreshold3 = [discoveryCopy bleSensorRssiIncreaseScanThreshold];
   v140 = bleSensorRssiIncreaseScanThreshold;
-  v158 = v116;
+  v158 = bleSensorRssiIncreaseScanThreshold3;
   CUAppendF();
   v117 = v9;
 
-  self->_bleSensorRssiIncreaseScanThreshold = [v4 bleSensorRssiIncreaseScanThreshold];
+  self->_bleSensorRssiIncreaseScanThreshold = [discoveryCopy bleSensorRssiIncreaseScanThreshold];
   v7 = 1;
   v9 = v117;
-  v118 = [v4 bleSensorEnableRssiIncreaseScan];
+  bleSensorEnableRssiIncreaseScan2 = [discoveryCopy bleSensorEnableRssiIncreaseScan];
   bleSensorEnableRssiIncreaseScan = self->_bleSensorEnableRssiIncreaseScan;
-  if (bleSensorEnableRssiIncreaseScan == v118)
+  if (bleSensorEnableRssiIncreaseScan == bleSensorEnableRssiIncreaseScan2)
   {
 LABEL_144:
-    v85 = [v4 bleSensorIncreaseScanRate];
+    bleSensorIncreaseScanRate = [discoveryCopy bleSensorIncreaseScanRate];
     bleSensorIncreaseScanRate = self->_bleSensorIncreaseScanRate;
-    if (v85 == bleSensorIncreaseScanRate)
+    if (bleSensorIncreaseScanRate == bleSensorIncreaseScanRate)
     {
       goto LABEL_145;
     }
@@ -2025,21 +2025,21 @@ LABEL_144:
 
 LABEL_169:
   v141 = bleSensorEnableRssiIncreaseScan;
-  v159 = [v4 bleSensorEnableRssiIncreaseScan];
+  bleSensorEnableRssiIncreaseScan3 = [discoveryCopy bleSensorEnableRssiIncreaseScan];
   CUAppendF();
   v119 = v9;
 
-  self->_bleSensorEnableRssiIncreaseScan = [v4 bleSensorEnableRssiIncreaseScan];
+  self->_bleSensorEnableRssiIncreaseScan = [discoveryCopy bleSensorEnableRssiIncreaseScan];
   v7 = 1;
   v9 = v119;
-  v120 = [v4 bleSensorIncreaseScanRate];
+  bleSensorIncreaseScanRate2 = [discoveryCopy bleSensorIncreaseScanRate];
   bleSensorIncreaseScanRate = self->_bleSensorIncreaseScanRate;
-  if (v120 == bleSensorIncreaseScanRate)
+  if (bleSensorIncreaseScanRate2 == bleSensorIncreaseScanRate)
   {
 LABEL_145:
-    v87 = [v4 bleSensorIncreaseScanTimeout];
+    bleSensorIncreaseScanTimeout = [discoveryCopy bleSensorIncreaseScanTimeout];
     bleSensorIncreaseScanTimeout = self->_bleSensorIncreaseScanTimeout;
-    if (v87 == bleSensorIncreaseScanTimeout)
+    if (bleSensorIncreaseScanTimeout == bleSensorIncreaseScanTimeout)
     {
       goto LABEL_146;
     }
@@ -2049,21 +2049,21 @@ LABEL_145:
 
 LABEL_170:
   v142 = bleSensorIncreaseScanRate;
-  v160 = [v4 bleSensorIncreaseScanRate];
+  bleSensorIncreaseScanRate3 = [discoveryCopy bleSensorIncreaseScanRate];
   CUAppendF();
   v121 = v9;
 
-  self->_bleSensorIncreaseScanRate = [v4 bleSensorIncreaseScanRate];
+  self->_bleSensorIncreaseScanRate = [discoveryCopy bleSensorIncreaseScanRate];
   v7 = 1;
   v9 = v121;
-  v122 = [v4 bleSensorIncreaseScanTimeout];
+  bleSensorIncreaseScanTimeout2 = [discoveryCopy bleSensorIncreaseScanTimeout];
   bleSensorIncreaseScanTimeout = self->_bleSensorIncreaseScanTimeout;
-  if (v122 == bleSensorIncreaseScanTimeout)
+  if (bleSensorIncreaseScanTimeout2 == bleSensorIncreaseScanTimeout)
   {
 LABEL_146:
-    v89 = [v4 bleSensorTimeoutBetweenIncreaseScan];
+    bleSensorTimeoutBetweenIncreaseScan = [discoveryCopy bleSensorTimeoutBetweenIncreaseScan];
     bleSensorTimeoutBetweenIncreaseScan = self->_bleSensorTimeoutBetweenIncreaseScan;
-    if (v89 == bleSensorTimeoutBetweenIncreaseScan)
+    if (bleSensorTimeoutBetweenIncreaseScan == bleSensorTimeoutBetweenIncreaseScan)
     {
       goto LABEL_148;
     }
@@ -2073,51 +2073,51 @@ LABEL_146:
 
 LABEL_171:
   v143 = bleSensorIncreaseScanTimeout;
-  v161 = [v4 bleSensorIncreaseScanTimeout];
+  bleSensorIncreaseScanTimeout3 = [discoveryCopy bleSensorIncreaseScanTimeout];
   CUAppendF();
   v123 = v9;
 
-  self->_bleSensorIncreaseScanTimeout = [v4 bleSensorIncreaseScanTimeout];
+  self->_bleSensorIncreaseScanTimeout = [discoveryCopy bleSensorIncreaseScanTimeout];
   v7 = 1;
   v9 = v123;
-  v124 = [v4 bleSensorTimeoutBetweenIncreaseScan];
+  bleSensorTimeoutBetweenIncreaseScan2 = [discoveryCopy bleSensorTimeoutBetweenIncreaseScan];
   bleSensorTimeoutBetweenIncreaseScan = self->_bleSensorTimeoutBetweenIncreaseScan;
-  if (v124 != bleSensorTimeoutBetweenIncreaseScan)
+  if (bleSensorTimeoutBetweenIncreaseScan2 != bleSensorTimeoutBetweenIncreaseScan)
   {
 LABEL_147:
     v138 = bleSensorTimeoutBetweenIncreaseScan;
-    v155 = [v4 bleSensorTimeoutBetweenIncreaseScan];
+    bleSensorTimeoutBetweenIncreaseScan3 = [discoveryCopy bleSensorTimeoutBetweenIncreaseScan];
     CUAppendF();
     v91 = v9;
 
-    self->_bleSensorTimeoutBetweenIncreaseScan = [v4 bleSensorTimeoutBetweenIncreaseScan];
+    self->_bleSensorTimeoutBetweenIncreaseScan = [discoveryCopy bleSensorTimeoutBetweenIncreaseScan];
     v7 = 1;
     v9 = v91;
   }
 
 LABEL_148:
-  v92 = [v4 bufferedAdvConfigsForAOP];
+  bufferedAdvConfigsForAOP = [discoveryCopy bufferedAdvConfigsForAOP];
   bufferedAdvConfigsForAOP = self->_bufferedAdvConfigsForAOP;
 
-  if (v92 != bufferedAdvConfigsForAOP)
+  if (bufferedAdvConfigsForAOP != bufferedAdvConfigsForAOP)
   {
     v94 = self->_bufferedAdvConfigsForAOP;
-    [v4 bufferedAdvConfigsForAOP];
+    [discoveryCopy bufferedAdvConfigsForAOP];
     v156 = v139 = v94;
     CUAppendF();
     v95 = v9;
 
-    v96 = [v4 bufferedAdvConfigsForAOP];
+    bufferedAdvConfigsForAOP2 = [discoveryCopy bufferedAdvConfigsForAOP];
     v97 = self->_bufferedAdvConfigsForAOP;
-    self->_bufferedAdvConfigsForAOP = v96;
+    self->_bufferedAdvConfigsForAOP = bufferedAdvConfigsForAOP2;
 
     v7 = 1;
     v9 = v95;
   }
 
-  v98 = [v4 spatialInteractionfilter];
+  spatialInteractionfilter = [discoveryCopy spatialInteractionfilter];
   spatialInteractionfilter = self->_spatialInteractionfilter;
-  v100 = v98;
+  v100 = spatialInteractionfilter;
   v101 = spatialInteractionfilter;
   if (v100 == v101)
   {
@@ -2153,14 +2153,14 @@ LABEL_154:
 LABEL_174:
     v125 = self->_spatialInteractionfilter;
     v126 = CUPrintNSObjectOneLine();
-    v127 = [v4 spatialInteractionfilter];
+    spatialInteractionfilter2 = [discoveryCopy spatialInteractionfilter];
     v162 = CUPrintNSObjectOneLine();
     CUAppendF();
     v128 = v9;
 
-    v129 = [v4 spatialInteractionfilter];
+    spatialInteractionfilter3 = [discoveryCopy spatialInteractionfilter];
     v130 = self->_spatialInteractionfilter;
-    self->_spatialInteractionfilter = v129;
+    self->_spatialInteractionfilter = spatialInteractionfilter3;
     v7 = 1;
     v9 = v128;
 
@@ -2209,25 +2209,25 @@ LABEL_181:
   return v7;
 }
 
-- (unint64_t)updateWithXPCSubscriberInfo:(id)a3
+- (unint64_t)updateWithXPCSubscriberInfo:(id)info
 {
   v107 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  infoCopy = info;
+  if (!infoCopy)
   {
     v80 = 0;
     goto LABEL_170;
   }
 
-  v5 = v4;
+  v5 = infoCopy;
   if (MEMORY[0x1C68DFDD0]() != MEMORY[0x1E69E9E80])
   {
     v80 = 0;
-    v4 = v5;
+    infoCopy = v5;
     goto LABEL_170;
   }
 
-  v81 = self;
+  selfCopy = self;
   v104 = 0;
   xdict = v5;
   CUXPCDecodeNSArrayOfNSString();
@@ -2290,14 +2290,14 @@ LABEL_181:
     while (v8);
   }
 
-  if (v7 == v81->_authFlags)
+  if (v7 == selfCopy->_authFlags)
   {
     v80 = 0;
   }
 
   else
   {
-    v81->_authFlags = v7;
+    selfCopy->_authFlags = v7;
     v80 = 0x80000000000;
   }
 
@@ -2362,16 +2362,16 @@ LABEL_181:
     while (v15);
   }
 
-  if (v14 != v81->_authFlagsExcluded)
+  if (v14 != selfCopy->_authFlagsExcluded)
   {
-    v81->_authFlagsExcluded = v14;
+    selfCopy->_authFlagsExcluded = v14;
     v80 = 0x80000000000;
   }
 
   uint64 = xpc_dictionary_get_uint64(xdict, "bleRSSIThresholdOrder");
-  if (uint64 != v81->_bleRSSIThresholdOrder)
+  if (uint64 != selfCopy->_bleRSSIThresholdOrder)
   {
-    v81->_bleRSSIThresholdOrder = uint64;
+    selfCopy->_bleRSSIThresholdOrder = uint64;
     v80 = 0x80000000000;
   }
 
@@ -2387,15 +2387,15 @@ LABEL_181:
     v22 = -128;
   }
 
-  if (v22 != v81->_bleRSSIThresholdHint)
+  if (v22 != selfCopy->_bleRSSIThresholdHint)
   {
-    v81->_bleRSSIThresholdHint = v22;
+    selfCopy->_bleRSSIThresholdHint = v22;
     v80 = 0x80000000000;
   }
 
   v94 = 0;
   CUXPCDecodeNSArrayOfNSString();
-  deviceFilter = v81->_deviceFilter;
+  deviceFilter = selfCopy->_deviceFilter;
   v24 = 0;
   v25 = deviceFilter;
   v26 = v25;
@@ -2417,8 +2417,8 @@ LABEL_181:
   {
 LABEL_58:
     v28 = [v94 copy];
-    v29 = v81->_deviceFilter;
-    v81->_deviceFilter = v28;
+    v29 = selfCopy->_deviceFilter;
+    selfCopy->_deviceFilter = v28;
 
     v80 |= 0x80000000000uLL;
   }
@@ -2429,7 +2429,7 @@ LABEL_59:
   v32 = v31;
   if (!string)
   {
-    v33 = v81;
+    v33 = selfCopy;
     if (!v31)
     {
       goto LABEL_102;
@@ -2437,7 +2437,7 @@ LABEL_59:
 
     if (!strcmp(v31, "Default"))
     {
-      v81->_bleScanRateScreenOff = 0;
+      selfCopy->_bleScanRateScreenOff = 0;
       v80 |= 0x80000000000uLL;
       if (strcmp(v32, "Periodic"))
       {
@@ -2456,7 +2456,7 @@ LABEL_95:
       goto LABEL_95;
     }
 
-    v81->_bleScanRateScreenOff = 10;
+    selfCopy->_bleScanRateScreenOff = 10;
     v80 |= 0x80000000000uLL;
     if (strcmp(v32, "Background"))
     {
@@ -2470,7 +2470,7 @@ LABEL_96:
     }
 
 LABEL_187:
-    v81->_bleScanRateScreenOff = 20;
+    selfCopy->_bleScanRateScreenOff = 20;
     v80 |= 0x80000000000uLL;
     if (strcmp(v32, "Low"))
     {
@@ -2484,7 +2484,7 @@ LABEL_97:
     }
 
 LABEL_188:
-    v81->_bleScanRateScreenOff = 30;
+    selfCopy->_bleScanRateScreenOff = 30;
     v80 |= 0x80000000000uLL;
     if (strcmp(v32, "MediumLow"))
     {
@@ -2498,7 +2498,7 @@ LABEL_98:
     }
 
 LABEL_189:
-    v81->_bleScanRateScreenOff = 35;
+    selfCopy->_bleScanRateScreenOff = 35;
     v80 |= 0x80000000000uLL;
     if (strcmp(v32, "Medium"))
     {
@@ -2512,7 +2512,7 @@ LABEL_99:
     }
 
 LABEL_190:
-    v81->_bleScanRateScreenOff = 40;
+    selfCopy->_bleScanRateScreenOff = 40;
     v80 |= 0x80000000000uLL;
     if (strcmp(v32, "High"))
     {
@@ -2526,7 +2526,7 @@ LABEL_100:
     }
 
 LABEL_191:
-    v81->_bleScanRateScreenOff = 50;
+    selfCopy->_bleScanRateScreenOff = 50;
     v80 |= 0x80000000000uLL;
     if (strcmp(v32, "Max"))
     {
@@ -2539,16 +2539,16 @@ LABEL_101:
     goto LABEL_102;
   }
 
-  v33 = v81;
+  v33 = selfCopy;
   if (!strcmp(string, "Default"))
   {
-    v81->_bleScanRate = 0;
+    selfCopy->_bleScanRate = 0;
     v80 |= 0x80000000000uLL;
   }
 
   if (v32 && !strcmp(v32, "Default"))
   {
-    v81->_bleScanRateScreenOff = 0;
+    selfCopy->_bleScanRateScreenOff = 0;
     v80 |= 0x80000000000uLL;
     if (strcmp(string, "Periodic"))
     {
@@ -2561,14 +2561,14 @@ LABEL_101:
   if (!strcmp(string, "Periodic"))
   {
 LABEL_65:
-    v81->_bleScanRate = 10;
+    selfCopy->_bleScanRate = 10;
     v80 |= 0x80000000000uLL;
   }
 
 LABEL_66:
   if (v32 && !strcmp(v32, "Periodic"))
   {
-    v81->_bleScanRateScreenOff = 10;
+    selfCopy->_bleScanRateScreenOff = 10;
     v80 |= 0x80000000000uLL;
     if (strcmp(string, "Background"))
     {
@@ -2581,14 +2581,14 @@ LABEL_66:
   if (!strcmp(string, "Background"))
   {
 LABEL_69:
-    v81->_bleScanRate = 20;
+    selfCopy->_bleScanRate = 20;
     v80 |= 0x80000000000uLL;
   }
 
 LABEL_70:
   if (v32 && !strcmp(v32, "Background"))
   {
-    v81->_bleScanRateScreenOff = 20;
+    selfCopy->_bleScanRateScreenOff = 20;
     v80 |= 0x80000000000uLL;
     if (strcmp(string, "Low"))
     {
@@ -2601,14 +2601,14 @@ LABEL_70:
   if (!strcmp(string, "Low"))
   {
 LABEL_73:
-    v81->_bleScanRate = 30;
+    selfCopy->_bleScanRate = 30;
     v80 |= 0x80000000000uLL;
   }
 
 LABEL_74:
   if (v32 && !strcmp(v32, "Low"))
   {
-    v81->_bleScanRateScreenOff = 30;
+    selfCopy->_bleScanRateScreenOff = 30;
     v80 |= 0x80000000000uLL;
     if (strcmp(string, "MediumLow"))
     {
@@ -2621,14 +2621,14 @@ LABEL_74:
   if (!strcmp(string, "MediumLow"))
   {
 LABEL_77:
-    v81->_bleScanRate = 35;
+    selfCopy->_bleScanRate = 35;
     v80 |= 0x80000000000uLL;
   }
 
 LABEL_78:
   if (v32 && !strcmp(v32, "MediumLow"))
   {
-    v81->_bleScanRateScreenOff = 35;
+    selfCopy->_bleScanRateScreenOff = 35;
     v80 |= 0x80000000000uLL;
     if (strcmp(string, "Medium"))
     {
@@ -2641,14 +2641,14 @@ LABEL_78:
   if (!strcmp(string, "Medium"))
   {
 LABEL_81:
-    v81->_bleScanRate = 40;
+    selfCopy->_bleScanRate = 40;
     v80 |= 0x80000000000uLL;
   }
 
 LABEL_82:
   if (v32 && !strcmp(v32, "Medium"))
   {
-    v81->_bleScanRateScreenOff = 40;
+    selfCopy->_bleScanRateScreenOff = 40;
     v80 |= 0x80000000000uLL;
     if (strcmp(string, "High"))
     {
@@ -2661,7 +2661,7 @@ LABEL_82:
   if (!strcmp(string, "High"))
   {
 LABEL_85:
-    v81->_bleScanRate = 50;
+    selfCopy->_bleScanRate = 50;
     v80 |= 0x80000000000uLL;
   }
 
@@ -2676,12 +2676,12 @@ LABEL_86:
     goto LABEL_89;
   }
 
-  v81->_bleScanRateScreenOff = 50;
+  selfCopy->_bleScanRateScreenOff = 50;
   v80 |= 0x80000000000uLL;
   if (!strcmp(string, "Max"))
   {
 LABEL_89:
-    v81->_bleScanRate = 60;
+    selfCopy->_bleScanRate = 60;
     v80 |= 0x80000000000uLL;
   }
 
@@ -2705,7 +2705,7 @@ LABEL_102:
     applier[2] = __43__CBDiscovery_updateWithXPCSubscriberInfo___block_invoke;
     applier[3] = &unk_1E8120850;
     applier[5] = &v90;
-    applier[4] = v81;
+    applier[4] = selfCopy;
     v36 = v35;
     xpc_array_apply(v35, applier);
     v35 = v36;
@@ -2715,7 +2715,7 @@ LABEL_102:
   v78 = v35;
   if (v37 != discoveryFlags)
   {
-    v81->_discoveryFlags = v37;
+    selfCopy->_discoveryFlags = v37;
     v80 |= 0x800000000uLL;
   }
 
@@ -2737,18 +2737,18 @@ LABEL_102:
     xpc_array_apply(v38, v82);
   }
 
-  if (*(v84 + 8) != *v81->_discoveryTypesInternal.bitArray || *(v84 + 18) != *&v81->_discoveryTypesInternal.bitArray[4])
+  if (*(v84 + 8) != *selfCopy->_discoveryTypesInternal.bitArray || *(v84 + 18) != *&selfCopy->_discoveryTypesInternal.bitArray[4])
   {
     v41 = *(v84 + 8);
-    *&v81->_discoveryTypesInternal.bitArray[4] = *(v84 + 18);
-    *v81->_discoveryTypesInternal.bitArray = v41;
+    *&selfCopy->_discoveryTypesInternal.bitArray[4] = *(v84 + 18);
+    *selfCopy->_discoveryTypesInternal.bitArray = v41;
     v80 |= 0x800000000uLL;
   }
 
   v42 = xpc_dictionary_get_BOOL(xdict, "keepAlive");
-  if (v81->_keepAlive != v42)
+  if (selfCopy->_keepAlive != v42)
   {
-    v81->_keepAlive = v42;
+    selfCopy->_keepAlive = v42;
     v80 |= 0x80000000000uLL;
   }
 
@@ -2766,10 +2766,10 @@ LABEL_102:
   if (!strcmp(v44, "warn"))
   {
     v45 = 2;
-    if (v81->_memoryPressureFlags != 2)
+    if (selfCopy->_memoryPressureFlags != 2)
     {
 LABEL_123:
-      v81->_memoryPressureFlags = v45;
+      selfCopy->_memoryPressureFlags = v45;
       v80 |= 0x80000000000uLL;
     }
   }
@@ -2786,7 +2786,7 @@ LABEL_123:
       v45 = 0;
     }
 
-    if (v45 != v81->_memoryPressureFlags)
+    if (v45 != selfCopy->_memoryPressureFlags)
     {
       goto LABEL_123;
     }
@@ -2794,7 +2794,7 @@ LABEL_123:
 
   objc_opt_class();
   CUXPCDecodeNSArrayOfClass();
-  oobKeys = v81->_oobKeys;
+  oobKeys = selfCopy->_oobKeys;
   v47 = 0;
   v48 = oobKeys;
   v49 = v48;
@@ -2816,8 +2816,8 @@ LABEL_123:
   {
 LABEL_132:
     v51 = [0 copy];
-    v52 = v81->_oobKeys;
-    v81->_oobKeys = v51;
+    v52 = selfCopy->_oobKeys;
+    selfCopy->_oobKeys = v51;
 
     v80 |= 0x80000000000uLL;
   }
@@ -2826,7 +2826,7 @@ LABEL_133:
   CUXPCDecodeNSArrayOfNSString();
   objc_opt_class();
   CUXPCDecodeNSArrayOfClass();
-  serviceUUIDs = v81->_serviceUUIDs;
+  serviceUUIDs = selfCopy->_serviceUUIDs;
   v54 = 0;
   v55 = serviceUUIDs;
   v56 = v55;
@@ -2847,7 +2847,7 @@ LABEL_133:
   if ((v57 & 1) == 0)
   {
 LABEL_139:
-    objc_storeStrong(&v81->_serviceUUIDs, 0);
+    objc_storeStrong(&selfCopy->_serviceUUIDs, 0);
     v80 |= 0x80000000000uLL;
   }
 
@@ -2864,64 +2864,64 @@ LABEL_140:
     v59 = -128;
   }
 
-  if (v59 != v81->_bleSensorRssiIncreaseScanThreshold)
+  if (v59 != selfCopy->_bleSensorRssiIncreaseScanThreshold)
   {
-    v81->_bleSensorRssiIncreaseScanThreshold = v59;
+    selfCopy->_bleSensorRssiIncreaseScanThreshold = v59;
     v80 |= 0x80000000000uLL;
   }
 
   v60 = xpc_dictionary_get_int64(xdict, "bleSensorEnableRssiIncreaseScan");
-  if (v60 != v81->_bleSensorEnableRssiIncreaseScan)
+  if (v60 != selfCopy->_bleSensorEnableRssiIncreaseScan)
   {
-    v81->_bleSensorEnableRssiIncreaseScan = v60 != 0;
+    selfCopy->_bleSensorEnableRssiIncreaseScan = v60 != 0;
     v80 |= 0x80000000000uLL;
   }
 
   v61 = xpc_dictionary_get_int64(xdict, "bleSensorIncreaseScanRate");
-  if (v61 != v81->_bleSensorIncreaseScanRate)
+  if (v61 != selfCopy->_bleSensorIncreaseScanRate)
   {
-    v81->_bleSensorIncreaseScanRate = v61;
+    selfCopy->_bleSensorIncreaseScanRate = v61;
     v80 |= 0x80000000000uLL;
   }
 
   v62 = xpc_dictionary_get_int64(xdict, "bleSensorIncreaseScanTimeout");
-  if (v62 != v81->_bleSensorIncreaseScanTimeout)
+  if (v62 != selfCopy->_bleSensorIncreaseScanTimeout)
   {
-    v81->_bleSensorIncreaseScanTimeout = v62;
+    selfCopy->_bleSensorIncreaseScanTimeout = v62;
     v80 |= 0x80000000000uLL;
   }
 
   v63 = xpc_dictionary_get_int64(xdict, "bleSensorTimeoutBetweenIncreaseScan");
-  if (v63 != v81->_bleSensorTimeoutBetweenIncreaseScan)
+  if (v63 != selfCopy->_bleSensorTimeoutBetweenIncreaseScan)
   {
-    v81->_bleSensorTimeoutBetweenIncreaseScan = v63;
+    selfCopy->_bleSensorTimeoutBetweenIncreaseScan = v63;
     v80 |= 0x80000000000uLL;
   }
 
   v64 = xpc_dictionary_get_BOOL(xdict, "denyLowPowerModeScans");
-  if (v81->_denyLowPowerModeScans != v64)
+  if (selfCopy->_denyLowPowerModeScans != v64)
   {
-    v81->_denyLowPowerModeScans = v64;
+    selfCopy->_denyLowPowerModeScans = v64;
     v80 |= 0x80000000000uLL;
   }
 
   v65 = xpc_dictionary_get_BOOL(xdict, "denyScreenLockedScans");
-  if (v81->_denyScreenLockedScans != v65)
+  if (selfCopy->_denyScreenLockedScans != v65)
   {
-    v81->_denyScreenLockedScans = v65;
+    selfCopy->_denyScreenLockedScans = v65;
     v80 |= 0x80000000000uLL;
   }
 
   v66 = xpc_dictionary_get_uint64(xdict, "deviceSetupState");
-  if (v66 != v81->_deviceSetupState)
+  if (v66 != selfCopy->_deviceSetupState)
   {
-    v81->_deviceSetupState = v66;
+    selfCopy->_deviceSetupState = v66;
     v80 |= 0x80000000000uLL;
   }
 
   objc_opt_class();
   CUXPCDecodeNSArrayOfClass();
-  bufferedAdvConfigsForAOP = v81->_bufferedAdvConfigsForAOP;
+  bufferedAdvConfigsForAOP = selfCopy->_bufferedAdvConfigsForAOP;
   v68 = 0;
   v69 = bufferedAdvConfigsForAOP;
   v70 = v69;
@@ -2946,24 +2946,24 @@ LABEL_140:
     }
 
     v72 = [0 copy];
-    v73 = v81->_bufferedAdvConfigsForAOP;
-    v81->_bufferedAdvConfigsForAOP = v72;
+    v73 = selfCopy->_bufferedAdvConfigsForAOP;
+    selfCopy->_bufferedAdvConfigsForAOP = v72;
 
     v80 |= 0x80000000000uLL;
   }
 
 LABEL_167:
   v74 = xpc_dictionary_get_BOOL(xdict, "xpcReportCompleteDevice");
-  if (v81->_xpcReportCompleteDevice != v74)
+  if (selfCopy->_xpcReportCompleteDevice != v74)
   {
-    v81->_xpcReportCompleteDevice = v74;
+    selfCopy->_xpcReportCompleteDevice = v74;
     v80 |= 0x80000000000uLL;
   }
 
   _Block_object_dispose(&v83, 8);
   _Block_object_dispose(&v90, 8);
 
-  v4 = xdict;
+  infoCopy = xdict;
 LABEL_170:
 
   v75 = *MEMORY[0x1E69E9840];
@@ -3198,17 +3198,17 @@ uint64_t __43__CBDiscovery_updateWithXPCSubscriberInfo___block_invoke_2(uint64_t
   return 1;
 }
 
-- (id)xpcAuthFlagsCreateWithDeviceFlags:(unint64_t)a3
+- (id)xpcAuthFlagsCreateWithDeviceFlags:(unint64_t)flags
 {
   v4 = xpc_array_create(0, 0);
   v5 = v4;
-  if ((a3 & 0x100) != 0)
+  if ((flags & 0x100) != 0)
   {
     xpc_array_set_string(v4, 0xFFFFFFFFFFFFFFFFLL, "Family");
-    if ((a3 & 0x400) == 0)
+    if ((flags & 0x400) == 0)
     {
 LABEL_3:
-      if ((a3 & 0x80) == 0)
+      if ((flags & 0x80) == 0)
       {
         goto LABEL_4;
       }
@@ -3217,16 +3217,16 @@ LABEL_3:
     }
   }
 
-  else if ((a3 & 0x400) == 0)
+  else if ((flags & 0x400) == 0)
   {
     goto LABEL_3;
   }
 
   xpc_array_set_string(v5, 0xFFFFFFFFFFFFFFFFLL, "Friend");
-  if ((a3 & 0x80) == 0)
+  if ((flags & 0x80) == 0)
   {
 LABEL_4:
-    if ((a3 & 0x200) == 0)
+    if ((flags & 0x200) == 0)
     {
       goto LABEL_5;
     }
@@ -3236,10 +3236,10 @@ LABEL_4:
 
 LABEL_12:
   xpc_array_set_string(v5, 0xFFFFFFFFFFFFFFFFLL, "SameAccount");
-  if ((a3 & 0x200) == 0)
+  if ((flags & 0x200) == 0)
   {
 LABEL_5:
-    if ((a3 & 0x800) == 0)
+    if ((flags & 0x800) == 0)
     {
       goto LABEL_6;
     }
@@ -3249,10 +3249,10 @@ LABEL_5:
 
 LABEL_13:
   xpc_array_set_string(v5, 0xFFFFFFFFFFFFFFFFLL, "SharedHome");
-  if ((a3 & 0x800) == 0)
+  if ((flags & 0x800) == 0)
   {
 LABEL_6:
-    if ((a3 & 0x100000000000) == 0)
+    if ((flags & 0x100000000000) == 0)
     {
       goto LABEL_7;
     }
@@ -3262,7 +3262,7 @@ LABEL_6:
 
 LABEL_14:
   xpc_array_set_string(v5, 0xFFFFFFFFFFFFFFFFLL, "SystemPaired");
-  if ((a3 & 0x100000000000) == 0)
+  if ((flags & 0x100000000000) == 0)
   {
 LABEL_7:
     v6 = v5;
@@ -3947,28 +3947,28 @@ LABEL_116:
   return v3;
 }
 
-- (void)activateWithCompletion:(id)a3
+- (void)activateWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if (!v5->_activateCalled)
+  completionCopy = completion;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_activateCalled)
   {
-    v5->_activateCalled = 1;
-    v6 = MEMORY[0x1C68DF720](v4);
-    activateCompletion = v5->_activateCompletion;
-    v5->_activateCompletion = v6;
+    selfCopy->_activateCalled = 1;
+    v6 = MEMORY[0x1C68DF720](completionCopy);
+    activateCompletion = selfCopy->_activateCompletion;
+    selfCopy->_activateCompletion = v6;
 
-    dispatchQueue = v5->_dispatchQueue;
+    dispatchQueue = selfCopy->_dispatchQueue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __38__CBDiscovery_activateWithCompletion___block_invoke;
     block[3] = &unk_1E811D130;
-    block[4] = v5;
+    block[4] = selfCopy;
     dispatch_async(dispatchQueue, block);
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)_activateDirectStart
@@ -4174,10 +4174,10 @@ LABEL_5:
   (*(*(a1 + 40) + 16))(*(a1 + 40));
 }
 
-- (void)_activateXPCStart:(BOOL)a3
+- (void)_activateXPCStart:(BOOL)start
 {
   var0 = self->_ucat->var0;
-  if (a3)
+  if (start)
   {
     if (var0 <= 30)
     {
@@ -4217,19 +4217,19 @@ LABEL_12:
   v6 = xpc_dictionary_create(0, 0, 0);
   [(CBDiscovery *)self encodeWithXPCObject:v6];
   xpc_dictionary_set_string(v6, "mTyp", "DscA");
-  v7 = [(CBDiscovery *)self _ensureXPCStarted];
+  _ensureXPCStarted = [(CBDiscovery *)self _ensureXPCStarted];
   dispatchQueue = self->_dispatchQueue;
   handler[0] = MEMORY[0x1E69E9820];
   handler[1] = 3221225472;
   handler[2] = __33__CBDiscovery__activateXPCStart___block_invoke;
   handler[3] = &unk_1E811D158;
   handler[4] = self;
-  xpc_connection_send_message_with_reply(v7, v6, dispatchQueue, handler);
+  xpc_connection_send_message_with_reply(_ensureXPCStarted, v6, dispatchQueue, handler);
 }
 
-- (void)_activateXPCCompleted:(id)a3
+- (void)_activateXPCCompleted:(id)completed
 {
-  v4 = a3;
+  completedCopy = completed;
   v39 = 0;
   v40 = &v39;
   v41 = 0x3032000000;
@@ -4249,8 +4249,8 @@ LABEL_12:
 
   if (!v40[5])
   {
-    self->_bluetoothState = xpc_dictionary_get_int64(v4, "pwrS");
-    v8 = xpc_dictionary_get_array(v4, "devA");
+    self->_bluetoothState = xpc_dictionary_get_int64(completedCopy, "pwrS");
+    v8 = xpc_dictionary_get_array(completedCopy, "devA");
     v9 = v8;
     if (v8)
     {
@@ -4278,16 +4278,16 @@ LABEL_12:
       {
         v22 = v40;
         v23 = v10;
-        v11 = v22[5];
+        selfCopy = v22[5];
         v22[5] = v23;
       }
 
       else
       {
-        v11 = self;
-        objc_sync_enter(v11);
-        objc_storeStrong(&v11->_deviceMap, v33[5]);
-        objc_sync_exit(v11);
+        selfCopy = self;
+        objc_sync_enter(selfCopy);
+        objc_storeStrong(&selfCopy->_deviceMap, v33[5]);
+        objc_sync_exit(selfCopy);
       }
 
       _Block_object_dispose(&v26, 8);
@@ -4649,17 +4649,17 @@ LABEL_6:
     [(CBDiscovery *)self _invalidateDirect];
   }
 
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = v4->_xpcCnx;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = selfCopy->_xpcCnx;
   v6 = v5;
   if (v5)
   {
     xpc_connection_cancel(v5);
   }
 
-  objc_sync_exit(v4);
-  [(CBDiscovery *)v4 _invalidated];
+  objc_sync_exit(selfCopy);
+  [(CBDiscovery *)selfCopy _invalidated];
 }
 
 void __32__CBDiscovery__invalidateDirect__block_invoke(uint64_t a1)
@@ -4678,41 +4678,41 @@ void __32__CBDiscovery__invalidateDirect__block_invoke(uint64_t a1)
 {
   if (self->_invalidateCalled && !self->_invalidateDone && !self->_direct)
   {
-    v3 = self;
-    objc_sync_enter(v3);
-    xpcCnx = v3->_xpcCnx;
-    objc_sync_exit(v3);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    xpcCnx = selfCopy->_xpcCnx;
+    objc_sync_exit(selfCopy);
 
     if (!xpcCnx)
     {
       self->_invalidateCalled = 1;
-      v17 = MEMORY[0x1C68DF720](v3->_invalidationHandler);
-      bluetoothStateChangedHandler = v3->_bluetoothStateChangedHandler;
-      v3->_bluetoothStateChangedHandler = 0;
+      v17 = MEMORY[0x1C68DF720](selfCopy->_invalidationHandler);
+      bluetoothStateChangedHandler = selfCopy->_bluetoothStateChangedHandler;
+      selfCopy->_bluetoothStateChangedHandler = 0;
 
-      deviceFoundHandler = v3->_deviceFoundHandler;
-      v3->_deviceFoundHandler = 0;
+      deviceFoundHandler = selfCopy->_deviceFoundHandler;
+      selfCopy->_deviceFoundHandler = 0;
 
-      deviceLostHandler = v3->_deviceLostHandler;
-      v3->_deviceLostHandler = 0;
+      deviceLostHandler = selfCopy->_deviceLostHandler;
+      selfCopy->_deviceLostHandler = 0;
 
-      devicesBufferedHandler = v3->_devicesBufferedHandler;
-      v3->_devicesBufferedHandler = 0;
+      devicesBufferedHandler = selfCopy->_devicesBufferedHandler;
+      selfCopy->_devicesBufferedHandler = 0;
 
-      errorHandler = v3->_errorHandler;
-      v3->_errorHandler = 0;
+      errorHandler = selfCopy->_errorHandler;
+      selfCopy->_errorHandler = 0;
 
-      finishHandler = v3->_finishHandler;
-      v3->_finishHandler = 0;
+      finishHandler = selfCopy->_finishHandler;
+      selfCopy->_finishHandler = 0;
 
-      interruptionHandler = v3->_interruptionHandler;
-      v3->_interruptionHandler = 0;
+      interruptionHandler = selfCopy->_interruptionHandler;
+      selfCopy->_interruptionHandler = 0;
 
-      invalidationHandler = v3->_invalidationHandler;
-      v3->_invalidationHandler = 0;
+      invalidationHandler = selfCopy->_invalidationHandler;
+      selfCopy->_invalidationHandler = 0;
 
-      systemOverrideHandler = v3->_systemOverrideHandler;
-      v3->_systemOverrideHandler = 0;
+      systemOverrideHandler = selfCopy->_systemOverrideHandler;
+      selfCopy->_systemOverrideHandler = 0;
 
       v14 = v17;
       if (v17)
@@ -4722,7 +4722,7 @@ void __32__CBDiscovery__invalidateDirect__block_invoke(uint64_t a1)
       }
 
       self->_invalidateDone = 1;
-      p_var0 = &v3->_ucat->var0;
+      p_var0 = &selfCopy->_ucat->var0;
       if (*p_var0 <= 30)
       {
         if (*p_var0 != -1)
@@ -4734,7 +4734,7 @@ void __32__CBDiscovery__invalidateDirect__block_invoke(uint64_t a1)
         v14 = v17;
         if (p_var0)
         {
-          ucat = v3->_ucat;
+          ucat = selfCopy->_ucat;
 LABEL_10:
           p_var0 = LogPrintF_safe();
           v14 = v17;
@@ -4743,26 +4743,26 @@ LABEL_10:
 {
   v21 = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1C68DF720](self->_deviceLostHandler, a2);
-  v4 = self;
-  objc_sync_enter(v4);
-  deviceMap = v4->_deviceMap;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  deviceMap = selfCopy->_deviceMap;
   if (!v3)
   {
     [(NSMutableDictionary *)deviceMap removeAllObjects];
-    objc_sync_exit(v4);
+    objc_sync_exit(selfCopy);
 
     goto LABEL_17;
   }
 
-  v6 = [(NSMutableDictionary *)deviceMap allValues];
-  [(NSMutableDictionary *)v4->_deviceMap removeAllObjects];
-  objc_sync_exit(v4);
+  allValues = [(NSMutableDictionary *)deviceMap allValues];
+  [(NSMutableDictionary *)selfCopy->_deviceMap removeAllObjects];
+  objc_sync_exit(selfCopy);
 
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v7 = v6;
+  v7 = allValues;
   v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (!v8)
   {
@@ -4781,7 +4781,7 @@ LABEL_10:
       }
 
       v11 = *(*(&v16 + 1) + 8 * v10);
-      var0 = v4->_ucat->var0;
+      var0 = selfCopy->_ucat->var0;
       if (var0 <= 15)
       {
         if (var0 != -1)
@@ -4791,7 +4791,7 @@ LABEL_10:
 
         if (_LogCategory_Initialize())
         {
-          ucat = v4->_ucat;
+          ucat = selfCopy->_ucat;
 LABEL_9:
           LogPrintF_safe();
         }
@@ -4813,17 +4813,17 @@ LABEL_17:
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)reportMockDeviceFound:(id)a3
+- (void)reportMockDeviceFound:(id)found
 {
-  v4 = a3;
+  foundCopy = found;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __37__CBDiscovery_reportMockDeviceFound___block_invoke;
   v7[3] = &unk_1E811CF50;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = foundCopy;
+  v6 = foundCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -4875,17 +4875,17 @@ LABEL_6:
   return result;
 }
 
-- (void)reportMockDeviceLost:(id)a3
+- (void)reportMockDeviceLost:(id)lost
 {
-  v4 = a3;
+  lostCopy = lost;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __36__CBDiscovery_reportMockDeviceLost___block_invoke;
   v7[3] = &unk_1E811CF50;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = lostCopy;
+  v6 = lostCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -4937,24 +4937,24 @@ LABEL_6:
   return result;
 }
 
-- (void)_updateIfNeededWithBlock:(id)a3
+- (void)_updateIfNeededWithBlock:(id)block
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if ((v4[2](v4) & 1) != 0 && v5->_activateCalled && !v5->_changesPending)
+  blockCopy = block;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ((blockCopy[2](blockCopy) & 1) != 0 && selfCopy->_activateCalled && !selfCopy->_changesPending)
   {
-    v5->_changesPending = 1;
-    dispatchQueue = v5->_dispatchQueue;
+    selfCopy->_changesPending = 1;
+    dispatchQueue = selfCopy->_dispatchQueue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __40__CBDiscovery__updateIfNeededWithBlock___block_invoke;
     block[3] = &unk_1E811D130;
-    block[4] = v5;
+    block[4] = selfCopy;
     dispatch_async(dispatchQueue, block);
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)_update
@@ -4964,13 +4964,13 @@ LABEL_6:
     return;
   }
 
-  v2 = self;
-  objc_sync_enter(v2);
-  changesPending = v2->_changesPending;
-  v2->_changesPending = 0;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  changesPending = selfCopy->_changesPending;
+  selfCopy->_changesPending = 0;
+  objc_sync_exit(selfCopy);
 
-  var0 = v2->_ucat->var0;
+  var0 = selfCopy->_ucat->var0;
   if (changesPending)
   {
     if (var0 > 30)
@@ -4983,19 +4983,19 @@ LABEL_6:
       if (!_LogCategory_Initialize())
       {
 LABEL_13:
-        if (!v2->_direct)
+        if (!selfCopy->_direct)
         {
           xdict = xpc_dictionary_create(0, 0, 0);
-          [(CBDiscovery *)v2 encodeWithXPCObject:xdict];
+          [(CBDiscovery *)selfCopy encodeWithXPCObject:xdict];
           xpc_dictionary_set_string(xdict, "mTyp", "DscU");
-          v5 = [(CBDiscovery *)v2 _ensureXPCStarted];
-          xpc_connection_send_message(v5, xdict);
+          _ensureXPCStarted = [(CBDiscovery *)selfCopy _ensureXPCStarted];
+          xpc_connection_send_message(_ensureXPCStarted, xdict);
         }
 
         return;
       }
 
-      ucat = v2->_ucat;
+      ucat = selfCopy->_ucat;
     }
 
     LogPrintF_safe();
@@ -5014,17 +5014,17 @@ LABEL_13:
       return;
     }
 
-    v6 = v2->_ucat;
+    v6 = selfCopy->_ucat;
   }
 
   LogPrintF_safe();
 }
 
-- (void)xpcReceivedMessage:(id)a3
+- (void)xpcReceivedMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   var0 = self->_ucat->var0;
-  v28 = v4;
+  v28 = messageCopy;
   if (var0 <= 9)
   {
     if (var0 != -1)
@@ -5033,12 +5033,12 @@ LABEL_3:
       v26 = CUPrintXPC();
       LogPrintF_safe();
 
-      v4 = v28;
+      messageCopy = v28;
       goto LABEL_5;
     }
 
     v6 = _LogCategory_Initialize();
-    v4 = v28;
+    messageCopy = v28;
     if (v6)
     {
       ucat = self->_ucat;
@@ -5047,7 +5047,7 @@ LABEL_3:
   }
 
 LABEL_5:
-  if (MEMORY[0x1C68DFDD0](v4) == MEMORY[0x1E69E9E80])
+  if (MEMORY[0x1C68DFDD0](messageCopy) == MEMORY[0x1E69E9E80])
   {
     [(CBDiscovery *)self _xpcReceivedMessage:v28];
     goto LABEL_26;
@@ -5084,13 +5084,13 @@ LABEL_5:
 
     LogPrintF_safe();
 LABEL_25:
-    v21 = self;
-    objc_sync_enter(v21);
-    xpcCnx = v21->_xpcCnx;
-    v21->_xpcCnx = 0;
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    xpcCnx = selfCopy->_xpcCnx;
+    selfCopy->_xpcCnx = 0;
 
-    objc_sync_exit(v21);
-    [(CBDiscovery *)v21 _invalidated];
+    objc_sync_exit(selfCopy);
+    [(CBDiscovery *)selfCopy _invalidated];
     goto LABEL_26;
   }
 
@@ -5143,10 +5143,10 @@ LABEL_21:
 LABEL_26:
 }
 
-- (void)_xpcReceivedMessage:(id)a3
+- (void)_xpcReceivedMessage:(id)message
 {
-  v11 = a3;
-  string = xpc_dictionary_get_string(v11, "mTyp");
+  messageCopy = message;
+  string = xpc_dictionary_get_string(messageCopy, "mTyp");
   if (!string)
   {
     var0 = self->_ucat->var0;
@@ -5168,7 +5168,7 @@ LABEL_12:
     }
 
 LABEL_13:
-    v8 = v11;
+    v8 = messageCopy;
 
     goto LABEL_15;
   }
@@ -5176,26 +5176,26 @@ LABEL_13:
   v5 = string;
   if (!strcmp(string, "DvFo"))
   {
-    [(CBDiscovery *)self _xpcReceivedDeviceFound:v11];
-    v8 = v11;
+    [(CBDiscovery *)self _xpcReceivedDeviceFound:messageCopy];
+    v8 = messageCopy;
   }
 
   else if (!strcmp(v5, "DvLo"))
   {
-    [(CBDiscovery *)self _xpcReceivedDeviceLost:v11];
-    v8 = v11;
+    [(CBDiscovery *)self _xpcReceivedDeviceLost:messageCopy];
+    v8 = messageCopy;
   }
 
   else if (!strcmp(v5, "DsBf"))
   {
-    [(CBDiscovery *)self _xpcReceivedDevicesBuffered:v11];
-    v8 = v11;
+    [(CBDiscovery *)self _xpcReceivedDevicesBuffered:messageCopy];
+    v8 = messageCopy;
   }
 
   else if (!strcmp(v5, "PwrC"))
   {
-    [(CBDiscovery *)self _xpcReceivedPowerStateChanged:v11];
-    v8 = v11;
+    [(CBDiscovery *)self _xpcReceivedPowerStateChanged:messageCopy];
+    v8 = messageCopy;
   }
 
   else
@@ -5222,16 +5222,16 @@ LABEL_13:
       goto LABEL_13;
     }
 
-    [(CBDiscovery *)self _xpcReceivedSystemOverrideChanged:v11];
-    v8 = v11;
+    [(CBDiscovery *)self _xpcReceivedSystemOverrideChanged:messageCopy];
+    v8 = messageCopy;
   }
 
 LABEL_15:
 }
 
-- (void)_xpcReceivedDeviceFound:(id)a3
+- (void)_xpcReceivedDeviceFound:(id)found
 {
-  v4 = a3;
+  foundCopy = found;
   if (MEMORY[0x1C68DFDD0]() != MEMORY[0x1E69E9E80])
   {
     [CBDiscovery _xpcReceivedDeviceFound:?];
@@ -5239,29 +5239,29 @@ LABEL_15:
   }
 
   v16 = 0;
-  v5 = [[CBDevice alloc] initWithXPCObject:v4 error:&v16];
+  v5 = [[CBDevice alloc] initWithXPCObject:foundCopy error:&v16];
   v6 = v16;
   if (v5)
   {
-    v7 = [(CBDevice *)v5 identifier];
-    if (v7)
+    identifier = [(CBDevice *)v5 identifier];
+    if (identifier)
     {
-      v8 = self;
-      objc_sync_enter(v8);
-      deviceMap = v8->_deviceMap;
+      selfCopy = self;
+      objc_sync_enter(selfCopy);
+      deviceMap = selfCopy->_deviceMap;
       if (!deviceMap)
       {
         v10 = objc_alloc_init(MEMORY[0x1E695DF90]);
-        v11 = v8->_deviceMap;
-        v8->_deviceMap = v10;
+        v11 = selfCopy->_deviceMap;
+        selfCopy->_deviceMap = v10;
 
-        deviceMap = v8->_deviceMap;
+        deviceMap = selfCopy->_deviceMap;
       }
 
-      [(NSMutableDictionary *)deviceMap setObject:v5 forKeyedSubscript:v7];
-      objc_sync_exit(v8);
+      [(NSMutableDictionary *)deviceMap setObject:v5 forKeyedSubscript:identifier];
+      objc_sync_exit(selfCopy);
 
-      var0 = v8->_ucat->var0;
+      var0 = selfCopy->_ucat->var0;
       if (var0 > 15)
       {
         goto LABEL_10;
@@ -5274,12 +5274,12 @@ LABEL_15:
           goto LABEL_10;
         }
 
-        ucat = v8->_ucat;
+        ucat = selfCopy->_ucat;
       }
 
       LogPrintF_safe();
 LABEL_10:
-      v13 = MEMORY[0x1C68DF720](v8->_deviceFoundHandler);
+      v13 = MEMORY[0x1C68DF720](selfCopy->_deviceFoundHandler);
       v14 = v13;
       if (v13)
       {
@@ -5290,7 +5290,7 @@ LABEL_10:
     }
 
     [CBDiscovery _xpcReceivedDeviceFound:?];
-    v7 = v17;
+    identifier = v17;
   }
 
   else
@@ -5300,7 +5300,7 @@ LABEL_10:
       goto LABEL_14;
     }
 
-    v7 = v17;
+    identifier = v17;
   }
 
 LABEL_13:
@@ -5309,9 +5309,9 @@ LABEL_14:
 LABEL_15:
 }
 
-- (void)_xpcReceivedDeviceLost:(id)a3
+- (void)_xpcReceivedDeviceLost:(id)lost
 {
-  v4 = a3;
+  lostCopy = lost;
   if (MEMORY[0x1C68DFDD0]() != MEMORY[0x1E69E9E80])
   {
     [CBDiscovery _xpcReceivedDeviceLost:?];
@@ -5319,19 +5319,19 @@ LABEL_15:
   }
 
   v13 = 0;
-  v5 = [[CBDevice alloc] initWithXPCObject:v4 error:&v13];
+  v5 = [[CBDevice alloc] initWithXPCObject:lostCopy error:&v13];
   v6 = v13;
   if (v5)
   {
-    v7 = [(CBDevice *)v5 identifier];
-    if (v7)
+    identifier = [(CBDevice *)v5 identifier];
+    if (identifier)
     {
-      v8 = self;
-      objc_sync_enter(v8);
-      [(NSMutableDictionary *)v8->_deviceMap setObject:0 forKeyedSubscript:v7];
-      objc_sync_exit(v8);
+      selfCopy = self;
+      objc_sync_enter(selfCopy);
+      [(NSMutableDictionary *)selfCopy->_deviceMap setObject:0 forKeyedSubscript:identifier];
+      objc_sync_exit(selfCopy);
 
-      var0 = v8->_ucat->var0;
+      var0 = selfCopy->_ucat->var0;
       if (var0 <= 15)
       {
         if (var0 == -1)
@@ -5341,14 +5341,14 @@ LABEL_15:
             goto LABEL_8;
           }
 
-          ucat = v8->_ucat;
+          ucat = selfCopy->_ucat;
         }
 
         LogPrintF_safe();
       }
 
 LABEL_8:
-      v10 = MEMORY[0x1C68DF720](v8->_deviceLostHandler);
+      v10 = MEMORY[0x1C68DF720](selfCopy->_deviceLostHandler);
       v11 = v10;
       if (v10)
       {
@@ -5359,7 +5359,7 @@ LABEL_8:
     }
 
     [CBDiscovery _xpcReceivedDeviceLost:?];
-    v7 = v14;
+    identifier = v14;
   }
 
   else
@@ -5369,7 +5369,7 @@ LABEL_8:
       goto LABEL_12;
     }
 
-    v7 = v14;
+    identifier = v14;
   }
 
 LABEL_11:
@@ -5378,9 +5378,9 @@ LABEL_12:
 LABEL_13:
 }
 
-- (void)_xpcReceivedDevicesBuffered:(id)a3
+- (void)_xpcReceivedDevicesBuffered:(id)buffered
 {
-  v4 = a3;
+  bufferedCopy = buffered;
   if (MEMORY[0x1C68DFDD0]() == MEMORY[0x1E69E9E80])
   {
     objc_opt_class();
@@ -5395,9 +5395,9 @@ LABEL_13:
   }
 }
 
-- (void)_xpcReceivedPowerStateChanged:(id)a3
+- (void)_xpcReceivedPowerStateChanged:(id)changed
 {
-  xdict = a3;
+  xdict = changed;
   if (MEMORY[0x1C68DFDD0]() == MEMORY[0x1E69E9E80])
   {
     self->_bluetoothState = xpc_dictionary_get_int64(xdict, "pwrS");
@@ -5418,9 +5418,9 @@ LABEL_13:
   }
 }
 
-- (void)_xpcReceivedSystemOverrideChanged:(id)a3
+- (void)_xpcReceivedSystemOverrideChanged:(id)changed
 {
-  xdict = a3;
+  xdict = changed;
   if (MEMORY[0x1C68DFDD0]() == MEMORY[0x1E69E9E80])
   {
     self->_bleScanRateOverride = xpc_dictionary_get_int64(xdict, "scRO");
@@ -5442,12 +5442,12 @@ LABEL_13:
   }
 }
 
-- (void)injectAOPBufAdv:(id)a3
+- (void)injectAOPBufAdv:(id)adv
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 count])
+  advCopy = adv;
+  v5 = advCopy;
+  if (advCopy && [advCopy count])
   {
     var0 = self->_ucat->var0;
     if (var0 <= 40)
@@ -5500,8 +5500,8 @@ LABEL_12:
     v16 = xpc_dictionary_create(0, 0, 0);
     xpc_dictionary_set_string(v16, "mTyp", "DsIA");
     xpc_dictionary_set_value(v16, "rAdv", empty);
-    v17 = [(CBDiscovery *)self _ensureXPCStarted];
-    xpc_connection_send_message(v17, v16);
+    _ensureXPCStarted = [(CBDiscovery *)self _ensureXPCStarted];
+    xpc_connection_send_message(_ensureXPCStarted, v16);
 
     goto LABEL_20;
   }
@@ -5527,16 +5527,16 @@ LABEL_20:
   v18 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)devicesWithDiscoveryFlags:(unint64_t)a3 endpoint:(id)a4 error:(id *)a5
++ (id)devicesWithDiscoveryFlags:(unint64_t)flags endpoint:(id)endpoint error:(id *)error
 {
-  v7 = a4;
+  endpointCopy = endpoint;
   v8 = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_string(v8, "mTyp", "DsGD");
-  xpc_dictionary_set_uint64(v8, "dsFl", a3);
+  xpc_dictionary_set_uint64(v8, "dsFl", flags);
   v9 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
   v10 = dispatch_queue_create("CBDiscovery-GetDevices", v9);
 
-  v11 = v7;
+  v11 = endpointCopy;
   v12 = v11;
   if (v11)
   {
@@ -5559,11 +5559,11 @@ LABEL_20:
     v22 = v21;
     if (v21)
     {
-      if (a5)
+      if (error)
       {
         v33 = v21;
         v31 = 0;
-        *a5 = v22;
+        *error = v22;
       }
 
       else
@@ -5600,9 +5600,9 @@ LABEL_20:
         if (v30)
         {
           v31 = 0;
-          if (a5)
+          if (error)
           {
-            *a5 = v30;
+            *error = v30;
           }
         }
 
@@ -5616,10 +5616,10 @@ LABEL_20:
         _Block_object_dispose(&v41, 8);
       }
 
-      else if (a5)
+      else if (error)
       {
         CBErrorF(-6700, "No devices", v23, v24, v25, v26, v27, v28, v34[0]);
-        *a5 = v31 = 0;
+        *error = v31 = 0;
       }
 
       else
@@ -5629,10 +5629,10 @@ LABEL_20:
     }
   }
 
-  else if (a5)
+  else if (error)
   {
     CBErrorF(-6700, "No reply", v15, v16, v17, v18, v19, v20, v34[0]);
-    *a5 = v31 = 0;
+    *error = v31 = 0;
   }
 
   else
@@ -5643,21 +5643,21 @@ LABEL_20:
   return v31;
 }
 
-- (void)devicesMatchingPropertiesOn:(id)a3 exactMatch:(BOOL)a4 completionHandler:(id)a5
+- (void)devicesMatchingPropertiesOn:(id)on exactMatch:(BOOL)match completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  onCopy = on;
+  handlerCopy = handler;
   dispatchQueue = self->_dispatchQueue;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __72__CBDiscovery_devicesMatchingPropertiesOn_exactMatch_completionHandler___block_invoke;
   v13[3] = &unk_1E81208F0;
   v13[4] = self;
-  v14 = v8;
-  v16 = a4;
-  v15 = v9;
-  v11 = v9;
-  v12 = v8;
+  v14 = onCopy;
+  matchCopy = match;
+  v15 = handlerCopy;
+  v11 = handlerCopy;
+  v12 = onCopy;
   dispatch_async(dispatchQueue, v13);
 }
 
@@ -5703,13 +5703,13 @@ void __72__CBDiscovery_devicesMatchingPropertiesOn_exactMatch_completionHandler_
   }
 }
 
-- (CBDiscovery)initWithXPCObject:(id)a3 error:(id *)a4
+- (CBDiscovery)initWithXPCObject:(id)object error:(id *)error
 {
-  v6 = a3;
+  objectCopy = object;
   v13 = [(CBDiscovery *)self init];
   if (!v13)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_86;
     }
@@ -5717,13 +5717,13 @@ void __72__CBDiscovery_devicesMatchingPropertiesOn_exactMatch_completionHandler_
     v42 = "CBDiscovery init failed";
 LABEL_85:
     CBErrorF(-6756, v42, v7, v8, v9, v10, v11, v12, v46);
-    *a4 = v40 = 0;
+    *error = v40 = 0;
     goto LABEL_80;
   }
 
-  if (MEMORY[0x1C68DFDD0](v6) != MEMORY[0x1E69E9E80])
+  if (MEMORY[0x1C68DFDD0](objectCopy) != MEMORY[0x1E69E9E80])
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_86;
     }

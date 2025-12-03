@@ -1,7 +1,7 @@
 @interface NotesAssistantUtilities
-+ (id)URLForSearchIndexableNote:(id)a3;
-+ (id)saNoteObjectForSearchIndexableNote:(id)a3;
-+ (id)searchIndexableNoteForObject:(id)a3 modernNoteContext:(id)a4 htmlNoteContext:(id)a5;
++ (id)URLForSearchIndexableNote:(id)note;
++ (id)saNoteObjectForSearchIndexableNote:(id)note;
++ (id)searchIndexableNoteForObject:(id)object modernNoteContext:(id)context htmlNoteContext:(id)noteContext;
 + (id)sharedHTMLNoteManagedObjectContext;
 @end
 
@@ -10,14 +10,14 @@
 + (id)sharedHTMLNoteManagedObjectContext
 {
   v2 = +[NoteContext sharedContext];
-  v3 = [v2 managedObjectContext];
+  managedObjectContext = [v2 managedObjectContext];
 
-  return v3;
+  return managedObjectContext;
 }
 
-+ (id)saNoteObjectForSearchIndexableNote:(id)a3
++ (id)saNoteObjectForSearchIndexableNote:(id)note
 {
-  v3 = a3;
+  noteCopy = note;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -27,8 +27,8 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
-    v5 = [v4 managedObjectContext];
+    v4 = noteCopy;
+    managedObjectContext = [v4 managedObjectContext];
     v6 = v11;
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
@@ -36,7 +36,7 @@
     v11[3] = &unk_100020C78;
     v11[5] = &v12;
     v11[4] = v4;
-    [v5 performBlockAndWait:v11];
+    [managedObjectContext performBlockAndWait:v11];
   }
 
   else
@@ -47,8 +47,8 @@
       goto LABEL_6;
     }
 
-    v7 = v3;
-    v5 = [v7 managedObjectContext];
+    v7 = noteCopy;
+    managedObjectContext = [v7 managedObjectContext];
     v6 = v10;
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
@@ -56,7 +56,7 @@
     v10[3] = &unk_100020C78;
     v10[5] = &v12;
     v10[4] = v7;
-    [v5 performBlockAndWait:v10];
+    [managedObjectContext performBlockAndWait:v10];
   }
 
 LABEL_6:
@@ -66,11 +66,11 @@ LABEL_6:
   return v8;
 }
 
-+ (id)searchIndexableNoteForObject:(id)a3 modernNoteContext:(id)a4 htmlNoteContext:(id)a5
++ (id)searchIndexableNoteForObject:(id)object modernNoteContext:(id)context htmlNoteContext:(id)noteContext
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  objectCopy = object;
+  contextCopy = context;
+  noteContextCopy = noteContext;
   v30 = 0;
   v31 = &v30;
   v32 = 0x3032000000;
@@ -87,9 +87,9 @@ LABEL_6:
     v13 = v12;
     if (v12)
     {
-      v14 = [v12 identifier];
+      identifier = [v12 identifier];
 
-      v11 = v14;
+      v11 = identifier;
     }
 
     if (!v11)
@@ -114,7 +114,7 @@ LABEL_11:
       v26[3] = &unk_100020790;
       v16 = v15;
       v27 = v16;
-      v28 = v8;
+      v28 = contextCopy;
       v29 = &v30;
       [v28 performBlockAndWait:v26];
 
@@ -132,15 +132,15 @@ LABEL_12:
       }
 
       v16 = [ICAppURLUtilities objectIDURIRepresentationForHTMLNoteMentionedInURL:v11];
-      v18 = [v9 persistentStoreCoordinator];
-      v19 = [v18 managedObjectIDForURIRepresentation:v16];
+      persistentStoreCoordinator = [noteContextCopy persistentStoreCoordinator];
+      v19 = [persistentStoreCoordinator managedObjectIDForURIRepresentation:v16];
 
       v22[0] = _NSConcreteStackBlock;
       v22[1] = 3221225472;
       v22[2] = sub_10000CF08;
       v22[3] = &unk_100020CA0;
       v25 = &v30;
-      v23 = v9;
+      v23 = noteContextCopy;
       v17 = v19;
       v24 = v17;
       [v23 performBlockAndWait:v22];
@@ -156,13 +156,13 @@ LABEL_13:
   return v20;
 }
 
-+ (id)URLForSearchIndexableNote:(id)a3
++ (id)URLForSearchIndexableNote:(id)note
 {
-  v3 = a3;
+  noteCopy = note;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [ICAppURLUtilities appURLForNote:v3];
+    v4 = [ICAppURLUtilities appURLForNote:noteCopy];
 LABEL_5:
     v5 = v4;
     goto LABEL_7;
@@ -171,7 +171,7 @@ LABEL_5:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [ICAppURLUtilities appURLForHTMLNote:v3];
+    v4 = [ICAppURLUtilities appURLForHTMLNote:noteCopy];
     goto LABEL_5;
   }
 

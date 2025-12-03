@@ -1,94 +1,94 @@
 @interface NUProviderCacheNode
-- (BOOL)shouldCacheNodeForPipelineState:(id)a3;
+- (BOOL)shouldCacheNodeForPipelineState:(id)state;
 - (BOOL)useTiledProviderCache;
-- (id)_evaluateImage:(id *)a3;
+- (id)_evaluateImage:(id *)image;
 - (id)colorSpace;
 - (id)pixelFormat;
 @end
 
 @implementation NUProviderCacheNode
 
-- (id)_evaluateImage:(id *)a3
+- (id)_evaluateImage:(id *)image
 {
-  v5 = [(NUCacheNode *)self inputNode];
-  v6 = [v5 outputImage:a3];
+  inputNode = [(NUCacheNode *)self inputNode];
+  v6 = [inputNode outputImage:image];
 
   if (v6)
   {
-    v7 = [(NUProviderCacheNode *)self useTiledProviderCache];
+    useTiledProviderCache = [(NUProviderCacheNode *)self useTiledProviderCache];
     v8 = off_1E8108020;
-    if (!v7)
+    if (!useTiledProviderCache)
     {
       v8 = off_1E8107DB0;
     }
 
     v9 = [objc_alloc(*v8) initWithImage:v6];
-    v10 = [(NUProviderCacheNode *)self colorSpace];
-    if (v10)
+    colorSpace = [(NUProviderCacheNode *)self colorSpace];
+    if (colorSpace)
     {
-      [v9 setColorSpace:v10];
+      [v9 setColorSpace:colorSpace];
     }
 
-    v11 = [(NUProviderCacheNode *)self pixelFormat];
-    if (v11)
+    pixelFormat = [(NUProviderCacheNode *)self pixelFormat];
+    if (pixelFormat)
     {
-      [v9 setPixelFormat:v11];
+      [v9 setPixelFormat:pixelFormat];
     }
 
-    v12 = [v9 outputImage];
+    outputImage = [v9 outputImage];
   }
 
   else
   {
-    v12 = 0;
+    outputImage = 0;
   }
 
-  return v12;
+  return outputImage;
 }
 
 - (BOOL)useTiledProviderCache
 {
-  v2 = [(NURenderNode *)self settings];
-  v3 = [v2 objectForKeyedSubscript:@"useTiledProviderCache"];
-  v4 = [v3 BOOLValue];
+  settings = [(NURenderNode *)self settings];
+  v3 = [settings objectForKeyedSubscript:@"useTiledProviderCache"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (id)pixelFormat
 {
-  v2 = [(NURenderNode *)self settings];
-  v3 = [v2 objectForKeyedSubscript:@"pixelFormat"];
+  settings = [(NURenderNode *)self settings];
+  v3 = [settings objectForKeyedSubscript:@"pixelFormat"];
 
   return v3;
 }
 
 - (id)colorSpace
 {
-  v2 = [(NURenderNode *)self settings];
-  v3 = [v2 objectForKeyedSubscript:@"colorSpace"];
+  settings = [(NURenderNode *)self settings];
+  v3 = [settings objectForKeyedSubscript:@"colorSpace"];
 
   return v3;
 }
 
-- (BOOL)shouldCacheNodeForPipelineState:(id)a3
+- (BOOL)shouldCacheNodeForPipelineState:(id)state
 {
-  v4 = a3;
-  if (![v4 evaluationMode])
+  stateCopy = state;
+  if (![stateCopy evaluationMode])
   {
     goto LABEL_5;
   }
 
-  v5 = [(NUCacheNode *)self auxiliaryImageType];
-  if (v5 && [v4 auxiliaryImageType] != v5)
+  auxiliaryImageType = [(NUCacheNode *)self auxiliaryImageType];
+  if (auxiliaryImageType && [stateCopy auxiliaryImageType] != auxiliaryImageType)
   {
     LOBYTE(v6) = 0;
     goto LABEL_8;
   }
 
-  if (([v4 lowMemoryMode] & 1) == 0)
+  if (([stateCopy lowMemoryMode] & 1) == 0)
   {
-    v6 = [v4 disableIntermediateCaching] ^ 1;
+    v6 = [stateCopy disableIntermediateCaching] ^ 1;
   }
 
   else

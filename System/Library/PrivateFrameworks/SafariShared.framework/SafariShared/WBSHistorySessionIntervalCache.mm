@@ -1,25 +1,25 @@
 @interface WBSHistorySessionIntervalCache
 - (WBSHistorySessionIntervalCache)init;
-- (WBSHistorySessionIntervalCache)initWithCalendar:(id)a3;
-- (double)_beginningOfSessionContainingTime:(double)a3;
-- (double)beginningOfSessionContainingTime:(double)a3;
+- (WBSHistorySessionIntervalCache)initWithCalendar:(id)calendar;
+- (double)_beginningOfSessionContainingTime:(double)time;
+- (double)beginningOfSessionContainingTime:(double)time;
 - (id).cxx_construct;
-- (void)_getSessionIntervalForTime:(double)a3 beginningOfDay:(double *)a4 beginningOfNextDay:(double *)a5;
+- (void)_getSessionIntervalForTime:(double)time beginningOfDay:(double *)day beginningOfNextDay:(double *)nextDay;
 @end
 
 @implementation WBSHistorySessionIntervalCache
 
 - (WBSHistorySessionIntervalCache)init
 {
-  v3 = [MEMORY[0x1E695DEE8] currentCalendar];
-  v4 = [(WBSHistorySessionIntervalCache *)self initWithCalendar:v3];
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+  v4 = [(WBSHistorySessionIntervalCache *)self initWithCalendar:currentCalendar];
 
   return v4;
 }
 
-- (WBSHistorySessionIntervalCache)initWithCalendar:(id)a3
+- (WBSHistorySessionIntervalCache)initWithCalendar:(id)calendar
 {
-  v5 = a3;
+  calendarCopy = calendar;
   v11.receiver = self;
   v11.super_class = WBSHistorySessionIntervalCache;
   v6 = [(WBSHistorySessionIntervalCache *)&v11 init];
@@ -29,14 +29,14 @@
     queue = v6->_queue;
     v6->_queue = v7;
 
-    objc_storeStrong(&v6->_calendar, a3);
+    objc_storeStrong(&v6->_calendar, calendar);
     v9 = v6;
   }
 
   return v6;
 }
 
-- (double)beginningOfSessionContainingTime:(double)a3
+- (double)beginningOfSessionContainingTime:(double)time
 {
   v7 = 0;
   v8 = &v7;
@@ -49,7 +49,7 @@
   block[3] = &unk_1E7FC70F8;
   block[4] = self;
   block[5] = &v7;
-  *&block[6] = a3;
+  *&block[6] = time;
   dispatch_sync(queue, block);
   v4 = v8[3];
   _Block_object_dispose(&v7, 8);
@@ -63,14 +63,14 @@ uint64_t __67__WBSHistorySessionIntervalCache_beginningOfSessionContainingTime__
   return result;
 }
 
-- (double)_beginningOfSessionContainingTime:(double)a3
+- (double)_beginningOfSessionContainingTime:(double)time
 {
-  v29 = a3;
+  timeCopy = time;
   p_intervalCache = &self->_intervalCache;
-  v5 = std::__equal_range[abi:sn200100]<std::_ClassicAlgPolicy,std::__less<void,void> &,double *,double *,double,std::__identity>(self->_intervalCache.m_buffer, &self->_intervalCache.m_buffer[self->_intervalCache.m_size], &v29);
+  v5 = std::__equal_range[abi:sn200100]<std::_ClassicAlgPolicy,std::__less<void,void> &,double *,double *,double,std::__identity>(self->_intervalCache.m_buffer, &self->_intervalCache.m_buffer[self->_intervalCache.m_size], &timeCopy);
   if (v6 - v5 == 16)
   {
-    return v29;
+    return timeCopy;
   }
 
   v8 = v5;
@@ -79,7 +79,7 @@ uint64_t __67__WBSHistorySessionIntervalCache_beginningOfSessionContainingTime__
   {
     if ((v9 & 8) == 0)
     {
-      return v29;
+      return timeCopy;
     }
 
     v8 = v5 + 1;
@@ -93,7 +93,7 @@ uint64_t __67__WBSHistorySessionIntervalCache_beginningOfSessionContainingTime__
   v27 = 0;
   v28 = 0.0;
   v10 = &v28;
-  [(WBSHistorySessionIntervalCache *)self _getSessionIntervalForTime:&v28 beginningOfDay:&v27 beginningOfNextDay:v29];
+  [(WBSHistorySessionIntervalCache *)self _getSessionIntervalForTime:&v28 beginningOfDay:&v27 beginningOfNextDay:timeCopy];
   v11 = v8 - self->_intervalCache.m_buffer;
   v12 = v11 >> 3;
   m_size = self->_intervalCache.m_size;
@@ -174,16 +174,16 @@ LABEL_22:
   return result;
 }
 
-- (void)_getSessionIntervalForTime:(double)a3 beginningOfDay:(double *)a4 beginningOfNextDay:(double *)a5
+- (void)_getSessionIntervalForTime:(double)time beginningOfDay:(double *)day beginningOfNextDay:(double *)nextDay
 {
-  v8 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:a3];
+  v8 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:time];
   v11 = 0;
   v12 = 0.0;
   [(NSCalendar *)self->_calendar rangeOfUnit:16 startDate:&v11 interval:&v12 forDate:v8];
   v9 = v11;
   [v9 timeIntervalSinceReferenceDate];
-  *a4 = v10;
-  *a5 = v10 + v12;
+  *day = v10;
+  *nextDay = v10 + v12;
 }
 
 - (id).cxx_construct

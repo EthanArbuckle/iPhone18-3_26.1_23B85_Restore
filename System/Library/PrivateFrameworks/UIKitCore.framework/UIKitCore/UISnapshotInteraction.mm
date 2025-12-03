@@ -1,8 +1,8 @@
 @interface UISnapshotInteraction
 - (UIView)view;
 - (_TtC5UIKitP33_5E047FF87EF322737F6B29EC4785CA5821UISnapshotInteraction)init;
-- (void)didMoveToView:(id)a3;
-- (void)setView:(id)a3;
+- (void)didMoveToView:(id)view;
+- (void)setView:(id)view;
 @end
 
 @implementation UISnapshotInteraction
@@ -14,17 +14,17 @@
   return Strong;
 }
 
-- (void)setView:(id)a3
+- (void)setView:(id)view
 {
-  v5 = a3;
-  v6 = self;
-  sub_1890A85F8(a3);
+  viewCopy = view;
+  selfCopy = self;
+  sub_1890A85F8(view);
 }
 
-- (void)didMoveToView:(id)a3
+- (void)didMoveToView:(id)view
 {
-  v4 = a3;
-  v5 = self;
+  viewCopy = view;
+  selfCopy = self;
   sub_1890A869C();
 }
 

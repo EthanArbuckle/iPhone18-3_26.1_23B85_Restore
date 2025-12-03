@@ -7,23 +7,23 @@
 - (id)px_fetchContainedAssets
 {
   v2 = +[PXMemoriesFeedSettings sharedInstance];
-  v3 = [v2 sharingBehavior];
+  sharingBehavior = [v2 sharingBehavior];
 
-  if (v3 == 2)
+  if (sharingBehavior == 2)
   {
-    v7 = [MEMORY[0x1E6978630] fetchAssetsInAssetCollection:a1 options:0];
+    v7 = [MEMORY[0x1E6978630] fetchAssetsInAssetCollection:self options:0];
     goto LABEL_7;
   }
 
-  if (v3 == 1)
+  if (sharingBehavior == 1)
   {
-    v7 = [MEMORY[0x1E6978630] fetchCuratedAssetsInAssetCollection:a1];
+    v7 = [MEMORY[0x1E6978630] fetchCuratedAssetsInAssetCollection:self];
 LABEL_7:
     v6 = v7;
     goto LABEL_9;
   }
 
-  if (v3)
+  if (sharingBehavior)
   {
     v6 = 0;
   }
@@ -31,8 +31,8 @@ LABEL_7:
   else
   {
     v4 = MEMORY[0x1E69788E0];
-    v5 = [a1 photoLibrary];
-    v6 = [v4 emptyFetchResultWithPhotoLibrary:v5];
+    photoLibrary = [self photoLibrary];
+    v6 = [v4 emptyFetchResultWithPhotoLibrary:photoLibrary];
   }
 
 LABEL_9:

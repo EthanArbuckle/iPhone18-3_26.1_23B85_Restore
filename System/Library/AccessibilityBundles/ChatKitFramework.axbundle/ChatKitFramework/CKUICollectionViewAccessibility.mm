@@ -6,8 +6,8 @@
 
 - (BOOL)isAccessibilityOpaqueElementProvider
 {
-  v3 = [(CKUICollectionViewAccessibility *)self accessibilityIdentification];
-  v4 = [v3 isEqualToString:@"AXImpactEffectCollectionView"];
+  accessibilityIdentification = [(CKUICollectionViewAccessibility *)self accessibilityIdentification];
+  v4 = [accessibilityIdentification isEqualToString:@"AXImpactEffectCollectionView"];
 
   if (v4)
   {

@@ -1,10 +1,10 @@
 @interface VideoViewManager
-- (void)videoDecodersUnavailable:(id)a3;
+- (void)videoDecodersUnavailable:(id)unavailable;
 @end
 
 @implementation VideoViewManager
 
-- (void)videoDecodersUnavailable:(id)a3
+- (void)videoDecodersUnavailable:(id)unavailable
 {
   v3 = sub_1E1AEF55C();
   v4 = *(v3 - 8);

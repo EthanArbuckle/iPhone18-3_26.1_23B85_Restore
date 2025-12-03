@@ -1,21 +1,21 @@
 @interface TLToneImportResponse
-- (TLToneImportResponse)initWithStatusCode:(int64_t)a3 toneIdentifier:(id)a4;
+- (TLToneImportResponse)initWithStatusCode:(int64_t)code toneIdentifier:(id)identifier;
 - (id)description;
 @end
 
 @implementation TLToneImportResponse
 
-- (TLToneImportResponse)initWithStatusCode:(int64_t)a3 toneIdentifier:(id)a4
+- (TLToneImportResponse)initWithStatusCode:(int64_t)code toneIdentifier:(id)identifier
 {
-  v6 = a4;
+  identifierCopy = identifier;
   v12.receiver = self;
   v12.super_class = TLToneImportResponse;
   v7 = [(TLToneImportResponse *)&v12 init];
   v8 = v7;
   if (v7)
   {
-    v7->_statusCode = a3;
-    v9 = [v6 copy];
+    v7->_statusCode = code;
+    v9 = [identifierCopy copy];
     toneIdentifier = v8->_toneIdentifier;
     v8->_toneIdentifier = v9;
   }

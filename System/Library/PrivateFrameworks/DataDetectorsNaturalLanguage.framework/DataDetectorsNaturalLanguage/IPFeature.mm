@@ -9,14 +9,14 @@
 
 - (id)matchString
 {
-  v3 = [(IPFeature *)self textUnit];
-  v4 = [v3 length];
-  v5 = [(IPFeature *)self matchRange];
+  textUnit = [(IPFeature *)self textUnit];
+  v4 = [textUnit length];
+  matchRange = [(IPFeature *)self matchRange];
   v7 = 0;
-  v8 = __CFADD__(v6, v5);
-  if (v6 && v4 && !v8 && v5 + v6 <= v4)
+  v8 = __CFADD__(v6, matchRange);
+  if (v6 && v4 && !v8 && matchRange + v6 <= v4)
   {
-    v7 = [v3 substringWithRange:{v5, v6}];
+    v7 = [textUnit substringWithRange:{matchRange, v6}];
   }
 
   return v7;
@@ -28,18 +28,18 @@
   v8.receiver = self;
   v8.super_class = IPFeature;
   v4 = [(IPFeature *)&v8 description];
-  v5 = [(IPFeature *)self matchString];
-  v6 = [v3 stringWithFormat:@"%@ [%@]", v4, v5];
+  matchString = [(IPFeature *)self matchString];
+  v6 = [v3 stringWithFormat:@"%@ [%@]", v4, matchString];
 
   return v6;
 }
 
 - (BOOL)isMatchStringInsideQuotationMarks
 {
-  v3 = [(IPFeature *)self matchRange];
+  matchRange = [(IPFeature *)self matchRange];
   v5 = v4;
-  v6 = [(IPFeature *)self textUnit];
-  v7 = [IPRegexToolbox isRangeInsideQuotationMarks:v3 text:v5 limitToSurroundingText:v6, 1];
+  textUnit = [(IPFeature *)self textUnit];
+  v7 = [IPRegexToolbox isRangeInsideQuotationMarks:matchRange text:v5 limitToSurroundingText:textUnit, 1];
 
   return v7;
 }

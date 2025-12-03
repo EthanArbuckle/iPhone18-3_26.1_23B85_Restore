@@ -1,31 +1,31 @@
 @interface _UIMotionEffectEngineLogger
-- (_UIMotionEffectEngineLogger)initWithFastUpdateInterval:(double)a3 slowUpdateInterval:(double)a4;
+- (_UIMotionEffectEngineLogger)initWithFastUpdateInterval:(double)interval slowUpdateInterval:(double)updateInterval;
 - (void)_dumpToAggregated;
-- (void)recordMotionMagnitude:(double)a3 atTimestamp:(double)a4;
+- (void)recordMotionMagnitude:(double)magnitude atTimestamp:(double)timestamp;
 @end
 
 @implementation _UIMotionEffectEngineLogger
 
-- (_UIMotionEffectEngineLogger)initWithFastUpdateInterval:(double)a3 slowUpdateInterval:(double)a4
+- (_UIMotionEffectEngineLogger)initWithFastUpdateInterval:(double)interval slowUpdateInterval:(double)updateInterval
 {
   v7.receiver = self;
   v7.super_class = _UIMotionEffectEngineLogger;
   result = [(_UIMotionEffectEngineLogger *)&v7 init];
   if (result)
   {
-    _MergedGlobals_967 = (1.0 / a3);
-    qword_1ED491CA0 = (1.0 / a4);
-    result->_updateFreqency = (1.0 / a3);
+    _MergedGlobals_967 = (1.0 / interval);
+    qword_1ED491CA0 = (1.0 / updateInterval);
+    result->_updateFreqency = (1.0 / interval);
     result->_lastUpdateTimeStamp = -1.0;
   }
 
   return result;
 }
 
-- (void)recordMotionMagnitude:(double)a3 atTimestamp:(double)a4
+- (void)recordMotionMagnitude:(double)magnitude atTimestamp:(double)timestamp
 {
   lastUpdateTimeStamp = self->_lastUpdateTimeStamp;
-  if (lastUpdateTimeStamp != a4)
+  if (lastUpdateTimeStamp != timestamp)
   {
     if (lastUpdateTimeStamp == -1.0)
     {
@@ -39,7 +39,7 @@
 
     else
     {
-      v9 = (1.0 / (a4 - lastUpdateTimeStamp));
+      v9 = (1.0 / (timestamp - lastUpdateTimeStamp));
       v10 = _MergedGlobals_967;
       if (_MergedGlobals_967 <= v9)
       {
@@ -70,32 +70,32 @@
       self->_updateFreqency = updateFreqency;
     }
 
-    if (a3 <= 0.01)
+    if (magnitude <= 0.01)
     {
       v12 = 0;
     }
 
-    else if (a3 <= 0.015)
+    else if (magnitude <= 0.015)
     {
       v12 = 1;
     }
 
-    else if (a3 <= 0.02)
+    else if (magnitude <= 0.02)
     {
       v12 = 2;
     }
 
-    else if (a3 <= 0.025)
+    else if (magnitude <= 0.025)
     {
       v12 = 3;
     }
 
-    else if (a3 <= 0.03)
+    else if (magnitude <= 0.03)
     {
       v12 = 4;
     }
 
-    else if (a3 <= 0.04)
+    else if (magnitude <= 0.04)
     {
       v12 = 5;
     }
@@ -103,14 +103,14 @@
     else
     {
       v12 = 6;
-      if (a3 > 0.05)
+      if (magnitude > 0.05)
       {
         v12 = 7;
       }
     }
 
     ++self->_motionLevelSamples[v12];
-    self->_lastUpdateTimeStamp = a4;
+    self->_lastUpdateTimeStamp = timestamp;
     sampleCount = self->_sampleCount;
     self->_sampleCount = sampleCount + 1;
     if (sampleCount >= 59)

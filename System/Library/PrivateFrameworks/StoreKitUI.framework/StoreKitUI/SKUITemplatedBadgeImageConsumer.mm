@@ -1,13 +1,13 @@
 @interface SKUITemplatedBadgeImageConsumer
-- (id)objectForData:(id)a3 response:(id)a4 error:(id *)a5;
+- (id)objectForData:(id)data response:(id)response error:(id *)error;
 @end
 
 @implementation SKUITemplatedBadgeImageConsumer
 
-- (id)objectForData:(id)a3 response:(id)a4 error:(id *)a5
+- (id)objectForData:(id)data response:(id)response error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  dataCopy = data;
+  responseCopy = response;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     [SKUITemplatedBadgeImageConsumer objectForData:response:error:];
@@ -15,18 +15,18 @@
 
   v16.receiver = self;
   v16.super_class = SKUITemplatedBadgeImageConsumer;
-  v10 = [(SKUIImageDataConsumer *)&v16 objectForData:v8 response:v9 error:a5];
+  v10 = [(SKUIImageDataConsumer *)&v16 objectForData:dataCopy response:responseCopy error:error];
   if (v10)
   {
     v11 = v10;
-    v12 = [(SKUITemplatedBadgeImageConsumer *)self templateColor];
+    templateColor = [(SKUITemplatedBadgeImageConsumer *)self templateColor];
 
-    if (v12)
+    if (templateColor)
     {
-      v13 = [(SKUITemplatedBadgeImageConsumer *)self templateColor];
-      v14 = [v11 _flatImageWithColor:v13];
+      templateColor2 = [(SKUITemplatedBadgeImageConsumer *)self templateColor];
+      v14 = [v11 _flatImageWithColor:templateColor2];
 
-      v11 = v13;
+      v11 = templateColor2;
     }
 
     else

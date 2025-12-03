@@ -1,37 +1,37 @@
 @interface CKConversationConfirmationAlertsController
-- (BOOL)_hasChatSharingLocationInConversations:(id)a3;
+- (BOOL)_hasChatSharingLocationInConversations:(id)conversations;
 - (BOOL)_isStoredOnIcloud;
-- (BOOL)_shouldConfirmStopSharingLocationForConversations:(id)a3;
-- (CKConversationConfirmationAlertsController)initWithConfiguration:(id)a3;
-- (id)_conversationDeletionAlertMessageForConversations:(id)a3;
-- (id)_deleteAndBlockActionWithConfirmedBlock:(id)a3;
-- (id)_identifyBusinessConversationToRemove:(id)a3;
-- (id)_identifySpamConversationsToRemove:(id)a3;
-- (id)_junkRecoveryAlertMessageForCount:(unint64_t)a3;
-- (id)_junkRecoveryAlertTitleForCount:(unint64_t)a3;
-- (id)_moveToRecentlyDeletedAlertMessageForMessagesCount:(unint64_t)a3;
-- (id)_moveToRecentlyDeletedAlertTitleForConversationsCount:(unint64_t)a3;
-- (id)_moveToRecentlyDeletedAlertTitleForMessagesCount:(unint64_t)a3;
-- (id)_permanentDeletionAlertMessageForCount:(unint64_t)a3;
-- (id)_permanentDeletionAlertTitleForCount:(unint64_t)a3;
-- (id)_permanentJunkDeletionAlertTitleForCount:(unint64_t)a3;
+- (BOOL)_shouldConfirmStopSharingLocationForConversations:(id)conversations;
+- (CKConversationConfirmationAlertsController)initWithConfiguration:(id)configuration;
+- (id)_conversationDeletionAlertMessageForConversations:(id)conversations;
+- (id)_deleteAndBlockActionWithConfirmedBlock:(id)block;
+- (id)_identifyBusinessConversationToRemove:(id)remove;
+- (id)_identifySpamConversationsToRemove:(id)remove;
+- (id)_junkRecoveryAlertMessageForCount:(unint64_t)count;
+- (id)_junkRecoveryAlertTitleForCount:(unint64_t)count;
+- (id)_moveToRecentlyDeletedAlertMessageForMessagesCount:(unint64_t)count;
+- (id)_moveToRecentlyDeletedAlertTitleForConversationsCount:(unint64_t)count;
+- (id)_moveToRecentlyDeletedAlertTitleForMessagesCount:(unint64_t)count;
+- (id)_permanentDeletionAlertMessageForCount:(unint64_t)count;
+- (id)_permanentDeletionAlertTitleForCount:(unint64_t)count;
+- (id)_permanentJunkDeletionAlertTitleForCount:(unint64_t)count;
 - (id)_presentReportSpamReaonsControllerIfNeeded;
-- (id)_presentStopBusinessChatAlertIfNeededForConversations:(id)a3;
-- (id)_recoveryAlertMessageForBlockedConversationsCount:(unint64_t)a3 allowedConversationsCount:(unint64_t)a4;
-- (id)_recoveryAlertMessageForMessagesCount:(unint64_t)a3;
-- (id)_recoveryAlertTitleForBlockedConversationsCount:(unint64_t)a3 allowedConversationsCount:(unint64_t)a4;
-- (id)_recoveryAlertTitleForMessagesCount:(unint64_t)a3;
+- (id)_presentStopBusinessChatAlertIfNeededForConversations:(id)conversations;
+- (id)_recoveryAlertMessageForBlockedConversationsCount:(unint64_t)count allowedConversationsCount:(unint64_t)conversationsCount;
+- (id)_recoveryAlertMessageForMessagesCount:(unint64_t)count;
+- (id)_recoveryAlertTitleForBlockedConversationsCount:(unint64_t)count allowedConversationsCount:(unint64_t)conversationsCount;
+- (id)_recoveryAlertTitleForMessagesCount:(unint64_t)count;
 - (id)_reportSpamConfirmationMessageForJunkConversations;
 - (id)_spamReportDestinationsForJunkConversations;
-- (unint64_t)_numberOfRecoverableMessagesInConversations:(id)a3;
-- (void)_configureAppearanceForAlertController:(id)a3;
+- (unint64_t)_numberOfRecoverableMessagesInConversations:(id)conversations;
+- (void)_configureAppearanceForAlertController:(id)controller;
 - (void)_generateSafetyCheckController;
-- (void)_markConversationsAsSpam:(id)a3;
-- (void)_presentEndBusinessChatConfirmationForBusinessConversation:(id)a3 actionCompletionBlock:(id)a4;
-- (void)_presentRecoverableConversationDeletionConfirmationWithConfirmedBlock:(id)a3 cancelBlock:(id)a4;
-- (void)_presentReportSpamReasonWithConversations:(id)a3 didReportBlock:(id)a4;
-- (void)_presentStopSharingLocationConfirmationWithActionCompletionBlock:(id)a3;
-- (void)_trackEvent:(int64_t)a3 forConversations:(id)a4;
+- (void)_markConversationsAsSpam:(id)spam;
+- (void)_presentEndBusinessChatConfirmationForBusinessConversation:(id)conversation actionCompletionBlock:(id)block;
+- (void)_presentRecoverableConversationDeletionConfirmationWithConfirmedBlock:(id)block cancelBlock:(id)cancelBlock;
+- (void)_presentReportSpamReasonWithConversations:(id)conversations didReportBlock:(id)block;
+- (void)_presentStopSharingLocationConfirmationWithActionCompletionBlock:(id)block;
+- (void)_trackEvent:(int64_t)event forConversations:(id)conversations;
 - (void)presentPermanentConversationDeletionConfirmations;
 - (void)presentPermanentJunkConversationDeletionConfirmations;
 - (void)presentRecoverDeletedConversationConfirmations;
@@ -42,16 +42,16 @@
 
 @implementation CKConversationConfirmationAlertsController
 
-- (CKConversationConfirmationAlertsController)initWithConfiguration:(id)a3
+- (CKConversationConfirmationAlertsController)initWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v8.receiver = self;
   v8.super_class = CKConversationConfirmationAlertsController;
   v5 = [(CKConversationConfirmationAlertsController *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(CKConversationConfirmationAlertsController *)v5 setConfiguration:v4];
+    [(CKConversationConfirmationAlertsController *)v5 setConfiguration:configurationCopy];
     [(CKConversationConfirmationAlertsController *)v6 _generateSafetyCheckController];
   }
 
@@ -60,19 +60,19 @@
 
 - (void)presentRecoverableConversationDeletionConfirmations
 {
-  v3 = [(CKConversationConfirmationAlertsController *)self configuration];
+  configuration = [(CKConversationConfirmationAlertsController *)self configuration];
   [(CKConversationConfirmationAlertsController *)self setShouldPromptBusinessChatSpamReason:0];
   [(CKConversationConfirmationAlertsController *)self setShouldPromptStopBusinessChat:1];
-  v4 = [v3 targetConversations];
-  v5 = [(CKConversationConfirmationAlertsController *)self _identifySpamConversationsToRemove:v4];
+  targetConversations = [configuration targetConversations];
+  v5 = [(CKConversationConfirmationAlertsController *)self _identifySpamConversationsToRemove:targetConversations];
   [(CKConversationConfirmationAlertsController *)self setJunkConversations:v5];
 
   v22[0] = 0;
   v22[1] = v22;
   v22[2] = 0x2020000000;
-  v23 = [(CKConversationConfirmationAlertsController *)self _shouldConfirmStopSharingLocationForConversations:v4];
-  v6 = [(CKConversationConfirmationAlertsController *)self _presentReportSpamReaonsControllerIfNeeded];
-  v7 = [(CKConversationConfirmationAlertsController *)self _presentStopBusinessChatAlertIfNeededForConversations:v4];
+  v23 = [(CKConversationConfirmationAlertsController *)self _shouldConfirmStopSharingLocationForConversations:targetConversations];
+  _presentReportSpamReaonsControllerIfNeeded = [(CKConversationConfirmationAlertsController *)self _presentReportSpamReaonsControllerIfNeeded];
+  v7 = [(CKConversationConfirmationAlertsController *)self _presentStopBusinessChatAlertIfNeededForConversations:targetConversations];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __97__CKConversationConfirmationAlertsController_presentRecoverableConversationDeletionConfirmations__block_invoke;
@@ -85,17 +85,17 @@
   v15[2] = __97__CKConversationConfirmationAlertsController_presentRecoverableConversationDeletionConfirmations__block_invoke_2;
   v15[3] = &unk_1E72F3550;
   v20 = v22;
-  v9 = v6;
+  v9 = _presentReportSpamReaonsControllerIfNeeded;
   v17 = v9;
   v10 = v7;
   v18 = v10;
   v11 = v8;
   v19 = v11;
-  v12 = v3;
+  v12 = configuration;
   v16 = v12;
   v13 = _Block_copy(v15);
-  v14 = [v12 cancelBlock];
-  [(CKConversationConfirmationAlertsController *)self _presentRecoverableConversationDeletionConfirmationWithConfirmedBlock:v13 cancelBlock:v14];
+  cancelBlock = [v12 cancelBlock];
+  [(CKConversationConfirmationAlertsController *)self _presentRecoverableConversationDeletionConfirmationWithConfirmedBlock:v13 cancelBlock:cancelBlock];
 
   _Block_object_dispose(v22, 8);
 }
@@ -185,16 +185,16 @@ void __97__CKConversationConfirmationAlertsController_presentRecoverableConversa
   }
 }
 
-- (id)_presentStopBusinessChatAlertIfNeededForConversations:(id)a3
+- (id)_presentStopBusinessChatAlertIfNeededForConversations:(id)conversations
 {
-  v4 = a3;
+  conversationsCopy = conversations;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __100__CKConversationConfirmationAlertsController__presentStopBusinessChatAlertIfNeededForConversations___block_invoke;
   v8[3] = &unk_1E72F3578;
   v8[4] = self;
-  v9 = v4;
-  v5 = v4;
+  v9 = conversationsCopy;
+  v5 = conversationsCopy;
   v6 = _Block_copy(v8);
 
   return v6;
@@ -353,11 +353,11 @@ uint64_t __88__CKConversationConfirmationAlertsController__presentReportSpamReao
   return result;
 }
 
-- (void)_presentRecoverableConversationDeletionConfirmationWithConfirmedBlock:(id)a3 cancelBlock:(id)a4
+- (void)_presentRecoverableConversationDeletionConfirmationWithConfirmedBlock:(id)block cancelBlock:(id)cancelBlock
 {
-  v6 = a3;
-  v32 = a4;
-  v30 = [(CKConversationConfirmationAlertsController *)self configuration];
+  blockCopy = block;
+  cancelBlockCopy = cancelBlock;
+  configuration = [(CKConversationConfirmationAlertsController *)self configuration];
   v7 = 2 * (CKIsRunningInMacCatalyst() == 0);
   v8 = CKFrameworkBundle();
   v9 = [v8 localizedStringForKey:@"DELETE" value:&stru_1F04268F8 table:@"ChatKit"];
@@ -365,7 +365,7 @@ uint64_t __88__CKConversationConfirmationAlertsController__presentReportSpamReao
   v38[1] = 3221225472;
   v38[2] = __128__CKConversationConfirmationAlertsController__presentRecoverableConversationDeletionConfirmationWithConfirmedBlock_cancelBlock___block_invoke;
   v38[3] = &unk_1E72EC218;
-  v10 = v6;
+  v10 = blockCopy;
   v39 = v10;
   v11 = [CKAlertAction actionWithTitle:v9 style:v7 handler:v38];
 
@@ -375,15 +375,15 @@ uint64_t __88__CKConversationConfirmationAlertsController__presentReportSpamReao
   v36[1] = 3221225472;
   v36[2] = __128__CKConversationConfirmationAlertsController__presentRecoverableConversationDeletionConfirmationWithConfirmedBlock_cancelBlock___block_invoke_2;
   v36[3] = &unk_1E72EC218;
-  v14 = v30;
-  v33 = v32;
+  v14 = configuration;
+  v33 = cancelBlockCopy;
   v37 = v33;
   v31 = [CKAlertAction actionWithTitle:v13 style:1 handler:v36];
 
-  if ([v30 alertControllerStyle] == 1)
+  if ([configuration alertControllerStyle] == 1)
   {
-    v15 = [v30 targetConversations];
-    v16 = -[CKConversationConfirmationAlertsController _moveToRecentlyDeletedAlertTitleForConversationsCount:](self, "_moveToRecentlyDeletedAlertTitleForConversationsCount:", [v15 count]);
+    targetConversations = [configuration targetConversations];
+    v16 = -[CKConversationConfirmationAlertsController _moveToRecentlyDeletedAlertTitleForConversationsCount:](self, "_moveToRecentlyDeletedAlertTitleForConversationsCount:", [targetConversations count]);
   }
 
   else
@@ -391,12 +391,12 @@ uint64_t __88__CKConversationConfirmationAlertsController__presentReportSpamReao
     v16 = 0;
   }
 
-  v17 = [(CKConversationConfirmationAlertsController *)self junkConversations];
-  v18 = [v17 count];
+  junkConversations = [(CKConversationConfirmationAlertsController *)self junkConversations];
+  v18 = [junkConversations count];
 
   if (v18)
   {
-    v19 = [(CKConversationConfirmationAlertsController *)self _reportSpamConfirmationMessageForJunkConversations];
+    _reportSpamConfirmationMessageForJunkConversations = [(CKConversationConfirmationAlertsController *)self _reportSpamConfirmationMessageForJunkConversations];
     v20 = CKFrameworkBundle();
     v21 = [v20 localizedStringForKey:@"REPORT_SPAM_ALERT_BUTTON_TITLE" value:&stru_1F04268F8 table:@"ChatKit"];
     v34[0] = MEMORY[0x1E69E9820];
@@ -408,7 +408,7 @@ uint64_t __88__CKConversationConfirmationAlertsController__presentReportSpamReao
     [CKAlertAction actionWithTitle:v21 style:2 handler:v34];
     v23 = v22 = v10;
 
-    v24 = +[CKAlertController alertControllerWithTitle:message:preferredStyle:](CKAlertController, "alertControllerWithTitle:message:preferredStyle:", v16, v19, [v14 alertControllerStyle]);
+    v24 = +[CKAlertController alertControllerWithTitle:message:preferredStyle:](CKAlertController, "alertControllerWithTitle:message:preferredStyle:", v16, _reportSpamConfirmationMessageForJunkConversations, [v14 alertControllerStyle]);
     [v24 addAction:v11];
     [v24 addAction:v23];
   }
@@ -416,15 +416,15 @@ uint64_t __88__CKConversationConfirmationAlertsController__presentReportSpamReao
   else
   {
     v22 = v10;
-    v25 = [v14 targetConversations];
-    v19 = [(CKConversationConfirmationAlertsController *)self _conversationDeletionAlertMessageForConversations:v25];
+    targetConversations2 = [v14 targetConversations];
+    _reportSpamConfirmationMessageForJunkConversations = [(CKConversationConfirmationAlertsController *)self _conversationDeletionAlertMessageForConversations:targetConversations2];
 
-    v24 = +[CKAlertController alertControllerWithTitle:message:preferredStyle:](CKAlertController, "alertControllerWithTitle:message:preferredStyle:", v16, v19, [v14 alertControllerStyle]);
+    v24 = +[CKAlertController alertControllerWithTitle:message:preferredStyle:](CKAlertController, "alertControllerWithTitle:message:preferredStyle:", v16, _reportSpamConfirmationMessageForJunkConversations, [v14 alertControllerStyle]);
     [v24 addAction:v11];
-    v26 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-    v27 = [v26 isIntroductionsEnabled];
+    mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+    isIntroductionsEnabled = [mEMORY[0x1E69A8070] isIntroductionsEnabled];
 
-    if (v27)
+    if (isIntroductionsEnabled)
     {
       v28 = [(CKConversationConfirmationAlertsController *)self _deleteAndBlockActionWithConfirmedBlock:v22];
       if (v28)
@@ -437,8 +437,8 @@ uint64_t __88__CKConversationConfirmationAlertsController__presentReportSpamReao
   [v24 addAction:v31];
   [v24 setPreferredAction:v11];
   [(CKConversationConfirmationAlertsController *)self _configureAppearanceForAlertController:v24];
-  v29 = [v14 presentationViewController];
-  [v24 presentFromViewController:v29 animated:1 completion:0];
+  presentationViewController = [v14 presentationViewController];
+  [v24 presentFromViewController:presentationViewController animated:1 completion:0];
 }
 
 uint64_t __128__CKConversationConfirmationAlertsController__presentRecoverableConversationDeletionConfirmationWithConfirmedBlock_cancelBlock___block_invoke(uint64_t a1)
@@ -478,27 +478,27 @@ void __128__CKConversationConfirmationAlertsController__presentRecoverableConver
   }
 }
 
-- (void)_presentReportSpamReasonWithConversations:(id)a3 didReportBlock:(id)a4
+- (void)_presentReportSpamReasonWithConversations:(id)conversations didReportBlock:(id)block
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CKConversationConfirmationAlertsController *)self configuration];
+  blockCopy = block;
+  conversationsCopy = conversations;
+  configuration = [(CKConversationConfirmationAlertsController *)self configuration];
   v9 = [CKReportSpamReasonContoller alloc];
   v16 = MEMORY[0x1E69E9820];
   v17 = 3221225472;
   v18 = __103__CKConversationConfirmationAlertsController__presentReportSpamReasonWithConversations_didReportBlock___block_invoke;
   v19 = &unk_1E72ED1C8;
-  v20 = v8;
-  v21 = v6;
-  v10 = v6;
-  v11 = v8;
-  v12 = [(CKReportSpamReasonContoller *)v9 initWithConversations:v7 didReportBlock:&v16];
+  v20 = configuration;
+  v21 = blockCopy;
+  v10 = blockCopy;
+  v11 = configuration;
+  v12 = [(CKReportSpamReasonContoller *)v9 initWithConversations:conversationsCopy didReportBlock:&v16];
 
   v13 = objc_alloc(MEMORY[0x1E69DCCD8]);
   v14 = [v13 initWithRootViewController:{v12, v16, v17, v18, v19}];
   [v14 setModalPresentationStyle:2];
-  v15 = [v11 presentationViewController];
-  [v15 presentViewController:v14 animated:1 completion:0];
+  presentationViewController = [v11 presentationViewController];
+  [presentationViewController presentViewController:v14 animated:1 completion:0];
 }
 
 uint64_t __103__CKConversationConfirmationAlertsController__presentReportSpamReasonWithConversations_didReportBlock___block_invoke(uint64_t a1)
@@ -517,19 +517,19 @@ uint64_t __103__CKConversationConfirmationAlertsController__presentReportSpamRea
   return result;
 }
 
-- (void)_presentEndBusinessChatConfirmationForBusinessConversation:(id)a3 actionCompletionBlock:(id)a4
+- (void)_presentEndBusinessChatConfirmationForBusinessConversation:(id)conversation actionCompletionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CKConversationConfirmationAlertsController *)self configuration];
+  conversationCopy = conversation;
+  blockCopy = block;
+  configuration = [(CKConversationConfirmationAlertsController *)self configuration];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __127__CKConversationConfirmationAlertsController__presentEndBusinessChatConfirmationForBusinessConversation_actionCompletionBlock___block_invoke;
   aBlock[3] = &unk_1E72ED638;
-  v32 = v6;
-  v33 = v7;
-  v26 = v7;
-  v25 = v6;
+  v32 = conversationCopy;
+  v33 = blockCopy;
+  v26 = blockCopy;
+  v25 = conversationCopy;
   v9 = _Block_copy(aBlock);
   v10 = CKFrameworkBundle();
   v11 = [v10 localizedStringForKey:@"BUSINESS_LEAVE_CONVERSATION_BUTTON" value:&stru_1F04268F8 table:@"ChatKit"];
@@ -555,14 +555,14 @@ uint64_t __103__CKConversationConfirmationAlertsController__presentReportSpamRea
   v19 = [v18 localizedStringForKey:@"BUSINESS_LEAVE_CONVERSATION_TITLE" value:&stru_1F04268F8 table:@"ChatKit"];
   v20 = CKFrameworkBundle();
   v21 = [v20 localizedStringForKey:@"BUSINESS_LEAVE_CONVERSATION_MESSAGE" value:&stru_1F04268F8 table:@"ChatKit"];
-  v22 = +[CKAlertController alertControllerWithTitle:message:preferredStyle:](CKAlertController, "alertControllerWithTitle:message:preferredStyle:", v19, v21, [v8 alertControllerStyle]);
+  v22 = +[CKAlertController alertControllerWithTitle:message:preferredStyle:](CKAlertController, "alertControllerWithTitle:message:preferredStyle:", v19, v21, [configuration alertControllerStyle]);
 
   [v22 addAction:v13];
   [v22 addAction:v17];
   [v22 setPreferredAction:v13];
   [(CKConversationConfirmationAlertsController *)self _configureAppearanceForAlertController:v22];
-  v23 = [v8 presentationViewController];
-  [v22 presentFromViewController:v23 animated:1 completion:0];
+  presentationViewController = [configuration presentationViewController];
+  [v22 presentFromViewController:presentationViewController animated:1 completion:0];
 }
 
 uint64_t __127__CKConversationConfirmationAlertsController__presentEndBusinessChatConfirmationForBusinessConversation_actionCompletionBlock___block_invoke(uint64_t a1, int a2)
@@ -584,17 +584,17 @@ uint64_t __127__CKConversationConfirmationAlertsController__presentEndBusinessCh
   return result;
 }
 
-- (void)_presentStopSharingLocationConfirmationWithActionCompletionBlock:(id)a3
+- (void)_presentStopSharingLocationConfirmationWithActionCompletionBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(CKConversationConfirmationAlertsController *)self configuration];
+  blockCopy = block;
+  configuration = [(CKConversationConfirmationAlertsController *)self configuration];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __111__CKConversationConfirmationAlertsController__presentStopSharingLocationConfirmationWithActionCompletionBlock___block_invoke;
   aBlock[3] = &unk_1E72ED638;
-  v6 = v5;
+  v6 = configuration;
   v31 = v6;
-  v25 = v4;
+  v25 = blockCopy;
   v32 = v25;
   v7 = _Block_copy(aBlock);
   v8 = CKFrameworkBundle();
@@ -617,8 +617,8 @@ uint64_t __127__CKConversationConfirmationAlertsController__presentEndBusinessCh
   v14 = v10;
   v15 = [CKAlertAction actionWithTitle:v13 style:0 handler:v26];
 
-  v16 = [v6 targetConversations];
-  v17 = [v16 count];
+  targetConversations = [v6 targetConversations];
+  v17 = [targetConversations count];
   v18 = CKFrameworkBundle();
   v19 = v18;
   if (v17 >= 2)
@@ -638,8 +638,8 @@ uint64_t __127__CKConversationConfirmationAlertsController__presentEndBusinessCh
   [v22 addAction:v15];
   [v22 setPreferredAction:v11];
   [(CKConversationConfirmationAlertsController *)self _configureAppearanceForAlertController:v22];
-  v23 = [v6 presentationViewController];
-  [v22 presentFromViewController:v23 animated:1 completion:0];
+  presentationViewController = [v6 presentationViewController];
+  [v22 presentFromViewController:presentationViewController animated:1 completion:0];
 }
 
 uint64_t __111__CKConversationConfirmationAlertsController__presentStopSharingLocationConfirmationWithActionCompletionBlock___block_invoke(uint64_t a1, int a2)
@@ -692,21 +692,21 @@ uint64_t __111__CKConversationConfirmationAlertsController__presentStopSharingLo
 
 - (id)_reportSpamConfirmationMessageForJunkConversations
 {
-  v3 = [(CKConversationConfirmationAlertsController *)self configuration];
-  v4 = [(CKConversationConfirmationAlertsController *)self _spamReportDestinationsForJunkConversations];
-  v5 = [v4 count];
-  v6 = [MEMORY[0x1E696AD08] localizedStringByJoiningStrings:v4];
-  v7 = [(CKConversationConfirmationAlertsController *)self _isStoredOnIcloud];
+  configuration = [(CKConversationConfirmationAlertsController *)self configuration];
+  _spamReportDestinationsForJunkConversations = [(CKConversationConfirmationAlertsController *)self _spamReportDestinationsForJunkConversations];
+  v5 = [_spamReportDestinationsForJunkConversations count];
+  v6 = [MEMORY[0x1E696AD08] localizedStringByJoiningStrings:_spamReportDestinationsForJunkConversations];
+  _isStoredOnIcloud = [(CKConversationConfirmationAlertsController *)self _isStoredOnIcloud];
   if (v5 < 2)
   {
-    if (!v7)
+    if (!_isStoredOnIcloud)
     {
-      v24 = [v3 alertControllerStyle];
-      v8 = [v3 targetConversations];
-      v25 = [v8 count];
+      alertControllerStyle = [configuration alertControllerStyle];
+      targetConversations = [configuration targetConversations];
+      v25 = [targetConversations count];
       v26 = CKFrameworkBundle();
       v16 = v26;
-      if (v24 == 1)
+      if (alertControllerStyle == 1)
       {
         v27 = @"BATCH_DELETE_AND_REPORT_APPLE_ALERT_MESSAGE";
         v28 = @"DELETE_AND_REPORT_APPLE_ALERT_MESSAGE";
@@ -732,8 +732,8 @@ uint64_t __111__CKConversationConfirmationAlertsController__presentStopSharingLo
       goto LABEL_29;
     }
 
-    v8 = [v3 targetConversations];
-    v14 = [v8 count];
+    targetConversations = [configuration targetConversations];
+    v14 = [targetConversations count];
     v10 = MEMORY[0x1E696AEC0];
     v11 = CKFrameworkBundle();
     v12 = v11;
@@ -750,15 +750,15 @@ uint64_t __111__CKConversationConfirmationAlertsController__presentStopSharingLo
 
   else
   {
-    if (!v7)
+    if (!_isStoredOnIcloud)
     {
-      v17 = [v3 alertControllerStyle];
-      v8 = [v3 targetConversations];
-      v18 = [v8 count];
+      alertControllerStyle2 = [configuration alertControllerStyle];
+      targetConversations = [configuration targetConversations];
+      v18 = [targetConversations count];
       v19 = MEMORY[0x1E696AEC0];
       v20 = CKFrameworkBundle();
       v21 = v20;
-      if (v17 == 1)
+      if (alertControllerStyle2 == 1)
       {
         v22 = @"BATCH_DELETE_AND_REPORT_APPLE_CARRIER_ALERT_MESSAGE";
         v23 = @"DELETE_AND_REPORT_APPLE_CARRIER_ALERT_MESSAGE";
@@ -786,8 +786,8 @@ uint64_t __111__CKConversationConfirmationAlertsController__presentStopSharingLo
       goto LABEL_20;
     }
 
-    v8 = [v3 targetConversations];
-    v9 = [v8 count];
+    targetConversations = [configuration targetConversations];
+    v9 = [targetConversations count];
     v10 = MEMORY[0x1E696AEC0];
     v11 = CKFrameworkBundle();
     v12 = v11;
@@ -806,10 +806,10 @@ uint64_t __111__CKConversationConfirmationAlertsController__presentStopSharingLo
   v16 = [v10 stringWithFormat:v15, v6];
 
 LABEL_20:
-  v31 = [MEMORY[0x1E69DC668] sharedApplication];
-  v32 = [v31 userInterfaceLayoutDirection];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  userInterfaceLayoutDirection = [mEMORY[0x1E69DC668] userInterfaceLayoutDirection];
 
-  if (v32 == 1)
+  if (userInterfaceLayoutDirection == 1)
   {
     v33 = @"\u200F";
   }
@@ -849,24 +849,24 @@ LABEL_29:
         }
 
         v6 = *(*(&v46 + 1) + 8 * i);
-        v7 = [v6 chat];
-        v8 = [v7 account];
-        v9 = [v8 service];
-        v10 = [v9 supportsCapability:*MEMORY[0x1E69A7A20]];
+        chat = [v6 chat];
+        account = [chat account];
+        service = [account service];
+        v10 = [service supportsCapability:*MEMORY[0x1E69A7A20]];
         if (v10 && (v11 = MEMORY[0x1E69A7F70], [v6 chat], v45 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v45, "lastFinishedMessageItem"), v2 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "chat"), v3 = objc_claimAutoreleasedReturnValue(), (objc_msgSend(v11, "isReportJunkServiceAllowedForMessageItem:junkChatStyle:", v2, objc_msgSend(v3, "chatStyle")) & 1) != 0))
         {
-          LOBYTE(v12) = 1;
+          LOBYTE(isChatBot) = 1;
         }
 
         else
         {
-          v13 = [v6 chat];
-          v12 = [v13 isChatBot];
+          chat2 = [v6 chat];
+          isChatBot = [chat2 isChatBot];
 
           if (!v10)
           {
 
-            if (!v12)
+            if (!isChatBot)
             {
               goto LABEL_15;
             }
@@ -875,56 +875,56 @@ LABEL_29:
           }
         }
 
-        if ((v12 & 1) == 0)
+        if ((isChatBot & 1) == 0)
         {
           goto LABEL_15;
         }
 
 LABEL_13:
         v14 = MEMORY[0x1E69A7F58];
-        v15 = [v6 chat];
-        v16 = [v15 lastFinishedMessageItem];
-        v17 = [v16 destinationCallerID];
-        v18 = [v14 carrierNameForPhoneNumber:v17];
+        chat3 = [v6 chat];
+        lastFinishedMessageItem = [chat3 lastFinishedMessageItem];
+        destinationCallerID = [lastFinishedMessageItem destinationCallerID];
+        lastAddressedSIMID = [v14 carrierNameForPhoneNumber:destinationCallerID];
 
-        if (v18)
+        if (lastAddressedSIMID)
         {
-          [v41 addObject:v18];
+          [v41 addObject:lastAddressedSIMID];
           goto LABEL_22;
         }
 
 LABEL_15:
-        v19 = [v6 chat];
-        v20 = [v19 isRCS];
+        chat4 = [v6 chat];
+        isRCS = [chat4 isRCS];
 
-        if (!v20)
+        if (!isRCS)
         {
           continue;
         }
 
-        v21 = [v6 chat];
-        v18 = [v21 lastAddressedSIMID];
+        chat5 = [v6 chat];
+        lastAddressedSIMID = [chat5 lastAddressedSIMID];
 
-        v22 = [v6 chat];
-        v23 = [v22 lastAddressedHandleID];
+        chat6 = [v6 chat];
+        lastAddressedHandleID = [chat6 lastAddressedHandleID];
 
-        v24 = [MEMORY[0x1E69A7F68] sharedInstance];
-        v25 = [v24 ctSubscriptionInfo];
-        v26 = [v25 __im_subscriptionContextForForSimID:v18 phoneNumber:v23];
+        mEMORY[0x1E69A7F68] = [MEMORY[0x1E69A7F68] sharedInstance];
+        ctSubscriptionInfo = [mEMORY[0x1E69A7F68] ctSubscriptionInfo];
+        v26 = [ctSubscriptionInfo __im_subscriptionContextForForSimID:lastAddressedSIMID phoneNumber:lastAddressedHandleID];
 
         if (v26)
         {
-          v27 = [MEMORY[0x1E69A7F50] sharedManager];
-          v28 = [v6 chat];
-          v29 = [v27 networkSupportsSpamReportingForContext:v26 isChatBot:{objc_msgSend(v28, "isChatBot")}];
+          mEMORY[0x1E69A7F50] = [MEMORY[0x1E69A7F50] sharedManager];
+          chat7 = [v6 chat];
+          v29 = [mEMORY[0x1E69A7F50] networkSupportsSpamReportingForContext:v26 isChatBot:{objc_msgSend(chat7, "isChatBot")}];
 
           if (v29)
           {
             v30 = MEMORY[0x1E69A7F58];
-            v31 = [v6 chat];
-            v32 = [v31 lastFinishedMessageItem];
-            v33 = [v32 destinationCallerID];
-            v34 = [v30 carrierNameForPhoneNumber:v33];
+            chat8 = [v6 chat];
+            lastFinishedMessageItem2 = [chat8 lastFinishedMessageItem];
+            destinationCallerID2 = [lastFinishedMessageItem2 destinationCallerID];
+            v34 = [v30 carrierNameForPhoneNumber:destinationCallerID2];
 
             if (v34)
             {
@@ -945,8 +945,8 @@ LABEL_22:
   v35 = objc_alloc_init(MEMORY[0x1E695DF70]);
   if ([v41 count])
   {
-    v36 = [v41 allObjects];
-    [v35 addObjectsFromArray:v36];
+    allObjects = [v41 allObjects];
+    [v35 addObjectsFromArray:allObjects];
   }
 
   v37 = CKFrameworkBundle();
@@ -960,11 +960,11 @@ LABEL_22:
 
 - (void)presentRecoverableMessageDeletionConfirmations
 {
-  v3 = [(CKConversationConfirmationAlertsController *)self configuration];
-  v4 = [v3 messagesCount];
-  if (v4)
+  configuration = [(CKConversationConfirmationAlertsController *)self configuration];
+  messagesCount = [configuration messagesCount];
+  if (messagesCount)
   {
-    v5 = v4;
+    v5 = messagesCount;
     objc_initWeak(location, self);
     if (CKIsRunningInMacCatalyst())
     {
@@ -979,10 +979,10 @@ LABEL_22:
       v11 = [v10 localizedStringForKey:@"DELETE_MESSAGES" value:&stru_1F04268F8 table:@"ChatKit"];
       v6 = [v9 localizedStringWithFormat:v11, v5];
 
-      v12 = [MEMORY[0x1E69DC668] sharedApplication];
-      v13 = [v12 userInterfaceLayoutDirection];
+      mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+      userInterfaceLayoutDirection = [mEMORY[0x1E69DC668] userInterfaceLayoutDirection];
 
-      if (v13 == 1)
+      if (userInterfaceLayoutDirection == 1)
       {
         v14 = @"\u200F";
       }
@@ -1002,7 +1002,7 @@ LABEL_22:
     v32[1] = 3221225472;
     v32[2] = __92__CKConversationConfirmationAlertsController_presentRecoverableMessageDeletionConfirmations__block_invoke;
     v32[3] = &unk_1E72EBFE8;
-    v17 = v3;
+    v17 = configuration;
     v33 = v17;
     v18 = [CKAlertAction actionWithTitle:v15 style:v16 handler:v32];
     v19 = CKFrameworkBundle();
@@ -1024,19 +1024,19 @@ LABEL_22:
     WeakRetained = objc_loadWeakRetained(location);
     [WeakRetained _configureAppearanceForAlertController:v25];
 
-    v27 = [v21 sender];
+    sender = [v21 sender];
     if (![v21 alertControllerStyle])
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v28 = [v25 popoverPresentationController];
-        [v28 setBarButtonItem:v27];
+        popoverPresentationController = [v25 popoverPresentationController];
+        [popoverPresentationController setBarButtonItem:sender];
       }
     }
 
-    v29 = [v21 presentationViewController];
-    [v25 presentFromViewController:v29 animated:1 completion:0];
+    presentationViewController = [v21 presentationViewController];
+    [v25 presentFromViewController:presentationViewController animated:1 completion:0];
 
     objc_destroyWeak(location);
   }
@@ -1087,9 +1087,9 @@ void __92__CKConversationConfirmationAlertsController_presentRecoverableMessageD
 
 - (void)presentPermanentConversationDeletionConfirmations
 {
-  v3 = [(CKConversationConfirmationAlertsController *)self configuration];
-  v4 = [v3 targetConversations];
-  v5 = [(CKConversationConfirmationAlertsController *)self _numberOfRecoverableMessagesInConversations:v4];
+  configuration = [(CKConversationConfirmationAlertsController *)self configuration];
+  targetConversations = [configuration targetConversations];
+  v5 = [(CKConversationConfirmationAlertsController *)self _numberOfRecoverableMessagesInConversations:targetConversations];
 
   if (v5)
   {
@@ -1098,10 +1098,10 @@ void __92__CKConversationConfirmationAlertsController_presentRecoverableMessageD
     v8 = [v7 localizedStringForKey:@"DELETE_MESSAGES" value:&stru_1F04268F8 table:@"ChatKit"];
     v9 = [v6 localizedStringWithFormat:v8, v5];
 
-    v10 = [MEMORY[0x1E69DC668] sharedApplication];
-    v11 = [v10 userInterfaceLayoutDirection];
+    mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+    userInterfaceLayoutDirection = [mEMORY[0x1E69DC668] userInterfaceLayoutDirection];
 
-    if (v11 == 1)
+    if (userInterfaceLayoutDirection == 1)
     {
       v12 = @"\u200F";
     }
@@ -1117,7 +1117,7 @@ void __92__CKConversationConfirmationAlertsController_presentRecoverableMessageD
     v29[1] = 3221225472;
     v29[2] = __95__CKConversationConfirmationAlertsController_presentPermanentConversationDeletionConfirmations__block_invoke;
     v29[3] = &unk_1E72EBFE8;
-    v14 = v3;
+    v14 = configuration;
     v30 = v14;
     v15 = [CKAlertAction actionWithTitle:v13 style:2 handler:v29];
 
@@ -1131,10 +1131,10 @@ void __92__CKConversationConfirmationAlertsController_presentRecoverableMessageD
     v28 = v18;
     v19 = [CKAlertAction actionWithTitle:v17 style:1 handler:v27];
 
-    v20 = [v18 alertControllerStyle];
+    alertControllerStyle = [v18 alertControllerStyle];
     v21 = [(CKConversationConfirmationAlertsController *)self _permanentDeletionAlertTitleForCount:v5];
     v22 = v21;
-    if (v20 == 1)
+    if (alertControllerStyle == 1)
     {
       v23 = [(CKConversationConfirmationAlertsController *)self _permanentDeletionAlertMessageForCount:v5];
     }
@@ -1150,8 +1150,8 @@ void __92__CKConversationConfirmationAlertsController_presentRecoverableMessageD
     [v25 addAction:v19];
     [v25 setPreferredAction:v15];
     [(CKConversationConfirmationAlertsController *)self _configureAppearanceForAlertController:v25];
-    v26 = [v18 presentationViewController];
-    [v25 presentFromViewController:v26 animated:1 completion:0];
+    presentationViewController = [v18 presentationViewController];
+    [v25 presentFromViewController:presentationViewController animated:1 completion:0];
   }
 
   else if (IMOSLoggingEnabled())
@@ -1189,34 +1189,34 @@ void __95__CKConversationConfirmationAlertsController_presentPermanentConversati
 
 - (void)presentPermanentJunkConversationDeletionConfirmations
 {
-  v3 = [(CKConversationConfirmationAlertsController *)self configuration];
-  v4 = [v3 targetConversations];
-  v5 = [v4 count];
+  configuration = [(CKConversationConfirmationAlertsController *)self configuration];
+  targetConversations = [configuration targetConversations];
+  v5 = [targetConversations count];
   if (v5)
   {
     v6 = v5;
-    v37 = v4;
-    v7 = [(CKConversationConfirmationAlertsController *)self _identifySpamConversationsToRemove:v4];
+    v37 = targetConversations;
+    v7 = [(CKConversationConfirmationAlertsController *)self _identifySpamConversationsToRemove:targetConversations];
     [(CKConversationConfirmationAlertsController *)self setJunkConversations:v7];
 
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __99__CKConversationConfirmationAlertsController_presentPermanentJunkConversationDeletionConfirmations__block_invoke;
     aBlock[3] = &unk_1E72EBA18;
-    v38 = v3;
-    v8 = v3;
+    v38 = configuration;
+    v8 = configuration;
     v48 = v8;
     v9 = _Block_copy(aBlock);
-    v39 = [(CKConversationConfirmationAlertsController *)self _presentReportSpamReaonsControllerIfNeeded];
+    _presentReportSpamReaonsControllerIfNeeded = [(CKConversationConfirmationAlertsController *)self _presentReportSpamReaonsControllerIfNeeded];
     v10 = MEMORY[0x1E696AEC0];
     v11 = CKFrameworkBundle();
     v12 = [v11 localizedStringForKey:@"DELETE_CONVERSATION" value:&stru_1F04268F8 table:@"ChatKit"];
     v13 = [v10 localizedStringWithFormat:v12, v6];
 
-    v14 = [MEMORY[0x1E69DC668] sharedApplication];
-    v15 = [v14 userInterfaceLayoutDirection];
+    mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+    userInterfaceLayoutDirection = [mEMORY[0x1E69DC668] userInterfaceLayoutDirection];
 
-    if (v15 == 1)
+    if (userInterfaceLayoutDirection == 1)
     {
       v16 = @"\u200F";
     }
@@ -1257,13 +1257,13 @@ void __95__CKConversationConfirmationAlertsController_presentPermanentConversati
       v23 = 0;
     }
 
-    v25 = [(CKConversationConfirmationAlertsController *)self junkConversations];
-    v26 = [v25 count];
+    junkConversations = [(CKConversationConfirmationAlertsController *)self junkConversations];
+    v26 = [junkConversations count];
 
-    v27 = v39;
+    v27 = _presentReportSpamReaonsControllerIfNeeded;
     if (v26)
     {
-      v28 = [(CKConversationConfirmationAlertsController *)self _reportSpamConfirmationMessageForJunkConversations];
+      _reportSpamConfirmationMessageForJunkConversations = [(CKConversationConfirmationAlertsController *)self _reportSpamConfirmationMessageForJunkConversations];
       v29 = CKFrameworkBundle();
       v30 = [v29 localizedStringForKey:@"REPORT_SPAM_ALERT_BUTTON_TITLE" value:&stru_1F04268F8 table:@"ChatKit"];
       v40[0] = MEMORY[0x1E69E9820];
@@ -1271,45 +1271,45 @@ void __95__CKConversationConfirmationAlertsController_presentPermanentConversati
       v40[2] = __99__CKConversationConfirmationAlertsController_presentPermanentJunkConversationDeletionConfirmations__block_invoke_4;
       v40[3] = &unk_1E72F35F0;
       v40[4] = self;
-      v42 = v39;
+      v42 = _presentReportSpamReaonsControllerIfNeeded;
       v31 = v21;
       v41 = v31;
       v32 = [CKAlertAction actionWithTitle:v30 style:2 handler:v40];
 
       v33 = v31;
-      v27 = v39;
-      v34 = +[CKAlertController alertControllerWithTitle:message:preferredStyle:](CKAlertController, "alertControllerWithTitle:message:preferredStyle:", v23, v28, [v33 alertControllerStyle]);
+      v27 = _presentReportSpamReaonsControllerIfNeeded;
+      v34 = +[CKAlertController alertControllerWithTitle:message:preferredStyle:](CKAlertController, "alertControllerWithTitle:message:preferredStyle:", v23, _reportSpamConfirmationMessageForJunkConversations, [v33 alertControllerStyle]);
       [v34 addAction:v18];
       [v34 addAction:v32];
 
-      v4 = v37;
+      targetConversations = v37;
     }
 
     else
     {
       if ([v21 alertControllerStyle] == 1 || !objc_msgSend(v21, "alertControllerStyle"))
       {
-        v4 = v37;
-        v28 = [(CKConversationConfirmationAlertsController *)self _conversationDeletionAlertMessageForConversations:v37];
+        targetConversations = v37;
+        _reportSpamConfirmationMessageForJunkConversations = [(CKConversationConfirmationAlertsController *)self _conversationDeletionAlertMessageForConversations:v37];
       }
 
       else
       {
-        v28 = 0;
-        v4 = v37;
+        _reportSpamConfirmationMessageForJunkConversations = 0;
+        targetConversations = v37;
       }
 
-      v34 = +[CKAlertController alertControllerWithTitle:message:preferredStyle:](CKAlertController, "alertControllerWithTitle:message:preferredStyle:", v23, v28, [v21 alertControllerStyle]);
+      v34 = +[CKAlertController alertControllerWithTitle:message:preferredStyle:](CKAlertController, "alertControllerWithTitle:message:preferredStyle:", v23, _reportSpamConfirmationMessageForJunkConversations, [v21 alertControllerStyle]);
       [v34 addAction:v18];
     }
 
     [v34 addAction:v22];
     [v34 setPreferredAction:v18];
     [(CKConversationConfirmationAlertsController *)self _configureAppearanceForAlertController:v34];
-    v35 = [v21 presentationViewController];
-    [v34 presentFromViewController:v35 animated:1 completion:0];
+    presentationViewController = [v21 presentationViewController];
+    [v34 presentFromViewController:presentationViewController animated:1 completion:0];
 
-    v3 = v38;
+    configuration = v38;
   }
 
   else if (IMOSLoggingEnabled())
@@ -1385,9 +1385,9 @@ void __99__CKConversationConfirmationAlertsController_presentPermanentJunkConver
 - (void)presentRecoverDeletedConversationConfirmations
 {
   v47 = *MEMORY[0x1E69E9840];
-  v36 = [(CKConversationConfirmationAlertsController *)self configuration];
-  v35 = [v36 targetConversations];
-  v3 = [(CKConversationConfirmationAlertsController *)self _numberOfRecoverableMessagesInConversations:v35];
+  configuration = [(CKConversationConfirmationAlertsController *)self configuration];
+  targetConversations = [configuration targetConversations];
+  v3 = [(CKConversationConfirmationAlertsController *)self _numberOfRecoverableMessagesInConversations:targetConversations];
   if (v3)
   {
     v4 = v3;
@@ -1396,10 +1396,10 @@ void __99__CKConversationConfirmationAlertsController_presentPermanentJunkConver
     v7 = [v6 localizedStringForKey:@"RECENTLY_DELETED_RECOVER_ACTION_TITLE" value:&stru_1F04268F8 table:@"ChatKit"];
     v8 = [v5 localizedStringWithFormat:v7, v4];
 
-    v9 = [MEMORY[0x1E69DC668] sharedApplication];
-    v10 = [v9 userInterfaceLayoutDirection];
+    mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+    userInterfaceLayoutDirection = [mEMORY[0x1E69DC668] userInterfaceLayoutDirection];
 
-    if (v10 == 1)
+    if (userInterfaceLayoutDirection == 1)
     {
       v11 = @"\u200F";
     }
@@ -1415,7 +1415,7 @@ void __99__CKConversationConfirmationAlertsController_presentPermanentJunkConver
     v43[1] = 3221225472;
     v43[2] = __92__CKConversationConfirmationAlertsController_presentRecoverDeletedConversationConfirmations__block_invoke;
     v43[3] = &unk_1E72EBFE8;
-    v12 = v36;
+    v12 = configuration;
     v44 = v12;
     v34 = [CKAlertAction actionWithTitle:v33 style:0 handler:v43];
     v13 = CKFrameworkBundle();
@@ -1432,7 +1432,7 @@ void __99__CKConversationConfirmationAlertsController_presentPermanentJunkConver
     v40 = 0u;
     v37 = 0u;
     v38 = 0u;
-    v16 = v35;
+    v16 = targetConversations;
     v17 = 0;
     v18 = [v16 countByEnumeratingWithState:&v37 objects:v46 count:16];
     if (v18)
@@ -1448,10 +1448,10 @@ void __99__CKConversationConfirmationAlertsController_presentPermanentJunkConver
             objc_enumerationMutation(v16);
           }
 
-          v21 = [*(*(&v37 + 1) + 8 * v20) chat];
-          v22 = [v21 isDeletingIncomingMessages];
+          chat = [*(*(&v37 + 1) + 8 * v20) chat];
+          isDeletingIncomingMessages = [chat isDeletingIncomingMessages];
 
-          v17 += v22;
+          v17 += isDeletingIncomingMessages;
           ++v20;
         }
 
@@ -1463,9 +1463,9 @@ void __99__CKConversationConfirmationAlertsController_presentPermanentJunkConver
     }
 
     v23 = [v16 count];
-    v24 = [v15 alertControllerStyle];
+    alertControllerStyle = [v15 alertControllerStyle];
     v25 = v23 - v17;
-    if (v24 == 1)
+    if (alertControllerStyle == 1)
     {
       if (v17)
       {
@@ -1506,8 +1506,8 @@ LABEL_27:
     [v30 addAction:v32];
     [v30 setPreferredAction:v34];
     [(CKConversationConfirmationAlertsController *)self _configureAppearanceForAlertController:v30];
-    v31 = [v15 presentationViewController];
-    [v30 presentFromViewController:v31 animated:1 completion:0];
+    presentationViewController = [v15 presentationViewController];
+    [v30 presentFromViewController:presentationViewController animated:1 completion:0];
 
     goto LABEL_28;
   }
@@ -1549,12 +1549,12 @@ void __92__CKConversationConfirmationAlertsController_presentRecoverDeletedConve
 
 - (void)presentRecoverJunkConversationConfirmations
 {
-  v3 = [(CKConversationConfirmationAlertsController *)self configuration];
-  v4 = [v3 alertControllerStyle];
-  v5 = [v3 targetConversations];
-  if ([v5 count])
+  configuration = [(CKConversationConfirmationAlertsController *)self configuration];
+  alertControllerStyle = [configuration alertControllerStyle];
+  targetConversations = [configuration targetConversations];
+  if ([targetConversations count])
   {
-    v21 = v5;
+    v21 = targetConversations;
     v6 = CKFrameworkBundle();
     v7 = [v6 localizedStringForKey:@"REMOVE_FROM_JUNK" value:&stru_1F04268F8 table:@"ChatKit"];
 
@@ -1562,7 +1562,7 @@ void __92__CKConversationConfirmationAlertsController_presentRecoverDeletedConve
     v24[1] = 3221225472;
     v24[2] = __89__CKConversationConfirmationAlertsController_presentRecoverJunkConversationConfirmations__block_invoke;
     v24[3] = &unk_1E72EBFE8;
-    v8 = v3;
+    v8 = configuration;
     v25 = v8;
     v20 = v7;
     v9 = [CKAlertAction actionWithTitle:v7 style:0 handler:v24];
@@ -1577,21 +1577,21 @@ void __92__CKConversationConfirmationAlertsController_presentRecoverDeletedConve
     v13 = [CKAlertAction actionWithTitle:v11 style:1 handler:v22];
 
     v14 = 0;
-    if (v4)
+    if (alertControllerStyle)
     {
       v15 = 0;
-      if (v4 != 1)
+      if (alertControllerStyle != 1)
       {
 LABEL_11:
-        v18 = [CKAlertController alertControllerWithTitle:v15 message:v14 preferredStyle:v4];
+        v18 = [CKAlertController alertControllerWithTitle:v15 message:v14 preferredStyle:alertControllerStyle];
         [v18 addAction:v9];
         [v18 addAction:v13];
         [v18 setPreferredAction:v9];
         [(CKConversationConfirmationAlertsController *)self _configureAppearanceForAlertController:v18];
-        v19 = [v12 presentationViewController];
-        [v18 presentFromViewController:v19 animated:1 completion:0];
+        presentationViewController = [v12 presentationViewController];
+        [v18 presentFromViewController:presentationViewController animated:1 completion:0];
 
-        v5 = v21;
+        targetConversations = v21;
         goto LABEL_12;
       }
 
@@ -1644,16 +1644,16 @@ void __89__CKConversationConfirmationAlertsController_presentRecoverJunkConversa
   }
 }
 
-- (void)_markConversationsAsSpam:(id)a3
+- (void)_markConversationsAsSpam:(id)spam
 {
   v58 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  spamCopy = spam;
   v4 = objc_opt_new();
   v50 = 0u;
   v51 = 0u;
   v52 = 0u;
   v53 = 0u;
-  obj = v3;
+  obj = spamCopy;
   v5 = [obj countByEnumeratingWithState:&v50 objects:v57 count:16];
   if (v5)
   {
@@ -1668,8 +1668,8 @@ void __89__CKConversationConfirmationAlertsController_presentRecoverJunkConversa
         }
 
         v8 = *(*(&v50 + 1) + 8 * i);
-        v9 = [v8 chat];
-        if (([v9 isBusinessChat] & 1) == 0)
+        chat = [v8 chat];
+        if (([chat isBusinessChat] & 1) == 0)
         {
 
 LABEL_10:
@@ -1677,10 +1677,10 @@ LABEL_10:
           continue;
         }
 
-        v10 = [v8 chat];
-        v11 = [v10 isChatBot];
+        chat2 = [v8 chat];
+        isChatBot = [chat2 isChatBot];
 
-        if (v11)
+        if (isChatBot)
         {
           goto LABEL_10;
         }
@@ -1713,70 +1713,70 @@ LABEL_10:
         }
 
         v14 = *(*(&v46 + 1) + 8 * j);
-        v15 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-        v16 = [v15 isReportJunkEverywhereEnabled];
+        mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+        isReportJunkEverywhereEnabled = [mEMORY[0x1E69A8070] isReportJunkEverywhereEnabled];
 
-        v17 = [v14 chat];
-        v18 = v17;
-        if (v16)
+        chat3 = [v14 chat];
+        v18 = chat3;
+        if (isReportJunkEverywhereEnabled)
         {
-          v19 = [v17 reportJunk];
+          reportJunk = [chat3 reportJunk];
           goto LABEL_35;
         }
 
-        v20 = [v17 _messageToReportJunk];
+        _messageToReportJunk = [chat3 _messageToReportJunk];
 
         v21 = MEMORY[0x1E69A5CA0];
-        v22 = [v20 service];
-        v45 = [v21 serviceWithInternalName:v22];
+        service = [_messageToReportJunk service];
+        v45 = [v21 serviceWithInternalName:service];
 
         v23 = [v45 supportsCapability:*MEMORY[0x1E69A7A20]];
         if (v23)
         {
           v24 = MEMORY[0x1E69A7F70];
-          v42 = [v14 chat];
-          if ([v24 isReportJunkServiceAllowedForMessageItem:v20 junkChatStyle:{objc_msgSend(v42, "chatStyle")}])
+          chat4 = [v14 chat];
+          if ([v24 isReportJunkServiceAllowedForMessageItem:_messageToReportJunk junkChatStyle:{objc_msgSend(chat4, "chatStyle")}])
           {
 
 LABEL_27:
-            v27 = [v14 chat];
-            [v27 reportJunkToCarrierViaRelay:0];
+            chat5 = [v14 chat];
+            [chat5 reportJunkToCarrierViaRelay:0];
 
-            v19 = 1;
+            reportJunk = 1;
             goto LABEL_28;
           }
         }
 
-        v25 = [v14 chat];
-        v26 = [v25 isChatBot];
+        chat6 = [v14 chat];
+        isChatBot2 = [chat6 isChatBot];
 
         if (v23)
         {
 
-          if (v26)
+          if (isChatBot2)
           {
             goto LABEL_27;
           }
         }
 
-        else if (v26)
+        else if (isChatBot2)
         {
           goto LABEL_27;
         }
 
-        v19 = 0;
+        reportJunk = 0;
 LABEL_28:
-        v28 = [v14 chat];
-        v29 = [v28 isChatBot];
+        chat7 = [v14 chat];
+        isChatBot3 = [chat7 isChatBot];
 
-        v30 = [v14 chat];
-        v31 = [v30 lastIncomingFinishedMessage];
-        v32 = [v31 sender];
-        v33 = [v32 service];
-        v34 = [MEMORY[0x1E69A5CA0] rcsService];
-        v35 = v33 == v34;
+        chat8 = [v14 chat];
+        lastIncomingFinishedMessage = [chat8 lastIncomingFinishedMessage];
+        sender = [lastIncomingFinishedMessage sender];
+        service2 = [sender service];
+        rcsService = [MEMORY[0x1E69A5CA0] rcsService];
+        v35 = service2 == rcsService;
 
-        if ((v29 | v35))
+        if ((isChatBot3 | v35))
         {
           if (IMOSLoggingEnabled())
           {
@@ -1784,20 +1784,20 @@ LABEL_28:
             if (os_log_type_enabled(v36, OS_LOG_TYPE_INFO))
             {
               *buf = v39;
-              v55 = v29;
+              v55 = isChatBot3;
               _os_log_impl(&dword_19020E000, v36, OS_LOG_TYPE_INFO, "Starting to report lazuli spam. isBot: %{BOOL}d", buf, 8u);
             }
           }
 
-          v37 = [v14 chat];
-          [v37 reportLazuliSpam:0 isBot:v29];
+          chat9 = [v14 chat];
+          [chat9 reportLazuliSpam:0 isBot:isChatBot3];
         }
 
-        v18 = v20;
+        v18 = _messageToReportJunk;
 LABEL_35:
 
-        v38 = [v14 chat];
-        [v38 markAsSpam:+[CKUtilities messageJunkStatus](CKUtilities isJunkReportedToCarrier:{"messageJunkStatus"), v19}];
+        chat10 = [v14 chat];
+        [chat10 markAsSpam:+[CKUtilities messageJunkStatus](CKUtilities isJunkReportedToCarrier:{"messageJunkStatus"), reportJunk}];
       }
 
       v44 = [v40 countByEnumeratingWithState:&v46 objects:v56 count:16];
@@ -1807,17 +1807,17 @@ LABEL_35:
   }
 }
 
-- (id)_identifySpamConversationsToRemove:(id)a3
+- (id)_identifySpamConversationsToRemove:(id)remove
 {
   v45 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  removeCopy = remove;
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v5 = IMSMSReportSpamExtensionAvailable();
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v6 = v3;
+  v6 = removeCopy;
   v7 = [v6 countByEnumeratingWithState:&v40 objects:v44 count:16];
   if (v7)
   {
@@ -1835,17 +1835,17 @@ LABEL_35:
         }
 
         v11 = *(*(&v40 + 1) + 8 * i);
-        v12 = [v11 chat];
-        if ([v12 isBusinessChat])
+        chat = [v11 chat];
+        if ([chat isBusinessChat])
         {
         }
 
         else
         {
-          v13 = [v11 chat];
-          v14 = [v13 numberOfTimesRespondedToThread];
+          chat2 = [v11 chat];
+          numberOfTimesRespondedToThread = [chat2 numberOfTimesRespondedToThread];
 
-          if (v14 > 2)
+          if (numberOfTimesRespondedToThread > 2)
           {
             continue;
           }
@@ -1853,58 +1853,58 @@ LABEL_35:
 
         if (([v11 isStewieConversation] & 1) == 0)
         {
-          v15 = [v11 chat];
-          v16 = [v15 isStewieSharingChat];
+          chat3 = [v11 chat];
+          isStewieSharingChat = [chat3 isStewieSharingChat];
 
-          if ((v16 & 1) == 0)
+          if ((isStewieSharingChat & 1) == 0)
           {
-            v17 = [v11 chat];
-            v18 = [v17 supportsFilteringExtensions] & v5;
+            chat4 = [v11 chat];
+            v18 = [chat4 supportsFilteringExtensions] & v5;
 
             if ((v18 & 1) == 0)
             {
-              v19 = [v11 chat];
-              v20 = [v19 hasKnownParticipants];
+              chat5 = [v11 chat];
+              hasKnownParticipants = [chat5 hasKnownParticipants];
 
-              if ((v20 & 1) == 0)
+              if ((hasKnownParticipants & 1) == 0)
               {
-                v21 = [v11 chat];
-                v22 = [v21 chatItems];
-                v23 = [v22 messages];
-                v24 = [v23 firstObject];
+                chat6 = [v11 chat];
+                chatItems = [chat6 chatItems];
+                messages = [chatItems messages];
+                firstObject = [messages firstObject];
 
-                v25 = [v11 chat];
-                if ([v25 isMapKitBusinessChat])
+                chat7 = [v11 chat];
+                if ([chat7 isMapKitBusinessChat])
                 {
 
                   v5 = v39;
                   goto LABEL_16;
                 }
 
-                v26 = [v24 isFromMe];
+                isFromMe = [firstObject isFromMe];
 
                 v5 = v39;
-                if ((v26 & 1) == 0)
+                if ((isFromMe & 1) == 0)
                 {
 LABEL_16:
-                  v27 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-                  v28 = [v27 isIntroductionsEnabled];
+                  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+                  isIntroductionsEnabled = [mEMORY[0x1E69A8070] isIntroductionsEnabled];
 
-                  if (!v28 || ([v11 chat], v29 = objc_claimAutoreleasedReturnValue(), v30 = objc_msgSend(v29, "isFiltered"), v29, v30 != 2))
+                  if (!isIntroductionsEnabled || ([v11 chat], v29 = objc_claimAutoreleasedReturnValue(), v30 = objc_msgSend(v29, "isFiltered"), v29, v30 != 2))
                   {
                     if ((IMShouldHandleInternalPhishingAttempts() & 1) == 0)
                     {
-                      v31 = [v11 chat];
-                      v32 = [v31 account];
-                      v33 = [v32 service];
-                      v34 = [MEMORY[0x1E69A5C90] rcsService];
-                      if (v33 == v34)
+                      chat8 = [v11 chat];
+                      account = [chat8 account];
+                      service = [account service];
+                      rcsService = [MEMORY[0x1E69A5C90] rcsService];
+                      if (service == rcsService)
                       {
-                        v37 = [v11 chat];
-                        if ([v37 isChatBot])
+                        chat9 = [v11 chat];
+                        if ([chat9 isChatBot])
                         {
-                          v36 = [v11 chat];
-                          [v36 lastSentMessage];
+                          chat10 = [v11 chat];
+                          [chat10 lastSentMessage];
                         }
                       }
 
@@ -1932,15 +1932,15 @@ LABEL_16:
   return v4;
 }
 
-- (BOOL)_hasChatSharingLocationInConversations:(id)a3
+- (BOOL)_hasChatSharingLocationInConversations:(id)conversations
 {
   v15 = *MEMORY[0x1E69E9840];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  conversationsCopy = conversations;
+  v4 = [conversationsCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = *v11;
@@ -1950,20 +1950,20 @@ LABEL_16:
       {
         if (*v11 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(conversationsCopy);
         }
 
-        v7 = [*(*(&v10 + 1) + 8 * i) chat];
-        v8 = [v7 hasRecipientsFollowingLocation];
+        chat = [*(*(&v10 + 1) + 8 * i) chat];
+        hasRecipientsFollowingLocation = [chat hasRecipientsFollowingLocation];
 
-        if (v8)
+        if (hasRecipientsFollowingLocation)
         {
           LOBYTE(v4) = 1;
           goto LABEL_11;
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v4 = [conversationsCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v4)
       {
         continue;
@@ -1978,33 +1978,33 @@ LABEL_11:
   return v4;
 }
 
-- (id)_deleteAndBlockActionWithConfirmedBlock:(id)a3
+- (id)_deleteAndBlockActionWithConfirmedBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(CKConversationConfirmationAlertsController *)self configuration];
-  v6 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v7 = [v6 isIntroductionsEnabled];
+  blockCopy = block;
+  configuration = [(CKConversationConfirmationAlertsController *)self configuration];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isIntroductionsEnabled = [mEMORY[0x1E69A8070] isIntroductionsEnabled];
 
-  if (!v7)
+  if (!isIntroductionsEnabled)
   {
     goto LABEL_7;
   }
 
-  v8 = [v5 targetConversations];
-  v9 = [v8 count];
+  targetConversations = [configuration targetConversations];
+  v9 = [targetConversations count];
 
   if (v9 > 1)
   {
     goto LABEL_7;
   }
 
-  v10 = [v5 targetConversations];
-  v11 = [v10 firstObject];
+  targetConversations2 = [configuration targetConversations];
+  firstObject = [targetConversations2 firstObject];
 
-  v12 = [v11 chat];
-  v13 = [v12 allParticipantsAreContacts];
+  chat = [firstObject chat];
+  allParticipantsAreContacts = [chat allParticipantsAreContacts];
 
-  if (!v13 || ([v11 isGroupConversation] & 1) != 0 || (objc_msgSend(v11, "chat"), v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "allParticipantsBlocked"), v14, v15))
+  if (!allParticipantsAreContacts || ([firstObject isGroupConversation] & 1) != 0 || (objc_msgSend(firstObject, "chat"), v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "allParticipantsBlocked"), v14, v15))
   {
 
 LABEL_7:
@@ -2019,11 +2019,11 @@ LABEL_7:
   v22[1] = 3221225472;
   v22[2] = __86__CKConversationConfirmationAlertsController__deleteAndBlockActionWithConfirmedBlock___block_invoke;
   v22[3] = &unk_1E72EDA18;
-  v23 = v11;
-  v24 = self;
-  v25 = v5;
-  v26 = v4;
-  v21 = v11;
+  v23 = firstObject;
+  selfCopy = self;
+  v25 = configuration;
+  v26 = blockCopy;
+  v21 = firstObject;
   v16 = [CKAlertAction actionWithTitle:v20 style:v18 handler:v22];
 
 LABEL_8:
@@ -2140,15 +2140,15 @@ uint64_t __86__CKConversationConfirmationAlertsController__deleteAndBlockActionW
   return result;
 }
 
-- (unint64_t)_numberOfRecoverableMessagesInConversations:(id)a3
+- (unint64_t)_numberOfRecoverableMessagesInConversations:(id)conversations
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  conversationsCopy = conversations;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v4 = [conversationsCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -2160,14 +2160,14 @@ uint64_t __86__CKConversationConfirmationAlertsController__deleteAndBlockActionW
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(conversationsCopy);
         }
 
-        v9 = [*(*(&v11 + 1) + 8 * i) chat];
-        v6 += [v9 recoverableMessagesCount];
+        chat = [*(*(&v11 + 1) + 8 * i) chat];
+        v6 += [chat recoverableMessagesCount];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [conversationsCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v5);
@@ -2181,7 +2181,7 @@ uint64_t __86__CKConversationConfirmationAlertsController__deleteAndBlockActionW
   return v6;
 }
 
-- (id)_moveToRecentlyDeletedAlertTitleForConversationsCount:(unint64_t)a3
+- (id)_moveToRecentlyDeletedAlertTitleForConversationsCount:(unint64_t)count
 {
   if ([(CKConversationConfirmationAlertsController *)self _isStoredOnIcloud])
   {
@@ -2194,12 +2194,12 @@ uint64_t __86__CKConversationConfirmationAlertsController__deleteAndBlockActionW
     v6 = MEMORY[0x1E696AEC0];
     v7 = CKFrameworkBundle();
     v8 = [v7 localizedStringForKey:@"DELETE_CONVERSATION" value:&stru_1F04268F8 table:@"ChatKit"];
-    v4 = [v6 localizedStringWithFormat:v8, a3];
+    v4 = [v6 localizedStringWithFormat:v8, count];
 
-    v9 = [MEMORY[0x1E69DC668] sharedApplication];
-    v10 = [v9 userInterfaceLayoutDirection];
+    mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+    userInterfaceLayoutDirection = [mEMORY[0x1E69DC668] userInterfaceLayoutDirection];
 
-    if (v10 == 1)
+    if (userInterfaceLayoutDirection == 1)
     {
       v11 = @"\u200F";
     }
@@ -2217,16 +2217,16 @@ uint64_t __86__CKConversationConfirmationAlertsController__deleteAndBlockActionW
   return v12;
 }
 
-- (id)_conversationDeletionAlertMessageForConversations:(id)a3
+- (id)_conversationDeletionAlertMessageForConversations:(id)conversations
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(CKConversationConfirmationAlertsController *)self configuration];
+  conversationsCopy = conversations;
+  configuration = [(CKConversationConfirmationAlertsController *)self configuration];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v6 = v4;
+  v6 = conversationsCopy;
   v7 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v7)
   {
@@ -2291,10 +2291,10 @@ LABEL_11:
 
   else
   {
-    v15 = [v5 alertControllerStyle];
+    alertControllerStyle = [configuration alertControllerStyle];
     v16 = [v6 count];
     v13 = CKFrameworkBundle();
-    if (v15 == 1)
+    if (alertControllerStyle == 1)
     {
       if (v16 == 1)
       {
@@ -2349,10 +2349,10 @@ LABEL_11:
   return v17;
 }
 
-- (id)_moveToRecentlyDeletedAlertTitleForMessagesCount:(unint64_t)a3
+- (id)_moveToRecentlyDeletedAlertTitleForMessagesCount:(unint64_t)count
 {
-  v5 = [(CKConversationConfirmationAlertsController *)self configuration];
-  if ([v5 alertControllerStyle])
+  configuration = [(CKConversationConfirmationAlertsController *)self configuration];
+  if ([configuration alertControllerStyle])
   {
     if ([(CKConversationConfirmationAlertsController *)self _isStoredOnIcloud])
     {
@@ -2365,12 +2365,12 @@ LABEL_11:
       v9 = MEMORY[0x1E696AEC0];
       v10 = CKFrameworkBundle();
       v11 = [v10 localizedStringForKey:@"DELETE_MESSAGES" value:&stru_1F04268F8 table:@"ChatKit"];
-      v6 = [v9 localizedStringWithFormat:v11, a3];
+      v6 = [v9 localizedStringWithFormat:v11, count];
 
-      v12 = [MEMORY[0x1E69DC668] sharedApplication];
-      v13 = [v12 userInterfaceLayoutDirection];
+      mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+      userInterfaceLayoutDirection = [mEMORY[0x1E69DC668] userInterfaceLayoutDirection];
 
-      if (v13 == 1)
+      if (userInterfaceLayoutDirection == 1)
       {
         v14 = @"\u200F";
       }
@@ -2394,12 +2394,12 @@ LABEL_11:
   return v8;
 }
 
-- (id)_moveToRecentlyDeletedAlertMessageForMessagesCount:(unint64_t)a3
+- (id)_moveToRecentlyDeletedAlertMessageForMessagesCount:(unint64_t)count
 {
   if ([(CKConversationConfirmationAlertsController *)self _isStoredOnIcloud])
   {
     v4 = CKFrameworkBundle();
-    if (a3 > 1)
+    if (count > 1)
     {
       v5 = @"BATCH_DELETE_INDIVIDUAL_MESSAGE_ON_ICLOUD";
     }
@@ -2419,7 +2419,7 @@ LABEL_11:
     }
 
     v4 = CKFrameworkBundle();
-    if (a3 > 1)
+    if (count > 1)
     {
       v5 = @"DELETE_MULTIPLE_MESSAGES";
     }
@@ -2437,13 +2437,13 @@ LABEL_11:
   return v6;
 }
 
-- (id)_permanentDeletionAlertTitleForCount:(unint64_t)a3
+- (id)_permanentDeletionAlertTitleForCount:(unint64_t)count
 {
-  v5 = [(CKConversationConfirmationAlertsController *)self configuration];
-  if ([v5 alertControllerStyle] == 1)
+  configuration = [(CKConversationConfirmationAlertsController *)self configuration];
+  if ([configuration alertControllerStyle] == 1)
   {
     v6 = CKFrameworkBundle();
-    if (a3 > 1)
+    if (count > 1)
     {
       v7 = @"RECENTLY_DELETED_PLURAL_PERMANENT_DELETION_ALERT_TITLE";
     }
@@ -2456,11 +2456,11 @@ LABEL_11:
 
   else
   {
-    v8 = [(CKConversationConfirmationAlertsController *)self _isStoredOnIcloud];
+    _isStoredOnIcloud = [(CKConversationConfirmationAlertsController *)self _isStoredOnIcloud];
     v6 = CKFrameworkBundle();
-    if (v8)
+    if (_isStoredOnIcloud)
     {
-      if (a3 > 1)
+      if (count > 1)
       {
         v7 = @"RECENTLY_DELETED_PLURAL_PERMANENT_DELETION_ICLOUD_MESSAGE";
       }
@@ -2471,7 +2471,7 @@ LABEL_11:
       }
     }
 
-    else if (a3 > 1)
+    else if (count > 1)
     {
       v7 = @"RECENTLY_DELETED_PLURAL_PERMANENT_DELETION_TITLE";
     }
@@ -2487,13 +2487,13 @@ LABEL_11:
   return v9;
 }
 
-- (id)_permanentJunkDeletionAlertTitleForCount:(unint64_t)a3
+- (id)_permanentJunkDeletionAlertTitleForCount:(unint64_t)count
 {
-  v5 = [(CKConversationConfirmationAlertsController *)self configuration];
-  if ([v5 alertControllerStyle] == 1)
+  configuration = [(CKConversationConfirmationAlertsController *)self configuration];
+  if ([configuration alertControllerStyle] == 1)
   {
     v6 = CKFrameworkBundle();
-    if (a3 > 1)
+    if (count > 1)
     {
       v7 = @"PERMANENT_PLURAL_CONVERSATION_DELETION_CONFIRMATION";
     }
@@ -2506,11 +2506,11 @@ LABEL_11:
 
   else
   {
-    v8 = [(CKConversationConfirmationAlertsController *)self _isStoredOnIcloud];
+    _isStoredOnIcloud = [(CKConversationConfirmationAlertsController *)self _isStoredOnIcloud];
     v6 = CKFrameworkBundle();
-    if (v8)
+    if (_isStoredOnIcloud)
     {
-      if (a3 > 1)
+      if (count > 1)
       {
         v7 = @"DELETE_PLURAL_WARNING_ON_ICLOUD";
       }
@@ -2521,7 +2521,7 @@ LABEL_11:
       }
     }
 
-    else if (a3 > 1)
+    else if (count > 1)
     {
       v7 = @"PERMANENT_PLURAL_CONVERSATION_DELETION_WARNING";
     }
@@ -2537,24 +2537,24 @@ LABEL_11:
   return v9;
 }
 
-- (id)_permanentDeletionAlertMessageForCount:(unint64_t)a3
+- (id)_permanentDeletionAlertMessageForCount:(unint64_t)count
 {
-  v4 = [(CKConversationConfirmationAlertsController *)self _isStoredOnIcloud];
+  _isStoredOnIcloud = [(CKConversationConfirmationAlertsController *)self _isStoredOnIcloud];
   v5 = CKFrameworkBundle();
   v6 = v5;
   v7 = @"RECENTLY_DELETED_PLURAL_PERMANENT_DELETION_ICLOUD_MESSAGE";
-  if (a3 < 2)
+  if (count < 2)
   {
     v7 = @"RECENTLY_DELETED_SINGULAR_PERMANENT_DELETION_ICLOUD_MESSAGE";
   }
 
   v8 = @"RECENTLY_DELETED_SINGULAR_PERMANENT_DELETION_MESSAGE";
-  if (a3 >= 2)
+  if (count >= 2)
   {
     v8 = @"RECENTLY_DELETED_PLURAL_PERMANENT_DELETION_MESSAGE";
   }
 
-  if (v4)
+  if (_isStoredOnIcloud)
   {
     v9 = v7;
   }
@@ -2569,11 +2569,11 @@ LABEL_11:
   return v10;
 }
 
-- (id)_recoveryAlertTitleForMessagesCount:(unint64_t)a3
+- (id)_recoveryAlertTitleForMessagesCount:(unint64_t)count
 {
   v4 = CKFrameworkBundle();
   v5 = v4;
-  if (a3 <= 1)
+  if (count <= 1)
   {
     v6 = @"RECENTLY_DELETED_SINGULAR_RECOVERY_TITLE";
   }
@@ -2588,19 +2588,19 @@ LABEL_11:
   return v7;
 }
 
-- (id)_recoveryAlertTitleForBlockedConversationsCount:(unint64_t)a3 allowedConversationsCount:(unint64_t)a4
+- (id)_recoveryAlertTitleForBlockedConversationsCount:(unint64_t)count allowedConversationsCount:(unint64_t)conversationsCount
 {
-  if (a4)
+  if (conversationsCount)
   {
     v6 = MEMORY[0x1E696AEC0];
     v7 = CKFrameworkBundle();
     v8 = [v7 localizedStringForKey:@"RECENTLY_DELETED_RECOVER_BLOCKED_CONVERSATIONS_CATALYST" value:&stru_1F04268F8 table:@"ChatKit"];
-    v9 = [v6 localizedStringWithFormat:v8, a3, a4];
+    conversationsCount = [v6 localizedStringWithFormat:v8, count, conversationsCount];
 
-    v10 = [MEMORY[0x1E69DC668] sharedApplication];
-    v11 = [v10 userInterfaceLayoutDirection];
+    mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+    userInterfaceLayoutDirection = [mEMORY[0x1E69DC668] userInterfaceLayoutDirection];
 
-    if (v11 == 1)
+    if (userInterfaceLayoutDirection == 1)
     {
       v12 = @"\u200F";
     }
@@ -2610,14 +2610,14 @@ LABEL_11:
       v12 = @"\u200E";
     }
 
-    v13 = [(__CFString *)v12 stringByAppendingString:v9];
+    v13 = [(__CFString *)v12 stringByAppendingString:conversationsCount];
   }
 
   else
   {
     v14 = CKFrameworkBundle();
-    v9 = v14;
-    if (a3 < 2)
+    conversationsCount = v14;
+    if (count < 2)
     {
       v15 = @"RECENTLY_DELETED_RECOVER_BLOCKED_CONVERSATIONS_SINGLE_CATALYST";
     }
@@ -2635,11 +2635,11 @@ LABEL_11:
   return v16;
 }
 
-- (id)_recoveryAlertMessageForMessagesCount:(unint64_t)a3
+- (id)_recoveryAlertMessageForMessagesCount:(unint64_t)count
 {
   v4 = CKFrameworkBundle();
   v5 = v4;
-  if (a3 <= 1)
+  if (count <= 1)
   {
     v6 = @"RECENTLY_DELETED_SINGULAR_RECOVERY_MESSAGE";
   }
@@ -2654,19 +2654,19 @@ LABEL_11:
   return v7;
 }
 
-- (id)_recoveryAlertMessageForBlockedConversationsCount:(unint64_t)a3 allowedConversationsCount:(unint64_t)a4
+- (id)_recoveryAlertMessageForBlockedConversationsCount:(unint64_t)count allowedConversationsCount:(unint64_t)conversationsCount
 {
-  if (a3 && a4)
+  if (count && conversationsCount)
   {
     v6 = MEMORY[0x1E696AEC0];
     v7 = CKFrameworkBundle();
     v8 = [v7 localizedStringForKey:@"RECENTLY_DELETED_RECOVER_BLOCKED_CONVERSATIONS" value:&stru_1F04268F8 table:@"ChatKit"];
-    v9 = [v6 localizedStringWithFormat:v8, a3, a4];
+    conversationsCount = [v6 localizedStringWithFormat:v8, count, conversationsCount];
 
-    v10 = [MEMORY[0x1E69DC668] sharedApplication];
-    v11 = [v10 userInterfaceLayoutDirection];
+    mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+    userInterfaceLayoutDirection = [mEMORY[0x1E69DC668] userInterfaceLayoutDirection];
 
-    if (v11 == 1)
+    if (userInterfaceLayoutDirection == 1)
     {
       v12 = @"\u200F";
     }
@@ -2676,28 +2676,28 @@ LABEL_11:
       v12 = @"\u200E";
     }
 
-    v13 = [(__CFString *)v12 stringByAppendingString:v9];
+    v13 = [(__CFString *)v12 stringByAppendingString:conversationsCount];
   }
 
   else
   {
-    if (!a3)
+    if (!count)
     {
       v16 = 0;
       goto LABEL_14;
     }
 
-    if (a3 == 1)
+    if (count == 1)
     {
       v14 = CKFrameworkBundle();
-      v9 = v14;
+      conversationsCount = v14;
       v15 = @"RECENTLY_DELETED_RECOVER_BLOCKED_CONVERSATION_SINGLE";
     }
 
     else
     {
       v14 = CKFrameworkBundle();
-      v9 = v14;
+      conversationsCount = v14;
       v15 = @"RECENTLY_DELETED_RECOVER_BLOCKED_CONVERSATIONS_MULTIPLE";
     }
 
@@ -2711,11 +2711,11 @@ LABEL_14:
   return v16;
 }
 
-- (id)_junkRecoveryAlertTitleForCount:(unint64_t)a3
+- (id)_junkRecoveryAlertTitleForCount:(unint64_t)count
 {
   v4 = CKFrameworkBundle();
   v5 = v4;
-  if (a3 <= 1)
+  if (count <= 1)
   {
     v6 = @"ARE_YOU_SURE_WANT_TO_REMOVE_THIS_CONVERSATION_FROM_JUNK";
   }
@@ -2730,11 +2730,11 @@ LABEL_14:
   return v7;
 }
 
-- (id)_junkRecoveryAlertMessageForCount:(unint64_t)a3
+- (id)_junkRecoveryAlertMessageForCount:(unint64_t)count
 {
   v4 = CKFrameworkBundle();
   v5 = v4;
-  if (a3 <= 1)
+  if (count <= 1)
   {
     v6 = @"THIS_CONVERSATION_WILL_BE_REMOVED_FROM_JUNK";
   }
@@ -2749,15 +2749,15 @@ LABEL_14:
   return v7;
 }
 
-- (id)_identifyBusinessConversationToRemove:(id)a3
+- (id)_identifyBusinessConversationToRemove:(id)remove
 {
-  v3 = a3;
-  if ([v3 count] == 1)
+  removeCopy = remove;
+  if ([removeCopy count] == 1)
   {
-    v4 = [v3 firstObject];
-    if ([v4 isMapKitBusinessConversation] && (objc_msgSend(v4, "isMakoConversation") & 1) == 0)
+    firstObject = [removeCopy firstObject];
+    if ([firstObject isMapKitBusinessConversation] && (objc_msgSend(firstObject, "isMakoConversation") & 1) == 0)
     {
-      v5 = v4;
+      v5 = firstObject;
     }
 
     else
@@ -2774,22 +2774,22 @@ LABEL_14:
   return v5;
 }
 
-- (BOOL)_shouldConfirmStopSharingLocationForConversations:(id)a3
+- (BOOL)_shouldConfirmStopSharingLocationForConversations:(id)conversations
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E69A5B70] sharedInstance];
-  if ([v5 restrictLocationSharing])
+  conversationsCopy = conversations;
+  mEMORY[0x1E69A5B70] = [MEMORY[0x1E69A5B70] sharedInstance];
+  if ([mEMORY[0x1E69A5B70] restrictLocationSharing])
   {
   }
 
   else
   {
-    v6 = [MEMORY[0x1E69A5B70] sharedInstance];
-    v7 = [v6 disableLocationSharing];
+    mEMORY[0x1E69A5B70]2 = [MEMORY[0x1E69A5B70] sharedInstance];
+    disableLocationSharing = [mEMORY[0x1E69A5B70]2 disableLocationSharing];
 
-    if ((v7 & 1) == 0)
+    if ((disableLocationSharing & 1) == 0)
     {
-      v8 = [(CKConversationConfirmationAlertsController *)self _hasChatSharingLocationInConversations:v4];
+      v8 = [(CKConversationConfirmationAlertsController *)self _hasChatSharingLocationInConversations:conversationsCopy];
       goto LABEL_6;
     }
   }
@@ -2800,40 +2800,40 @@ LABEL_6:
   return v8;
 }
 
-- (void)_configureAppearanceForAlertController:(id)a3
+- (void)_configureAppearanceForAlertController:(id)controller
 {
-  v10 = a3;
+  controllerCopy = controller;
   if (CKIsRunningInMacCatalyst())
   {
-    [v10 setWantsWindowedPresentation:1];
-    [v10 setShouldHidePresentingWindow:1];
+    [controllerCopy setWantsWindowedPresentation:1];
+    [controllerCopy setShouldHidePresentingWindow:1];
   }
 
-  v4 = [(CKConversationConfirmationAlertsController *)self configuration];
-  v5 = [v4 sourceView];
-  v6 = [v10 popoverPresentationController];
-  [v6 setSourceView:v5];
+  configuration = [(CKConversationConfirmationAlertsController *)self configuration];
+  sourceView = [configuration sourceView];
+  popoverPresentationController = [controllerCopy popoverPresentationController];
+  [popoverPresentationController setSourceView:sourceView];
 
-  v7 = [(CKConversationConfirmationAlertsController *)self configuration];
-  v8 = [v7 sourceItem];
-  v9 = [v10 popoverPresentationController];
-  [v9 setSourceItem:v8];
+  configuration2 = [(CKConversationConfirmationAlertsController *)self configuration];
+  sourceItem = [configuration2 sourceItem];
+  popoverPresentationController2 = [controllerCopy popoverPresentationController];
+  [popoverPresentationController2 setSourceItem:sourceItem];
 }
 
 - (BOOL)_isStoredOnIcloud
 {
-  v2 = [MEMORY[0x1E69A5B20] sharedInstance];
-  v3 = [v2 isEnabled];
+  mEMORY[0x1E69A5B20] = [MEMORY[0x1E69A5B20] sharedInstance];
+  isEnabled = [mEMORY[0x1E69A5B20] isEnabled];
 
-  return v3;
+  return isEnabled;
 }
 
-- (void)_trackEvent:(int64_t)a3 forConversations:(id)a4
+- (void)_trackEvent:(int64_t)event forConversations:(id)conversations
 {
   v27 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (event)
   {
-    if (a3 != 1)
+    if (event != 1)
     {
       return;
     }
@@ -2852,8 +2852,8 @@ LABEL_6:
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v6 = [(CKConversationConfirmationAlertsController *)self junkConversations];
-  v7 = [v6 countByEnumeratingWithState:&v20 objects:v26 count:16];
+  junkConversations = [(CKConversationConfirmationAlertsController *)self junkConversations];
+  v7 = [junkConversations countByEnumeratingWithState:&v20 objects:v26 count:16];
   if (v7)
   {
     v8 = v7;
@@ -2864,21 +2864,21 @@ LABEL_6:
       {
         if (*v21 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(junkConversations);
         }
 
         v11 = *(*(&v20 + 1) + 8 * i);
-        v12 = [v11 chat];
-        v13 = [v12 isFiltered];
+        chat = [v11 chat];
+        isFiltered = [chat isFiltered];
 
-        if (v13 == 2)
+        if (isFiltered == 2)
         {
-          v14 = [v11 chat];
-          v15 = [v14 isSMS];
+          chat2 = [v11 chat];
+          isSMS = [chat2 isSMS];
 
-          v16 = [MEMORY[0x1E69A8168] sharedInstance];
-          v17 = v16;
-          if (v15)
+          mEMORY[0x1E69A8168] = [MEMORY[0x1E69A8168] sharedInstance];
+          v17 = mEMORY[0x1E69A8168];
+          if (isSMS)
           {
             v24 = &unk_1F04E7E00;
             v18 = [MEMORY[0x1E696AD98] numberWithBool:IMIsOscarEnabled()];
@@ -2889,12 +2889,12 @@ LABEL_6:
 
           else
           {
-            [v16 trackiMessageJunkEvent:v4];
+            [mEMORY[0x1E69A8168] trackiMessageJunkEvent:v4];
           }
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v20 objects:v26 count:16];
+      v8 = [junkConversations countByEnumeratingWithState:&v20 objects:v26 count:16];
     }
 
     while (v8);
@@ -2904,17 +2904,17 @@ LABEL_6:
 - (void)_generateSafetyCheckController
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v3 = [(CKConversationConfirmationAlertsController *)self configuration];
-  v4 = [v3 targetConversations];
-  v5 = [v4 firstObject];
+  configuration = [(CKConversationConfirmationAlertsController *)self configuration];
+  targetConversations = [configuration targetConversations];
+  firstObject = [targetConversations firstObject];
 
-  v6 = [v5 recipient];
-  v7 = v6;
-  if (v6)
+  recipient = [firstObject recipient];
+  v7 = recipient;
+  if (recipient)
   {
-    v8 = [v6 cnContact];
+    cnContact = [recipient cnContact];
     v9 = [CKSafetyCheckHelper alloc];
-    v12[0] = v8;
+    v12[0] = cnContact;
     v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:1];
     v11 = [(CKSafetyCheckHelper *)v9 initWithContacts:v10];
     [(CKConversationConfirmationAlertsController *)self setSafetyCheckHelper:v11];

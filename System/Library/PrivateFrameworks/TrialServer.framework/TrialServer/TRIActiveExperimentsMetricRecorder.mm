@@ -1,36 +1,36 @@
 @interface TRIActiveExperimentsMetricRecorder
-- (TRIActiveExperimentsMetricRecorder)initWithExperimentCountProvider:(id)a3 client:(id)a4;
-- (TRIActiveExperimentsMetricRecorder)initWithServerContext:(id)a3;
+- (TRIActiveExperimentsMetricRecorder)initWithExperimentCountProvider:(id)provider client:(id)client;
+- (TRIActiveExperimentsMetricRecorder)initWithServerContext:(id)context;
 - (id)loggableMetrics;
 - (void)recordMetric;
 @end
 
 @implementation TRIActiveExperimentsMetricRecorder
 
-- (TRIActiveExperimentsMetricRecorder)initWithExperimentCountProvider:(id)a3 client:(id)a4
+- (TRIActiveExperimentsMetricRecorder)initWithExperimentCountProvider:(id)provider client:(id)client
 {
-  v7 = a3;
-  v8 = a4;
+  providerCopy = provider;
+  clientCopy = client;
   v12.receiver = self;
   v12.super_class = TRIActiveExperimentsMetricRecorder;
   v9 = [(TRIActiveExperimentsMetricRecorder *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_experimentCountProvider, a3);
-    objc_storeStrong(&v10->_client, a4);
+    objc_storeStrong(&v9->_experimentCountProvider, provider);
+    objc_storeStrong(&v10->_client, client);
   }
 
   return v10;
 }
 
-- (TRIActiveExperimentsMetricRecorder)initWithServerContext:(id)a3
+- (TRIActiveExperimentsMetricRecorder)initWithServerContext:(id)context
 {
-  v4 = a3;
-  v5 = [v4 experimentDatabase];
-  v6 = [v4 client];
+  contextCopy = context;
+  experimentDatabase = [contextCopy experimentDatabase];
+  client = [contextCopy client];
 
-  v7 = [(TRIActiveExperimentsMetricRecorder *)self initWithExperimentCountProvider:v5 client:v6];
+  v7 = [(TRIActiveExperimentsMetricRecorder *)self initWithExperimentCountProvider:experimentDatabase client:client];
   return v7;
 }
 
@@ -82,14 +82,14 @@ uint64_t __53__TRIActiveExperimentsMetricRecorder_loggableMetrics__block_invoke(
 
 - (void)recordMetric
 {
-  v7 = [(TRIActiveExperimentsMetricRecorder *)self loggableMetrics];
-  if ([v7 count])
+  loggableMetrics = [(TRIActiveExperimentsMetricRecorder *)self loggableMetrics];
+  if ([loggableMetrics count])
   {
-    v3 = [(TRIActiveExperimentsMetricRecorder *)self client];
-    v4 = [v3 logger];
-    v5 = [(TRIActiveExperimentsMetricRecorder *)self client];
-    v6 = [v5 trackingId];
-    [v4 logWithTrackingId:v6 metrics:v7 dimensions:0 trialSystemTelemetry:0];
+    client = [(TRIActiveExperimentsMetricRecorder *)self client];
+    logger = [client logger];
+    client2 = [(TRIActiveExperimentsMetricRecorder *)self client];
+    trackingId = [client2 trackingId];
+    [logger logWithTrackingId:trackingId metrics:loggableMetrics dimensions:0 trialSystemTelemetry:0];
   }
 }
 

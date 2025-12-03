@@ -1,64 +1,64 @@
 @interface SSVCookieStorage
-+ (BOOL)_bindStatement:(sqlite3_stmt *)a3 withValues:(id)a4;
-+ (BOOL)_currentProcessShouldUseRescuedStorageLocationForLocation:(id)a3;
-+ (BOOL)_fileIsOwnedByRoot:(id)a3;
-+ (BOOL)_fileURLRepresentsSharedStorageLocation:(id)a3;
-+ (BOOL)_migrateToVersion2WithDatabase:(id)a3;
-+ (BOOL)_setupCookieDatabase:(id)a3 forCookieStorage:(id)a4;
-+ (BOOL)responseHasSetCookies:(id)a3;
-+ (id)_getGlobalSetCookiesForResponse:(id)a3;
-+ (id)_getSetCookiesForResponse:(id)a3;
-+ (id)_getUserSetCookiesForResponse:(id)a3;
-+ (id)_rescuedStorageLocationForLocation:(id)a3;
++ (BOOL)_bindStatement:(sqlite3_stmt *)statement withValues:(id)values;
++ (BOOL)_currentProcessShouldUseRescuedStorageLocationForLocation:(id)location;
++ (BOOL)_fileIsOwnedByRoot:(id)root;
++ (BOOL)_fileURLRepresentsSharedStorageLocation:(id)location;
++ (BOOL)_migrateToVersion2WithDatabase:(id)database;
++ (BOOL)_setupCookieDatabase:(id)database forCookieStorage:(id)storage;
++ (BOOL)responseHasSetCookies:(id)cookies;
++ (id)_getGlobalSetCookiesForResponse:(id)response;
++ (id)_getSetCookiesForResponse:(id)response;
++ (id)_getUserSetCookiesForResponse:(id)response;
++ (id)_rescuedStorageLocationForLocation:(id)location;
 + (id)_sharedStorageLocationPath;
 + (id)sharedStorage;
-- (BOOL)_shouldAddITFECookieToURL:(id)a3;
+- (BOOL)_shouldAddITFECookieToURL:(id)l;
 - (SSSQLiteDatabase)_database;
-- (SSVCookieStorage)initWithStorageLocation:(id)a3;
-- (id)_accountForKey:(id)a3;
+- (SSVCookieStorage)initWithStorageLocation:(id)location;
+- (id)_accountForKey:(id)key;
 - (id)_allCookieKeys;
-- (id)_columnNameForCookieProperty:(id)a3;
-- (id)_copyCookieDictionaryForURL:(id)a3 key:(id)a4;
-- (id)_copyCookieObjectsForURL:(id)a3 key:(id)a4;
-- (id)_copyCookiesForPreparedSQLStatement:(sqlite3_stmt *)a3;
-- (id)_copyCookiesWithKey:(id)a3;
-- (id)_copyPrivateCookieObjectsForURL:(id)a3 key:(id)a4;
-- (id)_copyPrivateCookiesForURL:(id)a3 key:(id)a4;
-- (id)_filterCookies:(id)a3 forURL:(id)a4;
-- (id)allCookiesForAccount:(id)a3;
-- (id)allCookiesForUserIdentifier:(id)a3 scope:(int64_t)a4;
-- (id)cookieArrayBySettingFeatureEnablerWithArray:(id)a3 key:(id)a4;
-- (id)cookieHeadersForURL:(id)a3 account:(id)a4;
-- (id)cookieHeadersForURL:(id)a3 userIdentifier:(id)a4 scope:(int64_t)a5;
-- (id)cookiesForURL:(id)a3 account:(id)a4;
-- (id)cookiesForURL:(id)a3 userIdentifier:(id)a4 scope:(int64_t)a5;
+- (id)_columnNameForCookieProperty:(id)property;
+- (id)_copyCookieDictionaryForURL:(id)l key:(id)key;
+- (id)_copyCookieObjectsForURL:(id)l key:(id)key;
+- (id)_copyCookiesForPreparedSQLStatement:(sqlite3_stmt *)statement;
+- (id)_copyCookiesWithKey:(id)key;
+- (id)_copyPrivateCookieObjectsForURL:(id)l key:(id)key;
+- (id)_copyPrivateCookiesForURL:(id)l key:(id)key;
+- (id)_filterCookies:(id)cookies forURL:(id)l;
+- (id)allCookiesForAccount:(id)account;
+- (id)allCookiesForUserIdentifier:(id)identifier scope:(int64_t)scope;
+- (id)cookieArrayBySettingFeatureEnablerWithArray:(id)array key:(id)key;
+- (id)cookieHeadersForURL:(id)l account:(id)account;
+- (id)cookieHeadersForURL:(id)l userIdentifier:(id)identifier scope:(int64_t)scope;
+- (id)cookiesForURL:(id)l account:(id)account;
+- (id)cookiesForURL:(id)l userIdentifier:(id)identifier scope:(int64_t)scope;
 - (id)fetchDefaults;
-- (void)_bindInsertStatement:(sqlite3_stmt *)a3 forCookie:(id)a4 key:(id)a5;
+- (void)_bindInsertStatement:(sqlite3_stmt *)statement forCookie:(id)cookie key:(id)key;
 - (void)_cookieDatabaseDidChange;
 - (void)_handleSharedCookieDatabaseDidChangeDarwinNotification;
-- (void)_insertCookies:(id)a3 forKey:(id)a4;
-- (void)_setCookies:(id)a3 forKey:(id)a4;
+- (void)_insertCookies:(id)cookies forKey:(id)key;
+- (void)_setCookies:(id)cookies forKey:(id)key;
 - (void)dealloc;
 - (void)removeAllCookies;
-- (void)removeCookiesWithAccount:(id)a3;
-- (void)removeCookiesWithProperties:(id)a3;
-- (void)removeCookiesWithUserIdentifier:(id)a3 scope:(int64_t)a4;
-- (void)setCookies:(id)a3 forAccount:(id)a4;
-- (void)setCookies:(id)a3 forUserIdentifier:(id)a4;
-- (void)setCookiesForHTTPResponse:(id)a3 account:(id)a4;
-- (void)setCookiesForHTTPResponse:(id)a3 userIdentifier:(id)a4 scope:(int64_t)a5;
-- (void)setCookiesFromCookieStorage:(id)a3;
-- (void)setFeatureEnablerInDictionary:(id)a3 key:(id)a4;
-- (void)synchronizeFeatureEnablerCookieWithCookieValue:(id)a3 key:(id)a4 result:(id)a5;
+- (void)removeCookiesWithAccount:(id)account;
+- (void)removeCookiesWithProperties:(id)properties;
+- (void)removeCookiesWithUserIdentifier:(id)identifier scope:(int64_t)scope;
+- (void)setCookies:(id)cookies forAccount:(id)account;
+- (void)setCookies:(id)cookies forUserIdentifier:(id)identifier;
+- (void)setCookiesForHTTPResponse:(id)response account:(id)account;
+- (void)setCookiesForHTTPResponse:(id)response userIdentifier:(id)identifier scope:(int64_t)scope;
+- (void)setCookiesFromCookieStorage:(id)storage;
+- (void)setFeatureEnablerInDictionary:(id)dictionary key:(id)key;
+- (void)synchronizeFeatureEnablerCookieWithCookieValue:(id)value key:(id)key result:(id)result;
 @end
 
 @implementation SSVCookieStorage
 
-- (SSVCookieStorage)initWithStorageLocation:(id)a3
+- (SSVCookieStorage)initWithStorageLocation:(id)location
 {
   v46 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (([v4 isFileURL] & 1) == 0)
+  locationCopy = location;
+  if (([locationCopy isFileURL] & 1) == 0)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"Storage location must be a file URL"];
   }
@@ -68,28 +68,28 @@
   v5 = [(SSVCookieStorage *)&v43 init];
   if (!v5)
   {
-    v6 = v4;
+    v6 = locationCopy;
     goto LABEL_33;
   }
 
-  if ([objc_opt_class() _currentProcessShouldUseRescuedStorageLocationForLocation:v4])
+  if ([objc_opt_class() _currentProcessShouldUseRescuedStorageLocationForLocation:locationCopy])
   {
-    v6 = [objc_opt_class() _rescuedStorageLocationForLocation:v4];
+    v6 = [objc_opt_class() _rescuedStorageLocationForLocation:locationCopy];
 
     v7 = +[SSLogConfig sharedConfig];
-    v8 = [v7 shouldLog];
+    shouldLog = [v7 shouldLog];
     if ([v7 shouldLogToDisk])
     {
-      v9 = v8 | 2;
+      v9 = shouldLog | 2;
     }
 
     else
     {
-      v9 = v8;
+      v9 = shouldLog;
     }
 
-    v10 = [v7 OSLogObject];
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v7 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v11 = v9;
     }
@@ -114,19 +114,19 @@ LABEL_15:
         goto LABEL_18;
       }
 
-      v10 = [MEMORY[0x1E696AEC0] stringWithCString:v12 encoding:{4, &v44, v42}];
+      oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v12 encoding:{4, &v44, v42}];
       free(v12);
-      SSFileLog(v7, @"%@", v13, v14, v15, v16, v17, v18, v10);
+      SSFileLog(v7, @"%@", v13, v14, v15, v16, v17, v18, oSLogObject);
     }
 
     goto LABEL_15;
   }
 
-  v6 = v4;
+  v6 = locationCopy;
 LABEL_18:
   v5->_performingMigration = 0;
-  v19 = [v6 absoluteString];
-  v20 = [v19 containsString:@"backup"];
+  absoluteString = [v6 absoluteString];
+  v20 = [absoluteString containsString:@"backup"];
 
   if (!v20)
   {
@@ -139,19 +139,19 @@ LABEL_18:
     v21 = +[SSLogConfig sharedConfig];
   }
 
-  v22 = [v21 shouldLog];
+  shouldLog2 = [v21 shouldLog];
   if ([v21 shouldLogToDisk])
   {
-    v23 = v22 | 2;
+    v23 = shouldLog2 | 2;
   }
 
   else
   {
-    v23 = v22;
+    v23 = shouldLog2;
   }
 
-  v24 = [v21 OSLogObject];
-  if (!os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
+  oSLogObject2 = [v21 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
   {
     v23 &= 2u;
   }
@@ -170,9 +170,9 @@ LABEL_18:
 
   if (v27)
   {
-    v24 = [MEMORY[0x1E696AEC0] stringWithCString:v27 encoding:{4, &v44, v42}];
+    oSLogObject2 = [MEMORY[0x1E696AEC0] stringWithCString:v27 encoding:{4, &v44, v42}];
     free(v27);
-    SSFileLog(v21, @"%@", v28, v29, v30, v31, v32, v33, v24);
+    SSFileLog(v21, @"%@", v28, v29, v30, v31, v32, v33, oSLogObject2);
 LABEL_29:
   }
 
@@ -218,7 +218,7 @@ LABEL_33:
   block[1] = 3221225472;
   block[2] = __33__SSVCookieStorage_sharedStorage__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedStorage_sOnce != -1)
   {
     dispatch_once(&sharedStorage_sOnce, block);
@@ -293,63 +293,63 @@ void __33__SSVCookieStorage_sharedStorage__block_invoke(uint64_t a1)
 LABEL_4:
 }
 
-- (id)allCookiesForAccount:(id)a3
+- (id)allCookiesForAccount:(id)account
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  accountCopy = account;
+  v5 = accountCopy;
+  if (accountCopy)
   {
-    v6 = [v4 accountScope];
+    accountScope = [accountCopy accountScope];
   }
 
   else
   {
-    v6 = 0;
+    accountScope = 0;
   }
 
-  v7 = [v5 uniqueIdentifier];
-  v8 = [(SSVCookieStorage *)self allCookiesForUserIdentifier:v7 scope:v6];
+  uniqueIdentifier = [v5 uniqueIdentifier];
+  v8 = [(SSVCookieStorage *)self allCookiesForUserIdentifier:uniqueIdentifier scope:accountScope];
 
   return v8;
 }
 
-- (id)allCookiesForUserIdentifier:(id)a3 scope:(int64_t)a4
+- (id)allCookiesForUserIdentifier:(id)identifier scope:(int64_t)scope
 {
-  v5 = [SSVCookieKey keyWithIdentifier:a3 scope:a4];
+  v5 = [SSVCookieKey keyWithIdentifier:identifier scope:scope];
   v6 = [(SSVCookieStorage *)self _copyCookiesWithKey:v5];
   v7 = [(SSVCookieStorage *)self cookieArrayBySettingFeatureEnablerWithArray:v6 key:v5];
 
   return v7;
 }
 
-- (id)cookieHeadersForURL:(id)a3 account:(id)a4
+- (id)cookieHeadersForURL:(id)l account:(id)account
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  lCopy = l;
+  accountCopy = account;
+  v8 = accountCopy;
+  if (accountCopy)
   {
-    v9 = [v7 accountScope];
+    accountScope = [accountCopy accountScope];
   }
 
   else
   {
-    v9 = 0;
+    accountScope = 0;
   }
 
-  v10 = [v8 uniqueIdentifier];
-  v11 = [(SSVCookieStorage *)self cookieHeadersForURL:v6 userIdentifier:v10 scope:v9];
+  uniqueIdentifier = [v8 uniqueIdentifier];
+  v11 = [(SSVCookieStorage *)self cookieHeadersForURL:lCopy userIdentifier:uniqueIdentifier scope:accountScope];
 
   return v11;
 }
 
-- (id)cookieHeadersForURL:(id)a3 userIdentifier:(id)a4 scope:(int64_t)a5
+- (id)cookieHeadersForURL:(id)l userIdentifier:(id)identifier scope:(int64_t)scope
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [SSVCookieKey keyWithIdentifier:v9 scope:a5];
-  v11 = [(SSVCookieStorage *)self _copyCookieDictionaryForURL:v8 key:v10];
-  if ([(SSVCookieStorage *)self _shouldAddITFECookieToURL:v8])
+  lCopy = l;
+  identifierCopy = identifier;
+  v10 = [SSVCookieKey keyWithIdentifier:identifierCopy scope:scope];
+  v11 = [(SSVCookieStorage *)self _copyCookieDictionaryForURL:lCopy key:v10];
+  if ([(SSVCookieStorage *)self _shouldAddITFECookieToURL:lCopy])
   {
     [(SSVCookieStorage *)self setFeatureEnablerInDictionary:v11 key:v10];
   }
@@ -397,33 +397,33 @@ void __61__SSVCookieStorage_cookieHeadersForURL_userIdentifier_scope___block_inv
   ++*(*(*(a1 + 40) + 8) + 24);
 }
 
-- (id)cookiesForURL:(id)a3 account:(id)a4
+- (id)cookiesForURL:(id)l account:(id)account
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  lCopy = l;
+  accountCopy = account;
+  v8 = accountCopy;
+  if (accountCopy)
   {
-    v9 = [v7 accountScope];
+    accountScope = [accountCopy accountScope];
   }
 
   else
   {
-    v9 = 0;
+    accountScope = 0;
   }
 
-  v10 = [v8 uniqueIdentifier];
-  v11 = [(SSVCookieStorage *)self cookiesForURL:v6 userIdentifier:v10 scope:v9];
+  uniqueIdentifier = [v8 uniqueIdentifier];
+  v11 = [(SSVCookieStorage *)self cookiesForURL:lCopy userIdentifier:uniqueIdentifier scope:accountScope];
 
   return v11;
 }
 
-- (id)cookiesForURL:(id)a3 userIdentifier:(id)a4 scope:(int64_t)a5
+- (id)cookiesForURL:(id)l userIdentifier:(id)identifier scope:(int64_t)scope
 {
-  v8 = a3;
-  v9 = [SSVCookieKey keyWithIdentifier:a4 scope:a5];
-  v10 = [(SSVCookieStorage *)self _copyCookieObjectsForURL:v8 key:v9];
-  v11 = [(SSVCookieStorage *)self _shouldAddITFECookieToURL:v8];
+  lCopy = l;
+  v9 = [SSVCookieKey keyWithIdentifier:identifier scope:scope];
+  v10 = [(SSVCookieStorage *)self _copyCookieObjectsForURL:lCopy key:v9];
+  v11 = [(SSVCookieStorage *)self _shouldAddITFECookieToURL:lCopy];
 
   if (v11)
   {
@@ -440,15 +440,15 @@ void __61__SSVCookieStorage_cookieHeadersForURL_userIdentifier_scope___block_inv
   v35 = *MEMORY[0x1E69E9840];
   if ([MEMORY[0x1E698C890] useNewCookieStorage] && !-[SSVCookieStorage performingMigration](self, "performingMigration"))
   {
-    v4 = [MEMORY[0x1E6959A48] ams_sharedAccountStore];
+    ams_sharedAccountStore = [MEMORY[0x1E6959A48] ams_sharedAccountStore];
     v30 = 0u;
     v31 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v5 = [v4 ams_iTunesAccounts];
-    v33[0] = v5;
-    v6 = [v4 ams_iTunesSandboxAccounts];
-    v33[1] = v6;
+    ams_iTunesAccounts = [ams_sharedAccountStore ams_iTunesAccounts];
+    v33[0] = ams_iTunesAccounts;
+    ams_iTunesSandboxAccounts = [ams_sharedAccountStore ams_iTunesSandboxAccounts];
+    v33[1] = ams_iTunesSandboxAccounts;
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v33 count:2];
 
     v8 = [v7 countByEnumeratingWithState:&v28 objects:v34 count:16];
@@ -487,7 +487,7 @@ void __61__SSVCookieStorage_cookieHeadersForURL_userIdentifier_scope___block_inv
                 [v16 ams_removeAllCookies];
                 if ([v16 isDirty])
                 {
-                  v17 = [v4 ams_saveAccount:v16 verifyCredentials:0];
+                  v17 = [ams_sharedAccountStore ams_saveAccount:v16 verifyCredentials:0];
                 }
               }
 
@@ -508,13 +508,13 @@ void __61__SSVCookieStorage_cookieHeadersForURL_userIdentifier_scope___block_inv
   else
   {
     objc_initWeak(&location, self);
-    v3 = [(SSVCookieStorage *)self _database];
+    _database = [(SSVCookieStorage *)self _database];
     v18 = MEMORY[0x1E69E9820];
     v19 = 3221225472;
     v20 = __36__SSVCookieStorage_removeAllCookies__block_invoke;
     v21 = &unk_1E84B0F48;
     objc_copyWeak(&v22, &location);
-    [v3 prepareStatementForSQL:@"DELETE FROM cookies" cache:0 usingBlock:&v18];
+    [_database prepareStatementForSQL:@"DELETE FROM cookies" cache:0 usingBlock:&v18];
 
     [(SSVCookieStorage *)self _cookieDatabaseDidChange:v18];
     objc_destroyWeak(&v22);
@@ -529,14 +529,14 @@ void __36__SSVCookieStorage_removeAllCookies__block_invoke(uint64_t a1, uint64_t
   [v3 statementHasRowAfterStepping:a2];
 }
 
-- (void)removeCookiesWithProperties:(id)a3
+- (void)removeCookiesWithProperties:(id)properties
 {
   v34 = *MEMORY[0x1E69E9840];
-  v17 = a3;
+  propertiesCopy = properties;
   if ([MEMORY[0x1E698C890] useNewCookieStorage] && !-[SSVCookieStorage performingMigration](self, "performingMigration"))
   {
-    v16 = [MEMORY[0x1E6959A48] ams_sharedAccountStore];
-    [v16 ams_removeCookiesMatchingProperties:v17 error:0];
+    ams_sharedAccountStore = [MEMORY[0x1E6959A48] ams_sharedAccountStore];
+    [ams_sharedAccountStore ams_removeCookiesMatchingProperties:propertiesCopy error:0];
   }
 
   else
@@ -551,7 +551,7 @@ void __36__SSVCookieStorage_removeAllCookies__block_invoke(uint64_t a1, uint64_t
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v4 = v17;
+    v4 = propertiesCopy;
     v5 = [v4 countByEnumeratingWithState:&v25 objects:v33 count:16];
     if (v5)
     {
@@ -590,7 +590,7 @@ void __36__SSVCookieStorage_removeAllCookies__block_invoke(uint64_t a1, uint64_t
       v14 = [v12 initWithFormat:@"DELETE FROM cookies WHERE %@", v13];
 
       objc_initWeak(&location, self);
-      v15 = [(SSVCookieStorage *)self _database];
+      _database = [(SSVCookieStorage *)self _database];
       v20[0] = MEMORY[0x1E69E9820];
       v20[1] = 3221225472;
       v20[2] = __48__SSVCookieStorage_removeCookiesWithProperties___block_invoke;
@@ -598,7 +598,7 @@ void __36__SSVCookieStorage_removeAllCookies__block_invoke(uint64_t a1, uint64_t
       objc_copyWeak(&v23, &location);
       v22 = &v29;
       v21 = v18;
-      [v15 prepareStatementForSQL:v14 cache:0 usingBlock:v20];
+      [_database prepareStatementForSQL:v14 cache:0 usingBlock:v20];
 
       objc_destroyWeak(&v23);
       objc_destroyWeak(&location);
@@ -630,34 +630,34 @@ void __48__SSVCookieStorage_removeCookiesWithProperties___block_invoke(uint64_t 
   }
 }
 
-- (void)removeCookiesWithAccount:(id)a3
+- (void)removeCookiesWithAccount:(id)account
 {
-  v4 = a3;
-  v7 = v4;
-  if (v4)
+  accountCopy = account;
+  v7 = accountCopy;
+  if (accountCopy)
   {
-    v5 = [v4 accountScope];
-    v4 = v7;
+    accountScope = [accountCopy accountScope];
+    accountCopy = v7;
   }
 
   else
   {
-    v5 = 0;
+    accountScope = 0;
   }
 
-  v6 = [v4 uniqueIdentifier];
-  [(SSVCookieStorage *)self removeCookiesWithUserIdentifier:v6 scope:v5];
+  uniqueIdentifier = [accountCopy uniqueIdentifier];
+  [(SSVCookieStorage *)self removeCookiesWithUserIdentifier:uniqueIdentifier scope:accountScope];
 }
 
-- (void)removeCookiesWithUserIdentifier:(id)a3 scope:(int64_t)a4
+- (void)removeCookiesWithUserIdentifier:(id)identifier scope:(int64_t)scope
 {
   location[3] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (v6)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
     if ([MEMORY[0x1E698C890] useNewCookieStorage] && !-[SSVCookieStorage performingMigration](self, "performingMigration"))
     {
-      v22 = [SSVCookieKey keyWithIdentifier:v6 scope:a4];
+      v22 = [SSVCookieKey keyWithIdentifier:identifierCopy scope:scope];
       v23 = [(SSVCookieStorage *)self _accountForKey:v22];
       v24 = v23;
       if (v23)
@@ -665,8 +665,8 @@ void __48__SSVCookieStorage_removeCookiesWithProperties___block_invoke(uint64_t 
         [v23 ams_removeAllCookies];
         if ([v24 isDirty])
         {
-          v25 = [MEMORY[0x1E6959A48] ams_sharedAccountStore];
-          v26 = [v25 ams_saveAccount:v24 verifyCredentials:0];
+          ams_sharedAccountStore = [MEMORY[0x1E6959A48] ams_sharedAccountStore];
+          v26 = [ams_sharedAccountStore ams_saveAccount:v24 verifyCredentials:0];
         }
       }
     }
@@ -675,15 +675,15 @@ void __48__SSVCookieStorage_removeCookiesWithProperties___block_invoke(uint64_t 
     {
       v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"DELETE FROM cookies WHERE user=? AND user_scope=?"];
       objc_initWeak(location, self);
-      v8 = [(SSVCookieStorage *)self _database];
+      _database = [(SSVCookieStorage *)self _database];
       v28[0] = MEMORY[0x1E69E9820];
       v28[1] = 3221225472;
       v28[2] = __58__SSVCookieStorage_removeCookiesWithUserIdentifier_scope___block_invoke;
       v28[3] = &unk_1E84B0F98;
       objc_copyWeak(v30, location);
-      v29 = v6;
-      v30[1] = a4;
-      [v8 prepareStatementForSQL:v7 cache:0 usingBlock:v28];
+      v29 = identifierCopy;
+      v30[1] = scope;
+      [_database prepareStatementForSQL:v7 cache:0 usingBlock:v28];
 
       [(SSVCookieStorage *)self _cookieDatabaseDidChange];
       objc_destroyWeak(v30);
@@ -699,19 +699,19 @@ void __48__SSVCookieStorage_removeCookiesWithProperties___block_invoke(uint64_t 
       v9 = +[SSLogConfig sharedConfig];
     }
 
-    v10 = [v9 shouldLog];
+    shouldLog = [v9 shouldLog];
     if ([v9 shouldLogToDisk])
     {
-      v11 = v10 | 2;
+      v11 = shouldLog | 2;
     }
 
     else
     {
-      v11 = v10;
+      v11 = shouldLog;
     }
 
-    v12 = [v9 OSLogObject];
-    if (!os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v9 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v11 &= 2u;
     }
@@ -758,10 +758,10 @@ void __58__SSVCookieStorage_removeCookiesWithUserIdentifier_scope___block_invoke
   while ((v9 & 1) != 0);
 }
 
-+ (BOOL)responseHasSetCookies:(id)a3
++ (BOOL)responseHasSetCookies:(id)cookies
 {
-  v4 = a3;
-  v5 = [a1 _getSetCookiesForResponse:v4];
+  cookiesCopy = cookies;
+  v5 = [self _getSetCookiesForResponse:cookiesCopy];
   if ([v5 count])
   {
     v6 = 1;
@@ -769,7 +769,7 @@ void __58__SSVCookieStorage_removeCookiesWithUserIdentifier_scope___block_invoke
 
   else
   {
-    v7 = [a1 _getUserSetCookiesForResponse:v4];
+    v7 = [self _getUserSetCookiesForResponse:cookiesCopy];
 
     if ([v7 count])
     {
@@ -779,7 +779,7 @@ void __58__SSVCookieStorage_removeCookiesWithUserIdentifier_scope___block_invoke
 
     else
     {
-      v5 = [a1 _getGlobalSetCookiesForResponse:v4];
+      v5 = [self _getGlobalSetCookiesForResponse:cookiesCopy];
 
       v6 = [v5 count] != 0;
     }
@@ -788,98 +788,98 @@ void __58__SSVCookieStorage_removeCookiesWithUserIdentifier_scope___block_invoke
   return v6;
 }
 
-- (void)setCookies:(id)a3 forAccount:(id)a4
+- (void)setCookies:(id)cookies forAccount:(id)account
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  cookiesCopy = cookies;
+  accountCopy = account;
+  v7 = accountCopy;
+  if (accountCopy)
   {
-    v8 = [v6 accountScope];
+    accountScope = [accountCopy accountScope];
   }
 
   else
   {
-    v8 = 0;
+    accountScope = 0;
   }
 
-  v9 = [v7 uniqueIdentifier];
-  v10 = [SSVCookieKey keyWithIdentifier:v9 scope:v8];
+  uniqueIdentifier = [v7 uniqueIdentifier];
+  v10 = [SSVCookieKey keyWithIdentifier:uniqueIdentifier scope:accountScope];
 
-  [(SSVCookieStorage *)self _setCookies:v11 forKey:v10];
+  [(SSVCookieStorage *)self _setCookies:cookiesCopy forKey:v10];
 }
 
-- (void)setCookies:(id)a3 forUserIdentifier:(id)a4
+- (void)setCookies:(id)cookies forUserIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = [SSVCookieKey keyWithIdentifier:a4 scope:0];
-  [(SSVCookieStorage *)self _setCookies:v6 forKey:v7];
+  cookiesCopy = cookies;
+  v7 = [SSVCookieKey keyWithIdentifier:identifier scope:0];
+  [(SSVCookieStorage *)self _setCookies:cookiesCopy forKey:v7];
 }
 
-- (void)setCookiesForHTTPResponse:(id)a3 account:(id)a4
+- (void)setCookiesForHTTPResponse:(id)response account:(id)account
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  responseCopy = response;
+  accountCopy = account;
+  v7 = accountCopy;
+  if (accountCopy)
   {
-    v8 = [v6 accountScope];
+    accountScope = [accountCopy accountScope];
   }
 
   else
   {
-    v8 = 0;
+    accountScope = 0;
   }
 
-  v9 = [v7 uniqueIdentifier];
-  [(SSVCookieStorage *)self setCookiesForHTTPResponse:v10 userIdentifier:v9 scope:v8];
+  uniqueIdentifier = [v7 uniqueIdentifier];
+  [(SSVCookieStorage *)self setCookiesForHTTPResponse:responseCopy userIdentifier:uniqueIdentifier scope:accountScope];
 }
 
-- (void)setCookiesForHTTPResponse:(id)a3 userIdentifier:(id)a4 scope:(int64_t)a5
+- (void)setCookiesForHTTPResponse:(id)response userIdentifier:(id)identifier scope:(int64_t)scope
 {
-  v15 = a3;
-  v8 = a4;
-  v9 = [objc_opt_class() _getSetCookiesForResponse:v15];
+  responseCopy = response;
+  identifierCopy = identifier;
+  v9 = [objc_opt_class() _getSetCookiesForResponse:responseCopy];
   if ([v9 count])
   {
-    v10 = [SSVCookieKey keyWithIdentifier:v8 scope:a5];
+    v10 = [SSVCookieKey keyWithIdentifier:identifierCopy scope:scope];
     [(SSVCookieStorage *)self _setCookies:v9 forKey:v10];
   }
 
-  v11 = [objc_opt_class() _getUserSetCookiesForResponse:v15];
+  v11 = [objc_opt_class() _getUserSetCookiesForResponse:responseCopy];
 
   if ([v11 count])
   {
-    v12 = [SSVCookieKey keyWithIdentifier:v8 scope:a5];
+    v12 = [SSVCookieKey keyWithIdentifier:identifierCopy scope:scope];
     [(SSVCookieStorage *)self _setCookies:v11 forKey:v12];
   }
 
-  v13 = [objc_opt_class() _getGlobalSetCookiesForResponse:v15];
+  v13 = [objc_opt_class() _getGlobalSetCookiesForResponse:responseCopy];
 
   if ([v13 count])
   {
-    v14 = [SSVCookieKey keyWithIdentifier:&unk_1F507A1C8 scope:a5];
+    v14 = [SSVCookieKey keyWithIdentifier:&unk_1F507A1C8 scope:scope];
     [(SSVCookieStorage *)self _setCookies:v13 forKey:v14];
   }
 }
 
-- (void)setCookiesFromCookieStorage:(id)a3
+- (void)setCookiesFromCookieStorage:(id)storage
 {
-  v4 = a3;
+  storageCopy = storage;
   v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v6 = [v4 _database];
+  _database = [storageCopy _database];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __48__SSVCookieStorage_setCookiesFromCookieStorage___block_invoke;
   v15[3] = &unk_1E84B0FC0;
-  v7 = v4;
+  v7 = storageCopy;
   v16 = v7;
   v8 = v5;
   v17 = v8;
-  [v6 performTransactionWithBlock:v15];
+  [_database performTransactionWithBlock:v15];
 
   objc_initWeak(&location, self);
-  v9 = [(SSVCookieStorage *)self _database];
+  _database2 = [(SSVCookieStorage *)self _database];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __48__SSVCookieStorage_setCookiesFromCookieStorage___block_invoke_2;
@@ -887,7 +887,7 @@ void __58__SSVCookieStorage_removeCookiesWithUserIdentifier_scope___block_invoke
   objc_copyWeak(&v13, &location);
   v10 = v8;
   v12 = v10;
-  [v9 performTransactionWithBlock:v11];
+  [_database2 performTransactionWithBlock:v11];
 
   [(SSVCookieStorage *)self _cookieDatabaseDidChange];
   objc_destroyWeak(&v13);
@@ -949,24 +949,24 @@ uint64_t __48__SSVCookieStorage_setCookiesFromCookieStorage___block_invoke_2(uin
 
 - (void)_handleSharedCookieDatabaseDidChangeDarwinNotification
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 postNotificationName:@"SSVCookieStorageSharedCookiesDidChangeNotification" object:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"SSVCookieStorageSharedCookiesDidChangeNotification" object:self];
 }
 
-- (void)setFeatureEnablerInDictionary:(id)a3 key:(id)a4
+- (void)setFeatureEnablerInDictionary:(id)dictionary key:(id)key
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 objectForKeyedSubscript:@"itfe"];
+  dictionaryCopy = dictionary;
+  keyCopy = key;
+  v8 = [dictionaryCopy objectForKeyedSubscript:@"itfe"];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __54__SSVCookieStorage_setFeatureEnablerInDictionary_key___block_invoke;
   v11[3] = &unk_1E84B1038;
   v12 = v8;
-  v13 = v6;
-  v9 = v6;
+  v13 = dictionaryCopy;
+  v9 = dictionaryCopy;
   v10 = v8;
-  [(SSVCookieStorage *)self synchronizeFeatureEnablerCookieWithCookieValue:v10 key:v7 result:v11];
+  [(SSVCookieStorage *)self synchronizeFeatureEnablerCookieWithCookieValue:v10 key:keyCopy result:v11];
 }
 
 void __54__SSVCookieStorage_setFeatureEnablerInDictionary_key___block_invoke(uint64_t a1, int a2, void *a3)
@@ -998,21 +998,21 @@ void __54__SSVCookieStorage_setFeatureEnablerInDictionary_key___block_invoke(uin
 LABEL_8:
 }
 
-- (id)cookieArrayBySettingFeatureEnablerWithArray:(id)a3 key:(id)a4
+- (id)cookieArrayBySettingFeatureEnablerWithArray:(id)array key:(id)key
 {
   v35 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  keyCopy = key;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v7 = [a3 mutableCopy];
+  v7 = [array mutableCopy];
   v8 = [v7 countByEnumeratingWithState:&v30 objects:v34 count:16];
   if (v8)
   {
     v9 = v8;
-    v24 = self;
-    v25 = v6;
+    selfCopy = self;
+    v25 = keyCopy;
     v10 = *v31;
     v11 = -1;
     while (2)
@@ -1028,8 +1028,8 @@ LABEL_8:
         }
 
         v14 = *(*(&v30 + 1) + 8 * v12);
-        v15 = [v14 name];
-        v16 = [v15 isEqualToString:@"itfe"];
+        name = [v14 name];
+        v16 = [name isEqualToString:@"itfe"];
 
         if (v16)
         {
@@ -1054,8 +1054,8 @@ LABEL_8:
     v17 = 0;
     v13 = v11;
 LABEL_11:
-    self = v24;
-    v6 = v25;
+    self = selfCopy;
+    keyCopy = v25;
   }
 
   else
@@ -1064,7 +1064,7 @@ LABEL_11:
     v13 = -1;
   }
 
-  v18 = [v17 value];
+  value = [v17 value];
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __68__SSVCookieStorage_cookieArrayBySettingFeatureEnablerWithArray_key___block_invoke;
@@ -1074,7 +1074,7 @@ LABEL_11:
   v28 = v19;
   v29 = v13;
   v20 = v17;
-  [(SSVCookieStorage *)self synchronizeFeatureEnablerCookieWithCookieValue:v18 key:v6 result:v26];
+  [(SSVCookieStorage *)self synchronizeFeatureEnablerCookieWithCookieValue:value key:keyCopy result:v26];
 
   v21 = v28;
   v22 = v19;
@@ -1121,32 +1121,32 @@ void __68__SSVCookieStorage_cookieArrayBySettingFeatureEnablerWithArray_key___bl
 LABEL_10:
 }
 
-- (BOOL)_shouldAddITFECookieToURL:(id)a3
+- (BOOL)_shouldAddITFECookieToURL:(id)l
 {
-  v3 = a3;
-  v4 = [v3 host];
-  v5 = v4;
-  if (v4 && ([v4 hasPrefix:@"."] & 1) == 0)
+  lCopy = l;
+  host = [lCopy host];
+  v5 = host;
+  if (host && ([host hasPrefix:@"."] & 1) == 0)
   {
     v6 = [@"." stringByAppendingString:v5];
 
     v5 = v6;
   }
 
-  v7 = [v3 scheme];
-  v8 = [v7 isEqualToString:@"https"];
+  scheme = [lCopy scheme];
+  v8 = [scheme isEqualToString:@"https"];
 
-  LOBYTE(v7) = [v5 hasSuffix:@".apple.com"];
-  return v8 & v7;
+  LOBYTE(scheme) = [v5 hasSuffix:@".apple.com"];
+  return v8 & scheme;
 }
 
-- (void)synchronizeFeatureEnablerCookieWithCookieValue:(id)a3 key:(id)a4 result:(id)a5
+- (void)synchronizeFeatureEnablerCookieWithCookieValue:(id)value key:(id)key result:(id)result
 {
   v89[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(SSVCookieStorage *)self fetchDefaults];
+  valueCopy = value;
+  keyCopy = key;
+  resultCopy = result;
+  fetchDefaults = [(SSVCookieStorage *)self fetchDefaults];
   v12 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v78[0] = MEMORY[0x1E69E9820];
   v78[1] = 3221225472;
@@ -1154,16 +1154,16 @@ LABEL_10:
   v78[3] = &unk_1E84AC258;
   v13 = v12;
   v79 = v13;
-  [v11 enumerateKeysAndObjectsUsingBlock:v78];
+  [fetchDefaults enumerateKeysAndObjectsUsingBlock:v78];
   if (MGGetBoolAnswer())
   {
     v14 = [v13 count];
-    if (!v8 || v14)
+    if (!valueCopy || v14)
     {
       if ([v13 count])
       {
-        v73 = v9;
-        v31 = [v8 componentsSeparatedByString:@"+"];
+        v73 = keyCopy;
+        v31 = [valueCopy componentsSeparatedByString:@"+"];
         v32 = [v13 count];
         v70 = v31;
         if (v32 != [v31 count])
@@ -1180,8 +1180,8 @@ LABEL_10:
         if (v34)
         {
           v35 = v34;
-          v68 = v10;
-          v71 = v8;
+          v68 = resultCopy;
+          v71 = valueCopy;
           v36 = 0;
           v37 = *v75;
           do
@@ -1193,10 +1193,10 @@ LABEL_10:
                 objc_enumerationMutation(v33);
               }
 
-              v39 = [v11 objectForKeyedSubscript:*(*(&v74 + 1) + 8 * i)];
-              v40 = [v39 BOOLValue];
+              v39 = [fetchDefaults objectForKeyedSubscript:*(*(&v74 + 1) + 8 * i)];
+              bOOLValue = [v39 BOOLValue];
 
-              v36 |= v40 ^ 1;
+              v36 |= bOOLValue ^ 1;
             }
 
             v35 = [v33 countByEnumeratingWithState:&v74 objects:v87 count:16];
@@ -1204,8 +1204,8 @@ LABEL_10:
 
           while (v35);
 
-          v8 = v71;
-          v10 = v68;
+          valueCopy = v71;
+          resultCopy = v68;
           if (v36)
           {
 LABEL_28:
@@ -1235,7 +1235,7 @@ LABEL_28:
             v67 = v48;
             v84 = v48;
             v49 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v84 count:1];
-            v9 = v73;
+            keyCopy = v73;
             [(SSVCookieStorage *)self _setCookies:v49 forKey:v73];
 
             v50 = +[SSLogConfig sharedStoreServicesConfig];
@@ -1244,19 +1244,19 @@ LABEL_28:
               v50 = +[SSLogConfig sharedConfig];
             }
 
-            v51 = [v50 shouldLog];
+            shouldLog = [v50 shouldLog];
             if ([v50 shouldLogToDisk])
             {
-              v52 = v51 | 2;
+              v52 = shouldLog | 2;
             }
 
             else
             {
-              v52 = v51;
+              v52 = shouldLog;
             }
 
-            v53 = [v50 OSLogObject];
-            if (os_log_type_enabled(v53, OS_LOG_TYPE_DEBUG))
+            oSLogObject = [v50 OSLogObject];
+            if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
             {
               v54 = v52;
             }
@@ -1273,24 +1273,24 @@ LABEL_28:
               v81 = v55;
               v82 = 2112;
               v83 = v72;
-              v56 = v8;
+              v56 = valueCopy;
               v57 = v55;
               LODWORD(v66) = 22;
               v58 = _os_log_send_and_compose_impl();
 
-              v8 = v56;
+              valueCopy = v56;
               v59 = v70;
               if (!v58)
               {
 LABEL_41:
 
-                v10[2](v10, 1, v67);
+                resultCopy[2](resultCopy, 1, v67);
                 goto LABEL_17;
               }
 
-              v53 = [MEMORY[0x1E696AEC0] stringWithCString:v58 encoding:{4, &v80, v66}];
+              oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v58 encoding:{4, &v80, v66}];
               free(v58);
-              SSFileLog(v50, @"%@", v60, v61, v62, v63, v64, v65, v53);
+              SSFileLog(v50, @"%@", v60, v61, v62, v63, v64, v65, oSLogObject);
             }
 
             else
@@ -1306,10 +1306,10 @@ LABEL_41:
         {
         }
 
-        v9 = v73;
+        keyCopy = v73;
       }
 
-      v10[2](v10, 0, 0);
+      resultCopy[2](resultCopy, 0, 0);
       goto LABEL_17;
     }
   }
@@ -1325,19 +1325,19 @@ LABEL_41:
     v16 = +[SSLogConfig sharedConfig];
   }
 
-  v17 = [v16 shouldLog];
+  shouldLog2 = [v16 shouldLog];
   if ([v16 shouldLogToDisk])
   {
-    v18 = v17 | 2;
+    v18 = shouldLog2 | 2;
   }
 
   else
   {
-    v18 = v17;
+    v18 = shouldLog2;
   }
 
-  v19 = [v16 OSLogObject];
-  if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
+  oSLogObject2 = [v16 OSLogObject];
+  if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEBUG))
   {
     v20 = v18;
   }
@@ -1355,21 +1355,21 @@ LABEL_41:
   v21 = objc_opt_class();
   v80 = 138412290;
   v81 = v21;
-  v22 = v8;
+  v22 = valueCopy;
   v23 = v21;
   LODWORD(v66) = 12;
   v24 = _os_log_send_and_compose_impl();
 
-  v8 = v22;
+  valueCopy = v22;
   if (v24)
   {
-    v19 = [MEMORY[0x1E696AEC0] stringWithCString:v24 encoding:{4, &v80, v66}];
+    oSLogObject2 = [MEMORY[0x1E696AEC0] stringWithCString:v24 encoding:{4, &v80, v66}];
     free(v24);
-    SSFileLog(v16, @"%@", v25, v26, v27, v28, v29, v30, v19);
+    SSFileLog(v16, @"%@", v25, v26, v27, v28, v29, v30, oSLogObject2);
 LABEL_15:
   }
 
-  v10[2](v10, 1, 0);
+  resultCopy[2](resultCopy, 1, 0);
 LABEL_17:
 }
 
@@ -1416,30 +1416,30 @@ void __78__SSVCookieStorage_synchronizeFeatureEnablerCookieWithCookieValue_key_r
   return v5;
 }
 
-- (id)_accountForKey:(id)a3
+- (id)_accountForKey:(id)key
 {
-  v3 = a3;
-  v4 = [v3 scope];
+  keyCopy = key;
+  scope = [keyCopy scope];
   v5 = MEMORY[0x1E698C4C0];
-  if (v4)
+  if (scope)
   {
     v5 = MEMORY[0x1E698C4C8];
   }
 
   v6 = [MEMORY[0x1E6959A48] ams_sharedAccountStoreForMediaType:*v5];
-  v7 = [v3 identifier];
-  if (v7 && (v8 = v7, [v3 identifier], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "isEqualToNumber:", &unk_1F507A1C8), v9, v8, !v10))
+  identifier = [keyCopy identifier];
+  if (identifier && (v8 = identifier, [keyCopy identifier], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "isEqualToNumber:", &unk_1F507A1C8), v9, v8, !v10))
   {
-    v12 = [v3 identifier];
-    v11 = [v6 ams_iTunesAccountWithDSID:v12];
+    identifier2 = [keyCopy identifier];
+    ams_localiTunesAccount = [v6 ams_iTunesAccountWithDSID:identifier2];
   }
 
   else
   {
-    v11 = [v6 ams_localiTunesAccount];
+    ams_localiTunesAccount = [v6 ams_localiTunesAccount];
   }
 
-  return v11;
+  return ams_localiTunesAccount;
 }
 
 - (id)_allCookieKeys
@@ -1448,15 +1448,15 @@ void __78__SSVCookieStorage_synchronizeFeatureEnablerCookieWithCookieValue_key_r
   if ([MEMORY[0x1E698C890] useNewCookieStorage] && !-[SSVCookieStorage performingMigration](self, "performingMigration"))
   {
     v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v19 = [MEMORY[0x1E6959A48] ams_sharedAccountStore];
+    ams_sharedAccountStore = [MEMORY[0x1E6959A48] ams_sharedAccountStore];
     v32 = 0u;
     v33 = 0u;
     v31 = 0u;
     v30 = 0u;
-    v7 = [v19 ams_iTunesAccounts];
-    v35[0] = v7;
-    v8 = [v19 ams_iTunesSandboxAccounts];
-    v35[1] = v8;
+    ams_iTunesAccounts = [ams_sharedAccountStore ams_iTunesAccounts];
+    v35[0] = ams_iTunesAccounts;
+    ams_iTunesSandboxAccounts = [ams_sharedAccountStore ams_iTunesSandboxAccounts];
+    v35[1] = ams_iTunesSandboxAccounts;
     obj = [MEMORY[0x1E695DEC8] arrayWithObjects:v35 count:2];
 
     v9 = [obj countByEnumeratingWithState:&v30 objects:v36 count:16];
@@ -1492,10 +1492,10 @@ void __78__SSVCookieStorage_synchronizeFeatureEnablerCookieWithCookieValue_key_r
                 }
 
                 v16 = *(*(&v26 + 1) + 8 * j);
-                v17 = [v16 ams_DSID];
-                if (v17)
+                ams_DSID = [v16 ams_DSID];
+                if (ams_DSID)
                 {
-                  v18 = +[SSVCookieKey keyWithIdentifier:scope:](SSVCookieKey, "keyWithIdentifier:scope:", v17, [v16 ams_isSandboxAccount]);
+                  v18 = +[SSVCookieKey keyWithIdentifier:scope:](SSVCookieKey, "keyWithIdentifier:scope:", ams_DSID, [v16 ams_isSandboxAccount]);
                   [v5 addObject:v18];
                 }
               }
@@ -1516,17 +1516,17 @@ void __78__SSVCookieStorage_synchronizeFeatureEnablerCookieWithCookieValue_key_r
 
   else
   {
-    v3 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     objc_initWeak(&location, self);
-    v4 = [(SSVCookieStorage *)self _database];
+    _database = [(SSVCookieStorage *)self _database];
     v22[0] = MEMORY[0x1E69E9820];
     v22[1] = 3221225472;
     v22[2] = __34__SSVCookieStorage__allCookieKeys__block_invoke;
     v22[3] = &unk_1E84B1088;
     objc_copyWeak(&v24, &location);
-    v5 = v3;
+    v5 = array;
     v23 = v5;
-    [v4 prepareStatementForSQL:@"SELECT DISTINCT user cache:user_scope FROM cookies;" usingBlock:{0, v22}];
+    [_database prepareStatementForSQL:@"SELECT DISTINCT user cache:user_scope FROM cookies;" usingBlock:{0, v22}];
 
     objc_destroyWeak(&v24);
     objc_destroyWeak(&location);
@@ -1562,53 +1562,53 @@ void __34__SSVCookieStorage__allCookieKeys__block_invoke(uint64_t a1, sqlite3_st
   }
 }
 
-- (void)_bindInsertStatement:(sqlite3_stmt *)a3 forCookie:(id)a4 key:(id)a5
+- (void)_bindInsertStatement:(sqlite3_stmt *)statement forCookie:(id)cookie key:(id)key
 {
-  v16 = a4;
-  v7 = a5;
-  sqlite3_bind_int(a3, 1, [v16 isSessionOnly]);
-  v8 = [v16 domain];
-  sqlite3_bind_text(a3, 2, [v8 UTF8String], -1, 0);
+  cookieCopy = cookie;
+  keyCopy = key;
+  sqlite3_bind_int(statement, 1, [cookieCopy isSessionOnly]);
+  domain = [cookieCopy domain];
+  sqlite3_bind_text(statement, 2, [domain UTF8String], -1, 0);
 
-  v9 = [v16 expiresDate];
-  [v9 timeIntervalSinceReferenceDate];
-  sqlite3_bind_int(a3, 3, v10);
+  expiresDate = [cookieCopy expiresDate];
+  [expiresDate timeIntervalSinceReferenceDate];
+  sqlite3_bind_int(statement, 3, v10);
 
-  v11 = [v16 name];
-  sqlite3_bind_text(a3, 4, [v11 UTF8String], -1, 0);
+  name = [cookieCopy name];
+  sqlite3_bind_text(statement, 4, [name UTF8String], -1, 0);
 
-  v12 = [v16 path];
-  sqlite3_bind_text(a3, 5, [v12 UTF8String], -1, 0);
+  path = [cookieCopy path];
+  sqlite3_bind_text(statement, 5, [path UTF8String], -1, 0);
 
-  sqlite3_bind_int(a3, 6, [v16 isSecure]);
-  v13 = [v7 identifier];
-  if (v13)
+  sqlite3_bind_int(statement, 6, [cookieCopy isSecure]);
+  identifier = [keyCopy identifier];
+  if (identifier)
   {
-    v14 = [v7 identifier];
-    sqlite3_bind_int64(a3, 7, [v14 longLongValue]);
+    identifier2 = [keyCopy identifier];
+    sqlite3_bind_int64(statement, 7, [identifier2 longLongValue]);
   }
 
   else
   {
-    sqlite3_bind_int64(a3, 7, 0);
+    sqlite3_bind_int64(statement, 7, 0);
   }
 
-  sqlite3_bind_int(a3, 8, [v7 scope]);
-  v15 = [v16 value];
-  sqlite3_bind_text(a3, 9, [v15 UTF8String], -1, 0);
+  sqlite3_bind_int(statement, 8, [keyCopy scope]);
+  value = [cookieCopy value];
+  sqlite3_bind_text(statement, 9, [value UTF8String], -1, 0);
 
-  sqlite3_bind_int(a3, 10, [v16 version]);
+  sqlite3_bind_int(statement, 10, [cookieCopy version]);
 }
 
-+ (BOOL)_bindStatement:(sqlite3_stmt *)a3 withValues:(id)a4
++ (BOOL)_bindStatement:(sqlite3_stmt *)statement withValues:(id)values
 {
   v20 = *MEMORY[0x1E69E9840];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = a4;
-  v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  valuesCopy = values;
+  v6 = [valuesCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1620,14 +1620,14 @@ void __34__SSVCookieStorage__allCookieKeys__block_invoke(uint64_t a1, sqlite3_st
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(valuesCopy);
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          sqlite3_bind_text(a3, v9, [v11 UTF8String], -1, 0);
+          sqlite3_bind_text(statement, v9, [v11 UTF8String], -1, 0);
         }
 
         else
@@ -1635,7 +1635,7 @@ void __34__SSVCookieStorage__allCookieKeys__block_invoke(uint64_t a1, sqlite3_st
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            sqlite3_bind_int(a3, v9, [v11 intValue]);
+            sqlite3_bind_int(statement, v9, [v11 intValue]);
           }
 
           else
@@ -1648,14 +1648,14 @@ void __34__SSVCookieStorage__allCookieKeys__block_invoke(uint64_t a1, sqlite3_st
             }
 
             [v11 timeIntervalSinceReferenceDate];
-            sqlite3_bind_double(a3, v9, v12);
+            sqlite3_bind_double(statement, v9, v12);
           }
         }
 
         ++v9;
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v7 = [valuesCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v7)
       {
         continue;
@@ -1671,7 +1671,7 @@ LABEL_16:
   return v13;
 }
 
-- (id)_columnNameForCookieProperty:(id)a3
+- (id)_columnNameForCookieProperty:(id)property
 {
   v13 = *MEMORY[0x1E69E9840];
   v11[0] = xmmword_1E84B10A8;
@@ -1686,7 +1686,7 @@ LABEL_16:
   v10[5] = *MEMORY[0x1E696A468];
   v4 = 0;
   v10[6] = *MEMORY[0x1E696A470];
-  while (![a3 isEqualToString:v10[v4]])
+  while (![property isEqualToString:v10[v4]])
   {
     if (++v4 == 7)
     {
@@ -1719,18 +1719,18 @@ LABEL_6:
   }
 }
 
-- (id)_copyCookieDictionaryForURL:(id)a3 key:(id)a4
+- (id)_copyCookieDictionaryForURL:(id)l key:(id)key
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 host];
-  if (v8)
+  lCopy = l;
+  keyCopy = key;
+  host = [lCopy host];
+  if (host)
   {
-    v22 = v7;
-    v9 = [(SSVCookieStorage *)self _copyPrivateCookiesForURL:v6 key:v7];
-    v10 = [MEMORY[0x1E696AC60] sharedHTTPCookieStorage];
-    v11 = [v10 cookiesForURL:v6];
+    v22 = keyCopy;
+    v9 = [(SSVCookieStorage *)self _copyPrivateCookiesForURL:lCopy key:keyCopy];
+    mEMORY[0x1E696AC60] = [MEMORY[0x1E696AC60] sharedHTTPCookieStorage];
+    v11 = [mEMORY[0x1E696AC60] cookiesForURL:lCopy];
 
     v25 = 0u;
     v26 = 0u;
@@ -1752,13 +1752,13 @@ LABEL_6:
           }
 
           v17 = *(*(&v23 + 1) + 8 * i);
-          v18 = [v17 name];
-          v19 = [v9 objectForKey:v18];
+          name = [v17 name];
+          v19 = [v9 objectForKey:name];
 
           if (!v19)
           {
-            v20 = [v17 value];
-            [v9 setObject:v20 forKey:v18];
+            value = [v17 value];
+            [v9 setObject:value forKey:name];
           }
         }
 
@@ -1768,7 +1768,7 @@ LABEL_6:
       while (v14);
     }
 
-    v7 = v22;
+    keyCopy = v22;
   }
 
   else
@@ -1779,17 +1779,17 @@ LABEL_6:
   return v9;
 }
 
-- (id)_copyCookieObjectsForURL:(id)a3 key:(id)a4
+- (id)_copyCookieObjectsForURL:(id)l key:(id)key
 {
   v43 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 host];
-  if (v8)
+  lCopy = l;
+  keyCopy = key;
+  host = [lCopy host];
+  if (host)
   {
-    v31 = v8;
-    v32 = v7;
-    v9 = [(SSVCookieStorage *)self _copyPrivateCookieObjectsForURL:v6 key:v7];
+    v31 = host;
+    v32 = keyCopy;
+    v9 = [(SSVCookieStorage *)self _copyPrivateCookieObjectsForURL:lCopy key:keyCopy];
     v10 = objc_alloc_init(MEMORY[0x1E695DF90]);
     v37 = 0u;
     v38 = 0u;
@@ -1811,8 +1811,8 @@ LABEL_6:
           }
 
           v16 = *(*(&v37 + 1) + 8 * i);
-          v17 = [v16 name];
-          [v10 setObject:v16 forKey:v17];
+          name = [v16 name];
+          [v10 setObject:v16 forKey:name];
         }
 
         v13 = [v11 countByEnumeratingWithState:&v37 objects:v42 count:16];
@@ -1821,8 +1821,8 @@ LABEL_6:
       while (v13);
     }
 
-    v18 = [MEMORY[0x1E696AC60] sharedHTTPCookieStorage];
-    v19 = [v18 cookiesForURL:v6];
+    mEMORY[0x1E696AC60] = [MEMORY[0x1E696AC60] sharedHTTPCookieStorage];
+    v19 = [mEMORY[0x1E696AC60] cookiesForURL:lCopy];
 
     v35 = 0u;
     v36 = 0u;
@@ -1844,12 +1844,12 @@ LABEL_6:
           }
 
           v25 = *(*(&v33 + 1) + 8 * j);
-          v26 = [v25 name];
-          v27 = [v10 objectForKey:v26];
+          name2 = [v25 name];
+          v27 = [v10 objectForKey:name2];
 
           if (!v27)
           {
-            [v10 setObject:v25 forKey:v26];
+            [v10 setObject:v25 forKey:name2];
           }
         }
 
@@ -1859,11 +1859,11 @@ LABEL_6:
       while (v22);
     }
 
-    v28 = [v10 allValues];
-    v29 = [v28 copy];
+    allValues = [v10 allValues];
+    v29 = [allValues copy];
 
-    v8 = v31;
-    v7 = v32;
+    host = v31;
+    keyCopy = v32;
   }
 
   else
@@ -1874,13 +1874,13 @@ LABEL_6:
   return v29;
 }
 
-- (id)_copyCookiesForPreparedSQLStatement:(sqlite3_stmt *)a3
+- (id)_copyCookiesForPreparedSQLStatement:(sqlite3_stmt *)statement
 {
   v33[4] = *MEMORY[0x1E69E9840];
   v26 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v28 = self;
-  v5 = [(SSVCookieStorage *)self _database];
-  v6 = [v5 statementHasRowAfterStepping:a3];
+  selfCopy = self;
+  _database = [(SSVCookieStorage *)self _database];
+  v6 = [_database statementHasRowAfterStepping:statement];
 
   if (v6)
   {
@@ -1895,20 +1895,20 @@ LABEL_6:
     do
     {
       v11 = objc_alloc_init(MEMORY[0x1E695DF90]);
-      if (sqlite3_column_int(a3, 0))
+      if (sqlite3_column_int(statement, 0))
       {
         [v11 setObject:MEMORY[0x1E695E118] forKey:v25];
       }
 
-      if (sqlite3_column_int(a3, 5))
+      if (sqlite3_column_int(statement, 5))
       {
         [v11 setObject:MEMORY[0x1E695E118] forKey:v24];
       }
 
-      v12 = [MEMORY[0x1E696AD98] numberWithInt:{sqlite3_column_int(a3, 7)}];
+      v12 = [MEMORY[0x1E696AD98] numberWithInt:{sqlite3_column_int(statement, 7)}];
       [v11 setObject:v12 forKey:v27];
 
-      v13 = SSSQLiteCopyFoundationValueForStatementColumn(a3, 2);
+      v13 = SSSQLiteCopyFoundationValueForStatementColumn(statement, 2);
       v14 = v13;
       if (v13)
       {
@@ -1931,7 +1931,7 @@ LABEL_6:
       v29[1] = 3221225472;
       v29[2] = __56__SSVCookieStorage__copyCookiesForPreparedSQLStatement___block_invoke;
       v29[3] = &unk_1E84B10E8;
-      v31 = a3;
+      statementCopy = statement;
       v18 = v11;
       v30 = v18;
       [v17 enumerateKeysAndObjectsUsingBlock:v29];
@@ -1941,8 +1941,8 @@ LABEL_6:
         [v26 addObject:v19];
       }
 
-      v20 = [(SSVCookieStorage *)v28 _database];
-      v21 = [v20 statementHasRowAfterStepping:a3];
+      _database2 = [(SSVCookieStorage *)selfCopy _database];
+      v21 = [_database2 statementHasRowAfterStepping:statement];
     }
 
     while ((v21 & 1) != 0);
@@ -1961,14 +1961,14 @@ void __56__SSVCookieStorage__copyCookiesForPreparedSQLStatement___block_invoke(u
   }
 }
 
-- (id)_copyCookiesWithKey:(id)a3
+- (id)_copyCookiesWithKey:(id)key
 {
   v36 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  keyCopy = key;
   if ([MEMORY[0x1E698C890] useNewCookieStorage] && !-[SSVCookieStorage performingMigration](self, "performingMigration"))
   {
-    v14 = [(SSVCookieStorage *)self _accountForKey:v4];
-    v13 = [v14 ams_cookies];
+    v14 = [(SSVCookieStorage *)self _accountForKey:keyCopy];
+    ams_cookies = [v14 ams_cookies];
   }
 
   else
@@ -1980,31 +1980,31 @@ void __56__SSVCookieStorage__copyCookiesForPreparedSQLStatement___block_invoke(u
     v28 = __Block_byref_object_dispose__42;
     v29 = 0;
     objc_initWeak(&location, self);
-    v5 = [(SSVCookieStorage *)self _database];
+    _database = [(SSVCookieStorage *)self _database];
     v16 = MEMORY[0x1E69E9820];
     v17 = 3221225472;
     v18 = __40__SSVCookieStorage__copyCookiesWithKey___block_invoke;
     v19 = &unk_1E84B1110;
     objc_copyWeak(&v22, &location);
-    v6 = v4;
+    v6 = keyCopy;
     v20 = v6;
     v21 = &v24;
-    [v5 prepareStatementForSQL:@"SELECT discard cache:domain usingBlock:{expire_time, name, path, secure, value, version FROM cookies WHERE user=? AND user_scope=?;", 0, &v16}];
+    [_database prepareStatementForSQL:@"SELECT discard cache:domain usingBlock:{expire_time, name, path, secure, value, version FROM cookies WHERE user=? AND user_scope=?;", 0, &v16}];
 
     if ([(SSVCookieStorage *)self performingMigration:v16])
     {
-      v7 = [MEMORY[0x1E698C968] sharedAccountsCookiesConfig];
-      if (!v7)
+      mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedAccountsCookiesConfig];
+      if (!mEMORY[0x1E698C968])
       {
-        v7 = [MEMORY[0x1E698C968] sharedConfig];
+        mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
       }
 
-      v8 = [v7 OSLogObject];
-      if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+      oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+      if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
       {
         v9 = objc_opt_class();
         v10 = [v25[5] count];
-        v11 = [v6 identifier];
+        identifier = [v6 identifier];
         v12 = AMSHashIfNeeded();
         *buf = 138543874;
         v31 = v9;
@@ -2012,18 +2012,18 @@ void __56__SSVCookieStorage__copyCookiesForPreparedSQLStatement___block_invoke(u
         v33 = v10;
         v34 = 2114;
         v35 = v12;
-        _os_log_impl(&dword_1D48BA000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@: Someone is migrating the cookies. We found %lu cookie(s) in the database for %{public}@.", buf, 0x20u);
+        _os_log_impl(&dword_1D48BA000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: Someone is migrating the cookies. We found %lu cookie(s) in the database for %{public}@.", buf, 0x20u);
       }
     }
 
-    v13 = v25[5];
+    ams_cookies = v25[5];
 
     objc_destroyWeak(&v22);
     objc_destroyWeak(&location);
     _Block_object_dispose(&v24, 8);
   }
 
-  return v13;
+  return ams_cookies;
 }
 
 void __40__SSVCookieStorage__copyCookiesWithKey___block_invoke(uint64_t a1, sqlite3_stmt *a2)
@@ -2041,26 +2041,26 @@ void __40__SSVCookieStorage__copyCookiesWithKey___block_invoke(uint64_t a1, sqli
   *(v7 + 40) = v6;
 }
 
-- (id)_copyPrivateCookiesForURL:(id)a3 key:(id)a4
+- (id)_copyPrivateCookiesForURL:(id)l key:(id)key
 {
   v46 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  keyCopy = key;
   v8 = objc_alloc_init(MEMORY[0x1E695DF90]);
   if ([MEMORY[0x1E698C890] useNewCookieStorage] && !-[SSVCookieStorage performingMigration](self, "performingMigration"))
   {
-    v29 = [(SSVCookieStorage *)self _accountForKey:v7];
+    v29 = [(SSVCookieStorage *)self _accountForKey:keyCopy];
     if (!-[SSVCookieStorage _stopIncludingLocalCookies](self, "_stopIncludingLocalCookies") && ([v29 ams_isLocalAccount] & 1) == 0)
     {
-      v10 = +[SSVCookieKey keyWithIdentifier:scope:](SSVCookieKey, "keyWithIdentifier:scope:", &unk_1F507A1C8, [v7 scope]);
+      v10 = +[SSVCookieKey keyWithIdentifier:scope:](SSVCookieKey, "keyWithIdentifier:scope:", &unk_1F507A1C8, [keyCopy scope]);
       v28 = [(SSVCookieStorage *)self _accountForKey:v10];
 
       v42 = 0u;
       v43 = 0u;
       v40 = 0u;
       v41 = 0u;
-      v11 = [v28 ams_cookies];
-      v12 = [(SSVCookieStorage *)self _filterCookies:v11 forURL:v6];
+      ams_cookies = [v28 ams_cookies];
+      v12 = [(SSVCookieStorage *)self _filterCookies:ams_cookies forURL:lCopy];
 
       v13 = [v12 countByEnumeratingWithState:&v40 objects:v45 count:16];
       if (v13)
@@ -2076,9 +2076,9 @@ void __40__SSVCookieStorage__copyCookiesWithKey___block_invoke(uint64_t a1, sqli
             }
 
             v16 = *(*(&v40 + 1) + 8 * i);
-            v17 = [v16 value];
-            v18 = [v16 name];
-            [v8 setObject:v17 forKeyedSubscript:v18];
+            value = [v16 value];
+            name = [v16 name];
+            [v8 setObject:value forKeyedSubscript:name];
           }
 
           v13 = [v12 countByEnumeratingWithState:&v40 objects:v45 count:16];
@@ -2092,8 +2092,8 @@ void __40__SSVCookieStorage__copyCookiesWithKey___block_invoke(uint64_t a1, sqli
     v39 = 0u;
     v36 = 0u;
     v37 = 0u;
-    v19 = [v29 ams_cookies];
-    v20 = [(SSVCookieStorage *)self _filterCookies:v19 forURL:v6];
+    ams_cookies2 = [v29 ams_cookies];
+    v20 = [(SSVCookieStorage *)self _filterCookies:ams_cookies2 forURL:lCopy];
 
     v21 = [v20 countByEnumeratingWithState:&v36 objects:v44 count:16];
     if (v21)
@@ -2109,9 +2109,9 @@ void __40__SSVCookieStorage__copyCookiesWithKey___block_invoke(uint64_t a1, sqli
           }
 
           v24 = *(*(&v36 + 1) + 8 * j);
-          v25 = [v24 value];
-          v26 = [v24 name];
-          [v8 setObject:v25 forKeyedSubscript:v26];
+          value2 = [v24 value];
+          name2 = [v24 name];
+          [v8 setObject:value2 forKeyedSubscript:name2];
         }
 
         v21 = [v20 countByEnumeratingWithState:&v36 objects:v44 count:16];
@@ -2124,16 +2124,16 @@ void __40__SSVCookieStorage__copyCookiesWithKey___block_invoke(uint64_t a1, sqli
   else
   {
     objc_initWeak(&location, self);
-    v9 = [(SSVCookieStorage *)self _database];
+    _database = [(SSVCookieStorage *)self _database];
     v30[0] = MEMORY[0x1E69E9820];
     v30[1] = 3221225472;
     v30[2] = __50__SSVCookieStorage__copyPrivateCookiesForURL_key___block_invoke;
     v30[3] = &unk_1E84B1138;
     objc_copyWeak(&v34, &location);
-    v31 = v6;
-    v32 = v7;
+    v31 = lCopy;
+    v32 = keyCopy;
     v33 = v8;
-    [v9 prepareStatementForSQL:@"SELECT name cache:value FROM cookies WHERE ((NOT secure OR secure=?) AND ((user=? AND user_scope=?) OR (user=-1)) AND ((expire_time=0) OR (expire_time>=?)) AND (SUBSTR(? usingBlock:{-LENGTH(domain))=domain) AND (SUBSTR(?, 1, LENGTH(path))=path))", 1, v30}];
+    [_database prepareStatementForSQL:@"SELECT name cache:value FROM cookies WHERE ((NOT secure OR secure=?) AND ((user=? AND user_scope=?) OR (user=-1)) AND ((expire_time=0) OR (expire_time>=?)) AND (SUBSTR(? usingBlock:{-LENGTH(domain))=domain) AND (SUBSTR(?, 1, LENGTH(path))=path))", 1, v30}];
 
     objc_destroyWeak(&v34);
     objc_destroyWeak(&location);
@@ -2203,26 +2203,26 @@ void __50__SSVCookieStorage__copyPrivateCookiesForURL_key___block_invoke(id *a1,
   }
 }
 
-- (id)_copyPrivateCookieObjectsForURL:(id)a3 key:(id)a4
+- (id)_copyPrivateCookieObjectsForURL:(id)l key:(id)key
 {
   v51 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  keyCopy = key;
   if ([MEMORY[0x1E698C890] useNewCookieStorage] && !-[SSVCookieStorage performingMigration](self, "performingMigration"))
   {
     v10 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    v28 = [(SSVCookieStorage *)self _accountForKey:v7];
+    v28 = [(SSVCookieStorage *)self _accountForKey:keyCopy];
     if (!-[SSVCookieStorage _stopIncludingLocalCookies](self, "_stopIncludingLocalCookies") && ([v28 ams_isLocalAccount] & 1) == 0)
     {
-      v11 = +[SSVCookieKey keyWithIdentifier:scope:](SSVCookieKey, "keyWithIdentifier:scope:", &unk_1F507A1C8, [v7 scope]);
+      v11 = +[SSVCookieKey keyWithIdentifier:scope:](SSVCookieKey, "keyWithIdentifier:scope:", &unk_1F507A1C8, [keyCopy scope]);
       v27 = [(SSVCookieStorage *)self _accountForKey:v11];
 
       v47 = 0u;
       v48 = 0u;
       v45 = 0u;
       v46 = 0u;
-      v12 = [v27 ams_cookies];
-      v13 = [(SSVCookieStorage *)self _filterCookies:v12 forURL:v6];
+      ams_cookies = [v27 ams_cookies];
+      v13 = [(SSVCookieStorage *)self _filterCookies:ams_cookies forURL:lCopy];
 
       v14 = [v13 countByEnumeratingWithState:&v45 objects:v50 count:16];
       if (v14)
@@ -2238,8 +2238,8 @@ void __50__SSVCookieStorage__copyPrivateCookiesForURL_key___block_invoke(id *a1,
             }
 
             v17 = *(*(&v45 + 1) + 8 * i);
-            v18 = [v17 name];
-            [v10 setObject:v17 forKeyedSubscript:v18];
+            name = [v17 name];
+            [v10 setObject:v17 forKeyedSubscript:name];
           }
 
           v14 = [v13 countByEnumeratingWithState:&v45 objects:v50 count:16];
@@ -2253,8 +2253,8 @@ void __50__SSVCookieStorage__copyPrivateCookiesForURL_key___block_invoke(id *a1,
     v44 = 0u;
     v42 = 0u;
     v41 = 0u;
-    v19 = [v28 ams_cookies];
-    v20 = [(SSVCookieStorage *)self _filterCookies:v19 forURL:v6];
+    ams_cookies2 = [v28 ams_cookies];
+    v20 = [(SSVCookieStorage *)self _filterCookies:ams_cookies2 forURL:lCopy];
 
     v21 = [v20 countByEnumeratingWithState:&v41 objects:v49 count:16];
     if (v21)
@@ -2270,8 +2270,8 @@ void __50__SSVCookieStorage__copyPrivateCookiesForURL_key___block_invoke(id *a1,
           }
 
           v24 = *(*(&v41 + 1) + 8 * j);
-          v25 = [v24 name];
-          [v10 setObject:v24 forKeyedSubscript:v25];
+          name2 = [v24 name];
+          [v10 setObject:v24 forKeyedSubscript:name2];
         }
 
         v21 = [v20 countByEnumeratingWithState:&v41 objects:v49 count:16];
@@ -2280,7 +2280,7 @@ void __50__SSVCookieStorage__copyPrivateCookiesForURL_key___block_invoke(id *a1,
       while (v21);
     }
 
-    v9 = [v10 allValues];
+    allValues = [v10 allValues];
   }
 
   else
@@ -2292,24 +2292,24 @@ void __50__SSVCookieStorage__copyPrivateCookiesForURL_key___block_invoke(id *a1,
     v39 = __Block_byref_object_dispose__42;
     v40 = 0;
     objc_initWeak(&location, self);
-    v8 = [(SSVCookieStorage *)self _database];
+    _database = [(SSVCookieStorage *)self _database];
     v29[0] = MEMORY[0x1E69E9820];
     v29[1] = 3221225472;
     v29[2] = __56__SSVCookieStorage__copyPrivateCookieObjectsForURL_key___block_invoke;
     v29[3] = &unk_1E84B1160;
     objc_copyWeak(&v33, &location);
-    v30 = v6;
-    v31 = v7;
+    v30 = lCopy;
+    v31 = keyCopy;
     v32 = &v35;
-    [v8 prepareStatementForSQL:@"SELECT discard cache:domain usingBlock:{expire_time, name, path, secure, value, version FROM cookies WHERE ((NOT secure OR secure=?) AND ((user=? AND user_scope=?) OR (user=-1)) AND ((expire_time=0) OR (expire_time>=?)) AND (SUBSTR(?, -LENGTH(domain))=domain) AND (SUBSTR(?, 1, LENGTH(path))=path))", 1, v29}];
+    [_database prepareStatementForSQL:@"SELECT discard cache:domain usingBlock:{expire_time, name, path, secure, value, version FROM cookies WHERE ((NOT secure OR secure=?) AND ((user=? AND user_scope=?) OR (user=-1)) AND ((expire_time=0) OR (expire_time>=?)) AND (SUBSTR(?, -LENGTH(domain))=domain) AND (SUBSTR(?, 1, LENGTH(path))=path))", 1, v29}];
 
-    v9 = v36[5];
+    allValues = v36[5];
     objc_destroyWeak(&v33);
     objc_destroyWeak(&location);
     _Block_object_dispose(&v35, 8);
   }
 
-  return v9;
+  return allValues;
 }
 
 void __56__SSVCookieStorage__copyPrivateCookieObjectsForURL_key___block_invoke(uint64_t a1, sqlite3_stmt *a2)
@@ -2387,17 +2387,17 @@ void __29__SSVCookieStorage__database__block_invoke(uint64_t a1, void *a2)
   }
 }
 
-+ (BOOL)_fileURLRepresentsSharedStorageLocation:(id)a3
++ (BOOL)_fileURLRepresentsSharedStorageLocation:(id)location
 {
-  v3 = [a3 path];
-  if ([v3 length])
+  path = [location path];
+  if ([path length])
   {
-    v4 = [v3 stringByReplacingOccurrencesOfString:@"rescued." withString:&stru_1F503F418];
+    v4 = [path stringByReplacingOccurrencesOfString:@"rescued." withString:&stru_1F503F418];
 
-    v5 = [objc_opt_class() _sharedStorageLocationPath];
-    if (v5)
+    _sharedStorageLocationPath = [objc_opt_class() _sharedStorageLocationPath];
+    if (_sharedStorageLocationPath)
     {
-      v6 = [MEMORY[0x1E695DFF8] fileURLWithPath:v5];
+      v6 = [MEMORY[0x1E695DFF8] fileURLWithPath:_sharedStorageLocationPath];
     }
 
     else
@@ -2412,50 +2412,50 @@ void __29__SSVCookieStorage__database__block_invoke(uint64_t a1, void *a2)
   else
   {
     v7 = 0;
-    v4 = v3;
+    v4 = path;
   }
 
   return v7;
 }
 
-- (id)_filterCookies:(id)a3 forURL:(id)a4
+- (id)_filterCookies:(id)cookies forURL:(id)l
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  cookiesCopy = cookies;
+  lCopy = l;
+  if (!lCopy)
   {
     [SSVCookieStorage _filterCookies:a2 forURL:self];
   }
 
   v9 = MEMORY[0x1E695E0F0];
-  if (v7)
+  if (cookiesCopy)
   {
-    v9 = v7;
+    v9 = cookiesCopy;
   }
 
   v10 = v9;
 
-  v11 = [v8 host];
-  if (([v11 hasPrefix:@"."] & 1) == 0)
+  host = [lCopy host];
+  if (([host hasPrefix:@"."] & 1) == 0)
   {
-    v12 = [@"." stringByAppendingString:v11];
+    v12 = [@"." stringByAppendingString:host];
 
-    v11 = v12;
+    host = v12;
   }
 
-  v13 = [v8 path];
-  v14 = [v8 scheme];
-  v15 = [v14 isEqualToString:@"https"];
+  path = [lCopy path];
+  scheme = [lCopy scheme];
+  v15 = [scheme isEqualToString:@"https"];
 
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __42__SSVCookieStorage__filterCookies_forURL___block_invoke;
   v20[3] = &unk_1E84B11B0;
   v23 = v15;
-  v21 = v11;
-  v22 = v13;
-  v16 = v13;
-  v17 = v11;
+  v21 = host;
+  v22 = path;
+  v16 = path;
+  v17 = host;
   v18 = [v10 _ss_filterUsingTest:v20];
 
   return v18;
@@ -2511,20 +2511,20 @@ uint64_t __42__SSVCookieStorage__filterCookies_forURL___block_invoke(uint64_t a1
   return v11 & v14;
 }
 
-+ (id)_getGlobalSetCookiesForResponse:(id)a3
++ (id)_getGlobalSetCookiesForResponse:(id)response
 {
-  v3 = a3;
-  v4 = [v3 allHeaderFields];
-  v5 = [v4 objectForKey:@"X-Apple-Set-Cookie"];
+  responseCopy = response;
+  allHeaderFields = [responseCopy allHeaderFields];
+  v5 = [allHeaderFields objectForKey:@"X-Apple-Set-Cookie"];
 
   if ([v5 length])
   {
-    v6 = [v3 allHeaderFields];
-    v7 = [v6 mutableCopy];
+    allHeaderFields2 = [responseCopy allHeaderFields];
+    v7 = [allHeaderFields2 mutableCopy];
 
     [v7 setObject:v5 forKey:@"Set-Cookie"];
     v8 = MEMORY[0x1E696AC58];
-    v9 = [v3 URL];
+    v9 = [responseCopy URL];
     v10 = [v8 cookiesWithResponseHeaderFields:v7 forURL:v9];
   }
 
@@ -2536,32 +2536,32 @@ uint64_t __42__SSVCookieStorage__filterCookies_forURL___block_invoke(uint64_t a1
   return v10;
 }
 
-+ (id)_getSetCookiesForResponse:(id)a3
++ (id)_getSetCookiesForResponse:(id)response
 {
   v3 = MEMORY[0x1E696AC58];
-  v4 = a3;
-  v5 = [v4 allHeaderFields];
-  v6 = [v4 URL];
+  responseCopy = response;
+  allHeaderFields = [responseCopy allHeaderFields];
+  v6 = [responseCopy URL];
 
-  v7 = [v3 cookiesWithResponseHeaderFields:v5 forURL:v6];
+  v7 = [v3 cookiesWithResponseHeaderFields:allHeaderFields forURL:v6];
 
   return v7;
 }
 
-+ (id)_getUserSetCookiesForResponse:(id)a3
++ (id)_getUserSetCookiesForResponse:(id)response
 {
-  v3 = a3;
-  v4 = [v3 allHeaderFields];
-  v5 = [v4 objectForKey:@"X-Apple-Set-User-Cookie"];
+  responseCopy = response;
+  allHeaderFields = [responseCopy allHeaderFields];
+  v5 = [allHeaderFields objectForKey:@"X-Apple-Set-User-Cookie"];
 
   if ([v5 length])
   {
-    v6 = [v3 allHeaderFields];
-    v7 = [v6 mutableCopy];
+    allHeaderFields2 = [responseCopy allHeaderFields];
+    v7 = [allHeaderFields2 mutableCopy];
 
     [v7 setObject:v5 forKey:@"Set-Cookie"];
     v8 = MEMORY[0x1E696AC58];
-    v9 = [v3 URL];
+    v9 = [responseCopy URL];
     v10 = [v8 cookiesWithResponseHeaderFields:v7 forURL:v9];
   }
 
@@ -2573,22 +2573,22 @@ uint64_t __42__SSVCookieStorage__filterCookies_forURL___block_invoke(uint64_t a1
   return v10;
 }
 
-- (void)_insertCookies:(id)a3 forKey:(id)a4
+- (void)_insertCookies:(id)cookies forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  cookiesCopy = cookies;
+  keyCopy = key;
   objc_initWeak(&location, self);
-  v8 = [(SSVCookieStorage *)self _database];
+  _database = [(SSVCookieStorage *)self _database];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __42__SSVCookieStorage__insertCookies_forKey___block_invoke;
   v11[3] = &unk_1E84B11D8;
   objc_copyWeak(&v14, &location);
-  v9 = v6;
+  v9 = cookiesCopy;
   v12 = v9;
-  v10 = v7;
+  v10 = keyCopy;
   v13 = v10;
-  [v8 prepareStatementForSQL:@"INSERT OR REPLACE INTO cookies (discard cache:domain usingBlock:{expire_time, name, path, secure, user, user_scope, value, version) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", 1, v11}];
+  [_database prepareStatementForSQL:@"INSERT OR REPLACE INTO cookies (discard cache:domain usingBlock:{expire_time, name, path, secure, user, user_scope, value, version) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", 1, v11}];
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
@@ -2634,21 +2634,21 @@ void __42__SSVCookieStorage__insertCookies_forKey___block_invoke(uint64_t a1, sq
   }
 }
 
-- (void)_setCookies:(id)a3 forKey:(id)a4
+- (void)_setCookies:(id)cookies forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  cookiesCopy = cookies;
+  keyCopy = key;
   if ([MEMORY[0x1E698C890] useNewCookieStorage] && !-[SSVCookieStorage performingMigration](self, "performingMigration"))
   {
-    v9 = [(SSVCookieStorage *)self _accountForKey:v7];
+    v9 = [(SSVCookieStorage *)self _accountForKey:keyCopy];
     v10 = v9;
     if (v9)
     {
-      [v9 ams_addCookies:v6];
+      [v9 ams_addCookies:cookiesCopy];
       if ([v10 isDirty])
       {
-        v11 = [MEMORY[0x1E6959A48] ams_sharedAccountStore];
-        v12 = [v11 ams_saveAccount:v10 verifyCredentials:0];
+        ams_sharedAccountStore = [MEMORY[0x1E6959A48] ams_sharedAccountStore];
+        v12 = [ams_sharedAccountStore ams_saveAccount:v10 verifyCredentials:0];
 
         [v12 waitUntilFinished];
       }
@@ -2658,15 +2658,15 @@ void __42__SSVCookieStorage__insertCookies_forKey___block_invoke(uint64_t a1, sq
   else
   {
     objc_initWeak(&location, self);
-    v8 = [(SSVCookieStorage *)self _database];
+    _database = [(SSVCookieStorage *)self _database];
     v13 = MEMORY[0x1E69E9820];
     v14 = 3221225472;
     v15 = __39__SSVCookieStorage__setCookies_forKey___block_invoke;
     v16 = &unk_1E84B1200;
     objc_copyWeak(&v19, &location);
-    v17 = v6;
-    v18 = v7;
-    [v8 performTransactionWithBlock:&v13];
+    v17 = cookiesCopy;
+    v18 = keyCopy;
+    [_database performTransactionWithBlock:&v13];
 
     [(SSVCookieStorage *)self _cookieDatabaseDidChange:v13];
     objc_destroyWeak(&v19);
@@ -2682,35 +2682,35 @@ uint64_t __39__SSVCookieStorage__setCookies_forKey___block_invoke(uint64_t a1)
   return 1;
 }
 
-+ (BOOL)_setupCookieDatabase:(id)a3 forCookieStorage:(id)a4
++ (BOOL)_setupCookieDatabase:(id)database forCookieStorage:(id)storage
 {
-  v6 = a3;
-  v7 = a4;
+  databaseCopy = database;
+  storageCopy = storage;
   v19 = 0;
   v20 = &v19;
   v21 = 0x2020000000;
   v22 = 1;
-  objc_initWeak(&location, a1);
+  objc_initWeak(&location, self);
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __58__SSVCookieStorage__setupCookieDatabase_forCookieStorage___block_invoke;
   v14[3] = &unk_1E84B1250;
   objc_copyWeak(v17, &location);
-  v8 = v6;
+  v8 = databaseCopy;
   v15 = v8;
   v16 = &v19;
-  v17[1] = a1;
+  v17[1] = self;
   [v8 performTransactionWithBlock:v14];
   v9 = [v8 executeSQL:@"PRAGMA journal_mode=WAL;"];
   *(v20 + 24) = v9;
-  if (v7)
+  if (storageCopy)
   {
     v10 = dispatch_get_global_queue(0, 0);
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __58__SSVCookieStorage__setupCookieDatabase_forCookieStorage___block_invoke_2;
     v12[3] = &unk_1E84AC050;
-    v13 = v7;
+    v13 = storageCopy;
     dispatch_async(v10, v12);
 
     v9 = *(v20 + 24);
@@ -2946,28 +2946,28 @@ uint64_t __58__SSVCookieStorage__setupCookieDatabase_forCookieStorage___block_in
   return result;
 }
 
-+ (BOOL)_migrateToVersion2WithDatabase:(id)a3
++ (BOOL)_migrateToVersion2WithDatabase:(id)database
 {
-  v3 = a3;
-  if (![v3 executeSQL:{@"CREATE TABLE IF NOT EXISTS tmp_cookies (discard INTEGER DEFAULT 0, domain TEXT NOT NULL, expire_time REAL, name TEXT NOT NULL, path TEXT NOT NULL, secure INTEGER, user INTEGER DEFAULT 0, user_scope INTEGER DEFAULT 0, value TEXT NOT NULL, version INTEGER DEFAULT 1, PRIMARY KEY(name, domain, path, user, user_scope));"}])
+  databaseCopy = database;
+  if (![databaseCopy executeSQL:{@"CREATE TABLE IF NOT EXISTS tmp_cookies (discard INTEGER DEFAULT 0, domain TEXT NOT NULL, expire_time REAL, name TEXT NOT NULL, path TEXT NOT NULL, secure INTEGER, user INTEGER DEFAULT 0, user_scope INTEGER DEFAULT 0, value TEXT NOT NULL, version INTEGER DEFAULT 1, PRIMARY KEY(name, domain, path, user, user_scope));"}])
   {
     goto LABEL_6;
   }
 
-  if (([v3 executeSQL:{@"INSERT INTO tmp_cookies (discard, domain, expire_time, name, path, secure, user, value, version) SELECT discard, domain, expire_time, name, path, secure, user, value, version FROM cookies;"}] & 1) == 0)
+  if (([databaseCopy executeSQL:{@"INSERT INTO tmp_cookies (discard, domain, expire_time, name, path, secure, user, value, version) SELECT discard, domain, expire_time, name, path, secure, user, value, version FROM cookies;"}] & 1) == 0)
   {
-    [v3 executeSQL:@"DROP TABLE tmp_cookies;"];
+    [databaseCopy executeSQL:@"DROP TABLE tmp_cookies;"];
     goto LABEL_6;
   }
 
-  if (![v3 executeSQL:@"DROP TABLE cookies;"])
+  if (![databaseCopy executeSQL:@"DROP TABLE cookies;"])
   {
 LABEL_6:
     v4 = 0;
     goto LABEL_7;
   }
 
-  v4 = [v3 executeSQL:@"ALTER TABLE tmp_cookies RENAME TO cookies;"];
+  v4 = [databaseCopy executeSQL:@"ALTER TABLE tmp_cookies RENAME TO cookies;"];
 LABEL_7:
 
   return v4;
@@ -2981,15 +2981,15 @@ LABEL_7:
   return v3;
 }
 
-+ (BOOL)_currentProcessShouldUseRescuedStorageLocationForLocation:(id)a3
++ (BOOL)_currentProcessShouldUseRescuedStorageLocationForLocation:(id)location
 {
-  v4 = a3;
-  if ([a1 _fileIsOwnedByRoot:v4])
+  locationCopy = location;
+  if ([self _fileIsOwnedByRoot:locationCopy])
   {
-    v5 = [a1 _rescuedStorageLocationForLocation:v4];
-    v6 = [MEMORY[0x1E696AC08] defaultManager];
-    v7 = [v5 path];
-    v8 = [v6 fileExistsAtPath:v7];
+    v5 = [self _rescuedStorageLocationForLocation:locationCopy];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    path = [v5 path];
+    v8 = [defaultManager fileExistsAtPath:path];
 
     if (v8)
     {
@@ -2998,7 +2998,7 @@ LABEL_7:
 
     else
     {
-      v9 = [a1 _currentProcessIsRoot] ^ 1;
+      v9 = [self _currentProcessIsRoot] ^ 1;
     }
   }
 
@@ -3010,14 +3010,14 @@ LABEL_7:
   return v9;
 }
 
-+ (BOOL)_fileIsOwnedByRoot:(id)a3
++ (BOOL)_fileIsOwnedByRoot:(id)root
 {
   v3 = MEMORY[0x1E696AC08];
-  v4 = a3;
-  v5 = [v3 defaultManager];
-  v6 = [v4 path];
+  rootCopy = root;
+  defaultManager = [v3 defaultManager];
+  path = [rootCopy path];
 
-  v7 = [v5 attributesOfItemAtPath:v6 error:0];
+  v7 = [defaultManager attributesOfItemAtPath:path error:0];
 
   v8 = [v7 objectForKeyedSubscript:*MEMORY[0x1E696A358]];
   v9 = v8;
@@ -3034,23 +3034,23 @@ LABEL_7:
   return v10;
 }
 
-+ (id)_rescuedStorageLocationForLocation:(id)a3
++ (id)_rescuedStorageLocationForLocation:(id)location
 {
-  v4 = a3;
-  if ([a1 _fileIsOwnedByRoot:v4])
+  locationCopy = location;
+  if ([self _fileIsOwnedByRoot:locationCopy])
   {
-    v5 = [v4 pathExtension];
-    v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@", @"rescued.", v5];
-    v7 = [v4 path];
-    v8 = [v7 stringByReplacingOccurrencesOfString:v5 withString:v6];
+    pathExtension = [locationCopy pathExtension];
+    v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@", @"rescued.", pathExtension];
+    path = [locationCopy path];
+    v8 = [path stringByReplacingOccurrencesOfString:pathExtension withString:v6];
 
     v9 = [MEMORY[0x1E695DFF8] fileURLWithPath:v8];
-    v10 = [a1 _rescuedStorageLocationForLocation:v9];
+    v10 = [self _rescuedStorageLocationForLocation:v9];
   }
 
   else
   {
-    v10 = v4;
+    v10 = locationCopy;
   }
 
   return v10;

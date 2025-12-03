@@ -1,9 +1,9 @@
 @interface TUIHoverVisibleView
-+ (id)renderModelWithSubviewsModel:(id)a3 identifier:(id)a4 hoverIdentifier:(id)a5;
++ (id)renderModelWithSubviewsModel:(id)model identifier:(id)identifier hoverIdentifier:(id)hoverIdentifier;
 - (BOOL)_updateVisible;
 - (id)hoverController;
-- (void)applyLayoutAttributes:(id)a3;
-- (void)hoverStateChanged:(id)a3;
+- (void)applyLayoutAttributes:(id)attributes;
+- (void)hoverStateChanged:(id)changed;
 - (void)prepareForReuse;
 - (void)viewDidEndDisplay;
 - (void)viewWillDisplay;
@@ -11,25 +11,25 @@
 
 @implementation TUIHoverVisibleView
 
-+ (id)renderModelWithSubviewsModel:(id)a3 identifier:(id)a4 hoverIdentifier:(id)a5
++ (id)renderModelWithSubviewsModel:(id)model identifier:(id)identifier hoverIdentifier:(id)hoverIdentifier
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[_TUIHoverVisibleRenderModel alloc] initWithIdentifier:v8 submodel:v9 hoverIdentifier:v7];
+  hoverIdentifierCopy = hoverIdentifier;
+  identifierCopy = identifier;
+  modelCopy = model;
+  v10 = [[_TUIHoverVisibleRenderModel alloc] initWithIdentifier:identifierCopy submodel:modelCopy hoverIdentifier:hoverIdentifierCopy];
 
   return v10;
 }
 
-- (void)applyLayoutAttributes:(id)a3
+- (void)applyLayoutAttributes:(id)attributes
 {
   v6.receiver = self;
   v6.super_class = TUIHoverVisibleView;
-  v4 = a3;
-  [(TUIContainerView *)&v6 applyLayoutAttributes:v4];
-  v5 = [v4 forceVisibleOnHover];
+  attributesCopy = attributes;
+  [(TUIContainerView *)&v6 applyLayoutAttributes:attributesCopy];
+  forceVisibleOnHover = [attributesCopy forceVisibleOnHover];
 
-  self->_forceVisible = v5;
+  self->_forceVisible = forceVisibleOnHover;
 }
 
 - (void)prepareForReuse
@@ -42,12 +42,12 @@
 
 - (BOOL)_updateVisible
 {
-  v3 = [(TUIReusableBaseView *)self layoutAttributes];
-  v4 = [v3 renderModel];
+  layoutAttributes = [(TUIReusableBaseView *)self layoutAttributes];
+  renderModel = [layoutAttributes renderModel];
 
-  v5 = [(TUIHoverVisibleView *)self hoverController];
-  v6 = [v4 hoverIdentifier];
-  v7 = [v5 hoverStateForIdentifier:v6];
+  hoverController = [(TUIHoverVisibleView *)self hoverController];
+  hoverIdentifier = [renderModel hoverIdentifier];
+  v7 = [hoverController hoverStateForIdentifier:hoverIdentifier];
 
   visible = self->_visible;
   if (visible != v7)
@@ -62,8 +62,8 @@
 
 - (id)hoverController
 {
-  v2 = [(TUIHoverVisibleView *)self superview];
-  if (v2)
+  superview = [(TUIHoverVisibleView *)self superview];
+  if (superview)
   {
     do
     {
@@ -72,17 +72,17 @@
         break;
       }
 
-      v3 = [v2 superview];
+      v2Superview = [superview superview];
 
-      v2 = v3;
+      superview = v2Superview;
     }
 
-    while (v3);
+    while (v2Superview);
   }
 
-  v4 = [v2 hoverController];
+  hoverController = [superview hoverController];
 
-  return v4;
+  return hoverController;
 }
 
 - (void)viewWillDisplay
@@ -90,8 +90,8 @@
   v4.receiver = self;
   v4.super_class = TUIHoverVisibleView;
   [(TUIReusableBaseView *)&v4 viewWillDisplay];
-  v3 = [(TUIHoverVisibleView *)self hoverController];
-  [v3 registerHoverObserver:self];
+  hoverController = [(TUIHoverVisibleView *)self hoverController];
+  [hoverController registerHoverObserver:self];
 
   [(TUIHoverVisibleView *)self _updateVisible];
 }
@@ -101,17 +101,17 @@
   v4.receiver = self;
   v4.super_class = TUIHoverVisibleView;
   [(TUIContainerView *)&v4 viewDidEndDisplay];
-  v3 = [(TUIHoverVisibleView *)self hoverController];
-  [v3 unregisterHoverObserver:self];
+  hoverController = [(TUIHoverVisibleView *)self hoverController];
+  [hoverController unregisterHoverObserver:self];
 }
 
-- (void)hoverStateChanged:(id)a3
+- (void)hoverStateChanged:(id)changed
 {
-  v8 = a3;
-  v4 = [(TUIReusableBaseView *)self layoutAttributes];
-  v5 = [v4 renderModel];
+  changedCopy = changed;
+  layoutAttributes = [(TUIReusableBaseView *)self layoutAttributes];
+  renderModel = [layoutAttributes renderModel];
 
-  if (!v8 || ([v5 hoverIdentifier], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v8, "containsObject:", v6), v6, v7))
+  if (!changedCopy || ([renderModel hoverIdentifier], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(changedCopy, "containsObject:", v6), v6, v7))
   {
     if ([(TUIHoverVisibleView *)self _updateVisible])
     {

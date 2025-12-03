@@ -3,7 +3,7 @@
 - (SSAuthenticationContext)authenticationContext;
 - (void)dealloc;
 - (void)run;
-- (void)setAuthenticationContext:(id)a3;
+- (void)setAuthenticationContext:(id)context;
 @end
 
 @implementation GetAutomaticDownloadKindsOperation
@@ -31,14 +31,14 @@
   return v3;
 }
 
-- (void)setAuthenticationContext:(id)a3
+- (void)setAuthenticationContext:(id)context
 {
   [(GetAutomaticDownloadKindsOperation *)self lock];
   authContext = self->_authContext;
-  if (authContext != a3)
+  if (authContext != context)
   {
 
-    self->_authContext = [a3 copy];
+    self->_authContext = [context copy];
   }
 
   [(GetAutomaticDownloadKindsOperation *)self unlock];
@@ -60,15 +60,15 @@
     v5 = +[SSLogConfig sharedConfig];
   }
 
-  v6 = [v5 shouldLog];
+  shouldLog = [v5 shouldLog];
   if ([v5 shouldLogToDisk])
   {
-    v7 = v6 | 2;
+    v7 = shouldLog | 2;
   }
 
   else
   {
-    v7 = v6;
+    v7 = shouldLog;
   }
 
   if (!os_log_type_enabled([v5 OSLogObject], OS_LOG_TYPE_INFO))
@@ -111,15 +111,15 @@
           v14 = +[SSLogConfig sharedConfig];
         }
 
-        v15 = [v14 shouldLog];
+        shouldLog2 = [v14 shouldLog];
         if ([v14 shouldLogToDisk])
         {
-          v16 = v15 | 2;
+          v16 = shouldLog2 | 2;
         }
 
         else
         {
-          v16 = v15;
+          v16 = shouldLog2;
         }
 
         if (!os_log_type_enabled([v14 OSLogObject], OS_LOG_TYPE_INFO))
@@ -163,15 +163,15 @@
       v21 = +[SSLogConfig sharedConfig];
     }
 
-    v22 = [v21 shouldLog];
+    shouldLog3 = [v21 shouldLog];
     if ([v21 shouldLogToDisk])
     {
-      v23 = v22 | 2;
+      v23 = shouldLog3 | 2;
     }
 
     else
     {
-      v23 = v22;
+      v23 = shouldLog3;
     }
 
     if (!os_log_type_enabled([v21 OSLogObject], OS_LOG_TYPE_DEFAULT))

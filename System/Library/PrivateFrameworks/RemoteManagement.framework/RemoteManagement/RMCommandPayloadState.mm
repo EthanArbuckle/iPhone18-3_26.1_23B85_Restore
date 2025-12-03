@@ -1,6 +1,6 @@
 @interface RMCommandPayloadState
-- (void)markExecutedWithResult:(id)a3 reasons:(id)a4 unknownPayloadKeys:(id)a5;
-- (void)markFailedWithError:(id)a3 reasons:(id)a4;
+- (void)markExecutedWithResult:(id)result reasons:(id)reasons unknownPayloadKeys:(id)keys;
+- (void)markFailedWithError:(id)error reasons:(id)reasons;
 - (void)markPending;
 - (void)markQueued;
 @end
@@ -16,19 +16,19 @@
   [(RMCommandPayloadState *)self setResult:0];
 }
 
-- (void)markExecutedWithResult:(id)a3 reasons:(id)a4 unknownPayloadKeys:(id)a5
+- (void)markExecutedWithResult:(id)result reasons:(id)reasons unknownPayloadKeys:(id)keys
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  resultCopy = result;
+  reasonsCopy = reasons;
+  keysCopy = keys;
   [(RMCommandPayloadState *)self setStatus:1];
   v11 = objc_opt_new();
   [(RMCommandPayloadState *)self setModifiedDate:v11];
 
-  [(RMCommandPayloadState *)self setResult:v8];
-  v12 = v9;
+  [(RMCommandPayloadState *)self setResult:resultCopy];
+  v12 = reasonsCopy;
   v13 = v12;
-  if ([v10 count])
+  if ([keysCopy count])
   {
     if (v12)
     {
@@ -40,13 +40,13 @@
       v14 = &__NSArray0__struct;
     }
 
-    v15 = [RMProtocolCommandRequest_StatusReason failedWithUnknownPayloadKeys:v10];
+    v15 = [RMProtocolCommandRequest_StatusReason failedWithUnknownPayloadKeys:keysCopy];
     v13 = [v14 arrayByAddingObject:v15];
   }
 
   if (v13)
   {
-    v25 = v8;
+    v25 = resultCopy;
     v16 = v13;
     v17 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v16 count]);
     v26 = 0u;
@@ -85,23 +85,23 @@
     v24 = [v17 copy];
     [(RMCommandPayloadState *)self setReasons:v24];
 
-    v8 = v25;
+    resultCopy = v25;
   }
 }
 
-- (void)markFailedWithError:(id)a3 reasons:(id)a4
+- (void)markFailedWithError:(id)error reasons:(id)reasons
 {
-  v6 = a3;
-  v7 = a4;
+  errorCopy = error;
+  reasonsCopy = reasons;
   [(RMCommandPayloadState *)self setStatus:2];
   v8 = objc_opt_new();
   [(RMCommandPayloadState *)self setModifiedDate:v8];
 
   [(RMCommandPayloadState *)self setResult:0];
-  v9 = v7;
+  v9 = reasonsCopy;
   v10 = v9;
   v11 = v9;
-  if (v6)
+  if (errorCopy)
   {
     if (v9)
     {
@@ -113,7 +113,7 @@
       v12 = &__NSArray0__struct;
     }
 
-    v13 = [RMProtocolCommandRequest_StatusReason reasonWithError:v6];
+    v13 = [RMProtocolCommandRequest_StatusReason reasonWithError:errorCopy];
     v11 = [v12 arrayByAddingObject:v13];
   }
 

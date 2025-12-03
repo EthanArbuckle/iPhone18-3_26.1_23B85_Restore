@@ -1,14 +1,14 @@
 @interface CHMoveModeSettingsViewController
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4;
-- (CHMoveModeSettingsViewController)initWithCoder:(id)a3;
-- (CHMoveModeSettingsViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (CHMoveModeSettingsViewController)initWithStyle:(int64_t)a3;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path;
+- (CHMoveModeSettingsViewController)initWithCoder:(id)coder;
+- (CHMoveModeSettingsViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (CHMoveModeSettingsViewController)initWithStyle:(int64_t)style;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
 @end
 
 @implementation CHMoveModeSettingsViewController
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
   v4 = type metadata accessor for IndexPath();
   v5 = *(v4 - 8);
@@ -19,7 +19,7 @@
   return UITableViewAutomaticDimension;
 }
 
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path
 {
   v4 = type metadata accessor for IndexPath();
   v5 = *(v4 - 8);
@@ -30,7 +30,7 @@
   return 0;
 }
 
-- (CHMoveModeSettingsViewController)initWithCoder:(id)a3
+- (CHMoveModeSettingsViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.isa + OBJC_IVAR___CHMoveModeSettingsViewController_dataSource) = 0;
   result = _assertionFailure(_:_:file:line:flags:)();
@@ -38,14 +38,14 @@
   return result;
 }
 
-- (CHMoveModeSettingsViewController)initWithStyle:(int64_t)a3
+- (CHMoveModeSettingsViewController)initWithStyle:(int64_t)style
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (CHMoveModeSettingsViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (CHMoveModeSettingsViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

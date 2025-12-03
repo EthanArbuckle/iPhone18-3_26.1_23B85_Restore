@@ -1,8 +1,8 @@
 @interface MOEventData
 + (id)supportedMetricKeys;
 + (void)defineClassCollections;
-- (BOOL)submitMetricsWithError:(id *)a3;
-- (MOEventData)initWithEvent:(id)a3 islandID:(id)a4 subDate:(id)a5;
+- (BOOL)submitMetricsWithError:(id *)error;
+- (MOEventData)initWithEvent:(id)event islandID:(id)d subDate:(id)date;
 - (void)setValues;
 @end
 
@@ -28,13 +28,13 @@ void __37__MOEventData_defineClassCollections__block_invoke(id a1)
   poiCategoryDictionary = &off_10036EAE0;
 }
 
-- (MOEventData)initWithEvent:(id)a3 islandID:(id)a4 subDate:(id)a5
+- (MOEventData)initWithEvent:(id)event islandID:(id)d subDate:(id)date
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = v12;
-  if (!v10)
+  eventCopy = event;
+  dCopy = d;
+  dateCopy = date;
+  v13 = dateCopy;
+  if (!eventCopy)
   {
     v16 = _mo_log_facility_get_os_log(&MOLogFacilityGeneral);
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -46,12 +46,12 @@ void __37__MOEventData_defineClassCollections__block_invoke(id a1)
     v25 = v24;
     v26 = @"Invalid parameter not satisfying: event";
     v27 = a2;
-    v28 = self;
+    selfCopy3 = self;
     v29 = 98;
     goto LABEL_16;
   }
 
-  if (!v11)
+  if (!dCopy)
   {
     v30 = _mo_log_facility_get_os_log(&MOLogFacilityGeneral);
     if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
@@ -63,12 +63,12 @@ void __37__MOEventData_defineClassCollections__block_invoke(id a1)
     v25 = v24;
     v26 = @"Invalid parameter not satisfying: islandID != nil";
     v27 = a2;
-    v28 = self;
+    selfCopy3 = self;
     v29 = 99;
     goto LABEL_16;
   }
 
-  if (!v12)
+  if (!dateCopy)
   {
     v38 = _mo_log_facility_get_os_log(&MOLogFacilityGeneral);
     if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
@@ -80,78 +80,78 @@ void __37__MOEventData_defineClassCollections__block_invoke(id a1)
     v25 = v24;
     v26 = @"Invalid parameter not satisfying: subDate";
     v27 = a2;
-    v28 = self;
+    selfCopy3 = self;
     v29 = 100;
 LABEL_16:
-    [v24 handleFailureInMethod:v27 object:v28 file:@"MOEventData.m" lineNumber:v29 description:v26];
+    [v24 handleFailureInMethod:v27 object:selfCopy3 file:@"MOEventData.m" lineNumber:v29 description:v26];
 
-    v15 = 0;
+    selfCopy4 = 0;
     goto LABEL_17;
   }
 
   v14 = [(MOEventData *)self initWithLoggingEnabled:1];
   if (v14)
   {
-    v14->_provider = [v10 provider];
-    objc_storeStrong(&v14->_event, a3);
-    objc_storeStrong(&v14->_islandID, a4);
-    objc_storeStrong(&v14->_subDate, a5);
+    v14->_provider = [eventCopy provider];
+    objc_storeStrong(&v14->_event, event);
+    objc_storeStrong(&v14->_islandID, d);
+    objc_storeStrong(&v14->_subDate, date);
   }
 
   self = v14;
-  v15 = self;
+  selfCopy4 = self;
 LABEL_17:
 
-  return v15;
+  return selfCopy4;
 }
 
 + (id)supportedMetricKeys
 {
-  v2 = [objc_opt_class() integerKeys];
-  v3 = [NSMutableSet setWithSet:v2];
+  integerKeys = [objc_opt_class() integerKeys];
+  v3 = [NSMutableSet setWithSet:integerKeys];
 
-  v4 = [objc_opt_class() BOOLeanKeys];
-  v5 = [v4 allObjects];
-  [v3 addObjectsFromArray:v5];
+  bOOLeanKeys = [objc_opt_class() BOOLeanKeys];
+  allObjects = [bOOLeanKeys allObjects];
+  [v3 addObjectsFromArray:allObjects];
 
-  v6 = [objc_opt_class() bucketedKeys];
-  v7 = [v6 allObjects];
-  [v3 addObjectsFromArray:v7];
+  bucketedKeys = [objc_opt_class() bucketedKeys];
+  allObjects2 = [bucketedKeys allObjects];
+  [v3 addObjectsFromArray:allObjects2];
 
   return v3;
 }
 
-- (BOOL)submitMetricsWithError:(id *)a3
+- (BOOL)submitMetricsWithError:(id *)error
 {
   provider = self->_provider;
   if (provider <= 2)
   {
     if (provider == 1)
     {
-      v6 = MOAnalyticsEventMOEventDataWorkout;
+      event = MOAnalyticsEventMOEventDataWorkout;
       goto LABEL_13;
     }
 
     if (provider == 2)
     {
-      v6 = MOAnalyticsEventMOEventDataStorytelling;
+      event = MOAnalyticsEventMOEventDataStorytelling;
       goto LABEL_13;
     }
 
 LABEL_12:
-    v6 = [objc_opt_class() event];
+    event = [objc_opt_class() event];
     goto LABEL_13;
   }
 
   if (provider == 3)
   {
-    v6 = MOAnalyticsEventMOEventDataProactive;
+    event = MOAnalyticsEventMOEventDataProactive;
     goto LABEL_13;
   }
 
   if (provider == 9)
   {
-    v6 = MOAnalyticsEventMOEventDataScreenTime;
+    event = MOAnalyticsEventMOEventDataScreenTime;
     goto LABEL_13;
   }
 
@@ -160,12 +160,12 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  v6 = MOAnalyticsEventMOEventDataRoutine;
+  event = MOAnalyticsEventMOEventDataRoutine;
 LABEL_13:
   [(MOEventData *)self setValues];
   v8.receiver = self;
   v8.super_class = MOEventData;
-  return [(MOMetric *)&v8 submitMetricsWithError:a3 forEvent:v6];
+  return [(MOMetric *)&v8 submitMetricsWithError:error forEvent:event];
 }
 
 - (void)setValues
@@ -178,110 +178,110 @@ LABEL_13:
   v342 = [MOMetric binsFromStart:&off_100369748 toEnd:&off_10036E4F0 gap:&off_10036E530];
   v339 = +[NSCalendar currentCalendar];
   v4 = [v339 components:764 fromDate:self->_subDate];
-  v5 = [v4 year];
-  v6 = [v4 month];
+  year = [v4 year];
+  month = [v4 month];
   v362 = [v4 day];
-  v7 = [v4 weekday];
-  v8 = [v4 hour];
-  v9 = [v4 minute];
+  weekday = [v4 weekday];
+  hour = [v4 hour];
+  minute = [v4 minute];
   v338 = v4;
-  v10 = (v9 * 60.0 + v8 * 3600.0 + [v4 second]);
-  v11 = [NSNumber numberWithInteger:v7];
-  v12 = [(MOMetric *)self metrics];
-  [v12 setObject:v11 forKeyedSubscript:@"DayIDSubDate"];
+  v10 = (minute * 60.0 + hour * 3600.0 + [v4 second]);
+  v11 = [NSNumber numberWithInteger:weekday];
+  metrics = [(MOMetric *)self metrics];
+  [metrics setObject:v11 forKeyedSubscript:@"DayIDSubDate"];
 
   v13 = [NSNumber numberWithLong:v10];
   v340 = v3;
   v14 = v3;
-  v15 = self;
+  selfCopy = self;
   v16 = [MOMetric binForNumber:v13 bins:v14];
-  v17 = [(MOMetric *)self metrics];
-  [v17 setObject:v16 forKeyedSubscript:@"HourIDSubDate"];
+  metrics2 = [(MOMetric *)self metrics];
+  [metrics2 setObject:v16 forKeyedSubscript:@"HourIDSubDate"];
 
-  v18 = [NSNumber numberWithInteger:v5];
-  v19 = [(MOMetric *)self metrics];
-  [v19 setObject:v18 forKeyedSubscript:@"SubDateYear"];
+  v18 = [NSNumber numberWithInteger:year];
+  metrics3 = [(MOMetric *)self metrics];
+  [metrics3 setObject:v18 forKeyedSubscript:@"SubDateYear"];
 
-  v20 = [NSNumber numberWithInteger:v6];
-  v21 = [(MOMetric *)self metrics];
-  [v21 setObject:v20 forKeyedSubscript:@"SubDateMonth"];
+  v20 = [NSNumber numberWithInteger:month];
+  metrics4 = [(MOMetric *)self metrics];
+  [metrics4 setObject:v20 forKeyedSubscript:@"SubDateMonth"];
 
   v22 = [NSNumber numberWithInteger:v362];
-  v23 = [(MOMetric *)self metrics];
-  [v23 setObject:v22 forKeyedSubscript:@"SubDateDay"];
+  metrics5 = [(MOMetric *)self metrics];
+  [metrics5 setObject:v22 forKeyedSubscript:@"SubDateDay"];
 
-  v24 = [NSNumber numberWithInteger:v9];
-  v25 = [(MOMetric *)self metrics];
-  [v25 setObject:v24 forKeyedSubscript:@"SubDateMinute"];
+  v24 = [NSNumber numberWithInteger:minute];
+  metrics6 = [(MOMetric *)self metrics];
+  [metrics6 setObject:v24 forKeyedSubscript:@"SubDateMinute"];
 
   v26 = [NSNumber numberWithUnsignedInteger:[(MOEvent *)self->_event provider]];
-  v27 = [(MOMetric *)self metrics];
-  [v27 setObject:v26 forKeyedSubscript:@"provider"];
+  metrics7 = [(MOMetric *)self metrics];
+  [metrics7 setObject:v26 forKeyedSubscript:@"provider"];
 
   v28 = [NSNumber numberWithUnsignedInteger:[(MOEvent *)self->_event category]];
-  v29 = [(MOMetric *)self metrics];
-  [v29 setObject:v28 forKeyedSubscript:@"category"];
+  metrics8 = [(MOMetric *)self metrics];
+  [metrics8 setObject:v28 forKeyedSubscript:@"category"];
 
   subDate = self->_subDate;
-  v31 = [(MOEvent *)self->_event startDate];
-  [(NSDate *)subDate timeIntervalSinceDate:v31];
+  startDate = [(MOEvent *)self->_event startDate];
+  [(NSDate *)subDate timeIntervalSinceDate:startDate];
   v32 = [NSNumber numberWithDouble:?];
   v33 = [MOMetric binForNumber:v32 bins:v358];
-  v34 = [(MOMetric *)self metrics];
-  [v34 setObject:v33 forKeyedSubscript:@"startTimeID"];
+  metrics9 = [(MOMetric *)self metrics];
+  [metrics9 setObject:v33 forKeyedSubscript:@"startTimeID"];
 
   v35 = self->_subDate;
-  v36 = [(MOEvent *)self->_event endDate];
-  [(NSDate *)v35 timeIntervalSinceDate:v36];
+  endDate = [(MOEvent *)self->_event endDate];
+  [(NSDate *)v35 timeIntervalSinceDate:endDate];
   v37 = [NSNumber numberWithDouble:?];
   v38 = [MOMetric binForNumber:v37 bins:v358];
-  v39 = [(MOMetric *)self metrics];
-  [v39 setObject:v38 forKeyedSubscript:@"endTimeID"];
+  metrics10 = [(MOMetric *)self metrics];
+  [metrics10 setObject:v38 forKeyedSubscript:@"endTimeID"];
 
   islandID = self->_islandID;
-  v41 = [(MOMetric *)self metrics];
-  [v41 setObject:islandID forKeyedSubscript:@"islandID"];
+  metrics11 = [(MOMetric *)self metrics];
+  [metrics11 setObject:islandID forKeyedSubscript:@"islandID"];
 
-  v42 = [NSNumber numberWithUnsignedInteger:[(MOEvent *)self->_event hash]% 0x2710];
-  v43 = [(MOMetric *)self metrics];
-  [v43 setObject:v42 forKeyedSubscript:@"eventID"];
+  0x2710 = [NSNumber numberWithUnsignedInteger:[(MOEvent *)self->_event hash]% 0x2710];
+  metrics12 = [(MOMetric *)self metrics];
+  [metrics12 setObject:0x2710 forKeyedSubscript:@"eventID"];
 
   v44 = [NSNumber numberWithInt:[(NSNumber *)self->_islandID intValue]> 0];
-  v45 = [(MOMetric *)self metrics];
-  [v45 setObject:v44 forKeyedSubscript:@"cooccurrenceCheck"];
+  metrics13 = [(MOMetric *)self metrics];
+  [metrics13 setObject:v44 forKeyedSubscript:@"cooccurrenceCheck"];
 
-  v46 = [(MOEvent *)self->_event endDate];
+  endDate2 = [(MOEvent *)self->_event endDate];
 
-  if (v46)
+  if (endDate2)
   {
-    v47 = [(MOEvent *)self->_event creationDate];
+    creationDate = [(MOEvent *)self->_event creationDate];
 
-    if (v47)
+    if (creationDate)
     {
-      v48 = [(MOEvent *)self->_event creationDate];
-      v49 = [(MOEvent *)self->_event endDate];
-      [v48 timeIntervalSinceDate:v49];
+      creationDate2 = [(MOEvent *)self->_event creationDate];
+      endDate3 = [(MOEvent *)self->_event endDate];
+      [creationDate2 timeIntervalSinceDate:endDate3];
       v51 = v50;
 
       v52 = [NSNumber numberWithDouble:v51];
       v53 = [MOMetric binForNumber:v52 bins:v344];
-      v54 = [(MOMetric *)self metrics];
-      [v54 setObject:v53 forKeyedSubscript:@"sensedLatencyBucketed"];
+      metrics14 = [(MOMetric *)self metrics];
+      [metrics14 setObject:v53 forKeyedSubscript:@"sensedLatencyBucketed"];
     }
 
-    v55 = [(MOEvent *)self->_event sourceCreationDate];
+    sourceCreationDate = [(MOEvent *)self->_event sourceCreationDate];
 
-    if (v55)
+    if (sourceCreationDate)
     {
-      v56 = [(MOEvent *)self->_event sourceCreationDate];
-      v57 = [(MOEvent *)self->_event endDate];
-      [v56 timeIntervalSinceDate:v57];
+      sourceCreationDate2 = [(MOEvent *)self->_event sourceCreationDate];
+      endDate4 = [(MOEvent *)self->_event endDate];
+      [sourceCreationDate2 timeIntervalSinceDate:endDate4];
       v59 = v58;
 
       v60 = [NSNumber numberWithDouble:v59];
       v61 = [MOMetric binForNumber:v60 bins:v344];
-      v62 = [(MOMetric *)self metrics];
-      [v62 setObject:v61 forKeyedSubscript:@"realLatencyBucketed"];
+      metrics15 = [(MOMetric *)self metrics];
+      [metrics15 setObject:v61 forKeyedSubscript:@"realLatencyBucketed"];
     }
   }
 
@@ -290,18 +290,18 @@ LABEL_13:
   {
     if (provider == 1)
     {
-      v142 = [(MOEvent *)self->_event workoutType];
-      v143 = [HKWorkout _workoutActivityTypeFromString:v142];
+      workoutType = [(MOEvent *)self->_event workoutType];
+      v143 = [HKWorkout _workoutActivityTypeFromString:workoutType];
 
       v144 = [NSNumber numberWithUnsignedInteger:v143];
-      v145 = [(MOMetric *)self metrics];
-      [v145 setObject:v144 forKeyedSubscript:@"workoutType"];
+      metrics16 = [(MOMetric *)self metrics];
+      [metrics16 setObject:v144 forKeyedSubscript:@"workoutType"];
 
       if (objc_opt_class() && +[MOPlatformInfo isIHAEnabled])
       {
         v146 = [NSNumber numberWithUnsignedInteger:v143];
-        v147 = [(MOMetric *)self metrics];
-        [v147 setObject:v146 forKeyedSubscript:@"workoutTypeIHA"];
+        metrics17 = [(MOMetric *)self metrics];
+        [metrics17 setObject:v146 forKeyedSubscript:@"workoutTypeIHA"];
       }
 
       goto LABEL_186;
@@ -317,15 +317,15 @@ LABEL_13:
     v373 = 0u;
     v374 = 0u;
     v375 = 0u;
-    v345 = self;
-    v69 = [(MOEvent *)self->_event extendedAttributes];
-    v70 = [v69 photoMomentInferences];
+    selfCopy2 = self;
+    extendedAttributes = [(MOEvent *)self->_event extendedAttributes];
+    photoMomentInferences = [extendedAttributes photoMomentInferences];
 
-    v357 = [v70 countByEnumeratingWithState:&v372 objects:v385 count:16];
+    v357 = [photoMomentInferences countByEnumeratingWithState:&v372 objects:v385 count:16];
     if (v357)
     {
       v71 = 0;
-      obj = v70;
+      obj = photoMomentInferences;
       v354 = *v373;
 LABEL_16:
       v72 = 0;
@@ -347,8 +347,8 @@ LABEL_16:
           objc_enumerationMutation(obj);
         }
 
-        v74 = [*(*(&v372 + 1) + 8 * v72) lowercaseString];
-        v75 = v74;
+        lowercaseString = [*(*(&v372 + 1) + 8 * v72) lowercaseString];
+        v75 = lowercaseString;
         if (v72 == v359)
         {
           break;
@@ -375,11 +375,11 @@ LABEL_16:
 
               v81 = *(*(&v368 + 1) + 8 * i);
               v82 = [v76 objectForKeyedSubscript:v81];
-              v83 = [v82 lowercaseString];
-              if ([v75 containsString:v83])
+              lowercaseString2 = [v82 lowercaseString];
+              if ([v75 containsString:lowercaseString2])
               {
-                v84 = [(MOMetric *)v345 metrics];
-                [v84 setObject:v81 forKeyedSubscript:@"photoInference"];
+                metrics18 = [(MOMetric *)selfCopy2 metrics];
+                [metrics18 setObject:v81 forKeyedSubscript:@"photoInference"];
 
                 goto LABEL_33;
               }
@@ -423,14 +423,14 @@ LABEL_82:
 LABEL_89:
     v148 = &__kCFBooleanFalse;
 LABEL_90:
-    v154 = [(MOMetric *)v345 metrics];
-    [v154 setObject:v148 forKeyedSubscript:@"photoInferenceMade"];
+    metrics19 = [(MOMetric *)selfCopy2 metrics];
+    [metrics19 setObject:v148 forKeyedSubscript:@"photoInferenceMade"];
 
-    v155 = [(MOMetric *)v345 metrics];
-    [v155 setObject:&__kCFBooleanFalse forKeyedSubscript:@"isShared"];
+    metrics20 = [(MOMetric *)selfCopy2 metrics];
+    [metrics20 setObject:&__kCFBooleanFalse forKeyedSubscript:@"isShared"];
 
-    v156 = [(MOMetric *)v345 metrics];
-    [v156 setObject:&__kCFBooleanFalse forKeyedSubscript:@"isFavorited"];
+    metrics21 = [(MOMetric *)selfCopy2 metrics];
+    [metrics21 setObject:&__kCFBooleanFalse forKeyedSubscript:@"isFavorited"];
 
     v141 = v363;
 LABEL_91:
@@ -446,8 +446,8 @@ LABEL_91:
       v383 = 0u;
       v380 = 0u;
       v381 = 0u;
-      v355 = [(MOEvent *)self->_event interactions];
-      v85 = [v355 countByEnumeratingWithState:&v380 objects:v387 count:16];
+      interactions = [(MOEvent *)self->_event interactions];
+      v85 = [interactions countByEnumeratingWithState:&v380 objects:v387 count:16];
       if (v85)
       {
         v86 = v85;
@@ -469,12 +469,12 @@ LABEL_91:
           {
             if (*v381 != v89)
             {
-              objc_enumerationMutation(v355);
+              objc_enumerationMutation(interactions);
             }
 
             v94 = *(*(&v380 + 1) + 8 * v93);
-            v95 = [v94 bundleId];
-            v96 = [v95 containsString:@"com.apple."];
+            bundleId = [v94 bundleId];
+            v96 = [bundleId containsString:@"com.apple."];
 
             if (v96)
             {
@@ -483,8 +483,8 @@ LABEL_91:
 
             else
             {
-              v97 = [v94 bundleId];
-              v98 = v97 != 0;
+              bundleId2 = [v94 bundleId];
+              v98 = bundleId2 != 0;
 
               v88 |= v98;
             }
@@ -492,9 +492,9 @@ LABEL_91:
             if (![v94 mechanism] || objc_msgSend(v94, "mechanism") == 8 || objc_msgSend(v94, "mechanism") == 9 || objc_msgSend(v94, "mechanism") == 11 || objc_msgSend(v94, "mechanism") == 16)
             {
               v87 = (v87 + 1);
-              v99 = [v94 endDate];
-              v100 = [v94 startDate];
-              [v99 timeIntervalSinceDate:v100];
+              endDate5 = [v94 endDate];
+              startDate2 = [v94 startDate];
+              [endDate5 timeIntervalSinceDate:startDate2];
               v102 = v101;
 
               v92 = v92 + v102;
@@ -503,9 +503,9 @@ LABEL_91:
             else if ([v94 mechanism] == 12 || objc_msgSend(v94, "mechanism") == 17)
             {
               ++v347;
-              v117 = [v94 endDate];
-              v118 = [v94 startDate];
-              [v117 timeIntervalSinceDate:v118];
+              endDate6 = [v94 endDate];
+              startDate3 = [v94 startDate];
+              [endDate6 timeIntervalSinceDate:startDate3];
               v120 = v119;
 
               v91 = v91 + v120;
@@ -523,32 +523,32 @@ LABEL_91:
 
             if (![v94 mechanism] || objc_msgSend(v94, "mechanism") == 8 || objc_msgSend(v94, "mechanism") == 9 || objc_msgSend(v94, "mechanism") == 11 || objc_msgSend(v94, "mechanism") == 16 || objc_msgSend(v94, "mechanism") == 12 || objc_msgSend(v94, "mechanism") == 17)
             {
-              v103 = [v94 endDate];
-              v104 = [v94 startDate];
-              [v103 timeIntervalSinceDate:v104];
+              endDate7 = [v94 endDate];
+              startDate4 = [v94 startDate];
+              [endDate7 timeIntervalSinceDate:startDate4];
               v106 = v105;
 
               if (v106 > v90)
               {
                 v360 = v88;
-                v107 = v15->_subDate;
+                v107 = selfCopy->_subDate;
                 [v94 startDate];
                 v108 = v364 = v87;
                 [(NSDate *)v107 timeIntervalSinceDate:v108];
                 v109 = [NSNumber numberWithDouble:?];
                 v110 = [MOMetric binForNumber:v109 bins:v358];
-                v111 = [(MOMetric *)v15 metrics];
-                [v111 setObject:v110 forKeyedSubscript:@"startTimeIDlongestDurationCall"];
+                metrics22 = [(MOMetric *)selfCopy metrics];
+                [metrics22 setObject:v110 forKeyedSubscript:@"startTimeIDlongestDurationCall"];
 
                 v88 = v360;
-                v112 = v15->_subDate;
+                v112 = selfCopy->_subDate;
                 v89 = v349;
-                v113 = [v94 endDate];
-                [(NSDate *)v112 timeIntervalSinceDate:v113];
+                endDate8 = [v94 endDate];
+                [(NSDate *)v112 timeIntervalSinceDate:endDate8];
                 v114 = [NSNumber numberWithDouble:?];
                 v115 = [MOMetric binForNumber:v114 bins:v358];
-                v116 = [(MOMetric *)v15 metrics];
-                [v116 setObject:v115 forKeyedSubscript:@"endTimeIDlongestDurationCall"];
+                metrics23 = [(MOMetric *)selfCopy metrics];
+                [metrics23 setObject:v115 forKeyedSubscript:@"endTimeIDlongestDurationCall"];
 
                 v87 = v364;
                 v90 = v106;
@@ -559,7 +559,7 @@ LABEL_91:
           }
 
           while (v86 != v93);
-          v121 = [v355 countByEnumeratingWithState:&v380 objects:v387 count:16];
+          v121 = [interactions countByEnumeratingWithState:&v380 objects:v387 count:16];
           v86 = v121;
         }
 
@@ -579,103 +579,103 @@ LABEL_91:
       }
 
       v172 = [NSNumber numberWithInt:v87];
-      v173 = [(MOMetric *)v15 metrics];
-      [v173 setObject:v172 forKeyedSubscript:@"numAudioCalls"];
+      metrics24 = [(MOMetric *)selfCopy metrics];
+      [metrics24 setObject:v172 forKeyedSubscript:@"numAudioCalls"];
 
       v174 = [NSNumber numberWithDouble:v92];
       v175 = [MOMetric binForNumber:v174 bins:v341];
-      v176 = [(MOMetric *)v15 metrics];
-      [v176 setObject:v175 forKeyedSubscript:@"durationAudioCalls"];
+      metrics25 = [(MOMetric *)selfCopy metrics];
+      [metrics25 setObject:v175 forKeyedSubscript:@"durationAudioCalls"];
 
       v177 = [NSNumber numberWithInt:v347];
-      v178 = [(MOMetric *)v15 metrics];
-      [v178 setObject:v177 forKeyedSubscript:@"numVideoCalls"];
+      metrics26 = [(MOMetric *)selfCopy metrics];
+      [metrics26 setObject:v177 forKeyedSubscript:@"numVideoCalls"];
 
       v179 = [NSNumber numberWithDouble:v91];
       v180 = [MOMetric binForNumber:v179 bins:v341];
-      v181 = [(MOMetric *)v15 metrics];
-      [v181 setObject:v180 forKeyedSubscript:@"durationVideoCalls"];
+      metrics27 = [(MOMetric *)selfCopy metrics];
+      [metrics27 setObject:v180 forKeyedSubscript:@"durationVideoCalls"];
 
       v182 = [NSNumber numberWithInt:v336];
-      v183 = [(MOMetric *)v15 metrics];
-      [v183 setObject:v182 forKeyedSubscript:@"numTexts"];
+      metrics28 = [(MOMetric *)selfCopy metrics];
+      [metrics28 setObject:v182 forKeyedSubscript:@"numTexts"];
 
       v184 = [NSNumber numberWithInt:v334];
-      v185 = [(MOMetric *)v15 metrics];
-      [v185 setObject:v184 forKeyedSubscript:@"numOtherContactType"];
+      metrics29 = [(MOMetric *)selfCopy metrics];
+      [metrics29 setObject:v184 forKeyedSubscript:@"numOtherContactType"];
 
-      v186 = [(MOEvent *)v15->_event interactionScoredContact];
-      v187 = [v186 contact];
-      v188 = [v187 identifier];
-      v189 = [v188 hash] % 0x2710;
+      interactionScoredContact = [(MOEvent *)selfCopy->_event interactionScoredContact];
+      contact = [interactionScoredContact contact];
+      identifier = [contact identifier];
+      v189 = [identifier hash] % 0x2710;
 
       v190 = [NSNumber numberWithUnsignedInteger:v189];
-      v191 = [(MOMetric *)v15 metrics];
-      [v191 setObject:v190 forKeyedSubscript:@"sigContactPersonID"];
+      metrics30 = [(MOMetric *)selfCopy metrics];
+      [metrics30 setObject:v190 forKeyedSubscript:@"sigContactPersonID"];
 
-      v192 = [(MOEvent *)v15->_event interactionContactScore];
-      [v192 floatValue];
+      interactionContactScore = [(MOEvent *)selfCopy->_event interactionContactScore];
+      [interactionContactScore floatValue];
       *&v194 = v193 * 100.0;
       v159 = [NSNumber numberWithFloat:v194];
 
       v195 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v159 intValue]);
-      v196 = [(MOMetric *)v15 metrics];
-      [v196 setObject:v195 forKeyedSubscript:@"interactionContactScore"];
+      metrics31 = [(MOMetric *)selfCopy metrics];
+      [metrics31 setObject:v195 forKeyedSubscript:@"interactionContactScore"];
 
-      v197 = [(MOEvent *)v15->_event interactionContacts];
-      v198 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v197 count]);
-      v199 = [(MOMetric *)v15 metrics];
-      [v199 setObject:v198 forKeyedSubscript:@"numSigContacts"];
+      interactionContacts = [(MOEvent *)selfCopy->_event interactionContacts];
+      v198 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [interactionContacts count]);
+      metrics32 = [(MOMetric *)selfCopy metrics];
+      [metrics32 setObject:v198 forKeyedSubscript:@"numSigContacts"];
 
       v200 = v88 ^ 1;
       if (((obja ^ 1) & 1) == 0 && (v200 & 1) == 0)
       {
-        v201 = [(MOMetric *)v15 metrics];
-        [v201 setObject:&off_100369BC8 forKeyedSubscript:@"sourceApp"];
+        metrics33 = [(MOMetric *)selfCopy metrics];
+        [metrics33 setObject:&off_100369BC8 forKeyedSubscript:@"sourceApp"];
       }
 
       if (((obja | v200) & 1) == 0)
       {
-        v202 = [(MOMetric *)v15 metrics];
-        [v202 setObject:&off_100369BB0 forKeyedSubscript:@"sourceApp"];
+        metrics34 = [(MOMetric *)selfCopy metrics];
+        [metrics34 setObject:&off_100369BB0 forKeyedSubscript:@"sourceApp"];
       }
 
       if (((obja ^ 1 | v88) & 1) == 0)
       {
-        v203 = [(MOMetric *)v15 metrics];
-        [v203 setObject:&off_100369B80 forKeyedSubscript:@"sourceApp"];
+        metrics35 = [(MOMetric *)selfCopy metrics];
+        [metrics35 setObject:&off_100369B80 forKeyedSubscript:@"sourceApp"];
       }
 
       if (((obja | v88) & 1) == 0)
       {
-        v204 = [(MOMetric *)v15 metrics];
-        [v204 setObject:&off_100369BF8 forKeyedSubscript:@"sourceApp"];
+        metrics36 = [(MOMetric *)selfCopy metrics];
+        [metrics36 setObject:&off_100369BF8 forKeyedSubscript:@"sourceApp"];
       }
     }
 
     else
     {
-      v149 = [(MOEvent *)self->_event mediaPlayerBundleId];
-      if (v149)
+      mediaPlayerBundleId = [(MOEvent *)self->_event mediaPlayerBundleId];
+      if (mediaPlayerBundleId)
       {
-        v150 = v149;
-        v151 = [(MOEvent *)self->_event mediaPlayerBundleId];
-        v152 = [v151 containsString:@"com.apple."];
+        v150 = mediaPlayerBundleId;
+        mediaPlayerBundleId2 = [(MOEvent *)self->_event mediaPlayerBundleId];
+        v152 = [mediaPlayerBundleId2 containsString:@"com.apple."];
 
         if (v152)
         {
-          v153 = [(MOMetric *)self metrics];
-          [v153 setObject:&off_100369B80 forKeyedSubscript:@"sourceApp"];
+          metrics37 = [(MOMetric *)self metrics];
+          [metrics37 setObject:&off_100369B80 forKeyedSubscript:@"sourceApp"];
 
           goto LABEL_112;
         }
       }
 
-      v157 = [(MOEvent *)self->_event mediaPlayerBundleId];
+      mediaPlayerBundleId3 = [(MOEvent *)self->_event mediaPlayerBundleId];
 
-      v158 = [(MOMetric *)self metrics];
-      v159 = v158;
-      if (v157)
+      metrics38 = [(MOMetric *)self metrics];
+      v159 = metrics38;
+      if (mediaPlayerBundleId3)
       {
         v160 = &off_100369BB0;
       }
@@ -685,204 +685,204 @@ LABEL_91:
         v160 = &off_100369BF8;
       }
 
-      [v158 setObject:v160 forKeyedSubscript:@"sourceApp"];
+      [metrics38 setObject:v160 forKeyedSubscript:@"sourceApp"];
     }
 
 LABEL_112:
-    v205 = [(MOEvent *)v15->_event mediaGenre];
+    mediaGenre = [(MOEvent *)selfCopy->_event mediaGenre];
 
-    if (v205)
+    if (mediaGenre)
     {
-      v206 = [(MOEvent *)v15->_event mediaGenre];
-      v207 = [v206 lowercaseString];
+      mediaGenre2 = [(MOEvent *)selfCopy->_event mediaGenre];
+      lowercaseString3 = [mediaGenre2 lowercaseString];
 
-      if ([v207 containsString:@"alternative"])
+      if ([lowercaseString3 containsString:@"alternative"])
       {
-        v208 = [(MOMetric *)v15 metrics];
-        v209 = v208;
+        metrics39 = [(MOMetric *)selfCopy metrics];
+        v209 = metrics39;
         v210 = &off_100369B80;
       }
 
-      else if ([v207 containsString:@"blues"])
+      else if ([lowercaseString3 containsString:@"blues"])
       {
-        v208 = [(MOMetric *)v15 metrics];
-        v209 = v208;
+        metrics39 = [(MOMetric *)selfCopy metrics];
+        v209 = metrics39;
         v210 = &off_100369B98;
       }
 
-      else if ([v207 containsString:@"children"])
+      else if ([lowercaseString3 containsString:@"children"])
       {
-        v208 = [(MOMetric *)v15 metrics];
-        v209 = v208;
+        metrics39 = [(MOMetric *)selfCopy metrics];
+        v209 = metrics39;
         v210 = &off_100369BB0;
       }
 
-      else if (([v207 containsString:@"christian"] & 1) != 0 || objc_msgSend(v207, "containsString:", @"gospel"))
+      else if (([lowercaseString3 containsString:@"christian"] & 1) != 0 || objc_msgSend(lowercaseString3, "containsString:", @"gospel"))
       {
-        v208 = [(MOMetric *)v15 metrics];
-        v209 = v208;
+        metrics39 = [(MOMetric *)selfCopy metrics];
+        v209 = metrics39;
         v210 = &off_100369BC8;
       }
 
-      else if ([v207 containsString:@"classical"])
+      else if ([lowercaseString3 containsString:@"classical"])
       {
-        v208 = [(MOMetric *)v15 metrics];
-        v209 = v208;
+        metrics39 = [(MOMetric *)selfCopy metrics];
+        v209 = metrics39;
         v210 = &off_100369BE0;
       }
 
-      else if ([v207 containsString:@"comedy"])
+      else if ([lowercaseString3 containsString:@"comedy"])
       {
-        v208 = [(MOMetric *)v15 metrics];
-        v209 = v208;
+        metrics39 = [(MOMetric *)selfCopy metrics];
+        v209 = metrics39;
         v210 = &off_100369C10;
       }
 
-      else if ([v207 containsString:@"country"])
+      else if ([lowercaseString3 containsString:@"country"])
       {
-        v208 = [(MOMetric *)v15 metrics];
-        v209 = v208;
+        metrics39 = [(MOMetric *)selfCopy metrics];
+        v209 = metrics39;
         v210 = &off_100369C28;
       }
 
-      else if ([v207 containsString:@"dance"])
+      else if ([lowercaseString3 containsString:@"dance"])
       {
-        v208 = [(MOMetric *)v15 metrics];
-        v209 = v208;
+        metrics39 = [(MOMetric *)selfCopy metrics];
+        v209 = metrics39;
         v210 = &off_100369C40;
       }
 
-      else if ([v207 containsString:@"electronic"])
+      else if ([lowercaseString3 containsString:@"electronic"])
       {
-        v208 = [(MOMetric *)v15 metrics];
-        v209 = v208;
+        metrics39 = [(MOMetric *)selfCopy metrics];
+        v209 = metrics39;
         v210 = &off_100369C58;
       }
 
-      else if ([v207 containsString:@"hip"] && objc_msgSend(v207, "containsString:", @"hop"))
+      else if ([lowercaseString3 containsString:@"hip"] && objc_msgSend(lowercaseString3, "containsString:", @"hop"))
       {
-        v208 = [(MOMetric *)v15 metrics];
-        v209 = v208;
+        metrics39 = [(MOMetric *)selfCopy metrics];
+        v209 = metrics39;
         v210 = &off_100369C70;
       }
 
-      else if ([v207 containsString:@"rap"])
+      else if ([lowercaseString3 containsString:@"rap"])
       {
-        v208 = [(MOMetric *)v15 metrics];
-        v209 = v208;
+        metrics39 = [(MOMetric *)selfCopy metrics];
+        v209 = metrics39;
         v210 = &off_100369C88;
       }
 
-      else if ([v207 containsString:@"jazz"])
+      else if ([lowercaseString3 containsString:@"jazz"])
       {
-        v208 = [(MOMetric *)v15 metrics];
-        v209 = v208;
+        metrics39 = [(MOMetric *)selfCopy metrics];
+        v209 = metrics39;
         v210 = &off_100369CA0;
       }
 
-      else if ([v207 containsString:@"pop"])
+      else if ([lowercaseString3 containsString:@"pop"])
       {
-        v208 = [(MOMetric *)v15 metrics];
-        v209 = v208;
+        metrics39 = [(MOMetric *)selfCopy metrics];
+        v209 = metrics39;
         v210 = &off_100369CB8;
       }
 
-      else if ([v207 containsString:@"latin"])
+      else if ([lowercaseString3 containsString:@"latin"])
       {
-        v208 = [(MOMetric *)v15 metrics];
-        v209 = v208;
+        metrics39 = [(MOMetric *)selfCopy metrics];
+        v209 = metrics39;
         v210 = &off_100369CD0;
       }
 
-      else if ([v207 containsString:@"classic"] && objc_msgSend(v207, "containsString:", @"rock"))
+      else if ([lowercaseString3 containsString:@"classic"] && objc_msgSend(lowercaseString3, "containsString:", @"rock"))
       {
-        v208 = [(MOMetric *)v15 metrics];
-        v209 = v208;
+        metrics39 = [(MOMetric *)selfCopy metrics];
+        v209 = metrics39;
         v210 = &off_100369CE8;
       }
 
-      else if ([v207 containsString:@"rock"])
+      else if ([lowercaseString3 containsString:@"rock"])
       {
-        v208 = [(MOMetric *)v15 metrics];
-        v209 = v208;
+        metrics39 = [(MOMetric *)selfCopy metrics];
+        v209 = metrics39;
         v210 = &off_100369D00;
       }
 
-      else if (([v207 containsString:@"r&b"] & 1) != 0 || objc_msgSend(v207, "containsString:", @"rb"))
+      else if (([lowercaseString3 containsString:@"r&b"] & 1) != 0 || objc_msgSend(lowercaseString3, "containsString:", @"rb"))
       {
-        v208 = [(MOMetric *)v15 metrics];
-        v209 = v208;
+        metrics39 = [(MOMetric *)selfCopy metrics];
+        v209 = metrics39;
         v210 = &off_100369D18;
       }
 
-      else if ([v207 containsString:@"soul"])
+      else if ([lowercaseString3 containsString:@"soul"])
       {
-        v208 = [(MOMetric *)v15 metrics];
-        v209 = v208;
+        metrics39 = [(MOMetric *)selfCopy metrics];
+        v209 = metrics39;
         v210 = &off_100369D30;
       }
 
-      else if ([v207 containsString:@"reggae"])
+      else if ([lowercaseString3 containsString:@"reggae"])
       {
-        v208 = [(MOMetric *)v15 metrics];
-        v209 = v208;
+        metrics39 = [(MOMetric *)selfCopy metrics];
+        v209 = metrics39;
         v210 = &off_100369D48;
       }
 
-      else if ([v207 containsString:@"singer"])
+      else if ([lowercaseString3 containsString:@"singer"])
       {
-        v208 = [(MOMetric *)v15 metrics];
-        v209 = v208;
+        metrics39 = [(MOMetric *)selfCopy metrics];
+        v209 = metrics39;
         v210 = &off_100369D60;
       }
 
-      else if ([v207 containsString:@"songwriter"])
+      else if ([lowercaseString3 containsString:@"songwriter"])
       {
-        v208 = [(MOMetric *)v15 metrics];
-        v209 = v208;
+        metrics39 = [(MOMetric *)selfCopy metrics];
+        v209 = metrics39;
         v210 = &off_100369D78;
       }
 
-      else if ([v207 containsString:@"sound"] && objc_msgSend(v207, "containsString:", @"track"))
+      else if ([lowercaseString3 containsString:@"sound"] && objc_msgSend(lowercaseString3, "containsString:", @"track"))
       {
-        v208 = [(MOMetric *)v15 metrics];
-        v209 = v208;
+        metrics39 = [(MOMetric *)selfCopy metrics];
+        v209 = metrics39;
         v210 = &off_100369D90;
       }
 
-      else if ([v207 containsString:@"worldwide"])
+      else if ([lowercaseString3 containsString:@"worldwide"])
       {
-        v208 = [(MOMetric *)v15 metrics];
-        v209 = v208;
+        metrics39 = [(MOMetric *)selfCopy metrics];
+        v209 = metrics39;
         v210 = &off_100369DA8;
       }
 
-      else if ([v207 containsString:@"hits"])
+      else if ([lowercaseString3 containsString:@"hits"])
       {
-        v208 = [(MOMetric *)v15 metrics];
-        v209 = v208;
+        metrics39 = [(MOMetric *)selfCopy metrics];
+        v209 = metrics39;
         v210 = &off_100369DC0;
       }
 
-      else if ([v207 containsString:@"oldie"])
+      else if ([lowercaseString3 containsString:@"oldie"])
       {
-        v208 = [(MOMetric *)v15 metrics];
-        v209 = v208;
+        metrics39 = [(MOMetric *)selfCopy metrics];
+        v209 = metrics39;
         v210 = &off_100369DD8;
       }
 
-      else if ([v207 containsString:@"indie"])
+      else if ([lowercaseString3 containsString:@"indie"])
       {
-        v208 = [(MOMetric *)v15 metrics];
-        v209 = v208;
+        metrics39 = [(MOMetric *)selfCopy metrics];
+        v209 = metrics39;
         v210 = &off_100369DF0;
       }
 
       else
       {
-        v329 = [v207 containsString:@"metal"];
-        v208 = [(MOMetric *)v15 metrics];
-        v209 = v208;
+        v329 = [lowercaseString3 containsString:@"metal"];
+        metrics39 = [(MOMetric *)selfCopy metrics];
+        v209 = metrics39;
         if (v329)
         {
           v210 = &off_100369E08;
@@ -894,69 +894,69 @@ LABEL_112:
         }
       }
 
-      [v208 setObject:v210 forKeyedSubscript:@"mediaGenre"];
+      [metrics39 setObject:v210 forKeyedSubscript:@"mediaGenre"];
     }
 
     else
     {
-      v207 = [(MOMetric *)v15 metrics];
-      [v207 setObject:&off_100369BF8 forKeyedSubscript:@"mediaGenre"];
+      lowercaseString3 = [(MOMetric *)selfCopy metrics];
+      [lowercaseString3 setObject:&off_100369BF8 forKeyedSubscript:@"mediaGenre"];
     }
 
-    v212 = [(MOEvent *)v15->_event mediaType];
+    mediaType = [(MOEvent *)selfCopy->_event mediaType];
 
-    if (v212)
+    if (mediaType)
     {
-      v213 = [(MOEvent *)v15->_event mediaType];
-      v214 = [v213 lowercaseString];
+      mediaType2 = [(MOEvent *)selfCopy->_event mediaType];
+      lowercaseString4 = [mediaType2 lowercaseString];
 
-      if ([v214 containsString:@"music"])
+      if ([lowercaseString4 containsString:@"music"])
       {
-        v215 = [(MOMetric *)v15 metrics];
-        v216 = v215;
+        metrics40 = [(MOMetric *)selfCopy metrics];
+        v216 = metrics40;
         v217 = &off_100369B80;
       }
 
-      else if ([v214 containsString:@"podcast"])
+      else if ([lowercaseString4 containsString:@"podcast"])
       {
-        v215 = [(MOMetric *)v15 metrics];
-        v216 = v215;
+        metrics40 = [(MOMetric *)selfCopy metrics];
+        v216 = metrics40;
         v217 = &off_100369B98;
       }
 
-      else if ([v214 containsString:@"audio"] && objc_msgSend(v214, "containsString:", @"book"))
+      else if ([lowercaseString4 containsString:@"audio"] && objc_msgSend(lowercaseString4, "containsString:", @"book"))
       {
-        v215 = [(MOMetric *)v15 metrics];
-        v216 = v215;
+        metrics40 = [(MOMetric *)selfCopy metrics];
+        v216 = metrics40;
         v217 = &off_100369BB0;
       }
 
-      else if ([v214 containsString:@"audio"])
+      else if ([lowercaseString4 containsString:@"audio"])
       {
-        v215 = [(MOMetric *)v15 metrics];
-        v216 = v215;
+        metrics40 = [(MOMetric *)selfCopy metrics];
+        v216 = metrics40;
         v217 = &off_100369C10;
       }
 
-      else if ([v214 containsString:@"itune"] && objc_msgSend(v214, "containsString:", @"radio"))
+      else if ([lowercaseString4 containsString:@"itune"] && objc_msgSend(lowercaseString4, "containsString:", @"radio"))
       {
-        v215 = [(MOMetric *)v15 metrics];
-        v216 = v215;
+        metrics40 = [(MOMetric *)selfCopy metrics];
+        v216 = metrics40;
         v217 = &off_100369BE0;
       }
 
-      else if ([v214 containsString:@"itune"])
+      else if ([lowercaseString4 containsString:@"itune"])
       {
-        v215 = [(MOMetric *)v15 metrics];
-        v216 = v215;
+        metrics40 = [(MOMetric *)selfCopy metrics];
+        v216 = metrics40;
         v217 = &off_100369BC8;
       }
 
       else
       {
-        v328 = [v214 containsString:@"video"];
-        v215 = [(MOMetric *)v15 metrics];
-        v216 = v215;
+        v328 = [lowercaseString4 containsString:@"video"];
+        metrics40 = [(MOMetric *)selfCopy metrics];
+        v216 = metrics40;
         if (v328)
         {
           v217 = &off_100369C28;
@@ -968,36 +968,36 @@ LABEL_112:
         }
       }
 
-      [v215 setObject:v217 forKeyedSubscript:@"mediaType"];
+      [metrics40 setObject:v217 forKeyedSubscript:@"mediaType"];
     }
 
     else
     {
-      v214 = [(MOMetric *)v15 metrics];
-      [v214 setObject:&off_100369BF8 forKeyedSubscript:@"mediaType"];
+      lowercaseString4 = [(MOMetric *)selfCopy metrics];
+      [lowercaseString4 setObject:&off_100369BF8 forKeyedSubscript:@"mediaType"];
     }
 
-    if ([(MOEvent *)v15->_event category]== 4)
+    if ([(MOEvent *)selfCopy->_event category]== 4)
     {
-      v218 = [(MOEvent *)v15->_event mediaSumTimePlayed];
-      v219 = [MOMetric binForNumber:v218 bins:v343];
-      v220 = [(MOMetric *)v15 metrics];
-      [v220 setObject:v219 forKeyedSubscript:@"durationLeisureMedia"];
+      mediaSumTimePlayed = [(MOEvent *)selfCopy->_event mediaSumTimePlayed];
+      v219 = [MOMetric binForNumber:mediaSumTimePlayed bins:v343];
+      metrics41 = [(MOMetric *)selfCopy metrics];
+      [metrics41 setObject:v219 forKeyedSubscript:@"durationLeisureMedia"];
     }
 
-    if ([(MOEvent *)v15->_event category]== 3)
+    if ([(MOEvent *)selfCopy->_event category]== 3)
     {
-      v221 = [(MOEvent *)v15->_event mediaSumTimePlayed];
-      v222 = [MOMetric binForNumber:v221 bins:v343];
-      v223 = [(MOMetric *)v15 metrics];
-      [v223 setObject:v222 forKeyedSubscript:@"durationMediaOnRepeat"];
+      mediaSumTimePlayed2 = [(MOEvent *)selfCopy->_event mediaSumTimePlayed];
+      v222 = [MOMetric binForNumber:mediaSumTimePlayed2 bins:v343];
+      metrics42 = [(MOMetric *)selfCopy metrics];
+      [metrics42 setObject:v222 forKeyedSubscript:@"durationMediaOnRepeat"];
 
-      v224 = [(MOEvent *)v15->_event mediaRepetitions];
-      v225 = [(MOMetric *)v15 metrics];
-      [v225 setObject:v224 forKeyedSubscript:@"mediaRepetitions"];
+      mediaRepetitions = [(MOEvent *)selfCopy->_event mediaRepetitions];
+      metrics43 = [(MOMetric *)selfCopy metrics];
+      [metrics43 setObject:mediaRepetitions forKeyedSubscript:@"mediaRepetitions"];
     }
 
-    if ([(MOEvent *)v15->_event category]!= 6)
+    if ([(MOEvent *)selfCopy->_event category]!= 6)
     {
       goto LABEL_186;
     }
@@ -1006,9 +1006,9 @@ LABEL_112:
     v379 = 0u;
     v376 = 0u;
     v377 = 0u;
-    v346 = v15;
-    v365 = [(MOEvent *)v15->_event mediaPlaySessions];
-    v226 = [v365 countByEnumeratingWithState:&v376 objects:v386 count:16];
+    v346 = selfCopy;
+    mediaPlaySessions = [(MOEvent *)selfCopy->_event mediaPlaySessions];
+    v226 = [mediaPlaySessions countByEnumeratingWithState:&v376 objects:v386 count:16];
     if (!v226)
     {
       v348 = 0;
@@ -1055,25 +1055,25 @@ LABEL_151:
     {
       if (*v377 != v229)
       {
-        objc_enumerationMutation(v365);
+        objc_enumerationMutation(mediaPlaySessions);
       }
 
       v238 = *(*(&v376 + 1) + 8 * v237);
-      v239 = [v238 mediaType];
-      v240 = [v239 lowercaseString];
+      mediaType3 = [v238 mediaType];
+      lowercaseString5 = [mediaType3 lowercaseString];
 
-      if ([v240 containsString:@"music"])
+      if ([lowercaseString5 containsString:@"music"])
       {
         break;
       }
 
       v241 = mixedAudioBundleIds;
-      v242 = [v238 bundleId];
-      if ([v241 containsObject:v242])
+      bundleId3 = [v238 bundleId];
+      if ([v241 containsObject:bundleId3])
       {
-        v243 = [v238 artist];
+        artist = [v238 artist];
 
-        if (v243)
+        if (artist)
         {
           break;
         }
@@ -1083,84 +1083,84 @@ LABEL_151:
       {
       }
 
-      if (([v240 containsString:@"podcast"] & 1) == 0)
+      if (([lowercaseString5 containsString:@"podcast"] & 1) == 0)
       {
         v252 = mixedAudioBundleIds;
-        v253 = [v238 bundleId];
-        if (([v252 containsObject:v253] & 1) == 0)
+        bundleId4 = [v238 bundleId];
+        if (([v252 containsObject:bundleId4] & 1) == 0)
         {
 
 LABEL_165:
-          if ([v240 containsString:@"audio"] && objc_msgSend(v240, "containsString:", @"book"))
+          if ([lowercaseString5 containsString:@"audio"] && objc_msgSend(lowercaseString5, "containsString:", @"book"))
           {
             ++objb;
-            v255 = [v238 endDate];
-            v256 = [v238 startDate];
-            [v255 timeIntervalSinceDate:v256];
+            endDate9 = [v238 endDate];
+            startDate5 = [v238 startDate];
+            [endDate9 timeIntervalSinceDate:startDate5];
             v258 = v257;
 
             v233 = v233 + v258;
           }
 
-          else if ([v240 containsString:@"audio"])
+          else if ([lowercaseString5 containsString:@"audio"])
           {
             ++v356;
-            v259 = [v238 endDate];
-            v260 = [v238 startDate];
-            [v259 timeIntervalSinceDate:v260];
+            endDate10 = [v238 endDate];
+            startDate6 = [v238 startDate];
+            [endDate10 timeIntervalSinceDate:startDate6];
             v262 = v261;
 
             v235 = v235 + v262;
           }
 
-          else if ([v240 containsString:@"itune"] && objc_msgSend(v240, "containsString:", @"radio"))
+          else if ([lowercaseString5 containsString:@"itune"] && objc_msgSend(lowercaseString5, "containsString:", @"radio"))
           {
             ++v337;
-            v263 = [v238 endDate];
-            v264 = [v238 startDate];
-            [v263 timeIntervalSinceDate:v264];
+            endDate11 = [v238 endDate];
+            startDate7 = [v238 startDate];
+            [endDate11 timeIntervalSinceDate:startDate7];
             v266 = v265;
 
             v335 = v335 + v266;
           }
 
-          else if ([v240 containsString:@"itune"])
+          else if ([lowercaseString5 containsString:@"itune"])
           {
             ++v350;
-            v267 = [v238 endDate];
-            v268 = [v238 startDate];
-            [v267 timeIntervalSinceDate:v268];
+            endDate12 = [v238 endDate];
+            startDate8 = [v238 startDate];
+            [endDate12 timeIntervalSinceDate:startDate8];
             v270 = v269;
 
             v234 = v234 + v270;
           }
 
-          else if (([v240 containsString:@"video"] & 1) != 0 || (v271 = videoBundleIds, objc_msgSend(v238, "bundleId"), v272 = objc_claimAutoreleasedReturnValue(), LODWORD(v271) = objc_msgSend(v271, "containsObject:", v272), v272, v271))
+          else if (([lowercaseString5 containsString:@"video"] & 1) != 0 || (v271 = videoBundleIds, objc_msgSend(v238, "bundleId"), v272 = objc_claimAutoreleasedReturnValue(), LODWORD(v271) = objc_msgSend(v271, "containsObject:", v272), v272, v271))
           {
             ++v348;
-            v273 = [v238 endDate];
-            v274 = [v238 startDate];
-            [v273 timeIntervalSinceDate:v274];
+            endDate13 = [v238 endDate];
+            startDate9 = [v238 startDate];
+            [endDate13 timeIntervalSinceDate:startDate9];
             v276 = v275;
 
             v236 = v236 + v276;
             if (v276 > v230)
             {
               v277 = v346->_subDate;
-              v332 = [v238 startDate];
-              [(NSDate *)v277 timeIntervalSinceDate:v332];
+              startDate10 = [v238 startDate];
+              [(NSDate *)v277 timeIntervalSinceDate:startDate10];
               v278 = [NSNumber numberWithDouble:?];
               v279 = [MOMetric binForNumber:v278 bins:v358];
-              v280 = [(MOMetric *)v346 metrics];
-              [v280 setObject:v279 forKeyedSubscript:@"startTimeIDlongestDurationVideo"];
+              metrics44 = [(MOMetric *)v346 metrics];
+              [metrics44 setObject:v279 forKeyedSubscript:@"startTimeIDlongestDurationVideo"];
 
               v281 = v346->_subDate;
-              v333 = [v238 endDate];
-              [(NSDate *)v281 timeIntervalSinceDate:v333];
+              endDate14 = [v238 endDate];
+              [(NSDate *)v281 timeIntervalSinceDate:endDate14];
               v282 = [NSNumber numberWithDouble:?];
               v283 = [MOMetric binForNumber:v282 bins:v358];
-              v284 = [(MOMetric *)v346 metrics];
-              [v284 setObject:v283 forKeyedSubscript:@"endTimeIDlongestDurationVideo"];
+              metrics45 = [(MOMetric *)v346 metrics];
+              [metrics45 setObject:v283 forKeyedSubscript:@"endTimeIDlongestDurationVideo"];
 
               v230 = v276;
             }
@@ -1169,9 +1169,9 @@ LABEL_165:
           else
           {
             ++v331;
-            v285 = [v238 endDate];
-            v286 = [v238 startDate];
-            [v285 timeIntervalSinceDate:v286];
+            endDate15 = [v238 endDate];
+            startDate11 = [v238 startDate];
+            [endDate15 timeIntervalSinceDate:startDate11];
             v288 = v287;
 
             v330 = v330 + v288;
@@ -1180,18 +1180,18 @@ LABEL_165:
           goto LABEL_180;
         }
 
-        v254 = [v238 artist];
+        artist2 = [v238 artist];
 
-        if (v254)
+        if (artist2)
         {
           goto LABEL_165;
         }
       }
 
       ++v361;
-      v248 = [v238 endDate];
-      v249 = [v238 startDate];
-      [v248 timeIntervalSinceDate:v249];
+      endDate16 = [v238 endDate];
+      startDate12 = [v238 startDate];
+      [endDate16 timeIntervalSinceDate:startDate12];
       v251 = v250;
 
       v232 = v232 + v251;
@@ -1199,82 +1199,82 @@ LABEL_180:
 
       if (v227 == ++v237)
       {
-        v227 = [v365 countByEnumeratingWithState:&v376 objects:v386 count:16];
+        v227 = [mediaPlaySessions countByEnumeratingWithState:&v376 objects:v386 count:16];
         if (!v227)
         {
 LABEL_184:
 
           v289 = [NSNumber numberWithInt:v228];
-          v290 = [(MOMetric *)v346 metrics];
-          [v290 setObject:v289 forKeyedSubscript:@"numMusic"];
+          metrics46 = [(MOMetric *)v346 metrics];
+          [metrics46 setObject:v289 forKeyedSubscript:@"numMusic"];
 
           v291 = [NSNumber numberWithDouble:v231];
           v292 = [MOMetric binForNumber:v291 bins:v343];
-          v293 = [(MOMetric *)v346 metrics];
-          [v293 setObject:v292 forKeyedSubscript:@"durationMusic"];
+          metrics47 = [(MOMetric *)v346 metrics];
+          [metrics47 setObject:v292 forKeyedSubscript:@"durationMusic"];
 
           v294 = [NSNumber numberWithInt:v361];
-          v295 = [(MOMetric *)v346 metrics];
-          [v295 setObject:v294 forKeyedSubscript:@"numPodcast"];
+          metrics48 = [(MOMetric *)v346 metrics];
+          [metrics48 setObject:v294 forKeyedSubscript:@"numPodcast"];
 
           v296 = [NSNumber numberWithDouble:v232];
           v297 = [MOMetric binForNumber:v296 bins:v343];
-          v298 = [(MOMetric *)v346 metrics];
-          [v298 setObject:v297 forKeyedSubscript:@"durationPodcast"];
+          metrics49 = [(MOMetric *)v346 metrics];
+          [metrics49 setObject:v297 forKeyedSubscript:@"durationPodcast"];
 
           v299 = [NSNumber numberWithInt:objb];
-          v300 = [(MOMetric *)v346 metrics];
-          [v300 setObject:v299 forKeyedSubscript:@"numAudioBook"];
+          metrics50 = [(MOMetric *)v346 metrics];
+          [metrics50 setObject:v299 forKeyedSubscript:@"numAudioBook"];
 
           v301 = [NSNumber numberWithDouble:v233];
           v302 = [MOMetric binForNumber:v301 bins:v343];
-          v303 = [(MOMetric *)v346 metrics];
-          [v303 setObject:v302 forKeyedSubscript:@"durationAudioBook"];
+          metrics51 = [(MOMetric *)v346 metrics];
+          [metrics51 setObject:v302 forKeyedSubscript:@"durationAudioBook"];
 
           v304 = [NSNumber numberWithInt:v356];
-          v305 = [(MOMetric *)v346 metrics];
-          [v305 setObject:v304 forKeyedSubscript:@"numAudio"];
+          metrics52 = [(MOMetric *)v346 metrics];
+          [metrics52 setObject:v304 forKeyedSubscript:@"numAudio"];
 
           v306 = [NSNumber numberWithDouble:v235];
           v307 = [MOMetric binForNumber:v306 bins:v343];
-          v308 = [(MOMetric *)v346 metrics];
-          [v308 setObject:v307 forKeyedSubscript:@"durationAudio"];
+          metrics53 = [(MOMetric *)v346 metrics];
+          [metrics53 setObject:v307 forKeyedSubscript:@"durationAudio"];
 
           v309 = [NSNumber numberWithInt:v337];
-          v310 = [(MOMetric *)v346 metrics];
-          [v310 setObject:v309 forKeyedSubscript:@"numITunesRadio"];
+          metrics54 = [(MOMetric *)v346 metrics];
+          [metrics54 setObject:v309 forKeyedSubscript:@"numITunesRadio"];
 
           v311 = [NSNumber numberWithDouble:v335];
           v312 = [MOMetric binForNumber:v311 bins:v343];
-          v313 = [(MOMetric *)v346 metrics];
-          [v313 setObject:v312 forKeyedSubscript:@"durationITunesRadio"];
+          metrics55 = [(MOMetric *)v346 metrics];
+          [metrics55 setObject:v312 forKeyedSubscript:@"durationITunesRadio"];
 
           v314 = [NSNumber numberWithInt:v350];
-          v315 = [(MOMetric *)v346 metrics];
-          [v315 setObject:v314 forKeyedSubscript:@"numITunesU"];
+          metrics56 = [(MOMetric *)v346 metrics];
+          [metrics56 setObject:v314 forKeyedSubscript:@"numITunesU"];
 
           v316 = [NSNumber numberWithDouble:v234];
           v317 = [MOMetric binForNumber:v316 bins:v343];
-          v318 = [(MOMetric *)v346 metrics];
-          [v318 setObject:v317 forKeyedSubscript:@"durationITunesU"];
+          metrics57 = [(MOMetric *)v346 metrics];
+          [metrics57 setObject:v317 forKeyedSubscript:@"durationITunesU"];
 
           v319 = [NSNumber numberWithInt:v348];
-          v320 = [(MOMetric *)v346 metrics];
-          [v320 setObject:v319 forKeyedSubscript:@"numVideo"];
+          metrics58 = [(MOMetric *)v346 metrics];
+          [metrics58 setObject:v319 forKeyedSubscript:@"numVideo"];
 
           v321 = [NSNumber numberWithDouble:v236];
           v322 = [MOMetric binForNumber:v321 bins:v343];
-          v323 = [(MOMetric *)v346 metrics];
-          [v323 setObject:v322 forKeyedSubscript:@"durationVideo"];
+          metrics59 = [(MOMetric *)v346 metrics];
+          [metrics59 setObject:v322 forKeyedSubscript:@"durationVideo"];
 
           v324 = [NSNumber numberWithInt:v331];
-          v325 = [(MOMetric *)v346 metrics];
-          [v325 setObject:v324 forKeyedSubscript:@"numOther"];
+          metrics60 = [(MOMetric *)v346 metrics];
+          [metrics60 setObject:v324 forKeyedSubscript:@"numOther"];
 
-          v65 = [NSNumber numberWithDouble:v330];
-          v326 = [MOMetric binForNumber:v65 bins:v343];
-          v327 = [(MOMetric *)v346 metrics];
-          [v327 setObject:v326 forKeyedSubscript:@"durationOther"];
+          lowercaseString6 = [NSNumber numberWithDouble:v330];
+          v326 = [MOMetric binForNumber:lowercaseString6 bins:v343];
+          metrics61 = [(MOMetric *)v346 metrics];
+          [metrics61 setObject:v326 forKeyedSubscript:@"durationOther"];
 
           goto LABEL_185;
         }
@@ -1284,9 +1284,9 @@ LABEL_184:
     }
 
     v228 = (v228 + 1);
-    v244 = [v238 endDate];
-    v245 = [v238 startDate];
-    [v244 timeIntervalSinceDate:v245];
+    endDate17 = [v238 endDate];
+    startDate13 = [v238 startDate];
+    [endDate17 timeIntervalSinceDate:startDate13];
     v247 = v246;
 
     v231 = v231 + v247;
@@ -1295,42 +1295,42 @@ LABEL_184:
 
   if (provider == 9)
   {
-    v122 = [(MOEvent *)self->_event screenTimeEvent];
-    v123 = [v122 longestActivity];
+    screenTimeEvent = [(MOEvent *)self->_event screenTimeEvent];
+    longestActivity = [screenTimeEvent longestActivity];
 
-    if (v123)
+    if (longestActivity)
     {
       v124 = [MOMetric binsFromStart:&off_100369748 toEnd:&off_10036E4B0 gap:&off_10036E510];
       v125 = self->_subDate;
-      v126 = [(MOEvent *)self->_event screenTimeEvent];
-      v127 = [v126 longestActivity];
-      v128 = [v127 startDate];
-      [(NSDate *)v125 timeIntervalSinceDate:v128];
+      screenTimeEvent2 = [(MOEvent *)self->_event screenTimeEvent];
+      longestActivity2 = [screenTimeEvent2 longestActivity];
+      startDate14 = [longestActivity2 startDate];
+      [(NSDate *)v125 timeIntervalSinceDate:startDate14];
       v129 = [NSNumber numberWithDouble:?];
       v130 = [MOMetric binForNumber:v129 bins:v124];
-      v131 = [(MOMetric *)self metrics];
-      [v131 setObject:v130 forKeyedSubscript:@"screenTimeStartTimeIDlongestActivity"];
+      metrics62 = [(MOMetric *)self metrics];
+      [metrics62 setObject:v130 forKeyedSubscript:@"screenTimeStartTimeIDlongestActivity"];
 
       v132 = self->_subDate;
-      v133 = [(MOEvent *)self->_event screenTimeEvent];
-      v134 = [v133 longestActivity];
-      v135 = [v134 endDate];
-      [(NSDate *)v132 timeIntervalSinceDate:v135];
+      screenTimeEvent3 = [(MOEvent *)self->_event screenTimeEvent];
+      longestActivity3 = [screenTimeEvent3 longestActivity];
+      endDate18 = [longestActivity3 endDate];
+      [(NSDate *)v132 timeIntervalSinceDate:endDate18];
       v136 = [NSNumber numberWithDouble:?];
       v137 = [MOMetric binForNumber:v136 bins:v124];
-      v138 = [(MOMetric *)self metrics];
-      [v138 setObject:v137 forKeyedSubscript:@"screenTimeEndTimeIDlongestActivity"];
+      metrics63 = [(MOMetric *)self metrics];
+      [metrics63 setObject:v137 forKeyedSubscript:@"screenTimeEndTimeIDlongestActivity"];
     }
 
-    v139 = [(MOEvent *)self->_event screenTimeEvent];
-    v140 = [v139 appCategoryUsages];
+    screenTimeEvent4 = [(MOEvent *)self->_event screenTimeEvent];
+    appCategoryUsages = [screenTimeEvent4 appCategoryUsages];
     v366[0] = _NSConcreteStackBlock;
     v366[1] = 3221225472;
     v366[2] = __24__MOEventData_setValues__block_invoke;
     v366[3] = &unk_100338770;
     v366[4] = self;
     v367 = v342;
-    [v140 enumerateObjectsUsingBlock:v366];
+    [appCategoryUsages enumerateObjectsUsingBlock:v366];
 
     v141 = v367;
     goto LABEL_91;
@@ -1341,38 +1341,38 @@ LABEL_184:
     goto LABEL_186;
   }
 
-  v64 = [(MOEvent *)self->_event placeName];
-  v65 = [v64 lowercaseString];
+  placeName = [(MOEvent *)self->_event placeName];
+  lowercaseString6 = [placeName lowercaseString];
 
-  if ([v65 containsString:@"home"])
+  if ([lowercaseString6 containsString:@"home"])
   {
-    v66 = [(MOMetric *)self metrics];
-    v67 = v66;
+    metrics64 = [(MOMetric *)self metrics];
+    v67 = metrics64;
     v68 = &off_100369B80;
   }
 
-  else if ([v65 containsString:@"work"])
+  else if ([lowercaseString6 containsString:@"work"])
   {
-    v66 = [(MOMetric *)self metrics];
-    v67 = v66;
+    metrics64 = [(MOMetric *)self metrics];
+    v67 = metrics64;
     v68 = &off_100369B98;
   }
 
-  else if ([v65 containsString:@"gym"])
+  else if ([lowercaseString6 containsString:@"gym"])
   {
-    v66 = [(MOMetric *)self metrics];
-    v67 = v66;
+    metrics64 = [(MOMetric *)self metrics];
+    v67 = metrics64;
     v68 = &off_100369BB0;
   }
 
   else
   {
-    v211 = [v65 containsString:@"school"];
-    v66 = [(MOMetric *)self metrics];
-    v67 = v66;
+    v211 = [lowercaseString6 containsString:@"school"];
+    metrics64 = [(MOMetric *)self metrics];
+    v67 = metrics64;
     if (!v211)
     {
-      [v66 setObject:&off_100369BE0 forKeyedSubscript:@"visitCategory"];
+      [metrics64 setObject:&off_100369BE0 forKeyedSubscript:@"visitCategory"];
       v161 = &__kCFBooleanFalse;
       goto LABEL_97;
     }
@@ -1380,28 +1380,28 @@ LABEL_184:
     v68 = &off_100369BC8;
   }
 
-  [v66 setObject:v68 forKeyedSubscript:@"visitCategory"];
+  [metrics64 setObject:v68 forKeyedSubscript:@"visitCategory"];
   v161 = &__kCFBooleanTrue;
 LABEL_97:
 
-  v162 = [(MOMetric *)self metrics];
-  [v162 setObject:v161 forKeyedSubscript:@"visitLOI"];
+  metrics65 = [(MOMetric *)self metrics];
+  [metrics65 setObject:v161 forKeyedSubscript:@"visitLOI"];
 
   v163 = [NSNumber numberWithUnsignedInteger:[(MOEvent *)self->_event mode]];
-  v164 = [(MOMetric *)self metrics];
-  [v164 setObject:v163 forKeyedSubscript:@"visitMode"];
+  metrics66 = [(MOMetric *)self metrics];
+  [metrics66 setObject:v163 forKeyedSubscript:@"visitMode"];
 
   v165 = poiCategoryDictionary;
-  v166 = [(MOEvent *)self->_event poiCategory];
-  v167 = [v165 objectForKeyedSubscript:v166];
+  poiCategory = [(MOEvent *)self->_event poiCategory];
+  v167 = [v165 objectForKeyedSubscript:poiCategory];
 
   if (v167)
   {
     v168 = poiCategoryDictionary;
-    v169 = [(MOEvent *)self->_event poiCategory];
-    v170 = [v168 objectForKeyedSubscript:v169];
-    v171 = [(MOMetric *)self metrics];
-    [v171 setObject:v170 forKeyedSubscript:@"visitPOI"];
+    poiCategory2 = [(MOEvent *)self->_event poiCategory];
+    v170 = [v168 objectForKeyedSubscript:poiCategory2];
+    metrics67 = [(MOMetric *)self metrics];
+    [metrics67 setObject:v170 forKeyedSubscript:@"visitPOI"];
   }
 
 LABEL_185:

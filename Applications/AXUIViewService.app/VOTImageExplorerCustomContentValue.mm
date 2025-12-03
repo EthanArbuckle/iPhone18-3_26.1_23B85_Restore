@@ -1,21 +1,21 @@
 @interface VOTImageExplorerCustomContentValue
-- (VOTImageExplorerCustomContentValue)initWithFeatureValue:(id)a3 featureType:(id)a4;
+- (VOTImageExplorerCustomContentValue)initWithFeatureValue:(id)value featureType:(id)type;
 @end
 
 @implementation VOTImageExplorerCustomContentValue
 
-- (VOTImageExplorerCustomContentValue)initWithFeatureValue:(id)a3 featureType:(id)a4
+- (VOTImageExplorerCustomContentValue)initWithFeatureValue:(id)value featureType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
+  valueCopy = value;
+  typeCopy = type;
   v11.receiver = self;
   v11.super_class = VOTImageExplorerCustomContentValue;
   v8 = [(VOTImageExplorerCustomContentValue *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    [(VOTImageExplorerCustomContentValue *)v8 setValue:v6];
-    [(VOTImageExplorerCustomContentValue *)v9 setType:v7];
+    [(VOTImageExplorerCustomContentValue *)v8 setValue:valueCopy];
+    [(VOTImageExplorerCustomContentValue *)v9 setType:typeCopy];
   }
 
   return v9;

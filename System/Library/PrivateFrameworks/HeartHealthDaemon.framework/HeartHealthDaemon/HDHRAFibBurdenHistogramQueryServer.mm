@@ -1,6 +1,6 @@
 @interface HDHRAFibBurdenHistogramQueryServer
 + (id)requiredEntitlements;
-- (HDHRAFibBurdenHistogramQueryServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6;
+- (HDHRAFibBurdenHistogramQueryServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate;
 - (id)_makeEmptyHistogramResult;
 - (id)objectTypes;
 - (void)_queue_start;
@@ -8,21 +8,21 @@
 
 @implementation HDHRAFibBurdenHistogramQueryServer
 
-- (HDHRAFibBurdenHistogramQueryServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6
+- (HDHRAFibBurdenHistogramQueryServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate
 {
-  v10 = a5;
+  clientCopy = client;
   v18.receiver = self;
   v18.super_class = HDHRAFibBurdenHistogramQueryServer;
-  v11 = [(HDQueryServer *)&v18 initWithUUID:a3 configuration:a4 client:v10 delegate:a6];
+  v11 = [(HDQueryServer *)&v18 initWithUUID:d configuration:configuration client:clientCopy delegate:delegate];
   if (v11)
   {
-    v12 = [v10 profile];
-    v13 = [v12 profileExtensionWithIdentifier:*MEMORY[0x277D12F10]];
+    profile = [clientCopy profile];
+    v13 = [profile profileExtensionWithIdentifier:*MEMORY[0x277D12F10]];
 
-    v14 = [v13 aFibBurdenComponents];
-    v15 = [v14 analyzer];
+    aFibBurdenComponents = [v13 aFibBurdenComponents];
+    analyzer = [aFibBurdenComponents analyzer];
     analyzer = v11->_analyzer;
-    v11->_analyzer = v15;
+    v11->_analyzer = analyzer;
   }
 
   return v11;
@@ -58,20 +58,20 @@
   v31.receiver = self;
   v31.super_class = HDHRAFibBurdenHistogramQueryServer;
   [(HDQueryServer *)&v31 _queue_start];
-  v3 = [(HDQueryServer *)self clientProxy];
-  v4 = [v3 remoteObjectProxy];
+  clientProxy = [(HDQueryServer *)self clientProxy];
+  remoteObjectProxy = [clientProxy remoteObjectProxy];
 
-  v5 = [(HDQueryServer *)self client];
-  v6 = [v5 authorizationOracle];
-  v7 = [(HDHRAFibBurdenHistogramQueryServer *)self objectTypes];
+  client = [(HDQueryServer *)self client];
+  authorizationOracle = [client authorizationOracle];
+  objectTypes = [(HDHRAFibBurdenHistogramQueryServer *)self objectTypes];
   v30 = 0;
-  v8 = [v6 authorizationStatusRecordsForTypes:v7 error:&v30];
+  v8 = [authorizationOracle authorizationStatusRecordsForTypes:objectTypes error:&v30];
   v9 = v30;
 
   if (!v8)
   {
-    v19 = [(HDQueryServer *)self queryUUID];
-    [v4 client_deliverError:v9 forQuery:v19];
+    queryUUID = [(HDQueryServer *)self queryUUID];
+    [remoteObjectProxy client_deliverError:v9 forQuery:queryUUID];
     goto LABEL_22;
   }
 
@@ -79,26 +79,26 @@
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v10 = [v8 allValues];
-  v11 = [v10 countByEnumeratingWithState:&v26 objects:v36 count:16];
+  allValues = [v8 allValues];
+  v11 = [allValues countByEnumeratingWithState:&v26 objects:v36 count:16];
   if (!v11)
   {
 
 LABEL_18:
     analyzer = self->_analyzer;
     v25 = v9;
-    v19 = [(HKHRAFibBurdenAnalyzer *)analyzer generateSixWeekBurdenHistogramsWithError:&v25];
+    queryUUID = [(HKHRAFibBurdenAnalyzer *)analyzer generateSixWeekBurdenHistogramsWithError:&v25];
     v22 = v25;
 
-    v23 = [(HDQueryServer *)self queryUUID];
-    if (v19)
+    queryUUID2 = [(HDQueryServer *)self queryUUID];
+    if (queryUUID)
     {
-      [v4 client_deliverHistogramResult:v19 queryUUID:v23];
+      [remoteObjectProxy client_deliverHistogramResult:queryUUID queryUUID:queryUUID2];
     }
 
     else
     {
-      [v4 client_deliverError:v22 forQuery:v23];
+      [remoteObjectProxy client_deliverError:v22 forQuery:queryUUID2];
     }
 
     v9 = v22;
@@ -107,33 +107,33 @@ LABEL_18:
 
   v12 = v11;
   v13 = *v27;
-  v14 = 1;
+  canRead = 1;
   do
   {
     for (i = 0; i != v12; ++i)
     {
       if (*v27 != v13)
       {
-        objc_enumerationMutation(v10);
+        objc_enumerationMutation(allValues);
       }
 
-      if (v14)
+      if (canRead)
       {
-        v14 = [*(*(&v26 + 1) + 8 * i) canRead];
+        canRead = [*(*(&v26 + 1) + 8 * i) canRead];
       }
 
       else
       {
-        v14 = 0;
+        canRead = 0;
       }
     }
 
-    v12 = [v10 countByEnumeratingWithState:&v26 objects:v36 count:16];
+    v12 = [allValues countByEnumeratingWithState:&v26 objects:v36 count:16];
   }
 
   while (v12);
 
-  if (v14)
+  if (canRead)
   {
     goto LABEL_18;
   }
@@ -151,9 +151,9 @@ LABEL_18:
     _os_log_impl(&dword_229486000, v16, OS_LOG_TYPE_DEFAULT, "[%@] Avoiding exposing health data due to missing authorization: %@", buf, 0x16u);
   }
 
-  v19 = [(HDHRAFibBurdenHistogramQueryServer *)self _makeEmptyHistogramResult];
-  v20 = [(HDQueryServer *)self queryUUID];
-  [v4 client_deliverHistogramResult:v19 queryUUID:v20];
+  queryUUID = [(HDHRAFibBurdenHistogramQueryServer *)self _makeEmptyHistogramResult];
+  queryUUID3 = [(HDQueryServer *)self queryUUID];
+  [remoteObjectProxy client_deliverHistogramResult:queryUUID queryUUID:queryUUID3];
 
 LABEL_22:
   v24 = *MEMORY[0x277D85DE8];

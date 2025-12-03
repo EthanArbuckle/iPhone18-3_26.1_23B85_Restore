@@ -1,12 +1,12 @@
 @interface BMBlockMonitoring
-+ (id)computePersistencePath:(int64_t *)a3 error:(id *)a4;
-+ (id)monitorForTestingWithBootArgs:(id)a3;
-+ (id)sanitizedSignature:(id)a3 maxLength:(int64_t)a4;
++ (id)computePersistencePath:(int64_t *)path error:(id *)error;
++ (id)monitorForTestingWithBootArgs:(id)args;
++ (id)sanitizedSignature:(id)signature maxLength:(int64_t)length;
 + (id)sharedManager;
-+ (void)readEntitlement:(__CFString *)a3 withBlock:(id)a4;
++ (void)readEntitlement:(__CFString *)entitlement withBlock:(id)block;
 - (BOOL)_test_getPresentAlert;
 - (BOOL)isProcessBeingDebugged;
-- (char)initForTesting:(void *)a3 bootArgs:;
+- (char)initForTesting:(void *)testing bootArgs:;
 - (id)_test_getAlertPath;
 - (id)_test_getOSVersion;
 - (id)_test_getPanicReason;
@@ -15,29 +15,29 @@
 - (id)signaturePath;
 - (uint64_t)cleanup;
 - (uint64_t)lookForDeviceReadiness;
-- (uint64_t)parseBootArgInt:(void *)a3 where:;
+- (uint64_t)parseBootArgInt:(void *)int where:;
 - (unsigned)_test_getDebuggerState;
 - (unsigned)_test_getPanicDeny;
 - (unsigned)_test_getResultType;
-- (void)_test_allowPanic:(BOOL)a3;
+- (void)_test_allowPanic:(BOOL)panic;
 - (void)_test_resetVariables;
-- (void)_test_setActionDoneCallback:(id)a3;
-- (void)_test_setDebuggerState:(unsigned __int8)a3;
-- (void)_test_setEnabled:(BOOL)a3;
-- (void)_test_setExecutionDuration:(unint64_t)a3;
-- (void)_test_setLogFlushSleep:(unsigned int)a3;
-- (void)_test_setOSVersion:(id)a3;
-- (void)_test_setPanicPacing:(int64_t)a3;
-- (void)_test_setPanicSleep:(unsigned int)a3;
-- (void)_test_setPostPersistenceSleep:(unsigned int)a3;
-- (void)_test_setPresentAlert:(BOOL)a3;
+- (void)_test_setActionDoneCallback:(id)callback;
+- (void)_test_setDebuggerState:(unsigned __int8)state;
+- (void)_test_setEnabled:(BOOL)enabled;
+- (void)_test_setExecutionDuration:(unint64_t)duration;
+- (void)_test_setLogFlushSleep:(unsigned int)sleep;
+- (void)_test_setOSVersion:(id)version;
+- (void)_test_setPanicPacing:(int64_t)pacing;
+- (void)_test_setPanicSleep:(unsigned int)sleep;
+- (void)_test_setPostPersistenceSleep:(unsigned int)sleep;
+- (void)_test_setPresentAlert:(BOOL)alert;
 - (void)dealloc;
-- (void)executeBlockWithSignature:(const char *)a3 timeout:(unint64_t)a4 options:(int)a5 diagnosticCollectionBlock:(id)a6 block:(id)a7;
-- (void)logFault:(uint64_t)a3 thread_id:(uint64_t)a4 reason:;
-- (void)logPanicDeny:(uint64_t)a3 thread_id:(uint64_t)a4 reason:(int)a5 demoted:;
+- (void)executeBlockWithSignature:(const char *)signature timeout:(unint64_t)timeout options:(int)options diagnosticCollectionBlock:(id)block block:(id)a7;
+- (void)logFault:(uint64_t)fault thread_id:(uint64_t)thread_id reason:;
+- (void)logPanicDeny:(uint64_t)deny thread_id:(uint64_t)thread_id reason:(int)reason demoted:;
 - (void)lookForDeviceReadiness;
-- (void)showBootArgsAlertWithCheckingFirst:(uint64_t)a1;
-- (void)takeActionIfRelevant:(uint64_t)a3 thread_id:(NSObject *)a4 timeout:(unsigned int)a5 options:(_BYTE *)a6 recovered:(void *)a7 diagnosticCollectionBlock:;
+- (void)showBootArgsAlertWithCheckingFirst:(uint64_t)first;
+- (void)takeActionIfRelevant:(uint64_t)relevant thread_id:(NSObject *)thread_id timeout:(unsigned int)timeout options:(_BYTE *)options recovered:(void *)recovered diagnosticCollectionBlock:;
 @end
 
 @implementation BMBlockMonitoring
@@ -61,17 +61,17 @@ uint64_t __34__BMBlockMonitoring_sharedManager__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (char)initForTesting:(void *)a3 bootArgs:
+- (char)initForTesting:(void *)testing bootArgs:
 {
   v80 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (!a1)
+  testingCopy = testing;
+  if (!self)
   {
     v11 = 0;
     goto LABEL_60;
   }
 
-  v72.receiver = a1;
+  v72.receiver = self;
   v72.super_class = BMBlockMonitoring;
   v7 = objc_msgSendSuper2(&v72, sel_init);
   v8 = v7;
@@ -84,7 +84,7 @@ uint64_t __34__BMBlockMonitoring_sharedManager__block_invoke()
   *(v7 + 8) = a2;
   if (a2)
   {
-    objc_storeStrong(v7 + 19, a3);
+    objc_storeStrong(v7 + 19, testing);
   }
 
   *(v8 + 9) = xmmword_241BB4590;
@@ -278,10 +278,10 @@ LABEL_15:
   if (v8[5])
   {
     v19 = objc_autoreleasePoolPush();
-    v20 = [MEMORY[0x277CCA8D8] mainBundle];
-    v21 = [v20 bundleIdentifier];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
 
-    if (([v21 isEqualToString:@"com.apple.springboard"] & 1) == 0 && (objc_msgSend(v21, "isEqualToString:", @"com.apple.backboardd") & 1) == 0 && (v8[1] & 1) == 0)
+    if (([bundleIdentifier isEqualToString:@"com.apple.springboard"] & 1) == 0 && (objc_msgSend(bundleIdentifier, "isEqualToString:", @"com.apple.backboardd") & 1) == 0 && (v8[1] & 1) == 0)
     {
       v22 = v8[11];
       if ((v11[57] & 8) != 0)
@@ -539,23 +539,23 @@ void __45__BMBlockMonitoring_initForTesting_bootArgs___block_invoke(uint64_t a1,
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (uint64_t)parseBootArgInt:(void *)a3 where:
+- (uint64_t)parseBootArgInt:(void *)int where:
 {
   v5 = a2;
-  if (a1)
+  if (self)
   {
-    if (*(a1 + 8) == 1 && (v6 = *(a1 + 152)) != 0 && ([v6 objectForKey:v5], v7 = objc_claimAutoreleasedReturnValue(), v7, v7))
+    if (*(self + 8) == 1 && (v6 = *(self + 152)) != 0 && ([v6 objectForKey:v5], v7 = objc_claimAutoreleasedReturnValue(), v7, v7))
     {
-      if (a3)
+      if (int)
       {
-        v8 = [*(a1 + 152) objectForKey:v5];
+        v8 = [*(self + 152) objectForKey:v5];
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
           [BMBlockMonitoring parseBootArgInt:where:];
         }
 
-        *a3 = [v8 longLongValue];
+        *int = [v8 longLongValue];
       }
 
       v9 = 1;
@@ -629,15 +629,15 @@ void __45__BMBlockMonitoring_initForTesting_bootArgs___block_invoke_46(uint64_t 
 
 - (void)lookForDeviceReadiness
 {
-  v7 = *a1;
-  v8 = [v7 UTF8String];
+  v7 = *self;
+  uTF8String = [v7 UTF8String];
   v9 = *a2;
   *a3 = MEMORY[0x277D85DD0];
   a3[1] = 3221225472;
   a3[2] = __43__BMBlockMonitoring_lookForDeviceReadiness__block_invoke_54;
   a3[3] = &unk_278D0FDB0;
   a3[4] = a4;
-  notify_register_dispatch(v8, &lookForDeviceReadiness_buddyToken, v9, a3);
+  notify_register_dispatch(uTF8String, &lookForDeviceReadiness_buddyToken, v9, a3);
 }
 
 void __43__BMBlockMonitoring_lookForDeviceReadiness__block_invoke(uint64_t a1, int token)
@@ -787,11 +787,11 @@ intptr_t __104__BMBlockMonitoring_takeActionIfRelevant_thread_id_timeout_options
   return result;
 }
 
-- (void)executeBlockWithSignature:(const char *)a3 timeout:(unint64_t)a4 options:(int)a5 diagnosticCollectionBlock:(id)a6 block:(id)a7
+- (void)executeBlockWithSignature:(const char *)signature timeout:(unint64_t)timeout options:(int)options diagnosticCollectionBlock:(id)block block:(id)a7
 {
-  v12 = a6;
+  blockCopy = block;
   v13 = a7;
-  if (!a3)
+  if (!signature)
   {
     [BMBlockMonitoring parseBootArgInt:where:];
   }
@@ -803,12 +803,12 @@ intptr_t __104__BMBlockMonitoring_takeActionIfRelevant_thread_id_timeout_options
   }
 
   queue = self->_queue;
-  if (queue && self->_enabled && self->_deviceState == 3 && (a5 || !self->_coreDumpsDisabled || self->_presentAlert))
+  if (queue && self->_enabled && self->_deviceState == 3 && (options || !self->_coreDumpsDisabled || self->_presentAlert))
   {
     v16 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, queue);
-    v17 = dispatch_time(0, 1000000000 * a4);
-    dispatch_source_set_timer(v16, v17, 0xFFFFFFFFFFFFFFFFLL, 1000000000 * a4 / 0xA);
-    v18 = strdup(a3);
+    v17 = dispatch_time(0, 1000000000 * timeout);
+    dispatch_source_set_timer(v16, v17, 0xFFFFFFFFFFFFFFFFLL, 1000000000 * timeout / 0xA);
+    v18 = strdup(signature);
     v29 = 0;
     v19 = pthread_self();
     pthread_threadid_np(v19, &v29);
@@ -821,10 +821,10 @@ intptr_t __104__BMBlockMonitoring_takeActionIfRelevant_thread_id_timeout_options
     handler[4] = self;
     v24 = v18;
     v25 = v29;
-    v26 = a4;
+    timeoutCopy = timeout;
     v27 = v20;
-    v28 = a5;
-    v23 = v12;
+    optionsCopy = options;
+    v23 = blockCopy;
     dispatch_source_set_event_handler(v16, handler);
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
@@ -853,10 +853,10 @@ void __95__BMBlockMonitoring_executeBlockWithSignature_timeout_options_diagnosti
   free(v2);
 }
 
-+ (id)monitorForTestingWithBootArgs:(id)a3
++ (id)monitorForTestingWithBootArgs:(id)args
 {
-  v3 = a3;
-  v4 = [[BMBlockMonitoring alloc] initForTesting:v3 bootArgs:?];
+  argsCopy = args;
+  v4 = [[BMBlockMonitoring alloc] initForTesting:argsCopy bootArgs:?];
 
   return v4;
 }
@@ -876,86 +876,86 @@ void __95__BMBlockMonitoring_executeBlockWithSignature_timeout_options_diagnosti
   }
 }
 
-- (void)_test_setExecutionDuration:(unint64_t)a3
+- (void)_test_setExecutionDuration:(unint64_t)duration
 {
   if (self->_testing)
   {
-    self->_executionDuration = a3;
+    self->_executionDuration = duration;
   }
 }
 
-- (void)_test_setPanicPacing:(int64_t)a3
+- (void)_test_setPanicPacing:(int64_t)pacing
 {
   if (self->_testing)
   {
-    self->_panicPacing = a3;
+    self->_panicPacing = pacing;
   }
 }
 
-- (void)_test_setOSVersion:(id)a3
+- (void)_test_setOSVersion:(id)version
 {
-  v5 = a3;
+  versionCopy = version;
   if (self->_testing)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_osVersion, a3);
-    v5 = v6;
+    v6 = versionCopy;
+    objc_storeStrong(&self->_osVersion, version);
+    versionCopy = v6;
   }
 }
 
-- (void)_test_allowPanic:(BOOL)a3
+- (void)_test_allowPanic:(BOOL)panic
 {
   if (self->_testing)
   {
-    self->_test_allowPanic = a3;
+    self->_test_allowPanic = panic;
   }
 }
 
-- (void)_test_setEnabled:(BOOL)a3
+- (void)_test_setEnabled:(BOOL)enabled
 {
   if (self->_testing)
   {
-    self->_enabled = a3;
+    self->_enabled = enabled;
   }
 }
 
-- (void)_test_setPresentAlert:(BOOL)a3
+- (void)_test_setPresentAlert:(BOOL)alert
 {
   if (self->_testing)
   {
-    atomic_store(a3, &self->_presentAlert);
+    atomic_store(alert, &self->_presentAlert);
   }
 }
 
-- (void)_test_setPanicSleep:(unsigned int)a3
+- (void)_test_setPanicSleep:(unsigned int)sleep
 {
   if (self->_testing)
   {
-    self->_test_panicSleep = a3;
+    self->_test_panicSleep = sleep;
   }
 }
 
-- (void)_test_setLogFlushSleep:(unsigned int)a3
+- (void)_test_setLogFlushSleep:(unsigned int)sleep
 {
   if (self->_testing)
   {
-    self->_test_logFlushSleep = a3;
+    self->_test_logFlushSleep = sleep;
   }
 }
 
-- (void)_test_setPostPersistenceSleep:(unsigned int)a3
+- (void)_test_setPostPersistenceSleep:(unsigned int)sleep
 {
   if (self->_testing)
   {
-    self->_test_postPersistenceSleep = a3;
+    self->_test_postPersistenceSleep = sleep;
   }
 }
 
-- (void)_test_setDebuggerState:(unsigned __int8)a3
+- (void)_test_setDebuggerState:(unsigned __int8)state
 {
   if (self->_testing)
   {
-    self->_test_debuggerState = a3;
+    self->_test_debuggerState = state;
   }
 }
 
@@ -963,30 +963,30 @@ void __95__BMBlockMonitoring_executeBlockWithSignature_timeout_options_diagnosti
 {
   if (self->_testing)
   {
-    v3 = [(BMBlockMonitoring *)self signaturePath];
+    signaturePath = [(BMBlockMonitoring *)self signaturePath];
   }
 
   else
   {
-    v3 = 0;
+    signaturePath = 0;
   }
 
-  return v3;
+  return signaturePath;
 }
 
 - (id)_test_getAlertPath
 {
   if (self->_testing)
   {
-    v3 = [(BMBlockMonitoring *)self alertPath];
+    alertPath = [(BMBlockMonitoring *)self alertPath];
   }
 
   else
   {
-    v3 = 0;
+    alertPath = 0;
   }
 
-  return v3;
+  return alertPath;
 }
 
 - (id)_test_getPanicReason
@@ -1073,18 +1073,18 @@ void __95__BMBlockMonitoring_executeBlockWithSignature_timeout_options_diagnosti
   }
 }
 
-- (void)_test_setActionDoneCallback:(id)a3
+- (void)_test_setActionDoneCallback:(id)callback
 {
-  v4 = MEMORY[0x245CF9470](a3, a2);
+  v4 = MEMORY[0x245CF9470](callback, a2);
   test_actionDoneCallback = self->_test_actionDoneCallback;
   self->_test_actionDoneCallback = v4;
 
   MEMORY[0x2821F96F8]();
 }
 
-+ (id)computePersistencePath:(int64_t *)a3 error:(id *)a4
++ (id)computePersistencePath:(int64_t *)path error:(id *)error
 {
-  *a3 = -1;
+  *path = -1;
   if (container_query_create())
   {
     container_query_set_class();
@@ -1096,19 +1096,19 @@ void __95__BMBlockMonitoring_executeBlockWithSignature_timeout_options_diagnosti
     container_query_set_persona_unique_string();
     if (!container_query_get_single_result())
     {
-      if (a4)
+      if (error)
       {
         container_query_get_last_error();
         v11 = container_error_copy_unlocalized_description();
         if (!v11)
         {
           v10 = 0;
-          *a4 = @"Unable to get sandbox result, and unable to get error string";
+          *error = @"Unable to get sandbox result, and unable to get error string";
           goto LABEL_16;
         }
 
         v12 = v11;
-        *a4 = [MEMORY[0x277CCACA8] stringWithCString:v11 encoding:4];
+        *error = [MEMORY[0x277CCACA8] stringWithCString:v11 encoding:4];
         free(v12);
       }
 
@@ -1124,10 +1124,10 @@ LABEL_16:
       v9 = sandbox_extension_consume();
       if (v9 < 0)
       {
-        if (a4)
+        if (error)
         {
           [MEMORY[0x277CCACA8] stringWithFormat:@"Failed to get sandbox extension: %d (handle: %lld)", *__error(), v9];
-          *a4 = v10 = 0;
+          *error = v10 = 0;
         }
 
         else
@@ -1145,16 +1145,16 @@ LABEL_16:
     }
 
     v10 = [objc_alloc(MEMORY[0x277CCACA8]) initWithCString:container_get_path() encoding:4];
-    *a3 = v9;
+    *path = v9;
 LABEL_15:
     free(v8);
     goto LABEL_16;
   }
 
   v10 = 0;
-  if (a4)
+  if (error)
   {
-    *a4 = @"Unable to create sandbox container query";
+    *error = @"Unable to create sandbox container query";
   }
 
 LABEL_17:
@@ -1162,16 +1162,16 @@ LABEL_17:
   return v10;
 }
 
-+ (void)readEntitlement:(__CFString *)a3 withBlock:(id)a4
++ (void)readEntitlement:(__CFString *)entitlement withBlock:(id)block
 {
-  v5 = a4;
+  blockCopy = block;
   v6 = SecTaskCreateFromSelf(0);
   if (v6)
   {
     v7 = v6;
     error = 0;
-    v8 = SecTaskCopyValueForEntitlement(v6, a3, &error);
-    v5[2](v5, v8, error);
+    v8 = SecTaskCopyValueForEntitlement(v6, entitlement, &error);
+    blockCopy[2](blockCopy, v8, error);
     if (error)
     {
       CFRelease(error);
@@ -1187,13 +1187,13 @@ LABEL_17:
 
   else
   {
-    v5[2](v5, 0, 0);
+    blockCopy[2](blockCopy, 0, 0);
   }
 }
 
-+ (id)sanitizedSignature:(id)a3 maxLength:(int64_t)a4
++ (id)sanitizedSignature:(id)signature maxLength:(int64_t)length
 {
-  v5 = [a3 stringByReplacingOccurrencesOfString:@" " withString:@"_"];
+  v5 = [signature stringByReplacingOccurrencesOfString:@" " withString:@"_"];
   if (sanitizedSignature_maxLength__onceToken != -1)
   {
     +[BMBlockMonitoring(Testing) sanitizedSignature:maxLength:];
@@ -1202,7 +1202,7 @@ LABEL_17:
   v6 = [v5 componentsSeparatedByCharactersInSet:sanitizedSignature_maxLength__removedCharacters];
   v7 = [v6 componentsJoinedByString:&stru_2853CE600];
 
-  if (a4 <= 0)
+  if (length <= 0)
   {
     v10 = v7;
   }
@@ -1210,17 +1210,17 @@ LABEL_17:
   else
   {
     v8 = [v7 length];
-    if (v8 >= a4)
+    if (v8 >= length)
     {
-      v9 = a4;
+      lengthCopy = length;
     }
 
     else
     {
-      v9 = v8;
+      lengthCopy = v8;
     }
 
-    v10 = [v7 substringToIndex:v9];
+    v10 = [v7 substringToIndex:lengthCopy];
   }
 
   v11 = v10;
@@ -1258,19 +1258,19 @@ void __59__BMBlockMonitoring_Testing__sanitizedSignature_maxLength___block_invok
   return v4;
 }
 
-- (void)showBootArgsAlertWithCheckingFirst:(uint64_t)a1
+- (void)showBootArgsAlertWithCheckingFirst:(uint64_t)first
 {
   v18[4] = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (first)
   {
     v4 = objc_autoreleasePoolPush();
-    v5 = [(BMBlockMonitoring *)a1 alertPath];
-    v6 = v5;
-    if (!a2 || !access([v5 fileSystemRepresentation], 0))
+    alertPath = [(BMBlockMonitoring *)first alertPath];
+    v6 = alertPath;
+    if (!a2 || !access([alertPath fileSystemRepresentation], 0))
     {
-      if (*(a1 + 8))
+      if (*(first + 8))
       {
-        *(a1 + 137) = 1;
+        *(first + 137) = 1;
       }
 
       else
@@ -1292,10 +1292,10 @@ void __59__BMBlockMonitoring_Testing__sanitizedSignature_maxLength___block_invok
         CFUserNotificationReceiveResponse(v10, 0.0, &responseFlags);
         if (!responseFlags)
         {
-          v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"livability://boot-args/set?debug=0x%llx", *(a1 + 48) | 0x400];
-          v12 = [MEMORY[0x277CBEBC0] URLWithString:v11];
-          v13 = [MEMORY[0x277CC1E80] defaultWorkspace];
-          [v13 openURL:v12 withOptions:0];
+          0x400 = [MEMORY[0x277CCACA8] stringWithFormat:@"livability://boot-args/set?debug=0x%llx", *(first + 48) | 0x400];
+          v12 = [MEMORY[0x277CBEBC0] URLWithString:0x400];
+          defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
+          [defaultWorkspace openURL:v12 withOptions:0];
         }
 
         CFRelease(v10);
@@ -1341,9 +1341,9 @@ void __59__BMBlockMonitoring_Testing__sanitizedSignature_maxLength___block_invok
 
 - (id)signaturePath
 {
-  if (a1)
+  if (self)
   {
-    v1 = *(a1 + 24);
+    v1 = *(self + 24);
     if (v1)
     {
       v2 = +[BMBlockMonitoring signatureFileName];
@@ -1361,9 +1361,9 @@ void __59__BMBlockMonitoring_Testing__sanitizedSignature_maxLength___block_invok
 
 - (id)alertPath
 {
-  if (a1)
+  if (self)
   {
-    v1 = *(a1 + 24);
+    v1 = *(self + 24);
     if (v1)
     {
       v2 = +[BMBlockMonitoring alertFileName];
@@ -1379,39 +1379,39 @@ void __59__BMBlockMonitoring_Testing__sanitizedSignature_maxLength___block_invok
   return v1;
 }
 
-- (void)logPanicDeny:(uint64_t)a3 thread_id:(uint64_t)a4 reason:(int)a5 demoted:
+- (void)logPanicDeny:(uint64_t)deny thread_id:(uint64_t)thread_id reason:(int)reason demoted:
 {
   v28 = *MEMORY[0x277D85DE8];
   v9 = a2;
-  if (a1)
+  if (self)
   {
     OUTLINED_FUNCTION_21();
     if (v10)
     {
-      if ((a5 & 1) == 0)
+      if ((reason & 1) == 0)
       {
-        *(a1 + 120) = a4;
-        v11 = *(a1 + 128);
+        *(self + 120) = thread_id;
+        v11 = *(self + 128);
         if (v11)
         {
-          (*(v11 + 16))(v11, v9, a3, a4, 0);
+          (*(v11 + 16))(v11, v9, deny, thread_id, 0);
         }
       }
     }
 
-    v12 = *(a1 + 88);
+    v12 = *(self + 88);
     if (os_signpost_enabled(v12))
     {
       v13 = [BMBlockMonitoring sanitizedSignature:v9 maxLength:255];
 
-      if (os_signpost_enabled(*(a1 + 88)))
+      if (os_signpost_enabled(*(self + 88)))
       {
         v22 = 138543874;
         v23 = v13;
         v24 = 1026;
-        v25 = a4;
+        thread_idCopy = thread_id;
         v26 = 1026;
-        v27 = a5;
+        reasonCopy = reason;
         OUTLINED_FUNCTION_14();
         _os_signpost_emit_with_name_impl(v14, v15, v16, v17, v18, v19, v20, 0x18u);
       }
@@ -1429,42 +1429,42 @@ void __59__BMBlockMonitoring_Testing__sanitizedSignature_maxLength___block_invok
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logFault:(uint64_t)a3 thread_id:(uint64_t)a4 reason:
+- (void)logFault:(uint64_t)fault thread_id:(uint64_t)thread_id reason:
 {
   v25 = *MEMORY[0x277D85DE8];
   v7 = a2;
-  if (a1)
+  if (self)
   {
-    v8 = *(a1 + 104);
-    v9 = *(a1 + 88);
+    v8 = *(self + 104);
+    v9 = *(self + 88);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
     {
       v21 = 136315138;
-      v22 = a4;
+      thread_idCopy = thread_id;
       _os_log_fault_impl(&dword_241BAE000, v9, OS_LOG_TYPE_FAULT, "%s", &v21, 0xCu);
     }
 
-    *(a1 + 104) = 1;
-    if (*(a1 + 8) == 1)
+    *(self + 104) = 1;
+    if (*(self + 8) == 1)
     {
-      *(a1 + 121) = 3;
-      *(a1 + 160) = (v8 & 1) == 0;
-      v10 = *(a1 + 128);
+      *(self + 121) = 3;
+      *(self + 160) = (v8 & 1) == 0;
+      v10 = *(self + 128);
       if (v10)
       {
-        (*(v10 + 16))(v10, v7, a3, 0, 3);
+        (*(v10 + 16))(v10, v7, fault, 0, 3);
       }
     }
 
-    v11 = *(a1 + 88);
+    v11 = *(self + 88);
     if (os_signpost_enabled(v11))
     {
       v12 = [BMBlockMonitoring sanitizedSignature:v7 maxLength:255];
 
-      if (os_signpost_enabled(*(a1 + 88)))
+      if (os_signpost_enabled(*(self + 88)))
       {
         v21 = 138543618;
-        v22 = v12;
+        thread_idCopy = v12;
         v23 = 1026;
         v24 = (v8 & 1) == 0;
         OUTLINED_FUNCTION_14();
@@ -1484,19 +1484,19 @@ void __59__BMBlockMonitoring_Testing__sanitizedSignature_maxLength___block_invok
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)takeActionIfRelevant:(uint64_t)a3 thread_id:(NSObject *)a4 timeout:(unsigned int)a5 options:(_BYTE *)a6 recovered:(void *)a7 diagnosticCollectionBlock:
+- (void)takeActionIfRelevant:(uint64_t)relevant thread_id:(NSObject *)thread_id timeout:(unsigned int)timeout options:(_BYTE *)options recovered:(void *)recovered diagnosticCollectionBlock:
 {
   v338[1] = *MEMORY[0x277D85DE8];
   v13 = a2;
-  v14 = a7;
-  if (!a1)
+  recoveredCopy = recovered;
+  if (!self)
   {
     goto LABEL_53;
   }
 
-  if ([a1 isProcessBeingDebugged])
+  if ([self isProcessBeingDebugged])
   {
-    if ((*(a1 + 56) & 2) == 0)
+    if ((*(self + 56) & 2) == 0)
     {
       v65 = OUTLINED_FUNCTION_6();
       v68 = 11;
@@ -1505,7 +1505,7 @@ LABEL_89:
       goto LABEL_53;
     }
 
-    v15 = *(a1 + 88);
+    v15 = *(self + 88);
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
     {
       *__str = 0;
@@ -1514,13 +1514,13 @@ LABEL_89:
   }
 
   v16 = &loc_241BB4000;
-  if (a5 <= 1 && *(a1 + 41) == 1)
+  if (timeout <= 1 && *(self + 41) == 1)
   {
     v17 = 1;
-    atomic_compare_exchange_strong_explicit((a1 + 42), &v17, 0, memory_order_relaxed, memory_order_relaxed);
+    atomic_compare_exchange_strong_explicit((self + 42), &v17, 0, memory_order_relaxed, memory_order_relaxed);
     if (v17 != 1)
     {
-      if (a5)
+      if (timeout)
       {
         goto LABEL_11;
       }
@@ -1531,8 +1531,8 @@ LABEL_88:
       goto LABEL_89;
     }
 
-    v315 = a3;
-    v102 = *(a1 + 88);
+    relevantCopy = relevant;
+    v102 = *(self + 88);
     if (os_log_type_enabled(v102, OS_LOG_TYPE_ERROR))
     {
       OUTLINED_FUNCTION_7();
@@ -1541,8 +1541,8 @@ LABEL_88:
     }
 
     v108 = objc_autoreleasePoolPush();
-    v109 = [(BMBlockMonitoring *)a1 alertPath];
-    v110 = open([v109 fileSystemRepresentation], 770, 384);
+    alertPath = [(BMBlockMonitoring *)self alertPath];
+    v110 = open([alertPath fileSystemRepresentation], 770, 384);
     if ((v110 & 0x80000000) == 0)
     {
       v111 = v110;
@@ -1550,11 +1550,11 @@ LABEL_88:
       close(v111);
     }
 
-    [(BMBlockMonitoring *)a1 showBootArgsAlertWithCheckingFirst:?];
+    [(BMBlockMonitoring *)self showBootArgsAlertWithCheckingFirst:?];
 
     objc_autoreleasePoolPop(v108);
-    a3 = v315;
-    if (!a5)
+    relevant = relevantCopy;
+    if (!timeout)
     {
       goto LABEL_88;
     }
@@ -1562,42 +1562,42 @@ LABEL_88:
 
 LABEL_11:
   v18 = getpid();
-  v19 = *(a1 + 88);
+  v19 = *(self + 88);
   if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
   {
     OUTLINED_FUNCTION_0();
-    *&v333[6] = a3;
+    *&v333[6] = relevant;
     v334 = v44;
-    v335 = a4;
+    thread_idCopy = thread_id;
     _os_log_error_impl(&dword_241BAE000, v19, OS_LOG_TYPE_ERROR, "%@ (%u:%llu) timed out after %llu seconds", __str, 0x26u);
   }
 
   OUTLINED_FUNCTION_21();
-  if (v20 && *(a1 + 140))
+  if (v20 && *(self + 140))
   {
-    a4 = *(a1 + 88);
-    if (os_log_type_enabled(a4, OS_LOG_TYPE_INFO))
+    thread_id = *(self + 88);
+    if (os_log_type_enabled(thread_id, OS_LOG_TYPE_INFO))
     {
-      v21 = *(a1 + 140);
+      v21 = *(self + 140);
       OUTLINED_FUNCTION_7();
       OUTLINED_FUNCTION_17();
-      *&v333[6] = a3;
+      *&v333[6] = relevant;
       v334 = v22;
-      LODWORD(v335) = v23;
+      LODWORD(thread_idCopy) = v23;
       OUTLINED_FUNCTION_12();
       _os_log_impl(v24, v25, OS_LOG_TYPE_INFO, v26, v27, 0x22u);
     }
 
-    sleep(*(a1 + 140));
+    sleep(*(self + 140));
   }
 
   v28 = 0x277CCA000uLL;
-  if (a5 != 2)
+  if (timeout != 2)
   {
-    if (*(a1 + 41) == 1)
+    if (*(self + 41) == 1)
     {
-      a4 = *(a1 + 88);
-      if (os_log_type_enabled(a4, OS_LOG_TYPE_INFO))
+      thread_id = *(self + 88);
+      if (os_log_type_enabled(thread_id, OS_LOG_TYPE_INFO))
       {
         *__str = 0;
         OUTLINED_FUNCTION_12();
@@ -1610,17 +1610,17 @@ LABEL_11:
     }
 
     v69 = objc_autoreleasePoolPush();
-    v316 = [(BMBlockMonitoring *)a1 signaturePath];
+    signaturePath = [(BMBlockMonitoring *)self signaturePath];
     v292 = 384;
-    v70 = open([v316 fileSystemRepresentation], 770);
+    v70 = open([signaturePath fileSystemRepresentation], 770);
     context = v69;
     if (v70 < 0)
     {
-      v112 = *(a1 + 56);
+      v112 = *(self + 56);
       v113 = OUTLINED_FUNCTION_19();
       if ((v112 & 0x40) != 0)
       {
-        v114 = v316;
+        v114 = signaturePath;
         if (!v113)
         {
 LABEL_97:
@@ -1632,7 +1632,7 @@ LABEL_97:
         v115 = v69;
         v116 = *__error();
         *__str = 138412546;
-        v331 = v316;
+        v331 = signaturePath;
         OUTLINED_FUNCTION_11();
         OUTLINED_FUNCTION_12();
         v121 = 18;
@@ -1642,13 +1642,13 @@ LABEL_110:
         goto LABEL_97;
       }
 
-      v125 = v316;
+      v125 = signaturePath;
       if (v113)
       {
         v126 = v69;
         v127 = *__error();
         *__str = 138412546;
-        v331 = v316;
+        v331 = signaturePath;
         OUTLINED_FUNCTION_11();
         OUTLINED_FUNCTION_16();
         _os_log_error_impl(v128, v129, v130, v131, v132, 0x12u);
@@ -1666,7 +1666,7 @@ LABEL_110:
       {
         v72 = v71;
         v73 = read(SHIDWORD(v313), v71, 0x1FA0uLL);
-        v314 = a3;
+        relevantCopy2 = relevant;
         v309 = v72;
         if (v73 < 1)
         {
@@ -1695,7 +1695,7 @@ LABEL_110:
               {
                 v78 = v299;
                 [v78 timeIntervalSinceNow];
-                if (v79 <= -*(a1 + 80))
+                if (v79 <= -*(self + 80))
                 {
                   v69 = 0;
                   v16 = v78;
@@ -1704,9 +1704,9 @@ LABEL_110:
 
                 else
                 {
-                  v80 = *(a1 + 56);
+                  v80 = *(self + 56);
                   v311 = (v80 >> 3) & 1;
-                  v81 = *(a1 + 88);
+                  v81 = *(self + 88);
                   if ((v80 & 8) != 0)
                   {
                     v298 = v81;
@@ -1761,13 +1761,13 @@ LABEL_110:
               v155 = [v301 objectForKeyedSubscript:@"last_build"];
               v156 = 1;
               v297 = v155;
-              if (*(a1 + 64) && v155)
+              if (*(self + 64) && v155)
               {
                 objc_opt_class();
                 if (objc_opt_isKindOfClass())
                 {
                   v312 = v297;
-                  v156 = [v312 isEqualToString:*(a1 + 64)];
+                  v156 = [v312 isEqualToString:*(self + 64)];
                 }
 
                 else
@@ -1788,15 +1788,15 @@ LABEL_110:
                   v310 = v16;
                   if ([v310 containsObject:v13])
                   {
-                    v158 = *(a1 + 56);
+                    v158 = *(self + 56);
                     v16 = (v158 >> 2) & 1;
-                    v159 = *(a1 + 88);
+                    v159 = *(self + 88);
                     log = v159;
                     if ((v158 & 4) != 0)
                     {
                       if (os_log_type_enabled(v159, OS_LOG_TYPE_DEBUG))
                       {
-                        v160 = *(a1 + 64);
+                        v160 = *(self + 64);
                         OUTLINED_FUNCTION_7();
                         v332 = 2112;
                         *v333 = v161;
@@ -1808,7 +1808,7 @@ LABEL_110:
                     {
                       if (os_log_type_enabled(v159, OS_LOG_TYPE_INFO))
                       {
-                        v162 = *(a1 + 64);
+                        v162 = *(self + 64);
                         OUTLINED_FUNCTION_7();
                         v332 = 2112;
                         *v333 = v163;
@@ -1849,11 +1849,11 @@ LABEL_110:
           }
         }
 
-        if (*a6)
+        if (*options)
         {
-          if ((*(a1 + 56) & 0x10) == 0)
+          if ((*(self + 56) & 0x10) == 0)
           {
-            if (os_log_type_enabled(*(a1 + 88), OS_LOG_TYPE_INFO))
+            if (os_log_type_enabled(*(self + 88), OS_LOG_TYPE_INFO))
             {
               OUTLINED_FUNCTION_0();
               OUTLINED_FUNCTION_4();
@@ -1866,7 +1866,7 @@ LABEL_110:
             goto LABEL_194;
           }
 
-          v169 = *(a1 + 88);
+          v169 = *(self + 88);
           if (os_log_type_enabled(v169, OS_LOG_TYPE_DEBUG))
           {
             OUTLINED_FUNCTION_0();
@@ -1877,7 +1877,7 @@ LABEL_110:
         }
 
         v170 = v16 ^ 1;
-        if (!v14)
+        if (!recoveredCopy)
         {
           v170 = 1;
         }
@@ -1887,7 +1887,7 @@ LABEL_110:
           goto LABEL_155;
         }
 
-        v171 = *(a1 + 88);
+        v171 = *(self + 88);
         if (os_log_type_enabled(v171, OS_LOG_TYPE_ERROR))
         {
           getpid();
@@ -1898,8 +1898,8 @@ LABEL_110:
           OUTLINED_FUNCTION_18(v256, v257, v258, v259, v260);
         }
 
-        v14[2](v14);
-        if ((*a6 & 1) == 0)
+        recoveredCopy[2](recoveredCopy);
+        if ((*options & 1) == 0)
         {
 LABEL_155:
           if (!v16)
@@ -1910,9 +1910,9 @@ LABEL_155:
 
         else
         {
-          if ((*(a1 + 56) & 0x20) == 0)
+          if ((*(self + 56) & 0x20) == 0)
           {
-            if (os_log_type_enabled(*(a1 + 88), OS_LOG_TYPE_INFO))
+            if (os_log_type_enabled(*(self + 88), OS_LOG_TYPE_INFO))
             {
               OUTLINED_FUNCTION_0();
               OUTLINED_FUNCTION_4();
@@ -1925,7 +1925,7 @@ LABEL_155:
             goto LABEL_194;
           }
 
-          v177 = *(a1 + 88);
+          v177 = *(self + 88);
           if (os_log_type_enabled(v177, OS_LOG_TYPE_DEBUG))
           {
             OUTLINED_FUNCTION_0();
@@ -1935,9 +1935,9 @@ LABEL_155:
           }
         }
 
-        if ((a5 & 3) != 0)
+        if ((timeout & 3) != 0)
         {
-          v178 = *(a1 + 88);
+          v178 = *(self + 88);
           v179 = v310;
           if (os_log_type_enabled(v178, OS_LOG_TYPE_DEBUG))
           {
@@ -1952,7 +1952,7 @@ LABEL_155:
 
         else
         {
-          if (*(a1 + 105))
+          if (*(self + 105))
           {
             v186 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
             v187 = dispatch_queue_attr_make_with_overcommit();
@@ -1962,32 +1962,32 @@ LABEL_155:
             v307 = v188;
             v189 = dispatch_queue_create("com.apple.BlockMonitoring.FlushLogsQueue", v188);
             v190 = dispatch_semaphore_create(0);
-            v191 = *(a1 + 88);
+            v191 = *(self + 88);
             if (os_log_type_enabled(v191, OS_LOG_TYPE_DEBUG))
             {
               getpid();
               OUTLINED_FUNCTION_2();
               *v333 = v272;
               OUTLINED_FUNCTION_1();
-              OUTLINED_FUNCTION_13(&dword_241BAE000, v273, v274, "%@ (%u:%llu) flushing logs", v275, v276, v277, v278, 384, v293, v294, log, v296, v297, v299, v301, v303, v307, v309, v310, v313, v314, v316, context, v318, block, v320, v321, v322, v323, v324, v325, v326, v327, buf, *v329, *&v329[8], *&v329[16], __str[0]);
+              OUTLINED_FUNCTION_13(&dword_241BAE000, v273, v274, "%@ (%u:%llu) flushing logs", v275, v276, v277, v278, 384, v293, v294, log, v296, v297, v299, v301, v303, v307, v309, v310, v313, relevantCopy2, signaturePath, context, v318, block, v320, v321, v322, selfCopy, v324, v325, v326, v327, buf, *v329, *&v329[8], *&v329[16], __str[0]);
             }
 
             block = MEMORY[0x277D85DD0];
             v320 = 3221225472;
             v321 = __104__BMBlockMonitoring_takeActionIfRelevant_thread_id_timeout_options_recovered_diagnosticCollectionBlock___block_invoke;
             v322 = &unk_278D0FDD8;
-            v323 = a1;
+            selfCopy = self;
             LODWORD(v327) = v18;
             v300 = v13;
             v324 = v300;
-            v326 = v314;
+            v326 = relevantCopy2;
             v192 = v190;
             v325 = v192;
             dispatch_async(v189, &block);
             v193 = dispatch_time(0, 1000000000);
             v302 = v192;
             v194 = dispatch_semaphore_wait(v192, v193);
-            v195 = *(a1 + 88);
+            v195 = *(self + 88);
             v196 = v195;
             if (v194)
             {
@@ -2007,16 +2007,16 @@ LABEL_155:
               OUTLINED_FUNCTION_5();
               *v333 = v285;
               OUTLINED_FUNCTION_1();
-              OUTLINED_FUNCTION_13(&dword_241BAE000, v286, v287, "%@ (%u:%llu) flushed logs", v288, v289, v290, v291, v292, v293, v294, log, v296, v297, v300, v302, v303, v307, v309, v310, v313, v314, v316, context, v318, block, v320, v321, v322, v323, v324, v325, v326, v327, buf, *v329, *&v329[8], *&v329[16], __str[0]);
+              OUTLINED_FUNCTION_13(&dword_241BAE000, v286, v287, "%@ (%u:%llu) flushed logs", v288, v289, v290, v291, v292, v293, v294, log, v296, v297, v300, v302, v303, v307, v309, v310, v313, relevantCopy2, signaturePath, context, v318, block, v320, v321, v322, selfCopy, v324, v325, v326, v327, buf, *v329, *&v329[8], *&v329[16], __str[0]);
             }
 
             v305 = v189;
 
-            if (*a6)
+            if (*options)
             {
-              v244 = *(a1 + 56);
+              v244 = *(self + 56);
               v245 = (v244 >> 12) & 1;
-              v246 = *(a1 + 88);
+              v246 = *(self + 88);
               v247 = v246;
               if ((v244 & 0x1000) != 0)
               {
@@ -2025,7 +2025,7 @@ LABEL_155:
                   OUTLINED_FUNCTION_5();
                   *v333 = v18;
                   OUTLINED_FUNCTION_1();
-                  OUTLINED_FUNCTION_13(&dword_241BAE000, v248, v249, "%@ (%u:%llu) recovered during log flush - ignoring via boot-arg", v250, v251, v252, v253, v292, v293, v294, log, v296, v297, v300, v302, v305, v307, v309, v310, v313, v314, v316, context, v318, block, v320, v321, v322, v323, v324, v325, v326, v327, buf, *v329, *&v329[8], *&v329[16], __str[0]);
+                  OUTLINED_FUNCTION_13(&dword_241BAE000, v248, v249, "%@ (%u:%llu) recovered during log flush - ignoring via boot-arg", v250, v251, v252, v253, v292, v293, v294, log, v296, v297, v300, v302, v305, v307, v309, v310, v313, relevantCopy2, signaturePath, context, v318, block, v320, v321, v322, selfCopy, v324, v325, v326, v327, buf, *v329, *&v329[8], *&v329[16], __str[0]);
                 }
               }
 
@@ -2074,7 +2074,7 @@ LABEL_172:
             v336[0] = @"last_panic";
             v200 = [MEMORY[0x277CBEAA8] now];
             v201 = v200;
-            v202 = *(a1 + 64);
+            v202 = *(self + 64);
             if (!v202)
             {
               v202 = @"???";
@@ -2109,36 +2109,36 @@ LABEL_195:
                   free(v224);
                   close(SHIDWORD(v313));
                   OUTLINED_FUNCTION_21();
-                  if (v20 && *(a1 + 148))
+                  if (v20 && *(self + 148))
                   {
-                    v225 = *(a1 + 88);
+                    v225 = *(self + 88);
                     if (os_log_type_enabled(v225, OS_LOG_TYPE_INFO))
                     {
-                      v226 = *(a1 + 148);
+                      v226 = *(self + 148);
                       OUTLINED_FUNCTION_7();
                       OUTLINED_FUNCTION_17();
-                      *&v333[6] = v314;
+                      *&v333[6] = relevantCopy2;
                       v334 = v227;
-                      LODWORD(v335) = v228;
+                      LODWORD(thread_idCopy) = v228;
                       OUTLINED_FUNCTION_9();
                       _os_log_impl(v229, v230, OS_LOG_TYPE_INFO, v231, v232, 0x22u);
                     }
 
-                    sleep(*(a1 + 148));
+                    sleep(*(self + 148));
                   }
 
                   objc_autoreleasePoolPop(context);
-                  a3 = v314;
+                  relevant = relevantCopy2;
                   if ((v16 & 1) == 0)
                   {
                     goto LABEL_82;
                   }
 
 LABEL_202:
-                  if (*a6)
+                  if (*options)
                   {
-                    v233 = *(a1 + 56);
-                    v234 = *(a1 + 88);
+                    v233 = *(self + 56);
+                    v234 = *(self + 88);
                     v235 = v234;
                     if ((v233 & 0x2000) == 0)
                     {
@@ -2158,7 +2158,7 @@ LABEL_202:
                     if (os_log_type_enabled(v234, OS_LOG_TYPE_DEBUG))
                     {
                       OUTLINED_FUNCTION_0();
-                      *&v333[6] = a3;
+                      *&v333[6] = relevant;
                       OUTLINED_FUNCTION_25();
                       _os_log_debug_impl(v240, v241, OS_LOG_TYPE_DEBUG, v242, v243, 0x1Cu);
                     }
@@ -2169,8 +2169,8 @@ LABEL_202:
                 }
               }
 
-              v206 = *(a1 + 56);
-              v207 = *(a1 + 88);
+              v206 = *(self + 56);
+              v207 = *(self + 88);
               v208 = v207;
               if ((v206 & 0x40) == 0)
               {
@@ -2203,8 +2203,8 @@ LABEL_227:
 
             else
             {
-              v215 = *(a1 + 56);
-              v216 = *(a1 + 88);
+              v215 = *(self + 56);
+              v216 = *(self + 88);
               v208 = v216;
               if ((v215 & 0x40) == 0)
               {
@@ -2239,7 +2239,7 @@ LABEL_192:
             goto LABEL_192;
           }
 
-          v178 = *(a1 + 88);
+          v178 = *(self + 88);
           v179 = v310;
           if (os_log_type_enabled(v178, OS_LOG_TYPE_ERROR))
           {
@@ -2255,11 +2255,11 @@ LABEL_192:
         goto LABEL_172;
       }
 
-      v123 = *(a1 + 56);
+      v123 = *(self + 56);
       v124 = OUTLINED_FUNCTION_19();
       if ((v123 & 0x40) != 0)
       {
-        v114 = v316;
+        v114 = signaturePath;
         if (!v124)
         {
           goto LABEL_97;
@@ -2287,7 +2287,7 @@ LABEL_192:
       v143 = OUTLINED_FUNCTION_6();
       [(BMBlockMonitoring *)v143 logPanicDeny:v144 thread_id:v145 reason:9 demoted:0];
       close(SHIDWORD(v313));
-      v125 = v316;
+      v125 = signaturePath;
     }
 
     objc_autoreleasePoolPop(v69);
@@ -2295,15 +2295,15 @@ LABEL_192:
   }
 
 LABEL_20:
-  if ((*a6 & 1) == 0)
+  if ((*options & 1) == 0)
   {
     goto LABEL_23;
   }
 
-  a4 = *(a1 + 88);
-  if ((*(a1 + 56) & 0x10) == 0)
+  thread_id = *(self + 88);
+  if ((*(self + 56) & 0x10) == 0)
   {
-    if (os_log_type_enabled(*(a1 + 88), OS_LOG_TYPE_INFO))
+    if (os_log_type_enabled(*(self + 88), OS_LOG_TYPE_INFO))
     {
       OUTLINED_FUNCTION_2();
       *v333 = v18;
@@ -2319,13 +2319,13 @@ LABEL_82:
     goto LABEL_89;
   }
 
-  if (os_log_type_enabled(*(a1 + 88), OS_LOG_TYPE_DEBUG))
+  if (os_log_type_enabled(*(self + 88), OS_LOG_TYPE_DEBUG))
   {
     OUTLINED_FUNCTION_0();
-    *&v333[6] = a3;
+    *&v333[6] = relevant;
     OUTLINED_FUNCTION_12();
     _os_log_debug_impl(v89, v90, OS_LOG_TYPE_DEBUG, v91, v92, 0x1Cu);
-    if (v14)
+    if (recoveredCopy)
     {
       goto LABEL_24;
     }
@@ -2334,12 +2334,12 @@ LABEL_82:
   }
 
 LABEL_23:
-  if (v14)
+  if (recoveredCopy)
   {
 LABEL_24:
     if (OUTLINED_FUNCTION_19())
     {
-      v58 = a4;
+      thread_idCopy2 = thread_id;
       getpid();
       OUTLINED_FUNCTION_2();
       *v333 = v59;
@@ -2348,19 +2348,19 @@ LABEL_24:
       OUTLINED_FUNCTION_18(v60, v61, v62, v63, v64);
     }
 
-    v14[2](v14);
-    if ((*a6 & 1) == 0)
+    recoveredCopy[2](recoveredCopy);
+    if ((*options & 1) == 0)
     {
       goto LABEL_30;
     }
 
-    v29 = *(a1 + 88);
-    if ((*(a1 + 56) & 0x20) != 0)
+    v29 = *(self + 88);
+    if ((*(self + 56) & 0x20) != 0)
     {
-      if (os_log_type_enabled(*(a1 + 88), OS_LOG_TYPE_DEBUG))
+      if (os_log_type_enabled(*(self + 88), OS_LOG_TYPE_DEBUG))
       {
         OUTLINED_FUNCTION_0();
-        *&v333[6] = a3;
+        *&v333[6] = relevant;
         OUTLINED_FUNCTION_25();
         _os_log_debug_impl(v98, v99, OS_LOG_TYPE_DEBUG, v100, v101, 0x1Cu);
       }
@@ -2368,7 +2368,7 @@ LABEL_24:
       goto LABEL_30;
     }
 
-    if (os_log_type_enabled(*(a1 + 88), OS_LOG_TYPE_INFO))
+    if (os_log_type_enabled(*(self + 88), OS_LOG_TYPE_INFO))
     {
       OUTLINED_FUNCTION_2();
       *v333 = v18;
@@ -2384,28 +2384,28 @@ LABEL_24:
 LABEL_30:
   v30 = 1;
 LABEL_31:
-  snprintf(__str, 0x400uLL, "BMBlockMonitoring: %s (%u:%llu)", [v13 UTF8String], v18, a3);
+  snprintf(__str, 0x400uLL, "BMBlockMonitoring: %s (%u:%llu)", [v13 UTF8String], v18, relevant);
   if ((v30 & 1) == 0)
   {
-    v31 = *(a1 + 88);
+    v31 = *(self + 88);
     if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
     {
       OUTLINED_FUNCTION_23();
       *&v329[6] = v18;
       *&v329[10] = 2048;
-      *&v329[12] = a3;
+      *&v329[12] = relevant;
       OUTLINED_FUNCTION_18(&dword_241BAE000, v31, v88, "%@ (%u:%llu) is going to panic device", &buf);
     }
   }
 
   OUTLINED_FUNCTION_21();
-  if (!v20 || *(a1 + 136) == 1)
+  if (!v20 || *(self + 136) == 1)
   {
     if ((v30 & 1) == 0)
     {
-      if ((*(a1 + 56) & 1) == 0)
+      if ((*(self + 56) & 1) == 0)
       {
-        if (*(a1 + 96) != 1)
+        if (*(self + 96) != 1)
         {
 LABEL_52:
           MEMORY[0x245CF9630](3072, __str);
@@ -2413,7 +2413,7 @@ LABEL_52:
         }
 
         v32 = panic_with_data(0, 0, 0, 1u, __str);
-        v33 = *(a1 + 88);
+        v33 = *(self + 88);
         v34 = os_log_type_enabled(v33, OS_LOG_TYPE_ERROR);
         if (v32 < 0)
         {
@@ -2442,13 +2442,13 @@ LABEL_94:
         goto LABEL_52;
       }
 
-      v52 = *(a1 + 88);
+      v52 = *(self + 88);
       if (os_log_type_enabled(v52, OS_LOG_TYPE_ERROR))
       {
         OUTLINED_FUNCTION_23();
         *&v329[6] = v18;
         *&v329[10] = 2048;
-        *&v329[12] = a3;
+        *&v329[12] = relevant;
         OUTLINED_FUNCTION_18(&dword_241BAE000, v52, v53, "%@ (%u:%llu) would trigger a panic - boot-arg prevents panic, so faulting instead", &buf);
       }
     }
@@ -2461,15 +2461,15 @@ LABEL_61:
 
   v38 = [*(v28 + 3240) stringWithCString:__str encoding:4];
   v39 = [v38 copy];
-  v40 = *(a1 + 112);
-  *(a1 + 112) = v39;
+  v40 = *(self + 112);
+  *(self + 112) = v39;
 
   if (v30)
   {
     goto LABEL_61;
   }
 
-  if (*(a1 + 96))
+  if (*(self + 96))
   {
     v41 = 1;
   }
@@ -2479,11 +2479,11 @@ LABEL_61:
     v41 = 2;
   }
 
-  *(a1 + 121) = v41;
-  v42 = *(a1 + 128);
+  *(self + 121) = v41;
+  v42 = *(self + 128);
   if (v42)
   {
-    (*(v42 + 16))(v42, v13, a3, 0, v41);
+    (*(v42 + 16))(v42, v13, relevant, 0, v41);
   }
 
 LABEL_53:

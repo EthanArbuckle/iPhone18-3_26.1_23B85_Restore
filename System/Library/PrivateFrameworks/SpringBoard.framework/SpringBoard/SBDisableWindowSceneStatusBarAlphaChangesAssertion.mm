@@ -1,20 +1,20 @@
 @interface SBDisableWindowSceneStatusBarAlphaChangesAssertion
-- (id)_initWithWindowSceneStatusBarAssertionManager:(id)a3 reason:(id)a4;
+- (id)_initWithWindowSceneStatusBarAssertionManager:(id)manager reason:(id)reason;
 - (void)dealloc;
 - (void)invalidate;
 @end
 
 @implementation SBDisableWindowSceneStatusBarAlphaChangesAssertion
 
-- (id)_initWithWindowSceneStatusBarAssertionManager:(id)a3 reason:(id)a4
+- (id)_initWithWindowSceneStatusBarAssertionManager:(id)manager reason:(id)reason
 {
-  v6 = a3;
+  managerCopy = manager;
   v9.receiver = self;
   v9.super_class = SBDisableWindowSceneStatusBarAlphaChangesAssertion;
-  v7 = [(SBBaseWindowSceneStatusBarChangeAssertion *)&v9 _initWithWindowSceneStatusBarAssertionManager:v6 reason:a4];
+  v7 = [(SBBaseWindowSceneStatusBarChangeAssertion *)&v9 _initWithWindowSceneStatusBarAssertionManager:managerCopy reason:reason];
   if (v7)
   {
-    [v6 _addDisableWindowSceneStatusBarAlphaChangesAssertion:v7];
+    [managerCopy _addDisableWindowSceneStatusBarAlphaChangesAssertion:v7];
   }
 
   return v7;

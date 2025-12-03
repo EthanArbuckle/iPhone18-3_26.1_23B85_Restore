@@ -4,19 +4,19 @@
 - (BOOL)isAggregateComponent;
 - (BOOL)isAppleDevice;
 - (CBPowerSource)init;
-- (CBPowerSource)initWithCoder:(id)a3;
-- (CBPowerSource)initWithDictionary:(id)a3 error:(id *)a4;
-- (CBPowerSource)initWithXPCObject:(id)a3 error:(id *)a4;
+- (CBPowerSource)initWithCoder:(id)coder;
+- (CBPowerSource)initWithDictionary:(id)dictionary error:(id *)error;
+- (CBPowerSource)initWithXPCObject:(id)object error:(id *)error;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (int)publish;
 - (uint64_t)dictionaryRepresentation;
-- (unsigned)_updateAggregateWithComponent:(id)a3;
-- (unsigned)updateWithCBPowerSource:(id)a3;
+- (unsigned)_updateAggregateWithComponent:(id)component;
+- (unsigned)updateWithCBPowerSource:(id)source;
 - (void)_setPartName;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)encodeWithXPCObject:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)encodeWithXPCObject:(id)object;
 - (void)invalidate;
 - (void)releaseSource;
 - (void)removeBatteryInfo;
@@ -617,9 +617,9 @@ LABEL_106:
 
   if (self->_partID == 1)
   {
-    v57 = [(CBPowerSource *)self hasAllComponents];
+    hasAllComponents = [(CBPowerSource *)self hasAllComponents];
     v58 = @"N";
-    if (v57)
+    if (hasAllComponents)
     {
       v58 = @"Y";
     }
@@ -648,10 +648,10 @@ LABEL_106:
           v5 = v67;
         }
 
-        v68 = [v66 batteryInfo];
-        if (v68)
+        batteryInfo = [v66 batteryInfo];
+        if (batteryInfo)
         {
-          v69 = (v68 >> 8) & 7;
+          v69 = (batteryInfo >> 8) & 7;
           v70 = "";
           if (v69 == 2)
           {
@@ -722,8 +722,8 @@ LABEL_106:
     v12 = 0u;
     v9 = 0u;
     v10 = 0u;
-    v3 = [(NSMutableDictionary *)self->_componentMap allValues];
-    v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+    allValues = [(NSMutableDictionary *)self->_componentMap allValues];
+    v4 = [allValues countByEnumeratingWithState:&v9 objects:v13 count:16];
     if (v4)
     {
       v5 = v4;
@@ -735,14 +735,14 @@ LABEL_106:
         {
           if (*v10 != v6)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(allValues);
           }
 
           [*(*(&v9 + 1) + 8 * v7++) removeFlags];
         }
 
         while (v5 != v7);
-        v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+        v5 = [allValues countByEnumeratingWithState:&v9 objects:v13 count:16];
       }
 
       while (v5);
@@ -763,18 +763,18 @@ LABEL_106:
 - (void)invalidate
 {
   v25 = *MEMORY[0x1E69E9840];
-  v2 = self;
-  objc_sync_enter(v2);
-  [(CBPowerSource *)v2 releaseSource];
-  if (v2->_partID == 1)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(CBPowerSource *)selfCopy releaseSource];
+  if (selfCopy->_partID == 1)
   {
     v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v4 = [(NSMutableDictionary *)v2->_componentMap allKeys];
-    v5 = [v4 countByEnumeratingWithState:&v19 objects:v24 count:16];
+    allKeys = [(NSMutableDictionary *)selfCopy->_componentMap allKeys];
+    v5 = [allKeys countByEnumeratingWithState:&v19 objects:v24 count:16];
     if (v5)
     {
       v6 = *v20;
@@ -784,16 +784,16 @@ LABEL_106:
         {
           if (*v20 != v6)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(allKeys);
           }
 
           v8 = *(*(&v19 + 1) + 8 * i);
-          v9 = [v8 unsignedIntValue];
+          unsignedIntValue = [v8 unsignedIntValue];
           [v3 addObject:v8];
-          [(CBPowerSource *)v2 invalidateComponentWithPartID:v9];
+          [(CBPowerSource *)selfCopy invalidateComponentWithPartID:unsignedIntValue];
         }
 
-        v5 = [v4 countByEnumeratingWithState:&v19 objects:v24 count:16];
+        v5 = [allKeys countByEnumeratingWithState:&v19 objects:v24 count:16];
       }
 
       while (v5);
@@ -817,7 +817,7 @@ LABEL_106:
             objc_enumerationMutation(v10);
           }
 
-          [(NSMutableDictionary *)v2->_componentMap setObject:0 forKeyedSubscript:*(*(&v15 + 1) + 8 * j), v15];
+          [(NSMutableDictionary *)selfCopy->_componentMap setObject:0 forKeyedSubscript:*(*(&v15 + 1) + 8 * j), v15];
         }
 
         v11 = [v10 countByEnumeratingWithState:&v15 objects:v23 count:16];
@@ -827,7 +827,7 @@ LABEL_106:
     }
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   v14 = *MEMORY[0x1E69E9840];
 }
@@ -867,21 +867,21 @@ LABEL_106:
   return self;
 }
 
-- (void)encodeWithXPCObject:(id)a3
+- (void)encodeWithXPCObject:(id)object
 {
-  v4 = a3;
-  v5 = v4;
+  objectCopy = object;
+  v5 = objectCopy;
   if (self->_accessoryCategory)
   {
-    xpc_dictionary_set_uint64(v4, "aCat", self->_accessoryCategory);
+    xpc_dictionary_set_uint64(objectCopy, "aCat", self->_accessoryCategory);
   }
 
   accessoryID = self->_accessoryID;
   v7 = v5;
-  v8 = [(NSString *)accessoryID UTF8String];
-  if (v8)
+  uTF8String = [(NSString *)accessoryID UTF8String];
+  if (uTF8String)
   {
-    xpc_dictionary_set_string(v7, "id", v8);
+    xpc_dictionary_set_string(v7, "id", uTF8String);
   }
 
   appearanceValue = self->_appearanceValue;
@@ -899,11 +899,11 @@ LABEL_106:
   v11 = v10;
   if (v10)
   {
-    v12 = [(NSMutableDictionary *)v10 allValues];
+    allValues = [(NSMutableDictionary *)v10 allValues];
 
-    if (v12)
+    if (allValues)
     {
-      v13 = [(NSMutableDictionary *)v11 allValues];
+      allValues2 = [(NSMutableDictionary *)v11 allValues];
       CUXPCEncodeNSArrayOfObjects();
     }
   }
@@ -921,10 +921,10 @@ LABEL_106:
 
   groupID = self->_groupID;
   v16 = v7;
-  v17 = [(NSString *)groupID UTF8String];
-  if (v17)
+  uTF8String2 = [(NSString *)groupID UTF8String];
+  if (uTF8String2)
   {
-    xpc_dictionary_set_string(v16, "grID", v17);
+    xpc_dictionary_set_string(v16, "grID", uTF8String2);
   }
 
   internalFlags = self->_internalFlags;
@@ -947,10 +947,10 @@ LABEL_106:
 
   name = self->_name;
   v22 = v16;
-  v23 = [(NSString *)name UTF8String];
-  if (v23)
+  uTF8String3 = [(NSString *)name UTF8String];
+  if (uTF8String3)
   {
-    xpc_dictionary_set_string(v22, "nm", v23);
+    xpc_dictionary_set_string(v22, "nm", uTF8String3);
   }
 
   if (self->_partID)
@@ -960,10 +960,10 @@ LABEL_106:
 
   partName = self->_partName;
   v25 = v22;
-  v26 = [(NSString *)partName UTF8String];
-  if (v26)
+  uTF8String4 = [(NSString *)partName UTF8String];
+  if (uTF8String4)
   {
-    xpc_dictionary_set_string(v25, "ptNm", v26);
+    xpc_dictionary_set_string(v25, "ptNm", uTF8String4);
   }
 
   if (self->_present)
@@ -991,18 +991,18 @@ LABEL_106:
 
   transportType = self->_transportType;
   v31 = v25;
-  v32 = [(NSString *)transportType UTF8String];
-  if (v32)
+  uTF8String5 = [(NSString *)transportType UTF8String];
+  if (uTF8String5)
   {
-    xpc_dictionary_set_string(v31, "hciT", v32);
+    xpc_dictionary_set_string(v31, "hciT", uTF8String5);
   }
 
   type = self->_type;
   xdict = v31;
-  v34 = [(NSString *)type UTF8String];
-  if (v34)
+  uTF8String6 = [(NSString *)type UTF8String];
+  if (uTF8String6)
   {
-    xpc_dictionary_set_string(xdict, "pTyp", v34);
+    xpc_dictionary_set_string(xdict, "pTyp", uTF8String6);
   }
 
   if (self->_vendorID)
@@ -1016,11 +1016,11 @@ LABEL_106:
   }
 }
 
-- (CBPowerSource)initWithCoder:(id)a3
+- (CBPowerSource)initWithCoder:(id)coder
 {
   v17 = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E695DFD8];
-  v5 = a3;
+  coderCopy = coder;
   v12 = objc_opt_class();
   v13 = objc_opt_class();
   v14 = objc_opt_class();
@@ -1029,43 +1029,43 @@ LABEL_106:
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v12 count:5];
   v7 = [v4 setWithArray:{v6, v12, v13, v14, v15}];
 
-  v8 = [v5 decodeObjectOfClasses:v7 forKey:@"cbPS"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"cbPS"];
 
   v9 = [(CBPowerSource *)self initWithDictionary:v8 error:0];
   v10 = *MEMORY[0x1E69E9840];
   return v9;
 }
 
-- (CBPowerSource)initWithDictionary:(id)a3 error:(id *)a4
+- (CBPowerSource)initWithDictionary:(id)dictionary error:(id *)error
 {
   v12 = _CFXPCCreateXPCObjectFromCFObject();
   if (v12)
   {
-    self = [(CBPowerSource *)self initWithXPCObject:v12 error:a4];
-    v13 = self;
+    self = [(CBPowerSource *)self initWithXPCObject:v12 error:error];
+    selfCopy = self;
   }
 
-  else if (a4)
+  else if (error)
   {
     CBErrorF(-6700, "CBPowerSource convert XPC dict failed", v6, v7, v8, v9, v10, v11, v15);
-    *a4 = v13 = 0;
+    *error = selfCopy = 0;
   }
 
   else
   {
-    v13 = 0;
+    selfCopy = 0;
   }
 
-  return v13;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  v4 = [(CBPowerSource *)self dictionaryRepresentation];
-  if (v4)
+  coderCopy = coder;
+  dictionaryRepresentation = [(CBPowerSource *)self dictionaryRepresentation];
+  if (dictionaryRepresentation)
   {
-    [v5 encodeObject:v4 forKey:@"cbPS"];
+    [coderCopy encodeObject:dictionaryRepresentation forKey:@"cbPS"];
   }
 }
 
@@ -1160,8 +1160,8 @@ LABEL_106:
     v11 = 0u;
     v8 = 0u;
     v9 = 0u;
-    v2 = [(NSMutableDictionary *)self->_componentMap allValues];
-    v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+    allValues = [(NSMutableDictionary *)self->_componentMap allValues];
+    v3 = [allValues countByEnumeratingWithState:&v8 objects:v12 count:16];
     if (v3)
     {
       v4 = v3;
@@ -1173,14 +1173,14 @@ LABEL_106:
         {
           if (*v9 != v5)
           {
-            objc_enumerationMutation(v2);
+            objc_enumerationMutation(allValues);
           }
 
           [*(*(&v8 + 1) + 8 * v6++) setBatteryInfo:0];
         }
 
         while (v4 != v6);
-        v4 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+        v4 = [allValues countByEnumeratingWithState:&v8 objects:v12 count:16];
       }
 
       while (v4);
@@ -1200,9 +1200,9 @@ LABEL_106:
 
 - (int)publish
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if ((v2->_internalFlags & 8) == 0 && !v2->_changeFlags)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ((selfCopy->_internalFlags & 8) == 0 && !selfCopy->_changeFlags)
   {
     if (gLogCategory_CBPowerSource <= 30 && (gLogCategory_CBPowerSource != -1 || _LogCategory_Initialize()))
     {
@@ -1212,18 +1212,18 @@ LABEL_106:
     goto LABEL_39;
   }
 
-  if (v2->_partID == 1)
+  if (selfCopy->_partID == 1)
   {
-    if ([(CBPowerSource *)v2 hasAllComponents]&& [(CBPowerSource *)v2 combinedPublish])
+    if ([(CBPowerSource *)selfCopy hasAllComponents]&& [(CBPowerSource *)selfCopy combinedPublish])
     {
-      v3 = [(CBPowerSource *)v2 componentWithPartID:2];
+      v3 = [(CBPowerSource *)selfCopy componentWithPartID:2];
       v4 = v3;
       if (v3)
       {
         [v3 releaseSource];
       }
 
-      v5 = [(CBPowerSource *)v2 componentWithPartID:3];
+      v5 = [(CBPowerSource *)selfCopy componentWithPartID:3];
       v6 = v5;
       if (v5)
       {
@@ -1235,31 +1235,31 @@ LABEL_106:
 
     else
     {
-      [(CBPowerSource *)v2 releaseSource];
-      v8 = [(CBPowerSource *)v2 componentWithPartID:2];
+      [(CBPowerSource *)selfCopy releaseSource];
+      v8 = [(CBPowerSource *)selfCopy componentWithPartID:2];
       v9 = v8;
       if (v8)
       {
-        [v8 setChangeFlags:{v2->_changeFlags | objc_msgSend(v8, "changeFlags")}];
+        [v8 setChangeFlags:{selfCopy->_changeFlags | objc_msgSend(v8, "changeFlags")}];
         [v9 publish];
       }
 
-      v10 = [(CBPowerSource *)v2 componentWithPartID:3];
+      v10 = [(CBPowerSource *)selfCopy componentWithPartID:3];
       v6 = v10;
       if (v10)
       {
-        [v10 setChangeFlags:{v2->_changeFlags | objc_msgSend(v10, "changeFlags")}];
+        [v10 setChangeFlags:{selfCopy->_changeFlags | objc_msgSend(v10, "changeFlags")}];
         [v6 publish];
       }
 
       v7 = 0;
     }
 
-    v11 = [(CBPowerSource *)v2 componentWithPartID:4];
+    v11 = [(CBPowerSource *)selfCopy componentWithPartID:4];
     v12 = v11;
     if (v11)
     {
-      [v11 setChangeFlags:{v2->_changeFlags | objc_msgSend(v11, "changeFlags")}];
+      [v11 setChangeFlags:{selfCopy->_changeFlags | objc_msgSend(v11, "changeFlags")}];
       [v12 publish];
     }
 
@@ -1271,7 +1271,7 @@ LABEL_39:
     }
   }
 
-  if (!v2->_psID && (v13 = IOPSCreatePowerSource()) != 0)
+  if (!selfCopy->_psID && (v13 = IOPSCreatePowerSource()) != 0)
   {
     if (gLogCategory_CBPowerSource <= 30 && (gLogCategory_CBPowerSource != -1 || _LogCategory_Initialize()))
     {
@@ -1281,13 +1281,13 @@ LABEL_39:
 
   else
   {
-    v14 = [(CBPowerSource *)v2 dictionaryRepresentation];
+    dictionaryRepresentation = [(CBPowerSource *)selfCopy dictionaryRepresentation];
     if (gLogCategory_CBPowerSource <= 30 && (gLogCategory_CBPowerSource != -1 || _LogCategory_Initialize()))
     {
       LogPrintF_safe();
     }
 
-    psID = v2->_psID;
+    psID = selfCopy->_psID;
     v13 = IOPSSetPowerSourceDetails();
     if (v13 && gLogCategory_CBPowerSource <= 30 && (gLogCategory_CBPowerSource != -1 || _LogCategory_Initialize()))
     {
@@ -1296,7 +1296,7 @@ LABEL_39:
   }
 
 LABEL_40:
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v13;
 }
@@ -1366,11 +1366,11 @@ LABEL_16:
           v9 = v8;
           if (v8)
           {
-            v10 = [v8 dictionaryRepresentation];
-            if (v10)
+            dictionaryRepresentation = [v8 dictionaryRepresentation];
+            if (dictionaryRepresentation)
             {
               v11 = objc_alloc_init(MEMORY[0x1E695DF70]);
-              [v11 addObject:v10];
+              [v11 addObject:dictionaryRepresentation];
             }
 
             else
@@ -1388,15 +1388,15 @@ LABEL_16:
           v13 = v12;
           if (v12)
           {
-            v14 = [v12 dictionaryRepresentation];
-            if (v14)
+            dictionaryRepresentation2 = [v12 dictionaryRepresentation];
+            if (dictionaryRepresentation2)
             {
               if (!v11)
               {
                 v11 = objc_alloc_init(MEMORY[0x1E695DF70]);
               }
 
-              [v11 addObject:v14];
+              [v11 addObject:dictionaryRepresentation2];
             }
           }
 
@@ -1433,15 +1433,15 @@ LABEL_16:
 
                 v23 = *(*(&v54 + 1) + 8 * i);
                 v24 = NSDictionaryGetNSNumber();
-                v25 = [v24 intValue];
-                if (v25 >= v21)
+                intValue = [v24 intValue];
+                if (intValue >= v21)
                 {
                   v21 = v21;
                 }
 
                 else
                 {
-                  v21 = v25;
+                  v21 = intValue;
                 }
               }
 
@@ -1635,33 +1635,33 @@ LABEL_80:
   return v5;
 }
 
-- (unsigned)updateWithCBPowerSource:(id)a3
+- (unsigned)updateWithCBPowerSource:(id)source
 {
   v98 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  sourceCopy = source;
   changeFlags = self->_changeFlags;
-  if (![v4 isAggregateComponent] || self->_partID != 1)
+  if (![sourceCopy isAggregateComponent] || self->_partID != 1)
   {
-    v7 = [v4 accessoryCategory];
-    if (v7 && v7 != self->_accessoryCategory)
+    accessoryCategory = [sourceCopy accessoryCategory];
+    if (accessoryCategory && accessoryCategory != self->_accessoryCategory)
     {
-      self->_accessoryCategory = v7;
+      self->_accessoryCategory = accessoryCategory;
       changeFlags |= 1u;
     }
 
-    v8 = [v4 appearanceValue];
-    if (v8 && v8 != self->_appearanceValue)
+    appearanceValue = [sourceCopy appearanceValue];
+    if (appearanceValue && appearanceValue != self->_appearanceValue)
     {
-      self->_appearanceValue = v8;
+      self->_appearanceValue = appearanceValue;
       changeFlags |= 1u;
     }
 
-    v9 = [v4 accessoryID];
-    v10 = v9;
-    if (v9)
+    accessoryID = [sourceCopy accessoryID];
+    v10 = accessoryID;
+    if (accessoryID)
     {
       accessoryID = self->_accessoryID;
-      v12 = v9;
+      v12 = accessoryID;
       v13 = accessoryID;
       v14 = v13;
       if (v12 == v13)
@@ -1683,11 +1683,11 @@ LABEL_80:
 LABEL_21:
           objc_storeStrong(&self->_accessoryID, v10);
           changeFlags |= 1u;
-          v16 = [v4 batteryInfo];
+          batteryInfo = [sourceCopy batteryInfo];
           if (self->_partID != 1)
           {
 LABEL_22:
-            if (v16 == self->_batteryInfo)
+            if (batteryInfo == self->_batteryInfo)
             {
               goto LABEL_24;
             }
@@ -1696,16 +1696,16 @@ LABEL_22:
           }
 
 LABEL_17:
-          v17 = ((v16 & 0x7F) / 100.0);
+          v17 = ((batteryInfo & 0x7F) / 100.0);
           if (!v17 || 100 * v17 >= 100 * ((self->_batteryInfo & 0x7F) / 100.0))
           {
 LABEL_24:
-            v18 = [v4 groupID];
-            v19 = v18;
-            if (v18)
+            groupID = [sourceCopy groupID];
+            v19 = groupID;
+            if (groupID)
             {
               groupID = self->_groupID;
-              v21 = v18;
+              v21 = groupID;
               v22 = groupID;
               v23 = v22;
               if (v21 == v22)
@@ -1727,20 +1727,20 @@ LABEL_24:
 LABEL_55:
                   objc_storeStrong(&self->_groupID, v19);
                   changeFlags |= 1u;
-                  v25 = [v4 internalFlags];
-                  if (v25 == self->_internalFlags)
+                  internalFlags = [sourceCopy internalFlags];
+                  if (internalFlags == self->_internalFlags)
                   {
 LABEL_32:
-                    v26 = [v4 lowWarnLevel];
+                    lowWarnLevel = [sourceCopy lowWarnLevel];
                     lowWarnLevel = self->_lowWarnLevel;
                     v91 = v19;
                     v92 = v10;
-                    if (v26)
+                    if (lowWarnLevel)
                     {
-                      if (v26 == lowWarnLevel)
+                      if (lowWarnLevel == lowWarnLevel)
                       {
 LABEL_38:
-                        [v4 maxCapacity];
+                        [sourceCopy maxCapacity];
                         v29 = changeFlags | 1;
                         v30 = maxCapacity > 0.0 && maxCapacity != self->_maxCapacity;
                         if (v30)
@@ -1764,13 +1764,13 @@ LABEL_38:
                           self->_maxCapacity = maxCapacity;
                         }
 
-                        v32 = [v4 name];
-                        v33 = v32;
-                        if (v32)
+                        name = [sourceCopy name];
+                        v33 = name;
+                        if (name)
                         {
                           name = self->_name;
-                          v35 = v32;
-                          v36 = v32;
+                          v35 = name;
+                          v36 = name;
                           v37 = name;
                           v38 = v37;
                           if (v36 == v37)
@@ -1796,27 +1796,27 @@ LABEL_38:
 LABEL_58:
                               objc_storeStrong(&self->_name, v33);
                               v31 = v29;
-                              v40 = [v4 partID];
-                              if (!v40)
+                              partID = [sourceCopy partID];
+                              if (!partID)
                               {
                                 goto LABEL_61;
                               }
 
 LABEL_59:
-                              if (v40 != self->_partID)
+                              if (partID != self->_partID)
                               {
-                                self->_partID = v40;
+                                self->_partID = partID;
                                 v31 = v29;
                               }
 
 LABEL_61:
-                              v41 = [v4 partName];
-                              v42 = v41;
-                              if (v41)
+                              partName = [sourceCopy partName];
+                              v42 = partName;
+                              if (partName)
                               {
                                 partName = self->_partName;
-                                v44 = v41;
-                                v45 = v41;
+                                v44 = partName;
+                                v45 = partName;
                                 v46 = partName;
                                 v47 = v46;
                                 if (v45 == v46)
@@ -1843,14 +1843,14 @@ LABEL_73:
                                     {
 LABEL_74:
                                       [(CBPowerSource *)self _setPartName];
-                                      v49 = [v4 present];
-                                      if (self->_present != v49)
+                                      present = [sourceCopy present];
+                                      if (self->_present != present)
                                       {
 LABEL_75:
-                                        self->_present = v49;
+                                        self->_present = present;
                                         v31 |= 1u;
-                                        v50 = [v4 productID];
-                                        if (!v50)
+                                        productID = [sourceCopy productID];
+                                        if (!productID)
                                         {
                                           goto LABEL_78;
                                         }
@@ -1859,39 +1859,39 @@ LABEL_75:
                                       }
 
 LABEL_70:
-                                      v50 = [v4 productID];
-                                      if (!v50)
+                                      productID = [sourceCopy productID];
+                                      if (!productID)
                                       {
                                         goto LABEL_78;
                                       }
 
 LABEL_76:
-                                      if (v50 != self->_productID)
+                                      if (productID != self->_productID)
                                       {
-                                        self->_productID = v50;
+                                        self->_productID = productID;
                                         v31 |= 1u;
                                       }
 
 LABEL_78:
-                                      v51 = [v4 sourceID];
-                                      if (v51 && v51 != self->_sourceID)
+                                      sourceID = [sourceCopy sourceID];
+                                      if (sourceID && sourceID != self->_sourceID)
                                       {
-                                        self->_sourceID = v51;
+                                        self->_sourceID = sourceID;
                                       }
 
-                                      v52 = [v4 temperature];
-                                      if (v52 && v52 != self->_temperature)
+                                      temperature = [sourceCopy temperature];
+                                      if (temperature && temperature != self->_temperature)
                                       {
-                                        self->_temperature = v52;
+                                        self->_temperature = temperature;
                                         v31 |= 1u;
                                       }
 
-                                      v53 = [v4 transportType];
-                                      v54 = v53;
-                                      if (v53)
+                                      transportType = [sourceCopy transportType];
+                                      v54 = transportType;
+                                      if (transportType)
                                       {
                                         transportType = self->_transportType;
-                                        v56 = v53;
+                                        v56 = transportType;
                                         v57 = transportType;
                                         v58 = v57;
                                         if (v56 != v57)
@@ -1924,15 +1924,15 @@ LABEL_95:
 LABEL_96:
                                             self->_transportType = @"Bluetooth";
 
-                                            v63 = [v4 type];
-                                            if (!v63)
+                                            type = [sourceCopy type];
+                                            if (!type)
                                             {
                                               goto LABEL_102;
                                             }
 
 LABEL_97:
                                             type = self->_type;
-                                            v65 = v63;
+                                            v65 = type;
                                             v66 = type;
                                             v67 = v66;
                                             if (v65 != v66)
@@ -1956,8 +1956,8 @@ LABEL_107:
 LABEL_108:
                                                     self->_type = @"Accessory Source";
 
-                                                    v72 = [v4 vendorID];
-                                                    if (!v72)
+                                                    vendorID = [sourceCopy vendorID];
+                                                    if (!vendorID)
                                                     {
                                                       goto LABEL_111;
                                                     }
@@ -1966,24 +1966,24 @@ LABEL_108:
                                                   }
 
 LABEL_103:
-                                                  v72 = [v4 vendorID];
-                                                  if (!v72)
+                                                  vendorID = [sourceCopy vendorID];
+                                                  if (!vendorID)
                                                   {
                                                     goto LABEL_111;
                                                   }
 
 LABEL_109:
-                                                  if (v72 != self->_vendorID)
+                                                  if (vendorID != self->_vendorID)
                                                   {
-                                                    self->_vendorID = v72;
+                                                    self->_vendorID = vendorID;
                                                     v31 |= 1u;
                                                   }
 
 LABEL_111:
-                                                  v73 = [v4 vendorIDSource];
-                                                  if (v73 && v73 != self->_vendorIDSource)
+                                                  vendorIDSource = [sourceCopy vendorIDSource];
+                                                  if (vendorIDSource && vendorIDSource != self->_vendorIDSource)
                                                   {
-                                                    self->_vendorIDSource = v73;
+                                                    self->_vendorIDSource = vendorIDSource;
                                                     v31 |= 1u;
                                                   }
 
@@ -1997,7 +1997,7 @@ LABEL_111:
                                                     v6 = v31;
                                                   }
 
-                                                  if ([v4 partID] == 1 && self->_partID == 1)
+                                                  if ([sourceCopy partID] == 1 && self->_partID == 1)
                                                   {
                                                     v87 = v54;
                                                     v88 = v33;
@@ -2006,10 +2006,10 @@ LABEL_111:
                                                     v96 = 0u;
                                                     v93 = 0u;
                                                     v94 = 0u;
-                                                    v74 = [v4 components];
-                                                    v75 = [v74 allValues];
+                                                    components = [sourceCopy components];
+                                                    allValues = [components allValues];
 
-                                                    v76 = [v75 countByEnumeratingWithState:&v93 objects:v97 count:16];
+                                                    v76 = [allValues countByEnumeratingWithState:&v93 objects:v97 count:16];
                                                     if (v76)
                                                     {
                                                       v77 = v76;
@@ -2020,7 +2020,7 @@ LABEL_111:
                                                         {
                                                           if (*v94 != v78)
                                                           {
-                                                            objc_enumerationMutation(v75);
+                                                            objc_enumerationMutation(allValues);
                                                           }
 
                                                           v80 = *(*(&v93 + 1) + 8 * i);
@@ -2034,7 +2034,7 @@ LABEL_111:
                                                           v6 |= [(CBPowerSource *)self _updateAggregateWithComponent:v80];
                                                         }
 
-                                                        v77 = [v75 countByEnumeratingWithState:&v93 objects:v97 count:16];
+                                                        v77 = [allValues countByEnumeratingWithState:&v93 objects:v97 count:16];
                                                       }
 
                                                       while (v77);
@@ -2080,7 +2080,7 @@ LABEL_135:
                                               {
                                               }
 
-                                              objc_storeStrong(&self->_type, v63);
+                                              objc_storeStrong(&self->_type, type);
                                               v31 |= 1u;
                                               goto LABEL_107;
                                             }
@@ -2096,8 +2096,8 @@ LABEL_102:
                                           }
 
 LABEL_91:
-                                          v63 = [v4 type];
-                                          if (!v63)
+                                          type = [sourceCopy type];
+                                          if (!type)
                                           {
                                             goto LABEL_102;
                                           }
@@ -2116,8 +2116,8 @@ LABEL_91:
                                     }
 
 LABEL_69:
-                                    v49 = [v4 present];
-                                    if (self->_present != v49)
+                                    present = [sourceCopy present];
+                                    if (self->_present != present)
                                     {
                                       goto LABEL_75;
                                     }
@@ -2139,8 +2139,8 @@ LABEL_69:
                           }
                         }
 
-                        v40 = [v4 partID];
-                        if (!v40)
+                        partID = [sourceCopy partID];
+                        if (!partID)
                         {
                           goto LABEL_61;
                         }
@@ -2156,22 +2156,22 @@ LABEL_69:
                         goto LABEL_38;
                       }
 
-                      v26 = 20;
+                      lowWarnLevel = 20;
                     }
 
-                    self->_lowWarnLevel = v26;
+                    self->_lowWarnLevel = lowWarnLevel;
                     goto LABEL_38;
                   }
 
 LABEL_31:
-                  [(CBPowerSource *)self setInternalFlags:v25];
+                  [(CBPowerSource *)self setInternalFlags:internalFlags];
                   goto LABEL_32;
                 }
               }
             }
 
-            v25 = [v4 internalFlags];
-            if (v25 == self->_internalFlags)
+            internalFlags = [sourceCopy internalFlags];
+            if (internalFlags == self->_internalFlags)
             {
               goto LABEL_32;
             }
@@ -2180,14 +2180,14 @@ LABEL_31:
           }
 
 LABEL_23:
-          self->_batteryInfo = v16;
+          self->_batteryInfo = batteryInfo;
           changeFlags |= 2u;
           goto LABEL_24;
         }
       }
     }
 
-    v16 = [v4 batteryInfo];
+    batteryInfo = [sourceCopy batteryInfo];
     if (self->_partID != 1)
     {
       goto LABEL_22;
@@ -2196,23 +2196,23 @@ LABEL_23:
     goto LABEL_17;
   }
 
-  v6 = [(CBPowerSource *)self _updateAggregateWithComponent:v4];
+  v6 = [(CBPowerSource *)self _updateAggregateWithComponent:sourceCopy];
 LABEL_136:
 
   v85 = *MEMORY[0x1E69E9840];
   return v6;
 }
 
-- (CBPowerSource)initWithXPCObject:(id)a3 error:(id *)a4
+- (CBPowerSource)initWithXPCObject:(id)object error:(id *)error
 {
   v35 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  objectCopy = object;
   v33.receiver = self;
   v33.super_class = CBPowerSource;
   v13 = [(CBPowerSource *)&v33 init];
   if (!v13)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_59;
     }
@@ -2220,13 +2220,13 @@ LABEL_136:
     v30 = "CBPowerSource super init failed";
 LABEL_58:
     CBErrorF(-6756, v30, v7, v8, v9, v10, v11, v12, v31);
-    *a4 = v27 = 0;
+    *error = v27 = 0;
     goto LABEL_52;
   }
 
-  if (MEMORY[0x1C68DFDD0](v6) != MEMORY[0x1E69E9E80])
+  if (MEMORY[0x1C68DFDD0](objectCopy) != MEMORY[0x1E69E9E80])
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_59;
     }
@@ -2484,19 +2484,19 @@ LABEL_52:
       return 0;
     }
 
-    v5 = [v4 batteryInfo];
+    batteryInfo = [v4 batteryInfo];
   }
 
   else
   {
-    v5 = 0;
+    batteryInfo = 0;
   }
 
   v6 = [(CBPowerSource *)self componentWithPartID:3];
   v7 = v6;
   if (!v6)
   {
-    v8 = 0;
+    batteryInfo2 = 0;
     goto LABEL_10;
   }
 
@@ -2506,11 +2506,11 @@ LABEL_52:
     return 0;
   }
 
-  v8 = [v7 batteryInfo];
+  batteryInfo2 = [v7 batteryInfo];
 LABEL_10:
 
-  v9 = OUTLINED_FUNCTION_7_0(v5 & 0x7F);
-  v11 = ((v8 & 0x7F) / v10) * v10;
+  v9 = OUTLINED_FUNCTION_7_0(batteryInfo & 0x7F);
+  v11 = ((batteryInfo2 & 0x7F) / v10) * v10;
   if (v9 >= v11)
   {
     v12 = v9 - v11;
@@ -2521,9 +2521,9 @@ LABEL_10:
     v12 = v11 - v9;
   }
 
-  if ((((v8 >> 8) ^ (v5 >> 8)) & 7) != 0)
+  if ((((batteryInfo2 >> 8) ^ (batteryInfo >> 8)) & 7) != 0)
   {
-    v13 = (((v5 >> 8) & 5) == 1) ^ (((v8 >> 8) & 5) != 1);
+    v13 = (((batteryInfo >> 8) & 5) == 1) ^ (((batteryInfo2 >> 8) & 5) != 1);
   }
 
   else
@@ -2534,10 +2534,10 @@ LABEL_10:
   return v12 < 10.0 && v13;
 }
 
-- (unsigned)_updateAggregateWithComponent:(id)a3
+- (unsigned)_updateAggregateWithComponent:(id)component
 {
   v159 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  componentCopy = component;
   if (self->_partID != 1)
   {
     v108 = 0;
@@ -2551,7 +2551,7 @@ LABEL_10:
     self->_componentMap = v5;
   }
 
-  v7 = v4;
+  v7 = componentCopy;
   if (![v7 partID])
   {
     if (gLogCategory_CBPowerSource <= 30 && (gLogCategory_CBPowerSource != -1 || _LogCategory_Initialize()))
@@ -2565,8 +2565,8 @@ LABEL_10:
 
   [v7 updatePartID];
   changeFlags = self->_changeFlags;
-  v9 = [v7 partID];
-  v10 = [(CBPowerSource *)self componentWithPartID:v9];
+  partID = [v7 partID];
+  v10 = [(CBPowerSource *)self componentWithPartID:partID];
   if (v10)
   {
     v11 = v10;
@@ -2581,28 +2581,28 @@ LABEL_10:
 
   v12 = [(CBPowerSource *)v11 updateWithCBPowerSource:v7];
   v13 = self->_componentMap;
-  v14 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:v9];
+  v14 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:partID];
   [(NSMutableDictionary *)v13 setObject:v11 forKeyedSubscript:v14];
 
-  v15 = v9 & 0xFFFE;
-  v16 = [v7 accessoryCategory];
-  if (v16)
+  v15 = partID & 0xFFFE;
+  accessoryCategory = [v7 accessoryCategory];
+  if (accessoryCategory)
   {
-    v17 = v15 != 2 || v16 == self->_accessoryCategory;
+    v17 = v15 != 2 || accessoryCategory == self->_accessoryCategory;
     v18 = v17;
     if (!self->_accessoryCategory || !v18)
     {
-      self->_accessoryCategory = v16;
+      self->_accessoryCategory = accessoryCategory;
       changeFlags |= 1u;
     }
   }
 
-  v19 = [v7 accessoryID];
+  accessoryID = [v7 accessoryID];
   v115 = v15;
-  v114 = v19;
-  if (v19)
+  v114 = accessoryID;
+  if (accessoryID)
   {
-    v20 = v19;
+    v20 = accessoryID;
     accessoryID = self->_accessoryID;
     if (!accessoryID)
     {
@@ -2611,7 +2611,7 @@ LABEL_10:
 
     if (v15 == 2)
     {
-      v13 = v19;
+      v13 = accessoryID;
       v22 = accessoryID;
       OUTLINED_FUNCTION_5_2();
       if (v17)
@@ -2633,16 +2633,16 @@ LABEL_23:
   }
 
 LABEL_24:
-  v24 = [v7 appearanceValue];
+  appearanceValue = [v7 appearanceValue];
   v116 = v7;
-  if (v24 && v24 != self->_appearanceValue)
+  if (appearanceValue && appearanceValue != self->_appearanceValue)
   {
-    self->_appearanceValue = v24;
+    self->_appearanceValue = appearanceValue;
     changeFlags |= 1u;
   }
 
   v112 = v11;
-  v113 = v4;
+  v113 = componentCopy;
   v25 = OUTLINED_FUNCTION_7_0(self->_batteryInfo & 0x7F);
   if (v25 >= 100)
   {
@@ -2668,8 +2668,8 @@ LABEL_24:
   v148 = 0u;
   v149 = 0u;
   v150 = 0u;
-  v28 = [(NSMutableDictionary *)self->_componentMap allValues];
-  v29 = [v28 countByEnumeratingWithState:&v147 objects:v158 count:16];
+  allValues = [(NSMutableDictionary *)self->_componentMap allValues];
+  v29 = [allValues countByEnumeratingWithState:&v147 objects:v158 count:16];
   if (v29)
   {
     v30 = v29;
@@ -2680,7 +2680,7 @@ LABEL_24:
       {
         if (*v148 != v31)
         {
-          objc_enumerationMutation(v28);
+          objc_enumerationMutation(allValues);
         }
 
         v13 = *(*(&v147 + 1) + 8 * i);
@@ -2694,7 +2694,7 @@ LABEL_24:
         }
       }
 
-      v30 = [v28 countByEnumeratingWithState:&v147 objects:v158 count:16];
+      v30 = [allValues countByEnumeratingWithState:&v147 objects:v158 count:16];
     }
 
     while (v30);
@@ -2723,25 +2723,25 @@ LABEL_24:
     v7 = v116;
   }
 
-  v36 = [v7 deviceType];
-  if (v36 && v36 != self->_deviceType)
+  deviceType = [v7 deviceType];
+  if (deviceType && deviceType != self->_deviceType)
   {
-    self->_deviceType = v36;
+    self->_deviceType = deviceType;
     v34 |= 1u;
   }
 
   v118 = v34;
-  v37 = [v7 groupID];
+  groupID = [v7 groupID];
   location = self;
-  v111 = v37;
-  if (!v37)
+  v111 = groupID;
+  if (!groupID)
   {
     goto LABEL_78;
   }
 
-  v38 = v37;
+  v38 = groupID;
   groupID = self->_groupID;
-  v40 = v37;
+  v40 = groupID;
   v41 = groupID;
   v13 = v41;
   if (v40 == v41)
@@ -2752,9 +2752,9 @@ LABEL_24:
   {
     if (v41)
     {
-      v28 = [(NSMutableDictionary *)v40 isEqual:v41];
+      allValues = [(NSMutableDictionary *)v40 isEqual:v41];
 
-      if (v28)
+      if (allValues)
       {
         goto LABEL_78;
       }
@@ -2770,8 +2770,8 @@ LABEL_24:
     v146 = 0u;
     v143 = 0u;
     v144 = 0u;
-    v42 = [(NSMutableDictionary *)self->_componentMap allValues];
-    v43 = [(NSMutableDictionary *)v42 countByEnumeratingWithState:&v143 objects:v157 count:16];
+    allValues2 = [(NSMutableDictionary *)self->_componentMap allValues];
+    v43 = [(NSMutableDictionary *)allValues2 countByEnumeratingWithState:&v143 objects:v157 count:16];
     if (v43)
     {
       v44 = v43;
@@ -2783,16 +2783,16 @@ LABEL_24:
           OUTLINED_FUNCTION_4_2(v144);
           if (!v17)
           {
-            objc_enumerationMutation(v42);
+            objc_enumerationMutation(allValues2);
           }
 
           v47 = *(*(&v143 + 1) + 8 * j);
-          v48 = [v47 changeFlags];
-          if ((v48 & 0x10) == 0)
+          changeFlags = [v47 changeFlags];
+          if ((changeFlags & 0x10) == 0)
           {
-            v28 = [v47 groupID];
+            allValues = [v47 groupID];
             v13 = v40;
-            v50 = v28;
+            v50 = allValues;
             OUTLINED_FUNCTION_5_2();
             if (v17)
             {
@@ -2800,12 +2800,12 @@ LABEL_24:
               continue;
             }
 
-            if (!v28)
+            if (!allValues)
             {
 
 LABEL_71:
               [v47 setGroupID:v13];
-              v48 = [v47 setChangeFlags:{objc_msgSend(v47, "changeFlags") | 1}];
+              changeFlags = [v47 setChangeFlags:{objc_msgSend(v47, "changeFlags") | 1}];
               continue;
             }
 
@@ -2818,29 +2818,29 @@ LABEL_71:
           }
         }
 
-        v44 = OUTLINED_FUNCTION_9(v48, v49, &v143, v157);
+        v44 = OUTLINED_FUNCTION_9(changeFlags, v49, &v143, v157);
         if (!v44)
         {
-          v40 = v42;
+          v40 = allValues2;
           v7 = v116;
           goto LABEL_76;
         }
       }
     }
 
-    v40 = v42;
+    v40 = allValues2;
 LABEL_76:
     self = location;
   }
 
 LABEL_78:
-  v52 = [v7 internalFlags];
+  internalFlags = [v7 internalFlags];
   v139 = 0u;
   v140 = 0u;
   v141 = 0u;
   v142 = 0u;
-  v53 = [(NSMutableDictionary *)self->_componentMap allValues];
-  if ([v53 countByEnumeratingWithState:&v139 objects:v156 count:16])
+  allValues3 = [(NSMutableDictionary *)self->_componentMap allValues];
+  if ([allValues3 countByEnumeratingWithState:&v139 objects:v156 count:16])
   {
     v54 = *v140;
     do
@@ -2848,12 +2848,12 @@ LABEL_78:
       OUTLINED_FUNCTION_4_2(v140);
       if (!v17)
       {
-        objc_enumerationMutation(v53);
+        objc_enumerationMutation(allValues3);
       }
 
       if ((OUTLINED_FUNCTION_10(*(&v139 + 1)) & 0x10) == 0)
       {
-        v52 = [(NSMutableDictionary *)v13 internalFlags]| v52;
+        internalFlags = [(NSMutableDictionary *)v13 internalFlags]| internalFlags;
       }
 
       OUTLINED_FUNCTION_6_0();
@@ -2862,18 +2862,18 @@ LABEL_78:
     while (!v17 || OUTLINED_FUNCTION_9(v55, v56, &v139, v156));
   }
 
-  if (v52 != self->_internalFlags)
+  if (internalFlags != self->_internalFlags)
   {
-    [(CBPowerSource *)self setInternalFlags:v52];
+    [(CBPowerSource *)self setInternalFlags:internalFlags];
   }
 
-  v57 = [v7 lowWarnLevel];
+  lowWarnLevel = [v7 lowWarnLevel];
   v135 = 0u;
   v136 = 0u;
   v137 = 0u;
   v138 = 0u;
-  v58 = [(NSMutableDictionary *)self->_componentMap allValues];
-  if ([v58 countByEnumeratingWithState:&v135 objects:v155 count:16])
+  allValues4 = [(NSMutableDictionary *)self->_componentMap allValues];
+  if ([allValues4 countByEnumeratingWithState:&v135 objects:v155 count:16])
   {
     v59 = *v136;
     do
@@ -2881,12 +2881,12 @@ LABEL_78:
       OUTLINED_FUNCTION_4_2(v136);
       if (!v17)
       {
-        objc_enumerationMutation(v58);
+        objc_enumerationMutation(allValues4);
       }
 
-      if ((OUTLINED_FUNCTION_10(*(&v135 + 1)) & 0x10) == 0 && [(NSMutableDictionary *)v13 lowWarnLevel]< v57)
+      if ((OUTLINED_FUNCTION_10(*(&v135 + 1)) & 0x10) == 0 && [(NSMutableDictionary *)v13 lowWarnLevel]< lowWarnLevel)
       {
-        v57 = [(NSMutableDictionary *)v13 lowWarnLevel];
+        lowWarnLevel = [(NSMutableDictionary *)v13 lowWarnLevel];
       }
 
       OUTLINED_FUNCTION_6_0();
@@ -2896,11 +2896,11 @@ LABEL_78:
   }
 
   lowWarnLevel = self->_lowWarnLevel;
-  if (v57)
+  if (lowWarnLevel)
   {
-    if (v57 != lowWarnLevel)
+    if (lowWarnLevel != lowWarnLevel)
     {
-      self->_lowWarnLevel = v57;
+      self->_lowWarnLevel = lowWarnLevel;
       OUTLINED_FUNCTION_0_4();
     }
   }
@@ -2914,8 +2914,8 @@ LABEL_78:
   v134 = 0u;
   v131 = 0u;
   v132 = 0u;
-  v63 = [(NSMutableDictionary *)self->_componentMap allValues];
-  if ([v63 countByEnumeratingWithState:&v131 objects:v154 count:16])
+  allValues5 = [(NSMutableDictionary *)self->_componentMap allValues];
+  if ([allValues5 countByEnumeratingWithState:&v131 objects:v154 count:16])
   {
     v64 = *v132;
     v65 = 2.22507386e-308;
@@ -2924,7 +2924,7 @@ LABEL_78:
       OUTLINED_FUNCTION_4_2(v132);
       if (!v17)
       {
-        objc_enumerationMutation(v63);
+        objc_enumerationMutation(allValues5);
       }
 
       if ((OUTLINED_FUNCTION_10(*(&v131 + 1)) & 0x10) == 0)
@@ -2940,7 +2940,7 @@ LABEL_78:
       OUTLINED_FUNCTION_6_0();
     }
 
-    while (!v17 || [v63 countByEnumeratingWithState:&v131 objects:v154 count:16]);
+    while (!v17 || [allValues5 countByEnumeratingWithState:&v131 objects:v154 count:16]);
 
     if (v65 != 2.22507386e-308 && v65 != self->_maxCapacity)
     {
@@ -2953,9 +2953,9 @@ LABEL_78:
   {
   }
 
-  v69 = [v7 name];
-  v70 = v69;
-  if (!v69)
+  name = [v7 name];
+  v70 = name;
+  if (!name)
   {
     goto LABEL_127;
   }
@@ -2968,7 +2968,7 @@ LABEL_78:
 
   if (v115 == 2)
   {
-    v13 = v69;
+    v13 = name;
     v72 = name;
     OUTLINED_FUNCTION_5_2();
     if (v17)
@@ -3000,8 +3000,8 @@ LABEL_127:
   v130 = 0u;
   v127 = 0u;
   v128 = 0u;
-  v74 = [(NSMutableDictionary *)self->_componentMap allValues];
-  v75 = [v74 countByEnumeratingWithState:&v127 objects:v153 count:16];
+  allValues6 = [(NSMutableDictionary *)self->_componentMap allValues];
+  v75 = [allValues6 countByEnumeratingWithState:&v127 objects:v153 count:16];
   v76 = v75;
   if (v75)
   {
@@ -3011,7 +3011,7 @@ LABEL_127:
       OUTLINED_FUNCTION_4_2(v128);
       if (!v17)
       {
-        objc_enumerationMutation(v74);
+        objc_enumerationMutation(allValues6);
       }
 
       if (([**(&v127 + 1) changeFlags] & 0x10) == 0)
@@ -3044,12 +3044,12 @@ LABEL_139:
 
   if ([v7 partID] != 4)
   {
-    v81 = [v7 productID];
-    if (v81)
+    productID = [v7 productID];
+    if (productID)
     {
-      if (v81 != self->_productID)
+      if (productID != self->_productID)
       {
-        self->_productID = v81;
+        self->_productID = productID;
         OUTLINED_FUNCTION_0_4();
       }
     }
@@ -3061,8 +3061,8 @@ LABEL_139:
     v126 = 0u;
     v123 = 0u;
     v124 = 0u;
-    v82 = [(NSMutableDictionary *)self->_componentMap allValues];
-    if ([v82 countByEnumeratingWithState:&v123 objects:v152 count:16])
+    allValues7 = [(NSMutableDictionary *)self->_componentMap allValues];
+    if ([allValues7 countByEnumeratingWithState:&v123 objects:v152 count:16])
     {
       v83 = *v124;
       do
@@ -3070,7 +3070,7 @@ LABEL_139:
         OUTLINED_FUNCTION_4_2(v124);
         if (!v17)
         {
-          objc_enumerationMutation(v82);
+          objc_enumerationMutation(allValues7);
         }
 
         if ((OUTLINED_FUNCTION_10(*(&v123 + 1)) & 0x10) == 0 && ([(NSMutableDictionary *)v13 partID]== 2 || [(NSMutableDictionary *)v13 partID]== 3))
@@ -3085,9 +3085,9 @@ LABEL_139:
     }
   }
 
-  v86 = [v7 transportType];
-  v87 = v86;
-  if (!v86)
+  transportType = [v7 transportType];
+  v87 = transportType;
+  if (!transportType)
   {
     goto LABEL_165;
   }
@@ -3102,7 +3102,7 @@ LABEL_139:
 
   if (v115 == 2)
   {
-    v91 = v86;
+    v91 = transportType;
     v92 = v88;
     OUTLINED_FUNCTION_5_2();
     if (v17)
@@ -3124,9 +3124,9 @@ LABEL_163:
 LABEL_164:
   v7 = v116;
 LABEL_165:
-  v94 = [v7 type];
-  v95 = v94;
-  if (!v94)
+  type = [v7 type];
+  v95 = type;
+  if (!type)
   {
     goto LABEL_172;
   }
@@ -3139,7 +3139,7 @@ LABEL_165:
 
   if (v115 == 2)
   {
-    v97 = v94;
+    v97 = type;
     v98 = type;
     OUTLINED_FUNCTION_5_2();
     if (v17)
@@ -3161,17 +3161,17 @@ LABEL_170:
 LABEL_171:
   v7 = v116;
 LABEL_172:
-  v100 = [v7 vendorID];
-  if (v100 && v100 != location->_vendorID)
+  vendorID = [v7 vendorID];
+  if (vendorID && vendorID != location->_vendorID)
   {
-    location->_vendorID = v100;
+    location->_vendorID = vendorID;
     OUTLINED_FUNCTION_0_4();
   }
 
-  v101 = [v7 vendorIDSource];
-  if (v101 && v101 != location->_vendorIDSource)
+  vendorIDSource = [v7 vendorIDSource];
+  if (vendorIDSource && vendorIDSource != location->_vendorIDSource)
   {
-    location->_vendorIDSource = v101;
+    location->_vendorIDSource = vendorIDSource;
     OUTLINED_FUNCTION_0_4();
   }
 
@@ -3179,8 +3179,8 @@ LABEL_172:
   v122 = 0u;
   v119 = 0u;
   v120 = 0u;
-  v102 = [(NSMutableDictionary *)location->_componentMap allValues];
-  v103 = [v102 countByEnumeratingWithState:&v119 objects:v151 count:16];
+  allValues8 = [(NSMutableDictionary *)location->_componentMap allValues];
+  v103 = [allValues8 countByEnumeratingWithState:&v119 objects:v151 count:16];
   if (v103)
   {
     v104 = v103;
@@ -3192,13 +3192,13 @@ LABEL_172:
         OUTLINED_FUNCTION_4_2(v120);
         if (!v17)
         {
-          objc_enumerationMutation(v102);
+          objc_enumerationMutation(allValues8);
         }
 
         v12 |= [*(*(&v119 + 1) + 8 * k) changeFlags];
       }
 
-      v104 = [v102 countByEnumeratingWithState:&v119 objects:v151 count:16];
+      v104 = [allValues8 countByEnumeratingWithState:&v119 objects:v151 count:16];
     }
 
     while (v104);
@@ -3213,7 +3213,7 @@ LABEL_172:
   v108 = v107 | v12 & 0x1E;
   location->_changeFlags = v108;
 
-  v4 = v113;
+  componentCopy = v113;
 LABEL_188:
 
 LABEL_189:

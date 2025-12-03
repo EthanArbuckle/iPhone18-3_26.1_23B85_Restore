@@ -1,17 +1,17 @@
 @interface SMDSSource
 + (void)initialize;
 - (SMDSSource)init;
-- (void)fetchSharedResourcesWithCompletion:(id)a3;
-- (void)stopAllSharingWithCompletion:(id)a3;
-- (void)stopSharing:(id)a3 withCompletion:(id)a4;
-- (void)stopSharingWithParticipant:(id)a3 completion:(id)a4;
+- (void)fetchSharedResourcesWithCompletion:(id)completion;
+- (void)stopAllSharingWithCompletion:(id)completion;
+- (void)stopSharing:(id)sharing withCompletion:(id)completion;
+- (void)stopSharingWithParticipant:(id)participant completion:(id)completion;
 @end
 
 @implementation SMDSSource
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     qword_8EB0 = os_log_create("com.apple.SafetyMonitorSeparation", "SMDSSource");
 
@@ -34,9 +34,9 @@
   return v2;
 }
 
-- (void)fetchSharedResourcesWithCompletion:(id)a3
+- (void)fetchSharedResourcesWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = qword_8EB0;
   if (os_log_type_enabled(qword_8EB0, OS_LOG_TYPE_INFO))
   {
@@ -44,19 +44,19 @@
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_INFO, "Fetching shared resources.", buf, 2u);
   }
 
-  v6 = [(SMDSSource *)self safetyMonitorManager];
+  safetyMonitorManager = [(SMDSSource *)self safetyMonitorManager];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_E74;
   v8[3] = &unk_4180;
-  v9 = v4;
-  v7 = v4;
-  [v6 fetchCurrentSessionStateWithCompletion:v8];
+  v9 = completionCopy;
+  v7 = completionCopy;
+  [safetyMonitorManager fetchCurrentSessionStateWithCompletion:v8];
 }
 
-- (void)stopAllSharingWithCompletion:(id)a3
+- (void)stopAllSharingWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = qword_8EB0;
   if (os_log_type_enabled(qword_8EB0, OS_LOG_TYPE_INFO))
   {
@@ -64,20 +64,20 @@
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_INFO, "Stopping sharing via stopAllSharingWithCompletion.", buf, 2u);
   }
 
-  v6 = [(SMDSSource *)self safetyMonitorManager];
+  safetyMonitorManager = [(SMDSSource *)self safetyMonitorManager];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1714;
   v8[3] = &unk_41D0;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  [v6 fetchCurrentSessionStateWithCompletion:v8];
+  v9 = completionCopy;
+  v7 = completionCopy;
+  [safetyMonitorManager fetchCurrentSessionStateWithCompletion:v8];
 }
 
-- (void)stopSharing:(id)a3 withCompletion:(id)a4
+- (void)stopSharing:(id)sharing withCompletion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   v6 = qword_8EB0;
   if (os_log_type_enabled(qword_8EB0, OS_LOG_TYPE_INFO))
   {
@@ -89,14 +89,14 @@
   v8[1] = 3221225472;
   v8[2] = sub_1AD4;
   v8[3] = &unk_41A8;
-  v9 = v5;
-  v7 = v5;
+  v9 = completionCopy;
+  v7 = completionCopy;
   [(SMDSSource *)self stopAllSharingWithCompletion:v8];
 }
 
-- (void)stopSharingWithParticipant:(id)a3 completion:(id)a4
+- (void)stopSharingWithParticipant:(id)participant completion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   v6 = qword_8EB0;
   if (os_log_type_enabled(qword_8EB0, OS_LOG_TYPE_INFO))
   {
@@ -108,8 +108,8 @@
   v8[1] = 3221225472;
   v8[2] = sub_1BC4;
   v8[3] = &unk_41A8;
-  v9 = v5;
-  v7 = v5;
+  v9 = completionCopy;
+  v7 = completionCopy;
   [(SMDSSource *)self stopAllSharingWithCompletion:v8];
 }
 

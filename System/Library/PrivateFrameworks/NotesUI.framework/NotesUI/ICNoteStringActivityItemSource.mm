@@ -1,9 +1,9 @@
 @interface ICNoteStringActivityItemSource
-- (BOOL)allowsAttributedStringForActivityType:(id)a3;
+- (BOOL)allowsAttributedStringForActivityType:(id)type;
 - (ICNoteStringActivityItemSource)init;
-- (ICNoteStringActivityItemSource)initWithTitle:(id)a3 attributedStringCreator:(id)a4;
-- (id)activityViewController:(id)a3 itemForActivityType:(id)a4;
-- (id)activityViewControllerPlaceholderItem:(id)a3;
+- (ICNoteStringActivityItemSource)initWithTitle:(id)title attributedStringCreator:(id)creator;
+- (id)activityViewController:(id)controller itemForActivityType:(id)type;
+- (id)activityViewControllerPlaceholderItem:(id)item;
 @end
 
 @implementation ICNoteStringActivityItemSource
@@ -15,16 +15,16 @@
   return 0;
 }
 
-- (ICNoteStringActivityItemSource)initWithTitle:(id)a3 attributedStringCreator:(id)a4
+- (ICNoteStringActivityItemSource)initWithTitle:(id)title attributedStringCreator:(id)creator
 {
-  v6 = a4;
+  creatorCopy = creator;
   v10.receiver = self;
   v10.super_class = ICNoteStringActivityItemSource;
-  v7 = [(ICNoteBaseActivityItemSource *)&v10 initWithTitle:a3];
+  v7 = [(ICNoteBaseActivityItemSource *)&v10 initWithTitle:title];
   v8 = v7;
-  if (v6)
+  if (creatorCopy)
   {
-    [(ICNoteStringActivityItemSource *)v7 setAttributedStringCreator:v6];
+    [(ICNoteStringActivityItemSource *)v7 setAttributedStringCreator:creatorCopy];
   }
 
   else
@@ -37,23 +37,23 @@
   return v8;
 }
 
-- (id)activityViewControllerPlaceholderItem:(id)a3
+- (id)activityViewControllerPlaceholderItem:(id)item
 {
   v3 = objc_opt_new();
 
   return v3;
 }
 
-- (BOOL)allowsAttributedStringForActivityType:(id)a3
+- (BOOL)allowsAttributedStringForActivityType:(id)type
 {
   v3 = allowsAttributedStringForActivityType__onceToken;
-  v4 = a3;
+  typeCopy = type;
   if (v3 != -1)
   {
     [ICNoteStringActivityItemSource allowsAttributedStringForActivityType:];
   }
 
-  v5 = [allowsAttributedStringForActivityType__s_activitiesSupportingAttributedString containsObject:v4];
+  v5 = [allowsAttributedStringForActivityType__s_activitiesSupportingAttributedString containsObject:typeCopy];
 
   return v5;
 }
@@ -70,33 +70,33 @@ void __72__ICNoteStringActivityItemSource_allowsAttributedStringForActivityType_
   }
 }
 
-- (id)activityViewController:(id)a3 itemForActivityType:(id)a4
+- (id)activityViewController:(id)controller itemForActivityType:(id)type
 {
-  v5 = a4;
-  if ([v5 isEqualToString:*MEMORY[0x1E69CDAA0]])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:*MEMORY[0x1E69CDAA0]])
   {
     v6 = 0;
   }
 
   else
   {
-    v7 = [(ICNoteStringActivityItemSource *)self attributedString];
+    attributedString = [(ICNoteStringActivityItemSource *)self attributedString];
 
-    if (!v7)
+    if (!attributedString)
     {
-      v8 = [(ICNoteStringActivityItemSource *)self attributedStringCreator];
-      v9 = v8[2]();
+      attributedStringCreator = [(ICNoteStringActivityItemSource *)self attributedStringCreator];
+      v9 = attributedStringCreator[2]();
       [(ICNoteStringActivityItemSource *)self setAttributedString:v9];
     }
 
-    v10 = [(ICNoteStringActivityItemSource *)self allowsAttributedStringForActivityType:v5];
-    v11 = [(ICNoteStringActivityItemSource *)self attributedString];
-    v6 = v11;
+    v10 = [(ICNoteStringActivityItemSource *)self allowsAttributedStringForActivityType:typeCopy];
+    attributedString2 = [(ICNoteStringActivityItemSource *)self attributedString];
+    v6 = attributedString2;
     if (!v10)
     {
-      v12 = [v11 string];
+      string = [attributedString2 string];
 
-      v6 = v12;
+      v6 = string;
     }
   }
 

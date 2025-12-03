@@ -1,90 +1,90 @@
 @interface REMListFetchMetadata
-- (BOOL)isEqual:(id)a3;
-- (REMListFetchMetadata)initWithCoder:(id)a3;
-- (REMListFetchMetadata)initWithIncompleteReminderCounts:(id)a3 scheduledCount:(int64_t)a4;
+- (BOOL)isEqual:(id)equal;
+- (REMListFetchMetadata)initWithCoder:(id)coder;
+- (REMListFetchMetadata)initWithIncompleteReminderCounts:(id)counts scheduledCount:(int64_t)count;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation REMListFetchMetadata
 
-- (REMListFetchMetadata)initWithIncompleteReminderCounts:(id)a3 scheduledCount:(int64_t)a4
+- (REMListFetchMetadata)initWithIncompleteReminderCounts:(id)counts scheduledCount:(int64_t)count
 {
-  v7 = a3;
+  countsCopy = counts;
   v11.receiver = self;
   v11.super_class = REMListFetchMetadata;
   v8 = [(REMListFetchMetadata *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_incompleteReminderCounts, a3);
-    v9->_scheduledCount = a4;
+    objc_storeStrong(&v8->_incompleteReminderCounts, counts);
+    v9->_scheduledCount = count;
   }
 
   return v9;
 }
 
-- (REMListFetchMetadata)initWithCoder:(id)a3
+- (REMListFetchMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = REMListFetchMetadata;
-  v5 = [(REMFetchMetadata *)&v13 initWithCoder:v4];
+  v5 = [(REMFetchMetadata *)&v13 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = objc_opt_class();
     v9 = [v6 setWithObjects:{v7, v8, objc_opt_class(), 0}];
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"incompleteReminderCounts"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"incompleteReminderCounts"];
     incompleteReminderCounts = v5->_incompleteReminderCounts;
     v5->_incompleteReminderCounts = v10;
 
-    v5->_scheduledCount = [v4 decodeIntegerForKey:@"scheduledCount"];
+    v5->_scheduledCount = [coderCopy decodeIntegerForKey:@"scheduledCount"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = REMListFetchMetadata;
-  v4 = a3;
-  [(REMFetchMetadata *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(REMFetchMetadata *)&v6 encodeWithCoder:coderCopy];
   v5 = [(REMListFetchMetadata *)self incompleteReminderCounts:v6.receiver];
-  [v4 encodeObject:v5 forKey:@"incompleteReminderCounts"];
+  [coderCopy encodeObject:v5 forKey:@"incompleteReminderCounts"];
 
-  [v4 encodeInteger:-[REMListFetchMetadata scheduledCount](self forKey:{"scheduledCount"), @"scheduledCount"}];
+  [coderCopy encodeInteger:-[REMListFetchMetadata scheduledCount](self forKey:{"scheduledCount"), @"scheduledCount"}];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v11 = 1;
   }
 
   else
   {
-    v6 = v4;
+    v6 = equalCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [(REMListFetchMetadata *)self incompleteReminderCounts];
-      v8 = [(REMListFetchMetadata *)v6 incompleteReminderCounts];
-      if (v7 == v8)
+      incompleteReminderCounts = [(REMListFetchMetadata *)self incompleteReminderCounts];
+      incompleteReminderCounts2 = [(REMListFetchMetadata *)v6 incompleteReminderCounts];
+      if (incompleteReminderCounts == incompleteReminderCounts2)
       {
         v11 = 1;
       }
 
       else
       {
-        v9 = [(REMListFetchMetadata *)self incompleteReminderCounts];
-        v10 = [(REMListFetchMetadata *)v6 incompleteReminderCounts];
-        v11 = [v9 isEqual:v10];
+        incompleteReminderCounts3 = [(REMListFetchMetadata *)self incompleteReminderCounts];
+        incompleteReminderCounts4 = [(REMListFetchMetadata *)v6 incompleteReminderCounts];
+        v11 = [incompleteReminderCounts3 isEqual:incompleteReminderCounts4];
       }
     }
 
@@ -99,8 +99,8 @@
 
 - (unint64_t)hash
 {
-  v2 = [(REMListFetchMetadata *)self incompleteReminderCounts];
-  v3 = [v2 hash];
+  incompleteReminderCounts = [(REMListFetchMetadata *)self incompleteReminderCounts];
+  v3 = [incompleteReminderCounts hash];
 
   return v3;
 }

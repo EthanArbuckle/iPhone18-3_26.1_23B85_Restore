@@ -1,15 +1,15 @@
 @interface CloudExtensionSyncCoordinator
-+ (id)_createOperationGroupWithName:(id)a3;
++ (id)_createOperationGroupWithName:(id)name;
 - (BOOL)_canCloseCloudExtensionStoreDatabase;
 - (BOOL)_isDataclassEnabled;
 - (BOOL)_shouldContinueSyncOperation;
-- (BOOL)_shouldDeleteDatabaseForError:(id)a3;
-- (CloudExtensionSyncCoordinator)initWithAccountStore:(id)a3 cloudExtensionStore:(id)a4 cloudExtensionSQLiteStore:(id)a5;
-- (id)_changedRecordsForCloudExtensionDevice:(id)a3;
-- (id)_cloudExtensionDevicesDictionaryFromCloudExtensionDevices:(id)a3;
-- (id)_cloudExtensionStatesDictionaryFromCloudExtensionDevices:(id)a3;
+- (BOOL)_shouldDeleteDatabaseForError:(id)error;
+- (CloudExtensionSyncCoordinator)initWithAccountStore:(id)store cloudExtensionStore:(id)extensionStore cloudExtensionSQLiteStore:(id)liteStore;
+- (id)_changedRecordsForCloudExtensionDevice:(id)device;
+- (id)_cloudExtensionDevicesDictionaryFromCloudExtensionDevices:(id)devices;
+- (id)_cloudExtensionStatesDictionaryFromCloudExtensionDevices:(id)devices;
 - (id)_nextRecordBatchToSave;
-- (id)_recordIDsFromRecordNames:(id)a3;
+- (id)_recordIDsFromRecordNames:(id)names;
 - (void)_beginFetchingExtensionStates;
 - (void)_continueDeleting;
 - (void)_continueFetchingExtensionStates;
@@ -17,21 +17,21 @@
 - (void)_deleteDatabaseAndRestartFetch;
 - (void)_deleteObsoleteExtensionStateRecordsFromCloudKit;
 - (void)_deleteRecordsFromCloudKit;
-- (void)_didFetchModifiedRecord:(id)a3;
-- (void)_fetchChangesFromCloudKitCreatingCloudExtensionsZoneIfMissing:(BOOL)a3;
+- (void)_didFetchModifiedRecord:(id)record;
+- (void)_fetchChangesFromCloudKitCreatingCloudExtensionsZoneIfMissing:(BOOL)missing;
 - (void)_finishedDeletingRecords;
 - (void)_finishedFetching;
 - (void)_finishedSavingExtensionStates;
 - (void)_getServerChangeTokenFromSQLiteStore;
-- (void)_handleSevereSQLiteErrorWhileFetching:(id)a3;
-- (void)_handleSevereSQLiteErrorWhileMergingExistingDevice:(id)a3;
+- (void)_handleSevereSQLiteErrorWhileFetching:(id)fetching;
+- (void)_handleSevereSQLiteErrorWhileMergingExistingDevice:(id)device;
 - (void)_loadDevicesAndStatesFromSQLiteStore;
 - (void)_mergeDeviceIntoDeviceFromSQLiteStoreIfNecessary;
 - (void)_removeDeletedRecordsFromSQLiteStore;
 - (void)_resumeFetchingQueue;
 - (void)_resumeSavingQueue;
-- (void)_retryFetchChangesFromCloudKitIfPossibleAfterCreatingCloudExtensionsZoneCompletedWithError:(id)a3;
-- (void)_saveCloudExtensionDevice:(id)a3 shouldUpdateExtensionStatesWhenSavingDevice:(BOOL)a4 completionHandler:(id)a5;
+- (void)_retryFetchChangesFromCloudKitIfPossibleAfterCreatingCloudExtensionsZoneCompletedWithError:(id)error;
+- (void)_saveCloudExtensionDevice:(id)device shouldUpdateExtensionStatesWhenSavingDevice:(BOOL)savingDevice completionHandler:(id)handler;
 - (void)_saveDeviceToCloudKit;
 - (void)_saveModifiedRecordsToSQLiteStore;
 - (void)_setServerChangeTokenInSQLiteStore;
@@ -39,34 +39,34 @@
 - (void)_suspendSavingQueue;
 - (void)_updateSQLiteStoreFromCloudKitAfterDeletingRecords;
 - (void)_updateSQLiteStoreFromCloudKitAfterSavingExtensionState;
-- (void)_updateSQLiteStoreFromCloudKitInOperationGroup:(id)a3 withCompletionHandler:(id)a4;
-- (void)cloudExtensionSQLiteStoreStore:(id)a3 hadSevereError:(id)a4;
-- (void)deleteCloudExtensionDevicesWithUUIDStrings:(id)a3 completionHandler:(id)a4;
-- (void)deleteDatabaseWithCompletionHandler:(id)a3;
-- (void)getCloudExtensionStatesWithCompletionHandler:(id)a3;
-- (void)saveExtensionDeviceWithDictionaryRepresentation:(id)a3 completionHandler:(id)a4;
-- (void)saveExtensionStatesWithDictionaryRepresentation:(id)a3 forDevice:(id)a4 completionHandler:(id)a5;
+- (void)_updateSQLiteStoreFromCloudKitInOperationGroup:(id)group withCompletionHandler:(id)handler;
+- (void)cloudExtensionSQLiteStoreStore:(id)store hadSevereError:(id)error;
+- (void)deleteCloudExtensionDevicesWithUUIDStrings:(id)strings completionHandler:(id)handler;
+- (void)deleteDatabaseWithCompletionHandler:(id)handler;
+- (void)getCloudExtensionStatesWithCompletionHandler:(id)handler;
+- (void)saveExtensionDeviceWithDictionaryRepresentation:(id)representation completionHandler:(id)handler;
+- (void)saveExtensionStatesWithDictionaryRepresentation:(id)representation forDevice:(id)device completionHandler:(id)handler;
 - (void)userAccountChanged;
 @end
 
 @implementation CloudExtensionSyncCoordinator
 
-- (CloudExtensionSyncCoordinator)initWithAccountStore:(id)a3 cloudExtensionStore:(id)a4 cloudExtensionSQLiteStore:(id)a5
+- (CloudExtensionSyncCoordinator)initWithAccountStore:(id)store cloudExtensionStore:(id)extensionStore cloudExtensionSQLiteStore:(id)liteStore
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  storeCopy = store;
+  extensionStoreCopy = extensionStore;
+  liteStoreCopy = liteStore;
   v33.receiver = self;
   v33.super_class = CloudExtensionSyncCoordinator;
   v12 = [(CloudExtensionSyncCoordinator *)&v33 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_accountStore, a3);
-    objc_storeStrong(&v13->_cloudExtensionStore, a4);
-    if (v11)
+    objc_storeStrong(&v12->_accountStore, store);
+    objc_storeStrong(&v13->_cloudExtensionStore, extensionStore);
+    if (liteStoreCopy)
     {
-      v14 = v11;
+      v14 = liteStoreCopy;
       cloudExtensionLocalStore = v13->_cloudExtensionLocalStore;
       v13->_cloudExtensionLocalStore = v14;
     }
@@ -141,9 +141,9 @@
   self->_needsDataclassEnabledCheck = 1;
 }
 
-- (void)deleteDatabaseWithCompletionHandler:(id)a3
+- (void)deleteDatabaseWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = sub_1000D23FC();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -158,63 +158,63 @@
   v8[2] = sub_100026048;
   v8[3] = &unk_100131990;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = handlerCopy;
+  v7 = handlerCopy;
   [(CloudKitSQLiteStore *)cloudExtensionLocalStore deleteDatabaseWithCompletionHandler:v8];
 }
 
-- (void)saveExtensionStatesWithDictionaryRepresentation:(id)a3 forDevice:(id)a4 completionHandler:(id)a5
+- (void)saveExtensionStatesWithDictionaryRepresentation:(id)representation forDevice:(id)device completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  representationCopy = representation;
+  deviceCopy = device;
+  handlerCopy = handler;
   savingQueue = self->_savingQueue;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_1000261D4;
   v15[3] = &unk_1001315B0;
-  v16 = v9;
-  v17 = v8;
-  v18 = self;
-  v19 = v10;
-  v12 = v10;
-  v13 = v8;
-  v14 = v9;
+  v16 = deviceCopy;
+  v17 = representationCopy;
+  selfCopy = self;
+  v19 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = representationCopy;
+  v14 = deviceCopy;
   dispatch_async(savingQueue, v15);
 }
 
-- (void)saveExtensionDeviceWithDictionaryRepresentation:(id)a3 completionHandler:(id)a4
+- (void)saveExtensionDeviceWithDictionaryRepresentation:(id)representation completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  representationCopy = representation;
+  handlerCopy = handler;
   savingQueue = self->_savingQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000263E4;
   block[3] = &unk_100130E50;
-  v13 = self;
-  v14 = v7;
-  v12 = v6;
-  v9 = v7;
-  v10 = v6;
+  selfCopy = self;
+  v14 = handlerCopy;
+  v12 = representationCopy;
+  v9 = handlerCopy;
+  v10 = representationCopy;
   dispatch_async(savingQueue, block);
 }
 
-- (void)_saveCloudExtensionDevice:(id)a3 shouldUpdateExtensionStatesWhenSavingDevice:(BOOL)a4 completionHandler:(id)a5
+- (void)_saveCloudExtensionDevice:(id)device shouldUpdateExtensionStatesWhenSavingDevice:(BOOL)savingDevice completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  deviceCopy = device;
+  handlerCopy = handler;
   [(CloudExtensionSyncCoordinator *)self _suspendSavingQueue];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_1000265C0;
   v12[3] = &unk_1001323F8;
   v12[4] = self;
-  v13 = v8;
-  v15 = a4;
-  v14 = v9;
-  v10 = v9;
-  v11 = v8;
+  v13 = deviceCopy;
+  savingDeviceCopy = savingDevice;
+  v14 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = deviceCopy;
   dispatch_async(&_dispatch_main_q, v12);
 }
 
@@ -453,25 +453,25 @@ LABEL_10:
   }
 }
 
-- (id)_changedRecordsForCloudExtensionDevice:(id)a3
+- (id)_changedRecordsForCloudExtensionDevice:(id)device
 {
-  v3 = a3;
+  deviceCopy = device;
   v4 = +[NSMutableArray array];
-  v5 = [v3 record];
-  v6 = [v5 safari_hasAtLeastOneChangedField];
+  record = [deviceCopy record];
+  safari_hasAtLeastOneChangedField = [record safari_hasAtLeastOneChangedField];
 
-  if (v6)
+  if (safari_hasAtLeastOneChangedField)
   {
-    v7 = [v3 record];
-    [v4 addObject:v7];
+    record2 = [deviceCopy record];
+    [v4 addObject:record2];
   }
 
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v8 = [v3 cloudExtensionStates];
-  v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  cloudExtensionStates = [deviceCopy cloudExtensionStates];
+  v9 = [cloudExtensionStates countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v9)
   {
     v10 = v9;
@@ -482,20 +482,20 @@ LABEL_10:
       {
         if (*v18 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(cloudExtensionStates);
         }
 
-        v13 = [*(*(&v17 + 1) + 8 * i) record];
-        v14 = [v13 changedKeys];
-        v15 = [v14 count];
+        record3 = [*(*(&v17 + 1) + 8 * i) record];
+        changedKeys = [record3 changedKeys];
+        v15 = [changedKeys count];
 
         if (v15)
         {
-          [v4 addObject:v13];
+          [v4 addObject:record3];
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v10 = [cloudExtensionStates countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v10);
@@ -504,16 +504,16 @@ LABEL_10:
   return v4;
 }
 
-- (id)_recordIDsFromRecordNames:(id)a3
+- (id)_recordIDsFromRecordNames:(id)names
 {
-  v3 = a3;
+  namesCopy = names;
   v4 = +[NSMutableArray array];
   v5 = +[CloudExtensionStore cloudExtensionsRecordZoneID];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = v3;
+  v6 = namesCopy;
   v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
@@ -546,10 +546,10 @@ LABEL_10:
 - (id)_nextRecordBatchToSave
 {
   v3 = +[NSMutableArray array];
-  v4 = [(NSMutableArray *)self->_recordsToSave firstObject];
-  if (v4)
+  firstObject = [(NSMutableArray *)self->_recordsToSave firstObject];
+  if (firstObject)
   {
-    v5 = v4;
+    v5 = firstObject;
     v6 = 0;
     v7 = 100;
     while (1)
@@ -567,10 +567,10 @@ LABEL_10:
         break;
       }
 
-      v8 = [(NSMutableArray *)self->_recordsToSave firstObject];
+      firstObject2 = [(NSMutableArray *)self->_recordsToSave firstObject];
 
-      v5 = v8;
-      if (!v8)
+      v5 = firstObject2;
+      if (!firstObject2)
       {
         goto LABEL_6;
       }
@@ -588,7 +588,7 @@ LABEL_6:
   return v3;
 }
 
-- (void)_handleSevereSQLiteErrorWhileMergingExistingDevice:(id)a3
+- (void)_handleSevereSQLiteErrorWhileMergingExistingDevice:(id)device
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
@@ -598,17 +598,17 @@ LABEL_6:
   [(CloudExtensionSyncCoordinator *)self deleteDatabaseWithCompletionHandler:v3];
 }
 
-- (void)getCloudExtensionStatesWithCompletionHandler:(id)a3
+- (void)getCloudExtensionStatesWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   fetchingQueue = self->_fetchingQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100027E78;
   v7[3] = &unk_100131990;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(fetchingQueue, v7);
 }
 
@@ -638,20 +638,20 @@ LABEL_6:
   objc_sync_exit(obj);
 }
 
-- (void)_updateSQLiteStoreFromCloudKitInOperationGroup:(id)a3 withCompletionHandler:(id)a4
+- (void)_updateSQLiteStoreFromCloudKitInOperationGroup:(id)group withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  groupCopy = group;
+  handlerCopy = handler;
   fetchingQueue = self->_fetchingQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100028154;
   block[3] = &unk_100131A20;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = groupCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = groupCopy;
   dispatch_async(fetchingQueue, block);
 }
 
@@ -783,7 +783,7 @@ LABEL_12:
   objc_destroyWeak(buf);
 }
 
-- (void)_fetchChangesFromCloudKitCreatingCloudExtensionsZoneIfMissing:(BOOL)a3
+- (void)_fetchChangesFromCloudKitCreatingCloudExtensionsZoneIfMissing:(BOOL)missing
 {
   objc_initWeak(&location, self);
   v5 = sub_1000D23FC();
@@ -822,7 +822,7 @@ LABEL_12:
   v15[1] = 3221225472;
   v15[2] = sub_100028EF8;
   v15[3] = &unk_1001325B0;
-  v17 = a3;
+  missingCopy = missing;
   v15[4] = self;
   objc_copyWeak(&v16, &location);
   [(CloudExtensionStore *)cloudExtensionStore fetchCloudExtensionsRecordChangesSinceServerChangeToken:serverChangeToken inOperationGroup:currentFetchOperationGroup recordChangedBlock:v19 recordWithIDWasDeletedBlock:v18 completionHandler:v15];
@@ -830,19 +830,19 @@ LABEL_12:
   objc_destroyWeak(&location);
 }
 
-- (void)_retryFetchChangesFromCloudKitIfPossibleAfterCreatingCloudExtensionsZoneCompletedWithError:(id)a3
+- (void)_retryFetchChangesFromCloudKitIfPossibleAfterCreatingCloudExtensionsZoneCompletedWithError:(id)error
 {
-  v5 = a3;
+  errorCopy = error;
   v6 = sub_1000D23FC();
   v7 = v6;
-  if (v5)
+  if (errorCopy)
   {
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      sub_10002C2A0(v7, v5);
+      sub_10002C2A0(v7, errorCopy);
     }
 
-    objc_storeStrong(&self->_fetchError, a3);
+    objc_storeStrong(&self->_fetchError, error);
     objc_initWeak(location, self);
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
@@ -1087,12 +1087,12 @@ LABEL_12:
   }
 }
 
-- (void)_didFetchModifiedRecord:(id)a3
+- (void)_didFetchModifiedRecord:(id)record
 {
-  v4 = a3;
-  if ([v4 safari_isCloudExtensionDeviceRecord])
+  recordCopy = record;
+  if ([recordCopy safari_isCloudExtensionDeviceRecord])
   {
-    v5 = [CloudExtensionDevice cloudExtensionDeviceWithCKRecord:v4];
+    v5 = [CloudExtensionDevice cloudExtensionDeviceWithCKRecord:recordCopy];
     if (!v5)
     {
       v8 = sub_1000D23FC();
@@ -1112,9 +1112,9 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  if ([v4 safari_isCloudExtensionStateRecord])
+  if ([recordCopy safari_isCloudExtensionStateRecord])
   {
-    v5 = [CloudExtensionState cloudExtensionStateWithCKRecord:v4];
+    v5 = [CloudExtensionState cloudExtensionStateWithCKRecord:recordCopy];
     if (!v5)
     {
       v9 = sub_1000D23FC();
@@ -1139,12 +1139,12 @@ LABEL_14:
 LABEL_15:
 }
 
-- (void)_handleSevereSQLiteErrorWhileFetching:(id)a3
+- (void)_handleSevereSQLiteErrorWhileFetching:(id)fetching
 {
-  v5 = a3;
+  fetchingCopy = fetching;
   if (self->_isRefetchingAfterDeletingDatabase)
   {
-    objc_storeStrong(&self->_fetchError, a3);
+    objc_storeStrong(&self->_fetchError, fetching);
     [(CloudExtensionSyncCoordinator *)self _continueFetchingExtensionStates];
   }
 
@@ -1154,10 +1154,10 @@ LABEL_15:
   }
 }
 
-- (void)deleteCloudExtensionDevicesWithUUIDStrings:(id)a3 completionHandler:(id)a4
+- (void)deleteCloudExtensionDevicesWithUUIDStrings:(id)strings completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  stringsCopy = strings;
+  handlerCopy = handler;
   v8 = sub_1000D23FC();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -1165,7 +1165,7 @@ LABEL_15:
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Deleting extension devices from CloudKit", buf, 2u);
   }
 
-  if ([v6 count])
+  if ([stringsCopy count])
   {
     savingQueue = self->_savingQueue;
     block[0] = _NSConcreteStackBlock;
@@ -1173,8 +1173,8 @@ LABEL_15:
     block[2] = sub_10002A768;
     block[3] = &unk_100131A20;
     block[4] = self;
-    v12 = v6;
-    v13 = v7;
+    v12 = stringsCopy;
+    v13 = handlerCopy;
     dispatch_async(savingQueue, block);
   }
 
@@ -1187,7 +1187,7 @@ LABEL_15:
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "No extension devices to delete", buf, 2u);
     }
 
-    (*(v7 + 2))(v7, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 }
 
@@ -1310,23 +1310,23 @@ LABEL_15:
   }
 }
 
-- (void)cloudExtensionSQLiteStoreStore:(id)a3 hadSevereError:(id)a4
+- (void)cloudExtensionSQLiteStoreStore:(id)store hadSevereError:(id)error
 {
-  v5 = a4;
+  errorCopy = error;
   v6 = sub_1000D23FC();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
   {
     sub_10002C918(v6);
   }
 
-  [(CloudExtensionSyncCoordinator *)self set_cloudExtensionStoreError:v5];
+  [(CloudExtensionSyncCoordinator *)self set_cloudExtensionStoreError:errorCopy];
 }
 
-+ (id)_createOperationGroupWithName:(id)a3
++ (id)_createOperationGroupWithName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   v4 = objc_alloc_init(CKOperationGroup);
-  [v4 setName:v3];
+  [v4 setName:nameCopy];
 
   [v4 setExpectedSendSize:1];
   [v4 setExpectedReceiveSize:1];
@@ -1345,11 +1345,11 @@ LABEL_15:
   }
 
   self->_needsDataclassEnabledCheck = 0;
-  v3 = [(ACAccountStore *)self->_accountStore safari_primaryAppleAccount];
-  if (v3)
+  safari_primaryAppleAccount = [(ACAccountStore *)self->_accountStore safari_primaryAppleAccount];
+  if (safari_primaryAppleAccount)
   {
-    v4 = v3;
-    v5 = [v3 isEnabledForDataclass:kAccountDataclassBookmarks];
+    v4 = safari_primaryAppleAccount;
+    v5 = [safari_primaryAppleAccount isEnabledForDataclass:kAccountDataclassBookmarks];
     self->_dataclassEnabled = v5;
     if ((v5 & 1) == 0)
     {
@@ -1399,14 +1399,14 @@ LABEL_15:
   }
 }
 
-- (BOOL)_shouldDeleteDatabaseForError:(id)a3
+- (BOOL)_shouldDeleteDatabaseForError:(id)error
 {
-  v3 = a3;
+  errorCopy = error;
   v5 = 0;
-  if ([v3 safari_isInCloudKitErrorDomain])
+  if ([errorCopy safari_isInCloudKitErrorDomain])
   {
-    v4 = [v3 code];
-    if (v4 <= 0x23 && ((1 << v4) & 0x40BDCDFFELL) == 0 && ((1 << v4) & 0xBE0032000) == 0 && ((1 << v4) & 0x14200000) != 0)
+    code = [errorCopy code];
+    if (code <= 0x23 && ((1 << code) & 0x40BDCDFFELL) == 0 && ((1 << code) & 0xBE0032000) == 0 && ((1 << code) & 0x14200000) != 0)
     {
       v5 = 1;
     }
@@ -1415,18 +1415,18 @@ LABEL_15:
   return v5;
 }
 
-- (id)_cloudExtensionStatesDictionaryFromCloudExtensionDevices:(id)a3
+- (id)_cloudExtensionStatesDictionaryFromCloudExtensionDevices:(id)devices
 {
-  v3 = a3;
-  if (v3)
+  devicesCopy = devices;
+  if (devicesCopy)
   {
     v4 = +[NSMutableDictionary dictionary];
     v56 = 0u;
     v57 = 0u;
     v58 = 0u;
     v59 = 0u;
-    v33 = v3;
-    obj = v3;
+    v33 = devicesCopy;
+    obj = devicesCopy;
     v36 = [obj countByEnumeratingWithState:&v56 objects:v67 count:16];
     if (v36)
     {
@@ -1450,13 +1450,13 @@ LABEL_15:
 
           v37 = v5;
           v6 = *(*(&v56 + 1) + 8 * v5);
-          v51 = [v6 deviceUUIDString];
+          deviceUUIDString = [v6 deviceUUIDString];
           v52 = 0u;
           v53 = 0u;
           v54 = 0u;
           v55 = 0u;
-          v40 = [v6 cloudExtensionStates];
-          v47 = [v40 countByEnumeratingWithState:&v52 objects:v66 count:16];
+          cloudExtensionStates = [v6 cloudExtensionStates];
+          v47 = [cloudExtensionStates countByEnumeratingWithState:&v52 objects:v66 count:16];
           if (v47)
           {
             v46 = *v53;
@@ -1467,26 +1467,26 @@ LABEL_15:
               {
                 if (*v53 != v46)
                 {
-                  objc_enumerationMutation(v40);
+                  objc_enumerationMutation(cloudExtensionStates);
                 }
 
                 v8 = *(*(&v52 + 1) + 8 * v7);
-                v9 = [v8 dictionaryRepresentation];
-                if (v9)
+                dictionaryRepresentation = [v8 dictionaryRepresentation];
+                if (dictionaryRepresentation)
                 {
-                  v49 = [v8 composedIdentifier];
+                  composedIdentifier = [v8 composedIdentifier];
                   v10 = [v4 objectForKeyedSubscript:?];
-                  v11 = [v8 profileIdentifier];
-                  v12 = v11;
+                  profileIdentifier = [v8 profileIdentifier];
+                  v12 = profileIdentifier;
                   v13 = v45;
-                  if (v11)
+                  if (profileIdentifier)
                   {
-                    v13 = v11;
+                    v13 = profileIdentifier;
                   }
 
                   v14 = v13;
 
-                  v15 = [v9 mutableCopy];
+                  v15 = [dictionaryRepresentation mutableCopy];
                   v48 = v14;
                   v62 = v14;
                   v60[0] = v44;
@@ -1496,8 +1496,8 @@ LABEL_15:
                   v17 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v8 wasEnabledByUserGesture]);
                   v61[1] = v17;
                   v60[2] = v42;
-                  v18 = [v8 lastModifiedDate];
-                  v61[2] = v18;
+                  lastModifiedDate = [v8 lastModifiedDate];
+                  v61[2] = lastModifiedDate;
                   v19 = [NSDictionary dictionaryWithObjects:v61 forKeys:v60 count:3];
                   v63 = v19;
                   v20 = [NSDictionary dictionaryWithObjects:&v63 forKeys:&v62 count:1];
@@ -1526,7 +1526,7 @@ LABEL_22:
                       {
                         v24 = [v10 objectAtIndexedSubscript:v23];
                         v25 = [v24 objectForKeyedSubscript:v50];
-                        v26 = [v25 isEqual:v51];
+                        v26 = [v25 isEqual:deviceUUIDString];
 
                         if (v26)
                         {
@@ -1550,15 +1550,15 @@ LABEL_22:
                     }
 
                     v4 = v39;
-                    v28 = v49;
+                    v28 = composedIdentifier;
                   }
 
                   else
                   {
                     [v15 setObject:v20 forKeyedSubscript:v41];
                     v10 = [NSMutableArray arrayWithObject:v15];
-                    v28 = v49;
-                    [v4 setObject:v10 forKeyedSubscript:v49];
+                    v28 = composedIdentifier;
+                    [v4 setObject:v10 forKeyedSubscript:composedIdentifier];
                   }
                 }
 
@@ -1577,7 +1577,7 @@ LABEL_22:
               }
 
               while (v7 != v47);
-              v47 = [v40 countByEnumeratingWithState:&v52 objects:v66 count:16];
+              v47 = [cloudExtensionStates countByEnumeratingWithState:&v52 objects:v66 count:16];
             }
 
             while (v47);
@@ -1593,7 +1593,7 @@ LABEL_22:
       while (v36);
     }
 
-    v3 = v33;
+    devicesCopy = v33;
   }
 
   else
@@ -1604,11 +1604,11 @@ LABEL_22:
   return v4;
 }
 
-- (id)_cloudExtensionDevicesDictionaryFromCloudExtensionDevices:(id)a3
+- (id)_cloudExtensionDevicesDictionaryFromCloudExtensionDevices:(id)devices
 {
-  if (a3)
+  if (devices)
   {
-    v4 = [a3 safari_mapObjectsUsingBlock:&stru_100132688];
+    v4 = [devices safari_mapObjectsUsingBlock:&stru_100132688];
   }
 
   else

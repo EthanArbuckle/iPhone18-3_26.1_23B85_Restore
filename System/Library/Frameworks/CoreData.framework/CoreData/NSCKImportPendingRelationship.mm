@@ -1,5 +1,5 @@
 @interface NSCKImportPendingRelationship
-+ (NSManagedObject)insertPendingRelationshipForFailedRelationship:(uint64_t)a3 forOperation:(uint64_t)a4 inStore:(void *)a5 withManagedObjectContext:;
++ (NSManagedObject)insertPendingRelationshipForFailedRelationship:(uint64_t)relationship forOperation:(uint64_t)operation inStore:(void *)store withManagedObjectContext:;
 + (uint64_t)entityPath;
 - (BOOL)needsDeleteBool;
 @end
@@ -8,15 +8,15 @@
 
 - (BOOL)needsDeleteBool
 {
-  v2 = [(NSCKImportPendingRelationship *)self needsDelete];
+  needsDelete = [(NSCKImportPendingRelationship *)self needsDelete];
 
-  return [v2 BOOLValue];
+  return [needsDelete BOOLValue];
 }
 
-+ (NSManagedObject)insertPendingRelationshipForFailedRelationship:(uint64_t)a3 forOperation:(uint64_t)a4 inStore:(void *)a5 withManagedObjectContext:
++ (NSManagedObject)insertPendingRelationshipForFailedRelationship:(uint64_t)relationship forOperation:(uint64_t)operation inStore:(void *)store withManagedObjectContext:
 {
   objc_opt_self();
-  v9 = +[NSEntityDescription insertNewObjectForEntityForName:inManagedObjectContext:](NSEntityDescription, "insertNewObjectForEntityForName:inManagedObjectContext:", +[NSCKImportPendingRelationship entityPath], a5);
+  v9 = +[NSEntityDescription insertNewObjectForEntityForName:inManagedObjectContext:](NSEntityDescription, "insertNewObjectForEntityForName:inManagedObjectContext:", +[NSCKImportPendingRelationship entityPath], store);
   v10 = MEMORY[0x1E695E110];
   [(NSManagedObject *)v9 setNeedsDelete:MEMORY[0x1E695E110]];
   objc_opt_class();
@@ -167,8 +167,8 @@ LABEL_38:
   }
 
 LABEL_28:
-  [(NSManagedObject *)v9 setOperation:a3];
-  [a5 assignObject:v9 toPersistentStore:a4];
+  [(NSManagedObject *)v9 setOperation:relationship];
+  [store assignObject:v9 toPersistentStore:operation];
   return v9;
 }
 

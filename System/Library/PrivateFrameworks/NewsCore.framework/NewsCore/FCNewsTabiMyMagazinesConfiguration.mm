@@ -1,29 +1,29 @@
 @interface FCNewsTabiMyMagazinesConfiguration
-- (FCNewsTabiMyMagazinesConfiguration)initWithDictionary:(id)a3;
+- (FCNewsTabiMyMagazinesConfiguration)initWithDictionary:(id)dictionary;
 - (id)description;
 @end
 
 @implementation FCNewsTabiMyMagazinesConfiguration
 
-- (FCNewsTabiMyMagazinesConfiguration)initWithDictionary:(id)a3
+- (FCNewsTabiMyMagazinesConfiguration)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = FCAppConfigurationNumberValue(v4, @"maxTopicIds", 0);
+  dictionaryCopy = dictionary;
+  v5 = FCAppConfigurationNumberValue(dictionaryCopy, @"maxTopicIds", 0);
   v6 = v5;
   if (v5)
   {
     v7 = v5;
-    v8 = FCAppConfigurationNumberValue(v4, @"titleEmbeddingDimension", 0);
+    v8 = FCAppConfigurationNumberValue(dictionaryCopy, @"titleEmbeddingDimension", 0);
     v9 = v8;
     if (v8)
     {
       v10 = v8;
-      v11 = FCAppConfigurationNumberValue(v4, @"fullBodyEmbeddingDimension", 0);
+      v11 = FCAppConfigurationNumberValue(dictionaryCopy, @"fullBodyEmbeddingDimension", 0);
       v12 = v11;
       if (v11)
       {
         v13 = v11;
-        v14 = FCAppConfigurationStringValue(v4, @"scoreOutputName", 0);
+        v14 = FCAppConfigurationStringValue(dictionaryCopy, @"scoreOutputName", 0);
         v15 = v14;
         if (v14)
         {
@@ -40,7 +40,7 @@
           }
 
           self = v16;
-          v17 = self;
+          selfCopy = self;
           v18 = v20;
         }
 
@@ -50,8 +50,8 @@
           v22[1] = 3221225472;
           v22[2] = __57__FCNewsTabiMyMagazinesConfiguration_initWithDictionary___block_invoke_62;
           v22[3] = &unk_1E7C36F98;
-          v23 = v4;
-          v17 = __57__FCNewsTabiMyMagazinesConfiguration_initWithDictionary___block_invoke_62(v22);
+          v23 = dictionaryCopy;
+          selfCopy = __57__FCNewsTabiMyMagazinesConfiguration_initWithDictionary___block_invoke_62(v22);
           v18 = v23;
         }
       }
@@ -62,8 +62,8 @@
         v24[1] = 3221225472;
         v24[2] = __57__FCNewsTabiMyMagazinesConfiguration_initWithDictionary___block_invoke_61;
         v24[3] = &unk_1E7C36F98;
-        v25 = v4;
-        v17 = __57__FCNewsTabiMyMagazinesConfiguration_initWithDictionary___block_invoke_61(v24);
+        v25 = dictionaryCopy;
+        selfCopy = __57__FCNewsTabiMyMagazinesConfiguration_initWithDictionary___block_invoke_61(v24);
         v13 = v25;
       }
     }
@@ -74,8 +74,8 @@
       v26[1] = 3221225472;
       v26[2] = __57__FCNewsTabiMyMagazinesConfiguration_initWithDictionary___block_invoke_60;
       v26[3] = &unk_1E7C36F98;
-      v27 = v4;
-      v17 = __57__FCNewsTabiMyMagazinesConfiguration_initWithDictionary___block_invoke_60(v26);
+      v27 = dictionaryCopy;
+      selfCopy = __57__FCNewsTabiMyMagazinesConfiguration_initWithDictionary___block_invoke_60(v26);
       v10 = v27;
     }
   }
@@ -86,12 +86,12 @@
     v28[1] = 3221225472;
     v28[2] = __57__FCNewsTabiMyMagazinesConfiguration_initWithDictionary___block_invoke;
     v28[3] = &unk_1E7C36F98;
-    v29 = v4;
-    v17 = __57__FCNewsTabiMyMagazinesConfiguration_initWithDictionary___block_invoke(v28);
+    v29 = dictionaryCopy;
+    selfCopy = __57__FCNewsTabiMyMagazinesConfiguration_initWithDictionary___block_invoke(v28);
     v7 = v29;
   }
 
-  return v17;
+  return selfCopy;
 }
 
 uint64_t __57__FCNewsTabiMyMagazinesConfiguration_initWithDictionary___block_invoke(uint64_t a1)
@@ -172,8 +172,8 @@ uint64_t __57__FCNewsTabiMyMagazinesConfiguration_initWithDictionary___block_inv
   [v3 appendFormat:@"\n\tmaxTopicIds: %lu", -[FCNewsTabiMyMagazinesConfiguration maxTopicIds](self, "maxTopicIds")];
   [v3 appendFormat:@"\n\ttitleEmbeddingDimension: %lu", -[FCNewsTabiMyMagazinesConfiguration titleEmbeddingDimension](self, "titleEmbeddingDimension")];
   [v3 appendFormat:@"\n\tfullBodyEmbeddingDimension: %lu", -[FCNewsTabiMyMagazinesConfiguration fullBodyEmbeddingDimension](self, "fullBodyEmbeddingDimension")];
-  v4 = [(FCNewsTabiMyMagazinesConfiguration *)self scoreOutputName];
-  [v3 appendFormat:@"\n\tscoreOutputName: %@;", v4];
+  scoreOutputName = [(FCNewsTabiMyMagazinesConfiguration *)self scoreOutputName];
+  [v3 appendFormat:@"\n\tscoreOutputName: %@;", scoreOutputName];
 
   [v3 appendString:@"\n>"];
 

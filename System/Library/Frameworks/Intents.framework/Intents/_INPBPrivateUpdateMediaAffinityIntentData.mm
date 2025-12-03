@@ -1,40 +1,40 @@
 @interface _INPBPrivateUpdateMediaAffinityIntentData
-- (BOOL)isEqual:(id)a3;
-- (_INPBPrivateUpdateMediaAffinityIntentData)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBPrivateUpdateMediaAffinityIntentData)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addInternalSignal:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setInternalSignals:(id)a3;
-- (void)setPegasusMetaData:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addInternalSignal:(id)signal;
+- (void)encodeWithCoder:(id)coder;
+- (void)setInternalSignals:(id)signals;
+- (void)setPegasusMetaData:(id)data;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBPrivateUpdateMediaAffinityIntentData
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_internalSignals)
   {
-    v4 = [(_INPBPrivateUpdateMediaAffinityIntentData *)self internalSignals];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"internalSignal"];
+    internalSignals = [(_INPBPrivateUpdateMediaAffinityIntentData *)self internalSignals];
+    v5 = [internalSignals copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"internalSignal"];
   }
 
   if (self->_pegasusMetaData)
   {
-    v6 = [(_INPBPrivateUpdateMediaAffinityIntentData *)self pegasusMetaData];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"pegasusMetaData"];
+    pegasusMetaData = [(_INPBPrivateUpdateMediaAffinityIntentData *)self pegasusMetaData];
+    v7 = [pegasusMetaData copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"pegasusMetaData"];
   }
 
-  v8 = [(_INPBPrivateUpdateMediaAffinityIntentData *)self privateMediaIntentData];
-  v9 = [v8 dictionaryRepresentation];
-  [v3 setObject:v9 forKeyedSubscript:@"privateMediaIntentData"];
+  privateMediaIntentData = [(_INPBPrivateUpdateMediaAffinityIntentData *)self privateMediaIntentData];
+  dictionaryRepresentation = [privateMediaIntentData dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"privateMediaIntentData"];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -44,28 +44,28 @@
   return v4 ^ [(_INPBPrivateMediaIntentData *)self->_privateMediaIntentData hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_17;
   }
 
-  v5 = [(_INPBPrivateUpdateMediaAffinityIntentData *)self internalSignals];
-  v6 = [v4 internalSignals];
-  if ((v5 != 0) == (v6 == 0))
+  internalSignals = [(_INPBPrivateUpdateMediaAffinityIntentData *)self internalSignals];
+  internalSignals2 = [equalCopy internalSignals];
+  if ((internalSignals != 0) == (internalSignals2 == 0))
   {
     goto LABEL_16;
   }
 
-  v7 = [(_INPBPrivateUpdateMediaAffinityIntentData *)self internalSignals];
-  if (v7)
+  internalSignals3 = [(_INPBPrivateUpdateMediaAffinityIntentData *)self internalSignals];
+  if (internalSignals3)
   {
-    v8 = v7;
-    v9 = [(_INPBPrivateUpdateMediaAffinityIntentData *)self internalSignals];
-    v10 = [v4 internalSignals];
-    v11 = [v9 isEqual:v10];
+    v8 = internalSignals3;
+    internalSignals4 = [(_INPBPrivateUpdateMediaAffinityIntentData *)self internalSignals];
+    internalSignals5 = [equalCopy internalSignals];
+    v11 = [internalSignals4 isEqual:internalSignals5];
 
     if (!v11)
     {
@@ -77,20 +77,20 @@
   {
   }
 
-  v5 = [(_INPBPrivateUpdateMediaAffinityIntentData *)self pegasusMetaData];
-  v6 = [v4 pegasusMetaData];
-  if ((v5 != 0) == (v6 == 0))
+  internalSignals = [(_INPBPrivateUpdateMediaAffinityIntentData *)self pegasusMetaData];
+  internalSignals2 = [equalCopy pegasusMetaData];
+  if ((internalSignals != 0) == (internalSignals2 == 0))
   {
     goto LABEL_16;
   }
 
-  v12 = [(_INPBPrivateUpdateMediaAffinityIntentData *)self pegasusMetaData];
-  if (v12)
+  pegasusMetaData = [(_INPBPrivateUpdateMediaAffinityIntentData *)self pegasusMetaData];
+  if (pegasusMetaData)
   {
-    v13 = v12;
-    v14 = [(_INPBPrivateUpdateMediaAffinityIntentData *)self pegasusMetaData];
-    v15 = [v4 pegasusMetaData];
-    v16 = [v14 isEqual:v15];
+    v13 = pegasusMetaData;
+    pegasusMetaData2 = [(_INPBPrivateUpdateMediaAffinityIntentData *)self pegasusMetaData];
+    pegasusMetaData3 = [equalCopy pegasusMetaData];
+    v16 = [pegasusMetaData2 isEqual:pegasusMetaData3];
 
     if (!v16)
     {
@@ -102,12 +102,12 @@
   {
   }
 
-  v5 = [(_INPBPrivateUpdateMediaAffinityIntentData *)self privateMediaIntentData];
-  v6 = [v4 privateMediaIntentData];
-  if ((v5 != 0) != (v6 == 0))
+  internalSignals = [(_INPBPrivateUpdateMediaAffinityIntentData *)self privateMediaIntentData];
+  internalSignals2 = [equalCopy privateMediaIntentData];
+  if ((internalSignals != 0) != (internalSignals2 == 0))
   {
-    v17 = [(_INPBPrivateUpdateMediaAffinityIntentData *)self privateMediaIntentData];
-    if (!v17)
+    privateMediaIntentData = [(_INPBPrivateUpdateMediaAffinityIntentData *)self privateMediaIntentData];
+    if (!privateMediaIntentData)
     {
 
 LABEL_20:
@@ -115,10 +115,10 @@ LABEL_20:
       goto LABEL_18;
     }
 
-    v18 = v17;
-    v19 = [(_INPBPrivateUpdateMediaAffinityIntentData *)self privateMediaIntentData];
-    v20 = [v4 privateMediaIntentData];
-    v21 = [v19 isEqual:v20];
+    v18 = privateMediaIntentData;
+    privateMediaIntentData2 = [(_INPBPrivateUpdateMediaAffinityIntentData *)self privateMediaIntentData];
+    privateMediaIntentData3 = [equalCopy privateMediaIntentData];
+    v21 = [privateMediaIntentData2 isEqual:privateMediaIntentData3];
 
     if (v21)
     {
@@ -138,49 +138,49 @@ LABEL_18:
   return v22;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBPrivateUpdateMediaAffinityIntentData allocWithZone:](_INPBPrivateUpdateMediaAffinityIntentData init];
-  v6 = [(NSArray *)self->_internalSignals copyWithZone:a3];
+  v6 = [(NSArray *)self->_internalSignals copyWithZone:zone];
   [(_INPBPrivateUpdateMediaAffinityIntentData *)v5 setInternalSignals:v6];
 
-  v7 = [(NSData *)self->_pegasusMetaData copyWithZone:a3];
+  v7 = [(NSData *)self->_pegasusMetaData copyWithZone:zone];
   [(_INPBPrivateUpdateMediaAffinityIntentData *)v5 setPegasusMetaData:v7];
 
-  v8 = [(_INPBPrivateMediaIntentData *)self->_privateMediaIntentData copyWithZone:a3];
+  v8 = [(_INPBPrivateMediaIntentData *)self->_privateMediaIntentData copyWithZone:zone];
   [(_INPBPrivateUpdateMediaAffinityIntentData *)v5 setPrivateMediaIntentData:v8];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBPrivateUpdateMediaAffinityIntentData *)self data];
+  coderCopy = coder;
+  data = [(_INPBPrivateUpdateMediaAffinityIntentData *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBPrivateUpdateMediaAffinityIntentData)initWithCoder:(id)a3
+- (_INPBPrivateUpdateMediaAffinityIntentData)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBPrivateUpdateMediaAffinityIntentData *)self initWithData:v6];
+    self = [(_INPBPrivateUpdateMediaAffinityIntentData *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -213,55 +213,55 @@ LABEL_18:
     while (v7);
   }
 
-  v11 = [(_INPBPrivateUpdateMediaAffinityIntentData *)self pegasusMetaData];
+  pegasusMetaData = [(_INPBPrivateUpdateMediaAffinityIntentData *)self pegasusMetaData];
 
-  if (v11)
+  if (pegasusMetaData)
   {
     pegasusMetaData = self->_pegasusMetaData;
     PBDataWriterWriteDataField();
   }
 
-  v13 = [(_INPBPrivateUpdateMediaAffinityIntentData *)self privateMediaIntentData];
+  privateMediaIntentData = [(_INPBPrivateUpdateMediaAffinityIntentData *)self privateMediaIntentData];
 
-  if (v13)
+  if (privateMediaIntentData)
   {
-    v14 = [(_INPBPrivateUpdateMediaAffinityIntentData *)self privateMediaIntentData];
+    privateMediaIntentData2 = [(_INPBPrivateUpdateMediaAffinityIntentData *)self privateMediaIntentData];
     PBDataWriterWriteSubmessage();
   }
 
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setPegasusMetaData:(id)a3
+- (void)setPegasusMetaData:(id)data
 {
-  v4 = [a3 copy];
+  v4 = [data copy];
   pegasusMetaData = self->_pegasusMetaData;
   self->_pegasusMetaData = v4;
 
   MEMORY[0x1EEE66BB8](v4, pegasusMetaData);
 }
 
-- (void)addInternalSignal:(id)a3
+- (void)addInternalSignal:(id)signal
 {
-  v4 = a3;
+  signalCopy = signal;
   internalSignals = self->_internalSignals;
-  v8 = v4;
+  v8 = signalCopy;
   if (!internalSignals)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_internalSignals;
-    self->_internalSignals = v6;
+    self->_internalSignals = array;
 
-    v4 = v8;
+    signalCopy = v8;
     internalSignals = self->_internalSignals;
   }
 
-  [(NSArray *)internalSignals addObject:v4];
+  [(NSArray *)internalSignals addObject:signalCopy];
 }
 
-- (void)setInternalSignals:(id)a3
+- (void)setInternalSignals:(id)signals
 {
-  v4 = [a3 mutableCopy];
+  v4 = [signals mutableCopy];
   internalSignals = self->_internalSignals;
   self->_internalSignals = v4;
 

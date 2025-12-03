@@ -1,33 +1,33 @@
 @interface VNPersonSegmentationGeneratorLearnedMattingTiled
-+ (id)computeStagesToBindForConfigurationOptions:(id)a3;
-+ (id)supportedComputeStageDevicesForOptions:(id)a3 error:(id *)a4;
-- (BOOL)completeInitializationForSession:(id)a3 error:(id *)a4;
-- (BufferSize)_calculateNumberOfTilesForNetworkInputImageSize:(BufferSize)a3 networkInputMaskSize:(BufferSize)a4 networkOutputMaskSize:(BufferSize)a5 rotated:(BOOL)a6;
++ (id)computeStagesToBindForConfigurationOptions:(id)options;
++ (id)supportedComputeStageDevicesForOptions:(id)options error:(id *)error;
+- (BOOL)completeInitializationForSession:(id)session error:(id *)error;
+- (BufferSize)_calculateNumberOfTilesForNetworkInputImageSize:(BufferSize)size networkInputMaskSize:(BufferSize)maskSize networkOutputMaskSize:(BufferSize)outputMaskSize rotated:(BOOL)rotated;
 - (BufferSize)outputMaskSize;
-- (id)_bindPixelBufferToTexture:(__CVBuffer *)a3 error:(id *)a4;
-- (optional<std::tuple<std::unordered_map<NSString)_processTiledImageBuffer:(std:(espresso_buffer_t>>> *__return_ptr)retstr :(VNPersonSegmentationGeneratorLearnedMattingTiled *)self unordered_map<NSString *) inputMaskObservation:(SEL)a3 options:(id)a4 qosClass:(id)a5 error:(id)a6;
-- (optional<std::tuple<std::unordered_map<NSString)processLockedImageBuffer:(std:(espresso_buffer_t>>> *__return_ptr)retstr :(VNPersonSegmentationGeneratorLearnedMattingTiled *)self unordered_map<NSString *) inputMaskObservation:(SEL)a3 options:(__CVBuffer *)a4 qosClass:(id)a5 error:(id)a6;
-- (uint64_t)_processTiledImageBuffer:(uint64_t)a1 inputMaskObservation:options:qosClass:error:;
-- (void)_processTiledImageBuffer:(void *)result inputMaskObservation:(void *)a2 options:qosClass:error:;
+- (id)_bindPixelBufferToTexture:(__CVBuffer *)texture error:(id *)error;
+- (optional<std::tuple<std::unordered_map<NSString)_processTiledImageBuffer:(std:(espresso_buffer_t>>> *__return_ptr)retstr :(VNPersonSegmentationGeneratorLearnedMattingTiled *)self unordered_map<NSString *) inputMaskObservation:(SEL)observation options:(id)options qosClass:(id)class error:(id)error;
+- (optional<std::tuple<std::unordered_map<NSString)processLockedImageBuffer:(std:(espresso_buffer_t>>> *__return_ptr)retstr :(VNPersonSegmentationGeneratorLearnedMattingTiled *)self unordered_map<NSString *) inputMaskObservation:(SEL)observation options:(__CVBuffer *)options qosClass:(id)class error:(id)error;
+- (uint64_t)_processTiledImageBuffer:(uint64_t)buffer inputMaskObservation:options:qosClass:error:;
+- (void)_processTiledImageBuffer:(void *)result inputMaskObservation:(void *)observation options:qosClass:error:;
 @end
 
 @implementation VNPersonSegmentationGeneratorLearnedMattingTiled
 
-+ (id)computeStagesToBindForConfigurationOptions:(id)a3
++ (id)computeStagesToBindForConfigurationOptions:(id)options
 {
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___VNPersonSegmentationGeneratorLearnedMattingTiled;
-  v3 = objc_msgSendSuper2(&v6, sel_computeStagesToBindForConfigurationOptions_, a3);
+  v3 = objc_msgSendSuper2(&v6, sel_computeStagesToBindForConfigurationOptions_, options);
   v4 = [v3 arrayByAddingObject:@"VNComputeStagePostProcessing"];
 
   return v4;
 }
 
-+ (id)supportedComputeStageDevicesForOptions:(id)a3 error:(id *)a4
++ (id)supportedComputeStageDevicesForOptions:(id)options error:(id *)error
 {
-  v9.receiver = a1;
+  v9.receiver = self;
   v9.super_class = &OBJC_METACLASS___VNPersonSegmentationGeneratorLearnedMattingTiled;
-  v4 = objc_msgSendSuper2(&v9, sel_supportedComputeStageDevicesForOptions_error_, a3, a4);
+  v4 = objc_msgSendSuper2(&v9, sel_supportedComputeStageDevicesForOptions_error_, options, error);
   v5 = v4;
   if (v4)
   {
@@ -44,9 +44,9 @@
   return v6;
 }
 
-- (id)_bindPixelBufferToTexture:(__CVBuffer *)a3 error:(id *)a4
+- (id)_bindPixelBufferToTexture:(__CVBuffer *)texture error:(id *)error
 {
-  PixelFormatType = CVPixelBufferGetPixelFormatType(a3);
+  PixelFormatType = CVPixelBufferGetPixelFormatType(texture);
   switch(PixelFormatType)
   {
     case 0x42475241u:
@@ -58,16 +58,16 @@
     case 0x4C303068u:
       v8 = 25;
 LABEL_7:
-      v9 = [VNMetalContext bindPixelBufferToMTL2DTexture:a3 pixelFormat:v8 plane:a4 error:?];
+      v9 = [VNMetalContext bindPixelBufferToMTL2DTexture:texture pixelFormat:v8 plane:error error:?];
       goto LABEL_8;
   }
 
-  if (a4)
+  if (error)
   {
     v11 = [VNError errorForUnimplementedFunctionWithLocalizedDescription:@"pixel format unimplemented"];
     v12 = v11;
     v9 = 0;
-    *a4 = v11;
+    *error = v11;
   }
 
   else
@@ -80,43 +80,43 @@ LABEL_8:
   return v9;
 }
 
-- (optional<std::tuple<std::unordered_map<NSString)_processTiledImageBuffer:(std:(espresso_buffer_t>>> *__return_ptr)retstr :(VNPersonSegmentationGeneratorLearnedMattingTiled *)self unordered_map<NSString *) inputMaskObservation:(SEL)a3 options:(id)a4 qosClass:(id)a5 error:(id)a6
+- (optional<std::tuple<std::unordered_map<NSString)_processTiledImageBuffer:(std:(espresso_buffer_t>>> *__return_ptr)retstr :(VNPersonSegmentationGeneratorLearnedMattingTiled *)self unordered_map<NSString *) inputMaskObservation:(SEL)observation options:(id)options qosClass:(id)class error:(id)error
 {
   v186[2] = *MEMORY[0x1E69E9840];
-  v92 = a4;
-  v91 = a5;
-  v14 = a6;
-  v15 = [VNValidationUtilities requiredSessionInOptions:v14 error:a8];
+  optionsCopy = options;
+  classCopy = class;
+  errorCopy = error;
+  v15 = [VNValidationUtilities requiredSessionInOptions:errorCopy error:a8];
   if (v15)
   {
     v90 = v15;
-    v16 = [v14 objectForKeyedSubscript:@"VNSegmentationGeneratorProcessOption_ImageRotated"];
+    v16 = [errorCopy objectForKeyedSubscript:@"VNSegmentationGeneratorProcessOption_ImageRotated"];
     if ([v16 BOOLValue])
     {
-      v17 = [objc_opt_class() rotateImageToMatchNetworkOrientation];
+      rotateImageToMatchNetworkOrientation = [objc_opt_class() rotateImageToMatchNetworkOrientation];
     }
 
     else
     {
-      v17 = 0;
+      rotateImageToMatchNetworkOrientation = 0;
     }
 
     v18 = *(MEMORY[0x1E695F058] + 16);
     v184 = *MEMORY[0x1E695F058];
     v185 = v18;
-    v19 = [v14 objectForKeyedSubscript:@"VNSegmentationGeneratorProcessOption_ImageROI"];
+    v19 = [errorCopy objectForKeyedSubscript:@"VNSegmentationGeneratorProcessOption_ImageROI"];
     qos_class = a7;
     [v19 getValue:&v184 size:32];
 
-    v20 = [(VNSegmentationGenerator *)self espressoInputImageSize];
-    width = v20->width;
-    height = v20->height;
-    v23 = [(VNSegmentationGenerator *)self espressoInputMaskSize];
-    v24 = v23->width;
-    v25 = v23->height;
-    v26 = [(VNPersonSegmentationGeneratorLearnedMattingTiled *)self outputMaskSize];
-    LOBYTE(v68) = v17;
-    v28 = [(VNPersonSegmentationGeneratorLearnedMattingTiled *)self _calculateNumberOfTilesForNetworkInputImageSize:width networkInputMaskSize:height networkOutputMaskSize:v24 rotated:v25, v26, v27, v68];
+    espressoInputImageSize = [(VNSegmentationGenerator *)self espressoInputImageSize];
+    width = espressoInputImageSize->width;
+    height = espressoInputImageSize->height;
+    espressoInputMaskSize = [(VNSegmentationGenerator *)self espressoInputMaskSize];
+    v24 = espressoInputMaskSize->width;
+    v25 = espressoInputMaskSize->height;
+    outputMaskSize = [(VNPersonSegmentationGeneratorLearnedMattingTiled *)self outputMaskSize];
+    LOBYTE(v68) = rotateImageToMatchNetworkOrientation;
+    v28 = [(VNPersonSegmentationGeneratorLearnedMattingTiled *)self _calculateNumberOfTilesForNetworkInputImageSize:width networkInputMaskSize:height networkOutputMaskSize:v24 rotated:v25, outputMaskSize, v27, v68];
     v30 = v29;
     v31 = [(VNMetalContext *)self->_postProcessingMetalContext commandQueueReturnError:a8];
     if (!v31)
@@ -131,28 +131,28 @@ LABEL_49:
 
     v86 = v31;
     v32 = objc_opt_class();
-    v84 = [v32 inputImageBlobName];
-    v85 = [v32 inputMaskBlobName];
-    v33 = [v92 width];
-    v76 = [v92 height];
-    v77 = v33;
+    inputImageBlobName = [v32 inputImageBlobName];
+    inputMaskBlobName = [v32 inputMaskBlobName];
+    width = [optionsCopy width];
+    height = [optionsCopy height];
+    v77 = width;
     v79 = v30;
     v80 = v28;
     v88 = v185;
-    v34 = [(VNPersonSegmentationGeneratorLearnedMattingTiled *)self outputMaskSize];
-    if (v17)
+    outputMaskSize2 = [(VNPersonSegmentationGeneratorLearnedMattingTiled *)self outputMaskSize];
+    if (rotateImageToMatchNetworkOrientation)
     {
       v36 = v35;
     }
 
     else
     {
-      v36 = v34;
+      v36 = outputMaskSize2;
     }
 
-    if (v17)
+    if (rotateImageToMatchNetworkOrientation)
     {
-      v37 = v34;
+      v37 = outputMaskSize2;
     }
 
     else
@@ -185,14 +185,14 @@ LABEL_49:
     v164[2] = __121__VNPersonSegmentationGeneratorLearnedMattingTiled__processTiledImageBuffer_inputMaskObservation_options_qosClass_error___block_invoke_2;
     v164[3] = &unk_1E77B4350;
     v169 = v183;
-    v38 = v92;
+    v38 = optionsCopy;
     v172 = vcvtq_u64_f64(v88);
     v173 = v184;
     v174 = v185;
     v165 = v38;
     v170 = v182;
-    v166 = v91;
-    v167 = self;
+    v166 = classCopy;
+    selfCopy = self;
     v168 = v90;
     v171 = &v178;
     v175 = v36;
@@ -332,12 +332,12 @@ LABEL_47:
     v114 = v50;
     v71 = qos_classa;
     v119 = v71;
-    v115 = self;
+    selfCopy2 = self;
     v121 = v162;
     v122 = v160;
-    v116 = v84;
+    v116 = inputImageBlobName;
     v126 = v51;
-    v117 = v85;
+    v117 = inputMaskBlobName;
     v123 = &v127;
     v124 = v153;
     v125 = v155;
@@ -352,7 +352,7 @@ LABEL_47:
     v103[3] = &unk_1E77B44D0;
     v105 = v80;
     v106 = v79;
-    v107 = *(&v40 + 1) / v76;
+    v107 = *(&v40 + 1) / height;
     v108 = v44 / v36;
     v109 = v46 / v37;
     v110 = *&v40 / v77;
@@ -858,20 +858,20 @@ LABEL_8:
   return 0;
 }
 
-- (uint64_t)_processTiledImageBuffer:(uint64_t)a1 inputMaskObservation:options:qosClass:error:
+- (uint64_t)_processTiledImageBuffer:(uint64_t)buffer inputMaskObservation:options:qosClass:error:
 {
-  v2 = *(a1 + 8);
-  v3 = *(a1 + 16);
-  *(a1 + 40) = 0;
+  v2 = *(buffer + 8);
+  v3 = *(buffer + 16);
+  *(buffer + 40) = 0;
   v4 = v3 - v2;
   if (v4 >= 3)
   {
     do
     {
       operator delete(*v2);
-      v3 = *(a1 + 16);
-      v2 = (*(a1 + 8) + 8);
-      *(a1 + 8) = v2;
+      v3 = *(buffer + 16);
+      v2 = (*(buffer + 8) + 8);
+      *(buffer + 8) = v2;
       v4 = v3 - v2;
     }
 
@@ -888,7 +888,7 @@ LABEL_8:
   {
     v5 = 170;
 LABEL_7:
-    *(a1 + 32) = v5;
+    *(buffer + 32) = v5;
   }
 
   if (v2 != v3)
@@ -900,20 +900,20 @@ LABEL_7:
     }
 
     while (v2 != v3);
-    v8 = *(a1 + 8);
-    v7 = *(a1 + 16);
+    v8 = *(buffer + 8);
+    v7 = *(buffer + 16);
     if (v7 != v8)
     {
-      *(a1 + 16) = v7 + ((v8 - v7 + 7) & 0xFFFFFFFFFFFFFFF8);
+      *(buffer + 16) = v7 + ((v8 - v7 + 7) & 0xFFFFFFFFFFFFFFF8);
     }
   }
 
-  if (*a1)
+  if (*buffer)
   {
-    operator delete(*a1);
+    operator delete(*buffer);
   }
 
-  return a1;
+  return buffer;
 }
 
 void __121__VNPersonSegmentationGeneratorLearnedMattingTiled__processTiledImageBuffer_inputMaskObservation_options_qosClass_error___block_invoke_7(uint64_t a1, void *a2)
@@ -1051,7 +1051,7 @@ BOOL __121__VNPersonSegmentationGeneratorLearnedMattingTiled__processTiledImageB
   return v4;
 }
 
-- (void)_processTiledImageBuffer:(void *)result inputMaskObservation:(void *)a2 options:qosClass:error:
+- (void)_processTiledImageBuffer:(void *)result inputMaskObservation:(void *)observation options:qosClass:error:
 {
   v3 = result;
   v4 = result[2];
@@ -1094,7 +1094,7 @@ BOOL __121__VNPersonSegmentationGeneratorLearnedMattingTiled__processTiledImageB
     v3[2] = &v9[v10];
   }
 
-  *v4 = *a2;
+  *v4 = *observation;
   v3[2] += 8;
   return result;
 }
@@ -1124,19 +1124,19 @@ void __121__VNPersonSegmentationGeneratorLearnedMattingTiled__processTiledImageB
   }
 }
 
-- (optional<std::tuple<std::unordered_map<NSString)processLockedImageBuffer:(std:(espresso_buffer_t>>> *__return_ptr)retstr :(VNPersonSegmentationGeneratorLearnedMattingTiled *)self unordered_map<NSString *) inputMaskObservation:(SEL)a3 options:(__CVBuffer *)a4 qosClass:(id)a5 error:(id)a6
+- (optional<std::tuple<std::unordered_map<NSString)processLockedImageBuffer:(std:(espresso_buffer_t>>> *__return_ptr)retstr :(VNPersonSegmentationGeneratorLearnedMattingTiled *)self unordered_map<NSString *) inputMaskObservation:(SEL)observation options:(__CVBuffer *)options qosClass:(id)class error:(id)error
 {
   v9 = *&a7;
-  v13 = a5;
-  v14 = a6;
-  v15 = [(VNDetector *)self validatedImageBufferFromOptions:v14 error:a8];
+  classCopy = class;
+  errorCopy = error;
+  v15 = [(VNDetector *)self validatedImageBufferFromOptions:errorCopy error:a8];
   if (v15)
   {
     LOBYTE(__p) = 0;
     v66 = 0;
     v16 = objc_autoreleasePoolPush();
     v44 = 0;
-    [(VNPersonSegmentationGeneratorLearnedMattingTiled *)self _processTiledImageBuffer:v15 inputMaskObservation:v13 options:v14 qosClass:v9 error:&v44];
+    [(VNPersonSegmentationGeneratorLearnedMattingTiled *)self _processTiledImageBuffer:v15 inputMaskObservation:classCopy options:errorCopy qosClass:v9 error:&v44];
     v17 = v44;
     if (v66 == v55)
     {
@@ -1410,12 +1410,12 @@ void __121__VNPersonSegmentationGeneratorLearnedMattingTiled__processTiledImageB
   return result;
 }
 
-- (BufferSize)_calculateNumberOfTilesForNetworkInputImageSize:(BufferSize)a3 networkInputMaskSize:(BufferSize)a4 networkOutputMaskSize:(BufferSize)a5 rotated:(BOOL)a6
+- (BufferSize)_calculateNumberOfTilesForNetworkInputImageSize:(BufferSize)size networkInputMaskSize:(BufferSize)maskSize networkOutputMaskSize:(BufferSize)outputMaskSize rotated:(BOOL)rotated
 {
-  height = a3.height;
-  width = a3.width;
-  v8 = [(VNPersonSegmentationGeneratorLearnedMattingTiled *)self outputMaskSize:a3.width];
-  if (a6)
+  height = size.height;
+  width = size.width;
+  v8 = [(VNPersonSegmentationGeneratorLearnedMattingTiled *)self outputMaskSize:size.width];
+  if (rotated)
   {
     v10 = v9;
   }
@@ -1425,7 +1425,7 @@ void __121__VNPersonSegmentationGeneratorLearnedMattingTiled__processTiledImageB
     v10 = v8;
   }
 
-  if (a6)
+  if (rotated)
   {
     v11 = v8;
   }
@@ -1451,19 +1451,19 @@ void __121__VNPersonSegmentationGeneratorLearnedMattingTiled__processTiledImageB
   return result;
 }
 
-- (BOOL)completeInitializationForSession:(id)a3 error:(id *)a4
+- (BOOL)completeInitializationForSession:(id)session error:(id *)error
 {
   v17.receiver = self;
   v17.super_class = VNPersonSegmentationGeneratorLearnedMattingTiled;
-  if (![(VNSegmentationGenerator *)&v17 completeInitializationForSession:a3 error:?])
+  if (![(VNSegmentationGenerator *)&v17 completeInitializationForSession:session error:?])
   {
     return 0;
   }
 
-  v6 = [(VNDetector *)self boundComputeDeviceForComputeStage:@"VNComputeStagePostProcessing" error:a4];
-  if (v6 && ([VNComputeDeviceUtilities metalDeviceForComputeDevice:v6], v7 = objc_claimAutoreleasedReturnValue(), [VNMetalContext metalContextForDevice:v7 error:a4], v8 = objc_claimAutoreleasedReturnValue(), postProcessingMetalContext = self->_postProcessingMetalContext, self->_postProcessingMetalContext = v8, postProcessingMetalContext, v7, (v10 = self->_postProcessingMetalContext) != 0) && ([(VNMetalContext *)v10 computePipelineStateForFunctionWithName:a4 error:?], v11 = objc_claimAutoreleasedReturnValue(), createTileWithScaleComputePipelineState = self->_createTileWithScaleComputePipelineState, self->_createTileWithScaleComputePipelineState = v11, createTileWithScaleComputePipelineState, self->_createTileWithScaleComputePipelineState))
+  v6 = [(VNDetector *)self boundComputeDeviceForComputeStage:@"VNComputeStagePostProcessing" error:error];
+  if (v6 && ([VNComputeDeviceUtilities metalDeviceForComputeDevice:v6], v7 = objc_claimAutoreleasedReturnValue(), [VNMetalContext metalContextForDevice:v7 error:error], v8 = objc_claimAutoreleasedReturnValue(), postProcessingMetalContext = self->_postProcessingMetalContext, self->_postProcessingMetalContext = v8, postProcessingMetalContext, v7, (v10 = self->_postProcessingMetalContext) != 0) && ([(VNMetalContext *)v10 computePipelineStateForFunctionWithName:error error:?], v11 = objc_claimAutoreleasedReturnValue(), createTileWithScaleComputePipelineState = self->_createTileWithScaleComputePipelineState, self->_createTileWithScaleComputePipelineState = v11, createTileWithScaleComputePipelineState, self->_createTileWithScaleComputePipelineState))
   {
-    v13 = [(VNMetalContext *)self->_postProcessingMetalContext computePipelineStateForFunctionWithName:a4 error:?];
+    v13 = [(VNMetalContext *)self->_postProcessingMetalContext computePipelineStateForFunctionWithName:error error:?];
     pasteTileComputePipelineState = self->_pasteTileComputePipelineState;
     self->_pasteTileComputePipelineState = v13;
 

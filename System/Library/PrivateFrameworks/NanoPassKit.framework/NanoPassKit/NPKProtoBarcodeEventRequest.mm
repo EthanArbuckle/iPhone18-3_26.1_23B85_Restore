@@ -1,32 +1,32 @@
 @interface NPKProtoBarcodeEventRequest
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)addAssociatedApplicationIdentifiers:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addAssociatedApplicationIdentifiers:(id)identifiers;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NPKProtoBarcodeEventRequest
 
-- (void)addAssociatedApplicationIdentifiers:(id)a3
+- (void)addAssociatedApplicationIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   associatedApplicationIdentifiers = self->_associatedApplicationIdentifiers;
-  v8 = v4;
+  v8 = identifiersCopy;
   if (!associatedApplicationIdentifiers)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_associatedApplicationIdentifiers;
     self->_associatedApplicationIdentifiers = v6;
 
-    v4 = v8;
+    identifiersCopy = v8;
     associatedApplicationIdentifiers = self->_associatedApplicationIdentifiers;
   }
 
-  [(NSMutableArray *)associatedApplicationIdentifiers addObject:v4];
+  [(NSMutableArray *)associatedApplicationIdentifiers addObject:identifiersCopy];
 }
 
 - (id)description
@@ -35,20 +35,20 @@
   v8.receiver = self;
   v8.super_class = NPKProtoBarcodeEventRequest;
   v4 = [(NPKProtoBarcodeEventRequest *)&v8 description];
-  v5 = [(NPKProtoBarcodeEventRequest *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NPKProtoBarcodeEventRequest *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   requestData = self->_requestData;
   if (requestData)
   {
-    [v3 setObject:requestData forKey:@"requestData"];
+    [dictionary setObject:requestData forKey:@"requestData"];
   }
 
   associatedApplicationIdentifiers = self->_associatedApplicationIdentifiers;
@@ -60,10 +60,10 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (self->_requestData)
   {
     PBDataWriterWriteDataField();
@@ -104,35 +104,35 @@
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if (self->_requestData)
   {
-    [v8 setRequestData:?];
+    [toCopy setRequestData:?];
   }
 
   if ([(NPKProtoBarcodeEventRequest *)self associatedApplicationIdentifiersCount])
   {
-    [v8 clearAssociatedApplicationIdentifiers];
-    v4 = [(NPKProtoBarcodeEventRequest *)self associatedApplicationIdentifiersCount];
-    if (v4)
+    [toCopy clearAssociatedApplicationIdentifiers];
+    associatedApplicationIdentifiersCount = [(NPKProtoBarcodeEventRequest *)self associatedApplicationIdentifiersCount];
+    if (associatedApplicationIdentifiersCount)
     {
-      v5 = v4;
+      v5 = associatedApplicationIdentifiersCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(NPKProtoBarcodeEventRequest *)self associatedApplicationIdentifiersAtIndex:i];
-        [v8 addAssociatedApplicationIdentifiers:v7];
+        [toCopy addAssociatedApplicationIdentifiers:v7];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSData *)self->_requestData copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSData *)self->_requestData copyWithZone:zone];
   v7 = v5[2];
   v5[2] = v6;
 
@@ -156,7 +156,7 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v16 + 1) + 8 * v12) copyWithZone:{a3, v16}];
+        v13 = [*(*(&v16 + 1) + 8 * v12) copyWithZone:{zone, v16}];
         [v5 addAssociatedApplicationIdentifiers:v13];
 
         ++v12;
@@ -173,13 +173,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((requestData = self->_requestData, !(requestData | v4[2])) || -[NSData isEqual:](requestData, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((requestData = self->_requestData, !(requestData | equalCopy[2])) || -[NSData isEqual:](requestData, "isEqual:")))
   {
     associatedApplicationIdentifiers = self->_associatedApplicationIdentifiers;
-    if (associatedApplicationIdentifiers | v4[1])
+    if (associatedApplicationIdentifiers | equalCopy[1])
     {
       v7 = [(NSMutableArray *)associatedApplicationIdentifiers isEqual:?];
     }
@@ -198,11 +198,11 @@
   return v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (*(v4 + 2))
+  fromCopy = from;
+  if (*(fromCopy + 2))
   {
     [(NPKProtoBarcodeEventRequest *)self setRequestData:?];
   }
@@ -211,7 +211,7 @@
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = *(v4 + 1);
+  v5 = *(fromCopy + 1);
   v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {

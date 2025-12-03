@@ -6,7 +6,7 @@
 
 - (id)crk_JSONRepresentationWithPrettyPrinting:()JSONConformance sortKeys:
 {
-  v6 = [CRKJSONConverter JSONDictionaryForDictionary:a1];
+  v6 = [CRKJSONConverter JSONDictionaryForDictionary:self];
   v7 = JSONStringRepresentation(v6, a3, a4);
 
   return v7;

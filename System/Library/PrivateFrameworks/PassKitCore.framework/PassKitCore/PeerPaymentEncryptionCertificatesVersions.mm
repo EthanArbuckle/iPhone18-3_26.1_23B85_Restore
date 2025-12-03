@@ -1,22 +1,22 @@
 @interface PeerPaymentEncryptionCertificatesVersions
-+ (id)_predicateForAccountPID:(int64_t)a3;
++ (id)_predicateForAccountPID:(int64_t)d;
 + (id)_propertySettersForEncryptionCertificatesVersions;
-+ (id)associationPropertyForEntityClass:(Class)a3;
-+ (id)insertPeerPaymentEncryptionCertificatesVersions:(id)a3 forPeerPaymentAccountPID:(int64_t)a4 inDatabase:(id)a5;
-+ (id)peerPaymentEncryptionCertificatesVersionsForAccountPID:(int64_t)a3 inDatabase:(id)a4;
-+ (void)deletePeerPaymentEncryptionCertificatesVersionsForAccountPID:(int64_t)a3 inDatabase:(id)a4;
-+ (void)updatePeerPaymentEncryptionCertificatesVersions:(id)a3 forAccountPID:(int64_t)a4 inDatabase:(id)a5;
-- (PeerPaymentEncryptionCertificatesVersions)initWithPeerPaymentEncryptionCertificatesVersions:(id)a3 forPeerPaymentAccountPID:(int64_t)a4 inDatabase:(id)a5;
-- (id)_commonDictionaryForEncryptionCertificatesVersions:(id)a3;
++ (id)associationPropertyForEntityClass:(Class)class;
++ (id)insertPeerPaymentEncryptionCertificatesVersions:(id)versions forPeerPaymentAccountPID:(int64_t)d inDatabase:(id)database;
++ (id)peerPaymentEncryptionCertificatesVersionsForAccountPID:(int64_t)d inDatabase:(id)database;
++ (void)deletePeerPaymentEncryptionCertificatesVersionsForAccountPID:(int64_t)d inDatabase:(id)database;
++ (void)updatePeerPaymentEncryptionCertificatesVersions:(id)versions forAccountPID:(int64_t)d inDatabase:(id)database;
+- (PeerPaymentEncryptionCertificatesVersions)initWithPeerPaymentEncryptionCertificatesVersions:(id)versions forPeerPaymentAccountPID:(int64_t)d inDatabase:(id)database;
+- (id)_commonDictionaryForEncryptionCertificatesVersions:(id)versions;
 - (id)peerPaymentEncryptionCertificatesVersions;
-- (void)updatePeerPaymentEncryptionCertificatesVersions:(id)a3;
+- (void)updatePeerPaymentEncryptionCertificatesVersions:(id)versions;
 @end
 
 @implementation PeerPaymentEncryptionCertificatesVersions
 
-+ (id)associationPropertyForEntityClass:(Class)a3
++ (id)associationPropertyForEntityClass:(Class)class
 {
-  if (objc_opt_class() == a3)
+  if (objc_opt_class() == class)
   {
     return @"a";
   }
@@ -27,85 +27,85 @@
   }
 }
 
-+ (id)peerPaymentEncryptionCertificatesVersionsForAccountPID:(int64_t)a3 inDatabase:(id)a4
++ (id)peerPaymentEncryptionCertificatesVersionsForAccountPID:(int64_t)d inDatabase:(id)database
 {
-  v6 = a4;
-  v7 = [a1 _predicateForAccountPID:a3];
-  v8 = [a1 anyInDatabase:v6 predicate:v7];
+  databaseCopy = database;
+  v7 = [self _predicateForAccountPID:d];
+  v8 = [self anyInDatabase:databaseCopy predicate:v7];
 
-  v9 = [v8 peerPaymentEncryptionCertificatesVersions];
+  peerPaymentEncryptionCertificatesVersions = [v8 peerPaymentEncryptionCertificatesVersions];
 
-  return v9;
+  return peerPaymentEncryptionCertificatesVersions;
 }
 
-- (PeerPaymentEncryptionCertificatesVersions)initWithPeerPaymentEncryptionCertificatesVersions:(id)a3 forPeerPaymentAccountPID:(int64_t)a4 inDatabase:(id)a5
+- (PeerPaymentEncryptionCertificatesVersions)initWithPeerPaymentEncryptionCertificatesVersions:(id)versions forPeerPaymentAccountPID:(int64_t)d inDatabase:(id)database
 {
-  v8 = a5;
-  v9 = [(PeerPaymentEncryptionCertificatesVersions *)self _commonDictionaryForEncryptionCertificatesVersions:a3];
-  v10 = [NSNumber numberWithLongLong:a4];
+  databaseCopy = database;
+  v9 = [(PeerPaymentEncryptionCertificatesVersions *)self _commonDictionaryForEncryptionCertificatesVersions:versions];
+  v10 = [NSNumber numberWithLongLong:d];
   [v9 setObjectOrNull:v10 forKey:@"a"];
 
-  v11 = [(SQLiteEntity *)self initWithPropertyValues:v9 inDatabase:v8];
+  v11 = [(SQLiteEntity *)self initWithPropertyValues:v9 inDatabase:databaseCopy];
   return v11;
 }
 
-+ (id)insertPeerPaymentEncryptionCertificatesVersions:(id)a3 forPeerPaymentAccountPID:(int64_t)a4 inDatabase:(id)a5
++ (id)insertPeerPaymentEncryptionCertificatesVersions:(id)versions forPeerPaymentAccountPID:(int64_t)d inDatabase:(id)database
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [[a1 alloc] initWithPeerPaymentEncryptionCertificatesVersions:v9 forPeerPaymentAccountPID:a4 inDatabase:v8];
+  databaseCopy = database;
+  versionsCopy = versions;
+  v10 = [[self alloc] initWithPeerPaymentEncryptionCertificatesVersions:versionsCopy forPeerPaymentAccountPID:d inDatabase:databaseCopy];
 
   return v10;
 }
 
-+ (void)deletePeerPaymentEncryptionCertificatesVersionsForAccountPID:(int64_t)a3 inDatabase:(id)a4
++ (void)deletePeerPaymentEncryptionCertificatesVersionsForAccountPID:(int64_t)d inDatabase:(id)database
 {
-  v6 = a4;
-  v7 = [a1 _predicateForAccountPID:a3];
-  v8 = [a1 anyInDatabase:v6 predicate:v7];
+  databaseCopy = database;
+  v7 = [self _predicateForAccountPID:d];
+  v8 = [self anyInDatabase:databaseCopy predicate:v7];
 
   [v8 deleteFromDatabase];
 }
 
-+ (void)updatePeerPaymentEncryptionCertificatesVersions:(id)a3 forAccountPID:(int64_t)a4 inDatabase:(id)a5
++ (void)updatePeerPaymentEncryptionCertificatesVersions:(id)versions forAccountPID:(int64_t)d inDatabase:(id)database
 {
-  v12 = a3;
-  v8 = a5;
-  v9 = [a1 _predicateForAccountPID:a4];
-  v10 = [a1 anyInDatabase:v8 predicate:v9];
+  versionsCopy = versions;
+  databaseCopy = database;
+  v9 = [self _predicateForAccountPID:d];
+  v10 = [self anyInDatabase:databaseCopy predicate:v9];
 
   if (v10)
   {
-    [v10 updatePeerPaymentEncryptionCertificatesVersions:v12];
+    [v10 updatePeerPaymentEncryptionCertificatesVersions:versionsCopy];
   }
 
   else
   {
-    v11 = [PeerPaymentEncryptionCertificatesVersions insertPeerPaymentEncryptionCertificatesVersions:v12 forPeerPaymentAccountPID:a4 inDatabase:v8];
+    v11 = [PeerPaymentEncryptionCertificatesVersions insertPeerPaymentEncryptionCertificatesVersions:versionsCopy forPeerPaymentAccountPID:d inDatabase:databaseCopy];
   }
 }
 
-- (void)updatePeerPaymentEncryptionCertificatesVersions:(id)a3
+- (void)updatePeerPaymentEncryptionCertificatesVersions:(id)versions
 {
-  v4 = [(PeerPaymentEncryptionCertificatesVersions *)self _commonDictionaryForEncryptionCertificatesVersions:a3];
+  v4 = [(PeerPaymentEncryptionCertificatesVersions *)self _commonDictionaryForEncryptionCertificatesVersions:versions];
   [(SQLiteEntity *)self setValuesWithDictionary:v4];
 }
 
-+ (id)_predicateForAccountPID:(int64_t)a3
++ (id)_predicateForAccountPID:(int64_t)d
 {
-  v3 = [NSNumber numberWithLongLong:a3];
+  v3 = [NSNumber numberWithLongLong:d];
   v4 = [SQLiteComparisonPredicate predicateWithProperty:@"a" equalToValue:v3];
 
   return v4;
 }
 
-- (id)_commonDictionaryForEncryptionCertificatesVersions:(id)a3
+- (id)_commonDictionaryForEncryptionCertificatesVersions:(id)versions
 {
-  v3 = a3;
+  versionsCopy = versions;
   v4 = objc_alloc_init(NSMutableDictionary);
-  v5 = [v3 recipientData];
+  recipientData = [versionsCopy recipientData];
 
-  v6 = [NSNumber numberWithInteger:v5];
+  v6 = [NSNumber numberWithInteger:recipientData];
   [v4 setObjectOrNull:v6 forKey:@"b"];
 
   return v4;
@@ -123,18 +123,18 @@
 - (id)peerPaymentEncryptionCertificatesVersions
 {
   v3 = objc_alloc_init(PKPeerPaymentEncryptionCertificatesVersions);
-  v4 = [objc_opt_class() _propertySettersForEncryptionCertificatesVersions];
-  v5 = [v4 allKeys];
+  _propertySettersForEncryptionCertificatesVersions = [objc_opt_class() _propertySettersForEncryptionCertificatesVersions];
+  allKeys = [_propertySettersForEncryptionCertificatesVersions allKeys];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1000F580C;
   v11[3] = &unk_10083BEE0;
   v11[4] = self;
-  v12 = v4;
+  v12 = _propertySettersForEncryptionCertificatesVersions;
   v6 = v3;
   v13 = v6;
-  v7 = v4;
-  [(SQLiteEntity *)self getValuesForProperties:v5 withApplier:v11];
+  v7 = _propertySettersForEncryptionCertificatesVersions;
+  [(SQLiteEntity *)self getValuesForProperties:allKeys withApplier:v11];
 
   v8 = v13;
   v9 = v6;

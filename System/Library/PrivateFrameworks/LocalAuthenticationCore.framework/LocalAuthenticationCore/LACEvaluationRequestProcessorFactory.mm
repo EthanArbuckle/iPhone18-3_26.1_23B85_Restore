@@ -1,11 +1,11 @@
 @interface LACEvaluationRequestProcessorFactory
-+ (id)makeProcessorWithSubprocessors:(id)a3;
-+ (id)makeRootProcessorWithSubprocessors:(id)a3;
++ (id)makeProcessorWithSubprocessors:(id)subprocessors;
++ (id)makeRootProcessorWithSubprocessors:(id)subprocessors;
 @end
 
 @implementation LACEvaluationRequestProcessorFactory
 
-+ (id)makeRootProcessorWithSubprocessors:(id)a3
++ (id)makeRootProcessorWithSubprocessors:(id)subprocessors
 {
   __swift_instantiateConcreteTypeFromMangledNameV2(&_sSo29LACEvaluationRequestProcessor_pMd, &_sSo29LACEvaluationRequestProcessor_pMR);
   v3 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
@@ -14,7 +14,7 @@
   return v4;
 }
 
-+ (id)makeProcessorWithSubprocessors:(id)a3
++ (id)makeProcessorWithSubprocessors:(id)subprocessors
 {
   __swift_instantiateConcreteTypeFromMangledNameV2(&_sSo29LACEvaluationRequestProcessor_pMd, &_sSo29LACEvaluationRequestProcessor_pMR);
   v3 = static Array._unconditionallyBridgeFromObjectiveC(_:)();

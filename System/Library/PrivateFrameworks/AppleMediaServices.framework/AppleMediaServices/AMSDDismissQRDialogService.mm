@@ -1,10 +1,10 @@
 @interface AMSDDismissQRDialogService
 + (AMSDDismissQRDialogService)sharedService;
-+ (BOOL)isConnectionEntitled:(id)a3;
++ (BOOL)isConnectionEntitled:(id)entitled;
 - (AMSDDismissQRDialogService)init;
-- (void)notifyDismissDialogWithIdentifier:(id)a3;
-- (void)observeQRDialogDismissalNotificationForIdentifier:(id)a3 completion:(id)a4;
-- (void)removeQRDialogDismissalObserverForIdentifier:(id)a3 completion:(id)a4;
+- (void)notifyDismissDialogWithIdentifier:(id)identifier;
+- (void)observeQRDialogDismissalNotificationForIdentifier:(id)identifier completion:(id)completion;
+- (void)removeQRDialogDismissalObserverForIdentifier:(id)identifier completion:(id)completion;
 @end
 
 @implementation AMSDDismissQRDialogService
@@ -43,57 +43,57 @@
   return v3;
 }
 
-- (void)observeQRDialogDismissalNotificationForIdentifier:(id)a3 completion:(id)a4
+- (void)observeQRDialogDismissalNotificationForIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(AMSDDismissQRDialogService *)self taskQueue];
+  identifierCopy = identifier;
+  completionCopy = completion;
+  taskQueue = [(AMSDDismissQRDialogService *)self taskQueue];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100057384;
   v11[3] = &unk_1002B03F8;
   v11[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  [AMSDTransactionStore takeKeepAliveTransaction:@"com.apple.amsaccountsd.qrcodedismissal" withQueue:v8 whilePerformingBlock:v11];
+  v12 = identifierCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = identifierCopy;
+  [AMSDTransactionStore takeKeepAliveTransaction:@"com.apple.amsaccountsd.qrcodedismissal" withQueue:taskQueue whilePerformingBlock:v11];
 }
 
-- (void)removeQRDialogDismissalObserverForIdentifier:(id)a3 completion:(id)a4
+- (void)removeQRDialogDismissalObserverForIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(AMSDDismissQRDialogService *)self taskQueue];
+  identifierCopy = identifier;
+  completionCopy = completion;
+  taskQueue = [(AMSDDismissQRDialogService *)self taskQueue];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1000575E8;
   v11[3] = &unk_1002B03F8;
   v11[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  [AMSDTransactionStore takeKeepAliveTransaction:@"com.apple.amsaccountsd.qrcodedismissal" withQueue:v8 whilePerformingBlock:v11];
+  v12 = identifierCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = identifierCopy;
+  [AMSDTransactionStore takeKeepAliveTransaction:@"com.apple.amsaccountsd.qrcodedismissal" withQueue:taskQueue whilePerformingBlock:v11];
 }
 
-- (void)notifyDismissDialogWithIdentifier:(id)a3
+- (void)notifyDismissDialogWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(AMSDDismissQRDialogService *)self taskQueue];
+  identifierCopy = identifier;
+  taskQueue = [(AMSDDismissQRDialogService *)self taskQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100057820;
   v7[3] = &unk_1002B00E8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [AMSDTransactionStore takeKeepAliveTransaction:@"com.apple.amsaccountsd.qrcodedismissal" withQueue:v5 whilePerformingBlock:v7];
+  v8 = identifierCopy;
+  v6 = identifierCopy;
+  [AMSDTransactionStore takeKeepAliveTransaction:@"com.apple.amsaccountsd.qrcodedismissal" withQueue:taskQueue whilePerformingBlock:v7];
 }
 
-+ (BOOL)isConnectionEntitled:(id)a3
++ (BOOL)isConnectionEntitled:(id)entitled
 {
-  v3 = [a3 valueForEntitlement:@"com.apple.private.applemediaservices"];
+  v3 = [entitled valueForEntitlement:@"com.apple.private.applemediaservices"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -105,8 +105,8 @@
     v4 = 0;
   }
 
-  v5 = [v4 BOOLValue];
-  return v5;
+  bOOLValue = [v4 BOOLValue];
+  return bOOLValue;
 }
 
 @end

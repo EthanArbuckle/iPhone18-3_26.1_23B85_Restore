@@ -1,53 +1,53 @@
 @interface PKPassAuxiliaryPassInformationItem
-- (BOOL)_isEqualToItem:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (PKPassAuxiliaryPassInformationItem)initWithCoder:(id)a3;
-- (PKPassAuxiliaryPassInformationItem)initWithItemInformation:(id)a3 bundle:(id)a4 privateBundle:(id)a5 passType:(unint64_t)a6;
-- (id)_displayableStringForDate:(id)a3 fromField:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)_isEqualToItem:(id)item;
+- (BOOL)isEqual:(id)equal;
+- (PKPassAuxiliaryPassInformationItem)initWithCoder:(id)coder;
+- (PKPassAuxiliaryPassInformationItem)initWithItemInformation:(id)information bundle:(id)bundle privateBundle:(id)privateBundle passType:(unint64_t)type;
+- (id)_displayableStringForDate:(id)date fromField:(id)field;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setMerchant:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setMerchant:(id)merchant;
 @end
 
 @implementation PKPassAuxiliaryPassInformationItem
 
-- (PKPassAuxiliaryPassInformationItem)initWithItemInformation:(id)a3 bundle:(id)a4 privateBundle:(id)a5 passType:(unint64_t)a6
+- (PKPassAuxiliaryPassInformationItem)initWithItemInformation:(id)information bundle:(id)bundle privateBundle:(id)privateBundle passType:(unint64_t)type
 {
   v106 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  informationCopy = information;
+  bundleCopy = bundle;
+  privateBundleCopy = privateBundle;
   v102.receiver = self;
   v102.super_class = PKPassAuxiliaryPassInformationItem;
   v13 = [(PKPassAuxiliaryPassInformationItem *)&v102 init];
   if (v13)
   {
-    v14 = [v10 PKStringForKey:@"identifier"];
+    v14 = [informationCopy PKStringForKey:@"identifier"];
     identifier = v13->_identifier;
     v13->_identifier = v14;
 
-    v16 = [v10 PKStringForKey:@"title"];
-    v17 = PKLocalizedPassStringForPassBundle(v16, v11, v12);
+    v16 = [informationCopy PKStringForKey:@"title"];
+    v17 = PKLocalizedPassStringForPassBundle(v16, bundleCopy, privateBundleCopy);
     title = v13->_title;
     v13->_title = v17;
 
-    v19 = [v10 PKStringForKey:@"subtitle"];
-    v20 = PKLocalizedPassStringForPassBundle(v19, v11, v12);
+    v19 = [informationCopy PKStringForKey:@"subtitle"];
+    v20 = PKLocalizedPassStringForPassBundle(v19, bundleCopy, privateBundleCopy);
     subtitle = v13->_subtitle;
     v13->_subtitle = v20;
 
-    v22 = [v10 PKStringForKey:@"subtitle2"];
-    v23 = PKLocalizedPassStringForPassBundle(v22, v11, v12);
+    v22 = [informationCopy PKStringForKey:@"subtitle2"];
+    v23 = PKLocalizedPassStringForPassBundle(v22, bundleCopy, privateBundleCopy);
     subtitle2 = v13->_subtitle2;
     v13->_subtitle2 = v23;
 
-    v25 = [v10 PKURLForKey:@"mapsURL"];
+    v25 = [informationCopy PKURLForKey:@"mapsURL"];
     mapsURL = v13->_mapsURL;
     v13->_mapsURL = v25;
 
-    v27 = [v10 PKStringForKey:@"locationCategory"];
+    v27 = [informationCopy PKStringForKey:@"locationCategory"];
     v28 = v27;
     if (v27)
     {
@@ -62,8 +62,8 @@
     v99 = 0u;
     v100 = 0u;
     v101 = 0u;
-    v85 = v10;
-    v30 = [v10 objectForKey:@"fields"];
+    v85 = informationCopy;
+    v30 = [informationCopy objectForKey:@"fields"];
     v31 = [v30 countByEnumeratingWithState:&v98 objects:v105 count:16];
     if (v31)
     {
@@ -79,7 +79,7 @@
             objc_enumerationMutation(v30);
           }
 
-          v35 = _FieldForTypeWithDictionaryAndBundle(3, *(*(&v98 + 1) + 8 * v34), v11, v12, 0, 0, a6);
+          v35 = _FieldForTypeWithDictionaryAndBundle(3, *(*(&v98 + 1) + 8 * v34), bundleCopy, privateBundleCopy, 0, 0, type);
           [v89 safelyAddObject:v35];
           v36 = [v35 key];
           [v29 pk_safelyAddObject:v36];
@@ -116,7 +116,7 @@
             objc_enumerationMutation(v39);
           }
 
-          v44 = [[PKPassDetailSection alloc] initWithDictionary:*(*(&v94 + 1) + 8 * v43) allowedRows:v37 bundle:v11 privateBundle:v12];
+          v44 = [[PKPassDetailSection alloc] initWithDictionary:*(*(&v94 + 1) + 8 * v43) allowedRows:v37 bundle:bundleCopy privateBundle:privateBundleCopy];
           [v38 safelyAddObject:v44];
 
           ++v43;
@@ -129,26 +129,26 @@
       while (v41);
     }
 
-    v10 = v85;
+    informationCopy = v85;
     v45 = [v85 objectForKey:@"footerConfiguration"];
     v46 = [v45 PKStringForKey:@"leadingTitle"];
-    v47 = PKLocalizedPassStringForPassBundle(v46, v11, v12);
+    v47 = PKLocalizedPassStringForPassBundle(v46, bundleCopy, privateBundleCopy);
     v13 = v88;
     detailFooterLeadingTitle = v88->_detailFooterLeadingTitle;
     v88->_detailFooterLeadingTitle = v47;
 
     v49 = [v45 PKStringForKey:@"leadingDetailText"];
-    v50 = PKLocalizedPassStringForPassBundle(v49, v11, v12);
+    v50 = PKLocalizedPassStringForPassBundle(v49, bundleCopy, privateBundleCopy);
     detailFooterLeadingText = v88->_detailFooterLeadingText;
     v88->_detailFooterLeadingText = v50;
 
     v52 = [v45 PKStringForKey:@"trailingTitle"];
-    v53 = PKLocalizedPassStringForPassBundle(v52, v11, v12);
+    v53 = PKLocalizedPassStringForPassBundle(v52, bundleCopy, privateBundleCopy);
     detailFooterTrailingTitle = v88->_detailFooterTrailingTitle;
     v88->_detailFooterTrailingTitle = v53;
 
     v55 = [v45 PKStringForKey:@"trailingDetailText"];
-    v56 = PKLocalizedPassStringForPassBundle(v55, v11, v12);
+    v56 = PKLocalizedPassStringForPassBundle(v55, bundleCopy, privateBundleCopy);
     detailFooterTrailingText = v88->_detailFooterTrailingText;
     v88->_detailFooterTrailingText = v56;
 
@@ -179,9 +179,9 @@
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              v64 = [v63 value];
+              value = [v63 value];
               v65 = v13->_subtitle;
-              v13->_subtitle = v64;
+              v13->_subtitle = value;
 
               if (!v13->_detailFooterLeadingText)
               {
@@ -194,13 +194,13 @@
                 if (objc_opt_isKindOfClass())
                 {
                   v68 = v63;
-                  v86 = [v68 startDate];
-                  v69 = [(PKPassAuxiliaryPassInformationItem *)v88 _displayableStringForDate:v86 fromField:v68];
+                  startDate = [v68 startDate];
+                  v69 = [(PKPassAuxiliaryPassInformationItem *)v88 _displayableStringForDate:startDate fromField:v68];
                   v70 = v88->_detailFooterLeadingText;
                   v88->_detailFooterLeadingText = v69;
 
-                  v87 = [v68 endDate];
-                  v71 = [(PKPassAuxiliaryPassInformationItem *)v88 _displayableStringForDate:v87 fromField:v68];
+                  endDate = [v68 endDate];
+                  v71 = [(PKPassAuxiliaryPassInformationItem *)v88 _displayableStringForDate:endDate fromField:v68];
                   v72 = v88->_detailFooterTrailingText;
                   v88->_detailFooterTrailingText = v71;
 
@@ -212,9 +212,9 @@
 LABEL_42:
                   if (!v13->_detailFooterTrailingTitle)
                   {
-                    v66 = [v63 value];
+                    value2 = [v63 value];
                     v67 = v13->_detailFooterLeadingText;
-                    v13->_detailFooterLeadingText = v66;
+                    v13->_detailFooterLeadingText = value2;
                   }
                 }
               }
@@ -231,7 +231,7 @@ LABEL_42:
       }
 
       v45 = v83;
-      v10 = v85;
+      informationCopy = v85;
     }
 
     if (!v13->_subtitle2)
@@ -239,9 +239,9 @@ LABEL_42:
       merchant = v13->_merchant;
       if (merchant)
       {
-        v74 = [(PKMerchant *)merchant mapsMerchant];
-        v75 = [v74 postalAddress];
-        v76 = PKMerchantFormattedLocationForPostalAddress(v75);
+        mapsMerchant = [(PKMerchant *)merchant mapsMerchant];
+        postalAddress = [mapsMerchant postalAddress];
+        v76 = PKMerchantFormattedLocationForPostalAddress(postalAddress);
         v77 = v13->_subtitle2;
         v13->_subtitle2 = v76;
       }
@@ -259,31 +259,31 @@ LABEL_42:
   return v13;
 }
 
-- (void)setMerchant:(id)a3
+- (void)setMerchant:(id)merchant
 {
-  v10 = a3;
-  objc_storeStrong(&self->_merchant, a3);
+  merchantCopy = merchant;
+  objc_storeStrong(&self->_merchant, merchant);
   if (!self->_subtitle2)
   {
     merchant = self->_merchant;
     if (merchant)
     {
-      v6 = [(PKMerchant *)merchant mapsMerchant];
-      v7 = [v6 postalAddress];
-      v8 = PKMerchantFormattedLocationForPostalAddress(v7);
+      mapsMerchant = [(PKMerchant *)merchant mapsMerchant];
+      postalAddress = [mapsMerchant postalAddress];
+      v8 = PKMerchantFormattedLocationForPostalAddress(postalAddress);
       subtitle2 = self->_subtitle2;
       self->_subtitle2 = v8;
     }
   }
 }
 
-- (id)_displayableStringForDate:(id)a3 fromField:(id)a4
+- (id)_displayableStringForDate:(id)date fromField:(id)field
 {
-  v5 = a3;
-  v6 = a4;
+  dateCopy = date;
+  fieldCopy = field;
   v7 = objc_alloc_init(MEMORY[0x1E696AB78]);
-  [v7 setDoesRelativeDateFormatting:{objc_msgSend(v6, "isRelative")}];
-  if ([v6 ignoresTimeZone])
+  [v7 setDoesRelativeDateFormatting:{objc_msgSend(fieldCopy, "isRelative")}];
+  if ([fieldCopy ignoresTimeZone])
   {
     v8 = [MEMORY[0x1E695DFE8] timeZoneWithName:@"GMT"];
   }
@@ -294,18 +294,18 @@ LABEL_42:
   }
 
   [v7 setTimeZone:v8];
-  if ([v6 dateStyle] || objc_msgSend(v6, "timeStyle"))
+  if ([fieldCopy dateStyle] || objc_msgSend(fieldCopy, "timeStyle"))
   {
-    [v7 setDateStyle:{objc_msgSend(v6, "dateStyle")}];
-    [v7 setTimeStyle:{objc_msgSend(v6, "timeStyle")}];
+    [v7 setDateStyle:{objc_msgSend(fieldCopy, "dateStyle")}];
+    [v7 setTimeStyle:{objc_msgSend(fieldCopy, "timeStyle")}];
   }
 
   else
   {
-    v11 = [MEMORY[0x1E695DEE8] autoupdatingCurrentCalendar];
-    [v11 setTimeZone:v8];
-    v12 = [MEMORY[0x1E695DF00] date];
-    if ([v11 isDate:v5 equalToDate:v12 toUnitGranularity:4])
+    autoupdatingCurrentCalendar = [MEMORY[0x1E695DEE8] autoupdatingCurrentCalendar];
+    [autoupdatingCurrentCalendar setTimeZone:v8];
+    date = [MEMORY[0x1E695DF00] date];
+    if ([autoupdatingCurrentCalendar isDate:dateCopy equalToDate:date toUnitGranularity:4])
     {
       [v7 setLocalizedDateFormatFromTemplate:@"M d"];
       [v7 setFormattingContext:2];
@@ -318,7 +318,7 @@ LABEL_42:
     }
   }
 
-  v9 = [v7 stringFromDate:v5];
+  v9 = [v7 stringFromDate:dateCopy];
 
   return v9;
 }
@@ -337,62 +337,62 @@ LABEL_42:
   return self->_merchantCategory - (v11 - v10 + 32 * v10) + 32 * (v11 - v10 + 32 * v10) + 0x31809BE32FDED1;
 }
 
-- (PKPassAuxiliaryPassInformationItem)initWithCoder:(id)a3
+- (PKPassAuxiliaryPassInformationItem)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v35.receiver = self;
   v35.super_class = PKPassAuxiliaryPassInformationItem;
   v5 = [(PKPassAuxiliaryPassInformationItem *)&v35 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"title"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"title"];
     title = v5->_title;
     v5->_title = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"subtitle"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"subtitle"];
     subtitle = v5->_subtitle;
     v5->_subtitle = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"subtitle2"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"subtitle2"];
     subtitle2 = v5->_subtitle2;
     v5->_subtitle2 = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"leadingTitle"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"leadingTitle"];
     detailFooterLeadingTitle = v5->_detailFooterLeadingTitle;
     v5->_detailFooterLeadingTitle = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"leadingDetailText"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"leadingDetailText"];
     detailFooterLeadingText = v5->_detailFooterLeadingText;
     v5->_detailFooterLeadingText = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"trailingTitle"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"trailingTitle"];
     detailFooterTrailingTitle = v5->_detailFooterTrailingTitle;
     v5->_detailFooterTrailingTitle = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"trailingDetailText"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"trailingDetailText"];
     detailFooterTrailingText = v5->_detailFooterTrailingText;
     v5->_detailFooterTrailingText = v20;
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"mapsURL"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"mapsURL"];
     mapsURL = v5->_mapsURL;
     v5->_mapsURL = v22;
 
-    v5->_merchantCategory = [v4 decodeIntegerForKey:@"locationCategory"];
+    v5->_merchantCategory = [coderCopy decodeIntegerForKey:@"locationCategory"];
     v24 = MEMORY[0x1E695DFD8];
     v25 = objc_opt_class();
     v26 = [v24 setWithObjects:{v25, objc_opt_class(), 0}];
-    v27 = [v4 decodeObjectOfClasses:v26 forKey:@"sections"];
+    v27 = [coderCopy decodeObjectOfClasses:v26 forKey:@"sections"];
     sections = v5->_sections;
     v5->_sections = v27;
 
     v29 = MEMORY[0x1E695DFD8];
     v30 = objc_opt_class();
     v31 = [v29 setWithObjects:{v30, objc_opt_class(), 0}];
-    v32 = [v4 decodeObjectOfClasses:v31 forKey:@"fields"];
+    v32 = [coderCopy decodeObjectOfClasses:v31 forKey:@"fields"];
     fields = v5->_fields;
     v5->_fields = v32;
   }
@@ -400,69 +400,69 @@ LABEL_42:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"identifier"];
-  [v5 encodeObject:self->_title forKey:@"title"];
-  [v5 encodeObject:self->_subtitle forKey:@"subtitle"];
-  [v5 encodeObject:self->_subtitle2 forKey:@"subtitle2"];
-  [v5 encodeObject:self->_detailFooterLeadingTitle forKey:@"leadingTitle"];
-  [v5 encodeObject:self->_detailFooterLeadingText forKey:@"leadingDetailText"];
-  [v5 encodeObject:self->_detailFooterTrailingTitle forKey:@"trailingTitle"];
-  [v5 encodeObject:self->_detailFooterTrailingText forKey:@"trailingDetailText"];
-  [v5 encodeObject:self->_mapsURL forKey:@"mapsURL"];
-  [v5 encodeInteger:self->_merchantCategory forKey:@"locationCategory"];
-  [v5 encodeObject:self->_sections forKey:@"sections"];
-  [v5 encodeObject:self->_fields forKey:@"fields"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
+  [coderCopy encodeObject:self->_title forKey:@"title"];
+  [coderCopy encodeObject:self->_subtitle forKey:@"subtitle"];
+  [coderCopy encodeObject:self->_subtitle2 forKey:@"subtitle2"];
+  [coderCopy encodeObject:self->_detailFooterLeadingTitle forKey:@"leadingTitle"];
+  [coderCopy encodeObject:self->_detailFooterLeadingText forKey:@"leadingDetailText"];
+  [coderCopy encodeObject:self->_detailFooterTrailingTitle forKey:@"trailingTitle"];
+  [coderCopy encodeObject:self->_detailFooterTrailingText forKey:@"trailingDetailText"];
+  [coderCopy encodeObject:self->_mapsURL forKey:@"mapsURL"];
+  [coderCopy encodeInteger:self->_merchantCategory forKey:@"locationCategory"];
+  [coderCopy encodeObject:self->_sections forKey:@"sections"];
+  [coderCopy encodeObject:self->_fields forKey:@"fields"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[PKPassAuxiliaryPassInformationItem allocWithZone:](PKPassAuxiliaryPassInformationItem init];
-  v6 = [(NSString *)self->_identifier copyWithZone:a3];
+  v6 = [(NSString *)self->_identifier copyWithZone:zone];
   identifier = v5->_identifier;
   v5->_identifier = v6;
 
-  v8 = [(NSString *)self->_title copyWithZone:a3];
+  v8 = [(NSString *)self->_title copyWithZone:zone];
   title = v5->_title;
   v5->_title = v8;
 
-  v10 = [(NSString *)self->_subtitle copyWithZone:a3];
+  v10 = [(NSString *)self->_subtitle copyWithZone:zone];
   subtitle = v5->_subtitle;
   v5->_subtitle = v10;
 
-  v12 = [(NSString *)self->_subtitle2 copyWithZone:a3];
+  v12 = [(NSString *)self->_subtitle2 copyWithZone:zone];
   subtitle2 = v5->_subtitle2;
   v5->_subtitle2 = v12;
 
-  v14 = [(NSString *)self->_detailFooterLeadingTitle copyWithZone:a3];
+  v14 = [(NSString *)self->_detailFooterLeadingTitle copyWithZone:zone];
   detailFooterLeadingTitle = v5->_detailFooterLeadingTitle;
   v5->_detailFooterLeadingTitle = v14;
 
-  v16 = [(NSString *)self->_detailFooterLeadingText copyWithZone:a3];
+  v16 = [(NSString *)self->_detailFooterLeadingText copyWithZone:zone];
   detailFooterLeadingText = v5->_detailFooterLeadingText;
   v5->_detailFooterLeadingText = v16;
 
-  v18 = [(NSString *)self->_detailFooterTrailingTitle copyWithZone:a3];
+  v18 = [(NSString *)self->_detailFooterTrailingTitle copyWithZone:zone];
   detailFooterTrailingTitle = v5->_detailFooterTrailingTitle;
   v5->_detailFooterTrailingTitle = v18;
 
-  v20 = [(NSString *)self->_detailFooterTrailingText copyWithZone:a3];
+  v20 = [(NSString *)self->_detailFooterTrailingText copyWithZone:zone];
   detailFooterTrailingText = v5->_detailFooterTrailingText;
   v5->_detailFooterTrailingText = v20;
 
-  v22 = [(NSURL *)self->_mapsURL copyWithZone:a3];
+  v22 = [(NSURL *)self->_mapsURL copyWithZone:zone];
   mapsURL = v5->_mapsURL;
   v5->_mapsURL = v22;
 
   v5->_merchantCategory = self->_merchantCategory;
-  v24 = [(NSArray *)self->_sections copyWithZone:a3];
+  v24 = [(NSArray *)self->_sections copyWithZone:zone];
   sections = v5->_sections;
   v5->_sections = v24;
 
-  v26 = [(NSArray *)self->_fields copyWithZone:a3];
+  v26 = [(NSArray *)self->_fields copyWithZone:zone];
   fields = v5->_fields;
   v5->_fields = v26;
 
@@ -486,28 +486,28 @@ LABEL_42:
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKPassAuxiliaryPassInformationItem *)self _isEqualToItem:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKPassAuxiliaryPassInformationItem *)self _isEqualToItem:v5];
   }
 
   return v6;
 }
 
-- (BOOL)_isEqualToItem:(id)a3
+- (BOOL)_isEqualToItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   identifier = self->_identifier;
-  v6 = v4[1];
+  v6 = itemCopy[1];
   if (identifier)
   {
     v7 = v6 == 0;
@@ -532,7 +532,7 @@ LABEL_42:
   }
 
   title = self->_title;
-  v9 = v4[2];
+  v9 = itemCopy[2];
   if (title && v9)
   {
     if (([(NSString *)title isEqual:?]& 1) == 0)
@@ -547,7 +547,7 @@ LABEL_42:
   }
 
   subtitle = self->_subtitle;
-  v11 = v4[3];
+  v11 = itemCopy[3];
   if (subtitle && v11)
   {
     if (([(NSString *)subtitle isEqual:?]& 1) == 0)
@@ -562,7 +562,7 @@ LABEL_42:
   }
 
   subtitle2 = self->_subtitle2;
-  v13 = v4[4];
+  v13 = itemCopy[4];
   if (subtitle2 && v13)
   {
     if (([(NSString *)subtitle2 isEqual:?]& 1) == 0)
@@ -577,7 +577,7 @@ LABEL_42:
   }
 
   mapsURL = self->_mapsURL;
-  v15 = v4[9];
+  v15 = itemCopy[9];
   if (!mapsURL || !v15)
   {
     if (mapsURL == v15)
@@ -596,7 +596,7 @@ LABEL_29:
   }
 
 LABEL_27:
-  v16 = self->_merchantCategory == v4[11];
+  v16 = self->_merchantCategory == itemCopy[11];
 LABEL_30:
 
   return v16;

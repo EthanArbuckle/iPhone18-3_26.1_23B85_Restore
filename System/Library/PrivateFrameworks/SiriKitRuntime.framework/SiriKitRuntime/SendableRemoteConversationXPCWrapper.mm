@@ -1,23 +1,23 @@
 @interface SendableRemoteConversationXPCWrapper
-- (void)acceptInitialInputWithInputIdentifier:(id)a3 speechData:(id)a4 reply:(id)a5;
-- (void)acceptWithInputData:(id)a3 speechData:(id)a4 reply:(id)a5;
-- (void)canHandleWithInputData:(id)a3 rcId:(id)a4 reply:(id)a5;
-- (void)cancelWithCancellationReason:(int64_t)a3 reply:(id)a4;
-- (void)commitWithBridge:(id)a3 reply:(id)a4;
-- (void)ensureReadyWithReply:(id)a3;
-- (void)flexibleExecutionSupportOptionsWithReply:(id)a3;
-- (void)paraphraseWithReply:(id)a3;
-- (void)prepareWithBridge:(id)a3 reply:(id)a4;
-- (void)startTurnFromCacheWithExecutionRequestId:(id)a3 bridge:(id)a4 reply:(id)a5;
-- (void)startTurnWithTurnData:(id)a3 bridge:(id)a4 reply:(id)a5;
-- (void)warmupWithRefId:(id)a3 reply:(id)a4;
+- (void)acceptInitialInputWithInputIdentifier:(id)identifier speechData:(id)data reply:(id)reply;
+- (void)acceptWithInputData:(id)data speechData:(id)speechData reply:(id)reply;
+- (void)canHandleWithInputData:(id)data rcId:(id)id reply:(id)reply;
+- (void)cancelWithCancellationReason:(int64_t)reason reply:(id)reply;
+- (void)commitWithBridge:(id)bridge reply:(id)reply;
+- (void)ensureReadyWithReply:(id)reply;
+- (void)flexibleExecutionSupportOptionsWithReply:(id)reply;
+- (void)paraphraseWithReply:(id)reply;
+- (void)prepareWithBridge:(id)bridge reply:(id)reply;
+- (void)startTurnFromCacheWithExecutionRequestId:(id)id bridge:(id)bridge reply:(id)reply;
+- (void)startTurnWithTurnData:(id)data bridge:(id)bridge reply:(id)reply;
+- (void)warmupWithRefId:(id)id reply:(id)reply;
 @end
 
 @implementation SendableRemoteConversationXPCWrapper
 
-- (void)warmupWithRefId:(id)a3 reply:(id)a4
+- (void)warmupWithRefId:(id)id reply:(id)reply
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(reply);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
   v8 = *self->wrapped;
@@ -28,18 +28,18 @@
   v11[2] = thunk for @escaping @callee_guaranteed @Sendable () -> ();
   v11[3] = &block_descriptor_152;
   v9 = _Block_copy(v11);
-  v10 = a3;
+  idCopy = id;
 
-  [v8 warmupWithRefId:v10 reply:v9];
+  [v8 warmupWithRefId:idCopy reply:v9];
 
   _Block_release(v9);
 }
 
-- (void)canHandleWithInputData:(id)a3 rcId:(id)a4 reply:(id)a5
+- (void)canHandleWithInputData:(id)data rcId:(id)id reply:(id)reply
 {
-  v8 = _Block_copy(a5);
-  v9 = a3;
-  v10 = a4;
+  v8 = _Block_copy(reply);
+  dataCopy = data;
+  idCopy = id;
 
   v11 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v13 = v12;
@@ -56,15 +56,15 @@
   v18[3] = &block_descriptor_145;
   v17 = _Block_copy(v18);
 
-  [v15 canHandleWithInputData:isa rcId:v10 reply:v17];
+  [v15 canHandleWithInputData:isa rcId:idCopy reply:v17];
 
   outlined consume of Data._Representation(v11, v13);
   _Block_release(v17);
 }
 
-- (void)startTurnFromCacheWithExecutionRequestId:(id)a3 bridge:(id)a4 reply:(id)a5
+- (void)startTurnFromCacheWithExecutionRequestId:(id)id bridge:(id)bridge reply:(id)reply
 {
-  v8 = _Block_copy(a5);
+  v8 = _Block_copy(reply);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
   v10 = *self->wrapped;
@@ -75,18 +75,18 @@
   v13[2] = thunk for @escaping @callee_guaranteed @Sendable (@unowned Bool, @guaranteed Error?) -> ();
   v13[3] = &block_descriptor_111;
   v11 = _Block_copy(v13);
-  v12 = a3;
+  idCopy = id;
   swift_unknownObjectRetain();
 
-  [v10 startTurnFromCacheWithExecutionRequestId:v12 bridge:a4 reply:v11];
+  [v10 startTurnFromCacheWithExecutionRequestId:idCopy bridge:bridge reply:v11];
   swift_unknownObjectRelease();
 
   _Block_release(v11);
 }
 
-- (void)commitWithBridge:(id)a3 reply:(id)a4
+- (void)commitWithBridge:(id)bridge reply:(id)reply
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(reply);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
   v8 = *self->wrapped;
@@ -99,25 +99,25 @@
   v9 = _Block_copy(v10);
   swift_unknownObjectRetain();
 
-  [v8 commitWithBridge:a3 reply:v9];
+  [v8 commitWithBridge:bridge reply:v9];
   swift_unknownObjectRelease();
 
   _Block_release(v9);
 }
 
-- (void)acceptInitialInputWithInputIdentifier:(id)a3 speechData:(id)a4 reply:(id)a5
+- (void)acceptInitialInputWithInputIdentifier:(id)identifier speechData:(id)data reply:(id)reply
 {
   v8 = type metadata accessor for UUID();
   v9 = *(v8 - 8);
   v10 = *(v9 + 64);
   MEMORY[0x1EEE9AC00](v8);
   v12 = aBlock - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v13 = _Block_copy(a5);
+  v13 = _Block_copy(reply);
   static UUID._unconditionallyBridgeFromObjectiveC(_:)();
   v14 = swift_allocObject();
   *(v14 + 16) = v13;
   v15 = *self->wrapped;
-  v16 = a4;
+  dataCopy = data;
 
   isa = UUID._bridgeToObjectiveC()().super.isa;
   aBlock[4] = _s14SiriKitRuntime39ConversationFlexibleExecutionSupportXPCCIeyBhy_ACIeghg_TRTA_0;
@@ -128,15 +128,15 @@
   aBlock[3] = &block_descriptor_98_0;
   v18 = _Block_copy(aBlock);
 
-  [v15 acceptInitialInputWithInputIdentifier:isa speechData:v16 reply:v18];
+  [v15 acceptInitialInputWithInputIdentifier:isa speechData:dataCopy reply:v18];
   _Block_release(v18);
 
   (*(v9 + 8))(v12, v8);
 }
 
-- (void)prepareWithBridge:(id)a3 reply:(id)a4
+- (void)prepareWithBridge:(id)bridge reply:(id)reply
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(reply);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
   v8 = *self->wrapped;
@@ -149,15 +149,15 @@
   v9 = _Block_copy(v10);
   swift_unknownObjectRetain();
 
-  [v8 prepareWithBridge:a3 reply:v9];
+  [v8 prepareWithBridge:bridge reply:v9];
   swift_unknownObjectRelease();
 
   _Block_release(v9);
 }
 
-- (void)ensureReadyWithReply:(id)a3
+- (void)ensureReadyWithReply:(id)reply
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(reply);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
   v6 = *self->wrapped;
@@ -174,9 +174,9 @@
   _Block_release(v7);
 }
 
-- (void)cancelWithCancellationReason:(int64_t)a3 reply:(id)a4
+- (void)cancelWithCancellationReason:(int64_t)reason reply:(id)reply
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(reply);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
   v8 = *self->wrapped;
@@ -188,14 +188,14 @@
   v10[3] = &block_descriptor_139;
   v9 = _Block_copy(v10);
 
-  [v8 cancelWithCancellationReason:a3 reply:v9];
+  [v8 cancelWithCancellationReason:reason reply:v9];
 
   _Block_release(v9);
 }
 
-- (void)startTurnWithTurnData:(id)a3 bridge:(id)a4 reply:(id)a5
+- (void)startTurnWithTurnData:(id)data bridge:(id)bridge reply:(id)reply
 {
-  v8 = _Block_copy(a5);
+  v8 = _Block_copy(reply);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
   v10 = *self->wrapped;
@@ -206,21 +206,21 @@
   v13[2] = thunk for @escaping @callee_guaranteed @Sendable (@guaranteed Error?) -> ();
   v13[3] = &block_descriptor_118;
   v11 = _Block_copy(v13);
-  v12 = a3;
+  dataCopy = data;
   swift_unknownObjectRetain();
 
-  [v10 startTurnWithTurnData:v12 bridge:a4 reply:v11];
+  [v10 startTurnWithTurnData:dataCopy bridge:bridge reply:v11];
 
   swift_unknownObjectRelease();
 
   _Block_release(v11);
 }
 
-- (void)acceptWithInputData:(id)a3 speechData:(id)a4 reply:(id)a5
+- (void)acceptWithInputData:(id)data speechData:(id)speechData reply:(id)reply
 {
-  v8 = _Block_copy(a5);
-  v9 = a3;
-  v10 = a4;
+  v8 = _Block_copy(reply);
+  dataCopy = data;
+  speechDataCopy = speechData;
 
   v11 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v13 = v12;
@@ -237,15 +237,15 @@
   v18[3] = &block_descriptor_105_0;
   v17 = _Block_copy(v18);
 
-  [v15 acceptWithInputData:isa speechData:v10 reply:v17];
+  [v15 acceptWithInputData:isa speechData:speechDataCopy reply:v17];
 
   outlined consume of Data._Representation(v11, v13);
   _Block_release(v17);
 }
 
-- (void)paraphraseWithReply:(id)a3
+- (void)paraphraseWithReply:(id)reply
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(reply);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
   v6 = *self->wrapped;
@@ -262,9 +262,9 @@
   _Block_release(v7);
 }
 
-- (void)flexibleExecutionSupportOptionsWithReply:(id)a3
+- (void)flexibleExecutionSupportOptionsWithReply:(id)reply
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(reply);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
   v6 = *self->wrapped;

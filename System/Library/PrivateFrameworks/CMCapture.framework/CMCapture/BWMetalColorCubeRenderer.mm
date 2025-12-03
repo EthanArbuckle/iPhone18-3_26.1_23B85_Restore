@@ -1,18 +1,18 @@
 @interface BWMetalColorCubeRenderer
 + (id)bundle;
 + (uint64_t)bundle;
-- (BWMetalColorCubeRenderer)initWithMetalCommandQueue:(id)a3 mixInGammaDomain:(BOOL)a4;
-- (int)prepareForRenderingWithParameters:(id)a3 inputVideoFormat:(id)a4 inputMediaPropertiesByAttachedMediaKey:(id)a5;
+- (BWMetalColorCubeRenderer)initWithMetalCommandQueue:(id)queue mixInGammaDomain:(BOOL)domain;
+- (int)prepareForRenderingWithParameters:(id)parameters inputVideoFormat:(id)format inputMediaPropertiesByAttachedMediaKey:(id)key;
 - (uint64_t)_loadAndConfigureFilterBundle;
-- (void)_attachFiltersForZoomPIPWithInputBuffer:(void *)a3 rendererParameters:;
-- (void)_interpolatedLookupTableForEntry:(void *)a3 inputLookupTable:(float)a4 strength:;
+- (void)_attachFiltersForZoomPIPWithInputBuffer:(void *)buffer rendererParameters:;
+- (void)_interpolatedLookupTableForEntry:(void *)entry inputLookupTable:(float)table strength:;
 - (void)dealloc;
-- (void)renderUsingParameters:(id)a3 inputPixelBuffer:(__CVBuffer *)a4 inputSampleBuffer:(opaqueCMSampleBuffer *)a5 originalPixelBuffer:(__CVBuffer *)a6 processedPixelBuffer:(__CVBuffer *)a7 completionHandler:(id)a8;
+- (void)renderUsingParameters:(id)parameters inputPixelBuffer:(__CVBuffer *)buffer inputSampleBuffer:(opaqueCMSampleBuffer *)sampleBuffer originalPixelBuffer:(__CVBuffer *)pixelBuffer processedPixelBuffer:(__CVBuffer *)processedPixelBuffer completionHandler:(id)handler;
 @end
 
 @implementation BWMetalColorCubeRenderer
 
-- (BWMetalColorCubeRenderer)initWithMetalCommandQueue:(id)a3 mixInGammaDomain:(BOOL)a4
+- (BWMetalColorCubeRenderer)initWithMetalCommandQueue:(id)queue mixInGammaDomain:(BOOL)domain
 {
   v10.receiver = self;
   v10.super_class = BWMetalColorCubeRenderer;
@@ -20,7 +20,7 @@
   v7 = v6;
   if (v6)
   {
-    v6->_mtlCommandQueue = a3;
+    v6->_mtlCommandQueue = queue;
     v6->_previousInterpolationFractionComplete = 1.0;
     if (![(BWMetalColorCubeRenderer *)v6 _loadAndConfigureFilterBundle])
     {
@@ -31,8 +31,8 @@
         *([*(&v7->super.isa + v9) filterDescriptor] + 4) = 1;
         *[*(&v7->super.isa + v9) filterDescriptor] = 32;
         *([*(&v7->super.isa + v9) filterDescriptor] + 12) = 0;
-        *([*(&v7->super.isa + v9) filterDescriptor] + 16) = a4;
-        v7->_mixingColorCubesInGammaDomain = a4;
+        *([*(&v7->super.isa + v9) filterDescriptor] + 16) = domain;
+        v7->_mixingColorCubesInGammaDomain = domain;
         if ([*(&v7->super.isa + v9) prepareToProcess:0])
         {
           break;
@@ -92,14 +92,14 @@
 
 - (uint64_t)_loadAndConfigureFilterBundle
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v2 = [objc_opt_class() bundle];
-  *(a1 + 8) = v2;
-  if (!v2)
+  bundle = [objc_opt_class() bundle];
+  *(self + 8) = bundle;
+  if (!bundle)
   {
     fig_log_get_emitter();
     FigDebugAssert3();
@@ -109,8 +109,8 @@
   v3 = 16;
   while (1)
   {
-    v4 = [objc_alloc(NSClassFromString(&cfstr_Figcolorcubeme.isa)) initWithCommandQueue:*(a1 + 384)];
-    *(a1 + v3) = v4;
+    v4 = [objc_alloc(NSClassFromString(&cfstr_Figcolorcubeme.isa)) initWithCommandQueue:*(self + 384)];
+    *(self + v3) = v4;
     if (!v4)
     {
       break;
@@ -130,20 +130,20 @@
   if (v5)
   {
 
-    *(a1 + 8) = 0;
+    *(self + 8) = 0;
     for (i = 16; i != 56; i += 8)
     {
 
-      *(a1 + i) = 0;
+      *(self + i) = 0;
     }
   }
 
   return v5;
 }
 
-- (int)prepareForRenderingWithParameters:(id)a3 inputVideoFormat:(id)a4 inputMediaPropertiesByAttachedMediaKey:(id)a5
+- (int)prepareForRenderingWithParameters:(id)parameters inputVideoFormat:(id)format inputMediaPropertiesByAttachedMediaKey:(id)key
 {
-  v8 = [a4 colorSpaceProperties] - 5 < 0xFFFFFFFE;
+  v8 = [format colorSpaceProperties] - 5 < 0xFFFFFFFE;
   for (i = 16; i != 56; i += 8)
   {
     *([*(&self->super.isa + i) filterDescriptor] + 12) = v8;
@@ -156,15 +156,15 @@
     kdebug_trace();
   }
 
-  [a3 prepareForRenderingWithInputVideoFormat:a4];
+  [parameters prepareForRenderingWithInputVideoFormat:format];
   v11 = self->_filters[0];
-  v17 = [objc_msgSend(a3 "colorFilter")];
+  v17 = [objc_msgSend(parameters "colorFilter")];
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v17 count:1];
-  v16 = [a3 foregroundColorLookupTable];
-  v13 = -[FigColorCubeMetalFilter setForegroundCubesWithNames:data:](v11, "setForegroundCubesWithNames:data:", v12, [MEMORY[0x1E695DEC8] arrayWithObjects:&v16 count:1]);
+  foregroundColorLookupTable = [parameters foregroundColorLookupTable];
+  v13 = -[FigColorCubeMetalFilter setForegroundCubesWithNames:data:](v11, "setForegroundCubesWithNames:data:", v12, [MEMORY[0x1E695DEC8] arrayWithObjects:&foregroundColorLookupTable count:1]);
   if (!v13)
   {
-    v13 = -[FigColorCubeMetalFilter setBackgroundCubeWithName:data:](self->_filters[0], "setBackgroundCubeWithName:data:", [objc_msgSend(a3 "colorFilter")], objc_msgSend(a3, "backgroundColorLookupTable"));
+    v13 = -[FigColorCubeMetalFilter setBackgroundCubeWithName:data:](self->_filters[0], "setBackgroundCubeWithName:data:", [objc_msgSend(parameters "colorFilter")], objc_msgSend(parameters, "backgroundColorLookupTable"));
   }
 
   v14 = v13;
@@ -178,72 +178,72 @@
   return v14;
 }
 
-- (void)_interpolatedLookupTableForEntry:(void *)a3 inputLookupTable:(float)a4 strength:
+- (void)_interpolatedLookupTableForEntry:(void *)entry inputLookupTable:(float)table strength:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  if (*a2 != a3 || *(a2 + 8) != a4)
+  if (*a2 != entry || *(a2 + 8) != table)
   {
-    if (a4 == 0.0)
+    if (table == 0.0)
     {
-      v7 = [*(a1 + 376) identityColorLookupTable];
+      identityColorLookupTable = [*(self + 376) identityColorLookupTable];
     }
 
     else
     {
-      v8 = a3;
-      if (a4 == 1.0)
+      entryCopy = entry;
+      if (table == 1.0)
       {
 LABEL_10:
 
-        *a2 = a3;
-        *(a2 + 8) = a4;
-        *(a2 + 16) = v8;
-        return v8;
+        *a2 = entry;
+        *(a2 + 8) = table;
+        *(a2 + 16) = entryCopy;
+        return entryCopy;
       }
 
-      v9 = *(a1 + 376);
-      v10 = [v9 identityColorLookupTable];
-      *&v11 = a4;
-      v7 = [v9 interpolatedColorLookupTableFromTable:v10 toTable:a3 fractionComplete:v11];
+      v9 = *(self + 376);
+      identityColorLookupTable2 = [v9 identityColorLookupTable];
+      *&v11 = table;
+      identityColorLookupTable = [v9 interpolatedColorLookupTableFromTable:identityColorLookupTable2 toTable:entry fractionComplete:v11];
     }
 
-    v8 = v7;
+    entryCopy = identityColorLookupTable;
     goto LABEL_10;
   }
 
   return *(a2 + 16);
 }
 
-- (void)renderUsingParameters:(id)a3 inputPixelBuffer:(__CVBuffer *)a4 inputSampleBuffer:(opaqueCMSampleBuffer *)a5 originalPixelBuffer:(__CVBuffer *)a6 processedPixelBuffer:(__CVBuffer *)a7 completionHandler:(id)a8
+- (void)renderUsingParameters:(id)parameters inputPixelBuffer:(__CVBuffer *)buffer inputSampleBuffer:(opaqueCMSampleBuffer *)sampleBuffer originalPixelBuffer:(__CVBuffer *)pixelBuffer processedPixelBuffer:(__CVBuffer *)processedPixelBuffer completionHandler:(id)handler
 {
-  [(BWMetalColorCubeRenderer *)self _attachFiltersForZoomPIPWithInputBuffer:a5 rendererParameters:a3];
-  [a3 interpolationFractionComplete];
+  [(BWMetalColorCubeRenderer *)self _attachFiltersForZoomPIPWithInputBuffer:sampleBuffer rendererParameters:parameters];
+  [parameters interpolationFractionComplete];
   if (v12 != self->_previousInterpolationFractionComplete)
   {
-    [a3 interpolationFractionComplete];
+    [parameters interpolationFractionComplete];
     self->_previousInterpolationFractionComplete = v13;
     v14 = self->_filters[0];
-    v54 = [objc_msgSend(a3 "colorFilter")];
+    v54 = [objc_msgSend(parameters "colorFilter")];
     v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v54 count:1];
-    v53 = [a3 foregroundColorLookupTable];
-    if (-[FigColorCubeMetalFilter setForegroundCubesWithNames:data:](v14, "setForegroundCubesWithNames:data:", v15, [MEMORY[0x1E695DEC8] arrayWithObjects:&v53 count:1]) || -[FigColorCubeMetalFilter setBackgroundCubeWithName:data:](self->_filters[0], "setBackgroundCubeWithName:data:", objc_msgSend(objc_msgSend(a3, "colorFilter"), "name"), objc_msgSend(a3, "backgroundColorLookupTable")))
+    foregroundColorLookupTable = [parameters foregroundColorLookupTable];
+    if (-[FigColorCubeMetalFilter setForegroundCubesWithNames:data:](v14, "setForegroundCubesWithNames:data:", v15, [MEMORY[0x1E695DEC8] arrayWithObjects:&foregroundColorLookupTable count:1]) || -[FigColorCubeMetalFilter setBackgroundCubeWithName:data:](self->_filters[0], "setBackgroundCubeWithName:data:", objc_msgSend(objc_msgSend(parameters, "colorFilter"), "name"), objc_msgSend(parameters, "backgroundColorLookupTable")))
     {
       v40 = 0;
       goto LABEL_31;
     }
   }
 
-  ImageBuffer = CMGetAttachment(a5, @"PortraitStillImageFaceAdjustedBlurMap", 0);
+  ImageBuffer = CMGetAttachment(sampleBuffer, @"PortraitStillImageFaceAdjustedBlurMap", 0);
   if (ImageBuffer)
   {
     goto LABEL_5;
   }
 
-  AttachedMedia = BWSampleBufferGetAttachedMedia(a5, 0x1F21AABF0);
+  AttachedMedia = BWSampleBufferGetAttachedMedia(sampleBuffer, 0x1F21AABF0);
   if (!AttachedMedia)
   {
     ImageBuffer = 0;
@@ -256,14 +256,14 @@ LABEL_5:
   v17 = OUTLINED_FUNCTION_47_1();
   v42 = CMGetAttachment(v17, v18, v19);
 LABEL_8:
-  v20 = CMGetAttachment(a5, @"FiltersAndRegionArray", 0);
+  v20 = CMGetAttachment(sampleBuffer, @"FiltersAndRegionArray", 0);
   v21 = v20;
-  v41 = a8;
+  handlerCopy = handler;
   if (!v20)
   {
-    [(FigColorCubeMetalFilter *)self->_filters[0] setInputPixelBuffer:a4];
+    [(FigColorCubeMetalFilter *)self->_filters[0] setInputPixelBuffer:buffer];
     [(FigColorCubeMetalFilter *)self->_filters[0] setMattePixelbuffer:ImageBuffer];
-    [(FigColorCubeMetalFilter *)self->_filters[0] setOutputPixelBuffer:a7];
+    [(FigColorCubeMetalFilter *)self->_filters[0] setOutputPixelBuffer:processedPixelBuffer];
     [(FigColorCubeMetalFilter *)self->_filters[0] setTargetRectangle:*MEMORY[0x1E695F050], *(MEMORY[0x1E695F050] + 8), *(MEMORY[0x1E695F050] + 16), *(MEMORY[0x1E695F050] + 24)];
     -[FigColorCubeMetalFilter setMatteToInputPixelBufferRotationDegrees:](self->_filters[0], "setMatteToInputPixelBufferRotationDegrees:", [v42 intValue]);
     OUTLINED_FUNCTION_10_27();
@@ -295,7 +295,7 @@ LABEL_27:
       v39 = 0;
     }
 
-    a8 = v41;
+    handler = handlerCopy;
     v40 = 2 * ([(FigColorCubeMetalFilter *)self->_filters[v39] finishProcessing]== 0);
     goto LABEL_31;
   }
@@ -317,10 +317,10 @@ LABEL_27:
     }
 
     v30 = -[BWColorLookupCache colorLookupTablesForFilter:](self->_colorLookupCache, "colorLookupTablesForFilter:", [OUTLINED_FUNCTION_47_1() objectAtIndexedSubscript:?]);
-    v31 = [v30 foregroundColorLookupTable];
-    v32 = [v30 backgroundColorLookupTable];
-    v33 = [(BWMetalColorCubeRenderer *)self _interpolatedLookupTableForEntry:v31 inputLookupTable:v28 strength:?];
-    v34 = [(BWMetalColorCubeRenderer *)self _interpolatedLookupTableForEntry:v32 inputLookupTable:v28 strength:?];
+    foregroundColorLookupTable2 = [v30 foregroundColorLookupTable];
+    backgroundColorLookupTable = [v30 backgroundColorLookupTable];
+    v33 = [(BWMetalColorCubeRenderer *)self _interpolatedLookupTableForEntry:foregroundColorLookupTable2 inputLookupTable:v28 strength:?];
+    v34 = [(BWMetalColorCubeRenderer *)self _interpolatedLookupTableForEntry:backgroundColorLookupTable inputLookupTable:v28 strength:?];
     v35 = v34;
     if (currentForegroundColorLookupTables[v22] != v33)
     {
@@ -353,9 +353,9 @@ LABEL_27:
     v49 = *MEMORY[0x1E695F058];
     v50 = v37;
     [objc_msgSend(objc_msgSend(v21 objectAtIndexedSubscript:{v22), "objectForKeyedSubscript:", 0x1F21AA4B0), "getValue:", &v49}];
-    [(FigColorCubeMetalFilter *)filters[v22] setInputPixelBuffer:a4];
+    [(FigColorCubeMetalFilter *)filters[v22] setInputPixelBuffer:buffer];
     [(FigColorCubeMetalFilter *)filters[v22] setMattePixelbuffer:ImageBuffer];
-    [(FigColorCubeMetalFilter *)filters[v22] setOutputPixelBuffer:a7];
+    [(FigColorCubeMetalFilter *)filters[v22] setOutputPixelBuffer:processedPixelBuffer];
     [(FigColorCubeMetalFilter *)filters[v22] setTargetRectangle:v49, v50];
     -[FigColorCubeMetalFilter setMatteToInputPixelBufferRotationDegrees:](filters[v22], "setMatteToInputPixelBufferRotationDegrees:", [v42 intValue]);
     if ([(FigColorCubeMetalFilter *)filters[v22] process])
@@ -372,7 +372,7 @@ LABEL_27:
   }
 
   v40 = 0;
-  a8 = v41;
+  handler = handlerCopy;
 LABEL_31:
   OUTLINED_FUNCTION_10_27();
   if (v38)
@@ -381,24 +381,24 @@ LABEL_31:
     kdebug_trace();
   }
 
-  if (a8)
+  if (handler)
   {
-    (*(a8 + 2))(a8, v40, 0);
+    (*(handler + 2))(handler, v40, 0);
   }
 }
 
-- (void)_attachFiltersForZoomPIPWithInputBuffer:(void *)a3 rendererParameters:
+- (void)_attachFiltersForZoomPIPWithInputBuffer:(void *)buffer rendererParameters:
 {
-  if (a1)
+  if (self)
   {
     AttachedMedia = BWSampleBufferGetAttachedMedia(a2, 0x1F21AAEB0);
     if (AttachedMedia)
     {
       v6 = AttachedMedia;
-      v7 = CMGetAttachment(AttachedMedia, @"FiltersForZoomPIPOverlay", 0);
-      if (!v7)
+      array = CMGetAttachment(AttachedMedia, @"FiltersForZoomPIPOverlay", 0);
+      if (!array)
       {
-        v7 = [MEMORY[0x1E695DF70] array];
+        array = [MEMORY[0x1E695DF70] array];
       }
 
       v8 = CMGetAttachment(a2, @"FiltersAndRegionArray", 0);
@@ -441,19 +441,19 @@ LABEL_31:
           v11 = 0;
         }
 
-        v20 = [v11 objectAtIndexedSubscript:0];
+        colorFilter = [v11 objectAtIndexedSubscript:0];
         NSClassFromString(&cfstr_Cicolorcubesmi.isa);
         if (OUTLINED_FUNCTION_5_62())
         {
-          v22 = [v20 cube1Data];
+          cube1Data = [colorFilter cube1Data];
         }
 
         else
         {
-          v22 = 0;
+          cube1Data = 0;
         }
 
-        if (!v20)
+        if (!colorFilter)
         {
           goto LABEL_30;
         }
@@ -461,19 +461,19 @@ LABEL_31:
 
       else
       {
-        v20 = [a3 colorFilter];
-        if ([a3 backgroundColorLookupTable])
+        colorFilter = [buffer colorFilter];
+        if ([buffer backgroundColorLookupTable])
         {
-          v21 = [a3 backgroundColorLookupTable];
+          backgroundColorLookupTable = [buffer backgroundColorLookupTable];
         }
 
         else
         {
-          v21 = [a3 foregroundColorLookupTable];
+          backgroundColorLookupTable = [buffer foregroundColorLookupTable];
         }
 
-        v22 = v21;
-        if (!v20)
+        cube1Data = backgroundColorLookupTable;
+        if (!colorFilter)
         {
           goto LABEL_30;
         }
@@ -482,12 +482,12 @@ LABEL_31:
       NSClassFromString(&cfstr_Cicolorcubesmi.isa);
       if (OUTLINED_FUNCTION_5_62())
       {
-        v23 = [MEMORY[0x1E695F648] colorCubeWithColorSpaceFilter];
-        [v20 name];
+        colorCubeWithColorSpaceFilter = [MEMORY[0x1E695F648] colorCubeWithColorSpaceFilter];
+        [colorFilter name];
         [OUTLINED_FUNCTION_37_0() setName:?];
-        [v20 cubeDimension];
-        [v23 setCubeDimension:?];
-        [v20 colorSpace];
+        [colorFilter cubeDimension];
+        [colorCubeWithColorSpaceFilter setCubeDimension:?];
+        [colorFilter colorSpace];
         [OUTLINED_FUNCTION_37_0() setColorSpace:?];
       }
 
@@ -499,27 +499,27 @@ LABEL_31:
           NSClassFromString(&cfstr_Ciphotoeffect.isa);
           if ((OUTLINED_FUNCTION_5_62() & 1) == 0)
           {
-            v24 = v7;
-            v25 = v20;
+            v24 = array;
+            v25 = colorFilter;
             goto LABEL_29;
           }
         }
 
-        v23 = [MEMORY[0x1E695F648] colorCubeWithColorSpaceFilter];
-        [v20 name];
+        colorCubeWithColorSpaceFilter = [MEMORY[0x1E695F648] colorCubeWithColorSpaceFilter];
+        [colorFilter name];
         [OUTLINED_FUNCTION_37_0() setName:?];
-        [v23 setCubeDimension:8589936700.0];
+        [colorCubeWithColorSpaceFilter setCubeDimension:8589936700.0];
       }
 
-      [v23 setCubeData:v22];
-      v24 = v7;
-      v25 = v23;
+      [colorCubeWithColorSpaceFilter setCubeData:cube1Data];
+      v24 = array;
+      v25 = colorCubeWithColorSpaceFilter;
 LABEL_29:
       [v24 addObject:v25];
 LABEL_30:
-      if ([v7 count])
+      if ([array count])
       {
-        CMSetAttachment(v6, @"FiltersForZoomPIPOverlay", v7, 1u);
+        CMSetAttachment(v6, @"FiltersForZoomPIPOverlay", array, 1u);
       }
     }
   }

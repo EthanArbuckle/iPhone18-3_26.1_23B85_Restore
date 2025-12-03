@@ -1,31 +1,31 @@
 @interface _EFIdealTimerObservable
-- (_EFIdealTimerObservable)initWithObservable:(id)a3 timeInterval:(double)a4 scheduler:(id)a5;
-- (id)subscribe:(id)a3;
+- (_EFIdealTimerObservable)initWithObservable:(id)observable timeInterval:(double)interval scheduler:(id)scheduler;
+- (id)subscribe:(id)subscribe;
 @end
 
 @implementation _EFIdealTimerObservable
 
-- (_EFIdealTimerObservable)initWithObservable:(id)a3 timeInterval:(double)a4 scheduler:(id)a5
+- (_EFIdealTimerObservable)initWithObservable:(id)observable timeInterval:(double)interval scheduler:(id)scheduler
 {
-  v9 = a3;
-  v10 = a5;
+  observableCopy = observable;
+  schedulerCopy = scheduler;
   v14.receiver = self;
   v14.super_class = _EFIdealTimerObservable;
   v11 = [(_EFIdealTimerObservable *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_input, a3);
-    objc_storeStrong(&v12->_scheduler, a5);
-    v12->_interval = a4;
+    objc_storeStrong(&v11->_input, observable);
+    objc_storeStrong(&v12->_scheduler, scheduler);
+    v12->_interval = interval;
   }
 
   return v12;
 }
 
-- (id)subscribe:(id)a3
+- (id)subscribe:(id)subscribe
 {
-  v23 = a3;
+  subscribeCopy = subscribe;
   [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
   v5 = v4;
   interval = self->_interval;
@@ -39,7 +39,7 @@
   aBlock[1] = 3221225472;
   aBlock[2] = __37___EFIdealTimerObservable_subscribe___block_invoke;
   aBlock[3] = &unk_1E8248580;
-  v9 = v23;
+  v9 = subscribeCopy;
   v40 = v9;
   v10 = _Block_copy(aBlock);
   v32[0] = MEMORY[0x1E69E9820];

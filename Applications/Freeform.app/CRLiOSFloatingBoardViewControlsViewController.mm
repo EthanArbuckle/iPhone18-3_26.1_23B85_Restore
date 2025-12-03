@@ -1,5 +1,5 @@
 @interface CRLiOSFloatingBoardViewControlsViewController
-- (_TtC8Freeform45CRLiOSFloatingBoardViewControlsViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC8Freeform45CRLiOSFloatingBoardViewControlsViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)loadView;
 - (void)viewDidLoad;
 @end
@@ -8,18 +8,18 @@
 
 - (void)loadView
 {
-  v3 = self;
+  selfCopy = self;
   v2 = sub_100ACBECC();
-  [(CRLiOSFloatingBoardViewControlsViewController *)v3 setView:v2];
+  [(CRLiOSFloatingBoardViewControlsViewController *)selfCopy setView:v2];
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_100ACD404();
 }
 
-- (_TtC8Freeform45CRLiOSFloatingBoardViewControlsViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC8Freeform45CRLiOSFloatingBoardViewControlsViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

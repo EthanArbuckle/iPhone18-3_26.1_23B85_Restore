@@ -1,7 +1,7 @@
 @interface SBCaptureExtensionIdleTimerManager
 - (SBCaptureExtensionIdleTimerManager)init;
-- (void)cameraViewfinderMonitorSessionDidBeginMovieRecording:(id)a3;
-- (void)cameraViewfinderMonitorSessionDidEndMovieRecording:(id)a3;
+- (void)cameraViewfinderMonitorSessionDidBeginMovieRecording:(id)recording;
+- (void)cameraViewfinderMonitorSessionDidEndMovieRecording:(id)recording;
 - (void)invalidate;
 @end
 
@@ -26,29 +26,29 @@
 - (void)invalidate
 {
   v3 = +[SBLockScreenManager sharedInstanceIfExists];
-  v4 = [v3 lockScreenEnvironment];
-  v5 = [v4 idleTimerController];
-  [v5 removeIdleTimerDisabledAssertionReason:@"Capture Extension Movie Recording"];
+  lockScreenEnvironment = [v3 lockScreenEnvironment];
+  idleTimerController = [lockScreenEnvironment idleTimerController];
+  [idleTimerController removeIdleTimerDisabledAssertionReason:@"Capture Extension Movie Recording"];
 
   [(SBCameraViewfinderMonitoring *)self->_cameraViewfinderMonitorToken cancel];
   cameraViewfinderMonitorToken = self->_cameraViewfinderMonitorToken;
   self->_cameraViewfinderMonitorToken = 0;
 }
 
-- (void)cameraViewfinderMonitorSessionDidBeginMovieRecording:(id)a3
+- (void)cameraViewfinderMonitorSessionDidBeginMovieRecording:(id)recording
 {
   v5 = +[SBLockScreenManager sharedInstanceIfExists];
-  v3 = [v5 lockScreenEnvironment];
-  v4 = [v3 idleTimerController];
-  [v4 addIdleTimerDisabledAssertionReason:@"Capture Extension Movie Recording"];
+  lockScreenEnvironment = [v5 lockScreenEnvironment];
+  idleTimerController = [lockScreenEnvironment idleTimerController];
+  [idleTimerController addIdleTimerDisabledAssertionReason:@"Capture Extension Movie Recording"];
 }
 
-- (void)cameraViewfinderMonitorSessionDidEndMovieRecording:(id)a3
+- (void)cameraViewfinderMonitorSessionDidEndMovieRecording:(id)recording
 {
   v5 = +[SBLockScreenManager sharedInstanceIfExists];
-  v3 = [v5 lockScreenEnvironment];
-  v4 = [v3 idleTimerController];
-  [v4 removeIdleTimerDisabledAssertionReason:@"Capture Extension Movie Recording"];
+  lockScreenEnvironment = [v5 lockScreenEnvironment];
+  idleTimerController = [lockScreenEnvironment idleTimerController];
+  [idleTimerController removeIdleTimerDisabledAssertionReason:@"Capture Extension Movie Recording"];
 }
 
 @end

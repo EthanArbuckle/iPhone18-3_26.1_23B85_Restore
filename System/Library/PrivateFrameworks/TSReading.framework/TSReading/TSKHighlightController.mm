@@ -1,23 +1,23 @@
 @interface TSKHighlightController
 - (CGAffineTransform)transform;
-- (CGRect)buildLayersForPath:(CGPath *)a3 withImage:(id)a4;
-- (void)createLayerWithZOrder:(double)a3 contentsScaleForLayers:(double)a4;
+- (CGRect)buildLayersForPath:(CGPath *)path withImage:(id)image;
+- (void)createLayerWithZOrder:(double)order contentsScaleForLayers:(double)layers;
 - (void)dealloc;
 - (void)reset;
-- (void)setCanvasTransform:(CGAffineTransform *)a3 layerTransform:(CGAffineTransform *)a4;
-- (void)setPath:(CGPath *)a3;
-- (void)setTransform:(CGAffineTransform *)a3;
+- (void)setCanvasTransform:(CGAffineTransform *)transform layerTransform:(CGAffineTransform *)layerTransform;
+- (void)setPath:(CGPath *)path;
+- (void)setTransform:(CGAffineTransform *)transform;
 @end
 
 @implementation TSKHighlightController
 
-- (void)setPath:(CGPath *)a3
+- (void)setPath:(CGPath *)path
 {
   path = self->_path;
-  if (path != a3)
+  if (path != path)
   {
     CGPathRelease(path);
-    self->_path = CGPathRetain(a3);
+    self->_path = CGPathRetain(path);
   }
 }
 
@@ -39,19 +39,19 @@
   self->_containingLayer = 0;
 }
 
-- (void)createLayerWithZOrder:(double)a3 contentsScaleForLayers:(double)a4
+- (void)createLayerWithZOrder:(double)order contentsScaleForLayers:(double)layers
 {
   if (self->_containingLayer)
   {
-    v7 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSKHighlightController createLayerWithZOrder:contentsScaleForLayers:]"];
-    [v7 handleFailureInFunction:v8 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKHighlightController.m"), 91, @"Shouldn't be creating _containingLayer again"}];
+    [currentHandler handleFailureInFunction:v8 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKHighlightController.m"), 91, @"Shouldn't be creating _containingLayer again"}];
     [(TSKHighlightController *)self reset];
   }
 
-  if (a4 <= 0.0)
+  if (layers <= 0.0)
   {
-    a4 = 1.0;
+    layers = 1.0;
   }
 
   v9 = objc_alloc_init(MEMORY[0x277CD9ED0]);
@@ -60,30 +60,30 @@
   v11 = *(MEMORY[0x277CBF348] + 8);
   [(CALayer *)v9 setAnchorPoint:*MEMORY[0x277CBF348], v11];
   [(CALayer *)self->_containingLayer setEdgeAntialiasingMask:0];
-  [(CALayer *)self->_containingLayer setContentsScale:a4];
-  [(CALayer *)self->_containingLayer setZPosition:a3];
+  [(CALayer *)self->_containingLayer setContentsScale:layers];
+  [(CALayer *)self->_containingLayer setZPosition:order];
   [(CALayer *)self->_containingLayer setDelegate:self];
   v12 = objc_alloc_init(MEMORY[0x277CD9ED0]);
   self->_imageLayer = v12;
   [(CALayer *)v12 setAnchorPoint:v10, v11];
   [(CALayer *)self->_imageLayer setEdgeAntialiasingMask:0];
-  [(CALayer *)self->_imageLayer setContentsScale:a4];
+  [(CALayer *)self->_imageLayer setContentsScale:layers];
   [(CALayer *)self->_containingLayer addSublayer:self->_imageLayer];
   [(CALayer *)self->_imageLayer setDelegate:self];
   imageLayer = self->_imageLayer;
 }
 
-- (CGRect)buildLayersForPath:(CGPath *)a3 withImage:(id)a4
+- (CGRect)buildLayersForPath:(CGPath *)path withImage:(id)image
 {
   v7 = MEMORY[0x277CBF3A0];
   v8 = *(MEMORY[0x277CBF3A0] + 16);
   self->_overallRect.origin = *MEMORY[0x277CBF3A0];
   self->_overallRect.size = v8;
-  [(TSKHighlightController *)self setImage:a4];
-  [(TSKHighlightController *)self setPath:a3];
-  if (a3)
+  [(TSKHighlightController *)self setImage:image];
+  [(TSKHighlightController *)self setPath:path];
+  if (path)
   {
-    BoundingBox = CGPathGetBoundingBox(a3);
+    BoundingBox = CGPathGetBoundingBox(path);
     v34 = CGRectIntegral(BoundingBox);
     v9 = *&self->_layerTransform.c;
     *&v32.a = *&self->_layerTransform.a;
@@ -122,7 +122,7 @@
     v19 = self->_overallRect.origin.y;
     v20 = self->_overallRect.size.width;
     v21 = self->_overallRect.size.height;
-    [a4 size];
+    [image size];
     v23 = v22;
     v25 = v24;
     *&v22 = (v24 - v21) * 0.5;
@@ -146,16 +146,16 @@
   return result;
 }
 
-- (void)setTransform:(CGAffineTransform *)a3
+- (void)setTransform:(CGAffineTransform *)transform
 {
-  v3 = *&a3->a;
-  v4 = *&a3->c;
-  *&self->_layerTransform.tx = *&a3->tx;
+  v3 = *&transform->a;
+  v4 = *&transform->c;
+  *&self->_layerTransform.tx = *&transform->tx;
   *&self->_layerTransform.c = v4;
   *&self->_layerTransform.a = v3;
-  v5 = *&a3->a;
-  v6 = *&a3->c;
-  *&self->_canvasTransform.tx = *&a3->tx;
+  v5 = *&transform->a;
+  v6 = *&transform->c;
+  *&self->_canvasTransform.tx = *&transform->tx;
   *&self->_canvasTransform.c = v6;
   *&self->_canvasTransform.a = v5;
 }
@@ -169,16 +169,16 @@
   return self;
 }
 
-- (void)setCanvasTransform:(CGAffineTransform *)a3 layerTransform:(CGAffineTransform *)a4
+- (void)setCanvasTransform:(CGAffineTransform *)transform layerTransform:(CGAffineTransform *)layerTransform
 {
-  v4 = *&a3->a;
-  v5 = *&a3->c;
-  *&self->_canvasTransform.tx = *&a3->tx;
+  v4 = *&transform->a;
+  v5 = *&transform->c;
+  *&self->_canvasTransform.tx = *&transform->tx;
   *&self->_canvasTransform.c = v5;
   *&self->_canvasTransform.a = v4;
-  v6 = *&a4->a;
-  v7 = *&a4->c;
-  *&self->_layerTransform.tx = *&a4->tx;
+  v6 = *&layerTransform->a;
+  v7 = *&layerTransform->c;
+  *&self->_layerTransform.tx = *&layerTransform->tx;
   *&self->_layerTransform.c = v7;
   *&self->_layerTransform.a = v6;
 }

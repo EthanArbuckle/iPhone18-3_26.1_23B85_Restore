@@ -1,21 +1,21 @@
 @interface TCDumpField
-- (TCDumpField)initWithType:(id)a3 name:(id)a4;
+- (TCDumpField)initWithType:(id)type name:(id)name;
 @end
 
 @implementation TCDumpField
 
-- (TCDumpField)initWithType:(id)a3 name:(id)a4
+- (TCDumpField)initWithType:(id)type name:(id)name
 {
-  v7 = a3;
-  v8 = a4;
+  typeCopy = type;
+  nameCopy = name;
   v12.receiver = self;
   v12.super_class = TCDumpField;
   v9 = [(TCDumpField *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->mType, a3);
-    objc_storeStrong(&v10->mName, a4);
+    objc_storeStrong(&v9->mType, type);
+    objc_storeStrong(&v10->mName, name);
   }
 
   return v10;

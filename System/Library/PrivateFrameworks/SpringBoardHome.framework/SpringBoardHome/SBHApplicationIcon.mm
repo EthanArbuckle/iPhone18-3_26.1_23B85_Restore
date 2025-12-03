@@ -6,25 +6,25 @@
 - (BOOL)prioritizeDownload;
 - (BOOL)resumeDownload;
 - (NSString)applicationDisplayName;
-- (SBHApplicationIcon)initWithApplication:(id)a3;
-- (SBHApplicationIcon)initWithApplicationPlaceholder:(id)a3;
-- (SBHApplicationIcon)initWithApplicationWithBundleIdentifier:(id)a3;
-- (SBHApplicationIcon)initWithLeafIdentifier:(id)a3 application:(id)a4;
-- (SBHApplicationIcon)initWithLeafIdentifier:(id)a3 applicationPlaceholder:(id)a4;
+- (SBHApplicationIcon)initWithApplication:(id)application;
+- (SBHApplicationIcon)initWithApplicationPlaceholder:(id)placeholder;
+- (SBHApplicationIcon)initWithApplicationWithBundleIdentifier:(id)identifier;
+- (SBHApplicationIcon)initWithLeafIdentifier:(id)identifier application:(id)application;
+- (SBHApplicationIcon)initWithLeafIdentifier:(id)identifier applicationPlaceholder:(id)placeholder;
 - (id)automationID;
-- (id)copyWithLeafIdentifier:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithLeafIdentifier:(id)identifier;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)iconImageCacheIdentifier;
-- (void)changeEnablement:(unint64_t)a3 ofFeature:(unint64_t)a4;
-- (void)changeHiddenStatusToHidden:(BOOL)a3;
-- (void)changeLockedStatusToLocked:(BOOL)a3;
-- (void)possibleUserTapBeganWithAbsoluteTime:(unint64_t)a3 andContinuousTime:(unint64_t)a4;
+- (void)changeEnablement:(unint64_t)enablement ofFeature:(unint64_t)feature;
+- (void)changeHiddenStatusToHidden:(BOOL)hidden;
+- (void)changeLockedStatusToLocked:(BOOL)locked;
+- (void)possibleUserTapBeganWithAbsoluteTime:(unint64_t)time andContinuousTime:(unint64_t)continuousTime;
 - (void)possibleUserTapDidCancel;
-- (void)replaceApplicationDataSourcesWithApplication:(id)a3;
-- (void)replaceApplicationPlaceholderDataSourcesWithApplicationPlaceholder:(id)a3;
-- (void)replaceIconDataSourcesWithApplication:(id)a3;
-- (void)replaceIconDataSourcesWithApplicationPlaceholder:(id)a3;
-- (void)setBadge:(id)a3;
+- (void)replaceApplicationDataSourcesWithApplication:(id)application;
+- (void)replaceApplicationPlaceholderDataSourcesWithApplicationPlaceholder:(id)placeholder;
+- (void)replaceIconDataSourcesWithApplication:(id)application;
+- (void)replaceIconDataSourcesWithApplicationPlaceholder:(id)placeholder;
+- (void)setBadge:(id)badge;
 @end
 
 @implementation SBHApplicationIcon
@@ -47,21 +47,21 @@ uint64_t __44__SBHApplicationIcon_applicationPlaceholder__block_invoke(uint64_t 
 
 - (id)iconImageCacheIdentifier
 {
-  v3 = [(SBLeafIcon *)self applicationBundleID];
-  v4 = v3;
-  if (v3)
+  applicationBundleID = [(SBLeafIcon *)self applicationBundleID];
+  v4 = applicationBundleID;
+  if (applicationBundleID)
   {
-    v5 = v3;
+    iconImageCacheIdentifier = applicationBundleID;
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = SBHApplicationIcon;
-    v5 = [(SBIcon *)&v8 iconImageCacheIdentifier];
+    iconImageCacheIdentifier = [(SBIcon *)&v8 iconImageCacheIdentifier];
   }
 
-  v6 = v5;
+  v6 = iconImageCacheIdentifier;
 
   return v6;
 }
@@ -71,119 +71,119 @@ uint64_t __44__SBHApplicationIcon_applicationPlaceholder__block_invoke(uint64_t 
   v4.receiver = self;
   v4.super_class = SBHApplicationIcon;
   [(SBIcon *)&v4 possibleUserTapDidCancel];
-  v3 = [(SBHApplicationIcon *)self application];
+  application = [(SBHApplicationIcon *)self application];
   if (objc_opt_respondsToSelector())
   {
-    [v3 possibleUserTapDidCancel];
+    [application possibleUserTapDidCancel];
   }
 }
 
 - (BOOL)hasApplicationPlaceholder
 {
-  v2 = [(SBHApplicationIcon *)self applicationPlaceholder];
-  v3 = v2 != 0;
+  applicationPlaceholder = [(SBHApplicationIcon *)self applicationPlaceholder];
+  v3 = applicationPlaceholder != 0;
 
   return v3;
 }
 
-- (SBHApplicationIcon)initWithLeafIdentifier:(id)a3 application:(id)a4
+- (SBHApplicationIcon)initWithLeafIdentifier:(id)identifier application:(id)application
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v6 bundleIdentifier];
-  v9 = [(SBLeafIcon *)self initWithLeafIdentifier:v7 applicationBundleID:v8];
+  applicationCopy = application;
+  identifierCopy = identifier;
+  bundleIdentifier = [applicationCopy bundleIdentifier];
+  v9 = [(SBLeafIcon *)self initWithLeafIdentifier:identifierCopy applicationBundleID:bundleIdentifier];
 
   if (v9)
   {
-    [(SBLeafIcon *)v9 addIconDataSource:v6];
+    [(SBLeafIcon *)v9 addIconDataSource:applicationCopy];
   }
 
   return v9;
 }
 
-- (SBHApplicationIcon)initWithApplication:(id)a3
+- (SBHApplicationIcon)initWithApplication:(id)application
 {
-  v4 = a3;
-  v5 = [v4 bundleIdentifier];
+  applicationCopy = application;
+  bundleIdentifier = [applicationCopy bundleIdentifier];
   if (objc_opt_respondsToSelector())
   {
-    [v4 iconIdentifier];
+    [applicationCopy iconIdentifier];
   }
 
   else
   {
-    [v4 bundleIdentifier];
+    [applicationCopy bundleIdentifier];
   }
   v6 = ;
   if (v6)
   {
-    v7 = [(SBLeafIcon *)self initWithLeafIdentifier:v6 applicationBundleID:v5];
+    v7 = [(SBLeafIcon *)self initWithLeafIdentifier:v6 applicationBundleID:bundleIdentifier];
     v8 = v7;
     if (v7)
     {
-      [(SBLeafIcon *)v7 addIconDataSource:v4];
+      [(SBLeafIcon *)v7 addIconDataSource:applicationCopy];
     }
 
     self = v8;
-    v9 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
-- (SBHApplicationIcon)initWithApplicationWithBundleIdentifier:(id)a3
+- (SBHApplicationIcon)initWithApplicationWithBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (SBHIsRunningInSpringBoard(v4))
+  identifierCopy = identifier;
+  if (SBHIsRunningInSpringBoard(identifierCopy))
   {
     v8 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:@"SpringBoard should not use this initializer" userInfo:0];
     objc_exception_throw(v8);
   }
 
-  v5 = [[SBHSimpleApplication alloc] initWithBundleIdentifier:v4];
+  v5 = [[SBHSimpleApplication alloc] initWithBundleIdentifier:identifierCopy];
   if (v5)
   {
     self = [(SBHApplicationIcon *)self initWithApplication:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (SBHApplicationIcon)initWithLeafIdentifier:(id)a3 applicationPlaceholder:(id)a4
+- (SBHApplicationIcon)initWithLeafIdentifier:(id)identifier applicationPlaceholder:(id)placeholder
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v6 applicationBundleIdentifier];
-  v9 = [(SBLeafIcon *)self initWithLeafIdentifier:v7 applicationBundleID:v8];
+  placeholderCopy = placeholder;
+  identifierCopy = identifier;
+  applicationBundleIdentifier = [placeholderCopy applicationBundleIdentifier];
+  v9 = [(SBLeafIcon *)self initWithLeafIdentifier:identifierCopy applicationBundleID:applicationBundleIdentifier];
 
   if (v9)
   {
-    [(SBLeafIcon *)v9 addIconDataSource:v6];
+    [(SBLeafIcon *)v9 addIconDataSource:placeholderCopy];
   }
 
   return v9;
 }
 
-- (SBHApplicationIcon)initWithApplicationPlaceholder:(id)a3
+- (SBHApplicationIcon)initWithApplicationPlaceholder:(id)placeholder
 {
-  v4 = a3;
-  v5 = [v4 applicationBundleIdentifier];
-  v6 = [(SBLeafIcon *)self initWithLeafIdentifier:v5 applicationBundleID:v5];
+  placeholderCopy = placeholder;
+  applicationBundleIdentifier = [placeholderCopy applicationBundleIdentifier];
+  v6 = [(SBLeafIcon *)self initWithLeafIdentifier:applicationBundleIdentifier applicationBundleID:applicationBundleIdentifier];
   v7 = v6;
   if (v6)
   {
-    [(SBLeafIcon *)v6 addIconDataSource:v4];
+    [(SBLeafIcon *)v6 addIconDataSource:placeholderCopy];
   }
 
   return v7;
@@ -205,101 +205,101 @@ uint64_t __61__SBHApplicationIcon_removeApplicationPlaceholderDataSources__block
   return v3 & (v2 != 0);
 }
 
-- (void)replaceIconDataSourcesWithApplication:(id)a3
+- (void)replaceIconDataSourcesWithApplication:(id)application
 {
-  v4 = a3;
+  applicationCopy = application;
   [(SBLeafIcon *)self removeAllIconDataSources];
-  [(SBHApplicationIcon *)self addApplicationDataSource:v4];
+  [(SBHApplicationIcon *)self addApplicationDataSource:applicationCopy];
 }
 
-- (void)replaceApplicationDataSourcesWithApplication:(id)a3
+- (void)replaceApplicationDataSourcesWithApplication:(id)application
 {
-  v4 = a3;
+  applicationCopy = application;
   [(SBHApplicationIcon *)self removeApplicationDataSources];
-  [(SBHApplicationIcon *)self addApplicationDataSource:v4];
+  [(SBHApplicationIcon *)self addApplicationDataSource:applicationCopy];
 }
 
-- (void)replaceIconDataSourcesWithApplicationPlaceholder:(id)a3
+- (void)replaceIconDataSourcesWithApplicationPlaceholder:(id)placeholder
 {
-  v4 = a3;
+  placeholderCopy = placeholder;
   [(SBLeafIcon *)self removeAllIconDataSources];
-  [(SBLeafIcon *)self addIconDataSource:v4];
+  [(SBLeafIcon *)self addIconDataSource:placeholderCopy];
 }
 
-- (void)replaceApplicationPlaceholderDataSourcesWithApplicationPlaceholder:(id)a3
+- (void)replaceApplicationPlaceholderDataSourcesWithApplicationPlaceholder:(id)placeholder
 {
-  v4 = a3;
+  placeholderCopy = placeholder;
   [(SBHApplicationIcon *)self removeApplicationPlaceholderDataSources];
-  [(SBLeafIcon *)self addIconDataSource:v4];
+  [(SBLeafIcon *)self addIconDataSource:placeholderCopy];
 }
 
 - (BOOL)prioritizeDownload
 {
-  v2 = [(SBHApplicationIcon *)self applicationPlaceholder];
+  applicationPlaceholder = [(SBHApplicationIcon *)self applicationPlaceholder];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v2 prioritize];
+    prioritize = [applicationPlaceholder prioritize];
   }
 
   else
   {
-    v3 = 0;
+    prioritize = 0;
   }
 
-  return v3;
+  return prioritize;
 }
 
 - (BOOL)pauseDownload
 {
-  v2 = [(SBHApplicationIcon *)self applicationPlaceholder];
+  applicationPlaceholder = [(SBHApplicationIcon *)self applicationPlaceholder];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v2 pause];
+    pause = [applicationPlaceholder pause];
   }
 
   else
   {
-    v3 = 0;
+    pause = 0;
   }
 
-  return v3;
+  return pause;
 }
 
 - (BOOL)resumeDownload
 {
-  v2 = [(SBHApplicationIcon *)self applicationPlaceholder];
+  applicationPlaceholder = [(SBHApplicationIcon *)self applicationPlaceholder];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v2 resume];
+    resume = [applicationPlaceholder resume];
   }
 
   else
   {
-    v3 = 0;
+    resume = 0;
   }
 
-  return v3;
+  return resume;
 }
 
 - (BOOL)cancelDownload
 {
-  v2 = [(SBHApplicationIcon *)self applicationPlaceholder];
+  applicationPlaceholder = [(SBHApplicationIcon *)self applicationPlaceholder];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v2 cancel];
+    cancel = [applicationPlaceholder cancel];
   }
 
   else
   {
-    v3 = 0;
+    cancel = 0;
   }
 
-  return v3;
+  return cancel;
 }
 
-- (void)changeLockedStatusToLocked:(BOOL)a3
+- (void)changeLockedStatusToLocked:(BOOL)locked
 {
-  if (a3)
+  if (locked)
   {
     v3 = 1;
   }
@@ -312,9 +312,9 @@ uint64_t __61__SBHApplicationIcon_removeApplicationPlaceholderDataSources__block
   [(SBHApplicationIcon *)self changeEnablement:v3 ofFeature:1];
 }
 
-- (void)changeHiddenStatusToHidden:(BOOL)a3
+- (void)changeHiddenStatusToHidden:(BOOL)hidden
 {
-  if (a3)
+  if (hidden)
   {
     v3 = 1;
   }
@@ -327,10 +327,10 @@ uint64_t __61__SBHApplicationIcon_removeApplicationPlaceholderDataSources__block
   [(SBHApplicationIcon *)self changeEnablement:v3 ofFeature:2];
 }
 
-- (void)changeEnablement:(unint64_t)a3 ofFeature:(unint64_t)a4
+- (void)changeEnablement:(unint64_t)enablement ofFeature:(unint64_t)feature
 {
-  v6 = [(SBLeafIcon *)self applicationBundleID];
-  v7 = [MEMORY[0x1E698B0D0] applicationWithBundleIdentifier:v6];
+  applicationBundleID = [(SBLeafIcon *)self applicationBundleID];
+  v7 = [MEMORY[0x1E698B0D0] applicationWithBundleIdentifier:applicationBundleID];
   if (v7)
   {
     v8 = MEMORY[0x1E698B110];
@@ -338,10 +338,10 @@ uint64_t __61__SBHApplicationIcon_removeApplicationPlaceholderDataSources__block
     v9[1] = 3221225472;
     v9[2] = __49__SBHApplicationIcon_changeEnablement_ofFeature___block_invoke;
     v9[3] = &unk_1E808CAB0;
-    v10 = v6;
-    v11 = a4;
-    v12 = a3;
-    [v8 oneshotBeginFlowToSetEnablement:a3 ofFeature:a4 forSubject:v7 completion:v9];
+    v10 = applicationBundleID;
+    featureCopy = feature;
+    enablementCopy = enablement;
+    [v8 oneshotBeginFlowToSetEnablement:enablement ofFeature:feature forSubject:v7 completion:v9];
   }
 }
 
@@ -360,11 +360,11 @@ void __49__SBHApplicationIcon_changeEnablement_ofFeature___block_invoke(void *a1
 
 - (NSString)applicationDisplayName
 {
-  v3 = [(SBHApplicationIcon *)self applicationPlaceholder];
-  v4 = v3;
-  if (v3)
+  applicationPlaceholder = [(SBHApplicationIcon *)self applicationPlaceholder];
+  v4 = applicationPlaceholder;
+  if (applicationPlaceholder)
   {
-    [v3 applicationDisplayName];
+    [applicationPlaceholder applicationDisplayName];
   }
 
   else
@@ -376,58 +376,58 @@ void __49__SBHApplicationIcon_changeEnablement_ofFeature___block_invoke(void *a1
   return v5;
 }
 
-- (void)setBadge:(id)a3
+- (void)setBadge:(id)badge
 {
-  v5 = a3;
-  v4 = [(SBHApplicationIcon *)self application];
+  badgeCopy = badge;
+  application = [(SBHApplicationIcon *)self application];
   if (objc_opt_respondsToSelector())
   {
-    [v4 setBadgeValue:v5];
+    [application setBadgeValue:badgeCopy];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = SBHApplicationIcon;
-  v4 = [(SBLeafIcon *)&v6 copyWithZone:a3];
+  v4 = [(SBLeafIcon *)&v6 copyWithZone:zone];
   [v4 setUninstalledByUser:{-[SBHApplicationIcon isUninstalledByUser](self, "isUninstalledByUser")}];
   return v4;
 }
 
-- (id)copyWithLeafIdentifier:(id)a3
+- (id)copyWithLeafIdentifier:(id)identifier
 {
   v6.receiver = self;
   v6.super_class = SBHApplicationIcon;
-  v4 = [(SBLeafIcon *)&v6 copyWithLeafIdentifier:a3];
+  v4 = [(SBLeafIcon *)&v6 copyWithLeafIdentifier:identifier];
   [v4 setUninstalledByUser:{-[SBHApplicationIcon isUninstalledByUser](self, "isUninstalledByUser")}];
   return v4;
 }
 
 - (BOOL)hasApplication
 {
-  v2 = [(SBHApplicationIcon *)self application];
-  v3 = v2 != 0;
+  application = [(SBHApplicationIcon *)self application];
+  v3 = application != 0;
 
   return v3;
 }
 
-- (void)possibleUserTapBeganWithAbsoluteTime:(unint64_t)a3 andContinuousTime:(unint64_t)a4
+- (void)possibleUserTapBeganWithAbsoluteTime:(unint64_t)time andContinuousTime:(unint64_t)continuousTime
 {
   v8.receiver = self;
   v8.super_class = SBHApplicationIcon;
   [SBIcon possibleUserTapBeganWithAbsoluteTime:sel_possibleUserTapBeganWithAbsoluteTime_andContinuousTime_ andContinuousTime:?];
-  v7 = [(SBHApplicationIcon *)self application];
+  application = [(SBHApplicationIcon *)self application];
   if (objc_opt_respondsToSelector())
   {
-    [v7 possibleUserTapBeganWithAbsoluteTime:a3 andContinuousTime:a4];
+    [application possibleUserTapBeganWithAbsoluteTime:time andContinuousTime:continuousTime];
   }
 }
 
 - (id)automationID
 {
-  v2 = [(SBLeafIcon *)self applicationBundleID];
-  v3 = [@"BTN " stringByAppendingString:v2];
+  applicationBundleID = [(SBLeafIcon *)self applicationBundleID];
+  v3 = [@"BTN " stringByAppendingString:applicationBundleID];
 
   return v3;
 }

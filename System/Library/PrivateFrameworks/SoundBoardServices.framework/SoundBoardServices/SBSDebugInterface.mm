@@ -1,10 +1,10 @@
 @interface SBSDebugInterface
-- (SBSDebugInterface)initWithTarget:(id)a3;
+- (SBSDebugInterface)initWithTarget:(id)target;
 - (void)dealloc;
-- (void)getAllDebugInfo:(id)a3;
-- (void)getFeatureFlags:(id)a3;
-- (void)getTuningInfo:(id)a3;
-- (void)getUserDefaults:(id)a3;
+- (void)getAllDebugInfo:(id)info;
+- (void)getFeatureFlags:(id)flags;
+- (void)getTuningInfo:(id)info;
+- (void)getUserDefaults:(id)defaults;
 @end
 
 @implementation SBSDebugInterface
@@ -17,9 +17,9 @@
   [(SBSDebugInterface *)&v3 dealloc];
 }
 
-- (void)getFeatureFlags:(id)a3
+- (void)getFeatureFlags:(id)flags
 {
-  if (a3)
+  if (flags)
   {
     sbProxy = self->_sbProxy;
 
@@ -39,9 +39,9 @@
   }
 }
 
-- (void)getUserDefaults:(id)a3
+- (void)getUserDefaults:(id)defaults
 {
-  if (a3)
+  if (defaults)
   {
     sbProxy = self->_sbProxy;
 
@@ -61,9 +61,9 @@
   }
 }
 
-- (void)getTuningInfo:(id)a3
+- (void)getTuningInfo:(id)info
 {
-  if (a3)
+  if (info)
   {
     sbProxy = self->_sbProxy;
 
@@ -83,9 +83,9 @@
   }
 }
 
-- (void)getAllDebugInfo:(id)a3
+- (void)getAllDebugInfo:(id)info
 {
-  if (a3)
+  if (info)
   {
     sbProxy = self->_sbProxy;
 
@@ -105,22 +105,22 @@
   }
 }
 
-- (SBSDebugInterface)initWithTarget:(id)a3
+- (SBSDebugInterface)initWithTarget:(id)target
 {
-  v4 = a3;
+  targetCopy = target;
   v9.receiver = self;
   v9.super_class = SBSDebugInterface;
   v5 = [(SBSDebugInterface *)&v9 init];
   if (v5)
   {
-    if ([v4 isEqualToString:@"localhost"])
+    if ([targetCopy isEqualToString:@"localhost"])
     {
       [SBSUtils createProxyConnectionForXPCWithExportedObject:0 connection:&v5->_sbConnection];
     }
 
     else
     {
-      [SBSUtils createProxyConnectionForRapportTarget:v4];
+      [SBSUtils createProxyConnectionForRapportTarget:targetCopy];
     }
     v6 = ;
     sbProxy = v5->_sbProxy;

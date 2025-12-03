@@ -1,10 +1,10 @@
 @interface TNHintCache
-- ($44DB91ABE188F3342F2E860183E7D78B)pageRangeWithUpperBound:(TSUCellCoord)a3;
-- (TNHintCache)initWithInfo:(id)a3 pageController:(id)a4;
+- ($44DB91ABE188F3342F2E860183E7D78B)pageRangeWithUpperBound:(TSUCellCoord)bound;
+- (TNHintCache)initWithInfo:(id)info pageController:(id)controller;
 - (id).cxx_construct;
 - (id)_infoPartitioner;
-- (id)layoutAtCoordinate:(TSUCellCoord)a3 parentLayout:(id)a4;
-- (id)p_hintCacheEntryAtCoordinate:(TSUCellCoord)a3;
+- (id)layoutAtCoordinate:(TSUCellCoord)coordinate parentLayout:(id)layout;
+- (id)p_hintCacheEntryAtCoordinate:(TSUCellCoord)coordinate;
 - (set<TSUCellCoord,)pageCoordinatesWithAnnotations;
 - (void)dealloc;
 - (void)invalidate;
@@ -12,7 +12,7 @@
 
 @implementation TNHintCache
 
-- (TNHintCache)initWithInfo:(id)a3 pageController:(id)a4
+- (TNHintCache)initWithInfo:(id)info pageController:(id)controller
 {
   v10.receiver = self;
   v10.super_class = TNHintCache;
@@ -20,8 +20,8 @@
   v8 = v6;
   if (v6)
   {
-    objc_msgSend_setInfo_(v6, v7, a3);
-    v8->mPageController = a4;
+    objc_msgSend_setInfo_(v6, v7, info);
+    v8->mPageController = controller;
     v8->mHintCacheEntryDictionary = objc_alloc_init(TNPageCoordinateDictionary);
     v8->mPageRange.topLeft = 0xFFFF0000FFFFLL;
     v8->mPageRange.bottomRight = 0;
@@ -43,14 +43,14 @@
   [(TNHintCache *)&v3 dealloc];
 }
 
-- ($44DB91ABE188F3342F2E860183E7D78B)pageRangeWithUpperBound:(TSUCellCoord)a3
+- ($44DB91ABE188F3342F2E860183E7D78B)pageRangeWithUpperBound:(TSUCellCoord)bound
 {
   topLeft = self->mPageRange.topLeft;
   bottomRight = self->mPageRange.bottomRight;
   v10 = bottomRight >= topLeft.row && topLeft.column != 0xFFFF && WORD2(bottomRight) != 0xFFFF && topLeft.row != 0xFFFF && bottomRight != 0xFFFF && WORD2(bottomRight) >= topLeft.column;
-  if (!v10 || (!self->mIsMaxRowValid || !self->mIsMaxColumnValid) && (WORD2(bottomRight) < a3.column || a3.row > bottomRight))
+  if (!v10 || (!self->mIsMaxRowValid || !self->mIsMaxColumnValid) && (WORD2(bottomRight) < bound.column || bound.row > bottomRight))
   {
-    objc_msgSend_p_hintCacheEntryAtCoordinate_(self, bottomRight, *&a3);
+    objc_msgSend_p_hintCacheEntryAtCoordinate_(self, bottomRight, *&bound);
     topLeft = self->mPageRange.topLeft;
     bottomRight = self->mPageRange.bottomRight;
   }
@@ -60,9 +60,9 @@
   return result;
 }
 
-- (id)layoutAtCoordinate:(TSUCellCoord)a3 parentLayout:(id)a4
+- (id)layoutAtCoordinate:(TSUCellCoord)coordinate parentLayout:(id)layout
 {
-  v8 = objc_msgSend_p_hintCacheEntryAtCoordinate_(self, a2, *&a3);
+  v8 = objc_msgSend_p_hintCacheEntryAtCoordinate_(self, a2, *&coordinate);
   if (!v8)
   {
     v9 = MEMORY[0x277D81150];
@@ -83,7 +83,7 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v26, v27);
   }
 
-  v30 = objc_msgSend_layoutForHint_parentLayout_(v20, v19, v16, a4);
+  v30 = objc_msgSend_layoutForHint_parentLayout_(v20, v19, v16, layout);
   if (!v30)
   {
     v31 = MEMORY[0x277D81150];
@@ -162,12 +162,12 @@
   return objc_msgSend_partitioner(v3, v4, v5);
 }
 
-- (id)p_hintCacheEntryAtCoordinate:(TSUCellCoord)a3
+- (id)p_hintCacheEntryAtCoordinate:(TSUCellCoord)coordinate
 {
-  v5 = objc_msgSend_pageController(self, a2, *&a3);
+  v5 = objc_msgSend_pageController(self, a2, *&coordinate);
   v8 = objc_msgSend_infoProvider(v5, v6, v7);
   IsLeftToRight = objc_msgSend_layoutIsLeftToRight(v8, v9, v10);
-  v15 = objc_msgSend_objectForPageCoordinate_(self->mHintCacheEntryDictionary, v12, *&a3);
+  v15 = objc_msgSend_objectForPageCoordinate_(self->mHintCacheEntryDictionary, v12, *&coordinate);
   if (v15)
   {
     return v15;
@@ -302,8 +302,8 @@
     objc_msgSend_setObject_forPageCoordinate_(self->mHintCacheEntryDictionary, v83, v15, v53 | v42.row);
   }
 
-  column = a3.column;
-  if (a3.column >= self->mPageRange.topLeft.column)
+  column = coordinate.column;
+  if (coordinate.column >= self->mPageRange.topLeft.column)
   {
     v85 = v117;
   }
@@ -311,14 +311,14 @@
   else
   {
     v85 = v117;
-    if (p_mPageRange->topLeft.row > a3.row)
+    if (p_mPageRange->topLeft.row > coordinate.row)
     {
       v15 = 0;
       goto LABEL_55;
     }
   }
 
-  if ((v85 & 1) != 0 || v42.row >= a3.row)
+  if ((v85 & 1) != 0 || v42.row >= coordinate.row)
   {
     v52 = v41;
     goto LABEL_39;
@@ -354,7 +354,7 @@ LABEL_34:
     {
       v96 = v42.row + 2;
       ++v42.row;
-      if (v96 <= a3.row)
+      if (v96 <= coordinate.row)
       {
         continue;
       }
@@ -370,7 +370,7 @@ LABEL_34:
 LABEL_39:
   v116 = 0;
   v97 = v43 + 1;
-  if (a3.column >= (v43 + 1))
+  if (coordinate.column >= (v43 + 1))
   {
     while (1)
     {
@@ -462,7 +462,7 @@ LABEL_55:
       v42[1] = 3221225472;
       v43 = sub_275F2CBEC;
       v44 = &unk_27A6A3010;
-      v45 = self;
+      selfCopy = self;
       if (v10 >= v8 && WORD2(v8) != 0xFFFF && WORD2(v10) != 0xFFFF && v8 != 0xFFFF && v10 != 0xFFFF && WORD2(v10) >= WORD2(v8))
       {
         v23 = v8;
@@ -506,7 +506,7 @@ LABEL_55:
       v46[1] = 3221225472;
       v47 = sub_275F2CBB8;
       v48 = &unk_27A6A3010;
-      v49 = self;
+      selfCopy2 = self;
       if (v10 >= v8 && WORD2(v8) != 0xFFFF && WORD2(v10) != 0xFFFF && v8 != 0xFFFF && v10 != 0xFFFF && WORD2(v10) >= WORD2(v8))
       {
         v34 = HIDWORD(v8);

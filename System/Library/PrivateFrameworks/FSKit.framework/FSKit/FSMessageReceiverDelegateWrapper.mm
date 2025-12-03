@@ -1,40 +1,40 @@
 @interface FSMessageReceiverDelegateWrapper
-- (FSMessageReceiverDelegateWrapper)initWithDelegate:(id)a3 Locale:(id)a4 preferredLanguages:(id)a5;
-- (void)completed:(id)a3 replyHandler:(id)a4;
+- (FSMessageReceiverDelegateWrapper)initWithDelegate:(id)delegate Locale:(id)locale preferredLanguages:(id)languages;
+- (void)completed:(id)completed replyHandler:(id)handler;
 - (void)didStart;
 @end
 
 @implementation FSMessageReceiverDelegateWrapper
 
-- (FSMessageReceiverDelegateWrapper)initWithDelegate:(id)a3 Locale:(id)a4 preferredLanguages:(id)a5
+- (FSMessageReceiverDelegateWrapper)initWithDelegate:(id)delegate Locale:(id)locale preferredLanguages:(id)languages
 {
   v24[1] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  delegateCopy = delegate;
+  localeCopy = locale;
+  languagesCopy = languages;
   v23.receiver = self;
   v23.super_class = FSMessageReceiverDelegateWrapper;
   v12 = [(FSMessageReceiverDelegateWrapper *)&v23 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_delegate, a3);
-    if (v10)
+    objc_storeStrong(&v12->_delegate, delegate);
+    if (localeCopy)
     {
-      v14 = v10;
+      currentLocale = localeCopy;
     }
 
     else
     {
-      v14 = [MEMORY[0x277CBEAF8] currentLocale];
+      currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
     }
 
     locale = v13->_locale;
-    v13->_locale = v14;
+    v13->_locale = currentLocale;
 
-    if (v11 && [v11 count])
+    if (languagesCopy && [languagesCopy count])
     {
-      v16 = v11;
+      v16 = languagesCopy;
       preferredLanguages = v13->_preferredLanguages;
       v13->_preferredLanguages = v16;
     }
@@ -57,36 +57,36 @@
   return v13;
 }
 
-- (void)completed:(id)a3 replyHandler:(id)a4
+- (void)completed:(id)completed replyHandler:(id)handler
 {
   v18 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
-  objc_sync_enter(v9);
-  hasCompleted = v9->_hasCompleted;
+  completedCopy = completed;
+  handlerCopy = handler;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  hasCompleted = selfCopy->_hasCompleted;
   if (!hasCompleted)
   {
-    v9->_hasCompleted = 1;
+    selfCopy->_hasCompleted = 1;
   }
 
-  if (v9->_hasStarted)
+  if (selfCopy->_hasStarted)
   {
-    objc_sync_exit(v9);
+    objc_sync_exit(selfCopy);
 
     if (!hasCompleted)
     {
-      [(FSTaskMessageOperations *)v9->_delegate completed:v7 replyHandler:v8];
+      [(FSTaskMessageOperations *)selfCopy->_delegate completed:completedCopy replyHandler:handlerCopy];
       goto LABEL_11;
     }
 
 LABEL_7:
-    (*(v8 + 2))(v8, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0);
     goto LABEL_11;
   }
 
-  objc_storeStrong(&v9->_completedError, a3);
-  objc_sync_exit(v9);
+  objc_storeStrong(&selfCopy->_completedError, completed);
+  objc_sync_exit(selfCopy);
 
   if (hasCompleted)
   {
@@ -104,7 +104,7 @@ LABEL_7:
     _os_log_impl(&dword_24A929000, v12, OS_LOG_TYPE_DEFAULT, "%s: Task didn't start yet, replying (%@) to FSMessageConnection", &v14, 0x16u);
   }
 
-  (*(v8 + 2))(v8, 0, v11);
+  (*(handlerCopy + 2))(handlerCopy, 0, v11);
 LABEL_11:
 
   v13 = *MEMORY[0x277D85DE8];
@@ -112,16 +112,16 @@ LABEL_11:
 
 - (void)didStart
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v2->_hasStarted = 1;
-  hasCompleted = v2->_hasCompleted;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  selfCopy->_hasStarted = 1;
+  hasCompleted = selfCopy->_hasCompleted;
+  objc_sync_exit(selfCopy);
 
   if (hasCompleted)
   {
-    delegate = v2->_delegate;
-    completedError = v2->_completedError;
+    delegate = selfCopy->_delegate;
+    completedError = selfCopy->_completedError;
 
     [(FSTaskMessageOperations *)delegate completed:completedError replyHandler:&__block_literal_global];
   }

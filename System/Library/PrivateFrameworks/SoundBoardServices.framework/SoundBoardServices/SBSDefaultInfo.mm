@@ -1,25 +1,25 @@
 @interface SBSDefaultInfo
-+ (id)defaultsName:(id)a3 asBool:(id)a4 userInfo:(id)a5 requiresReinit:(BOOL)a6;
-+ (id)defaultsName:(id)a3 asDouble:(id)a4 rangeMin:(id)a5 rangeMax:(id)a6 userInfo:(id)a7 requiresReinit:(BOOL)a8;
-+ (id)defaultsName:(id)a3 asInt:(id)a4 rangeMin:(id)a5 rangeMax:(id)a6 userInfo:(id)a7 requiresReinit:(BOOL)a8;
-+ (id)defaultsName:(id)a3 asString:(id)a4 userInfo:(id)a5 requiresReinit:(BOOL)a6;
++ (id)defaultsName:(id)name asBool:(id)bool userInfo:(id)info requiresReinit:(BOOL)reinit;
++ (id)defaultsName:(id)name asDouble:(id)double rangeMin:(id)min rangeMax:(id)max userInfo:(id)info requiresReinit:(BOOL)reinit;
++ (id)defaultsName:(id)name asInt:(id)int rangeMin:(id)min rangeMax:(id)max userInfo:(id)info requiresReinit:(BOOL)reinit;
++ (id)defaultsName:(id)name asString:(id)string userInfo:(id)info requiresReinit:(BOOL)reinit;
 - (NSString)valueType;
-- (SBSDefaultInfo)initWithCoder:(id)a3;
-- (id)getHumanReadable:(id)a3 isDefaultSet:(BOOL)a4;
-- (void)encodeWithCoder:(id)a3;
+- (SBSDefaultInfo)initWithCoder:(id)coder;
+- (id)getHumanReadable:(id)readable isDefaultSet:(BOOL)set;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SBSDefaultInfo
 
-- (id)getHumanReadable:(id)a3 isDefaultSet:(BOOL)a4
+- (id)getHumanReadable:(id)readable isDefaultSet:(BOOL)set
 {
-  v4 = a4;
+  setCopy = set;
   v47 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(SBSDefaultInfo *)self stringForUserDefault];
-  [v7 getCString:v46 maxLength:128 encoding:1];
+  readableCopy = readable;
+  stringForUserDefault = [(SBSDefaultInfo *)self stringForUserDefault];
+  [stringForUserDefault getCString:v46 maxLength:128 encoding:1];
 
-  v8 = [(SBSDefaultInfo *)self defaultValue];
+  defaultValue = [(SBSDefaultInfo *)self defaultValue];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -28,23 +28,23 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v10 = v6;
+      stringValue = readableCopy;
     }
 
     else
     {
-      v10 = [v6 stringValue];
+      stringValue = [readableCopy stringValue];
     }
 
-    v11 = v10;
+    rangeMin = stringValue;
   }
 
   else
   {
-    v11 = 0;
+    rangeMin = 0;
   }
 
-  v12 = [(SBSDefaultInfo *)self defaultValue];
+  defaultValue2 = [(SBSDefaultInfo *)self defaultValue];
   objc_opt_class();
   v13 = objc_opt_isKindOfClass();
 
@@ -52,9 +52,9 @@
   {
     if ([(SBSDefaultInfo *)self isBool])
     {
-      v14 = [v6 BOOLValue];
+      bOOLValue = [readableCopy BOOLValue];
       v15 = @"NO";
-      if (v14)
+      if (bOOLValue)
       {
         v15 = @"YES";
       }
@@ -63,83 +63,83 @@
       goto LABEL_17;
     }
 
-    v17 = [(SBSDefaultInfo *)self isDouble];
+    isDouble = [(SBSDefaultInfo *)self isDouble];
     v18 = MEMORY[0x277CCACA8];
-    if (v17)
+    if (isDouble)
     {
-      [v6 doubleValue];
+      [readableCopy doubleValue];
       v20 = [v18 stringWithFormat:@"%-4.2f", v19];
 
-      v21 = [(SBSDefaultInfo *)self rangeMax];
+      rangeMax = [(SBSDefaultInfo *)self rangeMax];
 
-      if (v21)
+      if (rangeMax)
       {
         v22 = MEMORY[0x277CCACA8];
-        v11 = [(SBSDefaultInfo *)self rangeMin];
-        [(__CFString *)v11 doubleValue];
+        rangeMin = [(SBSDefaultInfo *)self rangeMin];
+        [(__CFString *)rangeMin doubleValue];
         v24 = v23;
-        v25 = [(SBSDefaultInfo *)self rangeMax];
-        [v25 doubleValue];
+        rangeMax2 = [(SBSDefaultInfo *)self rangeMax];
+        [rangeMax2 doubleValue];
         v16 = [v22 stringWithFormat:@"%@ [%.2f..%.2f]", v20, v24, v26];
 
 LABEL_17:
-        v11 = v16;
+        rangeMin = v16;
         goto LABEL_18;
       }
     }
 
     else
     {
-      v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"%-4ld", objc_msgSend(v6, "integerValue")];
+      v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"%-4ld", objc_msgSend(readableCopy, "integerValue")];
 
-      v27 = [(SBSDefaultInfo *)self rangeMax];
+      rangeMax3 = [(SBSDefaultInfo *)self rangeMax];
 
-      if (v27)
+      if (rangeMax3)
       {
         v28 = MEMORY[0x277CCACA8];
-        v11 = [(SBSDefaultInfo *)self rangeMin];
-        v29 = [(__CFString *)v11 integerValue];
-        v30 = [(SBSDefaultInfo *)self rangeMax];
-        v16 = [v28 stringWithFormat:@"%@ [%ld..%ld]", v20, v29, objc_msgSend(v30, "integerValue")];
+        rangeMin = [(SBSDefaultInfo *)self rangeMin];
+        integerValue = [(__CFString *)rangeMin integerValue];
+        rangeMax4 = [(SBSDefaultInfo *)self rangeMax];
+        v16 = [v28 stringWithFormat:@"%@ [%ld..%ld]", v20, integerValue, objc_msgSend(rangeMax4, "integerValue")];
 
         goto LABEL_17;
       }
     }
 
-    v11 = v20;
+    rangeMin = v20;
   }
 
 LABEL_18:
-  v31 = [(SBSDefaultInfo *)self defaultValue];
+  defaultValue3 = [(SBSDefaultInfo *)self defaultValue];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v32 = [(SBSDefaultInfo *)self isBool];
+    isBool = [(SBSDefaultInfo *)self isBool];
 
-    if (!v32)
+    if (!isBool)
     {
       goto LABEL_24;
     }
 
-    v33 = [v6 BOOLValue];
+    bOOLValue2 = [readableCopy BOOLValue];
     v34 = @"NO";
-    if (v33)
+    if (bOOLValue2)
     {
       v34 = @"YES";
     }
 
-    v31 = v11;
-    v11 = v34;
+    defaultValue3 = rangeMin;
+    rangeMin = v34;
   }
 
 LABEL_24:
-  [(__CFString *)v11 getCString:v45 maxLength:128 encoding:1];
-  v35 = [(SBSDefaultInfo *)self stringForUserDefault];
-  v36 = [(SBSDefaultInfo *)self userDescription];
-  v37 = [v35 isEqualToString:v36];
+  [(__CFString *)rangeMin getCString:v45 maxLength:128 encoding:1];
+  stringForUserDefault2 = [(SBSDefaultInfo *)self stringForUserDefault];
+  userDescription = [(SBSDefaultInfo *)self userDescription];
+  v37 = [stringForUserDefault2 isEqualToString:userDescription];
 
   v38 = MEMORY[0x277CCACA8];
-  if (v4)
+  if (setCopy)
   {
     v39 = "*";
   }
@@ -149,7 +149,7 @@ LABEL_24:
     v39 = "";
   }
 
-  if (v4)
+  if (setCopy)
   {
     v40 = "";
   }
@@ -166,8 +166,8 @@ LABEL_24:
 
   else
   {
-    v42 = [(SBSDefaultInfo *)self userDescription];
-    v41 = [v38 stringWithFormat:@"%s%-40s%s : %-16s%@%@", v39, v46, v40, v45, @" : ", v42];
+    userDescription2 = [(SBSDefaultInfo *)self userDescription];
+    v41 = [v38 stringWithFormat:@"%s%-40s%s : %-16s%@%@", v39, v46, v40, v45, @" : ", userDescription2];
   }
 
   v43 = *MEMORY[0x277D85DE8];
@@ -187,13 +187,13 @@ LABEL_24:
     return @"float";
   }
 
-  v4 = [(SBSDefaultInfo *)self defaultType];
-  if (v4 < 4)
+  defaultType = [(SBSDefaultInfo *)self defaultType];
+  if (defaultType < 4)
   {
-    return &off_279CD5228[v4]->isa;
+    return &off_279CD5228[defaultType]->isa;
   }
 
-  v5 = [(SBSDefaultInfo *)self defaultValue];
+  defaultValue = [(SBSDefaultInfo *)self defaultValue];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -202,7 +202,7 @@ LABEL_24:
     return @"array";
   }
 
-  v7 = [(SBSDefaultInfo *)self defaultValue];
+  defaultValue2 = [(SBSDefaultInfo *)self defaultValue];
   objc_opt_class();
   v8 = objc_opt_isKindOfClass();
 
@@ -217,108 +217,108 @@ LABEL_24:
   }
 }
 
-- (SBSDefaultInfo)initWithCoder:(id)a3
+- (SBSDefaultInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v23.receiver = self;
   v23.super_class = SBSDefaultInfo;
   v5 = [(SBSDefaultInfo *)&v23 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"stringForUserDefault"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"stringForUserDefault"];
     stringForUserDefault = v5->_stringForUserDefault;
     v5->_stringForUserDefault = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"userDescription"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"userDescription"];
     userDescription = v5->_userDescription;
     v5->_userDescription = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"defaultType"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"defaultType"];
     v5->_defaultType = [v10 unsignedIntegerValue];
 
     defaultType = v5->_defaultType;
     if (defaultType <= 3)
     {
       v12 = **(&unk_279CD5208 + defaultType);
-      v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"defaultValue"];
+      v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"defaultValue"];
       defaultValue = v5->_defaultValue;
       v5->_defaultValue = v13;
     }
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"isBool"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"isBool"];
     v5->_isBool = [v15 BOOLValue];
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"isDouble"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"isDouble"];
     v5->_isDouble = [v16 BOOLValue];
 
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"rangeMin"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"rangeMin"];
     rangeMin = v5->_rangeMin;
     v5->_rangeMin = v17;
 
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"rangeMax"];
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"rangeMax"];
     rangeMax = v5->_rangeMax;
     v5->_rangeMax = v19;
 
-    v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"requiresReinit"];
+    v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"requiresReinit"];
     v5->_requiresReinit = [v21 BOOLValue];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(SBSDefaultInfo *)self stringForUserDefault];
-  [v4 encodeObject:v5 forKey:@"stringForUserDefault"];
+  coderCopy = coder;
+  stringForUserDefault = [(SBSDefaultInfo *)self stringForUserDefault];
+  [coderCopy encodeObject:stringForUserDefault forKey:@"stringForUserDefault"];
 
-  v6 = [(SBSDefaultInfo *)self userDescription];
-  [v4 encodeObject:v6 forKey:@"userDescription"];
+  userDescription = [(SBSDefaultInfo *)self userDescription];
+  [coderCopy encodeObject:userDescription forKey:@"userDescription"];
 
-  v7 = [(SBSDefaultInfo *)self defaultValue];
-  [v4 encodeObject:v7 forKey:@"defaultValue"];
+  defaultValue = [(SBSDefaultInfo *)self defaultValue];
+  [coderCopy encodeObject:defaultValue forKey:@"defaultValue"];
 
   v8 = [MEMORY[0x277CCABB0] numberWithBool:{-[SBSDefaultInfo isBool](self, "isBool")}];
-  [v4 encodeObject:v8 forKey:@"isBool"];
+  [coderCopy encodeObject:v8 forKey:@"isBool"];
 
   v9 = [MEMORY[0x277CCABB0] numberWithBool:{-[SBSDefaultInfo isDouble](self, "isDouble")}];
-  [v4 encodeObject:v9 forKey:@"isDouble"];
+  [coderCopy encodeObject:v9 forKey:@"isDouble"];
 
-  v10 = [(SBSDefaultInfo *)self rangeMin];
-  [v4 encodeObject:v10 forKey:@"rangeMin"];
+  rangeMin = [(SBSDefaultInfo *)self rangeMin];
+  [coderCopy encodeObject:rangeMin forKey:@"rangeMin"];
 
-  v11 = [(SBSDefaultInfo *)self rangeMax];
-  [v4 encodeObject:v11 forKey:@"rangeMax"];
+  rangeMax = [(SBSDefaultInfo *)self rangeMax];
+  [coderCopy encodeObject:rangeMax forKey:@"rangeMax"];
 
   v12 = [MEMORY[0x277CCABB0] numberWithBool:{-[SBSDefaultInfo requiresReinit](self, "requiresReinit")}];
-  [v4 encodeObject:v12 forKey:@"requiresReinit"];
+  [coderCopy encodeObject:v12 forKey:@"requiresReinit"];
 
   v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[SBSDefaultInfo defaultType](self, "defaultType")}];
-  [v4 encodeObject:v13 forKey:@"defaultType"];
+  [coderCopy encodeObject:v13 forKey:@"defaultType"];
 }
 
-+ (id)defaultsName:(id)a3 asString:(id)a4 userInfo:(id)a5 requiresReinit:(BOOL)a6
++ (id)defaultsName:(id)name asString:(id)string userInfo:(id)info requiresReinit:(BOOL)reinit
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  nameCopy = name;
+  stringCopy = string;
+  infoCopy = info;
   v12 = objc_opt_new();
   if (v12)
   {
-    v13 = [v9 copy];
+    v13 = [nameCopy copy];
     v14 = *(v12 + 16);
     *(v12 + 16) = v13;
 
-    v15 = [v11 copy];
+    v15 = [infoCopy copy];
     v16 = *(v12 + 24);
     *(v12 + 24) = v15;
 
-    v17 = [v10 copy];
+    v17 = [stringCopy copy];
     v18 = *(v12 + 32);
     *(v12 + 32) = v17;
 
     *(v12 + 8) = 0;
-    *(v12 + 10) = a6;
+    *(v12 + 10) = reinit;
     *(v12 + 56) = 1;
     v19 = v12;
   }
@@ -326,29 +326,29 @@ LABEL_24:
   return v12;
 }
 
-+ (id)defaultsName:(id)a3 asDouble:(id)a4 rangeMin:(id)a5 rangeMax:(id)a6 userInfo:(id)a7 requiresReinit:(BOOL)a8
++ (id)defaultsName:(id)name asDouble:(id)double rangeMin:(id)min rangeMax:(id)max userInfo:(id)info requiresReinit:(BOOL)reinit
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  nameCopy = name;
+  doubleCopy = double;
+  minCopy = min;
+  maxCopy = max;
+  infoCopy = info;
   v18 = objc_opt_new();
   if (v18)
   {
-    v19 = [v13 copy];
+    v19 = [nameCopy copy];
     v20 = *(v18 + 16);
     *(v18 + 16) = v19;
 
-    v21 = [v17 copy];
+    v21 = [infoCopy copy];
     v22 = *(v18 + 24);
     *(v18 + 24) = v21;
 
-    objc_storeStrong((v18 + 32), a4);
-    objc_storeStrong((v18 + 40), a5);
-    objc_storeStrong((v18 + 48), a6);
+    objc_storeStrong((v18 + 32), double);
+    objc_storeStrong((v18 + 40), min);
+    objc_storeStrong((v18 + 48), max);
     *(v18 + 9) = 1;
-    *(v18 + 10) = a8;
+    *(v18 + 10) = reinit;
     *(v18 + 56) = 2;
     v23 = v18;
   }
@@ -356,28 +356,28 @@ LABEL_24:
   return v18;
 }
 
-+ (id)defaultsName:(id)a3 asInt:(id)a4 rangeMin:(id)a5 rangeMax:(id)a6 userInfo:(id)a7 requiresReinit:(BOOL)a8
++ (id)defaultsName:(id)name asInt:(id)int rangeMin:(id)min rangeMax:(id)max userInfo:(id)info requiresReinit:(BOOL)reinit
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  nameCopy = name;
+  intCopy = int;
+  minCopy = min;
+  maxCopy = max;
+  infoCopy = info;
   v18 = objc_opt_new();
   if (v18)
   {
-    v19 = [v13 copy];
+    v19 = [nameCopy copy];
     v20 = *(v18 + 16);
     *(v18 + 16) = v19;
 
-    v21 = [v17 copy];
+    v21 = [infoCopy copy];
     v22 = *(v18 + 24);
     *(v18 + 24) = v21;
 
-    objc_storeStrong((v18 + 32), a4);
-    objc_storeStrong((v18 + 40), a5);
-    objc_storeStrong((v18 + 48), a6);
-    *(v18 + 10) = a8;
+    objc_storeStrong((v18 + 32), int);
+    objc_storeStrong((v18 + 40), min);
+    objc_storeStrong((v18 + 48), max);
+    *(v18 + 10) = reinit;
     *(v18 + 56) = 2;
     v23 = v18;
   }
@@ -385,25 +385,25 @@ LABEL_24:
   return v18;
 }
 
-+ (id)defaultsName:(id)a3 asBool:(id)a4 userInfo:(id)a5 requiresReinit:(BOOL)a6
++ (id)defaultsName:(id)name asBool:(id)bool userInfo:(id)info requiresReinit:(BOOL)reinit
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  nameCopy = name;
+  boolCopy = bool;
+  infoCopy = info;
   v12 = objc_opt_new();
   if (v12)
   {
-    v13 = [v9 copy];
+    v13 = [nameCopy copy];
     v14 = *(v12 + 16);
     *(v12 + 16) = v13;
 
-    v15 = [v11 copy];
+    v15 = [infoCopy copy];
     v16 = *(v12 + 24);
     *(v12 + 24) = v15;
 
-    objc_storeStrong((v12 + 32), a4);
+    objc_storeStrong((v12 + 32), bool);
     *(v12 + 8) = 1;
-    *(v12 + 10) = a6;
+    *(v12 + 10) = reinit;
     *(v12 + 56) = 2;
     v17 = v12;
   }

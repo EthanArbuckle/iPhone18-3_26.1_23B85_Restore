@@ -1,9 +1,9 @@
 @interface THSearchViewController
 - (BESearchResultTableViewCell)dummySearchResultsCell;
 - (BOOL)p_isBottomViewVisible;
-- (BOOL)tableView:(id)a3 canFocusRowAtIndexPath:(id)a4;
+- (BOOL)tableView:(id)view canFocusRowAtIndexPath:(id)path;
 - (IMThemePage)themePage;
-- (THSearchViewController)initWithSearchController:(id)a3;
+- (THSearchViewController)initWithSearchController:(id)controller;
 - (THSearchViewControllerDelegate)searchDelegate;
 - (UISearchBar)searchBar;
 - (double)_resultsEstimatedRowHeight;
@@ -11,79 +11,79 @@
 - (double)p_aboveAndBelowContentHeight;
 - (double)p_bestPopoverHeight;
 - (id)delegate;
-- (id)p_dataSourceForTableView:(id)a3;
+- (id)p_dataSourceForTableView:(id)view;
 - (id)p_searchText;
-- (id)popViewControllerAnimated:(BOOL)a3;
-- (id)tableView:(id)a3 cellForPlainString:(id)a4;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 cellForSearchResult:(id)a4;
-- (id)tableView:(id)a3 noResultsCellWithKind:(int)a4;
-- (id)tableView:(id)a3 seeAllResultsCellWithKind:(int)a4 count:(unint64_t)a5;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
-- (id)tableView:(id)a3 viewForHeaderWithTitle:(id)a4;
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4;
+- (id)popViewControllerAnimated:(BOOL)animated;
+- (id)tableView:(id)view cellForPlainString:(id)string;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view cellForSearchResult:(id)result;
+- (id)tableView:(id)view noResultsCellWithKind:(int)kind;
+- (id)tableView:(id)view seeAllResultsCellWithKind:(int)kind count:(unint64_t)count;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
+- (id)tableView:(id)view viewForHeaderWithTitle:(id)title;
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path;
 - (id)topTableViewController;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
+- (int64_t)numberOfSectionsInTableView:(id)view;
 - (int64_t)overrideUserInterfaceStyle;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)_adjustPocketInsetsForSafeAreaInsets:(UIEdgeInsets)a3;
-- (void)_analyticsSubmitInBookSearchEventWithSearchText:(id)a3;
-- (void)_configureResultsCell:(id)a3 forSearchResult:(id)a4 inTableView:(id)a5;
-- (void)_scrollTableViewToTop:(id)a3;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)_adjustPocketInsetsForSafeAreaInsets:(UIEdgeInsets)insets;
+- (void)_analyticsSubmitInBookSearchEventWithSearchText:(id)text;
+- (void)_configureResultsCell:(id)cell forSearchResult:(id)result inTableView:(id)view;
+- (void)_scrollTableViewToTop:(id)top;
 - (void)dealloc;
-- (void)didPresentViewController:(id)a3;
+- (void)didPresentViewController:(id)controller;
 - (void)didReceiveMemoryWarning;
-- (void)keyboardWillChangeFrame:(id)a3;
-- (void)keyboardWillHideOrUndock:(id)a3;
-- (void)keyboardWillShowOrDock:(id)a3;
-- (void)navigateToAbsolutePageIndex:(unint64_t)a3;
-- (void)navigateToSearchResult:(id)a3;
-- (void)p_changeToSize:(double)a3 animated:(BOOL)a4;
-- (void)p_configureAnimated:(BOOL)a3;
-- (void)p_configureTableViewController:(id)a3;
-- (void)p_configureTableViewControllerColors:(id)a3;
+- (void)keyboardWillChangeFrame:(id)frame;
+- (void)keyboardWillHideOrUndock:(id)undock;
+- (void)keyboardWillShowOrDock:(id)dock;
+- (void)navigateToAbsolutePageIndex:(unint64_t)index;
+- (void)navigateToSearchResult:(id)result;
+- (void)p_changeToSize:(double)size animated:(BOOL)animated;
+- (void)p_configureAnimated:(BOOL)animated;
+- (void)p_configureTableViewController:(id)controller;
+- (void)p_configureTableViewControllerColors:(id)colors;
 - (void)p_deferredViewWillAppear;
-- (void)p_dismissSearchView:(id)a3;
-- (void)p_navigateToAbsolutePageIndex:(id)a3 animated:(BOOL)a4;
-- (void)p_navigateToSearchResult:(id)a3 animated:(BOOL)a4;
+- (void)p_dismissSearchView:(id)view;
+- (void)p_navigateToAbsolutePageIndex:(id)index animated:(BOOL)animated;
+- (void)p_navigateToSearchResult:(id)result animated:(BOOL)animated;
 - (void)p_removeSpinner;
-- (void)p_searchForSuggestion:(id)a3;
-- (void)p_searchIndexLoaded:(id)a3;
-- (void)p_searchPaginationResultsUpdated:(id)a3;
+- (void)p_searchForSuggestion:(id)suggestion;
+- (void)p_searchIndexLoaded:(id)loaded;
+- (void)p_searchPaginationResultsUpdated:(id)updated;
 - (void)p_setupSpinner;
 - (void)p_showRecents;
-- (void)popToRootViewControllerAnimated:(BOOL)a3 completion:(id)a4;
-- (void)pushViewController:(id)a3 animated:(BOOL)a4;
-- (void)scrollViewWillBeginDragging:(id)a3;
-- (void)searchBar:(id)a3 textDidChange:(id)a4;
-- (void)searchBarCancelButtonClicked:(id)a3;
-- (void)searchBarSearchButtonClicked:(id)a3;
-- (void)searchForString:(id)a3;
-- (void)setNoIndexViewVisible:(BOOL)a3;
-- (void)setTheme:(id)a3;
-- (void)showAllResultsWithKind:(int)a3;
+- (void)popToRootViewControllerAnimated:(BOOL)animated completion:(id)completion;
+- (void)pushViewController:(id)controller animated:(BOOL)animated;
+- (void)scrollViewWillBeginDragging:(id)dragging;
+- (void)searchBar:(id)bar textDidChange:(id)change;
+- (void)searchBarCancelButtonClicked:(id)clicked;
+- (void)searchBarSearchButtonClicked:(id)clicked;
+- (void)searchForString:(id)string;
+- (void)setNoIndexViewVisible:(BOOL)visible;
+- (void)setTheme:(id)theme;
+- (void)showAllResultsWithKind:(int)kind;
 - (void)stylizeForTheme;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
-- (void)willTransitionToTraitCollection:(id)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
+- (void)willTransitionToTraitCollection:(id)collection withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation THSearchViewController
 
-- (THSearchViewController)initWithSearchController:(id)a3
+- (THSearchViewController)initWithSearchController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v6 = [(THSearchViewController *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->mSearchController, a3);
+    objc_storeStrong(&v6->mSearchController, controller);
     v8 = +[UITraitCollection bc_allAPITraits];
     v9 = [(THSearchViewController *)v7 registerForTraitChanges:v8 withAction:"_traitCollectionDidChange:previousTraitCollection:"];
   }
@@ -113,11 +113,11 @@
 
 - (BOOL)p_isBottomViewVisible
 {
-  v3 = [(THSearchViewController *)self view];
-  if (v3)
+  view = [(THSearchViewController *)self view];
+  if (view)
   {
-    v4 = [(THSearchViewController *)self view];
-    [v4 frame];
+    view2 = [(THSearchViewController *)self view];
+    [view2 frame];
     if (v5 <= self->_searchBarHeight)
     {
       v7 = 0;
@@ -138,12 +138,12 @@
   return v7;
 }
 
-- (void)p_changeToSize:(double)a3 animated:(BOOL)a4
+- (void)p_changeToSize:(double)size animated:(BOOL)animated
 {
   if (![(THSearchViewController *)self p_presentingFullscreen]&& [(THSearchViewController *)self p_isBottomViewVisible])
   {
-    v6 = [(THSearchViewController *)self view];
-    [v6 frame];
+    view = [(THSearchViewController *)self view];
+    [view frame];
     Width = CGRectGetWidth(v15);
 
     if (Width <= 0.0)
@@ -151,30 +151,30 @@
       Width = 375.0;
     }
 
-    v8 = [(THSearchViewController *)self view];
-    [v8 frame];
+    view2 = [(THSearchViewController *)self view];
+    [view2 frame];
     v10 = v9;
     v12 = v11;
 
-    if (Width != v10 || v12 != a3)
+    if (Width != v10 || v12 != size)
     {
 
-      [(THSearchViewController *)self setPreferredContentSize:Width, a3];
+      [(THSearchViewController *)self setPreferredContentSize:Width, size];
     }
   }
 }
 
 - (id)topTableViewController
 {
-  v2 = [(THSearchViewController *)self topViewController];
+  topViewController = [(THSearchViewController *)self topViewController];
   objc_opt_class();
   v3 = TSUDynamicCast();
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 topViewController];
+    topViewController2 = [v3 topViewController];
 
-    v2 = v5;
+    topViewController = topViewController2;
   }
 
   objc_opt_class();
@@ -185,8 +185,8 @@
 
 - (double)p_aboveAndBelowContentHeight
 {
-  v2 = [(THSearchViewController *)self searchBar];
-  [v2 frame];
+  searchBar = [(THSearchViewController *)self searchBar];
+  [searchBar frame];
   v4 = v3 + -1.0;
 
   return v4;
@@ -195,9 +195,9 @@
 - (double)p_bestPopoverHeight
 {
   searchBarHeight = self->_searchBarHeight;
-  v4 = [(THSearchViewController *)self topTableViewController];
-  v5 = [v4 tableView];
-  if (v5)
+  topTableViewController = [(THSearchViewController *)self topTableViewController];
+  tableView = [topTableViewController tableView];
+  if (tableView)
   {
     [(THSearchViewController *)self p_aboveAndBelowContentHeight];
     v7 = v6;
@@ -213,12 +213,12 @@
     }
 
     v10 = v9 - v7;
-    v11 = [(THSearchViewController *)self resultsDataSource];
-    v12 = [(THSearchViewController *)self suggestionsDataSource];
+    resultsDataSource = [(THSearchViewController *)self resultsDataSource];
+    suggestionsDataSource = [(THSearchViewController *)self suggestionsDataSource];
 
-    if (v11 == v12)
+    if (resultsDataSource == suggestionsDataSource)
     {
-      [v5 rowHeight];
+      [tableView rowHeight];
       v15 = v14;
       [(THSearchViewController *)self _resultsHeaderHeight];
       v17 = 440.0;
@@ -237,7 +237,7 @@
 
     else
     {
-      [v5 preferredContentHeightWithMax:v10];
+      [tableView preferredContentHeightWithMax:v10];
     }
 
     searchBarHeight = v7 + v13;
@@ -246,49 +246,49 @@
   return searchBarHeight;
 }
 
-- (void)keyboardWillShowOrDock:(id)a3
+- (void)keyboardWillShowOrDock:(id)dock
 {
   [(THSearchViewController *)self p_bestPopoverHeight];
 
   [(THSearchViewController *)self p_changeToSize:1 animated:?];
 }
 
-- (void)keyboardWillHideOrUndock:(id)a3
+- (void)keyboardWillHideOrUndock:(id)undock
 {
   [(THSearchViewController *)self p_bestPopoverHeight];
 
   [(THSearchViewController *)self p_changeToSize:1 animated:?];
 }
 
-- (void)keyboardWillChangeFrame:(id)a3
+- (void)keyboardWillChangeFrame:(id)frame
 {
   [(THSearchViewController *)self p_bestPopoverHeight];
 
   [(THSearchViewController *)self p_changeToSize:0 animated:?];
 }
 
-- (void)pushViewController:(id)a3 animated:(BOOL)a4
+- (void)pushViewController:(id)controller animated:(BOOL)animated
 {
   v4.receiver = self;
   v4.super_class = THSearchViewController;
-  [(THSearchViewController *)&v4 pushViewController:a3 animated:a4];
+  [(THSearchViewController *)&v4 pushViewController:controller animated:animated];
 }
 
-- (id)popViewControllerAnimated:(BOOL)a3
+- (id)popViewControllerAnimated:(BOOL)animated
 {
   v5.receiver = self;
   v5.super_class = THSearchViewController;
-  v3 = [(THSearchViewController *)&v5 popViewControllerAnimated:a3];
+  v3 = [(THSearchViewController *)&v5 popViewControllerAnimated:animated];
 
   return v3;
 }
 
-- (void)popToRootViewControllerAnimated:(BOOL)a3 completion:(id)a4
+- (void)popToRootViewControllerAnimated:(BOOL)animated completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
+  animatedCopy = animated;
+  completionCopy = completion;
   [(THSearchViewController *)self setNoIndexViewVisible:0];
-  if (v4)
+  if (animatedCopy)
   {
     +[CATransaction begin];
     v7 = [(THSearchViewController *)self popToRootViewControllerAnimated:1];
@@ -296,7 +296,7 @@
     v9[1] = 3221225472;
     v9[2] = sub_D1A6C;
     v9[3] = &unk_45B718;
-    v10 = v6;
+    v10 = completionCopy;
     [CATransaction setCompletionBlock:v9];
     +[CATransaction commit];
   }
@@ -304,7 +304,7 @@
   else
   {
     v8 = [(THSearchViewController *)self popToRootViewControllerAnimated:0];
-    (*(v6 + 2))(v6, 1);
+    (*(completionCopy + 2))(completionCopy, 1);
   }
 }
 
@@ -328,54 +328,54 @@
   [(THSearchViewController *)self popToRootViewControllerAnimated:v3 completion:v4];
 }
 
-- (void)_adjustPocketInsetsForSafeAreaInsets:(UIEdgeInsets)a3
+- (void)_adjustPocketInsetsForSafeAreaInsets:(UIEdgeInsets)insets
 {
-  top = a3.top;
-  v5 = [(THSearchViewController *)self resultsViewController:a3.top];
-  v24 = [v5 tableView];
+  top = insets.top;
+  v5 = [(THSearchViewController *)self resultsViewController:insets.top];
+  tableView = [v5 tableView];
 
-  [v24 contentInset];
+  [tableView contentInset];
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  [v24 setContentInset:top + 4.0];
-  [v24 _pocketInsets];
+  [tableView setContentInset:top + 4.0];
+  [tableView _pocketInsets];
   v13 = v12;
   v15 = v14;
   v17 = v16;
-  [v24 sectionHeaderHeight];
+  [tableView sectionHeaderHeight];
   v19 = top + 4.0 - v18;
-  [v24 _setPocketInsets:{v19, v13, v15, v17}];
+  [tableView _setPocketInsets:{v19, v13, v15, v17}];
   if (![(THSearchViewController *)self p_presentingFullscreen])
   {
     top = 44.0;
   }
 
-  v20 = [(THSearchViewController *)self detailsViewController];
-  v21 = [v20 tableView];
-  [v21 setContentInset:{top, v7, v9, v11}];
+  detailsViewController = [(THSearchViewController *)self detailsViewController];
+  tableView2 = [detailsViewController tableView];
+  [tableView2 setContentInset:{top, v7, v9, v11}];
 
-  v22 = [(THSearchViewController *)self detailsViewController];
-  v23 = [v22 tableView];
-  [v23 _setPocketInsets:{v19, v13, v15, v17}];
+  detailsViewController2 = [(THSearchViewController *)self detailsViewController];
+  tableView3 = [detailsViewController2 tableView];
+  [tableView3 _setPocketInsets:{v19, v13, v15, v17}];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v9.receiver = self;
   v9.super_class = THSearchViewController;
   [(THSearchViewController *)&v9 viewWillAppear:?];
-  v5 = [(THSearchViewController *)self ba_analyticsTracker];
+  ba_analyticsTracker = [(THSearchViewController *)self ba_analyticsTracker];
 
-  if (!v5)
+  if (!ba_analyticsTracker)
   {
     v6 = [(THSearchViewController *)self ba_setupNewAnalyticsTrackerWithName:@"ContentSearch"];
   }
 
-  [(THSearchViewController *)self p_configureAnimated:v3];
+  [(THSearchViewController *)self p_configureAnimated:appearCopy];
   v10 = @"animated";
-  v7 = [NSNumber numberWithBool:v3];
+  v7 = [NSNumber numberWithBool:appearCopy];
   v11 = v7;
   v8 = [NSDictionary dictionaryWithObjects:&v11 forKeys:&v10 count:1];
   [(THSearchViewController *)self setPendingDeferredViewWillAppear:v8];
@@ -383,16 +383,16 @@
 
 - (void)p_deferredViewWillAppear
 {
-  v3 = [(THSearchViewController *)self pendingDeferredViewWillAppear];
-  v4 = [v3 objectForKeyedSubscript:@"animated"];
-  v5 = [v4 BOOLValue];
+  pendingDeferredViewWillAppear = [(THSearchViewController *)self pendingDeferredViewWillAppear];
+  v4 = [pendingDeferredViewWillAppear objectForKeyedSubscript:@"animated"];
+  bOOLValue = [v4 BOOLValue];
 
   [(THSearchViewController *)self setPendingDeferredViewWillAppear:0];
 
-  [(THSearchViewController *)self p_configureAnimated:v5];
+  [(THSearchViewController *)self p_configureAnimated:bOOLValue];
 }
 
-- (void)p_configureAnimated:(BOOL)a3
+- (void)p_configureAnimated:(BOOL)animated
 {
   if (isPad() && (WeakRetained = objc_loadWeakRetained(&self->mSearchBar), [WeakRetained setShowsCancelButton:0], WeakRetained, (-[THSearchViewController _isInPopoverPresentation](self, "_isInPopoverPresentation") & 1) == 0))
   {
@@ -406,28 +406,28 @@
 
   v5 = THBundle();
   v6 = [v5 localizedStringForKey:@"Search Book" value:&stru_471858 table:0];
-  v7 = [(THSearchViewController *)self resultsViewController];
-  v8 = [v7 navigationItem];
-  [v8 setTitle:v6];
+  resultsViewController = [(THSearchViewController *)self resultsViewController];
+  navigationItem = [resultsViewController navigationItem];
+  [navigationItem setTitle:v6];
 
-  v9 = [(THSearchViewController *)self resultsViewController];
-  v10 = [v9 navigationItem];
-  [v10 setRightBarButtonItem:v17];
+  resultsViewController2 = [(THSearchViewController *)self resultsViewController];
+  navigationItem2 = [resultsViewController2 navigationItem];
+  [navigationItem2 setRightBarButtonItem:v17];
 
   if ([(THSearchController *)self->mSearchController indexLoaded])
   {
     if (![(THSearchViewController *)self settingSearchForString])
     {
-      v11 = [(THSearchController *)self->mSearchController currentQuery];
-      if (v11)
+      currentQuery = [(THSearchController *)self->mSearchController currentQuery];
+      if (currentQuery)
       {
       }
 
       else
       {
-        v12 = [(THSearchViewController *)self pendingSearchText];
+        pendingSearchText = [(THSearchViewController *)self pendingSearchText];
 
-        if (!v12)
+        if (!pendingSearchText)
         {
           [(THSearchViewController *)self p_showRecents];
           goto LABEL_12;
@@ -435,34 +435,34 @@
       }
     }
 
-    v13 = [(THSearchController *)self->mSearchController currentQuery];
+    currentQuery2 = [(THSearchController *)self->mSearchController currentQuery];
 
-    if (v13)
+    if (currentQuery2)
     {
-      v14 = [(THSearchController *)self->mSearchController currentQuery];
+      currentQuery3 = [(THSearchController *)self->mSearchController currentQuery];
       v15 = objc_loadWeakRetained(&self->mSearchBar);
-      [v15 setText:v14];
+      [v15 setText:currentQuery3];
     }
   }
 
 LABEL_12:
-  v16 = [(THSearchViewController *)self uiSearchController];
-  [v16 setActive:1];
+  uiSearchController = [(THSearchViewController *)self uiSearchController];
+  [uiSearchController setActive:1];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v9.receiver = self;
   v9.super_class = THSearchViewController;
-  [(THSearchViewController *)&v9 viewDidAppear:a3];
+  [(THSearchViewController *)&v9 viewDidAppear:appear];
   if (!self->mSearchingForString)
   {
-    v4 = [(THSearchViewController *)self topTableViewController];
-    v5 = [v4 tableView];
-    v6 = [(THSearchViewController *)self p_dataSourceForTableView:v5];
-    v7 = [v6 searchViewMode];
+    topTableViewController = [(THSearchViewController *)self topTableViewController];
+    tableView = [topTableViewController tableView];
+    v6 = [(THSearchViewController *)self p_dataSourceForTableView:tableView];
+    searchViewMode = [v6 searchViewMode];
 
-    if (v7 != 2)
+    if (searchViewMode != 2)
     {
       WeakRetained = objc_loadWeakRetained(&self->mSearchBar);
       [WeakRetained becomeFirstResponder];
@@ -472,18 +472,18 @@ LABEL_12:
   self->mSearchingForString = 0;
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
-  v5 = [(THSearchViewController *)self uiSearchController];
-  [v5 setActive:0];
+  disappearCopy = disappear;
+  uiSearchController = [(THSearchViewController *)self uiSearchController];
+  [uiSearchController setActive:0];
 
   v6.receiver = self;
   v6.super_class = THSearchViewController;
-  [(THSearchViewController *)&v6 viewWillDisappear:v3];
+  [(THSearchViewController *)&v6 viewWillDisappear:disappearCopy];
 }
 
-- (void)didPresentViewController:(id)a3
+- (void)didPresentViewController:(id)controller
 {
   if ([(THSearchViewController *)self p_isBottomViewVisible])
   {
@@ -493,7 +493,7 @@ LABEL_12:
   }
 }
 
-- (void)p_searchIndexLoaded:(id)a3
+- (void)p_searchIndexLoaded:(id)loaded
 {
   v4 = +[NSNotificationCenter defaultCenter];
   [v4 removeObserver:self name:THSearchControllerDidLoadIndexNotification object:self->mSearchController];
@@ -507,72 +507,72 @@ LABEL_12:
   CFRunLoopPerformBlock(Main, kCFRunLoopDefaultMode, block);
 }
 
-- (void)p_searchPaginationResultsUpdated:(id)a3
+- (void)p_searchPaginationResultsUpdated:(id)updated
 {
-  v4 = [(THSearchViewController *)self resultsViewController];
-  v5 = [v4 tableView];
-  [v5 reloadData];
+  resultsViewController = [(THSearchViewController *)self resultsViewController];
+  tableView = [resultsViewController tableView];
+  [tableView reloadData];
 
-  v7 = [(THSearchViewController *)self detailsViewController];
-  v6 = [v7 tableView];
-  [v6 reloadData];
+  detailsViewController = [(THSearchViewController *)self detailsViewController];
+  tableView2 = [detailsViewController tableView];
+  [tableView2 reloadData];
 }
 
-- (void)setTheme:(id)a3
+- (void)setTheme:(id)theme
 {
-  v5 = a3;
-  if (self->mTheme != v5)
+  themeCopy = theme;
+  if (self->mTheme != themeCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->mTheme, a3);
+    v6 = themeCopy;
+    objc_storeStrong(&self->mTheme, theme);
     [(THSearchViewController *)self stylizeForTheme];
-    v5 = v6;
+    themeCopy = v6;
   }
 }
 
 - (void)stylizeForTheme
 {
-  v3 = [(THSearchViewController *)self viewIfLoaded];
-  if (v3)
+  viewIfLoaded = [(THSearchViewController *)self viewIfLoaded];
+  if (viewIfLoaded)
   {
-    v36 = v3;
-    v4 = [(THSearchViewController *)self themePage];
-    v5 = [(THSearchViewController *)self overrideUserInterfaceStyle];
-    v6 = [(THSearchViewController *)self resultsViewController];
-    [v6 setOverrideUserInterfaceStyle:v5];
+    v36 = viewIfLoaded;
+    themePage = [(THSearchViewController *)self themePage];
+    overrideUserInterfaceStyle = [(THSearchViewController *)self overrideUserInterfaceStyle];
+    resultsViewController = [(THSearchViewController *)self resultsViewController];
+    [resultsViewController setOverrideUserInterfaceStyle:overrideUserInterfaceStyle];
 
-    v7 = [(THSearchViewController *)self detailsViewController];
-    [v7 setOverrideUserInterfaceStyle:v5];
+    detailsViewController = [(THSearchViewController *)self detailsViewController];
+    [detailsViewController setOverrideUserInterfaceStyle:overrideUserInterfaceStyle];
 
-    v8 = [v4 secondaryTextColor];
-    v9 = [v4 keyColor];
-    v35 = [v4 primaryTextColor];
-    v10 = [v4 searchBackgroundColor];
-    if (!v10)
+    secondaryTextColor = [themePage secondaryTextColor];
+    keyColor = [themePage keyColor];
+    primaryTextColor = [themePage primaryTextColor];
+    searchBackgroundColor = [themePage searchBackgroundColor];
+    if (!searchBackgroundColor)
     {
-      v10 = [v4 backgroundColorForTraitEnvironment:self];
+      searchBackgroundColor = [themePage backgroundColorForTraitEnvironment:self];
     }
 
-    [v36 setTintColor:v9];
-    [v36 setBackgroundColor:v10];
-    v11 = [(THSearchViewController *)self popoverPresentationController];
-    [v11 setBackgroundColor:v10];
+    [v36 setTintColor:keyColor];
+    [v36 setBackgroundColor:searchBackgroundColor];
+    popoverPresentationController = [(THSearchViewController *)self popoverPresentationController];
+    [popoverPresentationController setBackgroundColor:searchBackgroundColor];
 
-    v12 = [(THSearchViewController *)self resultsViewController];
-    [(THSearchViewController *)self p_configureTableViewControllerColors:v12];
+    resultsViewController2 = [(THSearchViewController *)self resultsViewController];
+    [(THSearchViewController *)self p_configureTableViewControllerColors:resultsViewController2];
 
-    v13 = [(THSearchViewController *)self detailsViewController];
-    [(THSearchViewController *)self p_configureTableViewControllerColors:v13];
+    detailsViewController2 = [(THSearchViewController *)self detailsViewController];
+    [(THSearchViewController *)self p_configureTableViewControllerColors:detailsViewController2];
 
-    v33 = [v4 dividerColor];
-    [(BEHairlineDividerView *)self->_headerDividerView setDividerColor:v33];
-    [(BEHairlineDividerView *)self->_footerTopBorderView setDividerColor:v33];
-    v34 = v9;
+    dividerColor = [themePage dividerColor];
+    [(BEHairlineDividerView *)self->_headerDividerView setDividerColor:dividerColor];
+    [(BEHairlineDividerView *)self->_footerTopBorderView setDividerColor:dividerColor];
+    v34 = keyColor;
     v14 = [UIImage systemImageNamed:@"xmark.circle.fill"];
     v15 = [UIImageSymbolConfiguration configurationWithPointSize:14.0];
     v16 = [v14 imageWithConfiguration:v15];
 
-    v17 = [v16 imageWithTintColor:v8];
+    v17 = [v16 imageWithTintColor:secondaryTextColor];
 
     v18 = [v17 imageWithRenderingMode:1];
 
@@ -580,7 +580,7 @@ LABEL_12:
     v20 = [UIImageSymbolConfiguration configurationWithPointSize:16.0];
     v21 = [v19 imageWithConfiguration:v20];
 
-    v22 = [v21 imageWithTintColor:v8];
+    v22 = [v21 imageWithTintColor:secondaryTextColor];
 
     WeakRetained = objc_loadWeakRetained(&self->mSearchBar);
     [WeakRetained setImage:v18 forSearchBarIcon:1 state:0];
@@ -589,64 +589,64 @@ LABEL_12:
     [v24 setImage:v22 forSearchBarIcon:0 state:0];
 
     v25 = objc_loadWeakRetained(&self->mSearchBar);
-    v26 = [v25 searchField];
+    searchField = [v25 searchField];
 
-    v27 = [v26 _placeholderLabel];
-    [v27 setTextColor:v8];
+    _placeholderLabel = [searchField _placeholderLabel];
+    [_placeholderLabel setTextColor:secondaryTextColor];
 
-    [v26 setTextColor:v35];
-    v28 = [v26 leftView];
-    [v28 setTintColor:v8];
+    [searchField setTextColor:primaryTextColor];
+    leftView = [searchField leftView];
+    [leftView setTintColor:secondaryTextColor];
 
-    v29 = [(THSearchViewController *)self resultsViewController];
-    v30 = [v29 tableView];
-    [v30 reloadData];
+    resultsViewController3 = [(THSearchViewController *)self resultsViewController];
+    tableView = [resultsViewController3 tableView];
+    [tableView reloadData];
 
-    v31 = [(THSearchViewController *)self detailsViewController];
-    v32 = [v31 tableView];
-    [v32 reloadData];
+    detailsViewController3 = [(THSearchViewController *)self detailsViewController];
+    tableView2 = [detailsViewController3 tableView];
+    [tableView2 reloadData];
 
-    v3 = v36;
+    viewIfLoaded = v36;
   }
 }
 
-- (void)p_configureTableViewController:(id)a3
+- (void)p_configureTableViewController:(id)controller
 {
-  v4 = [a3 tableView];
-  [v4 setContentInsetAdjustmentBehavior:2];
+  tableView = [controller tableView];
+  [tableView setContentInsetAdjustmentBehavior:2];
   [(THSearchViewController *)self _resultsHeaderHeight];
-  [v4 setSectionHeaderHeight:?];
-  [v4 setDataSource:self];
-  [v4 setDelegate:self];
+  [tableView setSectionHeaderHeight:?];
+  [tableView setDataSource:self];
+  [tableView setDelegate:self];
 }
 
-- (void)_scrollTableViewToTop:(id)a3
+- (void)_scrollTableViewToTop:(id)top
 {
-  v6 = a3;
-  [v6 contentOffset];
+  topCopy = top;
+  [topCopy contentOffset];
   v4 = v3;
-  [v6 contentInset];
-  [v6 setContentOffset:{v4, -v5}];
+  [topCopy contentInset];
+  [topCopy setContentOffset:{v4, -v5}];
 }
 
-- (void)p_configureTableViewControllerColors:(id)a3
+- (void)p_configureTableViewControllerColors:(id)colors
 {
-  v8 = a3;
-  v4 = [(THSearchViewController *)self themePage];
-  v5 = [v4 searchBackgroundColor];
-  if (!v5)
+  colorsCopy = colors;
+  themePage = [(THSearchViewController *)self themePage];
+  searchBackgroundColor = [themePage searchBackgroundColor];
+  if (!searchBackgroundColor)
   {
-    v5 = [v4 backgroundColorForTraitEnvironment:self];
+    searchBackgroundColor = [themePage backgroundColorForTraitEnvironment:self];
   }
 
-  v6 = [v8 tableView];
-  v7 = [v4 tableViewSeparatorColor];
-  [v6 setSeparatorColor:v7];
+  tableView = [colorsCopy tableView];
+  tableViewSeparatorColor = [themePage tableViewSeparatorColor];
+  [tableView setSeparatorColor:tableViewSeparatorColor];
 
-  [v6 setBackgroundColor:v5];
+  [tableView setBackgroundColor:searchBackgroundColor];
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
   if ([(THSearchViewController *)self p_dismissKeyboardOnScroll])
   {
@@ -668,18 +668,18 @@ LABEL_12:
     v4 = kBESearchSectionSearchResultCellHeightPad;
   }
 
-  v5 = [(THSearchViewController *)self detailsViewController];
-  v6 = [v5 tableView];
-  [v6 setEstimatedRowHeight:v4];
+  detailsViewController = [(THSearchViewController *)self detailsViewController];
+  tableView = [detailsViewController tableView];
+  [tableView setEstimatedRowHeight:v4];
 
-  v7 = [(THSearchViewController *)self pendingDeferredViewWillAppear];
-  if (v7)
+  pendingDeferredViewWillAppear = [(THSearchViewController *)self pendingDeferredViewWillAppear];
+  if (pendingDeferredViewWillAppear)
   {
-    v8 = v7;
-    v9 = [(THSearchViewController *)self traitCollection];
-    v10 = [v9 horizontalSizeClass];
+    v8 = pendingDeferredViewWillAppear;
+    traitCollection = [(THSearchViewController *)self traitCollection];
+    horizontalSizeClass = [traitCollection horizontalSizeClass];
 
-    if (v10)
+    if (horizontalSizeClass)
     {
 
       [(THSearchViewController *)self p_deferredViewWillAppear];
@@ -687,30 +687,30 @@ LABEL_12:
   }
 }
 
-- (void)willTransitionToTraitCollection:(id)a3 withTransitionCoordinator:(id)a4
+- (void)willTransitionToTraitCollection:(id)collection withTransitionCoordinator:(id)coordinator
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_D2CF0;
   v4[3] = &unk_45D290;
   v4[4] = self;
-  [a4 animateAlongsideTransition:v4 completion:0];
+  [coordinator animateAlongsideTransition:v4 completion:0];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v9.receiver = self;
   v9.super_class = THSearchViewController;
-  v7 = a4;
-  [(THSearchViewController *)&v9 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  coordinatorCopy = coordinator;
+  [(THSearchViewController *)&v9 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_D2DD4;
   v8[3] = &unk_45D290;
   v8[4] = self;
-  [v7 animateAlongsideTransition:&stru_45D2D0 completion:v8];
+  [coordinatorCopy animateAlongsideTransition:&stru_45D2D0 completion:v8];
 }
 
 - (void)viewDidLoad
@@ -718,10 +718,10 @@ LABEL_12:
   v92.receiver = self;
   v92.super_class = THSearchViewController;
   [(THSearchViewController *)&v92 viewDidLoad];
-  v3 = [(THSearchViewController *)self view];
+  view = [(THSearchViewController *)self view];
   v4 = +[UIColor whiteColor];
-  v90 = v3;
-  [v3 setBackgroundColor:v4];
+  v90 = view;
+  [view setBackgroundColor:v4];
 
   v91 = objc_alloc_init(UIView);
   [v91 setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -757,38 +757,38 @@ LABEL_12:
   [v12 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v6 addSubview:v12];
   objc_storeStrong(&self->mNoIndexActivityIndicatorView, v12);
-  v85 = [v8 centerXAnchor];
-  v83 = [v6 centerXAnchor];
-  v81 = [v85 constraintEqualToAnchor:v83];
+  centerXAnchor = [v8 centerXAnchor];
+  centerXAnchor2 = [v6 centerXAnchor];
+  v81 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v94[0] = v81;
-  v79 = [v8 topAnchor];
-  v77 = [v6 topAnchor];
-  v76 = [v79 constraintEqualToAnchor:v77];
+  topAnchor = [v8 topAnchor];
+  topAnchor2 = [v6 topAnchor];
+  v76 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v94[1] = v76;
-  v75 = [v8 bottomAnchor];
-  v74 = [v6 bottomAnchor];
-  v73 = [v75 constraintEqualToAnchor:v74];
+  bottomAnchor = [v8 bottomAnchor];
+  bottomAnchor2 = [v6 bottomAnchor];
+  v73 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v94[2] = v73;
-  v72 = [v8 widthAnchor];
-  v71 = [v6 widthAnchor];
-  v70 = [v72 constraintLessThanOrEqualToAnchor:v71 constant:-30.0];
+  widthAnchor = [v8 widthAnchor];
+  widthAnchor2 = [v6 widthAnchor];
+  v70 = [widthAnchor constraintLessThanOrEqualToAnchor:widthAnchor2 constant:-30.0];
   v94[3] = v70;
-  v69 = [v12 centerYAnchor];
+  centerYAnchor = [v12 centerYAnchor];
   v89 = v6;
-  v68 = [v6 centerYAnchor];
-  v13 = [v69 constraintEqualToAnchor:v68];
+  centerYAnchor2 = [v6 centerYAnchor];
+  v13 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v94[4] = v13;
-  v14 = [v12 trailingAnchor];
+  trailingAnchor = [v12 trailingAnchor];
   v88 = v8;
-  v15 = [v8 leadingAnchor];
-  v16 = [v14 constraintEqualToAnchor:v15 constant:-10.0];
+  leadingAnchor = [v8 leadingAnchor];
+  v16 = [trailingAnchor constraintEqualToAnchor:leadingAnchor constant:-10.0];
   v94[5] = v16;
-  v17 = [v12 widthAnchor];
-  v18 = [v17 constraintEqualToConstant:20.0];
+  widthAnchor3 = [v12 widthAnchor];
+  v18 = [widthAnchor3 constraintEqualToConstant:20.0];
   v94[6] = v18;
   v87 = v12;
-  v19 = [v12 heightAnchor];
-  v20 = [v19 constraintEqualToConstant:20.0];
+  heightAnchor = [v12 heightAnchor];
+  v20 = [heightAnchor constraintEqualToConstant:20.0];
   v94[7] = v20;
   v21 = [NSArray arrayWithObjects:v94 count:8];
   [NSLayoutConstraint activateConstraints:v21];
@@ -806,23 +806,23 @@ LABEL_12:
   v25 = [[THSearchTableViewController alloc] initWithNibName:0 bundle:0];
   [(THSearchViewController *)self setDetailsViewController:v25];
 
-  v26 = [(THSearchViewController *)self resultsViewController];
-  v27 = [v26 p_setupStandardUISearchController];
-  [(THSearchViewController *)self setUiSearchController:v27];
+  resultsViewController = [(THSearchViewController *)self resultsViewController];
+  p_setupStandardUISearchController = [resultsViewController p_setupStandardUISearchController];
+  [(THSearchViewController *)self setUiSearchController:p_setupStandardUISearchController];
 
-  v28 = [(THSearchViewController *)self uiSearchController];
-  [v28 setSearchResultsUpdater:self];
+  uiSearchController = [(THSearchViewController *)self uiSearchController];
+  [uiSearchController setSearchResultsUpdater:self];
 
-  v29 = [(THSearchViewController *)self uiSearchController];
-  v30 = [v29 searchBar];
-  [v30 setDelegate:self];
+  uiSearchController2 = [(THSearchViewController *)self uiSearchController];
+  searchBar = [uiSearchController2 searchBar];
+  [searchBar setDelegate:self];
 
-  v31 = [(THSearchViewController *)self uiSearchController];
-  [v31 setObscuresBackgroundDuringPresentation:0];
+  uiSearchController3 = [(THSearchViewController *)self uiSearchController];
+  [uiSearchController3 setObscuresBackgroundDuringPresentation:0];
 
-  v32 = [(THSearchViewController *)self uiSearchController];
-  v33 = [v32 searchBar];
-  objc_storeWeak(&self->mSearchBar, v33);
+  uiSearchController4 = [(THSearchViewController *)self uiSearchController];
+  searchBar2 = [uiSearchController4 searchBar];
+  objc_storeWeak(&self->mSearchBar, searchBar2);
 
   v34 = objc_loadWeakRetained(&self->mSearchBar);
   [v34 setDelegate:self];
@@ -833,52 +833,52 @@ LABEL_12:
   [v37 setPlaceholder:v36];
 
   v38 = [THSearchTableViewDataSource alloc];
-  v39 = [(THSearchViewController *)self searchController];
-  v40 = [(THSearchTableViewDataSource *)v38 initWithSearchController:v39 searchViewMode:0];
+  searchController = [(THSearchViewController *)self searchController];
+  v40 = [(THSearchTableViewDataSource *)v38 initWithSearchController:searchController searchViewMode:0];
   [(THSearchViewController *)self setResultsDataSource:v40];
 
   v41 = [THSearchTableViewDataSource alloc];
-  v42 = [(THSearchViewController *)self searchController];
-  v43 = [(THSearchTableViewDataSource *)v41 initWithSearchController:v42 searchViewMode:2];
+  searchController2 = [(THSearchViewController *)self searchController];
+  v43 = [(THSearchTableViewDataSource *)v41 initWithSearchController:searchController2 searchViewMode:2];
   [(THSearchViewController *)self setDetailsDataSource:v43];
 
   v44 = [THSearchTableViewDataSource alloc];
-  v45 = [(THSearchViewController *)self searchController];
-  v46 = [(THSearchTableViewDataSource *)v44 initWithSearchController:v45 searchViewMode:1];
+  searchController3 = [(THSearchViewController *)self searchController];
+  v46 = [(THSearchTableViewDataSource *)v44 initWithSearchController:searchController3 searchViewMode:1];
   [(THSearchViewController *)self setSuggestionsDataSource:v46];
 
-  v47 = [(THSearchViewController *)self resultsViewController];
-  [(THSearchViewController *)self p_configureTableViewController:v47];
+  resultsViewController2 = [(THSearchViewController *)self resultsViewController];
+  [(THSearchViewController *)self p_configureTableViewController:resultsViewController2];
 
-  v48 = [(THSearchViewController *)self detailsViewController];
-  [(THSearchViewController *)self p_configureTableViewController:v48];
+  detailsViewController = [(THSearchViewController *)self detailsViewController];
+  [(THSearchViewController *)self p_configureTableViewController:detailsViewController];
 
-  v49 = [(THSearchViewController *)self resultsViewController];
-  [(THSearchViewController *)self pushViewController:v49 animated:0];
+  resultsViewController3 = [(THSearchViewController *)self resultsViewController];
+  [(THSearchViewController *)self pushViewController:resultsViewController3 animated:0];
 
-  v50 = [(THSearchViewController *)self resultsViewController];
-  v51 = [v50 view];
+  resultsViewController4 = [(THSearchViewController *)self resultsViewController];
+  view2 = [resultsViewController4 view];
 
-  v52 = [(THSearchViewController *)self resultsViewController];
-  v53 = [v52 view];
-  [v53 addSubview:v91];
+  resultsViewController5 = [(THSearchViewController *)self resultsViewController];
+  view3 = [resultsViewController5 view];
+  [view3 addSubview:v91];
 
-  v84 = [v91 topAnchor];
-  v82 = [v51 topAnchor];
-  v80 = [v84 constraintEqualToAnchor:v82];
+  topAnchor3 = [v91 topAnchor];
+  topAnchor4 = [view2 topAnchor];
+  v80 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
   v93[0] = v80;
-  v78 = [v91 leadingAnchor];
-  v54 = [v51 leadingAnchor];
-  v55 = [v78 constraintEqualToAnchor:v54];
+  leadingAnchor2 = [v91 leadingAnchor];
+  leadingAnchor3 = [view2 leadingAnchor];
+  v55 = [leadingAnchor2 constraintEqualToAnchor:leadingAnchor3];
   v93[1] = v55;
-  v56 = [v91 trailingAnchor];
-  v57 = [v51 trailingAnchor];
-  v58 = [v56 constraintEqualToAnchor:v57];
+  trailingAnchor2 = [v91 trailingAnchor];
+  trailingAnchor3 = [view2 trailingAnchor];
+  v58 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3];
   v93[2] = v58;
-  v59 = [v91 bottomAnchor];
-  v86 = v51;
-  v60 = [v51 bottomAnchor];
-  v61 = [v59 constraintEqualToAnchor:v60];
+  bottomAnchor3 = [v91 bottomAnchor];
+  v86 = view2;
+  bottomAnchor4 = [view2 bottomAnchor];
+  v61 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
   v93[3] = v61;
   v62 = [NSArray arrayWithObjects:v93 count:4];
   [NSLayoutConstraint activateConstraints:v62];
@@ -896,46 +896,46 @@ LABEL_12:
     [(THSearchController *)self->mSearchController loadIndex];
   }
 
-  v66 = [(THSearchViewController *)self contentContainerView];
-  [v66 setClipsToBounds:1];
+  contentContainerView = [(THSearchViewController *)self contentContainerView];
+  [contentContainerView setClipsToBounds:1];
 
-  v67 = [(THSearchViewController *)self view];
-  [v67 setClipsToBounds:1];
+  view4 = [(THSearchViewController *)self view];
+  [view4 setClipsToBounds:1];
 
   [(THSearchViewController *)self stylizeForTheme];
 }
 
-- (void)setNoIndexViewVisible:(BOOL)a3
+- (void)setNoIndexViewVisible:(BOOL)visible
 {
-  if (a3)
+  if (visible)
   {
-    v4 = [(THSearchViewController *)self topViewController];
-    if (v4)
+    topViewController = [(THSearchViewController *)self topViewController];
+    if (topViewController)
     {
-      v5 = [(UIView *)self->mNoIndexView superview];
-      v6 = [v4 view];
+      superview = [(UIView *)self->mNoIndexView superview];
+      view = [topViewController view];
 
-      if (v5 != v6)
+      if (superview != view)
       {
-        v7 = [v4 view];
-        [v7 addSubview:self->mNoIndexView];
+        view2 = [topViewController view];
+        [view2 addSubview:self->mNoIndexView];
 
         [(UIView *)self->mNoIndexView setTranslatesAutoresizingMaskIntoConstraints:0];
-        v19 = [(UIView *)self->mNoIndexView centerXAnchor];
-        v20 = [v4 view];
-        v18 = [v20 centerXAnchor];
-        v17 = [v19 constraintEqualToAnchor:v18];
+        centerXAnchor = [(UIView *)self->mNoIndexView centerXAnchor];
+        view3 = [topViewController view];
+        centerXAnchor2 = [view3 centerXAnchor];
+        v17 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
         v23[0] = v17;
-        v15 = [(UIView *)self->mNoIndexView centerYAnchor];
-        v16 = [v4 view];
-        v8 = [v16 centerYAnchor];
-        v9 = [v15 constraintEqualToAnchor:v8];
+        centerYAnchor = [(UIView *)self->mNoIndexView centerYAnchor];
+        view4 = [topViewController view];
+        centerYAnchor2 = [view4 centerYAnchor];
+        v9 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
         v23[1] = v9;
-        v10 = [(UIView *)self->mNoIndexView widthAnchor];
-        v11 = [v10 constraintEqualToConstant:375.0];
+        widthAnchor = [(UIView *)self->mNoIndexView widthAnchor];
+        v11 = [widthAnchor constraintEqualToConstant:375.0];
         v23[2] = v11;
-        v12 = [(UIView *)self->mNoIndexView heightAnchor];
-        v13 = [v12 constraintEqualToConstant:44.0];
+        heightAnchor = [(UIView *)self->mNoIndexView heightAnchor];
+        v13 = [heightAnchor constraintEqualToConstant:44.0];
         v23[3] = v13;
         v14 = [NSArray arrayWithObjects:v23 count:4];
         [NSLayoutConstraint activateConstraints:v14];
@@ -968,31 +968,31 @@ LABEL_12:
 {
   v7.receiver = self;
   v7.super_class = THSearchViewController;
-  v3 = [(THSearchViewController *)&v7 overrideUserInterfaceStyle];
-  if (!v3)
+  overrideUserInterfaceStyle = [(THSearchViewController *)&v7 overrideUserInterfaceStyle];
+  if (!overrideUserInterfaceStyle)
   {
     objc_opt_class();
-    v4 = [(THSearchViewController *)self theme];
+    theme = [(THSearchViewController *)self theme];
     v5 = TSUDynamicCast();
 
     if (v5)
     {
-      v3 = [v5 userInterfaceStyle];
+      overrideUserInterfaceStyle = [v5 userInterfaceStyle];
     }
 
     else
     {
-      v3 = 0;
+      overrideUserInterfaceStyle = 0;
     }
   }
 
-  return v3;
+  return overrideUserInterfaceStyle;
 }
 
-- (void)p_dismissSearchView:(id)a3
+- (void)p_dismissSearchView:(id)view
 {
-  v3 = [(THSearchViewController *)self searchDelegate];
-  [v3 searchFinished:1 completion:0];
+  searchDelegate = [(THSearchViewController *)self searchDelegate];
+  [searchDelegate searchFinished:1 completion:0];
 }
 
 - (void)didReceiveMemoryWarning
@@ -1005,15 +1005,15 @@ LABEL_12:
   }
 }
 
-- (void)searchForString:(id)a3
+- (void)searchForString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   self->mSearchingForString = 1;
   if ([(THSearchController *)self->mSearchController indexLoaded])
   {
     self->mTextSetBySearch = 1;
     WeakRetained = objc_loadWeakRetained(&self->mSearchBar);
-    [WeakRetained setText:v4];
+    [WeakRetained setText:stringCopy];
 
     self->mTextSetBySearch = 0;
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
@@ -1025,10 +1025,10 @@ LABEL_12:
     v9[3] = &unk_45ADD8;
     v9[4] = self;
     v6 = objc_retainBlock(v9);
-    v7 = [(THSearchViewController *)self topViewController];
-    v8 = [(THSearchViewController *)self resultsViewController];
+    topViewController = [(THSearchViewController *)self topViewController];
+    resultsViewController = [(THSearchViewController *)self resultsViewController];
 
-    if (v7 == v8)
+    if (topViewController == resultsViewController)
     {
       (v6[2])(v6, 1);
     }
@@ -1041,21 +1041,21 @@ LABEL_12:
 
   else
   {
-    [(THSearchViewController *)self setPendingSearchText:v4];
+    [(THSearchViewController *)self setPendingSearchText:stringCopy];
   }
 }
 
-- (void)p_searchForSuggestion:(id)a3
+- (void)p_searchForSuggestion:(id)suggestion
 {
-  v4 = a3;
+  suggestionCopy = suggestion;
   mSearchController = self->mSearchController;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_D40E4;
   v7[3] = &unk_45ADB0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = suggestionCopy;
+  v6 = suggestionCopy;
   [(THSearchController *)mSearchController suggestionsForSearchString:v6 completionBlock:v7];
 }
 
@@ -1064,82 +1064,82 @@ LABEL_12:
   v3 = [[UIView alloc] initWithFrame:{0.0, 0.0, 60.0, 60.0}];
   [(THSearchViewController *)self setProgressView:v3];
 
-  v4 = [(THSearchViewController *)self resultsViewController];
-  v5 = [v4 tableView];
-  v6 = [v5 backgroundColor];
-  v7 = [(THSearchViewController *)self progressView];
-  [v7 setBackgroundColor:v6];
+  resultsViewController = [(THSearchViewController *)self resultsViewController];
+  tableView = [resultsViewController tableView];
+  backgroundColor = [tableView backgroundColor];
+  progressView = [(THSearchViewController *)self progressView];
+  [progressView setBackgroundColor:backgroundColor];
 
-  v8 = [(THSearchViewController *)self progressView];
-  v9 = [v8 layer];
-  [v9 setCornerRadius:7.0];
+  progressView2 = [(THSearchViewController *)self progressView];
+  layer = [progressView2 layer];
+  [layer setCornerRadius:7.0];
 
-  v10 = [(THSearchViewController *)self contentContainerView];
-  v11 = [(THSearchViewController *)self progressView];
-  [v10 addSubview:v11];
+  contentContainerView = [(THSearchViewController *)self contentContainerView];
+  progressView3 = [(THSearchViewController *)self progressView];
+  [contentContainerView addSubview:progressView3];
 
-  v12 = [(THSearchViewController *)self contentContainerView];
-  [v12 bounds];
+  contentContainerView2 = [(THSearchViewController *)self contentContainerView];
+  [contentContainerView2 bounds];
   TSDCenterOfRect();
   TSDFlooredPoint();
   v14 = v13;
   v16 = v15;
-  v17 = [(THSearchViewController *)self progressView];
-  [v17 setCenter:{v14, v16}];
+  progressView4 = [(THSearchViewController *)self progressView];
+  [progressView4 setCenter:{v14, v16}];
 
   v18 = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:101];
   [(THSearchViewController *)self setSpinner:v18];
 
-  v19 = [(THSearchViewController *)self contentContainerView];
-  v20 = [(THSearchViewController *)self spinner];
-  [v19 addSubview:v20];
+  contentContainerView3 = [(THSearchViewController *)self contentContainerView];
+  spinner = [(THSearchViewController *)self spinner];
+  [contentContainerView3 addSubview:spinner];
 
-  v21 = [(THSearchViewController *)self progressView];
-  [v21 center];
+  progressView5 = [(THSearchViewController *)self progressView];
+  [progressView5 center];
   v23 = v22;
   v25 = v24;
-  v26 = [(THSearchViewController *)self spinner];
-  [v26 setCenter:{v23, v25}];
+  spinner2 = [(THSearchViewController *)self spinner];
+  [spinner2 setCenter:{v23, v25}];
 
-  v27 = [(THSearchViewController *)self progressView];
-  [v27 setAlpha:0.0];
+  progressView6 = [(THSearchViewController *)self progressView];
+  [progressView6 setAlpha:0.0];
 
-  v28 = [(THSearchViewController *)self spinner];
-  [v28 setAlpha:0.0];
+  spinner3 = [(THSearchViewController *)self spinner];
+  [spinner3 setAlpha:0.0];
 
-  v29 = [(THSearchViewController *)self spinner];
-  [v29 startAnimating];
+  spinner4 = [(THSearchViewController *)self spinner];
+  [spinner4 startAnimating];
 }
 
 - (void)p_removeSpinner
 {
-  v3 = [(THSearchViewController *)self spinner];
+  spinner = [(THSearchViewController *)self spinner];
 
-  if (v3)
+  if (spinner)
   {
-    v4 = [(THSearchViewController *)self spinner];
-    [v4 stopAnimating];
+    spinner2 = [(THSearchViewController *)self spinner];
+    [spinner2 stopAnimating];
 
-    v5 = [(THSearchViewController *)self spinner];
-    [v5 removeFromSuperview];
+    spinner3 = [(THSearchViewController *)self spinner];
+    [spinner3 removeFromSuperview];
 
     [(THSearchViewController *)self setSpinner:0];
   }
 
-  v6 = [(THSearchViewController *)self progressView];
+  progressView = [(THSearchViewController *)self progressView];
 
-  if (v6)
+  if (progressView)
   {
-    v7 = [(THSearchViewController *)self progressView];
-    [v7 removeFromSuperview];
+    progressView2 = [(THSearchViewController *)self progressView];
+    [progressView2 removeFromSuperview];
 
     [(THSearchViewController *)self setProgressView:0];
   }
 }
 
-- (void)navigateToSearchResult:(id)a3
+- (void)navigateToSearchResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   [(THSearchViewController *)self p_setupSpinner];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
@@ -1147,43 +1147,43 @@ LABEL_12:
   v5[3] = &unk_45AD60;
   v5[4] = self;
   [UIView animateWithDuration:196608 delay:v5 options:0 animations:0.2 completion:0.5];
-  [(THSearchViewController *)self performSelector:"p_navigateToSearchResult:" withObject:v4 afterDelay:0.0];
+  [(THSearchViewController *)self performSelector:"p_navigateToSearchResult:" withObject:resultCopy afterDelay:0.0];
 }
 
-- (void)p_navigateToAbsolutePageIndex:(id)a3 animated:(BOOL)a4
+- (void)p_navigateToAbsolutePageIndex:(id)index animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
+  animatedCopy = animated;
+  indexCopy = index;
   [(THSearchViewController *)self p_removeSpinner];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_D46F4;
   v9[3] = &unk_45ADB0;
-  v10 = v6;
+  v10 = indexCopy;
   WeakRetained = objc_loadWeakRetained(&self->_searchDelegate);
   v7 = WeakRetained;
-  v8 = v6;
-  [v7 searchFinished:v4 completion:v9];
+  v8 = indexCopy;
+  [v7 searchFinished:animatedCopy completion:v9];
 }
 
-- (void)p_navigateToSearchResult:(id)a3 animated:(BOOL)a4
+- (void)p_navigateToSearchResult:(id)result animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
+  animatedCopy = animated;
+  resultCopy = result;
   [(THSearchViewController *)self p_removeSpinner];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_D4820;
   v9[3] = &unk_45D2F8;
   WeakRetained = objc_loadWeakRetained(&self->_searchDelegate);
-  v11 = self;
-  v12 = v6;
-  v7 = v6;
+  selfCopy = self;
+  v12 = resultCopy;
+  v7 = resultCopy;
   v8 = WeakRetained;
-  [v8 searchFinished:v4 completion:v9];
+  [v8 searchFinished:animatedCopy completion:v9];
 }
 
-- (void)navigateToAbsolutePageIndex:(unint64_t)a3
+- (void)navigateToAbsolutePageIndex:(unint64_t)index
 {
   [(THSearchViewController *)self p_setupSpinner];
   v6[0] = _NSConcreteStackBlock;
@@ -1192,48 +1192,48 @@ LABEL_12:
   v6[3] = &unk_45AD60;
   v6[4] = self;
   [UIView animateWithDuration:196608 delay:v6 options:0 animations:0.2 completion:0.5];
-  v5 = [NSNumber numberWithUnsignedInteger:a3];
+  v5 = [NSNumber numberWithUnsignedInteger:index];
   [(THSearchViewController *)self performSelector:"p_navigateToAbsolutePageIndex:" withObject:v5 afterDelay:0.0];
 }
 
-- (void)showAllResultsWithKind:(int)a3
+- (void)showAllResultsWithKind:(int)kind
 {
-  v3 = *&a3;
-  v5 = [(THSearchViewController *)self detailsViewController];
-  v12 = [v5 tableView];
+  v3 = *&kind;
+  detailsViewController = [(THSearchViewController *)self detailsViewController];
+  tableView = [detailsViewController tableView];
 
-  v6 = [(THSearchViewController *)self detailsDataSource];
-  [v6 updateForResultsKind:v3];
+  detailsDataSource = [(THSearchViewController *)self detailsDataSource];
+  [detailsDataSource updateForResultsKind:v3];
 
-  [v12 reloadData];
-  [(THSearchViewController *)self _scrollTableViewToTop:v12];
-  v7 = [(THSearchViewController *)self searchController];
-  v8 = [v7 currentQuery];
-  v9 = [(THSearchViewController *)self detailsViewController];
-  v10 = [v9 navigationItem];
-  [v10 setTitle:v8];
+  [tableView reloadData];
+  [(THSearchViewController *)self _scrollTableViewToTop:tableView];
+  searchController = [(THSearchViewController *)self searchController];
+  currentQuery = [searchController currentQuery];
+  detailsViewController2 = [(THSearchViewController *)self detailsViewController];
+  navigationItem = [detailsViewController2 navigationItem];
+  [navigationItem setTitle:currentQuery];
 
-  v11 = [(THSearchViewController *)self detailsViewController];
-  [(THSearchViewController *)self pushViewController:v11 animated:1];
+  detailsViewController3 = [(THSearchViewController *)self detailsViewController];
+  [(THSearchViewController *)self pushViewController:detailsViewController3 animated:1];
 }
 
-- (void)searchBar:(id)a3 textDidChange:(id)a4
+- (void)searchBar:(id)bar textDidChange:(id)change
 {
   if (!self->mTextSetBySearch)
   {
-    [NSObject cancelPreviousPerformRequestsWithTarget:self, a4];
+    [NSObject cancelPreviousPerformRequestsWithTarget:self, change];
     [(THSearchController *)self->mSearchController clearSearchResults];
-    v9 = [(THSearchViewController *)self p_searchText];
-    if ([v9 length])
+    p_searchText = [(THSearchViewController *)self p_searchText];
+    if ([p_searchText length])
     {
-      [(THSearchViewController *)self performSelector:"p_searchForSuggestion:" withObject:v9 afterDelay:0.25];
+      [(THSearchViewController *)self performSelector:"p_searchForSuggestion:" withObject:p_searchText afterDelay:0.25];
     }
 
     else
     {
       v6 = +[NSArray array];
-      v7 = [(THSearchViewController *)self suggestionsDataSource];
-      [v7 setSuggestions:v6];
+      suggestionsDataSource = [(THSearchViewController *)self suggestionsDataSource];
+      [suggestionsDataSource setSuggestions:v6];
 
       [(THSearchViewController *)self p_showRecents];
       WeakRetained = objc_loadWeakRetained(&self->mSearchBar);
@@ -1242,16 +1242,16 @@ LABEL_12:
   }
 }
 
-- (void)searchBarSearchButtonClicked:(id)a3
+- (void)searchBarSearchButtonClicked:(id)clicked
 {
-  v4 = [(THSearchViewController *)self p_searchText];
-  if ([v4 length])
+  p_searchText = [(THSearchViewController *)self p_searchText];
+  if ([p_searchText length])
   {
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
     [(THSearchController *)self->mSearchController clearSearchResults];
     v5 = [THSearchTableViewDataSource alloc];
-    v6 = [(THSearchViewController *)self searchController];
-    v7 = [(THSearchTableViewDataSource *)v5 initWithSearchController:v6 searchViewMode:2];
+    searchController = [(THSearchViewController *)self searchController];
+    v7 = [(THSearchTableViewDataSource *)v5 initWithSearchController:searchController searchViewMode:2];
     [(THSearchViewController *)self setResultsDataSource:v7];
 
     WeakRetained = objc_loadWeakRetained(&self->mSearchBar);
@@ -1263,45 +1263,45 @@ LABEL_12:
     v10[2] = sub_D4D30;
     v10[3] = &unk_45AD60;
     v10[4] = self;
-    [(THSearchController *)mSearchController searchForString:v4 completionBlock:v10];
+    [(THSearchController *)mSearchController searchForString:p_searchText completionBlock:v10];
   }
 }
 
 - (id)p_searchText
 {
   WeakRetained = objc_loadWeakRetained(&self->mSearchBar);
-  v3 = [WeakRetained text];
+  text = [WeakRetained text];
   v4 = +[NSCharacterSet whitespaceAndNewlineCharacterSet];
-  v5 = [v3 stringByTrimmingCharactersInSet:v4];
+  v5 = [text stringByTrimmingCharactersInSet:v4];
 
   return v5;
 }
 
-- (void)searchBarCancelButtonClicked:(id)a3
+- (void)searchBarCancelButtonClicked:(id)clicked
 {
-  v4 = a3;
+  clickedCopy = clicked;
   if (isPhone())
   {
-    [(THSearchViewController *)self p_dismissSearchView:v4];
+    [(THSearchViewController *)self p_dismissSearchView:clickedCopy];
   }
 }
 
-- (id)tableView:(id)a3 viewForHeaderWithTitle:(id)a4
+- (id)tableView:(id)view viewForHeaderWithTitle:(id)title
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableHeaderFooterViewWithIdentifier:@"headerCell"];
+  titleCopy = title;
+  v7 = [view dequeueReusableHeaderFooterViewWithIdentifier:@"headerCell"];
   if (!v7)
   {
     v7 = [[UITableViewHeaderFooterView alloc] initWithReuseIdentifier:@"headerCell"];
   }
 
-  v8 = [v7 textLabel];
-  [v8 setText:v6];
+  textLabel = [v7 textLabel];
+  [textLabel setText:titleCopy];
 
-  v9 = [(THSearchViewController *)self themePage];
-  v10 = [v9 secondaryTextColor];
-  v11 = [v7 textLabel];
-  [v11 setTextColor:v10];
+  themePage = [(THSearchViewController *)self themePage];
+  secondaryTextColor = [themePage secondaryTextColor];
+  textLabel2 = [v7 textLabel];
+  [textLabel2 setTextColor:secondaryTextColor];
 
   v12 = +[UIBackgroundConfiguration listGroupedHeaderFooterConfiguration];
   [v7 setBackgroundConfiguration:v12];
@@ -1309,11 +1309,11 @@ LABEL_12:
   return v7;
 }
 
-- (id)tableView:(id)a3 cellForPlainString:(id)a4
+- (id)tableView:(id)view cellForPlainString:(id)string
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 dequeueReusableCellWithIdentifier:@"textCell"];
+  stringCopy = string;
+  viewCopy = view;
+  v8 = [viewCopy dequeueReusableCellWithIdentifier:@"textCell"];
   if (!v8)
   {
     v8 = [[UITableViewCell alloc] initWithStyle:0 reuseIdentifier:@"textCell"];
@@ -1321,145 +1321,145 @@ LABEL_12:
     [v8 setSelectedBackgroundView:v9];
   }
 
-  v10 = [v8 textLabel];
-  [v10 setText:v6];
+  textLabel = [v8 textLabel];
+  [textLabel setText:stringCopy];
 
-  v11 = [(THSearchViewController *)self themePage];
-  v12 = [v11 tableViewCellSelectedColor];
-  v13 = [v8 selectedBackgroundView];
-  [v13 setBackgroundColor:v12];
+  themePage = [(THSearchViewController *)self themePage];
+  tableViewCellSelectedColor = [themePage tableViewCellSelectedColor];
+  selectedBackgroundView = [v8 selectedBackgroundView];
+  [selectedBackgroundView setBackgroundColor:tableViewCellSelectedColor];
 
-  v14 = [v8 textLabel];
-  [v14 setHighlightedTextColor:0];
-  v15 = [v11 primaryTextColor];
-  [v14 setTextColor:v15];
+  textLabel2 = [v8 textLabel];
+  [textLabel2 setHighlightedTextColor:0];
+  primaryTextColor = [themePage primaryTextColor];
+  [textLabel2 setTextColor:primaryTextColor];
 
-  v16 = [v7 backgroundColor];
+  backgroundColor = [viewCopy backgroundColor];
 
-  [v8 setBackgroundColor:v16];
+  [v8 setBackgroundColor:backgroundColor];
 
   return v8;
 }
 
-- (id)tableView:(id)a3 cellForSearchResult:(id)a4
+- (id)tableView:(id)view cellForSearchResult:(id)result
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  resultCopy = result;
   v8 = kBESearchTableViewCellResultsIdentifier;
-  v9 = [v6 dequeueReusableCellWithIdentifier:kBESearchTableViewCellResultsIdentifier];
+  v9 = [viewCopy dequeueReusableCellWithIdentifier:kBESearchTableViewCellResultsIdentifier];
   if (!v9)
   {
     v9 = [[BESearchResultTableViewCell alloc] initWithStyle:3 reuseIdentifier:v8];
   }
 
-  [(THSearchViewController *)self _configureResultsCell:v9 forSearchResult:v7 inTableView:v6];
+  [(THSearchViewController *)self _configureResultsCell:v9 forSearchResult:resultCopy inTableView:viewCopy];
 
   return v9;
 }
 
-- (void)_configureResultsCell:(id)a3 forSearchResult:(id)a4 inTableView:(id)a5
+- (void)_configureResultsCell:(id)cell forSearchResult:(id)result inTableView:(id)view
 {
-  v60 = a3;
-  v8 = a4;
-  v9 = a5;
+  cellCopy = cell;
+  resultCopy = result;
+  viewCopy = view;
   v10 = [[UIView alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
-  [v60 setSelectedBackgroundView:v10];
-  v11 = [v8 title];
-  if (v11)
+  [cellCopy setSelectedBackgroundView:v10];
+  title = [resultCopy title];
+  if (title)
   {
   }
 
-  else if ([v8 rank] != 1)
+  else if ([resultCopy rank] != 1)
   {
-    [(THSearchController *)self->mSearchController resolveTitleForSearchResult:v8];
+    [(THSearchController *)self->mSearchController resolveTitleForSearchResult:resultCopy];
   }
 
-  v12 = [v8 rank];
-  if (v12 - 6 >= 2 && v12 == 1)
+  rank = [resultCopy rank];
+  if (rank - 6 >= 2 && rank == 1)
   {
-    v59 = v9;
+    v59 = viewCopy;
     v13 = THBundle();
-    v14 = [v13 localizedStringForKey:@"Glossary: %@" value:&stru_471858 table:0];
+    resultLabel4 = [v13 localizedStringForKey:@"Glossary: %@" value:&stru_471858 table:0];
 
-    v15 = [v8 term];
-    v16 = [NSString stringWithFormat:v14, v15];
-    v17 = [v60 titleLabel];
-    [v17 setText:v16];
+    term = [resultCopy term];
+    v16 = [NSString stringWithFormat:resultLabel4, term];
+    titleLabel = [cellCopy titleLabel];
+    [titleLabel setText:v16];
 
     mSearchController = self->mSearchController;
-    v19 = [v8 term];
-    v20 = [(THSearchController *)mSearchController summaryForGlossaryTerm:v19];
+    term2 = [resultCopy term];
+    v20 = [(THSearchController *)mSearchController summaryForGlossaryTerm:term2];
 
     if (!v20)
     {
       v21 = THBundle();
       v22 = [v21 localizedStringForKey:@"(Glossary entry for \\U201C%@\\U201D)" value:&stru_471858 table:0];
 
-      v23 = [v8 term];
-      v20 = [NSString stringWithFormat:v22, v23];
+      term3 = [resultCopy term];
+      v20 = [NSString stringWithFormat:v22, term3];
     }
 
-    v24 = [v60 resultLabel];
-    [v24 setText:v20];
+    resultLabel = [cellCopy resultLabel];
+    [resultLabel setText:v20];
 
-    v25 = [(THSearchViewController *)self searchController];
-    v26 = [v25 currentQuery];
-    v27 = [v20 rangeOfString:v26];
+    searchController = [(THSearchViewController *)self searchController];
+    currentQuery = [searchController currentQuery];
+    v27 = [v20 rangeOfString:currentQuery];
     v29 = v28;
-    v30 = [v60 resultLabel];
-    [v30 setBoldRange:{v27, v29}];
+    resultLabel2 = [cellCopy resultLabel];
+    [resultLabel2 setBoldRange:{v27, v29}];
 
-    v9 = v59;
+    viewCopy = v59;
   }
 
   else
   {
-    v31 = [v8 title];
-    v32 = [v31 length];
+    title2 = [resultCopy title];
+    v32 = [title2 length];
 
     if (v32)
     {
-      [v8 title];
+      [resultCopy title];
     }
 
     else
     {
-      [v8 term];
+      [resultCopy term];
     }
     v33 = ;
-    v34 = [v60 titleLabel];
-    [v34 setText:v33];
+    titleLabel2 = [cellCopy titleLabel];
+    [titleLabel2 setText:v33];
 
-    v35 = [v8 displayPageNumber];
-    v36 = [v60 pageNumberLabel];
-    [v36 setText:v35];
+    displayPageNumber = [resultCopy displayPageNumber];
+    pageNumberLabel = [cellCopy pageNumberLabel];
+    [pageNumberLabel setText:displayPageNumber];
 
-    v37 = [v8 context];
-    v38 = [v60 resultLabel];
-    [v38 setText:v37];
+    context = [resultCopy context];
+    resultLabel3 = [cellCopy resultLabel];
+    [resultLabel3 setText:context];
 
-    v39 = [v8 contextRangeForResult];
+    contextRangeForResult = [resultCopy contextRangeForResult];
     v41 = v40;
-    v14 = [v60 resultLabel];
-    [v14 setBoldRange:{v39, v41}];
+    resultLabel4 = [cellCopy resultLabel];
+    [resultLabel4 setBoldRange:{contextRangeForResult, v41}];
   }
 
-  v42 = [(THSearchViewController *)self themePage];
-  v43 = [v42 tableViewCellSelectedColor];
-  [v10 setBackgroundColor:v43];
+  themePage = [(THSearchViewController *)self themePage];
+  tableViewCellSelectedColor = [themePage tableViewCellSelectedColor];
+  [v10 setBackgroundColor:tableViewCellSelectedColor];
 
-  v44 = [v42 secondaryTextColor];
-  v45 = [v60 pageNumberLabel];
-  [v45 setTextColor:v44];
+  secondaryTextColor = [themePage secondaryTextColor];
+  pageNumberLabel2 = [cellCopy pageNumberLabel];
+  [pageNumberLabel2 setTextColor:secondaryTextColor];
 
-  v46 = [v42 primaryTextColor];
-  v47 = [v60 titleLabel];
-  [v47 setTextColor:v46];
+  primaryTextColor = [themePage primaryTextColor];
+  titleLabel3 = [cellCopy titleLabel];
+  [titleLabel3 setTextColor:primaryTextColor];
 
-  v48 = [v60 resultLabel];
-  [v48 setTextColor:v46];
+  resultLabel5 = [cellCopy resultLabel];
+  [resultLabel5 setTextColor:primaryTextColor];
 
-  [v9 frame];
+  [viewCopy frame];
   v50 = v49;
   v52 = v51;
   v54 = v53;
@@ -1469,19 +1469,19 @@ LABEL_12:
   v62.origin.y = v52;
   v62.size.width = v54;
   v62.size.height = v56;
-  [v60 setMaxWidth:CGRectGetWidth(v62)];
-  v57 = [v42 secondaryBackgroundColor];
-  v58 = [v60 focusShapeView];
-  [v58 setFillColor:v57];
+  [cellCopy setMaxWidth:CGRectGetWidth(v62)];
+  secondaryBackgroundColor = [themePage secondaryBackgroundColor];
+  focusShapeView = [cellCopy focusShapeView];
+  [focusShapeView setFillColor:secondaryBackgroundColor];
 
-  [v60 applyLabelFonts];
-  [v60 updateConstraintsIfNeeded];
+  [cellCopy applyLabelFonts];
+  [cellCopy updateConstraintsIfNeeded];
 }
 
-- (id)tableView:(id)a3 noResultsCellWithKind:(int)a4
+- (id)tableView:(id)view noResultsCellWithKind:(int)kind
 {
-  v4 = *&a4;
-  v6 = [a3 dequeueReusableCellWithIdentifier:@"noResultsCell"];
+  v4 = *&kind;
+  v6 = [view dequeueReusableCellWithIdentifier:@"noResultsCell"];
   if (!v6)
   {
     v6 = [[THSearchTableViewNoResultsCell alloc] initWithStyle:3 reuseIdentifier:@"noResultsCell"];
@@ -1489,48 +1489,48 @@ LABEL_12:
     [(THSearchTableViewNoResultsCell *)v6 setSelectedBackgroundView:v7];
   }
 
-  v8 = [(THSearchViewController *)self themePage];
-  v9 = [v8 tableViewCellSelectedColor];
-  v10 = [(THSearchTableViewNoResultsCell *)v6 selectedBackgroundView];
-  [v10 setBackgroundColor:v9];
+  themePage = [(THSearchViewController *)self themePage];
+  tableViewCellSelectedColor = [themePage tableViewCellSelectedColor];
+  selectedBackgroundView = [(THSearchTableViewNoResultsCell *)v6 selectedBackgroundView];
+  [selectedBackgroundView setBackgroundColor:tableViewCellSelectedColor];
 
-  v11 = [v8 primaryTextColor];
-  v12 = [(THSearchTableViewNoResultsCell *)v6 textLabel];
-  [v12 setTextColor:v11];
+  primaryTextColor = [themePage primaryTextColor];
+  textLabel = [(THSearchTableViewNoResultsCell *)v6 textLabel];
+  [textLabel setTextColor:primaryTextColor];
 
-  v13 = [(THSearchTableViewNoResultsCell *)v6 detailTextLabel];
-  [v13 setTextColor:v11];
+  detailTextLabel = [(THSearchTableViewNoResultsCell *)v6 detailTextLabel];
+  [detailTextLabel setTextColor:primaryTextColor];
 
   [(THSearchTableViewNoResultsCell *)v6 setSearchKind:v4];
 
   return v6;
 }
 
-- (id)tableView:(id)a3 seeAllResultsCellWithKind:(int)a4 count:(unint64_t)a5
+- (id)tableView:(id)view seeAllResultsCellWithKind:(int)kind count:(unint64_t)count
 {
-  v8 = [a3 dequeueReusableCellWithIdentifier:@"seeAllResultsCell"];
+  v8 = [view dequeueReusableCellWithIdentifier:@"seeAllResultsCell"];
   if (!v8)
   {
     v8 = [[UITableViewCell alloc] initWithStyle:0 reuseIdentifier:@"seeAllResultsCell"];
-    v9 = [v8 textLabel];
-    [v9 setTextAlignment:0];
+    textLabel = [v8 textLabel];
+    [textLabel setTextAlignment:0];
 
     v10 = [[UIView alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
     [v8 setSelectedBackgroundView:v10];
   }
 
-  v11 = [(THSearchViewController *)self themePage];
-  v12 = [v11 tableViewCellSelectedColor];
-  v13 = [v8 selectedBackgroundView];
-  [v13 setBackgroundColor:v12];
+  themePage = [(THSearchViewController *)self themePage];
+  tableViewCellSelectedColor = [themePage tableViewCellSelectedColor];
+  selectedBackgroundView = [v8 selectedBackgroundView];
+  [selectedBackgroundView setBackgroundColor:tableViewCellSelectedColor];
 
-  v14 = [v11 primaryTextColor];
-  v15 = [v8 textLabel];
-  [v15 setTextColor:v14];
+  primaryTextColor = [themePage primaryTextColor];
+  textLabel2 = [v8 textLabel];
+  [textLabel2 setTextColor:primaryTextColor];
 
   v16 = THBundle();
   v17 = v16;
-  if (a4)
+  if (kind)
   {
     v18 = @"See all %lu media results…";
   }
@@ -1542,12 +1542,12 @@ LABEL_12:
 
   v19 = [v16 localizedStringForKey:v18 value:&stru_471858 table:0];
 
-  v20 = [NSString localizedStringWithFormat:v19, a5];
-  v21 = [v8 textLabel];
-  [v21 setText:v20];
+  v20 = [NSString localizedStringWithFormat:v19, count];
+  textLabel3 = [v8 textLabel];
+  [textLabel3 setText:v20];
 
-  v22 = [v8 textLabel];
-  [v22 setNumberOfLines:0];
+  textLabel4 = [v8 textLabel];
+  [textLabel4 setNumberOfLines:0];
 
   return v8;
 }
@@ -1605,72 +1605,72 @@ LABEL_12:
   return result;
 }
 
-- (id)p_dataSourceForTableView:(id)a3
+- (id)p_dataSourceForTableView:(id)view
 {
-  v4 = a3;
-  v5 = [(THSearchViewController *)self resultsViewController];
-  v6 = [v5 view];
+  viewCopy = view;
+  resultsViewController = [(THSearchViewController *)self resultsViewController];
+  view = [resultsViewController view];
 
-  if (v6 == v4)
+  if (view == viewCopy)
   {
-    v10 = [(THSearchViewController *)self resultsDataSource];
+    resultsDataSource = [(THSearchViewController *)self resultsDataSource];
   }
 
   else
   {
-    v7 = [(THSearchViewController *)self detailsViewController];
-    v8 = [v7 view];
+    detailsViewController = [(THSearchViewController *)self detailsViewController];
+    view2 = [detailsViewController view];
 
-    if (v8 != v4)
+    if (view2 != viewCopy)
     {
       v9 = 0;
       goto LABEL_7;
     }
 
-    v10 = [(THSearchViewController *)self detailsDataSource];
+    resultsDataSource = [(THSearchViewController *)self detailsDataSource];
   }
 
-  v9 = v10;
+  v9 = resultsDataSource;
 LABEL_7:
 
   return v9;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = [(THSearchViewController *)self p_dataSourceForTableView:v6];
-  v8 = [v7 tableView:v6 numberOfRowsInSection:a4];
+  viewCopy = view;
+  v7 = [(THSearchViewController *)self p_dataSourceForTableView:viewCopy];
+  v8 = [v7 tableView:viewCopy numberOfRowsInSection:section];
 
   return v8;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(THSearchViewController *)self p_dataSourceForTableView:v7];
-  v9 = [v8 tableView:v7 cellForRowAtIndexPath:v6 searchViewController:self];
+  pathCopy = path;
+  viewCopy = view;
+  v8 = [(THSearchViewController *)self p_dataSourceForTableView:viewCopy];
+  v9 = [v8 tableView:viewCopy cellForRowAtIndexPath:pathCopy searchViewController:self];
 
   return v9;
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
-  v4 = a3;
-  v5 = [(THSearchViewController *)self p_dataSourceForTableView:v4];
-  v6 = [v5 numberOfSectionsInTableView:v4];
+  viewCopy = view;
+  v5 = [(THSearchViewController *)self p_dataSourceForTableView:viewCopy];
+  v6 = [v5 numberOfSectionsInTableView:viewCopy];
 
   return v6;
 }
 
-- (BOOL)tableView:(id)a3 canFocusRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view canFocusRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [(THSearchViewController *)self p_dataSourceForTableView:a3];
-  if ([v7 searchViewMode] == 2 && objc_msgSend(v7, "indexPathCorrespondsToSearchResultRow:", v6))
+  pathCopy = path;
+  v7 = [(THSearchViewController *)self p_dataSourceForTableView:view];
+  if ([v7 searchViewMode] == 2 && objc_msgSend(v7, "indexPathCorrespondsToSearchResultRow:", pathCopy))
   {
-    v8 = [v7 indexPathCorrespondsToSeeAllResultsRow:v6] ^ 1;
+    v8 = [v7 indexPathCorrespondsToSeeAllResultsRow:pathCopy] ^ 1;
   }
 
   else
@@ -1681,38 +1681,38 @@ LABEL_7:
   return v8;
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v13 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(THSearchViewController *)self p_dataSourceForTableView:v13];
-  if ([v10 searchViewMode] == 2 && objc_msgSend(v10, "indexPathCorrespondsToSearchResultRow:", v9))
+  viewCopy = view;
+  cellCopy = cell;
+  pathCopy = path;
+  v10 = [(THSearchViewController *)self p_dataSourceForTableView:viewCopy];
+  if ([v10 searchViewMode] == 2 && objc_msgSend(v10, "indexPathCorrespondsToSearchResultRow:", pathCopy))
   {
     objc_opt_class();
     v11 = TSUDynamicCast();
     if (v11)
     {
-      v12 = [v10 searchResultForTableIndexPath:v9];
-      [(THSearchViewController *)self _configureResultsCell:v11 forSearchResult:v12 inTableView:v13];
+      v12 = [v10 searchResultForTableIndexPath:pathCopy];
+      [(THSearchViewController *)self _configureResultsCell:v11 forSearchResult:v12 inTableView:viewCopy];
     }
   }
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = [(THSearchViewController *)self p_dataSourceForTableView:v6];
-  v8 = [v7 titleForHeaderInSection:a4];
-  v9 = [(THSearchViewController *)self tableView:v6 viewForHeaderWithTitle:v8];
+  viewCopy = view;
+  v7 = [(THSearchViewController *)self p_dataSourceForTableView:viewCopy];
+  v8 = [v7 titleForHeaderInSection:section];
+  v9 = [(THSearchViewController *)self tableView:viewCopy viewForHeaderWithTitle:v8];
 
   v10 = [UIFontDescriptor preferredFontDescriptorWithTextStyle:UIFontTextStyleTitle2];
   v11 = [v10 fontDescriptorWithDesign:UIFontDescriptorSystemDesignSerif];
   v12 = [v11 fontDescriptorWithSymbolicTraits:2];
   v13 = [UIFont fontWithDescriptor:v12 size:0.0];
 
-  v14 = [v9 textLabel];
-  [v14 setFont:v13];
+  textLabel = [v9 textLabel];
+  [textLabel setFont:v13];
 
   return v9;
 }
@@ -1732,17 +1732,17 @@ LABEL_7:
   return mDummySearchResultsCell;
 }
 
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  viewCopy = view;
+  pathCopy = path;
+  v8 = pathCopy;
   if ([(THSearchViewController *)self searchViewMode]== 2)
   {
-    v9 = [(THSearchViewController *)self p_dataSourceForTableView:v6];
-    v10 = [v9 numberOfResultsInSection:{objc_msgSend(v7, "section")}];
+    v9 = [(THSearchViewController *)self p_dataSourceForTableView:viewCopy];
+    v10 = [v9 numberOfResultsInSection:{objc_msgSend(pathCopy, "section")}];
 
-    v8 = v7;
+    v8 = pathCopy;
     if (!v10)
     {
 
@@ -1753,28 +1753,28 @@ LABEL_7:
   return v8;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v16 = a4;
-  v6 = a3;
-  [v6 deselectRowAtIndexPath:v16 animated:0];
-  v7 = [(THSearchViewController *)self p_dataSourceForTableView:v6];
+  pathCopy = path;
+  viewCopy = view;
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:0];
+  v7 = [(THSearchViewController *)self p_dataSourceForTableView:viewCopy];
 
-  v8 = [v7 searchViewMode];
-  if (v8 != 2)
+  searchViewMode = [v7 searchViewMode];
+  if (searchViewMode != 2)
   {
-    if (v8 == 1)
+    if (searchViewMode == 1)
     {
-      v10 = [v7 suggestions];
-      v9 = [v10 objectAtIndex:{objc_msgSend(v16, "row")}];
+      suggestions = [v7 suggestions];
+      v9 = [suggestions objectAtIndex:{objc_msgSend(pathCopy, "row")}];
 
-      v11 = [(THSearchViewController *)self searchController];
-      v12 = [v11 isEncodedResultForPageNumber:v9];
+      searchController = [(THSearchViewController *)self searchController];
+      v12 = [searchController isEncodedResultForPageNumber:v9];
 
       if (v12)
       {
-        v13 = [(THSearchViewController *)self searchController];
-        v14 = [v13 absolutePageIndexFromEncodedPageNumberResult:v9];
+        searchController2 = [(THSearchViewController *)self searchController];
+        v14 = [searchController2 absolutePageIndexFromEncodedPageNumberResult:v9];
 
         if (v14 != 0x7FFFFFFFFFFFFFFFLL)
         {
@@ -1787,12 +1787,12 @@ LABEL_7:
 
     else
     {
-      if (v8)
+      if (searchViewMode)
       {
         goto LABEL_10;
       }
 
-      v9 = -[THSearchController recentSearchQueryAtIndex:](self->mSearchController, "recentSearchQueryAtIndex:", [v16 row]);
+      v9 = -[THSearchController recentSearchQueryAtIndex:](self->mSearchController, "recentSearchQueryAtIndex:", [pathCopy row]);
     }
 
     [(THSearchViewController *)self searchForString:v9];
@@ -1801,35 +1801,35 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v15 = [v7 numberOfResultsInSection:{objc_msgSend(v16, "section")}];
+  v15 = [v7 numberOfResultsInSection:{objc_msgSend(pathCopy, "section")}];
   if (v15)
   {
-    if ([v16 row] != v15)
+    if ([pathCopy row] != v15)
     {
-      v9 = [v7 searchResultForTableIndexPath:v16];
+      v9 = [v7 searchResultForTableIndexPath:pathCopy];
       [(THSearchViewController *)self navigateToSearchResult:v9];
       goto LABEL_9;
     }
 
-    -[THSearchViewController showAllResultsWithKind:](self, "showAllResultsWithKind:", [v7 p_resultKindForSection:{objc_msgSend(v16, "section")}]);
+    -[THSearchViewController showAllResultsWithKind:](self, "showAllResultsWithKind:", [v7 p_resultKindForSection:{objc_msgSend(pathCopy, "section")}]);
   }
 
 LABEL_10:
 }
 
-- (void)_analyticsSubmitInBookSearchEventWithSearchText:(id)a3
+- (void)_analyticsSubmitInBookSearchEventWithSearchText:(id)text
 {
-  v9 = [(THSearchViewController *)self ba_effectiveAnalyticsTracker];
-  v4 = [(THSearchViewController *)self searchDelegate];
-  v5 = [v4 readingSessionDataForSearchViewController:self];
+  ba_effectiveAnalyticsTracker = [(THSearchViewController *)self ba_effectiveAnalyticsTracker];
+  searchDelegate = [(THSearchViewController *)self searchDelegate];
+  v5 = [searchDelegate readingSessionDataForSearchViewController:self];
 
-  v6 = [(THSearchViewController *)self searchDelegate];
-  v7 = [v6 contentDataForSearchViewController:self];
+  searchDelegate2 = [(THSearchViewController *)self searchDelegate];
+  v7 = [searchDelegate2 contentDataForSearchViewController:self];
 
-  if (v9 && v5 && v7)
+  if (ba_effectiveAnalyticsTracker && v5 && v7)
   {
     v8 = +[BAEventReporter sharedReporter];
-    [v8 emitInBookSearchEventWithTracker:v9 readingSessionData:v5 contentData:v7];
+    [v8 emitInBookSearchEventWithTracker:ba_effectiveAnalyticsTracker readingSessionData:v5 contentData:v7];
   }
 }
 

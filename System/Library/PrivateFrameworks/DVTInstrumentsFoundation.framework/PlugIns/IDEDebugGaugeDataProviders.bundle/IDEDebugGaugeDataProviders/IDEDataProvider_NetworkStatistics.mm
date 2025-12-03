@@ -1,9 +1,9 @@
 @interface IDEDataProvider_NetworkStatistics
 + (id)sharedDataProvider;
-- (BOOL)captureAttributes:(id)a3 toDictionary:(id)a4 forPID:(id)a5;
+- (BOOL)captureAttributes:(id)attributes toDictionary:(id)dictionary forPID:(id)d;
 - (IDEDataProvider_NetworkStatistics)init;
 - (id).cxx_construct;
-- (id)captureAttributes:(id)a3 forPIDs:(id)a4;
+- (id)captureAttributes:(id)attributes forPIDs:(id)ds;
 - (id)supportedAttributes;
 - (void)dealloc;
 @end
@@ -53,12 +53,12 @@
   return v3;
 }
 
-- (BOOL)captureAttributes:(id)a3 toDictionary:(id)a4 forPID:(id)a5
+- (BOOL)captureAttributes:(id)attributes toDictionary:(id)dictionary forPID:(id)d
 {
-  v51 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v9 intValue];
+  attributesCopy = attributes;
+  dictionaryCopy = dictionary;
+  dCopy = d;
+  intValue = [dCopy intValue];
   size = self->_processInfoByPID.__table_.__bucket_list_.__deleter_.__size_;
   if (!size)
   {
@@ -69,16 +69,16 @@
   v12.i16[0] = vaddlv_u8(v12);
   if (v12.u32[0] > 1uLL)
   {
-    v13 = v10;
-    if (size <= v10)
+    v13 = intValue;
+    if (size <= intValue)
     {
-      v13 = v10 % size;
+      v13 = intValue % size;
     }
   }
 
   else
   {
-    v13 = (size - 1) & v10;
+    v13 = (size - 1) & intValue;
   }
 
   v14 = self->_processInfoByPID.__table_.__bucket_list_.__ptr_[v13];
@@ -91,7 +91,7 @@ LABEL_18:
   while (1)
   {
     v16 = v15[1];
-    if (v16 == v10)
+    if (v16 == intValue)
     {
       break;
     }
@@ -122,54 +122,54 @@ LABEL_17:
     }
   }
 
-  if (*(v15 + 4) != v10)
+  if (*(v15 + 4) != intValue)
   {
     goto LABEL_17;
   }
 
   v17 = [NSNumber numberWithUnsignedLongLong:v15[17]];
-  [v8 setObject:v17 forKeyedSubscript:@"net.rx.bytes"];
+  [dictionaryCopy setObject:v17 forKeyedSubscript:@"net.rx.bytes"];
 
   v18 = [NSNumber numberWithUnsignedLongLong:v15[17] - v15[4]];
-  [v8 setObject:v18 forKeyedSubscript:@"net.rx.bytes.delta"];
+  [dictionaryCopy setObject:v18 forKeyedSubscript:@"net.rx.bytes.delta"];
 
   v19 = [NSNumber numberWithUnsignedLongLong:v15[19]];
-  [v8 setObject:v19 forKeyedSubscript:@"net.tx.bytes"];
+  [dictionaryCopy setObject:v19 forKeyedSubscript:@"net.tx.bytes"];
 
   v20 = [NSNumber numberWithUnsignedLongLong:v15[19] - v15[6]];
-  [v8 setObject:v20 forKeyedSubscript:@"net.tx.bytes.delta"];
+  [dictionaryCopy setObject:v20 forKeyedSubscript:@"net.tx.bytes.delta"];
 
   v21 = [NSNumber numberWithUnsignedLongLong:v15[19] + v15[17]];
-  [v8 setObject:v21 forKeyedSubscript:@"net.bytes"];
+  [dictionaryCopy setObject:v21 forKeyedSubscript:@"net.bytes"];
 
   v22 = [NSNumber numberWithUnsignedLongLong:v15[19] + v15[17] - (v15[4] + v15[6])];
-  [v8 setObject:v22 forKeyedSubscript:@"net.bytes.delta"];
+  [dictionaryCopy setObject:v22 forKeyedSubscript:@"net.bytes.delta"];
 
   v23 = [NSNumber numberWithUnsignedLongLong:v15[16]];
-  [v8 setObject:v23 forKeyedSubscript:@"net.rx.packets"];
+  [dictionaryCopy setObject:v23 forKeyedSubscript:@"net.rx.packets"];
 
   v24 = [NSNumber numberWithUnsignedLongLong:v15[16] - v15[3]];
-  [v8 setObject:v24 forKeyedSubscript:@"net.rx.packets.delta"];
+  [dictionaryCopy setObject:v24 forKeyedSubscript:@"net.rx.packets.delta"];
 
   v25 = [NSNumber numberWithUnsignedLongLong:v15[18]];
-  [v8 setObject:v25 forKeyedSubscript:@"net.tx.packets"];
+  [dictionaryCopy setObject:v25 forKeyedSubscript:@"net.tx.packets"];
 
   v26 = [NSNumber numberWithUnsignedLongLong:v15[18] - v15[5]];
-  [v8 setObject:v26 forKeyedSubscript:@"net.tx.packets.delta"];
+  [dictionaryCopy setObject:v26 forKeyedSubscript:@"net.tx.packets.delta"];
 
   v27 = [NSNumber numberWithUnsignedLongLong:v15[18] + v15[16]];
-  [v8 setObject:v27 forKeyedSubscript:@"net.packets"];
+  [dictionaryCopy setObject:v27 forKeyedSubscript:@"net.packets"];
 
   v28 = [NSNumber numberWithUnsignedLongLong:v15[18] + v15[16] - (v15[3] + v15[5])];
-  [v8 setObject:v28 forKeyedSubscript:@"net.packets.delta"];
+  [dictionaryCopy setObject:v28 forKeyedSubscript:@"net.packets.delta"];
 
-  if ([v51 containsObject:@"net.connections[]"])
+  if ([attributesCopy containsObject:@"net.connections[]"])
   {
     v29 = objc_opt_new();
     for (i = self->_sourceInfosBySrcRef.__table_.__first_node_.__next_; i; i = *i)
     {
-      v31 = [*(i + 3) intValue];
-      if (v31 == [v9 intValue])
+      intValue2 = [*(i + 3) intValue];
+      if (intValue2 == [dCopy intValue])
       {
         v32 = objc_opt_new();
         v33 = v32;
@@ -284,7 +284,7 @@ LABEL_17:
       }
     }
 
-    [v8 setObject:v29 forKeyedSubscript:@"net.connections[]"];
+    [dictionaryCopy setObject:v29 forKeyedSubscript:@"net.connections[]"];
   }
 
   return 1;
@@ -315,20 +315,20 @@ LABEL_17:
   [(IDEDataProvider_NetworkStatistics *)&v7 dealloc];
 }
 
-- (id)captureAttributes:(id)a3 forPIDs:(id)a4
+- (id)captureAttributes:(id)attributes forPIDs:(id)ds
 {
-  v6 = a3;
-  v7 = a4;
+  attributesCopy = attributes;
+  dsCopy = ds;
   capture_lock = self->_capture_lock;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_2674;
   block[3] = &unk_10470;
   block[4] = self;
-  v22 = v7;
-  v23 = v6;
-  v9 = v6;
-  v10 = v7;
+  v22 = dsCopy;
+  v23 = attributesCopy;
+  v9 = attributesCopy;
+  v10 = dsCopy;
   dispatch_sync(capture_lock, block);
   v15 = 0;
   v16 = &v15;

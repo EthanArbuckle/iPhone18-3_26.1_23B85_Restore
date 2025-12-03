@@ -1,10 +1,10 @@
 @interface PPNotificationHandler
-- (PPNotificationHandler)initWithName:(id)a3 waitSeconds:(double)a4;
+- (PPNotificationHandler)initWithName:(id)name waitSeconds:(double)seconds;
 - (id)description;
-- (void)_delayedExecutionAfterSeconds:(double)a3;
-- (void)_executeBlocksWithGuardedData:(id)a3;
-- (void)addObserverBlock:(id)a3 forLifetimeOfObject:(id)a4;
-- (void)fireWithObjects:(id)a3;
+- (void)_delayedExecutionAfterSeconds:(double)seconds;
+- (void)_executeBlocksWithGuardedData:(id)data;
+- (void)addObserverBlock:(id)block forLifetimeOfObject:(id)object;
+- (void)fireWithObjects:(id)objects;
 - (void)waitOnQueueToDrain;
 @end
 
@@ -17,19 +17,19 @@
   return v2;
 }
 
-- (void)addObserverBlock:(id)a3 forLifetimeOfObject:(id)a4
+- (void)addObserverBlock:(id)block forLifetimeOfObject:(id)object
 {
-  v6 = a3;
-  v7 = a4;
+  blockCopy = block;
+  objectCopy = object;
   lock = self->_lock;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __62__PPNotificationHandler_addObserverBlock_forLifetimeOfObject___block_invoke;
   v11[3] = &unk_1E77F7618;
-  v12 = v7;
-  v13 = v6;
-  v9 = v7;
-  v10 = v6;
+  v12 = objectCopy;
+  v13 = blockCopy;
+  v9 = objectCopy;
+  v10 = blockCopy;
   [(_PASLock *)lock runWithLockAcquired:v11];
 }
 
@@ -41,17 +41,17 @@ void __62__PPNotificationHandler_addObserverBlock_forLifetimeOfObject___block_in
   [v3 setObject:v4 forKey:*(a1 + 32)];
 }
 
-- (void)fireWithObjects:(id)a3
+- (void)fireWithObjects:(id)objects
 {
-  v4 = a3;
+  objectsCopy = objects;
   lock = self->_lock;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __41__PPNotificationHandler_fireWithObjects___block_invoke;
   v7[3] = &unk_1E77F75F0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = objectsCopy;
+  selfCopy = self;
+  v6 = objectsCopy;
   [(_PASLock *)lock runWithLockAcquired:v7];
 }
 
@@ -141,7 +141,7 @@ void __41__PPNotificationHandler_fireWithObjects___block_invoke(uint64_t a1, voi
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_delayedExecutionAfterSeconds:(double)a3
+- (void)_delayedExecutionAfterSeconds:(double)seconds
 {
   objc_initWeak(&location, self);
   v5 = MEMORY[0x1E69C5D10];
@@ -151,7 +151,7 @@ void __41__PPNotificationHandler_fireWithObjects___block_invoke(uint64_t a1, voi
   v7[2] = __55__PPNotificationHandler__delayedExecutionAfterSeconds___block_invoke;
   v7[3] = &unk_1E77F7970;
   objc_copyWeak(&v8, &location);
-  [v5 runAsyncOnQueue:waiterQueue afterDelaySeconds:v7 block:a3];
+  [v5 runAsyncOnQueue:waiterQueue afterDelaySeconds:v7 block:seconds];
   objc_destroyWeak(&v8);
   objc_destroyWeak(&location);
 }
@@ -191,21 +191,21 @@ void __55__PPNotificationHandler__delayedExecutionAfterSeconds___block_invoke_2(
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_executeBlocksWithGuardedData:(id)a3
+- (void)_executeBlocksWithGuardedData:(id)data
 {
   v36 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dataCopy = data;
   v5 = objc_autoreleasePoolPush();
-  v6 = [v4[3] objectEnumerator];
-  v7 = [v6 allObjects];
+  objectEnumerator = [dataCopy[3] objectEnumerator];
+  allObjects = [objectEnumerator allObjects];
 
   v8 = pp_default_log_handle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    v23 = [v7 count];
-    v24 = [v4[4] count];
+    v23 = [allObjects count];
+    v24 = [dataCopy[4] count];
     *buf = 138412802;
-    v31 = self;
+    selfCopy2 = self;
     v32 = 2048;
     v33 = v23;
     v34 = 2048;
@@ -217,7 +217,7 @@ void __55__PPNotificationHandler__delayedExecutionAfterSeconds___block_invoke_2(
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v9 = v7;
+  v9 = allObjects;
   v10 = [v9 countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v10)
   {
@@ -235,8 +235,8 @@ void __55__PPNotificationHandler__delayedExecutionAfterSeconds___block_invoke_2(
 
         v14 = *(*(&v25 + 1) + 8 * v13);
         v15 = objc_autoreleasePoolPush();
-        v16 = [v4[4] allObjects];
-        (*(v14 + 16))(v14, v16);
+        allObjects2 = [dataCopy[4] allObjects];
+        (*(v14 + 16))(v14, allObjects2);
 
         objc_autoreleasePoolPop(v15);
         ++v13;
@@ -250,45 +250,45 @@ void __55__PPNotificationHandler__delayedExecutionAfterSeconds___block_invoke_2(
   }
 
   v17 = objc_opt_new();
-  v18 = v4[4];
-  v4[4] = v17;
+  v18 = dataCopy[4];
+  dataCopy[4] = v17;
 
   v19 = pp_default_log_handle();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v31 = self;
+    selfCopy2 = self;
     _os_log_debug_impl(&dword_1A7FD3000, v19, OS_LOG_TYPE_DEBUG, "%@ reset object buffer to an empty set", buf, 0xCu);
   }
 
   v20 = objc_opt_new();
   [v20 timeIntervalSince1970];
-  v4[2] = v21;
+  dataCopy[2] = v21;
 
   objc_autoreleasePoolPop(v5);
   v22 = *MEMORY[0x1E69E9840];
 }
 
-- (PPNotificationHandler)initWithName:(id)a3 waitSeconds:(double)a4
+- (PPNotificationHandler)initWithName:(id)name waitSeconds:(double)seconds
 {
-  v7 = a3;
+  nameCopy = name;
   v20.receiver = self;
   v20.super_class = PPNotificationHandler;
   v8 = [(PPNotificationHandler *)&v20 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_name, a3);
-    v10 = 0.0;
-    if (a4 >= 0.0)
+    objc_storeStrong(&v8->_name, name);
+    secondsCopy = 0.0;
+    if (seconds >= 0.0)
     {
-      v10 = a4;
+      secondsCopy = seconds;
     }
 
-    v9->_waitSeconds = v10;
+    v9->_waitSeconds = secondsCopy;
     v11 = MEMORY[0x1E69C5D10];
-    v12 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"PPNotificationHandler.%@.waiterQueue", v7];
-    v13 = [v11 autoreleasingSerialQueueWithLabel:objc_msgSend(v12 qosClass:{"UTF8String"), 9}];
+    nameCopy = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"PPNotificationHandler.%@.waiterQueue", nameCopy];
+    v13 = [v11 autoreleasingSerialQueueWithLabel:objc_msgSend(nameCopy qosClass:{"UTF8String"), 9}];
     waiterQueue = v9->_waiterQueue;
     v9->_waiterQueue = v13;
 

@@ -1,11 +1,11 @@
 @interface SettingsCarManager
-- (void)accessoryDidUpdate:(id)a3 receivedAllValues:(BOOL)a4;
-- (void)carIsConfigured:(id)a3;
-- (void)carManager:(id)a3 didRemove:(id)a4;
-- (void)carManager:(id)a3 didUpdateCurrentCar:(id)a4;
+- (void)accessoryDidUpdate:(id)update receivedAllValues:(BOOL)values;
+- (void)carIsConfigured:(id)configured;
+- (void)carManager:(id)manager didRemove:(id)remove;
+- (void)carManager:(id)manager didUpdateCurrentCar:(id)car;
 - (void)dismissSettingsModal;
-- (void)navigationController:(id)a3 didShowViewController:(id)a4 animated:(BOOL)a5;
-- (void)sessionDidConnect:(id)a3;
+- (void)navigationController:(id)controller didShowViewController:(id)viewController animated:(BOOL)animated;
+- (void)sessionDidConnect:(id)connect;
 @end
 
 @implementation SettingsCarManager
@@ -19,66 +19,66 @@
   }
 }
 
-- (void)navigationController:(id)a3 didShowViewController:(id)a4 animated:(BOOL)a5
+- (void)navigationController:(id)controller didShowViewController:(id)viewController animated:(BOOL)animated
 {
   v5 = OBJC_IVAR____TtC7Vehicle18SettingsCarManager_fireRenderedAndFinalizedSignposts;
   if (*(&self->super.isa + OBJC_IVAR____TtC7Vehicle18SettingsCarManager_fireRenderedAndFinalizedSignposts) == 1)
   {
     v8 = *(&self->super.isa + OBJC_IVAR____TtC7Vehicle18SettingsCarManager_cafCarManager);
-    v9 = a3;
-    v10 = a4;
-    v13 = self;
-    v11 = [v8 currentCar];
-    if (v11)
+    controllerCopy = controller;
+    viewControllerCopy = viewController;
+    selfCopy = self;
+    currentCar = [v8 currentCar];
+    if (currentCar)
     {
-      v12 = v11;
+      v12 = currentCar;
       *(&self->super.isa + v5) = 0;
       CAFSignpostEmit_Rendered();
       CAFSignpostEmit_Finalized();
 
-      v9 = v10;
-      v10 = v13;
-      v13 = v12;
+      controllerCopy = viewControllerCopy;
+      viewControllerCopy = selfCopy;
+      selfCopy = v12;
     }
   }
 }
 
-- (void)carManager:(id)a3 didUpdateCurrentCar:(id)a4
+- (void)carManager:(id)manager didUpdateCurrentCar:(id)car
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_10001B1E8(a4);
+  managerCopy = manager;
+  carCopy = car;
+  selfCopy = self;
+  sub_10001B1E8(car);
 }
 
-- (void)carManager:(id)a3 didRemove:(id)a4
+- (void)carManager:(id)manager didRemove:(id)remove
 {
   sub_1000043C8(0, &qword_1000387E8, CAFCar_ptr);
   v6 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v7 = a3;
-  v8 = self;
+  managerCopy = manager;
+  selfCopy = self;
   sub_10001B484(v6);
 }
 
-- (void)accessoryDidUpdate:(id)a3 receivedAllValues:(BOOL)a4
+- (void)accessoryDidUpdate:(id)update receivedAllValues:(BOOL)values
 {
-  v6 = a3;
-  v7 = self;
-  sub_10001932C(v6, a4);
+  updateCopy = update;
+  selfCopy = self;
+  sub_10001932C(updateCopy, values);
 }
 
-- (void)sessionDidConnect:(id)a3
+- (void)sessionDidConnect:(id)connect
 {
-  v4 = a3;
-  v5 = self;
+  connectCopy = connect;
+  selfCopy = self;
   sub_10001B564();
 }
 
-- (void)carIsConfigured:(id)a3
+- (void)carIsConfigured:(id)configured
 {
-  v4 = a3;
-  v5 = self;
-  sub_100019748(v4);
+  configuredCopy = configured;
+  selfCopy = self;
+  sub_100019748(configuredCopy);
 }
 
 @end

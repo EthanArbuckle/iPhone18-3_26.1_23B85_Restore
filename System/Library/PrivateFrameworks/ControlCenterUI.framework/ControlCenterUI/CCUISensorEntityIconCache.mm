@@ -1,12 +1,12 @@
 @interface CCUISensorEntityIconCache
 + (CGSize)iconSize;
 + (id)sharedInstance;
-- (id)_imageInBundle:(id)a3 named:(id)a4 needsTreatment:(BOOL)a5;
+- (id)_imageInBundle:(id)bundle named:(id)named needsTreatment:(BOOL)treatment;
 - (id)_init;
 - (id)_keyboardSettingsIcon;
-- (id)continuityCaptureIconForExtensionIdentifier:(id)a3;
-- (id)imageForEntity:(id)a3;
-- (void)preheatImageForSensorEntity:(id)a3;
+- (id)continuityCaptureIconForExtensionIdentifier:(id)identifier;
+- (id)imageForEntity:(id)entity;
+- (void)preheatImageForSensorEntity:(id)entity;
 @end
 
 @implementation CCUISensorEntityIconCache
@@ -55,32 +55,32 @@ void __43__CCUISensorEntityIconCache_sharedInstance__block_invoke()
   return v2;
 }
 
-- (void)preheatImageForSensorEntity:(id)a3
+- (void)preheatImageForSensorEntity:(id)entity
 {
-  v4 = a3;
+  entityCopy = entity;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __57__CCUISensorEntityIconCache_preheatImageForSensorEntity___block_invoke;
   v7[3] = &unk_278381DC8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = entityCopy;
+  v6 = entityCopy;
   dispatch_async(queue, v7);
 }
 
-- (id)imageForEntity:(id)a3
+- (id)imageForEntity:(id)entity
 {
-  v4 = a3;
+  entityCopy = entity;
   [objc_opt_class() iconSize];
   v6 = v5;
   v8 = v7;
-  v9 = [MEMORY[0x277D759A0] mainScreen];
-  [v9 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v11 = v10;
 
   v12 = [objc_alloc(MEMORY[0x277D1B1C8]) initWithSize:v6 scale:{v8, v11}];
-  if (([v4 isGenericLocationSystemServiceEntity] & 1) != 0 || objc_msgSend(v4, "isSetupApp"))
+  if (([entityCopy isGenericLocationSystemServiceEntity] & 1) != 0 || objc_msgSend(entityCopy, "isSetupApp"))
   {
     v13 = objc_alloc(MEMORY[0x277D1B1A8]);
     v14 = @"com.apple.graphic-icon.gear";
@@ -90,90 +90,90 @@ LABEL_5:
     v16 = v15;
     v17 = objc_alloc(MEMORY[0x277D755B8]);
     v18 = [v16 prepareImageForDescriptor:v12];
-    v19 = [v18 CGImage];
+    cGImage = [v18 CGImage];
     [v12 scale];
-    v20 = [v17 initWithCGImage:v19 scale:0 orientation:?];
+    v20 = [v17 initWithCGImage:cGImage scale:0 orientation:?];
 
 LABEL_6:
     goto LABEL_7;
   }
 
-  if ([v4 isScreenRecording])
+  if ([entityCopy isScreenRecording])
   {
     v13 = objc_alloc(MEMORY[0x277D1B1A8]);
     v14 = @"com.apple.graphic-icon.screen-recording";
     goto LABEL_4;
   }
 
-  if ([v4 isSiriAndDictationEntity])
+  if ([entityCopy isSiriAndDictationEntity])
   {
     v15 = [objc_alloc(MEMORY[0x277D1B1A8]) initWithBundleIdentifier:@"com.apple.siri"];
     goto LABEL_5;
   }
 
-  if ([v4 isVoiceControlEntity])
+  if ([entityCopy isVoiceControlEntity])
   {
     v13 = objc_alloc(MEMORY[0x277D1B1A8]);
     v14 = @"com.apple.accessibilityuiserver.voice.control";
     goto LABEL_4;
   }
 
-  if ([v4 isEmergencySOSEntity])
+  if ([entityCopy isEmergencySOSEntity])
   {
     v13 = objc_alloc(MEMORY[0x277D1B1A8]);
     v14 = @"com.apple.graphic-icon.emergency-sos";
     goto LABEL_4;
   }
 
-  if ([v4 isWalletSpecialEntity])
+  if ([entityCopy isWalletSpecialEntity])
   {
-    v22 = CCUIIconImageForApplicationIdentifier(*MEMORY[0x277CFC928], v6, v8);
+    _keyboardSettingsIcon = CCUIIconImageForApplicationIdentifier(*MEMORY[0x277CFC928], v6, v8);
   }
 
   else
   {
-    if (![v4 isKeyboardCameraEntity])
+    if (![entityCopy isKeyboardCameraEntity])
     {
-      v23 = [v4 isContinuityCaptureExtension];
-      v24 = [v4 bundleIdentifier];
-      v16 = v24;
-      if (v23)
+      isContinuityCaptureExtension = [entityCopy isContinuityCaptureExtension];
+      bundleIdentifier = [entityCopy bundleIdentifier];
+      v16 = bundleIdentifier;
+      if (isContinuityCaptureExtension)
       {
-        [(CCUISensorEntityIconCache *)self continuityCaptureIconForExtensionIdentifier:v24];
+        [(CCUISensorEntityIconCache *)self continuityCaptureIconForExtensionIdentifier:bundleIdentifier];
       }
 
       else
       {
-        CCUIIconImageForApplicationIdentifier(v24, v6, v8);
+        CCUIIconImageForApplicationIdentifier(bundleIdentifier, v6, v8);
       }
       v20 = ;
       goto LABEL_6;
     }
 
-    v22 = [(CCUISensorEntityIconCache *)self _keyboardSettingsIcon];
+    _keyboardSettingsIcon = [(CCUISensorEntityIconCache *)self _keyboardSettingsIcon];
   }
 
-  v20 = v22;
+  v20 = _keyboardSettingsIcon;
 LABEL_7:
 
   return v20;
 }
 
-- (id)_imageInBundle:(id)a3 named:(id)a4 needsTreatment:(BOOL)a5
+- (id)_imageInBundle:(id)bundle named:(id)named needsTreatment:(BOOL)treatment
 {
-  v5 = a5;
-  v7 = a3;
-  v8 = a4;
-  v9 = [MEMORY[0x277CCA8D8] bundleWithURL:v7];
-  v10 = [MEMORY[0x277D755B8] imageNamed:v8 inBundle:v9];
+  treatmentCopy = treatment;
+  bundleCopy = bundle;
+  namedCopy = named;
+  v9 = [MEMORY[0x277CCA8D8] bundleWithURL:bundleCopy];
+  v10 = [MEMORY[0x277D755B8] imageNamed:namedCopy inBundle:v9];
   if (v10)
   {
     v11 = v10;
-    if (v5)
+    if (treatmentCopy)
     {
-      v12 = [v10 CGImage];
+      cGImage = [v10 CGImage];
       [objc_opt_class() iconSize];
-      v15 = CCUIIconImageForUntreatedImage(v12, v13, v14);
+      v15 = CCUIIconImageForUntreatedImage(cGImage, v13, v14);
 
       v11 = v15;
     }
@@ -184,7 +184,7 @@ LABEL_7:
     v16 = *MEMORY[0x277CFC8E8];
     if (os_log_type_enabled(*MEMORY[0x277CFC8E8], OS_LOG_TYPE_FAULT))
     {
-      [CCUISensorEntityIconCache _imageInBundle:v8 named:v7 needsTreatment:v16];
+      [CCUISensorEntityIconCache _imageInBundle:namedCopy named:bundleCopy needsTreatment:v16];
     }
 
     v11 = 0;
@@ -193,12 +193,12 @@ LABEL_7:
   return v11;
 }
 
-- (id)continuityCaptureIconForExtensionIdentifier:(id)a3
+- (id)continuityCaptureIconForExtensionIdentifier:(id)identifier
 {
   v4 = MEMORY[0x277CC1E50];
-  v5 = a3;
+  identifierCopy = identifier;
   v10 = 0;
-  v6 = [[v4 alloc] initWithBundleIdentifier:v5 error:&v10];
+  v6 = [[v4 alloc] initWithBundleIdentifier:identifierCopy error:&v10];
 
   v7 = [v6 URL];
   v8 = [(CCUISensorEntityIconCache *)self _imageInBundle:v7 named:@"AppIcon" needsTreatment:1];

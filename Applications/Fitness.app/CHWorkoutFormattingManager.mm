@@ -1,99 +1,99 @@
 @interface CHWorkoutFormattingManager
-- (BOOL)hasAnyNonZeroStatisticForDiscreteQuantityTypes:(id)a3 orCumulativeQuantityTypes:(id)a4 forWorkout:(id)a5 orWorkoutActivity:(id)a6;
-- (BOOL)hasAverageCadenceForWorkout:(id)a3 workoutActivity:(id)a4;
-- (BOOL)hasAverageCyclingPowerForWorkout:(id)a3 workoutActivity:(id)a4;
-- (BOOL)hasAverageCyclingSpeedForWorkout:(id)a3 workoutActivity:(id)a4;
-- (BOOL)hasAveragePowerForWorkout:(id)a3 workoutActivity:(id)a4;
-- (BOOL)hasConnectedGymVendorIconForWorkout:(id)a3;
-- (BOOL)hasDistanceForWorkout:(id)a3 workoutActivity:(id)a4;
-- (BOOL)hasElevationAscendedDataForWorkout:(id)a3 workoutActivity:(id)a4;
-- (BOOL)hasFlightsClimbedForWorkout:(id)a3 workoutActivity:(id)a4;
-- (BOOL)hasWeatherConditionForWorkout:(id)a3 workoutActivity:(id)a4;
-- (BOOL)isIndoorCyclingForWorkout:(id)a3 workoutActivity:(id)a4;
-- (BOOL)nonZeroMetadataExistsInWorkout:(id)a3 orWorkoutActivity:(id)a4 withKey:(id)a5;
-- (BOOL)shouldShowDistanceForWorkout:(id)a3 workoutActivity:(id)a4;
-- (BOOL)supportsDistanceForWorkout:(id)a3 workoutActivity:(id)a4;
-- (BOOL)supportsDownhillRunsCountForWorkout:(id)a3 workoutActivity:(id)a4;
-- (BOOL)supportsElevationAscendedForWorkout:(id)a3 workoutActivity:(id)a4;
-- (BOOL)supportsElevationDescendedForWorkout:(id)a3 workoutActivity:(id)a4;
-- (BOOL)supportsPaceForWorkout:(id)a3 workoutActivity:(id)a4;
-- (BOOL)workoutHasGoalCompletionEvent:(id)a3;
-- (BOOL)workoutWasInDayTime:(id)a3;
-- (CHWorkoutFormattingManager)initWithFitnessUIFormattingManager:(id)a3 healthStore:(id)a4;
-- (_NSRange)_unitRangeWithString:(id)a3 valueRange:(_NSRange)a4;
-- (double)averageCyclingPowerForWorkout:(id)a3 workoutActivity:(id)a4;
-- (double)averageCyclingSpeedForWorkout:(id)a3 workoutActivity:(id)a4;
-- (id)_activeEnergyInfoForWorkout:(id)a3;
-- (id)_distanceInfoForWorkout:(id)a3;
-- (id)_durationInfoForWorkout:(id)a3;
-- (id)_formattedDateForDetailWithWorkout:(id)a3;
-- (id)_formattedDateForListViewWithWorkout:(id)a3;
-- (id)_formattedDescriptionForDayViewWithWorkout:(id)a3;
-- (id)_formattedDescriptionForListViewWithWorkout:(id)a3;
-- (id)_formattedGoalForDetailViewWithWorkout:(id)a3;
-- (id)_formattedValueString:(id)a3 withUnitString:(id)a4 paceFormat:(int64_t)a5 context:(id)a6 color:(id)a7;
-- (id)_goalCompletionEventsForWorkout:(id)a3;
-- (id)_goalStringForWorkout:(id)a3 outValue:(id *)a4;
-- (id)_maxDepthInfoForDive:(id)a3;
-- (id)_paceUnitForActivityType:(id)a3 paceFormat:(int64_t)a4;
-- (id)_ringImageForWorkout:(id)a3 context:(id)a4;
-- (id)_shareIconForWorkout:(id)a3 routeImage:(id)a4;
-- (id)_shareValueForWorkout:(id)a3;
-- (id)_underwaterTimeInfoForDive:(id)a3;
-- (id)_workoutTypeInfoForWorkout:(id)a3;
-- (id)airQualityIndexForWorkout:(id)a3 workoutActivity:(id)a4;
-- (id)defaultCircularRingImageForContext:(id)a3;
-- (id)fakeLocationDataForWorkout:(id)a3;
-- (id)formattedActiveEnergyForWorkout:(id)a3 workoutActivity:(id)a4 context:(id)a5;
-- (id)formattedAverageCadenceForWorkout:(id)a3 workoutActivity:(id)a4 context:(id)a5;
-- (id)formattedAveragePowerForWorkout:(id)a3 workoutActivity:(id)a4 context:(id)a5;
-- (id)formattedAveragePowerStringFor:(double)a3 context:(id)a4;
-- (id)formattedAverageSwimPaceWithDuration:(id)a3 context:(id)a4;
-- (id)formattedCount:(int64_t)a3 color:(id)a4 context:(id)a5;
-- (id)formattedDateForWorkout:(id)a3 context:(id)a4;
-- (id)formattedDescriptionForWorkout:(id)a3 context:(id)a4;
-- (id)formattedDistanceByStrokeStyle:(id)a3 isPoolSwim:(BOOL)a4 context:(id)a5;
-- (id)formattedDistanceForWorkout:(id)a3 workoutActivity:(id)a4 context:(id)a5;
-- (id)formattedDownhillRunsCount:(int64_t)a3 context:(id)a4;
-- (id)formattedDurationForWorkout:(id)a3 workoutActivity:(id)a4 context:(id)a5;
-- (id)formattedElapsedTimeForWorkout:(id)a3 workoutActivity:(id)a4 context:(id)a5;
-- (id)formattedElevation:(id)a3 context:(id)a4;
-- (id)formattedElevationGainForWorkout:(id)a3 workoutActivity:(id)a4 context:(id)a5;
-- (id)formattedEnergyBurn:(id)a3 context:(id)a4;
-- (id)formattedFlightsClimbedForWorkout:(id)a3 workoutActivity:(id)a4 context:(id)a5;
-- (id)formattedGoalCompletedDurationForWorkout:(id)a3 context:(id)a4;
-- (id)formattedGoalForWorkout:(id)a3 context:(id)a4;
-- (id)formattedGroundElevationGainForWorkout:(id)a3 workoutActivity:(id)a4 context:(id)a5;
-- (id)formattedHeartRate:(id)a3 context:(id)a4;
-- (id)formattedLapCountForWorkout:(id)a3 workoutActivity:(id)a4 context:(id)a5;
-- (id)formattedPaceOrSpeedForWorkout:(id)a3 workoutActivity:(id)a4 context:(id)a5;
-- (id)formattedPaceOrSpeedWithDistance:(id)a3 overDuration:(double)a4 activityType:(id)a5 context:(id)a6;
-- (id)formattedPoolLengthForWorkout:(id)a3 workoutActivity:(id)a4 context:(id)a5;
-- (id)formattedPowerStringFor:(double)a3;
-- (id)formattedRacePaceOrSpeedForWorkout:(id)a3 metersPerSecond:(id)a4 context:(id)a5;
-- (id)formattedRaceTimeForWorkout:(id)a3 workoutActivity:(id)a4 context:(id)a5;
-- (id)formattedStepCountForWorkout:(id)a3 workoutActivity:(id)a4 context:(id)a5;
-- (id)formattedSwimmingStrokeTypeForWorkout:(id)a3 context:(id)a4;
-- (id)formattedTimeRangeForWorkout:(id)a3 workoutActivity:(id)a4 context:(id)a5;
-- (id)formattedTotalEnergyForWorkout:(id)a3 workoutActivity:(id)a4 context:(id)a5;
-- (id)formattedTypeForWorkout:(id)a3 workoutActivity:(id)a4 context:(id)a5;
-- (id)locationForWorkout:(id)a3 workoutActivity:(id)a4;
-- (id)shareImageForWorkout:(id)a3 routeImage:(id)a4;
-- (id)shareTextForWorkout:(id)a3;
-- (id)timeZoneForWorkout:(id)a3;
-- (id)waterTemperatureForWorkout:(id)a3 workoutActivity:(id)a4;
-- (id)weatherHumidityForWorkout:(id)a3 workoutActivity:(id)a4;
-- (id)weatherTemperatureForWorkout:(id)a3 workoutActivity:(id)a4;
-- (void)_fetchIconForConnectedGymWorkout:(id)a3 context:(id)a4 completion:(id)a5;
-- (void)_fetchIconForFirstPartyWorkout:(id)a3 context:(id)a4 completion:(id)a5;
-- (void)_fetchIconForHiddenAppWorkout:(id)a3 context:(id)a4 completion:(id)a5;
-- (void)_fetchIconForThirdPartyWorkout:(id)a3 context:(id)a4 completion:(id)a5;
-- (void)_fetchPhoneIconForWorkout:(id)a3 context:(id)a4 completion:(id)a5;
-- (void)_fetchRingImageForWorkout:(id)a3 context:(id)a4 completion:(id)a5;
-- (void)_fetchWatchIconForWorkout:(id)a3 context:(id)a4 completion:(id)a5;
-- (void)_formattedDistanceStringForWorkout:(id)a3 distanceString:(id *)a4 unitString:(id *)a5;
-- (void)appProtectionSubjectsChanged:(id)a3 forSubscription:(id)a4;
-- (void)fetchIconImageForWorkout:(id)a3 context:(id)a4 completion:(id)a5;
+- (BOOL)hasAnyNonZeroStatisticForDiscreteQuantityTypes:(id)types orCumulativeQuantityTypes:(id)quantityTypes forWorkout:(id)workout orWorkoutActivity:(id)activity;
+- (BOOL)hasAverageCadenceForWorkout:(id)workout workoutActivity:(id)activity;
+- (BOOL)hasAverageCyclingPowerForWorkout:(id)workout workoutActivity:(id)activity;
+- (BOOL)hasAverageCyclingSpeedForWorkout:(id)workout workoutActivity:(id)activity;
+- (BOOL)hasAveragePowerForWorkout:(id)workout workoutActivity:(id)activity;
+- (BOOL)hasConnectedGymVendorIconForWorkout:(id)workout;
+- (BOOL)hasDistanceForWorkout:(id)workout workoutActivity:(id)activity;
+- (BOOL)hasElevationAscendedDataForWorkout:(id)workout workoutActivity:(id)activity;
+- (BOOL)hasFlightsClimbedForWorkout:(id)workout workoutActivity:(id)activity;
+- (BOOL)hasWeatherConditionForWorkout:(id)workout workoutActivity:(id)activity;
+- (BOOL)isIndoorCyclingForWorkout:(id)workout workoutActivity:(id)activity;
+- (BOOL)nonZeroMetadataExistsInWorkout:(id)workout orWorkoutActivity:(id)activity withKey:(id)key;
+- (BOOL)shouldShowDistanceForWorkout:(id)workout workoutActivity:(id)activity;
+- (BOOL)supportsDistanceForWorkout:(id)workout workoutActivity:(id)activity;
+- (BOOL)supportsDownhillRunsCountForWorkout:(id)workout workoutActivity:(id)activity;
+- (BOOL)supportsElevationAscendedForWorkout:(id)workout workoutActivity:(id)activity;
+- (BOOL)supportsElevationDescendedForWorkout:(id)workout workoutActivity:(id)activity;
+- (BOOL)supportsPaceForWorkout:(id)workout workoutActivity:(id)activity;
+- (BOOL)workoutHasGoalCompletionEvent:(id)event;
+- (BOOL)workoutWasInDayTime:(id)time;
+- (CHWorkoutFormattingManager)initWithFitnessUIFormattingManager:(id)manager healthStore:(id)store;
+- (_NSRange)_unitRangeWithString:(id)string valueRange:(_NSRange)range;
+- (double)averageCyclingPowerForWorkout:(id)workout workoutActivity:(id)activity;
+- (double)averageCyclingSpeedForWorkout:(id)workout workoutActivity:(id)activity;
+- (id)_activeEnergyInfoForWorkout:(id)workout;
+- (id)_distanceInfoForWorkout:(id)workout;
+- (id)_durationInfoForWorkout:(id)workout;
+- (id)_formattedDateForDetailWithWorkout:(id)workout;
+- (id)_formattedDateForListViewWithWorkout:(id)workout;
+- (id)_formattedDescriptionForDayViewWithWorkout:(id)workout;
+- (id)_formattedDescriptionForListViewWithWorkout:(id)workout;
+- (id)_formattedGoalForDetailViewWithWorkout:(id)workout;
+- (id)_formattedValueString:(id)string withUnitString:(id)unitString paceFormat:(int64_t)format context:(id)context color:(id)color;
+- (id)_goalCompletionEventsForWorkout:(id)workout;
+- (id)_goalStringForWorkout:(id)workout outValue:(id *)value;
+- (id)_maxDepthInfoForDive:(id)dive;
+- (id)_paceUnitForActivityType:(id)type paceFormat:(int64_t)format;
+- (id)_ringImageForWorkout:(id)workout context:(id)context;
+- (id)_shareIconForWorkout:(id)workout routeImage:(id)image;
+- (id)_shareValueForWorkout:(id)workout;
+- (id)_underwaterTimeInfoForDive:(id)dive;
+- (id)_workoutTypeInfoForWorkout:(id)workout;
+- (id)airQualityIndexForWorkout:(id)workout workoutActivity:(id)activity;
+- (id)defaultCircularRingImageForContext:(id)context;
+- (id)fakeLocationDataForWorkout:(id)workout;
+- (id)formattedActiveEnergyForWorkout:(id)workout workoutActivity:(id)activity context:(id)context;
+- (id)formattedAverageCadenceForWorkout:(id)workout workoutActivity:(id)activity context:(id)context;
+- (id)formattedAveragePowerForWorkout:(id)workout workoutActivity:(id)activity context:(id)context;
+- (id)formattedAveragePowerStringFor:(double)for context:(id)context;
+- (id)formattedAverageSwimPaceWithDuration:(id)duration context:(id)context;
+- (id)formattedCount:(int64_t)count color:(id)color context:(id)context;
+- (id)formattedDateForWorkout:(id)workout context:(id)context;
+- (id)formattedDescriptionForWorkout:(id)workout context:(id)context;
+- (id)formattedDistanceByStrokeStyle:(id)style isPoolSwim:(BOOL)swim context:(id)context;
+- (id)formattedDistanceForWorkout:(id)workout workoutActivity:(id)activity context:(id)context;
+- (id)formattedDownhillRunsCount:(int64_t)count context:(id)context;
+- (id)formattedDurationForWorkout:(id)workout workoutActivity:(id)activity context:(id)context;
+- (id)formattedElapsedTimeForWorkout:(id)workout workoutActivity:(id)activity context:(id)context;
+- (id)formattedElevation:(id)elevation context:(id)context;
+- (id)formattedElevationGainForWorkout:(id)workout workoutActivity:(id)activity context:(id)context;
+- (id)formattedEnergyBurn:(id)burn context:(id)context;
+- (id)formattedFlightsClimbedForWorkout:(id)workout workoutActivity:(id)activity context:(id)context;
+- (id)formattedGoalCompletedDurationForWorkout:(id)workout context:(id)context;
+- (id)formattedGoalForWorkout:(id)workout context:(id)context;
+- (id)formattedGroundElevationGainForWorkout:(id)workout workoutActivity:(id)activity context:(id)context;
+- (id)formattedHeartRate:(id)rate context:(id)context;
+- (id)formattedLapCountForWorkout:(id)workout workoutActivity:(id)activity context:(id)context;
+- (id)formattedPaceOrSpeedForWorkout:(id)workout workoutActivity:(id)activity context:(id)context;
+- (id)formattedPaceOrSpeedWithDistance:(id)distance overDuration:(double)duration activityType:(id)type context:(id)context;
+- (id)formattedPoolLengthForWorkout:(id)workout workoutActivity:(id)activity context:(id)context;
+- (id)formattedPowerStringFor:(double)for;
+- (id)formattedRacePaceOrSpeedForWorkout:(id)workout metersPerSecond:(id)second context:(id)context;
+- (id)formattedRaceTimeForWorkout:(id)workout workoutActivity:(id)activity context:(id)context;
+- (id)formattedStepCountForWorkout:(id)workout workoutActivity:(id)activity context:(id)context;
+- (id)formattedSwimmingStrokeTypeForWorkout:(id)workout context:(id)context;
+- (id)formattedTimeRangeForWorkout:(id)workout workoutActivity:(id)activity context:(id)context;
+- (id)formattedTotalEnergyForWorkout:(id)workout workoutActivity:(id)activity context:(id)context;
+- (id)formattedTypeForWorkout:(id)workout workoutActivity:(id)activity context:(id)context;
+- (id)locationForWorkout:(id)workout workoutActivity:(id)activity;
+- (id)shareImageForWorkout:(id)workout routeImage:(id)image;
+- (id)shareTextForWorkout:(id)workout;
+- (id)timeZoneForWorkout:(id)workout;
+- (id)waterTemperatureForWorkout:(id)workout workoutActivity:(id)activity;
+- (id)weatherHumidityForWorkout:(id)workout workoutActivity:(id)activity;
+- (id)weatherTemperatureForWorkout:(id)workout workoutActivity:(id)activity;
+- (void)_fetchIconForConnectedGymWorkout:(id)workout context:(id)context completion:(id)completion;
+- (void)_fetchIconForFirstPartyWorkout:(id)workout context:(id)context completion:(id)completion;
+- (void)_fetchIconForHiddenAppWorkout:(id)workout context:(id)context completion:(id)completion;
+- (void)_fetchIconForThirdPartyWorkout:(id)workout context:(id)context completion:(id)completion;
+- (void)_fetchPhoneIconForWorkout:(id)workout context:(id)context completion:(id)completion;
+- (void)_fetchRingImageForWorkout:(id)workout context:(id)context completion:(id)completion;
+- (void)_fetchWatchIconForWorkout:(id)workout context:(id)context completion:(id)completion;
+- (void)_formattedDistanceStringForWorkout:(id)workout distanceString:(id *)string unitString:(id *)unitString;
+- (void)appProtectionSubjectsChanged:(id)changed forSubscription:(id)subscription;
+- (void)fetchIconImageForWorkout:(id)workout context:(id)context completion:(id)completion;
 - (void)updateHiddenAppBundleIds;
 @end
 
@@ -122,8 +122,8 @@
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * v8) bundleIdentifier];
-        [v3 addObject:v9];
+        bundleIdentifier = [*(*(&v12 + 1) + 8 * v8) bundleIdentifier];
+        [v3 addObject:bundleIdentifier];
 
         v8 = v8 + 1;
       }
@@ -140,25 +140,25 @@
   self->_hiddenApplicationBundleIds = v10;
 }
 
-- (CHWorkoutFormattingManager)initWithFitnessUIFormattingManager:(id)a3 healthStore:(id)a4
+- (CHWorkoutFormattingManager)initWithFitnessUIFormattingManager:(id)manager healthStore:(id)store
 {
-  v7 = a3;
-  v8 = a4;
+  managerCopy = manager;
+  storeCopy = store;
   v21.receiver = self;
   v21.super_class = CHWorkoutFormattingManager;
   v9 = [(CHWorkoutFormattingManager *)&v21 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_formattingManager, a3);
-    objc_storeStrong(&v10->_healthStore, a4);
+    objc_storeStrong(&v9->_formattingManager, manager);
+    objc_storeStrong(&v10->_healthStore, store);
     v11 = [[ARUIRingsViewRenderer alloc] initWithMaximumRingCount:1];
     renderer = v10->_renderer;
     v10->_renderer = v11;
 
     v13 = [CHWorkoutDataCalculator alloc];
-    v14 = [v7 unitManager];
-    v15 = [(CHWorkoutDataCalculator *)v13 initWithHealthStore:v8 unitManager:v14];
+    unitManager = [managerCopy unitManager];
+    v15 = [(CHWorkoutDataCalculator *)v13 initWithHealthStore:storeCopy unitManager:unitManager];
     dataCalculator = v10->_dataCalculator;
     v10->_dataCalculator = v15;
 
@@ -174,9 +174,9 @@
   return v10;
 }
 
-- (id)fakeLocationDataForWorkout:(id)a3
+- (id)fakeLocationDataForWorkout:(id)workout
 {
-  v3 = a3;
+  workoutCopy = workout;
   v4 = +[NSBundle mainBundle];
   v5 = [v4 pathForResource:@"CityRunFakedLocationCoordinates" ofType:@"json"];
 
@@ -187,9 +187,9 @@
     v7 = [NSJSONSerialization JSONObjectWithData:v6 options:4 error:&v23];
     v8 = v23;
     v9 = [v7 count];
-    v10 = [v3 endDate];
-    v11 = [v3 startDate];
-    [v10 timeIntervalSinceDate:v11];
+    endDate = [workoutCopy endDate];
+    startDate = [workoutCopy startDate];
+    [endDate timeIntervalSinceDate:startDate];
     v13 = v12 / v9;
 
     v14 = objc_alloc_init(NSMutableArray);
@@ -197,7 +197,7 @@
     v19[1] = 3221225472;
     v19[2] = sub_1000AABB8;
     v19[3] = &unk_10083A7B0;
-    v20 = v3;
+    v20 = workoutCopy;
     v22 = v13;
     v15 = v14;
     v21 = v15;
@@ -214,38 +214,38 @@
   return v17;
 }
 
-- (BOOL)workoutHasGoalCompletionEvent:(id)a3
+- (BOOL)workoutHasGoalCompletionEvent:(id)event
 {
-  v3 = [(CHWorkoutFormattingManager *)self _goalCompletionEventsForWorkout:a3];
+  v3 = [(CHWorkoutFormattingManager *)self _goalCompletionEventsForWorkout:event];
   v4 = [v3 count] != 0;
 
   return v4;
 }
 
-- (id)_goalCompletionEventsForWorkout:(id)a3
+- (id)_goalCompletionEventsForWorkout:(id)workout
 {
-  v3 = [a3 workoutEvents];
+  workoutEvents = [workout workoutEvents];
   v4 = [NSPredicate predicateWithBlock:&stru_10083A7F0];
-  v5 = [v3 filteredArrayUsingPredicate:v4];
+  v5 = [workoutEvents filteredArrayUsingPredicate:v4];
 
   return v5;
 }
 
-- (id)formattedDescriptionForWorkout:(id)a3 context:(id)a4
+- (id)formattedDescriptionForWorkout:(id)workout context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 isEqualToString:@"DayViewDisplayContext"])
+  workoutCopy = workout;
+  contextCopy = context;
+  if ([contextCopy isEqualToString:@"DayViewDisplayContext"])
   {
-    v8 = [(CHWorkoutFormattingManager *)self _formattedDescriptionForDayViewWithWorkout:v6];
+    v8 = [(CHWorkoutFormattingManager *)self _formattedDescriptionForDayViewWithWorkout:workoutCopy];
 LABEL_5:
     v9 = v8;
     goto LABEL_7;
   }
 
-  if ([v7 isEqualToString:@"WorkoutsListDisplayContext"])
+  if ([contextCopy isEqualToString:@"WorkoutsListDisplayContext"])
   {
-    v8 = [(CHWorkoutFormattingManager *)self _formattedDescriptionForListViewWithWorkout:v6];
+    v8 = [(CHWorkoutFormattingManager *)self _formattedDescriptionForListViewWithWorkout:workoutCopy];
     goto LABEL_5;
   }
 
@@ -255,13 +255,13 @@ LABEL_7:
   return v9;
 }
 
-- (id)_formattedDescriptionForDayViewWithWorkout:(id)a3
+- (id)_formattedDescriptionForDayViewWithWorkout:(id)workout
 {
-  v4 = a3;
-  if ([v4 workoutActivityType] == 84)
+  workoutCopy = workout;
+  if ([workoutCopy workoutActivityType] == 84)
   {
     formattingManager = self->_formattingManager;
-    [v4 duration];
+    [workoutCopy duration];
     v6 = [(FIUIFormattingManager *)formattingManager stringWithDuration:3 durationFormat:?];
     v7 = FILocalizedActivityNameWithWorkout();
 
@@ -275,7 +275,7 @@ LABEL_7:
     v6 = [CHWorkoutDisplayContext displayContextWithName:@"DayViewDisplayContext"];
     v10 = self->_formattingManager;
     v25 = &stru_1008680E8;
-    v11 = [(FIUIFormattingManager *)v10 localizedGoalDescriptionForWorkout:v4 withValue:&v25 appendActivityType:1];
+    v11 = [(FIUIFormattingManager *)v10 localizedGoalDescriptionForWorkout:workoutCopy withValue:&v25 appendActivityType:1];
 
     v12 = v25;
     v9 = [[NSMutableAttributedString alloc] initWithString:v11];
@@ -283,44 +283,44 @@ LABEL_7:
     v14 = +[UIColor labelColor];
     [v9 addAttribute:NSForegroundColorAttributeName value:v14 range:{0, v13}];
 
-    v15 = [v6 goalDescriptionFont];
-    [v9 addAttribute:NSFontAttributeName value:v15 range:{0, v13}];
+    goalDescriptionFont = [v6 goalDescriptionFont];
+    [v9 addAttribute:NSFontAttributeName value:goalDescriptionFont range:{0, v13}];
 
     if ([(__CFString *)v12 length])
     {
       v16 = [v11 rangeOfString:v12];
       v18 = v17;
-      v19 = [v6 valueFont];
-      [v9 addAttribute:NSFontAttributeName value:v19 range:{v16, v18}];
+      valueFont = [v6 valueFont];
+      [v9 addAttribute:NSFontAttributeName value:valueFont range:{v16, v18}];
 
       v20 = [(CHWorkoutFormattingManager *)self _unitRangeWithString:v11 valueRange:v16, v18];
       v22 = v21;
-      v23 = [v6 goalDescriptionAttributes];
-      [v9 addAttributes:v23 range:{v20, v22}];
+      goalDescriptionAttributes = [v6 goalDescriptionAttributes];
+      [v9 addAttributes:goalDescriptionAttributes range:{v20, v22}];
     }
   }
 
   return v9;
 }
 
-- (id)_formattedDescriptionForListViewWithWorkout:(id)a3
+- (id)_formattedDescriptionForListViewWithWorkout:(id)workout
 {
-  v3 = a3;
+  workoutCopy = workout;
   v26 = [CHWorkoutDisplayContext displayContextWithName:@"WorkoutsListDisplayContext"];
-  v4 = [v26 dateFont];
-  [v4 pointSize];
+  dateFont = [v26 dateFont];
+  [dateFont pointSize];
   v22 = [UIFont systemFontOfSize:?];
 
-  v23 = [v26 dateFont];
+  dateFont2 = [v26 dateFont];
   v5 = +[CHListAndDetailViewDateFormatter listViewDateFormatter];
-  v24 = v3;
-  v6 = [v3 startDate];
-  v21 = [v5 stringFromDate:v6];
+  v24 = workoutCopy;
+  startDate = [workoutCopy startDate];
+  v21 = [v5 stringFromDate:startDate];
 
-  v7 = [v3 fiui_activityType];
-  [v7 effectiveTypeIdentifier];
-  [v7 swimmingLocationType];
-  [v7 isIndoor];
+  fiui_activityType = [workoutCopy fiui_activityType];
+  [fiui_activityType effectiveTypeIdentifier];
+  [fiui_activityType swimmingLocationType];
+  [fiui_activityType isIndoor];
   v8 = FILocalizedNameForActivityType();
   v9 = [@" " stringByAppendingString:v8];
   v20 = [v9 stringByAppendingString:@"\n"];
@@ -336,7 +336,7 @@ LABEL_7:
 
   v14 = [NSAttributedString alloc];
   v27[1] = NSForegroundColorAttributeName;
-  v28[0] = v23;
+  v28[0] = dateFont2;
   v27[0] = NSFontAttributeName;
   v15 = +[UIColor labelColor];
   v28[1] = v15;
@@ -351,84 +351,84 @@ LABEL_7:
   return v13;
 }
 
-- (id)formattedDateForWorkout:(id)a3 context:(id)a4
+- (id)formattedDateForWorkout:(id)workout context:(id)context
 {
-  v6 = a3;
-  if ([a4 isEqualToString:@"WorkoutsListDisplayContext"])
+  workoutCopy = workout;
+  if ([context isEqualToString:@"WorkoutsListDisplayContext"])
   {
-    [(CHWorkoutFormattingManager *)self _formattedDateForListViewWithWorkout:v6];
+    [(CHWorkoutFormattingManager *)self _formattedDateForListViewWithWorkout:workoutCopy];
   }
 
   else
   {
-    [(CHWorkoutFormattingManager *)self _formattedDateForDetailWithWorkout:v6];
+    [(CHWorkoutFormattingManager *)self _formattedDateForDetailWithWorkout:workoutCopy];
   }
   v7 = ;
 
   return v7;
 }
 
-- (id)_formattedDateForDetailWithWorkout:(id)a3
+- (id)_formattedDateForDetailWithWorkout:(id)workout
 {
-  v3 = a3;
+  workoutCopy = workout;
   v4 = [CHWorkoutDisplayContext displayContextWithName:@"WorkoutDetailDisplayContext"];
   v5 = +[CHListAndDetailViewDateFormatter detailViewDateFormatter];
-  v6 = [v3 startDate];
+  startDate = [workoutCopy startDate];
 
-  v7 = [v5 stringFromDate:v6];
+  v7 = [v5 stringFromDate:startDate];
 
   v8 = [NSAttributedString alloc];
   v13 = NSFontAttributeName;
-  v9 = [v4 dateFont];
-  v14 = v9;
+  dateFont = [v4 dateFont];
+  v14 = dateFont;
   v10 = [NSDictionary dictionaryWithObjects:&v14 forKeys:&v13 count:1];
   v11 = [v8 initWithString:v7 attributes:v10];
 
   return v11;
 }
 
-- (id)_formattedDateForListViewWithWorkout:(id)a3
+- (id)_formattedDateForListViewWithWorkout:(id)workout
 {
-  v3 = a3;
+  workoutCopy = workout;
   v4 = [CHWorkoutDisplayContext displayContextWithName:@"WorkoutsListDisplayContext"];
-  v5 = [v3 startDate];
+  startDate = [workoutCopy startDate];
 
-  v6 = [v4 dateFont];
-  v7 = [CHListAndDetailViewDateFormatter formattedListStringForDate:v5 font:v6];
+  dateFont = [v4 dateFont];
+  v7 = [CHListAndDetailViewDateFormatter formattedListStringForDate:startDate font:dateFont];
 
   return v7;
 }
 
-- (id)formattedTypeForWorkout:(id)a3 workoutActivity:(id)a4 context:(id)a5
+- (id)formattedTypeForWorkout:(id)workout workoutActivity:(id)activity context:(id)context
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [CHWorkoutDisplayContext displayContextWithName:a5];
-  if (v8)
+  workoutCopy = workout;
+  activityCopy = activity;
+  v9 = [CHWorkoutDisplayContext displayContextWithName:context];
+  if (activityCopy)
   {
-    v10 = [v8 workoutConfiguration];
-    [v10 activityType];
+    workoutConfiguration = [activityCopy workoutConfiguration];
+    [workoutConfiguration activityType];
 
-    v11 = [v8 workoutConfiguration];
-    [v11 swimmingLocationType];
+    workoutConfiguration2 = [activityCopy workoutConfiguration];
+    [workoutConfiguration2 swimmingLocationType];
 
-    v12 = [v8 workoutConfiguration];
-    [v12 locationType];
+    workoutConfiguration3 = [activityCopy workoutConfiguration];
+    [workoutConfiguration3 locationType];
 
     v13 = FILocalizedNameForActivityType();
   }
 
   else
   {
-    v14 = [v7 metadata];
-    v13 = [v14 objectForKeyedSubscript:HKMetadataKeyWorkoutBrandName];
+    metadata = [workoutCopy metadata];
+    v13 = [metadata objectForKeyedSubscript:HKMetadataKeyWorkoutBrandName];
 
     if (![v13 length])
     {
-      v15 = [v7 fiui_activityType];
-      [v15 effectiveTypeIdentifier];
-      [v15 swimmingLocationType];
-      [v15 isIndoor];
+      fiui_activityType = [workoutCopy fiui_activityType];
+      [fiui_activityType effectiveTypeIdentifier];
+      [fiui_activityType swimmingLocationType];
+      [fiui_activityType isIndoor];
       v16 = FILocalizedNameForActivityType();
 
       v13 = v16;
@@ -438,9 +438,9 @@ LABEL_7:
   v17 = objc_alloc_init(NSMutableParagraphStyle);
   LODWORD(v18) = 1.0;
   [v17 setHyphenationFactor:v18];
-  v19 = [v9 workoutTypeFont];
+  workoutTypeFont = [v9 workoutTypeFont];
   v20 = [NSAttributedString alloc];
-  v26[0] = v19;
+  v26[0] = workoutTypeFont;
   v25[0] = NSFontAttributeName;
   v25[1] = NSForegroundColorAttributeName;
   v21 = +[UIColor labelColor];
@@ -453,18 +453,18 @@ LABEL_7:
   return v23;
 }
 
-- (id)formattedSwimmingStrokeTypeForWorkout:(id)a3 context:(id)a4
+- (id)formattedSwimmingStrokeTypeForWorkout:(id)workout context:(id)context
 {
-  v5 = a4;
-  if ([a3 fiui_strokeStyle])
+  contextCopy = context;
+  if ([workout fiui_strokeStyle])
   {
-    v6 = [CHWorkoutDisplayContext displayContextWithName:v5];
+    v6 = [CHWorkoutDisplayContext displayContextWithName:contextCopy];
     v7 = FILocalizedStrokeStyleName();
-    v8 = [v6 dateFont];
+    dateFont = [v6 dateFont];
     v9 = [NSAttributedString alloc];
     v14[0] = NSFontAttributeName;
     v14[1] = NSForegroundColorAttributeName;
-    v15[0] = v8;
+    v15[0] = dateFont;
     v10 = +[UIColor labelColor];
     v15[1] = v10;
     v11 = [NSDictionary dictionaryWithObjects:v15 forKeys:v14 count:2];
@@ -479,19 +479,19 @@ LABEL_7:
   return v12;
 }
 
-- (id)formattedDistanceByStrokeStyle:(id)a3 isPoolSwim:(BOOL)a4 context:(id)a5
+- (id)formattedDistanceByStrokeStyle:(id)style isPoolSwim:(BOOL)swim context:(id)context
 {
-  v33 = a4;
-  v6 = a3;
-  v30 = [CHWorkoutDisplayContext displayContextWithName:a5];
-  v7 = [v6 allKeys];
+  swimCopy = swim;
+  styleCopy = style;
+  v30 = [CHWorkoutDisplayContext displayContextWithName:context];
+  allKeys = [styleCopy allKeys];
   v41[0] = _NSConcreteStackBlock;
   v41[1] = 3221225472;
   v41[2] = sub_1000ABE6C;
   v41[3] = &unk_10083A818;
-  v34 = v6;
+  v34 = styleCopy;
   v42 = v34;
-  v8 = [v7 sortedArrayUsingComparator:v41];
+  v8 = [allKeys sortedArrayUsingComparator:v41];
 
   v9 = objc_alloc_init(NSMutableString);
   v37 = 0u;
@@ -516,21 +516,21 @@ LABEL_7:
         v13 = [v34 objectForKeyedSubscript:v12];
         [v12 integerValue];
         v14 = FILocalizedStrokeStyleName();
-        if (v33)
+        if (swimCopy)
         {
-          v15 = [(CHWorkoutFormattingManager *)self formattingManager];
+          formattingManager = [(CHWorkoutFormattingManager *)self formattingManager];
           v16 = +[HKUnit meterUnit];
           [v13 doubleValueForUnit:v16];
-          [v15 localizedStringWithDistanceInMeters:3 distanceType:1 unitStyle:5 roundingMode:?];
+          [formattingManager localizedStringWithDistanceInMeters:3 distanceType:1 unitStyle:5 roundingMode:?];
         }
 
         else
         {
           v36 = 0;
-          v15 = [(CHWorkoutFormattingManager *)self formattingManager];
+          formattingManager = [(CHWorkoutFormattingManager *)self formattingManager];
           v16 = +[HKUnit meterUnit];
           [v13 doubleValueForUnit:v16];
-          [v15 localizedNaturalScaleStringWithDistanceInMeters:4 distanceType:1 unitStyle:&v36 usedUnit:?];
+          [formattingManager localizedNaturalScaleStringWithDistanceInMeters:4 distanceType:1 unitStyle:&v36 usedUnit:?];
         }
         v17 = ;
 
@@ -538,8 +538,8 @@ LABEL_7:
         v19 = [v18 localizedStringForKey:@"SWIMMING_STROKE_STYLE_DISTANCE_%@_%@" value:&stru_1008680E8 table:@"Localizable"];
         v20 = [NSString stringWithFormat:v19, v14, v17];
 
-        v21 = [v10 firstObject];
-        LOBYTE(v19) = [v12 isEqualToNumber:v21];
+        firstObject = [v10 firstObject];
+        LOBYTE(v19) = [v12 isEqualToNumber:firstObject];
 
         if ((v19 & 1) == 0)
         {
@@ -557,12 +557,12 @@ LABEL_7:
 
   v22 = v10;
 
-  v23 = [v30 dateFont];
+  dateFont = [v30 dateFont];
   v24 = [NSAttributedString alloc];
   v25 = [[NSString alloc] initWithString:v9];
   v43[0] = NSFontAttributeName;
   v43[1] = NSForegroundColorAttributeName;
-  v44[0] = v23;
+  v44[0] = dateFont;
   v26 = +[UIColor labelColor];
   v44[1] = v26;
   v27 = [NSDictionary dictionaryWithObjects:v44 forKeys:v43 count:2];
@@ -571,47 +571,47 @@ LABEL_7:
   return v28;
 }
 
-- (id)formattedTimeRangeForWorkout:(id)a3 workoutActivity:(id)a4 context:(id)a5
+- (id)formattedTimeRangeForWorkout:(id)workout workoutActivity:(id)activity context:(id)context
 {
-  v7 = a3;
-  v8 = a4;
-  v25 = [CHWorkoutDisplayContext displayContextWithName:a5];
-  v9 = [v25 dateFont];
+  workoutCopy = workout;
+  activityCopy = activity;
+  v25 = [CHWorkoutDisplayContext displayContextWithName:context];
+  dateFont = [v25 dateFont];
   v10 = +[UIColor secondaryLabelColor];
-  if (v8)
+  if (activityCopy)
   {
-    v11 = v8;
+    v11 = activityCopy;
   }
 
   else
   {
-    v11 = v7;
+    v11 = workoutCopy;
   }
 
-  v12 = [v11 startDate];
+  startDate = [v11 startDate];
   v13 = +[CHListAndDetailViewDateFormatter timeDateFormatter];
-  v14 = [v13 stringFromDate:v12];
+  v14 = [v13 stringFromDate:startDate];
 
-  v24 = v7;
-  if (v8)
+  v24 = workoutCopy;
+  if (activityCopy)
   {
-    v15 = v8;
+    v15 = activityCopy;
   }
 
   else
   {
-    v15 = v7;
+    v15 = workoutCopy;
   }
 
-  v16 = [v15 endDate];
+  endDate = [v15 endDate];
   v17 = +[CHListAndDetailViewDateFormatter timeDateFormatter];
-  v18 = [v17 stringFromDate:v16];
+  v18 = [v17 stringFromDate:endDate];
 
   v19 = [NSString stringWithFormat:@"%@–%@", v14, v18];
   v20 = [NSAttributedString alloc];
   v26[0] = NSFontAttributeName;
   v26[1] = NSForegroundColorAttributeName;
-  v27[0] = v9;
+  v27[0] = dateFont;
   v27[1] = v10;
   v21 = [NSDictionary dictionaryWithObjects:v27 forKeys:v26 count:2];
   v22 = [v20 initWithString:v19 attributes:v21];
@@ -619,37 +619,37 @@ LABEL_7:
   return v22;
 }
 
-- (id)defaultCircularRingImageForContext:(id)a3
+- (id)defaultCircularRingImageForContext:(id)context
 {
-  v3 = [CHWorkoutDisplayContext displayContextWithName:a3];
+  v3 = [CHWorkoutDisplayContext displayContextWithName:context];
   [v3 ringDiameter];
   v4 = FIUICircularWorkoutGradientImage();
 
   return v4;
 }
 
-- (id)_ringImageForWorkout:(id)a3 context:(id)a4
+- (id)_ringImageForWorkout:(id)workout context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  [v6 fiui_completionFactor];
+  workoutCopy = workout;
+  contextCopy = context;
+  [workoutCopy fiui_completionFactor];
   v9 = v8;
-  v10 = [ARUIMetricColors metricColorsForWorkout:v6];
-  if ([v6 shouldUseCircularGradientImage])
+  v10 = [ARUIMetricColors metricColorsForWorkout:workoutCopy];
+  if ([workoutCopy shouldUseCircularGradientImage])
   {
-    v11 = [v10 gradientDarkColor];
-    v12 = [v10 gradientLightColor];
-    [v7 ringDiameter];
+    gradientDarkColor = [v10 gradientDarkColor];
+    gradientLightColor = [v10 gradientLightColor];
+    [contextCopy ringDiameter];
     v13 = FIUICircularGradientImage();
 
     goto LABEL_6;
   }
 
-  if (![v6 _goalType])
+  if (![workoutCopy _goalType])
   {
     v19 = +[CHWorkoutDisplayContext _dayViewDisplayContext];
     v20 = v19;
-    if (v19 == v7)
+    if (v19 == contextCopy)
     {
     }
 
@@ -657,18 +657,18 @@ LABEL_7:
     {
       v21 = +[CHWorkoutDisplayContext _friendDetailDisplayContext];
 
-      if (v21 != v7)
+      if (v21 != contextCopy)
       {
-        [v7 ringDiameter];
+        [contextCopy ringDiameter];
         v17 = FIUICircularWorkoutGradientImage();
         goto LABEL_5;
       }
     }
   }
 
-  [v7 ringDiameter];
+  [contextCopy ringDiameter];
   v15 = v14;
-  [v7 ringThickness];
+  [contextCopy ringThickness];
   v17 = [RingViewFactory workoutRingWithPercent:v10 colors:self->_renderer diameter:v9 thickness:v15 renderer:v16];
 LABEL_5:
   v13 = v17;
@@ -677,26 +677,26 @@ LABEL_6:
   return v13;
 }
 
-- (void)_fetchRingImageForWorkout:(id)a3 context:(id)a4 completion:(id)a5
+- (void)_fetchRingImageForWorkout:(id)workout context:(id)context completion:(id)completion
 {
-  v8 = a5;
-  v9 = [(CHWorkoutFormattingManager *)self _ringImageForWorkout:a3 context:a4];
-  v8[2](v8, v9);
+  completionCopy = completion;
+  v9 = [(CHWorkoutFormattingManager *)self _ringImageForWorkout:workout context:context];
+  completionCopy[2](completionCopy, v9);
 }
 
-- (void)_fetchWatchIconForWorkout:(id)a3 context:(id)a4 completion:(id)a5
+- (void)_fetchWatchIconForWorkout:(id)workout context:(id)context completion:(id)completion
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  completionCopy = completion;
+  contextCopy = context;
+  workoutCopy = workout;
   v10 = objc_alloc_init(CHWatchIconParameters);
-  v11 = [v9 sourceRevision];
+  sourceRevision = [workoutCopy sourceRevision];
 
-  v12 = [v11 source];
-  v13 = [v12 bundleIdentifier];
-  [(CHIconParameters *)v10 setBundleID:v13];
+  source = [sourceRevision source];
+  bundleIdentifier = [source bundleIdentifier];
+  [(CHIconParameters *)v10 setBundleID:bundleIdentifier];
 
-  [v8 appIconWidth];
+  [contextCopy appIconWidth];
   v15 = v14;
 
   [(CHIconParameters *)v10 setPreferredAppStoreIconWidth:v15];
@@ -706,24 +706,24 @@ LABEL_6:
   v17[1] = 3221225472;
   v17[2] = sub_1000AC4C8;
   v17[3] = &unk_10083A840;
-  v18 = v7;
-  v16 = v7;
+  v18 = completionCopy;
+  v16 = completionCopy;
   [CHIconCache fetchWatchIconWithParameters:v10 completion:v17];
 }
 
-- (void)_fetchPhoneIconForWorkout:(id)a3 context:(id)a4 completion:(id)a5
+- (void)_fetchPhoneIconForWorkout:(id)workout context:(id)context completion:(id)completion
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  completionCopy = completion;
+  contextCopy = context;
+  workoutCopy = workout;
   v10 = objc_alloc_init(CHPhoneIconParameters);
-  v11 = [v9 sourceRevision];
+  sourceRevision = [workoutCopy sourceRevision];
 
-  v12 = [v11 source];
-  v13 = [v12 bundleIdentifier];
-  [(CHIconParameters *)v10 setBundleID:v13];
+  source = [sourceRevision source];
+  bundleIdentifier = [source bundleIdentifier];
+  [(CHIconParameters *)v10 setBundleID:bundleIdentifier];
 
-  [v8 appIconWidth];
+  [contextCopy appIconWidth];
   v15 = v14;
 
   [(CHIconParameters *)v10 setPreferredAppStoreIconWidth:v15];
@@ -732,40 +732,40 @@ LABEL_6:
   v17[1] = 3221225472;
   v17[2] = sub_1000AC630;
   v17[3] = &unk_10083A840;
-  v18 = v7;
-  v16 = v7;
+  v18 = completionCopy;
+  v16 = completionCopy;
   [CHIconCache fetchPhoneIconWithParameters:v10 completion:v17];
 }
 
-- (void)_fetchIconForConnectedGymWorkout:(id)a3 context:(id)a4 completion:(id)a5
+- (void)_fetchIconForConnectedGymWorkout:(id)workout context:(id)context completion:(id)completion
 {
-  v12 = a3;
-  v8 = a5;
-  v9 = [CHWorkoutDisplayContext displayContextWithName:a4];
-  v10 = [v12 device];
+  workoutCopy = workout;
+  completionCopy = completion;
+  v9 = [CHWorkoutDisplayContext displayContextWithName:context];
+  device = [workoutCopy device];
   [v9 gymKitIconWidth];
-  v11 = [HKUIConnectedGymIconUtilties iconForConnectedGymDevice:v10 preferredIconWidth:?];
+  v11 = [HKUIConnectedGymIconUtilties iconForConnectedGymDevice:device preferredIconWidth:?];
 
   if (!v11)
   {
-    v11 = [(CHWorkoutFormattingManager *)self _ringImageForWorkout:v12 context:v9];
+    v11 = [(CHWorkoutFormattingManager *)self _ringImageForWorkout:workoutCopy context:v9];
   }
 
-  v8[2](v8, v11);
+  completionCopy[2](completionCopy, v11);
 }
 
-- (void)_fetchIconForFirstPartyWorkout:(id)a3 context:(id)a4 completion:(id)a5
+- (void)_fetchIconForFirstPartyWorkout:(id)workout context:(id)context completion:(id)completion
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [CHWorkoutDisplayContext displayContextWithName:a4];
-  [(CHWorkoutFormattingManager *)self _fetchRingImageForWorkout:v9 context:v10 completion:v8];
+  completionCopy = completion;
+  workoutCopy = workout;
+  v10 = [CHWorkoutDisplayContext displayContextWithName:context];
+  [(CHWorkoutFormattingManager *)self _fetchRingImageForWorkout:workoutCopy context:v10 completion:completionCopy];
 }
 
-- (void)_fetchIconForHiddenAppWorkout:(id)a3 context:(id)a4 completion:(id)a5
+- (void)_fetchIconForHiddenAppWorkout:(id)workout context:(id)context completion:(id)completion
 {
-  v6 = a5;
-  v7 = [CHWorkoutDisplayContext displayContextWithName:a4];
+  completionCopy = completion;
+  v7 = [CHWorkoutDisplayContext displayContextWithName:context];
   v8 = objc_opt_new();
   [v8 setBundleID:@"com.apple.Health"];
   [v7 appIconWidth];
@@ -775,56 +775,56 @@ LABEL_6:
   v10[1] = 3221225472;
   v10[2] = sub_1000AC8D0;
   v10[3] = &unk_10083A840;
-  v11 = v6;
-  v9 = v6;
+  v11 = completionCopy;
+  v9 = completionCopy;
   [CHIconCache fetchPhoneIconWithParameters:v8 completion:v10];
 }
 
-- (void)_fetchIconForThirdPartyWorkout:(id)a3 context:(id)a4 completion:(id)a5
+- (void)_fetchIconForThirdPartyWorkout:(id)workout context:(id)context completion:(id)completion
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [CHWorkoutDisplayContext displayContextWithName:a4];
-  if ([v9 _isWatchWorkout])
+  completionCopy = completion;
+  workoutCopy = workout;
+  v10 = [CHWorkoutDisplayContext displayContextWithName:context];
+  if ([workoutCopy _isWatchWorkout])
   {
-    [(CHWorkoutFormattingManager *)self _fetchWatchIconForWorkout:v9 context:v10 completion:v8];
+    [(CHWorkoutFormattingManager *)self _fetchWatchIconForWorkout:workoutCopy context:v10 completion:completionCopy];
   }
 
   else
   {
-    [(CHWorkoutFormattingManager *)self _fetchPhoneIconForWorkout:v9 context:v10 completion:v8];
+    [(CHWorkoutFormattingManager *)self _fetchPhoneIconForWorkout:workoutCopy context:v10 completion:completionCopy];
   }
 }
 
-- (BOOL)hasConnectedGymVendorIconForWorkout:(id)a3
+- (BOOL)hasConnectedGymVendorIconForWorkout:(id)workout
 {
-  v3 = a3;
+  workoutCopy = workout;
   v4 = [CHWorkoutDisplayContext displayContextWithName:@"WorkoutDetailDisplayContext"];
-  v5 = [v3 device];
+  device = [workoutCopy device];
 
   [v4 gymKitIconWidth];
-  v6 = [HKUIConnectedGymIconUtilties iconForConnectedGymDevice:v5 preferredIconWidth:?];
+  v6 = [HKUIConnectedGymIconUtilties iconForConnectedGymDevice:device preferredIconWidth:?];
 
   return v6 != 0;
 }
 
-- (void)fetchIconImageForWorkout:(id)a3 context:(id)a4 completion:(id)a5
+- (void)fetchIconImageForWorkout:(id)workout context:(id)context completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 fiui_isConnectedGymWorkout])
+  workoutCopy = workout;
+  contextCopy = context;
+  completionCopy = completion;
+  if ([workoutCopy fiui_isConnectedGymWorkout])
   {
-    [(CHWorkoutFormattingManager *)self _fetchIconForConnectedGymWorkout:v8 context:v9 completion:v10];
+    [(CHWorkoutFormattingManager *)self _fetchIconForConnectedGymWorkout:workoutCopy context:contextCopy completion:completionCopy];
   }
 
   else
   {
     hiddenApplicationBundleIds = self->_hiddenApplicationBundleIds;
-    v12 = [v8 sourceRevision];
-    v13 = [v12 source];
-    v14 = [v13 bundleIdentifier];
-    LODWORD(hiddenApplicationBundleIds) = [(NSArray *)hiddenApplicationBundleIds containsObject:v14];
+    sourceRevision = [workoutCopy sourceRevision];
+    source = [sourceRevision source];
+    bundleIdentifier = [source bundleIdentifier];
+    LODWORD(hiddenApplicationBundleIds) = [(NSArray *)hiddenApplicationBundleIds containsObject:bundleIdentifier];
 
     if (hiddenApplicationBundleIds)
     {
@@ -835,112 +835,112 @@ LABEL_6:
         sub_10069B414(v15);
       }
 
-      [(CHWorkoutFormattingManager *)self _fetchIconForHiddenAppWorkout:v8 context:v9 completion:v10];
+      [(CHWorkoutFormattingManager *)self _fetchIconForHiddenAppWorkout:workoutCopy context:contextCopy completion:completionCopy];
     }
 
-    else if ([v8 isFirstPartyWorkout])
+    else if ([workoutCopy isFirstPartyWorkout])
     {
-      [(CHWorkoutFormattingManager *)self _fetchIconForFirstPartyWorkout:v8 context:v9 completion:v10];
+      [(CHWorkoutFormattingManager *)self _fetchIconForFirstPartyWorkout:workoutCopy context:contextCopy completion:completionCopy];
     }
 
     else
     {
-      [(CHWorkoutFormattingManager *)self _fetchIconForThirdPartyWorkout:v8 context:v9 completion:v10];
+      [(CHWorkoutFormattingManager *)self _fetchIconForThirdPartyWorkout:workoutCopy context:contextCopy completion:completionCopy];
     }
   }
 }
 
-- (id)_goalStringForWorkout:(id)a3 outValue:(id *)a4
+- (id)_goalStringForWorkout:(id)workout outValue:(id *)value
 {
-  v6 = a3;
-  v7 = [v6 workoutActivityType];
+  workoutCopy = workout;
+  workoutActivityType = [workoutCopy workoutActivityType];
   formattingManager = self->_formattingManager;
-  if (v7 == 84)
+  if (workoutActivityType == 84)
   {
-    [(FIUIFormattingManager *)formattingManager localizedGoalDescriptionForDive:v6 outValue:a4];
+    [(FIUIFormattingManager *)formattingManager localizedGoalDescriptionForDive:workoutCopy outValue:value];
   }
 
   else
   {
-    [(FIUIFormattingManager *)formattingManager localizedGoalDescriptionForWorkout:v6 withValue:a4 appendActivityType:0];
+    [(FIUIFormattingManager *)formattingManager localizedGoalDescriptionForWorkout:workoutCopy withValue:value appendActivityType:0];
   }
   v9 = ;
 
   return v9;
 }
 
-- (id)formattedGoalForWorkout:(id)a3 context:(id)a4
+- (id)formattedGoalForWorkout:(id)workout context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 isEqualToString:@"WorkoutDetailDisplayContext"])
+  workoutCopy = workout;
+  contextCopy = context;
+  if ([contextCopy isEqualToString:@"WorkoutDetailDisplayContext"])
   {
-    v8 = [(CHWorkoutFormattingManager *)self _formattedGoalForDetailViewWithWorkout:v6];
+    v8 = [(CHWorkoutFormattingManager *)self _formattedGoalForDetailViewWithWorkout:workoutCopy];
   }
 
   else
   {
-    v9 = [CHWorkoutDisplayContext displayContextWithName:v7];
+    v9 = [CHWorkoutDisplayContext displayContextWithName:contextCopy];
     v36 = &stru_1008680E8;
-    v10 = [(CHWorkoutFormattingManager *)self _goalStringForWorkout:v6 outValue:&v36];
+    v10 = [(CHWorkoutFormattingManager *)self _goalStringForWorkout:workoutCopy outValue:&v36];
     v11 = v36;
     v12 = [NSMutableAttributedString alloc];
-    v13 = [v10 localizedUppercaseString];
-    v8 = [v12 initWithString:v13];
+    localizedUppercaseString = [v10 localizedUppercaseString];
+    v8 = [v12 initWithString:localizedUppercaseString];
 
     v14 = [v10 length];
-    v35 = [ARUIMetricColors metricColorsForWorkout:v6];
-    v15 = [v35 nonGradientTextColor];
-    if ([v7 isEqualToString:@"DayViewDisplayContext"])
+    v35 = [ARUIMetricColors metricColorsForWorkout:workoutCopy];
+    nonGradientTextColor = [v35 nonGradientTextColor];
+    if ([contextCopy isEqualToString:@"DayViewDisplayContext"])
     {
       v16 = +[UIColor labelColor];
 
-      v15 = v16;
+      nonGradientTextColor = v16;
     }
 
-    v34 = v15;
-    [v8 addAttribute:NSForegroundColorAttributeName value:v15 range:{0, v14}];
-    v17 = [v9 goalDescriptionFont];
-    [v8 addAttribute:NSFontAttributeName value:v17 range:{0, v14}];
+    v34 = nonGradientTextColor;
+    [v8 addAttribute:NSForegroundColorAttributeName value:nonGradientTextColor range:{0, v14}];
+    goalDescriptionFont = [v9 goalDescriptionFont];
+    [v8 addAttribute:NSFontAttributeName value:goalDescriptionFont range:{0, v14}];
 
     if ([(__CFString *)v11 length])
     {
       v18 = [v10 rangeOfString:v11];
       v20 = v19;
       [v9 valueFont];
-      v33 = v7;
+      v33 = contextCopy;
       v21 = v11;
-      v22 = v6;
+      v22 = workoutCopy;
       v23 = v10;
-      v24 = self;
+      selfCopy = self;
       v26 = v25 = v9;
       [v8 addAttribute:NSFontAttributeName value:v26 range:{v18, v20}];
 
       v9 = v25;
-      v27 = v24;
+      v27 = selfCopy;
       v10 = v23;
-      v6 = v22;
+      workoutCopy = v22;
       v11 = v21;
-      v7 = v33;
+      contextCopy = v33;
       v28 = [(CHWorkoutFormattingManager *)v27 _unitRangeWithString:v10 valueRange:v18, v20];
       v30 = v29;
-      v31 = [v9 goalDescriptionAttributes];
-      [v8 addAttributes:v31 range:{v28, v30}];
+      goalDescriptionAttributes = [v9 goalDescriptionAttributes];
+      [v8 addAttributes:goalDescriptionAttributes range:{v28, v30}];
     }
   }
 
   return v8;
 }
 
-- (id)_formattedGoalForDetailViewWithWorkout:(id)a3
+- (id)_formattedGoalForDetailViewWithWorkout:(id)workout
 {
-  v3 = a3;
+  workoutCopy = workout;
   v4 = +[CHWorkoutDisplayContext _workoutDetailDisplayContext];
-  v5 = [v4 dateFont];
+  dateFont = [v4 dateFont];
   v6 = +[ARUIMetricColors keyColors];
-  v7 = [v6 nonGradientTextColor];
+  nonGradientTextColor = [v6 nonGradientTextColor];
 
-  [v3 fiui_completionFactor];
+  [workoutCopy fiui_completionFactor];
   v9 = [NSNumber numberWithDouble:round(v8 * 100.0) / 100.0];
   v10 = [FIUIFormattingManager percentStringWithNumber:v9];
 
@@ -948,133 +948,133 @@ LABEL_6:
   v12 = [v11 localizedStringForKey:@"WORKOUT_COMPLETION_FORMAT_%@" value:&stru_1008680E8 table:@"Localizable"];
   v13 = [NSString localizedStringWithFormat:v12, v10];
 
-  v14 = [ARUIMetricColors metricColorsForWorkout:v3];
+  v14 = [ARUIMetricColors metricColorsForWorkout:workoutCopy];
 
-  v15 = [v14 nonGradientTextColor];
+  nonGradientTextColor2 = [v14 nonGradientTextColor];
 
   v16 = [NSAttributedString alloc];
   v20[0] = NSFontAttributeName;
   v20[1] = NSForegroundColorAttributeName;
-  v21[0] = v5;
-  v21[1] = v15;
+  v21[0] = dateFont;
+  v21[1] = nonGradientTextColor2;
   v17 = [NSDictionary dictionaryWithObjects:v21 forKeys:v20 count:2];
   v18 = [v16 initWithString:v13 attributes:v17];
 
   return v18;
 }
 
-- (id)formattedHeartRate:(id)a3 context:(id)a4
+- (id)formattedHeartRate:(id)rate context:(id)context
 {
-  v5 = a3;
-  v6 = [CHWorkoutDisplayContext displayContextWithName:a4];
-  if ([v5 integerValue] < 1)
+  rateCopy = rate;
+  v6 = [CHWorkoutDisplayContext displayContextWithName:context];
+  if ([rateCopy integerValue] < 1)
   {
     v24 = [NSAttributedString alloc];
     v22 = +[NSBundle mainBundle];
     v8 = [v22 localizedStringForKey:@"WORKOUT_EMPTY_VALUE" value:&stru_1008680E8 table:@"Localizable"];
     v29[0] = NSFontAttributeName;
-    v10 = [v6 valueFont];
-    v30[0] = v10;
+    valueFont = [v6 valueFont];
+    v30[0] = valueFont;
     v29[1] = NSForegroundColorAttributeName;
-    v23 = +[ARUIMetricColors heartRateColors];
-    v25 = [v23 nonGradientTextColor];
-    v30[1] = v25;
+    goalDescriptionAttributes = +[ARUIMetricColors heartRateColors];
+    nonGradientTextColor = [goalDescriptionAttributes nonGradientTextColor];
+    v30[1] = nonGradientTextColor;
     v26 = [NSDictionary dictionaryWithObjects:v30 forKeys:v29 count:2];
     v17 = [v24 initWithString:v8 attributes:v26];
   }
 
   else
   {
-    v28 = [NSNumberFormatter localizedStringFromNumber:v5 numberStyle:0];
+    v28 = [NSNumberFormatter localizedStringFromNumber:rateCopy numberStyle:0];
     v7 = +[NSBundle mainBundle];
     v8 = [v7 localizedStringForKey:@"BPM" value:&stru_1008680E8 table:@"Localizable"];
 
-    v9 = [v6 unitFormatString];
-    v10 = [NSString stringWithValidatedFormat:v9 validFormatSpecifiers:@"%@%@" error:0, v28, v8];
+    unitFormatString = [v6 unitFormatString];
+    valueFont = [NSString stringWithValidatedFormat:unitFormatString validFormatSpecifiers:@"%@%@" error:0, v28, v8];
 
     v11 = [NSMutableAttributedString alloc];
     v31[0] = NSFontAttributeName;
-    v12 = [v6 valueFont];
-    v32[0] = v12;
+    valueFont2 = [v6 valueFont];
+    v32[0] = valueFont2;
     v31[1] = NSForegroundColorAttributeName;
     +[ARUIMetricColors heartRateColors];
-    v14 = v13 = v5;
-    v15 = [v14 nonGradientTextColor];
-    v32[1] = v15;
+    v14 = v13 = rateCopy;
+    nonGradientTextColor2 = [v14 nonGradientTextColor];
+    v32[1] = nonGradientTextColor2;
     v16 = [NSDictionary dictionaryWithObjects:v32 forKeys:v31 count:2];
-    v17 = [v11 initWithString:v10 attributes:v16];
+    v17 = [v11 initWithString:valueFont attributes:v16];
 
-    v18 = [v10 rangeOfString:v8];
+    v18 = [valueFont rangeOfString:v8];
     v20 = v19;
-    v21 = [v6 goalDescriptionFont];
-    [v17 addAttribute:NSFontAttributeName value:v21 range:{v18, v20}];
+    goalDescriptionFont = [v6 goalDescriptionFont];
+    [v17 addAttribute:NSFontAttributeName value:goalDescriptionFont range:{v18, v20}];
 
-    v5 = v13;
+    rateCopy = v13;
     v22 = v28;
-    v23 = [v6 goalDescriptionAttributes];
-    [v17 addAttributes:v23 range:{v18, v20}];
+    goalDescriptionAttributes = [v6 goalDescriptionAttributes];
+    [v17 addAttributes:goalDescriptionAttributes range:{v18, v20}];
   }
 
   return v17;
 }
 
-- (id)formattedEnergyBurn:(id)a3 context:(id)a4
+- (id)formattedEnergyBurn:(id)burn context:(id)context
 {
-  v6 = a3;
-  v7 = [CHWorkoutDisplayContext displayContextWithName:a4];
-  v25 = [(FIUIFormattingManager *)self->_formattingManager localizedStringWithActiveEnergy:v6];
+  burnCopy = burn;
+  v7 = [CHWorkoutDisplayContext displayContextWithName:context];
+  v25 = [(FIUIFormattingManager *)self->_formattingManager localizedStringWithActiveEnergy:burnCopy];
 
-  v8 = [(FIUIFormattingManager *)self->_formattingManager localizedShortActiveEnergyUnitString];
-  v9 = [v8 localizedUppercaseString];
+  localizedShortActiveEnergyUnitString = [(FIUIFormattingManager *)self->_formattingManager localizedShortActiveEnergyUnitString];
+  localizedUppercaseString = [localizedShortActiveEnergyUnitString localizedUppercaseString];
 
-  v10 = [v7 unitFormatString];
-  v24 = v9;
-  v11 = [NSString stringWithValidatedFormat:v10 validFormatSpecifiers:@"%@%@" error:0, v25, v9];
+  unitFormatString = [v7 unitFormatString];
+  v24 = localizedUppercaseString;
+  v11 = [NSString stringWithValidatedFormat:unitFormatString validFormatSpecifiers:@"%@%@" error:0, v25, localizedUppercaseString];
 
-  v12 = [v11 rangeOfString:v9];
+  v12 = [v11 rangeOfString:localizedUppercaseString];
   v14 = v13;
   v15 = [NSMutableAttributedString alloc];
   v26[0] = NSFontAttributeName;
-  v16 = [v7 valueFont];
-  v27[0] = v16;
+  valueFont = [v7 valueFont];
+  v27[0] = valueFont;
   v26[1] = NSForegroundColorAttributeName;
   v17 = +[ARUIMetricColors energyColors];
-  v18 = [v17 nonGradientTextColor];
-  v27[1] = v18;
+  nonGradientTextColor = [v17 nonGradientTextColor];
+  v27[1] = nonGradientTextColor;
   v19 = [NSDictionary dictionaryWithObjects:v27 forKeys:v26 count:2];
   v20 = [v15 initWithString:v11 attributes:v19];
 
-  v21 = [v7 goalDescriptionFont];
-  [v20 addAttribute:NSFontAttributeName value:v21 range:{v12, v14}];
+  goalDescriptionFont = [v7 goalDescriptionFont];
+  [v20 addAttribute:NSFontAttributeName value:goalDescriptionFont range:{v12, v14}];
 
-  v22 = [v7 goalDescriptionAttributes];
-  [v20 addAttributes:v22 range:{v12, v14}];
+  goalDescriptionAttributes = [v7 goalDescriptionAttributes];
+  [v20 addAttributes:goalDescriptionAttributes range:{v12, v14}];
 
   return v20;
 }
 
-- (void)_formattedDistanceStringForWorkout:(id)a3 distanceString:(id *)a4 unitString:(id *)a5
+- (void)_formattedDistanceStringForWorkout:(id)workout distanceString:(id *)string unitString:(id *)unitString
 {
-  v8 = a3;
+  workoutCopy = workout;
   v34 = 0;
-  v9 = [v8 fiui_activityType];
+  fiui_activityType = [workoutCopy fiui_activityType];
   v10 = FIUIDistanceTypeForActivityType();
 
   v11 = ARUIRingsViewRenderer_ptr;
-  if ([v8 workoutActivityType] == 82)
+  if ([workoutCopy workoutActivityType] == 82)
   {
     v27 = v10;
-    v28 = a4;
-    v29 = a5;
+    stringCopy = string;
+    unitStringCopy = unitString;
     v12 = +[HKUnit meterUnit];
-    v13 = [HKQuantity quantityWithUnit:v12 doubleValue:0.0];
+    fiui_totalDistance = [HKQuantity quantityWithUnit:v12 doubleValue:0.0];
 
     v32 = 0u;
     v33 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v14 = [v8 workoutActivities];
-    v15 = [v14 countByEnumeratingWithState:&v30 objects:v35 count:16];
+    workoutActivities = [workoutCopy workoutActivities];
+    v15 = [workoutActivities countByEnumeratingWithState:&v30 objects:v35 count:16];
     if (v15)
     {
       v16 = v15;
@@ -1082,69 +1082,69 @@ LABEL_6:
       do
       {
         v18 = 0;
-        v19 = v13;
+        v19 = fiui_totalDistance;
         do
         {
           if (*v31 != v17)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(workoutActivities);
           }
 
           v20 = *(*(&v30 + 1) + 8 * v18);
-          v21 = [v20 distanceType];
-          v22 = [v20 statisticsForType:v21];
+          distanceType = [v20 distanceType];
+          v22 = [v20 statisticsForType:distanceType];
 
-          v23 = [v22 sumQuantity];
-          v13 = [v19 _quantityByAddingQuantity:v23];
+          sumQuantity = [v22 sumQuantity];
+          fiui_totalDistance = [v19 _quantityByAddingQuantity:sumQuantity];
 
           v18 = v18 + 1;
-          v19 = v13;
+          v19 = fiui_totalDistance;
         }
 
         while (v16 != v18);
-        v16 = [v14 countByEnumeratingWithState:&v30 objects:v35 count:16];
+        v16 = [workoutActivities countByEnumeratingWithState:&v30 objects:v35 count:16];
       }
 
       while (v16);
     }
 
-    a4 = v28;
-    a5 = v29;
+    string = stringCopy;
+    unitString = unitStringCopy;
     v10 = v27;
     v11 = ARUIRingsViewRenderer_ptr;
   }
 
   else
   {
-    v13 = [v8 fiui_totalDistance];
+    fiui_totalDistance = [workoutCopy fiui_totalDistance];
   }
 
   formattingManager = self->_formattingManager;
-  v25 = [v11[426] meterUnit];
-  [v13 doubleValueForUnit:v25];
-  *a4 = [(FIUIFormattingManager *)formattingManager localizedNaturalScaleStringWithDistanceInMeters:v10 distanceType:0 unitStyle:&v34 usedUnit:?];
+  meterUnit = [v11[426] meterUnit];
+  [fiui_totalDistance doubleValueForUnit:meterUnit];
+  *string = [(FIUIFormattingManager *)formattingManager localizedNaturalScaleStringWithDistanceInMeters:v10 distanceType:0 unitStyle:&v34 usedUnit:?];
 
   v26 = [(FIUIFormattingManager *)self->_formattingManager localizedShortUnitStringForDistanceUnit:v34];
-  *a5 = [v26 localizedUppercaseString];
+  *unitString = [v26 localizedUppercaseString];
 }
 
-- (id)formattedRacePaceOrSpeedForWorkout:(id)a3 metersPerSecond:(id)a4 context:(id)a5
+- (id)formattedRacePaceOrSpeedForWorkout:(id)workout metersPerSecond:(id)second context:(id)context
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v10 fiui_activityType];
+  contextCopy = context;
+  secondCopy = second;
+  workoutCopy = workout;
+  fiui_activityType = [workoutCopy fiui_activityType];
   v12 = FIUIPaceFormatForWorkoutActivityType();
   v13 = FIUIDistanceTypeForActivityType();
   v14 = +[HKUnit meterUnit];
-  [v9 doubleValue];
+  [secondCopy doubleValue];
   v16 = v15;
 
   v17 = [HKQuantity quantityWithUnit:v14 doubleValue:v16];
 
   v18 = [(FIUIFormattingManager *)self->_formattingManager localizedPaceStringWithDistance:v17 overDuration:v12 paceFormat:v13 distanceType:1.0];
-  v19 = [(CHWorkoutFormattingManager *)self _paceUnitForActivityType:v11 paceFormat:v12];
-  LOBYTE(v14) = [v10 didWinRace];
+  v19 = [(CHWorkoutFormattingManager *)self _paceUnitForActivityType:fiui_activityType paceFormat:v12];
+  LOBYTE(v14) = [workoutCopy didWinRace];
 
   if (v14)
   {
@@ -1156,17 +1156,17 @@ LABEL_6:
     +[ARUIMetricColors raceBehindColors];
   }
   v20 = ;
-  v21 = [v20 nonGradientTextColor];
-  v22 = [(CHWorkoutFormattingManager *)self _formattedValueString:v18 withUnitString:v19 paceFormat:v12 context:v8 color:v21];
+  nonGradientTextColor = [v20 nonGradientTextColor];
+  v22 = [(CHWorkoutFormattingManager *)self _formattedValueString:v18 withUnitString:v19 paceFormat:v12 context:contextCopy color:nonGradientTextColor];
 
   return v22;
 }
 
-- (id)formattedGoalCompletedDurationForWorkout:(id)a3 context:(id)a4
+- (id)formattedGoalCompletedDurationForWorkout:(id)workout context:(id)context
 {
-  v6 = a3;
-  v7 = [CHWorkoutDisplayContext displayContextWithName:a4];
-  v8 = [(CHWorkoutFormattingManager *)self _goalCompletionEventsForWorkout:v6];
+  workoutCopy = workout;
+  v7 = [CHWorkoutDisplayContext displayContextWithName:context];
+  v8 = [(CHWorkoutFormattingManager *)self _goalCompletionEventsForWorkout:workoutCopy];
   if ([v8 count])
   {
     v9 = [v8 objectAtIndexedSubscript:0];
@@ -1176,12 +1176,12 @@ LABEL_6:
     v12 = [(FIUIFormattingManager *)self->_formattingManager stringWithDuration:2 durationFormat:v11];
     v13 = [NSAttributedString alloc];
     v20[0] = NSFontAttributeName;
-    v14 = [v7 valueFont];
-    v21[0] = v14;
+    valueFont = [v7 valueFont];
+    v21[0] = valueFont;
     v20[1] = NSForegroundColorAttributeName;
-    v15 = [ARUIMetricColors metricColorsForWorkout:v6];
-    v16 = [v15 nonGradientTextColor];
-    v21[1] = v16;
+    v15 = [ARUIMetricColors metricColorsForWorkout:workoutCopy];
+    nonGradientTextColor = [v15 nonGradientTextColor];
+    v21[1] = nonGradientTextColor;
     v17 = [NSDictionary dictionaryWithObjects:v21 forKeys:v20 count:2];
     v18 = [v13 initWithString:v12 attributes:v17];
   }
@@ -1194,29 +1194,29 @@ LABEL_6:
   return v18;
 }
 
-- (_NSRange)_unitRangeWithString:(id)a3 valueRange:(_NSRange)a4
+- (_NSRange)_unitRangeWithString:(id)string valueRange:(_NSRange)range
 {
-  v4 = a4.location + a4.length;
-  v5 = [a3 length] - a4.location - a4.length;
+  v4 = range.location + range.length;
+  v5 = [string length] - range.location - range.length;
   v6 = v4;
   result.length = v5;
   result.location = v6;
   return result;
 }
 
-- (BOOL)hasAnyNonZeroStatisticForDiscreteQuantityTypes:(id)a3 orCumulativeQuantityTypes:(id)a4 forWorkout:(id)a5 orWorkoutActivity:(id)a6
+- (BOOL)hasAnyNonZeroStatisticForDiscreteQuantityTypes:(id)types orCumulativeQuantityTypes:(id)quantityTypes forWorkout:(id)workout orWorkoutActivity:(id)activity
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if (v12)
+  typesCopy = types;
+  quantityTypesCopy = quantityTypes;
+  workoutCopy = workout;
+  activityCopy = activity;
+  if (activityCopy)
   {
     v39 = 0uLL;
     v40 = 0uLL;
     v37 = 0uLL;
     v38 = 0uLL;
-    v13 = v9;
+    v13 = typesCopy;
     v14 = [v13 countByEnumeratingWithState:&v37 objects:v50 count:16];
     if (v14)
     {
@@ -1231,10 +1231,10 @@ LABEL_4:
           objc_enumerationMutation(v13);
         }
 
-        v18 = [v12 statisticsForType:*(*(&v37 + 1) + 8 * v17)];
-        v19 = [v18 averageQuantity];
+        v18 = [activityCopy statisticsForType:*(*(&v37 + 1) + 8 * v17)];
+        averageQuantity = [v18 averageQuantity];
 
-        if (v19)
+        if (averageQuantity)
         {
           goto LABEL_36;
         }
@@ -1256,7 +1256,7 @@ LABEL_4:
     v36 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v13 = v10;
+    v13 = quantityTypesCopy;
     v20 = [v13 countByEnumeratingWithState:&v33 objects:v49 count:16];
     if (v20)
     {
@@ -1270,10 +1270,10 @@ LABEL_12:
           objc_enumerationMutation(v13);
         }
 
-        v23 = [v12 statisticsForType:{*(*(&v33 + 1) + 8 * v22), v33}];
-        v19 = [v23 sumQuantity];
+        v23 = [activityCopy statisticsForType:{*(*(&v33 + 1) + 8 * v22), v33}];
+        averageQuantity = [v23 sumQuantity];
 
-        if (v19)
+        if (averageQuantity)
         {
           break;
         }
@@ -1291,7 +1291,7 @@ LABEL_12:
       }
 
 LABEL_36:
-      LOBYTE(v20) = [v19 fiui_isNonzero];
+      LOBYTE(v20) = [averageQuantity fiui_isNonzero];
     }
   }
 
@@ -1301,7 +1301,7 @@ LABEL_36:
     v48 = 0uLL;
     v45 = 0uLL;
     v46 = 0uLL;
-    v13 = v9;
+    v13 = typesCopy;
     v24 = [v13 countByEnumeratingWithState:&v45 objects:v52 count:16];
     if (v24)
     {
@@ -1316,10 +1316,10 @@ LABEL_21:
           objc_enumerationMutation(v13);
         }
 
-        v28 = [v11 statisticsForType:*(*(&v45 + 1) + 8 * v27)];
-        v19 = [v28 averageQuantity];
+        v28 = [workoutCopy statisticsForType:*(*(&v45 + 1) + 8 * v27)];
+        averageQuantity = [v28 averageQuantity];
 
-        if (v19)
+        if (averageQuantity)
         {
           goto LABEL_36;
         }
@@ -1341,7 +1341,7 @@ LABEL_21:
     v44 = 0u;
     v41 = 0u;
     v42 = 0u;
-    v13 = v10;
+    v13 = quantityTypesCopy;
     v20 = [v13 countByEnumeratingWithState:&v41 objects:v51 count:16];
     if (v20)
     {
@@ -1355,10 +1355,10 @@ LABEL_29:
           objc_enumerationMutation(v13);
         }
 
-        v31 = [v11 statisticsForType:*(*(&v41 + 1) + 8 * v30)];
-        v19 = [v31 sumQuantity];
+        v31 = [workoutCopy statisticsForType:*(*(&v41 + 1) + 8 * v30)];
+        averageQuantity = [v31 sumQuantity];
 
-        if (v19)
+        if (averageQuantity)
         {
           goto LABEL_36;
         }
@@ -1382,28 +1382,28 @@ LABEL_37:
   return v20;
 }
 
-- (BOOL)nonZeroMetadataExistsInWorkout:(id)a3 orWorkoutActivity:(id)a4 withKey:(id)a5
+- (BOOL)nonZeroMetadataExistsInWorkout:(id)workout orWorkoutActivity:(id)activity withKey:(id)key
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v8)
+  workoutCopy = workout;
+  activityCopy = activity;
+  keyCopy = key;
+  if (activityCopy)
   {
-    v10 = [v8 metadata];
-    v11 = [v10 objectForKeyedSubscript:v9];
+    metadata = [activityCopy metadata];
+    v11 = [metadata objectForKeyedSubscript:keyCopy];
     if (v11)
     {
-      v12 = [v8 metadata];
-      v13 = [v12 objectForKeyedSubscript:v9];
+      metadata2 = [activityCopy metadata];
+      v13 = [metadata2 objectForKeyedSubscript:keyCopy];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
       if (isKindOfClass)
       {
-        v15 = v8;
+        v15 = activityCopy;
 LABEL_8:
-        v10 = [v15 metadata];
-        v19 = [v10 objectForKeyedSubscript:v9];
+        metadata = [v15 metadata];
+        v19 = [metadata objectForKeyedSubscript:keyCopy];
         LOBYTE(v11) = [v19 fiui_isNonzero];
 
         goto LABEL_9;
@@ -1415,18 +1415,18 @@ LABEL_8:
 
   else
   {
-    v10 = [v7 metadata];
-    v11 = [v10 objectForKeyedSubscript:v9];
+    metadata = [workoutCopy metadata];
+    v11 = [metadata objectForKeyedSubscript:keyCopy];
     if (v11)
     {
-      v16 = [v7 metadata];
-      v17 = [v16 objectForKeyedSubscript:v9];
+      metadata3 = [workoutCopy metadata];
+      v17 = [metadata3 objectForKeyedSubscript:keyCopy];
       objc_opt_class();
       v18 = objc_opt_isKindOfClass();
 
       if (v18)
       {
-        v15 = v7;
+        v15 = workoutCopy;
         goto LABEL_8;
       }
 
@@ -1442,11 +1442,11 @@ LABEL_11:
   return v11;
 }
 
-- (BOOL)hasAverageCadenceForWorkout:(id)a3 workoutActivity:(id)a4
+- (BOOL)hasAverageCadenceForWorkout:(id)workout workoutActivity:(id)activity
 {
-  v6 = a3;
-  v7 = a4;
-  if ([(CHWorkoutFormattingManager *)self nonZeroMetadataExistsInWorkout:v6 orWorkoutActivity:v7 withKey:_HKPrivateMetadataKeyWorkoutAverageCadence])
+  workoutCopy = workout;
+  activityCopy = activity;
+  if ([(CHWorkoutFormattingManager *)self nonZeroMetadataExistsInWorkout:workoutCopy orWorkoutActivity:activityCopy withKey:_HKPrivateMetadataKeyWorkoutAverageCadence])
   {
     v8 = 1;
   }
@@ -1459,17 +1459,17 @@ LABEL_11:
     v11 = [HKQuantityType quantityTypeForIdentifier:HKQuantityTypeIdentifierStepCount];
     v14 = v11;
     v12 = [NSArray arrayWithObjects:&v14 count:1];
-    v8 = [(CHWorkoutFormattingManager *)self hasAnyNonZeroStatisticForDiscreteQuantityTypes:v10 orCumulativeQuantityTypes:v12 forWorkout:v6 orWorkoutActivity:v7];
+    v8 = [(CHWorkoutFormattingManager *)self hasAnyNonZeroStatisticForDiscreteQuantityTypes:v10 orCumulativeQuantityTypes:v12 forWorkout:workoutCopy orWorkoutActivity:activityCopy];
   }
 
   return v8;
 }
 
-- (BOOL)hasAveragePowerForWorkout:(id)a3 workoutActivity:(id)a4
+- (BOOL)hasAveragePowerForWorkout:(id)workout workoutActivity:(id)activity
 {
-  v6 = a3;
-  v7 = a4;
-  if ([(CHWorkoutFormattingManager *)self nonZeroMetadataExistsInWorkout:v6 orWorkoutActivity:v7 withKey:_HKPrivateMetadataKeyWorkoutAveragePower])
+  workoutCopy = workout;
+  activityCopy = activity;
+  if ([(CHWorkoutFormattingManager *)self nonZeroMetadataExistsInWorkout:workoutCopy orWorkoutActivity:activityCopy withKey:_HKPrivateMetadataKeyWorkoutAveragePower])
   {
     v8 = 1;
   }
@@ -1481,33 +1481,33 @@ LABEL_11:
     v10 = [HKQuantityType quantityTypeForIdentifier:HKQuantityTypeIdentifierCyclingPower];
     v13[1] = v10;
     v11 = [NSArray arrayWithObjects:v13 count:2];
-    v8 = [(CHWorkoutFormattingManager *)self hasAnyNonZeroStatisticForDiscreteQuantityTypes:v11 orCumulativeQuantityTypes:&__NSArray0__struct forWorkout:v6 orWorkoutActivity:v7];
+    v8 = [(CHWorkoutFormattingManager *)self hasAnyNonZeroStatisticForDiscreteQuantityTypes:v11 orCumulativeQuantityTypes:&__NSArray0__struct forWorkout:workoutCopy orWorkoutActivity:activityCopy];
   }
 
   return v8;
 }
 
-- (BOOL)hasAverageCyclingPowerForWorkout:(id)a3 workoutActivity:(id)a4
+- (BOOL)hasAverageCyclingPowerForWorkout:(id)workout workoutActivity:(id)activity
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 fiui_activityType];
-  v9 = v8;
-  if (v8)
+  workoutCopy = workout;
+  activityCopy = activity;
+  fiui_activityType = [activityCopy fiui_activityType];
+  v9 = fiui_activityType;
+  if (fiui_activityType)
   {
-    v10 = v8;
+    fiui_activityType2 = fiui_activityType;
   }
 
   else
   {
-    v10 = [v6 fiui_activityType];
+    fiui_activityType2 = [workoutCopy fiui_activityType];
   }
 
-  v11 = v10;
+  v11 = fiui_activityType2;
 
   if ([v11 identifier] == 13)
   {
-    if ([(CHWorkoutFormattingManager *)self nonZeroMetadataExistsInWorkout:v6 orWorkoutActivity:v7 withKey:_HKPrivateMetadataKeyWorkoutAveragePower])
+    if ([(CHWorkoutFormattingManager *)self nonZeroMetadataExistsInWorkout:workoutCopy orWorkoutActivity:activityCopy withKey:_HKPrivateMetadataKeyWorkoutAveragePower])
     {
       v12 = 1;
     }
@@ -1517,7 +1517,7 @@ LABEL_11:
       v13 = [HKQuantityType quantityTypeForIdentifier:HKQuantityTypeIdentifierCyclingPower];
       v16 = v13;
       v14 = [NSArray arrayWithObjects:&v16 count:1];
-      v12 = [(CHWorkoutFormattingManager *)self hasAnyNonZeroStatisticForDiscreteQuantityTypes:v14 orCumulativeQuantityTypes:&__NSArray0__struct forWorkout:v6 orWorkoutActivity:v7];
+      v12 = [(CHWorkoutFormattingManager *)self hasAnyNonZeroStatisticForDiscreteQuantityTypes:v14 orCumulativeQuantityTypes:&__NSArray0__struct forWorkout:workoutCopy orWorkoutActivity:activityCopy];
     }
   }
 
@@ -1529,57 +1529,57 @@ LABEL_11:
   return v12;
 }
 
-- (BOOL)isIndoorCyclingForWorkout:(id)a3 workoutActivity:(id)a4
+- (BOOL)isIndoorCyclingForWorkout:(id)workout workoutActivity:(id)activity
 {
-  v5 = a3;
-  v6 = [a4 fiui_activityType];
-  v7 = v6;
-  if (v6)
+  workoutCopy = workout;
+  fiui_activityType = [activity fiui_activityType];
+  v7 = fiui_activityType;
+  if (fiui_activityType)
   {
-    v8 = v6;
+    fiui_activityType2 = fiui_activityType;
   }
 
   else
   {
-    v8 = [v5 fiui_activityType];
+    fiui_activityType2 = [workoutCopy fiui_activityType];
   }
 
-  v9 = v8;
+  v9 = fiui_activityType2;
 
   if ([v9 identifier] == 13)
   {
-    v10 = [v9 isIndoor];
+    isIndoor = [v9 isIndoor];
   }
 
   else
   {
-    v10 = 0;
+    isIndoor = 0;
   }
 
-  return v10;
+  return isIndoor;
 }
 
-- (BOOL)hasAverageCyclingSpeedForWorkout:(id)a3 workoutActivity:(id)a4
+- (BOOL)hasAverageCyclingSpeedForWorkout:(id)workout workoutActivity:(id)activity
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 fiui_activityType];
-  v9 = v8;
-  if (v8)
+  workoutCopy = workout;
+  activityCopy = activity;
+  fiui_activityType = [activityCopy fiui_activityType];
+  v9 = fiui_activityType;
+  if (fiui_activityType)
   {
-    v10 = v8;
+    fiui_activityType2 = fiui_activityType;
   }
 
   else
   {
-    v10 = [v6 fiui_activityType];
+    fiui_activityType2 = [workoutCopy fiui_activityType];
   }
 
-  v11 = v10;
+  v11 = fiui_activityType2;
 
   if ([v11 identifier] == 13)
   {
-    v12 = [(CHWorkoutFormattingManager *)self nonZeroMetadataExistsInWorkout:v6 orWorkoutActivity:v7 withKey:_HKPrivateMetadataKeyWorkoutAveragePace];
+    v12 = [(CHWorkoutFormattingManager *)self nonZeroMetadataExistsInWorkout:workoutCopy orWorkoutActivity:activityCopy withKey:_HKPrivateMetadataKeyWorkoutAveragePace];
   }
 
   else
@@ -1590,29 +1590,29 @@ LABEL_11:
   return v12;
 }
 
-- (BOOL)hasDistanceForWorkout:(id)a3 workoutActivity:(id)a4
+- (BOOL)hasDistanceForWorkout:(id)workout workoutActivity:(id)activity
 {
-  v5 = a3;
-  v6 = a4;
+  workoutCopy = workout;
+  activityCopy = activity;
   v7 = ARUIRingsViewRenderer_ptr;
   v8 = +[HKUnit meterUnit];
   v9 = [HKQuantity quantityWithUnit:v8 doubleValue:0.0];
 
-  if (v6)
+  if (activityCopy)
   {
-    v10 = [v6 distanceType];
-    v11 = [v6 statisticsForType:v10];
+    distanceType = [activityCopy distanceType];
+    v11 = [activityCopy statisticsForType:distanceType];
 
-    v12 = [v11 sumQuantity];
+    sumQuantity = [v11 sumQuantity];
 
 LABEL_13:
-    v9 = v12;
+    v9 = sumQuantity;
     goto LABEL_14;
   }
 
-  if ([v5 workoutActivityType] != 82)
+  if ([workoutCopy workoutActivityType] != 82)
   {
-    v12 = [v5 fiui_totalDistance];
+    sumQuantity = [workoutCopy fiui_totalDistance];
 
     goto LABEL_13;
   }
@@ -1621,8 +1621,8 @@ LABEL_13:
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v13 = [v5 workoutActivities];
-  v14 = [v13 countByEnumeratingWithState:&v27 objects:v31 count:16];
+  workoutActivities = [workoutCopy workoutActivities];
+  v14 = [workoutActivities countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v14)
   {
     v15 = v14;
@@ -1635,22 +1635,22 @@ LABEL_13:
       {
         if (*v28 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(workoutActivities);
         }
 
         v19 = *(*(&v27 + 1) + 8 * v17);
-        v20 = [v19 distanceType];
-        v21 = [v19 statisticsForType:v20];
+        distanceType2 = [v19 distanceType];
+        v21 = [v19 statisticsForType:distanceType2];
 
-        v22 = [v21 sumQuantity];
-        v9 = [v18 _quantityByAddingQuantity:v22];
+        sumQuantity2 = [v21 sumQuantity];
+        v9 = [v18 _quantityByAddingQuantity:sumQuantity2];
 
         v17 = v17 + 1;
         v18 = v9;
       }
 
       while (v15 != v17);
-      v15 = [v13 countByEnumeratingWithState:&v27 objects:v31 count:16];
+      v15 = [workoutActivities countByEnumeratingWithState:&v27 objects:v31 count:16];
     }
 
     while (v15);
@@ -1658,95 +1658,95 @@ LABEL_13:
 
   v7 = ARUIRingsViewRenderer_ptr;
 LABEL_14:
-  v23 = [v7[426] meterUnit];
-  [v9 doubleValueForUnit:v23];
+  meterUnit = [v7[426] meterUnit];
+  [v9 doubleValueForUnit:meterUnit];
   v25 = v24 > 0.0;
 
   return v25;
 }
 
-- (BOOL)hasElevationAscendedDataForWorkout:(id)a3 workoutActivity:(id)a4
+- (BOOL)hasElevationAscendedDataForWorkout:(id)workout workoutActivity:(id)activity
 {
   v6 = _HKPrivateMetadataKeyWorkoutElevationAscended;
-  v7 = a4;
-  v8 = a3;
-  LOBYTE(v6) = [(CHWorkoutFormattingManager *)self nonZeroMetadataExistsInWorkout:v8 orWorkoutActivity:v7 withKey:v6];
-  LOBYTE(self) = [(CHWorkoutFormattingManager *)self nonZeroMetadataExistsInWorkout:v8 orWorkoutActivity:v7 withKey:HKMetadataKeyElevationAscended];
+  activityCopy = activity;
+  workoutCopy = workout;
+  LOBYTE(v6) = [(CHWorkoutFormattingManager *)self nonZeroMetadataExistsInWorkout:workoutCopy orWorkoutActivity:activityCopy withKey:v6];
+  LOBYTE(self) = [(CHWorkoutFormattingManager *)self nonZeroMetadataExistsInWorkout:workoutCopy orWorkoutActivity:activityCopy withKey:HKMetadataKeyElevationAscended];
 
   return (v6 | self) & 1;
 }
 
-- (BOOL)hasFlightsClimbedForWorkout:(id)a3 workoutActivity:(id)a4
+- (BOOL)hasFlightsClimbedForWorkout:(id)workout workoutActivity:(id)activity
 {
-  v5 = a4;
-  if (v5)
+  activityCopy = activity;
+  if (activityCopy)
   {
-    v6 = [[HKQuantityType alloc] initWithIdentifier:HKQuantityTypeIdentifierFlightsClimbed];
-    v7 = [v5 statisticsForType:v6];
+    totalFlightsClimbed = [[HKQuantityType alloc] initWithIdentifier:HKQuantityTypeIdentifierFlightsClimbed];
+    v7 = [activityCopy statisticsForType:totalFlightsClimbed];
     v8 = v7 != 0;
   }
 
   else
   {
-    v6 = [a3 totalFlightsClimbed];
+    totalFlightsClimbed = [workout totalFlightsClimbed];
     v7 = +[HKUnit countUnit];
-    [v6 doubleValueForUnit:v7];
+    [totalFlightsClimbed doubleValueForUnit:v7];
     v8 = v9 > 0.0;
   }
 
   return v8;
 }
 
-- (BOOL)shouldShowDistanceForWorkout:(id)a3 workoutActivity:(id)a4
+- (BOOL)shouldShowDistanceForWorkout:(id)workout workoutActivity:(id)activity
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 sourceRevision];
-  v9 = [v8 source];
-  v10 = [v9 _hasFirstPartyBundleID];
+  workoutCopy = workout;
+  activityCopy = activity;
+  sourceRevision = [workoutCopy sourceRevision];
+  source = [sourceRevision source];
+  _hasFirstPartyBundleID = [source _hasFirstPartyBundleID];
 
-  if (v10 && ![(CHWorkoutFormattingManager *)self supportsDistanceForWorkout:v6 workoutActivity:v7])
+  if (_hasFirstPartyBundleID && ![(CHWorkoutFormattingManager *)self supportsDistanceForWorkout:workoutCopy workoutActivity:activityCopy])
   {
     v11 = 0;
   }
 
   else
   {
-    v11 = [(CHWorkoutFormattingManager *)self hasDistanceForWorkout:v6 workoutActivity:v7];
+    v11 = [(CHWorkoutFormattingManager *)self hasDistanceForWorkout:workoutCopy workoutActivity:activityCopy];
   }
 
   return v11;
 }
 
-- (BOOL)supportsDistanceForWorkout:(id)a3 workoutActivity:(id)a4
+- (BOOL)supportsDistanceForWorkout:(id)workout workoutActivity:(id)activity
 {
-  v5 = a3;
-  v6 = a4;
+  workoutCopy = workout;
+  activityCopy = activity;
   v7 = objc_alloc_init(NSMutableSet);
-  v8 = [v6 fiui_activityType];
-  v9 = v8;
-  if (v8)
+  fiui_activityType = [activityCopy fiui_activityType];
+  v9 = fiui_activityType;
+  if (fiui_activityType)
   {
-    v10 = v8;
+    fiui_activityType2 = fiui_activityType;
   }
 
   else
   {
-    v10 = [v5 fiui_activityType];
+    fiui_activityType2 = [workoutCopy fiui_activityType];
   }
 
-  v11 = v10;
+  v11 = fiui_activityType2;
 
   v30 = v11;
-  v31 = v6;
+  v31 = activityCopy;
   if ([v11 identifier] == 82)
   {
     v39 = 0u;
     v40 = 0u;
     v37 = 0u;
     v38 = 0u;
-    v12 = [v5 workoutActivities];
-    v13 = [v12 countByEnumeratingWithState:&v37 objects:v42 count:16];
+    workoutActivities = [workoutCopy workoutActivities];
+    v13 = [workoutActivities countByEnumeratingWithState:&v37 objects:v42 count:16];
     if (v13)
     {
       v14 = v13;
@@ -1757,17 +1757,17 @@ LABEL_14:
         {
           if (*v38 != v15)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(workoutActivities);
           }
 
-          v17 = [*(*(&v37 + 1) + 8 * i) fiui_activityType];
-          if ([v17 effectiveTypeIdentifier] != 83)
+          fiui_activityType3 = [*(*(&v37 + 1) + 8 * i) fiui_activityType];
+          if ([fiui_activityType3 effectiveTypeIdentifier] != 83)
           {
-            [v7 addObject:v17];
+            [v7 addObject:fiui_activityType3];
           }
         }
 
-        v14 = [v12 countByEnumeratingWithState:&v37 objects:v42 count:16];
+        v14 = [workoutActivities countByEnumeratingWithState:&v37 objects:v42 count:16];
       }
 
       while (v14);
@@ -1779,7 +1779,7 @@ LABEL_14:
     [v7 addObject:v11];
   }
 
-  v18 = [FIUIWorkoutDefaultMetricsProvider metricsVersionForWorkout:v5];
+  v18 = [FIUIWorkoutDefaultMetricsProvider metricsVersionForWorkout:workoutCopy];
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
@@ -1802,10 +1802,10 @@ LABEL_14:
 
         v24 = *(*(&v33 + 1) + 8 * j);
         v25 = [FIUIWorkoutDefaultMetricsProvider alloc];
-        v26 = [v5 _activityMoveMode];
+        _activityMoveMode = [workoutCopy _activityMoveMode];
         v27 = FIUIDeviceSupportsElevationGain();
-        v28 = [v25 initWithMetricsVersion:v18 activityType:v24 activityMoveMode:v26 deviceSupportsElevationMetrics:v27 deviceSupportsGroundElevationMetrics:FIUIDeviceSupportsGroundElevation()];
-        v22 &= [v28 isMetricTypeSupported:1 isMachineWorkout:objc_msgSend(v5 activityType:{"fiui_isConnectedGymWorkout"), v24}];
+        v28 = [v25 initWithMetricsVersion:v18 activityType:v24 activityMoveMode:_activityMoveMode deviceSupportsElevationMetrics:v27 deviceSupportsGroundElevationMetrics:FIUIDeviceSupportsGroundElevation()];
+        v22 &= [v28 isMetricTypeSupported:1 isMachineWorkout:objc_msgSend(workoutCopy activityType:{"fiui_isConnectedGymWorkout"), v24}];
       }
 
       v20 = [obj countByEnumeratingWithState:&v33 objects:v41 count:16];
@@ -1822,158 +1822,158 @@ LABEL_14:
   return v22;
 }
 
-- (BOOL)supportsPaceForWorkout:(id)a3 workoutActivity:(id)a4
+- (BOOL)supportsPaceForWorkout:(id)workout workoutActivity:(id)activity
 {
-  v5 = a3;
-  v6 = v5;
-  if (a4)
+  activityCopy = workout;
+  v6 = activityCopy;
+  if (activity)
   {
-    v5 = a4;
+    activityCopy = activity;
   }
 
-  v7 = [v5 fiui_activityType];
+  fiui_activityType = [activityCopy fiui_activityType];
   v8 = [FIUIWorkoutDefaultMetricsProvider metricsVersionForWorkout:v6];
   v9 = [FIUIWorkoutDefaultMetricsProvider alloc];
-  v10 = [v6 _activityMoveMode];
+  _activityMoveMode = [v6 _activityMoveMode];
   v11 = FIUIDeviceSupportsElevationGain();
-  v12 = [v9 initWithMetricsVersion:v8 activityType:v7 activityMoveMode:v10 deviceSupportsElevationMetrics:v11 deviceSupportsGroundElevationMetrics:FIUIDeviceSupportsGroundElevation()];
-  v13 = [v6 fiui_isConnectedGymWorkout];
+  v12 = [v9 initWithMetricsVersion:v8 activityType:fiui_activityType activityMoveMode:_activityMoveMode deviceSupportsElevationMetrics:v11 deviceSupportsGroundElevationMetrics:FIUIDeviceSupportsGroundElevation()];
+  fiui_isConnectedGymWorkout = [v6 fiui_isConnectedGymWorkout];
 
-  v14 = [v12 isMetricTypeSupported:8 isMachineWorkout:v13 activityType:v7];
+  v14 = [v12 isMetricTypeSupported:8 isMachineWorkout:fiui_isConnectedGymWorkout activityType:fiui_activityType];
   return v14;
 }
 
-- (BOOL)supportsElevationAscendedForWorkout:(id)a3 workoutActivity:(id)a4
+- (BOOL)supportsElevationAscendedForWorkout:(id)workout workoutActivity:(id)activity
 {
-  if (a4)
+  if (activity)
   {
-    v4 = a4;
+    workoutCopy = activity;
   }
 
   else
   {
-    v4 = a3;
+    workoutCopy = workout;
   }
 
-  v5 = [v4 fiui_activityType];
-  v6 = [v5 bridge_supportsElevationAscendedInSummary];
+  fiui_activityType = [workoutCopy fiui_activityType];
+  bridge_supportsElevationAscendedInSummary = [fiui_activityType bridge_supportsElevationAscendedInSummary];
 
-  return v6;
+  return bridge_supportsElevationAscendedInSummary;
 }
 
-- (BOOL)supportsElevationDescendedForWorkout:(id)a3 workoutActivity:(id)a4
+- (BOOL)supportsElevationDescendedForWorkout:(id)workout workoutActivity:(id)activity
 {
-  if (a4)
+  if (activity)
   {
-    v4 = a4;
+    workoutCopy = activity;
   }
 
   else
   {
-    v4 = a3;
+    workoutCopy = workout;
   }
 
-  v5 = [v4 fiui_activityType];
-  v6 = [v5 bridge_supportsElevationDescendedInSummary];
+  fiui_activityType = [workoutCopy fiui_activityType];
+  bridge_supportsElevationDescendedInSummary = [fiui_activityType bridge_supportsElevationDescendedInSummary];
 
-  return v6;
+  return bridge_supportsElevationDescendedInSummary;
 }
 
-- (BOOL)supportsDownhillRunsCountForWorkout:(id)a3 workoutActivity:(id)a4
+- (BOOL)supportsDownhillRunsCountForWorkout:(id)workout workoutActivity:(id)activity
 {
-  if (a4)
+  if (activity)
   {
-    v4 = a4;
+    workoutCopy = activity;
   }
 
   else
   {
-    v4 = a3;
+    workoutCopy = workout;
   }
 
-  v5 = [v4 fiui_activityType];
-  v6 = +[CHWorkoutDownhillRun supportsActivityType:](CHWorkoutDownhillRun, "supportsActivityType:", [v5 effectiveTypeIdentifier]);
+  fiui_activityType = [workoutCopy fiui_activityType];
+  v6 = +[CHWorkoutDownhillRun supportsActivityType:](CHWorkoutDownhillRun, "supportsActivityType:", [fiui_activityType effectiveTypeIdentifier]);
 
   return v6;
 }
 
-- (id)formattedActiveEnergyForWorkout:(id)a3 workoutActivity:(id)a4 context:(id)a5
+- (id)formattedActiveEnergyForWorkout:(id)workout workoutActivity:(id)activity context:(id)context
 {
-  v8 = a4;
-  v9 = a5;
-  if (v8)
+  activityCopy = activity;
+  contextCopy = context;
+  if (activityCopy)
   {
     v10 = [[HKQuantityType alloc] initWithIdentifier:HKQuantityTypeIdentifierActiveEnergyBurned];
-    v11 = [v8 statisticsForType:v10];
-    v12 = [v11 sumQuantity];
+    v11 = [activityCopy statisticsForType:v10];
+    sumQuantity = [v11 sumQuantity];
   }
 
   else
   {
-    v12 = [a3 totalEnergyBurned];
+    sumQuantity = [workout totalEnergyBurned];
   }
 
-  v13 = [(CHWorkoutFormattingManager *)self formattedEnergyBurn:v12 context:a5];
+  v13 = [(CHWorkoutFormattingManager *)self formattedEnergyBurn:sumQuantity context:context];
 
   return v13;
 }
 
-- (id)formattedAverageCadenceForWorkout:(id)a3 workoutActivity:(id)a4 context:(id)a5
+- (id)formattedAverageCadenceForWorkout:(id)workout workoutActivity:(id)activity context:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([(CHWorkoutFormattingManager *)self hasAverageCadenceForWorkout:v8 workoutActivity:v9])
+  workoutCopy = workout;
+  activityCopy = activity;
+  contextCopy = context;
+  if ([(CHWorkoutFormattingManager *)self hasAverageCadenceForWorkout:workoutCopy workoutActivity:activityCopy])
   {
-    v37 = v8;
-    if (v9)
+    v37 = workoutCopy;
+    if (activityCopy)
     {
-      [v9 fiui_averageCadence];
+      [activityCopy fiui_averageCadence];
       v12 = v11;
-      v13 = [v9 workoutConfiguration];
-      v14 = [v13 activityType];
+      workoutConfiguration = [activityCopy workoutConfiguration];
+      activityType = [workoutConfiguration activityType];
     }
 
     else
     {
-      [v8 fiui_averageCadence];
+      [workoutCopy fiui_averageCadence];
       v12 = v16;
-      v14 = [v8 workoutActivityType];
+      activityType = [workoutCopy workoutActivityType];
     }
 
     v17 = [NSNumber numberWithDouble:v12];
     v35 = [FIUIFormattingManager stringWithNumber:v17 decimalPrecision:1];
 
-    v18 = [objc_opt_class() localizedShortCadenceUnitStringForActivityType:v14];
-    v19 = [v18 localizedUppercaseString];
+    v18 = [objc_opt_class() localizedShortCadenceUnitStringForActivityType:activityType];
+    localizedUppercaseString = [v18 localizedUppercaseString];
 
-    v20 = [CHWorkoutDisplayContext displayContextWithName:v10];
-    v21 = [v20 unitFormatString];
-    v22 = [NSString stringWithValidatedFormat:v21 validFormatSpecifiers:@"%@%@" error:0, v35, v19];
+    v20 = [CHWorkoutDisplayContext displayContextWithName:contextCopy];
+    unitFormatString = [v20 unitFormatString];
+    v22 = [NSString stringWithValidatedFormat:unitFormatString validFormatSpecifiers:@"%@%@" error:0, v35, localizedUppercaseString];
 
     v23 = [NSMutableAttributedString alloc];
     v38[0] = NSFontAttributeName;
-    v24 = [v20 valueFont];
-    v39[0] = v24;
+    valueFont = [v20 valueFont];
+    v39[0] = valueFont;
     v38[1] = NSForegroundColorAttributeName;
     v25 = +[ARUIMetricColors cadenceColors];
     [v25 nonGradientTextColor];
-    v26 = v36 = v10;
+    v26 = v36 = contextCopy;
     v39[1] = v26;
     v27 = [NSDictionary dictionaryWithObjects:v39 forKeys:v38 count:2];
     v15 = [v23 initWithString:v22 attributes:v27];
 
-    v28 = [v22 rangeOfString:v19];
+    v28 = [v22 rangeOfString:localizedUppercaseString];
     v30 = v29;
-    v31 = [v20 goalDescriptionFont];
-    [v15 addAttribute:NSFontAttributeName value:v31 range:{v28, v30}];
+    goalDescriptionFont = [v20 goalDescriptionFont];
+    [v15 addAttribute:NSFontAttributeName value:goalDescriptionFont range:{v28, v30}];
 
-    v32 = [v20 goalDescriptionAttributes];
+    goalDescriptionAttributes = [v20 goalDescriptionAttributes];
     v33 = v30;
-    v10 = v36;
-    [v15 addAttributes:v32 range:{v28, v33}];
+    contextCopy = v36;
+    [v15 addAttributes:goalDescriptionAttributes range:{v28, v33}];
 
-    v8 = v37;
+    workoutCopy = v37;
   }
 
   else
@@ -1984,62 +1984,62 @@ LABEL_14:
   return v15;
 }
 
-- (double)averageCyclingPowerForWorkout:(id)a3 workoutActivity:(id)a4
+- (double)averageCyclingPowerForWorkout:(id)workout workoutActivity:(id)activity
 {
-  v5 = a4;
-  if (v5)
+  activityCopy = activity;
+  if (activityCopy)
   {
     v6 = [[HKQuantityType alloc] initWithIdentifier:HKQuantityTypeIdentifierCyclingPower];
-    v7 = [v5 statisticsForType:v6];
-    v8 = [v7 averageQuantity];
-    [v8 _value];
+    v7 = [activityCopy statisticsForType:v6];
+    averageQuantity = [v7 averageQuantity];
+    [averageQuantity _value];
     v10 = v9;
   }
 
   else
   {
-    [a3 fiui_averagePower];
+    [workout fiui_averagePower];
     v10 = v11;
   }
 
   return v10;
 }
 
-- (double)averageCyclingSpeedForWorkout:(id)a3 workoutActivity:(id)a4
+- (double)averageCyclingSpeedForWorkout:(id)workout workoutActivity:(id)activity
 {
-  v5 = a4;
-  if (v5)
+  activityCopy = activity;
+  if (activityCopy)
   {
     v6 = [[HKQuantityType alloc] initWithIdentifier:HKQuantityTypeIdentifierCyclingSpeed];
-    v7 = [v5 statisticsForType:v6];
-    v8 = [v7 averageQuantity];
-    [v8 _value];
+    v7 = [activityCopy statisticsForType:v6];
+    averageQuantity = [v7 averageQuantity];
+    [averageQuantity _value];
     v10 = v9;
   }
 
   else
   {
-    [a3 fiui_averagePace];
+    [workout fiui_averagePace];
     v10 = v11;
   }
 
   return v10;
 }
 
-- (id)formattedAveragePowerForWorkout:(id)a3 workoutActivity:(id)a4 context:(id)a5
+- (id)formattedAveragePowerForWorkout:(id)workout workoutActivity:(id)activity context:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([(CHWorkoutFormattingManager *)self hasAveragePowerForWorkout:v8 workoutActivity:v9])
+  workoutCopy = workout;
+  activityCopy = activity;
+  contextCopy = context;
+  if ([(CHWorkoutFormattingManager *)self hasAveragePowerForWorkout:workoutCopy workoutActivity:activityCopy])
   {
-    if (v9)
+    if (activityCopy)
     {
-      v11 = [v9 fiui_activityType];
-      v12 = [v11 identifier];
+      fiui_activityType = [activityCopy fiui_activityType];
+      identifier = [fiui_activityType identifier];
 
       v13 = &HKQuantityTypeIdentifierCyclingPower;
-      if (v12 != 13)
+      if (identifier != 13)
       {
         v13 = &HKQuantityTypeIdentifierRunningPower;
       }
@@ -2047,19 +2047,19 @@ LABEL_14:
       v14 = *v13;
       v15 = [[HKQuantityType alloc] initWithIdentifier:v14];
 
-      v16 = [v9 statisticsForType:v15];
-      v17 = [v16 averageQuantity];
-      [v17 _value];
+      v16 = [activityCopy statisticsForType:v15];
+      averageQuantity = [v16 averageQuantity];
+      [averageQuantity _value];
       v19 = v18;
     }
 
     else
     {
-      [v8 fiui_averagePower];
+      [workoutCopy fiui_averagePower];
       v19 = v21;
     }
 
-    v20 = [(CHWorkoutFormattingManager *)self formattedAveragePowerStringFor:v10 context:v19];
+    v20 = [(CHWorkoutFormattingManager *)self formattedAveragePowerStringFor:contextCopy context:v19];
   }
 
   else
@@ -2070,75 +2070,75 @@ LABEL_14:
   return v20;
 }
 
-- (id)formattedAveragePowerStringFor:(double)a3 context:(id)a4
+- (id)formattedAveragePowerStringFor:(double)for context:(id)context
 {
-  v6 = a4;
-  v7 = [(CHWorkoutFormattingManager *)self formattedPowerStringFor:a3];
-  v8 = [objc_opt_class() localizedShortPowerUnitString];
-  v9 = [v8 localizedUppercaseString];
+  contextCopy = context;
+  v7 = [(CHWorkoutFormattingManager *)self formattedPowerStringFor:for];
+  localizedShortPowerUnitString = [objc_opt_class() localizedShortPowerUnitString];
+  localizedUppercaseString = [localizedShortPowerUnitString localizedUppercaseString];
 
-  v10 = [CHWorkoutDisplayContext displayContextWithName:v6];
+  v10 = [CHWorkoutDisplayContext displayContextWithName:contextCopy];
 
-  v11 = [v10 unitFormatString];
-  v12 = [NSString stringWithValidatedFormat:v11 validFormatSpecifiers:@"%@%@" error:0, v7, v9];
+  unitFormatString = [v10 unitFormatString];
+  v12 = [NSString stringWithValidatedFormat:unitFormatString validFormatSpecifiers:@"%@%@" error:0, v7, localizedUppercaseString];
 
   v13 = [NSMutableAttributedString alloc];
   v25[0] = NSFontAttributeName;
-  v14 = [v10 valueFont];
-  v26[0] = v14;
+  valueFont = [v10 valueFont];
+  v26[0] = valueFont;
   v25[1] = NSForegroundColorAttributeName;
   v15 = +[ARUIMetricColors powerColors];
-  v16 = [v15 nonGradientTextColor];
-  v26[1] = v16;
+  nonGradientTextColor = [v15 nonGradientTextColor];
+  v26[1] = nonGradientTextColor;
   v17 = [NSDictionary dictionaryWithObjects:v26 forKeys:v25 count:2];
   v18 = [v13 initWithString:v12 attributes:v17];
 
-  v19 = [v12 rangeOfString:v9];
+  v19 = [v12 rangeOfString:localizedUppercaseString];
   v21 = v20;
-  v22 = [v10 goalDescriptionFont];
-  [v18 addAttribute:NSFontAttributeName value:v22 range:{v19, v21}];
+  goalDescriptionFont = [v10 goalDescriptionFont];
+  [v18 addAttribute:NSFontAttributeName value:goalDescriptionFont range:{v19, v21}];
 
-  v23 = [v10 goalDescriptionAttributes];
-  [v18 addAttributes:v23 range:{v19, v21}];
+  goalDescriptionAttributes = [v10 goalDescriptionAttributes];
+  [v18 addAttributes:goalDescriptionAttributes range:{v19, v21}];
 
   return v18;
 }
 
-- (id)formattedPowerStringFor:(double)a3
+- (id)formattedPowerStringFor:(double)for
 {
-  v3 = [NSNumber numberWithDouble:floor(a3)];
+  v3 = [NSNumber numberWithDouble:floor(for)];
   v4 = [NSNumberFormatter localizedStringFromNumber:v3 numberStyle:0];
 
   return v4;
 }
 
-- (id)formattedDistanceForWorkout:(id)a3 workoutActivity:(id)a4 context:(id)a5
+- (id)formattedDistanceForWorkout:(id)workout workoutActivity:(id)activity context:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [CHWorkoutDisplayContext displayContextWithName:a5];
-  v54 = v9;
-  v55 = v8;
-  if (v9)
+  workoutCopy = workout;
+  activityCopy = activity;
+  v10 = [CHWorkoutDisplayContext displayContextWithName:context];
+  v54 = activityCopy;
+  v55 = workoutCopy;
+  if (activityCopy)
   {
-    v11 = [v9 distanceType];
-    v12 = [v9 statisticsForType:v11];
+    distanceType = [activityCopy distanceType];
+    v12 = [activityCopy statisticsForType:distanceType];
 
-    v13 = [v12 sumQuantity];
-    v14 = [v9 fiui_activityType];
+    sumQuantity = [v12 sumQuantity];
+    fiui_activityType = [activityCopy fiui_activityType];
     v15 = FIUIDistanceTypeForActivityType();
 
     v62 = 0;
     formattingManager = self->_formattingManager;
     v17 = +[HKUnit meterUnit];
-    [v13 doubleValueForUnit:v17];
+    [sumQuantity doubleValueForUnit:v17];
     v18 = [(FIUIFormattingManager *)formattingManager localizedNaturalScaleStringWithDistanceInMeters:v15 distanceType:0 unitStyle:&v62 usedUnit:?];
 
     v19 = [(FIUIFormattingManager *)self->_formattingManager localizedShortUnitStringForDistanceUnit:v62];
-    v20 = [v19 localizedUppercaseString];
+    localizedUppercaseString = [v19 localizedUppercaseString];
   }
 
-  else if ([v8 workoutActivityType] == 82)
+  else if ([workoutCopy workoutActivityType] == 82)
   {
     v52 = v10;
     v21 = +[HKUnit meterUnit];
@@ -2148,8 +2148,8 @@ LABEL_14:
     v61 = 0u;
     v58 = 0u;
     v59 = 0u;
-    v23 = [v8 workoutActivities];
-    v24 = [v23 countByEnumeratingWithState:&v58 objects:v65 count:16];
+    workoutActivities = [workoutCopy workoutActivities];
+    v24 = [workoutActivities countByEnumeratingWithState:&v58 objects:v65 count:16];
     if (v24)
     {
       v25 = v24;
@@ -2162,22 +2162,22 @@ LABEL_14:
         {
           if (*v59 != v26)
           {
-            objc_enumerationMutation(v23);
+            objc_enumerationMutation(workoutActivities);
           }
 
           v29 = *(*(&v58 + 1) + 8 * v27);
-          v30 = [v29 distanceType];
-          v31 = [v29 statisticsForType:v30];
+          distanceType2 = [v29 distanceType];
+          v31 = [v29 statisticsForType:distanceType2];
 
-          v32 = [v31 sumQuantity];
-          v22 = [v28 _quantityByAddingQuantity:v32];
+          sumQuantity2 = [v31 sumQuantity];
+          v22 = [v28 _quantityByAddingQuantity:sumQuantity2];
 
           v27 = v27 + 1;
           v28 = v22;
         }
 
         while (v25 != v27);
-        v25 = [v23 countByEnumeratingWithState:&v58 objects:v65 count:16];
+        v25 = [workoutActivities countByEnumeratingWithState:&v58 objects:v65 count:16];
       }
 
       while (v25);
@@ -2190,7 +2190,7 @@ LABEL_14:
     v18 = [(FIUIFormattingManager *)v33 localizedNaturalScaleStringWithDistanceInMeters:1 distanceType:0 unitStyle:&v62 usedUnit:?];
 
     v35 = [(FIUIFormattingManager *)self->_formattingManager localizedShortUnitStringForDistanceUnit:v62];
-    v20 = [v35 localizedUppercaseString];
+    localizedUppercaseString = [v35 localizedUppercaseString];
 
     v10 = v52;
   }
@@ -2199,58 +2199,58 @@ LABEL_14:
   {
     v56 = 0;
     v57 = 0;
-    [(CHWorkoutFormattingManager *)self _formattedDistanceStringForWorkout:v8 distanceString:&v57 unitString:&v56];
+    [(CHWorkoutFormattingManager *)self _formattedDistanceStringForWorkout:workoutCopy distanceString:&v57 unitString:&v56];
     v18 = v57;
-    v20 = v56;
+    localizedUppercaseString = v56;
   }
 
   v51 = v18;
-  v53 = v20;
-  v36 = [v10 unitFormatString];
-  v37 = [NSString stringWithValidatedFormat:v36 validFormatSpecifiers:@"%@%@" error:0, v18, v20];
+  v53 = localizedUppercaseString;
+  unitFormatString = [v10 unitFormatString];
+  v37 = [NSString stringWithValidatedFormat:unitFormatString validFormatSpecifiers:@"%@%@" error:0, v18, localizedUppercaseString];
 
-  v38 = [v37 rangeOfString:v20];
+  v38 = [v37 rangeOfString:localizedUppercaseString];
   v40 = v39;
   v41 = v10;
   v42 = [NSMutableAttributedString alloc];
   v63[0] = NSFontAttributeName;
-  v43 = [v41 valueFont];
-  v64[0] = v43;
+  valueFont = [v41 valueFont];
+  v64[0] = valueFont;
   v63[1] = NSForegroundColorAttributeName;
   v44 = +[ARUIMetricColors distanceColors];
-  v45 = [v44 nonGradientTextColor];
-  v64[1] = v45;
+  nonGradientTextColor = [v44 nonGradientTextColor];
+  v64[1] = nonGradientTextColor;
   v46 = [NSDictionary dictionaryWithObjects:v64 forKeys:v63 count:2];
   v47 = [v42 initWithString:v37 attributes:v46];
 
-  v48 = [v41 goalDescriptionFont];
-  [v47 addAttribute:NSFontAttributeName value:v48 range:{v38, v40}];
+  goalDescriptionFont = [v41 goalDescriptionFont];
+  [v47 addAttribute:NSFontAttributeName value:goalDescriptionFont range:{v38, v40}];
 
-  v49 = [v41 goalDescriptionAttributes];
-  [v47 addAttributes:v49 range:{v38, v40}];
+  goalDescriptionAttributes = [v41 goalDescriptionAttributes];
+  [v47 addAttributes:goalDescriptionAttributes range:{v38, v40}];
 
   return v47;
 }
 
-- (id)formattedDurationForWorkout:(id)a3 workoutActivity:(id)a4 context:(id)a5
+- (id)formattedDurationForWorkout:(id)workout workoutActivity:(id)activity context:(id)context
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [CHWorkoutDisplayContext displayContextWithName:a5];
-  if (v8)
+  activityCopy = activity;
+  workoutCopy = workout;
+  v10 = [CHWorkoutDisplayContext displayContextWithName:context];
+  if (activityCopy)
   {
-    [v8 duration];
+    [activityCopy duration];
   }
 
   else
   {
-    [v9 fiui_duration];
+    [workoutCopy fiui_duration];
   }
 
   v12 = v11;
-  v13 = [v9 workoutActivityType];
+  workoutActivityType = [workoutCopy workoutActivityType];
 
-  if (v12 < 3600.0 && v13 == 84)
+  if (v12 < 3600.0 && workoutActivityType == 84)
   {
     v15 = 3;
   }
@@ -2263,58 +2263,58 @@ LABEL_14:
   v16 = [(FIUIFormattingManager *)self->_formattingManager stringWithDuration:v15 durationFormat:v12];
   v17 = [NSAttributedString alloc];
   v24[0] = NSFontAttributeName;
-  v18 = [v10 valueFont];
-  v25[0] = v18;
+  valueFont = [v10 valueFont];
+  v25[0] = valueFont;
   v24[1] = NSForegroundColorAttributeName;
   v19 = +[ARUIMetricColors elapsedTimeColors];
-  v20 = [v19 nonGradientTextColor];
-  v25[1] = v20;
+  nonGradientTextColor = [v19 nonGradientTextColor];
+  v25[1] = nonGradientTextColor;
   v21 = [NSDictionary dictionaryWithObjects:v25 forKeys:v24 count:2];
   v22 = [v17 initWithString:v16 attributes:v21];
 
   return v22;
 }
 
-- (id)formattedElapsedTimeForWorkout:(id)a3 workoutActivity:(id)a4 context:(id)a5
+- (id)formattedElapsedTimeForWorkout:(id)workout workoutActivity:(id)activity context:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [CHWorkoutDisplayContext displayContextWithName:a5];
-  if (v9)
+  workoutCopy = workout;
+  activityCopy = activity;
+  v10 = [CHWorkoutDisplayContext displayContextWithName:context];
+  if (activityCopy)
   {
-    v11 = v9;
+    v11 = activityCopy;
   }
 
   else
   {
-    v11 = v8;
+    v11 = workoutCopy;
   }
 
   [v11 elapsedTime];
   v12 = [(FIUIFormattingManager *)self->_formattingManager stringWithDuration:2 durationFormat:?];
   v13 = [NSAttributedString alloc];
   v20[0] = NSFontAttributeName;
-  v14 = [v10 valueFont];
-  v21[0] = v14;
+  valueFont = [v10 valueFont];
+  v21[0] = valueFont;
   v20[1] = NSForegroundColorAttributeName;
   v15 = +[ARUIMetricColors elapsedTimeColors];
-  v16 = [v15 nonGradientTextColor];
-  v21[1] = v16;
+  nonGradientTextColor = [v15 nonGradientTextColor];
+  v21[1] = nonGradientTextColor;
   v17 = [NSDictionary dictionaryWithObjects:v21 forKeys:v20 count:2];
   v18 = [v13 initWithString:v12 attributes:v17];
 
   return v18;
 }
 
-- (id)formattedRaceTimeForWorkout:(id)a3 workoutActivity:(id)a4 context:(id)a5
+- (id)formattedRaceTimeForWorkout:(id)workout workoutActivity:(id)activity context:(id)context
 {
-  v7 = a3;
-  v8 = [CHWorkoutDisplayContext displayContextWithName:a5];
-  [v7 raceTime];
+  workoutCopy = workout;
+  v8 = [CHWorkoutDisplayContext displayContextWithName:context];
+  [workoutCopy raceTime];
   v9 = [(FIUIFormattingManager *)self->_formattingManager stringWithDuration:2 durationFormat:?];
-  v10 = [v7 didWinRace];
+  didWinRace = [workoutCopy didWinRace];
 
-  if (v10)
+  if (didWinRace)
   {
     +[ARUIMetricColors raceAheadColors];
   }
@@ -2326,139 +2326,139 @@ LABEL_14:
   v11 = ;
   v12 = [NSAttributedString alloc];
   v18[0] = NSFontAttributeName;
-  v13 = [v8 valueFont];
-  v19[0] = v13;
+  valueFont = [v8 valueFont];
+  v19[0] = valueFont;
   v18[1] = NSForegroundColorAttributeName;
-  v14 = [v11 nonGradientTextColor];
-  v19[1] = v14;
+  nonGradientTextColor = [v11 nonGradientTextColor];
+  v19[1] = nonGradientTextColor;
   v15 = [NSDictionary dictionaryWithObjects:v19 forKeys:v18 count:2];
   v16 = [v12 initWithString:v9 attributes:v15];
 
   return v16;
 }
 
-- (id)formattedElevationGainForWorkout:(id)a3 workoutActivity:(id)a4 context:(id)a5
+- (id)formattedElevationGainForWorkout:(id)workout workoutActivity:(id)activity context:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v9)
+  workoutCopy = workout;
+  activityCopy = activity;
+  contextCopy = context;
+  if (activityCopy)
   {
-    v11 = [v9 metadata];
-    v12 = [v11 objectForKeyedSubscript:HKMetadataKeyElevationAscended];
+    metadata = [activityCopy metadata];
+    v12 = [metadata objectForKeyedSubscript:HKMetadataKeyElevationAscended];
 
     if (v12)
     {
       goto LABEL_7;
     }
 
-    v13 = v9;
+    v13 = activityCopy;
   }
 
   else
   {
-    v14 = [v8 metadata];
-    v12 = [v14 objectForKeyedSubscript:HKMetadataKeyElevationAscended];
+    metadata2 = [workoutCopy metadata];
+    v12 = [metadata2 objectForKeyedSubscript:HKMetadataKeyElevationAscended];
 
     if (v12)
     {
       goto LABEL_7;
     }
 
-    v13 = v8;
+    v13 = workoutCopy;
   }
 
-  v15 = [v13 metadata];
-  v12 = [v15 objectForKeyedSubscript:_HKPrivateMetadataKeyWorkoutElevationAscended];
+  metadata3 = [v13 metadata];
+  v12 = [metadata3 objectForKeyedSubscript:_HKPrivateMetadataKeyWorkoutElevationAscended];
 
 LABEL_7:
-  v16 = [(CHWorkoutFormattingManager *)self formattedElevation:v12 context:v10];
+  v16 = [(CHWorkoutFormattingManager *)self formattedElevation:v12 context:contextCopy];
 
   return v16;
 }
 
-- (id)formattedElevation:(id)a3 context:(id)a4
+- (id)formattedElevation:(id)elevation context:(id)context
 {
   formattingManager = self->_formattingManager;
-  v7 = a4;
-  v8 = a3;
-  v9 = [(FIUIFormattingManager *)formattingManager unitManager];
-  v10 = [v9 userDistanceElevationUnit];
+  contextCopy = context;
+  elevationCopy = elevation;
+  unitManager = [(FIUIFormattingManager *)formattingManager unitManager];
+  userDistanceElevationUnit = [unitManager userDistanceElevationUnit];
 
-  v11 = [CHWorkoutDisplayContext displayContextWithName:v7];
+  v11 = [CHWorkoutDisplayContext displayContextWithName:contextCopy];
 
   v12 = self->_formattingManager;
   v13 = +[HKUnit meterUnit];
-  [v8 doubleValueForUnit:v13];
+  [elevationCopy doubleValueForUnit:v13];
   v15 = v14;
 
-  v32 = [(FIUIFormattingManager *)v12 localizedStringWithDistanceInMeters:v10 distanceUnit:0 unitStyle:1 decimalPrecision:v15];
+  v32 = [(FIUIFormattingManager *)v12 localizedStringWithDistanceInMeters:userDistanceElevationUnit distanceUnit:0 unitStyle:1 decimalPrecision:v15];
 
-  v16 = [(FIUIFormattingManager *)self->_formattingManager localizedShortUnitStringForDistanceUnit:v10];
-  v17 = [v16 localizedUppercaseString];
+  v16 = [(FIUIFormattingManager *)self->_formattingManager localizedShortUnitStringForDistanceUnit:userDistanceElevationUnit];
+  localizedUppercaseString = [v16 localizedUppercaseString];
 
-  v18 = [v11 unitFormatString];
-  v19 = [NSString stringWithValidatedFormat:v18 validFormatSpecifiers:@"%@%@" error:0, v32, v17];
+  unitFormatString = [v11 unitFormatString];
+  v19 = [NSString stringWithValidatedFormat:unitFormatString validFormatSpecifiers:@"%@%@" error:0, v32, localizedUppercaseString];
 
-  v20 = [v19 rangeOfString:v17];
+  v20 = [v19 rangeOfString:localizedUppercaseString];
   v22 = v21;
   v23 = +[ARUIMetricColors elevationColors];
-  v24 = [v23 nonGradientTextColor];
+  nonGradientTextColor = [v23 nonGradientTextColor];
 
   v25 = [NSMutableAttributedString alloc];
   v33[0] = NSFontAttributeName;
-  v26 = [v11 valueFont];
+  valueFont = [v11 valueFont];
   v33[1] = NSForegroundColorAttributeName;
-  v34[0] = v26;
-  v34[1] = v24;
+  v34[0] = valueFont;
+  v34[1] = nonGradientTextColor;
   v27 = [NSDictionary dictionaryWithObjects:v34 forKeys:v33 count:2];
   v28 = [v25 initWithString:v19 attributes:v27];
 
-  v29 = [v11 goalDescriptionFont];
-  [v28 addAttribute:NSFontAttributeName value:v29 range:{v20, v22}];
+  goalDescriptionFont = [v11 goalDescriptionFont];
+  [v28 addAttribute:NSFontAttributeName value:goalDescriptionFont range:{v20, v22}];
 
-  v30 = [v11 goalDescriptionAttributes];
-  [v28 addAttributes:v30 range:{v20, v22}];
+  goalDescriptionAttributes = [v11 goalDescriptionAttributes];
+  [v28 addAttributes:goalDescriptionAttributes range:{v20, v22}];
 
   return v28;
 }
 
-- (id)formattedFlightsClimbedForWorkout:(id)a3 workoutActivity:(id)a4 context:(id)a5
+- (id)formattedFlightsClimbedForWorkout:(id)workout workoutActivity:(id)activity context:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([(CHWorkoutFormattingManager *)self hasFlightsClimbedForWorkout:v8 workoutActivity:v9])
+  workoutCopy = workout;
+  activityCopy = activity;
+  contextCopy = context;
+  if ([(CHWorkoutFormattingManager *)self hasFlightsClimbedForWorkout:workoutCopy workoutActivity:activityCopy])
   {
-    if (v9)
+    if (activityCopy)
     {
-      v11 = [[HKQuantityType alloc] initWithIdentifier:HKQuantityTypeIdentifierFlightsClimbed];
-      v12 = [v9 statisticsForType:v11];
-      v13 = [v12 sumQuantity];
-      [v13 _value];
+      totalFlightsClimbed = [[HKQuantityType alloc] initWithIdentifier:HKQuantityTypeIdentifierFlightsClimbed];
+      v12 = [activityCopy statisticsForType:totalFlightsClimbed];
+      sumQuantity = [v12 sumQuantity];
+      [sumQuantity _value];
       v15 = v14;
     }
 
     else
     {
-      v11 = [v8 totalFlightsClimbed];
+      totalFlightsClimbed = [workoutCopy totalFlightsClimbed];
       v12 = +[HKUnit countUnit];
-      [v11 doubleValueForUnit:v12];
+      [totalFlightsClimbed doubleValueForUnit:v12];
       v15 = v17;
     }
 
     v18 = [NSNumber numberWithDouble:v15];
     v19 = [NSNumberFormatter localizedStringFromNumber:v18 numberStyle:0];
 
-    v20 = [CHWorkoutDisplayContext displayContextWithName:v10];
+    v20 = [CHWorkoutDisplayContext displayContextWithName:contextCopy];
     v21 = [NSAttributedString alloc];
     v27[0] = NSFontAttributeName;
-    v22 = [v20 valueFont];
-    v28[0] = v22;
+    valueFont = [v20 valueFont];
+    v28[0] = valueFont;
     v27[1] = NSForegroundColorAttributeName;
     v23 = +[ARUIMetricColors flightsClimbedColors];
-    v24 = [v23 nonGradientTextColor];
-    v28[1] = v24;
+    nonGradientTextColor = [v23 nonGradientTextColor];
+    v28[1] = nonGradientTextColor;
     v25 = [NSDictionary dictionaryWithObjects:v28 forKeys:v27 count:2];
     v16 = [v21 initWithString:v19 attributes:v25];
   }
@@ -2471,29 +2471,29 @@ LABEL_7:
   return v16;
 }
 
-- (id)formattedGroundElevationGainForWorkout:(id)a3 workoutActivity:(id)a4 context:(id)a5
+- (id)formattedGroundElevationGainForWorkout:(id)workout workoutActivity:(id)activity context:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v9)
+  workoutCopy = workout;
+  activityCopy = activity;
+  contextCopy = context;
+  if (activityCopy)
   {
-    v11 = [v9 metadata];
-    v12 = [v11 objectForKeyedSubscript:NLWorkoutMetadataKeyMaxGroundElevation];
+    metadata = [activityCopy metadata];
+    v12 = [metadata objectForKeyedSubscript:NLWorkoutMetadataKeyMaxGroundElevation];
 
-    v13 = v9;
+    v13 = activityCopy;
   }
 
   else
   {
-    v14 = [v8 metadata];
-    v12 = [v14 objectForKeyedSubscript:NLWorkoutMetadataKeyMaxGroundElevation];
+    metadata2 = [workoutCopy metadata];
+    v12 = [metadata2 objectForKeyedSubscript:NLWorkoutMetadataKeyMaxGroundElevation];
 
-    v13 = v8;
+    v13 = workoutCopy;
   }
 
-  v15 = [v13 metadata];
-  v16 = [v15 objectForKeyedSubscript:NLWorkoutMetadataKeyMinGroundElevation];
+  metadata3 = [v13 metadata];
+  v16 = [metadata3 objectForKeyedSubscript:NLWorkoutMetadataKeyMinGroundElevation];
 
   if (v12)
   {
@@ -2513,7 +2513,7 @@ LABEL_7:
   else
   {
     v54 = 0;
-    v52 = v8;
+    v52 = workoutCopy;
     v18 = +[HKUnit meterUnit];
     [v12 doubleValueForUnit:v18];
     v20 = v19;
@@ -2524,17 +2524,17 @@ LABEL_7:
     v23 = v22;
 
     [(FIUIFormattingManager *)self->_formattingManager localizedNaturalScaleStringWithDistanceInMeters:5 distanceType:0 unitStyle:&v54 usedUnit:v23];
-    v47 = v49 = v9;
+    v47 = v49 = activityCopy;
     [(FIUIFormattingManager *)self->_formattingManager localizedShortUnitStringForDistanceUnit:v54];
     v24 = v48 = v16;
-    v45 = [(CHWorkoutFormattingManager *)self _groundElevationFont];
+    _groundElevationFont = [(CHWorkoutFormattingManager *)self _groundElevationFont];
     v25 = objc_alloc_init(NSMutableParagraphStyle);
     [(CHWorkoutFormattingManager *)self _groundElevationHeight];
     [v25 setMaximumLineHeight:v26];
     [(CHWorkoutFormattingManager *)self _groundElevationHeight];
     v28 = v25;
     [v25 setMinimumLineHeight:v27];
-    v51 = v10;
+    v51 = contextCopy;
     FIUIBundle();
     v29 = v50 = v12;
     v30 = [v29 localizedStringForKey:@"SUMMARY_GROUND_ELEVATION_MIN" value:&stru_1008680E8 table:@"Localizable"];
@@ -2548,85 +2548,85 @@ LABEL_7:
     v35 = v31;
     v36 = [NSString localizedStringWithFormat:@"%@\n%@", v34, v31];
     v37 = [NSMutableAttributedString alloc];
-    v38 = [v36 localizedUppercaseString];
-    v56[0] = v45;
+    localizedUppercaseString = [v36 localizedUppercaseString];
+    v56[0] = _groundElevationFont;
     v55[0] = NSFontAttributeName;
     v55[1] = NSForegroundColorAttributeName;
     v39 = +[ARUIMetricColors elevationColors];
-    v40 = [v39 nonGradientTextColor];
+    nonGradientTextColor = [v39 nonGradientTextColor];
     v55[2] = NSParagraphStyleAttributeName;
-    v56[1] = v40;
+    v56[1] = nonGradientTextColor;
     v56[2] = v28;
     v41 = v28;
     v42 = [NSDictionary dictionaryWithObjects:v56 forKeys:v55 count:3];
-    v43 = [v37 initWithString:v38 attributes:v42];
+    v43 = [v37 initWithString:localizedUppercaseString attributes:v42];
 
-    v10 = v51;
+    contextCopy = v51;
     v12 = v50;
 
-    v8 = v52;
+    workoutCopy = v52;
     v16 = v48;
 
-    v9 = v49;
+    activityCopy = v49;
   }
 
   return v43;
 }
 
-- (id)formattedLapCountForWorkout:(id)a3 workoutActivity:(id)a4 context:(id)a5
+- (id)formattedLapCountForWorkout:(id)workout workoutActivity:(id)activity context:(id)context
 {
-  v8 = a5;
-  if (a4)
+  contextCopy = context;
+  if (activity)
   {
-    v9 = a4;
+    workoutCopy = activity;
   }
 
   else
   {
-    v9 = a3;
+    workoutCopy = workout;
   }
 
-  v10 = [v9 workoutEvents];
+  workoutEvents = [workoutCopy workoutEvents];
   v11 = [NSPredicate predicateWithBlock:&stru_10083A860];
-  v12 = [v10 filteredArrayUsingPredicate:v11];
+  v12 = [workoutEvents filteredArrayUsingPredicate:v11];
   v13 = [v12 count];
 
   v14 = +[ARUIMetricColors lapColors];
-  v15 = [v14 nonGradientTextColor];
+  nonGradientTextColor = [v14 nonGradientTextColor];
 
-  v16 = [(CHWorkoutFormattingManager *)self formattedCount:v13 color:v15 context:v8];
+  v16 = [(CHWorkoutFormattingManager *)self formattedCount:v13 color:nonGradientTextColor context:contextCopy];
 
   return v16;
 }
 
-- (id)formattedDownhillRunsCount:(int64_t)a3 context:(id)a4
+- (id)formattedDownhillRunsCount:(int64_t)count context:(id)context
 {
-  v6 = a4;
+  contextCopy = context;
   v7 = +[ARUIMetricColors lapColors];
-  v8 = [v7 nonGradientTextColor];
+  nonGradientTextColor = [v7 nonGradientTextColor];
 
-  v9 = [(CHWorkoutFormattingManager *)self formattedCount:a3 color:v8 context:v6];
+  v9 = [(CHWorkoutFormattingManager *)self formattedCount:count color:nonGradientTextColor context:contextCopy];
 
   return v9;
 }
 
-- (id)formattedCount:(int64_t)a3 color:(id)a4 context:(id)a5
+- (id)formattedCount:(int64_t)count color:(id)color context:(id)context
 {
-  if (a3)
+  if (count)
   {
-    v7 = a5;
-    v8 = a4;
-    v9 = [NSNumber numberWithInteger:a3];
+    contextCopy = context;
+    colorCopy = color;
+    v9 = [NSNumber numberWithInteger:count];
     v10 = [NSNumberFormatter localizedStringFromNumber:v9 numberStyle:0];
 
-    v11 = [CHWorkoutDisplayContext displayContextWithName:v7];
+    v11 = [CHWorkoutDisplayContext displayContextWithName:contextCopy];
 
     v12 = [NSAttributedString alloc];
     v17[0] = NSFontAttributeName;
-    v13 = [v11 valueFont];
+    valueFont = [v11 valueFont];
     v17[1] = NSForegroundColorAttributeName;
-    v18[0] = v13;
-    v18[1] = v8;
+    v18[0] = valueFont;
+    v18[1] = colorCopy;
     v14 = [NSDictionary dictionaryWithObjects:v18 forKeys:v17 count:2];
 
     v15 = [v12 initWithString:v10 attributes:v14];
@@ -2640,206 +2640,206 @@ LABEL_7:
   return v15;
 }
 
-- (id)formattedPaceOrSpeedForWorkout:(id)a3 workoutActivity:(id)a4 context:(id)a5
+- (id)formattedPaceOrSpeedForWorkout:(id)workout workoutActivity:(id)activity context:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 fiui_activityType];
-  v12 = v11;
-  if (v11)
+  workoutCopy = workout;
+  activityCopy = activity;
+  contextCopy = context;
+  fiui_activityType = [activityCopy fiui_activityType];
+  v12 = fiui_activityType;
+  if (fiui_activityType)
   {
-    v13 = v11;
+    fiui_activityType2 = fiui_activityType;
   }
 
   else
   {
-    v13 = [v8 fiui_activityType];
+    fiui_activityType2 = [workoutCopy fiui_activityType];
   }
 
-  v14 = v13;
+  v14 = fiui_activityType2;
 
-  if (v9)
+  if (activityCopy)
   {
-    v15 = [v9 distanceType];
-    v16 = [v9 statisticsForType:v15];
+    distanceType = [activityCopy distanceType];
+    v16 = [activityCopy statisticsForType:distanceType];
 
-    v17 = [v16 sumQuantity];
-    [v9 duration];
+    sumQuantity = [v16 sumQuantity];
+    [activityCopy duration];
     v19 = v18;
   }
 
-  else if ((([v8 fiui_isConnectedGymWorkout] & 1) != 0 || objc_msgSend(v14, "identifier") == 13 && objc_msgSend(v14, "isIndoor")) && objc_msgSend(v8, "fiui_hasAveragePace"))
+  else if ((([workoutCopy fiui_isConnectedGymWorkout] & 1) != 0 || objc_msgSend(v14, "identifier") == 13 && objc_msgSend(v14, "isIndoor")) && objc_msgSend(workoutCopy, "fiui_hasAveragePace"))
   {
-    [v8 fiui_averagePace];
+    [workoutCopy fiui_averagePace];
     v21 = v20;
     v22 = +[HKUnit meterUnit];
-    v17 = [HKQuantity quantityWithUnit:v22 doubleValue:v21];
+    sumQuantity = [HKQuantity quantityWithUnit:v22 doubleValue:v21];
 
     v19 = 1.0;
   }
 
   else
   {
-    v17 = [v8 totalDistance];
-    [v8 duration];
+    sumQuantity = [workoutCopy totalDistance];
+    [workoutCopy duration];
     v19 = v23;
   }
 
-  v24 = [(CHWorkoutFormattingManager *)self formattedPaceOrSpeedWithDistance:v17 overDuration:v14 activityType:v10 context:v19];
+  v24 = [(CHWorkoutFormattingManager *)self formattedPaceOrSpeedWithDistance:sumQuantity overDuration:v14 activityType:contextCopy context:v19];
 
   return v24;
 }
 
-- (id)formattedPaceOrSpeedWithDistance:(id)a3 overDuration:(double)a4 activityType:(id)a5 context:(id)a6
+- (id)formattedPaceOrSpeedWithDistance:(id)distance overDuration:(double)duration activityType:(id)type context:(id)context
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a3;
+  contextCopy = context;
+  typeCopy = type;
+  distanceCopy = distance;
   v13 = FIUIPaceFormatForWorkoutActivityType();
-  v14 = [(FIUIFormattingManager *)self->_formattingManager localizedPaceStringWithDistance:v12 overDuration:v13 paceFormat:FIUIDistanceTypeForActivityType() distanceType:a4];
+  v14 = [(FIUIFormattingManager *)self->_formattingManager localizedPaceStringWithDistance:distanceCopy overDuration:v13 paceFormat:FIUIDistanceTypeForActivityType() distanceType:duration];
 
-  v15 = [(CHWorkoutFormattingManager *)self _paceUnitForActivityType:v11 paceFormat:v13];
+  v15 = [(CHWorkoutFormattingManager *)self _paceUnitForActivityType:typeCopy paceFormat:v13];
 
   v16 = +[ARUIMetricColors paceColors];
-  v17 = [v16 nonGradientTextColor];
+  nonGradientTextColor = [v16 nonGradientTextColor];
 
-  v18 = [(CHWorkoutFormattingManager *)self _formattedValueString:v14 withUnitString:v15 paceFormat:v13 context:v10 color:v17];
+  v18 = [(CHWorkoutFormattingManager *)self _formattedValueString:v14 withUnitString:v15 paceFormat:v13 context:contextCopy color:nonGradientTextColor];
 
   return v18;
 }
 
-- (id)formattedAverageSwimPaceWithDuration:(id)a3 context:(id)a4
+- (id)formattedAverageSwimPaceWithDuration:(id)duration context:(id)context
 {
   formattingManager = self->_formattingManager;
-  v7 = a4;
-  [a3 doubleValue];
+  contextCopy = context;
+  [duration doubleValue];
   v8 = [(FIUIFormattingManager *)formattingManager stringWithDuration:1 durationFormat:?];
-  v9 = [(FIUIFormattingManager *)self->_formattingManager unitManager];
-  v10 = [v9 userLapLengthHKUnit];
+  unitManager = [(FIUIFormattingManager *)self->_formattingManager unitManager];
+  userLapLengthHKUnit = [unitManager userLapLengthHKUnit];
 
   v11 = [(FIUIFormattingManager *)self->_formattingManager localizedShortUnitStringForDistanceUnit:FIUIDistanceUnitForHKUnit()];
   v12 = FIUINumberOfUnitsInPaceForPaceFormat();
-  v13 = [v11 localizedLowercaseString];
+  localizedLowercaseString = [v11 localizedLowercaseString];
 
   v14 = +[NSBundle mainBundle];
   v15 = [v14 localizedStringForKey:@"PACE_MANY_UNIT_FORMAT" value:&stru_1008680E8 table:@"Localizable"];
   v16 = [NSNumber numberWithUnsignedInteger:v12];
-  v17 = [NSString stringWithFormat:v15, v16, v13];
+  v17 = [NSString stringWithFormat:v15, v16, localizedLowercaseString];
 
   v18 = +[ARUIMetricColors paceColors];
-  v19 = [v18 nonGradientTextColor];
+  nonGradientTextColor = [v18 nonGradientTextColor];
 
-  v20 = [(CHWorkoutFormattingManager *)self _formattedValueString:v8 withUnitString:v17 paceFormat:2 context:v7 color:v19];
+  v20 = [(CHWorkoutFormattingManager *)self _formattedValueString:v8 withUnitString:v17 paceFormat:2 context:contextCopy color:nonGradientTextColor];
 
   return v20;
 }
 
-- (id)_paceUnitForActivityType:(id)a3 paceFormat:(int64_t)a4
+- (id)_paceUnitForActivityType:(id)type paceFormat:(int64_t)format
 {
-  v6 = a3;
+  typeCopy = type;
   v7 = FIUIDistanceTypeForActivityType();
-  if (a4 == 4)
+  if (format == 4)
   {
-    v8 = [(FIUIFormattingManager *)self->_formattingManager localizedSpeedUnitStringForActivityType:v6];
+    localizedUppercaseString = [(FIUIFormattingManager *)self->_formattingManager localizedSpeedUnitStringForActivityType:typeCopy];
   }
 
   else
   {
     v9 = v7;
-    v10 = [v6 identifier];
+    identifier = [typeCopy identifier];
 
     formattingManager = self->_formattingManager;
-    v12 = [(FIUIFormattingManager *)formattingManager unitManager];
-    v13 = v12;
-    if (v10 == 46)
+    unitManager = [(FIUIFormattingManager *)formattingManager unitManager];
+    v13 = unitManager;
+    if (identifier == 46)
     {
-      v14 = [v12 userLapLengthHKUnit];
+      userLapLengthHKUnit = [unitManager userLapLengthHKUnit];
 
-      v8 = [(FIUIFormattingManager *)self->_formattingManager localizedShortUnitStringForDistanceUnit:FIUIDistanceUnitForHKUnit()];
-      v13 = v14;
+      localizedUppercaseString = [(FIUIFormattingManager *)self->_formattingManager localizedShortUnitStringForDistanceUnit:FIUIDistanceUnitForHKUnit()];
+      v13 = userLapLengthHKUnit;
     }
 
     else
     {
-      v15 = -[FIUIFormattingManager localizedShortUnitStringForDistanceUnit:](formattingManager, "localizedShortUnitStringForDistanceUnit:", [v12 paceDistanceUnitForDistanceType:v9]);
-      v8 = [v15 localizedUppercaseString];
+      v15 = -[FIUIFormattingManager localizedShortUnitStringForDistanceUnit:](formattingManager, "localizedShortUnitStringForDistanceUnit:", [unitManager paceDistanceUnitForDistanceType:v9]);
+      localizedUppercaseString = [v15 localizedUppercaseString];
     }
 
-    if ((a4 - 2) >= 2)
+    if ((format - 2) >= 2)
     {
-      if (a4 != 1)
+      if (format != 1)
       {
         goto LABEL_11;
       }
 
-      v6 = +[NSBundle mainBundle];
-      v20 = [v6 localizedStringForKey:@"FITNESS_PACE_UNIT_FORMAT_%@" value:&stru_1008680E8 table:@"Localizable"];
-      v21 = [NSString stringWithFormat:v20, v8];
+      typeCopy = +[NSBundle mainBundle];
+      v20 = [typeCopy localizedStringForKey:@"FITNESS_PACE_UNIT_FORMAT_%@" value:&stru_1008680E8 table:@"Localizable"];
+      v21 = [NSString stringWithFormat:v20, localizedUppercaseString];
 
-      v8 = v21;
+      localizedUppercaseString = v21;
     }
 
     else
     {
       v16 = FIUINumberOfUnitsInPaceForPaceFormat();
-      v17 = [v8 localizedLowercaseString];
+      localizedLowercaseString = [localizedUppercaseString localizedLowercaseString];
 
-      v6 = +[NSBundle mainBundle];
-      v18 = [v6 localizedStringForKey:@"PACE_MANY_UNIT_FORMAT" value:&stru_1008680E8 table:@"Localizable"];
+      typeCopy = +[NSBundle mainBundle];
+      v18 = [typeCopy localizedStringForKey:@"PACE_MANY_UNIT_FORMAT" value:&stru_1008680E8 table:@"Localizable"];
       v19 = [NSNumber numberWithUnsignedInteger:v16];
-      v8 = [NSString stringWithFormat:v18, v19, v17];
+      localizedUppercaseString = [NSString stringWithFormat:v18, v19, localizedLowercaseString];
     }
   }
 
 LABEL_11:
 
-  return v8;
+  return localizedUppercaseString;
 }
 
-- (id)_formattedValueString:(id)a3 withUnitString:(id)a4 paceFormat:(int64_t)a5 context:(id)a6 color:(id)a7
+- (id)_formattedValueString:(id)string withUnitString:(id)unitString paceFormat:(int64_t)format context:(id)context color:(id)color
 {
-  v11 = a7;
-  v12 = a4;
-  v13 = a3;
-  v14 = [CHWorkoutDisplayContext displayContextWithName:a6];
-  v15 = [v14 goalDescriptionFont];
-  v16 = [v14 goalDescriptionAttributes];
-  if ((a5 & 0xFFFFFFFFFFFFFFFELL) == 2)
+  colorCopy = color;
+  unitStringCopy = unitString;
+  stringCopy = string;
+  v14 = [CHWorkoutDisplayContext displayContextWithName:context];
+  goalDescriptionFont = [v14 goalDescriptionFont];
+  goalDescriptionAttributes = [v14 goalDescriptionAttributes];
+  if ((format & 0xFFFFFFFFFFFFFFFELL) == 2)
   {
-    v17 = [v14 pace100UnitFont];
+    pace100UnitFont = [v14 pace100UnitFont];
 
-    v16 = &__NSDictionary0__struct;
-    v34 = v17;
+    goalDescriptionAttributes = &__NSDictionary0__struct;
+    v34 = pace100UnitFont;
   }
 
   else
   {
-    v34 = v15;
+    v34 = goalDescriptionFont;
   }
 
-  v18 = [v14 unitFormatString];
-  v19 = [NSString stringWithValidatedFormat:v18 validFormatSpecifiers:@"%@%@" error:0, v13, v12];
+  unitFormatString = [v14 unitFormatString];
+  unitStringCopy = [NSString stringWithValidatedFormat:unitFormatString validFormatSpecifiers:@"%@%@" error:0, stringCopy, unitStringCopy];
 
-  v20 = [v19 rangeOfString:v12];
+  v20 = [unitStringCopy rangeOfString:unitStringCopy];
   v22 = v21;
 
-  v23 = [v19 rangeOfString:v13];
+  v23 = [unitStringCopy rangeOfString:stringCopy];
   v32 = v24;
   v33 = v23;
 
   v25 = [NSMutableAttributedString alloc];
   v35[0] = NSFontAttributeName;
-  v26 = [v14 valueFont];
+  valueFont = [v14 valueFont];
   v35[1] = NSForegroundColorAttributeName;
-  v36[0] = v26;
-  v36[1] = v11;
+  v36[0] = valueFont;
+  v36[1] = colorCopy;
   [NSDictionary dictionaryWithObjects:v36 forKeys:v35 count:2];
-  v28 = v27 = v11;
-  v29 = [v25 initWithString:v19 attributes:v28];
+  v28 = v27 = colorCopy;
+  v29 = [v25 initWithString:unitStringCopy attributes:v28];
 
   [v29 addAttribute:NSFontAttributeName value:v34 range:{v20, v22}];
-  [v29 addAttributes:v16 range:{v20, v22}];
+  [v29 addAttributes:goalDescriptionAttributes range:{v20, v22}];
   v30 = [UIView userInterfaceLayoutDirectionForSemanticContentAttribute:0];
 
   if (v30 == UIUserInterfaceLayoutDirectionRightToLeft)
@@ -2850,75 +2850,75 @@ LABEL_11:
   return v29;
 }
 
-- (id)formattedPoolLengthForWorkout:(id)a3 workoutActivity:(id)a4 context:(id)a5
+- (id)formattedPoolLengthForWorkout:(id)workout workoutActivity:(id)activity context:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v9)
+  workoutCopy = workout;
+  activityCopy = activity;
+  contextCopy = context;
+  if (activityCopy)
   {
-    v11 = [v9 workoutConfiguration];
-    v12 = [v11 lapLength];
+    workoutConfiguration = [activityCopy workoutConfiguration];
+    lapLength = [workoutConfiguration lapLength];
 
-    if (v12)
+    if (lapLength)
     {
-      v40 = v8;
+      v40 = workoutCopy;
       v41 = 0;
-      v39 = v9;
-      v13 = v9;
+      v39 = activityCopy;
+      v13 = activityCopy;
 LABEL_6:
       [v13 fiui_activityType];
-      v38 = v35 = v12;
+      v38 = v35 = lapLength;
       v15 = FIUIDistanceTypeForActivityType();
       formattingManager = self->_formattingManager;
       v17 = +[HKUnit meterUnit];
-      [v12 doubleValueForUnit:v17];
+      [lapLength doubleValueForUnit:v17];
       v37 = [(FIUIFormattingManager *)formattingManager localizedNaturalScaleStringWithDistanceInMeters:v15 distanceType:0 unitStyle:&v41 usedUnit:?];
 
       v18 = [(FIUIFormattingManager *)self->_formattingManager localizedShortUnitStringForDistanceUnit:v41];
-      v36 = [v18 localizedUppercaseString];
+      localizedUppercaseString = [v18 localizedUppercaseString];
 
-      v19 = [CHWorkoutDisplayContext displayContextWithName:v10];
-      v20 = [v19 unitFormatString];
-      v21 = [NSString stringWithValidatedFormat:v20 validFormatSpecifiers:@"%@%@" error:0, v37, v36];
+      v19 = [CHWorkoutDisplayContext displayContextWithName:contextCopy];
+      unitFormatString = [v19 unitFormatString];
+      v21 = [NSString stringWithValidatedFormat:unitFormatString validFormatSpecifiers:@"%@%@" error:0, v37, localizedUppercaseString];
 
-      v22 = [v21 rangeOfString:v36];
+      v22 = [v21 rangeOfString:localizedUppercaseString];
       v34 = v23;
       v24 = [NSMutableAttributedString alloc];
       v42[0] = NSFontAttributeName;
-      v25 = [v19 valueFont];
-      v43[0] = v25;
+      valueFont = [v19 valueFont];
+      v43[0] = valueFont;
       v42[1] = NSForegroundColorAttributeName;
       +[ARUIMetricColors lapColors];
-      v27 = v26 = v10;
-      v28 = [v27 nonGradientTextColor];
-      v43[1] = v28;
+      v27 = v26 = contextCopy;
+      nonGradientTextColor = [v27 nonGradientTextColor];
+      v43[1] = nonGradientTextColor;
       v29 = [NSDictionary dictionaryWithObjects:v43 forKeys:v42 count:2];
       v30 = [v24 initWithString:v21 attributes:v29];
 
-      v10 = v26;
-      v31 = [v19 goalDescriptionFont];
-      [v30 addAttribute:NSFontAttributeName value:v31 range:{v22, v34}];
+      contextCopy = v26;
+      goalDescriptionFont = [v19 goalDescriptionFont];
+      [v30 addAttribute:NSFontAttributeName value:goalDescriptionFont range:{v22, v34}];
 
-      v32 = [v19 goalDescriptionAttributes];
-      [v30 addAttributes:v32 range:{v22, v34}];
+      goalDescriptionAttributes = [v19 goalDescriptionAttributes];
+      [v30 addAttributes:goalDescriptionAttributes range:{v22, v34}];
 
-      v9 = v39;
-      v8 = v40;
+      activityCopy = v39;
+      workoutCopy = v40;
       goto LABEL_8;
     }
   }
 
   else
   {
-    v14 = [v8 fiui_lapLength];
-    if (v14)
+    fiui_lapLength = [workoutCopy fiui_lapLength];
+    if (fiui_lapLength)
     {
-      v12 = v14;
+      lapLength = fiui_lapLength;
       v39 = 0;
-      v40 = v8;
+      v40 = workoutCopy;
       v41 = 0;
-      v13 = v8;
+      v13 = workoutCopy;
       goto LABEL_6;
     }
   }
@@ -2929,36 +2929,36 @@ LABEL_8:
   return v30;
 }
 
-- (id)formattedStepCountForWorkout:(id)a3 workoutActivity:(id)a4 context:(id)a5
+- (id)formattedStepCountForWorkout:(id)workout workoutActivity:(id)activity context:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([(CHWorkoutFormattingManager *)self hasStepCountForWorkout:v8 workoutActivity:v9])
+  workoutCopy = workout;
+  activityCopy = activity;
+  contextCopy = context;
+  if ([(CHWorkoutFormattingManager *)self hasStepCountForWorkout:workoutCopy workoutActivity:activityCopy])
   {
-    if (v9)
+    if (activityCopy)
     {
-      v11 = v9;
+      v11 = activityCopy;
     }
 
     else
     {
-      v11 = v8;
+      v11 = workoutCopy;
     }
 
     [v11 fiui_totalStepCount];
     v13 = [NSNumber numberWithDouble:?];
     v14 = [NSNumberFormatter localizedStringFromNumber:v13 numberStyle:0];
 
-    v15 = [CHWorkoutDisplayContext displayContextWithName:v10];
+    v15 = [CHWorkoutDisplayContext displayContextWithName:contextCopy];
     v16 = [NSAttributedString alloc];
     v22[0] = NSFontAttributeName;
-    v17 = [v15 valueFont];
-    v23[0] = v17;
+    valueFont = [v15 valueFont];
+    v23[0] = valueFont;
     v22[1] = NSForegroundColorAttributeName;
     v18 = +[ARUIMetricColors stepColors];
-    v19 = [v18 nonGradientTextColor];
-    v23[1] = v19;
+    nonGradientTextColor = [v18 nonGradientTextColor];
+    v23[1] = nonGradientTextColor;
     v20 = [NSDictionary dictionaryWithObjects:v23 forKeys:v22 count:2];
     v12 = [v16 initWithString:v14 attributes:v20];
   }
@@ -2971,62 +2971,62 @@ LABEL_8:
   return v12;
 }
 
-- (id)formattedTotalEnergyForWorkout:(id)a3 workoutActivity:(id)a4 context:(id)a5
+- (id)formattedTotalEnergyForWorkout:(id)workout workoutActivity:(id)activity context:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  if (v9)
+  workoutCopy = workout;
+  activityCopy = activity;
+  if (activityCopy)
   {
-    v21 = self;
-    v10 = a5;
-    v11 = [[HKQuantityType alloc] initWithIdentifier:HKQuantityTypeIdentifierActiveEnergyBurned];
-    v12 = [v9 statisticsForType:v11];
-    v13 = [v12 sumQuantity];
+    selfCopy = self;
+    contextCopy = context;
+    totalEnergyBurned = [[HKQuantityType alloc] initWithIdentifier:HKQuantityTypeIdentifierActiveEnergyBurned];
+    _totalBasalEnergyBurned = [activityCopy statisticsForType:totalEnergyBurned];
+    sumQuantity = [_totalBasalEnergyBurned sumQuantity];
     v14 = [[HKQuantityType alloc] initWithIdentifier:HKQuantityTypeIdentifierBasalEnergyBurned];
-    v15 = [v9 statisticsForType:v14];
-    v16 = [v15 sumQuantity];
-    v17 = [v13 _quantityByAddingQuantity:v16];
+    v15 = [activityCopy statisticsForType:v14];
+    sumQuantity2 = [v15 sumQuantity];
+    v17 = [sumQuantity _quantityByAddingQuantity:sumQuantity2];
 
-    self = v21;
+    self = selfCopy;
   }
 
   else
   {
-    v18 = a5;
-    v11 = [v8 totalEnergyBurned];
-    v12 = [v8 _totalBasalEnergyBurned];
-    v17 = [v11 _quantityByAddingQuantity:v12];
+    contextCopy2 = context;
+    totalEnergyBurned = [workoutCopy totalEnergyBurned];
+    _totalBasalEnergyBurned = [workoutCopy _totalBasalEnergyBurned];
+    v17 = [totalEnergyBurned _quantityByAddingQuantity:_totalBasalEnergyBurned];
   }
 
-  v19 = [(CHWorkoutFormattingManager *)self formattedEnergyBurn:v17 context:a5];
+  v19 = [(CHWorkoutFormattingManager *)self formattedEnergyBurn:v17 context:context];
 
   return v19;
 }
 
-- (id)weatherTemperatureForWorkout:(id)a3 workoutActivity:(id)a4
+- (id)weatherTemperatureForWorkout:(id)workout workoutActivity:(id)activity
 {
-  v6 = a3;
-  v7 = a4;
+  workoutCopy = workout;
+  activityCopy = activity;
   if ([(CHWorkoutFormattingManager *)self shouldFakeData])
   {
-    v8 = +[HKUnit degreeFahrenheitUnit];
-    v9 = [HKQuantity quantityWithUnit:v8 doubleValue:72.0];
+    metadata = +[HKUnit degreeFahrenheitUnit];
+    v9 = [HKQuantity quantityWithUnit:metadata doubleValue:72.0];
   }
 
   else
   {
-    if (v7)
+    if (activityCopy)
     {
-      v10 = v7;
+      v10 = activityCopy;
     }
 
     else
     {
-      v10 = v6;
+      v10 = workoutCopy;
     }
 
-    v8 = [v10 metadata];
-    v9 = [v8 objectForKeyedSubscript:HKMetadataKeyWeatherTemperature];
+    metadata = [v10 metadata];
+    v9 = [metadata objectForKeyedSubscript:HKMetadataKeyWeatherTemperature];
   }
 
   v11 = v9;
@@ -3034,30 +3034,30 @@ LABEL_8:
   return v11;
 }
 
-- (id)waterTemperatureForWorkout:(id)a3 workoutActivity:(id)a4
+- (id)waterTemperatureForWorkout:(id)workout workoutActivity:(id)activity
 {
-  v6 = a3;
-  v7 = a4;
+  workoutCopy = workout;
+  activityCopy = activity;
   if ([(CHWorkoutFormattingManager *)self shouldFakeData])
   {
-    v8 = +[HKUnit degreeCelsiusUnit];
-    v9 = [HKQuantity quantityWithUnit:v8 doubleValue:18.0];
+    metadata = +[HKUnit degreeCelsiusUnit];
+    v9 = [HKQuantity quantityWithUnit:metadata doubleValue:18.0];
   }
 
   else
   {
-    if (v7)
+    if (activityCopy)
     {
-      v10 = v7;
+      v10 = activityCopy;
     }
 
     else
     {
-      v10 = v6;
+      v10 = workoutCopy;
     }
 
-    v8 = [v10 metadata];
-    v9 = [v8 objectForKeyedSubscript:NLPrivateMetadataKeyAverageWaterTemperature];
+    metadata = [v10 metadata];
+    v9 = [metadata objectForKeyedSubscript:NLPrivateMetadataKeyAverageWaterTemperature];
   }
 
   v11 = v9;
@@ -3065,30 +3065,30 @@ LABEL_8:
   return v11;
 }
 
-- (id)weatherHumidityForWorkout:(id)a3 workoutActivity:(id)a4
+- (id)weatherHumidityForWorkout:(id)workout workoutActivity:(id)activity
 {
-  v6 = a3;
-  v7 = a4;
+  workoutCopy = workout;
+  activityCopy = activity;
   if ([(CHWorkoutFormattingManager *)self shouldFakeData])
   {
-    v8 = +[HKUnit percentUnit];
-    v9 = [HKQuantity quantityWithUnit:v8 doubleValue:0.23];
+    metadata = +[HKUnit percentUnit];
+    v9 = [HKQuantity quantityWithUnit:metadata doubleValue:0.23];
   }
 
   else
   {
-    if (v7)
+    if (activityCopy)
     {
-      v10 = v7;
+      v10 = activityCopy;
     }
 
     else
     {
-      v10 = v6;
+      v10 = workoutCopy;
     }
 
-    v8 = [v10 metadata];
-    v9 = [v8 objectForKeyedSubscript:HKMetadataKeyWeatherHumidity];
+    metadata = [v10 metadata];
+    v9 = [metadata objectForKeyedSubscript:HKMetadataKeyWeatherHumidity];
   }
 
   v11 = v9;
@@ -3096,10 +3096,10 @@ LABEL_8:
   return v11;
 }
 
-- (id)airQualityIndexForWorkout:(id)a3 workoutActivity:(id)a4
+- (id)airQualityIndexForWorkout:(id)workout workoutActivity:(id)activity
 {
-  v6 = a3;
-  v7 = a4;
+  workoutCopy = workout;
+  activityCopy = activity;
   if ([(CHWorkoutFormattingManager *)self shouldFakeData])
   {
     v8 = [NSNumber numberWithInt:34];
@@ -3107,26 +3107,26 @@ LABEL_8:
 
   else
   {
-    if (v7)
+    if (activityCopy)
     {
-      v9 = v7;
+      v9 = activityCopy;
     }
 
     else
     {
-      v9 = v6;
+      v9 = workoutCopy;
     }
 
-    v10 = [v9 metadata];
-    v8 = [v10 objectForKeyedSubscript:NLPrivateMetadataKeyAirQualityIndex];
+    metadata = [v9 metadata];
+    v8 = [metadata objectForKeyedSubscript:NLPrivateMetadataKeyAirQualityIndex];
   }
 
   return v8;
 }
 
-- (id)timeZoneForWorkout:(id)a3
+- (id)timeZoneForWorkout:(id)workout
 {
-  v4 = a3;
+  workoutCopy = workout;
   if ([(CHWorkoutFormattingManager *)self shouldFakeData])
   {
     v5 = +[NSTimeZone systemTimeZone];
@@ -3134,8 +3134,8 @@ LABEL_8:
 
   else
   {
-    v6 = [v4 metadata];
-    v7 = [v6 objectForKeyedSubscript:HKMetadataKeyTimeZone];
+    metadata = [workoutCopy metadata];
+    v7 = [metadata objectForKeyedSubscript:HKMetadataKeyTimeZone];
 
     if (v7)
     {
@@ -3151,20 +3151,20 @@ LABEL_8:
   return v5;
 }
 
-- (BOOL)workoutWasInDayTime:(id)a3
+- (BOOL)workoutWasInDayTime:(id)time
 {
-  v4 = a3;
-  v5 = [v4 metadata];
-  v6 = [v5 objectForKeyedSubscript:_HKPrivateMetadataKeyWorkoutDaytime];
+  timeCopy = time;
+  metadata = [timeCopy metadata];
+  v6 = [metadata objectForKeyedSubscript:_HKPrivateMetadataKeyWorkoutDaytime];
 
   if (v6)
   {
-    v7 = [v6 BOOLValue];
+    bOOLValue = [v6 BOOLValue];
   }
 
   else
   {
-    v8 = [(CHWorkoutFormattingManager *)self timeZoneForWorkout:v4];
+    v8 = [(CHWorkoutFormattingManager *)self timeZoneForWorkout:timeCopy];
     v9 = +[NSCalendar currentCalendar];
     v10 = v9;
     if (v8)
@@ -3172,38 +3172,38 @@ LABEL_8:
       [v9 setTimeZone:v8];
     }
 
-    v11 = [v4 startDate];
-    v12 = [v10 component:32 fromDate:v11];
+    startDate = [timeCopy startDate];
+    v12 = [v10 component:32 fromDate:startDate];
 
-    v7 = (v12 - 6) < 0xD;
+    bOOLValue = (v12 - 6) < 0xD;
   }
 
-  return v7;
+  return bOOLValue;
 }
 
-- (id)locationForWorkout:(id)a3 workoutActivity:(id)a4
+- (id)locationForWorkout:(id)workout workoutActivity:(id)activity
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  workoutCopy = workout;
+  activityCopy = activity;
+  v7 = activityCopy;
+  if (activityCopy)
   {
-    v8 = [v6 metadata];
-    v9 = [v8 objectForKeyedSubscript:_HKPrivateMetadataKeyWorkoutWeatherLocationCoordinatesLatitude];
+    metadata = [activityCopy metadata];
+    v9 = [metadata objectForKeyedSubscript:_HKPrivateMetadataKeyWorkoutWeatherLocationCoordinatesLatitude];
 
     v10 = v7;
   }
 
   else
   {
-    v11 = [v5 metadata];
-    v9 = [v11 objectForKeyedSubscript:_HKPrivateMetadataKeyWorkoutWeatherLocationCoordinatesLatitude];
+    metadata2 = [workoutCopy metadata];
+    v9 = [metadata2 objectForKeyedSubscript:_HKPrivateMetadataKeyWorkoutWeatherLocationCoordinatesLatitude];
 
-    v10 = v5;
+    v10 = workoutCopy;
   }
 
-  v12 = [v10 metadata];
-  v13 = [v12 objectForKeyedSubscript:_HKPrivateMetadataKeyWorkoutWeatherLocationCoordinatesLongitude];
+  metadata3 = [v10 metadata];
+  v13 = [metadata3 objectForKeyedSubscript:_HKPrivateMetadataKeyWorkoutWeatherLocationCoordinatesLongitude];
 
   if (v9)
   {
@@ -3232,21 +3232,21 @@ LABEL_8:
   return v19;
 }
 
-- (id)shareImageForWorkout:(id)a3 routeImage:(id)a4
+- (id)shareImageForWorkout:(id)workout routeImage:(id)image
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CHWorkoutFormattingManager *)self _shareIconForWorkout:v6 routeImage:v7];
+  workoutCopy = workout;
+  imageCopy = image;
+  v8 = [(CHWorkoutFormattingManager *)self _shareIconForWorkout:workoutCopy routeImage:imageCopy];
   v9 = objc_alloc_init(NSMutableArray);
-  v10 = [(CHWorkoutFormattingManager *)self _workoutTypeInfoForWorkout:v6];
+  v10 = [(CHWorkoutFormattingManager *)self _workoutTypeInfoForWorkout:workoutCopy];
   [v9 addObject:v10];
-  v11 = [(CHWorkoutFormattingManager *)self shouldShowDistanceForWorkout:v6 workoutActivity:0];
-  v12 = [v6 _activityMoveMode];
-  if ([v6 workoutActivityType] == 84)
+  v11 = [(CHWorkoutFormattingManager *)self shouldShowDistanceForWorkout:workoutCopy workoutActivity:0];
+  _activityMoveMode = [workoutCopy _activityMoveMode];
+  if ([workoutCopy workoutActivityType] == 84)
   {
-    v13 = [(CHWorkoutFormattingManager *)self _underwaterTimeInfoForDive:v6];
+    v13 = [(CHWorkoutFormattingManager *)self _underwaterTimeInfoForDive:workoutCopy];
     [v9 addObject:v13];
-    v14 = [(CHWorkoutFormattingManager *)self _maxDepthInfoForDive:v6];
+    v14 = [(CHWorkoutFormattingManager *)self _maxDepthInfoForDive:workoutCopy];
 LABEL_3:
     v15 = v14;
     [v9 addObject:v14];
@@ -3254,31 +3254,31 @@ LABEL_3:
     goto LABEL_12;
   }
 
-  if ((v12 != 2) | v11 & 1)
+  if ((_activityMoveMode != 2) | v11 & 1)
   {
-    if (v12 != 2)
+    if (_activityMoveMode != 2)
     {
-      v13 = [(CHWorkoutFormattingManager *)self _activeEnergyInfoForWorkout:v6];
+      v13 = [(CHWorkoutFormattingManager *)self _activeEnergyInfoForWorkout:workoutCopy];
       [v9 addObject:v13];
       if (v11)
       {
-        [(CHWorkoutFormattingManager *)self _distanceInfoForWorkout:v6];
+        [(CHWorkoutFormattingManager *)self _distanceInfoForWorkout:workoutCopy];
       }
 
       else
       {
-        [(CHWorkoutFormattingManager *)self _durationInfoForWorkout:v6];
+        [(CHWorkoutFormattingManager *)self _durationInfoForWorkout:workoutCopy];
       }
       v14 = ;
       goto LABEL_3;
     }
 
-    v16 = [(CHWorkoutFormattingManager *)self _distanceInfoForWorkout:v6];
+    v16 = [(CHWorkoutFormattingManager *)self _distanceInfoForWorkout:workoutCopy];
   }
 
   else
   {
-    v16 = [(CHWorkoutFormattingManager *)self _durationInfoForWorkout:v6];
+    v16 = [(CHWorkoutFormattingManager *)self _durationInfoForWorkout:workoutCopy];
   }
 
   v13 = v16;
@@ -3287,54 +3287,54 @@ LABEL_12:
 
   v17 = [CHSharingImageWorkoutConfiguration alloc];
   v18 = [v9 copy];
-  v19 = [(CHSharingImageWorkoutConfiguration *)v17 initWithIconImage:v8 routeImage:v7 metricTitleAndValueInfo:v18];
+  v19 = [(CHSharingImageWorkoutConfiguration *)v17 initWithIconImage:v8 routeImage:imageCopy metricTitleAndValueInfo:v18];
 
   v20 = sub_1000F00D0(v19);
 
   return v20;
 }
 
-- (id)shareTextForWorkout:(id)a3
+- (id)shareTextForWorkout:(id)workout
 {
-  v4 = a3;
-  v5 = [(CHWorkoutFormattingManager *)self _shareValueForWorkout:v4];
-  v6 = [(FIUIFormattingManager *)self->_formattingManager localizedShareTextWithWorkout:v4 shareValue:v5];
+  workoutCopy = workout;
+  v5 = [(CHWorkoutFormattingManager *)self _shareValueForWorkout:workoutCopy];
+  v6 = [(FIUIFormattingManager *)self->_formattingManager localizedShareTextWithWorkout:workoutCopy shareValue:v5];
 
   return v6;
 }
 
-- (id)_shareValueForWorkout:(id)a3
+- (id)_shareValueForWorkout:(id)workout
 {
-  v4 = a3;
-  if ([(CHWorkoutFormattingManager *)self supportsDistanceForWorkout:v4 workoutActivity:0])
+  workoutCopy = workout;
+  if ([(CHWorkoutFormattingManager *)self supportsDistanceForWorkout:workoutCopy workoutActivity:0])
   {
-    [(CHWorkoutFormattingManager *)self _distanceInfoForWorkout:v4];
+    [(CHWorkoutFormattingManager *)self _distanceInfoForWorkout:workoutCopy];
   }
 
   else
   {
-    [(CHWorkoutFormattingManager *)self _durationInfoForWorkout:v4];
+    [(CHWorkoutFormattingManager *)self _durationInfoForWorkout:workoutCopy];
   }
   v5 = ;
 
-  v6 = [v5 value];
+  value = [v5 value];
 
-  return v6;
+  return value;
 }
 
-- (id)_workoutTypeInfoForWorkout:(id)a3
+- (id)_workoutTypeInfoForWorkout:(id)workout
 {
-  v3 = a3;
+  workoutCopy = workout;
   v4 = objc_alloc_init(CHSharingImageTitleAndValueInfo);
-  v5 = [v3 metadata];
-  v6 = [v5 objectForKeyedSubscript:HKMetadataKeyWorkoutBrandName];
+  metadata = [workoutCopy metadata];
+  v6 = [metadata objectForKeyedSubscript:HKMetadataKeyWorkoutBrandName];
 
   if (![v6 length])
   {
-    v7 = [v3 fiui_activityType];
-    [v7 effectiveTypeIdentifier];
-    [v7 swimmingLocationType];
-    [v7 isIndoor];
+    fiui_activityType = [workoutCopy fiui_activityType];
+    [fiui_activityType effectiveTypeIdentifier];
+    [fiui_activityType swimmingLocationType];
+    [fiui_activityType isIndoor];
     v8 = FILocalizedNameForActivityType();
 
     v6 = v8;
@@ -3345,31 +3345,31 @@ LABEL_12:
   return v4;
 }
 
-- (id)_durationInfoForWorkout:(id)a3
+- (id)_durationInfoForWorkout:(id)workout
 {
-  v4 = a3;
+  workoutCopy = workout;
   v5 = objc_alloc_init(CHSharingImageTitleAndValueInfo);
   v6 = +[NSBundle mainBundle];
   v7 = [v6 localizedStringForKey:@"TOTAL_TIME" value:&stru_1008680E8 table:@"Localizable"];
   [(CHSharingImageTitleAndValueInfo *)v5 setTitle:v7];
 
   formattingManager = self->_formattingManager;
-  [v4 duration];
+  [workoutCopy duration];
   v10 = v9;
 
   v11 = [(FIUIFormattingManager *)formattingManager stringWithDuration:3 durationFormat:v10];
   [(CHSharingImageTitleAndValueInfo *)v5 setValue:v11];
 
   v12 = +[ARUIMetricColors elapsedTimeColors];
-  v13 = [v12 nonGradientTextColor];
-  [(CHSharingImageTitleAndValueInfo *)v5 setValueColor:v13];
+  nonGradientTextColor = [v12 nonGradientTextColor];
+  [(CHSharingImageTitleAndValueInfo *)v5 setValueColor:nonGradientTextColor];
 
   return v5;
 }
 
-- (id)_distanceInfoForWorkout:(id)a3
+- (id)_distanceInfoForWorkout:(id)workout
 {
-  v4 = a3;
+  workoutCopy = workout;
   v5 = objc_alloc_init(CHSharingImageTitleAndValueInfo);
   v6 = +[NSBundle mainBundle];
   v7 = [v6 localizedStringForKey:@"WORKOUT_DISTANCE_TITLE" value:&stru_1008680E8 table:@"Localizable"];
@@ -3377,25 +3377,25 @@ LABEL_12:
 
   v15 = 0;
   v16 = 0;
-  [(CHWorkoutFormattingManager *)self _formattedDistanceStringForWorkout:v4 distanceString:&v16 unitString:&v15];
+  [(CHWorkoutFormattingManager *)self _formattedDistanceStringForWorkout:workoutCopy distanceString:&v16 unitString:&v15];
 
   v8 = v16;
   v9 = v15;
-  v10 = [v9 uppercaseString];
-  v11 = [NSString stringWithFormat:@"%@ %@", v8, v10];
+  uppercaseString = [v9 uppercaseString];
+  v11 = [NSString stringWithFormat:@"%@ %@", v8, uppercaseString];
   [(CHSharingImageTitleAndValueInfo *)v5 setValue:v11];
 
   [(CHSharingImageTitleAndValueInfo *)v5 setUnit:v9];
   v12 = +[ARUIMetricColors distanceColors];
-  v13 = [v12 nonGradientTextColor];
-  [(CHSharingImageTitleAndValueInfo *)v5 setValueColor:v13];
+  nonGradientTextColor = [v12 nonGradientTextColor];
+  [(CHSharingImageTitleAndValueInfo *)v5 setValueColor:nonGradientTextColor];
 
   return v5;
 }
 
-- (id)_maxDepthInfoForDive:(id)a3
+- (id)_maxDepthInfoForDive:(id)dive
 {
-  v4 = a3;
+  diveCopy = dive;
   v5 = objc_alloc_init(CHSharingImageTitleAndValueInfo);
   v6 = +[NSBundle mainBundle];
   v7 = [v6 localizedStringForKey:@"UNDERWATER_DIVE_MAX_DEPTH" value:&stru_1008680E8 table:@"Localizable"];
@@ -3403,41 +3403,41 @@ LABEL_12:
 
   formattingManager = self->_formattingManager;
   v13 = &stru_1008680E8;
-  v9 = [(FIUIFormattingManager *)formattingManager localizedGoalDescriptionForWorkout:v4 withValue:&v13 appendActivityType:0];
+  v9 = [(FIUIFormattingManager *)formattingManager localizedGoalDescriptionForWorkout:diveCopy withValue:&v13 appendActivityType:0];
 
   [(CHSharingImageTitleAndValueInfo *)v5 setValue:v9];
   v10 = +[ARUIMetricColors diveColors];
-  v11 = [v10 nonGradientTextColor];
-  [(CHSharingImageTitleAndValueInfo *)v5 setValueColor:v11];
+  nonGradientTextColor = [v10 nonGradientTextColor];
+  [(CHSharingImageTitleAndValueInfo *)v5 setValueColor:nonGradientTextColor];
 
   return v5;
 }
 
-- (id)_underwaterTimeInfoForDive:(id)a3
+- (id)_underwaterTimeInfoForDive:(id)dive
 {
-  v4 = a3;
+  diveCopy = dive;
   v5 = objc_alloc_init(CHSharingImageTitleAndValueInfo);
   v6 = +[NSBundle mainBundle];
   v7 = [v6 localizedStringForKey:@"TOTAL_TIME" value:&stru_1008680E8 table:@"Localizable"];
   [(CHSharingImageTitleAndValueInfo *)v5 setTitle:v7];
 
   formattingManager = self->_formattingManager;
-  [v4 duration];
+  [diveCopy duration];
   v10 = v9;
 
   v11 = [(FIUIFormattingManager *)formattingManager stringWithDuration:3 durationFormat:v10];
   [(CHSharingImageTitleAndValueInfo *)v5 setValue:v11];
 
   v12 = +[ARUIMetricColors elapsedTimeColors];
-  v13 = [v12 nonGradientTextColor];
-  [(CHSharingImageTitleAndValueInfo *)v5 setValueColor:v13];
+  nonGradientTextColor = [v12 nonGradientTextColor];
+  [(CHSharingImageTitleAndValueInfo *)v5 setValueColor:nonGradientTextColor];
 
   return v5;
 }
 
-- (id)_activeEnergyInfoForWorkout:(id)a3
+- (id)_activeEnergyInfoForWorkout:(id)workout
 {
-  v4 = a3;
+  workoutCopy = workout;
   v5 = objc_alloc_init(CHSharingImageTitleAndValueInfo);
   v6 = +[NSBundle mainBundle];
   v7 = [(FIUIFormattingManager *)self->_formattingManager localizationKeyForEnergyBaseKey:@"WORKOUT_ACTIVE_ENERGY_TITLE"];
@@ -3445,32 +3445,32 @@ LABEL_12:
   [(CHSharingImageTitleAndValueInfo *)v5 setTitle:v8];
 
   formattingManager = self->_formattingManager;
-  v10 = [v4 totalEnergyBurned];
+  totalEnergyBurned = [workoutCopy totalEnergyBurned];
 
-  v11 = [(FIUIFormattingManager *)formattingManager localizedStringWithActiveEnergy:v10];
+  v11 = [(FIUIFormattingManager *)formattingManager localizedStringWithActiveEnergy:totalEnergyBurned];
 
-  v12 = [(FIUIFormattingManager *)self->_formattingManager localizedShortActiveEnergyUnitString];
-  v13 = [v12 localizedUppercaseString];
+  localizedShortActiveEnergyUnitString = [(FIUIFormattingManager *)self->_formattingManager localizedShortActiveEnergyUnitString];
+  localizedUppercaseString = [localizedShortActiveEnergyUnitString localizedUppercaseString];
 
   v14 = [CHWorkoutDisplayContext displayContextWithName:@"WorkoutDetailDisplayContext"];
-  v15 = [v14 unitFormatString];
-  v16 = [NSString stringWithValidatedFormat:v15 validFormatSpecifiers:@"%@%@" error:0, v11, v13];
+  unitFormatString = [v14 unitFormatString];
+  v16 = [NSString stringWithValidatedFormat:unitFormatString validFormatSpecifiers:@"%@%@" error:0, v11, localizedUppercaseString];
 
   [(CHSharingImageTitleAndValueInfo *)v5 setValue:v16];
-  [(CHSharingImageTitleAndValueInfo *)v5 setUnit:v13];
+  [(CHSharingImageTitleAndValueInfo *)v5 setUnit:localizedUppercaseString];
   v17 = +[ARUIMetricColors energyColors];
-  v18 = [v17 nonGradientTextColor];
-  [(CHSharingImageTitleAndValueInfo *)v5 setValueColor:v18];
+  nonGradientTextColor = [v17 nonGradientTextColor];
+  [(CHSharingImageTitleAndValueInfo *)v5 setValueColor:nonGradientTextColor];
 
   return v5;
 }
 
-- (id)_shareIconForWorkout:(id)a3 routeImage:(id)a4
+- (id)_shareIconForWorkout:(id)workout routeImage:(id)image
 {
-  v6 = a3;
-  if ([v6 fiui_isConnectedGymWorkout])
+  workoutCopy = workout;
+  if ([workoutCopy fiui_isConnectedGymWorkout])
   {
-    v7 = ![(CHWorkoutFormattingManager *)self hasConnectedGymVendorIconForWorkout:v6];
+    v7 = ![(CHWorkoutFormattingManager *)self hasConnectedGymVendorIconForWorkout:workoutCopy];
   }
 
   else
@@ -3478,18 +3478,18 @@ LABEL_12:
     v7 = 1;
   }
 
-  v8 = [v6 sourceRevision];
-  v9 = [v8 source];
-  v10 = [v9 _hasFirstPartyBundleID];
+  sourceRevision = [workoutCopy sourceRevision];
+  source = [sourceRevision source];
+  _hasFirstPartyBundleID = [source _hasFirstPartyBundleID];
 
-  v11 = [v6 workoutActivityType];
-  v12 = v7 & v10;
+  workoutActivityType = [workoutCopy workoutActivityType];
+  v12 = v7 & _hasFirstPartyBundleID;
   v13 = objc_alloc_init(UIImageView);
   [v13 setTranslatesAutoresizingMaskIntoConstraints:0];
-  if (v11 == 84)
+  if (workoutActivityType == 84)
   {
     v14 = +[ARUIMetricColors diveColors];
-    v15 = [v14 nonGradientTextColor];
+    nonGradientTextColor = [v14 nonGradientTextColor];
 
     v16 = FIUICircularImage();
     [v13 setImage:v16];
@@ -3499,15 +3499,15 @@ LABEL_12:
   {
     v17 = [UIColor colorWithRed:0.28627451 green:0.37254902 blue:0.145098039 alpha:1.0];
     v18 = v17;
-    if (a4)
+    if (image)
     {
-      v19 = v17;
+      nonGradientTextColor2 = v17;
     }
 
     else
     {
       v20 = +[ARUIMetricColors briskColors];
-      v19 = [v20 nonGradientTextColor];
+      nonGradientTextColor2 = [v20 nonGradientTextColor];
     }
 
     v21 = FIUICircularImage();
@@ -3521,25 +3521,25 @@ LABEL_12:
     v37[2] = sub_1000B3604;
     v37[3] = &unk_10083A888;
     v38 = v13;
-    [(CHWorkoutFormattingManager *)self fetchIconImageForWorkout:v6 context:@"WorkoutDetailDisplayContext" completion:v37];
+    [(CHWorkoutFormattingManager *)self fetchIconImageForWorkout:workoutCopy context:@"WorkoutDetailDisplayContext" completion:v37];
   }
 
-  v22 = [FIUIWorkoutActivityType activityTypeWithWorkout:v6];
+  v22 = [FIUIWorkoutActivityType activityTypeWithWorkout:workoutCopy];
   v23 = FIUIStaticWorkoutIconImage();
   v24 = [v23 imageWithRenderingMode:2];
 
   v25 = objc_alloc_init(UIImageView);
   [v25 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v25 setImage:v24];
-  v26 = [v13 image];
-  [v26 size];
+  image = [v13 image];
+  [image size];
   v28 = v27;
-  v29 = [v13 image];
-  [v29 size];
+  image2 = [v13 image];
+  [image2 size];
   v40.width = v28;
   UIGraphicsBeginImageContextWithOptions(v40, 0, 0.0);
 
-  if (v11 == 84)
+  if (workoutActivityType == 84)
   {
     v30 = +[ARUIMetricColors diveColors];
     [v30 valueDisplayColor];
@@ -3552,7 +3552,7 @@ LABEL_12:
   }
   v31 = ;
   [v31 setFill];
-  if (((a4 == 0) & v12) != 0)
+  if (((image == 0) & v12) != 0)
   {
     v32 = 0.2;
   }
@@ -3562,13 +3562,13 @@ LABEL_12:
     v32 = 1.0;
   }
 
-  v33 = [v13 image];
-  [v33 drawAtPoint:0 blendMode:0.0 alpha:{0.0, v32}];
+  image3 = [v13 image];
+  [image3 drawAtPoint:0 blendMode:0.0 alpha:{0.0, v32}];
 
   if (v12)
   {
-    v34 = [v25 image];
-    [v34 drawInRect:0 blendMode:3.0 alpha:{3.0, 14.0, 14.0, 1.0}];
+    image4 = [v25 image];
+    [image4 drawInRect:0 blendMode:3.0 alpha:{3.0, 14.0, 14.0, 1.0}];
   }
 
   v35 = UIGraphicsGetImageFromCurrentImageContext();
@@ -3577,7 +3577,7 @@ LABEL_12:
   return v35;
 }
 
-- (void)appProtectionSubjectsChanged:(id)a3 forSubscription:(id)a4
+- (void)appProtectionSubjectsChanged:(id)changed forSubscription:(id)subscription
 {
   _HKInitializeLogging();
   v5 = HKLogWorkouts;
@@ -3595,20 +3595,20 @@ LABEL_12:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (BOOL)hasWeatherConditionForWorkout:(id)a3 workoutActivity:(id)a4
+- (BOOL)hasWeatherConditionForWorkout:(id)workout workoutActivity:(id)activity
 {
   v7 = sub_100140278(&qword_1008EABB8);
   __chkstk_darwin(v7 - 8);
   v9 = &v15 - v8;
-  v10 = a3;
-  v11 = a4;
-  v12 = self;
-  sub_1003876C4(v10, a4, v9);
+  workoutCopy = workout;
+  activityCopy = activity;
+  selfCopy = self;
+  sub_1003876C4(workoutCopy, activity, v9);
 
   v13 = type metadata accessor for WeatherCondition();
-  LOBYTE(a4) = (*(*(v13 - 8) + 48))(v9, 1, v13) != 1;
+  LOBYTE(activity) = (*(*(v13 - 8) + 48))(v9, 1, v13) != 1;
   sub_10038852C(v9);
-  return a4;
+  return activity;
 }
 
 @end

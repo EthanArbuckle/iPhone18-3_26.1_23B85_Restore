@@ -1,6 +1,6 @@
 @interface AVTSkinnerVariantPair
 - (uint64_t)originalSkinner;
-- (void)setOriginalSkinner:(uint64_t)a1;
+- (void)setOriginalSkinner:(uint64_t)skinner;
 @end
 
 @implementation AVTSkinnerVariantPair
@@ -15,11 +15,11 @@
   return result;
 }
 
-- (void)setOriginalSkinner:(uint64_t)a1
+- (void)setOriginalSkinner:(uint64_t)skinner
 {
-  if (a1)
+  if (skinner)
   {
-    objc_storeStrong((a1 + 8), a2);
+    objc_storeStrong((skinner + 8), a2);
   }
 }
 

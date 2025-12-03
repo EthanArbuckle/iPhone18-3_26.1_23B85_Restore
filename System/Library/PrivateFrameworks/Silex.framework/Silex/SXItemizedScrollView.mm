@@ -1,8 +1,8 @@
 @interface SXItemizedScrollView
-- (CGRect)frameForViewAtIndex:(unint64_t)a3;
+- (CGRect)frameForViewAtIndex:(unint64_t)index;
 - (CGSize)framesAreValidForSize;
-- (SXItemizedScrollView)initWithCoder:(id)a3;
-- (SXItemizedScrollView)initWithFrame:(CGRect)a3;
+- (SXItemizedScrollView)initWithCoder:(id)coder;
+- (SXItemizedScrollView)initWithFrame:(CGRect)frame;
 - (SXItemizedScrollViewDataSource)dataSource;
 - (UIView)activeView;
 - (_NSRange)visibleRange;
@@ -14,9 +14,9 @@
 - (void)reindexate;
 - (void)scrollToNext;
 - (void)scrollToPrevious;
-- (void)setActiveViewIndex:(unint64_t)a3 animated:(BOOL)a4;
-- (void)setFrame:(CGRect)a3;
-- (void)viewManagementForRange:(_NSRange)a3;
+- (void)setActiveViewIndex:(unint64_t)index animated:(BOOL)animated;
+- (void)setFrame:(CGRect)frame;
+- (void)viewManagementForRange:(_NSRange)range;
 @end
 
 @implementation SXItemizedScrollView
@@ -26,17 +26,17 @@
   v9.receiver = self;
   v9.super_class = SXItemizedScrollView;
   [(SXItemizedScrollView *)&v9 setDelegate:self];
-  v3 = [MEMORY[0x1E695DEC8] array];
+  array = [MEMORY[0x1E695DEC8] array];
   frames = self->_frames;
-  self->_frames = v3;
+  self->_frames = array;
 
-  v5 = [MEMORY[0x1E696AC90] indexSet];
+  indexSet = [MEMORY[0x1E696AC90] indexSet];
   visibleIndices = self->_visibleIndices;
-  self->_visibleIndices = v5;
+  self->_visibleIndices = indexSet;
 
-  v7 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   visibleViewsByIndex = self->_visibleViewsByIndex;
-  self->_visibleViewsByIndex = v7;
+  self->_visibleViewsByIndex = dictionary;
 
   self->_activeViewIndex = 0x7FFFFFFFFFFFFFFFLL;
   [(SXItemizedScrollView *)self setScrollsToTop:0];
@@ -47,11 +47,11 @@
   [(SXItemizedScrollView *)self setCanCancelContentTouches:1];
 }
 
-- (SXItemizedScrollView)initWithCoder:(id)a3
+- (SXItemizedScrollView)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = SXItemizedScrollView;
-  v3 = [(SXItemizedScrollView *)&v6 initWithCoder:a3];
+  v3 = [(SXItemizedScrollView *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -61,11 +61,11 @@
   return v4;
 }
 
-- (SXItemizedScrollView)initWithFrame:(CGRect)a3
+- (SXItemizedScrollView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = SXItemizedScrollView;
-  v3 = [(SXItemizedScrollView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SXItemizedScrollView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -85,34 +85,34 @@
     self->_gotActiveViewIndexChange = 1;
   }
 
-  v3 = [(SXItemizedScrollView *)self dataSource];
+  dataSource = [(SXItemizedScrollView *)self dataSource];
   v4 = objc_opt_respondsToSelector();
 
   if ((v4 & 1) == 0 || (-[SXItemizedScrollView dataSource](self, "dataSource"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 itemizedScrollViewWillReindex:self], v5, v6))
   {
     [(SXItemizedScrollView *)self determineNewVisibilityRange];
-    v7 = [(SXItemizedScrollView *)self visibleRange];
-    [(SXItemizedScrollView *)self viewManagementForRange:v7, v8];
+    visibleRange = [(SXItemizedScrollView *)self visibleRange];
+    [(SXItemizedScrollView *)self viewManagementForRange:visibleRange, v8];
   }
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
   v48 = *MEMORY[0x1E69E9840];
   v46.receiver = self;
   v46.super_class = SXItemizedScrollView;
-  [(SXItemizedScrollView *)&v46 setFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(SXItemizedScrollView *)&v46 setFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(SXItemizedScrollView *)self framesAreValidForSize];
   v5 = v4;
   v7 = v6;
   [(SXItemizedScrollView *)self bounds];
   if (v5 != v9 || v7 != v8)
   {
-    v11 = [(SXItemizedScrollView *)self superview];
+    superview = [(SXItemizedScrollView *)self superview];
 
-    if (v11)
+    if (superview)
     {
-      v12 = [(SXItemizedScrollView *)self dataSource];
+      dataSource = [(SXItemizedScrollView *)self dataSource];
       v13 = objc_opt_respondsToSelector();
 
       if ((v13 & 1) == 0 || (-[SXItemizedScrollView dataSource](self, "dataSource"), v14 = objc_claimAutoreleasedReturnValue(), v15 = [v14 itemizedScrollViewWillReindex:self], v14, v15))
@@ -121,19 +121,19 @@
         self->_framesAreValidForSize.width = v16;
         self->_framesAreValidForSize.height = v17;
         [(SXItemizedScrollView *)self rebuildFramesArray];
-        v18 = [(SXItemizedScrollView *)self activeViewIndex];
+        activeViewIndex = [(SXItemizedScrollView *)self activeViewIndex];
         self->_activeViewIndex = 0x7FFFFFFFFFFFFFFFLL;
         if ([(SXItemizedScrollView *)self gotActiveViewIndexChange])
         {
-          [(SXItemizedScrollView *)self setActiveViewIndex:v18 animated:0];
+          [(SXItemizedScrollView *)self setActiveViewIndex:activeViewIndex animated:0];
         }
 
         v44 = 0u;
         v45 = 0u;
         v42 = 0u;
         v43 = 0u;
-        v19 = [(SXItemizedScrollView *)self visibleViewsByIndex];
-        v20 = [v19 countByEnumeratingWithState:&v42 objects:v47 count:16];
+        visibleViewsByIndex = [(SXItemizedScrollView *)self visibleViewsByIndex];
+        v20 = [visibleViewsByIndex countByEnumeratingWithState:&v42 objects:v47 count:16];
         if (v20)
         {
           v21 = v20;
@@ -144,18 +144,18 @@
             {
               if (*v43 != v22)
               {
-                objc_enumerationMutation(v19);
+                objc_enumerationMutation(visibleViewsByIndex);
               }
 
               v24 = *(*(&v42 + 1) + 8 * i);
-              v25 = [v24 integerValue];
-              v26 = [(SXItemizedScrollView *)self dataSource];
+              integerValue = [v24 integerValue];
+              dataSource2 = [(SXItemizedScrollView *)self dataSource];
               v27 = objc_opt_respondsToSelector();
 
               if (v27)
               {
-                v28 = [(SXItemizedScrollView *)self dataSource];
-                v29 = [v28 itemizedScrollView:self isAllowedToAddViewInHierarchy:v25];
+                dataSource3 = [(SXItemizedScrollView *)self dataSource];
+                v29 = [dataSource3 itemizedScrollView:self isAllowedToAddViewInHierarchy:integerValue];
 
                 if (!v29)
                 {
@@ -163,11 +163,11 @@
                 }
               }
 
-              v30 = [(SXItemizedScrollView *)self visibleViewsByIndex];
-              v31 = [v30 objectForKeyedSubscript:v24];
+              visibleViewsByIndex2 = [(SXItemizedScrollView *)self visibleViewsByIndex];
+              v31 = [visibleViewsByIndex2 objectForKeyedSubscript:v24];
 
-              v32 = [(SXItemizedScrollView *)self frames];
-              v33 = [v32 objectAtIndexedSubscript:v25];
+              frames = [(SXItemizedScrollView *)self frames];
+              v33 = [frames objectAtIndexedSubscript:integerValue];
               [v33 CGRectValue];
               v35 = v34;
               v37 = v36;
@@ -177,7 +177,7 @@
               [v31 setFrame:{v35, v37, v39, v41}];
             }
 
-            v21 = [v19 countByEnumeratingWithState:&v42 objects:v47 count:16];
+            v21 = [visibleViewsByIndex countByEnumeratingWithState:&v42 objects:v47 count:16];
           }
 
           while (v21);
@@ -194,8 +194,8 @@
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v3 = [(SXItemizedScrollView *)self visibleViewsByIndex];
-  v4 = [v3 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  visibleViewsByIndex = [(SXItemizedScrollView *)self visibleViewsByIndex];
+  v4 = [visibleViewsByIndex countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v4)
   {
     v5 = v4;
@@ -206,16 +206,16 @@
       {
         if (*v23 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(visibleViewsByIndex);
         }
 
         v8 = *(*(&v22 + 1) + 8 * i);
-        v9 = [v8 unsignedIntegerValue];
-        v10 = [(SXItemizedScrollView *)self visibleViewsByIndex];
-        v11 = [v10 objectForKeyedSubscript:v8];
+        unsignedIntegerValue = [v8 unsignedIntegerValue];
+        visibleViewsByIndex2 = [(SXItemizedScrollView *)self visibleViewsByIndex];
+        v11 = [visibleViewsByIndex2 objectForKeyedSubscript:v8];
 
-        v12 = [(SXItemizedScrollView *)self frames];
-        v13 = [v12 objectAtIndexedSubscript:v9];
+        frames = [(SXItemizedScrollView *)self frames];
+        v13 = [frames objectAtIndexedSubscript:unsignedIntegerValue];
         [v13 CGRectValue];
         v15 = v14;
         v17 = v16;
@@ -233,7 +233,7 @@
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      v5 = [visibleViewsByIndex countByEnumeratingWithState:&v22 objects:v26 count:16];
     }
 
     while (v5);
@@ -248,53 +248,53 @@
   [(SXItemizedScrollView *)self setFrame:?];
 }
 
-- (void)setActiveViewIndex:(unint64_t)a3 animated:(BOOL)a4
+- (void)setActiveViewIndex:(unint64_t)index animated:(BOOL)animated
 {
   activeViewIndex = self->_activeViewIndex;
-  self->_activeViewIndex = a3;
+  self->_activeViewIndex = index;
   self->_gotActiveViewIndexChange = 1;
-  if (activeViewIndex != a3)
+  if (activeViewIndex != index)
   {
-    v7 = [(SXItemizedScrollView *)self activeViewIndex];
-    v8 = [(SXItemizedScrollView *)self frames];
-    v9 = [v8 count];
+    activeViewIndex = [(SXItemizedScrollView *)self activeViewIndex];
+    frames = [(SXItemizedScrollView *)self frames];
+    v9 = [frames count];
 
-    if (v7 >= v9)
+    if (activeViewIndex >= v9)
     {
       [(SXItemizedScrollView *)self rebuildFramesArray];
     }
 
-    v10 = [(SXItemizedScrollView *)self activeViewIndex];
-    v11 = [(SXItemizedScrollView *)self frames];
-    v12 = [v11 count];
+    activeViewIndex2 = [(SXItemizedScrollView *)self activeViewIndex];
+    frames2 = [(SXItemizedScrollView *)self frames];
+    v12 = [frames2 count];
 
-    if (v10 < v12)
+    if (activeViewIndex2 < v12)
     {
-      v13 = [(SXItemizedScrollView *)self frames];
-      v14 = [v13 objectAtIndexedSubscript:a3];
+      frames3 = [(SXItemizedScrollView *)self frames];
+      v14 = [frames3 objectAtIndexedSubscript:index];
       [v14 CGRectValue];
       v16 = v15;
       v18 = v17;
       v20 = v19;
       v22 = v21;
 
-      v23 = [(SXItemizedScrollView *)self activeView];
-      [v23 frame];
+      activeView = [(SXItemizedScrollView *)self activeView];
+      [activeView frame];
       v47.origin.x = v16;
       v47.origin.y = v18;
       v47.size.width = v20;
       v47.size.height = v22;
-      LOBYTE(v13) = CGRectEqualToRect(v43, v47);
+      LOBYTE(frames3) = CGRectEqualToRect(v43, v47);
 
-      if ((v13 & 1) == 0)
+      if ((frames3 & 1) == 0)
       {
-        v24 = [(SXItemizedScrollView *)self dataSource];
+        dataSource = [(SXItemizedScrollView *)self dataSource];
         v25 = objc_opt_respondsToSelector();
 
         if ((v25 & 1) == 0 || (-[SXItemizedScrollView dataSource](self, "dataSource"), v26 = objc_claimAutoreleasedReturnValue(), v27 = [v26 itemizedScrollView:self isAllowedToAddViewInHierarchy:{-[SXItemizedScrollView activeViewIndex](self, "activeViewIndex")}], v26, v27))
         {
-          v28 = [(SXItemizedScrollView *)self activeView];
-          [v28 setFrame:{v16, v18, v20, v22}];
+          activeView2 = [(SXItemizedScrollView *)self activeView];
+          [activeView2 setFrame:{v16, v18, v20, v22}];
         }
       }
 
@@ -333,17 +333,17 @@
 
 - (UIView)activeView
 {
-  v3 = [(SXItemizedScrollView *)self visibleViewsByIndex];
+  visibleViewsByIndex = [(SXItemizedScrollView *)self visibleViewsByIndex];
   v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[SXItemizedScrollView activeViewIndex](self, "activeViewIndex")}];
-  v5 = [v3 objectForKeyedSubscript:v4];
+  v5 = [visibleViewsByIndex objectForKeyedSubscript:v4];
 
   if (!v5)
   {
-    v6 = [(SXItemizedScrollView *)self activeViewIndex];
-    v7 = [(SXItemizedScrollView *)self frames];
-    v8 = [v7 count];
+    activeViewIndex = [(SXItemizedScrollView *)self activeViewIndex];
+    frames = [(SXItemizedScrollView *)self frames];
+    v8 = [frames count];
 
-    if (v6 >= v8)
+    if (activeViewIndex >= v8)
     {
       v5 = 0;
     }
@@ -351,23 +351,23 @@
     else
     {
       [(SXItemizedScrollView *)self determineNewVisibilityRange];
-      v9 = [(SXItemizedScrollView *)self visibleRange];
-      [(SXItemizedScrollView *)self viewManagementForRange:v9, v10];
-      v11 = [(SXItemizedScrollView *)self visibleViewsByIndex];
+      visibleRange = [(SXItemizedScrollView *)self visibleRange];
+      [(SXItemizedScrollView *)self viewManagementForRange:visibleRange, v10];
+      visibleViewsByIndex2 = [(SXItemizedScrollView *)self visibleViewsByIndex];
       v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[SXItemizedScrollView activeViewIndex](self, "activeViewIndex")}];
-      v5 = [v11 objectForKeyedSubscript:v12];
+      v5 = [visibleViewsByIndex2 objectForKeyedSubscript:v12];
     }
   }
 
   return v5;
 }
 
-- (CGRect)frameForViewAtIndex:(unint64_t)a3
+- (CGRect)frameForViewAtIndex:(unint64_t)index
 {
-  v5 = [(SXItemizedScrollView *)self frames];
-  v6 = [v5 count];
+  frames = [(SXItemizedScrollView *)self frames];
+  v6 = [frames count];
 
-  if (v6 <= a3)
+  if (v6 <= index)
   {
     v10 = *MEMORY[0x1E695F058];
     v12 = *(MEMORY[0x1E695F058] + 8);
@@ -377,8 +377,8 @@
 
   else
   {
-    v7 = [(SXItemizedScrollView *)self frames];
-    v8 = [v7 objectAtIndexedSubscript:a3];
+    frames2 = [(SXItemizedScrollView *)self frames];
+    v8 = [frames2 objectAtIndexedSubscript:index];
     [v8 CGRectValue];
     v10 = v9;
     v12 = v11;
@@ -399,8 +399,8 @@
 
 - (void)determineNewVisibilityRange
 {
-  v3 = [(SXItemizedScrollView *)self frames];
-  v4 = [v3 count];
+  frames = [(SXItemizedScrollView *)self frames];
+  v4 = [frames count];
 
   v5 = 0;
   if (v4)
@@ -409,8 +409,8 @@
     v7 = -1;
     do
     {
-      v8 = [(SXItemizedScrollView *)self frames];
-      v9 = [v8 objectAtIndexedSubscript:v6];
+      frames2 = [(SXItemizedScrollView *)self frames];
+      v9 = [frames2 objectAtIndexedSubscript:v6];
       [v9 CGRectValue];
       v11 = v10;
       v13 = v12;
@@ -456,8 +456,8 @@
       }
 
       ++v6;
-      v22 = [(SXItemizedScrollView *)self frames];
-      v23 = [v22 count];
+      frames3 = [(SXItemizedScrollView *)self frames];
+      v23 = [frames3 count];
     }
 
     while (v6 < v23);
@@ -470,29 +470,29 @@
 
   if (([(SXItemizedScrollView *)self isPagingEnabled]& 1) == 0 || [(SXItemizedScrollView *)self isDecelerating]&& ([(SXItemizedScrollView *)self _pageDecelerationTarget], v25 = v24, v27 = v26, [(SXItemizedScrollView *)self contentOffset], v25 == v29) && v27 == v28)
   {
-    v30 = 0;
+    _isAnimatingScrollTest = 0;
   }
 
   else if (([(SXItemizedScrollView *)self isDecelerating]& 1) != 0 || ([(SXItemizedScrollView *)self isTracking]& 1) != 0)
   {
-    v30 = 1;
+    _isAnimatingScrollTest = 1;
   }
 
   else
   {
-    v30 = [(SXItemizedScrollView *)self _isAnimatingScrollTest];
+    _isAnimatingScrollTest = [(SXItemizedScrollView *)self _isAnimatingScrollTest];
   }
 
-  if (v7 != [(SXItemizedScrollView *)self activeViewIndex]&& !(v30 & 1 | ![(SXItemizedScrollView *)self gotActiveViewIndexChange]))
+  if (v7 != [(SXItemizedScrollView *)self activeViewIndex]&& !(_isAnimatingScrollTest & 1 | ![(SXItemizedScrollView *)self gotActiveViewIndexChange]))
   {
     self->_activeViewIndex = v7;
-    v31 = [(SXItemizedScrollView *)self delegate];
+    delegate = [(SXItemizedScrollView *)self delegate];
     v32 = objc_opt_respondsToSelector();
 
     if (v32)
     {
-      v33 = [(SXItemizedScrollView *)self delegate];
-      [v33 itemizedScrollView:self didChangeToActiveViewIndex:{-[SXItemizedScrollView activeViewIndex](self, "activeViewIndex")}];
+      delegate2 = [(SXItemizedScrollView *)self delegate];
+      [delegate2 itemizedScrollView:self didChangeToActiveViewIndex:{-[SXItemizedScrollView activeViewIndex](self, "activeViewIndex")}];
     }
   }
 
@@ -513,19 +513,19 @@
 - (void)rebuildFramesArray
 {
   v79 = *MEMORY[0x1E69E9840];
-  v3 = [(SXItemizedScrollView *)self dataSource];
-  v4 = [v3 numberOfViewsInItemizedScrollView:self];
+  dataSource = [(SXItemizedScrollView *)self dataSource];
+  v4 = [dataSource numberOfViewsInItemizedScrollView:self];
 
   v5 = 0.0;
   if (([(SXItemizedScrollView *)self isPagingEnabled]& 1) == 0)
   {
-    v6 = [(SXItemizedScrollView *)self dataSource];
+    dataSource2 = [(SXItemizedScrollView *)self dataSource];
     v7 = objc_opt_respondsToSelector();
 
     if (v7)
     {
-      v8 = [(SXItemizedScrollView *)self dataSource];
-      [v8 gutterBetweenItemsInNotPagingItemizedScrollView:self];
+      dataSource3 = [(SXItemizedScrollView *)self dataSource];
+      [dataSource3 gutterBetweenItemsInNotPagingItemizedScrollView:self];
       v5 = v9;
     }
   }
@@ -537,8 +537,8 @@
     v12 = 0.0;
     do
     {
-      v13 = [(SXItemizedScrollView *)self dataSource];
-      [v13 itemizedScrollView:self frameForViewAtIndex:v11];
+      dataSource4 = [(SXItemizedScrollView *)self dataSource];
+      [dataSource4 itemizedScrollView:self frameForViewAtIndex:v11];
       v15 = v14;
       v17 = v16;
       v19 = v18;
@@ -581,9 +581,9 @@
   v25 = [v10 copy];
   [(SXItemizedScrollView *)self setFrames:v25];
 
-  v26 = [(SXItemizedScrollView *)self frames];
-  v27 = [v26 lastObject];
-  [v27 CGRectValue];
+  frames = [(SXItemizedScrollView *)self frames];
+  lastObject = [frames lastObject];
+  [lastObject CGRectValue];
   v29 = v28;
   v31 = v30;
   v33 = v32;
@@ -608,8 +608,8 @@
     v75 = 0u;
     v76 = 0u;
     v77 = 0u;
-    v44 = [(SXItemizedScrollView *)self frames];
-    v45 = [v44 countByEnumeratingWithState:&v74 objects:v78 count:16];
+    frames2 = [(SXItemizedScrollView *)self frames];
+    v45 = [frames2 countByEnumeratingWithState:&v74 objects:v78 count:16];
     if (v45)
     {
       v46 = v45;
@@ -621,7 +621,7 @@
         {
           if (*v75 != v48)
           {
-            objc_enumerationMutation(v44);
+            objc_enumerationMutation(frames2);
           }
 
           [*(*(&v74 + 1) + 8 * i) CGRectValue];
@@ -629,7 +629,7 @@
           [v43 addObject:v51];
         }
 
-        v46 = [v44 countByEnumeratingWithState:&v74 objects:v78 count:16];
+        v46 = [frames2 countByEnumeratingWithState:&v74 objects:v78 count:16];
       }
 
       while (v46);
@@ -649,14 +649,14 @@
   }
 
   [(SXItemizedScrollView *)self setContentSize:v38, Height];
-  v54 = [(SXItemizedScrollView *)self activeViewIndex];
-  v55 = [(SXItemizedScrollView *)self frames];
-  v56 = [v55 count];
+  activeViewIndex = [(SXItemizedScrollView *)self activeViewIndex];
+  frames3 = [(SXItemizedScrollView *)self frames];
+  v56 = [frames3 count];
 
-  if (v54 < v56)
+  if (activeViewIndex < v56)
   {
-    v57 = [(SXItemizedScrollView *)self frames];
-    v58 = [v57 objectAtIndexedSubscript:{-[SXItemizedScrollView activeViewIndex](self, "activeViewIndex")}];
+    frames4 = [(SXItemizedScrollView *)self frames];
+    v58 = [frames4 objectAtIndexedSubscript:{-[SXItemizedScrollView activeViewIndex](self, "activeViewIndex")}];
     [v58 CGRectValue];
     v60 = v59;
     v62 = v61;
@@ -676,27 +676,27 @@
   }
 
   [(SXItemizedScrollView *)self determineNewVisibilityRange];
-  v72 = [(SXItemizedScrollView *)self visibleRange];
-  [(SXItemizedScrollView *)self viewManagementForRange:v72, v73];
+  visibleRange = [(SXItemizedScrollView *)self visibleRange];
+  [(SXItemizedScrollView *)self viewManagementForRange:visibleRange, v73];
 }
 
-- (void)viewManagementForRange:(_NSRange)a3
+- (void)viewManagementForRange:(_NSRange)range
 {
-  v4 = [MEMORY[0x1E696AC90] indexSetWithIndexesInRange:{a3.location, a3.length}];
+  v4 = [MEMORY[0x1E696AC90] indexSetWithIndexesInRange:{range.location, range.length}];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __47__SXItemizedScrollView_viewManagementForRange___block_invoke;
   v13[3] = &unk_1E8501290;
   v13[4] = self;
   v5 = [v4 indexesWithOptions:0 passingTest:v13];
-  v6 = [(SXItemizedScrollView *)self visibleIndices];
+  visibleIndices = [(SXItemizedScrollView *)self visibleIndices];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __47__SXItemizedScrollView_viewManagementForRange___block_invoke_2;
   v11[3] = &unk_1E8501290;
   v12 = v4;
   v7 = v4;
-  v8 = [v6 indexesWithOptions:0 passingTest:v11];
+  v8 = [visibleIndices indexesWithOptions:0 passingTest:v11];
 
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
@@ -788,11 +788,11 @@ void __47__SXItemizedScrollView_viewManagementForRange___block_invoke_4(uint64_t
 
 - (void)scrollToNext
 {
-  v3 = [(SXItemizedScrollView *)self frames];
-  v4 = [v3 count];
-  v5 = [(SXItemizedScrollView *)self activeViewIndex];
+  frames = [(SXItemizedScrollView *)self frames];
+  v4 = [frames count];
+  activeViewIndex = [(SXItemizedScrollView *)self activeViewIndex];
 
-  if (v4 > v5)
+  if (v4 > activeViewIndex)
   {
     v6 = [(SXItemizedScrollView *)self activeViewIndex]+ 1;
 

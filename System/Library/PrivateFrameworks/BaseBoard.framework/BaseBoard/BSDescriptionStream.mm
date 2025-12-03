@@ -1,53 +1,53 @@
 @interface BSDescriptionStream
-+ (id)descriptionForRootObject:(id)a3;
-+ (id)descriptionForRootObject:(id)a3 withStyle:(id)a4;
++ (id)descriptionForRootObject:(id)object;
++ (id)descriptionForRootObject:(id)object withStyle:(id)style;
 - (BOOL)sortKeys;
 - (BSDescriptionStream)init;
-- (BSDescriptionStream)initWithDescriptionStyle:(id)a3;
-- (id)appendBool:(BOOL)a3 withName:(id)a4;
-- (id)appendBool:(BOOL)a3 withName:(id)a4 ifEqualTo:(BOOL)a5;
-- (id)appendCString:(const char *)a3 withName:(id)a4;
-- (id)appendClass:(Class)a3 withName:(id)a4;
-- (id)appendDouble:(double)a3 withName:(id)a4 decimalPrecision:(unint64_t)a5;
-- (id)appendFlag:(int64_t)a3 withName:(id)a4;
-- (id)appendFlag:(int64_t)a3 withName:(id)a4 skipIfNotSet:(BOOL)a5;
-- (id)appendInt64:(int64_t)a3 withName:(id)a4;
-- (id)appendInt:(int)a3 withName:(id)a4;
-- (id)appendInteger:(int64_t)a3 withName:(id)a4;
-- (id)appendObject:(id)a3 withName:(id)a4 skipIfNil:(BOOL)a5;
-- (id)appendPoint:(CGPoint)a3 withName:(id)a4;
-- (id)appendPointer:(void *)a3 withName:(id)a4;
-- (id)appendQueue:(id)a3 withName:(id)a4;
-- (id)appendRect:(CGRect)a3 withName:(id)a4;
-- (id)appendSelector:(SEL)a3 withName:(id)a4;
-- (id)appendSize:(CGSize)a3 withName:(id)a4;
-- (id)appendTimeInterval:(double)a3 withName:(id)a4 decomposeUnits:(BOOL)a5;
-- (id)appendUInt64:(unint64_t)a3 withName:(id)a4;
-- (id)appendUInt64:(unint64_t)a3 withName:(id)a4 format:(int64_t)a5;
-- (id)appendUnsignedInt:(unsigned int)a3 withName:(id)a4;
-- (id)appendUnsignedInteger:(unint64_t)a3 withName:(id)a4;
-- (id)appendUnsignedInteger:(unint64_t)a3 withName:(id)a4 format:(int64_t)a5;
-- (id)appendVersionedPID:(int64_t)a3 withName:(id)a4;
+- (BSDescriptionStream)initWithDescriptionStyle:(id)style;
+- (id)appendBool:(BOOL)bool withName:(id)name;
+- (id)appendBool:(BOOL)bool withName:(id)name ifEqualTo:(BOOL)to;
+- (id)appendCString:(const char *)string withName:(id)name;
+- (id)appendClass:(Class)class withName:(id)name;
+- (id)appendDouble:(double)double withName:(id)name decimalPrecision:(unint64_t)precision;
+- (id)appendFlag:(int64_t)flag withName:(id)name;
+- (id)appendFlag:(int64_t)flag withName:(id)name skipIfNotSet:(BOOL)set;
+- (id)appendInt64:(int64_t)int64 withName:(id)name;
+- (id)appendInt:(int)int withName:(id)name;
+- (id)appendInteger:(int64_t)integer withName:(id)name;
+- (id)appendObject:(id)object withName:(id)name skipIfNil:(BOOL)nil;
+- (id)appendPoint:(CGPoint)point withName:(id)name;
+- (id)appendPointer:(void *)pointer withName:(id)name;
+- (id)appendQueue:(id)queue withName:(id)name;
+- (id)appendRect:(CGRect)rect withName:(id)name;
+- (id)appendSelector:(SEL)selector withName:(id)name;
+- (id)appendSize:(CGSize)size withName:(id)name;
+- (id)appendTimeInterval:(double)interval withName:(id)name decomposeUnits:(BOOL)units;
+- (id)appendUInt64:(unint64_t)int64 withName:(id)name;
+- (id)appendUInt64:(unint64_t)int64 withName:(id)name format:(int64_t)format;
+- (id)appendUnsignedInt:(unsigned int)int withName:(id)name;
+- (id)appendUnsignedInteger:(unint64_t)integer withName:(id)name;
+- (id)appendUnsignedInteger:(unint64_t)integer withName:(id)name format:(int64_t)format;
+- (id)appendVersionedPID:(int64_t)d withName:(id)name;
 - (id)description;
-- (void)_appendDictionary:(__CFString *)a3 withName:(uint64_t)a4 itemBlock:;
-- (void)_appendSectionWithTotalItemCount:(uint64_t)a3 truncatedItemCount:(__CFString *)a4 openDelimiter:(__CFString *)a5 closeDelimiter:(uint64_t)a6 block:;
-- (void)_overlayStyle:(uint64_t)a3 block:;
-- (void)_overrideCollectionLineBreaking:(char)a3 force:(uint64_t)a4 block:;
-- (void)appendBodySectionWithName:(id)a3 openDelimiter:(id)a4 closeDelimiter:(id)a5 block:(id)a6;
-- (void)appendCollection:(id)a3 withName:(id)a4 itemBlock:(id)a5;
-- (void)appendCustomFormatForValue:(id)a3 withCustomFormatForName:(id)a4;
-- (void)appendCustomFormatWithName:(id)a3 block:(id)a4;
-- (void)appendCustomFormatWithNameFromObjectDescription:(id)a3 block:(id)a4;
-- (void)appendDictionary:(id)a3 withName:(id)a4 itemBlock:(id)a5;
-- (void)appendFormat:(id)a3;
-- (void)appendIntegerMap:(id)a3 withName:(id)a4 keyFormat:(int64_t)a5 valueBlock:(id)a6;
-- (void)appendIntegerSet:(id)a3 withName:(id)a4 format:(int64_t)a5;
-- (void)appendProem:(id)a3 block:(id)a4;
+- (void)_appendDictionary:(__CFString *)dictionary withName:(uint64_t)name itemBlock:;
+- (void)_appendSectionWithTotalItemCount:(uint64_t)count truncatedItemCount:(__CFString *)itemCount openDelimiter:(__CFString *)delimiter closeDelimiter:(uint64_t)closeDelimiter block:;
+- (void)_overlayStyle:(uint64_t)style block:;
+- (void)_overrideCollectionLineBreaking:(char)breaking force:(uint64_t)force block:;
+- (void)appendBodySectionWithName:(id)name openDelimiter:(id)delimiter closeDelimiter:(id)closeDelimiter block:(id)block;
+- (void)appendCollection:(id)collection withName:(id)name itemBlock:(id)block;
+- (void)appendCustomFormatForValue:(id)value withCustomFormatForName:(id)name;
+- (void)appendCustomFormatWithName:(id)name block:(id)block;
+- (void)appendCustomFormatWithNameFromObjectDescription:(id)description block:(id)block;
+- (void)appendDictionary:(id)dictionary withName:(id)name itemBlock:(id)block;
+- (void)appendFormat:(id)format;
+- (void)appendIntegerMap:(id)map withName:(id)name keyFormat:(int64_t)format valueBlock:(id)block;
+- (void)appendIntegerSet:(id)set withName:(id)name format:(int64_t)format;
+- (void)appendProem:(id)proem block:(id)block;
 - (void)appendRightArrow;
-- (void)appendString:(id)a3;
-- (void)appendString:(id)a3 withName:(id)a4 skipIfEmpty:(BOOL)a5;
-- (void)sameLine:(id)a3;
-- (void)setSortKeys:(BOOL)a3;
+- (void)appendString:(id)string;
+- (void)appendString:(id)string withName:(id)name skipIfEmpty:(BOOL)empty;
+- (void)sameLine:(id)line;
+- (void)setSortKeys:(BOOL)keys;
 @end
 
 @implementation BSDescriptionStream
@@ -107,7 +107,7 @@
   self->_emitPhase = 0;
 }
 
-- (BSDescriptionStream)initWithDescriptionStyle:(id)a3
+- (BSDescriptionStream)initWithDescriptionStyle:(id)style
 {
   v43 = *MEMORY[0x1E69E9840];
   v30.receiver = self;
@@ -115,8 +115,8 @@
   v5 = [(BSDescriptionStream *)&v30 init];
   if (v5)
   {
-    v6 = a3;
-    if (!v6)
+    styleCopy = style;
+    if (!styleCopy)
     {
       v12 = MEMORY[0x1E696AEC0];
       v13 = objc_opt_class();
@@ -153,13 +153,13 @@
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
       v20 = MEMORY[0x1E696AEC0];
-      v21 = [v6 classForCoder];
-      if (!v21)
+      classForCoder = [styleCopy classForCoder];
+      if (!classForCoder)
       {
-        v21 = objc_opt_class();
+        classForCoder = objc_opt_class();
       }
 
-      v22 = NSStringFromClass(v21);
+      v22 = NSStringFromClass(classForCoder);
       v23 = objc_opt_class();
       v24 = NSStringFromClass(v23);
       v25 = [v20 stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"style", v22, v24];
@@ -194,7 +194,7 @@
     string = v5->_string;
     v5->_string = v7;
 
-    v9 = [v6 copy];
+    v9 = [styleCopy copy];
     style = v5->_style;
     v5->_style = v9;
 
@@ -204,31 +204,31 @@
   return v5;
 }
 
-+ (id)descriptionForRootObject:(id)a3
++ (id)descriptionForRootObject:(id)object
 {
   v4 = objc_alloc_init(BSDescriptionStream);
-  v5 = [(BSDescriptionStream *)v4 appendObject:a3 withName:0];
+  v5 = [(BSDescriptionStream *)v4 appendObject:object withName:0];
   v6 = [v5 description];
 
   return v6;
 }
 
-+ (id)descriptionForRootObject:(id)a3 withStyle:(id)a4
++ (id)descriptionForRootObject:(id)object withStyle:(id)style
 {
-  v5 = [[BSDescriptionStream alloc] initWithDescriptionStyle:a4];
-  v6 = [(BSDescriptionStream *)v5 appendObject:a3 withName:0];
+  v5 = [[BSDescriptionStream alloc] initWithDescriptionStyle:style];
+  v6 = [(BSDescriptionStream *)v5 appendObject:object withName:0];
   v7 = [(BSDescriptionStream *)v5 description];
 
   return v7;
 }
 
-- (void)setSortKeys:(BOOL)a3
+- (void)setSortKeys:(BOOL)keys
 {
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __35__BSDescriptionStream_setSortKeys___block_invoke;
   v7[3] = &__block_descriptor_33_e35_v16__0__BSMutableDescriptionStyle_8l;
-  v8 = a3;
+  keysCopy = keys;
   v4 = [BSDescriptionStyle build:v7];
   v5 = [(BSDescriptionStyle *)self->_style _styleByOverlayingStyle:v4];
   style = self->_style;
@@ -260,41 +260,41 @@ uint64_t __35__BSDescriptionStream_setSortKeys___block_invoke(uint64_t a1, void 
   return self;
 }
 
-- (void)_overlayStyle:(uint64_t)a3 block:
+- (void)_overlayStyle:(uint64_t)style block:
 {
-  if (a1)
+  if (self)
   {
-    v6 = *(a1 + 8);
+    v6 = *(self + 8);
     if (v6 == a2)
     {
-      v11 = *(a3 + 16);
+      v11 = *(style + 16);
 
-      v11(a3);
+      v11(style);
     }
 
     else
     {
       v7 = v6;
-      v8 = [(BSDescriptionStyle *)*(a1 + 8) _styleByOverlayingStyle:a2];
-      v9 = *(a1 + 8);
-      *(a1 + 8) = v8;
+      v8 = [(BSDescriptionStyle *)*(self + 8) _styleByOverlayingStyle:a2];
+      v9 = *(self + 8);
+      *(self + 8) = v8;
 
-      (*(a3 + 16))(a3);
-      v10 = *(a1 + 8);
-      *(a1 + 8) = v7;
+      (*(style + 16))(style);
+      v10 = *(self + 8);
+      *(self + 8) = v7;
     }
   }
 }
 
-- (void)sameLine:(id)a3
+- (void)sameLine:(id)line
 {
   v5 = +[BSDescriptionStyle collectionLineBreakNoneStyle];
-  [(BSDescriptionStream *)self _overlayStyle:v5 block:a3];
+  [(BSDescriptionStream *)self _overlayStyle:v5 block:line];
 }
 
-- (void)appendBodySectionWithName:(id)a3 openDelimiter:(id)a4 closeDelimiter:(id)a5 block:(id)a6
+- (void)appendBodySectionWithName:(id)name openDelimiter:(id)delimiter closeDelimiter:(id)closeDelimiter block:(id)block
 {
-  if (!a3)
+  if (!name)
   {
     goto LABEL_67;
   }
@@ -445,14 +445,14 @@ LABEL_32:
   }
 
   *(&self->super.isa + v30) = maximumNameLengthBeforeTruncation;
-  v31 = [a3 length];
+  v31 = [name length];
   v32 = self->_appendBufferCount;
   if (v32 + 3 * v31 <= 1023)
   {
     usedBufLen = 0;
     v50.location = 0;
     v50.length = v31;
-    CFStringGetBytes(a3, v50, 0x8000100u, 0, 0, &self->_appendBuffer[v32], 1024 - v32, &usedBufLen);
+    CFStringGetBytes(name, v50, 0x8000100u, 0, 0, &self->_appendBuffer[v32], 1024 - v32, &usedBufLen);
     v33 = self->_appendBufferCount + usedBufLen;
 LABEL_44:
     self->_appendBufferCount = v33;
@@ -471,12 +471,12 @@ LABEL_44:
     usedBufLen = 0;
     v51.location = 0;
     v51.length = v31;
-    CFStringGetBytes(a3, v51, 0x8000100u, 0, 0, self->_appendBuffer, 1024, &usedBufLen);
+    CFStringGetBytes(name, v51, 0x8000100u, 0, 0, self->_appendBuffer, 1024, &usedBufLen);
     v33 = usedBufLen;
     goto LABEL_44;
   }
 
-  [(NSMutableString *)self->_string appendString:a3];
+  [(NSMutableString *)self->_string appendString:name];
 LABEL_46:
   BSDescribeTruncationCommit(self);
   if (self->_proemNestCount <= 0)
@@ -572,11 +572,11 @@ LABEL_67:
   v48[2] = __84__BSDescriptionStream_appendBodySectionWithName_openDelimiter_closeDelimiter_block___block_invoke;
   v48[3] = &unk_1E72CBBF0;
   v48[4] = self;
-  v48[5] = a4;
-  v48[6] = a5;
-  v48[7] = a6;
+  v48[5] = delimiter;
+  v48[6] = closeDelimiter;
+  v48[7] = block;
   [(BSDescriptionStream *)self _overrideCollectionLineBreaking:0 force:v48 block:?];
-  if (a3)
+  if (name)
   {
     self->_emitPhase = 1;
     BSDescribeTruncationCommit(self);
@@ -592,11 +592,11 @@ void __84__BSDescriptionStream_appendBodySectionWithName_openDelimiter_closeDeli
   }
 }
 
-- (void)_overrideCollectionLineBreaking:(char)a3 force:(uint64_t)a4 block:
+- (void)_overrideCollectionLineBreaking:(char)breaking force:(uint64_t)force block:
 {
-  if (a1)
+  if (self)
   {
-    if (*(a1[1] + 24) < 2 || (a3 & 1) != 0)
+    if (*(self[1] + 24) < 2 || (breaking & 1) != 0)
     {
       if (a2 == 2)
       {
@@ -608,22 +608,22 @@ void __84__BSDescriptionStream_appendBodySectionWithName_openDelimiter_closeDeli
         +[BSDescriptionStyle collectionLineBreakEachItemStyle];
       }
       v6 = ;
-      [a1 overlayStyle:? block:?];
+      [self overlayStyle:? block:?];
     }
 
     else
     {
-      v5 = *(a4 + 16);
+      v5 = *(force + 16);
 
-      v5(a4);
+      v5(force);
     }
   }
 }
 
-- (void)appendCollection:(id)a3 withName:(id)a4 itemBlock:(id)a5
+- (void)appendCollection:(id)collection withName:(id)name itemBlock:(id)block
 {
   v9 = _NSIsNSSet();
-  if (!a4)
+  if (!name)
   {
     goto LABEL_67;
   }
@@ -774,14 +774,14 @@ LABEL_32:
   }
 
   *(&self->super.isa + v29) = maximumNameLengthBeforeTruncation;
-  v30 = [a4 length];
+  v30 = [name length];
   v31 = self->_appendBufferCount;
   if (v31 + 3 * v30 <= 1023)
   {
     usedBufLen = 0;
     v58.location = 0;
     v58.length = v30;
-    CFStringGetBytes(a4, v58, 0x8000100u, 0, 0, &self->_appendBuffer[v31], 1024 - v31, &usedBufLen);
+    CFStringGetBytes(name, v58, 0x8000100u, 0, 0, &self->_appendBuffer[v31], 1024 - v31, &usedBufLen);
     v32 = self->_appendBufferCount + usedBufLen;
 LABEL_44:
     self->_appendBufferCount = v32;
@@ -800,12 +800,12 @@ LABEL_44:
     usedBufLen = 0;
     v59.location = 0;
     v59.length = v30;
-    CFStringGetBytes(a4, v59, 0x8000100u, 0, 0, self->_appendBuffer, 1024, &usedBufLen);
+    CFStringGetBytes(name, v59, 0x8000100u, 0, 0, self->_appendBuffer, 1024, &usedBufLen);
     v32 = usedBufLen;
     goto LABEL_44;
   }
 
-  [(NSMutableString *)self->_string appendString:a4];
+  [(NSMutableString *)self->_string appendString:name];
 LABEL_46:
   BSDescribeTruncationCommit(self);
   if (self->_proemNestCount <= 0)
@@ -896,7 +896,7 @@ LABEL_63:
   *(&self->super.isa + v45) = v43;
 
 LABEL_67:
-  v47 = [a3 count];
+  v47 = [collection count];
   style = self->_style;
   if (style->_collectionTruncationStyle == 2)
   {
@@ -933,7 +933,7 @@ LABEL_67:
     v52 = @"[";
   }
 
-  v54[4] = a3;
+  v54[4] = collection;
   v54[5] = self;
   v55 = v9;
   v56 = v50;
@@ -947,10 +947,10 @@ LABEL_67:
     v53 = @"]";
   }
 
-  v54[6] = a5;
+  v54[6] = block;
   v54[7] = v51;
   [(BSDescriptionStream *)self _appendSectionWithTotalItemCount:v47 truncatedItemCount:v51 openDelimiter:v52 closeDelimiter:v53 block:v54];
-  if (a4)
+  if (name)
   {
     self->_emitPhase = 1;
     BSDescribeTruncationCommit(self);
@@ -1118,34 +1118,34 @@ LABEL_7:
   return [v6 appendString:@"…"];
 }
 
-- (void)_appendSectionWithTotalItemCount:(uint64_t)a3 truncatedItemCount:(__CFString *)a4 openDelimiter:(__CFString *)a5 closeDelimiter:(uint64_t)a6 block:
+- (void)_appendSectionWithTotalItemCount:(uint64_t)count truncatedItemCount:(__CFString *)itemCount openDelimiter:(__CFString *)delimiter closeDelimiter:(uint64_t)closeDelimiter block:
 {
-  if (a1)
+  if (self)
   {
-    v12 = *(a1 + 1104);
+    v12 = *(self + 1104);
     if (v12 == 1)
     {
       v12 = 0;
-      *(a1 + 1104) = 0;
+      *(self + 1104) = 0;
     }
 
-    v13 = *(a1 + 1112);
-    *(a1 + 1112) = a3;
-    if (!a3 || (v14 = *(*(a1 + 8) + 24), v14 != 3) && (*(a1 + 1057) & 1) == 0 && (a3 == 1 || v14 == 2))
+    v13 = *(self + 1112);
+    *(self + 1112) = count;
+    if (!count || (v14 = *(*(self + 8) + 24), v14 != 3) && (*(self + 1057) & 1) == 0 && (count == 1 || v14 == 2))
     {
       v50[0] = MEMORY[0x1E69E9820];
       v50[1] = 3221225472;
       v50[2] = __110__BSDescriptionStream__appendSectionWithTotalItemCount_truncatedItemCount_openDelimiter_closeDelimiter_block___block_invoke;
       v50[3] = &unk_1E72CBDD0;
-      v51 = a2 != a3;
-      v50[7] = a6;
+      v51 = a2 != count;
+      v50[7] = closeDelimiter;
       v50[8] = a2;
-      v50[4] = a1;
-      v50[5] = a4;
-      v50[6] = a5;
-      [(BSDescriptionStream *)a1 _overrideCollectionLineBreaking:0 force:v50 block:?];
+      v50[4] = self;
+      v50[5] = itemCount;
+      v50[6] = delimiter;
+      [(BSDescriptionStream *)self _overrideCollectionLineBreaking:0 force:v50 block:?];
 LABEL_87:
-      *(a1 + 1112) = v13;
+      *(self + 1112) = v13;
       return;
     }
 
@@ -1158,155 +1158,155 @@ LABEL_87:
           goto LABEL_30;
         }
 
-        v15 = *(a1 + 1040);
-        v16 = (a1 + 16);
+        v15 = *(self + 1040);
+        v16 = (self + 16);
         if (v15 <= 1022)
         {
           v16[v15] = 32;
-          v17 = *(a1 + 1040) + 1;
+          v17 = *(self + 1040) + 1;
 LABEL_23:
-          *(a1 + 1040) = v17;
+          *(self + 1040) = v17;
           goto LABEL_29;
         }
 
         v16[v15] = 0;
-        CFStringAppendCString(*(a1 + 1064), v16, 0x8000100u);
-        *(a1 + 1040) = 0;
-        v25 = *(a1 + 1064);
+        CFStringAppendCString(*(self + 1064), v16, 0x8000100u);
+        *(self + 1040) = 0;
+        v25 = *(self + 1064);
         v26 = " ";
         goto LABEL_28;
       }
 
-      v18 = *(a1 + 1040);
-      v19 = (a1 + 16);
+      v18 = *(self + 1040);
+      v19 = (self + 16);
       if (v18 > 1022)
       {
         v19[v18] = 0;
-        CFStringAppendCString(*(a1 + 1064), v19, 0x8000100u);
-        *(a1 + 1040) = 0;
-        CFStringAppendCString(*(a1 + 1064), "\n", 0x8000100u);
+        CFStringAppendCString(*(self + 1064), v19, 0x8000100u);
+        *(self + 1040) = 0;
+        CFStringAppendCString(*(self + 1064), "\n", 0x8000100u);
       }
 
       else
       {
         v19[v18] = 10;
-        ++*(a1 + 1040);
+        ++*(self + 1040);
       }
     }
 
-    v20 = *(a1 + 1072);
+    v20 = *(self + 1072);
     if (v20 < 1)
     {
 LABEL_29:
-      *(a1 + 1104) = 0;
+      *(self + 1104) = 0;
 LABEL_30:
-      if (a2 != a3)
+      if (a2 != count)
       {
-        v27 = *(a1 + 1040);
-        v28 = a1 + 16;
+        v27 = *(self + 1040);
+        v28 = self + 16;
         if (v27 > 1022)
         {
           *(v28 + v27) = 0;
-          CFStringAppendCString(*(a1 + 1064), (a1 + 16), 0x8000100u);
-          *(a1 + 1040) = 0;
-          CFStringAppendCString(*(a1 + 1064), "|", 0x8000100u);
-          v29 = *(a1 + 1040);
+          CFStringAppendCString(*(self + 1064), (self + 16), 0x8000100u);
+          *(self + 1040) = 0;
+          CFStringAppendCString(*(self + 1064), "|", 0x8000100u);
+          v29 = *(self + 1040);
         }
 
         else
         {
           *(v28 + v27) = 124;
-          v29 = *(a1 + 1040) + 1;
-          *(a1 + 1040) = v29;
+          v29 = *(self + 1040) + 1;
+          *(self + 1040) = v29;
         }
 
         if (v29 >= 1)
         {
           *(v28 + v29) = 0;
-          CFStringAppendCString(*(a1 + 1064), (a1 + 16), 0x8000100u);
-          *(a1 + 1040) = 0;
+          CFStringAppendCString(*(self + 1064), (self + 16), 0x8000100u);
+          *(self + 1040) = 0;
         }
 
-        [*(a1 + 1064) appendFormat:@"%d", a2];
-        v30 = *(a1 + 1040);
+        [*(self + 1064) appendFormat:@"%d", a2];
+        v30 = *(self + 1040);
         if (v30 > 1021)
         {
           *(v28 + v30) = 0;
-          CFStringAppendCString(*(a1 + 1064), (a1 + 16), 0x8000100u);
-          *(a1 + 1040) = 0;
-          CFStringAppendCString(*(a1 + 1064), "| ", 0x8000100u);
+          CFStringAppendCString(*(self + 1064), (self + 16), 0x8000100u);
+          *(self + 1040) = 0;
+          CFStringAppendCString(*(self + 1064), "| ", 0x8000100u);
         }
 
         else
         {
           *(v28 + v30) = 8316;
-          *(a1 + 1040) += 2;
+          *(self + 1040) += 2;
         }
       }
 
-      v31 = [(__CFString *)a4 length];
-      v32 = *(a1 + 1040);
+      v31 = [(__CFString *)itemCount length];
+      v32 = *(self + 1040);
       if (3 * v31 + v32 > 1023)
       {
         if (v32 >= 1)
         {
-          *(a1 + 16 + v32) = 0;
-          CFStringAppendCString(*(a1 + 1064), (a1 + 16), 0x8000100u);
-          *(a1 + 1040) = 0;
+          *(self + 16 + v32) = 0;
+          CFStringAppendCString(*(self + 1064), (self + 16), 0x8000100u);
+          *(self + 1040) = 0;
         }
 
         if (v31 > 341)
         {
-          [*(a1 + 1064) appendString:a4];
-          v33 = *(a1 + 1040);
+          [*(self + 1064) appendString:itemCount];
+          v33 = *(self + 1040);
 LABEL_47:
-          v34 = a1 + 16;
+          v34 = self + 16;
           if (v33 > 1022)
           {
             *(v34 + v33) = 0;
-            CFStringAppendCString(*(a1 + 1064), (a1 + 16), 0x8000100u);
-            *(a1 + 1040) = 0;
-            CFStringAppendCString(*(a1 + 1064), "\n", 0x8000100u);
+            CFStringAppendCString(*(self + 1064), (self + 16), 0x8000100u);
+            *(self + 1040) = 0;
+            CFStringAppendCString(*(self + 1064), "\n", 0x8000100u);
           }
 
           else
           {
             *(v34 + v33) = 10;
-            ++*(a1 + 1040);
+            ++*(self + 1040);
           }
 
-          *(a1 + 1104) = 4;
-          ++*(a1 + 1072);
-          (*(a6 + 16))(a6);
-          v35 = *(a1 + 1104);
+          *(self + 1104) = 4;
+          ++*(self + 1072);
+          (*(closeDelimiter + 16))(closeDelimiter);
+          v35 = *(self + 1104);
           if (v35 == 3)
           {
-            *(a1 + 1104) = 4;
-            v36 = *(a1 + 1072) - 1;
-            *(a1 + 1072) = v36;
+            *(self + 1104) = 4;
+            v36 = *(self + 1072) - 1;
+            *(self + 1072) = v36;
           }
 
           else
           {
-            v36 = *(a1 + 1072) - 1;
-            *(a1 + 1072) = v36;
+            v36 = *(self + 1072) - 1;
+            *(self + 1072) = v36;
             switch(v35)
             {
               case 1:
-                v45 = *(a1 + 1040);
-                if (*(*(a1 + 8) + 24) != 3)
+                v45 = *(self + 1040);
+                if (*(*(self + 8) + 24) != 3)
                 {
                   if (v45 <= 1021)
                   {
                     *(v34 + v45) = 8251;
-                    v41 = *(a1 + 1040) + 2;
+                    v41 = *(self + 1040) + 2;
                     goto LABEL_70;
                   }
 
                   *(v34 + v45) = 0;
-                  CFStringAppendCString(*(a1 + 1064), (a1 + 16), 0x8000100u);
-                  *(a1 + 1040) = 0;
-                  v43 = *(a1 + 1064);
+                  CFStringAppendCString(*(self + 1064), (self + 16), 0x8000100u);
+                  *(self + 1040) = 0;
+                  v43 = *(self + 1064);
                   v44 = "; ";
                   goto LABEL_76;
                 }
@@ -1314,50 +1314,50 @@ LABEL_47:
                 if (v45 > 1022)
                 {
                   *(v34 + v45) = 0;
-                  CFStringAppendCString(*(a1 + 1064), (a1 + 16), 0x8000100u);
-                  *(a1 + 1040) = 0;
-                  CFStringAppendCString(*(a1 + 1064), ";", 0x8000100u);
-                  v46 = *(a1 + 1040);
+                  CFStringAppendCString(*(self + 1064), (self + 16), 0x8000100u);
+                  *(self + 1040) = 0;
+                  CFStringAppendCString(*(self + 1064), ";", 0x8000100u);
+                  v46 = *(self + 1040);
                 }
 
                 else
                 {
                   *(v34 + v45) = 59;
-                  v46 = *(a1 + 1040) + 1;
-                  *(a1 + 1040) = v46;
+                  v46 = *(self + 1040) + 1;
+                  *(self + 1040) = v46;
                 }
 
                 if (v46 > 1022)
                 {
                   *(v34 + v46) = 0;
-                  CFStringAppendCString(*(a1 + 1064), (a1 + 16), 0x8000100u);
-                  *(a1 + 1040) = 0;
-                  CFStringAppendCString(*(a1 + 1064), "\n", 0x8000100u);
+                  CFStringAppendCString(*(self + 1064), (self + 16), 0x8000100u);
+                  *(self + 1040) = 0;
+                  CFStringAppendCString(*(self + 1064), "\n", 0x8000100u);
                 }
 
                 else
                 {
                   *(v34 + v46) = 10;
-                  ++*(a1 + 1040);
+                  ++*(self + 1040);
                 }
 
-                v36 = *(a1 + 1072);
+                v36 = *(self + 1072);
                 break;
               case 4:
                 break;
               case 2:
-                v42 = *(a1 + 1040);
+                v42 = *(self + 1040);
                 if (v42 <= 1022)
                 {
                   *(v34 + v42) = 32;
-                  v41 = *(a1 + 1040) + 1;
+                  v41 = *(self + 1040) + 1;
                   goto LABEL_70;
                 }
 
                 *(v34 + v42) = 0;
-                CFStringAppendCString(*(a1 + 1064), (a1 + 16), 0x8000100u);
-                *(a1 + 1040) = 0;
-                v43 = *(a1 + 1064);
+                CFStringAppendCString(*(self + 1064), (self + 16), 0x8000100u);
+                *(self + 1040) = 0;
+                v43 = *(self + 1064);
                 v44 = " ";
 LABEL_76:
                 CFStringAppendCString(v43, v44, 0x8000100u);
@@ -1370,29 +1370,29 @@ LABEL_76:
           if (v36 < 1)
           {
 LABEL_77:
-            *(a1 + 1104) = 0;
+            *(self + 1104) = 0;
 LABEL_78:
-            v47 = [(__CFString *)a5 length];
-            v48 = *(a1 + 1040);
+            v47 = [(__CFString *)delimiter length];
+            v48 = *(self + 1040);
             if (3 * v47 + v48 > 1023)
             {
               if (v48 >= 1)
               {
                 *(v34 + v48) = 0;
-                CFStringAppendCString(*(a1 + 1064), (a1 + 16), 0x8000100u);
-                *(a1 + 1040) = 0;
+                CFStringAppendCString(*(self + 1064), (self + 16), 0x8000100u);
+                *(self + 1040) = 0;
               }
 
               if (v47 > 341)
               {
-                [*(a1 + 1064) appendString:a5];
+                [*(self + 1064) appendString:delimiter];
                 goto LABEL_86;
               }
 
               usedBufLen = 0;
               v56.location = 0;
               v56.length = v47;
-              CFStringGetBytes(a5, v56, 0x8000100u, 0, 0, (a1 + 16), 1024, &usedBufLen);
+              CFStringGetBytes(delimiter, v56, 0x8000100u, 0, 0, (self + 16), 1024, &usedBufLen);
               v49 = usedBufLen;
             }
 
@@ -1401,13 +1401,13 @@ LABEL_78:
               usedBufLen = 0;
               v55.location = 0;
               v55.length = v47;
-              CFStringGetBytes(a5, v55, 0x8000100u, 0, 0, (v34 + v48), 1024 - v48, &usedBufLen);
-              v49 = *(a1 + 1040) + usedBufLen;
+              CFStringGetBytes(delimiter, v55, 0x8000100u, 0, 0, (v34 + v48), 1024 - v48, &usedBufLen);
+              v49 = *(self + 1040) + usedBufLen;
             }
 
-            *(a1 + 1040) = v49;
+            *(self + 1040) = v49;
 LABEL_86:
-            *(a1 + 1104) = 3;
+            *(self + 1104) = 3;
             goto LABEL_87;
           }
 
@@ -1418,25 +1418,25 @@ LABEL_86:
 
           v37 = *(&sIndentSpaceStrings + v36);
           v38 = strlen(v37);
-          v39 = *(a1 + 1040);
+          v39 = *(self + 1040);
           if ((v39 + v38) <= 1023)
           {
             v40 = v38;
             memcpy((v34 + v39), v37, v38);
-            v41 = *(a1 + 1040) + v40;
+            v41 = *(self + 1040) + v40;
 LABEL_70:
-            *(a1 + 1040) = v41;
+            *(self + 1040) = v41;
             goto LABEL_77;
           }
 
           if (v39 >= 1)
           {
             *(v34 + v39) = 0;
-            CFStringAppendCString(*(a1 + 1064), (a1 + 16), 0x8000100u);
-            *(a1 + 1040) = 0;
+            CFStringAppendCString(*(self + 1064), (self + 16), 0x8000100u);
+            *(self + 1040) = 0;
           }
 
-          v43 = *(a1 + 1064);
+          v43 = *(self + 1064);
           v44 = v37;
           goto LABEL_76;
         }
@@ -1444,7 +1444,7 @@ LABEL_70:
         usedBufLen = 0;
         v54.location = 0;
         v54.length = v31;
-        CFStringGetBytes(a4, v54, 0x8000100u, 0, 0, (a1 + 16), 1024, &usedBufLen);
+        CFStringGetBytes(itemCount, v54, 0x8000100u, 0, 0, (self + 16), 1024, &usedBufLen);
         v33 = usedBufLen;
       }
 
@@ -1453,11 +1453,11 @@ LABEL_70:
         usedBufLen = 0;
         v53.location = 0;
         v53.length = v31;
-        CFStringGetBytes(a4, v53, 0x8000100u, 0, 0, (a1 + v32 + 16), 1024 - v32, &usedBufLen);
-        v33 = *(a1 + 1040) + usedBufLen;
+        CFStringGetBytes(itemCount, v53, 0x8000100u, 0, 0, (self + v32 + 16), 1024 - v32, &usedBufLen);
+        v33 = *(self + 1040) + usedBufLen;
       }
 
-      *(a1 + 1040) = v33;
+      *(self + 1040) = v33;
       goto LABEL_47;
     }
 
@@ -1468,23 +1468,23 @@ LABEL_70:
 
     v21 = *(&sIndentSpaceStrings + v20);
     v22 = strlen(v21);
-    v23 = *(a1 + 1040);
+    v23 = *(self + 1040);
     if ((v23 + v22) <= 1023)
     {
       v24 = v22;
-      memcpy((a1 + v23 + 16), v21, v22);
-      v17 = *(a1 + 1040) + v24;
+      memcpy((self + v23 + 16), v21, v22);
+      v17 = *(self + 1040) + v24;
       goto LABEL_23;
     }
 
     if (v23 >= 1)
     {
-      *(a1 + 16 + v23) = 0;
-      CFStringAppendCString(*(a1 + 1064), (a1 + 16), 0x8000100u);
-      *(a1 + 1040) = 0;
+      *(self + 16 + v23) = 0;
+      CFStringAppendCString(*(self + 1064), (self + 16), 0x8000100u);
+      *(self + 1040) = 0;
     }
 
-    v25 = *(a1 + 1064);
+    v25 = *(self + 1064);
     v26 = v21;
 LABEL_28:
     CFStringAppendCString(v25, v26, 0x8000100u);
@@ -1492,27 +1492,27 @@ LABEL_28:
   }
 }
 
-- (void)appendDictionary:(id)a3 withName:(id)a4 itemBlock:(id)a5
+- (void)appendDictionary:(id)dictionary withName:(id)name itemBlock:(id)block
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __59__BSDescriptionStream_appendDictionary_withName_itemBlock___block_invoke;
   v5[3] = &unk_1E72CBC40;
-  v5[4] = a5;
-  [(BSDescriptionStream *)self _appendDictionary:a3 withName:a4 itemBlock:v5];
+  v5[4] = block;
+  [(BSDescriptionStream *)self _appendDictionary:dictionary withName:name itemBlock:v5];
 }
 
-- (void)_appendDictionary:(__CFString *)a3 withName:(uint64_t)a4 itemBlock:
+- (void)_appendDictionary:(__CFString *)dictionary withName:(uint64_t)name itemBlock:
 {
-  if (!a1)
+  if (!self)
   {
     return;
   }
 
-  if (a3)
+  if (dictionary)
   {
-    v8 = *(a1 + 8);
-    v9 = *(a1 + 1104);
+    v8 = *(self + 8);
+    v9 = *(self + 1104);
     if (v9 > 2)
     {
       if (v9 != 3)
@@ -1530,29 +1530,29 @@ LABEL_33:
 
           else
           {
-            *(a1 + 1096) = v24;
-            *(a1 + 1080) = *(a1 + 1040) + [*(a1 + 1064) length];
+            *(self + 1096) = v24;
+            *(self + 1080) = *(self + 1040) + [*(self + 1064) length];
             v27 = 1088;
           }
 
-          *(a1 + v27) = v25;
-          v28 = [(__CFString *)a3 length];
-          v29 = *(a1 + 1040);
+          *(self + v27) = v25;
+          v28 = [(__CFString *)dictionary length];
+          v29 = *(self + 1040);
           if (v29 + 3 * v28 > 1023)
           {
             if (v29 >= 1)
             {
-              *(a1 + 16 + v29) = 0;
-              CFStringAppendCString(*(a1 + 1064), (a1 + 16), 0x8000100u);
-              *(a1 + 1040) = 0;
+              *(self + 16 + v29) = 0;
+              CFStringAppendCString(*(self + 1064), (self + 16), 0x8000100u);
+              *(self + 1040) = 0;
             }
 
             if (v28 > 341)
             {
-              [*(a1 + 1064) appendString:a3];
+              [*(self + 1064) appendString:dictionary];
 LABEL_47:
-              BSDescribeTruncationCommit(a1);
-              if (*(a1 + 1048) <= 0)
+              BSDescribeTruncationCommit(self);
+              if (*(self + 1048) <= 0)
               {
                 v31 = &OBJC_IVAR___BSDescriptionStyle__bodyItemSeparator;
               }
@@ -1562,11 +1562,11 @@ LABEL_47:
                 v31 = &OBJC_IVAR___BSDescriptionStyle__proemItemSeparator;
               }
 
-              v32 = *(*(a1 + 8) + *v31);
+              v32 = *(*(self + 8) + *v31);
               if (v32 < 2)
               {
-                v36 = *(a1 + 1040);
-                v37 = (a1 + 16);
+                v36 = *(self + 1040);
+                v37 = (self + 16);
                 if (v36 <= 1021)
                 {
                   *&v37[v36] = 8250;
@@ -1575,14 +1575,14 @@ LABEL_47:
                 }
 
                 v37[v36] = 0;
-                CFStringAppendCString(*(a1 + 1064), v37, 0x8000100u);
+                CFStringAppendCString(*(self + 1064), v37, 0x8000100u);
                 v40 = ": ";
               }
 
               else if (v32 == 2)
               {
-                v38 = *(a1 + 1040);
-                v39 = a1 + 16 + v38;
+                v38 = *(self + 1040);
+                v39 = self + 16 + v38;
                 if (v38 <= 1020)
                 {
                   *(v39 + 2) = 32;
@@ -1592,7 +1592,7 @@ LABEL_47:
                 }
 
                 *v39 = 0;
-                CFStringAppendCString(*(a1 + 1064), (a1 + 16), 0x8000100u);
+                CFStringAppendCString(*(self + 1064), (self + 16), 0x8000100u);
                 v40 = " = ";
               }
 
@@ -1603,24 +1603,24 @@ LABEL_47:
                   goto LABEL_64;
                 }
 
-                v33 = *(a1 + 1040);
-                v34 = (a1 + 16);
+                v33 = *(self + 1040);
+                v34 = (self + 16);
                 if (v33 <= 1019)
                 {
                   *&v34[v33] = 540945696;
                   v35 = 4;
 LABEL_59:
-                  *(a1 + 1040) += v35;
+                  *(self + 1040) += v35;
                   goto LABEL_64;
                 }
 
                 v34[v33] = 0;
-                CFStringAppendCString(*(a1 + 1064), v34, 0x8000100u);
+                CFStringAppendCString(*(self + 1064), v34, 0x8000100u);
                 v40 = " -> ";
               }
 
-              *(a1 + 1040) = 0;
-              CFStringAppendCString(*(a1 + 1064), v40, 0x8000100u);
+              *(self + 1040) = 0;
+              CFStringAppendCString(*(self + 1064), v40, 0x8000100u);
 LABEL_64:
               v41 = 0;
               v42 = v8[8];
@@ -1630,14 +1630,14 @@ LABEL_64:
                 v44 = v8[9];
                 if (v44 >= 1)
                 {
-                  *(a1 + 1096) = v42;
-                  *(a1 + 1080) = *(a1 + 1040) + [*(a1 + 1064) length];
+                  *(self + 1096) = v42;
+                  *(self + 1080) = *(self + 1040) + [*(self + 1064) length];
                   v43 = 1088;
                   v41 = v44;
                 }
               }
 
-              *(a1 + v43) = v41;
+              *(self + v43) = v41;
 
               goto LABEL_68;
             }
@@ -1645,7 +1645,7 @@ LABEL_64:
             usedBufLen = 0;
             v54.location = 0;
             v54.length = v28;
-            CFStringGetBytes(a3, v54, 0x8000100u, 0, 0, (a1 + 16), 1024, &usedBufLen);
+            CFStringGetBytes(dictionary, v54, 0x8000100u, 0, 0, (self + 16), 1024, &usedBufLen);
             v30 = usedBufLen;
           }
 
@@ -1654,11 +1654,11 @@ LABEL_64:
             usedBufLen = 0;
             v53.location = 0;
             v53.length = v28;
-            CFStringGetBytes(a3, v53, 0x8000100u, 0, 0, (a1 + v29 + 16), 1024 - v29, &usedBufLen);
-            v30 = *(a1 + 1040) + usedBufLen;
+            CFStringGetBytes(dictionary, v53, 0x8000100u, 0, 0, (self + v29 + 16), 1024 - v29, &usedBufLen);
+            v30 = *(self + 1040) + usedBufLen;
           }
 
-          *(a1 + 1040) = v30;
+          *(self + 1040) = v30;
           goto LABEL_47;
         }
 
@@ -1675,9 +1675,9 @@ LABEL_64:
           goto LABEL_33;
         }
 
-        v10 = (a1 + 1040);
-        v11 = *(a1 + 1040);
-        v12 = (a1 + 16);
+        v10 = (self + 1040);
+        v11 = *(self + 1040);
+        v12 = (self + 16);
         if (v11 <= 1022)
         {
           v12[v11] = 32;
@@ -1686,8 +1686,8 @@ LABEL_64:
         }
 
         v12[v11] = 0;
-        CFStringAppendCString(*(a1 + 1064), v12, 0x8000100u);
-        v16 = (a1 + 1064);
+        CFStringAppendCString(*(self + 1064), v12, 0x8000100u);
+        v16 = (self + 1064);
         v17 = " ";
 LABEL_31:
         *v10 = 0;
@@ -1695,10 +1695,10 @@ LABEL_31:
         goto LABEL_32;
       }
 
-      v10 = (a1 + 1040);
-      v14 = *(a1 + 1040);
-      v15 = (a1 + 16);
-      if (*(*(a1 + 8) + 24) != 3)
+      v10 = (self + 1040);
+      v14 = *(self + 1040);
+      v15 = (self + 16);
+      if (*(*(self + 8) + 24) != 3)
       {
         if (v14 <= 1021)
         {
@@ -1708,8 +1708,8 @@ LABEL_31:
         }
 
         v15[v14] = 0;
-        CFStringAppendCString(*(a1 + 1064), v15, 0x8000100u);
-        v16 = (a1 + 1064);
+        CFStringAppendCString(*(self + 1064), v15, 0x8000100u);
+        v16 = (self + 1064);
         v17 = "; ";
         goto LABEL_31;
       }
@@ -1717,9 +1717,9 @@ LABEL_31:
       if (v14 > 1022)
       {
         v15[v14] = 0;
-        CFStringAppendCString(*(a1 + 1064), v15, 0x8000100u);
-        *(a1 + 1040) = 0;
-        CFStringAppendCString(*(a1 + 1064), ";", 0x8000100u);
+        CFStringAppendCString(*(self + 1064), v15, 0x8000100u);
+        *(self + 1040) = 0;
+        CFStringAppendCString(*(self + 1064), ";", 0x8000100u);
       }
 
       else
@@ -1729,28 +1729,28 @@ LABEL_31:
       }
     }
 
-    v18 = *(a1 + 1040);
-    v19 = (a1 + 16);
+    v18 = *(self + 1040);
+    v19 = (self + 16);
     if (v18 > 1022)
     {
       v19[v18] = 0;
-      CFStringAppendCString(*(a1 + 1064), v19, 0x8000100u);
-      *(a1 + 1040) = 0;
-      CFStringAppendCString(*(a1 + 1064), "\n", 0x8000100u);
+      CFStringAppendCString(*(self + 1064), v19, 0x8000100u);
+      *(self + 1040) = 0;
+      CFStringAppendCString(*(self + 1064), "\n", 0x8000100u);
     }
 
     else
     {
       v19[v18] = 10;
-      ++*(a1 + 1040);
+      ++*(self + 1040);
     }
 
 LABEL_21:
-    v20 = *(a1 + 1072);
+    v20 = *(self + 1072);
     if (v20 < 1)
     {
 LABEL_32:
-      *(a1 + 1104) = 0;
+      *(self + 1104) = 0;
       goto LABEL_33;
     }
 
@@ -1761,23 +1761,23 @@ LABEL_32:
 
     v21 = *(&sIndentSpaceStrings + v20);
     v22 = strlen(v21);
-    v10 = (a1 + 1040);
-    v23 = *(a1 + 1040);
+    v10 = (self + 1040);
+    v23 = *(self + 1040);
     if ((v23 + v22) > 1023)
     {
       if (v23 >= 1)
       {
-        *(a1 + 16 + v23) = 0;
-        CFStringAppendCString(*(a1 + 1064), (a1 + 16), 0x8000100u);
+        *(self + 16 + v23) = 0;
+        CFStringAppendCString(*(self + 1064), (self + 16), 0x8000100u);
         *v10 = 0;
       }
 
-      CFStringAppendCString(*(a1 + 1064), v21, 0x8000100u);
+      CFStringAppendCString(*(self + 1064), v21, 0x8000100u);
       goto LABEL_32;
     }
 
     v13 = v22;
-    memcpy((a1 + v23 + 16), v21, v22);
+    memcpy((self + v23 + 16), v21, v22);
 LABEL_26:
     *v10 += v13;
     goto LABEL_32;
@@ -1785,7 +1785,7 @@ LABEL_26:
 
 LABEL_68:
   v45 = [a2 count];
-  v46 = *(a1 + 8);
+  v46 = *(self + 8);
   if (*(v46 + 80) == 2)
   {
     v47 = *(v46 + 96);
@@ -1811,16 +1811,16 @@ LABEL_68:
   v50[1] = 3221225472;
   v50[2] = __60__BSDescriptionStream__appendDictionary_withName_itemBlock___block_invoke;
   v50[3] = &unk_1E72CBC90;
-  v50[4] = a1;
+  v50[4] = self;
   v50[5] = a2;
   v51 = v48;
-  v50[6] = a4;
+  v50[6] = name;
   v50[7] = v49;
-  [(BSDescriptionStream *)a1 _appendSectionWithTotalItemCount:v45 truncatedItemCount:v49 openDelimiter:@"{" closeDelimiter:@"}" block:v50];
-  if (a3)
+  [(BSDescriptionStream *)self _appendSectionWithTotalItemCount:v45 truncatedItemCount:v49 openDelimiter:@"{" closeDelimiter:@"}" block:v50];
+  if (dictionary)
   {
-    *(a1 + 1104) = 1;
-    BSDescribeTruncationCommit(a1);
+    *(self + 1104) = 1;
+    BSDescribeTruncationCommit(self);
   }
 }
 
@@ -2024,9 +2024,9 @@ LABEL_7:
   return [v6 appendString:@"…"];
 }
 
-- (void)appendIntegerSet:(id)a3 withName:(id)a4 format:(int64_t)a5
+- (void)appendIntegerSet:(id)set withName:(id)name format:(int64_t)format
 {
-  if (!a4)
+  if (!name)
   {
     goto LABEL_67;
   }
@@ -2177,14 +2177,14 @@ LABEL_32:
   }
 
   *(&self->super.isa + v28) = maximumNameLengthBeforeTruncation;
-  v29 = [a4 length];
+  v29 = [name length];
   v30 = self->_appendBufferCount;
   if (v30 + 3 * v29 <= 1023)
   {
     usedBufLen = 0;
     v49.location = 0;
     v49.length = v29;
-    CFStringGetBytes(a4, v49, 0x8000100u, 0, 0, &self->_appendBuffer[v30], 1024 - v30, &usedBufLen);
+    CFStringGetBytes(name, v49, 0x8000100u, 0, 0, &self->_appendBuffer[v30], 1024 - v30, &usedBufLen);
     v31 = self->_appendBufferCount + usedBufLen;
 LABEL_44:
     self->_appendBufferCount = v31;
@@ -2203,12 +2203,12 @@ LABEL_44:
     usedBufLen = 0;
     v50.location = 0;
     v50.length = v29;
-    CFStringGetBytes(a4, v50, 0x8000100u, 0, 0, self->_appendBuffer, 1024, &usedBufLen);
+    CFStringGetBytes(name, v50, 0x8000100u, 0, 0, self->_appendBuffer, 1024, &usedBufLen);
     v31 = usedBufLen;
     goto LABEL_44;
   }
 
-  [(NSMutableString *)self->_string appendString:a4];
+  [(NSMutableString *)self->_string appendString:name];
 LABEL_46:
   BSDescribeTruncationCommit(self);
   if (self->_proemNestCount <= 0)
@@ -2299,20 +2299,20 @@ LABEL_63:
   *(&self->super.isa + v44) = v42;
 
 LABEL_67:
-  v46 = [a3 count];
+  v46 = [set count];
   v47[0] = MEMORY[0x1E69E9820];
   v47[1] = 3221225472;
   v47[2] = __56__BSDescriptionStream_appendIntegerSet_withName_format___block_invoke;
   v47[3] = &unk_1E72CB8A8;
-  v47[5] = a3;
-  v47[6] = a5;
+  v47[5] = set;
+  v47[6] = format;
   v47[4] = self;
   if (self)
   {
     [(BSDescriptionStream *)self _appendSectionWithTotalItemCount:v46 truncatedItemCount:v46 openDelimiter:@"(") closeDelimiter:CFSTR(")" block:v47];
   }
 
-  if (a4)
+  if (name)
   {
     self->_emitPhase = 1;
     BSDescribeTruncationCommit(self);
@@ -2379,9 +2379,9 @@ uint64_t __56__BSDescriptionStream_appendIntegerSet_withName_format___block_invo
   return [*(v2 + 1064) appendFormat:v4, a1[6]];
 }
 
-- (void)appendIntegerMap:(id)a3 withName:(id)a4 keyFormat:(int64_t)a5 valueBlock:(id)a6
+- (void)appendIntegerMap:(id)map withName:(id)name keyFormat:(int64_t)format valueBlock:(id)block
 {
-  if (!a4)
+  if (!name)
   {
     goto LABEL_67;
   }
@@ -2532,14 +2532,14 @@ LABEL_32:
   }
 
   *(&self->super.isa + v30) = maximumNameLengthBeforeTruncation;
-  v31 = [a4 length];
+  v31 = [name length];
   v32 = self->_appendBufferCount;
   if (v32 + 3 * v31 <= 1023)
   {
     usedBufLen = 0;
     v51.location = 0;
     v51.length = v31;
-    CFStringGetBytes(a4, v51, 0x8000100u, 0, 0, &self->_appendBuffer[v32], 1024 - v32, &usedBufLen);
+    CFStringGetBytes(name, v51, 0x8000100u, 0, 0, &self->_appendBuffer[v32], 1024 - v32, &usedBufLen);
     v33 = self->_appendBufferCount + usedBufLen;
 LABEL_44:
     self->_appendBufferCount = v33;
@@ -2558,12 +2558,12 @@ LABEL_44:
     usedBufLen = 0;
     v52.location = 0;
     v52.length = v31;
-    CFStringGetBytes(a4, v52, 0x8000100u, 0, 0, self->_appendBuffer, 1024, &usedBufLen);
+    CFStringGetBytes(name, v52, 0x8000100u, 0, 0, self->_appendBuffer, 1024, &usedBufLen);
     v33 = usedBufLen;
     goto LABEL_44;
   }
 
-  [(NSMutableString *)self->_string appendString:a4];
+  [(NSMutableString *)self->_string appendString:name];
 LABEL_46:
   BSDescribeTruncationCommit(self);
   if (self->_proemNestCount <= 0)
@@ -2654,21 +2654,21 @@ LABEL_63:
   *(&self->super.isa + v46) = v44;
 
 LABEL_67:
-  v48 = [a3 count];
+  v48 = [map count];
   v49[0] = MEMORY[0x1E69E9820];
   v49[1] = 3221225472;
   v49[2] = __70__BSDescriptionStream_appendIntegerMap_withName_keyFormat_valueBlock___block_invoke;
   v49[3] = &unk_1E72CBD80;
-  v49[6] = a6;
-  v49[7] = a5;
+  v49[6] = block;
+  v49[7] = format;
   v49[4] = self;
-  v49[5] = a3;
+  v49[5] = map;
   if (self)
   {
     [(BSDescriptionStream *)self _appendSectionWithTotalItemCount:v48 truncatedItemCount:v48 openDelimiter:@"{" closeDelimiter:@"}" block:v49];
   }
 
-  if (a4)
+  if (name)
   {
     self->_emitPhase = 1;
     BSDescribeTruncationCommit(self);
@@ -2756,7 +2756,7 @@ void __70__BSDescriptionStream_appendIntegerMap_withName_keyFormat_valueBlock___
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)appendCustomFormatForValue:(id)a3 withCustomFormatForName:(id)a4
+- (void)appendCustomFormatForValue:(id)value withCustomFormatForName:(id)name
 {
   forceSuccinct = self->_forceSuccinct;
   self->_forceSuccinct = 1;
@@ -2889,7 +2889,7 @@ LABEL_30:
   }
 
 LABEL_31:
-  (*(a4 + 2))(a4, self);
+  (*(name + 2))(name, self);
   if (self->_proemNestCount <= 0)
   {
     v23 = &OBJC_IVAR___BSDescriptionStyle__bodyItemSeparator;
@@ -2966,13 +2966,13 @@ LABEL_43:
   CFStringAppendCString(v32, v33, 0x8000100u);
 LABEL_48:
   self->_forceSuccinct = forceSuccinct;
-  (*(a3 + 2))(a3, self);
+  (*(value + 2))(value, self);
   self->_emitPhase = 1;
 
   BSDescribeTruncationCommit(self);
 }
 
-- (void)appendCustomFormatWithNameFromObjectDescription:(id)a3 block:(id)a4
+- (void)appendCustomFormatWithNameFromObjectDescription:(id)description block:(id)block
 {
   v7 = self->_style;
   emitPhase = self->_emitPhase;
@@ -3018,7 +3018,7 @@ LABEL_20:
       CFStringAppendCString(self->_string, v20, 0x8000100u);
 LABEL_31:
       self->_emitPhase = 0;
-      if (!a3)
+      if (!description)
       {
         goto LABEL_131;
       }
@@ -3109,7 +3109,7 @@ LABEL_30:
   }
 
 LABEL_8:
-  if (!a3)
+  if (!description)
   {
     goto LABEL_131;
   }
@@ -3135,8 +3135,8 @@ LABEL_32:
   {
     if (_NSIsNSNumber())
     {
-      v30 = a3;
-      v31 = *[v30 objCType];
+      descriptionCopy = description;
+      v31 = *[descriptionCopy objCType];
       if (v31 <= 0x62)
       {
         if (v31 > 75)
@@ -3153,7 +3153,7 @@ LABEL_32:
               }
 
               string = self->_string;
-              v34 = [v30 unsignedLongValue];
+              unsignedLongValue = [descriptionCopy unsignedLongValue];
               v35 = @"%lu";
               goto LABEL_112;
             case 'Q':
@@ -3166,7 +3166,7 @@ LABEL_32:
               }
 
               string = self->_string;
-              v34 = [v30 unsignedLongLongValue];
+              unsignedLongValue = [descriptionCopy unsignedLongLongValue];
               v35 = @"%llu";
               goto LABEL_112;
             case 'S':
@@ -3179,7 +3179,7 @@ LABEL_32:
               }
 
               string = self->_string;
-              v34 = [v30 unsignedShortValue];
+              unsignedLongValue = [descriptionCopy unsignedShortValue];
               v35 = @"%hu";
               goto LABEL_112;
           }
@@ -3200,7 +3200,7 @@ LABEL_32:
             }
 
             string = self->_string;
-            v34 = [v30 unsignedCharValue];
+            unsignedLongValue = [descriptionCopy unsignedCharValue];
           }
 
           else
@@ -3219,12 +3219,12 @@ LABEL_32:
             }
 
             string = self->_string;
-            v34 = [v30 unsignedIntValue];
+            unsignedLongValue = [descriptionCopy unsignedIntValue];
           }
 
           v35 = @"%u";
 LABEL_112:
-          [(NSMutableString *)string appendFormat:v35, v34];
+          [(NSMutableString *)string appendFormat:v35, unsignedLongValue];
           goto LABEL_113;
         }
       }
@@ -3246,7 +3246,7 @@ LABEL_112:
               }
 
               string = self->_string;
-              v34 = [v30 longLongValue];
+              unsignedLongValue = [descriptionCopy longLongValue];
               v35 = @"%lld";
               goto LABEL_112;
             }
@@ -3262,7 +3262,7 @@ LABEL_112:
               }
 
               string = self->_string;
-              v34 = [v30 shortValue];
+              unsignedLongValue = [descriptionCopy shortValue];
               v35 = @"%hi";
               goto LABEL_112;
             }
@@ -3283,7 +3283,7 @@ LABEL_112:
               }
 
               string = self->_string;
-              v34 = [v30 longValue];
+              unsignedLongValue = [descriptionCopy longValue];
               v35 = @"%ld";
               goto LABEL_112;
             }
@@ -3297,7 +3297,7 @@ LABEL_138:
               self->_appendBufferCount = 0;
             }
 
-            -[NSMutableString appendFormat:](self->_string, "appendFormat:", @"<***unknown type:%s>", [v30 objCType]);
+            -[NSMutableString appendFormat:](self->_string, "appendFormat:", @"<***unknown type:%s>", [descriptionCopy objCType]);
             goto LABEL_113;
           }
 
@@ -3310,7 +3310,7 @@ LABEL_138:
           }
 
           string = self->_string;
-          v34 = [v30 intValue];
+          unsignedLongValue = [descriptionCopy intValue];
           goto LABEL_94;
         }
 
@@ -3327,7 +3327,7 @@ LABEL_138:
             }
 
             v38 = self->_string;
-            [v30 doubleValue];
+            [descriptionCopy doubleValue];
             v41 = @"%0.16g";
           }
 
@@ -3347,7 +3347,7 @@ LABEL_138:
             }
 
             v38 = self->_string;
-            [v30 floatValue];
+            [descriptionCopy floatValue];
             v40 = v39;
             v41 = @"%0.7g";
           }
@@ -3368,7 +3368,7 @@ LABEL_113:
       }
 
       string = self->_string;
-      v34 = [v30 charValue];
+      unsignedLongValue = [descriptionCopy charValue];
 LABEL_94:
       v35 = @"%d";
       goto LABEL_112;
@@ -3376,13 +3376,13 @@ LABEL_94:
 
     if (objc_opt_respondsToSelector())
     {
-      [a3 appendDescriptionToStream:self];
+      [description appendDescriptionToStream:self];
       goto LABEL_114;
     }
 
     if (objc_opt_respondsToSelector())
     {
-      [a3 appendDescriptionToFormatter:self];
+      [description appendDescriptionToFormatter:self];
       goto LABEL_114;
     }
 
@@ -3392,15 +3392,15 @@ LABEL_94:
       v75 = 3221225472;
       v76 = __BSDescribeAppendObjectDescription_block_invoke;
       v77 = &unk_1E72CBE40;
-      v78 = self;
-      [(BSDescriptionStream *)self _appendDictionary:a3 withName:0 itemBlock:&usedBufLen];
+      selfCopy3 = self;
+      [(BSDescriptionStream *)self _appendDictionary:description withName:0 itemBlock:&usedBufLen];
       goto LABEL_114;
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(BSDescriptionStream *)self appendIntegerSet:a3 withName:0 format:0];
+      [(BSDescriptionStream *)self appendIntegerSet:description withName:0 format:0];
       goto LABEL_114;
     }
 
@@ -3411,8 +3411,8 @@ LABEL_94:
       v75 = 3221225472;
       v76 = __BSDescribeAppendObjectDescription_block_invoke_2;
       v77 = &unk_1E72CBE68;
-      v78 = self;
-      [(BSDescriptionStream *)self appendIntegerMap:a3 withName:0 keyFormat:0 valueBlock:&usedBufLen];
+      selfCopy3 = self;
+      [(BSDescriptionStream *)self appendIntegerMap:description withName:0 keyFormat:0 valueBlock:&usedBufLen];
       goto LABEL_114;
     }
 
@@ -3422,8 +3422,8 @@ LABEL_94:
       v75 = 3221225472;
       v76 = __BSDescribeAppendObjectDescription_block_invoke_3;
       v77 = &unk_1E72CBE68;
-      v78 = self;
-      [(BSDescriptionStream *)self appendCollection:a3 withName:0 itemBlock:&usedBufLen];
+      selfCopy3 = self;
+      [(BSDescriptionStream *)self appendCollection:description withName:0 itemBlock:&usedBufLen];
       goto LABEL_114;
     }
 
@@ -3431,7 +3431,7 @@ LABEL_94:
     {
       if (objc_opt_respondsToSelector())
       {
-        v69 = [a3 succinctDescription];
+        succinctDescription = [description succinctDescription];
         goto LABEL_154;
       }
 
@@ -3440,17 +3440,17 @@ LABEL_94:
 
     if (style->_debugging == 2)
     {
-      [a3 debugDescription];
+      [description debugDescription];
     }
 
     else
     {
-      [a3 description];
+      [description description];
     }
-    v69 = ;
+    succinctDescription = ;
 LABEL_154:
-    v70 = v69;
-    v71 = [(__CFString *)v69 length];
+    v70 = succinctDescription;
+    v71 = [(__CFString *)succinctDescription length];
     v72 = self->_appendBufferCount;
     if (v72 + 3 * v71 > 1023)
     {
@@ -3489,7 +3489,7 @@ LABEL_162:
     goto LABEL_114;
   }
 
-  v27 = [a3 length];
+  v27 = [description length];
   v28 = self->_appendBufferCount;
   if (v28 + 3 * v27 > 1023)
   {
@@ -3502,14 +3502,14 @@ LABEL_162:
 
     if (v27 > 341)
     {
-      [(NSMutableString *)self->_string appendString:a3];
+      [(NSMutableString *)self->_string appendString:description];
       goto LABEL_114;
     }
 
     usedBufLen = 0;
     v80.location = 0;
     v80.length = v27;
-    CFStringGetBytes(a3, v80, 0x8000100u, 0, 0, self->_appendBuffer, 1024, &usedBufLen);
+    CFStringGetBytes(description, v80, 0x8000100u, 0, 0, self->_appendBuffer, 1024, &usedBufLen);
     v29 = usedBufLen;
   }
 
@@ -3518,7 +3518,7 @@ LABEL_162:
     usedBufLen = 0;
     v79.location = 0;
     v79.length = v27;
-    CFStringGetBytes(a3, v79, 0x8000100u, 0, 0, &self->_appendBuffer[v28], 1024 - v28, &usedBufLen);
+    CFStringGetBytes(description, v79, 0x8000100u, 0, 0, &self->_appendBuffer[v28], 1024 - v28, &usedBufLen);
     v29 = self->_appendBufferCount + usedBufLen;
   }
 
@@ -3619,12 +3619,12 @@ LABEL_131:
 
   *(&self->super.isa + v66) = maximumValueLengthBeforeTruncation;
 
-  (*(a4 + 2))(a4, self);
+  (*(block + 2))(block, self);
   self->_emitPhase = 1;
   BSDescribeTruncationCommit(self);
 }
 
-- (void)appendCustomFormatWithName:(id)a3 block:(id)a4
+- (void)appendCustomFormatWithName:(id)name block:(id)block
 {
   v7 = self->_style;
   emitPhase = self->_emitPhase;
@@ -3670,7 +3670,7 @@ LABEL_20:
       CFStringAppendCString(self->_string, v20, 0x8000100u);
 LABEL_31:
       self->_emitPhase = 0;
-      if (!a3)
+      if (!name)
       {
         goto LABEL_63;
       }
@@ -3761,7 +3761,7 @@ LABEL_30:
   }
 
 LABEL_8:
-  if (!a3)
+  if (!name)
   {
     goto LABEL_63;
   }
@@ -3781,7 +3781,7 @@ LABEL_32:
     self->_maximumLengthBeforeTruncation = maximumNameLengthBeforeTruncation;
   }
 
-  v26 = [a3 length];
+  v26 = [name length];
   v27 = self->_appendBufferCount;
   if (v27 + 3 * v26 > 1023)
   {
@@ -3794,14 +3794,14 @@ LABEL_32:
 
     if (v26 > 341)
     {
-      [(NSMutableString *)self->_string appendString:a3];
+      [(NSMutableString *)self->_string appendString:name];
       goto LABEL_46;
     }
 
     usedBufLen = 0;
     v45.location = 0;
     v45.length = v26;
-    CFStringGetBytes(a3, v45, 0x8000100u, 0, 0, self->_appendBuffer, 1024, &usedBufLen);
+    CFStringGetBytes(name, v45, 0x8000100u, 0, 0, self->_appendBuffer, 1024, &usedBufLen);
     v28 = usedBufLen;
   }
 
@@ -3810,7 +3810,7 @@ LABEL_32:
     usedBufLen = 0;
     v44.location = 0;
     v44.length = v26;
-    CFStringGetBytes(a3, v44, 0x8000100u, 0, 0, &self->_appendBuffer[v27], 1024 - v27, &usedBufLen);
+    CFStringGetBytes(name, v44, 0x8000100u, 0, 0, &self->_appendBuffer[v27], 1024 - v27, &usedBufLen);
     v28 = self->_appendBufferCount + usedBufLen;
   }
 
@@ -3904,12 +3904,12 @@ LABEL_63:
 
   *(&self->super.isa + v42) = maximumValueLengthBeforeTruncation;
 
-  (*(a4 + 2))(a4, self);
+  (*(block + 2))(block, self);
   self->_emitPhase = 1;
   BSDescribeTruncationCommit(self);
 }
 
-- (void)appendProem:(id)a3 block:(id)a4
+- (void)appendProem:(id)proem block:(id)block
 {
   ++self->_proemNestCount;
   v5[0] = MEMORY[0x1E69E9820];
@@ -3917,8 +3917,8 @@ LABEL_63:
   v5[2] = __41__BSDescriptionStream_appendProem_block___block_invoke;
   v5[3] = &unk_1E72CBDA8;
   v5[4] = self;
-  v5[5] = a3;
-  v5[6] = a4;
+  v5[5] = proem;
+  v5[6] = block;
   [(BSDescriptionStream *)self _overrideCollectionLineBreaking:1 force:v5 block:?];
   --self->_proemNestCount;
 }
@@ -4375,16 +4375,16 @@ LABEL_26:
   return result;
 }
 
-- (void)appendString:(id)a3
+- (void)appendString:(id)string
 {
-  v5 = [a3 length];
+  v5 = [string length];
   appendBufferCount = self->_appendBufferCount;
   if (3 * v5 + appendBufferCount <= 1023)
   {
     usedBufLen = 0;
     v11.location = 0;
     v11.length = v5;
-    CFStringGetBytes(a3, v11, 0x8000100u, 0, 0, &self->_appendBuffer[appendBufferCount], 1024 - appendBufferCount, &usedBufLen);
+    CFStringGetBytes(string, v11, 0x8000100u, 0, 0, &self->_appendBuffer[appendBufferCount], 1024 - appendBufferCount, &usedBufLen);
     v7 = self->_appendBufferCount + usedBufLen;
 LABEL_7:
     self->_appendBufferCount = v7;
@@ -4403,17 +4403,17 @@ LABEL_7:
     usedBufLen = 0;
     v12.location = 0;
     v12.length = v5;
-    CFStringGetBytes(a3, v12, 0x8000100u, 0, 0, self->_appendBuffer, 1024, &usedBufLen);
+    CFStringGetBytes(string, v12, 0x8000100u, 0, 0, self->_appendBuffer, 1024, &usedBufLen);
     v7 = usedBufLen;
     goto LABEL_7;
   }
 
   string = self->_string;
 
-  [(NSMutableString *)string appendString:a3];
+  [(NSMutableString *)string appendString:string];
 }
 
-- (void)appendFormat:(id)a3
+- (void)appendFormat:(id)format
 {
   appendBufferCount = self->_appendBufferCount;
   if (appendBufferCount >= 1)
@@ -4423,12 +4423,12 @@ LABEL_7:
     self->_appendBufferCount = 0;
   }
 
-  CFStringAppendFormatAndArguments(self->_string, 0, a3, &v6);
+  CFStringAppendFormatAndArguments(self->_string, 0, format, &v6);
 }
 
-- (id)appendObject:(id)a3 withName:(id)a4 skipIfNil:(BOOL)a5
+- (id)appendObject:(id)object withName:(id)name skipIfNil:(BOOL)nil
 {
-  if (a3 || !a5)
+  if (object || !nil)
   {
     v8 = self->_style;
     emitPhase = self->_emitPhase;
@@ -4474,7 +4474,7 @@ LABEL_22:
         CFStringAppendCString(self->_string, v21, 0x8000100u);
 LABEL_33:
         self->_emitPhase = 0;
-        if (!a4)
+        if (!name)
         {
           goto LABEL_65;
         }
@@ -4512,7 +4512,7 @@ LABEL_32:
         }
 
 LABEL_10:
-        if (!a4)
+        if (!name)
         {
           goto LABEL_65;
         }
@@ -4532,7 +4532,7 @@ LABEL_34:
           self->_maximumLengthBeforeTruncation = maximumNameLengthBeforeTruncation;
         }
 
-        v27 = [a4 length];
+        v27 = [name length];
         v28 = self->_appendBufferCount;
         if (v28 + 3 * v27 > 1023)
         {
@@ -4545,14 +4545,14 @@ LABEL_34:
 
           if (v27 > 341)
           {
-            [(NSMutableString *)self->_string appendString:a4];
+            [(NSMutableString *)self->_string appendString:name];
             goto LABEL_48;
           }
 
           usedBufLen = 0;
           v86.location = 0;
           v86.length = v27;
-          CFStringGetBytes(a4, v86, 0x8000100u, 0, 0, self->_appendBuffer, 1024, &usedBufLen);
+          CFStringGetBytes(name, v86, 0x8000100u, 0, 0, self->_appendBuffer, 1024, &usedBufLen);
           v29 = usedBufLen;
         }
 
@@ -4561,7 +4561,7 @@ LABEL_34:
           usedBufLen = 0;
           v85.location = 0;
           v85.length = v27;
-          CFStringGetBytes(a4, v85, 0x8000100u, 0, 0, &self->_appendBuffer[v28], 1024 - v28, &usedBufLen);
+          CFStringGetBytes(name, v85, 0x8000100u, 0, 0, &self->_appendBuffer[v28], 1024 - v28, &usedBufLen);
           v29 = self->_appendBufferCount + usedBufLen;
         }
 
@@ -4655,7 +4655,7 @@ LABEL_65:
 
         *(&self->super.isa + v43) = maximumValueLengthBeforeTruncation;
 
-        if (!a3)
+        if (!object)
         {
           v47 = self->_appendBufferCount;
           v48 = &self->_appendBuffer[v47];
@@ -4681,7 +4681,7 @@ LABEL_91:
 
         if (_NSIsNSString())
         {
-          v44 = [a3 length];
+          v44 = [object length];
           v45 = self->_appendBufferCount;
           if (3 * v44 + v45 > 1023)
           {
@@ -4694,14 +4694,14 @@ LABEL_91:
 
             if (v44 > 341)
             {
-              [(NSMutableString *)self->_string appendString:a3];
+              [(NSMutableString *)self->_string appendString:object];
               goto LABEL_151;
             }
 
             usedBufLen = 0;
             v88.location = 0;
             v88.length = v44;
-            CFStringGetBytes(a3, v88, 0x8000100u, 0, 0, self->_appendBuffer, 1024, &usedBufLen);
+            CFStringGetBytes(object, v88, 0x8000100u, 0, 0, self->_appendBuffer, 1024, &usedBufLen);
             v46 = usedBufLen;
           }
 
@@ -4710,7 +4710,7 @@ LABEL_91:
             usedBufLen = 0;
             v87.location = 0;
             v87.length = v44;
-            CFStringGetBytes(a3, v87, 0x8000100u, 0, 0, &self->_appendBuffer[v45], 1024 - v45, &usedBufLen);
+            CFStringGetBytes(object, v87, 0x8000100u, 0, 0, &self->_appendBuffer[v45], 1024 - v45, &usedBufLen);
             v46 = self->_appendBufferCount + usedBufLen;
           }
 
@@ -4719,8 +4719,8 @@ LABEL_91:
 
         if (_NSIsNSNumber())
         {
-          v49 = a3;
-          v50 = *[v49 objCType];
+          objectCopy = object;
+          v50 = *[objectCopy objCType];
           if (v50 <= 0x62)
           {
             if (v50 > 75)
@@ -4737,7 +4737,7 @@ LABEL_91:
                   }
 
                   string = self->_string;
-                  v53 = [v49 unsignedLongValue];
+                  unsignedLongValue = [objectCopy unsignedLongValue];
                   v54 = @"%lu";
                   goto LABEL_149;
                 case 'Q':
@@ -4750,7 +4750,7 @@ LABEL_91:
                   }
 
                   string = self->_string;
-                  v53 = [v49 unsignedLongLongValue];
+                  unsignedLongValue = [objectCopy unsignedLongLongValue];
                   v54 = @"%llu";
                   goto LABEL_149;
                 case 'S':
@@ -4763,7 +4763,7 @@ LABEL_91:
                   }
 
                   string = self->_string;
-                  v53 = [v49 unsignedShortValue];
+                  unsignedLongValue = [objectCopy unsignedShortValue];
                   v54 = @"%hu";
                   goto LABEL_149;
               }
@@ -4784,7 +4784,7 @@ LABEL_91:
                 }
 
                 string = self->_string;
-                v53 = [v49 unsignedCharValue];
+                unsignedLongValue = [objectCopy unsignedCharValue];
               }
 
               else
@@ -4803,12 +4803,12 @@ LABEL_91:
                 }
 
                 string = self->_string;
-                v53 = [v49 unsignedIntValue];
+                unsignedLongValue = [objectCopy unsignedIntValue];
               }
 
               v54 = @"%u";
 LABEL_149:
-              [(NSMutableString *)string appendFormat:v54, v53];
+              [(NSMutableString *)string appendFormat:v54, unsignedLongValue];
               goto LABEL_150;
             }
           }
@@ -4830,7 +4830,7 @@ LABEL_149:
                   }
 
                   string = self->_string;
-                  v53 = [v49 longLongValue];
+                  unsignedLongValue = [objectCopy longLongValue];
                   v54 = @"%lld";
                   goto LABEL_149;
                 }
@@ -4846,7 +4846,7 @@ LABEL_149:
                   }
 
                   string = self->_string;
-                  v53 = [v49 shortValue];
+                  unsignedLongValue = [objectCopy shortValue];
                   v54 = @"%hi";
                   goto LABEL_149;
                 }
@@ -4867,7 +4867,7 @@ LABEL_149:
                   }
 
                   string = self->_string;
-                  v53 = [v49 longValue];
+                  unsignedLongValue = [objectCopy longValue];
                   v54 = @"%ld";
                   goto LABEL_149;
                 }
@@ -4881,7 +4881,7 @@ LABEL_155:
                   self->_appendBufferCount = 0;
                 }
 
-                -[NSMutableString appendFormat:](self->_string, "appendFormat:", @"<***unknown type:%s>", [v49 objCType]);
+                -[NSMutableString appendFormat:](self->_string, "appendFormat:", @"<***unknown type:%s>", [objectCopy objCType]);
                 goto LABEL_150;
               }
 
@@ -4894,7 +4894,7 @@ LABEL_155:
               }
 
               string = self->_string;
-              v53 = [v49 intValue];
+              unsignedLongValue = [objectCopy intValue];
               goto LABEL_131;
             }
 
@@ -4911,7 +4911,7 @@ LABEL_155:
                 }
 
                 v57 = self->_string;
-                [v49 doubleValue];
+                [objectCopy doubleValue];
                 v60 = @"%0.16g";
               }
 
@@ -4931,7 +4931,7 @@ LABEL_155:
                 }
 
                 v57 = self->_string;
-                [v49 floatValue];
+                [objectCopy floatValue];
                 v59 = v58;
                 v60 = @"%0.7g";
               }
@@ -4952,7 +4952,7 @@ LABEL_150:
           }
 
           string = self->_string;
-          v53 = [v49 charValue];
+          unsignedLongValue = [objectCopy charValue];
 LABEL_131:
           v54 = @"%d";
           goto LABEL_149;
@@ -4960,13 +4960,13 @@ LABEL_131:
 
         if (objc_opt_respondsToSelector())
         {
-          [a3 appendDescriptionToStream:self];
+          [object appendDescriptionToStream:self];
           goto LABEL_151;
         }
 
         if (objc_opt_respondsToSelector())
         {
-          [a3 appendDescriptionToFormatter:self];
+          [object appendDescriptionToFormatter:self];
           goto LABEL_151;
         }
 
@@ -4976,15 +4976,15 @@ LABEL_131:
           v80 = 3221225472;
           v81 = __BSDescribeAppendObjectDescription_block_invoke;
           v82 = &unk_1E72CBE40;
-          v83 = self;
-          [(BSDescriptionStream *)self _appendDictionary:a3 withName:0 itemBlock:&usedBufLen];
+          selfCopy3 = self;
+          [(BSDescriptionStream *)self _appendDictionary:object withName:0 itemBlock:&usedBufLen];
           goto LABEL_151;
         }
 
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          [(BSDescriptionStream *)self appendIntegerSet:a3 withName:0 format:0];
+          [(BSDescriptionStream *)self appendIntegerSet:object withName:0 format:0];
           goto LABEL_151;
         }
 
@@ -4995,8 +4995,8 @@ LABEL_131:
           v80 = 3221225472;
           v81 = __BSDescribeAppendObjectDescription_block_invoke_2;
           v82 = &unk_1E72CBE68;
-          v83 = self;
-          [(BSDescriptionStream *)self appendIntegerMap:a3 withName:0 keyFormat:0 valueBlock:&usedBufLen];
+          selfCopy3 = self;
+          [(BSDescriptionStream *)self appendIntegerMap:object withName:0 keyFormat:0 valueBlock:&usedBufLen];
           goto LABEL_151;
         }
 
@@ -5006,8 +5006,8 @@ LABEL_131:
           v80 = 3221225472;
           v81 = __BSDescribeAppendObjectDescription_block_invoke_3;
           v82 = &unk_1E72CBE68;
-          v83 = self;
-          [(BSDescriptionStream *)self appendCollection:a3 withName:0 itemBlock:&usedBufLen];
+          selfCopy3 = self;
+          [(BSDescriptionStream *)self appendCollection:object withName:0 itemBlock:&usedBufLen];
           goto LABEL_151;
         }
 
@@ -5015,7 +5015,7 @@ LABEL_131:
         {
           if (objc_opt_respondsToSelector())
           {
-            v74 = [a3 succinctDescription];
+            succinctDescription = [object succinctDescription];
             goto LABEL_171;
           }
 
@@ -5024,17 +5024,17 @@ LABEL_131:
 
         if (style->_debugging == 2)
         {
-          [a3 debugDescription];
+          [object debugDescription];
         }
 
         else
         {
-          [a3 description];
+          [object description];
         }
-        v74 = ;
+        succinctDescription = ;
 LABEL_171:
-        v75 = v74;
-        v76 = [(__CFString *)v74 length];
+        v75 = succinctDescription;
+        v76 = [(__CFString *)succinctDescription length];
         v77 = self->_appendBufferCount;
         if (v77 + 3 * v76 > 1023)
         {
@@ -5127,14 +5127,14 @@ LABEL_179:
   }
 
 LABEL_152:
-  v70 = self;
+  selfCopy4 = self;
 
   return self;
 }
 
-- (void)appendString:(id)a3 withName:(id)a4 skipIfEmpty:(BOOL)a5
+- (void)appendString:(id)string withName:(id)name skipIfEmpty:(BOOL)empty
 {
-  if (a3 || !a5)
+  if (string || !empty)
   {
     v8 = self->_style;
     emitPhase = self->_emitPhase;
@@ -5180,7 +5180,7 @@ LABEL_22:
         CFStringAppendCString(self->_string, v21, 0x8000100u);
 LABEL_33:
         self->_emitPhase = 0;
-        if (!a4)
+        if (!name)
         {
           goto LABEL_65;
         }
@@ -5218,7 +5218,7 @@ LABEL_32:
         }
 
 LABEL_10:
-        if (!a4)
+        if (!name)
         {
           goto LABEL_65;
         }
@@ -5238,7 +5238,7 @@ LABEL_34:
           self->_maximumLengthBeforeTruncation = maximumNameLengthBeforeTruncation;
         }
 
-        v27 = [a4 length];
+        v27 = [name length];
         v28 = self->_appendBufferCount;
         if (v28 + 3 * v27 > 1023)
         {
@@ -5251,14 +5251,14 @@ LABEL_34:
 
           if (v27 > 341)
           {
-            [(NSMutableString *)self->_string appendString:a4];
+            [(NSMutableString *)self->_string appendString:name];
             goto LABEL_48;
           }
 
           usedBufLen = 0;
           v51.location = 0;
           v51.length = v27;
-          CFStringGetBytes(a4, v51, 0x8000100u, 0, 0, self->_appendBuffer, 1024, &usedBufLen);
+          CFStringGetBytes(name, v51, 0x8000100u, 0, 0, self->_appendBuffer, 1024, &usedBufLen);
           v29 = usedBufLen;
         }
 
@@ -5267,7 +5267,7 @@ LABEL_34:
           usedBufLen = 0;
           v50.location = 0;
           v50.length = v27;
-          CFStringGetBytes(a4, v50, 0x8000100u, 0, 0, &self->_appendBuffer[v28], 1024 - v28, &usedBufLen);
+          CFStringGetBytes(name, v50, 0x8000100u, 0, 0, &self->_appendBuffer[v28], 1024 - v28, &usedBufLen);
           v29 = self->_appendBufferCount + usedBufLen;
         }
 
@@ -5361,9 +5361,9 @@ LABEL_65:
 
         *(&self->super.isa + v43) = maximumValueLengthBeforeTruncation;
 
-        if (a3)
+        if (string)
         {
-          v44 = [a3 length];
+          v44 = [string length];
           v45 = self->_appendBufferCount;
           if (3 * v44 + v45 > 1023)
           {
@@ -5376,14 +5376,14 @@ LABEL_65:
 
             if (v44 > 341)
             {
-              [(NSMutableString *)self->_string appendString:a3];
+              [(NSMutableString *)self->_string appendString:string];
               goto LABEL_83;
             }
 
             usedBufLen = 0;
             v53.location = 0;
             v53.length = v44;
-            CFStringGetBytes(a3, v53, 0x8000100u, 0, 0, self->_appendBuffer, 1024, &usedBufLen);
+            CFStringGetBytes(string, v53, 0x8000100u, 0, 0, self->_appendBuffer, 1024, &usedBufLen);
             v46 = usedBufLen;
           }
 
@@ -5392,7 +5392,7 @@ LABEL_65:
             usedBufLen = 0;
             v52.location = 0;
             v52.length = v44;
-            CFStringGetBytes(a3, v52, 0x8000100u, 0, 0, &self->_appendBuffer[v45], 1024 - v45, &usedBufLen);
+            CFStringGetBytes(string, v52, 0x8000100u, 0, 0, &self->_appendBuffer[v45], 1024 - v45, &usedBufLen);
             v46 = self->_appendBufferCount + usedBufLen;
           }
         }
@@ -5476,10 +5476,10 @@ LABEL_83:
   }
 }
 
-- (id)appendBool:(BOOL)a3 withName:(id)a4
+- (id)appendBool:(BOOL)bool withName:(id)name
 {
-  v5 = a3;
-  if (a3)
+  boolCopy = bool;
+  if (bool)
   {
     v7 = "YES";
   }
@@ -5533,7 +5533,7 @@ LABEL_23:
       CFStringAppendCString(self->_string, v21, 0x8000100u);
 LABEL_34:
       self->_emitPhase = 0;
-      if (!a4)
+      if (!name)
       {
         goto LABEL_66;
       }
@@ -5624,7 +5624,7 @@ LABEL_33:
   }
 
 LABEL_11:
-  if (!a4)
+  if (!name)
   {
     goto LABEL_66;
   }
@@ -5644,7 +5644,7 @@ LABEL_35:
     self->_maximumLengthBeforeTruncation = maximumNameLengthBeforeTruncation;
   }
 
-  v27 = [a4 length];
+  v27 = [name length];
   v28 = self->_appendBufferCount;
   if (v28 + 3 * v27 > 1023)
   {
@@ -5657,14 +5657,14 @@ LABEL_35:
 
     if (v27 > 341)
     {
-      [(NSMutableString *)self->_string appendString:a4];
+      [(NSMutableString *)self->_string appendString:name];
       goto LABEL_49;
     }
 
     usedBufLen = 0;
     v50.location = 0;
     v50.length = v27;
-    CFStringGetBytes(a4, v50, 0x8000100u, 0, 0, self->_appendBuffer, 1024, &usedBufLen);
+    CFStringGetBytes(name, v50, 0x8000100u, 0, 0, self->_appendBuffer, 1024, &usedBufLen);
     v29 = usedBufLen;
   }
 
@@ -5673,7 +5673,7 @@ LABEL_35:
     usedBufLen = 0;
     v49.location = 0;
     v49.length = v27;
-    CFStringGetBytes(a4, v49, 0x8000100u, 0, 0, &self->_appendBuffer[v28], 1024 - v28, &usedBufLen);
+    CFStringGetBytes(name, v49, 0x8000100u, 0, 0, &self->_appendBuffer[v28], 1024 - v28, &usedBufLen);
     v29 = self->_appendBufferCount + usedBufLen;
   }
 
@@ -5767,7 +5767,7 @@ LABEL_66:
 
   *(&self->super.isa + v43) = maximumValueLengthBeforeTruncation;
 
-  if (v5)
+  if (boolCopy)
   {
     v44 = 3;
   }
@@ -5802,15 +5802,15 @@ LABEL_66:
   return self;
 }
 
-- (id)appendBool:(BOOL)a3 withName:(id)a4 ifEqualTo:(BOOL)a5
+- (id)appendBool:(BOOL)bool withName:(id)name ifEqualTo:(BOOL)to
 {
-  if (a3 != a5)
+  if (bool != to)
   {
     goto LABEL_82;
   }
 
-  v7 = a3;
-  if (a3)
+  boolCopy = bool;
+  if (bool)
   {
     v8 = "YES";
   }
@@ -5851,7 +5851,7 @@ LABEL_34:
       }
 
 LABEL_12:
-      if (!a4)
+      if (!name)
       {
         goto LABEL_67;
       }
@@ -5955,7 +5955,7 @@ LABEL_24:
   CFStringAppendCString(self->_string, v22, 0x8000100u);
 LABEL_35:
   self->_emitPhase = 0;
-  if (!a4)
+  if (!name)
   {
     goto LABEL_67;
   }
@@ -5975,7 +5975,7 @@ LABEL_36:
     self->_maximumLengthBeforeTruncation = maximumNameLengthBeforeTruncation;
   }
 
-  v28 = [a4 length];
+  v28 = [name length];
   v29 = self->_appendBufferCount;
   if (v29 + 3 * v28 > 1023)
   {
@@ -5988,14 +5988,14 @@ LABEL_36:
 
     if (v28 > 341)
     {
-      [(NSMutableString *)self->_string appendString:a4];
+      [(NSMutableString *)self->_string appendString:name];
       goto LABEL_50;
     }
 
     usedBufLen = 0;
     v52.location = 0;
     v52.length = v28;
-    CFStringGetBytes(a4, v52, 0x8000100u, 0, 0, self->_appendBuffer, 1024, &usedBufLen);
+    CFStringGetBytes(name, v52, 0x8000100u, 0, 0, self->_appendBuffer, 1024, &usedBufLen);
     v30 = usedBufLen;
   }
 
@@ -6004,7 +6004,7 @@ LABEL_36:
     usedBufLen = 0;
     v51.location = 0;
     v51.length = v28;
-    CFStringGetBytes(a4, v51, 0x8000100u, 0, 0, &self->_appendBuffer[v29], 1024 - v29, &usedBufLen);
+    CFStringGetBytes(name, v51, 0x8000100u, 0, 0, &self->_appendBuffer[v29], 1024 - v29, &usedBufLen);
     v30 = self->_appendBufferCount + usedBufLen;
   }
 
@@ -6097,7 +6097,7 @@ LABEL_67:
 
   *(&self->super.isa + v44) = maximumValueLengthBeforeTruncation;
 
-  if (v7)
+  if (boolCopy)
   {
     v45 = 3;
   }
@@ -6129,14 +6129,14 @@ LABEL_67:
   self->_emitPhase = 1;
   BSDescribeTruncationCommit(self);
 LABEL_82:
-  v47 = self;
+  selfCopy = self;
 
   return self;
 }
 
-- (id)appendFlag:(int64_t)a3 withName:(id)a4
+- (id)appendFlag:(int64_t)flag withName:(id)name
 {
-  v6 = BSSettingFlagDescription(a3);
+  v6 = BSSettingFlagDescription(flag);
   v7 = self->_style;
   emitPhase = self->_emitPhase;
   if (emitPhase > 2)
@@ -6181,7 +6181,7 @@ LABEL_20:
       CFStringAppendCString(self->_string, v20, 0x8000100u);
 LABEL_31:
       self->_emitPhase = 0;
-      if (!a4)
+      if (!name)
       {
         goto LABEL_63;
       }
@@ -6272,7 +6272,7 @@ LABEL_30:
   }
 
 LABEL_8:
-  if (!a4)
+  if (!name)
   {
     goto LABEL_63;
   }
@@ -6292,7 +6292,7 @@ LABEL_32:
     self->_maximumLengthBeforeTruncation = maximumNameLengthBeforeTruncation;
   }
 
-  v26 = [a4 length];
+  v26 = [name length];
   v27 = self->_appendBufferCount;
   if (v27 + 3 * v26 > 1023)
   {
@@ -6305,14 +6305,14 @@ LABEL_32:
 
     if (v26 > 341)
     {
-      [(NSMutableString *)self->_string appendString:a4];
+      [(NSMutableString *)self->_string appendString:name];
       goto LABEL_46;
     }
 
     usedBufLen = 0;
     v52.location = 0;
     v52.length = v26;
-    CFStringGetBytes(a4, v52, 0x8000100u, 0, 0, self->_appendBuffer, 1024, &usedBufLen);
+    CFStringGetBytes(name, v52, 0x8000100u, 0, 0, self->_appendBuffer, 1024, &usedBufLen);
     v28 = usedBufLen;
   }
 
@@ -6321,7 +6321,7 @@ LABEL_32:
     usedBufLen = 0;
     v51.location = 0;
     v51.length = v26;
-    CFStringGetBytes(a4, v51, 0x8000100u, 0, 0, &self->_appendBuffer[v27], 1024 - v27, &usedBufLen);
+    CFStringGetBytes(name, v51, 0x8000100u, 0, 0, &self->_appendBuffer[v27], 1024 - v27, &usedBufLen);
     v28 = self->_appendBufferCount + usedBufLen;
   }
 
@@ -6473,20 +6473,20 @@ LABEL_63:
 LABEL_81:
   self->_emitPhase = 1;
   BSDescribeTruncationCommit(self);
-  v48 = self;
+  selfCopy = self;
 
   return self;
 }
 
-- (id)appendFlag:(int64_t)a3 withName:(id)a4 skipIfNotSet:(BOOL)a5
+- (id)appendFlag:(int64_t)flag withName:(id)name skipIfNotSet:(BOOL)set
 {
-  if (a3 == 0x7FFFFFFFFFFFFFFFLL && a5)
+  if (flag == 0x7FFFFFFFFFFFFFFFLL && set)
   {
-    v7 = self;
+    selfCopy = self;
     goto LABEL_85;
   }
 
-  v8 = BSSettingFlagDescription(a3);
+  v8 = BSSettingFlagDescription(flag);
   v9 = self->_style;
   emitPhase = self->_emitPhase;
   if (emitPhase > 2)
@@ -6531,7 +6531,7 @@ LABEL_23:
       CFStringAppendCString(self->_string, v22, 0x8000100u);
 LABEL_34:
       self->_emitPhase = 0;
-      if (!a4)
+      if (!name)
       {
         goto LABEL_66;
       }
@@ -6622,7 +6622,7 @@ LABEL_33:
   }
 
 LABEL_11:
-  if (!a4)
+  if (!name)
   {
     goto LABEL_66;
   }
@@ -6642,7 +6642,7 @@ LABEL_35:
     self->_maximumLengthBeforeTruncation = maximumNameLengthBeforeTruncation;
   }
 
-  v28 = [a4 length];
+  v28 = [name length];
   v29 = self->_appendBufferCount;
   if (v29 + 3 * v28 > 1023)
   {
@@ -6655,14 +6655,14 @@ LABEL_35:
 
     if (v28 > 341)
     {
-      [(NSMutableString *)self->_string appendString:a4];
+      [(NSMutableString *)self->_string appendString:name];
       goto LABEL_49;
     }
 
     usedBufLen = 0;
     v55.location = 0;
     v55.length = v28;
-    CFStringGetBytes(a4, v55, 0x8000100u, 0, 0, self->_appendBuffer, 1024, &usedBufLen);
+    CFStringGetBytes(name, v55, 0x8000100u, 0, 0, self->_appendBuffer, 1024, &usedBufLen);
     v30 = usedBufLen;
   }
 
@@ -6671,7 +6671,7 @@ LABEL_35:
     usedBufLen = 0;
     v54.location = 0;
     v54.length = v28;
-    CFStringGetBytes(a4, v54, 0x8000100u, 0, 0, &self->_appendBuffer[v29], 1024 - v29, &usedBufLen);
+    CFStringGetBytes(name, v54, 0x8000100u, 0, 0, &self->_appendBuffer[v29], 1024 - v29, &usedBufLen);
     v30 = self->_appendBufferCount + usedBufLen;
   }
 
@@ -6823,106 +6823,106 @@ LABEL_66:
 LABEL_84:
   self->_emitPhase = 1;
   BSDescribeTruncationCommit(self);
-  v50 = self;
+  selfCopy2 = self;
 
 LABEL_85:
 
   return self;
 }
 
-- (id)appendInteger:(int64_t)a3 withName:(id)a4
+- (id)appendInteger:(int64_t)integer withName:(id)name
 {
-  v8 = BSDescribeAppendFieldFormat(self, a4, @"%td", a4, v4, v5, v6, v7, a3);
+  v8 = BSDescribeAppendFieldFormat(self, name, @"%td", name, v4, v5, v6, v7, integer);
 
   return v8;
 }
 
-- (id)appendUnsignedInteger:(unint64_t)a3 withName:(id)a4
+- (id)appendUnsignedInteger:(unint64_t)integer withName:(id)name
 {
-  v8 = BSDescribeAppendFieldFormat(self, a4, @"%tu", a4, v4, v5, v6, v7, a3);
+  v8 = BSDescribeAppendFieldFormat(self, name, @"%tu", name, v4, v5, v6, v7, integer);
 
   return v8;
 }
 
-- (id)appendUnsignedInteger:(unint64_t)a3 withName:(id)a4 format:(int64_t)a5
+- (id)appendUnsignedInteger:(unint64_t)integer withName:(id)name format:(int64_t)format
 {
   v8 = @"%tu";
-  if (a5 == 1)
+  if (format == 1)
   {
     v8 = @"0x%tX";
   }
 
-  v9 = BSDescribeAppendFieldFormat(self, a4, v8, a4, a5, v5, v6, v7, a3);
+  v9 = BSDescribeAppendFieldFormat(self, name, v8, name, format, v5, v6, v7, integer);
 
   return v9;
 }
 
-- (id)appendInt:(int)a3 withName:(id)a4
+- (id)appendInt:(int)int withName:(id)name
 {
-  v8 = BSDescribeAppendFieldFormat(self, a4, @"%d", a4, v4, v5, v6, v7, a3);
+  v8 = BSDescribeAppendFieldFormat(self, name, @"%d", name, v4, v5, v6, v7, int);
 
   return v8;
 }
 
-- (id)appendUnsignedInt:(unsigned int)a3 withName:(id)a4
+- (id)appendUnsignedInt:(unsigned int)int withName:(id)name
 {
-  v8 = BSDescribeAppendFieldFormat(self, a4, @"%u", a4, v4, v5, v6, v7, a3);
+  v8 = BSDescribeAppendFieldFormat(self, name, @"%u", name, v4, v5, v6, v7, int);
 
   return v8;
 }
 
-- (id)appendInt64:(int64_t)a3 withName:(id)a4
+- (id)appendInt64:(int64_t)int64 withName:(id)name
 {
-  v8 = BSDescribeAppendFieldFormat(self, a4, @"%lld", a4, v4, v5, v6, v7, a3);
+  v8 = BSDescribeAppendFieldFormat(self, name, @"%lld", name, v4, v5, v6, v7, int64);
 
   return v8;
 }
 
-- (id)appendUInt64:(unint64_t)a3 withName:(id)a4
+- (id)appendUInt64:(unint64_t)int64 withName:(id)name
 {
-  v8 = BSDescribeAppendFieldFormat(self, a4, @"%llu", a4, v4, v5, v6, v7, a3);
+  v8 = BSDescribeAppendFieldFormat(self, name, @"%llu", name, v4, v5, v6, v7, int64);
 
   return v8;
 }
 
-- (id)appendUInt64:(unint64_t)a3 withName:(id)a4 format:(int64_t)a5
+- (id)appendUInt64:(unint64_t)int64 withName:(id)name format:(int64_t)format
 {
   v8 = @"%llu";
-  if (a5 == 1)
+  if (format == 1)
   {
     v8 = @"0x%llX";
   }
 
-  v9 = BSDescribeAppendFieldFormat(self, a4, v8, a4, a5, v5, v6, v7, a3);
+  v9 = BSDescribeAppendFieldFormat(self, name, v8, name, format, v5, v6, v7, int64);
 
   return v9;
 }
 
-- (id)appendDouble:(double)a3 withName:(id)a4 decimalPrecision:(unint64_t)a5
+- (id)appendDouble:(double)double withName:(id)name decimalPrecision:(unint64_t)precision
 {
-  if (a5 == 0x7FFFFFFFFFFFFFFFLL)
+  if (precision == 0x7FFFFFFFFFFFFFFFLL)
   {
-    BSDescribeAppendFieldFormat(self, a4, @"%f", 0x7FFFFFFFFFFFFFFFLL, v5, v6, v7, v8, SLOBYTE(a3));
+    BSDescribeAppendFieldFormat(self, name, @"%f", 0x7FFFFFFFFFFFFFFFLL, v5, v6, v7, v8, SLOBYTE(double));
   }
 
   else
   {
-    v9 = -1;
-    if (a5 < 0x7FFFFFFF)
+    precisionCopy = -1;
+    if (precision < 0x7FFFFFFF)
     {
-      v9 = a5;
+      precisionCopy = precision;
     }
 
-    BSDescribeAppendFieldFormat(self, a4, @"%.*f", a5, v5, v6, v7, v8, v9);
+    BSDescribeAppendFieldFormat(self, name, @"%.*f", precision, v5, v6, v7, v8, precisionCopy);
   }
   v10 = ;
 
   return v10;
 }
 
-- (id)appendTimeInterval:(double)a3 withName:(id)a4 decomposeUnits:(BOOL)a5
+- (id)appendTimeInterval:(double)interval withName:(id)name decomposeUnits:(BOOL)units
 {
-  if (fabs(a3) == INFINITY)
+  if (fabs(interval) == INFINITY)
   {
     v21 = self->_style;
     emitPhase = self->_emitPhase;
@@ -6968,7 +6968,7 @@ LABEL_41:
         CFStringAppendCString(self->_string, v38, 0x8000100u);
 LABEL_52:
         self->_emitPhase = 0;
-        if (!a4)
+        if (!name)
         {
           goto LABEL_84;
         }
@@ -7006,7 +7006,7 @@ LABEL_51:
         }
 
 LABEL_21:
-        if (!a4)
+        if (!name)
         {
           goto LABEL_84;
         }
@@ -7026,7 +7026,7 @@ LABEL_53:
           self->_maximumLengthBeforeTruncation = maximumNameLengthBeforeTruncation;
         }
 
-        v44 = [a4 length];
+        v44 = [name length];
         v45 = self->_appendBufferCount;
         if (v45 + 3 * v44 > 1023)
         {
@@ -7039,14 +7039,14 @@ LABEL_53:
 
           if (v44 > 341)
           {
-            [(NSMutableString *)self->_string appendString:a4];
+            [(NSMutableString *)self->_string appendString:name];
             goto LABEL_67;
           }
 
           usedBufLen = 0;
           v101.location = 0;
           v101.length = v44;
-          CFStringGetBytes(a4, v101, 0x8000100u, 0, 0, self->_appendBuffer, 1024, &usedBufLen);
+          CFStringGetBytes(name, v101, 0x8000100u, 0, 0, self->_appendBuffer, 1024, &usedBufLen);
           v46 = usedBufLen;
         }
 
@@ -7055,7 +7055,7 @@ LABEL_53:
           usedBufLen = 0;
           v100.location = 0;
           v100.length = v44;
-          CFStringGetBytes(a4, v100, 0x8000100u, 0, 0, &self->_appendBuffer[v45], 1024 - v45, &usedBufLen);
+          CFStringGetBytes(name, v100, 0x8000100u, 0, 0, &self->_appendBuffer[v45], 1024 - v45, &usedBufLen);
           v46 = self->_appendBufferCount + usedBufLen;
         }
 
@@ -7242,17 +7242,17 @@ LABEL_98:
     goto LABEL_41;
   }
 
-  v11 = (a3 - a3) * 1000.0;
-  if (!a5)
+  v11 = (interval - interval) * 1000.0;
+  if (!units)
   {
     if (fabs(v11) >= 2.22044605e-16)
     {
-      appended = BSDescribeAppendFieldFormat(self, a4, @"%.2fs", a5, v5, v6, v7, v8, SLOBYTE(a3));
+      appended = BSDescribeAppendFieldFormat(self, name, @"%.2fs", units, v5, v6, v7, v8, SLOBYTE(interval));
     }
 
     else
     {
-      appended = BSDescribeAppendFieldFormat(self, a4, @"%.1fs", a5, v5, v6, v7, v8, SLOBYTE(a3));
+      appended = BSDescribeAppendFieldFormat(self, name, @"%.1fs", units, v5, v6, v7, v8, SLOBYTE(interval));
     }
 
     v28 = appended;
@@ -7403,7 +7403,7 @@ LABEL_111:
   }
 
 LABEL_118:
-  if (!a4)
+  if (!name)
   {
     goto LABEL_148;
   }
@@ -7421,7 +7421,7 @@ LABEL_118:
     self->_maximumLengthBeforeTruncation = v73;
   }
 
-  v74 = [a4 length];
+  v74 = [name length];
   v75 = self->_appendBufferCount;
   if (v75 + 3 * v74 > 1023)
   {
@@ -7434,14 +7434,14 @@ LABEL_118:
 
     if (v74 > 341)
     {
-      [(NSMutableString *)self->_string appendString:a4];
+      [(NSMutableString *)self->_string appendString:name];
       goto LABEL_131;
     }
 
     usedBufLen = 0;
     v105.location = 0;
     v105.length = v74;
-    CFStringGetBytes(a4, v105, 0x8000100u, 0, 0, self->_appendBuffer, 1024, &usedBufLen);
+    CFStringGetBytes(name, v105, 0x8000100u, 0, 0, self->_appendBuffer, 1024, &usedBufLen);
     v76 = usedBufLen;
   }
 
@@ -7450,7 +7450,7 @@ LABEL_118:
     usedBufLen = 0;
     v104.location = 0;
     v104.length = v74;
-    CFStringGetBytes(a4, v104, 0x8000100u, 0, 0, &self->_appendBuffer[v75], 1024 - v75, &usedBufLen);
+    CFStringGetBytes(name, v104, 0x8000100u, 0, 0, &self->_appendBuffer[v75], 1024 - v75, &usedBufLen);
     v76 = self->_appendBufferCount + usedBufLen;
   }
 
@@ -7603,7 +7603,7 @@ LABEL_163:
   BSDescribeTruncationCommit(self);
 
 LABEL_164:
-  v96 = self;
+  selfCopy = self;
 
   return self;
 }
@@ -7619,17 +7619,17 @@ uint64_t __66__BSDescriptionStream_appendTimeInterval_withName_decomposeUnits___
   return [v2 setUnitsStyle:1];
 }
 
-- (id)appendPointer:(void *)a3 withName:(id)a4
+- (id)appendPointer:(void *)pointer withName:(id)name
 {
-  v8 = BSDescribeAppendFieldFormat(self, a4, @"%p", a4, v4, v5, v6, v7, a3);
+  v8 = BSDescribeAppendFieldFormat(self, name, @"%p", name, v4, v5, v6, v7, pointer);
 
   return v8;
 }
 
-- (id)appendPoint:(CGPoint)a3 withName:(id)a4
+- (id)appendPoint:(CGPoint)point withName:(id)name
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v8 = self->_style;
   emitPhase = self->_emitPhase;
   if (emitPhase > 2)
@@ -7674,7 +7674,7 @@ LABEL_20:
       CFStringAppendCString(self->_string, v21, 0x8000100u);
 LABEL_31:
       self->_emitPhase = 0;
-      if (!a4)
+      if (!name)
       {
         goto LABEL_63;
       }
@@ -7765,7 +7765,7 @@ LABEL_30:
   }
 
 LABEL_8:
-  if (!a4)
+  if (!name)
   {
     goto LABEL_63;
   }
@@ -7785,7 +7785,7 @@ LABEL_32:
     self->_maximumLengthBeforeTruncation = maximumNameLengthBeforeTruncation;
   }
 
-  v27 = [a4 length];
+  v27 = [name length];
   v28 = self->_appendBufferCount;
   if (v28 + 3 * v27 > 1023)
   {
@@ -7798,14 +7798,14 @@ LABEL_32:
 
     if (v27 > 341)
     {
-      [(NSMutableString *)self->_string appendString:a4];
+      [(NSMutableString *)self->_string appendString:name];
       goto LABEL_46;
     }
 
     usedBufLen = 0;
     v48.location = 0;
     v48.length = v27;
-    CFStringGetBytes(a4, v48, 0x8000100u, 0, 0, self->_appendBuffer, 1024, &usedBufLen);
+    CFStringGetBytes(name, v48, 0x8000100u, 0, 0, self->_appendBuffer, 1024, &usedBufLen);
     v29 = usedBufLen;
   }
 
@@ -7814,7 +7814,7 @@ LABEL_32:
     usedBufLen = 0;
     v47.location = 0;
     v47.length = v27;
-    CFStringGetBytes(a4, v47, 0x8000100u, 0, 0, &self->_appendBuffer[v28], 1024 - v28, &usedBufLen);
+    CFStringGetBytes(name, v47, 0x8000100u, 0, 0, &self->_appendBuffer[v28], 1024 - v28, &usedBufLen);
     v29 = self->_appendBufferCount + usedBufLen;
   }
 
@@ -7922,10 +7922,10 @@ LABEL_63:
   return self;
 }
 
-- (id)appendSize:(CGSize)a3 withName:(id)a4
+- (id)appendSize:(CGSize)size withName:(id)name
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v8 = self->_style;
   emitPhase = self->_emitPhase;
   if (emitPhase > 2)
@@ -7970,7 +7970,7 @@ LABEL_20:
       CFStringAppendCString(self->_string, v21, 0x8000100u);
 LABEL_31:
       self->_emitPhase = 0;
-      if (!a4)
+      if (!name)
       {
         goto LABEL_63;
       }
@@ -8061,7 +8061,7 @@ LABEL_30:
   }
 
 LABEL_8:
-  if (!a4)
+  if (!name)
   {
     goto LABEL_63;
   }
@@ -8081,7 +8081,7 @@ LABEL_32:
     self->_maximumLengthBeforeTruncation = maximumNameLengthBeforeTruncation;
   }
 
-  v27 = [a4 length];
+  v27 = [name length];
   v28 = self->_appendBufferCount;
   if (v28 + 3 * v27 > 1023)
   {
@@ -8094,14 +8094,14 @@ LABEL_32:
 
     if (v27 > 341)
     {
-      [(NSMutableString *)self->_string appendString:a4];
+      [(NSMutableString *)self->_string appendString:name];
       goto LABEL_46;
     }
 
     usedBufLen = 0;
     v48.location = 0;
     v48.length = v27;
-    CFStringGetBytes(a4, v48, 0x8000100u, 0, 0, self->_appendBuffer, 1024, &usedBufLen);
+    CFStringGetBytes(name, v48, 0x8000100u, 0, 0, self->_appendBuffer, 1024, &usedBufLen);
     v29 = usedBufLen;
   }
 
@@ -8110,7 +8110,7 @@ LABEL_32:
     usedBufLen = 0;
     v47.location = 0;
     v47.length = v27;
-    CFStringGetBytes(a4, v47, 0x8000100u, 0, 0, &self->_appendBuffer[v28], 1024 - v28, &usedBufLen);
+    CFStringGetBytes(name, v47, 0x8000100u, 0, 0, &self->_appendBuffer[v28], 1024 - v28, &usedBufLen);
     v29 = self->_appendBufferCount + usedBufLen;
   }
 
@@ -8218,12 +8218,12 @@ LABEL_63:
   return self;
 }
 
-- (id)appendRect:(CGRect)a3 withName:(id)a4
+- (id)appendRect:(CGRect)rect withName:(id)name
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v10 = self->_style;
   emitPhase = self->_emitPhase;
   if (emitPhase > 2)
@@ -8268,7 +8268,7 @@ LABEL_20:
       CFStringAppendCString(self->_string, v23, 0x8000100u);
 LABEL_31:
       self->_emitPhase = 0;
-      if (!a4)
+      if (!name)
       {
         goto LABEL_63;
       }
@@ -8359,7 +8359,7 @@ LABEL_30:
   }
 
 LABEL_8:
-  if (!a4)
+  if (!name)
   {
     goto LABEL_63;
   }
@@ -8379,7 +8379,7 @@ LABEL_32:
     self->_maximumLengthBeforeTruncation = maximumNameLengthBeforeTruncation;
   }
 
-  v29 = [a4 length];
+  v29 = [name length];
   v30 = self->_appendBufferCount;
   if (v30 + 3 * v29 > 1023)
   {
@@ -8392,14 +8392,14 @@ LABEL_32:
 
     if (v29 > 341)
     {
-      [(NSMutableString *)self->_string appendString:a4];
+      [(NSMutableString *)self->_string appendString:name];
       goto LABEL_46;
     }
 
     usedBufLen = 0;
     v55.location = 0;
     v55.length = v29;
-    CFStringGetBytes(a4, v55, 0x8000100u, 0, 0, self->_appendBuffer, 1024, &usedBufLen);
+    CFStringGetBytes(name, v55, 0x8000100u, 0, 0, self->_appendBuffer, 1024, &usedBufLen);
     v31 = usedBufLen;
   }
 
@@ -8408,7 +8408,7 @@ LABEL_32:
     usedBufLen = 0;
     v54.location = 0;
     v54.length = v29;
-    CFStringGetBytes(a4, v54, 0x8000100u, 0, 0, &self->_appendBuffer[v30], 1024 - v30, &usedBufLen);
+    CFStringGetBytes(name, v54, 0x8000100u, 0, 0, &self->_appendBuffer[v30], 1024 - v30, &usedBufLen);
     v31 = self->_appendBufferCount + usedBufLen;
   }
 
@@ -8573,9 +8573,9 @@ LABEL_63:
   return self;
 }
 
-- (id)appendSelector:(SEL)a3 withName:(id)a4
+- (id)appendSelector:(SEL)selector withName:(id)name
 {
-  v6 = NSStringFromSelector(a3);
+  v6 = NSStringFromSelector(selector);
   v7 = self->_style;
   emitPhase = self->_emitPhase;
   if (emitPhase > 2)
@@ -8620,7 +8620,7 @@ LABEL_20:
       CFStringAppendCString(self->_string, v20, 0x8000100u);
 LABEL_31:
       self->_emitPhase = 0;
-      if (!a4)
+      if (!name)
       {
         goto LABEL_63;
       }
@@ -8711,7 +8711,7 @@ LABEL_30:
   }
 
 LABEL_8:
-  if (!a4)
+  if (!name)
   {
     goto LABEL_63;
   }
@@ -8731,7 +8731,7 @@ LABEL_32:
     self->_maximumLengthBeforeTruncation = maximumNameLengthBeforeTruncation;
   }
 
-  v26 = [a4 length];
+  v26 = [name length];
   v27 = self->_appendBufferCount;
   if (v27 + 3 * v26 > 1023)
   {
@@ -8744,14 +8744,14 @@ LABEL_32:
 
     if (v26 > 341)
     {
-      [(NSMutableString *)self->_string appendString:a4];
+      [(NSMutableString *)self->_string appendString:name];
       goto LABEL_46;
     }
 
     usedBufLen = 0;
     v52.location = 0;
     v52.length = v26;
-    CFStringGetBytes(a4, v52, 0x8000100u, 0, 0, self->_appendBuffer, 1024, &usedBufLen);
+    CFStringGetBytes(name, v52, 0x8000100u, 0, 0, self->_appendBuffer, 1024, &usedBufLen);
     v28 = usedBufLen;
   }
 
@@ -8760,7 +8760,7 @@ LABEL_32:
     usedBufLen = 0;
     v51.location = 0;
     v51.length = v26;
-    CFStringGetBytes(a4, v51, 0x8000100u, 0, 0, &self->_appendBuffer[v27], 1024 - v27, &usedBufLen);
+    CFStringGetBytes(name, v51, 0x8000100u, 0, 0, &self->_appendBuffer[v27], 1024 - v27, &usedBufLen);
     v28 = self->_appendBufferCount + usedBufLen;
   }
 
@@ -8912,12 +8912,12 @@ LABEL_63:
 LABEL_81:
   self->_emitPhase = 1;
   BSDescribeTruncationCommit(self);
-  v48 = self;
+  selfCopy = self;
 
   return self;
 }
 
-- (id)appendCString:(const char *)a3 withName:(id)a4
+- (id)appendCString:(const char *)string withName:(id)name
 {
   v7 = self->_style;
   emitPhase = self->_emitPhase;
@@ -8963,7 +8963,7 @@ LABEL_20:
       CFStringAppendCString(self->_string, v20, 0x8000100u);
 LABEL_31:
       self->_emitPhase = 0;
-      if (!a4)
+      if (!name)
       {
         goto LABEL_63;
       }
@@ -9054,7 +9054,7 @@ LABEL_30:
   }
 
 LABEL_8:
-  if (!a4)
+  if (!name)
   {
     goto LABEL_63;
   }
@@ -9074,7 +9074,7 @@ LABEL_32:
     self->_maximumLengthBeforeTruncation = maximumNameLengthBeforeTruncation;
   }
 
-  v26 = [a4 length];
+  v26 = [name length];
   v27 = self->_appendBufferCount;
   if (v27 + 3 * v26 > 1023)
   {
@@ -9087,14 +9087,14 @@ LABEL_32:
 
     if (v26 > 341)
     {
-      [(NSMutableString *)self->_string appendString:a4];
+      [(NSMutableString *)self->_string appendString:name];
       goto LABEL_46;
     }
 
     usedBufLen = 0;
     v55.location = 0;
     v55.length = v26;
-    CFStringGetBytes(a4, v55, 0x8000100u, 0, 0, self->_appendBuffer, 1024, &usedBufLen);
+    CFStringGetBytes(name, v55, 0x8000100u, 0, 0, self->_appendBuffer, 1024, &usedBufLen);
     v28 = usedBufLen;
   }
 
@@ -9103,7 +9103,7 @@ LABEL_32:
     usedBufLen = 0;
     v54.location = 0;
     v54.length = v26;
-    CFStringGetBytes(a4, v54, 0x8000100u, 0, 0, &self->_appendBuffer[v27], 1024 - v27, &usedBufLen);
+    CFStringGetBytes(name, v54, 0x8000100u, 0, 0, &self->_appendBuffer[v27], 1024 - v27, &usedBufLen);
     v28 = self->_appendBufferCount + usedBufLen;
   }
 
@@ -9197,14 +9197,14 @@ LABEL_63:
 
   *(&self->super.isa + v42) = maximumValueLengthBeforeTruncation;
 
-  if (a3)
+  if (string)
   {
-    v43 = strlen(a3);
+    v43 = strlen(string);
     v44 = self->_appendBufferCount;
     if ((v44 + v43) <= 1023)
     {
       v45 = v43;
-      memcpy(&self->_appendBuffer[v44], a3, v43);
+      memcpy(&self->_appendBuffer[v44], string, v43);
       v46 = self->_appendBufferCount + v45;
 LABEL_74:
       self->_appendBufferCount = v46;
@@ -9219,7 +9219,7 @@ LABEL_74:
     }
 
     string = self->_string;
-    v50 = a3;
+    stringCopy = string;
   }
 
   else
@@ -9238,10 +9238,10 @@ LABEL_74:
     CFStringAppendCString(self->_string, self->_appendBuffer, 0x8000100u);
     self->_appendBufferCount = 0;
     string = self->_string;
-    v50 = "<nil>";
+    stringCopy = "<nil>";
   }
 
-  CFStringAppendCString(string, v50, 0x8000100u);
+  CFStringAppendCString(string, stringCopy, 0x8000100u);
 LABEL_80:
   self->_emitPhase = 1;
   BSDescribeTruncationCommit(self);
@@ -9249,9 +9249,9 @@ LABEL_80:
   return self;
 }
 
-- (id)appendQueue:(id)a3 withName:(id)a4
+- (id)appendQueue:(id)queue withName:(id)name
 {
-  label = dispatch_queue_get_label(a3);
+  label = dispatch_queue_get_label(queue);
   v7 = self->_style;
   emitPhase = self->_emitPhase;
   if (emitPhase > 2)
@@ -9296,7 +9296,7 @@ LABEL_20:
       CFStringAppendCString(self->_string, v20, 0x8000100u);
 LABEL_31:
       self->_emitPhase = 0;
-      if (!a4)
+      if (!name)
       {
         goto LABEL_63;
       }
@@ -9387,7 +9387,7 @@ LABEL_30:
   }
 
 LABEL_8:
-  if (!a4)
+  if (!name)
   {
     goto LABEL_63;
   }
@@ -9407,7 +9407,7 @@ LABEL_32:
     self->_maximumLengthBeforeTruncation = maximumNameLengthBeforeTruncation;
   }
 
-  v26 = [a4 length];
+  v26 = [name length];
   v27 = self->_appendBufferCount;
   if (v27 + 3 * v26 > 1023)
   {
@@ -9420,14 +9420,14 @@ LABEL_32:
 
     if (v26 > 341)
     {
-      [(NSMutableString *)self->_string appendString:a4];
+      [(NSMutableString *)self->_string appendString:name];
       goto LABEL_46;
     }
 
     usedBufLen = 0;
     v55.location = 0;
     v55.length = v26;
-    CFStringGetBytes(a4, v55, 0x8000100u, 0, 0, self->_appendBuffer, 1024, &usedBufLen);
+    CFStringGetBytes(name, v55, 0x8000100u, 0, 0, self->_appendBuffer, 1024, &usedBufLen);
     v28 = usedBufLen;
   }
 
@@ -9436,7 +9436,7 @@ LABEL_32:
     usedBufLen = 0;
     v54.location = 0;
     v54.length = v26;
-    CFStringGetBytes(a4, v54, 0x8000100u, 0, 0, &self->_appendBuffer[v27], 1024 - v27, &usedBufLen);
+    CFStringGetBytes(name, v54, 0x8000100u, 0, 0, &self->_appendBuffer[v27], 1024 - v27, &usedBufLen);
     v28 = self->_appendBufferCount + usedBufLen;
   }
 
@@ -9582,9 +9582,9 @@ LABEL_80:
   return self;
 }
 
-- (id)appendClass:(Class)a3 withName:(id)a4
+- (id)appendClass:(Class)class withName:(id)name
 {
-  v6 = NSStringFromClass(a3);
+  v6 = NSStringFromClass(class);
   v7 = self->_style;
   emitPhase = self->_emitPhase;
   if (emitPhase > 2)
@@ -9629,7 +9629,7 @@ LABEL_20:
       CFStringAppendCString(self->_string, v20, 0x8000100u);
 LABEL_31:
       self->_emitPhase = 0;
-      if (!a4)
+      if (!name)
       {
         goto LABEL_63;
       }
@@ -9720,7 +9720,7 @@ LABEL_30:
   }
 
 LABEL_8:
-  if (!a4)
+  if (!name)
   {
     goto LABEL_63;
   }
@@ -9740,7 +9740,7 @@ LABEL_32:
     self->_maximumLengthBeforeTruncation = maximumNameLengthBeforeTruncation;
   }
 
-  v26 = [a4 length];
+  v26 = [name length];
   v27 = self->_appendBufferCount;
   if (v27 + 3 * v26 > 1023)
   {
@@ -9753,14 +9753,14 @@ LABEL_32:
 
     if (v26 > 341)
     {
-      [(NSMutableString *)self->_string appendString:a4];
+      [(NSMutableString *)self->_string appendString:name];
       goto LABEL_46;
     }
 
     usedBufLen = 0;
     v52.location = 0;
     v52.length = v26;
-    CFStringGetBytes(a4, v52, 0x8000100u, 0, 0, self->_appendBuffer, 1024, &usedBufLen);
+    CFStringGetBytes(name, v52, 0x8000100u, 0, 0, self->_appendBuffer, 1024, &usedBufLen);
     v28 = usedBufLen;
   }
 
@@ -9769,7 +9769,7 @@ LABEL_32:
     usedBufLen = 0;
     v51.location = 0;
     v51.length = v26;
-    CFStringGetBytes(a4, v51, 0x8000100u, 0, 0, &self->_appendBuffer[v27], 1024 - v27, &usedBufLen);
+    CFStringGetBytes(name, v51, 0x8000100u, 0, 0, &self->_appendBuffer[v27], 1024 - v27, &usedBufLen);
     v28 = self->_appendBufferCount + usedBufLen;
   }
 
@@ -9921,12 +9921,12 @@ LABEL_63:
 LABEL_81:
   self->_emitPhase = 1;
   BSDescribeTruncationCommit(self);
-  v48 = self;
+  selfCopy = self;
 
   return self;
 }
 
-- (id)appendVersionedPID:(int64_t)a3 withName:(id)a4
+- (id)appendVersionedPID:(int64_t)d withName:(id)name
 {
   v7 = self->_style;
   emitPhase = self->_emitPhase;
@@ -9972,7 +9972,7 @@ LABEL_20:
       CFStringAppendCString(self->_string, v20, 0x8000100u);
 LABEL_31:
       self->_emitPhase = 0;
-      if (!a4)
+      if (!name)
       {
         goto LABEL_63;
       }
@@ -10063,7 +10063,7 @@ LABEL_30:
   }
 
 LABEL_8:
-  if (!a4)
+  if (!name)
   {
     goto LABEL_63;
   }
@@ -10083,7 +10083,7 @@ LABEL_32:
     self->_maximumLengthBeforeTruncation = maximumNameLengthBeforeTruncation;
   }
 
-  v26 = [a4 length];
+  v26 = [name length];
   v27 = self->_appendBufferCount;
   if (v27 + 3 * v26 > 1023)
   {
@@ -10096,14 +10096,14 @@ LABEL_32:
 
     if (v26 > 341)
     {
-      [(NSMutableString *)self->_string appendString:a4];
+      [(NSMutableString *)self->_string appendString:name];
       goto LABEL_46;
     }
 
     usedBufLen = 0;
     v46.location = 0;
     v46.length = v26;
-    CFStringGetBytes(a4, v46, 0x8000100u, 0, 0, self->_appendBuffer, 1024, &usedBufLen);
+    CFStringGetBytes(name, v46, 0x8000100u, 0, 0, self->_appendBuffer, 1024, &usedBufLen);
     v28 = usedBufLen;
   }
 
@@ -10112,7 +10112,7 @@ LABEL_32:
     usedBufLen = 0;
     v45.location = 0;
     v45.length = v26;
-    CFStringGetBytes(a4, v45, 0x8000100u, 0, 0, &self->_appendBuffer[v27], 1024 - v27, &usedBufLen);
+    CFStringGetBytes(name, v45, 0x8000100u, 0, 0, &self->_appendBuffer[v27], 1024 - v27, &usedBufLen);
     v28 = self->_appendBufferCount + usedBufLen;
   }
 
@@ -10206,7 +10206,7 @@ LABEL_63:
 
   *(&self->super.isa + v42) = maximumValueLengthBeforeTruncation;
 
-  BSAppendVersionedPIDToStringAppendTarget(a3, self);
+  BSAppendVersionedPIDToStringAppendTarget(d, self);
   self->_emitPhase = 1;
   BSDescribeTruncationCommit(self);
   return self;

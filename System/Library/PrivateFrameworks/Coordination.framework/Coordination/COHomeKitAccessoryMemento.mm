@@ -1,69 +1,69 @@
 @interface COHomeKitAccessoryMemento
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToHomeKitAccessoryMemento:(id)a3;
-- (COHomeKitAccessoryMemento)initWithCoder:(id)a3;
-- (COHomeKitAccessoryMemento)initWithHomeKitAccessory:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToHomeKitAccessoryMemento:(id)memento;
+- (COHomeKitAccessoryMemento)initWithCoder:(id)coder;
+- (COHomeKitAccessoryMemento)initWithHomeKitAccessory:(id)accessory;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation COHomeKitAccessoryMemento
 
-- (COHomeKitAccessoryMemento)initWithHomeKitAccessory:(id)a3
+- (COHomeKitAccessoryMemento)initWithHomeKitAccessory:(id)accessory
 {
-  v4 = a3;
+  accessoryCopy = accessory;
   v20.receiver = self;
   v20.super_class = COHomeKitAccessoryMemento;
   v5 = [(COHomeKitAccessoryMemento *)&v20 init];
   if (v5)
   {
-    v6 = [v4 uniqueIdentifier];
+    uniqueIdentifier = [accessoryCopy uniqueIdentifier];
     uniqueIdentifier = v5->_uniqueIdentifier;
-    v5->_uniqueIdentifier = v6;
+    v5->_uniqueIdentifier = uniqueIdentifier;
 
-    v8 = [v4 category];
-    v9 = [v8 categoryType];
-    v10 = [v9 copy];
+    category = [accessoryCopy category];
+    categoryType = [category categoryType];
+    v10 = [categoryType copy];
     categoryType = v5->_categoryType;
     v5->_categoryType = v10;
 
-    v12 = [v4 home];
-    v13 = [v12 uniqueIdentifier];
+    home = [accessoryCopy home];
+    uniqueIdentifier2 = [home uniqueIdentifier];
     homeUniqueIdentifier = v5->_homeUniqueIdentifier;
-    v5->_homeUniqueIdentifier = v13;
+    v5->_homeUniqueIdentifier = uniqueIdentifier2;
 
-    v15 = [v4 device];
-    v16 = [v15 idsIdentifier];
-    v17 = [v16 UUIDString];
+    device = [accessoryCopy device];
+    idsIdentifier = [device idsIdentifier];
+    uUIDString = [idsIdentifier UUIDString];
     IDSIdentifier = v5->_IDSIdentifier;
-    v5->_IDSIdentifier = v17;
+    v5->_IDSIdentifier = uUIDString;
   }
 
   return v5;
 }
 
-- (COHomeKitAccessoryMemento)initWithCoder:(id)a3
+- (COHomeKitAccessoryMemento)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = COHomeKitAccessoryMemento;
   v5 = [(COHomeKitAccessoryMemento *)&v15 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"uniqueIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"uniqueIdentifier"];
     uniqueIdentifier = v5->_uniqueIdentifier;
     v5->_uniqueIdentifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"categoryType"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"categoryType"];
     categoryType = v5->_categoryType;
     v5->_categoryType = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"homeUniqueIdentifier"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"homeUniqueIdentifier"];
     homeUniqueIdentifier = v5->_homeUniqueIdentifier;
     v5->_homeUniqueIdentifier = v10;
 
-    if (!v5->_uniqueIdentifier || !-[NSString length](v5->_categoryType, "length") || !v5->_homeUniqueIdentifier || ([v4 decodeObjectOfClass:objc_opt_class() forKey:@"idsIdentifier"], v12 = objc_claimAutoreleasedReturnValue(), IDSIdentifier = v5->_IDSIdentifier, v5->_IDSIdentifier = v12, IDSIdentifier, !v5->_IDSIdentifier) && objc_msgSend(v4, "containsValueForKey:", @"idsIdentifier"))
+    if (!v5->_uniqueIdentifier || !-[NSString length](v5->_categoryType, "length") || !v5->_homeUniqueIdentifier || ([coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"idsIdentifier"], v12 = objc_claimAutoreleasedReturnValue(), IDSIdentifier = v5->_IDSIdentifier, v5->_IDSIdentifier = v12, IDSIdentifier, !v5->_IDSIdentifier) && objc_msgSend(coderCopy, "containsValueForKey:", @"idsIdentifier"))
     {
 
       v5 = 0;
@@ -78,61 +78,61 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(COHomeKitAccessoryMemento *)self uniqueIdentifier];
-  v7 = [v6 UUIDString];
-  v8 = [v7 UTF8String];
-  v9 = [(COHomeKitAccessoryMemento *)self IDSIdentifier];
-  if (v9)
+  uniqueIdentifier = [(COHomeKitAccessoryMemento *)self uniqueIdentifier];
+  uUIDString = [uniqueIdentifier UUIDString];
+  uTF8String = [uUIDString UTF8String];
+  iDSIdentifier = [(COHomeKitAccessoryMemento *)self IDSIdentifier];
+  if (iDSIdentifier)
   {
-    v10 = [(COHomeKitAccessoryMemento *)self IDSIdentifier];
-    v11 = [v3 stringWithFormat:@"<%@: %p, id = %.8s, ids = %.8s>", v5, self, v8, objc_msgSend(v10, "UTF8String")];
+    iDSIdentifier2 = [(COHomeKitAccessoryMemento *)self IDSIdentifier];
+    v11 = [v3 stringWithFormat:@"<%@: %p, id = %.8s, ids = %.8s>", v5, self, uTF8String, objc_msgSend(iDSIdentifier2, "UTF8String")];
   }
 
   else
   {
-    v11 = [v3 stringWithFormat:@"<%@: %p, id = %.8s, ids = %.8s>", v5, self, v8, "nil"];
+    v11 = [v3 stringWithFormat:@"<%@: %p, id = %.8s, ids = %.8s>", v5, self, uTF8String, "nil"];
   }
 
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v8 = a3;
-  v4 = [(COHomeKitAccessoryMemento *)self uniqueIdentifier];
-  [v8 encodeObject:v4 forKey:@"uniqueIdentifier"];
+  coderCopy = coder;
+  uniqueIdentifier = [(COHomeKitAccessoryMemento *)self uniqueIdentifier];
+  [coderCopy encodeObject:uniqueIdentifier forKey:@"uniqueIdentifier"];
 
-  v5 = [(COHomeKitAccessoryMemento *)self categoryType];
-  [v8 encodeObject:v5 forKey:@"categoryType"];
+  categoryType = [(COHomeKitAccessoryMemento *)self categoryType];
+  [coderCopy encodeObject:categoryType forKey:@"categoryType"];
 
-  v6 = [(COHomeKitAccessoryMemento *)self homeUniqueIdentifier];
-  [v8 encodeObject:v6 forKey:@"homeUniqueIdentifier"];
+  homeUniqueIdentifier = [(COHomeKitAccessoryMemento *)self homeUniqueIdentifier];
+  [coderCopy encodeObject:homeUniqueIdentifier forKey:@"homeUniqueIdentifier"];
 
-  v7 = [(COHomeKitAccessoryMemento *)self IDSIdentifier];
-  if ([v7 length])
+  iDSIdentifier = [(COHomeKitAccessoryMemento *)self IDSIdentifier];
+  if ([iDSIdentifier length])
   {
-    [v8 encodeObject:v7 forKey:@"idsIdentifier"];
+    [coderCopy encodeObject:iDSIdentifier forKey:@"idsIdentifier"];
   }
 }
 
 - (unint64_t)hash
 {
-  v2 = [(COHomeKitAccessoryMemento *)self uniqueIdentifier];
-  v3 = [v2 hash];
+  uniqueIdentifier = [(COHomeKitAccessoryMemento *)self uniqueIdentifier];
+  v3 = [uniqueIdentifier hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (!equalCopy)
   {
     goto LABEL_5;
   }
 
-  if (self == v4)
+  if (self == equalCopy)
   {
     v6 = 1;
     goto LABEL_7;
@@ -155,36 +155,36 @@ LABEL_7:
   return v6;
 }
 
-- (BOOL)isEqualToHomeKitAccessoryMemento:(id)a3
+- (BOOL)isEqualToHomeKitAccessoryMemento:(id)memento
 {
-  v4 = a3;
-  v5 = [(COHomeKitAccessoryMemento *)self uniqueIdentifier];
-  v6 = [v4 uniqueIdentifier];
-  if ([v5 isEqual:v6])
+  mementoCopy = memento;
+  uniqueIdentifier = [(COHomeKitAccessoryMemento *)self uniqueIdentifier];
+  uniqueIdentifier2 = [mementoCopy uniqueIdentifier];
+  if ([uniqueIdentifier isEqual:uniqueIdentifier2])
   {
-    v7 = [(COHomeKitAccessoryMemento *)self homeUniqueIdentifier];
-    v8 = [v4 homeUniqueIdentifier];
-    if ([v7 isEqual:v8])
+    homeUniqueIdentifier = [(COHomeKitAccessoryMemento *)self homeUniqueIdentifier];
+    homeUniqueIdentifier2 = [mementoCopy homeUniqueIdentifier];
+    if ([homeUniqueIdentifier isEqual:homeUniqueIdentifier2])
     {
-      v9 = [(COHomeKitAccessoryMemento *)self categoryType];
-      v10 = [v4 categoryType];
-      if ([v9 isEqualToString:v10])
+      categoryType = [(COHomeKitAccessoryMemento *)self categoryType];
+      categoryType2 = [mementoCopy categoryType];
+      if ([categoryType isEqualToString:categoryType2])
       {
-        v11 = [(COHomeKitAccessoryMemento *)self IDSIdentifier];
-        v12 = [v4 IDSIdentifier];
-        if (v11 == v12)
+        iDSIdentifier = [(COHomeKitAccessoryMemento *)self IDSIdentifier];
+        iDSIdentifier2 = [mementoCopy IDSIdentifier];
+        if (iDSIdentifier == iDSIdentifier2)
         {
           v14 = 1;
         }
 
         else
         {
-          v16 = [(COHomeKitAccessoryMemento *)self IDSIdentifier];
-          [v4 IDSIdentifier];
-          v13 = v17 = v11;
-          v14 = [v16 isEqualToString:v13];
+          iDSIdentifier3 = [(COHomeKitAccessoryMemento *)self IDSIdentifier];
+          [mementoCopy IDSIdentifier];
+          v13 = v17 = iDSIdentifier;
+          v14 = [iDSIdentifier3 isEqualToString:v13];
 
-          v11 = v17;
+          iDSIdentifier = v17;
         }
       }
 

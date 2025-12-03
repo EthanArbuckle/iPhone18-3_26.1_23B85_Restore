@@ -1,5 +1,5 @@
 @interface RAPReportComposerPlaceClosureViewController
-- (RAPReportComposerPlaceClosureViewController)initWithReport:(id)a3 question:(id)a4 completion:(id)a5;
+- (RAPReportComposerPlaceClosureViewController)initWithReport:(id)report question:(id)question completion:(id)completion;
 - (id)tableParts;
 @end
 
@@ -38,15 +38,15 @@
   if (!self->_commentPart)
   {
     v11 = [RAPReportComposerCommentPart alloc];
-    v12 = [(RAPPlaceClosureQuestion *)self->_question commentQuestion];
-    v13 = [(RAPReportComposerCommentPart *)v11 initWithCommentQuestion:v12];
+    commentQuestion = [(RAPPlaceClosureQuestion *)self->_question commentQuestion];
+    v13 = [(RAPReportComposerCommentPart *)v11 initWithCommentQuestion:commentQuestion];
     commentPart = self->_commentPart;
     self->_commentPart = v13;
   }
 
-  v15 = [(RAPReportTableViewController *)self userInfoPart];
+  userInfoPart = [(RAPReportTableViewController *)self userInfoPart];
   v16 = self->_issuePart;
-  v22[0] = v15;
+  v22[0] = userInfoPart;
   v22[1] = v16;
   v22[2] = self->_commentPart;
   v17 = [NSArray arrayWithObjects:v22 count:3];
@@ -54,22 +54,22 @@
   return v17;
 }
 
-- (RAPReportComposerPlaceClosureViewController)initWithReport:(id)a3 question:(id)a4 completion:(id)a5
+- (RAPReportComposerPlaceClosureViewController)initWithReport:(id)report question:(id)question completion:(id)completion
 {
-  v9 = a4;
+  questionCopy = question;
   v16.receiver = self;
   v16.super_class = RAPReportComposerPlaceClosureViewController;
-  v10 = [(RAPReportTableViewController *)&v16 initWithReport:a3 question:v9 completion:a5];
+  v10 = [(RAPReportTableViewController *)&v16 initWithReport:report question:questionCopy completion:completion];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_question, a4);
-    v12 = [(RAPReportTableViewController *)v11 sendButtonItem];
-    v13 = [(RAPReportComposerPlaceClosureViewController *)v11 navigationItem];
-    [v13 setRightBarButtonItem:v12];
+    objc_storeStrong(&v10->_question, question);
+    sendButtonItem = [(RAPReportTableViewController *)v11 sendButtonItem];
+    navigationItem = [(RAPReportComposerPlaceClosureViewController *)v11 navigationItem];
+    [navigationItem setRightBarButtonItem:sendButtonItem];
 
-    v14 = [(RAPPlaceClosureQuestion *)v11->_question localizedTitle];
-    [(RAPReportComposerPlaceClosureViewController *)v11 setTitle:v14];
+    localizedTitle = [(RAPPlaceClosureQuestion *)v11->_question localizedTitle];
+    [(RAPReportComposerPlaceClosureViewController *)v11 setTitle:localizedTitle];
   }
 
   return v11;

@@ -1,11 +1,11 @@
 @interface NTKPrideMetalQuad
-- (BOOL)prepareForTime:(double)a3;
-- (NTKPrideMetalQuad)initWithDevice:(id)a3 initialSemaphoreCount:(int)a4;
+- (BOOL)prepareForTime:(double)time;
+- (NTKPrideMetalQuad)initWithDevice:(id)device initialSemaphoreCount:(int)count;
 - (id)computePipelineManager;
 - (void)dealloc;
-- (void)performOffscreenPassesWithCommandBuffer:(id)a3;
-- (void)renderForDisplayWithEncoder:(id)a3;
-- (void)setupForQuadView:(id)a3;
+- (void)performOffscreenPassesWithCommandBuffer:(id)buffer;
+- (void)renderForDisplayWithEncoder:(id)encoder;
+- (void)setupForQuadView:(id)view;
 @end
 
 @implementation NTKPrideMetalQuad
@@ -22,16 +22,16 @@
   return v3;
 }
 
-- (NTKPrideMetalQuad)initWithDevice:(id)a3 initialSemaphoreCount:(int)a4
+- (NTKPrideMetalQuad)initWithDevice:(id)device initialSemaphoreCount:(int)count
 {
-  v6 = a3;
+  deviceCopy = device;
   v10.receiver = self;
   v10.super_class = NTKPrideMetalQuad;
   v7 = [(NTKPrideMetalQuad *)&v10 init];
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_clkDevice, a3);
+    objc_storeStrong(&v7->_clkDevice, device);
     v8->_startTime = CACurrentMediaTime();
   }
 
@@ -45,16 +45,16 @@
   [(NTKPrideMetalQuad *)&v2 dealloc];
 }
 
-- (void)setupForQuadView:(id)a3
+- (void)setupForQuadView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v5 = [NSBundle bundleForClass:objc_opt_class()];
   v6 = +[CLKUIMetalResourceManager sharedDevice];
   v7 = [v6 newDefaultLibraryWithBundle:v5 error:0];
-  v8 = [(NTKPrideMetalQuad *)self computePipelineManager];
-  v9 = [v8 pipeline];
+  computePipelineManager = [(NTKPrideMetalQuad *)self computePipelineManager];
+  pipeline = [computePipelineManager pipeline];
   mtlComputePipelineState = self->_mtlComputePipelineState;
-  self->_mtlComputePipelineState = v9;
+  self->_mtlComputePipelineState = pipeline;
 
   if (!self->_mtlComputePipelineState)
   {
@@ -63,20 +63,20 @@
     v24[2] = sub_EE98;
     v24[3] = &unk_24A30;
     v25 = v7;
-    v26 = self;
+    selfCopy = self;
     v27 = v6;
     v11 = [NTKPromise metalPipelinePromiseNamed:@"Pride Compute Pipeline" withBlock:v24];
     v12 = self->_mtlComputePipelineState;
     self->_mtlComputePipelineState = v11;
 
-    v13 = [(NTKPrideMetalQuad *)self computePipelineManager];
-    [v13 setPipeline:self->_mtlComputePipelineState];
+    computePipelineManager2 = [(NTKPrideMetalQuad *)self computePipelineManager];
+    [computePipelineManager2 setPipeline:self->_mtlComputePipelineState];
   }
 
-  v14 = [(NTKPrideMetalQuad *)self renderPipelineManager];
-  v15 = [v14 pipeline];
+  renderPipelineManager = [(NTKPrideMetalQuad *)self renderPipelineManager];
+  pipeline2 = [renderPipelineManager pipeline];
   mtlPipelineState = self->_mtlPipelineState;
-  self->_mtlPipelineState = v15;
+  self->_mtlPipelineState = pipeline2;
 
   if (!self->_mtlPipelineState)
   {
@@ -86,59 +86,59 @@
     v20[3] = &unk_24A58;
     v20[4] = self;
     v21 = v7;
-    v22 = v4;
+    v22 = viewCopy;
     v23 = v6;
     v17 = [NTKPromise metalPipelinePromiseNamed:@"Pride Render Pipeline" withBlock:v20];
     v18 = self->_mtlPipelineState;
     self->_mtlPipelineState = v17;
 
-    v19 = [(NTKPrideMetalQuad *)self renderPipelineManager];
-    [v19 setPipeline:self->_mtlPipelineState];
+    renderPipelineManager2 = [(NTKPrideMetalQuad *)self renderPipelineManager];
+    [renderPipelineManager2 setPipeline:self->_mtlPipelineState];
   }
 
   [(NTKPrideMetalQuad *)self loadMetalTexturesAndBuffersWithDevice:v6];
 }
 
-- (void)performOffscreenPassesWithCommandBuffer:(id)a3
+- (void)performOffscreenPassesWithCommandBuffer:(id)buffer
 {
   if (self->_mtlComputePipelineState)
   {
-    v6 = [a3 computeCommandEncoder];
-    v4 = [(NTKPromise *)self->_mtlComputePipelineState object];
-    [v6 setComputePipelineState:v4];
+    computeCommandEncoder = [buffer computeCommandEncoder];
+    object = [(NTKPromise *)self->_mtlComputePipelineState object];
+    [computeCommandEncoder setComputePipelineState:object];
 
-    v5 = [(NTKPromise *)self->_mtlComputePipelineState object];
-    [(NTKPrideMetalQuad *)self computeWithEncoder:v6 pipelineState:v5];
+    object2 = [(NTKPromise *)self->_mtlComputePipelineState object];
+    [(NTKPrideMetalQuad *)self computeWithEncoder:computeCommandEncoder pipelineState:object2];
 
-    [v6 endEncoding];
+    [computeCommandEncoder endEncoding];
   }
 }
 
-- (void)renderForDisplayWithEncoder:(id)a3
+- (void)renderForDisplayWithEncoder:(id)encoder
 {
   mtlPipelineState = self->_mtlPipelineState;
-  v6 = a3;
-  v5 = [(NTKPromise *)mtlPipelineState object];
-  [v6 setRenderPipelineState:v5];
+  encoderCopy = encoder;
+  object = [(NTKPromise *)mtlPipelineState object];
+  [encoderCopy setRenderPipelineState:object];
 
-  [(NTKPrideMetalQuad *)self renderWithEncoder:v6];
+  [(NTKPrideMetalQuad *)self renderWithEncoder:encoderCopy];
 }
 
-- (BOOL)prepareForTime:(double)a3
+- (BOOL)prepareForTime:(double)time
 {
-  v5 = [(NTKPrideMetalQuad *)self quadView];
-  [v5 frameNum];
+  quadView = [(NTKPrideMetalQuad *)self quadView];
+  [quadView frameNum];
   kdebug_trace();
 
-  self->_currentTime = a3 - self->_startTime;
+  self->_currentTime = time - self->_startTime;
   v6 = [(NTKPrideMetalQuad *)self preSemaphoreComputeForTime:?];
   if (v6)
   {
     v6 = [(NTKPrideMetalQuad *)self postSemaphoreComputeForTime:self->_currentTime];
     if (v6)
     {
-      v7 = [(NTKPrideMetalQuad *)self quadView];
-      [v7 frameNum];
+      quadView2 = [(NTKPrideMetalQuad *)self quadView];
+      [quadView2 frameNum];
       kdebug_trace();
 
       LOBYTE(v6) = 1;

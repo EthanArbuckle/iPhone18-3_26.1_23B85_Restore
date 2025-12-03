@@ -1,41 +1,41 @@
 @interface PSWriterBlock
-- (PSWriterBlock)initWithWriter:(id)a3;
-- (PSWriterBlock)initWithWriter:(id)a3 graph:(id)a4 withStream:(id)a5 withWriterOptions:(PSResourceManagerOptions *)a6 withPRMManager:(PSResourceManager *)a7 withDevice:(id)a8 withResourceOptions:(ps_task_output_resource_options_s *)a9 withCAWriterDimensions:(id *)a10 withFrameHistoryClientHandle:(void *)a11;
-- (PSWriterBlock)initWithWriter:(id)a3 withSourceBlock:(id)a4 withPRMManager:(PSResourceManager *)a5;
+- (PSWriterBlock)initWithWriter:(id)writer;
+- (PSWriterBlock)initWithWriter:(id)writer graph:(id)graph withStream:(id)stream withWriterOptions:(PSResourceManagerOptions *)options withPRMManager:(PSResourceManager *)manager withDevice:(id)device withResourceOptions:(ps_task_output_resource_options_s *)resourceOptions withCAWriterDimensions:(id *)self0 withFrameHistoryClientHandle:(void *)self1;
+- (PSWriterBlock)initWithWriter:(id)writer withSourceBlock:(id)block withPRMManager:(PSResourceManager *)manager;
 - (void)dealloc;
 @end
 
 @implementation PSWriterBlock
 
-- (PSWriterBlock)initWithWriter:(id)a3
+- (PSWriterBlock)initWithWriter:(id)writer
 {
-  v5 = a3;
+  writerCopy = writer;
   v11.receiver = self;
   v11.super_class = PSWriterBlock;
   v6 = [(PSWriterBlock *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_writer, a3);
-    v8 = [v5 getContext];
-    v8[5] = ps_writer_block_acquire;
-    v8[6] = ps_writer_block_relinquish;
-    v8[7] = ps_writer_block_publish;
-    v8[8] = ps_writer_block_pause;
-    v8[9] = ps_writer_block_resume;
+    objc_storeStrong(&v6->_writer, writer);
+    getContext = [writerCopy getContext];
+    getContext[5] = ps_writer_block_acquire;
+    getContext[6] = ps_writer_block_relinquish;
+    getContext[7] = ps_writer_block_publish;
+    getContext[8] = ps_writer_block_pause;
+    getContext[9] = ps_writer_block_resume;
     v9 = v7;
   }
 
   return v7;
 }
 
-- (PSWriterBlock)initWithWriter:(id)a3 graph:(id)a4 withStream:(id)a5 withWriterOptions:(PSResourceManagerOptions *)a6 withPRMManager:(PSResourceManager *)a7 withDevice:(id)a8 withResourceOptions:(ps_task_output_resource_options_s *)a9 withCAWriterDimensions:(id *)a10 withFrameHistoryClientHandle:(void *)a11
+- (PSWriterBlock)initWithWriter:(id)writer graph:(id)graph withStream:(id)stream withWriterOptions:(PSResourceManagerOptions *)options withPRMManager:(PSResourceManager *)manager withDevice:(id)device withResourceOptions:(ps_task_output_resource_options_s *)resourceOptions withCAWriterDimensions:(id *)self0 withFrameHistoryClientHandle:(void *)self1
 {
-  v17 = a3;
-  v18 = a4;
-  v19 = a5;
-  v20 = a8;
-  v21 = [(PSWriterBlock *)self initWithWriter:v17];
+  writerCopy = writer;
+  graphCopy = graph;
+  streamCopy = stream;
+  deviceCopy = device;
+  v21 = [(PSWriterBlock *)self initWithWriter:writerCopy];
   if (!v21)
   {
 LABEL_22:
@@ -43,31 +43,31 @@ LABEL_22:
     return v21;
   }
 
-  v43 = v20;
-  v44 = v18;
-  v22 = [v17 getContext];
+  v43 = deviceCopy;
+  v44 = graphCopy;
+  getContext = [writerCopy getContext];
   v23 = malloc_type_calloc(1uLL, 0x30uLL, 0x1020040B9B5DC2EuLL);
-  v24 = [v17 name];
-  v25 = ps_task_resources_create(0, 1u, [v24 UTF8String], a7, 1);
+  name = [writerCopy name];
+  v25 = ps_task_resources_create(0, 1u, [name UTF8String], manager, 1);
 
   if (v25)
   {
-    ps_task_resources_add_output(v25, a6, 0);
+    ps_task_resources_add_output(v25, options, 0);
     *v23 = v25;
-    [v19 provider];
+    [streamCopy provider];
     *(v23 + 32) = ps_resource_stream_provider_is_rc();
-    *(v22 + 112) = a11;
-    ps_frame_history_writer_buffer_init(a11, v44, v17);
-    v26 = [v17 output];
-    v27 = [v26 resourceKey];
-    v28 = [v27 UTF8String];
-    if (v28)
+    *(getContext + 112) = handle;
+    ps_frame_history_writer_buffer_init(handle, v44, writerCopy);
+    output = [writerCopy output];
+    resourceKey = [output resourceKey];
+    uTF8String = [resourceKey UTF8String];
+    if (uTF8String)
     {
       v29 = -2128831035;
-      v30 = *v28;
-      if (*v28)
+      v30 = *uTF8String;
+      if (*uTF8String)
       {
-        v31 = v28 + 1;
+        v31 = uTF8String + 1;
         do
         {
           v29 = 16777619 * (v29 ^ v30);
@@ -84,16 +84,16 @@ LABEL_22:
       v29 = 0;
     }
 
-    *(v22 + 88) = ps_ca_camera_delivery_init(a10, v29, &__block_literal_global_12);
+    *(getContext + 88) = ps_ca_camera_delivery_init(dimensions, v29, &__block_literal_global_12);
 
     if (*(v23 + 32) == 1)
     {
-      v33 = [v19 key];
-      v20 = v43;
+      v33 = [streamCopy key];
+      deviceCopy = v43;
       v34 = [v43 propertiesForKey:v33];
-      v35 = [v34 rcFrameID];
+      rcFrameID = [v34 rcFrameID];
 
-      if (v35)
+      if (rcFrameID)
       {
         *(v23 + 33) = 0;
       }
@@ -107,66 +107,66 @@ LABEL_22:
     else
     {
       *(v23 + 33) = 0;
-      v20 = v43;
+      deviceCopy = v43;
     }
 
     *(v23 + 5) = 0;
-    if ([v19 framerate] && objc_msgSend(v19, "resourceClass") != 10)
+    if ([streamCopy framerate] && objc_msgSend(streamCopy, "resourceClass") != 10)
     {
       v36 = ps_liveness_node_allocate();
       *(v23 + 2) = v36;
-      v37 = [v19 key];
+      v37 = [streamCopy key];
       ps_liveness_node_set_base_info(v36, 0, [v37 UTF8String]);
 
-      [v19 provider];
+      [streamCopy provider];
       if (ps_resource_stream_provider_is_rc())
       {
         ps_liveness_node_set_aux_string(*(v23 + 2), "CamStream");
       }
 
-      ps_liveness_node_set_deadlines(*(v23 + 2), [v19 framerate], 0x3B9ACA00uLL / objc_msgSend(v19, "framerate"));
+      ps_liveness_node_set_deadlines(*(v23 + 2), [streamCopy framerate], 0x3B9ACA00uLL / objc_msgSend(streamCopy, "framerate"));
       ps_liveness_node_finalize(*(v23 + 2), 1);
     }
 
-    [v19 provider];
+    [streamCopy provider];
     if (ps_resource_stream_provider_is_rc())
     {
-      v38 = [v19 key];
+      v38 = [streamCopy key];
       *(v23 + 3) = ps_telemetry_create_string_id([v38 UTF8String]);
     }
 
-    v39 = [v19 key];
+    v39 = [streamCopy key];
     *(v23 + 2) = [PLSDevice getAriadneID:v39];
 
-    *v22 = 0;
-    *(v22 + 8) = v23;
+    *getContext = 0;
+    *(getContext + 8) = v23;
     v40 = v21;
-    v18 = v44;
+    graphCopy = v44;
     goto LABEL_22;
   }
 
-  v42 = [PSWriterBlock initWithWriter:v17 graph:? withStream:? withWriterOptions:? withPRMManager:? withDevice:? withResourceOptions:? withCAWriterDimensions:? withFrameHistoryClientHandle:?];
+  v42 = [PSWriterBlock initWithWriter:writerCopy graph:? withStream:? withWriterOptions:? withPRMManager:? withDevice:? withResourceOptions:? withCAWriterDimensions:? withFrameHistoryClientHandle:?];
   return __165__PSWriterBlock_initWithWriter_graph_withStream_withWriterOptions_withPRMManager_withDevice_withResourceOptions_withCAWriterDimensions_withFrameHistoryClientHandle___block_invoke(v42);
 }
 
-- (PSWriterBlock)initWithWriter:(id)a3 withSourceBlock:(id)a4 withPRMManager:(PSResourceManager *)a5
+- (PSWriterBlock)initWithWriter:(id)writer withSourceBlock:(id)block withPRMManager:(PSResourceManager *)manager
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(PSWriterBlock *)self initWithWriter:v7];
+  writerCopy = writer;
+  blockCopy = block;
+  v9 = [(PSWriterBlock *)self initWithWriter:writerCopy];
   if (v9)
   {
-    v10 = [v7 getContext];
-    objc_storeStrong(&v9->_sourceWriterBlock, a4);
-    *v10 = 1;
-    v11 = [v7 sourceTask];
-    *(v10 + 8) = [v11 sourceTaskFunction];
+    getContext = [writerCopy getContext];
+    objc_storeStrong(&v9->_sourceWriterBlock, block);
+    *getContext = 1;
+    sourceTask = [writerCopy sourceTask];
+    *(getContext + 8) = [sourceTask sourceTaskFunction];
 
-    v12 = [v7 sourceTask];
-    *(v10 + 16) = [v12 sourceTaskData];
+    sourceTask2 = [writerCopy sourceTask];
+    *(getContext + 16) = [sourceTask2 sourceTaskData];
 
-    v13 = [v7 sourceTask];
-    *(v10 + 24) = [v13 resources];
+    sourceTask3 = [writerCopy sourceTask];
+    *(getContext + 24) = [sourceTask3 resources];
 
     v14 = v9;
   }
@@ -176,21 +176,21 @@ LABEL_22:
 
 - (void)dealloc
 {
-  v3 = [(PSWriter *)self->_writer getContext];
-  ps_frame_history_graph_metadata_set_removal_timestamp(*(v3 + 96));
-  ps_frame_history_buffer_service_deallocate_buffer(*(v3 + 112), *(v3 + 96));
-  ps_ca_camera_delivery_delete(*(v3 + 88));
-  if (*v3)
+  getContext = [(PSWriter *)self->_writer getContext];
+  ps_frame_history_graph_metadata_set_removal_timestamp(*(getContext + 96));
+  ps_frame_history_buffer_service_deallocate_buffer(*(getContext + 112), *(getContext + 96));
+  ps_ca_camera_delivery_delete(*(getContext + 88));
+  if (*getContext)
   {
-    *(v3 + 8) = 0;
-    *(v3 + 16) = 0;
-    *(v3 + 24) = 0;
+    *(getContext + 8) = 0;
+    *(getContext + 16) = 0;
+    *(getContext + 24) = 0;
     [(PSSourceWriterBlock *)self->_sourceWriterBlock stop];
   }
 
   else
   {
-    v4 = *(v3 + 8);
+    v4 = *(getContext + 8);
     ps_task_resources_destroy_inputs(*v4);
     ps_task_resources_destroy_outputs(*v4);
     ps_task_resources_destroy(*v4);
@@ -202,7 +202,7 @@ LABEL_22:
     }
 
     free(v4);
-    *(v3 + 8) = 0;
+    *(getContext + 8) = 0;
     writer = self->_writer;
     self->_writer = 0;
   }

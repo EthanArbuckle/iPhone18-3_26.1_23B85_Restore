@@ -1,10 +1,10 @@
 @interface PRXScannerIndicatorView
 - (PRXScannerIndicatorView)init;
-- (id)innerHolePathForRatio:(double)a3 stroke:(double)a4;
-- (void)animateBorderFrom:(id)a3 to:(id)a4 duration:(double)a5;
+- (id)innerHolePathForRatio:(double)ratio stroke:(double)stroke;
+- (void)animateBorderFrom:(id)from to:(id)to duration:(double)duration;
 - (void)animateInitialIfNeeded;
-- (void)animateToColors:(id)a3 duration:(double)a4;
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4;
+- (void)animateToColors:(id)colors duration:(double)duration;
+- (void)animationDidStop:(id)stop finished:(BOOL)finished;
 - (void)completed;
 - (void)configure;
 - (void)initial;
@@ -58,32 +58,32 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(PRXScannerIndicatorView *)self viewFinderTintLayer];
-  [v11 setFrame:{v4, v6, v8, v10}];
+  viewFinderTintLayer = [(PRXScannerIndicatorView *)self viewFinderTintLayer];
+  [viewFinderTintLayer setFrame:{v4, v6, v8, v10}];
 
   [(PRXScannerIndicatorView *)self bounds];
   v13 = v12;
   v15 = v14;
   v17 = v16;
   v19 = v18;
-  v20 = [(PRXScannerIndicatorView *)self viewFinderBorderLayer];
-  [v20 setFrame:{v13, v15, v17, v19}];
+  viewFinderBorderLayer = [(PRXScannerIndicatorView *)self viewFinderBorderLayer];
+  [viewFinderBorderLayer setFrame:{v13, v15, v17, v19}];
 
   [(PRXScannerIndicatorView *)self bounds];
   v22 = v21;
   v24 = v23;
   v26 = v25;
   v28 = v27;
-  v29 = [(PRXScannerIndicatorView *)self initialWhiteTintLayer];
-  [v29 setFrame:{v22, v24, v26, v28}];
+  initialWhiteTintLayer = [(PRXScannerIndicatorView *)self initialWhiteTintLayer];
+  [initialWhiteTintLayer setFrame:{v22, v24, v26, v28}];
 
   [(PRXScannerIndicatorView *)self bounds];
   v31 = v30;
   v33 = v32;
   v35 = v34;
   v37 = v36;
-  v38 = [(PRXScannerIndicatorView *)self borderLayerMask];
-  [v38 setFrame:{v31, v33, v35, v37}];
+  borderLayerMask = [(PRXScannerIndicatorView *)self borderLayerMask];
+  [borderLayerMask setFrame:{v31, v33, v35, v37}];
 
   [(PRXScannerIndicatorView *)self updateBackgroundColors];
   [(PRXScannerIndicatorView *)self animateInitialIfNeeded];
@@ -91,54 +91,54 @@
 
 - (void)updateBackgroundColors
 {
-  v3 = [MEMORY[0x277D75348] systemBackgroundColor];
-  v4 = [v3 CGColor];
-  v5 = [(PRXScannerIndicatorView *)self viewFinderTintLayer];
-  [v5 setFillColor:v4];
+  systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+  cGColor = [systemBackgroundColor CGColor];
+  viewFinderTintLayer = [(PRXScannerIndicatorView *)self viewFinderTintLayer];
+  [viewFinderTintLayer setFillColor:cGColor];
 
-  v9 = [MEMORY[0x277D75348] systemBackgroundColor];
-  v6 = v9;
-  v7 = [v9 CGColor];
-  v8 = [(PRXScannerIndicatorView *)self initialWhiteTintLayer];
-  [v8 setFillColor:v7];
+  systemBackgroundColor2 = [MEMORY[0x277D75348] systemBackgroundColor];
+  v6 = systemBackgroundColor2;
+  cGColor2 = [systemBackgroundColor2 CGColor];
+  initialWhiteTintLayer = [(PRXScannerIndicatorView *)self initialWhiteTintLayer];
+  [initialWhiteTintLayer setFillColor:cGColor2];
 }
 
 - (void)configure
 {
   v3 = *MEMORY[0x277CDA698];
-  v4 = [(PRXScannerIndicatorView *)self viewFinderBorderLayer];
-  [v4 setType:v3];
+  viewFinderBorderLayer = [(PRXScannerIndicatorView *)self viewFinderBorderLayer];
+  [viewFinderBorderLayer setType:v3];
 
-  v5 = [(PRXScannerIndicatorView *)self viewFinderBorderLayer];
-  [v5 setStartPoint:{0.5, 0.5}];
+  viewFinderBorderLayer2 = [(PRXScannerIndicatorView *)self viewFinderBorderLayer];
+  [viewFinderBorderLayer2 setStartPoint:{0.5, 0.5}];
 
-  v6 = [(PRXScannerIndicatorView *)self viewFinderBorderLayer];
+  viewFinderBorderLayer3 = [(PRXScannerIndicatorView *)self viewFinderBorderLayer];
   CGAffineTransformMakeRotation(&v19, 3.14159265);
-  [v6 setAffineTransform:&v19];
+  [viewFinderBorderLayer3 setAffineTransform:&v19];
 
-  v7 = [(PRXScannerIndicatorView *)self borderLayerMask];
+  borderLayerMask = [(PRXScannerIndicatorView *)self borderLayerMask];
   LODWORD(v8) = 1060320051;
-  [v7 setOpacity:v8];
+  [borderLayerMask setOpacity:v8];
 
-  v9 = [(PRXScannerIndicatorView *)self viewFinderTintLayer];
+  viewFinderTintLayer = [(PRXScannerIndicatorView *)self viewFinderTintLayer];
   LODWORD(v10) = 1062501089;
-  [v9 setOpacity:v10];
+  [viewFinderTintLayer setOpacity:v10];
 
-  v11 = [(PRXScannerIndicatorView *)self initialWhiteTintLayer];
+  initialWhiteTintLayer = [(PRXScannerIndicatorView *)self initialWhiteTintLayer];
   LODWORD(v12) = 1.0;
-  [v11 setOpacity:v12];
+  [initialWhiteTintLayer setOpacity:v12];
 
-  v13 = [(PRXScannerIndicatorView *)self layer];
-  v14 = [(PRXScannerIndicatorView *)self viewFinderBorderLayer];
-  [v13 insertSublayer:v14 atIndex:0];
+  layer = [(PRXScannerIndicatorView *)self layer];
+  viewFinderBorderLayer4 = [(PRXScannerIndicatorView *)self viewFinderBorderLayer];
+  [layer insertSublayer:viewFinderBorderLayer4 atIndex:0];
 
-  v15 = [(PRXScannerIndicatorView *)self layer];
-  v16 = [(PRXScannerIndicatorView *)self initialWhiteTintLayer];
-  [v15 insertSublayer:v16 atIndex:0];
+  layer2 = [(PRXScannerIndicatorView *)self layer];
+  initialWhiteTintLayer2 = [(PRXScannerIndicatorView *)self initialWhiteTintLayer];
+  [layer2 insertSublayer:initialWhiteTintLayer2 atIndex:0];
 
-  v17 = [(PRXScannerIndicatorView *)self layer];
-  v18 = [(PRXScannerIndicatorView *)self viewFinderTintLayer];
-  [v17 insertSublayer:v18 atIndex:0];
+  layer3 = [(PRXScannerIndicatorView *)self layer];
+  viewFinderTintLayer2 = [(PRXScannerIndicatorView *)self viewFinderTintLayer];
+  [layer3 insertSublayer:viewFinderTintLayer2 atIndex:0];
 
   [(PRXScannerIndicatorView *)self initial];
 }
@@ -146,23 +146,23 @@
 - (void)initial
 {
   v14[2] = *MEMORY[0x277D85DE8];
-  v3 = [(PRXScannerIndicatorView *)self viewFinderBorderLayer];
-  [v3 removeAllAnimations];
+  viewFinderBorderLayer = [(PRXScannerIndicatorView *)self viewFinderBorderLayer];
+  [viewFinderBorderLayer removeAllAnimations];
 
   v4 = [(PRXScannerIndicatorView *)self innerHolePathForRatio:0.6 stroke:0.0];
   [objc_opt_class() strokeWidth];
   v6 = [(PRXScannerIndicatorView *)self innerHolePathForRatio:0.6 stroke:v5];
   [v4 appendPath:v6];
 
-  v7 = [v4 CGPath];
-  v8 = [(PRXScannerIndicatorView *)self borderLayerMask];
-  [v8 setPath:v7];
+  cGPath = [v4 CGPath];
+  borderLayerMask = [(PRXScannerIndicatorView *)self borderLayerMask];
+  [borderLayerMask setPath:cGPath];
 
-  v9 = [MEMORY[0x277D75348] systemBlueColor];
-  v10 = [v9 colorWithAlphaComponent:1.0];
+  systemBlueColor = [MEMORY[0x277D75348] systemBlueColor];
+  v10 = [systemBlueColor colorWithAlphaComponent:1.0];
   v14[0] = v10;
-  v11 = [MEMORY[0x277D75348] systemBlueColor];
-  v12 = [v11 colorWithAlphaComponent:1.0];
+  systemBlueColor2 = [MEMORY[0x277D75348] systemBlueColor];
+  v12 = [systemBlueColor2 colorWithAlphaComponent:1.0];
   v14[1] = v12;
   v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:2];
 
@@ -173,11 +173,11 @@
 - (void)completed
 {
   v13[2] = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277D75348] systemGreenColor];
-  v4 = [v3 colorWithAlphaComponent:1.0];
+  systemGreenColor = [MEMORY[0x277D75348] systemGreenColor];
+  v4 = [systemGreenColor colorWithAlphaComponent:1.0];
   v13[0] = v4;
-  v5 = [MEMORY[0x277D75348] systemGreenColor];
-  v6 = [v5 colorWithAlphaComponent:1.0];
+  systemGreenColor2 = [MEMORY[0x277D75348] systemGreenColor];
+  v6 = [systemGreenColor2 colorWithAlphaComponent:1.0];
   v13[1] = v6;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:2];
 
@@ -195,10 +195,10 @@
   [(PRXScannerIndicatorView *)self setNeedsReset:1];
 }
 
-- (id)innerHolePathForRatio:(double)a3 stroke:(double)a4
+- (id)innerHolePathForRatio:(double)ratio stroke:(double)stroke
 {
   [(PRXScannerIndicatorView *)self bounds];
-  v8 = a4 + v7 * a3;
+  v8 = stroke + v7 * ratio;
   [(PRXScannerIndicatorView *)self bounds];
   v9 = CGRectGetMidX(v14) - v8 * 0.5;
   [(PRXScannerIndicatorView *)self bounds];
@@ -208,16 +208,16 @@
   return [v11 bezierPathWithRoundedRect:v9 cornerRadius:{v10, v8, v8, v8 * 0.5}];
 }
 
-- (void)animateToColors:(id)a3 duration:(double)a4
+- (void)animateToColors:(id)colors duration:(double)duration
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [MEMORY[0x277CBEB18] array];
+  colorsCopy = colors;
+  array = [MEMORY[0x277CBEB18] array];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v8 = v6;
+  v8 = colorsCopy;
   v9 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v9)
   {
@@ -234,7 +234,7 @@
         }
 
         v13 = *(*(&v19 + 1) + 8 * v12);
-        [v7 addObject:{objc_msgSend(v13, "CGColor", v19)}];
+        [array addObject:{objc_msgSend(v13, "CGColor", v19)}];
         ++v12;
       }
 
@@ -245,81 +245,81 @@
     while (v10);
   }
 
-  if (a4 <= 0.0)
+  if (duration <= 0.0)
   {
-    v14 = [(PRXScannerIndicatorView *)self viewFinderBorderLayer];
-    [v14 setColors:v7];
+    viewFinderBorderLayer = [(PRXScannerIndicatorView *)self viewFinderBorderLayer];
+    [viewFinderBorderLayer setColors:array];
   }
 
   else
   {
-    v14 = [MEMORY[0x277CD9E10] animationWithKeyPath:@"colors"];
-    v15 = [(PRXScannerIndicatorView *)self viewFinderBorderLayer];
-    v16 = [v15 colors];
-    [v14 setFromValue:v16];
+    viewFinderBorderLayer = [MEMORY[0x277CD9E10] animationWithKeyPath:@"colors"];
+    viewFinderBorderLayer2 = [(PRXScannerIndicatorView *)self viewFinderBorderLayer];
+    colors = [viewFinderBorderLayer2 colors];
+    [viewFinderBorderLayer setFromValue:colors];
 
-    [v14 setToValue:v7];
-    [v14 setDuration:a4];
-    [v14 setRemovedOnCompletion:0];
-    [v14 setDelegate:self];
-    v17 = [(PRXScannerIndicatorView *)self viewFinderBorderLayer];
-    [v17 setColors:v7];
+    [viewFinderBorderLayer setToValue:array];
+    [viewFinderBorderLayer setDuration:duration];
+    [viewFinderBorderLayer setRemovedOnCompletion:0];
+    [viewFinderBorderLayer setDelegate:self];
+    viewFinderBorderLayer3 = [(PRXScannerIndicatorView *)self viewFinderBorderLayer];
+    [viewFinderBorderLayer3 setColors:array];
 
-    v18 = [(PRXScannerIndicatorView *)self viewFinderBorderLayer];
-    [v18 addAnimation:v14 forKey:@"colors"];
+    viewFinderBorderLayer4 = [(PRXScannerIndicatorView *)self viewFinderBorderLayer];
+    [viewFinderBorderLayer4 addAnimation:viewFinderBorderLayer forKey:@"colors"];
   }
 }
 
-- (void)animateBorderFrom:(id)a3 to:(id)a4 duration:(double)a5
+- (void)animateBorderFrom:(id)from to:(id)to duration:(double)duration
 {
   v8 = MEMORY[0x277CD9E10];
-  v9 = a4;
-  v10 = a3;
+  toCopy = to;
+  fromCopy = from;
   v15 = [v8 animationWithKeyPath:@"path"];
-  v11 = [v10 CGPath];
+  cGPath = [fromCopy CGPath];
 
-  [v15 setFromValue:v11];
-  v12 = [v9 CGPath];
+  [v15 setFromValue:cGPath];
+  cGPath2 = [toCopy CGPath];
 
-  [v15 setToValue:v12];
-  [v15 setDuration:a5];
+  [v15 setToValue:cGPath2];
+  [v15 setDuration:duration];
   v13 = [MEMORY[0x277CD9EF8] functionWithName:*MEMORY[0x277CDA7B8]];
   [v15 setTimingFunction:v13];
 
   [v15 setFillMode:*MEMORY[0x277CDA230]];
   [v15 setRemovedOnCompletion:0];
-  v14 = [(PRXScannerIndicatorView *)self borderLayerMask];
-  [v14 addAnimation:v15 forKey:@"path"];
+  borderLayerMask = [(PRXScannerIndicatorView *)self borderLayerMask];
+  [borderLayerMask addAnimation:v15 forKey:@"path"];
 }
 
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4
+- (void)animationDidStop:(id)stop finished:(BOOL)finished
 {
-  v13 = a3;
+  stopCopy = stop;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  v6 = v13;
+  v6 = stopCopy;
   if (isKindOfClass)
   {
-    v7 = v13;
-    v8 = [v7 keyPath];
-    v9 = [v8 isEqualToString:@"colors"];
+    v7 = stopCopy;
+    keyPath = [v7 keyPath];
+    v9 = [keyPath isEqualToString:@"colors"];
 
     if (v9)
     {
-      v10 = [v7 toValue];
-      v11 = [(PRXScannerIndicatorView *)self viewFinderBorderLayer];
-      [v11 setColors:v10];
+      toValue = [v7 toValue];
+      viewFinderBorderLayer = [(PRXScannerIndicatorView *)self viewFinderBorderLayer];
+      [viewFinderBorderLayer setColors:toValue];
 
       if ([(PRXScannerIndicatorView *)self needsReset])
       {
-        v12 = [(PRXScannerIndicatorView *)self viewFinderBorderLayer];
-        [v12 removeAllAnimations];
+        viewFinderBorderLayer2 = [(PRXScannerIndicatorView *)self viewFinderBorderLayer];
+        [viewFinderBorderLayer2 removeAllAnimations];
       }
 
       [(PRXScannerIndicatorView *)self setNeedsReset:0];
     }
 
-    v6 = v13;
+    v6 = stopCopy;
   }
 
   MEMORY[0x2821F96F8](isKindOfClass, v6);
@@ -343,31 +343,31 @@
   v11 = [(PRXScannerIndicatorView *)self innerHolePathForRatio:0.6 stroke:v10];
   [v9 appendPath:v11];
 
-  v12 = [v4 CGPath];
-  v13 = [(PRXScannerIndicatorView *)self viewFinderTintLayer];
-  [v13 setPath:v12];
+  cGPath = [v4 CGPath];
+  viewFinderTintLayer = [(PRXScannerIndicatorView *)self viewFinderTintLayer];
+  [viewFinderTintLayer setPath:cGPath];
 
-  v14 = [v6 CGPath];
-  v15 = [(PRXScannerIndicatorView *)self borderLayerMask];
-  [v15 setPath:v14];
+  cGPath2 = [v6 CGPath];
+  borderLayerMask = [(PRXScannerIndicatorView *)self borderLayerMask];
+  [borderLayerMask setPath:cGPath2];
 
-  v16 = [(PRXScannerIndicatorView *)self borderLayerMask];
-  v17 = [(PRXScannerIndicatorView *)self viewFinderBorderLayer];
-  [v17 setMask:v16];
+  borderLayerMask2 = [(PRXScannerIndicatorView *)self borderLayerMask];
+  viewFinderBorderLayer = [(PRXScannerIndicatorView *)self viewFinderBorderLayer];
+  [viewFinderBorderLayer setMask:borderLayerMask2];
 
   v18 = MEMORY[0x277D75208];
   [(PRXScannerIndicatorView *)self bounds];
   v19 = [v18 bezierPathWithRoundedRect:? cornerRadius:?];
-  v20 = [v19 CGPath];
-  v21 = [(PRXScannerIndicatorView *)self initialWhiteTintLayer];
-  [v21 setPath:v20];
+  cGPath3 = [v19 CGPath];
+  initialWhiteTintLayer = [(PRXScannerIndicatorView *)self initialWhiteTintLayer];
+  [initialWhiteTintLayer setPath:cGPath3];
 
   v22 = *MEMORY[0x277CDA248];
-  v23 = [(PRXScannerIndicatorView *)self viewFinderTintLayer];
-  [v23 setFillRule:v22];
+  viewFinderTintLayer2 = [(PRXScannerIndicatorView *)self viewFinderTintLayer];
+  [viewFinderTintLayer2 setFillRule:v22];
 
-  v24 = [(PRXScannerIndicatorView *)self borderLayerMask];
-  [v24 setFillRule:v22];
+  borderLayerMask3 = [(PRXScannerIndicatorView *)self borderLayerMask];
+  [borderLayerMask3 setFillRule:v22];
 
   v25 = [MEMORY[0x277CD9E10] animationWithKeyPath:@"opacity"];
   [v25 setFromValue:&unk_2873817F8];
@@ -383,11 +383,11 @@
   v30 = 3221225472;
   v31 = __49__PRXScannerIndicatorView_animateInitialIfNeeded__block_invoke;
   v32 = &unk_279ACC2B8;
-  v33 = self;
+  selfCopy = self;
   v34 = v25;
   v28 = v25;
   dispatch_after(v27, MEMORY[0x277D85CD0], &v29);
-  [(PRXScannerIndicatorView *)self animateBorderFrom:v6 to:v9 duration:0.5, v29, v30, v31, v32, v33];
+  [(PRXScannerIndicatorView *)self animateBorderFrom:v6 to:v9 duration:0.5, v29, v30, v31, v32, selfCopy];
 }
 
 void __49__PRXScannerIndicatorView_animateInitialIfNeeded__block_invoke(uint64_t a1)

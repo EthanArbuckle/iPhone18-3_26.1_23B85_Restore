@@ -1,23 +1,23 @@
 @interface SIResponseTransport
 - (_TtC22SearchIntrospectionKit19SIResponseTransport)init;
-- (_TtC22SearchIntrospectionKit19SIResponseTransport)initWithBSXPCCoder:(id)a3;
-- (void)encodeWithBSXPCCoder:(id)a3;
+- (_TtC22SearchIntrospectionKit19SIResponseTransport)initWithBSXPCCoder:(id)coder;
+- (void)encodeWithBSXPCCoder:(id)coder;
 @end
 
 @implementation SIResponseTransport
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  SIResponseTransport.encode(withBSXPCCoder:)(a3);
+  selfCopy = self;
+  SIResponseTransport.encode(withBSXPCCoder:)(coder);
   swift_unknownObjectRelease();
 }
 
-- (_TtC22SearchIntrospectionKit19SIResponseTransport)initWithBSXPCCoder:(id)a3
+- (_TtC22SearchIntrospectionKit19SIResponseTransport)initWithBSXPCCoder:(id)coder
 {
   swift_unknownObjectRetain();
-  v4 = sub_264E731F8(a3);
+  v4 = sub_264E731F8(coder);
   swift_unknownObjectRelease();
   return v4;
 }

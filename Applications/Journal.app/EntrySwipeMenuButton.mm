@@ -8,7 +8,7 @@
 - (void)buttonTapped
 {
   v2 = *(&self->super.super.super.isa + OBJC_IVAR____TtC7Journal20EntrySwipeMenuButton_tapClosure);
-  v4 = self;
+  selfCopy = self;
 
   v2(v3);
 }
@@ -16,7 +16,7 @@
 - (BOOL)accessibilityActivate
 {
   v2 = *(&self->super.super.super.isa + OBJC_IVAR____TtC7Journal20EntrySwipeMenuButton_tapClosure);
-  v3 = self;
+  selfCopy = self;
 
   v2(v4);
 

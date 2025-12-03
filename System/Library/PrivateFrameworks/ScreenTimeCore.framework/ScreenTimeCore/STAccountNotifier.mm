@@ -1,6 +1,6 @@
 @interface STAccountNotifier
 - (STAccountNotifier)init;
-- (void)registerObserver:(id)a3;
+- (void)registerObserver:(id)observer;
 @end
 
 @implementation STAccountNotifier
@@ -12,9 +12,9 @@
   return [(STAccountNotifier *)&v3 init];
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  [(STAccountNotifier *)self setObserver:a3];
+  [(STAccountNotifier *)self setObserver:observer];
   v4 = [[STAccountStateMonitor alloc] initWithDelegate:self];
   [(STAccountNotifier *)self setMonitor:v4];
 }

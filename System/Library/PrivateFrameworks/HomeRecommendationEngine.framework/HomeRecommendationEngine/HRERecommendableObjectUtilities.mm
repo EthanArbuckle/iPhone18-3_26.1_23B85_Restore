@@ -1,50 +1,50 @@
 @interface HRERecommendableObjectUtilities
-+ (BOOL)_actionMap:(id)a3 includesType:(id)a4 forRecommendableObject:(id)a5;
-+ (BOOL)recommendableObject:(id)a3 containsObject:(id)a4;
-+ (BOOL)recommendableObject:(id)a3 involvedInAction:(id)a4;
-+ (BOOL)recommendableObject:(id)a3 involvedInActionMap:(id)a4;
-+ (BOOL)recommendableObject:(id)a3 involvedInActionMap:(id)a4 snapshotContainer:(id)a5;
-+ (BOOL)recommendableObject:(id)a3 isEffectivelyEqualToObject:(id)a4;
-+ (BOOL)recommendableObjects:(id)a3 matchAllRules:(id)a4;
-+ (id)actionMapFromActionMap:(id)a3 forRecommendableObject:(id)a4;
-+ (id)filterRecommendableObjects:(id)a3 excludingObjectsInActions:(id)a4;
-+ (id)filterRecommendableObjects:(id)a3 toMatchTypes:(id)a4;
-+ (id)filterRecommendableObjects:(id)a3 toRooms:(id)a4;
-+ (id)recommendableObject:(id)a3 actionBuildersDerivedFromActions:(id)a4;
++ (BOOL)_actionMap:(id)map includesType:(id)type forRecommendableObject:(id)object;
++ (BOOL)recommendableObject:(id)object containsObject:(id)containsObject;
++ (BOOL)recommendableObject:(id)object involvedInAction:(id)action;
++ (BOOL)recommendableObject:(id)object involvedInActionMap:(id)map;
++ (BOOL)recommendableObject:(id)object involvedInActionMap:(id)map snapshotContainer:(id)container;
++ (BOOL)recommendableObject:(id)object isEffectivelyEqualToObject:(id)toObject;
++ (BOOL)recommendableObjects:(id)objects matchAllRules:(id)rules;
++ (id)actionMapFromActionMap:(id)map forRecommendableObject:(id)object;
++ (id)filterRecommendableObjects:(id)objects excludingObjectsInActions:(id)actions;
++ (id)filterRecommendableObjects:(id)objects toMatchTypes:(id)types;
++ (id)filterRecommendableObjects:(id)objects toRooms:(id)rooms;
++ (id)recommendableObject:(id)object actionBuildersDerivedFromActions:(id)actions;
 @end
 
 @implementation HRERecommendableObjectUtilities
 
-+ (BOOL)recommendableObject:(id)a3 involvedInActionMap:(id)a4 snapshotContainer:(id)a5
++ (BOOL)recommendableObject:(id)object involvedInActionMap:(id)map snapshotContainer:(id)container
 {
   sub_2543E9E04();
   v7 = sub_254406B30();
   swift_unknownObjectRetain();
-  v8 = a5;
-  LOBYTE(a5) = _sSo31HRERecommendableObjectUtilitiesC24HomeRecommendationEngineE013recommendableB0_10involvedIn17snapshotContainerSbSo24HFAccessoryRepresentable_So0aB8Protocolp_SDySSSo12HREActionMapCGSo016HFMatterSnapshotK0CSgtFZ_0(a3, v7, a5);
+  containerCopy = container;
+  LOBYTE(container) = _sSo31HRERecommendableObjectUtilitiesC24HomeRecommendationEngineE013recommendableB0_10involvedIn17snapshotContainerSbSo24HFAccessoryRepresentable_So0aB8Protocolp_SDySSSo12HREActionMapCGSo016HFMatterSnapshotK0CSgtFZ_0(object, v7, container);
   swift_unknownObjectRelease();
 
-  return a5 & 1;
+  return container & 1;
 }
 
-+ (BOOL)recommendableObject:(id)a3 isEffectivelyEqualToObject:(id)a4
++ (BOOL)recommendableObject:(id)object isEffectivelyEqualToObject:(id)toObject
 {
-  v5 = a3;
-  v6 = a4;
-  if (v5 == v6)
+  objectCopy = object;
+  toObjectCopy = toObject;
+  if (objectCopy == toObjectCopy)
   {
     v11 = 1;
   }
 
   else
   {
-    v7 = [v5 hf_containedServices];
-    v8 = [v6 hf_containedServices];
-    if ([v7 isEqualToSet:v8])
+    hf_containedServices = [objectCopy hf_containedServices];
+    hf_containedServices2 = [toObjectCopy hf_containedServices];
+    if ([hf_containedServices isEqualToSet:hf_containedServices2])
     {
-      v9 = [v5 hf_containedProfiles];
-      v10 = [v6 hf_containedProfiles];
-      v11 = [v9 isEqualToSet:v10];
+      hf_containedProfiles = [objectCopy hf_containedProfiles];
+      hf_containedProfiles2 = [toObjectCopy hf_containedProfiles];
+      v11 = [hf_containedProfiles isEqualToSet:hf_containedProfiles2];
     }
 
     else
@@ -56,24 +56,24 @@
   return v11;
 }
 
-+ (BOOL)recommendableObject:(id)a3 containsObject:(id)a4
++ (BOOL)recommendableObject:(id)object containsObject:(id)containsObject
 {
-  v6 = a3;
-  v7 = a4;
-  if ([a1 recommendableObject:v6 isEffectivelyEqualToObject:v7])
+  objectCopy = object;
+  containsObjectCopy = containsObject;
+  if ([self recommendableObject:objectCopy isEffectivelyEqualToObject:containsObjectCopy])
   {
     v8 = 0;
   }
 
   else
   {
-    v9 = [v7 hf_containedServices];
-    v10 = [v6 hf_containedServices];
-    if ([v9 isSubsetOfSet:v10])
+    hf_containedServices = [containsObjectCopy hf_containedServices];
+    hf_containedServices2 = [objectCopy hf_containedServices];
+    if ([hf_containedServices isSubsetOfSet:hf_containedServices2])
     {
-      v11 = [v7 hf_containedProfiles];
-      v12 = [v6 hf_containedProfiles];
-      v8 = [v11 isSubsetOfSet:v12];
+      hf_containedProfiles = [containsObjectCopy hf_containedProfiles];
+      hf_containedProfiles2 = [objectCopy hf_containedProfiles];
+      v8 = [hf_containedProfiles isSubsetOfSet:hf_containedProfiles2];
     }
 
     else
@@ -85,49 +85,49 @@
   return v8;
 }
 
-+ (id)recommendableObject:(id)a3 actionBuildersDerivedFromActions:(id)a4
++ (id)recommendableObject:(id)object actionBuildersDerivedFromActions:(id)actions
 {
   v15 = *MEMORY[0x277D85DE8];
   v5 = MEMORY[0x277CBEB98];
-  v14 = a3;
+  objectCopy = object;
   v6 = MEMORY[0x277CBEA60];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 arrayWithObjects:&v14 count:1];
-  v10 = [v5 setWithArray:{v9, v14, v15}];
-  v11 = [HREDerivedActionUtilities derivedActionsForActionableObjects:v10 fromActions:v7];
+  actionsCopy = actions;
+  objectCopy2 = object;
+  v9 = [v6 arrayWithObjects:&objectCopy count:1];
+  v10 = [v5 setWithArray:{v9, objectCopy, v15}];
+  v11 = [HREDerivedActionUtilities derivedActionsForActionableObjects:v10 fromActions:actionsCopy];
 
   v12 = *MEMORY[0x277D85DE8];
 
   return v11;
 }
 
-+ (BOOL)recommendableObject:(id)a3 involvedInActionMap:(id)a4
++ (BOOL)recommendableObject:(id)object involvedInActionMap:(id)map
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 hre_matchingTypes];
+  objectCopy = object;
+  mapCopy = map;
+  hre_matchingTypes = [objectCopy hre_matchingTypes];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __75__HRERecommendableObjectUtilities_recommendableObject_involvedInActionMap___block_invoke;
   v12[3] = &unk_2797762F8;
-  v14 = v6;
-  v15 = a1;
-  v13 = v7;
-  v9 = v6;
-  v10 = v7;
-  LOBYTE(v7) = [v8 na_any:v12];
+  v14 = objectCopy;
+  selfCopy = self;
+  v13 = mapCopy;
+  v9 = objectCopy;
+  v10 = mapCopy;
+  LOBYTE(mapCopy) = [hre_matchingTypes na_any:v12];
 
-  return v7;
+  return mapCopy;
 }
 
-+ (BOOL)_actionMap:(id)a3 includesType:(id)a4 forRecommendableObject:(id)a5
++ (BOOL)_actionMap:(id)map includesType:(id)type forRecommendableObject:(id)object
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  mapCopy = map;
+  typeCopy = type;
+  objectCopy = object;
   objc_opt_class();
-  v10 = [v7 objectForKeyedSubscript:@"HREServiceTypeAll"];
+  v10 = [mapCopy objectForKeyedSubscript:@"HREServiceTypeAll"];
   if (objc_opt_isKindOfClass())
   {
     v11 = v10;
@@ -145,16 +145,16 @@
     goto LABEL_7;
   }
 
-  v13 = [v12 flattenedMapEvaluatedForObject:v9];
+  v13 = [v12 flattenedMapEvaluatedForObject:objectCopy];
 
-  v14 = [v9 hre_characteristics];
+  hre_characteristics = [objectCopy hre_characteristics];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __82__HRERecommendableObjectUtilities__actionMap_includesType_forRecommendableObject___block_invoke;
   v18[3] = &unk_279776320;
   v12 = v13;
   v19 = v12;
-  LOBYTE(v13) = [v14 na_any:v18];
+  LOBYTE(v13) = [hre_characteristics na_any:v18];
 
   if (v13)
   {
@@ -164,7 +164,7 @@
   else
   {
 LABEL_7:
-    v16 = [v7 objectForKeyedSubscript:v8];
+    v16 = [mapCopy objectForKeyedSubscript:typeCopy];
     v15 = v16 != 0;
   }
 
@@ -184,20 +184,20 @@ BOOL __82__HRERecommendableObjectUtilities__actionMap_includesType_forRecommenda
   return v7;
 }
 
-+ (BOOL)recommendableObject:(id)a3 involvedInAction:(id)a4
++ (BOOL)recommendableObject:(id)object involvedInAction:(id)action
 {
-  v5 = a3;
-  v6 = a4;
-  if ((objc_opt_respondsToSelector() & 1) != 0 && ((objc_opt_class(), v7 = [v6 performSelector:sel_characteristic], (objc_opt_isKindOfClass() & 1) == 0) ? (v8 = 0) : (v8 = v7), v9 = v8, v7, v9))
+  objectCopy = object;
+  actionCopy = action;
+  if ((objc_opt_respondsToSelector() & 1) != 0 && ((objc_opt_class(), v7 = [actionCopy performSelector:sel_characteristic], (objc_opt_isKindOfClass() & 1) == 0) ? (v8 = 0) : (v8 = v7), v9 = v8, v7, v9))
   {
-    v10 = [v5 hre_characteristics];
-    v11 = [v10 containsObject:v9];
+    hre_characteristics = [objectCopy hre_characteristics];
+    v11 = [hre_characteristics containsObject:v9];
   }
 
   else
   {
     objc_opt_class();
-    v12 = v6;
+    v12 = actionCopy;
     if (objc_opt_isKindOfClass())
     {
       v13 = v12;
@@ -216,27 +216,27 @@ BOOL __82__HRERecommendableObjectUtilities__actionMap_includesType_forRecommenda
       goto LABEL_14;
     }
 
-    v10 = [v5 hf_containedProfiles];
-    v14 = [v9 mediaProfiles];
-    v11 = [v10 intersectsSet:v14];
+    hre_characteristics = [objectCopy hf_containedProfiles];
+    mediaProfiles = [v9 mediaProfiles];
+    v11 = [hre_characteristics intersectsSet:mediaProfiles];
   }
 
 LABEL_14:
   return v11;
 }
 
-+ (id)actionMapFromActionMap:(id)a3 forRecommendableObject:(id)a4
++ (id)actionMapFromActionMap:(id)map forRecommendableObject:(id)object
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 hre_matchingTypes];
-  if (![v7 count])
+  mapCopy = map;
+  objectCopy = object;
+  hre_matchingTypes = [objectCopy hre_matchingTypes];
+  if (![hre_matchingTypes count])
   {
 
     goto LABEL_7;
   }
 
-  v8 = [v5 count];
+  v8 = [mapCopy count];
 
   if (!v8)
   {
@@ -245,15 +245,15 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v9 = [v6 hre_matchingTypes];
-  v10 = [v9 allObjects];
+  hre_matchingTypes2 = [objectCopy hre_matchingTypes];
+  allObjects = [hre_matchingTypes2 allObjects];
   v17 = MEMORY[0x277D85DD0];
   v18 = 3221225472;
   v19 = __81__HRERecommendableObjectUtilities_actionMapFromActionMap_forRecommendableObject___block_invoke;
   v20 = &unk_279776348;
-  v21 = v5;
-  v22 = v6;
-  v11 = [v10 na_map:&v17];
+  v21 = mapCopy;
+  v22 = objectCopy;
+  v11 = [allObjects na_map:&v17];
 
   v12 = [v11 count];
   v13 = +[HREActionMap emptyMap];
@@ -456,20 +456,20 @@ void *__74__HRERecommendableObjectUtilities_recommendableObjectsFromHomeKitObjec
   return v3;
 }
 
-+ (BOOL)recommendableObjects:(id)a3 matchAllRules:(id)a4
++ (BOOL)recommendableObjects:(id)objects matchAllRules:(id)rules
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v6 count])
+  objectsCopy = objects;
+  rulesCopy = rules;
+  if ([rulesCopy count])
   {
-    if ([v5 count])
+    if ([objectsCopy count])
     {
       v9[0] = MEMORY[0x277D85DD0];
       v9[1] = 3221225472;
       v9[2] = __70__HRERecommendableObjectUtilities_recommendableObjects_matchAllRules___block_invoke;
       v9[3] = &unk_2797763D0;
-      v10 = v5;
-      v7 = [v6 na_all:v9];
+      v10 = objectsCopy;
+      v7 = [rulesCopy na_all:v9];
     }
 
     else
@@ -486,16 +486,16 @@ void *__74__HRERecommendableObjectUtilities_recommendableObjectsFromHomeKitObjec
   return v7;
 }
 
-+ (id)filterRecommendableObjects:(id)a3 toMatchTypes:(id)a4
++ (id)filterRecommendableObjects:(id)objects toMatchTypes:(id)types
 {
-  v5 = a4;
+  typesCopy = types;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __75__HRERecommendableObjectUtilities_filterRecommendableObjects_toMatchTypes___block_invoke;
   v9[3] = &unk_2797763F8;
-  v10 = v5;
-  v6 = v5;
-  v7 = [a3 na_filter:v9];
+  v10 = typesCopy;
+  v6 = typesCopy;
+  v7 = [objects na_filter:v9];
 
   return v7;
 }
@@ -508,16 +508,16 @@ uint64_t __75__HRERecommendableObjectUtilities_filterRecommendableObjects_toMatc
   return v4;
 }
 
-+ (id)filterRecommendableObjects:(id)a3 toRooms:(id)a4
++ (id)filterRecommendableObjects:(id)objects toRooms:(id)rooms
 {
-  v5 = a4;
+  roomsCopy = rooms;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __70__HRERecommendableObjectUtilities_filterRecommendableObjects_toRooms___block_invoke;
   v9[3] = &unk_2797763F8;
-  v10 = v5;
-  v6 = v5;
-  v7 = [a3 na_filter:v9];
+  v10 = roomsCopy;
+  v6 = roomsCopy;
+  v7 = [objects na_filter:v9];
 
   return v7;
 }
@@ -541,12 +541,12 @@ uint64_t __70__HRERecommendableObjectUtilities_filterRecommendableObjects_toRoom
   return v7;
 }
 
-+ (id)filterRecommendableObjects:(id)a3 excludingObjectsInActions:(id)a4
++ (id)filterRecommendableObjects:(id)objects excludingObjectsInActions:(id)actions
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v5 na_map:&__block_literal_global_224];
-  v8 = [v5 na_flatMap:&__block_literal_global_228];
+  actionsCopy = actions;
+  objectsCopy = objects;
+  v7 = [actionsCopy na_map:&__block_literal_global_224];
+  v8 = [actionsCopy na_flatMap:&__block_literal_global_228];
 
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
@@ -556,7 +556,7 @@ uint64_t __70__HRERecommendableObjectUtilities_filterRecommendableObjects_toRoom
   v15 = v8;
   v9 = v8;
   v10 = v7;
-  v11 = [v6 na_filter:v13];
+  v11 = [objectsCopy na_filter:v13];
 
   return v11;
 }

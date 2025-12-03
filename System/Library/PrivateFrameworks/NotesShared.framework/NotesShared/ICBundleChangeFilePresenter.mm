@@ -1,30 +1,30 @@
 @interface ICBundleChangeFilePresenter
-- (ICBundleChangeFilePresenter)initWithObjectID:(id)a3 url:(id)a4 managedObjectContext:(id)a5;
+- (ICBundleChangeFilePresenter)initWithObjectID:(id)d url:(id)url managedObjectContext:(id)context;
 - (void)applyChanges;
 - (void)presentedItemDidChange;
 @end
 
 @implementation ICBundleChangeFilePresenter
 
-- (ICBundleChangeFilePresenter)initWithObjectID:(id)a3 url:(id)a4 managedObjectContext:(id)a5
+- (ICBundleChangeFilePresenter)initWithObjectID:(id)d url:(id)url managedObjectContext:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  urlCopy = url;
+  contextCopy = context;
   v21.receiver = self;
   v21.super_class = ICBundleChangeFilePresenter;
   v11 = [(ICBundleChangeFilePresenter *)&v21 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [dCopy copy];
     objectID = v11->_objectID;
     v11->_objectID = v12;
 
-    v14 = [v9 copy];
+    v14 = [urlCopy copy];
     url = v11->_url;
     v11->_url = v14;
 
-    objc_storeStrong(&v11->_managedObjectContext, a5);
+    objc_storeStrong(&v11->_managedObjectContext, context);
     v16 = objc_alloc_init(MEMORY[0x277CCABD8]);
     operationQueue = v11->_operationQueue;
     v11->_operationQueue = v16;
@@ -42,19 +42,19 @@
 
 - (void)presentedItemDidChange
 {
-  v2 = [(ICBundleChangeFilePresenter *)self applyChangesSelectorDelayer];
-  [v2 requestFire];
+  applyChangesSelectorDelayer = [(ICBundleChangeFilePresenter *)self applyChangesSelectorDelayer];
+  [applyChangesSelectorDelayer requestFire];
 }
 
 - (void)applyChanges
 {
-  v3 = [(ICBundleChangeFilePresenter *)self managedObjectContext];
+  managedObjectContext = [(ICBundleChangeFilePresenter *)self managedObjectContext];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __43__ICBundleChangeFilePresenter_applyChanges__block_invoke;
   v4[3] = &unk_278194B00;
   v4[4] = self;
-  [v3 performBlock:v4];
+  [managedObjectContext performBlock:v4];
 }
 
 void __43__ICBundleChangeFilePresenter_applyChanges__block_invoke(uint64_t a1)

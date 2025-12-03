@@ -1,33 +1,33 @@
 @interface PABSDeviceTakeOverSectionController
-- (BOOL)shouldIgnoreSecurityOptionsGroupRowSelectionFor:(id)a3;
-- (BOOL)shouldIgnoreToggleGroupRowSelectionFor:(id)a3;
+- (BOOL)shouldIgnoreSecurityOptionsGroupRowSelectionFor:(id)for;
+- (BOOL)shouldIgnoreToggleGroupRowSelectionFor:(id)for;
 - (PABSDeviceTakeOverSectionController)init;
-- (id)getSpecifiersForSecurityOptionsGroup:(id)a3;
-- (id)getSpecifiersForToggleGroup:(id)a3;
+- (id)getSpecifiersForSecurityOptionsGroup:(id)group;
+- (id)getSpecifiersForToggleGroup:(id)group;
 - (id)getStatus;
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4;
-- (void)addSpecifiers:(id)a3 toExistingSpecifiers:(id)a4 atIndex:(unint64_t)a5;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path;
+- (void)addSpecifiers:(id)specifiers toExistingSpecifiers:(id)existingSpecifiers atIndex:(unint64_t)index;
 - (void)disableDTO;
 - (void)enableDTO;
-- (void)ensureAccountSecurityIsSufficientWithCompletion:(id)a3;
+- (void)ensureAccountSecurityIsSufficientWithCompletion:(id)completion;
 - (void)openLearnMoreLink;
-- (void)performPreEnableDTOChecksWithCompletion:(id)a3;
-- (void)printSpecifiersDescription:(id)a3;
+- (void)performPreEnableDTOChecksWithCompletion:(id)completion;
+- (void)printSpecifiersDescription:(id)description;
 - (void)proceedToDisableDTO;
 - (void)proceedToEnableDTO;
 - (void)reloadEntirePane;
 - (void)setUpFindMyEnablementStatus;
 - (void)showAlertForFailedToUpdateSecurityDelay;
-- (void)showAlertForFindMyIsDisabledWithCompletion:(id)a3;
-- (void)showDTOAlertForFailureToToggleToState:(BOOL)a3 withRatchetError:(unint64_t)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)toggleStatusTo:(id)a3;
-- (void)updateFooterForSecurityOptionsGroupSpecifier:(id)a3;
-- (void)updateFooterForToggleGroupSpecifier:(id)a3;
+- (void)showAlertForFindMyIsDisabledWithCompletion:(id)completion;
+- (void)showDTOAlertForFailureToToggleToState:(BOOL)state withRatchetError:(unint64_t)error;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)toggleStatusTo:(id)to;
+- (void)updateFooterForSecurityOptionsGroupSpecifier:(id)specifier;
+- (void)updateFooterForToggleGroupSpecifier:(id)specifier;
 - (void)updateSpecifiersWithPreCheckResults;
-- (void)userUpdatedSecurityOptionTo:(id)a3;
+- (void)userUpdatedSecurityOptionTo:(id)to;
 - (void)viewDidLoad;
 @end
 
@@ -69,13 +69,13 @@
     v5 = objc_opt_new();
     v6 = [(PABSDeviceTakeOverSectionController *)self getSpecifiersForToggleGroup:@"DTO_TOGGLE_GROUP_ID"];
     [(PABSDeviceTakeOverSectionController *)self addSpecifiers:v6 toExistingSpecifiers:v5 atIndex:0];
-    v7 = [(PABSDeviceTakeOverSectionController *)self dtoToggleMustBeDisabledReason];
-    if (!v7)
+    dtoToggleMustBeDisabledReason = [(PABSDeviceTakeOverSectionController *)self dtoToggleMustBeDisabledReason];
+    if (!dtoToggleMustBeDisabledReason)
     {
-      v8 = [(PABSDeviceTakeOverSectionController *)self getStatus];
-      v9 = [v8 BOOLValue];
+      getStatus = [(PABSDeviceTakeOverSectionController *)self getStatus];
+      bOOLValue = [getStatus BOOLValue];
 
-      if (!v9)
+      if (!bOOLValue)
       {
 LABEL_6:
         v10 = *(&self->super.super.super.super.super.isa + v3);
@@ -87,8 +87,8 @@ LABEL_6:
         goto LABEL_7;
       }
 
-      v7 = [(PABSDeviceTakeOverSectionController *)self getSpecifiersForSecurityOptionsGroup:@"DTO_SECURITY_OPTIONS_GROUP_ID"];
-      -[PABSDeviceTakeOverSectionController addSpecifiers:toExistingSpecifiers:atIndex:](self, "addSpecifiers:toExistingSpecifiers:atIndex:", v7, v5, [v6 count]);
+      dtoToggleMustBeDisabledReason = [(PABSDeviceTakeOverSectionController *)self getSpecifiersForSecurityOptionsGroup:@"DTO_SECURITY_OPTIONS_GROUP_ID"];
+      -[PABSDeviceTakeOverSectionController addSpecifiers:toExistingSpecifiers:atIndex:](self, "addSpecifiers:toExistingSpecifiers:atIndex:", dtoToggleMustBeDisabledReason, v5, [v6 count]);
     }
 
     goto LABEL_6;
@@ -111,16 +111,16 @@ LABEL_7:
   [(PABSDeviceTakeOverSectionController *)self reloadSpecifiers];
 }
 
-- (void)printSpecifiersDescription:(id)a3
+- (void)printSpecifiersDescription:(id)description
 {
   v41 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  descriptionCopy = description;
   v4 = [objc_alloc(MEMORY[0x277CCAB68]) initWithString:@"DTO Summary: "];
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v5 = v3;
+  v5 = descriptionCopy;
   v6 = [v5 countByEnumeratingWithState:&v34 objects:v40 count:16];
   if (!v6)
   {
@@ -143,8 +143,8 @@ LABEL_7:
       }
 
       v11 = *(*(&v34 + 1) + 8 * v10);
-      v12 = [v11 identifier];
-      v13 = [v12 isEqualToString:@"DTO_TOGGLE_GROUP_ID"];
+      identifier = [v11 identifier];
+      v13 = [identifier isEqualToString:@"DTO_TOGGLE_GROUP_ID"];
 
       if (v13)
       {
@@ -155,24 +155,24 @@ LABEL_8:
         goto LABEL_13;
       }
 
-      v16 = [v11 identifier];
-      v17 = [v16 isEqualToString:@"DTO_TOGGLE_ID"];
+      identifier2 = [v11 identifier];
+      v17 = [identifier2 isEqualToString:@"DTO_TOGGLE_ID"];
 
       if (v17)
       {
-        v18 = [(PABSDeviceTakeOverSectionController *)self getStatus];
-        [v4 appendFormat:@" -> Toggled [%@]", v18];
+        getStatus = [(PABSDeviceTakeOverSectionController *)self getStatus];
+        [v4 appendFormat:@" -> Toggled [%@]", getStatus];
       }
 
       else
       {
-        v19 = [v11 identifier];
-        v20 = [v19 isEqualToString:@"DTO_SECURITY_OPTIONS_GROUP_ID"];
+        identifier3 = [v11 identifier];
+        v20 = [identifier3 isEqualToString:@"DTO_SECURITY_OPTIONS_GROUP_ID"];
 
         if (!v20)
         {
-          v25 = [v11 identifier];
-          v26 = [v25 isEqualToString:@"DTO_SECURITY_OPTION_ALWAYS_FAMILIAR_ID"];
+          identifier4 = [v11 identifier];
+          v26 = [identifier4 isEqualToString:@"DTO_SECURITY_OPTION_ALWAYS_FAMILIAR_ID"];
 
           if (v26)
           {
@@ -191,8 +191,8 @@ LABEL_8:
 
           else
           {
-            v27 = [v11 identifier];
-            v28 = [v27 isEqualToString:@"DTO_SECURITY_OPTION_ALWAYS_ID"];
+            identifier5 = [v11 identifier];
+            v28 = [identifier5 isEqualToString:@"DTO_SECURITY_OPTION_ALWAYS_ID"];
 
             if (v28)
             {
@@ -220,8 +220,8 @@ LABEL_8:
         }
 
         v21 = MEMORY[0x277CCABB0];
-        v22 = [(PABSDeviceTakeOverSectionController *)self dtoController];
-        v23 = [v21 numberWithBool:{objc_msgSend(v22, "isStrictModeEnabled")}];
+        dtoController = [(PABSDeviceTakeOverSectionController *)self dtoController];
+        v23 = [v21 numberWithBool:{objc_msgSend(dtoController, "isStrictModeEnabled")}];
         [v4 appendFormat:@"| Group 2: Options (Strict Mode = %@)", v23];
 
         v24 = [v11 objectForKeyedSubscript:v32];
@@ -252,29 +252,29 @@ LABEL_29:
   v31 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addSpecifiers:(id)a3 toExistingSpecifiers:(id)a4 atIndex:(unint64_t)a5
+- (void)addSpecifiers:(id)specifiers toExistingSpecifiers:(id)existingSpecifiers atIndex:(unint64_t)index
 {
-  v10 = a3;
-  v7 = a4;
-  v8 = [v10 count];
+  specifiersCopy = specifiers;
+  existingSpecifiersCopy = existingSpecifiers;
+  v8 = [specifiersCopy count];
   if (v8)
   {
-    v9 = [MEMORY[0x277CCAA78] indexSetWithIndexesInRange:{a5, v8}];
-    [v7 insertObjects:v10 atIndexes:v9];
+    v9 = [MEMORY[0x277CCAA78] indexSetWithIndexesInRange:{index, v8}];
+    [existingSpecifiersCopy insertObjects:specifiersCopy atIndexes:v9];
   }
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v5 = [(PABSDeviceTakeOverSectionController *)self indexForIndexPath:a4];
+  v5 = [(PABSDeviceTakeOverSectionController *)self indexForIndexPath:path];
   v6 = [*(&self->super.super.super.super.super.isa + *MEMORY[0x277D3FC48]) objectAtIndex:v5];
   [(PABSDeviceTakeOverSectionController *)self userUpdatedSecurityOptionTo:v6];
 }
 
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(PABSDeviceTakeOverSectionController *)self specifierAtIndex:[(PABSDeviceTakeOverSectionController *)self indexForIndexPath:v5]];
+  pathCopy = path;
+  v6 = [(PABSDeviceTakeOverSectionController *)self specifierAtIndex:[(PABSDeviceTakeOverSectionController *)self indexForIndexPath:pathCopy]];
   if ([(PABSDeviceTakeOverSectionController *)self shouldIgnoreToggleGroupRowSelectionFor:v6])
   {
     v7 = PABSLogForCategory(0);
@@ -308,28 +308,28 @@ LABEL_8:
     goto LABEL_10;
   }
 
-  v10 = v5;
+  v10 = pathCopy;
 LABEL_10:
 
   return v10;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v6.receiver = self;
   v6.super_class = PABSDeviceTakeOverSectionController;
-  v4 = [(PABSDeviceTakeOverSectionController *)&v6 tableView:a3 cellForRowAtIndexPath:a4];
+  v4 = [(PABSDeviceTakeOverSectionController *)&v6 tableView:view cellForRowAtIndexPath:path];
   [v4 setSelectionStyle:0];
 
   return v4;
 }
 
-- (id)getSpecifiersForToggleGroup:(id)a3
+- (id)getSpecifiersForToggleGroup:(id)group
 {
-  v4 = a3;
+  groupCopy = group;
   v5 = objc_opt_new();
   v6 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:&stru_286FD1EF8 target:self set:0 get:0 detail:0 cell:0 edit:0];
-  [v6 setIdentifier:v4];
+  [v6 setIdentifier:groupCopy];
 
   [v6 setProperty:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277D3FFE8]];
   [(PABSDeviceTakeOverSectionController *)self updateFooterForToggleGroupSpecifier:v6];
@@ -339,9 +339,9 @@ LABEL_10:
   v9 = [v7 preferenceSpecifierNamed:v8 target:self set:sel_toggleStatusTo_ get:sel_getStatus detail:0 cell:6 edit:0];
 
   [v9 setIdentifier:@"DTO_TOGGLE_ID"];
-  v10 = [(PABSDeviceTakeOverSectionController *)self dtoToggleMustBeDisabledReason];
+  dtoToggleMustBeDisabledReason = [(PABSDeviceTakeOverSectionController *)self dtoToggleMustBeDisabledReason];
 
-  if (v10)
+  if (dtoToggleMustBeDisabledReason)
   {
     [v9 setProperty:MEMORY[0x277CBEC28] forKey:*MEMORY[0x277D3FF38]];
   }
@@ -351,18 +351,18 @@ LABEL_10:
   return v5;
 }
 
-- (void)updateFooterForToggleGroupSpecifier:(id)a3
+- (void)updateFooterForToggleGroupSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   v14 = PABS_LocalizedStringForPasscodeLock(@"DTO_GROUP_FOOTER_DESCRIPTION");
   v5 = PABS_LocalizedStringForPasscodeLock(@"DTO_GROUP_FOOTER_DESCRIPTION_SUFFIX_LINK");
-  v6 = [(PABSDeviceTakeOverSectionController *)self dtoToggleMustBeDisabledReason];
+  dtoToggleMustBeDisabledReason = [(PABSDeviceTakeOverSectionController *)self dtoToggleMustBeDisabledReason];
 
   v7 = MEMORY[0x277CCACA8];
-  if (v6)
+  if (dtoToggleMustBeDisabledReason)
   {
-    v8 = [(PABSDeviceTakeOverSectionController *)self dtoToggleMustBeDisabledReason];
-    v9 = [v7 stringWithFormat:@"%@ %@\n\n%@", v14, v5, v8];
+    dtoToggleMustBeDisabledReason2 = [(PABSDeviceTakeOverSectionController *)self dtoToggleMustBeDisabledReason];
+    v9 = [v7 stringWithFormat:@"%@ %@\n\n%@", v14, v5, dtoToggleMustBeDisabledReason2];
   }
 
   else
@@ -372,53 +372,53 @@ LABEL_10:
 
   v10 = objc_opt_class();
   v11 = NSStringFromClass(v10);
-  [v4 setProperty:v11 forKey:*MEMORY[0x277D3FF48]];
+  [specifierCopy setProperty:v11 forKey:*MEMORY[0x277D3FF48]];
 
-  [v4 setProperty:v9 forKey:*MEMORY[0x277D3FF70]];
+  [specifierCopy setProperty:v9 forKey:*MEMORY[0x277D3FF70]];
   v16.location = [v9 rangeOfString:v5];
   v12 = NSStringFromRange(v16);
-  [v4 setProperty:v12 forKey:*MEMORY[0x277D3FF58]];
+  [specifierCopy setProperty:v12 forKey:*MEMORY[0x277D3FF58]];
 
   v13 = [MEMORY[0x277CCAE60] valueWithNonretainedObject:self];
-  [v4 setProperty:v13 forKey:*MEMORY[0x277D3FF68]];
+  [specifierCopy setProperty:v13 forKey:*MEMORY[0x277D3FF68]];
 
-  [v4 setProperty:@"openLearnMoreLink" forKey:*MEMORY[0x277D3FF50]];
+  [specifierCopy setProperty:@"openLearnMoreLink" forKey:*MEMORY[0x277D3FF50]];
 }
 
 - (id)getStatus
 {
   v2 = MEMORY[0x277CCABB0];
-  v3 = [(PABSDeviceTakeOverSectionController *)self dtoController];
-  v4 = [v2 numberWithBool:{objc_msgSend(v3, "isRatchetEnabled")}];
+  dtoController = [(PABSDeviceTakeOverSectionController *)self dtoController];
+  v4 = [v2 numberWithBool:{objc_msgSend(dtoController, "isRatchetEnabled")}];
 
   return v4;
 }
 
-- (void)toggleStatusTo:(id)a3
+- (void)toggleStatusTo:(id)to
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   v5 = PABSLogForCategory(0);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412290;
-    v12 = v4;
+    v12 = toCopy;
     _os_log_impl(&dword_25E0E9000, v5, OS_LOG_TYPE_DEFAULT, "DTO: User toggled to state [%@]", &v11, 0xCu);
   }
 
-  v6 = [(PABSDeviceTakeOverSectionController *)self getStatus];
+  getStatus = [(PABSDeviceTakeOverSectionController *)self getStatus];
   v7 = PABSLogForCategory(0);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412546;
-    v12 = v4;
+    v12 = toCopy;
     v13 = 2112;
-    v14 = v6;
+    v14 = getStatus;
     _os_log_impl(&dword_25E0E9000, v7, OS_LOG_TYPE_DEFAULT, "DTO toggle: Set: %@ , current is %@", &v11, 0x16u);
   }
 
-  v8 = [v4 BOOLValue];
-  if (v8 == [v6 BOOLValue])
+  bOOLValue = [toCopy BOOLValue];
+  if (bOOLValue == [getStatus BOOLValue])
   {
     v9 = PABSLogForCategory(0);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -428,7 +428,7 @@ LABEL_10:
     }
   }
 
-  else if ([v4 BOOLValue])
+  else if ([toCopy BOOLValue])
   {
     [(PABSDeviceTakeOverSectionController *)self proceedToEnableDTO];
   }
@@ -505,13 +505,13 @@ void __57__PABSDeviceTakeOverSectionController_proceedToEnableDTO__block_invoke_
 
 - (void)enableDTO
 {
-  v3 = [(PABSDeviceTakeOverSectionController *)self dtoController];
+  dtoController = [(PABSDeviceTakeOverSectionController *)self dtoController];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __48__PABSDeviceTakeOverSectionController_enableDTO__block_invoke;
   v4[3] = &unk_279A039E0;
   v4[4] = self;
-  [v3 enableRatchetWithCompletion:v4];
+  [dtoController enableRatchetWithCompletion:v4];
 }
 
 void __48__PABSDeviceTakeOverSectionController_enableDTO__block_invoke(uint64_t a1, void *a2)
@@ -565,19 +565,19 @@ void __48__PABSDeviceTakeOverSectionController_enableDTO__block_invoke_98(uint64
 
 - (void)proceedToDisableDTO
 {
-  v3 = [(PABSDeviceTakeOverSectionController *)self dtoController];
-  v4 = [v3 isRatchetEnabled];
+  dtoController = [(PABSDeviceTakeOverSectionController *)self dtoController];
+  isRatchetEnabled = [dtoController isRatchetEnabled];
 
-  if (v4)
+  if (isRatchetEnabled)
   {
     objc_initWeak(&location, self);
-    v5 = [(PABSDeviceTakeOverSectionController *)self dtoController];
+    dtoController2 = [(PABSDeviceTakeOverSectionController *)self dtoController];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __58__PABSDeviceTakeOverSectionController_proceedToDisableDTO__block_invoke;
     v7[3] = &unk_279A03A08;
     objc_copyWeak(&v8, &location);
-    [v5 gateWithRatchetForOperation:6 forPresentingVC:self completion:v7];
+    [dtoController2 gateWithRatchetForOperation:6 forPresentingVC:self completion:v7];
 
     objc_destroyWeak(&v8);
     objc_destroyWeak(&location);
@@ -647,13 +647,13 @@ void __58__PABSDeviceTakeOverSectionController_proceedToDisableDTO__block_invoke
 
 - (void)disableDTO
 {
-  v3 = [(PABSDeviceTakeOverSectionController *)self dtoController];
+  dtoController = [(PABSDeviceTakeOverSectionController *)self dtoController];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __49__PABSDeviceTakeOverSectionController_disableDTO__block_invoke;
   v4[3] = &unk_279A039E0;
   v4[4] = self;
-  [v3 disableRatchetWithCompletion:v4];
+  [dtoController disableRatchetWithCompletion:v4];
 }
 
 void __49__PABSDeviceTakeOverSectionController_disableDTO__block_invoke(uint64_t a1, void *a2)
@@ -705,11 +705,11 @@ void __49__PABSDeviceTakeOverSectionController_disableDTO__block_invoke_100(uint
   }
 }
 
-- (BOOL)shouldIgnoreToggleGroupRowSelectionFor:(id)a3
+- (BOOL)shouldIgnoreToggleGroupRowSelectionFor:(id)for
 {
-  v3 = [(PABSDeviceTakeOverSectionController *)self getGroupSpecifierForSpecifier:a3];
-  v4 = [v3 identifier];
-  v5 = [v4 isEqualToString:@"DTO_TOGGLE_GROUP_ID"];
+  v3 = [(PABSDeviceTakeOverSectionController *)self getGroupSpecifierForSpecifier:for];
+  identifier = [v3 identifier];
+  v5 = [identifier isEqualToString:@"DTO_TOGGLE_GROUP_ID"];
 
   return v5;
 }
@@ -723,11 +723,11 @@ void __49__PABSDeviceTakeOverSectionController_disableDTO__block_invoke_100(uint
     _os_log_impl(&dword_25E0E9000, v2, OS_LOG_TYPE_DEFAULT, "DTO: User clicked on support link.", v7, 2u);
   }
 
-  v3 = [MEMORY[0x277D75128] sharedApplication];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
   v4 = MEMORY[0x277CBEBC0];
   v5 = PABS_LocalizedStringForPasscodeLock(@"DTO_ALERT_COULD_NOT_TOGGLE_LEARN_MORE_LINK");
   v6 = [v4 URLWithString:v5];
-  [v3 openURL:v6 withCompletionHandler:&__block_literal_global_3];
+  [mEMORY[0x277D75128] openURL:v6 withCompletionHandler:&__block_literal_global_3];
 }
 
 void __56__PABSDeviceTakeOverSectionController_openLearnMoreLink__block_invoke(uint64_t a1, char a2)
@@ -752,13 +752,13 @@ void __56__PABSDeviceTakeOverSectionController_openLearnMoreLink__block_invoke(u
     _os_log_impl(&dword_25E0E9000, v3, OS_LOG_TYPE_DEFAULT, "DTO: Will perform preliminary checks", buf, 2u);
   }
 
-  v4 = [(PABSDeviceTakeOverSectionController *)self dtoController];
+  dtoController = [(PABSDeviceTakeOverSectionController *)self dtoController];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __74__PABSDeviceTakeOverSectionController_updateSpecifiersWithPreCheckResults__block_invoke;
   v5[3] = &unk_279A03A50;
   objc_copyWeak(&v6, &location);
-  [v4 performPreliminaryPreEnableDTOChecksWithCompletion:v5];
+  [dtoController performPreliminaryPreEnableDTOChecksWithCompletion:v5];
 
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
@@ -822,13 +822,13 @@ void __74__PABSDeviceTakeOverSectionController_updateSpecifiersWithPreCheckResul
 - (void)setUpFindMyEnablementStatus
 {
   objc_initWeak(&location, self);
-  v2 = [MEMORY[0x277D08F78] sharedInstance];
+  mEMORY[0x277D08F78] = [MEMORY[0x277D08F78] sharedInstance];
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __66__PABSDeviceTakeOverSectionController_setUpFindMyEnablementStatus__block_invoke;
   v3[3] = &unk_279A03A78;
   objc_copyWeak(&v4, &location);
-  [v2 fmipStateWithCompletion:v3];
+  [mEMORY[0x277D08F78] fmipStateWithCompletion:v3];
 
   objc_destroyWeak(&v4);
   objc_destroyWeak(&location);
@@ -874,10 +874,10 @@ void __66__PABSDeviceTakeOverSectionController_setUpFindMyEnablementStatus__bloc
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)ensureAccountSecurityIsSufficientWithCompletion:(id)a3
+- (void)ensureAccountSecurityIsSufficientWithCompletion:(id)completion
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = PSUsedByHSA2Account();
   v6 = PSJoinedCDPCircleAccount();
   v7 = PABSLogForCategory(0);
@@ -890,7 +890,7 @@ void __66__PABSDeviceTakeOverSectionController_setUpFindMyEnablementStatus__bloc
       _os_log_impl(&dword_25E0E9000, v7, OS_LOG_TYPE_DEFAULT, "Account security: No need to Upgrade", buf, 2u);
     }
 
-    v4[2](v4, 1);
+    completionCopy[2](completionCopy, 1);
   }
 
   else
@@ -906,12 +906,12 @@ void __66__PABSDeviceTakeOverSectionController_setUpFindMyEnablementStatus__bloc
       _os_log_impl(&dword_25E0E9000, v7, OS_LOG_TYPE_DEFAULT, "Account security: Upgrading since HSA2 [%@] CDPCircle [%@]", buf, 0x16u);
     }
 
-    v11 = [MEMORY[0x277CB8F48] defaultStore];
-    v12 = [v11 aa_primaryAppleAccount];
-    v13 = [v12 aa_altDSID];
-    if (v13)
+    defaultStore = [MEMORY[0x277CB8F48] defaultStore];
+    aa_primaryAppleAccount = [defaultStore aa_primaryAppleAccount];
+    aa_altDSID = [aa_primaryAppleAccount aa_altDSID];
+    if (aa_altDSID)
     {
-      v14 = [objc_alloc(MEMORY[0x277CFDAE8]) initWithAltDSID:v13];
+      v14 = [objc_alloc(MEMORY[0x277CFDAE8]) initWithAltDSID:aa_altDSID];
       [v14 setDeviceToDeviceEncryptionUpgradeUIStyle:0];
       [v14 setDeviceToDeviceEncryptionUpgradeType:0];
       v15 = PABS_LocalizedStringForPasscodeLock(@"DTO_ALERT_MUST_UPGRADE_ACCOUNT_SECURITY");
@@ -923,7 +923,7 @@ void __66__PABSDeviceTakeOverSectionController_setUpFindMyEnablementStatus__bloc
       v19[1] = 3221225472;
       v19[2] = __87__PABSDeviceTakeOverSectionController_ensureAccountSecurityIsSufficientWithCompletion___block_invoke;
       v19[3] = &unk_279A03300;
-      v20 = v4;
+      v20 = completionCopy;
       [v16 performDeviceToDeviceEncryptionStateRepairWithCompletion:v19];
     }
 
@@ -936,7 +936,7 @@ void __66__PABSDeviceTakeOverSectionController_setUpFindMyEnablementStatus__bloc
       }
 
       [(PABSDeviceTakeOverSectionController *)self showDTOAlertForFailureToToggleToState:1 withRatchetError:2];
-      v4[2](v4, 0);
+      completionCopy[2](completionCopy, 0);
     }
   }
 
@@ -983,9 +983,9 @@ void __87__PABSDeviceTakeOverSectionController_ensureAccountSecurityIsSufficient
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)performPreEnableDTOChecksWithCompletion:(id)a3
+- (void)performPreEnableDTOChecksWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = PABSLogForCategory(0);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -999,19 +999,19 @@ void __87__PABSDeviceTakeOverSectionController_ensureAccountSecurityIsSufficient
     v6[1] = 3221225472;
     v6[2] = __79__PABSDeviceTakeOverSectionController_performPreEnableDTOChecksWithCompletion___block_invoke;
     v6[3] = &unk_279A03AA0;
-    v7 = v4;
+    v7 = completionCopy;
     [(PABSDeviceTakeOverSectionController *)self ensureAccountSecurityIsSufficientWithCompletion:v6];
   }
 
   else
   {
-    [(PABSDeviceTakeOverSectionController *)self showAlertForFindMyIsDisabledWithCompletion:v4];
+    [(PABSDeviceTakeOverSectionController *)self showAlertForFindMyIsDisabledWithCompletion:completionCopy];
   }
 }
 
-- (void)showAlertForFindMyIsDisabledWithCompletion:(id)a3
+- (void)showAlertForFindMyIsDisabledWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = MEMORY[0x277D75110];
   v6 = PABS_LocalizedStringForPasscodeLock(@"DTO_ALERT_MUST_TURN_ON_FIND_MY_TITLE");
   v7 = [v5 alertControllerWithTitle:0 message:v6 preferredStyle:1];
@@ -1022,8 +1022,8 @@ void __87__PABSDeviceTakeOverSectionController_ensureAccountSecurityIsSufficient
   v14[1] = 3221225472;
   v14[2] = __82__PABSDeviceTakeOverSectionController_showAlertForFindMyIsDisabledWithCompletion___block_invoke;
   v14[3] = &unk_279A03120;
-  v15 = v4;
-  v10 = v4;
+  v15 = completionCopy;
+  v10 = completionCopy;
   v11 = [v8 actionWithTitle:v9 style:0 handler:v14];
   [v7 addAction:v11];
 
@@ -1049,12 +1049,12 @@ uint64_t __82__PABSDeviceTakeOverSectionController_showAlertForFindMyIsDisabledW
   return (*(*(a1 + 32) + 16))();
 }
 
-- (void)showDTOAlertForFailureToToggleToState:(BOOL)a3 withRatchetError:(unint64_t)a4
+- (void)showDTOAlertForFailureToToggleToState:(BOOL)state withRatchetError:(unint64_t)error
 {
-  v4 = a3;
+  stateCopy = state;
   location[3] = *MEMORY[0x277D85DE8];
   v6 = MEMORY[0x277D75110];
-  if (a4 == 3)
+  if (error == 3)
   {
     if (PSSupportsMesa())
     {
@@ -1076,7 +1076,7 @@ uint64_t __82__PABSDeviceTakeOverSectionController_showAlertForFindMyIsDisabledW
     v22[1] = 3221225472;
     v22[2] = __94__PABSDeviceTakeOverSectionController_showDTOAlertForFailureToToggleToState_withRatchetError___block_invoke;
     v22[3] = &unk_279A03AC8;
-    v24 = v4;
+    v24 = stateCopy;
     objc_copyWeak(&v23, location);
     v12 = [v10 actionWithTitle:v11 style:0 handler:v22];
     [v9 addAction:v12];
@@ -1087,7 +1087,7 @@ uint64_t __82__PABSDeviceTakeOverSectionController_showAlertForFindMyIsDisabledW
 
   else
   {
-    if (a3)
+    if (state)
     {
       PABS_LocalizedStringForPasscodeLock(@"DTO_ALERT_COULD_NOT_TOGGLE_TO_ON_TITLE");
     }
@@ -1106,7 +1106,7 @@ uint64_t __82__PABSDeviceTakeOverSectionController_showAlertForFindMyIsDisabledW
   v20[1] = 3221225472;
   v20[2] = __94__PABSDeviceTakeOverSectionController_showDTOAlertForFailureToToggleToState_withRatchetError___block_invoke_146;
   v20[3] = &__block_descriptor_33_e23_v16__0__UIAlertAction_8l;
-  v21 = v4;
+  v21 = stateCopy;
   v16 = [v14 actionWithTitle:v15 style:0 handler:v20];
   [v9 addAction:v16];
 
@@ -1114,7 +1114,7 @@ uint64_t __82__PABSDeviceTakeOverSectionController_showAlertForFindMyIsDisabledW
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
     v18 = @"Off";
-    if (v4)
+    if (stateCopy)
     {
       v18 = @"On";
     }
@@ -1192,16 +1192,16 @@ void __94__PABSDeviceTakeOverSectionController_showDTOAlertForFailureToToggleToS
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (id)getSpecifiersForSecurityOptionsGroup:(id)a3
+- (id)getSpecifiersForSecurityOptionsGroup:(id)group
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  groupCopy = group;
   v5 = objc_opt_new();
   v6 = MEMORY[0x277D3FAD8];
   v7 = PABS_LocalizedStringForPasscodeLock(@"DTO_SECURITY_DELAY_OPTIONS_GROUP_HEADER_DESCRIPTION");
   v8 = [v6 preferenceSpecifierNamed:v7 target:self set:0 get:0 detail:0 cell:0 edit:0];
 
-  [v8 setIdentifier:v4];
+  [v8 setIdentifier:groupCopy];
   [v8 setProperty:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277D3FFE8]];
   [(PABSDeviceTakeOverSectionController *)self updateFooterForSecurityOptionsGroupSpecifier:v8];
   [v5 addObject:v8];
@@ -1217,19 +1217,19 @@ void __94__PABSDeviceTakeOverSectionController_showDTOAlertForFailureToToggleToS
 
   [v14 setIdentifier:@"DTO_SECURITY_OPTION_ALWAYS_ID"];
   [v5 addObject:v14];
-  v15 = [(PABSDeviceTakeOverSectionController *)self dtoController];
-  v16 = [v15 isStrictModeEnabled];
+  dtoController = [(PABSDeviceTakeOverSectionController *)self dtoController];
+  isStrictModeEnabled = [dtoController isStrictModeEnabled];
 
   v17 = PABSLogForCategory(0);
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
-    v18 = [MEMORY[0x277CCABB0] numberWithBool:v16];
+    v18 = [MEMORY[0x277CCABB0] numberWithBool:isStrictModeEnabled];
     *buf = 138412290;
     v23 = v18;
     _os_log_impl(&dword_25E0E9000, v17, OS_LOG_TYPE_DEFAULT, "DTO: Strict Mode [%@]", buf, 0xCu);
   }
 
-  if (v16)
+  if (isStrictModeEnabled)
   {
     v19 = v14;
   }
@@ -1246,21 +1246,21 @@ void __94__PABSDeviceTakeOverSectionController_showDTOAlertForFailureToToggleToS
   return v5;
 }
 
-- (void)updateFooterForSecurityOptionsGroupSpecifier:(id)a3
+- (void)updateFooterForSecurityOptionsGroupSpecifier:(id)specifier
 {
-  v8 = a3;
+  specifierCopy = specifier;
   v4 = PABS_LocalizedStringForPasscodeLock(@"DTO_SECURITY_DELAY_OPTIONS_GROUP_FOOTER_DESCRIPTION_FAMILIAR_LOCATIONS_ONLY");
-  v5 = [(PABSDeviceTakeOverSectionController *)self dtoController];
-  v6 = [v5 isStrictModeEnabled];
+  dtoController = [(PABSDeviceTakeOverSectionController *)self dtoController];
+  isStrictModeEnabled = [dtoController isStrictModeEnabled];
 
-  if (v6)
+  if (isStrictModeEnabled)
   {
     v7 = PABS_LocalizedStringForPasscodeLock(@"DTO_SECURITY_DELAY_OPTIONS_GROUP_FOOTER_DESCRIPTION_ALWAYS");
 
     v4 = v7;
   }
 
-  [v8 setProperty:v4 forKey:*MEMORY[0x277D3FF88]];
+  [specifierCopy setProperty:v4 forKey:*MEMORY[0x277D3FF88]];
 }
 
 void __58__PABSDeviceTakeOverSectionController_toggleToStrictMode___block_invoke(uint64_t a1, char a2)
@@ -1302,16 +1302,16 @@ void __58__PABSDeviceTakeOverSectionController_toggleToStrictMode___block_invoke
   }
 }
 
-- (void)userUpdatedSecurityOptionTo:(id)a3
+- (void)userUpdatedSecurityOptionTo:(id)to
 {
-  v4 = a3;
-  v5 = [(PABSDeviceTakeOverSectionController *)self dtoController];
-  v6 = [v5 isRatchetEnabled];
+  toCopy = to;
+  dtoController = [(PABSDeviceTakeOverSectionController *)self dtoController];
+  isRatchetEnabled = [dtoController isRatchetEnabled];
 
-  if (v6)
+  if (isRatchetEnabled)
   {
-    v7 = [v4 identifier];
-    v8 = [v7 isEqualToString:@"DTO_SECURITY_OPTION_ALWAYS_ID"];
+    identifier = [toCopy identifier];
+    v8 = [identifier isEqualToString:@"DTO_SECURITY_OPTION_ALWAYS_ID"];
 
     if (v8)
     {
@@ -1327,8 +1327,8 @@ void __58__PABSDeviceTakeOverSectionController_toggleToStrictMode___block_invoke
 
     else
     {
-      v11 = [v4 identifier];
-      v12 = [v11 isEqualToString:@"DTO_SECURITY_OPTION_ALWAYS_FAMILIAR_ID"];
+      identifier2 = [toCopy identifier];
+      v12 = [identifier2 isEqualToString:@"DTO_SECURITY_OPTION_ALWAYS_FAMILIAR_ID"];
 
       if (v12)
       {
@@ -1340,13 +1340,13 @@ void __58__PABSDeviceTakeOverSectionController_toggleToStrictMode___block_invoke
         }
 
         objc_initWeak(buf, self);
-        v14 = [(PABSDeviceTakeOverSectionController *)self dtoController];
+        dtoController2 = [(PABSDeviceTakeOverSectionController *)self dtoController];
         v15[0] = MEMORY[0x277D85DD0];
         v15[1] = 3221225472;
         v15[2] = __67__PABSDeviceTakeOverSectionController_userUpdatedSecurityOptionTo___block_invoke;
         v15[3] = &unk_279A03A08;
         objc_copyWeak(&v16, buf);
-        [v14 gateWithRatchetForOperation:10 forPresentingVC:self completion:v15];
+        [dtoController2 gateWithRatchetForOperation:10 forPresentingVC:self completion:v15];
 
         objc_destroyWeak(&v16);
         objc_destroyWeak(buf);
@@ -1422,15 +1422,15 @@ void __67__PABSDeviceTakeOverSectionController_userUpdatedSecurityOptionTo___blo
   }
 }
 
-- (BOOL)shouldIgnoreSecurityOptionsGroupRowSelectionFor:(id)a3
+- (BOOL)shouldIgnoreSecurityOptionsGroupRowSelectionFor:(id)for
 {
-  v4 = a3;
-  v5 = [(PABSDeviceTakeOverSectionController *)self getGroupSpecifierForSpecifier:v4];
-  v6 = [v5 identifier];
-  if ([v6 isEqualToString:@"DTO_SECURITY_OPTIONS_GROUP_ID"])
+  forCopy = for;
+  v5 = [(PABSDeviceTakeOverSectionController *)self getGroupSpecifierForSpecifier:forCopy];
+  identifier = [v5 identifier];
+  if ([identifier isEqualToString:@"DTO_SECURITY_OPTIONS_GROUP_ID"])
   {
     v7 = [v5 objectForKeyedSubscript:*MEMORY[0x277D40090]];
-    v8 = [v7 isEqualToSpecifier:v4];
+    v8 = [v7 isEqualToSpecifier:forCopy];
   }
 
   else

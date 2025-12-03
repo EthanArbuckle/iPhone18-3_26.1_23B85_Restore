@@ -1,25 +1,25 @@
 @interface WBSHistoryServiceURLRepresentation
-- (BOOL)isEqual:(id)a3;
-- (WBSHistoryServiceURLRepresentation)initWithCoder:(id)a3;
-- (WBSHistoryServiceURLRepresentation)initWithURLHash:(id)a3 salt:(id)a4;
-- (WBSHistoryServiceURLRepresentation)initWithURLString:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (WBSHistoryServiceURLRepresentation)initWithCoder:(id)coder;
+- (WBSHistoryServiceURLRepresentation)initWithURLHash:(id)hash salt:(id)salt;
+- (WBSHistoryServiceURLRepresentation)initWithURLString:(id)string;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WBSHistoryServiceURLRepresentation
 
-- (WBSHistoryServiceURLRepresentation)initWithURLString:(id)a3
+- (WBSHistoryServiceURLRepresentation)initWithURLString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v10.receiver = self;
   v10.super_class = WBSHistoryServiceURLRepresentation;
   v5 = [(WBSHistoryServiceURLRepresentation *)&v10 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [stringCopy copy];
     urlString = v5->_urlString;
     v5->_urlString = v6;
 
@@ -29,20 +29,20 @@
   return v5;
 }
 
-- (WBSHistoryServiceURLRepresentation)initWithURLHash:(id)a3 salt:(id)a4
+- (WBSHistoryServiceURLRepresentation)initWithURLHash:(id)hash salt:(id)salt
 {
-  v6 = a3;
-  v7 = a4;
+  hashCopy = hash;
+  saltCopy = salt;
   v15.receiver = self;
   v15.super_class = WBSHistoryServiceURLRepresentation;
   v8 = [(WBSHistoryServiceURLRepresentation *)&v15 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [hashCopy copy];
     urlHash = v8->_urlHash;
     v8->_urlHash = v9;
 
-    v11 = [v7 copy];
+    v11 = [saltCopy copy];
     urlSalt = v8->_urlSalt;
     v8->_urlSalt = v11;
 
@@ -52,23 +52,23 @@
   return v8;
 }
 
-- (WBSHistoryServiceURLRepresentation)initWithCoder:(id)a3
+- (WBSHistoryServiceURLRepresentation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = WBSHistoryServiceURLRepresentation;
   v5 = [(WBSHistoryServiceURLRepresentation *)&v14 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"urlString"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"urlString"];
     urlString = v5->_urlString;
     v5->_urlString = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"urlHash"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"urlHash"];
     urlHash = v5->_urlHash;
     v5->_urlHash = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"urlSalt"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"urlSalt"];
     urlSalt = v5->_urlSalt;
     v5->_urlSalt = v10;
 
@@ -78,19 +78,19 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   urlString = self->_urlString;
-  v5 = a3;
-  [v5 encodeObject:urlString forKey:@"urlString"];
-  [v5 encodeObject:self->_urlHash forKey:@"urlHash"];
-  [v5 encodeObject:self->_urlSalt forKey:@"urlSalt"];
+  coderCopy = coder;
+  [coderCopy encodeObject:urlString forKey:@"urlString"];
+  [coderCopy encodeObject:self->_urlHash forKey:@"urlHash"];
+  [coderCopy encodeObject:self->_urlSalt forKey:@"urlSalt"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   urlString = self->_urlString;
-  v5 = [objc_opt_class() allocWithZone:a3];
+  v5 = [objc_opt_class() allocWithZone:zone];
   if (urlString)
   {
     v6 = self->_urlString;
@@ -144,10 +144,10 @@
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -157,7 +157,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       urlString = self->_urlString;
       if (!urlString || (urlSalt = v5->_urlString) == 0)
       {

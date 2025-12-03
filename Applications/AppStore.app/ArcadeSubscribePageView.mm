@@ -1,14 +1,14 @@
 @interface ArcadeSubscribePageView
-- (_TtC8AppStore23ArcadeSubscribePageView)initWithCoder:(id)a3;
-- (_TtC8AppStore23ArcadeSubscribePageView)initWithFrame:(CGRect)a3;
-- (void)didTapDismiss:(id)a3;
+- (_TtC8AppStore23ArcadeSubscribePageView)initWithCoder:(id)coder;
+- (_TtC8AppStore23ArcadeSubscribePageView)initWithFrame:(CGRect)frame;
+- (void)didTapDismiss:(id)dismiss;
 - (void)layoutSubviews;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation ArcadeSubscribePageView
 
-- (_TtC8AppStore23ArcadeSubscribePageView)initWithCoder:(id)a3
+- (_TtC8AppStore23ArcadeSubscribePageView)initWithCoder:(id)coder
 {
   v3 = (&self->super.super.super.isa + OBJC_IVAR____TtC8AppStore23ArcadeSubscribePageView_dismissActionBlock);
   *v3 = 0;
@@ -22,17 +22,17 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_100488CB4();
 }
 
-- (void)didTapDismiss:(id)a3
+- (void)didTapDismiss:(id)dismiss
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   _bridgeAnyObjectToAny(_:)();
   swift_unknownObjectRelease();
-  v5 = *(&v4->super.super.super.isa + OBJC_IVAR____TtC8AppStore23ArcadeSubscribePageView_dismissActionBlock);
+  v5 = *(&selfCopy->super.super.super.isa + OBJC_IVAR____TtC8AppStore23ArcadeSubscribePageView_dismissActionBlock);
   if (v5)
   {
 
@@ -48,17 +48,17 @@
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v6.receiver = self;
   v6.super_class = swift_getObjectType();
-  v4 = a3;
+  changeCopy = change;
   v5 = v6.receiver;
-  [(ArcadeSubscribePageView *)&v6 traitCollectionDidChange:v4];
+  [(ArcadeSubscribePageView *)&v6 traitCollectionDidChange:changeCopy];
   [v5 setNeedsLayout];
 }
 
-- (_TtC8AppStore23ArcadeSubscribePageView)initWithFrame:(CGRect)a3
+- (_TtC8AppStore23ArcadeSubscribePageView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -1,23 +1,23 @@
 @interface PKPaymentPassTableCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (PKPaymentPassTableCellAccessibility)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (PKPaymentPassTableCellAccessibility)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (unint64_t)accessibilityTraits;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 @end
 
 @implementation PKPaymentPassTableCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PKPaymentPassTableCell" isKindOfClass:@"PSTableCell"];
-  [v3 validateClass:@"PSTableCell" hasInstanceMethod:@"specifier" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PKPaymentPassTableCell" hasInstanceVariable:@"_subTextLabel" withType:"UILabel"];
-  [v3 validateClass:@"PKPaymentPassTableCell" hasInstanceVariable:@"_pass" withType:"PKPaymentPass"];
-  [v3 validateClass:@"PKSecureElementPass" hasInstanceMethod:@"primaryAccountNumberSuffix" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PKPaymentPassTableCell" hasInstanceMethod:@"initWithStyle:reuseIdentifier:" withFullSignature:{"@", "q", "@", 0}];
-  [v3 validateClass:@"PKPaymentPassTableCell" hasInstanceMethod:@"refreshCellContentsWithSpecifier:" withFullSignature:{"v", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PKPaymentPassTableCell" isKindOfClass:@"PSTableCell"];
+  [validationsCopy validateClass:@"PSTableCell" hasInstanceMethod:@"specifier" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PKPaymentPassTableCell" hasInstanceVariable:@"_subTextLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"PKPaymentPassTableCell" hasInstanceVariable:@"_pass" withType:"PKPaymentPass"];
+  [validationsCopy validateClass:@"PKSecureElementPass" hasInstanceMethod:@"primaryAccountNumberSuffix" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PKPaymentPassTableCell" hasInstanceMethod:@"initWithStyle:reuseIdentifier:" withFullSignature:{"@", "q", "@", 0}];
+  [validationsCopy validateClass:@"PKPaymentPassTableCell" hasInstanceMethod:@"refreshCellContentsWithSpecifier:" withFullSignature:{"v", "@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -38,8 +38,8 @@
   v7 = [(PKPaymentPassTableCellAccessibility *)self safeValueForKey:@"_pass"];
   v8 = __UIAccessibilityCastAsClass();
 
-  v9 = [v8 secureElementPass];
-  LOBYTE(v7) = [v9 isStoredValuePass];
+  secureElementPass = [v8 secureElementPass];
+  LOBYTE(v7) = [secureElementPass isStoredValuePass];
 
   v10 = PKSanitizedPrimaryAccountRepresentationForPass();
   if (v7)
@@ -47,15 +47,15 @@
     goto LABEL_7;
   }
 
-  v11 = [v4 text];
-  if (![v11 length] || !v6)
+  text = [v4 text];
+  if (![text length] || !v6)
   {
 
     goto LABEL_7;
   }
 
-  v12 = [v4 text];
-  v13 = [v12 isEqualToString:v10];
+  text2 = [v4 text];
+  v13 = [text2 isEqualToString:v10];
 
   if (!v13)
   {
@@ -64,10 +64,10 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v14 = [v4 accessibilityLabel];
-  v15 = [MEMORY[0x29EDB9F50] decimalDigitCharacterSet];
-  v16 = [v15 invertedSet];
-  v17 = [v14 componentsSeparatedByCharactersInSet:v16];
+  accessibilityLabel = [v4 accessibilityLabel];
+  decimalDigitCharacterSet = [MEMORY[0x29EDB9F50] decimalDigitCharacterSet];
+  invertedSet = [decimalDigitCharacterSet invertedSet];
+  v17 = [accessibilityLabel componentsSeparatedByCharactersInSet:invertedSet];
   v18 = [v17 componentsJoinedByString:&stru_2A22657E8];
 
   v19 = MEMORY[0x29EDBD7E8];
@@ -96,7 +96,7 @@ LABEL_8:
   {
     v7.receiver = self;
     v7.super_class = PKPaymentPassTableCellAccessibility;
-    v4 = [(PKPaymentPassTableCellAccessibility *)&v7 accessibilityTraits];
+    accessibilityTraits = [(PKPaymentPassTableCellAccessibility *)&v7 accessibilityTraits];
     if (*MEMORY[0x29EDC7FA8])
     {
       return 0;
@@ -104,7 +104,7 @@ LABEL_8:
 
     else
     {
-      return v4 & 1;
+      return accessibilityTraits & 1;
     }
   }
 
@@ -116,21 +116,21 @@ LABEL_8:
   }
 }
 
-- (PKPaymentPassTableCellAccessibility)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (PKPaymentPassTableCellAccessibility)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v6.receiver = self;
   v6.super_class = PKPaymentPassTableCellAccessibility;
-  v4 = [(PKPaymentPassTableCellAccessibility *)&v6 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(PKPaymentPassTableCellAccessibility *)&v6 initWithStyle:style reuseIdentifier:identifier];
   [(PKPaymentPassTableCellAccessibility *)v4 _accessibilityLoadAccessibilityInformation];
 
   return v4;
 }
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
   v4.receiver = self;
   v4.super_class = PKPaymentPassTableCellAccessibility;
-  [(PKPaymentPassTableCellAccessibility *)&v4 refreshCellContentsWithSpecifier:a3];
+  [(PKPaymentPassTableCellAccessibility *)&v4 refreshCellContentsWithSpecifier:specifier];
   [(PKPaymentPassTableCellAccessibility *)self _accessibilityLoadAccessibilityInformation];
 }
 

@@ -13,21 +13,21 @@
   v15.receiver = self;
   v15.super_class = _UITextInputSessionKeyboardDockItemButtonPressAction;
   v3 = [(_UITextInputSessionAction *)&v15 description];
-  v4 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v5 = MEMORY[0x1E696AEC0];
   v6 = [UITextInputSessionActionAnalytics stringForKeyboardDockItemButtonType:[(_UITextInputSessionKeyboardDockItemButtonPressAction *)self buttonType]];
   v7 = [v5 stringWithFormat:@"buttonType=%@", v6];
-  [v4 addObject:v7];
+  [array addObject:v7];
 
   v8 = MEMORY[0x1E696AEC0];
   v9 = [UITextInputSessionActionAnalytics stringForKeyboardDockItemButtonPressResult:[(_UITextInputSessionKeyboardDockItemButtonPressAction *)self buttonPressResult]];
   v10 = [v8 stringWithFormat:@"buttonPressResult=%@", v9];
-  [v4 addObject:v10];
+  [array addObject:v10];
 
   v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"uiOrientation=%lu", -[_UITextInputSessionKeyboardDockItemButtonPressAction uiOrientation](self, "uiOrientation")];
-  [v4 addObject:v11];
+  [array addObject:v11];
 
-  v12 = [v4 componentsJoinedByString:{@", "}];
+  v12 = [array componentsJoinedByString:{@", "}];
   v13 = [v3 stringByAppendingFormat:@", %@", v12];
 
   return v13;
@@ -35,9 +35,9 @@
 
 - (int64_t)inputActionCount
 {
-  v3 = [(_UITextInputSessionKeyboardDockItemButtonPressAction *)self buttonPressResult];
+  buttonPressResult = [(_UITextInputSessionKeyboardDockItemButtonPressAction *)self buttonPressResult];
   result = [(_UITextInputSessionAction *)self inputActionCountFromMergedActions];
-  if (v3 != 2)
+  if (buttonPressResult != 2)
   {
     ++result;
   }

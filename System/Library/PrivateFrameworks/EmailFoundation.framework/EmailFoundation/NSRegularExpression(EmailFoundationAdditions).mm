@@ -28,7 +28,7 @@
   v12 = v8;
   v18 = v12;
   v21 = v10;
-  [a1 enumerateMatchesInString:v12 options:a4 range:v26 usingBlock:{v27, &v14}];
+  [self enumerateMatchesInString:v12 options:a4 range:v26 usingBlock:{v27, &v14}];
   if (v23[5])
   {
     v13 = [v12 substringWithRange:{v23[4], v14, v15, v16, v17}];
@@ -52,13 +52,13 @@
   v21 = v13;
   v14 = v12;
   v20 = v14;
-  [a1 ef_enumerateTokensInString:v10 options:a4 usingBlock:v19];
+  [self ef_enumerateTokensInString:v10 options:a4 usingBlock:v19];
   v15 = v14;
   v16 = v15;
   if ((a5 & 2) != 0)
   {
-    v17 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-    v16 = [v15 stringByTrimmingCharactersInSet:v17];
+    whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+    v16 = [v15 stringByTrimmingCharactersInSet:whitespaceCharacterSet];
   }
 
   return v16;
@@ -66,7 +66,7 @@
 
 - (id)ef_stringByRemovingTokensFromString:()EmailFoundationAdditions tokenizationHandler:
 {
-  v4 = [a1 ef_stringByRemovingTokensFromString:a3 matchingOptions:0 tokenizationOptions:0 tokenizationHandler:a4];
+  v4 = [self ef_stringByRemovingTokensFromString:a3 matchingOptions:0 tokenizationOptions:0 tokenizationHandler:a4];
 
   return v4;
 }
@@ -81,8 +81,8 @@
   v8 = v11;
   if (!v7)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:a1 file:@"EFNSRegularExpressionAdditions.m" lineNumber:96 description:{@"Failed to create regular expression. Error:", v8}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"EFNSRegularExpressionAdditions.m" lineNumber:96 description:{@"Failed to create regular expression. Error:", v8}];
   }
 
   return v7;

@@ -1,30 +1,30 @@
 @interface CKDFetchRecordVersionsOperation
 - (CKDDecryptRecordsOperation)recordDecryptOperation;
-- (CKDFetchRecordVersionsOperation)initWithOperationInfo:(id)a3 container:(id)a4;
+- (CKDFetchRecordVersionsOperation)initWithOperationInfo:(id)info container:(id)container;
 - (id)activityCreate;
 - (id)relevantZoneIDs;
-- (void)_finishOnCallbackQueueWithError:(id)a3;
-- (void)_handleRecordVersionsFetchedForID:(id)a3 isDeleted:(BOOL)a4 versions:(id)a5 responseCode:(id)a6;
+- (void)_finishOnCallbackQueueWithError:(id)error;
+- (void)_handleRecordVersionsFetchedForID:(id)d isDeleted:(BOOL)deleted versions:(id)versions responseCode:(id)code;
 - (void)finishDecryption;
 - (void)main;
 @end
 
 @implementation CKDFetchRecordVersionsOperation
 
-- (CKDFetchRecordVersionsOperation)initWithOperationInfo:(id)a3 container:(id)a4
+- (CKDFetchRecordVersionsOperation)initWithOperationInfo:(id)info container:(id)container
 {
   v35[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  infoCopy = info;
   v34.receiver = self;
   v34.super_class = CKDFetchRecordVersionsOperation;
-  v9 = [(CKDDatabaseOperation *)&v34 initWithOperationInfo:v6 container:a4];
+  v9 = [(CKDDatabaseOperation *)&v34 initWithOperationInfo:infoCopy container:container];
   if (v9)
   {
-    v10 = objc_msgSend_recordIDs(v6, v7, v8);
+    v10 = objc_msgSend_recordIDs(infoCopy, v7, v8);
     objc_msgSend_setRecordIDs_(v9, v11, v10);
 
-    v14 = objc_msgSend_desiredKeys(v6, v12, v13);
-    if (v14 && (v17 = v14, objc_msgSend_desiredKeys(v6, v15, v16), v18 = objc_claimAutoreleasedReturnValue(), v21 = objc_msgSend_count(v18, v19, v20), v18, v17, !v21))
+    v14 = objc_msgSend_desiredKeys(infoCopy, v12, v13);
+    if (v14 && (v17 = v14, objc_msgSend_desiredKeys(infoCopy, v15, v16), v18 = objc_claimAutoreleasedReturnValue(), v21 = objc_msgSend_count(v18, v19, v20), v18, v17, !v21))
     {
       v35[0] = *MEMORY[0x277CBC030];
       v22 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v15, v35, 1);
@@ -32,19 +32,19 @@
 
     else
     {
-      v22 = objc_msgSend_desiredKeys(v6, v15, v16);
+      v22 = objc_msgSend_desiredKeys(infoCopy, v15, v16);
     }
 
     desiredKeys = v9->_desiredKeys;
     v9->_desiredKeys = v22;
 
-    v26 = objc_msgSend_minimumVersionETag(v6, v24, v25);
+    v26 = objc_msgSend_minimumVersionETag(infoCopy, v24, v25);
     objc_msgSend_setMinimumVersionETag_(v9, v27, v26);
 
     v28 = dispatch_group_create();
     objc_msgSend_setFetchVersionsGroup_(v9, v29, v28);
 
-    v9->_shouldFetchAssetContent = objc_msgSend_shouldFetchAssetContent(v6, v30, v31);
+    v9->_shouldFetchAssetContent = objc_msgSend_shouldFetchAssetContent(infoCopy, v30, v31);
   }
 
   v32 = *MEMORY[0x277D85DE8];
@@ -60,9 +60,9 @@
 
 - (CKDDecryptRecordsOperation)recordDecryptOperation
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  decryptOperation = v2->_decryptOperation;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  decryptOperation = selfCopy->_decryptOperation;
   if (!decryptOperation || objc_msgSend_isFinished(decryptOperation, v3, v4))
   {
     v6 = objc_opt_new();
@@ -71,13 +71,13 @@
     v11[1] = 3221225472;
     v11[2] = sub_2251E5C64;
     v11[3] = &unk_278548B60;
-    v11[4] = v2;
-    objc_msgSend_spawnAndRunOperationOfClass_operationInfo_operationConfigurationBlock_(v2, v8, v7, v6, v11);
+    v11[4] = selfCopy;
+    objc_msgSend_spawnAndRunOperationOfClass_operationInfo_operationConfigurationBlock_(selfCopy, v8, v7, v6, v11);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  v9 = v2->_decryptOperation;
+  v9 = selfCopy->_decryptOperation;
 
   return v9;
 }
@@ -95,21 +95,21 @@
   objc_sync_exit(obj);
 }
 
-- (void)_handleRecordVersionsFetchedForID:(id)a3 isDeleted:(BOOL)a4 versions:(id)a5 responseCode:(id)a6
+- (void)_handleRecordVersionsFetchedForID:(id)d isDeleted:(BOOL)deleted versions:(id)versions responseCode:(id)code
 {
-  v58 = a4;
+  deletedCopy = deleted;
   v97 = *MEMORY[0x277D85DE8];
-  v61 = a3;
-  v59 = a5;
+  dCopy = d;
+  versionsCopy = versions;
   v85 = 0;
   v86 = &v85;
   v87 = 0x3032000000;
   v88 = sub_225074040;
   v89 = sub_2250735AC;
   v90 = 0;
-  v60 = a6;
-  v10 = objc_msgSend_code(v60, v8, v9);
-  if (v61 && v10 == 1)
+  codeCopy = code;
+  v10 = objc_msgSend_code(codeCopy, v8, v9);
+  if (dCopy && v10 == 1)
   {
     if (*MEMORY[0x277CBC880] != -1)
     {
@@ -119,23 +119,23 @@
     v11 = *MEMORY[0x277CBC830];
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
-      v55 = objc_msgSend_count(v59, v12, v13);
+      v55 = objc_msgSend_count(versionsCopy, v12, v13);
       v56 = @"false";
       *location = 134218498;
       *&location[4] = v55;
       v93 = 2114;
-      if (v58)
+      if (deletedCopy)
       {
         v56 = @"true";
       }
 
-      v94 = v61;
+      v94 = dCopy;
       v95 = 2114;
       v96 = v56;
       _os_log_debug_impl(&dword_22506F000, v11, OS_LOG_TYPE_DEBUG, "Fetched %ld versions for record with ID %{public}@ (is deleted: %{public}@)", location, 0x20u);
     }
 
-    if (objc_msgSend_count(v59, v14, v15))
+    if (objc_msgSend_count(versionsCopy, v14, v15))
     {
       v18 = objc_msgSend_fetchVersionsGroup(self, v16, v17);
       dispatch_group_enter(v18);
@@ -147,7 +147,7 @@
       v84 = 0u;
       v81 = 0u;
       v82 = 0u;
-      obj = v59;
+      obj = versionsCopy;
       v22 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v21, &v81, v91, 16);
       if (v22)
       {
@@ -189,12 +189,12 @@
       block[2] = sub_2251E6740;
       block[3] = &unk_278549B28;
       objc_copyWeak(&v74, location);
-      v32 = v61;
-      v75 = v58;
+      v32 = dCopy;
+      v75 = deletedCopy;
       v70 = v32;
       v71 = v20;
       v73 = &v85;
-      v72 = self;
+      selfCopy = self;
       v33 = v20;
       dispatch_group_notify(v19, v31, block);
 
@@ -207,12 +207,12 @@
   else
   {
     v34 = MEMORY[0x277CBC560];
-    v35 = sub_2253962A4(v60);
+    v35 = sub_2253962A4(codeCopy);
     v38 = objc_msgSend_request(self, v36, v37);
-    v39 = sub_225395734(v38, v60);
-    v42 = objc_msgSend_error(v60, v40, v41);
+    v39 = sub_225395734(v38, codeCopy);
+    v42 = objc_msgSend_error(codeCopy, v40, v41);
     v45 = objc_msgSend_errorDescription(v42, v43, v44);
-    v47 = objc_msgSend_errorWithDomain_code_userInfo_format_(v34, v46, *MEMORY[0x277CBC120], v35, v39, @"Error fetching versions for record %@ from server: %@", v61, v45);
+    v47 = objc_msgSend_errorWithDomain_code_userInfo_format_(v34, v46, *MEMORY[0x277CBC120], v35, v39, @"Error fetching versions for record %@ from server: %@", dCopy, v45);
     v48 = v86[5];
     v86[5] = v47;
 
@@ -226,7 +226,7 @@
     {
       v57 = v86[5];
       *location = 138412546;
-      *&location[4] = v61;
+      *&location[4] = dCopy;
       v93 = 2112;
       v94 = v57;
       _os_log_debug_impl(&dword_22506F000, v49, OS_LOG_TYPE_DEBUG, "Failed to fetch versions for record %@: %@", location, 0x16u);
@@ -243,9 +243,9 @@
     v64[2] = sub_2251E68B4;
     v64[3] = &unk_278549B00;
     v64[4] = self;
-    v65 = v61;
-    v68 = v58;
-    v66 = v59;
+    v65 = dCopy;
+    v68 = deletedCopy;
+    v66 = versionsCopy;
     v67 = &v85;
     dispatch_async(v53, v64);
   }
@@ -304,10 +304,10 @@ LABEL_21:
   }
 }
 
-- (void)_finishOnCallbackQueueWithError:(id)a3
+- (void)_finishOnCallbackQueueWithError:(id)error
 {
   v46 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  errorCopy = error;
   if (*MEMORY[0x277CBC880] != -1)
   {
     dispatch_once(MEMORY[0x277CBC880], *MEMORY[0x277CBC878]);
@@ -323,11 +323,11 @@ LABEL_21:
     *buf = 138544130;
     v39 = v26;
     v40 = 2048;
-    v41 = self;
+    selfCopy = self;
     v42 = 2114;
     v43 = v29;
     v44 = 2112;
-    v45 = v4;
+    v45 = errorCopy;
     _os_log_debug_impl(&dword_22506F000, v24, OS_LOG_TYPE_DEBUG, "Fetch record versions operation <%{public}@: %p; %{public}@> finished with error %@", buf, 0x2Au);
   }
 
@@ -374,7 +374,7 @@ LABEL_21:
   objc_msgSend_setRecordVersionFetchedBlock_(self, v21, 0);
   v30.receiver = self;
   v30.super_class = CKDFetchRecordVersionsOperation;
-  [(CKDOperation *)&v30 _finishOnCallbackQueueWithError:v4];
+  [(CKDOperation *)&v30 _finishOnCallbackQueueWithError:errorCopy];
 
   v23 = *MEMORY[0x277D85DE8];
 }

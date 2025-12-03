@@ -1,20 +1,20 @@
 @interface SUUIPreviewControlViewElement
 - (BOOL)isEnabled;
-- (SUUIPreviewControlViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5;
-- (id)applyUpdatesWithElement:(id)a3;
+- (SUUIPreviewControlViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory;
+- (id)applyUpdatesWithElement:(id)element;
 @end
 
 @implementation SUUIPreviewControlViewElement
 
-- (SUUIPreviewControlViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5
+- (SUUIPreviewControlViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory
 {
-  v8 = a3;
+  elementCopy = element;
   v16.receiver = self;
   v16.super_class = SUUIPreviewControlViewElement;
-  v9 = [(SUUIViewElement *)&v16 initWithDOMElement:v8 parent:a4 elementFactory:a5];
+  v9 = [(SUUIViewElement *)&v16 initWithDOMElement:elementCopy parent:parent elementFactory:factory];
   if (v9)
   {
-    v10 = [v8 getAttribute:@"disabled"];
+    v10 = [elementCopy getAttribute:@"disabled"];
     if ([v10 length])
     {
       v11 = [v10 BOOLValue] ^ 1;
@@ -26,13 +26,13 @@
     }
 
     v9->_enabled = v11;
-    v12 = [v8 getAttribute:@"data-content-id"];
+    v12 = [elementCopy getAttribute:@"data-content-id"];
     if ([v12 length])
     {
       v9->_itemIdentifier = [v12 longLongValue];
     }
 
-    v13 = [v8 getAttribute:@"preview-url"];
+    v13 = [elementCopy getAttribute:@"preview-url"];
     mediaURLString = v9->_mediaURLString;
     v9->_mediaURLString = v13;
   }
@@ -40,20 +40,20 @@
   return v9;
 }
 
-- (id)applyUpdatesWithElement:(id)a3
+- (id)applyUpdatesWithElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v10.receiver = self;
   v10.super_class = SUUIPreviewControlViewElement;
-  v5 = [(SUUIViewElement *)&v10 applyUpdatesWithElement:v4];
+  v5 = [(SUUIViewElement *)&v10 applyUpdatesWithElement:elementCopy];
   v6 = v5;
-  if (v4 != self || [v5 updateType])
+  if (elementCopy != self || [v5 updateType])
   {
-    self->_enabled = v4->_enabled;
-    self->_itemIdentifier = [(SUUIPreviewControlViewElement *)v4 itemIdentifier];
-    v7 = [(SUUIPreviewControlViewElement *)v4 mediaURLString];
+    self->_enabled = elementCopy->_enabled;
+    self->_itemIdentifier = [(SUUIPreviewControlViewElement *)elementCopy itemIdentifier];
+    mediaURLString = [(SUUIPreviewControlViewElement *)elementCopy mediaURLString];
     mediaURLString = self->_mediaURLString;
-    self->_mediaURLString = v7;
+    self->_mediaURLString = mediaURLString;
   }
 
   return v6;

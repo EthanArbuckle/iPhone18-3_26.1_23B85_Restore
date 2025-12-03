@@ -1,12 +1,12 @@
 @interface FMMetricsDistiller
-+ (id)packetFromMetrics:(id)a3 withSessionId:(unint64_t)a4 andUnlockSessionId:(unint64_t)a5 withSecondsFromStart:(double)a6 andMessageSessionId:(unint64_t)a7 withSecondsFromStart:(double)a8;
++ (id)packetFromMetrics:(id)metrics withSessionId:(unint64_t)id andUnlockSessionId:(unint64_t)sessionId withSecondsFromStart:(double)start andMessageSessionId:(unint64_t)messageSessionId withSecondsFromStart:(double)fromStart;
 @end
 
 @implementation FMMetricsDistiller
 
-+ (id)packetFromMetrics:(id)a3 withSessionId:(unint64_t)a4 andUnlockSessionId:(unint64_t)a5 withSecondsFromStart:(double)a6 andMessageSessionId:(unint64_t)a7 withSecondsFromStart:(double)a8
++ (id)packetFromMetrics:(id)metrics withSessionId:(unint64_t)id andUnlockSessionId:(unint64_t)sessionId withSecondsFromStart:(double)start andMessageSessionId:(unint64_t)messageSessionId withSecondsFromStart:(double)fromStart
 {
-  v13 = a3;
+  metricsCopy = metrics;
   v141 = 0u;
   v142 = 0u;
   v139 = 0u;
@@ -16,55 +16,55 @@
   v136 = 0u;
   memset(v135, 0, sizeof(v135));
   v134 = 5;
-  v14 = a5 != 0;
+  v14 = sessionId != 0;
   v15 = 2;
-  if (a5)
+  if (sessionId)
   {
     v15 = 3;
   }
 
-  if (a7)
+  if (messageSessionId)
   {
     v14 = v15;
   }
 
   *(&v135[1] + 12) = v14;
-  *(&v135[1] + 4) = a4;
-  *(&v135[2] + 4) = a5;
-  *(&v135[2] + 12) = a6;
-  *(&v135[3] + 4) = a7;
-  *(&v135[3] + 12) = a8;
+  *(&v135[1] + 4) = id;
+  *(&v135[2] + 4) = sessionId;
+  *(&v135[2] + 12) = start;
+  *(&v135[3] + 4) = messageSessionId;
+  *(&v135[3] + 12) = fromStart;
   v16 = sub_100004784();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134219008;
-    v125 = a5;
+    sessionIdCopy = sessionId;
     v126 = 2048;
-    v127 = a6;
+    startCopy = start;
     v128 = 2048;
-    v129 = a7;
+    messageSessionIdCopy = messageSessionId;
     v130 = 2048;
-    v131 = a8;
+    fromStartCopy = fromStart;
     v132 = 2048;
-    v133 = a4;
+    idCopy = id;
     _os_log_debug_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEBUG, "lock_session_id = %llu, seconds from device unlocked to packet = %f, message_session_id = %llu, seconds from message app session start to packet = %f, session_id = %llu", buf, 0x34u);
   }
 
-  v17 = [v13 objectForKeyedSubscript:kCVAFaceTracking_TrackedFacesArray];
-  v18 = [v17 firstObject];
+  v17 = [metricsCopy objectForKeyedSubscript:kCVAFaceTracking_TrackedFacesArray];
+  firstObject = [v17 firstObject];
 
-  if (v18)
+  if (firstObject)
   {
-    v19 = [v18 objectForKeyedSubscript:kCVAFaceTracking_FailureType];
+    v19 = [firstObject objectForKeyedSubscript:kCVAFaceTracking_FailureType];
     v20 = v19;
     if (v19 && ([v19 isEqualToNumber:&off_10000C7E8]& 1) == 0)
     {
       v21 = sub_100004784();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
       {
-        v100 = [v20 intValue];
+        intValue = [v20 intValue];
         *buf = 67109120;
-        LODWORD(v125) = v100;
+        LODWORD(sessionIdCopy) = intValue;
         _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_INFO, "kCVAFaceTracking_FailureType => %d", buf, 8u);
       }
 
@@ -72,7 +72,7 @@
       goto LABEL_149;
     }
 
-    v21 = [v18 objectForKeyedSubscript:kCVAFaceTracking_FaceID];
+    v21 = [firstObject objectForKeyedSubscript:kCVAFaceTracking_FaceID];
     if (!v21 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       v23 = sub_100004784();
@@ -100,10 +100,10 @@
     }
 
     [v22 getUUIDBytes:v135];
-    v24 = [v18 objectForKeyedSubscript:kCVAFaceTracking_Identity];
+    v24 = [firstObject objectForKeyedSubscript:kCVAFaceTracking_Identity];
     if (v24)
     {
-      v25 = [v18 objectForKeyedSubscript:kCVAFaceTracking_RawData];
+      v25 = [firstObject objectForKeyedSubscript:kCVAFaceTracking_RawData];
       v26 = v25;
       if (v25)
       {
@@ -169,7 +169,7 @@
         }
 
         while (v35 != 3);
-        v38 = [v18 objectForKeyedSubscript:kCVAFaceTracking_SmoothData];
+        v38 = [firstObject objectForKeyedSubscript:kCVAFaceTracking_SmoothData];
         v119 = v38;
         if (!v38)
         {

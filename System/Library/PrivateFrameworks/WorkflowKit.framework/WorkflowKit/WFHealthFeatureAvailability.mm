@@ -1,20 +1,20 @@
 @interface WFHealthFeatureAvailability
-- (WFHealthFeatureAvailability)initWithSleepFeature:(unint64_t)a3;
+- (WFHealthFeatureAvailability)initWithSleepFeature:(unint64_t)feature;
 - (WFHealthFeatureObserver)observer;
 - (unint64_t)sleepOnboardingStatus;
 - (void)dealloc;
-- (void)featureAvailabilityProvidingDidUpdateOnboardingCompletion:(id)a3;
-- (void)getSleepOnboardingStatus:(id)a3;
-- (void)setSleepOnboardingStatus:(unint64_t)a3;
+- (void)featureAvailabilityProvidingDidUpdateOnboardingCompletion:(id)completion;
+- (void)getSleepOnboardingStatus:(id)status;
+- (void)setSleepOnboardingStatus:(unint64_t)status;
 @end
 
 @implementation WFHealthFeatureAvailability
 
 - (unint64_t)sleepOnboardingStatus
 {
-  v3 = [MEMORY[0x1E695E000] systemShortcutsUserDefaults];
-  v4 = [(WFHealthFeatureAvailability *)self onboardingCompletedKey];
-  v5 = [v3 integerForKey:v4];
+  systemShortcutsUserDefaults = [MEMORY[0x1E695E000] systemShortcutsUserDefaults];
+  onboardingCompletedKey = [(WFHealthFeatureAvailability *)self onboardingCompletedKey];
+  v5 = [systemShortcutsUserDefaults integerForKey:onboardingCompletedKey];
 
   return v5;
 }
@@ -28,15 +28,15 @@
 
 - (void)dealloc
 {
-  v3 = [(WFHealthFeatureAvailability *)self store];
-  [v3 unregisterObserver:self];
+  store = [(WFHealthFeatureAvailability *)self store];
+  [store unregisterObserver:self];
 
   v4.receiver = self;
   v4.super_class = WFHealthFeatureAvailability;
   [(WFHealthFeatureAvailability *)&v4 dealloc];
 }
 
-- (void)featureAvailabilityProvidingDidUpdateOnboardingCompletion:(id)a3
+- (void)featureAvailabilityProvidingDidUpdateOnboardingCompletion:(id)completion
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
@@ -71,17 +71,17 @@ void __89__WFHealthFeatureAvailability_featureAvailabilityProvidingDidUpdateOnbo
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)getSleepOnboardingStatus:(id)a3
+- (void)getSleepOnboardingStatus:(id)status
 {
-  v4 = a3;
-  v5 = [(WFHealthFeatureAvailability *)self store];
+  statusCopy = status;
+  store = [(WFHealthFeatureAvailability *)self store];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __56__WFHealthFeatureAvailability_getSleepOnboardingStatus___block_invoke;
   v7[3] = &unk_1E83758B0;
-  v8 = v4;
-  v6 = v4;
-  [v5 isCurrentOnboardingVersionCompletedWithCompletion:v7];
+  v8 = statusCopy;
+  v6 = statusCopy;
+  [store isCurrentOnboardingVersionCompletedWithCompletion:v7];
 }
 
 void __56__WFHealthFeatureAvailability_getSleepOnboardingStatus___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -91,20 +91,20 @@ void __56__WFHealthFeatureAvailability_getSleepOnboardingStatus___block_invoke(u
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)setSleepOnboardingStatus:(unint64_t)a3
+- (void)setSleepOnboardingStatus:(unint64_t)status
 {
-  if ([(WFHealthFeatureAvailability *)self sleepOnboardingStatus]!= a3)
+  if ([(WFHealthFeatureAvailability *)self sleepOnboardingStatus]!= status)
   {
-    v5 = [MEMORY[0x1E695E000] systemShortcutsUserDefaults];
-    v6 = [(WFHealthFeatureAvailability *)self onboardingCompletedKey];
-    [v5 setInteger:a3 forKey:v6];
+    systemShortcutsUserDefaults = [MEMORY[0x1E695E000] systemShortcutsUserDefaults];
+    onboardingCompletedKey = [(WFHealthFeatureAvailability *)self onboardingCompletedKey];
+    [systemShortcutsUserDefaults setInteger:status forKey:onboardingCompletedKey];
 
-    v7 = [(WFHealthFeatureAvailability *)self observer];
-    [v7 healthFeatureAvailability:self sleepOnboardingStatusDidChange:a3];
+    observer = [(WFHealthFeatureAvailability *)self observer];
+    [observer healthFeatureAvailability:self sleepOnboardingStatusDidChange:status];
   }
 }
 
-- (WFHealthFeatureAvailability)initWithSleepFeature:(unint64_t)a3
+- (WFHealthFeatureAvailability)initWithSleepFeature:(unint64_t)feature
 {
   v25.receiver = self;
   v25.super_class = WFHealthFeatureAvailability;
@@ -119,7 +119,7 @@ void __56__WFHealthFeatureAvailability_getSleepOnboardingStatus___block_invoke(u
   queue = v4->_queue;
   v4->_queue = v6;
 
-  if (a3)
+  if (feature)
   {
     v31 = 0;
     v32 = &v31;
@@ -163,9 +163,9 @@ LABEL_12:
       return v4;
     }
 
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v21 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"HKFeatureIdentifier getHKFeatureIdentifierSleepActions(void)"];
-    [v20 handleFailureInFunction:v21 file:@"WFHealthFeatureAvailability.m" lineNumber:30 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v21 file:@"WFHealthFeatureAvailability.m" lineNumber:30 description:{@"%s", dlerror()}];
   }
 
   else
@@ -196,9 +196,9 @@ LABEL_12:
       goto LABEL_11;
     }
 
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v21 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"HKFeatureIdentifier getHKFeatureIdentifierSleepCoaching(void)"];
-    [v20 handleFailureInFunction:v21 file:@"WFHealthFeatureAvailability.m" lineNumber:29 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v21 file:@"WFHealthFeatureAvailability.m" lineNumber:29 description:{@"%s", dlerror()}];
   }
 
   __break(1u);

@@ -2,84 +2,84 @@
 - (BOOL)_deviceSupportsShortcutMenu;
 - (id)enabledTripleClickSettings;
 - (id)specifiers;
-- (int)_optionFromSpecifierKey:(id)a3;
+- (int)_optionFromSpecifierKey:(id)key;
 - (void)dealloc;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation TripleClickController
 
-- (int)_optionFromSpecifierKey:(id)a3
+- (int)_optionFromSpecifierKey:(id)key
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"voiceover"])
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"voiceover"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"zoom"])
+  else if ([keyCopy isEqualToString:@"zoom"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"touchaccommodations"])
+  else if ([keyCopy isEqualToString:@"touchaccommodations"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"hearingdevices"])
+  else if ([keyCopy isEqualToString:@"hearingdevices"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"watchcontrol"])
+  else if ([keyCopy isEqualToString:@"watchcontrol"])
   {
     v4 = 23;
   }
 
-  else if ([v3 isEqualToString:@"reducetransparency"])
+  else if ([keyCopy isEqualToString:@"reducetransparency"])
   {
     v4 = 20;
   }
 
-  else if ([v3 isEqualToString:@"increasecontrast"])
+  else if ([keyCopy isEqualToString:@"increasecontrast"])
   {
     v4 = 21;
   }
 
-  else if ([v3 isEqualToString:@"reducemotion"])
+  else if ([keyCopy isEqualToString:@"reducemotion"])
   {
     v4 = 24;
   }
 
-  else if ([v3 isEqualToString:@"leftrightbalance"])
+  else if ([keyCopy isEqualToString:@"leftrightbalance"])
   {
     v4 = 26;
   }
 
-  else if ([v3 isEqualToString:@"off"])
+  else if ([keyCopy isEqualToString:@"off"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"controlnearbydevices"])
+  else if ([keyCopy isEqualToString:@"controlnearbydevices"])
   {
     v4 = 31;
   }
 
-  else if ([v3 isEqualToString:@"livespeech"])
+  else if ([keyCopy isEqualToString:@"livespeech"])
   {
     v4 = 33;
   }
 
-  else if ([v3 isEqualToString:@"colorfilters"])
+  else if ([keyCopy isEqualToString:@"colorfilters"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"increasebrightnessfloor"])
+  else if ([keyCopy isEqualToString:@"increasebrightnessfloor"])
   {
     v4 = 41;
   }
@@ -122,12 +122,12 @@
       }
     }
 
-    v13 = [(TripleClickController *)self _deviceSupportsShortcutMenu];
+    _deviceSupportsShortcutMenu = [(TripleClickController *)self _deviceSupportsShortcutMenu];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __35__TripleClickController_specifiers__block_invoke_2;
     v17[3] = &__block_descriptor_33_e28_B32__0__PSSpecifier_8Q16_B24l;
-    v18 = v13;
+    v18 = _deviceSupportsShortcutMenu;
     v14 = [v5 indexesOfObjectsPassingTest:v17];
     if ([v14 count])
     {
@@ -216,8 +216,8 @@ uint64_t __35__TripleClickController_specifiers__block_invoke_3(uint64_t a1, voi
 
 - (id)enabledTripleClickSettings
 {
-  v2 = [(AccessibilityBridgeBaseController *)self accessibilityDomainAccessor];
-  v3 = [v2 objectForKey:@"TripleClickOptions"];
+  accessibilityDomainAccessor = [(AccessibilityBridgeBaseController *)self accessibilityDomainAccessor];
+  v3 = [accessibilityDomainAccessor objectForKey:@"TripleClickOptions"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -233,24 +233,24 @@ uint64_t __35__TripleClickController_specifiers__block_invoke_3(uint64_t a1, voi
   return v4;
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v18 = a4;
-  v6 = [v18 specifier];
-  v7 = [v6 propertyForKey:@"tripleClickOption"];
+  cellCopy = cell;
+  specifier = [cellCopy specifier];
+  v7 = [specifier propertyForKey:@"tripleClickOption"];
   v8 = [(TripleClickController *)self _optionFromSpecifierKey:v7];
 
-  v9 = [(TripleClickController *)self enabledTripleClickSettings];
+  enabledTripleClickSettings = [(TripleClickController *)self enabledTripleClickSettings];
   v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v8];
-  if ([v9 containsObject:v10])
+  if ([enabledTripleClickSettings containsObject:v10])
   {
     v11 = 1;
   }
 
   else
   {
-    v12 = [(TripleClickController *)self enabledTripleClickSettings];
-    if ([v12 count])
+    enabledTripleClickSettings2 = [(TripleClickController *)self enabledTripleClickSettings];
+    if ([enabledTripleClickSettings2 count])
     {
       v13 = 0;
     }
@@ -263,12 +263,12 @@ uint64_t __35__TripleClickController_specifiers__block_invoke_3(uint64_t a1, voi
     v11 = v13;
   }
 
-  [v18 setChecked:v11];
+  [cellCopy setChecked:v11];
   if (v8 == 23)
   {
     v14 = MEMORY[0x277CCABB0];
-    v15 = [(AccessibilityBridgeBaseController *)self accessibilityDomainAccessor];
-    v16 = [v15 BOOLForKey:@"VoiceOverTouchEnabled"];
+    accessibilityDomainAccessor = [(AccessibilityBridgeBaseController *)self accessibilityDomainAccessor];
+    featureEnabled = [accessibilityDomainAccessor BOOLForKey:@"VoiceOverTouchEnabled"];
   }
 
   else
@@ -279,17 +279,17 @@ uint64_t __35__TripleClickController_specifiers__block_invoke_3(uint64_t a1, voi
     }
 
     v14 = MEMORY[0x277CCABB0];
-    v15 = [MEMORY[0x277D7A910] sharedInstance];
-    v16 = [v15 featureEnabled];
+    accessibilityDomainAccessor = [MEMORY[0x277D7A910] sharedInstance];
+    featureEnabled = [accessibilityDomainAccessor featureEnabled];
   }
 
-  v17 = [v14 numberWithInt:v16 ^ 1u];
-  [v6 setProperty:v17 forKey:*MEMORY[0x277D3FF38]];
+  v17 = [v14 numberWithInt:featureEnabled ^ 1u];
+  [specifier setProperty:v17 forKey:*MEMORY[0x277D3FF38]];
 
 LABEL_15:
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v18[1] = *MEMORY[0x277D85DE8];
   [*(&self->super.super.super.super.super.super.isa + *MEMORY[0x277D3FC60]) setDelegate:self];
@@ -299,14 +299,14 @@ LABEL_15:
   [(TripleClickController *)self willBecomeActive];
   v4 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v5 = objc_alloc(MEMORY[0x277CCAEB8]);
-  v6 = [MEMORY[0x277CBEAF8] currentLocale];
-  v7 = [v4 bundleURL];
-  v8 = [v5 initWithKey:@"AX_SHORTCUT" table:@"AccessibilitySettings" locale:v6 bundleURL:v7];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  bundleURL = [v4 bundleURL];
+  v8 = [v5 initWithKey:@"AX_SHORTCUT" table:@"AccessibilitySettings" locale:currentLocale bundleURL:bundleURL];
 
   v9 = objc_alloc(MEMORY[0x277CCAEB8]);
-  v10 = [MEMORY[0x277CBEAF8] currentLocale];
-  v11 = [v4 bundleURL];
-  v12 = [v9 initWithKey:@"ACCESSIBILITY_TITLE" table:@"AccessibilitySettings" locale:v10 bundleURL:v11];
+  currentLocale2 = [MEMORY[0x277CBEAF8] currentLocale];
+  bundleURL2 = [v4 bundleURL];
+  v12 = [v9 initWithKey:@"ACCESSIBILITY_TITLE" table:@"AccessibilitySettings" locale:currentLocale2 bundleURL:bundleURL2];
 
   v13 = MEMORY[0x277CF3470];
   v18[0] = v12;
@@ -319,33 +319,33 @@ LABEL_15:
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = TripleClickController;
   [(AccessibilityBridgeBaseController *)&v4 dealloc];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v36 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   v33.receiver = self;
   v33.super_class = TripleClickController;
-  [(TripleClickController *)&v33 tableView:v6 didSelectRowAtIndexPath:v7];
-  v8 = [v6 cellForRowAtIndexPath:v7];
+  [(TripleClickController *)&v33 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
+  v8 = [viewCopy cellForRowAtIndexPath:pathCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [v8 isChecked];
+    isChecked = [v8 isChecked];
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v10 = [v6 visibleCells];
-    v11 = [v10 countByEnumeratingWithState:&v29 objects:v35 count:16];
+    visibleCells = [viewCopy visibleCells];
+    v11 = [visibleCells countByEnumeratingWithState:&v29 objects:v35 count:16];
     if (v11)
     {
       v12 = v11;
@@ -356,33 +356,33 @@ LABEL_15:
         {
           if (*v30 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(visibleCells);
           }
 
           [*(*(&v29 + 1) + 8 * i) setChecked:0];
         }
 
-        v12 = [v10 countByEnumeratingWithState:&v29 objects:v35 count:16];
+        v12 = [visibleCells countByEnumeratingWithState:&v29 objects:v35 count:16];
       }
 
       while (v12);
     }
 
-    v15 = [(AccessibilityBridgeBaseController *)self specifierForIndexPath:v7];
-    [v8 setChecked:v9 ^ 1u];
+    v15 = [(AccessibilityBridgeBaseController *)self specifierForIndexPath:pathCopy];
+    [v8 setChecked:isChecked ^ 1u];
     v16 = [v15 propertyForKey:@"tripleClickOption"];
     v17 = [(TripleClickController *)self _optionFromSpecifierKey:v16];
 
     if ([(TripleClickController *)self _deviceSupportsShortcutMenu])
     {
       v18 = MEMORY[0x277CBEB18];
-      v19 = [(TripleClickController *)self enabledTripleClickSettings];
-      v20 = [v18 arrayWithArray:v19];
+      enabledTripleClickSettings = [(TripleClickController *)self enabledTripleClickSettings];
+      v20 = [v18 arrayWithArray:enabledTripleClickSettings];
 
       [v20 removeObject:&unk_284E7E540];
-      v21 = [v8 isChecked];
+      isChecked2 = [v8 isChecked];
       v22 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v17];
-      if (v21)
+      if (isChecked2)
       {
         [v20 addObject:v22];
       }
@@ -396,8 +396,8 @@ LABEL_15:
       {
         v25 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v8, "isChecked")}];
         v26 = *MEMORY[0x277CE7F38];
-        v27 = [(AccessibilityBridgeBaseController *)self touchAccommodationsDomainAccessor];
-        [(AccessibilityBridgeBaseController *)self setGizmoPref:v25 forKey:v26 domainAccessor:v27];
+        touchAccommodationsDomainAccessor = [(AccessibilityBridgeBaseController *)self touchAccommodationsDomainAccessor];
+        [(AccessibilityBridgeBaseController *)self setGizmoPref:v25 forKey:v26 domainAccessor:touchAccommodationsDomainAccessor];
       }
 
       [(TripleClickController *)self _saveTripleClickOptions:v20];

@@ -1,5 +1,5 @@
 @interface CNVCardValueEncoder
-+ (id)encodeValue:(id)a3;
++ (id)encodeValue:(id)value;
 + (id)substitutions;
 @end
 
@@ -34,11 +34,11 @@ uint64_t __36__CNVCardValueEncoder_substitutions__block_invoke()
   return [v2 setObject:&stru_288651EC0 forKey:&stru_288654240];
 }
 
-+ (id)encodeValue:(id)a3
++ (id)encodeValue:(id)value
 {
-  v4 = a3;
-  v5 = [a1 substitutions];
-  v6 = [v4 _cn_stringByReplacingStrings:v5];
+  valueCopy = value;
+  substitutions = [self substitutions];
+  v6 = [valueCopy _cn_stringByReplacingStrings:substitutions];
 
   return v6;
 }

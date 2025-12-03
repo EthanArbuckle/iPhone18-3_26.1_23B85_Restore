@@ -1,6 +1,6 @@
 @interface MTROperationalCredentialsClusterFabricDescriptorStruct
 - (MTROperationalCredentialsClusterFabricDescriptorStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -13,9 +13,9 @@
   v2 = [(MTROperationalCredentialsClusterFabricDescriptorStruct *)&v12 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEA90] data];
+    data = [MEMORY[0x277CBEA90] data];
     rootPublicKey = v2->_rootPublicKey;
-    v2->_rootPublicKey = v3;
+    v2->_rootPublicKey = data;
 
     vendorID = v2->_vendorID;
     v2->_vendorID = &unk_284C3E588;
@@ -39,29 +39,29 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTROperationalCredentialsClusterFabricDescriptorStruct);
-  v5 = [(MTROperationalCredentialsClusterFabricDescriptorStruct *)self rootPublicKey];
-  [(MTROperationalCredentialsClusterFabricDescriptorStruct *)v4 setRootPublicKey:v5];
+  rootPublicKey = [(MTROperationalCredentialsClusterFabricDescriptorStruct *)self rootPublicKey];
+  [(MTROperationalCredentialsClusterFabricDescriptorStruct *)v4 setRootPublicKey:rootPublicKey];
 
-  v6 = [(MTROperationalCredentialsClusterFabricDescriptorStruct *)self vendorID];
-  [(MTROperationalCredentialsClusterFabricDescriptorStruct *)v4 setVendorID:v6];
+  vendorID = [(MTROperationalCredentialsClusterFabricDescriptorStruct *)self vendorID];
+  [(MTROperationalCredentialsClusterFabricDescriptorStruct *)v4 setVendorID:vendorID];
 
-  v7 = [(MTROperationalCredentialsClusterFabricDescriptorStruct *)self fabricID];
-  [(MTROperationalCredentialsClusterFabricDescriptorStruct *)v4 setFabricID:v7];
+  fabricID = [(MTROperationalCredentialsClusterFabricDescriptorStruct *)self fabricID];
+  [(MTROperationalCredentialsClusterFabricDescriptorStruct *)v4 setFabricID:fabricID];
 
-  v8 = [(MTROperationalCredentialsClusterFabricDescriptorStruct *)self nodeID];
-  [(MTROperationalCredentialsClusterFabricDescriptorStruct *)v4 setNodeID:v8];
+  nodeID = [(MTROperationalCredentialsClusterFabricDescriptorStruct *)self nodeID];
+  [(MTROperationalCredentialsClusterFabricDescriptorStruct *)v4 setNodeID:nodeID];
 
-  v9 = [(MTROperationalCredentialsClusterFabricDescriptorStruct *)self label];
-  [(MTROperationalCredentialsClusterFabricDescriptorStruct *)v4 setLabel:v9];
+  label = [(MTROperationalCredentialsClusterFabricDescriptorStruct *)self label];
+  [(MTROperationalCredentialsClusterFabricDescriptorStruct *)v4 setLabel:label];
 
-  v10 = [(MTROperationalCredentialsClusterFabricDescriptorStruct *)self vidVerificationStatement];
-  [(MTROperationalCredentialsClusterFabricDescriptorStruct *)v4 setVidVerificationStatement:v10];
+  vidVerificationStatement = [(MTROperationalCredentialsClusterFabricDescriptorStruct *)self vidVerificationStatement];
+  [(MTROperationalCredentialsClusterFabricDescriptorStruct *)v4 setVidVerificationStatement:vidVerificationStatement];
 
-  v11 = [(MTROperationalCredentialsClusterFabricDescriptorStruct *)self fabricIndex];
-  [(MTROperationalCredentialsClusterFabricDescriptorStruct *)v4 setFabricIndex:v11];
+  fabricIndex = [(MTROperationalCredentialsClusterFabricDescriptorStruct *)self fabricIndex];
+  [(MTROperationalCredentialsClusterFabricDescriptorStruct *)v4 setFabricIndex:fabricIndex];
 
   return v4;
 }

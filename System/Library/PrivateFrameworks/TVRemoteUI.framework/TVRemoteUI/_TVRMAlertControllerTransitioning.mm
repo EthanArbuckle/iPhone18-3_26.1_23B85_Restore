@@ -1,13 +1,13 @@
 @interface _TVRMAlertControllerTransitioning
-- (void)animateTransition:(id)a3;
+- (void)animateTransition:(id)transition;
 @end
 
 @implementation _TVRMAlertControllerTransitioning
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
-  v4 = a3;
-  v5 = [v4 containerView];
+  transitionCopy = transition;
+  containerView = [transitionCopy containerView];
   v6 = MEMORY[0x277CBF2C0];
   if (!self->_isPresentation)
   {
@@ -15,9 +15,9 @@
     goto LABEL_5;
   }
 
-  v7 = [v4 viewForKey:*MEMORY[0x277D77248]];
-  [v5 addSubview:v7];
-  [v5 layoutIfNeeded];
+  v7 = [transitionCopy viewForKey:*MEMORY[0x277D77248]];
+  [containerView addSubview:v7];
+  [containerView layoutIfNeeded];
 
   isPresentation = self->_isPresentation;
   memset(&v24, 0, sizeof(v24));
@@ -58,8 +58,8 @@ LABEL_6:
   v16[2] = __55___TVRMAlertControllerTransitioning_animateTransition___block_invoke_2;
   v16[3] = &unk_279D87BA8;
   v16[4] = self;
-  v17 = v4;
-  v15 = v4;
+  v17 = transitionCopy;
+  v15 = transitionCopy;
   [v13 animateWithDuration:6 delay:v18 usingSpringWithDamping:v16 initialSpringVelocity:0.404 options:0.0 animations:600.0 completion:0.0];
 }
 

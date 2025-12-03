@@ -1,7 +1,7 @@
 @interface OKAutoLayoutLayoutInfo
-- (CGRect)rectForRectName:(id)a3;
+- (CGRect)rectForRectName:(id)name;
 - (CGSize)targetScreenSize;
-- (OKAutoLayoutLayoutInfo)initWithLayout:(id)a3;
+- (OKAutoLayoutLayoutInfo)initWithLayout:(id)layout;
 - (void)_parseLayout;
 - (void)dealloc;
 @end
@@ -86,14 +86,14 @@ LABEL_19:
   }
 }
 
-- (OKAutoLayoutLayoutInfo)initWithLayout:(id)a3
+- (OKAutoLayoutLayoutInfo)initWithLayout:(id)layout
 {
   v6.receiver = self;
   v6.super_class = OKAutoLayoutLayoutInfo;
   v4 = [(OKAutoLayoutLayoutInfo *)&v6 init];
   if (v4)
   {
-    v4->_origLayout = a3;
+    v4->_origLayout = layout;
     v4->_areaPercentInAppearOrder = objc_opt_new();
     v4->_aspectRatiosInAppearOrder = objc_opt_new();
     v4->_rectNamesInAppearOrder = objc_opt_new();
@@ -145,9 +145,9 @@ LABEL_19:
   [(OKAutoLayoutLayoutInfo *)&v8 dealloc];
 }
 
-- (CGRect)rectForRectName:(id)a3
+- (CGRect)rectForRectName:(id)name
 {
-  v3 = [-[NSDictionary objectForKey:](self->_origLayout objectForKey:{a3), "objectForKey:", @"rect"}];
+  v3 = [-[NSDictionary objectForKey:](self->_origLayout objectForKey:{name), "objectForKey:", @"rect"}];
 
   [v3 CGRectValue];
   result.size.height = v7;

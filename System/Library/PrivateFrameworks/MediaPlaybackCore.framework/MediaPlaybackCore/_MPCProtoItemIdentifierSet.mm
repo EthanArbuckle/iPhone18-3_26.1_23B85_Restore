@@ -1,10 +1,10 @@
 @interface _MPCProtoItemIdentifierSet
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _MPCProtoItemIdentifierSet
@@ -74,31 +74,31 @@ LABEL_8:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ [(NSString *)self->_cloudUniversalLibraryID hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_32;
   }
 
   has = self->_has;
-  v6 = *(v4 + 64);
+  v6 = *(equalCopy + 64);
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 64) & 2) == 0 || self->_delegateInfoID != *(v4 + 2))
+    if ((*(equalCopy + 64) & 2) == 0 || self->_delegateInfoID != *(equalCopy + 2))
     {
       goto LABEL_32;
     }
   }
 
-  else if ((*(v4 + 64) & 2) != 0)
+  else if ((*(equalCopy + 64) & 2) != 0)
   {
     goto LABEL_32;
   }
 
   contentItemID = self->_contentItemID;
-  if (contentItemID | *(v4 + 7))
+  if (contentItemID | *(equalCopy + 7))
   {
     if (![(NSString *)contentItemID isEqual:?])
     {
@@ -108,12 +108,12 @@ LABEL_32:
     }
 
     has = self->_has;
-    v6 = *(v4 + 64);
+    v6 = *(equalCopy + 64);
   }
 
   if ((has & 8) != 0)
   {
-    if ((v6 & 8) == 0 || self->_storeAdamID != *(v4 + 4))
+    if ((v6 & 8) == 0 || self->_storeAdamID != *(equalCopy + 4))
     {
       goto LABEL_32;
     }
@@ -126,7 +126,7 @@ LABEL_32:
 
   if ((has & 0x10) != 0)
   {
-    if ((v6 & 0x10) == 0 || self->_storeSubscriptionAdamID != *(v4 + 5))
+    if ((v6 & 0x10) == 0 || self->_storeSubscriptionAdamID != *(equalCopy + 5))
     {
       goto LABEL_32;
     }
@@ -139,7 +139,7 @@ LABEL_32:
 
   if (has)
   {
-    if ((v6 & 1) == 0 || self->_cloudID != *(v4 + 1))
+    if ((v6 & 1) == 0 || self->_cloudID != *(equalCopy + 1))
     {
       goto LABEL_32;
     }
@@ -152,7 +152,7 @@ LABEL_32:
 
   if ((has & 4) != 0)
   {
-    if ((v6 & 4) == 0 || self->_purchaseHistoryID != *(v4 + 3))
+    if ((v6 & 4) == 0 || self->_purchaseHistoryID != *(equalCopy + 3))
     {
       goto LABEL_32;
     }
@@ -164,7 +164,7 @@ LABEL_32:
   }
 
   cloudUniversalLibraryID = self->_cloudUniversalLibraryID;
-  if (cloudUniversalLibraryID | *(v4 + 6))
+  if (cloudUniversalLibraryID | *(equalCopy + 6))
   {
     v9 = [(NSString *)cloudUniversalLibraryID isEqual:?];
   }
@@ -179,9 +179,9 @@ LABEL_33:
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if ((*&self->_has & 2) != 0)
   {
@@ -189,7 +189,7 @@ LABEL_33:
     *(v5 + 64) |= 2u;
   }
 
-  v7 = [(NSString *)self->_contentItemID copyWithZone:a3];
+  v7 = [(NSString *)self->_contentItemID copyWithZone:zone];
   v8 = *(v6 + 56);
   *(v6 + 56) = v7;
 
@@ -241,34 +241,34 @@ LABEL_7:
   }
 
 LABEL_8:
-  v10 = [(NSString *)self->_cloudUniversalLibraryID copyWithZone:a3];
+  v10 = [(NSString *)self->_cloudUniversalLibraryID copyWithZone:zone];
   v11 = *(v6 + 48);
   *(v6 + 48) = v10;
 
   return v6;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if ((*&self->_has & 2) != 0)
   {
     PBDataWriterWriteInt64Field();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_contentItemID)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 8) != 0)
   {
     PBDataWriterWriteInt64Field();
-    v4 = v6;
+    toCopy = v6;
     has = self->_has;
     if ((has & 0x10) == 0)
     {
@@ -288,7 +288,7 @@ LABEL_7:
   }
 
   PBDataWriterWriteInt64Field();
-  v4 = v6;
+  toCopy = v6;
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -303,42 +303,42 @@ LABEL_8:
 
 LABEL_17:
   PBDataWriterWriteInt64Field();
-  v4 = v6;
+  toCopy = v6;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_9:
     PBDataWriterWriteInt64Field();
-    v4 = v6;
+    toCopy = v6;
   }
 
 LABEL_10:
   if (self->_cloudUniversalLibraryID)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ((*&self->_has & 2) != 0)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_delegateInfoID];
-    [v3 setObject:v4 forKey:@"delegateInfoID"];
+    [dictionary setObject:v4 forKey:@"delegateInfoID"];
   }
 
   contentItemID = self->_contentItemID;
   if (contentItemID)
   {
-    [v3 setObject:contentItemID forKey:@"contentItemID"];
+    [dictionary setObject:contentItemID forKey:@"contentItemID"];
   }
 
   has = self->_has;
   if ((has & 8) != 0)
   {
     v10 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_storeAdamID];
-    [v3 setObject:v10 forKey:@"storeAdamID"];
+    [dictionary setObject:v10 forKey:@"storeAdamID"];
 
     has = self->_has;
     if ((has & 0x10) == 0)
@@ -359,7 +359,7 @@ LABEL_7:
   }
 
   v11 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_storeSubscriptionAdamID];
-  [v3 setObject:v11 forKey:@"storeSubscriptionAdamID"];
+  [dictionary setObject:v11 forKey:@"storeSubscriptionAdamID"];
 
   has = self->_has;
   if ((has & 1) == 0)
@@ -375,23 +375,23 @@ LABEL_8:
 
 LABEL_17:
   v12 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_cloudID];
-  [v3 setObject:v12 forKey:@"cloudID"];
+  [dictionary setObject:v12 forKey:@"cloudID"];
 
   if ((*&self->_has & 4) != 0)
   {
 LABEL_9:
     v7 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_purchaseHistoryID];
-    [v3 setObject:v7 forKey:@"purchaseHistoryID"];
+    [dictionary setObject:v7 forKey:@"purchaseHistoryID"];
   }
 
 LABEL_10:
   cloudUniversalLibraryID = self->_cloudUniversalLibraryID;
   if (cloudUniversalLibraryID)
   {
-    [v3 setObject:cloudUniversalLibraryID forKey:@"cloudUniversalLibraryID"];
+    [dictionary setObject:cloudUniversalLibraryID forKey:@"cloudUniversalLibraryID"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -400,8 +400,8 @@ LABEL_10:
   v8.receiver = self;
   v8.super_class = _MPCProtoItemIdentifierSet;
   v4 = [(_MPCProtoItemIdentifierSet *)&v8 description];
-  v5 = [(_MPCProtoItemIdentifierSet *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(_MPCProtoItemIdentifierSet *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }

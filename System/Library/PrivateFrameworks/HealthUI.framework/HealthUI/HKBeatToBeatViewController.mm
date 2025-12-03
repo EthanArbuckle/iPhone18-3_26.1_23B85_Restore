@@ -1,31 +1,31 @@
 @interface HKBeatToBeatViewController
-- (HKBeatToBeatViewController)initWithHRVSample:(id)a3 healthStore:(id)a4 displayTypeController:(id)a5 unitController:(id)a6;
-- (HKBeatToBeatViewController)initWithHeartbeatSeriesSample:(id)a3 healthStore:(id)a4 displayTypeController:(id)a5 unitController:(id)a6;
-- (id)_displayStringForInstantaneousBPM:(double)a3;
-- (id)_displayStringForTime:(double)a3;
-- (id)_initWithHealthStore:(id)a3 displayTypeController:(id)a4 unitController:(id)a5;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (void)_addHeartbeatSeriesSample:(id)a3;
+- (HKBeatToBeatViewController)initWithHRVSample:(id)sample healthStore:(id)store displayTypeController:(id)controller unitController:(id)unitController;
+- (HKBeatToBeatViewController)initWithHeartbeatSeriesSample:(id)sample healthStore:(id)store displayTypeController:(id)controller unitController:(id)unitController;
+- (id)_displayStringForInstantaneousBPM:(double)m;
+- (id)_displayStringForTime:(double)time;
+- (id)_initWithHealthStore:(id)store displayTypeController:(id)controller unitController:(id)unitController;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (void)_addHeartbeatSeriesSample:(id)sample;
 - (void)viewDidLoad;
 @end
 
 @implementation HKBeatToBeatViewController
 
-- (id)_initWithHealthStore:(id)a3 displayTypeController:(id)a4 unitController:(id)a5
+- (id)_initWithHealthStore:(id)store displayTypeController:(id)controller unitController:(id)unitController
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  storeCopy = store;
+  controllerCopy = controller;
+  unitControllerCopy = unitController;
   v17.receiver = self;
   v17.super_class = HKBeatToBeatViewController;
   v12 = [(HKTableViewController *)&v17 initWithUsingInsetStyling:1];
   p_isa = &v12->super.super.super.super.super.isa;
   if (v12)
   {
-    objc_storeStrong(&v12->_healthStore, a3);
-    objc_storeStrong(p_isa + 132, a4);
-    objc_storeStrong(p_isa + 133, a5);
+    objc_storeStrong(&v12->_healthStore, store);
+    objc_storeStrong(p_isa + 132, controller);
+    objc_storeStrong(p_isa + 133, unitController);
     v14 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
     v15 = [v14 localizedStringForKey:@"BEAT_TO_BEAT_MEASUREMENTS" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
     [p_isa setTitle:v15];
@@ -34,13 +34,13 @@
   return p_isa;
 }
 
-- (HKBeatToBeatViewController)initWithHeartbeatSeriesSample:(id)a3 healthStore:(id)a4 displayTypeController:(id)a5 unitController:(id)a6
+- (HKBeatToBeatViewController)initWithHeartbeatSeriesSample:(id)sample healthStore:(id)store displayTypeController:(id)controller unitController:(id)unitController
 {
-  v10 = a3;
-  v11 = [(HKBeatToBeatViewController *)self _initWithHealthStore:a4 displayTypeController:a5 unitController:a6];
+  sampleCopy = sample;
+  v11 = [(HKBeatToBeatViewController *)self _initWithHealthStore:store displayTypeController:controller unitController:unitController];
   if (v11)
   {
-    v12 = [MEMORY[0x1E696C1E0] instantaneousBPMsForHeartbeatSeriesSample:v10];
+    v12 = [MEMORY[0x1E696C1E0] instantaneousBPMsForHeartbeatSeriesSample:sampleCopy];
     bpmPoints = v11->_bpmPoints;
     v11->_bpmPoints = v12;
   }
@@ -48,11 +48,11 @@
   return v11;
 }
 
-- (HKBeatToBeatViewController)initWithHRVSample:(id)a3 healthStore:(id)a4 displayTypeController:(id)a5 unitController:(id)a6
+- (HKBeatToBeatViewController)initWithHRVSample:(id)sample healthStore:(id)store displayTypeController:(id)controller unitController:(id)unitController
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = [(HKBeatToBeatViewController *)self _initWithHealthStore:v11 displayTypeController:a5 unitController:a6];
+  sampleCopy = sample;
+  storeCopy = store;
+  v12 = [(HKBeatToBeatViewController *)self _initWithHealthStore:storeCopy displayTypeController:controller unitController:unitController];
   v13 = v12;
   if (v12)
   {
@@ -62,7 +62,7 @@
     v16[2] = __97__HKBeatToBeatViewController_initWithHRVSample_healthStore_displayTypeController_unitController___block_invoke;
     v16[3] = &unk_1E81B82C0;
     v17 = v12;
-    [v14 queryForParentSequenceOfHRV:v10 healthStore:v11 completion:v16];
+    [v14 queryForParentSequenceOfHRV:sampleCopy healthStore:storeCopy completion:v16];
   }
 
   return v13;
@@ -105,14 +105,14 @@ void __97__HKBeatToBeatViewController_initWithHRVSample_healthStore_displayTypeC
   }
 }
 
-- (void)_addHeartbeatSeriesSample:(id)a3
+- (void)_addHeartbeatSeriesSample:(id)sample
 {
-  v4 = [MEMORY[0x1E696C1E0] instantaneousBPMsForHeartbeatSeriesSample:a3];
+  v4 = [MEMORY[0x1E696C1E0] instantaneousBPMsForHeartbeatSeriesSample:sample];
   bpmPoints = self->_bpmPoints;
   self->_bpmPoints = v4;
 
-  v6 = [(HKBeatToBeatViewController *)self tableView];
-  [v6 reloadData];
+  tableView = [(HKBeatToBeatViewController *)self tableView];
+  [tableView reloadData];
 }
 
 - (void)viewDidLoad
@@ -120,74 +120,74 @@ void __97__HKBeatToBeatViewController_initWithHRVSample_healthStore_displayTypeC
   v6.receiver = self;
   v6.super_class = HKBeatToBeatViewController;
   [(HKTableViewController *)&v6 viewDidLoad];
-  v3 = [(HKBeatToBeatViewController *)self tableView];
-  [v3 setAllowsSelection:0];
+  tableView = [(HKBeatToBeatViewController *)self tableView];
+  [tableView setAllowsSelection:0];
 
   v4 = [MEMORY[0x1E696AEC0] healthAccessibilityIdentifier:3 suffix:@"BeatToBeat.EntireView"];
-  v5 = [(HKBeatToBeatViewController *)self tableView];
-  [v5 setAccessibilityIdentifier:v4];
+  tableView2 = [(HKBeatToBeatViewController *)self tableView];
+  [tableView2 setAccessibilityIdentifier:v4];
 }
 
-- (id)_displayStringForInstantaneousBPM:(double)a3
+- (id)_displayStringForInstantaneousBPM:(double)m
 {
   v5 = [(HKDisplayTypeController *)self->_displayTypeController displayTypeWithIdentifier:&unk_1F4382890];
-  v6 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+  v6 = [MEMORY[0x1E696AD98] numberWithDouble:m];
   v7 = HKFormattedStringFromValueForContext(v6, v5, self->_unitController, 0, 0, 1);
 
   return v7;
 }
 
-- (id)_displayStringForTime:(double)a3
+- (id)_displayStringForTime:(double)time
 {
-  v3 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:a3];
+  v3 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:time];
   v4 = HKLocalizedStringForDateAndTemplate(v3, 29);
 
   return v4;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"CellIdentifier"];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"CellIdentifier"];
   if (!v7)
   {
     v7 = [objc_alloc(MEMORY[0x1E69DD028]) initWithStyle:1 reuseIdentifier:@"CellIdentifier"];
   }
 
-  v8 = -[NSArray objectAtIndexedSubscript:](self->_bpmPoints, "objectAtIndexedSubscript:", [v6 row]);
+  v8 = -[NSArray objectAtIndexedSubscript:](self->_bpmPoints, "objectAtIndexedSubscript:", [pathCopy row]);
   [v8 bpm];
   v9 = [(HKBeatToBeatViewController *)self _displayStringForInstantaneousBPM:?];
-  v10 = [v7 textLabel];
-  [v10 setText:v9];
+  textLabel = [v7 textLabel];
+  [textLabel setText:v9];
 
   [v8 time];
   v11 = [(HKBeatToBeatViewController *)self _displayStringForTime:?];
-  v12 = [v7 detailTextLabel];
-  [v12 setText:v11];
+  detailTextLabel = [v7 detailTextLabel];
+  [detailTextLabel setText:v11];
 
-  v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"BeatToBeat.%ld", objc_msgSend(v6, "item")];
+  v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"BeatToBeat.%ld", objc_msgSend(pathCopy, "item")];
   v14 = [MEMORY[0x1E696AEC0] healthAccessibilityIdentifier:3 suffix:v13];
   [v7 setAccessibilityIdentifier:v14];
 
-  v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"BeatToBeat.%ld.BPM", objc_msgSend(v6, "item")];
+  v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"BeatToBeat.%ld.BPM", objc_msgSend(pathCopy, "item")];
   v16 = [MEMORY[0x1E696AEC0] healthAccessibilityIdentifier:3 suffix:v15];
-  v17 = [v7 textLabel];
-  [v17 setAccessibilityIdentifier:v16];
+  textLabel2 = [v7 textLabel];
+  [textLabel2 setAccessibilityIdentifier:v16];
 
   v18 = MEMORY[0x1E696AEC0];
-  v19 = [v6 item];
+  item = [pathCopy item];
 
-  v20 = [v18 stringWithFormat:@"BeatToBeat.%ld.Timestamp", v19];
+  v20 = [v18 stringWithFormat:@"BeatToBeat.%ld.Timestamp", item];
   v21 = [MEMORY[0x1E696AEC0] healthAccessibilityIdentifier:3 suffix:v20];
-  v22 = [v7 detailTextLabel];
-  [v22 setAccessibilityIdentifier:v21];
+  detailTextLabel2 = [v7 detailTextLabel];
+  [detailTextLabel2 setAccessibilityIdentifier:v21];
 
   return v7;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  v4 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:{@"com.apple.HealthUI", a4}];
+  v4 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:{@"com.apple.HealthUI", section}];
   v5 = [v4 localizedStringForKey:@"BEATS_PER_MINUTE_NUMBERLESS_UNIT" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
 
   return v5;

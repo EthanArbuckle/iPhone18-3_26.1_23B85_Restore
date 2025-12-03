@@ -1,6 +1,6 @@
 @interface CAFDAsyncCarManager
 - (_TtC13caraccessorydP33_63EDB8DF96AF53E23EC725535F297F4019CAFDAsyncCarManager)init;
-- (void)carManager:(id)a3 didUpdateCurrentCar:(id)a4;
+- (void)carManager:(id)manager didUpdateCurrentCar:(id)car;
 @end
 
 @implementation CAFDAsyncCarManager
@@ -12,12 +12,12 @@
   return result;
 }
 
-- (void)carManager:(id)a3 didUpdateCurrentCar:(id)a4
+- (void)carManager:(id)manager didUpdateCurrentCar:(id)car
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  CAFDAsyncCarManager.carManager(_:didUpdateCurrentCar:)(v6, a4);
+  managerCopy = manager;
+  carCopy = car;
+  selfCopy = self;
+  CAFDAsyncCarManager.carManager(_:didUpdateCurrentCar:)(managerCopy, car);
 }
 
 @end

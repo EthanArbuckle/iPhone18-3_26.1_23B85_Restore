@@ -1,12 +1,12 @@
 @interface MRDOutputDeviceRoutingDataSource
 - (BOOL)currentRouteSupportsVolumeControl;
-- (BOOL)setPickedSystemRoute:(id)a3 withPassword:(id)a4 forSource:(unsigned int)a5;
+- (BOOL)setPickedSystemRoute:(id)route withPassword:(id)password forSource:(unsigned int)source;
 - (BOOL)unpickAirPlayRoutes;
 - (MRDOutputDeviceRoutingDataSource)init;
-- (id)pickableRoutesForCategory:(id)a3 source:(unsigned int)a4;
-- (id)pickedRouteForCategory:(id)a3 source:(unsigned int)a4;
+- (id)pickableRoutesForCategory:(id)category source:(unsigned int)source;
+- (id)pickedRouteForCategory:(id)category source:(unsigned int)source;
 - (unsigned)discoveryMode;
-- (void)setDiscoveryMode:(unsigned int)a3;
+- (void)setDiscoveryMode:(unsigned int)mode;
 @end
 
 @implementation MRDOutputDeviceRoutingDataSource
@@ -32,28 +32,28 @@
 
 - (unsigned)discoveryMode
 {
-  v2 = [(AVOutputDeviceDiscoverySession *)self->_discoverySession discoveryMode];
-  if ((v2 - 1) > 2)
+  discoveryMode = [(AVOutputDeviceDiscoverySession *)self->_discoverySession discoveryMode];
+  if ((discoveryMode - 1) > 2)
   {
     return 0;
   }
 
   else
   {
-    return dword_10044E820[(v2 - 1)];
+    return dword_10044E820[(discoveryMode - 1)];
   }
 }
 
-- (void)setDiscoveryMode:(unsigned int)a3
+- (void)setDiscoveryMode:(unsigned int)mode
 {
-  if (a3 - 1 > 2)
+  if (mode - 1 > 2)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = qword_10044E830[a3 - 1];
+    v4 = qword_10044E830[mode - 1];
   }
 
   v5 = _MRLogForCategory();
@@ -70,22 +70,22 @@
 
 - (BOOL)currentRouteSupportsVolumeControl
 {
-  v2 = [(MRDOutputDeviceRoutingDataSource *)self _activeSystemContext];
-  v3 = [v2 outputDevice];
+  _activeSystemContext = [(MRDOutputDeviceRoutingDataSource *)self _activeSystemContext];
+  outputDevice = [_activeSystemContext outputDevice];
 
-  LOBYTE(v2) = [v3 canSetVolume];
-  return v2;
+  LOBYTE(_activeSystemContext) = [outputDevice canSetVolume];
+  return _activeSystemContext;
 }
 
-- (id)pickableRoutesForCategory:(id)a3 source:(unsigned int)a4
+- (id)pickableRoutesForCategory:(id)category source:(unsigned int)source
 {
   v5 = objc_alloc_init(NSMutableArray);
-  v6 = [(AVOutputDeviceDiscoverySession *)self->_discoverySession availableOutputDevices];
+  availableOutputDevices = [(AVOutputDeviceDiscoverySession *)self->_discoverySession availableOutputDevices];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v7 = [availableOutputDevices countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
     v8 = v7;
@@ -96,7 +96,7 @@
       {
         if (*v14 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(availableOutputDevices);
         }
 
         v11 = [[MRDAVOutputDeviceRoute alloc] initWithAVOutputDevice:*(*(&v13 + 1) + 8 * i)];
@@ -106,7 +106,7 @@
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v8 = [availableOutputDevices countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v8);
@@ -115,26 +115,26 @@
   return v5;
 }
 
-- (id)pickedRouteForCategory:(id)a3 source:(unsigned int)a4
+- (id)pickedRouteForCategory:(id)category source:(unsigned int)source
 {
   v5 = [MRDAVOutputDeviceRoute alloc];
-  v6 = [(MRDOutputDeviceRoutingDataSource *)self _activeSystemContext];
-  v7 = [v6 outputDevice];
-  v8 = [(MRDAVOutputDeviceRoute *)v5 initWithAVOutputDevice:v7];
+  _activeSystemContext = [(MRDOutputDeviceRoutingDataSource *)self _activeSystemContext];
+  outputDevice = [_activeSystemContext outputDevice];
+  v8 = [(MRDAVOutputDeviceRoute *)v5 initWithAVOutputDevice:outputDevice];
 
   return v8;
 }
 
-- (BOOL)setPickedSystemRoute:(id)a3 withPassword:(id)a4 forSource:(unsigned int)a5
+- (BOOL)setPickedSystemRoute:(id)route withPassword:(id)password forSource:(unsigned int)source
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 uniqueIdentifier];
+  routeCopy = route;
+  passwordCopy = password;
+  uniqueIdentifier = [routeCopy uniqueIdentifier];
   v10 = 0;
-  if (v8 && AVOutputContextSetOutputDevicePasswordKey)
+  if (passwordCopy && AVOutputContextSetOutputDevicePasswordKey)
   {
     v44 = AVOutputContextSetOutputDevicePasswordKey;
-    v45 = v8;
+    v45 = passwordCopy;
     v10 = [NSDictionary dictionaryWithObjects:&v45 forKeys:&v44 count:1];
   }
 
@@ -142,32 +142,32 @@
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    *&buf[4] = v7;
+    *&buf[4] = routeCopy;
     *&buf[12] = 2112;
-    *&buf[14] = v8;
+    *&buf[14] = passwordCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "[ODDSRouting] Setting picked system route to: %{public}@ with password %@", buf, 0x16u);
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v12 = [(MRDOutputDeviceRoutingDataSource *)self _activeSystemContext];
-    v13 = [v7 avOutputDevice];
+    _activeSystemContext = [(MRDOutputDeviceRoutingDataSource *)self _activeSystemContext];
+    avOutputDevice = [routeCopy avOutputDevice];
     v14 = _MRLogForCategory();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      *&buf[4] = v13;
+      *&buf[4] = avOutputDevice;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "[ODDSRouting] Route is an output device-based route. Setting the following device on the output context: %{public}@", buf, 0xCu);
     }
 
-    [v12 setOutputDevice:v13 options:v10];
+    [_activeSystemContext setOutputDevice:avOutputDevice options:v10];
 LABEL_22:
     v19 = 1;
     goto LABEL_23;
   }
 
-  if (v9 && ([v7 isSpeakerRoute] & 1) == 0)
+  if (uniqueIdentifier && ([routeCopy isSpeakerRoute] & 1) == 0)
   {
     v38 = 0;
     v20 = MRComputeBaseRouteUID();
@@ -192,8 +192,8 @@ LABEL_22:
     *&buf[16] = 0x3032000000;
     v40 = sub_10003501C;
     v41 = sub_1000359C4;
-    v26 = self;
-    v42 = v26;
+    selfCopy = self;
+    v42 = selfCopy;
     v36[0] = 0;
     v36[1] = v36;
     v36[2] = 0x3032000000;
@@ -208,10 +208,10 @@ LABEL_22:
     v33 = v36;
     v35 = v38;
     v31 = v10;
-    v32 = v7;
+    v32 = routeCopy;
     v34 = buf;
     [v27 beginSearchWithTimeout:v30 completion:5.0];
-    [(NSMutableArray *)v26->_activeReconnaissanceSessions addObject:v27];
+    [(NSMutableArray *)selfCopy->_activeReconnaissanceSessions addObject:v27];
 
     _Block_object_dispose(v36, 8);
     _Block_object_dispose(buf, 8);
@@ -219,7 +219,7 @@ LABEL_22:
     goto LABEL_22;
   }
 
-  if ([v7 isSpeakerRoute])
+  if ([routeCopy isSpeakerRoute])
   {
     v15 = +[AVOutputContext sharedSystemScreenContext];
     v16 = +[AVOutputContext sharedAudioPresentationOutputContext];
@@ -253,8 +253,8 @@ LABEL_23:
 
 - (BOOL)unpickAirPlayRoutes
 {
-  v2 = [(MRDOutputDeviceRoutingDataSource *)self _activeSystemContext];
-  [v2 setOutputDevice:0 options:0];
+  _activeSystemContext = [(MRDOutputDeviceRoutingDataSource *)self _activeSystemContext];
+  [_activeSystemContext setOutputDevice:0 options:0];
 
   return 1;
 }

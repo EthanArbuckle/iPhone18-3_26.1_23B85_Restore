@@ -194,7 +194,7 @@ LABEL_59:
   *&self->args.fh[16] = 0u;
   *&self->args.fh[32] = 0u;
   *&self->args.fh[48] = 0u;
-  v20 = [(NSData *)self->_fh bytes];
+  bytes = [(NSData *)self->_fh bytes];
   v21 = [(NSData *)self->_fh length];
   if (v21 >= 0x40)
   {
@@ -206,7 +206,7 @@ LABEL_59:
     v22 = v21;
   }
 
-  memcpy(self->args.fh, v20, v22);
+  memcpy(self->args.fh, bytes, v22);
   objc_autoreleasePoolPop(v19);
   if ((self->_mntFlags & 0x8000000) != 0)
   {

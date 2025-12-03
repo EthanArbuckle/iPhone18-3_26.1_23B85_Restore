@@ -1,9 +1,9 @@
 @interface BSPowerMonitor
 + (id)sharedInstance;
 - (BSPowerMonitor)init;
-- (void)addObserver:(id)a3;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
-- (void)removeObserver:(id)a3;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation BSPowerMonitor
@@ -63,8 +63,8 @@ void __32__BSPowerMonitor_sharedInstance__block_invoke()
 
 - (BSPowerMonitor)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"BSPowerMonitor.m" lineNumber:153 description:@"Please use the shared instance."];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"BSPowerMonitor.m" lineNumber:153 description:@"Please use the shared instance."];
 
   return 0;
 }
@@ -93,29 +93,29 @@ void __32__BSPowerMonitor_sharedInstance__block_invoke()
   [(BSPowerMonitor *)&v6 dealloc];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  if (v4)
+  observerCopy = observer;
+  if (observerCopy)
   {
-    v5 = v4;
+    v5 = observerCopy;
     os_unfair_lock_lock(&self->_observersLock);
     [(NSHashTable *)self->_lock_observers addObject:v5];
     os_unfair_lock_unlock(&self->_observersLock);
-    v4 = v5;
+    observerCopy = v5;
   }
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  if (v4)
+  observerCopy = observer;
+  if (observerCopy)
   {
-    v5 = v4;
+    v5 = observerCopy;
     os_unfair_lock_lock(&self->_observersLock);
     [(NSHashTable *)self->_lock_observers removeObject:v5];
     os_unfair_lock_unlock(&self->_observersLock);
-    v4 = v5;
+    observerCopy = v5;
   }
 }
 

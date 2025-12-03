@@ -1,12 +1,12 @@
 @interface MCNewSubCalAccountPayloadHandler
-- (BOOL)installWithInstaller:(id)a3 options:(id)a4 interactionClient:(id)a5 outError:(id *)a6;
+- (BOOL)installWithInstaller:(id)installer options:(id)options interactionClient:(id)client outError:(id *)error;
 - (BOOL)isInstalled;
 - (id)_accountFromPayload;
-- (id)_reallyInstallInstaller:(id)a3 isInstalledByMDM:(BOOL)a4 personaID:(id)a5 rmAccountIdentifier:(id)a6;
+- (id)_reallyInstallInstaller:(id)installer isInstalledByMDM:(BOOL)m personaID:(id)d rmAccountIdentifier:(id)identifier;
 - (id)accountTypeIdentifiers;
 - (id)unhashedAccountIdentifier;
 - (void)remove;
-- (void)setAsideWithInstaller:(id)a3;
+- (void)setAsideWithInstaller:(id)installer;
 - (void)unsetAside;
 @end
 
@@ -14,11 +14,11 @@
 
 - (id)unhashedAccountIdentifier
 {
-  v2 = [(MCNewPayloadHandler *)self payload];
-  v3 = [v2 hostname];
-  if (v3)
+  payload = [(MCNewPayloadHandler *)self payload];
+  hostname = [payload hostname];
+  if (hostname)
   {
-    v4 = [NSString stringWithFormat:@"subcal|%@", v3];
+    v4 = [NSString stringWithFormat:@"subcal|%@", hostname];
   }
 
   else
@@ -26,11 +26,11 @@
     v4 = 0;
   }
 
-  v5 = [v2 username];
-  v6 = v5;
-  if (v4 && v5)
+  username = [payload username];
+  v6 = username;
+  if (v4 && username)
   {
-    v7 = [v4 stringByAppendingFormat:@"|%@", v5];
+    v7 = [v4 stringByAppendingFormat:@"|%@", username];
 
     v4 = v7;
   }
@@ -40,46 +40,46 @@
 
 - (id)_accountFromPayload
 {
-  v3 = [(MCNewPayloadHandler *)self payload];
+  payload = [(MCNewPayloadHandler *)self payload];
   v4 = sharedDAAccountStore();
   v5 = [v4 accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierSubscribedCalendar];
 
   v6 = [[ACAccount alloc] initWithAccountType:v5];
   [v6 setManagingOwnerIdentifier:kMCAccountManagingOwnerIdentifier];
-  v7 = [v3 friendlyName];
-  [v6 setManagingSourceName:v7];
+  friendlyName = [payload friendlyName];
+  [v6 setManagingSourceName:friendlyName];
 
   v8 = +[MDMCloudConfiguration sharedConfiguration];
-  v9 = [v8 userMode];
+  userMode = [v8 userMode];
 
-  if (v9 == 1)
+  if (userMode == 1)
   {
-    v10 = [(MCACAccountPayloadHandler *)self MCACAccountIdentifier];
-    if (v10)
+    mCACAccountIdentifier = [(MCACAccountPayloadHandler *)self MCACAccountIdentifier];
+    if (mCACAccountIdentifier)
     {
-      v11 = [v6 identifier];
-      [v6 setAccountProperty:v11 forKey:@"MCAccountIdentifer"];
+      identifier = [v6 identifier];
+      [v6 setAccountProperty:identifier forKey:@"MCAccountIdentifer"];
 
-      [v6 setIdentifier:v10];
+      [v6 setIdentifier:mCACAccountIdentifier];
     }
 
     v12 = sharedDAAccountStore();
-    v13 = [v6 identifier];
-    v14 = [v12 accountWithIdentifier:v13];
+    identifier2 = [v6 identifier];
+    v14 = [v12 accountWithIdentifier:identifier2];
 
     if (v14)
     {
-      v15 = [v14 objectID];
-      [v6 performSelector:"_setObjectID:" withObject:v15];
+      objectID = [v14 objectID];
+      [v6 performSelector:"_setObjectID:" withObject:objectID];
     }
   }
 
-  v16 = [v5 supportedDataclasses];
+  supportedDataclasses = [v5 supportedDataclasses];
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
   v52 = 0u;
-  v17 = [v16 countByEnumeratingWithState:&v49 objects:v53 count:16];
+  v17 = [supportedDataclasses countByEnumeratingWithState:&v49 objects:v53 count:16];
   if (v17)
   {
     v18 = v17;
@@ -90,13 +90,13 @@
       {
         if (*v50 != v19)
         {
-          objc_enumerationMutation(v16);
+          objc_enumerationMutation(supportedDataclasses);
         }
 
         [v6 setProvisioned:1 forDataclass:*(*(&v49 + 1) + 8 * i)];
       }
 
-      v18 = [v16 countByEnumeratingWithState:&v49 objects:v53 count:16];
+      v18 = [supportedDataclasses countByEnumeratingWithState:&v49 objects:v53 count:16];
     }
 
     while (v18);
@@ -107,59 +107,59 @@
   if (v21)
   {
     [v21 setEnabled:1 forDADataclass:4];
-    v23 = [v3 password];
+    password = [payload password];
     v24 = &__kCFBooleanTrue;
-    if (!v23)
+    if (!password)
     {
       v24 = &__kCFBooleanFalse;
     }
 
     v25 = v24;
 
-    v26 = [v22 backingAccountInfo];
-    [v26 setAccountProperty:v25 forKey:ACAccountPropertyShouldNeverUseSyncableCredential];
+    backingAccountInfo = [v22 backingAccountInfo];
+    [backingAccountInfo setAccountProperty:v25 forKey:ACAccountPropertyShouldNeverUseSyncableCredential];
 
-    v27 = [v3 accountDescription];
-    if (v27)
+    accountDescription = [payload accountDescription];
+    if (accountDescription)
     {
-      [v22 setAccountDescription:v27];
+      [v22 setAccountDescription:accountDescription];
     }
 
     else
     {
-      v28 = [v3 hostname];
-      [v22 setAccountDescription:v28];
+      hostname = [payload hostname];
+      [v22 setAccountDescription:hostname];
     }
 
-    v29 = [v3 hostname];
-    [v22 setHost:v29];
+    hostname2 = [payload hostname];
+    [v22 setHost:hostname2];
 
-    v30 = [v3 username];
-    [v22 setUsername:v30];
+    username = [payload username];
+    [v22 setUsername:username];
 
-    v31 = [v3 password];
-    [v22 setPassword:v31];
+    password2 = [payload password];
+    [v22 setPassword:password2];
 
-    [v22 setUseSSL:{objc_msgSend(v3, "useSSL")}];
-    v32 = [v22 backingAccountInfo];
-    v33 = [(MCNewPayloadHandler *)self payload];
-    v34 = [v33 UUID];
-    [v32 setMcPayloadUUID:v34];
+    [v22 setUseSSL:{objc_msgSend(payload, "useSSL")}];
+    backingAccountInfo2 = [v22 backingAccountInfo];
+    payload2 = [(MCNewPayloadHandler *)self payload];
+    uUID = [payload2 UUID];
+    [backingAccountInfo2 setMcPayloadUUID:uUID];
 
-    v35 = [v22 backingAccountInfo];
-    v36 = [(MCNewPayloadHandler *)self payload];
-    v37 = [v36 profile];
-    v38 = [v37 UUID];
-    [v35 setMcProfileUUID:v38];
+    backingAccountInfo3 = [v22 backingAccountInfo];
+    payload3 = [(MCNewPayloadHandler *)self payload];
+    profile = [payload3 profile];
+    uUID2 = [profile UUID];
+    [backingAccountInfo3 setMcProfileUUID:uUID2];
 
-    v39 = [(MCNewPayloadHandler *)self payload];
-    v40 = [v39 profile];
-    v41 = [v40 identifier];
+    payload4 = [(MCNewPayloadHandler *)self payload];
+    profile2 = [payload4 profile];
+    identifier3 = [profile2 identifier];
 
-    if (v41)
+    if (identifier3)
     {
-      v42 = [v22 backingAccountInfo];
-      [v42 setMcConfigurationProfileIdentifier:v41];
+      backingAccountInfo4 = [v22 backingAccountInfo];
+      [backingAccountInfo4 setMcConfigurationProfileIdentifier:identifier3];
     }
 
     else
@@ -172,52 +172,52 @@
       }
     }
 
-    v44 = [v22 backingAccountInfo];
-    v45 = [v44 identifier];
-    v46 = [(MCNewPayloadHandler *)self payload];
-    [v46 setAcAccountIdentifier:v45];
+    backingAccountInfo5 = [v22 backingAccountInfo];
+    identifier4 = [backingAccountInfo5 identifier];
+    payload5 = [(MCNewPayloadHandler *)self payload];
+    [payload5 setAcAccountIdentifier:identifier4];
   }
 
   return v22;
 }
 
-- (id)_reallyInstallInstaller:(id)a3 isInstalledByMDM:(BOOL)a4 personaID:(id)a5 rmAccountIdentifier:(id)a6
+- (id)_reallyInstallInstaller:(id)installer isInstalledByMDM:(BOOL)m personaID:(id)d rmAccountIdentifier:(id)identifier
 {
-  v8 = a4;
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = [(MCNewPayloadHandler *)self payload];
-  v14 = [v13 hostname];
+  mCopy = m;
+  installerCopy = installer;
+  dCopy = d;
+  identifierCopy = identifier;
+  payload = [(MCNewPayloadHandler *)self payload];
+  hostname = [payload hostname];
 
-  if (v14)
+  if (hostname)
   {
-    v15 = [(MCNewSubCalAccountPayloadHandler *)self _accountFromPayload];
-    v16 = v15;
+    _accountFromPayload = [(MCNewSubCalAccountPayloadHandler *)self _accountFromPayload];
+    v16 = _accountFromPayload;
     v52 = 0;
     v53 = &v52;
     v54 = 0x3032000000;
     v55 = sub_100065078;
     v56 = sub_100065088;
     v57 = 0;
-    if (v15)
+    if (_accountFromPayload)
     {
-      if (v8)
+      if (mCopy)
       {
-        [v15 setAccountBoolProperty:1 forKey:@"MCAccountIsManaged"];
-        if ([v11 length])
+        [_accountFromPayload setAccountBoolProperty:1 forKey:@"MCAccountIsManaged"];
+        if ([dCopy length])
         {
-          [v16 setAccountProperty:v11 forKey:ACAccountPropertyPersonaIdentifier];
+          [v16 setAccountProperty:dCopy forKey:ACAccountPropertyPersonaIdentifier];
         }
 
-        if (v12)
+        if (identifierCopy)
         {
-          [v16 setAccountProperty:v12 forKey:ACAccountPropertyRemoteManagingAccountIdentifier];
+          [v16 setAccountProperty:identifierCopy forKey:ACAccountPropertyRemoteManagingAccountIdentifier];
         }
       }
 
-      v17 = [v16 backingAccountInfo];
-      [(MCACAccountPayloadHandler *)self markIfUpdatingOverInstalledAccount:v17];
+      backingAccountInfo = [v16 backingAccountInfo];
+      [(MCACAccountPayloadHandler *)self markIfUpdatingOverInstalledAccount:backingAccountInfo];
 
       v46 = 0;
       v47 = &v46;
@@ -229,29 +229,29 @@
       v43 = &v42;
       v44 = 0x2020000000;
       v45 = 1;
-      v18 = [v10 setAsideAccountIdentifiersForPayloadClass:objc_opt_class()];
+      v18 = [installerCopy setAsideAccountIdentifiersForPayloadClass:objc_opt_class()];
       if ([v18 count])
       {
-        v19 = [v16 backingAccountInfo];
+        backingAccountInfo2 = [v16 backingAccountInfo];
         v20 = +[DASharedAccountProperties DAAccountIdentifiersToIgnoreForUniquenessCheck];
-        [v19 setAccountProperty:v18 forKey:v20];
+        [backingAccountInfo2 setAccountProperty:v18 forKey:v20];
       }
 
       v21 = sharedDAAccountStore();
-      v22 = [v16 backingAccountInfo];
+      backingAccountInfo3 = [v16 backingAccountInfo];
       v41[0] = _NSConcreteStackBlock;
       v41[1] = 3221225472;
       v41[2] = sub_100065090;
       v41[3] = &unk_10011C8E0;
       v41[4] = &v42;
       v41[5] = &v46;
-      [v21 canSaveAccount:v22 withCompletionHandler:v41];
+      [v21 canSaveAccount:backingAccountInfo3 withCompletionHandler:v41];
 
       dispatch_semaphore_wait(v47[5], 0xFFFFFFFFFFFFFFFFLL);
       if (*(v43 + 24) == 1)
       {
-        v23 = [v16 backingAccountInfo];
-        [v23 setAuthenticated:1];
+        backingAccountInfo4 = [v16 backingAccountInfo];
+        [backingAccountInfo4 setAuthenticated:1];
 
         v37[0] = _NSConcreteStackBlock;
         v37[1] = 3221225472;
@@ -261,9 +261,9 @@
         v38 = v16;
         v40 = &v52;
         v24 = objc_retainBlock(v37);
-        if ([v11 length])
+        if ([dCopy length])
         {
-          v25 = [DMCPersonaHelper performBlockUnderPersona:v11 block:v24];
+          v25 = [DMCPersonaHelper performBlockUnderPersona:dCopy block:v24];
         }
 
         else
@@ -278,9 +278,9 @@
       {
         v32 = MCErrorArray();
         v33 = [NSError MCErrorWithDomain:MCSubCalErrorDomain code:16002 descriptionArray:v32 errorType:MCErrorTypeFatal, 0];
-        v34 = [v33 MCCopyAsPrimaryError];
+        mCCopyAsPrimaryError = [v33 MCCopyAsPrimaryError];
         v35 = v53[5];
-        v53[5] = v34;
+        v53[5] = mCCopyAsPrimaryError;
       }
 
       _Block_object_dispose(&v42, 8);
@@ -309,21 +309,21 @@
   return v28;
 }
 
-- (BOOL)installWithInstaller:(id)a3 options:(id)a4 interactionClient:(id)a5 outError:(id *)a6
+- (BOOL)installWithInstaller:(id)installer options:(id)options interactionClient:(id)client outError:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = [v10 objectForKeyedSubscript:kMCInstallProfileOptionIsInstalledByMDM];
-  v12 = [v11 BOOLValue];
+  installerCopy = installer;
+  optionsCopy = options;
+  v11 = [optionsCopy objectForKeyedSubscript:kMCInstallProfileOptionIsInstalledByMDM];
+  bOOLValue = [v11 BOOLValue];
 
-  if (v12)
+  if (bOOLValue)
   {
     v13 = kMDMPersonaKey;
-    v14 = [v10 objectForKeyedSubscript:kMDMPersonaKey];
+    v14 = [optionsCopy objectForKeyedSubscript:kMDMPersonaKey];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v15 = [v10 objectForKeyedSubscript:v13];
+      v15 = [optionsCopy objectForKeyedSubscript:v13];
     }
 
     else
@@ -332,22 +332,22 @@
     }
 
     v17 = kMCInstallProfileOptionManagingProfileIdentifier;
-    v18 = [v10 objectForKeyedSubscript:kMCInstallProfileOptionManagingProfileIdentifier];
+    v18 = [optionsCopy objectForKeyedSubscript:kMCInstallProfileOptionManagingProfileIdentifier];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v16 = 0;
+      identifier = 0;
       goto LABEL_11;
     }
 
-    v19 = [v10 objectForKeyedSubscript:v17];
+    v19 = [optionsCopy objectForKeyedSubscript:v17];
 
     if (v19)
     {
       v20 = +[ACAccountStore defaultStore];
       v21 = [v20 dmc_remoteManagementAccountForManagementProfileIdentifier:v19];
 
-      v16 = [v21 identifier];
+      identifier = [v21 identifier];
 
       v18 = v19;
 LABEL_11:
@@ -361,13 +361,13 @@ LABEL_11:
     v15 = 0;
   }
 
-  v16 = 0;
+  identifier = 0;
 LABEL_12:
-  v22 = [(MCNewSubCalAccountPayloadHandler *)self _reallyInstallInstaller:v9 isInstalledByMDM:v12 personaID:v15 rmAccountIdentifier:v16];
-  if (a6 && v22)
+  v22 = [(MCNewSubCalAccountPayloadHandler *)self _reallyInstallInstaller:installerCopy isInstalledByMDM:bOOLValue personaID:v15 rmAccountIdentifier:identifier];
+  if (error && v22)
   {
     v22 = v22;
-    *a6 = v22;
+    *error = v22;
   }
 
   v23 = v22 == 0;
@@ -385,28 +385,28 @@ LABEL_12:
 
 - (BOOL)isInstalled
 {
-  v2 = [(MCACAccountPayloadHandler *)self _installedDAAccount];
-  v3 = v2 != 0;
+  _installedDAAccount = [(MCACAccountPayloadHandler *)self _installedDAAccount];
+  v3 = _installedDAAccount != 0;
 
   return v3;
 }
 
-- (void)setAsideWithInstaller:(id)a3
+- (void)setAsideWithInstaller:(id)installer
 {
-  v4 = a3;
+  installerCopy = installer;
   v10.receiver = self;
   v10.super_class = MCNewSubCalAccountPayloadHandler;
-  [(MCNewPayloadHandler *)&v10 setAsideWithInstaller:v4];
-  v5 = [(MCACAccountPayloadHandler *)self _installedDAAccount];
-  v6 = v5;
-  if (v5)
+  [(MCNewPayloadHandler *)&v10 setAsideWithInstaller:installerCopy];
+  _installedDAAccount = [(MCACAccountPayloadHandler *)self _installedDAAccount];
+  v6 = _installedDAAccount;
+  if (_installedDAAccount)
   {
-    v7 = [v5 backingAccountInfo];
-    [(MCACAccountPayloadHandler *)self setSetAsideAccount:v7];
+    backingAccountInfo = [_installedDAAccount backingAccountInfo];
+    [(MCACAccountPayloadHandler *)self setSetAsideAccount:backingAccountInfo];
 
-    v8 = [v6 backingAccountInfo];
-    v9 = [v8 identifier];
-    [v4 addSetAsideAccountIdentifier:v9 forPayloadClass:objc_opt_class()];
+    backingAccountInfo2 = [v6 backingAccountInfo];
+    identifier = [backingAccountInfo2 identifier];
+    [installerCopy addSetAsideAccountIdentifier:identifier forPayloadClass:objc_opt_class()];
   }
 }
 
@@ -415,31 +415,31 @@ LABEL_12:
   v14 = +[MDMCloudConfiguration sharedConfiguration];
   if ([v14 userMode] == 1)
   {
-    v3 = [(MCACAccountPayloadHandler *)self setAsideAccount];
+    setAsideAccount = [(MCACAccountPayloadHandler *)self setAsideAccount];
 
-    if (v3)
+    if (setAsideAccount)
     {
-      v4 = [(MCACAccountPayloadHandler *)self _installedDAAccount];
-      v5 = [(MCACAccountPayloadHandler *)self setAsideAccount];
-      v6 = [v5 accountPropertyForKey:@"MCAccountIdentifer"];
+      _installedDAAccount = [(MCACAccountPayloadHandler *)self _installedDAAccount];
+      setAsideAccount2 = [(MCACAccountPayloadHandler *)self setAsideAccount];
+      v6 = [setAsideAccount2 accountPropertyForKey:@"MCAccountIdentifer"];
 
-      v7 = [v4 backingAccountInfo];
-      v8 = [v7 accountPropertyForKey:@"MCAccountIdentifer"];
+      backingAccountInfo = [_installedDAAccount backingAccountInfo];
+      v8 = [backingAccountInfo accountPropertyForKey:@"MCAccountIdentifer"];
 
       if (v6 && (!v8 || ([v6 isEqualToString:v8] & 1) == 0))
       {
-        v9 = [(MCACAccountPayloadHandler *)self setAsideAccount];
-        [v9 markAllPropertiesDirty];
+        setAsideAccount3 = [(MCACAccountPayloadHandler *)self setAsideAccount];
+        [setAsideAccount3 markAllPropertiesDirty];
         v10 = dispatch_semaphore_create(0);
         v11 = sharedDAAccountStore();
         v15[0] = _NSConcreteStackBlock;
         v15[1] = 3221225472;
         v15[2] = sub_1000657C0;
         v15[3] = &unk_10011C908;
-        v16 = v9;
+        v16 = setAsideAccount3;
         v17 = v10;
         v12 = v10;
-        v13 = v9;
+        v13 = setAsideAccount3;
         [v11 saveVerifiedAccount:v13 withCompletionHandler:v15];
 
         dispatch_semaphore_wait(v12, 0xFFFFFFFFFFFFFFFFLL);
@@ -456,35 +456,35 @@ LABEL_12:
 
 - (void)remove
 {
-  v3 = [(MCNewPayloadHandler *)self profileHandler];
-  v4 = [v3 isSetAside];
+  profileHandler = [(MCNewPayloadHandler *)self profileHandler];
+  isSetAside = [profileHandler isSetAside];
 
-  if (!v4)
+  if (!isSetAside)
   {
     if ([(MCACAccountPayloadHandler *)self updatedOverInstalledAccount])
     {
-      v7 = 0;
+      backingAccountInfo = 0;
       goto LABEL_11;
     }
 
-    v8 = [(MCACAccountPayloadHandler *)self _installedDAAccount];
-    v7 = [v8 backingAccountInfo];
+    _installedDAAccount = [(MCACAccountPayloadHandler *)self _installedDAAccount];
+    backingAccountInfo = [_installedDAAccount backingAccountInfo];
 
-    if (!v7)
+    if (!backingAccountInfo)
     {
       goto LABEL_11;
     }
 
 LABEL_10:
     [MCFeatureOverrides accountRemovalTimeoutWithDefaultValue:600.0];
-    [(MCACAccountPayloadHandler *)self _synchronouslyDeleteAccountAndAssociatedData:v7 timeout:0 completion:?];
+    [(MCACAccountPayloadHandler *)self _synchronouslyDeleteAccountAndAssociatedData:backingAccountInfo timeout:0 completion:?];
     goto LABEL_11;
   }
 
   v5 = +[MDMCloudConfiguration sharedConfiguration];
-  v6 = [v5 userMode];
+  userMode = [v5 userMode];
 
-  if (v6 == 1)
+  if (userMode == 1)
   {
     [(MCACAccountPayloadHandler *)self _installedSetAsideACAccount];
   }
@@ -493,9 +493,9 @@ LABEL_10:
   {
     [(MCACAccountPayloadHandler *)self setAsideAccount];
   }
-  v7 = ;
+  backingAccountInfo = ;
   [(MCACAccountPayloadHandler *)self setSetAsideAccount:0];
-  if (v7)
+  if (backingAccountInfo)
   {
     goto LABEL_10;
   }

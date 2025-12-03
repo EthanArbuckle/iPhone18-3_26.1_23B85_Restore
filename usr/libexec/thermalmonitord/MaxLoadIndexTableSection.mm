@@ -1,36 +1,36 @@
 @interface MaxLoadIndexTableSection
-- (MaxLoadIndexTableSection)initWithConstantMaxLI:(unint64_t)a3;
-- (unint64_t)getMaxLI:(unint64_t)a3;
-- (unint64_t)getReleaseMaxLI:(BOOL)a3 releaseRate:(int)a4;
+- (MaxLoadIndexTableSection)initWithConstantMaxLI:(unint64_t)i;
+- (unint64_t)getMaxLI:(unint64_t)i;
+- (unint64_t)getReleaseMaxLI:(BOOL)i releaseRate:(int)rate;
 @end
 
 @implementation MaxLoadIndexTableSection
 
-- (MaxLoadIndexTableSection)initWithConstantMaxLI:(unint64_t)a3
+- (MaxLoadIndexTableSection)initWithConstantMaxLI:(unint64_t)i
 {
   v5.receiver = self;
   v5.super_class = MaxLoadIndexTableSection;
   result = [(MaxLoadIndexTableSection *)&v5 init];
   if (result)
   {
-    result->_constantMaxLI = a3;
-    result->_releaseMaxLI = a3;
+    result->_constantMaxLI = i;
+    result->_releaseMaxLI = i;
     result->_releaseRate = 0;
   }
 
   return result;
 }
 
-- (unint64_t)getMaxLI:(unint64_t)a3
+- (unint64_t)getMaxLI:(unint64_t)i
 {
   constantMaxLI = self->_constantMaxLI;
   self->_maxLI = constantMaxLI;
   return constantMaxLI;
 }
 
-- (unint64_t)getReleaseMaxLI:(BOOL)a3 releaseRate:(int)a4
+- (unint64_t)getReleaseMaxLI:(BOOL)i releaseRate:(int)rate
 {
-  if (a4 == 999)
+  if (rate == 999)
   {
     maxLI = self->_maxLI;
   }
@@ -38,9 +38,9 @@
   else
   {
     maxLI = self->_releaseMaxLI;
-    if (!a3)
+    if (!i)
     {
-      maxLI += a4;
+      maxLI += rate;
     }
 
     if (maxLI >= self->_maxLI)

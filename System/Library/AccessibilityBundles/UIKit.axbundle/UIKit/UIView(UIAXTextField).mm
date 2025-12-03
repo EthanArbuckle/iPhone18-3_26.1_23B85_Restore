@@ -6,10 +6,10 @@
 
 - (double)_accessibilityFontSize
 {
-  v3 = [a1 font];
-  [v3 pointSize];
+  font = [self font];
+  [font pointSize];
   v4 = v1;
-  MEMORY[0x29EDC9740](v3);
+  MEMORY[0x29EDC9740](font);
   return v4;
 }
 

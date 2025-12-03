@@ -1,45 +1,45 @@
 @interface HDSkiingWorkoutDistanceCollector
-- (HDSkiingWorkoutDistanceCollector)initWithProfile:(id)a3;
-- (id)generateDownhillSnowSportsDistanceSampleForDistance:(double)a3 startDate:(id)a4 endDate:(id)a5;
-- (id)hkObjectsFromSensorData:(id)a3 baseSensorDatum:(id)a4 startDate:(id)a5 endDate:(id)a6;
-- (void)beginUpdatesFromDatum:(id)a3 withHandler:(id)a4;
-- (void)fetchHistoricalSensorDataSinceDatum:(id)a3 databaseIdentifier:(id)a4 completion:(id)a5;
-- (void)stopPerformingUpdatesWithErrorEncountered:(BOOL)a3;
+- (HDSkiingWorkoutDistanceCollector)initWithProfile:(id)profile;
+- (id)generateDownhillSnowSportsDistanceSampleForDistance:(double)distance startDate:(id)date endDate:(id)endDate;
+- (id)hkObjectsFromSensorData:(id)data baseSensorDatum:(id)datum startDate:(id)date endDate:(id)endDate;
+- (void)beginUpdatesFromDatum:(id)datum withHandler:(id)handler;
+- (void)fetchHistoricalSensorDataSinceDatum:(id)datum databaseIdentifier:(id)identifier completion:(id)completion;
+- (void)stopPerformingUpdatesWithErrorEncountered:(BOOL)encountered;
 @end
 
 @implementation HDSkiingWorkoutDistanceCollector
 
-- (HDSkiingWorkoutDistanceCollector)initWithProfile:(id)a3
+- (HDSkiingWorkoutDistanceCollector)initWithProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   v10.receiver = self;
   v10.super_class = HDSkiingWorkoutDistanceCollector;
-  v5 = [(HDAggregateDataCollector *)&v10 initWithProfile:v4];
+  v5 = [(HDAggregateDataCollector *)&v10 initWithProfile:profileCopy];
   if (v5)
   {
-    v6 = [v4 workoutManager];
-    v7 = [v6 newCMSkiTracker];
+    workoutManager = [profileCopy workoutManager];
+    newCMSkiTracker = [workoutManager newCMSkiTracker];
     skiTracker = v5->_skiTracker;
-    v5->_skiTracker = v7;
+    v5->_skiTracker = newCMSkiTracker;
   }
 
   return v5;
 }
 
-- (void)stopPerformingUpdatesWithErrorEncountered:(BOOL)a3
+- (void)stopPerformingUpdatesWithErrorEncountered:(BOOL)encountered
 {
-  v3 = a3;
+  encounteredCopy = encountered;
   [(CMSkiTracker *)self->_skiTracker stopUpdates];
-  if (v3)
+  if (encounteredCopy)
   {
     skiTracker = self->_skiTracker;
     self->_skiTracker = 0;
   }
 }
 
-- (void)beginUpdatesFromDatum:(id)a3 withHandler:(id)a4
+- (void)beginUpdatesFromDatum:(id)datum withHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   _HKInitializeLogging();
   v6 = *MEMORY[0x277CCC298];
   if (os_log_type_enabled(*MEMORY[0x277CCC298], OS_LOG_TYPE_DEFAULT))
@@ -53,25 +53,25 @@
   v9[1] = 3221225472;
   v9[2] = __70__HDSkiingWorkoutDistanceCollector_beginUpdatesFromDatum_withHandler___block_invoke;
   v9[3] = &unk_27861BB88;
-  v10 = v5;
-  v8 = v5;
+  v10 = handlerCopy;
+  v8 = handlerCopy;
   [(CMSkiTracker *)skiTracker startUpdatesFromRecord:0 handler:v9];
 }
 
-- (void)fetchHistoricalSensorDataSinceDatum:(id)a3 databaseIdentifier:(id)a4 completion:(id)a5
+- (void)fetchHistoricalSensorDataSinceDatum:(id)datum databaseIdentifier:(id)identifier completion:(id)completion
 {
   v20 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  datumCopy = datum;
+  identifierCopy = identifier;
+  completionCopy = completion;
   _HKInitializeLogging();
   v11 = *MEMORY[0x277CCC298];
   if (os_log_type_enabled(*MEMORY[0x277CCC298], OS_LOG_TYPE_INFO))
   {
     *buf = 138543618;
-    v17 = v8;
+    v17 = datumCopy;
     v18 = 2114;
-    v19 = v9;
+    v19 = identifierCopy;
     _os_log_impl(&dword_228986000, v11, OS_LOG_TYPE_INFO, "Fetching historical skiing distance data since datum: %{public}@ for database: %{public}@", buf, 0x16u);
   }
 
@@ -82,43 +82,43 @@
     v14[1] = 3221225472;
     v14[2] = __102__HDSkiingWorkoutDistanceCollector_fetchHistoricalSensorDataSinceDatum_databaseIdentifier_completion___block_invoke;
     v14[3] = &unk_27861BB88;
-    v15 = v10;
-    [(CMSkiTracker *)skiTracker querySkiUpdatesFromRecord:v8 handler:v14];
+    v15 = completionCopy;
+    [(CMSkiTracker *)skiTracker querySkiUpdatesFromRecord:datumCopy handler:v14];
   }
 
   else
   {
-    (*(v10 + 2))(v10, MEMORY[0x277CBEBF8], 0);
+    (*(completionCopy + 2))(completionCopy, MEMORY[0x277CBEBF8], 0);
   }
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (id)hkObjectsFromSensorData:(id)a3 baseSensorDatum:(id)a4 startDate:(id)a5 endDate:(id)a6
+- (id)hkObjectsFromSensorData:(id)data baseSensorDatum:(id)datum startDate:(id)date endDate:(id)endDate
 {
   v58 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if ([v10 count])
+  dataCopy = data;
+  datumCopy = datum;
+  dateCopy = date;
+  endDateCopy = endDate;
+  if ([dataCopy count])
   {
-    v42 = v13;
-    v43 = v12;
-    v44 = v11;
+    v42 = endDateCopy;
+    v43 = dateCopy;
+    v44 = datumCopy;
     v46 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v14 = [(HDAggregateDataCollector *)self _queue_lastReceivedSensorDatum];
+    _queue_lastReceivedSensorDatum = [(HDAggregateDataCollector *)self _queue_lastReceivedSensorDatum];
     v49 = 0u;
     v50 = 0u;
     v51 = 0u;
     v52 = 0u;
-    v45 = v10;
-    v15 = v10;
+    v45 = dataCopy;
+    v15 = dataCopy;
     v16 = [v15 countByEnumeratingWithState:&v49 objects:v53 count:16];
     if (v16)
     {
       v17 = v16;
-      v47 = self;
+      selfCopy = self;
       v18 = *v50;
       v19 = MEMORY[0x277CCC330];
       v20 = &dword_228986000;
@@ -143,12 +143,12 @@
             _os_log_impl(v20, v23, OS_LOG_TYPE_DEFAULT, "Processing ski distance data: %@", buf, 0xCu);
           }
 
-          v24 = [v22 recordId];
-          if (v24 > [v14 recordId])
+          recordId = [v22 recordId];
+          if (recordId > [_queue_lastReceivedSensorDatum recordId])
           {
             [v22 runDistance];
             v26 = v25;
-            [v14 runDistance];
+            [_queue_lastReceivedSensorDatum runDistance];
             v28 = v26 - v27;
             if (v28 > 2.22044605e-16)
             {
@@ -156,9 +156,9 @@
               v30 = v19;
               v31 = v15;
               v32 = v20;
-              v33 = [v22 startDate];
-              v34 = [v22 endDate];
-              v35 = [(HDSkiingWorkoutDistanceCollector *)v47 generateDownhillSnowSportsDistanceSampleForDistance:v33 startDate:v34 endDate:v28];
+              startDate = [v22 startDate];
+              endDate = [v22 endDate];
+              v35 = [(HDSkiingWorkoutDistanceCollector *)selfCopy generateDownhillSnowSportsDistanceSampleForDistance:startDate startDate:endDate endDate:v28];
 
               if (v35)
               {
@@ -174,7 +174,7 @@
 
             v36 = v22;
 
-            v14 = v36;
+            _queue_lastReceivedSensorDatum = v36;
           }
 
           ++v21;
@@ -187,10 +187,10 @@
       while (v17);
     }
 
-    v11 = v44;
-    v10 = v45;
-    v13 = v42;
-    v12 = v43;
+    datumCopy = v44;
+    dataCopy = v45;
+    endDateCopy = v42;
+    dateCopy = v43;
   }
 
   else
@@ -203,7 +203,7 @@
       *buf = 138412546;
       v55 = objc_opt_class();
       v56 = 2112;
-      v57 = v10;
+      v57 = dataCopy;
       v41 = v55;
       _os_log_error_impl(&dword_228986000, v40, OS_LOG_TYPE_ERROR, "%@: Received ski data array (%@) with no elememts", buf, 0x16u);
     }
@@ -216,21 +216,21 @@
   return v46;
 }
 
-- (id)generateDownhillSnowSportsDistanceSampleForDistance:(double)a3 startDate:(id)a4 endDate:(id)a5
+- (id)generateDownhillSnowSportsDistanceSampleForDistance:(double)distance startDate:(id)date endDate:(id)endDate
 {
   v23 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
-  if ([v8 hk_isBeforeDate:v7])
+  dateCopy = date;
+  endDateCopy = endDate;
+  if ([endDateCopy hk_isBeforeDate:dateCopy])
   {
     _HKInitializeLogging();
     v9 = *MEMORY[0x277CCC298];
     if (os_log_type_enabled(*MEMORY[0x277CCC298], OS_LOG_TYPE_FAULT))
     {
       v19 = 138543618;
-      v20 = v7;
+      v20 = dateCopy;
       v21 = 2114;
-      v22 = v8;
+      v22 = endDateCopy;
       _os_log_fault_impl(&dword_228986000, v9, OS_LOG_TYPE_FAULT, "Out-of-order CMSkiData samples: %{public}@, %{public}@", &v19, 0x16u);
     }
 
@@ -241,12 +241,12 @@
   {
     v11 = [MEMORY[0x277CCD830] quantityTypeForIdentifier:*MEMORY[0x277CCCB18]];
     v12 = MEMORY[0x277CCD7E8];
-    v13 = [MEMORY[0x277CCDAB0] meterUnit];
-    v14 = [v12 quantityWithUnit:v13 doubleValue:a3];
+    meterUnit = [MEMORY[0x277CCDAB0] meterUnit];
+    v14 = [v12 quantityWithUnit:meterUnit doubleValue:distance];
 
     v15 = MEMORY[0x277CCD800];
-    v16 = [MEMORY[0x277CCD2E8] localDevice];
-    v10 = [v15 quantitySampleWithType:v11 quantity:v14 startDate:v7 endDate:v8 device:v16 metadata:0];
+    localDevice = [MEMORY[0x277CCD2E8] localDevice];
+    v10 = [v15 quantitySampleWithType:v11 quantity:v14 startDate:dateCopy endDate:endDateCopy device:localDevice metadata:0];
   }
 
   v17 = *MEMORY[0x277D85DE8];

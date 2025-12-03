@@ -1,33 +1,33 @@
 @interface NTKAegirFace
-+ (BOOL)isRestrictedForDevice:(id)a3;
++ (BOOL)isRestrictedForDevice:(id)device;
 + (id)_complicationSlotDescriptors;
-+ (id)_localizedNameOverrideForCustomEditMode:(int64_t)a3 forDevice:(id)a4;
++ (id)_localizedNameOverrideForCustomEditMode:(int64_t)mode forDevice:(id)device;
 + (id)_orderedComplicationSlots;
-- (BOOL)_snapshotContext:(id)a3 isStaleRelativeToContext:(id)a4;
-- (Class)_optionClassForCustomEditMode:(int64_t)a3;
+- (BOOL)_snapshotContext:(id)context isStaleRelativeToContext:(id)toContext;
+- (Class)_optionClassForCustomEditMode:(int64_t)mode;
 - (id)_complicationSlotDescriptors;
 - (id)_customEditModes;
-- (id)_defaultOptionForCustomEditMode:(int64_t)a3 slot:(id)a4;
+- (id)_defaultOptionForCustomEditMode:(int64_t)mode slot:(id)slot;
 - (id)_faceDescription;
 - (id)_faceDescriptionKey;
-- (id)_localizedNameForComplicationSlot:(id)a3;
-- (id)_optionAtIndex:(unint64_t)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
+- (id)_localizedNameForComplicationSlot:(id)slot;
+- (id)_optionAtIndex:(unint64_t)index forCustomEditMode:(int64_t)mode slot:(id)slot;
 - (id)_orderedComplicationSlots;
 - (id)editOptionsThatHideEditModes;
-- (id)localizedExplanationMessageForDisabledEditMode:(int64_t)a3;
-- (unint64_t)_indexOfOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)a3 slot:(id)a4;
+- (id)localizedExplanationMessageForDisabledEditMode:(int64_t)mode;
+- (unint64_t)_indexOfOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)mode slot:(id)slot;
 @end
 
 @implementation NTKAegirFace
 
-+ (BOOL)isRestrictedForDevice:(id)a3
++ (BOOL)isRestrictedForDevice:(id)device
 {
-  v3 = a3;
+  deviceCopy = device;
   v4 = [[NSUUID alloc] initWithUUIDString:@"157666B2-886F-4DBB-BFEE-669DE191D8BB"];
-  if ([v3 supportsCapability:v4])
+  if ([deviceCopy supportsCapability:v4])
   {
-    v5 = [v3 deviceCategory] == &dword_0 + 1;
+    v5 = [deviceCopy deviceCategory] == &dword_0 + 1;
   }
 
   else
@@ -40,9 +40,9 @@
 
 - (id)_faceDescriptionKey
 {
-  v2 = [(NTKAegirFace *)self device];
+  device = [(NTKAegirFace *)self device];
   v3 = [[NSUUID alloc] initWithUUIDString:@"BD0302DD-00BC-43C2-81E9-48C038E6F8BB"];
-  v4 = [v2 supportsCapability:v3];
+  v4 = [device supportsCapability:v3];
 
   if (v4)
   {
@@ -57,21 +57,21 @@
 
 - (id)_faceDescription
 {
-  v2 = [(NTKAegirFace *)self _faceDescriptionKey];
-  v3 = [NTKAegirFaceBundle localizedStringForKey:v2 comment:v2];
+  _faceDescriptionKey = [(NTKAegirFace *)self _faceDescriptionKey];
+  v3 = [NTKAegirFaceBundle localizedStringForKey:_faceDescriptionKey comment:_faceDescriptionKey];
 
   return v3;
 }
 
-- (BOOL)_snapshotContext:(id)a3 isStaleRelativeToContext:(id)a4
+- (BOOL)_snapshotContext:(id)context isStaleRelativeToContext:(id)toContext
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  toContextCopy = toContext;
   v11.receiver = self;
   v11.super_class = NTKAegirFace;
-  if (!-[NTKAegirFace _snapshotContext:isStaleRelativeToContext:](&v11, "_snapshotContext:isStaleRelativeToContext:", v6, v7) && [v6 calendarDateMatchesContext:v7] && objc_msgSend(v6, "localeMatchesContext:", v7))
+  if (!-[NTKAegirFace _snapshotContext:isStaleRelativeToContext:](&v11, "_snapshotContext:isStaleRelativeToContext:", contextCopy, toContextCopy) && [contextCopy calendarDateMatchesContext:toContextCopy] && objc_msgSend(contextCopy, "localeMatchesContext:", toContextCopy))
   {
-    [v6 distanceInKilometersFromContext:v7];
+    [contextCopy distanceInKilometersFromContext:toContextCopy];
     v9 = v8 > 500.0;
   }
 
@@ -104,9 +104,9 @@
 {
   v4.receiver = self;
   v4.super_class = NTKAegirFace;
-  v2 = [(NTKAegirFace *)&v4 _complicationSlotDescriptors];
+  _complicationSlotDescriptors = [(NTKAegirFace *)&v4 _complicationSlotDescriptors];
 
-  return v2;
+  return _complicationSlotDescriptors;
 }
 
 + (id)_orderedComplicationSlots
@@ -122,22 +122,22 @@
 {
   v4.receiver = self;
   v4.super_class = NTKAegirFace;
-  v2 = [(NTKAegirFace *)&v4 _orderedComplicationSlots];
+  _orderedComplicationSlots = [(NTKAegirFace *)&v4 _orderedComplicationSlots];
 
-  return v2;
+  return _orderedComplicationSlots;
 }
 
-- (id)_localizedNameForComplicationSlot:(id)a3
+- (id)_localizedNameForComplicationSlot:(id)slot
 {
-  v3 = a3;
-  if ([v3 isEqualToString:NTKComplicationSlotTopRight])
+  slotCopy = slot;
+  if ([slotCopy isEqualToString:NTKComplicationSlotTopRight])
   {
     v4 = @"TOP";
   }
 
   else
   {
-    v5 = [v3 isEqualToString:NTKComplicationSlotBottom];
+    v5 = [slotCopy isEqualToString:NTKComplicationSlotBottom];
     v4 = @"BOTTOM";
     if (!v5)
     {
@@ -153,7 +153,7 @@
 
 - (id)_customEditModes
 {
-  v2 = [(NTKAegirFace *)self device];
+  device = [(NTKAegirFace *)self device];
   v3 = NTKShowIndicScriptNumerals();
 
   if (v3)
@@ -167,47 +167,47 @@
   }
 }
 
-- (id)_defaultOptionForCustomEditMode:(int64_t)a3 slot:(id)a4
+- (id)_defaultOptionForCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v6 = a4;
+  slotCopy = slot;
   v7 = 0;
-  if (a3 > 14)
+  if (mode > 14)
   {
-    if (a3 == 15)
+    if (mode == 15)
     {
-      v8 = [(NTKAegirFace *)self device];
-      v9 = [NTKAegirStyleEditOption optionWithStyle:7 forDevice:v8];
+      device = [(NTKAegirFace *)self device];
+      v9 = [NTKAegirStyleEditOption optionWithStyle:7 forDevice:device];
     }
 
     else
     {
-      if (a3 != 19)
+      if (mode != 19)
       {
         goto LABEL_11;
       }
 
       CLKLocaleNumberSystemForFirstLanguage();
       v10 = NTKNumeralOptionFromCLKLocaleNumberSystem();
-      v8 = [(NTKAegirFace *)self device];
-      v9 = [NTKNumeralEditOption optionWithNumeral:v10 forDevice:v8];
+      device = [(NTKAegirFace *)self device];
+      v9 = [NTKNumeralEditOption optionWithNumeral:v10 forDevice:device];
     }
   }
 
-  else if (a3 == 12)
+  else if (mode == 12)
   {
-    v8 = [(NTKAegirFace *)self device];
-    v9 = [NTKAegirVistaEditOption optionWithVista:0 forDevice:v8];
+    device = [(NTKAegirFace *)self device];
+    v9 = [NTKAegirVistaEditOption optionWithVista:0 forDevice:device];
   }
 
   else
   {
-    if (a3 != 13)
+    if (mode != 13)
     {
       goto LABEL_11;
     }
 
-    v8 = [(NTKAegirFace *)self device];
-    v9 = [NTKAegirTypefaceEditOption optionWithTypeface:1 forDevice:v8];
+    device = [(NTKAegirFace *)self device];
+    v9 = [NTKAegirTypefaceEditOption optionWithTypeface:1 forDevice:device];
   }
 
   v7 = v9;
@@ -217,11 +217,11 @@ LABEL_11:
   return v7;
 }
 
-+ (id)_localizedNameOverrideForCustomEditMode:(int64_t)a3 forDevice:(id)a4
++ (id)_localizedNameOverrideForCustomEditMode:(int64_t)mode forDevice:(id)device
 {
-  v6 = a4;
-  v7 = a3 - 12;
-  if (a3 - 12) <= 7 && ((0x8Bu >> v7))
+  deviceCopy = device;
+  v7 = mode - 12;
+  if (mode - 12) <= 7 && ((0x8Bu >> v7))
   {
     v8 = [(__CFString *)off_144E8[v7] stringByAppendingString:@"_COMPANION"];
     v9 = [NTKAegirFaceBundle localizedStringForKey:v8 comment:v8];
@@ -229,46 +229,46 @@ LABEL_11:
 
   else
   {
-    v11.receiver = a1;
+    v11.receiver = self;
     v11.super_class = &OBJC_METACLASS___NTKAegirFace;
-    v9 = objc_msgSendSuper2(&v11, "_localizedNameOverrideForCustomEditMode:forDevice:", a3, v6);
+    v9 = objc_msgSendSuper2(&v11, "_localizedNameOverrideForCustomEditMode:forDevice:", mode, deviceCopy);
   }
 
   return v9;
 }
 
-- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)a3 slot:(id)a4
+- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v5 = [(NTKAegirFace *)self _optionClassForCustomEditMode:a3, a4];
-  v6 = [(NTKAegirFace *)self device];
-  v7 = [(objc_class *)v5 numberOfOptionsForDevice:v6];
+  slot = [(NTKAegirFace *)self _optionClassForCustomEditMode:mode, slot];
+  device = [(NTKAegirFace *)self device];
+  v7 = [(objc_class *)slot numberOfOptionsForDevice:device];
 
   return v7;
 }
 
-- (id)_optionAtIndex:(unint64_t)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (id)_optionAtIndex:(unint64_t)index forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v7 = [(NTKAegirFace *)self _optionClassForCustomEditMode:a4];
-  v8 = [(NTKAegirFace *)self device];
-  v9 = [(objc_class *)v7 optionAtIndex:a3 forDevice:v8];
+  v7 = [(NTKAegirFace *)self _optionClassForCustomEditMode:mode];
+  device = [(NTKAegirFace *)self device];
+  v9 = [(objc_class *)v7 optionAtIndex:index forDevice:device];
 
   return v9;
 }
 
-- (unint64_t)_indexOfOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (unint64_t)_indexOfOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v7 = a3;
-  v8 = [(NTKAegirFace *)self _optionClassForCustomEditMode:a4];
-  v9 = [(NTKAegirFace *)self device];
-  v10 = [(objc_class *)v8 indexOfOption:v7 forDevice:v9];
+  optionCopy = option;
+  v8 = [(NTKAegirFace *)self _optionClassForCustomEditMode:mode];
+  device = [(NTKAegirFace *)self device];
+  v10 = [(objc_class *)v8 indexOfOption:optionCopy forDevice:device];
 
   return v10;
 }
 
-- (Class)_optionClassForCustomEditMode:(int64_t)a3
+- (Class)_optionClassForCustomEditMode:(int64_t)mode
 {
-  v4 = a3 - 12;
-  if (a3 - 12) <= 7 && ((0x8Bu >> v4))
+  v4 = mode - 12;
+  if (mode - 12) <= 7 && ((0x8Bu >> v4))
   {
     v5 = *off_14528[v4];
     v6 = objc_opt_class();
@@ -285,17 +285,17 @@ LABEL_11:
 - (id)editOptionsThatHideEditModes
 {
   v6 = &off_15680;
-  v2 = [(NTKAegirFace *)self device];
-  v3 = [NTKNumeralEditOption partiallySupportedEditOptionsForDevice:v2];
+  device = [(NTKAegirFace *)self device];
+  v3 = [NTKNumeralEditOption partiallySupportedEditOptionsForDevice:device];
   v7 = v3;
   v4 = [NSDictionary dictionaryWithObjects:&v7 forKeys:&v6 count:1];
 
   return v4;
 }
 
-- (id)localizedExplanationMessageForDisabledEditMode:(int64_t)a3
+- (id)localizedExplanationMessageForDisabledEditMode:(int64_t)mode
 {
-  if (a3 == 13)
+  if (mode == 13)
   {
     v5 = [NTKAegirFaceBundle localizedStringForKey:@"AEGIR_TIME_FONT_CANNOT_BE_CHANGED_EXPLANATION" comment:@"Time font cannot be changed description", v3];
   }

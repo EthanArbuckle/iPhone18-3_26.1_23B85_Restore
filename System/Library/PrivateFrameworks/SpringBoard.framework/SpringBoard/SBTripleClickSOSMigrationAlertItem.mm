@@ -1,22 +1,22 @@
 @interface SBTripleClickSOSMigrationAlertItem
-- (void)configure:(BOOL)a3 requirePasscodeForActions:(BOOL)a4;
+- (void)configure:(BOOL)configure requirePasscodeForActions:(BOOL)actions;
 @end
 
 @implementation SBTripleClickSOSMigrationAlertItem
 
-- (void)configure:(BOOL)a3 requirePasscodeForActions:(BOOL)a4
+- (void)configure:(BOOL)configure requirePasscodeForActions:(BOOL)actions
 {
-  v5 = [(SBAlertItem *)self alertController:a3];
-  v6 = [MEMORY[0x277CCA8D8] mainBundle];
-  v7 = [v6 localizedStringForKey:@"SOS_TRIPLE_CLICK_MIGRATION_TITLE" value:&stru_283094718 table:@"Late_Fall_2017_iOS_Strings"];
+  v5 = [(SBAlertItem *)self alertController:configure];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v7 = [mainBundle localizedStringForKey:@"SOS_TRIPLE_CLICK_MIGRATION_TITLE" value:&stru_283094718 table:@"Late_Fall_2017_iOS_Strings"];
 
   [v5 setTitle:v7];
-  v8 = [MEMORY[0x277CCA8D8] mainBundle];
-  v9 = [v8 localizedStringForKey:@"SOS_TRIPLE_CLICK_MIGRATION_BODY" value:&stru_283094718 table:@"Late_Fall_2017_iOS_Strings"];
+  mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
+  v9 = [mainBundle2 localizedStringForKey:@"SOS_TRIPLE_CLICK_MIGRATION_BODY" value:&stru_283094718 table:@"Late_Fall_2017_iOS_Strings"];
 
   [v5 setMessage:v9];
-  v10 = [MEMORY[0x277CCA8D8] mainBundle];
-  v11 = [v10 localizedStringForKey:@"SOS_TRIPLE_CLICK_MIGRATION_BUTTON_OK" value:&stru_283094718 table:@"Late_Fall_2017_iOS_Strings"];
+  mainBundle3 = [MEMORY[0x277CCA8D8] mainBundle];
+  v11 = [mainBundle3 localizedStringForKey:@"SOS_TRIPLE_CLICK_MIGRATION_BUTTON_OK" value:&stru_283094718 table:@"Late_Fall_2017_iOS_Strings"];
 
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;

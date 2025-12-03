@@ -7,13 +7,13 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_10022667C();
 }
 
 - (void)doneAction
 {
-  v2 = self;
+  selfCopy = self;
   sub_100228190();
 }
 

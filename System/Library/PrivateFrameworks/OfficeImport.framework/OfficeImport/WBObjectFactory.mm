@@ -1,10 +1,10 @@
 @interface WBObjectFactory
-+ (WrdObject)create:(int)a3;
++ (WrdObject)create:(int)create;
 @end
 
 @implementation WBObjectFactory
 
-+ (WrdObject)create:(int)a3
++ (WrdObject)create:(int)create
 {
   if (+[WBObjectFactory create:]::once != -1)
   {

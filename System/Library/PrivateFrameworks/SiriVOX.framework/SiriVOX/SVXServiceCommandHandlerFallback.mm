@@ -1,17 +1,17 @@
 @interface SVXServiceCommandHandlerFallback
-- (SVXServiceCommandHandlerFallback)initWithResult:(id)a3;
-- (void)handleCommand:(id)a3 withContext:(id)a4 taskTracker:(id)a5 completion:(id)a6;
+- (SVXServiceCommandHandlerFallback)initWithResult:(id)result;
+- (void)handleCommand:(id)command withContext:(id)context taskTracker:(id)tracker completion:(id)completion;
 @end
 
 @implementation SVXServiceCommandHandlerFallback
 
-- (void)handleCommand:(id)a3 withContext:(id)a4 taskTracker:(id)a5 completion:(id)a6
+- (void)handleCommand:(id)command withContext:(id)context taskTracker:(id)tracker completion:(id)completion
 {
   v23 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  commandCopy = command;
+  contextCopy = context;
+  trackerCopy = tracker;
+  completionCopy = completion;
   v14 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_ERROR))
   {
@@ -24,7 +24,7 @@
     v22 = v18;
     _os_log_error_impl(&dword_2695B9000, v16, OS_LOG_TYPE_ERROR, "%s Service command handler is missing for %@. Please file a radar.", &v19, 0x16u);
 
-    if (!v13)
+    if (!completionCopy)
     {
       goto LABEL_4;
     }
@@ -32,10 +32,10 @@
     goto LABEL_3;
   }
 
-  if (v13)
+  if (completionCopy)
   {
 LABEL_3:
-    v13[2](v13, self->_result);
+    completionCopy[2](completionCopy, self->_result);
   }
 
 LABEL_4:
@@ -43,15 +43,15 @@ LABEL_4:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (SVXServiceCommandHandlerFallback)initWithResult:(id)a3
+- (SVXServiceCommandHandlerFallback)initWithResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   v9.receiver = self;
   v9.super_class = SVXServiceCommandHandlerFallback;
   v5 = [(SVXServiceCommandHandlerFallback *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [resultCopy copy];
     v7 = v5->_result;
     v5->_result = v6;
   }

@@ -1,16 +1,16 @@
 @interface CoreDAVXMLData
-+ (BOOL)string:(id)a3 isEqualToXmlCharString:(const char *)a4;
++ (BOOL)string:(id)string isEqualToXmlCharString:(const char *)charString;
 - (CoreDAVXMLData)init;
 - (NSData)data;
-- (const)_prefixForNameSpace:(const char *)a3;
-- (void)_startElement:(id)a3 inNamespace:(id)a4;
-- (void)_startElement:(id)a3 inNamespace:(id)a4 withAttributeNamesAndValues:(id)a5 attributes:(char *)a6;
-- (void)appendElement:(id)a3 inNamespace:(id)a4 withStringContent:(id)a5 withAttributeNamesAndValues:(id)a6;
-- (void)appendElement:(id)a3 inNamespace:(id)a4 withStringContentAsCDATA:(id)a5 withAttributeNamesAndValues:(id)a6;
+- (const)_prefixForNameSpace:(const char *)space;
+- (void)_startElement:(id)element inNamespace:(id)namespace;
+- (void)_startElement:(id)element inNamespace:(id)namespace withAttributeNamesAndValues:(id)values attributes:(char *)attributes;
+- (void)appendElement:(id)element inNamespace:(id)namespace withStringContent:(id)content withAttributeNamesAndValues:(id)values;
+- (void)appendElement:(id)element inNamespace:(id)namespace withStringContentAsCDATA:(id)a withAttributeNamesAndValues:(id)values;
 - (void)dealloc;
-- (void)endElement:(id)a3 inNamespace:(id)a4;
-- (void)startElement:(id)a3 inNamespace:(id)a4 withAttributeNamesAndValues:(id)a5;
-- (void)startElement:(id)a3 inNamespace:(id)a4 withAttributes:(id)a5;
+- (void)endElement:(id)element inNamespace:(id)namespace;
+- (void)startElement:(id)element inNamespace:(id)namespace withAttributeNamesAndValues:(id)values;
+- (void)startElement:(id)element inNamespace:(id)namespace withAttributes:(id)attributes;
 @end
 
 @implementation CoreDAVXMLData
@@ -56,14 +56,14 @@
   [(CoreDAVXMLData *)&v3 dealloc];
 }
 
-- (const)_prefixForNameSpace:(const char *)a3
+- (const)_prefixForNameSpace:(const char *)space
 {
   if (_prefixForNameSpace__pred != -1)
   {
     [CoreDAVXMLData _prefixForNameSpace:];
   }
 
-  v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:a3];
+  v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:space];
   v24 = 0;
   v25 = &v24;
   v26 = 0x2020000000;
@@ -94,8 +94,8 @@
     dispatch_sync(v12, &v15);
     if (_prefixForNameSpace__sNextPrefix >= 0x5Bu)
     {
-      v14 = [MEMORY[0x277CCA890] currentHandler];
-      [v14 handleFailureInMethod:a2 object:self file:@"CoreDAVXMLData.m" lineNumber:78 description:@"Whoops- we're out of XML namespaces!"];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"CoreDAVXMLData.m" lineNumber:78 description:@"Whoops- we're out of XML namespaces!"];
     }
 
     v9 = v25[3];
@@ -130,26 +130,26 @@ void __38__CoreDAVXMLData__prefixForNameSpace___block_invoke_3(uint64_t a1)
   [_prefixForNameSpace___sNamespacePrefixes setObject:v2 forKeyedSubscript:*(a1 + 32)];
 }
 
-- (void)_startElement:(id)a3 inNamespace:(id)a4
+- (void)_startElement:(id)element inNamespace:(id)namespace
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [a3 UTF8String];
-  v8 = [v6 UTF8String];
-  if (v8)
+  namespaceCopy = namespace;
+  uTF8String = [element UTF8String];
+  uTF8String2 = [namespaceCopy UTF8String];
+  if (uTF8String2)
   {
-    v9 = v8;
-    v10 = [(NSMutableDictionary *)self->_seenURIsToPrefixes objectForKeyedSubscript:v6];
-    v11 = [v10 pointerValue];
+    v9 = uTF8String2;
+    v10 = [(NSMutableDictionary *)self->_seenURIsToPrefixes objectForKeyedSubscript:namespaceCopy];
+    pointerValue = [v10 pointerValue];
 
-    if (!v11)
+    if (!pointerValue)
     {
       v12 = [(CoreDAVXMLData *)self _prefixForNameSpace:v9];
       if (v12)
       {
-        v11 = v12;
+        pointerValue = v12;
         v13 = [MEMORY[0x277CCAE60] valueWithPointer:v12];
-        [(NSMutableDictionary *)self->_seenURIsToPrefixes setObject:v13 forKeyedSubscript:v6];
+        [(NSMutableDictionary *)self->_seenURIsToPrefixes setObject:v13 forKeyedSubscript:namespaceCopy];
       }
 
       else
@@ -164,67 +164,67 @@ void __38__CoreDAVXMLData__prefixForNameSpace___block_invoke_3(uint64_t a1)
           _os_log_impl(&dword_2452FB000, v18, OS_LOG_TYPE_ERROR, "Unknown namespace being written %s.  This will not go well", &v27, 0xCu);
         }
 
-        v11 = 0;
+        pointerValue = 0;
       }
     }
 
     v19 = [(NSMutableArray *)self->_elementStack count];
-    v20 = [(NSMutableDictionary *)self->_seenURIsToDepth objectForKey:v6];
+    v20 = [(NSMutableDictionary *)self->_seenURIsToDepth objectForKey:namespaceCopy];
 
     if (v20)
     {
-      v21 = [(NSMutableDictionary *)self->_seenURIsToDepth objectForKeyedSubscript:v6];
-      v22 = [v21 integerValue];
+      v21 = [(NSMutableDictionary *)self->_seenURIsToDepth objectForKeyedSubscript:namespaceCopy];
+      integerValue = [v21 integerValue];
 
-      if (v19 > v22)
+      if (v19 > integerValue)
       {
         v9 = 0;
 LABEL_15:
         elementStack = self->_elementStack;
-        v25 = [MEMORY[0x277CCAE60] valueWithPointer:v7];
+        v25 = [MEMORY[0x277CCAE60] valueWithPointer:uTF8String];
         [(NSMutableArray *)elementStack addObject:v25];
 
-        xmlTextWriterStartElementNS(self->_dataImpl->_writer, v11, v7, v9);
+        xmlTextWriterStartElementNS(self->_dataImpl->_writer, pointerValue, uTF8String, v9);
         goto LABEL_16;
       }
 
-      if (v19 >= v22)
+      if (v19 >= integerValue)
       {
         goto LABEL_15;
       }
     }
 
     v23 = [MEMORY[0x277CCABB0] numberWithInteger:v19];
-    [(NSMutableDictionary *)self->_seenURIsToDepth setObject:v23 forKeyedSubscript:v6];
+    [(NSMutableDictionary *)self->_seenURIsToDepth setObject:v23 forKeyedSubscript:namespaceCopy];
 
     goto LABEL_15;
   }
 
   v14 = self->_elementStack;
-  v15 = [MEMORY[0x277CCAE60] valueWithPointer:v7];
+  v15 = [MEMORY[0x277CCAE60] valueWithPointer:uTF8String];
   [(NSMutableArray *)v14 addObject:v15];
 
-  xmlTextWriterStartElement(self->_dataImpl->_writer, v7);
+  xmlTextWriterStartElement(self->_dataImpl->_writer, uTF8String);
 LABEL_16:
 
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_startElement:(id)a3 inNamespace:(id)a4 withAttributeNamesAndValues:(id)a5 attributes:(char *)a6
+- (void)_startElement:(id)element inNamespace:(id)namespace withAttributeNamesAndValues:(id)values attributes:(char *)attributes
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v21 = a6;
-  [(CoreDAVXMLData *)self _startElement:v10 inNamespace:v11];
-  if (v12)
+  elementCopy = element;
+  namespaceCopy = namespace;
+  valuesCopy = values;
+  attributesCopy = attributes;
+  [(CoreDAVXMLData *)self _startElement:elementCopy inNamespace:namespaceCopy];
+  if (valuesCopy)
   {
-    v13 = *a6;
-    xmlTextWriterStartAttributeNS(self->_dataImpl->_writer, 0, [v12 UTF8String], 0);
+    v13 = *attributes;
+    xmlTextWriterStartAttributeNS(self->_dataImpl->_writer, 0, [valuesCopy UTF8String], 0);
     xmlTextWriterWriteString(self->_dataImpl->_writer, [v13 UTF8String]);
     xmlTextWriterEndAttribute(self->_dataImpl->_writer);
-    v14 = (v21 + 8);
-    v22 = (v21 + 16);
+    v14 = (attributesCopy + 8);
+    v22 = (attributesCopy + 16);
     v15 = *v14;
     if (v15)
     {
@@ -250,36 +250,36 @@ LABEL_16:
   }
 }
 
-- (void)startElement:(id)a3 inNamespace:(id)a4 withAttributeNamesAndValues:(id)a5
+- (void)startElement:(id)element inNamespace:(id)namespace withAttributeNamesAndValues:(id)values
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  elementCopy = element;
+  namespaceCopy = namespace;
+  valuesCopy = values;
   if (self->_docHasEnded)
   {
     [CoreDAVXMLData startElement:inNamespace:withAttributeNamesAndValues:];
   }
 
-  [(CoreDAVXMLData *)self _startElement:v8 inNamespace:v9 withAttributeNamesAndValues:v10 attributes:&v11];
+  [(CoreDAVXMLData *)self _startElement:elementCopy inNamespace:namespaceCopy withAttributeNamesAndValues:valuesCopy attributes:&v11];
 }
 
-- (void)startElement:(id)a3 inNamespace:(id)a4 withAttributes:(id)a5
+- (void)startElement:(id)element inNamespace:(id)namespace withAttributes:(id)attributes
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  elementCopy = element;
+  namespaceCopy = namespace;
+  attributesCopy = attributes;
   if (self->_docHasEnded)
   {
     [CoreDAVXMLData startElement:inNamespace:withAttributes:];
   }
 
-  [(CoreDAVXMLData *)self _startElement:v8 inNamespace:v9];
+  [(CoreDAVXMLData *)self _startElement:elementCopy inNamespace:namespaceCopy];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __58__CoreDAVXMLData_startElement_inNamespace_withAttributes___block_invoke;
   v11[3] = &unk_278E311D0;
   v11[4] = self;
-  [v10 enumerateKeysAndObjectsUsingBlock:v11];
+  [attributesCopy enumerateKeysAndObjectsUsingBlock:v11];
 }
 
 uint64_t __58__CoreDAVXMLData_startElement_inNamespace_withAttributes___block_invoke(uint64_t a1, id a2, void *a3)
@@ -297,13 +297,13 @@ uint64_t __58__CoreDAVXMLData_startElement_inNamespace_withAttributes___block_in
   return xmlTextWriterEndAttribute(v11);
 }
 
-- (void)endElement:(id)a3 inNamespace:(id)a4
+- (void)endElement:(id)element inNamespace:(id)namespace
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v10 UTF8String];
-  v12 = [v9 UTF8String];
+  elementCopy = element;
+  namespaceCopy = namespace;
+  elementCopy2 = element;
+  uTF8String = [elementCopy2 UTF8String];
+  uTF8String2 = [namespaceCopy UTF8String];
 
   if (self->_docHasEnded)
   {
@@ -315,29 +315,29 @@ uint64_t __58__CoreDAVXMLData_startElement_inNamespace_withAttributes___block_in
     [CoreDAVXMLData endElement:inNamespace:];
   }
 
-  v13 = [(NSMutableArray *)self->_elementStack lastObject];
-  v14 = [v13 pointerValue];
+  lastObject = [(NSMutableArray *)self->_elementStack lastObject];
+  pointerValue = [lastObject pointerValue];
 
-  LOBYTE(v13) = [objc_opt_class() string:v10 isEqualToXmlCharString:v14];
-  if ((v13 & 1) == 0)
+  LOBYTE(lastObject) = [objc_opt_class() string:elementCopy2 isEqualToXmlCharString:pointerValue];
+  if ((lastObject & 1) == 0)
   {
-    [(CoreDAVXMLData *)a2 endElement:v11 inNamespace:v14];
+    [(CoreDAVXMLData *)a2 endElement:uTF8String inNamespace:pointerValue];
   }
 
   [(NSMutableArray *)self->_elementStack removeLastObject];
   xmlTextWriterFullEndElement(self->_dataImpl->_writer);
-  if (v9 && v12)
+  if (namespaceCopy && uTF8String2)
   {
     v15 = [(NSMutableArray *)self->_elementStack count];
-    v19 = [MEMORY[0x277CCACA8] stringWithUTF8String:v12];
+    v19 = [MEMORY[0x277CCACA8] stringWithUTF8String:uTF8String2];
     v16 = [(NSMutableDictionary *)self->_seenURIsToDepth objectForKey:?];
 
     if (v16)
     {
       v17 = [(NSMutableDictionary *)self->_seenURIsToDepth objectForKeyedSubscript:v19];
-      v18 = [v17 integerValue];
+      integerValue = [v17 integerValue];
 
-      if (v18 == v15)
+      if (integerValue == v15)
       {
         [(NSMutableDictionary *)self->_seenURIsToDepth removeObjectForKey:v19];
       }
@@ -345,55 +345,55 @@ uint64_t __58__CoreDAVXMLData_startElement_inNamespace_withAttributes___block_in
   }
 }
 
-- (void)appendElement:(id)a3 inNamespace:(id)a4 withStringContent:(id)a5 withAttributeNamesAndValues:(id)a6
+- (void)appendElement:(id)element inNamespace:(id)namespace withStringContent:(id)content withAttributeNamesAndValues:(id)values
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  elementCopy = element;
+  namespaceCopy = namespace;
+  contentCopy = content;
+  valuesCopy = values;
   if (self->_docHasEnded)
   {
     [CoreDAVXMLData appendElement:inNamespace:withStringContent:withAttributeNamesAndValues:];
   }
 
-  [(CoreDAVXMLData *)self _startElement:v10 inNamespace:v11 withAttributeNamesAndValues:v13 attributes:&v14];
-  if ([v12 length])
+  [(CoreDAVXMLData *)self _startElement:elementCopy inNamespace:namespaceCopy withAttributeNamesAndValues:valuesCopy attributes:&v14];
+  if ([contentCopy length])
   {
-    xmlTextWriterWriteString(self->_dataImpl->_writer, [v12 UTF8String]);
+    xmlTextWriterWriteString(self->_dataImpl->_writer, [contentCopy UTF8String]);
   }
 
-  [(CoreDAVXMLData *)self endElement:v10 inNamespace:v11];
+  [(CoreDAVXMLData *)self endElement:elementCopy inNamespace:namespaceCopy];
 }
 
-- (void)appendElement:(id)a3 inNamespace:(id)a4 withStringContentAsCDATA:(id)a5 withAttributeNamesAndValues:(id)a6
+- (void)appendElement:(id)element inNamespace:(id)namespace withStringContentAsCDATA:(id)a withAttributeNamesAndValues:(id)values
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  elementCopy = element;
+  namespaceCopy = namespace;
+  aCopy = a;
+  valuesCopy = values;
   if (self->_docHasEnded)
   {
     [CoreDAVXMLData appendElement:inNamespace:withStringContentAsCDATA:withAttributeNamesAndValues:];
   }
 
   v19[1] = &v20;
-  [(CoreDAVXMLData *)self _startElement:v10 inNamespace:v11 withAttributeNamesAndValues:v13 attributes:&v20];
-  if ([v12 length])
+  [(CoreDAVXMLData *)self _startElement:elementCopy inNamespace:namespaceCopy withAttributeNamesAndValues:valuesCopy attributes:&v20];
+  if ([aCopy length])
   {
     if (appendElement_inNamespace_withStringContentAsCDATA_withAttributeNamesAndValues__once != -1)
     {
       [CoreDAVXMLData appendElement:inNamespace:withStringContentAsCDATA:withAttributeNamesAndValues:];
     }
 
-    if ([v12 rangeOfCharacterFromSet:appendElement_inNamespace_withStringContentAsCDATA_withAttributeNamesAndValues__invalidXMLCharacterSet] == 0x7FFFFFFFFFFFFFFFLL)
+    if ([aCopy rangeOfCharacterFromSet:appendElement_inNamespace_withStringContentAsCDATA_withAttributeNamesAndValues__invalidXMLCharacterSet] == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v14 = v12;
+      string = aCopy;
     }
 
     else
     {
-      v14 = [MEMORY[0x277CCAB68] string];
-      v15 = [MEMORY[0x277CCAC80] scannerWithString:v12];
+      string = [MEMORY[0x277CCAB68] string];
+      v15 = [MEMORY[0x277CCAC80] scannerWithString:aCopy];
       [v15 setCharactersToBeSkipped:appendElement_inNamespace_withStringContentAsCDATA_withAttributeNamesAndValues__invalidXMLCharacterSet];
       if (([v15 isAtEnd] & 1) == 0)
       {
@@ -407,20 +407,20 @@ uint64_t __58__CoreDAVXMLData_startElement_inNamespace_withAttributes___block_in
           v16 = v18;
           if (v17 && [v18 length])
           {
-            [v14 appendString:v16];
+            [string appendString:v16];
           }
         }
 
         while (![v15 isAtEnd]);
       }
 
-      v12 = v14;
+      aCopy = string;
     }
 
-    xmlTextWriterWriteCDATA(self->_dataImpl->_writer, [v14 UTF8String]);
+    xmlTextWriterWriteCDATA(self->_dataImpl->_writer, [string UTF8String]);
   }
 
-  [(CoreDAVXMLData *)self endElement:v10 inNamespace:v11];
+  [(CoreDAVXMLData *)self endElement:elementCopy inNamespace:namespaceCopy];
 }
 
 void __97__CoreDAVXMLData_appendElement_inNamespace_withStringContentAsCDATA_withAttributeNamesAndValues___block_invoke()
@@ -451,38 +451,38 @@ void __97__CoreDAVXMLData_appendElement_inNamespace_withStringContentAsCDATA_wit
   return v3;
 }
 
-+ (BOOL)string:(id)a3 isEqualToXmlCharString:(const char *)a4
++ (BOOL)string:(id)string isEqualToXmlCharString:(const char *)charString
 {
-  v5 = a3;
-  if ([v5 length])
+  stringCopy = string;
+  if ([stringCopy length])
   {
-    if (a4)
+    if (charString)
     {
-      v6 = strlen(a4);
+      v6 = strlen(charString);
       if (v6)
       {
-        v7 = [objc_allocWithZone(MEMORY[0x277CCACA8]) initWithBytes:a4 length:v6 encoding:4];
-        LOBYTE(a4) = [v5 isEqualToString:v7];
+        v7 = [objc_allocWithZone(MEMORY[0x277CCACA8]) initWithBytes:charString length:v6 encoding:4];
+        LOBYTE(charString) = [stringCopy isEqualToString:v7];
       }
 
       else
       {
-        LOBYTE(a4) = 0;
+        LOBYTE(charString) = 0;
       }
     }
   }
 
-  else if (a4)
+  else if (charString)
   {
-    LOBYTE(a4) = *a4 == 0;
+    LOBYTE(charString) = *charString == 0;
   }
 
   else
   {
-    LOBYTE(a4) = 1;
+    LOBYTE(charString) = 1;
   }
 
-  return a4;
+  return charString;
 }
 
 - (void)startElement:inNamespace:withAttributeNamesAndValues:.cold.1()

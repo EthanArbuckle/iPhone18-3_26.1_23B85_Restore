@@ -5,9 +5,9 @@
 + (double)noServiceDotHeight;
 + (id)connectedDotColor;
 + (id)noServiceDotColor;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (CLKMonochromeFilterProvider)filterProvider;
-- (NTKExplorerStatusView)initWithFrame:(CGRect)a3 dotLayoutConstraints:(id)a4 dotColorOptions:(id)a5;
+- (NTKExplorerStatusView)initWithFrame:(CGRect)frame dotLayoutConstraints:(id)constraints dotColorOptions:(id)options;
 - (UIColor)connectedDotBackgroundColor;
 - (UIColor)connectedDotColor;
 - (UIColor)noServiceDotColor;
@@ -15,46 +15,46 @@
 - (double)dotDiameter;
 - (double)dotSpacing;
 - (double)noServiceDotHeight;
-- (void)_applyDotRotationFraction:(double)a3 forDotAtIndex:(unint64_t)a4;
-- (void)_applyState:(int64_t)a3 animated:(BOOL)a4;
+- (void)_applyDotRotationFraction:(double)fraction forDotAtIndex:(unint64_t)index;
+- (void)_applyState:(int64_t)state animated:(BOOL)animated;
 - (void)_layoutDotLayers;
 - (void)_updateDotFillStates;
-- (void)setDotColorOptions:(id)a3;
-- (void)setDotLayoutConstraints:(id)a3;
-- (void)setDotPosition:(int64_t)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)setShowsFullSignalStrength:(BOOL)a3;
-- (void)setSignalStrengthBars:(int64_t)a3;
-- (void)setState:(int64_t)a3 animated:(BOOL)a4;
-- (void)transitionToMonochromeWithFraction:(double)a3;
+- (void)setDotColorOptions:(id)options;
+- (void)setDotLayoutConstraints:(id)constraints;
+- (void)setDotPosition:(int64_t)position animated:(BOOL)animated completion:(id)completion;
+- (void)setShowsFullSignalStrength:(BOOL)strength;
+- (void)setSignalStrengthBars:(int64_t)bars;
+- (void)setState:(int64_t)state animated:(BOOL)animated;
+- (void)transitionToMonochromeWithFraction:(double)fraction;
 - (void)updateMonochromeColor;
 @end
 
 @implementation NTKExplorerStatusView
 
-- (NTKExplorerStatusView)initWithFrame:(CGRect)a3 dotLayoutConstraints:(id)a4 dotColorOptions:(id)a5
+- (NTKExplorerStatusView)initWithFrame:(CGRect)frame dotLayoutConstraints:(id)constraints dotColorOptions:(id)options
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v12 = a4;
-  v13 = a5;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  constraintsCopy = constraints;
+  optionsCopy = options;
   v23.receiver = self;
   v23.super_class = NTKExplorerStatusView;
-  v14 = [(NTKExplorerStatusView *)&v23 initWithFrame:x, y, width, height];
-  v15 = v14;
-  if (v14)
+  height = [(NTKExplorerStatusView *)&v23 initWithFrame:x, y, width, height];
+  v15 = height;
+  if (height)
   {
-    objc_storeStrong(&v14->_dotLayoutConstraints, a4);
-    objc_storeStrong(&v15->_dotColorOptions, a5);
+    objc_storeStrong(&height->_dotLayoutConstraints, constraints);
+    objc_storeStrong(&v15->_dotColorOptions, options);
     v16 = 4;
     v17 = [MEMORY[0x277CBEB18] arrayWithCapacity:4];
     do
     {
       v18 = +[_ExplorerDotLayer layer];
       [v17 addObject:v18];
-      v19 = [(NTKExplorerStatusView *)v15 layer];
-      [v19 addSublayer:v18];
+      layer = [(NTKExplorerStatusView *)v15 layer];
+      [layer addSublayer:v18];
 
       --v16;
     }
@@ -70,9 +70,9 @@
   return v15;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(NTKExplorerStatusView *)self dotDiameter:a3.width];
+  [(NTKExplorerStatusView *)self dotDiameter:fits.width];
   v5 = v4;
   [(NTKExplorerStatusView *)self dotSpacing];
   v7 = v6 * 3.0 + v5 * 4.0;
@@ -82,20 +82,20 @@
   return result;
 }
 
-- (void)setSignalStrengthBars:(int64_t)a3
+- (void)setSignalStrengthBars:(int64_t)bars
 {
-  if (self->_signalStrengthBars != a3)
+  if (self->_signalStrengthBars != bars)
   {
-    self->_signalStrengthBars = a3;
+    self->_signalStrengthBars = bars;
     [(NTKExplorerStatusView *)self _updateDotFillStates];
   }
 }
 
-- (void)setShowsFullSignalStrength:(BOOL)a3
+- (void)setShowsFullSignalStrength:(BOOL)strength
 {
-  if (self->_showsFullSignalStrength != a3)
+  if (self->_showsFullSignalStrength != strength)
   {
-    self->_showsFullSignalStrength = a3;
+    self->_showsFullSignalStrength = strength;
     [(NTKExplorerStatusView *)self _updateDotFillStates];
   }
 }
@@ -139,40 +139,40 @@ LABEL_6:
   [v7 setBorderWidth:v10];
 }
 
-- (void)setDotLayoutConstraints:(id)a3
+- (void)setDotLayoutConstraints:(id)constraints
 {
-  v5 = a3;
+  constraintsCopy = constraints;
   if (![(NTKExplorerDotLayoutConstraints *)self->_dotLayoutConstraints isEqual:?])
   {
-    objc_storeStrong(&self->_dotLayoutConstraints, a3);
+    objc_storeStrong(&self->_dotLayoutConstraints, constraints);
     [(NTKExplorerStatusView *)self _layoutDotLayers];
   }
 }
 
-- (void)setDotColorOptions:(id)a3
+- (void)setDotColorOptions:(id)options
 {
-  v5 = a3;
+  optionsCopy = options;
   if (([(NTKExplorerDotColorOptions *)self->_dotColorOptions isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_dotColorOptions, a3);
+    objc_storeStrong(&self->_dotColorOptions, options);
     [(NTKExplorerStatusView *)self _layoutDotLayers];
   }
 }
 
-- (void)setState:(int64_t)a3 animated:(BOOL)a4
+- (void)setState:(int64_t)state animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
-  if (self->_state != a3)
+  if (self->_state != state)
   {
-    [(NTKExplorerStatusView *)self _applyState:a3 animated:v4];
-    self->_state = a3;
+    [(NTKExplorerStatusView *)self _applyState:state animated:animatedCopy];
+    self->_state = state;
   }
 }
 
-- (void)_applyState:(int64_t)a3 animated:(BOOL)a4
+- (void)_applyState:(int64_t)state animated:(BOOL)animated
 {
-  if ([objc_opt_class() _fixedDotPositionForState:a3])
+  if ([objc_opt_class() _fixedDotPositionForState:state])
   {
     v5 = 1.0;
   }
@@ -264,19 +264,19 @@ LABEL_6:
 
 - (UIColor)connectedDotColor
 {
-  v2 = [(NTKExplorerDotColorOptions *)self->_dotColorOptions connectedDotColor];
-  v3 = v2;
-  if (v2)
+  connectedDotColor = [(NTKExplorerDotColorOptions *)self->_dotColorOptions connectedDotColor];
+  v3 = connectedDotColor;
+  if (connectedDotColor)
   {
-    v4 = v2;
+    connectedDotColor2 = connectedDotColor;
   }
 
   else
   {
-    v4 = [objc_opt_class() connectedDotColor];
+    connectedDotColor2 = [objc_opt_class() connectedDotColor];
   }
 
-  v5 = v4;
+  v5 = connectedDotColor2;
 
   return v5;
 }
@@ -285,44 +285,44 @@ LABEL_6:
 {
   if (self->_tritiumIsOn)
   {
-    v2 = [MEMORY[0x277D75348] clearColor];
+    clearColor = [MEMORY[0x277D75348] clearColor];
   }
 
   else
   {
-    v3 = [(NTKExplorerDotColorOptions *)self->_dotColorOptions connectedDotBackgroundColor];
-    v4 = v3;
-    if (v3)
+    connectedDotBackgroundColor = [(NTKExplorerDotColorOptions *)self->_dotColorOptions connectedDotBackgroundColor];
+    v4 = connectedDotBackgroundColor;
+    if (connectedDotBackgroundColor)
     {
-      v5 = v3;
+      blackColor = connectedDotBackgroundColor;
     }
 
     else
     {
-      v5 = [MEMORY[0x277D75348] blackColor];
+      blackColor = [MEMORY[0x277D75348] blackColor];
     }
 
-    v2 = v5;
+    clearColor = blackColor;
   }
 
-  return v2;
+  return clearColor;
 }
 
 - (UIColor)noServiceDotColor
 {
-  v2 = [(NTKExplorerDotColorOptions *)self->_dotColorOptions noServiceDotColor];
-  v3 = v2;
-  if (v2)
+  noServiceDotColor = [(NTKExplorerDotColorOptions *)self->_dotColorOptions noServiceDotColor];
+  v3 = noServiceDotColor;
+  if (noServiceDotColor)
   {
-    v4 = v2;
+    noServiceDotColor2 = noServiceDotColor;
   }
 
   else
   {
-    v4 = [objc_opt_class() noServiceDotColor];
+    noServiceDotColor2 = [objc_opt_class() noServiceDotColor];
   }
 
-  v5 = v4;
+  v5 = noServiceDotColor2;
 
   return v5;
 }
@@ -330,8 +330,8 @@ LABEL_6:
 + (double)dotDiameter
 {
   v2 = +[(CLKRenderingContext *)NTKFaceViewRenderingContext];
-  v3 = [v2 device];
-  v4 = ___LayoutConstants_block_invoke_15(v3, v3);
+  device = [v2 device];
+  v4 = ___LayoutConstants_block_invoke_15(device, device);
 
   return v4;
 }
@@ -339,8 +339,8 @@ LABEL_6:
 + (double)dotSpacing
 {
   v2 = +[(CLKRenderingContext *)NTKFaceViewRenderingContext];
-  v3 = [v2 device];
-  ___LayoutConstants_block_invoke_15(v3, v3);
+  device = [v2 device];
+  ___LayoutConstants_block_invoke_15(device, device);
   v5 = v4;
 
   return v5;
@@ -349,8 +349,8 @@ LABEL_6:
 + (double)dotBorderWidth
 {
   v2 = +[(CLKRenderingContext *)NTKFaceViewRenderingContext];
-  v3 = [v2 device];
-  ___LayoutConstants_block_invoke_15(v3, v3);
+  device = [v2 device];
+  ___LayoutConstants_block_invoke_15(device, device);
   v5 = v4;
 
   return v5;
@@ -359,8 +359,8 @@ LABEL_6:
 + (double)noServiceDotHeight
 {
   v2 = +[(CLKRenderingContext *)NTKFaceViewRenderingContext];
-  v3 = [v2 device];
-  ___LayoutConstants_block_invoke_15(v3, v3);
+  device = [v2 device];
+  ___LayoutConstants_block_invoke_15(device, device);
   v5 = v4;
 
   return v5;
@@ -404,36 +404,36 @@ void __42__NTKExplorerStatusView_noServiceDotColor__block_invoke()
   noServiceDotColor___color = v0;
 }
 
-- (void)_applyDotRotationFraction:(double)a3 forDotAtIndex:(unint64_t)a4
+- (void)_applyDotRotationFraction:(double)fraction forDotAtIndex:(unint64_t)index
 {
   [MEMORY[0x277CD9FF0] begin];
   [MEMORY[0x277CD9FF0] setDisableActions:1];
-  v7 = [(NSArray *)self->_dotLayers objectAtIndex:a4];
+  v7 = [(NSArray *)self->_dotLayers objectAtIndex:index];
   CLKInterpolateBetweenFloatsUnclipped();
   memset(&v33, 0, sizeof(v33));
   CATransform3DMakeRotation(&v33, v8, 1.0, 0.0, 0.0);
   v32 = v33;
-  v9 = [v7 connectivityDotBackingLayer];
+  connectivityDotBackingLayer = [v7 connectivityDotBackingLayer];
   v31 = v32;
-  [v9 setTransform:&v31];
+  [connectivityDotBackingLayer setTransform:&v31];
 
   v30 = v33;
-  v10 = [v7 connectivityDotLayer];
+  connectivityDotLayer = [v7 connectivityDotLayer];
   v31 = v30;
-  [v10 setTransform:&v31];
+  [connectivityDotLayer setTransform:&v31];
 
   CLKInterpolateBetweenFloatsUnclipped();
   CATransform3DMakeRotation(&v29, v11, 1.0, 0.0, 0.0);
-  v12 = [v7 noServicePillLayer];
+  noServicePillLayer = [v7 noServicePillLayer];
   v31 = v29;
-  [v12 setTransform:&v31];
+  [noServicePillLayer setTransform:&v31];
 
   v13 = self->_dotColorOptions;
-  v14 = [(NTKExplorerDotColorOptions *)v13 noServiceDotColor];
-  v15 = v14;
-  if (v14)
+  noServiceDotColor = [(NTKExplorerDotColorOptions *)v13 noServiceDotColor];
+  v15 = noServiceDotColor;
+  if (noServiceDotColor)
   {
-    v16 = v14;
+    v16 = noServiceDotColor;
   }
 
   else
@@ -443,11 +443,11 @@ void __42__NTKExplorerStatusView_noServiceDotColor__block_invoke()
 
   v17 = v16;
 
-  v18 = [(NTKExplorerDotColorOptions *)v13 connectedDotColor];
+  connectedDotColor = [(NTKExplorerDotColorOptions *)v13 connectedDotColor];
 
-  if (v18)
+  if (connectedDotColor)
   {
-    v19 = v18;
+    v19 = connectedDotColor;
   }
 
   else
@@ -458,26 +458,26 @@ void __42__NTKExplorerStatusView_noServiceDotColor__block_invoke()
   v20 = v19;
 
   v21 = NTKInterpolateBetweenColors();
-  v22 = [v21 CGColor];
-  v23 = [v7 noServicePillLayer];
-  [v23 setBackgroundColor:v22];
+  cGColor = [v21 CGColor];
+  noServicePillLayer2 = [v7 noServicePillLayer];
+  [noServicePillLayer2 setBackgroundColor:cGColor];
 
-  v24 = [v21 CGColor];
-  v25 = [v7 connectivityDotLayer];
-  [v25 setBorderColor:v24];
+  cGColor2 = [v21 CGColor];
+  connectivityDotLayer2 = [v7 connectivityDotLayer];
+  [connectivityDotLayer2 setBorderColor:cGColor2];
 
-  v27 = [v7 noServicePillLayer];
-  v26 = a3;
-  *&v28 = v26;
-  [v27 setOpacity:v28];
+  noServicePillLayer3 = [v7 noServicePillLayer];
+  fractionCopy = fraction;
+  *&v28 = fractionCopy;
+  [noServicePillLayer3 setOpacity:v28];
 
   [MEMORY[0x277CD9FF0] commit];
 }
 
-- (void)transitionToMonochromeWithFraction:(double)a3
+- (void)transitionToMonochromeWithFraction:(double)fraction
 {
-  v5 = [(NTKExplorerStatusView *)self filterProvider];
-  v6 = [v5 filtersForView:self style:0 fraction:a3];
+  filterProvider = [(NTKExplorerStatusView *)self filterProvider];
+  v6 = [filterProvider filtersForView:self style:0 fraction:fraction];
 
   if (v6)
   {
@@ -506,8 +506,8 @@ void __60__NTKExplorerStatusView_transitionToMonochromeWithFraction___block_invo
 
 - (void)updateMonochromeColor
 {
-  v3 = [(NTKExplorerStatusView *)self filterProvider];
-  v4 = [v3 filtersForView:self style:0];
+  filterProvider = [(NTKExplorerStatusView *)self filterProvider];
+  v4 = [filterProvider filtersForView:self style:0];
 
   if (v4)
   {
@@ -546,14 +546,14 @@ void __46__NTKExplorerStatusView_updateMonochromeColor__block_invoke(uint64_t a1
   [(NTKExplorerStatusView *)self dotDiameter];
   v10 = v9;
   v32[0] = @"backgroundColor";
-  v11 = [MEMORY[0x277CBEB68] null];
-  v33[0] = v11;
+  null = [MEMORY[0x277CBEB68] null];
+  v33[0] = null;
   v32[1] = @"borderColor";
-  v12 = [MEMORY[0x277CBEB68] null];
-  v33[1] = v12;
+  null2 = [MEMORY[0x277CBEB68] null];
+  v33[1] = null2;
   v32[2] = @"borderWidth";
-  v13 = [MEMORY[0x277CBEB68] null];
-  v33[2] = v13;
+  null3 = [MEMORY[0x277CBEB68] null];
+  v33[2] = null3;
   v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v33 forKeys:v32 count:3];
 
   [(NTKExplorerStatusView *)self noServiceDotHeight];
@@ -576,7 +576,7 @@ void __46__NTKExplorerStatusView_updateMonochromeColor__block_invoke(uint64_t a1
   v30 = v8;
   v31 = v16;
   v20 = v14;
-  v21 = self;
+  selfCopy = self;
   v18 = v14;
   [(NSArray *)dotLayers enumerateObjectsUsingBlock:v19];
   [MEMORY[0x277CD9FF0] commit];
@@ -620,12 +620,12 @@ void __41__NTKExplorerStatusView__layoutDotLayers__block_invoke(uint64_t a1, voi
   [v13 setZPosition:*(a1 + 120) + *(a1 + 72) + *(a1 + 72) * 0.5];
 }
 
-- (void)setDotPosition:(int64_t)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)setDotPosition:(int64_t)position animated:(BOOL)animated completion:(id)completion
 {
-  self->_position = a3;
-  if (a5)
+  self->_position = position;
+  if (completion)
   {
-    (*(a5 + 2))(a5);
+    (*(completion + 2))(completion);
   }
 }
 

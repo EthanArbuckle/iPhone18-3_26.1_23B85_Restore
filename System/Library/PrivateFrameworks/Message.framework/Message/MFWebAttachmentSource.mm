@@ -1,12 +1,12 @@
 @interface MFWebAttachmentSource
 + (id)_setOfAllSources;
 + (id)allSources;
-- (BOOL)setAttachment:(id)a3 forURL:(id)a4;
+- (BOOL)setAttachment:(id)attachment forURL:(id)l;
 - (MFWebAttachmentSource)init;
-- (id)attachmentForURL:(id)a3;
+- (id)attachmentForURL:(id)l;
 - (id)description;
 - (void)dealloc;
-- (void)removeAttachmentForURL:(id)a3;
+- (void)removeAttachmentForURL:(id)l;
 @end
 
 @implementation MFWebAttachmentSource
@@ -32,9 +32,9 @@ void __41__MFWebAttachmentSource__setOfAllSources__block_invoke()
 
 + (id)allSources
 {
-  v2 = [a1 _setOfAllSources];
-  v3 = [v2 allObjects];
-  v4 = [v3 sortedArrayUsingFunction:_SortWebAttachmentSources context:0];
+  _setOfAllSources = [self _setOfAllSources];
+  allObjects = [_setOfAllSources allObjects];
+  v4 = [allObjects sortedArrayUsingFunction:_SortWebAttachmentSources context:0];
 
   return v4;
 }
@@ -54,8 +54,8 @@ void __41__MFWebAttachmentSource__setOfAllSources__block_invoke()
     attachmentsByURL = v2->_attachmentsByURL;
     v2->_attachmentsByURL = v5;
 
-    v7 = [objc_opt_class() _setOfAllSources];
-    [v7 addObject:v2];
+    _setOfAllSources = [objc_opt_class() _setOfAllSources];
+    [_setOfAllSources addObject:v2];
   }
 
   return v2;
@@ -74,21 +74,21 @@ void __41__MFWebAttachmentSource__setOfAllSources__block_invoke()
 
 - (void)dealloc
 {
-  v3 = [objc_opt_class() _setOfAllSources];
-  [v3 removeObject:self];
+  _setOfAllSources = [objc_opt_class() _setOfAllSources];
+  [_setOfAllSources removeObject:self];
 
   v4.receiver = self;
   v4.super_class = MFWebAttachmentSource;
   [(MFWebAttachmentSource *)&v4 dealloc];
 }
 
-- (id)attachmentForURL:(id)a3
+- (id)attachmentForURL:(id)l
 {
-  v4 = a3;
-  if (v4)
+  lCopy = l;
+  if (lCopy)
   {
     [(MFLock *)self->_attachmentsLock lock];
-    v5 = [(NSMutableDictionary *)self->_attachmentsByURL objectForKeyedSubscript:v4];
+    v5 = [(NSMutableDictionary *)self->_attachmentsByURL objectForKeyedSubscript:lCopy];
     [(MFLock *)self->_attachmentsLock unlock];
   }
 
@@ -100,22 +100,22 @@ void __41__MFWebAttachmentSource__setOfAllSources__block_invoke()
   return v5;
 }
 
-- (BOOL)setAttachment:(id)a3 forURL:(id)a4
+- (BOOL)setAttachment:(id)attachment forURL:(id)l
 {
-  v6 = a3;
-  v7 = a4;
+  attachmentCopy = attachment;
+  lCopy = l;
   [(MFLock *)self->_attachmentsLock lock];
-  [(NSMutableDictionary *)self->_attachmentsByURL setObject:v6 forKey:v7];
+  [(NSMutableDictionary *)self->_attachmentsByURL setObject:attachmentCopy forKey:lCopy];
   [(MFLock *)self->_attachmentsLock unlock];
 
   return 1;
 }
 
-- (void)removeAttachmentForURL:(id)a3
+- (void)removeAttachmentForURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   [(MFLock *)self->_attachmentsLock lock];
-  [(NSMutableDictionary *)self->_attachmentsByURL removeObjectForKey:v4];
+  [(NSMutableDictionary *)self->_attachmentsByURL removeObjectForKey:lCopy];
   [(MFLock *)self->_attachmentsLock unlock];
 }
 

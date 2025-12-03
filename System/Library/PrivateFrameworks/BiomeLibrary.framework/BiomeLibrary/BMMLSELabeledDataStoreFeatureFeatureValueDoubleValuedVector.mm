@@ -1,39 +1,39 @@
 @interface BMMLSELabeledDataStoreFeatureFeatureValueDoubleValuedVector
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMMLSELabeledDataStoreFeatureFeatureValueDoubleValuedVector)initWithJSONDictionary:(id)a3 error:(id *)p_isa;
-- (BMMLSELabeledDataStoreFeatureFeatureValueDoubleValuedVector)initWithVectorWithDoubles:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BMMLSELabeledDataStoreFeatureFeatureValueDoubleValuedVector)initWithJSONDictionary:(id)dictionary error:(id *)p_isa;
+- (BMMLSELabeledDataStoreFeatureFeatureValueDoubleValuedVector)initWithVectorWithDoubles:(id)doubles;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (id)_vectorWithDoublesJSONArray;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMMLSELabeledDataStoreFeatureFeatureValueDoubleValuedVector
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMMLSELabeledDataStoreFeatureFeatureValueDoubleValuedVector *)self vectorWithDoubles];
-    v7 = [v5 vectorWithDoubles];
-    if (v6 == v7)
+    v5 = equalCopy;
+    vectorWithDoubles = [(BMMLSELabeledDataStoreFeatureFeatureValueDoubleValuedVector *)self vectorWithDoubles];
+    vectorWithDoubles2 = [v5 vectorWithDoubles];
+    if (vectorWithDoubles == vectorWithDoubles2)
     {
       v10 = 1;
     }
 
     else
     {
-      v8 = [(BMMLSELabeledDataStoreFeatureFeatureValueDoubleValuedVector *)self vectorWithDoubles];
-      v9 = [v5 vectorWithDoubles];
-      v10 = [v8 isEqual:v9];
+      vectorWithDoubles3 = [(BMMLSELabeledDataStoreFeatureFeatureValueDoubleValuedVector *)self vectorWithDoubles];
+      vectorWithDoubles4 = [v5 vectorWithDoubles];
+      v10 = [vectorWithDoubles3 isEqual:vectorWithDoubles4];
     }
   }
 
@@ -48,17 +48,17 @@
 - (id)jsonDictionary
 {
   v8[1] = *MEMORY[0x1E69E9840];
-  v2 = [(BMMLSELabeledDataStoreFeatureFeatureValueDoubleValuedVector *)self _vectorWithDoublesJSONArray];
+  _vectorWithDoublesJSONArray = [(BMMLSELabeledDataStoreFeatureFeatureValueDoubleValuedVector *)self _vectorWithDoublesJSONArray];
   v7 = @"vectorWithDoubles";
-  v3 = v2;
-  if (!v2)
+  null = _vectorWithDoublesJSONArray;
+  if (!_vectorWithDoublesJSONArray)
   {
-    v3 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v8[0] = v3;
+  v8[0] = null;
   v4 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v8 forKeys:&v7 count:1];
-  if (!v2)
+  if (!_vectorWithDoublesJSONArray)
   {
   }
 
@@ -75,8 +75,8 @@
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = [(BMMLSELabeledDataStoreFeatureFeatureValueDoubleValuedVector *)self vectorWithDoubles];
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  vectorWithDoubles = [(BMMLSELabeledDataStoreFeatureFeatureValueDoubleValuedVector *)self vectorWithDoubles];
+  v5 = [vectorWithDoubles countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -87,15 +87,15 @@
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(vectorWithDoubles);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
         [v9 doubleValue];
         if (fabs(v10) == INFINITY)
         {
-          v11 = [MEMORY[0x1E695DFB0] null];
-          [v3 addObject:v11];
+          null = [MEMORY[0x1E695DFB0] null];
+          [v3 addObject:null];
         }
 
         else
@@ -105,7 +105,7 @@
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [vectorWithDoubles countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v6);
@@ -116,12 +116,12 @@
   return v3;
 }
 
-- (BMMLSELabeledDataStoreFeatureFeatureValueDoubleValuedVector)initWithJSONDictionary:(id)a3 error:(id *)p_isa
+- (BMMLSELabeledDataStoreFeatureFeatureValueDoubleValuedVector)initWithJSONDictionary:(id)dictionary error:(id *)p_isa
 {
   v39[1] = *MEMORY[0x1E69E9840];
-  v6 = [a3 objectForKeyedSubscript:@"vectorWithDoubles"];
-  v7 = [MEMORY[0x1E695DFB0] null];
-  v8 = [v6 isEqual:v7];
+  v6 = [dictionary objectForKeyedSubscript:@"vectorWithDoubles"];
+  null = [MEMORY[0x1E695DFB0] null];
+  v8 = [v6 isEqual:null];
 
   if (v8)
   {
@@ -252,15 +252,15 @@ LABEL_23:
 {
   v3 = objc_opt_new();
   [(BMMLSELabeledDataStoreFeatureFeatureValueDoubleValuedVector *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -296,9 +296,9 @@ LABEL_23:
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v28.receiver = self;
   v28.super_class = BMMLSELabeledDataStoreFeatureFeatureValueDoubleValuedVector;
   v5 = [(BMEventBase *)&v28 init];
@@ -308,12 +308,12 @@ LABEL_23:
   }
 
   v6 = objc_opt_new();
-  v7 = [v4 position];
-  if (v7 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -324,18 +324,18 @@ LABEL_23:
       while (1)
       {
         LOBYTE(v29) = 0;
-        v11 = [v4 position] + 1;
-        if (v11 >= [v4 position] && (v12 = objc_msgSend(v4, "position") + 1, v12 <= objc_msgSend(v4, "length")))
+        v11 = [fromCopy position] + 1;
+        if (v11 >= [fromCopy position] && (v12 = objc_msgSend(fromCopy, "position") + 1, v12 <= objc_msgSend(fromCopy, "length")))
         {
-          v13 = [v4 data];
-          [v13 getBytes:&v29 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v29 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v10 |= (LOBYTE(v29) & 0x7F) << v8;
@@ -352,9 +352,9 @@ LABEL_23:
         }
       }
 
-      v15 = [v4 hasError] ? 0 : v10;
+      v15 = [fromCopy hasError] ? 0 : v10;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v15 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v15 & 7) == 4)
       {
         break;
       }
@@ -363,18 +363,18 @@ LABEL_16:
       {
         v16 = MEMORY[0x1E696AD98];
         v29 = 0.0;
-        v17 = [v4 position] + 8;
-        if (v17 >= [v4 position] && (v18 = objc_msgSend(v4, "position") + 8, v18 <= objc_msgSend(v4, "length")))
+        v17 = [fromCopy position] + 8;
+        if (v17 >= [fromCopy position] && (v18 = objc_msgSend(fromCopy, "position") + 8, v18 <= objc_msgSend(fromCopy, "length")))
         {
-          v19 = [v4 data];
-          [v19 getBytes:&v29 range:{objc_msgSend(v4, "position"), 8}];
+          data2 = [fromCopy data];
+          [data2 getBytes:&v29 range:{objc_msgSend(fromCopy, "position"), 8}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 8}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 8}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v20 = [v16 numberWithDouble:v29];
@@ -394,18 +394,18 @@ LABEL_30:
         goto LABEL_30;
       }
 
-      v22 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v22 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
   v23 = [v6 copy];
   vectorWithDoubles = v5->_vectorWithDoubles;
   v5->_vectorWithDoubles = v23;
 
-  v25 = [v4 hasError];
-  if (v25)
+  hasError = [fromCopy hasError];
+  if (hasError)
   {
 LABEL_31:
     v26 = 0;
@@ -423,22 +423,22 @@ LABEL_29:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMMLSELabeledDataStoreFeatureFeatureValueDoubleValuedVector *)self vectorWithDoubles];
-  v5 = [v3 initWithFormat:@"BMMLSELabeledDataStoreFeatureFeatureValueDoubleValuedVector with vectorWithDoubles: %@", v4];
+  vectorWithDoubles = [(BMMLSELabeledDataStoreFeatureFeatureValueDoubleValuedVector *)self vectorWithDoubles];
+  v5 = [v3 initWithFormat:@"BMMLSELabeledDataStoreFeatureFeatureValueDoubleValuedVector with vectorWithDoubles: %@", vectorWithDoubles];
 
   return v5;
 }
 
-- (BMMLSELabeledDataStoreFeatureFeatureValueDoubleValuedVector)initWithVectorWithDoubles:(id)a3
+- (BMMLSELabeledDataStoreFeatureFeatureValueDoubleValuedVector)initWithVectorWithDoubles:(id)doubles
 {
-  v5 = a3;
+  doublesCopy = doubles;
   v8.receiver = self;
   v8.super_class = BMMLSELabeledDataStoreFeatureFeatureValueDoubleValuedVector;
   v6 = [(BMEventBase *)&v8 init];
   if (v6)
   {
     v6->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v6->_vectorWithDoubles, a3);
+    objc_storeStrong(&v6->_vectorWithDoubles, doubles);
   }
 
   return v6;
@@ -477,9 +477,9 @@ id __70__BMMLSELabeledDataStoreFeatureFeatureValueDoubleValuedVector_columns__bl
   return v4;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -487,8 +487,8 @@ id __70__BMMLSELabeledDataStoreFeatureFeatureValueDoubleValuedVector_columns__bl
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMMLSELabeledDataStoreFeatureFeatureValueDoubleValuedVector alloc] initByReadFrom:v7];
     v4 = v8;

@@ -1,9 +1,9 @@
 @interface _UIAlertControllerShimPresenterWindow
 - (UIAlertController)alertController;
 - (_UIAlertControllerShimPresenterWindow)init;
-- (_UIAlertControllerShimPresenterWindow)initWithWindowScene:(id)a3;
+- (_UIAlertControllerShimPresenterWindow)initWithWindowScene:(id)scene;
 - (id)_presentationViewController;
-- (void)presentAlertController:(id)a3 animated:(BOOL)a4 completionBlock:(id)a5;
+- (void)presentAlertController:(id)controller animated:(BOOL)animated completionBlock:(id)block;
 @end
 
 @implementation _UIAlertControllerShimPresenterWindow
@@ -17,8 +17,8 @@
   {
     if ((dyld_program_sdk_at_least() & 1) == 0)
     {
-      v3 = [objc_opt_self() mainScreen];
-      [v3 bounds];
+      mainScreen = [objc_opt_self() mainScreen];
+      [mainScreen bounds];
       [(UIWindow *)v2 setFrame:?];
     }
 
@@ -26,8 +26,8 @@
     v4 = +[UIColor clearColor];
     [(UIView *)v2 setBackgroundColor:v4];
 
-    v5 = [objc_opt_self() mainScreen];
-    [(UIWindow *)v2 setScreen:v5];
+    mainScreen2 = [objc_opt_self() mainScreen];
+    [(UIWindow *)v2 setScreen:mainScreen2];
 
     [(UIWindow *)v2 setWindowLevel:2000.0];
     [(UIWindow *)v2 setHidden:1];
@@ -36,11 +36,11 @@
   return v2;
 }
 
-- (_UIAlertControllerShimPresenterWindow)initWithWindowScene:(id)a3
+- (_UIAlertControllerShimPresenterWindow)initWithWindowScene:(id)scene
 {
   v7.receiver = self;
   v7.super_class = _UIAlertControllerShimPresenterWindow;
-  v3 = [(UIApplicationRotationFollowingWindow *)&v7 initWithWindowScene:a3];
+  v3 = [(UIApplicationRotationFollowingWindow *)&v7 initWithWindowScene:scene];
   v4 = v3;
   if (v3)
   {
@@ -57,9 +57,9 @@
 
 - (id)_presentationViewController
 {
-  v3 = [(UIWindow *)self rootViewController];
+  rootViewController = [(UIWindow *)self rootViewController];
 
-  if (!v3)
+  if (!rootViewController)
   {
     v4 = objc_alloc_init(UIApplicationRotationFollowingController);
     [(UIApplicationRotationFollowingController *)v4 setSizesWindowToScene:1];
@@ -69,24 +69,24 @@
   return [(UIWindow *)self rootViewController];
 }
 
-- (void)presentAlertController:(id)a3 animated:(BOOL)a4 completionBlock:(id)a5
+- (void)presentAlertController:(id)controller animated:(BOOL)animated completionBlock:(id)block
 {
-  v6 = a4;
-  v9 = a3;
-  v10 = a5;
-  v11 = [(_UIAlertControllerShimPresenterWindow *)self _presentationViewController];
-  v12 = [v11 presentedViewController];
+  animatedCopy = animated;
+  controllerCopy = controller;
+  blockCopy = block;
+  _presentationViewController = [(_UIAlertControllerShimPresenterWindow *)self _presentationViewController];
+  presentedViewController = [_presentationViewController presentedViewController];
 
-  if (v12)
+  if (presentedViewController)
   {
-    v13 = [v11 presentedViewController];
+    presentedViewController2 = [_presentationViewController presentedViewController];
 
-    if (v13 != v9)
+    if (presentedViewController2 != controllerCopy)
     {
-      v19 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v19 handleFailureInMethod:a2 object:self file:@"_UIAlertControllerShimPresenter.m" lineNumber:366 description:{@"Multiple alert controllers assigned to the same window %@", self}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"_UIAlertControllerShimPresenter.m" lineNumber:366 description:{@"Multiple alert controllers assigned to the same window %@", self}];
 
-      if (!v10)
+      if (!blockCopy)
       {
         goto LABEL_8;
       }
@@ -94,11 +94,11 @@
       goto LABEL_4;
     }
 
-    if (v10)
+    if (blockCopy)
     {
 LABEL_4:
-      v14 = [v11 presentedViewController];
-      v10[2](v10, v14 == v9);
+      presentedViewController3 = [_presentationViewController presentedViewController];
+      blockCopy[2](blockCopy, presentedViewController3 == controllerCopy);
     }
   }
 
@@ -120,8 +120,8 @@ LABEL_4:
     v20[1] = 3221225472;
     v20[2] = __89___UIAlertControllerShimPresenterWindow_presentAlertController_animated_completionBlock___block_invoke;
     v20[3] = &unk_1E70F0F78;
-    v21 = v10;
-    [v11 presentViewController:v9 animated:v6 completion:v20];
+    v21 = blockCopy;
+    [_presentationViewController presentViewController:controllerCopy animated:animatedCopy completion:v20];
   }
 
 LABEL_8:
@@ -129,10 +129,10 @@ LABEL_8:
 
 - (UIAlertController)alertController
 {
-  v2 = [(_UIAlertControllerShimPresenterWindow *)self _presentationViewController];
-  v3 = [v2 presentedViewController];
+  _presentationViewController = [(_UIAlertControllerShimPresenterWindow *)self _presentationViewController];
+  presentedViewController = [_presentationViewController presentedViewController];
 
-  return v3;
+  return presentedViewController;
 }
 
 @end

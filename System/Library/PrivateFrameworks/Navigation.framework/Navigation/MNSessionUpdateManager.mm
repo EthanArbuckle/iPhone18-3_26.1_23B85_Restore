@@ -3,31 +3,31 @@
 - (MNSessionUpdateManager)init;
 - (MNSessionUpdateManagerDelegate)delegate;
 - (id)_baseETARequest;
-- (id)_updateETARequest:(id)a3 withRouteInfo:(id)a4 andUserLocation:(id)a5;
-- (id)_updateWaypointsForRequest:(id)a3 routeInfo:(id)a4 userLocation:(id)a5 etaRoute:(id)a6;
-- (int)_purposeForReason:(unint64_t)a3;
+- (id)_updateETARequest:(id)request withRouteInfo:(id)info andUserLocation:(id)location;
+- (id)_updateWaypointsForRequest:(id)request routeInfo:(id)info userLocation:(id)location etaRoute:(id)route;
+- (int)_purposeForReason:(unint64_t)reason;
 - (void)_cancelPendingETARequest;
 - (void)_continueETARequests;
-- (void)_handleETAResponse:(id)a3 forRouteInfo:(id)a4 etaRoute:(id)a5 reason:(unint64_t)a6;
-- (void)_scheduleETATimerWithInterval:(double)a3;
-- (void)_sendETARequestWithParameters:(id)a3;
-- (void)_sendETARequestWithReason:(unint64_t)a3;
+- (void)_handleETAResponse:(id)response forRouteInfo:(id)info etaRoute:(id)route reason:(unint64_t)reason;
+- (void)_scheduleETATimerWithInterval:(double)interval;
+- (void)_sendETARequestWithParameters:(id)parameters;
+- (void)_sendETARequestWithReason:(unint64_t)reason;
 - (void)_terminateETARequests;
-- (void)_updateRouteAttributesFor:(id)a3 route:(id)a4 updatedLocation:(id)a5 completion:(id)a6;
+- (void)_updateRouteAttributesFor:(id)for route:(id)route updatedLocation:(id)location completion:(id)completion;
 - (void)dealloc;
-- (void)pauseUpdateRequestsForSubscriber:(id)a3;
-- (void)requestImmediateUpdateWithReason:(unint64_t)a3;
-- (void)requestUpdateForETAUPosition:(id)a3;
+- (void)pauseUpdateRequestsForSubscriber:(id)subscriber;
+- (void)requestImmediateUpdateWithReason:(unint64_t)reason;
+- (void)requestUpdateForETAUPosition:(id)position;
 - (void)restartUpdateTimer;
-- (void)resumeUpdateRequestsForSubscriber:(id)a3;
-- (void)sendFinalETAURequestWithReason:(unint64_t)a3;
-- (void)startUpdateRequestsForRoutes:(id)a3 andNavigationType:(int64_t)a4;
+- (void)resumeUpdateRequestsForSubscriber:(id)subscriber;
+- (void)sendFinalETAURequestWithReason:(unint64_t)reason;
+- (void)startUpdateRequestsForRoutes:(id)routes andNavigationType:(int64_t)type;
 - (void)stopUpdateRequests;
-- (void)transitRouteUpdater:(id)a3 didFailUpdateForRouteIDs:(id)a4 withError:(id)a5;
-- (void)transitRouteUpdater:(id)a3 didReceiveResponse:(id)a4;
-- (void)transitRouteUpdater:(id)a3 didUpdateTransitRoutes:(id)a4;
-- (void)transitRouteUpdater:(id)a3 willSendRequests:(id)a4;
-- (void)transitRouteUpdater:(id)a3 willUpdateTransitForRouteIDs:(id)a4;
+- (void)transitRouteUpdater:(id)updater didFailUpdateForRouteIDs:(id)ds withError:(id)error;
+- (void)transitRouteUpdater:(id)updater didReceiveResponse:(id)response;
+- (void)transitRouteUpdater:(id)updater didUpdateTransitRoutes:(id)routes;
+- (void)transitRouteUpdater:(id)updater willSendRequests:(id)requests;
+- (void)transitRouteUpdater:(id)updater willUpdateTransitForRouteIDs:(id)ds;
 @end
 
 @implementation MNSessionUpdateManager
@@ -69,16 +69,16 @@ uint64_t __56__MNSessionUpdateManager__hasAtLeastOneActiveSubscriber__block_invo
   return result;
 }
 
-- (void)transitRouteUpdater:(id)a3 didFailUpdateForRouteIDs:(id)a4 withError:(id)a5
+- (void)transitRouteUpdater:(id)updater didFailUpdateForRouteIDs:(id)ds withError:(id)error
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a5;
-  v7 = v6;
+  errorCopy = error;
+  v7 = errorCopy;
   if (!self->_isPaused)
   {
-    v8 = [v6 domain];
+    domain = [errorCopy domain];
     v9 = GEOErrorDomain();
-    v10 = [v8 isEqualToString:v9];
+    v10 = [domain isEqualToString:v9];
 
     v11 = GEOFindOrCreateLog();
     v12 = os_log_type_enabled(v11, OS_LOG_TYPE_ERROR);
@@ -88,9 +88,9 @@ uint64_t __56__MNSessionUpdateManager__hasAtLeastOneActiveSubscriber__block_invo
       {
         [v7 code];
         v13 = GEOStringForError();
-        v14 = [v7 userInfo];
+        userInfo = [v7 userInfo];
         v15 = GEOErrorReasonKey();
-        v16 = [v14 objectForKeyedSubscript:v15];
+        v16 = [userInfo objectForKeyedSubscript:v15];
         v19 = 138412546;
         v20 = v13;
         v21 = 2112;
@@ -113,18 +113,18 @@ uint64_t __56__MNSessionUpdateManager__hasAtLeastOneActiveSubscriber__block_invo
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)transitRouteUpdater:(id)a3 didUpdateTransitRoutes:(id)a4
+- (void)transitRouteUpdater:(id)updater didUpdateTransitRoutes:(id)routes
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  routesCopy = routes;
   if (!self->_isPaused)
   {
-    v6 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{objc_msgSend(v5, "count")}];
+    v6 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{objc_msgSend(routesCopy, "count")}];
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v7 = v5;
+    v7 = routesCopy;
     v8 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v8)
     {
@@ -162,50 +162,50 @@ uint64_t __56__MNSessionUpdateManager__hasAtLeastOneActiveSubscriber__block_invo
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)transitRouteUpdater:(id)a3 willUpdateTransitForRouteIDs:(id)a4
+- (void)transitRouteUpdater:(id)updater willUpdateTransitForRouteIDs:(id)ds
 {
   if (!self->_isPaused)
   {
-    v6 = a4;
+    dsCopy = ds;
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained updateManager:self willSendTransitUpdateRequestForRouteIDs:v6];
+    [WeakRetained updateManager:self willSendTransitUpdateRequestForRouteIDs:dsCopy];
   }
 }
 
-- (void)transitRouteUpdater:(id)a3 didReceiveResponse:(id)a4
+- (void)transitRouteUpdater:(id)updater didReceiveResponse:(id)response
 {
   if (!self->_isPaused)
   {
-    v6 = a4;
+    responseCopy = response;
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained updateManager:self didReceiveTransitUpdateResponse:v6];
+    [WeakRetained updateManager:self didReceiveTransitUpdateResponse:responseCopy];
   }
 }
 
-- (void)transitRouteUpdater:(id)a3 willSendRequests:(id)a4
+- (void)transitRouteUpdater:(id)updater willSendRequests:(id)requests
 {
   if (!self->_isPaused)
   {
-    v6 = a4;
+    requestsCopy = requests;
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained updateManager:self willSendTransitUpdateRequests:v6];
+    [WeakRetained updateManager:self willSendTransitUpdateRequests:requestsCopy];
   }
 }
 
-- (void)_handleETAResponse:(id)a3 forRouteInfo:(id)a4 etaRoute:(id)a5 reason:(unint64_t)a6
+- (void)_handleETAResponse:(id)response forRouteInfo:(id)info etaRoute:(id)route reason:(unint64_t)reason
 {
   v55 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v46 = a5;
-  v12 = [v10 error];
-  if (v12)
+  responseCopy = response;
+  infoCopy = info;
+  routeCopy = route;
+  error = [responseCopy error];
+  if (error)
   {
     v13 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v48 = v12;
+      v48 = error;
       _os_log_impl(&dword_1D311E000, v13, OS_LOG_TYPE_ERROR, "Error in ETATrafficUpdate response: %@", buf, 0xCu);
     }
 
@@ -225,8 +225,8 @@ uint64_t __56__MNSessionUpdateManager__hasAtLeastOneActiveSubscriber__block_invo
     }
 
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v18 = [WeakRetained routeInfoForUpdateManager:self reason:a6];
-    v19 = [v18 route];
+    v18 = [WeakRetained routeInfoForUpdateManager:self reason:reason];
+    route = [v18 route];
 
     v20 = objc_loadWeakRetained(&self->_delegate);
     v21 = [v20 userLocationForUpdateManager:self];
@@ -234,38 +234,38 @@ uint64_t __56__MNSessionUpdateManager__hasAtLeastOneActiveSubscriber__block_invo
     v22 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
     {
-      v44 = [v10 request];
-      v43 = [v44 waypointRoute];
-      v42 = [v43 routeLegs];
-      v23 = v10;
-      v24 = [v42 count];
-      v25 = [v21 routeMatch];
-      [v19 waypointsFromRouteCoordinate:{objc_msgSend(v25, "routeCoordinate")}];
-      v26 = v45 = v11;
+      request = [responseCopy request];
+      waypointRoute = [request waypointRoute];
+      routeLegs = [waypointRoute routeLegs];
+      v23 = responseCopy;
+      v24 = [routeLegs count];
+      routeMatch = [v21 routeMatch];
+      [route waypointsFromRouteCoordinate:{objc_msgSend(routeMatch, "routeCoordinate")}];
+      v26 = v45 = infoCopy;
       v27 = [v26 count];
-      v28 = [v19 isEVRoute];
+      isEVRoute = [route isEVRoute];
       *buf = 138413058;
-      v48 = v12;
+      v48 = error;
       v49 = 2048;
       v50 = v24;
-      v10 = v23;
+      responseCopy = v23;
       v51 = 2048;
       v52 = v27;
       v53 = 1024;
-      v54 = v28;
+      v54 = isEVRoute;
       _os_log_impl(&dword_1D311E000, v22, OS_LOG_TYPE_DEBUG, "ETA Update failed. error: %@ | etaRequestLegsCount: %lu | remainingWaypointsCount: %lu | isEVRoute: %d", buf, 0x26u);
 
-      v11 = v45;
+      infoCopy = v45;
     }
 
-    v29 = [v11 etaRoute];
-    [v29 invalidateServerDisplayETA];
+    etaRoute = [infoCopy etaRoute];
+    [etaRoute invalidateServerDisplayETA];
 
     goto LABEL_11;
   }
 
-  v32 = [v10 response];
-  if ([v32 status])
+  response = [responseCopy response];
+  if ([response status])
   {
     v33 = GEOFindOrCreateLog();
     if (!os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
@@ -275,18 +275,18 @@ LABEL_38:
       goto LABEL_39;
     }
 
-    v34 = [v32 status];
-    if (v34 <= 19)
+    status = [response status];
+    if (status <= 19)
     {
-      if (v34 > 1)
+      if (status > 1)
       {
-        if (v34 == 2)
+        if (status == 2)
         {
           v35 = @"STATUS_INCOMPLETE";
           goto LABEL_37;
         }
 
-        if (v34 == 5)
+        if (status == 5)
         {
           v35 = @"INVALID_REQUEST";
           goto LABEL_37;
@@ -295,13 +295,13 @@ LABEL_38:
 
       else
       {
-        if (!v34)
+        if (!status)
         {
           v35 = @"STATUS_SUCCESS";
           goto LABEL_37;
         }
 
-        if (v34 == 1)
+        if (status == 1)
         {
           v35 = @"STATUS_FAILED";
           goto LABEL_37;
@@ -309,15 +309,15 @@ LABEL_38:
       }
     }
 
-    else if (v34 <= 39)
+    else if (status <= 39)
     {
-      if (v34 == 20)
+      if (status == 20)
       {
         v35 = @"FAILED_NO_RESULT";
         goto LABEL_37;
       }
 
-      if (v34 == 30)
+      if (status == 30)
       {
         v35 = @"NEEDS_REFINEMENT";
         goto LABEL_37;
@@ -326,7 +326,7 @@ LABEL_38:
 
     else
     {
-      switch(v34)
+      switch(status)
       {
         case '(':
           v35 = @"FAILED_NOT_AUTHORIZED";
@@ -345,35 +345,35 @@ LABEL_37:
       }
     }
 
-    v35 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v34];
+    v35 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", status];
     goto LABEL_37;
   }
 
 LABEL_39:
   v36 = objc_loadWeakRetained(&self->_delegate);
-  v21 = [v36 routeInfoForUpdateManager:self reason:a6];
+  v21 = [v36 routeInfoForUpdateManager:self reason:reason];
 
-  if (v21 == v11)
+  if (v21 == infoCopy)
   {
-    v39 = [v21 route];
-    v19 = v32;
-    v40 = [(__CFString *)v46 updateForResponse:v32 route:v39];
+    route2 = [v21 route];
+    route = response;
+    v40 = [(__CFString *)routeCopy updateForResponse:response route:route2];
 
     v41 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138477827;
-      v48 = v46;
+      v48 = routeCopy;
       _os_log_impl(&dword_1D311E000, v41, OS_LOG_TYPE_DEFAULT, "ETA route: %{private}@", buf, 0xCu);
     }
 
     if (v40)
     {
-      [(MNSessionUpdateManager *)self _updateForETARoute:v46];
-      [v21 updateWithETARoute:v46 etaResponse:v19];
+      [(MNSessionUpdateManager *)self _updateForETARoute:routeCopy];
+      [v21 updateWithETARoute:routeCopy etaResponse:route];
 LABEL_11:
       v30 = objc_loadWeakRetained(&self->_delegate);
-      [v30 updateManager:self didReceiveETAResponse:v10];
+      [v30 updateManager:self didReceiveETAResponse:responseCopy];
       goto LABEL_12;
     }
 
@@ -388,15 +388,15 @@ LABEL_11:
   else
   {
     v30 = GEOFindOrCreateLog();
-    v19 = v32;
+    route = response;
     if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
     {
-      v37 = [v11 routeID];
-      v38 = [v21 routeID];
+      routeID = [infoCopy routeID];
+      routeID2 = [v21 routeID];
       *buf = 138412546;
-      v48 = v37;
+      v48 = routeID;
       v49 = 2112;
-      v50 = v38;
+      v50 = routeID2;
       _os_log_impl(&dword_1D311E000, v30, OS_LOG_TYPE_DEFAULT, "ETA request was made for route %@, but current route is now %@. Ignoring response.", buf, 0x16u);
     }
   }
@@ -406,49 +406,49 @@ LABEL_12:
   v31 = *MEMORY[0x1E69E9840];
 }
 
-- (int)_purposeForReason:(unint64_t)a3
+- (int)_purposeForReason:(unint64_t)reason
 {
-  if (a3 - 1 > 5)
+  if (reason - 1 > 5)
   {
     return 0;
   }
 
   else
   {
-    return dword_1D328D528[a3 - 1];
+    return dword_1D328D528[reason - 1];
   }
 }
 
-- (id)_updateWaypointsForRequest:(id)a3 routeInfo:(id)a4 userLocation:(id)a5 etaRoute:(id)a6
+- (id)_updateWaypointsForRequest:(id)request routeInfo:(id)info userLocation:(id)location etaRoute:(id)route
 {
   v54 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [MEMORY[0x1E695DF70] array];
-  v12 = [objc_alloc(MEMORY[0x1E69A1E70]) initWithCLLocation:v10];
+  requestCopy = request;
+  infoCopy = info;
+  locationCopy = location;
+  array = [MEMORY[0x1E695DF70] array];
+  v12 = [objc_alloc(MEMORY[0x1E69A1E70]) initWithCLLocation:locationCopy];
   v13 = [objc_alloc(MEMORY[0x1E69A1CC8]) initWithLocation:v12 isCurrentLocation:1];
-  [v11 addObject:v13];
+  [array addObject:v13];
   if (MapsFeature_IsEnabled_DrivingMultiWaypointRoutes())
   {
     v43 = v12;
-    v44 = v10;
-    v45 = v11;
-    [v8 clearWaypointTypeds];
-    v14 = [v9 route];
-    v15 = [v14 waypoints];
+    v44 = locationCopy;
+    v45 = array;
+    [requestCopy clearWaypointTypeds];
+    route = [infoCopy route];
+    waypoints = [route waypoints];
 
-    v16 = [v15 count];
-    v17 = [v8 waypointRoute];
-    v18 = [v17 routeLegs];
-    v19 = v16 - [v18 count];
+    v16 = [waypoints count];
+    waypointRoute = [requestCopy waypointRoute];
+    routeLegs = [waypointRoute routeLegs];
+    v19 = v16 - [routeLegs count];
 
-    v42 = v15;
-    v20 = [v15 count] - v19;
-    v46 = v9;
-    v21 = [v9 route];
-    v22 = [v21 waypoints];
-    v23 = [v22 subarrayWithRange:{v19, v20}];
+    v42 = waypoints;
+    v20 = [waypoints count] - v19;
+    v46 = infoCopy;
+    route2 = [infoCopy route];
+    waypoints2 = [route2 waypoints];
+    v23 = [waypoints2 subarrayWithRange:{v19, v20}];
 
     v24 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
@@ -479,17 +479,17 @@ LABEL_12:
           }
 
           v31 = *(*(&v47 + 1) + 8 * i);
-          v32 = [v31 geoWaypointTyped];
-          if (v32)
+          geoWaypointTyped = [v31 geoWaypointTyped];
+          if (geoWaypointTyped)
           {
-            [v8 addWaypointTyped:v32];
+            [requestCopy addWaypointTyped:geoWaypointTyped];
           }
 
           else
           {
-            v33 = [v31 chargingInfo];
+            chargingInfo = [v31 chargingInfo];
 
-            if (!v33)
+            if (!chargingInfo)
             {
               v34 = GEOFindOrCreateLog();
               if (os_log_type_enabled(v34, OS_LOG_TYPE_FAULT))
@@ -508,38 +508,38 @@ LABEL_12:
       while (v28);
     }
 
-    v11 = v45;
+    array = v45;
     [v45 addObjectsFromArray:v26];
 
-    v9 = v46;
+    infoCopy = v46;
     v12 = v43;
-    v10 = v44;
+    locationCopy = v44;
   }
 
   else
   {
-    [v8 clearDestinationWaypointTypeds];
-    v35 = [v9 route];
-    v36 = [v35 destination];
-    v37 = [v36 geoWaypointTyped];
+    [requestCopy clearDestinationWaypointTypeds];
+    route3 = [infoCopy route];
+    destination = [route3 destination];
+    geoWaypointTyped2 = [destination geoWaypointTyped];
 
-    [v8 addDestinationWaypointTyped:v37];
-    v38 = [v9 route];
-    v39 = [v38 destination];
-    [v11 addObject:v39];
+    [requestCopy addDestinationWaypointTyped:geoWaypointTyped2];
+    route4 = [infoCopy route];
+    destination2 = [route4 destination];
+    [array addObject:destination2];
   }
 
   v40 = *MEMORY[0x1E69E9840];
 
-  return v11;
+  return array;
 }
 
-- (id)_updateETARequest:(id)a3 withRouteInfo:(id)a4 andUserLocation:(id)a5
+- (id)_updateETARequest:(id)request withRouteInfo:(id)info andUserLocation:(id)location
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v9)
+  requestCopy = request;
+  infoCopy = info;
+  locationCopy = location;
+  if (!infoCopy)
   {
     v12 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -556,9 +556,9 @@ LABEL_13:
     goto LABEL_24;
   }
 
-  v11 = [v9 route];
+  route = [infoCopy route];
 
-  if (!v11)
+  if (!route)
   {
     v12 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -572,42 +572,42 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  v12 = [objc_alloc(MEMORY[0x1E69A1E70]) initWithCLLocation:v10];
-  [v8 setCurrentUserLocation:v12];
-  v13 = [v10 routeMatch];
-  if (!v13)
+  v12 = [objc_alloc(MEMORY[0x1E69A1E70]) initWithCLLocation:locationCopy];
+  [requestCopy setCurrentUserLocation:v12];
+  routeMatch = [locationCopy routeMatch];
+  if (!routeMatch)
   {
 LABEL_15:
-    v34 = v10;
+    v34 = locationCopy;
     v16 = objc_alloc_init(MEMORY[0x1E69A1C50]);
-    v20 = [v9 route];
+    route2 = [infoCopy route];
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v22 = [WeakRetained targetLegIndex];
+    targetLegIndex = [WeakRetained targetLegIndex];
     v23 = objc_loadWeakRetained(&self->_delegate);
-    v35 = v13;
-    LOBYTE(v22) = -[NSObject prepareForRequest:route:routeMatch:targetLegIndex:state:](v16, "prepareForRequest:route:routeMatch:targetLegIndex:state:", v8, v20, v13, v22, [v23 state]);
+    v35 = routeMatch;
+    LOBYTE(targetLegIndex) = -[NSObject prepareForRequest:route:routeMatch:targetLegIndex:state:](v16, "prepareForRequest:route:routeMatch:targetLegIndex:state:", requestCopy, route2, routeMatch, targetLegIndex, [v23 state]);
 
-    if (v22)
+    if (targetLegIndex)
     {
       objc_storeStrong(&self->_pendingETARoute, v16);
-      v24 = [v9 route];
-      v25 = [v24 directionsResponseID];
-      [v8 setDirectionsResponseID:v25];
+      route3 = [infoCopy route];
+      directionsResponseID = [route3 directionsResponseID];
+      [requestCopy setDirectionsResponseID:directionsResponseID];
 
-      [v8 setEtauResponseID:0];
-      v26 = [v8 directionsResponseID];
+      [requestCopy setEtauResponseID:0];
+      directionsResponseID2 = [requestCopy directionsResponseID];
 
-      if (!v26)
+      if (!directionsResponseID2)
       {
-        v27 = [v9 route];
-        v28 = [v27 etauResponseID];
-        [v8 setEtauResponseID:v28];
+        route4 = [infoCopy route];
+        etauResponseID = [route4 etauResponseID];
+        [requestCopy setEtauResponseID:etauResponseID];
       }
 
-      v29 = [v9 displayETAInfo];
-      v30 = [v29 displayETAToEndOfLeg];
-      [v30 timeIntervalSinceReferenceDate];
-      [v8 setDisplayedEta:v31];
+      displayETAInfo = [infoCopy displayETAInfo];
+      displayETAToEndOfLeg = [displayETAInfo displayETAToEndOfLeg];
+      [displayETAToEndOfLeg timeIntervalSinceReferenceDate];
+      [requestCopy setDisplayedEta:v31];
 
       v16 = v16;
       v17 = v16;
@@ -625,17 +625,17 @@ LABEL_15:
       v17 = 0;
     }
 
-    v10 = v34;
-    v13 = v35;
+    locationCopy = v34;
+    routeMatch = v35;
     goto LABEL_23;
   }
 
-  v14 = [v9 route];
-  v15 = [v13 route];
+  route5 = [infoCopy route];
+  route6 = [routeMatch route];
 
-  if (v14 == v15)
+  if (route5 == route6)
   {
-    [v13 routeCoordinate];
+    [routeMatch routeCoordinate];
     goto LABEL_15;
   }
 
@@ -657,18 +657,18 @@ LABEL_24:
 - (id)_baseETARequest
 {
   v3 = objc_alloc_init(MEMORY[0x1E69A1D48]);
-  v4 = [MEMORY[0x1E69A2710] sharedInstance];
+  mEMORY[0x1E69A2710] = [MEMORY[0x1E69A2710] sharedInstance];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __41__MNSessionUpdateManager__baseETARequest__block_invoke;
   v16[3] = &unk_1E8430B58;
   v5 = v3;
   v17 = v5;
-  [v4 shortSessionValues:v16];
+  [mEMORY[0x1E69A2710] shortSessionValues:v16];
 
-  v6 = [MEMORY[0x1E69A2398] sharedPlatform];
-  v7 = [v6 clientCapabilities];
-  [v5 setClientCapabilities:v7];
+  mEMORY[0x1E69A2398] = [MEMORY[0x1E69A2398] sharedPlatform];
+  clientCapabilities = [mEMORY[0x1E69A2398] clientCapabilities];
+  [v5 setClientCapabilities:clientCapabilities];
 
   v8 = objc_alloc_init(MEMORY[0x1E69A1C20]);
   [v8 setIncludeTravelTimeAggressive:1];
@@ -682,8 +682,8 @@ LABEL_24:
   [v5 setTripOrigin:v9];
 
   tripOrigin = self->_tripOrigin;
-  v11 = [v5 tripOrigin];
-  [v11 setLatLng:tripOrigin];
+  tripOrigin = [v5 tripOrigin];
+  [tripOrigin setLatLng:tripOrigin];
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v13 = [WeakRetained recentLocationHistoryForUpdateManager:self];
@@ -702,29 +702,29 @@ uint64_t __41__MNSessionUpdateManager__baseETARequest__block_invoke(uint64_t a1,
   return [v10 setSessionCreateHour:a7];
 }
 
-- (void)_sendETARequestWithParameters:(id)a3
+- (void)_sendETARequestWithParameters:(id)parameters
 {
   v124 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  parametersCopy = parameters;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v6 = [WeakRetained wantsETAUpdates];
+  wantsETAUpdates = [WeakRetained wantsETAUpdates];
 
   v7 = GEOFindOrCreateLog();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
-  if (v6)
+  if (wantsETAUpdates)
   {
     if (v8)
     {
-      v9 = [v4 reason];
-      if ((v9 - 1) > 6)
+      reason = [parametersCopy reason];
+      if ((reason - 1) > 6)
       {
         v10 = @"Unknown";
       }
 
       else
       {
-        v10 = off_1E8430BB8[v9 - 1];
+        v10 = off_1E8430BB8[reason - 1];
       }
 
       *buf = 138412290;
@@ -750,7 +750,7 @@ uint64_t __41__MNSessionUpdateManager__baseETARequest__block_invoke(uint64_t a1,
     v111 = __Block_byref_object_copy__21496;
     v112 = __Block_byref_object_dispose__21497;
     v12 = objc_loadWeakRetained(&self->_delegate);
-    v113 = [v12 routeInfoForUpdateManager:self reason:{objc_msgSend(v4, "reason")}];
+    v113 = [v12 routeInfoForUpdateManager:self reason:{objc_msgSend(parametersCopy, "reason")}];
 
     if (!v109[5])
     {
@@ -761,7 +761,7 @@ uint64_t __41__MNSessionUpdateManager__baseETARequest__block_invoke(uint64_t a1,
         _os_log_impl(&dword_1D311E000, v37, OS_LOG_TYPE_DEFAULT, "No route provided to ETATrafficUpdate request. Skipping update.", buf, 2u);
       }
 
-      if ([v4 shouldRepeatAfterCompletion])
+      if ([parametersCopy shouldRepeatAfterCompletion])
       {
         [(MNSessionUpdateManager *)self _continueETARequests];
       }
@@ -780,29 +780,29 @@ uint64_t __41__MNSessionUpdateManager__baseETARequest__block_invoke(uint64_t a1,
     v14 = v103[5];
     if (v14)
     {
-      v15 = [v14 routeMatch];
-      v16 = [v15 routeCoordinate];
-      v17 = [v109[5] route];
-      LOBYTE(v16) = [v17 pointCount] > v16;
+      routeMatch = [v14 routeMatch];
+      routeCoordinate = [routeMatch routeCoordinate];
+      route = [v109[5] route];
+      LOBYTE(routeCoordinate) = [route pointCount] > routeCoordinate;
 
-      if (v16)
+      if (routeCoordinate)
       {
-        v18 = [(MNSessionUpdateManager *)self _baseETARequest];
-        v19 = [v4 routeAttributes];
-        [v18 setRouteAttributes:v19];
+        _baseETARequest = [(MNSessionUpdateManager *)self _baseETARequest];
+        routeAttributes = [parametersCopy routeAttributes];
+        [_baseETARequest setRouteAttributes:routeAttributes];
 
-        [v18 setPurpose:{-[MNSessionUpdateManager _purposeForReason:](self, "_purposeForReason:", objc_msgSend(v4, "reason"))}];
+        [_baseETARequest setPurpose:{-[MNSessionUpdateManager _purposeForReason:](self, "_purposeForReason:", objc_msgSend(parametersCopy, "reason"))}];
         v96 = 0;
         v97 = &v96;
         v98 = 0x3032000000;
         v99 = __Block_byref_object_copy__21496;
         v100 = __Block_byref_object_dispose__21497;
-        v101 = [(MNSessionUpdateManager *)self _updateETARequest:v18 withRouteInfo:v109[5] andUserLocation:v103[5]];
+        v101 = [(MNSessionUpdateManager *)self _updateETARequest:_baseETARequest withRouteInfo:v109[5] andUserLocation:v103[5]];
         if (v97[5])
         {
-          if ([v4 shouldTrackPendingRequest])
+          if ([parametersCopy shouldTrackPendingRequest])
           {
-            objc_storeStrong(&self->_pendingETARequest, v18);
+            objc_storeStrong(&self->_pendingETARequest, _baseETARequest);
           }
 
           v94[0] = 0;
@@ -810,7 +810,7 @@ uint64_t __41__MNSessionUpdateManager__baseETARequest__block_invoke(uint64_t a1,
           v94[2] = 0x3032000000;
           v94[3] = __Block_byref_object_copy__21496;
           v94[4] = __Block_byref_object_dispose__21497;
-          v95 = [(MNSessionUpdateManager *)self _updateWaypointsForRequest:v18 routeInfo:v109[5] userLocation:v103[5] etaRoute:v97[5]];
+          v95 = [(MNSessionUpdateManager *)self _updateWaypointsForRequest:_baseETARequest routeInfo:v109[5] userLocation:v103[5] etaRoute:v97[5]];
           [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
           v21 = v20;
           objc_initWeak(&location, self);
@@ -818,11 +818,11 @@ uint64_t __41__MNSessionUpdateManager__baseETARequest__block_invoke(uint64_t a1,
           aBlock[1] = 3221225472;
           aBlock[2] = __56__MNSessionUpdateManager__sendETARequestWithParameters___block_invoke;
           aBlock[3] = &unk_1E8430A88;
-          v22 = v4;
+          v22 = parametersCopy;
           v87 = v22;
           v89 = &v108;
           objc_copyWeak(v92, &location);
-          v23 = v18;
+          v23 = _baseETARequest;
           v88 = v23;
           v90 = v94;
           v92[1] = v21;
@@ -846,7 +846,7 @@ uint64_t __41__MNSessionUpdateManager__baseETARequest__block_invoke(uint64_t a1,
             v78 = &v96;
             v79 = v94;
             v74 = v25;
-            v75 = self;
+            selfCopy = self;
             v61 = _Block_copy(v71);
             v26 = [MEMORY[0x1E695DF00] now];
             dateOfLastUpdate = self->_dateOfLastUpdate;
@@ -859,21 +859,21 @@ uint64_t __41__MNSessionUpdateManager__baseETARequest__block_invoke(uint64_t a1,
               v30 = v29;
               [v103[5] coordinate];
               v32 = v31;
-              v33 = [v103[5] routeMatch];
-              [v33 routeCoordinate];
+              routeMatch2 = [v103[5] routeMatch];
+              [routeMatch2 routeCoordinate];
               v34 = GEOPolylineCoordinateAsShortString();
-              v35 = [v25 reason];
-              if ((v35 - 1) > 6)
+              reason2 = [v25 reason];
+              if ((reason2 - 1) > 6)
               {
                 v36 = @"Unknown";
               }
 
               else
               {
-                v36 = off_1E8430BB8[v35 - 1];
+                v36 = off_1E8430BB8[reason2 - 1];
               }
 
-              v56 = [v109[5] routeID];
+              routeID = [v109[5] routeID];
               *buf = 134284547;
               v115 = v30;
               v116 = 2049;
@@ -883,11 +883,11 @@ uint64_t __41__MNSessionUpdateManager__baseETARequest__block_invoke(uint64_t a1,
               v120 = 2112;
               v121 = v36;
               v122 = 2112;
-              v123 = v56;
+              v123 = routeID;
               _os_log_impl(&dword_1D311E000, v28, OS_LOG_TYPE_DEFAULT, "Starting conditional ETATrafficUpdate request from location: %{private}f, %{private}f (%@) | reason: %@ | routeID: %@", buf, 0x34u);
             }
 
-            v57 = [v109[5] route];
+            route2 = [v109[5] route];
             v58 = v103[5];
             v65[0] = MEMORY[0x1E69E9820];
             v65[1] = 3221225472;
@@ -899,7 +899,7 @@ uint64_t __41__MNSessionUpdateManager__baseETARequest__block_invoke(uint64_t a1,
             v59 = v61;
             v68 = v59;
             v69 = v63;
-            [(MNSessionUpdateManager *)self _updateRouteAttributesFor:v66 route:v57 updatedLocation:v58 completion:v65];
+            [(MNSessionUpdateManager *)self _updateRouteAttributesFor:v66 route:route2 updatedLocation:v58 completion:v65];
 
             objc_destroyWeak(&v70);
             objc_destroyWeak(&v80);
@@ -917,18 +917,18 @@ uint64_t __41__MNSessionUpdateManager__baseETARequest__block_invoke(uint64_t a1,
               v48 = v47;
               [v103[5] coordinate];
               v50 = v49;
-              v51 = [v22 reason];
-              if ((v51 - 1) > 6)
+              reason3 = [v22 reason];
+              if ((reason3 - 1) > 6)
               {
                 v52 = @"Unknown";
               }
 
               else
               {
-                v52 = off_1E8430BB8[v51 - 1];
+                v52 = off_1E8430BB8[reason3 - 1];
               }
 
-              v53 = [v109[5] routeID];
+              routeID2 = [v109[5] routeID];
               *buf = 134284291;
               v115 = v48;
               v116 = 2049;
@@ -936,21 +936,21 @@ uint64_t __41__MNSessionUpdateManager__baseETARequest__block_invoke(uint64_t a1,
               v118 = 2112;
               v119 = v52;
               v120 = 2112;
-              v121 = v53;
+              v121 = routeID2;
               _os_log_impl(&dword_1D311E000, v46, OS_LOG_TYPE_DEFAULT, "Sending immediate ETATrafficUpdate request from location: %{private}f, %{private}f | reason: %@ | routeID: %@", buf, 0x2Au);
             }
 
-            v54 = [v109[5] route];
+            route3 = [v109[5] route];
             v55 = v103[5];
             v81[0] = MEMORY[0x1E69E9820];
             v81[1] = 3221225472;
             v81[2] = __56__MNSessionUpdateManager__sendETARequestWithParameters___block_invoke_40;
             v81[3] = &unk_1E8430AB0;
             v82 = v23;
-            v83 = self;
+            selfCopy2 = self;
             v84 = v64;
             v85 = v63;
-            [(MNSessionUpdateManager *)self _updateRouteAttributesFor:v82 route:v54 updatedLocation:v55 completion:v81];
+            [(MNSessionUpdateManager *)self _updateRouteAttributesFor:v82 route:route3 updatedLocation:v55 completion:v81];
           }
 
           objc_destroyWeak(v92);
@@ -967,7 +967,7 @@ uint64_t __41__MNSessionUpdateManager__baseETARequest__block_invoke(uint64_t a1,
             _os_log_impl(&dword_1D311E000, v44, OS_LOG_TYPE_ERROR, "Error creating ETATrafficUpdate request.", buf, 2u);
           }
 
-          if ([v4 shouldRepeatAfterCompletion])
+          if ([parametersCopy shouldRepeatAfterCompletion])
           {
             [(MNSessionUpdateManager *)self _continueETARequests];
           }
@@ -981,19 +981,19 @@ uint64_t __41__MNSessionUpdateManager__baseETARequest__block_invoke(uint64_t a1,
       v39 = GEOFindOrCreateLog();
       if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
       {
-        v40 = [v103[5] routeMatch];
-        [v40 routeCoordinate];
+        routeMatch3 = [v103[5] routeMatch];
+        [routeMatch3 routeCoordinate];
         v41 = GEOPolylineCoordinateAsShortString();
-        v42 = [v109[5] route];
-        v43 = [v42 pointCount];
+        route4 = [v109[5] route];
+        pointCount = [route4 pointCount];
         *buf = 138412546;
         v115 = v41;
         v116 = 1024;
-        LODWORD(v117) = v43;
+        LODWORD(v117) = pointCount;
         _os_log_impl(&dword_1D311E000, v39, OS_LOG_TYPE_DEFAULT, "User location [%@] is at or past end of route (%d). Skipping update.", buf, 0x12u);
       }
 
-      if (![v4 shouldRepeatAfterCompletion])
+      if (![parametersCopy shouldRepeatAfterCompletion])
       {
         goto LABEL_51;
       }
@@ -1008,7 +1008,7 @@ uint64_t __41__MNSessionUpdateManager__baseETARequest__block_invoke(uint64_t a1,
         _os_log_impl(&dword_1D311E000, v38, OS_LOG_TYPE_ERROR, "Error creating ETATrafficUpdate request because userLocation is nil.", buf, 2u);
       }
 
-      if (([v4 shouldRepeatAfterCompletion] & 1) == 0)
+      if (([parametersCopy shouldRepeatAfterCompletion] & 1) == 0)
       {
         goto LABEL_51;
       }
@@ -1430,10 +1430,10 @@ void __56__MNSessionUpdateManager__sendETARequestWithParameters___block_invoke_4
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_sendETARequestWithReason:(unint64_t)a3
+- (void)_sendETARequestWithReason:(unint64_t)reason
 {
   v5 = objc_opt_new();
-  [v5 setReason:a3];
+  [v5 setReason:reason];
   [v5 setShouldUseConditionalRequest:self->_opportunisticRequestTimeWindow > 0.0];
   [v5 setShouldRepeatAfterCompletion:1];
   [v5 setShouldRetryImmediatelyOnError:1];
@@ -1441,89 +1441,89 @@ void __56__MNSessionUpdateManager__sendETARequestWithParameters___block_invoke_4
   [(MNSessionUpdateManager *)self _sendETARequestWithParameters:v5];
 }
 
-- (void)_updateRouteAttributesFor:(id)a3 route:(id)a4 updatedLocation:(id)a5 completion:(id)a6
+- (void)_updateRouteAttributesFor:(id)for route:(id)route updatedLocation:(id)location completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v37 = a6;
-  v12 = [v11 _navigation_geoLocation];
-  v13 = [v12 latLng];
+  forCopy = for;
+  routeCopy = route;
+  locationCopy = location;
+  completionCopy = completion;
+  _navigation_geoLocation = [locationCopy _navigation_geoLocation];
+  latLng = [_navigation_geoLocation latLng];
 
   v14 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v15 = v14;
-  if (v13)
+  if (latLng)
   {
-    [v14 addObject:v13];
+    [v14 addObject:latLng];
   }
 
   else
   {
-    v16 = [v10 origin];
-    v17 = [v16 latLng];
-    [v15 addObject:v17];
+    origin = [routeCopy origin];
+    latLng2 = [origin latLng];
+    [v15 addObject:latLng2];
   }
 
-  v18 = [v11 routeMatch];
-  v19 = [v18 legIndex];
+  routeMatch = [locationCopy routeMatch];
+  legIndex = [routeMatch legIndex];
 
-  v20 = [v10 legs];
-  v21 = [v20 count];
+  legs = [routeCopy legs];
+  v21 = [legs count];
 
-  if (v19 < v21)
+  if (legIndex < v21)
   {
     do
     {
-      v22 = [v10 legs];
-      v23 = [v22 objectAtIndexedSubscript:v19];
-      v24 = [v23 destination];
-      v25 = [v24 latLng];
-      [v15 addObject:v25];
+      legs2 = [routeCopy legs];
+      v23 = [legs2 objectAtIndexedSubscript:legIndex];
+      destination = [v23 destination];
+      latLng3 = [destination latLng];
+      [v15 addObject:latLng3];
 
-      ++v19;
-      v26 = [v10 legs];
-      v27 = [v26 count];
+      ++legIndex;
+      legs3 = [routeCopy legs];
+      v27 = [legs3 count];
     }
 
-    while (v19 < v27);
+    while (legIndex < v27);
   }
 
-  v28 = [v9 routeAttributes];
+  routeAttributes = [forCopy routeAttributes];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v30 = v9;
+    v30 = forCopy;
   }
 
   else
   {
-    v31 = [v10 routeAttributes];
+    routeAttributes2 = [routeCopy routeAttributes];
     objc_opt_class();
     v32 = objc_opt_isKindOfClass();
 
     if ((v32 & 1) == 0)
     {
       v34 = [MNRouteAttributes alloc];
-      v35 = [v10 routeAttributes];
-      v33 = [(MNRouteAttributes *)v34 initWithAttributes:v35 latLngs:v15];
+      routeAttributes3 = [routeCopy routeAttributes];
+      routeAttributes4 = [(MNRouteAttributes *)v34 initWithAttributes:routeAttributes3 latLngs:v15];
 
       goto LABEL_12;
     }
 
-    v30 = v10;
+    v30 = routeCopy;
   }
 
-  v33 = [v30 routeAttributes];
+  routeAttributes4 = [v30 routeAttributes];
 LABEL_12:
   v38[0] = MEMORY[0x1E69E9820];
   v38[1] = 3221225472;
   v38[2] = __85__MNSessionUpdateManager__updateRouteAttributesFor_route_updatedLocation_completion___block_invoke;
   v38[3] = &unk_1E8430A60;
-  v39 = v37;
-  v36 = v37;
-  [(MNRouteAttributes *)v33 buildRouteAttributesForETAUpdateRequest:v9 queue:MEMORY[0x1E69E96A0] result:v38];
+  v39 = completionCopy;
+  v36 = completionCopy;
+  [(MNRouteAttributes *)routeAttributes4 buildRouteAttributesForETAUpdateRequest:forCopy queue:MEMORY[0x1E69E96A0] result:v38];
 }
 
 void __85__MNSessionUpdateManager__updateRouteAttributesFor_route_updatedLocation_completion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -1614,9 +1614,9 @@ void __85__MNSessionUpdateManager__updateRouteAttributesFor_route_updatedLocatio
 - (void)_continueETARequests
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v4 = [WeakRetained wantsETAUpdates];
+  wantsETAUpdates = [WeakRetained wantsETAUpdates];
 
-  if (v4)
+  if (wantsETAUpdates)
   {
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
@@ -1636,7 +1636,7 @@ void __85__MNSessionUpdateManager__updateRouteAttributesFor_route_updatedLocatio
   }
 }
 
-- (void)_scheduleETATimerWithInterval:(double)a3
+- (void)_scheduleETATimerWithInterval:(double)interval
 {
   v22 = *MEMORY[0x1E69E9840];
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
@@ -1657,9 +1657,9 @@ void __85__MNSessionUpdateManager__updateRouteAttributesFor_route_updatedLocatio
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v6 = [WeakRetained wantsETAUpdates];
+  wantsETAUpdates = [WeakRetained wantsETAUpdates];
 
-  if (v6)
+  if (wantsETAUpdates)
   {
     [(NSTimer *)self->_etaTimer invalidate];
     objc_initWeak(location, self);
@@ -1669,7 +1669,7 @@ void __85__MNSessionUpdateManager__updateRouteAttributesFor_route_updatedLocatio
     v13[2] = __56__MNSessionUpdateManager__scheduleETATimerWithInterval___block_invoke;
     v13[3] = &unk_1E8430A38;
     objc_copyWeak(&v14, location);
-    v8 = [v7 scheduledTimerWithTimeInterval:0 repeats:v13 block:a3];
+    v8 = [v7 scheduledTimerWithTimeInterval:0 repeats:v13 block:interval];
     etaTimer = self->_etaTimer;
     self->_etaTimer = v8;
 
@@ -1704,19 +1704,19 @@ void __56__MNSessionUpdateManager__scheduleETATimerWithInterval___block_invoke(u
   }
 }
 
-- (void)resumeUpdateRequestsForSubscriber:(id)a3
+- (void)resumeUpdateRequestsForSubscriber:(id)subscriber
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  subscriberCopy = subscriber;
+  v5 = subscriberCopy;
+  if (subscriberCopy)
   {
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __60__MNSessionUpdateManager_resumeUpdateRequestsForSubscriber___block_invoke;
     v8[3] = &unk_1E8430D50;
     v8[4] = self;
-    v9 = v4;
+    v9 = subscriberCopy;
     MNRunAsyncOnNavigationQueue(v8);
   }
 
@@ -1751,19 +1751,19 @@ void __60__MNSessionUpdateManager_resumeUpdateRequestsForSubscriber___block_invo
   }
 }
 
-- (void)pauseUpdateRequestsForSubscriber:(id)a3
+- (void)pauseUpdateRequestsForSubscriber:(id)subscriber
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  subscriberCopy = subscriber;
+  v5 = subscriberCopy;
+  if (subscriberCopy)
   {
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __59__MNSessionUpdateManager_pauseUpdateRequestsForSubscriber___block_invoke;
     v8[3] = &unk_1E8430D50;
     v8[4] = self;
-    v9 = v4;
+    v9 = subscriberCopy;
     MNRunAsyncOnNavigationQueue(v8);
   }
 
@@ -1811,16 +1811,16 @@ void __59__MNSessionUpdateManager_pauseUpdateRequestsForSubscriber___block_invok
   }
 }
 
-- (void)requestUpdateForETAUPosition:(id)a3
+- (void)requestUpdateForETAUPosition:(id)position
 {
-  v4 = a3;
+  positionCopy = position;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __55__MNSessionUpdateManager_requestUpdateForETAUPosition___block_invoke;
   v6[3] = &unk_1E8430D50;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = positionCopy;
+  v5 = positionCopy;
   MNRunAsyncOnNavigationQueue(v6);
 }
 
@@ -1899,14 +1899,14 @@ LABEL_14:
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)requestImmediateUpdateWithReason:(unint64_t)a3
+- (void)requestImmediateUpdateWithReason:(unint64_t)reason
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __59__MNSessionUpdateManager_requestImmediateUpdateWithReason___block_invoke;
   v3[3] = &unk_1E8430A10;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = reason;
   MNRunAsyncOnNavigationQueue(v3);
 }
 
@@ -1924,12 +1924,12 @@ uint64_t __59__MNSessionUpdateManager_requestImmediateUpdateWithReason___block_i
   return [*(a1 + 32) _sendETARequestWithReason:*(a1 + 40)];
 }
 
-- (void)sendFinalETAURequestWithReason:(unint64_t)a3
+- (void)sendFinalETAURequestWithReason:(unint64_t)reason
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v6 = [WeakRetained wantsETAUpdates];
+  wantsETAUpdates = [WeakRetained wantsETAUpdates];
 
-  if (v6)
+  if (wantsETAUpdates)
   {
     v7 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -1939,7 +1939,7 @@ uint64_t __59__MNSessionUpdateManager_requestImmediateUpdateWithReason___block_i
     }
 
     v8 = objc_opt_new();
-    [v8 setReason:a3];
+    [v8 setReason:reason];
     [v8 setShouldUseConditionalRequest:0];
     [v8 setShouldRepeatAfterCompletion:0];
     [v8 setShouldRetryImmediatelyOnError:0];
@@ -2008,18 +2008,18 @@ uint64_t __44__MNSessionUpdateManager_stopUpdateRequests__block_invoke(uint64_t 
   return [*(a1 + 32) _terminateETARequests];
 }
 
-- (void)startUpdateRequestsForRoutes:(id)a3 andNavigationType:(int64_t)a4
+- (void)startUpdateRequestsForRoutes:(id)routes andNavigationType:(int64_t)type
 {
-  v6 = a3;
-  if ([v6 count])
+  routesCopy = routes;
+  if ([routesCopy count])
   {
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __73__MNSessionUpdateManager_startUpdateRequestsForRoutes_andNavigationType___block_invoke;
     block[3] = &unk_1E84309E8;
-    v9 = a4;
+    typeCopy = type;
     block[4] = self;
-    v8 = v6;
+    v8 = routesCopy;
     dispatch_async(MEMORY[0x1E69E96A0], block);
   }
 

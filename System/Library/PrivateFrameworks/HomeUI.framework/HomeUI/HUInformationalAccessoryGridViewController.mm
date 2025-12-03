@@ -1,12 +1,12 @@
 @interface HUInformationalAccessoryGridViewController
-- (BOOL)collectionView:(id)a3 shouldHighlightItemAtIndexPath:(id)a4;
-- (HUInformationalAccessoryGridViewController)initWithItemManager:(id)a3 collectionViewLayout:(id)a4;
-- (HUInformationalAccessoryGridViewController)initWithVisibleAccessories:(id)a3;
+- (BOOL)collectionView:(id)view shouldHighlightItemAtIndexPath:(id)path;
+- (HUInformationalAccessoryGridViewController)initWithItemManager:(id)manager collectionViewLayout:(id)layout;
+- (HUInformationalAccessoryGridViewController)initWithVisibleAccessories:(id)accessories;
 - (NSSet)visibleAccessories;
-- (id)buildItemModuleControllerForModule:(id)a3;
-- (id)initUsingCompositionalLayoutWithItemManager:(id)a3;
-- (id)layoutSectionForSection:(int64_t)a3 layoutEnvironment:(id)a4;
-- (void)setVisibleAccessories:(id)a3;
+- (id)buildItemModuleControllerForModule:(id)module;
+- (id)initUsingCompositionalLayoutWithItemManager:(id)manager;
+- (id)layoutSectionForSection:(int64_t)section layoutEnvironment:(id)environment;
+- (void)setVisibleAccessories:(id)accessories;
 - (void)viewDidLoad;
 @end
 
@@ -32,27 +32,27 @@
   return v4;
 }
 
-- (void)setVisibleAccessories:(id)a3
+- (void)setVisibleAccessories:(id)accessories
 {
-  v3 = a3;
-  if (a3)
+  accessoriesCopy = accessories;
+  if (accessories)
   {
     sub_20CECF940(0, &unk_27C81BF40);
     sub_20CFE165C();
-    v3 = sub_20D567D08();
+    accessoriesCopy = sub_20D567D08();
   }
 
   v5 = OBJC_IVAR___HUInformationalAccessoryGridViewController_visibleAccessories;
   swift_beginAccess();
-  *(self + v5) = v3;
-  v6 = self;
+  *(self + v5) = accessoriesCopy;
+  selfCopy = self;
 
   sub_20CFE0224();
 }
 
-- (HUInformationalAccessoryGridViewController)initWithVisibleAccessories:(id)a3
+- (HUInformationalAccessoryGridViewController)initWithVisibleAccessories:(id)accessories
 {
-  if (a3)
+  if (accessories)
   {
     sub_20CECF940(0, &unk_27C81BF40);
     sub_20CFE165C();
@@ -69,11 +69,11 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_20CFE0B9C();
 }
 
-- (BOOL)collectionView:(id)a3 shouldHighlightItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view shouldHighlightItemAtIndexPath:(id)path
 {
   v4 = sub_20D5638C8();
   v5 = *(v4 - 8);
@@ -84,33 +84,33 @@
   return 0;
 }
 
-- (id)buildItemModuleControllerForModule:(id)a3
+- (id)buildItemModuleControllerForModule:(id)module
 {
-  v4 = a3;
-  v5 = self;
+  moduleCopy = module;
+  selfCopy = self;
   v6 = sub_20CFE0DB8();
 
   return v6;
 }
 
-- (id)layoutSectionForSection:(int64_t)a3 layoutEnvironment:(id)a4
+- (id)layoutSectionForSection:(int64_t)section layoutEnvironment:(id)environment
 {
   swift_unknownObjectRetain();
-  v7 = self;
-  v8 = sub_20CFE0F48(a3, a4);
+  selfCopy = self;
+  v8 = sub_20CFE0F48(section, environment);
   swift_unknownObjectRelease();
 
   return v8;
 }
 
-- (HUInformationalAccessoryGridViewController)initWithItemManager:(id)a3 collectionViewLayout:(id)a4
+- (HUInformationalAccessoryGridViewController)initWithItemManager:(id)manager collectionViewLayout:(id)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (id)initUsingCompositionalLayoutWithItemManager:(id)a3
+- (id)initUsingCompositionalLayoutWithItemManager:(id)manager
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

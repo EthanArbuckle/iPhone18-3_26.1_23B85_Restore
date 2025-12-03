@@ -139,16 +139,16 @@ void __47___INVocabulary_supportedVocabularyStringTypes__block_invoke()
     v5.receiver = self;
     v5.super_class = INVocabulary;
     self = [(INVocabulary *)&v5 init];
-    v3 = self;
+    selfCopy = self;
   }
 
   else
   {
     [(INVocabulary *)self _THROW_EXCEPTION_FOR_PROCESS_MISSING_ENTITLEMENT_com_apple_developer_siri];
-    v3 = 0;
+    selfCopy = 0;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 + (INVocabulary)sharedVocabulary
@@ -157,7 +157,7 @@ void __47___INVocabulary_supportedVocabularyStringTypes__block_invoke()
   block[1] = 3221225472;
   block[2] = __32__INVocabulary_sharedVocabulary__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedVocabulary_onceToken != -1)
   {
     dispatch_once(&sharedVocabulary_onceToken, block);

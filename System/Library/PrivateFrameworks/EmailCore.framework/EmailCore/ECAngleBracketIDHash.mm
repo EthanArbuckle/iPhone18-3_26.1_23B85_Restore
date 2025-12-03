@@ -1,15 +1,15 @@
 @interface ECAngleBracketIDHash
-- (ECAngleBracketIDHash)initWithAngleBracketID:(id)a3;
+- (ECAngleBracketIDHash)initWithAngleBracketID:(id)d;
 @end
 
 @implementation ECAngleBracketIDHash
 
-- (ECAngleBracketIDHash)initWithAngleBracketID:(id)a3
+- (ECAngleBracketIDHash)initWithAngleBracketID:(id)d
 {
-  v4 = [a3 ec_messageIDSubstring];
+  ec_messageIDSubstring = [d ec_messageIDSubstring];
   v7.receiver = self;
   v7.super_class = ECAngleBracketIDHash;
-  v5 = [(EFStringHash *)&v7 initWithString:v4];
+  v5 = [(EFStringHash *)&v7 initWithString:ec_messageIDSubstring];
 
   return v5;
 }

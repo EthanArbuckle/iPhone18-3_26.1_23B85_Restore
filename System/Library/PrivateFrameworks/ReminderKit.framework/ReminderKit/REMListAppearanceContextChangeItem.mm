@@ -1,44 +1,44 @@
 @interface REMListAppearanceContextChangeItem
 - (BOOL)showingLargeAttachments;
 - (NSString)badgeEmblem;
-- (REMListAppearanceContextChangeItem)initWithListChangeItem:(id)a3;
+- (REMListAppearanceContextChangeItem)initWithListChangeItem:(id)item;
 - (REMListBadge)badge;
-- (void)setBadge:(id)a3;
-- (void)setBadgeEmblem:(id)a3;
+- (void)setBadge:(id)badge;
+- (void)setBadgeEmblem:(id)emblem;
 @end
 
 @implementation REMListAppearanceContextChangeItem
 
-- (REMListAppearanceContextChangeItem)initWithListChangeItem:(id)a3
+- (REMListAppearanceContextChangeItem)initWithListChangeItem:(id)item
 {
-  v5 = a3;
+  itemCopy = item;
   v9.receiver = self;
   v9.super_class = REMListAppearanceContextChangeItem;
   v6 = [(REMListAppearanceContextChangeItem *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_listChangeItem, a3);
+    objc_storeStrong(&v6->_listChangeItem, item);
   }
 
   return v7;
 }
 
-- (void)setBadge:(id)a3
+- (void)setBadge:(id)badge
 {
-  v5 = [a3 rawValue];
-  v4 = [(REMListAppearanceContextChangeItem *)self listChangeItem];
-  [v4 setBadgeEmblem:v5];
+  rawValue = [badge rawValue];
+  listChangeItem = [(REMListAppearanceContextChangeItem *)self listChangeItem];
+  [listChangeItem setBadgeEmblem:rawValue];
 }
 
 - (REMListBadge)badge
 {
-  v2 = [(REMListAppearanceContextChangeItem *)self listChangeItem];
-  v3 = [v2 badgeEmblem];
+  listChangeItem = [(REMListAppearanceContextChangeItem *)self listChangeItem];
+  badgeEmblem = [listChangeItem badgeEmblem];
 
-  if (v3)
+  if (badgeEmblem)
   {
-    v4 = [[REMListBadge alloc] initWithRawValue:v3];
+    v4 = [[REMListBadge alloc] initWithRawValue:badgeEmblem];
   }
 
   else
@@ -49,28 +49,28 @@
   return v4;
 }
 
-- (void)setBadgeEmblem:(id)a3
+- (void)setBadgeEmblem:(id)emblem
 {
-  v4 = a3;
-  v5 = [[REMListBadge alloc] initWithEmblem:v4];
+  emblemCopy = emblem;
+  v5 = [[REMListBadge alloc] initWithEmblem:emblemCopy];
 
   [(REMListAppearanceContextChangeItem *)self setBadge:v5];
 }
 
 - (NSString)badgeEmblem
 {
-  v2 = [(REMListAppearanceContextChangeItem *)self badge];
-  v3 = [v2 emblem];
+  badge = [(REMListAppearanceContextChangeItem *)self badge];
+  emblem = [badge emblem];
 
-  return v3;
+  return emblem;
 }
 
 - (BOOL)showingLargeAttachments
 {
-  v2 = [(REMListAppearanceContextChangeItem *)self listChangeItem];
-  v3 = [v2 showingLargeAttachments];
+  listChangeItem = [(REMListAppearanceContextChangeItem *)self listChangeItem];
+  showingLargeAttachments = [listChangeItem showingLargeAttachments];
 
-  return v3;
+  return showingLargeAttachments;
 }
 
 @end

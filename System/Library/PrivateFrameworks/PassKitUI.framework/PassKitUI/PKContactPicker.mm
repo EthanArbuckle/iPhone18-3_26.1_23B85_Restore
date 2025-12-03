@@ -1,26 +1,26 @@
 @interface PKContactPicker
-- (PKContactPicker)initWithSelectionHandler:(id)a3 cancelationHandler:(id)a4;
-- (void)contactPicker:(id)a3 didSelectContact:(id)a4;
-- (void)contactPickerDidCancel:(id)a3;
+- (PKContactPicker)initWithSelectionHandler:(id)handler cancelationHandler:(id)cancelationHandler;
+- (void)contactPicker:(id)picker didSelectContact:(id)contact;
+- (void)contactPickerDidCancel:(id)cancel;
 @end
 
 @implementation PKContactPicker
 
-- (PKContactPicker)initWithSelectionHandler:(id)a3 cancelationHandler:(id)a4
+- (PKContactPicker)initWithSelectionHandler:(id)handler cancelationHandler:(id)cancelationHandler
 {
   v20[4] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  handlerCopy = handler;
+  cancelationHandlerCopy = cancelationHandler;
   v19.receiver = self;
   v19.super_class = PKContactPicker;
   v8 = [(PKContactPicker *)&v19 init];
   if (v8)
   {
-    v9 = _Block_copy(v6);
+    v9 = _Block_copy(handlerCopy);
     selectionHandler = v8->_selectionHandler;
     v8->_selectionHandler = v9;
 
-    v11 = _Block_copy(v7);
+    v11 = _Block_copy(cancelationHandlerCopy);
     cancelationHandler = v8->_cancelationHandler;
     v8->_cancelationHandler = v11;
 
@@ -44,7 +44,7 @@
   return v8;
 }
 
-- (void)contactPickerDidCancel:(id)a3
+- (void)contactPickerDidCancel:(id)cancel
 {
   cancelationHandler = self->_cancelationHandler;
   if (cancelationHandler)
@@ -53,13 +53,13 @@
   }
 }
 
-- (void)contactPicker:(id)a3 didSelectContact:(id)a4
+- (void)contactPicker:(id)picker didSelectContact:(id)contact
 {
   if (self->_selectionHandler)
   {
     v5 = MEMORY[0x1E69B8728];
-    v6 = a4;
-    v7 = [[v5 alloc] initWithCNContact:v6];
+    contactCopy = contact;
+    v7 = [[v5 alloc] initWithCNContact:contactCopy];
 
     (*(self->_selectionHandler + 2))();
   }

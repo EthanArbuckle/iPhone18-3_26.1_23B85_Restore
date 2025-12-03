@@ -1,16 +1,16 @@
 @interface MUPlaceSectionHeaderView
-- (MUPlaceSectionHeaderView)initWithViewModel:(id)a3;
+- (MUPlaceSectionHeaderView)initWithViewModel:(id)model;
 - (void)_contentSizeDidChange;
 - (void)_setupHeader;
 - (void)beginAnimatingActivityIndicator;
-- (void)endAnimatingActivityIndicatorWithError:(id)a3;
+- (void)endAnimatingActivityIndicatorWithError:(id)error;
 @end
 
 @implementation MUPlaceSectionHeaderView
 
-- (void)endAnimatingActivityIndicatorWithError:(id)a3
+- (void)endAnimatingActivityIndicatorWithError:(id)error
 {
-  [(UIButton *)self->_seeAllButton setAlpha:a3, 1.0];
+  [(UIButton *)self->_seeAllButton setAlpha:error, 1.0];
   seeAllButton = self->_seeAllButton;
 
   [(UIButton *)seeAllButton setUserInteractionEnabled:1];
@@ -36,13 +36,13 @@
 - (void)_setupHeader
 {
   v106[1] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E69DCC10] _mapsui_defaultLabel];
+  _mapsui_defaultLabel = [MEMORY[0x1E69DCC10] _mapsui_defaultLabel];
   titleLabel = self->_titleLabel;
-  self->_titleLabel = v3;
+  self->_titleLabel = _mapsui_defaultLabel;
 
   [(UILabel *)self->_titleLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-  v5 = [(MUPlaceSectionHeaderViewModel *)self->_headerViewModel titleString];
-  [(UILabel *)self->_titleLabel set_mapsui_text:v5];
+  titleString = [(MUPlaceSectionHeaderViewModel *)self->_headerViewModel titleString];
+  [(UILabel *)self->_titleLabel set_mapsui_text:titleString];
 
   v6 = MUPlaceSectionHeaderFont();
   [(UILabel *)self->_titleLabel setFont:v6];
@@ -53,8 +53,8 @@
   [(UILabel *)self->_titleLabel setNumberOfLines:0];
   [(UILabel *)self->_titleLabel setAccessibilityIdentifier:@"PlaceSectionHeaderTitle"];
   [(MUPlaceSectionHeaderView *)self addSubview:self->_titleLabel];
-  v8 = [(MUPlaceSectionHeaderViewModel *)self->_headerViewModel subtitleString];
-  v9 = [v8 length];
+  subtitleString = [(MUPlaceSectionHeaderViewModel *)self->_headerViewModel subtitleString];
+  v9 = [subtitleString length];
 
   if (v9)
   {
@@ -63,8 +63,8 @@
     self->_subtitleLabel = v10;
 
     [(UILabel *)self->_subtitleLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-    v12 = [(MUPlaceSectionHeaderViewModel *)self->_headerViewModel subtitleString];
-    [(UILabel *)self->_subtitleLabel set_mapsui_text:v12];
+    subtitleString2 = [(MUPlaceSectionHeaderViewModel *)self->_headerViewModel subtitleString];
+    [(UILabel *)self->_subtitleLabel set_mapsui_text:subtitleString2];
 
     v13 = MUPlaceSectionHeaderSubtitleFont();
     [(UILabel *)self->_subtitleLabel setFont:v13];
@@ -74,14 +74,14 @@
     [(MUPlaceSectionHeaderView *)self addSubview:self->_subtitleLabel];
   }
 
-  v14 = [(MUPlaceSectionHeaderViewModel *)self->_headerViewModel seeMoreButtonText];
-  if (![v14 length])
+  seeMoreButtonText = [(MUPlaceSectionHeaderViewModel *)self->_headerViewModel seeMoreButtonText];
+  if (![seeMoreButtonText length])
   {
 
     goto LABEL_18;
   }
 
-  v15 = [(MUPlaceSectionHeaderViewModel *)self->_headerViewModel target];
+  target = [(MUPlaceSectionHeaderViewModel *)self->_headerViewModel target];
   [(MUPlaceSectionHeaderViewModel *)self->_headerViewModel selector];
   if (objc_opt_respondsToSelector())
   {
@@ -89,56 +89,56 @@
 
   else
   {
-    v16 = [(MUPlaceSectionHeaderViewModel *)self->_headerViewModel seeMoreButtonMenu];
+    seeMoreButtonMenu = [(MUPlaceSectionHeaderViewModel *)self->_headerViewModel seeMoreButtonMenu];
 
-    if (!v16)
+    if (!seeMoreButtonMenu)
     {
       goto LABEL_18;
     }
   }
 
-  v17 = [MEMORY[0x1E69DC738] _mapsui_sectionHeaderButton];
+  _mapsui_sectionHeaderButton = [MEMORY[0x1E69DC738] _mapsui_sectionHeaderButton];
   seeAllButton = self->_seeAllButton;
-  self->_seeAllButton = v17;
+  self->_seeAllButton = _mapsui_sectionHeaderButton;
 
   [(UIButton *)self->_seeAllButton setTranslatesAutoresizingMaskIntoConstraints:0];
-  v19 = [(MUPlaceSectionHeaderViewModel *)self->_headerViewModel seeMoreButtonText];
-  [(UIButton *)self->_seeAllButton set_mapsui_title:v19];
+  seeMoreButtonText2 = [(MUPlaceSectionHeaderViewModel *)self->_headerViewModel seeMoreButtonText];
+  [(UIButton *)self->_seeAllButton set_mapsui_title:seeMoreButtonText2];
 
-  v20 = [(MUPlaceSectionHeaderViewModel *)self->_headerViewModel seeMoreButtonMenu];
+  seeMoreButtonMenu2 = [(MUPlaceSectionHeaderViewModel *)self->_headerViewModel seeMoreButtonMenu];
 
   headerViewModel = self->_headerViewModel;
-  if (v20)
+  if (seeMoreButtonMenu2)
   {
-    v22 = [(MUPlaceSectionHeaderViewModel *)headerViewModel seeMoreButtonMenu];
-    [(UIButton *)self->_seeAllButton setMenu:v22];
+    seeMoreButtonMenu3 = [(MUPlaceSectionHeaderViewModel *)headerViewModel seeMoreButtonMenu];
+    [(UIButton *)self->_seeAllButton setMenu:seeMoreButtonMenu3];
 
     [(UIButton *)self->_seeAllButton setShowsMenuAsPrimaryAction:1];
     [(UIButton *)self->_seeAllButton setPreferredMenuElementOrder:2];
-    v23 = [(MUPlaceSectionHeaderViewModel *)self->_headerViewModel target];
+    target2 = [(MUPlaceSectionHeaderViewModel *)self->_headerViewModel target];
     [(MUPlaceSectionHeaderViewModel *)self->_headerViewModel selector];
     v24 = objc_opt_respondsToSelector();
 
     if (v24)
     {
       v25 = self->_seeAllButton;
-      v26 = [(MUPlaceSectionHeaderViewModel *)self->_headerViewModel target];
-      [(UIButton *)v25 addTarget:v26 action:[(MUPlaceSectionHeaderViewModel *)self->_headerViewModel selector] forControlEvents:0x4000];
+      target3 = [(MUPlaceSectionHeaderViewModel *)self->_headerViewModel target];
+      [(UIButton *)v25 addTarget:target3 action:[(MUPlaceSectionHeaderViewModel *)self->_headerViewModel selector] forControlEvents:0x4000];
 LABEL_13:
     }
   }
 
   else
   {
-    v27 = [(MUPlaceSectionHeaderViewModel *)headerViewModel target];
+    target4 = [(MUPlaceSectionHeaderViewModel *)headerViewModel target];
     [(MUPlaceSectionHeaderViewModel *)self->_headerViewModel selector];
     v28 = objc_opt_respondsToSelector();
 
     if (v28)
     {
       v29 = self->_seeAllButton;
-      v26 = [(MUPlaceSectionHeaderViewModel *)self->_headerViewModel target];
-      [(UIButton *)v29 _mapsui_setTarget:v26 action:[(MUPlaceSectionHeaderViewModel *)self->_headerViewModel selector]];
+      target3 = [(MUPlaceSectionHeaderViewModel *)self->_headerViewModel target];
+      [(UIButton *)v29 _mapsui_setTarget:target3 action:[(MUPlaceSectionHeaderViewModel *)self->_headerViewModel selector]];
       goto LABEL_13;
     }
   }
@@ -148,20 +148,20 @@ LABEL_13:
 
   if (+[MUInfoCardStyle sectionHeaderStyle]== 1)
   {
-    v31 = [MEMORY[0x1E69DC740] borderlessButtonConfiguration];
-    [v31 setTitleTextAttributesTransformer:&__block_literal_global_2329];
-    [v31 setContentInsets:{*MEMORY[0x1E69DC5C0], *(MEMORY[0x1E69DC5C0] + 8), *(MEMORY[0x1E69DC5C0] + 16), *(MEMORY[0x1E69DC5C0] + 24)}];
-    [(UIButton *)self->_seeAllButton setConfiguration:v31];
+    borderlessButtonConfiguration = [MEMORY[0x1E69DC740] borderlessButtonConfiguration];
+    [borderlessButtonConfiguration setTitleTextAttributesTransformer:&__block_literal_global_2329];
+    [borderlessButtonConfiguration setContentInsets:{*MEMORY[0x1E69DC5C0], *(MEMORY[0x1E69DC5C0] + 8), *(MEMORY[0x1E69DC5C0] + 16), *(MEMORY[0x1E69DC5C0] + 24)}];
+    [(UIButton *)self->_seeAllButton setConfiguration:borderlessButtonConfiguration];
   }
 
   else
   {
-    v32 = [(UIButton *)self->_seeAllButton titleLabel];
-    [v32 setAdjustsFontForContentSizeCategory:1];
+    titleLabel = [(UIButton *)self->_seeAllButton titleLabel];
+    [titleLabel setAdjustsFontForContentSizeCategory:1];
 
-    v31 = MUPlaceSectionHeaderAccessoryButtonFont();
-    v33 = [(UIButton *)self->_seeAllButton titleLabel];
-    [v33 setFont:v31];
+    borderlessButtonConfiguration = MUPlaceSectionHeaderAccessoryButtonFont();
+    titleLabel2 = [(UIButton *)self->_seeAllButton titleLabel];
+    [titleLabel2 setFont:borderlessButtonConfiguration];
   }
 
   [(UIButton *)self->_seeAllButton setAccessibilityIdentifier:@"PlaceSectionHeaderButton"];
@@ -177,13 +177,13 @@ LABEL_13:
   [(MUPlaceSectionHeaderView *)self addLayoutGuide:self->_headerFocusGuide];
 LABEL_18:
   v37 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v38 = [(UILabel *)self->_titleLabel leadingAnchor];
-  v39 = [(MUPlaceSectionHeaderView *)self leadingAnchor];
-  v40 = [v38 constraintEqualToAnchor:v39];
+  leadingAnchor = [(UILabel *)self->_titleLabel leadingAnchor];
+  leadingAnchor2 = [(MUPlaceSectionHeaderView *)self leadingAnchor];
+  v40 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v105[0] = v40;
-  v41 = [(UILabel *)self->_titleLabel topAnchor];
-  v42 = [(MUPlaceSectionHeaderView *)self topAnchor];
-  v43 = [v41 constraintEqualToAnchor:v42 constant:10.0];
+  topAnchor = [(UILabel *)self->_titleLabel topAnchor];
+  topAnchor2 = [(MUPlaceSectionHeaderView *)self topAnchor];
+  v43 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:10.0];
   v105[1] = v43;
   v44 = [MEMORY[0x1E695DEC8] arrayWithObjects:v105 count:2];
   v101 = v37;
@@ -193,18 +193,18 @@ LABEL_18:
   v46 = self->_subtitleLabel;
   if (v46)
   {
-    v98 = [(UILabel *)v46 leadingAnchor];
-    v96 = [(MUPlaceSectionHeaderView *)self leadingAnchor];
-    v47 = [v98 constraintEqualToAnchor:v96];
+    leadingAnchor3 = [(UILabel *)v46 leadingAnchor];
+    leadingAnchor4 = [(MUPlaceSectionHeaderView *)self leadingAnchor];
+    v47 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
     v104[0] = v47;
-    v48 = [(UILabel *)self->_subtitleLabel topAnchor];
-    v49 = [(UILabel *)self->_titleLabel bottomAnchor];
-    [v48 constraintEqualToAnchor:v49 constant:4.0];
+    topAnchor3 = [(UILabel *)self->_subtitleLabel topAnchor];
+    bottomAnchor = [(UILabel *)self->_titleLabel bottomAnchor];
+    [topAnchor3 constraintEqualToAnchor:bottomAnchor constant:4.0];
     v50 = v94 = v45;
     v104[1] = v50;
-    v51 = [(UILabel *)self->_subtitleLabel bottomAnchor];
-    v52 = [(MUPlaceSectionHeaderView *)self bottomAnchor];
-    v53 = [v51 constraintEqualToAnchor:v52];
+    bottomAnchor2 = [(UILabel *)self->_subtitleLabel bottomAnchor];
+    bottomAnchor3 = [(MUPlaceSectionHeaderView *)self bottomAnchor];
+    v53 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
     v104[2] = v53;
     v54 = [MEMORY[0x1E695DEC8] arrayWithObjects:v104 count:3];
     [v101 addObjectsFromArray:v54];
@@ -212,69 +212,69 @@ LABEL_18:
     v45 = self->_subtitleLabel;
   }
 
-  v55 = [(UILabel *)v45 bottomAnchor];
-  v56 = [(MUPlaceSectionHeaderView *)self bottomAnchor];
-  v57 = [v55 constraintEqualToAnchor:v56];
+  bottomAnchor4 = [(UILabel *)v45 bottomAnchor];
+  bottomAnchor5 = [(MUPlaceSectionHeaderView *)self bottomAnchor];
+  v57 = [bottomAnchor4 constraintEqualToAnchor:bottomAnchor5];
   v58 = v101;
   [v101 addObject:v57];
 
   v59 = self->_seeAllButton;
   if (v59)
   {
-    v60 = [(UIButton *)v59 bottomAnchor];
-    v61 = [(MUPlaceSectionHeaderView *)self bottomAnchor];
-    v62 = [v60 constraintEqualToAnchor:v61];
+    bottomAnchor6 = [(UIButton *)v59 bottomAnchor];
+    bottomAnchor7 = [(MUPlaceSectionHeaderView *)self bottomAnchor];
+    v62 = [bottomAnchor6 constraintEqualToAnchor:bottomAnchor7];
 
     LODWORD(v63) = 1132068864;
     [v62 setPriority:v63];
-    v89 = [(UILabel *)self->_titleLabel trailingAnchor];
-    v90 = [(UIButton *)self->_seeAllButton leadingAnchor];
-    v99 = [v89 constraintLessThanOrEqualToAnchor:v90 constant:-8.0];
+    trailingAnchor = [(UILabel *)self->_titleLabel trailingAnchor];
+    leadingAnchor5 = [(UIButton *)self->_seeAllButton leadingAnchor];
+    v99 = [trailingAnchor constraintLessThanOrEqualToAnchor:leadingAnchor5 constant:-8.0];
     v103[0] = v99;
-    v97 = [(UIButton *)self->_seeAllButton trailingAnchor];
-    v95 = [(MUPlaceSectionHeaderView *)self trailingAnchor];
-    v93 = [v97 constraintEqualToAnchor:v95];
+    trailingAnchor2 = [(UIButton *)self->_seeAllButton trailingAnchor];
+    trailingAnchor3 = [(MUPlaceSectionHeaderView *)self trailingAnchor];
+    v93 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3];
     v103[1] = v93;
-    v92 = [(UIButton *)self->_seeAllButton firstBaselineAnchor];
-    v100 = [(UILabel *)self->_titleLabel firstBaselineAnchor];
-    v91 = [v92 constraintEqualToAnchor:v100];
+    firstBaselineAnchor = [(UIButton *)self->_seeAllButton firstBaselineAnchor];
+    firstBaselineAnchor2 = [(UILabel *)self->_titleLabel firstBaselineAnchor];
+    v91 = [firstBaselineAnchor constraintEqualToAnchor:firstBaselineAnchor2];
     v103[2] = v91;
-    v88 = [(UIButton *)self->_seeAllButton topAnchor];
-    v87 = [(MUPlaceSectionHeaderView *)self topAnchor];
-    v86 = [v88 constraintGreaterThanOrEqualToAnchor:v87];
+    topAnchor4 = [(UIButton *)self->_seeAllButton topAnchor];
+    topAnchor5 = [(MUPlaceSectionHeaderView *)self topAnchor];
+    v86 = [topAnchor4 constraintGreaterThanOrEqualToAnchor:topAnchor5];
     v103[3] = v86;
     v103[4] = v62;
-    v85 = [(UIFocusGuide *)self->_headerFocusGuide leadingAnchor];
-    v84 = [(MUPlaceSectionHeaderView *)self leadingAnchor];
-    v83 = [v85 constraintEqualToAnchor:v84];
+    leadingAnchor6 = [(UIFocusGuide *)self->_headerFocusGuide leadingAnchor];
+    leadingAnchor7 = [(MUPlaceSectionHeaderView *)self leadingAnchor];
+    v83 = [leadingAnchor6 constraintEqualToAnchor:leadingAnchor7];
     v103[5] = v83;
-    v82 = [(UIFocusGuide *)self->_headerFocusGuide trailingAnchor];
-    v81 = [(MUPlaceSectionHeaderView *)self trailingAnchor];
-    v80 = [v82 constraintEqualToAnchor:v81];
+    trailingAnchor4 = [(UIFocusGuide *)self->_headerFocusGuide trailingAnchor];
+    trailingAnchor5 = [(MUPlaceSectionHeaderView *)self trailingAnchor];
+    v80 = [trailingAnchor4 constraintEqualToAnchor:trailingAnchor5];
     v103[6] = v80;
-    v64 = [(UIFocusGuide *)self->_headerFocusGuide topAnchor];
-    v65 = [(MUPlaceSectionHeaderView *)self topAnchor];
-    v66 = [v64 constraintEqualToAnchor:v65];
+    topAnchor6 = [(UIFocusGuide *)self->_headerFocusGuide topAnchor];
+    topAnchor7 = [(MUPlaceSectionHeaderView *)self topAnchor];
+    v66 = [topAnchor6 constraintEqualToAnchor:topAnchor7];
     v103[7] = v66;
-    v67 = [(UIFocusGuide *)self->_headerFocusGuide bottomAnchor];
-    v68 = [(MUPlaceSectionHeaderView *)self bottomAnchor];
-    v69 = [v67 constraintEqualToAnchor:v68];
+    bottomAnchor8 = [(UIFocusGuide *)self->_headerFocusGuide bottomAnchor];
+    bottomAnchor9 = [(MUPlaceSectionHeaderView *)self bottomAnchor];
+    v69 = [bottomAnchor8 constraintEqualToAnchor:bottomAnchor9];
     v103[8] = v69;
     v70 = [MEMORY[0x1E695DEC8] arrayWithObjects:v103 count:9];
     [v101 addObjectsFromArray:v70];
 
-    v71 = v62;
-    v72 = v89;
+    trailingAnchor6 = v62;
+    trailingAnchor7 = trailingAnchor;
 
-    v73 = v90;
+    v73 = leadingAnchor5;
     v58 = v101;
   }
 
   else
   {
-    v71 = [(UILabel *)self->_titleLabel trailingAnchor];
-    v72 = [(MUPlaceSectionHeaderView *)self trailingAnchor];
-    v73 = [v71 constraintEqualToAnchor:v72];
+    trailingAnchor6 = [(UILabel *)self->_titleLabel trailingAnchor];
+    trailingAnchor7 = [(MUPlaceSectionHeaderView *)self trailingAnchor];
+    v73 = [trailingAnchor6 constraintEqualToAnchor:trailingAnchor7];
     [v101 addObject:v73];
   }
 
@@ -299,16 +299,16 @@ id __40__MUPlaceSectionHeaderView__setupHeader__block_invoke(uint64_t a1, void *
   return v2;
 }
 
-- (MUPlaceSectionHeaderView)initWithViewModel:(id)a3
+- (MUPlaceSectionHeaderView)initWithViewModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   v9.receiver = self;
   v9.super_class = MUPlaceSectionHeaderView;
   v6 = [(MUPlaceSectionHeaderView *)&v9 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_headerViewModel, a3);
+    objc_storeStrong(&v6->_headerViewModel, model);
     [(MUPlaceSectionHeaderView *)v7 _setupHeader];
   }
 

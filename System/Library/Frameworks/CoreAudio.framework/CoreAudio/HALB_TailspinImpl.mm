@@ -2,7 +2,7 @@
 + (BOOL)enableTailspinSync;
 + (id)initOptionsDictionary;
 + (optional<std::string>)dumpTailspinSync:(optional<std::string> *__return_ptr)retstr forReason:;
-+ (void)prepareDumpOptions:(unint64_t)a3 outDict:(id *)a4;
++ (void)prepareDumpOptions:(unint64_t)options outDict:(id *)dict;
 @end
 
 @implementation HALB_TailspinImpl
@@ -19,16 +19,16 @@
     v33 = *MEMORY[0x1E696A370];
     v34[0] = &unk_1F5998868;
     v28 = [MEMORY[0x1E695DF18] dictionaryWithObjects:v34 forKeys:&v33 count:1];
-    v9 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
     v32 = 0;
-    [v9 createDirectoryAtPath:v8 withIntermediateDirectories:1 attributes:v28 error:&v32];
+    [defaultManager createDirectoryAtPath:v8 withIntermediateDirectories:1 attributes:v28 error:&v32];
     v26 = v32;
 
-    v27 = [MEMORY[0x1E695DF08] date];
+    date = [MEMORY[0x1E695DF08] date];
     v10 = objc_alloc_init(MEMORY[0x1E696AB78]);
     [v10 setDateFormat:@"yyyy-MM-dd_HH-mm-ss"];
     v11 = MEMORY[0x1E696AEC0];
-    v12 = [v10 stringFromDate:v27];
+    v12 = [v10 stringFromDate:date];
     v13 = [v11 stringWithFormat:@"AudioHAL_%@.tailspin", v12];
 
     v14 = [v8 stringByAppendingPathComponent:v13];
@@ -39,9 +39,9 @@
       NSLog(&cfstr_FailedToCreate.isa);
     }
 
-    v31 = [v5 initOptionsDictionary];
-    [v5 prepareDumpOptions:v4 outDict:&v31];
-    v17 = v31;
+    initOptionsDictionary = [v5 initOptionsDictionary];
+    [v5 prepareDumpOptions:v4 outDict:&initOptionsDictionary];
+    v17 = initOptionsDictionary;
     v18 = get_TSPDumpOptions_ReasonString();
     [v17 setValue:v7 forKey:v18];
 
@@ -49,7 +49,7 @@
     Symbol<BOOL (*)(int,NSDictionary *)>::initialize();
     if (weak_tailspin_dump_output_with_options_sync)
     {
-      v19 = (weak_tailspin_dump_output_with_options_sync)(v16, v31);
+      v19 = (weak_tailspin_dump_output_with_options_sync)(v16, initOptionsDictionary);
     }
 
     else
@@ -61,8 +61,8 @@
     if (v19)
     {
       v22 = v14;
-      v23 = [v14 UTF8String];
-      v24 = strlen(v23);
+      uTF8String = [v14 UTF8String];
+      v24 = strlen(uTF8String);
       if (v24 >= 0x7FFFFFFFFFFFFFF8)
       {
         std::string::__throw_length_error[abi:ne200100]();
@@ -77,7 +77,7 @@
       HIBYTE(v30) = v24;
       if (v24)
       {
-        memmove(&__dst, v23, v24);
+        memmove(&__dst, uTF8String, v24);
       }
 
       *(&__dst + v25) = 0;
@@ -346,7 +346,7 @@ LABEL_7:
   return v3;
 }
 
-+ (void)prepareDumpOptions:(unint64_t)a3 outDict:(id *)a4
++ (void)prepareDumpOptions:(unint64_t)options outDict:(id *)dict
 {
   v31 = *MEMORY[0x1E69E9840];
   v6 = get_TSPDumpOptions_MaxTimestamp();
@@ -372,29 +372,29 @@ LABEL_7:
         v25 = 1024;
         v26 = 191;
         v27 = 2048;
-        v28 = a3;
+        optionsCopy = options;
         _os_log_impl(&dword_1DE1F9000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "%25s:%-5d  HALB_TailspinImpl::dumpTailspin: Current mach time is %llu", &v23, 0x1Cu);
       }
 
-      endMachTimeOfLastDump = a3;
+      endMachTimeOfLastDump = options;
       v11 = v9 / v10;
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
       {
         v23 = 136315906;
-        v12 = a3 - v11;
+        v12 = options - v11;
         v24 = "HALB_Tailspin.mm";
         v25 = 1024;
         v26 = 195;
         v27 = 2048;
-        v28 = 5000;
+        optionsCopy = 5000;
         v29 = 2048;
-        v30 = v12;
+        optionsCopy2 = v12;
         _os_log_impl(&dword_1DE1F9000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "%25s:%-5d  HALB_TailspinImpl::dumpTailspin: Looking back %lld ms to time %llu", &v23, 0x26u);
       }
 
       else
       {
-        v12 = a3 - v11;
+        v12 = options - v11;
       }
 
       v13 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v12];
@@ -405,22 +405,22 @@ LABEL_7:
         v25 = 1024;
         v26 = 198;
         v27 = 2048;
-        v28 = 0;
+        optionsCopy = 0;
         v29 = 2048;
-        v30 = a3;
+        optionsCopy2 = options;
         _os_log_impl(&dword_1DE1F9000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "%25s:%-5d  HALB_TailspinImpl::dumpTailspin: Looking forward %lld ms to time %llu", &v23, 0x26u);
       }
 
       v14 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:endMachTimeOfLastDump];
-      v15 = *a4;
+      v15 = *dict;
       v16 = get_TSPDumpOptions_MaxTimestamp();
       [v15 setValue:v14 forKey:v16];
 
-      v17 = *a4;
+      v17 = *dict;
       v18 = get_TSPDumpOptions_MinTimestamp();
       [v17 setValue:v13 forKey:v18];
 
-      v19 = *a4;
+      v19 = *dict;
       v20 = [MEMORY[0x1E696AD98] numberWithInt:0];
       v21 = get_TSPDumpOptions_MinTraceBufferDurationSec();
       [v19 setValue:v20 forKey:v21];

@@ -3,12 +3,12 @@
 - (TUSearchController)searchController;
 - (TUSearchResults)searchResults;
 - (void)_cleanup;
-- (void)autocompleteFetch:(id)a3 didFailWithError:(id)a4;
-- (void)autocompleteFetch:(id)a3 didReceiveResults:(id)a4;
-- (void)autocompleteFetchDidFinish:(id)a3;
+- (void)autocompleteFetch:(id)fetch didFailWithError:(id)error;
+- (void)autocompleteFetch:(id)fetch didReceiveResults:(id)results;
+- (void)autocompleteFetchDidFinish:(id)finish;
 - (void)cancelSearch;
 - (void)dealloc;
-- (void)searchForString:(id)a3 completion:(id)a4;
+- (void)searchForString:(id)string completion:(id)completion;
 @end
 
 @implementation TUContactsAutocompleteSearchModule
@@ -24,8 +24,8 @@
     autocompleteResultPartitioner = v2->_autocompleteResultPartitioner;
     v2->_autocompleteResultPartitioner = v3;
 
-    v5 = [(TUContactsAutocompleteSearchModule *)v2 searchController];
-    [(TUAutocompleteResultPartitioner *)v2->_autocompleteResultPartitioner setSearchController:v5];
+    searchController = [(TUContactsAutocompleteSearchModule *)v2 searchController];
+    [(TUAutocompleteResultPartitioner *)v2->_autocompleteResultPartitioner setSearchController:searchController];
 
     v6 = dispatch_queue_create("com.apple.telephonyutilities.autocompletesearchmodule", 0);
     queue = v2->_queue;
@@ -45,25 +45,25 @@
 
 - (void)_cleanup
 {
-  v2 = [(TUContactsAutocompleteSearchModule *)self fetchRequest];
-  [v2 cancel];
+  fetchRequest = [(TUContactsAutocompleteSearchModule *)self fetchRequest];
+  [fetchRequest cancel];
 }
 
-- (void)searchForString:(id)a3 completion:(id)a4
+- (void)searchForString:(id)string completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(TUContactsAutocompleteSearchModule *)self queue];
+  stringCopy = string;
+  completionCopy = completion;
+  queue = [(TUContactsAutocompleteSearchModule *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __65__TUContactsAutocompleteSearchModule_searchForString_completion___block_invoke;
   block[3] = &unk_1E7425F68;
-  v12 = v6;
-  v13 = v7;
+  v12 = stringCopy;
+  v13 = completionCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
-  dispatch_async(v8, block);
+  v9 = stringCopy;
+  v10 = completionCopy;
+  dispatch_async(queue, block);
 }
 
 void __65__TUContactsAutocompleteSearchModule_searchForString_completion___block_invoke(uint64_t a1)
@@ -138,13 +138,13 @@ void *__65__TUContactsAutocompleteSearchModule_searchForString_completion___bloc
 
 - (void)cancelSearch
 {
-  v3 = [(TUContactsAutocompleteSearchModule *)self queue];
+  queue = [(TUContactsAutocompleteSearchModule *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __50__TUContactsAutocompleteSearchModule_cancelSearch__block_invoke;
   block[3] = &unk_1E7424950;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 uint64_t __50__TUContactsAutocompleteSearchModule_cancelSearch__block_invoke(uint64_t a1)
@@ -163,14 +163,14 @@ uint64_t __50__TUContactsAutocompleteSearchModule_cancelSearch__block_invoke(uin
   v10 = __Block_byref_object_copy__14;
   v11 = __Block_byref_object_dispose__14;
   v12 = 0;
-  v3 = [(TUContactsAutocompleteSearchModule *)self queue];
+  queue = [(TUContactsAutocompleteSearchModule *)self queue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __51__TUContactsAutocompleteSearchModule_searchResults__block_invoke;
   v6[3] = &unk_1E7425318;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(queue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -187,21 +187,21 @@ void __51__TUContactsAutocompleteSearchModule_searchResults__block_invoke(uint64
   *(v3 + 40) = v2;
 }
 
-- (void)autocompleteFetch:(id)a3 didReceiveResults:(id)a4
+- (void)autocompleteFetch:(id)fetch didReceiveResults:(id)results
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(TUContactsAutocompleteSearchModule *)self queue];
+  fetchCopy = fetch;
+  resultsCopy = results;
+  queue = [(TUContactsAutocompleteSearchModule *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __74__TUContactsAutocompleteSearchModule_autocompleteFetch_didReceiveResults___block_invoke;
   block[3] = &unk_1E7424FD8;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
-  dispatch_async(v8, block);
+  v12 = resultsCopy;
+  v13 = fetchCopy;
+  v9 = fetchCopy;
+  v10 = resultsCopy;
+  dispatch_async(queue, block);
 }
 
 void __74__TUContactsAutocompleteSearchModule_autocompleteFetch_didReceiveResults___block_invoke(uint64_t a1)
@@ -281,18 +281,18 @@ void __74__TUContactsAutocompleteSearchModule_autocompleteFetch_didReceiveResult
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)autocompleteFetch:(id)a3 didFailWithError:(id)a4
+- (void)autocompleteFetch:(id)fetch didFailWithError:(id)error
 {
-  v5 = a4;
-  v6 = [(TUContactsAutocompleteSearchModule *)self queue];
+  errorCopy = error;
+  queue = [(TUContactsAutocompleteSearchModule *)self queue];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __73__TUContactsAutocompleteSearchModule_autocompleteFetch_didFailWithError___block_invoke;
   v8[3] = &unk_1E7424898;
-  v9 = v5;
-  v10 = self;
-  v7 = v5;
-  dispatch_async(v6, v8);
+  v9 = errorCopy;
+  selfCopy = self;
+  v7 = errorCopy;
+  dispatch_async(queue, v8);
 }
 
 uint64_t __73__TUContactsAutocompleteSearchModule_autocompleteFetch_didFailWithError___block_invoke(uint64_t a1)
@@ -321,15 +321,15 @@ uint64_t __73__TUContactsAutocompleteSearchModule_autocompleteFetch_didFailWithE
   return result;
 }
 
-- (void)autocompleteFetchDidFinish:(id)a3
+- (void)autocompleteFetchDidFinish:(id)finish
 {
-  v4 = [(TUContactsAutocompleteSearchModule *)self queue];
+  queue = [(TUContactsAutocompleteSearchModule *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __65__TUContactsAutocompleteSearchModule_autocompleteFetchDidFinish___block_invoke;
   block[3] = &unk_1E7424950;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(queue, block);
 }
 
 void __65__TUContactsAutocompleteSearchModule_autocompleteFetchDidFinish___block_invoke(uint64_t a1)

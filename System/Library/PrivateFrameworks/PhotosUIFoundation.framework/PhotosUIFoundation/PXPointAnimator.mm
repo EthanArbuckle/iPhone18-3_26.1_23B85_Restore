@@ -3,21 +3,21 @@
 - (CGPoint)presentationValue;
 - (CGPoint)value;
 - (NSString)description;
-- (PXPointAnimator)initWithValue:(CGPoint)a3 epsilon:(double)a4;
-- (void)_setInternalValue:(CGPoint)a3;
+- (PXPointAnimator)initWithValue:(CGPoint)value epsilon:(double)epsilon;
+- (void)_setInternalValue:(CGPoint)value;
 - (void)_update;
 - (void)didPerformChanges;
-- (void)handleDisplayLink:(id)a3;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)performChanges:(id)a3;
-- (void)performChangesUsingDefaultSpringAnimationWithInitialVelocity:(CGPoint)a3 changes:(id)a4;
-- (void)performChangesUsingSpringAnimationWithStiffness:(double)a3 dampingRatio:(double)a4 initialVelocity:(CGPoint)a5 changes:(id)a6;
-- (void)performChangesWithDuration:(double)a3 curve:(int64_t)a4 changes:(id)a5;
-- (void)performChangesWithoutAnimation:(id)a3;
-- (void)setIsAnimating:(BOOL)a3;
-- (void)setLabel:(id)a3;
-- (void)setPresentationValue:(CGPoint)a3;
-- (void)setValue:(CGPoint)a3;
+- (void)handleDisplayLink:(id)link;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)performChanges:(id)changes;
+- (void)performChangesUsingDefaultSpringAnimationWithInitialVelocity:(CGPoint)velocity changes:(id)changes;
+- (void)performChangesUsingSpringAnimationWithStiffness:(double)stiffness dampingRatio:(double)ratio initialVelocity:(CGPoint)velocity changes:(id)changes;
+- (void)performChangesWithDuration:(double)duration curve:(int64_t)curve changes:(id)changes;
+- (void)performChangesWithoutAnimation:(id)animation;
+- (void)setIsAnimating:(BOOL)animating;
+- (void)setLabel:(id)label;
+- (void)setPresentationValue:(CGPoint)value;
+- (void)setValue:(CGPoint)value;
 @end
 
 @implementation PXPointAnimator
@@ -40,18 +40,18 @@
   return result;
 }
 
-- (void)handleDisplayLink:(id)a3
+- (void)handleDisplayLink:(id)link
 {
-  v4 = a3;
+  linkCopy = link;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __37__PXPointAnimator_handleDisplayLink___block_invoke;
   v7[3] = &unk_1E7BB7D80;
   v7[4] = self;
-  v8 = v4;
+  v8 = linkCopy;
   v6.receiver = self;
   v6.super_class = PXPointAnimator;
-  v5 = v4;
+  v5 = linkCopy;
   [(PXObservable *)&v6 performChanges:v7];
 }
 
@@ -64,17 +64,17 @@ uint64_t __37__PXPointAnimator_handleDisplayLink___block_invoke(uint64_t a1)
   return [v3 handleDisplayLink:v2];
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
   v5.receiver = self;
   v5.super_class = PXPointAnimator;
-  [(PXObservable *)&v5 performChanges:&__block_literal_global_14906, a4, a5];
+  [(PXObservable *)&v5 performChanges:&__block_literal_global_14906, change, context];
 }
 
-- (void)setValue:(CGPoint)a3
+- (void)setValue:(CGPoint)value
 {
-  y = a3.y;
-  [(PXMutableNumberAnimator *)self->_xAnimator setValue:a3.x];
+  y = value.y;
+  [(PXMutableNumberAnimator *)self->_xAnimator setValue:value.x];
   yAnimator = self->_yAnimator;
 
   [(PXMutableNumberAnimator *)yAnimator setValue:y];
@@ -88,18 +88,18 @@ uint64_t __37__PXPointAnimator_handleDisplayLink___block_invoke(uint64_t a1)
   [(PXPointAnimator *)self _update];
 }
 
-- (void)performChanges:(id)a3
+- (void)performChanges:(id)changes
 {
-  v4 = a3;
+  changesCopy = changes;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __34__PXPointAnimator_performChanges___block_invoke;
   v7[3] = &unk_1E7BB7C98;
   v7[4] = self;
-  v8 = v4;
+  v8 = changesCopy;
   v6.receiver = self;
   v6.super_class = PXPointAnimator;
-  v5 = v4;
+  v5 = changesCopy;
   [(PXObservable *)&v6 performChanges:v7];
 }
 
@@ -130,35 +130,35 @@ void __34__PXPointAnimator_performChanges___block_invoke_2(uint64_t a1)
   [v2 performChanges:v4];
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
-  objc_storeStrong(&self->_label, a3);
-  v5 = a3;
-  v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"x_%@", v5];
-  [(PXMutableNumberAnimator *)self->_xAnimator setLabel:v6];
+  objc_storeStrong(&self->_label, label);
+  labelCopy = label;
+  labelCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"x_%@", labelCopy];
+  [(PXMutableNumberAnimator *)self->_xAnimator setLabel:labelCopy];
 
-  v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"y_%@", v5];
-  [(PXMutableNumberAnimator *)self->_yAnimator setLabel:v7];
+  labelCopy2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"y_%@", labelCopy];
+  [(PXMutableNumberAnimator *)self->_yAnimator setLabel:labelCopy2];
 }
 
-- (void)performChangesUsingSpringAnimationWithStiffness:(double)a3 dampingRatio:(double)a4 initialVelocity:(CGPoint)a5 changes:(id)a6
+- (void)performChangesUsingSpringAnimationWithStiffness:(double)stiffness dampingRatio:(double)ratio initialVelocity:(CGPoint)velocity changes:(id)changes
 {
-  y = a5.y;
-  x = a5.x;
-  v11 = a6;
+  y = velocity.y;
+  x = velocity.x;
+  changesCopy = changes;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __104__PXPointAnimator_performChangesUsingSpringAnimationWithStiffness_dampingRatio_initialVelocity_changes___block_invoke;
   v14[3] = &unk_1E7BB7D38;
-  v16 = a3;
-  v17 = a4;
+  stiffnessCopy = stiffness;
+  ratioCopy = ratio;
   v18 = x;
   v19 = y;
   v14[4] = self;
-  v15 = v11;
+  v15 = changesCopy;
   v13.receiver = self;
   v13.super_class = PXPointAnimator;
-  v12 = v11;
+  v12 = changesCopy;
   [(PXObservable *)&v13 performChanges:v14];
 }
 
@@ -197,11 +197,11 @@ void __104__PXPointAnimator_performChangesUsingSpringAnimationWithStiffness_damp
   [v2 performChangesUsingSpringAnimationWithStiffness:v7 dampingRatio:v3 initialVelocity:v4 changes:v5];
 }
 
-- (void)performChangesUsingDefaultSpringAnimationWithInitialVelocity:(CGPoint)a3 changes:(id)a4
+- (void)performChangesUsingDefaultSpringAnimationWithInitialVelocity:(CGPoint)velocity changes:(id)changes
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = velocity.y;
+  x = velocity.x;
+  changesCopy = changes;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __88__PXPointAnimator_performChangesUsingDefaultSpringAnimationWithInitialVelocity_changes___block_invoke;
@@ -209,10 +209,10 @@ void __104__PXPointAnimator_performChangesUsingSpringAnimationWithStiffness_damp
   v12 = x;
   v13 = y;
   v10[4] = self;
-  v11 = v7;
+  v11 = changesCopy;
   v9.receiver = self;
   v9.super_class = PXPointAnimator;
-  v8 = v7;
+  v8 = changesCopy;
   [(PXObservable *)&v9 performChanges:v10];
 }
 
@@ -246,20 +246,20 @@ void __88__PXPointAnimator_performChangesUsingDefaultSpringAnimationWithInitialV
   [v2 performChangesUsingDefaultSpringAnimationWithInitialVelocity:v5 changes:v3];
 }
 
-- (void)performChangesWithDuration:(double)a3 curve:(int64_t)a4 changes:(id)a5
+- (void)performChangesWithDuration:(double)duration curve:(int64_t)curve changes:(id)changes
 {
-  v8 = a5;
+  changesCopy = changes;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __60__PXPointAnimator_performChangesWithDuration_curve_changes___block_invoke;
   v11[3] = &unk_1E7BB7CE8;
-  v13 = a3;
-  v14 = a4;
+  durationCopy = duration;
+  curveCopy = curve;
   v11[4] = self;
-  v12 = v8;
+  v12 = changesCopy;
   v10.receiver = self;
   v10.super_class = PXPointAnimator;
-  v9 = v8;
+  v9 = changesCopy;
   [(PXObservable *)&v10 performChanges:v11];
 }
 
@@ -295,18 +295,18 @@ void __60__PXPointAnimator_performChangesWithDuration_curve_changes___block_invo
   [v2 performChangesWithDuration:v4 curve:v6 changes:v3];
 }
 
-- (void)performChangesWithoutAnimation:(id)a3
+- (void)performChangesWithoutAnimation:(id)animation
 {
-  v4 = a3;
+  animationCopy = animation;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __50__PXPointAnimator_performChangesWithoutAnimation___block_invoke;
   v7[3] = &unk_1E7BB7C98;
   v7[4] = self;
-  v8 = v4;
+  v8 = animationCopy;
   v6.receiver = self;
   v6.super_class = PXPointAnimator;
-  v5 = v4;
+  v5 = animationCopy;
   [(PXObservable *)&v6 performChanges:v7];
 }
 
@@ -337,29 +337,29 @@ void __50__PXPointAnimator_performChangesWithoutAnimation___block_invoke_2(uint6
   [v2 performChangesWithoutAnimation:v4];
 }
 
-- (void)setIsAnimating:(BOOL)a3
+- (void)setIsAnimating:(BOOL)animating
 {
-  if (self->_isAnimating != a3)
+  if (self->_isAnimating != animating)
   {
-    self->_isAnimating = a3;
+    self->_isAnimating = animating;
     [(PXObservable *)self signalChange:4];
   }
 }
 
-- (void)setPresentationValue:(CGPoint)a3
+- (void)setPresentationValue:(CGPoint)value
 {
-  if (self->_presentationValue.x != a3.x || self->_presentationValue.y != a3.y)
+  if (self->_presentationValue.x != value.x || self->_presentationValue.y != value.y)
   {
-    self->_presentationValue = a3;
+    self->_presentationValue = value;
     [(PXObservable *)self signalChange:2];
   }
 }
 
-- (void)_setInternalValue:(CGPoint)a3
+- (void)_setInternalValue:(CGPoint)value
 {
-  if (self->_value.x != a3.x || self->_value.y != a3.y)
+  if (self->_value.x != value.x || self->_value.y != value.y)
   {
-    self->_value = a3;
+    self->_value = value;
     [(PXObservable *)self signalChange:1];
   }
 }
@@ -376,15 +376,15 @@ void __50__PXPointAnimator_performChangesWithoutAnimation___block_invoke_2(uint6
   [(PXPointAnimator *)self setPresentationValue:v7, v8];
   if (([(PXMutableNumberAnimator *)self->_xAnimator isAnimating]& 1) != 0)
   {
-    v9 = 1;
+    isAnimating = 1;
   }
 
   else
   {
-    v9 = [(PXMutableNumberAnimator *)self->_yAnimator isAnimating];
+    isAnimating = [(PXMutableNumberAnimator *)self->_yAnimator isAnimating];
   }
 
-  [(PXPointAnimator *)self setIsAnimating:v9];
+  [(PXPointAnimator *)self setIsAnimating:isAnimating];
 }
 
 - (CGPoint)approximateVelocity
@@ -404,17 +404,17 @@ void __50__PXPointAnimator_performChangesWithoutAnimation___block_invoke_2(uint6
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(PXPointAnimator *)self xAnimator];
-  v7 = [(PXPointAnimator *)self yAnimator];
-  v8 = [v3 stringWithFormat:@"<%@:%p x = %@, y = %@>", v5, self, v6, v7];;
+  xAnimator = [(PXPointAnimator *)self xAnimator];
+  yAnimator = [(PXPointAnimator *)self yAnimator];
+  v8 = [v3 stringWithFormat:@"<%@:%p x = %@, y = %@>", v5, self, xAnimator, yAnimator];;
 
   return v8;
 }
 
-- (PXPointAnimator)initWithValue:(CGPoint)a3 epsilon:(double)a4
+- (PXPointAnimator)initWithValue:(CGPoint)value epsilon:(double)epsilon
 {
-  y = a3.y;
-  x = a3.x;
+  y = value.y;
+  x = value.x;
   v16.receiver = self;
   v16.super_class = PXPointAnimator;
   v7 = [(PXObservable *)&v16 init];
@@ -428,7 +428,7 @@ void __50__PXPointAnimator_performChangesWithoutAnimation___block_invoke_2(uint6
     v12 = v7;
     v13 = x;
     v14 = y;
-    v15 = a4;
+    epsilonCopy = epsilon;
     v10.receiver = v12;
     v10.super_class = PXPointAnimator;
     [(PXObservable *)&v10 performChanges:v11];

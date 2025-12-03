@@ -1,22 +1,22 @@
 @interface DataConnectionNetworkAgentInternetSliceRouter
-- (BOOL)assertAgentWithOptions:(id)a3;
-- (void)unassertAgentWithOptions:(id)a3;
+- (BOOL)assertAgentWithOptions:(id)options;
+- (void)unassertAgentWithOptions:(id)options;
 @end
 
 @implementation DataConnectionNetworkAgentInternetSliceRouter
 
-- (BOOL)assertAgentWithOptions:(id)a3
+- (BOOL)assertAgentWithOptions:(id)options
 {
-  v4 = a3;
-  DataConnectionAgent::assertDataAgentWithOptions([(DataConnectionNetworkAgent *)self dataAgent], v4, 1);
+  optionsCopy = options;
+  DataConnectionAgent::assertDataAgentWithOptions([(DataConnectionNetworkAgent *)self dataAgent], optionsCopy, 1);
 
   return 1;
 }
 
-- (void)unassertAgentWithOptions:(id)a3
+- (void)unassertAgentWithOptions:(id)options
 {
-  v4 = a3;
-  DataConnectionAgent::unassertDataAgentWithOptions([(DataConnectionNetworkAgent *)self dataAgent], v4, 1);
+  optionsCopy = options;
+  DataConnectionAgent::unassertDataAgentWithOptions([(DataConnectionNetworkAgent *)self dataAgent], optionsCopy, 1);
 }
 
 @end

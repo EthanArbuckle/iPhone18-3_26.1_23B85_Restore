@@ -8,12 +8,12 @@
 - (id)pl_newSurroundingLocationsHashes
 {
   v9[16] = *MEMORY[0x1E69E9840];
-  v1 = [a1 pl_locationHash];
+  pl_locationHash = [self pl_locationHash];
   v2 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v3 = [MEMORY[0x1E696AD98] numberWithInt:v1];
+  v3 = [MEMORY[0x1E696AD98] numberWithInt:pl_locationHash];
   [v2 addObject:v3];
 
-  PLGetGeohashCoordinates(v1);
+  PLGetGeohashCoordinates(pl_locationHash);
   v4 = 0;
   *v9 = v5;
   *&v9[1] = v6 + 1.0;
@@ -46,7 +46,7 @@
 
 - (uint64_t)pl_locationHash
 {
-  [a1 coordinate];
+  [self coordinate];
 
   return PLCalculateAreaHashImpl(14, 0, 0, v1, v2, 90.0, -180.0, -90.0, 180.0);
 }

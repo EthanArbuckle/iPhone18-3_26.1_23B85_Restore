@@ -1,26 +1,26 @@
 @interface FLOWSchemaFLOWMediaPlayerRadioStationContext
-- (BOOL)isEqual:(id)a3;
-- (FLOWSchemaFLOWMediaPlayerRadioStationContext)initWithDictionary:(id)a3;
-- (FLOWSchemaFLOWMediaPlayerRadioStationContext)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (FLOWSchemaFLOWMediaPlayerRadioStationContext)initWithDictionary:(id)dictionary;
+- (FLOWSchemaFLOWMediaPlayerRadioStationContext)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation FLOWSchemaFLOWMediaPlayerRadioStationContext
 
-- (FLOWSchemaFLOWMediaPlayerRadioStationContext)initWithDictionary:(id)a3
+- (FLOWSchemaFLOWMediaPlayerRadioStationContext)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v11.receiver = self;
   v11.super_class = FLOWSchemaFLOWMediaPlayerRadioStationContext;
   v5 = [(FLOWSchemaFLOWMediaPlayerRadioStationContext *)&v11 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"linkId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"linkId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -28,7 +28,7 @@
       [(FLOWSchemaFLOWMediaPlayerRadioStationContext *)v5 setLinkId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"radioStationSubtype"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"radioStationSubtype"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -41,30 +41,30 @@
   return v5;
 }
 
-- (FLOWSchemaFLOWMediaPlayerRadioStationContext)initWithJSON:(id)a3
+- (FLOWSchemaFLOWMediaPlayerRadioStationContext)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(FLOWSchemaFLOWMediaPlayerRadioStationContext *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(FLOWSchemaFLOWMediaPlayerRadioStationContext *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(FLOWSchemaFLOWMediaPlayerRadioStationContext *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -77,20 +77,20 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_linkId)
   {
-    v4 = [(FLOWSchemaFLOWMediaPlayerRadioStationContext *)self linkId];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    linkId = [(FLOWSchemaFLOWMediaPlayerRadioStationContext *)self linkId];
+    dictionaryRepresentation = [linkId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"linkId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"linkId"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"linkId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"linkId"];
     }
   }
 
@@ -107,12 +107,12 @@
       v8 = off_1E78D5F00[v7];
     }
 
-    [v3 setObject:v8 forKeyedSubscript:@"radioStationSubtype"];
+    [dictionary setObject:v8 forKeyedSubscript:@"radioStationSubtype"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -131,18 +131,18 @@
   return v4 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(FLOWSchemaFLOWMediaPlayerRadioStationContext *)self linkId];
-  v6 = [v4 linkId];
-  v7 = v6;
-  if ((v5 != 0) == (v6 == 0))
+  linkId = [(FLOWSchemaFLOWMediaPlayerRadioStationContext *)self linkId];
+  linkId2 = [equalCopy linkId];
+  v7 = linkId2;
+  if ((linkId != 0) == (linkId2 == 0))
   {
 
 LABEL_12:
@@ -150,13 +150,13 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v8 = [(FLOWSchemaFLOWMediaPlayerRadioStationContext *)self linkId];
-  if (v8)
+  linkId3 = [(FLOWSchemaFLOWMediaPlayerRadioStationContext *)self linkId];
+  if (linkId3)
   {
-    v9 = v8;
-    v10 = [(FLOWSchemaFLOWMediaPlayerRadioStationContext *)self linkId];
-    v11 = [v4 linkId];
-    v12 = [v10 isEqual:v11];
+    v9 = linkId3;
+    linkId4 = [(FLOWSchemaFLOWMediaPlayerRadioStationContext *)self linkId];
+    linkId5 = [equalCopy linkId];
+    v12 = [linkId4 isEqual:linkId5];
 
     if (!v12)
     {
@@ -168,7 +168,7 @@ LABEL_12:
   {
   }
 
-  if ((*&self->_has & 1) != (v4[20] & 1))
+  if ((*&self->_has & 1) != (equalCopy[20] & 1))
   {
     goto LABEL_12;
   }
@@ -176,7 +176,7 @@ LABEL_12:
   if (*&self->_has)
   {
     radioStationSubtype = self->_radioStationSubtype;
-    if (radioStationSubtype != [v4 radioStationSubtype])
+    if (radioStationSubtype != [equalCopy radioStationSubtype])
     {
       goto LABEL_12;
     }
@@ -188,14 +188,14 @@ LABEL_13:
   return v14;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
-  v4 = [(FLOWSchemaFLOWMediaPlayerRadioStationContext *)self linkId];
+  toCopy = to;
+  linkId = [(FLOWSchemaFLOWMediaPlayerRadioStationContext *)self linkId];
 
-  if (v4)
+  if (linkId)
   {
-    v5 = [(FLOWSchemaFLOWMediaPlayerRadioStationContext *)self linkId];
+    linkId2 = [(FLOWSchemaFLOWMediaPlayerRadioStationContext *)self linkId];
     PBDataWriterWriteSubmessage();
   }
 
@@ -205,17 +205,17 @@ LABEL_13:
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = FLOWSchemaFLOWMediaPlayerRadioStationContext;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(FLOWSchemaFLOWMediaPlayerRadioStationContext *)self linkId:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(FLOWSchemaFLOWMediaPlayerRadioStationContext *)self deleteLinkId];
   }

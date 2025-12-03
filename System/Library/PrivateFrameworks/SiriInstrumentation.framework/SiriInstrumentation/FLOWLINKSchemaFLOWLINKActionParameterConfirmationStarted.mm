@@ -1,25 +1,25 @@
 @interface FLOWLINKSchemaFLOWLINKActionParameterConfirmationStarted
-- (BOOL)isEqual:(id)a3;
-- (FLOWLINKSchemaFLOWLINKActionParameterConfirmationStarted)initWithDictionary:(id)a3;
-- (FLOWLINKSchemaFLOWLINKActionParameterConfirmationStarted)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (FLOWLINKSchemaFLOWLINKActionParameterConfirmationStarted)initWithDictionary:(id)dictionary;
+- (FLOWLINKSchemaFLOWLINKActionParameterConfirmationStarted)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation FLOWLINKSchemaFLOWLINKActionParameterConfirmationStarted
 
-- (FLOWLINKSchemaFLOWLINKActionParameterConfirmationStarted)initWithDictionary:(id)a3
+- (FLOWLINKSchemaFLOWLINKActionParameterConfirmationStarted)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v10.receiver = self;
   v10.super_class = FLOWLINKSchemaFLOWLINKActionParameterConfirmationStarted;
   v5 = [(FLOWLINKSchemaFLOWLINKActionParameterConfirmationStarted *)&v10 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"parameter"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"parameter"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -33,30 +33,30 @@
   return v5;
 }
 
-- (FLOWLINKSchemaFLOWLINKActionParameterConfirmationStarted)initWithJSON:(id)a3
+- (FLOWLINKSchemaFLOWLINKActionParameterConfirmationStarted)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(FLOWLINKSchemaFLOWLINKActionParameterConfirmationStarted *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(FLOWLINKSchemaFLOWLINKActionParameterConfirmationStarted *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(FLOWLINKSchemaFLOWLINKActionParameterConfirmationStarted *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -69,40 +69,40 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_parameter)
   {
-    v4 = [(FLOWLINKSchemaFLOWLINKActionParameterConfirmationStarted *)self parameter];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    parameter = [(FLOWLINKSchemaFLOWLINKActionParameterConfirmationStarted *)self parameter];
+    dictionaryRepresentation = [parameter dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"parameter"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"parameter"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"parameter"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"parameter"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(FLOWLINKSchemaFLOWLINKActionParameterConfirmationStarted *)self parameter];
-    v6 = [v4 parameter];
-    v7 = v6;
-    if ((v5 != 0) != (v6 == 0))
+    parameter = [(FLOWLINKSchemaFLOWLINKActionParameterConfirmationStarted *)self parameter];
+    parameter2 = [equalCopy parameter];
+    v7 = parameter2;
+    if ((parameter != 0) != (parameter2 == 0))
     {
-      v8 = [(FLOWLINKSchemaFLOWLINKActionParameterConfirmationStarted *)self parameter];
-      if (!v8)
+      parameter3 = [(FLOWLINKSchemaFLOWLINKActionParameterConfirmationStarted *)self parameter];
+      if (!parameter3)
       {
 
 LABEL_10:
@@ -110,10 +110,10 @@ LABEL_10:
         goto LABEL_8;
       }
 
-      v9 = v8;
-      v10 = [(FLOWLINKSchemaFLOWLINKActionParameterConfirmationStarted *)self parameter];
-      v11 = [v4 parameter];
-      v12 = [v10 isEqual:v11];
+      v9 = parameter3;
+      parameter4 = [(FLOWLINKSchemaFLOWLINKActionParameterConfirmationStarted *)self parameter];
+      parameter5 = [equalCopy parameter];
+      v12 = [parameter4 isEqual:parameter5];
 
       if (v12)
       {
@@ -132,29 +132,29 @@ LABEL_8:
   return v13;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
-  v4 = [(FLOWLINKSchemaFLOWLINKActionParameterConfirmationStarted *)self parameter];
+  toCopy = to;
+  parameter = [(FLOWLINKSchemaFLOWLINKActionParameterConfirmationStarted *)self parameter];
 
-  if (v4)
+  if (parameter)
   {
-    v5 = [(FLOWLINKSchemaFLOWLINKActionParameterConfirmationStarted *)self parameter];
+    parameter2 = [(FLOWLINKSchemaFLOWLINKActionParameterConfirmationStarted *)self parameter];
     PBDataWriterWriteSubmessage();
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = FLOWLINKSchemaFLOWLINKActionParameterConfirmationStarted;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(FLOWLINKSchemaFLOWLINKActionParameterConfirmationStarted *)self parameter:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(FLOWLINKSchemaFLOWLINKActionParameterConfirmationStarted *)self deleteParameter];
   }

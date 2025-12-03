@@ -1,19 +1,19 @@
 @interface MFMessageSignerEMMessageSignerTransformer
-+ (id)messageSignerFromMFMessageSigner:(id)a3;
++ (id)messageSignerFromMFMessageSigner:(id)signer;
 @end
 
 @implementation MFMessageSignerEMMessageSignerTransformer
 
-+ (id)messageSignerFromMFMessageSigner:(id)a3
++ (id)messageSignerFromMFMessageSigner:(id)signer
 {
-  v3 = a3;
-  v4 = [v3 signingCertificateTrustInfo];
-  v5 = [MFCertificateTrustInfoEMCertificateTrustInformationTransformer certificateTrustInformationFromMFCertificateTrustInfo:v4];
+  signerCopy = signer;
+  signingCertificateTrustInfo = [signerCopy signingCertificateTrustInfo];
+  v5 = [MFCertificateTrustInfoEMCertificateTrustInformationTransformer certificateTrustInformationFromMFCertificateTrustInfo:signingCertificateTrustInfo];
 
-  v6 = [v3 encryptionCertificateTrustInfo];
-  if (v6)
+  encryptionCertificateTrustInfo = [signerCopy encryptionCertificateTrustInfo];
+  if (encryptionCertificateTrustInfo)
   {
-    v7 = [MFCertificateTrustInfoEMCertificateTrustInformationTransformer certificateTrustInformationFromMFCertificateTrustInfo:v6];
+    v7 = [MFCertificateTrustInfoEMCertificateTrustInformationTransformer certificateTrustInformationFromMFCertificateTrustInfo:encryptionCertificateTrustInfo];
   }
 
   else

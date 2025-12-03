@@ -12,11 +12,11 @@
 - (id)_mapkit_fontDescriptorByAddingFeaturesForTabularFigures
 {
   v7[1] = *MEMORY[0x1E69E9840];
-  v2 = [objc_opt_class() _mapkit_fontFeaturesForTabularFigures];
+  _mapkit_fontFeaturesForTabularFigures = [objc_opt_class() _mapkit_fontFeaturesForTabularFigures];
   v6 = *MEMORY[0x1E69DB8B0];
-  v7[0] = v2;
+  v7[0] = _mapkit_fontFeaturesForTabularFigures;
   v3 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v7 forKeys:&v6 count:1];
-  v4 = [a1 fontDescriptorByAddingAttributes:v3];
+  v4 = [self fontDescriptorByAddingAttributes:v3];
 
   return v4;
 }
@@ -28,7 +28,7 @@
   v8 = *MEMORY[0x1E69DB8B0];
   v9[0] = v4;
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:&v8 count:1];
-  v6 = [a1 fontDescriptorByAddingAttributes:v5];
+  v6 = [self fontDescriptorByAddingAttributes:v5];
 
   return v6;
 }
@@ -36,8 +36,8 @@
 + (id)_mapkit_fontFeaturesForTabularFigures
 {
   v4[1] = *MEMORY[0x1E69E9840];
-  v1 = [a1 _mapkit_fontMonospaceFeature];
-  v4[0] = v1;
+  _mapkit_fontMonospaceFeature = [self _mapkit_fontMonospaceFeature];
+  v4[0] = _mapkit_fontMonospaceFeature;
   v2 = [MEMORY[0x1E695DEC8] arrayWithObjects:v4 count:1];
 
   return v2;
@@ -72,13 +72,13 @@
 + (id)_mapkit_fontFeaturesForTimeDisplayUseMonospace:()MKCrossPlatformExtras
 {
   v5 = MEMORY[0x1E695DF70];
-  v6 = [a1 _mapkit_fontRoundedColonFeature];
-  v7 = [v5 arrayWithObject:v6];
+  _mapkit_fontRoundedColonFeature = [self _mapkit_fontRoundedColonFeature];
+  v7 = [v5 arrayWithObject:_mapkit_fontRoundedColonFeature];
 
   if (a3)
   {
-    v8 = [a1 _mapkit_fontMonospaceFeature];
-    [v7 addObject:v8];
+    _mapkit_fontMonospaceFeature = [self _mapkit_fontMonospaceFeature];
+    [v7 addObject:_mapkit_fontMonospaceFeature];
   }
 
   v9 = [MEMORY[0x1E695DEC8] arrayWithArray:v7];

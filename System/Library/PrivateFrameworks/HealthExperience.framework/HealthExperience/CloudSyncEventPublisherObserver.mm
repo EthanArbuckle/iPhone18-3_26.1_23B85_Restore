@@ -1,23 +1,23 @@
 @interface CloudSyncEventPublisherObserver
 - (_TtC16HealthExperience31CloudSyncEventPublisherObserver)init;
-- (void)cloudSyncObserver:(id)a3 syncFailedWithError:(id)a4;
-- (void)cloudSyncObserverSyncCompleted:(id)a3;
+- (void)cloudSyncObserver:(id)observer syncFailedWithError:(id)error;
+- (void)cloudSyncObserverSyncCompleted:(id)completed;
 @end
 
 @implementation CloudSyncEventPublisherObserver
 
-- (void)cloudSyncObserver:(id)a3 syncFailedWithError:(id)a4
+- (void)cloudSyncObserver:(id)observer syncFailedWithError:(id)error
 {
-  v5 = a4;
-  v6 = self;
+  errorCopy = error;
+  selfCopy = self;
   sub_1D0FF4F18();
 
-  sub_1D0F62E1C(a4, 1u);
+  sub_1D0F62E1C(error, 1u);
 }
 
-- (void)cloudSyncObserverSyncCompleted:(id)a3
+- (void)cloudSyncObserverSyncCompleted:(id)completed
 {
-  v3 = self;
+  selfCopy = self;
   sub_1D0FF4F18();
 }
 

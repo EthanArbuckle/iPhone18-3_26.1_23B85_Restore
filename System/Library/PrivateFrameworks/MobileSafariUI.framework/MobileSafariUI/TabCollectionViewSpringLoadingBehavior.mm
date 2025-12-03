@@ -1,9 +1,9 @@
 @interface TabCollectionViewSpringLoadingBehavior
-+ (void)addSpringLoadedInteractionToTabView:(id)a3;
-- (BOOL)shouldAllowInteraction:(id)a3 withContext:(id)a4;
++ (void)addSpringLoadedInteractionToTabView:(id)view;
+- (BOOL)shouldAllowInteraction:(id)interaction withContext:(id)context;
 - (TabCollectionView)tabView;
 - (TabCollectionViewSpringLoadingBehavior)init;
-- (void)interaction:(id)a3 didChangeWithContext:(id)a4;
+- (void)interaction:(id)interaction didChangeWithContext:(id)context;
 @end
 
 @implementation TabCollectionViewSpringLoadingBehavior
@@ -13,28 +13,28 @@
   v8.receiver = self;
   v8.super_class = TabCollectionViewSpringLoadingBehavior;
   v2 = [(TabCollectionViewSpringLoadingBehavior *)&v8 init];
-  v3 = [MEMORY[0x277D75A58] _defaultInteractionBehavior];
+  _defaultInteractionBehavior = [MEMORY[0x277D75A58] _defaultInteractionBehavior];
   behavior = v2->_behavior;
-  v2->_behavior = v3;
+  v2->_behavior = _defaultInteractionBehavior;
 
-  v5 = [MEMORY[0x277D75A58] _blinkEffect];
+  _blinkEffect = [MEMORY[0x277D75A58] _blinkEffect];
   effect = v2->_effect;
-  v2->_effect = v5;
+  v2->_effect = _blinkEffect;
 
   return v2;
 }
 
-+ (void)addSpringLoadedInteractionToTabView:(id)a3
++ (void)addSpringLoadedInteractionToTabView:(id)view
 {
-  v3 = a3;
-  v4 = [v3 view];
+  viewCopy = view;
+  view = [viewCopy view];
 
-  if (v4)
+  if (view)
   {
     v5 = objc_alloc_init(TabCollectionViewSpringLoadingBehavior);
-    [(TabCollectionViewSpringLoadingBehavior *)v5 setTabView:v3];
-    objc_initWeak(&location, v3);
-    v6 = [v3 view];
+    [(TabCollectionViewSpringLoadingBehavior *)v5 setTabView:viewCopy];
+    objc_initWeak(&location, viewCopy);
+    view2 = [viewCopy view];
     v7 = objc_alloc(MEMORY[0x277D75A58]);
     v9 = MEMORY[0x277D85DD0];
     v10 = 3221225472;
@@ -42,7 +42,7 @@
     v12 = &unk_2781DC630;
     objc_copyWeak(&v13, &location);
     v8 = [v7 initWithInteractionBehavior:v5 interactionEffect:v5 activationHandler:&v9];
-    [v6 addInteraction:{v8, v9, v10, v11, v12}];
+    [view2 addInteraction:{v8, v9, v10, v11, v12}];
 
     objc_destroyWeak(&v13);
     objc_destroyWeak(&location);
@@ -65,10 +65,10 @@ void __78__TabCollectionViewSpringLoadingBehavior_addSpringLoadedInteractionToTa
   }
 }
 
-- (BOOL)shouldAllowInteraction:(id)a3 withContext:(id)a4
+- (BOOL)shouldAllowInteraction:(id)interaction withContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  interactionCopy = interaction;
+  contextCopy = context;
   WeakRetained = objc_loadWeakRetained(&self->_tabView);
   if ((objc_opt_respondsToSelector() & 1) != 0 && [WeakRetained presentationState] != 2)
   {
@@ -77,8 +77,8 @@ void __78__TabCollectionViewSpringLoadingBehavior_addSpringLoadedInteractionToTa
 
   else
   {
-    v9 = [WeakRetained view];
-    [v7 locationInView:v9];
+    view = [WeakRetained view];
+    [contextCopy locationInView:view];
     v11 = v10;
     v13 = v12;
 
@@ -90,8 +90,8 @@ void __78__TabCollectionViewSpringLoadingBehavior_addSpringLoadedInteractionToTa
 
     else
     {
-      [v7 setTargetItem:v14];
-      v15 = [(UISpringLoadedInteractionBehavior *)self->_behavior shouldAllowInteraction:v6 withContext:v7];
+      [contextCopy setTargetItem:v14];
+      v15 = [(UISpringLoadedInteractionBehavior *)self->_behavior shouldAllowInteraction:interactionCopy withContext:contextCopy];
       LOBYTE(self) = 0;
       if (v15 && v14)
       {
@@ -103,24 +103,24 @@ void __78__TabCollectionViewSpringLoadingBehavior_addSpringLoadedInteractionToTa
   return self;
 }
 
-- (void)interaction:(id)a3 didChangeWithContext:(id)a4
+- (void)interaction:(id)interaction didChangeWithContext:(id)context
 {
-  v10 = a4;
-  v6 = a3;
+  contextCopy = context;
+  interactionCopy = interaction;
   WeakRetained = objc_loadWeakRetained(&self->_tabView);
-  v8 = [v10 targetItem];
-  if (v8)
+  targetItem = [contextCopy targetItem];
+  if (targetItem)
   {
-    v9 = [WeakRetained viewForItem:v8];
-    [v10 setTargetView:v9];
+    v9 = [WeakRetained viewForItem:targetItem];
+    [contextCopy setTargetView:v9];
   }
 
   else
   {
-    [v10 setTargetView:0];
+    [contextCopy setTargetView:0];
   }
 
-  [(UISpringLoadedInteractionEffect *)self->_effect interaction:v6 didChangeWithContext:v10];
+  [(UISpringLoadedInteractionEffect *)self->_effect interaction:interactionCopy didChangeWithContext:contextCopy];
 }
 
 - (TabCollectionView)tabView

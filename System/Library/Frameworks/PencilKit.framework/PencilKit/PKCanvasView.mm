@@ -1,21 +1,21 @@
 @interface PKCanvasView
-- (BOOL)_canvasViewSnapshottingDisabled:(id)a3;
-- (BOOL)_hasObserver:(id)a3;
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
-- (BOOL)canvasView:(id)a3 hoverShouldBeActiveAt:(CGPoint)a4;
-- (BOOL)canvasView:(id)a3 shouldBeginDrawingWithTouch:(id)a4;
+- (BOOL)_canvasViewSnapshottingDisabled:(id)disabled;
+- (BOOL)_hasObserver:(id)observer;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
+- (BOOL)canvasView:(id)view hoverShouldBeActiveAt:(CGPoint)at;
+- (BOOL)canvasView:(id)view shouldBeginDrawingWithTouch:(id)touch;
 - (BOOL)predictionDisabled;
 - (BOOL)rulerHostWantsSharedRuler;
 - (CGAffineTransform)drawingTransform;
 - (CGAffineTransform)strokeTransform;
-- (CGPoint)rulerSnapLineOriginAndNormal:(CGPoint *)a3 topSide:(BOOL)a4;
+- (CGPoint)rulerSnapLineOriginAndNormal:(CGPoint *)normal topSide:(BOOL)side;
 - (CGSize)_fixedPixelSize;
 - (CGSize)_metalViewDrawableSize;
 - (CGSize)_rendererControllerPixelSize;
 - (NSHashTable)_observers;
-- (PKCanvasView)initWithFrame:(CGRect)a3 drawingWidth:(double)a4 fixedPixelSizeScrollView:(id)a5;
-- (PKCanvasView)initWithFrame:(CGRect)a3 fixedPixelSize:(CGSize)a4 drawingScale:(double)a5 layerFixedPixelSize:(BOOL)a6;
-- (PKCanvasView)initWithFrame:(CGRect)a3 sixChannelBlend:(BOOL)a4 snapshotView:(id)a5;
+- (PKCanvasView)initWithFrame:(CGRect)frame drawingWidth:(double)width fixedPixelSizeScrollView:(id)view;
+- (PKCanvasView)initWithFrame:(CGRect)frame fixedPixelSize:(CGSize)size drawingScale:(double)scale layerFixedPixelSize:(BOOL)pixelSize;
+- (PKCanvasView)initWithFrame:(CGRect)frame sixChannelBlend:(BOOL)blend snapshotView:(id)view;
 - (PKDrawing)drawing;
 - (PKRulerHostingDelegate)rulerHostingDelegate;
 - (PKTool)tool;
@@ -24,94 +24,94 @@
 - (UIView)selectionView;
 - (id)_allowedDrawingTouchTypes;
 - (id)_selectionInteraction;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (id)rulerHostingView;
-- (void)_addObserver:(id)a3;
-- (void)_canvasViewWillBeginDrawing:(id)a3;
-- (void)_canvasViewWillCreateSnapshot:(id)a3;
+- (void)_addObserver:(id)observer;
+- (void)_canvasViewWillBeginDrawing:(id)drawing;
+- (void)_canvasViewWillCreateSnapshot:(id)snapshot;
 - (void)_drawingDidChange;
 - (void)_fullyRendered;
 - (void)_keepPencilShadowVisible;
-- (void)_removeObserver:(id)a3;
-- (void)_setChildrenBackgroundColor:(id)a3;
+- (void)_removeObserver:(id)observer;
+- (void)_setChildrenBackgroundColor:(id)color;
 - (void)_setContentViewOpaqueBackgroundColorIfApplicable;
-- (void)_setDrawing:(id)a3 fullyRenderedCompletionBlock:(id)a4;
-- (void)_setFixedPixelSize:(CGSize)a3 drawingScale:(double)a4;
+- (void)_setDrawing:(id)drawing fullyRenderedCompletionBlock:(id)block;
+- (void)_setFixedPixelSize:(CGSize)size drawingScale:(double)scale;
 - (void)_setupTiledViewWantsExtendedDynamicRangeContent;
 - (void)_updateCanvas;
 - (void)_updateChildrenOpaque;
-- (void)_updatePencilShadowViewWithInputPoint:(id *)a3;
+- (void)_updatePencilShadowViewWithInputPoint:(id *)point;
 - (void)awakeFromNib;
-- (void)canvasView:(id)a3 beganStroke:(id)a4;
-- (void)canvasView:(id)a3 cancelledStroke:(id)a4;
-- (void)canvasView:(id)a3 didChangeHiddenState:(BOOL)a4;
-- (void)canvasView:(id)a3 didRefineStrokes:(id)a4 withNewStrokes:(id)a5;
-- (void)canvasView:(id)a3 endedStroke:(id)a4 shapeStrokes:(id)a5;
-- (void)canvasView:(id)a3 scratchOutStrokes:(id)a4 drawing:(id)a5;
-- (void)canvasViewDidBeginDrawing:(id)a3;
-- (void)canvasViewDidBeginLasso:(id)a3;
-- (void)canvasViewDidEndDrawing:(id)a3;
-- (void)canvasViewDidEndLasso:(id)a3;
+- (void)canvasView:(id)view beganStroke:(id)stroke;
+- (void)canvasView:(id)view cancelledStroke:(id)stroke;
+- (void)canvasView:(id)view didChangeHiddenState:(BOOL)state;
+- (void)canvasView:(id)view didRefineStrokes:(id)strokes withNewStrokes:(id)newStrokes;
+- (void)canvasView:(id)view endedStroke:(id)stroke shapeStrokes:(id)strokes;
+- (void)canvasView:(id)view scratchOutStrokes:(id)strokes drawing:(id)drawing;
+- (void)canvasViewDidBeginDrawing:(id)drawing;
+- (void)canvasViewDidBeginLasso:(id)lasso;
+- (void)canvasViewDidEndDrawing:(id)drawing;
+- (void)canvasViewDidEndLasso:(id)lasso;
 - (void)didMoveToWindow;
-- (void)imageWithCompletionBlock:(id)a3;
+- (void)imageWithCompletionBlock:(id)block;
 - (void)layoutSubviews;
 - (void)setAllowsFingerDrawing:(BOOL)allowsFingerDrawing;
-- (void)setBackgroundColor:(id)a3;
-- (void)setContentSize:(CGSize)a3;
+- (void)setBackgroundColor:(id)color;
+- (void)setContentSize:(CGSize)size;
 - (void)setDelegate:(id)delegate;
 - (void)setDrawing:(PKDrawing *)drawing;
-- (void)setDrawingTransform:(CGAffineTransform *)a3;
-- (void)setInk:(id)a3;
-- (void)setMaximumZoomScale:(double)a3;
-- (void)setOpaque:(BOOL)a3;
-- (void)setPredictionDisabled:(BOOL)a3;
-- (void)setRulerHostingDelegate:(id)a3;
+- (void)setDrawingTransform:(CGAffineTransform *)transform;
+- (void)setInk:(id)ink;
+- (void)setMaximumZoomScale:(double)scale;
+- (void)setOpaque:(BOOL)opaque;
+- (void)setPredictionDisabled:(BOOL)disabled;
+- (void)setRulerHostingDelegate:(id)delegate;
 - (void)setTool:(PKTool *)tool;
-- (void)setupDrawingWidth:(double)a3 fixedPixelSizeScrollView:(id)a4 sixChannelBlend:(BOOL)a5 drawBitmapEraserMask:(BOOL)a6;
-- (void)toolPickerIsRulerActiveDidChange:(id)a3;
-- (void)toolPickerSelectedToolItemDidChange:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)updateFixedPixelSizeViewForBounds:(CGRect)a3;
-- (void)updateSubviewsForBounds:(CGRect)a3;
+- (void)setupDrawingWidth:(double)width fixedPixelSizeScrollView:(id)view sixChannelBlend:(BOOL)blend drawBitmapEraserMask:(BOOL)mask;
+- (void)toolPickerIsRulerActiveDidChange:(id)change;
+- (void)toolPickerSelectedToolItemDidChange:(id)change;
+- (void)traitCollectionDidChange:(id)change;
+- (void)updateFixedPixelSizeViewForBounds:(CGRect)bounds;
+- (void)updateSubviewsForBounds:(CGRect)bounds;
 @end
 
 @implementation PKCanvasView
 
-- (PKCanvasView)initWithFrame:(CGRect)a3 drawingWidth:(double)a4 fixedPixelSizeScrollView:(id)a5
+- (PKCanvasView)initWithFrame:(CGRect)frame drawingWidth:(double)width fixedPixelSizeScrollView:(id)view
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v14.receiver = self;
   v14.super_class = PKCanvasView;
-  v10 = a5;
-  v11 = [(PKCanvasView *)&v14 initWithFrame:x, y, width, height];
+  viewCopy = view;
+  height = [(PKCanvasView *)&v14 initWithFrame:x, y, width, height];
   v12 = +[PKContentVersionUtility sharedUtility];
-  v11->__observers = [(PKContentVersionUtility *)v12 contentVersionForCurrentSDK];
+  height->__observers = [(PKContentVersionUtility *)v12 contentVersionForCurrentSDK];
 
-  [(PKCanvasView *)v11 setupDrawingWidth:v10 fixedPixelSizeScrollView:a4, v14.receiver, v14.super_class];
-  return v11;
+  [(PKCanvasView *)height setupDrawingWidth:viewCopy fixedPixelSizeScrollView:width, v14.receiver, v14.super_class];
+  return height;
 }
 
-- (PKCanvasView)initWithFrame:(CGRect)a3 sixChannelBlend:(BOOL)a4 snapshotView:(id)a5
+- (PKCanvasView)initWithFrame:(CGRect)frame sixChannelBlend:(BOOL)blend snapshotView:(id)view
 {
-  v5 = a4;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  blendCopy = blend;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v14.receiver = self;
   v14.super_class = PKCanvasView;
-  v10 = a5;
-  v11 = [(PKCanvasView *)&v14 initWithFrame:x, y, width, height];
+  viewCopy = view;
+  height = [(PKCanvasView *)&v14 initWithFrame:x, y, width, height];
   v12 = +[PKContentVersionUtility sharedUtility];
-  v11->__observers = [(PKContentVersionUtility *)v12 contentVersionForCurrentSDK];
+  height->__observers = [(PKContentVersionUtility *)v12 contentVersionForCurrentSDK];
 
-  [(PKCanvasView *)v11 setupDrawingWidth:0 fixedPixelSizeScrollView:v5 sixChannelBlend:0 drawBitmapEraserMask:0.0, v14.receiver, v14.super_class];
-  [(PKTiledView *)v11->_tiledView setContentSnapshottingView:v10];
+  [(PKCanvasView *)height setupDrawingWidth:0 fixedPixelSizeScrollView:blendCopy sixChannelBlend:0 drawBitmapEraserMask:0.0, v14.receiver, v14.super_class];
+  [(PKTiledView *)height->_tiledView setContentSnapshottingView:viewCopy];
 
-  return v11;
+  return height;
 }
 
 - (void)awakeFromNib
@@ -126,19 +126,19 @@
   }
 
   [(PKCanvasView *)self setupDrawingWidth:0 fixedPixelSizeScrollView:0.0];
-  v4 = [(PKCanvasView *)self backgroundColor];
-  [(PKCanvasView *)self _setChildrenBackgroundColor:v4];
+  backgroundColor = [(PKCanvasView *)self backgroundColor];
+  [(PKCanvasView *)self _setChildrenBackgroundColor:backgroundColor];
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = [(PKCanvasView *)self _tiledView];
-  v9 = [v8 disableTileRendering];
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
+  _tiledView = [(PKCanvasView *)self _tiledView];
+  disableTileRendering = [_tiledView disableTileRendering];
 
-  if (v9)
+  if (disableTileRendering)
   {
     v10 = 0;
   }
@@ -147,25 +147,25 @@
   {
     v12.receiver = self;
     v12.super_class = PKCanvasView;
-    v10 = [(PKCanvasView *)&v12 hitTest:v7 withEvent:x, y];
+    v10 = [(PKCanvasView *)&v12 hitTest:eventCopy withEvent:x, y];
   }
 
   return v10;
 }
 
-- (void)setupDrawingWidth:(double)a3 fixedPixelSizeScrollView:(id)a4 sixChannelBlend:(BOOL)a5 drawBitmapEraserMask:(BOOL)a6
+- (void)setupDrawingWidth:(double)width fixedPixelSizeScrollView:(id)view sixChannelBlend:(BOOL)blend drawBitmapEraserMask:(BOOL)mask
 {
-  v6 = a5;
-  v64 = a4;
+  blendCopy = blend;
+  viewCopy = view;
   v10 = objc_opt_class();
-  if (v64)
+  if (viewCopy)
   {
-    [v64 bounds];
+    [viewCopy bounds];
     v12 = v11;
     v14 = v13;
     v16 = v15;
     v18 = v17;
-    objc_storeStrong(&self->_fixedPixelSizeScrollView, a4);
+    objc_storeStrong(&self->_fixedPixelSizeScrollView, view);
     v19 = objc_alloc(MEMORY[0x1E69DD250]);
     [(UIScrollView *)self->_fixedPixelSizeScrollView bounds];
     v20 = [v19 initWithFrame:?];
@@ -173,8 +173,8 @@
     self->_fixedPixelSizeScrollViewWrapper = v20;
 
     [(UIView *)self->_fixedPixelSizeScrollViewWrapper addSubview:self->_fixedPixelSizeScrollView];
-    v22 = [(UIView *)self->_fixedPixelSizeScrollViewWrapper layer];
-    [v22 setAnchorPoint:{0.0, 0.0}];
+    layer = [(UIView *)self->_fixedPixelSizeScrollViewWrapper layer];
+    [layer setAnchorPoint:{0.0, 0.0}];
 
     [(PKCanvasView *)self bounds];
     [(PKCanvasView *)self updateFixedPixelSizeViewForBounds:?];
@@ -189,8 +189,8 @@
     v18 = v26;
   }
 
-  v27 = [(PKCanvasView *)self panGestureRecognizer];
-  [v27 setAllowedTouchTypes:&unk_1F47C1E38];
+  panGestureRecognizer = [(PKCanvasView *)self panGestureRecognizer];
+  [panGestureRecognizer setAllowedTouchTypes:&unk_1F47C1E38];
 
   v28 = [objc_alloc(MEMORY[0x1E69DD250]) initWithFrame:{v12, v14, v16, v18}];
   rulerHostingDelegate = self->_rulerHostingDelegate;
@@ -203,9 +203,9 @@
   self->_pageView = v32;
 
   [(PKCanvasAttachmentView *)self->_pageView setCanvasView:self];
-  [(PKAttachmentView *)self->_pageView setSixChannelBlending:v6];
+  [(PKAttachmentView *)self->_pageView setSixChannelBlending:blendCopy];
   [(PKCanvasAttachmentView *)self->_pageView setUserInteractionEnabled:0];
-  [(PKCanvasAttachmentView *)self->_pageView setDrawingWidth:a3];
+  [(PKCanvasAttachmentView *)self->_pageView setDrawingWidth:width];
   [(PKRulerHostingDelegate *)self->_rulerHostingDelegate addSubview:self->_pageView];
   v34 = [PKTiledView alloc];
   if (self->_fixedPixelSizeScrollView)
@@ -218,7 +218,7 @@
     fixedPixelSizeScrollView = self;
   }
 
-  v36 = [(PKTiledView *)v34 initInScrollView:fixedPixelSizeScrollView sixChannelBlending:v6 defaultDrawingClass:objc_opt_class()];
+  v36 = [(PKTiledView *)v34 initInScrollView:fixedPixelSizeScrollView sixChannelBlending:blendCopy defaultDrawingClass:objc_opt_class()];
   tiledView = self->_tiledView;
   self->_tiledView = v36;
 
@@ -232,27 +232,27 @@
     goto LABEL_16;
   }
 
-  v38 = [MEMORY[0x1E696AAE8] mainBundle];
-  v39 = [v38 bundleIdentifier];
-  v40 = [v39 isEqualToString:@"com.apple.mobilenotes"];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v40 = [bundleIdentifier isEqualToString:@"com.apple.mobilenotes"];
 
   if (v40)
   {
     goto LABEL_16;
   }
 
-  v41 = [MEMORY[0x1E696AAE8] mainBundle];
-  v42 = [v41 bundleIdentifier];
-  v43 = [v42 hasPrefix:@"com.apple.sidecar.extension."];
+  mainBundle2 = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier2 = [mainBundle2 bundleIdentifier];
+  v43 = [bundleIdentifier2 hasPrefix:@"com.apple.sidecar.extension."];
 
   if (v43)
   {
     goto LABEL_16;
   }
 
-  v44 = [MEMORY[0x1E696AAE8] mainBundle];
-  v45 = [v44 bundleIdentifier];
-  v46 = [v45 isEqualToString:@"com.apple.ScreenshotServicesService"];
+  mainBundle3 = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier3 = [mainBundle3 bundleIdentifier];
+  v46 = [bundleIdentifier3 isEqualToString:@"com.apple.ScreenshotServicesService"];
 
   if (v46)
   {
@@ -264,18 +264,18 @@
     goto LABEL_16;
   }
 
-  v47 = [MEMORY[0x1E696AAE8] mainBundle];
-  v48 = [v47 bundleIdentifier];
-  v49 = [v48 isEqualToString:@"com.apple.PaperKit.MarkupPhotoEditingExtension"];
+  mainBundle4 = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier4 = [mainBundle4 bundleIdentifier];
+  v49 = [bundleIdentifier4 isEqualToString:@"com.apple.PaperKit.MarkupPhotoEditingExtension"];
 
   if (v49)
   {
     goto LABEL_16;
   }
 
-  v50 = [MEMORY[0x1E696AAE8] mainBundle];
-  v51 = [v50 bundleIdentifier];
-  if ([v51 isEqualToString:@"com.apple.quicklook.extension.previewUI"])
+  mainBundle5 = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier5 = [mainBundle5 bundleIdentifier];
+  if ([bundleIdentifier5 isEqualToString:@"com.apple.quicklook.extension.previewUI"])
   {
 
 LABEL_16:
@@ -283,33 +283,33 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  v62 = [MEMORY[0x1E696AAE8] mainBundle];
-  v52 = [v62 bundleIdentifier];
-  v63 = [v52 isEqualToString:@"com.apple.quicklook.UIExtension"];
+  mainBundle6 = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier6 = [mainBundle6 bundleIdentifier];
+  v63 = [bundleIdentifier6 isEqualToString:@"com.apple.quicklook.UIExtension"];
 
   if (v63)
   {
     goto LABEL_16;
   }
 
-  v61 = [MEMORY[0x1E695E000] standardUserDefaults];
-  -[PKTiledView setAllowSnapToShape:](self->_tiledView, "setAllowSnapToShape:", [v61 BOOLForKey:@"internalSettings.shapeRecognition.enableEverywhere"]);
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  -[PKTiledView setAllowSnapToShape:](self->_tiledView, "setAllowSnapToShape:", [standardUserDefaults BOOLForKey:@"internalSettings.shapeRecognition.enableEverywhere"]);
 
 LABEL_17:
-  v53 = [MEMORY[0x1E696AAE8] mainBundle];
-  v54 = [v53 bundleIdentifier];
-  v55 = [v54 isEqualToString:@"com.apple.Pages"];
+  mainBundle7 = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier7 = [mainBundle7 bundleIdentifier];
+  v55 = [bundleIdentifier7 isEqualToString:@"com.apple.Pages"];
 
   if ((v55 & 1) == 0)
   {
-    v56 = [(PKTiledView *)self->_tiledView selectionInteraction];
-    [v56 setDelegate:self];
+    selectionInteraction = [(PKTiledView *)self->_tiledView selectionInteraction];
+    [selectionInteraction setDelegate:self];
   }
 
-  if (v6)
+  if (blendCopy)
   {
-    v57 = [(PKTiledView *)self->_tiledView canvasView];
-    [v57 setOpaque:1];
+    canvasView = [(PKTiledView *)self->_tiledView canvasView];
+    [canvasView setOpaque:1];
 
     [(PKTiledView *)self->_tiledView setCanvasViewZOrderPolicy:1];
   }
@@ -324,46 +324,46 @@ LABEL_17:
   }
 
   [(PKCanvasView *)self insertSubview:v59 atIndex:0];
-  v60 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v60 addObserver:self selector:sel__drawingDidChange name:@"drawingDidChange" object:self->_pageView];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__drawingDidChange name:@"drawingDidChange" object:self->_pageView];
 
   [(PKCanvasView *)self _setContentViewOpaqueBackgroundColorIfApplicable];
   [(PKTiledView *)self->_tiledView _layoutSubviews];
 }
 
-- (void)setOpaque:(BOOL)a3
+- (void)setOpaque:(BOOL)opaque
 {
   v4.receiver = self;
   v4.super_class = PKCanvasView;
-  [(PKCanvasView *)&v4 setOpaque:a3];
+  [(PKCanvasView *)&v4 setOpaque:opaque];
   [(PKCanvasView *)self _updateChildrenOpaque];
 }
 
 - (void)_updateChildrenOpaque
 {
   v9 = *MEMORY[0x1E69E9840];
-  v3 = [(PKCanvasView *)self backgroundColor];
+  backgroundColor = [(PKCanvasView *)self backgroundColor];
 
-  if (v3)
+  if (backgroundColor)
   {
     *(&v8 + 1) = unk_1C801EC90;
     v4 = [(PKCanvasView *)self backgroundColor:0];
     DKUColorGetRGBAComponents([v4 CGColor], &v7);
 
-    v5 = *(&v8 + 1) >= 1.0;
+    isOpaque = *(&v8 + 1) >= 1.0;
   }
 
   else
   {
-    v5 = [(PKCanvasView *)self isOpaque];
+    isOpaque = [(PKCanvasView *)self isOpaque];
   }
 
-  v6 = [(PKTiledView *)self->_tiledView canvasView];
-  [v6 setOpaque:v5];
+  canvasView = [(PKTiledView *)self->_tiledView canvasView];
+  [canvasView setOpaque:isOpaque];
 
-  [(PKRulerHostingDelegate *)self->_rulerHostingDelegate setOpaque:v5];
-  [(PKCanvasAttachmentView *)self->_pageView setOpaque:v5];
-  if (v5)
+  [(PKRulerHostingDelegate *)self->_rulerHostingDelegate setOpaque:isOpaque];
+  [(PKCanvasAttachmentView *)self->_pageView setOpaque:isOpaque];
+  if (isOpaque)
   {
     [(PKCanvasView *)self _setContentViewOpaqueBackgroundColorIfApplicable];
   }
@@ -378,11 +378,11 @@ LABEL_17:
 {
   if ([(PKCanvasView *)self isOpaque])
   {
-    v9 = [(PKCanvasView *)self backgroundColor];
-    if (!v9)
+    backgroundColor = [(PKCanvasView *)self backgroundColor];
+    if (!backgroundColor)
     {
-      v3 = [(PKCanvasView *)self traitCollection];
-      if ([v3 userInterfaceStyle] == 2)
+      traitCollection = [(PKCanvasView *)self traitCollection];
+      if ([traitCollection userInterfaceStyle] == 2)
       {
         [MEMORY[0x1E69DC888] blackColor];
       }
@@ -391,58 +391,58 @@ LABEL_17:
       {
         [MEMORY[0x1E69DC888] whiteColor];
       }
-      v9 = ;
+      backgroundColor = ;
     }
 
-    v4 = [(PKRulerHostingDelegate *)self->_rulerHostingDelegate backgroundColor];
-    v5 = [v4 isEqual:v9];
+    backgroundColor2 = [(PKRulerHostingDelegate *)self->_rulerHostingDelegate backgroundColor];
+    v5 = [backgroundColor2 isEqual:backgroundColor];
 
     if ((v5 & 1) == 0)
     {
-      [(PKRulerHostingDelegate *)self->_rulerHostingDelegate setBackgroundColor:v9];
+      [(PKRulerHostingDelegate *)self->_rulerHostingDelegate setBackgroundColor:backgroundColor];
     }
 
-    v6 = [(PKCanvasView *)self traitCollection];
-    v7 = [v9 resolvedColorWithTraitCollection:v6];
+    traitCollection2 = [(PKCanvasView *)self traitCollection];
+    v7 = [backgroundColor resolvedColorWithTraitCollection:traitCollection2];
 
-    v8 = [(PKTiledView *)self->_tiledView canvasView];
-    [v8 setCanvasBackgroundColor:v7];
+    canvasView = [(PKTiledView *)self->_tiledView canvasView];
+    [canvasView setCanvasBackgroundColor:v7];
   }
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   v5.receiver = self;
   v5.super_class = PKCanvasView;
-  v4 = a3;
-  [(PKCanvasView *)&v5 setBackgroundColor:v4];
-  [(PKCanvasView *)self _setChildrenBackgroundColor:v4, v5.receiver, v5.super_class];
+  colorCopy = color;
+  [(PKCanvasView *)&v5 setBackgroundColor:colorCopy];
+  [(PKCanvasView *)self _setChildrenBackgroundColor:colorCopy, v5.receiver, v5.super_class];
 }
 
-- (void)_setChildrenBackgroundColor:(id)a3
+- (void)_setChildrenBackgroundColor:(id)color
 {
   tiledView = self->_tiledView;
-  v5 = a3;
-  v6 = [(PKTiledView *)tiledView canvasView];
-  [v6 setCanvasBackgroundColor:v5];
+  colorCopy = color;
+  canvasView = [(PKTiledView *)tiledView canvasView];
+  [canvasView setCanvasBackgroundColor:colorCopy];
 
-  [(PKRulerHostingDelegate *)self->_rulerHostingDelegate setBackgroundColor:v5];
+  [(PKRulerHostingDelegate *)self->_rulerHostingDelegate setBackgroundColor:colorCopy];
 
   [(PKCanvasView *)self _updateChildrenOpaque];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v8.receiver = self;
   v8.super_class = PKCanvasView;
-  v4 = a3;
-  [(PKCanvasView *)&v8 traitCollectionDidChange:v4];
-  v5 = [v4 userInterfaceStyle];
+  changeCopy = change;
+  [(PKCanvasView *)&v8 traitCollectionDidChange:changeCopy];
+  userInterfaceStyle = [changeCopy userInterfaceStyle];
 
-  v6 = [(PKCanvasView *)self traitCollection];
-  v7 = [v6 userInterfaceStyle];
+  traitCollection = [(PKCanvasView *)self traitCollection];
+  userInterfaceStyle2 = [traitCollection userInterfaceStyle];
 
-  if (v5 != v7)
+  if (userInterfaceStyle != userInterfaceStyle2)
   {
     [(PKCanvasView *)self _setContentViewOpaqueBackgroundColorIfApplicable];
   }
@@ -663,11 +663,11 @@ LABEL_17:
   }
 }
 
-- (void)setMaximumZoomScale:(double)a3
+- (void)setMaximumZoomScale:(double)scale
 {
   v3.receiver = self;
   v3.super_class = PKCanvasView;
-  [(PKCanvasView *)&v3 setMaximumZoomScale:fmin(a3, 10.0)];
+  [(PKCanvasView *)&v3 setMaximumZoomScale:fmin(scale, 10.0)];
 }
 
 - (void)_fullyRendered
@@ -677,15 +677,15 @@ LABEL_17:
   {
     if ((*&self->_canvasViewFlags & 2) != 0)
     {
-      v3 = [(PKCanvasView *)self delegate];
-      [v3 canvasViewDidFinishRendering:self];
+      delegate = [(PKCanvasView *)self delegate];
+      [delegate canvasViewDidFinishRendering:self];
     }
 
     [(PKCanvasAttachmentView *)self->_pageView set_wantsFullyRenderedNotification:0];
   }
 
-  v4 = [(PKCanvasAttachmentView *)self->_pageView fullyRenderedCompletionBlocks];
-  v5 = [v4 count];
+  fullyRenderedCompletionBlocks = [(PKCanvasAttachmentView *)self->_pageView fullyRenderedCompletionBlocks];
+  v5 = [fullyRenderedCompletionBlocks count];
 
   if (v5)
   {
@@ -693,8 +693,8 @@ LABEL_17:
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v6 = [(PKCanvasAttachmentView *)self->_pageView fullyRenderedCompletionBlocks];
-    v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    fullyRenderedCompletionBlocks2 = [(PKCanvasAttachmentView *)self->_pageView fullyRenderedCompletionBlocks];
+    v7 = [fullyRenderedCompletionBlocks2 countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v7)
     {
       v8 = v7;
@@ -706,21 +706,21 @@ LABEL_17:
         {
           if (*v13 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(fullyRenderedCompletionBlocks2);
           }
 
           (*(*(*(&v12 + 1) + 8 * v10++) + 16))();
         }
 
         while (v8 != v10);
-        v8 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v8 = [fullyRenderedCompletionBlocks2 countByEnumeratingWithState:&v12 objects:v16 count:16];
       }
 
       while (v8);
     }
 
-    v11 = [(PKCanvasAttachmentView *)self->_pageView fullyRenderedCompletionBlocks];
-    [v11 removeAllObjects];
+    fullyRenderedCompletionBlocks3 = [(PKCanvasAttachmentView *)self->_pageView fullyRenderedCompletionBlocks];
+    [fullyRenderedCompletionBlocks3 removeAllObjects];
   }
 }
 
@@ -728,35 +728,35 @@ LABEL_17:
 {
   if (*&self->_canvasViewFlags)
   {
-    v3 = [(PKAttachmentView *)self->_pageView drawing];
-    v4 = [v3 containsInternalStrokes];
+    drawing = [(PKAttachmentView *)self->_pageView drawing];
+    containsInternalStrokes = [drawing containsInternalStrokes];
 
-    if ((v4 & 1) == 0)
+    if ((containsInternalStrokes & 1) == 0)
     {
-      v5 = [(PKCanvasView *)self delegate];
-      [v5 canvasViewDrawingDidChange:self];
+      delegate = [(PKCanvasView *)self delegate];
+      [delegate canvasViewDrawingDidChange:self];
     }
   }
 }
 
 - (PKDrawing)drawing
 {
-  v3 = [(PKAttachmentView *)self->_pageView drawing];
-  v4 = [v3 containsInternalStrokes];
+  drawing = [(PKAttachmentView *)self->_pageView drawing];
+  containsInternalStrokes = [drawing containsInternalStrokes];
 
-  v5 = [(PKAttachmentView *)self->_pageView drawing];
-  v6 = v5;
-  if (v4)
+  drawing2 = [(PKAttachmentView *)self->_pageView drawing];
+  v6 = drawing2;
+  if (containsInternalStrokes)
   {
-    v7 = [v5 copyWithoutInternalStrokes];
+    copyWithoutInternalStrokes = [drawing2 copyWithoutInternalStrokes];
   }
 
   else
   {
-    v7 = [v5 copy];
+    copyWithoutInternalStrokes = [drawing2 copy];
   }
 
-  v8 = v7;
+  v8 = copyWithoutInternalStrokes;
 
   return v8;
 }
@@ -766,10 +766,10 @@ LABEL_17:
   v11 = drawing;
   if (-[PKTiledView disableTileRendering](self->_tiledView, "disableTileRendering") && (-[PKDrawing strokes](v11, "strokes"), v4 = objc_claimAutoreleasedReturnValue(), v5 = [v4 count], v4, !v5))
   {
-    v8 = [(PKAttachmentView *)self->_pageView drawing];
-    v9 = [(PKAttachmentView *)self->_pageView drawing];
-    v10 = [v9 strokes];
-    [v8 deleteStrokes:v10];
+    drawing = [(PKAttachmentView *)self->_pageView drawing];
+    drawing2 = [(PKAttachmentView *)self->_pageView drawing];
+    strokes = [drawing2 strokes];
+    [drawing deleteStrokes:strokes];
   }
 
   else
@@ -796,19 +796,19 @@ LABEL_17:
   }
 }
 
-- (void)setInk:(id)a3
+- (void)setInk:(id)ink
 {
-  v4 = a3;
-  if (!v4)
+  inkCopy = ink;
+  if (!inkCopy)
   {
-    v5 = [MEMORY[0x1E69DC888] blackColor];
-    v6 = [PKInk inkWithIdentifier:@"com.apple.ink.pen" color:v5 weight:-1.0];
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
+    v6 = [PKInk inkWithIdentifier:@"com.apple.ink.pen" color:blackColor weight:-1.0];
 
-    v4 = v6;
+    inkCopy = v6;
   }
 
-  v7 = v4;
-  [(PKTiledView *)self->_tiledView setInk:v4];
+  v7 = inkCopy;
+  [(PKTiledView *)self->_tiledView setInk:inkCopy];
 }
 
 - (PKTool)tool
@@ -849,12 +849,12 @@ LABEL_17:
   }
 }
 
-- (void)updateSubviewsForBounds:(CGRect)a3
+- (void)updateSubviewsForBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   if (self->_fixedPixelSizeScrollView)
   {
 
@@ -889,22 +889,22 @@ LABEL_17:
 
 - (void)_setupTiledViewWantsExtendedDynamicRangeContent
 {
-  v3 = [(PKCanvasView *)self window];
+  window = [(PKCanvasView *)self window];
 
-  if (v3)
+  if (window)
   {
-    v4 = [MEMORY[0x1E696AAE8] mainBundle];
-    v5 = [v4 bundleIdentifier];
-    v6 = [v5 isEqualToString:@"com.apple.freeform"];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
+    v6 = [bundleIdentifier isEqualToString:@"com.apple.freeform"];
 
     if ((v6 & 1) == 0)
     {
-      v11 = [(PKCanvasView *)self window];
-      v7 = [v11 screen];
-      [v7 potentialEDRHeadroom];
+      window2 = [(PKCanvasView *)self window];
+      screen = [window2 screen];
+      [screen potentialEDRHeadroom];
       v9 = v8 >= 2.0;
-      v10 = [(PKCanvasView *)self _tiledView];
-      [v10 setWantsExtendedDynamicRangeContent:v9];
+      _tiledView = [(PKCanvasView *)self _tiledView];
+      [_tiledView setWantsExtendedDynamicRangeContent:v9];
     }
   }
 }
@@ -925,15 +925,15 @@ LABEL_17:
   [(PKCanvasView *)self bounds];
   [(PKCanvasView *)self updateSubviewsForBounds:?];
   [(PKCanvasView *)self _setContentViewOpaqueBackgroundColorIfApplicable];
-  v3 = [(PKTiledView *)self->_tiledView canvasView];
-  v4 = [v3 rulerController];
-  [(PKRulerController *)v4 ensureRulerIsFullyOnscreen];
+  canvasView = [(PKTiledView *)self->_tiledView canvasView];
+  rulerController = [canvasView rulerController];
+  [(PKRulerController *)rulerController ensureRulerIsFullyOnscreen];
 }
 
-- (void)setContentSize:(CGSize)a3
+- (void)setContentSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v13.receiver = self;
   v13.super_class = PKCanvasView;
   [(PKCanvasView *)&v13 setContentSize:?];
@@ -950,10 +950,10 @@ LABEL_17:
 
 - (UIGestureRecognizer)drawingGestureRecognizer
 {
-  v2 = [(PKTiledView *)self->_tiledView canvasView];
-  v3 = [v2 drawingGestureRecognizer];
+  canvasView = [(PKTiledView *)self->_tiledView canvasView];
+  drawingGestureRecognizer = [canvasView drawingGestureRecognizer];
 
-  return v3;
+  return drawingGestureRecognizer;
 }
 
 - (void)setAllowsFingerDrawing:(BOOL)allowsFingerDrawing
@@ -971,65 +971,65 @@ LABEL_17:
   [(PKTiledView *)self->_tiledView setDrawingPolicy:v3];
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
   v8[1] = *MEMORY[0x1E69E9840];
-  if (sel_paste_ != a3)
+  if (sel_paste_ != action)
   {
     return 0;
   }
 
-  v5 = [MEMORY[0x1E69DCD50] generalPasteboard];
+  generalPasteboard = [MEMORY[0x1E69DCD50] generalPasteboard];
   v8[0] = @"com.apple.drawing";
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:1];
-  v4 = [v5 containsPasteboardTypes:v6];
+  v4 = [generalPasteboard containsPasteboardTypes:v6];
 
   return v4;
 }
 
-- (void)toolPickerSelectedToolItemDidChange:(id)a3
+- (void)toolPickerSelectedToolItemDidChange:(id)change
 {
-  v8 = a3;
-  v4 = [v8 selectedToolItem];
-  v5 = [v4 _toolShouldBeSetOnCanvasView];
-  if (v5)
+  changeCopy = change;
+  selectedToolItem = [changeCopy selectedToolItem];
+  _toolShouldBeSetOnCanvasView = [selectedToolItem _toolShouldBeSetOnCanvasView];
+  if (_toolShouldBeSetOnCanvasView)
   {
-    v6 = [v8 selectedToolItem];
-    v7 = [v6 _tool];
-    [(PKCanvasView *)self setTool:v7];
+    selectedToolItem2 = [changeCopy selectedToolItem];
+    _tool = [selectedToolItem2 _tool];
+    [(PKCanvasView *)self setTool:_tool];
   }
 
-  [(PKCanvasView *)self setDrawingEnabled:v5];
+  [(PKCanvasView *)self setDrawingEnabled:_toolShouldBeSetOnCanvasView];
 }
 
-- (void)toolPickerIsRulerActiveDidChange:(id)a3
+- (void)toolPickerIsRulerActiveDidChange:(id)change
 {
-  v4 = [a3 isRulerActive];
+  isRulerActive = [change isRulerActive];
 
-  [(PKCanvasView *)self setRulerActive:v4];
+  [(PKCanvasView *)self setRulerActive:isRulerActive];
 }
 
-- (PKCanvasView)initWithFrame:(CGRect)a3 fixedPixelSize:(CGSize)a4 drawingScale:(double)a5 layerFixedPixelSize:(BOOL)a6
+- (PKCanvasView)initWithFrame:(CGRect)frame fixedPixelSize:(CGSize)size drawingScale:(double)scale layerFixedPixelSize:(BOOL)pixelSize
 {
-  v6 = a6;
-  height = a4.height;
-  width = a4.width;
-  v9 = a3.size.height;
-  v10 = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if (a5 == 0.0)
+  pixelSizeCopy = pixelSize;
+  height = size.height;
+  width = size.width;
+  v9 = frame.size.height;
+  v10 = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  if (scale == 0.0)
   {
-    v14 = 1.0;
+    scaleCopy = 1.0;
   }
 
   else
   {
-    v14 = a5;
+    scaleCopy = scale;
   }
 
   +[PKMetalUtility layerContentsScale];
-  if (v6)
+  if (pixelSizeCopy)
   {
     +[PKMetalUtility layerContentsScale];
     v17 = [objc_alloc(MEMORY[0x1E69DCEF8]) initWithFrame:{0.0, 0.0, width / v16, height / v16}];
@@ -1038,13 +1038,13 @@ LABEL_17:
     [v17 setCanCancelContentTouches:0];
     [v17 setMinimumZoomScale:1.0];
     [v17 setMaximumZoomScale:1.0];
-    v18 = width / v14;
+    v18 = width / scaleCopy;
   }
 
   else
   {
     v17 = 0;
-    v18 = v10 / v14 * v15;
+    v18 = v10 / scaleCopy * v15;
   }
 
   v19 = [(PKCanvasView *)self initWithFrame:v17 drawingWidth:x fixedPixelSizeScrollView:y, v10, v9, v18];
@@ -1057,31 +1057,31 @@ LABEL_17:
   return v19;
 }
 
-- (void)_setDrawing:(id)a3 fullyRenderedCompletionBlock:(id)a4
+- (void)_setDrawing:(id)drawing fullyRenderedCompletionBlock:(id)block
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = [(PKCanvasAttachmentView *)self->_pageView fullyRenderedCompletionBlocks];
+  drawingCopy = drawing;
+  blockCopy = block;
+  fullyRenderedCompletionBlocks = [(PKCanvasAttachmentView *)self->_pageView fullyRenderedCompletionBlocks];
 
-  if (!v7)
+  if (!fullyRenderedCompletionBlocks)
   {
-    v8 = [MEMORY[0x1E695DF70] array];
-    [(PKCanvasAttachmentView *)self->_pageView setFullyRenderedCompletionBlocks:v8];
+    array = [MEMORY[0x1E695DF70] array];
+    [(PKCanvasAttachmentView *)self->_pageView setFullyRenderedCompletionBlocks:array];
   }
 
-  if (v6)
+  if (blockCopy)
   {
-    v9 = [(PKCanvasAttachmentView *)self->_pageView fullyRenderedCompletionBlocks];
-    v10 = _Block_copy(v6);
-    [v9 addObject:v10];
+    fullyRenderedCompletionBlocks2 = [(PKCanvasAttachmentView *)self->_pageView fullyRenderedCompletionBlocks];
+    v10 = _Block_copy(blockCopy);
+    [fullyRenderedCompletionBlocks2 addObject:v10];
   }
 
-  [(PKCanvasView *)self setDrawing:v11];
+  [(PKCanvasView *)self setDrawing:drawingCopy];
 }
 
-- (void)imageWithCompletionBlock:(id)a3
+- (void)imageWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   if (self->_fixedPixelSizeScrollView)
   {
     fixedPixelSizeScrollView = self->_fixedPixelSizeScrollView;
@@ -1098,7 +1098,7 @@ LABEL_17:
   v10 = [PKImageRenderer alloc];
   +[PKMetalUtility layerContentsScale];
   v12 = [(PKImageRenderer *)v10 initWithSize:v7 scale:v9, v11];
-  v13 = [(PKCanvasView *)self drawing];
+  drawing = [(PKCanvasView *)self drawing];
   pageView = self->_pageView;
   if (pageView)
   {
@@ -1118,13 +1118,13 @@ LABEL_17:
   v23[1] = 3221225472;
   v23[2] = __41__PKCanvasView_imageWithCompletionBlock___block_invoke;
   v23[3] = &unk_1E82DC070;
-  v24 = v4;
+  v24 = blockCopy;
   v18 = *MEMORY[0x1E695F050];
   v19 = *(MEMORY[0x1E695F050] + 8);
   v20 = *(MEMORY[0x1E695F050] + 16);
   v21 = *(MEMORY[0x1E695F050] + 24);
-  v22 = v4;
-  [(PKImageRenderer *)v12 renderDrawing:v13 clippedToStrokeSpaceRect:v23 scale:v18 completion:v19, v20, v21, v17];
+  v22 = blockCopy;
+  [(PKImageRenderer *)v12 renderDrawing:drawing clippedToStrokeSpaceRect:v23 scale:v18 completion:v19, v20, v21, v17];
 }
 
 uint64_t __41__PKCanvasView_imageWithCompletionBlock___block_invoke(uint64_t a1, id a2)
@@ -1141,14 +1141,14 @@ uint64_t __41__PKCanvasView_imageWithCompletionBlock___block_invoke(uint64_t a1,
 {
   if ((*(&self->_canvasViewFlags + 1) & 0x40) != 0)
   {
-    v9 = [(PKCanvasView *)self delegate];
-    v8 = [v9 _canvasViewRulerHostingView:self];
+    delegate = [(PKCanvasView *)self delegate];
+    v8 = [delegate _canvasViewRulerHostingView:self];
   }
 
   else
   {
-    v3 = [(PKCanvasView *)self rulerHostingDelegate];
-    if (!v3 || (v4 = v3, -[PKCanvasView rulerHostingDelegate](self, "rulerHostingDelegate"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_opt_respondsToSelector(), v5, v4, (v6 & 1) == 0) || (-[PKCanvasView rulerHostingDelegate](self, "rulerHostingDelegate"), v7 = objc_claimAutoreleasedReturnValue(), [v7 rulerHostingView], v8 = objc_claimAutoreleasedReturnValue(), v7, !v8))
+    rulerHostingDelegate = [(PKCanvasView *)self rulerHostingDelegate];
+    if (!rulerHostingDelegate || (v4 = rulerHostingDelegate, -[PKCanvasView rulerHostingDelegate](self, "rulerHostingDelegate"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_opt_respondsToSelector(), v5, v4, (v6 & 1) == 0) || (-[PKCanvasView rulerHostingDelegate](self, "rulerHostingDelegate"), v7 = objc_claimAutoreleasedReturnValue(), [v7 rulerHostingView], v8 = objc_claimAutoreleasedReturnValue(), v7, !v8))
     {
       v8 = self->_tiledView;
     }
@@ -1159,14 +1159,14 @@ uint64_t __41__PKCanvasView_imageWithCompletionBlock___block_invoke(uint64_t a1,
 
 - (BOOL)rulerHostWantsSharedRuler
 {
-  v3 = [(PKCanvasView *)self rulerHostingDelegate];
-  if (!v3)
+  rulerHostingDelegate = [(PKCanvasView *)self rulerHostingDelegate];
+  if (!rulerHostingDelegate)
   {
     return 0;
   }
 
-  v4 = v3;
-  v5 = [(PKCanvasView *)self rulerHostingDelegate];
+  v4 = rulerHostingDelegate;
+  rulerHostingDelegate2 = [(PKCanvasView *)self rulerHostingDelegate];
   v6 = objc_opt_respondsToSelector();
 
   if ((v6 & 1) == 0)
@@ -1174,19 +1174,19 @@ uint64_t __41__PKCanvasView_imageWithCompletionBlock___block_invoke(uint64_t a1,
     return 0;
   }
 
-  v7 = [(PKCanvasView *)self rulerHostingDelegate];
-  v8 = [v7 rulerHostWantsSharedRuler];
+  rulerHostingDelegate3 = [(PKCanvasView *)self rulerHostingDelegate];
+  rulerHostWantsSharedRuler = [rulerHostingDelegate3 rulerHostWantsSharedRuler];
 
-  return v8;
+  return rulerHostWantsSharedRuler;
 }
 
 - (UIView)selectionView
 {
-  v2 = [(PKTiledView *)self->_tiledView selectionController];
-  v3 = v2;
-  if (v2)
+  selectionController = [(PKTiledView *)self->_tiledView selectionController];
+  v3 = selectionController;
+  if (selectionController)
   {
-    v4 = *(v2 + 152);
+    v4 = *(selectionController + 152);
   }
 
   else
@@ -1201,8 +1201,8 @@ uint64_t __41__PKCanvasView_imageWithCompletionBlock___block_invoke(uint64_t a1,
 
 - (CGSize)_metalViewDrawableSize
 {
-  v2 = [(PKTiledView *)self->_tiledView canvasView];
-  [v2 _metalViewDrawableSize];
+  canvasView = [(PKTiledView *)self->_tiledView canvasView];
+  [canvasView _metalViewDrawableSize];
   v4 = v3;
   v6 = v5;
 
@@ -1215,8 +1215,8 @@ uint64_t __41__PKCanvasView_imageWithCompletionBlock___block_invoke(uint64_t a1,
 
 - (CGSize)_rendererControllerPixelSize
 {
-  v2 = [(PKTiledView *)self->_tiledView canvasView];
-  [v2 _rendererControllerPixelSize];
+  canvasView = [(PKTiledView *)self->_tiledView canvasView];
+  [canvasView _rendererControllerPixelSize];
   v4 = v3;
   v6 = v5;
 
@@ -1260,10 +1260,10 @@ uint64_t __41__PKCanvasView_imageWithCompletionBlock___block_invoke(uint64_t a1,
   return result;
 }
 
-- (void)updateFixedPixelSizeViewForBounds:(CGRect)a3
+- (void)updateFixedPixelSizeViewForBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
+  height = bounds.size.height;
+  width = bounds.size.width;
   [MEMORY[0x1E6979518] begin];
   [MEMORY[0x1E6979518] setDisableActions:1];
   [(UIScrollView *)self->_fixedPixelSizeScrollView bounds];
@@ -1292,20 +1292,20 @@ uint64_t __41__PKCanvasView_imageWithCompletionBlock___block_invoke(uint64_t a1,
   [MEMORY[0x1E6979518] commit];
 }
 
-- (void)_setFixedPixelSize:(CGSize)a3 drawingScale:(double)a4
+- (void)_setFixedPixelSize:(CGSize)size drawingScale:(double)scale
 {
   if (self->_fixedPixelSizeScrollView)
   {
-    height = a3.height;
-    width = a3.width;
+    height = size.height;
+    width = size.width;
     +[PKMetalUtility layerContentsScale];
     [(UIScrollView *)self->_fixedPixelSizeScrollView setFrame:0.0, 0.0, width / v8, height / v8];
     [(PKCanvasView *)self bounds];
     [(PKCanvasView *)self updateFixedPixelSizeViewForBounds:?];
   }
 
-  [(PKRulerHostingDelegate *)self->_rulerHostingDelegate bounds:a3.width];
-  v10 = v9 / a4;
+  [(PKRulerHostingDelegate *)self->_rulerHostingDelegate bounds:size.width];
+  v10 = v9 / scale;
   +[PKMetalUtility layerContentsScale];
   v12 = v11 * v10;
   pageView = self->_pageView;
@@ -1332,15 +1332,15 @@ uint64_t __41__PKCanvasView_imageWithCompletionBlock___block_invoke(uint64_t a1,
   *&retstr->tx = *(v4 + 32);
   if (*&self[45].c)
   {
-    v6 = self;
+    selfCopy = self;
     [(CGAffineTransform *)self bounds];
     v8 = v7;
     v10 = v9;
-    [*&v6[45].c bounds];
+    [*&selfCopy[45].c bounds];
     v12 = v11;
     v14 = v13;
     memset(&v18, 0, sizeof(v18));
-    b = v6[45].b;
+    b = selfCopy[45].b;
     if (b != 0.0)
     {
       [*&b drawingTransform];
@@ -1356,28 +1356,28 @@ uint64_t __41__PKCanvasView_imageWithCompletionBlock___block_invoke(uint64_t a1,
 
 - (UIHoverGestureRecognizer)_hoverGestureRecognizer
 {
-  v2 = [(PKCanvasView *)self _tiledView];
-  v3 = [v2 hoverGestureRecognizer];
+  _tiledView = [(PKCanvasView *)self _tiledView];
+  hoverGestureRecognizer = [_tiledView hoverGestureRecognizer];
 
-  return v3;
+  return hoverGestureRecognizer;
 }
 
-- (void)_canvasViewWillBeginDrawing:(id)a3
+- (void)_canvasViewWillBeginDrawing:(id)drawing
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  drawingCopy = drawing;
   if ((*(&self->_canvasViewFlags + 1) & 0x20) != 0)
   {
-    v5 = [(PKCanvasView *)self delegate];
-    [v5 _canvasViewWillBeginDrawing:self];
+    delegate = [(PKCanvasView *)self delegate];
+    [delegate _canvasViewWillBeginDrawing:self];
   }
 
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = [(PKCanvasView *)self _observers];
-  v7 = [v6 copy];
+  _observers = [(PKCanvasView *)self _observers];
+  v7 = [_observers copy];
 
   v8 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v8)
@@ -1405,105 +1405,105 @@ uint64_t __41__PKCanvasView_imageWithCompletionBlock___block_invoke(uint64_t a1,
   }
 }
 
-- (void)_canvasViewWillCreateSnapshot:(id)a3
+- (void)_canvasViewWillCreateSnapshot:(id)snapshot
 {
   if (*(&self->_canvasViewFlags + 2))
   {
-    v5 = [(PKCanvasView *)self delegate];
-    [v5 _canvasViewWillCreateSnapshot:self];
+    delegate = [(PKCanvasView *)self delegate];
+    [delegate _canvasViewWillCreateSnapshot:self];
   }
 }
 
-- (BOOL)_canvasViewSnapshottingDisabled:(id)a3
+- (BOOL)_canvasViewSnapshottingDisabled:(id)disabled
 {
   if ((*(&self->_canvasViewFlags + 2) & 2) == 0)
   {
     return 0;
   }
 
-  v4 = self;
-  v5 = [(PKCanvasView *)self delegate];
-  LOBYTE(v4) = [v5 _canvasViewSnapshottingDisabled:v4];
+  selfCopy = self;
+  delegate = [(PKCanvasView *)self delegate];
+  LOBYTE(selfCopy) = [delegate _canvasViewSnapshottingDisabled:selfCopy];
 
-  return v4;
+  return selfCopy;
 }
 
-- (void)canvasViewDidBeginDrawing:(id)a3
+- (void)canvasViewDidBeginDrawing:(id)drawing
 {
-  v7 = a3;
+  drawingCopy = drawing;
   canvasViewFlags = self->_canvasViewFlags;
   if ((*&canvasViewFlags & 4) != 0)
   {
-    v5 = [(PKCanvasView *)self delegate];
-    [v5 canvasViewDidBeginDrawing:self];
+    delegate = [(PKCanvasView *)self delegate];
+    [delegate canvasViewDidBeginDrawing:self];
 
     canvasViewFlags = self->_canvasViewFlags;
   }
 
   if ((*&canvasViewFlags & 0x10) != 0)
   {
-    v6 = [(PKCanvasView *)self delegate];
-    [v6 canvasViewDidBeginUsingTool:self];
+    delegate2 = [(PKCanvasView *)self delegate];
+    [delegate2 canvasViewDidBeginUsingTool:self];
   }
 }
 
-- (void)canvasViewDidEndDrawing:(id)a3
+- (void)canvasViewDidEndDrawing:(id)drawing
 {
-  v7 = a3;
+  drawingCopy = drawing;
   canvasViewFlags = self->_canvasViewFlags;
   if ((*&canvasViewFlags & 8) != 0)
   {
-    v5 = [(PKCanvasView *)self delegate];
-    [v5 canvasViewDidEndDrawing:self];
+    delegate = [(PKCanvasView *)self delegate];
+    [delegate canvasViewDidEndDrawing:self];
 
     canvasViewFlags = self->_canvasViewFlags;
   }
 
   if ((*&canvasViewFlags & 0x20) != 0)
   {
-    v6 = [(PKCanvasView *)self delegate];
-    [v6 canvasViewDidEndUsingTool:self];
+    delegate2 = [(PKCanvasView *)self delegate];
+    [delegate2 canvasViewDidEndUsingTool:self];
   }
 }
 
-- (void)canvasViewDidBeginLasso:(id)a3
+- (void)canvasViewDidBeginLasso:(id)lasso
 {
   if ((*&self->_canvasViewFlags & 0x10) != 0)
   {
-    v5 = [(PKCanvasView *)self delegate];
-    [v5 canvasViewDidBeginUsingTool:self];
+    delegate = [(PKCanvasView *)self delegate];
+    [delegate canvasViewDidBeginUsingTool:self];
   }
 }
 
-- (void)canvasViewDidEndLasso:(id)a3
+- (void)canvasViewDidEndLasso:(id)lasso
 {
   if ((*&self->_canvasViewFlags & 0x20) != 0)
   {
-    v5 = [(PKCanvasView *)self delegate];
-    [v5 canvasViewDidEndUsingTool:self];
+    delegate = [(PKCanvasView *)self delegate];
+    [delegate canvasViewDidEndUsingTool:self];
   }
 }
 
-- (void)canvasView:(id)a3 beganStroke:(id)a4
+- (void)canvasView:(id)view beganStroke:(id)stroke
 {
   if ((*&self->_canvasViewFlags & 0x40) != 0)
   {
-    v6 = a4;
-    v7 = [(PKCanvasView *)self delegate];
-    [v7 _canvasView:self beganStroke:v6];
+    strokeCopy = stroke;
+    delegate = [(PKCanvasView *)self delegate];
+    [delegate _canvasView:self beganStroke:strokeCopy];
   }
 }
 
-- (void)canvasView:(id)a3 endedStroke:(id)a4 shapeStrokes:(id)a5
+- (void)canvasView:(id)view endedStroke:(id)stroke shapeStrokes:(id)strokes
 {
-  v12 = a3;
-  v8 = a4;
-  v9 = a5;
+  viewCopy = view;
+  strokeCopy = stroke;
+  strokesCopy = strokes;
   canvasViewFlags = self->_canvasViewFlags;
   if ((*&canvasViewFlags & 0x200) != 0)
   {
-    v11 = [(PKCanvasView *)self delegate];
-    [v11 _canvasView:self endedStroke:v8 shapeStrokes:v9];
+    delegate = [(PKCanvasView *)self delegate];
+    [delegate _canvasView:self endedStroke:strokeCopy shapeStrokes:strokesCopy];
   }
 
   else
@@ -1513,69 +1513,69 @@ uint64_t __41__PKCanvasView_imageWithCompletionBlock___block_invoke(uint64_t a1,
       goto LABEL_6;
     }
 
-    v11 = [(PKCanvasView *)self delegate];
-    [v11 _canvasView:self endedStroke:v8];
+    delegate = [(PKCanvasView *)self delegate];
+    [delegate _canvasView:self endedStroke:strokeCopy];
   }
 
 LABEL_6:
 }
 
-- (void)canvasView:(id)a3 cancelledStroke:(id)a4
+- (void)canvasView:(id)view cancelledStroke:(id)stroke
 {
   if ((*(&self->_canvasViewFlags + 1) & 4) != 0)
   {
-    v6 = a4;
-    v7 = [(PKCanvasView *)self delegate];
-    [v7 _canvasView:self cancelledStroke:v6];
+    strokeCopy = stroke;
+    delegate = [(PKCanvasView *)self delegate];
+    [delegate _canvasView:self cancelledStroke:strokeCopy];
   }
 }
 
-- (void)canvasView:(id)a3 didRefineStrokes:(id)a4 withNewStrokes:(id)a5
+- (void)canvasView:(id)view didRefineStrokes:(id)strokes withNewStrokes:(id)newStrokes
 {
   if ((*(&self->_canvasViewFlags + 2) & 4) != 0)
   {
-    v8 = a5;
-    v9 = a4;
-    v10 = [(PKCanvasView *)self delegate];
-    [v10 canvasView:self didRefineStrokes:v9 withNewStrokes:v8];
+    newStrokesCopy = newStrokes;
+    strokesCopy = strokes;
+    delegate = [(PKCanvasView *)self delegate];
+    [delegate canvasView:self didRefineStrokes:strokesCopy withNewStrokes:newStrokesCopy];
   }
 }
 
-- (void)canvasView:(id)a3 scratchOutStrokes:(id)a4 drawing:(id)a5
+- (void)canvasView:(id)view scratchOutStrokes:(id)strokes drawing:(id)drawing
 {
   if ((*(&self->_canvasViewFlags + 2) & 8) != 0)
   {
-    v8 = a5;
-    v9 = a4;
-    v10 = [(PKCanvasView *)self delegate];
-    [v10 _canvasView:self scratchOutStrokes:v9 drawing:v8];
+    drawingCopy = drawing;
+    strokesCopy = strokes;
+    delegate = [(PKCanvasView *)self delegate];
+    [delegate _canvasView:self scratchOutStrokes:strokesCopy drawing:drawingCopy];
   }
 }
 
-- (void)canvasView:(id)a3 didChangeHiddenState:(BOOL)a4
+- (void)canvasView:(id)view didChangeHiddenState:(BOOL)state
 {
   if ((*(&self->_canvasViewFlags + 1) & 0x10) != 0)
   {
-    v5 = a4;
-    v7 = [(PKCanvasView *)self delegate];
-    [v7 _canvasView:self didChangeHiddenState:v5];
+    stateCopy = state;
+    delegate = [(PKCanvasView *)self delegate];
+    [delegate _canvasView:self didChangeHiddenState:stateCopy];
   }
 }
 
-- (BOOL)canvasView:(id)a3 shouldBeginDrawingWithTouch:(id)a4
+- (BOOL)canvasView:(id)view shouldBeginDrawingWithTouch:(id)touch
 {
-  v5 = a4;
+  touchCopy = touch;
   if ((*(&self->_canvasViewFlags + 1) & 8) != 0)
   {
-    v7 = [(PKCanvasView *)self window];
-    v8 = [PKToolPicker isActiveToolPickerVisibleForWindow:v7];
+    window = [(PKCanvasView *)self window];
+    v8 = [PKToolPicker isActiveToolPickerVisibleForWindow:window];
 
     if (v8)
     {
-      v9 = [(PKCanvasView *)self drawingGestureRecognizer];
-      v10 = [v9 allowedTouchTypes];
-      v11 = [(PKCanvasView *)self _allowedDrawingTouchTypes];
-      v12 = [v10 isEqualToArray:v11];
+      drawingGestureRecognizer = [(PKCanvasView *)self drawingGestureRecognizer];
+      allowedTouchTypes = [drawingGestureRecognizer allowedTouchTypes];
+      _allowedDrawingTouchTypes = [(PKCanvasView *)self _allowedDrawingTouchTypes];
+      v12 = [allowedTouchTypes isEqualToArray:_allowedDrawingTouchTypes];
 
       if ((v12 & 1) == 0)
       {
@@ -1586,18 +1586,18 @@ LABEL_6:
           _os_log_error_impl(&dword_1C7CCA000, v13, OS_LOG_TYPE_ERROR, "Received an unexpected touch type according to the current drawing policy.", v19, 2u);
         }
 
-        v14 = [(PKCanvasView *)self _allowedDrawingTouchTypes];
-        v15 = [(PKCanvasView *)self drawingGestureRecognizer];
-        [v15 setAllowedTouchTypes:v14];
+        _allowedDrawingTouchTypes2 = [(PKCanvasView *)self _allowedDrawingTouchTypes];
+        drawingGestureRecognizer2 = [(PKCanvasView *)self drawingGestureRecognizer];
+        [drawingGestureRecognizer2 setAllowedTouchTypes:_allowedDrawingTouchTypes2];
       }
     }
 
-    [v5 locationInView:self];
+    [touchCopy locationInView:self];
     v16 = [(PKCanvasView *)self hitTest:0 withEvent:?];
     if (v16)
     {
-      v17 = [(PKCanvasView *)self delegate];
-      v6 = [v17 _canvasView:self shouldBeginDrawingWithTouch:v5];
+      delegate = [(PKCanvasView *)self delegate];
+      v6 = [delegate _canvasView:self shouldBeginDrawingWithTouch:touchCopy];
     }
 
     else
@@ -1614,21 +1614,21 @@ LABEL_6:
   return v6;
 }
 
-- (BOOL)canvasView:(id)a3 hoverShouldBeActiveAt:(CGPoint)a4
+- (BOOL)canvasView:(id)view hoverShouldBeActiveAt:(CGPoint)at
 {
   if ((*(&self->_canvasViewFlags + 1) & 0x80) == 0)
   {
     return 1;
   }
 
-  v5 = self;
-  [(PKTiledView *)self->_tiledView convertPoint:self toView:a4.x, a4.y];
+  selfCopy = self;
+  [(PKTiledView *)self->_tiledView convertPoint:self toView:at.x, at.y];
   v7 = v6;
   v9 = v8;
-  v10 = [(PKCanvasView *)v5 delegate];
-  LOBYTE(v5) = [v10 _canvasView:v5 hoverShouldBeActiveAt:{v7, v9}];
+  delegate = [(PKCanvasView *)selfCopy delegate];
+  LOBYTE(selfCopy) = [delegate _canvasView:selfCopy hoverShouldBeActiveAt:{v7, v9}];
 
-  return v5;
+  return selfCopy;
 }
 
 - (id)_allowedDrawingTouchTypes
@@ -1646,22 +1646,22 @@ LABEL_6:
   return v2;
 }
 
-- (CGPoint)rulerSnapLineOriginAndNormal:(CGPoint *)a3 topSide:(BOOL)a4
+- (CGPoint)rulerSnapLineOriginAndNormal:(CGPoint *)normal topSide:(BOOL)side
 {
-  v4 = a4;
-  v7 = [(PKCanvasView *)self _tiledView];
-  v8 = [v7 rulerEnabled];
+  sideCopy = side;
+  _tiledView = [(PKCanvasView *)self _tiledView];
+  rulerEnabled = [_tiledView rulerEnabled];
 
-  if (v8)
+  if (rulerEnabled)
   {
     v26 = 0u;
     v27 = 0u;
     v25 = 0u;
-    v9 = [(PKCanvasView *)self _tiledView];
-    v10 = v9;
-    if (v9)
+    _tiledView2 = [(PKCanvasView *)self _tiledView];
+    v10 = _tiledView2;
+    if (_tiledView2)
     {
-      [v9 rulerTransform];
+      [_tiledView2 rulerTransform];
     }
 
     else
@@ -1671,11 +1671,11 @@ LABEL_6:
       v25 = 0u;
     }
 
-    v13 = [(PKCanvasView *)self _tiledView];
-    [v13 rulerWidth];
+    _tiledView3 = [(PKCanvasView *)self _tiledView];
+    [_tiledView3 rulerWidth];
     v15 = v14;
 
-    if (v4)
+    if (sideCopy)
     {
       v16 = v15 * 0.5;
     }
@@ -1689,10 +1689,10 @@ LABEL_6:
     _D3 = 0xC059000000000000;
     __asm { FMLA            D2, D3, V4.D[1] }
 
-    if (a3)
+    if (normal)
     {
       v24 = vsubq_f64(vaddq_f64(v27, vmlaq_f64(vmulq_n_f64(v26, v16 + v16), 0, v25)), vaddq_f64(v27, vmlaq_n_f64(vmulq_n_f64(v26, *(MEMORY[0x1E695EFF8] + 8)), v25, *MEMORY[0x1E695EFF8])));
-      *a3 = vmulq_n_f64(v24, 1.0 / sqrt(COERCE_DOUBLE(*&vmulq_f64(v24, v24).f64[1]) + v24.f64[0] * v24.f64[0]));
+      *normal = vmulq_n_f64(v24, 1.0 / sqrt(COERCE_DOUBLE(*&vmulq_f64(v24, v24).f64[1]) + v24.f64[0] * v24.f64[0]));
     }
 
     v11 = v27.f64[0] + v16 * v26.f64[0] + v25.f64[0] * -100.0;
@@ -1701,10 +1701,10 @@ LABEL_6:
 
   else
   {
-    if (a3)
+    if (normal)
     {
-      a3->x = 0.0;
-      a3->y = 0.0;
+      normal->x = 0.0;
+      normal->y = 0.0;
     }
 
     v11 = *MEMORY[0x1E695EFF8];
@@ -1716,44 +1716,44 @@ LABEL_6:
   return result;
 }
 
-- (void)setRulerHostingDelegate:(id)a3
+- (void)setRulerHostingDelegate:(id)delegate
 {
-  v5 = a3;
-  objc_storeWeak(&self->_drawingTransform, v5);
-  if (v5)
+  delegateCopy = delegate;
+  objc_storeWeak(&self->_drawingTransform, delegateCopy);
+  if (delegateCopy)
   {
-    v4 = v5;
+    selfCopy = delegateCopy;
   }
 
   else
   {
-    v4 = self;
+    selfCopy = self;
   }
 
-  [(PKTiledView *)self->_tiledView setRulerHostingDelegate:v4];
+  [(PKTiledView *)self->_tiledView setRulerHostingDelegate:selfCopy];
 }
 
-- (void)setPredictionDisabled:(BOOL)a3
+- (void)setPredictionDisabled:(BOOL)disabled
 {
-  v3 = a3;
-  v4 = [(PKTiledView *)self->_tiledView canvasView];
-  [v4 setPredictionDisabled:v3];
+  disabledCopy = disabled;
+  canvasView = [(PKTiledView *)self->_tiledView canvasView];
+  [canvasView setPredictionDisabled:disabledCopy];
 }
 
 - (BOOL)predictionDisabled
 {
-  v2 = [(PKTiledView *)self->_tiledView canvasView];
-  v3 = [v2 predictionDisabled];
+  canvasView = [(PKTiledView *)self->_tiledView canvasView];
+  predictionDisabled = [canvasView predictionDisabled];
 
-  return v3;
+  return predictionDisabled;
 }
 
 - (id)_selectionInteraction
 {
-  v2 = [(PKTiledView *)self->_tiledView selectionController];
-  v3 = [(PKSelectionController *)v2 selectionInteraction];
+  selectionController = [(PKTiledView *)self->_tiledView selectionController];
+  selectionInteraction = [(PKSelectionController *)selectionController selectionInteraction];
 
-  return v3;
+  return selectionInteraction;
 }
 
 - (NSHashTable)_observers
@@ -1761,9 +1761,9 @@ LABEL_6:
   contentView = self->_contentView;
   if (!contentView)
   {
-    v4 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     v5 = self->_contentView;
-    self->_contentView = v4;
+    self->_contentView = weakObjectsHashTable;
 
     contentView = self->_contentView;
   }
@@ -1771,52 +1771,52 @@ LABEL_6:
   return contentView;
 }
 
-- (void)_addObserver:(id)a3
+- (void)_addObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(PKCanvasView *)self _observers];
-  [v5 addObject:v4];
+  observerCopy = observer;
+  _observers = [(PKCanvasView *)self _observers];
+  [_observers addObject:observerCopy];
 }
 
-- (void)_removeObserver:(id)a3
+- (void)_removeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(PKCanvasView *)self _observers];
-  [v5 removeObject:v4];
+  observerCopy = observer;
+  _observers = [(PKCanvasView *)self _observers];
+  [_observers removeObject:observerCopy];
 }
 
-- (BOOL)_hasObserver:(id)a3
+- (BOOL)_hasObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(PKCanvasView *)self _observers];
-  v6 = [v5 containsObject:v4];
+  observerCopy = observer;
+  _observers = [(PKCanvasView *)self _observers];
+  v6 = [_observers containsObject:observerCopy];
 
   return v6;
 }
 
 - (void)_keepPencilShadowVisible
 {
-  v2 = [(PKCanvasView *)self _tiledView];
-  [v2 _keepPencilShadowVisible];
+  _tiledView = [(PKCanvasView *)self _tiledView];
+  [_tiledView _keepPencilShadowVisible];
 }
 
-- (void)_updatePencilShadowViewWithInputPoint:(id *)a3
+- (void)_updatePencilShadowViewWithInputPoint:(id *)point
 {
-  v4 = [(PKCanvasView *)self _tiledView];
-  v5 = *&a3->var13;
-  v9[6] = *&a3->var11;
+  _tiledView = [(PKCanvasView *)self _tiledView];
+  v5 = *&point->var13;
+  v9[6] = *&point->var11;
   v9[7] = v5;
-  var15 = a3->var15;
-  v6 = *&a3->var5;
-  v9[2] = *&a3->var3;
+  var15 = point->var15;
+  v6 = *&point->var5;
+  v9[2] = *&point->var3;
   v9[3] = v6;
-  v7 = *&a3->var9;
-  v9[4] = *&a3->var7;
+  v7 = *&point->var9;
+  v9[4] = *&point->var7;
   v9[5] = v7;
-  v8 = *&a3->var1;
-  v9[0] = a3->var0;
+  v8 = *&point->var1;
+  v9[0] = point->var0;
   v9[1] = v8;
-  [v4 _updatePencilShadowView:v9];
+  [_tiledView _updatePencilShadowView:v9];
 }
 
 - (PKRulerHostingDelegate)rulerHostingDelegate
@@ -1826,11 +1826,11 @@ LABEL_6:
   return WeakRetained;
 }
 
-- (void)setDrawingTransform:(CGAffineTransform *)a3
+- (void)setDrawingTransform:(CGAffineTransform *)transform
 {
-  v4 = *&a3->c;
-  v3 = *&a3->tx;
-  *&self->_drawingTransform.b = *&a3->a;
+  v4 = *&transform->c;
+  v3 = *&transform->tx;
+  *&self->_drawingTransform.b = *&transform->a;
   *&self->_drawingTransform.d = v4;
   *&self->_drawingTransform.ty = v3;
 }

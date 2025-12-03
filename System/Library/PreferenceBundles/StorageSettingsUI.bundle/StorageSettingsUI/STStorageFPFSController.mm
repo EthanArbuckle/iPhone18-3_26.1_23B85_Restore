@@ -1,15 +1,15 @@
 @interface STStorageFPFSController
-- (BOOL)shouldShowItem:(id)a3;
-- (BOOL)tableView:(id)a3 canEditRowAtIndexPath:(id)a4;
-- (id)specifierAtIndexPath:(id)a3;
+- (BOOL)shouldShowItem:(id)item;
+- (BOOL)tableView:(id)view canEditRowAtIndexPath:(id)path;
+- (id)specifierAtIndexPath:(id)path;
 - (id)specifiers;
 - (id)storageApp;
-- (id)tableView:(id)a3 titleForDeleteConfirmationButtonForRowAtIndexPath:(id)a4;
-- (void)dataForCollectionShouldBeReloaded:(id)a3;
-- (void)deleteItems:(id)a3;
+- (id)tableView:(id)view titleForDeleteConfirmationButtonForRowAtIndexPath:(id)path;
+- (void)dataForCollectionShouldBeReloaded:(id)reloaded;
+- (void)deleteItems:(id)items;
 - (void)emptyTrash;
 - (void)reloadSpecs;
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5;
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -19,9 +19,9 @@
 {
   v4.receiver = self;
   v4.super_class = STStorageFPFSController;
-  v2 = [(STStorageDetailViewController *)&v4 storageApp];
+  storageApp = [(STStorageDetailViewController *)&v4 storageApp];
 
-  return v2;
+  return storageApp;
 }
 
 - (void)viewDidLoad
@@ -29,17 +29,17 @@
   v8.receiver = self;
   v8.super_class = STStorageFPFSController;
   [(STStorageFPFSController *)&v8 viewDidLoad];
-  v3 = [(STStorageFPFSController *)self table];
-  [v3 setAllowsMultipleSelectionDuringEditing:0];
+  table = [(STStorageFPFSController *)self table];
+  [table setAllowsMultipleSelectionDuringEditing:0];
 
-  v4 = [(STStorageFPFSController *)self specifier];
-  v5 = [v4 propertyForKey:STStorageFPItemKey];
+  specifier = [(STStorageFPFSController *)self specifier];
+  v5 = [specifier propertyForKey:STStorageFPItemKey];
 
   if (v5)
   {
-    v6 = [v5 displayName];
-    v7 = [(STStorageFPFSController *)self navigationItem];
-    [v7 setTitle:v6];
+    displayName = [v5 displayName];
+    navigationItem = [(STStorageFPFSController *)self navigationItem];
+    [navigationItem setTitle:displayName];
   }
 }
 
@@ -51,8 +51,8 @@
     v4 = v3;
     if (v3)
     {
-      v5 = [v3 childItemCount];
-      if (![v5 longValue] || (objc_msgSend(v4, "capabilities") & 1) == 0)
+      childItemCount = [v3 childItemCount];
+      if (![childItemCount longValue] || (objc_msgSend(v4, "capabilities") & 1) == 0)
       {
 
 LABEL_8:
@@ -69,9 +69,9 @@ LABEL_18:
 
     else
     {
-      v6 = [(STStorageFPFSController *)self createCollection];
+      createCollection = [(STStorageFPFSController *)self createCollection];
       v7 = *(&self->_hideEdit + 2);
-      *(&self->_hideEdit + 2) = v6;
+      *(&self->_hideEdit + 2) = createCollection;
 
       if (!*(&self->_hideEdit + 2))
       {
@@ -98,8 +98,8 @@ LABEL_18:
     v14 = v13;
     if (v13)
     {
-      v15 = [v13 childItemCount];
-      if (![v15 longValue] || (objc_msgSend(v14, "capabilities") & 1) == 0)
+      childItemCount2 = [v13 childItemCount];
+      if (![childItemCount2 longValue] || (objc_msgSend(v14, "capabilities") & 1) == 0)
       {
 
         goto LABEL_18;
@@ -137,8 +137,8 @@ LABEL_18:
           v26 = *(*(&v50 + 1) + 8 * i);
           if ([(STStorageFPFSController *)self shouldShowItem:v26])
           {
-            v27 = [v26 itemID];
-            v28 = [v48 objectForKey:v27];
+            itemID = [v26 itemID];
+            v28 = [v48 objectForKey:itemID];
 
             if (!v28)
             {
@@ -156,8 +156,8 @@ LABEL_18:
             }
 
             [v29 addObject:v28];
-            v30 = [v26 itemID];
-            [(NSArray *)v20 setObject:v28 forKey:v30];
+            itemID2 = [v26 itemID];
+            [(NSArray *)v20 setObject:v28 forKey:itemID2];
           }
         }
 
@@ -186,18 +186,18 @@ LABEL_18:
     self->_hideEdit = [v45 count] == 0;
     [STStorageFPFSController setEditingButtonHidden:"setEditingButtonHidden:animated:" animated:?];
     v34 = [v45 count];
-    v35 = [(STStorageFPFSController *)self parentViewController];
-    v36 = [v35 navigationItem];
-    v37 = v36;
+    parentViewController = [(STStorageFPFSController *)self parentViewController];
+    navigationItem = [parentViewController navigationItem];
+    v37 = navigationItem;
     if (v34)
     {
-      v38 = [(STStorageFPFSController *)self editButtonItem];
-      [v37 setRightBarButtonItem:v38];
+      editButtonItem = [(STStorageFPFSController *)self editButtonItem];
+      [v37 setRightBarButtonItem:editButtonItem];
     }
 
     else
     {
-      [v36 setRightBarButtonItem:0];
+      [navigationItem setRightBarButtonItem:0];
 
       if (self->_areCollectionsLoaded)
       {
@@ -218,16 +218,16 @@ LABEL_18:
         }
 
         v40 = STLocalizedString(v39);
-        v35 = [STStorageMessageItemCell specifierWithTitle:v40];
-        [v35 setProperty:&__kCFBooleanFalse forKey:PSEnabledKey];
+        parentViewController = [STStorageMessageItemCell specifierWithTitle:v40];
+        [parentViewController setProperty:&__kCFBooleanFalse forKey:PSEnabledKey];
       }
 
       else
       {
-        v35 = [PSSpecifier preferenceSpecifierNamed:&stru_AD3C8 target:0 set:0 get:0 detail:0 cell:15 edit:0];
+        parentViewController = [PSSpecifier preferenceSpecifierNamed:&stru_AD3C8 target:0 set:0 get:0 detail:0 cell:15 edit:0];
       }
 
-      [v45 addObject:v35];
+      [v45 addObject:parentViewController];
     }
 
     v41 = *(&self->_fpItems + 6);
@@ -246,25 +246,25 @@ LABEL_49:
   return v16;
 }
 
-- (id)specifierAtIndexPath:(id)a3
+- (id)specifierAtIndexPath:(id)path
 {
   v5.receiver = self;
   v5.super_class = STStorageFPFSController;
-  v3 = [(STStorageFPFSController *)&v5 specifierAtIndexPath:a3];
+  v3 = [(STStorageFPFSController *)&v5 specifierAtIndexPath:path];
 
   return v3;
 }
 
-- (BOOL)tableView:(id)a3 canEditRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view canEditRowAtIndexPath:(id)path
 {
-  v4 = [(STStorageFPFSController *)self specifierAtIndexPath:a4];
+  v4 = [(STStorageFPFSController *)self specifierAtIndexPath:path];
 
   return v4 != 0;
 }
 
-- (id)tableView:(id)a3 titleForDeleteConfirmationButtonForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view titleForDeleteConfirmationButtonForRowAtIndexPath:(id)path
 {
-  if ([(STStorageFPFSController *)self pinnedOnly:a3])
+  if ([(STStorageFPFSController *)self pinnedOnly:view])
   {
     v4 = @"Unpin";
   }
@@ -279,30 +279,30 @@ LABEL_49:
   return v5;
 }
 
-- (void)deleteItems:(id)a3
+- (void)deleteItems:(id)items
 {
-  v4 = a3;
-  if (![v4 count])
+  itemsCopy = items;
+  if (![itemsCopy count])
   {
     goto LABEL_12;
   }
 
   v5 = +[UIDevice currentDevice];
-  v6 = [v5 userInterfaceIdiom];
+  userInterfaceIdiom = [v5 userInterfaceIdiom];
 
   v7 = STStorageDeviceKey();
   v8 = STLocalizedString(@"CONFIRM_DELETE_TITLE");
-  v9 = +[NSString localizedStringWithFormat:](NSString, "localizedStringWithFormat:", v8, [v4 count]);
+  v9 = +[NSString localizedStringWithFormat:](NSString, "localizedStringWithFormat:", v8, [itemsCopy count]);
 
   v10 = STLocalizedString(@"CONFIRM_DELETE_OTHER");
-  v11 = +[NSString localizedStringWithFormat:](NSString, "localizedStringWithFormat:", v10, [v4 count]);
+  v11 = +[NSString localizedStringWithFormat:](NSString, "localizedStringWithFormat:", v10, [itemsCopy count]);
 
   if ([v7 isEqualToString:@"PHONE"])
   {
     v12 = @"CONFIRM_DELETE_PHONE";
 LABEL_8:
     v13 = STLocalizedString(v12);
-    v14 = +[NSString localizedStringWithFormat:](NSString, "localizedStringWithFormat:", v13, [v4 count]);
+    v14 = +[NSString localizedStringWithFormat:](NSString, "localizedStringWithFormat:", v13, [itemsCopy count]);
 
     v11 = v14;
     goto LABEL_9;
@@ -321,14 +321,14 @@ LABEL_8:
   }
 
 LABEL_9:
-  v15 = v6 == 0;
+  v15 = userInterfaceIdiom == 0;
   v16 = [UIAlertController alertControllerWithTitle:v9 message:v11 preferredStyle:0];
   v17 = STLocalizedString(@"OK");
   v31[0] = _NSConcreteStackBlock;
   v31[1] = 3221225472;
   v31[2] = sub_11A44;
   v31[3] = &unk_AAB28;
-  v32 = v4;
+  v32 = itemsCopy;
   v18 = [UIAlertAction actionWithTitle:v17 style:2 handler:v31];
 
   v19 = STLocalizedString(@"Cancel");
@@ -336,29 +336,29 @@ LABEL_9:
 
   [v16 addAction:v18];
   [v16 addAction:v20];
-  v21 = [(STStorageFPFSController *)self table];
-  v22 = [v16 popoverPresentationController];
-  if (v22)
+  table = [(STStorageFPFSController *)self table];
+  popoverPresentationController = [v16 popoverPresentationController];
+  if (popoverPresentationController)
   {
-    [v21 frame];
+    [table frame];
     v24 = v23;
     v26 = v25;
     v28 = v27;
     v30 = v29;
-    [v22 setSourceView:v21];
-    [v22 setSourceRect:{v24 + v28 * 0.5, v26 + v30 * 0.5, 0.0, 0.0}];
-    [v22 setPermittedArrowDirections:0];
+    [popoverPresentationController setSourceView:table];
+    [popoverPresentationController setSourceRect:{v24 + v28 * 0.5, v26 + v30 * 0.5, 0.0, 0.0}];
+    [popoverPresentationController setPermittedArrowDirections:0];
   }
 
   [(STStorageFPFSController *)self presentViewController:v16 animated:1 completion:0];
 LABEL_12:
 }
 
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path
 {
-  if (a4 == 1)
+  if (style == 1)
   {
-    v6 = [(STStorageFPFSController *)self specifierAtIndexPath:a5];
+    v6 = [(STStorageFPFSController *)self specifierAtIndexPath:path];
     v7 = [v6 propertyForKey:STStorageFPItemKey];
     v8 = v7;
     if (v7)
@@ -372,15 +372,15 @@ LABEL_12:
 
 - (void)emptyTrash
 {
-  v3 = [*(&self->_hideEdit + 2) items];
-  v4 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v3 count]);
+  items = [*(&self->_hideEdit + 2) items];
+  v4 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [items count]);
 
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [*(&self->_hideEdit + 2) items];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  items2 = [*(&self->_hideEdit + 2) items];
+  v6 = [items2 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -391,7 +391,7 @@ LABEL_12:
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(items2);
         }
 
         v10 = *(*(&v11 + 1) + 8 * i);
@@ -401,7 +401,7 @@ LABEL_12:
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [items2 countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
@@ -410,17 +410,17 @@ LABEL_12:
   [(STStorageFPFSController *)self deleteItems:v4];
 }
 
-- (BOOL)shouldShowItem:(id)a3
+- (BOOL)shouldShowItem:(id)item
 {
-  v3 = a3;
-  v4 = [v3 capabilities];
-  v5 = [v3 capabilities];
-  v6 = [v3 capabilities];
-  v7 = [v3 childItemCount];
+  itemCopy = item;
+  capabilities = [itemCopy capabilities];
+  capabilities2 = [itemCopy capabilities];
+  capabilities3 = [itemCopy capabilities];
+  childItemCount = [itemCopy childItemCount];
 
-  if (v7)
+  if (childItemCount)
   {
-    if (![v7 intValue] || (v5 & 0x40) == 0 && (v6 & 0x10) == 0 && (v4 & 1) == 0)
+    if (![childItemCount intValue] || (capabilities2 & 0x40) == 0 && (capabilities3 & 0x10) == 0 && (capabilities & 1) == 0)
     {
       goto LABEL_6;
     }
@@ -430,7 +430,7 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if (v5 & 0x40 | (v6 & 0x10))
+  if (capabilities2 & 0x40 | (capabilities3 & 0x10))
   {
     goto LABEL_8;
   }
@@ -452,10 +452,10 @@ LABEL_9:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)dataForCollectionShouldBeReloaded:(id)a3
+- (void)dataForCollectionShouldBeReloaded:(id)reloaded
 {
-  v4 = [a3 items];
-  v5 = [NSArray arrayWithArray:v4];
+  items = [reloaded items];
+  v5 = [NSArray arrayWithArray:items];
   [(STStorageFPFSController *)self setFpItems:v5];
 
   self->_areCollectionsLoaded = 1;

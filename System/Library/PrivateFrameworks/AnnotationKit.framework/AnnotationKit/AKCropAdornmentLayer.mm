@@ -4,7 +4,7 @@
 - (void)_removeHandles;
 - (void)_updateHandles;
 - (void)updateAdornmentElements;
-- (void)updateSublayersWithScale:(double)a3;
+- (void)updateSublayersWithScale:(double)scale;
 @end
 
 @implementation AKCropAdornmentLayer
@@ -13,12 +13,12 @@
 {
   [MEMORY[0x277CD9FF0] begin];
   [MEMORY[0x277CD9FF0] setDisableActions:1];
-  v3 = [(AKAdornmentLayer *)self currentlyDraggedArea];
-  if (v3 - 1 < 8 || v3 == 20)
+  currentlyDraggedArea = [(AKAdornmentLayer *)self currentlyDraggedArea];
+  if (currentlyDraggedArea - 1 < 8 || currentlyDraggedArea == 20)
   {
-    v4 = [(AKCropAdornmentLayer *)self cornerHandlesLayer];
+    cornerHandlesLayer = [(AKCropAdornmentLayer *)self cornerHandlesLayer];
 
-    if (!v4)
+    if (!cornerHandlesLayer)
     {
       [(AKCropAdornmentLayer *)self _addHandles];
     }
@@ -27,59 +27,59 @@
   }
 
   [MEMORY[0x277CD9FF0] commit];
-  v5 = [(AKCropAdornmentLayer *)self _shouldShowHandles];
+  _shouldShowHandles = [(AKCropAdornmentLayer *)self _shouldShowHandles];
   [MEMORY[0x277CD9FF0] begin];
   [MEMORY[0x277CD9FF0] setDisableActions:1];
-  if (!v5)
+  if (!_shouldShowHandles)
   {
     [(AKCropAdornmentLayer *)self _removeHandles];
-    v13 = [(AKCropAdornmentLayer *)self cornerHandlesLayer];
-    [v13 setOpacity:0.0];
+    cornerHandlesLayer2 = [(AKCropAdornmentLayer *)self cornerHandlesLayer];
+    [cornerHandlesLayer2 setOpacity:0.0];
 
-    v14 = [(AKCropAdornmentLayer *)self edgeHandlesLayer];
-    v15 = v14;
+    edgeHandlesLayer = [(AKCropAdornmentLayer *)self edgeHandlesLayer];
+    v15 = edgeHandlesLayer;
     v16 = 0.0;
 LABEL_14:
-    [v14 setOpacity:v16];
+    [edgeHandlesLayer setOpacity:v16];
 
     [MEMORY[0x277CD9FF0] commit];
     goto LABEL_15;
   }
 
-  v6 = [(AKCropAdornmentLayer *)self cornerHandlesLayer];
-  v7 = [v6 superlayer];
+  cornerHandlesLayer3 = [(AKCropAdornmentLayer *)self cornerHandlesLayer];
+  superlayer = [cornerHandlesLayer3 superlayer];
 
-  v8 = [(AKCropAdornmentLayer *)self cornerHandlesLayer];
+  cornerHandlesLayer4 = [(AKCropAdornmentLayer *)self cornerHandlesLayer];
 
-  if (!v8)
+  if (!cornerHandlesLayer4)
   {
     [(AKCropAdornmentLayer *)self _addHandles];
   }
 
   [(AKCropAdornmentLayer *)self _updateHandles];
   [MEMORY[0x277CD9FF0] commit];
-  if (!v7)
+  if (!superlayer)
   {
     [MEMORY[0x277CD9FF0] begin];
     [MEMORY[0x277CD9FF0] setDisableActions:0];
     [MEMORY[0x277CD9FF0] setAnimationDuration:0.2];
-    v17 = [(AKCropAdornmentLayer *)self cornerHandlesLayer];
+    cornerHandlesLayer5 = [(AKCropAdornmentLayer *)self cornerHandlesLayer];
     LODWORD(v18) = 1.0;
-    [v17 setOpacity:v18];
+    [cornerHandlesLayer5 setOpacity:v18];
 
-    v14 = [(AKCropAdornmentLayer *)self edgeHandlesLayer];
-    v15 = v14;
+    edgeHandlesLayer = [(AKCropAdornmentLayer *)self edgeHandlesLayer];
+    v15 = edgeHandlesLayer;
     LODWORD(v16) = 1.0;
     goto LABEL_14;
   }
 
-  v9 = [(AKCropAdornmentLayer *)self cornerHandlesLayer];
+  cornerHandlesLayer6 = [(AKCropAdornmentLayer *)self cornerHandlesLayer];
   LODWORD(v10) = 1.0;
-  [v9 setOpacity:v10];
+  [cornerHandlesLayer6 setOpacity:v10];
 
-  v11 = [(AKCropAdornmentLayer *)self edgeHandlesLayer];
+  edgeHandlesLayer2 = [(AKCropAdornmentLayer *)self edgeHandlesLayer];
   LODWORD(v12) = 1.0;
-  [v11 setOpacity:v12];
+  [edgeHandlesLayer2 setOpacity:v12];
 
 LABEL_15:
   [MEMORY[0x277CD9FF0] begin];
@@ -90,31 +90,31 @@ LABEL_15:
   [MEMORY[0x277CD9FF0] commit];
 }
 
-- (void)updateSublayersWithScale:(double)a3
+- (void)updateSublayersWithScale:(double)scale
 {
   [MEMORY[0x277CD9FF0] begin];
   [MEMORY[0x277CD9FF0] setDisableActions:1];
   v13.receiver = self;
   v13.super_class = AKCropAdornmentLayer;
-  [(AKAdornmentLayer *)&v13 updateSublayersWithScale:a3];
-  v5 = [(AKCropAdornmentLayer *)self cornerHandlesLayer];
+  [(AKAdornmentLayer *)&v13 updateSublayersWithScale:scale];
+  cornerHandlesLayer = [(AKCropAdornmentLayer *)self cornerHandlesLayer];
 
-  if (v5)
+  if (cornerHandlesLayer)
   {
     [(AKAdornmentLayer *)self currentScaleFactor];
     v7 = 1.0 / v6;
-    v8 = [(AKCropAdornmentLayer *)self cornerHandlesLayer];
-    [v8 setLineWidth:v7];
+    cornerHandlesLayer2 = [(AKCropAdornmentLayer *)self cornerHandlesLayer];
+    [cornerHandlesLayer2 setLineWidth:v7];
   }
 
-  v9 = [(AKCropAdornmentLayer *)self edgeHandlesLayer];
+  edgeHandlesLayer = [(AKCropAdornmentLayer *)self edgeHandlesLayer];
 
-  if (v9)
+  if (edgeHandlesLayer)
   {
     [(AKAdornmentLayer *)self currentScaleFactor];
     v11 = 1.0 / v10;
-    v12 = [(AKCropAdornmentLayer *)self edgeHandlesLayer];
-    [v12 setLineWidth:v11];
+    edgeHandlesLayer2 = [(AKCropAdornmentLayer *)self edgeHandlesLayer];
+    [edgeHandlesLayer2 setLineWidth:v11];
   }
 
   [MEMORY[0x277CD9FF0] commit];
@@ -122,92 +122,92 @@ LABEL_15:
 
 - (BOOL)_shouldShowHandles
 {
-  v2 = [(AKAdornmentLayer *)self annotation];
-  v3 = [v2 showHandles];
+  annotation = [(AKAdornmentLayer *)self annotation];
+  showHandles = [annotation showHandles];
 
-  return v3;
+  return showHandles;
 }
 
 - (void)_addHandles
 {
-  v33 = [(AKAdornmentLayer *)self annotation];
+  annotation = [(AKAdornmentLayer *)self annotation];
   v3 = objc_opt_new();
   [(AKCropAdornmentLayer *)self setEdgeHandlesLayer:v3];
 
-  v4 = [(AKCropAdornmentLayer *)self edgeHandlesLayer];
-  [v4 setMasksToBounds:0];
+  edgeHandlesLayer = [(AKCropAdornmentLayer *)self edgeHandlesLayer];
+  [edgeHandlesLayer setMasksToBounds:0];
 
-  v5 = [(AKCropAdornmentLayer *)self edgeHandlesLayer];
-  [v5 setOpacity:0.0];
+  edgeHandlesLayer2 = [(AKCropAdornmentLayer *)self edgeHandlesLayer];
+  [edgeHandlesLayer2 setOpacity:0.0];
 
-  v6 = [v33 color];
-  v7 = [(AKCropAdornmentLayer *)self edgeHandlesLayer];
-  [v7 setFillColor:v6];
+  color = [annotation color];
+  edgeHandlesLayer3 = [(AKCropAdornmentLayer *)self edgeHandlesLayer];
+  [edgeHandlesLayer3 setFillColor:color];
 
-  v8 = [v33 color];
-  v9 = [(AKCropAdornmentLayer *)self edgeHandlesLayer];
-  [v9 setStrokeColor:v8];
+  color2 = [annotation color];
+  edgeHandlesLayer4 = [(AKCropAdornmentLayer *)self edgeHandlesLayer];
+  [edgeHandlesLayer4 setStrokeColor:color2];
 
   [(AKAdornmentLayer *)self currentScaleFactor];
   v11 = 1.0 / v10;
-  v12 = [(AKCropAdornmentLayer *)self edgeHandlesLayer];
-  [v12 setLineWidth:v11];
+  edgeHandlesLayer5 = [(AKCropAdornmentLayer *)self edgeHandlesLayer];
+  [edgeHandlesLayer5 setLineWidth:v11];
 
-  v13 = [(AKCropAdornmentLayer *)self edgeHandlesLayer];
-  [(AKCropAdornmentLayer *)self addSublayer:v13];
+  edgeHandlesLayer6 = [(AKCropAdornmentLayer *)self edgeHandlesLayer];
+  [(AKCropAdornmentLayer *)self addSublayer:edgeHandlesLayer6];
 
   v14 = objc_opt_new();
   [(AKCropAdornmentLayer *)self setCornerHandlesLayer:v14];
 
-  v15 = [(AKCropAdornmentLayer *)self cornerHandlesLayer];
-  [v15 setMasksToBounds:0];
+  cornerHandlesLayer = [(AKCropAdornmentLayer *)self cornerHandlesLayer];
+  [cornerHandlesLayer setMasksToBounds:0];
 
-  v16 = [(AKCropAdornmentLayer *)self cornerHandlesLayer];
-  [v16 setOpacity:0.0];
+  cornerHandlesLayer2 = [(AKCropAdornmentLayer *)self cornerHandlesLayer];
+  [cornerHandlesLayer2 setOpacity:0.0];
 
-  v17 = [v33 color];
-  v18 = [(AKCropAdornmentLayer *)self cornerHandlesLayer];
-  [v18 setFillColor:v17];
+  color3 = [annotation color];
+  cornerHandlesLayer3 = [(AKCropAdornmentLayer *)self cornerHandlesLayer];
+  [cornerHandlesLayer3 setFillColor:color3];
 
   v19 = [MEMORY[0x277D75348] colorWithWhite:0.2 alpha:0.5];
-  v20 = [v19 CGColor];
-  v21 = [(AKCropAdornmentLayer *)self cornerHandlesLayer];
-  [v21 setStrokeColor:v20];
+  cGColor = [v19 CGColor];
+  cornerHandlesLayer4 = [(AKCropAdornmentLayer *)self cornerHandlesLayer];
+  [cornerHandlesLayer4 setStrokeColor:cGColor];
 
   [(AKAdornmentLayer *)self currentScaleFactor];
   v23 = 1.0 / v22;
-  v24 = [(AKCropAdornmentLayer *)self cornerHandlesLayer];
-  [v24 setLineWidth:v23];
+  cornerHandlesLayer5 = [(AKCropAdornmentLayer *)self cornerHandlesLayer];
+  [cornerHandlesLayer5 setLineWidth:v23];
 
-  v25 = [MEMORY[0x277D75348] blackColor];
-  v26 = [v25 CGColor];
-  v27 = [(AKCropAdornmentLayer *)self cornerHandlesLayer];
-  [v27 setShadowColor:v26];
+  blackColor = [MEMORY[0x277D75348] blackColor];
+  cGColor2 = [blackColor CGColor];
+  cornerHandlesLayer6 = [(AKCropAdornmentLayer *)self cornerHandlesLayer];
+  [cornerHandlesLayer6 setShadowColor:cGColor2];
 
-  v28 = [(AKCropAdornmentLayer *)self cornerHandlesLayer];
-  [v28 setShadowOffset:{0.0, 0.2}];
+  cornerHandlesLayer7 = [(AKCropAdornmentLayer *)self cornerHandlesLayer];
+  [cornerHandlesLayer7 setShadowOffset:{0.0, 0.2}];
 
-  v29 = [(AKCropAdornmentLayer *)self cornerHandlesLayer];
-  [v29 setShadowRadius:4.0];
+  cornerHandlesLayer8 = [(AKCropAdornmentLayer *)self cornerHandlesLayer];
+  [cornerHandlesLayer8 setShadowRadius:4.0];
 
-  v30 = [(AKCropAdornmentLayer *)self cornerHandlesLayer];
+  cornerHandlesLayer9 = [(AKCropAdornmentLayer *)self cornerHandlesLayer];
   LODWORD(v31) = 1050253722;
-  [v30 setShadowOpacity:v31];
+  [cornerHandlesLayer9 setShadowOpacity:v31];
 
-  v32 = [(AKCropAdornmentLayer *)self cornerHandlesLayer];
-  [(AKCropAdornmentLayer *)self addSublayer:v32];
+  cornerHandlesLayer10 = [(AKCropAdornmentLayer *)self cornerHandlesLayer];
+  [(AKCropAdornmentLayer *)self addSublayer:cornerHandlesLayer10];
 }
 
 - (void)_updateHandles
 {
-  v16 = [(AKAdornmentLayer *)self annotation];
-  v3 = [(AKAdornmentLayer *)self pageController];
+  annotation = [(AKAdornmentLayer *)self annotation];
+  pageController = [(AKAdornmentLayer *)self pageController];
   Mutable = CGPathCreateMutable();
   v5 = CGPathCreateMutable();
-  v6 = [AKCropAnnotationRenderer cropHandle:0 forAnnotation:v16 withPageController:v3];
-  v7 = [AKCropAnnotationRenderer cropHandle:1 forAnnotation:v16 withPageController:v3];
-  v8 = [AKCropAnnotationRenderer cropHandle:2 forAnnotation:v16 withPageController:v3];
-  v9 = [AKCropAnnotationRenderer cropHandle:3 forAnnotation:v16 withPageController:v3];
+  v6 = [AKCropAnnotationRenderer cropHandle:0 forAnnotation:annotation withPageController:pageController];
+  v7 = [AKCropAnnotationRenderer cropHandle:1 forAnnotation:annotation withPageController:pageController];
+  v8 = [AKCropAnnotationRenderer cropHandle:2 forAnnotation:annotation withPageController:pageController];
+  v9 = [AKCropAnnotationRenderer cropHandle:3 forAnnotation:annotation withPageController:pageController];
   if (v6)
   {
     CGPathAddPath(Mutable, 0, v6);
@@ -232,10 +232,10 @@ LABEL_15:
   CGPathRelease(v7);
   CGPathRelease(v8);
   CGPathRelease(v9);
-  v10 = [AKCropAnnotationRenderer cropHandle:4 forAnnotation:v16 withPageController:v3];
-  v11 = [AKCropAnnotationRenderer cropHandle:5 forAnnotation:v16 withPageController:v3];
-  v12 = [AKCropAnnotationRenderer cropHandle:6 forAnnotation:v16 withPageController:v3];
-  v13 = [AKCropAnnotationRenderer cropHandle:7 forAnnotation:v16 withPageController:v3];
+  v10 = [AKCropAnnotationRenderer cropHandle:4 forAnnotation:annotation withPageController:pageController];
+  v11 = [AKCropAnnotationRenderer cropHandle:5 forAnnotation:annotation withPageController:pageController];
+  v12 = [AKCropAnnotationRenderer cropHandle:6 forAnnotation:annotation withPageController:pageController];
+  v13 = [AKCropAnnotationRenderer cropHandle:7 forAnnotation:annotation withPageController:pageController];
   CGPathAddPath(v5, 0, v10);
   CGPathAddPath(v5, 0, v11);
   CGPathAddPath(v5, 0, v12);
@@ -244,29 +244,29 @@ LABEL_15:
   CGPathRelease(v11);
   CGPathRelease(v12);
   CGPathRelease(v13);
-  v14 = [(AKCropAdornmentLayer *)self edgeHandlesLayer];
-  [v14 setPath:Mutable];
+  edgeHandlesLayer = [(AKCropAdornmentLayer *)self edgeHandlesLayer];
+  [edgeHandlesLayer setPath:Mutable];
 
-  v15 = [(AKCropAdornmentLayer *)self cornerHandlesLayer];
-  [v15 setPath:v5];
+  cornerHandlesLayer = [(AKCropAdornmentLayer *)self cornerHandlesLayer];
+  [cornerHandlesLayer setPath:v5];
 
   CGPathRelease(v5);
 }
 
 - (void)_removeHandles
 {
-  v3 = [(AKCropAdornmentLayer *)self cornerHandlesLayer];
-  [v3 removeFromSuperlayer];
+  cornerHandlesLayer = [(AKCropAdornmentLayer *)self cornerHandlesLayer];
+  [cornerHandlesLayer removeFromSuperlayer];
 
-  v4 = [(AKCropAdornmentLayer *)self cornerHandlesLayer];
-  [v4 setOpacity:0.0];
+  cornerHandlesLayer2 = [(AKCropAdornmentLayer *)self cornerHandlesLayer];
+  [cornerHandlesLayer2 setOpacity:0.0];
 
   [(AKCropAdornmentLayer *)self setCornerHandlesLayer:0];
-  v5 = [(AKCropAdornmentLayer *)self edgeHandlesLayer];
-  [v5 removeFromSuperlayer];
+  edgeHandlesLayer = [(AKCropAdornmentLayer *)self edgeHandlesLayer];
+  [edgeHandlesLayer removeFromSuperlayer];
 
-  v6 = [(AKCropAdornmentLayer *)self edgeHandlesLayer];
-  [v6 setOpacity:0.0];
+  edgeHandlesLayer2 = [(AKCropAdornmentLayer *)self edgeHandlesLayer];
+  [edgeHandlesLayer2 setOpacity:0.0];
 
   [(AKCropAdornmentLayer *)self setEdgeHandlesLayer:0];
 }

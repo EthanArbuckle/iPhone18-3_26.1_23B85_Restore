@@ -1,38 +1,38 @@
 @interface CLSAsset
-+ (BOOL)migrateFromVersion:(unint64_t)a3 finalVersion:(unint64_t *)a4 inDatabase:(id)a5;
++ (BOOL)migrateFromVersion:(unint64_t)version finalVersion:(unint64_t *)finalVersion inDatabase:(id)database;
 + (id)hashableColumnNames;
-+ (id)payloadsForObject:(id)a3 withSyncItem:(id)a4 database:(id)a5;
-- (BOOL)canCopyToDatabase:(id)a3;
-- (BOOL)shouldInsertInDatabase:(id)a3;
-- (BOOL)willBeProcessedByEndpointServer:(id)a3;
-- (CLSAsset)initWithDatabaseRow:(id)a3;
-- (id)initWithCKRecord:(id)a3;
-- (id)payloadsWithClassIDs:(id)a3 dependencies:(id)a4;
-- (int64_t)syncBackend:(id)a3;
++ (id)payloadsForObject:(id)object withSyncItem:(id)item database:(id)database;
+- (BOOL)canCopyToDatabase:(id)database;
+- (BOOL)shouldInsertInDatabase:(id)database;
+- (BOOL)willBeProcessedByEndpointServer:(id)server;
+- (CLSAsset)initWithDatabaseRow:(id)row;
+- (id)initWithCKRecord:(id)record;
+- (id)payloadsWithClassIDs:(id)ds dependencies:(id)dependencies;
+- (int64_t)syncBackend:(id)backend;
 - (unint64_t)changeHash;
-- (void)bindTo:(id)a3;
-- (void)populate:(id)a3;
-- (void)willBeDeletedFromDatabase:(id)a3;
+- (void)bindTo:(id)to;
+- (void)populate:(id)populate;
+- (void)willBeDeletedFromDatabase:(id)database;
 @end
 
 @implementation CLSAsset
 
-- (BOOL)willBeProcessedByEndpointServer:(id)a3
+- (BOOL)willBeProcessedByEndpointServer:(id)server
 {
-  v4 = [a3 database];
-  v5 = [(CLSAsset *)self ownerPersonID];
-  v6 = sub_1000712CC(v4);
+  database = [server database];
+  ownerPersonID = [(CLSAsset *)self ownerPersonID];
+  v6 = sub_1000712CC(database);
   v7 = v6;
-  if (v5)
+  if (ownerPersonID)
   {
-    if (!v6 || ([v5 isEqualToString:v6] & 1) == 0)
+    if (!v6 || ([ownerPersonID isEqualToString:v6] & 1) == 0)
     {
       CLSInitLog();
       v8 = CLSLogAsset;
       if (os_log_type_enabled(CLSLogAsset, OS_LOG_TYPE_DEFAULT))
       {
         v10 = 138412546;
-        v11 = v5;
+        v11 = ownerPersonID;
         v12 = 2112;
         v13 = v7;
         _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Refused to change asset.ownerPersonID from '%@' to '%@'", &v10, 0x16u);
@@ -48,15 +48,15 @@
   return 1;
 }
 
-- (BOOL)canCopyToDatabase:(id)a3
+- (BOOL)canCopyToDatabase:(id)database
 {
-  v4 = a3;
+  databaseCopy = database;
   v5 = objc_opt_class();
-  v6 = [(CLSAsset *)self parentObjectID];
-  v7 = [v4 select:v5 identity:v6];
+  parentObjectID = [(CLSAsset *)self parentObjectID];
+  v7 = [databaseCopy select:v5 identity:parentObjectID];
 
-  LOBYTE(v6) = [v7 canCopyToDatabase:v4];
-  return v6;
+  LOBYTE(parentObjectID) = [v7 canCopyToDatabase:databaseCopy];
+  return parentObjectID;
 }
 
 + (id)hashableColumnNames
@@ -76,15 +76,15 @@
 {
   v14.receiver = self;
   v14.super_class = CLSAsset;
-  v3 = [(CLSAsset *)&v14 changeHash];
+  changeHash = [(CLSAsset *)&v14 changeHash];
   v4 = [(CLSAsset *)self URL];
-  v5 = [v4 _cls_stableHash];
+  _cls_stableHash = [v4 _cls_stableHash];
 
-  v6 = [(CLSAsset *)self thumbnailURL];
-  v7 = v5 ^ [v6 _cls_stableHash];
+  thumbnailURL = [(CLSAsset *)self thumbnailURL];
+  v7 = _cls_stableHash ^ [thumbnailURL _cls_stableHash];
 
-  v8 = [(CLSAsset *)self title];
-  v9 = v7 ^ [v8 _cls_stableHash] ^ v3;
+  title = [(CLSAsset *)self title];
+  v9 = v7 ^ [title _cls_stableHash] ^ changeHash;
 
   v10 = v9 ^ (2 * [(CLSAsset *)self displayOrder]);
   [(CLSAsset *)self durationInSeconds];
@@ -94,53 +94,53 @@
   return v10 ^ v12;
 }
 
-- (CLSAsset)initWithDatabaseRow:(id)a3
+- (CLSAsset)initWithDatabaseRow:(id)row
 {
-  v4 = a3;
-  v5 = [(CLSAsset *)self _init];
-  v6 = v5;
-  if (v5)
+  rowCopy = row;
+  _init = [(CLSAsset *)self _init];
+  v6 = _init;
+  if (_init)
   {
-    [v5 _initCommonPropsWithDatabaseRow:v4];
-    v7 = sub_10016D778(v4, @"parentObjectID");
+    [_init _initCommonPropsWithDatabaseRow:rowCopy];
+    v7 = sub_10016D778(rowCopy, @"parentObjectID");
     [v6 setParentObjectID:v7];
 
-    v8 = sub_10016D778(v4, @"original");
+    v8 = sub_10016D778(rowCopy, @"original");
     [v6 setOriginal:{objc_msgSend(v8, "BOOLValue")}];
 
-    v9 = sub_10016D778(v4, @"schoolworkSyncStatus");
+    v9 = sub_10016D778(rowCopy, @"schoolworkSyncStatus");
     [v6 setSchoolworkSyncStatus:{objc_msgSend(v9, "integerValue")}];
 
-    v10 = sub_10016D778(v4, @"uploaded");
+    v10 = sub_10016D778(rowCopy, @"uploaded");
     [v6 setUploaded:{objc_msgSend(v10, "BOOLValue")}];
 
-    v11 = sub_10016D778(v4, @"ownerPersonID");
+    v11 = sub_10016D778(rowCopy, @"ownerPersonID");
     [v6 setOwnerPersonID:v11];
 
-    v12 = sub_10016D778(v4, @"ubiquitousContainerName");
+    v12 = sub_10016D778(rowCopy, @"ubiquitousContainerName");
     [v6 setUbiquitousContainerName:v12];
 
-    v13 = sub_10016D778(v4, @"relativePathWithinContainer");
+    v13 = sub_10016D778(rowCopy, @"relativePathWithinContainer");
     [v6 setRelativePathWithinContainer:v13];
 
-    v14 = sub_10016D778(v4, @"brItemID");
+    v14 = sub_10016D778(rowCopy, @"brItemID");
     [v6 setBrItemID:v14];
 
-    v15 = sub_10016D778(v4, @"brZoneName");
+    v15 = sub_10016D778(rowCopy, @"brZoneName");
     [v6 setBrZoneName:v15];
 
-    v16 = sub_10016D778(v4, @"brOwnerName");
+    v16 = sub_10016D778(rowCopy, @"brOwnerName");
     [v6 setBrOwnerName:v16];
 
-    v17 = sub_10016D778(v4, @"brShareName");
+    v17 = sub_10016D778(rowCopy, @"brShareName");
     [v6 setBrShareName:v17];
 
-    v18 = sub_10016D778(v4, @"type");
+    v18 = sub_10016D778(rowCopy, @"type");
     [v6 setType:{objc_msgSend(v18, "integerValue")}];
 
-    v19 = [v6 ubiquitousContainerName];
+    ubiquitousContainerName = [v6 ubiquitousContainerName];
 
-    if (v19)
+    if (ubiquitousContainerName)
     {
       if (![v6 type])
       {
@@ -153,14 +153,14 @@
       }
     }
 
-    v20 = sub_10016D778(v4, @"devModeURL");
+    v20 = sub_10016D778(rowCopy, @"devModeURL");
     if (v20)
     {
       v21 = [[NSURL alloc] initWithString:v20];
       [v6 setDevModeURL:v21];
     }
 
-    v22 = sub_10016D778(v4, @"url");
+    v22 = sub_10016D778(rowCopy, @"url");
 
     if (v22)
     {
@@ -168,7 +168,7 @@
       [v6 setURL:v23];
     }
 
-    v24 = sub_10016D778(v4, @"compressedURL");
+    v24 = sub_10016D778(rowCopy, @"compressedURL");
 
     if (v24)
     {
@@ -176,51 +176,51 @@
       [v6 setCompressedURL:v25];
     }
 
-    v26 = sub_10016D6F0(v4, @"urlExpirationDate");
+    v26 = sub_10016D6F0(rowCopy, @"urlExpirationDate");
     [v6 setUrlExpirationDate:v26];
 
     [v6 setAppIdentifier:0];
-    v27 = sub_10016D778(v4, @"parentEntityType");
+    v27 = sub_10016D778(rowCopy, @"parentEntityType");
     [v6 setParentEntityType:{objc_msgSend(v27, "integerValue")}];
 
-    v28 = sub_10016D778(v4, @"title");
+    v28 = sub_10016D778(rowCopy, @"title");
     [v6 setTitle:v28];
 
-    v29 = sub_10016D778(v4, @"fileSizeInBytes");
+    v29 = sub_10016D778(rowCopy, @"fileSizeInBytes");
     [v6 setFileSizeInBytes:{objc_msgSend(v29, "integerValue")}];
 
-    v30 = sub_10016D778(v4, @"displayOrder");
+    v30 = sub_10016D778(rowCopy, @"displayOrder");
     [v6 setDisplayOrder:{objc_msgSend(v30, "integerValue")}];
 
-    v31 = sub_10016D778(v4, @"durationInSeconds");
+    v31 = sub_10016D778(rowCopy, @"durationInSeconds");
     [v31 doubleValue];
     [v6 setDurationInSeconds:?];
 
-    v32 = sub_10016D778(v4, @"fileUTTypeIdentifier");
+    v32 = sub_10016D778(rowCopy, @"fileUTTypeIdentifier");
     if (v32)
     {
       v33 = [UTType typeWithIdentifier:v32];
       [v6 setFileUTType:v33];
     }
 
-    v34 = sub_10016D778(v4, @"originalFilename");
+    v34 = sub_10016D778(rowCopy, @"originalFilename");
     [v6 setOriginalFilename:v34];
 
-    v35 = sub_10016D778(v4, @"fractionUploaded");
+    v35 = sub_10016D778(rowCopy, @"fractionUploaded");
     [v35 doubleValue];
     [v6 setFractionUploaded:?];
 
-    v36 = sub_10016D778(v4, @"downloaded");
+    v36 = sub_10016D778(rowCopy, @"downloaded");
     [v6 setDownloaded:{objc_msgSend(v36, "integerValue") != 0}];
 
-    v37 = sub_10016D778(v4, @"fractionDownloaded");
+    v37 = sub_10016D778(rowCopy, @"fractionDownloaded");
     [v37 doubleValue];
     [v6 setFractionDownloaded:?];
 
-    v38 = sub_10016D778(v4, @"staged");
+    v38 = sub_10016D778(rowCopy, @"staged");
     [v6 setStaged:{objc_msgSend(v38, "integerValue") != 0}];
 
-    v39 = sub_10016D778(v4, @"thumbnailURL");
+    v39 = sub_10016D778(rowCopy, @"thumbnailURL");
 
     if (v39)
     {
@@ -234,123 +234,123 @@
   return v6;
 }
 
-- (void)bindTo:(id)a3
+- (void)bindTo:(id)to
 {
   v39.receiver = self;
   v39.super_class = CLSAsset;
-  v4 = a3;
-  [(CLSAsset *)&v39 bindTo:v4];
+  toCopy = to;
+  [(CLSAsset *)&v39 bindTo:toCopy];
   v5 = [(CLSAsset *)self parentObjectID:v39.receiver];
-  sub_1000982FC(v4, v5, @"parentObjectID");
+  sub_1000982FC(toCopy, v5, @"parentObjectID");
 
-  v6 = [(CLSAsset *)self brItemID];
-  sub_1000982FC(v4, v6, @"brItemID");
+  brItemID = [(CLSAsset *)self brItemID];
+  sub_1000982FC(toCopy, brItemID, @"brItemID");
 
-  v7 = [(CLSAsset *)self brZoneName];
-  sub_1000982FC(v4, v7, @"brZoneName");
+  brZoneName = [(CLSAsset *)self brZoneName];
+  sub_1000982FC(toCopy, brZoneName, @"brZoneName");
 
-  v8 = [(CLSAsset *)self brOwnerName];
-  sub_1000982FC(v4, v8, @"brOwnerName");
+  brOwnerName = [(CLSAsset *)self brOwnerName];
+  sub_1000982FC(toCopy, brOwnerName, @"brOwnerName");
 
-  v9 = [(CLSAsset *)self brShareName];
-  sub_1000982FC(v4, v9, @"brShareName");
+  brShareName = [(CLSAsset *)self brShareName];
+  sub_1000982FC(toCopy, brShareName, @"brShareName");
 
-  v10 = [(CLSAsset *)self ownerPersonID];
-  sub_1000982FC(v4, v10, @"ownerPersonID");
+  ownerPersonID = [(CLSAsset *)self ownerPersonID];
+  sub_1000982FC(toCopy, ownerPersonID, @"ownerPersonID");
 
   v11 = [NSNumber numberWithBool:[(CLSAsset *)self isUploaded]];
-  sub_1000982FC(v4, v11, @"uploaded");
+  sub_1000982FC(toCopy, v11, @"uploaded");
 
   v12 = [NSNumber numberWithBool:[(CLSAsset *)self isOriginal]];
-  sub_1000982FC(v4, v12, @"original");
+  sub_1000982FC(toCopy, v12, @"original");
 
   v13 = [(CLSAsset *)self URL];
-  v14 = [v13 absoluteString];
-  sub_1000982FC(v4, v14, @"url");
+  absoluteString = [v13 absoluteString];
+  sub_1000982FC(toCopy, absoluteString, @"url");
 
-  v15 = [(CLSAsset *)self compressedURL];
-  v16 = [v15 absoluteString];
-  sub_1000982FC(v4, v16, @"compressedURL");
+  compressedURL = [(CLSAsset *)self compressedURL];
+  absoluteString2 = [compressedURL absoluteString];
+  sub_1000982FC(toCopy, absoluteString2, @"compressedURL");
 
-  v17 = [(CLSAsset *)self ubiquitousContainerName];
-  sub_1000982FC(v4, v17, @"ubiquitousContainerName");
+  ubiquitousContainerName = [(CLSAsset *)self ubiquitousContainerName];
+  sub_1000982FC(toCopy, ubiquitousContainerName, @"ubiquitousContainerName");
 
-  v18 = [(CLSAsset *)self relativePathWithinContainer];
-  sub_1000982FC(v4, v18, @"relativePathWithinContainer");
+  relativePathWithinContainer = [(CLSAsset *)self relativePathWithinContainer];
+  sub_1000982FC(toCopy, relativePathWithinContainer, @"relativePathWithinContainer");
 
-  v19 = [(CLSAsset *)self devModeURL];
-  v20 = [v19 absoluteString];
-  sub_1000982FC(v4, v20, @"devModeURL");
+  devModeURL = [(CLSAsset *)self devModeURL];
+  absoluteString3 = [devModeURL absoluteString];
+  sub_1000982FC(toCopy, absoluteString3, @"devModeURL");
 
   v21 = [NSNumber numberWithInteger:[(CLSAsset *)self schoolworkSyncStatus]];
-  sub_1000982FC(v4, v21, @"schoolworkSyncStatus");
+  sub_1000982FC(toCopy, v21, @"schoolworkSyncStatus");
 
-  v22 = [(CLSAsset *)self urlExpirationDate];
-  sub_1000982FC(v4, v22, @"urlExpirationDate");
+  urlExpirationDate = [(CLSAsset *)self urlExpirationDate];
+  sub_1000982FC(toCopy, urlExpirationDate, @"urlExpirationDate");
 
   v40 = @"appIdentifier";
   v23 = [NSArray arrayWithObjects:&v40 count:1];
-  sub_1000983A8(v4, v23);
+  sub_1000983A8(toCopy, v23);
 
   v24 = [NSNumber numberWithInteger:[(CLSAsset *)self type]];
-  sub_1000982FC(v4, v24, @"type");
+  sub_1000982FC(toCopy, v24, @"type");
 
   v25 = [NSNumber numberWithInteger:[(CLSAsset *)self parentEntityType]];
-  sub_1000982FC(v4, v25, @"parentEntityType");
+  sub_1000982FC(toCopy, v25, @"parentEntityType");
 
-  v26 = [(CLSAsset *)self title];
-  sub_1000982FC(v4, v26, @"title");
+  title = [(CLSAsset *)self title];
+  sub_1000982FC(toCopy, title, @"title");
 
   v27 = [NSNumber numberWithInteger:[(CLSAsset *)self fileSizeInBytes]];
-  sub_1000982FC(v4, v27, @"fileSizeInBytes");
+  sub_1000982FC(toCopy, v27, @"fileSizeInBytes");
 
   v28 = [NSNumber numberWithInteger:[(CLSAsset *)self displayOrder]];
-  sub_1000982FC(v4, v28, @"displayOrder");
+  sub_1000982FC(toCopy, v28, @"displayOrder");
 
   [(CLSAsset *)self durationInSeconds];
   v29 = [NSNumber numberWithDouble:?];
-  sub_1000982FC(v4, v29, @"durationInSeconds");
+  sub_1000982FC(toCopy, v29, @"durationInSeconds");
 
-  v30 = [(CLSAsset *)self fileUTType];
-  v31 = [v30 identifier];
-  sub_1000982FC(v4, v31, @"fileUTTypeIdentifier");
+  fileUTType = [(CLSAsset *)self fileUTType];
+  identifier = [fileUTType identifier];
+  sub_1000982FC(toCopy, identifier, @"fileUTTypeIdentifier");
 
-  v32 = [(CLSAsset *)self originalFilename];
-  sub_1000982FC(v4, v32, @"originalFilename");
+  originalFilename = [(CLSAsset *)self originalFilename];
+  sub_1000982FC(toCopy, originalFilename, @"originalFilename");
 
   [(CLSAsset *)self fractionUploaded];
   v33 = [NSNumber numberWithDouble:?];
-  sub_1000982FC(v4, v33, @"fractionUploaded");
+  sub_1000982FC(toCopy, v33, @"fractionUploaded");
 
   v34 = [NSNumber numberWithBool:[(CLSAsset *)self isDownloaded]];
-  sub_1000982FC(v4, v34, @"downloaded");
+  sub_1000982FC(toCopy, v34, @"downloaded");
 
   [(CLSAsset *)self fractionDownloaded];
   v35 = [NSNumber numberWithDouble:?];
-  sub_1000982FC(v4, v35, @"fractionDownloaded");
+  sub_1000982FC(toCopy, v35, @"fractionDownloaded");
 
   v36 = [NSNumber numberWithBool:[(CLSAsset *)self isStaged]];
-  sub_1000982FC(v4, v36, @"staged");
+  sub_1000982FC(toCopy, v36, @"staged");
 
-  v37 = [(CLSAsset *)self thumbnailURL];
-  v38 = [v37 absoluteString];
-  sub_1000982FC(v4, v38, @"thumbnailURL");
+  thumbnailURL = [(CLSAsset *)self thumbnailURL];
+  absoluteString4 = [thumbnailURL absoluteString];
+  sub_1000982FC(toCopy, absoluteString4, @"thumbnailURL");
 }
 
-+ (BOOL)migrateFromVersion:(unint64_t)a3 finalVersion:(unint64_t *)a4 inDatabase:(id)a5
++ (BOOL)migrateFromVersion:(unint64_t)version finalVersion:(unint64_t *)finalVersion inDatabase:(id)database
 {
-  v7 = a5;
-  v8 = v7;
-  if (a3 != 2)
+  databaseCopy = database;
+  v8 = databaseCopy;
+  if (version != 2)
   {
-    if (a3 != 1)
+    if (version != 1)
     {
-      if (a3)
+      if (version)
       {
         goto LABEL_15;
       }
 
-      if (!sub_1000B9298(v7, @"create table CLSAsset(objectID         text not null, parentObjectID   text not null, dateCreated      real not null, dateLastModified real not null, appIdentifier    text not null, url              text, brItemID         text, brZoneName       text, brOwnerName      text, ownerPersonID    text, uploaded         integer, original         integer, ubiquitousContainerName     text, relativePathWithinContainer text, brShareName      text, foreign key (parentObjectID) references CLSHandoutAttachment(objectID) on delete cascade on update cascade)", 0, 0, 0) || !sub_1000B9298(v8, @"create unique index CLSAsset_objectID on CLSAsset (objectID)", 0, 0, 0) || !sub_1000B9298(v8, @"create index CLSAsset_parentObjectID on CLSAsset (parentObjectID)", 0, 0, 0))
+      if (!sub_1000B9298(databaseCopy, @"create table CLSAsset(objectID         text not null, parentObjectID   text not null, dateCreated      real not null, dateLastModified real not null, appIdentifier    text not null, url              text, brItemID         text, brZoneName       text, brOwnerName      text, ownerPersonID    text, uploaded         integer, original         integer, ubiquitousContainerName     text, relativePathWithinContainer text, brShareName      text, foreign key (parentObjectID) references CLSHandoutAttachment(objectID) on delete cascade on update cascade)", 0, 0, 0) || !sub_1000B9298(v8, @"create unique index CLSAsset_objectID on CLSAsset (objectID)", 0, 0, 0) || !sub_1000B9298(v8, @"create index CLSAsset_parentObjectID on CLSAsset (parentObjectID)", 0, 0, 0))
       {
         goto LABEL_48;
       }
@@ -386,19 +386,19 @@
     v10 = *(v20 + 24);
     if (v10)
     {
-      a3 = 3;
+      version = 3;
     }
 
     else
     {
-      a3 = 2;
+      version = 2;
     }
   }
 
   else
   {
     v10 = 0;
-    a3 = 2;
+    version = 2;
   }
 
   _Block_object_dispose(&v19, 8);
@@ -410,7 +410,7 @@
   }
 
 LABEL_15:
-  switch(a3)
+  switch(version)
   {
     case 5uLL:
       goto LABEL_26;
@@ -435,7 +435,7 @@ LABEL_48:
 LABEL_26:
       if (sub_1000B9298(v8, @"alter table CLSAsset add column compressedURL text", 0, 0, 0))
       {
-        a3 = 6;
+        version = 6;
         break;
       }
 
@@ -553,18 +553,18 @@ LABEL_47:
       goto LABEL_25;
   }
 
-  *a4 = a3;
+  *finalVersion = version;
   v11 = 1;
 LABEL_49:
 
   return v11;
 }
 
-- (void)willBeDeletedFromDatabase:(id)a3
+- (void)willBeDeletedFromDatabase:(id)database
 {
-  v4 = a3;
-  v5 = [(CLSAsset *)self objectID];
-  v6 = [v4 select:objc_opt_class() identity:v5];
+  databaseCopy = database;
+  objectID = [(CLSAsset *)self objectID];
+  v6 = [databaseCopy select:objc_opt_class() identity:objectID];
   v7 = objc_opt_new();
   if (v6)
   {
@@ -578,25 +578,25 @@ LABEL_49:
     v6 = v9;
     if (v9)
     {
-      objc_setProperty_nonatomic_copy(v9, v10, v5, 8);
+      objc_setProperty_nonatomic_copy(v9, v10, objectID, 8);
     }
   }
 
-  v11 = sub_10015CD74(v4, v5);
+  v11 = sub_10015CD74(databaseCopy, objectID);
   [v7 addObjectsFromArray:v11];
 
-  v12 = [v7 allObjects];
-  sub_10008121C(v6, v12);
+  allObjects = [v7 allObjects];
+  sub_10008121C(v6, allObjects);
 
-  [v4 insertOrUpdateObject:v6];
+  [databaseCopy insertOrUpdateObject:v6];
   if ([(CLSAsset *)self type]== 3)
   {
-    v13 = [(CLSAsset *)self objectID];
-    v14 = sub_10015CF38(v4, v13);
+    objectID2 = [(CLSAsset *)self objectID];
+    v14 = sub_10015CF38(databaseCopy, objectID2);
 
     if (v14)
     {
-      v15 = sub_10008E290([PDCKUploadAssetsOperation alloc], v4);
+      v15 = sub_10008E290([PDCKUploadAssetsOperation alloc], databaseCopy);
       v17 = v15;
       if (v15)
       {
@@ -604,7 +604,7 @@ LABEL_49:
       }
 
       v18 = [CKRecordID alloc];
-      v19 = [(CLSAsset *)self objectID];
+      objectID3 = [(CLSAsset *)self objectID];
       if (v17)
       {
         v20 = v17[3];
@@ -616,7 +616,7 @@ LABEL_49:
       }
 
       v21 = v20;
-      v22 = [v18 initWithRecordName:v19 zoneID:v21];
+      v22 = [v18 initWithRecordName:objectID3 zoneID:v21];
 
       v24 = v22;
       v23 = [NSArray arrayWithObjects:&v24 count:1];
@@ -627,60 +627,60 @@ LABEL_49:
   }
 }
 
-- (id)initWithCKRecord:(id)a3
+- (id)initWithCKRecord:(id)record
 {
-  v4 = a3;
-  v5 = [(CLSAsset *)self _init];
-  v6 = v5;
-  if (v5)
+  recordCopy = record;
+  _init = [(CLSAsset *)self _init];
+  v6 = _init;
+  if (_init)
   {
-    [v5 _initCommonPropsWithRecord:v4];
-    v7 = [v4 objectForKeyedSubscript:@"itemID"];
+    [_init _initCommonPropsWithRecord:recordCopy];
+    v7 = [recordCopy objectForKeyedSubscript:@"itemID"];
     [v6 setBrItemID:v7];
 
-    v8 = [v4 objectForKeyedSubscript:@"ownerName"];
+    v8 = [recordCopy objectForKeyedSubscript:@"ownerName"];
     [v6 setBrOwnerName:v8];
 
-    v9 = [v4 objectForKeyedSubscript:@"zoneName"];
+    v9 = [recordCopy objectForKeyedSubscript:@"zoneName"];
     [v6 setBrZoneName:v9];
 
-    v10 = [v4 objectForKeyedSubscript:@"relativePathWithinContainer"];
+    v10 = [recordCopy objectForKeyedSubscript:@"relativePathWithinContainer"];
     [v6 setRelativePathWithinContainer:v10];
 
-    v11 = [v4 objectForKeyedSubscript:@"ubiquitousContainerName"];
+    v11 = [recordCopy objectForKeyedSubscript:@"ubiquitousContainerName"];
     [v6 setUbiquitousContainerName:v11];
 
-    v12 = [v4 objectForKeyedSubscript:@"shareName"];
+    v12 = [recordCopy objectForKeyedSubscript:@"shareName"];
     [v6 setBrShareName:v12];
 
-    v13 = [v4 objectForKeyedSubscript:@"uploaded"];
+    v13 = [recordCopy objectForKeyedSubscript:@"uploaded"];
     [v6 setUploaded:{objc_msgSend(v13, "BOOLValue")}];
 
-    v14 = [v4 objectForKeyedSubscript:@"displayOrder"];
+    v14 = [recordCopy objectForKeyedSubscript:@"displayOrder"];
     [v6 setDisplayOrder:{objc_msgSend(v14, "integerValue")}];
-    v15 = [v4 objectForKeyedSubscript:@"mediaDurationInSeconds"];
+    v15 = [recordCopy objectForKeyedSubscript:@"mediaDurationInSeconds"];
     [v15 doubleValue];
     [v6 setDurationInSeconds:?];
-    v16 = [v4 objectForKeyedSubscript:@"fileSizeInBytes"];
+    v16 = [recordCopy objectForKeyedSubscript:@"fileSizeInBytes"];
 
     [v6 setFileSizeInBytes:{objc_msgSend(v16, "integerValue")}];
-    v17 = [v4 objectForKeyedSubscript:@"parentEntityType"];
+    v17 = [recordCopy objectForKeyedSubscript:@"parentEntityType"];
 
     [v6 setParentEntityType:{objc_msgSend(v17, "integerValue")}];
-    v18 = [v4 objectForKeyedSubscript:@"type"];
+    v18 = [recordCopy objectForKeyedSubscript:@"type"];
 
     [v6 setType:{objc_msgSend(v18, "integerValue")}];
-    v19 = [v4 objectForKeyedSubscript:@"fileUTTypeIdentifier"];
+    v19 = [recordCopy objectForKeyedSubscript:@"fileUTTypeIdentifier"];
     if (v19)
     {
       v20 = [UTType typeWithIdentifier:v19];
       [v6 setFileUTType:v20];
     }
 
-    v21 = [v4 objectForKeyedSubscript:@"originalFilename"];
+    v21 = [recordCopy objectForKeyedSubscript:@"originalFilename"];
     [v6 setOriginalFilename:v21];
 
-    v22 = [v4 objectForKeyedSubscript:@"title"];
+    v22 = [recordCopy objectForKeyedSubscript:@"title"];
     [v6 setTitle:v22];
 
     [v6 setOriginal:1];
@@ -690,107 +690,107 @@ LABEL_49:
   return v6;
 }
 
-- (void)populate:(id)a3
+- (void)populate:(id)populate
 {
-  v4 = a3;
+  populateCopy = populate;
   v23.receiver = self;
   v23.super_class = CLSAsset;
-  [(CLSAsset *)&v23 populate:v4];
-  v5 = [(CLSAsset *)self brItemID];
-  [v4 setObject:v5 forKeyedSubscript:@"itemID"];
+  [(CLSAsset *)&v23 populate:populateCopy];
+  brItemID = [(CLSAsset *)self brItemID];
+  [populateCopy setObject:brItemID forKeyedSubscript:@"itemID"];
 
-  v6 = [(CLSAsset *)self brOwnerName];
-  [v4 setObject:v6 forKeyedSubscript:@"ownerName"];
+  brOwnerName = [(CLSAsset *)self brOwnerName];
+  [populateCopy setObject:brOwnerName forKeyedSubscript:@"ownerName"];
 
-  v7 = [(CLSAsset *)self brZoneName];
-  [v4 setObject:v7 forKeyedSubscript:@"zoneName"];
+  brZoneName = [(CLSAsset *)self brZoneName];
+  [populateCopy setObject:brZoneName forKeyedSubscript:@"zoneName"];
 
-  v8 = [(CLSAsset *)self relativePathWithinContainer];
-  [v4 setObject:v8 forKeyedSubscript:@"relativePathWithinContainer"];
+  relativePathWithinContainer = [(CLSAsset *)self relativePathWithinContainer];
+  [populateCopy setObject:relativePathWithinContainer forKeyedSubscript:@"relativePathWithinContainer"];
 
-  v9 = [(CLSAsset *)self ubiquitousContainerName];
-  [v4 setObject:v9 forKeyedSubscript:@"ubiquitousContainerName"];
+  ubiquitousContainerName = [(CLSAsset *)self ubiquitousContainerName];
+  [populateCopy setObject:ubiquitousContainerName forKeyedSubscript:@"ubiquitousContainerName"];
 
-  v10 = [(CLSAsset *)self brShareName];
-  [v4 setObject:v10 forKeyedSubscript:@"shareName"];
+  brShareName = [(CLSAsset *)self brShareName];
+  [populateCopy setObject:brShareName forKeyedSubscript:@"shareName"];
 
   v11 = [NSNumber numberWithBool:[(CLSAsset *)self isUploaded]];
-  [v4 setObject:v11 forKeyedSubscript:@"uploaded"];
+  [populateCopy setObject:v11 forKeyedSubscript:@"uploaded"];
 
   v12 = [NSNumber numberWithBool:[(CLSAsset *)self isOriginal]];
-  [v4 setObject:v12 forKeyedSubscript:@"original"];
+  [populateCopy setObject:v12 forKeyedSubscript:@"original"];
 
   v13 = [NSNumber numberWithInteger:[(CLSAsset *)self displayOrder]];
-  [v4 setObject:v13 forKeyedSubscript:@"displayOrder"];
+  [populateCopy setObject:v13 forKeyedSubscript:@"displayOrder"];
 
   [(CLSAsset *)self durationInSeconds];
   v14 = [NSNumber numberWithDouble:?];
-  [v4 setObject:v14 forKeyedSubscript:@"mediaDurationInSeconds"];
+  [populateCopy setObject:v14 forKeyedSubscript:@"mediaDurationInSeconds"];
 
   v15 = [NSNumber numberWithInteger:[(CLSAsset *)self fileSizeInBytes]];
-  [v4 setObject:v15 forKeyedSubscript:@"fileSizeInBytes"];
+  [populateCopy setObject:v15 forKeyedSubscript:@"fileSizeInBytes"];
 
   v16 = [NSNumber numberWithInteger:[(CLSAsset *)self parentEntityType]];
-  [v4 setObject:v16 forKeyedSubscript:@"parentEntityType"];
+  [populateCopy setObject:v16 forKeyedSubscript:@"parentEntityType"];
 
   v17 = [NSNumber numberWithInteger:[(CLSAsset *)self type]];
-  [v4 setObject:v17 forKeyedSubscript:@"type"];
+  [populateCopy setObject:v17 forKeyedSubscript:@"type"];
 
-  v18 = [(CLSAsset *)self fileUTType];
+  fileUTType = [(CLSAsset *)self fileUTType];
 
-  if (v18)
+  if (fileUTType)
   {
-    v19 = [(CLSAsset *)self fileUTType];
-    v20 = [v19 identifier];
-    [v4 setObject:v20 forKeyedSubscript:@"fileUTTypeIdentifier"];
+    fileUTType2 = [(CLSAsset *)self fileUTType];
+    identifier = [fileUTType2 identifier];
+    [populateCopy setObject:identifier forKeyedSubscript:@"fileUTTypeIdentifier"];
   }
 
-  v21 = [(CLSAsset *)self originalFilename];
-  [v4 setObject:v21 forKeyedSubscript:@"originalFilename"];
+  originalFilename = [(CLSAsset *)self originalFilename];
+  [populateCopy setObject:originalFilename forKeyedSubscript:@"originalFilename"];
 
-  v22 = [(CLSAsset *)self title];
-  [v4 setObject:v22 forKeyedSubscript:@"title"];
+  title = [(CLSAsset *)self title];
+  [populateCopy setObject:title forKeyedSubscript:@"title"];
 
-  [(CLSAsset *)self updateParentReferencesForRecord:v4];
+  [(CLSAsset *)self updateParentReferencesForRecord:populateCopy];
 }
 
-- (BOOL)shouldInsertInDatabase:(id)a3
+- (BOOL)shouldInsertInDatabase:(id)database
 {
-  v4 = sub_1000712CC(a3);
+  v4 = sub_1000712CC(database);
   [(CLSAsset *)self setOwnerPersonID:v4];
 
   return 1;
 }
 
-- (int64_t)syncBackend:(id)a3
+- (int64_t)syncBackend:(id)backend
 {
-  v4 = a3;
+  backendCopy = backend;
   if (!self)
   {
     goto LABEL_40;
   }
 
-  v5 = [(CLSAsset *)self type];
-  if (!v5)
+  type = [(CLSAsset *)self type];
+  if (!type)
   {
     goto LABEL_40;
   }
 
-  if (v5 == 3)
+  if (type == 3)
   {
     if ([(CLSAsset *)self isUploaded])
     {
-      v6 = [(CLSAsset *)self brItemID];
-      if (!v6)
+      brItemID = [(CLSAsset *)self brItemID];
+      if (!brItemID)
       {
 LABEL_39:
 
         goto LABEL_40;
       }
 
-      v10 = [(CLSAsset *)self brZoneName];
+      brZoneName = [(CLSAsset *)self brZoneName];
 
-      if (v10)
+      if (brZoneName)
       {
         goto LABEL_13;
       }
@@ -802,9 +802,9 @@ LABEL_40:
     if (os_log_type_enabled(CLSLogAsset, OS_LOG_TYPE_DEFAULT))
     {
       v24 = v23;
-      v25 = [(CLSAsset *)self objectID];
+      objectID = [(CLSAsset *)self objectID];
       v27 = 138412290;
-      v28 = v25;
+      v28 = objectID;
       _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "Asset (%@) not syncable", &v27, 0xCu);
     }
 
@@ -812,7 +812,7 @@ LABEL_40:
     goto LABEL_43;
   }
 
-  if (v5 != 1)
+  if (type != 1)
   {
     goto LABEL_13;
   }
@@ -822,37 +822,37 @@ LABEL_40:
     goto LABEL_40;
   }
 
-  v6 = [(CLSAsset *)self brItemID];
-  if (!v6)
+  brItemID = [(CLSAsset *)self brItemID];
+  if (!brItemID)
   {
     goto LABEL_39;
   }
 
-  v7 = [(CLSAsset *)self brZoneName];
-  if (!v7)
+  brZoneName2 = [(CLSAsset *)self brZoneName];
+  if (!brZoneName2)
   {
     goto LABEL_39;
   }
 
-  v8 = v7;
-  v9 = [(CLSAsset *)self brOwnerName];
+  v8 = brZoneName2;
+  brOwnerName = [(CLSAsset *)self brOwnerName];
 
-  if (!v9)
+  if (!brOwnerName)
   {
     goto LABEL_40;
   }
 
 LABEL_13:
-  v11 = [(CLSAsset *)self parentObjectID];
-  v12 = [(CLSAsset *)self parentEntityType];
-  if (v12 <= 2)
+  parentObjectID = [(CLSAsset *)self parentObjectID];
+  parentEntityType = [(CLSAsset *)self parentEntityType];
+  if (parentEntityType <= 2)
   {
-    if (v12)
+    if (parentEntityType)
     {
-      if (v12 != 1)
+      if (parentEntityType != 1)
       {
         v13 = 0;
-        if (v12 != 2)
+        if (parentEntityType != 2)
         {
 LABEL_26:
           if ([(CLSAsset *)self isStaged])
@@ -891,12 +891,12 @@ LABEL_26:
     }
   }
 
-  else if (v12 > 5)
+  else if (parentEntityType > 5)
   {
     v13 = 0;
     v14 = 0;
     v15 = 0;
-    if (v12 != 6)
+    if (parentEntityType != 6)
     {
       goto LABEL_26;
     }
@@ -904,14 +904,14 @@ LABEL_26:
     goto LABEL_32;
   }
 
-  v17 = [v4 select:objc_opt_class() identity:v11];
+  v17 = [backendCopy select:objc_opt_class() identity:parentObjectID];
   v13 = v17;
   if (!v17)
   {
     goto LABEL_26;
   }
 
-  v15 = [v17 syncBackend:v4];
+  v15 = [v17 syncBackend:backendCopy];
   v14 = v13;
   if (v15 == -1)
   {
@@ -924,7 +924,7 @@ LABEL_32:
   if (os_log_type_enabled(CLSLogAsset, OS_LOG_TYPE_DEFAULT))
   {
     v19 = v18;
-    v20 = [(CLSAsset *)self objectID];
+    objectID2 = [(CLSAsset *)self objectID];
     v21 = @"None";
     if (v15 == 1)
     {
@@ -938,7 +938,7 @@ LABEL_32:
 
     v22 = v21;
     v27 = 138412546;
-    v28 = v20;
+    v28 = objectID2;
     v29 = 2112;
     v30 = v22;
     _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "Asset (%@) sync backend set to %@", &v27, 0x16u);
@@ -948,48 +948,48 @@ LABEL_43:
   return v15;
 }
 
-+ (id)payloadsForObject:(id)a3 withSyncItem:(id)a4 database:(id)a5
++ (id)payloadsForObject:(id)object withSyncItem:(id)item database:(id)database
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  objectCopy = object;
+  itemCopy = item;
+  databaseCopy = database;
   v10 = objc_alloc_init(PDDPPayload);
   [(PDDPPayload *)v10 setType:15];
-  v11 = [v8 state];
-  v12 = v7;
+  state = [itemCopy state];
+  v12 = objectCopy;
   objc_opt_self();
-  if (v11 != 3)
+  if (state != 3)
   {
-    if (v11 == 2)
+    if (state == 2)
     {
       if ([v12 isStaged])
       {
-        v11 = 1;
+        state = 1;
       }
 
       else
       {
-        v11 = 2;
+        state = 2;
       }
     }
 
     else
     {
-      v11 = v11 == 1;
+      state = state == 1;
     }
   }
 
-  [(PDDPPayload *)v10 setAction:v11];
-  if ([v8 state] == 3)
+  [(PDDPPayload *)v10 setAction:state];
+  if ([itemCopy state] == 3)
   {
     v13 = objc_opt_new();
     [(PDDPPayload *)v10 setAsset:v13];
 
-    v14 = [v8 entityIdentity];
-    v15 = [(PDDPPayload *)v10 asset];
-    [v15 setObjectId:v14];
+    entityIdentity = [itemCopy entityIdentity];
+    asset = [(PDDPPayload *)v10 asset];
+    [asset setObjectId:entityIdentity];
 
-    v16 = [v9 select:objc_opt_class() identity:v14];
+    v16 = [databaseCopy select:objc_opt_class() identity:entityIdentity];
 
     if (v16)
     {
@@ -1009,14 +1009,14 @@ LABEL_43:
     v19 = sub_10001E528(v12);
     [(PDDPPayload *)v10 setAsset:v19];
 
-    v14 = [v12 objectID];
-    v18 = sub_10015CD74(v9, v14);
-    v16 = v9;
+    entityIdentity = [v12 objectID];
+    v18 = sub_10015CD74(databaseCopy, entityIdentity);
+    v16 = databaseCopy;
   }
 
   v20 = [v18 mutableCopy];
-  v21 = [(PDDPPayload *)v10 asset];
-  [v21 setClassIds:v20];
+  asset2 = [(PDDPPayload *)v10 asset];
+  [asset2 setClassIds:v20];
 
   v24 = v10;
   v22 = [NSArray arrayWithObjects:&v24 count:1];
@@ -1024,17 +1024,17 @@ LABEL_43:
   return v22;
 }
 
-- (id)payloadsWithClassIDs:(id)a3 dependencies:(id)a4
+- (id)payloadsWithClassIDs:(id)ds dependencies:(id)dependencies
 {
-  v5 = a3;
+  dsCopy = ds;
   v6 = objc_alloc_init(PDDPPayload);
   [(PDDPPayload *)v6 setType:15];
   v7 = sub_10001E528(self);
   [(PDDPPayload *)v6 setAsset:v7];
 
-  v8 = [v5 mutableCopy];
-  v9 = [(PDDPPayload *)v6 asset];
-  [v9 setClassIds:v8];
+  v8 = [dsCopy mutableCopy];
+  asset = [(PDDPPayload *)v6 asset];
+  [asset setClassIds:v8];
 
   v12 = v6;
   v10 = [NSArray arrayWithObjects:&v12 count:1];

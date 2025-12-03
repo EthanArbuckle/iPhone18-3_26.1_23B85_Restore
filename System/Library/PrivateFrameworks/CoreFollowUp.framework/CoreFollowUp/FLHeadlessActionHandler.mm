@@ -1,53 +1,53 @@
 @interface FLHeadlessActionHandler
-+ (id)handlerWithItem:(id)a3;
-- (FLHeadlessActionHandler)initWithItem:(id)a3;
++ (id)handlerWithItem:(id)item;
+- (FLHeadlessActionHandler)initWithItem:(id)item;
 - (void)dealloc;
-- (void)handleAction:(id)a3 completion:(id)a4;
-- (void)handleExtensionBasedAction:(id)a3 completion:(id)a4;
+- (void)handleAction:(id)action completion:(id)completion;
+- (void)handleExtensionBasedAction:(id)action completion:(id)completion;
 @end
 
 @implementation FLHeadlessActionHandler
 
-- (FLHeadlessActionHandler)initWithItem:(id)a3
+- (FLHeadlessActionHandler)initWithItem:(id)item
 {
-  v5 = a3;
+  itemCopy = item;
   v6 = [(FLHeadlessActionHandler *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_item, a3);
+    objc_storeStrong(&v6->_item, item);
   }
 
   return v7;
 }
 
-+ (id)handlerWithItem:(id)a3
++ (id)handlerWithItem:(id)item
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithItem:v4];
+  itemCopy = item;
+  v5 = [[self alloc] initWithItem:itemCopy];
 
   return v5;
 }
 
-- (void)handleAction:(id)a3 completion:(id)a4
+- (void)handleAction:(id)action completion:(id)completion
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  actionCopy = action;
+  completionCopy = completion;
   v8 = _os_activity_create(&dword_22E696000, "followup/handling-action", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
   v18.opaque[0] = 0;
   v18.opaque[1] = 0;
   os_activity_scope_enter(v8, &v18);
-  v9 = [(FLHeadlessActionHandler *)self item];
-  v10 = [v9 extensionIdentifier];
-  if (v10)
+  item = [(FLHeadlessActionHandler *)self item];
+  extensionIdentifier = [item extensionIdentifier];
+  if (extensionIdentifier)
   {
     v11 = +[FLEnvironment currentEnvironment];
-    v12 = [v11 followUpExtensionSupportEnabled];
+    followUpExtensionSupportEnabled = [v11 followUpExtensionSupportEnabled];
 
-    if (v12)
+    if (followUpExtensionSupportEnabled)
     {
-      [(FLHeadlessActionHandler *)self handleExtensionBasedAction:v6 completion:v7];
+      [(FLHeadlessActionHandler *)self handleExtensionBasedAction:actionCopy completion:completionCopy];
       goto LABEL_10;
     }
   }
@@ -56,9 +56,9 @@
   {
   }
 
-  if ([v6 _loadActionURL])
+  if ([actionCopy _loadActionURL])
   {
-    v7[2](v7, 1, 0);
+    completionCopy[2](completionCopy, 1, 0);
   }
 
   else
@@ -66,17 +66,17 @@
     v13 = _FLLogSystem();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
-      v16 = [(FLHeadlessActionHandler *)self item];
-      v17 = [v16 uniqueIdentifier];
+      item2 = [(FLHeadlessActionHandler *)self item];
+      uniqueIdentifier = [item2 uniqueIdentifier];
       *buf = 138412546;
-      v20 = v6;
+      v20 = actionCopy;
       v21 = 2112;
-      v22 = v17;
+      v22 = uniqueIdentifier;
       _os_log_error_impl(&dword_22E696000, v13, OS_LOG_TYPE_ERROR, "Action could not be handled for %@ - %@", buf, 0x16u);
     }
 
     v14 = FLError(1666);
-    (v7)[2](v7, 0, v14);
+    (completionCopy)[2](completionCopy, 0, v14);
   }
 
 LABEL_10:
@@ -85,11 +85,11 @@ LABEL_10:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleExtensionBasedAction:(id)a3 completion:(id)a4
+- (void)handleExtensionBasedAction:(id)action completion:(id)completion
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  actionCopy = action;
+  completionCopy = completion;
   v8 = _os_activity_create(&dword_22E696000, "followup/silent-handling-action", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -97,9 +97,9 @@ LABEL_10:
   v9 = _FLLogSystem();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [(FLHeadlessActionHandler *)self item];
+    item = [(FLHeadlessActionHandler *)self item];
     *buf = 138412290;
-    v20 = v10;
+    v20 = item;
     _os_log_impl(&dword_22E696000, v9, OS_LOG_TYPE_DEFAULT, "Starting to load extension for follow up: %@", buf, 0xCu);
   }
 
@@ -109,10 +109,10 @@ LABEL_10:
   block[2] = __65__FLHeadlessActionHandler_handleExtensionBasedAction_completion___block_invoke;
   block[3] = &unk_278852920;
   block[4] = self;
-  v16 = v6;
-  v17 = v7;
-  v12 = v7;
-  v13 = v6;
+  v16 = actionCopy;
+  v17 = completionCopy;
+  v12 = completionCopy;
+  v13 = actionCopy;
   dispatch_async(v11, block);
 
   os_activity_scope_leave(&state);

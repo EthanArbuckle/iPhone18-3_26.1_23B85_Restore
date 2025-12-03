@@ -18,9 +18,9 @@
   if (v2)
   {
     v3 = +[NSUUID UUID];
-    v4 = [v3 UUIDString];
+    uUIDString = [v3 UUIDString];
     launchCorrelationKey = v2->_launchCorrelationKey;
-    v2->_launchCorrelationKey = v4;
+    v2->_launchCorrelationKey = uUIDString;
   }
 
   return v2;
@@ -30,7 +30,7 @@
 {
   if ((byte_CC088 & 1) == 0 && !qword_CC080)
   {
-    qword_CC080 = objc_alloc_init(a1);
+    qword_CC080 = objc_alloc_init(self);
 
     _objc_release_x1();
   }
@@ -79,8 +79,8 @@
   }
 
   v13[0] = @"launchCorrelationKey";
-  v3 = [(JSAMetricsAppLaunchEvent *)self launchCorrelationKey];
-  v14[0] = v3;
+  launchCorrelationKey = [(JSAMetricsAppLaunchEvent *)self launchCorrelationKey];
+  v14[0] = launchCorrelationKey;
   v14[1] = &__kCFBooleanTrue;
   v13[1] = @"isAppLaunch";
   v13[2] = @"jsBootstrapStartTime";

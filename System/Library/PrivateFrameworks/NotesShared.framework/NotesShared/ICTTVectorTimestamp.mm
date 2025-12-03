@@ -1,20 +1,20 @@
 @interface ICTTVectorTimestamp
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (ICTTVectorTimestamp)init;
-- (ICTTVectorTimestamp)initWithArchive:(const void *)a3;
-- (ICTTVectorTimestamp)initWithData:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (ICTTVectorTimestamp)initWithArchive:(const void *)archive;
+- (ICTTVectorTimestamp)initWithData:(id)data;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)serialize;
 - (id)sortedUUIDs;
-- (unint64_t)clockForUUID:(id)a3;
-- (unint64_t)compareTo:(id)a3;
-- (unint64_t)subclockForUUID:(id)a3;
-- (void)incrementClockForUUID:(id)a3;
-- (void)mergeWithTimestamp:(id)a3;
-- (void)saveToArchive:(void *)a3;
-- (void)setClock:(unint64_t)a3 forUUID:(id)a4;
-- (void)setClock:(unint64_t)a3 subclock:(unint64_t)a4 forUUID:(id)a5;
+- (unint64_t)clockForUUID:(id)d;
+- (unint64_t)compareTo:(id)to;
+- (unint64_t)subclockForUUID:(id)d;
+- (void)incrementClockForUUID:(id)d;
+- (void)mergeWithTimestamp:(id)timestamp;
+- (void)saveToArchive:(void *)archive;
+- (void)setClock:(unint64_t)clock forUUID:(id)d;
+- (void)setClock:(unint64_t)clock subclock:(unint64_t)subclock forUUID:(id)d;
 @end
 
 @implementation ICTTVectorTimestamp
@@ -34,86 +34,86 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[ICTTVectorTimestamp allocWithZone:?]];
   [(ICTTVectorTimestamp *)v4 mergeWithTimestamp:self];
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(ICTTVectorTimestamp *)self compareTo:v4]== 0;
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(ICTTVectorTimestamp *)self compareTo:equalCopy]== 0;
 
   return v5;
 }
 
-- (unint64_t)clockForUUID:(id)a3
+- (unint64_t)clockForUUID:(id)d
 {
-  v3 = [(NSMutableDictionary *)self->_clock objectForKeyedSubscript:a3];
-  v4 = [v3 clock];
+  v3 = [(NSMutableDictionary *)self->_clock objectForKeyedSubscript:d];
+  clock = [v3 clock];
 
-  return v4;
+  return clock;
 }
 
-- (unint64_t)subclockForUUID:(id)a3
+- (unint64_t)subclockForUUID:(id)d
 {
-  v3 = [(NSMutableDictionary *)self->_clock objectForKeyedSubscript:a3];
-  v4 = [v3 subclock];
+  v3 = [(NSMutableDictionary *)self->_clock objectForKeyedSubscript:d];
+  subclock = [v3 subclock];
 
-  return v4;
+  return subclock;
 }
 
-- (void)setClock:(unint64_t)a3 forUUID:(id)a4
+- (void)setClock:(unint64_t)clock forUUID:(id)d
 {
   clock = self->_clock;
-  v7 = a4;
-  v8 = [(NSMutableDictionary *)clock objectForKeyedSubscript:v7];
+  dCopy = d;
+  v8 = [(NSMutableDictionary *)clock objectForKeyedSubscript:dCopy];
   if (!v8)
   {
     v8 = objc_alloc_init(ICTTVectorTimestampElement);
   }
 
   v9 = v8;
-  [(ICTTVectorTimestampElement *)v8 setClock:a3];
-  [(NSMutableDictionary *)self->_clock setObject:v9 forKey:v7];
+  [(ICTTVectorTimestampElement *)v8 setClock:clock];
+  [(NSMutableDictionary *)self->_clock setObject:v9 forKey:dCopy];
 }
 
-- (void)setClock:(unint64_t)a3 subclock:(unint64_t)a4 forUUID:(id)a5
+- (void)setClock:(unint64_t)clock subclock:(unint64_t)subclock forUUID:(id)d
 {
-  v8 = a5;
+  dCopy = d;
   v9 = objc_alloc_init(ICTTVectorTimestampElement);
-  [(ICTTVectorTimestampElement *)v9 setClock:a3];
-  [(ICTTVectorTimestampElement *)v9 setSubclock:a4];
-  [(NSMutableDictionary *)self->_clock setObject:v9 forKey:v8];
+  [(ICTTVectorTimestampElement *)v9 setClock:clock];
+  [(ICTTVectorTimestampElement *)v9 setSubclock:subclock];
+  [(NSMutableDictionary *)self->_clock setObject:v9 forKey:dCopy];
 }
 
-- (void)incrementClockForUUID:(id)a3
+- (void)incrementClockForUUID:(id)d
 {
-  v4 = a3;
-  [(ICTTVectorTimestamp *)self setClock:[(ICTTVectorTimestamp *)self clockForUUID:v4]+ 1 forUUID:v4];
+  dCopy = d;
+  [(ICTTVectorTimestamp *)self setClock:[(ICTTVectorTimestamp *)self clockForUUID:dCopy]+ 1 forUUID:dCopy];
 }
 
 - (id)sortedUUIDs
 {
-  v2 = [(NSMutableDictionary *)self->_clock allKeys];
-  v3 = [v2 sortedArrayUsingSelector:sel_TTCompare_];
+  allKeys = [(NSMutableDictionary *)self->_clock allKeys];
+  v3 = [allKeys sortedArrayUsingSelector:sel_TTCompare_];
 
   return v3;
 }
 
-- (unint64_t)compareTo:(id)a3
+- (unint64_t)compareTo:(id)to
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   v5 = MEMORY[0x277CBEB58];
-  v6 = [(ICTTVectorTimestamp *)self allUUIDs];
-  v7 = [v5 setWithArray:v6];
+  allUUIDs = [(ICTTVectorTimestamp *)self allUUIDs];
+  v7 = [v5 setWithArray:allUUIDs];
 
-  v8 = [v4 allUUIDs];
-  [v7 addObjectsFromArray:v8];
+  allUUIDs2 = [toCopy allUUIDs];
+  [v7 addObjectsFromArray:allUUIDs2];
 
   v30 = 0u;
   v31 = 0u;
@@ -144,22 +144,22 @@
 
       v16 = *(*(&v28 + 1) + 8 * i);
       v17 = [(ICTTVectorTimestamp *)self clockElementForUUID:v16];
-      v18 = [v4 clockElementForUUID:v16];
-      v19 = [v17 clock];
-      if (v19 >= [v18 clock])
+      v18 = [toCopy clockElementForUUID:v16];
+      clock = [v17 clock];
+      if (clock >= [v18 clock])
       {
-        v20 = [v17 clock];
-        if (v20 > [v18 clock])
+        clock2 = [v17 clock];
+        if (clock2 > [v18 clock])
         {
           v12 = 1;
           goto LABEL_12;
         }
 
-        v21 = [v17 subclock];
-        if (v21 >= [v18 subclock])
+        subclock = [v17 subclock];
+        if (subclock >= [v18 subclock])
         {
-          v22 = [v17 subclock];
-          v12 |= v22 > [v18 subclock];
+          subclock2 = [v17 subclock];
+          v12 |= subclock2 > [v18 subclock];
           goto LABEL_12;
         }
       }
@@ -205,15 +205,15 @@ LABEL_22:
   return v25;
 }
 
-- (void)mergeWithTimestamp:(id)a3
+- (void)mergeWithTimestamp:(id)timestamp
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  timestampCopy = timestamp;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  obj = [v4 allUUIDs];
+  obj = [timestampCopy allUUIDs];
   v5 = [obj countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v5)
   {
@@ -230,13 +230,13 @@ LABEL_22:
 
         v9 = *(*(&v17 + 1) + 8 * i);
         v10 = [(ICTTVectorTimestamp *)self clockElementForUUID:v9];
-        v11 = [v4 clockElementForUUID:v9];
-        v12 = [v10 clock];
+        v11 = [timestampCopy clockElementForUUID:v9];
+        clock = [v10 clock];
         v13 = v10;
-        if (v12 <= [v11 clock])
+        if (clock <= [v11 clock])
         {
-          v14 = [v10 clock];
-          if (v14 != [v11 clock] || (v15 = objc_msgSend(v10, "subclock"), v13 = v10, v15 <= objc_msgSend(v11, "subclock")))
+          clock2 = [v10 clock];
+          if (clock2 != [v11 clock] || (v15 = objc_msgSend(v10, "subclock"), v13 = v10, v15 <= objc_msgSend(v11, "subclock")))
           {
             v13 = v11;
           }
@@ -264,8 +264,8 @@ LABEL_22:
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [(ICTTVectorTimestamp *)self sortedUUIDs];
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  sortedUUIDs = [(ICTTVectorTimestamp *)self sortedUUIDs];
+  v7 = [sortedUUIDs countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -276,7 +276,7 @@ LABEL_22:
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(sortedUUIDs);
         }
 
         v11 = *(*(&v14 + 1) + 8 * i);
@@ -284,7 +284,7 @@ LABEL_22:
         [v3 appendFormat:@"  %@:%lu.%lu\n", v11, objc_msgSend(v12, "clock"), objc_msgSend(v12, "subclock")];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v8 = [sortedUUIDs countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v8);
@@ -295,26 +295,26 @@ LABEL_22:
   return v3;
 }
 
-- (ICTTVectorTimestamp)initWithData:(id)a3
+- (ICTTVectorTimestamp)initWithData:(id)data
 {
-  v4 = a3;
-  v5 = [[ICTTVectorMultiTimestamp alloc] initWithData:v4 andCapacity:1];
-  v6 = [(ICTTVectorMultiTimestamp *)v5 timestamps];
-  v7 = [v6 objectAtIndexedSubscript:0];
+  dataCopy = data;
+  v5 = [[ICTTVectorMultiTimestamp alloc] initWithData:dataCopy andCapacity:1];
+  timestamps = [(ICTTVectorMultiTimestamp *)v5 timestamps];
+  v7 = [timestamps objectAtIndexedSubscript:0];
 
   return v7;
 }
 
-- (ICTTVectorTimestamp)initWithArchive:(const void *)a3
+- (ICTTVectorTimestamp)initWithArchive:(const void *)archive
 {
-  v4 = [[ICTTVectorMultiTimestamp alloc] initWithArchive:a3 andCapacity:1];
-  v5 = [(ICTTVectorMultiTimestamp *)v4 timestamps];
-  v6 = [v5 objectAtIndexedSubscript:0];
+  v4 = [[ICTTVectorMultiTimestamp alloc] initWithArchive:archive andCapacity:1];
+  timestamps = [(ICTTVectorMultiTimestamp *)v4 timestamps];
+  v6 = [timestamps objectAtIndexedSubscript:0];
 
   return v6;
 }
 
-- (void)saveToArchive:(void *)a3
+- (void)saveToArchive:(void *)archive
 {
   v8[1] = *MEMORY[0x277D85DE8];
   v5 = [ICTTVectorMultiTimestamp alloc];
@@ -322,7 +322,7 @@ LABEL_22:
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:1];
   v7 = [(ICTTVectorMultiTimestamp *)v5 initWithTimestamps:v6];
 
-  [(ICTTVectorMultiTimestamp *)v7 saveToArchive:a3];
+  [(ICTTVectorMultiTimestamp *)v7 saveToArchive:archive];
 }
 
 - (id)serialize
@@ -333,9 +333,9 @@ LABEL_22:
   v4 = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:1];
   v5 = [(ICTTVectorMultiTimestamp *)v3 initWithTimestamps:v4];
 
-  v6 = [(ICTTVectorMultiTimestamp *)v5 serialize];
+  serialize = [(ICTTVectorMultiTimestamp *)v5 serialize];
 
-  return v6;
+  return serialize;
 }
 
 @end

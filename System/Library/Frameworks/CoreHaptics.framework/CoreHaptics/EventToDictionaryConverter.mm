@@ -1,12 +1,12 @@
 @interface EventToDictionaryConverter
-+ (id)convertEvents:(id)a3;
-+ (id)eventTypeToNSString:(unint64_t)a3;
-+ (id)paramTypeToNSString:(unint64_t)a3;
++ (id)convertEvents:(id)events;
++ (id)eventTypeToNSString:(unint64_t)string;
++ (id)paramTypeToNSString:(unint64_t)string;
 @end
 
 @implementation EventToDictionaryConverter
 
-+ (id)eventTypeToNSString:(unint64_t)a3
++ (id)eventTypeToNSString:(unint64_t)string
 {
   v43[33] = *MEMORY[0x277D85DE8];
   {
@@ -113,7 +113,7 @@
   }
 
   v4 = +[EventToDictionaryConverter eventTypeToNSString:]::eventDict;
-  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:a3];
+  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:string];
   v6 = [v4 objectForKey:v5];
 
   v7 = *MEMORY[0x277D85DE8];
@@ -121,11 +121,11 @@
   return v6;
 }
 
-+ (id)paramTypeToNSString:(unint64_t)a3
++ (id)paramTypeToNSString:(unint64_t)string
 {
   v22[11] = *MEMORY[0x277D85DE8];
   {
-    v17 = a3;
+    stringCopy = string;
     v20 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:1000];
     v21[0] = v20;
     v22[0] = @"AudioVolume";
@@ -161,11 +161,11 @@
     v22[10] = @"HapticReleaseTime";
     +[EventToDictionaryConverter paramTypeToNSString:]::paramDict = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v22 forKeys:v21 count:11];
 
-    a3 = v17;
+    string = stringCopy;
   }
 
   v4 = +[EventToDictionaryConverter paramTypeToNSString:]::paramDict;
-  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:a3];
+  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:string];
   v6 = [v4 objectForKey:v5];
 
   v7 = *MEMORY[0x277D85DE8];
@@ -173,16 +173,16 @@
   return v6;
 }
 
-+ (id)convertEvents:(id)a3
++ (id)convertEvents:(id)events
 {
   v57 = *MEMORY[0x277D85DE8];
-  v39 = a3;
+  eventsCopy = events;
   v40 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v46 = 0u;
   v47 = 0u;
   v44 = 0u;
   v45 = 0u;
-  obj = v39;
+  obj = eventsCopy;
   v3 = [obj countByEnumeratingWithState:&v44 objects:v56 count:16];
   if (v3)
   {
@@ -237,7 +237,7 @@ LABEL_28:
           v14 = v27;
           if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
           {
-            v30 = [v5 paramType];
+            paramType = [v5 paramType];
             *buf = 136315906;
             v49 = "EventToDictionaryConverter.mm";
             v50 = 1024;
@@ -245,7 +245,7 @@ LABEL_28:
             v52 = 2080;
             v53 = "+[EventToDictionaryConverter convertEvents:]";
             v54 = 1024;
-            v55 = v30;
+            v55 = paramType;
             v31 = v14;
 LABEL_36:
             _os_log_impl(&dword_21569A000, v31, OS_LOG_TYPE_ERROR, "%25s:%-5d %s: ERROR: Unknown param type: %u", buf, 0x22u);
@@ -335,7 +335,7 @@ LABEL_34:
           v14 = v32;
           if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
           {
-            v35 = [v5 eventType];
+            eventType = [v5 eventType];
             *buf = 136315906;
             v49 = "EventToDictionaryConverter.mm";
             v50 = 1024;
@@ -343,7 +343,7 @@ LABEL_34:
             v52 = 2080;
             v53 = "+[EventToDictionaryConverter convertEvents:]";
             v54 = 1024;
-            v55 = v35;
+            v55 = eventType;
             v31 = v14;
             goto LABEL_36;
           }

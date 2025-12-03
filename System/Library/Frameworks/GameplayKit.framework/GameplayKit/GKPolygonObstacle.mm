@@ -1,9 +1,9 @@
 @interface GKPolygonObstacle
 + (GKPolygonObstacle)obstacleWithPoints:(vector_float2 *)points count:(size_t)numPoints;
-- (GKPolygonObstacle)initWithCoder:(id)a3;
+- (GKPolygonObstacle)initWithCoder:(id)coder;
 - (GKPolygonObstacle)initWithPoints:(vector_float2 *)points count:(size_t)numPoints;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation GKPolygonObstacle
@@ -40,10 +40,10 @@
   [(GKPolygonObstacle *)&v4 dealloc];
 }
 
-- (GKPolygonObstacle)initWithCoder:(id)a3
+- (GKPolygonObstacle)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntForKey:@"numVertices"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntForKey:@"numVertices"];
   if ((v5 & 0x80000000) != 0)
   {
     [MEMORY[0x277CCACA8] stringWithFormat:@"Serialization error!  Value (%i) for key 'numVertices' can not be negative.", v5];
@@ -52,7 +52,7 @@
   }
 
   v11 = 0;
-  v6 = [v4 decodeBytesForKey:@"vertices" returnedLength:&v11];
+  v6 = [coderCopy decodeBytesForKey:@"vertices" returnedLength:&v11];
   if (v11 < 8 * v5)
   {
     [MEMORY[0x277CCACA8] stringWithFormat:@"Serialization error!  Expected to decode %zu bytes for key 'vertices'.  Got %zu.", 8 * v5, v11];
@@ -65,11 +65,11 @@
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:(*(self->_cPolygonObstacle + 2) - *(self->_cPolygonObstacle + 1)) >> 3 forKey:@"numVertices"];
-  [v4 encodeBytes:*(self->_cPolygonObstacle + 1) length:*(self->_cPolygonObstacle + 2) - *(self->_cPolygonObstacle + 1) forKey:@"vertices"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:(*(self->_cPolygonObstacle + 2) - *(self->_cPolygonObstacle + 1)) >> 3 forKey:@"numVertices"];
+  [coderCopy encodeBytes:*(self->_cPolygonObstacle + 1) length:*(self->_cPolygonObstacle + 2) - *(self->_cPolygonObstacle + 1) forKey:@"vertices"];
 }
 
 @end

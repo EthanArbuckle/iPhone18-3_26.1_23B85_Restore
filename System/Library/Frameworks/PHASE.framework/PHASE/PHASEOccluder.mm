@@ -1,8 +1,8 @@
 @interface PHASEOccluder
 - (PHASEOccluder)init;
 - (PHASEOccluder)initWithEngine:(PHASEEngine *)engine shapes:(NSArray *)shapes;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setIsStatic:(BOOL)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setIsStatic:(BOOL)static;
 @end
 
 @implementation PHASEOccluder
@@ -35,24 +35,24 @@
     }
 
     self = v10;
-    v13 = self;
+    selfCopy = self;
   }
 
   else
   {
     [MEMORY[0x277CBEAD8] raise:@"API Misuse" format:@"Cannot create a PHASEOccluder with nil or empty shape array"];
-    v13 = 0;
+    selfCopy = 0;
   }
 
-  return v13;
+  return selfCopy;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(PHASEObject *)self engine];
-  v6 = [(PHASEOccluder *)self shapes];
-  v7 = [v4 initWithEngine:v5 shapes:v6];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  engine = [(PHASEObject *)self engine];
+  shapes = [(PHASEOccluder *)self shapes];
+  v7 = [v4 initWithEngine:engine shapes:shapes];
 
   *&v8 = self->_materialScaleFactor;
   [v7 setMaterialScaleFactor:v8];
@@ -62,19 +62,19 @@
   return v7;
 }
 
-- (void)setIsStatic:(BOOL)a3
+- (void)setIsStatic:(BOOL)static
 {
-  v3 = a3;
+  staticCopy = static;
   v22[1] = *MEMORY[0x277D85DE8];
-  v5 = [(PHASEObject *)self engine];
-  v6 = v5;
-  if (v5)
+  engine = [(PHASEObject *)self engine];
+  v6 = engine;
+  if (engine)
   {
-    if (self->_isStatic != v3)
+    if (self->_isStatic != staticCopy)
     {
-      v7 = *([v5 implementation] + 368);
-      (*(*v7 + 264))(v7, [(PHASEObject *)self geoEntityHandle], v3);
-      self->_isStatic = v3;
+      v7 = *([engine implementation] + 368);
+      (*(*v7 + 264))(v7, [(PHASEObject *)self geoEntityHandle], staticCopy);
+      self->_isStatic = staticCopy;
     }
   }
 
@@ -96,7 +96,7 @@
       v17 = 1024;
       v18 = 83;
       v19 = 2080;
-      v20 = [v13 UTF8String];
+      uTF8String = [v13 UTF8String];
       _os_log_impl(&dword_23A302000, v12, OS_LOG_TYPE_ERROR, "%25s:%-5d %s", &v15, 0x1Cu);
     }
   }

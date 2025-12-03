@@ -1,52 +1,52 @@
 @interface VOSBluetoothSSPPairingRequest
-- (VOSBluetoothSSPPairingRequest)initWithDevice:(id)a3 andSpecifier:(id)a4;
-- (VOSBluetoothSSPPairingRequest)initWithDevice:(id)a3 andSpecifier:(id)a4 acceptPairingBlock:(id)a5 cancelPairingBlock:(id)a6;
-- (id)_sanitizeNameForAlert:(id)a3;
+- (VOSBluetoothSSPPairingRequest)initWithDevice:(id)device andSpecifier:(id)specifier;
+- (VOSBluetoothSSPPairingRequest)initWithDevice:(id)device andSpecifier:(id)specifier acceptPairingBlock:(id)block cancelPairingBlock:(id)pairingBlock;
+- (id)_sanitizeNameForAlert:(id)alert;
 - (void)dealloc;
-- (void)setPairingStyle:(int)a3 andPasskey:(id)a4;
-- (void)showWithWindow:(id)a3;
+- (void)setPairingStyle:(int)style andPasskey:(id)passkey;
+- (void)showWithWindow:(id)window;
 @end
 
 @implementation VOSBluetoothSSPPairingRequest
 
-- (VOSBluetoothSSPPairingRequest)initWithDevice:(id)a3 andSpecifier:(id)a4
+- (VOSBluetoothSSPPairingRequest)initWithDevice:(id)device andSpecifier:(id)specifier
 {
-  v7 = a3;
-  v8 = a4;
+  deviceCopy = device;
+  specifierCopy = specifier;
   v13.receiver = self;
   v13.super_class = VOSBluetoothSSPPairingRequest;
   v9 = [(VOSBluetoothSSPPairingRequest *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_device, a3);
-    objc_storeStrong(&v10->_specifier, a4);
-    v11 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v11 addObserver:v10 selector:sel_hidPairingResult_ name:*MEMORY[0x277CE7EC8] object:0];
+    objc_storeStrong(&v9->_device, device);
+    objc_storeStrong(&v10->_specifier, specifier);
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v10 selector:sel_hidPairingResult_ name:*MEMORY[0x277CE7EC8] object:0];
   }
 
   return v10;
 }
 
-- (VOSBluetoothSSPPairingRequest)initWithDevice:(id)a3 andSpecifier:(id)a4 acceptPairingBlock:(id)a5 cancelPairingBlock:(id)a6
+- (VOSBluetoothSSPPairingRequest)initWithDevice:(id)device andSpecifier:(id)specifier acceptPairingBlock:(id)block cancelPairingBlock:(id)pairingBlock
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  deviceCopy = device;
+  specifierCopy = specifier;
+  blockCopy = block;
+  pairingBlockCopy = pairingBlock;
   v22.receiver = self;
   v22.super_class = VOSBluetoothSSPPairingRequest;
   v15 = [(VOSBluetoothSSPPairingRequest *)&v22 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_device, a3);
-    objc_storeStrong(&v16->_specifier, a4);
-    v17 = [v13 copy];
+    objc_storeStrong(&v15->_device, device);
+    objc_storeStrong(&v16->_specifier, specifier);
+    v17 = [blockCopy copy];
     acceptPairingBlock = v16->_acceptPairingBlock;
     v16->_acceptPairingBlock = v17;
 
-    v19 = [v14 copy];
+    v19 = [pairingBlockCopy copy];
     cancelPairingBlock = v16->_cancelPairingBlock;
     v16->_cancelPairingBlock = v19;
   }
@@ -56,8 +56,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   [(VOSBluetoothSSPPairingRequest *)self dismiss];
   v4.receiver = self;
@@ -65,46 +65,46 @@
   [(VOSBluetoothSSPPairingRequest *)&v4 dealloc];
 }
 
-- (id)_sanitizeNameForAlert:(id)a3
+- (id)_sanitizeNameForAlert:(id)alert
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CCAC80] scannerWithString:v3];
-  v5 = [MEMORY[0x277CCA900] illegalCharacterSet];
-  [v4 setCharactersToBeSkipped:v5];
+  alertCopy = alert;
+  v4 = [MEMORY[0x277CCAC80] scannerWithString:alertCopy];
+  illegalCharacterSet = [MEMORY[0x277CCA900] illegalCharacterSet];
+  [v4 setCharactersToBeSkipped:illegalCharacterSet];
 
-  v6 = [MEMORY[0x277CCAB68] string];
-  v7 = [MEMORY[0x277CCAB68] string];
+  string = [MEMORY[0x277CCAB68] string];
+  string2 = [MEMORY[0x277CCAB68] string];
   while (1)
   {
-    v8 = v7;
-    v9 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-    v16 = v7;
-    v10 = [v4 scanUpToCharactersFromSet:v9 intoString:&v16];
-    v7 = v16;
+    v8 = string2;
+    whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+    v16 = string2;
+    v10 = [v4 scanUpToCharactersFromSet:whitespaceAndNewlineCharacterSet intoString:&v16];
+    string2 = v16;
 
     if (!v10)
     {
       break;
     }
 
-    [v6 appendString:v7];
-    v11 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-    v12 = [v4 scanCharactersFromSet:v11 intoString:0];
+    [string appendString:string2];
+    whitespaceAndNewlineCharacterSet2 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+    v12 = [v4 scanCharactersFromSet:whitespaceAndNewlineCharacterSet2 intoString:0];
 
     if (v12)
     {
-      [v6 appendString:@" "];
+      [string appendString:@" "];
     }
   }
 
-  if ([v6 length] <= 0x32)
+  if ([string length] <= 0x32)
   {
-    v13 = v6;
+    v13 = string;
   }
 
   else
   {
-    v13 = [v6 substringToIndex:50];
+    v13 = [string substringToIndex:50];
   }
 
   v14 = v13;
@@ -112,14 +112,14 @@
   return v14;
 }
 
-- (void)setPairingStyle:(int)a3 andPasskey:(id)a4
+- (void)setPairingStyle:(int)style andPasskey:(id)passkey
 {
-  v6 = a4;
+  passkeyCopy = passkey;
   v7 = VOSLocString(@"CANCEL");
-  v8 = [(AXUIBluetoothDevice *)self->_device name];
-  v9 = [(VOSBluetoothSSPPairingRequest *)self _sanitizeNameForAlert:v8];
+  name = [(AXUIBluetoothDevice *)self->_device name];
+  v9 = [(VOSBluetoothSSPPairingRequest *)self _sanitizeNameForAlert:name];
 
-  self->_pairingStyle = a3;
+  self->_pairingStyle = style;
   v62 = 0;
   v63 = &v62;
   v64 = 0x2050000000;
@@ -141,16 +141,16 @@
   [v10 currentDevice];
   v50 = v49 = v9;
   v12 = 0;
-  if (a3 > 1)
+  if (style > 1)
   {
-    if (a3 == 2)
+    if (style == 2)
     {
       v29 = MEMORY[0x277CCACA8];
       v30 = VOSLocString(@"PASSKEY_TITLE");
-      v31 = [v50 localizedModel];
-      v15 = [v29 stringWithFormat:v30, v9, v31];
+      localizedModel = [v50 localizedModel];
+      v15 = [v29 stringWithFormat:v30, v9, localizedModel];
 
-      v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"%06u", objc_msgSend(v6, "unsignedIntValue")];
+      v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"%06u", objc_msgSend(passkeyCopy, "unsignedIntValue")];
       v32 = MEMORY[0x277CCACA8];
       v23 = VOSLocString(@"PASSKEY_MESSAGE");
       [v32 stringWithFormat:v23, v12, v9];
@@ -161,17 +161,17 @@
       v13 = 0;
       v14 = 0;
       v15 = 0;
-      if (a3 != 3)
+      if (style != 3)
       {
         goto LABEL_13;
       }
 
       v19 = MEMORY[0x277CCACA8];
       v20 = VOSLocString(@"PASSKEY_TITLE");
-      v21 = [v50 localizedModel];
-      v15 = [v19 stringWithFormat:v20, v49, v21];
+      localizedModel2 = [v50 localizedModel];
+      v15 = [v19 stringWithFormat:v20, v49, localizedModel2];
 
-      v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"%04u", objc_msgSend(v6, "unsignedIntValue")];
+      v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"%04u", objc_msgSend(passkeyCopy, "unsignedIntValue")];
       v22 = MEMORY[0x277CCACA8];
       v23 = VOSLocString(@"HID_MESSAGE");
       [v22 stringWithFormat:v23, v12, v49];
@@ -181,17 +181,17 @@
     v13 = 0;
   }
 
-  else if (a3)
+  else if (style)
   {
     v13 = 0;
     v14 = 0;
     v15 = 0;
-    if (a3 == 1)
+    if (style == 1)
     {
       v16 = MEMORY[0x277CCACA8];
       v17 = VOSLocString(@"JUST_WORKS_TITLE");
-      v18 = [v50 localizedModel];
-      v15 = [v16 stringWithFormat:v17, v49, v18];
+      localizedModel3 = [v50 localizedModel];
+      v15 = [v16 stringWithFormat:v17, v49, localizedModel3];
 
       v14 = VOSLocString(@"JUST_WORKS_MESSAGE");
       v13 = VOSLocString(@"JUST_WORKS_BUTTON");
@@ -203,10 +203,10 @@
   {
     v24 = MEMORY[0x277CCACA8];
     v25 = VOSLocString(@"NUMERIC_TITLE");
-    v26 = [v50 localizedModel];
-    v15 = [v24 stringWithFormat:v25, v9, v26];
+    localizedModel4 = [v50 localizedModel];
+    v15 = [v24 stringWithFormat:v25, v9, localizedModel4];
 
-    v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"%06u", objc_msgSend(v6, "unsignedIntValue")];
+    v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"%06u", objc_msgSend(passkeyCopy, "unsignedIntValue")];
     v27 = MEMORY[0x277CCACA8];
     v28 = VOSLocString(@"NUMERIC_MESSAGE");
     v14 = [v27 stringWithFormat:v28, v12, v9];
@@ -215,12 +215,12 @@
   }
 
 LABEL_13:
-  v48 = v6;
-  v33 = [(VOSBluetoothSSPPairingRequest *)self acceptPairingBlock];
-  v34 = v33;
-  if (!v33)
+  v48 = passkeyCopy;
+  acceptPairingBlock = [(VOSBluetoothSSPPairingRequest *)self acceptPairingBlock];
+  v34 = acceptPairingBlock;
+  if (!acceptPairingBlock)
   {
-    v33 = aBlock;
+    acceptPairingBlock = aBlock;
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
     aBlock[2] = __60__VOSBluetoothSSPPairingRequest_setPairingStyle_andPasskey___block_invoke;
@@ -228,13 +228,13 @@ LABEL_13:
     aBlock[4] = self;
   }
 
-  v35 = _Block_copy(v33);
+  v35 = _Block_copy(acceptPairingBlock);
 
-  v36 = [(VOSBluetoothSSPPairingRequest *)self cancelPairingBlock];
-  v37 = v36;
-  if (!v36)
+  cancelPairingBlock = [(VOSBluetoothSSPPairingRequest *)self cancelPairingBlock];
+  v37 = cancelPairingBlock;
+  if (!cancelPairingBlock)
   {
-    v36 = v55;
+    cancelPairingBlock = v55;
     v55[0] = MEMORY[0x277D85DD0];
     v55[1] = 3221225472;
     v55[2] = __60__VOSBluetoothSSPPairingRequest_setPairingStyle_andPasskey___block_invoke_2;
@@ -242,7 +242,7 @@ LABEL_13:
     v55[4] = self;
   }
 
-  v38 = _Block_copy(v36);
+  v38 = _Block_copy(cancelPairingBlock);
 
   v62 = 0;
   v63 = &v62;
@@ -331,10 +331,10 @@ void __60__VOSBluetoothSSPPairingRequest_setPairingStyle_andPasskey___block_invo
   }
 }
 
-- (void)showWithWindow:(id)a3
+- (void)showWithWindow:(id)window
 {
-  v4 = [a3 rootViewController];
-  [v4 presentViewController:self->_alert animated:1 completion:0];
+  rootViewController = [window rootViewController];
+  [rootViewController presentViewController:self->_alert animated:1 completion:0];
 }
 
 @end

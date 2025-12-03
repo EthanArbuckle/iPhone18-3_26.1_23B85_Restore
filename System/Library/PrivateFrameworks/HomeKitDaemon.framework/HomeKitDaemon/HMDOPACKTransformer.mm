@@ -1,20 +1,20 @@
 @interface HMDOPACKTransformer
 + (Class)valueClass;
-+ (id)OPACKFromValue:(id)a3 error:(id *)a4;
-+ (id)allocWithZone:(_NSZone *)a3;
-+ (id)reverseTransformedValue:(id)a3 error:(id *)a4;
-+ (id)transformedValue:(id)a3 error:(id *)a4;
-+ (id)valueFromOPACK:(id)a3 error:(id *)a4;
-- (id)OPACKFromValue:(id)a3 error:(id *)a4;
-- (id)valueFromOPACK:(id)a3 error:(id *)a4;
++ (id)OPACKFromValue:(id)value error:(id *)error;
++ (id)allocWithZone:(_NSZone *)zone;
++ (id)reverseTransformedValue:(id)value error:(id *)error;
++ (id)transformedValue:(id)value error:(id *)error;
++ (id)valueFromOPACK:(id)k error:(id *)error;
+- (id)OPACKFromValue:(id)value error:(id *)error;
+- (id)valueFromOPACK:(id)k error:(id *)error;
 @end
 
 @implementation HMDOPACKTransformer
 
-- (id)valueFromOPACK:(id)a3 error:(id *)a4
+- (id)valueFromOPACK:(id)k error:(id *)error
 {
-  v5 = a3;
-  if (!v5)
+  kCopy = k;
+  if (!kCopy)
   {
     goto LABEL_13;
   }
@@ -24,7 +24,7 @@
     dispatch_once(&HMDIsOPACKValue_once, &__block_literal_global_157086);
   }
 
-  v6 = CFGetTypeID(v5);
+  v6 = CFGetTypeID(kCopy);
   if (v6 == HMDIsOPACKValue_arrayTypeID || v6 == HMDIsOPACKValue_dictionaryTypeID || v6 == HMDIsOPACKValue_nullTypeID || v6 == HMDIsOPACKValue_BOOLeanTypeID || v6 == HMDIsOPACKValue_stringTypeID || v6 == HMDIsOPACKValue_numberTypeID || v6 == HMDIsOPACKValue_dataTypeID || v6 == HMDIsOPACKValue_dateTypeID)
   {
 
@@ -37,15 +37,15 @@
   if (isKindOfClass)
   {
 LABEL_16:
-    v8 = [objc_opt_class() valueFromOPACK:v5 error:a4];
+    v8 = [objc_opt_class() valueFromOPACK:kCopy error:error];
     goto LABEL_18;
   }
 
 LABEL_13:
-  if (a4)
+  if (error)
   {
     [MEMORY[0x277CCA9B8] hmfErrorWithCode:3 reason:@"Expected OPACK-compatible value"];
-    *a4 = v8 = 0;
+    *error = v8 = 0;
   }
 
   else
@@ -58,31 +58,31 @@ LABEL_18:
   return v8;
 }
 
-- (id)OPACKFromValue:(id)a3 error:(id *)a4
+- (id)OPACKFromValue:(id)value error:(id *)error
 {
-  v5 = a3;
+  valueCopy = value;
   v6 = objc_opt_class();
-  v7 = [v6 valueClass];
+  valueClass = [v6 valueClass];
   if (objc_opt_isKindOfClass())
   {
-    a4 = [v6 OPACKFromValue:v5 error:a4];
+    error = [v6 OPACKFromValue:valueCopy error:error];
   }
 
-  else if (a4)
+  else if (error)
   {
     v8 = MEMORY[0x277CCA9B8];
-    v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"Expected %@", v7];
-    *a4 = [v8 hmfErrorWithCode:3 reason:v9];
+    v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"Expected %@", valueClass];
+    *error = [v8 hmfErrorWithCode:3 reason:v9];
 
-    a4 = 0;
+    error = 0;
   }
 
-  return a4;
+  return error;
 }
 
-+ (id)valueFromOPACK:(id)a3 error:(id *)a4
++ (id)valueFromOPACK:(id)k error:(id *)error
 {
-  v5 = a3;
+  kCopy = k;
   v6 = MEMORY[0x277CBEAD8];
   v7 = *MEMORY[0x277CBE658];
   v8 = MEMORY[0x277CCACA8];
@@ -94,9 +94,9 @@ LABEL_18:
   objc_exception_throw(v11);
 }
 
-+ (id)OPACKFromValue:(id)a3 error:(id *)a4
++ (id)OPACKFromValue:(id)value error:(id *)error
 {
-  v5 = a3;
+  valueCopy = value;
   v6 = MEMORY[0x277CBEAD8];
   v7 = *MEMORY[0x277CBE658];
   v8 = MEMORY[0x277CCACA8];
@@ -108,23 +108,23 @@ LABEL_18:
   objc_exception_throw(v11);
 }
 
-+ (id)reverseTransformedValue:(id)a3 error:(id *)a4
++ (id)reverseTransformedValue:(id)value error:(id *)error
 {
   v5 = OPACKDecodeData();
-  if (a4)
+  if (error)
   {
     v6 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:-6705 userInfo:0];
-    *a4 = v6;
+    *error = v6;
 
-    a4 = 0;
+    error = 0;
   }
 
-  return a4;
+  return error;
 }
 
-+ (id)transformedValue:(id)a3 error:(id *)a4
++ (id)transformedValue:(id)value error:(id *)error
 {
-  v5 = [a1 OPACKFromValue:a3 error:?];
+  v5 = [self OPACKFromValue:value error:?];
   v6 = v5;
   if (!v5)
   {
@@ -137,17 +137,17 @@ LABEL_18:
   v8 = v7;
   if (!v7 || v12)
   {
-    if (a4)
+    if (error)
     {
       if (!v12)
       {
         v9 = 0;
-        *a4 = 0;
+        *error = 0;
         goto LABEL_11;
       }
 
       v10 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:? userInfo:?];
-      *a4 = v10;
+      *error = v10;
     }
 
     v9 = 0;
@@ -178,19 +178,19 @@ LABEL_12:
   objc_exception_throw(v7);
 }
 
-+ (id)allocWithZone:(_NSZone *)a3
++ (id)allocWithZone:(_NSZone *)zone
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
-    return [(HMDOPACKTransformer *)HMDDefaultOPACKTransformer allocWithZone:a3];
+    return [(HMDOPACKTransformer *)HMDDefaultOPACKTransformer allocWithZone:zone];
   }
 
   else
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___HMDOPACKTransformer;
-    return objc_msgSendSuper2(&v6, sel_allocWithZone_, a3);
+    return objc_msgSendSuper2(&v6, sel_allocWithZone_, zone);
   }
 }
 

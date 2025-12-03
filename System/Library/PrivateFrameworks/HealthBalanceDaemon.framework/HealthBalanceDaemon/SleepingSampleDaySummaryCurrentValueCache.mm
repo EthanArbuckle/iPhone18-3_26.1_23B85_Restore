@@ -7,7 +7,7 @@
 
 - (id)diagnosticDescription
 {
-  v2 = self;
+  selfCopy = self;
   SleepingSampleDaySummaryCurrentValueCache.diagnosticDescription()();
 
   v3 = sub_22892F098();

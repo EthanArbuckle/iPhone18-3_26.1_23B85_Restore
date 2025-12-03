@@ -1,20 +1,20 @@
 @interface MPSectionedIdentifierListTailEntry
-+ (id)tailEntryWithSectionHeadEntry:(id)a3;
++ (id)tailEntryWithSectionHeadEntry:(id)entry;
 - (MPSectionedIdentifierListHeadEntry)sectionHeadEntry;
 - (id)previousEntry;
 @end
 
 @implementation MPSectionedIdentifierListTailEntry
 
-+ (id)tailEntryWithSectionHeadEntry:(id)a3
++ (id)tailEntryWithSectionHeadEntry:(id)entry
 {
-  v4 = a3;
-  v5 = [a1 alloc];
+  entryCopy = entry;
+  v5 = [self alloc];
   v6 = [MPSectionedIdentifierListEntryPositionKey positionKeyWithDeviceIdentifier:&stru_1F149ECA8 generation:@"1"];
-  v7 = [v4 sectionIdentifier];
-  v8 = [v5 initWithPositionKey:v6 sectionIdentifier:v7];
+  sectionIdentifier = [entryCopy sectionIdentifier];
+  v8 = [v5 initWithPositionKey:v6 sectionIdentifier:sectionIdentifier];
 
-  objc_storeWeak(v8 + 8, v4);
+  objc_storeWeak(v8 + 8, entryCopy);
 
   return v8;
 }
@@ -29,65 +29,65 @@
 - (id)previousEntry
 {
   WeakRetained = objc_loadWeakRetained(&self->_sectionHeadEntry);
-  v3 = [WeakRetained lastItemEntry];
-  v4 = v3;
-  if (v3)
+  lastItemEntry = [WeakRetained lastItemEntry];
+  v4 = lastItemEntry;
+  if (lastItemEntry)
   {
-    v5 = [v3 nextEntries];
+    nextEntries = [lastItemEntry nextEntries];
     v6 = v4;
-    v7 = [v5 firstObject];
+    firstObject = [nextEntries firstObject];
 
-    if (v7)
+    if (firstObject)
     {
       do
       {
-        v8 = [v5 firstObject];
+        firstObject2 = [nextEntries firstObject];
 
-        v9 = [v8 nextEntries];
+        nextEntries2 = [firstObject2 nextEntries];
 
-        v10 = [v9 firstObject];
+        firstObject3 = [nextEntries2 firstObject];
 
-        v6 = v8;
-        v5 = v9;
+        v6 = firstObject2;
+        nextEntries = nextEntries2;
       }
 
-      while (v10);
+      while (firstObject3);
       goto LABEL_9;
     }
 
 LABEL_8:
-    v9 = v5;
-    v8 = v6;
+    nextEntries2 = nextEntries;
+    firstObject2 = v6;
     goto LABEL_9;
   }
 
-  v11 = [WeakRetained nextEntries];
-  v5 = [v11 msv_suffixFromIndex:1];
+  nextEntries3 = [WeakRetained nextEntries];
+  nextEntries = [nextEntries3 msv_suffixFromIndex:1];
 
   v6 = WeakRetained;
-  v12 = [v5 firstObject];
+  firstObject4 = [nextEntries firstObject];
 
-  if (!v12)
+  if (!firstObject4)
   {
     goto LABEL_8;
   }
 
   do
   {
-    v8 = [v5 firstObject];
+    firstObject2 = [nextEntries firstObject];
 
-    v9 = [v8 nextEntries];
+    nextEntries2 = [firstObject2 nextEntries];
 
-    v13 = [v9 firstObject];
+    firstObject5 = [nextEntries2 firstObject];
 
-    v6 = v8;
-    v5 = v9;
+    v6 = firstObject2;
+    nextEntries = nextEntries2;
   }
 
-  while (v13);
+  while (firstObject5);
 LABEL_9:
 
-  return v8;
+  return firstObject2;
 }
 
 @end

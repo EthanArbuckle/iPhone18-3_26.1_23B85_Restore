@@ -1,32 +1,32 @@
 @interface TIAssetManagerMock
-- (void)ddsAssetContentItemsWithContentType:(id)a3 inputMode:(id)a4 filteredWithRegion:(BOOL)a5 completion:(id)a6;
-- (void)ddsAssetsForInputMode:(id)a3 cachedOnly:(BOOL)a4 completion:(id)a5;
-- (void)requestAssetDownloadForLanguage:(id)a3 completion:(id)a4;
+- (void)ddsAssetContentItemsWithContentType:(id)type inputMode:(id)mode filteredWithRegion:(BOOL)region completion:(id)completion;
+- (void)ddsAssetsForInputMode:(id)mode cachedOnly:(BOOL)only completion:(id)completion;
+- (void)requestAssetDownloadForLanguage:(id)language completion:(id)completion;
 @end
 
 @implementation TIAssetManagerMock
 
-- (void)ddsAssetsForInputMode:(id)a3 cachedOnly:(BOOL)a4 completion:(id)a5
+- (void)ddsAssetsForInputMode:(id)mode cachedOnly:(BOOL)only completion:(id)completion
 {
-  if (a5)
+  if (completion)
   {
-    (*(a5 + 2))(a5, MEMORY[0x277CBEBF8]);
+    (*(completion + 2))(completion, MEMORY[0x277CBEBF8]);
   }
 }
 
-- (void)ddsAssetContentItemsWithContentType:(id)a3 inputMode:(id)a4 filteredWithRegion:(BOOL)a5 completion:(id)a6
+- (void)ddsAssetContentItemsWithContentType:(id)type inputMode:(id)mode filteredWithRegion:(BOOL)region completion:(id)completion
 {
-  if (a6)
+  if (completion)
   {
-    (*(a6 + 2))(a6, MEMORY[0x277CBEBF8]);
+    (*(completion + 2))(completion, MEMORY[0x277CBEBF8]);
   }
 }
 
-- (void)requestAssetDownloadForLanguage:(id)a3 completion:(id)a4
+- (void)requestAssetDownloadForLanguage:(id)language completion:(id)completion
 {
-  if (a4)
+  if (completion)
   {
-    (*(a4 + 2))(a4, 0);
+    (*(completion + 2))(completion, 0);
   }
 }
 

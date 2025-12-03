@@ -1,7 +1,7 @@
 @interface ConversationHUDDetailsNavigationController
 - (BOOL)isOnScreen;
-- (_TtC15ConversationKit42ConversationHUDDetailsNavigationController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)setIsOnScreen:(BOOL)a3;
+- (_TtC15ConversationKit42ConversationHUDDetailsNavigationController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)setIsOnScreen:(BOOL)screen;
 - (void)tapDoneButton;
 - (void)tapMessageButton;
 - (void)viewDidLoad;
@@ -11,44 +11,44 @@
 
 - (BOOL)isOnScreen
 {
-  v2 = self;
+  selfCopy = self;
   v3 = ConversationHUDDetailsNavigationController.isOnScreen.getter();
 
   return v3 & 1;
 }
 
-- (void)setIsOnScreen:(BOOL)a3
+- (void)setIsOnScreen:(BOOL)screen
 {
-  v4 = self;
-  ConversationHUDDetailsNavigationController.isOnScreen.setter(a3);
+  selfCopy = self;
+  ConversationHUDDetailsNavigationController.isOnScreen.setter(screen);
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   ConversationHUDDetailsNavigationController.viewDidLoad()();
 }
 
 - (void)tapDoneButton
 {
-  v2 = self;
+  selfCopy = self;
   ConversationHUDDetailsNavigationController.tapDoneButton()();
 }
 
 - (void)tapMessageButton
 {
-  v2 = self;
+  selfCopy = self;
   ConversationHUDDetailsNavigationController.tapMessageButton()();
 }
 
-- (_TtC15ConversationKit42ConversationHUDDetailsNavigationController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC15ConversationKit42ConversationHUDDetailsNavigationController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   ConversationHUDDetailsNavigationController.init(nibName:bundle:)();
 }
 

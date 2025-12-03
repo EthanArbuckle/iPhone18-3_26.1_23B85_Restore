@@ -1,22 +1,22 @@
 @interface CRKKeyValueTable
-- (CRKKeyValueTable)initWithDictionary:(id)a3;
-- (CRKKeyValueTable)initWithKeyValuePairs:(id)a3;
+- (CRKKeyValueTable)initWithDictionary:(id)dictionary;
+- (CRKKeyValueTable)initWithKeyValuePairs:(id)pairs;
 - (CRKTable)table;
-- (id)crk_JSONRepresentationWithPrettyPrinting:(BOOL)a3 sortKeys:(BOOL)a4;
+- (id)crk_JSONRepresentationWithPrettyPrinting:(BOOL)printing sortKeys:(BOOL)keys;
 - (id)tableString;
 @end
 
 @implementation CRKKeyValueTable
 
-- (CRKKeyValueTable)initWithKeyValuePairs:(id)a3
+- (CRKKeyValueTable)initWithKeyValuePairs:(id)pairs
 {
-  v4 = a3;
+  pairsCopy = pairs;
   v9.receiver = self;
   v9.super_class = CRKKeyValueTable;
   v5 = [(CRKKeyValueTable *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [pairsCopy copy];
     keyValuePairs = v5->_keyValuePairs;
     v5->_keyValuePairs = v6;
   }
@@ -24,9 +24,9 @@
   return v5;
 }
 
-- (CRKKeyValueTable)initWithDictionary:(id)a3
+- (CRKKeyValueTable)initWithDictionary:(id)dictionary
 {
-  v4 = [a3 crk_mapUsingBlock:&__block_literal_global_108];
+  v4 = [dictionary crk_mapUsingBlock:&__block_literal_global_108];
   v5 = [[CRKKeyValueTable alloc] initWithKeyValuePairs:v4];
 
   return v5;
@@ -41,14 +41,14 @@ CRKKeyValuePair *__39__CRKKeyValueTable_initWithDictionary___block_invoke(uint64
   return v6;
 }
 
-- (id)crk_JSONRepresentationWithPrettyPrinting:(BOOL)a3 sortKeys:(BOOL)a4
+- (id)crk_JSONRepresentationWithPrettyPrinting:(BOOL)printing sortKeys:(BOOL)keys
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = [(CRKKeyValueTable *)self keyValuePairs];
-  v7 = [v6 crk_dictionaryUsingKeyGenerator:&__block_literal_global_4_0 valueGenerator:&__block_literal_global_7];
+  keysCopy = keys;
+  printingCopy = printing;
+  keyValuePairs = [(CRKKeyValueTable *)self keyValuePairs];
+  v7 = [keyValuePairs crk_dictionaryUsingKeyGenerator:&__block_literal_global_4_0 valueGenerator:&__block_literal_global_7];
 
-  v8 = [v7 crk_JSONRepresentationWithPrettyPrinting:v5 sortKeys:v4];
+  v8 = [v7 crk_JSONRepresentationWithPrettyPrinting:printingCopy sortKeys:keysCopy];
 
   return v8;
 }
@@ -58,8 +58,8 @@ CRKKeyValuePair *__39__CRKKeyValueTable_initWithDictionary___block_invoke(uint64
   table = self->_table;
   if (!table)
   {
-    v4 = [(CRKKeyValueTable *)self keyValuePairs];
-    v5 = [CRKTable parsableTableWithKeyValuePairs:v4];
+    keyValuePairs = [(CRKKeyValueTable *)self keyValuePairs];
+    v5 = [CRKTable parsableTableWithKeyValuePairs:keyValuePairs];
     v6 = self->_table;
     self->_table = v5;
 
@@ -71,10 +71,10 @@ CRKKeyValuePair *__39__CRKKeyValueTable_initWithDictionary___block_invoke(uint64
 
 - (id)tableString
 {
-  v2 = [(CRKKeyValueTable *)self table];
-  v3 = [v2 stringValue];
+  table = [(CRKKeyValueTable *)self table];
+  stringValue = [table stringValue];
 
-  return v3;
+  return stringValue;
 }
 
 @end

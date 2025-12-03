@@ -1,51 +1,51 @@
 @interface BuddyThreatNotificationController
 - (BFFFlowItemDelegate)delegate;
 - (id)viewController;
-- (void)setDelegate:(id)a3;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation BuddyThreatNotificationController
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  objc_storeWeak(&v4->_delegate, location[0]);
+  objc_storeStrong(location, delegate);
+  objc_storeWeak(&selfCopy->_delegate, location[0]);
   objc_storeStrong(location, 0);
 }
 
 - (id)viewController
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
-  v2 = [(BuddyThreatNotificationController *)self initialViewController];
+  initialViewController = [(BuddyThreatNotificationController *)self initialViewController];
 
-  if (v2)
+  if (initialViewController)
   {
-    v15 = [(BuddyThreatNotificationController *)v14 initialViewController];
+    initialViewController2 = [(BuddyThreatNotificationController *)selfCopy initialViewController];
   }
 
   else
   {
-    objc_initWeak(location, v14);
-    v3 = [(BuddyThreatNotificationController *)v14 threatNotificationProvider];
+    objc_initWeak(location, selfCopy);
+    threatNotificationProvider = [(BuddyThreatNotificationController *)selfCopy threatNotificationProvider];
     v7 = _NSConcreteStackBlock;
     v8 = -1073741824;
     v9 = 0;
     v10 = sub_1000F7420;
     v11 = &unk_10032AF58;
     objc_copyWeak(&v12, location);
-    v4 = [(BuddyThreatNotificationProviding *)v3 threatNotificationFlowWithCompletion:&v7];
-    [(BuddyThreatNotificationController *)v14 setInitialViewController:v4];
+    v4 = [(BuddyThreatNotificationProviding *)threatNotificationProvider threatNotificationFlowWithCompletion:&v7];
+    [(BuddyThreatNotificationController *)selfCopy setInitialViewController:v4];
 
-    v15 = [(BuddyThreatNotificationController *)v14 initialViewController];
+    initialViewController2 = [(BuddyThreatNotificationController *)selfCopy initialViewController];
     objc_destroyWeak(&v12);
     objc_destroyWeak(location);
   }
 
-  v5 = v15;
+  v5 = initialViewController2;
 
   return v5;
 }

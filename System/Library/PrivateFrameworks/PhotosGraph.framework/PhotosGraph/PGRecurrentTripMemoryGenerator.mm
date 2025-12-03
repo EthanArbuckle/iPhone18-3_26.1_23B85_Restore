@@ -1,19 +1,19 @@
 @interface PGRecurrentTripMemoryGenerator
-- (id)chapterTitleGeneratorForTriggeredMemory:(id)a3 curatedAssets:(id)a4 extendedCuratedAssets:(id)a5 titleGenerationContext:(id)a6 inGraph:(id)a7;
-- (id)generatePotentialMemoriesForProcessingWindow:(id)a3 graph:(id)a4 progressBlock:(id)a5;
-- (id)relevantFeederForTriggeredMemory:(id)a3 inGraph:(id)a4 allowGuestAsset:(BOOL)a5 progressReporter:(id)a6;
-- (id)titleGeneratorForTriggeredMemory:(id)a3 withKeyAsset:(id)a4 curatedAssets:(id)a5 extendedCuratedAssets:(id)a6 titleGenerationContext:(id)a7 inGraph:(id)a8;
+- (id)chapterTitleGeneratorForTriggeredMemory:(id)memory curatedAssets:(id)assets extendedCuratedAssets:(id)curatedAssets titleGenerationContext:(id)context inGraph:(id)graph;
+- (id)generatePotentialMemoriesForProcessingWindow:(id)window graph:(id)graph progressBlock:(id)block;
+- (id)relevantFeederForTriggeredMemory:(id)memory inGraph:(id)graph allowGuestAsset:(BOOL)asset progressReporter:(id)reporter;
+- (id)titleGeneratorForTriggeredMemory:(id)memory withKeyAsset:(id)asset curatedAssets:(id)assets extendedCuratedAssets:(id)curatedAssets titleGenerationContext:(id)context inGraph:(id)graph;
 @end
 
 @implementation PGRecurrentTripMemoryGenerator
 
-- (id)chapterTitleGeneratorForTriggeredMemory:(id)a3 curatedAssets:(id)a4 extendedCuratedAssets:(id)a5 titleGenerationContext:(id)a6 inGraph:(id)a7
+- (id)chapterTitleGeneratorForTriggeredMemory:(id)memory curatedAssets:(id)assets extendedCuratedAssets:(id)curatedAssets titleGenerationContext:(id)context inGraph:(id)graph
 {
-  v7 = a3;
-  v8 = [v7 memoryMomentNodes];
-  v9 = [v8 dateNodes];
-  v10 = [v9 yearNodes];
-  v11 = [v10 count];
+  memoryCopy = memory;
+  memoryMomentNodes = [memoryCopy memoryMomentNodes];
+  dateNodes = [memoryMomentNodes dateNodes];
+  yearNodes = [dateNodes yearNodes];
+  v11 = [yearNodes count];
 
   if (v11 < 2)
   {
@@ -22,54 +22,54 @@
 
   else
   {
-    v12 = [[PGYearChapterTitleGenerator alloc] initWithTriggeredMemory:v7];
+    v12 = [[PGYearChapterTitleGenerator alloc] initWithTriggeredMemory:memoryCopy];
   }
 
   return v12;
 }
 
-- (id)titleGeneratorForTriggeredMemory:(id)a3 withKeyAsset:(id)a4 curatedAssets:(id)a5 extendedCuratedAssets:(id)a6 titleGenerationContext:(id)a7 inGraph:(id)a8
+- (id)titleGeneratorForTriggeredMemory:(id)memory withKeyAsset:(id)asset curatedAssets:(id)assets extendedCuratedAssets:(id)curatedAssets titleGenerationContext:(id)context inGraph:(id)graph
 {
-  v9 = a7;
-  v10 = [a3 memoryFeatureNodes];
-  v11 = [(PGGraphNodeCollection *)PGGraphNamedLocationNodeCollection subsetInCollection:v10];
+  contextCopy = context;
+  memoryFeatureNodes = [memory memoryFeatureNodes];
+  v11 = [(PGGraphNodeCollection *)PGGraphNamedLocationNodeCollection subsetInCollection:memoryFeatureNodes];
 
   v12 = [PGRecurrentTripMemoryTitleGenerator alloc];
-  v13 = [v11 temporarySet];
-  v14 = [(PGRecurrentTripMemoryTitleGenerator *)v12 initWithLocationNodes:v13 titleGenerationContext:v9];
+  temporarySet = [v11 temporarySet];
+  v14 = [(PGRecurrentTripMemoryTitleGenerator *)v12 initWithLocationNodes:temporarySet titleGenerationContext:contextCopy];
 
   return v14;
 }
 
-- (id)relevantFeederForTriggeredMemory:(id)a3 inGraph:(id)a4 allowGuestAsset:(BOOL)a5 progressReporter:(id)a6
+- (id)relevantFeederForTriggeredMemory:(id)memory inGraph:(id)graph allowGuestAsset:(BOOL)asset progressReporter:(id)reporter
 {
   v25 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
-  v12 = [v9 memoryFeatureNodes];
-  v13 = [(PGGraphNodeCollection *)PGGraphLocationNodeCollection subsetInCollection:v12];
+  memoryCopy = memory;
+  graphCopy = graph;
+  reporterCopy = reporter;
+  memoryFeatureNodes = [memoryCopy memoryFeatureNodes];
+  v13 = [(PGGraphNodeCollection *)PGGraphLocationNodeCollection subsetInCollection:memoryFeatureNodes];
 
   if ([v13 count] == 1)
   {
-    v14 = [v9 memoryMomentNodes];
-    v15 = [v13 anyNode];
-    v16 = [(PGMemoryGenerator *)self memoryCurationSession];
-    v17 = [v16 curationManager];
-    v18 = [PGMemoryGenerationHelper assetFetchResultForMomentNodes:v14 inLocationOrAreaNode:v15 requireInteresting:0 curationManager:v17 progressReporter:v11];
+    memoryMomentNodes = [memoryCopy memoryMomentNodes];
+    anyNode = [v13 anyNode];
+    memoryCurationSession = [(PGMemoryGenerator *)self memoryCurationSession];
+    curationManager = [memoryCurationSession curationManager];
+    v18 = [PGMemoryGenerationHelper assetFetchResultForMomentNodes:memoryMomentNodes inLocationOrAreaNode:anyNode requireInteresting:0 curationManager:curationManager progressReporter:reporterCopy];
 
-    v19 = [(PGMemoryGenerator *)self memoryCurationSession];
-    v20 = [PGMemoryGenerationHelper feederForMemoriesWithAssetFetchResult:v18 memoryCurationSession:v19 graph:v10];
+    memoryCurationSession2 = [(PGMemoryGenerator *)self memoryCurationSession];
+    v20 = [PGMemoryGenerationHelper feederForMemoriesWithAssetFetchResult:v18 memoryCurationSession:memoryCurationSession2 graph:graphCopy];
   }
 
   else
   {
-    v21 = [(PGMemoryGenerator *)self loggingConnection];
-    if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
+    loggingConnection = [(PGMemoryGenerator *)self loggingConnection];
+    if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
     {
       v24[0] = 67109120;
       v24[1] = [v13 count];
-      _os_log_error_impl(&dword_22F0FC000, v21, OS_LOG_TYPE_ERROR, "[PGRecurrentTripMemoryGenerator] One location node expected, found %d", v24, 8u);
+      _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "[PGRecurrentTripMemoryGenerator] One location node expected, found %d", v24, 8u);
     }
 
     v20 = 0;
@@ -80,13 +80,13 @@
   return v20;
 }
 
-- (id)generatePotentialMemoriesForProcessingWindow:(id)a3 graph:(id)a4 progressBlock:(id)a5
+- (id)generatePotentialMemoriesForProcessingWindow:(id)window graph:(id)graph progressBlock:(id)block
 {
   v82 = *MEMORY[0x277D85DE8];
-  v39 = a3;
-  v43 = a4;
-  v40 = a5;
-  v8 = _Block_copy(v40);
+  windowCopy = window;
+  graphCopy = graph;
+  blockCopy = block;
+  v8 = _Block_copy(blockCopy);
   v73 = 0;
   v74 = &v73;
   v75 = 0x2020000000;
@@ -106,25 +106,25 @@
     v67 = 0x2020000000;
     v68 = 0;
     v12 = objc_alloc_init(MEMORY[0x277CBEB38]);
-    v13 = [PGGraphHighlightTypeNodeCollection concludedTripTypeNodesInGraph:v43];
-    v14 = [v13 highlightGroupNodes];
+    v13 = [PGGraphHighlightTypeNodeCollection concludedTripTypeNodesInGraph:graphCopy];
+    highlightGroupNodes = [v13 highlightGroupNodes];
     v15 = MEMORY[0x277D22BF8];
     v16 = +[PGGraphHighlightGroupNode momentInHighlight];
     v17 = objc_opt_self();
-    v18 = [v15 adjacencyWithSources:v14 relation:v16 targetsClass:v17];
-    v38 = v14;
+    v18 = [v15 adjacencyWithSources:highlightGroupNodes relation:v16 targetsClass:v17];
+    v38 = highlightGroupNodes;
 
-    v19 = [(PGMemoryGenerator *)self memoryGenerationContext];
-    v41 = [v19 momentNodesAtSensitiveLocationsInGraph:v43];
+    memoryGenerationContext = [(PGMemoryGenerator *)self memoryGenerationContext];
+    v41 = [memoryGenerationContext momentNodesAtSensitiveLocationsInGraph:graphCopy];
 
     v42 = [v18 subtractingTargetsWith:v41];
 
-    v20 = [(PGMemoryGenerator *)self locationHelper];
+    locationHelper = [(PGMemoryGenerator *)self locationHelper];
     v58[0] = MEMORY[0x277D85DD0];
     v58[1] = 3221225472;
     v58[2] = __99__PGRecurrentTripMemoryGenerator_generatePotentialMemoriesForProcessingWindow_graph_progressBlock___block_invoke;
     v58[3] = &unk_278884DD0;
-    v21 = v20;
+    v21 = locationHelper;
     v59 = v21;
     v22 = v12;
     v60 = v22;
@@ -150,8 +150,8 @@
     }
 
     v24 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v25 = [(PGMemoryGenerator *)self momentNodesWithBlockedFeatureCache];
-    v26 = [v25 momentNodesWithBlockedFeature];
+    momentNodesWithBlockedFeatureCache = [(PGMemoryGenerator *)self momentNodesWithBlockedFeatureCache];
+    momentNodesWithBlockedFeature = [momentNodesWithBlockedFeatureCache momentNodesWithBlockedFeature];
 
     v45[0] = MEMORY[0x277D85DD0];
     v45[1] = 3221225472;
@@ -164,11 +164,11 @@
     v54 = &v73;
     v46 = v21;
     v47 = v42;
-    v28 = v26;
+    v28 = momentNodesWithBlockedFeature;
     v48 = v28;
-    v49 = self;
+    selfCopy = self;
     p_buf = &buf;
-    v50 = v43;
+    v50 = graphCopy;
     v56 = &v65;
     v29 = v24;
     v51 = v29;
@@ -189,8 +189,8 @@ LABEL_14:
 
     else
     {
-      v31 = [(PGMemoryGenerator *)self loggingConnection];
-      if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
+      loggingConnection = [(PGMemoryGenerator *)self loggingConnection];
+      if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_DEFAULT))
       {
         v32 = *(v80 + 24);
         v33 = v66[3];
@@ -198,7 +198,7 @@ LABEL_14:
         v78[0] = v32;
         LOWORD(v78[1]) = 2048;
         *(&v78[1] + 2) = v33;
-        _os_log_impl(&dword_22F0FC000, v31, OS_LOG_TYPE_DEFAULT, "Memory Creation Request: %lu not interesting, %lu no scenes processed", &v77, 0x16u);
+        _os_log_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_DEFAULT, "Memory Creation Request: %lu not interesting, %lu no scenes processed", &v77, 0x16u);
       }
 
       if (!v8 || (Current = CFAbsoluteTimeGetCurrent(), Current - v70[3] < 0.01) || (v70[3] = Current, v44 = 0, (*(v27 + 2))(v27, &v44, 1.0), v35 = *(v74 + 24) | v44, *(v74 + 24) = v35, (v35 & 1) == 0))

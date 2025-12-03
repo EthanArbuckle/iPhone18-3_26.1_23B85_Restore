@@ -1,5 +1,5 @@
 @interface SBRemoteTransientOverlayHostViewControllerAccessibility
-- (SBRemoteTransientOverlayHostViewControllerAccessibility)initWithNibName:(id)a3 bundle:(id)a4;
+- (SBRemoteTransientOverlayHostViewControllerAccessibility)initWithNibName:(id)name bundle:(id)bundle;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)viewWillLayoutSubviews;
 @end
@@ -12,15 +12,15 @@
   v5.super_class = SBRemoteTransientOverlayHostViewControllerAccessibility;
   [(SBRemoteTransientOverlayHostViewControllerAccessibility *)&v5 _accessibilityLoadAccessibilityInformation];
   v3 = [(SBRemoteTransientOverlayHostViewControllerAccessibility *)self safeUIViewForKey:@"viewIfLoaded"];
-  v4 = [v3 window];
-  [v4 setAccessibilityViewIsModal:1];
+  window = [v3 window];
+  [window setAccessibilityViewIsModal:1];
 }
 
-- (SBRemoteTransientOverlayHostViewControllerAccessibility)initWithNibName:(id)a3 bundle:(id)a4
+- (SBRemoteTransientOverlayHostViewControllerAccessibility)initWithNibName:(id)name bundle:(id)bundle
 {
   v6.receiver = self;
   v6.super_class = SBRemoteTransientOverlayHostViewControllerAccessibility;
-  v4 = [(SBRemoteTransientOverlayHostViewControllerAccessibility *)&v6 initWithNibName:a3 bundle:a4];
+  v4 = [(SBRemoteTransientOverlayHostViewControllerAccessibility *)&v6 initWithNibName:name bundle:bundle];
   [(SBRemoteTransientOverlayHostViewControllerAccessibility *)v4 _accessibilityLoadAccessibilityInformation];
 
   return v4;

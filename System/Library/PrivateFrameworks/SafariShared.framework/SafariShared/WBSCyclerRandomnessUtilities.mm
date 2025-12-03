@@ -1,7 +1,7 @@
 @interface WBSCyclerRandomnessUtilities
-+ (id)_randomStringWithCharactersFromString:(id)a3 withMaximumLength:(int64_t)a4;
-+ (id)randomElementOfArray:(id)a3;
-+ (id)randomElementOfArray:(id)a3 relativeProbabilities:(id)a4;
++ (id)_randomStringWithCharactersFromString:(id)string withMaximumLength:(int64_t)length;
++ (id)randomElementOfArray:(id)array;
++ (id)randomElementOfArray:(id)array relativeProbabilities:(id)probabilities;
 + (id)randomURL;
 + (void)initialize;
 @end
@@ -12,21 +12,21 @@
 {
   [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
 
-  [a1 setSeed:v3];
+  [self setSeed:v3];
 }
 
 + (id)randomURL
 {
-  if ([a1 randomIntegerWithUpperBound:5])
+  if ([self randomIntegerWithUpperBound:5])
   {
     v3 = MEMORY[0x1E695DFF8];
-    v4 = [a1 randomElementOfArray:&unk_1F3A9B198];
+    v4 = [self randomElementOfArray:&unk_1F3A9B198];
     v5 = [v3 URLWithString:v4];
   }
 
   else
   {
-    v4 = [a1 _randomStringWithCharactersFromString:@"abcdefghijklmnopqrstuvwxyz0123456789" withMaximumLength:200];
+    v4 = [self _randomStringWithCharactersFromString:@"abcdefghijklmnopqrstuvwxyz0123456789" withMaximumLength:200];
     v6 = MEMORY[0x1E695DFF8];
     v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"https://%@.com/", v4];
     v5 = [v6 URLWithString:v7];
@@ -35,24 +35,24 @@
   return v5;
 }
 
-+ (id)randomElementOfArray:(id)a3
++ (id)randomElementOfArray:(id)array
 {
-  v4 = a3;
-  v5 = [v4 objectAtIndexedSubscript:{objc_msgSend(a1, "randomIntegerWithUpperBound:", objc_msgSend(v4, "count"))}];
+  arrayCopy = array;
+  v5 = [arrayCopy objectAtIndexedSubscript:{objc_msgSend(self, "randomIntegerWithUpperBound:", objc_msgSend(arrayCopy, "count"))}];
 
   return v5;
 }
 
-+ (id)randomElementOfArray:(id)a3 relativeProbabilities:(id)a4
++ (id)randomElementOfArray:(id)array relativeProbabilities:(id)probabilities
 {
   v32 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  arrayCopy = array;
+  probabilitiesCopy = probabilities;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v7 = [v6 countByEnumeratingWithState:&v27 objects:v31 count:16];
+  v7 = [probabilitiesCopy countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v7)
   {
     v8 = *v28;
@@ -63,14 +63,14 @@
       {
         if (*v28 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(probabilitiesCopy);
         }
 
         [*(*(&v27 + 1) + 8 * i) doubleValue];
         v9 = v9 + v11;
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v27 objects:v31 count:16];
+      v7 = [probabilitiesCopy countByEnumeratingWithState:&v27 objects:v31 count:16];
     }
 
     while (v7);
@@ -96,11 +96,11 @@
   v15[2] = __75__WBSCyclerRandomnessUtilities_randomElementOfArray_relativeProbabilities___block_invoke;
   v15[3] = &unk_1E7FC5288;
   v17 = v26;
-  v12 = v6;
+  v12 = probabilitiesCopy;
   v19 = v9;
   v16 = v12;
   v18 = &v20;
-  [v5 enumerateObjectsUsingBlock:v15];
+  [arrayCopy enumerateObjectsUsingBlock:v15];
   v13 = v21[5];
 
   _Block_object_dispose(&v20, 8);
@@ -123,12 +123,12 @@ void __75__WBSCyclerRandomnessUtilities_randomElementOfArray_relativeProbabiliti
   }
 }
 
-+ (id)_randomStringWithCharactersFromString:(id)a3 withMaximumLength:(int64_t)a4
++ (id)_randomStringWithCharactersFromString:(id)string withMaximumLength:(int64_t)length
 {
-  v6 = a3;
-  v7 = [a1 randomIntegerWithUpperBound:a4];
-  v8 = [MEMORY[0x1E696AD60] string];
-  v9 = [v6 length];
+  stringCopy = string;
+  v7 = [self randomIntegerWithUpperBound:length];
+  string = [MEMORY[0x1E696AD60] string];
+  v9 = [stringCopy length];
   if (v7 <= 1)
   {
     v10 = 1;
@@ -141,13 +141,13 @@ void __75__WBSCyclerRandomnessUtilities_randomElementOfArray_relativeProbabiliti
 
   do
   {
-    [v8 appendFormat:@"%C", objc_msgSend(v6, "characterAtIndex:", objc_msgSend(a1, "randomIntegerWithUpperBound:", v9))];
+    [string appendFormat:@"%C", objc_msgSend(stringCopy, "characterAtIndex:", objc_msgSend(self, "randomIntegerWithUpperBound:", v9))];
     --v10;
   }
 
   while (v10);
 
-  return v8;
+  return string;
 }
 
 @end

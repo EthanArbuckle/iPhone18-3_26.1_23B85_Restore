@@ -1,16 +1,16 @@
 @interface KMHomeManagerBridge
-- (BOOL)enumerateItemsWithError:(id *)a3 usingBlock:(id)a4;
+- (BOOL)enumerateItemsWithError:(id *)error usingBlock:(id)block;
 - (KMHomeManagerBridge)init;
-- (KMHomeManagerBridge)initWithHomeManager:(id)a3 setupTimeout:(double)a4;
-- (void)homeManagerDidUpdateHomes:(id)a3;
+- (KMHomeManagerBridge)initWithHomeManager:(id)manager setupTimeout:(double)timeout;
+- (void)homeManagerDidUpdateHomes:(id)homes;
 @end
 
 @implementation KMHomeManagerBridge
 
-- (BOOL)enumerateItemsWithError:(id *)a3 usingBlock:(id)a4
+- (BOOL)enumerateItemsWithError:(id *)error usingBlock:(id)block
 {
   v60 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  blockCopy = block;
   v6 = KMIntentVocabularyAuthorization;
   v7 = KMLogContextCore;
   if (os_log_type_enabled(KMLogContextCore, OS_LOG_TYPE_INFO))
@@ -43,13 +43,13 @@
 
   else
   {
-    v16 = [(HMHomeManager *)self->_homeManager homes];
+    homes = [(HMHomeManager *)self->_homeManager homes];
     v17 = KMLogContextCore;
     if (os_log_type_enabled(KMLogContextCore, OS_LOG_TYPE_DEBUG))
     {
       v36 = MEMORY[0x277CCABB0];
       v37 = v17;
-      v38 = [v36 numberWithUnsignedInteger:{objc_msgSend(v16, "count")}];
+      v38 = [v36 numberWithUnsignedInteger:{objc_msgSend(homes, "count")}];
       *buf = 136315394;
       v57 = "[KMHomeManagerBridge enumerateItemsWithError:usingBlock:]";
       v58 = 2112;
@@ -61,7 +61,7 @@
     v53 = 0u;
     v50 = 0u;
     v51 = 0u;
-    v18 = v16;
+    v18 = homes;
     v19 = [v18 countByEnumeratingWithState:&v50 objects:v55 count:16];
     if (v19)
     {
@@ -129,7 +129,7 @@
 
                 v32 = *(*(&v45 + 1) + 8 * i);
                 v33 = objc_autoreleasePoolPush();
-                LODWORD(v32) = v5[2](v5, v32);
+                LODWORD(v32) = blockCopy[2](blockCopy, v32);
                 objc_autoreleasePoolPop(v33);
                 if (!v32)
                 {
@@ -188,7 +188,7 @@ LABEL_28:
   return v15;
 }
 
-- (void)homeManagerDidUpdateHomes:(id)a3
+- (void)homeManagerDidUpdateHomes:(id)homes
 {
   v8 = *MEMORY[0x277D85DE8];
   v4 = KMLogContextCore;
@@ -203,10 +203,10 @@ LABEL_28:
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (KMHomeManagerBridge)initWithHomeManager:(id)a3 setupTimeout:(double)a4
+- (KMHomeManagerBridge)initWithHomeManager:(id)manager setupTimeout:(double)timeout
 {
   v28 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  managerCopy = manager;
   v23.receiver = self;
   v23.super_class = KMHomeManagerBridge;
   v8 = [(KMHomeManagerBridge *)&v23 init];
@@ -216,7 +216,7 @@ LABEL_28:
     goto LABEL_5;
   }
 
-  objc_storeStrong(&v8->_homeManager, a3);
+  objc_storeStrong(&v8->_homeManager, manager);
   if (!v9->_homeManager)
   {
     v17 = KMLogContextCore;
@@ -234,7 +234,7 @@ LABEL_28:
   setupSema = v9->_setupSema;
   v9->_setupSema = v10;
 
-  v9->_setupTimeout = a4;
+  v9->_setupTimeout = timeout;
   v12 = objc_initWeak(&location, v9);
   [(HMHomeManager *)v9->_homeManager setDelegate:v9];
 

@@ -1,32 +1,32 @@
 @interface _UIStatusBarVisualProvider_CarPlay
-+ (CGSize)intrinsicContentSizeForOrientation:(int64_t)a3;
-+ (Class)visualProviderSubclassForScreen:(id)a3 visualProviderInfo:(id)a4;
++ (CGSize)intrinsicContentSizeForOrientation:(int64_t)orientation;
++ (Class)visualProviderSubclassForScreen:(id)screen visualProviderInfo:(id)info;
 - (_UIStatusBar)statusBar;
 - (_UIStatusBarVisualProvider_CarPlay)init;
 - (id)_animationForSensorIndicator;
-- (id)_defaultScaleAnimationWithIdentifier:(id)a3;
-- (id)additionAnimationForDisplayItemWithIdentifier:(id)a3 itemAnimation:(id)a4;
-- (id)overriddenStyleAttributesForDisplayItemWithIdentifier:(id)a3;
-- (id)removalAnimationForDisplayItemWithIdentifier:(id)a3 itemAnimation:(id)a4;
-- (id)stringForCellularType:(int64_t)a3 condensed:(BOOL)a4;
-- (id)styleAttributesForStyle:(int64_t)a3;
-- (id)willUpdateWithData:(id)a3;
-- (void)actionable:(id)a3 highlighted:(BOOL)a4 initialPress:(BOOL)a5;
-- (void)itemCreated:(id)a3;
+- (id)_defaultScaleAnimationWithIdentifier:(id)identifier;
+- (id)additionAnimationForDisplayItemWithIdentifier:(id)identifier itemAnimation:(id)animation;
+- (id)overriddenStyleAttributesForDisplayItemWithIdentifier:(id)identifier;
+- (id)removalAnimationForDisplayItemWithIdentifier:(id)identifier itemAnimation:(id)animation;
+- (id)stringForCellularType:(int64_t)type condensed:(BOOL)condensed;
+- (id)styleAttributesForStyle:(int64_t)style;
+- (id)willUpdateWithData:(id)data;
+- (void)actionable:(id)actionable highlighted:(BOOL)highlighted initialPress:(BOOL)press;
+- (void)itemCreated:(id)created;
 @end
 
 @implementation _UIStatusBarVisualProvider_CarPlay
 
-+ (Class)visualProviderSubclassForScreen:(id)a3 visualProviderInfo:(id)a4
++ (Class)visualProviderSubclassForScreen:(id)screen visualProviderInfo:(id)info
 {
-  v4 = a4;
+  infoCopy = info;
   v5 = objc_opt_class();
-  if (v4)
+  if (infoCopy)
   {
-    v6 = [v4 objectForKey:@"_UIStatusBarCarPlayHorizontalLayoutKey"];
-    v7 = [v6 BOOLValue];
+    v6 = [infoCopy objectForKey:@"_UIStatusBarCarPlayHorizontalLayoutKey"];
+    bOOLValue = [v6 BOOLValue];
 
-    if (v7)
+    if (bOOLValue)
     {
       v5 = objc_opt_class();
     }
@@ -37,7 +37,7 @@
   return v5;
 }
 
-+ (CGSize)intrinsicContentSizeForOrientation:(int64_t)a3
++ (CGSize)intrinsicContentSizeForOrientation:(int64_t)orientation
 {
   v3 = -1.0;
   v4 = -1.0;
@@ -56,39 +56,39 @@
     v3 = objc_opt_new();
     [(_UIStatusBarVisualProvider_CarPlay *)v2 setPillRegionCoordinator:v3];
 
-    v4 = [(_UIStatusBarVisualProvider_CarPlay *)v2 pillRegionCoordinator];
-    [v4 setVisualProvider:v2];
+    pillRegionCoordinator = [(_UIStatusBarVisualProvider_CarPlay *)v2 pillRegionCoordinator];
+    [pillRegionCoordinator setVisualProvider:v2];
   }
 
   return v2;
 }
 
-- (void)itemCreated:(id)a3
+- (void)itemCreated:(id)created
 {
-  v5 = a3;
+  createdCopy = created;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v5;
+    v4 = createdCopy;
     [v4 setReducesFontSize:0];
     [v4 setTypeStringProvider:self];
   }
 }
 
-- (id)stringForCellularType:(int64_t)a3 condensed:(BOOL)a4
+- (id)stringForCellularType:(int64_t)type condensed:(BOOL)condensed
 {
   v4 = @"􀛱";
-  if (a3 != 9)
+  if (type != 9)
   {
     v4 = 0;
   }
 
-  if (a3 == 8)
+  if (type == 8)
   {
     v4 = @"􀛰";
   }
 
-  if (a4)
+  if (condensed)
   {
     return v4;
   }
@@ -99,12 +99,12 @@
   }
 }
 
-- (id)styleAttributesForStyle:(int64_t)a3
+- (id)styleAttributesForStyle:(int64_t)style
 {
-  v5 = [(_UIStatusBarVisualProvider_CarPlay *)self statusBar];
-  v6 = [_UIStatusBarStyleAttributes styleAttributesForStatusBar:v5 style:a3];
+  statusBar = [(_UIStatusBarVisualProvider_CarPlay *)self statusBar];
+  v6 = [_UIStatusBarStyleAttributes styleAttributesForStatusBar:statusBar style:style];
 
-  if (a3 == 2)
+  if (style == 2)
   {
     v7 = +[UIColor blackColor];
     [v6 setTextColor:v7];
@@ -122,9 +122,9 @@
   v9 = ;
   [v6 setImageTintColor:v9];
 
-  v10 = [(_UIStatusBarVisualProvider_CarPlay *)self statusBar];
-  v11 = [v10 traitCollection];
-  v12 = [off_1E70ECC18 preferredFontForTextStyle:@"UICTFontTextStyleCaption1" compatibleWithTraitCollection:v11];
+  statusBar2 = [(_UIStatusBarVisualProvider_CarPlay *)self statusBar];
+  traitCollection = [statusBar2 traitCollection];
+  v12 = [off_1E70ECC18 preferredFontForTextStyle:@"UICTFontTextStyleCaption1" compatibleWithTraitCollection:traitCollection];
 
   if (v12)
   {
@@ -138,81 +138,81 @@
 
   [v6 setFont:CopyOfSystemUIFontWithGrade];
   [v6 setSmallFont:CopyOfSystemUIFontWithGrade];
-  v14 = [(_UIStatusBarVisualProvider_CarPlay *)self statusBar];
-  v15 = [v14 traitCollection];
-  v16 = [off_1E70ECC18 _preferredFontForTextStyle:@"UICTFontTextStyleCaption1" design:0 variant:1024 compatibleWithTraitCollection:v15];
+  statusBar3 = [(_UIStatusBarVisualProvider_CarPlay *)self statusBar];
+  traitCollection2 = [statusBar3 traitCollection];
+  v16 = [off_1E70ECC18 _preferredFontForTextStyle:@"UICTFontTextStyleCaption1" design:0 variant:1024 compatibleWithTraitCollection:traitCollection2];
   [v6 setEmphasizedFont:v16];
 
-  v17 = [v6 imageTintColor];
-  v18 = [v17 colorWithAlphaComponent:0.2];
+  imageTintColor = [v6 imageTintColor];
+  v18 = [imageTintColor colorWithAlphaComponent:0.2];
   [v6 setImageDimmedTintColor:v18];
 
   return v6;
 }
 
-- (id)willUpdateWithData:(id)a3
+- (id)willUpdateWithData:(id)data
 {
-  v4 = a3;
-  v5 = [v4 sensorActivityEntry];
-  v6 = v5;
-  if (v5)
+  dataCopy = data;
+  sensorActivityEntry = [dataCopy sensorActivityEntry];
+  v6 = sensorActivityEntry;
+  if (sensorActivityEntry)
   {
-    -[_UIStatusBarVisualProvider_CarPlay setShowingSensorActivityIndicator:](self, "setShowingSensorActivityIndicator:", [v5 isEnabled]);
+    -[_UIStatusBarVisualProvider_CarPlay setShowingSensorActivityIndicator:](self, "setShowingSensorActivityIndicator:", [sensorActivityEntry isEnabled]);
   }
 
-  v7 = [v4 backgroundActivityEntry];
-  v8 = [(_UIStatusBarVisualProvider_CarPlay *)self pillRegionCoordinator];
-  [v8 updateDataForBackgroundActivity:v4];
+  backgroundActivityEntry = [dataCopy backgroundActivityEntry];
+  pillRegionCoordinator = [(_UIStatusBarVisualProvider_CarPlay *)self pillRegionCoordinator];
+  [pillRegionCoordinator updateDataForBackgroundActivity:dataCopy];
 
-  if (v7)
+  if (backgroundActivityEntry)
   {
-    -[_UIStatusBarVisualProvider_CarPlay setShowingPill:](self, "setShowingPill:", [v7 isEnabled]);
+    -[_UIStatusBarVisualProvider_CarPlay setShowingPill:](self, "setShowingPill:", [backgroundActivityEntry isEnabled]);
   }
 
-  v9 = [v4 radarEntry];
-  v10 = v9;
-  if (v9)
+  radarEntry = [dataCopy radarEntry];
+  v10 = radarEntry;
+  if (radarEntry)
   {
-    if ([v9 isEnabled])
+    if ([radarEntry isEnabled])
     {
-      v11 = [_UIStatusBarActivityAction actionForBackgroundActivityType:29];
-      v12 = [(_UIStatusBarVisualProvider_CarPlay *)self radarRegion];
-      [v12 setAction:v11];
+      radarRegion2 = [_UIStatusBarActivityAction actionForBackgroundActivityType:29];
+      radarRegion = [(_UIStatusBarVisualProvider_CarPlay *)self radarRegion];
+      [radarRegion setAction:radarRegion2];
     }
 
     else
     {
-      v11 = [(_UIStatusBarVisualProvider_CarPlay *)self radarRegion];
-      [v11 setAction:0];
+      radarRegion2 = [(_UIStatusBarVisualProvider_CarPlay *)self radarRegion];
+      [radarRegion2 setAction:0];
     }
   }
 
   return MEMORY[0x1E695E0F0];
 }
 
-- (id)additionAnimationForDisplayItemWithIdentifier:(id)a3 itemAnimation:(id)a4
+- (id)additionAnimationForDisplayItemWithIdentifier:(id)identifier itemAnimation:(id)animation
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  animationCopy = animation;
   v8 = +[(_UIStatusBarBackgroundActivityItem *)_UIStatusBarPillBackgroundActivityItem];
 
-  if (v8 == v6)
+  if (v8 == identifierCopy)
   {
-    v17 = [(_UIStatusBarVisualProvider_CarPlay *)self pillRegionCoordinator];
-    v18 = [v17 animationForBackgroundActivityPillWithDuration:0.25 scale:0.25];
+    pillRegionCoordinator = [(_UIStatusBarVisualProvider_CarPlay *)self pillRegionCoordinator];
+    v18 = [pillRegionCoordinator animationForBackgroundActivityPillWithDuration:0.25 scale:0.25];
 
     goto LABEL_14;
   }
 
   v9 = +[(_UIStatusBarItem *)_UIStatusBarIndicatorQuietModeItem];
-  if (v9 == v6)
+  if (v9 == identifierCopy)
   {
     goto LABEL_11;
   }
 
   v10 = +[(_UIStatusBarItem *)_UIStatusBarIndicatorAnnounceNotificationsItem];
   v11 = v10;
-  if (v10 == v6)
+  if (v10 == identifierCopy)
   {
 
 LABEL_11:
@@ -221,27 +221,27 @@ LABEL_11:
 
   v12 = +[(_UIStatusBarItem *)_UIStatusBarIndicatorQuietModeAnnounceItem];
 
-  if (v12 != v6)
+  if (v12 != identifierCopy)
   {
     v13 = +[(_UIStatusBarItem *)_UIStatusBarSensorActivityItem];
 
-    if (v13 == v6)
+    if (v13 == identifierCopy)
     {
-      v16 = [(_UIStatusBarVisualProvider_CarPlay *)self _animationForSensorIndicator];
+      _animationForSensorIndicator = [(_UIStatusBarVisualProvider_CarPlay *)self _animationForSensorIndicator];
     }
 
     else
     {
       v14 = +[_UIStatusBarTimeItem pillTimeDisplayIdentifier];
 
-      if (v14 == v6 || (+[_UIStatusBarTimeItem shortTimeDisplayIdentifier], v15 = objc_claimAutoreleasedReturnValue(), v15, v15 == v6))
+      if (v14 == identifierCopy || (+[_UIStatusBarTimeItem shortTimeDisplayIdentifier], v15 = objc_claimAutoreleasedReturnValue(), v15, v15 == identifierCopy))
       {
-        v16 = [(_UIStatusBarVisualProvider_CarPlay *)self _animationForPillTime];
+        _animationForSensorIndicator = [(_UIStatusBarVisualProvider_CarPlay *)self _animationForPillTime];
       }
 
       else
       {
-        v16 = v7;
+        _animationForSensorIndicator = animationCopy;
       }
     }
 
@@ -249,37 +249,37 @@ LABEL_11:
   }
 
 LABEL_12:
-  v16 = [(_UIStatusBarVisualProvider_CarPlay *)self _defaultScaleAnimationWithIdentifier:v6];
+  _animationForSensorIndicator = [(_UIStatusBarVisualProvider_CarPlay *)self _defaultScaleAnimationWithIdentifier:identifierCopy];
 LABEL_13:
-  v18 = v16;
+  v18 = _animationForSensorIndicator;
 LABEL_14:
 
   return v18;
 }
 
-- (id)removalAnimationForDisplayItemWithIdentifier:(id)a3 itemAnimation:(id)a4
+- (id)removalAnimationForDisplayItemWithIdentifier:(id)identifier itemAnimation:(id)animation
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  animationCopy = animation;
   v8 = +[(_UIStatusBarBackgroundActivityItem *)_UIStatusBarPillBackgroundActivityItem];
 
-  if (v8 == v6)
+  if (v8 == identifierCopy)
   {
-    v17 = [(_UIStatusBarVisualProvider_CarPlay *)self pillRegionCoordinator];
-    v18 = [v17 animationForBackgroundActivityPillWithDuration:0.25 scale:0.25];
+    pillRegionCoordinator = [(_UIStatusBarVisualProvider_CarPlay *)self pillRegionCoordinator];
+    v18 = [pillRegionCoordinator animationForBackgroundActivityPillWithDuration:0.25 scale:0.25];
 
     goto LABEL_14;
   }
 
   v9 = +[(_UIStatusBarItem *)_UIStatusBarIndicatorQuietModeItem];
-  if (v9 == v6)
+  if (v9 == identifierCopy)
   {
     goto LABEL_11;
   }
 
   v10 = +[(_UIStatusBarItem *)_UIStatusBarIndicatorAnnounceNotificationsItem];
   v11 = v10;
-  if (v10 == v6)
+  if (v10 == identifierCopy)
   {
 
 LABEL_11:
@@ -288,27 +288,27 @@ LABEL_11:
 
   v12 = +[(_UIStatusBarItem *)_UIStatusBarIndicatorQuietModeAnnounceItem];
 
-  if (v12 != v6)
+  if (v12 != identifierCopy)
   {
     v13 = +[(_UIStatusBarItem *)_UIStatusBarSensorActivityItem];
 
-    if (v13 == v6)
+    if (v13 == identifierCopy)
     {
-      v16 = [(_UIStatusBarVisualProvider_CarPlay *)self _animationForSensorIndicator];
+      _animationForSensorIndicator = [(_UIStatusBarVisualProvider_CarPlay *)self _animationForSensorIndicator];
     }
 
     else
     {
       v14 = +[_UIStatusBarTimeItem pillTimeDisplayIdentifier];
 
-      if (v14 == v6 || (+[_UIStatusBarTimeItem shortTimeDisplayIdentifier], v15 = objc_claimAutoreleasedReturnValue(), v15, v15 == v6))
+      if (v14 == identifierCopy || (+[_UIStatusBarTimeItem shortTimeDisplayIdentifier], v15 = objc_claimAutoreleasedReturnValue(), v15, v15 == identifierCopy))
       {
-        v16 = [(_UIStatusBarVisualProvider_CarPlay *)self _animationForPillTime];
+        _animationForSensorIndicator = [(_UIStatusBarVisualProvider_CarPlay *)self _animationForPillTime];
       }
 
       else
       {
-        v16 = v7;
+        _animationForSensorIndicator = animationCopy;
       }
     }
 
@@ -316,50 +316,50 @@ LABEL_11:
   }
 
 LABEL_12:
-  v16 = [(_UIStatusBarVisualProvider_CarPlay *)self _defaultScaleAnimationWithIdentifier:v6];
+  _animationForSensorIndicator = [(_UIStatusBarVisualProvider_CarPlay *)self _defaultScaleAnimationWithIdentifier:identifierCopy];
 LABEL_13:
-  v18 = v16;
+  v18 = _animationForSensorIndicator;
 LABEL_14:
 
   return v18;
 }
 
-- (void)actionable:(id)a3 highlighted:(BOOL)a4 initialPress:(BOOL)a5
+- (void)actionable:(id)actionable highlighted:(BOOL)highlighted initialPress:(BOOL)press
 {
-  v5 = a5;
-  v6 = a4;
-  v13 = a3;
-  v8 = [(_UIStatusBarVisualProvider_CarPlay *)self pillRegionCoordinator];
-  if (([v8 handledUpdateOfActionable:v13 highlighted:v6 initialPress:v5] & 1) == 0)
+  pressCopy = press;
+  highlightedCopy = highlighted;
+  actionableCopy = actionable;
+  pillRegionCoordinator = [(_UIStatusBarVisualProvider_CarPlay *)self pillRegionCoordinator];
+  if (([pillRegionCoordinator handledUpdateOfActionable:actionableCopy highlighted:highlightedCopy initialPress:pressCopy] & 1) == 0)
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
-    v10 = v13;
+    v10 = actionableCopy;
     if ((isKindOfClass & 1) == 0)
     {
       goto LABEL_6;
     }
 
-    v8 = v13;
-    v11 = [(_UIStatusBarVisualProvider_CarPlay *)self radarRegion];
+    pillRegionCoordinator = actionableCopy;
+    radarRegion = [(_UIStatusBarVisualProvider_CarPlay *)self radarRegion];
 
-    if (v11 == v8)
+    if (radarRegion == pillRegionCoordinator)
     {
-      v12 = [(_UIStatusBarVisualProvider_CarPlay *)self pillRegionCoordinator];
-      [v12 updateRegion:v8 highlighted:v6 initialPress:v5 cornerRadius:8.0];
+      pillRegionCoordinator2 = [(_UIStatusBarVisualProvider_CarPlay *)self pillRegionCoordinator];
+      [pillRegionCoordinator2 updateRegion:pillRegionCoordinator highlighted:highlightedCopy initialPress:pressCopy cornerRadius:8.0];
     }
   }
 
-  v10 = v13;
+  v10 = actionableCopy;
 LABEL_6:
 }
 
-- (id)_defaultScaleAnimationWithIdentifier:(id)a3
+- (id)_defaultScaleAnimationWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   CGAffineTransformMakeScale(&v7, 0.25, 0.25);
-  v5 = _UIStatusBarDefaultAnimation(self, v4, &v7, 0.25, 0.25, 0.0);
+  v5 = _UIStatusBarDefaultAnimation(self, identifierCopy, &v7, 0.25, 0.25, 0.0);
 
   return v5;
 }
@@ -373,17 +373,17 @@ LABEL_6:
   return v4;
 }
 
-- (id)overriddenStyleAttributesForDisplayItemWithIdentifier:(id)a3
+- (id)overriddenStyleAttributesForDisplayItemWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = +[_UIStatusBarTimeItem pillTimeDisplayIdentifier];
 
-  if (v5 == v4)
+  if (v5 == identifierCopy)
   {
     v6 = +[_UIStatusBarStyleAttributes overriddenStyleAttributes];
-    v7 = [(_UIStatusBarVisualProvider_CarPlay *)self statusBar];
-    v8 = [v7 traitCollection];
-    v9 = [off_1E70ECC18 _preferredFontForTextStyle:@"UICTFontTextStyleCaption2" design:0 variant:1024 compatibleWithTraitCollection:v8];
+    statusBar = [(_UIStatusBarVisualProvider_CarPlay *)self statusBar];
+    traitCollection = [statusBar traitCollection];
+    v9 = [off_1E70ECC18 _preferredFontForTextStyle:@"UICTFontTextStyleCaption2" design:0 variant:1024 compatibleWithTraitCollection:traitCollection];
     [v6 setEmphasizedFont:v9];
 
     v10 = +[UIColor whiteColor];

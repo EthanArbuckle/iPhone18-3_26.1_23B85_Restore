@@ -1,5 +1,5 @@
 @interface AAUICodeEntryPane
-- (AAUICodeEntryPane)initWithFrame:(CGRect)a3;
+- (AAUICodeEntryPane)initWithFrame:(CGRect)frame;
 - (CGRect)_availableHeaderRect;
 - (double)keyboardHeightOffset;
 - (id)_createFooterButton;
@@ -13,19 +13,19 @@
 - (void)_layoutSubviews;
 - (void)_startListeningForKeyboardEvents;
 - (void)dealloc;
-- (void)handleEscapeAction:(id)a3;
+- (void)handleEscapeAction:(id)action;
 - (void)layoutSubviews;
-- (void)setContext:(id)a3;
+- (void)setContext:(id)context;
 @end
 
 @implementation AAUICodeEntryPane
 
-- (AAUICodeEntryPane)initWithFrame:(CGRect)a3
+- (AAUICodeEntryPane)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v20.receiver = self;
   v20.super_class = AAUICodeEntryPane;
   v7 = [(DevicePINPane *)&v20 initWithFrame:?];
@@ -38,23 +38,23 @@
     [(UIScrollView *)v7->_containerView setKeyboardDismissMode:0];
     [(AAUICodeEntryPane *)v7 addSubview:v7->_containerView];
     [(UIScrollView *)v7->_containerView addSubview:*(&v7->super.super.super.super.super.isa + *MEMORY[0x1E69C5790])];
-    v10 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-    [(AAUICodeEntryPane *)v7 setBackgroundColor:v10];
+    systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+    [(AAUICodeEntryPane *)v7 setBackgroundColor:systemBackgroundColor];
 
-    v11 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-    [(UIScrollView *)v7->_containerView setBackgroundColor:v11];
+    systemBackgroundColor2 = [MEMORY[0x1E69DC888] systemBackgroundColor];
+    [(UIScrollView *)v7->_containerView setBackgroundColor:systemBackgroundColor2];
 
     v12 = [AAUIPaneHeaderView alloc];
-    v13 = [(AAUICodeEntryContext *)v7->_context promptTitle];
-    v14 = [(AAUICodeEntryContext *)v7->_context promptMessage];
-    v15 = [(AAUIPaneHeaderView *)v12 initWithTitle:v13 detailText:v14 icon:0];
+    promptTitle = [(AAUICodeEntryContext *)v7->_context promptTitle];
+    promptMessage = [(AAUICodeEntryContext *)v7->_context promptMessage];
+    v15 = [(AAUIPaneHeaderView *)v12 initWithTitle:promptTitle detailText:promptMessage icon:0];
     headerView = v7->_headerView;
     v7->_headerView = v15;
 
     [(UIScrollView *)v7->_containerView addSubview:v7->_headerView];
     v17 = v7->_containerView;
-    v18 = [(AAUICodeEntryPane *)v7 _createFooterButton];
-    [(UIScrollView *)v17 addSubview:v18];
+    _createFooterButton = [(AAUICodeEntryPane *)v7 _createFooterButton];
+    [(UIScrollView *)v17 addSubview:_createFooterButton];
 
     [(AAUICodeEntryPane *)v7 _startListeningForKeyboardEvents];
   }
@@ -68,13 +68,13 @@
   footerButton = self->_footerButton;
   self->_footerButton = v3;
 
-  v5 = [(UIButton *)self->_footerButton titleLabel];
-  [v5 setNumberOfLines:0];
+  titleLabel = [(UIButton *)self->_footerButton titleLabel];
+  [titleLabel setNumberOfLines:0];
 
-  LODWORD(v5) = +[AAUIFeatureFlags isNaturalUIEnabled];
-  v6 = [(UIButton *)self->_footerButton titleLabel];
-  v7 = v6;
-  if (v5)
+  LODWORD(titleLabel) = +[AAUIFeatureFlags isNaturalUIEnabled];
+  titleLabel2 = [(UIButton *)self->_footerButton titleLabel];
+  v7 = titleLabel2;
+  if (titleLabel)
   {
     v8 = 4;
   }
@@ -84,22 +84,22 @@
     v8 = 1;
   }
 
-  [v6 setTextAlignment:v8];
+  [titleLabel2 setTextAlignment:v8];
 
   [(UIButton *)self->_footerButton setAutoresizingMask:12];
   if (+[AAUIFeatureFlags isSolariumEnabled])
   {
     v9 = MEMORY[0x1E69DCAD8];
-    v10 = [(UIButton *)self->_footerButton titleLabel];
-    v11 = [v10 font];
-    v12 = [v9 configurationWithFont:v11];
+    titleLabel3 = [(UIButton *)self->_footerButton titleLabel];
+    font = [titleLabel3 font];
+    v12 = [v9 configurationWithFont:font];
 
     v13 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"info.circle.fill"];
     v14 = [v13 imageByApplyingSymbolConfiguration:v12];
 
     [(UIButton *)self->_footerButton setImage:v14 forState:0];
-    v15 = [MEMORY[0x1E69DC740] borderlessButtonConfiguration];
-    v16 = [v15 updatedConfigurationForButton:self->_footerButton];
+    borderlessButtonConfiguration = [MEMORY[0x1E69DC740] borderlessButtonConfiguration];
+    v16 = [borderlessButtonConfiguration updatedConfigurationForButton:self->_footerButton];
 
     [v16 setContentInsets:{*MEMORY[0x1E69DC5C0], *(MEMORY[0x1E69DC5C0] + 8), *(MEMORY[0x1E69DC5C0] + 16), *(MEMORY[0x1E69DC5C0] + 24)}];
     [v16 setImagePadding:6.0];
@@ -114,8 +114,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = AAUICodeEntryPane;
@@ -124,8 +124,8 @@
 
 - (void)_startListeningForKeyboardEvents
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 addObserver:self selector:sel__keyboardLayoutChanged name:*MEMORY[0x1E69DDFD0] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__keyboardLayoutChanged name:*MEMORY[0x1E69DDFD0] object:0];
 }
 
 - (void)_keyboardLayoutChanged
@@ -140,32 +140,32 @@
 
 - (double)keyboardHeightOffset
 {
-  v3 = [MEMORY[0x1E69DC938] currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if ((v4 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     return 226.0;
   }
 
   v6 = MEMORY[0x1E69DCBB8];
-  v7 = [(PSEditingPane *)self viewController];
-  [v6 sizeForInterfaceOrientation:{objc_msgSend(v7, "interfaceOrientation")}];
+  viewController = [(PSEditingPane *)self viewController];
+  [v6 sizeForInterfaceOrientation:{objc_msgSend(viewController, "interfaceOrientation")}];
   v31 = v8;
 
-  v9 = [(PSEditingPane *)self viewController];
-  v10 = [v9 view];
-  v11 = [(PSEditingPane *)self viewController];
-  v12 = [v11 view];
-  [v12 bounds];
-  [v10 convertRect:0 toView:?];
+  viewController2 = [(PSEditingPane *)self viewController];
+  view = [viewController2 view];
+  viewController3 = [(PSEditingPane *)self viewController];
+  view2 = [viewController3 view];
+  [view2 bounds];
+  [view convertRect:0 toView:?];
   v14 = v13;
   v16 = v15;
   v18 = v17;
   v20 = v19;
 
-  v21 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v21 bounds];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen bounds];
   v23 = v22;
   v25 = v24;
   v27 = v26;
@@ -185,7 +185,7 @@
 
 - (void)layoutSubviews
 {
-  v1 = [MEMORY[0x1E696AD98] numberWithDouble:*(a1 + 552)];
+  v1 = [MEMORY[0x1E696AD98] numberWithDouble:*(self + 552)];
   OUTLINED_FUNCTION_3();
   OUTLINED_FUNCTION_0_7(&dword_1C5355000, v2, v3, "Starting layout with KB offset: %@", v4, v5, v6, v7, v8);
 }
@@ -228,10 +228,10 @@
 - (void)_layoutContainerView
 {
   containerView = self->_containerView;
-  v5 = [(PSEditingPane *)self viewController];
-  v3 = [v5 view];
-  v4 = [v3 safeAreaLayoutGuide];
-  [v4 layoutFrame];
+  viewController = [(PSEditingPane *)self viewController];
+  view = [viewController view];
+  safeAreaLayoutGuide = [view safeAreaLayoutGuide];
+  [safeAreaLayoutGuide layoutFrame];
   [(UIScrollView *)containerView setFrame:?];
 }
 
@@ -240,9 +240,9 @@
   [(AAUIPaneHeaderView *)self->_headerView setTranslatesAutoresizingMaskIntoConstraints:0];
   if (+[AAUIFeatureFlags isNaturalUIEnabled])
   {
-    v3 = [(AAUIPaneHeaderView *)self->_headerView widthAnchor];
-    v4 = [(UIScrollView *)self->_containerView widthAnchor];
-    v5 = [v3 constraintEqualToAnchor:v4 constant:-76.0];
+    widthAnchor = [(AAUIPaneHeaderView *)self->_headerView widthAnchor];
+    widthAnchor2 = [(UIScrollView *)self->_containerView widthAnchor];
+    v5 = [widthAnchor constraintEqualToAnchor:widthAnchor2 constant:-76.0];
     [v5 setActive:1];
   }
 
@@ -251,15 +251,15 @@
   [(AAUIPaneHeaderView *)headerView setFrame:?];
   if (!+[AAUIFeatureFlags isNaturalUIEnabled])
   {
-    v7 = [(AAUIPaneHeaderView *)self->_headerView widthAnchor];
+    widthAnchor3 = [(AAUIPaneHeaderView *)self->_headerView widthAnchor];
     [(UIScrollView *)self->_containerView bounds];
-    v9 = [v7 constraintEqualToConstant:v8 + -24.0];
+    v9 = [widthAnchor3 constraintEqualToConstant:v8 + -24.0];
     [v9 setActive:1];
   }
 
-  v10 = [(AAUIPaneHeaderView *)self->_headerView centerXAnchor];
-  v11 = [(UIScrollView *)self->_containerView centerXAnchor];
-  v12 = [v10 constraintEqualToAnchor:v11];
+  centerXAnchor = [(AAUIPaneHeaderView *)self->_headerView centerXAnchor];
+  centerXAnchor2 = [(UIScrollView *)self->_containerView centerXAnchor];
+  v12 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   [v12 setActive:1];
 
   [(AAUIPaneHeaderView *)self->_headerView layoutSubviews];
@@ -269,7 +269,7 @@
 
 - (void)_didFinishResizingHeaderView
 {
-  [*(a1 + 568) bounds];
+  [*(self + 568) bounds];
   v1 = NSStringFromCGRect(v9);
   OUTLINED_FUNCTION_3();
   OUTLINED_FUNCTION_0_7(&dword_1C5355000, v2, v3, "Available frame for remote secret view: %@", v4, v5, v6, v7, v8);
@@ -277,7 +277,7 @@
 
 - (void)_layoutPinView
 {
-  v4 = NSStringFromCGRect(*&a1);
+  v4 = NSStringFromCGRect(*&self);
   OUTLINED_FUNCTION_3();
   OUTLINED_FUNCTION_0_7(&dword_1C5355000, v5, v6, "Laid out pin view: %@", v7, v8, v9, v10, v11);
 }
@@ -307,11 +307,11 @@
   v9 = v8;
 
   v10 = MEMORY[0x1E69DB878];
-  v11 = [MEMORY[0x1E69DCEB0] mainScreen];
-  v12 = [v11 traitCollection];
-  v13 = [v10 preferredFontForTextStyle:v6 compatibleWithTraitCollection:v12];
-  v14 = [(UIButton *)self->_footerButton titleLabel];
-  [v14 setFont:v13];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  traitCollection = [mainScreen traitCollection];
+  v13 = [v10 preferredFontForTextStyle:v6 compatibleWithTraitCollection:traitCollection];
+  titleLabel = [(UIButton *)self->_footerButton titleLabel];
+  [titleLabel setFont:v13];
 
   [(UIButton *)self->_footerButton frame];
   v60 = v16;
@@ -328,16 +328,16 @@
 
   else
   {
-    v23 = [(UIButton *)self->_footerButton titleLabel];
+    titleLabel2 = [(UIButton *)self->_footerButton titleLabel];
     [(AAUICodeEntryPane *)self frame];
-    [v23 sizeThatFits:{CGRectGetWidth(v67), 1.79769313e308}];
+    [titleLabel2 sizeThatFits:{CGRectGetWidth(v67), 1.79769313e308}];
     v20 = v24;
     v22 = v25;
   }
 
   v26 = *MEMORY[0x1E69C5788];
-  v27 = [*(&self->super.super.super.super.super.isa + v26) superview];
-  [v27 frame];
+  superview = [*(&self->super.super.super.super.super.isa + v26) superview];
+  [superview frame];
   v29 = v28;
   v58 = v30;
   v59 = v28;
@@ -388,12 +388,12 @@
   }
 
   [(UIButton *)self->_footerButton setFrame:v45, MaxY, v20, v22];
-  v48 = [*(&self->super.super.super.super.super.isa + v26) superview];
-  [v48 setFrame:{v59, v57, v58, v44}];
+  superview2 = [*(&self->super.super.super.super.super.isa + v26) superview];
+  [superview2 setFrame:{v59, v57, v58, v44}];
 
   v49 = *(&self->super.super.super.super.super.isa + v26);
-  v50 = [v49 superview];
-  [v50 bounds];
+  superview3 = [v49 superview];
+  [superview3 bounds];
   [v49 setFrame:?];
 
   v72.origin.x = v45;
@@ -401,17 +401,17 @@
   v72.size.width = v20;
   v72.size.height = v22;
   [(UIScrollView *)self->_containerView setContentSize:0.0, v62 + CGRectGetMaxY(v72) + self->_keyboardOffset];
-  v51 = [(UIButton *)self->_footerButton superview];
+  superview4 = [(UIButton *)self->_footerButton superview];
 
-  if (v51)
+  if (superview4)
   {
     v52 = self->_containerView;
     [(UIScrollView *)v52 frame];
     [(UIScrollView *)v52 setContentOffset:0.0, fmax(v56 - CGRectGetHeight(v73), 0.0)];
-    v53 = [MEMORY[0x1E69DC938] currentDevice];
-    v54 = [v53 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if ((v54 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+    if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
     {
       v55 = self->_containerView;
 
@@ -420,27 +420,27 @@
   }
 }
 
-- (void)setContext:(id)a3
+- (void)setContext:(id)context
 {
-  v13 = a3;
-  objc_storeStrong(&self->_context, a3);
+  contextCopy = context;
+  objc_storeStrong(&self->_context, context);
   headerView = self->_headerView;
-  v6 = [(AAUICodeEntryContext *)self->_context promptTitle];
-  [(AAUIPaneHeaderView *)headerView setTitleText:v6];
+  promptTitle = [(AAUICodeEntryContext *)self->_context promptTitle];
+  [(AAUIPaneHeaderView *)headerView setTitleText:promptTitle];
 
   v7 = self->_headerView;
-  v8 = [(AAUICodeEntryContext *)self->_context promptMessage];
-  [(AAUIPaneHeaderView *)v7 setDetailText:v8];
+  promptMessage = [(AAUICodeEntryContext *)self->_context promptMessage];
+  [(AAUIPaneHeaderView *)v7 setDetailText:promptMessage];
 
-  v9 = [(AAUICodeEntryContext *)self->_context escapeTitle];
+  escapeTitle = [(AAUICodeEntryContext *)self->_context escapeTitle];
 
   footerButton = self->_footerButton;
-  if (v9)
+  if (escapeTitle)
   {
     [(UIButton *)footerButton addTarget:self action:sel_handleEscapeAction_ forControlEvents:64];
     v11 = self->_footerButton;
-    v12 = [(AAUICodeEntryContext *)self->_context escapeTitle];
-    [(UIButton *)v11 setTitle:v12 forState:0];
+    escapeTitle2 = [(AAUICodeEntryContext *)self->_context escapeTitle];
+    [(UIButton *)v11 setTitle:escapeTitle2 forState:0];
   }
 
   else
@@ -449,24 +449,24 @@
   }
 }
 
-- (void)handleEscapeAction:(id)a3
+- (void)handleEscapeAction:(id)action
 {
-  v4 = [(PSEditingPane *)self viewController];
-  [v4 dismissViewControllerAnimated:1 completion:0];
+  viewController = [(PSEditingPane *)self viewController];
+  [viewController dismissViewControllerAnimated:1 completion:0];
 
-  v5 = [(AAUICodeEntryContext *)self->_context escapeAction];
+  escapeAction = [(AAUICodeEntryContext *)self->_context escapeAction];
 
-  if (v5)
+  if (escapeAction)
   {
-    v6 = [(AAUICodeEntryContext *)self->_context escapeAction];
-    v6[2]();
+    escapeAction2 = [(AAUICodeEntryContext *)self->_context escapeAction];
+    escapeAction2[2]();
   }
 }
 
 - (void)_availableHeaderRect
 {
   v10.size.height = a2;
-  v10.size.width = a1;
+  v10.size.width = self;
   v10.origin.x = 0.0;
   v10.origin.y = 0.0;
   v2 = NSStringFromCGRect(v10);

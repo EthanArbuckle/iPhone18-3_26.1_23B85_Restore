@@ -1,27 +1,27 @@
 @interface HDSPCDInBedDetector
-+ (double)hoursOfSleepForResult:(id)a3;
++ (double)hoursOfSleepForResult:(id)result;
 + (id)inBedDetector;
-- (id)detectInBedTimesDuringInterval:(id)a3;
+- (id)detectInBedTimesDuringInterval:(id)interval;
 @end
 
 @implementation HDSPCDInBedDetector
 
 + (id)inBedDetector
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
 
-+ (double)hoursOfSleepForResult:(id)a3
++ (double)hoursOfSleepForResult:(id)result
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  resultCopy = result;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v4 = [resultCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = v4;
@@ -33,14 +33,14 @@
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(resultCopy);
         }
 
         [*(*(&v12 + 1) + 8 * i) duration];
         v7 = v7 + v9 / 3600.0;
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [resultCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v5);
@@ -55,17 +55,17 @@
   return v7;
 }
 
-- (id)detectInBedTimesDuringInterval:(id)a3
+- (id)detectInBedTimesDuringInterval:(id)interval
 {
   v24 = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CFE0A0];
-  v4 = a3;
-  v5 = [v3 inBedDetector];
-  v6 = [v4 startDate];
-  v7 = [v4 endDate];
+  intervalCopy = interval;
+  inBedDetector = [v3 inBedDetector];
+  startDate = [intervalCopy startDate];
+  endDate = [intervalCopy endDate];
 
   v19 = 0;
-  v8 = [v5 detectInBedBetweenBedtimeDate:v6 wakupDate:v7 error:&v19];
+  v8 = [inBedDetector detectInBedBetweenBedtimeDate:startDate wakupDate:endDate error:&v19];
   v9 = v19;
 
   v10 = [v8 hk_map:&__block_literal_global_10];

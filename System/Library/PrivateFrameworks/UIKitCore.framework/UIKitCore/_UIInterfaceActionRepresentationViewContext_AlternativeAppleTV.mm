@@ -1,12 +1,12 @@
 @interface _UIInterfaceActionRepresentationViewContext_AlternativeAppleTV
-- (CATransform3D)_enlargedTransformForSize:(SEL)a3 pressed:(CGSize)a4;
+- (CATransform3D)_enlargedTransformForSize:(SEL)size pressed:(CGSize)pressed;
 @end
 
 @implementation _UIInterfaceActionRepresentationViewContext_AlternativeAppleTV
 
-- (CATransform3D)_enlargedTransformForSize:(SEL)a3 pressed:(CGSize)a4
+- (CATransform3D)_enlargedTransformForSize:(SEL)size pressed:(CGSize)pressed
 {
-  if (a4.width != *MEMORY[0x1E695F060] || a4.height != *(MEMORY[0x1E695F060] + 8))
+  if (pressed.width != *MEMORY[0x1E695F060] || pressed.height != *(MEMORY[0x1E695F060] + 8))
   {
     return CATransform3DMakeScale(retstr, 0.95, 0.95, 1.0);
   }

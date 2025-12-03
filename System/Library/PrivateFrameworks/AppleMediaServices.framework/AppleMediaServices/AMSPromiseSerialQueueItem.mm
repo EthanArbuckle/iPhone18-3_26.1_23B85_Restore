@@ -1,6 +1,6 @@
 @interface AMSPromiseSerialQueueItem
-- (AMSPromiseSerialQueueItem)initWithBinaryPromise:(id)a3 block:(id)a4 completion:(id)a5;
-- (AMSPromiseSerialQueueItem)initWithPromise:(id)a3 block:(id)a4 completion:(id)a5;
+- (AMSPromiseSerialQueueItem)initWithBinaryPromise:(id)promise block:(id)block completion:(id)completion;
+- (AMSPromiseSerialQueueItem)initWithPromise:(id)promise block:(id)block completion:(id)completion;
 - (void)run;
 @end
 
@@ -20,11 +20,11 @@
   }
 }
 
-- (AMSPromiseSerialQueueItem)initWithBinaryPromise:(id)a3 block:(id)a4 completion:(id)a5
+- (AMSPromiseSerialQueueItem)initWithBinaryPromise:(id)promise block:(id)block completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  promiseCopy = promise;
+  blockCopy = block;
+  completionCopy = completion;
   v19.receiver = self;
   v19.super_class = AMSPromiseSerialQueueItem;
   v11 = [(AMSPromiseSerialQueueItem *)&v19 init];
@@ -34,9 +34,9 @@
     block[1] = 3221225472;
     block[2] = __68__AMSPromiseSerialQueueItem_initWithBinaryPromise_block_completion___block_invoke;
     block[3] = &unk_1E73BAFB8;
-    v17 = v9;
-    v16 = v8;
-    v18 = v10;
+    v17 = blockCopy;
+    v16 = promiseCopy;
+    v18 = completionCopy;
     v12 = dispatch_block_create(DISPATCH_BLOCK_ASSIGN_CURRENT, block);
     runBlock = v11->_runBlock;
     v11->_runBlock = v12;
@@ -65,11 +65,11 @@ uint64_t __68__AMSPromiseSerialQueueItem_initWithBinaryPromise_block_completion_
   return v4();
 }
 
-- (AMSPromiseSerialQueueItem)initWithPromise:(id)a3 block:(id)a4 completion:(id)a5
+- (AMSPromiseSerialQueueItem)initWithPromise:(id)promise block:(id)block completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  promiseCopy = promise;
+  blockCopy = block;
+  completionCopy = completion;
   v19.receiver = self;
   v19.super_class = AMSPromiseSerialQueueItem;
   v11 = [(AMSPromiseSerialQueueItem *)&v19 init];
@@ -79,9 +79,9 @@ uint64_t __68__AMSPromiseSerialQueueItem_initWithBinaryPromise_block_completion_
     block[1] = 3221225472;
     block[2] = __62__AMSPromiseSerialQueueItem_initWithPromise_block_completion___block_invoke;
     block[3] = &unk_1E73BAFB8;
-    v17 = v9;
-    v16 = v8;
-    v18 = v10;
+    v17 = blockCopy;
+    v16 = promiseCopy;
+    v18 = completionCopy;
     v12 = dispatch_block_create(DISPATCH_BLOCK_ASSIGN_CURRENT, block);
     runBlock = v11->_runBlock;
     v11->_runBlock = v12;

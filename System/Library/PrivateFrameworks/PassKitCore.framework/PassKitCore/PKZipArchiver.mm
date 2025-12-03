@@ -1,34 +1,34 @@
 @interface PKZipArchiver
-- (void)unzipStream:(id)a3 toPath:(id)a4 completionHandler:(id)a5;
-- (void)unzipStream:(id)a3 toURL:(id)a4 completionHandler:(id)a5;
+- (void)unzipStream:(id)stream toPath:(id)path completionHandler:(id)handler;
+- (void)unzipStream:(id)stream toURL:(id)l completionHandler:(id)handler;
 @end
 
 @implementation PKZipArchiver
 
-- (void)unzipStream:(id)a3 toPath:(id)a4 completionHandler:(id)a5
+- (void)unzipStream:(id)stream toPath:(id)path completionHandler:(id)handler
 {
   v8 = MEMORY[0x1E695DFF8];
-  v9 = a5;
-  v10 = a3;
-  v11 = [v8 fileURLWithPath:a4];
-  [(PKZipArchiver *)self unzipStream:v10 toURL:v11 completionHandler:v9];
+  handlerCopy = handler;
+  streamCopy = stream;
+  v11 = [v8 fileURLWithPath:path];
+  [(PKZipArchiver *)self unzipStream:streamCopy toURL:v11 completionHandler:handlerCopy];
 }
 
-- (void)unzipStream:(id)a3 toURL:(id)a4 completionHandler:(id)a5
+- (void)unzipStream:(id)stream toURL:(id)l completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
-  if (v7)
+  streamCopy = stream;
+  lCopy = l;
+  handlerCopy = handler;
+  v10 = handlerCopy;
+  if (streamCopy)
   {
     v11 = dispatch_get_global_queue(0, 0);
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __53__PKZipArchiver_unzipStream_toURL_completionHandler___block_invoke;
     v13[3] = &unk_1E79C4D60;
-    v14 = v7;
-    v15 = v8;
+    v14 = streamCopy;
+    v15 = lCopy;
     v16 = v10;
     v12 = v13;
     block[0] = MEMORY[0x1E69E9820];
@@ -39,9 +39,9 @@
     dispatch_async(v11, block);
   }
 
-  else if (v9)
+  else if (handlerCopy)
   {
-    (*(v9 + 2))(v9, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 }
 

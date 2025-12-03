@@ -1,12 +1,12 @@
 @interface SCNManipulableItem
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (SCNVector3)elementPosition;
 - (SCNVector3)scale;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)setPosition:(SCNVector3)a3;
-- (void)setTransform:(SCNMatrix4 *)a3;
-- (void)setWorldTransform:(SCNMatrix4 *)a3;
+- (void)setPosition:(SCNVector3)position;
+- (void)setTransform:(SCNMatrix4 *)transform;
+- (void)setWorldTransform:(SCNMatrix4 *)transform;
 @end
 
 @implementation SCNManipulableItem
@@ -20,16 +20,16 @@
   [(SCNManipulableItem *)&v3 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(SCNManipulableItem *)self node];
-    if (v5 == [a3 node] && (v6 = -[SCNManipulableItem elementIndex](self, "elementIndex"), v6 == objc_msgSend(a3, "elementIndex")))
+    node = [(SCNManipulableItem *)self node];
+    if (node == [equal node] && (v6 = -[SCNManipulableItem elementIndex](self, "elementIndex"), v6 == objc_msgSend(equal, "elementIndex")))
     {
-      v7 = [a3 component];
-      return v7 == [a3 component];
+      component = [equal component];
+      return component == [equal component];
     }
 
     else
@@ -42,18 +42,18 @@
   {
     v9.receiver = self;
     v9.super_class = SCNManipulableItem;
-    return [(SCNManipulableItem *)&v9 isEqual:a3];
+    return [(SCNManipulableItem *)&v9 isEqual:equal];
   }
 }
 
 - (unint64_t)hash
 {
-  v2 = [(SCNManipulableItem *)self node];
+  node = [(SCNManipulableItem *)self node];
 
-  return [(SCNNode *)v2 hash];
+  return [(SCNNode *)node hash];
 }
 
-- (void)setTransform:(SCNMatrix4 *)a3
+- (void)setTransform:(SCNMatrix4 *)transform
 {
   v4 = scn_default_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -62,7 +62,7 @@
   }
 }
 
-- (void)setWorldTransform:(SCNMatrix4 *)a3
+- (void)setWorldTransform:(SCNMatrix4 *)transform
 {
   v4 = scn_default_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -82,7 +82,7 @@
   return result;
 }
 
-- (void)setPosition:(SCNVector3)a3
+- (void)setPosition:(SCNVector3)position
 {
   v4 = scn_default_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))

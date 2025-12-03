@@ -1,6 +1,6 @@
 @interface MotionTransformerOutput
 - (NSSet)featureNames;
-- (id)featureValueForName:(id)a3;
+- (id)featureValueForName:(id)name;
 @end
 
 @implementation MotionTransformerOutput
@@ -9,7 +9,7 @@
 {
   v2 = *self->provider;
 
-  v3 = [v2 featureNames];
+  featureNames = [v2 featureNames];
   sub_251131108();
 
   v4 = sub_2511310F8();
@@ -17,11 +17,11 @@
   return v4;
 }
 
-- (id)featureValueForName:(id)a3
+- (id)featureValueForName:(id)name
 {
-  v3 = [*self->provider featureValueForName_];
+  featureValueForName_ = [*self->provider featureValueForName_];
 
-  return v3;
+  return featureValueForName_;
 }
 
 @end

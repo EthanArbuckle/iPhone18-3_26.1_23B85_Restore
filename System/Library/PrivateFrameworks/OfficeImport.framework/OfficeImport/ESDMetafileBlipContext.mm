@@ -1,26 +1,26 @@
 @interface ESDMetafileBlipContext
-- (BOOL)loadDelayedNode:(id)a3;
-- (ESDMetafileBlipContext)initWithOffset:(unsigned int)a3 byteCount:(unsigned int)a4 uncompressed:(unsigned int)a5 stream:(SsrwOOStream *)a6 streamID:(unsigned int)a7;
+- (BOOL)loadDelayedNode:(id)node;
+- (ESDMetafileBlipContext)initWithOffset:(unsigned int)offset byteCount:(unsigned int)count uncompressed:(unsigned int)uncompressed stream:(SsrwOOStream *)stream streamID:(unsigned int)d;
 @end
 
 @implementation ESDMetafileBlipContext
 
-- (ESDMetafileBlipContext)initWithOffset:(unsigned int)a3 byteCount:(unsigned int)a4 uncompressed:(unsigned int)a5 stream:(SsrwOOStream *)a6 streamID:(unsigned int)a7
+- (ESDMetafileBlipContext)initWithOffset:(unsigned int)offset byteCount:(unsigned int)count uncompressed:(unsigned int)uncompressed stream:(SsrwOOStream *)stream streamID:(unsigned int)d
 {
   v9.receiver = self;
   v9.super_class = ESDMetafileBlipContext;
-  result = [(ESDBlipContext *)&v9 initWithOffset:*&a3 byteCount:*&a4 stream:a6 streamID:*&a7];
+  result = [(ESDBlipContext *)&v9 initWithOffset:*&offset byteCount:*&count stream:stream streamID:*&d];
   if (result)
   {
-    *(&result->super.mByteCount + 1) = a5;
+    *(&result->super.mByteCount + 1) = uncompressed;
   }
 
   return result;
 }
 
-- (BOOL)loadDelayedNode:(id)a3
+- (BOOL)loadDelayedNode:(id)node
 {
-  v4 = a3;
+  nodeCopy = node;
   v5 = (self->mCb + *(&self->super.mByteCount + 1)) >> 32;
   if (!v5)
   {
@@ -31,7 +31,7 @@
     v8 = [objc_alloc(MEMORY[0x277CBEB28]) initWithLength:(self->mCb + v7)];
     destLen = v7;
     v9 = uncompress(([v8 mutableBytes] + self->mCb), &destLen, objc_msgSend(v6, "mutableBytes"), self->super.mByteCount);
-    v10 = v4;
+    v10 = nodeCopy;
     v11 = v10;
     if (v9)
     {

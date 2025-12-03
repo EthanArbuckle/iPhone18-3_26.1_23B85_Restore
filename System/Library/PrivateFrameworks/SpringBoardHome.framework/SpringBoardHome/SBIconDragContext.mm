@@ -1,8 +1,8 @@
 @interface SBIconDragContext
-- (BOOL)hasDragItem:(id)a3;
-- (BOOL)hasDraggedIcon:(id)a3;
+- (BOOL)hasDragItem:(id)item;
+- (BOOL)hasDraggedIcon:(id)icon;
 - (BOOL)hasFolderDraggedIcons;
-- (BOOL)hasItemIdentifier:(id)a3;
+- (BOOL)hasItemIdentifier:(id)identifier;
 - (BOOL)hasNonDefaultSizedDraggedIcons;
 - (BOOL)hasNonDefaultSizedSourceIcons;
 - (BOOL)isUserActive;
@@ -21,49 +21,49 @@
 - (NSString)sourceIconGridSizeClass;
 - (SBIconDragContext)init;
 - (SBIconListView)currentEnteredIconListView;
-- (id)appDragLocalContextWithIconIdentifier:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)dragPreviewForIconView:(id)a3;
-- (id)initialIndexPathForIcon:(id)a3;
+- (id)appDragLocalContextWithIconIdentifier:(id)identifier;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)dragPreviewForIconView:(id)view;
+- (id)initialIndexPathForIcon:(id)icon;
 - (id)succinctDescription;
-- (void)_addPrepareForDropAssertionForIconView:(id)a3;
-- (void)addAppLocalContext:(id)a3;
-- (void)addDestinationIconView:(id)a3;
-- (void)addDiscardedSourceIconView:(id)a3;
-- (void)addDragScreenLocation:(CGPoint)a3;
-- (void)addDropAnimatingDragItem:(id)a3;
-- (void)addDroppedIcon:(id)a3;
-- (void)addDroppedIcons:(id)a3;
-- (void)addEnteredIconListView:(id)a3;
-- (void)addGrabbedIconView:(id)a3;
-- (void)addIconViewDroppingAssertion:(id)a3 forIconView:(id)a4;
-- (void)addItemIdentifier:(id)a3;
-- (void)addMessageExpectationNamed:(id)a3;
-- (void)addSourceIcon:(id)a3;
-- (void)addSourceIconView:(id)a3;
-- (void)addSourceIcons:(id)a3;
+- (void)_addPrepareForDropAssertionForIconView:(id)view;
+- (void)addAppLocalContext:(id)context;
+- (void)addDestinationIconView:(id)view;
+- (void)addDiscardedSourceIconView:(id)view;
+- (void)addDragScreenLocation:(CGPoint)location;
+- (void)addDropAnimatingDragItem:(id)item;
+- (void)addDroppedIcon:(id)icon;
+- (void)addDroppedIcons:(id)icons;
+- (void)addEnteredIconListView:(id)view;
+- (void)addGrabbedIconView:(id)view;
+- (void)addIconViewDroppingAssertion:(id)assertion forIconView:(id)view;
+- (void)addItemIdentifier:(id)identifier;
+- (void)addMessageExpectationNamed:(id)named;
+- (void)addSourceIcon:(id)icon;
+- (void)addSourceIconView:(id)view;
+- (void)addSourceIcons:(id)icons;
 - (void)clearAllDropAssertions;
-- (void)clearDropAssertionsForIconView:(id)a3;
+- (void)clearDropAssertionsForIconView:(id)view;
 - (void)dealloc;
-- (void)enumerateDragPreviewsUsingBlock:(id)a3;
-- (void)enumerateDraggedIconUsingBlock:(id)a3;
+- (void)enumerateDragPreviewsUsingBlock:(id)block;
+- (void)enumerateDraggedIconUsingBlock:(id)block;
 - (void)invalidateIconViewBorrowAssertions;
 - (void)resetDragPlaceholder;
 - (void)resetDraggedIconsHiddenAssertion;
 - (void)resetLastUserInteractionDate;
-- (void)setAdditionalMatchingIcon:(id)a3 forDroppedIconIdentifier:(id)a4;
-- (void)setAppDragLocalContext:(id)a3 forDragItem:(id)a4;
-- (void)setBorrowedViewController:(id)a3 forIconView:(id)a4;
-- (void)setDestinationFolderIconView:(id)a3 forIconWithIdentifier:(id)a4;
-- (void)setDestinationStackIconView:(id)a3 forIconWithIdentifier:(id)a4;
-- (void)setDragPreview:(id)a3 forIconView:(id)a4;
-- (void)setIconViewBorrowAssertion:(id)a3 forIconView:(id)a4;
-- (void)setInitialIndexPath:(id)a3 forIcon:(id)a4;
-- (void)setRecipientIconView:(id)a3;
-- (void)setSourceIcons:(id)a3;
-- (void)setTargetIconView:(id)a3 forCancellingIconView:(id)a4;
-- (void)swapSourceIconWithIdentifier:(id)a3 withIcon:(id)a4;
+- (void)setAdditionalMatchingIcon:(id)icon forDroppedIconIdentifier:(id)identifier;
+- (void)setAppDragLocalContext:(id)context forDragItem:(id)item;
+- (void)setBorrowedViewController:(id)controller forIconView:(id)view;
+- (void)setDestinationFolderIconView:(id)view forIconWithIdentifier:(id)identifier;
+- (void)setDestinationStackIconView:(id)view forIconWithIdentifier:(id)identifier;
+- (void)setDragPreview:(id)preview forIconView:(id)view;
+- (void)setIconViewBorrowAssertion:(id)assertion forIconView:(id)view;
+- (void)setInitialIndexPath:(id)path forIcon:(id)icon;
+- (void)setRecipientIconView:(id)view;
+- (void)setSourceIcons:(id)icons;
+- (void)setTargetIconView:(id)view forCancellingIconView:(id)iconView;
+- (void)swapSourceIconWithIdentifier:(id)identifier withIcon:(id)icon;
 @end
 
 @implementation SBIconDragContext
@@ -106,9 +106,9 @@
 
 - (BOOL)isUserActive
 {
-  v3 = [(SBIconDragContext *)self state];
+  state = [(SBIconDragContext *)self state];
   result = 0;
-  if (v3 <= 4 && ((1 << v3) & 0x1A) != 0)
+  if (state <= 4 && ((1 << state) & 0x1A) != 0)
   {
     return ![(SBIconDragContext *)self dragItemWasConsumedExternally];
   }
@@ -116,35 +116,35 @@
   return result;
 }
 
-- (void)addItemIdentifier:(id)a3
+- (void)addItemIdentifier:(id)identifier
 {
-  v4 = a3;
-  v6 = [(SBIconDragContext *)self itemIdentifiers];
-  v5 = [v6 arrayByAddingObject:v4];
+  identifierCopy = identifier;
+  itemIdentifiers = [(SBIconDragContext *)self itemIdentifiers];
+  v5 = [itemIdentifiers arrayByAddingObject:identifierCopy];
 
   [(SBIconDragContext *)self setItemIdentifiers:v5];
 }
 
-- (BOOL)hasItemIdentifier:(id)a3
+- (BOOL)hasItemIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(SBIconDragContext *)self itemIdentifiers];
-  v6 = [v5 containsObject:v4];
+  identifierCopy = identifier;
+  itemIdentifiers = [(SBIconDragContext *)self itemIdentifiers];
+  v6 = [itemIdentifiers containsObject:identifierCopy];
 
   return v6;
 }
 
-- (void)addGrabbedIconView:(id)a3
+- (void)addGrabbedIconView:(id)view
 {
-  v4 = a3;
-  v5 = [(SBIconDragContext *)self grabbedIconViews];
-  v6 = [v5 arrayByAddingObject:v4];
+  viewCopy = view;
+  grabbedIconViews = [(SBIconDragContext *)self grabbedIconViews];
+  v6 = [grabbedIconViews arrayByAddingObject:viewCopy];
   [(SBIconDragContext *)self setGrabbedIconViews:v6];
 
-  v12 = [v4 icon];
+  icon = [viewCopy icon];
 
-  v8 = v12;
-  if (v12)
+  v8 = icon;
+  if (icon)
   {
     grabbedIcons = self->_grabbedIcons;
     if (!grabbedIcons)
@@ -156,8 +156,8 @@
       grabbedIcons = self->_grabbedIcons;
     }
 
-    v7 = [(NSMutableSet *)grabbedIcons addObject:v12];
-    v8 = v12;
+    v7 = [(NSMutableSet *)grabbedIcons addObject:icon];
+    v8 = icon;
   }
 
   MEMORY[0x1EEE66BB8](v7, v8);
@@ -168,61 +168,61 @@
   sourceIcons = self->_sourceIcons;
   if (sourceIcons)
   {
-    v4 = [(NSMutableOrderedSet *)sourceIcons array];
+    array = [(NSMutableOrderedSet *)sourceIcons array];
   }
 
   else
   {
-    v4 = MEMORY[0x1E695E0F0];
+    array = MEMORY[0x1E695E0F0];
   }
 
-  return v4;
+  return array;
 }
 
-- (void)setSourceIcons:(id)a3
+- (void)setSourceIcons:(id)icons
 {
   v4 = MEMORY[0x1E695DFA0];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithArray:v5];
+  iconsCopy = icons;
+  v6 = [[v4 alloc] initWithArray:iconsCopy];
 
   sourceIcons = self->_sourceIcons;
   self->_sourceIcons = v6;
 }
 
-- (void)addSourceIcon:(id)a3
+- (void)addSourceIcon:(id)icon
 {
-  v4 = a3;
+  iconCopy = icon;
   sourceIcons = self->_sourceIcons;
-  v8 = v4;
+  v8 = iconCopy;
   if (!sourceIcons)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DFA0]);
     v7 = self->_sourceIcons;
     self->_sourceIcons = v6;
 
-    v4 = v8;
+    iconCopy = v8;
     sourceIcons = self->_sourceIcons;
   }
 
-  [(NSMutableOrderedSet *)sourceIcons addObject:v4];
+  [(NSMutableOrderedSet *)sourceIcons addObject:iconCopy];
 }
 
-- (void)addSourceIcons:(id)a3
+- (void)addSourceIcons:(id)icons
 {
-  v4 = a3;
+  iconsCopy = icons;
   sourceIcons = self->_sourceIcons;
-  v8 = v4;
+  v8 = iconsCopy;
   if (!sourceIcons)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DFA0]);
     v7 = self->_sourceIcons;
     self->_sourceIcons = v6;
 
-    v4 = v8;
+    iconsCopy = v8;
     sourceIcons = self->_sourceIcons;
   }
 
-  [(NSMutableOrderedSet *)sourceIcons addObjectsFromArray:v4];
+  [(NSMutableOrderedSet *)sourceIcons addObjectsFromArray:iconsCopy];
 }
 
 - (NSArray)droppedIcons
@@ -238,46 +238,46 @@
   }
 }
 
-- (void)addDroppedIcon:(id)a3
+- (void)addDroppedIcon:(id)icon
 {
-  v4 = a3;
+  iconCopy = icon;
   droppedIcons = self->_droppedIcons;
-  v8 = v4;
+  v8 = iconCopy;
   if (!droppedIcons)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_droppedIcons;
     self->_droppedIcons = v6;
 
-    v4 = v8;
+    iconCopy = v8;
     droppedIcons = self->_droppedIcons;
   }
 
-  [(NSMutableArray *)droppedIcons addObject:v4];
+  [(NSMutableArray *)droppedIcons addObject:iconCopy];
 }
 
-- (void)addDroppedIcons:(id)a3
+- (void)addDroppedIcons:(id)icons
 {
-  v4 = a3;
+  iconsCopy = icons;
   droppedIcons = self->_droppedIcons;
-  v8 = v4;
+  v8 = iconsCopy;
   if (!droppedIcons)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_droppedIcons;
     self->_droppedIcons = v6;
 
-    v4 = v8;
+    iconsCopy = v8;
     droppedIcons = self->_droppedIcons;
   }
 
-  [(NSMutableArray *)droppedIcons addObjectsFromArray:v4];
+  [(NSMutableArray *)droppedIcons addObjectsFromArray:iconsCopy];
 }
 
-- (void)setAdditionalMatchingIcon:(id)a3 forDroppedIconIdentifier:(id)a4
+- (void)setAdditionalMatchingIcon:(id)icon forDroppedIconIdentifier:(id)identifier
 {
-  v10 = a3;
-  v6 = a4;
+  iconCopy = icon;
+  identifierCopy = identifier;
   additionalMatchingDroppedIcons = self->_additionalMatchingDroppedIcons;
   if (!additionalMatchingDroppedIcons)
   {
@@ -288,49 +288,49 @@
     additionalMatchingDroppedIcons = self->_additionalMatchingDroppedIcons;
   }
 
-  [(NSMutableDictionary *)additionalMatchingDroppedIcons setObject:v10 forKey:v6];
+  [(NSMutableDictionary *)additionalMatchingDroppedIcons setObject:iconCopy forKey:identifierCopy];
 }
 
-- (void)swapSourceIconWithIdentifier:(id)a3 withIcon:(id)a4
+- (void)swapSourceIconWithIdentifier:(id)identifier withIcon:(id)icon
 {
   v41 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SBIconDragContext *)self sourceIcons];
-  v9 = [v8 mutableCopy];
+  identifierCopy = identifier;
+  iconCopy = icon;
+  sourceIcons = [(SBIconDragContext *)self sourceIcons];
+  v9 = [sourceIcons mutableCopy];
   v38[0] = MEMORY[0x1E69E9820];
   v38[1] = 3221225472;
   v38[2] = __59__SBIconDragContext_swapSourceIconWithIdentifier_withIcon___block_invoke;
   v38[3] = &unk_1E808BFD8;
-  v10 = v6;
+  v10 = identifierCopy;
   v39 = v10;
   v11 = [v9 indexOfObjectPassingTest:v38];
   if (v11 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    [v9 addObject:v7];
+    [v9 addObject:iconCopy];
   }
 
   else
   {
-    [v9 replaceObjectAtIndex:v11 withObject:v7];
+    [v9 replaceObjectAtIndex:v11 withObject:iconCopy];
   }
 
   v27 = v9;
   [(SBIconDragContext *)self setSourceIcons:v9];
-  v12 = [(SBIconDragContext *)self itemIdentifiers];
-  v13 = [v12 mutableCopy];
+  itemIdentifiers = [(SBIconDragContext *)self itemIdentifiers];
+  v13 = [itemIdentifiers mutableCopy];
 
-  v14 = [v7 nodeIdentifier];
+  nodeIdentifier = [iconCopy nodeIdentifier];
   [v13 removeObject:v10];
-  [v13 addObject:v14];
+  [v13 addObject:nodeIdentifier];
   [(SBIconDragContext *)self setItemIdentifiers:v13];
   v35[0] = MEMORY[0x1E69E9820];
   v35[1] = 3221225472;
   v35[2] = __59__SBIconDragContext_swapSourceIconWithIdentifier_withIcon___block_invoke_2;
   v35[3] = &unk_1E8089FF0;
-  v15 = v8;
+  v15 = sourceIcons;
   v36 = v15;
-  v16 = v7;
+  v16 = iconCopy;
   v37 = v16;
   [(SBIconDragContext *)self enumerateSourceIconViewsUsingBlock:v35];
   v32[0] = MEMORY[0x1E69E9820];
@@ -362,12 +362,12 @@
         }
 
         v22 = *(*(&v28 + 1) + 8 * i);
-        v23 = [v22 uniqueIdentifier];
-        v24 = [v23 isEqualToString:v10];
+        uniqueIdentifier = [v22 uniqueIdentifier];
+        v24 = [uniqueIdentifier isEqualToString:v10];
 
         if (v24)
         {
-          [v22 setUniqueIdentifier:v14];
+          [v22 setUniqueIdentifier:nodeIdentifier];
         }
       }
 
@@ -421,8 +421,8 @@ void __59__SBIconDragContext_swapSourceIconWithIdentifier_withIcon___block_invok
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v2 = [(SBIconDragContext *)self sourceIcons];
-  v3 = [v2 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  sourceIcons = [(SBIconDragContext *)self sourceIcons];
+  v3 = [sourceIcons countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v3)
   {
     v4 = v3;
@@ -433,20 +433,20 @@ void __59__SBIconDragContext_swapSourceIconWithIdentifier_withIcon___block_invok
       {
         if (*v15 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(sourceIcons);
         }
 
         v7 = *(*(&v14 + 1) + 8 * i);
-        v8 = [v7 gridSizeClass];
-        v9 = v8;
-        if (v8 == @"SBHIconGridSizeClassDefault")
+        gridSizeClass = [v7 gridSizeClass];
+        v9 = gridSizeClass;
+        if (gridSizeClass == @"SBHIconGridSizeClassDefault")
         {
         }
 
         else
         {
-          v10 = [v7 gridSizeClass];
-          v11 = [v10 isEqualToString:@"SBHIconGridSizeClassDefault"];
+          gridSizeClass2 = [v7 gridSizeClass];
+          v11 = [gridSizeClass2 isEqualToString:@"SBHIconGridSizeClassDefault"];
 
           if (!v11)
           {
@@ -456,7 +456,7 @@ void __59__SBIconDragContext_swapSourceIconWithIdentifier_withIcon___block_invok
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v4 = [sourceIcons countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v4);
@@ -470,26 +470,26 @@ LABEL_13:
 
 - (NSString)sourceIconGridSizeClass
 {
-  v2 = [(SBIconDragContext *)self sourceIcons];
-  v3 = [v2 firstObject];
+  sourceIcons = [(SBIconDragContext *)self sourceIcons];
+  firstObject = [sourceIcons firstObject];
 
-  v4 = [v3 gridSizeClass];
+  gridSizeClass = [firstObject gridSizeClass];
 
-  return v4;
+  return gridSizeClass;
 }
 
 - (NSArray)draggedIcons
 {
-  v3 = [(SBIconDragContext *)self sourceIcons];
-  v4 = [(SBIconDragContext *)self createdIcons];
-  v5 = [(SBIconDragContext *)self externallyDraggedIcons];
-  v6 = [v3 count];
-  v7 = [v4 count];
-  v8 = [v5 count];
+  sourceIcons = [(SBIconDragContext *)self sourceIcons];
+  createdIcons = [(SBIconDragContext *)self createdIcons];
+  externallyDraggedIcons = [(SBIconDragContext *)self externallyDraggedIcons];
+  v6 = [sourceIcons count];
+  v7 = [createdIcons count];
+  v8 = [externallyDraggedIcons count];
   v9 = v8;
   if (v6 && !v7 && !v8)
   {
-    v10 = v3;
+    v10 = sourceIcons;
 LABEL_13:
     v12 = v10;
     goto LABEL_14;
@@ -507,26 +507,26 @@ LABEL_13:
 
   if (!v11 && v8 == 0)
   {
-    v10 = v4;
+    v10 = createdIcons;
     goto LABEL_13;
   }
 
   if (v6 == 0 && v7 == 0 && v8)
   {
-    v10 = v5;
+    v10 = externallyDraggedIcons;
     goto LABEL_13;
   }
 
-  v14 = [v3 mutableCopy];
+  v14 = [sourceIcons mutableCopy];
   v15 = v14;
   if (v7)
   {
-    [v14 addObjectsFromArray:v4];
+    [v14 addObjectsFromArray:createdIcons];
   }
 
   if (v9)
   {
-    [v15 addObjectsFromArray:v5];
+    [v15 addObjectsFromArray:externallyDraggedIcons];
   }
 
   additionalMatchingDroppedIcons = self->_additionalMatchingDroppedIcons;
@@ -571,25 +571,25 @@ uint64_t __33__SBIconDragContext_draggedIcons__block_invoke_2(uint64_t a1, void 
   return v4;
 }
 
-- (void)enumerateDraggedIconUsingBlock:(id)a3
+- (void)enumerateDraggedIconUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v19 = 0;
   v20 = &v19;
   v21 = 0x2020000000;
   v22 = 0;
-  v5 = [(SBIconDragContext *)self sourceIcons];
+  sourceIcons = [(SBIconDragContext *)self sourceIcons];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __52__SBIconDragContext_enumerateDraggedIconUsingBlock___block_invoke;
   v16[3] = &unk_1E808DEB0;
-  v6 = v4;
+  v6 = blockCopy;
   v17 = v6;
   v18 = &v19;
-  [v5 enumerateObjectsUsingBlock:v16];
+  [sourceIcons enumerateObjectsUsingBlock:v16];
   if ((v20[3] & 1) == 0)
   {
-    v7 = [(SBIconDragContext *)self createdIcons];
+    createdIcons = [(SBIconDragContext *)self createdIcons];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __52__SBIconDragContext_enumerateDraggedIconUsingBlock___block_invoke_2;
@@ -597,26 +597,26 @@ uint64_t __33__SBIconDragContext_draggedIcons__block_invoke_2(uint64_t a1, void 
     v8 = v6;
     v14 = v8;
     v15 = &v19;
-    [v7 enumerateObjectsUsingBlock:v13];
+    [createdIcons enumerateObjectsUsingBlock:v13];
     if ((v20[3] & 1) == 0)
     {
-      v9 = [(SBIconDragContext *)self externallyDraggedIcons];
+      externallyDraggedIcons = [(SBIconDragContext *)self externallyDraggedIcons];
       v10[0] = MEMORY[0x1E69E9820];
       v10[1] = 3221225472;
       v10[2] = __52__SBIconDragContext_enumerateDraggedIconUsingBlock___block_invoke_3;
       v10[3] = &unk_1E808DEB0;
       v11 = v8;
       v12 = &v19;
-      [v9 enumerateObjectsUsingBlock:v10];
+      [externallyDraggedIcons enumerateObjectsUsingBlock:v10];
     }
   }
 
   _Block_object_dispose(&v19, 8);
 }
 
-- (BOOL)hasDraggedIcon:(id)a3
+- (BOOL)hasDraggedIcon:(id)icon
 {
-  v4 = a3;
+  iconCopy = icon;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
@@ -625,7 +625,7 @@ uint64_t __33__SBIconDragContext_draggedIcons__block_invoke_2(uint64_t a1, void 
   v7[1] = 3221225472;
   v7[2] = __36__SBIconDragContext_hasDraggedIcon___block_invoke;
   v7[3] = &unk_1E808F260;
-  v5 = v4;
+  v5 = iconCopy;
   v8 = v5;
   v9 = &v10;
   [(SBIconDragContext *)self enumerateDraggedIconUsingBlock:v7];
@@ -653,8 +653,8 @@ uint64_t __36__SBIconDragContext_hasDraggedIcon___block_invoke(uint64_t result, 
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v2 = [(SBIconDragContext *)self draggedIcons];
-  v3 = [v2 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  draggedIcons = [(SBIconDragContext *)self draggedIcons];
+  v3 = [draggedIcons countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v3)
   {
     v4 = v3;
@@ -665,20 +665,20 @@ uint64_t __36__SBIconDragContext_hasDraggedIcon___block_invoke(uint64_t result, 
       {
         if (*v15 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(draggedIcons);
         }
 
         v7 = *(*(&v14 + 1) + 8 * i);
-        v8 = [v7 gridSizeClass];
-        v9 = v8;
-        if (v8 == @"SBHIconGridSizeClassDefault")
+        gridSizeClass = [v7 gridSizeClass];
+        v9 = gridSizeClass;
+        if (gridSizeClass == @"SBHIconGridSizeClassDefault")
         {
         }
 
         else
         {
-          v10 = [v7 gridSizeClass];
-          v11 = [v10 isEqualToString:@"SBHIconGridSizeClassDefault"];
+          gridSizeClass2 = [v7 gridSizeClass];
+          v11 = [gridSizeClass2 isEqualToString:@"SBHIconGridSizeClassDefault"];
 
           if (!v11)
           {
@@ -688,7 +688,7 @@ uint64_t __36__SBIconDragContext_hasDraggedIcon___block_invoke(uint64_t result, 
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v4 = [draggedIcons countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v4);
@@ -702,20 +702,20 @@ LABEL_13:
 
 - (NSString)draggedIconGridSizeClass
 {
-  v2 = [(SBIconDragContext *)self draggedIcons];
-  v3 = [v2 firstObject];
+  draggedIcons = [(SBIconDragContext *)self draggedIcons];
+  firstObject = [draggedIcons firstObject];
 
-  if (v3)
+  if (firstObject)
   {
-    v4 = [v3 gridSizeClass];
+    gridSizeClass = [firstObject gridSizeClass];
   }
 
   else
   {
-    v4 = @"SBHIconGridSizeClassDefault";
+    gridSizeClass = @"SBHIconGridSizeClassDefault";
   }
 
-  v5 = v4;
+  v5 = gridSizeClass;
 
   return v5;
 }
@@ -727,8 +727,8 @@ LABEL_13:
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(SBIconDragContext *)self draggedIcons];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  draggedIcons = [(SBIconDragContext *)self draggedIcons];
+  v3 = [draggedIcons countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = *v8;
@@ -738,7 +738,7 @@ LABEL_13:
       {
         if (*v8 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(draggedIcons);
         }
 
         if ([*(*(&v7 + 1) + 8 * i) isFolderIcon])
@@ -748,7 +748,7 @@ LABEL_13:
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v3 = [draggedIcons countByEnumeratingWithState:&v7 objects:v11 count:16];
       if (v3)
       {
         continue;
@@ -765,27 +765,27 @@ LABEL_11:
 
 - (NSArray)createdIcons
 {
-  v3 = [(SBIconDragContext *)self createdApplicationIcons];
-  v4 = [(SBIconDragContext *)self createdWidgetIcons];
-  v5 = v4;
-  if (v3 && !v4)
+  createdApplicationIcons = [(SBIconDragContext *)self createdApplicationIcons];
+  createdWidgetIcons = [(SBIconDragContext *)self createdWidgetIcons];
+  v5 = createdWidgetIcons;
+  if (createdApplicationIcons && !createdWidgetIcons)
   {
-    v6 = v3;
+    v6 = createdApplicationIcons;
 LABEL_10:
     v7 = v6;
     goto LABEL_11;
   }
 
-  if (!v3 && v4)
+  if (!createdApplicationIcons && createdWidgetIcons)
   {
-    v6 = v4;
+    v6 = createdWidgetIcons;
     goto LABEL_10;
   }
 
   v7 = MEMORY[0x1E695E0F0];
-  if (v3 && v4)
+  if (createdApplicationIcons && createdWidgetIcons)
   {
-    v6 = [v3 arrayByAddingObjectsFromArray:v4];
+    v6 = [createdApplicationIcons arrayByAddingObjectsFromArray:createdWidgetIcons];
     goto LABEL_10;
   }
 
@@ -794,64 +794,64 @@ LABEL_11:
   return v7;
 }
 
-- (void)addSourceIconView:(id)a3
+- (void)addSourceIconView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   sourceIconViews = self->_sourceIconViews;
-  v8 = v4;
+  v8 = viewCopy;
   if (!sourceIconViews)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     v7 = self->_sourceIconViews;
     self->_sourceIconViews = v6;
 
-    v4 = v8;
+    viewCopy = v8;
     sourceIconViews = self->_sourceIconViews;
   }
 
-  [(NSMutableSet *)sourceIconViews addObject:v4];
+  [(NSMutableSet *)sourceIconViews addObject:viewCopy];
 }
 
-- (void)addDiscardedSourceIconView:(id)a3
+- (void)addDiscardedSourceIconView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   discardedSourceIconViews = self->_discardedSourceIconViews;
-  v8 = v4;
+  v8 = viewCopy;
   if (!discardedSourceIconViews)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     v7 = self->_discardedSourceIconViews;
     self->_discardedSourceIconViews = v6;
 
-    v4 = v8;
+    viewCopy = v8;
     discardedSourceIconViews = self->_discardedSourceIconViews;
   }
 
-  [(NSMutableSet *)discardedSourceIconViews addObject:v4];
+  [(NSMutableSet *)discardedSourceIconViews addObject:viewCopy];
 }
 
-- (BOOL)hasDragItem:(id)a3
+- (BOOL)hasDragItem:(id)item
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 itemProvider];
-  v6 = [v5 hasItemConformingToTypeIdentifier:*MEMORY[0x1E699A3D0]];
+  itemCopy = item;
+  itemProvider = [itemCopy itemProvider];
+  v6 = [itemProvider hasItemConformingToTypeIdentifier:*MEMORY[0x1E699A3D0]];
 
   if (!v6)
   {
     goto LABEL_22;
   }
 
-  v7 = [v4 itemProvider];
-  v8 = [v7 teamData];
-  if (!v8)
+  itemProvider2 = [itemCopy itemProvider];
+  teamData = [itemProvider2 teamData];
+  if (!teamData)
   {
     goto LABEL_21;
   }
 
   v9 = MEMORY[0x1E696ACD0];
   v10 = objc_opt_self();
-  v11 = [v9 unarchivedObjectOfClass:v10 fromData:v8 error:0];
+  v11 = [v9 unarchivedObjectOfClass:v10 fromData:teamData error:0];
 
   if (!v11)
   {
@@ -872,8 +872,8 @@ LABEL_21:
   }
 
   v14 = v13;
-  v25 = self;
-  v26 = v8;
+  selfCopy = self;
+  v26 = teamData;
   v15 = *v28;
   while (2)
   {
@@ -922,12 +922,12 @@ LABEL_21:
     break;
   }
 
-  self = v25;
+  self = selfCopy;
 LABEL_22:
-  v7 = [v4 sbh_appDragLocalContext];
-  if (v7)
+  itemProvider2 = [itemCopy sbh_appDragLocalContext];
+  if (itemProvider2)
   {
-    v23 = [(NSMutableSet *)self->_appLocalContexts containsObject:v7];
+    v23 = [(NSMutableSet *)self->_appLocalContexts containsObject:itemProvider2];
   }
 
   else
@@ -940,22 +940,22 @@ LABEL_25:
   return v23;
 }
 
-- (void)addMessageExpectationNamed:(id)a3
+- (void)addMessageExpectationNamed:(id)named
 {
-  v4 = a3;
+  namedCopy = named;
   messageExpectations = self->_messageExpectations;
-  v8 = v4;
+  v8 = namedCopy;
   if (!messageExpectations)
   {
     v6 = objc_alloc_init(MEMORY[0x1E696AB50]);
     v7 = self->_messageExpectations;
     self->_messageExpectations = v6;
 
-    v4 = v8;
+    namedCopy = v8;
     messageExpectations = self->_messageExpectations;
   }
 
-  [(NSCountedSet *)messageExpectations addObject:v4];
+  [(NSCountedSet *)messageExpectations addObject:namedCopy];
 }
 
 - (NSSet)expectedMessages
@@ -974,98 +974,98 @@ LABEL_25:
   return v3;
 }
 
-- (void)addDestinationIconView:(id)a3
+- (void)addDestinationIconView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   destinationIconViews = self->_destinationIconViews;
-  v8 = v4;
+  v8 = viewCopy;
   if (!destinationIconViews)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     v7 = self->_destinationIconViews;
     self->_destinationIconViews = v6;
 
-    v4 = v8;
+    viewCopy = v8;
     destinationIconViews = self->_destinationIconViews;
   }
 
-  [(NSMutableSet *)destinationIconViews addObject:v4];
+  [(NSMutableSet *)destinationIconViews addObject:viewCopy];
 }
 
-- (void)addIconViewDroppingAssertion:(id)a3 forIconView:(id)a4
+- (void)addIconViewDroppingAssertion:(id)assertion forIconView:(id)view
 {
-  v11 = a3;
-  v6 = a4;
+  assertionCopy = assertion;
+  viewCopy = view;
   iconViewDroppingAssertions = self->_iconViewDroppingAssertions;
   if (!iconViewDroppingAssertions)
   {
-    v8 = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
     v9 = self->_iconViewDroppingAssertions;
-    self->_iconViewDroppingAssertions = v8;
+    self->_iconViewDroppingAssertions = weakToStrongObjectsMapTable;
 
     iconViewDroppingAssertions = self->_iconViewDroppingAssertions;
   }
 
-  v10 = [(NSMapTable *)iconViewDroppingAssertions objectForKey:v6];
+  v10 = [(NSMapTable *)iconViewDroppingAssertions objectForKey:viewCopy];
   if (!v10)
   {
     v10 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    [(NSMapTable *)self->_iconViewDroppingAssertions setObject:v10 forKey:v6];
+    [(NSMapTable *)self->_iconViewDroppingAssertions setObject:v10 forKey:viewCopy];
   }
 
-  [v10 addObject:v11];
+  [v10 addObject:assertionCopy];
 }
 
-- (void)addEnteredIconListView:(id)a3
+- (void)addEnteredIconListView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   enteredIconListViews = self->_enteredIconListViews;
-  v8 = v4;
+  v8 = viewCopy;
   if (!enteredIconListViews)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     v7 = self->_enteredIconListViews;
     self->_enteredIconListViews = v6;
 
-    v4 = v8;
+    viewCopy = v8;
     enteredIconListViews = self->_enteredIconListViews;
   }
 
-  [(NSMutableSet *)enteredIconListViews addObject:v4];
+  [(NSMutableSet *)enteredIconListViews addObject:viewCopy];
 }
 
-- (void)setTargetIconView:(id)a3 forCancellingIconView:(id)a4
+- (void)setTargetIconView:(id)view forCancellingIconView:(id)iconView
 {
-  v10 = a3;
-  v6 = a4;
+  viewCopy = view;
+  iconViewCopy = iconView;
   targetsForCancellingIconViews = self->_targetsForCancellingIconViews;
   if (!targetsForCancellingIconViews)
   {
-    v8 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
     v9 = self->_targetsForCancellingIconViews;
-    self->_targetsForCancellingIconViews = v8;
+    self->_targetsForCancellingIconViews = strongToStrongObjectsMapTable;
 
     targetsForCancellingIconViews = self->_targetsForCancellingIconViews;
   }
 
-  [(NSMapTable *)targetsForCancellingIconViews setObject:v10 forKey:v6];
+  [(NSMapTable *)targetsForCancellingIconViews setObject:viewCopy forKey:iconViewCopy];
 }
 
-- (void)setRecipientIconView:(id)a3
+- (void)setRecipientIconView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   recipientIconView = self->_recipientIconView;
-  if (recipientIconView != v5)
+  if (recipientIconView != viewCopy)
   {
     v7 = MEMORY[0x1E69DD278];
-    v11 = v5;
+    v11 = viewCopy;
     v8 = recipientIconView;
     v9 = [v7 alloc];
     +[SBHIconManager defaultIconLayoutAnimationDuration];
     v10 = [v9 initWithDuration:0 curve:0 animations:?];
     [(SBIconView *)v8 setShowsDropGlow:0 animator:v10];
     [(SBIconView *)v11 setShowsDropGlow:1 animator:v10];
-    objc_storeStrong(&self->_recipientIconView, a3);
+    objc_storeStrong(&self->_recipientIconView, view);
 
     [v10 startAnimation];
     if (!v11)
@@ -1073,14 +1073,14 @@ LABEL_25:
       [(SBIconDragContext *)self setRecipientIconEntryRegion:0];
     }
 
-    v5 = v11;
+    viewCopy = v11;
   }
 }
 
-- (id)dragPreviewForIconView:(id)a3
+- (id)dragPreviewForIconView:(id)view
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  viewCopy = view;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
@@ -1090,7 +1090,7 @@ LABEL_25:
   if (v5)
   {
     v6 = v5;
-    v20 = self;
+    selfCopy = self;
     v7 = *v23;
 LABEL_3:
     v8 = 0;
@@ -1102,9 +1102,9 @@ LABEL_3:
       }
 
       v9 = *(*(&v22 + 1) + 8 * v8);
-      v10 = [v9 icon];
-      v11 = [v4 icon];
-      v12 = [v10 isEqual:v11];
+      icon = [v9 icon];
+      icon2 = [viewCopy icon];
+      v12 = [icon isEqual:icon2];
 
       if (v12)
       {
@@ -1116,13 +1116,13 @@ LABEL_3:
 
       if (isKindOfClass)
       {
-        v15 = v10;
-        v16 = [v4 icon];
-        v17 = [v15 referencesIcon:v16];
+        v15 = icon;
+        icon3 = [viewCopy icon];
+        v17 = [v15 referencesIcon:icon3];
 
         if (v17)
         {
-          v18 = [(NSMapTable *)v20->_dragPreviewForIconViews objectForKey:v9];
+          v18 = [(NSMapTable *)selfCopy->_dragPreviewForIconViews objectForKey:v9];
 
           goto LABEL_15;
         }
@@ -1140,7 +1140,7 @@ LABEL_3:
       }
     }
 
-    v18 = [(NSMapTable *)v20->_dragPreviewForIconViews objectForKey:v9];
+    v18 = [(NSMapTable *)selfCopy->_dragPreviewForIconViews objectForKey:v9];
 LABEL_15:
 
     goto LABEL_16;
@@ -1153,27 +1153,27 @@ LABEL_16:
   return v18;
 }
 
-- (void)setDragPreview:(id)a3 forIconView:(id)a4
+- (void)setDragPreview:(id)preview forIconView:(id)view
 {
-  v10 = a3;
-  v6 = a4;
+  previewCopy = preview;
+  viewCopy = view;
   dragPreviewForIconViews = self->_dragPreviewForIconViews;
   if (!dragPreviewForIconViews)
   {
-    v8 = [MEMORY[0x1E696AD18] weakToWeakObjectsMapTable];
+    weakToWeakObjectsMapTable = [MEMORY[0x1E696AD18] weakToWeakObjectsMapTable];
     v9 = self->_dragPreviewForIconViews;
-    self->_dragPreviewForIconViews = v8;
+    self->_dragPreviewForIconViews = weakToWeakObjectsMapTable;
 
     dragPreviewForIconViews = self->_dragPreviewForIconViews;
   }
 
-  [(NSMapTable *)dragPreviewForIconViews setObject:v10 forKey:v6];
+  [(NSMapTable *)dragPreviewForIconViews setObject:previewCopy forKey:viewCopy];
 }
 
-- (void)enumerateDragPreviewsUsingBlock:(id)a3
+- (void)enumerateDragPreviewsUsingBlock:(id)block
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -1196,7 +1196,7 @@ LABEL_3:
       v10 = *(*(&v13 + 1) + 8 * v9);
       v11 = [(NSMapTable *)self->_dragPreviewForIconViews objectForKey:v10];
       v12 = 0;
-      v4[2](v4, v11, v10, &v12);
+      blockCopy[2](blockCopy, v11, v10, &v12);
       LOBYTE(v10) = v12;
 
       if (v10)
@@ -1218,22 +1218,22 @@ LABEL_3:
   }
 }
 
-- (void)addAppLocalContext:(id)a3
+- (void)addAppLocalContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   appLocalContexts = self->_appLocalContexts;
-  v8 = v4;
+  v8 = contextCopy;
   if (!appLocalContexts)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     v7 = self->_appLocalContexts;
     self->_appLocalContexts = v6;
 
-    v4 = v8;
+    contextCopy = v8;
     appLocalContexts = self->_appLocalContexts;
   }
 
-  [(NSMutableSet *)appLocalContexts addObject:v4];
+  [(NSMutableSet *)appLocalContexts addObject:contextCopy];
 }
 
 - (NSSet)appLocalContexts
@@ -1252,20 +1252,20 @@ LABEL_3:
   return v3;
 }
 
-- (id)appDragLocalContextWithIconIdentifier:(id)a3
+- (id)appDragLocalContextWithIconIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   appLocalContexts = self->_appLocalContexts;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __59__SBIconDragContext_appDragLocalContextWithIconIdentifier___block_invoke;
   v10[3] = &unk_1E808F288;
-  v11 = v4;
-  v6 = v4;
+  v11 = identifierCopy;
+  v6 = identifierCopy;
   v7 = [(NSMutableSet *)appLocalContexts objectsPassingTest:v10];
-  v8 = [v7 anyObject];
+  anyObject = [v7 anyObject];
 
-  return v8;
+  return anyObject;
 }
 
 uint64_t __59__SBIconDragContext_appDragLocalContextWithIconIdentifier___block_invoke(uint64_t a1, void *a2)
@@ -1282,10 +1282,10 @@ uint64_t __59__SBIconDragContext_appDragLocalContextWithIconIdentifier___block_i
   [(SBIconDragContext *)self setLastUserInteractionDate:v3];
 }
 
-- (void)setDestinationFolderIconView:(id)a3 forIconWithIdentifier:(id)a4
+- (void)setDestinationFolderIconView:(id)view forIconWithIdentifier:(id)identifier
 {
-  v10 = a3;
-  v6 = a4;
+  viewCopy = view;
+  identifierCopy = identifier;
   destinationFolderIconViews = self->_destinationFolderIconViews;
   if (!destinationFolderIconViews)
   {
@@ -1296,14 +1296,14 @@ uint64_t __59__SBIconDragContext_appDragLocalContextWithIconIdentifier___block_i
     destinationFolderIconViews = self->_destinationFolderIconViews;
   }
 
-  [(NSMutableDictionary *)destinationFolderIconViews setObject:v10 forKey:v6];
-  [(SBIconDragContext *)self _addPrepareForDropAssertionForIconView:v10];
+  [(NSMutableDictionary *)destinationFolderIconViews setObject:viewCopy forKey:identifierCopy];
+  [(SBIconDragContext *)self _addPrepareForDropAssertionForIconView:viewCopy];
 }
 
-- (void)setDestinationStackIconView:(id)a3 forIconWithIdentifier:(id)a4
+- (void)setDestinationStackIconView:(id)view forIconWithIdentifier:(id)identifier
 {
-  v10 = a3;
-  v6 = a4;
+  viewCopy = view;
+  identifierCopy = identifier;
   destinationStackIconViews = self->_destinationStackIconViews;
   if (!destinationStackIconViews)
   {
@@ -1314,13 +1314,13 @@ uint64_t __59__SBIconDragContext_appDragLocalContextWithIconIdentifier___block_i
     destinationStackIconViews = self->_destinationStackIconViews;
   }
 
-  [(NSMutableDictionary *)destinationStackIconViews setObject:v10 forKey:v6];
-  [(SBIconDragContext *)self _addPrepareForDropAssertionForIconView:v10];
+  [(NSMutableDictionary *)destinationStackIconViews setObject:viewCopy forKey:identifierCopy];
+  [(SBIconDragContext *)self _addPrepareForDropAssertionForIconView:viewCopy];
 }
 
-- (void)_addPrepareForDropAssertionForIconView:(id)a3
+- (void)_addPrepareForDropAssertionForIconView:(id)view
 {
-  v9 = a3;
+  viewCopy = view;
   v4 = [(NSMapTable *)self->_iconViewPrepareForDropAssertions objectForKey:?];
 
   if (!v4)
@@ -1328,26 +1328,26 @@ uint64_t __59__SBIconDragContext_appDragLocalContextWithIconIdentifier___block_i
     iconViewPrepareForDropAssertions = self->_iconViewPrepareForDropAssertions;
     if (!iconViewPrepareForDropAssertions)
     {
-      v6 = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
+      weakToStrongObjectsMapTable = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
       v7 = self->_iconViewPrepareForDropAssertions;
-      self->_iconViewPrepareForDropAssertions = v6;
+      self->_iconViewPrepareForDropAssertions = weakToStrongObjectsMapTable;
 
       iconViewPrepareForDropAssertions = self->_iconViewPrepareForDropAssertions;
     }
 
-    v8 = [v9 prepareForIconDrop];
-    [(NSMapTable *)iconViewPrepareForDropAssertions setObject:v8 forKey:v9];
+    prepareForIconDrop = [viewCopy prepareForIconDrop];
+    [(NSMapTable *)iconViewPrepareForDropAssertions setObject:prepareForIconDrop forKey:viewCopy];
   }
 }
 
-- (void)clearDropAssertionsForIconView:(id)a3
+- (void)clearDropAssertionsForIconView:(id)view
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(NSMapTable *)self->_iconViewPrepareForDropAssertions objectForKey:v4];
+  viewCopy = view;
+  v5 = [(NSMapTable *)self->_iconViewPrepareForDropAssertions objectForKey:viewCopy];
   [v5 invalidate];
-  [(NSMapTable *)self->_iconViewPrepareForDropAssertions removeObjectForKey:v4];
-  v6 = [(NSMapTable *)self->_iconViewDroppingAssertions objectForKey:v4];
+  [(NSMapTable *)self->_iconViewPrepareForDropAssertions removeObjectForKey:viewCopy];
+  v6 = [(NSMapTable *)self->_iconViewDroppingAssertions objectForKey:viewCopy];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -1377,7 +1377,7 @@ uint64_t __59__SBIconDragContext_appDragLocalContextWithIconIdentifier___block_i
     while (v8);
   }
 
-  [(NSMapTable *)self->_iconViewDroppingAssertions removeObjectForKey:v4];
+  [(NSMapTable *)self->_iconViewDroppingAssertions removeObjectForKey:viewCopy];
 }
 
 - (void)clearAllDropAssertions
@@ -1387,9 +1387,9 @@ uint64_t __59__SBIconDragContext_appDragLocalContextWithIconIdentifier___block_i
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v3 = [(NSMapTable *)self->_iconViewPrepareForDropAssertions keyEnumerator];
-  v4 = [v3 allObjects];
-  v5 = [v4 copy];
+  keyEnumerator = [(NSMapTable *)self->_iconViewPrepareForDropAssertions keyEnumerator];
+  allObjects = [keyEnumerator allObjects];
+  v5 = [allObjects copy];
 
   v6 = [v5 countByEnumeratingWithState:&v21 objects:v26 count:16];
   if (v6)
@@ -1420,9 +1420,9 @@ uint64_t __59__SBIconDragContext_appDragLocalContextWithIconIdentifier___block_i
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v10 = [(NSMapTable *)self->_iconViewDroppingAssertions keyEnumerator];
-  v11 = [v10 allObjects];
-  v12 = [v11 copy];
+  keyEnumerator2 = [(NSMapTable *)self->_iconViewDroppingAssertions keyEnumerator];
+  allObjects2 = [keyEnumerator2 allObjects];
+  v12 = [allObjects2 copy];
 
   v13 = [v12 countByEnumeratingWithState:&v17 objects:v25 count:16];
   if (v13)
@@ -1450,36 +1450,36 @@ uint64_t __59__SBIconDragContext_appDragLocalContextWithIconIdentifier___block_i
   }
 }
 
-- (void)addDropAnimatingDragItem:(id)a3
+- (void)addDropAnimatingDragItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   dropAnimatingDragItems = self->_dropAnimatingDragItems;
-  v8 = v4;
+  v8 = itemCopy;
   if (!dropAnimatingDragItems)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     v7 = self->_dropAnimatingDragItems;
     self->_dropAnimatingDragItems = v6;
 
-    v4 = v8;
+    itemCopy = v8;
     dropAnimatingDragItems = self->_dropAnimatingDragItems;
   }
 
-  [(NSMutableSet *)dropAnimatingDragItems addObject:v4];
+  [(NSMutableSet *)dropAnimatingDragItems addObject:itemCopy];
 }
 
-- (id)initialIndexPathForIcon:(id)a3
+- (id)initialIndexPathForIcon:(id)icon
 {
-  v4 = [a3 nodeIdentifier];
-  v5 = [(SBIconDragContext *)self initialIndexPathForIconWithIdentifier:v4];
+  nodeIdentifier = [icon nodeIdentifier];
+  v5 = [(SBIconDragContext *)self initialIndexPathForIconWithIdentifier:nodeIdentifier];
 
   return v5;
 }
 
-- (void)setInitialIndexPath:(id)a3 forIcon:(id)a4
+- (void)setInitialIndexPath:(id)path forIcon:(id)icon
 {
-  v11 = a3;
-  v6 = a4;
+  pathCopy = path;
+  iconCopy = icon;
   initialIconPaths = self->_initialIconPaths;
   if (!initialIconPaths)
   {
@@ -1490,39 +1490,39 @@ uint64_t __59__SBIconDragContext_appDragLocalContextWithIconIdentifier___block_i
     initialIconPaths = self->_initialIconPaths;
   }
 
-  v10 = [v6 nodeIdentifier];
-  [(NSMutableDictionary *)initialIconPaths setObject:v11 forKey:v10];
+  nodeIdentifier = [iconCopy nodeIdentifier];
+  [(NSMutableDictionary *)initialIconPaths setObject:pathCopy forKey:nodeIdentifier];
 }
 
-- (void)setAppDragLocalContext:(id)a3 forDragItem:(id)a4
+- (void)setAppDragLocalContext:(id)context forDragItem:(id)item
 {
-  v10 = a3;
-  v6 = a4;
-  [(SBIconDragContext *)self addAppLocalContext:v10];
+  contextCopy = context;
+  itemCopy = item;
+  [(SBIconDragContext *)self addAppLocalContext:contextCopy];
   appDragLocalContexts = self->_appDragLocalContexts;
   if (!appDragLocalContexts)
   {
-    v8 = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
     v9 = self->_appDragLocalContexts;
-    self->_appDragLocalContexts = v8;
+    self->_appDragLocalContexts = weakToStrongObjectsMapTable;
 
     appDragLocalContexts = self->_appDragLocalContexts;
   }
 
-  [(NSMapTable *)appDragLocalContexts setObject:v10 forKey:v6];
+  [(NSMapTable *)appDragLocalContexts setObject:contextCopy forKey:itemCopy];
 }
 
 - (void)resetDraggedIconsHiddenAssertion
 {
-  v3 = [(SBIconDragContext *)self draggedIconsHiddenAssertion];
-  [v3 invalidate];
+  draggedIconsHiddenAssertion = [(SBIconDragContext *)self draggedIconsHiddenAssertion];
+  [draggedIconsHiddenAssertion invalidate];
   [(SBIconDragContext *)self setDraggedIconsHiddenAssertion:0];
 }
 
 - (void)resetDragPlaceholder
 {
-  v3 = [(SBIconDragContext *)self dragPlaceholder];
-  [v3 invalidate];
+  dragPlaceholder = [(SBIconDragContext *)self dragPlaceholder];
+  [dragPlaceholder invalidate];
   [(SBIconDragContext *)self setDragPlaceholder:0];
   [(SBIconDragContext *)self setDragPlaceholderListView:0];
   [(SBIconDragContext *)self setDragPlaceholderGridSizeClass:0];
@@ -1530,32 +1530,32 @@ uint64_t __59__SBIconDragContext_appDragLocalContextWithIconIdentifier___block_i
 
 - (NSString)dragPlaceholderGridSizeClass
 {
-  v3 = self->_dragPlaceholderGridSizeClass;
-  if (!v3)
+  gridSizeClass = self->_dragPlaceholderGridSizeClass;
+  if (!gridSizeClass)
   {
-    v4 = [(SBIconDragContext *)self draggedIcons];
-    v5 = [v4 firstObject];
-    v3 = [v5 gridSizeClass];
+    draggedIcons = [(SBIconDragContext *)self draggedIcons];
+    firstObject = [draggedIcons firstObject];
+    gridSizeClass = [firstObject gridSizeClass];
   }
 
-  return v3;
+  return gridSizeClass;
 }
 
-- (void)setIconViewBorrowAssertion:(id)a3 forIconView:(id)a4
+- (void)setIconViewBorrowAssertion:(id)assertion forIconView:(id)view
 {
-  v10 = a3;
-  v6 = a4;
+  assertionCopy = assertion;
+  viewCopy = view;
   iconViewBorrowAssertions = self->_iconViewBorrowAssertions;
   if (!iconViewBorrowAssertions)
   {
-    v8 = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
     v9 = self->_iconViewBorrowAssertions;
-    self->_iconViewBorrowAssertions = v8;
+    self->_iconViewBorrowAssertions = weakToStrongObjectsMapTable;
 
     iconViewBorrowAssertions = self->_iconViewBorrowAssertions;
   }
 
-  [(NSMapTable *)iconViewBorrowAssertions setObject:v10 forKey:v6];
+  [(NSMapTable *)iconViewBorrowAssertions setObject:assertionCopy forKey:viewCopy];
 }
 
 - (void)invalidateIconViewBorrowAssertions
@@ -1599,45 +1599,45 @@ uint64_t __59__SBIconDragContext_appDragLocalContextWithIconIdentifier___block_i
   }
 }
 
-- (void)setBorrowedViewController:(id)a3 forIconView:(id)a4
+- (void)setBorrowedViewController:(id)controller forIconView:(id)view
 {
-  v10 = a3;
-  v6 = a4;
+  controllerCopy = controller;
+  viewCopy = view;
   borrowedViewControllers = self->_borrowedViewControllers;
   if (!borrowedViewControllers)
   {
-    v8 = [MEMORY[0x1E696AD18] weakToWeakObjectsMapTable];
+    weakToWeakObjectsMapTable = [MEMORY[0x1E696AD18] weakToWeakObjectsMapTable];
     v9 = self->_borrowedViewControllers;
-    self->_borrowedViewControllers = v8;
+    self->_borrowedViewControllers = weakToWeakObjectsMapTable;
 
     borrowedViewControllers = self->_borrowedViewControllers;
   }
 
-  [(NSMapTable *)borrowedViewControllers setObject:v10 forKey:v6];
+  [(NSMapTable *)borrowedViewControllers setObject:controllerCopy forKey:viewCopy];
 }
 
-- (void)addDragScreenLocation:(CGPoint)a3
+- (void)addDragScreenLocation:(CGPoint)location
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(SBIconDragContext *)self velocityIntegrator];
-  if (!v6)
+  y = location.y;
+  x = location.x;
+  velocityIntegrator = [(SBIconDragContext *)self velocityIntegrator];
+  if (!velocityIntegrator)
   {
     v7 = objc_alloc_init(MEMORY[0x1E69DD7E8]);
     [v7 setMinimumRequiredMovement:0.0];
     [v7 setHysteresisTimeInterval:0.3];
     [(SBIconDragContext *)self setVelocityIntegrator:v7];
-    v6 = v7;
+    velocityIntegrator = v7;
   }
 
-  v8 = v6;
-  [v6 addSample:{x, y}];
+  v8 = velocityIntegrator;
+  [velocityIntegrator addSample:{x, y}];
 }
 
 - (CGVector)dragVelocity
 {
-  v2 = [(SBIconDragContext *)self velocityIntegrator];
-  [v2 velocity];
+  velocityIntegrator = [(SBIconDragContext *)self velocityIntegrator];
+  [velocityIntegrator velocity];
   v4 = v3;
   v6 = v5;
 
@@ -1648,15 +1648,15 @@ uint64_t __59__SBIconDragContext_appDragLocalContextWithIconIdentifier___block_i
   return result;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBIconDragContext *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBIconDragContext *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v4 = [MEMORY[0x1E698E680] builderWithObject:self];
   v5 = SBStringForIconDragContextState([(SBIconDragContext *)self state]);
@@ -1698,10 +1698,10 @@ uint64_t __59__SBIconDragContext_appDragLocalContextWithIconIdentifier___block_i
 
 - (id)succinctDescription
 {
-  v2 = [(SBIconDragContext *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBIconDragContext *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (SBIconListView)currentEnteredIconListView

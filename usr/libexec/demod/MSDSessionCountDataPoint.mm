@@ -1,10 +1,10 @@
 @interface MSDSessionCountDataPoint
-- (MSDSessionCountDataPoint)initWithCount:(int64_t)a3;
+- (MSDSessionCountDataPoint)initWithCount:(int64_t)count;
 @end
 
 @implementation MSDSessionCountDataPoint
 
-- (MSDSessionCountDataPoint)initWithCount:(int64_t)a3
+- (MSDSessionCountDataPoint)initWithCount:(int64_t)count
 {
   v7.receiver = self;
   v7.super_class = MSDSessionCountDataPoint;
@@ -12,7 +12,7 @@
   v5 = v4;
   if (v4)
   {
-    [(MSDSessionCountDataPoint *)v4 setCount:a3];
+    [(MSDSessionCountDataPoint *)v4 setCount:count];
   }
 
   return v5;

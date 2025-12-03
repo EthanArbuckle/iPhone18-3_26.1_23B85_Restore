@@ -1,17 +1,17 @@
 @interface SCNPhysicsHingeJoint
 + (SCNPhysicsHingeJoint)jointWithBody:(SCNPhysicsBody *)body axis:(SCNVector3)axis anchor:(SCNVector3)anchor;
 + (SCNPhysicsHingeJoint)jointWithBodyA:(SCNPhysicsBody *)bodyA axisA:(SCNVector3)axisA anchorA:(SCNVector3)anchorA bodyB:(SCNPhysicsBody *)bodyB axisB:(SCNVector3)axisB anchorB:(SCNVector3)anchorB;
-- (SCNPhysicsHingeJoint)initWithBodyA:(id)a3 axisA:(SCNVector3)a4 anchorA:(SCNVector3)a5 bodyB:(id)a6 axisB:(SCNVector3)a7 anchorB:(SCNVector3)a8;
-- (SCNPhysicsHingeJoint)initWithCoder:(id)a3;
+- (SCNPhysicsHingeJoint)initWithBodyA:(id)a axisA:(SCNVector3)axisA anchorA:(SCNVector3)anchorA bodyB:(id)b axisB:(SCNVector3)axisB anchorB:(SCNVector3)anchorB;
+- (SCNPhysicsHingeJoint)initWithCoder:(id)coder;
 - (SCNVector3)anchorA;
 - (SCNVector3)anchorB;
 - (SCNVector3)axisA;
 - (SCNVector3)axisB;
-- (void)_addToPhysicsWorld:(id)a3 definition:(id *)a4;
-- (void)_copyDefinition:(id *)a3;
-- (void)_willRemoveFromPhysicsWorld:(id)a3;
+- (void)_addToPhysicsWorld:(id)world definition:(id *)definition;
+- (void)_copyDefinition:(id *)definition;
+- (void)_willRemoveFromPhysicsWorld:(id)world;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)setAnchorA:(SCNVector3)anchorA;
 - (void)setAnchorB:(SCNVector3)anchorB;
 - (void)setAxisA:(SCNVector3)axisA;
@@ -33,28 +33,28 @@
   [(SCNPhysicsHingeJoint *)&v4 dealloc];
 }
 
-- (SCNPhysicsHingeJoint)initWithBodyA:(id)a3 axisA:(SCNVector3)a4 anchorA:(SCNVector3)a5 bodyB:(id)a6 axisB:(SCNVector3)a7 anchorB:(SCNVector3)a8
+- (SCNPhysicsHingeJoint)initWithBodyA:(id)a axisA:(SCNVector3)axisA anchorA:(SCNVector3)anchorA bodyB:(id)b axisB:(SCNVector3)axisB anchorB:(SCNVector3)anchorB
 {
-  z = a5.z;
-  y = a5.y;
-  x = a5.x;
-  v12 = a4.z;
-  v13 = a4.y;
-  v14 = a4.x;
+  z = anchorA.z;
+  y = anchorA.y;
+  x = anchorA.x;
+  v12 = axisA.z;
+  v13 = axisA.y;
+  v14 = axisA.x;
   v18.receiver = self;
   v18.super_class = SCNPhysicsHingeJoint;
-  v16 = [(SCNPhysicsHingeJoint *)&v18 init:a3];
+  v16 = [(SCNPhysicsHingeJoint *)&v18 init:a];
   if (v16)
   {
-    v16->_definition.bodyA = a3;
+    v16->_definition.bodyA = a;
     v16->_definition.axisA.x = v14;
     v16->_definition.axisA.y = v13;
     v16->_definition.axisA.z = v12;
     v16->_definition.anchorA.x = x;
     v16->_definition.anchorA.y = y;
     v16->_definition.anchorA.z = z;
-    v16->_definition.bodyB = a6;
-    v16->_definition.axisB = a7;
+    v16->_definition.bodyB = b;
+    v16->_definition.axisB = axisB;
     v16->_definition.anchorB.x = v19;
     v16->_definition.anchorB.y = v20;
     v16->_definition.anchorB.z = v21;
@@ -71,7 +71,7 @@
   v12 = axisA.z;
   v13 = axisA.y;
   v14 = axisA.x;
-  v16 = [a1 alloc];
+  v16 = [self alloc];
   HIDWORD(v25) = v28;
   *(&v25 + 4) = v27;
   *&v25 = axisB.z;
@@ -94,7 +94,7 @@
   v8 = axis.z;
   v9 = axis.y;
   v10 = axis.x;
-  v12 = [a1 alloc];
+  v12 = [self alloc];
   *&v13 = v10;
   *&v14 = v9;
   *&v15 = v8;
@@ -277,23 +277,23 @@ uint64_t __35__SCNPhysicsHingeJoint_setAnchorB___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)_copyDefinition:(id *)a3
+- (void)_copyDefinition:(id *)definition
 {
   v3 = *&self->_definition.axisA.z;
   v5 = *&self->_definition.bodyA;
   v4 = *&self->_definition.anchorA.x;
-  *&a3->var0[32] = *&self->_definition.anchorB.y;
-  *&a3->var0[48] = v3;
-  *a3->var0 = v5;
-  *&a3->var0[16] = v4;
+  *&definition->var0[32] = *&self->_definition.anchorB.y;
+  *&definition->var0[48] = v3;
+  *definition->var0 = v5;
+  *&definition->var0[16] = v4;
 }
 
-- (void)_addToPhysicsWorld:(id)a3 definition:(id *)a4
+- (void)_addToPhysicsWorld:(id)world definition:(id *)definition
 {
   world = self->_world;
   if (world)
   {
-    v8 = world == a3;
+    v8 = world == world;
   }
 
   else
@@ -310,24 +310,24 @@ uint64_t __35__SCNPhysicsHingeJoint_setAnchorB___block_invoke(uint64_t a1)
     }
   }
 
-  self->_world = a3;
-  v10 = *&a4->var0[16];
-  v13[0] = *a4->var0;
+  self->_world = world;
+  v10 = *&definition->var0[16];
+  v13[0] = *definition->var0;
   v13[1] = v10;
-  v11 = *&a4->var0[48];
-  v13[2] = *&a4->var0[32];
+  v11 = *&definition->var0[48];
+  v13[2] = *&definition->var0[32];
   v13[3] = v11;
   self->_constraint = _createConstraintFromDefinition(v13);
-  v12 = [a3 _handle];
-  (*(*v12 + 112))(v12, self->_constraint, 0);
+  _handle = [world _handle];
+  (*(*_handle + 112))(_handle, self->_constraint, 0);
 }
 
-- (void)_willRemoveFromPhysicsWorld:(id)a3
+- (void)_willRemoveFromPhysicsWorld:(id)world
 {
   if (self->_constraint)
   {
-    v4 = [a3 _handle];
-    (*(*v4 + 120))(v4, self->_constraint);
+    _handle = [world _handle];
+    (*(*_handle + 120))(_handle, self->_constraint);
     constraint = self->_constraint;
     if (constraint)
     {
@@ -338,7 +338,7 @@ uint64_t __35__SCNPhysicsHingeJoint_setAnchorB___block_invoke(uint64_t a1)
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = SCNPhysicsHingeJoint;
@@ -346,22 +346,22 @@ uint64_t __35__SCNPhysicsHingeJoint_setAnchorB___block_invoke(uint64_t a1)
   p_definition = &self->_definition;
   if (p_definition->bodyA)
   {
-    [a3 encodeObject:p_definition->bodyA forKey:@"bodyA"];
+    [coder encodeObject:p_definition->bodyA forKey:@"bodyA"];
   }
 
   bodyB = p_definition->bodyB;
   if (bodyB)
   {
-    [a3 encodeObject:bodyB forKey:@"bodyB"];
+    [coder encodeObject:bodyB forKey:@"bodyB"];
   }
 
-  SCNEncodeVector3(a3, @"axisA", p_definition->axisA.x, p_definition->axisA.y, p_definition->axisA.z);
-  SCNEncodeVector3(a3, @"axisB", p_definition->axisB.x, p_definition->axisB.y, p_definition->axisB.z);
-  SCNEncodeVector3(a3, @"anchorA", p_definition->anchorA.x, p_definition->anchorA.y, p_definition->anchorA.z);
-  SCNEncodeVector3(a3, @"anchorB", p_definition->anchorB.x, p_definition->anchorB.y, p_definition->anchorB.z);
+  SCNEncodeVector3(coder, @"axisA", p_definition->axisA.x, p_definition->axisA.y, p_definition->axisA.z);
+  SCNEncodeVector3(coder, @"axisB", p_definition->axisB.x, p_definition->axisB.y, p_definition->axisB.z);
+  SCNEncodeVector3(coder, @"anchorA", p_definition->anchorA.x, p_definition->anchorA.y, p_definition->anchorA.z);
+  SCNEncodeVector3(coder, @"anchorB", p_definition->anchorB.x, p_definition->anchorB.y, p_definition->anchorB.z);
 }
 
-- (SCNPhysicsHingeJoint)initWithCoder:(id)a3
+- (SCNPhysicsHingeJoint)initWithCoder:(id)coder
 {
   v15.receiver = self;
   v15.super_class = SCNPhysicsHingeJoint;
@@ -370,20 +370,20 @@ uint64_t __35__SCNPhysicsHingeJoint_setAnchorB___block_invoke(uint64_t a1)
   {
     v5 = +[SCNTransaction immediateMode];
     [SCNTransaction setImmediateMode:1];
-    v4->_definition.axisA.x = SCNDecodeVector3(a3, @"axisA");
+    v4->_definition.axisA.x = SCNDecodeVector3(coder, @"axisA");
     v4->_definition.axisA.y = v6;
     v4->_definition.axisA.z = v7;
-    v4->_definition.axisB.x = SCNDecodeVector3(a3, @"axisB");
+    v4->_definition.axisB.x = SCNDecodeVector3(coder, @"axisB");
     v4->_definition.axisB.y = v8;
     v4->_definition.axisB.z = v9;
-    v4->_definition.anchorA.x = SCNDecodeVector3(a3, @"anchorA");
+    v4->_definition.anchorA.x = SCNDecodeVector3(coder, @"anchorA");
     v4->_definition.anchorA.y = v10;
     v4->_definition.anchorA.z = v11;
-    v4->_definition.anchorB.x = SCNDecodeVector3(a3, @"anchorB");
+    v4->_definition.anchorB.x = SCNDecodeVector3(coder, @"anchorB");
     v4->_definition.anchorB.y = v12;
     v4->_definition.anchorB.z = v13;
-    v4->_definition.bodyA = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"bodyA"];
-    v4->_definition.bodyB = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"bodyB"];
+    v4->_definition.bodyA = [coder decodeObjectOfClass:objc_opt_class() forKey:@"bodyA"];
+    v4->_definition.bodyB = [coder decodeObjectOfClass:objc_opt_class() forKey:@"bodyB"];
     [SCNTransaction setImmediateMode:v5];
   }
 

@@ -1,6 +1,6 @@
 @interface DisambiguateActionsIntent
 - (DisambiguateActionsIntent)init;
-- (DisambiguateActionsIntent)initWithCoder:(id)a3;
+- (DisambiguateActionsIntent)initWithCoder:(id)coder;
 @end
 
 @implementation DisambiguateActionsIntent
@@ -12,12 +12,12 @@
   return [(DisambiguateActionsIntent *)&v3 init];
 }
 
-- (DisambiguateActionsIntent)initWithCoder:(id)a3
+- (DisambiguateActionsIntent)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for DisambiguateActionsIntent();
-  v4 = a3;
-  v5 = [(DisambiguateActionsIntent *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(DisambiguateActionsIntent *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

@@ -1,16 +1,16 @@
 @interface SmarterFetchURLSessionDelegate
 - (_TtC8NewsCoreP33_518427B76BF8C86DB8CFA6C39DA250E530SmarterFetchURLSessionDelegate)init;
-- (void)URLSession:(id)a3 didCreateTask:(id)a4;
+- (void)URLSession:(id)session didCreateTask:(id)task;
 @end
 
 @implementation SmarterFetchURLSessionDelegate
 
-- (void)URLSession:(id)a3 didCreateTask:(id)a4
+- (void)URLSession:(id)session didCreateTask:(id)task
 {
   v6 = *(&self->super.isa + OBJC_IVAR____TtC8NewsCoreP33_518427B76BF8C86DB8CFA6C39DA250E530SmarterFetchURLSessionDelegate__task);
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
+  sessionCopy = session;
+  taskCopy = task;
+  selfCopy = self;
 
   os_unfair_lock_lock((v6 + 24));
   sub_1B64895E4((v6 + 16));

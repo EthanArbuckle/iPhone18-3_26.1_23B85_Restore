@@ -1,21 +1,21 @@
 @interface UISwipeGestureRecognizer
-- (BOOL)shouldReceiveEvent:(id)a3;
-- (CGPoint)locationInView:(id)a3;
-- (CGPoint)locationOfTouch:(unint64_t)a3 inView:(id)a4;
-- (UISwipeGestureRecognizer)initWithCoder:(id)a3;
-- (UISwipeGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4;
+- (BOOL)shouldReceiveEvent:(id)event;
+- (CGPoint)locationInView:(id)view;
+- (CGPoint)locationOfTouch:(unint64_t)touch inView:(id)view;
+- (UISwipeGestureRecognizer)initWithCoder:(id)coder;
+- (UISwipeGestureRecognizer)initWithTarget:(id)target action:(SEL)action;
 - (double)startPoint;
-- (uint64_t)_checkForSwipeWithDelta:(double)a3 time:(double)a4 currentPositionChange:(double)a5 currentTimeChange:(double)a6 indirect:(double)a7;
-- (void)_appendSubclassDescription:(id)a3;
+- (uint64_t)_checkForSwipeWithDelta:(double)delta time:(double)time currentPositionChange:(double)change currentTimeChange:(double)timeChange indirect:(double)indirect;
+- (void)_appendSubclassDescription:(id)description;
 - (void)_resetGestureRecognizer;
-- (void)_scrollingChangedWithEvent:(id)a3;
+- (void)_scrollingChangedWithEvent:(id)event;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)setNumberOfTouchesRequired:(NSUInteger)numberOfTouchesRequired;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation UISwipeGestureRecognizer
@@ -39,11 +39,11 @@
   [(UIGestureRecognizer *)&v5 dealloc];
 }
 
-- (UISwipeGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4
+- (UISwipeGestureRecognizer)initWithTarget:(id)target action:(SEL)action
 {
   v8.receiver = self;
   v8.super_class = UISwipeGestureRecognizer;
-  v4 = [(UIGestureRecognizer *)&v8 initWithTarget:a3 action:a4];
+  v4 = [(UIGestureRecognizer *)&v8 initWithTarget:target action:action];
   v5 = v4;
   if (v4)
   {
@@ -54,7 +54,7 @@
   return v5;
 }
 
-- (UISwipeGestureRecognizer)initWithCoder:(id)a3
+- (UISwipeGestureRecognizer)initWithCoder:(id)coder
 {
   v8.receiver = self;
   v8.super_class = UISwipeGestureRecognizer;
@@ -63,14 +63,14 @@
   if (v4)
   {
     _UISwipeGestureRecognizerCommonInit(v4);
-    if ([a3 containsValueForKey:@"UISwipeGestureRecognizer.numberOfTouchesRequired"])
+    if ([coder containsValueForKey:@"UISwipeGestureRecognizer.numberOfTouchesRequired"])
     {
-      v5->_numberOfTouchesRequired = [a3 decodeIntegerForKey:@"UISwipeGestureRecognizer.numberOfTouchesRequired"];
+      v5->_numberOfTouchesRequired = [coder decodeIntegerForKey:@"UISwipeGestureRecognizer.numberOfTouchesRequired"];
     }
 
-    if ([a3 containsValueForKey:@"UISwipeGestureRecognizer.direction"])
+    if ([coder containsValueForKey:@"UISwipeGestureRecognizer.direction"])
     {
-      v5->_direction = [a3 decodeIntegerForKey:@"UISwipeGestureRecognizer.direction"];
+      v5->_direction = [coder decodeIntegerForKey:@"UISwipeGestureRecognizer.direction"];
     }
 
     v6 = v5;
@@ -79,7 +79,7 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = UISwipeGestureRecognizer;
@@ -87,27 +87,27 @@
   numberOfTouchesRequired = self->_numberOfTouchesRequired;
   if (numberOfTouchesRequired != 1)
   {
-    [a3 encodeInteger:numberOfTouchesRequired forKey:@"UISwipeGestureRecognizer.numberOfTouchesRequired"];
+    [coder encodeInteger:numberOfTouchesRequired forKey:@"UISwipeGestureRecognizer.numberOfTouchesRequired"];
   }
 
   direction = self->_direction;
   if (direction != 1)
   {
-    [a3 encodeInteger:direction forKey:@"UISwipeGestureRecognizer.direction"];
+    [coder encodeInteger:direction forKey:@"UISwipeGestureRecognizer.direction"];
   }
 }
 
 - (double)startPoint
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  v2 = [a1 view];
-  v3 = [v2 window];
-  [v3 _convertPointFromSceneReferenceSpace:{a1[47], a1[48]}];
-  [v2 convertPoint:0 fromView:?];
+  view = [self view];
+  window = [view window];
+  [window _convertPointFromSceneReferenceSpace:{self[47], self[48]}];
+  [view convertPoint:0 fromView:?];
   v5 = v4;
 
   return v5;
@@ -158,30 +158,30 @@
   [(UIGestureRecognizer *)&v4 _resetGestureRecognizer];
 }
 
-- (uint64_t)_checkForSwipeWithDelta:(double)a3 time:(double)a4 currentPositionChange:(double)a5 currentTimeChange:(double)a6 indirect:(double)a7
+- (uint64_t)_checkForSwipeWithDelta:(double)delta time:(double)time currentPositionChange:(double)change currentTimeChange:(double)timeChange indirect:(double)indirect
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v8 = *(a1 + 288);
+  v8 = *(self + 288);
   v9 = 3.40282347e38;
-  v10 = *(a1 + 296);
+  v10 = *(self + 296);
   if (a2)
   {
     v8 = v8 + v8;
   }
 
-  v11 = fmin(a5, 0.5);
-  v12 = 1.0 - v11 * (1.0 - *(a1 + 336));
+  v11 = fmin(change, 0.5);
+  v12 = 1.0 - v11 * (1.0 - *(self + 336));
   v13 = v8 * v12;
   if (v8 == 3.40282347e38)
   {
     v13 = 3.40282347e38;
   }
 
-  v14 = 1.0 - v11 * (1.0 - *(a1 + 344));
+  v14 = 1.0 - v11 * (1.0 - *(self + 344));
   if (v10 == 3.40282347e38)
   {
     v15 = 3.40282347e38;
@@ -192,7 +192,7 @@
     v15 = v10 * v14;
   }
 
-  v16 = *(a1 + 304);
+  v16 = *(self + 304);
   if (v16 == 3.40282347e38)
   {
     v17 = 3.40282347e38;
@@ -203,24 +203,24 @@
     v17 = v12 * v16;
   }
 
-  v18 = *(a1 + 312);
+  v18 = *(self + 312);
   v19 = v14 * v18;
   if (v18 != 3.40282347e38)
   {
     v9 = v19;
   }
 
-  v20 = *(a1 + 368);
+  v20 = *(self + 368);
   v21 = v20 & 3;
   if (v21 == 2)
   {
-    if (a3 > *(a1 + 320))
+    if (delta > *(self + 320))
     {
       goto LABEL_29;
     }
   }
 
-  else if (v21 == 1 && a3 < -*(a1 + 320))
+  else if (v21 == 1 && delta < -*(self + 320))
   {
     goto LABEL_29;
   }
@@ -228,7 +228,7 @@
   v22 = v20 & 0xC;
   if (v22 == 8)
   {
-    if (a4 >= -*(a1 + 320))
+    if (time >= -*(self + 320))
     {
       goto LABEL_24;
     }
@@ -236,11 +236,11 @@
 LABEL_29:
     v21 = 0;
 LABEL_30:
-    *(a1 + 440) = 1;
+    *(self + 440) = 1;
     return v21;
   }
 
-  if (v22 == 4 && a4 > *(a1 + 320))
+  if (v22 == 4 && time > *(self + 320))
   {
     goto LABEL_29;
   }
@@ -253,20 +253,20 @@ LABEL_24:
 
   if (v21)
   {
-    v23 = fabs(a3);
+    v23 = fabs(delta);
     if (v23 > v15)
     {
       goto LABEL_29;
     }
 
-    v24 = fabs(a4);
+    v24 = fabs(time);
     if (v24 > v9)
     {
       goto LABEL_29;
     }
 
     v26 = v23 < v13 || v24 < v17;
-    if (!v26 && fabs(a6 / a8) >= *(a1 + 328))
+    if (!v26 && fabs(timeChange / a8) >= *(self + 328))
     {
       v21 = 1;
       if (!v22)
@@ -286,15 +286,15 @@ LABEL_24:
   }
 
 LABEL_39:
-  v27 = fabs(a4);
-  v28 = fabs(a3);
+  v27 = fabs(time);
+  v28 = fabs(delta);
   if (v27 > v15 || v28 > v9)
   {
     goto LABEL_30;
   }
 
   v30 = v27 < v13 || v28 < v17;
-  if (!v30 && fabs(a7 / a8) >= *(a1 + 328))
+  if (!v30 && fabs(indirect / a8) >= *(self + 328))
   {
     return 1;
   }
@@ -302,10 +302,10 @@ LABEL_39:
   return v21;
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   v31 = *MEMORY[0x1E69E9840];
-  if (self->_failed || (v6 = -[NSMutableArray count](self->_touches, "count", a3, a4), [a3 count] + v6 > self->_numberOfTouchesRequired))
+  if (self->_failed || (v6 = -[NSMutableArray count](self->_touches, "count", began, event), [began count] + v6 > self->_numberOfTouchesRequired))
   {
     self->_failed = 1;
   }
@@ -316,8 +316,8 @@ LABEL_39:
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v7 = a3;
-    v8 = [v7 countByEnumeratingWithState:&v26 objects:v30 count:16];
+    beganCopy = began;
+    v8 = [beganCopy countByEnumeratingWithState:&v26 objects:v30 count:16];
     if (v8)
     {
       v9 = v8;
@@ -329,23 +329,23 @@ LABEL_39:
         {
           if (*v27 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(beganCopy);
           }
 
           v12 = *(*(&v26 + 1) + 8 * v11);
           startLocations = self->_startLocations;
           p_x = &startLocations[[(NSMutableArray *)self->_touches count]].x;
-          v15 = [v12 window];
+          window = [v12 window];
           [v12 locationInView:0];
-          [v15 _convertPointToSceneReferenceSpace:?];
+          [window _convertPointToSceneReferenceSpace:?];
           *p_x = v16;
           p_x[1] = v17;
 
           previousLocations = self->_previousLocations;
           v19 = &previousLocations[[(NSMutableArray *)self->_touches count]].x;
-          v20 = [v12 window];
+          window2 = [v12 window];
           [v12 locationInView:0];
-          [v20 _convertPointToSceneReferenceSpace:?];
+          [window2 _convertPointToSceneReferenceSpace:?];
           *v19 = v21;
           v19[1] = v22;
 
@@ -354,7 +354,7 @@ LABEL_39:
         }
 
         while (v9 != v11);
-        v9 = [v7 countByEnumeratingWithState:&v26 objects:v30 count:16];
+        v9 = [beganCopy countByEnumeratingWithState:&v26 objects:v30 count:16];
       }
 
       while (v9);
@@ -369,7 +369,7 @@ LABEL_39:
   }
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
   v35 = *MEMORY[0x1E69E9840];
   v5 = _TimestampForTouches(self->_touches);
@@ -404,17 +404,17 @@ LABEL_39:
           }
 
           v13 = *(*(&v30 + 1) + 8 * v11);
-          v14 = [v13 window];
+          window = [v13 window];
           [v13 locationInView:0];
-          [v14 _convertPointToSceneReferenceSpace:?];
+          [window _convertPointToSceneReferenceSpace:?];
           v16 = v15;
           v18 = v17;
 
           v19 = (&self->_startLocations->x + v12);
           v20 = v16 - *(v19 - 1);
           v21 = v18 - *v19;
-          v22 = [(UIGestureRecognizer *)self view];
-          v23 = _convertSwipeOffsetFromSceneReferenceSpaceToView(v22, v20, v21);
+          view = [(UIGestureRecognizer *)self view];
+          v23 = _convertSwipeOffsetFromSceneReferenceSpaceToView(view, v20, v21);
           v25 = v24;
 
           v6 &= [(UISwipeGestureRecognizer *)self _checkForSwipeWithDelta:v23 time:v25 currentPositionChange:v5 - self->_startTime currentTimeChange:v16 - *(self->_previousLocations + v12 - 8) indirect:v18 - *(&self->_previousLocations->x + v12), v5 - self->_previousTime];
@@ -435,17 +435,17 @@ LABEL_39:
 
     if (v6)
     {
-      v27 = self;
+      selfCopy2 = self;
       v28 = 3;
 LABEL_15:
-      [(UIGestureRecognizer *)v27 setState:v28];
+      [(UIGestureRecognizer *)selfCopy2 setState:v28];
       goto LABEL_16;
     }
 
     if (self->_failed)
     {
 LABEL_14:
-      v27 = self;
+      selfCopy2 = self;
       v28 = 5;
       goto LABEL_15;
     }
@@ -455,15 +455,15 @@ LABEL_16:
   self->_previousTime = v5;
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
   v15 = *MEMORY[0x1E69E9840];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = a3;
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  endedCopy = ended;
+  v6 = [endedCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = v6;
@@ -475,14 +475,14 @@ LABEL_16:
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(endedCopy);
         }
 
         [(NSMutableArray *)self->_touches removeObject:*(*(&v10 + 1) + 8 * v9++), v10];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [endedCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);
@@ -499,15 +499,15 @@ LABEL_16:
   }
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
   v15 = *MEMORY[0x1E69E9840];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = a3;
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  cancelledCopy = cancelled;
+  v6 = [cancelledCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = v6;
@@ -519,14 +519,14 @@ LABEL_16:
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(cancelledCopy);
         }
 
         [(NSMutableArray *)self->_touches removeObject:*(*(&v10 + 1) + 8 * v9++), v10];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [cancelledCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);
@@ -543,36 +543,36 @@ LABEL_16:
   }
 }
 
-- (BOOL)shouldReceiveEvent:(id)a3
+- (BOOL)shouldReceiveEvent:(id)event
 {
-  if ([a3 type] == 10)
+  if ([event type] == 10)
   {
-    return [a3 _scrollType] == 1 && -[UISwipeGestureRecognizer numberOfTouchesRequired](self, "numberOfTouchesRequired") == 1;
+    return [event _scrollType] == 1 && -[UISwipeGestureRecognizer numberOfTouchesRequired](self, "numberOfTouchesRequired") == 1;
   }
 
   v6.receiver = self;
   v6.super_class = UISwipeGestureRecognizer;
-  return [(UIGestureRecognizer *)&v6 shouldReceiveEvent:a3];
+  return [(UIGestureRecognizer *)&v6 shouldReceiveEvent:event];
 }
 
-- (void)_scrollingChangedWithEvent:(id)a3
+- (void)_scrollingChangedWithEvent:(id)event
 {
-  v5 = [a3 phase];
-  if ((v5 - 4) >= 2)
+  phase = [event phase];
+  if ((phase - 4) >= 2)
   {
-    if (v5 != 3)
+    if (phase != 3)
     {
-      if (v5 == 2)
+      if (phase == 2)
       {
-        v6 = [a3 _allWindows];
-        v26 = [v6 anyObject];
+        _allWindows = [event _allWindows];
+        anyObject = [_allWindows anyObject];
 
-        [a3 locationInView:v26];
-        [v26 _convertPointToSceneReferenceSpace:?];
+        [event locationInView:anyObject];
+        [anyObject _convertPointToSceneReferenceSpace:?];
         self->_startLocation.x = v7;
         self->_startLocation.y = v8;
         self->_previousLocation = self->_startLocation;
-        [a3 timestamp];
+        [event timestamp];
         self->_startTime = v9;
         self->_previousTime = v9;
       }
@@ -580,7 +580,7 @@ LABEL_16:
       return;
     }
 
-    [a3 timestamp];
+    [event timestamp];
     v11 = v10;
     if (v10 - self->_startTime > self->_maximumDuration && [(UIGestureRecognizer *)self state]== UIGestureRecognizerStatePossible)
     {
@@ -595,16 +595,16 @@ LABEL_21:
       return;
     }
 
-    v12 = [a3 _allWindows];
-    v13 = [v12 anyObject];
+    _allWindows2 = [event _allWindows];
+    anyObject2 = [_allWindows2 anyObject];
 
-    [a3 _adjustedDeltaForPanWithAcceleration:0 honoringScrollDirectionPreference:0];
+    [event _adjustedDeltaForPanWithAcceleration:0 honoringScrollDirectionPreference:0];
     v15 = v14 + self->_previousLocation.x;
     v17 = v16 + self->_previousLocation.y;
     v18 = v15 - self->_startLocation.x;
     v19 = v17 - self->_startLocation.y;
-    v20 = [(UIGestureRecognizer *)self view];
-    v21 = _convertSwipeOffsetFromSceneReferenceSpaceToView(v20, v18, v19);
+    view = [(UIGestureRecognizer *)self view];
+    v21 = _convertSwipeOffsetFromSceneReferenceSpaceToView(view, v18, v19);
     v23 = v22;
 
     v24 = [(UISwipeGestureRecognizer *)self _checkForSwipeWithDelta:v21 time:v23 currentPositionChange:v11 - self->_startTime currentTimeChange:v15 - self->_previousLocation.x indirect:v17 - self->_previousLocation.y, v11 - self->_previousTime];
@@ -638,11 +638,11 @@ LABEL_19:
   }
 }
 
-- (CGPoint)locationInView:(id)a3
+- (CGPoint)locationInView:(id)view
 {
-  v5 = [a3 window];
-  [v5 _convertPointFromSceneReferenceSpace:{self->_startLocation.x, self->_startLocation.y}];
-  [a3 convertPoint:0 fromView:?];
+  window = [view window];
+  [window _convertPointFromSceneReferenceSpace:{self->_startLocation.x, self->_startLocation.y}];
+  [view convertPoint:0 fromView:?];
   v7 = v6;
   v9 = v8;
 
@@ -653,11 +653,11 @@ LABEL_19:
   return result;
 }
 
-- (CGPoint)locationOfTouch:(unint64_t)a3 inView:(id)a4
+- (CGPoint)locationOfTouch:(unint64_t)touch inView:(id)view
 {
-  v7 = [a4 window];
-  [v7 _convertPointFromSceneReferenceSpace:{self->_startLocations[a3].x, self->_startLocations[a3].y}];
-  [a4 convertPoint:0 fromView:?];
+  window = [view window];
+  [window _convertPointFromSceneReferenceSpace:{self->_startLocations[touch].x, self->_startLocations[touch].y}];
+  [view convertPoint:0 fromView:?];
   v9 = v8;
   v11 = v10;
 
@@ -668,29 +668,29 @@ LABEL_19:
   return result;
 }
 
-- (void)_appendSubclassDescription:(id)a3
+- (void)_appendSubclassDescription:(id)description
 {
   if (self->_numberOfTouchesRequired != 1)
   {
-    [a3 appendFormat:@"; numberOfTouchesRequired = %lu", self->_numberOfTouchesRequired];
+    [description appendFormat:@"; numberOfTouchesRequired = %lu", self->_numberOfTouchesRequired];
   }
 
   if (self->_direction)
   {
-    [a3 appendString:@"; direction = "];
+    [description appendString:@"; direction = "];
     direction = self->_direction;
     if (direction)
     {
-      [a3 appendString:@"right"];
+      [description appendString:@"right"];
       v6 = self->_direction;
       if ((v6 & 2) == 0)
       {
         if ((v6 & 4) != 0)
         {
 LABEL_15:
-          [a3 appendString:{@", "}];
+          [description appendString:{@", "}];
 LABEL_16:
-          [a3 appendString:@"up"];
+          [description appendString:@"up"];
           if ((self->_direction & 8) == 0)
           {
             return;
@@ -706,14 +706,14 @@ LABEL_11:
         }
 
 LABEL_17:
-        [a3 appendString:{@", "}];
+        [description appendString:{@", "}];
 LABEL_18:
 
-        [a3 appendString:@"down"];
+        [description appendString:@"down"];
         return;
       }
 
-      [a3 appendString:{@", "}];
+      [description appendString:{@", "}];
     }
 
     else if ((direction & 2) == 0)
@@ -731,7 +731,7 @@ LABEL_18:
       goto LABEL_16;
     }
 
-    [a3 appendString:@"left"];
+    [description appendString:@"left"];
     v6 = self->_direction;
     if ((v6 & 4) != 0)
     {

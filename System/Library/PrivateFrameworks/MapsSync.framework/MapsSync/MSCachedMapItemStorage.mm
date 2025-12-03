@@ -1,29 +1,29 @@
 @interface MSCachedMapItemStorage
-+ (BOOL)beforeFetchWithStore:(id)a3 context:(id)a4 error:(id *)a5;
++ (BOOL)beforeFetchWithStore:(id)store context:(id)context error:(id *)error;
 + (Class)managedClass;
 - (GEOMapItemStorage)mapItemStorage;
-- (MSCachedMapItemStorage)initWithCustomName:(id)a3 latitude:(id)a4 longitude:(id)a5 mapItemStorage:(id)a6 muid:(id)a7 resultsProvider:(id)a8;
-- (MSCachedMapItemStorage)initWithObject:(id)a3 store:(id)a4 lazyLoad:(BOOL)a5 parent:(BOOL)a6;
-- (MSCachedMapItemStorage)initWithStore:(id)a3 customName:(id)a4 latitude:(id)a5 longitude:(id)a6 mapItemStorage:(id)a7 muid:(id)a8 resultsProvider:(id)a9;
+- (MSCachedMapItemStorage)initWithCustomName:(id)name latitude:(id)latitude longitude:(id)longitude mapItemStorage:(id)storage muid:(id)muid resultsProvider:(id)provider;
+- (MSCachedMapItemStorage)initWithObject:(id)object store:(id)store lazyLoad:(BOOL)load parent:(BOOL)parent;
+- (MSCachedMapItemStorage)initWithStore:(id)store customName:(id)name latitude:(id)latitude longitude:(id)longitude mapItemStorage:(id)storage muid:(id)muid resultsProvider:(id)provider;
 - (NSNumber)latitude;
 - (NSNumber)longitude;
 - (NSNumber)muid;
 - (NSNumber)resultsProvider;
 - (NSString)customName;
-- (void)setCustomName:(id)a3;
-- (void)setLatitude:(id)a3;
-- (void)setLongitude:(id)a3;
-- (void)setMapItemStorage:(id)a3;
-- (void)setMuid:(id)a3;
-- (void)setPropertiesUnsafeWithManagedObject:(id)a3 lazyLoad:(BOOL)a4 parent:(BOOL)a5;
-- (void)setResultsProvider:(id)a3;
+- (void)setCustomName:(id)name;
+- (void)setLatitude:(id)latitude;
+- (void)setLongitude:(id)longitude;
+- (void)setMapItemStorage:(id)storage;
+- (void)setMuid:(id)muid;
+- (void)setPropertiesUnsafeWithManagedObject:(id)object lazyLoad:(BOOL)load parent:(BOOL)parent;
+- (void)setResultsProvider:(id)provider;
 @end
 
 @implementation MSCachedMapItemStorage
 
-- (MSCachedMapItemStorage)initWithCustomName:(id)a3 latitude:(id)a4 longitude:(id)a5 mapItemStorage:(id)a6 muid:(id)a7 resultsProvider:(id)a8
+- (MSCachedMapItemStorage)initWithCustomName:(id)name latitude:(id)latitude longitude:(id)longitude mapItemStorage:(id)storage muid:(id)muid resultsProvider:(id)provider
 {
-  if (a3)
+  if (name)
   {
     sub_1B63BEBD4();
     v15 = v14;
@@ -35,11 +35,11 @@
   }
 
   v16 = qword_1EDB0F2A0;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
+  latitudeCopy = latitude;
+  longitudeCopy = longitude;
+  storageCopy = storage;
+  muidCopy = muid;
+  providerCopy = provider;
   if (v16 != -1)
   {
     swift_once();
@@ -56,14 +56,14 @@
     v23 = 0;
   }
 
-  v24 = [(MSCachedMapItemStorage *)self initWithStore:v22 customName:v23 latitude:v17 longitude:v18 mapItemStorage:v19 muid:v20 resultsProvider:v21];
+  v24 = [(MSCachedMapItemStorage *)self initWithStore:v22 customName:v23 latitude:latitudeCopy longitude:longitudeCopy mapItemStorage:storageCopy muid:muidCopy resultsProvider:providerCopy];
 
   return v24;
 }
 
-- (MSCachedMapItemStorage)initWithStore:(id)a3 customName:(id)a4 latitude:(id)a5 longitude:(id)a6 mapItemStorage:(id)a7 muid:(id)a8 resultsProvider:(id)a9
+- (MSCachedMapItemStorage)initWithStore:(id)store customName:(id)name latitude:(id)latitude longitude:(id)longitude mapItemStorage:(id)storage muid:(id)muid resultsProvider:(id)provider
 {
-  if (a4)
+  if (name)
   {
     v14 = sub_1B63BEBD4();
     v16 = v15;
@@ -75,13 +75,13 @@
     v16 = 0;
   }
 
-  v17 = a3;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
-  v22 = a9;
-  return CachedMapItemStorage.init(store:customName:latitude:longitude:mapItemStorage:muid:resultsProvider:)(v17, v14, v16, a5, a6, a7, a8, a9);
+  storeCopy = store;
+  latitudeCopy = latitude;
+  longitudeCopy = longitude;
+  storageCopy = storage;
+  muidCopy = muid;
+  providerCopy = provider;
+  return CachedMapItemStorage.init(store:customName:latitude:longitude:mapItemStorage:muid:resultsProvider:)(storeCopy, v14, v16, latitude, longitude, storage, muid, provider);
 }
 
 + (Class)managedClass
@@ -91,16 +91,16 @@
   return swift_getObjCClassFromMetadata();
 }
 
-- (void)setPropertiesUnsafeWithManagedObject:(id)a3 lazyLoad:(BOOL)a4 parent:(BOOL)a5
+- (void)setPropertiesUnsafeWithManagedObject:(id)object lazyLoad:(BOOL)load parent:(BOOL)parent
 {
-  v7 = a3;
-  v8 = self;
-  sub_1B62C67E4(v7, a4);
+  objectCopy = object;
+  selfCopy = self;
+  sub_1B62C67E4(objectCopy, load);
 }
 
 - (NSString)customName
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B62C3514();
   v4 = v3;
 
@@ -117,9 +117,9 @@
   return v5;
 }
 
-- (void)setCustomName:(id)a3
+- (void)setCustomName:(id)name
 {
-  if (a3)
+  if (name)
   {
     v4 = sub_1B63BEBD4();
     v6 = v5;
@@ -131,102 +131,102 @@
     v6 = 0;
   }
 
-  v7 = self;
+  selfCopy = self;
   sub_1B62C3920(v4, v6);
 }
 
 - (NSNumber)latitude
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1B62C3DB4();
 
   return v3;
 }
 
-- (void)setLatitude:(id)a3
+- (void)setLatitude:(id)latitude
 {
-  v6 = a3;
-  v5 = self;
-  sub_1B62C6A58(a3);
+  latitudeCopy = latitude;
+  selfCopy = self;
+  sub_1B62C6A58(latitude);
 }
 
 - (NSNumber)longitude
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1B62C4250();
 
   return v3;
 }
 
-- (void)setLongitude:(id)a3
+- (void)setLongitude:(id)longitude
 {
-  v6 = a3;
-  v5 = self;
-  sub_1B62C6C30(a3);
+  longitudeCopy = longitude;
+  selfCopy = self;
+  sub_1B62C6C30(longitude);
 }
 
 - (GEOMapItemStorage)mapItemStorage
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1B62C476C();
 
   return v3;
 }
 
-- (void)setMapItemStorage:(id)a3
+- (void)setMapItemStorage:(id)storage
 {
   v5 = OBJC_IVAR____TtC8MapsSync14MapsSyncObject__propertyLock;
   v6 = *(&self->super.super.isa + OBJC_IVAR____TtC8MapsSync14MapsSyncObject__propertyLock);
-  v7 = a3;
-  v8 = self;
+  storageCopy = storage;
+  selfCopy = self;
   [v6 lock];
-  sub_1B62C4DFC(*(&self->super.super.isa + v5), a3, v8);
+  sub_1B62C4DFC(*(&self->super.super.isa + v5), storage, selfCopy);
   [*(&self->super.super.isa + v5) unlock];
 }
 
 - (NSNumber)muid
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1B62C55CC();
 
   return v3;
 }
 
-- (void)setMuid:(id)a3
+- (void)setMuid:(id)muid
 {
-  v6 = a3;
-  v5 = self;
-  sub_1B62C6E14(a3);
+  muidCopy = muid;
+  selfCopy = self;
+  sub_1B62C6E14(muid);
 }
 
 - (NSNumber)resultsProvider
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1B62C5A68();
 
   return v3;
 }
 
-- (void)setResultsProvider:(id)a3
+- (void)setResultsProvider:(id)provider
 {
-  v6 = a3;
-  v5 = self;
-  sub_1B62C6FEC(a3);
+  providerCopy = provider;
+  selfCopy = self;
+  sub_1B62C6FEC(provider);
 }
 
-- (MSCachedMapItemStorage)initWithObject:(id)a3 store:(id)a4 lazyLoad:(BOOL)a5 parent:(BOOL)a6
+- (MSCachedMapItemStorage)initWithObject:(id)object store:(id)store lazyLoad:(BOOL)load parent:(BOOL)parent
 {
-  v6 = a6;
-  v7 = a5;
-  v10 = a3;
-  return sub_1B62C60A0(a3, a4, v7, v6);
+  parentCopy = parent;
+  loadCopy = load;
+  objectCopy = object;
+  return sub_1B62C60A0(object, store, loadCopy, parentCopy);
 }
 
-+ (BOOL)beforeFetchWithStore:(id)a3 context:(id)a4 error:(id *)a5
++ (BOOL)beforeFetchWithStore:(id)store context:(id)context error:(id *)error
 {
-  v6 = a3;
-  v7 = a4;
-  sub_1B63A064C(v6, v7);
+  storeCopy = store;
+  contextCopy = context;
+  sub_1B63A064C(storeCopy, contextCopy);
 
   return 1;
 }

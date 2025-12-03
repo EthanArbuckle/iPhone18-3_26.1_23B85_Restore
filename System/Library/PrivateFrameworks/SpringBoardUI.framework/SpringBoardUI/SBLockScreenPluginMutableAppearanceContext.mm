@@ -1,10 +1,10 @@
 @interface SBLockScreenPluginMutableAppearanceContext
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation SBLockScreenPluginMutableAppearanceContext
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [SBLockScreenPluginAppearanceContext alloc];
 

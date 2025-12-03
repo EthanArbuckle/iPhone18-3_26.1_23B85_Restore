@@ -1,28 +1,28 @@
 @interface SBDeckSwitcherViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (id)_accessibilityNonVisibleElements:(BOOL)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (id)_accessibilityNonVisibleElements:(BOOL)elements;
 - (void)dealloc;
 - (void)viewDidLoad;
 @end
 
 @implementation SBDeckSwitcherViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SBDeckSwitcherViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"SBDeckSwitcherViewController" isKindOfClass:@"SBFluidSwitcherViewController"];
-  [v3 validateClass:@"SBFluidSwitcherViewController" hasInstanceMethod:@"appLayouts" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBFluidSwitcherViewController" hasInstanceMethod:@"_scrollToAppLayout:animated:alignment:completion:" withFullSignature:{"v", "@", "B", "q", "@?", 0}];
-  [v3 validateClass:@"SBDeckSwitcherViewController" hasInstanceVariable:@"_scrollView" withType:"SBAppSwitcherScrollView"];
-  [v3 validateClass:@"SBAppSwitcherScrollView" isKindOfClass:@"UIScrollView"];
-  [v3 validateClass:@"SBDeckSwitcherViewController" hasInstanceVariable:@"_visibleItemContainers" withType:"NSMutableDictionary"];
-  [v3 validateClass:@"SBDeckSwitcherViewController" isKindOfClass:@"SBFluidSwitcherViewController"];
-  [v3 validateClass:@"SBIconModel" hasInstanceMethod:@"expectedIconForDisplayIdentifier:" withFullSignature:{"@", "@", 0}];
-  [v3 validateClass:@"SBIconController" hasClassMethod:@"sharedInstance" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBHomeScreenController" hasInstanceMethod:@"model" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBAppLayout" hasInstanceMethod:@"itemForLayoutRole:" withFullSignature:{"@", "q", 0}];
-  [v3 validateClass:@"SBDisplayItem" hasInstanceMethod:@"bundleIdentifier" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SBDeckSwitcherViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"SBDeckSwitcherViewController" isKindOfClass:@"SBFluidSwitcherViewController"];
+  [validationsCopy validateClass:@"SBFluidSwitcherViewController" hasInstanceMethod:@"appLayouts" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBFluidSwitcherViewController" hasInstanceMethod:@"_scrollToAppLayout:animated:alignment:completion:" withFullSignature:{"v", "@", "B", "q", "@?", 0}];
+  [validationsCopy validateClass:@"SBDeckSwitcherViewController" hasInstanceVariable:@"_scrollView" withType:"SBAppSwitcherScrollView"];
+  [validationsCopy validateClass:@"SBAppSwitcherScrollView" isKindOfClass:@"UIScrollView"];
+  [validationsCopy validateClass:@"SBDeckSwitcherViewController" hasInstanceVariable:@"_visibleItemContainers" withType:"NSMutableDictionary"];
+  [validationsCopy validateClass:@"SBDeckSwitcherViewController" isKindOfClass:@"SBFluidSwitcherViewController"];
+  [validationsCopy validateClass:@"SBIconModel" hasInstanceMethod:@"expectedIconForDisplayIdentifier:" withFullSignature:{"@", "@", 0}];
+  [validationsCopy validateClass:@"SBIconController" hasClassMethod:@"sharedInstance" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBHomeScreenController" hasInstanceMethod:@"model" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBAppLayout" hasInstanceMethod:@"itemForLayoutRole:" withFullSignature:{"@", "q", 0}];
+  [validationsCopy validateClass:@"SBDisplayItem" hasInstanceMethod:@"bundleIdentifier" withFullSignature:{"@", 0}];
 }
 
 - (void)dealloc
@@ -33,8 +33,8 @@
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v3 = [v2 allValues];
-  v4 = [v3 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  allValues = [v2 allValues];
+  v4 = [allValues countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v4)
   {
     v5 = v4;
@@ -45,7 +45,7 @@
       {
         if (*v19 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allValues);
         }
 
         v17 = 0;
@@ -59,7 +59,7 @@
         AXPerformSafeBlock();
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v5 = [allValues countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v5);
@@ -78,18 +78,18 @@
   [(SBDeckSwitcherViewControllerAccessibility *)self _accessibilityLoadAccessibilityInformation];
 }
 
-- (id)_accessibilityNonVisibleElements:(BOOL)a3
+- (id)_accessibilityNonVisibleElements:(BOOL)elements
 {
-  v38 = a3;
+  elementsCopy = elements;
   v55 = *MEMORY[0x29EDCA608];
   v33 = [(SBDeckSwitcherViewControllerAccessibility *)self safeArrayForKey:@"appLayouts"];
   objc_opt_class();
   v3 = [(SBDeckSwitcherViewControllerAccessibility *)self safeValueForKey:@"_visibleItemContainers"];
   v41 = __UIAccessibilityCastAsClass();
 
-  v37 = [MEMORY[0x29EDB8DE8] array];
-  v34 = [MEMORY[0x29EDBA0F8] stringWithFormat:@"AXFakeElements-%d", v38];
-  v35 = [(SBDeckSwitcherViewControllerAccessibility *)self _accessibilityValueForKey:v34];
+  array = [MEMORY[0x29EDB8DE8] array];
+  elementsCopy = [MEMORY[0x29EDBA0F8] stringWithFormat:@"AXFakeElements-%d", elementsCopy];
+  v35 = [(SBDeckSwitcherViewControllerAccessibility *)self _accessibilityValueForKey:elementsCopy];
   LOBYTE(v44) = 0;
   v4 = AXMainSBHomeScreenController();
   v5 = [v4 safeValueForKey:@"model"];
@@ -99,14 +99,14 @@
   v51 = 0u;
   v52 = 0u;
   v53 = 0u;
-  v6 = [v33 reverseObjectEnumerator];
-  obj = [v6 allObjects];
+  reverseObjectEnumerator = [v33 reverseObjectEnumerator];
+  obj = [reverseObjectEnumerator allObjects];
 
   v7 = [obj countByEnumeratingWithState:&v50 objects:v54 count:16];
   if (v7)
   {
     v8 = *v51;
-    v9 = v38;
+    v9 = elementsCopy;
     do
     {
       for (i = 0; i != v7; ++i)
@@ -117,12 +117,12 @@
         }
 
         v11 = *(*(&v50 + 1) + 8 * i);
-        v12 = [v41 allKeys];
-        v13 = [v12 containsObject:v11];
+        allKeys = [v41 allKeys];
+        v13 = [allKeys containsObject:v11];
 
         if (v13)
         {
-          if (v38)
+          if (elementsCopy)
           {
             goto LABEL_15;
           }
@@ -156,12 +156,12 @@
           v17 = v45[5];
 
           _Block_object_dispose(&v44, 8);
-          v18 = [v17 accessibilityLabel];
-          [(SBAXFakeAppSwitcherAccessibilityElement *)v14 setAccessibilityLabel:v18];
+          accessibilityLabel = [v17 accessibilityLabel];
+          [(SBAXFakeAppSwitcherAccessibilityElement *)v14 setAccessibilityLabel:accessibilityLabel];
 
           [(SBAXFakeAppSwitcherAccessibilityElement *)v14 setAppLayout:v11];
           [(SBAXFakeAppSwitcherAccessibilityElement *)v14 setDeckSwitcherDelegate:self];
-          [v37 addObject:v14];
+          [array addObject:v14];
 
 LABEL_11:
           v9 = 1;
@@ -179,11 +179,11 @@ LABEL_11:
 
 LABEL_15:
 
-  v19 = [v37 count];
+  v19 = [array count];
   if (v19 == [v35 count])
   {
-    v20 = [v37 count];
-    v21 = v37;
+    v20 = [array count];
+    v21 = array;
     if (v20 < 1)
     {
 LABEL_20:
@@ -197,10 +197,10 @@ LABEL_20:
     while (1)
     {
       v23 = [v21 objectAtIndexedSubscript:v22];
-      v24 = [v23 appLayout];
+      appLayout = [v23 appLayout];
       v25 = [v35 objectAtIndexedSubscript:v22];
-      v26 = [v25 appLayout];
-      v27 = v24 == v26;
+      appLayout2 = [v25 appLayout];
+      v27 = appLayout == appLayout2;
 
       if (!v27)
       {
@@ -208,7 +208,7 @@ LABEL_20:
       }
 
       ++v22;
-      v21 = v37;
+      v21 = array;
       if (v20 == v22)
       {
         goto LABEL_20;
@@ -216,11 +216,11 @@ LABEL_20:
     }
   }
 
-  v29 = v37;
-  if (v37 != v35)
+  v29 = array;
+  if (array != v35)
   {
-    [(SBDeckSwitcherViewControllerAccessibility *)self _accessibilitySetRetainedValue:v37 forKey:v34];
-    v29 = v37;
+    [(SBDeckSwitcherViewControllerAccessibility *)self _accessibilitySetRetainedValue:array forKey:elementsCopy];
+    v29 = array;
   }
 
 LABEL_23:

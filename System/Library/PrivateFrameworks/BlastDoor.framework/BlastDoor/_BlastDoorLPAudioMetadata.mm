@@ -1,9 +1,9 @@
 @interface _BlastDoorLPAudioMetadata
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (_BlastDoorLPAudioMetadata)init;
-- (_BlastDoorLPAudioMetadata)initWithCoder:(id)a3;
-- (id)_initWithDictionary:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (_BlastDoorLPAudioMetadata)initWithCoder:(id)coder;
+- (id)_initWithDictionary:(id)dictionary;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _BlastDoorLPAudioMetadata
@@ -25,13 +25,13 @@
   return v3;
 }
 
-- (id)_initWithDictionary:(id)a3
+- (id)_initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = [(_BlastDoorLPAudioMetadata *)self init];
-  if (v5 && (URLForKey(v4, @"LPMetadataAudioURL"), v6 = objc_claimAutoreleasedReturnValue(), URL = v5->_URL, v5->_URL = v6, URL, v5->_URL))
+  if (v5 && (URLForKey(dictionaryCopy, @"LPMetadataAudioURL"), v6 = objc_claimAutoreleasedReturnValue(), URL = v5->_URL, v5->_URL = v6, URL, v5->_URL))
   {
-    v8 = stringForKey(v4, @"LPMetadataAudioType");
+    v8 = stringForKey(dictionaryCopy, @"LPMetadataAudioType");
     type = v5->_type;
     v5->_type = v8;
 
@@ -46,25 +46,25 @@
   return v10;
 }
 
-- (_BlastDoorLPAudioMetadata)initWithCoder:(id)a3
+- (_BlastDoorLPAudioMetadata)initWithCoder:(id)coder
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = _BlastDoorLPAudioMetadata;
   v5 = [(_BlastDoorLPAudioMetadata *)&v15 init];
   if (v5)
   {
-    v5->_version = [v4 decodeInt32ForKey:@"version"];
-    v6 = decodeURLForKey(v4, @"URL");
+    v5->_version = [coderCopy decodeInt32ForKey:@"version"];
+    v6 = decodeURLForKey(coderCopy, @"URL");
     URL = v5->_URL;
     v5->_URL = v6;
 
-    v8 = decodeStringForKey(v4, @"type");
+    v8 = decodeStringForKey(coderCopy, @"type");
     type = v5->_type;
     v5->_type = v8;
 
-    v10 = decodeStringForKey(v4, @"accessibilityText");
+    v10 = decodeStringForKey(coderCopy, @"accessibilityText");
     accessibilityText = v5->_accessibilityText;
     v5->_accessibilityText = v10;
 
@@ -75,23 +75,23 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   version = self->_version;
-  v5 = a3;
-  [v5 encodeInt32:version forKey:@"version"];
-  [v5 _bd_lp_encodeURLIfNotNilOrLocalFile:self->_URL forKey:@"URL"];
-  [v5 _bd_lp_encodeObjectIfNotNil:self->_type forKey:@"type"];
-  [v5 _bd_lp_encodeObjectIfNotNil:self->_accessibilityText forKey:@"accessibilityText"];
+  coderCopy = coder;
+  [coderCopy encodeInt32:version forKey:@"version"];
+  [coderCopy _bd_lp_encodeURLIfNotNilOrLocalFile:self->_URL forKey:@"URL"];
+  [coderCopy _bd_lp_encodeObjectIfNotNil:self->_type forKey:@"type"];
+  [coderCopy _bd_lp_encodeObjectIfNotNil:self->_accessibilityText forKey:@"accessibilityText"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  equalCopy = equal;
   v13.receiver = self;
   v13.super_class = _BlastDoorLPAudioMetadata;
-  if ([(_BlastDoorLPAudioMetadata *)&v13 isEqual:v4])
+  if ([(_BlastDoorLPAudioMetadata *)&v13 isEqual:equalCopy])
   {
     v5 = 1;
   }
@@ -101,7 +101,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v4;
+      v6 = equalCopy;
       v7 = v6;
       if (*(v6 + 2) == self->_version && ((v8 = v6[2], !(v8 | self->_URL)) || [v8 isEqual:?]) && ((v9 = v7[3], !(v9 | self->_type)) || objc_msgSend(v9, "isEqual:")))
       {

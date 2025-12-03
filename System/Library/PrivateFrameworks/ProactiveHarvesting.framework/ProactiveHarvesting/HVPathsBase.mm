@@ -1,11 +1,11 @@
 @interface HVPathsBase
-+ (id)topDirectoryWithName:(id)a3 createIfNeeded:(BOOL)a4;
-+ (void)_createDirectoryAtPath:(uint64_t)a1;
++ (id)topDirectoryWithName:(id)name createIfNeeded:(BOOL)needed;
++ (void)_createDirectoryAtPath:(uint64_t)path;
 @end
 
 @implementation HVPathsBase
 
-+ (void)_createDirectoryAtPath:(uint64_t)a1
++ (void)_createDirectoryAtPath:(uint64_t)path
 {
   v27 = *MEMORY[0x277D85DE8];
   v2 = a2;
@@ -16,9 +16,9 @@
   while (1)
   {
     v6 = v5;
-    v7 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
     v22 = 0;
-    v8 = [v7 createDirectoryAtPath:v2 withIntermediateDirectories:1 attributes:0 error:&v22];
+    v8 = [defaultManager createDirectoryAtPath:v2 withIntermediateDirectories:1 attributes:0 error:&v22];
     v9 = v22;
 
     if (v8)
@@ -28,8 +28,8 @@
 
     if ([v9 code] == 640)
     {
-      v10 = [v9 domain];
-      v11 = [v10 isEqualToString:v4];
+      domain = [v9 domain];
+      v11 = [domain isEqualToString:v4];
 
       if (v11)
       {
@@ -107,9 +107,9 @@ LABEL_31:
       _os_log_error_impl(&dword_2321EC000, v12, OS_LOG_TYPE_ERROR, "HVPathBase: deleting file squatting at %@ due to error %@", buf, 0x16u);
     }
 
-    v13 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
     v21 = 0;
-    [v13 removeItemAtPath:v2 error:&v21];
+    [defaultManager2 removeItemAtPath:v2 error:&v21];
     v14 = v21;
 
     if (v14)
@@ -143,30 +143,30 @@ LABEL_31:
   if ((v8 & 1) == 0)
   {
 LABEL_15:
-    v15 = [MEMORY[0x277CCA890] currentHandler];
-    [v15 handleFailureInMethod:sel__createDirectoryAtPath_ object:v3 file:@"HVPaths.m" lineNumber:224 description:{@"HVPathBase: _createDirectoryAtPath: %@ error: %@", v2, v9}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:sel__createDirectoryAtPath_ object:v3 file:@"HVPaths.m" lineNumber:224 description:{@"HVPathBase: _createDirectoryAtPath: %@ error: %@", v2, v9}];
   }
 
   objc_sync_exit(v3);
   v16 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)topDirectoryWithName:(id)a3 createIfNeeded:(BOOL)a4
++ (id)topDirectoryWithName:(id)name createIfNeeded:(BOOL)needed
 {
-  v4 = a4;
+  neededCopy = needed;
   v18 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  nameCopy = name;
   v8 = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, 1uLL, 1);
   v9 = [v8 objectAtIndexedSubscript:0];
 
   if (!v9 || ![v9 length])
   {
-    v15 = [MEMORY[0x277CCA890] currentHandler];
-    [v15 handleFailureInMethod:a2 object:a1 file:@"HVPaths.m" lineNumber:118 description:@"failed to construct the root path"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HVPaths.m" lineNumber:118 description:@"failed to construct the root path"];
   }
 
   v10 = objc_autoreleasePoolPush();
-  v11 = [v9 stringByAppendingPathComponent:v7];
+  v11 = [v9 stringByAppendingPathComponent:nameCopy];
   objc_autoreleasePoolPop(v10);
   v12 = hv_default_log_handle();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
@@ -176,9 +176,9 @@ LABEL_15:
     _os_log_debug_impl(&dword_2321EC000, v12, OS_LOG_TYPE_DEBUG, "using top directory: %@", &v16, 0xCu);
   }
 
-  if (v4)
+  if (neededCopy)
   {
-    [(HVPathsBase *)a1 _createDirectoryAtPath:v11];
+    [(HVPathsBase *)self _createDirectoryAtPath:v11];
   }
 
   v13 = *MEMORY[0x277D85DE8];

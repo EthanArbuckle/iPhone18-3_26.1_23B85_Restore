@@ -1,32 +1,32 @@
 @interface CKDPProtectionInfoKeysToRemove
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)addKeysToRemove:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addKeysToRemove:(id)remove;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CKDPProtectionInfoKeysToRemove
 
-- (void)addKeysToRemove:(id)a3
+- (void)addKeysToRemove:(id)remove
 {
-  v4 = a3;
+  removeCopy = remove;
   keysToRemoves = self->_keysToRemoves;
-  v8 = v4;
+  v8 = removeCopy;
   if (!keysToRemoves)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_keysToRemoves;
     self->_keysToRemoves = v6;
 
-    v4 = v8;
+    removeCopy = v8;
     keysToRemoves = self->_keysToRemoves;
   }
 
-  objc_msgSend_addObject_(keysToRemoves, v4, v4);
+  objc_msgSend_addObject_(keysToRemoves, removeCopy, removeCopy);
 }
 
 - (id)description
@@ -93,10 +93,10 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -137,12 +137,12 @@
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v16 = a3;
+  toCopy = to;
   if (objc_msgSend_keysToRemovesCount(self, v4, v5))
   {
-    objc_msgSend_clearKeysToRemoves(v16, v6, v7);
+    objc_msgSend_clearKeysToRemoves(toCopy, v6, v7);
     v10 = objc_msgSend_keysToRemovesCount(self, v8, v9);
     if (v10)
     {
@@ -150,7 +150,7 @@
       for (i = 0; i != v11; ++i)
       {
         v13 = objc_msgSend_keysToRemoveAtIndex_(self, v6, i);
-        objc_msgSend_addKeysToRemove_(v16, v14, v13);
+        objc_msgSend_addKeysToRemove_(toCopy, v14, v13);
       }
     }
   }
@@ -158,15 +158,15 @@
   protectionInfoTag = self->_protectionInfoTag;
   if (protectionInfoTag)
   {
-    objc_msgSend_setProtectionInfoTag_(v16, v6, protectionInfoTag);
+    objc_msgSend_setProtectionInfoTag_(toCopy, v6, protectionInfoTag);
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v30 = *MEMORY[0x277D85DE8];
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v10 = objc_msgSend_init(v7, v8, v9);
   v25 = 0u;
   v26 = 0u;
@@ -188,7 +188,7 @@
           objc_enumerationMutation(v11);
         }
 
-        v18 = objc_msgSend_copyWithZone_(*(*(&v25 + 1) + 8 * v17), v14, a3, v25);
+        v18 = objc_msgSend_copyWithZone_(*(*(&v25 + 1) + 8 * v17), v14, zone, v25);
         objc_msgSend_addKeysToRemove_(v10, v19, v18);
 
         ++v17;
@@ -201,7 +201,7 @@
     while (v15);
   }
 
-  v21 = objc_msgSend_copyWithZone_(self->_protectionInfoTag, v20, a3);
+  v21 = objc_msgSend_copyWithZone_(self->_protectionInfoTag, v20, zone);
   v22 = v10[2];
   v10[2] = v21;
 
@@ -209,14 +209,14 @@
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if (objc_msgSend_isMemberOfClass_(v4, v6, v5) && ((keysToRemoves = self->_keysToRemoves, v9 = v4[1], !(keysToRemoves | v9)) || objc_msgSend_isEqual_(keysToRemoves, v7, v9)))
+  if (objc_msgSend_isMemberOfClass_(equalCopy, v6, v5) && ((keysToRemoves = self->_keysToRemoves, v9 = equalCopy[1], !(keysToRemoves | v9)) || objc_msgSend_isEqual_(keysToRemoves, v7, v9)))
   {
     protectionInfoTag = self->_protectionInfoTag;
-    v11 = v4[2];
+    v11 = equalCopy[2];
     if (protectionInfoTag | v11)
     {
       isEqual = objc_msgSend_isEqual_(protectionInfoTag, v7, v11);
@@ -236,15 +236,15 @@
   return isEqual;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fromCopy = from;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = *(v4 + 1);
+  v5 = *(fromCopy + 1);
   v7 = objc_msgSend_countByEnumeratingWithState_objects_count_(v5, v6, &v15, v19, 16);
   if (v7)
   {
@@ -268,7 +268,7 @@
     while (v9);
   }
 
-  v13 = *(v4 + 2);
+  v13 = *(fromCopy + 2);
   if (v13)
   {
     objc_msgSend_setProtectionInfoTag_(self, v12, v13);

@@ -1,6 +1,6 @@
 @interface SUCorePolicyExtension
 - (SUCorePolicyExtension)init;
-- (SUCorePolicyExtension)initWithCoder:(id)a3;
+- (SUCorePolicyExtension)initWithCoder:(id)coder;
 @end
 
 @implementation SUCorePolicyExtension
@@ -12,7 +12,7 @@
   return [(SUCorePolicyExtension *)&v3 init];
 }
 
-- (SUCorePolicyExtension)initWithCoder:(id)a3
+- (SUCorePolicyExtension)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = SUCorePolicyExtension;

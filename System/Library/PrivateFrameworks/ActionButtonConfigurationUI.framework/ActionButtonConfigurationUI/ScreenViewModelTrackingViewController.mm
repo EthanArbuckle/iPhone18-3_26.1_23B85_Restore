@@ -1,88 +1,88 @@
 @interface ScreenViewModelTrackingViewController
-- (_TtC27ActionButtonConfigurationUI37ScreenViewModelTrackingViewController)initWithCoder:(id)a3;
-- (_TtC27ActionButtonConfigurationUI37ScreenViewModelTrackingViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)presentationController:(id)a3 willPresentWithAdaptiveStyle:(int64_t)a4 transitionCoordinator:(id)a5;
-- (void)presentationControllerWillDismiss:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewIsAppearing:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (_TtC27ActionButtonConfigurationUI37ScreenViewModelTrackingViewController)initWithCoder:(id)coder;
+- (_TtC27ActionButtonConfigurationUI37ScreenViewModelTrackingViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)presentationController:(id)controller willPresentWithAdaptiveStyle:(int64_t)style transitionCoordinator:(id)coordinator;
+- (void)presentationControllerWillDismiss:(id)dismiss;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewIsAppearing:(BOOL)appearing;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation ScreenViewModelTrackingViewController
 
-- (void)viewIsAppearing:(BOOL)a3
+- (void)viewIsAppearing:(BOOL)appearing
 {
-  v4 = self;
-  sub_23DDE756C(a3);
+  selfCopy = self;
+  sub_23DDE756C(appearing);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_23DDE762C(a3);
+  selfCopy = self;
+  sub_23DDE762C(appear);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_23DDE76EC(a3);
+  selfCopy = self;
+  sub_23DDE76EC(disappear);
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_23DDE77AC(a3);
+  selfCopy = self;
+  sub_23DDE77AC(disappear);
 }
 
-- (void)presentationController:(id)a3 willPresentWithAdaptiveStyle:(int64_t)a4 transitionCoordinator:(id)a5
+- (void)presentationController:(id)controller willPresentWithAdaptiveStyle:(int64_t)style transitionCoordinator:(id)coordinator
 {
-  v8 = a3;
+  controllerCopy = controller;
   swift_unknownObjectRetain();
-  v9 = self;
-  sub_23DDE7DC4(a4, a5);
+  selfCopy = self;
+  sub_23DDE7DC4(style, coordinator);
 
   swift_unknownObjectRelease();
 }
 
-- (void)presentationControllerWillDismiss:(id)a3
+- (void)presentationControllerWillDismiss:(id)dismiss
 {
-  v4 = a3;
-  v5 = self;
-  sub_23DDE64D8(v4);
+  dismissCopy = dismiss;
+  selfCopy = self;
+  sub_23DDE64D8(dismissCopy);
 }
 
-- (_TtC27ActionButtonConfigurationUI37ScreenViewModelTrackingViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC27ActionButtonConfigurationUI37ScreenViewModelTrackingViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_23DE05A48();
     *(&self->super.super.super.isa + OBJC_IVAR____TtC27ActionButtonConfigurationUI37ScreenViewModelTrackingViewController_viewModel) = 0;
-    v6 = a4;
+    bundleCopy = bundle;
     v7 = sub_23DE05A18();
   }
 
   else
   {
     *(&self->super.super.super.isa + OBJC_IVAR____TtC27ActionButtonConfigurationUI37ScreenViewModelTrackingViewController_viewModel) = 0;
-    v8 = a4;
+    bundleCopy2 = bundle;
     v7 = 0;
   }
 
   v11.receiver = self;
   v11.super_class = type metadata accessor for ScreenViewModelTrackingViewController();
-  v9 = [(ScreenViewModelTrackingViewController *)&v11 initWithNibName:v7 bundle:a4];
+  v9 = [(ScreenViewModelTrackingViewController *)&v11 initWithNibName:v7 bundle:bundle];
 
   return v9;
 }
 
-- (_TtC27ActionButtonConfigurationUI37ScreenViewModelTrackingViewController)initWithCoder:(id)a3
+- (_TtC27ActionButtonConfigurationUI37ScreenViewModelTrackingViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC27ActionButtonConfigurationUI37ScreenViewModelTrackingViewController_viewModel) = 0;
   v7.receiver = self;
   v7.super_class = type metadata accessor for ScreenViewModelTrackingViewController();
-  v4 = a3;
-  v5 = [(ScreenViewModelTrackingViewController *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(ScreenViewModelTrackingViewController *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

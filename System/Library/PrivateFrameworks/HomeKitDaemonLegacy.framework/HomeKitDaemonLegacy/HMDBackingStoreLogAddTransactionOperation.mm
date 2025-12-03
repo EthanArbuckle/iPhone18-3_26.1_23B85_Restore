@@ -1,6 +1,6 @@
 @interface HMDBackingStoreLogAddTransactionOperation
-- (HMDBackingStoreLogAddTransactionOperation)initWithAtomicSaveEnabled:(BOOL)a3 transaction:(id)a4;
-- (HMDBackingStoreLogAddTransactionOperation)initWithTransaction:(id)a3;
+- (HMDBackingStoreLogAddTransactionOperation)initWithAtomicSaveEnabled:(BOOL)enabled transaction:(id)transaction;
+- (HMDBackingStoreLogAddTransactionOperation)initWithTransaction:(id)transaction;
 - (id)mainReturningError;
 @end
 
@@ -9,28 +9,28 @@
 - (id)mainReturningError
 {
   v38 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDBackingStoreOperation *)self store];
-  v4 = [v3 local];
-  v5 = [v4 _begin];
+  store = [(HMDBackingStoreOperation *)self store];
+  local = [store local];
+  _begin = [local _begin];
 
-  if (!v5)
+  if (!_begin)
   {
-    v6 = [(HMDBackingStoreOperation *)self store];
-    v7 = [v6 local];
-    v8 = [(HMDBackingStoreOperation *)self store];
-    v9 = [v8 root];
-    v10 = [(HMDBackingStoreLogAddTransactionOperation *)self transaction];
-    v11 = [(HMDBackingStoreLogAddTransactionOperation *)self transaction];
-    v12 = [v11 options];
+    store2 = [(HMDBackingStoreOperation *)self store];
+    local2 = [store2 local];
+    store3 = [(HMDBackingStoreOperation *)self store];
+    root = [store3 root];
+    transaction = [(HMDBackingStoreLogAddTransactionOperation *)self transaction];
+    transaction2 = [(HMDBackingStoreLogAddTransactionOperation *)self transaction];
+    options = [transaction2 options];
     v32 = 0;
-    v13 = [v7 _insertLogWithRoot:v9 transaction:v10 set:objc_msgSend(v12 error:{"destination") | 0x100000000000000, &v32}];
-    v5 = v32;
+    v13 = [local2 _insertLogWithRoot:root transaction:transaction set:objc_msgSend(options error:{"destination") | 0x100000000000000, &v32}];
+    _begin = v32;
 
-    if (v5)
+    if (_begin)
     {
-      v14 = [(HMDBackingStoreOperation *)self store];
-      v15 = [v14 local];
-      [v15 _rollback];
+      store4 = [(HMDBackingStoreOperation *)self store];
+      local3 = [store4 local];
+      [local3 _rollback];
     }
 
     else if ([(HMDBackingStoreLogAddTransactionOperation *)self isAtomicSaveEnabled])
@@ -52,15 +52,15 @@
 
     else
     {
-      v16 = [(HMDBackingStoreOperation *)self store];
-      v17 = [v16 local];
-      v18 = [v17 _commit];
+      store5 = [(HMDBackingStoreOperation *)self store];
+      local4 = [store5 local];
+      _commit = [local4 _commit];
 
       v19 = objc_autoreleasePoolPush();
-      v20 = self;
+      selfCopy = self;
       v21 = HMFGetOSLogHandle();
       v22 = v21;
-      if (v18)
+      if (_commit)
       {
         if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
         {
@@ -70,12 +70,12 @@
           v34 = 2048;
           v35 = v13;
           v36 = 2112;
-          v37 = v18;
+          v37 = _commit;
           _os_log_impl(&dword_2531F8000, v22, OS_LOG_TYPE_ERROR, "%{public}@Failed to commit non-atomic transaction %lu: %@", location, 0x20u);
         }
 
         objc_autoreleasePoolPop(v19);
-        v5 = v18;
+        _begin = _commit;
       }
 
       else
@@ -95,7 +95,7 @@
     }
   }
 
-  v25 = v5;
+  v25 = _begin;
 
   v26 = *MEMORY[0x277D85DE8];
 
@@ -178,27 +178,27 @@ LABEL_13:
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDBackingStoreLogAddTransactionOperation)initWithAtomicSaveEnabled:(BOOL)a3 transaction:(id)a4
+- (HMDBackingStoreLogAddTransactionOperation)initWithAtomicSaveEnabled:(BOOL)enabled transaction:(id)transaction
 {
-  v7 = a4;
+  transactionCopy = transaction;
   v12.receiver = self;
   v12.super_class = HMDBackingStoreLogAddTransactionOperation;
   v8 = [(HMDBackingStoreOperation *)&v12 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_transaction, a4);
-    v9->_isAtomicSaveEnabled = a3;
+    objc_storeStrong(&v8->_transaction, transaction);
+    v9->_isAtomicSaveEnabled = enabled;
     v10 = v9;
   }
 
   return v9;
 }
 
-- (HMDBackingStoreLogAddTransactionOperation)initWithTransaction:(id)a3
+- (HMDBackingStoreLogAddTransactionOperation)initWithTransaction:(id)transaction
 {
-  v4 = a3;
-  v5 = [(HMDBackingStoreLogAddTransactionOperation *)self initWithAtomicSaveEnabled:!isWatch() transaction:v4];
+  transactionCopy = transaction;
+  v5 = [(HMDBackingStoreLogAddTransactionOperation *)self initWithAtomicSaveEnabled:!isWatch() transaction:transactionCopy];
 
   return v5;
 }

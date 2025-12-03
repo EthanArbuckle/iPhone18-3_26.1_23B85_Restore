@@ -1,33 +1,33 @@
 @interface AKTextAnnotationAttributeHelper
-+ (id)actualOrPlaceholderTextOfAnnotation:(id)a3;
-+ (id)font:(id)a3 byApplyingScaleFactor:(double)a4;
-+ (id)fontsOfAnnotations:(id)a3;
-+ (id)fontsOfEditor:(id)a3;
-+ (id)newTextStorage:(id)a3 byApplyingScaleFactor:(double)a4;
-+ (id)newTextStorageOriginalFontSavvyWithAttributedString:(id)a3;
-+ (id)newTextStorageOriginalFontSavvyWithString:(id)a3 attributes:(id)a4;
-+ (id)placeholderTextOfAnnotation:(id)a3;
-+ (id)textAttributesOfAnnotations:(id)a3;
-+ (id)textAttributesOfEditor:(id)a3;
-+ (id)typingAttributes:(id)a3 byApplyingScaleFactor:(double)a4;
-+ (void)adjustAnnotationBoundsToFitText:(id)a3;
-+ (void)adjustBoundsOfAnnotation:(id)a3 toFitOptionalText:(id)a4 onPageController:(id)a5;
-+ (void)enumerateFontAttributesOfAttributedString:(id)a3 usingBlock:(id)a4;
-+ (void)resolvedAlignmentAndDirection:(id)a3 locale:(id)a4 alignment:(int64_t *)a5 direction:(int64_t *)a6;
-+ (void)setFont:(id)a3 ofAnnotation:(id)a4;
-+ (void)setTextAlignment:(int64_t)a3 ofAnnotation:(id)a4;
-+ (void)setTextAttributes:(id)a3 ofAnnotation:(id)a4;
++ (id)actualOrPlaceholderTextOfAnnotation:(id)annotation;
++ (id)font:(id)font byApplyingScaleFactor:(double)factor;
++ (id)fontsOfAnnotations:(id)annotations;
++ (id)fontsOfEditor:(id)editor;
++ (id)newTextStorage:(id)storage byApplyingScaleFactor:(double)factor;
++ (id)newTextStorageOriginalFontSavvyWithAttributedString:(id)string;
++ (id)newTextStorageOriginalFontSavvyWithString:(id)string attributes:(id)attributes;
++ (id)placeholderTextOfAnnotation:(id)annotation;
++ (id)textAttributesOfAnnotations:(id)annotations;
++ (id)textAttributesOfEditor:(id)editor;
++ (id)typingAttributes:(id)attributes byApplyingScaleFactor:(double)factor;
++ (void)adjustAnnotationBoundsToFitText:(id)text;
++ (void)adjustBoundsOfAnnotation:(id)annotation toFitOptionalText:(id)text onPageController:(id)controller;
++ (void)enumerateFontAttributesOfAttributedString:(id)string usingBlock:(id)block;
++ (void)resolvedAlignmentAndDirection:(id)direction locale:(id)locale alignment:(int64_t *)alignment direction:(int64_t *)a6;
++ (void)setFont:(id)font ofAnnotation:(id)annotation;
++ (void)setTextAlignment:(int64_t)alignment ofAnnotation:(id)annotation;
++ (void)setTextAttributes:(id)attributes ofAnnotation:(id)annotation;
 @end
 
 @implementation AKTextAnnotationAttributeHelper
 
-+ (void)resolvedAlignmentAndDirection:(id)a3 locale:(id)a4 alignment:(int64_t *)a5 direction:(int64_t *)a6
++ (void)resolvedAlignmentAndDirection:(id)direction locale:(id)locale alignment:(int64_t *)alignment direction:(int64_t *)a6
 {
-  v13 = a3;
-  v9 = a4;
-  if (!v13 || (v10 = [v13 baseWritingDirection], v10 == -1))
+  directionCopy = direction;
+  localeCopy = locale;
+  if (!directionCopy || (v10 = [directionCopy baseWritingDirection], v10 == -1))
   {
-    v10 = [MEMORY[0x277D74248] defaultWritingDirectionForLanguage:v9];
+    v10 = [MEMORY[0x277D74248] defaultWritingDirectionForLanguage:localeCopy];
   }
 
   if (a6)
@@ -35,13 +35,13 @@
     *a6 = v10;
   }
 
-  if (a5)
+  if (alignment)
   {
-    if (v13)
+    if (directionCopy)
     {
-      v11 = [v13 alignment];
+      alignment = [directionCopy alignment];
       v12 = v10 == 1;
-      if (v11 != 4)
+      if (alignment != 4)
       {
         goto LABEL_12;
       }
@@ -52,22 +52,22 @@
       v12 = v10 == 1;
     }
 
-    v11 = 2 * v12;
+    alignment = 2 * v12;
 LABEL_12:
-    *a5 = v11;
+    *alignment = alignment;
   }
 }
 
-+ (id)fontsOfAnnotations:(id)a3
++ (id)fontsOfAnnotations:(id)annotations
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  annotationsCopy = annotations;
   v17 = [MEMORY[0x277CBEB58] set];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v4 = v3;
+  v4 = annotationsCopy;
   v5 = [v4 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v5)
   {
@@ -87,18 +87,18 @@ LABEL_12:
         if ([v9 conformsToAKTextAnnotationProtocol])
         {
           v10 = v9;
-          v11 = [v10 annotationText];
+          annotationText = [v10 annotationText];
           v18[0] = MEMORY[0x277D85DD0];
           v18[1] = 3221225472;
           v18[2] = sub_23F40CA8C;
           v18[3] = &unk_278C7B608;
           v12 = v17;
           v19 = v12;
-          [AKTextAnnotationAttributeHelper enumerateFontAttributesOfAttributedString:v11 usingBlock:v18];
-          if (!v11 || ![v11 length])
+          [AKTextAnnotationAttributeHelper enumerateFontAttributesOfAttributedString:annotationText usingBlock:v18];
+          if (!annotationText || ![annotationText length])
           {
-            v13 = [v10 typingAttributes];
-            v14 = [v13 objectForKeyedSubscript:v16];
+            typingAttributes = [v10 typingAttributes];
+            v14 = [typingAttributes objectForKeyedSubscript:v16];
 
             if (v14)
             {
@@ -117,81 +117,81 @@ LABEL_12:
   return v17;
 }
 
-+ (id)fontsOfEditor:(id)a3
++ (id)fontsOfEditor:(id)editor
 {
-  v3 = a3;
+  editorCopy = editor;
   v4 = [MEMORY[0x277CBEB58] set];
-  if ([v3 isEditing])
+  if ([editorCopy isEditing])
   {
-    v5 = [v3 textView];
-    v6 = [v3 annotation];
-    [v6 originalModelBaseScaleFactor];
+    textView = [editorCopy textView];
+    annotation = [editorCopy annotation];
+    [annotation originalModelBaseScaleFactor];
     v8 = 1.0 / v7;
-    v9 = [v5 textStorage];
+    textStorage = [textView textStorage];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = sub_23F40CBCC;
     v11[3] = &unk_278C7B630;
     v13 = v8;
     v12 = v4;
-    [AKTextAnnotationAttributeHelper enumerateFontAttributesOfAttributedString:v9 usingBlock:v11];
+    [AKTextAnnotationAttributeHelper enumerateFontAttributesOfAttributedString:textStorage usingBlock:v11];
   }
 
   return v4;
 }
 
-+ (void)setFont:(id)a3 ofAnnotation:(id)a4
++ (void)setFont:(id)font ofAnnotation:(id)annotation
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 annotationText];
-  v9 = [v8 mutableCopy];
+  fontCopy = font;
+  annotationCopy = annotation;
+  annotationText = [annotationCopy annotationText];
+  v9 = [annotationText mutableCopy];
 
-  v10 = [v7 annotationText];
+  annotationText2 = [annotationCopy annotationText];
   v14 = MEMORY[0x277D85DD0];
   v15 = 3221225472;
   v16 = sub_23F40CD54;
   v17 = &unk_278C7B658;
   v18 = v9;
-  v19 = v6;
-  v11 = v6;
+  v19 = fontCopy;
+  v11 = fontCopy;
   v12 = v9;
-  [AKTextAnnotationAttributeHelper enumerateFontAttributesOfAttributedString:v10 usingBlock:&v14];
+  [AKTextAnnotationAttributeHelper enumerateFontAttributesOfAttributedString:annotationText2 usingBlock:&v14];
 
-  v13 = [a1 newTextStorageOriginalFontSavvyWithAttributedString:{v12, v14, v15, v16, v17}];
-  [v7 setAnnotationText:v13];
+  v13 = [self newTextStorageOriginalFontSavvyWithAttributedString:{v12, v14, v15, v16, v17}];
+  [annotationCopy setAnnotationText:v13];
 }
 
-+ (void)setTextAlignment:(int64_t)a3 ofAnnotation:(id)a4
++ (void)setTextAlignment:(int64_t)alignment ofAnnotation:(id)annotation
 {
-  v6 = a4;
-  v7 = [v6 annotationText];
-  v13 = [v7 mutableCopy];
+  annotationCopy = annotation;
+  annotationText = [annotationCopy annotationText];
+  v13 = [annotationText mutableCopy];
 
   v8 = [v13 length];
   v9 = *MEMORY[0x277D74118];
-  if (!v8 || ([v13 attribute:*MEMORY[0x277D74118] atIndex:0 effectiveRange:0], (v10 = objc_claimAutoreleasedReturnValue()) == 0))
+  if (!v8 || ([v13 attribute:*MEMORY[0x277D74118] atIndex:0 effectiveRange:0], (defaultParagraphStyle = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v10 = [MEMORY[0x277D74248] defaultParagraphStyle];
+    defaultParagraphStyle = [MEMORY[0x277D74248] defaultParagraphStyle];
   }
 
-  v11 = [v10 mutableCopy];
-  [v11 setAlignment:a3];
+  v11 = [defaultParagraphStyle mutableCopy];
+  [v11 setAlignment:alignment];
   [v13 addAttribute:v9 value:v11 range:{0, objc_msgSend(v13, "length")}];
-  v12 = [a1 newTextStorageOriginalFontSavvyWithAttributedString:v13];
-  [v6 setAnnotationText:v12];
+  v12 = [self newTextStorageOriginalFontSavvyWithAttributedString:v13];
+  [annotationCopy setAnnotationText:v12];
 }
 
-+ (id)textAttributesOfAnnotations:(id)a3
++ (id)textAttributesOfAnnotations:(id)annotations
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  annotationsCopy = annotations;
   v4 = [MEMORY[0x277CBEB58] set];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v5 = v3;
+  v5 = annotationsCopy;
   v6 = [v5 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v6)
   {
@@ -210,19 +210,19 @@ LABEL_12:
         if ([v10 conformsToAKTextAnnotationProtocol])
         {
           v11 = v10;
-          v12 = [v11 annotationText];
-          v13 = [v12 length];
+          annotationText = [v11 annotationText];
+          v13 = [annotationText length];
           v17[0] = MEMORY[0x277D85DD0];
           v17[1] = 3221225472;
           v17[2] = sub_23F40D094;
           v17[3] = &unk_278C7B680;
           v14 = v4;
           v18 = v14;
-          [v12 enumerateAttributesInRange:0 options:v13 usingBlock:{0, v17}];
-          if (!v12 || ![v12 length])
+          [annotationText enumerateAttributesInRange:0 options:v13 usingBlock:{0, v17}];
+          if (!annotationText || ![annotationText length])
           {
-            v15 = [v11 typingAttributes];
-            [v14 addObject:v15];
+            typingAttributes = [v11 typingAttributes];
+            [v14 addObject:typingAttributes];
           }
         }
       }
@@ -236,48 +236,48 @@ LABEL_12:
   return v4;
 }
 
-+ (id)textAttributesOfEditor:(id)a3
++ (id)textAttributesOfEditor:(id)editor
 {
-  v3 = a3;
+  editorCopy = editor;
   v4 = [MEMORY[0x277CBEB58] set];
-  if ([v3 isEditing])
+  if ([editorCopy isEditing])
   {
-    v5 = [v3 textView];
-    v6 = [v5 textStorage];
-    v7 = [v6 length];
+    textView = [editorCopy textView];
+    textStorage = [textView textStorage];
+    v7 = [textStorage length];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = sub_23F40D1AC;
     v9[3] = &unk_278C7B680;
     v10 = v4;
-    [v6 enumerateAttributesInRange:0 options:v7 usingBlock:{0, v9}];
+    [textStorage enumerateAttributesInRange:0 options:v7 usingBlock:{0, v9}];
   }
 
   return v4;
 }
 
-+ (void)setTextAttributes:(id)a3 ofAnnotation:(id)a4
++ (void)setTextAttributes:(id)attributes ofAnnotation:(id)annotation
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v6 annotationText];
-  v10 = [v8 mutableCopy];
+  annotationCopy = annotation;
+  attributesCopy = attributes;
+  annotationText = [annotationCopy annotationText];
+  v10 = [annotationText mutableCopy];
 
-  [v10 addAttributes:v7 range:{0, objc_msgSend(v10, "length")}];
-  v9 = [a1 newTextStorageOriginalFontSavvyWithAttributedString:v10];
-  [v6 setAnnotationText:v9];
+  [v10 addAttributes:attributesCopy range:{0, objc_msgSend(v10, "length")}];
+  v9 = [self newTextStorageOriginalFontSavvyWithAttributedString:v10];
+  [annotationCopy setAnnotationText:v9];
 }
 
-+ (void)adjustBoundsOfAnnotation:(id)a3 toFitOptionalText:(id)a4 onPageController:(id)a5
++ (void)adjustBoundsOfAnnotation:(id)annotation toFitOptionalText:(id)text onPageController:(id)controller
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = a4;
-  v10 = [v7 conformsToAKRectangularAnnotationProtocol];
+  annotationCopy = annotation;
+  controllerCopy = controller;
+  textCopy = text;
+  conformsToAKRectangularAnnotationProtocol = [annotationCopy conformsToAKRectangularAnnotationProtocol];
   v15 = 0u;
   v16 = 0u;
   v14 = 0;
-  if (v10)
+  if (conformsToAKRectangularAnnotationProtocol)
   {
     v11 = &v15;
   }
@@ -288,44 +288,44 @@ LABEL_12:
   }
 
   LOBYTE(v13) = 0;
-  [AKTextAnnotationRenderHelper getAnnotationRectangle:v11 textBounds:0 containerSize:0 exclusionPaths:0 isTextClipped:&v14 forAnnotation:v7 onPageController:*MEMORY[0x277CBF348] orInContext:*(MEMORY[0x277CBF348] + 8) shouldAlignToPixels:*MEMORY[0x277CBF3A0] optionalText:*(MEMORY[0x277CBF3A0] + 8) optionalCenter:*(MEMORY[0x277CBF3A0] + 16) optionalProposedRectangle:*(MEMORY[0x277CBF3A0] + 24), v8, 0, v13, v9];
+  [AKTextAnnotationRenderHelper getAnnotationRectangle:v11 textBounds:0 containerSize:0 exclusionPaths:0 isTextClipped:&v14 forAnnotation:annotationCopy onPageController:*MEMORY[0x277CBF348] orInContext:*(MEMORY[0x277CBF348] + 8) shouldAlignToPixels:*MEMORY[0x277CBF3A0] optionalText:*(MEMORY[0x277CBF3A0] + 8) optionalCenter:*(MEMORY[0x277CBF3A0] + 16) optionalProposedRectangle:*(MEMORY[0x277CBF3A0] + 24), controllerCopy, 0, v13, textCopy];
 
-  if (v10)
+  if (conformsToAKRectangularAnnotationProtocol)
   {
-    [v7 setRectangle:{v15, v16}];
+    [annotationCopy setRectangle:{v15, v16}];
   }
 
-  v12 = [v7 textIsClipped];
-  if (v14 != v12)
+  textIsClipped = [annotationCopy textIsClipped];
+  if (v14 != textIsClipped)
   {
-    [v7 setTextIsClipped:?];
+    [annotationCopy setTextIsClipped:?];
   }
 }
 
-+ (void)adjustAnnotationBoundsToFitText:(id)a3
++ (void)adjustAnnotationBoundsToFitText:(id)text
 {
-  v3 = a3;
-  v4 = [AKTextAnnotationAttributeHelper actualOrPlaceholderTextOfAnnotation:v3];
+  textCopy = text;
+  v4 = [AKTextAnnotationAttributeHelper actualOrPlaceholderTextOfAnnotation:textCopy];
   if (![v4 length])
   {
     goto LABEL_20;
   }
 
-  v5 = [v3 textIsFixedWidth];
-  v6 = [v3 textIsFixedHeight];
-  [v3 setTextIsFixedWidth:1];
-  [v3 setTextIsFixedHeight:1];
-  [v3 rectangle];
+  textIsFixedWidth = [textCopy textIsFixedWidth];
+  textIsFixedHeight = [textCopy textIsFixedHeight];
+  [textCopy setTextIsFixedWidth:1];
+  [textCopy setTextIsFixedHeight:1];
+  [textCopy rectangle];
   x = v7;
   y = v9;
   v12 = v11;
   v14 = v13;
-  v15 = +[AKGeometryHelper exifOrientationHasReversedAxes:](AKGeometryHelper, "exifOrientationHasReversedAxes:", [v3 originalExifOrientation]);
+  v15 = +[AKGeometryHelper exifOrientationHasReversedAxes:](AKGeometryHelper, "exifOrientationHasReversedAxes:", [textCopy originalExifOrientation]);
   v16 = *(MEMORY[0x277CBF3A0] + 16);
   v17 = *(MEMORY[0x277CBF3A0] + 24);
   v59 = *(MEMORY[0x277CBF3A0] + 8);
   v60 = *MEMORY[0x277CBF3A0];
-  [AKAnnotationRenderer textBoundsOfAnnotation:v3 withOptionalAnnotationRect:v4 optionalText:?];
+  [AKAnnotationRenderer textBoundsOfAnnotation:textCopy withOptionalAnnotationRect:v4 optionalText:?];
   v19 = v18;
   v52 = v20;
   v53 = v21;
@@ -356,12 +356,12 @@ LABEL_7:
     v64.size.width = v53;
     v64.size.height = rect;
     v65 = CGRectInset(v64, v30, v31);
-    [AKAnnotationRenderer rectangleForAnnotation:v3 withTextBounds:v65.origin.x, v65.origin.y, v65.size.width, v65.size.height];
+    [AKAnnotationRenderer rectangleForAnnotation:textCopy withTextBounds:v65.origin.x, v65.origin.y, v65.size.width, v65.size.height];
     x = v36;
     y = v37;
     v12 = v38;
     v14 = v39;
-    [v3 setRectangle:?];
+    [textCopy setRectangle:?];
     if (v15)
     {
       goto LABEL_8;
@@ -405,7 +405,7 @@ LABEL_10:
       v63 = 0u;
       v61 = 0;
       LOBYTE(v51) = 0;
-      [AKTextAnnotationRenderHelper getAnnotationRectangle:&v62 textBounds:0 containerSize:0 exclusionPaths:0 isTextClipped:&v61 forAnnotation:v3 onPageController:v42 orInContext:v43 shouldAlignToPixels:v60 optionalText:v59 optionalCenter:v16 optionalProposedRectangle:v17, 0, 0, v51, v4];
+      [AKTextAnnotationRenderHelper getAnnotationRectangle:&v62 textBounds:0 containerSize:0 exclusionPaths:0 isTextClipped:&v61 forAnnotation:textCopy onPageController:v42 orInContext:v43 shouldAlignToPixels:v60 optionalText:v59 optionalCenter:v16 optionalProposedRectangle:v17, 0, 0, v51, v4];
       if (v61 != 1)
       {
         break;
@@ -432,7 +432,7 @@ LABEL_10:
       y = v69.origin.y;
       v12 = v69.size.width;
       v14 = v69.size.height;
-      [v3 setRectangle:?];
+      [textCopy setRectangle:?];
       if (!--v41)
       {
         goto LABEL_17;
@@ -443,13 +443,13 @@ LABEL_10:
     v47 = *&v62;
     v50 = *(&v63 + 1);
     v49 = *&v63;
-    v46 = v3;
+    v46 = textCopy;
   }
 
   else
   {
 LABEL_17:
-    v46 = v3;
+    v46 = textCopy;
     v48 = v57;
     v47 = v58;
     v50 = v55;
@@ -457,19 +457,19 @@ LABEL_17:
   }
 
   [v46 setRectangle:{v47, v48, v49, v50}];
-  [v3 setTextIsFixedWidth:v5];
-  [v3 setTextIsFixedHeight:v6];
+  [textCopy setTextIsFixedWidth:textIsFixedWidth];
+  [textCopy setTextIsFixedHeight:textIsFixedHeight];
 LABEL_20:
 }
 
-+ (id)placeholderTextOfAnnotation:(id)a3
++ (id)placeholderTextOfAnnotation:(id)annotation
 {
-  v3 = a3;
-  if ([v3 shouldUsePlaceholderText] && ((objc_msgSend(v3, "customPlaceholderText"), (v4 = objc_claimAutoreleasedReturnValue()) != 0) || (objc_msgSend(objc_opt_class(), "defaultPlaceholderText"), (v4 = objc_claimAutoreleasedReturnValue()) != 0)))
+  annotationCopy = annotation;
+  if ([annotationCopy shouldUsePlaceholderText] && ((objc_msgSend(annotationCopy, "customPlaceholderText"), (v4 = objc_claimAutoreleasedReturnValue()) != 0) || (objc_msgSend(objc_opt_class(), "defaultPlaceholderText"), (v4 = objc_claimAutoreleasedReturnValue()) != 0)))
   {
     v5 = v4;
-    v6 = [v3 typingAttributes];
-    v7 = [AKTextAnnotationAttributeHelper newTextStorageOriginalFontSavvyWithString:v5 attributes:v6];
+    typingAttributes = [annotationCopy typingAttributes];
+    v7 = [AKTextAnnotationAttributeHelper newTextStorageOriginalFontSavvyWithString:v5 attributes:typingAttributes];
   }
 
   else
@@ -480,43 +480,43 @@ LABEL_20:
   return v7;
 }
 
-+ (id)actualOrPlaceholderTextOfAnnotation:(id)a3
++ (id)actualOrPlaceholderTextOfAnnotation:(id)annotation
 {
-  v4 = a3;
-  v5 = [v4 annotationText];
-  v6 = [v5 length];
+  annotationCopy = annotation;
+  annotationText = [annotationCopy annotationText];
+  v6 = [annotationText length];
 
   if (v6)
   {
-    [v4 annotationText];
+    [annotationCopy annotationText];
   }
 
   else
   {
-    [a1 placeholderTextOfAnnotation:v4];
+    [self placeholderTextOfAnnotation:annotationCopy];
   }
   v7 = ;
 
   return v7;
 }
 
-+ (id)font:(id)a3 byApplyingScaleFactor:(double)a4
++ (id)font:(id)font byApplyingScaleFactor:(double)factor
 {
-  v5 = a3;
-  [v5 pointSize];
-  v7 = [v5 fontWithSize:v6 * a4];
+  fontCopy = font;
+  [fontCopy pointSize];
+  factor = [fontCopy fontWithSize:v6 * factor];
 
-  return v7;
+  return factor;
 }
 
-+ (id)typingAttributes:(id)a3 byApplyingScaleFactor:(double)a4
++ (id)typingAttributes:(id)attributes byApplyingScaleFactor:(double)factor
 {
   v32[2] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = v5;
-  if (fabs(a4 + -1.0) >= 0.0005)
+  attributesCopy = attributes;
+  v6 = attributesCopy;
+  if (fabs(factor + -1.0) >= 0.0005)
   {
-    v8 = [v5 objectForKeyedSubscript:*MEMORY[0x277D740F8]];
+    v8 = [attributesCopy objectForKeyedSubscript:*MEMORY[0x277D740F8]];
     v9 = *MEMORY[0x277D740A8];
     if (!v8)
     {
@@ -525,10 +525,10 @@ LABEL_20:
 
     [v8 pointSize];
     v26 = v8;
-    v11 = [v8 fontWithSize:v10 * a4];
+    factor = [v8 fontWithSize:v10 * factor];
     v7 = [v6 mutableCopy];
-    v25 = v11;
-    [v7 setObject:v11 forKeyedSubscript:v9];
+    v25 = factor;
+    [v7 setObject:factor forKeyedSubscript:v9];
     v12 = *MEMORY[0x277D741E0];
     v32[0] = *MEMORY[0x277D740D0];
     v32[1] = v12;
@@ -558,8 +558,8 @@ LABEL_20:
           {
             v21 = MEMORY[0x277CCABB0];
             [v19 doubleValue];
-            v23 = [v21 numberWithDouble:v22 * a4];
-            [v7 setObject:v23 forKeyedSubscript:v18];
+            factor2 = [v21 numberWithDouble:v22 * factor];
+            [v7 setObject:factor2 forKeyedSubscript:v18];
           }
         }
 
@@ -572,32 +572,32 @@ LABEL_20:
 
   else
   {
-    v7 = v5;
+    v7 = attributesCopy;
   }
 
   return v7;
 }
 
-+ (id)newTextStorage:(id)a3 byApplyingScaleFactor:(double)a4
++ (id)newTextStorage:(id)storage byApplyingScaleFactor:(double)factor
 {
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  storageCopy = storage;
+  v7 = storageCopy;
+  if (storageCopy)
   {
-    v8 = [v6 mutableCopy];
-    if ([v7 length] && fabs(a4 + -1.0) >= 0.0005)
+    v8 = [storageCopy mutableCopy];
+    if ([v7 length] && fabs(factor + -1.0) >= 0.0005)
     {
       v11[0] = MEMORY[0x277D85DD0];
       v11[1] = 3221225472;
       v11[2] = sub_23F40DB54;
       v11[3] = &unk_278C7B6A8;
-      v13 = a1;
-      v14 = a4;
+      selfCopy = self;
+      factorCopy = factor;
       v12 = v8;
-      [a1 enumerateFontAttributesOfAttributedString:v7 usingBlock:v11];
+      [self enumerateFontAttributesOfAttributedString:v7 usingBlock:v11];
     }
 
-    v9 = [a1 newTextStorageOriginalFontSavvyWithAttributedString:v8];
+    v9 = [self newTextStorageOriginalFontSavvyWithAttributedString:v8];
   }
 
   else
@@ -608,30 +608,30 @@ LABEL_20:
   return v9;
 }
 
-+ (id)newTextStorageOriginalFontSavvyWithAttributedString:(id)a3
++ (id)newTextStorageOriginalFontSavvyWithAttributedString:(id)string
 {
-  if (!a3)
+  if (!string)
   {
     return 0;
   }
 
   v3 = MEMORY[0x277D742D8];
-  v4 = a3;
+  stringCopy = string;
   v5 = objc_alloc_init(v3);
   v6 = objc_alloc_init(AKTextLayoutManager);
   [v5 addLayoutManager:v6];
-  [v5 setAttributedString:v4];
+  [v5 setAttributedString:stringCopy];
 
   [v5 removeLayoutManager:v6];
   return v5;
 }
 
-+ (id)newTextStorageOriginalFontSavvyWithString:(id)a3 attributes:(id)a4
++ (id)newTextStorageOriginalFontSavvyWithString:(id)string attributes:(id)attributes
 {
-  v6 = a3;
-  if (v6)
+  stringCopy = string;
+  if (stringCopy)
   {
-    v7 = v6;
+    v7 = stringCopy;
   }
 
   else
@@ -640,25 +640,25 @@ LABEL_20:
   }
 
   v8 = MEMORY[0x277CCA898];
-  v9 = a4;
-  v10 = [[v8 alloc] initWithString:v7 attributes:v9];
+  attributesCopy = attributes;
+  v10 = [[v8 alloc] initWithString:v7 attributes:attributesCopy];
 
-  v11 = [a1 newTextStorageOriginalFontSavvyWithAttributedString:v10];
+  v11 = [self newTextStorageOriginalFontSavvyWithAttributedString:v10];
   return v11;
 }
 
-+ (void)enumerateFontAttributesOfAttributedString:(id)a3 usingBlock:(id)a4
++ (void)enumerateFontAttributesOfAttributedString:(id)string usingBlock:(id)block
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v6 length];
+  blockCopy = block;
+  stringCopy = string;
+  v7 = [stringCopy length];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = sub_23F40DDC8;
   v9[3] = &unk_278C7B6D0;
-  v10 = v5;
-  v8 = v5;
-  [v6 enumerateAttributesInRange:0 options:v7 usingBlock:{0x100000, v9}];
+  v10 = blockCopy;
+  v8 = blockCopy;
+  [stringCopy enumerateAttributesInRange:0 options:v7 usingBlock:{0x100000, v9}];
 }
 
 @end

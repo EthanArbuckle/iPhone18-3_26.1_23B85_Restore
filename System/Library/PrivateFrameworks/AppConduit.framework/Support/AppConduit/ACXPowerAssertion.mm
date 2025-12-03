@@ -1,14 +1,14 @@
 @interface ACXPowerAssertion
-- (ACXPowerAssertion)initWithName:(id)a3 description:(id)a4 timeoutSeconds:(unint64_t)a5;
+- (ACXPowerAssertion)initWithName:(id)name description:(id)description timeoutSeconds:(unint64_t)seconds;
 - (void)dealloc;
 @end
 
 @implementation ACXPowerAssertion
 
-- (ACXPowerAssertion)initWithName:(id)a3 description:(id)a4 timeoutSeconds:(unint64_t)a5
+- (ACXPowerAssertion)initWithName:(id)name description:(id)description timeoutSeconds:(unint64_t)seconds
 {
-  v8 = a3;
-  v9 = a4;
+  nameCopy = name;
+  descriptionCopy = description;
   v15.receiver = self;
   v15.super_class = ACXPowerAssertion;
   v10 = [(ACXPowerAssertion *)&v15 init];
@@ -20,7 +20,7 @@
 
   AssertionID = 0;
   [(ACXPowerAssertion *)v10 setAssertion:0];
-  if (!IOPMAssertionCreateWithDescription(@"PreventUserIdleSystemSleep", v8, v9, 0, 0, a5, 0, &AssertionID))
+  if (!IOPMAssertionCreateWithDescription(@"PreventUserIdleSystemSleep", nameCopy, descriptionCopy, 0, 0, seconds, 0, &AssertionID))
   {
     [(ACXPowerAssertion *)v11 setAssertion:AssertionID];
 LABEL_8:

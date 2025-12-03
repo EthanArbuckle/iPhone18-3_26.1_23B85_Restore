@@ -1,5 +1,5 @@
 @interface MORankingParamsMO
-+ (void)_updateRankingParamsMO:(id)a3 with:(id)a4 forEvergreenScore:(BOOL)a5;
++ (void)_updateRankingParamsMO:(id)o with:(id)with forEvergreenScore:(BOOL)score;
 - (id)rankingParams;
 @end
 
@@ -8,8 +8,8 @@
 - (id)rankingParams
 {
   v3 = objc_alloc_init(MORankingParams);
-  v4 = [(MORankingParamsMO *)self engagementScoreParamsUpdateDate];
-  [(MORankingParams *)v3 setEngagementScoreParamsUpdateDate:v4];
+  engagementScoreParamsUpdateDate = [(MORankingParamsMO *)self engagementScoreParamsUpdateDate];
+  [(MORankingParams *)v3 setEngagementScoreParamsUpdateDate:engagementScoreParamsUpdateDate];
 
   [(MORankingParamsMO *)self activityInterfaceTypeEngagementWeight];
   [(MORankingParams *)v3 setActivityInterfaceTypeEngagementWeight:?];
@@ -44,8 +44,8 @@
   [(MORankingParamsMO *)self thematicSummaryInterfaceTypeEngagementWeight];
   [(MORankingParams *)v3 setThematicSummaryInterfaceTypeEngagementWeight:?];
   [(MORankingParams *)v3 setIsParamsUpdateOnHold:[(MORankingParamsMO *)self isParamsUpdateOnHold]];
-  v5 = [(MORankingParamsMO *)self evergreenEngagementScoreParamsUpdateDate];
-  [(MORankingParams *)v3 setEvergreenEngagementScoreParamsUpdateDate:v5];
+  evergreenEngagementScoreParamsUpdateDate = [(MORankingParamsMO *)self evergreenEngagementScoreParamsUpdateDate];
+  [(MORankingParams *)v3 setEvergreenEngagementScoreParamsUpdateDate:evergreenEngagementScoreParamsUpdateDate];
 
   [(MORankingParams *)v3 setIsEvergreenEngagementScoreParamsUpdateOnHold:[(MORankingParamsMO *)self isEvergreenEngagementScoreParamsUpdateOnHold]];
   [(MORankingParamsMO *)self wisdomEvergreenTypeEngagementWeight];
@@ -64,132 +64,132 @@
   return v3;
 }
 
-+ (void)_updateRankingParamsMO:(id)a3 with:(id)a4 forEvergreenScore:(BOOL)a5
++ (void)_updateRankingParamsMO:(id)o with:(id)with forEvergreenScore:(BOOL)score
 {
-  v5 = a5;
-  v7 = a4;
-  v8 = a3;
+  scoreCopy = score;
+  withCopy = with;
+  oCopy = o;
   v9 = +[NSDate date];
-  if (v5)
+  if (scoreCopy)
   {
-    [v8 setEvergreenEngagementScoreParamsUpdateDate:v9];
+    [oCopy setEvergreenEngagementScoreParamsUpdateDate:v9];
 
-    v10 = [v7 evergreenEngagementScoreParameterDict];
-    v11 = [v10 objectForKeyedSubscript:@"WISDOM"];
+    evergreenEngagementScoreParameterDict = [withCopy evergreenEngagementScoreParameterDict];
+    v11 = [evergreenEngagementScoreParameterDict objectForKeyedSubscript:@"WISDOM"];
     [v11 floatValue];
-    [v8 setWisdomEvergreenTypeEngagementWeight:?];
+    [oCopy setWisdomEvergreenTypeEngagementWeight:?];
 
-    v12 = [v7 evergreenEngagementScoreParameterDict];
-    v13 = [v12 objectForKeyedSubscript:@"GRATITUDE"];
+    evergreenEngagementScoreParameterDict2 = [withCopy evergreenEngagementScoreParameterDict];
+    v13 = [evergreenEngagementScoreParameterDict2 objectForKeyedSubscript:@"GRATITUDE"];
     [v13 floatValue];
-    [v8 setGratitudeEvergreenTypeEngagementWeight:?];
+    [oCopy setGratitudeEvergreenTypeEngagementWeight:?];
 
-    v14 = [v7 evergreenEngagementScoreParameterDict];
-    v15 = [v14 objectForKeyedSubscript:@"KINDNESS"];
+    evergreenEngagementScoreParameterDict3 = [withCopy evergreenEngagementScoreParameterDict];
+    v15 = [evergreenEngagementScoreParameterDict3 objectForKeyedSubscript:@"KINDNESS"];
     [v15 floatValue];
-    [v8 setKindnessEvergreenTypeEngagementWeight:?];
+    [oCopy setKindnessEvergreenTypeEngagementWeight:?];
 
-    v16 = [v7 evergreenEngagementScoreParameterDict];
-    v17 = [v16 objectForKeyedSubscript:@"PURPOSE"];
+    evergreenEngagementScoreParameterDict4 = [withCopy evergreenEngagementScoreParameterDict];
+    v17 = [evergreenEngagementScoreParameterDict4 objectForKeyedSubscript:@"PURPOSE"];
     [v17 floatValue];
-    [v8 setPurposeEvergreenTypeEngagementWeight:?];
+    [oCopy setPurposeEvergreenTypeEngagementWeight:?];
 
-    v18 = [v7 evergreenEngagementScoreParameterDict];
-    v19 = [v18 objectForKeyedSubscript:@"RESILIENCE"];
+    evergreenEngagementScoreParameterDict5 = [withCopy evergreenEngagementScoreParameterDict];
+    v19 = [evergreenEngagementScoreParameterDict5 objectForKeyedSubscript:@"RESILIENCE"];
     [v19 floatValue];
-    [v8 setResilienceEvergreenTypeEngagementWeight:?];
+    [oCopy setResilienceEvergreenTypeEngagementWeight:?];
 
-    v51 = [v7 evergreenEngagementScoreParameterDict];
+    evergreenEngagementScoreParameterDict6 = [withCopy evergreenEngagementScoreParameterDict];
 
-    v20 = [v51 objectForKeyedSubscript:@"CREATIVITY"];
+    v20 = [evergreenEngagementScoreParameterDict6 objectForKeyedSubscript:@"CREATIVITY"];
     [v20 floatValue];
-    [v8 setCreativityEvergreenTypeEngagementWeight:?];
+    [oCopy setCreativityEvergreenTypeEngagementWeight:?];
   }
 
   else
   {
-    [v8 setEngagementScoreParamsUpdateDate:v9];
+    [oCopy setEngagementScoreParamsUpdateDate:v9];
 
-    v21 = [v7 dynamicModelParameterDict];
-    v22 = [v21 objectForKeyedSubscript:&off_10036A3C0];
+    dynamicModelParameterDict = [withCopy dynamicModelParameterDict];
+    v22 = [dynamicModelParameterDict objectForKeyedSubscript:&off_10036A3C0];
     [v22 floatValue];
-    [v8 setActivityInterfaceTypeEngagementWeight:?];
+    [oCopy setActivityInterfaceTypeEngagementWeight:?];
 
-    v23 = [v7 dynamicModelParameterDict];
-    v24 = [v23 objectForKeyedSubscript:&off_10036A3D8];
+    dynamicModelParameterDict2 = [withCopy dynamicModelParameterDict];
+    v24 = [dynamicModelParameterDict2 objectForKeyedSubscript:&off_10036A3D8];
     [v24 floatValue];
-    [v8 setOutingInterfaceTypeEngagementWeight:?];
+    [oCopy setOutingInterfaceTypeEngagementWeight:?];
 
-    v25 = [v7 dynamicModelParameterDict];
-    v26 = [v25 objectForKeyedSubscript:&off_10036A3F0];
+    dynamicModelParameterDict3 = [withCopy dynamicModelParameterDict];
+    v26 = [dynamicModelParameterDict3 objectForKeyedSubscript:&off_10036A3F0];
     [v26 floatValue];
-    [v8 setPhotoMomentInterfaceTypeEngagementWeight:?];
+    [oCopy setPhotoMomentInterfaceTypeEngagementWeight:?];
 
-    v27 = [v7 dynamicModelParameterDict];
-    v28 = [v27 objectForKeyedSubscript:&off_10036A408];
+    dynamicModelParameterDict4 = [withCopy dynamicModelParameterDict];
+    v28 = [dynamicModelParameterDict4 objectForKeyedSubscript:&off_10036A408];
     [v28 floatValue];
-    [v8 setSignificantContactInterfaceTypeEngagementWeight:?];
+    [oCopy setSignificantContactInterfaceTypeEngagementWeight:?];
 
-    v29 = [v7 dynamicModelParameterDict];
-    v30 = [v29 objectForKeyedSubscript:&off_10036A420];
+    dynamicModelParameterDict5 = [withCopy dynamicModelParameterDict];
+    v30 = [dynamicModelParameterDict5 objectForKeyedSubscript:&off_10036A420];
     [v30 floatValue];
-    [v8 setYourMediaInterfaceTypeEngagementWeight:?];
+    [oCopy setYourMediaInterfaceTypeEngagementWeight:?];
 
-    v31 = [v7 dynamicModelParameterDict];
-    v32 = [v31 objectForKeyedSubscript:&off_10036A438];
+    dynamicModelParameterDict6 = [withCopy dynamicModelParameterDict];
+    v32 = [dynamicModelParameterDict6 objectForKeyedSubscript:&off_10036A438];
     [v32 floatValue];
-    [v8 setYourSharedContentInterfaceTypeEngagementWeight:?];
+    [oCopy setYourSharedContentInterfaceTypeEngagementWeight:?];
 
-    v33 = [v7 dynamicModelParameterDict];
-    v34 = [v33 objectForKeyedSubscript:&off_10036A450];
+    dynamicModelParameterDict7 = [withCopy dynamicModelParameterDict];
+    v34 = [dynamicModelParameterDict7 objectForKeyedSubscript:&off_10036A450];
     [v34 floatValue];
-    [v8 setYourTimeAtHomeInterfaceTypeEngagementWeight:?];
+    [oCopy setYourTimeAtHomeInterfaceTypeEngagementWeight:?];
 
-    v35 = [v7 dynamicModelParameterDict];
-    v36 = [v35 objectForKeyedSubscript:&off_10036A468];
+    dynamicModelParameterDict8 = [withCopy dynamicModelParameterDict];
+    v36 = [dynamicModelParameterDict8 objectForKeyedSubscript:&off_10036A468];
     [v36 floatValue];
-    [v8 setTopicsOfInterestInterfaceTypeEngagementWeight:?];
+    [oCopy setTopicsOfInterestInterfaceTypeEngagementWeight:?];
 
-    v37 = [v7 dynamicModelParameterDict];
-    v38 = [v37 objectForKeyedSubscript:&off_10036A480];
+    dynamicModelParameterDict9 = [withCopy dynamicModelParameterDict];
+    v38 = [dynamicModelParameterDict9 objectForKeyedSubscript:&off_10036A480];
     [v38 floatValue];
-    [v8 setTrendInterfaceTypeEngagementWeight:?];
+    [oCopy setTrendInterfaceTypeEngagementWeight:?];
 
-    v39 = [v7 dynamicModelParameterDict];
-    v40 = [v39 objectForKeyedSubscript:&off_10036A498];
+    dynamicModelParameterDict10 = [withCopy dynamicModelParameterDict];
+    v40 = [dynamicModelParameterDict10 objectForKeyedSubscript:&off_10036A498];
     [v40 floatValue];
-    [v8 setPhotoMemoryInterfaceTypeEngagementWeight:?];
+    [oCopy setPhotoMemoryInterfaceTypeEngagementWeight:?];
 
-    v41 = [v7 dynamicModelParameterDict];
-    v42 = [v41 objectForKeyedSubscript:&off_10036A4B0];
+    dynamicModelParameterDict11 = [withCopy dynamicModelParameterDict];
+    v42 = [dynamicModelParameterDict11 objectForKeyedSubscript:&off_10036A4B0];
     [v42 floatValue];
-    [v8 setEvergreenInterfaceTypeEngagementWeight:?];
+    [oCopy setEvergreenInterfaceTypeEngagementWeight:?];
 
-    v43 = [v7 dynamicModelParameterDict];
-    v44 = [v43 objectForKeyedSubscript:&off_10036A4C8];
+    dynamicModelParameterDict12 = [withCopy dynamicModelParameterDict];
+    v44 = [dynamicModelParameterDict12 objectForKeyedSubscript:&off_10036A4C8];
     [v44 floatValue];
-    [v8 setTimeContextInterfaceTypeEngagementWeight:?];
+    [oCopy setTimeContextInterfaceTypeEngagementWeight:?];
 
-    v45 = [v7 dynamicModelParameterDict];
-    v46 = [v45 objectForKeyedSubscript:&off_10036A4E0];
+    dynamicModelParameterDict13 = [withCopy dynamicModelParameterDict];
+    v46 = [dynamicModelParameterDict13 objectForKeyedSubscript:&off_10036A4E0];
     [v46 floatValue];
-    [v8 setTripInterfaceTypeEngagementWeight:?];
+    [oCopy setTripInterfaceTypeEngagementWeight:?];
 
-    v47 = [v7 dynamicModelParameterDict];
-    v48 = [v47 objectForKeyedSubscript:&off_10036A4F8];
+    dynamicModelParameterDict14 = [withCopy dynamicModelParameterDict];
+    v48 = [dynamicModelParameterDict14 objectForKeyedSubscript:&off_10036A4F8];
     [v48 floatValue];
-    [v8 setStateOfMindInterfaceTypeEngagementWeight:?];
+    [oCopy setStateOfMindInterfaceTypeEngagementWeight:?];
 
-    v49 = [v7 dynamicModelParameterDict];
-    v50 = [v49 objectForKeyedSubscript:&off_10036A510];
+    dynamicModelParameterDict15 = [withCopy dynamicModelParameterDict];
+    v50 = [dynamicModelParameterDict15 objectForKeyedSubscript:&off_10036A510];
     [v50 floatValue];
-    [v8 setClusteringInterfaceTypeEngagementWeight:?];
+    [oCopy setClusteringInterfaceTypeEngagementWeight:?];
 
-    v51 = [v7 dynamicModelParameterDict];
+    evergreenEngagementScoreParameterDict6 = [withCopy dynamicModelParameterDict];
 
-    v20 = [v51 objectForKeyedSubscript:&off_10036A528];
+    v20 = [evergreenEngagementScoreParameterDict6 objectForKeyedSubscript:&off_10036A528];
     [v20 floatValue];
-    [v8 setThematicSummaryInterfaceTypeEngagementWeight:?];
+    [oCopy setThematicSummaryInterfaceTypeEngagementWeight:?];
   }
 }
 

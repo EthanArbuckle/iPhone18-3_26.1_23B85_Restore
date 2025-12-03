@@ -1,18 +1,18 @@
 @interface HKAudiogramAverageSensitivityDataSource
 - (HKAudiogramAverageSensitivityDataSource)init;
-- (HKAudiogramAverageSensitivityDataSource)initWithAudiogramSample:(id)a3 isLeftEar:(BOOL)a4;
-- (HKGraphSeriesDataBlockPath)blockPathForX:(SEL)a3 zoom:(id)a4 resolution:(int64_t)a5;
-- (id)cachedBlockForPath:(HKGraphSeriesDataBlockPath *)a3 context:(id)a4;
+- (HKAudiogramAverageSensitivityDataSource)initWithAudiogramSample:(id)sample isLeftEar:(BOOL)ear;
+- (HKGraphSeriesDataBlockPath)blockPathForX:(SEL)x zoom:(id)zoom resolution:(int64_t)resolution;
+- (id)cachedBlockForPath:(HKGraphSeriesDataBlockPath *)path context:(id)context;
 @end
 
 @implementation HKAudiogramAverageSensitivityDataSource
 
-- (HKAudiogramAverageSensitivityDataSource)initWithAudiogramSample:(id)a3 isLeftEar:(BOOL)a4
+- (HKAudiogramAverageSensitivityDataSource)initWithAudiogramSample:(id)sample isLeftEar:(BOOL)ear
 {
   v7 = objc_allocWithZone(HKGraphSeriesDataBlock);
-  v8 = a3;
+  sampleCopy = sample;
   v9 = [v7 init];
-  sub_1C3CC1AD0(v8, a4);
+  sub_1C3CC1AD0(sampleCopy, ear);
   sub_1C3C77FEC(0, &qword_1EC085850);
   v10 = sub_1C3D202A4();
 
@@ -26,7 +26,7 @@
   return v11;
 }
 
-- (HKGraphSeriesDataBlockPath)blockPathForX:(SEL)a3 zoom:(id)a4 resolution:(int64_t)a5
+- (HKGraphSeriesDataBlockPath)blockPathForX:(SEL)x zoom:(id)zoom resolution:(int64_t)resolution
 {
   swift_unknownObjectRetain();
   sub_1C3D20774();
@@ -37,19 +37,19 @@
   return result;
 }
 
-- (id)cachedBlockForPath:(HKGraphSeriesDataBlockPath *)a3 context:(id)a4
+- (id)cachedBlockForPath:(HKGraphSeriesDataBlockPath *)path context:(id)context
 {
-  index = a3->index;
-  if (a4)
+  index = path->index;
+  if (context)
   {
-    v6 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_1C3D20774();
     swift_unknownObjectRelease();
     if (index)
     {
 LABEL_3:
-      v7 = [objc_opt_self() emptyDataBlock];
+      emptyDataBlock = [objc_opt_self() emptyDataBlock];
 
       sub_1C396C69C(v10);
       goto LABEL_6;
@@ -59,7 +59,7 @@ LABEL_3:
   else
   {
     memset(v10, 0, sizeof(v10));
-    v8 = self;
+    selfCopy2 = self;
     if (index)
     {
       goto LABEL_3;
@@ -67,11 +67,11 @@ LABEL_3:
   }
 
   sub_1C396C69C(v10);
-  v7 = *(&self->super.super.isa + OBJC_IVAR___HKAudiogramAverageSensitivityDataSource_dataBlock);
+  emptyDataBlock = *(&self->super.super.isa + OBJC_IVAR___HKAudiogramAverageSensitivityDataSource_dataBlock);
 
 LABEL_6:
 
-  return v7;
+  return emptyDataBlock;
 }
 
 - (HKAudiogramAverageSensitivityDataSource)init

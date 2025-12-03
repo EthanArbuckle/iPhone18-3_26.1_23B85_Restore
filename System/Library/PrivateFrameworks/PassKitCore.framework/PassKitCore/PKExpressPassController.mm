@@ -1,43 +1,43 @@
 @interface PKExpressPassController
 - (BOOL)deviceUsesAutomaticAuthorization;
-- (BOOL)hasEligibleExpressUpgradeRequestForPass:(id)a3;
-- (BOOL)isExpressModeSupportedForPass:(id)a3;
+- (BOOL)hasEligibleExpressUpgradeRequestForPass:(id)pass;
+- (BOOL)isExpressModeSupportedForPass:(id)pass;
 - (BOOL)supportsLowPowerExpressMode;
-- (PKExpressPassController)initWithPaymentDataProvider:(id)a3 passLibraryDataProvider:(id)a4 isForWatch:(BOOL)a5;
-- (id)eligibleExpressUpgradeRequestsForPass:(id)a3;
+- (PKExpressPassController)initWithPaymentDataProvider:(id)provider passLibraryDataProvider:(id)dataProvider isForWatch:(BOOL)watch;
+- (id)eligibleExpressUpgradeRequestsForPass:(id)pass;
 - (id)enabledExpressPasses;
-- (id)existingExpressPassConfigurationForPass:(id)a3;
-- (id)existingExpressPassInformationForPass:(id)a3;
-- (id)expressModeSupportedForPass:(id)a3;
-- (id)expressModeUpgradeRequestForPass:(id)a3;
+- (id)existingExpressPassConfigurationForPass:(id)pass;
+- (id)existingExpressPassInformationForPass:(id)pass;
+- (id)expressModeSupportedForPass:(id)pass;
+- (id)expressModeUpgradeRequestForPass:(id)pass;
 - (id)expressState;
 - (id)presentingViewController;
-- (void)_disableExpressModeForPassWithUniqueIdentifier:(id)a3 withCompletion:(id)a4;
-- (void)conflictingExpressPassesWithPassConfiguration:(id)a3 completion:(id)a4;
-- (void)conflictingExpressPassesWithPassInformation:(id)a3 completion:(id)a4;
-- (void)disableExpressModeForPass:(id)a3 withCompletion:(id)a4;
-- (void)disableExpressModeForPassesWithUniqueIdentifiers:(id)a3 withCompletion:(id)a4;
-- (void)setExpressModeWithPassConfiguration:(id)a3 requiresAuth:(BOOL)a4 credential:(id)a5 completion:(id)a6;
-- (void)setExpressModeWithPassInformation:(id)a3 credential:(id)a4 completion:(id)a5;
-- (void)upgradeExpressModeForPass:(id)a3 withCredential:(id)a4 completion:(id)a5;
-- (void)upgradeExpressModeForPass:(id)a3 withCredential:(id)a4 resultHandler:(id)a5;
+- (void)_disableExpressModeForPassWithUniqueIdentifier:(id)identifier withCompletion:(id)completion;
+- (void)conflictingExpressPassesWithPassConfiguration:(id)configuration completion:(id)completion;
+- (void)conflictingExpressPassesWithPassInformation:(id)information completion:(id)completion;
+- (void)disableExpressModeForPass:(id)pass withCompletion:(id)completion;
+- (void)disableExpressModeForPassesWithUniqueIdentifiers:(id)identifiers withCompletion:(id)completion;
+- (void)setExpressModeWithPassConfiguration:(id)configuration requiresAuth:(BOOL)auth credential:(id)credential completion:(id)completion;
+- (void)setExpressModeWithPassInformation:(id)information credential:(id)credential completion:(id)completion;
+- (void)upgradeExpressModeForPass:(id)pass withCredential:(id)credential completion:(id)completion;
+- (void)upgradeExpressModeForPass:(id)pass withCredential:(id)credential resultHandler:(id)handler;
 @end
 
 @implementation PKExpressPassController
 
-- (PKExpressPassController)initWithPaymentDataProvider:(id)a3 passLibraryDataProvider:(id)a4 isForWatch:(BOOL)a5
+- (PKExpressPassController)initWithPaymentDataProvider:(id)provider passLibraryDataProvider:(id)dataProvider isForWatch:(BOOL)watch
 {
-  v8 = a3;
-  v9 = a4;
+  providerCopy = provider;
+  dataProviderCopy = dataProvider;
   v17.receiver = self;
   v17.super_class = PKExpressPassController;
   v10 = [(PKExpressPassController *)&v17 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeWeak(&v10->_paymentDataProvider, v8);
-    objc_storeWeak(&v11->_passLibraryDataProvider, v9);
-    v11->_isForWatch = a5;
+    objc_storeWeak(&v10->_paymentDataProvider, providerCopy);
+    objc_storeWeak(&v11->_passLibraryDataProvider, dataProviderCopy);
+    v11->_isForWatch = watch;
     WeakRetained = objc_loadWeakRetained(&v11->_paymentDataProvider);
     v11->_hasSupportsExpressForAutomaticSelectionTechnologyTypeCheck = objc_opt_respondsToSelector() & 1;
 
@@ -59,9 +59,9 @@
   return v11;
 }
 
-- (id)expressModeSupportedForPass:(id)a3
+- (id)expressModeSupportedForPass:(id)pass
 {
-  v4 = a3;
+  passCopy = pass;
   if (self->_hasSupportsExpressForAutomaticSelectionTechnologyTypeCheck)
   {
     v5 = [PKExpressPassInformation alloc];
@@ -70,7 +70,7 @@
     v9[2] = __55__PKExpressPassController_expressModeSupportedForPass___block_invoke;
     v9[3] = &unk_1E79DDD18;
     v9[4] = self;
-    v6 = [(PKExpressPassInformation *)v5 initForPaymentPass:v4 withTechologyTest:v9];
+    v6 = [(PKExpressPassInformation *)v5 initForPaymentPass:passCopy withTechologyTest:v9];
   }
 
   else
@@ -96,9 +96,9 @@ uint64_t __55__PKExpressPassController_expressModeSupportedForPass___block_invok
   return v4;
 }
 
-- (BOOL)isExpressModeSupportedForPass:(id)a3
+- (BOOL)isExpressModeSupportedForPass:(id)pass
 {
-  v4 = a3;
+  passCopy = pass;
   if (self->_hasSupportsExpressForAutomaticSelectionTechnologyTypeCheck)
   {
     v5 = [PKExpressPassInformation alloc];
@@ -107,7 +107,7 @@ uint64_t __55__PKExpressPassController_expressModeSupportedForPass___block_invok
     v10[2] = __57__PKExpressPassController_isExpressModeSupportedForPass___block_invoke;
     v10[3] = &unk_1E79DDD18;
     v10[4] = self;
-    v6 = [(PKExpressPassInformation *)v5 initForPaymentPass:v4 withTechologyTest:v10];
+    v6 = [(PKExpressPassInformation *)v5 initForPaymentPass:passCopy withTechologyTest:v10];
     v7 = v6 != 0;
   }
 
@@ -134,16 +134,16 @@ uint64_t __57__PKExpressPassController_isExpressModeSupportedForPass___block_inv
   return v4;
 }
 
-- (void)conflictingExpressPassesWithPassConfiguration:(id)a3 completion:(id)a4
+- (void)conflictingExpressPassesWithPassConfiguration:(id)configuration completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  configurationCopy = configuration;
+  completionCopy = completion;
+  v8 = completionCopy;
+  if (completionCopy)
   {
     if (!self->_apiVersion)
     {
-      (*(v7 + 2))(v7, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
     }
 
     WeakRetained = objc_loadWeakRetained(&self->_paymentDataProvider);
@@ -158,7 +158,7 @@ uint64_t __57__PKExpressPassController_isExpressModeSupportedForPass___block_inv
       v20[3] = &unk_1E79D12B0;
       v20[4] = self;
       v21 = v8;
-      [v11 conflictingExpressPassIdentifiersForPassConfiguration:v6 withCompletion:v20];
+      [v11 conflictingExpressPassIdentifiersForPassConfiguration:configurationCopy withCompletion:v20];
 
       v12 = v21;
 LABEL_8:
@@ -171,14 +171,14 @@ LABEL_8:
     if (v13)
     {
       v14 = objc_loadWeakRetained(&self->_paymentDataProvider);
-      v15 = [v6 passInformation];
+      passInformation = [configurationCopy passInformation];
       v18[0] = MEMORY[0x1E69E9820];
       v18[1] = 3221225472;
       v18[2] = __84__PKExpressPassController_conflictingExpressPassesWithPassConfiguration_completion___block_invoke_2;
       v18[3] = &unk_1E79D12B0;
       v18[4] = self;
       v19 = v8;
-      [v14 conflictingExpressPassIdentifiersForPassInformation:v15 withCompletion:v18];
+      [v14 conflictingExpressPassIdentifiersForPassInformation:passInformation withCompletion:v18];
 
       v12 = v19;
       goto LABEL_8;
@@ -313,24 +313,24 @@ void __84__PKExpressPassController_conflictingExpressPassesWithPassConfiguration
   }
 }
 
-- (void)conflictingExpressPassesWithPassInformation:(id)a3 completion:(id)a4
+- (void)conflictingExpressPassesWithPassInformation:(id)information completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  informationCopy = information;
+  completionCopy = completion;
+  v8 = completionCopy;
+  if (completionCopy)
   {
     if (!self->_apiVersion)
     {
-      (*(v7 + 2))(v7, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
     }
 
     WeakRetained = objc_loadWeakRetained(&self->_passLibraryDataProvider);
-    v10 = [v6 passUniqueIdentifier];
-    v11 = [WeakRetained passWithUniqueID:v10];
-    v12 = [v11 secureElementPass];
+    passUniqueIdentifier = [informationCopy passUniqueIdentifier];
+    v11 = [WeakRetained passWithUniqueID:passUniqueIdentifier];
+    secureElementPass = [v11 secureElementPass];
 
-    v13 = [[PKExpressPassConfiguration alloc] initWithPassInformation:v6 forSecureElementPass:v12];
+    v13 = [[PKExpressPassConfiguration alloc] initWithPassInformation:informationCopy forSecureElementPass:secureElementPass];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __82__PKExpressPassController_conflictingExpressPassesWithPassInformation_completion___block_invoke;
@@ -340,11 +340,11 @@ void __84__PKExpressPassController_conflictingExpressPassesWithPassConfiguration
   }
 }
 
-- (id)existingExpressPassConfigurationForPass:(id)a3
+- (id)existingExpressPassConfigurationForPass:(id)pass
 {
   v40 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 uniqueID];
+  passCopy = pass;
+  uniqueID = [passCopy uniqueID];
   WeakRetained = objc_loadWeakRetained(&self->_paymentDataProvider);
   v7 = objc_opt_respondsToSelector();
 
@@ -352,13 +352,13 @@ void __84__PKExpressPassController_conflictingExpressPassesWithPassConfiguration
   v9 = v8;
   if (v7)
   {
-    v10 = [v8 expressPassConfigurations];
+    expressPassConfigurations = [v8 expressPassConfigurations];
 
     v36 = 0u;
     v37 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v11 = v10;
+    v11 = expressPassConfigurations;
     v12 = [v11 countByEnumeratingWithState:&v34 objects:v39 count:16];
     if (v12)
     {
@@ -373,11 +373,11 @@ void __84__PKExpressPassController_conflictingExpressPassesWithPassConfiguration
           }
 
           v15 = *(*(&v34 + 1) + 8 * i);
-          v16 = [v15 passUniqueIdentifier];
-          v17 = v16;
-          if (v5 && v16)
+          passUniqueIdentifier = [v15 passUniqueIdentifier];
+          v17 = passUniqueIdentifier;
+          if (uniqueID && passUniqueIdentifier)
           {
-            v18 = [v16 isEqual:v5];
+            v18 = [passUniqueIdentifier isEqual:uniqueID];
 
             if (v18)
             {
@@ -388,7 +388,7 @@ void __84__PKExpressPassController_conflictingExpressPassesWithPassConfiguration
           else
           {
 
-            if (v17 == v5)
+            if (v17 == uniqueID)
             {
 LABEL_29:
               v28 = v15;
@@ -419,13 +419,13 @@ LABEL_29:
     }
 
     v20 = objc_loadWeakRetained(&self->_paymentDataProvider);
-    v21 = [v20 expressPassesInformation];
+    expressPassesInformation = [v20 expressPassesInformation];
 
     v32 = 0u;
     v33 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v11 = v21;
+    v11 = expressPassesInformation;
     v12 = [v11 countByEnumeratingWithState:&v30 objects:v38 count:16];
     if (v12)
     {
@@ -440,11 +440,11 @@ LABEL_29:
           }
 
           v24 = *(*(&v30 + 1) + 8 * j);
-          v25 = [v24 passUniqueIdentifier];
-          v26 = v25;
-          if (v5 && v25)
+          passUniqueIdentifier2 = [v24 passUniqueIdentifier];
+          v26 = passUniqueIdentifier2;
+          if (uniqueID && passUniqueIdentifier2)
           {
-            v27 = [v25 isEqual:v5];
+            v27 = [passUniqueIdentifier2 isEqual:uniqueID];
 
             if (v27)
             {
@@ -455,10 +455,10 @@ LABEL_29:
           else
           {
 
-            if (v26 == v5)
+            if (v26 == uniqueID)
             {
 LABEL_31:
-              v28 = [[PKExpressPassConfiguration alloc] initWithPassInformation:v24 forSecureElementPass:v4];
+              v28 = [[PKExpressPassConfiguration alloc] initWithPassInformation:v24 forSecureElementPass:passCopy];
 LABEL_32:
               v12 = v28;
               goto LABEL_33;
@@ -484,12 +484,12 @@ LABEL_34:
   return v12;
 }
 
-- (id)existingExpressPassInformationForPass:(id)a3
+- (id)existingExpressPassInformationForPass:(id)pass
 {
-  v3 = [(PKExpressPassController *)self existingExpressPassConfigurationForPass:a3];
-  v4 = [v3 passInformation];
+  v3 = [(PKExpressPassController *)self existingExpressPassConfigurationForPass:pass];
+  passInformation = [v3 passInformation];
 
-  return v4;
+  return passInformation;
 }
 
 - (BOOL)supportsLowPowerExpressMode
@@ -503,14 +503,14 @@ LABEL_34:
   }
 
   v5 = objc_loadWeakRetained(&self->_paymentDataProvider);
-  v6 = [v5 supportsLowPowerExpressMode];
+  supportsLowPowerExpressMode = [v5 supportsLowPowerExpressMode];
 
-  return v6;
+  return supportsLowPowerExpressMode;
 }
 
-- (id)expressModeUpgradeRequestForPass:(id)a3
+- (id)expressModeUpgradeRequestForPass:(id)pass
 {
-  v3 = [(PKExpressPassController *)self eligibleExpressUpgradeRequestsForPass:a3];
+  v3 = [(PKExpressPassController *)self eligibleExpressUpgradeRequestsForPass:pass];
   if ([v3 count])
   {
     v4 = [v3 objectAtIndexedSubscript:0];
@@ -524,10 +524,10 @@ LABEL_34:
   return v4;
 }
 
-- (id)eligibleExpressUpgradeRequestsForPass:(id)a3
+- (id)eligibleExpressUpgradeRequestsForPass:(id)pass
 {
   v24[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  passCopy = pass;
   if (self->_hasSupportsExpressForAutomaticSelectionTechnologyTypeCheck)
   {
     aBlock[0] = MEMORY[0x1E69E9820];
@@ -537,9 +537,9 @@ LABEL_34:
     aBlock[4] = self;
     v5 = _Block_copy(aBlock);
     WeakRetained = objc_loadWeakRetained(&self->_paymentDataProvider);
-    v7 = [WeakRetained secureElementIdentifier];
+    secureElementIdentifier = [WeakRetained secureElementIdentifier];
 
-    if (v7)
+    if (secureElementIdentifier)
     {
       v8 = objc_loadWeakRetained(&self->_paymentDataProvider);
       v9 = objc_opt_respondsToSelector();
@@ -547,7 +547,7 @@ LABEL_34:
       if (v9)
       {
         v10 = objc_loadWeakRetained(&self->_paymentDataProvider);
-        v11 = [v10 deviceClass];
+        deviceClass = [v10 deviceClass];
       }
 
       else
@@ -559,7 +559,7 @@ LABEL_34:
           _os_log_impl(&dword_1AD337000, v14, OS_LOG_TYPE_DEFAULT, "Unable to get device class", buf, 2u);
         }
 
-        v11 = PKDeviceClass();
+        deviceClass = PKDeviceClass();
       }
 
       v15 = objc_loadWeakRetained(&self->_paymentDataProvider);
@@ -568,7 +568,7 @@ LABEL_34:
       if (v16)
       {
         v17 = objc_loadWeakRetained(&self->_paymentDataProvider);
-        v18 = [v17 deviceVersion];
+        deviceVersion = [v17 deviceVersion];
       }
 
       else
@@ -580,21 +580,21 @@ LABEL_34:
           _os_log_impl(&dword_1AD337000, v19, OS_LOG_TYPE_DEFAULT, "Unable to get device version", buf, 2u);
         }
 
-        v18 = +[PKOSVersionRequirement fromDeviceVersion];
+        deviceVersion = +[PKOSVersionRequirement fromDeviceVersion];
       }
 
-      v24[0] = v7;
+      v24[0] = secureElementIdentifier;
       v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:1];
-      v13 = [v4 eligibleExpressUpgradeRequestsForDeviceClass:v11 deviceSEIDs:v20 deviceVersion:v18 technologyTest:v5];
+      v13 = [passCopy eligibleExpressUpgradeRequestsForDeviceClass:deviceClass deviceSEIDs:v20 deviceVersion:deviceVersion technologyTest:v5];
     }
 
     else
     {
-      v11 = PKLogFacilityTypeGetObject(7uLL);
-      if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+      deviceClass = PKLogFacilityTypeGetObject(7uLL);
+      if (os_log_type_enabled(deviceClass, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 0;
-        _os_log_impl(&dword_1AD337000, v11, OS_LOG_TYPE_DEFAULT, "Unable to get device SEID", buf, 2u);
+        _os_log_impl(&dword_1AD337000, deviceClass, OS_LOG_TYPE_DEFAULT, "Unable to get device SEID", buf, 2u);
       }
 
       v13 = 0;
@@ -624,31 +624,31 @@ uint64_t __65__PKExpressPassController_eligibleExpressUpgradeRequestsForPass___b
   return v4;
 }
 
-- (BOOL)hasEligibleExpressUpgradeRequestForPass:(id)a3
+- (BOOL)hasEligibleExpressUpgradeRequestForPass:(id)pass
 {
-  v3 = [(PKExpressPassController *)self eligibleExpressUpgradeRequestsForPass:a3];
+  v3 = [(PKExpressPassController *)self eligibleExpressUpgradeRequestsForPass:pass];
   v4 = [v3 count] != 0;
 
   return v4;
 }
 
-- (void)upgradeExpressModeForPass:(id)a3 withCredential:(id)a4 completion:(id)a5
+- (void)upgradeExpressModeForPass:(id)pass withCredential:(id)credential completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __79__PKExpressPassController_upgradeExpressModeForPass_withCredential_completion___block_invoke;
   v10[3] = &unk_1E79DDD40;
-  v11 = v8;
-  v9 = v8;
-  [(PKExpressPassController *)self upgradeExpressModeForPass:a3 withCredential:a4 resultHandler:v10];
+  v11 = completionCopy;
+  v9 = completionCopy;
+  [(PKExpressPassController *)self upgradeExpressModeForPass:pass withCredential:credential resultHandler:v10];
 }
 
-- (void)upgradeExpressModeForPass:(id)a3 withCredential:(id)a4 resultHandler:(id)a5
+- (void)upgradeExpressModeForPass:(id)pass withCredential:(id)credential resultHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  passCopy = pass;
+  credentialCopy = credential;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&self->_paymentDataProvider);
   if ([WeakRetained isDeviceInRestrictedMode])
   {
@@ -681,9 +681,9 @@ LABEL_13:
       _os_log_impl(&dword_1AD337000, v12, OS_LOG_TYPE_DEFAULT, v13, location, 2u);
 LABEL_14:
 
-      if (v10)
+      if (handlerCopy)
       {
-        (*(v10 + 2))(v10, 0, 0);
+        (*(handlerCopy + 2))(handlerCopy, 0, 0);
       }
 
       goto LABEL_21;
@@ -703,7 +703,7 @@ LABEL_14:
     goto LABEL_13;
   }
 
-  v15 = [(PKExpressPassController *)self expressModeUpgradeRequestForPass:v8];
+  v15 = [(PKExpressPassController *)self expressModeUpgradeRequestForPass:passCopy];
   if (v15)
   {
     objc_initWeak(location, self);
@@ -713,10 +713,10 @@ LABEL_14:
     v18[2] = __82__PKExpressPassController_upgradeExpressModeForPass_withCredential_resultHandler___block_invoke;
     v18[3] = &unk_1E79DDD68;
     objc_copyWeak(&v21, location);
-    v20 = v10;
+    v20 = handlerCopy;
     v18[4] = self;
-    v19 = v9;
-    [WeakRetained passUpgradeWithRequest:v15 pass:v8 visibleViewController:v16 completion:v18];
+    v19 = credentialCopy;
+    [WeakRetained passUpgradeWithRequest:v15 pass:passCopy visibleViewController:v16 completion:v18];
 
     objc_destroyWeak(&v21);
     objc_destroyWeak(location);
@@ -731,9 +731,9 @@ LABEL_14:
       _os_log_impl(&dword_1AD337000, v17, OS_LOG_TYPE_DEFAULT, "Missing upgrade request for pass, skipping pass upgrade.", location, 2u);
     }
 
-    if (v10)
+    if (handlerCopy)
     {
-      (*(v10 + 2))(v10, 0, 0);
+      (*(handlerCopy + 2))(handlerCopy, 0, 0);
     }
   }
 
@@ -853,12 +853,12 @@ void __82__PKExpressPassController_upgradeExpressModeForPass_withCredential_resu
   }
 }
 
-- (void)setExpressModeWithPassConfiguration:(id)a3 requiresAuth:(BOOL)a4 credential:(id)a5 completion:(id)a6
+- (void)setExpressModeWithPassConfiguration:(id)configuration requiresAuth:(BOOL)auth credential:(id)credential completion:(id)completion
 {
-  v8 = a4;
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  authCopy = auth;
+  configurationCopy = configuration;
+  credentialCopy = credential;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_paymentDataProvider);
   if (self->_isForWatch)
   {
@@ -873,9 +873,9 @@ void __82__PKExpressPassController_upgradeExpressModeForPass_withCredential_resu
         _os_log_impl(&dword_1AD337000, v17, OS_LOG_TYPE_DEFAULT, "Missing presenting view controller, skipping setting express pass.", buf, 2u);
       }
 
-      if (v12)
+      if (completionCopy)
       {
-        v12[2](v12, 0);
+        completionCopy[2](completionCopy, 0);
       }
 
       goto LABEL_14;
@@ -888,8 +888,8 @@ void __82__PKExpressPassController_upgradeExpressModeForPass_withCredential_resu
       v24[1] = 3221225472;
       v24[2] = __98__PKExpressPassController_setExpressModeWithPassConfiguration_requiresAuth_credential_completion___block_invoke;
       v24[3] = &unk_1E79D1578;
-      v25 = v12;
-      [WeakRetained setExpressWithPassConfiguration:v10 visibleViewController:v15 requiresAuth:v8 completion:v24];
+      v25 = completionCopy;
+      [WeakRetained setExpressWithPassConfiguration:configurationCopy visibleViewController:v15 requiresAuth:authCopy completion:v24];
 
       v16 = v25;
 LABEL_13:
@@ -900,15 +900,15 @@ LABEL_14:
 
     if (objc_opt_respondsToSelector())
     {
-      v18 = [v10 passInformation];
+      passInformation = [configurationCopy passInformation];
       v19 = objc_loadWeakRetained(&self->_presentingViewController);
       v22[0] = MEMORY[0x1E69E9820];
       v22[1] = 3221225472;
       v22[2] = __98__PKExpressPassController_setExpressModeWithPassConfiguration_requiresAuth_credential_completion___block_invoke_2;
       v22[3] = &unk_1E79D1550;
       v22[4] = self;
-      v23 = v12;
-      [WeakRetained setExpressWithPassInformation:v18 visibleViewController:v19 requiresAuth:v8 completion:v22];
+      v23 = completionCopy;
+      [WeakRetained setExpressWithPassInformation:passInformation visibleViewController:v19 requiresAuth:authCopy completion:v22];
 
       v16 = v23;
       goto LABEL_13;
@@ -921,8 +921,8 @@ LABEL_14:
     v20[1] = 3221225472;
     v20[2] = __98__PKExpressPassController_setExpressModeWithPassConfiguration_requiresAuth_credential_completion___block_invoke_4;
     v20[3] = &unk_1E79D1578;
-    v21 = v12;
-    [WeakRetained setExpressWithPassConfiguration:v10 credential:v11 completion:v20];
+    v21 = completionCopy;
+    [WeakRetained setExpressWithPassConfiguration:configurationCopy credential:credentialCopy completion:v20];
     v16 = v21;
     goto LABEL_13;
   }
@@ -996,24 +996,24 @@ uint64_t __98__PKExpressPassController_setExpressModeWithPassConfiguration_requi
   return result;
 }
 
-- (void)setExpressModeWithPassInformation:(id)a3 credential:(id)a4 completion:(id)a5
+- (void)setExpressModeWithPassInformation:(id)information credential:(id)credential completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  completionCopy = completion;
+  credentialCopy = credential;
+  informationCopy = information;
   WeakRetained = objc_loadWeakRetained(&self->_passLibraryDataProvider);
-  v12 = [v10 passUniqueIdentifier];
-  v13 = [WeakRetained passWithUniqueID:v12];
-  v14 = [v13 secureElementPass];
+  passUniqueIdentifier = [informationCopy passUniqueIdentifier];
+  v13 = [WeakRetained passWithUniqueID:passUniqueIdentifier];
+  secureElementPass = [v13 secureElementPass];
 
-  v15 = [[PKExpressPassConfiguration alloc] initWithPassInformation:v10 forSecureElementPass:v14];
+  v15 = [[PKExpressPassConfiguration alloc] initWithPassInformation:informationCopy forSecureElementPass:secureElementPass];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __83__PKExpressPassController_setExpressModeWithPassInformation_credential_completion___block_invoke;
   v17[3] = &unk_1E79D1300;
-  v18 = v8;
-  v16 = v8;
-  [(PKExpressPassController *)self setExpressModeWithPassConfiguration:v15 requiresAuth:1 credential:v9 completion:v17];
+  v18 = completionCopy;
+  v16 = completionCopy;
+  [(PKExpressPassController *)self setExpressModeWithPassConfiguration:v15 requiresAuth:1 credential:credentialCopy completion:v17];
 }
 
 void __83__PKExpressPassController_setExpressModeWithPassInformation_credential_completion___block_invoke(uint64_t a1, void *a2)
@@ -1023,10 +1023,10 @@ void __83__PKExpressPassController_setExpressModeWithPassInformation_credential_
   (*(v2 + 16))(v2, v3);
 }
 
-- (void)_disableExpressModeForPassWithUniqueIdentifier:(id)a3 withCompletion:(id)a4
+- (void)_disableExpressModeForPassWithUniqueIdentifier:(id)identifier withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_paymentDataProvider);
   if (self->_isForWatch)
   {
@@ -1039,9 +1039,9 @@ void __83__PKExpressPassController_setExpressModeWithPassInformation_credential_
       v15[3] = &unk_1E79D1550;
       v10 = &v16;
       v15[4] = self;
-      v16 = v7;
-      v11 = v7;
-      [WeakRetained removeExpressPassWithUniqueIdentifier:v6 visibleViewController:v9 completion:v15];
+      v16 = completionCopy;
+      v11 = completionCopy;
+      [WeakRetained removeExpressPassWithUniqueIdentifier:identifierCopy visibleViewController:v9 completion:v15];
 
 LABEL_6:
       return;
@@ -1055,9 +1055,9 @@ LABEL_6:
     v13[2] = __89__PKExpressPassController__disableExpressModeForPassWithUniqueIdentifier_withCompletion___block_invoke_3;
     v13[3] = &unk_1E79D1578;
     v10 = &v14;
-    v14 = v7;
-    v12 = v7;
-    [WeakRetained removeExpressPassWithUniqueIdentifier:v6 completion:v13];
+    v14 = completionCopy;
+    v12 = completionCopy;
+    [WeakRetained removeExpressPassWithUniqueIdentifier:identifierCopy completion:v13];
     goto LABEL_6;
   }
 
@@ -1114,19 +1114,19 @@ uint64_t __89__PKExpressPassController__disableExpressModeForPassWithUniqueIdent
   return result;
 }
 
-- (void)disableExpressModeForPass:(id)a3 withCompletion:(id)a4
+- (void)disableExpressModeForPass:(id)pass withCompletion:(id)completion
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [a3 uniqueID];
-  v12[0] = v7;
+  completionCopy = completion;
+  uniqueID = [pass uniqueID];
+  v12[0] = uniqueID;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:1];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __68__PKExpressPassController_disableExpressModeForPass_withCompletion___block_invoke;
   v10[3] = &unk_1E79D1300;
-  v11 = v6;
-  v9 = v6;
+  v11 = completionCopy;
+  v9 = completionCopy;
   [(PKExpressPassController *)self disableExpressModeForPassesWithUniqueIdentifiers:v8 withCompletion:v10];
 }
 
@@ -1137,11 +1137,11 @@ void __68__PKExpressPassController_disableExpressModeForPass_withCompletion___bl
   (*(v2 + 16))(v2, v3);
 }
 
-- (void)disableExpressModeForPassesWithUniqueIdentifiers:(id)a3 withCompletion:(id)a4
+- (void)disableExpressModeForPassesWithUniqueIdentifiers:(id)identifiers withCompletion:(id)completion
 {
   v41 = *MEMORY[0x1E69E9840];
-  v20 = a3;
-  v21 = a4;
+  identifiersCopy = identifiers;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_paymentDataProvider);
   v19 = WeakRetained;
   if (!self->_isForWatch)
@@ -1159,7 +1159,7 @@ LABEL_5:
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v11 = v20;
+    v11 = identifiersCopy;
     v12 = [v11 countByEnumeratingWithState:&v27 objects:v40 count:{16, v19}];
     if (v12)
     {
@@ -1194,14 +1194,14 @@ LABEL_5:
       while (v12);
     }
 
-    v16 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
     v22[0] = MEMORY[0x1E69E9820];
     v22[1] = 3221225472;
     v22[2] = __91__PKExpressPassController_disableExpressModeForPassesWithUniqueIdentifiers_withCompletion___block_invoke_3;
     v22[3] = &unk_1E79CB818;
-    v23 = v21;
+    v23 = completionCopy;
     v24 = buf;
-    v17 = [(PKAsyncUnaryOperationComposer *)v10 evaluateWithInput:v16 completion:v22];
+    v17 = [(PKAsyncUnaryOperationComposer *)v10 evaluateWithInput:null completion:v22];
 
     _Block_object_dispose(buf, 8);
     objc_destroyWeak(&location);
@@ -1221,8 +1221,8 @@ LABEL_5:
       v38[1] = 3221225472;
       v38[2] = __91__PKExpressPassController_disableExpressModeForPassesWithUniqueIdentifiers_withCompletion___block_invoke;
       v38[3] = &unk_1E79D1578;
-      v39 = v21;
-      [v7 removeExpressPassesWithUniqueIdentifiers:v20 visibleViewController:v9 completion:{v38, v19}];
+      v39 = completionCopy;
+      [v7 removeExpressPassesWithUniqueIdentifiers:identifiersCopy visibleViewController:v9 completion:{v38, v19}];
 
       goto LABEL_13;
     }
@@ -1237,9 +1237,9 @@ LABEL_5:
     _os_log_impl(&dword_1AD337000, v18, OS_LOG_TYPE_DEFAULT, "Missing presenting view controller when removing express passes.", buf, 2u);
   }
 
-  if (v21)
+  if (completionCopy)
   {
-    (*(v21 + 2))(v21, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 
 LABEL_13:
@@ -1308,7 +1308,7 @@ uint64_t __91__PKExpressPassController_disableExpressModeForPassesWithUniqueIden
   v6 = v5;
   if (v4)
   {
-    v7 = [v5 expressPassConfigurations];
+    expressPassConfigurations = [v5 expressPassConfigurations];
 LABEL_5:
 
     goto LABEL_7;
@@ -1319,25 +1319,25 @@ LABEL_5:
   if (v8)
   {
     v6 = objc_loadWeakRetained(&self->_paymentDataProvider);
-    v9 = [v6 expressPassesInformation];
+    expressPassesInformation = [v6 expressPassesInformation];
     v24[0] = MEMORY[0x1E69E9820];
     v24[1] = 3221225472;
     v24[2] = __47__PKExpressPassController_enabledExpressPasses__block_invoke;
     v24[3] = &unk_1E79DDD90;
     v24[4] = self;
-    v7 = [v9 pk_setBySafelyApplyingBlock:v24];
+    expressPassConfigurations = [expressPassesInformation pk_setBySafelyApplyingBlock:v24];
 
     goto LABEL_5;
   }
 
-  v7 = 0;
+  expressPassConfigurations = 0;
 LABEL_7:
-  v10 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v7, "count")}];
+  v10 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(expressPassConfigurations, "count")}];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v11 = v7;
+  v11 = expressPassConfigurations;
   v12 = [v11 countByEnumeratingWithState:&v20 objects:v25 count:16];
   if (v12)
   {
@@ -1353,10 +1353,10 @@ LABEL_7:
         }
 
         v16 = *(*(&v20 + 1) + 8 * i);
-        v17 = [v16 passUniqueIdentifier];
-        if (v17)
+        passUniqueIdentifier = [v16 passUniqueIdentifier];
+        if (passUniqueIdentifier)
         {
-          [v10 setObject:v16 forKey:v17];
+          [v10 setObject:v16 forKey:passUniqueIdentifier];
         }
       }
 
@@ -1387,15 +1387,15 @@ PKExpressPassConfiguration *__47__PKExpressPassController_enabledExpressPasses__
 
 - (id)expressState
 {
-  v2 = [(PKExpressPassController *)self enabledExpressPasses];
-  v3 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v2, "count")}];
+  enabledExpressPasses = [(PKExpressPassController *)self enabledExpressPasses];
+  v3 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(enabledExpressPasses, "count")}];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __39__PKExpressPassController_expressState__block_invoke;
   v7[3] = &unk_1E79DDDB8;
   v8 = v3;
   v4 = v3;
-  [v2 enumerateKeysAndObjectsUsingBlock:v7];
+  [enabledExpressPasses enumerateKeysAndObjectsUsingBlock:v7];
   v5 = [v4 copy];
 
   return v5;

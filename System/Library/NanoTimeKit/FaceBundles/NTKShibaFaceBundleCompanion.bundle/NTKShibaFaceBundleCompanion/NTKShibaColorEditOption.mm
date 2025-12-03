@@ -8,10 +8,10 @@
 
 - (id)localizedName
 {
-  v2 = [(NTKShibaColorEditOption *)self pigmentEditOption];
-  v3 = [v2 localizedName];
+  pigmentEditOption = [(NTKShibaColorEditOption *)self pigmentEditOption];
+  localizedName = [pigmentEditOption localizedName];
 
-  return v3;
+  return localizedName;
 }
 
 - (id)_valueToFaceBundleStringDict

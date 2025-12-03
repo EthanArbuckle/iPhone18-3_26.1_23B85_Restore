@@ -1,13 +1,13 @@
 @interface ASDTIOA2BlockControl
 - (ASDTIOA2Device)ioa2Device;
-- (BOOL)getProperty:(const AudioObjectPropertyAddress *)a3 withQualifierSize:(unsigned int)a4 qualifierData:(const void *)a5 dataSize:(unsigned int *)a6 andData:(void *)a7 forClient:(int)a8;
-- (BOOL)hasProperty:(const AudioObjectPropertyAddress *)a3;
-- (BOOL)isPropertySettable:(const AudioObjectPropertyAddress *)a3;
-- (BOOL)setProperty:(const AudioObjectPropertyAddress *)a3 withQualifierSize:(unsigned int)a4 qualifierData:(const void *)a5 dataSize:(unsigned int)a6 andData:(const void *)a7 forClient:(int)a8;
-- (BOOL)synchronizeWithRegistryDictionary:(id)a3;
+- (BOOL)getProperty:(const AudioObjectPropertyAddress *)property withQualifierSize:(unsigned int)size qualifierData:(const void *)data dataSize:(unsigned int *)dataSize andData:(void *)andData forClient:(int)client;
+- (BOOL)hasProperty:(const AudioObjectPropertyAddress *)property;
+- (BOOL)isPropertySettable:(const AudioObjectPropertyAddress *)settable;
+- (BOOL)setProperty:(const AudioObjectPropertyAddress *)property withQualifierSize:(unsigned int)size qualifierData:(const void *)data dataSize:(unsigned int)dataSize andData:(const void *)andData forClient:(int)client;
+- (BOOL)synchronizeWithRegistryDictionary:(id)dictionary;
 - (NSArray)propertySelectorInfo;
 - (id).cxx_construct;
-- (unsigned)dataSizeForProperty:(const AudioObjectPropertyAddress *)a3 withQualifierSize:(unsigned int)a4 andQualifierData:(const void *)a5;
+- (unsigned)dataSizeForProperty:(const AudioObjectPropertyAddress *)property withQualifierSize:(unsigned int)size andQualifierData:(const void *)data;
 - (void)dealloc;
 @end
 
@@ -43,19 +43,19 @@
   return v4;
 }
 
-- (BOOL)synchronizeWithRegistryDictionary:(id)a3
+- (BOOL)synchronizeWithRegistryDictionary:(id)dictionary
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ASDTIOA2BlockControl *)self ioa2Device];
-  v6 = [v5 ioa2UserClient];
+  dictionaryCopy = dictionary;
+  ioa2Device = [(ASDTIOA2BlockControl *)self ioa2Device];
+  ioa2UserClient = [ioa2Device ioa2UserClient];
 
-  if (!v6)
+  if (!ioa2UserClient)
   {
     goto LABEL_17;
   }
 
-  v7 = v4;
+  v7 = dictionaryCopy;
   v8 = v7;
   if (!v7)
   {
@@ -72,7 +72,7 @@ LABEL_8:
       _os_log_impl(&dword_2416BA000, v11, OS_LOG_TYPE_DEFAULT, "%@: Couldn't synchronize with registry", buf, 0xCu);
     }
 
-    LOBYTE(v6) = 0;
+    LOBYTE(ioa2UserClient) = 0;
     goto LABEL_15;
   }
 
@@ -92,13 +92,13 @@ LABEL_8:
   }
 
   std::mutex::lock((self + 200));
-  ASDT::IOA2UserClient::MapBlockControlBuffer(v6, &cf, buf);
+  ASDT::IOA2UserClient::MapBlockControlBuffer(ioa2UserClient, &cf, buf);
   ASDT::IOMemoryMap::operator=();
   MEMORY[0x245CED200](buf);
   if (*(self + 23))
   {
     v10 = [v8 objectForKeyedSubscript:@"property selectors"];
-    LOBYTE(v6) = [(ASDControl *)self asdtAddControlProperties:v10];
+    LOBYTE(ioa2UserClient) = [(ASDControl *)self asdtAddControlProperties:v10];
   }
 
   else
@@ -111,7 +111,7 @@ LABEL_8:
       [(ASDTIOA2BlockControl *)v15 synchronizeWithRegistryDictionary:buf, v10];
     }
 
-    LOBYTE(v6) = 0;
+    LOBYTE(ioa2UserClient) = 0;
   }
 
   std::mutex::unlock((self + 200));
@@ -124,17 +124,17 @@ LABEL_15:
 LABEL_17:
 
   v16 = *MEMORY[0x277D85DE8];
-  return v6;
+  return ioa2UserClient;
 }
 
-- (BOOL)hasProperty:(const AudioObjectPropertyAddress *)a3
+- (BOOL)hasProperty:(const AudioObjectPropertyAddress *)property
 {
-  if (!a3)
+  if (!property)
   {
     return 0;
   }
 
-  if (a3->mSelector == 1651272546 || a3->mSelector == 1651272548)
+  if (property->mSelector == 1651272546 || property->mSelector == 1651272548)
   {
     return 1;
   }
@@ -146,14 +146,14 @@ LABEL_17:
   return [(ASDTIOA2BlockControl *)&v7 hasProperty:?];
 }
 
-- (BOOL)isPropertySettable:(const AudioObjectPropertyAddress *)a3
+- (BOOL)isPropertySettable:(const AudioObjectPropertyAddress *)settable
 {
-  if (!a3)
+  if (!settable)
   {
     return 0;
   }
 
-  if (a3->mSelector == 1651272546)
+  if (settable->mSelector == 1651272546)
   {
 
     return [(ASDTIOA2BlockControl *)self settable];
@@ -169,19 +169,19 @@ LABEL_17:
   }
 }
 
-- (unsigned)dataSizeForProperty:(const AudioObjectPropertyAddress *)a3 withQualifierSize:(unsigned int)a4 andQualifierData:(const void *)a5
+- (unsigned)dataSizeForProperty:(const AudioObjectPropertyAddress *)property withQualifierSize:(unsigned int)size andQualifierData:(const void *)data
 {
-  if (!a3)
+  if (!property)
   {
     return 0;
   }
 
-  if (a3->mSelector == 1651272548)
+  if (property->mSelector == 1651272548)
   {
     return 8;
   }
 
-  if (a3->mSelector == 1651272546)
+  if (property->mSelector == 1651272546)
   {
     std::mutex::lock((self + 200));
     v6 = *(self + 48);
@@ -198,31 +198,31 @@ LABEL_17:
   return v6;
 }
 
-- (BOOL)getProperty:(const AudioObjectPropertyAddress *)a3 withQualifierSize:(unsigned int)a4 qualifierData:(const void *)a5 dataSize:(unsigned int *)a6 andData:(void *)a7 forClient:(int)a8
+- (BOOL)getProperty:(const AudioObjectPropertyAddress *)property withQualifierSize:(unsigned int)size qualifierData:(const void *)data dataSize:(unsigned int *)dataSize andData:(void *)andData forClient:(int)client
 {
-  LOBYTE(v8) = 0;
-  if (a6 && a3 && a7)
+  LOBYTE(ioa2UserClient2) = 0;
+  if (dataSize && property && andData)
   {
-    if (a3->mSelector == 1651272548)
+    if (property->mSelector == 1651272548)
     {
-      v14 = [(ASDTIOA2BlockControl *)self ioa2Device];
-      v15 = [v14 ioa2UserClient];
+      ioa2Device = [(ASDTIOA2BlockControl *)self ioa2Device];
+      ioa2UserClient = [ioa2Device ioa2UserClient];
 
-      if (!v15)
+      if (!ioa2UserClient)
       {
-        LOBYTE(v8) = 0;
-        return v8;
+        LOBYTE(ioa2UserClient2) = 0;
+        return ioa2UserClient2;
       }
 
       std::mutex::lock((self + 200));
-      LOBYTE(v8) = *a6 > 7;
-      if (*a6 >= 8)
+      LOBYTE(ioa2UserClient2) = *dataSize > 7;
+      if (*dataSize >= 8)
       {
-        *a6 = 8;
-        ASDT::IOA2UserClient::CopyControlDictionaryByID(v15, [(ASDTIOA2BlockControl *)self userClientID], &v21);
+        *dataSize = 8;
+        ASDT::IOA2UserClient::CopyControlDictionaryByID(ioa2UserClient, [(ASDTIOA2BlockControl *)self userClientID], &v21);
         ASDT::IOA2UserClient::CopyBlockControlInfo_Descriptor(&v21, &v20);
         v16 = v21;
-        *a7 = v20;
+        *andData = v20;
         if (v16)
         {
           CFRelease(v16);
@@ -233,12 +233,12 @@ LABEL_17:
       goto LABEL_20;
     }
 
-    if (a3->mSelector == 1651272546)
+    if (property->mSelector == 1651272546)
     {
-      v12 = [(ASDTIOA2BlockControl *)self ioa2Device];
-      v8 = [v12 ioa2UserClient];
+      ioa2Device2 = [(ASDTIOA2BlockControl *)self ioa2Device];
+      ioa2UserClient2 = [ioa2Device2 ioa2UserClient];
 
-      if (v8)
+      if (ioa2UserClient2)
       {
         std::mutex::lock((self + 200));
         if (!*(self + 23))
@@ -247,22 +247,22 @@ LABEL_17:
         }
 
         v13 = *(self + 48);
-        if (v13 >= *a6)
+        if (v13 >= *dataSize)
         {
-          v13 = *a6;
+          v13 = *dataSize;
         }
 
-        *a6 = v13;
-        if (ASDT::IOA2UserClient::MoveBlockControlData(v8, [(ASDTIOA2BlockControl *)self userClientID], 0, *a6))
+        *dataSize = v13;
+        if (ASDT::IOA2UserClient::MoveBlockControlData(ioa2UserClient2, [(ASDTIOA2BlockControl *)self userClientID], 0, *dataSize))
         {
-          memcpy(a7, *(self + 23), *a6);
-          LOBYTE(v8) = 1;
+          memcpy(andData, *(self + 23), *dataSize);
+          LOBYTE(ioa2UserClient2) = 1;
         }
 
         else
         {
 LABEL_18:
-          LOBYTE(v8) = 0;
+          LOBYTE(ioa2UserClient2) = 0;
         }
 
         v17 = (self + 200);
@@ -275,25 +275,25 @@ LABEL_20:
     {
       v19.receiver = self;
       v19.super_class = ASDTIOA2BlockControl;
-      LOBYTE(v8) = [ASDTIOA2BlockControl getProperty:sel_getProperty_withQualifierSize_qualifierData_dataSize_andData_forClient_ withQualifierSize:? qualifierData:? dataSize:? andData:? forClient:?];
+      LOBYTE(ioa2UserClient2) = [ASDTIOA2BlockControl getProperty:sel_getProperty_withQualifierSize_qualifierData_dataSize_andData_forClient_ withQualifierSize:? qualifierData:? dataSize:? andData:? forClient:?];
     }
   }
 
-  return v8;
+  return ioa2UserClient2;
 }
 
-- (BOOL)setProperty:(const AudioObjectPropertyAddress *)a3 withQualifierSize:(unsigned int)a4 qualifierData:(const void *)a5 dataSize:(unsigned int)a6 andData:(const void *)a7 forClient:(int)a8
+- (BOOL)setProperty:(const AudioObjectPropertyAddress *)property withQualifierSize:(unsigned int)size qualifierData:(const void *)data dataSize:(unsigned int)dataSize andData:(const void *)andData forClient:(int)client
 {
-  LOBYTE(v8) = 0;
-  if (a3 && a7)
+  LOBYTE(ioa2UserClient) = 0;
+  if (property && andData)
   {
-    LODWORD(v10) = a6;
-    if (a3->mSelector == 1651272546)
+    LODWORD(v10) = dataSize;
+    if (property->mSelector == 1651272546)
     {
-      v12 = [(ASDTIOA2BlockControl *)self ioa2Device];
-      v8 = [v12 ioa2UserClient];
+      ioa2Device = [(ASDTIOA2BlockControl *)self ioa2Device];
+      ioa2UserClient = [ioa2Device ioa2UserClient];
 
-      if (v8)
+      if (ioa2UserClient)
       {
         std::mutex::lock((self + 200));
         v13 = *(self + 23);
@@ -310,13 +310,13 @@ LABEL_20:
             v10 = v14;
           }
 
-          memcpy(v13, a7, v10);
-          LOBYTE(v8) = ASDT::IOA2UserClient::MoveBlockControlData(v8, [(ASDTIOA2BlockControl *)self userClientID], 1u, v10);
+          memcpy(v13, andData, v10);
+          LOBYTE(ioa2UserClient) = ASDT::IOA2UserClient::MoveBlockControlData(ioa2UserClient, [(ASDTIOA2BlockControl *)self userClientID], 1u, v10);
         }
 
         else
         {
-          LOBYTE(v8) = 0;
+          LOBYTE(ioa2UserClient) = 0;
         }
 
         std::mutex::unlock((self + 200));
@@ -327,11 +327,11 @@ LABEL_20:
     {
       v16.receiver = self;
       v16.super_class = ASDTIOA2BlockControl;
-      LOBYTE(v8) = [ASDTIOA2BlockControl setProperty:sel_setProperty_withQualifierSize_qualifierData_dataSize_andData_forClient_ withQualifierSize:? qualifierData:? dataSize:? andData:? forClient:?];
+      LOBYTE(ioa2UserClient) = [ASDTIOA2BlockControl setProperty:sel_setProperty_withQualifierSize_qualifierData_dataSize_andData_forClient_ withQualifierSize:? qualifierData:? dataSize:? andData:? forClient:?];
     }
   }
 
-  return v8;
+  return ioa2UserClient;
 }
 
 - (ASDTIOA2Device)ioa2Device

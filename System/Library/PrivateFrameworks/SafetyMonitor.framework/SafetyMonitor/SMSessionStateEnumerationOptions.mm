@@ -1,19 +1,19 @@
 @interface SMSessionStateEnumerationOptions
-- (SMSessionStateEnumerationOptions)initWithBatchSize:(unint64_t)a3 fetchLimit:(unint64_t)a4 sortByCreationDate:(BOOL)a5 ascending:(BOOL)a6 dateInterval:(id)a7 sessionState:(unint64_t)a8 locationBoundingBox:(id)a9 boundingBoxRadius:(id)a10 sessionIdentifier:(id)a11;
-- (SMSessionStateEnumerationOptions)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SMSessionStateEnumerationOptions)initWithBatchSize:(unint64_t)size fetchLimit:(unint64_t)limit sortByCreationDate:(BOOL)date ascending:(BOOL)ascending dateInterval:(id)interval sessionState:(unint64_t)state locationBoundingBox:(id)box boundingBoxRadius:(id)self0 sessionIdentifier:(id)self1;
+- (SMSessionStateEnumerationOptions)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SMSessionStateEnumerationOptions
 
-- (SMSessionStateEnumerationOptions)initWithBatchSize:(unint64_t)a3 fetchLimit:(unint64_t)a4 sortByCreationDate:(BOOL)a5 ascending:(BOOL)a6 dateInterval:(id)a7 sessionState:(unint64_t)a8 locationBoundingBox:(id)a9 boundingBoxRadius:(id)a10 sessionIdentifier:(id)a11
+- (SMSessionStateEnumerationOptions)initWithBatchSize:(unint64_t)size fetchLimit:(unint64_t)limit sortByCreationDate:(BOOL)date ascending:(BOOL)ascending dateInterval:(id)interval sessionState:(unint64_t)state locationBoundingBox:(id)box boundingBoxRadius:(id)self0 sessionIdentifier:(id)self1
 {
-  v14 = a7;
-  v15 = a9;
-  v16 = a10;
-  v17 = a11;
+  intervalCopy = interval;
+  boxCopy = box;
+  radiusCopy = radius;
+  identifierCopy = identifier;
   v28.receiver = self;
   v28.super_class = SMSessionStateEnumerationOptions;
   v18 = [(SMSessionStateEnumerationOptions *)&v28 init];
@@ -23,16 +23,16 @@
     goto LABEL_7;
   }
 
-  v18->_batchSize = a3;
-  v18->_fetchLimit = a4;
-  v18->_sortByCreationDate = a5;
-  v18->_ascending = a6;
-  objc_storeStrong(&v18->_dateInterval, a7);
-  v19->_sessionState = a8;
-  objc_storeStrong(&v19->_locationBoundingBox, a9);
-  objc_storeStrong(&v19->_sessionIdentifier, a11);
-  objc_storeStrong(&v19->_boundingBoxRadius, a10);
-  if (v16)
+  v18->_batchSize = size;
+  v18->_fetchLimit = limit;
+  v18->_sortByCreationDate = date;
+  v18->_ascending = ascending;
+  objc_storeStrong(&v18->_dateInterval, interval);
+  v19->_sessionState = state;
+  objc_storeStrong(&v19->_locationBoundingBox, box);
+  objc_storeStrong(&v19->_sessionIdentifier, identifier);
+  objc_storeStrong(&v19->_boundingBoxRadius, radius);
+  if (radiusCopy)
   {
     goto LABEL_7;
   }
@@ -79,40 +79,40 @@ LABEL_7:
   return v17;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   boundingBoxRadius = self->_boundingBoxRadius;
   return [v4 initWithBatchSize:self->_batchSize fetchLimit:self->_fetchLimit sortByCreationDate:self->_sortByCreationDate ascending:self->_ascending dateInterval:self->_dateInterval sessionState:self->_sessionState locationBoundingBox:self->_locationBoundingBox boundingBoxRadius:boundingBoxRadius sessionIdentifier:self->_sessionIdentifier];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   batchSize = self->_batchSize;
-  v5 = a3;
-  [v5 encodeInteger:batchSize forKey:@"batchSize"];
-  [v5 encodeInteger:self->_fetchLimit forKey:@"fetchLimit"];
-  [v5 encodeBool:self->_sortByCreationDate forKey:@"sortByCreationDate"];
-  [v5 encodeBool:self->_ascending forKey:@"ascending"];
-  [v5 encodeObject:self->_dateInterval forKey:@"dateInterval"];
-  [v5 encodeInteger:self->_sessionState forKey:@"sessionState"];
-  [v5 encodeObject:self->_locationBoundingBox forKey:@"locationBoundingBox"];
-  [v5 encodeObject:self->_boundingBoxRadius forKey:@"boundingBoxRadius"];
-  [v5 encodeObject:self->_sessionIdentifier forKey:@"sessionIdentifier"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:batchSize forKey:@"batchSize"];
+  [coderCopy encodeInteger:self->_fetchLimit forKey:@"fetchLimit"];
+  [coderCopy encodeBool:self->_sortByCreationDate forKey:@"sortByCreationDate"];
+  [coderCopy encodeBool:self->_ascending forKey:@"ascending"];
+  [coderCopy encodeObject:self->_dateInterval forKey:@"dateInterval"];
+  [coderCopy encodeInteger:self->_sessionState forKey:@"sessionState"];
+  [coderCopy encodeObject:self->_locationBoundingBox forKey:@"locationBoundingBox"];
+  [coderCopy encodeObject:self->_boundingBoxRadius forKey:@"boundingBoxRadius"];
+  [coderCopy encodeObject:self->_sessionIdentifier forKey:@"sessionIdentifier"];
 }
 
-- (SMSessionStateEnumerationOptions)initWithCoder:(id)a3
+- (SMSessionStateEnumerationOptions)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v4 = [v3 decodeIntegerForKey:@"batchSize"];
-  v5 = [v3 decodeIntegerForKey:@"fetchLimit"];
-  v6 = [v3 decodeBoolForKey:@"sortByCreationDate"];
-  v7 = [v3 decodeBoolForKey:@"ascending"];
-  v8 = [v3 decodeObjectForKey:@"dateInterval"];
-  v9 = [v3 decodeIntegerForKey:@"sessionState"];
-  v10 = [v3 decodeObjectForKey:@"locationBoundingBox"];
-  v11 = [v3 decodeObjectForKey:@"boundingBoxRadius"];
-  v12 = [v3 decodeObjectForKey:@"sessionIdentifier"];
+  coderCopy = coder;
+  v4 = [coderCopy decodeIntegerForKey:@"batchSize"];
+  v5 = [coderCopy decodeIntegerForKey:@"fetchLimit"];
+  v6 = [coderCopy decodeBoolForKey:@"sortByCreationDate"];
+  v7 = [coderCopy decodeBoolForKey:@"ascending"];
+  v8 = [coderCopy decodeObjectForKey:@"dateInterval"];
+  v9 = [coderCopy decodeIntegerForKey:@"sessionState"];
+  v10 = [coderCopy decodeObjectForKey:@"locationBoundingBox"];
+  v11 = [coderCopy decodeObjectForKey:@"boundingBoxRadius"];
+  v12 = [coderCopy decodeObjectForKey:@"sessionIdentifier"];
 
   v13 = [(SMSessionStateEnumerationOptions *)self initWithBatchSize:v4 fetchLimit:v5 sortByCreationDate:v6 ascending:v7 dateInterval:v8 sessionState:v9 locationBoundingBox:v10 boundingBoxRadius:v11 sessionIdentifier:v12];
   return v13;

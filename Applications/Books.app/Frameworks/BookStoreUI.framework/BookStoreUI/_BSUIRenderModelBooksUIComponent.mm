@@ -1,32 +1,32 @@
 @interface _BSUIRenderModelBooksUIComponent
-- (BOOL)isEqualToRenderModel:(id)a3;
+- (BOOL)isEqualToRenderModel:(id)model;
 - (CGSize)size;
-- (_BSUIRenderModelBooksUIComponent)initWithRawComponentModel:(id)a3 identifier:(id)a4;
+- (_BSUIRenderModelBooksUIComponent)initWithRawComponentModel:(id)model identifier:(id)identifier;
 - (unint64_t)hash;
 @end
 
 @implementation _BSUIRenderModelBooksUIComponent
 
-- (_BSUIRenderModelBooksUIComponent)initWithRawComponentModel:(id)a3 identifier:(id)a4
+- (_BSUIRenderModelBooksUIComponent)initWithRawComponentModel:(id)model identifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a4;
+  modelCopy = model;
+  identifierCopy = identifier;
   v12.receiver = self;
   v12.super_class = _BSUIRenderModelBooksUIComponent;
   v9 = [(_BSUIRenderModelBooksUIComponent *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_rawComponentModel, a3);
-    objc_storeStrong(&v10->_identifier, a4);
+    objc_storeStrong(&v9->_rawComponentModel, model);
+    objc_storeStrong(&v10->_identifier, identifier);
   }
 
   return v10;
 }
 
-- (BOOL)isEqualToRenderModel:(id)a3
+- (BOOL)isEqualToRenderModel:(id)model
 {
-  v3 = a3;
+  modelCopy = model;
   objc_opt_class();
   v4 = BUDynamicCast();
 
@@ -36,7 +36,7 @@
 
 - (unint64_t)hash
 {
-  v2 = [(_BSUIRenderModelBooksUIComponent *)self identifier];
+  identifier = [(_BSUIRenderModelBooksUIComponent *)self identifier];
   v3 = TUIIdentifierHash();
 
   return v3;

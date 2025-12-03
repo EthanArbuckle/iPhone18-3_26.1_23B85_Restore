@@ -11,10 +11,10 @@
 {
   if (self->_logoutProgressTransientOverlayViewController)
   {
-    v16 = [(SBLogoutProgressTestRecipe *)self remainingApplications];
-    if ([v16 count] < 2)
+    remainingApplications = [(SBLogoutProgressTestRecipe *)self remainingApplications];
+    if ([remainingApplications count] < 2)
     {
-      if (v16)
+      if (remainingApplications)
       {
         [(SBLogoutProgressTestRecipe *)self setRemainingApplications:0];
       }
@@ -22,17 +22,17 @@
 
     else
     {
-      v3 = [v16 subarrayWithRange:{1, objc_msgSend(v16, "count") - 1}];
+      v3 = [remainingApplications subarrayWithRange:{1, objc_msgSend(remainingApplications, "count") - 1}];
       [(SBLogoutProgressTestRecipe *)self setRemainingApplications:v3];
     }
 
-    v12 = [(SBLogoutProgressTestRecipe *)self remainingBlockingTasks];
-    if ([v12 count])
+    remainingBlockingTasks = [(SBLogoutProgressTestRecipe *)self remainingBlockingTasks];
+    if ([remainingBlockingTasks count])
     {
-      v13 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:v12];
-      v14 = [v13 allKeys];
-      v15 = [v14 firstObject];
-      [v13 removeObjectForKey:v15];
+      v13 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:remainingBlockingTasks];
+      allKeys = [v13 allKeys];
+      firstObject = [allKeys firstObject];
+      [v13 removeObjectForKey:firstObject];
 
       [(SBLogoutProgressTestRecipe *)self setRemainingBlockingTasks:v13];
     }
@@ -48,24 +48,24 @@
   else
   {
     v4 = [SBLogoutProgressTransientOverlayViewController alloc];
-    v5 = [SBApp userSessionController];
-    v6 = [v5 user];
-    v7 = [(SBLogoutProgressTransientOverlayViewController *)v4 initWithUserAccount:v6];
+    userSessionController = [SBApp userSessionController];
+    user = [userSessionController user];
+    v7 = [(SBLogoutProgressTransientOverlayViewController *)v4 initWithUserAccount:user];
     logoutProgressTransientOverlayViewController = self->_logoutProgressTransientOverlayViewController;
     self->_logoutProgressTransientOverlayViewController = v7;
 
-    v9 = [(SBLogoutProgressTestRecipe *)self _defaultPendingApplications];
-    [(SBLogoutProgressTestRecipe *)self setRemainingApplications:v9];
+    _defaultPendingApplications = [(SBLogoutProgressTestRecipe *)self _defaultPendingApplications];
+    [(SBLogoutProgressTestRecipe *)self setRemainingApplications:_defaultPendingApplications];
 
-    v10 = [(SBLogoutProgressTestRecipe *)self _defaultBlockingTasks];
-    [(SBLogoutProgressTestRecipe *)self setRemainingBlockingTasks:v10];
+    _defaultBlockingTasks = [(SBLogoutProgressTestRecipe *)self _defaultBlockingTasks];
+    [(SBLogoutProgressTestRecipe *)self setRemainingBlockingTasks:_defaultBlockingTasks];
 
     [(SBLogoutProgressTransientOverlayViewController *)self->_logoutProgressTransientOverlayViewController setDataSource:self];
     v11 = +[SBWorkspace mainWorkspace];
     [v11 presentTransientOverlayViewController:self->_logoutProgressTransientOverlayViewController animated:1 completion:0];
 
-    v16 = [SBApp userSessionController];
-    [v16 setLoggingOut:1];
+    remainingApplications = [SBApp userSessionController];
+    [remainingApplications setLoggingOut:1];
   }
 }
 
@@ -80,8 +80,8 @@
     self->_logoutProgressTransientOverlayViewController = 0;
 
     [(SBLogoutProgressTestRecipe *)self setRemainingApplications:0];
-    v5 = [SBApp userSessionController];
-    [v5 setLoggingOut:0];
+    userSessionController = [SBApp userSessionController];
+    [userSessionController setLoggingOut:0];
   }
 }
 

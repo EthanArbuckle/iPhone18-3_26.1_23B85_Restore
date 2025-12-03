@@ -1,10 +1,10 @@
 @interface BatteryAlgorithmsRunner
-- (BOOL)algoWriteValidSmcKeys:(id)a3;
+- (BOOL)algoWriteValidSmcKeys:(id)keys;
 - (BatteryAlgorithmsRunner)init;
-- (id)algoPreRunnerWithData:(id)a3;
-- (int)algoRunnerExecuteWithData:(id)a3;
-- (void)algoRunnerFreshInitWithData:(id)a3;
-- (void)algoRunnerInitWithData:(id)a3;
+- (id)algoPreRunnerWithData:(id)data;
+- (int)algoRunnerExecuteWithData:(id)data;
+- (void)algoRunnerFreshInitWithData:(id)data;
+- (void)algoRunnerInitWithData:(id)data;
 - (void)algoRunnerStoreOutput;
 @end
 
@@ -32,18 +32,18 @@
   return v2;
 }
 
-- (void)algoRunnerInitWithData:(id)a3
+- (void)algoRunnerInitWithData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   if (![(BatteryAlgorithmsRunner *)self featureFlagEn])
   {
     v5 = qword_100057920;
     if (os_log_type_enabled(qword_100057920, OS_LOG_TYPE_DEFAULT))
     {
       v6 = v5;
-      v7 = [(BatteryAlgorithmsRunner *)self AlgorithmClassName];
+      algorithmClassName = [(BatteryAlgorithmsRunner *)self AlgorithmClassName];
       *buf = 138412290;
-      v48 = v7;
+      v48 = algorithmClassName;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%@ algorithm disabled by Feature Flag, Skipping", buf, 0xCu);
     }
 
@@ -54,8 +54,8 @@
   v9 = [v8 stringByAppendingFormat:@"%@%@%@", @"/", @"com.apple.batteryintelligence.batteryalgorithms", @"/"];
 
   v10 = [v9 stringByAppendingFormat:@"%@%@", @"com.apple.batteryintelligence.batteryalgorithms", @"-"];
-  v11 = [(BatteryAlgorithmsRunner *)self AlgorithmClassName];
-  v12 = [v10 stringByAppendingFormat:@"%@%@", v11, @"-meta.plist"];
+  algorithmClassName2 = [(BatteryAlgorithmsRunner *)self AlgorithmClassName];
+  v12 = [v10 stringByAppendingFormat:@"%@%@", algorithmClassName2, @"-meta.plist"];
   metaFilePath = self->_metaFilePath;
   self->_metaFilePath = v12;
 
@@ -68,15 +68,15 @@
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Metadata file: %@", buf, 0xCu);
   }
 
-  v16 = [(BatteryAlgorithmsRunner *)self metaFilePath];
-  v17 = sub_10001E4AC(v16);
+  metaFilePath = [(BatteryAlgorithmsRunner *)self metaFilePath];
+  v17 = sub_10001E4AC(metaFilePath);
 
   v18 = [NSMutableDictionary dictionaryWithDictionary:v17];
   runMetaData = self->_runMetaData;
   self->_runMetaData = v18;
 
-  v20 = [(BatteryAlgorithmsRunner *)self AlgorithmClassName];
-  v21 = [v10 stringByAppendingFormat:@"%@%@", v20, @"-state.plist"];
+  algorithmClassName3 = [(BatteryAlgorithmsRunner *)self AlgorithmClassName];
+  v21 = [v10 stringByAppendingFormat:@"%@%@", algorithmClassName3, @"-state.plist"];
   stateFilePath = self->_stateFilePath;
   self->_stateFilePath = v21;
 
@@ -89,52 +89,52 @@
     _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "State file: %@", buf, 0xCu);
   }
 
-  v25 = [(BatteryAlgorithmsRunner *)self stateFilePath];
-  v26 = sub_10001E4AC(v25);
+  stateFilePath = [(BatteryAlgorithmsRunner *)self stateFilePath];
+  v26 = sub_10001E4AC(stateFilePath);
 
   v27 = [NSMutableDictionary dictionaryWithDictionary:v26];
   algoStateData = self->_algoStateData;
   self->_algoStateData = v27;
 
-  v29 = [(BatteryAlgorithmsRunner *)self AlgorithmClassName];
-  v30 = [@"com.apple.batteryalgorithm." stringByAppendingFormat:@"%@", v29];
+  algorithmClassName4 = [(BatteryAlgorithmsRunner *)self AlgorithmClassName];
+  v30 = [@"com.apple.batteryalgorithm." stringByAppendingFormat:@"%@", algorithmClassName4];
   eventCA = self->_eventCA;
   self->_eventCA = v30;
 
-  v32 = [(BatteryAlgorithmsRunner *)self algoStateData];
-  [v4 setObject:v32 forKey:@"savedAlgoState"];
+  algoStateData = [(BatteryAlgorithmsRunner *)self algoStateData];
+  [dataCopy setObject:algoStateData forKey:@"savedAlgoState"];
 
-  v33 = [(BatteryAlgorithmsRunner *)self AlgorithmClassName];
-  v34 = [NSClassFromString(v33) algorithmWithData:v4];
+  algorithmClassName5 = [(BatteryAlgorithmsRunner *)self AlgorithmClassName];
+  v34 = [NSClassFromString(algorithmClassName5) algorithmWithData:dataCopy];
 
   algorithmObject = self->_algorithmObject;
   self->_algorithmObject = v34;
 
-  v36 = [(BatteryAlgorithmsRunner *)self algorithmObject];
+  algorithmObject = [(BatteryAlgorithmsRunner *)self algorithmObject];
 
-  if (!v36)
+  if (!algorithmObject)
   {
     v37 = qword_100057920;
     if (os_log_type_enabled(qword_100057920, OS_LOG_TYPE_DEFAULT))
     {
       v38 = v37;
-      v39 = [(BatteryAlgorithmsRunner *)self AlgorithmClassName];
+      algorithmClassName6 = [(BatteryAlgorithmsRunner *)self AlgorithmClassName];
       *buf = 138412290;
-      v48 = v39;
+      v48 = algorithmClassName6;
       _os_log_impl(&_mh_execute_header, v38, OS_LOG_TYPE_DEFAULT, "%@ algorithm Errored out", buf, 0xCu);
     }
 
     self->_initDone = 0;
   }
 
-  v40 = [(BatteryAlgorithmsRunner *)self algorithmObject];
+  algorithmObject2 = [(BatteryAlgorithmsRunner *)self algorithmObject];
   v41 = qword_100057920;
   if (os_log_type_enabled(qword_100057920, OS_LOG_TYPE_DEFAULT))
   {
     v42 = v41;
-    v43 = [v40 name];
+    name = [algorithmObject2 name];
     *buf = 138412290;
-    v48 = v43;
+    v48 = name;
     _os_log_impl(&_mh_execute_header, v42, OS_LOG_TYPE_DEFAULT, "The Algorithm Name is: %@", buf, 0xCu);
   }
 
@@ -142,23 +142,23 @@
   if (os_log_type_enabled(qword_100057920, OS_LOG_TYPE_DEFAULT))
   {
     v45 = v44;
-    v46 = [v40 algoDescription];
+    algoDescription = [algorithmObject2 algoDescription];
     *buf = 138412290;
-    v48 = v46;
+    v48 = algoDescription;
     _os_log_impl(&_mh_execute_header, v45, OS_LOG_TYPE_DEFAULT, "The Algorithm description is: %@", buf, 0xCu);
   }
 
-  self->_freshInitRequested = [v40 freshInitNeeded];
+  self->_freshInitRequested = [algorithmObject2 freshInitNeeded];
   self->_initDone = 1;
 }
 
-- (void)algoRunnerFreshInitWithData:(id)a3
+- (void)algoRunnerFreshInitWithData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   if ([(BatteryAlgorithmsRunner *)self featureFlagEn])
   {
-    v5 = [(BatteryAlgorithmsRunner *)self algorithmObject];
-    v6 = [v5 freshInitWithData:v4];
+    algorithmObject = [(BatteryAlgorithmsRunner *)self algorithmObject];
+    v6 = [algorithmObject freshInitWithData:dataCopy];
 
     if (v6)
     {
@@ -166,9 +166,9 @@
       if (os_log_type_enabled(qword_100057920, OS_LOG_TYPE_DEFAULT))
       {
         v8 = v7;
-        v9 = [(BatteryAlgorithmsRunner *)self AlgorithmClassName];
+        algorithmClassName = [(BatteryAlgorithmsRunner *)self AlgorithmClassName];
         v13 = 138412546;
-        v14 = v9;
+        v14 = algorithmClassName;
         v15 = 1024;
         v16 = v6;
         _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%@ failed to init: %d", &v13, 0x12u);
@@ -184,72 +184,72 @@
     if (os_log_type_enabled(qword_100057920, OS_LOG_TYPE_DEFAULT))
     {
       v11 = v10;
-      v12 = [(BatteryAlgorithmsRunner *)self AlgorithmClassName];
+      algorithmClassName2 = [(BatteryAlgorithmsRunner *)self AlgorithmClassName];
       v13 = 138412290;
-      v14 = v12;
+      v14 = algorithmClassName2;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%@ algorithm disabled by Feature Flag, Skipping", &v13, 0xCu);
     }
   }
 }
 
-- (id)algoPreRunnerWithData:(id)a3
+- (id)algoPreRunnerWithData:(id)data
 {
-  v4 = a3;
-  v5 = [(BatteryAlgorithmsRunner *)self algorithmObject];
-  v6 = [v5 preRun:v4];
+  dataCopy = data;
+  algorithmObject = [(BatteryAlgorithmsRunner *)self algorithmObject];
+  v6 = [algorithmObject preRun:dataCopy];
 
   return v6;
 }
 
-- (int)algoRunnerExecuteWithData:(id)a3
+- (int)algoRunnerExecuteWithData:(id)data
 {
-  v4 = a3;
-  v5 = [(BatteryAlgorithmsRunner *)self algorithmObject];
-  v6 = [v5 runWithData:v4];
+  dataCopy = data;
+  algorithmObject = [(BatteryAlgorithmsRunner *)self algorithmObject];
+  v6 = [algorithmObject runWithData:dataCopy];
 
   return v6;
 }
 
-- (BOOL)algoWriteValidSmcKeys:(id)a3
+- (BOOL)algoWriteValidSmcKeys:(id)keys
 {
-  v3 = a3;
+  keysCopy = keys;
   v4 = off_100057768;
-  v5 = [v3 allKeys];
-  v6 = [v5 containsObject:v4];
+  allKeys = [keysCopy allKeys];
+  v6 = [allKeys containsObject:v4];
 
   if (v6)
   {
-    v7 = [v3 objectForKeyedSubscript:v4];
+    v7 = [keysCopy objectForKeyedSubscript:v4];
     if (!v7)
     {
       v13 = qword_100057920;
       if (os_log_type_enabled(qword_100057920, OS_LOG_TYPE_DEFAULT))
       {
-        v22 = 138412290;
-        v23 = v3;
-        _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Did not find valid value in data dict %@", &v22, 0xCu);
+        intValue = 138412290;
+        v23 = keysCopy;
+        _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Did not find valid value in data dict %@", &intValue, 0xCu);
       }
 
       goto LABEL_19;
     }
 
     v8 = v7;
-    v9 = off_100057778[0];
+    allKeys2 = off_100057778[0];
     v10 = off_100057780;
-    if ([v8 compare:v9]== -1 || [v8 compare:v10]== 1)
+    if ([v8 compare:allKeys2]== -1 || [v8 compare:v10]== 1)
     {
       v11 = qword_100057920;
       if (os_log_type_enabled(qword_100057920, OS_LOG_TYPE_DEFAULT))
       {
-        v22 = 138413058;
+        intValue = 138413058;
         v23 = v8;
         v24 = 2112;
         v25 = v4;
         v26 = 2112;
-        v27 = v9;
+        v27 = allKeys2;
         v28 = 2112;
         v29 = v10;
-        _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Value %@ is out of range for %@. Valid range [%@:%@]", &v22, 0x2Au);
+        _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Value %@ is out of range for %@. Valid range [%@:%@]", &intValue, 0x2Au);
       }
     }
 
@@ -257,10 +257,10 @@
     {
       v14 = dword_100057770;
       v15 = byte_100057774;
-      v22 = [v8 intValue];
+      intValue = [v8 intValue];
       if (v15 < 5)
       {
-        v17 = sub_100001484(v14, &v22, v15);
+        v17 = sub_100001484(v14, &intValue, v15);
         if (!v17)
         {
 
@@ -293,12 +293,12 @@
   if (os_log_type_enabled(qword_100057920, OS_LOG_TYPE_DEFAULT))
   {
     v8 = v12;
-    v9 = [v3 allKeys];
-    v22 = 138412546;
+    allKeys2 = [keysCopy allKeys];
+    intValue = 138412546;
     v23 = v4;
     v24 = 2112;
-    v25 = v9;
-    _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Did not find any data for %@. Keys passed in = %@", &v22, 0x16u);
+    v25 = allKeys2;
+    _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Did not find any data for %@. Keys passed in = %@", &intValue, 0x16u);
 LABEL_18:
   }
 
@@ -311,13 +311,13 @@ LABEL_20:
 
 - (void)algoRunnerStoreOutput
 {
-  v2 = self;
-  v3 = [(BatteryAlgorithmsRunner *)self algorithmObject];
-  v4 = [v3 output];
+  selfCopy = self;
+  algorithmObject = [(BatteryAlgorithmsRunner *)self algorithmObject];
+  output = [algorithmObject output];
 
-  if (v4)
+  if (output)
   {
-    v5 = [v4 valueForKey:@"kCoreAnalyticsData"];
+    v5 = [output valueForKey:@"kCoreAnalyticsData"];
 
     if (v5)
     {
@@ -325,22 +325,22 @@ LABEL_20:
       if (os_log_type_enabled(qword_100057920, OS_LOG_TYPE_DEFAULT))
       {
         v7 = v6;
-        v8 = [v4 valueForKey:@"kCoreAnalyticsData"];
+        v8 = [output valueForKey:@"kCoreAnalyticsData"];
         *buf = 138412290;
         v107 = v8;
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Storing this to CA: %@", buf, 0xCu);
       }
 
-      v9 = [v4 valueForKey:@"kCoreAnalyticsData"];
-      v10 = [(BatteryAlgorithmsRunner *)v2 eventCA];
-      [BIMetricRecorder sendToCoreAnalytics:v9 forEvent:v10 withTrialManager:0];
+      v9 = [output valueForKey:@"kCoreAnalyticsData"];
+      eventCA = [(BatteryAlgorithmsRunner *)selfCopy eventCA];
+      [BIMetricRecorder sendToCoreAnalytics:v9 forEvent:eventCA withTrialManager:0];
     }
 
-    v11 = [v4 valueForKey:@"kBDCOutputData"];
+    v11 = [output valueForKey:@"kBDCOutputData"];
 
     if (v11)
     {
-      v12 = [v4 valueForKey:@"kBDCOutputData"];
+      v12 = [output valueForKey:@"kBDCOutputData"];
       v83 = 0u;
       v84 = 0u;
       v85 = 0u;
@@ -351,7 +351,7 @@ LABEL_20:
         v14 = v13;
         v77 = *v84;
         v72 = v12;
-        v73 = v2;
+        v73 = selfCopy;
         do
         {
           v15 = 0;
@@ -373,8 +373,8 @@ LABEL_20:
               _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "Looking for %@ in BDCOutputData", buf, 0xCu);
             }
 
-            v18 = [v12 allKeys];
-            v19 = [v18 containsObject:v16];
+            allKeys = [v12 allKeys];
+            v19 = [allKeys containsObject:v16];
 
             if (v19)
             {
@@ -389,8 +389,8 @@ LABEL_20:
                 _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "Storing this to DB Table %@: %@", buf, 0x16u);
               }
 
-              v22 = [(BatteryAlgorithmsRunner *)v2 AlgorithmClassName];
-              v23 = [NSString stringWithFormat:@"%@%@", v22, v16];
+              algorithmClassName = [(BatteryAlgorithmsRunner *)selfCopy AlgorithmClassName];
+              v23 = [NSString stringWithFormat:@"%@%@", algorithmClassName, v16];
 
               objc_opt_class();
               if (objc_opt_isKindOfClass())
@@ -457,7 +457,7 @@ LABEL_20:
                   [BIMetricRecorder sendToPPS:v25 forIdentifier:v76];
 
                   v12 = v72;
-                  v2 = v73;
+                  selfCopy = v73;
                   v14 = v74;
                   v20 = v75;
                 }
@@ -563,7 +563,7 @@ LABEL_20:
                   }
 
                   v12 = v72;
-                  v2 = v73;
+                  selfCopy = v73;
                   v14 = v74;
                   v20 = v75;
                   v23 = v76;
@@ -577,11 +577,11 @@ LABEL_20:
               if (os_log_type_enabled(qword_100057920, OS_LOG_TYPE_DEFAULT))
               {
                 v38 = v37;
-                v39 = [v12 allKeys];
+                allKeys2 = [v12 allKeys];
                 *buf = 138412546;
                 v107 = v16;
                 v108 = 2112;
-                v109 = v39;
+                v109 = allKeys2;
                 _os_log_impl(&_mh_execute_header, v38, OS_LOG_TYPE_DEFAULT, "Did not find any data for %@. Keys passed in = %@", buf, 0x16u);
               }
             }
@@ -597,7 +597,7 @@ LABEL_20:
       }
     }
 
-    v55 = [v4 valueForKey:@"smcData"];
+    v55 = [output valueForKey:@"smcData"];
 
     if (v55)
     {
@@ -605,14 +605,14 @@ LABEL_20:
       if (os_log_type_enabled(qword_100057920, OS_LOG_TYPE_DEFAULT))
       {
         v57 = v56;
-        v58 = [v4 valueForKey:@"smcData"];
+        v58 = [output valueForKey:@"smcData"];
         *buf = 138412290;
         v107 = v58;
         _os_log_impl(&_mh_execute_header, v57, OS_LOG_TYPE_DEFAULT, "Transfer SMC data %@", buf, 0xCu);
       }
 
-      v59 = [v4 valueForKey:@"smcData"];
-      if (![(BatteryAlgorithmsRunner *)v2 algoWriteValidSmcKeys:v59])
+      v59 = [output valueForKey:@"smcData"];
+      if (![(BatteryAlgorithmsRunner *)selfCopy algoWriteValidSmcKeys:v59])
       {
         v60 = qword_100057920;
         if (os_log_type_enabled(qword_100057920, OS_LOG_TYPE_DEFAULT))
@@ -623,7 +623,7 @@ LABEL_20:
       }
     }
 
-    v61 = [v4 valueForKey:@"savedAlgoState"];
+    v61 = [output valueForKey:@"savedAlgoState"];
 
     if (v61)
     {
@@ -631,15 +631,15 @@ LABEL_20:
       if (os_log_type_enabled(qword_100057920, OS_LOG_TYPE_DEFAULT))
       {
         v63 = v62;
-        v64 = [v4 valueForKey:@"savedAlgoState"];
+        v64 = [output valueForKey:@"savedAlgoState"];
         *buf = 138412290;
         v107 = v64;
         _os_log_impl(&_mh_execute_header, v63, OS_LOG_TYPE_DEFAULT, "Storing system state %@", buf, 0xCu);
       }
 
-      v65 = [v4 valueForKey:@"savedAlgoState"];
-      v66 = [(BatteryAlgorithmsRunner *)v2 stateFilePath];
-      sub_10001DFFC(v65, v66);
+      v65 = [output valueForKey:@"savedAlgoState"];
+      stateFilePath = [(BatteryAlgorithmsRunner *)selfCopy stateFilePath];
+      sub_10001DFFC(v65, stateFilePath);
     }
   }
 
@@ -647,15 +647,15 @@ LABEL_20:
   if (os_log_type_enabled(qword_100057920, OS_LOG_TYPE_DEFAULT))
   {
     v68 = v67;
-    v69 = [(BatteryAlgorithmsRunner *)v2 runMetaData];
+    runMetaData = [(BatteryAlgorithmsRunner *)selfCopy runMetaData];
     *buf = 138412290;
-    v107 = v69;
+    v107 = runMetaData;
     _os_log_impl(&_mh_execute_header, v68, OS_LOG_TYPE_DEFAULT, "Storing MetaData %@", buf, 0xCu);
   }
 
-  v70 = [(BatteryAlgorithmsRunner *)v2 runMetaData];
-  v71 = [(BatteryAlgorithmsRunner *)v2 metaFilePath];
-  sub_10001DFFC(v70, v71);
+  runMetaData2 = [(BatteryAlgorithmsRunner *)selfCopy runMetaData];
+  metaFilePath = [(BatteryAlgorithmsRunner *)selfCopy metaFilePath];
+  sub_10001DFFC(runMetaData2, metaFilePath);
 }
 
 @end

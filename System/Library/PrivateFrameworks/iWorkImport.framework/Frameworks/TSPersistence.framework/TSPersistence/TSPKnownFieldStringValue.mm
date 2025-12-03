@@ -1,17 +1,17 @@
 @interface TSPKnownFieldStringValue
-- (TSPKnownFieldStringValue)initWithFieldDescriptor:(const void *)a3 fieldInfo:(const void *)a4 message:(const Message *)a5 reflection:(const Reflection *)a6;
+- (TSPKnownFieldStringValue)initWithFieldDescriptor:(const void *)descriptor fieldInfo:(const void *)info message:(const Message *)message reflection:(const Reflection *)reflection;
 - (id).cxx_construct;
 - (id)debugDescription;
-- (void)mergeToMessage:(Message *)a3 reflection:(const Reflection *)a4;
+- (void)mergeToMessage:(Message *)message reflection:(const Reflection *)reflection;
 @end
 
 @implementation TSPKnownFieldStringValue
 
-- (TSPKnownFieldStringValue)initWithFieldDescriptor:(const void *)a3 fieldInfo:(const void *)a4 message:(const Message *)a5 reflection:(const Reflection *)a6
+- (TSPKnownFieldStringValue)initWithFieldDescriptor:(const void *)descriptor fieldInfo:(const void *)info message:(const Message *)message reflection:(const Reflection *)reflection
 {
   v25.receiver = self;
   v25.super_class = TSPKnownFieldStringValue;
-  v9 = [TSPKnownField initWithFieldDescriptor:sel_initWithFieldDescriptor_fieldInfo_message_reflection_ fieldInfo:a3 message:a4 reflection:?];
+  v9 = [TSPKnownField initWithFieldDescriptor:sel_initWithFieldDescriptor_fieldInfo_message_reflection_ fieldInfo:descriptor message:info reflection:?];
   v10 = v9;
   if (!v9)
   {
@@ -21,7 +21,7 @@
   type = v9->super._type;
   if (type == 9)
   {
-    google::protobuf::Reflection::GetString(a6, a5, a3, &v23);
+    google::protobuf::Reflection::GetString(reflection, message, descriptor, &v23);
   }
 
   else
@@ -44,7 +44,7 @@
       return v10;
     }
 
-    Message = google::protobuf::Reflection::GetMessage(a6, a5, a3, 0);
+    Message = google::protobuf::Reflection::GetMessage(reflection, message, descriptor, 0);
     google::protobuf::MessageLite::SerializePartialAsString(Message, &v23);
   }
 
@@ -60,14 +60,14 @@
   return v10;
 }
 
-- (void)mergeToMessage:(Message *)a3 reflection:(const Reflection *)a4
+- (void)mergeToMessage:(Message *)message reflection:(const Reflection *)reflection
 {
-  v7 = (*(a3->var0 + 19))(a3, a2);
+  v7 = (*(message->var0 + 19))(message, a2);
   FieldByNumber = google::protobuf::Descriptor::FindFieldByNumber(v7, self->super._number);
-  if (FieldByNumber || (FieldByNumber = google::protobuf::Reflection::FindKnownExtensionByNumber(a4, self->super._number)) != 0)
+  if (FieldByNumber || (FieldByNumber = google::protobuf::Reflection::FindKnownExtensionByNumber(reflection, self->super._number)) != 0)
   {
     v10 = FieldByNumber;
-    google::protobuf::Reflection::ClearField(a4, a3, FieldByNumber);
+    google::protobuf::Reflection::ClearField(reflection, message, FieldByNumber);
     type = self->super._type;
     if (type == 9)
     {
@@ -83,7 +83,7 @@
         v30 = *(&self->_value.__rep_.__l + 2);
       }
 
-      google::protobuf::Reflection::SetString(a4, a3, v10, __p);
+      google::protobuf::Reflection::SetString(reflection, message, v10, __p);
       if (SHIBYTE(v30) < 0)
       {
         operator delete(__p[0]);
@@ -92,7 +92,7 @@
 
     else if (type == 10)
     {
-      v18 = google::protobuf::Reflection::MutableMessage(a4, a3, v10, 0);
+      v18 = google::protobuf::Reflection::MutableMessage(reflection, message, v10, 0);
 
       google::protobuf::MessageLite::ParsePartialFromString(v18, &self->_value);
     }

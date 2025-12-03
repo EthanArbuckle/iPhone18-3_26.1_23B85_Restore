@@ -1,32 +1,32 @@
 @interface MusicMessagesSharingViewController
-- (BOOL)collectionView:(id)a3 shouldHighlightItemAtIndexPath:(id)a4;
-- (BOOL)collectionView:(id)a3 shouldSelectItemAtIndexPath:(id)a4;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 referenceSizeForHeaderInSection:(int64_t)a5;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5;
-- (UIEdgeInsets)collectionView:(id)a3 layout:(id)a4 insetForSectionAtIndex:(int64_t)a5;
-- (_TtC16MusicMessagesApp34MusicMessagesSharingViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5;
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4;
-- (id)contextMenuInteraction:(id)a3 previewForHighlightingMenuWithConfiguration:(id)a4;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)contextMenuInteraction:(id)a3 willEndForConfiguration:(id)a4 animator:(id)a5;
-- (void)contextMenuInteraction:(id)a3 willPerformPreviewActionForMenuWithConfiguration:(id)a4 animator:(id)a5;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (BOOL)collectionView:(id)view shouldHighlightItemAtIndexPath:(id)path;
+- (BOOL)collectionView:(id)view shouldSelectItemAtIndexPath:(id)path;
+- (CGSize)collectionView:(id)view layout:(id)layout referenceSizeForHeaderInSection:(int64_t)section;
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path;
+- (UIEdgeInsets)collectionView:(id)view layout:(id)layout insetForSectionAtIndex:(int64_t)index;
+- (_TtC16MusicMessagesApp34MusicMessagesSharingViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path;
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location;
+- (id)contextMenuInteraction:(id)interaction previewForHighlightingMenuWithConfiguration:(id)configuration;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)contextMenuInteraction:(id)interaction willEndForConfiguration:(id)configuration animator:(id)animator;
+- (void)contextMenuInteraction:(id)interaction willPerformPreviewActionForMenuWithConfiguration:(id)configuration animator:(id)animator;
+- (void)traitCollectionDidChange:(id)change;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation MusicMessagesSharingViewController
 
-- (_TtC16MusicMessagesApp34MusicMessagesSharingViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC16MusicMessagesApp34MusicMessagesSharingViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = sub_1004DD43C();
     v7 = v6;
@@ -38,33 +38,33 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_10000920C(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_10000920C(v5, v7, bundle);
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_100009A8C();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v9.receiver = self;
   v9.super_class = type metadata accessor for MusicMessagesSharingViewController();
   v4 = v9.receiver;
-  v5 = a3;
-  [(MusicMessagesSharingViewController *)&v9 traitCollectionDidChange:v5];
+  changeCopy = change;
+  [(MusicMessagesSharingViewController *)&v9 traitCollectionDidChange:changeCopy];
   sub_10000B6E8();
   v6 = *&v4[OBJC_IVAR____TtC16MusicMessagesApp34MusicMessagesSharingViewController__collectionFlowLayout];
   if (v6)
   {
     [v6 invalidateLayout];
-    v7 = [v4 view];
-    if (v7)
+    view = [v4 view];
+    if (view)
     {
-      v8 = v7;
-      [v7 setNeedsLayout];
+      v8 = view;
+      [view setNeedsLayout];
 
       return;
     }
@@ -80,41 +80,41 @@
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_100009F2C();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5.receiver = self;
   v5.super_class = type metadata accessor for MusicMessagesSharingViewController();
   v4 = v5.receiver;
-  [(MusicMessagesSharingViewController *)&v5 viewWillAppear:v3];
+  [(MusicMessagesSharingViewController *)&v5 viewWillAppear:appearCopy];
   sub_10000BB34();
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_10000A14C(a3, &selRef_viewWillDisappear_);
+  selfCopy = self;
+  sub_10000A14C(disappear, &selRef_viewWillDisappear_);
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_10000A14C(a3, &selRef_viewDidDisappear_);
+  selfCopy = self;
+  sub_10000A14C(disappear, &selRef_viewDidDisappear_);
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v12.receiver = self;
   v12.super_class = type metadata accessor for MusicMessagesSharingViewController();
   swift_unknownObjectRetain();
   v7 = v12.receiver;
-  [(MusicMessagesSharingViewController *)&v12 viewWillTransitionToSize:a4 withTransitionCoordinator:width, height];
+  [(MusicMessagesSharingViewController *)&v12 viewWillTransitionToSize:coordinator withTransitionCoordinator:width, height];
   v8 = swift_allocObject();
   *(v8 + 16) = v7;
   v11[4] = sub_10001097C;
@@ -126,13 +126,13 @@
   v9 = _Block_copy(v11);
   v10 = v7;
 
-  [a4 animateAlongsideTransition:v9 completion:0];
+  [coordinator animateAlongsideTransition:v9 completion:0];
   swift_unknownObjectRelease();
 
   _Block_release(v9);
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
   v4 = OBJC_IVAR____TtC16MusicMessagesApp34MusicMessagesSharingViewController__sharableTracks;
   v5 = *(&self->super.super.super.isa + OBJC_IVAR____TtC16MusicMessagesApp34MusicMessagesSharingViewController__sharableTracks);
@@ -146,9 +146,9 @@
     return 1;
   }
 
-  v8 = self;
+  selfCopy = self;
   v9 = sub_1004DED5C();
-  self = v8;
+  self = selfCopy;
   if (v9 < 1)
   {
     return 1;
@@ -164,15 +164,15 @@ LABEL_3:
   return sub_1004DED5C();
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
   v6 = sub_1004D85FC();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v14 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1004D858C();
-  v10 = a3;
-  v11 = self;
+  viewCopy = view;
+  selfCopy = self;
   v12 = sub_10000A548();
 
   (*(v7 + 8))(v9, v6);
@@ -180,15 +180,15 @@ LABEL_3:
   return v12;
 }
 
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path
 {
   v7 = sub_1004D85FC();
   v8 = *(v7 - 8);
   __chkstk_darwin(v7);
   v10 = &v15 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1004D858C();
-  v11 = a3;
-  v12 = self;
+  viewCopy = view;
+  selfCopy = self;
   v13 = sub_10000EB38();
 
   (*(v8 + 8))(v10, v7);
@@ -196,7 +196,7 @@ LABEL_3:
   return v13;
 }
 
-- (BOOL)collectionView:(id)a3 shouldHighlightItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view shouldHighlightItemAtIndexPath:(id)path
 {
   v5 = sub_1004D85FC();
   v6 = *(v5 - 8);
@@ -204,53 +204,53 @@ LABEL_3:
   v8 = &v12 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1004D858C();
   v9 = *(v6 + 8);
-  v10 = self;
+  selfCopy = self;
   v9(v8, v5);
-  LOBYTE(self) = *(&v10->super.super.super.isa + OBJC_IVAR____TtC16MusicMessagesApp34MusicMessagesSharingViewController__activePreviewingTrack) == 0;
+  LOBYTE(self) = *(&selfCopy->super.super.super.isa + OBJC_IVAR____TtC16MusicMessagesApp34MusicMessagesSharingViewController__activePreviewingTrack) == 0;
 
   return self;
 }
 
-- (BOOL)collectionView:(id)a3 shouldSelectItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view shouldSelectItemAtIndexPath:(id)path
 {
   v6 = sub_1004D85FC();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v13 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1004D858C();
-  v10 = a3;
-  v11 = self;
+  viewCopy = view;
+  selfCopy = self;
   LOBYTE(self) = sub_10000ED1C();
 
   (*(v7 + 8))(v9, v6);
   return self & 1;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
   v6 = sub_1004D85FC();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v12 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1004D858C();
-  v10 = a3;
-  v11 = self;
+  viewCopy = view;
+  selfCopy = self;
   sub_10000EF8C();
 
   (*(v7 + 8))(v9, v6);
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path
 {
   v8 = sub_1004D85FC();
   v9 = *(v8 - 8);
   __chkstk_darwin(v8);
   v11 = &v20 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1004D858C();
-  v12 = a3;
-  v13 = a4;
-  v14 = self;
-  v15 = sub_10000F1A0(v12);
+  viewCopy = view;
+  layoutCopy = layout;
+  selfCopy = self;
+  v15 = sub_10000F1A0(viewCopy);
   v17 = v16;
 
   (*(v9 + 8))(v11, v8);
@@ -261,12 +261,12 @@ LABEL_3:
   return result;
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 referenceSizeForHeaderInSection:(int64_t)a5
+- (CGSize)collectionView:(id)view layout:(id)layout referenceSizeForHeaderInSection:(int64_t)section
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
-  v10 = sub_10000F40C(v7);
+  viewCopy = view;
+  layoutCopy = layout;
+  selfCopy = self;
+  v10 = sub_10000F40C(viewCopy);
   v12 = v11;
 
   v13 = v10;
@@ -276,7 +276,7 @@ LABEL_3:
   return result;
 }
 
-- (UIEdgeInsets)collectionView:(id)a3 layout:(id)a4 insetForSectionAtIndex:(int64_t)a5
+- (UIEdgeInsets)collectionView:(id)view layout:(id)layout insetForSectionAtIndex:(int64_t)index
 {
   v5 = *&qword_1006330B8;
   v6 = 0.0;
@@ -289,42 +289,42 @@ LABEL_3:
   return result;
 }
 
-- (id)contextMenuInteraction:(id)a3 previewForHighlightingMenuWithConfiguration:(id)a4
+- (id)contextMenuInteraction:(id)interaction previewForHighlightingMenuWithConfiguration:(id)configuration
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_10000F634(v6);
+  interactionCopy = interaction;
+  configurationCopy = configuration;
+  selfCopy = self;
+  v9 = sub_10000F634(interactionCopy);
 
   return v9;
 }
 
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = a3;
-  v8 = self;
+  y = location.y;
+  x = location.x;
+  interactionCopy = interaction;
+  selfCopy = self;
   v9 = sub_10000F894(x, y);
 
   return v9;
 }
 
-- (void)contextMenuInteraction:(id)a3 willPerformPreviewActionForMenuWithConfiguration:(id)a4 animator:(id)a5
+- (void)contextMenuInteraction:(id)interaction willPerformPreviewActionForMenuWithConfiguration:(id)configuration animator:(id)animator
 {
-  v7 = a3;
-  v8 = a4;
+  interactionCopy = interaction;
+  configurationCopy = configuration;
   swift_unknownObjectRetain();
-  v9 = self;
+  selfCopy = self;
   sub_1000100D8();
 
   swift_unknownObjectRelease();
 }
 
-- (void)contextMenuInteraction:(id)a3 willEndForConfiguration:(id)a4 animator:(id)a5
+- (void)contextMenuInteraction:(id)interaction willEndForConfiguration:(id)configuration animator:(id)animator
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC16MusicMessagesApp34MusicMessagesSharingViewController__activePreviewingTrack) = 0;
-  v6 = self;
+  selfCopy = self;
 
   if (qword_100631E68 != -1)
   {
@@ -332,12 +332,12 @@ LABEL_3:
   }
 
   sub_100007320();
-  v5 = v6;
-  if (*(&v6->super.super.super.isa + OBJC_IVAR____TtC16MusicMessagesApp34MusicMessagesSharingViewController__previewingPreventedReload) == 1)
+  v5 = selfCopy;
+  if (*(&selfCopy->super.super.super.isa + OBJC_IVAR____TtC16MusicMessagesApp34MusicMessagesSharingViewController__previewingPreventedReload) == 1)
   {
-    *(&v6->super.super.super.isa + OBJC_IVAR____TtC16MusicMessagesApp34MusicMessagesSharingViewController__previewingPreventedReload) = 0;
+    *(&selfCopy->super.super.super.isa + OBJC_IVAR____TtC16MusicMessagesApp34MusicMessagesSharingViewController__previewingPreventedReload) = 0;
     sub_10000BB34();
-    v5 = v6;
+    v5 = selfCopy;
   }
 }
 

@@ -1,27 +1,27 @@
 @interface TSCH3DChartAddBoundsSceneObject
-+ (id)p_rotationBoundsModeForScene:(id)a3;
-+ (id)p_setBoundsModeClass:(Class)a3 forScene:(id)a4;
-+ (void)setDepthBoundsForScene:(id)a3;
-+ (void)setRadialBoundsFactor:(float)a3 forScene:(id)a4;
-+ (void)setXYRotationBoundsForScene:(id)a3;
-+ (void)setYRotationBoundsForScene:(id)a3;
-- (void)getBounds:(id)a3;
++ (id)p_rotationBoundsModeForScene:(id)scene;
++ (id)p_setBoundsModeClass:(Class)class forScene:(id)scene;
++ (void)setDepthBoundsForScene:(id)scene;
++ (void)setRadialBoundsFactor:(float)factor forScene:(id)scene;
++ (void)setXYRotationBoundsForScene:(id)scene;
++ (void)setYRotationBoundsForScene:(id)scene;
+- (void)getBounds:(id)bounds;
 @end
 
 @implementation TSCH3DChartAddBoundsSceneObject
 
-+ (id)p_setBoundsModeClass:(Class)a3 forScene:(id)a4
++ (id)p_setBoundsModeClass:(Class)class forScene:(id)scene
 {
-  v5 = a4;
+  sceneCopy = scene;
   v6 = objc_opt_class();
-  v11 = objc_msgSend_propertiesForType_(v5, v7, v8, v9, v10, v6);
+  v11 = objc_msgSend_propertiesForType_(sceneCopy, v7, v8, v9, v10, v6);
   v12 = TSUDynamicCast();
 
   if (!v12)
   {
-    v12 = objc_msgSend_mode(a3, v13, v14, v15, v16);
+    v12 = objc_msgSend_mode(class, v13, v14, v15, v16);
     v17 = objc_opt_class();
-    objc_msgSend_setProperties_forType_(v5, v18, v19, v20, v21, v12, v17);
+    objc_msgSend_setProperties_forType_(sceneCopy, v18, v19, v20, v21, v12, v17);
     if (!v12)
     {
       v26 = MEMORY[0x277D81150];
@@ -37,59 +37,59 @@
   return v12;
 }
 
-+ (void)setDepthBoundsForScene:(id)a3
++ (void)setDepthBoundsForScene:(id)scene
 {
-  v10 = a3;
+  sceneCopy = scene;
   v4 = objc_opt_class();
-  v9 = objc_msgSend_p_setBoundsModeClass_forScene_(a1, v5, v6, v7, v8, v4, v10);
+  v9 = objc_msgSend_p_setBoundsModeClass_forScene_(self, v5, v6, v7, v8, v4, sceneCopy);
 }
 
-+ (id)p_rotationBoundsModeForScene:(id)a3
++ (id)p_rotationBoundsModeForScene:(id)scene
 {
-  v4 = a3;
+  sceneCopy = scene;
   v5 = objc_opt_class();
-  v10 = objc_msgSend_p_setBoundsModeClass_forScene_(a1, v6, v7, v8, v9, v5, v4);
+  v10 = objc_msgSend_p_setBoundsModeClass_forScene_(self, v6, v7, v8, v9, v5, sceneCopy);
 
   return v10;
 }
 
-+ (void)setYRotationBoundsForScene:(id)a3
++ (void)setYRotationBoundsForScene:(id)scene
 {
-  v10 = objc_msgSend_p_rotationBoundsModeForScene_(a1, a2, v3, v4, v5, a3);
+  v10 = objc_msgSend_p_rotationBoundsModeForScene_(self, a2, v3, v4, v5, scene);
   objc_msgSend_setRotationType_(v10, v6, v7, v8, v9, 0);
 }
 
-+ (void)setXYRotationBoundsForScene:(id)a3
++ (void)setXYRotationBoundsForScene:(id)scene
 {
-  v10 = objc_msgSend_p_rotationBoundsModeForScene_(a1, a2, v3, v4, v5, a3);
+  v10 = objc_msgSend_p_rotationBoundsModeForScene_(self, a2, v3, v4, v5, scene);
   objc_msgSend_setRotationType_(v10, v6, v7, v8, v9, 1);
 }
 
-+ (void)setRadialBoundsFactor:(float)a3 forScene:(id)a4
++ (void)setRadialBoundsFactor:(float)factor forScene:(id)scene
 {
-  v16 = a4;
+  sceneCopy = scene;
   v6 = objc_opt_class();
-  v11 = objc_msgSend_p_setBoundsModeClass_forScene_(a1, v7, v8, v9, v10, v6, v16);
-  *&v12 = a3;
+  v11 = objc_msgSend_p_setBoundsModeClass_forScene_(self, v7, v8, v9, v10, v6, sceneCopy);
+  *&v12 = factor;
   objc_msgSend_setFactor_(v11, v13, v12, v14, v15);
 }
 
-- (void)getBounds:(id)a3
+- (void)getBounds:(id)bounds
 {
-  v3 = a3;
-  v8 = objc_msgSend_scene(v3, v4, v5, v6, v7);
+  boundsCopy = bounds;
+  v8 = objc_msgSend_scene(boundsCopy, v4, v5, v6, v7);
   v9 = objc_opt_class();
   v14 = objc_msgSend_propertiesForType_(v8, v10, v11, v12, v13, v9);
 
   if (v14)
   {
-    v19 = objc_msgSend_processor(v3, v15, v16, v17, v18);
+    v19 = objc_msgSend_processor(boundsCopy, v15, v16, v17, v18);
     v24[0] = MEMORY[0x277D85DD0];
     v24[1] = 3221225472;
     v24[2] = sub_2761C12BC;
     v24[3] = &unk_27A6B67A0;
     v25 = v14;
-    v26 = v3;
+    v26 = boundsCopy;
     objc_msgSend_performBlockWithProcessor_block_(TSCH3DRenderProcessorMatrixSession, v20, v21, v22, v23, v19, v24);
   }
 }

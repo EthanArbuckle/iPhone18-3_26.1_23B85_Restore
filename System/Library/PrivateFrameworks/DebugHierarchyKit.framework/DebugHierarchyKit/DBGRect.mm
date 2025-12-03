@@ -1,8 +1,8 @@
 @interface DBGRect
-+ (id)valueWithEncodedValue:(id)a3 format:(id)a4 error:(id *)a5;
-+ (id)withRect:(CGRect)a3;
++ (id)valueWithEncodedValue:(id)value format:(id)format error:(id *)error;
++ (id)withRect:(CGRect)rect;
 - (CGRect)rect;
-- (DBGRect)initWithCGRect:(CGRect)a3;
+- (DBGRect)initWithCGRect:(CGRect)rect;
 - (NSString)debugDescription;
 - (NSString)description;
 - (id)JSONCompatibleRepresentation;
@@ -10,19 +10,19 @@
 
 @implementation DBGRect
 
-+ (id)withRect:(CGRect)a3
++ (id)withRect:(CGRect)rect
 {
-  v3 = [[a1 alloc] initWithCGRect:{a3.origin.x, a3.origin.y, a3.size.width, a3.size.height}];
+  v3 = [[self alloc] initWithCGRect:{rect.origin.x, rect.origin.y, rect.size.width, rect.size.height}];
 
   return v3;
 }
 
-- (DBGRect)initWithCGRect:(CGRect)a3
+- (DBGRect)initWithCGRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v8.receiver = self;
   v8.super_class = DBGRect;
   result = [(DBGRect *)&v8 init];
@@ -39,8 +39,8 @@
 
 - (NSString)description
 {
-  v2 = [(DBGRect *)self objectValue];
-  v3 = [v2 description];
+  objectValue = [(DBGRect *)self objectValue];
+  v3 = [objectValue description];
 
   return v3;
 }
@@ -69,7 +69,7 @@
   return result;
 }
 
-+ (id)valueWithEncodedValue:(id)a3 format:(id)a4 error:(id *)a5
++ (id)valueWithEncodedValue:(id)value format:(id)format error:(id *)error
 {
   v7 = DBGDecodeValueFromJSONCompatibleValue();
   v8 = 0;
@@ -80,10 +80,10 @@
     y = CGRectZero.origin.y;
     width = CGRectZero.size.width;
     height = CGRectZero.size.height;
-    if (a5)
+    if (error)
     {
       v14 = v8;
-      *a5 = v9;
+      *error = v9;
     }
   }
 
@@ -112,7 +112,7 @@
     width = v25.width;
   }
 
-  v22 = [a1 withRect:{x, y, width, height}];
+  v22 = [self withRect:{x, y, width, height}];
 
   return v22;
 }

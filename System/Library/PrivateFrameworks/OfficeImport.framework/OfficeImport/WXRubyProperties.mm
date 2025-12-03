@@ -1,7 +1,7 @@
 @interface WXRubyProperties
 + (id)rubyAlignmentEnumMap;
-+ (int)rubyAlignmentFromString:(id)a3;
-+ (void)readFrom:(_xmlNode *)a3 to:(id)a4 state:(id)a5;
++ (int)rubyAlignmentFromString:(id)string;
++ (void)readFrom:(_xmlNode *)from to:(id)to state:(id)state;
 + (void)rubyAlignmentEnumMap;
 @end
 
@@ -30,11 +30,11 @@ void __40__WXRubyProperties_rubyAlignmentEnumMap__block_invoke()
   +[WXRubyProperties rubyAlignmentEnumMap]::sRubyAlignmentEnumMap = v0;
 }
 
-+ (int)rubyAlignmentFromString:(id)a3
++ (int)rubyAlignmentFromString:(id)string
 {
-  v4 = a3;
-  v5 = [a1 rubyAlignmentEnumMap];
-  v6 = [v5 valueForString:v4];
+  stringCopy = string;
+  rubyAlignmentEnumMap = [self rubyAlignmentEnumMap];
+  v6 = [rubyAlignmentEnumMap valueForString:stringCopy];
 
   if (v6 == -130883970)
   {
@@ -49,24 +49,24 @@ void __40__WXRubyProperties_rubyAlignmentEnumMap__block_invoke()
   return v7;
 }
 
-+ (void)readFrom:(_xmlNode *)a3 to:(id)a4 state:(id)a5
++ (void)readFrom:(_xmlNode *)from to:(id)to state:(id)state
 {
-  v7 = a4;
-  v8 = a5;
-  for (i = OCXFirstChild(a3); i; i = OCXNextSibling(i))
+  toCopy = to;
+  stateCopy = state;
+  for (i = OCXFirstChild(from); i; i = OCXNextSibling(i))
   {
     if (xmlStrEqual(i->name, "rubyAlign"))
     {
-      v10 = [v8 WXMainNamespace];
+      wXMainNamespace = [stateCopy WXMainNamespace];
       v21 = 0;
-      CXOptionalStringAttribute(i, v10, "val", &v21);
+      CXOptionalStringAttribute(i, wXMainNamespace, "val", &v21);
       v11 = v21;
 
       if (v11)
       {
         if ([(NSString *)v11 length])
         {
-          [v7 setAlignment:{+[WXRubyProperties rubyAlignmentFromString:](WXRubyProperties, "rubyAlignmentFromString:", v11)}];
+          [toCopy setAlignment:{+[WXRubyProperties rubyAlignmentFromString:](WXRubyProperties, "rubyAlignmentFromString:", v11)}];
         }
       }
 
@@ -78,49 +78,49 @@ LABEL_7:
     if (xmlStrEqual(i->name, "hps"))
     {
       v20 = 0;
-      v12 = [v8 WXMainNamespace];
-      v13 = CXOptionalLongAttribute(i, v12, "val", &v20, 15);
+      wXMainNamespace2 = [stateCopy WXMainNamespace];
+      v13 = CXOptionalLongAttribute(i, wXMainNamespace2, "val", &v20, 15);
 
       if (v13)
       {
-        [v7 setPhoneticGuideFontSize:v20];
+        [toCopy setPhoneticGuideFontSize:v20];
       }
     }
 
     else if (xmlStrEqual(i->name, "hpsRaise"))
     {
       v20 = 0;
-      v14 = [v8 WXMainNamespace];
-      v15 = CXOptionalLongAttribute(i, v14, "val", &v20, 15);
+      wXMainNamespace3 = [stateCopy WXMainNamespace];
+      v15 = CXOptionalLongAttribute(i, wXMainNamespace3, "val", &v20, 15);
 
       if (v15)
       {
-        [v7 setDistanceBetween:v20];
+        [toCopy setDistanceBetween:v20];
       }
     }
 
     else if (xmlStrEqual(i->name, "hpsBaseText"))
     {
       v20 = 0;
-      v16 = [v8 WXMainNamespace];
-      v17 = CXOptionalLongAttribute(i, v16, "val", &v20, 15);
+      wXMainNamespace4 = [stateCopy WXMainNamespace];
+      v17 = CXOptionalLongAttribute(i, wXMainNamespace4, "val", &v20, 15);
 
       if (v17)
       {
-        [v7 setBaseFontSize:v20];
+        [toCopy setBaseFontSize:v20];
       }
     }
 
     else if (xmlStrEqual(i->name, "lid"))
     {
-      v18 = [v8 WXMainNamespace];
+      wXMainNamespace5 = [stateCopy WXMainNamespace];
       v19 = 0;
-      CXOptionalStringAttribute(i, v18, "val", &v19);
+      CXOptionalStringAttribute(i, wXMainNamespace5, "val", &v19);
       v11 = v19;
 
       if (v11 && [(NSString *)v11 length])
       {
-        [v7 setPhoneticGuideLanguage:OCDLanguageFromOfficeString(v11)];
+        [toCopy setPhoneticGuideLanguage:OCDLanguageFromOfficeString(v11)];
       }
 
       goto LABEL_7;

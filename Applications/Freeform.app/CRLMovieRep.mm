@@ -1,28 +1,28 @@
 @interface CRLMovieRep
 + (id)CRLMovieButtonFillColor;
 + (void)initialize;
-- (BOOL)canUseSpecializedHitRegionForKnob:(id)a3;
+- (BOOL)canUseSpecializedHitRegionForKnob:(id)knob;
 - (BOOL)directlyManagesLayerContent;
-- (BOOL)directlyManagesVisibilityOfKnob:(id)a3;
-- (BOOL)handleSingleTapAtPoint:(CGPoint)a3 inputType:(int64_t)a4;
+- (BOOL)directlyManagesVisibilityOfKnob:(id)knob;
+- (BOOL)handleSingleTapAtPoint:(CGPoint)point inputType:(int64_t)type;
 - (BOOL)isPlaying;
 - (BOOL)manuallyControlsMiniFormatter;
 - (BOOL)noKnobTogglePlayAndMiniFormatter;
 - (BOOL)p_cornerRadiusValueIsSignificant;
 - (BOOL)p_isLoopingSticker;
 - (BOOL)p_isMiniFormatterShowing;
-- (BOOL)p_isMovieKnob:(id)a3;
+- (BOOL)p_isMovieKnob:(id)knob;
 - (BOOL)p_isPresentingMiniFormatterOrPlayButtonVisible;
 - (BOOL)p_miniFormatterIsPresentingSecondLayer;
-- (BOOL)p_needsTilingForStroke:(id)a3;
+- (BOOL)p_needsTilingForStroke:(id)stroke;
 - (BOOL)p_playButtonFitsInFrame;
 - (BOOL)shouldDisplayAsSpatial;
 - (BOOL)shouldShowLoadingUI;
-- (CGPoint)positionOfPlayKnobForBounds:(CGRect)a3 viewScale:(double)a4;
-- (CGPoint)positionOfStandardKnob:(id)a3 forBounds:(CGRect)a4;
-- (CGRect)p_strokeFrameForRenderableFrame:(CGRect)a3;
+- (CGPoint)positionOfPlayKnobForBounds:(CGRect)bounds viewScale:(double)scale;
+- (CGPoint)positionOfStandardKnob:(id)knob forBounds:(CGRect)bounds;
+- (CGRect)p_strokeFrameForRenderableFrame:(CGRect)frame;
 - (CRLMediaPlayerController)playerControllerForcingCreationIfNotPreExisting;
-- (CRLMovieRep)initWithLayout:(id)a3 canvas:(id)a4;
+- (CRLMovieRep)initWithLayout:(id)layout canvas:(id)canvas;
 - (_TtC8Freeform12CRLMovieItem)movieItem;
 - (double)absoluteCurrentTime;
 - (double)visibleTime;
@@ -30,55 +30,55 @@
 - (id)additionalRenderablesOverRenderable;
 - (id)dynamicResizeDidBegin;
 - (id)movieLayout;
-- (id)newTrackerForKnob:(id)a3;
-- (id)nowPlayingImageProviderWithPlaybackController:(id)a3;
-- (id)nowPlayingTitleWithPlaybackController:(id)a3;
-- (id)p_pathForRoundedCornerMaskWithBounds:(CGRect)a3;
+- (id)newTrackerForKnob:(id)knob;
+- (id)nowPlayingImageProviderWithPlaybackController:(id)controller;
+- (id)nowPlayingTitleWithPlaybackController:(id)controller;
+- (id)p_pathForRoundedCornerMaskWithBounds:(CGRect)bounds;
 - (id)p_playButtonKnob;
 - (id)p_posterImageProvider;
 - (id)p_selectionPath;
 - (id)p_shapeRenderableForPlayerStroke;
 - (id)pauseButtonImage;
 - (id)playButtonImage;
-- (id)resizedGeometryForTransform:(CGAffineTransform *)a3;
+- (id)resizedGeometryForTransform:(CGAffineTransform *)transform;
 - (id)visuallySignificantDataSet;
 - (unint64_t)enabledKnobMask;
-- (void)addKnobsToArray:(id)a3;
+- (void)addKnobsToArray:(id)array;
 - (void)becameNotSelected;
 - (void)becameSelected;
 - (void)dealloc;
 - (void)didEndZooming;
 - (void)didFinishPencilKitStroke;
-- (void)didUpdateRenderable:(id)a3;
+- (void)didUpdateRenderable:(id)renderable;
 - (void)documentEditabilityDidChange;
-- (void)drawInContextWithoutEffects:(CGContext *)a3 withContent:(BOOL)a4 strokeDrawOptions:(unint64_t)a5 withOpacity:(BOOL)a6 forAlphaOnly:(BOOL)a7 drawChildren:(BOOL)a8 keepingChildrenPassingTest:(id)a9;
-- (void)drawLayer:(id)a3 inContext:(CGContext *)a4;
-- (void)dynamicFreeTransformDidBeginWithTracker:(id)a3;
-- (void)dynamicFreeTransformDidEndWithTracker:(id)a3;
-- (void)dynamicResizeDidEndWithTracker:(id)a3;
+- (void)drawInContextWithoutEffects:(CGContext *)effects withContent:(BOOL)content strokeDrawOptions:(unint64_t)options withOpacity:(BOOL)opacity forAlphaOnly:(BOOL)only drawChildren:(BOOL)children keepingChildrenPassingTest:(id)test;
+- (void)drawLayer:(id)layer inContext:(CGContext *)context;
+- (void)dynamicFreeTransformDidBeginWithTracker:(id)tracker;
+- (void)dynamicFreeTransformDidEndWithTracker:(id)tracker;
+- (void)dynamicResizeDidEndWithTracker:(id)tracker;
 - (void)dynamicVisibleTimeChangeDidBegin;
 - (void)dynamicVisibleTimeChangeDidEnd;
-- (void)dynamicVisibleTimeUpdateToValue:(double)a3 withTolerance:(double)a4 completionHandler:(id)a5;
+- (void)dynamicVisibleTimeUpdateToValue:(double)value withTolerance:(double)tolerance completionHandler:(id)handler;
 - (void)dynamicVolumeChangeDidBegin;
 - (void)enterPreviewMode;
 - (void)handleFadeInForZoom;
 - (void)handleFadeOutForZoom;
 - (void)i_hidePlayButtonIndependently;
 - (void)i_togglePlayPauseTriggeredFromKnob;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)p_addPlayButtonToKnobs:(id)a3;
-- (void)p_applyBasicStroke:(id)a3 toRenderable:(id)a4 bounds:(CGRect)a5;
-- (void)p_applyRoundedCornersTo:(id)a3;
-- (void)p_arrangeRenderableVisibility:(id)a3;
-- (void)p_checkAndSyncTilingState:(BOOL)a3;
-- (void)p_commonDrawStrokeInContext:(CGContext *)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)p_addPlayButtonToKnobs:(id)knobs;
+- (void)p_applyBasicStroke:(id)stroke toRenderable:(id)renderable bounds:(CGRect)bounds;
+- (void)p_applyRoundedCornersTo:(id)to;
+- (void)p_arrangeRenderableVisibility:(id)visibility;
+- (void)p_checkAndSyncTilingState:(BOOL)state;
+- (void)p_commonDrawStrokeInContext:(CGContext *)context;
 - (void)p_disposeStrokeRenderable;
-- (void)p_drawInContext:(CGContext *)a3 withContent:(BOOL)a4 withStroke:(BOOL)a5 withOpacity:(double)a6 forShadowOrHitTest:(BOOL)a7;
-- (void)p_drawPlayButtonForNonInteractiveCanvasInContext:(CGContext *)a3;
-- (void)p_drawPosterImageInContext:(CGContext *)a3 forShadowOrHitTest:(BOOL)a4;
-- (void)p_handleAssetPreparationCompletionForAsset:(id)a3;
+- (void)p_drawInContext:(CGContext *)context withContent:(BOOL)content withStroke:(BOOL)stroke withOpacity:(double)opacity forShadowOrHitTest:(BOOL)test;
+- (void)p_drawPlayButtonForNonInteractiveCanvasInContext:(CGContext *)context;
+- (void)p_drawPosterImageInContext:(CGContext *)context forShadowOrHitTest:(BOOL)test;
+- (void)p_handleAssetPreparationCompletionForAsset:(id)asset;
 - (void)p_hideControls;
-- (void)p_hideControlsWithDelay:(double)a3;
+- (void)p_hideControlsWithDelay:(double)delay;
 - (void)p_hideMiniFormatter;
 - (void)p_hidePlayPauseButtonKnob;
 - (void)p_invalidateHideControlsTimeoutTimer;
@@ -86,13 +86,13 @@
 - (void)p_playTriggeredFromKnob;
 - (void)p_positionPauseButtonImage;
 - (void)p_positionPlayButtonImage;
-- (void)p_removeRoundedCornersFrom:(id)a3;
-- (void)p_setPositionAndBoundsIfDifferent:(id)a3 position:(CGPoint)a4 bounds:(CGRect)a5;
+- (void)p_removeRoundedCornersFrom:(id)from;
+- (void)p_setPositionAndBoundsIfDifferent:(id)different position:(CGPoint)position bounds:(CGRect)bounds;
 - (void)p_setupPlayerControllerIfNecessary;
 - (void)p_setupPlayerLayerIfNecessary;
-- (void)p_setupPlayerStrokeRenderables:(BOOL)a3;
+- (void)p_setupPlayerStrokeRenderables:(BOOL)renderables;
 - (void)p_setupShapePlayerStrokeRenderable;
-- (void)p_setupStrokeRenderables:(BOOL)a3;
+- (void)p_setupStrokeRenderables:(BOOL)renderables;
 - (void)p_setupTilingPlayerStrokeRenderable;
 - (void)p_showControls;
 - (void)p_showMiniFormatter;
@@ -107,35 +107,35 @@
 - (void)p_updatePlayButtonVisibility;
 - (void)p_updateRoundedCornersForPlayerRenderableIfNeeded;
 - (void)p_updateStartTime;
-- (void)p_updateStrokeRenderablesForStroke:(id)a3 repRenderable:(id)a4;
+- (void)p_updateStrokeRenderablesForStroke:(id)stroke repRenderable:(id)renderable;
 - (void)p_updateUIStateForMoviePlayability;
-- (void)p_updateUsePlayPauseButtonToMatchIsPlaying:(BOOL)a3;
+- (void)p_updateUsePlayPauseButtonToMatchIsPlaying:(BOOL)playing;
 - (void)p_updateVolume;
 - (void)p_usePauseButtonKnobImage;
 - (void)p_usePlayButtonKnobImage;
 - (void)pausePlaybackIfNeeded;
-- (void)playbackDidStopForPlayerController:(id)a3;
-- (void)playerController:(id)a3 playbackDidFailWithError:(id)a4;
+- (void)playbackDidStopForPlayerController:(id)controller;
+- (void)playerController:(id)controller playbackDidFailWithError:(id)error;
 - (void)prepareForPreview;
-- (void)processChangedProperty:(unint64_t)a3;
+- (void)processChangedProperty:(unint64_t)property;
 - (void)screenScaleDidChange;
 - (void)setNeedsDisplay;
 - (void)stopPlaybackIfNeeded;
 - (void)toggleMiniFormatter;
 - (void)toggleShowingControls;
 - (void)updateFromLayout;
-- (void)updateRenderableGeometryFromLayout:(id)a3;
+- (void)updateRenderableGeometryFromLayout:(id)layout;
 - (void)updateUI_toMatchPlayer;
 - (void)willBeRemoved;
 - (void)willBeginEyedropperMode;
-- (void)willUpdateRenderable:(id)a3;
+- (void)willUpdateRenderable:(id)renderable;
 @end
 
 @implementation CRLMovieRep
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = [[CRLWidthLimitedQueue alloc] initWithLimit:10];
     v3 = qword_101A34788;
@@ -143,24 +143,24 @@
   }
 }
 
-- (CRLMovieRep)initWithLayout:(id)a3 canvas:(id)a4
+- (CRLMovieRep)initWithLayout:(id)layout canvas:(id)canvas
 {
-  v6 = a4;
+  canvasCopy = canvas;
   v13.receiver = self;
   v13.super_class = CRLMovieRep;
-  v7 = [(CRLCanvasRep *)&v13 initWithLayout:a3 canvas:v6];
+  v7 = [(CRLCanvasRep *)&v13 initWithLayout:layout canvas:canvasCopy];
   v8 = v7;
   if (v7)
   {
-    v9 = [(CRLMovieRep *)v7 movieItem];
+    movieItem = [(CRLMovieRep *)v7 movieItem];
 
-    if (v9)
+    if (movieItem)
     {
       v10 = objc_alloc_init(NSUUID);
       downloadObserverIdentifier = v8->_downloadObserverIdentifier;
       v8->_downloadObserverIdentifier = v10;
 
-      if ([v6 isCanvasInteractive])
+      if ([canvasCopy isCanvasInteractive])
       {
         [(CRLMovieRep *)v8 p_listenForAssetChangesIfAppropriate];
         [(CRLMovieRep *)v8 p_startOrStopLoopingStickerIfNecessary];
@@ -180,8 +180,8 @@
 - (_TtC8Freeform12CRLMovieItem)movieItem
 {
   v3 = objc_opt_class();
-  v4 = [(CRLCanvasRep *)self info];
-  v5 = sub_100014370(v3, v4);
+  info = [(CRLCanvasRep *)self info];
+  v5 = sub_100014370(v3, info);
 
   return v5;
 }
@@ -189,8 +189,8 @@
 - (id)movieLayout
 {
   v3 = objc_opt_class();
-  v4 = [(CRLCanvasRep *)self layout];
-  v5 = sub_100014370(v3, v4);
+  layout = [(CRLCanvasRep *)self layout];
+  v5 = sub_100014370(v3, layout);
 
   return v5;
 }
@@ -244,12 +244,12 @@
 - (id)p_posterImageProvider
 {
   v3 = +[CRLImageProviderPool sharedPool];
-  v4 = [(CRLMovieRep *)self movieItem];
-  v5 = [v4 posterImageAssetPayload];
-  if (v5)
+  movieItem = [(CRLMovieRep *)self movieItem];
+  posterImageAssetPayload = [movieItem posterImageAssetPayload];
+  if (posterImageAssetPayload)
   {
     v6 = objc_opt_class();
-    v7 = [v3 providerForAsset:v5 shouldValidate:1];
+    v7 = [v3 providerForAsset:posterImageAssetPayload shouldValidate:1];
     v8 = sub_100014370(v6, v7);
   }
 
@@ -261,24 +261,24 @@
   return v8;
 }
 
-- (void)p_drawPosterImageInContext:(CGContext *)a3 forShadowOrHitTest:(BOOL)a4
+- (void)p_drawPosterImageInContext:(CGContext *)context forShadowOrHitTest:(BOOL)test
 {
-  v4 = a4;
-  CGContextSaveGState(a3);
-  v7 = [(CRLMediaRep *)self mediaLayout];
-  [v7 boundsForStandardKnobs];
+  testCopy = test;
+  CGContextSaveGState(context);
+  mediaLayout = [(CRLMediaRep *)self mediaLayout];
+  [mediaLayout boundsForStandardKnobs];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
 
   memset(&v45, 0, sizeof(v45));
-  v16 = [(CRLMediaRep *)self mediaLayout];
-  v17 = [v16 geometryInRoot];
-  v18 = v17;
-  if (v17)
+  mediaLayout2 = [(CRLMediaRep *)self mediaLayout];
+  geometryInRoot = [mediaLayout2 geometryInRoot];
+  v18 = geometryInRoot;
+  if (geometryInRoot)
   {
-    [v17 transform];
+    [geometryInRoot transform];
   }
 
   else
@@ -299,9 +299,9 @@
     y = v47.origin.y;
     width = v47.size.width;
     height = v47.size.height;
-    v23 = sub_100510A7C(a3);
-    v24 = [(CRLCanvasRep *)self canvas];
-    [v24 viewScale];
+    v23 = sub_100510A7C(context);
+    canvas = [(CRLCanvasRep *)self canvas];
+    [canvas viewScale];
     v26 = v23 * v25;
 
     v27 = sub_1001221E8(x, y, width, height, v26);
@@ -321,112 +321,112 @@
     v15 = v49.size.height;
   }
 
-  v34 = [(CRLMovieRep *)self p_posterImageProvider];
-  if (v34)
+  p_posterImageProvider = [(CRLMovieRep *)self p_posterImageProvider];
+  if (p_posterImageProvider)
   {
-    CGContextSaveGState(a3);
+    CGContextSaveGState(context);
     v35 = [(CRLMovieRep *)self p_pathForRoundedCornerMaskWithBounds:v9, v11, v13, v15];
     v36 = v35;
     if (v35)
     {
-      CGContextAddPath(a3, [v35 CGPath]);
-      CGContextClip(a3);
+      CGContextAddPath(context, [v35 CGPath]);
+      CGContextClip(context);
     }
 
-    if (v4 && [v34 isOpaque])
+    if (testCopy && [p_posterImageProvider isOpaque])
     {
       v37 = +[CRLColor blackColor];
-      CGContextSetFillColorWithColor(a3, [v37 CGColor]);
+      CGContextSetFillColorWithColor(context, [v37 CGColor]);
 
       v50.origin.x = v9;
       v50.origin.y = v11;
       v50.size.width = v13;
       v50.size.height = v15;
-      CGContextFillRect(a3, v50);
+      CGContextFillRect(context, v50);
     }
 
     else
     {
-      [v34 drawImageInContext:a3 rect:{v9, v11, v13, v15}];
+      [p_posterImageProvider drawImageInContext:context rect:{v9, v11, v13, v15}];
     }
 
-    CGContextRestoreGState(a3);
+    CGContextRestoreGState(context);
   }
 
   else if ([(CRLMovieRep *)self shouldShowLoadingUI])
   {
     v38 = [_TtC8Freeform33CRLUndownloadedAssetDrawingHelper alloc];
-    v39 = [(CRLMovieRep *)self movieItem];
-    v40 = [v39 posterImageAssetPayload];
-    v41 = [(CRLUndownloadedAssetDrawingHelper *)v38 initWithRep:self asset:v40];
+    movieItem = [(CRLMovieRep *)self movieItem];
+    posterImageAssetPayload = [movieItem posterImageAssetPayload];
+    v41 = [(CRLUndownloadedAssetDrawingHelper *)v38 initWithRep:self asset:posterImageAssetPayload];
 
-    [(CRLUndownloadedAssetDrawingHelper *)v41 drawInContext:a3];
+    [(CRLUndownloadedAssetDrawingHelper *)v41 drawInContext:context];
   }
 
-  else if (v4)
+  else if (testCopy)
   {
     v42 = +[CRLColor blackColor];
-    CGContextSetFillColorWithColor(a3, [v42 CGColor]);
+    CGContextSetFillColorWithColor(context, [v42 CGColor]);
 
     v51.origin.x = v9;
     v51.origin.y = v11;
     v51.size.width = v13;
     v51.size.height = v15;
-    CGContextFillRect(a3, v51);
+    CGContextFillRect(context, v51);
   }
 
-  CGContextRestoreGState(a3);
+  CGContextRestoreGState(context);
 }
 
-- (void)p_drawInContext:(CGContext *)a3 withContent:(BOOL)a4 withStroke:(BOOL)a5 withOpacity:(double)a6 forShadowOrHitTest:(BOOL)a7
+- (void)p_drawInContext:(CGContext *)context withContent:(BOOL)content withStroke:(BOOL)stroke withOpacity:(double)opacity forShadowOrHitTest:(BOOL)test
 {
-  v7 = a7;
-  v9 = a5;
-  v10 = a4;
-  v13 = [(CRLStyledRep *)self styledLayout];
-  v14 = [v13 isInvisible];
+  testCopy = test;
+  strokeCopy = stroke;
+  contentCopy = content;
+  styledLayout = [(CRLStyledRep *)self styledLayout];
+  isInvisible = [styledLayout isInvisible];
 
-  if (v14)
+  if (isInvisible)
   {
     return;
   }
 
-  v15 = [(CRLCanvasRep *)self layout];
-  v33 = [v15 stroke];
+  layout = [(CRLCanvasRep *)self layout];
+  stroke = [layout stroke];
 
-  if (v33)
+  if (stroke)
   {
-    if (![v33 shouldRender])
+    if (![stroke shouldRender])
     {
       v18 = 0;
       goto LABEL_8;
     }
 
-    v16 = [(CRLCanvasRep *)self canvas];
-    v17 = [v16 shouldSuppressBackgrounds];
+    canvas = [(CRLCanvasRep *)self canvas];
+    shouldSuppressBackgrounds = [canvas shouldSuppressBackgrounds];
 
-    if (v17)
+    if (shouldSuppressBackgrounds)
     {
-      v18 = [v33 mutableCopy];
+      v18 = [stroke mutableCopy];
 
-      v33 = +[CRLColor blackColor];
+      stroke = +[CRLColor blackColor];
       [v18 setColor:?];
 LABEL_8:
 
-      v33 = v18;
+      stroke = v18;
     }
   }
 
   else
   {
-    v33 = 0;
+    stroke = 0;
   }
 
-  v19 = a6 < 1.0 && v9;
-  v20 = v19 && v10;
-  if (v19 && v10 && (CGContextSaveGState(a3), CGContextSetAlpha(a3, a6), v33))
+  v19 = opacity < 1.0 && strokeCopy;
+  v20 = v19 && contentCopy;
+  if (v19 && contentCopy && (CGContextSaveGState(context), CGContextSetAlpha(context, opacity), stroke))
   {
-    CGContextBeginTransparencyLayer(a3, 0);
+    CGContextBeginTransparencyLayer(context, 0);
     v21 = 1;
   }
 
@@ -435,61 +435,61 @@ LABEL_8:
     v21 = 0;
   }
 
-  CGContextSaveGState(a3);
-  v22 = [(CRLMediaRep *)self mediaLayout];
-  [v22 boundsForStandardKnobs];
+  CGContextSaveGState(context);
+  mediaLayout = [(CRLMediaRep *)self mediaLayout];
+  [mediaLayout boundsForStandardKnobs];
   v24 = v23;
   v26 = v25;
   v28 = v27;
   v30 = v29;
-  if (v10)
+  if (contentCopy)
   {
-    [(CRLMovieRep *)self p_drawPosterImageInContext:a3 forShadowOrHitTest:v7];
+    [(CRLMovieRep *)self p_drawPosterImageInContext:context forShadowOrHitTest:testCopy];
   }
 
-  CGContextRestoreGState(a3);
-  if (v9 && v33)
+  CGContextRestoreGState(context);
+  if (strokeCopy && stroke)
   {
-    CGContextSaveGState(a3);
-    [v33 paintRect:a3 inContext:{v24, v26, v28, v30}];
-    CGContextRestoreGState(a3);
+    CGContextSaveGState(context);
+    [stroke paintRect:context inContext:{v24, v26, v28, v30}];
+    CGContextRestoreGState(context);
   }
 
-  if (!v7)
+  if (!testCopy)
   {
-    v31 = [(CRLCanvasRep *)self canvas];
-    if ([v31 isCanvasInteractive])
+    canvas2 = [(CRLCanvasRep *)self canvas];
+    if ([canvas2 isCanvasInteractive])
     {
     }
 
     else
     {
-      v32 = [(CRLMovieRep *)self p_playButtonFitsInFrame];
+      p_playButtonFitsInFrame = [(CRLMovieRep *)self p_playButtonFitsInFrame];
 
-      if (v32)
+      if (p_playButtonFitsInFrame)
       {
-        CGContextSaveGState(a3);
-        [(CRLMovieRep *)self p_drawPlayButtonForNonInteractiveCanvasInContext:a3];
-        CGContextRestoreGState(a3);
+        CGContextSaveGState(context);
+        [(CRLMovieRep *)self p_drawPlayButtonForNonInteractiveCanvasInContext:context];
+        CGContextRestoreGState(context);
       }
     }
   }
 
   if (v21)
   {
-    CGContextEndTransparencyLayer(a3);
+    CGContextEndTransparencyLayer(context);
   }
 
   if (v20)
   {
-    CGContextRestoreGState(a3);
+    CGContextRestoreGState(context);
   }
 }
 
-- (void)p_drawPlayButtonForNonInteractiveCanvasInContext:(CGContext *)a3
+- (void)p_drawPlayButtonForNonInteractiveCanvasInContext:(CGContext *)context
 {
-  v5 = [(CRLMediaRep *)self mediaLayout];
-  [v5 boundsForStandardKnobs];
+  mediaLayout = [(CRLMediaRep *)self mediaLayout];
+  [mediaLayout boundsForStandardKnobs];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -501,13 +501,13 @@ LABEL_8:
   v20 = v19;
   v22 = v21;
   v23 = +[CRLMovieRep CRLMovieButtonFillColor];
-  CGContextSetFillColorWithColor(a3, [v23 CGColor]);
+  CGContextSetFillColorWithColor(context, [v23 CGColor]);
 
   v44.origin.x = v16;
   v44.origin.y = v18;
   v44.size.width = v20;
   v44.size.height = v22;
-  CGContextFillEllipseInRect(a3, v44);
+  CGContextFillEllipseInRect(context, v44);
   v24 = sub_100120414(v16, v18, v20, v22);
   v26 = v25;
   v27 = v24 + 2.88;
@@ -522,26 +522,26 @@ LABEL_8:
   v40 = +[CRLColor whiteColor];
   v42 = [v28 compositedImageWithColor:v40 alpha:20 blendMode:1.0];
 
-  v41 = [v42 CGImageForSize:a3 inContext:0 orContentsScaleProvider:{v30, v32}];
+  v41 = [v42 CGImageForSize:context inContext:0 orContentsScaleProvider:{v30, v32}];
   v45.origin.x = v33;
   v45.origin.y = v35;
   v45.size.width = v37;
   v45.size.height = v39;
-  CGContextDrawImage(a3, v45, v41);
+  CGContextDrawImage(context, v45, v41);
 }
 
-- (void)drawInContextWithoutEffects:(CGContext *)a3 withContent:(BOOL)a4 strokeDrawOptions:(unint64_t)a5 withOpacity:(BOOL)a6 forAlphaOnly:(BOOL)a7 drawChildren:(BOOL)a8 keepingChildrenPassingTest:(id)a9
+- (void)drawInContextWithoutEffects:(CGContext *)effects withContent:(BOOL)content strokeDrawOptions:(unint64_t)options withOpacity:(BOOL)opacity forAlphaOnly:(BOOL)only drawChildren:(BOOL)children keepingChildrenPassingTest:(id)test
 {
-  v9 = a7;
-  v10 = a5;
-  v11 = a4;
+  onlyCopy = only;
+  optionsCopy = options;
+  contentCopy = content;
   v14 = 1.0;
-  if (a6)
+  if (opacity)
   {
-    [(CRLStyledRep *)self opacity:a3];
+    [(CRLStyledRep *)self opacity:effects];
   }
 
-  [(CRLMovieRep *)self p_drawInContext:a3 withContent:v11 withStroke:v10 & 1 withOpacity:v9 forShadowOrHitTest:a7, a8, v14];
+  [(CRLMovieRep *)self p_drawInContext:effects withContent:contentCopy withStroke:optionsCopy & 1 withOpacity:onlyCopy forShadowOrHitTest:only, children, v14];
 }
 
 - (void)willBeRemoved
@@ -554,7 +554,7 @@ LABEL_8:
   block[1] = 3221225472;
   v12 = sub_100184C94;
   v13 = &unk_10183AB38;
-  v14 = self;
+  selfCopy = self;
   if (+[NSThread isMainThread])
   {
     v12(block);
@@ -566,8 +566,8 @@ LABEL_8:
   }
 
   [(CRLMovieRep *)self p_invalidateHideControlsTimeoutTimer];
-  v3 = [(CRLCanvasKnob *)self->_playButtonKnob renderable];
-  [v3 setDelegate:0];
+  renderable = [(CRLCanvasKnob *)self->_playButtonKnob renderable];
+  [renderable setDelegate:0];
 
   playButtonKnob = self->_playButtonKnob;
   self->_playButtonKnob = 0;
@@ -601,33 +601,33 @@ LABEL_8:
     [CRLAssertionHandler handleFailureInFunction:v6 file:v7 lineNumber:422 isFatal:0 description:"invalid nil value for '%{public}s'", "_downloadObserverIdentifier"];
   }
 
-  v8 = [(CRLMovieRep *)self movieItem];
-  v9 = [v8 store];
-  v10 = [v9 assetManager];
-  [v10 removeAllDownloadObserversWithIdentifier:self->_downloadObserverIdentifier];
+  movieItem = [(CRLMovieRep *)self movieItem];
+  store = [movieItem store];
+  assetManager = [store assetManager];
+  [assetManager removeAllDownloadObserversWithIdentifier:self->_downloadObserverIdentifier];
 }
 
 - (BOOL)directlyManagesLayerContent
 {
-  v3 = [(CRLMovieRep *)self shouldShowLoadingUI];
-  v4 = v3 ^ 1;
-  if (self->_directlyManagesLayerContent != (v3 ^ 1))
+  shouldShowLoadingUI = [(CRLMovieRep *)self shouldShowLoadingUI];
+  v4 = shouldShowLoadingUI ^ 1;
+  if (self->_directlyManagesLayerContent != (shouldShowLoadingUI ^ 1))
   {
     self->_directlyManagesLayerContent = v4;
-    if (v3)
+    if (shouldShowLoadingUI)
     {
       [(CRLMovieRep *)self setNeedsDisplay];
     }
 
     else
     {
-      v5 = [(CRLCanvasRep *)self canvas];
-      v6 = [v5 isCanvasInteractive];
+      canvas = [(CRLCanvasRep *)self canvas];
+      isCanvasInteractive = [canvas isCanvasInteractive];
 
-      if (v6)
+      if (isCanvasInteractive)
       {
-        v7 = [(CRLCanvasRep *)self interactiveCanvasController];
-        v8 = [v7 renderableForRep:self];
+        interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+        v8 = [interactiveCanvasController renderableForRep:self];
 
         [v8 setContents:0];
       }
@@ -652,9 +652,9 @@ LABEL_8:
 {
   if (!self->_playerRenderable)
   {
-    v3 = [(CRLCanvasRenderableMediaPlayerController *)self->_playerController newRenderable];
+    newRenderable = [(CRLCanvasRenderableMediaPlayerController *)self->_playerController newRenderable];
     playerRenderable = self->_playerRenderable;
-    self->_playerRenderable = v3;
+    self->_playerRenderable = newRenderable;
 
     [(CRLCanvasRenderable *)self->_playerRenderable setDelegate:self];
     [(CRLCanvasRenderable *)self->_playerRenderable setHidden:1];
@@ -675,12 +675,12 @@ LABEL_8:
     }
 
     self->_currentlyObservingPlayerLayer = v8;
-    v9 = [(CRLCanvasRep *)self info];
-    v10 = [v9 geometry];
-    v11 = v10;
-    if (v10)
+    info = [(CRLCanvasRep *)self info];
+    geometry = [info geometry];
+    v11 = geometry;
+    if (geometry)
     {
-      [v10 transformBasedOnPoint:CGPointZero.x centeredAtPoint:{CGPointZero.y, CGPointZero.x, CGPointZero.y}];
+      [geometry transformBasedOnPoint:CGPointZero.x centeredAtPoint:{CGPointZero.y, CGPointZero.x, CGPointZero.y}];
     }
 
     else
@@ -696,35 +696,35 @@ LABEL_8:
     v26[2] = v29;
     [(CRLCanvasRenderable *)v12 setAffineTransform:v26];
 
-    v13 = [(CRLCanvasRep *)self canvas];
-    v14 = [(CRLCanvasRep *)self layout];
-    v15 = [v14 geometry];
-    [v15 size];
-    [v13 convertUnscaledToBoundsRect:sub_10011ECB4()];
+    canvas = [(CRLCanvasRep *)self canvas];
+    layout = [(CRLCanvasRep *)self layout];
+    geometry2 = [layout geometry];
+    [geometry2 size];
+    [canvas convertUnscaledToBoundsRect:sub_10011ECB4()];
     [(CRLCanvasRenderable *)self->_playerRenderable setBounds:?];
 
-    v16 = [(CRLCanvasRep *)self canvas];
-    v17 = [(CRLCanvasRep *)self layout];
-    v18 = [v17 geometry];
-    [v18 frame];
-    [v16 convertUnscaledToBoundsPoint:{sub_100120414(v19, v20, v21, v22)}];
+    canvas2 = [(CRLCanvasRep *)self canvas];
+    layout2 = [(CRLCanvasRep *)self layout];
+    geometry3 = [layout2 geometry];
+    [geometry3 frame];
+    [canvas2 convertUnscaledToBoundsPoint:{sub_100120414(v19, v20, v21, v22)}];
     [(CRLCanvasRenderable *)self->_playerRenderable setPosition:?];
 
     [(CRLStyledRep *)self opacity];
     *&v23 = v23;
     [(CRLCanvasRenderable *)self->_playerRenderable setOpacity:v23];
-    v24 = [(CRLCanvasRenderable *)self->_playerRenderable layer];
-    [(CRLMovieRep *)self p_applyRoundedCornersTo:v24];
+    layer = [(CRLCanvasRenderable *)self->_playerRenderable layer];
+    [(CRLMovieRep *)self p_applyRoundedCornersTo:layer];
 
-    v25 = [(CRLCanvasRep *)self canvas];
-    [v25 invalidateContentLayersForRep:self];
+    canvas3 = [(CRLCanvasRep *)self canvas];
+    [canvas3 invalidateContentLayersForRep:self];
   }
 }
 
 - (BOOL)p_cornerRadiusValueIsSignificant
 {
-  v2 = [(CRLMovieRep *)self movieItem];
-  [v2 cornerRadius];
+  movieItem = [(CRLMovieRep *)self movieItem];
+  [movieItem cornerRadius];
   v4 = v3 >= 0.001;
 
   return v4;
@@ -734,56 +734,56 @@ LABEL_8:
 {
   if (self->_playerRenderable)
   {
-    v3 = [(CRLMovieRep *)self movieItem];
-    v4 = [v3 hasRoundedCorners];
+    movieItem = [(CRLMovieRep *)self movieItem];
+    hasRoundedCorners = [movieItem hasRoundedCorners];
 
-    v5 = [(CRLCanvasRenderable *)self->_playerRenderable layer];
-    if (v4)
+    layer = [(CRLCanvasRenderable *)self->_playerRenderable layer];
+    if (hasRoundedCorners)
     {
-      [(CRLMovieRep *)self p_applyRoundedCornersTo:v5];
+      [(CRLMovieRep *)self p_applyRoundedCornersTo:layer];
     }
 
     else
     {
-      [(CRLMovieRep *)self p_removeRoundedCornersFrom:v5];
+      [(CRLMovieRep *)self p_removeRoundedCornersFrom:layer];
     }
   }
 }
 
-- (void)p_applyRoundedCornersTo:(id)a3
+- (void)p_applyRoundedCornersTo:(id)to
 {
-  v9 = a3;
+  toCopy = to;
   if ([(CRLMovieRep *)self p_cornerRadiusValueIsSignificant])
   {
-    v4 = [(CRLMovieRep *)self movieItem];
-    [v4 cornerRadius];
+    movieItem = [(CRLMovieRep *)self movieItem];
+    [movieItem cornerRadius];
     v6 = v5;
-    v7 = [(CRLCanvasRep *)self canvas];
-    [v7 viewScale];
-    [v9 setCornerRadius:v8 * v6];
+    canvas = [(CRLCanvasRep *)self canvas];
+    [canvas viewScale];
+    [toCopy setCornerRadius:v8 * v6];
 
-    [v9 setMasksToBounds:1];
-    [v9 setCornerCurve:kCACornerCurveContinuous];
+    [toCopy setMasksToBounds:1];
+    [toCopy setCornerCurve:kCACornerCurveContinuous];
   }
 }
 
-- (void)p_removeRoundedCornersFrom:(id)a3
+- (void)p_removeRoundedCornersFrom:(id)from
 {
-  v3 = a3;
-  [v3 setCornerRadius:0.0];
-  [v3 setMasksToBounds:0];
+  fromCopy = from;
+  [fromCopy setCornerRadius:0.0];
+  [fromCopy setMasksToBounds:0];
 }
 
-- (id)p_pathForRoundedCornerMaskWithBounds:(CGRect)a3
+- (id)p_pathForRoundedCornerMaskWithBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   if ([(CRLMovieRep *)self p_cornerRadiusValueIsSignificant])
   {
-    v8 = [(CRLMovieRep *)self movieItem];
-    [v8 cornerRadius];
+    movieItem = [(CRLMovieRep *)self movieItem];
+    [movieItem cornerRadius];
     v10 = [CRLBezierPath bezierPathWithContinuousCornerRoundedRect:x cornerRadius:y, width, height, v9];
   }
 
@@ -795,21 +795,21 @@ LABEL_8:
   return v10;
 }
 
-- (void)drawLayer:(id)a3 inContext:(CGContext *)a4
+- (void)drawLayer:(id)layer inContext:(CGContext *)context
 {
-  v6 = a3;
-  v7 = [(CRLCanvasRenderable *)self->_playerStrokeRenderable layer];
+  layerCopy = layer;
+  layer = [(CRLCanvasRenderable *)self->_playerStrokeRenderable layer];
 
-  if (v7 == v6)
+  if (layer == layerCopy)
   {
-    [(CRLMovieRep *)self p_drawStrokeInContext:a4];
+    [(CRLMovieRep *)self p_drawStrokeInContext:context];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = CRLMovieRep;
-    [(CRLMovieRep *)&v8 drawLayer:v6 inContext:a4];
+    [(CRLMovieRep *)&v8 drawLayer:layerCopy inContext:context];
   }
 }
 
@@ -849,9 +849,9 @@ LABEL_8:
   }
 }
 
-- (BOOL)p_needsTilingForStroke:(id)a3
+- (BOOL)p_needsTilingForStroke:(id)stroke
 {
-  v4 = a3;
+  strokeCopy = stroke;
   if ([(CRLCanvasRep *)self isBeingResized])
   {
     isKindOfClass = 0;
@@ -866,9 +866,9 @@ LABEL_8:
   return isKindOfClass & 1;
 }
 
-- (void)p_setupPlayerStrokeRenderables:(BOOL)a3
+- (void)p_setupPlayerStrokeRenderables:(BOOL)renderables
 {
-  if (a3)
+  if (renderables)
   {
     [(CRLMovieRep *)self p_setupTilingPlayerStrokeRenderable];
   }
@@ -879,52 +879,52 @@ LABEL_8:
   }
 }
 
-- (void)p_checkAndSyncTilingState:(BOOL)a3
+- (void)p_checkAndSyncTilingState:(BOOL)state
 {
-  v3 = a3;
+  stateCopy = state;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != v3)
+  if ((objc_opt_isKindOfClass() & 1) != stateCopy)
   {
 
     [(CRLMovieRep *)self p_disposeStrokeRenderable];
   }
 }
 
-- (void)p_setupStrokeRenderables:(BOOL)a3
+- (void)p_setupStrokeRenderables:(BOOL)renderables
 {
-  v3 = a3;
+  renderablesCopy = renderables;
   [(CRLMovieRep *)self p_checkAndSyncTilingState:?];
 
-  [(CRLMovieRep *)self p_setupPlayerStrokeRenderables:v3];
+  [(CRLMovieRep *)self p_setupPlayerStrokeRenderables:renderablesCopy];
 }
 
-- (void)p_commonDrawStrokeInContext:(CGContext *)a3
+- (void)p_commonDrawStrokeInContext:(CGContext *)context
 {
-  CGContextSaveGState(a3);
-  v5 = [(CRLCanvasRep *)self canvas];
-  [v5 viewScale];
+  CGContextSaveGState(context);
+  canvas = [(CRLCanvasRep *)self canvas];
+  [canvas viewScale];
   v7 = v6;
 
-  CGContextScaleCTM(a3, v7, v7);
-  [(CRLMovieRep *)self p_drawInContext:a3 withContent:0 withStroke:1 withOpacity:0 forShadowOrHitTest:0.0];
+  CGContextScaleCTM(context, v7, v7);
+  [(CRLMovieRep *)self p_drawInContext:context withContent:0 withStroke:1 withOpacity:0 forShadowOrHitTest:0.0];
 
-  CGContextRestoreGState(a3);
+  CGContextRestoreGState(context);
 }
 
-- (CGRect)p_strokeFrameForRenderableFrame:(CGRect)a3
+- (CGRect)p_strokeFrameForRenderableFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(CRLCanvasRep *)self layout];
-  v9 = [v8 stroke];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  layout = [(CRLCanvasRep *)self layout];
+  stroke = [layout stroke];
 
-  v10 = [(CRLCanvasRep *)self canvas];
-  [v10 viewScale];
+  canvas = [(CRLCanvasRep *)self canvas];
+  [canvas viewScale];
   v12 = v11;
 
-  [v9 renderedWidth];
+  [stroke renderedWidth];
   v14 = v12 * (v13 * -0.5);
   v26.origin.x = x;
   v26.origin.y = y;
@@ -947,21 +947,21 @@ LABEL_8:
   return result;
 }
 
-- (void)p_arrangeRenderableVisibility:(id)a3
+- (void)p_arrangeRenderableVisibility:(id)visibility
 {
-  v6 = a3;
+  visibilityCopy = visibility;
   if (self->_playerLayerShouldBeDisplayed && !self->_needsTeardownPlayerController)
   {
     [(CRLCanvasRenderable *)self->_playerRenderable setHidden:0];
-    [(CRLCanvasRenderable *)v6 setHidden:1];
+    [(CRLCanvasRenderable *)visibilityCopy setHidden:1];
     playerRenderable = self->_playerRenderable;
   }
 
   else
   {
-    [(CRLCanvasRenderable *)v6 setHidden:0];
+    [(CRLCanvasRenderable *)visibilityCopy setHidden:0];
     [(CRLCanvasRenderable *)self->_playerRenderable setHidden:1];
-    playerRenderable = v6;
+    playerRenderable = visibilityCopy;
   }
 
   v5 = playerRenderable;
@@ -972,19 +972,19 @@ LABEL_8:
   }
 }
 
-- (void)willUpdateRenderable:(id)a3
+- (void)willUpdateRenderable:(id)renderable
 {
   v7.receiver = self;
   v7.super_class = CRLMovieRep;
-  v4 = a3;
-  [(CRLCanvasRep *)&v7 willUpdateRenderable:v4];
+  renderableCopy = renderable;
+  [(CRLCanvasRep *)&v7 willUpdateRenderable:renderableCopy];
   v5 = [(CRLCanvasRep *)self layout:v7.receiver];
-  v6 = [v5 stroke];
+  stroke = [v5 stroke];
 
-  [(CRLMovieRep *)self p_arrangeRenderableVisibility:v4];
-  if ([(CRLMediaRep *)self i_shouldRenderStroke:v6])
+  [(CRLMovieRep *)self p_arrangeRenderableVisibility:renderableCopy];
+  if ([(CRLMediaRep *)self i_shouldRenderStroke:stroke])
   {
-    [(CRLMovieRep *)self p_setupStrokeRenderables:[(CRLMovieRep *)self p_needsTilingForStroke:v6]];
+    [(CRLMovieRep *)self p_setupStrokeRenderables:[(CRLMovieRep *)self p_needsTilingForStroke:stroke]];
   }
 
   else
@@ -993,9 +993,9 @@ LABEL_8:
   }
 }
 
-- (void)didUpdateRenderable:(id)a3
+- (void)didUpdateRenderable:(id)renderable
 {
-  v4 = a3;
+  renderableCopy = renderable;
   v38[0] = _NSConcreteStackBlock;
   v38[1] = 3221225472;
   v38[2] = sub_100185D40;
@@ -1007,8 +1007,8 @@ LABEL_8:
   [CATransaction setCompletionBlock:v5];
   v37.receiver = self;
   v37.super_class = CRLMovieRep;
-  [(CRLCanvasRep *)&v37 didUpdateRenderable:v4];
-  [(CRLCanvasRenderable *)v4 crl_ignoreAccessibilityInvertColorsIfNeeded];
+  [(CRLCanvasRep *)&v37 didUpdateRenderable:renderableCopy];
+  [(CRLCanvasRenderable *)renderableCopy crl_ignoreAccessibilityInvertColorsIfNeeded];
   [(CRLStyledRep *)self opacity];
   v7 = v6;
   if ([(CRLMovieRep *)self shouldShowLoadingUI]&& ![(CRLMovieRep *)self directlyManagesLayerContent])
@@ -1016,12 +1016,12 @@ LABEL_8:
     v7 = 1.0;
   }
 
-  [(CRLCanvasRenderable *)v4 opacity];
+  [(CRLCanvasRenderable *)renderableCopy opacity];
   v9 = v8;
   if (v7 != v9)
   {
     *&v9 = v7;
-    [(CRLCanvasRenderable *)v4 setOpacity:v9];
+    [(CRLCanvasRenderable *)renderableCopy setOpacity:v9];
   }
 
   playerRenderable = self->_playerRenderable;
@@ -1036,25 +1036,25 @@ LABEL_8:
     }
   }
 
-  v13 = [(CRLCanvasRep *)self layout];
-  v14 = [v13 stroke];
+  layout = [(CRLCanvasRep *)self layout];
+  stroke = [layout stroke];
 
-  if ([(CRLMediaRep *)self i_shouldRenderStroke:v14])
+  if ([(CRLMediaRep *)self i_shouldRenderStroke:stroke])
   {
-    v15 = v4;
+    v15 = renderableCopy;
     if (self->_playerLayerShouldBeDisplayed)
     {
       v15 = self->_playerRenderable;
     }
 
-    [(CRLMovieRep *)self p_updateStrokeRenderablesForStroke:v14 repRenderable:v15];
+    [(CRLMovieRep *)self p_updateStrokeRenderablesForStroke:stroke repRenderable:v15];
   }
 
   [(CRLMediaRep *)self updateSpatialLabel];
   if ([(CRLMovieRep *)self directlyManagesLayerContent])
   {
-    v16 = [(CRLMovieRep *)self p_posterImageProvider];
-    if (v16)
+    p_posterImageProvider = [(CRLMovieRep *)self p_posterImageProvider];
+    if (p_posterImageProvider)
     {
       v31 = 0;
       v32 = &v31;
@@ -1062,23 +1062,23 @@ LABEL_8:
       v35 = 0;
       v36 = 0;
       v34 = &unk_1016A8115;
-      v17 = [(CRLCanvasRep *)self canvas];
-      v18 = [(CRLCanvasRep *)self layout];
-      v19 = [v18 geometry];
-      [v19 size];
-      [v17 convertUnscaledToBoundsSize:?];
+      canvas = [(CRLCanvasRep *)self canvas];
+      layout2 = [(CRLCanvasRep *)self layout];
+      geometry = [layout2 geometry];
+      [geometry size];
+      [canvas convertUnscaledToBoundsSize:?];
       v35 = v20;
       v36 = v21;
 
-      v22 = [v16 cachedCGImageOfNearestSizeOrNULLPreferringSize:v4 withContentsScaleProvider:{v32[4], v32[5]}];
+      v22 = [p_posterImageProvider cachedCGImageOfNearestSizeOrNULLPreferringSize:renderableCopy withContentsScaleProvider:{v32[4], v32[5]}];
       if (v22)
       {
-        [(CRLCanvasRenderable *)v4 setContents:v22];
+        [(CRLCanvasRenderable *)renderableCopy setContents:v22];
       }
 
       else
       {
-        -[CRLCanvasRenderable setContents:](v4, "setContents:", [v16 CGImageOfAnySize]);
+        -[CRLCanvasRenderable setContents:](renderableCopy, "setContents:", [p_posterImageProvider CGImageOfAnySize]);
       }
 
       v23 = dispatch_get_global_queue(0, 0);
@@ -1086,15 +1086,15 @@ LABEL_8:
       block[1] = 3221225472;
       block[2] = sub_100185D48;
       block[3] = &unk_101842C68;
-      v27 = v16;
+      v27 = p_posterImageProvider;
       v30 = &v31;
-      v24 = v4;
+      v24 = renderableCopy;
       v28 = v24;
-      v29 = self;
+      selfCopy = self;
       dispatch_async(v23, block);
 
-      v25 = [(CRLCanvasRenderable *)v24 layer];
-      [(CRLMovieRep *)self p_applyRoundedCornersTo:v25];
+      layer = [(CRLCanvasRenderable *)v24 layer];
+      [(CRLMovieRep *)self p_applyRoundedCornersTo:layer];
 
       _Block_object_dispose(&v31, 8);
     }
@@ -1105,8 +1105,8 @@ LABEL_8:
 
 - (BOOL)shouldDisplayAsSpatial
 {
-  v3 = [(CRLMovieRep *)self movieItem];
-  if ([v3 isSpatial])
+  movieItem = [(CRLMovieRep *)self movieItem];
+  if ([movieItem isSpatial])
   {
     v4 = ![(CRLMovieRep *)self isPlaying];
   }
@@ -1119,22 +1119,22 @@ LABEL_8:
   return v4;
 }
 
-- (void)p_setPositionAndBoundsIfDifferent:(id)a3 position:(CGPoint)a4 bounds:(CGRect)a5
+- (void)p_setPositionAndBoundsIfDifferent:(id)different position:(CGPoint)position bounds:(CGRect)bounds
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v9 = a4.y;
-  v10 = a4.x;
-  v18 = a3;
-  [v18 position];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  v9 = position.y;
+  v10 = position.x;
+  differentCopy = different;
+  [differentCopy position];
   if (v12 != v10 || v11 != v9)
   {
-    [v18 setPosition:{v10, v9}];
+    [differentCopy setPosition:{v10, v9}];
   }
 
-  [v18 bounds];
+  [differentCopy bounds];
   v21.origin.x = v14;
   v21.origin.y = v15;
   v21.size.width = v16;
@@ -1145,13 +1145,13 @@ LABEL_8:
   v20.size.height = height;
   if (!CGRectEqualToRect(v20, v21))
   {
-    [v18 setBounds:{x, y, width, height}];
+    [differentCopy setBounds:{x, y, width, height}];
   }
 }
 
-- (void)updateRenderableGeometryFromLayout:(id)a3
+- (void)updateRenderableGeometryFromLayout:(id)layout
 {
-  v4 = a3;
+  layoutCopy = layout;
   if ([(CRLMovieRep *)self directlyManagesLayerContent])
   {
     v14 = 0u;
@@ -1159,14 +1159,14 @@ LABEL_8:
     v12 = 0u;
     v13 = 0u;
     v11 = 0u;
-    v5 = [(CRLMovieRep *)self movieLayout];
-    v6 = [v5 pureGeometry];
-    [(CRLCanvasRep *)self computeDirectLayerFrame:&v14 andTransform:&v11 basedOnLayoutGeometry:v6];
+    movieLayout = [(CRLMovieRep *)self movieLayout];
+    pureGeometry = [movieLayout pureGeometry];
+    [(CRLCanvasRep *)self computeDirectLayerFrame:&v14 andTransform:&v11 basedOnLayoutGeometry:pureGeometry];
     [(CRLCanvasRep *)self antiAliasDefeatLayerTransform:&v11 forFrame:v14, v15];
     v8 = v11;
     v9 = v12;
     v10 = v13;
-    [v4 setIfDifferentFrame:&v8 orTransform:{v14, v15}];
+    [layoutCopy setIfDifferentFrame:&v8 orTransform:{v14, v15}];
     if (self->_playerRenderable)
     {
       +[CATransaction begin];
@@ -1184,24 +1184,24 @@ LABEL_8:
   {
     v16.receiver = self;
     v16.super_class = CRLMovieRep;
-    [(CRLCanvasRep *)&v16 updateRenderableGeometryFromLayout:v4];
+    [(CRLCanvasRep *)&v16 updateRenderableGeometryFromLayout:layoutCopy];
   }
 }
 
-- (void)p_applyBasicStroke:(id)a3 toRenderable:(id)a4 bounds:(CGRect)a5
+- (void)p_applyBasicStroke:(id)stroke toRenderable:(id)renderable bounds:(CGRect)bounds
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v11 = a4;
-  v12 = a3;
-  v13 = [(CRLCanvasRep *)self canvas];
-  [v13 viewScale];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  renderableCopy = renderable;
+  strokeCopy = stroke;
+  canvas = [(CRLCanvasRep *)self canvas];
+  [canvas viewScale];
   v15 = v14;
 
-  [v11 setBounds:{x, y, width, height}];
-  [v12 applyToShapeRenderable:v11 withScale:v15];
+  [renderableCopy setBounds:{x, y, width, height}];
+  [strokeCopy applyToShapeRenderable:renderableCopy withScale:v15];
 
   Mutable = CGPathCreateMutable();
   v18.origin.x = x;
@@ -1209,25 +1209,25 @@ LABEL_8:
   v18.size.width = width;
   v18.size.height = height;
   CGPathAddRect(Mutable, 0, v18);
-  [v11 setHidden:0];
-  [v11 setPath:Mutable];
+  [renderableCopy setHidden:0];
+  [renderableCopy setPath:Mutable];
 
   CGPathRelease(Mutable);
 }
 
-- (void)p_updateStrokeRenderablesForStroke:(id)a3 repRenderable:(id)a4
+- (void)p_updateStrokeRenderablesForStroke:(id)stroke repRenderable:(id)renderable
 {
-  v5 = a3;
-  v6 = [(CRLMovieRep *)self p_playerStrokeRenderable];
+  strokeCopy = stroke;
+  p_playerStrokeRenderable = [(CRLMovieRep *)self p_playerStrokeRenderable];
   +[CATransaction begin];
   [CATransaction setDisableActions:1];
-  v7 = [(CRLMovieRep *)self p_needsTilingForStroke:v5];
+  v7 = [(CRLMovieRep *)self p_needsTilingForStroke:strokeCopy];
   v35 = 0u;
   memset(&v36, 0, sizeof(v36));
   v34 = 0u;
-  v8 = [(CRLCanvasRep *)self layout];
-  v9 = [v8 pureGeometry];
-  [(CRLCanvasRep *)self computeDirectLayerFrame:&v34 andTransform:&v36 basedOnLayoutGeometry:v9];
+  layout = [(CRLCanvasRep *)self layout];
+  pureGeometry = [layout pureGeometry];
+  [(CRLCanvasRep *)self computeDirectLayerFrame:&v34 andTransform:&v36 basedOnLayoutGeometry:pureGeometry];
 
   v10 = v35;
   v11 = sub_10011ECB4();
@@ -1236,21 +1236,21 @@ LABEL_8:
   v17 = v16;
   v18 = sub_100120414(*&v34, *(&v34 + 1), *&v10, *(&v10 + 1));
   v20 = v19;
-  [v6 position];
+  [p_playerStrokeRenderable position];
   if (v22 == v18 && v21 == v20)
   {
-    if (v6)
+    if (p_playerStrokeRenderable)
     {
 LABEL_4:
-      [v6 affineTransform];
+      [p_playerStrokeRenderable affineTransform];
       goto LABEL_7;
     }
   }
 
   else
   {
-    [v6 setPosition:{v18, v20}];
-    if (v6)
+    [p_playerStrokeRenderable setPosition:{v18, v20}];
+    if (p_playerStrokeRenderable)
     {
       goto LABEL_4;
     }
@@ -1262,45 +1262,45 @@ LABEL_7:
   if (!CGAffineTransformEqualToTransform(&t1, &v32))
   {
     t1 = v36;
-    [v6 setAffineTransform:&t1];
+    [p_playerStrokeRenderable setAffineTransform:&t1];
   }
 
   [(CRLStyledRep *)self opacity];
   v24 = v23;
-  [v6 opacity];
+  [p_playerStrokeRenderable opacity];
   v26 = v25;
   if (v24 != v26)
   {
     *&v26 = v24;
-    [v6 setOpacity:v26];
+    [p_playerStrokeRenderable setOpacity:v26];
   }
 
   [(CRLMovieRep *)self p_strokeFrameForRenderableFrame:v11, v13, v15, v17];
-  [(CRLMovieRep *)self p_setPositionAndBoundsIfDifferent:v6 position:v18 bounds:v20, v27, v28, v29, v30];
+  [(CRLMovieRep *)self p_setPositionAndBoundsIfDifferent:p_playerStrokeRenderable position:v18 bounds:v20, v27, v28, v29, v30];
   if ((v7 & 1) == 0)
   {
-    v31 = [(CRLMovieRep *)self p_shapeRenderableForPlayerStroke];
-    [(CRLMovieRep *)self p_applyBasicStroke:v5 toRenderable:v31 bounds:v11, v13, v15, v17];
+    p_shapeRenderableForPlayerStroke = [(CRLMovieRep *)self p_shapeRenderableForPlayerStroke];
+    [(CRLMovieRep *)self p_applyBasicStroke:strokeCopy toRenderable:p_shapeRenderableForPlayerStroke bounds:v11, v13, v15, v17];
   }
 
   +[CATransaction commit];
 }
 
-- (void)processChangedProperty:(unint64_t)a3
+- (void)processChangedProperty:(unint64_t)property
 {
   v8.receiver = self;
   v8.super_class = CRLMovieRep;
   [(CRLMediaRep *)&v8 processChangedProperty:?];
-  if (a3 <= 44)
+  if (property <= 44)
   {
-    if (a3 <= 18)
+    if (property <= 18)
     {
-      if (a3 == 16)
+      if (property == 16)
       {
         [(CRLMovieRep *)self p_disposeStrokeRenderable];
       }
 
-      else if (a3 != 17)
+      else if (property != 17)
       {
         return;
       }
@@ -1308,11 +1308,11 @@ LABEL_7:
       goto LABEL_22;
     }
 
-    if (a3 == 19)
+    if (property == 19)
     {
       [(CRLMovieRep *)self p_setNeedsTeardownPlayerControllerOnUpdateRenderable];
-      v6 = [(CRLCanvasRep *)self canvas];
-      [v6 invalidateContentLayersForRep:self];
+      canvas = [(CRLCanvasRep *)self canvas];
+      [canvas invalidateContentLayersForRep:self];
 
       [(CRLMovieRep *)self p_listenForAssetChangesIfAppropriate];
       [(CRLMovieRep *)self p_stopUpdatingUIStateForMoviePlayability];
@@ -1320,11 +1320,11 @@ LABEL_7:
       [(CRLMovieRep *)self p_updatePlayButtonVisibility];
     }
 
-    else if (a3 == 44)
+    else if (property == 44)
     {
       [(CRLMovieRep *)self setNeedsDisplay];
-      v5 = [(CRLCanvasRep *)self canvas];
-      [v5 invalidateContentLayersForRep:self];
+      canvas2 = [(CRLCanvasRep *)self canvas];
+      [canvas2 invalidateContentLayersForRep:self];
 
       [(CRLMovieRep *)self p_updatePlayButtonVisibility];
       [(CRLMovieRep *)self p_listenForAssetChangesIfAppropriate];
@@ -1333,17 +1333,17 @@ LABEL_7:
 
   else
   {
-    if (a3 > 47)
+    if (property > 47)
     {
-      if (a3 == 48)
+      if (property == 48)
       {
         [(CRLMovieRep *)self p_updateVolume];
         return;
       }
 
-      if (a3 != 49)
+      if (property != 49)
       {
-        if (a3 == 56)
+        if (property == 56)
         {
           [(CRLMovieRep *)self p_startOrStopLoopingStickerIfNecessary];
           [(CRLMovieRep *)self p_updateLoopingSettingForMoviePlaybackIfNeeded];
@@ -1353,20 +1353,20 @@ LABEL_7:
       }
 
       [(CRLMovieRep *)self p_updateRoundedCornersForPlayerRenderableIfNeeded];
-      v7 = [(CRLCanvasRep *)self canvas];
-      [v7 invalidateContentLayersForRep:self];
+      canvas3 = [(CRLCanvasRep *)self canvas];
+      [canvas3 invalidateContentLayersForRep:self];
 
 LABEL_22:
       [(CRLMovieRep *)self setNeedsDisplay];
       return;
     }
 
-    if (a3 == 45)
+    if (property == 45)
     {
       [(CRLMovieRep *)self p_updateStartTime];
     }
 
-    else if (a3 == 46)
+    else if (property == 46)
     {
       [(CRLMovieRep *)self p_updateEndTime];
     }
@@ -1384,7 +1384,7 @@ LABEL_22:
     block[1] = 3221225472;
     v4 = sub_100186750;
     v5 = &unk_10183AB38;
-    v6 = self;
+    selfCopy = self;
     if (+[NSThread isMainThread])
     {
       v4(block);
@@ -1437,33 +1437,33 @@ LABEL_22:
 
 - (id)p_selectionPath
 {
-  v3 = [(CRLCanvasRep *)self isSelected];
-  v4 = [(CRLCanvasRep *)self interactiveCanvasController];
-  v5 = v4;
-  if (v3)
+  isSelected = [(CRLCanvasRep *)self isSelected];
+  interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+  v5 = interactiveCanvasController;
+  if (isSelected)
   {
-    v6 = [v4 editorController];
-    v7 = [v6 selectionPath];
+    editorController = [interactiveCanvasController editorController];
+    selectionPath = [editorController selectionPath];
   }
 
   else
   {
-    v6 = [v4 canvasEditor];
-    v8 = [(CRLMovieRep *)self movieItem];
-    v7 = [v6 selectionPathWithInfo:v8];
+    editorController = [interactiveCanvasController canvasEditor];
+    movieItem = [(CRLMovieRep *)self movieItem];
+    selectionPath = [editorController selectionPathWithInfo:movieItem];
   }
 
-  return v7;
+  return selectionPath;
 }
 
 - (void)toggleMiniFormatter
 {
-  v3 = [(CRLCanvasRep *)self interactiveCanvasController];
-  v4 = [v3 layerHost];
-  v5 = [v4 miniFormatterPresenter];
-  v6 = [v5 isPresentingMiniFormatter];
+  interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+  layerHost = [interactiveCanvasController layerHost];
+  miniFormatterPresenter = [layerHost miniFormatterPresenter];
+  isPresentingMiniFormatter = [miniFormatterPresenter isPresentingMiniFormatter];
 
-  if (v6)
+  if (isPresentingMiniFormatter)
   {
 
     [(CRLMovieRep *)self p_hideMiniFormatter];
@@ -1478,42 +1478,42 @@ LABEL_22:
 
 - (void)p_showMiniFormatter
 {
-  v6 = [(CRLCanvasRep *)self interactiveCanvasController];
-  if (([v6 documentIsSharedReadOnly] & 1) == 0)
+  interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+  if (([interactiveCanvasController documentIsSharedReadOnly] & 1) == 0)
   {
-    v3 = [v6 layerHost];
-    v4 = [v3 miniFormatterPresenter];
-    v5 = [(CRLMovieRep *)self p_selectionPath];
-    [v4 presentMiniFormatterForSelectionPath:v5];
+    layerHost = [interactiveCanvasController layerHost];
+    miniFormatterPresenter = [layerHost miniFormatterPresenter];
+    p_selectionPath = [(CRLMovieRep *)self p_selectionPath];
+    [miniFormatterPresenter presentMiniFormatterForSelectionPath:p_selectionPath];
   }
 }
 
 - (void)p_hideMiniFormatter
 {
-  v5 = [(CRLCanvasRep *)self interactiveCanvasController];
-  v3 = [v5 layerHost];
-  v4 = [v3 miniFormatterPresenter];
-  [v4 dismissMiniFormatterForRep:self];
+  interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+  layerHost = [interactiveCanvasController layerHost];
+  miniFormatterPresenter = [layerHost miniFormatterPresenter];
+  [miniFormatterPresenter dismissMiniFormatterForRep:self];
 }
 
 - (BOOL)p_isMiniFormatterShowing
 {
-  v2 = [(CRLCanvasRep *)self interactiveCanvasController];
-  v3 = [v2 layerHost];
-  v4 = [v3 miniFormatterPresenter];
-  v5 = [v4 isPresentingMiniFormatter];
+  interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+  layerHost = [interactiveCanvasController layerHost];
+  miniFormatterPresenter = [layerHost miniFormatterPresenter];
+  isPresentingMiniFormatter = [miniFormatterPresenter isPresentingMiniFormatter];
 
-  return v5;
+  return isPresentingMiniFormatter;
 }
 
 - (BOOL)p_miniFormatterIsPresentingSecondLayer
 {
-  v2 = [(CRLCanvasRep *)self interactiveCanvasController];
-  v3 = [v2 layerHost];
-  v4 = [v3 miniFormatterPresenter];
-  v5 = [v4 isPresentingSecondLayerPopover];
+  interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+  layerHost = [interactiveCanvasController layerHost];
+  miniFormatterPresenter = [layerHost miniFormatterPresenter];
+  isPresentingSecondLayerPopover = [miniFormatterPresenter isPresentingSecondLayerPopover];
 
-  return v5;
+  return isPresentingSecondLayerPopover;
 }
 
 - (BOOL)noKnobTogglePlayAndMiniFormatter
@@ -1547,49 +1547,49 @@ LABEL_22:
   return v5;
 }
 
-- (void)p_addPlayButtonToKnobs:(id)a3
+- (void)p_addPlayButtonToKnobs:(id)knobs
 {
-  v4 = a3;
-  v5 = [(CRLMovieRep *)self p_playButtonKnob];
-  [v4 crl_addObjects:{v5, 0}];
+  knobsCopy = knobs;
+  p_playButtonKnob = [(CRLMovieRep *)self p_playButtonKnob];
+  [knobsCopy crl_addObjects:{p_playButtonKnob, 0}];
 
   [(CRLMovieRep *)self p_updateUIStateForMoviePlayability];
   [(CRLMovieRep *)self p_updatePlayButtonVisibility];
 }
 
-- (void)addKnobsToArray:(id)a3
+- (void)addKnobsToArray:(id)array
 {
   v5.receiver = self;
   v5.super_class = CRLMovieRep;
-  v4 = a3;
-  [(CRLCanvasRep *)&v5 addKnobsToArray:v4];
-  [(CRLMovieRep *)self p_addPlayButtonToKnobs:v4, v5.receiver, v5.super_class];
+  arrayCopy = array;
+  [(CRLCanvasRep *)&v5 addKnobsToArray:arrayCopy];
+  [(CRLMovieRep *)self p_addPlayButtonToKnobs:arrayCopy, v5.receiver, v5.super_class];
 }
 
 - (unint64_t)enabledKnobMask
 {
   v5.receiver = self;
   v5.super_class = CRLMovieRep;
-  v3 = [(CRLCanvasRep *)&v5 enabledKnobMask];
+  enabledKnobMask = [(CRLCanvasRep *)&v5 enabledKnobMask];
   if ([(CRLCanvasRep *)self shouldCreateKnobs]&& [(CRLCanvasRep *)self isSelected]&& ![(CRLMovieRep *)self p_playButtonFitsInFrame])
   {
-    return v3 & 0x28A;
+    return enabledKnobMask & 0x28A;
   }
 
-  return v3;
+  return enabledKnobMask;
 }
 
-- (id)newTrackerForKnob:(id)a3
+- (id)newTrackerForKnob:(id)knob
 {
-  v4 = a3;
+  knobCopy = knob;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [[CRLCanvasButtonKnobTracker alloc] initWithRep:self knob:v4];
+    v5 = [[CRLCanvasButtonKnobTracker alloc] initWithRep:self knob:knobCopy];
     [(CRLCanvasButtonKnobTracker *)v5 setTarget:self];
-    v6 = [(CRLMovieRep *)self p_playButtonKnob];
+    p_playButtonKnob = [(CRLMovieRep *)self p_playButtonKnob];
 
-    if (v6 == v4)
+    if (p_playButtonKnob == knobCopy)
     {
       [(CRLCanvasButtonKnobTracker *)v5 setAction:"i_togglePlayPauseTriggeredFromKnob"];
     }
@@ -1599,7 +1599,7 @@ LABEL_22:
   {
     v8.receiver = self;
     v8.super_class = CRLMovieRep;
-    v5 = [(CRLCanvasRep *)&v8 newTrackerForKnob:v4];
+    v5 = [(CRLCanvasRep *)&v8 newTrackerForKnob:knobCopy];
   }
 
   return v5;
@@ -1607,18 +1607,18 @@ LABEL_22:
 
 - (void)p_showControls
 {
-  v3 = [(CRLMovieRep *)self movieItem];
-  v4 = [v3 posterImageAssetPayload];
-  v5 = [v4 needsDownload];
+  movieItem = [(CRLMovieRep *)self movieItem];
+  posterImageAssetPayload = [movieItem posterImageAssetPayload];
+  needsDownload = [posterImageAssetPayload needsDownload];
 
-  if ([(CRLMovieRep *)self p_playButtonFitsInFrame]&& (v5 & 1) == 0 && ![(CRLMovieRep *)self p_isLoopingSticker])
+  if ([(CRLMovieRep *)self p_playButtonFitsInFrame]&& (needsDownload & 1) == 0 && ![(CRLMovieRep *)self p_isLoopingSticker])
   {
-    v6 = [(CRLMovieRep *)self p_playButtonKnob];
-    [v6 setHidden:0];
+    p_playButtonKnob = [(CRLMovieRep *)self p_playButtonKnob];
+    [p_playButtonKnob setHidden:0];
 
-    v7 = [(CRLMovieRep *)self p_playButtonKnob];
-    v8 = [v7 renderable];
-    [v8 removeAnimationForKey:@"hidden"];
+    p_playButtonKnob2 = [(CRLMovieRep *)self p_playButtonKnob];
+    renderable = [p_playButtonKnob2 renderable];
+    [renderable removeAnimationForKey:@"hidden"];
 
     v14 = [CABasicAnimation animationWithKeyPath:@"opacity"];
     v9 = [NSNumber numberWithFloat:0.0];
@@ -1629,20 +1629,20 @@ LABEL_22:
     [v14 setToValue:v11];
 
     [v14 setDuration:0.2];
-    v12 = [(CRLMovieRep *)self p_playButtonKnob];
-    v13 = [v12 renderable];
-    [v13 addAnimation:v14 forKey:@"hidden"];
+    p_playButtonKnob3 = [(CRLMovieRep *)self p_playButtonKnob];
+    renderable2 = [p_playButtonKnob3 renderable];
+    [renderable2 addAnimation:v14 forKey:@"hidden"];
   }
 }
 
 - (void)i_hidePlayButtonIndependently
 {
-  v3 = [(CRLMovieRep *)self p_playButtonKnob];
-  [v3 setHidden:1];
+  p_playButtonKnob = [(CRLMovieRep *)self p_playButtonKnob];
+  [p_playButtonKnob setHidden:1];
 
-  v4 = [(CRLMovieRep *)self p_playButtonKnob];
-  v5 = [v4 renderable];
-  [v5 removeAnimationForKey:@"hidden"];
+  p_playButtonKnob2 = [(CRLMovieRep *)self p_playButtonKnob];
+  renderable = [p_playButtonKnob2 renderable];
+  [renderable removeAnimationForKey:@"hidden"];
 
   v11 = [CABasicAnimation animationWithKeyPath:@"opacity"];
   LODWORD(v6) = 1.0;
@@ -1653,9 +1653,9 @@ LABEL_22:
   [v11 setToValue:v8];
 
   [v11 setDuration:0.2];
-  v9 = [(CRLMovieRep *)self p_playButtonKnob];
-  v10 = [v9 renderable];
-  [v10 addAnimation:v11 forKey:@"hidden"];
+  p_playButtonKnob3 = [(CRLMovieRep *)self p_playButtonKnob];
+  renderable2 = [p_playButtonKnob3 renderable];
+  [renderable2 addAnimation:v11 forKey:@"hidden"];
 }
 
 - (void)p_hideControls
@@ -1678,12 +1678,12 @@ LABEL_22:
 
   else
   {
-    v7 = [(CRLCanvasRep *)self interactiveCanvasController];
-    v3 = [v7 canvasEditor];
-    v4 = [(CRLMovieRep *)self movieItem];
-    v5 = [v3 selectionPathWithInfo:v4];
-    v6 = [v7 editorController];
-    [v6 setSelectionPath:v5];
+    interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+    canvasEditor = [interactiveCanvasController canvasEditor];
+    movieItem = [(CRLMovieRep *)self movieItem];
+    v5 = [canvasEditor selectionPathWithInfo:movieItem];
+    editorController = [interactiveCanvasController editorController];
+    [editorController setSelectionPath:v5];
 
     [(CRLMovieRep *)self p_invalidateHideControlsTimeoutTimer];
     [(CRLMovieRep *)self p_showControls];
@@ -1698,20 +1698,20 @@ LABEL_22:
   self->_hideControlsTimeoutTimer = 0;
 }
 
-- (void)p_hideControlsWithDelay:(double)a3
+- (void)p_hideControlsWithDelay:(double)delay
 {
-  v5 = [(CRLCanvasRep *)self interactiveCanvasController];
-  v6 = [v5 freehandDrawingToolkit];
-  v7 = [v6 isLassoSelectionForMixedTypeEnabledInDrawingMode];
+  interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+  freehandDrawingToolkit = [interactiveCanvasController freehandDrawingToolkit];
+  isLassoSelectionForMixedTypeEnabledInDrawingMode = [freehandDrawingToolkit isLassoSelectionForMixedTypeEnabledInDrawingMode];
 
-  if (!self->_hideControlsTimeoutTimer && (v7 & 1) == 0)
+  if (!self->_hideControlsTimeoutTimer && (isLassoSelectionForMixedTypeEnabledInDrawingMode & 1) == 0)
   {
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_100187430;
     v10[3] = &unk_101842CB0;
     v10[4] = self;
-    v8 = [NSTimer scheduledTimerWithTimeInterval:0 repeats:v10 block:a3];
+    v8 = [NSTimer scheduledTimerWithTimeInterval:0 repeats:v10 block:delay];
     hideControlsTimeoutTimer = self->_hideControlsTimeoutTimer;
     self->_hideControlsTimeoutTimer = v8;
   }
@@ -1719,27 +1719,27 @@ LABEL_22:
 
 - (BOOL)p_isPresentingMiniFormatterOrPlayButtonVisible
 {
-  v2 = [(CRLCanvasRep *)self interactiveCanvasController];
-  v3 = [v2 layerHost];
-  v4 = [v3 miniFormatterPresenter];
-  v5 = [v4 isPresentingMiniFormatter];
+  interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+  layerHost = [interactiveCanvasController layerHost];
+  miniFormatterPresenter = [layerHost miniFormatterPresenter];
+  isPresentingMiniFormatter = [miniFormatterPresenter isPresentingMiniFormatter];
 
-  return v5;
+  return isPresentingMiniFormatter;
 }
 
-- (BOOL)p_isMovieKnob:(id)a3
+- (BOOL)p_isMovieKnob:(id)knob
 {
-  v3 = a3;
+  knobCopy = knob;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   return isKindOfClass & 1;
 }
 
-- (BOOL)directlyManagesVisibilityOfKnob:(id)a3
+- (BOOL)directlyManagesVisibilityOfKnob:(id)knob
 {
-  v4 = a3;
-  if ([(CRLMovieRep *)self p_isMovieKnob:v4])
+  knobCopy = knob;
+  if ([(CRLMovieRep *)self p_isMovieKnob:knobCopy])
   {
     v5 = 1;
   }
@@ -1748,7 +1748,7 @@ LABEL_22:
   {
     v7.receiver = self;
     v7.super_class = CRLMovieRep;
-    v5 = [(CRLCanvasRep *)&v7 directlyManagesVisibilityOfKnob:v4];
+    v5 = [(CRLCanvasRep *)&v7 directlyManagesVisibilityOfKnob:knobCopy];
   }
 
   return v5;
@@ -1772,14 +1772,14 @@ LABEL_22:
 
 - (void)didEndZooming
 {
-  v3 = [(CRLCanvasRenderable *)self->_playerRenderable layer];
-  [(CRLMovieRep *)self p_applyRoundedCornersTo:v3];
+  layer = [(CRLCanvasRenderable *)self->_playerRenderable layer];
+  [(CRLMovieRep *)self p_applyRoundedCornersTo:layer];
 }
 
-- (BOOL)canUseSpecializedHitRegionForKnob:(id)a3
+- (BOOL)canUseSpecializedHitRegionForKnob:(id)knob
 {
-  v4 = a3;
-  if ([(CRLMovieRep *)self p_isMovieKnob:v4])
+  knobCopy = knob;
+  if ([(CRLMovieRep *)self p_isMovieKnob:knobCopy])
   {
     v5 = 0;
   }
@@ -1788,19 +1788,19 @@ LABEL_22:
   {
     v7.receiver = self;
     v7.super_class = CRLMovieRep;
-    v5 = [(CRLCanvasRep *)&v7 canUseSpecializedHitRegionForKnob:v4];
+    v5 = [(CRLCanvasRep *)&v7 canUseSpecializedHitRegionForKnob:knobCopy];
   }
 
   return v5;
 }
 
-- (CGPoint)positionOfPlayKnobForBounds:(CGRect)a3 viewScale:(double)a4
+- (CGPoint)positionOfPlayKnobForBounds:(CGRect)bounds viewScale:(double)scale
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  MinX = CGRectGetMinX(a3);
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  MinX = CGRectGetMinX(bounds);
   v18.origin.x = x;
   v18.origin.y = y;
   v18.size.width = width;
@@ -1817,7 +1817,7 @@ LABEL_22:
   v20.size.height = height;
   v12 = CGRectGetMaxY(v20);
   v13 = sub_1004A48FC();
-  v14 = MaxX - 36.0 / a4;
+  v14 = MaxX - 36.0 / scale;
   if (v13)
   {
     v15 = MaxY;
@@ -1830,38 +1830,38 @@ LABEL_22:
 
   if (v13)
   {
-    v14 = 36.0 / a4 + MinX;
+    v14 = 36.0 / scale + MinX;
   }
 
-  v16 = v15 - 36.0 / a4;
+  v16 = v15 - 36.0 / scale;
   result.y = v16;
   result.x = v14;
   return result;
 }
 
-- (CGPoint)positionOfStandardKnob:(id)a3 forBounds:(CGRect)a4
+- (CGPoint)positionOfStandardKnob:(id)knob forBounds:(CGRect)bounds
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v21.receiver = self;
   v21.super_class = CRLMovieRep;
-  v9 = a3;
-  [(CRLCanvasRep *)&v21 positionOfStandardKnob:v9 forBounds:x, y, width, height];
+  knobCopy = knob;
+  [(CRLCanvasRep *)&v21 positionOfStandardKnob:knobCopy forBounds:x, y, width, height];
   v11 = v10;
   v13 = v12;
   v14 = [(CRLMovieRep *)self p_playButtonKnob:v21.receiver];
 
-  if (v14 == v9)
+  if (v14 == knobCopy)
   {
     if (![(CRLMovieRep *)self p_playButtonFitsInFrame])
     {
       [(CRLMovieRep *)self p_updatePlayButtonVisibility];
     }
 
-    v15 = [(CRLCanvasRep *)self canvas];
-    [v15 viewScale];
+    canvas = [(CRLCanvasRep *)self canvas];
+    [canvas viewScale];
     [(CRLMovieRep *)self positionOfPlayKnobForBounds:x viewScale:y, width, height, v16];
     v11 = v17;
     v13 = v18;
@@ -1879,10 +1879,10 @@ LABEL_22:
   v5.receiver = self;
   v5.super_class = CRLMovieRep;
   [(CRLCanvasRep *)&v5 documentEditabilityDidChange];
-  v3 = [(CRLCanvasRep *)self interactiveCanvasController];
-  v4 = [v3 editingDisabled];
+  interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+  editingDisabled = [interactiveCanvasController editingDisabled];
 
-  if (v4)
+  if (editingDisabled)
   {
     [(CRLMovieRep *)self p_teardownPlayerController];
   }
@@ -1907,9 +1907,9 @@ LABEL_22:
   if (!playButtonKnob)
   {
     v4 = [CRLMovieKnob alloc];
-    v5 = [(CRLMovieRep *)self playButtonImage];
+    playButtonImage = [(CRLMovieRep *)self playButtonImage];
     v6 = +[CRLMovieRep CRLMovieButtonFillColor];
-    v7 = [(CRLMovieKnob *)v4 initWithImage:v5 radius:v6 backgroundColor:self onRep:24.0];
+    v7 = [(CRLMovieKnob *)v4 initWithImage:playButtonImage radius:v6 backgroundColor:self onRep:24.0];
     v8 = self->_playButtonKnob;
     self->_playButtonKnob = v7;
 
@@ -1931,9 +1931,9 @@ LABEL_22:
   if (!self->_playButtonShowingPause)
   {
     self->_playButtonShowingPause = 1;
-    v5 = [(CRLMovieRep *)self pauseButtonImage];
-    v4 = [(CRLMovieRep *)self p_playButtonKnob];
-    [v4 setImage:v5];
+    pauseButtonImage = [(CRLMovieRep *)self pauseButtonImage];
+    p_playButtonKnob = [(CRLMovieRep *)self p_playButtonKnob];
+    [p_playButtonKnob setImage:pauseButtonImage];
   }
 }
 
@@ -1942,28 +1942,28 @@ LABEL_22:
   if (self->_playButtonShowingPause)
   {
     self->_playButtonShowingPause = 0;
-    v5 = [(CRLMovieRep *)self playButtonImage];
-    v4 = [(CRLMovieRep *)self p_playButtonKnob];
-    [v4 setImage:v5];
+    playButtonImage = [(CRLMovieRep *)self playButtonImage];
+    p_playButtonKnob = [(CRLMovieRep *)self p_playButtonKnob];
+    [p_playButtonKnob setImage:playButtonImage];
   }
 }
 
 - (void)p_hidePlayPauseButtonKnob
 {
-  v2 = [(CRLMovieRep *)self p_playButtonKnob];
-  [v2 setHidden:1];
+  p_playButtonKnob = [(CRLMovieRep *)self p_playButtonKnob];
+  [p_playButtonKnob setHidden:1];
 }
 
-- (void)p_updateUsePlayPauseButtonToMatchIsPlaying:(BOOL)a3
+- (void)p_updateUsePlayPauseButtonToMatchIsPlaying:(BOOL)playing
 {
-  v3 = a3;
+  playingCopy = playing;
   if ([(CRLMovieRep *)self p_isLoopingSticker])
   {
 
     [(CRLMovieRep *)self p_hidePlayPauseButtonKnob];
   }
 
-  else if (v3)
+  else if (playingCopy)
   {
 
     [(CRLMovieRep *)self p_usePauseButtonKnobImage];
@@ -1980,13 +1980,13 @@ LABEL_22:
 {
   +[CATransaction begin];
   [CATransaction setDisableActions:1];
-  v3 = [(CRLCanvasKnob *)self->_playButtonKnob renderable];
-  [v3 bounds];
+  renderable = [(CRLCanvasKnob *)self->_playButtonKnob renderable];
+  [renderable bounds];
   v8 = sub_100120414(v4, v5, v6, v7);
   v10 = v9;
 
-  v11 = [(CRLCanvasButtonKnob *)self->_playButtonKnob imageRenderable];
-  [v11 setPosition:{v8 + 2.88, v10}];
+  imageRenderable = [(CRLCanvasButtonKnob *)self->_playButtonKnob imageRenderable];
+  [imageRenderable setPosition:{v8 + 2.88, v10}];
 
   +[CATransaction commit];
 }
@@ -1995,12 +1995,12 @@ LABEL_22:
 {
   +[CATransaction begin];
   [CATransaction setDisableActions:1];
-  v3 = [(CRLCanvasKnob *)self->_playButtonKnob renderable];
-  [v3 bounds];
+  renderable = [(CRLCanvasKnob *)self->_playButtonKnob renderable];
+  [renderable bounds];
   v8 = sub_100120414(v4, v5, v6, v7);
   v10 = v9;
-  v11 = [(CRLCanvasButtonKnob *)self->_playButtonKnob imageRenderable];
-  [v11 setPosition:{v8, v10}];
+  imageRenderable = [(CRLCanvasButtonKnob *)self->_playButtonKnob imageRenderable];
+  [imageRenderable setPosition:{v8, v10}];
 
   +[CATransaction commit];
 }
@@ -2009,8 +2009,8 @@ LABEL_22:
 {
   if (!self->_didCheckPlayability && !self->_assetForPlayability)
   {
-    v3 = [(CRLMovieRep *)self movieItem];
-    v4 = [v3 movieAssetPayload];
+    movieItem = [(CRLMovieRep *)self movieItem];
+    movieAssetPayload = [movieItem movieAssetPayload];
 
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
@@ -2018,9 +2018,9 @@ LABEL_22:
     v15[3] = &unk_10183AB38;
     v15[4] = self;
     v5 = objc_retainBlock(v15);
-    if (v4)
+    if (movieAssetPayload)
     {
-      if ([v4 needsDownload])
+      if ([movieAssetPayload needsDownload])
       {
         self->_isPlayable = 0;
         self->_didCheckPlayability = 1;
@@ -2028,13 +2028,13 @@ LABEL_22:
 
       else
       {
-        v6 = [v4 type];
-        v7 = [v6 identifier];
-        v8 = [CRLAnimatedGIFController canInitWithDataType:v7];
+        type = [movieAssetPayload type];
+        identifier = [type identifier];
+        v8 = [CRLAnimatedGIFController canInitWithDataType:identifier];
 
         if (!v8)
         {
-          v9 = [v4 AVAssetAndReturnError:0];
+          v9 = [movieAssetPayload AVAssetAndReturnError:0];
           self->_didCheckPlayability = 1;
           objc_storeStrong(&self->_assetForPlayability, v9);
           self->_isPlayable = 0;
@@ -2053,7 +2053,7 @@ LABEL_22:
         }
 
         self->_didCheckPlayability = 1;
-        self->_isPlayable = [v4 needsDownload] ^ 1;
+        self->_isPlayable = [movieAssetPayload needsDownload] ^ 1;
       }
 
       (v5[2])(v5);
@@ -2074,12 +2074,12 @@ LABEL_10:
 
 - (BOOL)p_playButtonFitsInFrame
 {
-  v3 = [(CRLCanvasRep *)self canvas];
-  if ([v3 isCanvasInteractive])
+  canvas = [(CRLCanvasRep *)self canvas];
+  if ([canvas isCanvasInteractive])
   {
-    v4 = [(CRLCanvasRep *)self canvas];
+    canvas2 = [(CRLCanvasRep *)self canvas];
     [(CRLCanvasRep *)self naturalBounds];
-    [v4 convertUnscaledToBoundsSize:{v5, v6}];
+    [canvas2 convertUnscaledToBoundsSize:{v5, v6}];
     v8 = v7;
     v10 = v9;
   }
@@ -2096,8 +2096,8 @@ LABEL_10:
 
 - (void)p_updatePlayButtonVisibility
 {
-  v36 = [(CRLCanvasRep *)self canvas];
-  if ([v36 isCanvasInteractive])
+  canvas = [(CRLCanvasRep *)self canvas];
+  if ([canvas isCanvasInteractive])
   {
     didCancelUpdatingPlayButtonVisibility = self->_didCancelUpdatingPlayButtonVisibility;
 
@@ -2106,26 +2106,26 @@ LABEL_10:
       return;
     }
 
-    v36 = [(CRLCanvasRep *)self interactiveCanvasController];
-    v4 = [v36 editorController];
-    v5 = [v4 selectionPath];
-    v6 = [v36 modelsForSelectionPath:v5];
+    canvas = [(CRLCanvasRep *)self interactiveCanvasController];
+    editorController = [canvas editorController];
+    selectionPath = [editorController selectionPath];
+    v6 = [canvas modelsForSelectionPath:selectionPath];
 
-    v7 = [(CRLMovieRep *)self movieItem];
+    movieItem = [(CRLMovieRep *)self movieItem];
     if ([v6 count] == 1)
     {
-      v34 = [v6 anyObject];
+      anyObject = [v6 anyObject];
     }
 
     else
     {
-      v34 = 0;
+      anyObject = 0;
     }
 
-    v33 = [(CRLMovieRep *)self p_playButtonFitsInFrame];
+    p_playButtonFitsInFrame = [(CRLMovieRep *)self p_playButtonFitsInFrame];
     if ([(CRLMovieRep *)self p_isLoopingSticker])
     {
-      if ([v36 editingDisabled])
+      if ([canvas editingDisabled])
       {
         v8 = ![(CRLMovieRep *)self p_shouldAllowPlaybackWhenEditingDisabled];
       }
@@ -2141,20 +2141,20 @@ LABEL_10:
       v8 = 0;
     }
 
-    v9 = [(CRLCanvasRep *)self interactiveCanvasController];
-    v10 = [v9 layerHost];
-    v11 = [v10 asiOSCVC];
-    v35 = [v11 isCurrentlyInQuickSelectMode];
+    interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+    layerHost = [interactiveCanvasController layerHost];
+    asiOSCVC = [layerHost asiOSCVC];
+    isCurrentlyInQuickSelectMode = [asiOSCVC isCurrentlyInQuickSelectMode];
 
     v12 = objc_opt_class();
-    v13 = [(CRLCanvasRep *)self interactiveCanvasController];
-    v14 = [v13 layerHost];
-    v15 = sub_100014370(v12, v14);
+    interactiveCanvasController2 = [(CRLCanvasRep *)self interactiveCanvasController];
+    layerHost2 = [interactiveCanvasController2 layerHost];
+    v15 = sub_100014370(v12, layerHost2);
 
-    v16 = [v15 delegate];
+    delegate = [v15 delegate];
     if (objc_opt_respondsToSelector())
     {
-      v17 = [v16 allowsMoviePlayButton] ^ 1;
+      v17 = [delegate allowsMoviePlayButton] ^ 1;
     }
 
     else
@@ -2162,12 +2162,12 @@ LABEL_10:
       v17 = 0;
     }
 
-    v18 = [v36 editingCoordinator];
-    v19 = [v18 followCoordinator];
-    v20 = [v19 isFollowing];
+    editingCoordinator = [canvas editingCoordinator];
+    followCoordinator = [editingCoordinator followCoordinator];
+    isFollowing = [followCoordinator isFollowing];
 
     v21 = 0;
-    if ((v8 | v35) & 1) != 0 || (v17)
+    if ((v8 | isCurrentlyInQuickSelectMode) & 1) != 0 || (v17)
     {
       goto LABEL_21;
     }
@@ -2175,23 +2175,23 @@ LABEL_10:
     if (self->_didCheckPlayability)
     {
       v21 = 0;
-      if ([(CRLMovieRep *)self isPlaying]|| ((v33 ^ 1) & 1) != 0)
+      if ([(CRLMovieRep *)self isPlaying]|| ((p_playButtonFitsInFrame ^ 1) & 1) != 0)
       {
         goto LABEL_21;
       }
 
       if (!self->_isChangingDynamicVisibleTimeCount)
       {
-        v31 = [(CRLCanvasRep *)self repForSelecting];
-        if (v31 == self)
+        repForSelecting = [(CRLCanvasRep *)self repForSelecting];
+        if (repForSelecting == self)
         {
           v21 = 1;
         }
 
         else
         {
-          v32 = [(CRLCanvasRep *)self repForSelecting];
-          v21 = (v32 == 0) & v20;
+          repForSelecting2 = [(CRLCanvasRep *)self repForSelecting];
+          v21 = (repForSelecting2 == 0) & isFollowing;
         }
 
         goto LABEL_21;
@@ -2200,34 +2200,34 @@ LABEL_10:
 
     v21 = 0;
 LABEL_21:
-    v22 = [(CRLMovieRep *)self p_playButtonKnob];
-    v23 = [v22 isHidden];
+    p_playButtonKnob = [(CRLMovieRep *)self p_playButtonKnob];
+    isHidden = [p_playButtonKnob isHidden];
 
-    if (v21 == v23)
+    if (v21 == isHidden)
     {
       [(CRLMovieRep *)self p_updateUsePlayPauseButtonToMatchIsPlaying:[(CRLMovieRep *)self isPlaying]];
       [(CRLMovieRep *)self p_invalidateHideControlsTimeoutTimer];
-      v24 = v34;
+      v24 = anyObject;
       if (v21)
       {
         [(CRLMovieRep *)self p_showControls];
-        v25 = [(CRLCanvasRep *)self canvas];
-        [v25 invalidateContentLayersForRep:self];
+        canvas2 = [(CRLCanvasRep *)self canvas];
+        [canvas2 invalidateContentLayersForRep:self];
       }
 
       else
       {
-        if (v34 == v7)
+        if (anyObject == movieItem)
         {
           v26 = 0;
         }
 
         else
         {
-          v26 = [objc_msgSend(v34 "repClass")];
+          v26 = [objc_msgSend(anyObject "repClass")];
         }
 
-        if (v33 && (v26 & 1) == 0 && self->_didCheckPlayability && (-[CRLMovieRep p_playButtonKnob](self, "p_playButtonKnob"), v27 = objc_claimAutoreleasedReturnValue(), [v27 renderable], v28 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v28, "superlayer"), v29 = objc_claimAutoreleasedReturnValue(), v30 = v29 == 0, v29, v28, v27, ((v30 | v35) & 1) == 0))
+        if (p_playButtonFitsInFrame && (v26 & 1) == 0 && self->_didCheckPlayability && (-[CRLMovieRep p_playButtonKnob](self, "p_playButtonKnob"), v27 = objc_claimAutoreleasedReturnValue(), [v27 renderable], v28 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v28, "superlayer"), v29 = objc_claimAutoreleasedReturnValue(), v30 = v29 == 0, v29, v28, v27, ((v30 | isCurrentlyInQuickSelectMode) & 1) == 0))
         {
           [(CRLMovieRep *)self p_hideControlsWithDelay:3.25];
         }
@@ -2241,7 +2241,7 @@ LABEL_21:
 
     else
     {
-      v24 = v34;
+      v24 = anyObject;
       if (v21 && self->_hideControlsTimeoutTimer)
       {
         [(CRLMovieRep *)self p_invalidateHideControlsTimeoutTimer];
@@ -2277,66 +2277,66 @@ LABEL_21:
     if (self->_playerController)
     {
       [(CRLMovieRep *)self p_setNeedsTeardownPlayerControllerOnUpdateRenderable];
-      v3 = [(CRLCanvasRep *)self interactiveCanvasController];
-      [v3 invalidateContentLayersForRep:self];
+      interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+      [interactiveCanvasController invalidateContentLayersForRep:self];
     }
 
     [(CRLMovieRep *)self p_invalidateHideControlsTimeoutTimer];
   }
 }
 
-- (void)playerController:(id)a3 playbackDidFailWithError:(id)a4
+- (void)playerController:(id)controller playbackDidFailWithError:(id)error
 {
   v7 = _NSConcreteStackBlock;
   v8 = 3221225472;
   v9 = sub_100188C84;
   v10 = &unk_10183AE28;
-  v11 = self;
-  v12 = a4;
-  v5 = v12;
+  selfCopy = self;
+  errorCopy = error;
+  v5 = errorCopy;
   Main = CFRunLoopGetMain();
   CFRunLoopPerformBlock(Main, kCFRunLoopDefaultMode, &v7);
   CFRunLoopWakeUp(Main);
-  [(CRLMovieRep *)self p_updateUsePlayPauseButtonToMatchIsPlaying:0, v7, v8, v9, v10, v11];
+  [(CRLMovieRep *)self p_updateUsePlayPauseButtonToMatchIsPlaying:0, v7, v8, v9, v10, selfCopy];
   [(CRLMovieRep *)self p_invalidateHideControlsTimeoutTimer];
 }
 
-- (void)playbackDidStopForPlayerController:(id)a3
+- (void)playbackDidStopForPlayerController:(id)controller
 {
   [(CRLMovieRep *)self p_setNeedsTeardownPlayerControllerOnUpdateRenderable];
-  v4 = [(CRLCanvasRep *)self canvas];
-  [v4 invalidateContentLayersForRep:self];
+  canvas = [(CRLCanvasRep *)self canvas];
+  [canvas invalidateContentLayersForRep:self];
 }
 
-- (id)nowPlayingTitleWithPlaybackController:(id)a3
+- (id)nowPlayingTitleWithPlaybackController:(id)controller
 {
-  if (self->_playerController == a3)
+  if (self->_playerController == controller)
   {
-    v4 = [(CRLMovieRep *)self movieItem];
-    v3 = [v4 title];
+    movieItem = [(CRLMovieRep *)self movieItem];
+    title = [movieItem title];
   }
 
   else
   {
-    v3 = 0;
+    title = 0;
   }
 
-  return v3;
+  return title;
 }
 
-- (id)nowPlayingImageProviderWithPlaybackController:(id)a3
+- (id)nowPlayingImageProviderWithPlaybackController:(id)controller
 {
-  if (self->_playerController == a3)
+  if (self->_playerController == controller)
   {
-    v5 = [(CRLMovieRep *)self p_posterImageProvider];
+    p_posterImageProvider = [(CRLMovieRep *)self p_posterImageProvider];
   }
 
   else
   {
-    v5 = 0;
+    p_posterImageProvider = 0;
   }
 
-  return v5;
+  return p_posterImageProvider;
 }
 
 - (BOOL)isPlaying
@@ -2354,8 +2354,8 @@ LABEL_21:
 {
   if ([(CRLMovieRep *)self isPlayable])
   {
-    v3 = [(CRLMovieRep *)self playerControllerForcingCreationIfNotPreExisting];
-    [v3 setPlaying:1];
+    playerControllerForcingCreationIfNotPreExisting = [(CRLMovieRep *)self playerControllerForcingCreationIfNotPreExisting];
+    [playerControllerForcingCreationIfNotPreExisting setPlaying:1];
 
     [(CRLMovieRep *)self p_updateUsePlayPauseButtonToMatchIsPlaying:1];
 
@@ -2367,12 +2367,12 @@ LABEL_21:
 {
   if (![(CRLCanvasRep *)self isSelected])
   {
-    v3 = [(CRLCanvasRep *)self interactiveCanvasController];
-    v4 = [v3 canvasEditor];
-    v5 = [(CRLMovieRep *)self movieItem];
-    v6 = [v4 selectionPathWithInfo:v5];
-    v7 = [v3 editorController];
-    [v7 setSelectionPath:v6];
+    interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+    canvasEditor = [interactiveCanvasController canvasEditor];
+    movieItem = [(CRLMovieRep *)self movieItem];
+    v6 = [canvasEditor selectionPathWithInfo:movieItem];
+    editorController = [interactiveCanvasController editorController];
+    [editorController setSelectionPath:v6];
   }
 
   if ([(CRLMovieRep *)self isPlaying])
@@ -2385,14 +2385,14 @@ LABEL_21:
     [(CRLMovieRep *)self p_playTriggeredFromKnob];
   }
 
-  v11 = [(CRLCanvasRep *)self interactiveCanvasController];
-  v8 = [v11 freehandDrawingToolkit];
-  v9 = [v8 isLassoSelectionForMixedTypeEnabledInDrawingMode];
+  interactiveCanvasController2 = [(CRLCanvasRep *)self interactiveCanvasController];
+  freehandDrawingToolkit = [interactiveCanvasController2 freehandDrawingToolkit];
+  isLassoSelectionForMixedTypeEnabledInDrawingMode = [freehandDrawingToolkit isLassoSelectionForMixedTypeEnabledInDrawingMode];
 
-  if (v9)
+  if (isLassoSelectionForMixedTypeEnabledInDrawingMode)
   {
-    v10 = [v11 canvasEditor];
-    [v10 hideLassoSelectionEditMenuInDrawingModeIfLassoToolIsSelected];
+    canvasEditor2 = [interactiveCanvasController2 canvasEditor];
+    [canvasEditor2 hideLassoSelectionEditMenuInDrawingModeIfLassoToolIsSelected];
   }
 }
 
@@ -2400,13 +2400,13 @@ LABEL_21:
 {
   if ([(CRLMovieRep *)self isPlayable])
   {
-    v3 = [(CRLMovieRep *)self playerControllerForcingCreationIfNotPreExisting];
-    v4 = [v3 isPlaying];
+    playerControllerForcingCreationIfNotPreExisting = [(CRLMovieRep *)self playerControllerForcingCreationIfNotPreExisting];
+    isPlaying = [playerControllerForcingCreationIfNotPreExisting isPlaying];
 
-    v5 = [(CRLMovieRep *)self playerControllerForcingCreationIfNotPreExisting];
-    [v5 setPlaying:v4 ^ 1];
+    playerControllerForcingCreationIfNotPreExisting2 = [(CRLMovieRep *)self playerControllerForcingCreationIfNotPreExisting];
+    [playerControllerForcingCreationIfNotPreExisting2 setPlaying:isPlaying ^ 1];
 
-    [(CRLMovieRep *)self p_updateUsePlayPauseButtonToMatchIsPlaying:v4 ^ 1];
+    [(CRLMovieRep *)self p_updateUsePlayPauseButtonToMatchIsPlaying:isPlaying ^ 1];
 
     [(CRLMovieRep *)self p_invalidateHideControlsTimeoutTimer];
   }
@@ -2414,15 +2414,15 @@ LABEL_21:
 
 - (void)updateUI_toMatchPlayer
 {
-  v3 = [(CRLMovieRep *)self playerControllerForcingCreationIfNotPreExisting];
-  [v3 updatePlayingToMatchPlayer];
+  playerControllerForcingCreationIfNotPreExisting = [(CRLMovieRep *)self playerControllerForcingCreationIfNotPreExisting];
+  [playerControllerForcingCreationIfNotPreExisting updatePlayingToMatchPlayer];
 
-  v4 = [(CRLMovieRep *)self isPlaying];
-  self->_playerLayerShouldBeDisplayed = v4;
-  [(CRLMovieRep *)self p_updateUsePlayPauseButtonToMatchIsPlaying:v4];
+  isPlaying = [(CRLMovieRep *)self isPlaying];
+  self->_playerLayerShouldBeDisplayed = isPlaying;
+  [(CRLMovieRep *)self p_updateUsePlayPauseButtonToMatchIsPlaying:isPlaying];
   [(CRLMovieRep *)self p_updatePlayButtonVisibility];
-  v5 = [(CRLCanvasRep *)self interactiveCanvasController];
-  [v5 invalidateContentLayersForRep:self];
+  interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+  [interactiveCanvasController invalidateContentLayersForRep:self];
 }
 
 - (void)p_setupPlayerControllerIfNecessary
@@ -2487,10 +2487,10 @@ LABEL_21:
       [CRLAssertionHandler handleFailureInFunction:v7 file:v8 lineNumber:1757 isFatal:0 description:"Setting up player controller when movie isn't playable!"];
     }
 
-    v9 = [(CRLMovieRep *)self movieItem];
-    v10 = [v9 movieAssetPayload];
+    movieItem = [(CRLMovieRep *)self movieItem];
+    movieAssetPayload = [movieItem movieAssetPayload];
 
-    if ([v10 needsDownload])
+    if ([movieAssetPayload needsDownload])
     {
       +[CRLAssertionHandler _atomicIncrementAssertCount];
       if (qword_101AD5A10 != -1)
@@ -2519,14 +2519,14 @@ LABEL_21:
       [CRLAssertionHandler handleFailureInFunction:v12 file:v13 lineNumber:1759 isFatal:0 description:"Setting up player controller for data that needs to be downloaded!"];
     }
 
-    v14 = [v10 type];
-    v15 = [v14 identifier];
-    v16 = [CRLAnimatedGIFController canInitWithDataType:v15];
+    type = [movieAssetPayload type];
+    identifier = [type identifier];
+    v16 = [CRLAnimatedGIFController canInitWithDataType:identifier];
 
     if (v16)
     {
       [(CRLMovieRep *)self willChangeValueForKey:@"playerController"];
-      v17 = [[CRLAnimatedGIFController alloc] initWithData:v10 delegate:self];
+      v17 = [[CRLAnimatedGIFController alloc] initWithData:movieAssetPayload delegate:self];
       playerController = self->_playerController;
       self->_playerController = v17;
 
@@ -2535,8 +2535,8 @@ LABEL_21:
 
     else
     {
-      v19 = [(CRLMovieRep *)self movieItem];
-      v20 = [v19 makeAVAssetAndReturnError:0];
+      movieItem2 = [(CRLMovieRep *)self movieItem];
+      v20 = [movieItem2 makeAVAssetAndReturnError:0];
 
       if (v20)
       {
@@ -2589,15 +2589,15 @@ LABEL_21:
     {
       v27 = self->_playerController;
       *buf = 134218240;
-      v42 = self;
+      selfCopy = self;
       v43 = 2048;
       v44 = v27;
       _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "movie rep %p creating player controller %p", buf, 0x16u);
     }
 
     [(CRLMovieRep *)self p_updateStartTime];
-    v28 = [(CRLMovieRep *)self movieItem];
-    [v28 endTime];
+    movieItem3 = [(CRLMovieRep *)self movieItem];
+    [movieItem3 endTime];
     v30 = v29;
 
     if (v30 != 0.0)
@@ -2613,8 +2613,8 @@ LABEL_21:
     [(CRLCanvasRenderableMediaPlayerController *)self->_playerController addObservationToken:self->_observationTokenForPlayingStatus];
     [(CRLMovieRep *)self p_setupPlayerLayerIfNecessary];
     v39 = @"CRLInteractiveCanvasControllerMediaRepKey";
-    v40 = self;
-    v33 = [NSDictionary dictionaryWithObjects:&v40 forKeys:&v39 count:1];
+    selfCopy2 = self;
+    v33 = [NSDictionary dictionaryWithObjects:&selfCopy2 forKeys:&v39 count:1];
     v34 = [v33 mutableCopy];
     v35 = v34;
     v36 = self->_playerController;
@@ -2624,8 +2624,8 @@ LABEL_21:
     }
 
     v37 = +[NSNotificationCenter defaultCenter];
-    v38 = [(CRLCanvasRep *)self interactiveCanvasController];
-    [v37 postNotificationName:@"CRLInteractiveCanvasControllerDidUpdateMoviePlayerControllerNotification" object:v38 userInfo:v35];
+    interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+    [v37 postNotificationName:@"CRLInteractiveCanvasControllerDidUpdateMoviePlayerControllerNotification" object:interactiveCanvasController userInfo:v35];
   }
 }
 
@@ -2710,18 +2710,18 @@ LABEL_33:
       playerController = self->_playerController;
     }
 
-    v9 = [(CRLCanvasRenderableMediaPlayerController *)playerController isPlaying];
+    isPlaying = [(CRLCanvasRenderableMediaPlayerController *)playerController isPlaying];
     v10 = self->_playerController;
-    if (v9)
+    if (isPlaying)
     {
       [(CRLCanvasRenderableMediaPlayerController *)v10 setPlaying:0];
     }
 
     else
     {
-      v11 = [(CRLCanvasRenderableMediaPlayerController *)v10 isFastReversing];
+      isFastReversing = [(CRLCanvasRenderableMediaPlayerController *)v10 isFastReversing];
       v12 = self->_playerController;
-      if (v11)
+      if (isFastReversing)
       {
         [(CRLCanvasRenderableMediaPlayerController *)v12 setFastReversing:0];
       }
@@ -2756,7 +2756,7 @@ LABEL_33:
     {
       v17 = self->_playerController;
       *buf = 134218240;
-      v27 = self;
+      selfCopy = self;
       v28 = 2048;
       v29 = v17;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "movie rep %p clearing player controller %p in p_teardownPlayerController", buf, 0x16u);
@@ -2780,11 +2780,11 @@ LABEL_33:
     self->_playerRenderable = 0;
 
     v21 = +[NSNotificationCenter defaultCenter];
-    v22 = [(CRLCanvasRep *)self interactiveCanvasController];
+    interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
     v24 = @"CRLInteractiveCanvasControllerMediaRepKey";
-    v25 = self;
-    v23 = [NSDictionary dictionaryWithObjects:&v25 forKeys:&v24 count:1];
-    [v21 postNotificationName:@"CRLInteractiveCanvasControllerDidUpdateMoviePlayerControllerNotification" object:v22 userInfo:v23];
+    selfCopy2 = self;
+    v23 = [NSDictionary dictionaryWithObjects:&selfCopy2 forKeys:&v24 count:1];
+    [v21 postNotificationName:@"CRLInteractiveCanvasControllerDidUpdateMoviePlayerControllerNotification" object:interactiveCanvasController userInfo:v23];
 
     isChangingDynamicVisibleTimeCount = self->_isChangingDynamicVisibleTimeCount;
   }
@@ -2805,9 +2805,9 @@ LABEL_34:
   {
     [(CRLMovieRep *)self volume];
     v4 = v3;
-    v6 = [(CRLMovieRep *)self playerControllerForcingCreationIfNotPreExisting];
+    playerControllerForcingCreationIfNotPreExisting = [(CRLMovieRep *)self playerControllerForcingCreationIfNotPreExisting];
     LODWORD(v5) = v4;
-    [v6 setVolume:v5];
+    [playerControllerForcingCreationIfNotPreExisting setVolume:v5];
   }
 }
 
@@ -2815,12 +2815,12 @@ LABEL_34:
 {
   if (self->_playerController)
   {
-    v3 = [(CRLMovieRep *)self movieItem];
-    [v3 startTime];
+    movieItem = [(CRLMovieRep *)self movieItem];
+    [movieItem startTime];
     v5 = v4;
 
-    v6 = [(CRLMovieRep *)self playerControllerForcingCreationIfNotPreExisting];
-    [v6 setStartTime:v5];
+    playerControllerForcingCreationIfNotPreExisting = [(CRLMovieRep *)self playerControllerForcingCreationIfNotPreExisting];
+    [playerControllerForcingCreationIfNotPreExisting setStartTime:v5];
   }
 }
 
@@ -2828,24 +2828,24 @@ LABEL_34:
 {
   if (self->_playerController)
   {
-    v3 = [(CRLMovieRep *)self movieItem];
-    [v3 endTime];
+    movieItem = [(CRLMovieRep *)self movieItem];
+    [movieItem endTime];
     v5 = v4;
 
-    v6 = [(CRLMovieRep *)self playerControllerForcingCreationIfNotPreExisting];
-    [v6 setEndTime:v5];
+    playerControllerForcingCreationIfNotPreExisting = [(CRLMovieRep *)self playerControllerForcingCreationIfNotPreExisting];
+    [playerControllerForcingCreationIfNotPreExisting setEndTime:v5];
   }
 }
 
 - (void)p_startOrStopLoopingStickerIfNecessary
 {
-  v16 = [(CRLCanvasRep *)self canvas];
-  if ([v16 isCanvasInteractive])
+  canvas = [(CRLCanvasRep *)self canvas];
+  if ([canvas isCanvasInteractive])
   {
-    v3 = [(CRLMovieRep *)self movieItem];
-    v4 = [v3 isAnimatedImage];
+    movieItem = [(CRLMovieRep *)self movieItem];
+    isAnimatedImage = [movieItem isAnimatedImage];
 
-    if (v4)
+    if (isAnimatedImage)
     {
       if (self->_isPlayable)
       {
@@ -2880,16 +2880,16 @@ LABEL_34:
 
         if (self->_currentlyDrawingPencilKitStroke)
         {
-          v8 = 0;
+          isLooping = 0;
         }
 
         else
         {
-          v9 = [(CRLMovieRep *)self movieItem];
-          v8 = [v9 isLooping];
+          movieItem2 = [(CRLMovieRep *)self movieItem];
+          isLooping = [movieItem2 isLooping];
         }
 
-        v10 = [(CRLMovieRep *)self isPlaying];
+        isPlaying = [(CRLMovieRep *)self isPlaying];
         playerController = self->_playerController;
         if (playerController)
         {
@@ -2901,8 +2901,8 @@ LABEL_34:
           v12 = 1;
         }
 
-        v13 = v10 ^ 1 | v12;
-        if (v8)
+        v13 = isPlaying ^ 1 | v12;
+        if (isLooping)
         {
           if (v13)
           {
@@ -2910,8 +2910,8 @@ LABEL_34:
             [(CRLCanvasRenderableMediaPlayerController *)self->_playerController setRepeatMode:1];
             [(CRLCanvasRenderableMediaPlayerController *)self->_playerController setPlaying:1];
             self->_playerLayerShouldBeDisplayed = 1;
-            v14 = [(CRLCanvasRep *)self interactiveCanvasController];
-            v15 = [v14 renderableForRep:self];
+            interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+            v15 = [interactiveCanvasController renderableForRep:self];
             [(CRLMovieRep *)self p_arrangeRenderableVisibility:v15];
           }
         }
@@ -2940,36 +2940,36 @@ LABEL_34:
 {
   if (self->_playerController)
   {
-    v3 = [(CRLMovieRep *)self movieItem];
-    v4 = [v3 isAnimatedImage];
+    movieItem = [(CRLMovieRep *)self movieItem];
+    isAnimatedImage = [movieItem isAnimatedImage];
 
-    if ((v4 & 1) == 0)
+    if ((isAnimatedImage & 1) == 0)
     {
-      v5 = [(CRLMovieRep *)self movieItem];
-      v6 = [v5 isLooping];
+      movieItem2 = [(CRLMovieRep *)self movieItem];
+      isLooping = [movieItem2 isLooping];
 
       playerController = self->_playerController;
 
-      [(CRLCanvasRenderableMediaPlayerController *)playerController setRepeatMode:v6];
+      [(CRLCanvasRenderableMediaPlayerController *)playerController setRepeatMode:isLooping];
     }
   }
 }
 
 - (BOOL)p_isLoopingSticker
 {
-  v3 = [(CRLMovieRep *)self movieItem];
-  if ([v3 isAnimatedImage])
+  movieItem = [(CRLMovieRep *)self movieItem];
+  if ([movieItem isAnimatedImage])
   {
-    v4 = [(CRLMovieRep *)self movieItem];
-    v5 = [v4 isLooping];
+    movieItem2 = [(CRLMovieRep *)self movieItem];
+    isLooping = [movieItem2 isLooping];
   }
 
   else
   {
-    v5 = 0;
+    isLooping = 0;
   }
 
-  return v5;
+  return isLooping;
 }
 
 - (id)additionalRenderablesOverRenderable
@@ -2981,16 +2981,16 @@ LABEL_34:
     [v3 addObject:?];
   }
 
-  v4 = [(CRLMovieRep *)self p_playerStrokeRenderable];
-  if (v4)
+  p_playerStrokeRenderable = [(CRLMovieRep *)self p_playerStrokeRenderable];
+  if (p_playerStrokeRenderable)
   {
-    [v3 addObject:v4];
+    [v3 addObject:p_playerStrokeRenderable];
   }
 
   v7.receiver = self;
   v7.super_class = CRLMovieRep;
-  v5 = [(CRLMediaRep *)&v7 additionalRenderablesOverRenderable];
-  [v3 addObjectsFromArray:v5];
+  additionalRenderablesOverRenderable = [(CRLMediaRep *)&v7 additionalRenderablesOverRenderable];
+  [v3 addObjectsFromArray:additionalRenderablesOverRenderable];
 
   return v3;
 }
@@ -3045,45 +3045,45 @@ LABEL_34:
   v13[5] = downloadObserverIdentifier;
   v7 = downloadObserverIdentifier;
   v8 = objc_retainBlock(v13);
-  v9 = [(CRLMovieRep *)self movieItem];
-  v10 = [v9 movieAssetPayload];
-  (v8[2])(v8, v10);
+  movieItem = [(CRLMovieRep *)self movieItem];
+  movieAssetPayload = [movieItem movieAssetPayload];
+  (v8[2])(v8, movieAssetPayload);
 
-  v11 = [(CRLMovieRep *)self movieItem];
-  v12 = [v11 posterImageAssetPayload];
-  (v8[2])(v8, v12);
+  movieItem2 = [(CRLMovieRep *)self movieItem];
+  posterImageAssetPayload = [movieItem2 posterImageAssetPayload];
+  (v8[2])(v8, posterImageAssetPayload);
 }
 
-- (void)p_handleAssetPreparationCompletionForAsset:(id)a3
+- (void)p_handleAssetPreparationCompletionForAsset:(id)asset
 {
-  v4 = a3;
+  assetCopy = asset;
   if (![(CRLCanvasRep *)self hasBeenRemoved])
   {
     [(CRLMovieRep *)self setNeedsDisplay];
-    v5 = [(CRLCanvasRep *)self interactiveCanvasController];
-    [v5 invalidateContentLayersForRep:self];
+    interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+    [interactiveCanvasController invalidateContentLayersForRep:self];
 
-    v6 = [(CRLMovieRep *)self movieItem];
-    v7 = [v6 movieAssetPayload];
+    movieItem = [(CRLMovieRep *)self movieItem];
+    movieAssetPayload = [movieItem movieAssetPayload];
 
-    if (v7 == v4)
+    if (movieAssetPayload == assetCopy)
     {
       [(CRLMovieRep *)self p_stopUpdatingUIStateForMoviePlayability];
       [(CRLMovieRep *)self p_updateUIStateForMoviePlayability];
       v10 = +[NSNotificationCenter defaultCenter];
-      v11 = [(CRLCanvasRep *)self interactiveCanvasController];
+      interactiveCanvasController2 = [(CRLCanvasRep *)self interactiveCanvasController];
       v13 = @"CRLInteractiveCanvasControllerMediaRepKey";
-      v14 = self;
-      v12 = [NSDictionary dictionaryWithObjects:&v14 forKeys:&v13 count:1];
-      [v10 postNotificationName:@"CRLInteractiveCanvasControllerDidLoadAssetForMediaRepNotification" object:v11 userInfo:v12];
+      selfCopy = self;
+      v12 = [NSDictionary dictionaryWithObjects:&selfCopy forKeys:&v13 count:1];
+      [v10 postNotificationName:@"CRLInteractiveCanvasControllerDidLoadAssetForMediaRepNotification" object:interactiveCanvasController2 userInfo:v12];
     }
 
     else
     {
-      v8 = [(CRLMovieRep *)self movieItem];
-      v9 = [v8 posterImageAssetPayload];
+      movieItem2 = [(CRLMovieRep *)self movieItem];
+      posterImageAssetPayload = [movieItem2 posterImageAssetPayload];
 
-      if (v9 == v4)
+      if (posterImageAssetPayload == assetCopy)
       {
         [(CRLMovieRep *)self p_showControls];
       }
@@ -3095,22 +3095,22 @@ LABEL_34:
 
 - (id)visuallySignificantDataSet
 {
-  v3 = [(CRLMovieRep *)self movieItem];
-  v4 = [v3 posterImageAssetPayload];
+  movieItem = [(CRLMovieRep *)self movieItem];
+  posterImageAssetPayload = [movieItem posterImageAssetPayload];
 
-  v5 = [(CRLMovieRep *)self movieItem];
-  v6 = [v5 movieAssetPayload];
+  movieItem2 = [(CRLMovieRep *)self movieItem];
+  movieAssetPayload = [movieItem2 movieAssetPayload];
 
   v7 = [[NSMutableSet alloc] initWithCapacity:2];
   v8 = v7;
-  if (v4)
+  if (posterImageAssetPayload)
   {
-    [v7 addObject:v4];
+    [v7 addObject:posterImageAssetPayload];
   }
 
-  if (v6)
+  if (movieAssetPayload)
   {
-    [v8 addObject:v6];
+    [v8 addObject:movieAssetPayload];
   }
 
   if ([v8 count])
@@ -3130,9 +3130,9 @@ LABEL_34:
 
 - (BOOL)shouldShowLoadingUI
 {
-  v3 = [(CRLMovieRep *)self movieItem];
-  v4 = [v3 posterImageAssetPayload];
-  if ([v4 needsDownload])
+  movieItem = [(CRLMovieRep *)self movieItem];
+  posterImageAssetPayload = [movieItem posterImageAssetPayload];
+  if ([posterImageAssetPayload needsDownload])
   {
     v5 = !self->_playerLayerShouldBeDisplayed;
   }
@@ -3150,29 +3150,29 @@ LABEL_34:
   [(CRLMovieRep *)self p_disposeStrokeRenderable];
   v5.receiver = self;
   v5.super_class = CRLMovieRep;
-  v3 = [(CRLCanvasRep *)&v5 dynamicResizeDidBegin];
+  dynamicResizeDidBegin = [(CRLCanvasRep *)&v5 dynamicResizeDidBegin];
 
-  return v3;
+  return dynamicResizeDidBegin;
 }
 
-- (void)dynamicResizeDidEndWithTracker:(id)a3
+- (void)dynamicResizeDidEndWithTracker:(id)tracker
 {
-  v4 = a3;
+  trackerCopy = tracker;
   [(CRLMovieRep *)self p_disposeStrokeRenderable];
   v5.receiver = self;
   v5.super_class = CRLMovieRep;
-  [(CRLCanvasRep *)&v5 dynamicResizeDidEndWithTracker:v4];
+  [(CRLCanvasRep *)&v5 dynamicResizeDidEndWithTracker:trackerCopy];
 }
 
-- (id)resizedGeometryForTransform:(CGAffineTransform *)a3
+- (id)resizedGeometryForTransform:(CGAffineTransform *)transform
 {
   memset(&v12, 0, sizeof(v12));
-  v4 = [(CRLCanvasRep *)self layout];
-  v5 = [v4 originalPureGeometry];
-  v6 = v5;
-  if (v5)
+  layout = [(CRLCanvasRep *)self layout];
+  originalPureGeometry = [layout originalPureGeometry];
+  v6 = originalPureGeometry;
+  if (originalPureGeometry)
   {
-    [v5 fullTransform];
+    [originalPureGeometry fullTransform];
   }
 
   else
@@ -3180,10 +3180,10 @@ LABEL_34:
     memset(&t1, 0, sizeof(t1));
   }
 
-  v7 = *&a3->c;
-  *&v10.a = *&a3->a;
+  v7 = *&transform->c;
+  *&v10.a = *&transform->a;
   *&v10.c = v7;
-  *&v10.tx = *&a3->tx;
+  *&v10.tx = *&transform->tx;
   CGAffineTransformConcat(&v12, &t1, &v10);
 
   t1 = v12;
@@ -3192,35 +3192,35 @@ LABEL_34:
   return v8;
 }
 
-- (void)dynamicFreeTransformDidBeginWithTracker:(id)a3
+- (void)dynamicFreeTransformDidBeginWithTracker:(id)tracker
 {
   [(CRLMovieRep *)self p_disposeStrokeRenderable];
   v5.receiver = self;
   v5.super_class = CRLMovieRep;
-  v4 = [(CRLCanvasRep *)&v5 dynamicResizeDidBegin];
+  dynamicResizeDidBegin = [(CRLCanvasRep *)&v5 dynamicResizeDidBegin];
 }
 
-- (void)dynamicFreeTransformDidEndWithTracker:(id)a3
+- (void)dynamicFreeTransformDidEndWithTracker:(id)tracker
 {
-  v4 = a3;
+  trackerCopy = tracker;
   [(CRLMovieRep *)self p_disposeStrokeRenderable];
   v5.receiver = self;
   v5.super_class = CRLMovieRep;
-  [(CRLCanvasRep *)&v5 dynamicFreeTransformDidEndWithTracker:v4];
+  [(CRLCanvasRep *)&v5 dynamicFreeTransformDidEndWithTracker:trackerCopy];
 }
 
 - (double)visibleTime
 {
   if (self->_isChangingDynamicVisibleTimeCount)
   {
-    v2 = [(CRLMovieRep *)self playerControllerForcingCreationIfNotPreExisting];
-    [v2 absoluteCurrentTime];
+    playerControllerForcingCreationIfNotPreExisting = [(CRLMovieRep *)self playerControllerForcingCreationIfNotPreExisting];
+    [playerControllerForcingCreationIfNotPreExisting absoluteCurrentTime];
   }
 
   else
   {
-    v2 = [(CRLMovieRep *)self movieItem];
-    [v2 posterTime];
+    playerControllerForcingCreationIfNotPreExisting = [(CRLMovieRep *)self movieItem];
+    [playerControllerForcingCreationIfNotPreExisting posterTime];
   }
 
   v4 = v3;
@@ -3230,8 +3230,8 @@ LABEL_34:
 
 - (double)absoluteCurrentTime
 {
-  v2 = [(CRLMovieRep *)self playerControllerForcingCreationIfNotPreExisting];
-  [v2 absoluteCurrentTime];
+  playerControllerForcingCreationIfNotPreExisting = [(CRLMovieRep *)self playerControllerForcingCreationIfNotPreExisting];
+  [playerControllerForcingCreationIfNotPreExisting absoluteCurrentTime];
   v4 = v3;
 
   return v4;
@@ -3273,14 +3273,14 @@ LABEL_34:
   if (!isChangingDynamicVisibleTimeCount)
   {
     [(CRLMovieRep *)self p_updatePlayButtonVisibility];
-    v7 = [(CRLMovieRep *)self playerControllerForcingCreationIfNotPreExisting];
-    [v7 beginScrubbing];
+    playerControllerForcingCreationIfNotPreExisting = [(CRLMovieRep *)self playerControllerForcingCreationIfNotPreExisting];
+    [playerControllerForcingCreationIfNotPreExisting beginScrubbing];
   }
 }
 
-- (void)dynamicVisibleTimeUpdateToValue:(double)a3 withTolerance:(double)a4 completionHandler:(id)a5
+- (void)dynamicVisibleTimeUpdateToValue:(double)value withTolerance:(double)tolerance completionHandler:(id)handler
 {
-  v8 = a5;
+  handlerCopy = handler;
   if (!+[NSThread isMainThread])
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -3339,8 +3339,8 @@ LABEL_34:
     [CRLAssertionHandler handleFailureInFunction:v13 file:v14 lineNumber:2107 isFatal:0 description:"A dynamic poster time change must be in progress"];
   }
 
-  v15 = [(CRLMovieRep *)self playerControllerForcingCreationIfNotPreExisting];
-  [v15 scrubToTime:v8 withTolerance:a3 completionHandler:a4];
+  playerControllerForcingCreationIfNotPreExisting = [(CRLMovieRep *)self playerControllerForcingCreationIfNotPreExisting];
+  [playerControllerForcingCreationIfNotPreExisting scrubToTime:handlerCopy withTolerance:value completionHandler:tolerance];
 }
 
 - (void)dynamicVisibleTimeChangeDidEnd
@@ -3428,8 +3428,8 @@ LABEL_34:
     return self->_dynamicVolume;
   }
 
-  v3 = [(CRLMovieRep *)self movieItem];
-  [v3 volume];
+  movieItem = [(CRLMovieRep *)self movieItem];
+  [movieItem volume];
   v5 = v4;
 
   return v5;
@@ -3442,32 +3442,32 @@ LABEL_34:
   self->_isChangingDynamicVolume = 1;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = v12;
-  if (off_1019EDD08 == a6)
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  v13 = changeCopy;
+  if (off_1019EDD08 == context)
   {
     [(CRLMovieRep *)self p_updatePlayButtonVisibility];
     [(CRLCanvasRep *)self invalidateKnobs];
   }
 
-  else if (off_1019EDD00 == a6)
+  else if (off_1019EDD00 == context)
   {
-    v14 = [v12 objectForKey:NSKeyValueChangeNewKey];
-    v15 = [v14 BOOLValue];
+    v14 = [changeCopy objectForKey:NSKeyValueChangeNewKey];
+    bOOLValue = [v14 BOOLValue];
 
-    if (v15)
+    if (bOOLValue)
     {
       v16 = objc_opt_class();
       v17 = sub_100013F00(v16, self->_playerRenderable);
       [v17 removeReadyToDisplayObserver:self context:off_1019EDD00];
       self->_currentlyObservingPlayerLayer = 0;
       self->_playerLayerShouldBeDisplayed = 1;
-      v18 = [(CRLCanvasRep *)self interactiveCanvasController];
-      [v18 invalidateContentLayersForRep:self];
+      interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+      [interactiveCanvasController invalidateContentLayersForRep:self];
     }
   }
 
@@ -3475,7 +3475,7 @@ LABEL_34:
   {
     v19.receiver = self;
     v19.super_class = CRLMovieRep;
-    [(CRLMovieRep *)&v19 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(CRLMovieRep *)&v19 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 
@@ -3501,24 +3501,24 @@ LABEL_34:
   return v3;
 }
 
-- (BOOL)handleSingleTapAtPoint:(CGPoint)a3 inputType:(int64_t)a4
+- (BOOL)handleSingleTapAtPoint:(CGPoint)point inputType:(int64_t)type
 {
-  if ([(CRLMovieRep *)self noKnobTogglePlayAndMiniFormatter:a4])
+  if ([(CRLMovieRep *)self noKnobTogglePlayAndMiniFormatter:type])
   {
-    LOBYTE(v5) = 0;
+    LOBYTE(isPlaying) = 0;
   }
 
   else
   {
-    v5 = [(CRLMovieRep *)self isPlaying];
-    if (v5)
+    isPlaying = [(CRLMovieRep *)self isPlaying];
+    if (isPlaying)
     {
       [(CRLMovieRep *)self toggleShowingControls];
-      LOBYTE(v5) = 1;
+      LOBYTE(isPlaying) = 1;
     }
   }
 
-  return v5;
+  return isPlaying;
 }
 
 - (void)willBeginEyedropperMode
@@ -3541,8 +3541,8 @@ LABEL_34:
     [(CRLMovieRep *)self p_togglePlaying];
   }
 
-  v4 = [(CRLCanvasRep *)self interactiveCanvasController];
-  v3 = [v4 renderableForRep:self];
+  interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+  v3 = [interactiveCanvasController renderableForRep:self];
   self->_playerLayerShouldBeDisplayed = 0;
   [(CRLMovieRep *)self p_arrangeRenderableVisibility:v3];
   [(CRLMovieRep *)self p_teardownPlayerController];
@@ -3554,8 +3554,8 @@ LABEL_34:
   if ([(CRLMovieRep *)self p_isLoopingSticker])
   {
     self->_playerLayerShouldBeDisplayed = 1;
-    v4 = [(CRLCanvasRep *)self interactiveCanvasController];
-    v3 = [v4 renderableForRep:self];
+    interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+    v3 = [interactiveCanvasController renderableForRep:self];
     [(CRLMovieRep *)self p_arrangeRenderableVisibility:v3];
     [(CRLMovieRep *)self p_startOrStopLoopingStickerIfNecessary];
   }
@@ -3563,18 +3563,18 @@ LABEL_34:
 
 - (void)prepareForPreview
 {
-  v2 = self;
-  if ([(CRLMovieRep *)v2 isPlaying])
+  selfCopy = self;
+  if ([(CRLMovieRep *)selfCopy isPlaying])
   {
-    [(CRLMovieRep *)v2 pausePlaybackIfNeeded];
+    [(CRLMovieRep *)selfCopy pausePlaybackIfNeeded];
   }
 }
 
 - (void)enterPreviewMode
 {
-  v5 = self;
-  [(CRLMovieRep *)v5 prepareForPreview];
-  v2 = [(CRLCanvasRep *)v5 info];
+  selfCopy = self;
+  [(CRLMovieRep *)selfCopy prepareForPreview];
+  info = [(CRLCanvasRep *)selfCopy info];
   type metadata accessor for CRLBoardItem(0);
   v3 = swift_isaMask & *swift_dynamicCastClassUnconditional();
   v4 = (*(v3 + 624))();

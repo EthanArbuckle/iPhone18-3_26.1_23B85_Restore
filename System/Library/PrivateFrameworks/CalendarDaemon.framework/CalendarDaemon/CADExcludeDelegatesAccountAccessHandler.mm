@@ -1,15 +1,15 @@
 @interface CADExcludeDelegatesAccountAccessHandler
-- (BOOL)isActionAllowed:(unint64_t)a3 forStore:(void *)a4 inDatabase:(CalDatabase *)a5;
+- (BOOL)isActionAllowed:(unint64_t)allowed forStore:(void *)store inDatabase:(CalDatabase *)database;
 @end
 
 @implementation CADExcludeDelegatesAccountAccessHandler
 
-- (BOOL)isActionAllowed:(unint64_t)a3 forStore:(void *)a4 inDatabase:(CalDatabase *)a5
+- (BOOL)isActionAllowed:(unint64_t)allowed forStore:(void *)store inDatabase:(CalDatabase *)database
 {
-  v7 = [(CADAccountAccessHandler *)self dataProvider];
-  LOBYTE(a5) = [v7 isStoreDelegate:a4 inDatabase:a5];
+  dataProvider = [(CADAccountAccessHandler *)self dataProvider];
+  LOBYTE(database) = [dataProvider isStoreDelegate:store inDatabase:database];
 
-  return a5 ^ 1;
+  return database ^ 1;
 }
 
 @end

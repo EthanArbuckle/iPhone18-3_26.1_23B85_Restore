@@ -1,23 +1,23 @@
 @interface SpeechManager
 - (_TtC17SequoiaTranslator13SpeechManager)init;
-- (void)handleAudioInterruptionWithNotification:(id)a3;
-- (void)languageDetectionResult:(id)a3;
+- (void)handleAudioInterruptionWithNotification:(id)notification;
+- (void)languageDetectionResult:(id)result;
 - (void)speechActivityDetected;
-- (void)speechRecognitionResult:(id)a3;
-- (void)translationDidFinishWithError:(id)a3;
-- (void)translatorDidTranslate:(id)a3;
+- (void)speechRecognitionResult:(id)result;
+- (void)translationDidFinishWithError:(id)error;
+- (void)translatorDidTranslate:(id)translate;
 @end
 
 @implementation SpeechManager
 
-- (void)handleAudioInterruptionWithNotification:(id)a3
+- (void)handleAudioInterruptionWithNotification:(id)notification
 {
   v4 = type metadata accessor for Notification();
   v5 = *(v4 - 8);
   __chkstk_darwin(v4);
   v7 = &v9 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   static Notification._unconditionallyBridgeFromObjectiveC(_:)();
-  v8 = self;
+  selfCopy = self;
   sub_10023CB70();
 
   (*(v5 + 8))(v7, v4);
@@ -30,32 +30,32 @@
   return result;
 }
 
-- (void)languageDetectionResult:(id)a3
+- (void)languageDetectionResult:(id)result
 {
-  v4 = a3;
-  v5 = self;
-  sub_10023D854(v4, &unk_10038A968, sub_100241224, &unk_10038A980);
+  resultCopy = result;
+  selfCopy = self;
+  sub_10023D854(resultCopy, &unk_10038A968, sub_100241224, &unk_10038A980);
 }
 
-- (void)speechRecognitionResult:(id)a3
+- (void)speechRecognitionResult:(id)result
 {
-  v4 = a3;
-  v5 = self;
-  sub_10023D854(v4, &unk_10038A918, sub_1002411DC, &unk_10038A930);
+  resultCopy = result;
+  selfCopy = self;
+  sub_10023D854(resultCopy, &unk_10038A918, sub_1002411DC, &unk_10038A930);
 }
 
-- (void)translatorDidTranslate:(id)a3
+- (void)translatorDidTranslate:(id)translate
 {
-  v4 = a3;
-  v5 = self;
-  sub_10023D854(v4, &unk_10038A8C8, sub_1002411D4, &unk_10038A8E0);
+  translateCopy = translate;
+  selfCopy = self;
+  sub_10023D854(translateCopy, &unk_10038A8C8, sub_1002411D4, &unk_10038A8E0);
 }
 
-- (void)translationDidFinishWithError:(id)a3
+- (void)translationDidFinishWithError:(id)error
 {
-  v4 = self;
-  v5 = a3;
-  sub_10023F5D8(a3);
+  selfCopy = self;
+  errorCopy = error;
+  sub_10023F5D8(error);
 }
 
 - (void)speechActivityDetected

@@ -1,35 +1,35 @@
 @interface TranscriptNavigationBarOrnamentView
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (void)layoutSubviews;
-- (void)setConversationTitle:(id)a3;
+- (void)setConversationTitle:(id)title;
 @end
 
 @implementation TranscriptNavigationBarOrnamentView
 
-- (void)setConversationTitle:(id)a3
+- (void)setConversationTitle:(id)title
 {
-  v6 = a3;
-  v5 = self;
-  sub_1909FB584(a3);
+  titleCopy = title;
+  selfCopy = self;
+  sub_1909FB584(title);
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  if (a3.width == 0.0 && a3.height == 0.0)
+  height = fits.height;
+  width = fits.width;
+  if (fits.width == 0.0 && fits.height == 0.0)
   {
     v6 = objc_opt_self();
-    v7 = self;
-    v8 = [v6 mainScreen];
-    [v8 bounds];
+    selfCopy = self;
+    mainScreen = [v6 mainScreen];
+    [mainScreen bounds];
     width = v9;
     height = v10;
   }
 
   else
   {
-    v11 = self;
+    selfCopy2 = self;
   }
 
   sub_1909FA074(v18);
@@ -47,7 +47,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1909F9E5C();
 }
 

@@ -22,30 +22,30 @@
 
 - (id)eventDictionary
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_videoOrientation)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:"), @"videoOrientation"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:"), @"videoOrientation"}];
   }
 
   if (self->_cameraPosture)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:"), @"cameraPosture"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:"), @"cameraPosture"}];
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithBool:", self->_stereoVideoCaptureEnabled), @"stereoVideoCaptureEnabled"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithBool:", self->_stereoVideoCaptureEnabled), @"stereoVideoCaptureEnabled"}];
   if (self->_stereoVideoCaptureEnabled)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", self->_stereoVideoCaptureStatus), @"stereoVideoCaptureStatus"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", self->_stereoVideoCaptureStatus), @"stereoVideoCaptureStatus"}];
     *&v4 = self->_stereoVideoCaptureDuration;
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v4), @"stereoVideoCaptureDuration"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v4), @"stereoVideoCaptureDuration"}];
     *&v5 = self->_percentageOfFramesWithAggressiveLuxLevel;
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v5), @"percentageOfFramesWithAggressiveLuxLevel"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v5), @"percentageOfFramesWithAggressiveLuxLevel"}];
     *&v6 = self->_percentageOfFramesWithAggressiveFocusDistance;
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v6), @"percentageOfFramesWithAggressiveFocusDistance"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v6), @"percentageOfFramesWithAggressiveFocusDistance"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (void)reset

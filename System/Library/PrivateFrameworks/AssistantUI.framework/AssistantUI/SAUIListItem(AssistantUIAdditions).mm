@@ -7,14 +7,14 @@
 
 - (id)afui_appInfo
 {
-  v2 = [a1 object];
+  object = [self object];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v4 = [a1 object];
-    v5 = [v4 copy];
+    object2 = [self object];
+    v5 = [object2 copy];
   }
 
   else
@@ -28,16 +28,16 @@
 - (void)afui_setSelectionTextWithDisambiguationList:()AssistantUIAdditions
 {
   v6 = a3;
-  v4 = [a1 selectionResponse];
-  if (!v4)
+  selectionResponse = [self selectionResponse];
+  if (!selectionResponse)
   {
-    v4 = [a1 selectionText];
-    if (!v4)
+    selectionResponse = [self selectionText];
+    if (!selectionResponse)
     {
-      v5 = [v6 selectionResponse];
-      [a1 setSelectionText:v5];
+      selectionResponse2 = [v6 selectionResponse];
+      [self setSelectionText:selectionResponse2];
 
-      v4 = 0;
+      selectionResponse = 0;
     }
   }
 }

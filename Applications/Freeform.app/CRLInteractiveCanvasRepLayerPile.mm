@@ -1,13 +1,13 @@
 @interface CRLInteractiveCanvasRepLayerPile
-- (BOOL)isContentEqualToContentOfRepContentPile:(id)a3;
+- (BOOL)isContentEqualToContentOfRepContentPile:(id)pile;
 - (CRLInteractiveCanvasRepLayerPile)init;
 - (NSArray)contentLayers;
 - (NSString)description;
-- (id)newRepLayerPileByTransferringAndCloningParentLayers:(id *)a3 reusingPreviouslyClonedLayers:(id)a4;
-- (void)addLayer:(id)a3;
-- (void)mutateLayersUsingBlock:(id)a3;
+- (id)newRepLayerPileByTransferringAndCloningParentLayers:(id *)layers reusingPreviouslyClonedLayers:(id)clonedLayers;
+- (void)addLayer:(id)layer;
+- (void)mutateLayersUsingBlock:(id)block;
 - (void)popParentLayer;
-- (void)pushParentLayer:(id)a3;
+- (void)pushParentLayer:(id)layer;
 @end
 
 @implementation CRLInteractiveCanvasRepLayerPile
@@ -52,23 +52,23 @@
         v5 = *(*(&v26 + 1) + 8 * i);
         v6 = objc_alloc_init(NSMutableArray);
         v21 = v5;
-        v7 = [v5 first];
-        if (v7)
+        first = [v5 first];
+        if (first)
         {
           do
           {
-            [v6 insertObject:v7 atIndex:0];
-            if (([(NSMutableOrderedSet *)self->_topLevelLayers containsObject:v7]& 1) != 0)
+            [v6 insertObject:first atIndex:0];
+            if (([(NSMutableOrderedSet *)self->_topLevelLayers containsObject:first]& 1) != 0)
             {
               break;
             }
 
-            v8 = [v7 superlayer];
+            superlayer = [first superlayer];
 
-            v7 = v8;
+            first = superlayer;
           }
 
-          while (v8);
+          while (superlayer);
         }
 
         v24 = 0u;
@@ -84,7 +84,7 @@
           do
           {
             v13 = 0;
-            v14 = v7;
+            v14 = first;
             do
             {
               if (*v23 != v12)
@@ -92,11 +92,11 @@
                 objc_enumerationMutation(v9);
               }
 
-              v7 = *(*(&v22 + 1) + 8 * v13);
+              first = *(*(&v22 + 1) + 8 * v13);
 
-              [v3 appendFormat:@"%@/", v7];
+              [v3 appendFormat:@"%@/", first];
               v13 = v13 + 1;
-              v14 = v7;
+              v14 = first;
             }
 
             while (v11 != v13);
@@ -106,8 +106,8 @@
           while (v11);
         }
 
-        v15 = [v21 second];
-        [v3 appendFormat:@" -> %@\n", v15];
+        second = [v21 second];
+        [v3 appendFormat:@" -> %@\n", second];
       }
 
       v20 = [(NSMutableArray *)obj countByEnumeratingWithState:&v26 objects:v31 count:16];
@@ -122,49 +122,49 @@
   return v16;
 }
 
-- (void)addLayer:(id)a3
+- (void)addLayer:(id)layer
 {
-  v7 = a3;
-  v4 = [(NSMutableArray *)self->_parentLayerAndChildLayersStack lastObject];
-  v5 = v4;
-  if (v4)
+  layerCopy = layer;
+  lastObject = [(NSMutableArray *)self->_parentLayerAndChildLayersStack lastObject];
+  v5 = lastObject;
+  if (lastObject)
   {
-    v6 = [v4 second];
-    [v6 addObject:v7];
+    second = [lastObject second];
+    [second addObject:layerCopy];
   }
 
   else
   {
-    [(NSMutableOrderedSet *)self->_topLevelLayers addObject:v7];
+    [(NSMutableOrderedSet *)self->_topLevelLayers addObject:layerCopy];
   }
 }
 
-- (void)mutateLayersUsingBlock:(id)a3
+- (void)mutateLayersUsingBlock:(id)block
 {
   parentLayerAndChildLayersStack = self->_parentLayerAndChildLayersStack;
-  v5 = a3;
-  v6 = [(NSMutableArray *)parentLayerAndChildLayersStack lastObject];
-  v9 = v6;
-  if (v6)
+  blockCopy = block;
+  lastObject = [(NSMutableArray *)parentLayerAndChildLayersStack lastObject];
+  v9 = lastObject;
+  if (lastObject)
   {
-    v7 = [v6 second];
-    v5[2](v5, v7);
+    second = [lastObject second];
+    blockCopy[2](blockCopy, second);
   }
 
   else
   {
-    v8 = [(NSMutableOrderedSet *)self->_topLevelLayers array];
-    v7 = [v8 mutableCopy];
+    array = [(NSMutableOrderedSet *)self->_topLevelLayers array];
+    second = [array mutableCopy];
 
-    v5[2](v5, v7);
+    blockCopy[2](blockCopy, second);
     [(NSMutableOrderedSet *)self->_topLevelLayers removeAllObjects];
-    [(NSMutableOrderedSet *)self->_topLevelLayers addObjectsFromArray:v7];
+    [(NSMutableOrderedSet *)self->_topLevelLayers addObjectsFromArray:second];
   }
 }
 
-- (void)pushParentLayer:(id)a3
+- (void)pushParentLayer:(id)layer
 {
-  v10 = a3;
+  layerCopy = layer;
   parentLayerAndChildLayersStack = self->_parentLayerAndChildLayersStack;
   if (!parentLayerAndChildLayersStack)
   {
@@ -177,14 +177,14 @@
 
   v7 = [CRLPair alloc];
   v8 = objc_alloc_init(NSMutableArray);
-  v9 = [(CRLPair *)v7 initWithFirst:v10 second:v8];
+  v9 = [(CRLPair *)v7 initWithFirst:layerCopy second:v8];
   [(NSMutableArray *)parentLayerAndChildLayersStack addObject:v9];
 }
 
 - (void)popParentLayer
 {
-  v3 = [(NSMutableArray *)self->_parentLayerAndChildLayersStack lastObject];
-  if (!v3)
+  lastObject = [(NSMutableArray *)self->_parentLayerAndChildLayersStack lastObject];
+  if (!lastObject)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -213,8 +213,8 @@
     [CRLAssertionHandler handleFailureInFunction:v5 file:v6 lineNumber:102 isFatal:0 description:"popParentLayer called without matching pushParentLayer:"];
   }
 
-  v7 = [v3 first];
-  if (!v7)
+  first = [lastObject first];
+  if (!first)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -243,8 +243,8 @@
     [CRLAssertionHandler handleFailureInFunction:v9 file:v10 lineNumber:105 isFatal:0 description:"invalid nil value for '%{public}s'", "parentLayer"];
   }
 
-  v11 = [v3 second];
-  if (!v11)
+  second = [lastObject second];
+  if (!second)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -273,30 +273,30 @@
     [CRLAssertionHandler handleFailureInFunction:v13 file:v14 lineNumber:107 isFatal:0 description:"invalid nil value for '%{public}s'", "childLayers"];
   }
 
-  [v7 crl_tilingSafeSetSublayers:v11];
+  [first crl_tilingSafeSetSublayers:second];
   [(NSMutableArray *)self->_parentLayerAndChildLayersStack removeLastObject];
 }
 
-- (id)newRepLayerPileByTransferringAndCloningParentLayers:(id *)a3 reusingPreviouslyClonedLayers:(id)a4
+- (id)newRepLayerPileByTransferringAndCloningParentLayers:(id *)layers reusingPreviouslyClonedLayers:(id)clonedLayers
 {
-  v6 = a4;
+  clonedLayersCopy = clonedLayers;
   v70 = objc_alloc_init(CRLInteractiveCanvasRepLayerPile);
   v7 = [[NSMutableArray alloc] initWithCapacity:0];
   if ([(NSMutableArray *)self->_parentLayerAndChildLayersStack count])
   {
-    v66 = a3;
+    layersCopy = layers;
     v77[0] = _NSConcreteStackBlock;
     v77[1] = 3221225472;
     v77[2] = sub_1004C128C;
     v77[3] = &unk_1018686C0;
     v63 = [[NSMapTable alloc] initWithKeyOptions:512 valueOptions:512 capacity:0];
     v77[4] = v63;
-    v65 = v6;
-    v78 = v6;
+    v65 = clonedLayersCopy;
+    v78 = clonedLayersCopy;
     v79 = v7;
     v64 = v7;
     v8 = objc_retainBlock(v77);
-    v9 = [(NSMutableOrderedSet *)self->_topLevelLayers lastObject];
+    lastObject = [(NSMutableOrderedSet *)self->_topLevelLayers lastObject];
     v73 = 0u;
     v74 = 0u;
     v75 = 0u;
@@ -310,7 +310,7 @@
       do
       {
         v11 = 0;
-        v12 = v9;
+        v12 = lastObject;
         do
         {
           if (*v74 != v68)
@@ -372,8 +372,8 @@
             [CRLAssertionHandler handleFailureInFunction:v14 file:v18 lineNumber:173 isFatal:0 description:"invalid nil value for '%{public}s'", "pushedParentLayer"];
           }
 
-          v19 = [v13 first];
-          if (!v19)
+          first = [v13 first];
+          if (!first)
           {
             v20 = +[CRLAssertionHandler _atomicIncrementAssertCount];
             if (qword_101AD5A10 != -1)
@@ -419,8 +419,8 @@
             [CRLAssertionHandler handleFailureInFunction:v23 file:v24 lineNumber:179 isFatal:0 description:"invalid nil value for '%{public}s'", "parentLayer"];
           }
 
-          v71 = [v13 second];
-          if (!v71)
+          second = [v13 second];
+          if (!second)
           {
             v25 = +[CRLAssertionHandler _atomicIncrementAssertCount];
             if (qword_101AD5A10 != -1)
@@ -466,17 +466,17 @@
             [CRLAssertionHandler handleFailureInFunction:v28 file:v29 lineNumber:181 isFatal:0 description:"invalid nil value for '%{public}s'", "childLayers"];
           }
 
-          v30 = v19;
+          v30 = first;
           v31 = v30;
-          v32 = v30;
+          superlayer = v30;
           if (v30 != v12)
           {
             v33 = v30;
             do
             {
               v34 = (v8[2])(v8, v33);
-              v32 = [v33 superlayer];
-              if (!v32)
+              superlayer = [v33 superlayer];
+              if (!superlayer)
               {
                 v35 = +[CRLAssertionHandler _atomicIncrementAssertCount];
                 if (qword_101AD5A10 != -1)
@@ -522,18 +522,18 @@
                 v10 = &_s10Foundation9IndexPathVSHAAMc_ptr;
               }
 
-              v40 = (v8[2])(v8, v32);
+              v40 = (v8[2])(v8, superlayer);
               v80 = v34;
               v41 = [v10[412] arrayWithObjects:&v80 count:1];
               [v40 setSublayers:v41];
 
-              v33 = v32;
+              v33 = superlayer;
             }
 
-            while (v32 != v12);
+            while (superlayer != v12);
           }
 
-          if (!v32)
+          if (!superlayer)
           {
             v44 = +[CRLAssertionHandler _atomicIncrementAssertCount];
             if (qword_101AD5A10 != -1)
@@ -580,10 +580,10 @@
           v49 = (v8[2])(v8, v31);
           [(CRLInteractiveCanvasRepLayerPile *)v70 pushParentLayer:v49];
 
-          v9 = [v71 lastObject];
+          lastObject = [second lastObject];
 
           v11 = v72 + 1;
-          v12 = v9;
+          v12 = lastObject;
         }
 
         while ((v72 + 1) != v69);
@@ -598,7 +598,7 @@
       [(CRLInteractiveCanvasRepLayerPile *)self popParentLayer];
     }
 
-    a3 = v66;
+    layers = layersCopy;
     if ([(NSMutableOrderedSet *)v70->_topLevelLayers count]!= 1)
     {
       +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -629,28 +629,28 @@
     }
 
     v7 = v64;
-    v6 = v65;
+    clonedLayersCopy = v65;
   }
 
-  if (a3)
+  if (layers)
   {
     v61 = v7;
-    *a3 = v7;
+    *layers = v7;
   }
 
   return v70;
 }
 
-- (BOOL)isContentEqualToContentOfRepContentPile:(id)a3
+- (BOOL)isContentEqualToContentOfRepContentPile:(id)pile
 {
-  if (self == a3)
+  if (self == pile)
   {
     return 1;
   }
 
-  v4 = a3;
+  pileCopy = pile;
   v5 = objc_opt_class();
-  v6 = sub_100014370(v5, v4);
+  v6 = sub_100014370(v5, pileCopy);
 
   if (v6)
   {
@@ -689,7 +689,7 @@
       v18 = 1024;
       v19 = 243;
       v20 = 2048;
-      v21 = self;
+      selfCopy = self;
       v22 = 2048;
       v23 = [(NSMutableArray *)parentLayerAndChildLayersStack count];
       _os_log_error_impl(&_mh_execute_header, v11, OS_LOG_TYPE_ERROR, "#Assert *** Assertion failure #%u: %{public}s %{public}s:%d Should not attempt to access content layers in %p when some (%lu) parent layers are still pushed, since the returned layers may not represent a complete layer hierarchy.", buf, 0x36u);
@@ -711,9 +711,9 @@
     [CRLAssertionHandler handleFailureInFunction:v6 file:v7 lineNumber:243 isFatal:0 description:"Should not attempt to access content layers in %p when some (%lu) parent layers are still pushed, since the returned layers may not represent a complete layer hierarchy.", self, [(NSMutableArray *)self->_parentLayerAndChildLayersStack count]];
   }
 
-  v8 = [(NSMutableOrderedSet *)self->_topLevelLayers array];
+  array = [(NSMutableOrderedSet *)self->_topLevelLayers array];
 
-  return v8;
+  return array;
 }
 
 @end

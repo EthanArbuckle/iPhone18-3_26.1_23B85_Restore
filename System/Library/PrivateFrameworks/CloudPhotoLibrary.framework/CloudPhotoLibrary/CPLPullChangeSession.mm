@@ -1,15 +1,15 @@
 @interface CPLPullChangeSession
-- (void)acknowledgeChangeBatch:(id)a3 withCompletionHandler:(id)a4;
-- (void)getChangeBatchWithCompletionHandler:(id)a3;
+- (void)acknowledgeChangeBatch:(id)batch withCompletionHandler:(id)handler;
+- (void)getChangeBatchWithCompletionHandler:(id)handler;
 @end
 
 @implementation CPLPullChangeSession
 
-- (void)acknowledgeChangeBatch:(id)a3 withCompletionHandler:(id)a4
+- (void)acknowledgeChangeBatch:(id)batch withCompletionHandler:(id)handler
 {
   v33 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  batchCopy = batch;
+  handlerCopy = handler;
   if ((_CPLSilentLogging & 1) == 0)
   {
     v9 = __CPLSessionOSLogDomain_0();
@@ -17,7 +17,7 @@
     {
       v10 = NSStringFromSelector(a2);
       *buf = 138412290;
-      v30 = v10;
+      selfCopy = v10;
       _os_log_impl(&dword_1DC05A000, v9, OS_LOG_TYPE_DEBUG, "%@ called", buf, 0xCu);
     }
   }
@@ -35,15 +35,15 @@
         {
           v21 = [objc_opt_class() stateDescriptionForState:{-[CPLChangeSession state](self, "state")}];
           *buf = 138412290;
-          v30 = v21;
+          selfCopy = v21;
           _os_log_impl(&dword_1DC05A000, v20, OS_LOG_TYPE_ERROR, "can't finalize a session that is in %@ state", buf, 0xCu);
         }
       }
 
-      v22 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v23 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Framework/Sources/CPLPullChangeSession.m"];
       v24 = [objc_opt_class() stateDescriptionForState:{-[CPLChangeSession state](self, "state")}];
-      [v22 handleFailureInMethod:a2 object:self file:v23 lineNumber:65 description:{@"can't finalize a session that is in %@ state", v24}];
+      [currentHandler handleFailureInMethod:a2 object:self file:v23 lineNumber:65 description:{@"can't finalize a session that is in %@ state", v24}];
 
       abort();
     }
@@ -56,23 +56,23 @@
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412546;
-        v30 = self;
+        selfCopy = self;
         v31 = 2112;
-        v32 = v7;
+        v32 = batchCopy;
         _os_log_impl(&dword_1DC05A000, v14, OS_LOG_TYPE_DEBUG, "%@ acknowledging %@", buf, 0x16u);
       }
     }
 
-    v15 = [(CPLChangeSession *)self platformObject];
+    platformObject = [(CPLChangeSession *)self platformObject];
     v25[0] = MEMORY[0x1E69E9820];
     v25[1] = 3221225472;
     v25[2] = __69__CPLPullChangeSession_acknowledgeChangeBatch_withCompletionHandler___block_invoke;
     v25[3] = &unk_1E861CB58;
     v25[4] = self;
     v28 = v13;
-    v26 = v7;
-    v27 = v8;
-    [v15 acknowledgeChangeBatch:v26 withCompletionHandler:v25];
+    v26 = batchCopy;
+    v27 = handlerCopy;
+    [platformObject acknowledgeChangeBatch:v26 withCompletionHandler:v25];
   }
 
   else
@@ -84,13 +84,13 @@
       {
         v17 = [objc_opt_class() stateDescriptionForState:{-[CPLChangeSession state](self, "state")}];
         *buf = 138412290;
-        v30 = v17;
+        selfCopy = v17;
         _os_log_impl(&dword_1DC05A000, v16, OS_LOG_TYPE_ERROR, "Trying to acknowledge a batch while session is not waiting for that (state: %@)", buf, 0xCu);
       }
     }
 
     v18 = [CPLErrors incorrectMachineStateErrorWithReason:@"Trying to acknowledge a batch while session is not waiting for that"];
-    (*(v8 + 2))(v8, v18, 0);
+    (*(handlerCopy + 2))(handlerCopy, v18, 0);
   }
 
   v19 = *MEMORY[0x1E69E9840];
@@ -144,10 +144,10 @@ void __69__CPLPullChangeSession_acknowledgeChangeBatch_withCompletionHandler___b
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)getChangeBatchWithCompletionHandler:(id)a3
+- (void)getChangeBatchWithCompletionHandler:(id)handler
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  handlerCopy = handler;
   if ((_CPLSilentLogging & 1) == 0)
   {
     v6 = __CPLSessionOSLogDomain_0();
@@ -155,7 +155,7 @@ void __69__CPLPullChangeSession_acknowledgeChangeBatch_withCompletionHandler___b
     {
       v7 = NSStringFromSelector(a2);
       *buf = 138412290;
-      v17 = v7;
+      selfCopy = v7;
       _os_log_impl(&dword_1DC05A000, v6, OS_LOG_TYPE_DEBUG, "%@ called", buf, 0xCu);
     }
   }
@@ -169,19 +169,19 @@ void __69__CPLPullChangeSession_acknowledgeChangeBatch_withCompletionHandler___b
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412290;
-        v17 = self;
+        selfCopy = self;
         _os_log_impl(&dword_1DC05A000, v8, OS_LOG_TYPE_DEBUG, "%@ asking for batches", buf, 0xCu);
       }
     }
 
-    v9 = [(CPLChangeSession *)self platformObject];
+    platformObject = [(CPLChangeSession *)self platformObject];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __60__CPLPullChangeSession_getChangeBatchWithCompletionHandler___block_invoke;
     v14[3] = &unk_1E861B578;
     v14[4] = self;
-    v15 = v5;
-    [v9 getChangeBatchWithCompletionHandler:v14];
+    v15 = handlerCopy;
+    [platformObject getChangeBatchWithCompletionHandler:v14];
   }
 
   else
@@ -193,13 +193,13 @@ void __69__CPLPullChangeSession_acknowledgeChangeBatch_withCompletionHandler___b
       {
         v11 = [objc_opt_class() stateDescriptionForState:{-[CPLChangeSession state](self, "state")}];
         *buf = 138412290;
-        v17 = v11;
+        selfCopy = v11;
         _os_log_impl(&dword_1DC05A000, v10, OS_LOG_TYPE_ERROR, "Trying to get change batches while session is not idle (state: %@)", buf, 0xCu);
       }
     }
 
     v12 = [CPLErrors incorrectMachineStateErrorWithReason:@"Trying to get change batches while session is not idle"];
-    (*(v5 + 2))(v5, v12, 0);
+    (*(handlerCopy + 2))(handlerCopy, v12, 0);
   }
 
   v13 = *MEMORY[0x1E69E9840];

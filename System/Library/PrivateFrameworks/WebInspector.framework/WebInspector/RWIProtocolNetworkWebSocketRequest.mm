@@ -1,36 +1,36 @@
 @interface RWIProtocolNetworkWebSocketRequest
 - (RWIProtocolNetworkHeaders)headers;
-- (RWIProtocolNetworkWebSocketRequest)initWithHeaders:(id)a3;
-- (void)setHeaders:(id)a3;
+- (RWIProtocolNetworkWebSocketRequest)initWithHeaders:(id)headers;
+- (void)setHeaders:(id)headers;
 @end
 
 @implementation RWIProtocolNetworkWebSocketRequest
 
-- (RWIProtocolNetworkWebSocketRequest)initWithHeaders:(id)a3
+- (RWIProtocolNetworkWebSocketRequest)initWithHeaders:(id)headers
 {
-  v4 = a3;
+  headersCopy = headers;
   v8.receiver = self;
   v8.super_class = RWIProtocolNetworkWebSocketRequest;
   v5 = [(RWIProtocolJSONObject *)&v8 init];
   if (v5)
   {
-    if (!v4)
+    if (!headersCopy)
     {
       [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"required property '%@' cannot be nil", @"headers"}];
     }
 
-    [(RWIProtocolNetworkWebSocketRequest *)v5 setHeaders:v4];
+    [(RWIProtocolNetworkWebSocketRequest *)v5 setHeaders:headersCopy];
     v6 = v5;
   }
 
   return v5;
 }
 
-- (void)setHeaders:(id)a3
+- (void)setHeaders:(id)headers
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolNetworkWebSocketRequest;
-  [(RWIProtocolJSONObject *)&v3 setObject:a3 forKey:@"headers"];
+  [(RWIProtocolJSONObject *)&v3 setObject:headers forKey:@"headers"];
 }
 
 - (RWIProtocolNetworkHeaders)headers

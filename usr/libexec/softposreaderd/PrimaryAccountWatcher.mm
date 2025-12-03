@@ -1,30 +1,30 @@
 @interface PrimaryAccountWatcher
-- (void)accountWasAdded:(id)a3;
-- (void)accountWasModified:(id)a3;
-- (void)accountWasRemoved:(id)a3;
+- (void)accountWasAdded:(id)added;
+- (void)accountWasModified:(id)modified;
+- (void)accountWasRemoved:(id)removed;
 @end
 
 @implementation PrimaryAccountWatcher
 
-- (void)accountWasAdded:(id)a3
+- (void)accountWasAdded:(id)added
 {
-  v4 = a3;
-  v5 = self;
-  PrimaryAccountWatcher.accountWasAdded(_:)(v4);
+  addedCopy = added;
+  selfCopy = self;
+  PrimaryAccountWatcher.accountWasAdded(_:)(addedCopy);
 }
 
-- (void)accountWasRemoved:(id)a3
+- (void)accountWasRemoved:(id)removed
 {
-  v4 = a3;
-  v5 = self;
-  PrimaryAccountWatcher.accountWasRemoved(_:)(v4);
+  removedCopy = removed;
+  selfCopy = self;
+  PrimaryAccountWatcher.accountWasRemoved(_:)(removedCopy);
 }
 
-- (void)accountWasModified:(id)a3
+- (void)accountWasModified:(id)modified
 {
-  v4 = a3;
-  v5 = self;
-  PrimaryAccountWatcher.accountWasModified(_:)(v4);
+  modifiedCopy = modified;
+  selfCopy = self;
+  PrimaryAccountWatcher.accountWasModified(_:)(modifiedCopy);
 }
 
 @end

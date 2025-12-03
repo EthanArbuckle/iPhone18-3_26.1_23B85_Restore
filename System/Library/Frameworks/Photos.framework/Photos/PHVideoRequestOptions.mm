@@ -1,22 +1,22 @@
 @interface PHVideoRequestOptions
 - ($73DE6CFC58B34F5FFCF9CF852B54AD9C)timeRange;
 - (BOOL)hasValidTimeRange;
-- (BOOL)isValidConfigurationWithError:(id *)a3;
+- (BOOL)isValidConfigurationWithError:(id *)error;
 - (CGSize)targetSize;
 - (NSString)description;
 - (PHVideoRequestOptions)init;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setRestrictToStreamable:(BOOL)a3;
-- (void)setTimeRange:(id *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setRestrictToStreamable:(BOOL)streamable;
+- (void)setTimeRange:(id *)range;
 @end
 
 @implementation PHVideoRequestOptions
 
-- (void)setTimeRange:(id *)a3
+- (void)setTimeRange:(id *)range
 {
-  v3 = *&a3->var0.var0;
-  v4 = *&a3->var0.var3;
-  *&self->_timeRange.duration.timescale = *&a3->var1.var1;
+  v3 = *&range->var0.var0;
+  v4 = *&range->var0.var3;
+  *&self->_timeRange.duration.timescale = *&range->var1.var1;
   *&self->_timeRange.start.epoch = v4;
   *&self->_timeRange.start.value = v3;
 }
@@ -65,19 +65,19 @@
 
 - (NSString)description
 {
-  v3 = [MEMORY[0x1E696AD60] string];
-  [v3 appendString:@"version="];
+  string = [MEMORY[0x1E696AD60] string];
+  [string appendString:@"version="];
   if ([(PHVideoRequestOptions *)self version]== PHVideoRequestOptionsVersionOriginal)
   {
     v4 = @"orig";
 LABEL_3:
-    [v3 appendString:v4];
+    [string appendString:v4];
     goto LABEL_5;
   }
 
   if ([(PHVideoRequestOptions *)self version]== PHVideoRequestOptionsVersionCurrent)
   {
-    [v3 appendString:@"curr"];
+    [string appendString:@"curr"];
     if ([(PHVideoRequestOptions *)self deliveryMode]== PHVideoRequestOptionsDeliveryModeAutomatic)
     {
       v4 = @"+auto";
@@ -112,32 +112,32 @@ LABEL_3:
 LABEL_5:
   if ([(PHVideoRequestOptions *)self isMediumHighQualityAllowed])
   {
-    [v3 appendString:@"+HQ"];
+    [string appendString:@"+HQ"];
   }
 
   if ([(PHVideoRequestOptions *)self isStreamingAllowed])
   {
-    [v3 appendString:@"+stream"];
+    [string appendString:@"+stream"];
   }
 
-  v5 = [(PHVideoRequestOptions *)self streamingVideoIntent];
-  if (v5)
+  streamingVideoIntent = [(PHVideoRequestOptions *)self streamingVideoIntent];
+  if (streamingVideoIntent)
   {
-    v6 = _PHStreamingVideoIntentName(v5);
-    [v3 appendFormat:@"+streamingIntent:%@", v6];
+    v6 = _PHStreamingVideoIntentName(streamingVideoIntent);
+    [string appendFormat:@"+streamingIntent:%@", v6];
   }
 
-  v7 = [(PHVideoRequestOptions *)self downloadIntent];
-  if (v7)
+  downloadIntent = [(PHVideoRequestOptions *)self downloadIntent];
+  if (downloadIntent)
   {
-    v8 = _PHDownloadIntentName(v7);
+    v8 = _PHDownloadIntentName(downloadIntent);
     v9 = _PHDownloadPriorityName([(PHVideoRequestOptions *)self downloadPriority]);
-    [v3 appendFormat:@"+downloadIntent:%@+downloadPriority:%@", v8, v9];
+    [string appendFormat:@"+downloadIntent:%@+downloadPriority:%@", v8, v9];
   }
 
   if ([(PHVideoRequestOptions *)self isNetworkAccessAllowed])
   {
-    [v3 appendString:@"+network"];
+    [string appendString:@"+network"];
   }
 
   if ([(PHVideoRequestOptions *)self hasValidTimeRange])
@@ -145,32 +145,32 @@ LABEL_5:
     v10 = *MEMORY[0x1E695E480];
     [(PHVideoRequestOptions *)self timeRange];
     v11 = CMTimeRangeCopyDescription(v10, &range);
-    [v3 appendString:@"+timeRange="];
-    [v3 appendString:v11];
+    [string appendString:@"+timeRange="];
+    [string appendString:v11];
   }
 
   if ([(PHVideoRequestOptions *)self includeTimeRangeMapper])
   {
-    [v3 appendString:@"+timeRangeMapper"];
+    [string appendString:@"+timeRangeMapper"];
   }
 
   if ([(PHVideoRequestOptions *)self restrictToStreamable])
   {
-    [v3 appendString:@"+streamOnly"];
+    [string appendString:@"+streamOnly"];
   }
 
   if ([(PHVideoRequestOptions *)self restrictToEncryptedStream])
   {
-    [v3 appendString:@"+encrypted"];
+    [string appendString:@"+encrypted"];
   }
 
-  return v3;
+  return string;
 }
 
-- (void)setRestrictToStreamable:(BOOL)a3
+- (void)setRestrictToStreamable:(BOOL)streamable
 {
-  self->_restrictToStreamable = a3;
-  if (a3)
+  self->_restrictToStreamable = streamable;
+  if (streamable)
   {
     [(PHVideoRequestOptions *)self setStreamingAllowed:1];
 
@@ -178,7 +178,7 @@ LABEL_5:
   }
 }
 
-- (BOOL)isValidConfigurationWithError:(id *)a3
+- (BOOL)isValidConfigurationWithError:(id *)error
 {
   if ([(PHVideoRequestOptions *)self restrictToStreamable])
   {
@@ -199,7 +199,7 @@ LABEL_5:
 
     v5 = [MEMORY[0x1E696ABC0] ph_errorWithCode:3306 localizedDescription:v8];
     v6 = 0;
-    if (!a3)
+    if (!error)
     {
       goto LABEL_6;
     }
@@ -210,11 +210,11 @@ LABEL_5:
 LABEL_4:
   v5 = 0;
   v6 = 1;
-  if (a3)
+  if (error)
   {
 LABEL_5:
     v5 = v5;
-    *a3 = v5;
+    *error = v5;
   }
 
 LABEL_6:
@@ -222,17 +222,17 @@ LABEL_6:
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setVersion:{-[PHVideoRequestOptions version](self, "version")}];
   [v4 setDeliveryMode:{-[PHVideoRequestOptions deliveryMode](self, "deliveryMode")}];
   [v4 setNetworkAccessAllowed:{-[PHVideoRequestOptions isNetworkAccessAllowed](self, "isNetworkAccessAllowed")}];
   [v4 setStreamingAllowed:{-[PHVideoRequestOptions isStreamingAllowed](self, "isStreamingAllowed")}];
   [v4 setStreamingVideoIntent:{-[PHVideoRequestOptions streamingVideoIntent](self, "streamingVideoIntent")}];
   [v4 setVideoComplementAllowed:{-[PHVideoRequestOptions isVideoComplementAllowed](self, "isVideoComplementAllowed")}];
-  v5 = [(PHVideoRequestOptions *)self progressHandler];
-  [v4 setProgressHandler:v5];
+  progressHandler = [(PHVideoRequestOptions *)self progressHandler];
+  [v4 setProgressHandler:progressHandler];
 
   [(PHVideoRequestOptions *)self targetSize];
   [v4 setTargetSize:?];
@@ -241,8 +241,8 @@ LABEL_6:
   [v4 setRestrictToStreamable:{-[PHVideoRequestOptions restrictToStreamable](self, "restrictToStreamable")}];
   [v4 setRestrictToEncryptedStream:{-[PHVideoRequestOptions restrictToEncryptedStream](self, "restrictToEncryptedStream")}];
   [v4 setAllowMediumHighQuality:{-[PHVideoRequestOptions isMediumHighQualityAllowed](self, "isMediumHighQualityAllowed")}];
-  v6 = [(PHVideoRequestOptions *)self resultHandlerQueue];
-  [v4 setResultHandlerQueue:v6];
+  resultHandlerQueue = [(PHVideoRequestOptions *)self resultHandlerQueue];
+  [v4 setResultHandlerQueue:resultHandlerQueue];
 
   [v4 setLiveRenderVideoIfNeeded:{-[PHVideoRequestOptions liveRenderVideoIfNeeded](self, "liveRenderVideoIfNeeded")}];
   [v4 setLiveRenderAndOnDemandRenderVideoConcurrently:{-[PHVideoRequestOptions liveRenderAndOnDemandRenderVideoConcurrently](self, "liveRenderAndOnDemandRenderVideoConcurrently")}];

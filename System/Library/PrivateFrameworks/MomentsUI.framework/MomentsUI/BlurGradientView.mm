@@ -15,13 +15,13 @@
 
 - (void)didMoveToWindow
 {
-  v2 = self;
+  selfCopy = self;
   BlurGradientView.didMoveToWindow()();
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   BlurGradientView.layoutSubviews()();
 }
 

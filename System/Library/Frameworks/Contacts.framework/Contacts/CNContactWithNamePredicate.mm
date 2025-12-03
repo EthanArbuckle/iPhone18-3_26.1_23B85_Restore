@@ -1,28 +1,28 @@
 @interface CNContactWithNamePredicate
-+ (BOOL)doesPerson:(id)a3 matchName:(id)a4;
-+ (id)descriptionForOptions:(unint64_t)a3;
-- (BOOL)isEqual:(id)a3;
-- (CNContactWithNamePredicate)initWithCoder:(id)a3;
-- (CNContactWithNamePredicate)initWithName:(id)a3 options:(unint64_t)a4;
++ (BOOL)doesPerson:(id)person matchName:(id)name;
++ (id)descriptionForOptions:(unint64_t)options;
+- (BOOL)isEqual:(id)equal;
+- (CNContactWithNamePredicate)initWithCoder:(id)coder;
+- (CNContactWithNamePredicate)initWithName:(id)name options:(unint64_t)options;
 - (NSString)description;
-- (id)contactsFromCLSDataStore:(id)a3;
-- (id)contactsFromRecentsLibrary:(id)a3;
-- (id)sgContactMatchesWithSortOrder:(int64_t)a3 mutableObjects:(BOOL)a4 service:(id)a5 error:(id *)a6;
-- (int64_t)countOfContactsFromRecentsLibrary:(id)a3;
+- (id)contactsFromCLSDataStore:(id)store;
+- (id)contactsFromRecentsLibrary:(id)library;
+- (id)sgContactMatchesWithSortOrder:(int64_t)order mutableObjects:(BOOL)objects service:(id)service error:(id *)error;
+- (int64_t)countOfContactsFromRecentsLibrary:(id)library;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CNContactWithNamePredicate
 
-- (id)contactsFromCLSDataStore:(id)a3
+- (id)contactsFromCLSDataStore:(id)store
 {
-  v4 = a3;
-  v5 = [(CNContactWithNamePredicate *)self name];
+  storeCopy = store;
+  name = [(CNContactWithNamePredicate *)self name];
   if ((*(*MEMORY[0x1E6996570] + 16))())
   {
-    v6 = [objc_alloc(MEMORY[0x1E695B4C0]) initWithOptions:1 behaviors:1 searchString:v5];
-    v7 = [CNClassKitServices objectsMatching:v6 fromStore:v4];
+    v6 = [objc_alloc(MEMORY[0x1E695B4C0]) initWithOptions:1 behaviors:1 searchString:name];
+    v7 = [CNClassKitServices objectsMatching:v6 fromStore:storeCopy];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __61__CNContactWithNamePredicate_MAID__contactsFromCLSDataStore___block_invoke;
@@ -64,17 +64,17 @@ uint64_t __61__CNContactWithNamePredicate_MAID__contactsFromCLSDataStore___block
   return v6;
 }
 
-+ (BOOL)doesPerson:(id)a3 matchName:(id)a4
++ (BOOL)doesPerson:(id)person matchName:(id)name
 {
-  v5 = a3;
-  v6 = [a4 _cn_tokens];
+  personCopy = person;
+  _cn_tokens = [name _cn_tokens];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __57__CNContactWithNamePredicate_MAID__doesPerson_matchName___block_invoke;
   v10[3] = &unk_1E7412440;
-  v11 = v5;
-  v7 = v5;
-  v8 = [v6 _cn_all:v10];
+  v11 = personCopy;
+  v7 = personCopy;
+  v8 = [_cn_tokens _cn_all:v10];
 
   return v8;
 }
@@ -106,43 +106,43 @@ uint64_t __57__CNContactWithNamePredicate_MAID__doesPerson_matchName___block_inv
   return v5;
 }
 
-- (id)sgContactMatchesWithSortOrder:(int64_t)a3 mutableObjects:(BOOL)a4 service:(id)a5 error:(id *)a6
+- (id)sgContactMatchesWithSortOrder:(int64_t)order mutableObjects:(BOOL)objects service:(id)service error:(id *)error
 {
-  v8 = a5;
-  v9 = [(CNContactWithNamePredicate *)self name];
-  v10 = [v8 suggestContactMatchesWithMessagingPrefix:v9 limitTo:-1 error:a6];
+  serviceCopy = service;
+  name = [(CNContactWithNamePredicate *)self name];
+  v10 = [serviceCopy suggestContactMatchesWithMessagingPrefix:name limitTo:-1 error:error];
 
   return v10;
 }
 
-- (CNContactWithNamePredicate)initWithName:(id)a3 options:(unint64_t)a4
+- (CNContactWithNamePredicate)initWithName:(id)name options:(unint64_t)options
 {
-  v6 = a3;
+  nameCopy = name;
   v12.receiver = self;
   v12.super_class = CNContactWithNamePredicate;
   v7 = [(CNPredicate *)&v12 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [nameCopy copy];
     name = v7->_name;
     v7->_name = v8;
 
-    v7->_options = a4;
+    v7->_options = options;
     v10 = v7;
   }
 
   return v7;
 }
 
-- (CNContactWithNamePredicate)initWithCoder:(id)a3
+- (CNContactWithNamePredicate)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = CNContactWithNamePredicate;
   v5 = [(CNPredicate *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_name"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_name"];
     v7 = [v6 copy];
     name = v5->_name;
     v5->_name = v7;
@@ -153,41 +153,41 @@ uint64_t __57__CNContactWithNamePredicate_MAID__doesPerson_matchName___block_inv
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = CNContactWithNamePredicate;
-  v4 = a3;
-  [(CNPredicate *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_name forKey:{@"_name", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(CNPredicate *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_name forKey:{@"_name", v5.receiver, v5.super_class}];
 }
 
 - (NSString)description
 {
   v3 = [MEMORY[0x1E69966B0] descriptionBuilderWithObject:self];
   v4 = [v3 appendName:@"kind" object:@"-[CNContact predicateForContactsMatchingName:]"];
-  v5 = [(CNContactWithNamePredicate *)self name];
-  v6 = [v3 appendName:@"name" object:v5];
+  name = [(CNContactWithNamePredicate *)self name];
+  v6 = [v3 appendName:@"name" object:name];
 
   v7 = [objc_opt_class() descriptionForOptions:{-[CNContactWithNamePredicate options](self, "options")}];
   v8 = [v3 appendName:@"options" object:v7];
 
-  v9 = [v3 build];
+  build = [v3 build];
 
-  return v9;
+  return build;
 }
 
-+ (id)descriptionForOptions:(unint64_t)a3
++ (id)descriptionForOptions:(unint64_t)options
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF70] array];
-  v5 = v4;
-  if ((v3 & 2) != 0)
+  optionsCopy = options;
+  array = [MEMORY[0x1E695DF70] array];
+  v5 = array;
+  if ((optionsCopy & 2) != 0)
   {
-    [v4 addObject:@"prefix"];
+    [array addObject:@"prefix"];
   }
 
-  if (v3)
+  if (optionsCopy)
   {
     [v5 addObject:@"cd-insensitive"];
   }
@@ -205,25 +205,25 @@ uint64_t __57__CNContactWithNamePredicate_MAID__doesPerson_matchName___block_inv
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = MEMORY[0x1E69966F0];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __38__CNContactWithNamePredicate_isEqual___block_invoke;
   v15[3] = &unk_1E7412228;
   v15[4] = self;
-  v16 = v4;
+  v16 = equalCopy;
   aBlock = MEMORY[0x1E69E9820];
   v10 = 3221225472;
   v11 = __38__CNContactWithNamePredicate_isEqual___block_invoke_2;
   v12 = &unk_1E7412228;
-  v13 = self;
+  selfCopy = self;
   v14 = v16;
   v6 = v16;
   v7 = _Block_copy(&aBlock);
-  LOBYTE(self) = [v5 isObject:v6 memberOfSameClassAndEqualTo:self withBlocks:{v15, v7, 0, aBlock, v10, v11, v12, v13}];
+  LOBYTE(self) = [v5 isObject:v6 memberOfSameClassAndEqualTo:self withBlocks:{v15, v7, 0, aBlock, v10, v11, v12, selfCopy}];
 
   return self;
 }
@@ -283,19 +283,19 @@ uint64_t __34__CNContactWithNamePredicate_hash__block_invoke_2(uint64_t a1)
   return [v1 unsignedIntegerHash:v2];
 }
 
-- (id)contactsFromRecentsLibrary:(id)a3
+- (id)contactsFromRecentsLibrary:(id)library
 {
-  v4 = a3;
+  libraryCopy = library;
   v5 = *MEMORY[0x1E6996570];
-  v6 = [(CNContactWithNamePredicate *)self name];
-  LOBYTE(v5) = (*(v5 + 16))(v5, v6);
+  name = [(CNContactWithNamePredicate *)self name];
+  LOBYTE(v5) = (*(v5 + 16))(v5, name);
 
   if (v5)
   {
     v7 = ([(CNContactWithNamePredicate *)self options]>> 1) & 1;
-    v8 = [(CNContactWithNamePredicate *)self name];
+    name2 = [(CNContactWithNamePredicate *)self name];
     v15 = 0;
-    v9 = [v4 contactsWithName:v8 prefixSearch:v7 error:&v15];
+    v9 = [libraryCopy contactsWithName:name2 prefixSearch:v7 error:&v15];
     v10 = v15;
 
     v11 = MEMORY[0x1E6996810];
@@ -311,18 +311,18 @@ uint64_t __34__CNContactWithNamePredicate_hash__block_invoke_2(uint64_t a1)
   return v13;
 }
 
-- (int64_t)countOfContactsFromRecentsLibrary:(id)a3
+- (int64_t)countOfContactsFromRecentsLibrary:(id)library
 {
-  v4 = a3;
+  libraryCopy = library;
   v5 = *MEMORY[0x1E6996570];
-  v6 = [(CNContactWithNamePredicate *)self name];
-  LODWORD(v5) = (*(v5 + 16))(v5, v6);
+  name = [(CNContactWithNamePredicate *)self name];
+  LODWORD(v5) = (*(v5 + 16))(v5, name);
 
   if (v5)
   {
     v7 = ([(CNContactWithNamePredicate *)self options]>> 1) & 1;
-    v8 = [(CNContactWithNamePredicate *)self name];
-    v9 = [v4 countOfContactsWithName:v8 prefixSearch:v7 error:0];
+    name2 = [(CNContactWithNamePredicate *)self name];
+    v9 = [libraryCopy countOfContactsWithName:name2 prefixSearch:v7 error:0];
   }
 
   else

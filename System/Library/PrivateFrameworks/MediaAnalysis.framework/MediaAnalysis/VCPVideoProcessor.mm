@@ -1,30 +1,30 @@
 @interface VCPVideoProcessor
-- (BOOL)_analyzeWithStart:(id *)a3 andDuration:(id *)a4 error:(id *)a5;
-- (BOOL)analyzeWithError:(id *)a3;
-- (BOOL)analyzeWithStart:(id *)a3 andDuration:(id *)a4 error:(id *)a5;
-- (VCPVideoProcessor)initWithURL:(id)a3;
-- (void)setDecoderSettings:(id)a3;
+- (BOOL)_analyzeWithStart:(id *)start andDuration:(id *)duration error:(id *)error;
+- (BOOL)analyzeWithError:(id *)error;
+- (BOOL)analyzeWithStart:(id *)start andDuration:(id *)duration error:(id *)error;
+- (VCPVideoProcessor)initWithURL:(id)l;
+- (void)setDecoderSettings:(id)settings;
 @end
 
 @implementation VCPVideoProcessor
 
-- (void)setDecoderSettings:(id)a3
+- (void)setDecoderSettings:(id)settings
 {
-  v6 = a3;
-  v4 = [v6 count];
+  settingsCopy = settings;
+  v4 = [settingsCopy count];
   if (v4)
   {
-    v4 = v6;
+    v4 = settingsCopy;
   }
 
   decoderSettings = self->_decoderSettings;
   self->_decoderSettings = v4;
 }
 
-- (VCPVideoProcessor)initWithURL:(id)a3
+- (VCPVideoProcessor)initWithURL:(id)l
 {
   v28[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  lCopy = l;
   v25.receiver = self;
   v25.super_class = VCPVideoProcessor;
   v6 = [(VCPVideoProcessor *)&v25 init];
@@ -36,7 +36,7 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  objc_storeStrong(&v6->_url, a3);
+  objc_storeStrong(&v6->_url, l);
   v8 = objc_alloc_init(VCPVideoProcessorSession);
   session = v7->_session;
   v7->_session = v8;
@@ -99,20 +99,20 @@ LABEL_15:
   return v17;
 }
 
-- (BOOL)_analyzeWithStart:(id *)a3 andDuration:(id *)a4 error:(id *)a5
+- (BOOL)_analyzeWithStart:(id *)start andDuration:(id *)duration error:(id *)error
 {
   v99[1] = *MEMORY[0x1E69E9840];
   v9 = MEMORY[0x1E6988168];
   url = self->_url;
-  v11 = [objc_opt_class() urlAssetOptions];
-  v12 = [v9 URLAssetWithURL:url options:v11];
+  urlAssetOptions = [objc_opt_class() urlAssetOptions];
+  v12 = [v9 URLAssetWithURL:url options:urlAssetOptions];
 
   if (v12)
   {
-    v13 = [v12 resourceLoader];
-    [v13 setDelegate:self->_resourceLoaderDelegate queue:self->_resourceLoaderDelegateQueue];
+    resourceLoader = [v12 resourceLoader];
+    [resourceLoader setDelegate:self->_resourceLoaderDelegate queue:self->_resourceLoaderDelegateQueue];
 
-    v14 = [MEMORY[0x1E6987E78] assetReaderWithAsset:v12 error:a5];
+    v14 = [MEMORY[0x1E6987E78] assetReaderWithAsset:v12 error:error];
     if (!v14)
     {
       v30 = 0;
@@ -130,10 +130,10 @@ LABEL_81:
         goto LABEL_12;
       }
 
-      v72 = [v15 formatDescriptions];
-      if ([v72 count] != 1)
+      formatDescriptions = [v15 formatDescriptions];
+      if ([formatDescriptions count] != 1)
       {
-        if (!a5)
+        if (!error)
         {
           v30 = 0;
 LABEL_79:
@@ -143,37 +143,37 @@ LABEL_79:
 
         v33 = MEMORY[0x1E696ABC0];
         v94 = *MEMORY[0x1E696A578];
-        v25 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Video track contains %d (expecting 1) format description(s)", objc_msgSend(v72, "count")];
+        v25 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Video track contains %d (expecting 1) format description(s)", objc_msgSend(formatDescriptions, "count")];
         v95 = v25;
         v34 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v95 forKeys:&v94 count:1];
-        *a5 = [v33 errorWithDomain:*MEMORY[0x1E696A768] code:-50 userInfo:v34];
+        *error = [v33 errorWithDomain:*MEMORY[0x1E696A768] code:-50 userInfo:v34];
 
 LABEL_41:
         v30 = 0;
         goto LABEL_78;
       }
 
-      v17 = [v72 objectAtIndexedSubscript:0];
+      v17 = [formatDescriptions objectAtIndexedSubscript:0];
       MediaSubType = CMFormatDescriptionGetMediaSubType(v17);
 
-      if (MediaSubType != 1635148593 && MediaSubType != 1752589105 && a5)
+      if (MediaSubType != 1635148593 && MediaSubType != 1752589105 && error)
       {
         v69 = MEMORY[0x1E696ABC0];
         v92 = *MEMORY[0x1E696A578];
-        v19 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unsupported codec type: %d", MediaSubType];
-        v93 = v19;
+        mediaSubType = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unsupported codec type: %d", MediaSubType];
+        v93 = mediaSubType;
         v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v93 forKeys:&v92 count:1];
-        *a5 = [v69 errorWithDomain:*MEMORY[0x1E696A768] code:-50 userInfo:v20];
+        *error = [v69 errorWithDomain:*MEMORY[0x1E696A768] code:-50 userInfo:v20];
       }
 
       if (MediaSubType == 1635148593 || MediaSubType == 1752589105)
       {
 LABEL_12:
         v21 = [(NSDictionary *)self->_decoderSettings objectForKeyedSubscript:@"AppliesPreferredTrackTransform"];
-        v22 = [v21 BOOLValue];
+        bOOLValue = [v21 BOOLValue];
 
-        v72 = [(NSDictionary *)self->_decoderSettings mutableCopy];
-        [v72 removeObjectForKey:@"AppliesPreferredTrackTransform"];
+        formatDescriptions = [(NSDictionary *)self->_decoderSettings mutableCopy];
+        [formatDescriptions removeObjectForKey:@"AppliesPreferredTrackTransform"];
         [v16 preferredTransform];
         v70 = angleForTransform(&range);
         if (self->_requiresSyncFrameDetectionFromNalUnit)
@@ -183,21 +183,21 @@ LABEL_12:
 
         else
         {
-          v23 = v72;
+          v23 = formatDescriptions;
         }
 
         v24 = [MEMORY[0x1E6987EA8] assetReaderTrackOutputWithTrack:v16 outputSettings:v23];
         v25 = v24;
         if (v24)
         {
-          if (v22 && !self->_requiresSyncFrameDetectionFromNalUnit)
+          if (bOOLValue && !self->_requiresSyncFrameDetectionFromNalUnit)
           {
             [v24 setAppliesPreferredTrackTransform:1];
           }
 
-          *&start.start.value = *&a3->var0;
-          start.start.epoch = a3->var3;
-          duration = *a4;
+          *&start.start.value = *&start->var0;
+          start.start.epoch = start->var3;
+          duration = *duration;
           CMTimeRangeMake(&range, &start.start, &duration);
           [v16 timeRange];
           CMTimeRangeGetIntersection(&v81, &range, &start);
@@ -246,14 +246,14 @@ LABEL_24:
 
               if ([v27 status] == 4)
               {
-                if (a5)
+                if (error)
                 {
                   v55 = MEMORY[0x1E696ABC0];
                   v84 = *MEMORY[0x1E696A578];
                   v56 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Video processor cancelled"];
                   v85 = v56;
                   v57 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v85 forKeys:&v84 count:1];
-                  *a5 = [v55 errorWithDomain:*MEMORY[0x1E696A768] code:-128 userInfo:v57];
+                  *error = [v55 errorWithDomain:*MEMORY[0x1E696A768] code:-128 userInfo:v57];
                 }
               }
 
@@ -262,7 +262,7 @@ LABEL_24:
                 session = self->_session;
                 [v27 timeRange];
                 CMTimeRangeGetEnd(&duration, &start);
-                if ([(VCPVideoProcessorSession *)session flushWithEndTime:&duration error:a5])
+                if ([(VCPVideoProcessorSession *)session flushWithEndTime:&duration error:error])
                 {
 LABEL_25:
                   [v68 destroy];
@@ -277,16 +277,16 @@ LABEL_25:
                 }
               }
 
-              else if (a5)
+              else if (error)
               {
                 v59 = MEMORY[0x1E696ABC0];
                 v82 = *MEMORY[0x1E696A578];
                 v60 = MEMORY[0x1E696AEC0];
-                v61 = [v27 error];
-                v62 = [v60 stringWithFormat:@"Failed to complete video decoding: %@", v61];
+                error = [v27 error];
+                v62 = [v60 stringWithFormat:@"Failed to complete video decoding: %@", error];
                 v83 = v62;
                 v63 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v83 forKeys:&v82 count:1];
-                *a5 = [v59 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v63];
+                *error = [v59 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v63];
               }
 
 LABEL_76:
@@ -297,7 +297,7 @@ LABEL_77:
               goto LABEL_78;
             }
 
-            if (v22)
+            if (bOOLValue)
             {
               v41 = v70;
             }
@@ -360,14 +360,14 @@ LABEL_77:
                   syncFrameDecoder = self->_syncFrameDecoder;
                   if (!syncFrameDecoder)
                   {
-                    if (a5)
+                    if (error)
                     {
                       v65 = MEMORY[0x1E696ABC0];
                       v86 = *MEMORY[0x1E696A578];
                       v66 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to create VCPVideoSyncFrameDecoder"];
                       v87 = v66;
                       v67 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v87 forKeys:&v86 count:1];
-                      *a5 = [v65 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v67];
+                      *error = [v65 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v67];
                     }
 
                     goto LABEL_75;
@@ -375,7 +375,7 @@ LABEL_77:
                 }
 
                 start.start.value = 0;
-                if (![(VCPVideoSyncFrameDecoder *)syncFrameDecoder decodeCMSampleBuffer:duration.value toCMSampleBuffer:&start error:a5])
+                if (![(VCPVideoSyncFrameDecoder *)syncFrameDecoder decodeCMSampleBuffer:duration.value toCMSampleBuffer:&start error:error])
                 {
                   CF<__CVBuffer *>::~CF(&start);
 LABEL_75:
@@ -388,7 +388,7 @@ LABEL_75:
                 value = duration.value;
               }
 
-              if (![(VCPVideoProcessorSession *)self->_session processSampleBuffer:value error:a5])
+              if (![(VCPVideoProcessorSession *)self->_session processSampleBuffer:value error:error])
               {
                 goto LABEL_75;
               }
@@ -407,40 +407,40 @@ LABEL_62:
             }
           }
 
-          if (a5)
+          if (error)
           {
             v38 = MEMORY[0x1E696ABC0];
             v88 = *MEMORY[0x1E696A578];
             v39 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to start decoding video track"];
             v89 = v39;
             v40 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v89 forKeys:&v88 count:1];
-            *a5 = [v38 errorWithDomain:*MEMORY[0x1E696A768] code:-19 userInfo:v40];
+            *error = [v38 errorWithDomain:*MEMORY[0x1E696A768] code:-19 userInfo:v40];
           }
         }
 
-        else if (a5)
+        else if (error)
         {
           v35 = MEMORY[0x1E696ABC0];
           v90 = *MEMORY[0x1E696A578];
           v36 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to create video track output"];
           v91 = v36;
           v37 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v91 forKeys:&v90 count:1];
-          *a5 = [v35 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v37];
+          *error = [v35 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v37];
         }
 
         goto LABEL_41;
       }
     }
 
-    else if (a5)
+    else if (error)
     {
       v32 = MEMORY[0x1E696ABC0];
       v96 = *MEMORY[0x1E696A578];
-      v72 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Asset contains no video tracks"];
-      v97 = v72;
+      formatDescriptions = [MEMORY[0x1E696AEC0] stringWithFormat:@"Asset contains no video tracks"];
+      v97 = formatDescriptions;
       v25 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v97 forKeys:&v96 count:1];
       [v32 errorWithDomain:*MEMORY[0x1E696A768] code:-50 userInfo:v25];
-      *a5 = v30 = 0;
+      *error = v30 = 0;
 LABEL_78:
 
       goto LABEL_79;
@@ -452,7 +452,7 @@ LABEL_80:
     goto LABEL_81;
   }
 
-  if (a5)
+  if (error)
   {
     v31 = MEMORY[0x1E696ABC0];
     v98 = *MEMORY[0x1E696A578];
@@ -460,7 +460,7 @@ LABEL_80:
     v99[0] = v14;
     v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v99 forKeys:&v98 count:1];
     [v31 errorWithDomain:*MEMORY[0x1E696A768] code:-50 userInfo:v16];
-    *a5 = v30 = 0;
+    *error = v30 = 0;
     goto LABEL_80;
   }
 
@@ -508,11 +508,11 @@ void __57__VCPVideoProcessor__analyzeWithStart_andDuration_error___block_invoke(
   }
 }
 
-- (BOOL)analyzeWithStart:(id *)a3 andDuration:(id *)a4 error:(id *)a5
+- (BOOL)analyzeWithStart:(id *)start andDuration:(id *)duration error:(id *)error
 {
   v9 = objc_autoreleasePoolPush();
-  buf = *a3;
-  v18 = *a4;
+  buf = *start;
+  v18 = *duration;
   v17 = 0;
   v10 = [(VCPVideoProcessor *)self _analyzeWithStart:&buf andDuration:&v18 error:&v17];
   v11 = v17;
@@ -534,8 +534,8 @@ void __57__VCPVideoProcessor__analyzeWithStart_andDuration_error___block_invoke(
       }
 
       self->_requiresSyncFrameDetectionFromNalUnit = 1;
-      buf = *a3;
-      v18 = *a4;
+      buf = *start;
+      v18 = *duration;
       v16 = v11;
       v12 = [(VCPVideoProcessor *)self _analyzeWithStart:&buf andDuration:&v18 error:&v16];
       v14 = v16;
@@ -550,21 +550,21 @@ void __57__VCPVideoProcessor__analyzeWithStart_andDuration_error___block_invoke(
   }
 
   objc_autoreleasePoolPop(v9);
-  if (a5 && v11)
+  if (error && v11)
   {
-    *a5 = [v11 copy];
+    *error = [v11 copy];
   }
 
   return v12;
 }
 
-- (BOOL)analyzeWithError:(id *)a3
+- (BOOL)analyzeWithError:(id *)error
 {
   v6 = *MEMORY[0x1E6960CC0];
   v7 = *(MEMORY[0x1E6960CC0] + 16);
   v4 = *MEMORY[0x1E6960C88];
   v5 = *(MEMORY[0x1E6960C88] + 16);
-  return [(VCPVideoProcessor *)self analyzeWithStart:&v6 andDuration:&v4 error:a3];
+  return [(VCPVideoProcessor *)self analyzeWithStart:&v6 andDuration:&v4 error:error];
 }
 
 @end

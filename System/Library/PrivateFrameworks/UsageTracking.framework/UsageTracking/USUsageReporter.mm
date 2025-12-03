@@ -1,9 +1,9 @@
 @interface USUsageReporter
 - (USUsageReporter)init;
-- (id)fetchUsageForApplications:(id)a3 webDomains:(id)a4 categories:(id)a5 interval:(id)a6 error:(id *)a7;
+- (id)fetchUsageForApplications:(id)applications webDomains:(id)domains categories:(id)categories interval:(id)interval error:(id *)error;
 - (void)dealloc;
-- (void)fetchReportsDuringInterval:(id)a3 partitionInterval:(double)a4 completionHandler:(id)a5;
-- (void)fetchReportsDuringInterval:(id)a3 partitionInterval:(double)a4 forceImmediateSync:(BOOL)a5 completionHandler:(id)a6;
+- (void)fetchReportsDuringInterval:(id)interval partitionInterval:(double)partitionInterval completionHandler:(id)handler;
+- (void)fetchReportsDuringInterval:(id)interval partitionInterval:(double)partitionInterval forceImmediateSync:(BOOL)sync completionHandler:(id)handler;
 @end
 
 @implementation USUsageReporter
@@ -29,17 +29,17 @@
   [(USUsageReporter *)&v3 dealloc];
 }
 
-- (void)fetchReportsDuringInterval:(id)a3 partitionInterval:(double)a4 forceImmediateSync:(BOOL)a5 completionHandler:(id)a6
+- (void)fetchReportsDuringInterval:(id)interval partitionInterval:(double)partitionInterval forceImmediateSync:(BOOL)sync completionHandler:(id)handler
 {
-  v7 = a5;
-  v11 = a3;
-  v10 = a6;
-  if (v7)
+  syncCopy = sync;
+  intervalCopy = interval;
+  handlerCopy = handler;
+  if (syncCopy)
   {
     [objc_opt_class() synchronizeUsageWithCompletionHandler:&__block_literal_global_2];
   }
 
-  [(USUsageReporter *)self fetchReportsDuringInterval:v11 partitionInterval:v10 completionHandler:a4];
+  [(USUsageReporter *)self fetchReportsDuringInterval:intervalCopy partitionInterval:handlerCopy completionHandler:partitionInterval];
 }
 
 void __101__USUsageReporter_fetchReportsDuringInterval_partitionInterval_forceImmediateSync_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -51,22 +51,22 @@ void __101__USUsageReporter_fetchReportsDuringInterval_partitionInterval_forceIm
   }
 }
 
-- (void)fetchReportsDuringInterval:(id)a3 partitionInterval:(double)a4 completionHandler:(id)a5
+- (void)fetchReportsDuringInterval:(id)interval partitionInterval:(double)partitionInterval completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(USUsageReporter *)self xpcConnection];
+  intervalCopy = interval;
+  handlerCopy = handler;
+  xpcConnection = [(USUsageReporter *)self xpcConnection];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __82__USUsageReporter_fetchReportsDuringInterval_partitionInterval_completionHandler___block_invoke;
   v13[3] = &unk_279E0A4D0;
-  v17 = a4;
-  v14 = v8;
-  v15 = self;
-  v16 = v9;
-  v11 = v9;
-  v12 = v8;
-  [USXPCRemoteObjectProxy proxyFromConnection:v10 withRetryCount:1 proxyHandler:v13];
+  partitionIntervalCopy = partitionInterval;
+  v14 = intervalCopy;
+  selfCopy = self;
+  v16 = handlerCopy;
+  v11 = handlerCopy;
+  v12 = intervalCopy;
+  [USXPCRemoteObjectProxy proxyFromConnection:xpcConnection withRetryCount:1 proxyHandler:v13];
 }
 
 void __82__USUsageReporter_fetchReportsDuringInterval_partitionInterval_completionHandler___block_invoke(double *a1, void *a2)
@@ -93,12 +93,12 @@ void __82__USUsageReporter_fetchReportsDuringInterval_partitionInterval_completi
   }
 }
 
-- (id)fetchUsageForApplications:(id)a3 webDomains:(id)a4 categories:(id)a5 interval:(id)a6 error:(id *)a7
+- (id)fetchUsageForApplications:(id)applications webDomains:(id)domains categories:(id)categories interval:(id)interval error:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  applicationsCopy = applications;
+  domainsCopy = domains;
+  categoriesCopy = categories;
+  intervalCopy = interval;
   v37 = 0;
   v38 = &v37;
   v39 = 0x3032000000;
@@ -111,29 +111,29 @@ void __82__USUsageReporter_fetchReportsDuringInterval_partitionInterval_completi
   v34 = __Block_byref_object_copy__2;
   v35 = __Block_byref_object_dispose__2;
   v36 = 0;
-  v16 = [(USUsageReporter *)self xpcConnection];
+  xpcConnection = [(USUsageReporter *)self xpcConnection];
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __82__USUsageReporter_fetchUsageForApplications_webDomains_categories_interval_error___block_invoke;
   v24[3] = &unk_279E0A520;
-  v17 = v12;
+  v17 = applicationsCopy;
   v25 = v17;
-  v18 = v13;
+  v18 = domainsCopy;
   v26 = v18;
-  v19 = v14;
+  v19 = categoriesCopy;
   v27 = v19;
-  v20 = v15;
+  v20 = intervalCopy;
   v28 = v20;
   v29 = &v37;
   v30 = &v31;
-  [USXPCRemoteObjectProxy synchronousProxyFromConnection:v16 withRetryCount:1 proxyHandler:v24];
+  [USXPCRemoteObjectProxy synchronousProxyFromConnection:xpcConnection withRetryCount:1 proxyHandler:v24];
 
-  if (a7)
+  if (error)
   {
     v21 = v32[5];
     if (v21)
     {
-      *a7 = v21;
+      *error = v21;
     }
   }
 

@@ -1,6 +1,6 @@
 @interface FormatVideoView
 + (Class)layerClass;
-- (_TtC8NewsFeed15FormatVideoView)initWithCoder:(id)a3;
+- (_TtC8NewsFeed15FormatVideoView)initWithCoder:(id)coder;
 - (void)didMoveToWindow;
 @end
 
@@ -13,7 +13,7 @@
   return swift_getObjCClassFromMetadata();
 }
 
-- (_TtC8NewsFeed15FormatVideoView)initWithCoder:(id)a3
+- (_TtC8NewsFeed15FormatVideoView)initWithCoder:(id)coder
 {
   v4 = (&self->super.super.super.isa + OBJC_IVAR____TtC8NewsFeed15FormatVideoView_identifier);
   *v4 = 0;

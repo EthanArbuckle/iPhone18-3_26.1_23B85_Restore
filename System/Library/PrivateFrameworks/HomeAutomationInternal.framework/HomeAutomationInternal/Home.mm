@@ -1,10 +1,10 @@
 @interface Home
-- (id)copyWithZone:(void *)a3;
+- (id)copyWithZone:(void *)zone;
 @end
 
 @implementation Home
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
   v3 = *(&self->super.super.isa + OBJC_IVAR____TtC22HomeAutomationInternal4Home_delegate);
   v4 = type metadata accessor for Home();

@@ -1,18 +1,18 @@
 @interface _HKDisplayTypeSectionedHeaderWithButtonView
-- (_HKDisplayTypeSectionedHeaderWithButtonView)initWithFrame:(CGRect)a3;
+- (_HKDisplayTypeSectionedHeaderWithButtonView)initWithFrame:(CGRect)frame;
 - (void)_updatePreferredTitleFont;
 - (void)prepareForReuse;
-- (void)setAccessoryButtonAction:(id)a3;
+- (void)setAccessoryButtonAction:(id)action;
 @end
 
 @implementation _HKDisplayTypeSectionedHeaderWithButtonView
 
-- (_HKDisplayTypeSectionedHeaderWithButtonView)initWithFrame:(CGRect)a3
+- (_HKDisplayTypeSectionedHeaderWithButtonView)initWithFrame:(CGRect)frame
 {
   v59[4] = *MEMORY[0x1E69E9840];
   v57.receiver = self;
   v57.super_class = _HKDisplayTypeSectionedHeaderWithButtonView;
-  v3 = [(_HKDisplayTypeSectionedHeaderView *)&v57 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(_HKDisplayTypeSectionedHeaderView *)&v57 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc(MEMORY[0x1E69DC738]);
@@ -24,79 +24,79 @@
     accessoryButton = v3->_accessoryButton;
     v3->_accessoryButton = v9;
 
-    v11 = [(UIButton *)v3->_accessoryButton titleLabel];
-    [v11 setAdjustsFontForContentSizeCategory:1];
+    titleLabel = [(UIButton *)v3->_accessoryButton titleLabel];
+    [titleLabel setAdjustsFontForContentSizeCategory:1];
 
     v12 = v3->_accessoryButton;
-    v13 = [MEMORY[0x1E69DC888] systemBlueColor];
-    [(UIButton *)v12 setTitleColor:v13 forState:0];
+    systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
+    [(UIButton *)v12 setTitleColor:systemBlueColor forState:0];
 
     [(UIButton *)v3->_accessoryButton setTranslatesAutoresizingMaskIntoConstraints:0];
-    v14 = [MEMORY[0x1E69DC888] clearColor];
-    [(UIButton *)v3->_accessoryButton setBackgroundColor:v14];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(UIButton *)v3->_accessoryButton setBackgroundColor:clearColor];
 
     [(UIButton *)v3->_accessoryButton setClipsToBounds:0];
-    v15 = [(UIButton *)v3->_accessoryButton titleLabel];
-    [v15 setLineBreakMode:0];
+    titleLabel2 = [(UIButton *)v3->_accessoryButton titleLabel];
+    [titleLabel2 setLineBreakMode:0];
 
-    v16 = [(UIButton *)v3->_accessoryButton titleLabel];
-    [v16 setNumberOfLines:0];
+    titleLabel3 = [(UIButton *)v3->_accessoryButton titleLabel];
+    [titleLabel3 setNumberOfLines:0];
 
     v17 = [objc_alloc(MEMORY[0x1E69DD250]) initWithFrame:{v5, v6, v7, v8}];
     [v17 setTranslatesAutoresizingMaskIntoConstraints:0];
     [v17 addSubview:v3->_accessoryButton];
     v45 = MEMORY[0x1E696ACD8];
-    v55 = [(UIButton *)v3->_accessoryButton topAnchor];
-    v53 = [v17 topAnchor];
-    v51 = [v55 constraintEqualToAnchor:v53];
+    topAnchor = [(UIButton *)v3->_accessoryButton topAnchor];
+    topAnchor2 = [v17 topAnchor];
+    v51 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v59[0] = v51;
-    v49 = [(UIButton *)v3->_accessoryButton bottomAnchor];
-    v47 = [v17 bottomAnchor];
-    v18 = [v49 constraintEqualToAnchor:v47];
+    bottomAnchor = [(UIButton *)v3->_accessoryButton bottomAnchor];
+    bottomAnchor2 = [v17 bottomAnchor];
+    v18 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v59[1] = v18;
-    v19 = [(UIButton *)v3->_accessoryButton leadingAnchor];
-    v20 = [v17 leadingAnchor];
-    v21 = [v19 constraintGreaterThanOrEqualToAnchor:v20];
+    leadingAnchor = [(UIButton *)v3->_accessoryButton leadingAnchor];
+    leadingAnchor2 = [v17 leadingAnchor];
+    v21 = [leadingAnchor constraintGreaterThanOrEqualToAnchor:leadingAnchor2];
     v59[2] = v21;
-    v22 = [(UIButton *)v3->_accessoryButton trailingAnchor];
-    v23 = [v17 trailingAnchor];
-    v24 = [v22 constraintEqualToAnchor:v23];
+    trailingAnchor = [(UIButton *)v3->_accessoryButton trailingAnchor];
+    trailingAnchor2 = [v17 trailingAnchor];
+    v24 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v59[3] = v24;
     v25 = [MEMORY[0x1E695DEC8] arrayWithObjects:v59 count:4];
     [v45 activateConstraints:v25];
 
     [(_HKDisplayTypeSectionedHeaderWithButtonView *)v3 _updatePreferredTitleFont];
-    v26 = [(_HKDisplayTypeSectionedHeaderView *)v3 contentView];
-    [v26 addSubview:v17];
+    contentView = [(_HKDisplayTypeSectionedHeaderView *)v3 contentView];
+    [contentView addSubview:v17];
 
-    v27 = [(_HKDisplayTypeSectionedHeaderView *)v3 titleTrailingConstraint];
-    [v27 setActive:0];
+    titleTrailingConstraint = [(_HKDisplayTypeSectionedHeaderView *)v3 titleTrailingConstraint];
+    [titleTrailingConstraint setActive:0];
 
     v42 = MEMORY[0x1E696ACD8];
-    v54 = [v17 topAnchor];
-    v56 = [(_HKDisplayTypeSectionedHeaderView *)v3 contentView];
-    v52 = [v56 topAnchor];
-    v50 = [v54 constraintEqualToAnchor:v52];
+    topAnchor3 = [v17 topAnchor];
+    contentView2 = [(_HKDisplayTypeSectionedHeaderView *)v3 contentView];
+    topAnchor4 = [contentView2 topAnchor];
+    v50 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
     v58[0] = v50;
-    v46 = [v17 bottomAnchor];
-    v48 = [(_HKDisplayTypeSectionedHeaderView *)v3 contentView];
-    v44 = [v48 bottomAnchor];
-    v43 = [v46 constraintEqualToAnchor:v44];
+    bottomAnchor3 = [v17 bottomAnchor];
+    contentView3 = [(_HKDisplayTypeSectionedHeaderView *)v3 contentView];
+    bottomAnchor4 = [contentView3 bottomAnchor];
+    v43 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
     v58[1] = v43;
-    v40 = [v17 trailingAnchor];
-    v41 = [(_HKDisplayTypeSectionedHeaderView *)v3 contentView];
-    v39 = [v41 trailingAnchor];
-    v38 = [v40 constraintEqualToAnchor:v39];
+    trailingAnchor3 = [v17 trailingAnchor];
+    contentView4 = [(_HKDisplayTypeSectionedHeaderView *)v3 contentView];
+    trailingAnchor4 = [contentView4 trailingAnchor];
+    v38 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
     v58[2] = v38;
-    v37 = [v17 leadingAnchor];
-    v28 = [(_HKDisplayTypeSectionedHeaderView *)v3 titleLabel];
-    v29 = [v28 trailingAnchor];
-    v30 = [v37 constraintEqualToAnchor:v29 constant:10.0];
+    leadingAnchor3 = [v17 leadingAnchor];
+    titleLabel4 = [(_HKDisplayTypeSectionedHeaderView *)v3 titleLabel];
+    trailingAnchor5 = [titleLabel4 trailingAnchor];
+    v30 = [leadingAnchor3 constraintEqualToAnchor:trailingAnchor5 constant:10.0];
     v58[3] = v30;
-    v31 = [v17 widthAnchor];
-    v32 = [(_HKDisplayTypeSectionedHeaderView *)v3 titleLabel];
-    v33 = [v32 widthAnchor];
-    v34 = [v31 constraintEqualToAnchor:v33];
+    widthAnchor = [v17 widthAnchor];
+    titleLabel5 = [(_HKDisplayTypeSectionedHeaderView *)v3 titleLabel];
+    widthAnchor2 = [titleLabel5 widthAnchor];
+    v34 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
     v58[4] = v34;
     v35 = [MEMORY[0x1E695DEC8] arrayWithObjects:v58 count:5];
     [v42 activateConstraints:v35];
@@ -105,21 +105,21 @@
   return v3;
 }
 
-- (void)setAccessoryButtonAction:(id)a3
+- (void)setAccessoryButtonAction:(id)action
 {
-  if (a3)
+  if (action)
   {
     accessoryButton = self->_accessoryButton;
-    v5 = a3;
-    v6 = [v5 title];
-    [(UIButton *)accessoryButton setTitle:v6 forState:0];
+    actionCopy = action;
+    title = [actionCopy title];
+    [(UIButton *)accessoryButton setTitle:title forState:0];
 
-    [(UIButton *)self->_accessoryButton addAction:v5 forControlEvents:64];
-    v7 = [(_HKDisplayTypeSectionedHeaderView *)self titleWithTopMargin];
-    [v7 setActive:0];
+    [(UIButton *)self->_accessoryButton addAction:actionCopy forControlEvents:64];
+    titleWithTopMargin = [(_HKDisplayTypeSectionedHeaderView *)self titleWithTopMargin];
+    [titleWithTopMargin setActive:0];
 
-    v8 = [(_HKDisplayTypeSectionedHeaderView *)self titleWithNoTopMargin];
-    [v8 setActive:1];
+    titleWithNoTopMargin = [(_HKDisplayTypeSectionedHeaderView *)self titleWithNoTopMargin];
+    [titleWithNoTopMargin setActive:1];
   }
 }
 
@@ -128,8 +128,8 @@
   v4.receiver = self;
   v4.super_class = _HKDisplayTypeSectionedHeaderWithButtonView;
   [(_HKDisplayTypeSectionedHeaderView *)&v4 prepareForReuse];
-  v3 = [(UIButton *)self->_accessoryButton titleLabel];
-  [v3 setText:&stru_1F42FFBE0];
+  titleLabel = [(UIButton *)self->_accessoryButton titleLabel];
+  [titleLabel setText:&stru_1F42FFBE0];
 
   [(_HKDisplayTypeSectionedHeaderWithButtonView *)self setHidden:0];
 }
@@ -139,9 +139,9 @@
   v5.receiver = self;
   v5.super_class = _HKDisplayTypeSectionedHeaderWithButtonView;
   [(_HKDisplayTypeSectionedHeaderView *)&v5 _updatePreferredTitleFont];
-  v3 = [MEMORY[0x1E69DB878] hk_chartOverlaySectionHeaderAccessoryButtonFont];
-  v4 = [(UIButton *)self->_accessoryButton titleLabel];
-  [v4 setFont:v3];
+  hk_chartOverlaySectionHeaderAccessoryButtonFont = [MEMORY[0x1E69DB878] hk_chartOverlaySectionHeaderAccessoryButtonFont];
+  titleLabel = [(UIButton *)self->_accessoryButton titleLabel];
+  [titleLabel setFont:hk_chartOverlaySectionHeaderAccessoryButtonFont];
 }
 
 @end

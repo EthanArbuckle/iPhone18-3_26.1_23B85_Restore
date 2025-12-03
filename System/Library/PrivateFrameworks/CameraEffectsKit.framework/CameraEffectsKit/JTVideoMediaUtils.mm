@@ -1,31 +1,31 @@
 @interface JTVideoMediaUtils
-- (BOOL)hasAudibleCharacteristicWithIsMissing:(BOOL)a3;
+- (BOOL)hasAudibleCharacteristicWithIsMissing:(BOOL)missing;
 - (BOOL)isOriginalHEVC4k;
 - (CGAffineTransform)cachedTransform;
 - (CGAffineTransform)transform;
 - (CGSize)cachedNaturalSize;
-- (CGSize)naturalSizeWithIsMissing:(BOOL)a3 asset:(id)a4;
+- (CGSize)naturalSizeWithIsMissing:(BOOL)missing asset:(id)asset;
 - (float)frameRate;
 - (id)colorSpace;
-- (int)durationAt30fpsWithAssetDuration:(double)a3;
-- (void)cacheTrackInformationWithAVAsset:(id)a3;
-- (void)requestAVAssetAsyncWithAsset:(id)a3 needsDerivativeMedia:(BOOL)a4 frameRate:(float)a5 completion:(id)a6;
-- (void)setCachedPreciseAssetDuration:(id *)a3;
-- (void)setCachedTransform:(CGAffineTransform *)a3;
+- (int)durationAt30fpsWithAssetDuration:(double)duration;
+- (void)cacheTrackInformationWithAVAsset:(id)asset;
+- (void)requestAVAssetAsyncWithAsset:(id)asset needsDerivativeMedia:(BOOL)media frameRate:(float)rate completion:(id)completion;
+- (void)setCachedPreciseAssetDuration:(id *)duration;
+- (void)setCachedTransform:(CGAffineTransform *)transform;
 @end
 
 @implementation JTVideoMediaUtils
 
-- (void)cacheTrackInformationWithAVAsset:(id)a3
+- (void)cacheTrackInformationWithAVAsset:(id)asset
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4 && ![(JTVideoMediaUtils *)self cachedAssetInformationValid])
+  assetCopy = asset;
+  if (assetCopy && ![(JTVideoMediaUtils *)self cachedAssetInformationValid])
   {
-    v5 = [v4 tracks];
-    if ([v5 count])
+    tracks = [assetCopy tracks];
+    if ([tracks count])
     {
-      [v4 duration];
+      [assetCopy duration];
 
       if (location[1] >= 1)
       {
@@ -42,9 +42,9 @@
         if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 134218242;
-          *&buf[4] = v4;
+          *&buf[4] = assetCopy;
           *&buf[12] = 2112;
-          *&buf[14] = v4;
+          *&buf[14] = assetCopy;
           _os_log_impl(&dword_242A3B000, v7, OS_LOG_TYPE_DEFAULT, "Movie (Video): tracksWithMediaCharacteristic assetToInsert=%p %@", buf, 0x16u);
         }
 
@@ -58,9 +58,9 @@
         v9 = *MEMORY[0x277CE5E40];
         v10 = v8;
         v22 = v10;
-        [v4 loadTracksWithMediaCharacteristic:v9 completionHandler:v21];
+        [assetCopy loadTracksWithMediaCharacteristic:v9 completionHandler:v21];
         dispatch_semaphore_wait(v10, 0xFFFFFFFFFFFFFFFFLL);
-        [v4 duration];
+        [assetCopy duration];
         *buf = v19;
         *&buf[16] = v20;
         [(JTVideoMediaUtils *)self setCachedPreciseAssetDuration:buf];
@@ -75,7 +75,7 @@
         v14[3] = &unk_278D7A4F8;
         objc_copyWeak(&v17, location);
         v12 = *MEMORY[0x277CE5DE0];
-        v15 = v4;
+        v15 = assetCopy;
         v13 = v11;
         v16 = v13;
         [v15 loadTracksWithMediaCharacteristic:v12 completionHandler:v14];
@@ -251,14 +251,14 @@ void __54__JTVideoMediaUtils_cacheTrackInformationWithAVAsset___block_invoke_2(u
   dispatch_semaphore_signal(*(a1 + 40));
 }
 
-- (void)requestAVAssetAsyncWithAsset:(id)a3 needsDerivativeMedia:(BOOL)a4 frameRate:(float)a5 completion:(id)a6
+- (void)requestAVAssetAsyncWithAsset:(id)asset needsDerivativeMedia:(BOOL)media frameRate:(float)rate completion:(id)completion
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = a6;
-  if (a5 <= 105.0)
+  mediaCopy = media;
+  assetCopy = asset;
+  completionCopy = completion;
+  if (rate <= 105.0)
   {
-    v11 = ([v9 mediaSubtypes] >> 17) & 1;
+    v11 = ([assetCopy mediaSubtypes] >> 17) & 1;
   }
 
   else
@@ -270,7 +270,7 @@ void __54__JTVideoMediaUtils_cacheTrackInformationWithAVAsset___block_invoke_2(u
   [v12 setVersion:v11];
   [v12 setNetworkAccessAllowed:0];
   [v12 setStreamingAllowed:0];
-  if (v8)
+  if (mediaCopy)
   {
     v13 = 2;
   }
@@ -281,19 +281,19 @@ void __54__JTVideoMediaUtils_cacheTrackInformationWithAVAsset___block_invoke_2(u
   }
 
   [v12 setDeliveryMode:v13];
-  v14 = [MEMORY[0x277CD9898] defaultManager];
+  defaultManager = [MEMORY[0x277CD9898] defaultManager];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __92__JTVideoMediaUtils_requestAVAssetAsyncWithAsset_needsDerivativeMedia_frameRate_completion___block_invoke;
   v18[3] = &unk_278D7A548;
-  v22 = v8;
-  v19 = v9;
+  v22 = mediaCopy;
+  v19 = assetCopy;
   v20 = v12;
-  v21 = v10;
-  v15 = v10;
+  v21 = completionCopy;
+  v15 = completionCopy;
   v16 = v12;
-  v17 = v9;
-  [v14 requestAVAssetForVideo:v17 options:v16 resultHandler:v18];
+  v17 = assetCopy;
+  [defaultManager requestAVAssetForVideo:v17 options:v16 resultHandler:v18];
 }
 
 void __92__JTVideoMediaUtils_requestAVAssetAsyncWithAsset_needsDerivativeMedia_frameRate_completion___block_invoke(uint64_t a1, void *a2)
@@ -347,7 +347,7 @@ LABEL_4:
   return result;
 }
 
-- (int)durationAt30fpsWithAssetDuration:(double)a3
+- (int)durationAt30fpsWithAssetDuration:(double)duration
 {
   if ([(JTVideoMediaUtils *)self cachedAssetInformationValid])
   {
@@ -363,7 +363,7 @@ LABEL_4:
       [JTVideoMediaUtils durationAt30fpsWithAssetDuration:v6];
     }
 
-    CMTimeMakeWithSeconds(&v7, a3, 30);
+    CMTimeMakeWithSeconds(&v7, duration, 30);
     return v7.value;
   }
 }
@@ -383,37 +383,37 @@ LABEL_4:
   return result;
 }
 
-- (BOOL)hasAudibleCharacteristicWithIsMissing:(BOOL)a3
+- (BOOL)hasAudibleCharacteristicWithIsMissing:(BOOL)missing
 {
-  v4 = [(JTVideoMediaUtils *)self cachedAudioTrackCount];
-  if (v4)
+  cachedAudioTrackCount = [(JTVideoMediaUtils *)self cachedAudioTrackCount];
+  if (cachedAudioTrackCount)
   {
-    LOBYTE(v4) = ![(JTVideoMediaUtils *)self isUnsupportedAudio];
+    LOBYTE(cachedAudioTrackCount) = ![(JTVideoMediaUtils *)self isUnsupportedAudio];
   }
 
-  return v4;
+  return cachedAudioTrackCount;
 }
 
-- (CGSize)naturalSizeWithIsMissing:(BOOL)a3 asset:(id)a4
+- (CGSize)naturalSizeWithIsMissing:(BOOL)missing asset:(id)asset
 {
-  v6 = a4;
+  assetCopy = asset;
   if ([(JTVideoMediaUtils *)self cachedAssetInformationValid])
   {
     [(JTVideoMediaUtils *)self cachedNaturalSize];
-    v8 = v7;
-    v10 = v9;
+    pixelWidth = v7;
+    pixelHeight = v9;
   }
 
-  else if (v6)
+  else if (assetCopy)
   {
-    v8 = [v6 pixelWidth];
-    v10 = [v6 pixelHeight];
+    pixelWidth = [assetCopy pixelWidth];
+    pixelHeight = [assetCopy pixelHeight];
   }
 
   else
   {
-    v10 = 1080.0;
-    if (!a3)
+    pixelHeight = 1080.0;
+    if (!missing)
     {
       v11 = JFXLog_model();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -422,11 +422,11 @@ LABEL_4:
       }
     }
 
-    v8 = 1920.0;
+    pixelWidth = 1920.0;
   }
 
-  v12 = v8;
-  v13 = v10;
+  v12 = pixelWidth;
+  v13 = pixelHeight;
   result.height = v13;
   result.width = v12;
   return result;
@@ -457,15 +457,15 @@ LABEL_4:
 {
   if ([(JTVideoMediaUtils *)self cachedAssetInformationValid])
   {
-    v3 = [(JTVideoMediaUtils *)self cachedColorSpace];
+    cachedColorSpace = [(JTVideoMediaUtils *)self cachedColorSpace];
   }
 
   else
   {
-    v3 = 0;
+    cachedColorSpace = 0;
   }
 
-  return v3;
+  return cachedColorSpace;
 }
 
 - (CGSize)cachedNaturalSize
@@ -486,19 +486,19 @@ LABEL_4:
   return self;
 }
 
-- (void)setCachedTransform:(CGAffineTransform *)a3
+- (void)setCachedTransform:(CGAffineTransform *)transform
 {
-  v3 = *&a3->a;
-  v4 = *&a3->c;
-  *&self->_cachedTransform.tx = *&a3->tx;
+  v3 = *&transform->a;
+  v4 = *&transform->c;
+  *&self->_cachedTransform.tx = *&transform->tx;
   *&self->_cachedTransform.c = v4;
   *&self->_cachedTransform.a = v3;
 }
 
-- (void)setCachedPreciseAssetDuration:(id *)a3
+- (void)setCachedPreciseAssetDuration:(id *)duration
 {
-  v3 = *&a3->var0;
-  self->_cachedPreciseAssetDuration.epoch = a3->var3;
+  v3 = *&duration->var0;
+  self->_cachedPreciseAssetDuration.epoch = duration->var3;
   *&self->_cachedPreciseAssetDuration.value = v3;
 }
 

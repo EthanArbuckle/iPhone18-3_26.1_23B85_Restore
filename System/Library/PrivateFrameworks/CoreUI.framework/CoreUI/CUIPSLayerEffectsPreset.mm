@@ -1,26 +1,26 @@
 @interface CUIPSLayerEffectsPreset
-- (CUIPSLayerEffectsPreset)initWithLayerEffects:(id)a3 forScaleFactor:(double)a4;
+- (CUIPSLayerEffectsPreset)initWithLayerEffects:(id)effects forScaleFactor:(double)factor;
 @end
 
 @implementation CUIPSLayerEffectsPreset
 
-- (CUIPSLayerEffectsPreset)initWithLayerEffects:(id)a3 forScaleFactor:(double)a4
+- (CUIPSLayerEffectsPreset)initWithLayerEffects:(id)effects forScaleFactor:(double)factor
 {
-  v4 = self;
-  if (a3)
+  selfCopy = self;
+  if (effects)
   {
-    if (a4 > 0.0)
+    if (factor > 0.0)
     {
       v24.receiver = self;
       v24.super_class = CUIPSLayerEffectsPreset;
-      v4 = [(CUIShapeEffectPreset *)&v24 initWithEffectScale:?];
-      if (v4)
+      selfCopy = [(CUIShapeEffectPreset *)&v24 initWithEffectScale:?];
+      if (selfCopy)
       {
         v22 = 0u;
         v23 = 0u;
         v20 = 0u;
         v21 = 0u;
-        v6 = [objc_msgSend(a3 "effectList")];
+        v6 = [objc_msgSend(effects "effectList")];
         v7 = [v6 countByEnumeratingWithState:&v20 objects:v25 count:16];
         if (v7)
         {
@@ -37,7 +37,7 @@
 
               v11 = *(*(&v20 + 1) + 8 * i);
               v19 = 0;
-              if ([v11 visible] && (objc_msgSend(v11, "updateLayerEffectPreset:error:", v4, &v19) & 1) == 0 && v19)
+              if ([v11 visible] && (objc_msgSend(v11, "updateLayerEffectPreset:error:", selfCopy, &v19) & 1) == 0 && v19)
               {
                 _CUILog(4, "Unable to update layer effect preset: %@", v12, v13, v14, v15, v16, v17, v19);
 
@@ -58,7 +58,7 @@
     }
   }
 
-  return v4;
+  return selfCopy;
 }
 
 @end

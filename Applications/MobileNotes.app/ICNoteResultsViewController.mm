@@ -1,34 +1,34 @@
 @interface ICNoteResultsViewController
-- (BOOL)shouldUpdateFocusInContext:(id)a3;
-- (ICNoteResultsViewController)initWithViewMode:(int64_t)a3 viewControllerManager:(id)a4 viewControllerType:(int64_t)a5;
-- (id)managedObjectContextChangeController:(id)a3 managedObjectIDsToUpdateForUpdatedManagedObjects:(id)a4;
-- (void)dataSourceDataUpdateDidRender:(id)a3;
+- (BOOL)shouldUpdateFocusInContext:(id)context;
+- (ICNoteResultsViewController)initWithViewMode:(int64_t)mode viewControllerManager:(id)manager viewControllerType:(int64_t)type;
+- (id)managedObjectContextChangeController:(id)controller managedObjectIDsToUpdateForUpdatedManagedObjects:(id)objects;
+- (void)dataSourceDataUpdateDidRender:(id)render;
 - (void)dealloc;
 - (void)dismissContextMenu;
-- (void)noteDecryptedStatusDidChange:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)thumbnailCacheDidInvalidateThumbnail:(id)a3;
-- (void)updateCellsForManagedObjectIDs:(id)a3 updateTextAndStatus:(BOOL)a4 updateThumbnails:(BOOL)a5;
-- (void)updateNoteSelectionAnimated:(BOOL)a3;
+- (void)noteDecryptedStatusDidChange:(id)change;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)thumbnailCacheDidInvalidateThumbnail:(id)thumbnail;
+- (void)updateCellsForManagedObjectIDs:(id)ds updateTextAndStatus:(BOOL)status updateThumbnails:(BOOL)thumbnails;
+- (void)updateNoteSelectionAnimated:(BOOL)animated;
 - (void)updatePreparedCells;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation ICNoteResultsViewController
 
-- (ICNoteResultsViewController)initWithViewMode:(int64_t)a3 viewControllerManager:(id)a4 viewControllerType:(int64_t)a5
+- (ICNoteResultsViewController)initWithViewMode:(int64_t)mode viewControllerManager:(id)manager viewControllerType:(int64_t)type
 {
   v15.receiver = self;
   v15.super_class = ICNoteResultsViewController;
-  v5 = [(ICBaseViewController *)&v15 initWithViewMode:a3 viewControllerManager:a4 viewControllerType:a5];
+  v5 = [(ICBaseViewController *)&v15 initWithViewMode:mode viewControllerManager:manager viewControllerType:type];
   v6 = v5;
   if (v5)
   {
-    v7 = [(ICBaseViewController *)v5 legacyViewContext];
-    v8 = [(ICBaseViewController *)v6 modernViewContext];
-    v9 = [NSSet setWithObjects:v7, v8, 0];
+    legacyViewContext = [(ICBaseViewController *)v5 legacyViewContext];
+    modernViewContext = [(ICBaseViewController *)v6 modernViewContext];
+    v9 = [NSSet setWithObjects:legacyViewContext, modernViewContext, 0];
 
     v10 = [[ICManagedObjectContextChangeController alloc] initWithManagedObjectContexts:v9 delegate:v6];
     managedObjectContextChangeController = v6->_managedObjectContextChangeController;
@@ -47,11 +47,11 @@
   v3 = +[NSNotificationCenter defaultCenter];
   [v3 removeObserver:self];
 
-  v4 = [(ICBaseViewController *)self viewControllerManager];
-  [v4 ic_removeObserver:self forKeyPath:@"selectedNoteObjectID" context:&off_1006BBA38];
+  viewControllerManager = [(ICBaseViewController *)self viewControllerManager];
+  [viewControllerManager ic_removeObserver:self forKeyPath:@"selectedNoteObjectID" context:&off_1006BBA38];
 
-  v5 = [(ICBaseViewController *)self viewControllerManager];
-  [v5 ic_removeObserver:self forKeyPath:@"selectedSearchResult" context:&off_1006BBA38];
+  viewControllerManager2 = [(ICBaseViewController *)self viewControllerManager];
+  [viewControllerManager2 ic_removeObserver:self forKeyPath:@"selectedSearchResult" context:&off_1006BBA38];
 
   v6.receiver = self;
   v6.super_class = ICNoteResultsViewController;
@@ -76,31 +76,31 @@
   v9 = +[ICAuthenticationState sharedState];
   [v7 addObserver:self selector:"noteDecryptedStatusDidChange:" name:v8 object:v9];
 
-  v10 = [(ICBaseViewController *)self viewControllerManager];
-  [v10 ic_addObserver:self forKeyPath:@"selectedNoteObjectID" context:&off_1006BBA38];
+  viewControllerManager = [(ICBaseViewController *)self viewControllerManager];
+  [viewControllerManager ic_addObserver:self forKeyPath:@"selectedNoteObjectID" context:&off_1006BBA38];
 
-  v11 = [(ICBaseViewController *)self viewControllerManager];
-  [v11 ic_addObserver:self forKeyPath:@"selectedSearchResult" context:&off_1006BBA38];
+  viewControllerManager2 = [(ICBaseViewController *)self viewControllerManager];
+  [viewControllerManager2 ic_addObserver:self forKeyPath:@"selectedSearchResult" context:&off_1006BBA38];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v24.receiver = self;
   v24.super_class = ICNoteResultsViewController;
-  [(ICBaseViewController *)&v24 viewWillAppear:a3];
-  v4 = [(ICNoteResultsViewController *)self managedObjectContextChangeController];
-  [v4 performUpdatesIfNeeded];
+  [(ICBaseViewController *)&v24 viewWillAppear:appear];
+  managedObjectContextChangeController = [(ICNoteResultsViewController *)self managedObjectContextChangeController];
+  [managedObjectContextChangeController performUpdatesIfNeeded];
 
   if ([(ICNoteResultsViewController *)self ic_isBeingRevealedFromPoppingViewController]&& ([(ICNoteResultsViewController *)self isEditing]& 1) == 0)
   {
-    v5 = [(ICNoteResultsViewController *)self collectionView];
-    v6 = [v5 indexPathsForSelectedItems];
+    collectionView = [(ICNoteResultsViewController *)self collectionView];
+    indexPathsForSelectedItems = [collectionView indexPathsForSelectedItems];
 
     v22 = 0u;
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v7 = v6;
+    v7 = indexPathsForSelectedItems;
     v8 = [v7 countByEnumeratingWithState:&v20 objects:v25 count:16];
     if (v8)
     {
@@ -117,16 +117,16 @@
           }
 
           v12 = *(*(&v20 + 1) + 8 * v11);
-          v13 = [(ICBaseViewController *)self dataSource];
-          v14 = [v13 collectionViewDiffableDataSource];
-          v15 = [v14 itemIdentifierForIndexPath:v12];
+          dataSource = [(ICBaseViewController *)self dataSource];
+          collectionViewDiffableDataSource = [dataSource collectionViewDiffableDataSource];
+          v15 = [collectionViewDiffableDataSource itemIdentifierForIndexPath:v12];
 
           objc_opt_class();
           v16 = ICDynamicCast();
           if (([v16 ic_isNoteType] & 1) != 0 || (objc_msgSend(v16, "ic_isFolderType") & 1) != 0 || objc_msgSend(v16, "ic_isInvitationType"))
           {
-            v17 = [(ICNoteResultsViewController *)self collectionView];
-            [v17 deselectItemAtIndexPath:v12 animated:1];
+            collectionView2 = [(ICNoteResultsViewController *)self collectionView];
+            [collectionView2 deselectItemAtIndexPath:v12 animated:1];
           }
 
           v11 = v11 + 1;
@@ -139,99 +139,99 @@
       while (v9);
     }
 
-    v18 = [(ICBaseViewController *)self noteSearchViewController];
-    v19 = [v18 collectionView];
-    [v19 ic_deselectAllItemsAnimated:1];
+    noteSearchViewController = [(ICBaseViewController *)self noteSearchViewController];
+    collectionView3 = [noteSearchViewController collectionView];
+    [collectionView3 ic_deselectAllItemsAnimated:1];
   }
 
   [(ICNoteResultsViewController *)self updateNoteSelectionAnimated:0, v20];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = ICNoteResultsViewController;
-  [(ICBaseViewController *)&v6 viewDidAppear:a3];
-  v4 = [(ICNoteResultsViewController *)self managedObjectIDsForDeferredCellUpdates];
-  [(ICNoteResultsViewController *)self updateCellsForManagedObjectIDs:v4 updateTextAndStatus:1 updateThumbnails:1];
+  [(ICBaseViewController *)&v6 viewDidAppear:appear];
+  managedObjectIDsForDeferredCellUpdates = [(ICNoteResultsViewController *)self managedObjectIDsForDeferredCellUpdates];
+  [(ICNoteResultsViewController *)self updateCellsForManagedObjectIDs:managedObjectIDsForDeferredCellUpdates updateTextAndStatus:1 updateThumbnails:1];
 
-  v5 = [(ICNoteResultsViewController *)self managedObjectIDsForDeferredCellUpdates];
-  [v5 removeAllObjects];
+  managedObjectIDsForDeferredCellUpdates2 = [(ICNoteResultsViewController *)self managedObjectIDsForDeferredCellUpdates];
+  [managedObjectIDsForDeferredCellUpdates2 removeAllObjects];
 }
 
-- (void)updateNoteSelectionAnimated:(BOOL)a3
+- (void)updateNoteSelectionAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   if (([(ICNoteResultsViewController *)self isEditing]& 1) != 0)
   {
     return;
   }
 
-  v5 = [(ICBaseViewController *)self viewControllerManager];
-  v38 = [v5 selectedNoteObjectID];
+  viewControllerManager = [(ICBaseViewController *)self viewControllerManager];
+  selectedNoteObjectID = [viewControllerManager selectedNoteObjectID];
 
-  v6 = [(ICBaseViewController *)self viewControllerManager];
-  v7 = [v6 selectedInvitationObjectID];
+  viewControllerManager2 = [(ICBaseViewController *)self viewControllerManager];
+  selectedInvitationObjectID = [viewControllerManager2 selectedInvitationObjectID];
 
-  v8 = [(ICBaseViewController *)self viewControllerManager];
-  v9 = [v8 selectedContainerIdentifiers];
+  viewControllerManager3 = [(ICBaseViewController *)self viewControllerManager];
+  selectedContainerIdentifiers = [viewControllerManager3 selectedContainerIdentifiers];
 
-  if (!(v38 | v7) && ([(ICNoteResultsViewController *)self isEditing]& 1) == 0)
+  if (!(selectedNoteObjectID | selectedInvitationObjectID) && ([(ICNoteResultsViewController *)self isEditing]& 1) == 0)
   {
-    v10 = [(ICBaseViewController *)self viewControllerManager];
-    if ([v10 isAutomaticallySelectingNotes])
+    viewControllerManager4 = [(ICBaseViewController *)self viewControllerManager];
+    if ([viewControllerManager4 isAutomaticallySelectingNotes])
     {
     }
 
     else
     {
-      v11 = [v9 count];
+      v11 = [selectedContainerIdentifiers count];
 
       if (!v11)
       {
-        v12 = [(ICNoteResultsViewController *)self collectionView];
-        [v12 ic_deselectAllItemsAnimated:v3];
+        collectionView = [(ICNoteResultsViewController *)self collectionView];
+        [collectionView ic_deselectAllItemsAnimated:animatedCopy];
         goto LABEL_29;
       }
     }
   }
 
-  v12 = [(ICBaseViewController *)self viewControllerManager];
-  if (![v12 isAutomaticallySelectingNotes])
+  collectionView = [(ICBaseViewController *)self viewControllerManager];
+  if (![collectionView isAutomaticallySelectingNotes])
   {
     goto LABEL_29;
   }
 
-  v13 = [(ICNoteResultsViewController *)self isEditing];
+  isEditing = [(ICNoteResultsViewController *)self isEditing];
 
-  if ((v13 & 1) == 0)
+  if ((isEditing & 1) == 0)
   {
-    if (v38 | v7 && (!v38 ? (v14 = v7) : (v14 = v38), -[ICBaseViewController dataSource](self, "dataSource"), v15 = objc_claimAutoreleasedReturnValue(), [v15 collectionViewDiffableDataSource], v16 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v16, "indexPathForItemIdentifier:", v14), v12 = objc_claimAutoreleasedReturnValue(), v16, v15, v12) || (-[ICBaseViewController viewControllerManager](self, "viewControllerManager"), v17 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v17, "selectedSearchResult"), v18 = objc_claimAutoreleasedReturnValue(), v17, -[ICBaseViewController dataSource](self, "dataSource"), v19 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v19, "collectionViewDiffableDataSource"), v20 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v20, "indexPathForItemIdentifier:", v18), v12 = objc_claimAutoreleasedReturnValue(), v20, v19, v18, v12))
+    if (selectedNoteObjectID | selectedInvitationObjectID && (!selectedNoteObjectID ? (v14 = selectedInvitationObjectID) : (v14 = selectedNoteObjectID), -[ICBaseViewController dataSource](self, "dataSource"), v15 = objc_claimAutoreleasedReturnValue(), [v15 collectionViewDiffableDataSource], v16 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v16, "indexPathForItemIdentifier:", v14), collectionView = objc_claimAutoreleasedReturnValue(), v16, v15, collectionView) || (-[ICBaseViewController viewControllerManager](self, "viewControllerManager"), v17 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v17, "selectedSearchResult"), v18 = objc_claimAutoreleasedReturnValue(), v17, -[ICBaseViewController dataSource](self, "dataSource"), v19 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v19, "collectionViewDiffableDataSource"), v20 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v20, "indexPathForItemIdentifier:", v18), collectionView = objc_claimAutoreleasedReturnValue(), v20, v19, v18, collectionView))
     {
-      v21 = [(ICNoteResultsViewController *)self collectionView];
-      v22 = [v21 numberOfSections];
-      if (v22 <= [v12 section])
+      collectionView2 = [(ICNoteResultsViewController *)self collectionView];
+      numberOfSections = [collectionView2 numberOfSections];
+      if (numberOfSections <= [collectionView section])
       {
       }
 
       else
       {
-        v23 = [(ICNoteResultsViewController *)self collectionView];
-        v24 = [v23 numberOfItemsInSection:{objc_msgSend(v12, "section")}];
-        v25 = [v12 row];
+        collectionView3 = [(ICNoteResultsViewController *)self collectionView];
+        v24 = [collectionView3 numberOfItemsInSection:{objc_msgSend(collectionView, "section")}];
+        v25 = [collectionView row];
 
         if (v24 > v25)
         {
-          v26 = [(ICNoteResultsViewController *)self collectionView];
-          v27 = [v26 indexPathsForSelectedItems];
-          v28 = [v27 firstObject];
-          v29 = [v28 isEqual:v12];
+          collectionView4 = [(ICNoteResultsViewController *)self collectionView];
+          indexPathsForSelectedItems = [collectionView4 indexPathsForSelectedItems];
+          firstObject = [indexPathsForSelectedItems firstObject];
+          v29 = [firstObject isEqual:collectionView];
 
           if ((v29 & 1) == 0)
           {
-            v30 = [(ICNoteResultsViewController *)self collectionView];
-            v31 = [v30 indexPathsForVisibleItems];
-            if ([v31 containsObject:v12])
+            collectionView5 = [(ICNoteResultsViewController *)self collectionView];
+            indexPathsForVisibleItems = [collectionView5 indexPathsForVisibleItems];
+            if ([indexPathsForVisibleItems containsObject:collectionView])
             {
               v32 = 0;
             }
@@ -241,25 +241,25 @@
               v32 = 2;
             }
 
-            v33 = [(ICNoteResultsViewController *)self collectionView];
-            if ([v33 allowsMultipleSelection])
+            collectionView6 = [(ICNoteResultsViewController *)self collectionView];
+            if ([collectionView6 allowsMultipleSelection])
             {
-              v34 = [(ICNoteResultsViewController *)self collectionView];
-              v35 = [v34 indexPathsForSelectedItems];
-              v36 = [v35 count];
+              collectionView7 = [(ICNoteResultsViewController *)self collectionView];
+              indexPathsForSelectedItems2 = [collectionView7 indexPathsForSelectedItems];
+              v36 = [indexPathsForSelectedItems2 count];
 
               if (v36 != 1)
               {
 LABEL_25:
-                v37 = [(ICNoteResultsViewController *)self collectionView];
-                [v37 selectItemAtIndexPath:v12 animated:v3 scrollPosition:v32];
+                collectionView8 = [(ICNoteResultsViewController *)self collectionView];
+                [collectionView8 selectItemAtIndexPath:collectionView animated:animatedCopy scrollPosition:v32];
 LABEL_28:
 
                 goto LABEL_29;
               }
 
-              v33 = [(ICNoteResultsViewController *)self collectionView];
-              [v33 ic_deselectAllItemsAnimated:v3];
+              collectionView6 = [(ICNoteResultsViewController *)self collectionView];
+              [collectionView6 ic_deselectAllItemsAnimated:animatedCopy];
             }
 
             goto LABEL_25;
@@ -272,23 +272,23 @@ LABEL_29:
       }
     }
 
-    v37 = [(ICNoteResultsViewController *)self collectionView];
-    [v37 ic_deselectAllItemsAnimated:v3];
+    collectionView8 = [(ICNoteResultsViewController *)self collectionView];
+    [collectionView8 ic_deselectAllItemsAnimated:animatedCopy];
     goto LABEL_28;
   }
 
 LABEL_30:
 }
 
-- (id)managedObjectContextChangeController:(id)a3 managedObjectIDsToUpdateForUpdatedManagedObjects:(id)a4
+- (id)managedObjectContextChangeController:(id)controller managedObjectIDsToUpdateForUpdatedManagedObjects:(id)objects
 {
-  v4 = a4;
+  objectsCopy = objects;
   v5 = +[NSMutableSet set];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v6 = v4;
+  v6 = objectsCopy;
   v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v7)
   {
@@ -303,29 +303,29 @@ LABEL_30:
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v18 + 1) + 8 * i) objectID];
-        if ([v11 ic_isInvitationType])
+        objectID = [*(*(&v18 + 1) + 8 * i) objectID];
+        if ([objectID ic_isInvitationType])
         {
-          [v5 addObject:v11];
+          [v5 addObject:objectID];
         }
 
-        if ([v11 ic_isNoteType])
+        if ([objectID ic_isNoteType])
         {
-          [v5 addObject:v11];
+          [v5 addObject:objectID];
         }
 
-        if ([v11 ic_isModernFolderType])
+        if ([objectID ic_isModernFolderType])
         {
           objc_opt_class();
           v12 = ICCheckedDynamicCast();
-          [v5 addObject:v11];
-          v13 = [v12 recursiveVisibleSubfolders];
+          [v5 addObject:objectID];
+          recursiveVisibleSubfolders = [v12 recursiveVisibleSubfolders];
           v16[0] = _NSConcreteStackBlock;
           v16[1] = 3221225472;
           v16[2] = sub_1001056F4;
           v16[3] = &unk_10064A058;
           v17 = v5;
-          [v13 enumerateObjectsUsingBlock:v16];
+          [recursiveVisibleSubfolders enumerateObjectsUsingBlock:v16];
         }
       }
 
@@ -340,38 +340,38 @@ LABEL_30:
   return v14;
 }
 
-- (void)dataSourceDataUpdateDidRender:(id)a3
+- (void)dataSourceDataUpdateDidRender:(id)render
 {
   v3.receiver = self;
   v3.super_class = ICNoteResultsViewController;
-  [(ICBaseViewController *)&v3 dataSourceDataUpdateDidRender:a3];
+  [(ICBaseViewController *)&v3 dataSourceDataUpdateDidRender:render];
   performBlockOnMainThread();
 }
 
-- (void)thumbnailCacheDidInvalidateThumbnail:(id)a3
+- (void)thumbnailCacheDidInvalidateThumbnail:(id)thumbnail
 {
-  v4 = a3;
-  v5 = [(ICBaseViewController *)self modernViewContext];
+  thumbnailCopy = thumbnail;
+  modernViewContext = [(ICBaseViewController *)self modernViewContext];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1001058B0;
   v7[3] = &unk_100645BA0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 performBlockAndWait:v7];
+  v8 = thumbnailCopy;
+  v6 = thumbnailCopy;
+  [modernViewContext performBlockAndWait:v7];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a4;
-  if (([(ICNoteResultsViewController *)self ic_didAddObserverForContext:a6 inScope:"/Library/Caches/com.apple.xbs/Sources/MobileNotes/Ironcade/iOS/UI/Note/Common/View Controllers/ICNoteResultsViewController.m"]& 1) != 0)
+  pathCopy = path;
+  changeCopy = change;
+  objectCopy = object;
+  if (([(ICNoteResultsViewController *)self ic_didAddObserverForContext:context inScope:"/Library/Caches/com.apple.xbs/Sources/MobileNotes/Ironcade/iOS/UI/Note/Common/View Controllers/ICNoteResultsViewController.m"]& 1) != 0)
   {
-    v13 = [(ICNoteResultsViewController *)self ic_shouldIgnoreObserveValue:v11 ofObject:v12 forKeyPath:v10];
+    v13 = [(ICNoteResultsViewController *)self ic_shouldIgnoreObserveValue:changeCopy ofObject:objectCopy forKeyPath:pathCopy];
 
-    if (a6 == &off_1006BBA38 && (v13 & 1) == 0 && (([v10 isEqualToString:@"selectedNoteObjectID"] & 1) != 0 || objc_msgSend(v10, "isEqualToString:", @"selectedSearchResult")))
+    if (context == &off_1006BBA38 && (v13 & 1) == 0 && (([pathCopy isEqualToString:@"selectedNoteObjectID"] & 1) != 0 || objc_msgSend(pathCopy, "isEqualToString:", @"selectedSearchResult")))
     {
       performBlockOnMainThread();
     }
@@ -381,16 +381,16 @@ LABEL_30:
   {
     v14.receiver = self;
     v14.super_class = ICNoteResultsViewController;
-    [(ICNoteResultsViewController *)&v14 observeValueForKeyPath:v10 ofObject:v12 change:v11 context:a6];
+    [(ICNoteResultsViewController *)&v14 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 
-- (void)noteDecryptedStatusDidChange:(id)a3
+- (void)noteDecryptedStatusDidChange:(id)change
 {
   v3 = +[ICAuthenticationState sharedState];
-  v4 = [v3 isBlockingDeauthentication];
+  isBlockingDeauthentication = [v3 isBlockingDeauthentication];
 
-  if ((v4 & 1) == 0)
+  if ((isBlockingDeauthentication & 1) == 0)
   {
     performBlockOnMainThread();
   }
@@ -398,9 +398,9 @@ LABEL_30:
 
 - (void)updatePreparedCells
 {
-  v2 = [(ICNoteResultsViewController *)self collectionView];
-  v3 = [v2 preparedCells];
-  v4 = [v3 ic_objectsConformingToProtocol:&OBJC_PROTOCOL___ICNoteBrowseCellUpdating];
+  collectionView = [(ICNoteResultsViewController *)self collectionView];
+  preparedCells = [collectionView preparedCells];
+  v4 = [preparedCells ic_objectsConformingToProtocol:&OBJC_PROTOCOL___ICNoteBrowseCellUpdating];
 
   v13 = 0u;
   v14 = 0u;
@@ -435,20 +435,20 @@ LABEL_30:
 
 - (void)dismissContextMenu
 {
-  v2 = [(ICNoteResultsViewController *)self collectionView];
-  v3 = [v2 interactions];
-  v5 = [v3 ic_objectPassingTest:&stru_10064A098];
+  collectionView = [(ICNoteResultsViewController *)self collectionView];
+  interactions = [collectionView interactions];
+  v5 = [interactions ic_objectPassingTest:&stru_10064A098];
 
   objc_opt_class();
   v4 = ICCheckedDynamicCast();
   [v4 dismissMenu];
 }
 
-- (BOOL)shouldUpdateFocusInContext:(id)a3
+- (BOOL)shouldUpdateFocusInContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   objc_opt_class();
-  v5 = [v4 previouslyFocusedItem];
+  previouslyFocusedItem = [contextCopy previouslyFocusedItem];
   if (objc_opt_isKindOfClass())
   {
     isKindOfClass = 0;
@@ -456,37 +456,37 @@ LABEL_30:
 
   else
   {
-    v7 = [v4 nextFocusedItem];
+    nextFocusedItem = [contextCopy nextFocusedItem];
     isKindOfClass = objc_opt_isKindOfClass();
   }
 
-  v8 = [(ICNoteResultsViewController *)self collectionView];
-  v9 = [v8 indexPathsForSelectedItems];
-  v10 = [v9 count];
+  collectionView = [(ICNoteResultsViewController *)self collectionView];
+  indexPathsForSelectedItems = [collectionView indexPathsForSelectedItems];
+  v10 = [indexPathsForSelectedItems count];
 
   if (v10 && (isKindOfClass & 1) != 0)
   {
-    v11 = [(ICNoteResultsViewController *)self collectionView];
-    [v11 ic_deselectAllItems];
+    collectionView2 = [(ICNoteResultsViewController *)self collectionView];
+    [collectionView2 ic_deselectAllItems];
   }
 
   return 1;
 }
 
-- (void)updateCellsForManagedObjectIDs:(id)a3 updateTextAndStatus:(BOOL)a4 updateThumbnails:(BOOL)a5
+- (void)updateCellsForManagedObjectIDs:(id)ds updateTextAndStatus:(BOOL)status updateThumbnails:(BOOL)thumbnails
 {
-  v5 = a5;
-  v6 = a4;
-  v8 = a3;
-  if ([v8 count])
+  thumbnailsCopy = thumbnails;
+  statusCopy = status;
+  dsCopy = ds;
+  if ([dsCopy count])
   {
-    v9 = [(ICNoteResultsViewController *)self viewIfLoaded];
-    v10 = [v9 window];
+    viewIfLoaded = [(ICNoteResultsViewController *)self viewIfLoaded];
+    window = [viewIfLoaded window];
 
-    if (v10)
+    if (window)
     {
-      v11 = [(ICBaseViewController *)self dataSource];
-      v12 = [v11 associatedCellsForItemIdentifiers:v8];
+      dataSource = [(ICBaseViewController *)self dataSource];
+      v12 = [dataSource associatedCellsForItemIdentifiers:dsCopy];
 
       v21 = v12;
       v13 = [v12 ic_objectsConformingToProtocol:&OBJC_PROTOCOL___ICNoteBrowseCellUpdating];
@@ -509,7 +509,7 @@ LABEL_30:
             }
 
             v18 = *(*(&v22 + 1) + 8 * i);
-            if (v6)
+            if (statusCopy)
             {
               [*(*(&v22 + 1) + 8 * i) updateTextAndStatus];
               objc_opt_class();
@@ -521,7 +521,7 @@ LABEL_30:
               }
             }
 
-            if (v5)
+            if (thumbnailsCopy)
             {
               [v18 updateThumbnail];
             }
@@ -536,8 +536,8 @@ LABEL_30:
 
     else
     {
-      v20 = [(ICNoteResultsViewController *)self managedObjectIDsForDeferredCellUpdates];
-      [v20 unionSet:v8];
+      managedObjectIDsForDeferredCellUpdates = [(ICNoteResultsViewController *)self managedObjectIDsForDeferredCellUpdates];
+      [managedObjectIDsForDeferredCellUpdates unionSet:dsCopy];
     }
   }
 }

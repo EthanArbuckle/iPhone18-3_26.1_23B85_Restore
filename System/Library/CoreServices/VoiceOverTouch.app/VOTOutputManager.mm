@@ -3,61 +3,61 @@
 + (id)outputManager;
 + (void)clearPreviousSoundsPlayed;
 + (void)initialize;
-+ (void)logSoundPlayed:(id)a3;
-- (BOOL)_isHeadphoneRoute:(id)a3;
-- (BOOL)_isHeadsetRoute:(id)a3;
-- (BOOL)_isRouteExternalHDMIRoute:(id)a3;
++ (void)logSoundPlayed:(id)played;
+- (BOOL)_isHeadphoneRoute:(id)route;
+- (BOOL)_isHeadsetRoute:(id)route;
+- (BOOL)_isRouteExternalHDMIRoute:(id)route;
 - (BOOL)airTunesRouteIsAirPlaying;
 - (BOOL)externalAudioRouteSelected;
-- (BOOL)isCurrentRouteConsideredExternal:(id)a3;
+- (BOOL)isCurrentRouteConsideredExternal:(id)external;
 - (BOOL)isPaused;
-- (BOOL)isRoutePicked:(id)a3;
-- (BOOL)isRouteWireless:(id)a3;
+- (BOOL)isRoutePicked:(id)picked;
+- (BOOL)isRouteWireless:(id)wireless;
 - (BOOL)isSpeaking;
 - (BOOL)isSystemMuted;
-- (BOOL)isWirelessRoutePicked:(id)a3;
-- (BOOL)replacesCharacterAsPunctuation:(unsigned __int16)a3;
+- (BOOL)isWirelessRoutePicked:(id)picked;
+- (BOOL)replacesCharacterAsPunctuation:(unsigned __int16)punctuation;
 - (NSArray)queuedRequests;
 - (VOTOutputManager)init;
 - (double)volume;
 - (float)systemVolume;
-- (void)_activeRouteChanged:(id)a3;
+- (void)_activeRouteChanged:(id)changed;
 - (void)_dispatchNextQueuedRequest;
-- (void)_handleProcessRequest:(id)a3;
-- (void)_handleRequestFinished:(id)a3;
+- (void)_handleProcessRequest:(id)request;
+- (void)_handleRequestFinished:(id)finished;
 - (void)_holdCurrentRequest;
 - (void)_notifyObserversOutputManagerDidFinishProcessingQueuedRequests;
-- (void)_notifyObserversOutputManagerWillProcessNextRequest:(id)a3;
+- (void)_notifyObserversOutputManagerWillProcessNextRequest:(id)request;
 - (void)_resumeCurrentRequest;
-- (void)_silenceRequestsForTimeInterval:(id)a3;
-- (void)_systemVolumeDidChange:(id)a3;
+- (void)_silenceRequestsForTimeInterval:(id)interval;
+- (void)_systemVolumeDidChange:(id)change;
 - (void)_updateActiveRoutes;
 - (void)_updateExternalRoutesAvailable;
 - (void)_updateSoundCurtain;
-- (void)addOutputManagerObserver:(id)a3;
-- (void)addVOSEventFinishedHandler:(id)a3 forIdentifier:(id)a4;
-- (void)addVOSEventStartedHandler:(id)a3 forIdentifier:(id)a4;
+- (void)addOutputManagerObserver:(id)observer;
+- (void)addVOSEventFinishedHandler:(id)handler forIdentifier:(id)identifier;
+- (void)addVOSEventStartedHandler:(id)handler forIdentifier:(id)identifier;
 - (void)continueSpeaking;
 - (void)dealloc;
-- (void)disableAudioSession:(id)a3 userDelay:(double)a4;
-- (void)dispatcher:(id)a3 handleEvent:(id)a4 soundPack:(id)a5 hapticPack:(id)a6;
-- (void)enableAudioSession:(id)a3;
-- (void)finishedOutputRequest:(id)a3;
-- (void)handleEvent:(id)a3;
-- (void)pauseSpeakingAtBoundary:(int)a3;
-- (void)playSoundFast:(id)a3 startedBlock:(id)a4 completionBlock:(id)a5;
+- (void)disableAudioSession:(id)session userDelay:(double)delay;
+- (void)dispatcher:(id)dispatcher handleEvent:(id)event soundPack:(id)pack hapticPack:(id)hapticPack;
+- (void)enableAudioSession:(id)session;
+- (void)finishedOutputRequest:(id)request;
+- (void)handleEvent:(id)event;
+- (void)pauseSpeakingAtBoundary:(int)boundary;
+- (void)playSoundFast:(id)fast startedBlock:(id)block completionBlock:(id)completionBlock;
 - (void)removeAllAudioSessionEnablers;
 - (void)removeAllOutputManagerObservers;
-- (void)removeOutputManagerObserver:(id)a3;
-- (void)selectAudioRoute:(BOOL)a3;
-- (void)sendEvent:(id)a3;
-- (void)setSoundCurtainEnabled:(BOOL)a3;
-- (void)setSystemVolume:(float)a3;
+- (void)removeOutputManagerObserver:(id)observer;
+- (void)selectAudioRoute:(BOOL)route;
+- (void)sendEvent:(id)event;
+- (void)setSoundCurtainEnabled:(BOOL)enabled;
+- (void)setSystemVolume:(float)volume;
 - (void)shutdown;
-- (void)silenceOutputForTimeInterval:(double)a3;
-- (void)speakSimpleString:(id)a3 braille:(BOOL)a4 language:(id)a5;
-- (void)stopSpeakingAtBoundary:(int)a3 allRequests:(BOOL)a4 sessionDeactivationDelay:(id)a5;
-- (void)toggleAudioSessionActive:(BOOL)a3;
+- (void)silenceOutputForTimeInterval:(double)interval;
+- (void)speakSimpleString:(id)string braille:(BOOL)braille language:(id)language;
+- (void)stopSpeakingAtBoundary:(int)boundary allRequests:(BOOL)requests sessionDeactivationDelay:(id)delay;
+- (void)toggleAudioSessionActive:(BOOL)active;
 - (void)toggleSystemMute;
 - (void)updateAudioSessionProperties;
 - (void)updateSupportedLanguageMap;
@@ -259,31 +259,31 @@
   return v2;
 }
 
-- (void)handleEvent:(id)a3
+- (void)handleEvent:(id)event
 {
-  v10 = a3;
-  v4 = [v10 objectForIndex:1];
-  v5 = [v4 unsignedIntValue];
+  eventCopy = event;
+  v4 = [eventCopy objectForIndex:1];
+  unsignedIntValue = [v4 unsignedIntValue];
 
-  if (v5 == 3)
+  if (unsignedIntValue == 3)
   {
-    [(VOTOutputManager *)self _handleRequestFinished:v10];
+    [(VOTOutputManager *)self _handleRequestFinished:eventCopy];
   }
 
   else
   {
-    if (v5 != 2)
+    if (unsignedIntValue != 2)
     {
       goto LABEL_8;
     }
 
-    v6 = [(VOTOutputManager *)self dateToResumeRequests];
+    dateToResumeRequests = [(VOTOutputManager *)self dateToResumeRequests];
 
-    if (v6)
+    if (dateToResumeRequests)
     {
       v7 = +[NSDate date];
-      v8 = [(VOTOutputManager *)self dateToResumeRequests];
-      v9 = [v7 compare:v8];
+      dateToResumeRequests2 = [(VOTOutputManager *)self dateToResumeRequests];
+      v9 = [v7 compare:dateToResumeRequests2];
 
       if (v9 == -1)
       {
@@ -293,7 +293,7 @@
       [(VOTOutputManager *)self setDateToResumeRequests:0];
     }
 
-    [(VOTOutputManager *)self _handleProcessRequest:v10];
+    [(VOTOutputManager *)self _handleProcessRequest:eventCopy];
   }
 
 LABEL_8:
@@ -301,9 +301,9 @@ LABEL_8:
 
 - (void)updateSupportedLanguageMap
 {
-  v6 = [VOTSharedWorkspace systemSpokenLanguage];
+  systemSpokenLanguage = [VOTSharedWorkspace systemSpokenLanguage];
   v3 = +[AXLanguageManager sharedInstance];
-  v4 = [v3 dialectForLanguageID:v6];
+  v4 = [v3 dialectForLanguageID:systemSpokenLanguage];
   supportedLanguageMap = self->_supportedLanguageMap;
   self->_supportedLanguageMap = v4;
 
@@ -313,26 +313,26 @@ LABEL_8:
   }
 }
 
-- (void)_handleRequestFinished:(id)a3
+- (void)_handleRequestFinished:(id)finished
 {
-  v4 = [a3 objectForIndex:14];
-  v5 = [v4 completionDelegate];
-  [v5 outputRequestFinished:v4];
+  v4 = [finished objectForIndex:14];
+  completionDelegate = [v4 completionDelegate];
+  [completionDelegate outputRequestFinished:v4];
 
-  v6 = [v4 completionBlock];
+  completionBlock = [v4 completionBlock];
 
-  if (v6)
+  if (completionBlock)
   {
-    v7 = [v4 completionBlock];
-    (v7)[2](v7, v4);
+    completionBlock2 = [v4 completionBlock];
+    (completionBlock2)[2](completionBlock2, v4);
   }
 
   v8 = v4;
   AX_PERFORM_WITH_LOCK();
   v9 = [(NSMutableArray *)self->_requestRunners firstObject:_NSConcreteStackBlock];
-  v10 = [v9 currentRequest];
+  currentRequest = [v9 currentRequest];
 
-  if (v8 && (!v10 || v10 == v8))
+  if (v8 && (!currentRequest || currentRequest == v8))
   {
     [(VOTOutputManager *)self _dispatchNextQueuedRequest];
   }
@@ -355,17 +355,17 @@ LABEL_8:
   }
 }
 
-- (void)_handleProcessRequest:(id)a3
+- (void)_handleProcessRequest:(id)request
 {
-  v4 = a3;
-  v5 = v4;
+  requestCopy = request;
+  v5 = requestCopy;
   if (!self->_shutdown)
   {
     v7 = 0;
     v8 = &v7;
     v9 = 0x2020000000;
     v10 = 0;
-    v6 = [v4 objectForIndex:14];
+    v6 = [requestCopy objectForIndex:14];
     AX_PERFORM_WITH_LOCK();
     if (*(v8 + 24) == 1)
     {
@@ -410,23 +410,23 @@ LABEL_8:
   _Block_object_dispose(&v5, 8);
 }
 
-- (void)finishedOutputRequest:(id)a3
+- (void)finishedOutputRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v6 = [objc_allocWithZone(NSNumber) initWithUnsignedInt:3];
   v5 = [objc_allocWithZone(AXIndexMap) init];
   [v5 setObject:v6 forIndex:1];
-  [v5 setObject:v4 forIndex:14];
+  [v5 setObject:requestCopy forIndex:14];
 
   [(VOTOutputManager *)self performSelector:"handleEvent:" withThreadKey:self->_threadKey count:1 objects:v5];
 }
 
-- (void)setSystemVolume:(float)a3
+- (void)setSystemVolume:(float)volume
 {
   v6 = +[AVSystemController sharedAVSystemController];
-  *&v4 = a3;
+  *&v4 = volume;
   [v6 setVolumeTo:@"Audio/Video" forCategory:v4];
-  v5 = a3 * 0.8;
+  v5 = volume * 0.8;
   *&v5 = v5;
   [v6 setVolumeTo:AVAudioSessionCategoryVoiceCommand forCategory:v5];
 }
@@ -441,10 +441,10 @@ LABEL_8:
   return v3;
 }
 
-- (void)_systemVolumeDidChange:(id)a3
+- (void)_systemVolumeDidChange:(id)change
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:AVSystemController_AudioVolumeNotificationParameter];
+  userInfo = [change userInfo];
+  v5 = [userInfo objectForKey:AVSystemController_AudioVolumeNotificationParameter];
   [v5 floatValue];
   v7 = v6;
 
@@ -464,9 +464,9 @@ LABEL_8:
 - (void)_updateSoundCurtain
 {
   v3 = +[AXSettings sharedInstance];
-  v4 = [v3 voiceOverSoundCurtain];
+  voiceOverSoundCurtain = [v3 voiceOverSoundCurtain];
 
-  if (!v4)
+  if (!voiceOverSoundCurtain)
   {
     goto LABEL_11;
   }
@@ -488,9 +488,9 @@ LABEL_9:
   }
 
   v8 = +[VOTBrailleManager manager];
-  v9 = [v8 brailleEnabled];
+  brailleEnabled = [v8 brailleEnabled];
 
-  if ((v9 & 1) == 0)
+  if ((brailleEnabled & 1) == 0)
   {
     v5 = VOTLogAudio();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -513,16 +513,16 @@ LABEL_12:
   [(VOTOutputManager *)self setSoundCurtainEnabled:v10, v11];
 }
 
-- (void)setSoundCurtainEnabled:(BOOL)a3
+- (void)setSoundCurtainEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v4 = +[AVSystemController sharedAVSystemController];
-  if (v3 && [VOTSharedWorkspace voiceOverIsConfirmed])
+  if (enabledCopy && [VOTSharedWorkspace voiceOverIsConfirmed])
   {
     v5 = [v4 attributeForKey:AVSystemController_FullMuteAttribute];
-    v6 = [v5 BOOLValue];
+    bOOLValue = [v5 BOOLValue];
 
-    if ((v6 & 1) == 0)
+    if ((bOOLValue & 1) == 0)
     {
       v11 = 0;
       [v4 setAttribute:&__kCFBooleanTrue forKey:AVSystemController_FullMuteAttribute error:&v11];
@@ -565,9 +565,9 @@ LABEL_13:
 
 - (void)toggleSystemMute
 {
-  v2 = [(VOTOutputManager *)self isSystemMuted];
+  isSystemMuted = [(VOTOutputManager *)self isSystemMuted];
   v4 = +[AVSystemController sharedAVSystemController];
-  v3 = [NSNumber numberWithBool:v2 ^ 1];
+  v3 = [NSNumber numberWithBool:isSystemMuted ^ 1];
   [v4 setAttribute:v3 forKey:AVSystemController_FullMuteAttribute error:0];
 }
 
@@ -575,15 +575,15 @@ LABEL_13:
 {
   v2 = +[AVSystemController sharedAVSystemController];
   v3 = [v2 attributeForKey:AVSystemController_FullMuteAttribute];
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (double)volume
 {
-  v2 = [(VOTOutputManager *)self speechComponent];
-  [v2 volume];
+  speechComponent = [(VOTOutputManager *)self speechComponent];
+  [speechComponent volume];
   v4 = v3;
 
   return v4;
@@ -591,43 +591,43 @@ LABEL_13:
 
 - (BOOL)airTunesRouteIsAirPlaying
 {
-  v3 = [(VOTOutputManager *)self airTunesRouteIsAirPlayingTestingBlock];
+  airTunesRouteIsAirPlayingTestingBlock = [(VOTOutputManager *)self airTunesRouteIsAirPlayingTestingBlock];
 
-  if (v3)
+  if (airTunesRouteIsAirPlayingTestingBlock)
   {
-    v4 = [(VOTOutputManager *)self airTunesRouteIsAirPlayingTestingBlock];
-    LOBYTE(v5) = v4[2]();
+    airTunesRouteIsAirPlayingTestingBlock2 = [(VOTOutputManager *)self airTunesRouteIsAirPlayingTestingBlock];
+    LOBYTE(v5) = airTunesRouteIsAirPlayingTestingBlock2[2]();
   }
 
   else
   {
-    v4 = +[AVSystemController sharedAVSystemController];
-    v6 = [v4 attributeForKey:AVSystemController_CurrentExternalScreenAttribute];
+    airTunesRouteIsAirPlayingTestingBlock2 = +[AVSystemController sharedAVSystemController];
+    v6 = [airTunesRouteIsAirPlayingTestingBlock2 attributeForKey:AVSystemController_CurrentExternalScreenAttribute];
     v5 = [v6 isEqualToString:AVSystemController_ExternalScreenType_AirPlay];
   }
 
   return v5;
 }
 
-- (BOOL)_isRouteExternalHDMIRoute:(id)a3
+- (BOOL)_isRouteExternalHDMIRoute:(id)route
 {
-  v3 = [a3 objectForKey:AVController_RouteDescriptionKey_AVAudioRouteName];
+  v3 = [route objectForKey:AVController_RouteDescriptionKey_AVAudioRouteName];
   v4 = [v3 isEqualToString:@"HDMI"];
 
   return v4;
 }
 
-- (BOOL)isCurrentRouteConsideredExternal:(id)a3
+- (BOOL)isCurrentRouteConsideredExternal:(id)external
 {
-  v4 = a3;
-  v5 = [v4 valueForKey:AVController_RouteDescriptionKey_AVAudioRouteName];
+  externalCopy = external;
+  v5 = [externalCopy valueForKey:AVController_RouteDescriptionKey_AVAudioRouteName];
   if ([v5 isEqualToString:@"AirTunes"])
   {
-    v6 = [v4 objectForKey:AVController_RouteDescriptionKey_RouteSupportsAirPlayVideo];
-    v7 = [v6 BOOLValue];
+    v6 = [externalCopy objectForKey:AVController_RouteDescriptionKey_RouteSupportsAirPlayVideo];
+    bOOLValue = [v6 BOOLValue];
 
-    v8 = [(VOTOutputManager *)self airTunesRouteIsAirPlaying];
-    if (v7 && (v8 & 1) != 0)
+    airTunesRouteIsAirPlaying = [(VOTOutputManager *)self airTunesRouteIsAirPlaying];
+    if (bOOLValue && (airTunesRouteIsAirPlaying & 1) != 0)
     {
       goto LABEL_9;
     }
@@ -638,11 +638,11 @@ LABEL_13:
     [(VOTOutputManager *)self airTunesRouteIsAirPlaying];
   }
 
-  if (!-[VOTOutputManager _isRouteExternalHDMIRoute:](self, "_isRouteExternalHDMIRoute:", v4) || (+[AXSettings sharedInstance](AXSettings, "sharedInstance"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 voiceOverAudioFollowsHDMIAudio], v9, (v10 & 1) == 0))
+  if (!-[VOTOutputManager _isRouteExternalHDMIRoute:](self, "_isRouteExternalHDMIRoute:", externalCopy) || (+[AXSettings sharedInstance](AXSettings, "sharedInstance"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 voiceOverAudioFollowsHDMIAudio], v9, (v10 & 1) == 0))
   {
     if (([v5 isEqualToString:@"BluetoothLEOutput"] & 1) == 0)
     {
-      v11 = [(VOTOutputManager *)self isWirelessRoutePicked:v4];
+      v11 = [(VOTOutputManager *)self isWirelessRoutePicked:externalCopy];
       goto LABEL_11;
     }
   }
@@ -654,49 +654,49 @@ LABEL_11:
   return v11;
 }
 
-- (BOOL)_isHeadphoneRoute:(id)a3
+- (BOOL)_isHeadphoneRoute:(id)route
 {
-  v3 = [a3 objectForKey:AVController_RouteDescriptionKey_AVAudioRouteName];
+  v3 = [route objectForKey:AVController_RouteDescriptionKey_AVAudioRouteName];
   v4 = [v3 isEqualToString:@"HeadphonesBT"];
 
   return v4;
 }
 
-- (BOOL)_isHeadsetRoute:(id)a3
+- (BOOL)_isHeadsetRoute:(id)route
 {
-  v3 = [a3 objectForKey:AVController_RouteDescriptionKey_AVAudioRouteName];
+  v3 = [route objectForKey:AVController_RouteDescriptionKey_AVAudioRouteName];
   v4 = [v3 isEqualToString:@"HeadsetBT"];
 
   return v4;
 }
 
-- (BOOL)isRoutePicked:(id)a3
+- (BOOL)isRoutePicked:(id)picked
 {
   v3 = AVSystemController_RouteDescriptionKey_RouteCurrentlyPicked;
-  v4 = a3;
-  v5 = [v4 objectForKey:v3];
-  v6 = [v5 BOOLValue];
+  pickedCopy = picked;
+  v5 = [pickedCopy objectForKey:v3];
+  bOOLValue = [v5 BOOLValue];
 
-  v7 = [v4 objectForKey:AVSystemController_RouteDescriptionKey_IsCurrentlyPickedOnPairedDevice];
+  v7 = [pickedCopy objectForKey:AVSystemController_RouteDescriptionKey_IsCurrentlyPickedOnPairedDevice];
 
-  LOBYTE(v4) = [v7 BOOLValue];
-  return v6 & (v4 ^ 1);
+  LOBYTE(pickedCopy) = [v7 BOOLValue];
+  return bOOLValue & (pickedCopy ^ 1);
 }
 
-- (BOOL)isRouteWireless:(id)a3
+- (BOOL)isRouteWireless:(id)wireless
 {
-  v3 = [a3 objectForKey:AVController_RouteDescriptionKey_RouteType];
+  v3 = [wireless objectForKey:AVController_RouteDescriptionKey_RouteType];
   v4 = [v3 isEqualToString:AVController_PickableRouteType_Wireless];
 
   return v4;
 }
 
-- (BOOL)isWirelessRoutePicked:(id)a3
+- (BOOL)isWirelessRoutePicked:(id)picked
 {
-  v4 = a3;
-  if ([(VOTOutputManager *)self isRouteWireless:v4])
+  pickedCopy = picked;
+  if ([(VOTOutputManager *)self isRouteWireless:pickedCopy])
   {
-    v5 = [(VOTOutputManager *)self isRoutePicked:v4];
+    v5 = [(VOTOutputManager *)self isRoutePicked:pickedCopy];
   }
 
   else
@@ -707,12 +707,12 @@ LABEL_11:
   return v5;
 }
 
-- (void)_activeRouteChanged:(id)a3
+- (void)_activeRouteChanged:(id)changed
 {
   v4 = +[VOTWorkspace sharedWorkspace];
-  v5 = [v4 currentCallState];
+  currentCallState = [v4 currentCallState];
 
-  if (v5 != 2)
+  if (currentCallState != 2)
   {
     avAccessQueue = self->_avAccessQueue;
     block[0] = _NSConcreteStackBlock;
@@ -769,7 +769,7 @@ LABEL_11:
     }
   }
 
-  v8 = [(VOTOutputManager *)self currentRouteName];
+  currentRouteName = [(VOTOutputManager *)self currentRouteName];
   v9 = VOTLogAudio();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -779,11 +779,11 @@ LABEL_11:
     v20 = 2114;
     v21 = v5;
     v22 = 2114;
-    v23 = v8;
+    v23 = currentRouteName;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Audio route changed %lu %{public}@-%{public}@", buf, 0x20u);
   }
 
-  if (([v5 isEqualToString:v8] & 1) == 0)
+  if (([v5 isEqualToString:currentRouteName] & 1) == 0)
   {
     [v5 isEqualToString:@"HDMI"];
     [(VOTOutputManager *)self updateAudioSessionProperties];
@@ -796,7 +796,7 @@ LABEL_11:
 
 - (void)_updateExternalRoutesAvailable
 {
-  v2 = self;
+  selfCopy = self;
   self->_externalAudioRouteIsHearingAid = 0;
   p_externalAudioRouteIsHearingAid = &self->_externalAudioRouteIsHearingAid;
   *&self->_externalRoutesAvailable = 0;
@@ -826,31 +826,31 @@ LABEL_11:
 
         v11 = *(*(&v27 + 1) + 8 * i);
         v12 = [v11 valueForKey:*v7];
-        v13 = [(VOTOutputManager *)v2 isCurrentRouteConsideredExternal:v11];
+        v13 = [(VOTOutputManager *)selfCopy isCurrentRouteConsideredExternal:v11];
         if ([v12 isEqualToString:v8])
         {
           [v11 objectForKey:AVController_RouteDescriptionKey_RouteCurrentlyPicked];
           v26 = v12;
-          v14 = v2;
+          v14 = selfCopy;
           v15 = v6;
           v16 = v9;
           v17 = v8;
           v19 = v18 = v7;
-          v20 = [v19 BOOLValue];
+          bOOLValue = [v19 BOOLValue];
 
           v7 = v18;
           v8 = v17;
           v9 = v16;
           v6 = v15;
-          v2 = v14;
+          selfCopy = v14;
           v12 = v26;
-          v13 &= v20;
+          v13 &= bOOLValue;
         }
 
-        if (![(VOTOutputManager *)v2 _isHeadphoneRoute:v11]&& ![(VOTOutputManager *)v2 _isHeadsetRoute:v11]&& ((v13 ^ 1) & 1) == 0)
+        if (![(VOTOutputManager *)selfCopy _isHeadphoneRoute:v11]&& ![(VOTOutputManager *)selfCopy _isHeadsetRoute:v11]&& ((v13 ^ 1) & 1) == 0)
         {
-          v2->_externalRoutesAvailable = 1;
-          v21 = [(VOTOutputManager *)v2 _isRouteExternalHDMIRoute:v11];
+          selfCopy->_externalRoutesAvailable = 1;
+          v21 = [(VOTOutputManager *)selfCopy _isRouteExternalHDMIRoute:v11];
           v22 = p_externalAudioRouteIsHearingAid - 1;
           if ((v21 & 1) != 0 || (v23 = [v12 isEqualToString:@"BluetoothLEOutput"], v22 = p_externalAudioRouteIsHearingAid, v23))
           {
@@ -907,9 +907,9 @@ LABEL_11:
           if ([(VOTOutputManager *)self isCurrentRouteConsideredExternal:v13, v22])
           {
             v14 = [v13 objectForKey:AVController_RouteDescriptionKey_RouteCurrentlyPicked];
-            v15 = [v14 BOOLValue];
+            bOOLValue = [v14 BOOLValue];
 
-            if (v15)
+            if (bOOLValue)
             {
               v16 = VOTLogAudio();
               if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
@@ -960,9 +960,9 @@ LABEL_17:
   return v3;
 }
 
-- (void)selectAudioRoute:(BOOL)a3
+- (void)selectAudioRoute:(BOOL)route
 {
-  v3 = a3;
+  routeCopy = route;
   v4 = +[AVSystemController sharedAVSystemController];
   v5 = [v4 pickableRoutesForCategory:@"Audio/Video"];
 
@@ -991,7 +991,7 @@ LABEL_17:
         v12 = *(*(&v31 + 1) + 8 * i);
         v13 = [v12 valueForKey:AVController_RouteDescriptionKey_RouteType];
         v14 = [v12 objectForKey:AVController_RouteDescriptionKey_RouteCurrentlyPicked];
-        v15 = [v14 BOOLValue];
+        bOOLValue = [v14 BOOLValue];
 
         v16 = [(VOTOutputManager *)self isCurrentRouteConsideredExternal:v12];
         if ([v13 isEqual:AVController_PickableRouteType_Default])
@@ -1008,7 +1008,7 @@ LABEL_17:
           v30 = v19;
         }
 
-        v9 |= v15 & v16 & v3 | (v15 ^ 1 | v16 | v3) ^ 1;
+        v9 |= bOOLValue & v16 & routeCopy | (bOOLValue ^ 1 | v16 | routeCopy) ^ 1;
       }
 
       v7 = [obj countByEnumeratingWithState:&v31 objects:v37 count:16];
@@ -1052,7 +1052,7 @@ LABEL_17:
 
   if (v9)
   {
-    if (v3)
+    if (routeCopy)
     {
       v23 = v8;
     }
@@ -1101,46 +1101,46 @@ LABEL_17:
 
 - (void)updateAudioSessionProperties
 {
-  v2 = [(VOTOutputManager *)self speechComponent];
-  [v2 updateAudioSessionProperties:0];
+  speechComponent = [(VOTOutputManager *)self speechComponent];
+  [speechComponent updateAudioSessionProperties:0];
 }
 
-- (void)pauseSpeakingAtBoundary:(int)a3
+- (void)pauseSpeakingAtBoundary:(int)boundary
 {
-  v3 = *&a3;
-  v4 = [(VOTOutputManager *)self speechComponent];
-  [v4 pauseSpeakingAtBoundary:v3];
+  v3 = *&boundary;
+  speechComponent = [(VOTOutputManager *)self speechComponent];
+  [speechComponent pauseSpeakingAtBoundary:v3];
 }
 
 - (void)continueSpeaking
 {
-  v2 = [(VOTOutputManager *)self speechComponent];
-  [v2 continueSpeaking];
+  speechComponent = [(VOTOutputManager *)self speechComponent];
+  [speechComponent continueSpeaking];
 }
 
-- (void)stopSpeakingAtBoundary:(int)a3 allRequests:(BOOL)a4 sessionDeactivationDelay:(id)a5
+- (void)stopSpeakingAtBoundary:(int)boundary allRequests:(BOOL)requests sessionDeactivationDelay:(id)delay
 {
-  v5 = a4;
-  v6 = *&a3;
-  v8 = a5;
-  v9 = [(VOTOutputManager *)self speechComponent];
-  [v9 stopSpeakingAtBoundary:v6 allRequests:v5 sessionDeactivationDelay:v8];
+  requestsCopy = requests;
+  v6 = *&boundary;
+  delayCopy = delay;
+  speechComponent = [(VOTOutputManager *)self speechComponent];
+  [speechComponent stopSpeakingAtBoundary:v6 allRequests:requestsCopy sessionDeactivationDelay:delayCopy];
 }
 
 - (BOOL)isPaused
 {
-  v2 = [(VOTOutputManager *)self speechComponent];
-  v3 = [v2 isPaused];
+  speechComponent = [(VOTOutputManager *)self speechComponent];
+  isPaused = [speechComponent isPaused];
 
-  return v3;
+  return isPaused;
 }
 
 - (BOOL)isSpeaking
 {
-  v2 = [(VOTOutputManager *)self speechComponent];
-  v3 = [v2 isSpeaking];
+  speechComponent = [(VOTOutputManager *)self speechComponent];
+  isSpeaking = [speechComponent isSpeaking];
 
-  return v3;
+  return isSpeaking;
 }
 
 - (void)_holdCurrentRequest
@@ -1177,42 +1177,42 @@ LABEL_17:
   }
 }
 
-- (void)_silenceRequestsForTimeInterval:(id)a3
+- (void)_silenceRequestsForTimeInterval:(id)interval
 {
-  v4 = a3;
+  intervalCopy = interval;
   v8 = +[NSDate date];
-  [v4 doubleValue];
+  [intervalCopy doubleValue];
   v6 = v5;
 
   v7 = [v8 dateByAddingTimeInterval:v6];
   [(VOTOutputManager *)self setDateToResumeRequests:v7];
 }
 
-- (void)silenceOutputForTimeInterval:(double)a3
+- (void)silenceOutputForTimeInterval:(double)interval
 {
   v5 = +[NSDate date];
-  v6 = [v5 dateByAddingTimeInterval:a3];
+  v6 = [v5 dateByAddingTimeInterval:interval];
   [(VOTOutputManager *)self setDateToResumeSounds:v6];
 
   threadKey = self->_threadKey;
-  v8 = [NSNumber numberWithDouble:a3];
+  v8 = [NSNumber numberWithDouble:interval];
   [(VOTOutputManager *)self performSelector:"_silenceRequestsForTimeInterval:" withThreadKey:threadKey count:1 objects:v8];
 }
 
-- (void)toggleAudioSessionActive:(BOOL)a3
+- (void)toggleAudioSessionActive:(BOOL)active
 {
-  v3 = a3;
+  activeCopy = active;
   v5 = VOTLogAudio();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 67109120;
-    v14 = v3;
+    v14 = activeCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Toggle audio session: %d", buf, 8u);
   }
 
   v6 = +[AVAudioSession sharedInstance];
   v12 = 0;
-  v7 = [v6 setActive:v3 withOptions:0 error:&v12];
+  v7 = [v6 setActive:activeCopy withOptions:0 error:&v12];
   v8 = v12;
 
   if (v7)
@@ -1234,7 +1234,7 @@ LABEL_17:
     }
   }
 
-  self->_audioSessionActive = v3;
+  self->_audioSessionActive = activeCopy;
   v11 = VOTLogAudio();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
@@ -1242,11 +1242,11 @@ LABEL_17:
   }
 }
 
-- (void)enableAudioSession:(id)a3
+- (void)enableAudioSession:(id)session
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  sessionCopy = session;
+  v5 = sessionCopy;
+  if (sessionCopy)
   {
     audioSessionQueue = self->_audioSessionQueue;
     v7[0] = _NSConcreteStackBlock;
@@ -1254,7 +1254,7 @@ LABEL_17:
     v7[2] = sub_10000DBA4;
     v7[3] = &unk_1001C7778;
     v7[4] = self;
-    v8 = v4;
+    v8 = sessionCopy;
     [(AXAccessQueue *)audioSessionQueue performSynchronousWritingBlock:v7];
   }
 }
@@ -1308,31 +1308,31 @@ LABEL_17:
   _Block_object_dispose(&v13, 8);
 }
 
-- (void)disableAudioSession:(id)a3 userDelay:(double)a4
+- (void)disableAudioSession:(id)session userDelay:(double)delay
 {
-  v6 = a3;
+  sessionCopy = session;
   audioSessionQueue = self->_audioSessionQueue;
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10000DFB0;
   v9[3] = &unk_1001C7840;
   v9[4] = self;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
+  v10 = sessionCopy;
+  delayCopy = delay;
+  v8 = sessionCopy;
   [(AXAccessQueue *)audioSessionQueue performSynchronousWritingBlock:v9];
 }
 
-- (void)speakSimpleString:(id)a3 braille:(BOOL)a4 language:(id)a5
+- (void)speakSimpleString:(id)string braille:(BOOL)braille language:(id)language
 {
-  v6 = a4;
-  v10 = a3;
-  v7 = a5;
-  if ([v10 length])
+  brailleCopy = braille;
+  stringCopy = string;
+  languageCopy = language;
+  if ([stringCopy length])
   {
     v8 = [objc_allocWithZone(VOTOutputRequest) init];
-    v9 = [v8 addString:v10 withLanguage:v7];
-    if (v6)
+    v9 = [v8 addString:stringCopy withLanguage:languageCopy];
+    if (brailleCopy)
     {
       sub_100009588(v8);
     }
@@ -1359,12 +1359,12 @@ LABEL_17:
   [v2 unlock];
 }
 
-- (void)playSoundFast:(id)a3 startedBlock:(id)a4 completionBlock:(id)a5
+- (void)playSoundFast:(id)fast startedBlock:(id)block completionBlock:(id)completionBlock
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (![v8 length])
+  fastCopy = fast;
+  blockCopy = block;
+  completionBlockCopy = completionBlock;
+  if (![fastCopy length])
   {
     v17 = VOTLogAudio();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -1375,8 +1375,8 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  [objc_opt_class() logSoundPlayed:v8];
-  if ([v8 isEqualToString:@"Sounds/WrapBoundary.aiff"] && _AXSAutomationEnabled())
+  [objc_opt_class() logSoundPlayed:fastCopy];
+  if ([fastCopy isEqualToString:@"Sounds/WrapBoundary.aiff"] && _AXSAutomationEnabled())
   {
     v11 = +[NSDistributedNotificationCenter defaultCenter];
     [v11 postNotificationName:@"VoiceOverEventOccurred" object:@"BoundaryEncountered"];
@@ -1388,28 +1388,28 @@ LABEL_17:
     sub_100127E6C();
   }
 
-  if (([VOTSharedWorkspace screenOn] & 1) != 0 || (objc_msgSend(v8, "isEqualToString:", @"Sounds/ScreenOff.aiff") & 1) != 0 || (objc_msgSend(v8, "isEqualToString:", @"Sounds/LockScreenTouchIDAuthenticated.aiff") & 1) != 0 || objc_msgSend(v8, "isEqualToString:", @"Sounds/BrailleDisplayDisconnected.aiff"))
+  if (([VOTSharedWorkspace screenOn] & 1) != 0 || (objc_msgSend(fastCopy, "isEqualToString:", @"Sounds/ScreenOff.aiff") & 1) != 0 || (objc_msgSend(fastCopy, "isEqualToString:", @"Sounds/LockScreenTouchIDAuthenticated.aiff") & 1) != 0 || objc_msgSend(fastCopy, "isEqualToString:", @"Sounds/BrailleDisplayDisconnected.aiff"))
   {
-    v13 = [(VOTOutputManager *)self dateToResumeSounds];
+    dateToResumeSounds = [(VOTOutputManager *)self dateToResumeSounds];
 
-    if (!v13)
+    if (!dateToResumeSounds)
     {
 LABEL_14:
-      v17 = [objc_allocWithZone(VOTOutputAction) initWithSoundPath:v8];
-      v18 = [VOTSharedWorkspace applicationForCurrentElement];
-      v19 = [v18 bundleIdentifier];
-      [v17 setObject:v19 forVariant:43];
+      v17 = [objc_allocWithZone(VOTOutputAction) initWithSoundPath:fastCopy];
+      applicationForCurrentElement = [VOTSharedWorkspace applicationForCurrentElement];
+      bundleIdentifier = [applicationForCurrentElement bundleIdentifier];
+      [v17 setObject:bundleIdentifier forVariant:43];
 
       v20 = [(VOTOutputManager *)self componentForType:1];
-      [v20 playSoundFast:v17 startedBlock:v9 completionBlock:v10];
+      [v20 playSoundFast:v17 startedBlock:blockCopy completionBlock:completionBlockCopy];
 
 LABEL_17:
       goto LABEL_18;
     }
 
     v14 = +[NSDate date];
-    v15 = [(VOTOutputManager *)self dateToResumeSounds];
-    v16 = [v14 compare:v15];
+    dateToResumeSounds2 = [(VOTOutputManager *)self dateToResumeSounds];
+    v16 = [v14 compare:dateToResumeSounds2];
 
     if (v16 != -1)
     {
@@ -1421,49 +1421,49 @@ LABEL_17:
 LABEL_18:
 }
 
-+ (void)logSoundPlayed:(id)a3
++ (void)logSoundPlayed:(id)played
 {
-  v3 = a3;
+  playedCopy = played;
   [qword_1001FE9C0 lock];
   if ([qword_1001FE9B8 count] >= 0xB)
   {
     [qword_1001FE9B8 removeObjectsInRange:{0, objc_msgSend(qword_1001FE9B8, "count") - 10}];
   }
 
-  [qword_1001FE9B8 addObject:v3];
+  [qword_1001FE9B8 addObject:playedCopy];
   [qword_1001FE9C0 unlock];
 }
 
-- (BOOL)replacesCharacterAsPunctuation:(unsigned __int16)a3
+- (BOOL)replacesCharacterAsPunctuation:(unsigned __int16)punctuation
 {
-  v3 = a3;
-  v4 = [(VOTOutputManager *)self speechComponent];
-  LOBYTE(v3) = [v4 replacesCharacterAsPunctuation:v3];
+  punctuationCopy = punctuation;
+  speechComponent = [(VOTOutputManager *)self speechComponent];
+  LOBYTE(punctuationCopy) = [speechComponent replacesCharacterAsPunctuation:punctuationCopy];
 
-  return v3;
+  return punctuationCopy;
 }
 
-- (void)sendEvent:(id)a3
+- (void)sendEvent:(id)event
 {
-  v6 = a3;
+  eventCopy = event;
   if (([VOTSharedWorkspace outputDisabled] & 1) == 0)
   {
     v3 = +[VOSOutputEventDispatcher sharedInstance];
-    [v3 sendEvent:v6];
+    [v3 sendEvent:eventCopy];
 
-    if ([v6 supportsSoundEffect])
+    if ([eventCopy supportsSoundEffect])
     {
       v4 = objc_opt_class();
-      v5 = [v6 rawValue];
-      [v4 logSoundPlayed:v5];
+      rawValue = [eventCopy rawValue];
+      [v4 logSoundPlayed:rawValue];
     }
   }
 }
 
-- (void)addVOSEventFinishedHandler:(id)a3 forIdentifier:(id)a4
+- (void)addVOSEventFinishedHandler:(id)handler forIdentifier:(id)identifier
 {
-  v10 = a3;
-  v6 = a4;
+  handlerCopy = handler;
+  identifierCopy = identifier;
   if (!self->_vosEventHandlers)
   {
     v7 = +[NSMutableDictionary dictionary];
@@ -1471,14 +1471,14 @@ LABEL_18:
     self->_vosEventHandlers = v7;
   }
 
-  v9 = objc_retainBlock(v10);
-  [(NSMutableDictionary *)self->_vosEventHandlers setObject:v9 forKeyedSubscript:v6];
+  v9 = objc_retainBlock(handlerCopy);
+  [(NSMutableDictionary *)self->_vosEventHandlers setObject:v9 forKeyedSubscript:identifierCopy];
 }
 
-- (void)addVOSEventStartedHandler:(id)a3 forIdentifier:(id)a4
+- (void)addVOSEventStartedHandler:(id)handler forIdentifier:(id)identifier
 {
-  v10 = a3;
-  v6 = a4;
+  handlerCopy = handler;
+  identifierCopy = identifier;
   if (!self->_vosEventStartedHandlers)
   {
     v7 = +[NSMutableDictionary dictionary];
@@ -1486,16 +1486,16 @@ LABEL_18:
     self->_vosEventStartedHandlers = v7;
   }
 
-  v9 = objc_retainBlock(v10);
-  [(NSMutableDictionary *)self->_vosEventStartedHandlers setObject:v9 forKeyedSubscript:v6];
+  v9 = objc_retainBlock(handlerCopy);
+  [(NSMutableDictionary *)self->_vosEventStartedHandlers setObject:v9 forKeyedSubscript:identifierCopy];
 }
 
-- (void)dispatcher:(id)a3 handleEvent:(id)a4 soundPack:(id)a5 hapticPack:(id)a6
+- (void)dispatcher:(id)dispatcher handleEvent:(id)event soundPack:(id)pack hapticPack:(id)hapticPack
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dispatcherCopy = dispatcher;
+  eventCopy = event;
+  packCopy = pack;
+  hapticPackCopy = hapticPack;
   if ([VOTSharedWorkspace pauseSpeechAndHaptics])
   {
     v14 = VOTLogAudio();
@@ -1516,9 +1516,9 @@ LABEL_18:
     sub_100127F68();
   }
 
-  if ([v10 shouldPlaySoundForEvent:v11])
+  if ([dispatcherCopy shouldPlaySoundForEvent:eventCopy])
   {
-    v16 = [v12 soundAssetURLForOutputEvent:v11];
+    v16 = [packCopy soundAssetURLForOutputEvent:eventCopy];
     v17 = VOTLogCommon();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
     {
@@ -1527,8 +1527,8 @@ LABEL_18:
 
     if (v16)
     {
-      v18 = [v16 lastPathComponent];
-      v19 = [NSString stringWithFormat:@"Sounds/%@", v18];
+      lastPathComponent = [v16 lastPathComponent];
+      v19 = [NSString stringWithFormat:@"Sounds/%@", lastPathComponent];
 
       v24[4] = self;
       v25[0] = _NSConcreteStackBlock;
@@ -1544,10 +1544,10 @@ LABEL_18:
     }
   }
 
-  if ([v10 shouldPlayHapticForEvent:v11])
+  if ([dispatcherCopy shouldPlayHapticForEvent:eventCopy])
   {
     v14 = objc_alloc_init(AXMOutputRequest);
-    v20 = [v13 hapticAssetURLForOutputEvent:v11];
+    v20 = [hapticPackCopy hapticAssetURLForOutputEvent:eventCopy];
     v21 = VOTLogCommon();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
     {
@@ -1569,14 +1569,14 @@ LABEL_18:
 LABEL_19:
 }
 
-- (void)addOutputManagerObserver:(id)a3
+- (void)addOutputManagerObserver:(id)observer
 {
-  if (a3)
+  if (observer)
   {
     outputManagerObserversLock = self->_outputManagerObserversLock;
-    v5 = a3;
+    observerCopy = observer;
     [(NSLock *)outputManagerObserversLock lock];
-    [(NSHashTable *)self->_outputManagerObservers addObject:v5];
+    [(NSHashTable *)self->_outputManagerObservers addObject:observerCopy];
 
     v6 = self->_outputManagerObserversLock;
 
@@ -1584,14 +1584,14 @@ LABEL_19:
   }
 }
 
-- (void)removeOutputManagerObserver:(id)a3
+- (void)removeOutputManagerObserver:(id)observer
 {
-  if (a3)
+  if (observer)
   {
     outputManagerObserversLock = self->_outputManagerObserversLock;
-    v5 = a3;
+    observerCopy = observer;
     [(NSLock *)outputManagerObserversLock lock];
-    [(NSHashTable *)self->_outputManagerObservers removeObject:v5];
+    [(NSHashTable *)self->_outputManagerObservers removeObject:observerCopy];
 
     v6 = self->_outputManagerObserversLock;
 
@@ -1611,13 +1611,13 @@ LABEL_19:
 - (void)_notifyObserversOutputManagerDidFinishProcessingQueuedRequests
 {
   [(NSLock *)self->_outputManagerObserversLock lock];
-  v3 = [(NSHashTable *)self->_outputManagerObservers allObjects];
+  allObjects = [(NSHashTable *)self->_outputManagerObservers allObjects];
   [(NSLock *)self->_outputManagerObserversLock unlock];
   v11 = 0u;
   v12 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v4 = v3;
+  v4 = allObjects;
   v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
@@ -1645,17 +1645,17 @@ LABEL_19:
   }
 }
 
-- (void)_notifyObserversOutputManagerWillProcessNextRequest:(id)a3
+- (void)_notifyObserversOutputManagerWillProcessNextRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   [(NSLock *)self->_outputManagerObserversLock lock];
-  v5 = [(NSHashTable *)self->_outputManagerObservers allObjects];
+  allObjects = [(NSHashTable *)self->_outputManagerObservers allObjects];
   [(NSLock *)self->_outputManagerObserversLock unlock];
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v6 = v5;
+  v6 = allObjects;
   v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {
@@ -1671,7 +1671,7 @@ LABEL_19:
           objc_enumerationMutation(v6);
         }
 
-        [*(*(&v11 + 1) + 8 * v10) outputManager:self willProcessNextRequest:{v4, v11}];
+        [*(*(&v11 + 1) + 8 * v10) outputManager:self willProcessNextRequest:{requestCopy, v11}];
         v10 = v10 + 1;
       }
 

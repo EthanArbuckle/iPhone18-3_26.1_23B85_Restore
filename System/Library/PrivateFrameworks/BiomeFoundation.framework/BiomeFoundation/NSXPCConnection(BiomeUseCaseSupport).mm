@@ -11,9 +11,9 @@
 
 - (id)bm_remoteUseCase
 {
-  v1 = [a1 bm_transport];
-  v2 = [v1 remoteUserInfo];
-  v3 = [v2 objectForKeyedSubscript:@"UseCase"];
+  bm_transport = [self bm_transport];
+  remoteUserInfo = [bm_transport remoteUserInfo];
+  v3 = [remoteUserInfo objectForKeyedSubscript:@"UseCase"];
 
   return v3;
 }
@@ -21,8 +21,8 @@
 + (id)bm_connectionWithListenerEndpoint:()BiomeUseCaseSupport queue:
 {
   v5 = a4;
-  v6 = [a3 _endpoint];
-  v7 = xpc_connection_create_from_endpoint(v6);
+  _endpoint = [a3 _endpoint];
+  v7 = xpc_connection_create_from_endpoint(_endpoint);
 
   if (v5)
   {
@@ -58,16 +58,16 @@
 - (void)setBm_exportedUseCase:()BiomeUseCaseSupport
 {
   v4 = a3;
-  v6 = [a1 bm_transport];
-  v5 = [v6 exportedUserInfo];
-  [v5 setObject:v4 forKeyedSubscript:@"UseCase"];
+  bm_transport = [self bm_transport];
+  exportedUserInfo = [bm_transport exportedUserInfo];
+  [exportedUserInfo setObject:v4 forKeyedSubscript:@"UseCase"];
 }
 
 - (id)bm_exportedUseCase
 {
-  v1 = [a1 bm_transport];
-  v2 = [v1 exportedUserInfo];
-  v3 = [v2 objectForKeyedSubscript:@"UseCase"];
+  bm_transport = [self bm_transport];
+  exportedUserInfo = [bm_transport exportedUserInfo];
+  v3 = [exportedUserInfo objectForKeyedSubscript:@"UseCase"];
 
   return v3;
 }

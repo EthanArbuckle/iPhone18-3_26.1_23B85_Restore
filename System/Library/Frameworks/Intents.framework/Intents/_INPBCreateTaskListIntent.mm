@@ -1,13 +1,13 @@
 @interface _INPBCreateTaskListIntent
-- (BOOL)isEqual:(id)a3;
-- (_INPBCreateTaskListIntent)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBCreateTaskListIntent)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addTaskTitles:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setTaskTitles:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addTaskTitles:(id)titles;
+- (void)encodeWithCoder:(id)coder;
+- (void)setTaskTitles:(id)titles;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBCreateTaskListIntent
@@ -15,18 +15,18 @@
 - (id)dictionaryRepresentation
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(_INPBCreateTaskListIntent *)self groupName];
-  v5 = [v4 dictionaryRepresentation];
-  [v3 setObject:v5 forKeyedSubscript:@"groupName"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  groupName = [(_INPBCreateTaskListIntent *)self groupName];
+  dictionaryRepresentation = [groupName dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"groupName"];
 
-  v6 = [(_INPBCreateTaskListIntent *)self intentMetadata];
-  v7 = [v6 dictionaryRepresentation];
-  [v3 setObject:v7 forKeyedSubscript:@"intentMetadata"];
+  intentMetadata = [(_INPBCreateTaskListIntent *)self intentMetadata];
+  dictionaryRepresentation2 = [intentMetadata dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"intentMetadata"];
 
   if ([(NSArray *)self->_taskTitles count])
   {
-    v8 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
@@ -46,8 +46,8 @@
             objc_enumerationMutation(v9);
           }
 
-          v14 = [*(*(&v19 + 1) + 8 * i) dictionaryRepresentation];
-          [v8 addObject:v14];
+          dictionaryRepresentation3 = [*(*(&v19 + 1) + 8 * i) dictionaryRepresentation];
+          [array addObject:dictionaryRepresentation3];
         }
 
         v11 = [(NSArray *)v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
@@ -56,16 +56,16 @@
       while (v11);
     }
 
-    [v3 setObject:v8 forKeyedSubscript:@"taskTitles"];
+    [dictionary setObject:array forKeyedSubscript:@"taskTitles"];
   }
 
-  v15 = [(_INPBCreateTaskListIntent *)self title];
-  v16 = [v15 dictionaryRepresentation];
-  [v3 setObject:v16 forKeyedSubscript:@"title"];
+  title = [(_INPBCreateTaskListIntent *)self title];
+  dictionaryRepresentation4 = [title dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"title"];
 
   v17 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -76,28 +76,28 @@
   return v4 ^ v5 ^ [(_INPBDataString *)self->_title hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_22;
   }
 
-  v5 = [(_INPBCreateTaskListIntent *)self groupName];
-  v6 = [v4 groupName];
-  if ((v5 != 0) == (v6 == 0))
+  groupName = [(_INPBCreateTaskListIntent *)self groupName];
+  groupName2 = [equalCopy groupName];
+  if ((groupName != 0) == (groupName2 == 0))
   {
     goto LABEL_21;
   }
 
-  v7 = [(_INPBCreateTaskListIntent *)self groupName];
-  if (v7)
+  groupName3 = [(_INPBCreateTaskListIntent *)self groupName];
+  if (groupName3)
   {
-    v8 = v7;
-    v9 = [(_INPBCreateTaskListIntent *)self groupName];
-    v10 = [v4 groupName];
-    v11 = [v9 isEqual:v10];
+    v8 = groupName3;
+    groupName4 = [(_INPBCreateTaskListIntent *)self groupName];
+    groupName5 = [equalCopy groupName];
+    v11 = [groupName4 isEqual:groupName5];
 
     if (!v11)
     {
@@ -109,20 +109,20 @@
   {
   }
 
-  v5 = [(_INPBCreateTaskListIntent *)self intentMetadata];
-  v6 = [v4 intentMetadata];
-  if ((v5 != 0) == (v6 == 0))
+  groupName = [(_INPBCreateTaskListIntent *)self intentMetadata];
+  groupName2 = [equalCopy intentMetadata];
+  if ((groupName != 0) == (groupName2 == 0))
   {
     goto LABEL_21;
   }
 
-  v12 = [(_INPBCreateTaskListIntent *)self intentMetadata];
-  if (v12)
+  intentMetadata = [(_INPBCreateTaskListIntent *)self intentMetadata];
+  if (intentMetadata)
   {
-    v13 = v12;
-    v14 = [(_INPBCreateTaskListIntent *)self intentMetadata];
-    v15 = [v4 intentMetadata];
-    v16 = [v14 isEqual:v15];
+    v13 = intentMetadata;
+    intentMetadata2 = [(_INPBCreateTaskListIntent *)self intentMetadata];
+    intentMetadata3 = [equalCopy intentMetadata];
+    v16 = [intentMetadata2 isEqual:intentMetadata3];
 
     if (!v16)
     {
@@ -134,20 +134,20 @@
   {
   }
 
-  v5 = [(_INPBCreateTaskListIntent *)self taskTitles];
-  v6 = [v4 taskTitles];
-  if ((v5 != 0) == (v6 == 0))
+  groupName = [(_INPBCreateTaskListIntent *)self taskTitles];
+  groupName2 = [equalCopy taskTitles];
+  if ((groupName != 0) == (groupName2 == 0))
   {
     goto LABEL_21;
   }
 
-  v17 = [(_INPBCreateTaskListIntent *)self taskTitles];
-  if (v17)
+  taskTitles = [(_INPBCreateTaskListIntent *)self taskTitles];
+  if (taskTitles)
   {
-    v18 = v17;
-    v19 = [(_INPBCreateTaskListIntent *)self taskTitles];
-    v20 = [v4 taskTitles];
-    v21 = [v19 isEqual:v20];
+    v18 = taskTitles;
+    taskTitles2 = [(_INPBCreateTaskListIntent *)self taskTitles];
+    taskTitles3 = [equalCopy taskTitles];
+    v21 = [taskTitles2 isEqual:taskTitles3];
 
     if (!v21)
     {
@@ -159,12 +159,12 @@
   {
   }
 
-  v5 = [(_INPBCreateTaskListIntent *)self title];
-  v6 = [v4 title];
-  if ((v5 != 0) != (v6 == 0))
+  groupName = [(_INPBCreateTaskListIntent *)self title];
+  groupName2 = [equalCopy title];
+  if ((groupName != 0) != (groupName2 == 0))
   {
-    v22 = [(_INPBCreateTaskListIntent *)self title];
-    if (!v22)
+    title = [(_INPBCreateTaskListIntent *)self title];
+    if (!title)
     {
 
 LABEL_25:
@@ -172,10 +172,10 @@ LABEL_25:
       goto LABEL_23;
     }
 
-    v23 = v22;
-    v24 = [(_INPBCreateTaskListIntent *)self title];
-    v25 = [v4 title];
-    v26 = [v24 isEqual:v25];
+    v23 = title;
+    title2 = [(_INPBCreateTaskListIntent *)self title];
+    title3 = [equalCopy title];
+    v26 = [title2 isEqual:title3];
 
     if (v26)
     {
@@ -195,65 +195,65 @@ LABEL_23:
   return v27;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBCreateTaskListIntent allocWithZone:](_INPBCreateTaskListIntent init];
-  v6 = [(_INPBDataString *)self->_groupName copyWithZone:a3];
+  v6 = [(_INPBDataString *)self->_groupName copyWithZone:zone];
   [(_INPBCreateTaskListIntent *)v5 setGroupName:v6];
 
-  v7 = [(_INPBIntentMetadata *)self->_intentMetadata copyWithZone:a3];
+  v7 = [(_INPBIntentMetadata *)self->_intentMetadata copyWithZone:zone];
   [(_INPBCreateTaskListIntent *)v5 setIntentMetadata:v7];
 
-  v8 = [(NSArray *)self->_taskTitles copyWithZone:a3];
+  v8 = [(NSArray *)self->_taskTitles copyWithZone:zone];
   [(_INPBCreateTaskListIntent *)v5 setTaskTitles:v8];
 
-  v9 = [(_INPBDataString *)self->_title copyWithZone:a3];
+  v9 = [(_INPBDataString *)self->_title copyWithZone:zone];
   [(_INPBCreateTaskListIntent *)v5 setTitle:v9];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBCreateTaskListIntent *)self data];
+  coderCopy = coder;
+  data = [(_INPBCreateTaskListIntent *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBCreateTaskListIntent)initWithCoder:(id)a3
+- (_INPBCreateTaskListIntent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBCreateTaskListIntent *)self initWithData:v6];
+    self = [(_INPBCreateTaskListIntent *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(_INPBCreateTaskListIntent *)self groupName];
+  toCopy = to;
+  groupName = [(_INPBCreateTaskListIntent *)self groupName];
 
-  if (v5)
+  if (groupName)
   {
-    v6 = [(_INPBCreateTaskListIntent *)self groupName];
+    groupName2 = [(_INPBCreateTaskListIntent *)self groupName];
     PBDataWriterWriteSubmessage();
   }
 
-  v7 = [(_INPBCreateTaskListIntent *)self intentMetadata];
+  intentMetadata = [(_INPBCreateTaskListIntent *)self intentMetadata];
 
-  if (v7)
+  if (intentMetadata)
   {
-    v8 = [(_INPBCreateTaskListIntent *)self intentMetadata];
+    intentMetadata2 = [(_INPBCreateTaskListIntent *)self intentMetadata];
     PBDataWriterWriteSubmessage();
   }
 
@@ -289,38 +289,38 @@ LABEL_23:
     while (v11);
   }
 
-  v15 = [(_INPBCreateTaskListIntent *)self title];
+  title = [(_INPBCreateTaskListIntent *)self title];
 
-  if (v15)
+  if (title)
   {
-    v16 = [(_INPBCreateTaskListIntent *)self title];
+    title2 = [(_INPBCreateTaskListIntent *)self title];
     PBDataWriterWriteSubmessage();
   }
 
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addTaskTitles:(id)a3
+- (void)addTaskTitles:(id)titles
 {
-  v4 = a3;
+  titlesCopy = titles;
   taskTitles = self->_taskTitles;
-  v8 = v4;
+  v8 = titlesCopy;
   if (!taskTitles)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_taskTitles;
-    self->_taskTitles = v6;
+    self->_taskTitles = array;
 
-    v4 = v8;
+    titlesCopy = v8;
     taskTitles = self->_taskTitles;
   }
 
-  [(NSArray *)taskTitles addObject:v4];
+  [(NSArray *)taskTitles addObject:titlesCopy];
 }
 
-- (void)setTaskTitles:(id)a3
+- (void)setTaskTitles:(id)titles
 {
-  v4 = [a3 mutableCopy];
+  v4 = [titles mutableCopy];
   taskTitles = self->_taskTitles;
   self->_taskTitles = v4;
 

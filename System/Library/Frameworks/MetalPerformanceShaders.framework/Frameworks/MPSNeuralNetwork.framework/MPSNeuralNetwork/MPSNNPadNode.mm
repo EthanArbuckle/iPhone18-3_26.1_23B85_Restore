@@ -7,7 +7,7 @@
 
 + (MPSNNPadNode)nodeWithSource:(MPSNNImageNode *)source paddingSizeBefore:(MPSImageCoordinate *)paddingSizeBefore paddingSizeAfter:(MPSImageCoordinate *)paddingSizeAfter edgeMode:(MPSImageEdgeMode)edgeMode
 {
-  v10 = [a1 alloc];
+  v10 = [self alloc];
   v16 = *paddingSizeBefore;
   v15 = *paddingSizeAfter;
   return objc_msgSend_initWithSource_paddingSizeBefore_paddingSizeAfter_edgeMode_(v10, v11, source, &v16, &v15, edgeMode, v12, v13);

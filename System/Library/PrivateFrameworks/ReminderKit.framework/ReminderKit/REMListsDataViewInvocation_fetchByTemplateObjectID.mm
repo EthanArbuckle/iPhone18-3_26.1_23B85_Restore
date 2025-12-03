@@ -1,72 +1,72 @@
 @interface REMListsDataViewInvocation_fetchByTemplateObjectID
-- (BOOL)isEqual:(id)a3;
-- (REMListsDataViewInvocation_fetchByTemplateObjectID)initWithCoder:(id)a3;
-- (REMListsDataViewInvocation_fetchByTemplateObjectID)initWithTemplateObjectID:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (REMListsDataViewInvocation_fetchByTemplateObjectID)initWithCoder:(id)coder;
+- (REMListsDataViewInvocation_fetchByTemplateObjectID)initWithTemplateObjectID:(id)d;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation REMListsDataViewInvocation_fetchByTemplateObjectID
 
-- (REMListsDataViewInvocation_fetchByTemplateObjectID)initWithTemplateObjectID:(id)a3
+- (REMListsDataViewInvocation_fetchByTemplateObjectID)initWithTemplateObjectID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v9.receiver = self;
   v9.super_class = REMListsDataViewInvocation_fetchByTemplateObjectID;
   v6 = [(REMStoreInvocationValueStorage *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_templateObjectID, a3);
+    objc_storeStrong(&v6->_templateObjectID, d);
   }
 
   return v7;
 }
 
-- (REMListsDataViewInvocation_fetchByTemplateObjectID)initWithCoder:(id)a3
+- (REMListsDataViewInvocation_fetchByTemplateObjectID)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"templateObjectID"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"templateObjectID"];
 
   if (v5)
   {
     self = [(REMListsDataViewInvocation_fetchByTemplateObjectID *)self initWithTemplateObjectID:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(REMListsDataViewInvocation_fetchByTemplateObjectID *)self templateObjectID];
-  [v4 encodeObject:v5 forKey:@"templateObjectID"];
+  coderCopy = coder;
+  templateObjectID = [(REMListsDataViewInvocation_fetchByTemplateObjectID *)self templateObjectID];
+  [coderCopy encodeObject:templateObjectID forKey:@"templateObjectID"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(REMListsDataViewInvocation_fetchByTemplateObjectID *)self templateObjectID];
-    v6 = [v4 templateObjectID];
-    if (v5 == v6)
+    templateObjectID = [(REMListsDataViewInvocation_fetchByTemplateObjectID *)self templateObjectID];
+    templateObjectID2 = [equalCopy templateObjectID];
+    if (templateObjectID == templateObjectID2)
     {
       v9 = 1;
     }
 
     else
     {
-      v7 = [(REMListsDataViewInvocation_fetchByTemplateObjectID *)self templateObjectID];
-      v8 = [v4 templateObjectID];
-      v9 = [v7 isEqual:v8];
+      templateObjectID3 = [(REMListsDataViewInvocation_fetchByTemplateObjectID *)self templateObjectID];
+      templateObjectID4 = [equalCopy templateObjectID];
+      v9 = [templateObjectID3 isEqual:templateObjectID4];
     }
   }
 
@@ -80,8 +80,8 @@
 
 - (unint64_t)hash
 {
-  v2 = [(REMListsDataViewInvocation_fetchByTemplateObjectID *)self templateObjectID];
-  v3 = [v2 hash];
+  templateObjectID = [(REMListsDataViewInvocation_fetchByTemplateObjectID *)self templateObjectID];
+  v3 = [templateObjectID hash];
 
   return v3;
 }

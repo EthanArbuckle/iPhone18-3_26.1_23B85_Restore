@@ -1,31 +1,31 @@
 @interface AVCaptureSystemExposureBiasSlider
-- (AVCaptureSystemExposureBiasSlider)initWithDevice:(id)a3;
-- (AVCaptureSystemExposureBiasSlider)initWithDevice:(id)a3 action:(id)a4;
+- (AVCaptureSystemExposureBiasSlider)initWithDevice:(id)device;
+- (AVCaptureSystemExposureBiasSlider)initWithDevice:(id)device action:(id)action;
 - (id)actionQueue;
 - (id)description;
 - (id)device;
 - (id)overlayControl;
 - (id)overlayUpdate;
 - (void)dealloc;
-- (void)enqueueActionWithUpdate:(id)a3;
+- (void)enqueueActionWithUpdate:(id)update;
 - (void)installObservers;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)removeObservers;
 @end
 
 @implementation AVCaptureSystemExposureBiasSlider
 
-- (AVCaptureSystemExposureBiasSlider)initWithDevice:(id)a3
+- (AVCaptureSystemExposureBiasSlider)initWithDevice:(id)device
 {
   v9.receiver = self;
   v9.super_class = AVCaptureSystemExposureBiasSlider;
-  v4 = [(AVCaptureControl *)&v9 initSubclass];
-  if (v4)
+  initSubclass = [(AVCaptureControl *)&v9 initSubclass];
+  if (initSubclass)
   {
-    [a3 minExposureTargetBias];
-    if (v5 == 0.0 || ([a3 maxExposureTargetBias], v6 == 0.0))
+    [device minExposureTargetBias];
+    if (v5 == 0.0 || ([device maxExposureTargetBias], v6 == 0.0))
     {
-      v7 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector() userInfo:{0, objc_msgSend(a3, "localizedName")}];
+      v7 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector() userInfo:{0, objc_msgSend(device, "localizedName")}];
 
       if (AVCaptureShouldThrowForAPIViolations())
       {
@@ -38,26 +38,26 @@
 
     else
     {
-      v4->_device = a3;
-      v4->_actionLock._os_unfair_lock_opaque = 0;
-      v4->_changeExposureBiasInProcess = 1;
+      initSubclass->_device = device;
+      initSubclass->_actionLock._os_unfair_lock_opaque = 0;
+      initSubclass->_changeExposureBiasInProcess = 1;
     }
   }
 
-  return v4;
+  return initSubclass;
 }
 
-- (AVCaptureSystemExposureBiasSlider)initWithDevice:(id)a3 action:(id)a4
+- (AVCaptureSystemExposureBiasSlider)initWithDevice:(id)device action:(id)action
 {
   v11.receiver = self;
   v11.super_class = AVCaptureSystemExposureBiasSlider;
-  v6 = [(AVCaptureControl *)&v11 initSubclass];
-  if (v6)
+  initSubclass = [(AVCaptureControl *)&v11 initSubclass];
+  if (initSubclass)
   {
-    [a3 minExposureTargetBias];
-    if (v7 == 0.0 || ([a3 maxExposureTargetBias], v8 == 0.0))
+    [device minExposureTargetBias];
+    if (v7 == 0.0 || ([device maxExposureTargetBias], v8 == 0.0))
     {
-      v9 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector() userInfo:{0, objc_msgSend(a3, "localizedName")}];
+      v9 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector() userInfo:{0, objc_msgSend(device, "localizedName")}];
 
       if (AVCaptureShouldThrowForAPIViolations())
       {
@@ -70,14 +70,14 @@
 
     else
     {
-      v6->_device = a3;
-      v6->_action = [a4 copy];
-      v6->_actionLock._os_unfair_lock_opaque = 0;
-      v6->_changeExposureBiasInProcess = 1;
+      initSubclass->_device = device;
+      initSubclass->_action = [action copy];
+      initSubclass->_actionLock._os_unfair_lock_opaque = 0;
+      initSubclass->_changeExposureBiasInProcess = 1;
     }
   }
 
-  return v6;
+  return initSubclass;
 }
 
 - (void)dealloc
@@ -111,10 +111,10 @@
 
 - (id)overlayUpdate
 {
-  v3 = [(AVCaptureSystemExposureBiasSlider *)self overlayControl];
+  overlayControl = [(AVCaptureSystemExposureBiasSlider *)self overlayControl];
   [(AVCaptureDevice *)self->_device exposureTargetBias];
 
-  return [v3 updateWithFloatValue:?];
+  return [overlayControl updateWithFloatValue:?];
 }
 
 - (id)device
@@ -164,29 +164,29 @@
   os_unfair_lock_unlock(&self->_actionLock);
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   os_unfair_lock_lock(&self->_actionLock);
   observing = self->_observing;
   os_unfair_lock_unlock(&self->_actionLock);
-  if ([a3 isEqualToString:@"exposureTargetBias"] && self->_device == a4)
+  if ([path isEqualToString:@"exposureTargetBias"] && self->_device == object)
   {
-    v11 = [a5 objectForKeyedSubscript:*MEMORY[0x1E696A4F0]];
+    v11 = [change objectForKeyedSubscript:*MEMORY[0x1E696A4F0]];
     if (observing && v11 != 0)
     {
       overlayControl = self->_overlayControl;
       [v11 floatValue];
       v14 = [(CAMOverlayServiceSlider *)overlayControl updateWithFloatValue:?];
-      v15 = [(AVCaptureControl *)self overlay];
+      overlay = [(AVCaptureControl *)self overlay];
 
-      [(AVCaptureControlsOverlay *)v15 updateControl:v14];
+      [(AVCaptureControlsOverlay *)overlay updateControl:v14];
     }
   }
 }
 
-- (void)enqueueActionWithUpdate:(id)a3
+- (void)enqueueActionWithUpdate:(id)update
 {
-  [a3 floatValue];
+  [update floatValue];
   v5 = v4;
   [(AVCaptureDevice *)self->_device minExposureTargetBias];
   if (v5 >= v6)

@@ -1,7 +1,7 @@
 @interface MediaInfo
 - (MediaInfo)init;
 - (MediaInfoDelegate)delegate;
-- (double)preferredIntervalForCommand:(unsigned int)a3;
+- (double)preferredIntervalForCommand:(unsigned int)command;
 - (float)defaultPlaybackRate;
 - (float)playbackRate;
 - (id)playerElapsedTime;
@@ -17,17 +17,17 @@
 - (id)trackArtist;
 - (id)trackDuration;
 - (id)trackTitle;
-- (void)applicationDidChange:(id)a3;
-- (void)avEffectiveVolumeDidChangeNotification:(id)a3;
+- (void)applicationDidChange:(id)change;
+- (void)avEffectiveVolumeDidChangeNotification:(id)notification;
 - (void)avServerConnectionDiedNotification;
 - (void)dealloc;
-- (void)infoDidChange:(id)a3;
+- (void)infoDidChange:(id)change;
 - (void)registerForAVNotifications;
-- (void)sendCommand:(unsigned __int8)a3;
-- (void)setCurrentSupportedCommands:(__CFArray *)a3;
-- (void)supportedCommandsDidChange:(__CFArray *)a3;
+- (void)sendCommand:(unsigned __int8)command;
+- (void)setCurrentSupportedCommands:(__CFArray *)commands;
+- (void)supportedCommandsDidChange:(__CFArray *)change;
 - (void)unregisterForAVNotifications;
-- (void)volumeDidChangeForCategory:(id)a3;
+- (void)volumeDidChangeForCategory:(id)category;
 @end
 
 @implementation MediaInfo
@@ -74,9 +74,9 @@
   return v3;
 }
 
-- (void)sendCommand:(unsigned __int8)a3
+- (void)sendCommand:(unsigned __int8)command
 {
-  switch(a3)
+  switch(command)
   {
     case 0u:
     case 1u:
@@ -130,9 +130,9 @@ LABEL_9:
 - (id)supportedCommands
 {
   v3 = [NSMutableSet setWithObjects:&off_1000C3DC8, &off_1000C3DE0, 0];
-  v4 = [(MediaInfo *)self currentSettings];
-  var0 = v4.var0;
-  IntegerValueForKey = HIDWORD(*&v4);
+  currentSettings = [(MediaInfo *)self currentSettings];
+  var0 = currentSettings.var0;
+  IntegerValueForKey = HIDWORD(*&currentSettings);
   if ([(MediaInfo *)self currentSupportedCommands]&& CFArrayGetCount([(MediaInfo *)self currentSupportedCommands]) >= 1)
   {
     v7 = 0;
@@ -203,22 +203,22 @@ LABEL_18:
 
 - (id)playerName
 {
-  v3 = [(MediaInfo *)self currentIdentifier];
+  currentIdentifier = [(MediaInfo *)self currentIdentifier];
 
-  if (v3)
+  if (currentIdentifier)
   {
-    v4 = [(MediaInfo *)self currentIdentifier];
-    v5 = [LSApplicationProxy applicationProxyForIdentifier:v4];
+    currentIdentifier2 = [(MediaInfo *)self currentIdentifier];
+    v5 = [LSApplicationProxy applicationProxyForIdentifier:currentIdentifier2];
 
-    v6 = [v5 localizedName];
+    localizedName = [v5 localizedName];
   }
 
   else
   {
-    v6 = 0;
+    localizedName = 0;
   }
 
-  return v6;
+  return localizedName;
 }
 
 - (id)playerPlaybackState
@@ -270,13 +270,13 @@ LABEL_18:
 
 - (id)playerElapsedTime
 {
-  v3 = [(MediaInfo *)self currentInfo];
-  v4 = [v3 objectForKeyedSubscript:kMRMediaRemoteNowPlayingInfoTimestamp];
+  currentInfo = [(MediaInfo *)self currentInfo];
+  v4 = [currentInfo objectForKeyedSubscript:kMRMediaRemoteNowPlayingInfoTimestamp];
 
   if (v4)
   {
-    v5 = [(MediaInfo *)self currentInfo];
-    v6 = [v5 objectForKeyedSubscript:kMRMediaRemoteNowPlayingInfoElapsedTime];
+    currentInfo2 = [(MediaInfo *)self currentInfo];
+    v6 = [currentInfo2 objectForKeyedSubscript:kMRMediaRemoteNowPlayingInfoElapsedTime];
 
     if (v6)
     {
@@ -313,16 +313,16 @@ LABEL_18:
 
 - (id)queueIndex
 {
-  v2 = [(MediaInfo *)self currentInfo];
-  v3 = [v2 objectForKeyedSubscript:kMRMediaRemoteNowPlayingInfoQueueIndex];
+  currentInfo = [(MediaInfo *)self currentInfo];
+  v3 = [currentInfo objectForKeyedSubscript:kMRMediaRemoteNowPlayingInfoQueueIndex];
 
   return v3;
 }
 
 - (id)queueCount
 {
-  v2 = [(MediaInfo *)self currentInfo];
-  v3 = [v2 objectForKeyedSubscript:kMRMediaRemoteNowPlayingInfoTotalQueueCount];
+  currentInfo = [(MediaInfo *)self currentInfo];
+  v3 = [currentInfo objectForKeyedSubscript:kMRMediaRemoteNowPlayingInfoTotalQueueCount];
 
   return v3;
 }
@@ -357,37 +357,37 @@ LABEL_18:
 
 - (id)trackArtist
 {
-  v2 = [(MediaInfo *)self currentInfo];
-  v3 = [v2 objectForKeyedSubscript:kMRMediaRemoteNowPlayingInfoArtist];
+  currentInfo = [(MediaInfo *)self currentInfo];
+  v3 = [currentInfo objectForKeyedSubscript:kMRMediaRemoteNowPlayingInfoArtist];
 
   return v3;
 }
 
 - (id)trackAlbum
 {
-  v2 = [(MediaInfo *)self currentInfo];
-  v3 = [v2 objectForKeyedSubscript:kMRMediaRemoteNowPlayingInfoAlbum];
+  currentInfo = [(MediaInfo *)self currentInfo];
+  v3 = [currentInfo objectForKeyedSubscript:kMRMediaRemoteNowPlayingInfoAlbum];
 
   return v3;
 }
 
 - (id)trackTitle
 {
-  v2 = [(MediaInfo *)self currentInfo];
-  v3 = [v2 objectForKeyedSubscript:kMRMediaRemoteNowPlayingInfoTitle];
+  currentInfo = [(MediaInfo *)self currentInfo];
+  v3 = [currentInfo objectForKeyedSubscript:kMRMediaRemoteNowPlayingInfoTitle];
 
   return v3;
 }
 
 - (id)trackDuration
 {
-  v2 = [(MediaInfo *)self currentInfo];
-  v3 = [v2 objectForKeyedSubscript:kMRMediaRemoteNowPlayingInfoDuration];
+  currentInfo = [(MediaInfo *)self currentInfo];
+  v3 = [currentInfo objectForKeyedSubscript:kMRMediaRemoteNowPlayingInfoDuration];
 
   return v3;
 }
 
-- (void)setCurrentSupportedCommands:(__CFArray *)a3
+- (void)setCurrentSupportedCommands:(__CFArray *)commands
 {
   currentSupportedCommands = self->_currentSupportedCommands;
   if (currentSupportedCommands)
@@ -395,9 +395,9 @@ LABEL_18:
     CFRelease(currentSupportedCommands);
   }
 
-  if (a3)
+  if (commands)
   {
-    v6 = CFRetain(a3);
+    v6 = CFRetain(commands);
   }
 
   else
@@ -450,45 +450,45 @@ LABEL_18:
   [v4 removeObserver:self name:AVSystemController_EffectiveVolumeDidChangeNotification object:0];
 }
 
-- (void)supportedCommandsDidChange:(__CFArray *)a3
+- (void)supportedCommandsDidChange:(__CFArray *)change
 {
-  [(MediaInfo *)self setCurrentSupportedCommands:a3];
+  [(MediaInfo *)self setCurrentSupportedCommands:change];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained supportedCommandsDidChange];
 }
 
-- (void)applicationDidChange:(id)a3
+- (void)applicationDidChange:(id)change
 {
-  if (!a3)
+  if (!change)
   {
-    a3 = @"com.apple.Music";
+    change = @"com.apple.Music";
   }
 
-  [(MediaInfo *)self setCurrentIdentifier:a3];
+  [(MediaInfo *)self setCurrentIdentifier:change];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained mediaPlayerDidChange];
 }
 
-- (void)infoDidChange:(id)a3
+- (void)infoDidChange:(id)change
 {
-  [(MediaInfo *)self setCurrentInfo:a3];
+  [(MediaInfo *)self setCurrentInfo:change];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained mediaInfoDidChange];
 }
 
-- (void)volumeDidChangeForCategory:(id)a3
+- (void)volumeDidChangeForCategory:(id)category
 {
-  if ([a3 isEqualToString:@"Audio/Video"])
+  if ([category isEqualToString:@"Audio/Video"])
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     [WeakRetained mediaVolumeDidChange];
   }
 }
 
-- (void)avEffectiveVolumeDidChangeNotification:(id)a3
+- (void)avEffectiveVolumeDidChangeNotification:(id)notification
 {
-  v5 = [a3 userInfo];
-  v4 = [v5 objectForKeyedSubscript:AVSystemController_EffectiveVolumeNotificationParameter_Category];
+  userInfo = [notification userInfo];
+  v4 = [userInfo objectForKeyedSubscript:AVSystemController_EffectiveVolumeNotificationParameter_Category];
   [(MediaInfo *)self volumeDidChangeForCategory:v4];
 }
 
@@ -501,8 +501,8 @@ LABEL_18:
 
 - (float)playbackRate
 {
-  v3 = [(MediaInfo *)self currentInfo];
-  v4 = [v3 objectForKeyedSubscript:kMRMediaRemoteNowPlayingInfoPlaybackRate];
+  currentInfo = [(MediaInfo *)self currentInfo];
+  v4 = [currentInfo objectForKeyedSubscript:kMRMediaRemoteNowPlayingInfoPlaybackRate];
 
   if (v4)
   {
@@ -525,8 +525,8 @@ LABEL_18:
 
 - (float)defaultPlaybackRate
 {
-  v2 = [(MediaInfo *)self currentInfo];
-  v3 = [v2 objectForKeyedSubscript:kMRMediaRemoteNowPlayingInfoDefaultPlaybackRate];
+  currentInfo = [(MediaInfo *)self currentInfo];
+  v3 = [currentInfo objectForKeyedSubscript:kMRMediaRemoteNowPlayingInfoDefaultPlaybackRate];
 
   if (v3)
   {
@@ -542,7 +542,7 @@ LABEL_18:
   return v5;
 }
 
-- (double)preferredIntervalForCommand:(unsigned int)a3
+- (double)preferredIntervalForCommand:(unsigned int)command
 {
   if (CFArrayGetCount([(MediaInfo *)self currentSupportedCommands]) < 1)
   {
@@ -556,7 +556,7 @@ LABEL_5:
     while (1)
     {
       CFArrayGetValueAtIndex([(MediaInfo *)self currentSupportedCommands], v5);
-      if (MRMediaRemoteCommandInfoGetCommand() == a3)
+      if (MRMediaRemoteCommandInfoGetCommand() == command)
       {
         break;
       }
@@ -570,11 +570,11 @@ LABEL_5:
     v6 = MRMediaRemoteCommandInfoCopyValueForKey();
   }
 
-  v7 = [v6 firstObject];
-  v8 = v7;
-  if (v7)
+  firstObject = [v6 firstObject];
+  v8 = firstObject;
+  if (firstObject)
   {
-    [v7 doubleValue];
+    [firstObject doubleValue];
     v10 = v9;
   }
 

@@ -1,7 +1,7 @@
 @interface WTProofreadCandidateBarView
 - (CGSize)intrinsicContentSize;
 - (WTProofreadCandidateBarView)init;
-- (void)setSuggestionCount:(unint64_t)a3;
+- (void)setSuggestionCount:(unint64_t)count;
 @end
 
 @implementation WTProofreadCandidateBarView
@@ -9,8 +9,8 @@
 - (WTProofreadCandidateBarView)init
 {
   v3 = objc_alloc(MEMORY[0x1E69DD568]);
-  v4 = [MEMORY[0x1E69DD578] sharedLight];
-  v5 = [v3 initWithLightSource:v4];
+  mEMORY[0x1E69DD578] = [MEMORY[0x1E69DD578] sharedLight];
+  v5 = [v3 initWithLightSource:mEMORY[0x1E69DD578]];
   v15.receiver = self;
   v15.super_class = WTProofreadCandidateBarView;
   v6 = [(WTProofreadCandidateBarView *)&v15 initWithEffect:v5];
@@ -29,11 +29,11 @@
 
     v11 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v7];
     [v11 setContentMode:1];
-    v12 = [(WTProofreadCandidateBarView *)v6 contentView];
-    [v12 addSubview:v11];
+    contentView = [(WTProofreadCandidateBarView *)v6 contentView];
+    [contentView addSubview:v11];
 
-    v13 = [(WTProofreadCandidateBarView *)v6 contentView];
-    [v13 addSubview:v6->_badgeView];
+    contentView2 = [(WTProofreadCandidateBarView *)v6 contentView];
+    [contentView2 addSubview:v6->_badgeView];
 
     [(WTProofreadCandidateBarView *)v6 setFrame:0.0, 0.0, 50.0, 48.0];
     [v11 setFrame:{12.0, 12.0, 24.0, 24.0}];
@@ -43,13 +43,13 @@
   return v6;
 }
 
-- (void)setSuggestionCount:(unint64_t)a3
+- (void)setSuggestionCount:(unint64_t)count
 {
   v4 = MEMORY[0x1E696ADA0];
-  v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:count];
   v5 = [v4 localizedStringFromNumber:v7 numberStyle:0];
-  v6 = [(WTProofreadCandidateBarView *)self badgeView];
-  [v6 setText:v5];
+  badgeView = [(WTProofreadCandidateBarView *)self badgeView];
+  [badgeView setText:v5];
 }
 
 - (CGSize)intrinsicContentSize

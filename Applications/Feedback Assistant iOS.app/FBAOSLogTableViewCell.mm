@@ -13,11 +13,11 @@
   v3 = [UIFontMetrics metricsForTextStyle:UIFontTextStyleFootnote];
   v4 = [UIFont monospacedSystemFontOfSize:14.0 weight:UIFontWeightRegular];
   v5 = [v3 scaledFontForFont:v4];
-  v6 = [(FBAOSLogTableViewCell *)self logLabel];
-  [v6 setFont:v5];
+  logLabel = [(FBAOSLogTableViewCell *)self logLabel];
+  [logLabel setFont:v5];
 
-  v7 = [(FBAOSLogTableViewCell *)self logLabel];
-  [v7 setAdjustsFontForContentSizeCategory:1];
+  logLabel2 = [(FBAOSLogTableViewCell *)self logLabel];
+  [logLabel2 setAdjustsFontForContentSizeCategory:1];
 }
 
 - (UILabel)logLabel

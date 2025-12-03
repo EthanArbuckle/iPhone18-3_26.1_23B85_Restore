@@ -1,18 +1,18 @@
 @interface PLFilteredAlbumChangeNotification
-+ (id)notificationForDerivedObject:(id)a3 priorChangeState:(id)a4 forBackingObjectNotification:(id)a5;
-- (BOOL)_getOldSet:(id *)a3 newSet:(id *)a4;
++ (id)notificationForDerivedObject:(id)object priorChangeState:(id)state forBackingObjectNotification:(id)notification;
+- (BOOL)_getOldSet:(id *)set newSet:(id *)newSet;
 - (BOOL)countDidChange;
 - (BOOL)shouldReload;
 - (NSString)description;
-- (PLFilteredAlbumChangeNotification)initWithFilteredAlbum:(id)a3 priorChangeState:(id)a4 albumChangeNotification:(id)a5;
+- (PLFilteredAlbumChangeNotification)initWithFilteredAlbum:(id)album priorChangeState:(id)state albumChangeNotification:(id)notification;
 - (PLIndexMapper)indexMapper;
 - (id)_diffDescription;
-- (void)setFilteredIndexes:(id)a3;
+- (void)setFilteredIndexes:(id)indexes;
 @end
 
 @implementation PLFilteredAlbumChangeNotification
 
-- (BOOL)_getOldSet:(id *)a3 newSet:(id *)a4
+- (BOOL)_getOldSet:(id *)set newSet:(id *)newSet
 {
   backingNotification = self->_backingNotification;
   v23 = 0;
@@ -23,11 +23,11 @@
   if (v8)
   {
     v11 = self->_oldFilteredIndexes;
-    v12 = [(PLFilteredAlbumChangeNotification *)self updatedFilteredIndexes];
-    v13 = v12;
+    updatedFilteredIndexes = [(PLFilteredAlbumChangeNotification *)self updatedFilteredIndexes];
+    v13 = updatedFilteredIndexes;
     if (v11)
     {
-      v14 = v12 == 0;
+      v14 = updatedFilteredIndexes == 0;
     }
 
     else
@@ -44,11 +44,11 @@
     {
       v17 = MEMORY[0x1E695DFB8];
       v18 = [v9 objectsAtIndexes:v11];
-      *a3 = [v17 orderedSetWithArray:v18];
+      *set = [v17 orderedSetWithArray:v18];
 
       v19 = MEMORY[0x1E695DFB8];
       v20 = [v10 objectsAtIndexes:v13];
-      *a4 = [v19 orderedSetWithArray:v20];
+      *newSet = [v19 orderedSetWithArray:v20];
 
       v21 = 1;
     }
@@ -66,64 +66,64 @@
 {
   [(PLContainerChangeNotification *)self _calculateDiffsIfNecessary];
   v3 = objc_autoreleasePoolPush();
-  v4 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   if ([(PLFilteredAlbumChangeNotification *)self shouldReload])
   {
-    v5 = [(PLAssetContainerChangeNotification *)self _contentRelationshipName];
-    [v4 appendFormat:@", %@ need reload", v5];
+    _contentRelationshipName = [(PLAssetContainerChangeNotification *)self _contentRelationshipName];
+    [string appendFormat:@", %@ need reload", _contentRelationshipName];
   }
 
   else
   {
-    v6 = [(PLContainerChangeNotification *)self deletedIndexes];
+    deletedIndexes = [(PLContainerChangeNotification *)self deletedIndexes];
 
-    if (v6)
+    if (deletedIndexes)
     {
-      v7 = [(PLContainerChangeNotification *)self deletedIndexes];
-      v8 = [v7 pl_shortDescription];
-      [v4 appendFormat:@", deleted: {%@}", v8];
+      deletedIndexes2 = [(PLContainerChangeNotification *)self deletedIndexes];
+      pl_shortDescription = [deletedIndexes2 pl_shortDescription];
+      [string appendFormat:@", deleted: {%@}", pl_shortDescription];
     }
 
-    v9 = [(PLContainerChangeNotification *)self insertedIndexes];
+    insertedIndexes = [(PLContainerChangeNotification *)self insertedIndexes];
 
-    if (v9)
+    if (insertedIndexes)
     {
-      v10 = [(PLContainerChangeNotification *)self insertedIndexes];
-      v11 = [v10 pl_shortDescription];
-      [v4 appendFormat:@", inserted: {%@}", v11];
+      insertedIndexes2 = [(PLContainerChangeNotification *)self insertedIndexes];
+      pl_shortDescription2 = [insertedIndexes2 pl_shortDescription];
+      [string appendFormat:@", inserted: {%@}", pl_shortDescription2];
     }
 
-    v12 = [MEMORY[0x1E696AD60] string];
+    string2 = [MEMORY[0x1E696AD60] string];
     v18 = MEMORY[0x1E69E9820];
     v19 = 3221225472;
     v20 = __53__PLFilteredAlbumChangeNotification__diffDescription__block_invoke;
     v21 = &unk_1E7576478;
-    v13 = v12;
+    v13 = string2;
     v22 = v13;
     [(PLContainerChangeNotification *)self enumerateMovesWithBlock:&v18];
     if ([v13 length])
     {
-      [v4 appendFormat:@", moved: {%@}", v13, v18, v19, v20, v21];
+      [string appendFormat:@", moved: {%@}", v13, v18, v19, v20, v21];
     }
 
-    v14 = [(PLContainerChangeNotification *)self changedIndexes];
+    changedIndexes = [(PLContainerChangeNotification *)self changedIndexes];
 
-    if (v14)
+    if (changedIndexes)
     {
-      v15 = [(PLContainerChangeNotification *)self changedIndexes];
-      v16 = [v15 pl_shortDescription];
-      [v4 appendFormat:@", changed: {%@}", v16];
+      changedIndexes2 = [(PLContainerChangeNotification *)self changedIndexes];
+      pl_shortDescription3 = [changedIndexes2 pl_shortDescription];
+      [string appendFormat:@", changed: {%@}", pl_shortDescription3];
     }
 
     if ([(PLFilteredAlbumChangeNotification *)self countDidChange])
     {
-      [v4 appendString:{@", count changed"}];
+      [string appendString:{@", count changed"}];
     }
   }
 
   objc_autoreleasePoolPop(v3);
 
-  return v4;
+  return string;
 }
 
 - (NSString)description
@@ -131,11 +131,11 @@
   v3 = objc_autoreleasePoolPush();
   v4 = MEMORY[0x1E696AD60];
   v5 = objc_opt_class();
-  v6 = [(PLFilteredAlbumChangeNotification *)self object];
-  v7 = [v4 stringWithFormat:@"<%@: %p> filtered album: %p backing note: <%@: %p>", v5, self, v6, objc_opt_class(), self->_backingNotification];
+  object = [(PLFilteredAlbumChangeNotification *)self object];
+  v7 = [v4 stringWithFormat:@"<%@: %p> filtered album: %p backing note: <%@: %p>", v5, self, object, objc_opt_class(), self->_backingNotification];
 
-  v8 = [(PLFilteredAlbumChangeNotification *)self _diffDescription];
-  [v7 appendString:v8];
+  _diffDescription = [(PLFilteredAlbumChangeNotification *)self _diffDescription];
+  [v7 appendString:_diffDescription];
 
   if ([(PLFilteredAlbumChangeNotification *)self keyAssetDidChange])
   {
@@ -161,8 +161,8 @@
   }
 
   v4 = [(NSIndexSet *)oldFilteredIndexes count];
-  v5 = [(PLFilteredAlbumChangeNotification *)self updatedFilteredIndexes];
-  v6 = v4 != [v5 count];
+  updatedFilteredIndexes = [(PLFilteredAlbumChangeNotification *)self updatedFilteredIndexes];
+  v6 = v4 != [updatedFilteredIndexes count];
 
   return v6;
 }
@@ -179,24 +179,24 @@
   return [(PLContainerChangeNotification *)&v3 shouldReload];
 }
 
-- (PLFilteredAlbumChangeNotification)initWithFilteredAlbum:(id)a3 priorChangeState:(id)a4 albumChangeNotification:(id)a5
+- (PLFilteredAlbumChangeNotification)initWithFilteredAlbum:(id)album priorChangeState:(id)state albumChangeNotification:(id)notification
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  albumCopy = album;
+  stateCopy = state;
+  notificationCopy = notification;
   v21.receiver = self;
   v21.super_class = PLFilteredAlbumChangeNotification;
-  v12 = [(PLContainerChangeNotification *)&v21 _init];
-  v13 = v12;
-  if (v12)
+  _init = [(PLContainerChangeNotification *)&v21 _init];
+  v13 = _init;
+  if (_init)
   {
-    objc_storeStrong(v12 + 13, a3);
-    v14 = [v11 snapshot];
+    objc_storeStrong(_init + 13, album);
+    snapshot = [notificationCopy snapshot];
 
-    if (v14)
+    if (snapshot)
     {
-      v15 = [v11 snapshot];
-      v16 = [v15 filteredIndexesForFilter:v13->_album];
+      snapshot2 = [notificationCopy snapshot];
+      v16 = [snapshot2 filteredIndexesForFilter:v13->_album];
       oldFilteredIndexes = v13->_oldFilteredIndexes;
       v13->_oldFilteredIndexes = v16;
     }
@@ -206,7 +206,7 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v18 = v10;
+        v18 = stateCopy;
       }
 
       else
@@ -215,25 +215,25 @@
       }
 
       v19 = v18;
-      v15 = v13->_oldFilteredIndexes;
+      snapshot2 = v13->_oldFilteredIndexes;
       v13->_oldFilteredIndexes = v19;
     }
 
-    objc_storeStrong(&v13->_backingNotification, a5);
+    objc_storeStrong(&v13->_backingNotification, notification);
   }
 
   return v13;
 }
 
-+ (id)notificationForDerivedObject:(id)a3 priorChangeState:(id)a4 forBackingObjectNotification:(id)a5
++ (id)notificationForDerivedObject:(id)object priorChangeState:(id)state forBackingObjectNotification:(id)notification
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  objectCopy = object;
+  stateCopy = state;
+  notificationCopy = notification;
+  if (notificationCopy)
   {
-    v11 = v8;
-    v12 = v10;
+    v11 = objectCopy;
+    v12 = notificationCopy;
     if (v11)
     {
       objc_opt_class();
@@ -250,7 +250,7 @@
 
     else
     {
-      v13 = [[a1 alloc] initWithFilteredAlbum:v11 priorChangeState:v9 albumChangeNotification:v12];
+      v13 = [[self alloc] initWithFilteredAlbum:v11 priorChangeState:stateCopy albumChangeNotification:v12];
     }
   }
 
@@ -262,14 +262,14 @@
   return v13;
 }
 
-- (void)setFilteredIndexes:(id)a3
+- (void)setFilteredIndexes:(id)indexes
 {
-  v5 = a3;
-  if (self->_filteredIndexes != v5)
+  indexesCopy = indexes;
+  if (self->_filteredIndexes != indexesCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_filteredIndexes, a3);
-    v5 = v6;
+    v6 = indexesCopy;
+    objc_storeStrong(&self->_filteredIndexes, indexes);
+    indexesCopy = v6;
   }
 }
 

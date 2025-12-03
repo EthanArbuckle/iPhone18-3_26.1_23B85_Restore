@@ -1,10 +1,10 @@
 @interface INRestaurantReservationUserBooking
-- (BOOL)isEqual:(id)a3;
-- (INRestaurantReservationUserBooking)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (INRestaurantReservationUserBooking)initWithCoder:(id)coder;
 - (INRestaurantReservationUserBooking)initWithRestaurant:(INRestaurant *)restaurant bookingDate:(NSDate *)bookingDate partySize:(NSUInteger)partySize bookingIdentifier:(NSString *)bookingIdentifier guest:(INRestaurantGuest *)guest status:(INRestaurantReservationUserBookingStatus)status dateStatusModified:(NSDate *)dateStatusModified;
 - (id)_dictionaryRepresentation;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation INRestaurantReservationUserBooking
@@ -14,66 +14,66 @@
   v29[6] = *MEMORY[0x1E69E9840];
   v23 = @"guest";
   guest = self->_guest;
-  v4 = guest;
+  null = guest;
   if (!guest)
   {
-    v4 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v22 = v4;
-  v29[0] = v4;
+  v22 = null;
+  v29[0] = null;
   v24 = @"advisementText";
   advisementText = self->_advisementText;
-  v6 = advisementText;
+  null2 = advisementText;
   if (!advisementText)
   {
-    v6 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v21 = v6;
-  v29[1] = v6;
+  v21 = null2;
+  v29[1] = null2;
   v25 = @"selectedOffer";
   selectedOffer = self->_selectedOffer;
-  v8 = selectedOffer;
+  null3 = selectedOffer;
   if (!selectedOffer)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v19 = v8;
-  v29[2] = v8;
+  v19 = null3;
+  v29[2] = null3;
   v26 = @"guestProvidedSpecialRequestText";
   guestProvidedSpecialRequestText = self->_guestProvidedSpecialRequestText;
-  v10 = guestProvidedSpecialRequestText;
+  null4 = guestProvidedSpecialRequestText;
   if (!guestProvidedSpecialRequestText)
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v29[3] = v10;
+  v29[3] = null4;
   v27 = @"status";
-  v11 = [(INRestaurantReservationUserBooking *)self status];
-  v12 = v11;
-  if (v11 <= INRestaurantReservationUserBookingStatusDenied)
+  status = [(INRestaurantReservationUserBooking *)self status];
+  v12 = status;
+  if (status <= INRestaurantReservationUserBookingStatusDenied)
   {
-    v13 = off_1E72802D0[v11];
+    null5 = off_1E72802D0[status];
   }
 
   else
   {
-    v13 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v29[4] = v13;
+  v29[4] = null5;
   v28 = @"dateStatusModified";
   dateStatusModified = self->_dateStatusModified;
-  v15 = dateStatusModified;
+  null6 = dateStatusModified;
   if (!dateStatusModified)
   {
-    v15 = [MEMORY[0x1E695DFB0] null];
+    null6 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v29[5] = v15;
+  v29[5] = null6;
   v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v29 forKeys:&v23 count:6];
   if (!dateStatusModified)
   {
@@ -138,35 +138,35 @@ LABEL_21:
   return v16;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
+  equalCopy = equal;
   v31.receiver = self;
   v31.super_class = INRestaurantReservationUserBooking;
-  if (![(INRestaurantReservationBooking *)&v31 isEqual:v6])
+  if (![(INRestaurantReservationBooking *)&v31 isEqual:equalCopy])
   {
     goto LABEL_9;
   }
 
-  if (v6 == self)
+  if (equalCopy == self)
   {
     v12 = 1;
     goto LABEL_37;
   }
 
-  if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  if (!equalCopy || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
 LABEL_9:
     v12 = 0;
     goto LABEL_37;
   }
 
-  v7 = v6;
-  v8 = [(INRestaurantReservationUserBooking *)self advisementText];
-  if (!v8)
+  v7 = equalCopy;
+  advisementText = [(INRestaurantReservationUserBooking *)self advisementText];
+  if (!advisementText)
   {
-    v3 = [(INRestaurantReservationUserBooking *)v7 advisementText];
-    if (!v3)
+    advisementText2 = [(INRestaurantReservationUserBooking *)v7 advisementText];
+    if (!advisementText2)
     {
       v11 = 1;
 LABEL_15:
@@ -175,31 +175,31 @@ LABEL_15:
     }
   }
 
-  v4 = [(INRestaurantReservationUserBooking *)v7 advisementText];
-  v9 = [(INRestaurantReservationUserBooking *)self advisementText];
-  if (v9)
+  advisementText3 = [(INRestaurantReservationUserBooking *)v7 advisementText];
+  advisementText4 = [(INRestaurantReservationUserBooking *)self advisementText];
+  if (advisementText4)
   {
-    v10 = [(INRestaurantReservationUserBooking *)self advisementText];
-    v11 = [v4 isEqualToString:v10];
+    advisementText5 = [(INRestaurantReservationUserBooking *)self advisementText];
+    v11 = [advisementText3 isEqualToString:advisementText5];
   }
 
   else
   {
-    v11 = [v4 isEqualToString:&stru_1F01E0850];
+    v11 = [advisementText3 isEqualToString:&stru_1F01E0850];
   }
 
-  if (!v8)
+  if (!advisementText)
   {
     goto LABEL_15;
   }
 
 LABEL_16:
 
-  v13 = [(INRestaurantReservationUserBooking *)self selectedOffer];
-  if (!v13)
+  selectedOffer = [(INRestaurantReservationUserBooking *)self selectedOffer];
+  if (!selectedOffer)
   {
-    v4 = [(INRestaurantReservationUserBooking *)v7 selectedOffer];
-    if (!v4)
+    advisementText3 = [(INRestaurantReservationUserBooking *)v7 selectedOffer];
+    if (!advisementText3)
     {
       v16 = 1;
 LABEL_21:
@@ -208,24 +208,24 @@ LABEL_21:
     }
   }
 
-  v14 = [(INRestaurantReservationUserBooking *)self selectedOffer];
-  v15 = [(INRestaurantReservationUserBooking *)v7 selectedOffer];
-  v16 = [v14 isEqual:v15];
+  selectedOffer2 = [(INRestaurantReservationUserBooking *)self selectedOffer];
+  selectedOffer3 = [(INRestaurantReservationUserBooking *)v7 selectedOffer];
+  v16 = [selectedOffer2 isEqual:selectedOffer3];
 
-  if (!v13)
+  if (!selectedOffer)
   {
     goto LABEL_21;
   }
 
 LABEL_22:
 
-  v17 = [(INRestaurantReservationUserBooking *)self guestProvidedSpecialRequestText];
-  if (!v17)
+  guestProvidedSpecialRequestText = [(INRestaurantReservationUserBooking *)self guestProvidedSpecialRequestText];
+  if (!guestProvidedSpecialRequestText)
   {
-    v30 = [(INRestaurantReservationUserBooking *)v7 guestProvidedSpecialRequestText];
-    if (!v30)
+    guestProvidedSpecialRequestText2 = [(INRestaurantReservationUserBooking *)v7 guestProvidedSpecialRequestText];
+    if (!guestProvidedSpecialRequestText2)
     {
-      v30 = 0;
+      guestProvidedSpecialRequestText2 = 0;
       v23 = 1;
 LABEL_30:
 
@@ -233,14 +233,14 @@ LABEL_30:
     }
   }
 
-  v18 = [(INRestaurantReservationUserBooking *)self guestProvidedSpecialRequestText];
-  v19 = [(INRestaurantReservationUserBooking *)self guestProvidedSpecialRequestText];
-  if (v19)
+  guestProvidedSpecialRequestText3 = [(INRestaurantReservationUserBooking *)self guestProvidedSpecialRequestText];
+  guestProvidedSpecialRequestText4 = [(INRestaurantReservationUserBooking *)self guestProvidedSpecialRequestText];
+  if (guestProvidedSpecialRequestText4)
   {
     [(INRestaurantReservationUserBooking *)self guestProvidedSpecialRequestText];
     v20 = v16;
     v22 = v21 = v11;
-    v23 = [v18 isEqualToString:v22];
+    v23 = [guestProvidedSpecialRequestText3 isEqualToString:v22];
 
     v11 = v21;
     v16 = v20;
@@ -248,27 +248,27 @@ LABEL_30:
 
   else
   {
-    v23 = [v18 isEqualToString:&stru_1F01E0850];
+    v23 = [guestProvidedSpecialRequestText3 isEqualToString:&stru_1F01E0850];
   }
 
-  if (!v17)
+  if (!guestProvidedSpecialRequestText)
   {
     goto LABEL_30;
   }
 
 LABEL_31:
 
-  v24 = [(INRestaurantReservationUserBooking *)v7 guest];
-  v25 = [(INRestaurantReservationUserBooking *)self guest];
+  guest = [(INRestaurantReservationUserBooking *)v7 guest];
+  guest2 = [(INRestaurantReservationUserBooking *)self guest];
   v12 = 0;
-  if (([v24 isEqual:v25] & v11 & v16) == 1 && v23)
+  if (([guest isEqual:guest2] & v11 & v16) == 1 && v23)
   {
-    v26 = [(INRestaurantReservationUserBooking *)self status];
-    if (v26 == [(INRestaurantReservationUserBooking *)v7 status])
+    status = [(INRestaurantReservationUserBooking *)self status];
+    if (status == [(INRestaurantReservationUserBooking *)v7 status])
     {
-      v27 = [(INRestaurantReservationUserBooking *)v7 dateStatusModified];
-      v28 = [(INRestaurantReservationUserBooking *)self dateStatusModified];
-      v12 = [v27 isEqualToDate:v28];
+      dateStatusModified = [(INRestaurantReservationUserBooking *)v7 dateStatusModified];
+      dateStatusModified2 = [(INRestaurantReservationUserBooking *)self dateStatusModified];
+      v12 = [dateStatusModified isEqualToDate:dateStatusModified2];
     }
 
     else
@@ -281,72 +281,72 @@ LABEL_37:
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v11.receiver = self;
   v11.super_class = INRestaurantReservationUserBooking;
-  v4 = [(INRestaurantReservationBooking *)&v11 copyWithZone:a3];
-  v5 = [(INRestaurantReservationUserBooking *)self guest];
-  [v4 setGuest:v5];
+  v4 = [(INRestaurantReservationBooking *)&v11 copyWithZone:zone];
+  guest = [(INRestaurantReservationUserBooking *)self guest];
+  [v4 setGuest:guest];
 
-  v6 = [(INRestaurantReservationUserBooking *)self advisementText];
-  [v4 setAdvisementText:v6];
+  advisementText = [(INRestaurantReservationUserBooking *)self advisementText];
+  [v4 setAdvisementText:advisementText];
 
-  v7 = [(INRestaurantReservationUserBooking *)self selectedOffer];
-  [v4 setSelectedOffer:v7];
+  selectedOffer = [(INRestaurantReservationUserBooking *)self selectedOffer];
+  [v4 setSelectedOffer:selectedOffer];
 
-  v8 = [(INRestaurantReservationUserBooking *)self guestProvidedSpecialRequestText];
-  [v4 setGuestProvidedSpecialRequestText:v8];
+  guestProvidedSpecialRequestText = [(INRestaurantReservationUserBooking *)self guestProvidedSpecialRequestText];
+  [v4 setGuestProvidedSpecialRequestText:guestProvidedSpecialRequestText];
 
   [v4 setStatus:{-[INRestaurantReservationUserBooking status](self, "status")}];
-  v9 = [(INRestaurantReservationUserBooking *)self dateStatusModified];
-  [v4 setDateStatusModified:v9];
+  dateStatusModified = [(INRestaurantReservationUserBooking *)self dateStatusModified];
+  [v4 setDateStatusModified:dateStatusModified];
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = INRestaurantReservationUserBooking;
-  v4 = a3;
-  [(INRestaurantReservationBooking *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_guest forKey:{@"guest", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_advisementText forKey:@"advisementText"];
-  [v4 encodeObject:self->_selectedOffer forKey:@"selectedOffer"];
-  [v4 encodeObject:self->_guestProvidedSpecialRequestText forKey:@"guestProvidedSpecialRequestText"];
-  [v4 encodeInteger:self->_status forKey:@"status"];
-  [v4 encodeObject:self->_dateStatusModified forKey:@"dateStatusModified"];
+  coderCopy = coder;
+  [(INRestaurantReservationBooking *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_guest forKey:{@"guest", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_advisementText forKey:@"advisementText"];
+  [coderCopy encodeObject:self->_selectedOffer forKey:@"selectedOffer"];
+  [coderCopy encodeObject:self->_guestProvidedSpecialRequestText forKey:@"guestProvidedSpecialRequestText"];
+  [coderCopy encodeInteger:self->_status forKey:@"status"];
+  [coderCopy encodeObject:self->_dateStatusModified forKey:@"dateStatusModified"];
 }
 
-- (INRestaurantReservationUserBooking)initWithCoder:(id)a3
+- (INRestaurantReservationUserBooking)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = INRestaurantReservationUserBooking;
-  v5 = [(INRestaurantReservationBooking *)&v15 initWithCoder:v4];
+  v5 = [(INRestaurantReservationBooking *)&v15 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"guest"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"guest"];
     if (v6)
     {
       objc_storeStrong(&v5->_guest, v6);
     }
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"advisementText"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"advisementText"];
     advisementText = v5->_advisementText;
     v5->_advisementText = v7;
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"selectedOffer"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"selectedOffer"];
     selectedOffer = v5->_selectedOffer;
     v5->_selectedOffer = v9;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"guestProvidedSpecialRequestText"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"guestProvidedSpecialRequestText"];
     guestProvidedSpecialRequestText = v5->_guestProvidedSpecialRequestText;
     v5->_guestProvidedSpecialRequestText = v11;
 
-    v5->_status = [v4 decodeIntegerForKey:@"status"];
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dateStatusModified"];
+    v5->_status = [coderCopy decodeIntegerForKey:@"status"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dateStatusModified"];
     if (v13)
     {
       objc_storeStrong(&v5->_dateStatusModified, v13);

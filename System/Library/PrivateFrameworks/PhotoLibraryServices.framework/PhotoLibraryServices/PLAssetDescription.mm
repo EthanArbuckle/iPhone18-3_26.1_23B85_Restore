@@ -2,7 +2,7 @@
 + (id)listOfSyncedProperties;
 - (BOOL)isSyncableChange;
 - (id)duplicateSortPropertyNames;
-- (id)payloadForChangedKeys:(id)a3;
+- (id)payloadForChangedKeys:(id)keys;
 - (id)payloadID;
 - (void)prepareForDeletion;
 - (void)willSave;
@@ -19,14 +19,14 @@
   return v2;
 }
 
-- (id)payloadForChangedKeys:(id)a3
+- (id)payloadForChangedKeys:(id)keys
 {
-  v4 = a3;
-  v5 = [(PLAssetDescription *)self assetAttributes];
-  v6 = [v5 asset];
-  if ([v6 isValidForJournalPersistence])
+  keysCopy = keys;
+  assetAttributes = [(PLAssetDescription *)self assetAttributes];
+  asset = [assetAttributes asset];
+  if ([asset isValidForJournalPersistence])
   {
-    v7 = [[PLAssetJournalEntryPayload alloc] initWithAssetDescription:self changedKeys:v4];
+    v7 = [[PLAssetJournalEntryPayload alloc] initWithAssetDescription:self changedKeys:keysCopy];
   }
 
   else
@@ -39,10 +39,10 @@
 
 - (id)payloadID
 {
-  v2 = [(PLAssetDescription *)self assetAttributes];
-  v3 = [v2 asset];
-  v4 = [v3 uuid];
-  v5 = [PLJournalEntryPayloadIDFactory payloadIDWithUUIDString:v4];
+  assetAttributes = [(PLAssetDescription *)self assetAttributes];
+  asset = [assetAttributes asset];
+  uuid = [asset uuid];
+  v5 = [PLJournalEntryPayloadIDFactory payloadIDWithUUIDString:uuid];
 
   return v5;
 }
@@ -52,45 +52,45 @@
   v16.receiver = self;
   v16.super_class = PLAssetDescription;
   [(PLManagedObject *)&v16 willSave];
-  v3 = [(PLAssetDescription *)self managedObjectContext];
+  managedObjectContext = [(PLAssetDescription *)self managedObjectContext];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     goto LABEL_20;
   }
 
-  v4 = [(PLAssetDescription *)self assetAttributes];
-  v5 = [v4 asset];
+  assetAttributes = [(PLAssetDescription *)self assetAttributes];
+  asset = [assetAttributes asset];
 
-  if (([v5 isDeleted] & 1) == 0 && (-[PLAssetDescription isDeleted](self, "isDeleted") & 1) == 0)
+  if (([asset isDeleted] & 1) == 0 && (-[PLAssetDescription isDeleted](self, "isDeleted") & 1) == 0)
   {
-    v6 = [(PLAssetDescription *)self changedValues];
-    v7 = [(PLAssetDescription *)self isSyncableChange];
-    v8 = [v5 changedValues];
-    v9 = [v8 objectForKeyedSubscript:@"modificationDate"];
+    changedValues = [(PLAssetDescription *)self changedValues];
+    isSyncableChange = [(PLAssetDescription *)self isSyncableChange];
+    changedValues2 = [asset changedValues];
+    v9 = [changedValues2 objectForKeyedSubscript:@"modificationDate"];
 
-    if (!v9 && v7)
+    if (!v9 && isSyncableChange)
     {
-      v10 = [MEMORY[0x1E695DF00] date];
-      [v5 setModificationDate:v10];
+      date = [MEMORY[0x1E695DF00] date];
+      [asset setModificationDate:date];
     }
 
-    if (![v5 isValidTypeForPersistence])
+    if (![asset isValidTypeForPersistence])
     {
       goto LABEL_14;
     }
 
-    v11 = [v5 persistedFileSystemAttributesFileURL];
-    if (v11)
+    persistedFileSystemAttributesFileURL = [asset persistedFileSystemAttributesFileURL];
+    if (persistedFileSystemAttributesFileURL)
     {
-      v12 = [v6 objectForKeyedSubscript:@"longDescription"];
+      v12 = [changedValues objectForKeyedSubscript:@"longDescription"];
       if (v12)
       {
 
 LABEL_12:
         v13 = MEMORY[0x1E69BF230];
-        v14 = [(PLAssetDescription *)self longDescription];
-        [v13 persistString:v14 forKey:*MEMORY[0x1E69BFD70] fileURL:v11];
+        longDescription = [(PLAssetDescription *)self longDescription];
+        [v13 persistString:longDescription forKey:*MEMORY[0x1E69BFD70] fileURL:persistedFileSystemAttributesFileURL];
 
         goto LABEL_13;
       }
@@ -106,8 +106,8 @@ LABEL_13:
 LABEL_14:
     if ([PLDuplicateAsset isDuplicateAssetSortChangedObject:self])
     {
-      v15 = [v5 duplicateAlbum];
-      [v15 sortAssets];
+      duplicateAlbum = [asset duplicateAlbum];
+      [duplicateAlbum sortAssets];
     }
   }
 
@@ -124,20 +124,20 @@ LABEL_20:
   v7.receiver = self;
   v7.super_class = PLAssetDescription;
   [(PLAssetDescription *)&v7 prepareForDeletion];
-  v3 = [(PLAssetDescription *)self managedObjectContext];
+  managedObjectContext = [(PLAssetDescription *)self managedObjectContext];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     [PLDelayedSearchIndexUpdates recordAssetDescriptionIfNeeded:self];
-    v4 = [(PLAssetDescription *)self assetAttributes];
-    v5 = [v4 asset];
+    assetAttributes = [(PLAssetDescription *)self assetAttributes];
+    asset = [assetAttributes asset];
 
-    if (([v5 isDeleted] & 1) == 0 && objc_msgSend(v5, "isValidTypeForPersistence"))
+    if (([asset isDeleted] & 1) == 0 && objc_msgSend(asset, "isValidTypeForPersistence"))
     {
-      v6 = [v5 persistedFileSystemAttributesFileURL];
-      if (v6)
+      persistedFileSystemAttributesFileURL = [asset persistedFileSystemAttributesFileURL];
+      if (persistedFileSystemAttributesFileURL)
       {
-        [MEMORY[0x1E69BF230] persistString:0 forKey:*MEMORY[0x1E69BFD70] fileURL:v6];
+        [MEMORY[0x1E69BF230] persistString:0 forKey:*MEMORY[0x1E69BFD70] fileURL:persistedFileSystemAttributesFileURL];
       }
     }
   }
@@ -146,12 +146,12 @@ LABEL_20:
 - (BOOL)isSyncableChange
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [(PLAssetDescription *)self assetAttributes];
-  v4 = [v3 asset];
+  assetAttributes = [(PLAssetDescription *)self assetAttributes];
+  asset = [assetAttributes asset];
 
-  if ([v4 savedAssetTypeIsSupportedForUpload])
+  if ([asset savedAssetTypeIsSupportedForUpload])
   {
-    v5 = [(PLAssetDescription *)self changedValues];
+    changedValues = [(PLAssetDescription *)self changedValues];
     v12 = 0u;
     v13 = 0u;
     v14 = 0u;
@@ -170,7 +170,7 @@ LABEL_20:
             objc_enumerationMutation(v6);
           }
 
-          v10 = [v5 objectForKey:*(*(&v12 + 1) + 8 * i)];
+          v10 = [changedValues objectForKey:*(*(&v12 + 1) + 8 * i)];
 
           if (v10)
           {

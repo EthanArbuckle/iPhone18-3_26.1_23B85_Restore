@@ -1,6 +1,6 @@
 @interface MusicSBS_TextContentView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (MusicSBS_TextContentView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (MusicSBS_TextContentView)initWithFrame:(CGRect)frame;
 - (UILabel)accessibilityTranslationLabel;
 - (UIView)accessibilityMainTextView;
 - (id)copy;
@@ -30,7 +30,7 @@
 
 - (id)copy
 {
-  v2 = self;
+  selfCopy = self;
   SyncedLyricsLineView.SBS_TextContentView.copy()(v5);
 
   __swift_project_boxed_opaque_existential_0Tm(v5, v5[3]);
@@ -39,11 +39,11 @@
   return v3;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = self;
+  height = fits.height;
+  width = fits.width;
+  selfCopy = self;
   SyncedLyricsLineView.SBS_TextContentView.sizeThatFits(_:)(width, height);
   v7 = v6;
   v9 = v8;
@@ -57,11 +57,11 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   SyncedLyricsLineView.SBS_TextContentView.layoutSubviews()();
 }
 
-- (MusicSBS_TextContentView)initWithFrame:(CGRect)a3
+- (MusicSBS_TextContentView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

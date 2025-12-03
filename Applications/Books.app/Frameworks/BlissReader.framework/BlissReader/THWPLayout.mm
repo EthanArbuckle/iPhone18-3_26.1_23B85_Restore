@@ -1,17 +1,17 @@
 @interface THWPLayout
-- (void)willBeAddedToLayoutController:(id)a3;
+- (void)willBeAddedToLayoutController:(id)controller;
 @end
 
 @implementation THWPLayout
 
-- (void)willBeAddedToLayoutController:(id)a3
+- (void)willBeAddedToLayoutController:(id)controller
 {
-  v4 = [(THWPLayout *)self info];
+  info = [(THWPLayout *)self info];
   if ([objc_msgSend(objc_msgSend(-[THWPLayout sectionLayout](self "sectionLayout")])
   {
     v5 = [objc_msgSend(-[THWPLayout sectionLayout](self "sectionLayout")];
 
-    [v4 updateAnnotationSourceWithContentNode:v5];
+    [info updateAnnotationSourceWithContentNode:v5];
   }
 }
 

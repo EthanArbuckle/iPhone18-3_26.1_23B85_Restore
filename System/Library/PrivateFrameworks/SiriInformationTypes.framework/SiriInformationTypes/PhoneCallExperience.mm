@@ -1,14 +1,14 @@
 @interface PhoneCallExperience
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PhoneCallExperience
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  PhoneCallExperience.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  PhoneCallExperience.encode(with:)(coderCopy);
 }
 
 @end

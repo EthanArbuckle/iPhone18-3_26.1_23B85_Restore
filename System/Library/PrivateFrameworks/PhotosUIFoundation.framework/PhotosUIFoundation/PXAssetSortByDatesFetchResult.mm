@@ -1,24 +1,24 @@
 @interface PXAssetSortByDatesFetchResult
-- (PXAssetSortByDatesFetchResult)initWithSortDescriptor:(id)a3 fetchedIndexes:(id)a4 dateByIndex:(id)a5;
-- (void)enumerateFetchedItemsUsingBlock:(id)a3;
+- (PXAssetSortByDatesFetchResult)initWithSortDescriptor:(id)descriptor fetchedIndexes:(id)indexes dateByIndex:(id)index;
+- (void)enumerateFetchedItemsUsingBlock:(id)block;
 @end
 
 @implementation PXAssetSortByDatesFetchResult
 
-- (void)enumerateFetchedItemsUsingBlock:(id)a3
+- (void)enumerateFetchedItemsUsingBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(PXAssetSortByDatesFetchResult *)self dateByIndex];
-  v6 = [(PXAssetSortByDatesFetchResult *)self fetchedIndexes];
+  blockCopy = block;
+  dateByIndex = [(PXAssetSortByDatesFetchResult *)self dateByIndex];
+  fetchedIndexes = [(PXAssetSortByDatesFetchResult *)self fetchedIndexes];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __65__PXAssetSortByDatesFetchResult_enumerateFetchedItemsUsingBlock___block_invoke;
   v9[3] = &unk_1E7BB78A8;
-  v10 = v5;
-  v11 = v4;
-  v7 = v4;
-  v8 = v5;
-  [v6 enumerateIndexesUsingBlock:v9];
+  v10 = dateByIndex;
+  v11 = blockCopy;
+  v7 = blockCopy;
+  v8 = dateByIndex;
+  [fetchedIndexes enumerateIndexesUsingBlock:v9];
 }
 
 void __65__PXAssetSortByDatesFetchResult_enumerateFetchedItemsUsingBlock___block_invoke(uint64_t a1, uint64_t a2)
@@ -35,23 +35,23 @@ void __65__PXAssetSortByDatesFetchResult_enumerateFetchedItemsUsingBlock___block
   }
 }
 
-- (PXAssetSortByDatesFetchResult)initWithSortDescriptor:(id)a3 fetchedIndexes:(id)a4 dateByIndex:(id)a5
+- (PXAssetSortByDatesFetchResult)initWithSortDescriptor:(id)descriptor fetchedIndexes:(id)indexes dateByIndex:(id)index
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  descriptorCopy = descriptor;
+  indexesCopy = indexes;
+  indexCopy = index;
   v19.receiver = self;
   v19.super_class = PXAssetSortByDatesFetchResult;
   v12 = [(PXAssetSortByDatesFetchResult *)&v19 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_sortDescriptor, a3);
-    v14 = [v10 copy];
+    objc_storeStrong(&v12->_sortDescriptor, descriptor);
+    v14 = [indexesCopy copy];
     fetchedIndexes = v13->_fetchedIndexes;
     v13->_fetchedIndexes = v14;
 
-    v16 = [v11 copy];
+    v16 = [indexCopy copy];
     dateByIndex = v13->_dateByIndex;
     v13->_dateByIndex = v16;
   }

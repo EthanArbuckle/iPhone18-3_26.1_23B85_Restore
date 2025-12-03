@@ -1,15 +1,15 @@
 @interface DNDMutableScheduleSettings
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setTimePeriod:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setTimePeriod:(id)period;
 @end
 
 @implementation DNDMutableScheduleSettings
 
-- (void)setTimePeriod:(id)a3
+- (void)setTimePeriod:(id)period
 {
-  if (a3)
+  if (period)
   {
-    v4 = [a3 copy];
+    v4 = [period copy];
   }
 
   else
@@ -23,7 +23,7 @@
   MEMORY[0x2821F96F8](v4, timePeriod);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [DNDScheduleSettings alloc];
 

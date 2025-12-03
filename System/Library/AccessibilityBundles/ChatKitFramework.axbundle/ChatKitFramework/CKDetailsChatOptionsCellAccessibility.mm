@@ -1,5 +1,5 @@
 @interface CKDetailsChatOptionsCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (CGPoint)accessibilityActivationPoint;
 - (id)accessibilityLabel;
 - (id)accessibilityValue;
@@ -8,43 +8,43 @@
 
 @implementation CKDetailsChatOptionsCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CKDetailsChatOptionsCell" isKindOfClass:@"UITableViewCell"];
-  [v3 validateClass:@"CKDetailsChatOptionsCell" hasInstanceMethod:@"controlSwitch" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CKDetailsChatOptionsCell" isKindOfClass:@"UITableViewCell"];
+  [validationsCopy validateClass:@"CKDetailsChatOptionsCell" hasInstanceMethod:@"controlSwitch" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel
 {
   v3 = [(CKDetailsChatOptionsCellAccessibility *)self safeUIViewForKey:@"textLabel"];
-  v4 = [v3 accessibilityLabel];
+  accessibilityLabel = [v3 accessibilityLabel];
 
-  if (![v4 length])
+  if (![accessibilityLabel length])
   {
     v5 = [(CKDetailsChatOptionsCellAccessibility *)self safeUIViewForKey:@"controlSwitch"];
-    v6 = [v5 accessibilityLabel];
+    accessibilityLabel2 = [v5 accessibilityLabel];
 
-    v4 = v6;
+    accessibilityLabel = accessibilityLabel2;
   }
 
-  return v4;
+  return accessibilityLabel;
 }
 
 - (id)accessibilityValue
 {
   v2 = [(CKDetailsChatOptionsCellAccessibility *)self safeUIViewForKey:@"controlSwitch"];
-  v3 = [v2 accessibilityValue];
+  accessibilityValue = [v2 accessibilityValue];
 
-  return v3;
+  return accessibilityValue;
 }
 
 - (unint64_t)accessibilityTraits
 {
   v2 = [(CKDetailsChatOptionsCellAccessibility *)self safeUIViewForKey:@"controlSwitch"];
-  v3 = [v2 accessibilityTraits];
+  accessibilityTraits = [v2 accessibilityTraits];
 
-  return v3;
+  return accessibilityTraits;
 }
 
 - (CGPoint)accessibilityActivationPoint

@@ -1,54 +1,54 @@
 @interface SXDataTableBlueprint
-- (BOOL)isRectValid:(CGRect)a3;
-- (CGRect)cellContentRectForIndexPath:(id)a3;
-- (CGRect)cellRectForIndexPath:(id)a3;
-- (CGRect)rectForColumnAtIndex:(unint64_t)a3;
-- (CGRect)rectForColumnDividerAtIndexPath:(id)a3;
-- (CGRect)rectForRowAtIndex:(unint64_t)a3;
-- (CGRect)rectForRowDividerAtIndexPath:(id)a3;
+- (BOOL)isRectValid:(CGRect)valid;
+- (CGRect)cellContentRectForIndexPath:(id)path;
+- (CGRect)cellRectForIndexPath:(id)path;
+- (CGRect)rectForColumnAtIndex:(unint64_t)index;
+- (CGRect)rectForColumnDividerAtIndexPath:(id)path;
+- (CGRect)rectForRowAtIndex:(unint64_t)index;
+- (CGRect)rectForRowDividerAtIndexPath:(id)path;
 - (CGSize)tableSize;
-- (SXDataTableBlueprint)initWithNumberOfRows:(unint64_t)a3 numberOfColumns:(unint64_t)a4 withTableInsets:(UIEdgeInsets)a5;
+- (SXDataTableBlueprint)initWithNumberOfRows:(unint64_t)rows numberOfColumns:(unint64_t)columns withTableInsets:(UIEdgeInsets)insets;
 - (UIEdgeInsets)tableInsets;
 - (id)description;
-- (void)addCellContentRect:(CGRect)a3 forIndexPath:(id)a4;
-- (void)addCellRect:(CGRect)a3 forIndexPath:(id)a4;
-- (void)addColumnDividerRect:(CGRect)a3 forIndexPath:(id)a4;
-- (void)addRowDividerRect:(CGRect)a3 forIndexPath:(id)a4;
+- (void)addCellContentRect:(CGRect)rect forIndexPath:(id)path;
+- (void)addCellRect:(CGRect)rect forIndexPath:(id)path;
+- (void)addColumnDividerRect:(CGRect)rect forIndexPath:(id)path;
+- (void)addRowDividerRect:(CGRect)rect forIndexPath:(id)path;
 @end
 
 @implementation SXDataTableBlueprint
 
-- (SXDataTableBlueprint)initWithNumberOfRows:(unint64_t)a3 numberOfColumns:(unint64_t)a4 withTableInsets:(UIEdgeInsets)a5
+- (SXDataTableBlueprint)initWithNumberOfRows:(unint64_t)rows numberOfColumns:(unint64_t)columns withTableInsets:(UIEdgeInsets)insets
 {
-  right = a5.right;
-  bottom = a5.bottom;
-  left = a5.left;
-  top = a5.top;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
   v22.receiver = self;
   v22.super_class = SXDataTableBlueprint;
   v11 = [(SXDataTableBlueprint *)&v22 init];
   v12 = v11;
   if (v11)
   {
-    v11->_numberOfRows = a3;
-    v11->_numberOfColumns = a4;
+    v11->_numberOfRows = rows;
+    v11->_numberOfColumns = columns;
     v11->_tableInsets.top = top;
     v11->_tableInsets.left = left;
     v11->_tableInsets.bottom = bottom;
     v11->_tableInsets.right = right;
-    v13 = [SXDataTableDictionary dataTableDictionaryWithRows:a3 andColumns:a4];
+    v13 = [SXDataTableDictionary dataTableDictionaryWithRows:rows andColumns:columns];
     blueprint = v12->_blueprint;
     v12->_blueprint = v13;
 
-    v15 = [SXDataTableDictionary dataTableDictionaryWithRows:a3 andColumns:a4];
+    v15 = [SXDataTableDictionary dataTableDictionaryWithRows:rows andColumns:columns];
     contentBlueprint = v12->_contentBlueprint;
     v12->_contentBlueprint = v15;
 
-    v17 = [SXDataTableDictionary dataTableDictionaryWithRows:a3 andColumns:a4];
+    v17 = [SXDataTableDictionary dataTableDictionaryWithRows:rows andColumns:columns];
     rowDividers = v12->_rowDividers;
     v12->_rowDividers = v17;
 
-    v19 = [SXDataTableDictionary dataTableDictionaryWithRows:a3 andColumns:a4];
+    v19 = [SXDataTableDictionary dataTableDictionaryWithRows:rows andColumns:columns];
     columnDividers = v12->_columnDividers;
     v12->_columnDividers = v19;
   }
@@ -56,64 +56,64 @@
   return v12;
 }
 
-- (void)addCellRect:(CGRect)a3 forIndexPath:(id)a4
+- (void)addCellRect:(CGRect)rect forIndexPath:(id)path
 {
-  var1 = a4.var1;
-  var0 = a4.var0;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v11 = [(SXDataTableBlueprint *)self blueprint];
+  var1 = path.var1;
+  var0 = path.var0;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  blueprint = [(SXDataTableBlueprint *)self blueprint];
   v10 = [MEMORY[0x1E696B098] valueWithCGRect:{x, y, width, height}];
-  [v11 setObject:v10 forIndexPath:{var0, var1}];
+  [blueprint setObject:v10 forIndexPath:{var0, var1}];
 }
 
-- (void)addCellContentRect:(CGRect)a3 forIndexPath:(id)a4
+- (void)addCellContentRect:(CGRect)rect forIndexPath:(id)path
 {
-  var1 = a4.var1;
-  var0 = a4.var0;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v11 = [(SXDataTableBlueprint *)self contentBlueprint];
+  var1 = path.var1;
+  var0 = path.var0;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  contentBlueprint = [(SXDataTableBlueprint *)self contentBlueprint];
   v10 = [MEMORY[0x1E696B098] valueWithCGRect:{x, y, width, height}];
-  [v11 setObject:v10 forIndexPath:{var0, var1}];
+  [contentBlueprint setObject:v10 forIndexPath:{var0, var1}];
 }
 
-- (void)addColumnDividerRect:(CGRect)a3 forIndexPath:(id)a4
+- (void)addColumnDividerRect:(CGRect)rect forIndexPath:(id)path
 {
-  var1 = a4.var1;
-  var0 = a4.var0;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v11 = [(SXDataTableBlueprint *)self columnDividers];
+  var1 = path.var1;
+  var0 = path.var0;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  columnDividers = [(SXDataTableBlueprint *)self columnDividers];
   v10 = [MEMORY[0x1E696B098] valueWithCGRect:{x, y, width, height}];
-  [v11 setObject:v10 forIndexPath:{var0, var1}];
+  [columnDividers setObject:v10 forIndexPath:{var0, var1}];
 }
 
-- (void)addRowDividerRect:(CGRect)a3 forIndexPath:(id)a4
+- (void)addRowDividerRect:(CGRect)rect forIndexPath:(id)path
 {
-  var1 = a4.var1;
-  var0 = a4.var0;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v11 = [(SXDataTableBlueprint *)self rowDividers];
+  var1 = path.var1;
+  var0 = path.var0;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  rowDividers = [(SXDataTableBlueprint *)self rowDividers];
   v10 = [MEMORY[0x1E696B098] valueWithCGRect:{x, y, width, height}];
-  [v11 setObject:v10 forIndexPath:{var0, var1}];
+  [rowDividers setObject:v10 forIndexPath:{var0, var1}];
 }
 
-- (CGRect)cellRectForIndexPath:(id)a3
+- (CGRect)cellRectForIndexPath:(id)path
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
-  v5 = [(SXDataTableBlueprint *)self blueprint];
-  v6 = [v5 objectForIndexPath:{var0, var1}];
+  var1 = path.var1;
+  var0 = path.var0;
+  blueprint = [(SXDataTableBlueprint *)self blueprint];
+  v6 = [blueprint objectForIndexPath:{var0, var1}];
   [v6 CGRectValue];
   v8 = v7;
   v10 = v9;
@@ -131,12 +131,12 @@
   return result;
 }
 
-- (CGRect)cellContentRectForIndexPath:(id)a3
+- (CGRect)cellContentRectForIndexPath:(id)path
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
-  v5 = [(SXDataTableBlueprint *)self contentBlueprint];
-  v6 = [v5 objectForIndexPath:{var0, var1}];
+  var1 = path.var1;
+  var0 = path.var0;
+  contentBlueprint = [(SXDataTableBlueprint *)self contentBlueprint];
+  v6 = [contentBlueprint objectForIndexPath:{var0, var1}];
   [v6 CGRectValue];
   v8 = v7;
   v10 = v9;
@@ -154,12 +154,12 @@
   return result;
 }
 
-- (CGRect)rectForColumnDividerAtIndexPath:(id)a3
+- (CGRect)rectForColumnDividerAtIndexPath:(id)path
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
-  v5 = [(SXDataTableBlueprint *)self columnDividers];
-  v6 = [v5 objectForIndexPath:{var0, var1}];
+  var1 = path.var1;
+  var0 = path.var0;
+  columnDividers = [(SXDataTableBlueprint *)self columnDividers];
+  v6 = [columnDividers objectForIndexPath:{var0, var1}];
   [v6 CGRectValue];
   v8 = v7;
   v10 = v9;
@@ -177,12 +177,12 @@
   return result;
 }
 
-- (CGRect)rectForRowDividerAtIndexPath:(id)a3
+- (CGRect)rectForRowDividerAtIndexPath:(id)path
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
-  v5 = [(SXDataTableBlueprint *)self rowDividers];
-  v6 = [v5 objectForIndexPath:{var0, var1}];
+  var1 = path.var1;
+  var0 = path.var0;
+  rowDividers = [(SXDataTableBlueprint *)self rowDividers];
+  v6 = [rowDividers objectForIndexPath:{var0, var1}];
   [v6 CGRectValue];
   v8 = v7;
   v10 = v9;
@@ -200,14 +200,14 @@
   return result;
 }
 
-- (CGRect)rectForRowAtIndex:(unint64_t)a3
+- (CGRect)rectForRowAtIndex:(unint64_t)index
 {
-  [(SXDataTableBlueprint *)self cellRectForIndexPath:a3, 0];
+  [(SXDataTableBlueprint *)self cellRectForIndexPath:index, 0];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  [(SXDataTableBlueprint *)self cellRectForIndexPath:a3, [(SXDataTableBlueprint *)self numberOfColumns]- 1];
+  [(SXDataTableBlueprint *)self cellRectForIndexPath:index, [(SXDataTableBlueprint *)self numberOfColumns]- 1];
   v14 = v13;
   v16 = v15;
   v18 = v17;
@@ -232,9 +232,9 @@
   v36.size.width = v10;
   v36.size.height = v12;
   Height = CGRectGetHeight(v36);
-  [(SXDataTableBlueprint *)self rectForRowDividerAtIndexPath:a3, 0];
+  [(SXDataTableBlueprint *)self rectForRowDividerAtIndexPath:index, 0];
   v24 = Height + CGRectGetHeight(v37);
-  if (!a3)
+  if (!index)
   {
     [(SXDataTableBlueprint *)self tableInsets];
     MinY = MinY - v25;
@@ -242,7 +242,7 @@
     v24 = v24 + v26;
   }
 
-  if ([(SXDataTableBlueprint *)self numberOfRows]- 1 == a3)
+  if ([(SXDataTableBlueprint *)self numberOfRows]- 1 == index)
   {
     [(SXDataTableBlueprint *)self tableInsets];
     v24 = v24 + v27;
@@ -259,9 +259,9 @@
   return result;
 }
 
-- (CGRect)rectForColumnAtIndex:(unint64_t)a3
+- (CGRect)rectForColumnAtIndex:(unint64_t)index
 {
-  [(SXDataTableBlueprint *)self cellRectForIndexPath:[(SXDataTableBlueprint *)self numberOfRows]- 1, a3];
+  [(SXDataTableBlueprint *)self cellRectForIndexPath:[(SXDataTableBlueprint *)self numberOfRows]- 1, index];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -283,9 +283,9 @@
   v28.size.width = v10;
   v28.size.height = v12;
   Width = CGRectGetWidth(v28);
-  [(SXDataTableBlueprint *)self rectForColumnDividerAtIndexPath:0, a3];
+  [(SXDataTableBlueprint *)self rectForColumnDividerAtIndexPath:0, index];
   v17 = Width + CGRectGetWidth(v29);
-  if (!a3)
+  if (!index)
   {
     [(SXDataTableBlueprint *)self tableInsets];
     MinX = MinX - v18;
@@ -293,7 +293,7 @@
     v17 = v17 + v19;
   }
 
-  if ([(SXDataTableBlueprint *)self numberOfColumns]- 1 == a3)
+  if ([(SXDataTableBlueprint *)self numberOfColumns]- 1 == index)
   {
     [(SXDataTableBlueprint *)self tableInsets];
     v17 = v17 + v20;
@@ -310,13 +310,13 @@
   return result;
 }
 
-- (BOOL)isRectValid:(CGRect)a3
+- (BOOL)isRectValid:(CGRect)valid
 {
-  y = a3.origin.y;
-  height = a3.size.height;
+  y = valid.origin.y;
+  height = valid.size.height;
   v5 = vdupq_n_s64(0x7FEFFFFFFFFFFFFFuLL);
-  LODWORD(v5.f64[0]) = vuzp1_s8(vmovn_s32(vmvnq_s8(vuzp1q_s32(vceqq_f64(a3.origin, v5), vceqq_f64(a3.size, v5)))), *&a3.origin.x).u32[0];
-  v6 = vmovn_s32(vuzp1q_s32(vceqq_f64(a3.origin, a3.origin), vceqq_f64(a3.size, a3.size)));
+  LODWORD(v5.f64[0]) = vuzp1_s8(vmovn_s32(vmvnq_s8(vuzp1q_s32(vceqq_f64(valid.origin, v5), vceqq_f64(valid.size, v5)))), *&valid.origin.x).u32[0];
+  v6 = vmovn_s32(vuzp1q_s32(vceqq_f64(valid.origin, valid.origin), vceqq_f64(valid.size, valid.size)));
   HIDWORD(v5.f64[0]) = vuzp1_s8(v6, v6).i32[1];
   return vminv_u8(vcltz_s8(vshl_n_s8(*&v5.f64[0], 7uLL))) & 1;
 }
@@ -339,16 +339,16 @@
         v8 = 0;
         do
         {
-          v9 = [(SXDataTableBlueprint *)self blueprint];
-          v10 = [v9 objectForIndexPath:{v7, v8}];
+          blueprint = [(SXDataTableBlueprint *)self blueprint];
+          v10 = [blueprint objectForIndexPath:{v7, v8}];
           [v10 CGRectValue];
           v12 = v11;
           v14 = v13;
           v16 = v15;
           v18 = v17;
 
-          v19 = [(SXDataTableBlueprint *)self contentBlueprint];
-          v20 = [v19 objectForIndexPath:{v7, v8}];
+          contentBlueprint = [(SXDataTableBlueprint *)self contentBlueprint];
+          v20 = [contentBlueprint objectForIndexPath:{v7, v8}];
           [v20 CGRectValue];
           v22 = v21;
           v24 = v23;

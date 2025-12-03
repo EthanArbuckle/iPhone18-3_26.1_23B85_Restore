@@ -1,11 +1,11 @@
 @interface _OSLogLRUCache
-- (_OSLogLRUCache)initWithName:(id)a3 maxCount:(unint64_t)a4 evictionHandler:(id)a5;
-- (id)objectForKey:(id)a3;
+- (_OSLogLRUCache)initWithName:(id)name maxCount:(unint64_t)count evictionHandler:(id)handler;
+- (id)objectForKey:(id)key;
 - (unint64_t)count;
 - (void)dealloc;
 - (void)evictAllEntries;
 - (void)removeAllObjects;
-- (void)setObject:(id)a3 forKey:(id)a4;
+- (void)setObject:(id)object forKey:(id)key;
 @end
 
 @implementation _OSLogLRUCache
@@ -21,8 +21,8 @@
 - (unint64_t)count
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(_OSLogLRUCache *)self mruItems];
-  v4 = [v3 count];
+  mruItems = [(_OSLogLRUCache *)self mruItems];
+  v4 = [mruItems count];
 
   os_unfair_lock_unlock(&self->_lock);
   return v4;
@@ -32,11 +32,11 @@
 {
   os_unfair_lock_lock(&self->_lock);
   [(_OSLogLRUCache *)self evictAllEntries];
-  v3 = [(_OSLogLRUCache *)self storage];
-  [v3 removeAllObjects];
+  storage = [(_OSLogLRUCache *)self storage];
+  [storage removeAllObjects];
 
-  v4 = [(_OSLogLRUCache *)self mruItems];
-  [v4 removeAllObjects];
+  mruItems = [(_OSLogLRUCache *)self mruItems];
+  [mruItems removeAllObjects];
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -44,16 +44,16 @@
 - (void)evictAllEntries
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = [(_OSLogLRUCache *)self evictionHandler];
+  evictionHandler = [(_OSLogLRUCache *)self evictionHandler];
 
-  if (v3)
+  if (evictionHandler)
   {
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v4 = [(_OSLogLRUCache *)self storage];
-    v5 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    storage = [(_OSLogLRUCache *)self storage];
+    v5 = [storage countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v5)
     {
       v6 = v5;
@@ -67,23 +67,23 @@
         {
           if (*v17 != v8)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(storage);
           }
 
           v11 = *(*(&v16 + 1) + 8 * v9);
-          v12 = [(_OSLogLRUCache *)self storage];
-          v7 = [v12 objectForKeyedSubscript:v11];
+          storage2 = [(_OSLogLRUCache *)self storage];
+          v7 = [storage2 objectForKeyedSubscript:v11];
 
-          v13 = [v7 data];
-          v14 = [(_OSLogLRUCache *)self evictionHandler];
-          (v14)[2](v14, v11, v13);
+          data = [v7 data];
+          evictionHandler2 = [(_OSLogLRUCache *)self evictionHandler];
+          (evictionHandler2)[2](evictionHandler2, v11, data);
 
           ++v9;
           v10 = v7;
         }
 
         while (v6 != v9);
-        v6 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v6 = [storage countByEnumeratingWithState:&v16 objects:v20 count:16];
       }
 
       while (v6);
@@ -93,16 +93,16 @@
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
   v48 = *MEMORY[0x277D85DE8];
-  v38 = a3;
-  v6 = a4;
+  objectCopy = object;
+  keyCopy = key;
   os_unfair_lock_lock(&self->_lock);
-  v7 = [(_OSLogLRUCache *)self mruItems];
-  v8 = [v7 count];
-  v9 = [(_OSLogLRUCache *)self storage];
-  v10 = [v9 count];
+  mruItems = [(_OSLogLRUCache *)self mruItems];
+  v8 = [mruItems count];
+  storage = [(_OSLogLRUCache *)self storage];
+  v10 = [storage count];
 
   if (v8 != v10)
   {
@@ -112,8 +112,8 @@
     v45 = 0u;
     v43 = 0u;
     os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR);
-    v30 = [(_OSLogLRUCache *)self mruItems];
-    v31 = [v30 count];
+    mruItems2 = [(_OSLogLRUCache *)self mruItems];
+    v31 = [mruItems2 count];
     self = [(_OSLogLRUCache *)self storage];
     v39 = 134218240;
     v40 = v31;
@@ -128,61 +128,61 @@
     goto LABEL_15;
   }
 
-  v11 = [(_OSLogLRUCache *)self storage];
-  v12 = [v11 objectForKey:v6];
+  storage2 = [(_OSLogLRUCache *)self storage];
+  removeFromHead = [storage2 objectForKey:keyCopy];
 
-  if (v12)
+  if (removeFromHead)
   {
-    [(OSLogDoublyLinkedListNode *)v12 setData:v38];
-    v13 = [(_OSLogLRUCache *)self mruItems];
-    [v13 removeNodeAndAddToTail:v12];
+    [(OSLogDoublyLinkedListNode *)removeFromHead setData:objectCopy];
+    mruItems3 = [(_OSLogLRUCache *)self mruItems];
+    [mruItems3 removeNodeAndAddToTail:removeFromHead];
   }
 
   else
   {
-    v14 = [(_OSLogLRUCache *)self maxCount];
-    v15 = [(_OSLogLRUCache *)self mruItems];
-    v16 = [v15 count];
+    maxCount = [(_OSLogLRUCache *)self maxCount];
+    mruItems4 = [(_OSLogLRUCache *)self mruItems];
+    v16 = [mruItems4 count];
 
-    if (v14 == v16)
+    if (maxCount == v16)
     {
-      v17 = [(_OSLogLRUCache *)self mruItems];
-      v12 = [v17 removeFromHead];
+      mruItems5 = [(_OSLogLRUCache *)self mruItems];
+      removeFromHead = [mruItems5 removeFromHead];
 
-      v18 = [(_OSLogLRUCache *)self evictionHandler];
+      evictionHandler = [(_OSLogLRUCache *)self evictionHandler];
 
-      if (v18)
+      if (evictionHandler)
       {
-        v19 = [(OSLogDoublyLinkedListNode *)v12 key];
-        v20 = [(OSLogDoublyLinkedListNode *)v12 data];
-        v21 = [(_OSLogLRUCache *)self evictionHandler];
-        (v21)[2](v21, v19, v20);
+        v19 = [(OSLogDoublyLinkedListNode *)removeFromHead key];
+        data = [(OSLogDoublyLinkedListNode *)removeFromHead data];
+        evictionHandler2 = [(_OSLogLRUCache *)self evictionHandler];
+        (evictionHandler2)[2](evictionHandler2, v19, data);
       }
 
-      v22 = [(_OSLogLRUCache *)self storage];
-      v23 = [(OSLogDoublyLinkedListNode *)v12 key];
-      [v22 setObject:0 forKeyedSubscript:v23];
+      storage3 = [(_OSLogLRUCache *)self storage];
+      v23 = [(OSLogDoublyLinkedListNode *)removeFromHead key];
+      [storage3 setObject:0 forKeyedSubscript:v23];
 
-      [(OSLogDoublyLinkedListNode *)v12 setKey:v6];
-      [(OSLogDoublyLinkedListNode *)v12 setData:v38];
+      [(OSLogDoublyLinkedListNode *)removeFromHead setKey:keyCopy];
+      [(OSLogDoublyLinkedListNode *)removeFromHead setData:objectCopy];
     }
 
     else
     {
-      v12 = [[OSLogDoublyLinkedListNode alloc] initWithKey:v6 data:v38];
+      removeFromHead = [[OSLogDoublyLinkedListNode alloc] initWithKey:keyCopy data:objectCopy];
     }
 
-    v24 = [(_OSLogLRUCache *)self mruItems];
-    [v24 addToTail:v12];
+    mruItems6 = [(_OSLogLRUCache *)self mruItems];
+    [mruItems6 addToTail:removeFromHead];
 
-    v13 = [(_OSLogLRUCache *)self storage];
-    [v13 setObject:v12 forKeyedSubscript:v6];
+    mruItems3 = [(_OSLogLRUCache *)self storage];
+    [mruItems3 setObject:removeFromHead forKeyedSubscript:keyCopy];
   }
 
-  v25 = [(_OSLogLRUCache *)self mruItems];
-  v26 = [v25 count];
-  v27 = [(_OSLogLRUCache *)self storage];
-  v28 = [v27 count];
+  mruItems7 = [(_OSLogLRUCache *)self mruItems];
+  v26 = [mruItems7 count];
+  storage4 = [(_OSLogLRUCache *)self storage];
+  v28 = [storage4 count];
 
   if (v26 != v28)
   {
@@ -195,8 +195,8 @@ LABEL_15:
     os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR);
     v32 = [(_OSLogLRUCache *)self mruItems:v36];
     v33 = [v32 count];
-    v34 = [(_OSLogLRUCache *)self storage];
-    v35 = [v34 count];
+    storage5 = [(_OSLogLRUCache *)self storage];
+    v35 = [storage5 count];
     v39 = 134218240;
     v40 = v33;
     v41 = 2048;
@@ -212,15 +212,15 @@ LABEL_15:
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
   v36 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  keyCopy = key;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(_OSLogLRUCache *)self mruItems];
-  v6 = [v5 count];
-  v7 = [(_OSLogLRUCache *)self storage];
-  v8 = [v7 count];
+  mruItems = [(_OSLogLRUCache *)self mruItems];
+  v6 = [mruItems count];
+  storage = [(_OSLogLRUCache *)self storage];
+  v8 = [storage count];
 
   if (v6 != v8)
   {
@@ -230,8 +230,8 @@ LABEL_15:
     v33 = 0u;
     v31 = 0u;
     os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR);
-    v19 = [(_OSLogLRUCache *)self mruItems];
-    v20 = [v19 count];
+    mruItems2 = [(_OSLogLRUCache *)self mruItems];
+    v20 = [mruItems2 count];
     self = [(_OSLogLRUCache *)self storage];
     v27 = 134218240;
     v28 = v20;
@@ -246,20 +246,20 @@ LABEL_15:
     goto LABEL_9;
   }
 
-  v9 = [(_OSLogLRUCache *)self storage];
-  v10 = [v9 objectForKeyedSubscript:v4];
+  storage2 = [(_OSLogLRUCache *)self storage];
+  v10 = [storage2 objectForKeyedSubscript:keyCopy];
 
   if (v10)
   {
-    v11 = [(_OSLogLRUCache *)self mruItems];
-    [v11 removeNodeAndAddToTail:v10];
+    mruItems3 = [(_OSLogLRUCache *)self mruItems];
+    [mruItems3 removeNodeAndAddToTail:v10];
   }
 
-  v12 = [v10 data];
-  v13 = [(_OSLogLRUCache *)self mruItems];
-  v14 = [v13 count];
-  v15 = [(_OSLogLRUCache *)self storage];
-  v16 = [v15 count];
+  data = [v10 data];
+  mruItems4 = [(_OSLogLRUCache *)self mruItems];
+  v14 = [mruItems4 count];
+  storage3 = [(_OSLogLRUCache *)self storage];
+  v16 = [storage3 count];
 
   if (v14 != v16)
   {
@@ -272,8 +272,8 @@ LABEL_9:
     os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR);
     v21 = [(_OSLogLRUCache *)self mruItems:v25];
     v22 = [v21 count];
-    v23 = [(_OSLogLRUCache *)self storage];
-    v24 = [v23 count];
+    storage4 = [(_OSLogLRUCache *)self storage];
+    v24 = [storage4 count];
     v27 = 134218240;
     v28 = v22;
     v29 = 2048;
@@ -288,22 +288,22 @@ LABEL_9:
 
   v17 = *MEMORY[0x277D85DE8];
 
-  return v12;
+  return data;
 }
 
-- (_OSLogLRUCache)initWithName:(id)a3 maxCount:(unint64_t)a4 evictionHandler:(id)a5
+- (_OSLogLRUCache)initWithName:(id)name maxCount:(unint64_t)count evictionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a5;
+  nameCopy = name;
+  handlerCopy = handler;
   v20.receiver = self;
   v20.super_class = _OSLogLRUCache;
   v11 = [(_OSLogLRUCache *)&v20 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_name, a3);
-    v12->_maxCount = a4;
-    v13 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:a4];
+    objc_storeStrong(&v11->_name, name);
+    v12->_maxCount = count;
+    v13 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:count];
     storage = v12->_storage;
     v12->_storage = v13;
 
@@ -312,7 +312,7 @@ LABEL_9:
     v12->_mruItems = v15;
 
     v12->_lock._os_unfair_lock_opaque = 0;
-    v17 = _Block_copy(v10);
+    v17 = _Block_copy(handlerCopy);
     evictionHandler = v12->evictionHandler;
     v12->evictionHandler = v17;
   }

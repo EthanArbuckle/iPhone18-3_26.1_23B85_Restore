@@ -1,21 +1,21 @@
 @interface TSDMutableAngleGradient
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setLastColor:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setLastColor:(id)color;
 @end
 
 @implementation TSDMutableAngleGradient
 
-- (void)setLastColor:(id)a3
+- (void)setLastColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   v11 = objc_msgSend_gradientStops(self, v5, v6);
   v9 = objc_msgSend_count(v11, v7, v8);
-  objc_msgSend_setColorOfStopAtIndex_toColor_(self, v10, v9 - 1, v4);
+  objc_msgSend_setColorOfStopAtIndex_toColor_(self, v10, v9 - 1, colorCopy);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = objc_msgSend_allocWithZone_(TSDAngleGradient, a2, a3);
+  v4 = objc_msgSend_allocWithZone_(TSDAngleGradient, a2, zone);
   v7 = objc_msgSend_gradientStops(self, v5, v6);
   v10 = objc_msgSend_gradientType(self, v8, v9);
   objc_msgSend_opacity(self, v11, v12);

@@ -1,7 +1,7 @@
 @interface IPAPhotoAdjustment
 - (id)_debugDescriptionSuffix;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setMaskUUID:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setMaskUUID:(id)d;
 @end
 
 @implementation IPAPhotoAdjustment
@@ -23,12 +23,12 @@
   return v4;
 }
 
-- (void)setMaskUUID:(id)a3
+- (void)setMaskUUID:(id)d
 {
-  v4 = a3;
-  v5 = v4;
-  v12 = v4;
-  if (v4 && (v6 = [v4 length], v5 = v12, !v6))
+  dCopy = d;
+  v5 = dCopy;
+  v12 = dCopy;
+  if (dCopy && (v6 = [dCopy length], v5 = v12, !v6))
   {
     v9 = _PFAssertFailHandler();
     [(IPAPhotoAdjustment *)v9 copyWithZone:v10, v11];
@@ -42,11 +42,11 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = IPAPhotoAdjustment;
-  v4 = [(IPAAdjustment *)&v6 copyWithZone:a3];
+  v4 = [(IPAAdjustment *)&v6 copyWithZone:zone];
   *(v4 + 32) = self->_enabled;
   objc_storeStrong(v4 + 5, self->_maskUUID);
   objc_storeStrong(v4 + 6, self->_autoSettings);

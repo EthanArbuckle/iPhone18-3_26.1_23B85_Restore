@@ -1,7 +1,7 @@
 @interface PUAlbumListTableViewCell
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (PUAlbumListTableViewCellDelegate)stateChangeDelegate;
-- (void)willTransitionToState:(unint64_t)a3;
+- (void)willTransitionToState:(unint64_t)state;
 @end
 
 @implementation PUAlbumListTableViewCell
@@ -13,10 +13,10 @@
   return WeakRetained;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   v5 = [(PUAlbumListTableViewCell *)self viewWithTag:236897];
   [v5 sizeThatFits:{width, height}];
   v7 = v6;
@@ -29,13 +29,13 @@
   return result;
 }
 
-- (void)willTransitionToState:(unint64_t)a3
+- (void)willTransitionToState:(unint64_t)state
 {
   v6.receiver = self;
   v6.super_class = PUAlbumListTableViewCell;
   [(PUAlbumListTableViewCell *)&v6 willTransitionToState:?];
-  v5 = [(PUAlbumListTableViewCell *)self stateChangeDelegate];
-  [v5 albumListTableViewCell:self willChangeState:a3];
+  stateChangeDelegate = [(PUAlbumListTableViewCell *)self stateChangeDelegate];
+  [stateChangeDelegate albumListTableViewCell:self willChangeState:state];
 }
 
 @end

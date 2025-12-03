@@ -14,15 +14,15 @@
   v6 = a3;
   if (a4)
   {
-    v7 = [a1 encryptedValuesByKey];
-    v8 = [v7 objectForKey:v6];
+    encryptedValuesByKey = [self encryptedValuesByKey];
+    v8 = [encryptedValuesByKey objectForKey:v6];
 
-    v6 = v7;
+    v6 = encryptedValuesByKey;
   }
 
   else
   {
-    v8 = [a1 objectForKey:v6];
+    v8 = [self objectForKey:v6];
   }
 
   return v8;
@@ -35,23 +35,23 @@
   v11 = v9;
   if (a5)
   {
-    v10 = [a1 encryptedValuesByKey];
-    [v10 setObject:v11 forKey:v8];
+    encryptedValuesByKey = [self encryptedValuesByKey];
+    [encryptedValuesByKey setObject:v11 forKey:v8];
 
     v8 = v11;
-    v11 = v10;
+    v11 = encryptedValuesByKey;
   }
 
   else
   {
-    [a1 setObject:v9 forKey:v8];
+    [self setObject:v9 forKey:v8];
   }
 }
 
 - (id)externalID:()HMB
 {
-  v4 = [a1 recordID];
-  v5 = [v4 externalID:a3];
+  recordID = [self recordID];
+  v5 = [recordID externalID:a3];
 
   return v5;
 }
@@ -59,27 +59,27 @@
 - (id)externalData:()HMB
 {
   v5 = [objc_alloc(MEMORY[0x277CCAAB0]) initRequiringSecureCoding:1];
-  [a1 encodeSystemFieldsWithCoder:v5];
+  [self encodeSystemFieldsWithCoder:v5];
   [v5 finishEncoding];
   if (a3)
   {
     *a3 = [v5 error];
   }
 
-  v6 = [v5 encodedData];
+  encodedData = [v5 encodedData];
 
-  return v6;
+  return encodedData;
 }
 
 - (id)hmbDescription
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [a1 recordID];
-  v4 = [v3 hmbDescription];
-  v5 = [a1 recordChangeTag];
-  v6 = [a1 modifiedByDevice];
-  v7 = [a1 modificationDate];
-  v8 = [v2 stringWithFormat:@"%@/%@/%@/%@", v4, v5, v6, v7];
+  recordID = [self recordID];
+  hmbDescription = [recordID hmbDescription];
+  recordChangeTag = [self recordChangeTag];
+  modifiedByDevice = [self modifiedByDevice];
+  modificationDate = [self modificationDate];
+  v8 = [v2 stringWithFormat:@"%@/%@/%@/%@", hmbDescription, recordChangeTag, modifiedByDevice, modificationDate];
 
   return v8;
 }
@@ -104,9 +104,9 @@
 
     else if (a4)
     {
-      v13 = [v7 error];
+      error = [v7 error];
 
-      if (v13)
+      if (error)
       {
         [v7 error];
       }

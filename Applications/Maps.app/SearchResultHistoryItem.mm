@@ -1,29 +1,29 @@
 @interface SearchResultHistoryItem
-- (SearchResultHistoryItem)initWithSearchResult:(id)a3;
+- (SearchResultHistoryItem)initWithSearchResult:(id)result;
 - (double)timestamp;
-- (void)updateModel:(id)a3;
+- (void)updateModel:(id)model;
 @end
 
 @implementation SearchResultHistoryItem
 
 - (double)timestamp
 {
-  v2 = [(PersistentSearchResultHistoryItem *)self searchResult];
-  [v2 timestamp];
+  searchResult = [(PersistentSearchResultHistoryItem *)self searchResult];
+  [searchResult timestamp];
   v4 = v3;
 
   return v4;
 }
 
-- (SearchResultHistoryItem)initWithSearchResult:(id)a3
+- (SearchResultHistoryItem)initWithSearchResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   v9.receiver = self;
   v9.super_class = SearchResultHistoryItem;
   v5 = [(SearchResultHistoryItem *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [resultCopy copy];
     [(PersistentSearchResultHistoryItem *)v5 setSearchResult:v6];
     v7 = v5;
   }
@@ -31,16 +31,16 @@
   return v5;
 }
 
-- (void)updateModel:(id)a3
+- (void)updateModel:(id)model
 {
-  v4 = a3;
-  v5 = [(PersistentSearchResultHistoryItem *)self searchResult];
-  [v5 updateModel:v4];
+  modelCopy = model;
+  searchResult = [(PersistentSearchResultHistoryItem *)self searchResult];
+  [searchResult updateModel:modelCopy];
 
   v6 = objc_opt_class();
   v8 = NSStringFromClass(v6);
   v7 = [NSString stringWithFormat:@"[%@]", v8];
-  [v4 setDebugSubtitle:v7];
+  [modelCopy setDebugSubtitle:v7];
 }
 
 @end

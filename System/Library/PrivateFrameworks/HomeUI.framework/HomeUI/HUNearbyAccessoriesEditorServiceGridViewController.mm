@@ -1,17 +1,17 @@
 @interface HUNearbyAccessoriesEditorServiceGridViewController
-+ (id)defaultItemProviderCreatorWithOptions:(unint64_t)a3 accessoryProfileItem:(id)a4;
-- (BOOL)serviceGridItemManager:(id)a3 shouldHideItem:(id)a4;
-- (HUNearbyAccessoriesEditorServiceGridViewController)initWithAccessoryProfileSourceItem:(id)a3;
++ (id)defaultItemProviderCreatorWithOptions:(unint64_t)options accessoryProfileItem:(id)item;
+- (BOOL)serviceGridItemManager:(id)manager shouldHideItem:(id)item;
+- (HUNearbyAccessoriesEditorServiceGridViewController)initWithAccessoryProfileSourceItem:(id)item;
 @end
 
 @implementation HUNearbyAccessoriesEditorServiceGridViewController
 
-- (HUNearbyAccessoriesEditorServiceGridViewController)initWithAccessoryProfileSourceItem:(id)a3
+- (HUNearbyAccessoriesEditorServiceGridViewController)initWithAccessoryProfileSourceItem:(id)item
 {
-  v4 = a3;
-  v5 = [objc_opt_class() defaultItemProviderCreatorWithOptions:11 accessoryProfileItem:v4];
+  itemCopy = item;
+  v5 = [objc_opt_class() defaultItemProviderCreatorWithOptions:11 accessoryProfileItem:itemCopy];
   v6 = [HUServiceGridItemManager alloc];
-  v7 = [v4 copy];
+  v7 = [itemCopy copy];
   v8 = [(HUServiceGridItemManager *)v6 initWithDelegate:self sourceItem:v7 shouldGroupByRoom:1 shouldShowSectionHeaders:1 itemProvidersCreator:v5];
 
   v13.receiver = self;
@@ -19,22 +19,22 @@
   v9 = [(HUSelectableServiceGridViewController *)&v13 initWithServiceGridItemManager:v8];
   if (v9)
   {
-    v10 = [v4 accessory];
+    accessory = [itemCopy accessory];
     primaryAccessory = v9->_primaryAccessory;
-    v9->_primaryAccessory = v10;
+    v9->_primaryAccessory = accessory;
   }
 
   return v9;
 }
 
-- (BOOL)serviceGridItemManager:(id)a3 shouldHideItem:(id)a4
+- (BOOL)serviceGridItemManager:(id)manager shouldHideItem:(id)item
 {
-  v5 = a4;
+  itemCopy = item;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     objc_opt_class();
-    v7 = v5;
+    v7 = itemCopy;
     if (objc_opt_isKindOfClass())
     {
       v8 = v7;
@@ -48,10 +48,10 @@
     v9 = v8;
 
     objc_opt_class();
-    v10 = [v9 sourceHomeKitItem];
+    sourceHomeKitItem = [v9 sourceHomeKitItem];
     if (objc_opt_isKindOfClass())
     {
-      v11 = v10;
+      v11 = sourceHomeKitItem;
     }
 
     else
@@ -62,10 +62,10 @@
     v12 = v11;
 
     objc_opt_class();
-    v13 = [v9 homeKitObject];
+    homeKitObject = [v9 homeKitObject];
     if (objc_opt_isKindOfClass())
     {
-      v14 = v13;
+      v14 = homeKitObject;
     }
 
     else
@@ -91,10 +91,10 @@
 
     if (v12)
     {
-      v19 = [v12 accessory];
-      v20 = [v19 hf_primaryService];
+      accessory = [v12 accessory];
+      hf_primaryService = [accessory hf_primaryService];
 
-      v15 = v19;
+      v15 = accessory;
     }
 
     else
@@ -102,16 +102,16 @@
       if (!v18)
       {
 LABEL_20:
-        v21 = [(HUNearbyAccessoriesEditorServiceGridViewController *)self primaryAccessory];
-        v6 = [v21 hf_shouldHideNearbyAccessoryService:v15];
+        primaryAccessory = [(HUNearbyAccessoriesEditorServiceGridViewController *)self primaryAccessory];
+        v6 = [primaryAccessory hf_shouldHideNearbyAccessoryService:v15];
 
         goto LABEL_21;
       }
 
-      v20 = [v18 service];
+      hf_primaryService = [v18 service];
     }
 
-    v15 = v20;
+    v15 = hf_primaryService;
     goto LABEL_20;
   }
 
@@ -121,16 +121,16 @@ LABEL_21:
   return v6;
 }
 
-+ (id)defaultItemProviderCreatorWithOptions:(unint64_t)a3 accessoryProfileItem:(id)a4
++ (id)defaultItemProviderCreatorWithOptions:(unint64_t)options accessoryProfileItem:(id)item
 {
-  v5 = a4;
+  itemCopy = item;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __113__HUNearbyAccessoriesEditorServiceGridViewController_defaultItemProviderCreatorWithOptions_accessoryProfileItem___block_invoke;
   v9[3] = &unk_277DC2148;
-  v10 = v5;
-  v11 = a3;
-  v6 = v5;
+  v10 = itemCopy;
+  optionsCopy = options;
+  v6 = itemCopy;
   v7 = _Block_copy(v9);
 
   return v7;

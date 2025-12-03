@@ -2,27 +2,27 @@
 - (BOOL)_ensureXPCStarted;
 - (CBUserController)init;
 - (void)_activate;
-- (void)_activateXPCStart:(BOOL)a3;
+- (void)_activateXPCStart:(BOOL)start;
 - (void)_interrupted;
 - (void)_invalidated;
-- (void)activateWithCompletion:(id)a3;
-- (void)appleAudioAccessoryLimitedLoggingWithCompletion:(id)a3;
+- (void)activateWithCompletion:(id)completion;
+- (void)appleAudioAccessoryLimitedLoggingWithCompletion:(id)completion;
 - (void)dealloc;
-- (void)deleteControllerInfoForDevice:(id)a3 completion:(id)a4;
-- (void)diagnosticShow:(id)a3 completion:(id)a4;
-- (void)getCloudPairedDevicesWithCompletionHandler:(id)a3;
-- (void)getControllerInfoForDevice:(id)a3 completion:(id)a4;
-- (void)getCurrentUserGivenNameWithCompletion:(id)a3;
-- (void)getDistributedLoggingStatusWithCompletion:(id)a3;
+- (void)deleteControllerInfoForDevice:(id)device completion:(id)completion;
+- (void)diagnosticShow:(id)show completion:(id)completion;
+- (void)getCloudPairedDevicesWithCompletionHandler:(id)handler;
+- (void)getControllerInfoForDevice:(id)device completion:(id)completion;
+- (void)getCurrentUserGivenNameWithCompletion:(id)completion;
+- (void)getDistributedLoggingStatusWithCompletion:(id)completion;
 - (void)invalidate;
-- (void)readPrefKeys:(id)a3 source:(unsigned int)a4 completion:(id)a5;
-- (void)recordEventWithDeviceIdentifier:(id)a3 initiator:(BOOL)a4 starting:(BOOL)a5 useCase:(unsigned int)a6;
-- (void)recordEventWithStarting:(BOOL)a3 useCase:(unsigned int)a4;
-- (void)setAppleAudioAccessoryLimitedLogging:(BOOL)a3 completion:(id)a4;
-- (void)setDistributedLoggingStatus:(unsigned int)a3 completion:(id)a4;
-- (void)storeControllerInfo:(id)a3 completion:(id)a4;
-- (void)userNotificationEvent:(id)a3 completion:(id)a4;
-- (void)writePrefKey:(id)a3 value:(id)a4 source:(unsigned int)a5 completion:(id)a6;
+- (void)readPrefKeys:(id)keys source:(unsigned int)source completion:(id)completion;
+- (void)recordEventWithDeviceIdentifier:(id)identifier initiator:(BOOL)initiator starting:(BOOL)starting useCase:(unsigned int)case;
+- (void)recordEventWithStarting:(BOOL)starting useCase:(unsigned int)case;
+- (void)setAppleAudioAccessoryLimitedLogging:(BOOL)logging completion:(id)completion;
+- (void)setDistributedLoggingStatus:(unsigned int)status completion:(id)completion;
+- (void)storeControllerInfo:(id)info completion:(id)completion;
+- (void)userNotificationEvent:(id)event completion:(id)completion;
+- (void)writePrefKey:(id)key value:(id)value source:(unsigned int)source completion:(id)completion;
 @end
 
 @implementation CBUserController
@@ -133,16 +133,16 @@
   }
 
 LABEL_6:
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = v5->_xpcCnx;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = selfCopy->_xpcCnx;
   v7 = v6;
   if (v6)
   {
     [(NSXPCConnection *)v6 invalidate];
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
   v8 = self->_ucat;
   if (v8 && (v8->var3 & 0x40000) != 0)
   {
@@ -150,8 +150,8 @@ LABEL_6:
     self->_ucat = 0;
   }
 
-  interruptionHandler = v5->_interruptionHandler;
-  v5->_interruptionHandler = 0;
+  interruptionHandler = selfCopy->_interruptionHandler;
+  selfCopy->_interruptionHandler = 0;
 
   invalidationHandler = self->_invalidationHandler;
   self->_invalidationHandler = 0;
@@ -168,28 +168,28 @@ LABEL_13:
   [(CBUserController *)&v13 dealloc];
 }
 
-- (void)activateWithCompletion:(id)a3
+- (void)activateWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if (!v5->_activateCalled)
+  completionCopy = completion;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_activateCalled)
   {
-    v5->_activateCalled = 1;
-    v6 = MEMORY[0x1C68DF720](v4);
-    activateCompletion = v5->_activateCompletion;
-    v5->_activateCompletion = v6;
+    selfCopy->_activateCalled = 1;
+    v6 = MEMORY[0x1C68DF720](completionCopy);
+    activateCompletion = selfCopy->_activateCompletion;
+    selfCopy->_activateCompletion = v6;
 
-    dispatchQueue = v5->_dispatchQueue;
+    dispatchQueue = selfCopy->_dispatchQueue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __43__CBUserController_activateWithCompletion___block_invoke;
     block[3] = &unk_1E811D130;
-    block[4] = v5;
+    block[4] = selfCopy;
     dispatch_async(dispatchQueue, block);
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)_activate
@@ -241,30 +241,30 @@ LABEL_9:
   [(CBUserController *)self _activateXPCStart:0];
 }
 
-- (void)_activateXPCStart:(BOOL)a3
+- (void)_activateXPCStart:(BOOL)start
 {
   var0 = self->_ucat->var0;
-  if (a3)
+  if (start)
   {
     if (var0 <= 30)
     {
       if (var0 != -1)
       {
 LABEL_7:
-        v4 = self;
+        selfCopy = self;
         LogPrintF_safe();
-        self = v4;
+        self = selfCopy;
 
         goto LABEL_9;
       }
 
-      v5 = self;
+      selfCopy2 = self;
       ucat = self->_ucat;
       v7 = _LogCategory_Initialize();
-      self = v5;
+      self = selfCopy2;
       if (v7)
       {
-        v12 = v5->_ucat;
+        v12 = selfCopy2->_ucat;
         goto LABEL_7;
       }
     }
@@ -277,13 +277,13 @@ LABEL_7:
       goto LABEL_7;
     }
 
-    v8 = self;
+    selfCopy3 = self;
     v9 = self->_ucat;
     v10 = _LogCategory_Initialize();
-    self = v8;
+    self = selfCopy3;
     if (v10)
     {
-      v11 = v8->_ucat;
+      v11 = selfCopy3->_ucat;
       goto LABEL_7;
     }
   }
@@ -423,20 +423,20 @@ LABEL_8:
   }
 }
 
-- (void)diagnosticShow:(id)a3 completion:(id)a4
+- (void)diagnosticShow:(id)show completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  showCopy = show;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __46__CBUserController_diagnosticShow_completion___block_invoke;
   block[3] = &unk_1E811D2D8;
-  v12 = v6;
-  v13 = v7;
+  v12 = showCopy;
+  v13 = completionCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = showCopy;
+  v10 = completionCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -538,17 +538,17 @@ LABEL_8:
   return v5();
 }
 
-- (void)appleAudioAccessoryLimitedLoggingWithCompletion:(id)a3
+- (void)appleAudioAccessoryLimitedLoggingWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __68__CBUserController_appleAudioAccessoryLimitedLoggingWithCompletion___block_invoke;
   v7[3] = &unk_1E811CFA0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -650,18 +650,18 @@ LABEL_8:
   return v5();
 }
 
-- (void)setAppleAudioAccessoryLimitedLogging:(BOOL)a3 completion:(id)a4
+- (void)setAppleAudioAccessoryLimitedLogging:(BOOL)logging completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __68__CBUserController_setAppleAudioAccessoryLimitedLogging_completion___block_invoke;
   block[3] = &unk_1E811D300;
   block[4] = self;
-  v10 = v6;
-  v11 = a3;
-  v8 = v6;
+  v10 = completionCopy;
+  loggingCopy = logging;
+  v8 = completionCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -753,17 +753,17 @@ LABEL_8:
   return v5();
 }
 
-- (void)getDistributedLoggingStatusWithCompletion:(id)a3
+- (void)getDistributedLoggingStatusWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __62__CBUserController_getDistributedLoggingStatusWithCompletion___block_invoke;
   v7[3] = &unk_1E811CFA0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -855,18 +855,18 @@ LABEL_8:
   return v5();
 }
 
-- (void)setDistributedLoggingStatus:(unsigned int)a3 completion:(id)a4
+- (void)setDistributedLoggingStatus:(unsigned int)status completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __59__CBUserController_setDistributedLoggingStatus_completion___block_invoke;
   block[3] = &unk_1E811D328;
   block[4] = self;
-  v10 = v6;
-  v11 = a3;
-  v8 = v6;
+  v10 = completionCopy;
+  statusCopy = status;
+  v8 = completionCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -958,17 +958,17 @@ LABEL_8:
   return v5();
 }
 
-- (void)getCurrentUserGivenNameWithCompletion:(id)a3
+- (void)getCurrentUserGivenNameWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __58__CBUserController_getCurrentUserGivenNameWithCompletion___block_invoke;
   v7[3] = &unk_1E811CFA0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -1060,20 +1060,20 @@ LABEL_8:
   return v5();
 }
 
-- (void)getControllerInfoForDevice:(id)a3 completion:(id)a4
+- (void)getControllerInfoForDevice:(id)device completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  deviceCopy = device;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __58__CBUserController_getControllerInfoForDevice_completion___block_invoke;
   block[3] = &unk_1E811D2D8;
-  v13 = self;
-  v14 = v7;
-  v12 = v6;
-  v9 = v6;
-  v10 = v7;
+  selfCopy = self;
+  v14 = completionCopy;
+  v12 = deviceCopy;
+  v9 = deviceCopy;
+  v10 = completionCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -1164,20 +1164,20 @@ LABEL_7:
   return v6();
 }
 
-- (void)storeControllerInfo:(id)a3 completion:(id)a4
+- (void)storeControllerInfo:(id)info completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  infoCopy = info;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __51__CBUserController_storeControllerInfo_completion___block_invoke;
   block[3] = &unk_1E811D2D8;
-  v12 = v6;
-  v13 = v7;
+  v12 = infoCopy;
+  v13 = completionCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = infoCopy;
+  v10 = completionCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -1269,17 +1269,17 @@ LABEL_8:
   return v5();
 }
 
-- (void)getCloudPairedDevicesWithCompletionHandler:(id)a3
+- (void)getCloudPairedDevicesWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __63__CBUserController_getCloudPairedDevicesWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E811CFA0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -1371,20 +1371,20 @@ LABEL_8:
   return v5();
 }
 
-- (void)deleteControllerInfoForDevice:(id)a3 completion:(id)a4
+- (void)deleteControllerInfoForDevice:(id)device completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  deviceCopy = device;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __61__CBUserController_deleteControllerInfoForDevice_completion___block_invoke;
   block[3] = &unk_1E811D2D8;
-  v12 = v6;
-  v13 = v7;
+  v12 = deviceCopy;
+  v13 = completionCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = deviceCopy;
+  v10 = completionCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -1476,20 +1476,20 @@ LABEL_8:
   return v5();
 }
 
-- (void)recordEventWithDeviceIdentifier:(id)a3 initiator:(BOOL)a4 starting:(BOOL)a5 useCase:(unsigned int)a6
+- (void)recordEventWithDeviceIdentifier:(id)identifier initiator:(BOOL)initiator starting:(BOOL)starting useCase:(unsigned int)case
 {
-  v10 = a3;
+  identifierCopy = identifier;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __79__CBUserController_recordEventWithDeviceIdentifier_initiator_starting_useCase___block_invoke;
   block[3] = &unk_1E811D3C8;
-  v14 = v10;
-  v15 = self;
-  v17 = a4;
-  v18 = a5;
-  v16 = a6;
-  v12 = v10;
+  v14 = identifierCopy;
+  selfCopy = self;
+  initiatorCopy = initiator;
+  startingCopy = starting;
+  caseCopy = case;
+  v12 = identifierCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -1553,16 +1553,16 @@ void __79__CBUserController_recordEventWithDeviceIdentifier_initiator_starting_u
   }
 }
 
-- (void)recordEventWithStarting:(BOOL)a3 useCase:(unsigned int)a4
+- (void)recordEventWithStarting:(BOOL)starting useCase:(unsigned int)case
 {
   dispatchQueue = self->_dispatchQueue;
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __52__CBUserController_recordEventWithStarting_useCase___block_invoke;
   v5[3] = &unk_1E811D418;
-  v6 = a4;
+  caseCopy = case;
   v5[4] = self;
-  v7 = a3;
+  startingCopy = starting;
   dispatch_async(dispatchQueue, v5);
 }
 
@@ -1626,21 +1626,21 @@ void __52__CBUserController_recordEventWithStarting_useCase___block_invoke_2(uin
   }
 }
 
-- (void)readPrefKeys:(id)a3 source:(unsigned int)a4 completion:(id)a5
+- (void)readPrefKeys:(id)keys source:(unsigned int)source completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  keysCopy = keys;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __51__CBUserController_readPrefKeys_source_completion___block_invoke;
   v13[3] = &unk_1E811D440;
-  v14 = v8;
-  v15 = self;
-  v17 = a4;
-  v16 = v9;
-  v11 = v9;
-  v12 = v8;
+  v14 = keysCopy;
+  selfCopy = self;
+  sourceCopy = source;
+  v16 = completionCopy;
+  v11 = completionCopy;
+  v12 = keysCopy;
   dispatch_async(dispatchQueue, v13);
 }
 
@@ -1713,24 +1713,24 @@ void __51__CBUserController_readPrefKeys_source_completion___block_invoke_2(uint
   }
 }
 
-- (void)writePrefKey:(id)a3 value:(id)a4 source:(unsigned int)a5 completion:(id)a6
+- (void)writePrefKey:(id)key value:(id)value source:(unsigned int)source completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  keyCopy = key;
+  valueCopy = value;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __57__CBUserController_writePrefKey_value_source_completion___block_invoke;
   block[3] = &unk_1E811D468;
-  v18 = v10;
-  v19 = self;
-  v22 = a5;
-  v20 = v11;
-  v21 = v12;
-  v14 = v12;
-  v15 = v11;
-  v16 = v10;
+  v18 = keyCopy;
+  selfCopy = self;
+  sourceCopy = source;
+  v20 = valueCopy;
+  v21 = completionCopy;
+  v14 = completionCopy;
+  v15 = valueCopy;
+  v16 = keyCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -1804,20 +1804,20 @@ void __57__CBUserController_writePrefKey_value_source_completion___block_invoke_
   }
 }
 
-- (void)userNotificationEvent:(id)a3 completion:(id)a4
+- (void)userNotificationEvent:(id)event completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  eventCopy = event;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __53__CBUserController_userNotificationEvent_completion___block_invoke;
   block[3] = &unk_1E811D490;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = eventCopy;
+  selfCopy = self;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  v10 = eventCopy;
   dispatch_async(dispatchQueue, block);
 }
 

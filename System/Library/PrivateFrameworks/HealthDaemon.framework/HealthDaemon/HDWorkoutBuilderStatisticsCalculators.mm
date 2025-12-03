@@ -1,12 +1,12 @@
 @interface HDWorkoutBuilderStatisticsCalculators
 - (HDWorkoutBuilderStatisticsCalculators)init;
-- (HDWorkoutBuilderStatisticsCalculators)initWithCoder:(id)a3;
-- (id)calculatorForQuantityType:(id)a3 activityUUID:(id)a4;
-- (void)encodeWithCoder:(id)a3;
-- (void)enumerateCalculatorsForActivityUUID:(id)a3 handler:(id)a4;
-- (void)enumerateCalculatorsForQuantityType:(id)a3 handler:(id)a4;
-- (void)enumerateCalculatorsWithHandler:(id)a3;
-- (void)setCalculator:(id)a3 forQuantityType:(id)a4 activityUUID:(id)a5;
+- (HDWorkoutBuilderStatisticsCalculators)initWithCoder:(id)coder;
+- (id)calculatorForQuantityType:(id)type activityUUID:(id)d;
+- (void)encodeWithCoder:(id)coder;
+- (void)enumerateCalculatorsForActivityUUID:(id)d handler:(id)handler;
+- (void)enumerateCalculatorsForQuantityType:(id)type handler:(id)handler;
+- (void)enumerateCalculatorsWithHandler:(id)handler;
+- (void)setCalculator:(id)calculator forQuantityType:(id)type activityUUID:(id)d;
 @end
 
 @implementation HDWorkoutBuilderStatisticsCalculators
@@ -26,43 +26,43 @@
   return v2;
 }
 
-- (id)calculatorForQuantityType:(id)a3 activityUUID:(id)a4
+- (id)calculatorForQuantityType:(id)type activityUUID:(id)d
 {
   calculatorsByTypeAndActivityUUID = self->_calculatorsByTypeAndActivityUUID;
-  v6 = a4;
-  v7 = [(NSMutableDictionary *)calculatorsByTypeAndActivityUUID objectForKeyedSubscript:a3];
-  v8 = [v7 objectForKeyedSubscript:v6];
+  dCopy = d;
+  v7 = [(NSMutableDictionary *)calculatorsByTypeAndActivityUUID objectForKeyedSubscript:type];
+  v8 = [v7 objectForKeyedSubscript:dCopy];
 
   return v8;
 }
 
-- (void)setCalculator:(id)a3 forQuantityType:(id)a4 activityUUID:(id)a5
+- (void)setCalculator:(id)calculator forQuantityType:(id)type activityUUID:(id)d
 {
-  v14 = a4;
+  typeCopy = type;
   calculatorsByTypeAndActivityUUID = self->_calculatorsByTypeAndActivityUUID;
-  v9 = a5;
-  v10 = a3;
-  v11 = [(NSMutableDictionary *)calculatorsByTypeAndActivityUUID objectForKeyedSubscript:v14];
+  dCopy = d;
+  calculatorCopy = calculator;
+  v11 = [(NSMutableDictionary *)calculatorsByTypeAndActivityUUID objectForKeyedSubscript:typeCopy];
 
   if (!v11)
   {
     v12 = objc_alloc_init(MEMORY[0x277CBEB38]);
-    [(NSMutableDictionary *)self->_calculatorsByTypeAndActivityUUID setObject:v12 forKeyedSubscript:v14];
+    [(NSMutableDictionary *)self->_calculatorsByTypeAndActivityUUID setObject:v12 forKeyedSubscript:typeCopy];
   }
 
-  v13 = [(NSMutableDictionary *)self->_calculatorsByTypeAndActivityUUID objectForKeyedSubscript:v14];
-  [v13 setObject:v10 forKeyedSubscript:v9];
+  v13 = [(NSMutableDictionary *)self->_calculatorsByTypeAndActivityUUID objectForKeyedSubscript:typeCopy];
+  [v13 setObject:calculatorCopy forKeyedSubscript:dCopy];
 }
 
-- (void)enumerateCalculatorsWithHandler:(id)a3
+- (void)enumerateCalculatorsWithHandler:(id)handler
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v22 = self;
+  selfCopy = self;
   v5 = self->_calculatorsByTypeAndActivityUUID;
   v19 = [(NSMutableDictionary *)v5 countByEnumeratingWithState:&v27 objects:v32 count:16];
   if (v19)
@@ -86,7 +86,7 @@
         v24 = 0u;
         v25 = 0u;
         v26 = 0u;
-        v9 = [(NSMutableDictionary *)v22->_calculatorsByTypeAndActivityUUID objectForKeyedSubscript:v8];
+        v9 = [(NSMutableDictionary *)selfCopy->_calculatorsByTypeAndActivityUUID objectForKeyedSubscript:v8];
         v10 = [v9 countByEnumeratingWithState:&v23 objects:v31 count:16];
         if (v10)
         {
@@ -102,9 +102,9 @@
               }
 
               v14 = *(*(&v23 + 1) + 8 * i);
-              v15 = [(NSMutableDictionary *)v22->_calculatorsByTypeAndActivityUUID objectForKeyedSubscript:v8];
+              v15 = [(NSMutableDictionary *)selfCopy->_calculatorsByTypeAndActivityUUID objectForKeyedSubscript:v8];
               v16 = [v15 objectForKeyedSubscript:v14];
-              LODWORD(v14) = v4[2](v4, v16, v8, v14);
+              LODWORD(v14) = handlerCopy[2](handlerCopy, v16, v8, v14);
 
               if (!v14)
               {
@@ -141,16 +141,16 @@ LABEL_18:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)enumerateCalculatorsForQuantityType:(id)a3 handler:(id)a4
+- (void)enumerateCalculatorsForQuantityType:(id)type handler:(id)handler
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  typeCopy = type;
+  handlerCopy = handler;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  obj = [(NSMutableDictionary *)self->_calculatorsByTypeAndActivityUUID objectForKeyedSubscript:v6];
+  obj = [(NSMutableDictionary *)self->_calculatorsByTypeAndActivityUUID objectForKeyedSubscript:typeCopy];
   v8 = [obj countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v8)
   {
@@ -166,9 +166,9 @@ LABEL_3:
       }
 
       v12 = *(*(&v17 + 1) + 8 * v11);
-      v13 = [(NSMutableDictionary *)self->_calculatorsByTypeAndActivityUUID objectForKeyedSubscript:v6];
+      v13 = [(NSMutableDictionary *)self->_calculatorsByTypeAndActivityUUID objectForKeyedSubscript:typeCopy];
       v14 = [v13 objectForKeyedSubscript:v12];
-      LODWORD(v12) = v7[2](v7, v14, v12);
+      LODWORD(v12) = handlerCopy[2](handlerCopy, v14, v12);
 
       if (!v12)
       {
@@ -191,11 +191,11 @@ LABEL_3:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)enumerateCalculatorsForActivityUUID:(id)a3 handler:(id)a4
+- (void)enumerateCalculatorsForActivityUUID:(id)d handler:(id)handler
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  handlerCopy = handler;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -217,9 +217,9 @@ LABEL_3:
 
         v12 = *(*(&v17 + 1) + 8 * i);
         v13 = [(NSMutableDictionary *)self->_calculatorsByTypeAndActivityUUID objectForKeyedSubscript:v12];
-        v14 = [v13 objectForKeyedSubscript:v6];
+        v14 = [v13 objectForKeyedSubscript:dCopy];
 
-        if (v14 && !v7[2](v7, v14, v12))
+        if (v14 && !handlerCopy[2](handlerCopy, v14, v12))
         {
 
           goto LABEL_12;
@@ -241,12 +241,12 @@ LABEL_12:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   calculatorsByTypeAndActivityUUID = self->_calculatorsByTypeAndActivityUUID;
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(NSMutableDictionary *)calculatorsByTypeAndActivityUUID hk_map:&__block_literal_global_205];
-  [v4 encodeObject:v5 forKey:@"calculators"];
+  [coderCopy encodeObject:v5 forKey:@"calculators"];
 }
 
 void __57__HDWorkoutBuilderStatisticsCalculators_encodeWithCoder___block_invoke(uint64_t a1, void *a2, void *a3, void *a4)
@@ -296,10 +296,10 @@ void __57__HDWorkoutBuilderStatisticsCalculators_encodeWithCoder___block_invoke_
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (HDWorkoutBuilderStatisticsCalculators)initWithCoder:(id)a3
+- (HDWorkoutBuilderStatisticsCalculators)initWithCoder:(id)coder
 {
   v60[4] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v49.receiver = self;
   v49.super_class = HDWorkoutBuilderStatisticsCalculators;
   v5 = [(HDWorkoutBuilderStatisticsCalculators *)&v49 init];
@@ -314,7 +314,7 @@ void __57__HDWorkoutBuilderStatisticsCalculators_encodeWithCoder___block_invoke_
     v8 = [v6 setWithArray:v7];
 
     v37 = v8;
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"calculators"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"calculators"];
     v10 = 0x277CBE000uLL;
     v11 = objc_alloc_init(MEMORY[0x277CBEB38]);
     calculatorsByTypeAndActivityUUID = v5->_calculatorsByTypeAndActivityUUID;
@@ -330,7 +330,7 @@ void __57__HDWorkoutBuilderStatisticsCalculators_encodeWithCoder___block_invoke_
     {
       v13 = *v46;
       v35 = v5;
-      v36 = v4;
+      v36 = coderCopy;
       v32 = *v46;
       do
       {
@@ -393,7 +393,7 @@ void __57__HDWorkoutBuilderStatisticsCalculators_encodeWithCoder___block_invoke_
                   }
 
                   v26 = 0;
-                  v4 = v36;
+                  coderCopy = v36;
                   goto LABEL_22;
                 }
 
@@ -417,7 +417,7 @@ void __57__HDWorkoutBuilderStatisticsCalculators_encodeWithCoder___block_invoke_
           [(NSMutableDictionary *)v35->_calculatorsByTypeAndActivityUUID setObject:v16 forKeyedSubscript:v15];
 
           v14 = v34 + 1;
-          v4 = v36;
+          coderCopy = v36;
           v10 = 0x277CBE000;
           v13 = v32;
         }

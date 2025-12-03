@@ -4,57 +4,57 @@
 - (SOSAccountTrust)init;
 - (__OpaqueSOSPeerInfo)peerInfo;
 - (void)dealloc;
-- (void)setExpansion:(id)a3;
-- (void)setFullPeerInfo:(__OpaqueSOSFullPeerInfo *)a3;
-- (void)setRetirees:(id)a3;
-- (void)setTrustedCircle:(__OpaqueSOSCircle *)a3;
+- (void)setExpansion:(id)expansion;
+- (void)setFullPeerInfo:(__OpaqueSOSFullPeerInfo *)info;
+- (void)setRetirees:(id)retirees;
+- (void)setTrustedCircle:(__OpaqueSOSCircle *)circle;
 @end
 
 @implementation SOSAccountTrust
 
-- (void)setExpansion:(id)a3
+- (void)setExpansion:(id)expansion
 {
-  v4 = [a3 mutableCopy];
+  v4 = [expansion mutableCopy];
   expansion = self->expansion;
   self->expansion = v4;
 
   _objc_release_x1();
 }
 
-- (void)setFullPeerInfo:(__OpaqueSOSFullPeerInfo *)a3
+- (void)setFullPeerInfo:(__OpaqueSOSFullPeerInfo *)info
 {
   fullPeerInfo = self->fullPeerInfo;
-  if (fullPeerInfo != a3)
+  if (fullPeerInfo != info)
   {
-    if (!a3 || (CFRetain(a3), (fullPeerInfo = self->fullPeerInfo) != 0))
+    if (!info || (CFRetain(info), (fullPeerInfo = self->fullPeerInfo) != 0))
     {
       CFRelease(fullPeerInfo);
     }
 
-    self->fullPeerInfo = a3;
+    self->fullPeerInfo = info;
   }
 }
 
-- (void)setRetirees:(id)a3
+- (void)setRetirees:(id)retirees
 {
-  v4 = [a3 mutableCopy];
+  v4 = [retirees mutableCopy];
   retirees = self->retirees;
   self->retirees = v4;
 
   _objc_release_x1();
 }
 
-- (void)setTrustedCircle:(__OpaqueSOSCircle *)a3
+- (void)setTrustedCircle:(__OpaqueSOSCircle *)circle
 {
   trustedCircle = self->trustedCircle;
-  if (trustedCircle != a3)
+  if (trustedCircle != circle)
   {
-    if (!a3 || (CFRetain(a3), (trustedCircle = self->trustedCircle) != 0))
+    if (!circle || (CFRetain(circle), (trustedCircle = self->trustedCircle) != 0))
     {
       CFRelease(trustedCircle);
     }
 
-    self->trustedCircle = a3;
+    self->trustedCircle = circle;
   }
 }
 

@@ -1,20 +1,20 @@
 @interface PCNativeLocalizedHeadline
-- (id)initWithLocalizedStringEntry:(id)a3;
+- (id)initWithLocalizedStringEntry:(id)entry;
 @end
 
 @implementation PCNativeLocalizedHeadline
 
-- (id)initWithLocalizedStringEntry:(id)a3
+- (id)initWithLocalizedStringEntry:(id)entry
 {
-  v4 = a3;
+  entryCopy = entry;
   v5 = [(PCNativeLocalizedHeadline *)self init];
   if (v5)
   {
-    v6 = [v4 languageIdentifier];
-    [(PCNativeLocalizedHeadline *)v5 setLanguageIdentifier:v6];
+    languageIdentifier = [entryCopy languageIdentifier];
+    [(PCNativeLocalizedHeadline *)v5 setLanguageIdentifier:languageIdentifier];
 
-    v7 = [v4 value];
-    [(PCNativeLocalizedHeadline *)v5 setValue:v7];
+    value = [entryCopy value];
+    [(PCNativeLocalizedHeadline *)v5 setValue:value];
   }
 
   return v5;

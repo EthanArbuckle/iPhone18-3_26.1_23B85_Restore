@@ -5,64 +5,64 @@
 - (id)batteryOptimizationMode;
 - (id)boardId;
 - (id)idsn;
-- (void)populateAttributes:(id)a3;
-- (void)populatePLQueryAttributes:(id)a3;
+- (void)populateAttributes:(id)attributes;
+- (void)populatePLQueryAttributes:(id)attributes;
 @end
 
 @implementation ComponentBatteryInternal
 
-- (void)populateAttributes:(id)a3
+- (void)populateAttributes:(id)attributes
 {
-  v4 = a3;
+  attributesCopy = attributes;
   v15.receiver = self;
   v15.super_class = ComponentBatteryInternal;
-  [(ComponentBatteryInternalBase *)&v15 populateAttributes:v4];
-  [(ComponentBatteryInternal *)self populatePLQueryAttributes:v4];
+  [(ComponentBatteryInternalBase *)&v15 populateAttributes:attributesCopy];
+  [(ComponentBatteryInternal *)self populatePLQueryAttributes:attributesCopy];
   v5 = [[PowerUISmartChargeClient alloc] initWithClientName:@"com.apple.diagnostics"];
   [(ComponentBatteryInternal *)self setSmartChargeClient:v5];
 
-  v6 = [(ComponentBatteryInternal *)self batteryCellDisconnectCount];
-  if (v6)
+  batteryCellDisconnectCount = [(ComponentBatteryInternal *)self batteryCellDisconnectCount];
+  if (batteryCellDisconnectCount)
   {
-    [v4 setObject:v6 forKeyedSubscript:@"batteryCellDisconnectCount"];
+    [attributesCopy setObject:batteryCellDisconnectCount forKeyedSubscript:@"batteryCellDisconnectCount"];
   }
 
-  v7 = [(ComponentBatteryInternal *)self accessoryCertificate];
-  [v4 setObject:v7 forKeyedSubscript:@"accessoryCertificate"];
+  accessoryCertificate = [(ComponentBatteryInternal *)self accessoryCertificate];
+  [attributesCopy setObject:accessoryCertificate forKeyedSubscript:@"accessoryCertificate"];
 
-  v8 = [(ComponentBatteryInternal *)self idsn];
-  [v4 setObject:v8 forKeyedSubscript:@"chipId"];
+  idsn = [(ComponentBatteryInternal *)self idsn];
+  [attributesCopy setObject:idsn forKeyedSubscript:@"chipId"];
 
-  v9 = [(ComponentBatteryInternal *)self boardId];
-  [v4 setObject:v9 forKeyedSubscript:@"boardId"];
+  boardId = [(ComponentBatteryInternal *)self boardId];
+  [attributesCopy setObject:boardId forKeyedSubscript:@"boardId"];
 
   v10 = [NSNumber numberWithBool:[(ComponentBatteryInternal *)self isGasGaugeLocked]];
-  [v4 setObject:v10 forKeyedSubscript:@"isGasGaugeLocked"];
+  [attributesCopy setObject:v10 forKeyedSubscript:@"isGasGaugeLocked"];
 
   if (objc_opt_class())
   {
     v11 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", +[CRRepairStatus isVeridianFWUpdateRequired]);
-    [v4 setObject:v11 forKeyedSubscript:@"isFirmwareUpdateRequired"];
+    [attributesCopy setObject:v11 forKeyedSubscript:@"isFirmwareUpdateRequired"];
   }
 
-  v12 = [(ComponentBatteryBase *)self generatePowerSourceData];
-  [v4 addEntriesFromDictionary:v12];
+  generatePowerSourceData = [(ComponentBatteryBase *)self generatePowerSourceData];
+  [attributesCopy addEntriesFromDictionary:generatePowerSourceData];
 
-  v13 = [(ComponentBatteryInternalBase *)self generateMitigationState];
-  [v4 addEntriesFromDictionary:v13];
+  generateMitigationState = [(ComponentBatteryInternalBase *)self generateMitigationState];
+  [attributesCopy addEntriesFromDictionary:generateMitigationState];
 
   if ((+[CBSUtilities isCheckerBoardActive]& 1) == 0)
   {
-    v14 = [(ComponentBatteryInternal *)self batteryOptimizationMode];
-    [v4 setObject:v14 forKeyedSubscript:@"batteryOptimizationMode"];
+    batteryOptimizationMode = [(ComponentBatteryInternal *)self batteryOptimizationMode];
+    [attributesCopy setObject:batteryOptimizationMode forKeyedSubscript:@"batteryOptimizationMode"];
   }
 
-  removeNullFromDictionary(v4);
+  removeNullFromDictionary(attributesCopy);
 }
 
-- (void)populatePLQueryAttributes:(id)a3
+- (void)populatePLQueryAttributes:(id)attributes
 {
-  v4 = a3;
+  attributesCopy = attributes;
   v36 = 0;
   v37 = &v36;
   v38 = 0x3032000000;
@@ -132,27 +132,27 @@
   dispatch_group_wait(v5, 0xFFFFFFFFFFFFFFFFLL);
   if (v37[5])
   {
-    [v4 addEntriesFromDictionary:?];
+    [attributesCopy addEntriesFromDictionary:?];
   }
 
   if (v31[5])
   {
-    [v4 addEntriesFromDictionary:?];
+    [attributesCopy addEntriesFromDictionary:?];
   }
 
   if (v25[5])
   {
-    [v4 addEntriesFromDictionary:?];
+    [attributesCopy addEntriesFromDictionary:?];
   }
 
   if (v19[5])
   {
-    [v4 addEntriesFromDictionary:?];
+    [attributesCopy addEntriesFromDictionary:?];
   }
 
   if ([v13[5] count])
   {
-    [v4 setObject:v13[5] forKeyedSubscript:@"shutdownLog"];
+    [attributesCopy setObject:v13[5] forKeyedSubscript:@"shutdownLog"];
   }
 
   _Block_object_dispose(&v12, 8);
@@ -253,16 +253,16 @@ LABEL_8:
 
 - (id)batteryOptimizationMode
 {
-  v3 = [(ComponentBatteryInternal *)self smartChargeClient];
-  if (([v3 isMCLSupported] & 1) == 0)
+  smartChargeClient = [(ComponentBatteryInternal *)self smartChargeClient];
+  if (([smartChargeClient isMCLSupported] & 1) == 0)
   {
 
     goto LABEL_6;
   }
 
-  v4 = [(ComponentBatteryInternal *)self smartChargeClient];
+  smartChargeClient2 = [(ComponentBatteryInternal *)self smartChargeClient];
   v21 = 0;
-  v5 = [v4 isMCLCurrentlyEnabled:&v21];
+  v5 = [smartChargeClient2 isMCLCurrentlyEnabled:&v21];
   v6 = v21;
 
   if (!v5)
@@ -279,14 +279,14 @@ LABEL_8:
     }
 
 LABEL_6:
-    v11 = [(ComponentBatteryInternal *)self smartChargeClient];
-    v12 = [v11 isOBCSupported];
+    smartChargeClient3 = [(ComponentBatteryInternal *)self smartChargeClient];
+    isOBCSupported = [smartChargeClient3 isOBCSupported];
 
-    if (v12)
+    if (isOBCSupported)
     {
-      v13 = [(ComponentBatteryInternal *)self smartChargeClient];
+      smartChargeClient4 = [(ComponentBatteryInternal *)self smartChargeClient];
       v19 = 0;
-      v14 = [v13 isSmartChargingCurrentlyEnabled:&v19];
+      v14 = [smartChargeClient4 isSmartChargingCurrentlyEnabled:&v19];
       v15 = v19;
 
       if ((v14 - 3) >= 0xFFFFFFFFFFFFFFFELL)
@@ -312,9 +312,9 @@ LABEL_6:
     goto LABEL_19;
   }
 
-  v7 = [(ComponentBatteryInternal *)self smartChargeClient];
+  smartChargeClient5 = [(ComponentBatteryInternal *)self smartChargeClient];
   v20 = v6;
-  v8 = [v7 getMCLLimitWithError:&v20];
+  v8 = [smartChargeClient5 getMCLLimitWithError:&v20];
   v9 = v20;
 
   if (v9)
